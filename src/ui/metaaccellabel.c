@@ -271,9 +271,9 @@ meta_accel_label_draw (GtkWidget *widget,
         cairo_translate (cr, ac_width, 0);
       if (gtk_label_get_ellipsize (label))
         pango_layout_set_width (label_layout,
-                                pango_layout_get_width (label_layout) 
+                                pango_layout_get_width (label_layout)
                                 - ac_width * PANGO_SCALE);
-      
+
       allocation.width -= ac_width;
       gtk_widget_set_allocation (widget, &allocation);
       if (GTK_WIDGET_CLASS (meta_accel_label_parent_class)->draw)
@@ -283,7 +283,7 @@ meta_accel_label_draw (GtkWidget *widget,
       gtk_widget_set_allocation (widget, &allocation);
       if (gtk_label_get_ellipsize (label))
         pango_layout_set_width (label_layout,
-                                pango_layout_get_width (label_layout) 
+                                pango_layout_get_width (label_layout)
                                 + ac_width * PANGO_SCALE);
 
       cairo_restore (cr);
@@ -318,7 +318,7 @@ meta_accel_label_draw (GtkWidget *widget,
       if (GTK_WIDGET_CLASS (meta_accel_label_parent_class)->draw)
         GTK_WIDGET_CLASS (meta_accel_label_parent_class)->draw (widget, cr);
     }
-  
+
   return FALSE;
 }
 

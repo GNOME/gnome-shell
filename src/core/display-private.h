@@ -2,12 +2,12 @@
 
 /* Mutter X display handler */
 
-/* 
+/*
  * Copyright (C) 2001 Havoc Pennington
  * Copyright (C) 2002 Red Hat, Inc.
  * Copyright (C) 2003 Rob Adams
  * Copyright (C) 2004-2006 Elijah Newren
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 2 of the
@@ -17,7 +17,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
@@ -85,7 +85,7 @@ typedef enum {
 struct _MetaDisplay
 {
   GObject parent_instance;
-  
+
   char *name;
   Display *xdisplay;
 
@@ -143,7 +143,7 @@ struct _MetaDisplay
    * multiple events with the same serial.
    */
   guint focused_by_us : 1;
-  
+
   /*< private-ish >*/
   MetaScreen *screen;
   GHashTable *xids;
@@ -157,7 +157,7 @@ struct _MetaDisplay
    */
   unsigned long ignored_crossing_serials[N_IGNORED_CROSSING_SERIALS];
   Window ungrab_should_not_cause_focus_window;
-  
+
   guint32 current_time;
 
   /* We maintain a sequence counter, incremented for each #MetaWindow
@@ -181,7 +181,7 @@ struct _MetaDisplay
 
   /* Alt+click button grabs */
   ClutterModifierType window_grab_modifiers;
-  
+
   /* current window operation */
   MetaGrabOp  grab_op;
   MetaWindow *grab_window;
@@ -234,7 +234,7 @@ struct _MetaDisplay
   gboolean overlay_key_only_pressed;
   MetaKeyCombo *iso_next_group_combos;
   int n_iso_next_group_combos;
-  
+
   /* Monitor cache */
   unsigned int monitor_cache_invalidated : 1;
 

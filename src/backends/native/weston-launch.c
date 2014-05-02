@@ -108,7 +108,7 @@ weston_launch_allowed(struct weston_launch *wl)
 		}
 		free(session);
 	}
-	
+
 	return 0;
 }
 
@@ -117,7 +117,7 @@ setup_launcher_socket(struct weston_launch *wl)
 {
 	if (socketpair(AF_LOCAL, SOCK_DGRAM, 0, wl->sock) < 0)
 		error(1, errno, "socketpair failed");
-	
+
 	fcntl(wl->sock[0], F_SETFD, O_CLOEXEC);
 
 	return 0;
@@ -640,7 +640,7 @@ main(int argc, char *argv[])
 		{ "verbose", no_argument,       NULL, 'v' },
 		{ "help",    no_argument,       NULL, 'h' },
 		{ 0,         0,                 NULL,  0  }
-	};	
+	};
 
 	memset(&wl, 0, sizeof wl);
 	wl.drm_fd = -1;

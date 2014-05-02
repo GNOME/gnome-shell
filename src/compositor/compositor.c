@@ -555,10 +555,10 @@ meta_compositor_manage (MetaCompositor *compositor)
 
       meta_empty_stage_input_region (screen);
 
-      /* Make sure there isn't any left-over output shape on the 
+      /* Make sure there isn't any left-over output shape on the
        * overlay window by setting the whole screen to be an
        * output region.
-       * 
+       *
        * Note: there doesn't seem to be any real chance of that
        *  because the X server will destroy the overlay window
        *  when the last client using it exits.
@@ -746,9 +746,9 @@ meta_compositor_window_surface_changed (MetaCompositor *compositor,
 
 /**
  * meta_compositor_process_event: (skip)
- * @compositor: 
- * @event: 
- * @window: 
+ * @compositor:
+ * @event:
+ * @window:
  *
  */
 gboolean

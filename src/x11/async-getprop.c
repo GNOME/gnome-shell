@@ -55,7 +55,7 @@ struct _ListNode
 struct _AgGetPropertyTask
 {
   ListNode node;
-  
+
   AgPerDisplayData *dd;
   Window window;
   Atom property;
@@ -77,7 +77,7 @@ struct _AgPerDisplayData
 {
   ListNode node;
   _XAsyncHandler async;
-  
+
   Display *display;
   ListNode *pending_tasks;
   ListNode *pending_tasks_tail;
@@ -96,7 +96,7 @@ append_to_list (ListNode **head,
                 ListNode  *task)
 {
   task->next = NULL;
-  
+
   if (*tail == NULL)
     {
       assert (*head == NULL);
@@ -131,10 +131,10 @@ remove_from_list (ListNode **head,
 
           if (node == *tail)
             *tail = prev;
-          
+
           break;
         }
-      
+
       prev = node;
       node = node->next;
     }
@@ -152,7 +152,7 @@ move_to_completed (AgPerDisplayData  *dd,
   remove_from_list (&dd->pending_tasks,
                     &dd->pending_tasks_tail,
                     &task->node);
-  
+
   append_to_list (&dd->completed_tasks,
                   &dd->completed_tasks_tail,
                   &task->node);
@@ -187,18 +187,18 @@ find_pending_by_request_sequence (AgPerDisplayData *dd,
    * I'm not sure this is 100% guaranteed, if it is,
    * it would be a big speedup.
    */
-  
+
   node = dd->pending_tasks;
   while (node != NULL)
     {
       AgGetPropertyTask *task = (AgGetPropertyTask*) node;
-      
+
       if (task->request_seq == request_seq)
         return task;
-      
+
       node = node->next;
     }
-  
+
   return NULL;
 }
 
@@ -216,12 +216,12 @@ async_get_property_handler (Display *dpy,
   int bytes_read;
 
   dd = (AgPerDisplayData*) data;
-  
+
 #if 0
   printf ("%s: seeing request seq %ld buflen %d\n", __FUNCTION__,
           dpy->last_request_read, len);
 #endif
-  
+
   task = find_pending_by_request_sequence (dd, dpy->last_request_read);
 
   if (task == NULL)
@@ -231,7 +231,7 @@ async_get_property_handler (Display *dpy,
 
   task->have_reply = True;
   move_to_completed (dd, task);
-  
+
   /* read bytes so far */
   bytes_read = SIZEOF (xReply);
 
@@ -240,7 +240,7 @@ async_get_property_handler (Display *dpy,
       xError errbuf;
 
       task->error = rep->error.errorCode;
-      
+
 #ifdef DEBUG_SPEW
       printf ("%s: error code = %d (ignoring error, eating %d bytes, generic.length = %ld)\n",
               __FUNCTION__, task->error, (SIZEOF (xError) - bytes_read),
@@ -263,7 +263,7 @@ async_get_property_handler (Display *dpy,
       _XGetAsyncReply (dpy, (char *)&errbuf, rep, buf, len,
                        (SIZEOF (xError) - bytes_read) >> 2, /* in 32-bit words */
                        False); /* really seems like it should be True */
-      
+
       return True;
     }
 
@@ -368,7 +368,7 @@ async_get_property_handler (Display *dpy,
                   char *netdata;
                   char *lptr;
                   char *end_lptr;
-                  
+
                   /* Store the 32-bit values in the end of the array */
                   netdata = task->data + nbytes / 2;
 
@@ -377,7 +377,7 @@ async_get_property_handler (Display *dpy,
                                   netbytes);
 
                   /* Now move the 32-bit values to the front */
-                  
+
                   lptr = task->data;
                   end_lptr = task->data + nbytes;
                   while (lptr != end_lptr)
@@ -411,7 +411,7 @@ async_get_property_handler (Display *dpy,
 #if 0
             xError error;
 #endif
-            
+
             task->error = BadImplementation;
 
 #if 0
@@ -468,21 +468,21 @@ get_display_data (Display *display,
 {
   ListNode *node;
   AgPerDisplayData *dd;
-  
+
   node = display_datas;
   while (node != NULL)
     {
       dd = (AgPerDisplayData*) node;
-      
+
       if (dd->display == display)
         return dd;
-      
+
       node = node->next;
     }
 
   if (!create)
     return NULL;
-  
+
   dd = Xcalloc (1, sizeof (AgPerDisplayData));
   if (dd == NULL)
     return NULL;
@@ -496,7 +496,7 @@ get_display_data (Display *display,
   append_to_list (&display_datas,
                   &display_datas_tail,
                   &dd->node);
-  
+
   return dd;
 }
 
@@ -524,8 +524,8 @@ ag_task_create (Display *dpy,
 {
   AgGetPropertyTask *task;
   xGetPropertyReq *req;
-  AgPerDisplayData *dd;  
-  
+  AgPerDisplayData *dd;
+
   /* Fire up our request */
   LockDisplay (dpy);
 
@@ -535,7 +535,7 @@ ag_task_create (Display *dpy,
       UnlockDisplay (dpy);
       return NULL;
     }
-  
+
   GetReq (GetProperty, req);
   req->window = window;
   req->property = property;
@@ -561,7 +561,7 @@ ag_task_create (Display *dpy,
                   &dd->pending_tasks_tail,
                   &task->node);
   dd->n_tasks_pending += 1;
-  
+
   UnlockDisplay (dpy);
 
   SyncHandle ();
@@ -593,13 +593,13 @@ ag_task_get_reply_and_free (AgGetPropertyTask  *task,
   *prop = NULL;
 
   dpy = task->dd->display; /* Xlib macros require a variable named "dpy" */
-  
+
   if (task->error != Success)
     {
       Status s = task->error;
 
       free_task (task);
-      
+
       return s;
     }
 
@@ -620,7 +620,7 @@ ag_task_get_reply_and_free (AgGetPropertyTask  *task,
   SyncHandle ();
 
   free_task (task);
-  
+
   return Success;
 }
 
@@ -657,7 +657,7 @@ ag_get_next_completed_task (Display *display)
 
   if (dd == NULL)
     return NULL;
-  
+
 #ifdef DEBUG_SPEW
   printf ("%d pending %d completed\n",
           dd->n_tasks_pending,

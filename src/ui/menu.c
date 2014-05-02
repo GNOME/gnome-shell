@@ -2,11 +2,11 @@
 
 /* Mutter window menu */
 
-/* 
+/*
  * Copyright (C) 2001 Havoc Pennington
  * Copyright (C) 2004 Rob Adams
  * Copyright (C) 2005 Elijah Newren
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 2 of the
@@ -16,7 +16,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
@@ -107,18 +107,18 @@ popup_position_func (GtkMenu   *menu,
                      gboolean  *push_in,
                      gpointer  user_data)
 {
-  GtkRequisition req;      
+  GtkRequisition req;
   GdkPoint *pos;
 
   pos = user_data;
-  
+
   gtk_widget_get_preferred_size (GTK_WIDGET (menu), &req, NULL);
 
   *x = pos->x;
   *y = pos->y;
-  
+
   if (meta_ui_get_direction() == META_UI_DIRECTION_RTL)
-    *x = MAX (0, *x - req.width); 
+    *x = MAX (0, *x - req.width);
 
   /* Ensure onscreen */
   *x = CLAMP (*x, 0, MAX (0, gdk_screen_width () - req.width));
@@ -130,7 +130,7 @@ menu_closed (GtkMenu *widget,
              gpointer data)
 {
   MetaWindowMenu *menu;
-  
+
   menu = data;
 
   (* menu->func) (menu,
@@ -139,7 +139,7 @@ menu_closed (GtkMenu *widget,
                   gtk_get_current_event_time (),
                   0, 0,
                   menu->data);
-  
+
   /* menu may now be freed */
 }
 
@@ -147,9 +147,9 @@ static void
 activate_cb (GtkWidget *menuitem, gpointer data)
 {
   MenuData *md;
-  
+
   g_return_if_fail (GTK_IS_WIDGET (menuitem));
-  
+
   md = data;
 
   (* md->menu->func) (md->menu,
@@ -169,7 +169,7 @@ activate_cb (GtkWidget *menuitem, gpointer data)
  * accelerators. At the moment this means adding a _ if the name is of
  * the form "Workspace n" where n is less than 10, and escaping any
  * other '_'s so they do not create inadvertant accelerators.
- * 
+ *
  * The calling code owns the string, and is reponsible to free the
  * memory after use.
  *
@@ -188,7 +188,7 @@ get_workspace_name_with_accel (Display *display,
   name = meta_core_get_workspace_name_with_index (display, xroot, index);
 
   g_assert (name != NULL);
-  
+
   /*
    * If the name is of the form "Workspace x" where x is an unsigned
    * integer, insert a '_' before the number if it is less than 10 and
@@ -199,7 +199,7 @@ get_workspace_name_with_accel (Display *display,
       *(name + charcount)=='\0')
     {
       char *new_name;
-      
+
       /*
        * Above name is a pointer into the Workspace struct. Here we make
        * a copy copy so we can have our wicked way with it.
@@ -271,10 +271,10 @@ menu_item_new (MenuItem *menuitem, int workspace_id)
   else if (menuitem->type == MENU_ITEM_CHECKBOX)
     {
       mi = gtk_check_menu_item_new ();
-      
+
       gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (mi),
                                       menuitem->checked);
-    }    
+    }
   else if (menuitem->type == MENU_ITEM_RADIOBUTTON)
     {
       mi = gtk_check_menu_item_new ();
@@ -300,7 +300,7 @@ menu_item_new (MenuItem *menuitem, int workspace_id)
 
   meta_accel_label_set_accelerator (META_ACCEL_LABEL (accel_label),
                                     key, mods);
-  
+
   return mi;
 }
 
@@ -320,18 +320,18 @@ meta_window_menu_new   (MetaFrames         *frames,
   /* FIXME: Modifications to 'ops' should happen in meta_window_show_menu */
   if (n_workspaces < 2)
     ops &= ~(META_MENU_OP_STICK | META_MENU_OP_UNSTICK | META_MENU_OP_WORKSPACES);
-  else if (n_workspaces == 2) 
+  else if (n_workspaces == 2)
     /* #151183: If we only have two workspaces, disable the menu listing them. */
     ops &= ~(META_MENU_OP_WORKSPACES);
-  
+
   menu = g_new (MetaWindowMenu, 1);
   menu->frames = frames;
   menu->client_xwindow = client_xwindow;
   menu->func = func;
   menu->data = data;
   menu->ops = ops;
-  menu->insensitive = insensitive;  
-  
+  menu->insensitive = insensitive;
+
   menu->menu = gtk_menu_new ();
 
   gtk_menu_set_screen (GTK_MENU (menu->menu),
@@ -450,12 +450,12 @@ meta_window_menu_new   (MetaFrames         *frames,
 
               if (insensitive & menuitem.op)
                 gtk_widget_set_sensitive (mi, FALSE);
-              
+
               md = g_new (MenuData, 1);
-              
+
               md->menu = menu;
               md->op = menuitem.op;
-              
+
               g_signal_connect_data (G_OBJECT (mi),
                                      "activate",
                                      G_CALLBACK (activate_cb),
@@ -466,15 +466,15 @@ meta_window_menu_new   (MetaFrames         *frames,
           if (mi)
             {
               gtk_menu_shell_append (GTK_MENU_SHELL (menu->menu), mi);
-          
+
               gtk_widget_show (mi);
             }
         }
     }
 
- 
+
   g_signal_connect (menu->menu, "selection_done",
-                    G_CALLBACK (menu_closed), menu);  
+                    G_CALLBACK (menu_closed), menu);
 
   return menu;
 }
@@ -487,7 +487,7 @@ meta_window_menu_popup (MetaWindowMenu     *menu,
                         guint32             timestamp)
 {
   GdkPoint *pt;
-  
+
   pt = g_new (GdkPoint, 1);
 
   g_object_set_data_full (G_OBJECT (menu->menu),
@@ -497,7 +497,7 @@ meta_window_menu_popup (MetaWindowMenu     *menu,
 
   pt->x = root_x;
   pt->y = root_y;
-  
+
   gtk_menu_popup (GTK_MENU (menu->menu),
                   NULL, NULL,
                   popup_position_func, pt,

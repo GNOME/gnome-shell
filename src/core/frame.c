@@ -2,11 +2,11 @@
 
 /* Mutter X window decorations */
 
-/* 
+/*
  * Copyright (C) 2001 Havoc Pennington
  * Copyright (C) 2003, 2004 Red Hat, Inc.
  * Copyright (C) 2005 Elijah Newren
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 2 of the
@@ -16,7 +16,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
@@ -43,10 +43,10 @@ meta_window_ensure_frame (MetaWindow *window)
   Visual *visual;
   gulong create_serial;
   MetaStackWindow stack_window;
-  
+
   if (window->frame)
     return;
-  
+
   frame = g_new (MetaFrame, 1);
 
   frame->window = window;
@@ -61,7 +61,7 @@ meta_window_ensure_frame (MetaWindow *window)
 
   frame->is_flashing = FALSE;
   frame->borders_cached = FALSE;
-  
+
   meta_verbose ("Framing window %s: visual %s default, depth %d default depth %d\n",
                 window->desc,
                 XVisualIDFromVisual (window->xvisual) ==
@@ -71,7 +71,7 @@ meta_window_ensure_frame (MetaWindow *window)
   meta_verbose ("Frame geometry %d,%d  %dx%d\n",
                 frame->rect.x, frame->rect.y,
                 frame->rect.width, frame->rect.height);
-  
+
   /* Default depth/visual handles clients with weird visuals; they can
    * always be children of the root depth/visual obviously, but
    * e.g. DRI games can't be children of a parent that has the same
@@ -80,7 +80,7 @@ meta_window_ensure_frame (MetaWindow *window)
    * We look for an ARGB visual if we can find one, otherwise use
    * the default of NULL.
    */
-  
+
   /* Special case for depth 32 windows (assumed to be ARGB),
    * we use the window's visual. Otherwise we just use the system visual.
    */
@@ -88,7 +88,7 @@ meta_window_ensure_frame (MetaWindow *window)
     visual = window->xvisual;
   else
     visual = NULL;
-  
+
   frame->xwindow = meta_ui_create_frame_window (window->screen->ui,
                                                 window->display->xdisplay,
                                                 visual,
@@ -108,7 +108,7 @@ meta_window_ensure_frame (MetaWindow *window)
   attrs.event_mask = EVENT_MASK;
   XChangeWindowAttributes (window->display->xdisplay,
 			   frame->xwindow, CWEventMask, &attrs);
-  
+
   meta_display_register_x_window (window->display, &frame->xwindow, window);
 
   meta_error_trap_push (window->display);
@@ -136,7 +136,7 @@ meta_window_ensure_frame (MetaWindow *window)
                    window->rect.y);
   /* FIXME handle this error */
   meta_error_trap_pop (window->display);
-  
+
   /* stick frame to the window */
   window->frame = frame;
 
@@ -145,7 +145,7 @@ meta_window_ensure_frame (MetaWindow *window)
    */
   meta_ui_update_frame_style (window->screen->ui, frame->xwindow);
   meta_ui_reset_frame_bg (window->screen->ui, frame->xwindow);
-  
+
   if (window->title)
     meta_ui_set_frame_title (window->screen->ui,
                              window->frame->xwindow,
@@ -163,18 +163,18 @@ meta_window_destroy_frame (MetaWindow *window)
   MetaFrame *frame;
   MetaFrameBorders borders;
   MetaStackWindow stack_window;
-  
+
   if (window->frame == NULL)
     return;
 
   meta_verbose ("Unframing window %s\n", window->desc);
-  
+
   frame = window->frame;
 
   meta_frame_calc_borders (frame, &borders);
-  
+
   meta_bell_notify_frame_destroy (frame);
-  
+
   /* Unparent the client window; it may be destroyed,
    * thus the error trap.
    */
@@ -209,7 +209,7 @@ meta_window_destroy_frame (MetaWindow *window)
 
   meta_display_unregister_x_window (window->display,
                                     frame->xwindow);
-  
+
   window->frame = NULL;
   if (window->frame_bounds)
     {
@@ -219,9 +219,9 @@ meta_window_destroy_frame (MetaWindow *window)
 
   /* Move keybindings to window instead of frame */
   meta_window_grab_keys (window);
-  
+
   g_free (frame);
-  
+
   /* Put our state back where it should be */
   meta_window_queue (window, META_QUEUE_CALC_SHOWING);
   meta_window_queue (window, META_QUEUE_MOVE_RESIZE);
@@ -244,20 +244,20 @@ meta_frame_get_flags (MetaFrame *frame)
   else
     {
       flags |= META_FRAME_ALLOWS_MENU;
-      
+
       if (frame->window->has_close_func)
         flags |= META_FRAME_ALLOWS_DELETE;
-      
+
       if (frame->window->has_maximize_func)
         flags |= META_FRAME_ALLOWS_MAXIMIZE;
-      
+
       if (frame->window->has_minimize_func)
         flags |= META_FRAME_ALLOWS_MINIMIZE;
-      
+
       if (frame->window->has_shade_func)
         flags |= META_FRAME_ALLOWS_SHADE;
-    }  
-  
+    }
+
   if (META_WINDOW_ALLOWS_MOVE (frame->window))
     flags |= META_FRAME_ALLOWS_MOVE;
 
@@ -266,7 +266,7 @@ meta_frame_get_flags (MetaFrame *frame)
 
   if (META_WINDOW_ALLOWS_VERTICAL_RESIZE (frame->window))
     flags |= META_FRAME_ALLOWS_VERTICAL_RESIZE;
-  
+
   if (meta_window_appears_focused (frame->window))
     flags |= META_FRAME_HAS_FOCUS;
 
@@ -296,7 +296,7 @@ meta_frame_get_flags (MetaFrame *frame)
 
   if (frame->window->wm_state_above)
     flags |= META_FRAME_ABOVE;
-  
+
   return flags;
 }
 
@@ -418,7 +418,7 @@ meta_frame_set_screen_cursor (MetaFrame	*frame,
   if (cursor == META_CURSOR_DEFAULT)
     XUndefineCursor (frame->window->display->xdisplay, frame->xwindow);
   else
-    { 
+    {
       xcursor = meta_display_create_x_cursor (frame->window->display, cursor);
       XDefineCursor (frame->window->display->xdisplay, frame->xwindow, xcursor);
       XFlush (frame->window->display->xdisplay);

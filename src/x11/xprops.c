@@ -2,7 +2,7 @@
 
 /* Mutter X property convenience routines */
 
-/* 
+/*
  * Copyright (C) 2001 Havoc Pennington
  * Copyright (C) 2002 Red Hat Inc.
  *
@@ -10,7 +10,7 @@
  *   Copyright 1987, 1988, 1998  The Open Group
  *   Copyright 1988 by Wyse Technology, Inc., San Jose, Ca,
  *   Copyright 1987 by Digital Equipment Corporation, Maynard, Massachusetts,
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 2 of the
@@ -20,7 +20,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
@@ -31,20 +31,20 @@ Copyright 1987 by Digital Equipment Corporation, Maynard, Massachusetts,
 
                         All Rights Reserved
 
-Permission to use, copy, modify, and distribute this software and its 
-documentation for any purpose and without fee is hereby granted, 
+Permission to use, copy, modify, and distribute this software and its
+documentation for any purpose and without fee is hereby granted,
 provided that the above copyright notice appear in all copies and that
-both that copyright notice and this permission notice appear in 
+both that copyright notice and this permission notice appear in
 supporting documentation, and that the name Digital not be
 used in advertising or publicity pertaining to distribution of the
-software without specific, written prior permission.  
+software without specific, written prior permission.
 
-DIGITAL AND WYSE DISCLAIM ALL WARRANTIES WITH REGARD TO THIS SOFTWARE, 
-INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO 
-EVENT SHALL DIGITAL OR WYSE BE LIABLE FOR ANY SPECIAL, INDIRECT OR 
-CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF 
-USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR 
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR 
+DIGITAL AND WYSE DISCLAIM ALL WARRANTIES WITH REGARD TO THIS SOFTWARE,
+INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO
+EVENT SHALL DIGITAL OR WYSE BE LIABLE FOR ANY SPECIAL, INDIRECT OR
+CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF
+USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 PERFORMANCE OF THIS SOFTWARE.
 
 ******************************************************************/
@@ -114,12 +114,12 @@ validate_or_free_results (GetPropertyResults *results,
   const char *res_class;
   const char *res_name;
   MetaWindow *w;
-  
+
   if (expected_format == results->format &&
       expected_type == results->type &&
       (!must_have_items || results->n_items > 0))
-    return TRUE;  
-  
+    return TRUE;
+
   meta_error_trap_push (results->display);
   type_name = XGetAtomName (results->display->xdisplay, results->type);
   expected_name = XGetAtomName (results->display->xdisplay, expected_type);
@@ -140,7 +140,7 @@ validate_or_free_results (GetPropertyResults *results,
       res_class = NULL;
       res_name = NULL;
     }
-  
+
   if (title == NULL)
     title = "unknown";
 
@@ -149,7 +149,7 @@ validate_or_free_results (GetPropertyResults *results,
 
   if (res_name == NULL)
     res_name = "unknown";
-  
+
   meta_warning ("Window 0x%lx has property %s\nthat was expected to have type %s format %d\nand actually has type %s format %d n_items %d.\nThis is most likely an application bug, not a window manager bug.\nThe window has title=\"%s\" class=\"%s\" name=\"%s\"\n",
                 results->xwindow,
                 prop_name ? prop_name : "(bad atom)",
@@ -171,7 +171,7 @@ validate_or_free_results (GetPropertyResults *results,
       XFree (results->prop);
       results->prop = NULL;
     }
-  
+
   return FALSE;
 }
 
@@ -190,7 +190,7 @@ get_property (MetaDisplay        *display,
   results->type = None;
   results->bytes_after = 0;
   results->format = 0;
-  
+
   meta_error_trap_push (display);
   if (XGetWindowProperty (display->xdisplay, xwindow, xatom,
                           0, G_MAXLONG,
@@ -222,12 +222,12 @@ atom_list_from_results (GetPropertyResults *results,
                         int                *n_atoms_p)
 {
   if (!validate_or_free_results (results, 32, XA_ATOM, FALSE))
-    return FALSE;  
+    return FALSE;
 
   *atoms_p = (Atom*) results->prop;
   *n_atoms_p = results->n_items;
-  results->prop = NULL;  
-  
+  results->prop = NULL;
+
   return TRUE;
 }
 
@@ -256,12 +256,12 @@ cardinal_list_from_results (GetPropertyResults *results,
                             int                *n_cardinals_p)
 {
   if (!validate_or_free_results (results, 32, XA_CARDINAL, FALSE))
-    return FALSE;  
+    return FALSE;
 
   *cardinals_p = (gulong*) results->prop;
   *n_cardinals_p = results->n_items;
   results->prop = NULL;
-  
+
 #if GLIB_SIZEOF_LONG == 8
   /* Xlib sign-extends format=32 items, but we want them unsigned */
   {
@@ -300,8 +300,8 @@ motif_hints_from_results (GetPropertyResults *results,
 {
   int real_size, max_size;
 #define MAX_ITEMS sizeof (MotifWmHints)/sizeof (gulong)
-  
-  *hints_p = NULL;  
+
+  *hints_p = NULL;
 
   if (results->type == None || results->n_items <= 0)
     {
@@ -337,7 +337,7 @@ motif_hints_from_results (GetPropertyResults *results,
       XFree (results->prop);
       results->prop = NULL;
     }
-  
+
   return TRUE;
 }
 
@@ -348,7 +348,7 @@ meta_prop_get_motif_hints (MetaDisplay   *display,
                            MotifWmHints **hints_p)
 {
   GetPropertyResults results;
-  
+
   *hints_p = NULL;
 
   if (!get_property (display, xwindow, xatom, AnyPropertyType,
@@ -363,13 +363,13 @@ latin1_string_from_results (GetPropertyResults *results,
                             char              **str_p)
 {
   *str_p = NULL;
-  
+
   if (!validate_or_free_results (results, 8, XA_STRING, FALSE))
     return FALSE;
 
   *str_p = (char*) results->prop;
   results->prop = NULL;
-  
+
   return TRUE;
 }
 
@@ -386,7 +386,7 @@ meta_prop_get_latin1_string (MetaDisplay *display,
   if (!get_property (display, xwindow, xatom, XA_STRING,
                      &results))
     return FALSE;
-  
+
   return latin1_string_from_results (&results, str_p);
 }
 
@@ -395,7 +395,7 @@ utf8_string_from_results (GetPropertyResults *results,
                           char              **str_p)
 {
   *str_p = NULL;
-  
+
   if (!validate_or_free_results (results, 8,
                                  results->display->atom_UTF8_STRING, FALSE))
     return FALSE;
@@ -411,13 +411,13 @@ utf8_string_from_results (GetPropertyResults *results,
       meta_XFree (name);
       XFree (results->prop);
       results->prop = NULL;
-      
+
       return FALSE;
     }
-  
+
   *str_p = (char*) results->prop;
   results->prop = NULL;
-  
+
   return TRUE;
 }
 
@@ -449,14 +449,14 @@ utf8_list_from_results (GetPropertyResults *results,
   int n_strings;
   char **retval;
   const char *p;
-  
+
   *str_p = NULL;
   *n_str_p = 0;
 
   if (!validate_or_free_results (results, 8,
                                  results->display->atom_UTF8_STRING, FALSE))
     return FALSE;
-  
+
   /* I'm not sure this is right, but I'm guessing the
    * property is nul-separated
    */
@@ -471,11 +471,11 @@ utf8_list_from_results (GetPropertyResults *results,
 
   if (results->prop[results->n_items - 1] != '\0')
     ++n_strings;
- 
+
   /* we're guaranteed that results->prop has a nul on the end
    * by XGetWindowProperty
    */
-  
+
   retval = g_new0 (char*, n_strings + 1);
 
   p = (char *)results->prop;
@@ -494,17 +494,17 @@ utf8_list_from_results (GetPropertyResults *results,
           meta_XFree (name);
           meta_XFree (results->prop);
           results->prop = NULL;
-          
+
           g_strfreev (retval);
           return FALSE;
         }
 
       retval[i] = g_strdup (p);
-      
+
       p = p + strlen (p) + 1;
       ++i;
     }
-  
+
   *str_p = retval;
   *n_str_p = i;
 
@@ -544,13 +544,13 @@ latin1_list_from_results (GetPropertyResults *results,
   int n_strings;
   char **retval;
   const char *p;
-  
+
   *str_p = NULL;
   *n_str_p = 0;
 
   if (!validate_or_free_results (results, 8, XA_STRING, FALSE))
     return FALSE;
-  
+
   /* I'm not sure this is right, but I'm guessing the
    * property is nul-separated
    */
@@ -565,11 +565,11 @@ latin1_list_from_results (GetPropertyResults *results,
 
   if (results->prop[results->n_items - 1] != '\0')
     ++n_strings;
- 
+
   /* we're guaranteed that results->prop has a nul on the end
    * by XGetWindowProperty
    */
-  
+
   retval = g_new0 (char*, n_strings + 1);
 
   p = (char *)results->prop;
@@ -577,11 +577,11 @@ latin1_list_from_results (GetPropertyResults *results,
   while (i < n_strings)
     {
       retval[i] = g_strdup (p);
-      
+
       p = p + strlen (p) + 1;
       ++i;
     }
-  
+
   *str_p = retval;
   *n_str_p = i;
 
@@ -616,9 +616,9 @@ meta_prop_set_utf8_string_hint (MetaDisplay *display,
                                 const char *val)
 {
   meta_error_trap_push (display);
-  XChangeProperty (display->xdisplay, 
+  XChangeProperty (display->xdisplay,
                    xwindow, atom,
-                   display->atom_UTF8_STRING, 
+                   display->atom_UTF8_STRING,
                    8, PropModeReplace, (guchar*) val, strlen (val));
   meta_error_trap_pop (display);
 }
@@ -628,12 +628,12 @@ window_from_results (GetPropertyResults *results,
                      Window             *window_p)
 {
   if (!validate_or_free_results (results, 32, XA_WINDOW, TRUE))
-    return FALSE;  
+    return FALSE;
 
   *window_p = *(Window*) results->prop;
   XFree (results->prop);
-  results->prop = NULL;  
-  
+  results->prop = NULL;
+
   return TRUE;
 }
 
@@ -644,12 +644,12 @@ counter_from_results (GetPropertyResults *results,
   if (!validate_or_free_results (results, 32,
                                  XA_CARDINAL,
                                  TRUE))
-    return FALSE;  
+    return FALSE;
 
   *counter_p = *(XSyncCounter*) results->prop;
   XFree (results->prop);
   results->prop = NULL;
-  
+
   return TRUE;
 }
 
@@ -679,7 +679,7 @@ meta_prop_get_window (MetaDisplay *display,
   GetPropertyResults results;
 
   *window_p = None;
-  
+
   if (!get_property (display, xwindow, xatom, XA_WINDOW,
                      &results))
     return FALSE;
@@ -703,7 +703,7 @@ cardinal_with_atom_type_from_results (GetPropertyResults *results,
                                       gulong             *cardinal_p)
 {
   if (!validate_or_free_results (results, 32, prop_type, TRUE))
-    return FALSE;  
+    return FALSE;
 
   *cardinal_p = *(gulong*) results->prop;
 #if GLIB_SIZEOF_LONG == 8
@@ -711,8 +711,8 @@ cardinal_with_atom_type_from_results (GetPropertyResults *results,
   *cardinal_p &= 0xffffffff;
 #endif
   XFree (results->prop);
-  results->prop = NULL;  
-  
+  results->prop = NULL;
+
   return TRUE;
 }
 
@@ -769,13 +769,13 @@ text_property_from_results (GetPropertyResults *results,
   results->prop = NULL;
   tp.encoding = results->type;
   tp.format = results->format;
-  tp.nitems = results->n_items;  
-  
+  tp.nitems = results->n_items;
+
   *utf8_str_p = text_property_to_utf8 (results->display->xdisplay, &tp);
-  
+
   if (tp.value != NULL)
     XFree (tp.value);
-  
+
   return *utf8_str_p != NULL;
 }
 
@@ -786,7 +786,7 @@ meta_prop_get_text_property (MetaDisplay   *display,
                              char         **utf8_str_p)
 {
   GetPropertyResults results;
-  
+
   if (!get_property (display, xwindow, xatom, AnyPropertyType,
                      &results))
     return FALSE;
@@ -825,13 +825,13 @@ wm_hints_from_results (GetPropertyResults *results,
 {
   XWMHints *hints;
   xPropWMHints *raw;
-  
-  *hints_p = NULL;
-  
-  if (!validate_or_free_results (results, 32, XA_WM_HINTS, TRUE))
-    return FALSE;  
 
-  /* pre-R3 bogusly truncated window_group, don't fail on them */  
+  *hints_p = NULL;
+
+  if (!validate_or_free_results (results, 32, XA_WM_HINTS, TRUE))
+    return FALSE;
+
+  /* pre-R3 bogusly truncated window_group, don't fail on them */
   if (results->n_items < (NumPropWMHintsElements - 1))
     {
       meta_verbose ("WM_HINTS property too short: %d should be %d\n",
@@ -843,11 +843,11 @@ wm_hints_from_results (GetPropertyResults *results,
         }
       return FALSE;
     }
-  
+
   hints = ag_Xmalloc0 (sizeof (XWMHints));
 
   raw = (xPropWMHints*) results->prop;
-  
+
   hints->flags = raw->flags;
   hints->input = (raw->input ? True : False);
   hints->initial_state = cvtINT32toInt (raw->initialState);
@@ -881,7 +881,7 @@ meta_prop_get_wm_hints (MetaDisplay   *display,
   GetPropertyResults results;
 
   *hints_p = NULL;
-  
+
   if (!get_property (display, xwindow, xatom, XA_WM_HINTS,
                      &results))
     return FALSE;
@@ -894,13 +894,13 @@ class_hint_from_results (GetPropertyResults *results,
                          XClassHint         *class_hint)
 {
   int len_name, len_class;
-  
+
   class_hint->res_class = NULL;
   class_hint->res_name = NULL;
-  
+
   if (!validate_or_free_results (results, 8, XA_STRING, FALSE))
     return FALSE;
-  
+
   len_name = strlen ((char *) results->prop);
   if (! (class_hint->res_name = ag_Xmalloc (len_name+1)))
     {
@@ -908,14 +908,14 @@ class_hint_from_results (GetPropertyResults *results,
       results->prop = NULL;
       return FALSE;
     }
-  
+
   strcpy (class_hint->res_name, (char *)results->prop);
 
   if (len_name == (int) results->n_items)
     len_name--;
-  
+
   len_class = strlen ((char *)results->prop + len_name + 1);
-  
+
   if (! (class_hint->res_class = ag_Xmalloc(len_class+1)))
     {
       XFree(class_hint->res_name);
@@ -924,12 +924,12 @@ class_hint_from_results (GetPropertyResults *results,
       results->prop = NULL;
       return FALSE;
     }
-  
+
   strcpy (class_hint->res_class, (char *)results->prop + len_name + 1);
 
   XFree (results->prop);
   results->prop = NULL;
-  
+
   return TRUE;
 }
 
@@ -940,10 +940,10 @@ meta_prop_get_class_hint (MetaDisplay   *display,
                           XClassHint    *class_hint)
 {
   GetPropertyResults results;
-  
+
   class_hint->res_class = NULL;
   class_hint->res_name = NULL;
-  
+
   if (!get_property (display, xwindow, xatom, XA_STRING,
                      &results))
     return FALSE;
@@ -958,10 +958,10 @@ size_hints_from_results (GetPropertyResults *results,
 {
   xPropSizeHints *raw;
   XSizeHints *hints;
-  
+
   *hints_p = NULL;
   *flags_p = 0;
-  
+
   if (!validate_or_free_results (results, 32, XA_WM_SIZE_HINTS, FALSE))
     return FALSE;
 
@@ -971,7 +971,7 @@ size_hints_from_results (GetPropertyResults *results,
   raw = (xPropSizeHints*) results->prop;
 
   hints = ag_Xmalloc (sizeof (XSizeHints));
-  
+
   /* XSizeHints misdeclares these as int instead of long */
   hints->flags = raw->flags;
   hints->x = cvtINT32toInt (raw->x);
@@ -999,12 +999,12 @@ size_hints_from_results (GetPropertyResults *results,
     }
 
   hints->flags &= (*flags_p);	/* get rid of unwanted bits */
-  
+
   XFree (results->prop);
   results->prop = NULL;
 
   *hints_p = hints;
-  
+
   return TRUE;
 }
 
@@ -1019,7 +1019,7 @@ meta_prop_get_size_hints (MetaDisplay   *display,
 
   *hints_p = NULL;
   *flags_p = 0;
-  
+
   if (!get_property (display, xwindow, xatom, XA_WM_SIZE_HINTS,
                      &results))
     return FALSE;
@@ -1044,7 +1044,7 @@ latin1_to_utf8 (const char *text)
 {
   GString *str;
   const char *p;
-  
+
   str = g_string_new ("");
 
   p = text;
@@ -1068,10 +1068,10 @@ meta_prop_get_values (MetaDisplay   *display,
 
   meta_verbose ("Requesting %d properties of 0x%lx at once\n",
                 n_values, xwindow);
-  
+
   if (n_values == 0)
     return;
-  
+
   tasks = g_new0 (AgGetPropertyTask*, n_values);
 
   /* Start up tasks. The "values" array can have values
@@ -1134,22 +1134,22 @@ meta_prop_get_values (MetaDisplay   *display,
       if (values[i].atom != None)
         tasks[i] = get_task (display, xwindow,
                              values[i].atom, values[i].required_type);
-      
+
       ++i;
-    }  
-  
+    }
+
   /* Get replies for all our tasks */
   meta_topic (META_DEBUG_SYNC, "Syncing to get %d GetProperty replies in %s\n",
               n_values, G_STRFUNC);
   XSync (display->xdisplay, False);
-  
+
   /* Collect results, should arrive in order requested */
   i = 0;
   while (i < n_values)
     {
       AgGetPropertyTask *task;
       GetPropertyResults results;
-      
+
       if (tasks[i] == NULL)
         {
           /* Probably values[i].type was None, or ag_task_create()
@@ -1158,7 +1158,7 @@ meta_prop_get_values (MetaDisplay   *display,
           values[i].type = META_PROP_VALUE_INVALID;
           goto next;
         }
-      
+
       task = ag_get_next_completed_task (display->xdisplay);
       g_assert (task != NULL);
       g_assert (ag_task_have_reply (task));
@@ -1171,7 +1171,7 @@ meta_prop_get_values (MetaDisplay   *display,
       results.type = None;
       results.bytes_after = 0;
       results.format = 0;
-      
+
       if (ag_task_get_reply_and_free (task,
                                       &results.type, &results.format,
                                       &results.n_items,
@@ -1301,7 +1301,7 @@ free_value (MetaPropValue *value)
 {
   switch (value->type)
     {
-    case META_PROP_VALUE_INVALID:          
+    case META_PROP_VALUE_INVALID:
       break;
     case META_PROP_VALUE_UTF8:
     case META_PROP_VALUE_STRING:
@@ -1310,10 +1310,10 @@ free_value (MetaPropValue *value)
       break;
     case META_PROP_VALUE_MOTIF_HINTS:
       meta_XFree (value->v.motif_hints);
-      break;          
+      break;
     case META_PROP_VALUE_CARDINAL:
       break;
-    case META_PROP_VALUE_WINDOW:          
+    case META_PROP_VALUE_WINDOW:
       break;
     case META_PROP_VALUE_ATOM_LIST:
       meta_XFree (value->v.atom_list.atoms);

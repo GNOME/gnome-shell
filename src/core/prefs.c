@@ -1,6 +1,6 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* 
+/*
  * Copyright (C) 2001 Havoc Pennington, Copyright (C) 2002 Red Hat Inc.
  * Copyright (C) 2006 Elijah Newren
  * Copyright (C) 2008 Thomas Thurman
@@ -15,7 +15,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
@@ -615,7 +615,7 @@ handle_preference_init_int (void)
 {
   MetaIntPreference *cursor = preferences_int;
 
-  
+
   while (cursor->base.key != NULL)
     {
       if (cursor->target)
@@ -671,7 +671,7 @@ handle_preference_update_bool (GSettings *settings,
    * store the current value away.
    */
   old_value = *((gboolean *) cursor->target);
-  
+
   /* Now look it up... */
   *((gboolean *) cursor->target) =
     g_settings_get_boolean (SETTINGS (cursor->base.schema), key);
@@ -802,7 +802,7 @@ handle_preference_update_int (GSettings *settings,
     }
 }
 
-
+
 /****************************************************************************/
 /* Listeners.                                                               */
 /****************************************************************************/
@@ -851,7 +851,7 @@ meta_prefs_remove_listener (MetaPrefsChangedFunc func,
 
           return;
         }
-      
+
       tmp = tmp->next;
     }
 
@@ -866,9 +866,9 @@ emit_changed (MetaPreference pref)
 
   meta_topic (META_DEBUG_PREFS, "Notifying listeners that pref %s changed\n",
               meta_preference_to_string (pref));
-  
+
   copy = g_list_copy (listeners);
-  
+
   tmp = copy;
 
   while (tmp != NULL)
@@ -890,24 +890,24 @@ changed_idle_handler (gpointer data)
   GList *copy;
 
   changed_idle = 0;
-  
+
   copy = g_list_copy (changes); /* reentrancy paranoia */
 
   g_list_free (changes);
   changes = NULL;
-  
+
   tmp = copy;
   while (tmp != NULL)
     {
       MetaPreference pref = GPOINTER_TO_INT (tmp->data);
 
       emit_changed (pref);
-      
+
       tmp = tmp->next;
     }
 
   g_list_free (copy);
-  
+
   return FALSE;
 }
 
@@ -915,7 +915,7 @@ static void
 queue_changed (MetaPreference pref)
 {
   meta_topic (META_DEBUG_PREFS, "Queueing change of pref %s\n",
-              meta_preference_to_string (pref));  
+              meta_preference_to_string (pref));
 
   if (g_list_find (changes, GINT_TO_POINTER (pref)) == NULL)
     changes = g_list_prepend (changes, GINT_TO_POINTER (pref));
@@ -931,7 +931,7 @@ queue_changed (MetaPreference pref)
     }
 }
 
-
+
 /****************************************************************************/
 /* Initialisation.                                                          */
 /****************************************************************************/
@@ -1117,7 +1117,7 @@ meta_prefs_override_preference_schema (const char *key, const char *schema)
     do_override (overridden->key, overridden->new_schema);
 }
 
-
+
 /****************************************************************************/
 /* Updates.                                                                 */
 /****************************************************************************/
@@ -1194,7 +1194,7 @@ static void
 maybe_give_disable_workarounds_warning (void)
 {
   static gboolean first_disable = TRUE;
-    
+
   if (first_disable && disable_workarounds)
     {
       first_disable = FALSE;
@@ -1261,7 +1261,7 @@ meta_prefs_get_cursor_size (void)
   return cursor_size;
 }
 
-
+
 /****************************************************************************/
 /* Handlers for string preferences.                                         */
 /****************************************************************************/
@@ -1345,7 +1345,7 @@ mouse_button_mods_handler (GVariant *value,
     {
       meta_topic (META_DEBUG_KEYBINDINGS,
                   "Failed to parse new GSettings value\n");
-          
+
       meta_warning ("\"%s\" found in configuration database is "
                     "not a valid value for mouse button modifier\n",
                     string_value);
@@ -1369,7 +1369,7 @@ mouse_button_mods_handler (GVariant *value,
 static gboolean
 button_layout_equal (const MetaButtonLayout *a,
                      const MetaButtonLayout *b)
-{  
+{
   int i;
 
   i = 0;
@@ -1410,7 +1410,7 @@ button_function_from_string (const char *str)
     return META_BUTTON_FUNCTION_ABOVE;
   else if (strcmp (str, "stick") == 0)
     return META_BUTTON_FUNCTION_STICK;
-  else 
+  else
     /* don't know; give up */
     return META_BUTTON_FUNCTION_LAST;
 }
@@ -1535,7 +1535,7 @@ button_layout_handler (GVariant *value,
           new_layout.right_buttons_has_spacer[i] = FALSE;
           ++i;
         }
-      
+
       buttons = g_strsplit (sides[1], ",", -1);
       i = 0;
       b = 0;
@@ -1571,7 +1571,7 @@ button_layout_handler (GVariant *value,
                               buttons[b]);
                 }
             }
-          
+
           ++b;
         }
 
@@ -1585,13 +1585,13 @@ button_layout_handler (GVariant *value,
     }
 
   g_strfreev (sides);
-  
+
   /* Invert the button layout for RTL languages */
   if (meta_ui_get_direction() == META_UI_DIRECTION_RTL)
   {
     MetaButtonLayout rtl_layout;
     int j;
-    
+
     for (i = 0; new_layout.left_buttons[i] != META_BUTTON_FUNCTION_LAST; i++);
     for (j = 0; j < i; j++)
       {
@@ -1606,7 +1606,7 @@ button_layout_handler (GVariant *value,
         rtl_layout.right_buttons[j] = META_BUTTON_FUNCTION_LAST;
         rtl_layout.right_buttons_has_spacer[j] = FALSE;
       }
-      
+
     for (i = 0; new_layout.right_buttons[i] != META_BUTTON_FUNCTION_LAST; i++);
     for (j = 0; j < i; j++)
       {
@@ -1751,7 +1751,7 @@ meta_preference_to_string (MetaPreference pref)
 
     case META_PREF_RAISE_ON_CLICK:
       return "RAISE_ON_CLICK";
-      
+
     case META_PREF_THEME:
       return "THEME";
 
@@ -1778,7 +1778,7 @@ meta_preference_to_string (MetaPreference pref)
 
     case META_PREF_AUTO_RAISE:
       return "AUTO_RAISE";
-      
+
     case META_PREF_AUTO_RAISE_DELAY:
       return "AUTO_RAISE_DELAY";
 
@@ -2021,7 +2021,7 @@ meta_prefs_change_workspace_name (int         num,
 {
   GVariantBuilder builder;
   int n_workspace_names, i;
-  
+
   g_return_if_fail (num >= 0);
 
   meta_topic (META_DEBUG_PREFS,
@@ -2181,7 +2181,7 @@ meta_prefs_get_keybindings ()
   return g_hash_table_get_values (key_bindings);
 }
 
-void 
+void
 meta_prefs_get_overlay_binding (MetaKeyCombo *combo)
 {
   *combo = overlay_key_combo;

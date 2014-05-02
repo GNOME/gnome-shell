@@ -1,9 +1,9 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* 
+/*
  * Copyright (C) 2001 Havoc Pennington
  * Copyright (C) 2005 Elijah Newren
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 2 of the
@@ -13,7 +13,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
@@ -67,7 +67,7 @@ ensure_logfile (void)
       char *tmpl;
       int fd;
       GError *err;
-      
+
       tmpl = g_strdup_printf ("mutter-%d-debug-log-XXXXXX",
                               (int) getpid ());
 
@@ -77,7 +77,7 @@ ensure_logfile (void)
                             &err);
 
       g_free (tmpl);
-      
+
       if (err != NULL)
         {
           meta_warning ("Failed to open debug log: %s\n",
@@ -85,9 +85,9 @@ ensure_logfile (void)
           g_error_free (err);
           return;
         }
-      
+
       logfile = fdopen (fd, "w");
-      
+
       if (logfile == NULL)
         {
           meta_warning ("Failed to fdopen() log file %s: %s\n",
@@ -98,7 +98,7 @@ ensure_logfile (void)
         {
           g_printerr ("Opened log file %s\n", filename);
         }
-      
+
       g_free (filename);
     }
 }
@@ -116,7 +116,7 @@ meta_set_verbose (gboolean setting)
 #ifndef WITH_VERBOSE_MODE
   if (setting)
     meta_fatal (_("Mutter was compiled without support for verbose mode\n"));
-#else 
+#else
   if (setting)
     ensure_logfile ();
 #endif
@@ -225,7 +225,7 @@ utf8_fputs (const char *str,
 {
   char *l;
   int retval;
-  
+
   l = g_locale_from_utf8 (str, -1, NULL, NULL, NULL);
 
   if (l == NULL)
@@ -259,24 +259,24 @@ meta_debug_spew_real (const char *format, ...)
   va_list args;
   gchar *str;
   FILE *out;
-  
+
   g_return_if_fail (format != NULL);
 
   if (!is_debugging)
     return;
-  
+
   va_start (args, format);
   str = g_strdup_vprintf (format, args);
   va_end (args);
 
   out = logfile ? logfile : stderr;
-  
+
   if (no_prefix == 0)
     utf8_fputs ("Window manager: ", out);
   utf8_fputs (str, out);
 
   fflush (out);
-  
+
   g_free (str);
 }
 #endif /* WITH_VERBOSE_MODE */
@@ -381,11 +381,11 @@ meta_topic_real_valist (MetaDebugTopic topic,
       ++sync_count;
       fprintf (out, "%d: ", sync_count);
     }
-  
+
   utf8_fputs (str, out);
-  
+
   fflush (out);
-  
+
   g_free (str);
 }
 
@@ -410,7 +410,7 @@ meta_bug (const char *format, ...)
   FILE *out;
 
   g_return_if_fail (format != NULL);
-  
+
   va_start (args, format);
   str = g_strdup_vprintf (format, args);
   va_end (args);
@@ -426,9 +426,9 @@ meta_bug (const char *format, ...)
   utf8_fputs (str, out);
 
   fflush (out);
-  
+
   g_free (str);
-  
+
   /* stop us in a debugger */
   abort ();
 }
@@ -439,9 +439,9 @@ meta_warning (const char *format, ...)
   va_list args;
   gchar *str;
   FILE *out;
-  
+
   g_return_if_fail (format != NULL);
-  
+
   va_start (args, format);
   str = g_strdup_vprintf (format, args);
   va_end (args);
@@ -457,7 +457,7 @@ meta_warning (const char *format, ...)
   utf8_fputs (str, out);
 
   fflush (out);
-  
+
   g_free (str);
 }
 
@@ -467,9 +467,9 @@ meta_fatal (const char *format, ...)
   va_list args;
   gchar *str;
   FILE *out;
-  
+
   g_return_if_fail (format != NULL);
-  
+
   va_start (args, format);
   str = g_strdup_vprintf (format, args);
   va_end (args);
@@ -485,7 +485,7 @@ meta_fatal (const char *format, ...)
   utf8_fputs (str, out);
 
   fflush (out);
-  
+
   g_free (str);
 
   meta_exit (META_EXIT_ERROR);
@@ -508,7 +508,7 @@ meta_pop_no_msg_prefix (void)
 void
 meta_exit (MetaExitCode code)
 {
-  
+
   exit (code);
 }
 

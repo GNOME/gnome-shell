@@ -179,7 +179,7 @@ decode_display_parameters (const uchar *edid, MonitorInfo *info)
   else if (edid[0x16] == 0)
     {
       info->width_mm = -1;
-      info->height_mm = -1; 
+      info->height_mm = -1;
       info->aspect_ratio = 100.0 / (edid[0x15] + 99);
     }
   else if (edid[0x15] == 0)
@@ -267,7 +267,7 @@ decode_color_characteristics (const uchar *edid, MonitorInfo *info)
 static int
 decode_established_timings (const uchar *edid, MonitorInfo *info)
 {
-  static const Timing established[][8] = 
+  static const Timing established[][8] =
     {
       {
         { 800, 600, 60 },

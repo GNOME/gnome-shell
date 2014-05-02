@@ -2,9 +2,9 @@
 
 /* Simple box operations */
 
-/* 
+/*
  * Copyright (C) 2005, 2006 Elijah Newren
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 2 of the
@@ -14,7 +14,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
@@ -43,7 +43,7 @@ typedef enum
  *   region_to_string: (RECT_LENGTH+strlen(separator_string)) *
  *                     g_list_length (region)
  *   edge_to_string:   EDGE_LENGTH
- *   edge_list_to_...: (EDGE_LENGTH+strlen(separator_string)) * 
+ *   edge_list_to_...: (EDGE_LENGTH+strlen(separator_string)) *
  *                     g_list_length (edge_list)
  */
 #define RECT_LENGTH 27
@@ -181,7 +181,7 @@ void meta_rectangle_find_linepoint_closest_to_point (double x1,    double y1,
 /* Return whether an edge overlaps or is adjacent to the rectangle in the
  * nonzero-width dimension of the edge.
  */
-gboolean meta_rectangle_edge_aligns (const MetaRectangle *rect, 
+gboolean meta_rectangle_edge_aligns (const MetaRectangle *rect,
                                      const MetaEdge      *edge);
 
 /* Compare two edges, so that sorting functions can put a list of edges in

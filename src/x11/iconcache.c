@@ -471,7 +471,7 @@ try_pixmap_and_mask (MetaDisplay *display,
                                  GDK_INTERP_BILINEAR);
 
       g_object_unref (G_OBJECT (unscaled));
-      
+
       if (*iconp && *mini_iconp)
         return TRUE;
       else
@@ -569,7 +569,7 @@ clear_icon_cache (MetaIconCache *icon_cache,
     g_object_unref (G_OBJECT (icon_cache->mini_icon));
   icon_cache->mini_icon = NULL;
 #endif
-  
+
   icon_cache->origin = USING_NO_ICON;
 
   if (dirty_all)
@@ -655,13 +655,13 @@ scaled_from_pixdata (guchar *pixdata,
 {
   GdkPixbuf *src;
   GdkPixbuf *dest;
-  
+
   src = gdk_pixbuf_new_from_data (pixdata,
                                   GDK_COLORSPACE_RGB,
                                   TRUE,
                                   8,
                                   w, h, w * 4,
-                                  free_pixels, 
+                                  free_pixels,
                                   NULL);
 
   if (src == NULL)
@@ -673,7 +673,7 @@ scaled_from_pixdata (guchar *pixdata,
       int size;
 
       size = MAX (w, h);
-      
+
       tmp = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8, size, size);
 
       if (tmp)
@@ -682,16 +682,16 @@ scaled_from_pixdata (guchar *pixdata,
 	  gdk_pixbuf_copy_area (src, 0, 0, w, h,
 				tmp,
 				(size - w) / 2, (size - h) / 2);
-	  
+
 	  g_object_unref (src);
 	  src = tmp;
 	}
     }
-  
+
   if (w != new_w || h != new_h)
     {
       dest = gdk_pixbuf_scale_simple (src, new_w, new_h, GDK_INTERP_BILINEAR);
-      
+
       g_object_unref (G_OBJECT (src));
     }
   else
@@ -741,7 +741,7 @@ meta_read_icons (MetaScreen     *screen,
   icon_cache->ideal_mini_width = ideal_mini_width;
   icon_cache->ideal_mini_height = ideal_mini_height;
 #endif
-  
+
   if (!meta_icon_cache_get_icon_invalidated (icon_cache))
     return FALSE; /* we have no new info to use */
 
@@ -778,7 +778,7 @@ meta_read_icons (MetaScreen     *screen,
             {
               replace_cache (icon_cache, USING_NET_WM_ICON,
                              *iconp, *mini_iconp);
-              
+
               return TRUE;
             }
           else
@@ -862,7 +862,7 @@ meta_read_icons (MetaScreen     *screen,
 
       replace_cache (icon_cache, USING_FALLBACK_ICON,
                      *iconp, *mini_iconp);
-      
+
       return TRUE;
     }
 

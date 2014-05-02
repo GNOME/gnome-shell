@@ -2,10 +2,10 @@
 
 /* Mutter main() */
 
-/* 
+/*
  * Copyright (C) 2001 Havoc Pennington
  * Copyright (C) 2006 Elijah Newren
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 2 of the
@@ -15,7 +15,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
@@ -160,7 +160,7 @@ meta_print_self_identity (void)
   g_date_strftime (buf, sizeof (buf), "%x", &d);
   meta_verbose ("Mutter version %s running on %s\n",
     VERSION, buf);
-  
+
   /* Locale and encoding. */
   g_get_charset (&charset);
   meta_verbose ("Running in locale \"%s\" with encoding \"%s\"\n",
@@ -343,7 +343,7 @@ meta_init (void)
                     g_get_home_dir ());
 
   meta_print_self_identity ();
-  
+
 #ifdef HAVE_INTROSPECTION
   g_irepository_prepend_search_path (MUTTER_PKGLIBDIR);
 #endif
@@ -358,13 +358,13 @@ meta_init (void)
     meta_select_display (opt_display_name);
 
   meta_set_syncing (opt_sync || (g_getenv ("MUTTER_SYNC") != NULL));
-  
+
   if (opt_replace_wm)
     meta_set_replace_current_wm (TRUE);
 
   if (opt_save_file && opt_client_id)
     meta_fatal ("Can't specify both SM save file and SM client id\n");
-  
+
   meta_main_loop = g_main_loop_new (NULL, FALSE);
 
   meta_ui_init ();
@@ -455,7 +455,7 @@ meta_run (void)
 
   if (g_getenv ("MUTTER_G_FATAL_WARNINGS") != NULL)
     g_log_set_always_fatal (G_LOG_LEVEL_MASK);
-  
+
   meta_ui_set_current_theme (meta_prefs_get_theme ());
 
   /* Try to find some theme that'll work if the theme preference
@@ -464,37 +464,37 @@ meta_run (void)
    */
   if (!meta_ui_have_a_theme ())
     meta_ui_set_current_theme ("Simple");
-  
+
   if (!meta_ui_have_a_theme ())
     {
       const char *dir_entry = NULL;
       GError *err = NULL;
       GDir   *themes_dir = NULL;
-      
+
       if (!(themes_dir = g_dir_open (MUTTER_DATADIR"/themes", 0, &err)))
         {
           meta_fatal (_("Failed to scan themes directory: %s\n"), err->message);
           g_error_free (err);
-        } 
-      else 
+        }
+      else
         {
-          while (((dir_entry = g_dir_read_name (themes_dir)) != NULL) && 
+          while (((dir_entry = g_dir_read_name (themes_dir)) != NULL) &&
                  (!meta_ui_have_a_theme ()))
             {
               meta_ui_set_current_theme (dir_entry);
             }
-          
+
           g_dir_close (themes_dir);
         }
     }
-  
+
   if (!meta_ui_have_a_theme ())
     meta_fatal (_("Could not find a theme! Be sure %s exists and contains the usual themes.\n"),
                 MUTTER_DATADIR"/themes");
 
   if (!meta_display_open ())
     meta_exit (META_EXIT_ERROR);
-  
+
   g_main_loop_run (meta_main_loop);
 
   meta_finalize ();

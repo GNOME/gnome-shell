@@ -921,7 +921,7 @@ resync_verified_stack_with_xserver_stack (MetaStackTracker *tracker)
           MetaStackWindow new;
           MetaStackWindow *expected;
           int expected_index;
-          
+
           /* If the current window corresponds to a window that's not
            * in xserver_stack any more then the least disruptive thing
            * we can do is to simply remove it and take another look at

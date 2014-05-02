@@ -2,9 +2,9 @@
 
 /* Mutter interface for talking to GTK+ UI module */
 
-/* 
+/*
  * Copyright (C) 2002 Havoc Pennington
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 2 of the
@@ -14,7 +14,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
@@ -330,7 +330,7 @@ meta_ui_create_frame_window (MetaUI *ui,
   gint attributes_mask;
   GdkWindow *window;
   GdkVisual *visual;
-  
+
   /* Default depth/visual handles clients with weird visuals; they can
    * always be children of the root depth/visual obviously, but
    * e.g. DRI games can't be children of a parent that has the same
@@ -379,7 +379,7 @@ meta_ui_create_frame_window (MetaUI *ui,
 		    &attrs, attributes_mask);
 
   gdk_window_resize (window, width, height);
-  
+
   meta_frames_manage_window (ui->frames, GDK_WINDOW_XID (window), window);
 
   return GDK_WINDOW_XID (window);
@@ -602,7 +602,7 @@ meta_ui_get_default_window_icon (MetaUI *ui)
     }
 
   g_object_ref (G_OBJECT (default_icon));
-  
+
   return default_icon;
 }
 
@@ -637,7 +637,7 @@ meta_ui_get_default_mini_icon (MetaUI *ui)
     }
 
   g_object_ref (G_OBJECT (default_icon));
-  
+
   return default_icon;
 }
 

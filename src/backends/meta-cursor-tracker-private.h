@@ -53,7 +53,7 @@ struct _MetaCursorTracker {
 
   MetaCursorReference *grab_cursor;
 
-  /* Wayland clients can set a NULL buffer as their cursor 
+  /* Wayland clients can set a NULL buffer as their cursor
    * explicitly, which means that we shouldn't display anything.
    * So, we can't simply store a NULL in window_cursor to
    * determine an unset window cursor; we need an extra boolean.

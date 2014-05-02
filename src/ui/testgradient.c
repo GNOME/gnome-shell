@@ -2,9 +2,9 @@
 
 /* Mutter gradient test program */
 
-/* 
+/*
  * Copyright (C) 2002 Havoc Pennington
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 2 of the
@@ -14,7 +14,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.  */
 
@@ -32,9 +32,9 @@ draw_checkerboard (cairo_t *cr,
 {
   gint i, j, xcount, ycount;
   GdkRGBA color1, color2;
-  
+
 #define CHECK_SIZE 10
-#define SPACING 2  
+#define SPACING 2
 
   color1.red = 30000. / 65535.;
   color1.green = 30000. / 65535.;
@@ -83,7 +83,7 @@ render_simple (cairo_t     *cr,
 {
   GdkPixbuf *pixbuf;
   GdkRGBA from, to;
-  
+
   gdk_rgba_parse (&from, "blue");
   gdk_rgba_parse (&to, "green");
 
@@ -94,23 +94,23 @@ render_simple (cairo_t     *cr,
   if (with_alpha)
     {
       const unsigned char alphas[] = { 0xff, 0xaa, 0x2f, 0x0, 0xcc, 0xff, 0xff };
-      
+
       if (!gdk_pixbuf_get_has_alpha (pixbuf))
         {
           GdkPixbuf *new_pixbuf;
-          
+
           new_pixbuf = gdk_pixbuf_add_alpha (pixbuf, FALSE, 0, 0, 0);
           g_object_unref (G_OBJECT (pixbuf));
           pixbuf = new_pixbuf;
         }
-      
+
       meta_gradient_add_alpha (pixbuf,
                                alphas, G_N_ELEMENTS (alphas),
                                META_GRADIENT_HORIZONTAL);
-      
+
       draw_checkerboard (cr , width, height);
     }
-    
+
   gdk_cairo_set_source_pixbuf (cr, pixbuf, 0, 0);
   cairo_rectangle (cr, 0, 0, width, height);
   cairo_fill (cr);
@@ -253,13 +253,13 @@ create_gradient_window (const char *title,
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 
   gtk_window_set_title (GTK_WINDOW (window), title);
-  
+
   drawing_area = gtk_drawing_area_new ();
 
   gtk_widget_set_size_request (drawing_area, 1, 1);
 
   gtk_window_set_default_size (GTK_WINDOW (window), 175, 175);
-  
+
   g_signal_connect (G_OBJECT (drawing_area),
                     "draw",
                     G_CALLBACK (draw_callback),
@@ -268,7 +268,7 @@ create_gradient_window (const char *title,
   gtk_container_add (GTK_CONTAINER (window), drawing_area);
 
   gtk_widget_show_all (window);
-  
+
   return window;
 }
 

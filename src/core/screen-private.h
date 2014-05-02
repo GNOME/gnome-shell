@@ -9,11 +9,11 @@
  * which the rest of the world is allowed to use.)
  */
 
-/* 
+/*
  * Copyright (C) 2001 Havoc Pennington
  * Copyright (C) 2003 Rob Adams
  * Copyright (C) 2004-2006 Elijah Newren
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 2 of the
@@ -23,7 +23,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
@@ -73,7 +73,7 @@ struct _MetaScreen
    * any actual clients
    */
   Window no_focus_window;
-  
+
   GList *workspaces;
 
   MetaStack *stack;
@@ -110,11 +110,11 @@ struct _MetaScreen
   MetaScreenCorner starting_corner;
   guint vertical_workspaces : 1;
   guint workspace_layout_overridden : 1;
-  
+
   guint keys_grabbed : 1;
-  
+
   int closing;
-  
+
   /* Instead of unmapping withdrawn windows we can leave them mapped
    * and restack them below a guard window. When using a compositor
    * this allows us to provide live previews of unmapped windows */

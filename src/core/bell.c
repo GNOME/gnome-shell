@@ -2,10 +2,10 @@
 
 /* Mutter visual bell */
 
-/* 
+/*
  * Copyright (C) 2002 Sun Microsystems Inc.
  * Copyright (C) 2005, 2006 Elijah Newren
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 2 of the
@@ -15,7 +15,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
@@ -71,7 +71,7 @@
  */
 #ifdef HAVE_XKB
 static void
-bell_flash_fullscreen (MetaDisplay *display, 
+bell_flash_fullscreen (MetaDisplay *display,
                        XkbAnyEvent *xkb_ev)
 {
   g_assert (xkb_ev->xkb_type == XkbBellNotify);
@@ -96,7 +96,7 @@ bell_flash_fullscreen (MetaDisplay *display,
  * Bug: This is the parallel to bell_flash_window_frame(), so it should
  * really be called meta_bell_unflash_window_frame().
  */
-static gboolean 
+static gboolean
 bell_unflash_frame (gpointer data)
 {
   MetaFrame *frame = (MetaFrame *) data;
@@ -143,12 +143,12 @@ bell_flash_window_frame (MetaWindow *window)
  * flashes the screen.
  */
 static void
-bell_flash_frame (MetaDisplay *display, 
+bell_flash_frame (MetaDisplay *display,
 		  XkbAnyEvent *xkb_ev)
 {
   XkbBellNotifyEvent *xkb_bell_event = (XkbBellNotifyEvent *) xkb_ev;
   MetaWindow *window;
-  
+
   g_assert (xkb_ev->xkb_type == XkbBellNotify);
   window = meta_display_lookup_x_window (display, xkb_bell_event->window);
   if (!window && (display->focus_window))
@@ -180,10 +180,10 @@ bell_flash_frame (MetaDisplay *display,
  * Bug: This should be merged with meta_bell_notify().
  */
 static void
-bell_visual_notify (MetaDisplay *display, 
+bell_visual_notify (MetaDisplay *display,
 			 XkbAnyEvent *xkb_ev)
 {
-  switch (meta_prefs_get_visual_bell_type ()) 
+  switch (meta_prefs_get_visual_bell_type ())
     {
     case G_DESKTOP_VISUAL_BELL_FULLSCREEN_FLASH:
       bell_flash_fullscreen (display, xkb_ev);
@@ -195,7 +195,7 @@ bell_visual_notify (MetaDisplay *display,
 }
 
 void
-meta_bell_notify (MetaDisplay *display, 
+meta_bell_notify (MetaDisplay *display,
 		  XkbAnyEvent *xkb_ev)
 {
   /* flash something */
@@ -271,19 +271,19 @@ meta_bell_init (MetaDisplay *display)
 #ifdef HAVE_XKB
   int xkb_base_error_type, xkb_opcode;
 
-  if (!XkbQueryExtension (display->xdisplay, &xkb_opcode, 
-			  &display->xkb_base_event_type, 
-			  &xkb_base_error_type, 
+  if (!XkbQueryExtension (display->xdisplay, &xkb_opcode,
+			  &display->xkb_base_event_type,
+			  &xkb_base_error_type,
 			  NULL, NULL))
     {
       display->xkb_base_event_type = -1;
       g_message ("could not find XKB extension.");
       return FALSE;
     }
-  else 
+  else
     {
       unsigned int mask = XkbBellNotifyMask;
-      gboolean visual_bell_auto_reset = FALSE; 
+      gboolean visual_bell_auto_reset = FALSE;
       /* TRUE if and when non-broken version is available */
       XkbSelectEvents (display->xdisplay,
 		       XkbUseCoreKbd,
@@ -326,6 +326,6 @@ meta_bell_shutdown (MetaDisplay *display)
 void
 meta_bell_notify_frame_destroy (MetaFrame *frame)
 {
-  if (frame->is_flashing) 
+  if (frame->is_flashing)
     g_source_remove_by_funcs_user_data (&g_timeout_funcs, frame);
 }

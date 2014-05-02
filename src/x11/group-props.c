@@ -2,9 +2,9 @@
 
 /* MetaGroup property handling */
 
-/* 
+/*
  * Copyright (C) 2002 Red Hat, Inc.
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 2 of the
@@ -14,7 +14,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
@@ -65,16 +65,16 @@ meta_group_reload_properties (MetaGroup  *group,
 
   g_return_if_fail (properties != NULL);
   g_return_if_fail (n_properties > 0);
-  
+
   values = g_new0 (MetaPropValue, n_properties);
-  
+
   i = 0;
   while (i < n_properties)
     {
       init_prop_value (group->display, properties[i], &values[i]);
       ++i;
     }
-  
+
   meta_prop_get_values (group->display, group->group_leader,
                         values, n_properties);
 
@@ -82,12 +82,12 @@ meta_group_reload_properties (MetaGroup  *group,
   while (i < n_properties)
     {
       reload_prop_value (group, &values[i]);
-      
+
       ++i;
     }
 
   meta_prop_free_values (values, n_properties);
-  
+
   g_free (values);
 }
 
@@ -97,11 +97,11 @@ init_prop_value (MetaDisplay   *display,
                  Atom           property,
                  MetaPropValue *value)
 {
-  MetaGroupPropHooks *hooks;  
+  MetaGroupPropHooks *hooks;
 
   value->type = META_PROP_VALUE_INVALID;
   value->atom = None;
-  
+
   hooks = find_hooks (display, property);
   if (hooks && hooks->init_func != NULL)
     (* hooks->init_func) (display, property, value);
@@ -111,8 +111,8 @@ static void
 reload_prop_value (MetaGroup    *group,
                    MetaPropValue *value)
 {
-  MetaGroupPropHooks *hooks;  
-  
+  MetaGroupPropHooks *hooks;
+
   hooks = find_hooks (group->display, value->atom);
   if (hooks && hooks->reload_func != NULL)
     (* hooks->reload_func) (group, value);
@@ -133,7 +133,7 @@ reload_wm_client_machine (MetaGroup     *group,
 {
   g_free (group->wm_client_machine);
   group->wm_client_machine = NULL;
-  
+
   if (value->type != META_PROP_VALUE_INVALID)
     group->wm_client_machine = g_strdup (value->v.str);
 
@@ -156,10 +156,10 @@ reload_net_startup_id (MetaGroup     *group,
 {
   g_free (group->startup_id);
   group->startup_id = NULL;
-  
+
   if (value->type != META_PROP_VALUE_INVALID)
     group->startup_id = g_strdup (value->v.str);
-  
+
   meta_verbose ("Group has startup id \"%s\"\n",
                 group->startup_id ? group->startup_id : "unset");
 }
@@ -171,12 +171,12 @@ meta_display_init_group_prop_hooks (MetaDisplay *display)
 {
   int i;
   MetaGroupPropHooks *hooks;
-  
+
   g_assert (display->group_prop_hooks == NULL);
 
-  display->group_prop_hooks = g_new0 (MetaGroupPropHooks, N_HOOKS); 
+  display->group_prop_hooks = g_new0 (MetaGroupPropHooks, N_HOOKS);
   hooks = display->group_prop_hooks;
-  
+
   i = 0;
 
   hooks[i].property = display->atom_WM_CLIENT_MACHINE;
@@ -193,7 +193,7 @@ meta_display_init_group_prop_hooks (MetaDisplay *display)
   hooks[i].init_func = init_net_startup_id;
   hooks[i].reload_func = reload_net_startup_id;
   ++i;
-  
+
   if (i != N_HOOKS)
     {
       g_error ("Initialized %d group hooks should have been %d\n", i, N_HOOKS);
@@ -204,7 +204,7 @@ void
 meta_display_free_group_prop_hooks (MetaDisplay *display)
 {
   g_assert (display->group_prop_hooks != NULL);
-  
+
   g_free (display->group_prop_hooks);
   display->group_prop_hooks = NULL;
 }
@@ -218,13 +218,13 @@ find_hooks (MetaDisplay *display,
   /* FIXME we could sort the array and do binary search or
    * something
    */
-  
+
   i = 0;
   while (i < N_HOOKS)
     {
       if (display->group_prop_hooks[i].property == property)
         return &display->group_prop_hooks[i];
-      
+
       ++i;
     }
 

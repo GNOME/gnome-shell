@@ -1,10 +1,10 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* 
+/*
  * Copyright (C) 2001 Havoc Pennington
  * Copyright (C) 2003 Rob Adams
  * Copyright (C) 2004, 2005 Elijah Newren
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 2 of the
@@ -14,7 +14,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
@@ -197,7 +197,7 @@ meta_workspace_new (MetaScreen *screen)
   workspace->all_struts = NULL;
 
   workspace->showing_desktop = FALSE;
-  
+
   return workspace;
 }
 
@@ -219,7 +219,7 @@ workspace_free_all_struts (MetaWorkspace *workspace)
 {
   if (workspace->all_struts == NULL)
     return;
-    
+
   g_slist_foreach (workspace->all_struts, free_this, NULL);
   g_slist_free (workspace->all_struts);
   workspace->all_struts = NULL;
@@ -236,7 +236,7 @@ workspace_free_builtin_struts (MetaWorkspace *workspace)
 {
   if (workspace->builtin_struts == NULL)
     return;
-    
+
   g_slist_foreach (workspace->builtin_struts, free_this, NULL);
   g_slist_free (workspace->builtin_struts);
   workspace->builtin_struts = NULL;
@@ -254,7 +254,7 @@ meta_workspace_remove (MetaWorkspace *workspace)
   /* Here we assume all the windows are already on another workspace
    * as well, so they won't be "orphaned"
    */
-  
+
   tmp = workspace->windows;
   while (tmp != NULL)
     {
@@ -272,10 +272,10 @@ meta_workspace_remove (MetaWorkspace *workspace)
   g_assert (workspace->windows == NULL);
 
   screen = workspace->screen;
-  
+
   workspace->screen->workspaces =
     g_list_remove (workspace->screen->workspaces, workspace);
-  
+
   g_free (workspace->work_area_monitor);
 
   g_list_free (workspace->mru_list);
@@ -313,11 +313,11 @@ meta_workspace_add_window (MetaWorkspace *workspace,
                            MetaWindow    *window)
 {
   g_return_if_fail (window->workspace == NULL);
-  
+
   /* If the window is on all workspaces, we want to add it to all mru
    * lists, otherwise just add it to this workspaces mru list
    */
-  if (window->on_all_workspaces) 
+  if (window->on_all_workspaces)
     {
       if (window->workspace == NULL)
         {
@@ -343,7 +343,7 @@ meta_workspace_add_window (MetaWorkspace *workspace,
   window->workspace = workspace;
 
   meta_window_set_current_workspace_hint (window);
-  
+
   if (window->struts)
     {
       meta_topic (META_DEBUG_WORKAREA,
@@ -371,10 +371,10 @@ meta_workspace_remove_window (MetaWorkspace *workspace,
   window->workspace = NULL;
 
   /* If the window is on all workspaces, we don't want to remove it
-   * from the MRU list unless this causes it to be removed from all 
+   * from the MRU list unless this causes it to be removed from all
    * workspaces
    */
-  if (window->on_all_workspaces) 
+  if (window->on_all_workspaces)
     {
       GList* tmp = window->screen->workspaces;
       while (tmp)
@@ -392,7 +392,7 @@ meta_workspace_remove_window (MetaWorkspace *workspace,
     }
 
   meta_window_set_current_workspace_hint (window);
-  
+
   if (window->struts)
     {
       meta_topic (META_DEBUG_WORKAREA,
@@ -416,12 +416,12 @@ meta_workspace_relocate_windows (MetaWorkspace *workspace,
 {
   GList *tmp;
   GList *copy;
-  
+
   g_return_if_fail (workspace != new_home);
 
   /* can't modify list we're iterating over */
   copy = g_list_copy (workspace->windows);
-  
+
   tmp = copy;
   while (tmp != NULL)
     {
@@ -429,12 +429,12 @@ meta_workspace_relocate_windows (MetaWorkspace *workspace,
 
       meta_workspace_remove_window (workspace, window);
       meta_workspace_add_window (new_home, window);
-      
+
       tmp = tmp->next;
     }
 
   g_list_free (copy);
-  
+
   g_assert (workspace->windows == NULL);
 }
 
@@ -547,10 +547,10 @@ meta_workspace_activate_with_focus (MetaWorkspace *workspace,
   MetaWorkspaceLayout layout1, layout2;
   gint num_workspaces, current_space, new_space;
   MetaMotionDirection direction;
-  
+
   meta_verbose ("Activating workspace %d\n",
                 meta_workspace_index (workspace));
-  
+
   if (workspace->screen->active_workspace == workspace)
     return;
 
@@ -582,7 +582,7 @@ meta_workspace_activate_with_focus (MetaWorkspace *workspace,
   if (workspace->screen->display->grab_op == META_GRAB_OP_MOVING ||
       workspace->screen->display->grab_op == META_GRAB_OP_KEYBOARD_MOVING)
     move_window = workspace->screen->display->grab_window;
-      
+
   if (move_window != NULL)
     {
       if (move_window->on_all_workspaces)
@@ -739,7 +739,7 @@ meta_workspace_list_windows (MetaWorkspace *workspace)
   GSList *display_windows;
   GSList *tmp;
   GList *workspace_windows;
-  
+
   display_windows = meta_display_list_windows (workspace->screen->display,
                                                META_LIST_DEFAULT);
 
@@ -767,7 +767,7 @@ meta_workspace_invalidate_work_area (MetaWorkspace *workspace)
   GList *tmp;
   GList *windows;
   int i;
-  
+
   if (workspace->work_areas_invalid)
     {
       meta_topic (META_DEBUG_WORKAREA,
@@ -787,7 +787,7 @@ meta_workspace_invalidate_work_area (MetaWorkspace *workspace)
 
   g_free (workspace->work_area_monitor);
   workspace->work_area_monitor = NULL;
-      
+
   workspace_free_all_struts (workspace);
 
   for (i = 0; i < workspace->screen->n_monitor_infos; i++)
@@ -800,7 +800,7 @@ meta_workspace_invalidate_work_area (MetaWorkspace *workspace)
   workspace->screen_region = NULL;
   workspace->screen_edges = NULL;
   workspace->monitor_edges = NULL;
-  
+
   workspace->work_areas_invalid = TRUE;
 
   /* redo the size/position constraints on all windows */
@@ -811,7 +811,7 @@ meta_workspace_invalidate_work_area (MetaWorkspace *workspace)
       MetaWindow *w = tmp->data;
 
       meta_window_queue (w, META_QUEUE_MOVE_RESIZE);
-      
+
       tmp = tmp->next;
     }
 
@@ -876,7 +876,7 @@ ensure_work_areas_validated (MetaWorkspace *workspace)
 
   /* STEP 2: Get the maximal/spanning rects for the onscreen and
    *         on-single-monitor regions
-   */  
+   */
   g_assert (workspace->monitor_region == NULL);
   g_assert (workspace->screen_region   == NULL);
 
@@ -948,7 +948,7 @@ ensure_work_areas_validated (MetaWorkspace *workspace)
               workspace->work_area_screen.x,
               workspace->work_area_screen.y,
               workspace->work_area_screen.width,
-              workspace->work_area_screen.height);    
+              workspace->work_area_screen.height);
 
   /* Now find the work areas for each monitor */
   g_free (workspace->work_area_monitor);
@@ -983,7 +983,7 @@ ensure_work_areas_validated (MetaWorkspace *workspace)
 
   /* STEP 4: Make sure the screen_region is nonempty (separate from step 2
    *         since it relies on step 3).
-   */  
+   */
   if (workspace->screen_region == NULL)
     {
       MetaRectangle *nonempty_region;
@@ -1070,7 +1070,7 @@ meta_workspace_get_work_area_for_monitor (MetaWorkspace *workspace,
 
   ensure_work_areas_validated (workspace);
   g_assert (which_monitor < workspace->screen->n_monitor_infos);
-  
+
   *area = workspace->work_area_monitor[which_monitor];
 }
 
@@ -1086,7 +1086,7 @@ meta_workspace_get_work_area_all_monitors (MetaWorkspace *workspace,
                                            MetaRectangle *area)
 {
   ensure_work_areas_validated (workspace);
-  
+
   *area = workspace->work_area_screen;
 }
 
@@ -1151,7 +1151,7 @@ MetaWorkspace*
 meta_workspace_get_neighbor (MetaWorkspace      *workspace,
                              MetaMotionDirection direction)
 {
-  MetaWorkspaceLayout layout;  
+  MetaWorkspaceLayout layout;
   int i, current_space, num_workspaces;
   gboolean ltr;
 
@@ -1162,10 +1162,10 @@ meta_workspace_get_neighbor (MetaWorkspace      *workspace,
 
   meta_verbose ("Getting neighbor of %d in direction %s\n",
                 current_space, meta_motion_direction_to_string (direction));
-  
+
   ltr = meta_ui_get_direction() == META_UI_DIRECTION_LTR;
 
-  switch (direction) 
+  switch (direction)
     {
     case META_MOTION_LEFT:
       layout.current_col -= ltr ? 1 : -1;
@@ -1199,12 +1199,12 @@ meta_workspace_get_neighbor (MetaWorkspace      *workspace,
   if (i >= num_workspaces)
     meta_bug ("calc_workspace_layout left an invalid (too-high) workspace number %d in the grid\n",
               i);
-    
+
   meta_verbose ("Neighbor workspace is %d at row %d col %d\n",
                 i, layout.current_row, layout.current_col);
 
   meta_screen_free_workspace_layout (&layout);
-  
+
   return meta_screen_get_workspace_by_index (workspace->screen, i);
 }
 
@@ -1258,7 +1258,7 @@ meta_workspace_focus_default_window (MetaWorkspace *workspace,
             }
 
           if (workspace->screen->display->autoraise_window != window &&
-              meta_prefs_get_auto_raise ()) 
+              meta_prefs_get_auto_raise ())
             {
               meta_display_queue_autoraise_callback (workspace->screen->display,
                                                      window);
@@ -1303,7 +1303,7 @@ focus_ancestor_or_top_window (MetaWorkspace *workspace,
     meta_topic (META_DEBUG_FOCUS,
                 "Focusing MRU window\n");
 
-  /* First, check to see if we need to focus an ancestor of a window */  
+  /* First, check to see if we need to focus an ancestor of a window */
   if (not_this_one)
     {
       MetaWindow *ancestor;
@@ -1314,9 +1314,9 @@ focus_ancestor_or_top_window (MetaWorkspace *workspace,
           meta_window_showing_on_its_workspace (ancestor))
         {
           meta_topic (META_DEBUG_FOCUS,
-                      "Focusing %s, ancestor of %s\n", 
+                      "Focusing %s, ancestor of %s\n",
                       ancestor->desc, not_this_one->desc);
-      
+
           meta_window_focus (ancestor, timestamp);
 
           /* Also raise the window if in click-to-focus */
@@ -1335,7 +1335,7 @@ focus_ancestor_or_top_window (MetaWorkspace *workspace,
     {
       meta_topic (META_DEBUG_FOCUS,
                   "Focusing workspace MRU window %s\n", window->desc);
-      
+
       meta_window_focus (window, timestamp);
 
       /* Also raise the window if in click-to-focus */

@@ -15,11 +15,11 @@
  * together.
  */
 
-/* 
+/*
  * Copyright (C) 2001, 2002, 2003 Red Hat, Inc.
  * Copyright (C) 2004, 2005 Elijah Newren
  * Copyright (C) 2009 Thomas Thurman
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 2 of the
@@ -29,7 +29,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
@@ -196,7 +196,7 @@ reload_wm_client_machine (MetaWindow    *window,
 {
   g_free (window->wm_client_machine);
   window->wm_client_machine = NULL;
-  
+
   if (value->type != META_PROP_VALUE_INVALID)
     window->wm_client_machine = g_strdup (value->v.str);
 
@@ -345,7 +345,7 @@ reload_net_wm_pid (MetaWindow    *window,
   if (value->type != META_PROP_VALUE_INVALID)
     {
       gulong cardinal = (int) value->v.cardinal;
-      
+
       if (cardinal <= 0)
         meta_warning ("Application set a bogus _NET_WM_PID %lu\n",
                       cardinal);
@@ -445,12 +445,12 @@ set_title_text (MetaWindow  *window,
                 char       **target)
 {
   gboolean modified = FALSE;
-  
+
   if (!target)
     return FALSE;
-  
+
   g_free (*target);
-  
+
   if (!title)
     *target = g_strdup ("");
   else if (g_utf8_strlen (title, MAX_TITLE_LENGTH + 1) > MAX_TITLE_LENGTH)
@@ -503,7 +503,7 @@ set_window_title (MetaWindow *window,
                     window->display->atom__NET_WM_VISIBLE_NAME,
                     &new_title);
   priv->using_net_wm_visible_name = modified;
-  
+
   meta_window_set_title (window, new_title);
 
   g_free (new_title);
@@ -548,7 +548,7 @@ reload_wm_name (MetaWindow    *window,
                     value->v.str);
       return;
     }
-  
+
   if (value->type != META_PROP_VALUE_INVALID)
     {
       set_window_title (window, value->v.str);
@@ -796,7 +796,7 @@ reload_mwm_hints (MetaWindow    *window,
     meta_verbose ("Functions flag unset\n");
 
   meta_window_recalc_features (window);
-  
+
   /* We do all this anyhow at the end of meta_window_x11_new() */
   if (!window->constructing)
     {
@@ -804,7 +804,7 @@ reload_mwm_hints (MetaWindow    *window,
         meta_window_ensure_frame (window);
       else
         meta_window_destroy_frame (window);
-      
+
       meta_window_queue (window,
                          META_QUEUE_MOVE_RESIZE |
                          /* because ensure/destroy frame may unmap: */
@@ -859,32 +859,32 @@ reload_net_startup_id (MetaWindow    *window,
 {
   guint32 timestamp = window->net_wm_user_time;
   MetaWorkspace *workspace = NULL;
-  
+
   g_free (window->startup_id);
-  
+
   if (value->type != META_PROP_VALUE_INVALID)
     window->startup_id = g_strdup (value->v.str);
   else
     window->startup_id = NULL;
-    
+
   /* Update timestamp and workspace on a running window */
   if (!window->constructing)
   {
-    window->initial_timestamp_set = 0;  
+    window->initial_timestamp_set = 0;
     window->initial_workspace_set = 0;
-    
+
     if (meta_screen_apply_startup_properties (window->screen, window))
       {
-  
+
         if (window->initial_timestamp_set)
           timestamp = window->initial_timestamp;
         if (window->initial_workspace_set)
           workspace = meta_screen_get_workspace_by_index (window->screen, window->initial_workspace);
-    
+
         meta_window_activate_with_workspace (window, timestamp, workspace);
       }
   }
-  
+
   meta_verbose ("New _NET_STARTUP_ID \"%s\" for %s\n",
                 window->startup_id ? window->startup_id : "unset",
                 window->desc);
@@ -982,7 +982,7 @@ spew_size_hints_differences (const XSizeHints *old,
   if (FLAG_CHANGED (old, new, PWinGravity))
     meta_topic (META_DEBUG_GEOMETRY, "XSizeHints: PWinGravity now %s  (%d -> %d)\n",
                 FLAG_TOGGLED_ON (old, new, PWinGravity) ? "set" : "unset",
-                old->win_gravity, new->win_gravity);  
+                old->win_gravity, new->win_gravity);
 }
 
 void
@@ -1335,15 +1335,15 @@ reload_normal_hints (MetaWindow    *window,
   if (value->type != META_PROP_VALUE_INVALID)
     {
       XSizeHints old_hints;
-  
+
       meta_topic (META_DEBUG_GEOMETRY, "Updating WM_NORMAL_HINTS for %s\n", window->desc);
 
       old_hints = window->size_hints;
-  
+
       meta_set_normal_hints (window, value->v.size_hints.hints);
-      
+
       spew_size_hints_differences (&old_hints, &window->size_hints);
-      
+
       meta_window_recalc_features (window);
 
       if (!initial)
@@ -1357,12 +1357,12 @@ reload_wm_protocols (MetaWindow    *window,
                      gboolean       initial)
 {
   int i;
-  
+
   window->take_focus = FALSE;
   window->delete_window = FALSE;
   window->can_ping = FALSE;
-  
-  if (value->type == META_PROP_VALUE_INVALID)    
+
+  if (value->type == META_PROP_VALUE_INVALID)
     return;
 
   i = 0;
@@ -1379,7 +1379,7 @@ reload_wm_protocols (MetaWindow    *window,
         window->can_ping = TRUE;
       ++i;
     }
-  
+
   meta_verbose ("New _NET_STARTUP_ID \"%s\" for %s\n",
                 window->startup_id ? window->startup_id : "unset",
                 window->desc);
@@ -1394,7 +1394,7 @@ reload_wm_hints (MetaWindow    *window,
   gboolean urgent;
 
   old_group_leader = window->xgroup_leader;
-  
+
   /* Fill in defaults */
   window->input = TRUE;
   window->initially_iconic = FALSE;
@@ -1406,7 +1406,7 @@ reload_wm_hints (MetaWindow    *window,
   if (value->type != META_PROP_VALUE_INVALID)
     {
       const XWMHints *hints = value->v.wm_hints;
-      
+
       if (hints->flags & InputHint)
         window->input = hints->input;
 
@@ -1436,7 +1436,7 @@ reload_wm_hints (MetaWindow    *window,
     {
       meta_verbose ("Window %s changed its group leader to 0x%lx\n",
                     window->desc, window->xgroup_leader);
-      
+
       meta_window_group_leader_changed (window);
     }
 
@@ -1709,7 +1709,7 @@ meta_display_init_window_prop_hooks (MetaDisplay *display)
 
   MetaWindowPropHooks *table = g_memdup (hooks, sizeof (hooks)),
     *cursor = table;
-  
+
   g_assert (display->prop_hooks == NULL);
 
   display->prop_hooks_table = (gpointer) table;

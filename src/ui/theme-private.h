@@ -2,9 +2,9 @@
 
 /* Metacity Theme Rendering */
 
-/* 
+/*
  * Copyright (C) 2001 Havoc Pennington
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 2 of the
@@ -14,7 +14,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
@@ -57,7 +57,7 @@ typedef struct _MetaGradientSpec MetaGradientSpec;
  * MetaAlphaGradientSpec: (skip)
  *
  */
-typedef struct _MetaAlphaGradientSpec MetaAlphaGradientSpec; 
+typedef struct _MetaAlphaGradientSpec MetaAlphaGradientSpec;
 /**
  * MetaColorSpec: (skip)
  *
@@ -131,14 +131,14 @@ struct _MetaFrameLayout
 {
   /** Reference count. */
   int refcount;
-  
+
   /** Size of left side */
   int left_width;
   /** Size of right side */
   int right_width;
   /** Size of bottom side */
   int bottom_height;
-  
+
   /** Border of blue title region
    * \bug (blue?!)
    **/
@@ -146,12 +146,12 @@ struct _MetaFrameLayout
 
   /** Extra height for inside of title region, above the font height */
   int title_vertical_pad;
-  
+
   /** Right indent of buttons from edges of frame */
   int right_titlebar_edge;
   /** Left indent of buttons from edges of frame */
   int left_titlebar_edge;
-  
+
   /**
    * Sizing rule of buttons, either META_BUTTON_SIZING_ASPECT
    * (in which case button_aspect will be honoured, and
@@ -167,7 +167,7 @@ struct _MetaFrameLayout
    * Otherwise we figure out the height from the button_border.
    */
   double button_aspect;
-  
+
   /** Width of a button; set even when we are using aspect sizing */
   int button_width;
 
@@ -179,7 +179,7 @@ struct _MetaFrameLayout
 
   /** scale factor for title text */
   double title_scale;
-  
+
   /** Whether title text will be displayed */
   guint has_title : 1;
 
@@ -218,7 +218,7 @@ struct _MetaFrameGeometry
   MetaFrameBorders borders;
 
   int width;
-  int height;  
+  int height;
 
   GdkRectangle title_rect;
 
@@ -230,7 +230,7 @@ struct _MetaFrameGeometry
   /* used for a memset hack */
 #define ADDRESS_OF_BUTTON_RECTS(fgeom) (((char*)(fgeom)) + G_STRUCT_OFFSET (MetaFrameGeometry, close_rect))
 #define LENGTH_OF_BUTTON_RECTS (G_STRUCT_OFFSET (MetaFrameGeometry, right_single_background) + sizeof (GdkRectangle) - G_STRUCT_OFFSET (MetaFrameGeometry, close_rect))
-  
+
   /* The button rects (if changed adjust memset hack) */
   MetaButtonSpace close_rect;
   MetaButtonSpace max_rect;
@@ -258,7 +258,7 @@ struct _MetaFrameGeometry
   MetaButtonLayout button_layout;
   int n_left_buttons;
   int n_right_buttons;
-  
+
   /* Round corners */
   guint top_left_corner_rounded_radius;
   guint top_right_corner_rounded_radius;
@@ -363,14 +363,14 @@ typedef enum
 
   /** Clip to a rectangle */
   META_DRAW_CLIP,
-  
+
   /* Texture thingies */
 
   /** Just a filled rectangle with alpha */
   META_DRAW_TINT,
   META_DRAW_GRADIENT,
   META_DRAW_IMAGE,
-  
+
   /** GTK theme engine stuff */
   META_DRAW_GTK_ARROW,
   META_DRAW_GTK_BOX,
@@ -459,7 +459,7 @@ struct _MetaDrawSpec
    * otherwise it is zero.
    */
   int value;
-  
+
   /** A list of tokens in the expression. */
   PosToken *tokens;
 
@@ -517,7 +517,7 @@ struct _MetaDrawOp
       MetaDrawSpec *width;
       MetaDrawSpec *height;
     } clip;
-    
+
     struct {
       MetaColorSpec *color_spec;
       MetaAlphaGradientSpec *alpha_spec;
@@ -551,7 +551,7 @@ struct _MetaDrawOp
       unsigned int vertical_stripes : 1;
       unsigned int horizontal_stripes : 1;
     } image;
-    
+
     struct {
       GtkStateFlags state;
       GtkShadowType shadow;
@@ -577,7 +577,7 @@ struct _MetaDrawOp
       GtkStateFlags state;
       MetaDrawSpec *x;
       MetaDrawSpec *y1;
-      MetaDrawSpec *y2;  
+      MetaDrawSpec *y2;
     } gtk_vline;
 
     struct {
@@ -615,7 +615,7 @@ struct _MetaDrawOp
       MetaDrawSpec *tile_width;
       MetaDrawSpec *tile_height;
     } tile;
-    
+
   } data;
 };
 
@@ -690,7 +690,7 @@ typedef enum
    *   |       rather than   |
    *
    */
-  
+
   /* entire frame */
   META_FRAME_PIECE_ENTIRE_BACKGROUND,
   /* entire titlebar background */
@@ -756,7 +756,7 @@ struct _MetaFrameStyle
 };
 
 /* Kinds of frame...
- * 
+ *
  *  normal ->   noresize / vert only / horz only / both
  *              focused / unfocused
  *  max    ->   focused / unfocused
@@ -768,7 +768,7 @@ struct _MetaFrameStyle
  *
  * 14 window states times 7 or 8 window types. Except some
  * window types never get a frame so that narrows it down a bit.
- * 
+ *
  */
 typedef enum
 {

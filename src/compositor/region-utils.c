@@ -121,7 +121,7 @@ meta_region_builder_finish (MetaRegionBuilder *builder)
 
   return result;
 }
-
+
 
 /* MetaRegionIterator */
 
@@ -171,7 +171,7 @@ meta_region_iterator_next (MetaRegionIterator *iter)
       iter->line_end = TRUE;
     }
 }
-
+
 static void
 add_expanded_rect (MetaRegionBuilder  *builder,
                    int                 x,

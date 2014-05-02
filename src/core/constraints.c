@@ -42,7 +42,7 @@
  //      "constrain_whatever".
  //   3) Add your function to the all_constraints and all_constraint_names
  //      arrays (the latter of which is for debugging purposes)
- // 
+ //
  // An example constraint function, constrain_whatever:
  //
  // /* constrain_whatever does the following:
@@ -246,7 +246,7 @@ do_all_constraints (MetaWindow         *window,
           /* Log how the constraint modified the position */
           meta_topic (META_DEBUG_GEOMETRY,
                       "info->current is %d,%d +%d,%d after %s\n",
-                      info->current.x, info->current.y, 
+                      info->current.x, info->current.y,
                       info->current.width, info->current.height,
                       constraint->name);
         }
@@ -282,7 +282,7 @@ meta_window_constrain (MetaWindow          *window,
               new->x,  new->y,  new->width,  new->height);
 
   setup_constraint_info (&info,
-                         window, 
+                         window,
                          flags,
                          resize_gravity,
                          orig,
@@ -295,7 +295,7 @@ meta_window_constrain (MetaWindow          *window,
     /* Individually enforce all the high-enough priority constraints */
     do_all_constraints (window, &info, priority, !check_only);
 
-    /* Check if all high-enough priority constraints are simultaneously 
+    /* Check if all high-enough priority constraints are simultaneously
      * satisfied
      */
     satisfied = do_all_constraints (window, &info, priority, check_only);
@@ -398,10 +398,10 @@ setup_constraint_info (ConstraintInfo      *info,
     }
 
   cur_workspace = window->screen->active_workspace;
-  info->usable_screen_region   = 
+  info->usable_screen_region   =
     meta_workspace_get_onscreen_region (cur_workspace);
-  info->usable_monitor_region = 
-    meta_workspace_get_onmonitor_region (cur_workspace, 
+  info->usable_monitor_region =
+    meta_workspace_get_onmonitor_region (cur_workspace,
                                          monitor_info->number);
 
   /* Workaround braindead legacy apps that don't know how to
@@ -441,7 +441,7 @@ setup_constraint_info (ConstraintInfo      *info,
               "  work_area_monitor: %d,%d +%d,%d\n"
               "  entire_monitor   : %d,%d +%d,%d\n",
               info->orig.x, info->orig.y, info->orig.width, info->orig.height,
-              info->current.x, info->current.y, 
+              info->current.x, info->current.y,
                 info->current.width, info->current.height,
               (info->action_type == ACTION_MOVE) ? "Move" :
                 (info->action_type == ACTION_RESIZE) ? "Resize" :
@@ -454,7 +454,7 @@ setup_constraint_info (ConstraintInfo      *info,
                 (info->fixed_directions == FIXED_DIRECTION_Y) ? "Y fixed" :
                 "Freakin' Invalid Stupid",
               info->work_area_monitor.x, info->work_area_monitor.y,
-                info->work_area_monitor.width, 
+                info->work_area_monitor.width,
                 info->work_area_monitor.height,
               info->entire_monitor.x, info->entire_monitor.y,
                 info->entire_monitor.width, info->entire_monitor.height);
@@ -502,8 +502,8 @@ place_window_if_needed(MetaWindow     *window,
                                              monitor_info->number,
                                              &info->work_area_monitor);
       cur_workspace = window->screen->active_workspace;
-      info->usable_monitor_region = 
-        meta_workspace_get_onmonitor_region (cur_workspace, 
+      info->usable_monitor_region =
+        meta_workspace_get_onmonitor_region (cur_workspace,
                                              monitor_info->number);
 
       meta_window_frame_rect_to_client_rect (window, &placed_rect, &placed_rect);
@@ -546,7 +546,7 @@ place_window_if_needed(MetaWindow     *window,
 
           if (window->maximize_horizontally_after_placement ||
               window->maximize_vertically_after_placement)
-            meta_window_maximize_internal (window,   
+            meta_window_maximize_internal (window,
                 (window->maximize_horizontally_after_placement ?
                  META_MAXIMIZE_HORIZONTAL : 0 ) |
                 (window->maximize_vertically_after_placement ?
@@ -631,7 +631,7 @@ update_onscreen_requirements (MetaWindow     *window,
   if (old ^ window->require_on_single_monitor)
     meta_topic (META_DEBUG_GEOMETRY,
                 "require_on_single_monitor for %s toggled to %s\n",
-                window->desc, 
+                window->desc,
                 window->require_on_single_monitor ? "TRUE" : "FALSE");
 
   /* Update whether we want future constraint runs to require the
@@ -910,7 +910,7 @@ constrain_size_increments (MetaWindow         *window,
     return TRUE;
 
   /* Determine whether constraint applies; exit if it doesn't */
-  if (META_WINDOW_MAXIMIZED (window) || window->fullscreen || 
+  if (META_WINDOW_MAXIMIZED (window) || window->fullscreen ||
       META_WINDOW_TILED_SIDE_BY_SIDE (window) ||
       info->action_type == ACTION_MOVE)
     return TRUE;
@@ -928,7 +928,7 @@ constrain_size_increments (MetaWindow         *window,
   if (window->maximized_vertically)
     extra_height *= 0;
   /* constraint is satisfied iff there is no extra height or width */
-  constraint_already_satisfied = 
+  constraint_already_satisfied =
     (extra_height == 0 && extra_width == 0);
 
   if (check_only || constraint_already_satisfied)
@@ -954,10 +954,10 @@ constrain_size_increments (MetaWindow         *window,
     start_rect = &info->current;
   else
     start_rect = &info->orig;
-    
+
   /* Resize to the new size */
   meta_rectangle_resize_with_gravity (start_rect,
-                                      &info->current, 
+                                      &info->current,
                                       info->resize_gravity,
                                       new_width,
                                       new_height);
@@ -1002,7 +1002,7 @@ constrain_size_limits (MetaWindow         *window,
   /*** Enforce constraint ***/
   new_width  = CLAMP (info->current.width,  min_size.width,  max_size.width);
   new_height = CLAMP (info->current.height, min_size.height, max_size.height);
-  
+
   /* Figure out what original rect to pass to meta_rectangle_resize_with_gravity
    * See bug 448183
    */
@@ -1010,9 +1010,9 @@ constrain_size_limits (MetaWindow         *window,
     start_rect = &info->current;
   else
     start_rect = &info->orig;
-  
+
   meta_rectangle_resize_with_gravity (start_rect,
-                                      &info->current, 
+                                      &info->current,
                                       info->resize_gravity,
                                       new_width,
                                       new_height);
@@ -1042,7 +1042,7 @@ constrain_aspect_ratio (MetaWindow         *window,
          (double)window->size_hints.max_aspect.y;
   constraints_are_inconsistent = minr > maxr;
   if (constraints_are_inconsistent ||
-      META_WINDOW_MAXIMIZED (window) || window->fullscreen || 
+      META_WINDOW_MAXIMIZED (window) || window->fullscreen ||
       META_WINDOW_TILED_SIDE_BY_SIDE (window) ||
       info->action_type == ACTION_MOVE)
     return TRUE;
@@ -1082,7 +1082,7 @@ constrain_aspect_ratio (MetaWindow         *window,
       fudge = 1;
       break;
     }
-  constraint_already_satisfied = 
+  constraint_already_satisfied =
     info->current.width - (info->current.height * minr ) > -minr*fudge &&
     info->current.width - (info->current.height * maxr ) <  maxr*fudge;
   if (check_only || constraint_already_satisfied)
@@ -1146,7 +1146,7 @@ constrain_aspect_ratio (MetaWindow         *window,
     start_rect = &info->orig;
 
   meta_rectangle_resize_with_gravity (start_rect,
-                                      &info->current, 
+                                      &info->current,
                                       info->resize_gravity,
                                       new_width,
                                       new_height);
@@ -1194,7 +1194,7 @@ do_screen_and_monitor_relative_constraints (
     exit_early = TRUE;
 
   /* Determine whether constraint is already satisfied; exit if it is */
-  constraint_satisfied = 
+  constraint_satisfied =
     meta_rectangle_contained_in_region (region_spanning_rectangles,
                                         &info->current);
   if (exit_early || constraint_satisfied || check_only)
@@ -1233,7 +1233,7 @@ constrain_to_single_monitor (MetaWindow         *window,
     return TRUE;
 
   /* Exit early if we know the constraint won't apply--note that this constraint
-   * is only meant for normal windows (e.g. we don't want docks to be shoved 
+   * is only meant for normal windows (e.g. we don't want docks to be shoved
    * "onscreen" by their own strut) and we can't apply it to frameless windows
    * or else users will be unable to move windows such as XMMS across monitors.
    */
@@ -1246,7 +1246,7 @@ constrain_to_single_monitor (MetaWindow         *window,
     return TRUE;
 
   /* Have a helper function handle the constraint for us */
-  return do_screen_and_monitor_relative_constraints (window, 
+  return do_screen_and_monitor_relative_constraints (window,
                                                      info->usable_monitor_region,
                                                      info,
                                                      check_only);
@@ -1262,18 +1262,18 @@ constrain_fully_onscreen (MetaWindow         *window,
     return TRUE;
 
   /* Exit early if we know the constraint won't apply--note that this constraint
-   * is only meant for normal windows (e.g. we don't want docks to be shoved 
+   * is only meant for normal windows (e.g. we don't want docks to be shoved
    * "onscreen" by their own strut).
    */
   if (window->type == META_WINDOW_DESKTOP ||
       window->type == META_WINDOW_DOCK    ||
       window->fullscreen                  ||
-      !window->require_fully_onscreen     || 
+      !window->require_fully_onscreen     ||
       info->is_user_action)
     return TRUE;
 
   /* Have a helper function handle the constraint for us */
-  return do_screen_and_monitor_relative_constraints (window, 
+  return do_screen_and_monitor_relative_constraints (window,
                                                      info->usable_screen_region,
                                                      info,
                                                      check_only);
@@ -1301,7 +1301,7 @@ constrain_titlebar_visible (MetaWindow         *window,
     info->is_user_action && !window->display->grab_frame_action;
 
   /* Exit early if we know the constraint won't apply--note that this constraint
-   * is only meant for normal windows (e.g. we don't want docks to be shoved 
+   * is only meant for normal windows (e.g. we don't want docks to be shoved
    * "onscreen" by their own strut).
    */
   if (window->type == META_WINDOW_DESKTOP ||
@@ -1345,13 +1345,13 @@ constrain_titlebar_visible (MetaWindow         *window,
    */
   meta_rectangle_expand_region_conditionally (info->usable_screen_region,
                                               horiz_amount_offscreen,
-                                              horiz_amount_offscreen, 
+                                              horiz_amount_offscreen,
                                               0, /* Don't let titlebar off */
                                               bottom_amount,
                                               horiz_amount_onscreen,
                                               vert_amount_onscreen);
   retval =
-    do_screen_and_monitor_relative_constraints (window, 
+    do_screen_and_monitor_relative_constraints (window,
                                                 info->usable_screen_region,
                                                 info,
                                                 check_only);
@@ -1381,7 +1381,7 @@ constrain_partially_onscreen (MetaWindow         *window,
     return TRUE;
 
   /* Exit early if we know the constraint won't apply--note that this constraint
-   * is only meant for normal windows (e.g. we don't want docks to be shoved 
+   * is only meant for normal windows (e.g. we don't want docks to be shoved
    * "onscreen" by their own strut).
    */
   if (window->type == META_WINDOW_DESKTOP ||
@@ -1423,13 +1423,13 @@ constrain_partially_onscreen (MetaWindow         *window,
    */
   meta_rectangle_expand_region_conditionally (info->usable_screen_region,
                                               horiz_amount_offscreen,
-                                              horiz_amount_offscreen, 
+                                              horiz_amount_offscreen,
                                               top_amount,
                                               bottom_amount,
                                               horiz_amount_onscreen,
                                               vert_amount_onscreen);
   retval =
-    do_screen_and_monitor_relative_constraints (window, 
+    do_screen_and_monitor_relative_constraints (window,
                                                 info->usable_screen_region,
                                                 info,
                                                 check_only);
