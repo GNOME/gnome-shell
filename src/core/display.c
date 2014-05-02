@@ -1773,7 +1773,8 @@ meta_display_begin_grab_op (MetaDisplay *display,
   /* If window is a modal dialog attached to its parent,
    * grab the parent instead for moving.
    */
-  if (meta_grab_op_is_moving (op))
+  if (window && meta_window_is_attached_dialog (window) &&
+      meta_grab_op_is_moving (op))
     grab_window = get_toplevel_transient_for (window);
 
   g_assert (grab_window != NULL);
