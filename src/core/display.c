@@ -1741,22 +1741,22 @@ meta_display_begin_grab_op (MetaDisplay *display,
 {
   MetaWindow *grab_window = NULL;
 
+  g_assert (window != NULL);
+
   meta_topic (META_DEBUG_WINDOW_OPS,
               "Doing grab op %u on window %s button %d pointer already grabbed: %d pointer pos %d,%d\n",
-              op, window ? window->desc : "none", button, pointer_already_grabbed,
+              op, window->desc, button, pointer_already_grabbed,
               root_x, root_y);
 
   if (display->grab_op != META_GRAB_OP_NONE)
     {
-      if (window)
-        meta_warning ("Attempt to perform window operation %u on window %s when operation %u on %s already in effect\n",
-                      op, window->desc, display->grab_op,
-                      display->grab_window ? display->grab_window->desc : "none");
+      meta_warning ("Attempt to perform window operation %u on window %s when operation %u on %s already in effect\n",
+                    op, window->desc, display->grab_op,
+                    display->grab_window ? display->grab_window->desc : "none");
       return FALSE;
     }
 
-  if (window &&
-      (meta_grab_op_is_moving (op) || meta_grab_op_is_resizing (op)))
+  if (meta_grab_op_is_moving (op) || meta_grab_op_is_resizing (op))
     {
       if (meta_prefs_get_raise_on_click ())
         meta_window_raise (window);
@@ -1773,8 +1773,7 @@ meta_display_begin_grab_op (MetaDisplay *display,
   /* If window is a modal dialog attached to its parent,
    * grab the parent instead for moving.
    */
-  if (window && meta_window_is_attached_dialog (window) &&
-      meta_grab_op_is_moving (op))
+  if (meta_window_is_attached_dialog (window) && meta_grab_op_is_moving (op))
     grab_window = get_toplevel_transient_for (window);
 
   g_assert (grab_window != NULL);
