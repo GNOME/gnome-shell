@@ -1259,6 +1259,7 @@ guint
 meta_display_grab_accelerator (MetaDisplay *display,
                                const char  *accelerator)
 {
+  MetaBackend *backend = meta_get_backend ();
   MetaKeyBinding *binding;
   MetaKeyGrab *grab;
   guint keysym = 0;
@@ -1284,7 +1285,8 @@ meta_display_grab_accelerator (MetaDisplay *display,
   if (display_get_keybinding (display, keycode, mask))
     return META_KEYBINDING_ACTION_NONE;
 
-  meta_change_keygrab (display, display->screen->xroot, TRUE, keysym, keycode, mask);
+  if (META_IS_BACKEND_X11 (backend))
+    meta_change_keygrab (display, display->screen->xroot, TRUE, keysym, keycode, mask);
 
   grab = g_new0 (MetaKeyGrab, 1);
   grab->action = next_dynamic_keybinding_action ();
@@ -1314,6 +1316,7 @@ gboolean
 meta_display_ungrab_accelerator (MetaDisplay *display,
                                  guint        action)
 {
+  MetaBackend *backend = meta_get_backend ();
   MetaKeyBinding *binding;
   MetaKeyGrab *grab;
   char *key;
@@ -1335,10 +1338,11 @@ meta_display_ungrab_accelerator (MetaDisplay *display,
     {
       guint32 index_key;
 
-      meta_change_keygrab (display, display->screen->xroot, FALSE,
-                           binding->keysym,
-                           binding->keycode,
-                           binding->mask);
+      if (META_IS_BACKEND_X11 (backend))
+        meta_change_keygrab (display, display->screen->xroot, FALSE,
+                             binding->keysym,
+                             binding->keycode,
+                             binding->mask);
 
       index_key = key_binding_key (binding->keycode, binding->mask);
       g_hash_table_remove (display->key_bindings_index, GINT_TO_POINTER (index_key));
