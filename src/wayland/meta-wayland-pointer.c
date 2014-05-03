@@ -383,9 +383,13 @@ handle_scroll_event (MetaWaylandPointer *pointer,
     case CLUTTER_SCROLL_SMOOTH:
       {
         double dx, dy;
+        /* Clutter smooth scroll events are in discrete steps (1 step = 1.0 long
+         * vector along one axis). To convert to smooth scroll events that are
+         * in pointer motion event space, multiply the vector with the 10. */
+        const double factor = 10.0;
         clutter_event_get_scroll_delta (event, &dx, &dy);
-        x_value = wl_fixed_from_double (dx);
-        y_value = wl_fixed_from_double (dy);
+        x_value = wl_fixed_from_double (dx) * factor;
+        y_value = wl_fixed_from_double (dy) * factor;
       }
       break;
 
