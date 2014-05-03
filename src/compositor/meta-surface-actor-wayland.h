@@ -63,6 +63,7 @@ void meta_surface_actor_wayland_set_buffer (MetaSurfaceActorWayland *self,
 
 double meta_surface_actor_wayland_get_scale (MetaSurfaceActorWayland *actor);
 
+void meta_surface_actor_wayland_scale_texture (MetaSurfaceActorWayland *actor);
 G_END_DECLS
 
 #endif /* __META_SURFACE_ACTOR_WAYLAND_H__ */

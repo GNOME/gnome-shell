@@ -155,6 +155,15 @@ meta_surface_actor_wayland_get_scale (MetaSurfaceActorWayland *actor)
    return (double)output_scale / (double)priv->surface->scale;
 }
 
+void
+meta_surface_actor_wayland_scale_texture (MetaSurfaceActorWayland *actor)
+{
+  MetaShapedTexture *stex = meta_surface_actor_get_texture (META_SURFACE_ACTOR (actor));
+  double output_scale = meta_surface_actor_wayland_get_scale (actor);
+
+  clutter_actor_set_scale (CLUTTER_ACTOR (stex), output_scale, output_scale);
+}
+
 static MetaWindow *
 meta_surface_actor_wayland_get_window (MetaSurfaceActor *actor)
 {
@@ -169,7 +178,6 @@ meta_surface_actor_wayland_get_preferred_width  (ClutterActor *self,
                                                  gfloat       *min_width_p,
                                                  gfloat       *natural_width_p)
 {
-  MetaSurfaceActorWaylandPrivate *priv = meta_surface_actor_wayland_get_instance_private (self);
   MetaShapedTexture *stex = meta_surface_actor_get_texture (META_SURFACE_ACTOR (self));
   double scale = meta_surface_actor_wayland_get_scale (META_SURFACE_ACTOR_WAYLAND (self));
 
@@ -188,7 +196,6 @@ meta_surface_actor_wayland_get_preferred_height  (ClutterActor *self,
                                                   gfloat       *min_height_p,
                                                   gfloat       *natural_height_p)
 {
-  MetaSurfaceActorWaylandPrivate *priv = meta_surface_actor_wayland_get_instance_private (self);
   MetaShapedTexture *stex = meta_surface_actor_get_texture (META_SURFACE_ACTOR (self));
   double scale = meta_surface_actor_wayland_get_scale (META_SURFACE_ACTOR_WAYLAND (self));
 

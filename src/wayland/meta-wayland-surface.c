@@ -376,9 +376,7 @@ commit_pending_state (MetaWaylandSurface      *surface,
   g_list_foreach (surface->subsurfaces, parent_surface_committed, NULL);
 
   /* scale surface texture */
-  output_scale = meta_surface_actor_wayland_get_scale (META_SURFACE_ACTOR_WAYLAND (surface->surface_actor));
-  clutter_actor_set_scale (CLUTTER_ACTOR (meta_surface_actor_get_texture (surface->surface_actor)),
-                           output_scale, output_scale);
+  meta_surface_actor_wayland_scale_texture (surface->surface_actor);
 
   /* wl_surface.frame */
   wl_list_insert_list (&compositor->frame_callbacks, &pending->frame_callback_list);
