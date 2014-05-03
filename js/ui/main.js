@@ -9,7 +9,6 @@ const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
-const GSystem = imports.gi.GSystem;
 
 const Components = imports.ui.components;
 const CtrlAltTab = imports.ui.ctrlAltTab;
@@ -214,6 +213,9 @@ function _initializeUI() {
                                   screenShield.lockIfWasLocked();
                               }
                               if (LoginManager.haveSystemd() && sessionMode.currentMode === 'user') {
+                                  // Do not import globally to not depend
+                                  // on systemd on non-systemd systems.
+                                  let GSystem = imports.gi.GSystem;
                                   GSystem.log_structured_print('GNOME Shell started at ' + _startDate,
                                                                ['MESSAGE_ID=' + GNOMESHELL_STARTED_MESSAGE_ID]);
                               } else {
