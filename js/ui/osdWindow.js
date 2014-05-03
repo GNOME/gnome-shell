@@ -192,6 +192,8 @@ const OsdWindow = new Lang.Class({
     _monitorsChanged: function() {
         /* assume 110x110 on a 640x480 display and scale from there */
         let monitor = Main.layoutManager.monitors[this._monitorIndex];
+        if (!monitor)
+            return; // we are about to be removed
 
         let scalew = monitor.width / 640.0;
         let scaleh = monitor.height / 480.0;
