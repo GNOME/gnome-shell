@@ -1395,6 +1395,9 @@ clutter_device_manager_xi2_get_core_device (ClutterDeviceManager   *manager,
   switch (device_type)
     {
     case CLUTTER_POINTER_DEVICE:
+      if (manager_xi2->client_pointer == NULL)
+        update_client_pointer (manager_xi2);
+
       return manager_xi2->client_pointer;
 
     case CLUTTER_KEYBOARD_DEVICE:
