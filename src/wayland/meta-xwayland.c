@@ -76,7 +76,17 @@ typedef struct {
   MetaXWaylandManager *manager;
   MetaWindow *window;
   guint32 surface_id;
+  guint idle_id;
 } AssociateWindowWithSurfaceOp;
+
+static void
+associate_window_with_surface_window_destroyed (gpointer  user_data,
+                                                GObject  *obj)
+{
+  AssociateWindowWithSurfaceOp *op = user_data;
+  g_source_remove (op->idle_id);
+  g_free (op);
+}
 
 static gboolean
 associate_window_with_surface_idle (gpointer user_data)
@@ -87,6 +97,7 @@ associate_window_with_surface_idle (gpointer user_data)
       /* Not here? Oh well... nothing we can do */
       g_warning ("Unknown surface ID %d (from window %s)", op->surface_id, op->window->desc);
     }
+  g_object_weak_unref (G_OBJECT (op->window), associate_window_with_surface_window_destroyed, op);
   g_free (op);
 
   return G_SOURCE_REMOVE;
@@ -101,8 +112,6 @@ meta_xwayland_handle_wl_surface_id (MetaWindow *window,
 
   if (!associate_window_with_surface_id (manager, window, surface_id))
     {
-      guint id;
-
       /* No surface ID yet... it should arrive after the next
        * iteration through the loop, so queue an idle and see
        * what happens.
@@ -111,8 +120,10 @@ meta_xwayland_handle_wl_surface_id (MetaWindow *window,
       op->manager = manager;
       op->window = window;
       op->surface_id = surface_id;
-      id = g_idle_add (associate_window_with_surface_idle, op);
-      g_source_set_name_by_id (id, "[mutter] associate_window_with_surface_idle");
+      op->idle_id = g_idle_add (associate_window_with_surface_idle, op);
+      g_source_set_name_by_id (op->idle_id, "[mutter] associate_window_with_surface_idle");
+
+      g_object_weak_ref (G_OBJECT (op->window), associate_window_with_surface_window_destroyed, op);
     }
 }
 
