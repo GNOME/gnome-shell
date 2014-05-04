@@ -37,13 +37,6 @@ struct _MetaUI
   Display *xdisplay;
   Screen *xscreen;
   MetaFrames *frames;
-
-  /* For double-click tracking */
-  gint button_click_number;
-  Window button_click_window;
-  int button_click_x;
-  int button_click_y;
-  guint32 button_click_time;
 };
 
 void
@@ -72,183 +65,6 @@ meta_ui_get_screen_number (void)
   return gdk_screen_get_number (gdk_screen_get_default ());
 }
 
-/* For XInput2 */
-#include "display-private.h"
-
-static gboolean
-is_input_event (XEvent *event)
-{
-  MetaDisplay *display = meta_get_display ();
-
-  return (event->type == GenericEvent &&
-          event->xcookie.extension == display->xinput_opcode);
-}
-
-/* We do some of our event handling in frames.c, which expects
- * GDK events delivered by GTK+.  However, since the transition to
- * client side windows, we can't let GDK see button events, since the
- * client-side tracking of implicit and explicit grabs it does will
- * get confused by our direct use of X grabs in the core code.
- *
- * So we do a very minimal GDK => GTK event conversion here and send on the
- * events we care about, and then filter them out so they don't go
- * through the normal GDK event handling.
- *
- * To reduce the amount of code, the only events fields filled out
- * below are the ones that frames.c uses. If frames.c is modified to
- * use more fields, more fields need to be filled out below.
- */
-
-static gboolean
-maybe_redirect_mouse_event (XEvent *xevent)
-{
-  GdkDisplay *gdisplay;
-  GdkDeviceManager *gmanager;
-  GdkDevice *gdevice;
-  MetaUI *ui;
-  GdkEvent *gevent;
-  GdkWindow *gdk_window;
-  Window window;
-  XIEvent *xev;
-  XIDeviceEvent *xev_d = NULL;
-  XIEnterEvent *xev_e = NULL;
-
-  if (!is_input_event (xevent))
-    return FALSE;
-
-  xev = (XIEvent *) xevent->xcookie.data;
-
-  switch (xev->evtype)
-    {
-    case XI_TouchBegin:
-    case XI_ButtonPress:
-    case XI_ButtonRelease:
-    case XI_Motion:
-      xev_d = (XIDeviceEvent *) xev;
-      window = xev_d->event;
-      break;
-    case XI_Enter:
-    case XI_Leave:
-      xev_e = (XIEnterEvent *) xev;
-      window = xev_e->event;
-      break;
-    default:
-      return FALSE;
-    }
-
-  gdisplay = gdk_x11_lookup_xdisplay (xev->display);
-  ui = g_object_get_data (G_OBJECT (gdisplay), "meta-ui");
-  if (!ui)
-    return FALSE;
-
-  gdk_window = gdk_x11_window_lookup_for_display (gdisplay, window);
-  if (gdk_window == NULL)
-    return FALSE;
-
-  gmanager = gdk_display_get_device_manager (gdisplay);
-  gdevice = gdk_x11_device_manager_lookup (gmanager, META_VIRTUAL_CORE_POINTER_ID);
-
-  /* If GDK already thinks it has a grab, we better let it see events; this
-   * is the menu-navigation case and events need to get sent to the appropriate
-   * (client-side) subwindow for individual menu items.
-   */
-  if (gdk_display_device_is_grabbed (gdisplay, gdevice))
-    return FALSE;
-
-  switch (xev->evtype)
-    {
-    case XI_TouchBegin:
-    case XI_ButtonPress:
-    case XI_ButtonRelease:
-      if (xev_d->evtype == XI_ButtonPress || xev_d->evtype == XI_TouchBegin)
-        {
-          GtkSettings *settings = gtk_settings_get_default ();
-          int double_click_time;
-          int double_click_distance;
-          int button;
-
-          g_object_get (settings,
-                        "gtk-double-click-time", &double_click_time,
-                        "gtk-double-click-distance", &double_click_distance,
-                        NULL);
-
-          if (xev->evtype == XI_TouchBegin)
-            button = 1;
-          else
-            button = xev_d->detail;
-
-          if (button == ui->button_click_number &&
-              xev_d->event == ui->button_click_window &&
-              xev_d->time < ui->button_click_time + double_click_time &&
-              ABS (xev_d->event_x - ui->button_click_x) <= double_click_distance &&
-              ABS (xev_d->event_y - ui->button_click_y) <= double_click_distance)
-            {
-              gevent = gdk_event_new (GDK_2BUTTON_PRESS);
-
-              ui->button_click_number = 0;
-            }
-          else
-            {
-              gevent = gdk_event_new (GDK_BUTTON_PRESS);
-              ui->button_click_number = button;
-              ui->button_click_window = xev_d->event;
-              ui->button_click_time = xev_d->time;
-              ui->button_click_x = xev_d->event_x;
-              ui->button_click_y = xev_d->event_y;
-            }
-
-          gevent->button.button = button;
-        }
-      else
-        {
-          gevent = gdk_event_new (GDK_BUTTON_RELEASE);
-          gevent->button.button = xev_d->detail;
-        }
-
-      gevent->button.window = g_object_ref (gdk_window);
-      gevent->button.time = xev_d->time;
-      gevent->button.x = xev_d->event_x;
-      gevent->button.y = xev_d->event_y;
-      gevent->button.x_root = xev_d->root_x;
-      gevent->button.y_root = xev_d->root_y;
-
-      break;
-    case XI_Motion:
-      gevent = gdk_event_new (GDK_MOTION_NOTIFY);
-      gevent->motion.type = GDK_MOTION_NOTIFY;
-      gevent->motion.window = g_object_ref (gdk_window);
-      break;
-    case XI_Enter:
-    case XI_Leave:
-      gevent = gdk_event_new (xev_e->evtype == XI_Enter ? GDK_ENTER_NOTIFY : GDK_LEAVE_NOTIFY);
-      gevent->crossing.window = g_object_ref (gdk_window);
-      gevent->crossing.x = xev_e->event_x;
-      gevent->crossing.y = xev_e->event_y;
-      break;
-    default:
-      g_assert_not_reached ();
-      break;
-    }
-
-  /* If we've gotten here, we've created the gdk_event and should send it on */
-  gdk_event_set_device (gevent, gdevice);
-  gtk_main_do_event (gevent);
-  gdk_event_free (gevent);
-
-  return TRUE;
-}
-
-static GdkFilterReturn
-ui_filter_func (GdkXEvent *xevent,
-                GdkEvent *event,
-                gpointer data)
-{
-  if (maybe_redirect_mouse_event (xevent))
-    return GDK_FILTER_REMOVE;
-  else
-    return GDK_FILTER_CONTINUE;
-}
-
 MetaUI*
 meta_ui_new (Display *xdisplay,
              Screen  *screen)
@@ -272,25 +88,13 @@ meta_ui_new (Display *xdisplay,
    */
   gtk_widget_show (GTK_WIDGET (ui->frames));
 
-  gdk_window_add_filter (NULL, ui_filter_func, NULL);
-
-  g_object_set_data (G_OBJECT (gdisplay), "meta-ui", ui);
-
   return ui;
 }
 
 void
 meta_ui_free (MetaUI *ui)
 {
-  GdkDisplay *gdisplay;
-
   gtk_widget_destroy (GTK_WIDGET (ui->frames));
-
-  gdisplay = gdk_x11_lookup_xdisplay (ui->xdisplay);
-  g_object_set_data (G_OBJECT (gdisplay), "meta-ui", NULL);
-
-  gdk_window_remove_filter (NULL, ui_filter_func, NULL);
-
   g_free (ui);
 }
 
