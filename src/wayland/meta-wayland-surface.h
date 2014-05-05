@@ -109,8 +109,6 @@ struct _MetaWaylandSurface
     GSList *pending_placement_ops;
   } sub;
 
-  uint32_t state_changed_serial;
-
   /* All the pending state that wl_surface.commit will apply. */
   MetaWaylandPendingState pending;
 };
@@ -128,13 +126,6 @@ void                meta_wayland_surface_set_window (MetaWaylandSurface *surface
 void                meta_wayland_surface_configure_notify (MetaWaylandSurface *surface,
 							   int                 width,
 							   int                 height);
-void                meta_wayland_surface_send_maximized (MetaWaylandSurface *surface);
-void                meta_wayland_surface_send_unmaximized (MetaWaylandSurface *surface);
-void                meta_wayland_surface_send_fullscreened (MetaWaylandSurface *surface);
-void                meta_wayland_surface_send_unfullscreened (MetaWaylandSurface *surface);
-
-void                meta_wayland_surface_activated (MetaWaylandSurface *surface);
-void                meta_wayland_surface_deactivated (MetaWaylandSurface *surface);
 
 void                meta_wayland_surface_ping (MetaWaylandSurface *surface,
                                                guint32             serial);

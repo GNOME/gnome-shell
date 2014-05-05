@@ -186,6 +186,14 @@ meta_window_wayland_move_resize_internal (MetaWindow                *window,
 }
 
 static void
+surface_state_changed (MetaWindow *window)
+{
+  meta_wayland_surface_configure_notify (window->surface,
+                                         window->rect.width,
+                                         window->rect.height);
+}
+
+static void
 appears_focused_changed (GObject    *object,
                          GParamSpec *pspec,
                          gpointer    user_data)
@@ -197,10 +205,7 @@ appears_focused_changed (GObject    *object,
   if (window->unmanaging)
     return;
 
-  if (meta_window_appears_focused (window))
-    meta_wayland_surface_activated (window->surface);
-  else
-    meta_wayland_surface_deactivated (window->surface);
+  surface_state_changed (window);
 }
 
 static void
