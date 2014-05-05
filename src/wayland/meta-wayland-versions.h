@@ -61,6 +61,7 @@
 
 /* The first version to implement a specific event */
 #define META_WL_SEAT_HAS_NAME               2
+#define META_WL_OUTPUT_HAS_SCALE            2
 #define META_WL_OUTPUT_HAS_DONE             2
 
 #endif
