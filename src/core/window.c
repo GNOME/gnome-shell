@@ -6600,6 +6600,7 @@ meta_window_handle_mouse_grab_op_event  (MetaWindow         *window,
           meta_grab_op_is_keyboard (window->display->grab_op))
         {
           end_grab_op (window, event);
+          return FALSE;
         }
       return TRUE;
 
@@ -6608,6 +6609,7 @@ meta_window_handle_mouse_grab_op_event  (MetaWindow         *window,
           event->button.button == (unsigned int) meta_prefs_get_mouse_button_resize ())
         {
           end_grab_op (window, event);
+          return FALSE;
         }
       return TRUE;
 
