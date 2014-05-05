@@ -905,6 +905,7 @@ constrain_size_increments (MetaWindow         *window,
   int new_width, new_height;
   gboolean constraint_already_satisfied;
   MetaRectangle *start_rect;
+  MetaRectangle client_rect;
 
   if (priority > PRIORITY_SIZE_HINTS_INCREMENTS)
     return TRUE;
@@ -915,13 +916,15 @@ constrain_size_increments (MetaWindow         *window,
       info->action_type == ACTION_MOVE)
     return TRUE;
 
+  meta_window_frame_rect_to_client_rect (window, &info->current, &client_rect);
+
   /* Determine whether constraint is already satisfied; exit if it is */
   bh = window->size_hints.base_height;
   hi = window->size_hints.height_inc;
   bw = window->size_hints.base_width;
   wi = window->size_hints.width_inc;
-  extra_height = (info->current.height - bh) % hi;
-  extra_width  = (info->current.width  - bw) % wi;
+  extra_height = (client_rect.height - bh) % hi;
+  extra_width  = (client_rect.width  - bw) % wi;
   /* ignore size increments for maximized windows */
   if (window->maximized_horizontally)
     extra_width *= 0;
@@ -935,8 +938,8 @@ constrain_size_increments (MetaWindow         *window,
     return constraint_already_satisfied;
 
   /*** Enforce constraint ***/
-  new_width  = info->current.width  - extra_width;
-  new_height = info->current.height - extra_height;
+  new_width  = client_rect.width  - extra_width;
+  new_height = client_rect.height - extra_height;
 
   /* Adjusting down instead of up (as done in the above two lines) may
    * violate minimum size constraints; fix the adjustment if this
