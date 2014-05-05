@@ -950,6 +950,14 @@ constrain_size_increments (MetaWindow         *window,
   if (new_height < window->size_hints.min_height)
     new_height += ((window->size_hints.min_height - new_height)/hi + 1)*hi;
 
+  {
+    client_rect.width = new_width;
+    client_rect.height = new_height;
+    meta_window_client_rect_to_frame_rect (window, &client_rect, &client_rect);
+    new_width = client_rect.width;
+    new_height = client_rect.height;
+  }
+
   /* Figure out what original rect to pass to meta_rectangle_resize_with_gravity
    * See bug 448183
    */
