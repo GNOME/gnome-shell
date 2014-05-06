@@ -877,7 +877,8 @@ apply_configuration (MetaMonitorConfig  *self,
 
   /* Stored (persistent) configurations override the previous one always.
      Also, we clear the previous configuration if the current one (which is
-     about to become previous) is stored.
+     about to become previous) is stored, or if the current one has
+     different outputs.
   */
   if (stored ||
       (self->current && self->current_is_stored))
@@ -888,7 +889,19 @@ apply_configuration (MetaMonitorConfig  *self,
     }
   else
     {
-      self->previous = self->current;
+      /* Despite the name, config_equal() only checks the set of outputs,
+         not their modes
+      */
+      if (self->current && config_equal (self->current, config))
+        {
+          self->previous = self->current;
+        }
+      else
+        {
+          if (self->current)
+            config_free (self->current);
+          self->previous = NULL;
+        }
     }
 
   self->current = config;
