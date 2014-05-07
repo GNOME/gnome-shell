@@ -1643,6 +1643,8 @@ process_overlay_key (MetaDisplay *display,
                 XIAllowEvents (xdisplay,
                                clutter_input_device_get_device_id (event->device),
                                XIReplayDevice, event->time);
+
+              return FALSE;
             }
         }
       else if (event->type == CLUTTER_KEY_RELEASE)
