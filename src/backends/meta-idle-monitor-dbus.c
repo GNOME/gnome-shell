@@ -180,6 +180,9 @@ create_monitor_skeleton (GDBusObjectManagerServer *manager,
   meta_dbus_object_skeleton_set_idle_monitor (object, skeleton);
 
   g_dbus_object_manager_server_export (manager, G_DBUS_OBJECT_SKELETON (object));
+
+  g_object_unref (skeleton);
+  g_object_unref (object);
 }
 
 static void
