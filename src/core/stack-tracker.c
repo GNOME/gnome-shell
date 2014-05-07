@@ -541,6 +541,8 @@ static void
 stack_tracker_apply_prediction (MetaStackTracker *tracker,
 			        MetaStackOp      *op)
 {
+  gboolean free_at_end = FALSE;
+
   /* If this is a wayland operation then it's implicitly verified so
    * we can apply it immediately so long as it doesn't depend on any
    * unverified X operations...
@@ -550,6 +552,8 @@ stack_tracker_apply_prediction (MetaStackTracker *tracker,
     {
       if (meta_stack_op_apply (op, tracker->verified_stack))
         meta_stack_tracker_queue_sync_stack (tracker);
+
+      free_at_end = TRUE;
     }
   else
     {
@@ -560,6 +564,9 @@ stack_tracker_apply_prediction (MetaStackTracker *tracker,
   if (!tracker->predicted_stack ||
       meta_stack_op_apply (op, tracker->predicted_stack))
     meta_stack_tracker_queue_sync_stack (tracker);
+
+  if (free_at_end)
+    meta_stack_op_free (op);
 
   meta_stack_tracker_dump (tracker);
 }
@@ -895,7 +902,10 @@ resync_verified_stack_with_xserver_stack (MetaStackTracker *tracker)
   requery_xserver_stack (tracker);
 
   for (l = tracker->unverified_predictions->head; l; l = l->next)
-    meta_stack_op_apply (l->data, tracker->verified_stack);
+    {
+      meta_stack_op_apply (l->data, tracker->verified_stack);
+      meta_stack_op_free (l->data);
+    }
   g_queue_clear (tracker->unverified_predictions);
 
   j = 0;
