@@ -75,6 +75,7 @@ main (int argc, char **argv)
       g_printerr ("mutter: %s\n", error->message);
       exit (1);
     }
+  g_option_context_free (ctx);
 
   if (plugin)
     meta_plugin_manager_load (plugin);
