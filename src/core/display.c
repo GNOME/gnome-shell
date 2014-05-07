@@ -1003,6 +1003,7 @@ meta_display_close (MetaDisplay *display,
    * unregister windows
    */
   g_hash_table_destroy (display->xids);
+  g_hash_table_destroy (display->wayland_windows);
 
   if (display->leader_window != None)
     XDestroyWindow (display->xdisplay, display->leader_window);
