@@ -1598,11 +1598,12 @@ process_overlay_key (MetaDisplay *display,
                      MetaWindow *window)
 {
   MetaBackend *backend = meta_get_backend ();
+  Display *xdisplay;
 
-  if (!META_IS_BACKEND_X11 (backend))
-    return FALSE;
-
-  Display *xdisplay = meta_backend_x11_get_xdisplay (META_BACKEND_X11 (backend));
+  if (META_IS_BACKEND_X11 (backend))
+    xdisplay = meta_backend_x11_get_xdisplay (META_BACKEND_X11 (backend));
+  else
+    xdisplay = NULL;
 
   if (display->overlay_key_only_pressed)
     {
@@ -1628,17 +1629,20 @@ process_overlay_key (MetaDisplay *display,
                * binding, we unfreeze the keyboard but keep the grab
                * (this is important for something like cycling
                * windows */
-              XIAllowEvents (xdisplay,
-                             clutter_input_device_get_device_id (event->device),
-                             XIAsyncDevice, event->time);
+
+              if (xdisplay)
+                XIAllowEvents (xdisplay,
+                               clutter_input_device_get_device_id (event->device),
+                               XIAsyncDevice, event->time);
             }
           else
             {
               /* Replay the event so it gets delivered to our
                * per-window key bindings or to the application */
-              XIAllowEvents (xdisplay,
-                             clutter_input_device_get_device_id (event->device),
-                             XIReplayDevice, event->time);
+              if (xdisplay)
+                XIAllowEvents (xdisplay,
+                               clutter_input_device_get_device_id (event->device),
+                               XIReplayDevice, event->time);
             }
         }
       else if (event->type == CLUTTER_KEY_RELEASE)
@@ -1649,9 +1653,10 @@ process_overlay_key (MetaDisplay *display,
 
           /* We want to unfreeze events, but keep the grab so that if the user
            * starts typing into the overlay we get all the keys */
-          XIAllowEvents (xdisplay,
-                         clutter_input_device_get_device_id (event->device),
-                         XIAsyncDevice, event->time);
+          if (xdisplay)
+            XIAllowEvents (xdisplay,
+                           clutter_input_device_get_device_id (event->device),
+                           XIAsyncDevice, event->time);
 
           binding = display_get_keybinding (display,
                                             display->overlay_key_combo.keycode,
@@ -1675,9 +1680,10 @@ process_overlay_key (MetaDisplay *display,
            *
            * https://bugzilla.gnome.org/show_bug.cgi?id=666101
            */
-          XIAllowEvents (xdisplay,
-                         clutter_input_device_get_device_id (event->device),
-                         XIAsyncDevice, event->time);
+          if (xdisplay)
+            XIAllowEvents (xdisplay,
+                           clutter_input_device_get_device_id (event->device),
+                           XIAsyncDevice, event->time);
         }
 
       return TRUE;
@@ -1688,9 +1694,10 @@ process_overlay_key (MetaDisplay *display,
       display->overlay_key_only_pressed = TRUE;
       /* We keep the keyboard frozen - this allows us to use ReplayKeyboard
        * on the next event if it's not the release of the overlay key */
-      XIAllowEvents (xdisplay,
-                     clutter_input_device_get_device_id (event->device),
-                     XISyncDevice, event->time);
+      if (xdisplay)
+        XIAllowEvents (xdisplay,
+                       clutter_input_device_get_device_id (event->device),
+                       XISyncDevice, event->time);
 
       return TRUE;
     }
