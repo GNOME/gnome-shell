@@ -753,7 +753,7 @@ text_property_to_utf8 (Display *xdisplay,
   ret = g_strdup (local_list[0]);
 
  out:
-  meta_XFree (local_list);
+  XFreeStringList (local_list);
   return ret;
 }
 
