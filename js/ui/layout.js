@@ -597,7 +597,9 @@ const LayoutManager = new Lang.Class({
                                               reactive: true });
         this.addChrome(this._coverPane);
 
-        if (Main.sessionMode.isGreeter) {
+        if (Meta.is_restart()) {
+            // On restart, we don't do an animation
+        } else if (Main.sessionMode.isGreeter) {
             this.panelBox.translation_y = -this.panelBox.height;
         } else {
             this._updateBackgrounds();
@@ -635,7 +637,9 @@ const LayoutManager = new Lang.Class({
     },
 
     _startupAnimation: function() {
-        if (Main.sessionMode.isGreeter)
+        if (Meta.is_restart())
+            this._startupAnimationComplete();
+        else if (Main.sessionMode.isGreeter)
             this._startupAnimationGreeter();
         else
             this._startupAnimationSession();
