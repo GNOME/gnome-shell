@@ -200,6 +200,10 @@ const WindowClone = new Lang.Class({
         this.emit('size-changed');
     },
 
+    hasAttachedDialogs: function() {
+        return this.actor.get_n_children() > 1;
+    },
+
     _doAddAttachedDialog: function(metaWin, realWin) {
         let clone = new Clutter.Clone({ source: realWin });
         clone._updateId = metaWin.connect('size-changed', Lang.bind(this, function() {
@@ -582,7 +586,8 @@ const WindowOverlay = new Lang.Class({
     },
 
     _windowCanClose: function() {
-        return this._windowClone.metaWindow.can_close();
+        return this._windowClone.metaWindow.can_close() &&
+               !this._windowClone.hasAttachedDialogs();
     },
 
     _onWindowAdded: function(workspace, win) {
