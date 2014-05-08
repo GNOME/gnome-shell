@@ -1946,8 +1946,6 @@ meta_display_handle_event (MetaDisplay        *display,
       if (grab_op_should_block_mouse_events (display->grab_op))
         break;
 
-      display->overlay_key_only_pressed = FALSE;
-
       if (window && display->grab_op == META_GRAB_OP_NONE)
         {
           ClutterModifierType grab_mask;
@@ -2102,13 +2100,6 @@ meta_display_handle_event (MetaDisplay        *display,
               bypass_wayland = TRUE;
             }
         }
-      break;
-
-    case CLUTTER_BUTTON_RELEASE:
-      if (grab_op_should_block_mouse_events (display->grab_op))
-        break;
-
-      display->overlay_key_only_pressed = FALSE;
       break;
 
     default:
