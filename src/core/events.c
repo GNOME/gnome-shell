@@ -1967,7 +1967,7 @@ meta_display_handle_event (MetaDisplay        *display,
           unmodified = (event->button.modifier_state & grab_mask) == 0;
           fully_modified = grab_mask && (event->button.modifier_state & grab_mask) == grab_mask;
 
-          if (unmodified && window)
+          if (unmodified)
             {
               if (meta_prefs_get_raise_on_click ())
                 meta_window_raise (window);
