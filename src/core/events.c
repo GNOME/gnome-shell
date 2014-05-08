@@ -1958,9 +1958,7 @@ meta_display_handle_event (MetaDisplay        *display,
            * grab on the window, or because we're a wayland
            * compositor and thus we see all the events, so we
            * need to check if the event is interesting.
-           * We want an event that is not modified, for a window
-           * that has (or would have, the wayland case) the
-           * button grab active.
+           * We want an event that is not modified for a window.
            *
            * We may have other events on the window, for example
            * a click on a frame button, but that's not for us to
@@ -1969,7 +1967,7 @@ meta_display_handle_event (MetaDisplay        *display,
           unmodified = (event->button.modifier_state & grab_mask) == 0;
           fully_modified = grab_mask && (event->button.modifier_state & grab_mask) == grab_mask;
 
-          if (unmodified && window && window->have_focus_click_grab)
+          if (unmodified && window)
             {
               if (meta_prefs_get_raise_on_click ())
                 meta_window_raise (window);
