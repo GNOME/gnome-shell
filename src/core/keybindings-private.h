@@ -100,9 +100,9 @@ gboolean meta_window_grab_all_keys          (MetaWindow  *window,
                                              guint32      timestamp);
 void     meta_window_ungrab_all_keys        (MetaWindow  *window,
                                              guint32      timestamp);
-gboolean meta_display_process_key_event     (MetaDisplay     *display,
-                                             MetaWindow      *window,
-                                             ClutterKeyEvent *event);
+gboolean meta_keybindings_process_event     (MetaDisplay        *display,
+                                             MetaWindow         *window,
+                                             const ClutterEvent *event);
 void     meta_display_process_mapping_event (MetaDisplay *display,
                                              XEvent      *event);
 

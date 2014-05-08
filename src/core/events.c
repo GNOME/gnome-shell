@@ -1927,6 +1927,19 @@ meta_display_handle_event (MetaDisplay        *display,
         }
     }
 
+  /* For key events, it's important to enforce single-handling, or
+   * we can get into a confused state. So if a keybinding is
+   * handled (because it's one of our hot-keys, or because we are
+   * in a keyboard-grabbed mode like moving a window, we don't
+   * want to pass the key event to the compositor or Wayland at all.
+   */
+  if (meta_keybindings_process_event (display, window, event))
+    {
+      bypass_clutter = TRUE;
+      bypass_wayland = TRUE;
+      goto out;
+    }
+
   switch (event->type)
     {
     case CLUTTER_BUTTON_PRESS:
@@ -2096,21 +2109,6 @@ meta_display_handle_event (MetaDisplay        *display,
         break;
 
       display->overlay_key_only_pressed = FALSE;
-      break;
-
-    case CLUTTER_KEY_PRESS:
-    case CLUTTER_KEY_RELEASE:
-      /* For key events, it's important to enforce single-handling, or
-       * we can get into a confused state. So if a keybinding is
-       * handled (because it's one of our hot-keys, or because we are
-       * in a keyboard-grabbed mode like moving a window, we don't
-       * want to pass the key event to the compositor or Wayland at all.
-       */
-      if (meta_display_process_key_event (display, window, (ClutterKeyEvent *) event))
-        {
-          bypass_clutter = TRUE;
-          bypass_wayland = TRUE;
-        }
       break;
 
     default:

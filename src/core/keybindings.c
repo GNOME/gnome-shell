@@ -1738,24 +1738,10 @@ process_iso_next_group (MetaDisplay *display,
   return activate;
 }
 
-/* Handle a key event. May be called recursively: some key events cause
- * grabs to be ended and then need to be processed again in their own
- * right. This cannot cause infinite recursion because we never call
- * ourselves when there wasn't a grab, and we always clear the grab
- * first; the invariant is enforced using an assertion. See #112560.
- *
- * The return value is whether we handled the key event.
- *
- * FIXME: We need to prove there are no race conditions here.
- * FIXME: Does it correctly handle alt-Tab being followed by another
- * grabbing keypress without letting go of alt?
- * FIXME: An iterative solution would probably be simpler to understand
- * (and help us solve the other fixmes).
- */
-gboolean
-meta_display_process_key_event (MetaDisplay     *display,
-                                MetaWindow      *window,
-                                ClutterKeyEvent *event)
+static gboolean
+process_key_event (MetaDisplay     *display,
+                   MetaWindow      *window,
+                   ClutterKeyEvent *event)
 {
   gboolean keep_grab;
   gboolean all_keys_grabbed;
@@ -1851,6 +1837,36 @@ meta_display_process_key_event (MetaDisplay     *display,
 
   /* Do the normal keybindings */
   return process_event (display, screen, window, event);
+}
+
+/* Handle a key event. May be called recursively: some key events cause
+ * grabs to be ended and then need to be processed again in their own
+ * right. This cannot cause infinite recursion because we never call
+ * ourselves when there wasn't a grab, and we always clear the grab
+ * first; the invariant is enforced using an assertion. See #112560.
+ *
+ * The return value is whether we handled the key event.
+ *
+ * FIXME: We need to prove there are no race conditions here.
+ * FIXME: Does it correctly handle alt-Tab being followed by another
+ * grabbing keypress without letting go of alt?
+ * FIXME: An iterative solution would probably be simpler to understand
+ * (and help us solve the other fixmes).
+ */
+gboolean
+meta_keybindings_process_event (MetaDisplay        *display,
+                                MetaWindow         *window,
+                                const ClutterEvent *event)
+{
+  switch (event->type)
+    {
+    case CLUTTER_KEY_PRESS:
+    case CLUTTER_KEY_RELEASE:
+      return process_key_event (display, window, (ClutterKeyEvent *) event);
+
+    default:
+      return FALSE;
+    }
 }
 
 static gboolean
