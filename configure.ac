@@ -72,7 +72,7 @@ CLUTTER_PACKAGE=clutter-1.0
 
 MUTTER_PC_MODULES="
    gtk+-3.0 >= 3.9.11
-   gio-2.0 >= 2.25.10
+   gio-unix-2.0 >= 2.25.10
    pango >= 1.2.0
    cairo >= 1.10.0
    gsettings-desktop-schemas >= 3.7.3

@@ -367,6 +367,8 @@ meta_init (void)
       meta_clutter_init ();
     }
 
+  meta_restart_init ();
+
   /*
    * XXX: We cannot handle high dpi scaling yet, so fix the scale to 1
    * for now.

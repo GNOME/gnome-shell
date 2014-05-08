@@ -709,6 +709,10 @@ meta_screen_new (MetaDisplay *display,
 
   screen->composite_overlay_window = XCompositeGetOverlayWindow (xdisplay, xroot);
 
+  /* Now that we've gotten taken a reference count on the COW, we
+   * can close the helper that is holding on to it */
+  meta_restart_finish ();
+
   reload_monitor_infos (screen);
 
   meta_screen_set_cursor (screen, META_CURSOR_DEFAULT);

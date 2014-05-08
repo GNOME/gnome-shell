@@ -167,6 +167,7 @@ libmutter_la_SOURCES =				\
 	core/screen-private.h			\
 	meta/screen.h				\
 	meta/types.h				\
+	core/restart.c				\
 	core/stack.c				\
 	core/stack.h				\
 	core/stack-tracker.c			\
@@ -315,6 +316,10 @@ bin_PROGRAMS=mutter
 
 mutter_SOURCES = core/mutter.c
 mutter_LDADD = $(MUTTER_LIBS) libmutter.la
+
+libexec_PROGRAMS = mutter-restart-helper
+mutter_restart_helper_SOURCES = core/restart-helper.c
+mutter_restart_helper_LDADD = $(MUTTER_LIBS)
 
 if HAVE_INTROSPECTION
 include $(INTROSPECTION_MAKEFILE)

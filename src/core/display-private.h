@@ -446,4 +446,11 @@ void meta_display_remove_pending_pings_for_window (MetaDisplay *display,
 
 MetaGestureTracker * meta_display_get_gesture_tracker (MetaDisplay *display);
 
+gboolean meta_display_show_restart_message (MetaDisplay *display,
+                                            const char  *message);
+gboolean meta_display_request_restart      (MetaDisplay *display);
+
+void meta_restart_init (void);
+void meta_restart_finish (void);
+
 #endif
