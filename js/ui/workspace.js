@@ -1140,6 +1140,11 @@ const Workspace = new Lang.Class({
 
         this._positionWindowsFlags = 0;
         this._positionWindowsId = 0;
+
+        this.actor.connect('notify::mapped', Lang.bind(this, function() {
+            if (this.actor.mapped)
+                this._syncActualGeometry();
+        }));
     },
 
     setFullGeometry: function(geom) {
@@ -1147,7 +1152,9 @@ const Workspace = new Lang.Class({
             return;
 
         this._fullGeometry = geom;
-        this._recalculateWindowPositions(WindowPositionFlags.NONE);
+
+        if (this.actor.mapped)
+            this._recalculateWindowPositions(WindowPositionFlags.NONE);
     },
 
     setActualGeometry: function(geom) {
@@ -1155,18 +1162,29 @@ const Workspace = new Lang.Class({
             return;
 
         this._actualGeometry = geom;
+        this._actualGeometryDirty = true;
 
-        if (this._actualGeometryLater)
+        if (this.actor.mapped)
+            this._syncActualGeometry();
+    },
+
+    _syncActualGeometry: function() {
+        if (this._actualGeometryLater || !this._actualGeometryDirty)
+            return;
+        if (!this._actualGeometry)
             return;
 
         this._actualGeometryLater = Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this, function() {
+            this._actualGeometryLater = 0;
+            if (!this.actor.mapped)
+                return false;
+
             let geom = this._actualGeometry;
 
             this._dropRect.set_position(geom.x, geom.y);
             this._dropRect.set_size(geom.width, geom.height);
             this._updateWindowPositions(Main.overview.animationInProgress ? WindowPositionFlags.ANIMATE : WindowPositionFlags.NONE);
 
-            this._actualGeometryLater = 0;
             return false;
         }));
     },
