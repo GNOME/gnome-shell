@@ -156,6 +156,11 @@ void     clutter_x11_set_use_argb_visual (gboolean use_argb);
 CLUTTER_AVAILABLE_IN_ALL
 gboolean clutter_x11_get_use_argb_visual (void);
 
+CLUTTER_AVAILABLE_IN_1_22
+void     clutter_x11_set_use_stereo_stage (gboolean use_stereo);
+CLUTTER_AVAILABLE_IN_1_22
+gboolean clutter_x11_get_use_stereo_stage (void);
+
 CLUTTER_AVAILABLE_IN_ALL
 Time clutter_x11_get_current_event_time (void);
 

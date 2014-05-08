@@ -93,6 +93,7 @@ static const gchar *atom_names[] = {
 static gboolean _no_xevent_retrieval = FALSE;
 static gboolean clutter_enable_xinput = TRUE;
 static gboolean clutter_enable_argb = FALSE;
+static gboolean clutter_enable_stereo = FALSE;
 static Display  *_foreign_dpy = NULL;
 
 /* options */
@@ -688,6 +689,59 @@ clutter_backend_x11_get_renderer (ClutterBackend  *backend,
   return renderer;
 }
 
+static gboolean
+check_onscreen_template (CoglRenderer         *renderer,
+                         CoglSwapChain        *swap_chain,
+                         CoglOnscreenTemplate *onscreen_template,
+                         CoglBool              enable_argb,
+                         CoglBool              enable_stereo,
+                         GError              **error)
+{
+  GError *internal_error = NULL;
+
+  cogl_swap_chain_set_has_alpha (swap_chain, enable_argb);
+  cogl_onscreen_template_set_stereo_enabled (onscreen_template,
+					     clutter_enable_stereo);
+
+  /* cogl_renderer_check_onscreen_template() is actually just a
+   * shorthand for creating a CoglDisplay, and calling
+   * cogl_display_setup() on it, then throwing the display away. If we
+   * could just return that display, then it would be more efficient
+   * not to use cogl_renderer_check_onscreen_template(). However, the
+   * backend API requires that we return an CoglDisplay that has not
+   * yet been setup, so one way or the other we'll have to discard the
+   * first display and make a new fresh one.
+   */
+  if (cogl_renderer_check_onscreen_template (renderer, onscreen_template, &internal_error))
+    {
+      clutter_enable_argb = enable_argb;
+      clutter_enable_stereo = enable_stereo;
+
+      return TRUE;
+    }
+  else
+    {
+      if (enable_argb || enable_stereo) /* More possibilities to try */
+        CLUTTER_NOTE (BACKEND,
+                      "Creation of a CoglDisplay with alpha=%s, stereo=%s failed: %s",
+                      enable_argb ? "enabled" : "disabled",
+                      enable_stereo ? "enabled" : "disabled",
+                      internal_error != NULL
+                        ?  internal_error->message
+                        : "Unknown reason");
+      else
+        g_set_error_literal (error, CLUTTER_INIT_ERROR,
+                             CLUTTER_INIT_ERROR_BACKEND,
+                             internal_error != NULL
+                               ? internal_error->message
+                               : "Creation of a CoglDisplay failed");
+
+      g_clear_error (&internal_error);
+
+      return FALSE;
+    }
+}
+
 static CoglDisplay *
 clutter_backend_x11_get_display (ClutterBackend  *backend,
                                  CoglRenderer    *renderer,
@@ -695,56 +749,38 @@ clutter_backend_x11_get_display (ClutterBackend  *backend,
                                  GError         **error)
 {
   CoglOnscreenTemplate *onscreen_template;
-  GError *internal_error = NULL;
-  CoglDisplay *display;
-  gboolean res;
+  CoglDisplay *display = NULL;
+  gboolean res = FALSE;
 
-  CLUTTER_NOTE (BACKEND, "Alpha on Cogl swap chain: %s",
-                clutter_enable_argb ? "enabled" : "disabled");
-
-  cogl_swap_chain_set_has_alpha (swap_chain, clutter_enable_argb);
+  CLUTTER_NOTE (BACKEND, "Creating CoglDisplay, alpha=%s, stereo=%s",
+                clutter_enable_argb ? "enabled" : "disabled",
+                clutter_enable_stereo ? "enabled" : "disabled");
 
   onscreen_template = cogl_onscreen_template_new (swap_chain);
 
-  res = cogl_renderer_check_onscreen_template (renderer,
-                                               onscreen_template,
-                                               &internal_error);
+  /* It's possible that the current renderer doesn't support transparency
+   * or doesn't support stereo, so we try the different combinations.
+   */
+  if (clutter_enable_argb && clutter_enable_stereo)
+    res = check_onscreen_template (renderer, swap_chain, onscreen_template,
+                                  TRUE, TRUE, error);
+
+  /* Prioritize stereo over alpha */
+  if (!res && clutter_enable_stereo)
+    res = check_onscreen_template (renderer, swap_chain, onscreen_template,
+                                  FALSE, TRUE, error);
+
   if (!res && clutter_enable_argb)
-    {
-      CLUTTER_NOTE (BACKEND,
-                    "Creation of a context with a ARGB visual failed: %s",
-                    internal_error != NULL ? internal_error->message
-                                           : "Unknown reason");
-
-      g_clear_error (&internal_error);
-
-      /* It's possible that the current renderer doesn't support transparency
-       * in a swap_chain so lets see if we can fallback to not having any
-       * transparency...
-       *
-       * XXX: It might be nice to have a CoglRenderer feature we could
-       * explicitly check for ahead of time.
-       */
-      clutter_enable_argb = FALSE;
-      cogl_swap_chain_set_has_alpha (swap_chain, FALSE);
-      res = cogl_renderer_check_onscreen_template (renderer,
-                                                   onscreen_template,
-                                                   &internal_error);
-    }
+    res = check_onscreen_template (renderer, swap_chain, onscreen_template,
+                                  TRUE, FALSE, error);
 
   if (!res)
-    {
-      g_set_error_literal (error, CLUTTER_INIT_ERROR,
-                           CLUTTER_INIT_ERROR_BACKEND,
-                           internal_error->message);
+    res = check_onscreen_template (renderer, swap_chain, onscreen_template,
+                                  FALSE, FALSE, error);
 
-      g_error_free (internal_error);
-      cogl_object_unref (onscreen_template);
+  if (res)
+    display = cogl_display_new (renderer, onscreen_template);
 
-      return NULL;
-    }
-
-  display = cogl_display_new (renderer, onscreen_template);
   cogl_object_unref (onscreen_template);
 
   return display;
@@ -1301,6 +1337,60 @@ gboolean
 clutter_x11_get_use_argb_visual (void)
 {
   return clutter_enable_argb;
+}
+
+/**
+ * clutter_x11_set_use_stereo_stage:
+ * @use_stereo: %TRUE if the stereo stages should be used if possible.
+ *
+ * Sets whether the backend object for Clutter stages, will,
+ * if possible, be created with the ability to support stereo drawing
+ * (drawing separate images for the left and right eyes).
+ *
+ * This function must be called before clutter_init() is called.
+ * During paint callbacks, cogl_framebuffer_is_stereo() can be called
+ * on the framebuffer retrieved by cogl_get_draw_framebuffer() to
+ * determine if stereo support was successfully enabled, and
+ * cogl_framebuffer_set_stereo_mode() to determine which buffers
+ * will be drawn to.
+ *
+ * Note that this function *does not* cause the stage to be drawn
+ * multiple times with different perspective transformations and thus
+ * appear in 3D, it simply enables individual ClutterActors to paint
+ * different images for the left and and right eye.
+ *
+ * Since: 1.22
+ */
+void
+clutter_x11_set_use_stereo_stage (gboolean use_stereo)
+{
+  if (_clutter_context_is_initialized ())
+    {
+      g_warning ("%s() can only be used before calling clutter_init()",
+                 G_STRFUNC);
+      return;
+    }
+
+  CLUTTER_NOTE (BACKEND, "STEREO stages are %s",
+                use_stereo ? "enabled" : "disabled");
+
+  clutter_enable_stereo = use_stereo;
+}
+
+/**
+ * clutter_x11_get_use_stereo_stage:
+ *
+ * Retrieves whether the Clutter X11 backend will create stereo
+ * stages if possible.
+ *
+ * Return value: %TRUE if stereo stages are used if possible
+ *
+ * Since: 1.22
+ */
+gboolean
+clutter_x11_get_use_stereo_stage (void)
+{
+  return clutter_enable_stereo;
 }
 
 XVisualInfo *
