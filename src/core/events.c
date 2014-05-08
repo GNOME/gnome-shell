@@ -1684,20 +1684,6 @@ handle_other_xevent (MetaDisplay *display,
 }
 
 static gboolean
-grab_op_should_block_mouse_events (MetaGrabOp op)
-{
-  switch (op)
-    {
-    case META_GRAB_OP_WAYLAND_POPUP:
-    case META_GRAB_OP_COMPOSITOR:
-      return TRUE;
-
-    default:
-      return FALSE;
-    }
-}
-
-static gboolean
 window_has_xwindow (MetaWindow *window,
                     Window      xwindow)
 {
@@ -1943,9 +1929,6 @@ meta_display_handle_event (MetaDisplay        *display,
   switch (event->type)
     {
     case CLUTTER_BUTTON_PRESS:
-      if (grab_op_should_block_mouse_events (display->grab_op))
-        break;
-
       if (window && display->grab_op == META_GRAB_OP_NONE)
         {
           ClutterModifierType grab_mask;
