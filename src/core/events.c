@@ -1931,6 +1931,7 @@ meta_display_handle_event (MetaDisplay        *display,
       ClutterModifierType grab_mask;
       gboolean unmodified;
       gboolean fully_modified;
+      gboolean handled = FALSE;
 
       grab_mask = display->window_grab_modifiers;
       if (g_getenv ("MUTTER_DEBUG_BUTTON_GRABS"))
@@ -1985,18 +1986,7 @@ meta_display_handle_event (MetaDisplay        *display,
              */
             display->allow_terminal_deactivation = TRUE;
 
-          meta_verbose ("Allowing events time %u\n",
-                        (unsigned int)event->button.time);
-
-          {
-            MetaBackend *backend = meta_get_backend ();
-            if (META_IS_BACKEND_X11 (backend))
-              {
-                Display *xdisplay = meta_backend_x11_get_xdisplay (META_BACKEND_X11 (backend));
-                XIAllowEvents (xdisplay, clutter_input_device_get_device_id (event->button.device),
-                               XIReplayDevice, event->button.time);
-              }
-          }
+          /* Don't handle the event so it's sent back to clients. */
         }
       else if (fully_modified && (int) event->button.button == meta_prefs_get_mouse_button_resize ())
         {
@@ -2046,7 +2036,7 @@ meta_display_handle_event (MetaDisplay        *display,
                                             event->button.x,
                                             event->button.y);
             }
-          bypass_wayland = TRUE;
+          handled = TRUE;
         }
       else if (fully_modified && (int) event->button.button == meta_prefs_get_mouse_button_menu ())
         {
@@ -2057,7 +2047,7 @@ meta_display_handle_event (MetaDisplay        *display,
                                  event->button.y,
                                  event->button.button,
                                  event->any.time);
-          bypass_wayland = TRUE;
+          handled = TRUE;
         }
       else if (fully_modified && (int) event->button.button == 1)
         {
@@ -2075,7 +2065,30 @@ meta_display_handle_event (MetaDisplay        *display,
                                           event->button.x,
                                           event->button.y);
             }
+          handled = TRUE;
+        }
+
+      /* Under X11, we have a Sync grab and in order to send it back to
+       * clients, we have to explicitly replay it.
+       *
+       * Under Wayland, we retrieve all events and we have to make sure
+       * to filter them out from Wayland clients.
+       */
+      if (handled)
+        {
           bypass_wayland = TRUE;
+        }
+      else
+        {
+          MetaBackend *backend = meta_get_backend ();
+          if (META_IS_BACKEND_X11 (backend))
+            {
+              Display *xdisplay = meta_backend_x11_get_xdisplay (META_BACKEND_X11 (backend));
+              meta_verbose ("Allowing events time %u\n",
+                            (unsigned int)event->button.time);
+              XIAllowEvents (xdisplay, clutter_event_get_device_id (event),
+                             XIReplayDevice, event->button.time);
+            }
         }
     }
 
