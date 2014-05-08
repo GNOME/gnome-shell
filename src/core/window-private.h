@@ -713,6 +713,9 @@ void meta_window_handle_enter (MetaWindow  *window,
                                guint        root_x,
                                guint        root_y);
 
+gboolean meta_window_handle_ungrabbed_event (MetaWindow         *window,
+                                             const ClutterEvent *event);
+
 void meta_window_set_surface_mapped (MetaWindow *window,
                                      gboolean    surface_mapped);
 

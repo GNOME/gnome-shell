@@ -8273,6 +8273,159 @@ meta_window_handle_enter (MetaWindow  *window,
     }
 }
 
+gboolean
+meta_window_handle_ungrabbed_event (MetaWindow         *window,
+                                    const ClutterEvent *event)
+{
+  MetaDisplay *display = window->display;
+  ClutterModifierType grab_mask;
+  gboolean unmodified;
+  gboolean fully_modified;
+
+  if (event->type != CLUTTER_BUTTON_PRESS)
+    return FALSE;
+
+  if (display->grab_op != META_GRAB_OP_NONE)
+    return FALSE;
+
+  /* We have three passive button grabs:
+   * - on any button, without modifiers => focuses and maybe raises the window
+   * - on resize button, with modifiers => start an interactive resizing
+   *   (normally <Super>middle)
+   * - on move button, with modifiers => start an interactive move
+   *   (normally <Super>left)
+   * - on menu button, with modifiers => show the window menu
+   *   (normally <Super>right)
+   *
+   * We may get here because we actually have a button
+   * grab on the window, or because we're a wayland
+   * compositor and thus we see all the events, so we
+   * need to check if the event is interesting.
+   * We want an event that is not modified for a window.
+   *
+   * We may have other events on the window, for example
+   * a click on a frame button, but that's not for us to
+   * care about. Just let the event through.
+   */
+
+  grab_mask = display->window_grab_modifiers;
+  if (g_getenv ("MUTTER_DEBUG_BUTTON_GRABS"))
+    grab_mask |= CLUTTER_CONTROL_MASK;
+
+  unmodified = (event->button.modifier_state & grab_mask) == 0;
+  fully_modified = grab_mask && (event->button.modifier_state & grab_mask) == grab_mask;
+
+  if (unmodified)
+    {
+      if (meta_prefs_get_raise_on_click ())
+        meta_window_raise (window);
+      else
+        meta_topic (META_DEBUG_FOCUS,
+                    "Not raising window on click due to don't-raise-on-click option\n");
+
+      /* Don't focus panels--they must explicitly request focus.
+       * See bug 160470
+       */
+      if (window->type != META_WINDOW_DOCK)
+        {
+          meta_topic (META_DEBUG_FOCUS,
+                      "Focusing %s due to unmodified button %u press (display.c)\n",
+                      window->desc, event->button.button);
+          meta_window_focus (window, event->any.time);
+        }
+      else
+        /* However, do allow terminals to lose focus due to new
+         * window mappings after the user clicks on a panel.
+         */
+        display->allow_terminal_deactivation = TRUE;
+
+      meta_verbose ("Allowing events time %u\n",
+                    (unsigned int)event->button.time);
+      return FALSE;
+    }
+  else if (fully_modified && (int) event->button.button == meta_prefs_get_mouse_button_resize ())
+    {
+      if (window->has_resize_func)
+        {
+          gboolean north, south;
+          gboolean west, east;
+          MetaRectangle frame_rect;
+          MetaGrabOp op;
+
+          meta_window_get_frame_rect (window, &frame_rect);
+
+          west = event->button.x < (frame_rect.x + 1 * frame_rect.width / 3);
+          east = event->button.x > (frame_rect.x + 2 * frame_rect.width / 3);
+          north = event->button.y < (frame_rect.y + 1 * frame_rect.height / 3);
+          south = event->button.y > (frame_rect.y + 2 * frame_rect.height / 3);
+
+          if (north && west)
+            op = META_GRAB_OP_RESIZING_NW;
+          else if (north && east)
+            op = META_GRAB_OP_RESIZING_NE;
+          else if (south && west)
+            op = META_GRAB_OP_RESIZING_SW;
+          else if (south && east)
+            op = META_GRAB_OP_RESIZING_SE;
+          else if (north)
+            op = META_GRAB_OP_RESIZING_N;
+          else if (west)
+            op = META_GRAB_OP_RESIZING_W;
+          else if (east)
+            op = META_GRAB_OP_RESIZING_E;
+          else if (south)
+            op = META_GRAB_OP_RESIZING_S;
+          else /* Middle region is no-op to avoid user triggering wrong action */
+            op = META_GRAB_OP_NONE;
+
+          if (op != META_GRAB_OP_NONE)
+            meta_display_begin_grab_op (display,
+                                        window->screen,
+                                        window,
+                                        op,
+                                        TRUE,
+                                        FALSE,
+                                        event->button.button,
+                                        0,
+                                        event->any.time,
+                                        event->button.x,
+                                        event->button.y);
+        }
+      return TRUE;
+    }
+  else if (fully_modified && (int) event->button.button == meta_prefs_get_mouse_button_menu ())
+    {
+      if (meta_prefs_get_raise_on_click ())
+        meta_window_raise (window);
+      meta_window_show_menu (window,
+                             event->button.x,
+                             event->button.y,
+                             event->button.button,
+                             event->any.time);
+      return TRUE;
+    }
+  else if (fully_modified && (int) event->button.button == 1)
+    {
+      if (window->has_move_func)
+        {
+          meta_display_begin_grab_op (display,
+                                      window->screen,
+                                      window,
+                                      META_GRAB_OP_MOVING,
+                                      TRUE,
+                                      FALSE,
+                                      event->button.button,
+                                      0,
+                                      event->any.time,
+                                      event->button.x,
+                                      event->button.y);
+        }
+      return TRUE;
+    }
+
+  return TRUE;
+}
+
 void
 meta_window_set_surface_mapped (MetaWindow *window,
                                 gboolean    surface_mapped)
