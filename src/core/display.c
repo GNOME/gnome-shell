@@ -2012,10 +2012,7 @@ void
 meta_display_grab_window_buttons (MetaDisplay *display,
                                   Window       xwindow)
 {
-  MetaBackend *backend = meta_get_backend ();
-
-  /* Do nothing under non-X11 backends */
-  if (!META_IS_BACKEND_X11 (backend))
+  if (meta_is_wayland_compositor ())
     return;
 
   /* Grab Alt + button1 for moving window.
@@ -2068,14 +2065,11 @@ void
 meta_display_ungrab_window_buttons  (MetaDisplay *display,
                                      Window       xwindow)
 {
-  MetaBackend *backend = meta_get_backend ();
-
-  /* Do nothing under non-X11 backends */
-  if (!META_IS_BACKEND_X11 (backend))
-    return;
-
   gboolean debug;
   int i;
+
+  if (meta_is_wayland_compositor ())
+    return;
 
   if (display->window_grab_modifiers == 0)
     return;
@@ -2102,10 +2096,7 @@ void
 meta_display_grab_focus_window_button (MetaDisplay *display,
                                        MetaWindow  *window)
 {
-  MetaBackend *backend = meta_get_backend ();
-
-  /* Do nothing under non-X11 backends */
-  if (!META_IS_BACKEND_X11 (backend))
+  if (meta_is_wayland_compositor ())
     return;
 
   /* Grab button 1 for activating unfocused windows */
@@ -2157,10 +2148,7 @@ void
 meta_display_ungrab_focus_window_button (MetaDisplay *display,
                                          MetaWindow  *window)
 {
-  MetaBackend *backend = meta_get_backend ();
-
-  /* Do nothing under non-X11 backends */
-  if (!META_IS_BACKEND_X11 (backend))
+  if (meta_is_wayland_compositor ())
     return;
 
   meta_verbose ("Ungrabbing unfocused window buttons for %s\n", window->desc);
