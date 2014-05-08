@@ -606,8 +606,9 @@ const WorkspacesDisplay = new Lang.Class({
             return;
 
         let [x, y] = this.actor.get_transformed_position();
-        let width = this.actor.allocation.x2 - this.actor.allocation.x1;
-        let height = this.actor.allocation.y2 - this.actor.allocation.y1;
+        let allocation = this.actor.allocation;
+        let width = allocation.x2 - allocation.x1;
+        let height = allocation.y2 - allocation.y1;
         let primaryGeometry = { x: x, y: y, width: width, height: height };
 
         let monitors = Main.layoutManager.monitors;
