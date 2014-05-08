@@ -239,6 +239,14 @@ const WindowClone = new Lang.Class({
         return this._boundingBox;
     },
 
+    get width() {
+        return this._boundingBox.width;
+    },
+
+    get height() {
+        return this._boundingBox.height;
+    },
+
     getOriginalPosition: function() {
         return [this._boundingBox.x, this._boundingBox.y];
     },
@@ -257,7 +265,8 @@ const WindowClone = new Lang.Class({
             rect = rect.union(metaWindow.get_outer_rect());
         }, this);
 
-        this._boundingBox = rect;
+        // Convert from a MetaRectangle to a native JS object
+        this._boundingBox = { x: rect.x, y: rect.y, width: rect.width, height: rect.height };
         this.actor.layout_manager.boundingBox = rect;
     },
 
@@ -832,7 +841,7 @@ const LayoutStrategy = new Lang.Class({
         // thumbnails is much more important to preserve than the width of
         // them, so two windows with equal height, but maybe differering
         // widths line up.
-        let ratio = window.actor.height / this._monitor.height;
+        let ratio = window.height / this._monitor.height;
 
         // The purpose of this manipulation here is to prevent windows
         // from getting too small. For something like a calculator window,
@@ -934,11 +943,11 @@ const LayoutStrategy = new Lang.Class({
                 let window = row.windows[j];
 
                 let s = scale * this._computeWindowScale(window) * row.additionalScale;
-                let cellWidth = window.actor.width * s;
-                let cellHeight = window.actor.height * s;
+                let cellWidth = window.width * s;
+                let cellHeight = window.height * s;
 
                 s = Math.min(s, WINDOW_CLONE_MAXIMUM_SCALE);
-                let cloneWidth = window.actor.width * s;
+                let cloneWidth = window.width * s;
 
                 let cloneX = x + (cellWidth - cloneWidth) / 2;
                 let cloneY = row.y + row.height - cellHeight;
@@ -992,7 +1001,7 @@ const UnalignedLayoutStrategy = new Lang.Class({
         for (let i = 0; i < windows.length; i++) {
             let window = windows[i];
             let s = this._computeWindowScale(window);
-            totalWidth += window.actor.width * s;
+            totalWidth += window.width * s;
         }
 
         let idealRowWidth = totalWidth / numRows;
@@ -1005,8 +1014,8 @@ const UnalignedLayoutStrategy = new Lang.Class({
             for (; windowIdx < windows.length; windowIdx++) {
                 let window = windows[windowIdx];
                 let s = this._computeWindowScale(window);
-                let width = window.actor.width * s;
-                let height = window.actor.height * s;
+                let width = window.width * s;
+                let height = window.height * s;
                 row.fullHeight = Math.max(row.fullHeight, height);
 
                 // either new width is < idealWidth or new width is nearer from idealWidth then oldWidth
