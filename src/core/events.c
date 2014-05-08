@@ -1936,6 +1936,9 @@ meta_display_handle_event (MetaDisplay        *display,
       if (g_getenv ("MUTTER_DEBUG_BUTTON_GRABS"))
         grab_mask |= CLUTTER_CONTROL_MASK;
 
+      /* Swallow all events on windows that come our way. */
+      bypass_clutter = TRUE;
+
       /* We have three passive button grabs:
        * - on any button, without modifiers => focuses and maybe raises the window
        * - on resize button, with modifiers => start an interactive resizing
@@ -1994,8 +1997,6 @@ meta_display_handle_event (MetaDisplay        *display,
                                XIReplayDevice, event->button.time);
               }
           }
-
-          bypass_clutter = TRUE;
         }
       else if (fully_modified && (int) event->button.button == meta_prefs_get_mouse_button_resize ())
         {
@@ -2045,7 +2046,6 @@ meta_display_handle_event (MetaDisplay        *display,
                                             event->button.x,
                                             event->button.y);
             }
-          bypass_clutter = TRUE;
           bypass_wayland = TRUE;
         }
       else if (fully_modified && (int) event->button.button == meta_prefs_get_mouse_button_menu ())
@@ -2057,7 +2057,6 @@ meta_display_handle_event (MetaDisplay        *display,
                                  event->button.y,
                                  event->button.button,
                                  event->any.time);
-          bypass_clutter = TRUE;
           bypass_wayland = TRUE;
         }
       else if (fully_modified && (int) event->button.button == 1)
@@ -2076,7 +2075,6 @@ meta_display_handle_event (MetaDisplay        *display,
                                           event->button.x,
                                           event->button.y);
             }
-          bypass_clutter = TRUE;
           bypass_wayland = TRUE;
         }
     }
