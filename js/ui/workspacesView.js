@@ -74,12 +74,12 @@ const WorkspacesViewBase = new Lang.Class({
 
     setFullGeometry: function(geom) {
         this._fullGeometry = geom;
-        this._syncGeometry();
+        this._syncFullGeometry();
     },
 
     setActualGeometry: function(geom) {
         this._actualGeometry = geom;
-        this._syncGeometry();
+        this._syncActualGeometry();
     },
 });
 
@@ -127,9 +127,12 @@ const WorkspacesView = new Lang.Class({
             this._workspaces[i].setReservedSlot(clone);
     },
 
-    _syncGeometry: function() {
+    _syncFullGeometry: function() {
         for (let i = 0; i < this._workspaces.length; i++)
             this._workspaces[i].setFullGeometry(this._fullGeometry);
+    },
+
+    _syncActualGeometry: function() {
         for (let i = 0; i < this._workspaces.length; i++)
             this._workspaces[i].setActualGeometry(this._actualGeometry);
     },
@@ -260,10 +263,12 @@ const WorkspacesView = new Lang.Class({
             }
         }
 
-        if (this._fullGeometry)
+        if (this._fullGeometry) {
             this._updateWorkspaceActors(false);
-
-        this._syncGeometry();
+            this._syncFullGeometry();
+        }
+        if (this._actualGeometry)
+            this._syncActualGeometry();
     },
 
     _activeWorkspaceChanged: function(wm, from, to, direction) {
@@ -352,8 +357,11 @@ const ExtraWorkspaceView = new Lang.Class({
         this._workspace.setReservedSlot(clone);
     },
 
-    _syncGeometry: function() {
+    _syncFullGeometry: function() {
         this._workspace.setFullGeometry(this._fullGeometry);
+    },
+
+    _syncActualGeometry: function() {
         this._workspace.setActualGeometry(this._actualGeometry);
     },
 
