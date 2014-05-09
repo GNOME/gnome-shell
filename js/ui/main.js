@@ -212,7 +212,9 @@ function _initializeUI() {
                               if (screenShield) {
                                   screenShield.lockIfWasLocked();
                               }
-                              if (LoginManager.haveSystemd() && sessionMode.currentMode === 'user') {
+                              if (LoginManager.haveSystemd() &&
+                                  sessionMode.currentMode != 'gdm' &&
+                                  sessionMode.currentMode != 'initial-setup') {
                                   // Do not import globally to not depend
                                   // on systemd on non-systemd systems.
                                   let GSystem = imports.gi.GSystem;
