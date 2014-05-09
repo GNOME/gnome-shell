@@ -1825,6 +1825,7 @@ meta_display_handle_xevent (MetaDisplay *display,
         bypass_gtk = TRUE;
     }
 
+  display->current_time = CurrentTime;
   return bypass_gtk;
 }
 
@@ -1972,6 +1973,7 @@ meta_display_handle_event (MetaDisplay        *display,
         bypass_clutter = TRUE;
     }
 
+  display->current_time = CurrentTime;
   return bypass_clutter;
 }
 
