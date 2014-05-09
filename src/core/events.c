@@ -1729,6 +1729,7 @@ meta_display_handle_xevent (MetaDisplay *display,
     }
 #endif
 
+  display->current_time = event_get_time (display, event);
   display->monitor_cache_invalidated = TRUE;
 
   if (display->focused_by_us &&
@@ -1824,7 +1825,6 @@ meta_display_handle_xevent (MetaDisplay *display,
         bypass_gtk = TRUE;
     }
 
-  display->current_time = event_get_time (display, event);
   return bypass_gtk;
 }
 
