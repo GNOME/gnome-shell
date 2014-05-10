@@ -14,16 +14,16 @@ msgstr ""
 "Project-Id-Version: mutter.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-04-09 22:40+0000\n"
-"PO-Revision-Date: 2014-04-10 11:04+0200\n"
+"POT-Creation-Date: 2014-05-08 09:39+0000\n"
+"PO-Revision-Date: 2014-05-10 19:21+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
-"Language-Team: Español <gnome-es-list@gnome.org>\n"
+"Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n!=1);\n"
-"X-Generator: Gtranslator 2.91.5\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Gtranslator 2.91.6\n"
 
 #: ../src/50-mutter-navigation.xml.in.h:1
 msgid "Navigation"
@@ -46,98 +46,108 @@ msgid "Move window to workspace 4"
 msgstr "Mover la ventana al área de trabajo 4"
 
 #: ../src/50-mutter-navigation.xml.in.h:6
+#| msgid "Move window to workspace 1"
+msgid "Move window to last workspace"
+msgstr "Mover la ventana a la última área de trabajo"
+
+#: ../src/50-mutter-navigation.xml.in.h:7
 msgid "Move window one workspace to the left"
 msgstr "Mover la ventana un área de trabajo a la izquierda"
 
-#: ../src/50-mutter-navigation.xml.in.h:7
+#: ../src/50-mutter-navigation.xml.in.h:8
 msgid "Move window one workspace to the right"
 msgstr "Mover la ventana un área de trabajo a la derecha"
 
-#: ../src/50-mutter-navigation.xml.in.h:8
+#: ../src/50-mutter-navigation.xml.in.h:9
 msgid "Move window one workspace up"
 msgstr "Subir la ventana un área de trabajo"
 
-#: ../src/50-mutter-navigation.xml.in.h:9
+#: ../src/50-mutter-navigation.xml.in.h:10
 msgid "Move window one workspace down"
 msgstr "Bajar la ventana un área de trabajo"
 
-#: ../src/50-mutter-navigation.xml.in.h:10
+#: ../src/50-mutter-navigation.xml.in.h:11
 msgid "Move window one monitor to the left"
 msgstr "Mover la ventana una pantalla a la izquierda"
 
-#: ../src/50-mutter-navigation.xml.in.h:11
+#: ../src/50-mutter-navigation.xml.in.h:12
 msgid "Move window one monitor to the right"
 msgstr "Mover la ventana una pantalla a la derecha"
 
-#: ../src/50-mutter-navigation.xml.in.h:12
+#: ../src/50-mutter-navigation.xml.in.h:13
 msgid "Move window one monitor up"
 msgstr "Subir la ventana una pantalla"
 
-#: ../src/50-mutter-navigation.xml.in.h:13
+#: ../src/50-mutter-navigation.xml.in.h:14
 msgid "Move window one monitor down"
 msgstr "Bajar la ventana una pantalla"
 
-#: ../src/50-mutter-navigation.xml.in.h:14
+#: ../src/50-mutter-navigation.xml.in.h:15
 msgid "Switch applications"
 msgstr "Cambiar entre aplicaciones"
 
-#: ../src/50-mutter-navigation.xml.in.h:15
+#: ../src/50-mutter-navigation.xml.in.h:16
 msgid "Switch windows"
 msgstr "Cambiar entre ventanas"
 
-#: ../src/50-mutter-navigation.xml.in.h:16
+#: ../src/50-mutter-navigation.xml.in.h:17
 msgid "Switch windows of an application"
 msgstr "Cambiar entre ventanas de una aplicación"
 
-#: ../src/50-mutter-navigation.xml.in.h:17
+#: ../src/50-mutter-navigation.xml.in.h:18
 msgid "Switch system controls"
 msgstr "Cambiar entre controles del sistema"
 
-#: ../src/50-mutter-navigation.xml.in.h:18
+#: ../src/50-mutter-navigation.xml.in.h:19
 msgid "Switch windows directly"
 msgstr "Cambiar entre ventanas directamente"
 
-#: ../src/50-mutter-navigation.xml.in.h:19
+#: ../src/50-mutter-navigation.xml.in.h:20
 msgid "Switch windows of an app directly"
 msgstr "Cambiar entre ventanas de una aplicación directamente"
 
-#: ../src/50-mutter-navigation.xml.in.h:20
+#: ../src/50-mutter-navigation.xml.in.h:21
 msgid "Switch system controls directly"
 msgstr "Cambiar entre controles del sistema directamente"
 
-#: ../src/50-mutter-navigation.xml.in.h:21
+#: ../src/50-mutter-navigation.xml.in.h:22
 msgid "Hide all normal windows"
 msgstr "Ocultar todas las ventanas normales"
 
-#: ../src/50-mutter-navigation.xml.in.h:22
+#: ../src/50-mutter-navigation.xml.in.h:23
 msgid "Switch to workspace 1"
 msgstr "Cambiar al área de trabajo 1"
 
-#: ../src/50-mutter-navigation.xml.in.h:23
+#: ../src/50-mutter-navigation.xml.in.h:24
 msgid "Switch to workspace 2"
 msgstr "Cambiar al área de trabajo 2"
 
-#: ../src/50-mutter-navigation.xml.in.h:24
+#: ../src/50-mutter-navigation.xml.in.h:25
 msgid "Switch to workspace 3"
 msgstr "Cambiar al área de trabajo 3"
 
-#: ../src/50-mutter-navigation.xml.in.h:25
+#: ../src/50-mutter-navigation.xml.in.h:26
 msgid "Switch to workspace 4"
 msgstr "Cambiar al área de trabajo 4"
 
-#: ../src/50-mutter-navigation.xml.in.h:26
+#: ../src/50-mutter-navigation.xml.in.h:27
+#| msgid "Switch to workspace 1"
+msgid "Switch to last workspace"
+msgstr "Cambiar a la útima área de trabajo"
+
+#: ../src/50-mutter-navigation.xml.in.h:28
 msgid "Move to workspace left"
 msgstr "Mover al área de trabajo de la izquierda"
 
-#: ../src/50-mutter-navigation.xml.in.h:27
+#: ../src/50-mutter-navigation.xml.in.h:29
 msgid "Move to workspace right"
 msgstr "Mover al área de trabajo de la derecha"
 
-#: ../src/50-mutter-navigation.xml.in.h:28
+#: ../src/50-mutter-navigation.xml.in.h:30
 msgid "Move to workspace above"
 msgstr "Mover al área de trabajo de la arriba"
 
-#: ../src/50-mutter-navigation.xml.in.h:29
+#: ../src/50-mutter-navigation.xml.in.h:31
 msgid "Move to workspace below"
 msgstr "Mover al área de trabajo de abajo"
 
@@ -229,29 +239,29 @@ msgstr "Ver división a la izquierda"
 msgid "View split on right"
 msgstr "Ver división a la derecha"
 
-#: ../src/backends/meta-monitor-manager.c:465
+#: ../src/backends/meta-monitor-manager.c:412
 msgid "Built-in display"
 msgstr "Pantalla integrada"
 
-#: ../src/backends/meta-monitor-manager.c:490
+#: ../src/backends/meta-monitor-manager.c:437
 msgid "Unknown"
 msgstr "Desconocida"
 
-#: ../src/backends/meta-monitor-manager.c:492
+#: ../src/backends/meta-monitor-manager.c:439
 msgid "Unknown Display"
 msgstr "Pantalla desconocida"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: ../src/backends/meta-monitor-manager.c:500
+#: ../src/backends/meta-monitor-manager.c:447
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:505
+#: ../src/compositor/compositor.c:464
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
@@ -264,7 +274,7 @@ msgstr ""
 msgid "background texture could not be created from file"
 msgstr "no se pudo crear la textura de fondo a partir de archivo"
 
-#: ../src/core/bell.c:213
+#: ../src/core/bell.c:215
 msgid "Bell event"
 msgstr "Evento de campana"
 
@@ -293,49 +303,49 @@ msgstr "_Esperar"
 msgid "_Force Quit"
 msgstr "_Forzar la salida"
 
-#: ../src/core/display.c:453
+#: ../src/core/display.c:451
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Ocurrió un error al abrir la pantalla de X Window System «%s»\n"
 
-#: ../src/core/main.c:200
+#: ../src/core/main.c:190
 msgid "Disable connection to session manager"
 msgstr "Desactivar conexión al gestor de sesión"
 
-#: ../src/core/main.c:206
+#: ../src/core/main.c:196
 msgid "Replace the running window manager"
 msgstr "Reemplazar el gestor de ventanas en ejecución"
 
-#: ../src/core/main.c:212
+#: ../src/core/main.c:202
 msgid "Specify session management ID"
 msgstr "Especificar el ID se gestión de sesión"
 
-#: ../src/core/main.c:217
+#: ../src/core/main.c:207
 msgid "X Display to use"
 msgstr "Pantalla X que usar"
 
-#: ../src/core/main.c:223
+#: ../src/core/main.c:213
 msgid "Initialize session from savefile"
 msgstr "Inicializar sesión desde el archivo de salvaguarda"
 
-#: ../src/core/main.c:229
+#: ../src/core/main.c:219
 msgid "Make X calls synchronous"
 msgstr "Hacer que las llamadas a las X sean síncronas"
 
-#: ../src/core/main.c:235
+#: ../src/core/main.c:225
 msgid "Run as a wayland compositor"
 msgstr "Ejecutar como compositor Wayland"
 
-#: ../src/core/main.c:241
+#: ../src/core/main.c:231
 msgid "Run as a full display server, rather than nested"
 msgstr "Ejecutar como servidor completo, en lugar de anidado"
 
-#: ../src/core/main.c:486
+#: ../src/core/main.c:476
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Falló al inspeccionar la carpeta de temas: %s\n"
 
-#: ../src/core/main.c:502
+#: ../src/core/main.c:492
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
@@ -366,17 +376,17 @@ msgstr "Imprimir versión"
 msgid "Mutter plugin to use"
 msgstr "Complemento de mutter que usar"
 
-#: ../src/core/prefs.c:1985
+#: ../src/core/prefs.c:2005
 #, c-format
 msgid "Workspace %d"
 msgstr "Área de trabajo %d"
 
-#: ../src/core/screen.c:543
+#: ../src/core/screen.c:529
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "La ventana %d en la pantalla «%s» no es válida\n"
 
-#: ../src/core/screen.c:559
+#: ../src/core/screen.c:545
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -385,7 +395,7 @@ msgstr ""
 "La ventana %d en la pantalla «%s» ya tiene un gestor de ventanas, intente "
 "usar la opción «--replace» para reemplazar el gestor de ventanas activo.\n"
 
-#: ../src/core/screen.c:664
+#: ../src/core/screen.c:650
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "La ventana %d en la pantalla «%s» ya tiene un gestor de ventanas\n"
@@ -397,10 +407,6 @@ msgstr "Mutter fue compilado sin soporte para modo prolijo\n"
 #: ../src/mutter.desktop.in.h:1
 msgid "Mutter"
 msgstr "Mutter"
-
-#: ../src/mutter-wayland.desktop.in.h:1
-msgid "Mutter (wayland compositor)"
-msgstr "Mutter (compositor Wayland)"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:1
 msgid "Modifier to use for extended window management operations"
@@ -530,45 +536,50 @@ msgstr ""
 "la pantalla, se maximizan."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:19
+msgid "Place new windows in the center"
+msgstr "Colocar las ventanas nuevas en el centro"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:20
+msgid ""
+"When true, the new windows will always be put in the center of the active "
+"screen of the monitor."
+msgstr ""
+"Cuando es cierto, las ventanas nuevas se colocarán siempre en el centro de "
+"la pantalla activa del monitor."
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:21
 msgid "Select window from tab popup"
 msgstr "Seleccionar ventana de la pestaña emergente"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:20
+#: ../src/org.gnome.mutter.gschema.xml.in.h:22
 msgid "Cancel tab popup"
 msgstr "Cancelar pestaña emergente"
 
 #: ../src/org.gnome.mutter.wayland.gschema.xml.in.h:1
-#| msgid "Switch to workspace 1"
 msgid "Switch to VT 1"
 msgstr "Cambiar al VT 1"
 
 #: ../src/org.gnome.mutter.wayland.gschema.xml.in.h:2
-#| msgid "Switch to workspace 2"
 msgid "Switch to VT 2"
 msgstr "Cambiar al VT 2"
 
 #: ../src/org.gnome.mutter.wayland.gschema.xml.in.h:3
-#| msgid "Switch to workspace 3"
 msgid "Switch to VT 3"
 msgstr "Cambiar al VT 3"
 
 #: ../src/org.gnome.mutter.wayland.gschema.xml.in.h:4
-#| msgid "Switch to workspace 4"
 msgid "Switch to VT 4"
 msgstr "Cambiar al VT 4"
 
 #: ../src/org.gnome.mutter.wayland.gschema.xml.in.h:5
-#| msgid "Switch to workspace 5"
 msgid "Switch to VT 5"
 msgstr "Cambiar al VT 5"
 
 #: ../src/org.gnome.mutter.wayland.gschema.xml.in.h:6
-#| msgid "Switch to workspace 6"
 msgid "Switch to VT 6"
 msgstr "Cambiar al VT 6"
 
 #: ../src/org.gnome.mutter.wayland.gschema.xml.in.h:7
-#| msgid "Switch to workspace 7"
 msgid "Switch to VT 7"
 msgstr "Cambiar al VT 7"
 
@@ -654,22 +665,22 @@ msgstr "Mover al área de trabajo de a_bajo"
 msgid "_Close"
 msgstr "_Cerrar"
 
-#: ../src/ui/menu.c:200
+#: ../src/ui/menu.c:198
 #, c-format
 msgid "Workspace %d%n"
 msgstr "Área de trabajo %d%n"
 
-#: ../src/ui/menu.c:210
+#: ../src/ui/menu.c:208
 #, c-format
 msgid "Workspace 1_0"
 msgstr "Área de trabajo 1_0"
 
-#: ../src/ui/menu.c:212
+#: ../src/ui/menu.c:210
 #, c-format
 msgid "Workspace %s%d"
 msgstr "Área de trabajo %s%d"
 
-#: ../src/ui/menu.c:382
+#: ../src/ui/menu.c:380
 msgid "Move to Another _Workspace"
 msgstr "Mover a _otro área de trabajo"
 
@@ -1482,6 +1493,9 @@ msgstr ""
 msgid "%s (on %s)"
 msgstr "%s (on %s)"
 
+#~ msgid "Mutter (wayland compositor)"
+#~ msgstr "Mutter (compositor Wayland)"
+
 #~ msgid "Unknown window information request: %d"
 #~ msgstr "Petición de información de ventana desconocida: %d"
 
@@ -2015,11 +2029,11 @@ msgstr "%s (on %s)"
 
 #~ msgid "GConf key %s is already in use and can't be used to override %s\n"
 #~ msgstr ""
-#~ "La clave de GConf %s ya está en uso y no se puede usar para sobreescribir "
+#~ "La clave de GConf %s ya está en uso y no se puede usar para sobrescribir "
 #~ "%s\n"
 
 #~ msgid "Can't override GConf key, %s not found\n"
-#~ msgstr "No se puede sobreescribir la clave de GConf, no se encontró %s\n"
+#~ msgstr "No se puede sobrescribir la clave de GConf, no se encontró %s\n"
 
 #~ msgid "Error setting number of workspaces to %d: %s\n"
 #~ msgstr ""
