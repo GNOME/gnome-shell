@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-03-30 19:57+0000\n"
-"PO-Revision-Date: 2014-03-30 23:02+0300\n"
+"POT-Creation-Date: 2014-05-11 19:29+0000\n"
+"PO-Revision-Date: 2014-05-11 23:42+0300\n"
 "Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lietuvių <gnome-lt@lists.akl.lt>\n"
 "Language: lt\n"
@@ -336,25 +336,25 @@ msgstr "Pasirinkite seansą"
 msgid "Not listed?"
 msgstr "Nėra sąraše?"
 
-#: ../js/gdm/loginDialog.js:614
+#: ../js/gdm/loginDialog.js:616
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(pvz., naudotojas arba %s)"
 
-#: ../js/gdm/loginDialog.js:619 ../js/ui/components/networkAgent.js:262
+#: ../js/gdm/loginDialog.js:621 ../js/ui/components/networkAgent.js:262
 #: ../js/ui/components/networkAgent.js:280
 msgid "Username: "
 msgstr "Naudotojo vardas: "
 
-#: ../js/gdm/loginDialog.js:920
+#: ../js/gdm/loginDialog.js:924
 msgid "Login Window"
 msgstr "Prisijungimo langas"
 
-#: ../js/gdm/util.js:322
+#: ../js/gdm/util.js:323
 msgid "Authentication error"
 msgstr "Tapatybės patvirtinimo klaida"
 
-#: ../js/gdm/util.js:452
+#: ../js/gdm/util.js:453
 msgid "(or swipe finger)"
 msgstr "(arba perbraukite pirštu)"
 
@@ -371,29 +371,34 @@ msgstr "Nepavyko perskaityti komandos:"
 msgid "Execution of “%s” failed:"
 msgstr "Nepavyko įvykdyti „%s“:"
 
-#: ../js/ui/appDisplay.js:636
+#: ../js/ui/appDisplay.js:640
 msgid "Frequently used applications will appear here"
 msgstr "Čia bus matomos dažnai naudojamos programos"
 
-#: ../js/ui/appDisplay.js:747
+#: ../js/ui/appDisplay.js:751
 msgid "Frequent"
 msgstr "Dažnai naudojamos"
 
-#: ../js/ui/appDisplay.js:754
+#: ../js/ui/appDisplay.js:758
 msgid "All"
 msgstr "Visos"
 
-#: ../js/ui/appDisplay.js:1566
+#: ../js/ui/appDisplay.js:1571
 msgid "New Window"
 msgstr "Naujas langas"
 
-#: ../js/ui/appDisplay.js:1588 ../js/ui/dash.js:285
+#: ../js/ui/appDisplay.js:1593 ../js/ui/dash.js:285
 msgid "Remove from Favorites"
 msgstr "Pašalinti iš mėgstamų"
 
-#: ../js/ui/appDisplay.js:1594
+#: ../js/ui/appDisplay.js:1599
 msgid "Add to Favorites"
 msgstr "Pridėti prie mėgstamų"
+
+#: ../js/ui/appDisplay.js:1608
+#| msgid "Show Text"
+msgid "Show Details"
+msgstr "Rodyti detalią informaciją"
 
 #: ../js/ui/appFavorites.js:87
 #, javascript-format
@@ -405,8 +410,8 @@ msgstr "%s pridėta prie jūsų mėgstamų."
 msgid "%s has been removed from your favorites."
 msgstr "%s pašalinta iš jūsų mėgstamų."
 
-#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:809
-#: ../js/ui/status/system.js:334
+#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:810
+#: ../js/ui/status/system.js:337
 msgid "Settings"
 msgstr "Nustatymai"
 
@@ -417,14 +422,14 @@ msgstr "Keisti foną…"
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #. */
-#: ../js/ui/calendar.js:64
+#: ../js/ui/calendar.js:67
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Visa diena"
 
 #. Translators: Shown in calendar event list, if 24h format,
 #. \u2236 is a ratio character, similar to : */
-#: ../js/ui/calendar.js:70
+#: ../js/ui/calendar.js:73
 msgctxt "event list time"
 msgid "%H∶%M"
 msgstr "%H∶%M"
@@ -432,7 +437,7 @@ msgstr "%H∶%M"
 #. Translators: Shown in calendar event list, if 12h format,
 #. \u2236 is a ratio character, similar to : and \u2009 is
 #. a thin space */
-#: ../js/ui/calendar.js:79
+#: ../js/ui/calendar.js:82
 msgctxt "event list time"
 msgid "%l∶%M %p"
 msgstr "%l:%M"
@@ -442,43 +447,43 @@ msgstr "%l:%M"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #. */
-#: ../js/ui/calendar.js:110
+#: ../js/ui/calendar.js:113
 msgctxt "grid sunday"
 msgid "S"
 msgstr "S"
 
 #. Translators: Calendar grid abbreviation for Monday */
-#: ../js/ui/calendar.js:112
+#: ../js/ui/calendar.js:115
 msgctxt "grid monday"
 msgid "M"
 msgstr "P"
 
 #. Translators: Calendar grid abbreviation for Tuesday */
-#: ../js/ui/calendar.js:114
+#: ../js/ui/calendar.js:117
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "A"
 
 #. Translators: Calendar grid abbreviation for Wednesday */
-#: ../js/ui/calendar.js:116
+#: ../js/ui/calendar.js:119
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "T"
 
 #. Translators: Calendar grid abbreviation for Thursday */
-#: ../js/ui/calendar.js:118
+#: ../js/ui/calendar.js:121
 msgctxt "grid thursday"
 msgid "T"
 msgstr "K"
 
 #. Translators: Calendar grid abbreviation for Friday */
-#: ../js/ui/calendar.js:120
+#: ../js/ui/calendar.js:123
 msgctxt "grid friday"
 msgid "F"
 msgstr "P"
 
 #. Translators: Calendar grid abbreviation for Saturday */
-#: ../js/ui/calendar.js:122
+#: ../js/ui/calendar.js:125
 msgctxt "grid saturday"
 msgid "S"
 msgstr "Š"
@@ -489,97 +494,93 @@ msgstr "Š"
 #. * so they need to be unique (e.g. Tuesday and Thursday cannot
 #. * both be 'T').
 #. */
-#: ../js/ui/calendar.js:135
+#: ../js/ui/calendar.js:138
 msgctxt "list sunday"
 msgid "Su"
 msgstr "Sk"
 
 #. Translators: Event list abbreviation for Monday */
-#: ../js/ui/calendar.js:137
+#: ../js/ui/calendar.js:140
 msgctxt "list monday"
 msgid "M"
 msgstr "Pr"
 
 #. Translators: Event list abbreviation for Tuesday */
-#: ../js/ui/calendar.js:139
+#: ../js/ui/calendar.js:142
 msgctxt "list tuesday"
 msgid "T"
 msgstr "An"
 
 #. Translators: Event list abbreviation for Wednesday */
-#: ../js/ui/calendar.js:141
+#: ../js/ui/calendar.js:144
 msgctxt "list wednesday"
 msgid "W"
 msgstr "Tr"
 
 #. Translators: Event list abbreviation for Thursday */
-#: ../js/ui/calendar.js:143
+#: ../js/ui/calendar.js:146
 msgctxt "list thursday"
 msgid "Th"
 msgstr "Kt"
 
 #. Translators: Event list abbreviation for Friday */
-#: ../js/ui/calendar.js:145
+#: ../js/ui/calendar.js:148
 msgctxt "list friday"
 msgid "F"
 msgstr "Pn"
 
 #. Translators: Event list abbreviation for Saturday */
-#: ../js/ui/calendar.js:147
+#: ../js/ui/calendar.js:150
 msgctxt "list saturday"
 msgid "S"
 msgstr "Št"
 
-#: ../js/ui/calendar.js:390
-msgid "calendar:MY"
-msgstr "calendar:YM"
-
-#: ../js/ui/calendar.js:450
+#: ../js/ui/calendar.js:453
 msgid "Previous month"
 msgstr "Ankstesnis mėnuo"
 
-#: ../js/ui/calendar.js:460
+#: ../js/ui/calendar.js:463
 msgid "Next month"
 msgstr "Kitas mėnuo"
 
 #. Translators: Text to show if there are no events */
-#: ../js/ui/calendar.js:772
+#: ../js/ui/calendar.js:775
 msgid "Nothing Scheduled"
 msgstr "Nieko nesuplanuota"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year */
-#: ../js/ui/calendar.js:790
+#: ../js/ui/calendar.js:793
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %B %d d."
 
 #. Translators: Shown on calendar heading when selected day occurs on different year */
-#: ../js/ui/calendar.js:793
+#: ../js/ui/calendar.js:796
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %Y m. %B %d d."
 
-#: ../js/ui/calendar.js:804
+#: ../js/ui/calendar.js:807
 msgid "Today"
 msgstr "Šiandien"
 
-#: ../js/ui/calendar.js:808
+#: ../js/ui/calendar.js:811
 msgid "Tomorrow"
 msgstr "Rytoj"
 
-#: ../js/ui/calendar.js:819
+#: ../js/ui/calendar.js:822
 msgid "This week"
 msgstr "Šią savaitę"
 
-#: ../js/ui/calendar.js:827
+#: ../js/ui/calendar.js:830
 msgid "Next week"
 msgstr "Kitą savaitę"
 
-#: ../js/ui/components/automountManager.js:90
+#: ../js/ui/components/automountManager.js:91
 msgid "External drive connected"
 msgstr "Prijungta išorinė laikmena"
 
-#: ../js/ui/components/automountManager.js:101
+#: ../js/ui/components/automountManager.js:102
 msgid "External drive disconnected"
 msgstr "Atjungta išorinė laikmena"
 
@@ -724,77 +725,77 @@ msgid "Mute"
 msgstr "Nutildyti"
 
 #. Translators: Time in 24h format */
-#: ../js/ui/components/telepathyClient.js:955
+#: ../js/ui/components/telepathyClient.js:958
 msgid "%H∶%M"
 msgstr "%H∶%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30" */
-#: ../js/ui/components/telepathyClient.js:962
+#: ../js/ui/components/telepathyClient.js:965
 msgid "Yesterday, %H∶%M"
 msgstr "Vakar, %H:%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 24h format. i.e. "Monday, 14:30" */
-#: ../js/ui/components/telepathyClient.js:969
+#: ../js/ui/components/telepathyClient.js:972
 msgid "%A, %H∶%M"
 msgstr "%A, %H∶%M"
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 24h format.
 #. i.e. "May 25, 14:30" */
-#: ../js/ui/components/telepathyClient.js:976
+#: ../js/ui/components/telepathyClient.js:979
 msgid "%B %d, %H∶%M"
 msgstr "%B %d, %H∶%M"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
 #. i.e. "May 25 2012, 14:30" */
-#: ../js/ui/components/telepathyClient.js:982
+#: ../js/ui/components/telepathyClient.js:985
 msgid "%B %d %Y, %H∶%M"
 msgstr "%Y %m %d, %H∶%M"
 
 #. Translators: Time in 24h format */
-#: ../js/ui/components/telepathyClient.js:991
+#: ../js/ui/components/telepathyClient.js:994
 msgid "%l∶%M %p"
 msgstr "%l∶%M %p"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 12h format. i.e. "Yesterday, 2:30 pm" */
-#: ../js/ui/components/telepathyClient.js:998
+#: ../js/ui/components/telepathyClient.js:1001
 msgid "Yesterday, %l∶%M %p"
 msgstr "Vakar, %l∶%M %p"
 
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm" */
-#: ../js/ui/components/telepathyClient.js:1005
+#: ../js/ui/components/telepathyClient.js:1008
 msgid "%A, %l∶%M %p"
 msgstr "%A, %l∶%M %p"
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 12h format.
 #. i.e. "May 25, 2:30 pm" */
-#: ../js/ui/components/telepathyClient.js:1012
+#: ../js/ui/components/telepathyClient.js:1015
 msgid "%B %d, %l∶%M %p"
 msgstr "%B %d, %l∶%M %p"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
 #. i.e. "May 25 2012, 2:30 pm"*/
-#: ../js/ui/components/telepathyClient.js:1018
+#: ../js/ui/components/telepathyClient.js:1021
 msgid "%B %d %Y, %l∶%M %p"
 msgstr "%Y %B %d, %l∶%M %p"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name. */
-#: ../js/ui/components/telepathyClient.js:1051
+#: ../js/ui/components/telepathyClient.js:1054
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s nuo šiol vadinasi %s"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example. */
-#: ../js/ui/components/telepathyClient.js:1154
+#: ../js/ui/components/telepathyClient.js:1158
 #, javascript-format
 msgid "Invitation to %s"
 msgstr "Kvietimas į %s"
@@ -802,38 +803,38 @@ msgstr "Kvietimas į %s"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example. */
-#: ../js/ui/components/telepathyClient.js:1162
+#: ../js/ui/components/telepathyClient.js:1166
 #, javascript-format
 msgid "%s is inviting you to join %s"
 msgstr "%s jus kviečia prisijungti prie %s"
 
-#: ../js/ui/components/telepathyClient.js:1164
-#: ../js/ui/components/telepathyClient.js:1199
-#: ../js/ui/components/telepathyClient.js:1233
-#: ../js/ui/components/telepathyClient.js:1291
+#: ../js/ui/components/telepathyClient.js:1168
+#: ../js/ui/components/telepathyClient.js:1203
+#: ../js/ui/components/telepathyClient.js:1237
+#: ../js/ui/components/telepathyClient.js:1295
 msgid "Decline"
 msgstr "Atmesti"
 
-#: ../js/ui/components/telepathyClient.js:1170
-#: ../js/ui/components/telepathyClient.js:1239
-#: ../js/ui/components/telepathyClient.js:1296
+#: ../js/ui/components/telepathyClient.js:1174
+#: ../js/ui/components/telepathyClient.js:1243
+#: ../js/ui/components/telepathyClient.js:1300
 msgid "Accept"
 msgstr "Priimti"
 
 #. translators: argument is a contact name like Alice for example. */
-#: ../js/ui/components/telepathyClient.js:1189
+#: ../js/ui/components/telepathyClient.js:1193
 #, javascript-format
 msgid "Video call from %s"
 msgstr "Vaizdo skambutis nuo %s"
 
 #. translators: argument is a contact name like Alice for example. */
-#: ../js/ui/components/telepathyClient.js:1192
+#: ../js/ui/components/telepathyClient.js:1196
 #, javascript-format
 msgid "Call from %s"
 msgstr "Skambutis nuo %s"
 
 #. translators: this is a button label (verb), not a noun */
-#: ../js/ui/components/telepathyClient.js:1206
+#: ../js/ui/components/telepathyClient.js:1210
 msgid "Answer"
 msgstr "Atsiliepti"
 
@@ -842,110 +843,110 @@ msgstr "Atsiliepti"
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
 #. */
-#: ../js/ui/components/telepathyClient.js:1227
+#: ../js/ui/components/telepathyClient.js:1231
 #, javascript-format
 msgid "%s is sending you %s"
 msgstr "%s jums siunčia %s"
 
 #. To translators: The parameter is the contact's alias */
-#: ../js/ui/components/telepathyClient.js:1256
+#: ../js/ui/components/telepathyClient.js:1260
 #, javascript-format
 msgid "%s would like permission to see when you are online"
 msgstr "%s pageidauja matyti, kai esate prisijungę prie interneto"
 
-#: ../js/ui/components/telepathyClient.js:1342
+#: ../js/ui/components/telepathyClient.js:1346
 msgid "Network error"
 msgstr "Tinklo klaida"
 
-#: ../js/ui/components/telepathyClient.js:1344
+#: ../js/ui/components/telepathyClient.js:1348
 msgid "Authentication failed"
 msgstr "Nepavyko patvirtinti tapatybės"
 
-#: ../js/ui/components/telepathyClient.js:1346
+#: ../js/ui/components/telepathyClient.js:1350
 msgid "Encryption error"
 msgstr "Šifravimo klaida"
 
-#: ../js/ui/components/telepathyClient.js:1348
+#: ../js/ui/components/telepathyClient.js:1352
 msgid "Certificate not provided"
 msgstr "Liudijimas nepateiktas"
 
-#: ../js/ui/components/telepathyClient.js:1350
+#: ../js/ui/components/telepathyClient.js:1354
 msgid "Certificate untrusted"
 msgstr "Liudijimas nepatikimas"
 
-#: ../js/ui/components/telepathyClient.js:1352
+#: ../js/ui/components/telepathyClient.js:1356
 msgid "Certificate expired"
 msgstr "Liudijimo galiojimas pasibaigęs"
 
-#: ../js/ui/components/telepathyClient.js:1354
+#: ../js/ui/components/telepathyClient.js:1358
 msgid "Certificate not activated"
 msgstr "Liudijimas neaktyvuotas"
 
-#: ../js/ui/components/telepathyClient.js:1356
+#: ../js/ui/components/telepathyClient.js:1360
 msgid "Certificate hostname mismatch"
 msgstr "Liudijimo serverio vardo nesutapimas"
 
-#: ../js/ui/components/telepathyClient.js:1358
+#: ../js/ui/components/telepathyClient.js:1362
 msgid "Certificate fingerprint mismatch"
 msgstr "Liudijimo piršto atspaudo nesutapimas"
 
-#: ../js/ui/components/telepathyClient.js:1360
+#: ../js/ui/components/telepathyClient.js:1364
 msgid "Certificate self-signed"
 msgstr "Liudijimas pačių pasirašytas"
 
-#: ../js/ui/components/telepathyClient.js:1362
+#: ../js/ui/components/telepathyClient.js:1366
 msgid "Status is set to offline"
 msgstr "Nustatyta atsijungimo būsena"
 
-#: ../js/ui/components/telepathyClient.js:1364
+#: ../js/ui/components/telepathyClient.js:1368
 msgid "Encryption is not available"
 msgstr "Šifravimas negalimas"
 
-#: ../js/ui/components/telepathyClient.js:1366
+#: ../js/ui/components/telepathyClient.js:1370
 msgid "Certificate is invalid"
 msgstr "Liudijimas netinkamas"
 
-#: ../js/ui/components/telepathyClient.js:1368
+#: ../js/ui/components/telepathyClient.js:1372
 msgid "Connection has been refused"
 msgstr "Ryšys atmestas"
 
-#: ../js/ui/components/telepathyClient.js:1370
+#: ../js/ui/components/telepathyClient.js:1374
 msgid "Connection can't be established"
 msgstr "Nepavyko užmegzti ryšio"
 
-#: ../js/ui/components/telepathyClient.js:1372
+#: ../js/ui/components/telepathyClient.js:1376
 msgid "Connection has been lost"
 msgstr "Ryšys nutrūko"
 
-#: ../js/ui/components/telepathyClient.js:1374
+#: ../js/ui/components/telepathyClient.js:1378
 msgid "This account is already connected to the server"
 msgstr "Ši paskyra jau prijungta prie serverio"
 
-#: ../js/ui/components/telepathyClient.js:1376
+#: ../js/ui/components/telepathyClient.js:1380
 msgid ""
 "Connection has been replaced by a new connection using the same resource"
 msgstr "Ryšys pakeistas nauju ryšiu naudojant tą patį išteklių"
 
-#: ../js/ui/components/telepathyClient.js:1378
+#: ../js/ui/components/telepathyClient.js:1382
 msgid "The account already exists on the server"
 msgstr "Tokia paskyra serveryje jau yra"
 
-#: ../js/ui/components/telepathyClient.js:1380
+#: ../js/ui/components/telepathyClient.js:1384
 msgid "Server is currently too busy to handle the connection"
 msgstr "Šiuo metu serveris per daug užimtas šiai užklausai apdoroti"
 
-#: ../js/ui/components/telepathyClient.js:1382
+#: ../js/ui/components/telepathyClient.js:1386
 msgid "Certificate has been revoked"
 msgstr "Liudijimas atšauktas"
 
-#: ../js/ui/components/telepathyClient.js:1384
+#: ../js/ui/components/telepathyClient.js:1388
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr ""
 "Liudijimui naudojamas nesaugus šifravimo algoritmas arba jis kriptografiškai "
 "silpnas"
 
-#: ../js/ui/components/telepathyClient.js:1386
+#: ../js/ui/components/telepathyClient.js:1390
 msgid ""
 "The length of the server certificate, or the depth of the server certificate "
 "chain, exceed the limits imposed by the cryptography library"
@@ -953,22 +954,22 @@ msgstr ""
 "Serverio liudijimo ilgis arba liudijimų eilės dydis viršija kriptografijos "
 "bibliotekos apribojimus"
 
-#: ../js/ui/components/telepathyClient.js:1388
+#: ../js/ui/components/telepathyClient.js:1392
 msgid "Internal error"
 msgstr "Vidinė klaida"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example. */
-#: ../js/ui/components/telepathyClient.js:1398
+#: ../js/ui/components/telepathyClient.js:1402
 #, javascript-format
 msgid "Unable to connect to %s"
 msgstr "Nepavyksta prisijungti prie %s"
 
-#: ../js/ui/components/telepathyClient.js:1403
+#: ../js/ui/components/telepathyClient.js:1407
 msgid "View account"
 msgstr "Rodyti paskyrą"
 
-#: ../js/ui/components/telepathyClient.js:1440
+#: ../js/ui/components/telepathyClient.js:1444
 msgid "Unknown reason"
 msgstr "Nežinoma priežastis"
 
@@ -984,22 +985,22 @@ msgstr "Paleisti programas"
 msgid "Dash"
 msgstr "Paleidimo sritis"
 
-#: ../js/ui/dateMenu.js:91
+#: ../js/ui/dateMenu.js:97
 msgid "Open Calendar"
 msgstr "Atverti kalendorių"
 
-#: ../js/ui/dateMenu.js:95
+#: ../js/ui/dateMenu.js:101
 msgid "Open Clocks"
 msgstr "Atverti laikrodžius"
 
-#: ../js/ui/dateMenu.js:102
+#: ../js/ui/dateMenu.js:108
 msgid "Date & Time Settings"
 msgstr "Datos ir laiko nustatymai"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #. */
-#: ../js/ui/dateMenu.js:192
+#: ../js/ui/dateMenu.js:205
 msgid "%A %B %e, %Y"
 msgstr "%A, %Y m. %B %d d."
 
@@ -1128,13 +1129,13 @@ msgid "Other users are logged in."
 msgstr "Yra prisijungusių kitų naudotojų"
 
 #. Translators: Remote here refers to a remote session, like a ssh login */
-#: ../js/ui/endSessionDialog.js:618
+#: ../js/ui/endSessionDialog.js:619
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (nutolęs)"
 
 #. Translators: Console here refers to a tty like a VT console */
-#: ../js/ui/endSessionDialog.js:621
+#: ../js/ui/endSessionDialog.js:622
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (komandų eilutė)"
@@ -1148,7 +1149,7 @@ msgstr "Įdiegti"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Parsiųsti ir įdiegti „%s“ iš extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:641 ../js/ui/status/keyboard.js:335
+#: ../js/ui/keyboard.js:645 ../js/ui/status/keyboard.js:335
 msgid "Keyboard"
 msgstr "Klaviatūra"
 
@@ -1236,16 +1237,16 @@ msgstr "Nėra pranešimų"
 msgid "Message Tray"
 msgstr "Pranešimų juosta"
 
-#: ../js/ui/messageTray.js:2962
+#: ../js/ui/messageTray.js:2967
 msgid "System Information"
 msgstr "Sistemos informacija"
 
-#: ../js/ui/notificationDaemon.js:515 ../src/shell-app.c:425
+#: ../js/ui/notificationDaemon.js:516 ../src/shell-app.c:425
 msgctxt "program"
 msgid "Unknown"
 msgstr "Nežinoma"
 
-#: ../js/ui/overviewControls.js:483 ../js/ui/screenShield.js:151
+#: ../js/ui/overviewControls.js:488 ../js/ui/screenShield.js:151
 #, javascript-format
 msgid "%d new message"
 msgid_plural "%d new messages"
@@ -1279,7 +1280,7 @@ msgstr "Užverti"
 msgid "Activities"
 msgstr "Apžvalga"
 
-#: ../js/ui/panel.js:914
+#: ../js/ui/panel.js:915
 msgid "Top Bar"
 msgstr "Viršutinė juosta"
 
@@ -1309,7 +1310,7 @@ msgstr[0] "%d naujas pranešimas"
 msgstr[1] "%d nauji pranešimai"
 msgstr[2] "%d naujų pranešimų"
 
-#: ../js/ui/screenShield.js:474 ../js/ui/status/system.js:342
+#: ../js/ui/screenShield.js:474 ../js/ui/status/system.js:345
 msgid "Lock"
 msgstr "Užrakinti"
 
@@ -1317,19 +1318,19 @@ msgstr "Užrakinti"
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME aplinkai reikia užrakinti ekraną"
 
-#: ../js/ui/screenShield.js:835 ../js/ui/screenShield.js:1309
+#: ../js/ui/screenShield.js:835 ../js/ui/screenShield.js:1312
 msgid "Unable to lock"
 msgstr "Nepavyksta užrakinti"
 
-#: ../js/ui/screenShield.js:836 ../js/ui/screenShield.js:1310
+#: ../js/ui/screenShield.js:836 ../js/ui/screenShield.js:1313
 msgid "Lock was blocked by an application"
 msgstr "Programa užblokavo užrakinimą"
 
-#: ../js/ui/search.js:603
+#: ../js/ui/search.js:606
 msgid "Searching…"
 msgstr "Ieškoma…"
 
-#: ../js/ui/search.js:649
+#: ../js/ui/search.js:652
 msgid "No results."
 msgstr "Nerasta atitikmenų."
 
@@ -1393,11 +1394,11 @@ msgstr "Pasikartojantieji klavišai"
 msgid "Mouse Keys"
 msgstr "Pelės mygtukai"
 
-#: ../js/ui/status/accessibility.js:143
+#: ../js/ui/status/accessibility.js:144
 msgid "High Contrast"
 msgstr "Didelis kontrastas"
 
-#: ../js/ui/status/accessibility.js:192
+#: ../js/ui/status/accessibility.js:193
 msgid "Large Text"
 msgstr "Didelis tekstas"
 
@@ -1407,8 +1408,8 @@ msgstr "Bluetooth"
 
 #: ../js/ui/status/bluetooth.js:51 ../js/ui/status/network.js:151
 #: ../js/ui/status/network.js:323 ../js/ui/status/network.js:1234
-#: ../js/ui/status/network.js:1345 ../js/ui/status/rfkill.js:85
-#: ../js/ui/status/rfkill.js:105
+#: ../js/ui/status/network.js:1345 ../js/ui/status/rfkill.js:86
+#: ../js/ui/status/rfkill.js:114
 msgid "Turn Off"
 msgstr "Išjungti"
 
@@ -1441,12 +1442,10 @@ msgid "Location"
 msgstr "Vieta"
 
 #: ../js/ui/status/location.js:60 ../js/ui/status/location.js:168
-#| msgid "Disabled"
 msgid "Disable"
 msgstr "Išjungti"
 
 #: ../js/ui/status/location.js:165
-#| msgid "Enabled"
 msgid "Enable"
 msgstr "Įjungti"
 
@@ -1470,37 +1469,42 @@ msgstr "Prisijungta"
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu) */
 #: ../js/ui/status/network.js:426
-msgid "unmanaged"
-msgstr "nevaldomas"
+#| msgid "unmanaged"
+msgid "Unmanaged"
+msgstr "Nevaldomas"
 
 #: ../js/ui/status/network.js:428
-msgid "disconnecting..."
-msgstr "atsijungiama..."
+#| msgid "disconnecting..."
+msgid "Disconnecting"
+msgstr "Atsijungiama"
 
-#: ../js/ui/status/network.js:434 ../js/ui/status/network.js:1362
-msgid "connecting..."
-msgstr "jungiamasi..."
+#: ../js/ui/status/network.js:434 ../js/ui/status/network.js:1254
+msgid "Connecting"
+msgstr "Jungiamasi"
 
 #. Translators: this is for network connections that require some kind of key or password */
-#: ../js/ui/status/network.js:437 ../js/ui/status/network.js:1365
-msgid "authentication required"
-msgstr "reikia patvirtinti tapatybę"
+#: ../js/ui/status/network.js:437
+#| msgid "authentication required"
+msgid "Authentication required"
+msgstr "Reikia patvirtinti tapatybę"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing */
 #: ../js/ui/status/network.js:445
-msgid "firmware missing"
+#| msgid "firmware missing"
+msgid "Firmware missing"
 msgstr "Trūksta integruotos programinės įrangos (firmware)"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage */
 #: ../js/ui/status/network.js:449
-msgid "unavailable"
-msgstr "nepasiekiamas"
+#| msgid "unavailable"
+msgid "Unavailable"
+msgstr "Nepasiekiamas"
 
-#: ../js/ui/status/network.js:451 ../js/ui/status/network.js:1367
-msgid "connection failed"
-msgstr "nepavyko prisijungti"
+#: ../js/ui/status/network.js:451 ../js/ui/status/network.js:1646
+msgid "Connection failed"
+msgstr "Nepavyko prisijungti"
 
 #: ../js/ui/status/network.js:467
 msgid "Wired Settings"
@@ -1554,7 +1558,7 @@ msgstr "Pasirinkite tinklą"
 msgid "No Networks"
 msgstr "Nėra tinklų"
 
-#: ../js/ui/status/network.js:866 ../js/ui/status/rfkill.js:103
+#: ../js/ui/status/network.js:866 ../js/ui/status/rfkill.js:112
 msgid "Use hardware switch to turn off"
 msgstr "Išjungimui naudoti aparatinį jungiklį"
 
@@ -1574,11 +1578,20 @@ msgstr "Įjungti"
 msgid "Hotspot Active"
 msgstr "Prieigos taškas aktyvus"
 
-#: ../js/ui/status/network.js:1254
-msgid "Connecting"
-msgstr "Jungiamasi"
+#: ../js/ui/status/network.js:1362
+msgid "connecting..."
+msgstr "jungiamasi..."
 
-#: ../js/ui/status/network.js:1433 ../js/ui/status/rfkill.js:88
+#. Translators: this is for network connections that require some kind of key or password */
+#: ../js/ui/status/network.js:1365
+msgid "authentication required"
+msgstr "reikia patvirtinti tapatybę"
+
+#: ../js/ui/status/network.js:1367
+msgid "connection failed"
+msgstr "nepavyko prisijungti"
+
+#: ../js/ui/status/network.js:1433 ../js/ui/status/rfkill.js:89
 msgid "Network Settings"
 msgstr "Tinklo nustatymai"
 
@@ -1593,10 +1606,6 @@ msgstr "VPN"
 #: ../js/ui/status/network.js:1607
 msgid "Network Manager"
 msgstr "Tinklo valdymas"
-
-#: ../js/ui/status/network.js:1646
-msgid "Connection failed"
-msgstr "Nepavyko prisijungti"
 
 #: ../js/ui/status/network.js:1647
 msgid "Activation of network connection failed"
@@ -1632,31 +1641,31 @@ msgstr "UPS"
 msgid "Battery"
 msgstr "Baterija"
 
-#: ../js/ui/status/rfkill.js:82
+#: ../js/ui/status/rfkill.js:83
 msgid "Airplane Mode"
 msgstr "Skrydžio veiksena"
 
-#: ../js/ui/status/rfkill.js:84
+#: ../js/ui/status/rfkill.js:85
 msgid "On"
 msgstr "Įjungta"
 
-#: ../js/ui/status/system.js:314
+#: ../js/ui/status/system.js:317
 msgid "Switch User"
 msgstr "Keisti naudotoją"
 
-#: ../js/ui/status/system.js:319
+#: ../js/ui/status/system.js:322
 msgid "Log Out"
 msgstr "Atsijungti"
 
-#: ../js/ui/status/system.js:338
+#: ../js/ui/status/system.js:341
 msgid "Orientation Lock"
 msgstr "Padėties užrakinimas"
 
-#: ../js/ui/status/system.js:346
+#: ../js/ui/status/system.js:349
 msgid "Suspend"
 msgstr "Užmigdyti"
 
-#: ../js/ui/status/system.js:349
+#: ../js/ui/status/system.js:352
 msgid "Power Off"
 msgstr "Išjungti"
 
@@ -1708,7 +1717,7 @@ msgstr "Grąžinti nustatymus"
 msgid "Keep Changes"
 msgstr "Įrašyti pakeitimus"
 
-#: ../js/ui/windowManager.js:97
+#: ../js/ui/windowManager.js:98
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
@@ -1773,6 +1782,7 @@ msgstr "Slaptažodžiai nesutampa."
 msgid "Password cannot be blank"
 msgstr "Slaptažodis negali būti tuščias"
 
-#: ../src/shell-polkit-authentication-agent.c:343
+#: ../src/shell-polkit-authentication-agent.c:346
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Naudotojas užvėrė tapatybės patvirtinimo dialogą"
+
