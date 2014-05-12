@@ -186,8 +186,30 @@ meta_window_wayland_move_resize_internal (MetaWindow                *window,
 }
 
 static void
-meta_window_wayland_init (MetaWindowWayland *window_wayland)
+appears_focused_changed (GObject    *object,
+                         GParamSpec *pspec,
+                         gpointer    user_data)
 {
+  MetaWindow *window = META_WINDOW (object);
+
+  /* When we're unmanaging, we remove focus from the window,
+   * causing this to fire. Don't do anything in that case. */
+  if (window->unmanaging)
+    return;
+
+  if (meta_window_appears_focused (window))
+    meta_wayland_surface_activated (window->surface);
+  else
+    meta_wayland_surface_deactivated (window->surface);
+}
+
+static void
+meta_window_wayland_init (MetaWindowWayland *wl_window)
+{
+  MetaWindow *window = META_WINDOW (wl_window);
+
+  g_signal_connect (window, "notify::appears-focused",
+                    G_CALLBACK (appears_focused_changed), NULL);
 }
 
 static void
