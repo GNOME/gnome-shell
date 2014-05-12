@@ -38,6 +38,9 @@ struct _MetaWindowWayland
   gboolean has_saved_pos;
   int saved_x;
   int saved_y;
+
+  int last_sent_width;
+  int last_sent_height;
 };
 
 struct _MetaWindowWaylandClass
@@ -160,6 +163,9 @@ meta_window_wayland_move_resize_internal (MetaWindow                *window,
       wl_window->saved_x = constrained_rect.x;
       wl_window->saved_y = constrained_rect.y;
 
+      wl_window->last_sent_width = constrained_rect.width;
+      wl_window->last_sent_height = constrained_rect.height;
+
       meta_wayland_surface_configure_notify (window->surface,
                                              constrained_rect.width,
                                              constrained_rect.height);
@@ -188,9 +194,11 @@ meta_window_wayland_move_resize_internal (MetaWindow                *window,
 static void
 surface_state_changed (MetaWindow *window)
 {
+  MetaWindowWayland *wl_window = META_WINDOW_WAYLAND (window);
+
   meta_wayland_surface_configure_notify (window->surface,
-                                         window->rect.width,
-                                         window->rect.height);
+                                         wl_window->last_sent_width,
+                                         wl_window->last_sent_height);
 }
 
 static void
