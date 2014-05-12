@@ -38,6 +38,8 @@ struct _MetaCompositor
   gint                   switch_workspace_in_progress;
 
   MetaPluginManager *plugin_mgr;
+
+  gboolean frame_has_updated_xsurfaces;
 };
 
 /* Wait 2ms after vblank before starting to draw next frame */
