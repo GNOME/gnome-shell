@@ -142,12 +142,12 @@ bind_output (struct wl_client *client,
                           (int)output->crtc->current_mode->refresh_rate);
 
   output->scale = compute_scale (output);
-  if (version >= META_WL_OUTPUT_HAS_SCALE)
+  if (version >= WL_OUTPUT_SCALE_SINCE_VERSION)
     wl_resource_post_event (resource,
                             WL_OUTPUT_SCALE,
                             output->scale);
 
-  if (version >= META_WL_OUTPUT_HAS_DONE)
+  if (version >= WL_OUTPUT_DONE_SINCE_VERSION)
     wl_resource_post_event (resource,
                             WL_OUTPUT_DONE);
 }

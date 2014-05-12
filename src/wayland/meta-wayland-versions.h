@@ -59,9 +59,4 @@
 #define META_GTK_SURFACE_VERSION            1 /* from gtk_shell */
 #define META_WL_SUBSURFACE_VERSION          1 /* from wl_subcompositor */
 
-/* The first version to implement a specific event */
-#define META_WL_SEAT_HAS_NAME               2
-#define META_WL_OUTPUT_HAS_SCALE            2
-#define META_WL_OUTPUT_HAS_DONE             2
-
 #endif

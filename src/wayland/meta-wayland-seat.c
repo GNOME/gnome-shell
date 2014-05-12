@@ -86,7 +86,7 @@ bind_seat (struct wl_client *client,
                              WL_SEAT_CAPABILITY_POINTER |
                              WL_SEAT_CAPABILITY_KEYBOARD);
 
-  if (version >= META_WL_SEAT_HAS_NAME)
+  if (version >= WL_SEAT_NAME_SINCE_VERSION)
     wl_seat_send_name (resource, "seat0");
 }
 
