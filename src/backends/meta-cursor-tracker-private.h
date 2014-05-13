@@ -62,6 +62,9 @@ struct _MetaCursorTracker {
   MetaCursorReference *window_cursor;
 
   MetaCursorReference *root_cursor;
+
+  /* The cursor from the X11 server. */
+  MetaCursorReference *xfixes_cursor;
 };
 
 struct _MetaCursorTrackerClass {

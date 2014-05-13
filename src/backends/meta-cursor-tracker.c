@@ -224,7 +224,7 @@ meta_cursor_tracker_handle_xevent (MetaCursorTracker *tracker,
   if (notify_event->subtype != XFixesDisplayCursorNotify)
     return FALSE;
 
-  set_window_cursor (tracker, FALSE, NULL);
+  g_clear_pointer (&tracker->xfixes_cursor, meta_cursor_reference_unref);
 
   return TRUE;
 }
@@ -254,7 +254,7 @@ ensure_xfixes_cursor (MetaCursorTracker *tracker)
   gboolean free_cursor_data;
   CoglContext *ctx;
 
-  if (tracker->has_window_cursor)
+  if (tracker->xfixes_cursor)
     return;
 
   cursor_image = XFixesGetCursorImage (tracker->screen->display->xdisplay);
@@ -304,7 +304,7 @@ ensure_xfixes_cursor (MetaCursorTracker *tracker)
       MetaCursorReference *cursor = meta_cursor_reference_take_texture (sprite,
                                                                         cursor_image->xhot,
                                                                         cursor_image->yhot);
-      set_window_cursor (tracker, TRUE, cursor);
+      tracker->xfixes_cursor = cursor;
     }
   XFree (cursor_image);
 }
@@ -317,13 +317,22 @@ ensure_xfixes_cursor (MetaCursorTracker *tracker)
 CoglTexture *
 meta_cursor_tracker_get_sprite (MetaCursorTracker *tracker)
 {
+  MetaCursorReference *cursor;
+
   g_return_val_if_fail (META_IS_CURSOR_TRACKER (tracker), NULL);
 
-  if (!meta_is_wayland_compositor ())
-    ensure_xfixes_cursor (tracker);
+  if (meta_is_wayland_compositor ())
+    {
+      cursor = tracker->displayed_cursor;
+    }
+  else
+    {
+      ensure_xfixes_cursor (tracker);
+      cursor = tracker->xfixes_cursor;
+    }
 
-  if (tracker->displayed_cursor)
-    return meta_cursor_reference_get_cogl_texture (tracker->displayed_cursor, NULL, NULL);
+  if (cursor)
+    return meta_cursor_reference_get_cogl_texture (cursor, NULL, NULL);
   else
     return NULL;
 }
@@ -340,13 +349,22 @@ meta_cursor_tracker_get_hot (MetaCursorTracker *tracker,
                              int               *x,
                              int               *y)
 {
+  MetaCursorReference *cursor;
+
   g_return_if_fail (META_IS_CURSOR_TRACKER (tracker));
 
-  if (!meta_is_wayland_compositor ())
-    ensure_xfixes_cursor (tracker);
+  if (meta_is_wayland_compositor ())
+    {
+      cursor = tracker->displayed_cursor;
+    }
+  else
+    {
+      ensure_xfixes_cursor (tracker);
+      cursor = tracker->xfixes_cursor;
+    }
 
-  if (tracker->displayed_cursor)
-    meta_cursor_reference_get_cogl_texture (tracker->displayed_cursor, x, y);
+  if (cursor)
+    meta_cursor_reference_get_cogl_texture (cursor, x, y);
   else
     {
       if (x)
