@@ -63,11 +63,11 @@ get_displayed_cursor (MetaCursorTracker *tracker)
   if (!tracker->is_showing)
     return NULL;
 
-  if (tracker->grab_cursor)
-    return tracker->grab_cursor;
-
-  if (tracker->has_window_cursor)
-    return tracker->window_cursor;
+  if (tracker->screen->display->grab_op == META_GRAB_OP_NONE)
+    {
+      if (tracker->has_window_cursor)
+        return tracker->window_cursor;
+    }
 
   return tracker->root_cursor;
 }
@@ -372,17 +372,6 @@ meta_cursor_tracker_get_hot (MetaCursorTracker *tracker,
       if (y)
         *y = 0;
     }
-}
-
-void
-meta_cursor_tracker_set_grab_cursor (MetaCursorTracker   *tracker,
-                                     MetaCursorReference *cursor)
-{
-  g_clear_pointer (&tracker->grab_cursor, meta_cursor_reference_unref);
-  if (cursor)
-    tracker->grab_cursor = meta_cursor_reference_ref (cursor);
-
-  sync_cursor (tracker);
 }
 
 void

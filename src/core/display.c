@@ -1702,14 +1702,8 @@ meta_display_set_grab_op_cursor (MetaDisplay *display,
 {
   /* Set root cursor */
   MetaBackend *backend = meta_get_backend ();
-  MetaCursorTracker *tracker = meta_cursor_tracker_get_for_screen (display->screen);
-  MetaCursor cursor = meta_cursor_for_grab_op (op);
-  MetaCursorReference *cursor_ref;
 
-  cursor_ref = meta_cursor_reference_from_theme (cursor);
-  meta_cursor_tracker_set_grab_cursor (tracker, cursor_ref);
-  if (cursor_ref)
-    meta_cursor_reference_unref (cursor_ref);
+  meta_screen_set_cursor (display->screen, meta_cursor_for_grab_op (op));
 
   if (meta_backend_grab_device (backend, META_VIRTUAL_CORE_POINTER_ID, timestamp))
     display->grab_have_pointer = TRUE;
@@ -1862,8 +1856,6 @@ void
 meta_display_end_grab_op (MetaDisplay *display,
                           guint32      timestamp)
 {
-  MetaCursorTracker *tracker;
-
   meta_topic (META_DEBUG_WINDOW_OPS,
               "Ending grab op %u at time %u\n", display->grab_op, timestamp);
 
@@ -1904,8 +1896,7 @@ meta_display_end_grab_op (MetaDisplay *display,
       meta_window_ungrab_all_keys (display->grab_window, timestamp);
     }
 
-  tracker = meta_cursor_tracker_get_for_screen (display->screen);
-  meta_cursor_tracker_set_grab_cursor (tracker, NULL);
+  meta_screen_set_cursor (display->screen, META_CURSOR_DEFAULT);
 
   display->grab_timestamp = 0;
   display->grab_window = NULL;
