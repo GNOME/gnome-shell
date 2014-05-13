@@ -1117,6 +1117,20 @@ cogl_kms_renderer_set_kms_fd (CoglRenderer *renderer,
   renderer->kms_fd = fd;
 }
 
+struct gbm_device *
+cogl_kms_renderer_get_gbm (CoglRenderer *renderer)
+{
+  _COGL_RETURN_VAL_IF_FAIL (cogl_is_renderer (renderer), NULL);
+  if (renderer->connected)
+    {
+      CoglRendererEGL *egl_renderer = renderer->winsys;
+      CoglRendererKMS *kms_renderer = egl_renderer->platform;
+      return kms_renderer->gbm;
+    }
+    else
+      return NULL;
+}
+
 int
 cogl_kms_renderer_get_kms_fd (CoglRenderer *renderer)
 {

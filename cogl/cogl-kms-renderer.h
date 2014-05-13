@@ -68,5 +68,6 @@ cogl_kms_renderer_set_kms_fd (CoglRenderer *renderer,
 int
 cogl_kms_renderer_get_kms_fd (CoglRenderer *renderer);
 
+struct gbm_device *cogl_kms_renderer_get_gbm (CoglRenderer *renderer);
 COGL_END_DECLS
 #endif /* __COGL_KMS_RENDERER_H__ */
