@@ -34,8 +34,6 @@
 #include "meta-monitor-manager-xrandr.h"
 #include "backends/meta-monitor-manager-dummy.h"
 
-#include "meta-cursor-tracker-private.h"
-#include "meta-cursor.h"
 #include <meta/util.h>
 #include "display-private.h"
 #include "compositor/compositor-private.h"
@@ -326,14 +324,10 @@ meta_backend_x11_grab_device (MetaBackend *backend,
   XISetMask (mask.mask, XI_KeyPress);
   XISetMask (mask.mask, XI_KeyRelease);
 
-  MetaCursorTracker *tracker = meta_cursor_tracker_get_for_screen (NULL);
-  MetaCursorReference *cursor_ref = meta_cursor_tracker_get_displayed_cursor (tracker);
-  MetaCursor cursor = meta_cursor_reference_get_meta_cursor (cursor_ref);
-
   ret = XIGrabDevice (priv->xdisplay, device_id,
                       get_stage_window (x11),
                       timestamp,
-                      meta_cursor_create_x_cursor (priv->xdisplay, cursor),
+                      None,
                       XIGrabModeAsync, XIGrabModeAsync,
                       False, /* owner_events */
                       &mask);
