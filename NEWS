@@ -1,3 +1,21 @@
+3.12.2
+======
+* Fix turning off airplane mode [Giovanni; #728512]
+* Handle empty VPN keyfiles [Adel; #728681]
+* Fix setting zero-level in osdWindow [Bastien; #727384]
+* Fix removal of multiple workspace thumbnails at once [Florian; #728820]
+* Make airplane mode menu insensitive in lock screen [Giovanni; #729224]
+* Fix keynav for alternatives in AltSwitcher [Florian; #727259]
+* Fix zombie search providers showing up [Jasper; #728597]
+
+Contributors:
+  Giovanni Campagna, Adel Gadllah, Florian Müllner, Bastien Nocera,
+  Jasper St. Pierre
+
+Translations:
+  Wouter Bolsterlee [nl], Daniel Korostil [uk], Ihar Hrachyshka [be],
+  Giovanni Campagna [it], Carles Ferrando [ca@valencia]
+
 3.12.1
 ======
 * Ensure the currently focused app icon is viewable [Rui; #726759]
