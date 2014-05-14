@@ -200,7 +200,7 @@ AS_IF([test "x$WAYLAND_SCANNER" = "xno"],
 AC_SUBST([WAYLAND_SCANNER])
 AC_SUBST(XWAYLAND_PATH)
 
-MUTTER_PC_MODULES="$MUTTER_PC_MODULES clutter-wayland-1.0 clutter-wayland-compositor-1.0 clutter-egl-1.0 wayland-server libdrm"
+MUTTER_PC_MODULES="$MUTTER_PC_MODULES clutter-wayland-1.0 clutter-wayland-compositor-1.0 clutter-egl-1.0 wayland-server >= 1.4.93 libdrm"
 PKG_CHECK_MODULES(MUTTER, $MUTTER_PC_MODULES)
 
 PKG_CHECK_EXISTS([xi >= 1.6.99.1],
