@@ -1004,8 +1004,9 @@ xdg_shell_get_xdg_popup (struct wl_client *client,
     }
 
   window = meta_window_wayland_new (meta_get_display (), surface);
-  window->rect.x = parent_surf->window->rect.x + x;
-  window->rect.y = parent_surf->window->rect.y + y;
+  meta_window_move (window, FALSE,
+                    parent_surf->window->rect.x + x,
+                    parent_surf->window->rect.y + y);
   window->showing_for_first_time = FALSE;
   window->placed = TRUE;
   meta_window_set_transient_for (window, parent_surf->window);
