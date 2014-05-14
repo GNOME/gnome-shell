@@ -117,16 +117,6 @@ AC_ARG_ENABLE(shape,
                  [disable mutter's use of the shaped window extension]),,
   enable_shape=auto)
 
-## Wayland support requires the xserver.xml protocol extension found in the weston
-## repository but since there aren't currently established conventions for
-## installing and discovering these we simply require a location to be given
-## explicitly...
-AC_ARG_WITH([wayland-protocols],
-            [AS_HELP_STRING([--with-wayland-protocols], [Location for wayland extension protocol specs])],
-            [
-            ],
-            [])
-
 AC_ARG_WITH([xwayland-path],
             [AS_HELP_STRING([--with-xwayland-path], [Absolute path for an X Wayland server])],
             [XWAYLAND_PATH="$withval"],
