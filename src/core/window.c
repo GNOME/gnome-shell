@@ -7057,11 +7057,7 @@ meta_window_update_keyboard_resize (MetaWindow *window,
                      &x, &y);
 
   if (update_cursor)
-    {
-      meta_display_set_grab_op_cursor (window->display,
-                                       window->display->grab_op,
-                                       window->display->grab_timestamp);
-    }
+    meta_display_update_cursor (window->display);
 }
 
 void

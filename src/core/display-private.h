@@ -367,9 +367,7 @@ MetaDisplay* meta_get_display            (void);
 Cursor         meta_display_create_x_cursor (MetaDisplay *display,
                                              MetaCursor   cursor);
 
-void     meta_display_set_grab_op_cursor (MetaDisplay *display,
-                                          MetaGrabOp   op,
-                                          guint32      timestamp);
+void     meta_display_update_cursor (MetaDisplay *display);
 
 void    meta_display_check_threshold_reached (MetaDisplay *display,
                                               int          x,

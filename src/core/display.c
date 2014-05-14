@@ -1696,17 +1696,9 @@ meta_cursor_for_grab_op (MetaGrabOp op)
 }
 
 void
-meta_display_set_grab_op_cursor (MetaDisplay *display,
-                                 MetaGrabOp   op,
-                                 guint32      timestamp)
+meta_display_update_cursor (MetaDisplay *display)
 {
-  /* Set root cursor */
-  MetaBackend *backend = meta_get_backend ();
-
-  meta_screen_set_cursor (display->screen, meta_cursor_for_grab_op (op));
-
-  if (meta_backend_grab_device (backend, META_VIRTUAL_CORE_POINTER_ID, timestamp))
-    display->grab_have_pointer = TRUE;
+  meta_screen_set_cursor (display->screen, meta_cursor_for_grab_op (display->grab_op));
 }
 
 static MetaWindow *
@@ -1734,6 +1726,7 @@ meta_display_begin_grab_op (MetaDisplay *display,
                             int          root_x,
                             int          root_y)
 {
+  MetaBackend *backend = meta_get_backend ();
   MetaWindow *grab_window = NULL;
 
   g_assert (window != NULL);
@@ -1788,7 +1781,8 @@ meta_display_begin_grab_op (MetaDisplay *display,
                   timestamp);
   XSync (display->xdisplay, False);
 
-  meta_display_set_grab_op_cursor (display, op, timestamp);
+  if (meta_backend_grab_device (backend, META_VIRTUAL_CORE_POINTER_ID, timestamp))
+    display->grab_have_pointer = TRUE;
 
   if (!display->grab_have_pointer && !meta_grab_op_is_keyboard (op))
     {
@@ -1803,7 +1797,6 @@ meta_display_begin_grab_op (MetaDisplay *display,
 
       if (!display->grab_have_keyboard)
         {
-          MetaBackend *backend = meta_get_backend ();
           meta_topic (META_DEBUG_WINDOW_OPS, "grabbing all keys failed, ungrabbing pointer\n");
           meta_backend_ungrab_device (backend, META_VIRTUAL_CORE_POINTER_ID, timestamp);
           display->grab_have_pointer = FALSE;
@@ -1826,6 +1819,8 @@ meta_display_begin_grab_op (MetaDisplay *display,
   display->grab_frame_action = frame_action;
   display->grab_resize_unmaximize = 0;
   display->grab_timestamp = timestamp;
+
+  meta_display_update_cursor (display);
 
   if (display->grab_resize_timeout_id)
     {
@@ -1896,13 +1891,13 @@ meta_display_end_grab_op (MetaDisplay *display,
       meta_window_ungrab_all_keys (display->grab_window, timestamp);
     }
 
-  meta_screen_set_cursor (display->screen, META_CURSOR_DEFAULT);
-
   display->grab_timestamp = 0;
   display->grab_window = NULL;
   display->grab_tile_mode = META_TILE_NONE;
   display->grab_tile_monitor_number = -1;
   display->grab_op = META_GRAB_OP_NONE;
+
+  meta_display_update_cursor (display);
 
   if (display->grab_resize_timeout_id)
     {
