@@ -7983,6 +7983,16 @@ meta_window_handle_enter (MetaWindow  *window,
     case G_DESKTOP_FOCUS_MODE_CLICK:
       break;
     }
+
+  if (window->type == META_WINDOW_DOCK)
+    meta_window_raise (window);
+}
+
+void
+meta_window_handle_leave (MetaWindow *window)
+{
+  if (window->type == META_WINDOW_DOCK && !window->has_focus)
+    meta_window_lower (window);
 }
 
 gboolean

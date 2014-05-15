@@ -888,22 +888,17 @@ handle_input_xevent (MetaDisplay *display,
                                     enter_event->time,
                                     enter_event->root_x,
                                     enter_event->root_y);
-
-          if (window->type == META_WINDOW_DOCK)
-            meta_window_raise (window);
         }
       break;
     case XI_Leave:
       if (display->grab_op == META_GRAB_OP_COMPOSITOR)
         break;
 
-      if (window != NULL)
+      if (window != NULL &&
+          enter_event->mode != XINotifyGrab &&
+          enter_event->mode != XINotifyUngrab)
         {
-          if (window->type == META_WINDOW_DOCK &&
-              enter_event->mode != XINotifyGrab &&
-              enter_event->mode != XINotifyUngrab &&
-              !window->has_focus)
-            meta_window_lower (window);
+          meta_window_handle_leave (window);
         }
       break;
     case XI_FocusIn:
