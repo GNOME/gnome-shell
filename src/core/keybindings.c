@@ -2757,7 +2757,7 @@ do_choose_window (MetaDisplay     *display,
                   gboolean         backward)
 {
   MetaTabList type = binding->handler->data;
-  MetaWindow *initial_selection;
+  MetaWindow *window;
 
   meta_topic (META_DEBUG_KEYBINDINGS,
               "Tab list = %u\n", type);
@@ -2766,13 +2766,13 @@ do_choose_window (MetaDisplay     *display,
   if (event->modifier_state & CLUTTER_SHIFT_MASK)
     backward = !backward;
 
-  initial_selection = meta_display_get_tab_next (display,
-                                                 type,
-                                                 screen->active_workspace,
-                                                 NULL,
-                                                 backward);
+  window = meta_display_get_tab_next (display,
+                                      type,
+                                      screen->active_workspace,
+                                      NULL,
+                                      backward);
 
-  meta_window_activate (initial_selection, event->time);
+  meta_window_activate (window, event->time);
 }
 
 static void
