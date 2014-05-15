@@ -300,9 +300,9 @@ void
 meta_wayland_pointer_update (MetaWaylandPointer *pointer,
                              const ClutterEvent *event)
 {
-  pointer->button_count = count_buttons (event);
-
   repick_for_event (pointer, event);
+
+  pointer->button_count = count_buttons (event);
 
   if (pointer->cursor_tracker)
     {
