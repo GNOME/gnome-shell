@@ -72,8 +72,8 @@ meta_backend_real_post_init (MetaBackend *backend)
 {
   MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
 
-  priv->cursor_renderer = META_BACKEND_GET_CLASS (backend)->create_cursor_renderer (backend);
   priv->monitor_manager = META_BACKEND_GET_CLASS (backend)->create_monitor_manager (backend);
+  priv->cursor_renderer = META_BACKEND_GET_CLASS (backend)->create_cursor_renderer (backend);
 }
 
 static MetaCursorRenderer *
