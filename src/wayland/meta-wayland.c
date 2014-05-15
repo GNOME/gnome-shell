@@ -360,7 +360,7 @@ set_gnome_env (const char *name,
 			       "Setenv",
 			       g_variant_new ("(ss)", name, value),
 			       NULL,
-			       G_DBUS_CALL_FLAGS_NONE,
+			       G_DBUS_CALL_FLAGS_NO_AUTO_START,
 			       -1, NULL, &error);
   if (error)
     {
