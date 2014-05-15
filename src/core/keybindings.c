@@ -2772,7 +2772,8 @@ do_choose_window (MetaDisplay     *display,
                                       NULL,
                                       backward);
 
-  meta_window_activate (window, event->time);
+  if (window)
+    meta_window_activate (window, event->time);
 }
 
 static void
