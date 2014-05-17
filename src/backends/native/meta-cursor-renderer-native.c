@@ -120,7 +120,7 @@ update_hw_cursor (MetaCursorRendererNative *native,
 
       set_crtc_cursor (native, &crtcs[i], crtc_cursor, force);
 
-      if (cursor)
+      if (crtc_cursor)
         {
           drmModeMoveCursor (priv->drm_fd, crtcs[i].crtc_id,
                              cursor_rect->x - crtc_rect->x,
