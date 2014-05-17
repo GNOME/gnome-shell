@@ -66,7 +66,7 @@ const WindowMenu = new Lang.Class({
             }));
         }
 
-        item = this.addAction("Always on Top", Lang.bind(this, function() {
+        item = this.addAction(_("Always on Top"), Lang.bind(this, function() {
             if (window.is_above())
                 window.unmake_above();
             else
