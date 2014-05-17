@@ -41,6 +41,7 @@ struct _MetaCursorRendererPrivate
   MetaRectangle current_rect;
 
   MetaCursorReference *displayed_cursor;
+  gboolean handled_by_backend;
 };
 typedef struct _MetaCursorRendererPrivate MetaCursorRendererPrivate;
 
@@ -57,15 +58,16 @@ queue_redraw (MetaCursorRenderer *renderer)
   if (!stage)
     return;
 
-  meta_stage_set_cursor (META_STAGE (stage),
-                         priv->displayed_cursor,
-                         &priv->current_rect);
+  if (priv->handled_by_backend)
+    meta_stage_set_cursor (META_STAGE (stage), NULL, &priv->current_rect);
+  else
+    meta_stage_set_cursor (META_STAGE (stage), priv->displayed_cursor, &priv->current_rect);
 }
 
-static void
+static gboolean
 meta_cursor_renderer_real_update_cursor (MetaCursorRenderer *renderer)
 {
-  queue_redraw (renderer);
+  return FALSE;
 }
 
 static void
@@ -83,6 +85,8 @@ static void
 update_cursor (MetaCursorRenderer *renderer)
 {
   MetaCursorRendererPrivate *priv = meta_cursor_renderer_get_instance_private (renderer);
+  gboolean handled_by_backend;
+  gboolean should_redraw = FALSE;
 
   if (priv->displayed_cursor)
     {
@@ -104,7 +108,18 @@ update_cursor (MetaCursorRenderer *renderer)
       priv->current_rect.height = 0;
     }
 
-  META_CURSOR_RENDERER_GET_CLASS (renderer)->update_cursor (renderer);
+  handled_by_backend = META_CURSOR_RENDERER_GET_CLASS (renderer)->update_cursor (renderer);
+  if (handled_by_backend != priv->handled_by_backend)
+    {
+      priv->handled_by_backend = handled_by_backend;
+      should_redraw = TRUE;
+    }
+
+  if (!handled_by_backend)
+    should_redraw = TRUE;
+
+  if (should_redraw)
+    queue_redraw (renderer);
 }
 
 MetaCursorRenderer *

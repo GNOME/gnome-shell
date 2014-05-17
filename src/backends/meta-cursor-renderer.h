@@ -51,7 +51,7 @@ struct _MetaCursorRendererClass
 {
   GObjectClass parent_class;
 
-  void (* update_cursor) (MetaCursorRenderer *renderer);
+  gboolean (* update_cursor) (MetaCursorRenderer *renderer);
 };
 
 GType meta_cursor_renderer_get_type (void) G_GNUC_CONST;

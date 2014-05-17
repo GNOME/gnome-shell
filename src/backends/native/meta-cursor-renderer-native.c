@@ -140,7 +140,7 @@ should_have_hw_cursor (MetaCursorRenderer *renderer)
     return FALSE;
 }
 
-static void
+static gboolean
 meta_cursor_renderer_native_update_cursor (MetaCursorRenderer *renderer)
 {
   MetaCursorRendererNative *native = META_CURSOR_RENDERER_NATIVE (renderer);
@@ -148,10 +148,7 @@ meta_cursor_renderer_native_update_cursor (MetaCursorRenderer *renderer)
 
   priv->has_hw_cursor = should_have_hw_cursor (renderer);
   update_hw_cursor (native, FALSE);
-
-  /* Fall back to the stage-based cursor if we don't have HW cursors. */
-  if (!priv->has_hw_cursor)
-    META_CURSOR_RENDERER_CLASS (meta_cursor_renderer_native_parent_class)->update_cursor (renderer);
+  return priv->has_hw_cursor;
 }
 
 static void
