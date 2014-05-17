@@ -230,7 +230,11 @@ if test "x$system" = xFedora ; then
 
   if test ! "x$missing" = x; then
       echo -n "Installing packages ... "
-      gpk-install-package-name $missing
+      missing_str=
+      for pkg in $missing ; do
+          missing_str="$missing_str${missing_str:+,}\"$pkg\""
+      done
+      gdbus call -e -d org.freedesktop.PackageKit -o /org/freedesktop/PackageKit -m org.freedesktop.PackageKit.Modify.InstallPackageNames 0 "[$missing_str]" "hide-finished,show-warnings"
       echo "done"
   fi
 fi
