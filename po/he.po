@@ -3,15 +3,16 @@
 # This file is distributed under the same license as the gnome-shell package.
 # liel <lielft@gmail.com>, 2009.
 # Yaron Shahrabani <sh.yaron@gmail.com>, 2010.
-# Yosef Or Boczko <yoseforb@gnome.org>, 2013, 2014.
+# 
+# Yosef Or Boczko <yoseforb@gnome.org>, 2013, 2014., 2014.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-14 17:02+0300\n"
-"PO-Revision-Date: 2014-05-14 17:17+0300\n"
-"Last-Translator: Yosef Or Boczko <yoseforb@gmail.com>\n"
+"POT-Creation-Date: 2014-05-18 02:41+0300\n"
+"PO-Revision-Date: 2014-05-18 02:47+0300\n"
+"Last-Translator: Yosef Or Boczko <yoseforb@gnome.org>\n"
 "Language-Team: עברית <>\n"
 "Language: he\n"
 "MIME-Version: 1.0\n"
@@ -1272,7 +1273,7 @@ msgstr "toggle-switch-intl"
 msgid "Enter a Command"
 msgstr "נא להזין פקודה"
 
-#: ../js/ui/runDialog.js:114
+#: ../js/ui/runDialog.js:114 ../js/ui/windowMenu.js:117
 msgid "Close"
 msgstr "סגירה"
 
@@ -1599,12 +1600,12 @@ msgid "Estimating…"
 msgstr "מתבצע שערוך…"
 
 #: ../js/ui/status/power.js:86
-#, c-format
+#, javascript-format
 msgid "%d∶%02d Remaining (%d%%)"
 msgstr "‏‎‎%d∶%02d נותרו (%d%%)"
 
 #: ../js/ui/status/power.js:91
-#, c-format
+#, javascript-format
 msgid "%d∶%02d Until Full (%d%%)"
 msgstr "%d:%02d עד לטעינה מלאה (%d%%)"
 
@@ -1677,28 +1678,68 @@ msgstr "חיפוש"
 msgid "“%s” is ready"
 msgstr "‏„%s” מוכן"
 
-#: ../js/ui/windowManager.js:56
+#: ../js/ui/windowManager.js:57
 msgid "Do you want to keep these display settings?"
 msgstr "האם ברצונך לשמור הגדרות תצוגה אלה?"
 
 #. Translators: this and the following message should be limited in lenght,
 #. to avoid ellipsizing the labels.
 #. */
-#: ../js/ui/windowManager.js:75
+#: ../js/ui/windowManager.js:76
 msgid "Revert Settings"
 msgstr "שחזור הגדרות"
 
-#: ../js/ui/windowManager.js:79
+#: ../js/ui/windowManager.js:80
 msgid "Keep Changes"
 msgstr "שמירת שינויים"
 
 # javascript-format
-#: ../js/ui/windowManager.js:98
+#: ../js/ui/windowManager.js:99
 #, c-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
 msgstr[0] "שינויי הגדרות ישוחזרו בעוד שנייה"
 msgstr[1] "שינויי הגדרות ישוחזרו בעוד %d שניות"
+
+#: ../js/ui/windowMenu.js:33
+msgid "Minimize"
+msgstr "מזעור"
+
+#: ../js/ui/windowMenu.js:40
+msgid "Unmaximize"
+msgstr "ביטול המזעור"
+
+#: ../js/ui/windowMenu.js:44
+msgid "Maximize"
+msgstr "הגדלה"
+
+#: ../js/ui/windowMenu.js:51
+msgid "Move"
+msgstr "הזזה"
+
+#: ../js/ui/windowMenu.js:57
+msgid "Resize"
+msgstr "שינוי גודל"
+
+#: ../js/ui/windowMenu.js:64
+msgid "Move Titlebar Onscreen"
+msgstr "הזזת שורת הכותרת על המסך"
+
+#: ../js/ui/windowMenu.js:69
+msgid "Always on Top"
+msgstr "תמיד עליון"
+
+#: ../js/ui/windowMenu.js:86
+msgid "Always on Visible Workspace"
+msgstr "הצגה בכל מרחבי העבודה"
+
+#: ../js/ui/windowMenu.js:103
+msgid "Move to Workspace Up"
+msgstr "הזזה למרחב העבודה שמלמעלה"
+
+#: ../js/ui/windowMenu.js:108
+msgid "Move to Workspace Down"
+msgstr "הזזה למרחב העבודה שמלמטה"
 
 #: ../src/calendar-server/evolution-calendar.desktop.in.in.h:1
 msgid "Evolution Calendar"
