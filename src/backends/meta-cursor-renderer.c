@@ -57,10 +57,6 @@ queue_redraw (MetaCursorRenderer *renderer)
   if (!stage)
     return;
 
-  /* If we're not using a MetaStage, quit early */
-  if (!META_IS_STAGE (stage))
-    return;
-
   meta_stage_set_cursor (META_STAGE (stage),
                          priv->displayed_cursor,
                          &priv->current_rect);
