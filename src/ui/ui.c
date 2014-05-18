@@ -24,7 +24,6 @@
 #include "ui.h"
 #include "frames.h"
 #include <meta/util.h>
-#include "menu.h"
 #include "core.h"
 #include "theme-private.h"
 

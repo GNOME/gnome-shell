@@ -28,7 +28,6 @@
 #include "frames.h"
 #include <meta/util.h>
 #include "core.h"
-#include "menu.h"
 #include <meta/theme.h>
 #include <meta/prefs.h>
 #include "ui.h"

@@ -79,8 +79,6 @@ IGNORE_HFILES= \
 	iconcache.h \
 	inlinepixbufs.h \
 	keybindings-private.h \
-	menu.h \
-	metaaccellabel.h \
 	meta-background-actor-private.h \
 	meta-background-group-private.h \
 	meta-module.h \
