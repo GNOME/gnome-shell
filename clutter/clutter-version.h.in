@@ -224,6 +224,16 @@ G_BEGIN_DECLS
  */
 #define CLUTTER_VERSION_1_18    (G_ENCODE_VERSION (1, 18))
 
+/**
+ * CLUTTER_VERSION_1_20:
+ *
+ * A macro that evaluates to the 1.18 version of Clutter, in a format
+ * that can be used by the C pre-processor.
+ *
+ * Since: 1.20
+ */
+#define CLUTTER_VERSION_1_20    (G_ENCODE_VERSION (1, 20))
+
 /* evaluates to the current stable version; for development cycles,
  * this means the next stable target
  */
