@@ -223,6 +223,14 @@ fi
 AM_CONDITIONAL(ENABLE_MAN, test "$enable_man" != no)
 
 GNOME_COMPILE_WARNINGS([error])
+case "$WARN_CFLAGS" in
+    *-Werror*)
+        WARN_CFLAGS="$WARN_CFLAGS -Wno-error=deprecated-declarations"
+        ;;
+esac
+
+AM_CFLAGS="$AM_CFLAGS $WARN_CFLAGS"
+AC_SUBST(AM_CFLAGS)
 
 BROWSER_PLUGIN_DIR="${BROWSER_PLUGIN_DIR:-"\${libdir}/mozilla/plugins"}"
 AC_ARG_VAR([BROWSER_PLUGIN_DIR],[Where to install the plugin to])
