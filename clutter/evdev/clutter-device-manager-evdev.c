@@ -121,6 +121,7 @@ static ClutterOpenDeviceCallback  device_open_callback;
 static ClutterCloseDeviceCallback device_close_callback;
 static gpointer                   device_callback_data;
 
+#ifdef CLUTTER_ENABLE_DEBUG
 static const char *device_type_str[] = {
   "pointer",            /* CLUTTER_POINTER_DEVICE */
   "keyboard",           /* CLUTTER_KEYBOARD_DEVICE */
@@ -133,6 +134,7 @@ static const char *device_type_str[] = {
   "eraser",             /* CLUTTER_ERASER_DEVICE */
   "cursor",             /* CLUTTER_CURSOR_DEVICE */
 };
+#endif /* CLUTTER_ENABLE_DEBUG */
 
 /*
  * ClutterEventSource management
