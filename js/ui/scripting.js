@@ -306,8 +306,8 @@ function _collect(scriptModule, outputFile) {
         print ('------------------------------------------------------------');
         for (let i = 0; i < metrics.length; i++) {
             let metric = metrics[i];
-            print ('# ' + scriptModule.METRIC_DESCRIPTIONS[metric]);
-            print (metric + ': ' +  scriptModule.METRICS[metric]);
+            print ('# ' + scriptModule.METRICS[metric].description);
+            print (metric + ': ' +  scriptModule.METRICS[metric].value + scriptModule.METRICS[metric].units);
         }
         print ('------------------------------------------------------------');
     }
