@@ -55,6 +55,10 @@ struct _MetaWindowX11Private
   int border_width;
 
   MetaResizePopup *grab_resize_popup;
+
+  /* These are in server coordinates. If we have a frame, it's
+   * relative to the frame. */
+  MetaRectangle client_rect;
 };
 
 G_END_DECLS

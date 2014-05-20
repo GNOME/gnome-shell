@@ -1906,12 +1906,12 @@ process_mouse_move_resize_grab (MetaDisplay     *display,
       else if (window->tile_mode != META_TILE_NONE)
         meta_window_tile (window);
       else
-        meta_window_move_resize (display->grab_window,
-                                 TRUE,
-                                 display->grab_initial_window_pos.x,
-                                 display->grab_initial_window_pos.y,
-                                 display->grab_initial_window_pos.width,
-                                 display->grab_initial_window_pos.height);
+        meta_window_move_resize_frame (display->grab_window,
+                                       TRUE,
+                                       display->grab_initial_window_pos.x,
+                                       display->grab_initial_window_pos.y,
+                                       display->grab_initial_window_pos.width,
+                                       display->grab_initial_window_pos.height);
 
       /* End grab */
       return FALSE;
@@ -1968,12 +1968,12 @@ process_keyboard_move_grab (MetaDisplay     *display,
       if (window->shaken_loose)
         meta_window_maximize (window, META_MAXIMIZE_BOTH);
       else
-        meta_window_move_resize (display->grab_window,
-                                 TRUE,
-                                 display->grab_initial_window_pos.x,
-                                 display->grab_initial_window_pos.y,
-                                 display->grab_initial_window_pos.width,
-                                 display->grab_initial_window_pos.height);
+        meta_window_move_resize_frame (display->grab_window,
+                                       TRUE,
+                                       display->grab_initial_window_pos.x,
+                                       display->grab_initial_window_pos.y,
+                                       display->grab_initial_window_pos.width,
+                                       display->grab_initial_window_pos.height);
     }
 
   /* When moving by increments, we still snap to edges if the move
@@ -2185,12 +2185,12 @@ process_keyboard_resize_grab (MetaDisplay     *display,
   if (event->keyval == CLUTTER_KEY_Escape)
     {
       /* End resize and restore to original state. */
-      meta_window_move_resize (display->grab_window,
-                               TRUE,
-                               display->grab_initial_window_pos.x,
-                               display->grab_initial_window_pos.y,
-                               display->grab_initial_window_pos.width,
-                               display->grab_initial_window_pos.height);
+      meta_window_move_resize_frame (display->grab_window,
+                                     TRUE,
+                                     display->grab_initial_window_pos.x,
+                                     display->grab_initial_window_pos.y,
+                                     display->grab_initial_window_pos.width,
+                                     display->grab_initial_window_pos.height);
 
       return FALSE;
     }

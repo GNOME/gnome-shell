@@ -29,6 +29,9 @@
 #include <meta/errors.h>
 #include "util-private.h"
 
+#include "x11/window-x11.h"
+#include "x11/window-x11-private.h"
+
 /* Looks up the MetaWindow representing the frame of the given X window.
  * Used as a helper function by a bunch of the functions below.
  *
@@ -69,6 +72,8 @@ meta_core_get (Display *xdisplay,
 
   MetaDisplay *display = meta_display_for_x_display (xdisplay);
   MetaWindow *window = meta_display_lookup_x_window (display, xwindow);
+  MetaWindowX11 *window_x11 = META_WINDOW_X11 (window);
+  MetaWindowX11Private *priv = window_x11->priv;
 
   va_start (args, xwindow);
 
@@ -103,10 +108,10 @@ meta_core_get (Display *xdisplay,
           if (!*((gboolean*)answer)) goto out; /* see above */
           break;
         case META_CORE_GET_CLIENT_WIDTH:
-          *((gint*)answer) = window->rect.width;
+          *((gint*)answer) = priv->client_rect.width;
           break;
         case META_CORE_GET_CLIENT_HEIGHT:
-          *((gint*)answer) = window->rect.height;
+          *((gint*)answer) = priv->client_rect.height;
           break;
         case META_CORE_GET_FRAME_FLAGS:
           *((MetaFrameFlags*)answer) = meta_frame_get_flags (window->frame);

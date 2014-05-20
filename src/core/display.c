@@ -1826,9 +1826,9 @@ meta_display_begin_grab_op (MetaDisplay *display,
               "Grab op %u on window %s successful\n",
               display->grab_op, window ? window->desc : "(null)");
 
-  meta_window_get_client_root_coords (display->grab_window,
-                                      &display->grab_initial_window_pos);
-  meta_window_get_frame_rect (display->grab_window, &display->grab_anchor_window_pos);
+  meta_window_get_frame_rect (display->grab_window,
+                              &display->grab_initial_window_pos);
+  display->grab_anchor_window_pos = display->grab_initial_window_pos;
 
   if (meta_is_wayland_compositor ())
     meta_display_sync_wayland_input_focus (display);

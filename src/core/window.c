@@ -2654,15 +2654,11 @@ meta_window_save_rect (MetaWindow *window)
         {
           window->saved_rect.x      = window->rect.x;
           window->saved_rect.width  = window->rect.width;
-          if (window->frame)
-            window->saved_rect.x   += window->frame->rect.x;
         }
       if (!window->maximized_vertically)
         {
           window->saved_rect.y      = window->rect.y;
           window->saved_rect.height = window->rect.height;
-          if (window->frame)
-            window->saved_rect.y   += window->frame->rect.y;
         }
     }
 }
@@ -3016,12 +3012,12 @@ unmaximize_window_before_freeing (MetaWindow        *window)
        * Moreover, it will need to know the unmaximized geometry,
        * therefore move_resize the window to saved_rect here
        * before closing it. */
-      meta_window_move_resize (window,
-                               FALSE,
-                               window->saved_rect.x,
-                               window->saved_rect.y,
-                               window->saved_rect.width,
-                               window->saved_rect.height);
+      meta_window_move_resize_frame (window,
+                                     FALSE,
+                                     window->saved_rect.x,
+                                     window->saved_rect.y,
+                                     window->saved_rect.width,
+                                     window->saved_rect.height);
     }
 }
 
@@ -3078,7 +3074,7 @@ meta_window_unmaximize_internal (MetaWindow        *window,
       /* Unmaximize to the saved_rect position in the direction(s)
        * being unmaximized.
        */
-      meta_window_get_client_root_coords (window, &target_rect);
+      target_rect = old_rect;
 
       /* Avoid unmaximizing to "almost maximized" size when the previous size
        * is greater then 80% of the work area use MAX_UNMAXIMIZED_WINDOW_AREA of the work area as upper limit
@@ -3115,7 +3111,9 @@ meta_window_unmaximize_internal (MetaWindow        *window,
       /* Window's size hints may have changed while maximized, making
        * saved_rect invalid.  #329152
        */
+      meta_window_frame_rect_to_client_rect (window, &target_rect, &target_rect);
       ensure_size_hints_satisfied (&target_rect, &window->size_hints);
+      meta_window_client_rect_to_frame_rect (window, &target_rect, &target_rect);
 
       meta_window_move_resize_internal (window,
                                         META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION,
@@ -3139,9 +3137,6 @@ meta_window_unmaximize_internal (MetaWindow        *window,
           window->display->grab_window == window)
         {
           window->display->grab_anchor_window_pos = window->unconstrained_rect;
-          meta_window_client_rect_to_frame_rect (window,
-                                                 &window->display->grab_anchor_window_pos,
-                                                 &window->display->grab_anchor_window_pos);
         }
 
       meta_window_recalc_features (window);
@@ -3182,9 +3177,6 @@ meta_window_unmaximize_with_gravity (MetaWindow        *window,
   desired_rect.width = new_width;
   desired_rect.height = new_height;
 
-  meta_window_frame_rect_to_client_rect (window, &desired_rect, &desired_rect);
-
-  meta_window_get_position (window, &desired_rect.x, &desired_rect.y);
   meta_window_unmaximize_internal (window, directions, &desired_rect, gravity);
 }
 
@@ -3298,12 +3290,12 @@ meta_window_unmake_fullscreen (MetaWindow  *window)
       meta_window_recalc_features (window);
       set_net_wm_state (window);
 
-      meta_window_move_resize (window,
-                               FALSE,
-                               target_rect.x,
-                               target_rect.y,
-                               target_rect.width,
-                               target_rect.height);
+      meta_window_move_resize_frame (window,
+                                     FALSE,
+                                     target_rect.x,
+                                     target_rect.y,
+                                     target_rect.width,
+                                     target_rect.height);
 
       meta_window_update_layer (window);
 
@@ -3650,13 +3642,27 @@ void
 meta_window_move_resize_internal (MetaWindow          *window,
                                   MetaMoveResizeFlags  flags,
                                   int                  gravity,
-                                  MetaRectangle        client_rect)
+                                  MetaRectangle        frame_rect)
 {
-  /* The rectangle here that's passed in is always the root position
-   * of the client window. For undecorated or client-decorated windows,
-   * this is the root position of the X11 window. For server-decorated
-   * windows, this is the root position of the client area of the window.
+  /* The rectangle here that's passed in *always* in "frame rect"
+   * coordinates. That means the position of the frame's visible bounds,
+   * with x and y being absolute (root window) coordinates.
+   *
+   * For an X11 framed window, the client window's server rectangle is
+   * inset from this rectangle by the frame's visible borders, and the
+   * frame window's server rectangle is outset by the invisible borders.
+   *
+   * For an X11 unframed window, the rectangle here directly matches
+   * the server's rectangle, since the visible and invisible borders
+   * are both 0.
+   *
+   * For an X11 CSD window, the client window's server rectangle is
+   * outset from this rectagle by the client-specified frame extents.
+   *
+   * For a Wayland window, this rectangle can simply be sent directly
+   * to the client.
    */
+
   gboolean did_placement;
   MetaRectangle unconstrained_rect;
   MetaRectangle constrained_rect;
@@ -3679,18 +3685,15 @@ meta_window_move_resize_internal (MetaWindow          *window,
    * resizing the old rectangle with the given gravity. */
   if ((flags & (META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION)) == META_IS_RESIZE_ACTION)
     {
-      MetaRectangle old_rect;
-
-      meta_window_get_client_root_coords (window, &old_rect);
-      meta_rectangle_resize_with_gravity (&old_rect,
+      meta_rectangle_resize_with_gravity (&window->rect,
                                           &unconstrained_rect,
                                           gravity,
-                                          client_rect.width,
-                                          client_rect.height);
+                                          frame_rect.width,
+                                          frame_rect.height);
     }
   else
     {
-      unconstrained_rect = client_rect;
+      unconstrained_rect = frame_rect;
     }
 
   /* If this is only a move, then ignore the passed in size and
@@ -3711,15 +3714,11 @@ meta_window_move_resize_internal (MetaWindow          *window,
       MetaRectangle old_rect;
       meta_window_get_frame_rect (window, &old_rect);
 
-      meta_window_client_rect_to_frame_rect (window, &constrained_rect, &constrained_rect);
-
       meta_window_constrain (window,
                              flags,
                              gravity,
                              &old_rect,
                              &constrained_rect);
-
-      meta_window_frame_rect_to_client_rect (window, &constrained_rect, &constrained_rect);
     }
 
   /* Do the protocol-specific move/resize logic */
@@ -3740,12 +3739,6 @@ meta_window_move_resize_internal (MetaWindow          *window,
     }
 
   meta_window_update_monitor (window);
-
-  /* Invariants leaving this function are:
-   *   a) window->rect and frame->rect reflect the actual
-   *      server-side size/pos of window->xwindow and frame->xwindow
-   *   b) all constraints are obeyed by window->rect and frame->rect
-   */
 
   if ((result & META_MOVE_RESIZE_RESULT_FRAME_SHAPE_CHANGED) && window->frame_bounds)
     {
@@ -3783,7 +3776,6 @@ meta_window_move_frame (MetaWindow *window,
   g_return_if_fail (!window->override_redirect);
 
   flags = (user_op ? META_IS_USER_ACTION : 0) | META_IS_MOVE_ACTION;
-  meta_window_frame_rect_to_client_rect (window, &rect, &rect);
   meta_window_move_resize_internal (window, flags, NorthWestGravity, rect);
 }
 
@@ -3828,10 +3820,14 @@ meta_window_move_resize_frame (MetaWindow  *window,
                                int          w,
                                int          h)
 {
+  MetaMoveResizeFlags flags;
   MetaRectangle rect = { root_x_nw, root_y_nw, w, h };
-  meta_window_frame_rect_to_client_rect (window, &rect, &rect);
 
-  meta_window_move_resize (window, user_op, rect.x, rect.y, rect.width, rect.height);
+  g_return_if_fail (!window->override_redirect);
+
+  flags = (user_op ? META_IS_USER_ACTION : 0) | META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION;
+
+  meta_window_move_resize_internal (window, flags, NorthWestGravity, rect);
 }
 
 /**
@@ -3868,30 +3864,6 @@ meta_window_move_to_monitor (MetaWindow  *window,
 }
 
 void
-meta_window_move_resize (MetaWindow  *window,
-                         gboolean     user_op,
-                         int          root_x_nw,
-                         int          root_y_nw,
-                         int          w,
-                         int          h)
-{
-  MetaMoveResizeFlags flags;
-  MetaRectangle rect;
-
-  g_return_if_fail (!window->override_redirect);
-
-  flags = (user_op ? META_IS_USER_ACTION : 0) |
-    META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION;
-
-  rect.x = root_x_nw;
-  rect.y = root_y_nw;
-  rect.width = w;
-  rect.height = h;
-
-  meta_window_move_resize_internal (window, flags, NorthWestGravity, rect);
-}
-
-void
 meta_window_resize_frame_with_gravity (MetaWindow *window,
                                        gboolean     user_op,
                                        int          w,
@@ -3904,8 +3876,6 @@ meta_window_resize_frame_with_gravity (MetaWindow *window,
   rect.width = w;
   rect.height = h;
 
-  meta_window_frame_rect_to_client_rect (window, &rect, &rect);
-
   flags = (user_op ? META_IS_USER_ACTION : 0) | META_IS_RESIZE_ACTION;
   meta_window_move_resize_internal (window, flags, gravity, rect);
 }
@@ -3913,11 +3883,11 @@ meta_window_resize_frame_with_gravity (MetaWindow *window,
 static void
 meta_window_move_resize_now (MetaWindow  *window)
 {
-  meta_window_move_resize (window, FALSE,
-                           window->unconstrained_rect.x,
-                           window->unconstrained_rect.y,
-                           window->unconstrained_rect.width,
-                           window->unconstrained_rect.height);
+  meta_window_move_resize_frame (window, FALSE,
+                                 window->unconstrained_rect.x,
+                                 window->unconstrained_rect.y,
+                                 window->unconstrained_rect.width,
+                                 window->unconstrained_rect.height);
 }
 
 static gboolean
@@ -3958,36 +3928,6 @@ idle_move_resize (gpointer data)
   destroying_windows_disallowed -= 1;
 
   return FALSE;
-}
-
-void
-meta_window_get_position (MetaWindow  *window,
-                          int         *x,
-                          int         *y)
-{
-  if (window->frame)
-    {
-      if (x)
-        *x = window->frame->rect.x + window->frame->child_x;
-      if (y)
-        *y = window->frame->rect.y + window->frame->child_y;
-    }
-  else
-    {
-      if (x)
-        *x = window->rect.x;
-      if (y)
-        *y = window->rect.y;
-    }
-}
-
-void
-meta_window_get_client_root_coords (MetaWindow    *window,
-                                    MetaRectangle *rect)
-{
-  meta_window_get_position (window, &rect->x, &rect->y);
-  rect->width  = window->rect.width;
-  rect->height = window->rect.height;
 }
 
 void
@@ -4108,7 +4048,10 @@ meta_window_get_input_rect (const MetaWindow *window,
   if (window->frame)
     *rect = window->frame->rect;
   else
-    *rect = window->rect;
+    {
+      *rect = window->rect;
+      meta_window_frame_rect_to_client_rect ((MetaWindow *) window, rect, rect);
+    }
 }
 
 /**
@@ -4218,30 +4161,7 @@ void
 meta_window_get_frame_rect (const MetaWindow *window,
                             MetaRectangle    *rect)
 {
-  if (window->frame)
-    {
-      MetaFrameBorders borders;
-      *rect = window->frame->rect;
-      meta_frame_calc_borders (window->frame, &borders);
-
-      rect->x += borders.invisible.left;
-      rect->y += borders.invisible.top;
-      rect->width  -= borders.invisible.left + borders.invisible.right;
-      rect->height -= borders.invisible.top  + borders.invisible.bottom;
-    }
-  else
-    {
-      *rect = window->rect;
-
-      if (window->has_custom_frame_extents)
-        {
-          const GtkBorder *extents = &window->custom_frame_extents;
-          rect->x += extents->left;
-          rect->y += extents->top;
-          rect->width -= extents->left + extents->right;
-          rect->height -= extents->top + extents->bottom;
-        }
-    }
+  *rect = window->rect;
 }
 
 /**
@@ -4276,22 +4196,18 @@ void
 meta_window_get_client_area_rect (const MetaWindow      *window,
                                   cairo_rectangle_int_t *rect)
 {
-  if (window->frame)
-    {
-      rect->x = window->frame->child_x;
-      rect->y = window->frame->child_y;
-    }
-  else
-    {
-      rect->x = 0;
-      rect->y = 0;
-    }
+  MetaFrameBorders borders;
 
-  rect->width = window->rect.width;
+  meta_frame_calc_borders (window->frame, &borders);
+
+  rect->x = borders.total.left;
+  rect->y = borders.total.top;
+
+  rect->width = window->rect.width - borders.visible.left - borders.visible.right;
   if (window->shaded)
     rect->height = 0;
   else
-    rect->height = window->rect.height;
+    rect->height = window->rect.height - borders.visible.top - borders.visible.bottom;
 }
 
 void

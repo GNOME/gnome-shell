@@ -357,7 +357,8 @@ struct _MetaWindow
   /* if non-NULL, the bounds of the window frame */
   cairo_region_t *frame_bounds;
 
-  /* if non-NULL, the bounding shape region of the window */
+  /* if non-NULL, the bounding shape region of the window. Relative to
+   * the server-side client window. */
   cairo_region_t *shape_region;
 
   /* if non-NULL, the opaque region _NET_WM_OPAQUE_REGION */
@@ -403,32 +404,23 @@ struct _MetaWindow
   gboolean has_custom_frame_extents;
   GtkBorder custom_frame_extents;
 
-  /* The size we set the window to last (i.e. what we believe
-   * to be its actual size on the server). The x, y are
-   * the actual server-side x,y so are relative to the frame
-   * (meaning that they just hold the frame width and height)
-   * or the root window (meaning they specify the location
-   * of the top left of the inner window) as appropriate.
-   */
+  /* The rectangles here are in "frame rect" coordinates. See the
+   * comment at the top of meta_window_move_resize_internal() for more
+   * information. */
+
+  /* The current window geometry of the window. */
   MetaRectangle rect;
 
-  /* The geometry to restore when we unmaximize.  The position is in
-   * root window coords, even if there's a frame, which contrasts with
-   * window->rect above.  Note that this gives the position and size
-   * of the client window (i.e. ignoring the frame).
-   */
+  /* The geometry to restore when we unmaximize. */
   MetaRectangle saved_rect;
 
   /* This is the geometry the window will have if no constraints have
    * applied. We use this whenever we are moving implicitly (for example,
    * if we move to avoid a panel, we can snap back to this position if
-   * the panel moves again).  Note that this gives the position and size
-   * of the client window (i.e. ignoring the frame).
-   *
-   * Position always in root coords, unlike window->rect.
+   * the panel moves again).
    */
   MetaRectangle unconstrained_rect;
-  
+
   /* Cached net_wm_icon_geometry */
   MetaRectangle icon_geometry;
 
@@ -539,12 +531,6 @@ void        meta_window_update_fullscreen_monitors (MetaWindow    *window,
                                                     unsigned long  left,
                                                     unsigned long  right);
 
-void        meta_window_move_resize        (MetaWindow  *window,
-                                            gboolean     user_op,
-                                            int          root_x_nw,
-                                            int          root_y_nw,
-                                            int          w,
-                                            int          h);
 void        meta_window_resize_frame_with_gravity (MetaWindow  *window,
                                                    gboolean     user_op,
                                                    int          w,
@@ -558,17 +544,6 @@ void        meta_window_change_workspace   (MetaWindow  *window,
 gboolean    meta_window_should_be_showing   (MetaWindow  *window);
 
 void        meta_window_update_struts      (MetaWindow  *window);
-
-/* this gets root coords */
-void        meta_window_get_position       (MetaWindow  *window,
-                                            int         *x,
-                                            int         *y);
-
-/* Gets root coords for x, y, width & height of client window; uses
- * meta_window_get_position for x & y.
- */
-void        meta_window_get_client_root_coords (MetaWindow    *window,
-                                                MetaRectangle *rect);
 
 /* gets position we need to set to stay in current position,
  * assuming position will be gravity-compensated. i.e.
@@ -716,7 +691,7 @@ void meta_window_update_resize (MetaWindow *window,
 void meta_window_move_resize_internal (MetaWindow          *window,
                                        MetaMoveResizeFlags  flags,
                                        int                  gravity,
-                                       MetaRectangle        client_rect);
+                                       MetaRectangle        frame_rect);
 
 void meta_window_grab_op_began (MetaWindow *window, MetaGrabOp op);
 void meta_window_grab_op_ended (MetaWindow *window, MetaGrabOp op);

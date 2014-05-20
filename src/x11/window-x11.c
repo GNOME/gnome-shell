@@ -210,8 +210,8 @@ send_configure_notify (MetaWindow *window)
   event.xconfigure.display = window->display->xdisplay;
   event.xconfigure.event = window->xwindow;
   event.xconfigure.window = window->xwindow;
-  event.xconfigure.x = window->rect.x - priv->border_width;
-  event.xconfigure.y = window->rect.y - priv->border_width;
+  event.xconfigure.x = priv->client_rect.x - priv->border_width;
+  event.xconfigure.y = priv->client_rect.y - priv->border_width;
   if (window->frame)
     {
       if (window->withdrawn)
@@ -233,8 +233,8 @@ send_configure_notify (MetaWindow *window)
           event.xconfigure.y += window->frame->rect.y;
         }
     }
-  event.xconfigure.width = window->rect.width;
-  event.xconfigure.height = window->rect.height;
+  event.xconfigure.width = priv->client_rect.width;
+  event.xconfigure.height = priv->client_rect.height;
   event.xconfigure.border_width = priv->border_width; /* requested not actual */
   event.xconfigure.above = None; /* FIXME */
   event.xconfigure.override_redirect = False;
@@ -492,6 +492,7 @@ meta_window_apply_session_info (MetaWindow *window,
       flags = META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION;
 
       adjust_for_gravity (window, FALSE, gravity, &rect);
+      meta_window_client_rect_to_frame_rect (window, &rect, &rect);
       meta_window_move_resize_internal (window, flags, gravity, rect);
     }
 }
@@ -547,6 +548,7 @@ meta_window_x11_manage (MetaWindow *window)
       rect.height = window->size_hints.height;
 
       adjust_for_gravity (window, TRUE, gravity, &rect);
+      meta_window_client_rect_to_frame_rect (window, &rect, &rect);
       meta_window_move_resize_internal (window, flags, gravity, rect);
     }
 }
@@ -786,6 +788,22 @@ meta_window_x11_focus (MetaWindow *window,
 }
 
 static void
+meta_window_get_client_root_coords (MetaWindow    *window,
+                                    MetaRectangle *rect)
+{
+  MetaWindowX11 *window_x11 = META_WINDOW_X11 (window);
+  MetaWindowX11Private *priv = meta_window_x11_get_instance_private (window_x11);
+
+  *rect = priv->client_rect;
+
+  if (window->frame)
+    {
+      rect->x += window->frame->rect.x;
+      rect->y += window->frame->rect.y;
+    }
+}
+
+static void
 meta_window_refresh_resize_popup (MetaWindow *window)
 {
   MetaWindowX11 *window_x11 = META_WINDOW_X11 (window);
@@ -1003,9 +1021,7 @@ meta_window_x11_move_resize_internal (MetaWindow                *window,
   MetaWindowX11 *window_x11 = META_WINDOW_X11 (window);
   MetaWindowX11Private *priv = meta_window_x11_get_instance_private (window_x11);
   MetaFrameBorders borders;
-  int root_x_nw, root_y_nw;
-  int w, h;
-  int client_move_x, client_move_y;
+  MetaRectangle client_rect;
   int size_dx, size_dy;
   XWindowChanges values;
   unsigned int mask;
@@ -1021,32 +1037,22 @@ meta_window_x11_move_resize_internal (MetaWindow                *window,
 
   is_configure_request = (flags & META_IS_CONFIGURE_REQUEST) != 0;
 
-  /* meta_window_constrain() might have maximized the window after placement,
-   * changing the borders.
-   */
   meta_frame_calc_borders (window->frame, &borders);
 
-  root_x_nw = constrained_rect.x;
-  root_y_nw = constrained_rect.y;
-  w = constrained_rect.width;
-  h = constrained_rect.height;
+  size_dx = constrained_rect.x - window->rect.width;
+  size_dy = constrained_rect.y - window->rect.height;
 
-  size_dx = w - window->rect.width;
-  size_dy = h - window->rect.height;
-
-  if (size_dx != 0 || size_dy != 0)
-    need_resize_client = TRUE;
-
-  window->rect.width = w;
-  window->rect.height = h;
+  window->rect = constrained_rect;
 
   if (window->frame)
     {
       int new_w, new_h;
+      int new_x, new_y;
 
-      new_w = window->rect.width + borders.total.left + borders.total.right;
+      /* Compute new frame size */
+      new_w = window->rect.width + borders.invisible.left + borders.invisible.right;
 
-      new_h = borders.total.top + borders.total.bottom;
+      new_h = borders.invisible.top + borders.invisible.bottom;
       if (!window->shaded)
         new_h += window->rect.height;
 
@@ -1058,19 +1064,9 @@ meta_window_x11_move_resize_internal (MetaWindow                *window,
           window->frame->rect.height = new_h;
         }
 
-      meta_topic (META_DEBUG_GEOMETRY,
-                  "Calculated frame size %dx%d\n",
-                  window->frame->rect.width,
-                  window->frame->rect.height);
-    }
-
-  if (window->frame)
-    {
-      int new_x, new_y;
-
       /* Compute new frame coords */
-      new_x = root_x_nw - borders.total.left;
-      new_y = root_y_nw - borders.total.top;
+      new_x = window->rect.x - borders.invisible.left;
+      new_y = window->rect.y - borders.invisible.top;
 
       if (new_x != window->frame->rect.x ||
           new_y != window->frame->rect.y)
@@ -1079,22 +1075,35 @@ meta_window_x11_move_resize_internal (MetaWindow                *window,
           window->frame->rect.x = new_x;
           window->frame->rect.y = new_y;
         }
-
-      client_move_x = borders.total.left;
-      client_move_y = borders.total.top;
     }
-  else
+
+  /* Calculate the new client rect */
+  meta_window_frame_rect_to_client_rect (window, &constrained_rect, &client_rect);
+
+  /* The above client_rect is in root window coordinates. The
+   * values we need to pass to XConfigureWindow are in parent
+   * coordinates, so if the window is in a frame, we need to
+   * correct the x/y positions here. */
+  if (window->frame)
     {
-      client_move_x = root_x_nw;
-      client_move_y = root_y_nw;
+      client_rect.x = borders.total.left;
+      client_rect.y = borders.total.top;
     }
 
-  if (client_move_x != window->rect.x ||
-      client_move_y != window->rect.y)
+  if (client_rect.x != priv->client_rect.x ||
+      client_rect.y != priv->client_rect.y)
     {
       need_move_client = TRUE;
-      window->rect.x = client_move_x;
-      window->rect.y = client_move_y;
+      priv->client_rect.x = client_rect.x;
+      priv->client_rect.y = client_rect.y;
+    }
+
+  if (client_rect.width != priv->client_rect.width ||
+      client_rect.height != priv->client_rect.height)
+    {
+      need_resize_client = TRUE;
+      priv->client_rect.width = client_rect.width;
+      priv->client_rect.height = client_rect.height;
     }
 
   /* If frame extents have changed, fill in other frame fields and
@@ -1186,10 +1195,10 @@ meta_window_x11_move_resize_internal (MetaWindow                *window,
                                                      need_move_frame, need_resize_frame);
 
   values.border_width = 0;
-  values.x = client_move_x;
-  values.y = client_move_y;
-  values.width = window->rect.width;
-  values.height = window->rect.height;
+  values.x = client_rect.x;
+  values.y = client_rect.y;
+  values.width = client_rect.width;
+  values.height = client_rect.height;
 
   mask = 0;
   if (is_configure_request && priv->border_width != 0)
@@ -1768,6 +1777,8 @@ void
 meta_window_x11_update_input_region (MetaWindow *window)
 {
   cairo_region_t *region = NULL;
+  MetaWindowX11 *window_x11 = META_WINDOW_X11 (window);
+  MetaWindowX11Private *priv = meta_window_x11_get_instance_private (window_x11);
 
   /* Decorated windows don't have an input region, because
      we don't shape the frame to match the client windows
@@ -1804,8 +1815,8 @@ meta_window_x11_update_input_region (MetaWindow *window)
               (n_rects == 1 &&
                (rects[0].x != 0 ||
                 rects[0].y != 0 ||
-                rects[0].width != window->rect.width ||
-                rects[0].height != window->rect.height)))
+                rects[0].width != priv->client_rect.width ||
+                rects[0].height != priv->client_rect.height)))
             region = region_create_from_x_rectangles (rects, n_rects);
 
           XFree (rects);
@@ -1818,8 +1829,8 @@ meta_window_x11_update_input_region (MetaWindow *window)
 
       client_area.x = 0;
       client_area.y = 0;
-      client_area.width = window->rect.width;
-      client_area.height = window->rect.height;
+      client_area.width = priv->client_rect.width;
+      client_area.height = priv->client_rect.height;
 
       /* The shape we get back from the client may have coordinates
        * outside of the frame. The X SHAPE Extension requires that
@@ -1850,6 +1861,8 @@ meta_window_set_shape_region (MetaWindow     *window,
 void
 meta_window_x11_update_shape_region (MetaWindow *window)
 {
+  MetaWindowX11 *window_x11 = META_WINDOW_X11 (window);
+  MetaWindowX11Private *priv = meta_window_x11_get_instance_private (window_x11);
   cairo_region_t *region = NULL;
 
   if (META_DISPLAY_HAS_SHAPE (window->display))
@@ -1893,8 +1906,8 @@ meta_window_x11_update_shape_region (MetaWindow *window)
 
       client_area.x = 0;
       client_area.y = 0;
-      client_area.width = window->rect.width;
-      client_area.height = window->rect.height;
+      client_area.width = priv->client_rect.width;
+      client_area.height = priv->client_rect.height;
 
       /* The shape we get back from the client may have coordinates
        * outside of the frame. The X SHAPE Extension requires that
@@ -2080,6 +2093,7 @@ meta_window_move_resize_request (MetaWindow *window,
       rect.height = height;
 
       adjust_for_gravity (window, TRUE, gravity, &rect);
+      meta_window_client_rect_to_frame_rect (window, &rect, &rect);
       meta_window_move_resize_internal (window, flags, gravity, rect);
     }
 }

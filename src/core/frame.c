@@ -202,7 +202,7 @@ meta_window_destroy_frame (MetaWindow *window)
   XReparentWindow (window->display->xdisplay,
                    window->xwindow,
                    window->screen->xroot,
-                   /* Using anything other than meta_window_get_position()
+                   /* Using anything other than client root window coordinates
                     * coordinates here means we'll need to ensure a configure
                     * notify event is sent; see bug 399552.
                     */
