@@ -389,6 +389,7 @@ EXTRA_DIST=$(desktopfiles_files) 	\
 	libmutter.pc.in \
 	mutter-enum-types.h.in \
 	mutter-enum-types.c.in \
+	org.freedesktop.login1.xml	\
 	org.gnome.Mutter.DisplayConfig.xml	\
 	org.gnome.Mutter.IdleMonitor.xml
 
