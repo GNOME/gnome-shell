@@ -113,6 +113,9 @@ static void meta_window_move_between_rects (MetaWindow          *window,
 static void unmaximize_window_before_freeing (MetaWindow        *window);
 static void unminimize_window_and_all_transient_parents (MetaWindow *window);
 
+static void meta_window_propagate_focus_appearance (MetaWindow *window,
+                                                    gboolean    focused);
+
 /* Idle handlers for the three queues (run with meta_later_add()). The
  * "data" parameter in each case will be a GINT_TO_POINTER of the
  * index into the queue arrays to use.
@@ -4821,7 +4824,7 @@ meta_window_appears_focused_changed (MetaWindow *window)
  * @window's ancestors will have its %attached_focus_window field
  * cleared if it is currently %focus_window.
  */
-void
+static void
 meta_window_propagate_focus_appearance (MetaWindow *window,
                                         gboolean    focused)
 {

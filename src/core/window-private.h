@@ -668,9 +668,6 @@ void meta_window_update_icon_now (MetaWindow *window);
 void meta_window_update_for_monitors_changed (MetaWindow *window);
 void meta_window_update_on_all_workspaces (MetaWindow *window);
 
-void meta_window_propagate_focus_appearance (MetaWindow *window,
-                                             gboolean    focused);
-
 gboolean meta_window_should_attach_to_parent (MetaWindow *window);
 gboolean meta_window_can_tile_side_by_side   (MetaWindow *window);
 
