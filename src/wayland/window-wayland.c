@@ -119,6 +119,34 @@ meta_window_wayland_focus (MetaWindow *window,
 }
 
 static void
+surface_state_changed (MetaWindow *window)
+{
+  MetaWindowWayland *wl_window = META_WINDOW_WAYLAND (window);
+
+  meta_wayland_surface_configure_notify (window->surface,
+                                         wl_window->last_sent_width,
+                                         wl_window->last_sent_height);
+}
+
+static void
+meta_window_wayland_grab_op_began (MetaWindow *window,
+                                   MetaGrabOp  op)
+{
+  surface_state_changed (window);
+
+  META_WINDOW_CLASS (meta_window_wayland_parent_class)->grab_op_began (window, op);
+}
+
+static void
+meta_window_wayland_grab_op_ended (MetaWindow *window,
+                                   MetaGrabOp  op)
+{
+  surface_state_changed (window);
+
+  META_WINDOW_CLASS (meta_window_wayland_parent_class)->grab_op_ended (window, op);
+}
+
+static void
 meta_window_wayland_move_resize_internal (MetaWindow                *window,
                                           int                        gravity,
                                           MetaRectangle              requested_rect,
@@ -192,16 +220,6 @@ meta_window_wayland_move_resize_internal (MetaWindow                *window,
 }
 
 static void
-surface_state_changed (MetaWindow *window)
-{
-  MetaWindowWayland *wl_window = META_WINDOW_WAYLAND (window);
-
-  meta_wayland_surface_configure_notify (window->surface,
-                                         wl_window->last_sent_width,
-                                         wl_window->last_sent_height);
-}
-
-static void
 appears_focused_changed (GObject    *object,
                          GParamSpec *pspec,
                          gpointer    user_data)
@@ -236,6 +254,8 @@ meta_window_wayland_class_init (MetaWindowWaylandClass *klass)
   window_class->delete = meta_window_wayland_delete;
   window_class->kill = meta_window_wayland_kill;
   window_class->focus = meta_window_wayland_focus;
+  window_class->grab_op_began = meta_window_wayland_grab_op_began;
+  window_class->grab_op_ended = meta_window_wayland_grab_op_ended;
   window_class->move_resize_internal = meta_window_wayland_move_resize_internal;
 }
 
