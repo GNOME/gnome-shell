@@ -441,8 +441,9 @@ struct _MetaWindow
   MetaStackLayer layer;
   int stack_position; /* see comment in stack.h */
 
-  /* Current dialog open for this window */
+  /* Managed by delete.c */
   int dialog_pid;
+  guint is_alive : 1;
 
   /* maintained by group.c */
   MetaGroup *group;
@@ -738,5 +739,7 @@ void meta_window_move_resize_internal (MetaWindow          *window,
 
 void meta_window_grab_op_began (MetaWindow *window, MetaGrabOp op);
 void meta_window_grab_op_ended (MetaWindow *window, MetaGrabOp op);
+
+void meta_window_set_alive (MetaWindow *window, gboolean is_alive);
 
 #endif

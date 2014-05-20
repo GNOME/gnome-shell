@@ -98,12 +98,9 @@
  */
 typedef struct
 {
-  MetaWindow  *window;
-  guint32      timestamp;
-  MetaWindowPingFunc ping_reply_func;
-  MetaWindowPingFunc ping_timeout_func;
-  void        *user_data;
-  guint        ping_timeout_id;
+  MetaWindow *window;
+  guint32     serial;
+  guint       ping_timeout_id;
 } MetaPingData;
 
 G_DEFINE_TYPE(MetaDisplay, meta_display, G_TYPE_OBJECT);
@@ -2303,15 +2300,16 @@ static gboolean
 meta_display_ping_timeout (gpointer data)
 {
   MetaPingData *ping_data = data;
-  MetaDisplay *display = ping_data->window->display;
+  MetaWindow *window = ping_data->window;
+  MetaDisplay *display = window->display;
+
+  meta_window_set_alive (window, FALSE);
 
   ping_data->ping_timeout_id = 0;
 
   meta_topic (META_DEBUG_PING,
               "Ping %u on window %s timed out\n",
-              ping_data->timestamp, ping_data->window->desc);
-
-  (* ping_data->ping_timeout_func) (ping_data->window, ping_data->timestamp, ping_data->user_data);
+              ping_data->serial, ping_data->window->desc);
 
   display->pending_pings = g_slist_remove (display->pending_pings, ping_data);
   ping_data_free (ping_data);
@@ -2325,11 +2323,6 @@ meta_display_ping_timeout (gpointer data)
  * @window: The #MetaWindow to send the ping to
  * @timestamp: The timestamp of the ping. Used for uniqueness.
  *             Cannot be CurrentTime; use a real timestamp!
- * @ping_reply_func: The callback to call if we get a response.
- * @ping_timeout_func: The callback to call if we don't get a response.
- * @user_data: Arbitrary data that will be passed to the callback
- *             function. (In practice it's often a pointer to
- *             the window.)
  *
  * Sends a ping request to a window. The window must respond to
  * the request within a certain amount of time. If it does, we
@@ -2341,35 +2334,24 @@ meta_display_ping_timeout (gpointer data)
  * the callbacks will be called from the event loop.
  */
 void
-meta_display_ping_window (MetaWindow        *window,
-			  guint32            timestamp,
-			  MetaWindowPingFunc ping_reply_func,
-			  MetaWindowPingFunc ping_timeout_func,
-			  gpointer           user_data)
+meta_display_ping_window (MetaWindow *window,
+			  guint32     serial)
 {
   MetaDisplay *display = window->display;
   MetaPingData *ping_data;
 
-  if (timestamp == CurrentTime)
+  if (serial == 0)
     {
-      meta_warning ("Tried to ping a window with CurrentTime! Not allowed.\n");
+      meta_warning ("Tried to ping a window with a bad serial! Not allowed.\n");
       return;
     }
 
   if (!window->can_ping)
-    {
-      if (ping_reply_func)
-        (* ping_reply_func) (window, timestamp, user_data);
-
-      return;
-    }
+    return;
 
   ping_data = g_new (MetaPingData, 1);
   ping_data->window = window;
-  ping_data->timestamp = timestamp;
-  ping_data->ping_reply_func = ping_reply_func;
-  ping_data->ping_timeout_func = ping_timeout_func;
-  ping_data->user_data = user_data;
+  ping_data->serial = serial;
   ping_data->ping_timeout_id = g_timeout_add (PING_TIMEOUT_DELAY,
 					      meta_display_ping_timeout,
 					      ping_data);
@@ -2378,10 +2360,10 @@ meta_display_ping_window (MetaWindow        *window,
   display->pending_pings = g_slist_prepend (display->pending_pings, ping_data);
 
   meta_topic (META_DEBUG_PING,
-              "Sending ping with timestamp %u to window %s\n",
-              timestamp, window->desc);
+              "Sending ping with serial %u to window %s\n",
+              serial, window->desc);
 
-  META_WINDOW_GET_CLASS (window)->ping (window, timestamp);
+  META_WINDOW_GET_CLASS (window)->ping (window, serial);
 }
 
 /**
@@ -2405,11 +2387,11 @@ meta_display_pong_for_serial (MetaDisplay    *display,
     {
       MetaPingData *ping_data = tmp->data;
 
-      if (serial == ping_data->timestamp)
+      if (serial == ping_data->serial)
         {
           meta_topic (META_DEBUG_PING,
                       "Matching ping found for pong %u\n",
-                      ping_data->timestamp);
+                      ping_data->serial);
 
           /* Remove the ping data from the list */
           display->pending_pings = g_slist_remove (display->pending_pings,
@@ -2422,13 +2404,8 @@ meta_display_pong_for_serial (MetaDisplay    *display,
               ping_data->ping_timeout_id = 0;
             }
 
-          /* Call callback */
-          (* ping_data->ping_reply_func) (ping_data->window,
-                                          ping_data->timestamp,
-                                          ping_data->user_data);
-
+          meta_window_set_alive (ping_data->window, TRUE);
           ping_data_free (ping_data);
-
           break;
         }
     }
