@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-05-08 07:26+0000\n"
-"PO-Revision-Date: 2014-05-10 18:39+0200\n"
+"POT-Creation-Date: 2014-05-20 07:27+0000\n"
+"PO-Revision-Date: 2014-05-20 19:10+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
 "Language: es\n"
@@ -143,8 +143,8 @@ msgid ""
 "This key overrides the automatic hiding of the 'Log out' menu item in single-"
 "user, single-session situations."
 msgstr ""
-"Esta clave sobrescribe la ocultación automática del elemento de menú "
-"«Cerrar sesión» en situaciones de un único usuario o de una única sesión."
+"Esta clave sobrescribe la ocultación automática del elemento de menú «Cerrar "
+"sesión» en situaciones de un único usuario o de una única sesión."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:13
 msgid ""
@@ -403,7 +403,6 @@ msgid "Add to Favorites"
 msgstr "Añadir a los favoritos"
 
 #: ../js/ui/appDisplay.js:1608
-#| msgid "Show Text"
 msgid "Show Details"
 msgstr "Mostrar detalles"
 
@@ -1296,7 +1295,7 @@ msgstr "toggle-switch-intl"
 msgid "Enter a Command"
 msgstr "Introducir un comando"
 
-#: ../js/ui/runDialog.js:114
+#: ../js/ui/runDialog.js:114 ../js/ui/windowMenu.js:117
 msgid "Close"
 msgstr "Cerrar"
 
@@ -1471,12 +1470,10 @@ msgstr "Conectada"
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu) */
 #: ../js/ui/status/network.js:426
-#| msgid "unmanaged"
 msgid "Unmanaged"
 msgstr "Sin gestionar"
 
 #: ../js/ui/status/network.js:428
-#| msgid "disconnecting..."
 msgid "Disconnecting"
 msgstr "Desconectando"
 
@@ -1486,14 +1483,12 @@ msgstr "Conectando"
 
 #. Translators: this is for network connections that require some kind of key or password */
 #: ../js/ui/status/network.js:437
-#| msgid "authentication required"
 msgid "Authentication required"
 msgstr "Autenticación requerida"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing */
 #: ../js/ui/status/network.js:445
-#| msgid "firmware missing"
 msgid "Firmware missing"
 msgstr "Falta el «firmware»"
 
@@ -1703,27 +1698,67 @@ msgstr "Buscar"
 msgid "“%s” is ready"
 msgstr "«%s» está preparado"
 
-#: ../js/ui/windowManager.js:56
+#: ../js/ui/windowManager.js:57
 msgid "Do you want to keep these display settings?"
 msgstr "¿Quiere mantener esta configuración de la pantalla?"
 
 #. Translators: this and the following message should be limited in lenght,
 #. to avoid ellipsizing the labels.
 #. */
-#: ../js/ui/windowManager.js:75
+#: ../js/ui/windowManager.js:76
 msgid "Revert Settings"
 msgstr "Revertir configuración"
 
-#: ../js/ui/windowManager.js:79
+#: ../js/ui/windowManager.js:80
 msgid "Keep Changes"
 msgstr "Mantener cambios"
 
-#: ../js/ui/windowManager.js:98
+#: ../js/ui/windowManager.js:99
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
 msgstr[0] "La configuración se revertirá en %d segundo"
 msgstr[1] "La configuración se revertirá en %d segundos"
+
+#: ../js/ui/windowMenu.js:33
+msgid "Minimize"
+msgstr "Minimizar"
+
+#: ../js/ui/windowMenu.js:40
+msgid "Unmaximize"
+msgstr "Desmaximizar"
+
+#: ../js/ui/windowMenu.js:44
+msgid "Maximize"
+msgstr "Maximizar"
+
+#: ../js/ui/windowMenu.js:51
+msgid "Move"
+msgstr "Mover"
+
+#: ../js/ui/windowMenu.js:57
+msgid "Resize"
+msgstr "Redimensionar"
+
+#: ../js/ui/windowMenu.js:64
+msgid "Move Titlebar Onscreen"
+msgstr "Mover la barra de título a la pantalla"
+
+#: ../js/ui/windowMenu.js:69
+msgid "Always on Top"
+msgstr "Siempre encima"
+
+#: ../js/ui/windowMenu.js:86
+msgid "Always on Visible Workspace"
+msgstr "Siempre en el área de trabajo visible"
+
+#: ../js/ui/windowMenu.js:103
+msgid "Move to Workspace Up"
+msgstr "Subir a un área de trabajo"
+
+#: ../js/ui/windowMenu.js:108
+msgid "Move to Workspace Down"
+msgstr "Bajar a un área de trabajo"
 
 #: ../src/calendar-server/evolution-calendar.desktop.in.in.h:1
 msgid "Evolution Calendar"
@@ -2326,8 +2361,7 @@ msgstr "El usuario rechazó el diálogo de autenticación"
 #~ msgstr ""
 #~ "Las extensiones de GNOME Shell tienen una propiedad uuid; esta clave "
 #~ "lista las extensiones que no se deben cargar. «disabled-extensions» "
-#~ "sobrescribe este ajuste para las extensiones que aparecen en ambas "
-#~ "listas."
+#~ "sobrescribe este ajuste para las extensiones que aparecen en ambas listas."
 
 #~ msgid "Home Folder"
 #~ msgstr "Carpeta personal"
