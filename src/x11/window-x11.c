@@ -816,6 +816,8 @@ meta_window_x11_grab_op_began (MetaWindow *window,
           meta_window_refresh_resize_popup (window);
         }
     }
+
+  META_WINDOW_CLASS (meta_window_x11_parent_class)->grab_op_began (window, op);
 }
 
 static void
@@ -830,6 +832,8 @@ meta_window_x11_grab_op_ended (MetaWindow *window,
       meta_ui_resize_popup_free (priv->grab_resize_popup);
       priv->grab_resize_popup = NULL;
     }
+
+  META_WINDOW_CLASS (meta_window_x11_parent_class)->grab_op_ended (window, op);
 }
 
 static void
