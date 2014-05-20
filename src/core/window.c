@@ -3749,34 +3749,6 @@ meta_window_move_resize_internal (MetaWindow          *window,
 }
 
 /**
- * meta_window_resize:
- * @window: a #MetaWindow
- * @user_op: bool to indicate whether or not this is a user operation
- * @w: desired width
- * @h: desired height
- *
- * Resize the window to the desired size.
- */
-void
-meta_window_resize (MetaWindow  *window,
-                    gboolean     user_op,
-                    int          w,
-                    int          h)
-{
-  MetaMoveResizeFlags flags;
-  MetaRectangle rect;
-
-  g_return_if_fail (!window->override_redirect);
-
-  flags = (user_op ? META_IS_USER_ACTION : 0) | META_IS_RESIZE_ACTION;
-
-  rect.width = w;
-  rect.height = h;
-
-  meta_window_move_resize_internal (window, flags, NorthWestGravity, rect);
-}
-
-/**
  * meta_window_move:
  * @window: a #MetaWindow
  * @user_op: bool to indicate whether or not this is a user operation
