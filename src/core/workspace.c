@@ -342,7 +342,7 @@ meta_workspace_add_window (MetaWorkspace *workspace,
 
   window->workspace = workspace;
 
-  meta_window_set_current_workspace_hint (window);
+  meta_window_current_workspace_changed (window);
 
   if (window->struts)
     {
@@ -391,7 +391,7 @@ meta_workspace_remove_window (MetaWorkspace *workspace,
       g_assert (g_list_find (workspace->mru_list, window) == NULL);
     }
 
-  meta_window_set_current_workspace_hint (window);
+  meta_window_current_workspace_changed (window);
 
   if (window->struts)
     {
@@ -718,7 +718,7 @@ meta_workspace_update_window_hints (MetaWorkspace *workspace)
     {
       MetaWindow *win = l->data;
 
-      meta_window_set_current_workspace_hint (win);
+      meta_window_current_workspace_changed (win);
 
       l = l->next;
     }

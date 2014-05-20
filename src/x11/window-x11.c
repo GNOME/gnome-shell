@@ -945,6 +945,42 @@ send_sync_request (MetaWindow *window)
                                       meta_window_updates_are_frozen (window));
 }
 
+static unsigned long
+meta_window_get_net_wm_desktop (MetaWindow *window)
+{
+  if (window->on_all_workspaces)
+    return 0xFFFFFFFF;
+  else
+    return meta_workspace_index (window->workspace);
+}
+
+static void
+meta_window_x11_current_workspace_changed (MetaWindow *window)
+{
+  /* FIXME if on more than one workspace, we claim to be "sticky",
+   * the WM spec doesn't say what to do here.
+   */
+  unsigned long data[1];
+
+  if (window->workspace == NULL)
+    {
+      /* this happens when unmanaging windows */
+      return;
+    }
+
+  data[0] = meta_window_get_net_wm_desktop (window);
+
+  meta_verbose ("Setting _NET_WM_DESKTOP of %s to %lu\n",
+                window->desc, data[0]);
+
+  meta_error_trap_push (window->display);
+  XChangeProperty (window->display->xdisplay, window->xwindow,
+                   window->display->atom__NET_WM_DESKTOP,
+                   XA_CARDINAL,
+                   32, PropModeReplace, (guchar*) data, 1);
+  meta_error_trap_pop (window->display);
+}
+
 static void
 meta_window_x11_move_resize_internal (MetaWindow                *window,
                                       int                        gravity,
@@ -1426,6 +1462,7 @@ meta_window_x11_class_init (MetaWindowX11Class *klass)
   window_class->focus = meta_window_x11_focus;
   window_class->grab_op_began = meta_window_x11_grab_op_began;
   window_class->grab_op_ended = meta_window_x11_grab_op_ended;
+  window_class->current_workspace_changed = meta_window_x11_current_workspace_changed;
   window_class->move_resize_internal = meta_window_x11_move_resize_internal;
   window_class->update_struts = meta_window_x11_update_struts;
   window_class->get_default_skip_hints = meta_window_x11_get_default_skip_hints;

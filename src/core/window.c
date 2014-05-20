@@ -205,6 +205,11 @@ meta_window_real_grab_op_ended (MetaWindow *window,
   window->shaken_loose = FALSE;
 }
 
+static void
+meta_window_real_current_workspace_changed (MetaWindow *window)
+{
+}
+
 static gboolean
 meta_window_real_update_struts (MetaWindow *window)
 {
@@ -378,6 +383,7 @@ meta_window_class_init (MetaWindowClass *klass)
 
   klass->grab_op_began = meta_window_real_grab_op_began;
   klass->grab_op_ended = meta_window_real_grab_op_ended;
+  klass->current_workspace_changed = meta_window_real_current_workspace_changed;
   klass->update_struts = meta_window_real_update_struts;
   klass->get_default_skip_hints = meta_window_real_get_default_skip_hints;
 
@@ -1130,7 +1136,7 @@ _meta_window_shared_new (MetaDisplay         *display,
         }
 
       /* for the various on_all_workspaces = TRUE possible above */
-      meta_window_set_current_workspace_hint (window);
+      meta_window_current_workspace_changed (window);
 
       meta_window_update_struts (window);
     }
@@ -1502,7 +1508,7 @@ meta_window_update_on_all_workspaces (MetaWindow *window)
               tmp = tmp->next;
             }
         }
-      meta_window_set_current_workspace_hint (window);
+      meta_window_current_workspace_changed (window);
     }
 }
 
@@ -4637,40 +4643,10 @@ meta_window_unstick (MetaWindow  *window)
                                  &stick);
 }
 
-unsigned long
-meta_window_get_net_wm_desktop (MetaWindow *window)
-{
-  if (window->on_all_workspaces)
-    return 0xFFFFFFFF;
-  else
-    return meta_workspace_index (window->workspace);
-}
-
 void
-meta_window_set_current_workspace_hint (MetaWindow *window)
+meta_window_current_workspace_changed (MetaWindow *window)
 {
-  /* FIXME if on more than one workspace, we claim to be "sticky",
-   * the WM spec doesn't say what to do here.
-   */
-  unsigned long data[1];
-
-  if (window->workspace == NULL)
-    {
-      /* this happens when unmanaging windows */
-      return;
-    }
-
-  data[0] = meta_window_get_net_wm_desktop (window);
-
-  meta_verbose ("Setting _NET_WM_DESKTOP of %s to %lu\n",
-                window->desc, data[0]);
-
-  meta_error_trap_push (window->display);
-  XChangeProperty (window->display->xdisplay, window->xwindow,
-                   window->display->atom__NET_WM_DESKTOP,
-                   XA_CARDINAL,
-                   32, PropModeReplace, (guchar*) data, 1);
-  meta_error_trap_pop (window->display);
+  META_WINDOW_GET_CLASS (window)->current_workspace_changed (window);
 }
 
 static gboolean

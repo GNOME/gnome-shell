@@ -477,6 +477,7 @@ struct _MetaWindowClass
                                   MetaGrabOp  op);
   void (*grab_op_ended)          (MetaWindow *window,
                                   MetaGrabOp  op);
+  void (*current_workspace_changed) (MetaWindow *window);
   void (*move_resize_internal)   (MetaWindow                *window,
                                   int                        gravity,
                                   MetaRectangle              requested_rect,
@@ -615,9 +616,7 @@ void        meta_window_update_unfocused_button_grabs (MetaWindow *window);
 void     meta_window_set_focused_internal (MetaWindow *window,
                                            gboolean    focused);
 
-void     meta_window_set_current_workspace_hint (MetaWindow *window);
-
-unsigned long meta_window_get_net_wm_desktop (MetaWindow *window);
+void     meta_window_current_workspace_changed (MetaWindow *window);
 
 void meta_window_show_menu (MetaWindow *window);
 
