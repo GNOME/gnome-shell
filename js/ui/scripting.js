@@ -98,6 +98,28 @@ function _getPerfHelper() {
     return _perfHelper;
 }
 
+function _callRemote(obj, method, ...args) {
+    let cb;
+    let errcb;
+
+    args.push(function(result, excp) {
+                  if (excp) {
+                      if (errcb)
+                          errcb(excp);
+                  } else {
+                      if (cb)
+                          cb();
+                  }
+             });
+
+    method.apply(obj, args);
+
+    return function(callback, error_callback) {
+        cb = callback;
+        errcb = error_callback;
+    };
+}
+
 /**
  * createTestWindow:
  * @params: options for window creation.
@@ -119,19 +141,10 @@ function createTestWindow(width, height, params) {
                                     alpha: false,
                                     maximized: false });
 
-    let cb;
     let perfHelper = _getPerfHelper();
-
-    perfHelper.CreateWindowRemote(params.width, params.height,
-                                  params.alpha, params.maximized,
-                                  function(result, excp) {
-                                      if (cb)
-                                          cb();
-                                  });
-
-    return function(callback) {
-        cb = callback;
-    };
+    return _callRemote(perfHelper, perfHelper.CreateWindowRemote,
+                       params.width, params.height,
+                       params.alpha, params.maximized);
 }
 
 /**
@@ -141,17 +154,8 @@ function createTestWindow(width, height, params) {
  * created with createTestWindow have been mapped and exposed.
  */
 function waitTestWindows() {
-    let cb;
     let perfHelper = _getPerfHelper();
-
-    perfHelper.WaitWindowsRemote(function(result, excp) {
-                                     if (cb)
-                                         cb();
-                                 });
-
-    return function(callback) {
-        cb = callback;
-    };
+    return _callRemote(perfHelper, perfHelper.WaitWindowsRemote);
 }
 
 /**
@@ -164,17 +168,8 @@ function waitTestWindows() {
  * process because of normal X asynchronicity.
  */
 function destroyTestWindows() {
-    let cb;
     let perfHelper = _getPerfHelper();
-
-    perfHelper.DestroyWindowsRemote(function(result, excp) {
-                                        if (cb)
-                                            cb();
-                                    });
-
-    return function(callback) {
-        cb = callback;
-    };
+    return _callRemote(perfHelper, perfHelper.DestroyWindowsRemote);
 }
 
 /**
@@ -217,6 +212,10 @@ function _step(g, finish, onError) {
         let waitFunction = g.next();
         waitFunction(function() {
                          _step(g, finish, onError);
+                     },
+                     function(err) {
+                         if (onError)
+                             onError(err);
                      });
     } catch (err if err instanceof StopIteration) {
         if (finish)
