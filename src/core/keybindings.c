@@ -1081,7 +1081,7 @@ typedef struct
 {
   MetaDisplay *display;
   Window xwindow;
-  gboolean binding_per_window;
+  gboolean only_per_window;
   gboolean grab;
 } ChangeKeygrabData;
 
@@ -1092,29 +1092,31 @@ change_keygrab_foreach (gpointer key,
 {
   ChangeKeygrabData *data = user_data;
   MetaKeyBinding *binding = value;
+  gboolean binding_is_per_window = (binding->flags & META_KEY_BINDING_PER_WINDOW) != 0;
 
-  if (!!data->binding_per_window ==
-      !!(binding->flags & META_KEY_BINDING_PER_WINDOW) &&
-      binding->keycode != 0)
-    {
-      meta_change_keygrab (data->display, data->xwindow, data->grab,
-                           binding->keysym,
-                           binding->keycode,
-                           binding->mask);
-    }
+  if (data->only_per_window != binding_is_per_window)
+    return;
+
+  if (binding->keycode == 0)
+    return;
+
+  meta_change_keygrab (data->display, data->xwindow, data->grab,
+                       binding->keysym,
+                       binding->keycode,
+                       binding->mask);
 }
 
 static void
-change_binding_keygrabs (MetaDisplay    *display,
-                         Window          xwindow,
-                         gboolean        binding_per_window,
-                         gboolean        grab)
+change_binding_keygrabs (MetaDisplay *display,
+                         Window       xwindow,
+                         gboolean     only_per_window,
+                         gboolean     grab)
 {
   ChangeKeygrabData data;
 
   data.display = display;
   data.xwindow = xwindow;
-  data.binding_per_window = binding_per_window;
+  data.only_per_window = only_per_window;
   data.grab = grab;
 
   g_hash_table_foreach (display->key_bindings, change_keygrab_foreach, &data);
