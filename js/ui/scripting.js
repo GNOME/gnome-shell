@@ -7,6 +7,7 @@ const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 
 const Main = imports.ui.main;
+const Params = imports.misc.params;
 
 // This module provides functionality for driving the shell user interface
 // in an automated fashion. The primary current use case for this is
@@ -99,9 +100,11 @@ function _getPerfHelper() {
 
 /**
  * createTestWindow:
- * @width: width of window, in pixels
- * @height: height of window, in pixels
- * @alpha: whether the window should be alpha transparent
+ * @params: options for window creation.
+ *   width - width of window, in pixels (default 640)
+ *   height - height of window, in pixels (default 480)
+ *   alpha - whether the window should have an alpha channel (default false)
+ *   maximized - whether the window should be created maximized (default false)
  * @maximized: whethe the window should be created maximized
  *
  * Creates a window using gnome-shell-perf-helper for testing purposes.
@@ -110,11 +113,17 @@ function _getPerfHelper() {
  * because of the normal X asynchronous mapping process, to actually wait
  * until the window has been mapped and exposed, use waitTestWindows().
  */
-function createTestWindow(width, height, alpha, maximized) {
+function createTestWindow(width, height, params) {
+    params = Params.parse(params, { width: 640,
+                                    height: 480,
+                                    alpha: false,
+                                    maximized: false });
+
     let cb;
     let perfHelper = _getPerfHelper();
 
-    perfHelper.CreateWindowRemote(width, height, alpha, maximized,
+    perfHelper.CreateWindowRemote(params.width, params.height,
+                                  params.alpha, params.maximized,
                                   function(result, excp) {
                                       if (cb)
                                           cb();
