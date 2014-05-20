@@ -24,6 +24,7 @@
 #define META_WINDOW_X11_H
 
 #include <meta/window.h>
+#include <meta/compositor.h>
 #include <X11/Xlib.h>
 
 G_BEGIN_DECLS
@@ -39,6 +40,11 @@ GType meta_window_x11_get_type (void);
 
 typedef struct _MetaWindowX11      MetaWindowX11;
 typedef struct _MetaWindowX11Class MetaWindowX11Class;
+
+MetaWindow * meta_window_x11_new           (MetaDisplay        *display,
+                                            Window              xwindow,
+                                            gboolean            must_be_viewable,
+                                            MetaCompEffect      effect);
 
 void meta_window_x11_set_net_wm_state            (MetaWindow *window);
 void meta_window_x11_set_wm_state                (MetaWindow *window);

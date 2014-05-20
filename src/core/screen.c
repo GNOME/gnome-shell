@@ -52,6 +52,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "x11/window-x11.h"
 #include "x11/xprops.h"
 
 static char* get_screen_name (MetaDisplay *display,

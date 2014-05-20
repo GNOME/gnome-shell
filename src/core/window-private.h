@@ -524,13 +524,6 @@ MetaWindow * _meta_window_shared_new       (MetaDisplay         *display,
                                             MetaCompEffect       effect,
                                             XWindowAttributes   *attrs);
 
-MetaWindow * meta_window_x11_new           (MetaDisplay        *display,
-                                            Window              xwindow,
-                                            gboolean            must_be_viewable,
-                                            MetaCompEffect      effect);
-MetaWindow * meta_window_wayland_new       (MetaDisplay        *display,
-                                            MetaWaylandSurface *surface);
-
 void        meta_window_unmanage           (MetaWindow  *window,
                                             guint32      timestamp);
 void        meta_window_calc_showing       (MetaWindow  *window);

@@ -26,6 +26,7 @@
 #define META_WINDOW_WAYLAND_H
 
 #include <meta/window.h>
+#include "wayland/meta-wayland-types.h"
 
 G_BEGIN_DECLS
 
@@ -40,6 +41,9 @@ GType meta_window_wayland_get_type (void);
 
 typedef struct _MetaWindowWayland      MetaWindowWayland;
 typedef struct _MetaWindowWaylandClass MetaWindowWaylandClass;
+
+MetaWindow * meta_window_wayland_new       (MetaDisplay        *display,
+                                            MetaWaylandSurface *surface);
 
 void meta_window_wayland_move_resize (MetaWindow *window,
                                       int         width,
