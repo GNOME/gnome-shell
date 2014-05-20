@@ -3176,10 +3176,12 @@ meta_window_unmaximize_with_gravity (MetaWindow        *window,
 {
   MetaRectangle desired_rect;
 
-  meta_window_get_position (window, &desired_rect.x, &desired_rect.y);
   desired_rect.width = new_width;
   desired_rect.height = new_height;
 
+  meta_window_frame_rect_to_client_rect (window, &desired_rect, &desired_rect);
+
+  meta_window_get_position (window, &desired_rect.x, &desired_rect.y);
   meta_window_unmaximize_internal (window, directions, &desired_rect, gravity);
 }
 
@@ -3910,17 +3912,19 @@ meta_window_move_resize (MetaWindow  *window,
 }
 
 void
-meta_window_resize_with_gravity (MetaWindow *window,
-                                 gboolean     user_op,
-                                 int          w,
-                                 int          h,
-                                 int          gravity)
+meta_window_resize_frame_with_gravity (MetaWindow *window,
+                                       gboolean     user_op,
+                                       int          w,
+                                       int          h,
+                                       int          gravity)
 {
   MetaMoveResizeFlags flags;
   MetaRectangle rect;
 
   rect.width = w;
   rect.height = h;
+
+  meta_window_frame_rect_to_client_rect (window, &rect, &rect);
 
   flags = (user_op ? META_IS_USER_ACTION : 0) | META_IS_RESIZE_ACTION;
   meta_window_move_resize_internal (window, flags, gravity, rect);
@@ -5998,7 +6002,7 @@ update_resize (MetaWindow *window,
       window->display->grab_resize_timeout_id = 0;
     }
 
-  old = window->rect;  /* Don't actually care about x,y */
+  meta_window_get_frame_rect (window, &old);
 
   /* One sided resizing ought to actually be one-sided, despite the fact that
    * aspect ratio windows don't interact nicely with the above stuff.  So,
@@ -6026,8 +6030,6 @@ update_resize (MetaWindow *window,
 
   /* Do any edge resistance/snapping */
   meta_window_edge_resistance_for_resize (window,
-                                          old.width,
-                                          old.height,
                                           &new_w,
                                           &new_h,
                                           gravity,
@@ -6037,13 +6039,7 @@ update_resize (MetaWindow *window,
 
   if (new_unmaximize == window->display->grab_resize_unmaximize)
     {
-      /* We don't need to update unless the specified width and height
-       * are actually different from what we had before.
-       */
-      if (old.width != new_w || old.height != new_h)
-        {
-          meta_window_resize_with_gravity (window, TRUE, new_w, new_h, gravity);
-        }
+      meta_window_resize_frame_with_gravity (window, TRUE, new_w, new_h, gravity);
     }
   else
     {

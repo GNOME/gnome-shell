@@ -1218,13 +1218,8 @@ meta_window_edge_resistance_for_move (MetaWindow  *window,
     }
 }
 
-/* Note that old_(width|height) and new_(width|height) are with respect to
- * sizes of the inner window.
- */
 void
 meta_window_edge_resistance_for_resize (MetaWindow  *window,
-                                        int          old_width,
-                                        int          old_height,
                                         int         *new_width,
                                         int         *new_height,
                                         int          gravity,
@@ -1237,8 +1232,8 @@ meta_window_edge_resistance_for_resize (MetaWindow  *window,
   gboolean is_resize;
 
   meta_window_get_frame_rect (window, &old_outer);
-  proposed_outer_width  = old_outer.width  + (*new_width  - old_width);
-  proposed_outer_height = old_outer.height + (*new_height - old_height);
+  proposed_outer_width  = *new_width;
+  proposed_outer_height = *new_height;
   meta_rectangle_resize_with_gravity (&old_outer,
                                       &new_outer,
                                       gravity,
@@ -1256,8 +1251,8 @@ meta_window_edge_resistance_for_resize (MetaWindow  *window,
                                           is_keyboard_op,
                                           is_resize))
     {
-      *new_width  = old_width  + (new_outer.width  - old_outer.width);
-      *new_height = old_height + (new_outer.height - old_outer.height);
+      *new_width = new_outer.width;
+      *new_height = new_outer.height;
 
       meta_topic (META_DEBUG_EDGE_RESISTANCE,
                   "outer width & height got changed from %d,%d to %d,%d\n",

@@ -2166,6 +2166,7 @@ process_keyboard_resize_grab (MetaDisplay     *display,
                               MetaWindow      *window,
                               ClutterKeyEvent *event)
 {
+  MetaRectangle frame_rect;
   gboolean handled;
   int height_inc;
   int width_inc;
@@ -2201,6 +2202,10 @@ process_keyboard_resize_grab (MetaDisplay     *display,
 
   width = window->rect.width;
   height = window->rect.height;
+
+  meta_window_get_frame_rect (window, &frame_rect);
+  width = frame_rect.width;
+  height = frame_rect.height;
 
   gravity = meta_resize_gravity_from_grab_op (display->grab_op);
 
@@ -2359,18 +2364,13 @@ process_keyboard_resize_grab (MetaDisplay     *display,
 
   if (handled)
     {
-      MetaRectangle old_rect;
       meta_topic (META_DEBUG_KEYBINDINGS,
                   "Computed new window size due to keypress: "
                   "%dx%d, gravity %s\n",
                   width, height, meta_gravity_to_string (gravity));
 
-      old_rect = window->rect;  /* Don't actually care about x,y */
-
       /* Do any edge resistance/snapping */
       meta_window_edge_resistance_for_resize (window,
-                                              old_rect.width,
-                                              old_rect.height,
                                               &width,
                                               &height,
                                               gravity,
@@ -2378,15 +2378,11 @@ process_keyboard_resize_grab (MetaDisplay     *display,
                                               smart_snap,
                                               TRUE);
 
-      /* We don't need to update unless the specified width and height
-       * are actually different from what we had before.
-       */
-      if (window->rect.width != width || window->rect.height != height)
-        meta_window_resize_with_gravity (window,
-                                         TRUE,
-                                         width,
-                                         height,
-                                         gravity);
+      meta_window_resize_frame_with_gravity (window,
+                                             TRUE,
+                                             width,
+                                             height,
+                                             gravity);
 
       meta_window_update_keyboard_resize (window, FALSE);
     }

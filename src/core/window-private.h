@@ -539,8 +539,6 @@ void        meta_window_update_fullscreen_monitors (MetaWindow    *window,
                                                     unsigned long  left,
                                                     unsigned long  right);
 
-
-/* args to move are window pos, not frame pos */
 void        meta_window_move               (MetaWindow  *window,
                                             gboolean     user_op,
                                             int          root_x_nw,
@@ -551,11 +549,12 @@ void        meta_window_move_resize        (MetaWindow  *window,
                                             int          root_y_nw,
                                             int          w,
                                             int          h);
-void        meta_window_resize_with_gravity (MetaWindow  *window,
-                                             gboolean     user_op,
-                                             int          w,
-                                             int          h,
-                                             int          gravity);
+void        meta_window_resize_frame_with_gravity (MetaWindow  *window,
+                                                   gboolean     user_op,
+                                                   int          w,
+                                                   int          h,
+                                                   int          gravity);
+
 void        meta_window_change_workspace   (MetaWindow  *window,
                                             MetaWorkspace *workspace);
 

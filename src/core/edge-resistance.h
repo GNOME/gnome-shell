@@ -33,8 +33,6 @@ void        meta_window_edge_resistance_for_move   (MetaWindow  *window,
                                                     gboolean     snap,
                                                     gboolean     is_keyboard_op);
 void        meta_window_edge_resistance_for_resize (MetaWindow  *window,
-                                                    int          old_width,
-                                                    int          old_height,
                                                     int         *new_width,
                                                     int         *new_height,
                                                     int          gravity,
