@@ -3822,10 +3822,10 @@ meta_window_move (MetaWindow  *window,
  * Otherwise, acts identically to meta_window_move().
  */
 void
-meta_window_move_frame (MetaWindow  *window,
-                  gboolean     user_op,
-                  int          root_x_nw,
-                  int          root_y_nw)
+meta_window_move_frame (MetaWindow *window,
+                        gboolean    user_op,
+                        int         root_x_nw,
+                        int         root_y_nw)
 {
   MetaRectangle rect = { root_x_nw, root_y_nw, 0, 0 };
 
