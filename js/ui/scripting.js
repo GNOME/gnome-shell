@@ -79,6 +79,7 @@ const PerfHelperIface = '<node> \
     <arg type="i" direction="in" /> \
     <arg type="b" direction="in" /> \
     <arg type="b" direction="in" /> \
+    <arg type="b" direction="in" /> \
 </method> \
 <method name="WaitWindows" /> \
 <method name="DestroyWindows" /> \
@@ -127,6 +128,7 @@ function _callRemote(obj, method, ...args) {
  *   height - height of window, in pixels (default 480)
  *   alpha - whether the window should have an alpha channel (default false)
  *   maximized - whether the window should be created maximized (default false)
+ *   redraws - whether the window should continually redraw itself (default false)
  * @maximized: whethe the window should be created maximized
  *
  * Creates a window using gnome-shell-perf-helper for testing purposes.
@@ -139,12 +141,13 @@ function createTestWindow(width, height, params) {
     params = Params.parse(params, { width: 640,
                                     height: 480,
                                     alpha: false,
-                                    maximized: false });
+                                    maximized: false,
+                                    redraws: false });
 
     let perfHelper = _getPerfHelper();
     return _callRemote(perfHelper, perfHelper.CreateWindowRemote,
                        params.width, params.height,
-                       params.alpha, params.maximized);
+                       params.alpha, params.maximized, params.redraws);
 }
 
 /**

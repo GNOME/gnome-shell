@@ -257,7 +257,7 @@ libexec_PROGRAMS += gnome-shell-perf-helper
 
 gnome_shell_perf_helper_SOURCES = shell-perf-helper.c
 gnome_shell_perf_helper_CPPFLAGS = $(SHELL_PERF_HELPER_CFLAGS)
-gnome_shell_perf_helper_LDADD = $(SHELL_PERF_HELPER_LIBS)
+gnome_shell_perf_helper_LDADD = $(SHELL_PERF_HELPER_LIBS) -lm
 
 ########################################
 

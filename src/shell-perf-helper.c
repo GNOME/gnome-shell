@@ -9,6 +9,8 @@
 
 #include "config.h"
 
+#include <math.h>
+
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>
 
@@ -27,6 +29,7 @@ static const gchar introspection_xml[] =
 	  "      <arg type='i' name='height' direction='in'/>"
 	  "      <arg type='b' name='alpha' direction='in'/>"
 	  "      <arg type='b' name='maximized' direction='in'/>"
+	  "      <arg type='b' name='redraws' direction='in'/>"
 	  "    </method>"
 	  "    <method name='WaitWindows'/>"
 	  "    <method name='DestroyWindows'/>"
@@ -40,9 +43,13 @@ typedef struct {
 
   guint alpha : 1;
   guint maximized : 1;
+  guint redraws : 1;
   guint mapped : 1;
   guint exposed : 1;
   guint pending : 1;
+
+  gint64 start_time;
+  gint64 time;
 } WindowInfo;
 
 static int opt_idle_timeout = 30;
@@ -119,6 +126,7 @@ on_window_draw (GtkWidget  *window,
 {
   cairo_rectangle_int_t allocation;
   gtk_widget_get_allocation (window, &allocation);
+  double x_offset, y_offset;
 
   /* We draw an arbitrary pattern of red lines near the border of the
    * window to make it more clear than empty windows if something
@@ -136,16 +144,27 @@ on_window_draw (GtkWidget  *window,
   cairo_paint (cr);
   cairo_restore (cr);
 
+  if (info->redraws)
+    {
+      double position = (info->time - info->start_time) / 1000000.;
+      x_offset = 20 * cos (2 * M_PI * position);
+      y_offset = 20 * sin (2 * M_PI * position);
+    }
+  else
+    {
+      x_offset = y_offset = 0;
+    }
+
   cairo_set_source_rgb (cr, 1, 0, 0);
   cairo_set_line_width (cr, 10);
-  cairo_move_to (cr, 0, 40);
-  cairo_line_to (cr, allocation.width, 40);
-  cairo_move_to (cr, 0, allocation.height - 40);
-  cairo_line_to (cr, allocation.width, allocation.height - 40);
-  cairo_move_to (cr, 40, 0);
-  cairo_line_to (cr, 40, allocation.height);
-  cairo_move_to (cr, allocation.width - 40, 0);
-  cairo_line_to (cr, allocation.width - 40, allocation.height);
+  cairo_move_to (cr, 0, 40 + y_offset);
+  cairo_line_to (cr, allocation.width, 40 + y_offset);
+  cairo_move_to (cr, 0, allocation.height - 40 + y_offset);
+  cairo_line_to (cr, allocation.width, allocation.height - 40 + y_offset);
+  cairo_move_to (cr, 40 + x_offset, 0);
+  cairo_line_to (cr, 40 + x_offset, allocation.height);
+  cairo_move_to (cr, allocation.width - 40 + x_offset, 0);
+  cairo_line_to (cr, allocation.width - 40 + x_offset, allocation.height);
   cairo_stroke (cr);
 
   info->exposed = TRUE;
@@ -159,11 +178,29 @@ on_window_draw (GtkWidget  *window,
   return FALSE;
 }
 
+static gboolean
+tick_callback (GtkWidget     *widget,
+               GdkFrameClock *frame_clock,
+               gpointer       user_data)
+{
+  WindowInfo *info = user_data;
+
+  if (info->start_time < 0)
+    info->start_time = info->time = gdk_frame_clock_get_frame_time (frame_clock);
+  else
+    info->time = gdk_frame_clock_get_frame_time (frame_clock);
+
+  gtk_widget_queue_draw (widget);
+
+  return TRUE;
+}
+
 static void
 create_window (int      width,
 	       int      height,
                gboolean alpha,
-               gboolean maximized)
+               gboolean maximized,
+               gboolean redraws)
 {
   WindowInfo *info;
 
@@ -172,18 +209,24 @@ create_window (int      width,
   info->height = height;
   info->alpha = alpha;
   info->maximized = maximized;
+  info->redraws = redraws;
   info->window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   if (alpha)
     gtk_widget_set_visual (info->window, gdk_screen_get_rgba_visual (gdk_screen_get_default ()));
   if (maximized)
     gtk_window_maximize (GTK_WINDOW (info->window));
   info->pending = TRUE;
+  info->start_time = -1;
 
   gtk_widget_set_size_request (info->window, width, height);
   gtk_widget_set_app_paintable (info->window, TRUE);
   g_signal_connect (info->window, "map-event", G_CALLBACK (on_window_map_event), info);
   g_signal_connect (info->window, "draw", G_CALLBACK (on_window_draw), info);
   gtk_widget_show (info->window);
+
+  if (info->redraws)
+    gtk_widget_add_tick_callback (info->window, tick_callback,
+                                  info, NULL);
 
   our_windows = g_list_prepend (our_windows, info);
 }
@@ -242,11 +285,11 @@ handle_method_call (GDBusConnection       *connection,
   else if (g_strcmp0 (method_name, "CreateWindow") == 0)
     {
       int width, height;
-      gboolean alpha, maximized;
+      gboolean alpha, maximized, redraws;
 
-      g_variant_get (parameters, "(iibb)", &width, &height, &alpha, &maximized);
+      g_variant_get (parameters, "(iibbb)", &width, &height, &alpha, &maximized, &redraws);
 
-      create_window (width, height, alpha, maximized);
+      create_window (width, height, alpha, maximized, redraws);
       g_dbus_method_invocation_return_value (invocation, NULL);
     }
   else if (g_strcmp0 (method_name, "WaitWindows") == 0)
