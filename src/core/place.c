@@ -837,11 +837,8 @@ meta_window_place (MetaWindow        *window,
                       x, y, &x, &y))
     goto done_check_denied_focus;
 
-  /* If no placement has been done, revert to cascade to avoid
-   * fully overlapping window (e.g. starting multiple terminals)
-   * */
-  if (x == xi->rect.x && y == xi->rect.y)
-    find_next_cascade (window, windows, x, y, &x, &y);
+  /* No good fit? Fall back to cascading... */
+  find_next_cascade (window, windows, x, y, &x, &y);
 
  done_check_denied_focus:
   /* If the window is being denied focus and isn't a transient of the
