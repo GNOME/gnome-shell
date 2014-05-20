@@ -1215,62 +1215,6 @@ _meta_window_shared_new (MetaDisplay         *display,
   return window;
 }
 
-MetaWindow *
-meta_window_wayland_new (MetaDisplay        *display,
-                         MetaWaylandSurface *surface)
-{
-  XWindowAttributes attrs;
-  MetaScreen *scr = display->screen;
-  MetaWindow *window;
-
-  attrs.x = 0;
-  attrs.y = 0;
-  attrs.width = 1;
-  attrs.height = 1;
-  attrs.border_width = 0;
-  attrs.depth = 24;
-  attrs.visual = NULL;
-  attrs.root = scr->xroot;
-  attrs.class = InputOutput;
-  attrs.bit_gravity = NorthWestGravity;
-  attrs.win_gravity = NorthWestGravity;
-  attrs.backing_store = 0;
-  attrs.backing_planes = ~0;
-  attrs.backing_pixel = 0;
-  attrs.save_under = 0;
-  attrs.colormap = 0;
-  attrs.map_installed = 1;
-  attrs.map_state = IsUnmapped;
-  attrs.all_event_masks = ~0;
-  attrs.your_event_mask = 0;
-  attrs.do_not_propagate_mask = 0;
-  attrs.override_redirect = 0;
-  attrs.screen = scr->xscreen;
-
-  /* XXX: Note: In the Wayland case we currently still trap X errors while
-   * creating a MetaWindow because we will still be making various redundant
-   * X requests (passing a window xid of None) until we thoroughly audit all
-   * the code to make sure it knows about non X based clients...
-   */
-  meta_error_trap_push (display); /* Push a trap over all of window
-                                   * creation, to reduce XSync() calls
-                                   */
-
-  window = _meta_window_shared_new (display,
-                                    scr,
-                                    META_WINDOW_CLIENT_TYPE_WAYLAND,
-                                    surface,
-                                    None,
-                                    WithdrawnState,
-                                    META_COMP_EFFECT_CREATE,
-                                    &attrs);
-  window->can_ping = TRUE;
-
-  meta_error_trap_pop (display); /* pop the XSync()-reducing trap */
-
-  return window;
-}
-
 static gboolean
 detach_foreach_func (MetaWindow *window,
                      void       *data)
