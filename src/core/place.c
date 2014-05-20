@@ -617,12 +617,10 @@ meta_window_place (MetaWindow        *window,
                    int               *new_x,
                    int               *new_y)
 {
-  GList *windows;
+  GList *windows = NULL;
   const MetaMonitorInfo *xi;
 
   meta_topic (META_DEBUG_PLACEMENT, "Placing window %s\n", window->desc);
-
-  windows = NULL;
 
   switch (window->type)
     {
@@ -649,7 +647,7 @@ meta_window_place (MetaWindow        *window,
     case META_WINDOW_COMBO:
     case META_WINDOW_DND:
     case META_WINDOW_OVERRIDE_OTHER:
-      goto done_no_constraints;
+      goto done;
     }
 
   if (meta_prefs_get_disable_workarounds ())
@@ -694,7 +692,7 @@ meta_window_place (MetaWindow        *window,
             {
               meta_topic (META_DEBUG_PLACEMENT,
                           "Not placing non-normal non-dialog window with PPosition set\n");
-              goto done_no_constraints;
+              goto done;
             }
           break;
         }
@@ -709,7 +707,7 @@ meta_window_place (MetaWindow        *window,
           meta_topic (META_DEBUG_PLACEMENT,
                       "Not placing window with PPosition or USPosition set\n");
           avoid_being_obscured_as_second_modal_dialog (window, &x, &y);
-          goto done_no_constraints;
+          goto done;
         }
     }
 
@@ -888,9 +886,8 @@ meta_window_place (MetaWindow        *window,
     }
 
  done:
-  g_list_free (windows);
-
- done_no_constraints:
+  if (windows)
+    g_list_free (windows);
 
   *new_x = x;
   *new_y = y;
