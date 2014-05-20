@@ -14,22 +14,24 @@
 # Fábio Nogueira <fnogueira@gnome.org>, 2014.
 # Rafael Ferreira <rafael.f.f1@gmail.com>, 2013, 2014.
 # Enrico Nicoletto <liverig@gmail.com>, 2013, 2014.
+# Georges Basile Stavracas Neto <georges.stavracas@gmail.com>, 2014.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-05-15 07:48+0000\n"
-"PO-Revision-Date: 2014-05-15 15:24-0300\n"
-"Last-Translator: Enrico Nicoletto <liverig@gmail.com>\n"
+"POT-Creation-Date: 2014-05-19 11:46+0000\n"
+"PO-Revision-Date: 2014-05-19 16:48-0300\n"
+"Last-Translator: Georges Basile Stavracas Neto <georges.stavracas@gmail."
+"com>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 1.6.5\n"
+"X-Generator: Poedit 1.6.4\n"
 "X-Project-Style: gnome\n"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
@@ -416,7 +418,6 @@ msgid "Add to Favorites"
 msgstr "Adicionar aos favoritos"
 
 #: ../js/ui/appDisplay.js:1608
-#| msgid "Show Text"
 msgid "Show Details"
 msgstr "Mostrar detalhes"
 
@@ -1308,7 +1309,7 @@ msgstr "toggle-switch-intl"
 msgid "Enter a Command"
 msgstr "Digite um comando"
 
-#: ../js/ui/runDialog.js:114
+#: ../js/ui/runDialog.js:114 ../js/ui/windowMenu.js:117
 msgid "Close"
 msgstr "Fechar"
 
@@ -1714,27 +1715,67 @@ msgstr "Pesquisar"
 msgid "“%s” is ready"
 msgstr "\"%s\" está pronto"
 
-#: ../js/ui/windowManager.js:56
+#: ../js/ui/windowManager.js:57
 msgid "Do you want to keep these display settings?"
 msgstr "Você deseja manter essas configurações de exibição?"
 
 #. Translators: this and the following message should be limited in lenght,
 #. to avoid ellipsizing the labels.
 #. */
-#: ../js/ui/windowManager.js:75
+#: ../js/ui/windowManager.js:76
 msgid "Revert Settings"
 msgstr "Reverter configurações"
 
-#: ../js/ui/windowManager.js:79
+#: ../js/ui/windowManager.js:80
 msgid "Keep Changes"
 msgstr "Manter alterações"
 
-#: ../js/ui/windowManager.js:98
+#: ../js/ui/windowManager.js:99
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
 msgstr[0] "Alterações nas configurações serão revertidas em %d segundo"
 msgstr[1] "Alterações nas configurações serão revertidas em %d segundos"
+
+#: ../js/ui/windowMenu.js:33
+msgid "Minimize"
+msgstr "Minimizar"
+
+#: ../js/ui/windowMenu.js:40
+msgid "Unmaximize"
+msgstr "Restaurar"
+
+#: ../js/ui/windowMenu.js:44
+msgid "Maximize"
+msgstr "Maximizar"
+
+#: ../js/ui/windowMenu.js:51
+msgid "Move"
+msgstr "Mover"
+
+#: ../js/ui/windowMenu.js:57
+msgid "Resize"
+msgstr "Redimensionar"
+
+#: ../js/ui/windowMenu.js:64
+msgid "Move Titlebar Onscreen"
+msgstr "Mover barra de título na tela"
+
+#: ../js/ui/windowMenu.js:69
+msgid "Always on Top"
+msgstr "Sempre no topo"
+
+#: ../js/ui/windowMenu.js:86
+msgid "Always on Visible Workspace"
+msgstr "Sempre na área de trabalho visível"
+
+#: ../js/ui/windowMenu.js:103
+msgid "Move to Workspace Up"
+msgstr "Mover para a área de trabalho acima"
+
+#: ../js/ui/windowMenu.js:108
+msgid "Move to Workspace Down"
+msgstr "Mover para a área de trabalho abaixo"
 
 #: ../src/calendar-server/evolution-calendar.desktop.in.in.h:1
 msgid "Evolution Calendar"
