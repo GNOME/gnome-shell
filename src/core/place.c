@@ -803,15 +803,6 @@ meta_window_place (MetaWindow        *window,
   /* Warning, this is a round trip! */
   xi = meta_screen_get_current_monitor_info (window->screen);
 
-  /* "Origin" placement algorithm */
-  x = xi->rect.x;
-  y = xi->rect.y;
-
-  if (find_first_fit (window, windows,
-                      xi->number,
-                      x, y, &x, &y))
-    goto done_check_denied_focus;
-
   /* Maximize windows if they are too big for their work area (bit of
    * a hack here). Assume undecorated windows probably don't intend to
    * be maximized.
@@ -836,6 +827,15 @@ meta_window_place (MetaWindow        *window,
           window->maximize_vertically_after_placement = TRUE;
         }
     }
+
+  /* "Origin" placement algorithm */
+  x = xi->rect.x;
+  y = xi->rect.y;
+
+  if (find_first_fit (window, windows,
+                      xi->number,
+                      x, y, &x, &y))
+    goto done_check_denied_focus;
 
   /* If no placement has been done, revert to cascade to avoid
    * fully overlapping window (e.g. starting multiple terminals)
