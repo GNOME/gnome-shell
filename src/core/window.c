@@ -828,8 +828,7 @@ _meta_window_shared_new (MetaDisplay         *display,
   window->rect.width = attrs->width;
   window->rect.height = attrs->height;
 
-  /* And border width, size_hints are the "request" */
-  window->border_width = attrs->border_width;
+  /* size_hints are the "request" */
   window->size_hints.x = attrs->x;
   window->size_hints.y = attrs->y;
   window->size_hints.width = attrs->width;

@@ -432,8 +432,6 @@ struct _MetaWindow
   /* Cached net_wm_icon_geometry */
   MetaRectangle icon_geometry;
 
-  /* Requested geometry */
-  int border_width;
   /* x/y/w/h here get filled with ConfigureRequest values */
   XSizeHints size_hints;
 

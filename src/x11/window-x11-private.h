@@ -51,6 +51,9 @@ struct _MetaWindowX11Private
 
   Atom type_atom;
 
+  /* Requested geometry */
+  int border_width;
+
   MetaResizePopup *grab_resize_popup;
 };
 

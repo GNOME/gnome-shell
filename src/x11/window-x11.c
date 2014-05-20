@@ -200,6 +200,8 @@ update_sm_hints (MetaWindow *window)
 static void
 send_configure_notify (MetaWindow *window)
 {
+  MetaWindowX11 *window_x11 = META_WINDOW_X11 (window);
+  MetaWindowX11Private *priv = meta_window_x11_get_instance_private (window_x11);
   XEvent event;
 
   /* from twm */
@@ -208,8 +210,8 @@ send_configure_notify (MetaWindow *window)
   event.xconfigure.display = window->display->xdisplay;
   event.xconfigure.event = window->xwindow;
   event.xconfigure.window = window->xwindow;
-  event.xconfigure.x = window->rect.x - window->border_width;
-  event.xconfigure.y = window->rect.y - window->border_width;
+  event.xconfigure.x = window->rect.x - priv->border_width;
+  event.xconfigure.y = window->rect.y - priv->border_width;
   if (window->frame)
     {
       if (window->withdrawn)
@@ -233,7 +235,7 @@ send_configure_notify (MetaWindow *window)
     }
   event.xconfigure.width = window->rect.width;
   event.xconfigure.height = window->rect.height;
-  event.xconfigure.border_width = window->border_width; /* requested not actual */
+  event.xconfigure.border_width = priv->border_width; /* requested not actual */
   event.xconfigure.above = None; /* FIXME */
   event.xconfigure.override_redirect = False;
 
@@ -256,6 +258,8 @@ adjust_for_gravity (MetaWindow        *window,
                     int                gravity,
                     MetaRectangle     *rect)
 {
+  MetaWindowX11 *window_x11 = META_WINDOW_X11 (window);
+  MetaWindowX11Private *priv = meta_window_x11_get_instance_private (window_x11);
   int ref_x, ref_y;
   int bw;
   int child_x, child_y;
@@ -263,7 +267,7 @@ adjust_for_gravity (MetaWindow        *window,
   MetaFrameBorders borders;
 
   if (coords_assume_border)
-    bw = window->border_width;
+    bw = priv->border_width;
   else
     bw = 0;
 
@@ -550,6 +554,9 @@ meta_window_x11_manage (MetaWindow *window)
 static void
 meta_window_x11_unmanage (MetaWindow *window)
 {
+  MetaWindowX11 *window_x11 = META_WINDOW_X11 (window);
+  MetaWindowX11Private *priv = meta_window_x11_get_instance_private (window_x11);
+
   meta_error_trap_push (window->display);
 
   meta_window_x11_destroy_sync_request_alarm (window);
@@ -593,10 +600,10 @@ meta_window_x11_unmanage (MetaWindow *window)
   meta_display_unregister_x_window (window->display, window->xwindow);
 
   /* Put back anything we messed up */
-  if (window->border_width != 0)
+  if (priv->border_width != 0)
     XSetWindowBorderWidth (window->display->xdisplay,
                            window->xwindow,
-                           window->border_width);
+                           priv->border_width);
 
   /* No save set */
   XRemoveFromSaveSet (window->display->xdisplay,
@@ -1157,7 +1164,7 @@ meta_window_x11_move_resize_internal (MetaWindow                *window,
   if  (is_configure_request &&
        !(need_move_client || need_move_frame ||
          need_resize_client || need_resize_frame ||
-         window->border_width != 0))
+         priv->border_width != 0))
     need_configure_notify = TRUE;
 
   /* We must send configure notify if we move but don't resize, since
@@ -1218,7 +1225,7 @@ meta_window_x11_move_resize_internal (MetaWindow                *window,
   values.height = window->rect.height;
 
   mask = 0;
-  if (is_configure_request && window->border_width != 0)
+  if (is_configure_request && priv->border_width != 0)
     mask |= CWBorderWidth; /* must force to 0 */
   if (need_move_client)
     mask |= (CWX | CWY);
@@ -2126,6 +2133,9 @@ gboolean
 meta_window_x11_configure_request (MetaWindow *window,
                                    XEvent     *event)
 {
+  MetaWindowX11 *window_x11 = META_WINDOW_X11 (window);
+  MetaWindowX11Private *priv = meta_window_x11_get_instance_private (window_x11);
+
   /* Note that x, y is the corner of the window border,
    * and width, height is the size of the window inside
    * its border, but that we always deny border requests
@@ -2133,7 +2143,7 @@ meta_window_x11_configure_request (MetaWindow *window,
    * requested border here.
    */
   if (event->xconfigurerequest.value_mask & CWBorderWidth)
-    window->border_width = event->xconfigurerequest.border_width;
+    priv->border_width = event->xconfigurerequest.border_width;
 
   meta_window_move_resize_request(window,
                                   event->xconfigurerequest.value_mask,
@@ -3068,6 +3078,11 @@ meta_window_x11_new (MetaDisplay       *display,
                                     existing_wm_state,
                                     effect,
                                     &attrs);
+
+  MetaWindowX11 *window_x11 = META_WINDOW_X11 (window);
+  MetaWindowX11Private *priv = meta_window_x11_get_instance_private (window_x11);
+
+  priv->border_width = attrs.border_width;
 
   meta_window_grab_keys (window);
   if (window->type != META_WINDOW_DOCK && !window->override_redirect)
