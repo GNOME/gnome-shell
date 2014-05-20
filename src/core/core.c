@@ -106,9 +106,6 @@ meta_core_get (Display *xdisplay,
       case META_CORE_GET_CLIENT_HEIGHT:
         *((gint*)answer) = window->rect.height;
         break;
-      case META_CORE_GET_CLIENT_XWINDOW:
-        *((Window*)answer) = window->xwindow;
-        break;
       case META_CORE_GET_FRAME_FLAGS:
         *((MetaFrameFlags*)answer) = meta_frame_get_flags (window->frame);
         break;
@@ -121,21 +118,6 @@ meta_core_get (Display *xdisplay,
       case META_CORE_GET_ICON:
         *((GdkPixbuf**)answer) = window->icon;
         break;
-      case META_CORE_GET_X:
-        meta_window_get_position (window, (int*)answer, NULL);
-        break;
-      case META_CORE_GET_Y:
-        meta_window_get_position (window, NULL, (int*)answer);
-        break;
-      case META_CORE_GET_FRAME_WORKSPACE:
-        *((gint*)answer) = meta_window_get_net_wm_desktop (window);
-        break;
-      case META_CORE_GET_FRAME_X:
-        *((gint*)answer) = window->frame->rect.x;
-        break;
-      case META_CORE_GET_FRAME_Y:
-        *((gint*)answer) = window->frame->rect.y;
-        break;
       case META_CORE_GET_FRAME_WIDTH:
         *((gint*)answer) = window->frame->rect.width;
         break;
@@ -144,12 +126,6 @@ meta_core_get (Display *xdisplay,
         break;
       case META_CORE_GET_THEME_VARIANT:
         *((char**)answer) = window->gtk_theme_variant;
-        break;
-      case META_CORE_GET_SCREEN_WIDTH:
-        *((gint*)answer) = window->screen->rect.width;
-        break;
-      case META_CORE_GET_SCREEN_HEIGHT:
-        *((gint*)answer) = window->screen->rect.height;
         break;
 
       default:

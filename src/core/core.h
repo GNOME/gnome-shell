@@ -33,21 +33,13 @@ typedef enum
   META_CORE_WINDOW_HAS_FRAME,
   META_CORE_GET_CLIENT_WIDTH,
   META_CORE_GET_CLIENT_HEIGHT,
-  META_CORE_GET_CLIENT_XWINDOW,
   META_CORE_GET_FRAME_FLAGS,
   META_CORE_GET_FRAME_TYPE,
   META_CORE_GET_MINI_ICON,
   META_CORE_GET_ICON,
-  META_CORE_GET_X,
-  META_CORE_GET_Y,
-  META_CORE_GET_FRAME_WORKSPACE,
-  META_CORE_GET_FRAME_X,
-  META_CORE_GET_FRAME_Y,
   META_CORE_GET_FRAME_WIDTH,
   META_CORE_GET_FRAME_HEIGHT,
   META_CORE_GET_THEME_VARIANT,
-  META_CORE_GET_SCREEN_WIDTH,
-  META_CORE_GET_SCREEN_HEIGHT,
 } MetaCoreGetType;
 
 /* General information function about the given window. Pass in a sequence of
@@ -56,8 +48,8 @@ typedef enum
  * For example:
  *
  *   meta_core_get (my_display, my_window,
- *                  META_CORE_GET_X, &x,
- *                  META_CORE_GET_Y, &y,
+ *                  META_CORE_GET_FRAME_WIDTH, &width,
+ *                  META_CORE_GET_FRAME_HEIGHT, &height,
  *                  META_CORE_GET_END);
  *
  * If the window doesn't have a frame, this will raise a meta_bug. To suppress
