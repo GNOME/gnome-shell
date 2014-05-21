@@ -151,10 +151,15 @@ meta_window_ensure_frame (MetaWindow *window)
                              window->frame->xwindow,
                              window->title);
 
+  meta_ui_map_frame (frame->window->screen->ui, frame->xwindow);
+
+  /* Since the backend takes keygrabs on another connection, make sure
+   * to sync the GTK+ connection to ensure that the frame window has
+   * been created on the server at this point. */
+  XSync (window->display->xdisplay, False);
+
   /* Move keybindings to frame instead of window */
   meta_window_grab_keys (window);
-
-  meta_ui_map_frame (frame->window->screen->ui, frame->xwindow);
 }
 
 void
