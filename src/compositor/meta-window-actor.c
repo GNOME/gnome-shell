@@ -36,6 +36,12 @@
 
 #include "wayland/meta-wayland-surface.h"
 
+typedef enum {
+  INITIALLY_FROZEN,
+  DRAWING_FIRST_FRAME,
+  EMITTED_FIRST_FRAME
+} FirstFrameState;
+
 struct _MetaWindowActorPrivate
 {
   MetaWindow *window;
@@ -104,6 +110,7 @@ struct _MetaWindowActorPrivate
   guint             no_shadow              : 1;
 
   guint             updates_frozen         : 1;
+  guint             first_frame_state      : 2; /* FirstFrameState */
 };
 
 typedef struct _FrameData FrameData;
@@ -114,6 +121,14 @@ struct _FrameData
   guint64 sync_request_serial;
   gint64 frame_drawn_time;
 };
+
+enum
+{
+  FIRST_FRAME,
+  LAST_SIGNAL
+};
+
+static guint signals[LAST_SIGNAL] = { 0 };
 
 enum
 {
@@ -180,6 +195,31 @@ meta_window_actor_class_init (MetaWindowActorClass *klass)
 
   actor_class->paint = meta_window_actor_paint;
   actor_class->get_paint_volume = meta_window_actor_get_paint_volume;
+
+  /**
+   * MetaWindowActor::first-frame:
+   * @actor: the #MetaWindowActor instance
+   *
+   * The ::first-frame signal will be emitted the first time a frame
+   * of window contents has been drawn by the application and Mutter
+   * has had the chance to drawn that frame to the screen. If the
+   * window starts off initially hidden, obscured, or on on a
+   * different workspace, the ::first-frame signal will be emitted
+   * even though the user doesn't see the contents.
+   *
+   * MetaDisplay::window-created is a good place to connect to this
+   * signal - at that point, the MetaWindowActor for the window
+   * exists, but the window has reliably not yet been drawn.
+   * Connecting to an existing window that has already been drawn to
+   * the screen is not useful.
+   */
+  signals[FIRST_FRAME] =
+    g_signal_new ("first-frame",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL, NULL,
+                  G_TYPE_NONE, 0);
 
   pspec = g_param_spec_object ("meta-window",
                                "MetaWindow",
@@ -306,6 +346,9 @@ meta_window_actor_thaw (MetaWindowActor *self)
   if (priv->freeze_count > 0)
     return;
 
+  if (priv->first_frame_state == INITIALLY_FROZEN)
+    priv->first_frame_state = DRAWING_FIRST_FRAME;
+
   if (priv->surface)
     meta_surface_actor_set_frozen (priv->surface, FALSE);
 
@@ -347,6 +390,9 @@ set_surface (MetaWindowActor  *self,
       /* If the previous surface actor was frozen, start out
        * frozen as well... */
       meta_surface_actor_set_frozen (priv->surface, priv->freeze_count > 0);
+
+      if (!is_frozen (self) && priv->first_frame_state == INITIALLY_FROZEN)
+        priv->first_frame_state = DRAWING_FIRST_FRAME;
 
       meta_window_actor_update_shape (self);
     }
@@ -1328,6 +1374,11 @@ meta_window_actor_new (MetaWindow *window)
 
   meta_window_actor_sync_updates_frozen (self);
 
+  if (is_frozen (self))
+    priv->first_frame_state = INITIALLY_FROZEN;
+  else
+    priv->first_frame_state = DRAWING_FIRST_FRAME;
+
   /* If a window doesn't start off with updates frozen, we should
    * we should send a _NET_WM_FRAME_DRAWN immediately after the first drawn.
    */
@@ -1909,6 +1960,12 @@ meta_window_actor_post_paint (MetaWindowActor *self)
     {
       do_send_frame_drawn (self, priv->frames->data);
       priv->needs_frame_drawn = FALSE;
+    }
+
+  if (priv->first_frame_state == DRAWING_FIRST_FRAME)
+    {
+      priv->first_frame_state = EMITTED_FIRST_FRAME;
+      g_signal_emit (self, signals[FIRST_FRAME], 0);
     }
 }
 
