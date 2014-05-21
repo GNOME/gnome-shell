@@ -1093,46 +1093,21 @@ meta_window_x11_move_resize_internal (MetaWindow                *window,
           window->frame->rect.y = new_y;
         }
 
-      /* If frame will both move and resize, then StaticGravity
-       * on the child window will kick in and implicitly move
-       * the child with respect to the frame. The implicit
-       * move will keep the child in the same place with
-       * respect to the root window. If frame only moves
-       * or only resizes, then the child will just move along
-       * with the frame.
-       */
-
-      /* window->rect.x, window->rect.y are relative to frame,
-       * remember they are the server coords
-       */
-
-      new_x = borders.total.left;
-      new_y = borders.total.top;
-      client_move_x = new_x;
-      client_move_y = new_y;
-
-      if (client_move_x != window->rect.x ||
-          client_move_y != window->rect.y)
-        need_move_client = TRUE;
-
-      /* This is the final target position, but not necessarily what
-       * we pass to XConfigureWindow, due to StaticGravity implicit
-       * movement.
-       */
-      window->rect.x = new_x;
-      window->rect.y = new_y;
+      client_move_x = borders.total.left;
+      client_move_y = borders.total.top;
     }
   else
     {
-      if (root_x_nw != window->rect.x ||
-          root_y_nw != window->rect.y)
-        need_move_client = TRUE;
+      client_move_x = root_x_nw;
+      client_move_y = root_y_nw;
+    }
 
-      window->rect.x = root_x_nw;
-      window->rect.y = root_y_nw;
-
-      client_move_x = window->rect.x;
-      client_move_y = window->rect.y;
+  if (client_move_x != window->rect.x ||
+      client_move_y != window->rect.y)
+    {
+      need_move_client = TRUE;
+      window->rect.x = client_move_x;
+      window->rect.y = client_move_y;
     }
 
   /* If frame extents have changed, fill in other frame fields and
