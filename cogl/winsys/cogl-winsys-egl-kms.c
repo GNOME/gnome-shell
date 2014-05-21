@@ -582,7 +582,7 @@ flip_all_crtcs (CoglDisplay *display, CoglFlipKMS *flip, int fb_id)
       CoglKmsCrtc *crtc = l->data;
       int ret;
 
-      if (crtc->count == 0)
+      if (crtc->count == 0 || crtc->ignore)
         continue;
 
       ret = drmModePageFlip (kms_renderer->fd,
@@ -1237,4 +1237,25 @@ cogl_kms_display_set_layout (CoglDisplay *display,
   kms_display->pending_set_crtc = TRUE;
 
   return TRUE;
+}
+
+
+void
+cogl_kms_display_set_ignore_crtc (CoglDisplay *display,
+                                  uint32_t id,
+                                  CoglBool ignore)
+{
+  CoglDisplayEGL *egl_display = display->winsys;
+  CoglDisplayKMS *kms_display = egl_display->platform;
+  GList *l;
+
+  for (l = kms_display->crtcs; l; l = l->next)
+  {
+    CoglKmsCrtc *crtc = l->data;
+    if (crtc->id == id)
+      {
+        crtc->ignore = ignore;
+        break;
+      }
+  }
 }

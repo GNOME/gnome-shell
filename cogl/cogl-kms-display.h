@@ -67,6 +67,8 @@ typedef struct {
 
   uint32_t *connectors;
   uint32_t  count;
+ 
+  CoglBool  ignore;
 } CoglKmsCrtc;
 
 /**
@@ -97,5 +99,21 @@ cogl_kms_display_set_layout (CoglDisplay *display,
                              int n_crtcs,
                              CoglError **error);
 
+
+/**
+ * cogl_kms_display_set_layout:
+ * @onscreen: a #CoglDisplay
+ * @id: KMS output id
+ * @ignore: Ignore ouput or not
+ *
+ * Tells cogl to ignore (or stop ignoring) a ctrc which means
+ * it never flips buffers at this crtc.
+ *
+ * Stability: unstable
+ */
+void
+cogl_kms_display_set_ignore_crtc (CoglDisplay *display,
+                                  uint32_t id,
+                                  CoglBool ignore);
 COGL_END_DECLS
 #endif /* __COGL_KMS_DISPLAY_H__ */
