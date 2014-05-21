@@ -115,7 +115,7 @@ const WindowMenu = new Lang.Class({
         this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
         item = this.addAction(_("Close"), Lang.bind(this, function(event) {
-            window.close(event.get_time());
+            window.delete(event.get_time());
         }));
         if (!window.can_close())
             item.setSensitive(false);
