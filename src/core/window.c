@@ -3651,9 +3651,6 @@ meta_window_move_resize_internal (MetaWindow          *window,
    * windows, this is the root position of the client area of the window.
    */
   gboolean did_placement;
-  /* used for the configure request, but may not be final
-   * destination due to StaticGravity etc.
-   */
   MetaRectangle new_rect;
   MetaRectangle requested_rect;
   MetaMoveResizeResultFlags result = 0;
