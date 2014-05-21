@@ -2636,22 +2636,14 @@ handle_move_to_center  (MetaDisplay     *display,
 {
   MetaRectangle work_area;
   MetaRectangle frame_rect;
-  int orig_x, orig_y;
-  int frame_width, frame_height;
 
   meta_window_get_work_area_all_monitors (window, &work_area);
   meta_window_get_frame_rect (window, &frame_rect);
-  meta_window_get_position (window, &orig_x, &orig_y);
 
-  frame_width = (window->frame ? window->frame->child_x : 0);
-  frame_height = (window->frame ? window->frame->child_y : 0);
-
-  meta_window_move_resize (window,
-                           TRUE,
-                           work_area.x + (work_area.width +frame_width -frame_rect.width )/2,
-                           work_area.y + (work_area.height+frame_height-frame_rect.height)/2,
-                           window->rect.width,
-                           window->rect.height);
+  meta_window_move_frame (window,
+                          TRUE,
+                          work_area.x + (work_area.width  - frame_rect.width ) / 2,
+                          work_area.y + (work_area.height - frame_rect.height) / 2);
 }
 
 static void

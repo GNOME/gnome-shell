@@ -5328,7 +5328,6 @@ meta_window_shove_titlebar_onscreen (MetaWindow *window)
   MetaRectangle  frame_rect;
   GList         *onscreen_region;
   int            horiz_amount, vert_amount;
-  int            newx, newy;
 
   g_return_if_fail (!window->override_redirect);
 
@@ -5360,14 +5359,7 @@ meta_window_shove_titlebar_onscreen (MetaWindow *window)
                                 0,
                                 -vert_amount);
 
-  newx = frame_rect.x + window->frame->child_x;
-  newy = frame_rect.y + window->frame->child_y;
-  meta_window_move_resize (window,
-                           FALSE,
-                           newx,
-                           newy,
-                           window->rect.width,
-                           window->rect.height);
+  meta_window_move_frame (window, FALSE, frame_rect.x, frame_rect.y);
 }
 
 gboolean
