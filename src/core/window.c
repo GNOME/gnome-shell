@@ -3139,6 +3139,9 @@ meta_window_unmaximize_internal (MetaWindow        *window,
           window->display->grab_window == window)
         {
           window->display->grab_anchor_window_pos = window->unconstrained_rect;
+          meta_window_client_rect_to_frame_rect (window,
+                                                 &window->display->grab_anchor_window_pos,
+                                                 &window->display->grab_anchor_window_pos);
         }
 
       meta_window_recalc_features (window);
@@ -6553,8 +6556,8 @@ warp_grab_pointer (MetaWindow          *window,
   display->grab_anchor_root_y = *y;
   display->grab_latest_motion_x = *x;
   display->grab_latest_motion_y = *y;
-  meta_window_get_client_root_coords (window,
-                                      &display->grab_anchor_window_pos);
+  meta_window_get_frame_rect (window,
+                              &display->grab_anchor_window_pos);
 
   {
     MetaBackend *backend = meta_get_backend ();
