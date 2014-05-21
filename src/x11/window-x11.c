@@ -1064,21 +1064,6 @@ meta_window_x11_move_resize_internal (MetaWindow                *window,
                   window->frame->rect.height);
     }
 
-  /* For nice effect, when growing the window we want to move/resize
-   * the frame first, when shrinking the window we want to move/resize
-   * the client first. If we grow one way and shrink the other,
-   * see which way we're moving "more"
-   *
-   * Mail from Owen subject "Suggestion: Gravity and resizing from the left"
-   * http://mail.gnome.org/archives/wm-spec-list/1999-November/msg00088.html
-   *
-   * An annoying fact you need to know in this code is that StaticGravity
-   * does nothing if you _only_ resize or _only_ move the frame;
-   * it must move _and_ resize, otherwise you get NorthWestGravity
-   * behavior. The move and resize must actually occur, it is not
-   * enough to set CWX | CWWidth but pass in the current size/pos.
-   */
-
   if (window->frame)
     {
       int new_x, new_y;
@@ -1162,6 +1147,21 @@ meta_window_x11_move_resize_internal (MetaWindow                *window,
 
   /* The rest of this function syncs our new size/pos with X as
    * efficiently as possible
+   */
+
+  /* For nice effect, when growing the window we want to move/resize
+   * the frame first, when shrinking the window we want to move/resize
+   * the client first. If we grow one way and shrink the other,
+   * see which way we're moving "more"
+   *
+   * Mail from Owen subject "Suggestion: Gravity and resizing from the left"
+   * http://mail.gnome.org/archives/wm-spec-list/1999-November/msg00088.html
+   *
+   * An annoying fact you need to know in this code is that StaticGravity
+   * does nothing if you _only_ resize or _only_ move the frame;
+   * it must move _and_ resize, otherwise you get NorthWestGravity
+   * behavior. The move and resize must actually occur, it is not
+   * enough to set CWX | CWWidth but pass in the current size/pos.
    */
 
   /* Normally, we configure the frame first depending on whether
