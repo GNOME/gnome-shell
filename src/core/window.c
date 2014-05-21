@@ -3686,6 +3686,14 @@ meta_window_move_resize_internal (MetaWindow          *window,
       requested_rect = client_rect;
     }
 
+  /* If this is only a move, then ignore the passed in size and
+   * just use the existing size of the window. */
+  if ((flags & (META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION)) == META_IS_MOVE_ACTION)
+    {
+      requested_rect.width = window->rect.width;
+      requested_rect.height = window->rect.height;
+    }
+
   new_rect = requested_rect;
 
   /* Save the unconstrained rectangle to the position we should be at
@@ -3764,17 +3772,11 @@ meta_window_move (MetaWindow  *window,
                   int          root_y_nw)
 {
   MetaMoveResizeFlags flags;
-  MetaRectangle rect;
+  MetaRectangle rect = { root_x_nw, root_y_nw, 0, 0 };
 
   g_return_if_fail (!window->override_redirect);
 
   flags = (user_op ? META_IS_USER_ACTION : 0) | META_IS_MOVE_ACTION;
-
-  rect.x = root_x_nw;
-  rect.y = root_y_nw;
-  rect.width = window->rect.width;
-  rect.height = window->rect.height;
-
   meta_window_move_resize_internal (window, flags, NorthWestGravity, rect);
 }
 
