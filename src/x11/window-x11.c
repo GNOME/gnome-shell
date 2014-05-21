@@ -1031,8 +1031,10 @@ meta_window_x11_move_resize_internal (MetaWindow                *window,
   w = constrained_rect.width;
   h = constrained_rect.height;
 
-  if (w != window->rect.width ||
-      h != window->rect.height)
+  size_dx = w - window->rect.width;
+  size_dy = h - window->rect.height;
+
+  if (size_dx != 0 || size_dy != 0)
     need_resize_client = TRUE;
 
   window->rect.width = w;
@@ -1174,16 +1176,9 @@ meta_window_x11_move_resize_internal (MetaWindow                *window,
    * the client finishes redrawing.
    */
   if (window->extended_sync_request_counter)
-    {
-      configure_frame_first = TRUE;
-    }
+    configure_frame_first = TRUE;
   else
-    {
-      size_dx = w - window->rect.width;
-      size_dy = h - window->rect.height;
-
-      configure_frame_first = size_dx + size_dy >= 0;
-    }
+    configure_frame_first = size_dx + size_dy >= 0;
 
   if (configure_frame_first && window->frame)
     frame_shape_changed = meta_frame_sync_to_window (window->frame,
