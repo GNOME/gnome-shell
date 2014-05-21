@@ -1040,7 +1040,6 @@ meta_window_x11_move_resize_internal (MetaWindow                *window,
 
   if (window->frame)
     {
-      int frame_size_dx, frame_size_dy;
       int new_w, new_h;
 
       new_w = window->rect.width + borders.total.left + borders.total.right;
@@ -1049,13 +1048,13 @@ meta_window_x11_move_resize_internal (MetaWindow                *window,
       if (!window->shaded)
         new_h += window->rect.height;
 
-      frame_size_dx = new_w - window->frame->rect.width;
-      frame_size_dy = new_h - window->frame->rect.height;
-
-      need_resize_frame = (frame_size_dx != 0 || frame_size_dy != 0);
-
-      window->frame->rect.width = new_w;
-      window->frame->rect.height = new_h;
+      if (new_w != window->frame->rect.width ||
+          new_h != window->frame->rect.height)
+        {
+          need_resize_frame = TRUE;
+          window->frame->rect.width = new_w;
+          window->frame->rect.height = new_h;
+        }
 
       meta_topic (META_DEBUG_GEOMETRY,
                   "Calculated frame size %dx%d\n",
@@ -1081,19 +1080,18 @@ meta_window_x11_move_resize_internal (MetaWindow                *window,
   if (window->frame)
     {
       int new_x, new_y;
-      int frame_pos_dx, frame_pos_dy;
 
       /* Compute new frame coords */
       new_x = root_x_nw - borders.total.left;
       new_y = root_y_nw - borders.total.top;
 
-      frame_pos_dx = new_x - window->frame->rect.x;
-      frame_pos_dy = new_y - window->frame->rect.y;
-
-      need_move_frame = (frame_pos_dx != 0 || frame_pos_dy != 0);
-
-      window->frame->rect.x = new_x;
-      window->frame->rect.y = new_y;
+      if (new_x != window->frame->rect.x ||
+          new_y != window->frame->rect.y)
+        {
+          need_move_frame = TRUE;
+          window->frame->rect.x = new_x;
+          window->frame->rect.y = new_y;
+        }
 
       /* If frame will both move and resize, then StaticGravity
        * on the child window will kick in and implicitly move
