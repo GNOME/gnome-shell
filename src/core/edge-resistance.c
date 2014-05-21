@@ -1134,13 +1134,8 @@ compute_resistance_and_snapping_edges (MetaDisplay *display)
   initialize_grab_edge_resistance_data (display);
 }
 
-/* Note that old_[xy] and new_[xy] are with respect to inner positions of
- * the window.
- */
 void
 meta_window_edge_resistance_for_move (MetaWindow  *window,
-                                      int          old_x,
-                                      int          old_y,
                                       int         *new_x,
                                       int         *new_y,
                                       GSourceFunc  timeout_func,
@@ -1153,8 +1148,8 @@ meta_window_edge_resistance_for_move (MetaWindow  *window,
   meta_window_get_frame_rect (window, &old_outer);
 
   proposed_outer = old_outer;
-  proposed_outer.x += (*new_x - old_x);
-  proposed_outer.y += (*new_y - old_y);
+  proposed_outer.x = *new_x;
+  proposed_outer.y = *new_y;
   new_outer = proposed_outer;
 
   window->display->grab_last_user_action_was_snap = snap;
@@ -1205,16 +1200,15 @@ meta_window_edge_resistance_for_move (MetaWindow  *window,
       else
         smaller_y_change = bottom_change;
 
-      *new_x = old_x + smaller_x_change +
+      *new_x = old_outer.x + smaller_x_change +
               (BOX_LEFT (*reference) - BOX_LEFT (old_outer));
-      *new_y = old_y + smaller_y_change +
+      *new_y = old_outer.y + smaller_y_change +
               (BOX_TOP (*reference) - BOX_TOP (old_outer));
 
       meta_topic (META_DEBUG_EDGE_RESISTANCE,
                   "outer x & y move-to coordinate changed from %d,%d to %d,%d\n",
                   proposed_outer.x, proposed_outer.y,
-                  old_outer.x + (*new_x - old_x),
-                  old_outer.y + (*new_y - old_y));
+                  *new_x, *new_y);
     }
 }
 

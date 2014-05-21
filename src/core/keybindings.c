@@ -1927,6 +1927,7 @@ process_keyboard_move_grab (MetaDisplay     *display,
                             ClutterKeyEvent *event)
 {
   gboolean handled;
+  MetaRectangle frame_rect;
   int x, y;
   int incr;
   gboolean smart_snap;
@@ -1941,7 +1942,9 @@ process_keyboard_move_grab (MetaDisplay     *display,
   if (is_modifier (event->keyval))
     return TRUE;
 
-  meta_window_get_position (window, &x, &y);
+  meta_window_get_frame_rect (window, &frame_rect);
+  x = frame_rect.x;
+  y = frame_rect.y;
 
   smart_snap = (event->modifier_state & CLUTTER_SHIFT_MASK) != 0;
 
@@ -2016,23 +2019,18 @@ process_keyboard_move_grab (MetaDisplay     *display,
 
   if (handled)
     {
-      MetaRectangle old_rect;
       meta_topic (META_DEBUG_KEYBINDINGS,
                   "Computed new window location %d,%d due to keypress\n",
                   x, y);
 
-      meta_window_get_client_root_coords (window, &old_rect);
-
       meta_window_edge_resistance_for_move (window,
-                                            old_rect.x,
-                                            old_rect.y,
                                             &x,
                                             &y,
                                             NULL,
                                             smart_snap,
                                             TRUE);
 
-      meta_window_move (window, TRUE, x, y);
+      meta_window_move_frame (window, TRUE, x, y);
       meta_window_update_keyboard_move (window);
     }
 

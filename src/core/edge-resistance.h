@@ -25,8 +25,6 @@
 #include "window-private.h"
 
 void        meta_window_edge_resistance_for_move   (MetaWindow  *window,
-                                                    int          old_x,
-                                                    int          old_y,
                                                     int         *new_x,
                                                     int         *new_y,
                                                     GSourceFunc  timeout_func,

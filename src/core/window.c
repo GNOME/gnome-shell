@@ -3534,7 +3534,7 @@ maybe_move_attached_dialog (MetaWindow *window,
 {
   if (meta_window_is_attached_dialog (window))
     /* It ignores x,y for such a dialog  */
-    meta_window_move (window, FALSE, 0, 0);
+    meta_window_move_frame (window, FALSE, 0, 0);
 
   return FALSE;
 }
@@ -3757,33 +3757,6 @@ meta_window_move_resize_internal (MetaWindow          *window,
 }
 
 /**
- * meta_window_move:
- * @window: a #MetaWindow
- * @user_op: bool to indicate whether or not this is a user operation
- * @root_x_nw: desired x pos
- * @root_y_nw: desired y pos
- *
- * Moves the window to the desired location on window's assigned workspace.
- * NOTE: does NOT place according to the origin of the enclosing
- * frame/window-decoration, but according to the origin of the window,
- * itself.
- */
-void
-meta_window_move (MetaWindow  *window,
-                  gboolean     user_op,
-                  int          root_x_nw,
-                  int          root_y_nw)
-{
-  MetaMoveResizeFlags flags;
-  MetaRectangle rect = { root_x_nw, root_y_nw, 0, 0 };
-
-  g_return_if_fail (!window->override_redirect);
-
-  flags = (user_op ? META_IS_USER_ACTION : 0) | META_IS_MOVE_ACTION;
-  meta_window_move_resize_internal (window, flags, NorthWestGravity, rect);
-}
-
-/**
  * meta_window_move_frame:
  * @window: a #MetaWindow
  * @user_op: bool to indicate whether or not this is a user operation
@@ -3801,10 +3774,14 @@ meta_window_move_frame (MetaWindow *window,
                         int         root_x_nw,
                         int         root_y_nw)
 {
+  MetaMoveResizeFlags flags;
   MetaRectangle rect = { root_x_nw, root_y_nw, 0, 0 };
 
+  g_return_if_fail (!window->override_redirect);
+
+  flags = (user_op ? META_IS_USER_ACTION : 0) | META_IS_MOVE_ACTION;
   meta_window_frame_rect_to_client_rect (window, &rect, &rect);
-  meta_window_move (window, user_op, rect.x, rect.y);
+  meta_window_move_resize_internal (window, flags, NorthWestGravity, rect);
 }
 
 static void
@@ -5698,7 +5675,7 @@ update_move (MetaWindow  *window,
   meta_screen_update_tile_preview (window->screen,
                                    window->tile_mode != META_TILE_NONE);
 
-  meta_window_get_client_root_coords (window, &old);
+  meta_window_get_frame_rect (window, &old);
 
   /* Don't allow movement in the maximized directions or while tiled */
   if (window->maximized_horizontally || META_WINDOW_TILED_SIDE_BY_SIDE (window))
@@ -5708,15 +5685,13 @@ update_move (MetaWindow  *window,
 
   /* Do any edge resistance/snapping */
   meta_window_edge_resistance_for_move (window,
-                                        old.x,
-                                        old.y,
                                         &new_x,
                                         &new_y,
                                         update_move_timeout,
                                         snap,
                                         FALSE);
 
-  meta_window_move (window, TRUE, new_x, new_y);
+  meta_window_move_frame (window, TRUE, new_x, new_y);
 }
 
 /* When resizing a maximized window by using alt-middle-drag (resizing

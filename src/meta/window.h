@@ -147,7 +147,6 @@ const char * meta_window_get_gtk_window_object_path (MetaWindow *window);
 const char * meta_window_get_gtk_app_menu_object_path (MetaWindow *window);
 const char * meta_window_get_gtk_menubar_object_path (MetaWindow *window);
 
-void meta_window_move(MetaWindow *window, gboolean user_op, int root_x_nw, int root_y_nw);
 void meta_window_move_frame(MetaWindow *window, gboolean user_op, int root_x_nw, int root_y_nw);
 void meta_window_move_resize_frame (MetaWindow *window, gboolean user_op, int root_x_nw, int root_y_nw, int w, int h);
 void meta_window_move_to_monitor (MetaWindow *window, int monitor);

@@ -539,10 +539,6 @@ void        meta_window_update_fullscreen_monitors (MetaWindow    *window,
                                                     unsigned long  left,
                                                     unsigned long  right);
 
-void        meta_window_move               (MetaWindow  *window,
-                                            gboolean     user_op,
-                                            int          root_x_nw,
-                                            int          root_y_nw);
 void        meta_window_move_resize        (MetaWindow  *window,
                                             gboolean     user_op,
                                             int          root_x_nw,
