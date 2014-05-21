@@ -592,7 +592,7 @@ void        meta_window_get_gravity_position (MetaWindow  *window,
 /* Get geometry for saving in the session; x/y are gravity
  * position, and w/h are in resize inc above the base size.
  */
-void        meta_window_get_geometry         (MetaWindow  *window,
+void        meta_window_get_session_geometry (MetaWindow  *window,
                                               int         *x,
                                               int         *y,
                                               int         *width,

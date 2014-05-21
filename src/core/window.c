@@ -4091,11 +4091,11 @@ meta_window_get_gravity_position (MetaWindow  *window,
 }
 
 void
-meta_window_get_geometry (MetaWindow  *window,
-                          int         *x,
-                          int         *y,
-                          int         *width,
-                          int         *height)
+meta_window_get_session_geometry (MetaWindow  *window,
+                                  int         *x,
+                                  int         *y,
+                                  int         *width,
+                                  int         *height)
 {
   meta_window_get_gravity_position (window,
                                     window->size_hints.win_gravity,
