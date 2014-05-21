@@ -995,7 +995,7 @@ meta_window_x11_current_workspace_changed (MetaWindow *window)
 static void
 meta_window_x11_move_resize_internal (MetaWindow                *window,
                                       int                        gravity,
-                                      MetaRectangle              requested_rect,
+                                      MetaRectangle              unconstrained_rect,
                                       MetaRectangle              constrained_rect,
                                       MetaMoveResizeFlags        flags,
                                       MetaMoveResizeResultFlags *result)

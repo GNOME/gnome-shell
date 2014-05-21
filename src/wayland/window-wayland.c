@@ -150,7 +150,7 @@ meta_window_wayland_grab_op_ended (MetaWindow *window,
 static void
 meta_window_wayland_move_resize_internal (MetaWindow                *window,
                                           int                        gravity,
-                                          MetaRectangle              requested_rect,
+                                          MetaRectangle              unconstrained_rect,
                                           MetaRectangle              constrained_rect,
                                           MetaMoveResizeFlags        flags,
                                           MetaMoveResizeResultFlags *result)
@@ -177,8 +177,8 @@ meta_window_wayland_move_resize_internal (MetaWindow                *window,
        */
 
       *result |= META_MOVE_RESIZE_RESULT_RESIZED;
-      window->rect.width = requested_rect.width;
-      window->rect.height = requested_rect.height;
+      window->rect.width = unconstrained_rect.width;
+      window->rect.height = unconstrained_rect.height;
 
       /* This is a commit of an attach. We should move the window to match the
        * new position the client wants. */

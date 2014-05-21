@@ -478,7 +478,7 @@ struct _MetaWindowClass
   void (*current_workspace_changed) (MetaWindow *window);
   void (*move_resize_internal)   (MetaWindow                *window,
                                   int                        gravity,
-                                  MetaRectangle              requested_rect,
+                                  MetaRectangle              unconstrained_rect,
                                   MetaRectangle              constrained_rect,
                                   MetaMoveResizeFlags        flags,
                                   MetaMoveResizeResultFlags *result);

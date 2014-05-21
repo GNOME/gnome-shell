@@ -3651,8 +3651,8 @@ meta_window_move_resize_internal (MetaWindow          *window,
    * windows, this is the root position of the client area of the window.
    */
   gboolean did_placement;
-  MetaRectangle new_rect;
-  MetaRectangle requested_rect;
+  MetaRectangle unconstrained_rect;
+  MetaRectangle constrained_rect;
   MetaMoveResizeResultFlags result = 0;
 
   g_return_if_fail (!window->override_redirect);
@@ -3676,48 +3676,47 @@ meta_window_move_resize_internal (MetaWindow          *window,
 
       meta_window_get_client_root_coords (window, &old_rect);
       meta_rectangle_resize_with_gravity (&old_rect,
-                                          &requested_rect,
+                                          &unconstrained_rect,
                                           gravity,
                                           client_rect.width,
                                           client_rect.height);
     }
   else
     {
-      requested_rect = client_rect;
+      unconstrained_rect = client_rect;
     }
 
   /* If this is only a move, then ignore the passed in size and
    * just use the existing size of the window. */
   if ((flags & (META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION)) == META_IS_MOVE_ACTION)
     {
-      requested_rect.width = window->rect.width;
-      requested_rect.height = window->rect.height;
+      unconstrained_rect.width = window->rect.width;
+      unconstrained_rect.height = window->rect.height;
     }
-
-  new_rect = requested_rect;
 
   /* Save the unconstrained rectangle to the position we should be at
    * before constraints kick in. */
-  window->unconstrained_rect = new_rect;
+  window->unconstrained_rect = unconstrained_rect;
 
+  constrained_rect = unconstrained_rect;
   if (flags & (META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION))
     {
       MetaRectangle old_rect;
       meta_window_get_frame_rect (window, &old_rect);
 
-      meta_window_client_rect_to_frame_rect (window, &new_rect, &new_rect);
+      meta_window_client_rect_to_frame_rect (window, &constrained_rect, &constrained_rect);
 
       meta_window_constrain (window,
                              flags,
                              gravity,
                              &old_rect,
-                             &new_rect);
+                             &constrained_rect);
 
-      meta_window_frame_rect_to_client_rect (window, &new_rect, &new_rect);
+      meta_window_frame_rect_to_client_rect (window, &constrained_rect, &constrained_rect);
     }
 
   /* Do the protocol-specific move/resize logic */
-  META_WINDOW_GET_CLASS (window)->move_resize_internal (window, gravity, requested_rect, new_rect, flags, &result);
+  META_WINDOW_GET_CLASS (window)->move_resize_internal (window, gravity, unconstrained_rect, constrained_rect, flags, &result);
 
   if (result & META_MOVE_RESIZE_RESULT_MOVED)
     g_signal_emit (window, window_signals[POSITION_CHANGED], 0);
