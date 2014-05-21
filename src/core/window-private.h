@@ -400,6 +400,9 @@ struct _MetaWindow
   /* window that gets updated net_wm_user_time values */
   Window user_time_window;
 
+  gboolean has_custom_frame_extents;
+  GtkBorder custom_frame_extents;
+
   /* The size we set the window to last (i.e. what we believe
    * to be its actual size on the server). The x, y are
    * the actual server-side x,y so are relative to the frame
@@ -408,9 +411,6 @@ struct _MetaWindow
    * of the top left of the inner window) as appropriate.
    */
   MetaRectangle rect;
-
-  gboolean has_custom_frame_extents;
-  GtkBorder custom_frame_extents;
 
   /* The geometry to restore when we unmaximize.  The position is in
    * root window coords, even if there's a frame, which contrasts with
