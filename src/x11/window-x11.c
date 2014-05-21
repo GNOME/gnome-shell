@@ -1002,6 +1002,7 @@ meta_window_x11_move_resize_internal (MetaWindow                *window,
 {
   MetaWindowX11 *window_x11 = META_WINDOW_X11 (window);
   MetaWindowX11Private *priv = meta_window_x11_get_instance_private (window_x11);
+  MetaFrameBorders borders;
   int root_x_nw, root_y_nw;
   int w, h;
   int client_move_x, client_move_y;
@@ -1009,7 +1010,6 @@ meta_window_x11_move_resize_internal (MetaWindow                *window,
   XWindowChanges values;
   unsigned int mask;
   gboolean need_configure_notify;
-  MetaFrameBorders borders;
   gboolean need_move_client = FALSE;
   gboolean need_move_frame = FALSE;
   gboolean need_resize_client = FALSE;
