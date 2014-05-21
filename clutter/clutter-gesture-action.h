@@ -160,7 +160,7 @@ CLUTTER_AVAILABLE_IN_1_18
 void                            clutter_gesture_action_set_threshold_trigger_edge       (ClutterGestureAction      *action,
                                                                                          ClutterGestureTriggerEdge  edge);
 CLUTTER_AVAILABLE_IN_1_18
-ClutterGestureTriggerEdge       clutter_gesture_action_get_threshold_trigger_egde       (ClutterGestureAction      *action);
+ClutterGestureTriggerEdge       clutter_gesture_action_get_threshold_trigger_edge       (ClutterGestureAction      *action);
 
 CLUTTER_AVAILABLE_IN_1_18
 void                            clutter_gesture_action_set_threshold_trigger_distance   (ClutterGestureAction      *action,
