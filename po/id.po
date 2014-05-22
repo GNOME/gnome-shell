@@ -10,9 +10,9 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-04-05 19:59+0000\n"
-"PO-Revision-Date: 2014-04-09 05:35+0700\n"
-"Last-Translator: Dirgita <dirgitadevina@yahoo.co.id>\n"
+"POT-Creation-Date: 2014-05-22 07:28+0000\n"
+"PO-Revision-Date: 2014-05-22 16:21+0700\n"
+"Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
 "Language: id\n"
 "MIME-Version: 1.0\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Generator: Lokalize 1.5\n"
+"X-Generator: Poedit 1.5.7\n"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
 msgid "System"
@@ -341,25 +341,25 @@ msgstr "Pilih Sesi"
 msgid "Not listed?"
 msgstr "Tak masuk daftar?"
 
-#: ../js/gdm/loginDialog.js:614
+#: ../js/gdm/loginDialog.js:616
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(cth., pengguna dari %s)"
 
-#: ../js/gdm/loginDialog.js:619 ../js/ui/components/networkAgent.js:262
+#: ../js/gdm/loginDialog.js:621 ../js/ui/components/networkAgent.js:262
 #: ../js/ui/components/networkAgent.js:280
 msgid "Username: "
 msgstr "Nama pengguna: "
 
-#: ../js/gdm/loginDialog.js:920
+#: ../js/gdm/loginDialog.js:924
 msgid "Login Window"
 msgstr "Jendela Log Masuk"
 
-#: ../js/gdm/util.js:322
+#: ../js/gdm/util.js:323
 msgid "Authentication error"
 msgstr "Galat otentikasi"
 
-#: ../js/gdm/util.js:452
+#: ../js/gdm/util.js:453
 msgid "(or swipe finger)"
 msgstr "(atau gesekkan jari)"
 
@@ -376,29 +376,33 @@ msgstr "Tak dapat mengurai perintah:"
 msgid "Execution of “%s” failed:"
 msgstr "Eksekusi \"%s\" gagal:"
 
-#: ../js/ui/appDisplay.js:636
+#: ../js/ui/appDisplay.js:640
 msgid "Frequently used applications will appear here"
 msgstr "Aplikasi yang sering dipakai akan muncul di sini"
 
-#: ../js/ui/appDisplay.js:747
+#: ../js/ui/appDisplay.js:751
 msgid "Frequent"
 msgstr "Sering"
 
-#: ../js/ui/appDisplay.js:754
+#: ../js/ui/appDisplay.js:758
 msgid "All"
 msgstr "Semua"
 
-#: ../js/ui/appDisplay.js:1566
+#: ../js/ui/appDisplay.js:1571
 msgid "New Window"
 msgstr "Jendela Baru"
 
-#: ../js/ui/appDisplay.js:1588 ../js/ui/dash.js:285
+#: ../js/ui/appDisplay.js:1593 ../js/ui/dash.js:285
 msgid "Remove from Favorites"
 msgstr "Hapus dari Favorit"
 
-#: ../js/ui/appDisplay.js:1594
+#: ../js/ui/appDisplay.js:1599
 msgid "Add to Favorites"
 msgstr "Tambah ke Favorit"
+
+#: ../js/ui/appDisplay.js:1608
+msgid "Show Details"
+msgstr "Tampilkan Rincian"
 
 #: ../js/ui/appFavorites.js:87
 #, javascript-format
@@ -410,8 +414,8 @@ msgstr "%s telah ditambahkan ke favorit Anda."
 msgid "%s has been removed from your favorites."
 msgstr "%s telah dihapus dari favorit Anda."
 
-#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:809
-#: ../js/ui/status/system.js:334
+#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:810
+#: ../js/ui/status/system.js:337
 msgid "Settings"
 msgstr "Pengaturan"
 
@@ -422,14 +426,14 @@ msgstr "Ubah Latar…"
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #. */
-#: ../js/ui/calendar.js:64
+#: ../js/ui/calendar.js:67
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Sepanjang Hari"
 
 #. Translators: Shown in calendar event list, if 24h format,
 #. \u2236 is a ratio character, similar to : */
-#: ../js/ui/calendar.js:70
+#: ../js/ui/calendar.js:73
 msgctxt "event list time"
 msgid "%H∶%M"
 msgstr "%H∶%M"
@@ -437,7 +441,7 @@ msgstr "%H∶%M"
 #. Translators: Shown in calendar event list, if 12h format,
 #. \u2236 is a ratio character, similar to : and \u2009 is
 #. a thin space */
-#: ../js/ui/calendar.js:79
+#: ../js/ui/calendar.js:82
 msgctxt "event list time"
 msgid "%l∶%M %p"
 msgstr "%l∶%M %p"
@@ -447,43 +451,43 @@ msgstr "%l∶%M %p"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #. */
-#: ../js/ui/calendar.js:110
+#: ../js/ui/calendar.js:113
 msgctxt "grid sunday"
 msgid "S"
 msgstr "M"
 
 #. Translators: Calendar grid abbreviation for Monday */
-#: ../js/ui/calendar.js:112
+#: ../js/ui/calendar.js:115
 msgctxt "grid monday"
 msgid "M"
 msgstr "S"
 
 #. Translators: Calendar grid abbreviation for Tuesday */
-#: ../js/ui/calendar.js:114
+#: ../js/ui/calendar.js:117
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "S"
 
 #. Translators: Calendar grid abbreviation for Wednesday */
-#: ../js/ui/calendar.js:116
+#: ../js/ui/calendar.js:119
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "R"
 
 #. Translators: Calendar grid abbreviation for Thursday */
-#: ../js/ui/calendar.js:118
+#: ../js/ui/calendar.js:121
 msgctxt "grid thursday"
 msgid "T"
 msgstr "K"
 
 #. Translators: Calendar grid abbreviation for Friday */
-#: ../js/ui/calendar.js:120
+#: ../js/ui/calendar.js:123
 msgctxt "grid friday"
 msgid "F"
 msgstr "J"
 
 #. Translators: Calendar grid abbreviation for Saturday */
-#: ../js/ui/calendar.js:122
+#: ../js/ui/calendar.js:125
 msgctxt "grid saturday"
 msgid "S"
 msgstr "S"
@@ -494,97 +498,93 @@ msgstr "S"
 #. * so they need to be unique (e.g. Tuesday and Thursday cannot
 #. * both be 'T').
 #. */
-#: ../js/ui/calendar.js:135
+#: ../js/ui/calendar.js:138
 msgctxt "list sunday"
 msgid "Su"
 msgstr "Min"
 
 #. Translators: Event list abbreviation for Monday */
-#: ../js/ui/calendar.js:137
+#: ../js/ui/calendar.js:140
 msgctxt "list monday"
 msgid "M"
 msgstr "Sen"
 
 #. Translators: Event list abbreviation for Tuesday */
-#: ../js/ui/calendar.js:139
+#: ../js/ui/calendar.js:142
 msgctxt "list tuesday"
 msgid "T"
 msgstr "Sel"
 
 #. Translators: Event list abbreviation for Wednesday */
-#: ../js/ui/calendar.js:141
+#: ../js/ui/calendar.js:144
 msgctxt "list wednesday"
 msgid "W"
 msgstr "Rab"
 
 #. Translators: Event list abbreviation for Thursday */
-#: ../js/ui/calendar.js:143
+#: ../js/ui/calendar.js:146
 msgctxt "list thursday"
 msgid "Th"
 msgstr "Kam"
 
 #. Translators: Event list abbreviation for Friday */
-#: ../js/ui/calendar.js:145
+#: ../js/ui/calendar.js:148
 msgctxt "list friday"
 msgid "F"
 msgstr "Jum"
 
 #. Translators: Event list abbreviation for Saturday */
-#: ../js/ui/calendar.js:147
+#: ../js/ui/calendar.js:150
 msgctxt "list saturday"
 msgid "S"
 msgstr "Sab"
 
-#: ../js/ui/calendar.js:390
-msgid "calendar:MY"
-msgstr "calendar:MY"
-
-#: ../js/ui/calendar.js:450
+#: ../js/ui/calendar.js:453
 msgid "Previous month"
 msgstr "Bulan sebelumnya"
 
-#: ../js/ui/calendar.js:460
+#: ../js/ui/calendar.js:463
 msgid "Next month"
 msgstr "Bulan selanjutnya"
 
 #. Translators: Text to show if there are no events */
-#: ../js/ui/calendar.js:772
+#: ../js/ui/calendar.js:775
 msgid "Nothing Scheduled"
 msgstr "Tak Ada Jadwal"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year */
-#: ../js/ui/calendar.js:790
+#: ../js/ui/calendar.js:793
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d %B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year */
-#: ../js/ui/calendar.js:793
+#: ../js/ui/calendar.js:796
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d %B %Y"
 
-#: ../js/ui/calendar.js:804
+#: ../js/ui/calendar.js:807
 msgid "Today"
 msgstr "Hari ini"
 
-#: ../js/ui/calendar.js:808
+#: ../js/ui/calendar.js:811
 msgid "Tomorrow"
 msgstr "Besok"
 
-#: ../js/ui/calendar.js:819
+#: ../js/ui/calendar.js:822
 msgid "This week"
 msgstr "Minggu ini"
 
-#: ../js/ui/calendar.js:827
+#: ../js/ui/calendar.js:830
 msgid "Next week"
 msgstr "Minggu depan"
 
-#: ../js/ui/components/automountManager.js:90
+#: ../js/ui/components/automountManager.js:91
 msgid "External drive connected"
 msgstr "Drive eksternal tersambung"
 
-#: ../js/ui/components/automountManager.js:101
+#: ../js/ui/components/automountManager.js:102
 msgid "External drive disconnected"
 msgstr "Drive eksternal terputus"
 
@@ -729,77 +729,77 @@ msgid "Mute"
 msgstr "Bisu"
 
 #. Translators: Time in 24h format */
-#: ../js/ui/components/telepathyClient.js:955
+#: ../js/ui/components/telepathyClient.js:958
 msgid "%H∶%M"
 msgstr "%H∶%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30" */
-#: ../js/ui/components/telepathyClient.js:962
+#: ../js/ui/components/telepathyClient.js:965
 msgid "Yesterday, %H∶%M"
 msgstr "Kemarin, %H:%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 24h format. i.e. "Monday, 14:30" */
-#: ../js/ui/components/telepathyClient.js:969
+#: ../js/ui/components/telepathyClient.js:972
 msgid "%A, %H∶%M"
 msgstr "%A, %H∶%M"
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 24h format.
 #. i.e. "May 25, 14:30" */
-#: ../js/ui/components/telepathyClient.js:976
+#: ../js/ui/components/telepathyClient.js:979
 msgid "%B %d, %H∶%M"
 msgstr "%d %B, %H∶%M"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
 #. i.e. "May 25 2012, 14:30" */
-#: ../js/ui/components/telepathyClient.js:982
+#: ../js/ui/components/telepathyClient.js:985
 msgid "%B %d %Y, %H∶%M"
 msgstr "%d %B %Y, %H∶%M"
 
 #. Translators: Time in 24h format */
-#: ../js/ui/components/telepathyClient.js:991
+#: ../js/ui/components/telepathyClient.js:994
 msgid "%l∶%M %p"
 msgstr "%H∶%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 12h format. i.e. "Yesterday, 2:30 pm" */
-#: ../js/ui/components/telepathyClient.js:998
+#: ../js/ui/components/telepathyClient.js:1001
 msgid "Yesterday, %l∶%M %p"
 msgstr "Kemarin, %l∶%M %p"
 
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm" */
-#: ../js/ui/components/telepathyClient.js:1005
+#: ../js/ui/components/telepathyClient.js:1008
 msgid "%A, %l∶%M %p"
 msgstr "%A, %l∶%M %p"
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 12h format.
 #. i.e. "May 25, 2:30 pm" */
-#: ../js/ui/components/telepathyClient.js:1012
+#: ../js/ui/components/telepathyClient.js:1015
 msgid "%B %d, %l∶%M %p"
 msgstr "%d %B, %l∶%M %p"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
 #. i.e. "May 25 2012, 2:30 pm"*/
-#: ../js/ui/components/telepathyClient.js:1018
+#: ../js/ui/components/telepathyClient.js:1021
 msgid "%B %d %Y, %l∶%M %p"
 msgstr "%d %B %Y, %l∶%M %p"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name. */
-#: ../js/ui/components/telepathyClient.js:1051
+#: ../js/ui/components/telepathyClient.js:1054
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s sekarang dikenal sebagai %s"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example. */
-#: ../js/ui/components/telepathyClient.js:1154
+#: ../js/ui/components/telepathyClient.js:1158
 #, javascript-format
 msgid "Invitation to %s"
 msgstr "Undangan ke %s"
@@ -807,38 +807,38 @@ msgstr "Undangan ke %s"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example. */
-#: ../js/ui/components/telepathyClient.js:1162
+#: ../js/ui/components/telepathyClient.js:1166
 #, javascript-format
 msgid "%s is inviting you to join %s"
 msgstr "%s mengundang Anda untuk bergabung dengan %s"
 
-#: ../js/ui/components/telepathyClient.js:1164
-#: ../js/ui/components/telepathyClient.js:1199
-#: ../js/ui/components/telepathyClient.js:1233
-#: ../js/ui/components/telepathyClient.js:1291
+#: ../js/ui/components/telepathyClient.js:1168
+#: ../js/ui/components/telepathyClient.js:1203
+#: ../js/ui/components/telepathyClient.js:1237
+#: ../js/ui/components/telepathyClient.js:1295
 msgid "Decline"
 msgstr "Tolak"
 
-#: ../js/ui/components/telepathyClient.js:1170
-#: ../js/ui/components/telepathyClient.js:1239
-#: ../js/ui/components/telepathyClient.js:1296
+#: ../js/ui/components/telepathyClient.js:1174
+#: ../js/ui/components/telepathyClient.js:1243
+#: ../js/ui/components/telepathyClient.js:1300
 msgid "Accept"
 msgstr "Terima"
 
 #. translators: argument is a contact name like Alice for example. */
-#: ../js/ui/components/telepathyClient.js:1189
+#: ../js/ui/components/telepathyClient.js:1193
 #, javascript-format
 msgid "Video call from %s"
 msgstr "Panggilan video dari %s"
 
 #. translators: argument is a contact name like Alice for example. */
-#: ../js/ui/components/telepathyClient.js:1192
+#: ../js/ui/components/telepathyClient.js:1196
 #, javascript-format
 msgid "Call from %s"
 msgstr "Panggilan dari %s"
 
 #. translators: this is a button label (verb), not a noun */
-#: ../js/ui/components/telepathyClient.js:1206
+#: ../js/ui/components/telepathyClient.js:1210
 msgid "Answer"
 msgstr "Jawab"
 
@@ -847,111 +847,111 @@ msgstr "Jawab"
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
 #. */
-#: ../js/ui/components/telepathyClient.js:1227
+#: ../js/ui/components/telepathyClient.js:1231
 #, javascript-format
 msgid "%s is sending you %s"
 msgstr "%s sedang mengirimi Anda %s"
 
 #. To translators: The parameter is the contact's alias */
-#: ../js/ui/components/telepathyClient.js:1256
+#: ../js/ui/components/telepathyClient.js:1260
 #, javascript-format
 msgid "%s would like permission to see when you are online"
 msgstr "%s ingin minta izin melihat Anda ketika Anda daring"
 
-#: ../js/ui/components/telepathyClient.js:1342
+#: ../js/ui/components/telepathyClient.js:1346
 msgid "Network error"
 msgstr "Galat jaringan"
 
-#: ../js/ui/components/telepathyClient.js:1344
+#: ../js/ui/components/telepathyClient.js:1348
 msgid "Authentication failed"
 msgstr "Otentikasi gagal"
 
-#: ../js/ui/components/telepathyClient.js:1346
+#: ../js/ui/components/telepathyClient.js:1350
 msgid "Encryption error"
 msgstr "Galat enkripsi"
 
-#: ../js/ui/components/telepathyClient.js:1348
+#: ../js/ui/components/telepathyClient.js:1352
 msgid "Certificate not provided"
 msgstr "Sertifikat tidak disediakan"
 
-#: ../js/ui/components/telepathyClient.js:1350
+#: ../js/ui/components/telepathyClient.js:1354
 msgid "Certificate untrusted"
 msgstr "Sertifikat tidak dipercaya"
 
-#: ../js/ui/components/telepathyClient.js:1352
+#: ../js/ui/components/telepathyClient.js:1356
 msgid "Certificate expired"
 msgstr "Sertifikat kadaluarsa"
 
-#: ../js/ui/components/telepathyClient.js:1354
+#: ../js/ui/components/telepathyClient.js:1358
 msgid "Certificate not activated"
 msgstr "Sertifikat tidak diaktifkan"
 
-#: ../js/ui/components/telepathyClient.js:1356
+#: ../js/ui/components/telepathyClient.js:1360
 msgid "Certificate hostname mismatch"
 msgstr "Nama host sertifikat tidak cocok"
 
-#: ../js/ui/components/telepathyClient.js:1358
+#: ../js/ui/components/telepathyClient.js:1362
 msgid "Certificate fingerprint mismatch"
 msgstr "Sidik jari sertifikat tidak cocok"
 
-#: ../js/ui/components/telepathyClient.js:1360
+#: ../js/ui/components/telepathyClient.js:1364
 msgid "Certificate self-signed"
 msgstr "Sertifikat ditandatangani sendiri"
 
-#: ../js/ui/components/telepathyClient.js:1362
+#: ../js/ui/components/telepathyClient.js:1366
 msgid "Status is set to offline"
 msgstr "Status diatur ke luring"
 
-#: ../js/ui/components/telepathyClient.js:1364
+#: ../js/ui/components/telepathyClient.js:1368
 msgid "Encryption is not available"
 msgstr "Enkripsi tidak tersedia"
 
-#: ../js/ui/components/telepathyClient.js:1366
+#: ../js/ui/components/telepathyClient.js:1370
 msgid "Certificate is invalid"
 msgstr "Sertifikat tidak valid"
 
-#: ../js/ui/components/telepathyClient.js:1368
+#: ../js/ui/components/telepathyClient.js:1372
 msgid "Connection has been refused"
 msgstr "Koneksi telah ditolak"
 
-#: ../js/ui/components/telepathyClient.js:1370
+#: ../js/ui/components/telepathyClient.js:1374
 msgid "Connection can't be established"
 msgstr "Koneksi tak dapat dijalin"
 
-#: ../js/ui/components/telepathyClient.js:1372
+#: ../js/ui/components/telepathyClient.js:1376
 msgid "Connection has been lost"
 msgstr "Koneksi telah terputus"
 
-#: ../js/ui/components/telepathyClient.js:1374
+#: ../js/ui/components/telepathyClient.js:1378
 msgid "This account is already connected to the server"
 msgstr "Akun ini telah tersambung pada server"
 
-#: ../js/ui/components/telepathyClient.js:1376
+#: ../js/ui/components/telepathyClient.js:1380
 msgid ""
 "Connection has been replaced by a new connection using the same resource"
 msgstr ""
 "Koneksi telah digantikan oleh koneksi baru memakai sumberdaya yang sama"
 
-#: ../js/ui/components/telepathyClient.js:1378
+#: ../js/ui/components/telepathyClient.js:1382
 msgid "The account already exists on the server"
 msgstr "Akun ini sudah ada di server"
 
-#: ../js/ui/components/telepathyClient.js:1380
+#: ../js/ui/components/telepathyClient.js:1384
 msgid "Server is currently too busy to handle the connection"
 msgstr "Server kini terlalu sibuk untuk menangani koneksi"
 
-#: ../js/ui/components/telepathyClient.js:1382
+#: ../js/ui/components/telepathyClient.js:1386
 msgid "Certificate has been revoked"
 msgstr "Sertifikat telah dicabut"
 
-#: ../js/ui/components/telepathyClient.js:1384
+#: ../js/ui/components/telepathyClient.js:1388
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr ""
 "Sertifikat memakai algorima cipher yang tak aman atau lemah secara "
 "kriptografi"
 
-#: ../js/ui/components/telepathyClient.js:1386
+#: ../js/ui/components/telepathyClient.js:1390
 msgid ""
 "The length of the server certificate, or the depth of the server certificate "
 "chain, exceed the limits imposed by the cryptography library"
@@ -959,22 +959,22 @@ msgstr ""
 "Panjang sertifikat server, atau kedalaman rantai sertifikat server, "
 "melampaui batas yang diberlakukan oleh pustaka kriptografi"
 
-#: ../js/ui/components/telepathyClient.js:1388
+#: ../js/ui/components/telepathyClient.js:1392
 msgid "Internal error"
 msgstr "Galat internal"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example. */
-#: ../js/ui/components/telepathyClient.js:1398
+#: ../js/ui/components/telepathyClient.js:1402
 #, javascript-format
 msgid "Unable to connect to %s"
 msgstr "Tak bisa menyambung ke %s"
 
-#: ../js/ui/components/telepathyClient.js:1403
+#: ../js/ui/components/telepathyClient.js:1407
 msgid "View account"
 msgstr "Tilik akun"
 
-#: ../js/ui/components/telepathyClient.js:1440
+#: ../js/ui/components/telepathyClient.js:1444
 msgid "Unknown reason"
 msgstr "Alasan yang tidak diketahui"
 
@@ -990,22 +990,22 @@ msgstr "Tampilkan Aplikasi"
 msgid "Dash"
 msgstr "Dash"
 
-#: ../js/ui/dateMenu.js:91
+#: ../js/ui/dateMenu.js:97
 msgid "Open Calendar"
 msgstr "Buka Kalender"
 
-#: ../js/ui/dateMenu.js:95
+#: ../js/ui/dateMenu.js:101
 msgid "Open Clocks"
 msgstr "Buka Jam"
 
-#: ../js/ui/dateMenu.js:102
+#: ../js/ui/dateMenu.js:108
 msgid "Date & Time Settings"
 msgstr "Pengaturan Waktu & Tanggal"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #. */
-#: ../js/ui/dateMenu.js:192
+#: ../js/ui/dateMenu.js:205
 msgid "%A %B %e, %Y"
 msgstr "%A, %e %B %Y"
 
@@ -1122,13 +1122,13 @@ msgid "Other users are logged in."
 msgstr "Pengguna lain sedang log masuk."
 
 #. Translators: Remote here refers to a remote session, like a ssh login */
-#: ../js/ui/endSessionDialog.js:618
+#: ../js/ui/endSessionDialog.js:619
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (jarak jauh)"
 
 #. Translators: Console here refers to a tty like a VT console */
-#: ../js/ui/endSessionDialog.js:621
+#: ../js/ui/endSessionDialog.js:622
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (konsol)"
@@ -1142,7 +1142,7 @@ msgstr "Pasang"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Unduh dan pasang \"%s\" dari extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:641 ../js/ui/status/keyboard.js:335
+#: ../js/ui/keyboard.js:645 ../js/ui/status/keyboard.js:335
 msgid "Keyboard"
 msgstr "Papan Ketik"
 
@@ -1230,16 +1230,16 @@ msgstr "Tiada Pesan"
 msgid "Message Tray"
 msgstr "Baki Pesan"
 
-#: ../js/ui/messageTray.js:2962
+#: ../js/ui/messageTray.js:2967
 msgid "System Information"
 msgstr "Informasi Sistem"
 
-#: ../js/ui/notificationDaemon.js:515 ../src/shell-app.c:425
+#: ../js/ui/notificationDaemon.js:516 ../src/shell-app.c:425
 msgctxt "program"
 msgid "Unknown"
 msgstr "Tak dikenal"
 
-#: ../js/ui/overviewControls.js:483 ../js/ui/screenShield.js:151
+#: ../js/ui/overviewControls.js:488 ../js/ui/screenShield.js:151
 #, javascript-format
 msgid "%d new message"
 msgid_plural "%d new messages"
@@ -1271,7 +1271,7 @@ msgstr "Keluar"
 msgid "Activities"
 msgstr "Aktivitas"
 
-#: ../js/ui/panel.js:914
+#: ../js/ui/panel.js:915
 msgid "Top Bar"
 msgstr "Bar Atas"
 
@@ -1284,7 +1284,7 @@ msgstr "toggle-switch-intl"
 msgid "Enter a Command"
 msgstr "Ketikkan Perintah"
 
-#: ../js/ui/runDialog.js:114
+#: ../js/ui/runDialog.js:114 ../js/ui/windowMenu.js:117
 msgid "Close"
 msgstr "Tutup"
 
@@ -1300,7 +1300,7 @@ msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d pemberitahuan baru"
 
-#: ../js/ui/screenShield.js:474 ../js/ui/status/system.js:342
+#: ../js/ui/screenShield.js:474 ../js/ui/status/system.js:345
 msgid "Lock"
 msgstr "Kunci"
 
@@ -1308,19 +1308,19 @@ msgstr "Kunci"
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME perlu mengunci layar"
 
-#: ../js/ui/screenShield.js:835 ../js/ui/screenShield.js:1309
+#: ../js/ui/screenShield.js:835 ../js/ui/screenShield.js:1312
 msgid "Unable to lock"
 msgstr "Tak bisa mengunci"
 
-#: ../js/ui/screenShield.js:836 ../js/ui/screenShield.js:1310
+#: ../js/ui/screenShield.js:836 ../js/ui/screenShield.js:1313
 msgid "Lock was blocked by an application"
 msgstr "Kunci diblokir oleh suatu aplikasi"
 
-#: ../js/ui/search.js:603
+#: ../js/ui/search.js:606
 msgid "Searching…"
 msgstr "Mencari…"
 
-#: ../js/ui/search.js:649
+#: ../js/ui/search.js:652
 msgid "No results."
 msgstr "Tak ada yang cocok."
 
@@ -1384,11 +1384,11 @@ msgstr "Tombol Pantul"
 msgid "Mouse Keys"
 msgstr "Tombol Tetikus"
 
-#: ../js/ui/status/accessibility.js:143
+#: ../js/ui/status/accessibility.js:144
 msgid "High Contrast"
 msgstr "Kontras Tinggi"
 
-#: ../js/ui/status/accessibility.js:192
+#: ../js/ui/status/accessibility.js:193
 msgid "Large Text"
 msgstr "Teks Besar"
 
@@ -1398,8 +1398,8 @@ msgstr "Bluetooth"
 
 #: ../js/ui/status/bluetooth.js:51 ../js/ui/status/network.js:151
 #: ../js/ui/status/network.js:323 ../js/ui/status/network.js:1234
-#: ../js/ui/status/network.js:1345 ../js/ui/status/rfkill.js:85
-#: ../js/ui/status/rfkill.js:105
+#: ../js/ui/status/network.js:1345 ../js/ui/status/rfkill.js:86
+#: ../js/ui/status/rfkill.js:114
 msgid "Turn Off"
 msgstr "Matikan"
 
@@ -1457,37 +1457,37 @@ msgstr "Tersambung"
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu) */
 #: ../js/ui/status/network.js:426
-msgid "unmanaged"
-msgstr "tak dikelola"
+msgid "Unmanaged"
+msgstr "Tak Dikelola"
 
 #: ../js/ui/status/network.js:428
-msgid "disconnecting..."
-msgstr "memutus..."
+msgid "Disconnecting"
+msgstr "Memutus"
 
-#: ../js/ui/status/network.js:434 ../js/ui/status/network.js:1362
-msgid "connecting..."
-msgstr "menghubungi..."
+#: ../js/ui/status/network.js:434 ../js/ui/status/network.js:1254
+msgid "Connecting"
+msgstr "Menyambung"
 
 #. Translators: this is for network connections that require some kind of key or password */
-#: ../js/ui/status/network.js:437 ../js/ui/status/network.js:1365
-msgid "authentication required"
-msgstr "diperlukan otentikasi"
+#: ../js/ui/status/network.js:437
+msgid "Authentication required"
+msgstr "Diperlukan otentikasi"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing */
 #: ../js/ui/status/network.js:445
-msgid "firmware missing"
-msgstr "firmware hilang"
+msgid "Firmware missing"
+msgstr "Firmware hilang"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage */
 #: ../js/ui/status/network.js:449
-msgid "unavailable"
-msgstr "tidak tersedia"
+msgid "Unavailable"
+msgstr "Tak tersedia"
 
-#: ../js/ui/status/network.js:451 ../js/ui/status/network.js:1367
-msgid "connection failed"
-msgstr "koneksi gagal"
+#: ../js/ui/status/network.js:451 ../js/ui/status/network.js:1646
+msgid "Connection failed"
+msgstr "Koneksi gagal"
 
 #: ../js/ui/status/network.js:467
 msgid "Wired Settings"
@@ -1541,7 +1541,7 @@ msgstr "Pilih jaringan"
 msgid "No Networks"
 msgstr "Tiada Jaringan"
 
-#: ../js/ui/status/network.js:866 ../js/ui/status/rfkill.js:103
+#: ../js/ui/status/network.js:866 ../js/ui/status/rfkill.js:112
 msgid "Use hardware switch to turn off"
 msgstr "Pakai saklar perangkat keras untuk mematikan"
 
@@ -1561,11 +1561,20 @@ msgstr "Nyalakan"
 msgid "Hotspot Active"
 msgstr "Hotspot Aktif"
 
-#: ../js/ui/status/network.js:1254
-msgid "Connecting"
-msgstr "Menyambung"
+#: ../js/ui/status/network.js:1362
+msgid "connecting..."
+msgstr "menghubungi..."
 
-#: ../js/ui/status/network.js:1433 ../js/ui/status/rfkill.js:88
+#. Translators: this is for network connections that require some kind of key or password */
+#: ../js/ui/status/network.js:1365
+msgid "authentication required"
+msgstr "diperlukan otentikasi"
+
+#: ../js/ui/status/network.js:1367
+msgid "connection failed"
+msgstr "koneksi gagal"
+
+#: ../js/ui/status/network.js:1433 ../js/ui/status/rfkill.js:89
 msgid "Network Settings"
 msgstr "Pengaturan Jaringan"
 
@@ -1580,10 +1589,6 @@ msgstr "VPN"
 #: ../js/ui/status/network.js:1607
 msgid "Network Manager"
 msgstr "Manajer Jaringan"
-
-#: ../js/ui/status/network.js:1646
-msgid "Connection failed"
-msgstr "Koneksi gagal"
 
 #: ../js/ui/status/network.js:1647
 msgid "Activation of network connection failed"
@@ -1619,31 +1624,31 @@ msgstr "UPS"
 msgid "Battery"
 msgstr "Baterai"
 
-#: ../js/ui/status/rfkill.js:82
+#: ../js/ui/status/rfkill.js:83
 msgid "Airplane Mode"
 msgstr "Mode Pesawat Terbang"
 
-#: ../js/ui/status/rfkill.js:84
+#: ../js/ui/status/rfkill.js:85
 msgid "On"
 msgstr "Nyala"
 
-#: ../js/ui/status/system.js:314
+#: ../js/ui/status/system.js:317
 msgid "Switch User"
 msgstr "Ganti Pengguna"
 
-#: ../js/ui/status/system.js:319
+#: ../js/ui/status/system.js:322
 msgid "Log Out"
 msgstr "Keluar"
 
-#: ../js/ui/status/system.js:338
+#: ../js/ui/status/system.js:341
 msgid "Orientation Lock"
 msgstr "Kunci Orientasi"
 
-#: ../js/ui/status/system.js:346
+#: ../js/ui/status/system.js:349
 msgid "Suspend"
 msgstr "Suspensi"
 
-#: ../js/ui/status/system.js:349
+#: ../js/ui/status/system.js:352
 msgid "Power Off"
 msgstr "Matikan"
 
@@ -1680,26 +1685,66 @@ msgstr "Cari"
 msgid "“%s” is ready"
 msgstr "'%s' siap"
 
-#: ../js/ui/windowManager.js:56
+#: ../js/ui/windowManager.js:57
 msgid "Do you want to keep these display settings?"
 msgstr "Apakah Anda ingin mempertahankan pengaturan tampilan ini?"
 
 #. Translators: this and the following message should be limited in lenght,
 #. to avoid ellipsizing the labels.
 #. */
-#: ../js/ui/windowManager.js:75
+#: ../js/ui/windowManager.js:76
 msgid "Revert Settings"
 msgstr "Balikkan Tatanan"
 
-#: ../js/ui/windowManager.js:79
+#: ../js/ui/windowManager.js:80
 msgid "Keep Changes"
 msgstr "Simpan Perubahan"
 
-#: ../js/ui/windowManager.js:97
+#: ../js/ui/windowManager.js:99
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
 msgstr[0] "Perubahan tatanan akan dikembalikan dalam %d detik"
+
+#: ../js/ui/windowMenu.js:33
+msgid "Minimize"
+msgstr "Minimalkan"
+
+#: ../js/ui/windowMenu.js:40
+msgid "Unmaximize"
+msgstr "Tak Maksimalkan"
+
+#: ../js/ui/windowMenu.js:44
+msgid "Maximize"
+msgstr "Maksimalkan"
+
+#: ../js/ui/windowMenu.js:51
+msgid "Move"
+msgstr "Pindah"
+
+#: ../js/ui/windowMenu.js:57
+msgid "Resize"
+msgstr "Ubah Ukuran"
+
+#: ../js/ui/windowMenu.js:64
+msgid "Move Titlebar Onscreen"
+msgstr "Pindahkan Bilah Judul Pada Layar"
+
+#: ../js/ui/windowMenu.js:69
+msgid "Always on Top"
+msgstr "Selalu di Puncak"
+
+#: ../js/ui/windowMenu.js:86
+msgid "Always on Visible Workspace"
+msgstr "Selalu pada Ruang Kerja yang Tampak"
+
+#: ../js/ui/windowMenu.js:103
+msgid "Move to Workspace Up"
+msgstr "Pindah ke Ruang Kerja Atas"
+
+#: ../js/ui/windowMenu.js:108
+msgid "Move to Workspace Down"
+msgstr "Pindah ke Ruang Kerja Bawah"
 
 #: ../src/calendar-server/evolution-calendar.desktop.in.in.h:1
 msgid "Evolution Calendar"
@@ -1754,8 +1799,6 @@ msgstr "Sandi tidak cocok."
 msgid "Password cannot be blank"
 msgstr "Sandi tidak boleh kosong"
 
-#: ../src/shell-polkit-authentication-agent.c:343
+#: ../src/shell-polkit-authentication-agent.c:346
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Dialog otentikasi ditolak oleh pengguna"
-
-
