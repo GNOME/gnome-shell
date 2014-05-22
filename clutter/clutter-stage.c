@@ -1068,8 +1068,8 @@ _clutter_stage_process_queued_events (ClutterStage *stage)
               goto next_event;
             }
           else if (event->type == CLUTTER_TOUCH_UPDATE &&
-                   (next_event->type == CLUTTER_TOUCH_UPDATE ||
-                    next_event->type == CLUTTER_LEAVE) &&
+                   next_event->type == CLUTTER_TOUCH_UPDATE &&
+                   event->touch.sequence == next_event->touch.sequence &&
                    (!check_device || (device == next_device)))
             {
               CLUTTER_NOTE (EVENT,
