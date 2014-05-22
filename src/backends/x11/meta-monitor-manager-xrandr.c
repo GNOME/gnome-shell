@@ -918,6 +918,7 @@ meta_monitor_manager_xrandr_apply_configuration (MetaMonitorManager *manager,
     }
 
   XUngrabServer (manager_xrandr->xdisplay);
+  XFlush (manager_xrandr->xdisplay);
 }
 
 static void
