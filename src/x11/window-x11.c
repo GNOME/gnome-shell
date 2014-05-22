@@ -1201,18 +1201,6 @@ meta_window_x11_move_resize_internal (MetaWindow                *window,
 
   if (mask != 0)
     {
-      {
-        int newx, newy;
-        meta_window_get_position (window, &newx, &newy);
-        meta_topic (META_DEBUG_GEOMETRY,
-                    "Syncing new client geometry %d,%d %dx%d, border: %s pos: %s size: %s\n",
-                    newx, newy,
-                    window->rect.width, window->rect.height,
-                    mask & CWBorderWidth ? "true" : "false",
-                    need_move_client ? "true" : "false",
-                    need_resize_client ? "true" : "false");
-      }
-
       meta_error_trap_push (window->display);
 
       if (window == window->display->grab_window &&
