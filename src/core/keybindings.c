@@ -2516,21 +2516,27 @@ handle_move_to_corner_backend (MetaDisplay    *display,
   meta_window_get_frame_rect (window, &frame_rect);
   meta_window_get_position (window, &orig_x, &orig_y);
 
-  if (xchange) {
-    new_x = work_area.x + (to_right ?
-                           work_area.width - frame_rect.width :
-                           0);
-  } else {
-    new_x = orig_x;
-  }
+  if (xchange)
+    {
+      new_x = work_area.x + (to_right ?
+                             work_area.width - frame_rect.width :
+                             0);
+    }
+  else
+    {
+      new_x = orig_x;
+    }
 
-  if (ychange) {
-    new_y = work_area.y + (to_bottom ?
-                           work_area.height - frame_rect.height :
-                           0);
-  } else {
-    new_y = orig_y;
-  }
+  if (ychange)
+    {
+      new_y = work_area.y + (to_bottom ?
+                             work_area.height - frame_rect.height :
+                             0);
+    }
+  else
+    {
+      new_y = orig_y;
+    }
 
   meta_window_move_frame (window,
                           TRUE,
