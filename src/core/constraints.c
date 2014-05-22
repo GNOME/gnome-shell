@@ -506,8 +506,6 @@ place_window_if_needed(MetaWindow     *window,
         meta_workspace_get_onmonitor_region (cur_workspace,
                                              monitor_info->number);
 
-      meta_window_frame_rect_to_client_rect (window, &placed_rect, &placed_rect);
-
       info->current.x = placed_rect.x;
       info->current.y = placed_rect.y;
 
