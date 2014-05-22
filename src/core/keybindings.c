@@ -2509,12 +2509,10 @@ handle_move_to_corner_backend (MetaDisplay    *display,
 {
   MetaRectangle work_area;
   MetaRectangle frame_rect;
-  int orig_x, orig_y;
   int new_x, new_y;
 
   meta_window_get_work_area_all_monitors (window, &work_area);
   meta_window_get_frame_rect (window, &frame_rect);
-  meta_window_get_position (window, &orig_x, &orig_y);
 
   if (xchange)
     {
@@ -2524,7 +2522,7 @@ handle_move_to_corner_backend (MetaDisplay    *display,
     }
   else
     {
-      new_x = orig_x;
+      new_x = frame_rect.x;
     }
 
   if (ychange)
@@ -2535,7 +2533,7 @@ handle_move_to_corner_backend (MetaDisplay    *display,
     }
   else
     {
-      new_y = orig_y;
+      new_y = frame_rect.y;
     }
 
   meta_window_move_frame (window,
