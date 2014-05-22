@@ -347,7 +347,7 @@ meta_window_wayland_move_resize (MetaWindow *window,
         }
       else
         {
-          meta_window_get_position (window, &rect.x, &rect.y);
+          meta_window_get_frame_rect (window, &rect);
         }
 
       if (dx != 0 || dy != 0)
