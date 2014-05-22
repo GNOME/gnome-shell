@@ -2729,7 +2729,13 @@ meta_window_x11_client_message (MetaWindow *window,
   else if (event->xclient.message_type ==
            display->atom__GTK_SHOW_WINDOW_MENU)
     {
-      meta_window_show_menu (window);
+      gulong x, y;
+
+      /* l[0] is device_id, which we don't use */
+      x = event->xclient.data.l[1];
+      y = event->xclient.data.l[2];
+
+      meta_window_show_menu (window, x, y);
     }
 
   return FALSE;

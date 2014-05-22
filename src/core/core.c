@@ -374,6 +374,8 @@ meta_core_change_workspace (Display *xdisplay,
 void
 meta_core_show_window_menu (Display *xdisplay,
                             Window   frame_xwindow,
+                            int      root_x,
+                            int      root_y,
                             guint32  timestamp)
 {
   MetaWindow *window = get_window (xdisplay, frame_xwindow);
@@ -382,7 +384,7 @@ meta_core_show_window_menu (Display *xdisplay,
     meta_window_raise (window);
   meta_window_focus (window, timestamp);
 
-  meta_window_show_menu (window);
+  meta_window_show_menu (window, root_x, root_y);
 }
 
 const char*

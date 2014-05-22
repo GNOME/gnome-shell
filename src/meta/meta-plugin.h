@@ -165,7 +165,9 @@ struct _MetaPluginClass
   void (*hide_tile_preview) (MetaPlugin      *plugin);
 
   void (*show_window_menu)  (MetaPlugin      *plugin,
-                             MetaWindow      *window);
+                             MetaWindow      *window,
+                             int              x,
+                             int              y);
 
   /**
    * MetaPluginClass::kill_window_effects:

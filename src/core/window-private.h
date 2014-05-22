@@ -605,7 +605,9 @@ void     meta_window_set_focused_internal (MetaWindow *window,
 
 void     meta_window_current_workspace_changed (MetaWindow *window);
 
-void meta_window_show_menu (MetaWindow *window);
+void meta_window_show_menu (MetaWindow *window,
+                            int         x,
+                            int         y);
 
 gboolean meta_window_handle_mouse_grab_op_event  (MetaWindow         *window,
                                                   const ClutterEvent *event);

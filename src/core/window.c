@@ -5313,10 +5313,12 @@ meta_window_recalc_features (MetaWindow *window)
 }
 
 void
-meta_window_show_menu (MetaWindow *window)
+meta_window_show_menu (MetaWindow *window,
+                       int         x,
+                       int         y)
 {
   g_return_if_fail (!window->override_redirect);
-  meta_compositor_show_window_menu (window->display->compositor, window);
+  meta_compositor_show_window_menu (window->display->compositor, window, x, y);
 }
 
 void
@@ -7976,7 +7978,9 @@ meta_window_handle_ungrabbed_event (MetaWindow         *window,
     {
       if (meta_prefs_get_raise_on_click ())
         meta_window_raise (window);
-      meta_window_show_menu (window);
+      meta_window_show_menu (window,
+                             event->button.x,
+                             event->button.y);
       return TRUE;
     }
   else if (fully_modified && (int) event->button.button == 1)

@@ -1359,7 +1359,9 @@ meta_compositor_hide_tile_preview (MetaCompositor *compositor)
 
 void
 meta_compositor_show_window_menu (MetaCompositor *compositor,
-                                  MetaWindow     *window)
+                                  MetaWindow     *window,
+                                  int             x,
+                                  int             y)
 {
-  meta_plugin_manager_show_window_menu (compositor->plugin_mgr, window);
+  meta_plugin_manager_show_window_menu (compositor->plugin_mgr, window, x, y);
 }

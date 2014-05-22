@@ -82,6 +82,8 @@ gboolean meta_plugin_manager_show_tile_preview (MetaPluginManager *mgr,
 gboolean meta_plugin_manager_hide_tile_preview (MetaPluginManager *mgr);
 
 void meta_plugin_manager_show_window_menu (MetaPluginManager *mgr,
-                                           MetaWindow        *window);
+                                           MetaWindow        *window,
+                                           int                x,
+                                           int                y);
 
 #endif
