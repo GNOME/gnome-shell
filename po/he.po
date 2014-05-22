@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-18 02:41+0300\n"
-"PO-Revision-Date: 2014-05-18 02:47+0300\n"
-"Last-Translator: Yosef Or Boczko <yoseforb@gnome.org>\n"
+"POT-Creation-Date: 2014-05-22 23:44+0300\n"
+"PO-Revision-Date: 2014-05-22 23:45+0300\n"
+"Last-Translator: Yosef Or Boczko <yoseforb@gmail.com>\n"
 "Language-Team: עברית <>\n"
 "Language: he\n"
 "MIME-Version: 1.0\n"
@@ -1707,7 +1707,7 @@ msgstr "מזעור"
 
 #: ../js/ui/windowMenu.js:40
 msgid "Unmaximize"
-msgstr "ביטול המזעור"
+msgstr "ביטול הגדלה"
 
 #: ../js/ui/windowMenu.js:44
 msgid "Maximize"
