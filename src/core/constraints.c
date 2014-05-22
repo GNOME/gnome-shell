@@ -637,13 +637,10 @@ update_onscreen_requirements (MetaWindow     *window,
    */
   if (window->frame && window->decorated)
     {
-      MetaFrameBorders borders;
       MetaRectangle titlebar_rect;
 
-      meta_frame_calc_borders (window->frame, &borders);
+      meta_window_get_titlebar_rect (window, &titlebar_rect);
 
-      titlebar_rect = info->current;
-      titlebar_rect.height = borders.visible.top;
       old = window->require_titlebar_visible;
       window->require_titlebar_visible =
         meta_rectangle_overlaps_with_region (info->usable_screen_region,
