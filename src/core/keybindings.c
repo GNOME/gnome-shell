@@ -2491,21 +2491,11 @@ handle_always_on_top (MetaDisplay     *display,
     meta_window_unmake_above (window);
 }
 
-/* Move a window to a corner; to_bottom/to_right are FALSE for the
- * top or left edge, or TRUE for the bottom/right edge.  xchange/ychange
- * are FALSE if that dimension is not to be changed, TRUE otherwise.
- * Together they describe which of the four corners, or four sides,
- * is desired.
- */
 static void
-handle_move_to_corner_backend (MetaDisplay    *display,
-                               MetaScreen     *screen,
-                               MetaWindow     *window,
-                               gboolean        xchange,
-                               gboolean        ychange,
-                               gboolean        to_right,
-                               gboolean        to_bottom,
-                               gpointer        dummy)
+handle_move_to_corner_backend (MetaDisplay           *display,
+                               MetaScreen            *screen,
+                               MetaWindow            *window,
+                               int                    gravity)
 {
   MetaRectangle work_area;
   MetaRectangle frame_rect;
@@ -2514,26 +2504,44 @@ handle_move_to_corner_backend (MetaDisplay    *display,
   meta_window_get_work_area_all_monitors (window, &work_area);
   meta_window_get_frame_rect (window, &frame_rect);
 
-  if (xchange)
+  switch (gravity)
     {
-      new_x = work_area.x + (to_right ?
-                             work_area.width - frame_rect.width :
-                             0);
-    }
-  else
-    {
+    case NorthWestGravity:
+    case WestGravity:
+    case SouthWestGravity:
+      new_x = work_area.x;
+      break;
+    case NorthGravity:
+    case SouthGravity:
       new_x = frame_rect.x;
+      break;
+    case NorthEastGravity:
+    case EastGravity:
+    case SouthEastGravity:
+      new_x = work_area.x + work_area.width - frame_rect.width;
+      break;
+    default:
+      g_assert_not_reached ();
     }
 
-  if (ychange)
+  switch (gravity)
     {
-      new_y = work_area.y + (to_bottom ?
-                             work_area.height - frame_rect.height :
-                             0);
-    }
-  else
-    {
+    case NorthWestGravity:
+    case NorthGravity:
+    case NorthEastGravity:
+      new_y = work_area.y;
+      break;
+    case WestGravity:
+    case EastGravity:
       new_y = frame_rect.y;
+      break;
+    case SouthWestGravity:
+    case SouthGravity:
+    case SouthEastGravity:
+      new_y = work_area.y + work_area.height - frame_rect.height;
+      break;
+    default:
+      g_assert_not_reached ();
     }
 
   meta_window_move_frame (window,
@@ -2550,7 +2558,7 @@ handle_move_to_corner_nw  (MetaDisplay     *display,
                            MetaKeyBinding  *binding,
                            gpointer         dummy)
 {
-  handle_move_to_corner_backend (display, screen, window, TRUE, TRUE, FALSE, FALSE, dummy);
+  handle_move_to_corner_backend (display, screen, window, NorthWestGravity);
 }
 
 static void
@@ -2561,7 +2569,7 @@ handle_move_to_corner_ne  (MetaDisplay     *display,
                            MetaKeyBinding  *binding,
                            gpointer         dummy)
 {
-  handle_move_to_corner_backend (display, screen, window, TRUE, TRUE, TRUE, FALSE, dummy);
+  handle_move_to_corner_backend (display, screen, window, NorthEastGravity);
 }
 
 static void
@@ -2572,7 +2580,7 @@ handle_move_to_corner_sw  (MetaDisplay     *display,
                            MetaKeyBinding  *binding,
                            gpointer         dummy)
 {
-  handle_move_to_corner_backend (display, screen, window, TRUE, TRUE, FALSE, TRUE, dummy);
+  handle_move_to_corner_backend (display, screen, window, SouthWestGravity);
 }
 
 static void
@@ -2583,7 +2591,7 @@ handle_move_to_corner_se  (MetaDisplay     *display,
                            MetaKeyBinding  *binding,
                            gpointer         dummy)
 {
-  handle_move_to_corner_backend (display, screen, window, TRUE, TRUE, TRUE, TRUE, dummy);
+  handle_move_to_corner_backend (display, screen, window, SouthEastGravity);
 }
 
 static void
@@ -2594,7 +2602,7 @@ handle_move_to_side_n     (MetaDisplay     *display,
                            MetaKeyBinding  *binding,
                            gpointer         dummy)
 {
-  handle_move_to_corner_backend (display, screen, window, FALSE, TRUE, FALSE, FALSE, dummy);
+  handle_move_to_corner_backend (display, screen, window, NorthGravity);
 }
 
 static void
@@ -2605,7 +2613,7 @@ handle_move_to_side_s     (MetaDisplay     *display,
                            MetaKeyBinding  *binding,
                            gpointer         dummy)
 {
-  handle_move_to_corner_backend (display, screen, window, FALSE, TRUE, FALSE, TRUE, dummy);
+  handle_move_to_corner_backend (display, screen, window, SouthGravity);
 }
 
 static void
@@ -2616,7 +2624,7 @@ handle_move_to_side_e     (MetaDisplay     *display,
                            MetaKeyBinding  *binding,
                            gpointer         dummy)
 {
-  handle_move_to_corner_backend (display, screen, window, TRUE, FALSE, TRUE, FALSE, dummy);
+  handle_move_to_corner_backend (display, screen, window, EastGravity);
 }
 
 static void
@@ -2627,7 +2635,7 @@ handle_move_to_side_w     (MetaDisplay     *display,
                            MetaKeyBinding  *binding,
                            gpointer         dummy)
 {
-  handle_move_to_corner_backend (display, screen, window, TRUE, FALSE, FALSE, FALSE, dummy);
+  handle_move_to_corner_backend (display, screen, window, WestGravity);
 }
 
 static void
