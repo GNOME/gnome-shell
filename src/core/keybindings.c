@@ -2728,12 +2728,17 @@ handle_activate_window_menu (MetaDisplay     *display,
   if (display->focus_window)
     {
       int x, y;
+      MetaRectangle frame_rect;
+      cairo_rectangle_int_t child_rect;
 
-      meta_window_get_position (display->focus_window, &x, &y);
+      meta_window_get_frame_rect (display->focus_window, &frame_rect);
+      meta_window_get_client_area_rect (display->focus_window, &child_rect);
 
+      x = frame_rect.x + child_rect.x;
       if (meta_ui_get_direction() == META_UI_DIRECTION_RTL)
-        x += display->focus_window->rect.width;
+        x += child_rect.width;
 
+      y = frame_rect.y + child_rect.y;
       meta_window_show_menu (display->focus_window, x, y);
     }
 }
