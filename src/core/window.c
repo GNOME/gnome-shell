@@ -3167,7 +3167,7 @@ meta_window_unmaximize (MetaWindow        *window,
  * Unlike meta_window_unmaximize(), tiling is not restored for windows
  * with a tile mode other than META_TILE_NONE.
  */
-void
+static void
 meta_window_unmaximize_with_gravity (MetaWindow        *window,
                                      MetaMaximizeFlags  directions,
                                      int                new_width,

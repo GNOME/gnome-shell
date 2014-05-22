@@ -531,11 +531,6 @@ void        meta_window_tile               (MetaWindow        *window);
 void        meta_window_maximize_internal  (MetaWindow        *window,
                                             MetaMaximizeFlags  directions,
                                             MetaRectangle     *saved_rect);
-void        meta_window_unmaximize_with_gravity (MetaWindow        *window,
-                                                 MetaMaximizeFlags  directions,
-                                                 int                new_width,
-                                                 int                new_height,
-                                                 int                gravity);
 
 void        meta_window_make_fullscreen_internal (MetaWindow    *window);
 void        meta_window_update_fullscreen_monitors (MetaWindow    *window,
