@@ -805,3 +805,13 @@ meta_wayland_pointer_create_new_resource (MetaWaylandPointer *pointer,
   if (pointer->focus_surface && wl_resource_get_client (pointer->focus_surface->resource) == client)
     meta_wayland_pointer_set_focus (pointer, pointer->focus_surface);
 }
+
+gboolean
+meta_wayland_pointer_can_grab_surface (MetaWaylandPointer *pointer,
+                                       MetaWaylandSurface *surface,
+                                       uint32_t            serial)
+{
+  return (pointer->button_count == 0 &&
+          pointer->grab_serial == serial &&
+          pointer->focus_surface == surface);
+}

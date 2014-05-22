@@ -110,4 +110,8 @@ void meta_wayland_pointer_create_new_resource (MetaWaylandPointer *pointer,
                                                struct wl_resource *seat_resource,
                                                uint32_t id);
 
+gboolean meta_wayland_pointer_can_grab_surface (MetaWaylandPointer *pointer,
+                                                MetaWaylandSurface *surface,
+                                                uint32_t            serial);
+
 #endif /* META_WAYLAND_POINTER_H */

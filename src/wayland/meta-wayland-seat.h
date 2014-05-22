@@ -70,4 +70,8 @@ gboolean meta_wayland_seat_handle_event (MetaWaylandSeat *seat,
 void meta_wayland_seat_repick (MetaWaylandSeat *seat);
 void meta_wayland_seat_update_cursor_surface (MetaWaylandSeat *seat);
 
+gboolean meta_wayland_seat_can_grab_surface (MetaWaylandSeat    *seat,
+                                             MetaWaylandSurface *surface,
+                                             uint32_t            serial);
+
 #endif /* META_WAYLAND_SEAT_H */

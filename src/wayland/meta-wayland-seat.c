@@ -182,3 +182,11 @@ meta_wayland_seat_update_cursor_surface (MetaWaylandSeat *seat)
 {
   meta_wayland_pointer_update_cursor_surface (&seat->pointer);
 }
+
+gboolean
+meta_wayland_seat_can_grab_surface (MetaWaylandSeat    *seat,
+                                    MetaWaylandSurface *surface,
+                                    uint32_t            serial)
+{
+  return meta_wayland_pointer_can_grab_surface (&seat->pointer, surface, serial);
+}

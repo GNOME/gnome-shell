@@ -802,9 +802,7 @@ xdg_surface_move (struct wl_client *client,
   MetaWaylandSeat *seat = wl_resource_get_user_data (seat_resource);
   MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
 
-  if (seat->pointer.button_count == 0 ||
-      seat->pointer.grab_serial != serial ||
-      seat->pointer.focus_surface != surface)
+  if (!meta_wayland_seat_can_grab_surface (seat, surface, serial))
     return;
 
   begin_grab_op_on_surface (surface, seat, META_GRAB_OP_MOVING);
@@ -847,9 +845,7 @@ xdg_surface_resize (struct wl_client *client,
   MetaWaylandSeat *seat = wl_resource_get_user_data (seat_resource);
   MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
 
-  if (seat->pointer.button_count == 0 ||
-      seat->pointer.grab_serial != serial ||
-      seat->pointer.focus_surface != surface)
+  if (!meta_wayland_seat_can_grab_surface (seat, surface, serial))
     return;
 
   begin_grab_op_on_surface (surface, seat, grab_op_for_xdg_surface_resize_edge (edges));
@@ -1105,9 +1101,7 @@ wl_shell_surface_move (struct wl_client *client,
   MetaWaylandSeat *seat = wl_resource_get_user_data (seat_resource);
   MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
 
-  if (seat->pointer.button_count == 0 ||
-      seat->pointer.grab_serial != serial ||
-      seat->pointer.focus_surface != surface)
+  if (!meta_wayland_seat_can_grab_surface (seat, surface, serial))
     return;
 
   begin_grab_op_on_surface (surface, seat, META_GRAB_OP_MOVING);
@@ -1150,9 +1144,7 @@ wl_shell_surface_resize (struct wl_client *client,
   MetaWaylandSeat *seat = wl_resource_get_user_data (seat_resource);
   MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
 
-  if (seat->pointer.button_count == 0 ||
-      seat->pointer.grab_serial != serial ||
-      seat->pointer.focus_surface != surface)
+  if (!meta_wayland_seat_can_grab_surface (seat, surface, serial))
     return;
 
   begin_grab_op_on_surface (surface, seat, grab_op_for_wl_shell_surface_resize_edge (edges));
