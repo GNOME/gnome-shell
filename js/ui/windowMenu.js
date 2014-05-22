@@ -129,11 +129,10 @@ const WindowMenuManager = new Lang.Class({
         this._manager = new PopupMenu.PopupMenuManager({ actor: Main.layoutManager.dummyCursor });
     },
 
-    showForWindow: function(window) {
+    showForWindow: function(window, x, y) {
         let menu = new WindowMenu(window);
         this._manager.addMenu(menu);
 
-        let [x, y] = global.get_pointer();
         Main.layoutManager.setDummyCursorGeometry(x, y, 0, 0);
         menu.open(BoxPointer.PopupAnimation.NONE);
         menu.actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
