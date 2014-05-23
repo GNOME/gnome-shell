@@ -669,15 +669,6 @@ typedef enum
 
 typedef enum
 {
-  META_MENU_ICON_TYPE_CLOSE,
-  META_MENU_ICON_TYPE_MAXIMIZE,
-  META_MENU_ICON_TYPE_UNMAXIMIZE,
-  META_MENU_ICON_TYPE_MINIMIZE,
-  META_MENU_ICON_TYPE_LAST
-} MetaMenuIconType;
-
-typedef enum
-{
   /* Listed in the order in which the textures are drawn.
    * (though this only matters for overlaps of course.)
    * Buttons are drawn after the frame textures.
