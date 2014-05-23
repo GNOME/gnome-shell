@@ -358,10 +358,11 @@ meta_plugin_manager_hide_tile_preview (MetaPluginManager *plugin_mgr)
 }
 
 void
-meta_plugin_manager_show_window_menu (MetaPluginManager *plugin_mgr,
-                                      MetaWindow        *window,
-                                      int                x,
-                                      int                y)
+meta_plugin_manager_show_window_menu (MetaPluginManager  *plugin_mgr,
+                                      MetaWindow         *window,
+                                      MetaWindowMenuType  menu,
+                                      int                 x,
+                                      int                 y)
 {
   MetaPlugin *plugin = plugin_mgr->plugin;
   MetaPluginClass *klass = META_PLUGIN_GET_CLASS (plugin);
@@ -371,5 +372,5 @@ meta_plugin_manager_show_window_menu (MetaPluginManager *plugin_mgr,
     return;
 
   if (klass->show_window_menu)
-    klass->show_window_menu (plugin, window, x, y);
+    klass->show_window_menu (plugin, window, menu, x, y);
 }

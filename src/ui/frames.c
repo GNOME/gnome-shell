@@ -1101,6 +1101,7 @@ meta_frame_titlebar_event (MetaUIFrame    *frame,
     case G_DESKTOP_TITLEBAR_ACTION_MENU:
       meta_core_show_window_menu (display,
                                   frame->xwindow,
+                                  META_WINDOW_MENU_WM,
                                   event->x_root,
                                   event->y_root,
                                   event->time);
@@ -1202,7 +1203,8 @@ meta_frames_button_press_event (GtkWidget      *widget,
        control == META_FRAME_CONTROL_UNABOVE ||
        control == META_FRAME_CONTROL_STICK ||
        control == META_FRAME_CONTROL_UNSTICK ||
-       control == META_FRAME_CONTROL_MENU))
+       control == META_FRAME_CONTROL_MENU ||
+       control == META_FRAME_CONTROL_APPMENU))
     {
       frames->grab_xwindow = frame->xwindow;
 
@@ -1211,15 +1213,17 @@ meta_frames_button_press_event (GtkWidget      *widget,
       frame->prelit_control = control;
       redraw_control (frames, frame, control);
 
-      if (control == META_FRAME_CONTROL_MENU)
+      if (control == META_FRAME_CONTROL_MENU ||
+          control == META_FRAME_CONTROL_APPMENU)
         {
           MetaFrameGeometry fgeom;
           GdkRectangle *rect;
+          MetaWindowMenuType menu;
           int dx, dy;
 
           meta_frames_calc_geometry (frames, frame, &fgeom);
 
-          rect = control_rect (META_FRAME_CONTROL_MENU, &fgeom);
+          rect = control_rect (control, &fgeom);
 
           /* get delta to convert to root coords */
           dx = event->x_root - event->x;
@@ -1229,8 +1233,12 @@ meta_frames_button_press_event (GtkWidget      *widget,
           if (meta_ui_get_direction() == META_UI_DIRECTION_RTL)
             dx += rect->width;
 
+          menu = control == META_FRAME_CONTROL_MENU ? META_WINDOW_MENU_WM
+                                                    : META_WINDOW_MENU_APP;
+
           meta_core_show_window_menu (display,
                                       frame->xwindow,
+                                      menu,
                                       rect->x + dx,
                                       rect->y + rect->height + dy,
                                       event->time);

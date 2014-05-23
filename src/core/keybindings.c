@@ -2751,7 +2751,7 @@ handle_activate_window_menu (MetaDisplay     *display,
         x += child_rect.width;
 
       y = frame_rect.y + child_rect.y;
-      meta_window_show_menu (display->focus_window, x, y);
+      meta_window_show_menu (display->focus_window, META_WINDOW_MENU_WM, x, y);
     }
 }
 

@@ -122,9 +122,10 @@ void meta_compositor_show_tile_preview (MetaCompositor *compositor,
                                         MetaRectangle  *tile_rect,
                                         int             tile_monitor_number);
 void meta_compositor_hide_tile_preview (MetaCompositor *compositor);
-void meta_compositor_show_window_menu (MetaCompositor *compositor,
-                                       MetaWindow     *window,
-                                       int             x,
-                                       int             y);
+void meta_compositor_show_window_menu (MetaCompositor     *compositor,
+                                       MetaWindow         *window,
+				       MetaWindowMenuType  menu,
+                                       int                 x,
+                                       int                 y);
 
 #endif /* META_COMPOSITOR_H */

@@ -784,7 +784,7 @@ xdg_surface_show_window_menu (struct wl_client *client,
   if (!meta_wayland_seat_can_grab_surface (seat, surface, serial))
     return;
 
-  meta_window_show_menu (surface->window, x, y);
+  meta_window_show_menu (surface->window, META_WINDOW_MENU_WM, x, y);
 }
 
 static gboolean

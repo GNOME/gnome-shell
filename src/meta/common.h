@@ -388,6 +388,19 @@ struct _MetaButtonLayout
 };
 
 /**
+ * MetaWindowMenuType:
+ * @META_WINDOW_MENU_WM: the window manager menu
+ * @META_WINDOW_MENU_APP: the (fallback) app menu
+ *
+ * Menu the compositor should display for a given window
+ */
+typedef enum
+{
+  META_WINDOW_MENU_WM,
+  META_WINDOW_MENU_APP
+} MetaWindowMenuType;
+
+/**
  * MetaFrameBorders:
  * @visible: inner visible portion of frame border
  * @invisible: outer invisible portion of frame border

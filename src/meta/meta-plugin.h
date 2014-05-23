@@ -164,10 +164,11 @@ struct _MetaPluginClass
                              int              tile_monitor_number);
   void (*hide_tile_preview) (MetaPlugin      *plugin);
 
-  void (*show_window_menu)  (MetaPlugin      *plugin,
-                             MetaWindow      *window,
-                             int              x,
-                             int              y);
+  void (*show_window_menu)  (MetaPlugin         *plugin,
+                             MetaWindow         *window,
+                             MetaWindowMenuType  menu,
+                             int                 x,
+                             int                 y);
 
   /**
    * MetaPluginClass::kill_window_effects:

@@ -5314,12 +5314,13 @@ meta_window_recalc_features (MetaWindow *window)
 }
 
 void
-meta_window_show_menu (MetaWindow *window,
-                       int         x,
-                       int         y)
+meta_window_show_menu (MetaWindow         *window,
+                       MetaWindowMenuType  menu,
+                       int                 x,
+                       int                 y)
 {
   g_return_if_fail (!window->override_redirect);
-  meta_compositor_show_window_menu (window->display->compositor, window, x, y);
+  meta_compositor_show_window_menu (window->display->compositor, window, menu, x, y);
 }
 
 void
@@ -7980,6 +7981,7 @@ meta_window_handle_ungrabbed_event (MetaWindow         *window,
       if (meta_prefs_get_raise_on_click ())
         meta_window_raise (window);
       meta_window_show_menu (window,
+                             META_WINDOW_MENU_WM,
                              event->button.x,
                              event->button.y);
       return TRUE;

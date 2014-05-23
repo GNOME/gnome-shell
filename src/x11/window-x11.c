@@ -2723,7 +2723,7 @@ meta_window_x11_client_message (MetaWindow *window,
       x = event->xclient.data.l[1];
       y = event->xclient.data.l[2];
 
-      meta_window_show_menu (window, x, y);
+      meta_window_show_menu (window, META_WINDOW_MENU_WM, x, y);
     }
 
   return FALSE;
