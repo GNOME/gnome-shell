@@ -81,7 +81,9 @@ const WindowMenu = new Lang.Class({
             type == Meta.WindowType.SPLASHSCREEN)
             item.setSensitive(false);
 
-        if (!Meta.prefs_get_workspaces_only_on_primary() || window.is_on_primary_monitor()) {
+        if (Main.sessionMode.hasWorkspaces &&
+            (!Meta.prefs_get_workspaces_only_on_primary() ||
+             window.is_on_primary_monitor())) {
             let isSticky = window.is_on_all_workspaces();
 
             item = this.addAction(_("Always on Visible Workspace"), Lang.bind(this, function() {
