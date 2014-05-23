@@ -1425,6 +1425,8 @@ meta_frames_update_prelit_control (MetaFrames      *frames,
       break;
     case META_FRAME_CONTROL_MENU:
       break;
+    case META_FRAME_CONTROL_APPMENU:
+      break;
     case META_FRAME_CONTROL_MINIMIZE:
       break;
     case META_FRAME_CONTROL_MAXIMIZE:
@@ -1477,6 +1479,7 @@ meta_frames_update_prelit_control (MetaFrames      *frames,
   switch (control)
     {
     case META_FRAME_CONTROL_MENU:
+    case META_FRAME_CONTROL_APPMENU:
     case META_FRAME_CONTROL_MINIMIZE:
     case META_FRAME_CONTROL_MAXIMIZE:
     case META_FRAME_CONTROL_DELETE:
@@ -1796,6 +1799,9 @@ meta_frames_paint (MetaFrames   *frames,
     case META_FRAME_CONTROL_MENU:
       button_type = META_BUTTON_TYPE_MENU;
       break;
+    case META_FRAME_CONTROL_APPMENU:
+      button_type = META_BUTTON_TYPE_APPMENU;
+      break;
     case META_FRAME_CONTROL_MINIMIZE:
       button_type = META_BUTTON_TYPE_MINIMIZE;
       break;
@@ -1961,6 +1967,9 @@ control_rect (MetaFrameControl control,
     case META_FRAME_CONTROL_MENU:
       rect = &fgeom->menu_rect.visible;
       break;
+    case META_FRAME_CONTROL_APPMENU:
+      rect = &fgeom->appmenu_rect.visible;
+      break;
     case META_FRAME_CONTROL_MINIMIZE:
       rect = &fgeom->min_rect.visible;
       break;
@@ -2039,6 +2048,9 @@ get_control (MetaFrames *frames,
 
   if (POINT_IN_RECT (x, y, fgeom.menu_rect.clickable))
     return META_FRAME_CONTROL_MENU;
+
+  if (POINT_IN_RECT (x, y, fgeom.appmenu_rect.clickable))
+    return META_FRAME_CONTROL_APPMENU;
 
   meta_core_get (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()),
                  frame->xwindow,

@@ -36,7 +36,7 @@
  * look out for.
  */
 #define THEME_MAJOR_VERSION 3
-#define THEME_MINOR_VERSION 4
+#define THEME_MINOR_VERSION 5
 #define THEME_VERSION (1000 * THEME_MAJOR_VERSION + THEME_MINOR_VERSION)
 
 #define METACITY_THEME_FILENAME_FORMAT "metacity-theme-%d.xml"

@@ -250,6 +250,10 @@ meta_frame_get_flags (MetaFrame *frame)
     {
       flags |= META_FRAME_ALLOWS_MENU;
 
+      if (meta_prefs_get_show_fallback_app_menu () &&
+          frame->window->gtk_app_menu_object_path)
+        flags |= META_FRAME_ALLOWS_APPMENU;
+
       if (frame->window->has_close_func)
         flags |= META_FRAME_ALLOWS_DELETE;
 

@@ -49,6 +49,7 @@ typedef struct _MetaResizePopup MetaResizePopup;
  * MetaFrameFlags:
  * @META_FRAME_ALLOWS_DELETE: frame allows delete
  * @META_FRAME_ALLOWS_MENU: frame allows menu
+ * @META_FRAME_ALLOWS_APPMENU: frame allows (fallback) app menu
  * @META_FRAME_ALLOWS_MINIMIZE: frame allows minimize
  * @META_FRAME_ALLOWS_MAXIMIZE: frame allows maximize
  * @META_FRAME_ALLOWS_VERTICAL_RESIZE: frame allows vertical resize
@@ -69,21 +70,22 @@ typedef enum
 {
   META_FRAME_ALLOWS_DELETE            = 1 << 0,
   META_FRAME_ALLOWS_MENU              = 1 << 1,
-  META_FRAME_ALLOWS_MINIMIZE          = 1 << 2,
-  META_FRAME_ALLOWS_MAXIMIZE          = 1 << 3,
-  META_FRAME_ALLOWS_VERTICAL_RESIZE   = 1 << 4,
-  META_FRAME_ALLOWS_HORIZONTAL_RESIZE = 1 << 5,
-  META_FRAME_HAS_FOCUS                = 1 << 6,
-  META_FRAME_SHADED                   = 1 << 7,
-  META_FRAME_STUCK                    = 1 << 8,
-  META_FRAME_MAXIMIZED                = 1 << 9,
-  META_FRAME_ALLOWS_SHADE             = 1 << 10,
-  META_FRAME_ALLOWS_MOVE              = 1 << 11,
-  META_FRAME_FULLSCREEN               = 1 << 12,
-  META_FRAME_IS_FLASHING              = 1 << 13,
-  META_FRAME_ABOVE                    = 1 << 14,
-  META_FRAME_TILED_LEFT               = 1 << 15,
-  META_FRAME_TILED_RIGHT              = 1 << 16
+  META_FRAME_ALLOWS_APPMENU           = 1 << 2,
+  META_FRAME_ALLOWS_MINIMIZE          = 1 << 3,
+  META_FRAME_ALLOWS_MAXIMIZE          = 1 << 4,
+  META_FRAME_ALLOWS_VERTICAL_RESIZE   = 1 << 5,
+  META_FRAME_ALLOWS_HORIZONTAL_RESIZE = 1 << 6,
+  META_FRAME_HAS_FOCUS                = 1 << 7,
+  META_FRAME_SHADED                   = 1 << 8,
+  META_FRAME_STUCK                    = 1 << 9,
+  META_FRAME_MAXIMIZED                = 1 << 10,
+  META_FRAME_ALLOWS_SHADE             = 1 << 11,
+  META_FRAME_ALLOWS_MOVE              = 1 << 12,
+  META_FRAME_FULLSCREEN               = 1 << 13,
+  META_FRAME_IS_FLASHING              = 1 << 14,
+  META_FRAME_ABOVE                    = 1 << 15,
+  META_FRAME_TILED_LEFT               = 1 << 16,
+  META_FRAME_TILED_RIGHT              = 1 << 17
 } MetaFrameFlags;
 
 /**
@@ -359,6 +361,7 @@ typedef enum
   META_BUTTON_FUNCTION_UNSHADE,
   META_BUTTON_FUNCTION_UNABOVE,
   META_BUTTON_FUNCTION_UNSTICK,
+  META_BUTTON_FUNCTION_APPMENU,
   META_BUTTON_FUNCTION_LAST
 } MetaButtonFunction;
 
@@ -367,10 +370,10 @@ typedef enum
 /* Keep array size in sync with MAX_BUTTONS_PER_CORNER */
 /**
  * MetaButtonLayout:
- * @left_buttons: (array fixed-size=10):
- * @right_buttons: (array fixed-size=10):
- * @left_buttons_has_spacer: (array fixed-size=10):
- * @right_buttons_has_spacer: (array fixed-size=10):
+ * @left_buttons: (array fixed-size=11):
+ * @right_buttons: (array fixed-size=11):
+ * @left_buttons_has_spacer: (array fixed-size=11):
+ * @right_buttons_has_spacer: (array fixed-size=11):
  */
 typedef struct _MetaButtonLayout MetaButtonLayout;
 struct _MetaButtonLayout
