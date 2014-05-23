@@ -282,7 +282,7 @@ const ViewSelector = new Lang.Class({
             return Clutter.EVENT_STOP;
         } else if (this._shouldTriggerSearch(symbol)) {
             this.startSearch(event);
-        } else if (!this._searchActive) {
+        } else if (!this._searchActive && !global.stage.key_focus) {
             if (symbol == Clutter.Tab || symbol == Clutter.Down) {
                 this._activePage.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
                 return true;
