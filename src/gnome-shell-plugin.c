@@ -73,10 +73,11 @@ static void gnome_shell_plugin_show_tile_preview (MetaPlugin      *plugin,
                                                   MetaRectangle   *tile_rect,
                                                   int              tile_monitor);
 static void gnome_shell_plugin_hide_tile_preview (MetaPlugin *plugin);
-static void gnome_shell_plugin_show_window_menu  (MetaPlugin *plugin,
-                                                  MetaWindow *window,
-                                                  int         x,
-                                                  int         y);
+static void gnome_shell_plugin_show_window_menu  (MetaPlugin         *plugin,
+                                                  MetaWindow         *window,
+                                                  MetaWindowMenuType  menu,
+                                                  int                 x,
+                                                  int                 y);
 
 static gboolean              gnome_shell_plugin_xevent_filter (MetaPlugin *plugin,
                                                                XEvent     *event);
@@ -308,12 +309,13 @@ gnome_shell_plugin_hide_tile_preview (MetaPlugin *plugin)
 }
 
 static void
-gnome_shell_plugin_show_window_menu (MetaPlugin *plugin,
-                                     MetaWindow *window,
-                                     int         x,
-                                     int         y)
+gnome_shell_plugin_show_window_menu (MetaPlugin         *plugin,
+                                     MetaWindow         *window,
+                                     MetaWindowMenuType  menu,
+                                     int                 x,
+                                     int                 y)
 {
-  _shell_wm_show_window_menu (get_shell_wm (), window, x, y);
+  _shell_wm_show_window_menu (get_shell_wm (), window, menu, x, y);
 }
 
 static gboolean

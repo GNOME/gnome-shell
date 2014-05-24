@@ -141,8 +141,8 @@ shell_wm_class_init (ShellWMClass *klass)
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   0, NULL, NULL, NULL,
-                  G_TYPE_NONE, 3,
-                  META_TYPE_WINDOW, G_TYPE_INT, G_TYPE_INT);
+                  G_TYPE_NONE, 4,
+                  META_TYPE_WINDOW, G_TYPE_INT, G_TYPE_INT, G_TYPE_INT);
   shell_wm_signals[FILTER_KEYBINDING] =
     g_signal_new ("filter-keybinding",
                   G_TYPE_FROM_CLASS (klass),
@@ -297,12 +297,13 @@ _shell_wm_hide_tile_preview (ShellWM *wm)
 }
 
 void
-_shell_wm_show_window_menu (ShellWM    *wm,
-                            MetaWindow *window,
-                            int         x,
-                            int         y)
+_shell_wm_show_window_menu (ShellWM            *wm,
+                            MetaWindow         *window,
+                            MetaWindowMenuType  menu,
+                            int                 x,
+                            int                 y)
 {
-  g_signal_emit (wm, shell_wm_signals[SHOW_WINDOW_MENU], 0, window, x, y);
+  g_signal_emit (wm, shell_wm_signals[SHOW_WINDOW_MENU], 0, window, menu, x, y);
 }
 
 void

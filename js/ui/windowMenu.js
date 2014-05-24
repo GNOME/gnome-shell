@@ -9,6 +9,7 @@ const Shell = imports.gi.Shell;
 const BoxPointer = imports.ui.boxpointer;
 const Main = imports.ui.main;
 const PopupMenu = imports.ui.popupMenu;
+const RemoteMenu = imports.ui.remoteMenu;
 
 const WindowMenu = new Lang.Class({
     Name: 'WindowMenu',
@@ -122,6 +123,22 @@ const WindowMenu = new Lang.Class({
     }
 });
 
+const AppMenu = new Lang.Class({
+    Name: 'AppMenu',
+    Extends: RemoteMenu.RemoteMenu,
+
+    _init: function(window) {
+        let app = Shell.WindowTracker.get_default().get_window_app(window);
+
+        this.parent(Main.layoutManager.dummyCursor, app.menu, app.action_group);
+
+        this.actor.add_style_class_name('fallback-app-menu');
+
+        Main.layoutManager.uiGroup.add_actor(this.actor);
+        this.actor.hide();
+    }
+});
+
 const WindowMenuManager = new Lang.Class({
     Name: 'WindowMenuManager',
 
@@ -129,8 +146,10 @@ const WindowMenuManager = new Lang.Class({
         this._manager = new PopupMenu.PopupMenuManager({ actor: Main.layoutManager.dummyCursor });
     },
 
-    showForWindow: function(window, x, y) {
-        let menu = new WindowMenu(window);
+    showWindowMenuForWindow: function(window, type, x, y) {
+        let menu = (type == Meta.WindowMenuType.WM) ? new WindowMenu(window)
+                                                    : new AppMenu(window);
+
         this._manager.addMenu(menu);
 
         Main.layoutManager.setDummyCursorGeometry(x, y, 0, 0);
@@ -140,5 +159,5 @@ const WindowMenuManager = new Lang.Class({
             if (!isOpen)
                 menu.destroy();
         }));
-    },
+    }
 });
