@@ -1601,21 +1601,20 @@ static void
 clip_region_to_visible_frame_border (cairo_region_t *region,
                                      MetaUIFrame    *frame)
 {
+  MetaRectangle frame_rect;
   cairo_rectangle_int_t area;
   cairo_region_t *frame_border;
   MetaFrameFlags flags;
   MetaFrameType type;
   MetaFrameBorders borders;
   Display *display;
-  int frame_width, frame_height;
 
   display = GDK_DISPLAY_XDISPLAY (gdk_display_get_default ());
 
   meta_core_get (display, frame->xwindow,
                  META_CORE_GET_FRAME_FLAGS, &flags,
                  META_CORE_GET_FRAME_TYPE, &type,
-                 META_CORE_GET_FRAME_WIDTH, &frame_width,
-                 META_CORE_GET_FRAME_HEIGHT, &frame_height,
+                 META_CORE_GET_FRAME_RECT, &frame_rect,
                  META_CORE_GET_END);
 
   meta_theme_get_frame_borders (meta_theme_get_current (),
@@ -1625,8 +1624,8 @@ clip_region_to_visible_frame_border (cairo_region_t *region,
   /* Visible frame rect */
   area.x = borders.invisible.left;
   area.y = borders.invisible.top;
-  area.width = frame_width - borders.invisible.left - borders.invisible.right;
-  area.height = frame_height - borders.invisible.top - borders.invisible.bottom;
+  area.width = frame_rect.width - borders.invisible.left - borders.invisible.right;
+  area.height = frame_rect.height - borders.invisible.top - borders.invisible.bottom;
 
   frame_border = cairo_region_create_rectangle (&area);
 

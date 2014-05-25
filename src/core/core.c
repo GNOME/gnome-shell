@@ -120,11 +120,8 @@ meta_core_get (Display *xdisplay,
         case META_CORE_GET_ICON:
           *((GdkPixbuf**)answer) = window->icon;
           break;
-        case META_CORE_GET_FRAME_WIDTH:
-          *((gint*)answer) = window->frame->rect.width;
-          break;
-        case META_CORE_GET_FRAME_HEIGHT:
-          *((gint*)answer) = window->frame->rect.height;
+        case META_CORE_GET_FRAME_RECT:
+          *((MetaRectangle*)answer) = window->frame->rect;
           break;
         case META_CORE_GET_THEME_VARIANT:
           *((char**)answer) = window->gtk_theme_variant;
