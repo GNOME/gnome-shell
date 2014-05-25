@@ -133,6 +133,9 @@ const AppMenu = new Lang.Class({
         this.parent(Main.layoutManager.dummyCursor, app.menu, app.action_group);
 
         this.actor.add_style_class_name('fallback-app-menu');
+        let variant = window.get_gtk_theme_variant();
+        if (variant)
+            this.actor.add_style_class_name(variant);
 
         Main.layoutManager.uiGroup.add_actor(this.actor);
         this.actor.hide();

@@ -153,6 +153,21 @@ StScrollBar StButton#vhandle:active {
     -arrow-rise: 11px;
 }
 
+.popup-menu-boxpointer.fallback-app-menu {
+    -arrow-border-radius: 4px;
+    -arrow-background-color: #ededed;
+    -arrow-border-width: 1px;
+    -arrow-border-color: #a6a6a6;
+    -arrow-base: 24px;
+    -arrow-rise: 11px;
+}
+
+.popup-menu-boxpointer.fallback-app-menu.dark {
+    -arrow-background-color: #3f4747;
+    -arrow-border-color: #282b2b;
+}
+
+
 .popup-menu {
     min-width: 200px;
 }
@@ -166,9 +181,32 @@ StScrollBar StButton#vhandle:active {
     background-color: #333333;
 }
 
+.fallback-app-menu .popup-submenu-menu-item:open {
+    background-color: #888888;
+    color: white;
+}
+
+.fallback-app-menu.dark .popup-submenu-menu-item:open {
+    background-color: #333333;
+}
+
 .popup-sub-menu {
     background-gradient-start: rgba(80,80,80,0.3);
     background-gradient-end: rgba(80,80,80,0.4);
+    background-gradient-direction: vertical;
+    box-shadow: inset 0px 2px 4px rgba(0,0,0,0.9);
+}
+
+.fallback-app-menu .popup-sub-menu {
+    background-gradient-start: #dddddd;
+    background-gradient-end: #dfdfdf;
+    background-gradient-direction: vertical;
+    box-shadow: inset 0px 2px 4px rgba(0,0,0,0.4);
+}
+
+.fallback-app-menu.dark .popup-sub-menu {
+    background-gradient-start: #474747;
+    background-gradient-end: #4b4b4b;
     background-gradient-direction: vertical;
     box-shadow: inset 0px 2px 4px rgba(0,0,0,0.9);
 }
@@ -221,6 +259,31 @@ StScrollBar StButton#vhandle:active {
     color: #9f9f9f;
 }
 
+.fallback-app-menu .popup-menu-item {
+    color: #43484a;
+}
+
+.fallback-app-menu .popup-menu-item:active {
+    color: white;
+    background-color: #4689cd;
+}
+
+.fallback-app-menu .popup-menu-item:insensitive {
+    color: gray;
+}
+
+.fallback-app-menu.dark .popup-menu-item {
+    color: white;
+}
+
+.fallback-app-menu.dark .popup-menu-item:active {
+    background-color: #445f7d;
+}
+
+.fallback-app-menu.dark .popup-menu-item:insensitive {
+    color: #9f9f9f;
+}
+
 .popup-separator-menu-item {
     -gradient-height: 1px;
     -gradient-start: rgba(255,255,255,0.0);
@@ -228,6 +291,17 @@ StScrollBar StButton#vhandle:active {
     -margin-horizontal: 24px;
     height: 1px;
     padding: 8px 0px;
+}
+
+.fallback-app-menu .popup-separator-menu-item {
+    -gradient-start: #a0a2a3;
+    -gradient-end: #a0a2a3;
+    -margin-horizontal: 0;
+}
+
+.fallback-app-menu.dark .popup-separator-menu-item {
+    -gradient-start: #818584;
+    -gradient-end: #818584;
 }
 
 .popup-status-menu-item {
