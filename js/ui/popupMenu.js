@@ -251,8 +251,16 @@ const PopupSeparatorMenuItem = new Lang.Class({
         this.actor.add(this.label);
         this.actor.label_actor = this.label;
 
+        this.label.connect('notify::text',
+                           Lang.bind(this, this._syncVisibility));
+        this._syncVisibility();
+
         this._separator = new Separator.HorizontalSeparator({ style_class: 'popup-separator-menu-item' });
         this.actor.add(this._separator.actor, { expand: true });
+    },
+
+    _syncVisibility: function() {
+        this.label.visible = this.label.text != '';
     }
 });
 
