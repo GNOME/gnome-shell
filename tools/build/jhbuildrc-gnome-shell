@@ -18,7 +18,7 @@
 # Only rebuild modules that have changed
 build_policy = 'updated'
 
-moduleset = 'gnome-apps-3.12'
+moduleset = 'gnome-apps-3.14'
 
 modules = [ 'meta-gnome-core-shell' ]
 
