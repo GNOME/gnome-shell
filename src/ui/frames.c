@@ -1624,8 +1624,8 @@ clip_region_to_visible_frame_border (cairo_region_t *region,
   /* Visible frame rect */
   area.x = borders.invisible.left;
   area.y = borders.invisible.top;
-  area.width = frame_rect.width - borders.invisible.left - borders.invisible.right;
-  area.height = frame_rect.height - borders.invisible.top - borders.invisible.bottom;
+  area.width = frame_rect.width;
+  area.height = frame_rect.height;
 
   frame_border = cairo_region_create_rectangle (&area);
 

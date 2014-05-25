@@ -121,7 +121,7 @@ meta_core_get (Display *xdisplay,
           *((GdkPixbuf**)answer) = window->icon;
           break;
         case META_CORE_GET_FRAME_RECT:
-          *((MetaRectangle*)answer) = window->frame->rect;
+          meta_window_get_frame_rect (window, ((MetaRectangle*)answer));
           break;
         case META_CORE_GET_THEME_VARIANT:
           *((char**)answer) = window->gtk_theme_variant;
