@@ -86,54 +86,56 @@ meta_core_get (Display *xdisplay,
    */
 
   if (request != META_CORE_WINDOW_HAS_FRAME &&
-      (window == NULL || window->frame == NULL)) {
-    meta_bug ("No such frame window 0x%lx!\n", xwindow);
-    goto out;
-  }
-
-  while (request != META_CORE_GET_END) {
-
-    gpointer answer = va_arg (args, gpointer);
-
-    switch (request) {
-      case META_CORE_WINDOW_HAS_FRAME:
-        *((gboolean*)answer) = window != NULL && window->frame != NULL;
-        if (!*((gboolean*)answer)) goto out; /* see above */
-        break;
-      case META_CORE_GET_CLIENT_WIDTH:
-        *((gint*)answer) = window->rect.width;
-        break;
-      case META_CORE_GET_CLIENT_HEIGHT:
-        *((gint*)answer) = window->rect.height;
-        break;
-      case META_CORE_GET_FRAME_FLAGS:
-        *((MetaFrameFlags*)answer) = meta_frame_get_flags (window->frame);
-        break;
-      case META_CORE_GET_FRAME_TYPE:
-        *((MetaFrameType*)answer) = meta_window_get_frame_type (window);
-        break;
-      case META_CORE_GET_MINI_ICON:
-        *((GdkPixbuf**)answer) = window->mini_icon;
-        break;
-      case META_CORE_GET_ICON:
-        *((GdkPixbuf**)answer) = window->icon;
-        break;
-      case META_CORE_GET_FRAME_WIDTH:
-        *((gint*)answer) = window->frame->rect.width;
-        break;
-      case META_CORE_GET_FRAME_HEIGHT:
-        *((gint*)answer) = window->frame->rect.height;
-        break;
-      case META_CORE_GET_THEME_VARIANT:
-        *((char**)answer) = window->gtk_theme_variant;
-        break;
-
-      default:
-        meta_warning("Unknown window information request: %d\n", request);
+      (window == NULL || window->frame == NULL))
+    {
+      meta_bug ("No such frame window 0x%lx!\n", xwindow);
+      goto out;
     }
 
-    request = va_arg (args, MetaCoreGetType);
-  }
+  while (request != META_CORE_GET_END)
+    {
+      gpointer answer = va_arg (args, gpointer);
+
+      switch (request)
+        {
+        case META_CORE_WINDOW_HAS_FRAME:
+          *((gboolean*)answer) = window != NULL && window->frame != NULL;
+          if (!*((gboolean*)answer)) goto out; /* see above */
+          break;
+        case META_CORE_GET_CLIENT_WIDTH:
+          *((gint*)answer) = window->rect.width;
+          break;
+        case META_CORE_GET_CLIENT_HEIGHT:
+          *((gint*)answer) = window->rect.height;
+          break;
+        case META_CORE_GET_FRAME_FLAGS:
+          *((MetaFrameFlags*)answer) = meta_frame_get_flags (window->frame);
+          break;
+        case META_CORE_GET_FRAME_TYPE:
+          *((MetaFrameType*)answer) = meta_window_get_frame_type (window);
+          break;
+        case META_CORE_GET_MINI_ICON:
+          *((GdkPixbuf**)answer) = window->mini_icon;
+          break;
+        case META_CORE_GET_ICON:
+          *((GdkPixbuf**)answer) = window->icon;
+          break;
+        case META_CORE_GET_FRAME_WIDTH:
+          *((gint*)answer) = window->frame->rect.width;
+          break;
+        case META_CORE_GET_FRAME_HEIGHT:
+          *((gint*)answer) = window->frame->rect.height;
+          break;
+        case META_CORE_GET_THEME_VARIANT:
+          *((char**)answer) = window->gtk_theme_variant;
+          break;
+
+        default:
+          meta_warning("Unknown window information request: %d\n", request);
+        }
+
+      request = va_arg (args, MetaCoreGetType);
+    }
 
  out:
   va_end (args);
