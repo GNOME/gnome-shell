@@ -7072,6 +7072,18 @@ meta_window_get_wm_class_instance (MetaWindow *window)
 }
 
 /**
+ * meta_window_get_gtk_theme_variant:
+ * @window: a #MetaWindow
+ *
+ * Return value: (transfer none): the theme variant or %NULL
+ **/
+const char *
+meta_window_get_gtk_theme_variant (MetaWindow *window)
+{
+  return window->gtk_theme_variant;
+}
+
+/**
  * meta_window_get_gtk_application_id:
  * @window: a #MetaWindow
  *

@@ -140,6 +140,7 @@ const char * meta_window_get_wm_class (MetaWindow *window);
 const char * meta_window_get_wm_class_instance (MetaWindow *window);
 gboolean    meta_window_showing_on_its_workspace (MetaWindow *window);
 
+const char * meta_window_get_gtk_theme_variant (MetaWindow *window);
 const char * meta_window_get_gtk_application_id (MetaWindow *window);
 const char * meta_window_get_gtk_unique_bus_name (MetaWindow *window);
 const char * meta_window_get_gtk_application_object_path (MetaWindow *window);
