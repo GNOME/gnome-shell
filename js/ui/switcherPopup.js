@@ -189,10 +189,11 @@ const SwitcherPopup = new Lang.Class({
 
         this._disableHover();
 
+        if (this._keyPressHandler(keysym, backwards, action) != Clutter.EVENT_PROPAGATE)
+            return Clutter.EVENT_STOP;
+
         if (keysym == Clutter.Escape)
             this.destroy();
-        else
-            this._keyPressHandler(keysym, backwards, action);
 
         return Clutter.EVENT_STOP;
     },

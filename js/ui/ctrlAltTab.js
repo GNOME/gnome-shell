@@ -165,6 +165,10 @@ const CtrlAltTabPopup = new Lang.Class({
             this._select(this._previous());
         else if (keysym == Clutter.Right)
             this._select(this._next());
+        else
+            return Clutter.EVENT_PROPAGATE;
+
+        return Clutter.EVENT_STOP;
     },
 
     _finish : function(time) {
