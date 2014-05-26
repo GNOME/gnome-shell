@@ -167,6 +167,8 @@ const AppSwitcherPopup = new Lang.Class({
                 this._select(this._selectedIndex, this._nextWindow());
             else if (keysym == Clutter.Up)
                 this._select(this._selectedIndex, null, true);
+            else
+                return Clutter.EVENT_PROPAGATE;
         } else {
             if (keysym == Clutter.Left)
                 this._select(this._previous());
@@ -174,7 +176,11 @@ const AppSwitcherPopup = new Lang.Class({
                 this._select(this._next());
             else if (keysym == Clutter.Down)
                 this._select(this._selectedIndex, 0);
+            else
+                return Clutter.EVENT_PROPAGATE;
         }
+
+        return Clutter.EVENT_STOP;
     },
 
     _scrollHandler: function(direction) {
@@ -404,7 +410,11 @@ const WindowSwitcherPopup = new Lang.Class({
                 this._select(this._previous());
             else if (keysym == Clutter.Right)
                 this._select(this._next());
+            else
+                return Clutter.EVENT_PROPAGATE;
         }
+
+        return Clutter.EVENT_STOP;
     },
 
     _finish: function() {
