@@ -52,6 +52,8 @@ const Application = new Lang.Class({
         this._extensionPrefsModules = {};
 
         this._startupUuid = null;
+        this._loaded = false;
+        this._skipMainWindow = false;
     },
 
     _extensionAvailable: function(uuid) {
@@ -100,8 +102,18 @@ const Application = new Lang.Class({
 
         let dialog = new Gtk.Dialog({ use_header_bar: true,
                                       modal: true,
-                                      title: extension.metadata.name,
-                                      transient_for: this._window });
+                                      title: extension.metadata.name });
+
+        if (this._skipMainWindow) {
+            this.application.add_window(dialog);
+            if (this._window)
+                this._window.destroy();
+            this._window = dialog;
+            this._window.window_position = Gtk.WindowPosition.CENTER;
+        } else {
+            dialog.transient_for = this._window;
+        }
+
         dialog.set_default_size(600, 400);
         dialog.get_content_area().add(widget);
         dialog.show();
@@ -220,6 +232,8 @@ const Application = new Lang.Class({
         if (this._startupUuid && this._extensionAvailable(this._startupUuid))
             this._selectExtension(this._startupUuid);
         this._startupUuid = null;
+        this._skipMainWindow = false;
+        this._loaded = true;
     },
 
     _onActivate: function() {
@@ -235,16 +249,21 @@ const Application = new Lang.Class({
     _onCommandLine: function(app, commandLine) {
         app.activate();
         let args = commandLine.get_arguments();
+
         if (args.length) {
             let uuid = args[0];
+
+            this._skipMainWindow = true;
 
             // Strip off "extension:///" prefix which fakes a URI, if it exists
             uuid = stripPrefix(uuid, "extension:///");
 
             if (this._extensionAvailable(uuid))
                 this._selectExtension(uuid);
-            else
+            else if (!this._loaded)
                 this._startupUuid = uuid;
+            else
+                this._skipMainWindow = false;
         }
         return 0;
     }
