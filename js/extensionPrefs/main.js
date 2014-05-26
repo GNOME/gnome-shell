@@ -259,6 +259,12 @@ const ExtensionRow = new Lang.Class({
 
         this.uuid = uuid;
 
+        this._settings = new Gio.Settings({ schema: 'org.gnome.shell' });
+        this._settings.connect('changed::enabled-extensions', Lang.bind(this,
+            function() {
+                this._switch.state = this._isEnabled();
+            }));
+
         this._buildUI();
     },
 
@@ -294,6 +300,44 @@ const ExtensionRow = new Lang.Class({
         hbox.add(button);
 
         this.prefsButton = button;
+
+        this._switch = new Gtk.Switch({ valign: Gtk.Align.CENTER,
+                                        state: this._isEnabled() });
+        this._switch.connect('notify::active', Lang.bind(this,
+            function() {
+                if (this._switch.active)
+                    this._enable();
+                else
+                    this._disable();
+            }));
+        this._switch.connect('state-set', function() { return true; });
+        hbox.add(this._switch);
+    },
+
+    _isEnabled: function() {
+        let extensions = this._settings.get_strv('enabled-extensions');
+        return extensions.indexOf(this.uuid) != -1;
+    },
+
+    _enable: function() {
+        let extensions = this._settings.get_strv('enabled-extensions');
+        if (extensions.indexOf(this.uuid) != -1)
+            return;
+
+        extensions.push(this.uuid);
+        this._settings.set_strv('enabled-extensions', extensions);
+    },
+
+    _disable: function() {
+        let extensions = this._settings.get_strv('enabled-extensions');
+        let pos = extensions.indexOf(this.uuid);
+        if (pos == -1)
+            return;
+        do {
+            extensions.splice(pos, 1);
+            pos = extensions.indexOf(this.uuid);
+        } while (pos != -1);
+        this._settings.set_strv('enabled-extensions', extensions);
     }
 });
 
