@@ -1,3 +1,21 @@
+3.13.2
+======
+* Add basic HiDPI support on wayland [Adel; #728902]
+* Fix crash when monitors change during suspend [Giovanni; #725637]
+* Replace mutter-launch with logind integration [Jasper; #724604]
+* Move window menu into the compositor [Jasper; #726352]
+* Fix delayed focus-follows-mouse support [Florian; #730541]
+* Support fallback app menu in window decorations [Florian; #730752]
+* Misc. bug fixes and cleanups [Giovanni, Jonas, Jasper; #729732, #729602,
+  #726714]
+
+Contributors:
+  Jonas Ådahl, Giovanni Campagna, Adel Gadllah, Florian Müllner,
+  Jasper St. Pierre, Rico Tzschichholz
+
+Translations:
+  Pau Iranzo [ca], Daniel Mustieles [es]
+
 3.13.1
 ======
 * Fix opacity values from _NET_WM_WINDOW_OPACITY [Nirbheek; #727874]
