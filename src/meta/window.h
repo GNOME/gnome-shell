@@ -108,7 +108,6 @@ gboolean meta_window_appears_focused (MetaWindow *window);
 gboolean meta_window_is_shaded (MetaWindow *window);
 gboolean meta_window_is_override_redirect (MetaWindow *window);
 gboolean meta_window_is_skip_taskbar (MetaWindow *window);
-MetaRectangle *meta_window_get_rect (MetaWindow *window);
 void meta_window_get_input_rect (const MetaWindow *window, MetaRectangle *rect);
 
 void meta_window_get_frame_rect (const MetaWindow *window, MetaRectangle *rect);
