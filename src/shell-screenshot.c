@@ -530,26 +530,15 @@ shell_screenshot_screenshot_window (ShellScreenshot *screenshot,
   window_actor = CLUTTER_ACTOR (meta_window_get_compositor_private (window));
   clutter_actor_get_position (window_actor, &actor_x, &actor_y);
 
-  if (include_frame || !meta_window_get_frame (window))
-    {
-      meta_window_get_outer_rect (window, &rect);
+  meta_window_get_frame_rect (window, &rect);
 
-      screenshot_data->screenshot_area.x = rect.x;
-      screenshot_data->screenshot_area.y = rect.y;
+  if (!include_frame)
+    meta_window_frame_rect_to_client_rect (window, &rect, &rect);
 
-      clip.x = rect.x - (gint) actor_x;
-      clip.y = rect.y - (gint) actor_y;
-    }
-  else
-    {
-      rect = *meta_window_get_rect (window);
-
-      screenshot_data->screenshot_area.x = (gint) actor_x + rect.x;
-      screenshot_data->screenshot_area.y = (gint) actor_y + rect.y;
-
-      clip.x = rect.x;
-      clip.y = rect.y;
-    }
+  screenshot_data->screenshot_area.x = rect.x;
+  screenshot_data->screenshot_area.y = rect.y;
+  clip.x = rect.x - (gint) actor_x;
+  clip.y = rect.y - (gint) actor_y;
 
   clip.width = screenshot_data->screenshot_area.width = rect.width;
   clip.height = screenshot_data->screenshot_area.height = rect.height;
