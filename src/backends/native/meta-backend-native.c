@@ -175,6 +175,20 @@ meta_backend_native_create_cursor_renderer (MetaBackend *backend)
 }
 
 static void
+meta_backend_native_warp_pointer (MetaBackend *backend,
+                                  int          x,
+                                  int          y)
+{
+  ClutterDeviceManager *manager = clutter_device_manager_get_default ();
+  ClutterInputDevice *device = clutter_device_manager_get_core_device (manager, CLUTTER_POINTER_DEVICE);
+
+  /* XXX */
+  guint32 time_ = 0;
+
+  clutter_evdev_warp_pointer (device, time_, x, y);
+}
+
+static void
 meta_backend_native_class_init (MetaBackendNativeClass *klass)
 {
   MetaBackendClass *backend_class = META_BACKEND_CLASS (klass);
@@ -183,6 +197,8 @@ meta_backend_native_class_init (MetaBackendNativeClass *klass)
   backend_class->create_idle_monitor = meta_backend_native_create_idle_monitor;
   backend_class->create_monitor_manager = meta_backend_native_create_monitor_manager;
   backend_class->create_cursor_renderer = meta_backend_native_create_cursor_renderer;
+
+  backend_class->warp_pointer = meta_backend_native_warp_pointer;
 }
 
 static void

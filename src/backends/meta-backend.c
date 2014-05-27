@@ -104,14 +104,6 @@ meta_backend_real_ungrab_device (MetaBackend *backend,
 }
 
 static void
-meta_backend_real_warp_pointer (MetaBackend *backend,
-                                int          x,
-                                int          y)
-{
-  /* Do nothing */
-}
-
-static void
 meta_backend_class_init (MetaBackendClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -122,7 +114,6 @@ meta_backend_class_init (MetaBackendClass *klass)
   klass->create_cursor_renderer = meta_backend_real_create_cursor_renderer;
   klass->grab_device = meta_backend_real_grab_device;
   klass->ungrab_device = meta_backend_real_ungrab_device;
-  klass->warp_pointer = meta_backend_real_warp_pointer;
 }
 
 static void
