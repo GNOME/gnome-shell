@@ -58,6 +58,8 @@
 #include "wayland/window-wayland.h"
 #include "wayland/meta-wayland-private.h"
 
+#include "backends/meta-backend.h"
+
 /* Windows that unmaximize to a size bigger than that fraction of the workarea
  * will be scaled down to that size (while maintaining aspect ratio).
  * Windows that cover an area greater then this size are automaximized on map.
@@ -6562,12 +6564,10 @@ warp_grab_pointer (MetaWindow          *window,
   meta_window_get_client_root_coords (window,
                                       &display->grab_anchor_window_pos);
 
-  XIWarpPointer (display->xdisplay,
-                 META_VIRTUAL_CORE_POINTER_ID,
-                 None,
-                 window->screen->xroot,
-                 0, 0, 0, 0,
-                 *x, *y);
+  {
+    MetaBackend *backend = meta_get_backend ();
+    meta_backend_warp_pointer (backend, *x, *y);
+  }
 
   if (meta_error_trap_pop_with_return (display) != Success)
     {

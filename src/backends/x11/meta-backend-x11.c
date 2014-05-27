@@ -347,6 +347,22 @@ meta_backend_x11_ungrab_device (MetaBackend *backend,
 }
 
 static void
+meta_backend_x11_warp_pointer (MetaBackend *backend,
+                               int          x,
+                               int          y)
+{
+  MetaBackendX11 *x11 = META_BACKEND_X11 (backend);
+  MetaBackendX11Private *priv = meta_backend_x11_get_instance_private (x11);
+
+  XIWarpPointer (priv->xdisplay,
+                 META_VIRTUAL_CORE_POINTER_ID,
+                 None,
+                 meta_backend_x11_get_xwindow (x11),
+                 0, 0, 0, 0,
+                 x, y);
+}
+
+static void
 meta_backend_x11_class_init (MetaBackendX11Class *klass)
 {
   MetaBackendClass *backend_class = META_BACKEND_CLASS (klass);
@@ -358,6 +374,7 @@ meta_backend_x11_class_init (MetaBackendX11Class *klass)
 
   backend_class->grab_device = meta_backend_x11_grab_device;
   backend_class->ungrab_device = meta_backend_x11_ungrab_device;
+  backend_class->warp_pointer = meta_backend_x11_warp_pointer;
 }
 
 static void

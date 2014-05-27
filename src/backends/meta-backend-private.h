@@ -62,6 +62,10 @@ struct _MetaBackendClass
   gboolean (* ungrab_device) (MetaBackend *backend,
                               int          device_id,
                               uint32_t     timestamp);
+
+  void (* warp_pointer) (MetaBackend *backend,
+                         int          x,
+                         int          y);
 };
 
 #endif /* META_BACKEND_PRIVATE_H */

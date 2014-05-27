@@ -50,6 +50,10 @@ gboolean meta_backend_ungrab_device (MetaBackend *backend,
                                      int          device_id,
                                      uint32_t     timestamp);
 
+void meta_backend_warp_pointer (MetaBackend *backend,
+                                int          x,
+                                int          y);
+
 void meta_clutter_init (void);
 
 #endif /* META_BACKEND_H */
