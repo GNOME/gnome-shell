@@ -1,3 +1,27 @@
+3.13.2
+======
+* Make airplane mode menu insensitive in lock screen [Giovanni; #729224]
+* Don't always extend struts to the screen edge [Florian; #683819]
+* Fix keynav for alternatives in AltSwitcher [Florian; #727259]
+* Implement window menus in the shell [Jasper; #726352]
+* Support resource:/// URLs in GNOME_SHELL_JS envvar [Owen; #730409]
+* Fix switcher popups with keybindings containing Escape [Rui; #730739]
+* Update extension-prefs UI to follow GNOME 3 patterns [Florian; #730829]
+* Add support for fallback app menu in window decorations [Florian; #730752]
+* Fix keynav escaping open app folders [Florian; #726760]
+* Misc. bug fixes [Kalev, Florian, Owen; #729429, #728449, #730408, #730753,
+  #730653]
+
+Contributors:
+  Giovanni Campagna, Piotr Drąg, Kalev Lember, Rui Matos, Florian Müllner,
+  Vadim Rutkovsky, Carlos Soriano, Jasper St. Pierre, Owen W. Taylor
+
+Translations:
+  Ihar Hrachyshka [be], Giovanni Campagna [it], Carles Ferrando [ca@valencia],
+  Daniel Mustieles [es], Aurimas Černius [lt], Enrico Nicoletto [pt_BR],
+  Yosef Or Boczko [he], Marek Černocký [cs], Muhammet Kara [tr],
+  Georges Neto [pt_BR], Andika Triwidada [id]
+
 3.13.1
 ======
 * Ensure the currently focused app icon is viewable [Rui; #726759]
