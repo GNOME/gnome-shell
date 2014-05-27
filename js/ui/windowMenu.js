@@ -155,6 +155,10 @@ const WindowMenuManager = new Lang.Class({
 
         this._manager.addMenu(menu);
 
+        menu.connect('activate', function() {
+            window.check_alive(global.get_current_time());
+        });
+
         Main.layoutManager.setDummyCursorGeometry(x, y, 0, 0);
         menu.open(BoxPointer.PopupAnimation.NONE);
         menu.actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
