@@ -1984,3 +1984,30 @@ clutter_evdev_remove_filter (ClutterEvdevFilterFunc func,
       tmp_list = tmp_list->next;
     }
 }
+
+/**
+ * clutter_evdev_warp_pointer:
+ * @pointer_device: the pointer device to warp
+ * @time: the timestamp for the warp event
+ * @x: the new X position of the pointer
+ * @y: the new Y position of the pointer
+ *
+ * Warps the pointer to a new location. Technically, this is
+ * processed the same way as an absolute motion event from
+ * libinput: it simply generates an absolute motion event that
+ * will be processed on the next iteration of the mainloop.
+ *
+ * The intended use for this is for display servers that need
+ * to warp cursor the cursor to a new location.
+ *
+ * Since: 1.20
+ * Stability: unstable
+ */
+void
+clutter_evdev_warp_pointer (ClutterInputDevice   *pointer_device,
+                            guint32               time_,
+                            int                   x,
+                            int                   y)
+{
+  notify_absolute_motion (pointer_device, time_, x, y);
+}

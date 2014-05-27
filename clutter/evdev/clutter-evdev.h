@@ -119,6 +119,12 @@ struct libinput_device * clutter_evdev_input_device_get_libinput_device (Clutter
 CLUTTER_AVAILABLE_IN_1_20
 gint32 clutter_evdev_event_sequence_get_slot (const ClutterEventSequence *sequence);
 
+CLUTTER_AVAILABLE_IN_1_20
+void clutter_evdev_warp_pointer (ClutterInputDevice   *pointer_device,
+                                 guint32               time_,
+                                 int                   x,
+                                 int                   y);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_EVDEV_H__ */
