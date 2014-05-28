@@ -91,21 +91,6 @@ const rewriteRules = {
     ]
 };
 
-const STANDARD_TRAY_ICON_IMPLEMENTATIONS = {
-    'bluetooth-applet': 'bluetooth',
-    'gnome-volume-control-applet': 'volume', // renamed to gnome-sound-applet
-                                             // when moved to control center
-    'gnome-sound-applet': 'volume',
-    'nm-applet': 'network',
-    'gnome-power-manager': 'battery',
-    'keyboard': 'keyboard',
-    'a11y-keyboard': 'a11y',
-    'kbd-scrolllock': 'keyboard',
-    'kbd-numlock': 'keyboard',
-    'kbd-capslock': 'keyboard',
-    'ibus-ui-gtk': 'keyboard'
-};
-
 const FdoNotificationDaemon = new Lang.Class({
     Name: 'FdoNotificationDaemon',
 
@@ -509,10 +494,6 @@ const FdoNotificationDaemon = new Lang.Class({
     },
 
     _onTrayIconAdded: function(o, icon) {
-        let wmClass = icon.wm_class ? icon.wm_class.toLowerCase() : '';
-        if (STANDARD_TRAY_ICON_IMPLEMENTATIONS[wmClass] !== undefined)
-            return;
-
         let source = this._getSource(icon.title || icon.wm_class || C_("program", "Unknown"), icon.pid, null, null, icon);
     },
 
