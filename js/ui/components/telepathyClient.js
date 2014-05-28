@@ -783,7 +783,6 @@ const ChatNotification = new Lang.Class({
 
         this._createScrollArea();
         this._lastGroup = null;
-        this._lastGroupActor = null;
 
         // Keep track of the bottom position for the current adjustment and
         // force a scroll to the bottom if things change while we were at the
