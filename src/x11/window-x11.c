@@ -501,7 +501,6 @@ static void
 meta_window_x11_manage (MetaWindow *window)
 {
   MetaDisplay *display = window->display;
-  MetaMoveResizeFlags flags;
 
   meta_display_register_x_window (display, &window->xwindow, window);
   meta_window_x11_update_shape_region (window);
@@ -536,16 +535,18 @@ meta_window_x11_manage (MetaWindow *window)
    * passing TRUE for is_configure_request, ICCCM says
    * initial map is handled same as configure request
    */
-  flags = META_IS_CONFIGURE_REQUEST | META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION;
   if (!window->override_redirect)
     {
       MetaRectangle rect;
+      MetaMoveResizeFlags flags;
       int gravity = window->size_hints.win_gravity;
 
       rect.x = window->size_hints.x;
       rect.y = window->size_hints.y;
       rect.width = window->size_hints.width;
       rect.height = window->size_hints.height;
+
+      flags = META_IS_CONFIGURE_REQUEST | META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION;
 
       adjust_for_gravity (window, TRUE, gravity, &rect);
       meta_window_client_rect_to_frame_rect (window, &rect, &rect);
