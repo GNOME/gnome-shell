@@ -1070,7 +1070,7 @@ const Source = new Lang.Class({
     },
 
     get isClearable() {
-        return !this.trayIcon && !this.isChat;
+        return !this.isChat;
     },
 
     countUpdated: function() {
@@ -1631,6 +1631,71 @@ const MessageTrayIndicator = new Lang.Class({
     },
 });
 
+const SystemTrayIconButton = new Lang.Class({
+    Name: 'SystemTrayIconButton',
+
+    _init: function(trayIcon) {
+        this._trayIcon = trayIcon;
+
+        this.actor = new St.Button({ style_class: 'system-tray-icon-button',
+                                     track_hover: true,
+                                     can_focus: true,
+                                     reactive: true });
+        this.actor.connect('clicked', Lang.bind(this, this._onClicked));
+        this.actor.set_child(this._trayIcon);
+
+        this._trayIcon.connect('destroy', Lang.bind(this, function() {
+            this.actor.set_child(null);
+            this.actor.destroy();
+        }));
+    },
+
+    _onClicked: function() {
+        let event = Clutter.get_current_event();
+
+        let id = global.stage.connect('deactivate', Lang.bind(this, function() {
+            global.stage.disconnect(id);
+            this._trayIcon.click(event);
+        }));
+
+        this.emit('clicked');
+
+        Main.overview.hide();
+        return true;
+    },
+});
+Signals.addSignalMethods(SystemTrayIconButton.prototype);
+
+const SystemTraySection = new Lang.Class({
+    Name: 'SystemTraySection',
+
+    _init: function(tray) {
+        this._tray = tray;
+
+        this.actor = new St.BoxLayout({ style_class: 'system-tray-icons',
+                                        y_align: Clutter.ActorAlign.CENTER,
+                                        y_expand: true });
+
+        this._trayManager = new Shell.TrayManager();
+        this._trayManager.connect('tray-icon-added', Lang.bind(this, this._onTrayIconAdded));
+        this._trayManager.connect('tray-icon-removed', Lang.bind(this, this._onTrayIconRemoved));
+
+        this._trayManager.manage_screen(global.screen, this.actor);
+    },
+
+    _onTrayIconAdded: function(manager, trayIcon) {
+        let button = new SystemTrayIconButton(trayIcon);
+        button.connect('clicked', Lang.bind(this, function() {
+            this._tray.close();
+        }));
+        this.actor.add_child(button.actor);
+    },
+
+    _onTrayIconRemoved: function(manager, trayIcon) {
+        trayIcon.destroy();
+    },
+});
+
 const MessageTray = new Lang.Class({
     Name: 'MessageTray',
 
@@ -1683,13 +1748,18 @@ const MessageTray = new Lang.Class({
             return Clutter.EVENT_PROPAGATE;
         }));
         global.focus_manager.add_group(this.actor);
-        this._summary = new St.BoxLayout({ style_class: 'message-tray-summary',
-                                           reactive: true,
-                                           x_align: Clutter.ActorAlign.END,
-                                           x_expand: true,
-                                           y_align: Clutter.ActorAlign.CENTER,
-                                           y_expand: true });
-        this.actor.add_actor(this._summary);
+
+        this._summaryGroup = new St.BoxLayout({ x_align: Clutter.ActorAlign.END,
+                                                x_expand: true,
+                                                y_align: Clutter.ActorAlign.CENTER,
+                                                y_expand: true });
+        this.actor.add_child(this._summaryGroup);
+
+        this._summary = new St.BoxLayout({ style_class: 'message-tray-summary' });
+        this._summaryGroup.add_child(this._summary);
+
+        this._systemTray = new SystemTraySection(this);
+        this._summaryGroup.add_child(this._systemTray.actor);
 
         this._summaryMotionId = 0;
 

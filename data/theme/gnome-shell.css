@@ -1495,6 +1495,24 @@ StScrollBar StButton#vhandle:active {
     background: #2e3436 url(message-tray-background.png);
     background-repeat: repeat;
     height: 72px;
+
+    padding-right: 8px;
+}
+
+.system-tray-icons {
+    border-radius: 8px;
+    border: 1px solid #4c4c4c;
+}
+
+.system-tray-icon-button {
+    padding: 8px;
+
+    width: 22px;
+    height: 22px;
+}
+
+.system-tray-icon-button:hover {
+    background: 1px solid #4c4c4c;
 }
 
 .message-tray-summary {
