@@ -2268,6 +2268,16 @@ const MessageTray = new Lang.Class({
             this._grabHelper.addActor(corner.actor);
     },
 
+    _resetNotificationLeftTimeout: function() {
+        this._useLongerNotificationLeftTimeout = false;
+        if (this._notificationLeftTimeoutId) {
+            Mainloop.source_remove(this._notificationLeftTimeoutId);
+            this._notificationLeftTimeoutId = 0;
+            this._notificationLeftMouseX = -1;
+            this._notificationLeftMouseY = -1;
+        }
+    },
+
     _onNotificationHoverChanged: function() {
         if (this._notificationWidget.hover == this._notificationHovered)
             return;
@@ -2277,13 +2287,7 @@ const MessageTray = new Lang.Class({
             // No dwell inside notifications at the bottom of the screen
             this._cancelTrayDwell();
 
-            this._useLongerNotificationLeftTimeout = false;
-            if (this._notificationLeftTimeoutId) {
-                Mainloop.source_remove(this._notificationLeftTimeoutId);
-                this._notificationLeftTimeoutId = 0;
-                this._notificationLeftMouseX = -1;
-                this._notificationLeftMouseY = -1;
-            }
+            this._resetNotificationLeftTimeout();
 
             if (this._showNotificationMouseX >= 0) {
                 let actorAtShowNotificationPosition =
@@ -2719,13 +2723,7 @@ const MessageTray = new Lang.Class({
             this._notificationUnfocusedId = 0;
         }
 
-        this._useLongerNotificationLeftTimeout = false;
-        if (this._notificationLeftTimeoutId) {
-            Mainloop.source_remove(this._notificationLeftTimeoutId);
-            this._notificationLeftTimeoutId = 0;
-            this._notificationLeftMouseX = -1;
-            this._notificationLeftMouseY = -1;
-        }
+        this._resetNotificationLeftTimeout();
 
         if (animate) {
             this._tween(this._notificationWidget, '_notificationState', State.HIDDEN,
