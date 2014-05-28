@@ -532,7 +532,7 @@ st_icon_get_gicon (StIcon *icon)
 /**
  * st_icon_set_gicon:
  * @icon: an icon
- * @gicon: (allow-none): a #GIcon to override :icon-name
+ * @gicon: (nullable): a #GIcon to override :icon-name
  */
 void
 st_icon_set_gicon (StIcon *icon, GIcon *gicon)

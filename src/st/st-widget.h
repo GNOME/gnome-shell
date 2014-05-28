@@ -80,7 +80,7 @@ struct _StWidgetClass
   /**
    * StWidgetClass::navigate_focus:
    * @self: the "top level" container
-   * @from: (allow-none): the actor that the focus is coming from
+   * @from: (nullable): the actor that the focus is coming from
    * @direction: the direction focus is moving in
    */
   gboolean (* navigate_focus)      (StWidget         *self,

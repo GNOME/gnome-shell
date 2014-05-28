@@ -204,17 +204,17 @@ split_on_whitespace (const gchar *s)
 /**
  * st_theme_node_new:
  * @context: the context representing global state for this themed tree
- * @parent_node: (allow-none): the parent node of this node
- * @theme: (allow-none): a theme (stylesheet set) that overrides the
+ * @parent_node: (nullable): the parent node of this node
+ * @theme: (nullable): a theme (stylesheet set) that overrides the
  *   theme inherited from the parent node
  * @element_type: the type of the GObject represented by this node
  *  in the tree (corresponding to an element if we were theming an XML
  *  document. %G_TYPE_NONE means this style was created for the stage
  * actor and matches a selector element name of 'stage'.
- * @element_id: (allow-none): the ID to match CSS rules against
- * @element_class: (allow-none): a whitespace-separated list of classes
+ * @element_id: (nullable): the ID to match CSS rules against
+ * @element_class: (nullable): a whitespace-separated list of classes
  *   to match CSS rules against
- * @pseudo_class: (allow-none): a whitespace-separated list of pseudo-classes
+ * @pseudo_class: (nullable): a whitespace-separated list of pseudo-classes
  *   (like 'hover' or 'visited') to match CSS rules against
  *
  * Creates a new #StThemeNode. Once created, a node is immutable. Of any
@@ -3536,7 +3536,7 @@ st_theme_node_adjust_for_height (StThemeNode  *node,
 /**
  * st_theme_node_adjust_preferred_width:
  * @node: a #StThemeNode
- * @min_width_p: (inout) (allow-none): the minimum width to adjust
+ * @min_width_p: (inout) (nullable): the minimum width to adjust
  * @natural_width_p: (inout): the natural width to adjust
  *
  * Adjusts the minimum and natural width computed for an actor by
@@ -3603,7 +3603,7 @@ st_theme_node_adjust_for_width (StThemeNode  *node,
 /**
  * st_theme_node_adjust_preferred_height:
  * @node: a #StThemeNode
- * @min_height_p: (inout) (allow-none): the minimum height to adjust
+ * @min_height_p: (inout) (nullable): the minimum height to adjust
  * @natural_height_p: (inout): the natural height to adjust
  *
  * Adjusts the minimum and natural height computed for an actor by
@@ -3815,8 +3815,8 @@ st_theme_node_geometry_equal (StThemeNode *node,
 
 /**
  * st_theme_node_paint_equal:
- * @node: (allow-none): a #StThemeNode
- * @other: (allow-none): a different #StThemeNode
+ * @node: (nullable): a #StThemeNode
+ * @other: (nullable): a different #StThemeNode
  *
  * Check if st_theme_node_paint() will paint identically for @node as it does
  * for @other. Note that in some cases this function may return %TRUE even

@@ -908,7 +908,7 @@ st_entry_get_text (StEntry *entry)
 /**
  * st_entry_set_text:
  * @entry: a #StEntry
- * @text: (allow-none): text to set the entry to
+ * @text: (nullable): text to set the entry to
  *
  * Sets the text displayed on the entry
  */
@@ -963,7 +963,7 @@ st_entry_get_clutter_text (StEntry *entry)
 /**
  * st_entry_set_hint_text:
  * @entry: a #StEntry
- * @text: (allow-none): text to set as the entry hint
+ * @text: (nullable): text to set as the entry hint
  *
  * Sets the text to display when the entry is empty and unfocused. When the
  * entry is displaying the hint, it has a pseudo class of "indeterminate".
@@ -1136,7 +1136,7 @@ _st_entry_set_icon (StEntry       *entry,
 /**
  * st_entry_set_primary_icon:
  * @entry: a #StEntry
- * @icon: (allow-none): a #ClutterActor
+ * @icon: (nullable): a #ClutterActor
  *
  * Set the primary icon of the entry to @icon
  */
@@ -1156,7 +1156,7 @@ st_entry_set_primary_icon (StEntry      *entry,
 /**
  * st_entry_set_secondary_icon:
  * @entry: a #StEntry
- * @icon: (allow-none): an #ClutterActor
+ * @icon: (nullable): an #ClutterActor
  *
  * Set the secondary icon of the entry to @icon
  */

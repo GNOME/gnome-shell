@@ -516,7 +516,7 @@ shell_keyring_prompt_new (void)
  *
  * Get the prompt password text actor
  *
- * Returns: (transfer none) (allow-none): the password actor
+ * Returns: (transfer none) (nullable): the password actor
  */
 ClutterText *
 shell_keyring_prompt_get_password_actor (ShellKeyringPrompt *self)
@@ -531,7 +531,7 @@ shell_keyring_prompt_get_password_actor (ShellKeyringPrompt *self)
  *
  * Get the prompt password text actor
  *
- * Returns: (transfer none) (allow-none): the password actor
+ * Returns: (transfer none) (nullable): the password actor
  */
 ClutterText *
 shell_keyring_prompt_get_confirm_actor (ShellKeyringPrompt *self)
@@ -616,7 +616,7 @@ on_password_changed (ClutterText *text,
 /**
  * shell_keyring_prompt_set_password_actor:
  * @self: the internal prompt
- * @password_actor: (allow-none): the password actor
+ * @password_actor: (nullable): the password actor
  *
  * Set the prompt password text actor
  */
@@ -651,7 +651,7 @@ shell_keyring_prompt_set_password_actor (ShellKeyringPrompt *self,
 /**
  * shell_keyring_prompt_set_confirm_actor:
  * @self: the internal prompt
- * @confirm_actor: (allow-none): the confirm password actor
+ * @confirm_actor: (nullable): the confirm password actor
  *
  * Set the prompt password confirmation text actor
  */

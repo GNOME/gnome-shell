@@ -1629,7 +1629,7 @@ shell_recorder_set_draw_cursor (ShellRecorder *recorder,
 /**
  * shell_recorder_set_pipeline:
  * @recorder: the #ShellRecorder
- * @pipeline: (allow-none): the GStreamer pipeline used to encode recordings
+ * @pipeline: (nullable): the GStreamer pipeline used to encode recordings
  *            or %NULL for the default value.
  *
  * Sets the GStreamer pipeline used to encode recordings.
@@ -1681,7 +1681,7 @@ shell_recorder_set_area (ShellRecorder *recorder,
 /**
  * shell_recorder_record:
  * @recorder: the #ShellRecorder
- * @filename_used: (out) (allow-none): actual filename used for recording
+ * @filename_used: (out) (optional): actual filename used for recording
  *
  * Starts recording, Starting the recording may fail if the output file
  * cannot be opened, or if the output stream cannot be created

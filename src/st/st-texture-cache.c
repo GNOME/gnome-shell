@@ -1022,7 +1022,7 @@ load_gicon_with_colors (StTextureCache    *cache,
 /**
  * st_texture_cache_load_gicon:
  * @cache: The texture cache instance
- * @theme_node: (allow-none): The #StThemeNode to use for colors, or NULL
+ * @theme_node: (nullable): The #StThemeNode to use for colors, or NULL
  *                            if the icon must not be recolored
  * @icon: the #GIcon to load
  * @size: Size of themed
@@ -1235,7 +1235,7 @@ load_sliced_image (GSimpleAsyncResult *result,
  * @grid_width: Width in pixels
  * @grid_height: Height in pixels
  * @scale: Scale factor of the display
- * @load_callback: (scope async) (allow-none): Function called when the image is loaded, or %NULL
+ * @load_callback: (scope async) (nullable): Function called when the image is loaded, or %NULL
  * @user_data: Data to pass to the load callback
  *
  * This function reads a single image file which contains multiple images internally.

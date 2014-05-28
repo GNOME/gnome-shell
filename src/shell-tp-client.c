@@ -35,7 +35,7 @@ struct _ShellTpClientPrivate
  * if possible
  * @channels: (element-type TelepathyGLib.Channel): a #GList of #TpChannel,
  *  all having %TP_CHANNEL_FEATURE_CORE prepared if possible
- * @dispatch_operation: (allow-none): a #TpChannelDispatchOperation or %NULL;
+ * @dispatch_operation: (nullable): a #TpChannelDispatchOperation or %NULL;
  *  the dispatch_operation is not guaranteed to be prepared
  * @requests: (element-type TelepathyGLib.ChannelRequest): a #GList of
  *  #TpChannelRequest, all having their object-path defined but are not
@@ -54,7 +54,7 @@ struct _ShellTpClientPrivate
  * if possible
  * @channels: (element-type TelepathyGLib.Channel): a #GList of #TpChannel,
  *  all having %TP_CHANNEL_FEATURE_CORE prepared if possible
- * @dispatch_operation: (allow-none): a #TpChannelDispatchOperation or %NULL;
+ * @dispatch_operation: (nullable): a #TpChannelDispatchOperation or %NULL;
  *  the dispatch_operation is not guaranteed to be prepared
  * @context: a #TpAddDispatchOperationContext representing the context of this
  *  D-Bus call

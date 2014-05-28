@@ -516,7 +516,7 @@ find_most_recent_transient_on_same_workspace (MetaDisplay *display,
 /**
  * shell_app_activate_window:
  * @app: a #ShellApp
- * @window: (allow-none): Window to be focused
+ * @window: (nullable): Window to be focused
  * @timestamp: Event timestamp
  *
  * Bring all windows for the given app to the foreground,

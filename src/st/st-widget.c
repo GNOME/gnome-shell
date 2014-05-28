@@ -1173,7 +1173,7 @@ remove_class_name (gchar       **class_list,
 /**
  * st_widget_set_style_class_name:
  * @actor: a #StWidget
- * @style_class_list: (allow-none): a new style class list string
+ * @style_class_list: (nullable): a new style class list string
  *
  * Set the style class name list. @style_class_list can either be
  * %NULL, for no classes, or a space-separated list of style class
@@ -1316,7 +1316,7 @@ st_widget_has_style_pseudo_class (StWidget    *actor,
 /**
  * st_widget_set_style_pseudo_class:
  * @actor: a #StWidget
- * @pseudo_class_list: (allow-none): a new pseudo class list string
+ * @pseudo_class_list: (nullable): a new pseudo class list string
  *
  * Set the style pseudo class list. @pseudo_class_list can either be
  * %NULL, for no classes, or a space-separated list of pseudo class
@@ -1382,7 +1382,7 @@ st_widget_remove_style_pseudo_class (StWidget    *actor,
 /**
  * st_widget_set_style:
  * @actor: a #StWidget
- * @style: (allow-none): a inline style string, or %NULL
+ * @style: (nullable): a inline style string, or %NULL
  *
  * Set the inline style string for this widget. The inline style string is an
  * optional ';'-separated list of CSS properties that override the style as
@@ -2051,7 +2051,7 @@ st_widget_real_navigate_focus (StWidget         *widget,
 /**
  * st_widget_navigate_focus:
  * @widget: the "top level" container
- * @from: (allow-none): the actor that the focus is coming from
+ * @from: (nullable): the actor that the focus is coming from
  * @direction: the direction focus is moving in
  * @wrap_around: whether focus should wrap around
  *
@@ -2270,7 +2270,7 @@ st_widget_set_label_actor (StWidget     *widget,
 /**
  * st_widget_set_accessible_name:
  * @widget: widget to set the accessible name for
- * @name: (allow-none): a character string to be set as the accessible name
+ * @name: (nullable): a character string to be set as the accessible name
  *
  * This method sets @name as the accessible name for @widget.
  *
@@ -2845,8 +2845,8 @@ st_widget_get_focus_chain (StWidget *widget)
  * st_get_align_factors:
  * @x_align: an #StAlign
  * @y_align: an #StAlign
- * @x_align_out: (out) (allow-none): @x_align as a #gdouble
- * @y_align_out: (out) (allow-none): @y_align as a #gdouble
+ * @x_align_out: (out) (optional): @x_align as a #gdouble
+ * @y_align_out: (out) (optional): @y_align as a #gdouble
  *
  * Converts @x_align and @y_align to #gdouble values.
  */

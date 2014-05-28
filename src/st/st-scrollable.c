@@ -131,8 +131,8 @@ st_scrollable_set_adjustments (StScrollable *scrollable,
 
 /**
  * st_scroll_bar_get_adjustments:
- * @hadjustment: (transfer none) (out) (allow-none): location to store the horizontal adjustment, or %NULL
- * @vadjustment: (transfer none) (out) (allow-none): location to store the vertical adjustment, or %NULL
+ * @hadjustment: (transfer none) (out) (optional) (nullable): location to store the horizontal adjustment, or %NULL
+ * @vadjustment: (transfer none) (out) (optional) (nullable): location to store the vertical adjustment, or %NULL
  *
  * Gets the adjustment objects that store the offsets of the scrollable widget
  * into its possible scrolling area.

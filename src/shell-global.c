@@ -1583,7 +1583,7 @@ build_ca_proplist_for_event (ca_proplist  *props,
  * @global: the #ShellGlobal
  * @id: an id, used to cancel later (0 if not needed)
  * @name: the sound name
- * @for_event: (allow-none): a #ClutterEvent in response to which the sound is played
+ * @for_event: (nullable): a #ClutterEvent in response to which the sound is played
  *
  * Plays a simple sound picked according to Freedesktop sound theme.
  * Really just a workaround for libcanberra not being introspected.
@@ -1611,7 +1611,7 @@ shell_global_play_theme_sound (ShellGlobal  *global,
  * @id: an id, used to cancel later (0 if not needed)
  * @name: the sound name
  * @description: the localized description of the event that triggered this alert
- * @for_event: (allow-none): a #ClutterEvent in response to which the sound is played
+ * @for_event: (nullable): a #ClutterEvent in response to which the sound is played
  * @application_id: application on behalf of which the sound is played
  * @application_name:
  *
@@ -1645,7 +1645,7 @@ shell_global_play_theme_sound_full (ShellGlobal  *global,
  * @id: an id, used to cancel later (0 if not needed)
  * @file_name: the file name to play
  * @description: the localized description of the event that triggered this alert
- * @for_event: (allow-none): a #ClutterEvent in response to which the sound is played
+ * @for_event: (nullable): a #ClutterEvent in response to which the sound is played
  * @application_id: application on behalf of which the sound is played
  * @application_name:
  *
@@ -1679,7 +1679,7 @@ shell_global_play_sound_file_full  (ShellGlobal  *global,
  * @id: an id, used to cancel later (0 if not needed)
  * @file_name: the file name to play
  * @description: the localized description of the event that triggered this alert
- * @for_event: (allow-none): a #ClutterEvent in response to which the sound is played
+ * @for_event: (nullable): a #ClutterEvent in response to which the sound is played
  *
  * Like shell_global_play_theme_sound(), but with an explicit path
  * instead of a themed sound.
@@ -1840,7 +1840,7 @@ load_variant (GFile      *dir,
  * shell_global_set_runtime_state:
  * @global: a #ShellGlobal
  * @property_name: Name of the property
- * @variant: (allow-none): A #GVariant, or %NULL to unset
+ * @variant: (nullable): A #GVariant, or %NULL to unset
  *
  * Change the value of serialized runtime state.
  */
@@ -1875,7 +1875,7 @@ shell_global_get_runtime_state (ShellGlobal  *global,
  * shell_global_set_persistent_state:
  * @global: a #ShellGlobal
  * @property_name: Name of the property
- * @variant: (allow-none): A #GVariant, or %NULL to unset
+ * @variant: (nullable): A #GVariant, or %NULL to unset
  *
  * Change the value of serialized persistent state.
  */

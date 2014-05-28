@@ -252,7 +252,7 @@ shell_app_system_lookup_heuristic_basename (ShellAppSystem *system,
 /**
  * shell_app_system_lookup_desktop_wmclass:
  * @system: a #ShellAppSystem
- * @wmclass: (allow-none): A WM_CLASS value
+ * @wmclass: (nullable): A WM_CLASS value
  *
  * Find a valid application whose .desktop file, without the extension
  * and properly canonicalized, matches @wmclass.
@@ -303,7 +303,7 @@ shell_app_system_lookup_desktop_wmclass (ShellAppSystem *system,
 /**
  * shell_app_system_lookup_startup_wmclass:
  * @system: a #ShellAppSystem
- * @wmclass: (allow-none): A WM_CLASS value
+ * @wmclass: (nullable): A WM_CLASS value
  *
  * Find a valid application whose .desktop file contains a
  * StartupWMClass entry matching @wmclass.

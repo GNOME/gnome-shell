@@ -64,7 +64,7 @@ shell_menu_tracker_remove_func (gint position,
  * shell_menu_tracker_new:
  * @observable:
  * @model:
- * @action_namespace: (allow-none):
+ * @action_namespace: (nullable):
  * @insert_func:
  * @insert_user_data:
  * @insert_notify:
