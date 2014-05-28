@@ -1044,9 +1044,6 @@ _meta_window_shared_new (MetaDisplay         *display,
   if (window->attached)
     meta_window_recalc_features (window);
 
-  if (window->decorated)
-    meta_window_ensure_frame (window);
-
   if (window->type == META_WINDOW_DESKTOP ||
       window->type == META_WINDOW_DOCK)
     {
@@ -1392,9 +1389,6 @@ meta_window_unmanage (MetaWindow  *window,
     meta_display_remove_autoraise_callback (window->display);
 
   META_WINDOW_GET_CLASS (window)->unmanage (window);
-
-  if (window->frame)
-    meta_window_destroy_frame (window);
 
   meta_prefs_remove_listener (prefs_changed_callback, window);
   meta_screen_queue_check_fullscreen (window->screen);

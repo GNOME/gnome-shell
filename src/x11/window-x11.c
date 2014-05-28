@@ -518,6 +518,9 @@ meta_window_x11_manage (MetaWindow *window)
 
   meta_window_x11_update_net_wm_type (window);
 
+  if (window->decorated)
+    meta_window_ensure_frame (window);
+
   /* Now try applying saved stuff from the session */
   {
     const MetaWindowSessionInfo *info;
@@ -647,6 +650,9 @@ meta_window_x11_unmanage (MetaWindow *window)
   meta_display_ungrab_focus_window_button (window->display, window);
 
   meta_error_trap_pop (window->display);
+
+  if (window->frame)
+    meta_window_destroy_frame (window);
 }
 
 static void
