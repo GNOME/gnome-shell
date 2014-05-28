@@ -403,6 +403,14 @@ StScrollBar StButton#vhandle:active {
     icon-size: 16px;
 }
 
+.no-networks-label {
+    color: #999999;
+}
+
+.no-networks-box {
+    spacing: 12px;
+}
+
 /* Buttons */
 
 .candidate-page-button,
@@ -1495,11 +1503,8 @@ StScrollBar StButton#vhandle:active {
     padding-right: 8pt;
 }
 
-.url-highlighter {
-    link-color: #ccccff;
-}
-
 /* Message Tray */
+
 #message-tray {
     background: #2e3436 url(message-tray-background.png);
     background-repeat: repeat;
@@ -1522,13 +1527,12 @@ StScrollBar StButton#vhandle:active {
     color: #eeeeee;
 }
 
-.no-messages-label,
-.no-networks-label {
-    color: #999999;
+.url-highlighter {
+    link-color: #ccccff;
 }
 
-.no-networks-box {
-    spacing: 12px;
+.no-messages-label {
+    color: #999999;
 }
 
 .notification {
