@@ -1263,16 +1263,12 @@ const NotificationDrawerList = new Lang.Class({
         this._list.add_child(wrapper);
 
         // XXX -- figure out a better policy for this
-        if (notification.actor.get_parent() == null) {
-            wrapper.add_child(notification.actor);
-        } else {
-            let id = notification.actor.connect('parent-set', Lang.bind(this, function() {
-                if (notification.actor.get_parent() == null) {
-                    notification.actor.disconnect(id);
-                    wrapper.add_child(notification.actor);
-                }
-            }));
-        }
+        let id = notification.actor.connect('parent-set', Lang.bind(this, function() {
+            if (notification.actor.get_parent() == null) {
+                notification.actor.disconnect(id);
+                wrapper.add_child(notification.actor);
+            }
+        }));
 
         notification.connect('destroy', function() {
             wrapper.destroy();
@@ -1734,8 +1730,8 @@ const MessageTray = new Lang.Class({
             });
         }
 
-        this._notificationDrawer.pushNotification(notification);
         this._updateState();
+        this._notificationDrawer.pushNotification(notification);
     },
 
     _hotCornersChanged: function() {
