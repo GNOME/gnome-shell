@@ -1244,6 +1244,42 @@ const SystemTraySection = new Lang.Class({
     },
 });
 
+const NotificationDrawerList = new Lang.Class({
+    Name: 'NotificationDrawerList',
+
+    _init: function() {
+        this.actor = new St.ScrollView({ style_class: 'notification-drawer-list-scrollview',
+                                         hscrollbar_policy: Gtk.PolicyType.NEVER });
+        this._list = new St.BoxLayout({ style_class: 'notification-drawer-list',
+                                        vertical: true });
+        this.actor.add_actor(this._list);
+
+        this._notifications = [];
+    },
+
+    pushNotification: function(notification) {
+        this._notifications.push(notification);
+        let wrapper = new St.Widget({ style_class: 'notification-drawer-notification' });
+        this._list.add_child(wrapper);
+
+        // XXX -- figure out a better policy for this
+        if (notification.actor.get_parent() == null) {
+            wrapper.add_child(notification.actor);
+        } else {
+            let id = notification.actor.connect('parent-set', Lang.bind(this, function() {
+                if (notification.actor.get_parent() == null) {
+                    notification.actor.disconnect(id);
+                    wrapper.add_child(notification.actor);
+                }
+            }));
+        }
+
+        notification.connect('destroy', function() {
+            wrapper.destroy();
+        });
+    },
+});
+
 const NotificationDrawer = new Lang.Class({
     Name: 'NotificationDrawer',
 
@@ -1252,6 +1288,9 @@ const NotificationDrawer = new Lang.Class({
 
         this.actor = new St.BoxLayout({ style_class: 'notification-drawer',
                                         vertical: true });
+
+        this._notificationList = new NotificationDrawerList();
+        this.actor.add_child(this._notificationList.actor);
 
         this._footer = new St.BoxLayout({ style_class: 'notification-drawer-footer' });
         this.actor.add_child(this._footer);
@@ -1300,6 +1339,17 @@ const NotificationDrawer = new Lang.Class({
 
         Main.overview.hide();
         this._tray.close();
+    },
+
+    pushNotification: function(notification) {
+        this._notificationList.pushNotification(notification);
+    },
+
+    setVisible: function(visible) {
+        if (visible)
+            this.actor.y = -this.actor.height;
+        else
+            this.actor.y = 0;
     },
 });
 
@@ -1683,6 +1733,8 @@ const MessageTray = new Lang.Class({
                 return (notification2.urgency - notification1.urgency);
             });
         }
+
+        this._notificationDrawer.pushNotification(notification);
         this._updateState();
     },
 
@@ -1855,10 +1907,7 @@ const MessageTray = new Lang.Class({
             }
         }
 
-        if (this._traySummoned)
-            this._notificationDrawer.actor.y = -this._notificationDrawer.actor.height;
-        else
-            this._notificationDrawer.actor.y = 0;
+        this._notificationDrawer.setVisible(this._traySummoned);
 
         this._updatingState = false;
 
