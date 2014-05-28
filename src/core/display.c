@@ -2526,7 +2526,7 @@ mru_cmp (gconstpointer a,
  * @display: a #MetaDisplay
  * @type: type of tab list
  * @screen: a #MetaScreen
- * @workspace: (allow-none): origin workspace
+ * @workspace: (nullable): origin workspace
  *
  * Determine the list of windows that should be displayed for Alt-TAB
  * functionality.  The windows are returned in most recently used order.
@@ -2595,7 +2595,7 @@ meta_display_get_tab_list (MetaDisplay   *display,
  * @display: a #MetaDisplay
  * @type: type of tab list
  * @workspace: origin workspace
- * @window: (allow-none): starting window
+ * @window: (nullable): starting window
  * @backward: If %TRUE, look for the previous window.
  *
  * Determine the next window that should be displayed for Alt-TAB

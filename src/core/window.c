@@ -4789,7 +4789,7 @@ meta_window_get_icon_geometry (MetaWindow    *window,
 /**
  * meta_window_set_icon_geometry:
  * @window: a #MetaWindow
- * @rect: (allow-none): rectangle with the desired geometry or %NULL.
+ * @rect: (nullable): rectangle with the desired geometry or %NULL.
  *
  * Sets or unsets the location of the icon corresponding to the window. If
  * set, the location should correspond to a dock, task bar or other user
@@ -7280,7 +7280,7 @@ meta_window_get_frame_type (MetaWindow *window)
  *
  * Gets a region representing the outer bounds of the window's frame.
  *
- * Return value: (transfer none) (allow-none): a #cairo_region_t
+ * Return value: (transfer none) (nullable): a #cairo_region_t
  *  holding the outer bounds of the window, or %NULL if the window
  *  doesn't have a frame.
  */
@@ -7325,7 +7325,7 @@ meta_window_is_attached_dialog (MetaWindow *window)
  *  - there is no 3rd window stacked between both tiled windows that's
  *    partially visible in the common edge.
  *
- * Return value: (transfer none) (allow-none): the matching tiled window or
+ * Return value: (transfer none) (nullable): the matching tiled window or
  * %NULL if it doesn't exist.
  */
 MetaWindow *

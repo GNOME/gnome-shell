@@ -3187,7 +3187,7 @@ handle_switch_vt (MetaDisplay     *display,
 /**
  * meta_keybindings_set_custom_handler:
  * @name: The name of the keybinding to set
- * @handler: (allow-none): The new handler function
+ * @handler: (nullable): The new handler function
  * @user_data: User data to pass to the callback
  * @free_data: Will be called when this handler is overridden.
  *

@@ -210,9 +210,9 @@ make_watch (MetaIdleMonitor           *monitor,
  * meta_idle_monitor_add_idle_watch:
  * @monitor: A #MetaIdleMonitor
  * @interval_msec: The idletime interval, in milliseconds
- * @callback: (allow-none): The callback to call when the user has
+ * @callback: (nullable): The callback to call when the user has
  *     accumulated @interval_msec milliseconds of idle time.
- * @user_data: (allow-none): The user data to pass to the callback
+ * @user_data: (nullable): The user data to pass to the callback
  * @notify: A #GDestroyNotify
  *
  * Returns: a watch id
@@ -252,9 +252,9 @@ meta_idle_monitor_add_idle_watch (MetaIdleMonitor	       *monitor,
 /**
  * meta_idle_monitor_add_user_active_watch:
  * @monitor: A #MetaIdleMonitor
- * @callback: (allow-none): The callback to call when the user is
+ * @callback: (nullable): The callback to call when the user is
  *     active again.
- * @user_data: (allow-none): The user data to pass to the callback
+ * @user_data: (nullable): The user data to pass to the callback
  * @notify: A #GDestroyNotify
  *
  * Returns: a watch id

@@ -180,7 +180,7 @@ typedef struct
 
 /**
  * MetaStringPreference:
- * @handler: (allow-none): A handler. Many of the string preferences
+ * @handler: (nullable): A handler. Many of the string preferences
  * aren't stored as strings and need parsing; others of them have
  * default values which can't be solved in the general case.  If you
  * include a function pointer here, it will be called instead of writing
@@ -192,7 +192,7 @@ typedef struct
  * in particular the @result (out) parameter as returned by
  * g_settings_get_mapped() will be ignored in all cases.
  * This may be %NULL.  If it is, see "target", below.
- * @target: (allow-none): Where to write the incoming string.
+ * @target: (nullable): Where to write the incoming string.
  * This must be %NULL if the handler is non-%NULL.
  * If the incoming string is %NULL, no change will be made.
  */

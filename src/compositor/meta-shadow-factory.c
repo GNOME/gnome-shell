@@ -189,7 +189,7 @@ meta_shadow_unref (MetaShadow *shadow)
  * @window_y: y position of the region to paint a shadow for
  * @window_width: actual width of the region to paint a shadow for
  * @window_height: actual height of the region to paint a shadow for
- * @clip: (allow-none): if non-%NULL specifies the visible portion
+ * @clip: (nullable): if non-%NULL specifies the visible portion
  *   of the shadow.
  * @clip_strictly: if %TRUE, drawing will be clipped strictly
  *   to @clip, otherwise, it will be only used to optimize

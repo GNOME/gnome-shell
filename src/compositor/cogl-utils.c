@@ -68,7 +68,7 @@ meta_create_color_texture_4ub (guint8           red,
 
 /**
  * meta_create_texture_pipeline:
- * @src_texture: (allow-none): texture to use initially for the layer
+ * @src_texture: (nullable): texture to use initially for the layer
  *
  * Creates a pipeline with a single layer. Using a common template
  * makes it easier for Cogl to share a shader for different uses in

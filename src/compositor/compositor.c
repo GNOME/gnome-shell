@@ -595,7 +595,7 @@ meta_compositor_unmanage (MetaCompositor *compositor)
 /**
  * meta_shape_cow_for_window:
  * @compositor: A #MetaCompositor
- * @window: (allow-none): A #MetaWindow to shape the COW for
+ * @window: (nullable): A #MetaWindow to shape the COW for
  *
  * Sets an bounding shape on the COW so that the given window
  * is exposed. If @window is %NULL it clears the shape again.
