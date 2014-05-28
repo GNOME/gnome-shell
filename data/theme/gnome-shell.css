@@ -1491,19 +1491,37 @@ StScrollBar StButton#vhandle:active {
 
 /* Message Tray */
 
-.system-tray-icons {
-    border-radius: 8px;
+.notification-drawer {
+    background: rgba(0,0,0,0.8);
+    padding: 1em;
+    border: 2px solid #4c4c4c;
+    border-bottom: 0px;
+    border-radius: 6px 6px 0 0;
+}
+
+.system-tray-icons,
+.notification-drawer-footer-actions {
+    spacing: 0.5em;
+}
+
+.system-tray-icon-button,
+.notification-drawer-button {
+    border-radius: 4px;
     border: 1px solid #4c4c4c;
+    padding: 4px;
 }
 
 .system-tray-icon-button {
-    padding: 8px;
-
     width: 22px;
     height: 22px;
 }
 
-.system-tray-icon-button:hover {
+.notification-drawer-button StIcon {
+    icon-size: 22px;
+}
+
+.system-tray-icon-button:hover,
+.notification-drawer-button:hover {
     background: 1px solid #4c4c4c;
 }
 
@@ -1511,7 +1529,7 @@ StScrollBar StButton#vhandle:active {
     link-color: #ccccff;
 }
 
-.notification, #notification-container {
+.notification, #notification-container, .notification-drawer {
     font-size: 11pt;
     width: 34em;
 }

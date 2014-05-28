@@ -1066,164 +1066,6 @@ const Source = new Lang.Class({
 });
 Signals.addSignalMethods(Source.prototype);
 
-const MessageTrayMenu = new Lang.Class({
-    Name: 'MessageTrayMenu',
-    Extends: PopupMenu.PopupMenu,
-
-    _init: function(button, tray) {
-        this.parent(button, 0, St.Side.BOTTOM);
-
-        this._tray = tray;
-
-        this._presence = new GnomeSession.Presence(Lang.bind(this, function(proxy, error) {
-            if (error) {
-                logError(error, 'Error while reading gnome-session presence');
-                return;
-            }
-
-            this._onStatusChanged(proxy.status);
-        }));
-        this._presence.connectSignal('StatusChanged', Lang.bind(this, function(proxy, senderName, [status]) {
-            this._onStatusChanged(status);
-        }));
-
-        this._accountManager = Tp.AccountManager.dup();
-        this._accountManager.connect('most-available-presence-changed',
-                                     Lang.bind(this, this._onIMPresenceChanged));
-        this._accountManager.prepare_async(null, Lang.bind(this, this._onIMPresenceChanged));
-
-        this.actor.hide();
-        Main.layoutManager.addChrome(this.actor);
-
-        this._busyItem = new PopupMenu.PopupSwitchMenuItem(_("Notifications"));
-        this._busyItem.connect('toggled', Lang.bind(this, this._updatePresence));
-        this.addMenuItem(this._busyItem);
-
-        let separator = new PopupMenu.PopupSeparatorMenuItem();
-        this.addMenuItem(separator);
-
-        this._clearItem = this.addAction(_("Clear Messages"), function() {
-            let toDestroy = tray.getSources().filter(function(source) {
-                return source.isClearable;
-            });
-
-            toDestroy.forEach(function(source) {
-                source.destroy();
-            });
-
-            tray.close();
-        });
-
-        tray.connect('source-added', Lang.bind(this, this._updateClearSensitivity));
-        tray.connect('source-removed', Lang.bind(this, this._updateClearSensitivity));
-        this._updateClearSensitivity();
-
-        let separator = new PopupMenu.PopupSeparatorMenuItem();
-        this.addMenuItem(separator);
-
-        let settingsItem = this.addSettingsAction(_("Notification Settings"), 'gnome-notifications-panel.desktop');
-        settingsItem.connect('activate', function() { tray.close(); });
-    },
-
-    _onStatusChanged: function(status) {
-        this._sessionStatus = status;
-        this._busyItem.setToggleState(status != GnomeSession.PresenceStatus.BUSY);
-    },
-
-    _onIMPresenceChanged: function(am, type) {
-        if (type == Tp.ConnectionPresenceType.AVAILABLE &&
-            this._sessionStatus == GnomeSession.PresenceStatus.BUSY)
-            this._presence.SetStatusRemote(GnomeSession.PresenceStatus.AVAILABLE);
-    },
-
-    _updateClearSensitivity: function() {
-        this._clearItem.setSensitive(this._tray.clearableCount > 0);
-    },
-
-    _updatePresence: function(item, state) {
-        let status = state ? GnomeSession.PresenceStatus.AVAILABLE
-                           : GnomeSession.PresenceStatus.BUSY;
-        this._presence.SetStatusRemote(status);
-
-        let [type, s ,msg] = this._accountManager.get_most_available_presence();
-        let newType = 0;
-        let newStatus;
-        if (status == GnomeSession.PresenceStatus.BUSY &&
-            type == Tp.ConnectionPresenceType.AVAILABLE) {
-            newType = Tp.ConnectionPresenceType.BUSY;
-            newStatus = 'busy';
-        } else if (status == GnomeSession.PresenceStatus.AVAILABLE &&
-                 type == Tp.ConnectionPresenceType.BUSY) {
-            newType = Tp.ConnectionPresenceType.AVAILABLE;
-            newStatus = 'available';
-        }
-
-        if (newType > 0)
-            this._accountManager.set_all_requested_presences(newType,
-                                                             newStatus, msg);
-    }
-});
-
-const MessageTrayMenuButton = new Lang.Class({
-    Name: 'MessageTrayMenuButton',
-
-    _init: function(tray) {
-        this._icon = new St.Icon();
-        this.actor = new St.Button({ style_class: 'message-tray-menu-button',
-                                     reactive: true,
-                                     track_hover: true,
-                                     can_focus: true,
-                                     button_mask: St.ButtonMask.ONE | St.ButtonMask.TWO | St.ButtonMask.THREE,
-                                     accessible_name: _("Tray Menu"),
-                                     accessible_role: Atk.Role.MENU,
-                                     child: this._icon });
-
-        // Standard hack for ClutterBinLayout.
-        this.actor.set_x_expand(true);
-        this.actor.set_y_expand(true);
-        this.actor.set_x_align(Clutter.ActorAlign.START);
-
-        this._menu = new MessageTrayMenu(this.actor, tray);
-        this._manager = new PopupMenu.PopupMenuManager({ actor: this.actor });
-        this._manager.addMenu(this._menu);
-        this._menu.connect('open-state-changed', Lang.bind(this, function(menu, open) {
-            if (open)
-                this.actor.add_style_pseudo_class('active');
-            else
-                this.actor.remove_style_pseudo_class('active');
-        }));
-
-        this.actor.connect('clicked', Lang.bind(this, function() {
-            this._menu.toggle();
-        }));
-
-        this._accountManager = Tp.AccountManager.dup();
-        this._accountManager.connect('most-available-presence-changed',
-                                     Lang.bind(this, this._sync));
-        this._accountManager.prepare_async(null, Lang.bind(this, this._sync));
-    },
-
-    _iconForPresence: function(presence) {
-        if (presence == Tp.ConnectionPresenceType.AVAILABLE)
-            return 'user-available-symbolic';
-        else if (presence == Tp.ConnectionPresenceType.BUSY)
-            return 'user-busy-symbolic';
-        else if (presence == Tp.ConnectionPresenceType.HIDDEN)
-            return 'user-hidden-symbolic';
-        else if (presence == Tp.ConnectionPresenceType.AWAY)
-            return 'user-away-symbolic';
-        else if (presence == Tp.ConnectionPresenceType.EXTENDED_AWAY)
-            return 'user-idle-symbolic';
-        else
-            return 'emblem-system-symbolic';
-    },
-
-    _sync: function() {
-        let [presence, status, message] = this._accountManager.get_most_available_presence();
-        this._icon.icon_name = this._iconForPresence(presence);
-    },
-});
-
 const MessageTrayIndicator = new Lang.Class({
     Name: 'MessageTrayIndicator',
 
@@ -1402,6 +1244,65 @@ const SystemTraySection = new Lang.Class({
     },
 });
 
+const NotificationDrawer = new Lang.Class({
+    Name: 'NotificationDrawer',
+
+    _init: function(tray) {
+        this._tray = tray;
+
+        this.actor = new St.BoxLayout({ style_class: 'notification-drawer',
+                                        vertical: true });
+
+        this._footer = new St.BoxLayout({ style_class: 'notification-drawer-footer' });
+        this.actor.add_child(this._footer);
+
+        this._footerActions = new St.BoxLayout({ style_class: 'notification-drawer-footer-actions' });
+
+        this._clearButton = new St.Button({ reactive: true,
+                                            can_focus: true,
+                                            track_hover: true,
+                                            accessible_name: _("Clear all notifications"),
+                                            style_class: 'notification-drawer-button' });
+        this._clearButton.child = new St.Icon({ icon_name: 'edit-clear-all-symbolic' });
+        this._clearButton.connect('clicked', Lang.bind(this, this._clearAllNotifications));
+        this._footerActions.add_child(this._clearButton);
+
+        this._settingsButton = new St.Button({ reactive: true,
+                                               can_focus: true,
+                                               track_hover: true,
+                                               button_mask: St.ButtonMask.ONE | St.ButtonMask.TWO | St.ButtonMask.THREE,
+                                               accessible_name: _("Settings"),
+                                               accessible_role: Atk.Role.MENU,
+                                               style_class: 'notification-drawer-button' });
+        this._settingsButton.child = new St.Icon({ icon_name: 'emblem-system-symbolic' });
+        this._settingsButton.connect('clicked', Lang.bind(this, this._launchSettings));
+        this._footerActions.add_child(this._settingsButton);
+
+        this._footer.add_child(this._footerActions);
+
+        this._systemTray = new SystemTraySection(this._tray);
+        this._footer.add_child(this._systemTray.actor);
+    },
+
+    _clearAllNotifications: function() {
+        let toDestroy = this._tray.getSources().filter(function(source) {
+            return source.isClearable;
+        });
+
+        toDestroy.forEach(function(source) {
+            source.destroy();
+        });
+    },
+
+    _launchSettings: function() {
+        let app = Shell.AppSystem.get_default().lookup_app('gnome-notifications-panel.desktop');
+        app.activate();
+
+        Main.overview.hide();
+        this._tray.close();
+    },
+});
+
 const MessageTray = new Lang.Class({
     Name: 'MessageTray',
 
@@ -1449,11 +1350,6 @@ const MessageTray = new Lang.Class({
         this.idleMonitor = Meta.IdleMonitor.get_core();
 
         /*
-        this._systemTray = new SystemTraySection(this);
-        this.actor.add_child(this._systemTray.actor);
-        */
-
-        /*
         Main.layoutManager.connect('keyboard-visible-changed', Lang.bind(this, this._onKeyboardVisibleChanged));
         */
 
@@ -1481,6 +1377,12 @@ const MessageTray = new Lang.Class({
         Main.layoutManager.trayBox.add_actor(this._notificationRevealer.actor);
         Main.layoutManager.trackChrome(this._notificationWidget);
         Main.layoutManager.trackChrome(this._closeButton);
+
+        this._notificationDrawer = new NotificationDrawer(this);
+        this._notificationDrawer.actor.x_align = Clutter.ActorAlign.CENTER;
+        this._notificationDrawer.actor.x_expand = true;
+        Main.layoutManager.trayBox.add_actor(this._notificationDrawer.actor);
+        Main.layoutManager.trackChrome(this._notificationDrawer.actor);
 
         global.screen.connect('in-fullscreen-changed', Lang.bind(this, this._updateState));
         Main.layoutManager.connect('hot-corners-changed', Lang.bind(this, this._hotCornersChanged));
@@ -1952,6 +1854,11 @@ const MessageTray = new Lang.Class({
                 this._ensureNotificationFocused();
             }
         }
+
+        if (this._traySummoned)
+            this._notificationDrawer.actor.y = -this._notificationDrawer.actor.height;
+        else
+            this._notificationDrawer.actor.y = 0;
 
         this._updatingState = false;
 
