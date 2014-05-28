@@ -1497,28 +1497,8 @@ StScrollBar StButton#vhandle:active {
     height: 72px;
 }
 
-.message-tray-summary {
-    height: 72px;
-}
-
-.message-tray-menu-button StIcon {
-    padding: 0 20px;
-    color: #aaaaaa;
-    icon-size: 24px;
-}
-
-.message-tray-menu-button:hover StIcon,
-.message-tray-menu-button:active StIcon,
-.message-tray-menu-button:focus StIcon {
-    color: #eeeeee;
-}
-
 .url-highlighter {
     link-color: #ccccff;
-}
-
-.no-messages-label {
-    color: #999999;
 }
 
 .notification, #notification-container {
@@ -1584,40 +1564,6 @@ StScrollBar StButton#vhandle:active {
 
 .notification-scrollview:rtl > StScrollBar {
     padding-right: 6px;
-}
-
-.summary-boxpointer {
-    -arrow-border-radius: 15px;
-    -arrow-background-color: rgba(0,0,0,0.9);
-    -arrow-base: 36px;
-    -arrow-rise: 18px;
-    color: white;
-    -boxpointer-gap: 4px;
-}
-
-.summary-boxpointer .notification {
-    border-radius: 9px;
-    background: rgba(0,0,0,0) !important;
-    padding-bottom: 12px;
-}
-
-.summary-boxpointer #summary-right-click-menu {
-    padding-top: 12px;
-    padding-bottom: 12px;
-}
-
-.summary-notification-stack-scrollview {
-    max-height: 18em;
-    padding-top: 8px;
-    padding-bottom: 8px;
-}
-
-.summary-notification-stack-scrollview:ltr {
-    padding-right: 8px;
-}
-
-.summary-notification-stack-scrollview:rtl {
-    padding-left: 8px;
 }
 
 .notification-scrollview {
