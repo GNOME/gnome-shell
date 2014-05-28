@@ -1,3 +1,25 @@
+Clutter 1.19.2                                                       2014-05-28
+===============================================================================
+
+  • List of changes since Clutter 1.18
+
+    - Improve event handling on evdev input backend
+    Clutter now allows writing applications and compositors that can respond
+    to eventts from touch devices, as well as reporting correct smooth
+    scrolling deltas.
+
+  • List of bugs fixed since Clutter 1.18
+
+    #723560 - wayland: Generate better smooth scroll deltas
+    #730577 - Do not compress touch events so eagerly
+    #728968 - evdev: Implement touch support
+    #728967 - evdev: Add libinput-specific helpers
+    #730215 - Add a way to pause the ClutterMasterClock
+
+Many thanks to:
+
+  Carlos Garnacho, Jasper St. Pierre, Jonas Ådahl.
+
 Clutter 1.18.2                                                       2014-04-14
 ===============================================================================
 
