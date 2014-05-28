@@ -611,12 +611,14 @@ const Notification = new Lang.Class({
 
         this._actionAreaBin = new St.Bin({ style_class: 'notification-action-area',
                                            x_expand: true, y_expand: true });
-        this._vbox.add_child(this._actionAreaBin);
+        this._actionAreaRevealer = new Revealer(this._actionAreaBin);
+        this._vbox.add_child(this._actionAreaRevealer.actor);
 
         this._buttonBox = new St.BoxLayout({ style_class: 'notification-button-box',
                                              x_expand: true, y_expand: true });
         global.focus_manager.add_group(this._buttonBox);
-        this._vbox.add_child(this._buttonBox);
+        this._buttonBoxRevealer = new Revealer(this._buttonBox);
+        this._vbox.add_child(this._buttonBoxRevealer.actor);
 
         // If called with only one argument we assume the caller
         // will call .update() later on. This is the case of
@@ -629,8 +631,20 @@ const Notification = new Lang.Class({
     },
 
     _sync: function() {
-        this._actionAreaBin.visible = this.expanded && (this._actionArea != null);
-        this._buttonBox.visible = this.expanded && (this._buttonBox.get_n_children() > 0);
+        if (this.expanded) {
+            if (this._actionArea != null)
+                this._actionAreaRevealer.show(true);
+            else
+                this._actionAreaRevealer.hide(false);
+
+            if (this._buttonBox.get_n_children() > 0)
+                this._buttonBoxRevealer.show(true);
+            else
+                this._buttonBoxRevealer.hide(false);
+        } else {
+            this._actionAreaRevealer.hide(true);
+            this._buttonBoxRevealer.hide(true);
+        }
 
         this._iconBin.visible = (this._icon != null && this._icon.visible);
         this._secondaryIconBin.visible = (this._secondaryIcon != null);
