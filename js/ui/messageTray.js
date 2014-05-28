@@ -2283,7 +2283,6 @@ const MessageTray = new Lang.Class({
                 this._notificationLeftTimeoutId = 0;
                 this._notificationLeftMouseX = -1;
                 this._notificationLeftMouseY = -1;
-                return;
             }
 
             if (this._showNotificationMouseX >= 0) {
@@ -2301,6 +2300,7 @@ const MessageTray = new Lang.Class({
                     return;
                 }
             }
+
             this._pointerInNotification = true;
             this._updateState();
         } else {
