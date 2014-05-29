@@ -101,6 +101,12 @@ meta_key_binding_get_modifiers (MetaKeyBinding *binding)
   return binding->modifiers;
 }
 
+gboolean
+meta_key_binding_is_reversed (MetaKeyBinding *binding)
+{
+  return (binding->handler->flags & META_KEY_BINDING_IS_REVERSED) != 0;
+}
+
 guint
 meta_key_binding_get_mask (MetaKeyBinding *binding)
 {
@@ -2970,7 +2976,7 @@ handle_switch (MetaDisplay     *display,
                MetaKeyBinding  *binding,
                gpointer         dummy)
 {
-  gint backwards = (binding->handler->flags & META_KEY_BINDING_IS_REVERSED) != 0;
+  gboolean backwards = meta_key_binding_is_reversed (binding);
   do_choose_window (display, screen, event_window, event, binding, backwards);
 }
 
@@ -2982,7 +2988,7 @@ handle_cycle (MetaDisplay     *display,
               MetaKeyBinding  *binding,
               gpointer         dummy)
 {
-  gint backwards = (binding->handler->flags & META_KEY_BINDING_IS_REVERSED) != 0;
+  gboolean backwards = meta_key_binding_is_reversed (binding);
   do_choose_window (display, screen, event_window, event, binding, backwards);
 }
 
