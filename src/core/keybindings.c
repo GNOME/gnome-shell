@@ -3475,7 +3475,8 @@ init_builtin_key_bindings (MetaDisplay *display)
                           META_KEYBINDING_ACTION_SET_SPEW_MARK,
                           handle_set_spew_mark, 0);
 
-  if (meta_is_wayland_compositor ())
+  MetaBackend *backend = meta_get_backend ();
+  if (META_IS_BACKEND_NATIVE (backend))
     {
       add_builtin_keybinding (display,
                               "switch-to-session-1",
