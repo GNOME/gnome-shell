@@ -57,7 +57,10 @@
 
 #include "wayland/meta-wayland.h"
 #include "backends/x11/meta-backend-x11.h"
+
+#ifdef HAVE_NATIVE_BACKEND
 #include "backends/native/meta-backend-native.h"
+#endif
 
 #define SCHEMA_COMMON_KEYBINDINGS "org.gnome.desktop.wm.keybindings"
 #define SCHEMA_MUTTER_KEYBINDINGS "org.gnome.mutter.keybindings"
@@ -3166,6 +3169,7 @@ handle_set_spew_mark (MetaDisplay     *display,
   meta_verbose ("-- MARK MARK MARK MARK --\n");
 }
 
+#ifdef HAVE_NATIVE_BACKEND
 static void
 handle_switch_vt (MetaDisplay     *display,
                   MetaScreen      *screen,
@@ -3183,6 +3187,7 @@ handle_switch_vt (MetaDisplay     *display,
       g_error_free (error);
     }
 }
+#endif /* HAVE_NATIVE_BACKEND */
 
 /**
  * meta_keybindings_set_custom_handler:
@@ -3475,6 +3480,7 @@ init_builtin_key_bindings (MetaDisplay *display)
                           META_KEYBINDING_ACTION_SET_SPEW_MARK,
                           handle_set_spew_mark, 0);
 
+#ifdef HAVE_NATIVE_BACKEND
   MetaBackend *backend = meta_get_backend ();
   if (META_IS_BACKEND_NATIVE (backend))
     {
@@ -3527,6 +3533,7 @@ init_builtin_key_bindings (MetaDisplay *display)
                               META_KEYBINDING_ACTION_NONE,
                               handle_switch_vt, 7);
     }
+#endif /* HAVE_NATIVE_BACKEND */
 
 #undef REVERSES_AND_REVERSED
 

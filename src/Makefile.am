@@ -11,6 +11,7 @@ INCLUDES=								\
 	-DCOGL_ENABLE_EXPERIMENTAL_API					\
 	-DCOGL_ENABLE_EXPERIMENTAL_2_0_API                              \
 	$(MUTTER_CFLAGS)						\
+	$(MUTTER_NATIVE_BACKEND_CFLAGS)					\
 	-I$(srcdir)							\
 	-I$(srcdir)/backends						\
 	-I$(srcdir)/core						\
@@ -71,18 +72,6 @@ libmutter_la_SOURCES =				\
 	backends/meta-monitor-manager-dummy.h	\
 	backends/edid-parse.c			\
 	backends/edid.h				\
-	backends/native/meta-backend-native.c		\
-	backends/native/meta-backend-native.h		\
-	backends/native/meta-cursor-renderer-native.c	\
-	backends/native/meta-cursor-renderer-native.h	\
-	backends/native/meta-idle-monitor-native.c	\
-	backends/native/meta-idle-monitor-native.h	\
-	backends/native/meta-monitor-manager-kms.c	\
-	backends/native/meta-monitor-manager-kms.h	\
-	backends/native/meta-launcher.c			\
-	backends/native/meta-launcher.h			\
-	backends/native/dbus-utils.c			\
-	backends/native/dbus-utils.h			\
 	backends/x11/meta-backend-x11.c			\
 	backends/x11/meta-backend-x11.h			\
 	backends/x11/meta-cursor-renderer-x11.c		\
@@ -243,11 +232,27 @@ libmutter_la_SOURCES =				\
 	wayland/window-wayland.c		\
 	wayland/window-wayland.h
 
+if HAVE_NATIVE_BACKEND
+libmutter_la_SOURCES +=					\
+	backends/native/meta-backend-native.c		\
+	backends/native/meta-backend-native.h		\
+	backends/native/meta-cursor-renderer-native.c	\
+	backends/native/meta-cursor-renderer-native.h	\
+	backends/native/meta-idle-monitor-native.c	\
+	backends/native/meta-idle-monitor-native.h	\
+	backends/native/meta-monitor-manager-kms.c	\
+	backends/native/meta-monitor-manager-kms.h	\
+	backends/native/meta-launcher.c			\
+	backends/native/meta-launcher.h			\
+	backends/native/dbus-utils.c			\
+	backends/native/dbus-utils.h
+endif
+
 nodist_libmutter_la_SOURCES =			\
 	$(mutter_built_sources)
 
 libmutter_la_LDFLAGS = -no-undefined
-libmutter_la_LIBADD  = $(MUTTER_LIBS)
+libmutter_la_LIBADD  = $(MUTTER_LIBS) $(MUTTER_NATIVE_BACKEND_LIBS)
 
 # Headers installed for plugins; introspected information will
 # be extracted into Mutter-<version>.gir

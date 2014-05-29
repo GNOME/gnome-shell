@@ -199,8 +199,14 @@ AS_IF([test "x$WAYLAND_SCANNER" = "xno"],
 AC_SUBST([WAYLAND_SCANNER])
 AC_SUBST(XWAYLAND_PATH)
 
-MUTTER_PC_MODULES="$MUTTER_PC_MODULES clutter-wayland-1.0 clutter-wayland-compositor-1.0 clutter-egl-1.0 wayland-server >= 1.4.93 libdrm libsystemd"
+MUTTER_PC_MODULES="$MUTTER_PC_MODULES clutter-wayland-1.0 clutter-wayland-compositor-1.0 clutter-egl-1.0 wayland-server >= 1.4.93"
 PKG_CHECK_MODULES(MUTTER, $MUTTER_PC_MODULES)
+
+PKG_CHECK_MODULES(MUTTER_NATIVE_BACKEND, [libdrm libsystemd], [have_native_backend=yes], [have_native_backend=no])
+if test $have_native_backend = yes; then
+   AC_DEFINE([HAVE_NATIVE_BACKEND],[1],[Define if you want to enable the native (KMS) backend based on systemd])
+fi
+AM_CONDITIONAL([HAVE_NATIVE_BACKEND],[test $have_native_backend = yes])
 
 PKG_CHECK_EXISTS([xi >= 1.6.99.1],
                  AC_DEFINE([HAVE_XI23],[1],[Define if you have support for XInput 2.3 or greater]))

@@ -181,7 +181,9 @@ static gboolean  opt_replace_wm;
 static gboolean  opt_disable_sm;
 static gboolean  opt_sync;
 static gboolean  opt_wayland;
+#ifdef HAVE_NATIVE_BACKEND
 static gboolean  opt_display_server;
+#endif
 
 static GOptionEntry meta_options[] = {
   {
@@ -225,11 +227,13 @@ static GOptionEntry meta_options[] = {
     N_("Run as a wayland compositor"),
     NULL
   },
+#ifdef HAVE_NATIVE_BACKEND
   {
     "display-server", 0, 0, G_OPTION_ARG_NONE,
     &opt_display_server,
     N_("Run as a full display server, rather than nested")
   },
+#endif
   {NULL}
 };
 
@@ -332,8 +336,10 @@ meta_init (void)
   if (g_getenv ("MUTTER_DEBUG"))
     meta_set_debugging (TRUE);
 
+#if defined(CLUTTER_WINDOWING_EGL) && defined(HAVE_NATIVE_BACKEND)
   if (opt_display_server)
     clutter_set_windowing_backend (CLUTTER_WINDOWING_EGL);
+#endif
 
   meta_set_is_wayland_compositor (opt_wayland);
 

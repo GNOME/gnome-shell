@@ -28,7 +28,10 @@
 #include "display-private.h"
 #include "screen-private.h"
 #include "meta-backend.h"
+
+#ifdef HAVE_NATIVE_BACKEND
 #include "backends/native/meta-cursor-renderer-native.h"
+#endif
 
 #include <string.h>
 
@@ -171,13 +174,15 @@ meta_cursor_image_load_gbm_buffer (struct gbm_device *gbm,
 static struct gbm_device *
 get_gbm_device (void)
 {
+#ifdef HAVE_NATIVE_BACKEND
   MetaBackend *meta_backend = meta_get_backend ();
   MetaCursorRenderer *renderer = meta_backend_get_cursor_renderer (meta_backend);
 
   if (META_IS_CURSOR_RENDERER_NATIVE (renderer))
     return meta_cursor_renderer_native_get_gbm_device (META_CURSOR_RENDERER_NATIVE (renderer));
-  else
-    return NULL;
+#endif
+
+  return NULL;
 }
 
 static void

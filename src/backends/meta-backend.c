@@ -30,7 +30,10 @@
 #include <clutter/clutter.h>
 
 #include "backends/x11/meta-backend-x11.h"
+
+#ifdef HAVE_NATIVE_BACKEND
 #include "backends/native/meta-backend-native.h"
+#endif
 
 static MetaBackend *_backend;
 
@@ -214,7 +217,7 @@ get_backend_type (void)
     return META_TYPE_BACKEND_X11;
 #endif
 
-#if defined(CLUTTER_WINDOWING_EGL)
+#if defined(CLUTTER_WINDOWING_EGL) && defined(HAVE_NATIVE_BACKEND)
   if (clutter_check_windowing_backend (CLUTTER_WINDOWING_EGL))
     return META_TYPE_BACKEND_NATIVE;
 #endif

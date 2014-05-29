@@ -33,9 +33,12 @@
 #include "bell.h"
 #include "workspace-private.h"
 #include "backends/meta-backend.h"
+#include "backends/x11/meta-backend-x11.h"
+
+#ifdef HAVE_NATIVE_BACKEND
 #include "backends/native/meta-backend-native.h"
 #include "backends/native/meta-idle-monitor-native.h"
-#include "backends/x11/meta-backend-x11.h"
+#endif
 
 #include "x11/window-x11.h"
 #include "x11/xprops.h"
@@ -1828,6 +1831,7 @@ meta_display_handle_xevent (MetaDisplay *display,
 static void
 handle_idletime_for_event (const ClutterEvent *event)
 {
+#ifdef HAVE_NATIVE_BACKEND
   /* This is handled by XSync under X11. */
   MetaBackend *backend = meta_get_backend ();
 
@@ -1857,6 +1861,7 @@ handle_idletime_for_event (const ClutterEvent *event)
           meta_idle_monitor_native_reset_idletime (device_monitor);
         }
     }
+#endif /* HAVE_NATIVE_BACKEND */
 }
 
 static gboolean
