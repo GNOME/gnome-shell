@@ -373,7 +373,7 @@ const InputSourceIndicator = new Lang.Class({
             Main.wm.addKeybinding('switch-input-source-backward',
                                   new Gio.Settings({ schema: "org.gnome.desktop.wm.keybindings" }),
                                   Meta.KeyBindingFlags.REVERSES |
-                                  Meta.KeyBindingFlags.REVERSED,
+                                  Meta.KeyBindingFlags.IS_REVERSED,
                                   Shell.KeyBindingMode.ALL,
                                   Lang.bind(this, this._switchInputSource));
         this._settings = new Gio.Settings({ schema: DESKTOP_INPUT_SOURCES_SCHEMA });
