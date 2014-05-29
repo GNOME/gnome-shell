@@ -515,85 +515,84 @@ find_first_fit (MetaWindow *window,
   meta_window_get_frame_rect (window, &rect);
 
 #ifdef WITH_VERBOSE_MODE
-    {
-      char monitor_location_string[RECT_LENGTH];
-      meta_rectangle_to_string (&window->screen->monitor_infos[monitor].rect,
-                                monitor_location_string);
-      meta_topic (META_DEBUG_XINERAMA,
-		  "Natural monitor is %s\n",
-		  monitor_location_string);
-    }
+  {
+    char monitor_location_string[RECT_LENGTH];
+    meta_rectangle_to_string (&window->screen->monitor_infos[monitor].rect,
+                              monitor_location_string);
+    meta_topic (META_DEBUG_XINERAMA,
+                "Natural monitor is %s\n",
+                monitor_location_string);
+  }
 #endif
 
-    meta_window_get_work_area_for_monitor (window, monitor, &work_area);
+  meta_window_get_work_area_for_monitor (window, monitor, &work_area);
 
-    center_tile_rect_in_area (&rect, &work_area);
+  center_tile_rect_in_area (&rect, &work_area);
 
-    if (meta_rectangle_contains_rect (&work_area, &rect) &&
-        !rectangle_overlaps_some_window (&rect, windows))
-      {
-        *new_x = rect.x;
-        *new_y = rect.y;
+  if (meta_rectangle_contains_rect (&work_area, &rect) &&
+      !rectangle_overlaps_some_window (&rect, windows))
+    {
+      *new_x = rect.x;
+      *new_y = rect.y;
 
-        retval = TRUE;
+      retval = TRUE;
 
-        goto out;
-      }
+      goto out;
+    }
 
-    /* try below each window */
-    tmp = below_sorted;
-    while (tmp != NULL)
-      {
-        MetaWindow *w = tmp->data;
-        MetaRectangle frame_rect;
+  /* try below each window */
+  tmp = below_sorted;
+  while (tmp != NULL)
+    {
+      MetaWindow *w = tmp->data;
+      MetaRectangle frame_rect;
 
-        meta_window_get_frame_rect (w, &frame_rect);
+      meta_window_get_frame_rect (w, &frame_rect);
 
-        rect.x = frame_rect.x;
-        rect.y = frame_rect.y + frame_rect.height;
+      rect.x = frame_rect.x;
+      rect.y = frame_rect.y + frame_rect.height;
 
-        if (meta_rectangle_contains_rect (&work_area, &rect) &&
-            !rectangle_overlaps_some_window (&rect, below_sorted))
-          {
-            *new_x = rect.x;
-            *new_y = rect.y;
+      if (meta_rectangle_contains_rect (&work_area, &rect) &&
+          !rectangle_overlaps_some_window (&rect, below_sorted))
+        {
+          *new_x = rect.x;
+          *new_y = rect.y;
 
-            retval = TRUE;
+          retval = TRUE;
 
-            goto out;
-          }
+          goto out;
+        }
 
-        tmp = tmp->next;
-      }
+      tmp = tmp->next;
+    }
 
-    /* try to the right of each window */
-    tmp = right_sorted;
-    while (tmp != NULL)
-      {
-        MetaWindow *w = tmp->data;
-        MetaRectangle frame_rect;
+  /* try to the right of each window */
+  tmp = right_sorted;
+  while (tmp != NULL)
+    {
+      MetaWindow *w = tmp->data;
+      MetaRectangle frame_rect;
 
-        meta_window_get_frame_rect (w, &frame_rect);
+      meta_window_get_frame_rect (w, &frame_rect);
 
-        rect.x = frame_rect.x + frame_rect.width;
-        rect.y = frame_rect.y;
+      rect.x = frame_rect.x + frame_rect.width;
+      rect.y = frame_rect.y;
 
-        if (meta_rectangle_contains_rect (&work_area, &rect) &&
-            !rectangle_overlaps_some_window (&rect, right_sorted))
-          {
-            *new_x = rect.x;
-            *new_y = rect.y;
+      if (meta_rectangle_contains_rect (&work_area, &rect) &&
+          !rectangle_overlaps_some_window (&rect, right_sorted))
+        {
+          *new_x = rect.x;
+          *new_y = rect.y;
 
-            retval = TRUE;
+          retval = TRUE;
 
-            goto out;
-          }
+          goto out;
+        }
 
-        tmp = tmp->next;
-      }
+      tmp = tmp->next;
+    }
 
  out:
-
   g_list_free (below_sorted);
   g_list_free (right_sorted);
   return retval;
