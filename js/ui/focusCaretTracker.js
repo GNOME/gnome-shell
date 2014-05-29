@@ -32,11 +32,9 @@ const FocusCaretTracker = new Lang.Class({
     Name: 'FocusCaretTracker',
 
     _init: function() {
-        Atspi.init();
-        Atspi.set_timeout(250, 250);
-
         this._atspiListener = Atspi.EventListener.new(Lang.bind(this, this._onChanged));
 
+        this._atspiInited = false;
         this._focusListenerRegistered = false;
         this._caretListenerRegistered = false;
     },
@@ -48,12 +46,20 @@ const FocusCaretTracker = new Lang.Class({
             this.emit('caret-moved', event);
     },
 
+    _initAtspi: function() {
+        if (!this._atspiInited) {
+            Atspi.init();
+            Atspi.set_timeout(250, 250);
+            this._atspiInited = true;
+        }
+    },
+
     registerFocusListener: function() {
         if (this._focusListenerRegistered)
             return;
 
-        // Ignore the return value, we get an exception if they fail
-        // And they should never fail
+        this._initAtspi();
+
         this._atspiListener.register(STATECHANGED + ':focused');
         this._atspiListener.register(STATECHANGED + ':selected');
         this._focusListenerRegistered = true;
@@ -62,6 +68,8 @@ const FocusCaretTracker = new Lang.Class({
     registerCaretListener: function() {
         if (this._caretListenerRegistered)
             return;
+
+        this._initAtspi();
 
         this._atspiListener.register(CARETMOVED);
         this._caretListenerRegistered = true;
