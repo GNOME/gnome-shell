@@ -33,6 +33,7 @@
 #include "bell.h"
 #include "workspace-private.h"
 #include "backends/meta-backend.h"
+#include "backends/native/meta-backend-native.h"
 #include "backends/native/meta-idle-monitor-native.h"
 #include "backends/x11/meta-backend-x11.h"
 
@@ -1827,34 +1828,34 @@ meta_display_handle_xevent (MetaDisplay *display,
 static void
 handle_idletime_for_event (const ClutterEvent *event)
 {
-  ClutterInputDevice *device, *source_device;
-  MetaIdleMonitor *core_monitor, *device_monitor;
-  int device_id;
-
   /* This is handled by XSync under X11. */
-#if defined(CLUTTER_WINDOWING_X11)
-  if (clutter_check_windowing_backend (CLUTTER_WINDOWING_X11))
-    return;
-#endif
+  MetaBackend *backend = meta_get_backend ();
 
-  device = clutter_event_get_device (event);
-  if (device == NULL)
-    return;
-
-  device_id = clutter_input_device_get_device_id (device);
-
-  core_monitor = meta_idle_monitor_get_core ();
-  device_monitor = meta_idle_monitor_get_for_device (device_id);
-
-  meta_idle_monitor_native_reset_idletime (core_monitor);
-  meta_idle_monitor_native_reset_idletime (device_monitor);
-
-  source_device = clutter_event_get_source_device (event);
-  if (source_device != device)
+  if (META_IS_BACKEND_NATIVE (backend))
     {
+      ClutterInputDevice *device, *source_device;
+      MetaIdleMonitor *core_monitor, *device_monitor;
+      int device_id;
+
+      device = clutter_event_get_device (event);
+      if (device == NULL)
+        return;
+
       device_id = clutter_input_device_get_device_id (device);
+
+      core_monitor = meta_idle_monitor_get_core ();
       device_monitor = meta_idle_monitor_get_for_device (device_id);
+
+      meta_idle_monitor_native_reset_idletime (core_monitor);
       meta_idle_monitor_native_reset_idletime (device_monitor);
+
+      source_device = clutter_event_get_source_device (event);
+      if (source_device != device)
+        {
+          device_id = clutter_input_device_get_device_id (device);
+          device_monitor = meta_idle_monitor_get_for_device (device_id);
+          meta_idle_monitor_native_reset_idletime (device_monitor);
+        }
     }
 }
 
