@@ -1,5 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
+const Gio = imports.gi.Gio;
 const Lang = imports.lang;
 const Signals = imports.signals;
 
@@ -44,6 +45,17 @@ const IBusManager = new Lang.Class({
         // Need to set this to get 'global-engine-changed' emitions
         this._ibus.set_watch_ibus_signal(true);
         this._ibus.connect('global-engine-changed', Lang.bind(this, this._engineChanged));
+
+        this._spawn();
+    },
+
+    _spawn: function() {
+        try {
+            Gio.Subprocess.new(['ibus-daemon', '--xim', '--panel', 'disable'],
+                               Gio.SubprocessFlags.NONE);
+        } catch(e) {
+            log('Failed to launch ibus-daemon: ' + e.message);
+        }
     },
 
     _clear: function() {
@@ -58,6 +70,8 @@ const IBusManager = new Lang.Class({
         this._currentEngineName = null;
 
         this.emit('ready', false);
+
+        this._spawn();
     },
 
     _onConnected: function() {
