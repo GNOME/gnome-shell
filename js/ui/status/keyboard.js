@@ -147,25 +147,10 @@ const InputSourceSwitcher = new Lang.Class({
     }
 });
 
-const InputSourceIndicator = new Lang.Class({
-    Name: 'InputSourceIndicator',
-    Extends: PanelMenu.Button,
+const InputSourceManager = new Lang.Class({
+    Name: 'InputSourceManager',
 
     _init: function() {
-        this.parent(0.0, _("Keyboard"));
-
-        this._container = new Shell.GenericContainer();
-        this._container.connect('get-preferred-width', Lang.bind(this, this._containerGetPreferredWidth));
-        this._container.connect('get-preferred-height', Lang.bind(this, this._containerGetPreferredHeight));
-        this._container.connect('allocate', Lang.bind(this, this._containerAllocate));
-
-        this._hbox = new St.BoxLayout({ style_class: 'panel-status-menu-box' });
-        this._hbox.add_child(this._container);
-        this._hbox.add_child(PopupMenu.arrowIcon(St.Side.BOTTOM));
-
-        this.actor.add_child(this._hbox);
-        this.actor.add_style_class_name('panel-status-button');
-
         // All valid input sources currently in the gsettings
         // KEY_INPUT_SOURCES list indexed by their index there
         this._inputSources = {};
@@ -197,28 +182,15 @@ const InputSourceIndicator = new Lang.Class({
 
         this._xkbInfo = KeyboardManager.getXkbInfo();
 
-        this._propSeparator = new PopupMenu.PopupSeparatorMenuItem();
-        this.menu.addMenuItem(this._propSeparator);
-        this._propSection = new PopupMenu.PopupMenuSection();
-        this.menu.addMenuItem(this._propSection);
-        this._propSection.actor.hide();
-
         this._ibusReady = false;
         this._ibusManager = IBusManager.getIBusManager();
         this._ibusManager.connect('ready', Lang.bind(this, this._ibusReadyCallback));
         this._ibusManager.connect('properties-registered', Lang.bind(this, this._ibusPropertiesRegistered));
         this._ibusManager.connect('property-updated', Lang.bind(this, this._ibusPropertyUpdated));
-        this._inputSourcesChanged();
 
         this._keyboardManager = KeyboardManager.getKeyboardManager();
 
         global.display.connect('modifiers-accelerator-activated', Lang.bind(this, this._modifiersSwitcher));
-
-        this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-        this._showLayoutItem = this.menu.addAction(_("Show Keyboard Layout"), Lang.bind(this, this._showLayout));
-
-        Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
-        this._sessionUpdated();
 
         this._sourcesPerWindow = false;
         this._focusWindowNotifyId = 0;
@@ -228,12 +200,8 @@ const InputSourceIndicator = new Lang.Class({
         this._sourcesPerWindowChanged();
     },
 
-    _sessionUpdated: function() {
-        // re-using "allowSettings" for the keyboard layout is a bit shady,
-        // but at least for now it is used as "allow popping up windows
-        // from shell menus"; we can always add a separate sessionMode
-        // option if need arises.
-        this._showLayoutItem.actor.visible = Main.sessionMode.allowSettings;
+    reload: function() {
+        this._inputSourcesChanged();
     },
 
     _ibusReadyCallback: function(im, ready) {
@@ -288,7 +256,6 @@ const InputSourceIndicator = new Lang.Class({
     },
 
     _currentInputSourceChanged: function() {
-        let nVisibleSources = Object.keys(this._inputSources).length;
         let newSourceIndex = this._settings.get_uint(KEY_CURRENT_INPUT_SOURCE);
         let newSource = this._inputSources[newSourceIndex];
 
@@ -300,24 +267,10 @@ const InputSourceIndicator = new Lang.Class({
             oldSource.indicatorLabel.hide();
         }
 
-        if (!newSource || (nVisibleSources < 2 && !newSource.properties)) {
-            // This source index might be invalid if we weren't able
-            // to build a menu item for it, so we hide ourselves since
-            // we can't fix it here. *shrug*
-
-            // We also hide if we have only one visible source unless
-            // it's an IBus source with properties.
-            this.menu.close();
-            this.actor.hide();
-            return;
-        }
-
-        this.actor.show();
+        this.emit('current-source-changed');
 
         newSource.menuItem.setOrnament(PopupMenu.Ornament.DOT);
         newSource.indicatorLabel.show();
-
-        this._buildPropSection(newSource.properties);
 
         for (let i = 1; i < this._mruSources.length; ++i)
             if (this._mruSources[i] == newSource) {
@@ -384,19 +337,16 @@ const InputSourceIndicator = new Lang.Class({
                 this._ibusSources[is.id] = is;
         }
 
-        let menuIndex = 0;
         for (let i in this._inputSources) {
             let is = this._inputSources[i];
             if (inputSourcesByShortName[is.shortName].length > 1) {
                 let sub = inputSourcesByShortName[is.shortName].indexOf(is) + 1;
                 is.shortName += String.fromCharCode(0x2080 + sub);
             }
-
-            this.menu.addMenuItem(is.menuItem, menuIndex++);
-
             is.indicatorLabel.hide();
-            this._container.add_actor(is.indicatorLabel);
         }
+
+        this.emit('sources-changed');
 
         let sourcesList = [];
         for (let i in this._inputSources)
@@ -414,33 +364,6 @@ const InputSourceIndicator = new Lang.Class({
         this._mruSources = mruSources.concat(sourcesList);
 
         this._currentInputSourceChanged();
-    },
-
-    _showLayout: function() {
-        Main.overview.hide();
-
-        let source = this._currentSource;
-        let xkbLayout = '';
-        let xkbVariant = '';
-
-        if (source.type == INPUT_SOURCE_TYPE_XKB) {
-            [, , , xkbLayout, xkbVariant] = this._xkbInfo.get_layout_info(source.id);
-        } else if (source.type == INPUT_SOURCE_TYPE_IBUS) {
-            let engineDesc = this._ibusManager.getEngineDesc(source.id);
-            if (engineDesc) {
-                xkbLayout = engineDesc.get_layout();
-                xkbVariant = '';
-            }
-        }
-
-        if (!xkbLayout || xkbLayout.length == 0)
-            return;
-
-        let description = xkbLayout;
-        if (xkbVariant.length > 0)
-            description = description + '\t' + xkbVariant;
-
-        Util.spawn(['gkbd-keyboard-display', '-l', description]);
     },
 
     _makeEngineShortName: function(engineDesc) {
@@ -491,116 +414,6 @@ const InputSourceIndicator = new Lang.Class({
             }
         }
         return false;
-    },
-
-    _buildPropSection: function(properties) {
-        this._propSeparator.actor.hide();
-        this._propSection.actor.hide();
-        this._propSection.removeAll();
-
-        this._buildPropSubMenu(this._propSection, properties);
-
-        if (!this._propSection.isEmpty()) {
-            this._propSection.actor.show();
-            this._propSeparator.actor.show();
-        }
-    },
-
-    _buildPropSubMenu: function(menu, props) {
-        if (!props)
-            return;
-
-        let radioGroup = [];
-        let p;
-        for (let i = 0; (p = props.get(i)) != null; ++i) {
-            let prop = p;
-
-            if (!prop.get_visible())
-                continue;
-
-            if (prop.get_key() == 'InputMode') {
-                let text;
-                if (prop.get_symbol)
-                    text = prop.get_symbol().get_text();
-                else
-                    text = prop.get_label().get_text();
-
-                if (text && text.length > 0 && text.length < 3)
-                    this._currentSource.indicatorLabel.set_text(text);
-            }
-
-            let item;
-            switch (prop.get_prop_type()) {
-            case IBus.PropType.MENU:
-                item = new PopupMenu.PopupSubMenuMenuItem(prop.get_label().get_text());
-                this._buildPropSubMenu(item.menu, prop.get_sub_props());
-                break;
-
-            case IBus.PropType.RADIO:
-                item = new PopupMenu.PopupMenuItem(prop.get_label().get_text());
-                item.prop = prop;
-                radioGroup.push(item);
-                item.radioGroup = radioGroup;
-                item.setOrnament(prop.get_state() == IBus.PropState.CHECKED ?
-                                 PopupMenu.Ornament.DOT : PopupMenu.Ornament.NONE);
-                item.connect('activate', Lang.bind(this, function() {
-                    if (item.prop.get_state() == IBus.PropState.CHECKED)
-                        return;
-
-                    let group = item.radioGroup;
-                    for (let i = 0; i < group.length; ++i) {
-                        if (group[i] == item) {
-                            item.setOrnament(PopupMenu.Ornament.DOT);
-                            item.prop.set_state(IBus.PropState.CHECKED);
-                            this._ibusManager.activateProperty(item.prop.get_key(),
-                                                               IBus.PropState.CHECKED);
-                        } else {
-                            group[i].setOrnament(PopupMenu.Ornament.NONE);
-                            group[i].prop.set_state(IBus.PropState.UNCHECKED);
-                            this._ibusManager.activateProperty(group[i].prop.get_key(),
-                                                               IBus.PropState.UNCHECKED);
-                        }
-                    }
-                }));
-                break;
-
-            case IBus.PropType.TOGGLE:
-                item = new PopupMenu.PopupSwitchMenuItem(prop.get_label().get_text(), prop.get_state() == IBus.PropState.CHECKED);
-                item.prop = prop;
-                item.connect('toggled', Lang.bind(this, function() {
-                    if (item.state) {
-                        item.prop.set_state(IBus.PropState.CHECKED);
-                        this._ibusManager.activateProperty(item.prop.get_key(),
-                                                           IBus.PropState.CHECKED);
-                    } else {
-                        item.prop.set_state(IBus.PropState.UNCHECKED);
-                        this._ibusManager.activateProperty(item.prop.get_key(),
-                                                           IBus.PropState.UNCHECKED);
-                    }
-                }));
-                break;
-
-            case IBus.PropType.NORMAL:
-                item = new PopupMenu.PopupMenuItem(prop.get_label().get_text());
-                item.prop = prop;
-                item.connect('activate', Lang.bind(this, function() {
-                    this._ibusManager.activateProperty(item.prop.get_key(),
-                                                       item.prop.get_state());
-                }));
-                break;
-
-            case IBus.PropType.SEPARATOR:
-                item = new PopupMenu.PopupSeparatorMenuItem();
-                break;
-
-            default:
-                log ('IBus property %s has invalid type %d'.format(prop.get_key(), type));
-                continue;
-            }
-
-            item.setSensitive(prop.get_sensitive());
-            menu.addMenuItem(item);
-        }
     },
 
     _getNewInputSource: function(current) {
@@ -679,14 +492,245 @@ const InputSourceIndicator = new Lang.Class({
         window._currentSource = this._currentSource;
     },
 
+    get currentSource() {
+        return this._currentSource;
+    },
+
+    get inputSources() {
+        return this._inputSources;
+    },
+});
+Signals.addSignalMethods(InputSourceManager.prototype);
+
+let _inputSourceManager = null;
+
+function getInputSourceManager() {
+    if (_inputSourceManager == null)
+        _inputSourceManager = new InputSourceManager();
+    return _inputSourceManager;
+}
+
+const InputSourceIndicator = new Lang.Class({
+    Name: 'InputSourceIndicator',
+    Extends: PanelMenu.Button,
+
+    _init: function() {
+        this.parent(0.0, _("Keyboard"));
+
+        this._container = new Shell.GenericContainer();
+        this._container.connect('get-preferred-width', Lang.bind(this, this._containerGetPreferredWidth));
+        this._container.connect('get-preferred-height', Lang.bind(this, this._containerGetPreferredHeight));
+        this._container.connect('allocate', Lang.bind(this, this._containerAllocate));
+
+        this._hbox = new St.BoxLayout({ style_class: 'panel-status-menu-box' });
+        this._hbox.add_child(this._container);
+        this._hbox.add_child(PopupMenu.arrowIcon(St.Side.BOTTOM));
+
+        this.actor.add_child(this._hbox);
+        this.actor.add_style_class_name('panel-status-button');
+
+        this._propSeparator = new PopupMenu.PopupSeparatorMenuItem();
+        this.menu.addMenuItem(this._propSeparator);
+        this._propSection = new PopupMenu.PopupMenuSection();
+        this.menu.addMenuItem(this._propSection);
+        this._propSection.actor.hide();
+
+        this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+        this._showLayoutItem = this.menu.addAction(_("Show Keyboard Layout"), Lang.bind(this, this._showLayout));
+
+        Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
+        this._sessionUpdated();
+
+        this._inputSourceManager = getInputSourceManager();
+        this._inputSourceManager.connect('sources-changed', Lang.bind(this, this._sourcesChanged));
+        this._inputSourceManager.connect('current-source-changed', Lang.bind(this, this._currentSourceChanged));
+        this._inputSourceManager.reload();
+    },
+
+    _sessionUpdated: function() {
+        // re-using "allowSettings" for the keyboard layout is a bit shady,
+        // but at least for now it is used as "allow popping up windows
+        // from shell menus"; we can always add a separate sessionMode
+        // option if need arises.
+        this._showLayoutItem.actor.visible = Main.sessionMode.allowSettings;
+    },
+
+    _sourcesChanged: function() {
+        let menuIndex = 0;
+        for (let i in this._inputSourceManager.inputSources) {
+            let is = this._inputSourceManager.inputSources[i];
+            this.menu.addMenuItem(is.menuItem, menuIndex++);
+            this._container.add_actor(is.indicatorLabel);
+        }
+    },
+
+    _currentSourceChanged: function() {
+        let nVisibleSources = Object.keys(this._inputSourceManager.inputSources).length;
+        let newSource = this._inputSourceManager.currentSource;
+
+        if (!newSource || (nVisibleSources < 2 && !newSource.properties)) {
+            // This source index might be invalid if we weren't able
+            // to build a menu item for it, so we hide ourselves since
+            // we can't fix it here. *shrug*
+
+            // We also hide if we have only one visible source unless
+            // it's an IBus source with properties.
+            this.menu.close();
+            this.actor.hide();
+            return;
+        }
+
+        this.actor.show();
+
+        this._buildPropSection(newSource.properties);
+    },
+
+    _buildPropSection: function(properties) {
+        this._propSeparator.actor.hide();
+        this._propSection.actor.hide();
+        this._propSection.removeAll();
+
+        this._buildPropSubMenu(this._propSection, properties);
+
+        if (!this._propSection.isEmpty()) {
+            this._propSection.actor.show();
+            this._propSeparator.actor.show();
+        }
+    },
+
+    _buildPropSubMenu: function(menu, props) {
+        if (!props)
+            return;
+
+        let ibusManager = IBusManager.getIBusManager();
+        let radioGroup = [];
+        let p;
+        for (let i = 0; (p = props.get(i)) != null; ++i) {
+            let prop = p;
+
+            if (!prop.get_visible())
+                continue;
+
+            if (prop.get_key() == 'InputMode') {
+                let text;
+                if (prop.get_symbol)
+                    text = prop.get_symbol().get_text();
+                else
+                    text = prop.get_label().get_text();
+
+                if (text && text.length > 0 && text.length < 3)
+                    this._currentSource.indicatorLabel.set_text(text);
+            }
+
+            let item;
+            switch (prop.get_prop_type()) {
+            case IBus.PropType.MENU:
+                item = new PopupMenu.PopupSubMenuMenuItem(prop.get_label().get_text());
+                this._buildPropSubMenu(item.menu, prop.get_sub_props());
+                break;
+
+            case IBus.PropType.RADIO:
+                item = new PopupMenu.PopupMenuItem(prop.get_label().get_text());
+                item.prop = prop;
+                radioGroup.push(item);
+                item.radioGroup = radioGroup;
+                item.setOrnament(prop.get_state() == IBus.PropState.CHECKED ?
+                                 PopupMenu.Ornament.DOT : PopupMenu.Ornament.NONE);
+                item.connect('activate', Lang.bind(this, function() {
+                    if (item.prop.get_state() == IBus.PropState.CHECKED)
+                        return;
+
+                    let group = item.radioGroup;
+                    for (let i = 0; i < group.length; ++i) {
+                        if (group[i] == item) {
+                            item.setOrnament(PopupMenu.Ornament.DOT);
+                            item.prop.set_state(IBus.PropState.CHECKED);
+                            ibusManager.activateProperty(item.prop.get_key(),
+                                                         IBus.PropState.CHECKED);
+                        } else {
+                            group[i].setOrnament(PopupMenu.Ornament.NONE);
+                            group[i].prop.set_state(IBus.PropState.UNCHECKED);
+                            ibusManager.activateProperty(group[i].prop.get_key(),
+                                                         IBus.PropState.UNCHECKED);
+                        }
+                    }
+                }));
+                break;
+
+            case IBus.PropType.TOGGLE:
+                item = new PopupMenu.PopupSwitchMenuItem(prop.get_label().get_text(), prop.get_state() == IBus.PropState.CHECKED);
+                item.prop = prop;
+                item.connect('toggled', Lang.bind(this, function() {
+                    if (item.state) {
+                        item.prop.set_state(IBus.PropState.CHECKED);
+                        ibusManager.activateProperty(item.prop.get_key(),
+                                                     IBus.PropState.CHECKED);
+                    } else {
+                        item.prop.set_state(IBus.PropState.UNCHECKED);
+                        ibusManager.activateProperty(item.prop.get_key(),
+                                                     IBus.PropState.UNCHECKED);
+                    }
+                }));
+                break;
+
+            case IBus.PropType.NORMAL:
+                item = new PopupMenu.PopupMenuItem(prop.get_label().get_text());
+                item.prop = prop;
+                item.connect('activate', Lang.bind(this, function() {
+                    ibusManager.activateProperty(item.prop.get_key(),
+                                                 item.prop.get_state());
+                }));
+                break;
+
+            case IBus.PropType.SEPARATOR:
+                item = new PopupMenu.PopupSeparatorMenuItem();
+                break;
+
+            default:
+                log ('IBus property %s has invalid type %d'.format(prop.get_key(), type));
+                continue;
+            }
+
+            item.setSensitive(prop.get_sensitive());
+            menu.addMenuItem(item);
+        }
+    },
+
+    _showLayout: function() {
+        Main.overview.hide();
+
+        let source = this._inputSourceManager.currentSource;
+        let xkbLayout = '';
+        let xkbVariant = '';
+
+        if (source.type == INPUT_SOURCE_TYPE_XKB) {
+            [, , , xkbLayout, xkbVariant] = KeyboardManager.getXkbInfo().get_layout_info(source.id);
+        } else if (source.type == INPUT_SOURCE_TYPE_IBUS) {
+            let engineDesc = IBusManager.getIBusManager().getEngineDesc(source.id);
+            if (engineDesc) {
+                xkbLayout = engineDesc.get_layout();
+                xkbVariant = '';
+            }
+        }
+
+        if (!xkbLayout || xkbLayout.length == 0)
+            return;
+
+        let description = xkbLayout;
+        if (xkbVariant.length > 0)
+            description = description + '\t' + xkbVariant;
+
+        Util.spawn(['gkbd-keyboard-display', '-l', description]);
+    },
+
     _containerGetPreferredWidth: function(container, for_height, alloc) {
         // Here, and in _containerGetPreferredHeight, we need to query
         // for the height of all children, but we ignore the results
         // for those we don't actually display.
         let max_min_width = 0, max_natural_width = 0;
 
-        for (let i in this._inputSources) {
-            let is = this._inputSources[i];
+        for (let i in this._inputSourceManager.inputSources) {
+            let is = this._inputSourceManager.inputSources[i];
             let [min_width, natural_width] = is.indicatorLabel.get_preferred_width(for_height);
             max_min_width = Math.max(max_min_width, min_width);
             max_natural_width = Math.max(max_natural_width, natural_width);
@@ -699,8 +743,8 @@ const InputSourceIndicator = new Lang.Class({
     _containerGetPreferredHeight: function(container, for_width, alloc) {
         let max_min_height = 0, max_natural_height = 0;
 
-        for (let i in this._inputSources) {
-            let is = this._inputSources[i];
+        for (let i in this._inputSourceManager.inputSources) {
+            let is = this._inputSourceManager.inputSources[i];
             let [min_height, natural_height] = is.indicatorLabel.get_preferred_height(for_width);
             max_min_height = Math.max(max_min_height, min_height);
             max_natural_height = Math.max(max_natural_height, natural_height);
@@ -717,8 +761,8 @@ const InputSourceIndicator = new Lang.Class({
         box.y2 -= box.y1;
         box.y1 = 0;
 
-        for (let i in this._inputSources) {
-            let is = this._inputSources[i];
+        for (let i in this._inputSourceManager.inputSources) {
+            let is = this._inputSourceManager.inputSources[i];
             is.indicatorLabel.allocate_align_fill(box, 0.5, 0.5, false, false, flags);
         }
     }
