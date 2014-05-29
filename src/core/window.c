@@ -3715,6 +3715,16 @@ meta_window_move_resize_internal (MetaWindow          *window,
                              &constrained_rect);
     }
 
+  /* If we did placement, then we need to save the position that the window
+   * was placed at to make sure that meta_window_move_resize_now places the
+   * window correctly.
+   */
+  if (did_placement)
+    {
+      window->unconstrained_rect.x = constrained_rect.x;
+      window->unconstrained_rect.y = constrained_rect.y;
+    }
+
   /* Do the protocol-specific move/resize logic */
   META_WINDOW_GET_CLASS (window)->move_resize_internal (window, gravity, unconstrained_rect, constrained_rect, flags, &result);
 
