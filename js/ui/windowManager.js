@@ -1385,9 +1385,7 @@ const WindowManager = new Lang.Class({
 
         let tabPopup = new AltTab.AppSwitcherPopup();
 
-        let modifiers = binding.get_modifiers();
-        let backwards = modifiers & Meta.VirtualModifier.SHIFT_MASK;
-        if (!tabPopup.show(backwards, binding.get_name(), binding.get_mask()))
+        if (!tabPopup.show(binding.is_reversed(), binding.get_name(), binding.get_mask()))
             tabPopup.destroy();
     },
 
@@ -1398,16 +1396,12 @@ const WindowManager = new Lang.Class({
 
         let tabPopup = new AltTab.WindowSwitcherPopup();
 
-        let modifiers = binding.get_modifiers();
-        let backwards = modifiers & Meta.VirtualModifier.SHIFT_MASK;
-        if (!tabPopup.show(backwards, binding.get_name(), binding.get_mask()))
+        if (!tabPopup.show(binding.is_reversed(), binding.get_name(), binding.get_mask()))
             tabPopup.destroy();
     },
 
     _startA11ySwitcher : function(display, screen, window, binding) {
-        let modifiers = binding.get_modifiers();
-        let backwards = modifiers & Meta.VirtualModifier.SHIFT_MASK;
-        Main.ctrlAltTabManager.popup(backwards, binding.get_name(), binding.get_mask());
+        Main.ctrlAltTabManager.popup(binding.is_reversed(), binding.get_name(), binding.get_mask());
     },
 
     _toggleAppMenu : function(display, screen, window, event, binding) {

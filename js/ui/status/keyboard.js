@@ -473,8 +473,7 @@ const InputSourceIndicator = new Lang.Class({
 
         let popup = new InputSourcePopup(this._mruSources, this._keybindingAction, this._keybindingActionBackward);
         let modifiers = binding.get_modifiers();
-        let backwards = modifiers & Meta.VirtualModifier.SHIFT_MASK;
-        if (!popup.show(backwards, binding.get_name(), binding.get_mask()))
+        if (!popup.show(binding.is_reversed(), binding.get_name(), binding.get_mask()))
             popup.destroy();
     },
 
