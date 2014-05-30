@@ -34,7 +34,6 @@
 #endif
 
 #ifdef __OpenBSD__
-#include <sys/param.h>
 #include <sys/sysctl.h>
 #endif
 
@@ -1156,28 +1155,19 @@ shell_global_reexec_self (ShellGlobal *global)
 {
   GPtrArray *arr;
   gsize len;
+
+#if defined __linux__
   char *buf;
   char *buf_p;
   char *buf_end;
   GError *error = NULL;
 
-#if defined __linux__
   if (!g_file_get_contents ("/proc/self/cmdline", &buf, &len, &error))
     {
       g_warning ("failed to get /proc/self/cmdline: %s", error->message);
       return;
     }
-#elif defined __OpenBSD__
-  int pid = getpid();
-  int mib[] = { CTL_KERN, KERN_PROC_ARGS, pid, KERN_PROC_ARGV };
-  if (sysctl(mib, G_N_ELEMENTS (mib), &buf, &len, NULL, 0) == -1) {
-    g_warning ("failed to get command line args: %d", errno);
-    return;
-  }
-#else
-  return;
-#endif
-  
+
   buf_end = buf+len;
   arr = g_ptr_array_new ();
   /* The cmdline file is NUL-separated */
@@ -1185,6 +1175,30 @@ shell_global_reexec_self (ShellGlobal *global)
     g_ptr_array_add (arr, buf_p);
 
   g_ptr_array_add (arr, NULL);
+#elif defined __OpenBSD__
+  gchar **args, **args_p;
+  gint mib[] = { CTL_KERN, KERN_PROC_ARGS, getpid(), KERN_PROC_ARGV };
+
+  if (sysctl (mib, G_N_ELEMENTS (mib), NULL, &len, NULL, 0) == -1)
+    return;
+
+  args = g_malloc0 (len);
+
+  if (sysctl (mib, G_N_ELEMENTS (mib), args, &len, NULL, 0) == -1) {
+    g_warning ("failed to get command line args: %d", errno);
+    g_free (args);
+    return;
+  }
+
+  arr = g_ptr_array_new ();
+  for (args_p = args; *args_p != NULL; args_p++) {
+    g_ptr_array_add (arr, *args_p);
+  }
+
+  g_ptr_array_add (arr, NULL);
+#else
+  return;
+#endif
 
   /* Close all file descriptors other than stdin/stdout/stderr, otherwise
    * they will leak and stay open after the exec. In particular, this is
@@ -1200,6 +1214,11 @@ shell_global_reexec_self (ShellGlobal *global)
   execvp (arr->pdata[0], (char**)arr->pdata);
   g_warning ("failed to reexec: %s", g_strerror (errno));
   g_ptr_array_free (arr, TRUE);
+#if defined __linux__
+  g_free (buf);
+#elif defined __OpenBSD__
+  g_free (args);
+#endif
 }
 
 /**
