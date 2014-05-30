@@ -575,6 +575,10 @@ void meta_window_show_menu (MetaWindow         *window,
                             int                 x,
                             int                 y);
 
+void meta_window_show_menu_for_rect (MetaWindow         *window,
+                                     MetaWindowMenuType  menu,
+                                     MetaRectangle      *rect);
+
 gboolean meta_window_handle_mouse_grab_op_event  (MetaWindow         *window,
                                                   const ClutterEvent *event);
 

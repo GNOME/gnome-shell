@@ -392,6 +392,22 @@ meta_core_show_window_menu (Display            *xdisplay,
   meta_window_show_menu (window, menu, root_x, root_y);
 }
 
+void
+meta_core_show_window_menu_for_rect (Display            *xdisplay,
+                                     Window              frame_xwindow,
+                                     MetaWindowMenuType  menu,
+                                     MetaRectangle      *rect,
+                                     guint32             timestamp)
+{
+  MetaWindow *window = get_window (xdisplay, frame_xwindow);
+
+  if (meta_prefs_get_raise_on_click ())
+    meta_window_raise (window);
+  meta_window_focus (window, timestamp);
+
+  meta_window_show_menu_for_rect (window, menu, rect);
+}
+
 const char*
 meta_core_get_workspace_name_with_index (Display *xdisplay,
                                          Window   xroot,

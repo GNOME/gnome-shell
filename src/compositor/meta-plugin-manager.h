@@ -87,5 +87,10 @@ void meta_plugin_manager_show_window_menu (MetaPluginManager  *mgr,
                                            int                 x,
                                            int                 y);
 
+void meta_plugin_manager_show_window_menu_for_rect (MetaPluginManager  *mgr,
+		                                    MetaWindow         *window,
+						    MetaWindowMenuType  menu,
+						    MetaRectangle      *rect);
+
 
 #endif

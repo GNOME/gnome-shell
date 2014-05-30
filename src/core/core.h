@@ -26,6 +26,7 @@
 /* Don't include core headers here */
 #include <gdk/gdkx.h>
 #include <meta/common.h>
+#include <meta/boxes.h>
 
 typedef enum
 {
@@ -137,6 +138,12 @@ void meta_core_show_window_menu (Display            *xdisplay,
                                  int                 root_x,
                                  int                 root_y,
                                  guint32             timestamp);
+
+void meta_core_show_window_menu_for_rect (Display            *xdisplay,
+                                          Window              frame_xwindow,
+                                          MetaWindowMenuType  menu,
+                                          MetaRectangle      *rect,
+                                          guint32             timestamp);
 
 gboolean   meta_core_begin_grab_op (Display    *xdisplay,
                                     Window      frame_xwindow,

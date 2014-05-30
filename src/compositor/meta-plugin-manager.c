@@ -374,3 +374,20 @@ meta_plugin_manager_show_window_menu (MetaPluginManager  *plugin_mgr,
   if (klass->show_window_menu)
     klass->show_window_menu (plugin, window, menu, x, y);
 }
+
+void
+meta_plugin_manager_show_window_menu_for_rect (MetaPluginManager  *plugin_mgr,
+                                               MetaWindow         *window,
+                                               MetaWindowMenuType  menu,
+					       MetaRectangle      *rect)
+{
+  MetaPlugin *plugin = plugin_mgr->plugin;
+  MetaPluginClass *klass = META_PLUGIN_GET_CLASS (plugin);
+  MetaDisplay *display = plugin_mgr->compositor->display;
+
+  if (display->display_opening)
+    return;
+
+  if (klass->show_window_menu_for_rect)
+    klass->show_window_menu_for_rect (plugin, window, menu, rect);
+}

@@ -170,6 +170,11 @@ struct _MetaPluginClass
                              int                 x,
                              int                 y);
 
+  void (*show_window_menu_for_rect)  (MetaPlugin         *plugin,
+		                      MetaWindow         *window,
+				      MetaWindowMenuType  menu,
+				      MetaRectangle      *rect);
+
   /**
    * MetaPluginClass::kill_window_effects:
    * @actor: a #MetaWindowActor

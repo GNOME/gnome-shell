@@ -1366,3 +1366,12 @@ meta_compositor_show_window_menu (MetaCompositor     *compositor,
 {
   meta_plugin_manager_show_window_menu (compositor->plugin_mgr, window, menu, x, y);
 }
+
+void
+meta_compositor_show_window_menu_for_rect (MetaCompositor     *compositor,
+                                           MetaWindow         *window,
+                                           MetaWindowMenuType  menu,
+					   MetaRectangle      *rect)
+{
+  meta_plugin_manager_show_window_menu_for_rect (compositor->plugin_mgr, window, menu, rect);
+}

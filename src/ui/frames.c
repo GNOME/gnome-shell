@@ -1218,30 +1218,31 @@ meta_frames_button_press_event (GtkWidget      *widget,
         {
           MetaFrameGeometry fgeom;
           GdkRectangle *rect;
+          MetaRectangle root_rect;
           MetaWindowMenuType menu;
-          int dx, dy;
+          int win_x, win_y;
 
           meta_frames_calc_geometry (frames, frame, &fgeom);
 
           rect = control_rect (control, &fgeom);
 
-          /* get delta to convert to root coords */
-          dx = event->x_root - event->x;
-          dy = event->y_root - event->y;
+          /* convert to root coords */
+          win_x = event->x_root - event->x;
+          win_y = event->y_root - event->y;
 
-          /* Align to the right end of the menu rectangle if RTL */
-          if (meta_ui_get_direction() == META_UI_DIRECTION_RTL)
-            dx += rect->width;
+          root_rect.x = win_x + rect->x;
+          root_rect.y = win_y + rect->y;
+          root_rect.width = rect->width;
+          root_rect.height = rect->height;
 
           menu = control == META_FRAME_CONTROL_MENU ? META_WINDOW_MENU_WM
                                                     : META_WINDOW_MENU_APP;
 
-          meta_core_show_window_menu (display,
-                                      frame->xwindow,
-                                      menu,
-                                      rect->x + dx,
-                                      rect->y + rect->height + dy,
-                                      event->time);
+          meta_core_show_window_menu_for_rect (display,
+                                               frame->xwindow,
+                                               menu,
+                                               &root_rect,
+                                               event->time);
         }
     }
   else if (event->button == 1 &&

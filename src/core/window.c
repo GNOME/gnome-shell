@@ -5252,6 +5252,15 @@ meta_window_show_menu (MetaWindow         *window,
 }
 
 void
+meta_window_show_menu_for_rect (MetaWindow         *window,
+                                MetaWindowMenuType  menu,
+                                MetaRectangle      *rect)
+{
+  g_return_if_fail (!window->override_redirect);
+  meta_compositor_show_window_menu_for_rect (window->display->compositor, window, menu, rect);
+}
+
+void
 meta_window_shove_titlebar_onscreen (MetaWindow *window)
 {
   MetaRectangle  frame_rect;

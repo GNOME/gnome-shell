@@ -127,5 +127,9 @@ void meta_compositor_show_window_menu (MetaCompositor     *compositor,
 				       MetaWindowMenuType  menu,
                                        int                 x,
                                        int                 y);
+void meta_compositor_show_window_menu_for_rect (MetaCompositor     *compositor,
+                                                MetaWindow         *window,
+				                MetaWindowMenuType  menu,
+                                                MetaRectangle      *rect);
 
 #endif /* META_COMPOSITOR_H */
