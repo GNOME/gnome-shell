@@ -50,16 +50,7 @@ const InputSource = new Lang.Class({
         this._shortName = shortName;
         this.index = index;
 
-        this._menuItem = new LayoutMenuItem(this.displayName, this._shortName);
-        this._menuItem.connect('activate', Lang.bind(this, this.activate));
-        this._indicatorLabel = new St.Label({ text: this._shortName });
-
         this.properties = null;
-    },
-
-    destroy: function() {
-        this._menuItem.destroy();
-        this._indicatorLabel.destroy();
     },
 
     get shortName() {
@@ -68,16 +59,7 @@ const InputSource = new Lang.Class({
 
     set shortName(v) {
         this._shortName = v;
-        this._menuItem.indicator.set_text(v);
-        this._indicatorLabel.set_text(v);
-    },
-
-    get menuItem() {
-        return this._menuItem;
-    },
-
-    get indicatorLabel() {
-        return this._indicatorLabel;
+        this.emit('changed');
     },
 
     activate: function() {
@@ -262,15 +244,7 @@ const InputSourceManager = new Lang.Class({
         let oldSource;
         [oldSource, this._currentSource] = [this._currentSource, newSource];
 
-        if (oldSource) {
-            oldSource.menuItem.setOrnament(PopupMenu.Ornament.NONE);
-            oldSource.indicatorLabel.hide();
-        }
-
-        this.emit('current-source-changed');
-
-        newSource.menuItem.setOrnament(PopupMenu.Ornament.DOT);
-        newSource.indicatorLabel.show();
+        this.emit('current-source-changed', oldSource);
 
         for (let i = 1; i < this._mruSources.length; ++i)
             if (this._mruSources[i] == newSource) {
@@ -285,9 +259,6 @@ const InputSourceManager = new Lang.Class({
     _inputSourcesChanged: function() {
         let sources = this._settings.get_value(KEY_INPUT_SOURCES);
         let nSources = sources.n_children();
-
-        for (let i in this._inputSources)
-            this._inputSources[i].destroy();
 
         this._inputSources = {};
         this._ibusSources = {};
@@ -343,7 +314,6 @@ const InputSourceManager = new Lang.Class({
                 let sub = inputSourcesByShortName[is.shortName].indexOf(is) + 1;
                 is.shortName += String.fromCharCode(0x2080 + sub);
             }
-            is.indicatorLabel.hide();
         }
 
         this.emit('sources-changed');
@@ -517,6 +487,9 @@ const InputSourceIndicator = new Lang.Class({
     _init: function() {
         this.parent(0.0, _("Keyboard"));
 
+        this._menuItems = {};
+        this._indicatorLabels = {};
+
         this._container = new Shell.GenericContainer();
         this._container.connect('get-preferred-width', Lang.bind(this, this._containerGetPreferredWidth));
         this._container.connect('get-preferred-height', Lang.bind(this, this._containerGetPreferredHeight));
@@ -556,17 +529,40 @@ const InputSourceIndicator = new Lang.Class({
     },
 
     _sourcesChanged: function() {
+        for (let i in this._menuItems)
+            this._menuItems[i].destroy();
+        for (let i in this._indicatorLabels)
+            this._indicatorLabels[i].destroy();
+
         let menuIndex = 0;
         for (let i in this._inputSourceManager.inputSources) {
             let is = this._inputSourceManager.inputSources[i];
-            this.menu.addMenuItem(is.menuItem, menuIndex++);
-            this._container.add_actor(is.indicatorLabel);
+
+            let menuItem = new LayoutMenuItem(is.displayName, is.shortName);
+            menuItem.connect('activate', Lang.bind(is, is.activate));
+            let indicatorLabel = new St.Label({ text: is.shortName,
+                                                visible: false });
+
+            this._menuItems[i] = menuItem;
+            this._indicatorLabels[i] = indicatorLabel;
+            is.connect('changed', function() {
+                menuItem.indicator.set_text(is.shortName);
+                indicatorLabel.set_text(is.shorName);
+            });
+
+            this.menu.addMenuItem(menuItem, menuIndex++);
+            this._container.add_actor(indicatorLabel);
         }
     },
 
-    _currentSourceChanged: function() {
+    _currentSourceChanged: function(manager, oldSource) {
         let nVisibleSources = Object.keys(this._inputSourceManager.inputSources).length;
         let newSource = this._inputSourceManager.currentSource;
+
+        if (oldSource) {
+            this._menuItems[oldSource.index].setOrnament(PopupMenu.Ornament.NONE);
+            this._indicatorLabels[oldSource.index].hide();
+        }
 
         if (!newSource || (nVisibleSources < 2 && !newSource.properties)) {
             // This source index might be invalid if we weren't able
@@ -583,6 +579,9 @@ const InputSourceIndicator = new Lang.Class({
         this.actor.show();
 
         this._buildPropSection(newSource.properties);
+
+        this._menuItems[newSource.index].setOrnament(PopupMenu.Ornament.DOT);
+        this._indicatorLabels[newSource.index].show();
     },
 
     _buildPropSection: function(properties) {
@@ -618,8 +617,12 @@ const InputSourceIndicator = new Lang.Class({
                 else
                     text = prop.get_label().get_text();
 
-                if (text && text.length > 0 && text.length < 3)
-                    this._currentSource.indicatorLabel.set_text(text);
+                let currentSource = this._inputSourceManager.currentSource;
+                if (currentSource) {
+                    let indicatorLabel = this._indicatorLabels[currentSource.index];
+                    if (text && text.length > 0 && text.length < 3)
+                        indicatorLabel.set_text(text);
+                }
             }
 
             let item;
@@ -730,8 +733,8 @@ const InputSourceIndicator = new Lang.Class({
         let max_min_width = 0, max_natural_width = 0;
 
         for (let i in this._inputSourceManager.inputSources) {
-            let is = this._inputSourceManager.inputSources[i];
-            let [min_width, natural_width] = is.indicatorLabel.get_preferred_width(for_height);
+            let label = this._indicatorLabels[i];
+            let [min_width, natural_width] = label.get_preferred_width(for_height);
             max_min_width = Math.max(max_min_width, min_width);
             max_natural_width = Math.max(max_natural_width, natural_width);
         }
@@ -744,8 +747,8 @@ const InputSourceIndicator = new Lang.Class({
         let max_min_height = 0, max_natural_height = 0;
 
         for (let i in this._inputSourceManager.inputSources) {
-            let is = this._inputSourceManager.inputSources[i];
-            let [min_height, natural_height] = is.indicatorLabel.get_preferred_height(for_width);
+            let label = this._indicatorLabels[i];
+            let [min_height, natural_height] = label.get_preferred_height(for_width);
             max_min_height = Math.max(max_min_height, min_height);
             max_natural_height = Math.max(max_natural_height, natural_height);
         }
@@ -762,8 +765,8 @@ const InputSourceIndicator = new Lang.Class({
         box.y1 = 0;
 
         for (let i in this._inputSourceManager.inputSources) {
-            let is = this._inputSourceManager.inputSources[i];
-            is.indicatorLabel.allocate_align_fill(box, 0.5, 0.5, false, false, flags);
+            let label = this._indicatorLabels[i];
+            label.allocate_align_fill(box, 0.5, 0.5, false, false, flags);
         }
     }
 });
