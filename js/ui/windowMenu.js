@@ -15,8 +15,8 @@ const WindowMenu = new Lang.Class({
     Name: 'WindowMenu',
     Extends: PopupMenu.PopupMenu,
 
-    _init: function(window) {
-        this.parent(Main.layoutManager.dummyCursor, 0, St.Side.TOP);
+    _init: function(window, sourceActor) {
+        this.parent(sourceActor, 0, St.Side.TOP);
 
         this.actor.add_style_class_name('window-menu');
 
@@ -129,10 +129,10 @@ const AppMenu = new Lang.Class({
     Name: 'AppMenu',
     Extends: RemoteMenu.RemoteMenu,
 
-    _init: function(window) {
+    _init: function(window, sourceActor) {
         let app = Shell.WindowTracker.get_default().get_window_app(window);
 
-        this.parent(Main.layoutManager.dummyCursor, app.menu, app.action_group);
+        this.parent(sourceActor, app.menu, app.action_group);
 
         this.actor.add_style_class_name('fallback-app-menu');
         let variant = window.get_gtk_theme_variant();
@@ -149,11 +149,18 @@ const WindowMenuManager = new Lang.Class({
 
     _init: function() {
         this._manager = new PopupMenu.PopupMenuManager({ actor: Main.layoutManager.dummyCursor });
+
+        this._sourceActor = new St.Widget({ reactive: true, visible: false });
+        this._sourceActor.connect('button-press-event', Lang.bind(this,
+            function() {
+                this._manager.activeMenu.toggle();
+            }));
+        Main.uiGroup.add_actor(this._sourceActor);
     },
 
     showWindowMenuForWindow: function(window, type, rect) {
-        let menu = (type == Meta.WindowMenuType.WM) ? new WindowMenu(window)
-                                                    : new AppMenu(window);
+        let menuType = (type == Meta.WindowMenuType.WM) ? WindowMenu : AppMenu;
+        let menu = new menuType(window, this._sourceActor);
 
         this._manager.addMenu(menu);
 
@@ -161,12 +168,18 @@ const WindowMenuManager = new Lang.Class({
             window.check_alive(global.get_current_time());
         });
 
-        Main.layoutManager.setDummyCursorGeometry(rect.x, rect.y, 0, 0);
+        this._sourceActor.set_size(rect.width, rect.height);
+        this._sourceActor.set_position(rect.x, rect.y);
+        this._sourceActor.show();
+
         menu.open(BoxPointer.PopupAnimation.NONE);
         menu.actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
         menu.connect('open-state-changed', Lang.bind(this, function(menu_, isOpen) {
-            if (!isOpen)
-                menu.destroy();
+            if (isOpen)
+                return;
+
+            this._sourceActor.hide();
+            menu.destroy();
         }));
     }
 });
