@@ -80,6 +80,7 @@ struct _MetaUIFrame
   int text_height;
   char *title; /* NULL once we have a layout */
   guint shape_applied : 1;
+  guint maybe_ignore_leave_notify : 1;
 
   /* FIXME get rid of this, it can just be in the MetaFrames struct */
   MetaFrameControl prelit_control;

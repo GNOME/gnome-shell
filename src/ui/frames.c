@@ -1238,6 +1238,11 @@ meta_frames_button_press_event (GtkWidget      *widget,
           menu = control == META_FRAME_CONTROL_MENU ? META_WINDOW_MENU_WM
                                                     : META_WINDOW_MENU_APP;
 
+          /* if the compositor takes a grab for showing the menu, we will
+           * get a LeaveNotify event we want to ignore, to keep the pressed
+           * button state while the menu is open
+           */
+          frame->maybe_ignore_leave_notify = TRUE;
           meta_core_show_window_menu_for_rect (display,
                                                frame->xwindow,
                                                menu,
@@ -1933,6 +1938,8 @@ meta_frames_enter_notify_event      (GtkWidget           *widget,
   if (frame == NULL)
     return FALSE;
 
+  frame->maybe_ignore_leave_notify = FALSE;
+
   control = get_control (frames, frame, event->x, event->y);
   meta_frames_update_prelit_control (frames, frame, control);
 
@@ -1945,11 +1952,25 @@ meta_frames_leave_notify_event      (GtkWidget           *widget,
 {
   MetaUIFrame *frame;
   MetaFrames *frames;
+  Display *display;
+  MetaGrabOp grab_op;
 
   frames = META_FRAMES (widget);
 
   frame = meta_frames_lookup_window (frames, GDK_WINDOW_XID (event->window));
   if (frame == NULL)
+    return FALSE;
+
+  display = GDK_DISPLAY_XDISPLAY (gdk_display_get_default ());
+  grab_op = meta_core_get_grab_op (display);
+
+  /* ignore the first LeaveNotify event after opening a window menu
+   * if it is the result of a compositor grab
+   */
+  frame->maybe_ignore_leave_notify = frame->maybe_ignore_leave_notify &&
+                                     grab_op == META_GRAB_OP_COMPOSITOR;
+
+  if (frame->maybe_ignore_leave_notify)
     return FALSE;
 
   meta_frames_update_prelit_control (frames, frame, META_FRAME_CONTROL_NONE);
