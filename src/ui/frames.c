@@ -1512,7 +1512,8 @@ meta_frames_update_prelit_control (MetaFrames      *frames,
       break;
     }
 
-  if (control == frame->prelit_control)
+  if (control == frame->prelit_control &&
+      frame->button_state == META_BUTTON_STATE_PRELIGHT)
     return;
 
   /* Save the old control so we can unprelight it */
