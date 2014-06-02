@@ -400,8 +400,8 @@ notify_absolute_motion (ClutterInputDevice *input_device,
 static void
 notify_relative_motion (ClutterInputDevice *input_device,
                         guint32             time_,
-                        li_fixed_t          dx,
-                        li_fixed_t          dy)
+                        double              dx,
+                        double              dy)
 {
   gfloat new_x, new_y;
   ClutterInputDeviceEvdev *device_evdev;
@@ -416,17 +416,9 @@ notify_relative_motion (ClutterInputDevice *input_device,
   device_evdev = CLUTTER_INPUT_DEVICE_EVDEV (input_device);
   seat = _clutter_input_device_evdev_get_seat (device_evdev);
 
-  /* Append previously discarded fraction. */
-  dx += device_evdev->dx_frac;
-  dy += device_evdev->dy_frac;
-
   clutter_input_device_get_coords (seat->core_pointer, NULL, &point);
-  new_x = point.x + li_fixed_to_int (dx);
-  new_y = point.y + li_fixed_to_int (dy);
-
-  /* Save the discarded fraction part for next motion event. */
-  device_evdev->dx_frac = (dx < 0 ? -1 : 1) * (0xff & dx);
-  device_evdev->dy_frac = (dy < 0 ? -1 : 1) * (0xff & dy);
+  new_x = point.x + dx;
+  new_y = point.y + dy;
 
   notify_absolute_motion (input_device, time_, new_x, new_y);
 }
@@ -1122,7 +1114,7 @@ process_device_event (ClutterDeviceManagerEvdev *manager_evdev,
     case LIBINPUT_EVENT_POINTER_MOTION:
       {
         guint32 time;
-        li_fixed_t dx, dy;
+        double dx, dy;
         struct libinput_event_pointer *motion_event =
           libinput_event_get_pointer_event (event);
         device = libinput_device_get_user_data (libinput_device);
@@ -1138,7 +1130,7 @@ process_device_event (ClutterDeviceManagerEvdev *manager_evdev,
     case LIBINPUT_EVENT_POINTER_MOTION_ABSOLUTE:
       {
         guint32 time;
-        li_fixed_t x, y;
+        double x, y;
         gfloat stage_width, stage_height;
         ClutterStage *stage;
         struct libinput_event_pointer *motion_event =
@@ -1157,10 +1149,7 @@ process_device_event (ClutterDeviceManagerEvdev *manager_evdev,
                                                                stage_width);
         y = libinput_event_pointer_get_absolute_y_transformed (motion_event,
                                                                stage_height);
-        notify_absolute_motion (device,
-                                time,
-                                li_fixed_to_double(x),
-                                li_fixed_to_double(y));
+        notify_absolute_motion (device, time, x, y);
 
         break;
       }
@@ -1191,8 +1180,7 @@ process_device_event (ClutterDeviceManagerEvdev *manager_evdev,
         device = libinput_device_get_user_data (libinput_device);
 
         time = libinput_event_pointer_get_time (axis_event);
-        value = li_fixed_to_double (
-          libinput_event_pointer_get_axis_value (axis_event));
+        value = libinput_event_pointer_get_axis_value (axis_event);
         axis = libinput_event_pointer_get_axis (axis_event);
 
         switch (axis)
@@ -1218,7 +1206,7 @@ process_device_event (ClutterDeviceManagerEvdev *manager_evdev,
       {
         gint32 slot;
         guint32 time;
-        li_fixed_t x, y;
+        double x, y;
         gfloat stage_width, stage_height;
         ClutterStage *stage;
         ClutterTouchState *touch_state;
@@ -1241,8 +1229,8 @@ process_device_event (ClutterDeviceManagerEvdev *manager_evdev,
                                                     stage_height);
 
         touch_state = _device_seat_add_touch (device, slot);
-        touch_state->coords.x = li_fixed_to_double (x);
-        touch_state->coords.y = li_fixed_to_double (y);
+        touch_state->coords.x = x;
+        touch_state->coords.y = y;
 
         notify_touch_event (device, CLUTTER_TOUCH_BEGIN, time, slot,
                              touch_state->coords.x, touch_state->coords.y);
@@ -1273,7 +1261,7 @@ process_device_event (ClutterDeviceManagerEvdev *manager_evdev,
       {
         gint32 slot;
         guint32 time;
-        li_fixed_t x, y;
+        double x, y;
         gfloat stage_width, stage_height;
         ClutterStage *stage;
         ClutterTouchState *touch_state;
@@ -1296,8 +1284,8 @@ process_device_event (ClutterDeviceManagerEvdev *manager_evdev,
                                                     stage_height);
 
         touch_state = _device_seat_get_touch (device, slot);
-        touch_state->coords.x = li_fixed_to_double (x);
-        touch_state->coords.y = li_fixed_to_double (y);
+        touch_state->coords.x = x;
+        touch_state->coords.y = y;
 
         notify_touch_event (device, CLUTTER_TOUCH_UPDATE, time, slot,
 			    touch_state->coords.x, touch_state->coords.y);

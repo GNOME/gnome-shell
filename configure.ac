@@ -146,7 +146,7 @@ m4_define([uprof_req_version],          [0.3])
 m4_define([gtk_doc_req_version],        [1.20])
 m4_define([xcomposite_req_version],     [0.4])
 m4_define([gdk_req_version],            [3.3.18])
-m4_define([libinput_req_version],       [0.1.0])
+m4_define([libinput_req_version],       [0.3.0])
 m4_define([libudev_req_version],        [136])
 
 AC_SUBST([GLIB_REQ_VERSION],       [glib_req_version])

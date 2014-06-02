@@ -64,8 +64,6 @@ struct _ClutterInputDeviceEvdev
 
   struct libinput_device *libinput_device;
   ClutterSeatEvdev *seat;
-  li_fixed_t dx_frac;
-  li_fixed_t dy_frac;
 };
 
 GType                     _clutter_input_device_evdev_get_type        (void) G_GNUC_CONST;
