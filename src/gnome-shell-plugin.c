@@ -78,6 +78,10 @@ static void gnome_shell_plugin_show_window_menu  (MetaPlugin         *plugin,
                                                   MetaWindowMenuType  menu,
                                                   int                 x,
                                                   int                 y);
+static void gnome_shell_plugin_show_window_menu_for_rect (MetaPlugin         *plugin,
+                                                          MetaWindow         *window,
+                                                          MetaWindowMenuType  menu,
+                                                          MetaRectangle      *rect);
 
 static gboolean              gnome_shell_plugin_xevent_filter (MetaPlugin *plugin,
                                                                XEvent     *event);
@@ -145,6 +149,7 @@ gnome_shell_plugin_class_init (GnomeShellPluginClass *klass)
   plugin_class->show_tile_preview = gnome_shell_plugin_show_tile_preview;
   plugin_class->hide_tile_preview = gnome_shell_plugin_hide_tile_preview;
   plugin_class->show_window_menu = gnome_shell_plugin_show_window_menu;
+  plugin_class->show_window_menu_for_rect = gnome_shell_plugin_show_window_menu_for_rect;
 
   plugin_class->xevent_filter     = gnome_shell_plugin_xevent_filter;
   plugin_class->keybinding_filter = gnome_shell_plugin_keybinding_filter;
@@ -316,6 +321,15 @@ gnome_shell_plugin_show_window_menu (MetaPlugin         *plugin,
                                      int                 y)
 {
   _shell_wm_show_window_menu (get_shell_wm (), window, menu, x, y);
+}
+
+static void
+gnome_shell_plugin_show_window_menu_for_rect (MetaPlugin         *plugin,
+                                              MetaWindow         *window,
+                                              MetaWindowMenuType  menu,
+                                              MetaRectangle      *rect)
+{
+  _shell_wm_show_window_menu_for_rect (get_shell_wm (), window, menu, rect);
 }
 
 static gboolean

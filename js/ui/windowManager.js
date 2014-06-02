@@ -1153,8 +1153,8 @@ const WindowManager = new Lang.Class({
         this._tilePreview.hide();
     },
 
-    _showWindowMenu: function(shellwm, window, menu, x, y) {
-        this._windowMenuManager.showWindowMenuForWindow(window, menu, x, y);
+    _showWindowMenu: function(shellwm, window, menu, rect) {
+        this._windowMenuManager.showWindowMenuForWindow(window, menu, rect);
     },
 
     _startAppSwitcher : function(display, screen, window, binding) {

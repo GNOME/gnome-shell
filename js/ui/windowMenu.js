@@ -151,7 +151,7 @@ const WindowMenuManager = new Lang.Class({
         this._manager = new PopupMenu.PopupMenuManager({ actor: Main.layoutManager.dummyCursor });
     },
 
-    showWindowMenuForWindow: function(window, type, x, y) {
+    showWindowMenuForWindow: function(window, type, rect) {
         let menu = (type == Meta.WindowMenuType.WM) ? new WindowMenu(window)
                                                     : new AppMenu(window);
 
@@ -161,7 +161,7 @@ const WindowMenuManager = new Lang.Class({
             window.check_alive(global.get_current_time());
         });
 
-        Main.layoutManager.setDummyCursorGeometry(x, y, 0, 0);
+        Main.layoutManager.setDummyCursorGeometry(rect.x, rect.y, 0, 0);
         menu.open(BoxPointer.PopupAnimation.NONE);
         menu.actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
         menu.connect('open-state-changed', Lang.bind(this, function(menu_, isOpen) {

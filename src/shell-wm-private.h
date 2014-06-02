@@ -45,6 +45,10 @@ void _shell_wm_show_window_menu      (ShellWM             *wm,
                                       MetaWindowMenuType   menu,
                                       int                  x,
                                       int                  y);
+void _shell_wm_show_window_menu_for_rect (ShellWM             *wm,
+                                          MetaWindow          *window,
+                                          MetaWindowMenuType   menu,
+                                          MetaRectangle       *rect);
 
 gboolean _shell_wm_filter_keybinding (ShellWM             *wm,
                                       MetaKeyBinding      *binding);
