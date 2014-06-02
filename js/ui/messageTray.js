@@ -2631,6 +2631,8 @@ const MessageTray = new Lang.Class({
         // the mouse is moving towards it or within it.
         this._lastSeenMouseX = x;
         this._lastSeenMouseY = y;
+
+        this._resetNotificationLeftTimeout();
     },
 
     _updateShowingNotification: function() {
