@@ -1234,6 +1234,7 @@ xsettings_overrides_changed (GSettings  *settings,
   GVariant *value;
   GVariantDict overrides;
   int shell_shows_app_menu = 1;
+  gboolean changed = FALSE;
 
   if (!g_settings_get_boolean (settings, "active"))
     goto out;
@@ -1247,8 +1248,13 @@ xsettings_overrides_changed (GSettings  *settings,
                          "Gtk/ShellShowsAppMenu", "i", &shell_shows_app_menu);
   g_variant_dict_clear (&overrides);
 
+  changed = (show_fallback_app_menu == !!shell_shows_app_menu);
+
 out:
   show_fallback_app_menu = !shell_shows_app_menu;
+
+  if (changed)
+    queue_changed (META_PREF_BUTTON_LAYOUT);
 }
 
 /**
