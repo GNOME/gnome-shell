@@ -320,7 +320,7 @@ INTROSPECTION_GIRS += ShellMenu-0.1.gir
 CLEANFILES += ShellMenu-0.1.gir
 
 Shell-0.1.gir: gnome-shell St-1.0.gir ShellMenu-0.1.gir
-Shell_0_1_gir_INCLUDES = Clutter-1.0 ClutterX11-1.0 Meta-3.0 TelepathyGLib-0.12 Soup-2.4 GMenu-3.0
+Shell_0_1_gir_INCLUDES = Clutter-1.0 ClutterX11-1.0 Meta-3.0 TelepathyGLib-0.12 Soup-2.4
 if HAVE_NETWORKMANAGER
 Shell_0_1_gir_INCLUDES += NetworkManager-1.0 NMClient-1.0
 endif
