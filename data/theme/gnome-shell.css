@@ -1540,6 +1540,11 @@ StScrollBar StButton#vhandle:active {
     spacing: 8px;
 }
 
+.notification-close-button {
+    padding: 8px;
+    border-radius: 4px;
+}
+
 .notification-action-area {
     padding: 8px;
 }
@@ -1555,7 +1560,8 @@ StScrollBar StButton#vhandle:active {
 }
 
 .notification-main-button:hover,
-.notification-button:hover {
+.notification-button:hover,
+.notification-close-button:hover {
     background: rgba(100,100,100,0.9);
 }
 

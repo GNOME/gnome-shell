@@ -494,12 +494,12 @@ const Notification = new Lang.Class({
         //      ,. this._iconBin         ,. this._titleLabel
         //      |        ,-- this._second|ryIconBin
         // .----|--------|---------------|-----------.
-        // | .----. | .----.-----------------------. |
-        // | |    | | |    |                       |--- this._titleBox
-        // | '....' | '....'.......................' |
-        // |        |                                |- this._hbox
-        // |        |        this._bodyBin           |-.
-        // |________|________________________________| |- this.actor
+        // | .----. | .----.-------------------. | X |
+        // | |    | | |    |                   |-|----- this._titleBox
+        // | '....' | '....'...................' |   |
+        // |        |                            |   |- this._hbox
+        // |        |        this._bodyBin       |   |-.
+        // |________|____________________________|___| |- this.actor
         // | this._actionArea                        |-'
         // |_________________________________________|
         // | this._buttonBox                         |
@@ -517,7 +517,7 @@ const Notification = new Lang.Class({
         this._mainButton.connect('clicked', Lang.bind(this, this._onClicked));
         this.actor.add_child(this._mainButton);
 
-        // Separates the icon and title/body
+        // Separates the icon, title/body and close button
         this._hbox = new St.BoxLayout({ style_class: 'notification-main-content' });
         this._mainButton.child = this._hbox;
 
@@ -526,7 +526,16 @@ const Notification = new Lang.Class({
 
         this._titleBodyBox = new St.BoxLayout({ style_class: 'notification-title-body-box',
                                                 vertical: true });
+        this._titleBodyBox.set_x_expand(true);
         this._hbox.add_child(this._titleBodyBox);
+
+        this._closeButton = new St.Button({ style_class: 'notification-close-button',
+                                            can_focus: true });
+        this._closeButton.set_y_align(Clutter.ActorAlign.START);
+        this._closeButton.set_y_expand(true);
+        this._closeButton.child = new St.Icon({ icon_name: 'window-close-symbolic', icon_size: 16 });
+        this._closeButton.connect('clicked', Lang.bind(this, this._onCloseClicked));
+        this._hbox.add_child(this._closeButton);
 
         this._titleBox = new St.BoxLayout({ style_class: 'notification-title-box',
                                             x_expand: true, x_align: Clutter.ActorAlign.START });
@@ -804,7 +813,6 @@ const Notification = new Lang.Class({
     expand: function(animate) {
         this.expanded = true;
         this._sync();
-        this.emit('expanded');
     },
 
     collapseCompleted: function() {
@@ -818,6 +826,10 @@ const Notification = new Lang.Class({
     _onClicked: function() {
         this.emit('clicked');
         this.emit('done-displaying');
+        this.destroy();
+    },
+
+    _onCloseClicked: function() {
         this.destroy();
     },
 
@@ -1523,11 +1535,6 @@ const MessageTray = new Lang.Class({
         this._clickedSummaryItemMouseButton = -1;
         this._clickedSummaryItemAllocationChangedId = 0;
 
-        this._closeButton = Util.makeCloseButton();
-        this._closeButton.hide();
-        this._closeButton.connect('clicked', Lang.bind(this, this._closeNotification));
-        this._notificationWidget.add_actor(this._closeButton);
-
         this._userActiveWhileNotificationShown = false;
 
         this.idleMonitor = Meta.IdleMonitor.get_core();
@@ -1558,7 +1565,6 @@ const MessageTray = new Lang.Class({
         this._keyboardVisible = false;
         this._notificationState = State.HIDDEN;
         this._notificationTimeoutId = 0;
-        this._notificationExpandedId = 0;
         this._summaryBoxPointerState = State.HIDDEN;
         this._summaryBoxPointerTimeoutId = 0;
         this._desktopCloneState = State.HIDDEN;
@@ -1582,7 +1588,6 @@ const MessageTray = new Lang.Class({
         Main.layoutManager.trayBox.add_actor(this._notificationWidget);
         Main.layoutManager.trackChrome(this.actor);
         Main.layoutManager.trackChrome(this._notificationWidget);
-        Main.layoutManager.trackChrome(this._closeButton);
 
         global.screen.connect('in-fullscreen-changed', Lang.bind(this, this._updateState));
         Main.layoutManager.connect('hot-corners-changed', Lang.bind(this, this._hotCornersChanged));
@@ -1732,14 +1737,6 @@ const MessageTray = new Lang.Class({
     _expireNotification: function() {
         this._notificationExpired = true;
         this._updateState();
-    },
-
-    _closeNotification: function() {
-        if (this._notificationState == State.SHOWN) {
-            this._closeButton.hide();
-            this._notification.emit('done-displaying');
-            this._notification.destroy();
-        }
     },
 
     contains: function(source) {
@@ -2398,10 +2395,6 @@ const MessageTray = new Lang.Class({
     _hideNotification: function(animate) {
         this._notificationFocusGrabber.ungrabFocus();
 
-        if (this._notificationExpandedId) {
-            this._notification.disconnect(this._notificationExpandedId);
-            this._notificationExpandedId = 0;
-        }
         if (this._notificationClickedId) {
             this._notification.disconnect(this._notificationClickedId);
             this._notificationClickedId = 0;
@@ -2437,7 +2430,6 @@ const MessageTray = new Lang.Class({
         if (notification.isTransient)
             notification.destroy(NotificationDestroyedReason.EXPIRED);
 
-        this._closeButton.hide();
         this._pointerInNotification = false;
         this._notificationRemoved = false;
         this._notificationBin.child = null;
@@ -2452,20 +2444,12 @@ const MessageTray = new Lang.Class({
     },
 
     _expandNotification: function(autoExpanding) {
-        if (!this._notificationExpandedId)
-            this._notificationExpandedId =
-                this._notification.connect('expanded',
-                                           Lang.bind(this, this._onNotificationExpanded));
         // Don't animate changes in notifications that are auto-expanding.
         this._notification.expand(!autoExpanding);
 
         // Don't focus notifications that are auto-expanding.
         if (!autoExpanding)
             this._ensureNotificationFocused();
-    },
-
-    _onNotificationExpanded: function() {
-        this._closeButton.show();
     },
 
     _ensureNotificationFocused: function() {
