@@ -534,11 +534,22 @@ meta_window_x11_manage (MetaWindow *window)
       }
   }
 
-  /* Put our state back where it should be,
-   * passing TRUE for is_configure_request, ICCCM says
-   * initial map is handled same as configure request
+  /* For override-redirect windows, save the client rect
+   * directly. window->rect was assigned from the XWindowAttributes
+   * in the main meta_window_shared_new.
+   *
+   * For normal windows, do a full ConfigureRequest based on the
+   * window hints, as that's what the ICCCM says to do.
    */
-  if (!window->override_redirect)
+
+  if (window->override_redirect)
+    {
+      MetaWindowX11 *window_x11 = META_WINDOW_X11 (window);
+      MetaWindowX11Private *priv = meta_window_x11_get_instance_private (window_x11);
+
+      priv->client_rect = window->rect;
+    }
+  else
     {
       MetaRectangle rect;
       MetaMoveResizeFlags flags;
@@ -3212,6 +3223,9 @@ void
 meta_window_x11_configure_notify (MetaWindow      *window,
                                   XConfigureEvent *event)
 {
+  MetaWindowX11 *window_x11 = META_WINDOW_X11 (window);
+  MetaWindowX11Private *priv = meta_window_x11_get_instance_private (window_x11);
+
   g_assert (window->override_redirect);
   g_assert (window->frame == NULL);
 
@@ -3219,6 +3233,9 @@ meta_window_x11_configure_notify (MetaWindow      *window,
   window->rect.y = event->y;
   window->rect.width = event->width;
   window->rect.height = event->height;
+
+  priv->client_rect = window->rect;
+
   meta_window_update_monitor (window);
 
   /* Whether an override-redirect window is considered fullscreen depends
