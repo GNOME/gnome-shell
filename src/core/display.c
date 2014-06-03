@@ -2525,21 +2525,19 @@ mru_cmp (gconstpointer a,
  * meta_display_get_tab_list:
  * @display: a #MetaDisplay
  * @type: type of tab list
- * @screen: a #MetaScreen
  * @workspace: (nullable): origin workspace
  *
  * Determine the list of windows that should be displayed for Alt-TAB
  * functionality.  The windows are returned in most recently used order.
  * If @workspace is not %NULL, the list only conains windows that are on
  * @workspace or have the demands-attention hint set; otherwise it contains
- * all windows on @screen.
+ * all windows.
  *
  * Returns: (transfer container) (element-type Meta.Window): List of windows
  */
 GList*
 meta_display_get_tab_list (MetaDisplay   *display,
                            MetaTabList    type,
-                           MetaScreen    *screen,
                            MetaWorkspace *workspace)
 {
   GList *tab_list = NULL;
@@ -2614,7 +2612,7 @@ meta_display_get_tab_next (MetaDisplay   *display,
   gboolean skip;
   GList *tab_list;
   MetaWindow *ret;
-  tab_list = meta_display_get_tab_list (display, type, NULL, workspace);
+  tab_list = meta_display_get_tab_list (display, type, workspace);
 
   if (tab_list == NULL)
     return NULL;

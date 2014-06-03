@@ -94,7 +94,6 @@ guint32 meta_display_get_current_time_roundtrip (MetaDisplay *display);
 
 GList* meta_display_get_tab_list (MetaDisplay   *display,
                                   MetaTabList    type,
-                                  MetaScreen    *screen,
                                   MetaWorkspace *workspace);
 
 MetaWindow* meta_display_get_tab_next (MetaDisplay   *display,
