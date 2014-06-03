@@ -87,7 +87,7 @@ const CtrlAltTabManager = new Lang.Class({
         if (Main.sessionMode.hasWindows && !Main.overview.visible) {
             let screen = global.screen;
             let display = screen.get_display();
-            let windows = display.get_tab_list(Meta.TabList.DOCKS, screen, screen.get_active_workspace ());
+            let windows = display.get_tab_list(Meta.TabList.DOCKS, screen.get_active_workspace ());
             let windowTracker = Shell.WindowTracker.get_default();
             let textureCache = St.TextureCache.get_default();
             for (let i = 0; i < windows.length; i++) {
