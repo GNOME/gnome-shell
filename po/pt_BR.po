@@ -13,25 +13,24 @@
 # Juan Diego Martins da Costa Cruz <juan.martins@ifrn.edu.br>, 2013.
 # Fábio Nogueira <fnogueira@gnome.org>, 2014.
 # Rafael Ferreira <rafael.f.f1@gmail.com>, 2013, 2014.
-# Enrico Nicoletto <liverig@gmail.com>, 2013, 2014.
 # Georges Basile Stavracas Neto <georges.stavracas@gmail.com>, 2014.
+# Enrico Nicoletto <liverig@gmail.com>, 2013, 2014.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-05-19 11:46+0000\n"
-"PO-Revision-Date: 2014-05-19 16:48-0300\n"
-"Last-Translator: Georges Basile Stavracas Neto <georges.stavracas@gmail."
-"com>\n"
+"POT-Creation-Date: 2014-06-03 07:28+0000\n"
+"PO-Revision-Date: 2014-06-03 10:26-0300\n"
+"Last-Translator: Enrico Nicoletto <liverig@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 1.6.4\n"
+"X-Generator: Poedit 1.6.5\n"
 "X-Project-Style: gnome\n"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
@@ -68,13 +67,12 @@ msgid "Window management and application launching"
 msgstr "Gerenciamento de janelas e lançador de aplicativos"
 
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:1
-#: ../js/extensionPrefs/main.js:155
 msgid "GNOME Shell Extension Preferences"
-msgstr "Preferências de extensões do GNOME Shell"
+msgstr "Preferências de extensões do Shell do GNOME"
 
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:2
 msgid "Configure GNOME Shell Extensions"
-msgstr "Configurar extensões do GNOME Shell"
+msgstr "Configurar extensões do Shell do GNOME"
 
 # Traduções do Xfce e da Microsoft usam compositor --Enrico
 #: ../data/gnome-shell-wayland.desktop.in.in.h:1
@@ -287,47 +285,31 @@ msgstr ""
 "GNOME."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:35
-msgid "Arrangement of buttons on the titlebar"
-msgstr "Organização dos botões na barra de título"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:36
-msgid ""
-"This key overrides the key in org.gnome.desktop.wm.preferences when running "
-"GNOME Shell."
-msgstr ""
-"Esta chave sobrescreve a chave em org.gnome.desktop.wm.preferences ao "
-"executar o Shell do GNOME."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:37
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr ""
 "Habilitar contorno ladrilhado ao arrastar janelas sobre as bordas da tela"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:38
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:36
 msgid "Workspaces are managed dynamically"
 msgstr "Espaços de trabalho são gerenciados dinamicamente"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:39
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:37
 msgid "Workspaces only on primary monitor"
 msgstr "Espaços de trabalho apenas no monitor primário"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:40
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:38
 msgid "Delay focus changes in mouse mode until the pointer stops moving"
 msgstr "Atrasar foco altera o modo do mouse até o ponteiro parar de mover"
 
-#: ../js/extensionPrefs/main.js:127
+#: ../js/extensionPrefs/main.js:125
 #, javascript-format
 msgid "There was an error loading the preferences dialog for %s:"
 msgstr "Ocorreu um erro ao carregar o dialogo de preferências para %s:"
 
-#: ../js/extensionPrefs/main.js:167
-msgid "Extension"
-msgstr "Extensão"
-
-#: ../js/extensionPrefs/main.js:191
-msgid "Select an extension to configure using the combobox above."
-msgstr ""
-"Selecione uma extensão para configurar usando a caixa de seleção abaixo."
+#: ../js/extensionPrefs/main.js:157
+#| msgid "Configure GNOME Shell Extensions"
+msgid "GNOME Shell Extensions"
+msgstr "Extensões do Shell do GNOME"
 
 #: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:136
 #: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:429
@@ -350,25 +332,25 @@ msgctxt "button"
 msgid "Sign In"
 msgstr "Entrar"
 
-#: ../js/gdm/loginDialog.js:271
+#: ../js/gdm/loginDialog.js:269
 msgid "Choose Session"
 msgstr "Escolher sessão"
 
-#: ../js/gdm/loginDialog.js:431
+#: ../js/gdm/loginDialog.js:429
 msgid "Not listed?"
 msgstr "Não está listado?"
 
-#: ../js/gdm/loginDialog.js:616
+#: ../js/gdm/loginDialog.js:614
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(ex.: usuário ou %s)"
 
-#: ../js/gdm/loginDialog.js:621 ../js/ui/components/networkAgent.js:262
+#: ../js/gdm/loginDialog.js:619 ../js/ui/components/networkAgent.js:262
 #: ../js/ui/components/networkAgent.js:280
 msgid "Username: "
 msgstr "Nome de usuário: "
 
-#: ../js/gdm/loginDialog.js:924
+#: ../js/gdm/loginDialog.js:922
 msgid "Login Window"
 msgstr "Janela de sessão"
 
@@ -556,11 +538,11 @@ msgctxt "list saturday"
 msgid "S"
 msgstr "Sab"
 
-#: ../js/ui/calendar.js:453
+#: ../js/ui/calendar.js:454
 msgid "Previous month"
 msgstr "Mês anterior"
 
-#: ../js/ui/calendar.js:463
+#: ../js/ui/calendar.js:464
 msgid "Next month"
 msgstr "Próximo mês"
 
@@ -746,77 +728,77 @@ msgid "Mute"
 msgstr "Sem áudio"
 
 #. Translators: Time in 24h format */
-#: ../js/ui/components/telepathyClient.js:958
+#: ../js/ui/components/telepathyClient.js:957
 msgid "%H∶%M"
 msgstr "%H∶%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30" */
-#: ../js/ui/components/telepathyClient.js:965
+#: ../js/ui/components/telepathyClient.js:964
 msgid "Yesterday, %H∶%M"
 msgstr "Ontem, %H∶%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 24h format. i.e. "Monday, 14:30" */
-#: ../js/ui/components/telepathyClient.js:972
+#: ../js/ui/components/telepathyClient.js:971
 msgid "%A, %H∶%M"
 msgstr "%A, %H∶%M"
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 24h format.
 #. i.e. "May 25, 14:30" */
-#: ../js/ui/components/telepathyClient.js:979
+#: ../js/ui/components/telepathyClient.js:978
 msgid "%B %d, %H∶%M"
 msgstr "%d de %B, %H∶%M"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
 #. i.e. "May 25 2012, 14:30" */
-#: ../js/ui/components/telepathyClient.js:985
+#: ../js/ui/components/telepathyClient.js:984
 msgid "%B %d %Y, %H∶%M"
 msgstr "%d de %B de %Y, %H∶%M"
 
 #. Translators: Time in 24h format */
-#: ../js/ui/components/telepathyClient.js:994
+#: ../js/ui/components/telepathyClient.js:990
 msgid "%l∶%M %p"
 msgstr "%l∶%M %p"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 12h format. i.e. "Yesterday, 2:30 pm" */
-#: ../js/ui/components/telepathyClient.js:1001
+#: ../js/ui/components/telepathyClient.js:997
 msgid "Yesterday, %l∶%M %p"
 msgstr "Ontem, %l∶%M %p"
 
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm" */
-#: ../js/ui/components/telepathyClient.js:1008
+#: ../js/ui/components/telepathyClient.js:1004
 msgid "%A, %l∶%M %p"
 msgstr "%A, %l∶%M %p"
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 12h format.
 #. i.e. "May 25, 2:30 pm" */
-#: ../js/ui/components/telepathyClient.js:1015
+#: ../js/ui/components/telepathyClient.js:1011
 msgid "%B %d, %l∶%M %p"
 msgstr "%d de %B, %l∶%M %p"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
 #. i.e. "May 25 2012, 2:30 pm"*/
-#: ../js/ui/components/telepathyClient.js:1021
+#: ../js/ui/components/telepathyClient.js:1017
 msgid "%B %d %Y, %l∶%M %p"
 msgstr "%d de %B de %Y, %l∶%M %p"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name. */
-#: ../js/ui/components/telepathyClient.js:1054
+#: ../js/ui/components/telepathyClient.js:1049
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s agora é conhecido como %s"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example. */
-#: ../js/ui/components/telepathyClient.js:1158
+#: ../js/ui/components/telepathyClient.js:1153
 #, javascript-format
 msgid "Invitation to %s"
 msgstr "Convite para %s"
@@ -824,38 +806,38 @@ msgstr "Convite para %s"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example. */
-#: ../js/ui/components/telepathyClient.js:1166
+#: ../js/ui/components/telepathyClient.js:1161
 #, javascript-format
 msgid "%s is inviting you to join %s"
 msgstr "%s está convidando você para participar de %s"
 
-#: ../js/ui/components/telepathyClient.js:1168
-#: ../js/ui/components/telepathyClient.js:1203
-#: ../js/ui/components/telepathyClient.js:1237
-#: ../js/ui/components/telepathyClient.js:1295
+#: ../js/ui/components/telepathyClient.js:1163
+#: ../js/ui/components/telepathyClient.js:1198
+#: ../js/ui/components/telepathyClient.js:1232
+#: ../js/ui/components/telepathyClient.js:1290
 msgid "Decline"
 msgstr "Recusar"
 
-#: ../js/ui/components/telepathyClient.js:1174
-#: ../js/ui/components/telepathyClient.js:1243
-#: ../js/ui/components/telepathyClient.js:1300
+#: ../js/ui/components/telepathyClient.js:1169
+#: ../js/ui/components/telepathyClient.js:1238
+#: ../js/ui/components/telepathyClient.js:1295
 msgid "Accept"
 msgstr "Aceitar"
 
 #. translators: argument is a contact name like Alice for example. */
-#: ../js/ui/components/telepathyClient.js:1193
+#: ../js/ui/components/telepathyClient.js:1188
 #, javascript-format
 msgid "Video call from %s"
 msgstr "Chamada de vídeo para %s"
 
 #. translators: argument is a contact name like Alice for example. */
-#: ../js/ui/components/telepathyClient.js:1196
+#: ../js/ui/components/telepathyClient.js:1191
 #, javascript-format
 msgid "Call from %s"
 msgstr "Chamada de %s"
 
 #. translators: this is a button label (verb), not a noun */
-#: ../js/ui/components/telepathyClient.js:1210
+#: ../js/ui/components/telepathyClient.js:1205
 msgid "Answer"
 msgstr "Atender"
 
@@ -864,110 +846,110 @@ msgstr "Atender"
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
 #. */
-#: ../js/ui/components/telepathyClient.js:1231
+#: ../js/ui/components/telepathyClient.js:1226
 #, javascript-format
 msgid "%s is sending you %s"
 msgstr "%s está enviando %s"
 
 #. To translators: The parameter is the contact's alias */
-#: ../js/ui/components/telepathyClient.js:1260
+#: ../js/ui/components/telepathyClient.js:1255
 #, javascript-format
 msgid "%s would like permission to see when you are online"
 msgstr "%s quer permissão para vê-lo quando conectado"
 
-#: ../js/ui/components/telepathyClient.js:1346
+#: ../js/ui/components/telepathyClient.js:1341
 msgid "Network error"
 msgstr "Erro de rede"
 
-#: ../js/ui/components/telepathyClient.js:1348
+#: ../js/ui/components/telepathyClient.js:1343
 msgid "Authentication failed"
 msgstr "Falha de autenticação"
 
-#: ../js/ui/components/telepathyClient.js:1350
+#: ../js/ui/components/telepathyClient.js:1345
 msgid "Encryption error"
 msgstr "Erro de criptografia"
 
-#: ../js/ui/components/telepathyClient.js:1352
+#: ../js/ui/components/telepathyClient.js:1347
 msgid "Certificate not provided"
 msgstr "Certificado não fornecido"
 
-#: ../js/ui/components/telepathyClient.js:1354
+#: ../js/ui/components/telepathyClient.js:1349
 msgid "Certificate untrusted"
 msgstr "Certificado não confiável"
 
-#: ../js/ui/components/telepathyClient.js:1356
+#: ../js/ui/components/telepathyClient.js:1351
 msgid "Certificate expired"
 msgstr "Certificado expirado"
 
-#: ../js/ui/components/telepathyClient.js:1358
+#: ../js/ui/components/telepathyClient.js:1353
 msgid "Certificate not activated"
 msgstr "Certificado não ativado"
 
-#: ../js/ui/components/telepathyClient.js:1360
+#: ../js/ui/components/telepathyClient.js:1355
 msgid "Certificate hostname mismatch"
 msgstr "Máquina do certificado não confere"
 
-#: ../js/ui/components/telepathyClient.js:1362
+#: ../js/ui/components/telepathyClient.js:1357
 msgid "Certificate fingerprint mismatch"
 msgstr "Impressão digital do certificado não confere"
 
-#: ../js/ui/components/telepathyClient.js:1364
+#: ../js/ui/components/telepathyClient.js:1359
 msgid "Certificate self-signed"
 msgstr "Certificado auto-assinado"
 
-#: ../js/ui/components/telepathyClient.js:1366
+#: ../js/ui/components/telepathyClient.js:1361
 msgid "Status is set to offline"
 msgstr "O status está definido como desconectado."
 
-#: ../js/ui/components/telepathyClient.js:1368
+#: ../js/ui/components/telepathyClient.js:1363
 msgid "Encryption is not available"
 msgstr "Criptografia não disponível"
 
-#: ../js/ui/components/telepathyClient.js:1370
+#: ../js/ui/components/telepathyClient.js:1365
 msgid "Certificate is invalid"
 msgstr "O certificado é inválido"
 
-#: ../js/ui/components/telepathyClient.js:1372
+#: ../js/ui/components/telepathyClient.js:1367
 msgid "Connection has been refused"
 msgstr "A conexão foi recusada"
 
-#: ../js/ui/components/telepathyClient.js:1374
+#: ../js/ui/components/telepathyClient.js:1369
 msgid "Connection can't be established"
 msgstr "A conexão não pode ser estabelecida"
 
-#: ../js/ui/components/telepathyClient.js:1376
+#: ../js/ui/components/telepathyClient.js:1371
 msgid "Connection has been lost"
 msgstr "Conexão perdida"
 
-#: ../js/ui/components/telepathyClient.js:1378
+#: ../js/ui/components/telepathyClient.js:1373
 msgid "This account is already connected to the server"
 msgstr "Esta conta já está conectada ao servidor"
 
-#: ../js/ui/components/telepathyClient.js:1380
+#: ../js/ui/components/telepathyClient.js:1375
 msgid ""
 "Connection has been replaced by a new connection using the same resource"
 msgstr "A conexão foi substituída por uma nova conexão usando o mesmo recurso"
 
-#: ../js/ui/components/telepathyClient.js:1382
+#: ../js/ui/components/telepathyClient.js:1377
 msgid "The account already exists on the server"
 msgstr "A conta já existe no servidor"
 
-#: ../js/ui/components/telepathyClient.js:1384
+#: ../js/ui/components/telepathyClient.js:1379
 msgid "Server is currently too busy to handle the connection"
 msgstr "O servidor está atualmente muito ocupado para controlar a conexão"
 
-#: ../js/ui/components/telepathyClient.js:1386
+#: ../js/ui/components/telepathyClient.js:1381
 msgid "Certificate has been revoked"
 msgstr "O certificado foi revogado"
 
-#: ../js/ui/components/telepathyClient.js:1388
+#: ../js/ui/components/telepathyClient.js:1383
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr ""
 "O certificado usa um algoritmo de cifragem inseguro ou é criptograficamente "
 "fraco"
 
-#: ../js/ui/components/telepathyClient.js:1390
+#: ../js/ui/components/telepathyClient.js:1385
 msgid ""
 "The length of the server certificate, or the depth of the server certificate "
 "chain, exceed the limits imposed by the cryptography library"
@@ -975,22 +957,22 @@ msgstr ""
 "O comprimento do certificado do servidor, ou a profundidade da cadeia do "
 "certificado excedeu os limites impostos pela biblioteca de criptografia"
 
-#: ../js/ui/components/telepathyClient.js:1392
+#: ../js/ui/components/telepathyClient.js:1387
 msgid "Internal error"
 msgstr "Erro interno"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example. */
-#: ../js/ui/components/telepathyClient.js:1402
+#: ../js/ui/components/telepathyClient.js:1397
 #, javascript-format
 msgid "Unable to connect to %s"
 msgstr "Não foi possível conectar-se a %s"
 
-#: ../js/ui/components/telepathyClient.js:1407
+#: ../js/ui/components/telepathyClient.js:1402
 msgid "View account"
 msgstr "Visualizar conta"
 
-#: ../js/ui/components/telepathyClient.js:1444
+#: ../js/ui/components/telepathyClient.js:1439
 msgid "Unknown reason"
 msgstr "Razão desconhecida"
 
@@ -1167,7 +1149,7 @@ msgstr "Instalar"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Baixar e instalar \"%s\" de extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:645 ../js/ui/status/keyboard.js:335
+#: ../js/ui/keyboard.js:645 ../js/ui/status/keyboard.js:339
 msgid "Keyboard"
 msgstr "Teclado"
 
@@ -1301,7 +1283,7 @@ msgstr "Atividades"
 msgid "Top Bar"
 msgstr "Barra superior"
 
-#: ../js/ui/popupMenu.js:271
+#: ../js/ui/popupMenu.js:279
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -1309,7 +1291,7 @@ msgstr "toggle-switch-intl"
 msgid "Enter a Command"
 msgstr "Digite um comando"
 
-#: ../js/ui/runDialog.js:114 ../js/ui/windowMenu.js:117
+#: ../js/ui/runDialog.js:114 ../js/ui/windowMenu.js:120
 msgid "Close"
 msgstr "Fechar"
 
@@ -1448,7 +1430,7 @@ msgstr "Não conectado"
 msgid "Brightness"
 msgstr "Brilho"
 
-#: ../js/ui/status/keyboard.js:403
+#: ../js/ui/status/keyboard.js:407
 msgid "Show Keyboard Layout"
 msgstr "Exibir disposição de teclado"
 
@@ -1737,43 +1719,43 @@ msgid_plural "Settings changes will revert in %d seconds"
 msgstr[0] "Alterações nas configurações serão revertidas em %d segundo"
 msgstr[1] "Alterações nas configurações serão revertidas em %d segundos"
 
-#: ../js/ui/windowMenu.js:33
+#: ../js/ui/windowMenu.js:34
 msgid "Minimize"
 msgstr "Minimizar"
 
-#: ../js/ui/windowMenu.js:40
+#: ../js/ui/windowMenu.js:41
 msgid "Unmaximize"
 msgstr "Restaurar"
 
-#: ../js/ui/windowMenu.js:44
+#: ../js/ui/windowMenu.js:45
 msgid "Maximize"
 msgstr "Maximizar"
 
-#: ../js/ui/windowMenu.js:51
+#: ../js/ui/windowMenu.js:52
 msgid "Move"
 msgstr "Mover"
 
-#: ../js/ui/windowMenu.js:57
+#: ../js/ui/windowMenu.js:58
 msgid "Resize"
 msgstr "Redimensionar"
 
-#: ../js/ui/windowMenu.js:64
+#: ../js/ui/windowMenu.js:65
 msgid "Move Titlebar Onscreen"
 msgstr "Mover barra de título na tela"
 
-#: ../js/ui/windowMenu.js:69
+#: ../js/ui/windowMenu.js:70
 msgid "Always on Top"
 msgstr "Sempre no topo"
 
-#: ../js/ui/windowMenu.js:86
+#: ../js/ui/windowMenu.js:89
 msgid "Always on Visible Workspace"
 msgstr "Sempre na área de trabalho visível"
 
-#: ../js/ui/windowMenu.js:103
+#: ../js/ui/windowMenu.js:106
 msgid "Move to Workspace Up"
 msgstr "Mover para a área de trabalho acima"
 
-#: ../js/ui/windowMenu.js:108
+#: ../js/ui/windowMenu.js:111
 msgid "Move to Workspace Down"
 msgstr "Mover para a área de trabalho abaixo"
 
@@ -1835,6 +1817,23 @@ msgstr "A senha não pode estar em branco"
 #: ../src/shell-polkit-authentication-agent.c:346
 msgid "Authentication dialog was dismissed by the user"
 msgstr "O diálogo de autenticação foi descartado pelo usuário"
+
+#~ msgid "Arrangement of buttons on the titlebar"
+#~ msgstr "Organização dos botões na barra de título"
+
+#~ msgid ""
+#~ "This key overrides the key in org.gnome.desktop.wm.preferences when "
+#~ "running GNOME Shell."
+#~ msgstr ""
+#~ "Esta chave sobrescreve a chave em org.gnome.desktop.wm.preferences ao "
+#~ "executar o Shell do GNOME."
+
+#~ msgid "Extension"
+#~ msgstr "Extensão"
+
+#~ msgid "Select an extension to configure using the combobox above."
+#~ msgstr ""
+#~ "Selecione uma extensão para configurar usando a caixa de seleção abaixo."
 
 #~ msgid "calendar:MY"
 #~ msgstr "calendar:MY"
