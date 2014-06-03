@@ -504,7 +504,6 @@ const Notification = new Lang.Class({
         this.bannerBodyMarkup = false;
         this._bannerBodyAdded = false;
         this._titleFitsInBannerMode = true;
-        this._titleDirection = Clutter.TextDirection.DEFAULT;
         this._spacing = 0;
         this._scrollPolicy = Gtk.PolicyType.AUTOMATIC;
         this._imageBin = null;
@@ -643,10 +642,11 @@ const Notification = new Lang.Class({
         title = title ? _fixMarkup(title.replace(/\n/g, ' '), false) : '';
         this._titleLabel.clutter_text.set_markup('<b>' + title + '</b>');
 
+        let titleDirection;
         if (Pango.find_base_dir(title, -1) == Pango.Direction.RTL)
-            this._titleDirection = Clutter.TextDirection.RTL;
+            titleDirection = Clutter.TextDirection.RTL;
         else
-            this._titleDirection = Clutter.TextDirection.LTR;
+            titleDirection = Clutter.TextDirection.LTR;
 
         // Let the title's text direction control the overall direction
         // of the notification - in case where different scripts are used
@@ -654,7 +654,7 @@ const Notification = new Lang.Class({
         // arguably for action buttons as well. Labels other than the title
         // will be allocated at the available width, so that their alignment
         // is done correctly automatically.
-        this._table.set_text_direction(this._titleDirection);
+        this._table.set_text_direction(titleDirection);
 
         // Unless the notification has custom content, we save this.bannerBodyText
         // to add it to the content of the notification if the notification is
