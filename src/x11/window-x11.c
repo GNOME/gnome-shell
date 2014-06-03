@@ -204,6 +204,8 @@ send_configure_notify (MetaWindow *window)
   MetaWindowX11Private *priv = meta_window_x11_get_instance_private (window_x11);
   XEvent event;
 
+  g_assert (!window->override_redirect);
+
   /* from twm */
 
   event.type = ConfigureNotify;
@@ -650,12 +652,6 @@ meta_window_x11_unmanage (MetaWindow *window)
   if (META_DISPLAY_HAS_SHAPE (window->display))
     XShapeSelectInput (window->display->xdisplay, window->xwindow, NoEventMask);
 
-  /* The XReparentWindow call in meta_window_destroy_frame() moves the
-   * window so we need to send a configure notify; see bug 399552.  (We
-   * also do this just in case a window got unmaximized.)
-   */
-  send_configure_notify (window);
-
   meta_window_ungrab_keys (window);
   meta_display_ungrab_window_buttons (window->display, window->xwindow);
   meta_display_ungrab_focus_window_button (window->display, window);
@@ -663,7 +659,15 @@ meta_window_x11_unmanage (MetaWindow *window)
   meta_error_trap_pop (window->display);
 
   if (window->frame)
-    meta_window_destroy_frame (window);
+    {
+      /* The XReparentWindow call in meta_window_destroy_frame() moves the
+       * window so we need to send a configure notify; see bug 399552.  (We
+       * also do this just in case a window got unmaximized.)
+       */
+      send_configure_notify (window);
+
+      meta_window_destroy_frame (window);
+    }
 }
 
 static void
