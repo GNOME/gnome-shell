@@ -20,10 +20,11 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "window-private.h"
-
 #ifndef META_WINDOW_X11_PRIVATE_H
 #define META_WINDOW_X11_PRIVATE_H
+
+#include "window-private.h"
+#include "ui/resizepopup.h"
 
 G_BEGIN_DECLS
 

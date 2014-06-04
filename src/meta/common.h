@@ -43,8 +43,6 @@
 #define META_VIRTUAL_CORE_POINTER_ID 2
 #define META_VIRTUAL_CORE_KEYBOARD_ID 3
 
-typedef struct _MetaResizePopup MetaResizePopup;
-
 /**
  * MetaFrameFlags:
  * @META_FRAME_ALLOWS_DELETE: frame allows delete
