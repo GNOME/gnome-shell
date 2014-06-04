@@ -68,6 +68,13 @@ const ScreenshotService = new Lang.Class({
         Gio.DBus.session.own_name('org.gnome.Shell.Screenshot', Gio.BusNameOwnerFlags.REPLACE, null, null);
     },
 
+    _checkArea: function(x, y, width, height) {
+        return x >= 0 && y >= 0 &&
+               width > 0 && height > 0 &&
+               x + width <= global.screen_width &&
+               y + height <= global.screen_height;
+    },
+
     _onScreenshotComplete: function(obj, result, area, filenameUsed, flash, invocation) {
         if (flash && result) {
             let flashspot = new Flashspot(area);
@@ -80,11 +87,10 @@ const ScreenshotService = new Lang.Class({
 
     ScreenshotAreaAsync : function (params, invocation) {
         let [x, y, width, height, flash, filename, callback] = params;
-        if (x < 0 || y < 0 ||
-            width <= 0 || height <= 0 ||
-            x + width > global.screen_width || y + height > global.screen_height) {
-            invocation.return_error_literal(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED,
-                        "Invalid params");
+        if (!this._checkArea(x, y, width, height)) {
+            invocation.return_error_literal(Gio.IOErrorEnum,
+                                            Gio.IOErrorEnum.CANCELLED,
+                                            "Invalid params");
             return;
         }
         let screenshot = new Shell.Screenshot();
@@ -126,9 +132,17 @@ const ScreenshotService = new Lang.Class({
             }));
     },
 
-    FlashArea: function(x, y, width, height) {
+    FlashAreaAsync: function(params, invocation) {
+        let [x, y, width, height] = params;
+        if (!this._checkArea(x, y, width, height)) {
+            invocation.return_error_literal(Gio.IOErrorEnum,
+                                            Gio.IOErrorEnum.CANCELLED,
+                                            "Invalid params");
+            return;
+        }
         let flashspot = new Flashspot({ x : x, y : y, width: width, height: height});
         flashspot.fire();
+        invocation.return_value(null);
     }
 });
 
