@@ -63,6 +63,10 @@ function _patchLayoutClass(layoutClass, styleProps) {
     };
 }
 
+function _adjustEasingTime(msecs) {
+    return St.get_slow_down_factor() * msecs;
+}
+
 function _loggingFunc() {
     let fields = {'MESSAGE': [].join.call(arguments, ', ')};
     let domain = "GNOME Shell";
@@ -98,6 +102,15 @@ function init() {
     _patchLayoutClass(Clutter.GridLayout, { row_spacing: 'spacing-rows',
                                             column_spacing: 'spacing-columns' });
     _patchLayoutClass(Clutter.BoxLayout, { spacing: 'spacing' });
+
+    let origSetEasingDuration = Clutter.Actor.prototype.set_easing_duration;
+    Clutter.Actor.prototype.set_easing_duration = function(msecs) {
+        origSetEasingDuration.call(this, _adjustEasingTime(msecs));
+    };
+    let origSetEasingDelay = Clutter.Actor.prototype.set_easing_delay;
+    Clutter.Actor.prototype.set_easing_delay = function(msecs) {
+        origSetEasingDelay.call(this, _adjustEasingTime(msecs));
+    };
 
     Clutter.Actor.prototype.toString = function() {
         return St.describe_actor(this);
