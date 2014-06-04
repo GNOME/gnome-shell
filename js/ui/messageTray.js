@@ -111,7 +111,6 @@ const FocusGrabber = new Lang.Class({
         if (this._focused)
             return;
 
-        this._prevFocusedWindow = global.display.focus_window;
         this._prevKeyFocusActor = global.stage.get_key_focus();
 
         this._focusActorChangedId = global.stage.connect('notify::key-focus', Lang.bind(this, this._focusActorChanged));
