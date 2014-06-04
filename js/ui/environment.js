@@ -94,6 +94,15 @@ function init() {
                                             column_spacing: 'spacing-columns' });
     _patchLayoutClass(Clutter.BoxLayout, { spacing: 'spacing' });
 
+    let origSetEasingDuration = Clutter.Actor.prototype.set_easing_duration;
+    Clutter.Actor.prototype.set_easing_duration = function(msecs) {
+        origSetEasingDuration.call(this, adjustAnimationTime(msecs));
+    };
+    let origSetEasingDelay = Clutter.Actor.prototype.set_easing_delay;
+    Clutter.Actor.prototype.set_easing_delay = function(msecs) {
+        origSetEasingDelay.call(this, adjustAnimationTime(msecs));
+    };
+
     Clutter.Actor.prototype.toString = function() {
         return St.describe_actor(this);
     };
