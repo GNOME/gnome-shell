@@ -125,8 +125,6 @@ AC_ARG_WITH([xwayland-path],
 AM_GLIB_GNU_GETTEXT
 
 ## here we get the flags we'll actually use
-# GRegex requires Glib-2.14.0
-PKG_CHECK_MODULES(ALL, glib-2.0 >= 2.14.0)
 
 # Unconditionally use this dir to avoid a circular dep with gnomecc
 GNOME_KEYBINDINGS_KEYSDIR="${datadir}/gnome-control-center/keybindings"
@@ -298,17 +296,6 @@ if test "$found_sm" = "yes"; then
 fi
 
 AM_CONDITIONAL(HAVE_SM, test "$found_sm" = "yes")
-
-HOST_ALIAS=$host_alias
-AC_SUBST(HOST_ALIAS)
-
-AC_PATH_PROG(GDK_PIXBUF_CSOURCE, gdk-pixbuf-csource, no)
-
-if test x"$GDK_PIXBUF_CSOURCE" = xno; then
-  AC_MSG_ERROR([gdk-pixbuf-csource executable not found in your path - should be installed with GTK])
-fi
-
-AC_SUBST(GDK_PIXBUF_CSOURCE)
 
 AC_PATH_PROG(ZENITY, zenity, no)
 if test x"$ZENITY" = xno; then

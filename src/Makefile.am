@@ -5,7 +5,7 @@ lib_LTLIBRARIES = libmutter.la
 
 SUBDIRS=compositor/plugins
 
-INCLUDES=								\
+AM_CPPFLAGS = \
 	-DCLUTTER_ENABLE_COMPOSITOR_API					\
 	-DCLUTTER_ENABLE_EXPERIMENTAL_API				\
 	-DCOGL_ENABLE_EXPERIMENTAL_API					\
@@ -18,8 +18,7 @@ INCLUDES=								\
 	-I$(srcdir)/ui							\
 	-I$(srcdir)/compositor						\
 	-DMUTTER_LIBEXECDIR=\"$(libexecdir)\"				\
-	-DHOST_ALIAS=\"@HOST_ALIAS@\"					\
-	-DMUTTER_LOCALEDIR=\"$(prefix)/@DATADIRNAME@/locale\"		\
+	-DMUTTER_LOCALEDIR=\"$(localedir)\"				\
 	-DMUTTER_PKGDATADIR=\"$(pkgdatadir)\"				\
 	-DMUTTER_DATADIR=\"$(datadir)\"					\
 	-DG_LOG_DOMAIN=\"mutter\"					\
@@ -29,9 +28,9 @@ INCLUDES=								\
 	-DMUTTER_MICRO_VERSION=$(MUTTER_MICRO_VERSION)			\
 	-DMUTTER_PLUGIN_API_VERSION=$(MUTTER_PLUGIN_API_VERSION)	\
 	-DMUTTER_PKGLIBDIR=\"$(pkglibdir)\"				\
-	-DMUTTER_PLUGIN_DIR=\"@MUTTER_PLUGIN_DIR@\"			\
+	-DMUTTER_PLUGIN_DIR=\"$(MUTTER_PLUGIN_DIR)\"			\
 	-DGETTEXT_PACKAGE=\"$(GETTEXT_PACKAGE)\"			\
-	-DXWAYLAND_PATH='"@XWAYLAND_PATH@"'
+	-DXWAYLAND_PATH=\"$(XWAYLAND_PATH)\"
 
 mutter_built_sources = \
 	$(dbus_idle_built_sources)		\
@@ -324,7 +323,7 @@ INTROSPECTION_GIRS = Meta-$(api_version).gir
 Meta-$(api_version).gir: libmutter.la
 @META_GIR@_INCLUDES = GObject-2.0 GDesktopEnums-3.0 Gdk-3.0 Gtk-3.0 Clutter-1.0 xlib-2.0 xfixes-4.0 Cogl-1.0
 @META_GIR@_EXPORT_PACKAGES = libmutter
-@META_GIR@_CFLAGS = $(INCLUDES)
+@META_GIR@_CFLAGS = $(AM_CPPFLAGS)
 @META_GIR@_LIBS = libmutter.la
 @META_GIR@_FILES =				\
 	mutter-enum-types.h			\
@@ -351,7 +350,7 @@ desktopfiles_in_files=mutter.desktop.in
 desktopfiles_files=$(desktopfiles_in_files:.desktop.in=.desktop)
 desktopfiles_DATA = $(desktopfiles_files)
 
-xmldir       = @GNOME_KEYBINDINGS_KEYSDIR@
+xmldir       = $(GNOME_KEYBINDINGS_KEYSDIR)
 xml_in_files = \
         50-mutter-navigation.xml.in	\
         50-mutter-system.xml.in		\
