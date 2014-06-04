@@ -145,3 +145,17 @@ function init() {
     Tweener.init();
     String.prototype.format = Format.format;
 }
+
+// adjustAnimationTime:
+// @msecs: time in milliseconds
+//
+// Adjust @msecs to account for St's enable-animations
+// and slow-down-factor settings
+function adjustAnimationTime(msecs) {
+    let settings = St.Settings.get();
+
+    if (!settings.enable_animations)
+        return 1;
+    return settings.slow_down_factor * msecs;
+}
+
