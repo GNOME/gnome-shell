@@ -368,10 +368,8 @@ convertdir = $(datadir)/GConf/gsettings
 convert_DATA = mutter-schemas.convert
 
 CLEANFILES =					\
-	mutter.desktop				\
-	mutter-wm.desktop			\
-	org.gnome.mutter.gschema.xml		\
-	org.gnome.mutter.wayland.gschema.xml	\
+	$(desktopfiles_DATA)			\
+	$(gsettings_SCHEMAS)			\
 	$(xml_DATA)				\
 	$(mutter_built_sources)			\
 	$(typelib_DATA)				\
@@ -381,7 +379,7 @@ pkgconfigdir = $(libdir)/pkgconfig
 
 pkgconfig_DATA = libmutter.pc
 
-EXTRA_DIST=$(desktopfiles_files) 	\
+EXTRA_DIST =				\
 	$(wmproperties_files)		\
 	$(IMAGES) 			\
 	$(desktopfiles_in_files)	\
