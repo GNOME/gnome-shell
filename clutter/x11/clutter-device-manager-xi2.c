@@ -666,8 +666,15 @@ translate_coords (ClutterStageX11 *stage_x11,
                   gfloat          *x_out,
                   gfloat          *y_out)
 {
-  *x_out = CLAMP (event_x, 0, stage_x11->xwin_width)  / stage_x11->scale_factor;
-  *y_out = CLAMP (event_y, 0, stage_x11->xwin_height) / stage_x11->scale_factor;
+  ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_x11);
+  ClutterActor *stage = CLUTTER_ACTOR (stage_cogl->wrapper);
+  gfloat stage_width;
+  gfloat stage_height;
+
+  clutter_actor_get_size (stage, &stage_width, &stage_height);
+
+  *x_out = CLAMP (event_x, 0, stage_width)  / stage_x11->scale_factor;
+  *y_out = CLAMP (event_y, 0, stage_height) / stage_x11->scale_factor;
 }
 
 static gdouble
