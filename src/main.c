@@ -34,6 +34,8 @@ extern GType gnome_shell_plugin_get_type (void);
 #define SHELL_DBUS_SERVICE "org.gnome.Shell"
 #define MAGNIFIER_DBUS_SERVICE "org.gnome.Magnifier"
 
+#define OVERRIDES_SCHEMA "org.gnome.shell.overrides"
+
 #define WM_NAME "GNOME Shell"
 #define GNOME_WM_KEYBINDINGS "Mutter,GNOME Shell"
 
@@ -165,6 +167,23 @@ shell_dbus_init (gboolean replace)
                            "org.gnome.Caribou.Keyboard", FALSE);
   g_object_unref (bus);
   g_object_unref (session);
+}
+
+static void
+shell_prefs_init (void)
+{
+  ShellGlobal *global = shell_global_get ();
+  GSettings *settings = shell_global_get_overrides_settings (global);
+  char **keys, **k;
+
+  if (!settings)
+    return;
+
+  keys = g_settings_list_keys (settings);
+  for (keys = k = g_settings_list_keys (settings); *k; k++)
+    meta_prefs_override_preference_schema (*k, OVERRIDES_SCHEMA);
+
+  g_strfreev (keys);
 }
 
 static void
@@ -433,6 +452,8 @@ main (int argc, char **argv)
     session_mode = is_gdm_mode ? "gdm" : "user";
 
   _shell_global_init ("session-mode", session_mode, NULL);
+
+  shell_prefs_init ();
 
   ecode = meta_run ();
 

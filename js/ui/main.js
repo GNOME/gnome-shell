@@ -74,7 +74,6 @@ let _startDate;
 let _defaultCssStylesheet = null;
 let _cssStylesheet = null;
 let _a11ySettings = null;
-let dynamicWorkspacesSchema = null;
 
 function _sessionUpdated() {
     _loadDefaultStylesheet();
@@ -111,24 +110,12 @@ function start() {
 
     sessionMode = new SessionMode.SessionMode();
     sessionMode.connect('updated', _sessionUpdated);
-    _initializePrefs();
     _initializeUI();
 
     shellDBusService = new ShellDBus.GnomeShell();
     shellMountOpDBusService = new ShellMountOperation.GnomeShellMountOpHandler();
 
     _sessionUpdated();
-}
-
-function _initializePrefs() {
-    let keys = new Gio.Settings({ schema: sessionMode.overridesSchema }).list_keys();
-    for (let i = 0; i < keys.length; i++)
-        Meta.prefs_override_preference_schema(keys[i], sessionMode.overridesSchema);
-
-    if (keys.indexOf('dynamic-workspaces') > -1)
-        dynamicWorkspacesSchema = sessionMode.overridesSchema;
-    else
-        dynamicWorkspacesSchema = 'org.gnome.mutter';
 }
 
 function _initializeUI() {

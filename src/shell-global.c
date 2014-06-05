@@ -1356,6 +1356,37 @@ shell_global_get_settings (ShellGlobal *global)
 }
 
 /**
+ * shell_global_get_overrides_settings:
+ * @global: A #ShellGlobal
+ *
+ * Get the session overrides GSettings instance.
+ *
+ * Return value: (transfer none): The GSettings object
+ */
+GSettings *
+shell_global_get_overrides_settings (ShellGlobal *global)
+{
+  static GSettings *settings = NULL;
+  const char *schema;
+
+  g_return_val_if_fail (SHELL_IS_GLOBAL (global), NULL);
+
+  if (!settings)
+    {
+      if (strcmp (global->session_mode, "classic") == 0)
+        schema = "org.gnome.shell.extensions.classic-overrides";
+      else if (strcmp (global->session_mode, "user") == 0)
+        schema = "org.gnome.shell.overrides";
+      else
+        return NULL;
+
+      settings = g_settings_new (schema);
+    }
+
+  return settings;
+}
+
+/**
  * shell_global_get_current_time:
  * @global: A #ShellGlobal
  *

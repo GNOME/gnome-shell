@@ -35,6 +35,7 @@ GdkScreen     *shell_global_get_gdk_screen            (ShellGlobal *global);
 MetaDisplay   *shell_global_get_display               (ShellGlobal *global);
 GList         *shell_global_get_window_actors         (ShellGlobal *global);
 GSettings     *shell_global_get_settings              (ShellGlobal *global);
+GSettings     *shell_global_get_overrides_settings    (ShellGlobal *global);
 guint32        shell_global_get_current_time          (ShellGlobal *global);
 
 
