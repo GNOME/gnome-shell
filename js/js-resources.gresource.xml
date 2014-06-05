@@ -25,6 +25,7 @@
     <file>misc/util.js</file>
 
     <file>perf/core.js</file>
+    <file>perf/hwtest.js</file>
 
     <file>portalHelper/main.js</file>
 
