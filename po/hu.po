@@ -6,21 +6,23 @@
 # Lukács Bence <lukacs.bence1 at gmail dot com>, 2012.
 # Balázs Úr <urbalazs at gmail dot com>, 2012.
 # Balázs Úr <urbalazs@gmail.com>, 2014.
+# Balázs Meskó <meskobalazs at gmail dot com>, 2014.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-04-13 07:59+0000\n"
-"PO-Revision-Date: 2014-04-13 15:41+0200\n"
-"Last-Translator: Balázs Úr <urbalazs@gmail.com>\n"
-"Language-Team: Hungarian <openscope at googlegroups dot com>\n"
+"POT-Creation-Date: 2014-06-01 07:29+0000\n"
+"PO-Revision-Date: 2014-06-03 20:23+0200\n"
+"Last-Translator: Balázs Meskó <meskobalazs at gmail dot com>\n"
+"Language-Team: magyar <>\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms:  nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 1.2\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Gtranslator 2.91.6\n"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
 msgid "System"
@@ -56,7 +58,6 @@ msgid "Window management and application launching"
 msgstr "Ablakkezelés és alkalmazásindítás"
 
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:1
-#: ../js/extensionPrefs/main.js:155
 msgid "GNOME Shell Extension Preferences"
 msgstr "GNOME Shell kiterjesztések beállításai"
 
@@ -269,46 +270,31 @@ msgstr ""
 "GNOME Shell fut."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:35
-msgid "Arrangement of buttons on the titlebar"
-msgstr "A gombok elrendezése az ablak címsorában"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:36
-msgid ""
-"This key overrides the key in org.gnome.desktop.wm.preferences when running "
-"GNOME Shell."
-msgstr ""
-"Ez a kulcs felülbírálja az org.gnome.desktop.wm.preferences helyen lévő "
-"kulcsot, amikor a GNOME Shell fut."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:37
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr "Szélek csempézésének engedélyezése ablakok képernyőszélekre ejtésekor"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:38
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:36
 msgid "Workspaces are managed dynamically"
 msgstr "Munkaterületek dinamikus kezelése"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:39
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:37
 msgid "Workspaces only on primary monitor"
 msgstr "Munkaterületek csak az elsődleges monitoron"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:40
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:38
 msgid "Delay focus changes in mouse mode until the pointer stops moving"
 msgstr ""
 "Fókuszváltozások késleltetése a mutató mozgásának megállásáig egér módban"
 
-#: ../js/extensionPrefs/main.js:127
+#: ../js/extensionPrefs/main.js:125
 #, javascript-format
 msgid "There was an error loading the preferences dialog for %s:"
 msgstr "Hiba történt a(z) %s beállításablakának betöltésekor:"
 
-#: ../js/extensionPrefs/main.js:167
-msgid "Extension"
-msgstr "Kiterjesztés"
-
-#: ../js/extensionPrefs/main.js:191
-msgid "Select an extension to configure using the combobox above."
-msgstr "Válasszon egy beállítandó kiterjesztést a fenti legördülő menüből."
+#: ../js/extensionPrefs/main.js:157
+#| msgid "Configure GNOME Shell Extensions"
+msgid "GNOME Shell Extensions"
+msgstr "GNOME Shell kiterjesztések"
 
 #: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:136
 #: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:429
@@ -331,25 +317,25 @@ msgctxt "button"
 msgid "Sign In"
 msgstr "Bejelentkezés"
 
-#: ../js/gdm/loginDialog.js:271
+#: ../js/gdm/loginDialog.js:269
 msgid "Choose Session"
 msgstr "Válasszon munkamenetet"
 
-#: ../js/gdm/loginDialog.js:431
+#: ../js/gdm/loginDialog.js:429
 msgid "Not listed?"
 msgstr "Nincs a listán?"
 
-#: ../js/gdm/loginDialog.js:616
+#: ../js/gdm/loginDialog.js:614
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(például: felhasználó vagy %s)"
 
-#: ../js/gdm/loginDialog.js:621 ../js/ui/components/networkAgent.js:262
+#: ../js/gdm/loginDialog.js:619 ../js/ui/components/networkAgent.js:262
 #: ../js/ui/components/networkAgent.js:280
 msgid "Username: "
 msgstr "Felhasználónév: "
 
-#: ../js/gdm/loginDialog.js:924
+#: ../js/gdm/loginDialog.js:922
 msgid "Login Window"
 msgstr "Bejelentkezési ablak"
 
@@ -374,29 +360,34 @@ msgstr "A parancs nem dolgozható fel:"
 msgid "Execution of “%s” failed:"
 msgstr "„%s” végrehajtása meghiúsult:"
 
-#: ../js/ui/appDisplay.js:636
+#: ../js/ui/appDisplay.js:640
 msgid "Frequently used applications will appear here"
 msgstr "Itt jelennek meg a gyakran használt alkalmazások"
 
-#: ../js/ui/appDisplay.js:747
+#: ../js/ui/appDisplay.js:751
 msgid "Frequent"
 msgstr "Gyakori"
 
-#: ../js/ui/appDisplay.js:754
+#: ../js/ui/appDisplay.js:758
 msgid "All"
 msgstr "Összes"
 
-#: ../js/ui/appDisplay.js:1567
+#: ../js/ui/appDisplay.js:1571
 msgid "New Window"
 msgstr "Új ablak"
 
-#: ../js/ui/appDisplay.js:1589 ../js/ui/dash.js:285
+#: ../js/ui/appDisplay.js:1593 ../js/ui/dash.js:285
 msgid "Remove from Favorites"
 msgstr "Eltávolítás a Kedvencek közül"
 
-#: ../js/ui/appDisplay.js:1595
+#: ../js/ui/appDisplay.js:1599
 msgid "Add to Favorites"
 msgstr "Hozzáadás a Kedvencekhez"
+
+#: ../js/ui/appDisplay.js:1608
+#| msgid "Show Text"
+msgid "Show Details"
+msgstr "Részletek megjelenítése"
 
 #: ../js/ui/appFavorites.js:87
 #, javascript-format
@@ -409,7 +400,7 @@ msgid "%s has been removed from your favorites."
 msgstr "%s eltávolítva a Kedvencek közül"
 
 #: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:810
-#: ../js/ui/status/system.js:334
+#: ../js/ui/status/system.js:337
 msgid "Settings"
 msgstr "Beállítások"
 
@@ -420,14 +411,14 @@ msgstr "Háttér megváltoztatása…"
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #. */
-#: ../js/ui/calendar.js:64
+#: ../js/ui/calendar.js:67
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Egész nap"
 
 #. Translators: Shown in calendar event list, if 24h format,
 #. \u2236 is a ratio character, similar to : */
-#: ../js/ui/calendar.js:70
+#: ../js/ui/calendar.js:73
 msgctxt "event list time"
 msgid "%H∶%M"
 msgstr "%k.%M"
@@ -435,7 +426,7 @@ msgstr "%k.%M"
 #. Translators: Shown in calendar event list, if 12h format,
 #. \u2236 is a ratio character, similar to : and \u2009 is
 #. a thin space */
-#: ../js/ui/calendar.js:79
+#: ../js/ui/calendar.js:82
 msgctxt "event list time"
 msgid "%l∶%M %p"
 msgstr "%l.%M  %p"
@@ -445,43 +436,43 @@ msgstr "%l.%M  %p"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #. */
-#: ../js/ui/calendar.js:110
+#: ../js/ui/calendar.js:113
 msgctxt "grid sunday"
 msgid "S"
 msgstr "V"
 
 #. Translators: Calendar grid abbreviation for Monday */
-#: ../js/ui/calendar.js:112
+#: ../js/ui/calendar.js:115
 msgctxt "grid monday"
 msgid "M"
 msgstr "H"
 
 #. Translators: Calendar grid abbreviation for Tuesday */
-#: ../js/ui/calendar.js:114
+#: ../js/ui/calendar.js:117
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "K"
 
 #. Translators: Calendar grid abbreviation for Wednesday */
-#: ../js/ui/calendar.js:116
+#: ../js/ui/calendar.js:119
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "Sz"
 
 #. Translators: Calendar grid abbreviation for Thursday */
-#: ../js/ui/calendar.js:118
+#: ../js/ui/calendar.js:121
 msgctxt "grid thursday"
 msgid "T"
 msgstr "Cs"
 
 #. Translators: Calendar grid abbreviation for Friday */
-#: ../js/ui/calendar.js:120
+#: ../js/ui/calendar.js:123
 msgctxt "grid friday"
 msgid "F"
 msgstr "P"
 
 #. Translators: Calendar grid abbreviation for Saturday */
-#: ../js/ui/calendar.js:122
+#: ../js/ui/calendar.js:125
 msgctxt "grid saturday"
 msgid "S"
 msgstr "Sz"
@@ -492,89 +483,85 @@ msgstr "Sz"
 #. * so they need to be unique (e.g. Tuesday and Thursday cannot
 #. * both be 'T').
 #. */
-#: ../js/ui/calendar.js:135
+#: ../js/ui/calendar.js:138
 msgctxt "list sunday"
 msgid "Su"
 msgstr "V"
 
 #. Translators: Event list abbreviation for Monday */
-#: ../js/ui/calendar.js:137
+#: ../js/ui/calendar.js:140
 msgctxt "list monday"
 msgid "M"
 msgstr "H"
 
 #. Translators: Event list abbreviation for Tuesday */
-#: ../js/ui/calendar.js:139
+#: ../js/ui/calendar.js:142
 msgctxt "list tuesday"
 msgid "T"
 msgstr "K"
 
 #. Translators: Event list abbreviation for Wednesday */
-#: ../js/ui/calendar.js:141
+#: ../js/ui/calendar.js:144
 msgctxt "list wednesday"
 msgid "W"
 msgstr "Sze"
 
 #. Translators: Event list abbreviation for Thursday */
-#: ../js/ui/calendar.js:143
+#: ../js/ui/calendar.js:146
 msgctxt "list thursday"
 msgid "Th"
 msgstr "Cs"
 
 #. Translators: Event list abbreviation for Friday */
-#: ../js/ui/calendar.js:145
+#: ../js/ui/calendar.js:148
 msgctxt "list friday"
 msgid "F"
 msgstr "P"
 
 #. Translators: Event list abbreviation for Saturday */
-#: ../js/ui/calendar.js:147
+#: ../js/ui/calendar.js:150
 msgctxt "list saturday"
 msgid "S"
 msgstr "Szo"
 
-#: ../js/ui/calendar.js:390
-msgid "calendar:MY"
-msgstr "calendar:YM"
-
-#: ../js/ui/calendar.js:450
+#: ../js/ui/calendar.js:454
 msgid "Previous month"
 msgstr "Előző hónap"
 
-#: ../js/ui/calendar.js:460
+#: ../js/ui/calendar.js:464
 msgid "Next month"
 msgstr "Következő hónap"
 
 #. Translators: Text to show if there are no events */
-#: ../js/ui/calendar.js:772
+#: ../js/ui/calendar.js:775
 msgid "Nothing Scheduled"
 msgstr "Semmi sincs ütemezve"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year */
-#: ../js/ui/calendar.js:790
+#: ../js/ui/calendar.js:793
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %B %d."
 
 #. Translators: Shown on calendar heading when selected day occurs on different year */
-#: ../js/ui/calendar.js:793
+#: ../js/ui/calendar.js:796
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %Y. %B %d."
 
-#: ../js/ui/calendar.js:804
+#: ../js/ui/calendar.js:807
 msgid "Today"
 msgstr "Ma"
 
-#: ../js/ui/calendar.js:808
+#: ../js/ui/calendar.js:811
 msgid "Tomorrow"
 msgstr "Holnap"
 
-#: ../js/ui/calendar.js:819
+#: ../js/ui/calendar.js:822
 msgid "This week"
 msgstr "Ezen a héten"
 
-#: ../js/ui/calendar.js:827
+#: ../js/ui/calendar.js:830
 msgid "Next week"
 msgstr "Jövő héten"
 
@@ -727,77 +714,77 @@ msgid "Mute"
 msgstr "Némítás"
 
 #. Translators: Time in 24h format */
-#: ../js/ui/components/telepathyClient.js:958
+#: ../js/ui/components/telepathyClient.js:957
 msgid "%H∶%M"
 msgstr "%k.%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30" */
-#: ../js/ui/components/telepathyClient.js:965
+#: ../js/ui/components/telepathyClient.js:964
 msgid "Yesterday, %H∶%M"
 msgstr "Tegnap, %k.%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 24h format. i.e. "Monday, 14:30" */
-#: ../js/ui/components/telepathyClient.js:972
+#: ../js/ui/components/telepathyClient.js:971
 msgid "%A, %H∶%M"
 msgstr "%A %k.%M"
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 24h format.
 #. i.e. "May 25, 14:30" */
-#: ../js/ui/components/telepathyClient.js:979
+#: ../js/ui/components/telepathyClient.js:978
 msgid "%B %d, %H∶%M"
 msgstr "%B %d., %k.%M"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
 #. i.e. "May 25 2012, 14:30" */
-#: ../js/ui/components/telepathyClient.js:985
+#: ../js/ui/components/telepathyClient.js:984
 msgid "%B %d %Y, %H∶%M"
 msgstr "%Y. %B %d., %k.%M"
 
 #. Translators: Time in 24h format */
-#: ../js/ui/components/telepathyClient.js:994
+#: ../js/ui/components/telepathyClient.js:990
 msgid "%l∶%M %p"
 msgstr "%P %l.%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 12h format. i.e. "Yesterday, 2:30 pm" */
-#: ../js/ui/components/telepathyClient.js:1001
+#: ../js/ui/components/telepathyClient.js:997
 msgid "Yesterday, %l∶%M %p"
 msgstr "Tegnap %l.%M %P"
 
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm" */
-#: ../js/ui/components/telepathyClient.js:1008
+#: ../js/ui/components/telepathyClient.js:1004
 msgid "%A, %l∶%M %p"
 msgstr "%A, %l.%M %P"
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 12h format.
 #. i.e. "May 25, 2:30 pm" */
-#: ../js/ui/components/telepathyClient.js:1015
+#: ../js/ui/components/telepathyClient.js:1011
 msgid "%B %d, %l∶%M %p"
 msgstr "%B %d., %l.%M  %p"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
 #. i.e. "May 25 2012, 2:30 pm"*/
-#: ../js/ui/components/telepathyClient.js:1021
+#: ../js/ui/components/telepathyClient.js:1017
 msgid "%B %d %Y, %l∶%M %p"
 msgstr "%Y. %B %d., %l.%M  %p"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name. */
-#: ../js/ui/components/telepathyClient.js:1054
+#: ../js/ui/components/telepathyClient.js:1049
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s mostantól %s néven ismert"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example. */
-#: ../js/ui/components/telepathyClient.js:1158
+#: ../js/ui/components/telepathyClient.js:1153
 #, javascript-format
 msgid "Invitation to %s"
 msgstr "Meghívás ide: %s"
@@ -805,38 +792,38 @@ msgstr "Meghívás ide: %s"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example. */
-#: ../js/ui/components/telepathyClient.js:1166
+#: ../js/ui/components/telepathyClient.js:1161
 #, javascript-format
 msgid "%s is inviting you to join %s"
 msgstr "%s kéri, hogy csatlakozzon ehhez: %s"
 
-#: ../js/ui/components/telepathyClient.js:1168
-#: ../js/ui/components/telepathyClient.js:1203
-#: ../js/ui/components/telepathyClient.js:1237
-#: ../js/ui/components/telepathyClient.js:1295
+#: ../js/ui/components/telepathyClient.js:1163
+#: ../js/ui/components/telepathyClient.js:1198
+#: ../js/ui/components/telepathyClient.js:1232
+#: ../js/ui/components/telepathyClient.js:1290
 msgid "Decline"
 msgstr "Elutasítás"
 
-#: ../js/ui/components/telepathyClient.js:1174
-#: ../js/ui/components/telepathyClient.js:1243
-#: ../js/ui/components/telepathyClient.js:1300
+#: ../js/ui/components/telepathyClient.js:1169
+#: ../js/ui/components/telepathyClient.js:1238
+#: ../js/ui/components/telepathyClient.js:1295
 msgid "Accept"
 msgstr "Elfogadás"
 
 #. translators: argument is a contact name like Alice for example. */
-#: ../js/ui/components/telepathyClient.js:1193
+#: ../js/ui/components/telepathyClient.js:1188
 #, javascript-format
 msgid "Video call from %s"
 msgstr "Videohívás tőle: %s"
 
 #. translators: argument is a contact name like Alice for example. */
-#: ../js/ui/components/telepathyClient.js:1196
+#: ../js/ui/components/telepathyClient.js:1191
 #, javascript-format
 msgid "Call from %s"
 msgstr "Hívás tőle: %s"
 
 #. translators: this is a button label (verb), not a noun */
-#: ../js/ui/components/telepathyClient.js:1210
+#: ../js/ui/components/telepathyClient.js:1205
 msgid "Answer"
 msgstr "Válasz"
 
@@ -845,111 +832,111 @@ msgstr "Válasz"
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
 #. */
-#: ../js/ui/components/telepathyClient.js:1231
+#: ../js/ui/components/telepathyClient.js:1226
 #, javascript-format
 msgid "%s is sending you %s"
 msgstr "%s a következőt küldi: %s"
 
 #. To translators: The parameter is the contact's alias */
-#: ../js/ui/components/telepathyClient.js:1260
+#: ../js/ui/components/telepathyClient.js:1255
 #, javascript-format
 msgid "%s would like permission to see when you are online"
 msgstr "%s engedélyt kér, hogy láthassa az Ön elérhető állapotát"
 
-#: ../js/ui/components/telepathyClient.js:1346
+#: ../js/ui/components/telepathyClient.js:1341
 msgid "Network error"
 msgstr "Hálózati hiba"
 
-#: ../js/ui/components/telepathyClient.js:1348
+#: ../js/ui/components/telepathyClient.js:1343
 msgid "Authentication failed"
 msgstr "A hitelesítés meghiúsult"
 
-#: ../js/ui/components/telepathyClient.js:1350
+#: ../js/ui/components/telepathyClient.js:1345
 msgid "Encryption error"
 msgstr "Titkosítási hiba"
 
-#: ../js/ui/components/telepathyClient.js:1352
+#: ../js/ui/components/telepathyClient.js:1347
 msgid "Certificate not provided"
 msgstr "Nincs megadva tanúsítvány"
 
-#: ../js/ui/components/telepathyClient.js:1354
+#: ../js/ui/components/telepathyClient.js:1349
 msgid "Certificate untrusted"
 msgstr "A tanúsítvány nem megbízható"
 
-#: ../js/ui/components/telepathyClient.js:1356
+#: ../js/ui/components/telepathyClient.js:1351
 msgid "Certificate expired"
 msgstr "A tanúsítvány lejárt"
 
-#: ../js/ui/components/telepathyClient.js:1358
+#: ../js/ui/components/telepathyClient.js:1353
 msgid "Certificate not activated"
 msgstr "A tanúsítvány nincs aktiválva"
 
-#: ../js/ui/components/telepathyClient.js:1360
+#: ../js/ui/components/telepathyClient.js:1355
 msgid "Certificate hostname mismatch"
 msgstr "A tanúsítvány gépneve eltér"
 
-#: ../js/ui/components/telepathyClient.js:1362
+#: ../js/ui/components/telepathyClient.js:1357
 msgid "Certificate fingerprint mismatch"
 msgstr "A tanúsítvány ujjlenyomata eltér"
 
-#: ../js/ui/components/telepathyClient.js:1364
+#: ../js/ui/components/telepathyClient.js:1359
 msgid "Certificate self-signed"
 msgstr "A tanúsítvány önaláírt"
 
-#: ../js/ui/components/telepathyClient.js:1366
+#: ../js/ui/components/telepathyClient.js:1361
 msgid "Status is set to offline"
 msgstr "Az állapot beállítva kilépettre"
 
-#: ../js/ui/components/telepathyClient.js:1368
+#: ../js/ui/components/telepathyClient.js:1363
 msgid "Encryption is not available"
 msgstr "A titkosítás nem érhető el"
 
-#: ../js/ui/components/telepathyClient.js:1370
+#: ../js/ui/components/telepathyClient.js:1365
 msgid "Certificate is invalid"
 msgstr "A tanúsítvány érvénytelen"
 
-#: ../js/ui/components/telepathyClient.js:1372
+#: ../js/ui/components/telepathyClient.js:1367
 msgid "Connection has been refused"
 msgstr "A kapcsolat visszautasítva"
 
-#: ../js/ui/components/telepathyClient.js:1374
+#: ../js/ui/components/telepathyClient.js:1369
 msgid "Connection can't be established"
 msgstr "A kapcsolat nem hozható létre"
 
-#: ../js/ui/components/telepathyClient.js:1376
+#: ../js/ui/components/telepathyClient.js:1371
 msgid "Connection has been lost"
 msgstr "A kapcsolat elveszett"
 
-#: ../js/ui/components/telepathyClient.js:1378
+#: ../js/ui/components/telepathyClient.js:1373
 msgid "This account is already connected to the server"
 msgstr "Ez a fiók már kapcsolódik a kiszolgálóhoz"
 
-#: ../js/ui/components/telepathyClient.js:1380
+#: ../js/ui/components/telepathyClient.js:1375
 msgid ""
 "Connection has been replaced by a new connection using the same resource"
 msgstr ""
 "A kapcsolatot leváltotta egy új, ugyanazt az erőforrást használó kapcsolat"
 
-#: ../js/ui/components/telepathyClient.js:1382
+#: ../js/ui/components/telepathyClient.js:1377
 msgid "The account already exists on the server"
 msgstr "A fiók már létezik a kiszolgálón"
 
-#: ../js/ui/components/telepathyClient.js:1384
+#: ../js/ui/components/telepathyClient.js:1379
 msgid "Server is currently too busy to handle the connection"
 msgstr "A kiszolgáló pillanatnyilag túl elfoglalt a kapcsolat kezeléséhez"
 
-#: ../js/ui/components/telepathyClient.js:1386
+#: ../js/ui/components/telepathyClient.js:1381
 msgid "Certificate has been revoked"
 msgstr "A tanúsítvány visszavonva"
 
-#: ../js/ui/components/telepathyClient.js:1388
+#: ../js/ui/components/telepathyClient.js:1383
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr ""
 "A tanúsítvány nem biztonságos titkosító algoritmust használ, vagy "
 "titkosításilag gyenge"
 
-#: ../js/ui/components/telepathyClient.js:1390
+#: ../js/ui/components/telepathyClient.js:1385
 msgid ""
 "The length of the server certificate, or the depth of the server certificate "
 "chain, exceed the limits imposed by the cryptography library"
@@ -957,22 +944,22 @@ msgstr ""
 "A kiszolgáló tanúsítványának hossza, vagy a kiszolgáló tanúsítványláncának "
 "mélysége túllépi a titkosítási programkönyvtár korlátozásait"
 
-#: ../js/ui/components/telepathyClient.js:1392
+#: ../js/ui/components/telepathyClient.js:1387
 msgid "Internal error"
 msgstr "Belső hiba"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example. */
-#: ../js/ui/components/telepathyClient.js:1402
+#: ../js/ui/components/telepathyClient.js:1397
 #, javascript-format
 msgid "Unable to connect to %s"
 msgstr "Nem lehet kapcsolódni ehhez: %s"
 
-#: ../js/ui/components/telepathyClient.js:1407
+#: ../js/ui/components/telepathyClient.js:1402
 msgid "View account"
 msgstr "Fiók megtekintése"
 
-#: ../js/ui/components/telepathyClient.js:1444
+#: ../js/ui/components/telepathyClient.js:1439
 msgid "Unknown reason"
 msgstr "Ismeretlen ok"
 
@@ -989,22 +976,22 @@ msgstr "Alkalmazások megjelenítése"
 msgid "Dash"
 msgstr "Dash"
 
-#: ../js/ui/dateMenu.js:91
+#: ../js/ui/dateMenu.js:97
 msgid "Open Calendar"
 msgstr "Naptár megnyitása"
 
-#: ../js/ui/dateMenu.js:95
+#: ../js/ui/dateMenu.js:101
 msgid "Open Clocks"
 msgstr "Órák megnyitása"
 
-#: ../js/ui/dateMenu.js:102
+#: ../js/ui/dateMenu.js:108
 msgid "Date & Time Settings"
 msgstr "Dátum- és időbeállítások"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #. */
-#: ../js/ui/dateMenu.js:192
+#: ../js/ui/dateMenu.js:205
 msgid "%A %B %e, %Y"
 msgstr "%A, %Y. %B %d."
 
@@ -1150,7 +1137,7 @@ msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr ""
 "Letölti és telepíti a következőt az extensions.gnome.org webhelyről: „%s”?"
 
-#: ../js/ui/keyboard.js:645 ../js/ui/status/keyboard.js:335
+#: ../js/ui/keyboard.js:645 ../js/ui/status/keyboard.js:339
 msgid "Keyboard"
 msgstr "Billentyűzet"
 
@@ -1247,7 +1234,7 @@ msgctxt "program"
 msgid "Unknown"
 msgstr "Ismeretlen"
 
-#: ../js/ui/overviewControls.js:483 ../js/ui/screenShield.js:151
+#: ../js/ui/overviewControls.js:488 ../js/ui/screenShield.js:151
 #, javascript-format
 msgid "%d new message"
 msgid_plural "%d new messages"
@@ -1284,7 +1271,7 @@ msgstr "Tevékenységek"
 msgid "Top Bar"
 msgstr "Felső sáv"
 
-#: ../js/ui/popupMenu.js:271
+#: ../js/ui/popupMenu.js:279
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -1292,7 +1279,7 @@ msgstr "toggle-switch-intl"
 msgid "Enter a Command"
 msgstr "Adjon meg egy parancsot"
 
-#: ../js/ui/runDialog.js:114
+#: ../js/ui/runDialog.js:114 ../js/ui/windowMenu.js:120
 msgid "Close"
 msgstr "Bezárás"
 
@@ -1309,7 +1296,7 @@ msgid_plural "%d new notifications"
 msgstr[0] "%d új értesítés"
 msgstr[1] "%d új értesítés"
 
-#: ../js/ui/screenShield.js:474 ../js/ui/status/system.js:342
+#: ../js/ui/screenShield.js:474 ../js/ui/status/system.js:345
 msgid "Lock"
 msgstr "Zárolás"
 
@@ -1325,11 +1312,11 @@ msgstr "Nem lehet zárolni"
 msgid "Lock was blocked by an application"
 msgstr "A zárolást egy alkalmazás blokkolta"
 
-#: ../js/ui/search.js:603
+#: ../js/ui/search.js:606
 msgid "Searching…"
 msgstr "Keresés…"
 
-#: ../js/ui/search.js:649
+#: ../js/ui/search.js:652
 msgid "No results."
 msgstr "Nincs találat."
 
@@ -1407,8 +1394,8 @@ msgstr "Bluetooth"
 
 #: ../js/ui/status/bluetooth.js:51 ../js/ui/status/network.js:151
 #: ../js/ui/status/network.js:323 ../js/ui/status/network.js:1234
-#: ../js/ui/status/network.js:1345 ../js/ui/status/rfkill.js:85
-#: ../js/ui/status/rfkill.js:105
+#: ../js/ui/status/network.js:1345 ../js/ui/status/rfkill.js:86
+#: ../js/ui/status/rfkill.js:114
 msgid "Turn Off"
 msgstr "Kikapcsolás"
 
@@ -1431,7 +1418,7 @@ msgstr "Nincs kapcsolat"
 msgid "Brightness"
 msgstr "Fényerő"
 
-#: ../js/ui/status/keyboard.js:403
+#: ../js/ui/status/keyboard.js:407
 msgid "Show Keyboard Layout"
 msgstr "Billentyűzetkiosztás megjelenítése"
 
@@ -1440,12 +1427,10 @@ msgid "Location"
 msgstr "Hely"
 
 #: ../js/ui/status/location.js:60 ../js/ui/status/location.js:168
-#| msgid "Disabled"
 msgid "Disable"
 msgstr "Letiltás"
 
 #: ../js/ui/status/location.js:165
-#| msgid "Enabled"
 msgid "Enable"
 msgstr "Engedélyezés"
 
@@ -1469,37 +1454,41 @@ msgstr "Kapcsolódva"
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu) */
 #: ../js/ui/status/network.js:426
-msgid "unmanaged"
-msgstr "felügyeletlen"
+#| msgid "unmanaged"
+msgid "Unmanaged"
+msgstr "Felügyeletlen"
 
 #: ../js/ui/status/network.js:428
-msgid "disconnecting..."
-msgstr "bontás…"
+#| msgid "disconnecting..."
+msgid "Disconnecting"
+msgstr "Bontás…"
 
-#: ../js/ui/status/network.js:434 ../js/ui/status/network.js:1362
-msgid "connecting..."
-msgstr "kapcsolódás…"
+#: ../js/ui/status/network.js:434 ../js/ui/status/network.js:1254
+msgid "Connecting"
+msgstr "Kapcsolódás"
 
 #. Translators: this is for network connections that require some kind of key or password */
-#: ../js/ui/status/network.js:437 ../js/ui/status/network.js:1365
-msgid "authentication required"
-msgstr "hitelesítés szükséges"
+#: ../js/ui/status/network.js:437
+#| msgid "authentication required"
+msgid "Authentication required"
+msgstr "Hitelesítés szükséges"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing */
 #: ../js/ui/status/network.js:445
-msgid "firmware missing"
-msgstr "hiányzó firmware"
+#| msgid "firmware missing"
+msgid "Firmware missing"
+msgstr "Hiányzó firmware"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage */
 #: ../js/ui/status/network.js:449
-msgid "unavailable"
-msgstr "nem érhető el"
+msgid "Unavailable"
+msgstr "Nem érhető el"
 
-#: ../js/ui/status/network.js:451 ../js/ui/status/network.js:1367
-msgid "connection failed"
-msgstr "a kapcsolódás meghiúsult"
+#: ../js/ui/status/network.js:451 ../js/ui/status/network.js:1646
+msgid "Connection failed"
+msgstr "Kapcsolódás meghiúsult"
 
 #: ../js/ui/status/network.js:467
 msgid "Wired Settings"
@@ -1553,7 +1542,7 @@ msgstr "Válasszon egy hálózatot"
 msgid "No Networks"
 msgstr "Nincs hálózat"
 
-#: ../js/ui/status/network.js:866 ../js/ui/status/rfkill.js:103
+#: ../js/ui/status/network.js:866 ../js/ui/status/rfkill.js:112
 msgid "Use hardware switch to turn off"
 msgstr "A hardveres kapcsolóval kapcsolja ki"
 
@@ -1573,11 +1562,20 @@ msgstr "Bekapcsolás"
 msgid "Hotspot Active"
 msgstr "A hotspot aktív"
 
-#: ../js/ui/status/network.js:1254
-msgid "Connecting"
-msgstr "Kapcsolódás"
+#: ../js/ui/status/network.js:1362
+msgid "connecting..."
+msgstr "kapcsolódás…"
 
-#: ../js/ui/status/network.js:1433 ../js/ui/status/rfkill.js:88
+#. Translators: this is for network connections that require some kind of key or password */
+#: ../js/ui/status/network.js:1365
+msgid "authentication required"
+msgstr "hitelesítés szükséges"
+
+#: ../js/ui/status/network.js:1367
+msgid "connection failed"
+msgstr "a kapcsolódás meghiúsult"
+
+#: ../js/ui/status/network.js:1433 ../js/ui/status/rfkill.js:89
 msgid "Network Settings"
 msgstr "Hálózati beállítások"
 
@@ -1592,10 +1590,6 @@ msgstr "VPN"
 #: ../js/ui/status/network.js:1607
 msgid "Network Manager"
 msgstr "Hálózatkezelő"
-
-#: ../js/ui/status/network.js:1646
-msgid "Connection failed"
-msgstr "Kapcsolódás meghiúsult"
 
 #: ../js/ui/status/network.js:1647
 msgid "Activation of network connection failed"
@@ -1631,31 +1625,31 @@ msgstr "Szünetmentes táp"
 msgid "Battery"
 msgstr "Akkumulátor"
 
-#: ../js/ui/status/rfkill.js:82
+#: ../js/ui/status/rfkill.js:83
 msgid "Airplane Mode"
 msgstr "Repülőgép üzemmód"
 
-#: ../js/ui/status/rfkill.js:84
+#: ../js/ui/status/rfkill.js:85
 msgid "On"
 msgstr "Be"
 
-#: ../js/ui/status/system.js:314
+#: ../js/ui/status/system.js:317
 msgid "Switch User"
 msgstr "Felhasználóváltás"
 
-#: ../js/ui/status/system.js:319
+#: ../js/ui/status/system.js:322
 msgid "Log Out"
 msgstr "Kijelentkezés"
 
-#: ../js/ui/status/system.js:338
+#: ../js/ui/status/system.js:341
 msgid "Orientation Lock"
 msgstr "Tájolás zárolása"
 
-#: ../js/ui/status/system.js:346
+#: ../js/ui/status/system.js:349
 msgid "Suspend"
 msgstr "Felfüggesztés"
 
-#: ../js/ui/status/system.js:349
+#: ../js/ui/status/system.js:352
 msgid "Power Off"
 msgstr "Kikapcsolás"
 
@@ -1692,27 +1686,67 @@ msgstr "Oldalsáv"
 msgid "“%s” is ready"
 msgstr "„%s” kész"
 
-#: ../js/ui/windowManager.js:56
+#: ../js/ui/windowManager.js:57
 msgid "Do you want to keep these display settings?"
 msgstr "Meg szeretné tartani ezeket a kijelzőbeállításokat?"
 
 #. Translators: this and the following message should be limited in lenght,
 #. to avoid ellipsizing the labels.
 #. */
-#: ../js/ui/windowManager.js:75
+#: ../js/ui/windowManager.js:76
 msgid "Revert Settings"
 msgstr "Beállítások visszavonása"
 
-#: ../js/ui/windowManager.js:79
+#: ../js/ui/windowManager.js:80
 msgid "Keep Changes"
 msgstr "Módosítások megtartása"
 
-#: ../js/ui/windowManager.js:98
+#: ../js/ui/windowManager.js:99
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
 msgstr[0] "A beállítások módosításai %d másodperc múlva visszavonásra kerülnek"
 msgstr[1] "A beállítások módosításai %d másodperc múlva visszavonásra kerülnek"
+
+#: ../js/ui/windowMenu.js:34
+msgid "Minimize"
+msgstr "Minimalizálás"
+
+#: ../js/ui/windowMenu.js:41
+msgid "Unmaximize"
+msgstr "Eredeti méret"
+
+#: ../js/ui/windowMenu.js:45
+msgid "Maximize"
+msgstr "Maximalizálás"
+
+#: ../js/ui/windowMenu.js:52
+msgid "Move"
+msgstr "Áthelyezés"
+
+#: ../js/ui/windowMenu.js:58
+msgid "Resize"
+msgstr "Átméretezés"
+
+#: ../js/ui/windowMenu.js:65
+msgid "Move Titlebar Onscreen"
+msgstr "Címsor mozgatása a képernyőre"
+
+#: ../js/ui/windowMenu.js:70
+msgid "Always on Top"
+msgstr "Mindig felül"
+
+#: ../js/ui/windowMenu.js:89
+msgid "Always on Visible Workspace"
+msgstr "Mindig a látható munkaterületen"
+
+#: ../js/ui/windowMenu.js:106
+msgid "Move to Workspace Up"
+msgstr "Mozgatás a fentebbi munkaterületre"
+
+#: ../js/ui/windowMenu.js:111
+msgid "Move to Workspace Down"
+msgstr "Mozgatás az alsóbb munkaterületre"
 
 #: ../src/calendar-server/evolution-calendar.desktop.in.in.h:1
 msgid "Evolution Calendar"
@@ -1773,6 +1807,28 @@ msgstr "A jelszó nem lehet üres"
 #: ../src/shell-polkit-authentication-agent.c:346
 msgid "Authentication dialog was dismissed by the user"
 msgstr "A hitelesítési ablakot a felhasználó bezárta"
+
+#~ msgid "Arrangement of buttons on the titlebar"
+#~ msgstr "A gombok elrendezése az ablak címsorában"
+
+#~ msgid ""
+#~ "This key overrides the key in org.gnome.desktop.wm.preferences when "
+#~ "running GNOME Shell."
+#~ msgstr ""
+#~ "Ez a kulcs felülbírálja az org.gnome.desktop.wm.preferences helyen lévő "
+#~ "kulcsot, amikor a GNOME Shell fut."
+
+#~ msgid "Extension"
+#~ msgstr "Kiterjesztés"
+
+#~ msgid "Select an extension to configure using the combobox above."
+#~ msgstr "Válasszon egy beállítandó kiterjesztést a fenti legördülő menüből."
+
+#~ msgid "calendar:MY"
+#~ msgstr "calendar:YM"
+
+#~ msgid "unavailable"
+#~ msgstr "nem érhető el"
 
 #~ msgid "List of categories that should be displayed as folders"
 #~ msgstr "Mappaként megjelenítendő kategóriák listája"
@@ -2210,9 +2266,6 @@ msgstr "A hitelesítési ablakot a felhasználó bezárta"
 
 #~ msgid "VPN Connections"
 #~ msgstr "VPN kapcsolatok"
-
-#~ msgid "Unavailable"
-#~ msgstr "Nem érhető el"
 
 #~ msgid "System Settings"
 #~ msgstr "Rendszerbeállítások"
