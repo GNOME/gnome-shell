@@ -25,6 +25,7 @@
 #include <meta/types.h>
 #include <meta/compositor.h>
 #include <meta/compositor-mutter.h>
+#include <meta/meta-version.h>
 
 #include <clutter/clutter.h>
 #include <X11/extensions/Xfixes.h>
@@ -299,10 +300,10 @@ struct _MetaPluginVersion
 #define META_PLUGIN_DECLARE(ObjectName, object_name)                    \
   G_MODULE_EXPORT MetaPluginVersion meta_plugin_version =               \
     {                                                                   \
-      MUTTER_MAJOR_VERSION,                                             \
-      MUTTER_MINOR_VERSION,                                             \
-      MUTTER_MICRO_VERSION,                                             \
-      MUTTER_PLUGIN_API_VERSION                                         \
+      META_MAJOR_VERSION,                                               \
+      META_MINOR_VERSION,                                               \
+      META_MICRO_VERSION,                                               \
+      META_PLUGIN_API_VERSION                                           \
     };                                                                  \
                                                                         \
   static GType g_define_type_id = 0;                                    \

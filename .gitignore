@@ -75,6 +75,7 @@ src/xdg-shell-protocol.c
 src/xdg-shell-server-protocol.h
 src/xserver-protocol.c
 src/xserver-server-protocol.h
+src/meta/meta-version.h
 doc/reference/*.args
 doc/reference/*.bak
 doc/reference/*.hierarchy

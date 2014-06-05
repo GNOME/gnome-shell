@@ -12,6 +12,7 @@ AM_CPPFLAGS = \
 	-DCOGL_ENABLE_EXPERIMENTAL_2_0_API                              \
 	$(MUTTER_CFLAGS)						\
 	$(MUTTER_NATIVE_BACKEND_CFLAGS)					\
+	-I$(builddir)							\
 	-I$(srcdir)							\
 	-I$(srcdir)/backends						\
 	-I$(srcdir)/core						\
@@ -23,10 +24,6 @@ AM_CPPFLAGS = \
 	-DMUTTER_DATADIR=\"$(datadir)\"					\
 	-DG_LOG_DOMAIN=\"mutter\"					\
 	-DSN_API_NOT_YET_FROZEN=1					\
-	-DMUTTER_MAJOR_VERSION=$(MUTTER_MAJOR_VERSION)			\
-	-DMUTTER_MINOR_VERSION=$(MUTTER_MINOR_VERSION)			\
-	-DMUTTER_MICRO_VERSION=$(MUTTER_MICRO_VERSION)			\
-	-DMUTTER_PLUGIN_API_VERSION=$(MUTTER_PLUGIN_API_VERSION)	\
 	-DMUTTER_PKGLIBDIR=\"$(pkglibdir)\"				\
 	-DMUTTER_PLUGIN_DIR=\"$(MUTTER_PLUGIN_DIR)\"			\
 	-DGETTEXT_PACKAGE=\"$(GETTEXT_PACKAGE)\"			\
@@ -36,6 +33,7 @@ mutter_built_sources = \
 	$(dbus_idle_built_sources)		\
 	$(dbus_display_config_built_sources)	\
 	$(dbus_login1_built_sources)		\
+	meta/meta-version.h			\
 	mutter-enum-types.h 			\
 	mutter-enum-types.c			\
 	gtk-shell-protocol.c			\
@@ -257,7 +255,7 @@ libmutter_la_LIBADD  = $(MUTTER_LIBS) $(MUTTER_NATIVE_BACKEND_LIBS)
 
 # Headers installed for plugins; introspected information will
 # be extracted into Mutter-<version>.gir
-libmutterinclude_base_headers =		\
+libmutterinclude_headers =			\
 	meta/barrier.h				\
 	meta/boxes.h				\
 	meta/common.h				\
@@ -286,6 +284,13 @@ libmutterinclude_base_headers =		\
 	meta/window.h				\
 	meta/workspace.h
 
+libmutterinclude_built_headers =		\
+	meta/meta-version.h
+
+libmutterinclude_base_headers =			\
+	$(libmutterinclude_headers)		\
+	$(libmutterinclude_built_headers)
+
 # Excluded from scanning for introspection but installed
 # atomnames.h: macros cause problems for scanning process
 libmutterinclude_extra_headers =		\
@@ -294,8 +299,11 @@ libmutterinclude_extra_headers =		\
 libmutterincludedir = $(includedir)/mutter/meta
 
 libmutterinclude_HEADERS =			\
-	$(libmutterinclude_base_headers)	\
+	$(libmutterinclude_headers)		\
 	$(libmutterinclude_extra_headers)
+
+nodist_libmutterinclude_HEADERS =		\
+	$(libmutterinclude_built_headers)
 
 bin_PROGRAMS=mutter
 
@@ -349,6 +357,7 @@ dbus_idle_built_sources = meta-dbus-idle-monitor.c meta-dbus-idle-monitor.h
 
 CLEANFILES =					\
 	$(mutter_built_sources)			\
+	$(libmutterinclude_built_headers)	\
 	$(typelib_DATA)				\
 	$(gir_DATA)
 

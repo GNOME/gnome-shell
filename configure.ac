@@ -387,6 +387,7 @@ doc/reference/meta-docs.sgml
 src/Makefile
 src/libmutter.pc
 src/compositor/plugins/Makefile
+src/meta/meta-version.h
 po/Makefile.in
 ])
 

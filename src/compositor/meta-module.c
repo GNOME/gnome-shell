@@ -20,6 +20,7 @@
  */
 
 #include <meta/meta-plugin.h>
+#include <meta/meta-version.h>
 #include "meta-module.h"
 
 #include <gmodule.h>
@@ -68,7 +69,7 @@ meta_module_load (GTypeModule *gmodule)
 		       (gpointer *)(void *)&register_type) &&
       info && register_type)
     {
-      if (info->version_api != MUTTER_PLUGIN_API_VERSION)
+      if (info->version_api != META_PLUGIN_API_VERSION)
 	g_warning ("Plugin API mismatch for [%s]", priv->path);
       else
         {

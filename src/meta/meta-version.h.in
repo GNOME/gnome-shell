@@ -1,0 +1,28 @@
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
+
+/*
+ * Copyright (C) 2014 Rico Tzschichholz
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses/>.
+ */
+
+#ifndef META_VERSION_H
+#define META_VERSION_H
+
+#define META_MAJOR_VERSION @MUTTER_MAJOR_VERSION@
+#define META_MINOR_VERSION @MUTTER_MINOR_VERSION@
+#define META_MICRO_VERSION @MUTTER_MICRO_VERSION@
+#define META_PLUGIN_API_VERSION @MUTTER_PLUGIN_API_VERSION@
+
+#endif
