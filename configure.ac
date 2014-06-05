@@ -75,8 +75,13 @@ MUTTER_PC_MODULES="
    cairo >= 1.10.0
    gsettings-desktop-schemas >= 3.7.3
    xcomposite >= 0.2 xfixes xext xdamage xi >= 1.6.0
+   xcursor
    $CLUTTER_PACKAGE >= 1.17.5
+   clutter-wayland-1.0
+   clutter-wayland-compositor-1.0
+   clutter-egl-1.0
    cogl-1.0 >= 1.17.1
+   wayland-server >= 1.4.93
    upower-glib >= 0.99.0
    gnome-desktop-3.0
 "
@@ -179,15 +184,12 @@ if test x$found_introspection != xno; then
   AC_SUBST(META_GIR)
 fi
 
-MUTTER_PC_MODULES="$MUTTER_PC_MODULES xcursor"
-
 AC_PATH_PROG([WAYLAND_SCANNER],[wayland-scanner],[no])
 AS_IF([test "x$WAYLAND_SCANNER" = "xno"],
   AC_MSG_ERROR([Could not find wayland-scanner in your PATH, required for parsing wayland extension protocols]))
 AC_SUBST([WAYLAND_SCANNER])
 AC_SUBST(XWAYLAND_PATH)
 
-MUTTER_PC_MODULES="$MUTTER_PC_MODULES clutter-wayland-1.0 clutter-wayland-compositor-1.0 clutter-egl-1.0 wayland-server >= 1.4.93"
 PKG_CHECK_MODULES(MUTTER, $MUTTER_PC_MODULES)
 
 PKG_CHECK_MODULES(MUTTER_NATIVE_BACKEND, [libdrm libsystemd], [have_native_backend=yes], [have_native_backend=no])
