@@ -135,6 +135,7 @@ MetaScreen*   meta_screen_new                 (MetaDisplay                *displ
                                                guint32                     timestamp);
 void          meta_screen_free                (MetaScreen                 *screen,
                                                guint32                     timestamp);
+void          meta_screen_init_workspaces     (MetaScreen                 *screen);
 void          meta_screen_manage_all_windows  (MetaScreen                 *screen);
 void          meta_screen_foreach_window      (MetaScreen                 *screen,
                                                MetaScreenWindowFunc        func,

@@ -506,7 +506,6 @@ meta_screen_new (MetaDisplay *display,
   Atom wm_sn_atom;
   char buf[128];
   guint32 manager_timestamp;
-  gulong current_workspace;
   MetaMonitorManager *manager;
 
   replace_current_wm = meta_get_replace_current_wm ();
@@ -721,24 +720,10 @@ meta_screen_new (MetaDisplay *display,
 
   meta_screen_update_workspace_layout (screen);
 
-  /* Get current workspace */
-  current_workspace = 0;
-  if (meta_prop_get_cardinal (screen->display,
-                              screen->xroot,
-                              screen->display->atom__NET_CURRENT_DESKTOP,
-                              &current_workspace))
-    meta_verbose ("Read existing _NET_CURRENT_DESKTOP = %d\n",
-                  (int) current_workspace);
-  else
-    meta_verbose ("No _NET_CURRENT_DESKTOP present\n");
-
   /* Screens must have at least one workspace at all times,
    * so create that required workspace.
    */
-  meta_workspace_activate (meta_workspace_new (screen), timestamp);
-  update_num_workspaces (screen, timestamp);
-
-  set_workspace_names (screen);
+  meta_workspace_new (screen);
 
   screen->keys_grabbed = FALSE;
   meta_screen_grab_keys (screen);
@@ -764,21 +749,44 @@ meta_screen_new (MetaDisplay *display,
   screen->startup_sequence_timeout = 0;
 #endif
 
-  /* Switch to the _NET_CURRENT_DESKTOP workspace */
-  {
-    MetaWorkspace *space;
-
-    space = meta_screen_get_workspace_by_index (screen,
-                                                current_workspace);
-
-    if (space != NULL)
-      meta_workspace_activate (space, timestamp);
-  }
-
   meta_verbose ("Added screen %d ('%s') root 0x%lx\n",
                 screen->number, screen->screen_name, screen->xroot);
 
   return screen;
+}
+
+void
+meta_screen_init_workspaces (MetaScreen *screen)
+{
+  MetaWorkspace *current_workspace;
+  gulong current_workspace_index = 0;
+  guint32 timestamp;
+
+  g_return_if_fail (META_IS_SCREEN (screen));
+
+  timestamp = screen->wm_sn_timestamp;
+
+  /* Get current workspace */
+  if (meta_prop_get_cardinal (screen->display,
+                              screen->xroot,
+                              screen->display->atom__NET_CURRENT_DESKTOP,
+                              &current_workspace_index))
+    meta_verbose ("Read existing _NET_CURRENT_DESKTOP = %d\n",
+                  (int) current_workspace_index);
+  else
+    meta_verbose ("No _NET_CURRENT_DESKTOP present\n");
+
+  meta_workspace_activate (screen->workspaces->data, timestamp);
+  update_num_workspaces (screen, timestamp);
+
+  set_workspace_names (screen);
+
+  /* Switch to the _NET_CURRENT_DESKTOP workspace */
+  current_workspace = meta_screen_get_workspace_by_index (screen,
+                                                          current_workspace_index);
+
+  if (current_workspace != NULL)
+    meta_workspace_activate (current_workspace, timestamp);
 }
 
 void

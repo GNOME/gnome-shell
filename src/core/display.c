@@ -805,6 +805,7 @@ meta_display_open (void)
 
   enable_compositor (the_display);
 
+  meta_screen_init_workspaces (screen);
   meta_screen_create_guard_window (screen);
 
   /* We know that if mutter is running as a Wayland compositor,
