@@ -75,7 +75,9 @@ def start_shell(perf_output=None):
     # Set up environment
     env = dict(os.environ)
     env['SHELL_PERF_MODULE'] = options.perf
-    env['MUTTER_WM_CLASS_FILTER'] = 'Gnome-shell-perf-helper'
+
+    filters = ['Gnome-shell-perf-helper'] + options.extra_filter
+    env['MUTTER_WM_CLASS_FILTER'] = ','.join(filters)
 
     if perf_output is not None:
         env['SHELL_PERF_OUTPUT'] = perf_output
@@ -189,6 +191,11 @@ def upload_performance_report(report_text):
         print "Performance report upload failed with status %d" % response.status
         print response.read()
 
+def gnome_hwtest_log(*args):
+    command = ['gnome-hwtest-log', '-t', 'gnome-shell-perf-tool']
+    command.extend(args)
+    subprocess.check_call(command)
+
 def run_performance_test():
     iters = options.perf_iters
     if options.perf_warmup:
@@ -289,6 +296,13 @@ def run_performance_test():
 
         if options.perf_upload:
             upload_performance_report(json.dumps(report))
+    elif options.hwtest:
+        # Log to systemd journal
+        for metric in sorted(metric_summaries.keys()):
+            summary = metric_summaries[metric]
+            gnome_hwtest_log('--metric=' + metric + '=' + str(summary['values'][0]) + summary['units'],
+                             '--metric-description=' + summary['description'])
+        gnome_hwtest_log('--finished')
     else:
         # Write a human readable summary
         print '------------------------------------------------------------';
@@ -304,8 +318,7 @@ def run_performance_test():
 
 parser = optparse.OptionParser()
 parser.add_option("", "--perf", metavar="PERF_MODULE",
-		  help="Specify the name of a performance module to run",
-                  default="core")
+		  help="Specify the name of a performance module to run")
 parser.add_option("", "--perf-iters", type="int", metavar="ITERS",
 		  help="Numbers of iterations of performance module to run",
                   default=1)
@@ -315,6 +328,10 @@ parser.add_option("", "--perf-output", metavar="OUTPUT_FILE",
 		  help="Output file to write performance report")
 parser.add_option("", "--perf-upload", action="store_true",
 		  help="Upload performance report to server")
+parser.add_option("", "--extra-filter", action="append",
+                  help="add an extra window class that should be allowed")
+parser.add_option("", "--hwtest", action="store_true",
+		  help="Log results appropriately for GNOME Hardware Testing")
 parser.add_option("", "--version", action="callback", callback=show_version,
                   help="Display version and exit")
 
@@ -323,12 +340,25 @@ parser.add_option("-r", "--replace", action="store_true",
 
 options, args = parser.parse_args()
 
+if options.perf == None:
+    if options.hwtest:
+        options.perf = 'hwtest'
+    else:
+        options.perf = 'core'
+
+if options.extra_filter is None:
+    if options.hwtest:
+        options.extra_filter = ['Gedit']
+    else:
+        options.extra_filter = []
+
 if args:
     parser.print_usage()
     sys.exit(1)
 
 normal_exit = run_performance_test()
 if normal_exit:
-    restore_shell()
+    if not options.hwtest:
+        restore_shell()
 else:
     sys.exit(1)
