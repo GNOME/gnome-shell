@@ -25,6 +25,10 @@ function getIBusManager() {
 const IBusManager = new Lang.Class({
     Name: 'IBusManager',
 
+    // This is the longest we'll keep the keyboard frozen until an input
+    // source is active.
+    _MAX_INPUT_SOURCE_ACTIVATION_TIME: 4000, // ms
+
     _init: function() {
         if (!IBus)
             return;
@@ -160,6 +164,17 @@ const IBusManager = new Lang.Class({
             return null;
 
         return this._engines[id];
-    }
+    },
+
+    setEngine: function(id, callback) {
+        if (!IBus || !this._ready || id == this._currentEngineName) {
+            if (callback)
+                callback();
+            return;
+        }
+
+        this._ibus.set_global_engine_async(id, this._MAX_INPUT_SOURCE_ACTIVATION_TIME,
+                                           null, callback);
+    },
 });
 Signals.addSignalMethods(IBusManager.prototype);

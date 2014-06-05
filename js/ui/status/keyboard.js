@@ -19,8 +19,8 @@ const SwitcherPopup = imports.ui.switcherPopup;
 const Util = imports.misc.util;
 
 const DESKTOP_INPUT_SOURCES_SCHEMA = 'org.gnome.desktop.input-sources';
-const KEY_CURRENT_INPUT_SOURCE = 'current';
 const KEY_INPUT_SOURCES = 'sources';
+const KEY_KEYBOARD_OPTIONS = 'xkb-options';
 
 const INPUT_SOURCE_TYPE_XKB = 'xkb';
 const INPUT_SOURCE_TYPE_IBUS = 'ibus';
@@ -51,6 +51,8 @@ const InputSource = new Lang.Class({
         this.index = index;
 
         this.properties = null;
+
+        this.xkbId = this._getXkbId();
     },
 
     get shortName() {
@@ -65,6 +67,17 @@ const InputSource = new Lang.Class({
     activate: function() {
         this.emit('activate');
     },
+
+    _getXkbId: function() {
+        let engineDesc = IBusManager.getIBusManager().getEngineDesc(this.id);
+        if (!engineDesc)
+            return this.id;
+
+        if (engineDesc.variant && engineDesc.variant.length > 0)
+            return engineDesc.layout + '+' + engineDesc.variant;
+        else
+            return engineDesc.layout;
+    }
 });
 Signals.addSignalMethods(InputSource.prototype);
 
@@ -159,18 +172,17 @@ const InputSourceManager = new Lang.Class({
                                   Shell.KeyBindingMode.ALL,
                                   Lang.bind(this, this._switchInputSource));
         this._settings = new Gio.Settings({ schema_id: DESKTOP_INPUT_SOURCES_SCHEMA });
-        this._settings.connect('changed::' + KEY_CURRENT_INPUT_SOURCE, Lang.bind(this, this._currentInputSourceChanged));
         this._settings.connect('changed::' + KEY_INPUT_SOURCES, Lang.bind(this, this._inputSourcesChanged));
+        this._settings.connect('changed::' + KEY_KEYBOARD_OPTIONS, Lang.bind(this, this._keyboardOptionsChanged));
 
         this._xkbInfo = KeyboardManager.getXkbInfo();
+        this._keyboardManager = KeyboardManager.getKeyboardManager();
 
         this._ibusReady = false;
         this._ibusManager = IBusManager.getIBusManager();
         this._ibusManager.connect('ready', Lang.bind(this, this._ibusReadyCallback));
         this._ibusManager.connect('properties-registered', Lang.bind(this, this._ibusPropertiesRegistered));
         this._ibusManager.connect('property-updated', Lang.bind(this, this._ibusPropertyUpdated));
-
-        this._keyboardManager = KeyboardManager.getKeyboardManager();
 
         global.display.connect('modifiers-accelerator-activated', Lang.bind(this, this._modifiersSwitcher));
 
@@ -183,6 +195,7 @@ const InputSourceManager = new Lang.Class({
     },
 
     reload: function() {
+        this._keyboardManager.setKeyboardOptions(this._settings.get_strv(KEY_KEYBOARD_OPTIONS));
         this._inputSourcesChanged();
     },
 
@@ -237,10 +250,12 @@ const InputSourceManager = new Lang.Class({
             popup.destroy();
     },
 
-    _currentInputSourceChanged: function() {
-        let newSourceIndex = this._settings.get_uint(KEY_CURRENT_INPUT_SOURCE);
-        let newSource = this._inputSources[newSourceIndex];
+    _keyboardOptionsChanged: function() {
+        this._keyboardManager.setKeyboardOptions(this._settings.get_strv(KEY_KEYBOARD_OPTIONS));
+        this._keyboardManager.reapply();
+    },
 
+    _currentInputSourceChanged: function(newSource) {
         let oldSource;
         [oldSource, this._currentSource] = [this._currentSource, newSource];
 
@@ -256,13 +271,32 @@ const InputSourceManager = new Lang.Class({
         this._changePerWindowSource();
     },
 
+    _activateInputSource: function(is) {
+        KeyboardManager.holdKeyboard();
+        this._keyboardManager.apply(is.xkbId);
+
+        // All the "xkb:..." IBus engines simply "echo" back symbols,
+        // despite their naming implying differently, so we always set
+        // one in order for XIM applications to work given that we set
+        // XMODIFIERS=@im=ibus in the first place so that they can
+        // work without restarting when/if the user adds an IBus input
+        // source.
+        let engine;
+        if (is.type == INPUT_SOURCE_TYPE_IBUS)
+            engine = is.id;
+        else
+            engine = 'xkb:us::eng';
+
+        this._ibusManager.setEngine(engine, KeyboardManager.releaseKeyboard);
+        this._currentInputSourceChanged(is);
+    },
+
     _inputSourcesChanged: function() {
         let sources = this._settings.get_value(KEY_INPUT_SOURCES);
         let nSources = sources.n_children();
 
         this._inputSources = {};
         this._ibusSources = {};
-        this._currentSource = null;
 
         let inputSourcesByShortName = {};
 
@@ -294,9 +328,7 @@ const InputSourceManager = new Lang.Class({
 
             let is = new InputSource(type, id, displayName, shortName, i);
 
-            is.connect('activate', Lang.bind(this, function() {
-                this._keyboardManager.SetInputSource(is);
-            }));
+            is.connect('activate', Lang.bind(this, this._activateInputSource));
 
             if (!(is.shortName in inputSourcesByShortName))
                 inputSourcesByShortName[is.shortName] = [];
@@ -322,6 +354,8 @@ const InputSourceManager = new Lang.Class({
         for (let i in this._inputSources)
             sourcesList.push(this._inputSources[i]);
 
+        this._keyboardManager.setUserLayouts(sourcesList.map(function(x) { return x.xkbId; }));
+
         let mruSources = [];
         for (let i = 0; i < this._mruSources.length; i++) {
             for (let j = 0; j < sourcesList.length; j++)
@@ -333,7 +367,8 @@ const InputSourceManager = new Lang.Class({
         }
         this._mruSources = mruSources.concat(sourcesList);
 
-        this._currentInputSourceChanged();
+        if (this._mruSources.length > 0)
+            this._mruSources[0].activate();
     },
 
     _makeEngineShortName: function(engineDesc) {
@@ -356,7 +391,7 @@ const InputSourceManager = new Lang.Class({
         source.properties = props;
 
         if (source == this._currentSource)
-            this._currentInputSourceChanged();
+            this.emit('current-source-changed', null);
     },
 
     _ibusPropertyUpdated: function(im, engineName, prop) {
@@ -366,7 +401,7 @@ const InputSourceManager = new Lang.Class({
 
         if (this._updateSubProperty(source.properties, prop) &&
             source == this._currentSource)
-            this._currentInputSourceChanged();
+            this.emit('current-source-changed', null);
     },
 
     _updateSubProperty: function(props, prop) {
