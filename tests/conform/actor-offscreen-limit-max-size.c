@@ -75,10 +75,8 @@ actor_offscreen_limit_max_size (void)
     return;
 
   data.stage = clutter_test_get_stage ();
-  clutter_stage_set_paint_callback (CLUTTER_STAGE (data.stage),
-                                    check_results,
-                                    &data,
-                                    NULL);
+  g_signal_connect (data.stage, "after-paint",
+                    G_CALLBACK (check_results), &data);
   clutter_actor_set_size (data.stage, STAGE_WIDTH, STAGE_HEIGHT);
 
   data.actor_group1 = clutter_actor_new ();

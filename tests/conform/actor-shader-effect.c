@@ -271,10 +271,8 @@ actor_shader_effect (void)
   clutter_actor_show (stage);
 
   was_painted = FALSE;
-  clutter_stage_set_paint_callback (CLUTTER_STAGE (stage),
-                                    paint_cb,
-                                    &was_painted,
-                                    NULL);
+  g_signal_connect (stage, "after-paint",
+                    G_CALLBACK (paint_cb), NULL);
 
   while (!was_painted)
     g_main_context_iteration (NULL, FALSE);

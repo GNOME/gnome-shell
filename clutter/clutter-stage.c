@@ -146,7 +146,6 @@ struct _ClutterStagePrivate
 
   ClutterStageState current_state;
 
-  ClutterStagePaintFunc paint_callback;
   gpointer paint_data;
   GDestroyNotify paint_notify;
 
@@ -192,6 +191,7 @@ enum
   ACTIVATE,
   DEACTIVATE,
   DELETE_EVENT,
+  AFTER_PAINT,
 
   LAST_SIGNAL
 };
@@ -202,7 +202,6 @@ static const ClutterColor default_stage_color = { 255, 255, 255, 255 };
 
 static void clutter_stage_maybe_finish_queue_redraws (ClutterStage *stage);
 static void free_queue_redraw_entry (ClutterStageQueueRedrawEntry *entry);
-static void clutter_stage_invoke_paint_callback (ClutterStage *stage);
 
 static void clutter_container_iface_init (ClutterContainerIface *iface);
 
@@ -688,7 +687,7 @@ _clutter_stage_do_paint (ClutterStage                *stage,
   _clutter_stage_update_active_framebuffer (stage);
   clutter_actor_paint (CLUTTER_ACTOR (stage));
 
-  clutter_stage_invoke_paint_callback (stage);
+  g_signal_emit (stage, stage_signals[AFTER_PAINT], 0);
 }
 
 /* If we don't implement this here, we get the paint function
@@ -2210,6 +2209,23 @@ clutter_stage_class_init (ClutterStageClass *klass)
                   _clutter_marshal_BOOLEAN__BOXED,
                   G_TYPE_BOOLEAN, 1,
                   CLUTTER_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
+
+  /**
+   * ClutterStage::after-paint:
+   * @stage: the stage that received the event
+   *
+   * The ::after-paint signal is emitted after the stage is painted,
+   * but before the results are displayed on the screen.
+   *
+   * Since: 1.20
+   */
+  stage_signals[AFTER_PAINT] =
+    g_signal_new (I_("after-paint"),
+                  G_TYPE_FROM_CLASS (gobject_class),
+                  G_SIGNAL_RUN_LAST,
+                  0, /* no corresponding vfunc */
+                  NULL, NULL, NULL,
+                  G_TYPE_NONE, 0);
 
   klass->fullscreen = clutter_stage_real_fullscreen;
   klass->activate = clutter_stage_real_activate;
@@ -4591,45 +4607,6 @@ clutter_stage_skip_sync_delay (ClutterStage *stage)
   stage_window = _clutter_stage_get_window (stage);
   if (stage_window)
     _clutter_stage_window_schedule_update (stage_window, -1);
-}
-
-/**
- * clutter_stage_set_paint_callback:
- * @stage: a #ClutterStage
- * @callback: (allow-none): a callback
- * @data: (allow-none): data to be passed to @callback
- * @notify: (allow-none): function to be called when the callback is removed
- *
- * Sets a callback function to be invoked after the @stage has been
- * painted.
- *
- * Since: 1.14
- */
-void
-clutter_stage_set_paint_callback (ClutterStage          *stage,
-                                  ClutterStagePaintFunc  callback,
-                                  gpointer               data,
-                                  GDestroyNotify         notify)
-{
-  ClutterStagePrivate *priv;
-
-  g_return_if_fail (CLUTTER_IS_STAGE (stage));
-
-  priv = stage->priv;
-
-  if (priv->paint_notify != NULL)
-    priv->paint_notify (priv->paint_data);
-
-  priv->paint_callback = callback;
-  priv->paint_data = data;
-  priv->paint_notify = notify;
-}
-
-static void
-clutter_stage_invoke_paint_callback (ClutterStage *stage)
-{
-  if (stage->priv->paint_callback != NULL)
-    stage->priv->paint_callback (stage, stage->priv->paint_data);
 }
 
 void

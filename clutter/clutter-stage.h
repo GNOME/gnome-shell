@@ -243,15 +243,6 @@ void            clutter_stage_set_sync_delay                    (ClutterStage   
                                                                  gint                   sync_delay);
 CLUTTER_AVAILABLE_IN_1_14
 void            clutter_stage_skip_sync_delay                   (ClutterStage          *stage);
-
-typedef void (* ClutterStagePaintFunc) (ClutterStage *stage,
-                                        gpointer      data);
-
-CLUTTER_AVAILABLE_IN_1_14
-void            clutter_stage_set_paint_callback                (ClutterStage          *stage,
-                                                                 ClutterStagePaintFunc  callback,
-                                                                 gpointer               data,
-                                                                 GDestroyNotify         notify);
 #endif
 
 G_END_DECLS
