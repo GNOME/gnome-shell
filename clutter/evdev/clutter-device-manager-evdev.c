@@ -1164,7 +1164,7 @@ process_device_event (ClutterDeviceManagerEvdev *manager_evdev,
         time = libinput_event_pointer_get_time (button_event);
         button = libinput_event_pointer_get_button (button_event);
         button_state = libinput_event_pointer_get_button_state (button_event) ==
-                       LIBINPUT_POINTER_BUTTON_STATE_PRESSED;
+                       LIBINPUT_BUTTON_STATE_PRESSED;
         notify_button (device, time, button, button_state);
 
         break;
