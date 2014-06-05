@@ -345,51 +345,18 @@ testboxes_LDADD = $(MUTTER_LIBS) libmutter.la
 testgradient_LDADD = $(MUTTER_LIBS) libmutter.la
 testasyncgetprop_LDADD = $(MUTTER_LIBS) libmutter.la
 
-@INTLTOOL_DESKTOP_RULE@
-
-desktopfilesdir=$(datadir)/applications
-desktopfiles_in_files=mutter.desktop.in
-desktopfiles_files=$(desktopfiles_in_files:.desktop.in=.desktop)
-desktopfiles_DATA = $(desktopfiles_files)
-
-xmldir       = $(GNOME_KEYBINDINGS_KEYSDIR)
-xml_in_files = \
-        50-mutter-navigation.xml.in	\
-        50-mutter-system.xml.in		\
-        50-mutter-windows.xml.in
-xml_DATA     = $(xml_in_files:.xml.in=.xml)
-
 dbus_idle_built_sources = meta-dbus-idle-monitor.c meta-dbus-idle-monitor.h
 
-gsettings_SCHEMAS = org.gnome.mutter.gschema.xml org.gnome.mutter.wayland.gschema.xml
-@INTLTOOL_XML_NOMERGE_RULE@
-@GSETTINGS_RULES@
-
-convertdir = $(datadir)/GConf/gsettings
-convert_DATA = mutter-schemas.convert
-
 CLEANFILES =					\
-	$(desktopfiles_DATA)			\
-	$(gsettings_SCHEMAS)			\
-	$(xml_DATA)				\
 	$(mutter_built_sources)			\
 	$(typelib_DATA)				\
 	$(gir_DATA)
 
 pkgconfigdir = $(libdir)/pkgconfig
-
 pkgconfig_DATA = libmutter.pc
 
 EXTRA_DIST =				\
-	$(wmproperties_files)		\
-	$(IMAGES) 			\
-	$(desktopfiles_in_files)	\
-	$(wmproperties_in_files)	\
-	$(xml_in_files)			\
 	$(wayland_protocols)		\
-	org.gnome.mutter.gschema.xml.in \
-	org.gnome.mutter.wayland.gschema.xml.in \
-	mutter-schemas.convert \
 	libmutter.pc.in \
 	mutter-enum-types.h.in \
 	mutter-enum-types.c.in \

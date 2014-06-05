@@ -379,6 +379,7 @@ changequote([,])dnl
 
 AC_CONFIG_FILES([
 Makefile
+data/Makefile
 doc/Makefile
 doc/man/Makefile
 doc/reference/Makefile

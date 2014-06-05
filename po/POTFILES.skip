@@ -1,2 +1,1 @@
-src/metacity.schemas.in
-src/mutter-wayland.desktop.in
+data/mutter-wayland.desktop.in

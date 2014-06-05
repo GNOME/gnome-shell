@@ -1,8 +1,11 @@
 # List of source files containing translatable strings.
 # Please keep this file sorted alphabetically.
-src/50-mutter-navigation.xml.in
-src/50-mutter-system.xml.in
-src/50-mutter-windows.xml.in
+data/50-mutter-navigation.xml.in
+data/50-mutter-system.xml.in
+data/50-mutter-windows.xml.in
+data/mutter.desktop.in
+data/org.gnome.mutter.gschema.xml.in
+data/org.gnome.mutter.wayland.gschema.xml.in
 src/backends/meta-monitor-manager.c
 src/compositor/compositor.c
 src/compositor/meta-background.c
@@ -18,9 +21,6 @@ src/core/prefs.c
 src/core/screen.c
 src/core/util.c
 src/core/window.c
-src/mutter.desktop.in
-src/org.gnome.mutter.gschema.xml.in
-src/org.gnome.mutter.wayland.gschema.xml.in
 src/ui/frames.c
 src/ui/resizepopup.c
 src/ui/theme.c
