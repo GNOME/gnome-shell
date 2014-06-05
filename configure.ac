@@ -107,16 +107,6 @@ AC_ARG_WITH(libcanberra,
                  [disable the use of libcanberra for playing sounds]),,
   with_libcanberra=auto)
 
-AC_ARG_ENABLE(xsync,
-  AC_HELP_STRING([--disable-xsync],
-                 [disable mutter's use of the XSync extension]),,
-  enable_xsync=auto)
-
-AC_ARG_ENABLE(shape,
-  AC_HELP_STRING([--disable-shape],
-                 [disable mutter's use of the shaped window extension]),,
-  enable_shape=auto)
-
 AC_ARG_WITH([xwayland-path],
             [AS_HELP_STRING([--with-xwayland-path], [Absolute path for an X Wayland server])],
             [XWAYLAND_PATH="$withval"],
