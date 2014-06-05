@@ -1,5 +1,4 @@
-AC_PREREQ(2.50)
-AC_CONFIG_MACRO_DIR([m4])
+AC_PREREQ(2.62)
 
 m4_define([mutter_major_version], [3])
 m4_define([mutter_minor_version], [13])
@@ -14,6 +13,7 @@ AC_INIT([mutter], [mutter_version],
         [http://bugzilla.gnome.org/enter_bug.cgi?product=mutter])
 
 AC_CONFIG_MACRO_DIR([m4])
+AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_SRCDIR(src/core/display.c)
 AC_CONFIG_HEADERS(config.h)
 
@@ -40,12 +40,14 @@ GETTEXT_PACKAGE=mutter
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE",[Name of default gettext domain])
 
-IT_PROG_INTLTOOL([0.34.90])
+LT_PREREQ([2.2.6])
+LT_INIT([disable-static])
+IT_PROG_INTLTOOL([0.41])
 AC_PROG_CC
-AC_ISC_POSIX
+AC_PROG_CC_C_O
+AC_PROG_INSTALL
 AC_HEADER_STDC
-AC_LIBTOOL_WIN32_DLL
-AM_PROG_LIBTOOL
+PKG_PROG_PKG_CONFIG([0.21])
 
 # Sets GLIB_GENMARSHAL and GLIB_MKENUMS
 AM_PATH_GLIB_2_0()
@@ -116,8 +118,6 @@ AC_ARG_WITH([xwayland-path],
             [AS_HELP_STRING([--with-xwayland-path], [Absolute path for an X Wayland server])],
             [XWAYLAND_PATH="$withval"],
             [XWAYLAND_PATH="$bindir/Xwayland"])
-
-AM_GLIB_GNU_GETTEXT
 
 ## here we get the flags we'll actually use
 
