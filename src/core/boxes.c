@@ -546,6 +546,26 @@ compare_rect_areas (gconstpointer a, gconstpointer b)
   return b_area - a_area; /* positive ret value denotes b > a, ... */
 }
 
+/* ... and another helper for get_minimal_spanning_set_for_region()... */
+static gboolean
+check_strut_align (MetaStrut *strut, const MetaRectangle *rect)
+{
+  /* Check whether @strut actually aligns to the side of @rect it claims */
+  switch (strut->side)
+    {
+    case META_SIDE_TOP:
+      return BOX_TOP (strut->rect) <= BOX_TOP (*rect);
+    case META_SIDE_BOTTOM:
+      return BOX_BOTTOM (strut->rect) >= BOX_BOTTOM (*rect);
+    case META_SIDE_LEFT:
+      return BOX_LEFT (strut->rect) <= BOX_LEFT (*rect);
+    case META_SIDE_RIGHT:
+      return BOX_RIGHT (strut->rect) >= BOX_RIGHT (*rect);
+    default:
+      return FALSE;
+    }
+}
+
 /**
  * meta_rectangle_get_minimal_spanning_set_for_region:
  * @basic_rect: Input rectangle
@@ -630,7 +650,8 @@ meta_rectangle_get_minimal_spanning_set_for_region (
   for (strut_iter = all_struts; strut_iter; strut_iter = strut_iter->next)
     {
       GList *rect_iter;
-      MetaRectangle *strut_rect = &((MetaStrut*)strut_iter->data)->rect;
+      MetaStrut *strut = (MetaStrut*)strut_iter->data;
+      MetaRectangle *strut_rect = &strut->rect;
 
       tmp_list = ret;
       ret = NULL;
@@ -638,7 +659,9 @@ meta_rectangle_get_minimal_spanning_set_for_region (
       while (rect_iter)
         {
           MetaRectangle *rect = (MetaRectangle*) rect_iter->data;
-          if (!meta_rectangle_overlap (rect, strut_rect))
+
+          if (!meta_rectangle_overlap (strut_rect, rect) ||
+              !check_strut_align (strut, basic_rect))
             ret = g_list_prepend (ret, rect);
           else
             {
