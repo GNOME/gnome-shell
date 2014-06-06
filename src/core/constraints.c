@@ -411,6 +411,9 @@ setup_constraint_info (ConstraintInfo      *info,
    * if there are no struts making the workarea smaller than
    * the monitor.
    */
+
+  meta_window_frame_rect_to_client_rect (window, new, new);
+
   if (meta_prefs_get_force_fullscreen() &&
       window->client_type != META_WINDOW_CLIENT_TYPE_WAYLAND &&
       !window->hide_titlebar_when_maximized &&
@@ -428,6 +431,8 @@ setup_constraint_info (ConstraintInfo      *info,
                   window->desc);
       meta_window_make_fullscreen_internal (window);
     }
+
+  meta_window_client_rect_to_frame_rect (window, new, new);
 
   /* Log all this information for debugging */
   meta_topic (META_DEBUG_GEOMETRY,
