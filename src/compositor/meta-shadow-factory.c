@@ -496,7 +496,12 @@ get_box_filter_size (int radius)
 static int
 get_shadow_spread (int radius)
 {
-  int d = get_box_filter_size (radius);
+  int d;
+
+  if (radius == 0)
+    return 0;
+
+  d = get_box_filter_size (radius);
 
   if (d % 2 == 1)
     return 3 * (d / 2);
