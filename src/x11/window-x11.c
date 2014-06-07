@@ -3182,7 +3182,7 @@ meta_window_x11_recalc_window_type (MetaWindow *window)
    */
   if (window->override_redirect)
     {
-      switch (window->type)
+      switch (type)
         {
         /* Decorated types */
         case META_WINDOW_NORMAL:
