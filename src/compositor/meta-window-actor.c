@@ -746,9 +746,11 @@ meta_window_actor_has_shadow (MetaWindowActor *self)
     return FALSE;
 
   /*
-   * Add shadows to override redirect windows (e.g., Gtk menus).
+   * Add shadows to override redirect windows on X11 unless the toolkit
+   * indicates that it is handling shadows itself (e.g., Gtk menus).
    */
-  if (priv->window->override_redirect)
+  if (priv->window->override_redirect &&
+      !priv->window->has_custom_frame_extents)
     return TRUE;
 
   return FALSE;
