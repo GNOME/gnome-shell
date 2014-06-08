@@ -41,8 +41,7 @@ const ButtonBox = new Lang.Class({
     },
 
     _getPreferredWidth: function(actor, forHeight, alloc) {
-        let children = actor.get_children();
-        let child = children.length > 0 ? children[0] : null;
+        let child = actor.get_first_child();
 
         if (child) {
             [alloc.min_size, alloc.natural_size] = child.get_preferred_width(-1);
@@ -55,8 +54,7 @@ const ButtonBox = new Lang.Class({
     },
 
     _getPreferredHeight: function(actor, forWidth, alloc) {
-        let children = actor.get_children();
-        let child = children.length > 0 ? children[0] : null;
+        let child = actor.get_first_child();
 
         if (child) {
             [alloc.min_size, alloc.natural_size] = child.get_preferred_height(-1);
@@ -66,13 +64,11 @@ const ButtonBox = new Lang.Class({
     },
 
     _allocate: function(actor, box, flags) {
-        let children = actor.get_children();
-        if (children.length == 0)
+        let child = actor.get_first_child();
+        if (!child)
             return;
 
-        let child = children[0];
         let [minWidth, natWidth] = child.get_preferred_width(-1);
-        let [minHeight, natHeight] = child.get_preferred_height(-1);
 
         let availWidth = box.x2 - box.x1;
         let availHeight = box.y2 - box.y1;
