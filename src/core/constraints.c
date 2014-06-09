@@ -404,36 +404,6 @@ setup_constraint_info (ConstraintInfo      *info,
     meta_workspace_get_onmonitor_region (cur_workspace,
                                          monitor_info->number);
 
-  /* Workaround braindead legacy apps that don't know how to
-   * fullscreen themselves properly - don't get fooled by
-   * windows which hide their titlebar when maximized or which are
-   * client decorated; that's not the same as fullscreen, even
-   * if there are no struts making the workarea smaller than
-   * the monitor.
-   */
-
-  meta_window_frame_rect_to_client_rect (window, new, new);
-
-  if (meta_prefs_get_force_fullscreen() &&
-      window->client_type != META_WINDOW_CLIENT_TYPE_WAYLAND &&
-      !window->hide_titlebar_when_maximized &&
-      (window->decorated || !meta_window_is_client_decorated (window)) &&
-      meta_rectangle_equal (new, &monitor_info->rect) &&
-      window->has_fullscreen_func &&
-      !window->fullscreen)
-    {
-      /*
-      meta_topic (META_DEBUG_GEOMETRY,
-      */
-      meta_warning (
-                  "Treating resize request of legacy application %s as a "
-                  "fullscreen request\n",
-                  window->desc);
-      meta_window_make_fullscreen_internal (window);
-    }
-
-  meta_window_client_rect_to_frame_rect (window, new, new);
-
   /* Log all this information for debugging */
   meta_topic (META_DEBUG_GEOMETRY,
               "Setting up constraint info:\n"
