@@ -4,6 +4,9 @@
     <Import Project="clutter-build-defines.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros">
+    <BinDir>$(SolutionDir)$(Configuration)\$(Platform)\bin</BinDir>
+    <InstalledDlls>$(BinDir)\$(ClutterDllPrefix)clutter(ClutterDllSuffix).dll</InstalledDlls>
+    <InstalledBins>$(BinDir)\cally-atkcomponent-example.exe;$(BinDir)\cally-atkeditabletext-example.exe;$(BinDir)\cally-atkevents-example.exe;$(BinDir)\cally-atktext-example.exe;$(BinDir)\cally-clone-example.exe;$(BinDir)\test-cogl-perf.exe;$(BinDir)\test-interactive-clutter.exe;$(BinDir)\test-picking-performance.exe;$(BinDir)\test-picking.exe;$(BinDir)\test-random-text.exe;$(BinDir)\test-state-hidden-performance.exe;$(BinDir)\test-state-interactive-performance.exe;$(BinDir)\test-state-mini-performance.exe;$(BinDir)\test-state-performance.exe;$(BinDir)\test-state-pick-performance.exe;$(BinDir)\test-text-perf-performance.exe;$(BinDir)\test-text-perf.exe;$(BinDir)\test-text.exe</InstalledBins>
     <ClutterDoInstall>
 mkdir $(CopyDir)
 
@@ -11,10 +14,10 @@ mkdir $(CopyDir)\bin
 
 mkdir $(CopyDir)\share\clutter-$(ApiVersion)\data
 
-copy $(SolutionDir)$(Configuration)\$(Platform)\bin\*.dll $(CopyDir)\bin
+copy $(BinDir)\*.dll $(CopyDir)\bin
 
 
-copy $(SolutionDir)$(Configuration)\$(Platform)\bin\*.exe $(CopyDir)\bin
+copy $(BinDir)\*.exe $(CopyDir)\bin
 
 copy ..\..\..\tests\interactive\*.png $(CopyDir)\share\clutter-$(ApiVersion)\data
 
@@ -26,7 +29,7 @@ copy ..\..\..\tests\interactive\*.json $(CopyDir)\share\clutter-$(ApiVersion)\da
 
 mkdir $(CopyDir)\lib
 
-copy $(SolutionDir)$(Configuration)\$(Platform)\bin\*-$(ApiVersion).lib $(CopyDir)\lib
+copy $(BinDir)\*-$(ApiVersion).lib $(CopyDir)\lib
 
 
 mkdir $(CopyDir)\include\clutter-$(ApiVersion)\clutter\win32
@@ -322,6 +325,15 @@ copy ..\..\..\clutter\gdk\clutter-gdk.h $(CopyDir)\include\clutter-$(ApiVersion)
     <_PropertySheetDisplayName>clutterinstallprops</_PropertySheetDisplayName>
   </PropertyGroup>
   <ItemGroup>
+    <BuildMacro Include="BinDir">
+      <Value>$(BinDir)</Value>
+    </BuildMacro>
+    <BuildMacro Include="InstalledDlls">
+      <Value>$(InstalledDlls)</Value>
+    </BuildMacro>
+    <BuildMacro Include="InstalledBins">
+      <Value>$(InstalledBins)</Value>
+    </BuildMacro>
     <BuildMacro Include="ClutterDoInstall">
       <Value>$(ClutterDoInstall)</Value>
     </BuildMacro>
