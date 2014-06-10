@@ -285,10 +285,10 @@ const ViewSelector = new Lang.Class({
         } else if (!this._searchActive && !global.stage.key_focus) {
             if (symbol == Clutter.Tab || symbol == Clutter.Down) {
                 this._activePage.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
-                return true;
+                return Clutter.EVENT_STOP;
             } else if (symbol == Clutter.ISO_Left_Tab) {
                 this._activePage.navigate_focus(null, Gtk.DirectionType.TAB_BACKWARD, false);
-                return true;
+                return Clutter.EVENT_STOP;
             }
         }
         return Clutter.EVENT_PROPAGATE;
