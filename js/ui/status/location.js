@@ -191,8 +191,12 @@ const Indicator = new Lang.Class({
         let unpacked = properties.deep_unpack();
         if ("InUse" in unpacked)
             this._syncIndicator();
-        if ("AvailableAccuracyLevel" in unpacked)
+        if ("AvailableAccuracyLevel" in unpacked) {
             this._availableAccuracyLevel = this._proxy.AvailableAccuracyLevel;
+
+            if (this._getMaxAccuracyLevel() != 0)
+                this._settings.set_enum(MAX_ACCURACY_LEVEL, this._availableAccuracyLevel);
+        }
     }
 });
 
