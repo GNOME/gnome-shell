@@ -174,16 +174,19 @@ shell_prefs_init (void)
 {
   ShellGlobal *global = shell_global_get ();
   GSettings *settings = shell_global_get_overrides_settings (global);
-  char **keys, **k;
+  char **keys, **k, *schema_id;
 
   if (!settings)
     return;
 
+  g_object_get (G_OBJECT (settings), "schema-id", &schema_id, NULL);
+
   keys = g_settings_list_keys (settings);
   for (keys = k = g_settings_list_keys (settings); *k; k++)
-    meta_prefs_override_preference_schema (*k, OVERRIDES_SCHEMA);
+    meta_prefs_override_preference_schema (*k, schema_id);
 
   g_strfreev (keys);
+  g_free (schema_id);
 }
 
 static void
