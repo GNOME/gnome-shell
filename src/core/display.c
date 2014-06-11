@@ -1696,15 +1696,15 @@ meta_display_update_cursor (MetaDisplay *display)
 }
 
 static MetaWindow *
-get_toplevel_transient_for (MetaWindow *window)
+get_first_freefloating_window (MetaWindow *window)
 {
-  while (TRUE)
-    {
-      MetaWindow *parent = meta_window_get_transient_for (window);
-      if (parent == NULL)
-        return window;
-      window = parent;
-    }
+  while (meta_window_is_attached_dialog (window))
+    window = meta_window_get_transient_for (window);
+
+  /* Attached dialogs should always have a non-NULL transient-for */
+  g_assert (window != NULL);
+
+  return window;
 }
 
 gboolean
@@ -1752,11 +1752,11 @@ meta_display_begin_grab_op (MetaDisplay *display,
 
   grab_window = window;
 
-  /* If window is a modal dialog attached to its parent,
-   * grab the parent instead for moving.
+  /* If we're trying to move a window, move the first
+   * non-attached dialog instead.
    */
-  if (meta_window_is_attached_dialog (window) && meta_grab_op_is_moving (op))
-    grab_window = get_toplevel_transient_for (window);
+  if (meta_grab_op_is_moving (op))
+    grab_window = get_first_freefloating_window (window);
 
   g_assert (grab_window != NULL);
   g_assert (op != META_GRAB_OP_NONE);
