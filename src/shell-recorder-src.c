@@ -14,9 +14,6 @@ struct _ShellRecorderSrc
   GMutex mutex_data;
   GMutex *mutex;
 
-  GstClock *clock;
-  GstClockTime last_frame_time;
-
   GstCaps *caps;
   GAsyncQueue *queue;
   gboolean closed;
@@ -45,9 +42,7 @@ shell_recorder_src_init (ShellRecorderSrc      *src)
 {
   gst_base_src_set_format (GST_BASE_SRC (src), GST_FORMAT_TIME);
   gst_base_src_set_live (GST_BASE_SRC (src), TRUE);
-
-  src->clock = gst_system_clock_obtain ();
-  src->last_frame_time = 0;
+  gst_base_src_set_do_timestamp (GST_BASE_SRC (src), TRUE);
 
   src->queue = g_async_queue_new ();
   src->mutex = &src->mutex_data;
@@ -113,9 +108,6 @@ shell_recorder_src_create (GstPushSrc  *push_src,
 
   buffer = g_async_queue_pop (src->queue);
 
-  if (src->last_frame_time == 0)
-    src->last_frame_time = gst_clock_get_time (GST_CLOCK (src->clock));
-
   if (buffer == RECORDER_QUEUE_END)
     {
       /* Returning UNEXPECTED here will cause a EOS message to be sent */
@@ -127,9 +119,6 @@ shell_recorder_src_create (GstPushSrc  *push_src,
 					 - (int)(gst_buffer_get_size(buffer) / 1024));
 
   *buffer_out = buffer;
-  GST_BUFFER_DURATION(*buffer_out) = GST_CLOCK_DIFF (src->last_frame_time, gst_clock_get_time (GST_CLOCK (src->clock)));
-
-  src->last_frame_time = gst_clock_get_time (GST_CLOCK (src->clock));
 
   return GST_FLOW_OK;
 }
@@ -170,8 +159,6 @@ shell_recorder_src_finalize (GObject *object)
   g_async_queue_unref (src->queue);
 
   g_mutex_clear (src->mutex);
-
-  gst_object_unref (src->clock);
 
   G_OBJECT_CLASS (shell_recorder_src_parent_class)->finalize (object);
 }
