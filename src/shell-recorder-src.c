@@ -85,6 +85,19 @@ shell_recorder_src_update_memory_used (ShellRecorderSrc *src,
   g_mutex_unlock (src->mutex);
 }
 
+/* _negotiate() is called when we have to decide on a format. We
+ * use the configured format */
+static gboolean
+shell_recorder_src_negotiate (GstBaseSrc * base_src)
+{
+  ShellRecorderSrc *src = SHELL_RECORDER_SRC (base_src);
+  gboolean result;
+
+  result = gst_base_src_set_caps (base_src, src->caps);
+
+  return result;
+}
+
 /* The create() virtual function is responsible for returning the next buffer.
  * We just pop buffers off of the queue and block if necessary.
  */
@@ -211,6 +224,7 @@ shell_recorder_src_class_init (ShellRecorderSrcClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GstElementClass *element_class = GST_ELEMENT_CLASS (klass);
+  GstBaseSrcClass *base_src_class = GST_BASE_SRC_CLASS (klass);
   GstPushSrcClass *push_src_class = GST_PUSH_SRC_CLASS (klass);
 
   static GstStaticPadTemplate src_template =
@@ -223,7 +237,10 @@ shell_recorder_src_class_init (ShellRecorderSrcClass *klass)
   object_class->set_property = shell_recorder_src_set_property;
   object_class->get_property = shell_recorder_src_get_property;
 
+  base_src_class->negotiate = shell_recorder_src_negotiate;
+
   push_src_class->create = shell_recorder_src_create;
+
 
   g_object_class_install_property (object_class,
                                    PROP_CAPS,
@@ -264,7 +281,6 @@ shell_recorder_src_add_buffer (ShellRecorderSrc *src,
   g_return_if_fail (SHELL_IS_RECORDER_SRC (src));
   g_return_if_fail (src->caps != NULL);
 
-  gst_base_src_set_caps (GST_BASE_SRC (src), src->caps);
   shell_recorder_src_update_memory_used (src,
 					 (int)(gst_buffer_get_size(buffer) / 1024));
 
