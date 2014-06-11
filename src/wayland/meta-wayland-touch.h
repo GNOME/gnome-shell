@@ -48,15 +48,15 @@ void meta_wayland_touch_init (MetaWaylandTouch  *touch,
 
 void meta_wayland_touch_release (MetaWaylandTouch *touch);
 
-void meta_wayland_touch_create_new_resource (MetaWaylandTouch   *touch,
-                                             struct wl_client   *client,
-                                             struct wl_resource *seat_resource,
-                                             uint32_t            id);
-
 void meta_wayland_touch_update (MetaWaylandTouch   *touch,
                                 const ClutterEvent *event);
 
 gboolean meta_wayland_touch_handle_event (MetaWaylandTouch   *touch,
                                           const ClutterEvent *event);
+
+void meta_wayland_touch_create_new_resource (MetaWaylandTouch   *touch,
+                                             struct wl_client   *client,
+                                             struct wl_resource *seat_resource,
+                                             uint32_t            id);
 
 #endif /* META_WAYLAND_TOUCH_H */
