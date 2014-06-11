@@ -1040,6 +1040,45 @@ void
 meta_workspace_set_builtin_struts (MetaWorkspace *workspace,
                                    GSList        *struts)
 {
+  MetaScreen *screen = workspace->screen;
+  GSList *l;
+
+  for (l = struts; l; l = l->next)
+    {
+      MetaStrut *strut = l->data;
+      int idx = meta_screen_get_monitor_index_for_rect (screen, &strut->rect);
+
+      switch (strut->side)
+        {
+        case META_SIDE_TOP:
+          if (meta_screen_get_monitor_neighbor (screen, idx, META_SCREEN_UP))
+            continue;
+
+          strut->rect.height += strut->rect.y;
+          strut->rect.y = 0;
+          break;
+        case META_SIDE_BOTTOM:
+          if (meta_screen_get_monitor_neighbor (screen, idx, META_SCREEN_DOWN))
+            continue;
+
+          strut->rect.height = screen->rect.height - strut->rect.y;
+          break;
+        case META_SIDE_LEFT:
+          if (meta_screen_get_monitor_neighbor (screen, idx, META_SCREEN_LEFT))
+            continue;
+
+          strut->rect.width += strut->rect.x;
+          strut->rect.x = 0;
+          break;
+        case META_SIDE_RIGHT:
+          if (meta_screen_get_monitor_neighbor (screen, idx, META_SCREEN_RIGHT))
+            continue;
+
+          strut->rect.width = screen->rect.width - strut->rect.x;
+          break;
+        }
+    }
+
   /* Reordering doesn't actually matter, so we don't catch all
    * no-impact changes, but this is just a (possibly unnecessary
    * anyways) optimization */
