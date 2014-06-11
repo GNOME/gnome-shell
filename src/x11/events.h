@@ -22,10 +22,10 @@
 
 #include <meta/display.h>
 
-#ifndef META_EVENTS_H
-#define META_EVENTS_H
+#ifndef META_EVENTS_X11_H
+#define META_EVENTS_X11_H
 
-void meta_display_init_events (MetaDisplay *display);
-void meta_display_free_events (MetaDisplay *display);
+void meta_display_init_events_x11 (MetaDisplay *display);
+void meta_display_free_events_x11 (MetaDisplay *display);
 
 #endif

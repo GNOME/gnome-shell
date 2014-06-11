@@ -191,6 +191,8 @@ libmutter_la_SOURCES =				\
 	x11/iconcache.h				\
 	x11/async-getprop.c			\
 	x11/async-getprop.h			\
+	x11/events.c				\
+	x11/events.h				\
 	x11/group-private.h			\
 	x11/group-props.c			\
 	x11/group-props.h			\
