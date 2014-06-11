@@ -239,7 +239,7 @@ static GSList*
 get_strut_list (int which)
 {
   GSList *ans;
-  MetaDirection wc = 0; /* wc == who cares? ;-) */
+  MetaSide wc = 0; /* wc == who cares? ;-) */
 
   ans = NULL;
 
@@ -249,32 +249,32 @@ get_strut_list (int which)
     case 0:
       break;
     case 1:
-      ans = g_slist_prepend (ans, new_meta_strut (   0,    0, 1600,   20, wc));
-      ans = g_slist_prepend (ans, new_meta_strut ( 400, 1160, 1600,   40, wc));
+      ans = g_slist_prepend (ans, new_meta_strut (   0,    0, 1600,   20, META_SIDE_TOP));
+      ans = g_slist_prepend (ans, new_meta_strut ( 400, 1160, 1600,   40, META_SIDE_BOTTOM));
       break;
     case 2:
-      ans = g_slist_prepend (ans, new_meta_strut (   0,    0, 1600,   20, wc));
-      ans = g_slist_prepend (ans, new_meta_strut ( 800, 1100,  400,  100, wc));
-      ans = g_slist_prepend (ans, new_meta_strut ( 300, 1150,  150,   50, wc));
+      ans = g_slist_prepend (ans, new_meta_strut (   0,    0, 1600,   20, META_SIDE_TOP));
+      ans = g_slist_prepend (ans, new_meta_strut ( 800, 1100,  400,  100, META_SIDE_BOTTOM));
+      ans = g_slist_prepend (ans, new_meta_strut ( 300, 1150,  150,   50, META_SIDE_BOTTOM));
       break;
     case 3:
-      ans = g_slist_prepend (ans, new_meta_strut (   0,    0, 1600,   20, wc));
-      ans = g_slist_prepend (ans, new_meta_strut ( 800, 1100,  400,  100, wc));
-      ans = g_slist_prepend (ans, new_meta_strut ( 300, 1150,   80,   50, wc));
+      ans = g_slist_prepend (ans, new_meta_strut (   0,    0, 1600,   20, META_SIDE_TOP));
+      ans = g_slist_prepend (ans, new_meta_strut ( 800, 1100,  400,  100, META_SIDE_LEFT));
+      ans = g_slist_prepend (ans, new_meta_strut ( 300, 1150,   80,   50, META_SIDE_BOTTOM));
       ans = g_slist_prepend (ans, new_meta_strut ( 700,  525,  200,  150, wc));
       break;
     case 4:
-      ans = g_slist_prepend (ans, new_meta_strut (   0,    0,  800, 1200, wc));
-      ans = g_slist_prepend (ans, new_meta_strut ( 800,    0, 1600,   20, wc));
+      ans = g_slist_prepend (ans, new_meta_strut (   0,    0,  800, 1200, META_SIDE_LEFT));
+      ans = g_slist_prepend (ans, new_meta_strut ( 800,    0, 1600,   20, META_SIDE_TOP));
       break;
     case 5:
-      ans = g_slist_prepend (ans, new_meta_strut ( 800,    0, 1600,   20, wc));
-      ans = g_slist_prepend (ans, new_meta_strut (   0,    0,  800, 1200, wc));
-      ans = g_slist_prepend (ans, new_meta_strut ( 800,   10,  800, 1200, wc));
+      ans = g_slist_prepend (ans, new_meta_strut ( 800,    0, 1600,   20, META_SIDE_TOP));
+      ans = g_slist_prepend (ans, new_meta_strut (   0,    0,  800, 1200, META_SIDE_LEFT));
+      ans = g_slist_prepend (ans, new_meta_strut ( 800,   10,  800, 1200, META_SIDE_RIGHT));
       break;
     case 6:
-      ans = g_slist_prepend (ans, new_meta_strut (   0,    0, 1600,   40, wc));
-      ans = g_slist_prepend (ans, new_meta_strut (   0,    0, 1600,   20, wc));
+      ans = g_slist_prepend (ans, new_meta_strut (   0,    0, 1600,   40, META_SIDE_TOP));
+      ans = g_slist_prepend (ans, new_meta_strut (   0,    0, 1600,   20, META_SIDE_TOP));
       break;
     }
 
@@ -624,15 +624,9 @@ test_regions_okay ()
   /*************************************************************/
   region = get_screen_region (3);
   tmp = NULL;
-  tmp = g_list_prepend (tmp, new_meta_rect ( 380,  675,  420,  525)); /* 220500 */
   tmp = g_list_prepend (tmp, new_meta_rect (   0,   20,  300, 1180)); /* 354000 */
-  tmp = g_list_prepend (tmp, new_meta_rect ( 380,   20,  320, 1180)); /* 377600 */
-  tmp = g_list_prepend (tmp, new_meta_rect (   0,  675,  800,  475)); /* 380000 */
-  tmp = g_list_prepend (tmp, new_meta_rect (1200,   20,  400, 1180)); /* 472000 */
-  tmp = g_list_prepend (tmp, new_meta_rect (   0,  675, 1600,  425)); /* 680000 */
-  tmp = g_list_prepend (tmp, new_meta_rect ( 900,   20,  700, 1080)); /* 756000 */
-  tmp = g_list_prepend (tmp, new_meta_rect (   0,   20,  700, 1130)); /* 791000 */
-  tmp = g_list_prepend (tmp, new_meta_rect (   0,   20, 1600,  505)); /* 808000 */
+  tmp = g_list_prepend (tmp, new_meta_rect ( 380,   20,  1220, 1180)); /* 377600 */
+  tmp = g_list_prepend (tmp, new_meta_rect (   0,   20,  1600, 1130)); /* 791000 */
 #if 0
   printf ("Got to here...\n");
   char region_list[(RECT_LENGTH+2) * g_list_length (region)];
