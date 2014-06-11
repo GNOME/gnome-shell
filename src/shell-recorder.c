@@ -1059,8 +1059,6 @@ recorder_pipeline_set_caps (RecorderPipeline *pipeline)
 #else
                               "format", G_TYPE_STRING, "xRGB",
 #endif
-                              "bpp", G_TYPE_INT, 32,
-                              "depth", G_TYPE_INT, 24,
                               "framerate", GST_TYPE_FRACTION, pipeline->recorder->framerate, 1,
                               "width", G_TYPE_INT, pipeline->recorder->area.width,
                               "height", G_TYPE_INT, pipeline->recorder->area.height,
