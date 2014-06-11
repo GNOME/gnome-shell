@@ -1678,10 +1678,8 @@ wl_subcompositor_get_subsurface (struct wl_client *client,
 
   pending_state_init (&surface->sub.pending);
   surface->sub.parent = parent;
-  surface->sub.parent_destroy_listener.notify =
-    surface_handle_parent_surface_destroyed;
-  wl_resource_add_destroy_listener (parent->resource,
-                                    &surface->sub.parent_destroy_listener);
+  surface->sub.parent_destroy_listener.notify = surface_handle_parent_surface_destroyed;
+  wl_resource_add_destroy_listener (parent->resource, &surface->sub.parent_destroy_listener);
   parent->subsurfaces = g_list_append (parent->subsurfaces, surface);
 
   clutter_actor_add_child (CLUTTER_ACTOR (parent->surface_actor),
