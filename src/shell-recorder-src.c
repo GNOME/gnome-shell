@@ -35,6 +35,7 @@ enum {
 /* Special marker value once the source is closed */
 #define RECORDER_QUEUE_END ((GstBuffer *)1)
 
+#define shell_recorder_src_parent_class parent_class
 G_DEFINE_TYPE(ShellRecorderSrc, shell_recorder_src, GST_TYPE_PUSH_SRC);
 
 static void
@@ -91,6 +92,26 @@ shell_recorder_src_negotiate (GstBaseSrc * base_src)
   result = gst_base_src_set_caps (base_src, src->caps);
 
   return result;
+}
+
+static gboolean
+shell_recorder_src_send_event (GstElement * element, GstEvent * event)
+{
+  ShellRecorderSrc *src = SHELL_RECORDER_SRC (element);
+  gboolean res;
+
+  switch (GST_EVENT_TYPE (event)) {
+    case GST_EVENT_EOS:
+      shell_recorder_src_close (src);
+      gst_event_unref (event);
+      res = TRUE;
+      break;
+    default:
+      res = GST_CALL_PARENT_WITH_DEFAULT (GST_ELEMENT_CLASS, send_event, (element,
+              event), FALSE);
+      break;
+  }
+  return res;
 }
 
 /* The create() virtual function is responsible for returning the next buffer.
@@ -224,11 +245,6 @@ shell_recorder_src_class_init (ShellRecorderSrcClass *klass)
   object_class->set_property = shell_recorder_src_set_property;
   object_class->get_property = shell_recorder_src_get_property;
 
-  base_src_class->negotiate = shell_recorder_src_negotiate;
-
-  push_src_class->create = shell_recorder_src_create;
-
-
   g_object_class_install_property (object_class,
                                    PROP_CAPS,
                                    g_param_spec_boxed ("caps",
@@ -251,6 +267,12 @@ shell_recorder_src_class_init (ShellRecorderSrcClass *klass)
 					"Generic/Src",
 					"Feed screen capture data to a pipeline",
 					"Owen Taylor <otaylor@redhat.com>");
+
+  element_class->send_event = shell_recorder_src_send_event;
+
+  base_src_class->negotiate = shell_recorder_src_negotiate;
+
+  push_src_class->create = shell_recorder_src_create;
 }
 
 /**
