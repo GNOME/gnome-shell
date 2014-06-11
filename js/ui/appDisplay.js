@@ -16,6 +16,7 @@ const Atk = imports.gi.Atk;
 const AppFavorites = imports.ui.appFavorites;
 const BoxPointer = imports.ui.boxpointer;
 const DND = imports.ui.dnd;
+const GrabHelper = imports.ui.grabHelper;
 const IconGrid = imports.ui.iconGrid;
 const Main = imports.ui.main;
 const Overview = imports.ui.overview;
@@ -1249,18 +1250,7 @@ const AppFolderPopup = new Lang.Class({
             function() {
                 this.actor.destroy();
             }));
-        this.actor.connect('key-press-event', Lang.bind(this, this._onKeyPress));
-    },
-
-    _onKeyPress: function(actor, event) {
-        if (!this._isOpen)
-            return Clutter.EVENT_PROPAGATE;
-
-        if (event.get_key_symbol() != Clutter.KEY_Escape)
-            return Clutter.EVENT_PROPAGATE;
-
-        this.popdown();
-        return Clutter.EVENT_STOP;
+        this._grabHelper = new GrabHelper.GrabHelper(this.actor);
     },
 
     toggle: function() {
@@ -1274,6 +1264,12 @@ const AppFolderPopup = new Lang.Class({
         if (this._isOpen)
             return;
 
+        this._isOpen = this._grabHelper.grab({ actor: this.actor,
+                                               onUngrab: Lang.bind(this, this.popdown) });
+
+        if (!this._isOpen)
+            return;
+
         this.actor.show();
 
         this._boxPointer.setArrowActor(this._source.actor);
@@ -1282,13 +1278,14 @@ const AppFolderPopup = new Lang.Class({
 
         this.actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
 
-        this._isOpen = true;
         this.emit('open-state-changed', true);
     },
 
     popdown: function() {
         if (!this._isOpen)
             return;
+
+        this._grabHelper.ungrab({ actor: this.actor });
 
         this._boxPointer.hide(BoxPointer.PopupAnimation.FADE |
                               BoxPointer.PopupAnimation.SLIDE);
