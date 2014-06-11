@@ -1017,43 +1017,6 @@ const LayoutManager = new Lang.Class({
                 else
                     continue;
 
-                // Ensure that the strut rects goes all the way to the screen edge,
-                // as this really what mutter expects. However skip this step
-                // in cases where this would render an entire monitor unusable.
-                switch (side) {
-                case Meta.Side.TOP:
-                    let hasMonitorsAbove = this.monitors.some(Lang.bind(this,
-                        function(mon) {
-                            return this._isAboveOrBelowPrimary(mon) &&
-                                   mon.y < primary.y;
-                        }));
-                    if (!hasMonitorsAbove)
-                        y1 = 0;
-                    break;
-                case Meta.Side.BOTTOM:
-                    if (this.primaryIndex == this.bottomIndex)
-                        y2 = global.screen_height;
-                    break;
-                case Meta.Side.LEFT:
-                    let hasMonitorsLeft = this.monitors.some(Lang.bind(this,
-                        function(mon) {
-                            return !this._isAboveOrBelowPrimary(mon) &&
-                                   mon.x < primary.x;
-                        }));
-                    if (!hasMonitorsLeft)
-                        x1 = 0;
-                    break;
-                case Meta.Side.RIGHT:
-                    let hasMonitorsRight = this.monitors.some(Lang.bind(this,
-                        function(mon) {
-                            return !this._isAboveOrBelowPrimary(mon) &&
-                                   mon.x > primary.x;
-                        }));
-                    if (!hasMonitorsRight)
-                        x2 = global.screen_width;
-                    break;
-                }
-
                 let strutRect = new Meta.Rectangle({ x: x1, y: y1, width: x2 - x1, height: y2 - y1});
                 let strut = new Meta.Strut({ rect: strutRect, side: side });
                 struts.push(strut);
