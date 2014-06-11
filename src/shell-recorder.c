@@ -1541,8 +1541,8 @@ recorder_close_pipeline (ShellRecorder *recorder)
        * is written. The bus watch for the pipeline will get it and do
        * final cleanup
        */
-      shell_recorder_src_close (SHELL_RECORDER_SRC (recorder->current_pipeline->src));
-
+      gst_element_send_event (recorder->current_pipeline->pipeline,
+          gst_event_new_eos());
       recorder->current_pipeline = NULL;
     }
 }
