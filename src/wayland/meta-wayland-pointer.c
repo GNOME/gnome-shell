@@ -200,8 +200,6 @@ meta_wayland_pointer_init (MetaWaylandPointer *pointer,
 
   pointer->cursor_surface = NULL;
   pointer->cursor_surface_destroy_listener.notify = pointer_handle_cursor_surface_destroy;
-  pointer->hotspot_x = 16;
-  pointer->hotspot_y = 16;
 
   pointer->default_grab.interface = &default_pointer_grab_interface;
   pointer->default_grab.pointer = pointer;
