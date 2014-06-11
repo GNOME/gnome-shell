@@ -38,7 +38,6 @@
     <method name="Screencast">
       <arg type="s" direction="in" name="file_template"/>
       <arg type="a{sv}" direction="in" name="options"/>
-      <arg type="b" direction="in" name="flash"/>
       <arg type="b" direction="out" name="success"/>
       <arg type="s" direction="out" name="filename_used"/>
     </method>
