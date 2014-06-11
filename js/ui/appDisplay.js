@@ -1253,6 +1253,51 @@ const AppFolderPopup = new Lang.Class({
             }));
         this._grabHelper = new GrabHelper.GrabHelper(this.actor);
         this._grabHelper.addActor(Main.layoutManager.overviewGroup);
+        this.actor.connect('key-press-event', Lang.bind(this, this._onKeyPress));
+    },
+
+    _onKeyPress: function(actor, event) {
+        if (global.stage.get_key_focus() != actor)
+            return Clutter.EVENT_PROPAGATE;
+
+        // Since we need to only grab focus on one item child when the user
+        // actually press a key we don't use navigate_focus when opening
+        // the popup.
+        // Instead of that, grab the focus on the AppFolderPopup actor
+        // and actually moves the focus to a child only when the user
+        // actually press a key.
+        // It should work with just grab_key_focus on the AppFolderPopup
+        // actor, but since the arrow keys are not wrapping_around the focus
+        // is not grabbed by a child when the widget that has the current focus
+        // is the same that is requesting focus, so to make it works with arrow
+        // keys we need to connect to the key-press-event and navigate_focus
+        // when that happens using TAB_FORWARD or TAB_BACKWARD instead of arrow
+        // keys
+
+        // Use TAB_FORWARD for down key and right key
+        // and TAB_BACKWARD for up key and left key on ltr
+        // languages
+        let direction;
+        let isLtr = Clutter.get_default_text_direction() == Clutter.TextDirection.LTR;
+        switch (event.get_key_symbol()) {
+            case Clutter.Down:
+                direction = Gtk.DirectionType.TAB_FORWARD;
+                break;
+            case Clutter.Right:
+                direction = isLtr ? Gtk.DirectionType.TAB_FORWARD :
+                                    Gtk.DirectionType.TAB_BACKWARD;
+                break;
+            case Clutter.Up:
+                direction = Gtk.DirectionType.TAB_BACKWARD;
+                break;
+            case Clutter.Left:
+                direction = isLtr ? Gtk.DirectionType.TAB_BACKWARD :
+                                    Gtk.DirectionType.TAB_FORWARD;
+                break;
+            default:
+                return Clutter.EVENT_PROPAGATE;
+        }
+        return actor.navigate_focus(null, direction, false);
     },
 
     toggle: function() {
@@ -1277,8 +1322,6 @@ const AppFolderPopup = new Lang.Class({
         this._boxPointer.setArrowActor(this._source.actor);
         this._boxPointer.show(BoxPointer.PopupAnimation.FADE |
                               BoxPointer.PopupAnimation.SLIDE);
-
-        this.actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
 
         this.emit('open-state-changed', true);
     },
