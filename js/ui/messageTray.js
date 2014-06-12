@@ -478,7 +478,6 @@ const Notification = new Lang.Class({
         this.urgency = Urgency.NORMAL;
         this.isMusic = false;
         this.forFeedback = false;
-        this.expanded = false;
         this.focused = false;
         this.acknowledged = false;
         this._destroyed = false;
@@ -539,6 +538,8 @@ const Notification = new Lang.Class({
         this._secondaryIconBin = new St.Bin();
         this._titleBox.add_child(this._secondaryIconBin);
         this._titleLabel = new St.Label({ x_expand: true });
+        this._titleLabel.clutter_text.line_wrap = true;
+        this._titleLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this._titleBox.add_child(this._titleLabel);
         this._titleBodyBox.add(this._titleBox);
 
@@ -555,6 +556,8 @@ const Notification = new Lang.Class({
         // By default, this._bodyBin contains a URL highlighter. Subclasses
         // can override this to provide custom content if they want to.
         this._bodyUrlHighlighter = new URLHighlighter();
+        this._bodyUrlHighlighter.actor.clutter_text.line_wrap = true;
+        this._bodyUrlHighlighter.actor.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this._bodyBin.child = this._bodyUrlHighlighter.actor;
 
         this._actionAreaBin = new St.Bin({ style_class: 'notification-action-area',
@@ -577,24 +580,11 @@ const Notification = new Lang.Class({
     },
 
     _sync: function() {
-        this._actionAreaBin.visible = this.expanded && (this._actionArea != null);
-        this._buttonBox.visible = this.expanded && (this._buttonBox.get_n_children() > 0);
-
         this._iconBin.visible = (this._icon != null && this._icon.visible);
         this._secondaryIconBin.visible = (this._secondaryIcon != null);
 
-        if (this.expanded) {
-            this._titleLabel.clutter_text.line_wrap = true;
-            this._titleLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
-            this._bodyUrlHighlighter.actor.clutter_text.line_wrap = true;
-            this._bodyUrlHighlighter.actor.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
-        } else {
-            this._titleLabel.clutter_text.line_wrap = false;
-            this._titleLabel.clutter_text.ellipsize = Pango.EllipsizeMode.END;
-            this._bodyUrlHighlighter.actor.clutter_text.line_wrap = false;
-            this._bodyUrlHighlighter.actor.clutter_text.ellipsize = Pango.EllipsizeMode.END;
-        }
-        this.enableScrolling(this.expanded);
+        this._actionAreaBin.visible = (this._actionAreaBin.child != null);
+        this._buttonBox.visible = (this._buttonBox.get_n_children() > 0);
 
         this._bodyUrlHighlighter.actor.visible = this._bodyUrlHighlighter.hasText();
     },
@@ -801,19 +791,6 @@ const Notification = new Lang.Class({
                 global.play_sound_file(0, this._soundFile, this.title, null);
             }
         }
-    },
-
-    expand: function(animate) {
-        this.expanded = true;
-        this._sync();
-    },
-
-    collapseCompleted: function() {
-        if (this._destroyed)
-            return;
-
-        this.expanded = false;
-        this._sync();
     },
 
     _onClicked: function() {
@@ -1250,7 +1227,6 @@ const SummaryItem = new Lang.Class({
 
     doneShowingNotificationStack: function() {
         this.source.notifications.forEach(Lang.bind(this, function(notification) {
-            notification.collapseCompleted();
             notification.setIconVisible(true);
             notification.enableScrolling(true);
             this.notificationStack.remove_actor(notification.actor);
@@ -1274,7 +1250,6 @@ const SummaryItem = new Lang.Class({
         notification.connect('destroy', Lang.bind(this, this._contentUpdated));
         if (!this.source.isChat)
             notification.enableScrolling(false);
-        notification.expand(false);
         this.notificationStack.add(notification.actor);
         this._contentUpdated();
     },
@@ -1598,13 +1573,6 @@ const MessageTray = new Lang.Class({
                               Shell.KeyBindingMode.MESSAGE_TRAY |
                               Shell.KeyBindingMode.OVERVIEW,
                               Lang.bind(this, this.toggleAndNavigate));
-        Main.wm.addKeybinding('focus-active-notification',
-                              new Gio.Settings({ schema: SHELL_KEYBINDINGS_SCHEMA }),
-                              Meta.KeyBindingFlags.NONE,
-                              Shell.KeyBindingMode.NORMAL |
-                              Shell.KeyBindingMode.MESSAGE_TRAY |
-                              Shell.KeyBindingMode.OVERVIEW,
-                              Lang.bind(this, this._expandActiveNotification));
 
         this._sources = new Map();
         this._chatSummaryItemsCount = 0;
@@ -2099,8 +2067,6 @@ const MessageTray = new Lang.Class({
             if (mustClose) {
                 let animate = hasNotifications && !this._notificationRemoved;
                 this._hideNotification(animate);
-            } else if (this._pointerInNotification && !this._notification.expanded) {
-                this._expandNotification(false);
             } else if (this._pointerInNotification) {
                 this._ensureNotificationFocused();
             }
@@ -2321,12 +2287,6 @@ const MessageTray = new Lang.Class({
         this._notification.acknowledged = true;
         this._notification.playSound();
 
-        // We auto-expand notifications with CRITICAL urgency, or for which the relevant setting
-        // is on in the control center.
-        if (this._notification.urgency == Urgency.CRITICAL ||
-            this._notification.source.policy.forceExpanded)
-            this._expandNotification(true);
-
         // We tween all notifications to full opacity. This ensures that both new notifications and
         // notifications that might have been in the process of hiding get full opacity.
         //
@@ -2415,8 +2375,6 @@ const MessageTray = new Lang.Class({
     },
 
     _hideNotificationCompleted: function() {
-        this._notification.collapseCompleted();
-
         let notification = this._notification;
         this._notification = null;
 
@@ -2424,22 +2382,6 @@ const MessageTray = new Lang.Class({
         this._notificationRemoved = false;
         this._notificationBin.child = null;
         this._notificationWidget.hide();
-    },
-
-    _expandActiveNotification: function() {
-        if (!this._notification)
-            return;
-
-        this._expandNotification(false);
-    },
-
-    _expandNotification: function(autoExpanding) {
-        // Don't animate changes in notifications that are auto-expanding.
-        this._notification.expand(!autoExpanding);
-
-        // Don't focus notifications that are auto-expanding.
-        if (!autoExpanding)
-            this._ensureNotificationFocused();
     },
 
     _ensureNotificationFocused: function() {
