@@ -7663,8 +7663,8 @@ window_has_pointer_x11 (MetaWindow *window)
   return meta_display_lookup_x_window (display, child) == window;
 }
 
-static gboolean
-window_has_pointer (MetaWindow *window)
+gboolean
+meta_window_has_pointer (MetaWindow *window)
 {
   if (meta_is_wayland_compositor ())
     return window_has_pointer_wayland (window);
@@ -7696,7 +7696,7 @@ window_focus_on_pointer_rest_callback (gpointer data)
       return TRUE;
     }
 
-  if (!window_has_pointer (window))
+  if (!meta_window_has_pointer (window))
     goto out;
 
   timestamp = meta_display_get_current_time_roundtrip (display);

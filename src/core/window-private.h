@@ -702,4 +702,6 @@ void meta_window_grab_op_ended (MetaWindow *window, MetaGrabOp op);
 
 void meta_window_set_alive (MetaWindow *window, gboolean is_alive);
 
+gboolean meta_window_has_pointer (MetaWindow *window);
+
 #endif

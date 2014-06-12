@@ -1344,23 +1344,7 @@ window_raise_with_delay_callback (void *data)
    */
   if (meta_stack_get_top (window->screen->stack) != window)
     {
-      int x, y, root_x, root_y;
-      Window root, child;
-      MetaRectangle frame_rect;
-      unsigned int mask;
-      gboolean same_screen;
-      gboolean point_in_window;
-
-      meta_error_trap_push (window->display);
-      same_screen = XQueryPointer (window->display->xdisplay,
-				   window->xwindow,
-				   &root, &child,
-				   &root_x, &root_y, &x, &y, &mask);
-      meta_error_trap_pop (window->display);
-
-      meta_window_get_frame_rect (window, &frame_rect);
-      point_in_window = POINT_IN_RECT (root_x, root_y, frame_rect);
-      if (same_screen && point_in_window)
+      if (meta_window_has_pointer (window))
 	meta_window_raise (window);
       else
 	meta_topic (META_DEBUG_FOCUS,
