@@ -181,7 +181,6 @@ struct _MetaDisplay
   /* current window operation */
   MetaGrabOp  grab_op;
   MetaWindow *grab_window;
-  Window      grab_xwindow;
   int         grab_button;
   int         grab_anchor_root_x;
   int         grab_anchor_root_y;
