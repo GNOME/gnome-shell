@@ -7693,7 +7693,7 @@ window_focus_on_pointer_rest_callback (gpointer data)
     {
       focus_data->pointer_x = root_x;
       focus_data->pointer_y = root_y;
-      return TRUE;
+      return G_SOURCE_CONTINUE;
     }
 
   if (!meta_window_has_pointer (window))
@@ -7704,7 +7704,7 @@ window_focus_on_pointer_rest_callback (gpointer data)
 
  out:
   display->focus_timeout_id = 0;
-  return FALSE;
+  return G_SOURCE_REMOVE;
 }
 
 /* The interval, in milliseconds, we use in focus-follows-mouse

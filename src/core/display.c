@@ -1352,7 +1352,7 @@ window_raise_with_delay_callback (void *data)
 		    window->desc);
     }
 
-  return FALSE;
+  return G_SOURCE_REMOVE;
 }
 
 void
