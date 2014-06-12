@@ -1632,7 +1632,6 @@ const NMApplet = new Lang.Class({
         let gicon = new Gio.ThemedIcon({ name: iconName });
         this._notification = new MessageTray.Notification(this._source, title, text, { gicon: gicon });
         this._notification.setUrgency(urgency);
-        this._notification.setTransient(true);
         this._notification.connect('destroy', function() {
             this._notification = null;
         });

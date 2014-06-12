@@ -281,7 +281,6 @@ function notify(msg, details) {
     let source = new MessageTray.SystemNotificationSource();
     messageTray.add(source);
     let notification = new MessageTray.Notification(source, msg, details);
-    notification.setTransient(true);
     source.notify(notification);
 }
 

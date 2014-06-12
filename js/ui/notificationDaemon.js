@@ -180,10 +180,6 @@ const FdoNotificationDaemon = new Lang.Class({
         if (!pid && !(ndata && ndata.notification))
             return null;
 
-        // We use notification's source for the notifications we still have
-        // around that are getting replaced because we don't keep sources
-        // for transient notifications in this._sources, but we still want
-        // the notification associated with them to get replaced correctly.
         if (ndata && ndata.notification)
             return ndata.notification.source;
 
@@ -422,9 +418,6 @@ const FdoNotificationDaemon = new Lang.Class({
                 notification.setUrgency(MessageTray.Urgency.CRITICAL);
                 break;
         }
-        // 'transient' is a reserved keyword in JS, so we have to retrieve the value
-        // of the 'transient' hint with hints['transient'] rather than hints.transient
-        notification.setTransient(hints['transient'] == true);
 
         let sourceGIcon = source.useNotificationIcon ? gicon : null;
         source.processNotification(notification, sourceGIcon);

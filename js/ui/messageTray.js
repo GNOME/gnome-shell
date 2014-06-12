@@ -476,8 +476,6 @@ const Notification = new Lang.Class({
         this.source = source;
         this.title = title;
         this.urgency = Urgency.NORMAL;
-        // 'transient' is a reserved keyword in JS, so we have to use an alternate variable name
-        this.isTransient = false;
         this.isMusic = false;
         this.forFeedback = false;
         this.expanded = false;
@@ -750,10 +748,6 @@ const Notification = new Lang.Class({
         this.urgency = urgency;
     },
 
-    setTransient: function(isTransient) {
-        this.isTransient = isTransient;
-    },
-
     setForFeedback: function(forFeedback) {
         this.forFeedback = forFeedback;
     },
@@ -997,8 +991,7 @@ const Source = new Lang.Class({
     },
 
     get indicatorCount() {
-        let notifications = this.notifications.filter(function(n) { return !n.isTransient; });
-        return notifications.length;
+        return this.notifications.length;
     },
 
     get unseenCount() {
@@ -2426,8 +2419,6 @@ const MessageTray = new Lang.Class({
 
         let notification = this._notification;
         this._notification = null;
-        if (notification.isTransient)
-            notification.destroy(NotificationDestroyedReason.EXPIRED);
 
         this._pointerInNotification = false;
         this._notificationRemoved = false;

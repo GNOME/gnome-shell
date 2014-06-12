@@ -253,7 +253,6 @@ const ShellUnmountNotifier = new Lang.Class({
 
         if (!this._notification) {
             this._notification = new MessageTray.Notification(this, header, text);
-            this._notification.setTransient(true);
             this._notification.setUrgency(MessageTray.Urgency.CRITICAL);
         } else {
             this._notification.update(header, text);
@@ -270,7 +269,6 @@ const ShellUnmountNotifier = new Lang.Class({
 
         if (message) {
             let notification = new MessageTray.Notification(this, message, null);
-            notification.setTransient(true);
 
             this.notify(notification);
         }

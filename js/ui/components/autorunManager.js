@@ -416,7 +416,6 @@ const AutorunTransientNotification = new Lang.Class({
 
         // set the notification to transient and urgent, so that it
         // expands out
-        this.setTransient(true);
         this.setUrgency(MessageTray.Urgency.CRITICAL);
     },
 
