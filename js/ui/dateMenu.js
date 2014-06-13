@@ -18,8 +18,7 @@ const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 const Calendar = imports.ui.calendar;
 
-function _onVertSepRepaint (area)
-{
+function _onVertSepRepaint(area) {
     let cr = area.get_context();
     let themeNode = area.get_theme_node();
     let [width, height] = area.get_surface_size();
@@ -33,7 +32,7 @@ function _onVertSepRepaint (area)
     cr.setLineWidth(stippleWidth);
     cr.stroke();
     cr.$dispose();
-};
+}
 
 const DateMenuButton = new Lang.Class({
     Name: 'DateMenuButton',
