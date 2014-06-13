@@ -114,7 +114,7 @@ const FdoNotificationDaemon = new Lang.Class({
         Main.overview.connect('hidden',
             Lang.bind(this, this._onFocusAppChanged));
 
-        this._trayManager.manage_screen(global.screen, Main.messageTray.actor);
+        // this._trayManager.manage_screen(global.screen, Main.messageTray.actor);
     },
 
     _imageForNotificationData: function(hints) {
