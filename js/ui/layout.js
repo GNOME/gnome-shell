@@ -150,7 +150,6 @@ const LayoutManager = new Lang.Class({
 
         this._keyboardIndex = -1;
         this._rightPanelBarrier = null;
-        this._trayBarrier = null;
 
         this._inOverview = false;
         this._updateRegionIdle = 0;
@@ -210,7 +209,6 @@ const LayoutManager = new Lang.Class({
         this.trayBox = new St.Widget({ name: 'trayBox',
                                        layout_manager: new Clutter.BinLayout() }); 
         this.addChrome(this.trayBox);
-        this._setupTrayPressure();
 
         this.modalDialogGroup = new St.Widget({ name: 'modalDialogGroup',
                                                 layout_manager: new Clutter.BinLayout() });
@@ -449,50 +447,9 @@ const LayoutManager = new Lang.Class({
         }
     },
 
-    _setupTrayPressure: function() {
-        this._trayPressure = new PressureBarrier(MESSAGE_TRAY_PRESSURE_THRESHOLD,
-                                                 MESSAGE_TRAY_PRESSURE_TIMEOUT,
-                                                 Shell.KeyBindingMode.NORMAL |
-                                                 Shell.KeyBindingMode.OVERVIEW);
-        this._trayPressure.setEventFilter(this._trayBarrierEventFilter);
-        this._trayPressure.connect('trigger', function(barrier) {
-            if (Main.layoutManager.bottomMonitor.inFullscreen)
-                return;
-
-            Main.messageTray.openTray();
-        });
-    },
-
-    _updateTrayBarrier: function() {
-        let monitor = this.bottomMonitor;
-
-        if (this._trayBarrier) {
-            this._trayPressure.removeBarrier(this._trayBarrier);
-            this._trayBarrier.destroy();
-            this._trayBarrier = null;
-        }
-
-        this._trayBarrier = new Meta.Barrier({ display: global.display,
-                                               x1: monitor.x, x2: monitor.x + monitor.width,
-                                               y1: monitor.y + monitor.height, y2: monitor.y + monitor.height,
-                                               directions: Meta.BarrierDirection.NEGATIVE_Y });
-        this._trayPressure.addBarrier(this._trayBarrier);
-    },
-
-    _trayBarrierEventFilter: function(event) {
-        // Throw out all events where the pointer was grabbed by another
-        // client, as the client that grabbed the pointer expects to have
-        // complete control over it
-        if (event.grabbed && Main.modalCount == 0)
-            return true;
-
-        return false;
-    },
-
     _monitorsChanged: function() {
         this._updateMonitors();
         this._updateBoxes();
-        this._updateTrayBarrier();
         this._updateHotCorners();
         this._updateBackgrounds();
         this._updateFullscreen();
