@@ -457,9 +457,6 @@ const MessagesIndicator = new Lang.Class({
     },
 
     _onSourceAdded: function(tray, source) {
-        if (source.trayIcon)
-            return;
-
         source.connect('count-updated', Lang.bind(this, this._updateCount));
         this._sources.push(source);
         this._updateCount();

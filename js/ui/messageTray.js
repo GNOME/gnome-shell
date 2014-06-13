@@ -1313,7 +1313,7 @@ const Source = new Lang.Class({
     },
 
     get isClearable() {
-        return !this.trayIcon && !this.isChat && !this.resident;
+        return !this.isChat && !this.resident;
     },
 
     countUpdated: function() {
