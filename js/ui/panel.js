@@ -862,11 +862,56 @@ const AggregateMenu = new Lang.Class({
     },
 });
 
+const DateMenuButton2 = new Lang.Class({
+    Name: 'DateMenuButton2',
+
+    _init: function() {
+        this.container = new St.Widget({ layout_manager: new Clutter.BinLayout() });
+
+        this._notificationPreview = Main.messageTray.notificationPreview;
+        this.container.add_child(this._notificationPreview.actor);
+        this._notificationPreview.actor.x_expand = true;
+        this._notificationPreview.actor.x_align = Clutter.ActorAlign.CENTER;
+        this._notificationPreview.connect('updated', Lang.bind(this, this._sync));
+
+        let dateMenu = new imports.ui.dateMenu.DateMenuButton();
+        this._clock = dateMenu.container;
+        this._clock.x_expand = true;
+        this._clock.x_align = Clutter.ActorAlign.CENTER;
+        this.container.add_child(this._clock);
+
+        this._currentlyShowing = 'clock';
+        this._sync();
+    },
+
+    _show: function(which, animate) {
+        if (this._currentlyShowing == which)
+            return;
+
+        this._currentlyShowing = which;
+        if (this._currentlyShowing == 'clock') {
+            this._notificationPreview.actor.visible = false;
+            this._clock.visible = true;
+        } else if (this._currentlyShowing == 'notification') {
+            this._notificationPreview.actor.visible = true;
+            this._clock.visible = false;
+        }
+    },
+
+    _sync: function() {
+        if (this._currentlyShowing == 'clock' && this._notificationPreview.hasNotification)
+            this._show('notification', true);
+        else if (this._currentlyShowing == 'notification' && !this._notificationPreview.hasNotification)
+            this._show('clock', false);
+    },
+});
+Signals.addSignalMethods(DateMenuButton2.prototype);
+
 const PANEL_ITEM_IMPLEMENTATIONS = {
     'activities': ActivitiesButton,
     'aggregateMenu': AggregateMenu,
     'appMenu': AppMenuButton,
-    'dateMenu': imports.ui.dateMenu.DateMenuButton,
+    'dateMenu': DateMenuButton2,
     'a11y': imports.ui.status.accessibility.ATIndicator,
     'a11yGreeter': imports.ui.status.accessibility.ATGreeterIndicator,
     'keyboard': imports.ui.status.keyboard.InputSourceIndicator,

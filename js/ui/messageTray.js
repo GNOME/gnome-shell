@@ -559,6 +559,8 @@ const Notification = new Lang.Class({
             this._buttonBox.destroy_all_children();
         }
 
+        this.gicon = params.gicon;
+
         if (this._icon && (params.gicon || params.clear)) {
             this._icon.destroy();
             this._icon = null;
@@ -602,6 +604,8 @@ const Notification = new Lang.Class({
         // will be allocated at the available width, so that their alignment
         // is done correctly automatically.
         this.actor.set_text_direction(titleDirection);
+
+        this.bannerBodyText = banner;
 
         this._bodyUrlHighlighter.setMarkup(banner, params.bannerMarkup);
 
@@ -918,11 +922,94 @@ const Source = new Lang.Class({
 });
 Signals.addSignalMethods(Source.prototype);
 
+const TopBarNotificationPreview = new Lang.Class({
+    Name: 'TopBarNotificationPreview',
+
+    _init: function() {
+        this.actor = new St.BoxLayout({ style_class: 'top-bar-notification-preview' });
+
+        this._icon = new St.Icon({ icon_size: 22 });
+        this.actor.add_child(this._icon);
+
+        this._title = new St.Label({ style_class: 'top-bar-notification-preview-title' });
+        this.actor.add_child(this._title);
+
+        this._body = new St.Label({ style_class: 'top-bar-notification-preview-body' });
+        this.actor.add_child(this._body);
+    },
+
+    setNotification: function(notification) {
+        this._icon.gicon = notification.gicon;
+
+        let title = notification.title;
+        title = title ? _fixMarkup(title.replace(/\n/g, ' '), false) : '';
+        this._title.clutter_text.set_markup('<b>' + title + '</b>');
+
+        this._body.clutter_text.set_text(_fixMarkup(notification.bannerBodyText, false));
+    },
+});
+
+const TopBarNotificationController = new Lang.Class({
+    Name: 'TopBarNotificationController',
+
+    _init: function() {
+        this.actor = new St.Widget();
+
+        this._notificationPreview = new TopBarNotificationPreview();
+        this.actor.add_child(this._notificationPreview.actor);
+
+        this._notificationQueue = [];
+        this._timeoutId = 0;
+    },
+
+    _timeout: function() {
+        this._notificationQueue.shift();
+        this._update();
+        this._timeoutId = 0;
+        return GLib.SOURCE_REMOVE;
+    },
+
+    _ensureTimeout: function() {
+        if (this._timeoutId == 0)
+            this._timeoutId = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 2, Lang.bind(this, this._timeout));
+    },
+
+    get hasNotification() {
+        return (this._notificationQueue.length > 0);
+    },
+
+    _update: function() {
+        if (this._notificationQueue.length > 0) {
+            let notification = this._notificationQueue[0];
+            this._notificationPreview.setNotification(notification);
+
+            this._ensureTimeout();
+        }
+
+        this.emit('updated');
+    },
+
+    pushNotification: function(notification) {
+        this._notificationQueue.push(notification);
+
+        notification.connect('destroy', Lang.bind(this, function() {
+            let idx = this._notificationQueue.indexOf(notification);
+            this._notificationQueue.splice(idx, 1);
+            this._update();
+        }));
+
+        this._update();
+    },
+});
+Signals.addSignalMethods(TopBarNotificationController.prototype);
+
 const MessageTray = new Lang.Class({
     Name: 'MessageTray',
 
     _init: function() {
         this._sources = new Map();
+
+        this.notificationPreview = new TopBarNotificationController();
     },
 
     _expireNotification: function() {
@@ -1003,7 +1090,7 @@ const MessageTray = new Lang.Class({
     },
 
     _onNotify: function(source, notification) {
-        // Fill in here.
+        this.notificationPreview.pushNotification(notification);
     },
 });
 Signals.addSignalMethods(MessageTray.prototype);

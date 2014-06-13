@@ -2591,3 +2591,7 @@ StScrollBar StButton#vhandle:active {
     -boxpointer-gap: 4px;
     -arrow-rise: 0px;
 }
+
+.top-bar-notification-preview {
+    font-weight: normal;
+}
