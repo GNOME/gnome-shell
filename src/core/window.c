@@ -965,6 +965,7 @@ _meta_window_shared_new (MetaDisplay         *display,
   window->compositor_private = NULL;
 
   window->monitor = meta_screen_get_monitor_for_window (window->screen, window);
+  window->preferred_output_id = window->monitor->output_id;
 
   window->tile_match = NULL;
 
@@ -3549,13 +3550,29 @@ meta_window_get_monitor (MetaWindow *window)
   return window->monitor->number;
 }
 
+static MetaMonitorInfo *
+find_monitor_by_id (MetaWindow *window,
+                    guint       id)
+{
+  int i;
+
+  for (i = 0; i < window->screen->n_monitor_infos; i++)
+    {
+      MetaMonitorInfo *info = &window->screen->monitor_infos[i];
+
+      if (info->output_id != 0 && info->output_id == id)
+        return info;
+    }
+
+  return NULL;
+}
+
 /* This is called when the monitor setup has changed. The window->monitor
  * reference is still "valid", but refer to the previous monitor setup */
 void
 meta_window_update_for_monitors_changed (MetaWindow *window)
 {
   const MetaMonitorInfo *old, *new;
-  int i;
 
   if (window->type == META_WINDOW_DESKTOP)
     return;
@@ -3568,21 +3585,16 @@ meta_window_update_for_monitors_changed (MetaWindow *window)
 
   old = window->monitor;
 
-  /* Start on primary */
-  new = &window->screen->monitor_infos[window->screen->primary_monitor_index];
+  /* Try the preferred output first */
+  new = find_monitor_by_id (window, window->preferred_output_id);
 
-  /* But, if we can find the old output on a new monitor, use that */
-  for (i = 0; i < window->screen->n_monitor_infos; i++)
-    {
-      MetaMonitorInfo *info = &window->screen->monitor_infos[i];
+  /* Otherwise, try to find the old output on a new monitor */
+  if (!new)
+    new = find_monitor_by_id (window, old->output_id);
 
-      if (info->output_id != 0 &&
-          info->output_id == old->output_id)
-        {
-          new = info;
-          break;
-        }
-    }
+  /* Fall back to primary if everything else failed */
+  if (!new)
+    new = &window->screen->monitor_infos[window->screen->primary_monitor_index];
 
   if (window->tile_mode != META_TILE_NONE)
     window->tile_monitor_number = new->number;
@@ -3665,6 +3677,7 @@ meta_window_move_resize_internal (MetaWindow          *window,
    */
 
   gboolean did_placement;
+  guint old_output_id;
   MetaRectangle unconstrained_rect;
   MetaRectangle constrained_rect;
   MetaMoveResizeResultFlags result = 0;
@@ -3749,7 +3762,13 @@ meta_window_move_resize_internal (MetaWindow          *window,
                                               did_placement);
     }
 
+  old_output_id = window->monitor->output_id;
+
   meta_window_update_monitor (window);
+
+  if (old_output_id != window->monitor->output_id &&
+      flags & META_IS_MOVE_ACTION && flags & META_IS_USER_ACTION)
+    window->preferred_output_id = window->monitor->output_id;
 
   if ((result & META_MOVE_RESIZE_RESULT_FRAME_SHAPE_CHANGED) && window->frame_bounds)
     {
@@ -3869,6 +3888,7 @@ meta_window_move_to_monitor (MetaWindow  *window,
     window->tile_monitor_number = monitor;
 
   meta_window_move_between_rects (window, &old_area, &new_area);
+  window->preferred_output_id = window->monitor->output_id;
 
   if (window->fullscreen || window->override_redirect)
     meta_screen_queue_check_fullscreen (window->screen);
