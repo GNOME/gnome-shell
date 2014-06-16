@@ -881,17 +881,17 @@ resync_verified_stack_with_xserver_stack (MetaStackTracker *tracker)
    *   windows and free the queue of unverified_predictions.
    *
    * - Iterate through the x windows listed in verified_stack at the
-   *   same time as iterating the windows in xserver_list. (Stop
-   *   when we reach the end of the xserver_list)
+   *   same time as iterating the windows in xserver_stack. (Stop
+   *   when we reach the end of the xserver_stack)
    *     - If the window found doesn't match the window expected
-   *     according to the order of xserver_list then:
+   *     according to the order of xserver_stack then:
    *       - Look ahead for the window we were expecting and restack
    *       that above the previous X window. If we fail to find the
    *       expected window then create a new entry for it and stack
    *       that.
    *
    * - Continue to iterate through verified_stack for any remaining
-   *   X windows that we now know aren't in the xserver_list and
+   *   X windows that we now know aren't in the xserver_stack and
    *   remove them.
    *
    * - Free ->predicted_stack if any.
@@ -1016,7 +1016,7 @@ resync_verified_stack_with_xserver_stack (MetaStackTracker *tracker)
     }
 
   /* If we get to the end of verified_list and there are any remaining
-   * entries in xserver_list then append them all to the end */
+   * entries in xserver_stack then append them all to the end */
   for (; j < tracker->xserver_stack->len; j++)
     {
       MetaStackWindow *current =
