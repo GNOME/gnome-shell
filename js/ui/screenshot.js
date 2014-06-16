@@ -84,8 +84,27 @@ const ScreenshotService = new Lang.Class({
         invocation.return_value(retval);
     },
 
+    _scaleArea: function(x, y, width, height) {
+        let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
+        x *= scaleFactor;
+        y *= scaleFactor;
+        width *= scaleFactor;
+        height *= scaleFactor;
+        return [x, y, width, height];
+    },
+
+    _unscaleArea: function(x, y, width, height) {
+        let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
+        x /= scaleFactor;
+        y /= scaleFactor;
+        width /= scaleFactor;
+        height /= scaleFactor;
+        return [x, y, width, height];
+    },
+
     ScreenshotAreaAsync : function (params, invocation) {
         let [x, y, width, height, flash, filename, callback] = params;
+        [x, y, width, height] = this._scaleArea(x, y, width, height);
         if (!this._checkArea(x, y, width, height)) {
             invocation.return_error_literal(Gio.IOErrorEnum,
                                             Gio.IOErrorEnum.CANCELLED,
@@ -120,9 +139,9 @@ const ScreenshotService = new Lang.Class({
         selectArea.connect('finished', Lang.bind(this,
             function(selectArea, areaRectangle) {
                 if (areaRectangle) {
-                    let retval = GLib.Variant.new('(iiii)',
-                        [areaRectangle.x, areaRectangle.y,
-                         areaRectangle.width, areaRectangle.height]);
+                    let retRectangle = this._unscaleArea(areaRectangle.x, areaRectangle.y,
+                        areaRectangle.width, areaRectangle.height);
+                    let retval = GLib.Variant.new('(iiii)', retRectangle);
                     invocation.return_value(retval);
                 } else {
                     invocation.return_error_literal(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED,
@@ -133,6 +152,7 @@ const ScreenshotService = new Lang.Class({
 
     FlashAreaAsync: function(params, invocation) {
         let [x, y, width, height] = params;
+        [x, y, width, height] = this._scaleArea(x, y, width, height);
         if (!this._checkArea(x, y, width, height)) {
             invocation.return_error_literal(Gio.IOErrorEnum,
                                             Gio.IOErrorEnum.CANCELLED,
