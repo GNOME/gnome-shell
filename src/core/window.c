@@ -4051,6 +4051,17 @@ meta_window_get_input_rect (const MetaWindow *window,
 {
   if (window->frame)
     *rect = window->frame->rect;
+  else if (window->xwindow != None)
+    {
+      XWindowAttributes xwa;
+
+      XGetWindowAttributes (window->display->xdisplay, window->xwindow, &xwa);
+
+      rect->x = xwa.x;
+      rect->y = xwa.y;
+      rect->width = xwa.width;
+      rect->height = xwa.height;
+    }
   else
     {
       *rect = window->rect;
