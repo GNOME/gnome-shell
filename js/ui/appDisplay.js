@@ -1251,6 +1251,7 @@ const AppFolderPopup = new Lang.Class({
                 this.actor.destroy();
             }));
         this._grabHelper = new GrabHelper.GrabHelper(this.actor);
+        this._grabHelper.addActor(Main.layoutManager.overviewGroup);
     },
 
     toggle: function() {
