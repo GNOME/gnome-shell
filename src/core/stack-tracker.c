@@ -485,14 +485,12 @@ requery_xserver_stack (MetaStackTracker *tracker)
               screen->xroot,
               &ignored1, &ignored2, &children, &n_children);
 
-  tracker->xserver_stack =
-    g_array_sized_new (FALSE, FALSE, sizeof (MetaStackWindow), n_children);
+  tracker->xserver_stack = g_array_sized_new (FALSE, FALSE, sizeof (MetaStackWindow), n_children);
   g_array_set_size (tracker->xserver_stack, n_children);
 
   for (i = 0; i < n_children; i++)
     {
-      MetaStackWindow *window =
-        &g_array_index (tracker->xserver_stack, MetaStackWindow, i);
+      MetaStackWindow *window = &g_array_index (tracker->xserver_stack, MetaStackWindow, i);
       window->any.type = META_WINDOW_CLIENT_TYPE_X11;
       window->x11.xwindow = children[i];
     }
@@ -909,15 +907,11 @@ resync_verified_stack_with_xserver_stack (MetaStackTracker *tracker)
   g_queue_clear (tracker->unverified_predictions);
 
   j = 0;
-  expected_xwindow =
-    &g_array_index (tracker->xserver_stack, MetaStackWindow, j);
+  expected_xwindow = &g_array_index (tracker->xserver_stack, MetaStackWindow, j);
 
-  for (i = 0;
-       i < tracker->verified_stack->len;
-       )
+  for (i = 0; i < tracker->verified_stack->len; )
     {
-      MetaStackWindow *current =
-        &g_array_index (tracker->verified_stack, MetaStackWindow, i);
+      MetaStackWindow *current = &g_array_index (tracker->verified_stack, MetaStackWindow, i);
 
       if (current->any.type != META_WINDOW_CLIENT_TYPE_X11)
         {
@@ -954,8 +948,7 @@ resync_verified_stack_with_xserver_stack (MetaStackTracker *tracker)
 
           /* Technically we only need to look forward from i if we
            * wanted to optimize this a bit... */
-          expected_index =
-            find_window (tracker->verified_stack, expected_xwindow);
+          expected_index = find_window (tracker->verified_stack, expected_xwindow);
 
           if (expected_index >= 0)
             {
@@ -993,8 +986,7 @@ resync_verified_stack_with_xserver_stack (MetaStackTracker *tracker)
       i++;
 
       j++;
-      expected_xwindow =
-        &g_array_index (tracker->xserver_stack, MetaStackWindow, j);
+      expected_xwindow = &g_array_index (tracker->xserver_stack, MetaStackWindow, j);
 
       if (j >= tracker->xserver_stack->len)
         break;
@@ -1004,8 +996,7 @@ resync_verified_stack_with_xserver_stack (MetaStackTracker *tracker)
    * xserver_stack and so we can remove them. */
   while (i < tracker->verified_stack->len)
     {
-      MetaStackWindow *current =
-        &g_array_index (tracker->verified_stack, MetaStackWindow, i);
+      MetaStackWindow *current = &g_array_index (tracker->verified_stack, MetaStackWindow, i);
 
       if (current->any.type == META_WINDOW_CLIENT_TYPE_X11)
         g_array_remove_index (tracker->verified_stack, i);
@@ -1019,8 +1010,7 @@ resync_verified_stack_with_xserver_stack (MetaStackTracker *tracker)
    * entries in xserver_stack then append them all to the end */
   for (; j < tracker->xserver_stack->len; j++)
     {
-      MetaStackWindow *current =
-        &g_array_index (tracker->xserver_stack, MetaStackWindow, j);
+      MetaStackWindow *current = &g_array_index (tracker->xserver_stack, MetaStackWindow, j);
       g_array_append_val (tracker->verified_stack, *current);
 
       modified_stack = TRUE;
