@@ -7950,12 +7950,6 @@ meta_window_set_surface_mapped (MetaWindow *window,
   meta_window_queue (window, META_QUEUE_CALC_SHOWING);
 }
 
-Window
-meta_window_get_toplevel_xwindow (MetaWindow *window)
-{
-  return window->frame ? window->frame->xwindow : window->xwindow;
-}
-
 void
 meta_window_set_custom_frame_extents (MetaWindow *window,
                                       GtkBorder  *extents)

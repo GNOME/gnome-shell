@@ -57,6 +57,7 @@
 
 #include "wayland/meta-wayland.h"
 #include "backends/x11/meta-backend-x11.h"
+#include "x11/window-x11.h"
 
 #ifdef HAVE_NATIVE_BACKEND
 #include "backends/native/meta-backend-native.h"
@@ -1223,7 +1224,7 @@ meta_window_grab_keys (MetaWindow  *window)
     }
 
   meta_window_change_keygrabs (window,
-                               meta_window_get_toplevel_xwindow (window),
+                               meta_window_x11_get_toplevel_xwindow (window),
                                TRUE);
 
   window->keys_grabbed = TRUE;
@@ -1437,7 +1438,7 @@ meta_window_grab_all_keys (MetaWindow  *window,
               window->desc);
   meta_window_focus (window, timestamp);
 
-  grabwindow = meta_window_get_toplevel_xwindow (window);
+  grabwindow = meta_window_x11_get_toplevel_xwindow (window);
 
   meta_topic (META_DEBUG_KEYBINDINGS,
               "Grabbing all keys on window %s\n", window->desc);

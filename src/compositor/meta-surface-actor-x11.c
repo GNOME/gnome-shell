@@ -34,6 +34,7 @@
 #include "window-private.h"
 #include "meta-shaped-texture-private.h"
 #include "meta-cullable.h"
+#include "x11/window-x11.h"
 
 struct _MetaSurfaceActorX11Private
 {
@@ -143,7 +144,7 @@ update_pixmap (MetaSurfaceActorX11 *self)
   if (priv->pixmap == None)
     {
       Pixmap new_pixmap;
-      Window xwindow = meta_window_get_toplevel_xwindow (priv->window);
+      Window xwindow = meta_window_x11_get_toplevel_xwindow (priv->window);
 
       meta_error_trap_push (display);
       new_pixmap = XCompositeNameWindowPixmap (xdisplay, xwindow);
@@ -312,7 +313,7 @@ sync_unredirected (MetaSurfaceActorX11 *self)
   MetaSurfaceActorX11Private *priv = meta_surface_actor_x11_get_instance_private (self);
   MetaDisplay *display = priv->display;
   Display *xdisplay = meta_display_get_xdisplay (display);
-  Window xwindow = meta_window_get_toplevel_xwindow (priv->window);
+  Window xwindow = meta_window_x11_get_toplevel_xwindow (priv->window);
 
   meta_error_trap_push (display);
 
@@ -404,7 +405,7 @@ create_damage (MetaSurfaceActorX11 *self)
 {
   MetaSurfaceActorX11Private *priv = meta_surface_actor_x11_get_instance_private (self);
   Display *xdisplay = meta_display_get_xdisplay (priv->display);
-  Window xwindow = meta_window_get_toplevel_xwindow (priv->window);
+  Window xwindow = meta_window_x11_get_toplevel_xwindow (priv->window);
 
   priv->damage = XDamageCreate (xdisplay, xwindow, XDamageReportBoundingBox);
 }

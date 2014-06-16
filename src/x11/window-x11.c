@@ -3484,3 +3484,9 @@ meta_window_x11_update_sync_request_counter (MetaWindow *window,
     meta_compositor_queue_frame_drawn (window->display->compositor, window,
                                        no_delay_frame);
 }
+
+Window
+meta_window_x11_get_toplevel_xwindow (MetaWindow *window)
+{
+  return window->frame ? window->frame->xwindow : window->xwindow;
+}

@@ -73,4 +73,6 @@ gboolean meta_window_x11_client_message          (MetaWindow *window,
 void     meta_window_x11_configure_notify        (MetaWindow      *window,
                                                   XConfigureEvent *event);
 
+Window   meta_window_x11_get_toplevel_xwindow    (MetaWindow *window);
+
 #endif
