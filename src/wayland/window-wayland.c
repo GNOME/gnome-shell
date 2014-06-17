@@ -361,6 +361,8 @@ meta_window_wayland_move_resize (MetaWindow *window,
   rect.width = width;
   rect.height = height;
 
+  window->buffer_rect = rect;
+
   if (rect.width != window->rect.width || rect.height != window->rect.height)
     flags |= META_IS_RESIZE_ACTION;
 

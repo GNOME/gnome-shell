@@ -550,6 +550,7 @@ meta_window_x11_manage (MetaWindow *window)
       MetaWindowX11Private *priv = meta_window_x11_get_instance_private (window_x11);
 
       priv->client_rect = window->rect;
+      window->buffer_rect = window->rect;
     }
   else
     {
@@ -1256,6 +1257,11 @@ meta_window_x11_move_resize_internal (MetaWindow                *window,
     frame_shape_changed = meta_frame_sync_to_window (window->frame,
                                                      gravity,
                                                      need_move_frame, need_resize_frame);
+
+  if (window->frame)
+    window->buffer_rect = window->frame->rect;
+  else
+    window->buffer_rect = client_rect;
 
   if (need_configure_notify)
     send_configure_notify (window);
@@ -3265,6 +3271,7 @@ meta_window_x11_configure_notify (MetaWindow      *window,
   window->rect.height = event->height;
 
   priv->client_rect = window->rect;
+  window->buffer_rect = window->rect;
 
   meta_window_update_monitor (window);
 

@@ -4052,24 +4052,7 @@ void
 meta_window_get_buffer_rect (const MetaWindow *window,
                              MetaRectangle    *rect)
 {
-  if (window->frame)
-    *rect = window->frame->rect;
-  else if (window->xwindow != None)
-    {
-      XWindowAttributes xwa;
-
-      XGetWindowAttributes (window->display->xdisplay, window->xwindow, &xwa);
-
-      rect->x = xwa.x;
-      rect->y = xwa.y;
-      rect->width = xwa.width;
-      rect->height = xwa.height;
-    }
-  else
-    {
-      *rect = window->rect;
-      meta_window_frame_rect_to_client_rect ((MetaWindow *) window, rect, rect);
-    }
+  *rect = window->buffer_rect;
 }
 
 /**

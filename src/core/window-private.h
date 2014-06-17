@@ -421,6 +421,15 @@ struct _MetaWindow
    */
   MetaRectangle unconstrained_rect;
 
+  /* The rectangle of the "server-side" geometry of the buffer,
+   * in root coordinates.
+   *
+   * For X11 windows, this matches XGetGeometry of the toplevel.
+   *
+   * For Wayland windows, this matches the buffer size and where
+   * the surface actor is positioned. */
+  MetaRectangle buffer_rect;
+
   /* Cached net_wm_icon_geometry */
   MetaRectangle icon_geometry;
 
