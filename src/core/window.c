@@ -4036,18 +4036,21 @@ meta_window_get_session_geometry (MetaWindow  *window,
 }
 
 /**
- * meta_window_get_input_rect:
+ * meta_window_get_buffer_rect:
  * @window: a #MetaWindow
  * @rect: (out): pointer to an allocated #MetaRectangle
  *
- * Gets the rectangle that bounds @window that is responsive to mouse events.
- * This includes decorations - the visible portion of its border - and (if
- * present) any invisible area that we make make responsive to mouse clicks in
- * order to allow convenient border dragging.
+ * Gets the rectangle that the pixmap or buffer of @window occupies.
+ *
+ * For X11 windows, this is the server-side geometry of the toplevel
+ * window.
+ *
+ * For Wayland windows, this is the bounding rectangle of the attached
+ * buffer.
  */
 void
-meta_window_get_input_rect (const MetaWindow *window,
-                            MetaRectangle    *rect)
+meta_window_get_buffer_rect (const MetaWindow *window,
+                             MetaRectangle    *rect)
 {
   if (window->frame)
     *rect = window->frame->rect;

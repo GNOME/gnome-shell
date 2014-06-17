@@ -1152,7 +1152,7 @@ meta_window_actor_sync_actor_geometry (MetaWindowActor *self,
   MetaWindowActorPrivate *priv = self->priv;
   MetaRectangle window_rect;
 
-  meta_window_get_input_rect (priv->window, &window_rect);
+  meta_window_get_buffer_rect (priv->window, &window_rect);
 
   /* When running as a Wayland compositor we catch size changes when new
    * buffers are attached */
