@@ -3632,6 +3632,93 @@ meta_window_update_monitor (MetaWindow *window)
     }
 }
 
+static gboolean
+place_window_if_needed (MetaWindow    *window,
+                        MetaRectangle *unconstrained_rect)
+{
+  /* Do placement if any, so we go ahead and apply position
+   * constraints in a move-only context. Don't place
+   * maximized/minimized/fullscreen windows until they are
+   * unmaximized, unminimized and unfullscreened.
+   */
+
+  if (!window->placed &&
+      window->calc_placement &&
+      !(window->maximized_horizontally ||
+        window->maximized_vertically) &&
+      !window->minimized &&
+      !window->fullscreen)
+    {
+      meta_window_place (window,
+                         unconstrained_rect->x,
+                         unconstrained_rect->y,
+                         &unconstrained_rect->x,
+                         &unconstrained_rect->y);
+      return TRUE;
+    }
+  else
+    {
+      return FALSE;
+    }
+}
+
+static void
+apply_after_placement_rules (MetaWindow *window)
+{
+  if (window->maximize_horizontally_after_placement ||
+      window->maximize_vertically_after_placement   ||
+      window->fullscreen_after_placement)
+    {
+      const MetaMonitorInfo *monitor_info;
+      MetaRectangle work_area_monitor;
+
+      monitor_info = meta_screen_get_monitor_for_rect (window->screen, &window->unconstrained_rect);
+      meta_window_get_work_area_for_monitor (window,
+                                             monitor_info->number,
+                                             &work_area_monitor);
+
+      /* define a sane saved_rect so that the user can unmaximize or
+       * make unfullscreen to something reasonable.
+       */
+      if (window->unconstrained_rect.width >= work_area_monitor.width)
+        {
+          window->saved_rect.width = .75 * work_area_monitor.width;
+          window->saved_rect.x = work_area_monitor.x + .125 * work_area_monitor.width;
+        }
+      if (window->unconstrained_rect.height >= work_area_monitor.height)
+        {
+          window->saved_rect.height = .75 * work_area_monitor.height;
+          window->saved_rect.y = work_area_monitor.y + .083 * work_area_monitor.height;
+        }
+
+      if (window->maximize_horizontally_after_placement ||
+          window->maximize_vertically_after_placement)
+        {
+          meta_window_maximize_internal (window,
+                                         (window->maximize_horizontally_after_placement ? META_MAXIMIZE_HORIZONTAL : 0 ) |
+                                         (window->maximize_vertically_after_placement ? META_MAXIMIZE_VERTICAL : 0),
+                                         &window->saved_rect);
+
+          window->maximize_horizontally_after_placement = FALSE;
+          window->maximize_vertically_after_placement = FALSE;
+        }
+
+      if (window->fullscreen_after_placement)
+        {
+          window->fullscreen = TRUE;
+          window->fullscreen_after_placement = FALSE;
+
+          g_object_notify (G_OBJECT (window), "fullscreen");
+        }
+    }
+
+  if (window->minimize_after_placement)
+    {
+      meta_window_minimize (window);
+      window->minimize_after_placement = FALSE;
+    }
+}
+
 void
 meta_window_move_resize_internal (MetaWindow          *window,
                                   MetaMoveResizeFlags  flags,
@@ -3669,8 +3756,6 @@ meta_window_move_resize_internal (MetaWindow          *window,
    */
   g_assert (flags & (META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION | META_IS_WAYLAND_RESIZE));
 
-  did_placement = !window->placed && window->calc_placement;
-
   /* We don't need it in the idle queue anymore. */
   meta_window_unqueue (window, META_QUEUE_MOVE_RESIZE);
 
@@ -3698,9 +3783,14 @@ meta_window_move_resize_internal (MetaWindow          *window,
       unconstrained_rect.height = window->rect.height;
     }
 
+  did_placement = place_window_if_needed (window, &unconstrained_rect);
+
   /* Save the unconstrained rectangle to the position we should be at
    * before constraints kick in. */
   window->unconstrained_rect = unconstrained_rect;
+
+  if (did_placement)
+    apply_after_placement_rules (window);
 
   constrained_rect = unconstrained_rect;
   if (flags & (META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION))
@@ -3713,16 +3803,6 @@ meta_window_move_resize_internal (MetaWindow          *window,
                              gravity,
                              &old_rect,
                              &constrained_rect);
-    }
-
-  /* If we did placement, then we need to save the position that the window
-   * was placed at to make sure that meta_window_move_resize_now places the
-   * window correctly.
-   */
-  if (did_placement)
-    {
-      window->unconstrained_rect.x = constrained_rect.x;
-      window->unconstrained_rect.y = constrained_rect.y;
     }
 
   /* Do the protocol-specific move/resize logic */

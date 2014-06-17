@@ -195,8 +195,6 @@ static void setup_constraint_info        (ConstraintInfo      *info,
                                           int                  resize_gravity,
                                           const MetaRectangle *orig,
                                           MetaRectangle       *new);
-static void place_window_if_needed       (MetaWindow     *window,
-                                          ConstraintInfo *info);
 static void update_onscreen_requirements (MetaWindow     *window,
                                           ConstraintInfo *info);
 
@@ -287,7 +285,6 @@ meta_window_constrain (MetaWindow          *window,
                          resize_gravity,
                          orig,
                          new);
-  place_window_if_needed (window, &info);
 
   while (!satisfied && priority <= PRIORITY_MAXIMUM) {
     gboolean check_only = TRUE;
@@ -433,116 +430,6 @@ setup_constraint_info (ConstraintInfo      *info,
                 info->work_area_monitor.height,
               info->entire_monitor.x, info->entire_monitor.y,
                 info->entire_monitor.width, info->entire_monitor.height);
-}
-
-static void
-place_window_if_needed(MetaWindow     *window,
-                       ConstraintInfo *info)
-{
-  gboolean did_placement;
-
-  /* Do placement if any, so we go ahead and apply position
-   * constraints in a move-only context. Don't place
-   * maximized/minimized/fullscreen windows until they are
-   * unmaximized, unminimized and unfullscreened.
-   */
-  did_placement = FALSE;
-  if (!window->placed &&
-      window->calc_placement &&
-      !(window->maximized_horizontally ||
-        window->maximized_vertically) &&
-      !window->minimized &&
-      !window->fullscreen)
-    {
-      MetaRectangle orig_rect;
-      MetaRectangle placed_rect;
-      MetaWorkspace *cur_workspace;
-      const MetaMonitorInfo *monitor_info;
-
-      meta_window_get_frame_rect (window, &placed_rect);
-
-      orig_rect = info->orig;
-
-      meta_window_place (window, orig_rect.x, orig_rect.y,
-                         &placed_rect.x, &placed_rect.y);
-      did_placement = TRUE;
-
-      /* placing the window may have changed the monitor.  Find the
-       * new monitor and update the ConstraintInfo
-       */
-      monitor_info =
-        meta_screen_get_monitor_for_rect (window->screen, &placed_rect);
-      info->entire_monitor = monitor_info->rect;
-      meta_window_get_work_area_for_monitor (window,
-                                             monitor_info->number,
-                                             &info->work_area_monitor);
-      cur_workspace = window->screen->active_workspace;
-      info->usable_monitor_region =
-        meta_workspace_get_onmonitor_region (cur_workspace,
-                                             monitor_info->number);
-
-      info->current.x = placed_rect.x;
-      info->current.y = placed_rect.y;
-
-      /* Since we just barely placed the window, there's no reason to
-       * consider any of the directions fixed.
-       */
-      info->fixed_directions = FIXED_DIRECTION_NONE;
-    }
-
-  if (window->placed || did_placement)
-    {
-      if (window->maximize_horizontally_after_placement ||
-          window->maximize_vertically_after_placement   ||
-          window->fullscreen_after_placement)
-        {
-          /* define a sane saved_rect so that the user can unmaximize or
-           * make unfullscreen to something reasonable.
-           */
-          if (info->current.width >= info->work_area_monitor.width)
-            {
-              info->current.width = .75 * info->work_area_monitor.width;
-              info->current.x = info->work_area_monitor.x +
-                       .125 * info->work_area_monitor.width;
-            }
-          if (info->current.height >= info->work_area_monitor.height)
-            {
-              info->current.height = .75 * info->work_area_monitor.height;
-              info->current.y = info->work_area_monitor.y +
-                       .083 * info->work_area_monitor.height;
-            }
-
-          /* idle_move_resize() uses the unconstrained_rect, so make sure it
-           * uses the placed coordinates (bug #556696).
-           */
-          window->unconstrained_rect = info->current;
-
-          if (window->maximize_horizontally_after_placement ||
-              window->maximize_vertically_after_placement)
-            meta_window_maximize_internal (window,
-                (window->maximize_horizontally_after_placement ?
-                 META_MAXIMIZE_HORIZONTAL : 0 ) |
-                (window->maximize_vertically_after_placement ?
-                 META_MAXIMIZE_VERTICAL : 0), &info->current);
-
-          if (window->fullscreen_after_placement)
-            {
-              window->saved_rect = info->current;
-              window->fullscreen = TRUE;
-              window->fullscreen_after_placement = FALSE;
-
-              g_object_notify (G_OBJECT (window), "fullscreen");
-            }
-
-          window->maximize_horizontally_after_placement = FALSE;
-          window->maximize_vertically_after_placement = FALSE;
-        }
-      if (window->minimize_after_placement)
-        {
-          meta_window_minimize (window);
-          window->minimize_after_placement = FALSE;
-        }
-    }
 }
 
 static void
