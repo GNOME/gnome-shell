@@ -964,6 +964,10 @@ const FolderView = new Lang.Class({
         Util.ensureActorVisibleInScrollView(this.actor, actor);
     },
 
+    animate: function(animationDirection) {
+        this._grid.animatePulse(animationDirection);
+    },
+
     createFolderIcon: function(size) {
         let layout = new Clutter.GridLayout();
         let icon = new St.Widget({ layout_manager: layout,
@@ -1339,8 +1343,17 @@ const AppFolderPopup = new Lang.Class({
         this.actor.show();
 
         this._boxPointer.setArrowActor(this._source.actor);
+        // We need to hide the icons of the view until the boxpointer animation
+        // is completed so we can animate the icons after as we like without
+        // showing them while boxpointer is animating.
+        this._view.actor.opacity = 0;
         this._boxPointer.show(BoxPointer.PopupAnimation.FADE |
-                              BoxPointer.PopupAnimation.SLIDE);
+                              BoxPointer.PopupAnimation.SLIDE,
+                              Lang.bind(this,
+            function() {
+                this._view.actor.opacity = 255;
+                this._view.animate(IconGrid.AnimationDirection.IN);
+            }));
 
         this.emit('open-state-changed', true);
     },

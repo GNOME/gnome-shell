@@ -10,11 +10,21 @@ const St = imports.gi.St;
 const Lang = imports.lang;
 const Params = imports.misc.params;
 const Tweener = imports.ui.tweener;
+const Main = imports.ui.main;
 
 const ICON_SIZE = 96;
 const MIN_ICON_SIZE = 16;
 
 const EXTRA_SPACE_ANIMATION_TIME = 0.25;
+
+const ANIMATION_TIME_IN = 0.350;
+const ANIMATION_MAX_DELAY_FOR_ITEM = 2/3 * ANIMATION_TIME_IN;
+
+const ANIMATION_BOUNCE_ICON_SCALE = 1.1;
+
+const AnimationDirection = {
+    IN: 0
+};
 
 const BaseIcon = new Lang.Class({
     Name: 'BaseIcon',
@@ -338,15 +348,91 @@ const IconGrid = new Lang.Class({
         }
     },
 
-    _calculateChildBox: function(child, x, y, box) {
-        let [childMinWidth, childMinHeight, childNaturalWidth, childNaturalHeight] =
-             child.get_preferred_size();
+    /**
+     * Intended to be override by subclasses if they need a different
+     * set of items to be animated.
+     */
+    _getChildrenToAnimate: function() {
+        return this._getVisibleChildren();
+    },
 
+    _animationDone: function() {
+        this._animating = false;
+        this.emit('animation-done');
+    },
+
+    animatePulse: function(animationDirection) {
+        if (animationDirection != AnimationDirection.IN)
+            throw new Error("Pulse animation only implements 'in' animation direction");
+
+        if (this._animating)
+            return;
+
+        this._animating = true;
+
+        let actors = this._getChildrenToAnimate();
+        if (actors.length == 0) {
+            this._animationDone();
+            return;
+        }
+
+        for (let index = 0; index < actors.length; index++) {
+            let actor = actors[index];
+            actor.opacity = 0;
+
+            let delay = index / actors.length * ANIMATION_MAX_DELAY_FOR_ITEM;
+            let [originalX, originalY] = actor.get_transformed_position();
+            let [originalWidth, originalHeight,,] = this._getAllocatedChildSizeAndSpacing(actor);
+
+            let actorClone = new Clutter.Clone({ source: actor });
+            Main.uiGroup.add_actor(actorClone);
+
+            actorClone.set_position(originalX, originalY);
+            actorClone.set_scale(0, 0);
+            actorClone.set_pivot_point(0.5, 0.5);
+            actorClone.set_size(originalWidth, originalHeight);
+
+            let bounceUpTime = ANIMATION_TIME_IN / 4;
+            // Defeat onComplete anonymous function closure
+            let isLastItem = index == actors.length - 1;
+            Tweener.addTween(actorClone,
+                            { time: bounceUpTime,
+                              transition: 'easeInOutQuad',
+                              delay: delay,
+                              scale_x: ANIMATION_BOUNCE_ICON_SCALE,
+                              scale_y: ANIMATION_BOUNCE_ICON_SCALE,
+                              onComplete: Lang.bind(this, function() {
+                                  Tweener.addTween(actorClone,
+                                                   { time: ANIMATION_TIME_IN - bounceUpTime,
+                                                     transition: 'easeInOutQuad',
+                                                     scale_x: 1,
+                                                     scale_y: 1,
+                                                     onComplete: Lang.bind(this, function() {
+                                                        if (isLastItem)
+                                                            this._animationDone();
+
+                                                        actor.opacity = 255;
+                                                        actorClone.destroy();
+                                                    })
+                                                   });
+                              })
+                            });
+        }
+    },
+
+    _getAllocatedChildSizeAndSpacing: function(child) {
+        let [,, natWidth, natHeight] = child.get_preferred_size();
+        let width = Math.min(this._getHItemSize(), natWidth);
+        let xSpacing = Math.max(0, width - natWidth) / 2;
+        let height = Math.min(this._getVItemSize(), natHeight);
+        let ySpacing = Math.max(0, height - natHeight) / 2;
+        return [width, height, xSpacing, ySpacing];
+    },
+
+    _calculateChildBox: function(child, x, y, box) {
         /* Center the item in its allocation horizontally */
-        let width = Math.min(this._getHItemSize(), childNaturalWidth);
-        let childXSpacing = Math.max(0, width - childNaturalWidth) / 2;
-        let height = Math.min(this._getVItemSize(), childNaturalHeight);
-        let childYSpacing = Math.max(0, height - childNaturalHeight) / 2;
+        let [width, height, childXSpacing, childYSpacing] =
+            this._getAllocatedChildSizeAndSpacing(child);
 
         let childBox = new Clutter.ActorBox();
         if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL) {
