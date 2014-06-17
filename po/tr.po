@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-06-05 07:25+0000\n"
-"PO-Revision-Date: 2014-06-05 23:19+0000\n"
+"POT-Creation-Date: 2014-06-17 07:28+0000\n"
+"PO-Revision-Date: 2014-06-17 19:00+0000\n"
 "Last-Translator: Muhammet Kara <muhammetk@gmail.com>\n"
 "Language-Team: Türkçe <gnome-turk@gnome.org>\n"
 "Language: tr\n"
@@ -111,29 +111,37 @@ msgid ""
 msgstr "Bu tanımlayıcıya sahip uygulamalar sık kullanılanlar bölümünde gösterilecek."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:9
+msgid "App Picker View"
+msgstr "Uygulama Seçici Görünümü"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:10
+msgid "Index of the currently selected view in the application picker."
+msgstr "Uygulama seçicide şu anda seçili olan görünümün dizini."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:11
 msgid "History for command (Alt-F2) dialog"
 msgstr "Komut kutucuğu (Alt-F2) geçmişi"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:10
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:12
 msgid "History for the looking glass dialog"
 msgstr "Ayna iletişim penceresinin geçmişi"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:11
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:13
 msgid "Always show the 'Log out' menu item in the user menu."
 msgstr "Kullanıcı menüsünde 'Oturumu Kapat' menü öğesini daima göster."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:12
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:14
 msgid ""
 "This key overrides the automatic hiding of the 'Log out' menu item in "
 "single-user, single-session situations."
 msgstr "Bu ayar tek kullanıcı oturum açtığında 'Oturumu Kapat' menü ögesinin gizlenmesini önler."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:13
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:15
 msgid ""
 "Whether to remember password for mounting encrypted or remote filesystems"
 msgstr "Şifreli ya da uzak dosya sistemlerini bağlamak için parolanın hatırlanması"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:14
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:16
 msgid ""
 "The shell will request a password when an encrypted device or a remote "
 "filesystem is mounted. If the password can be saved for future use a "
@@ -141,69 +149,75 @@ msgid ""
 "state of the checkbox."
 msgstr "Kabuk, şifreli bir cihaz ya da uzak dosya sistemi bağlandığında parola isteyecek. Eğer parola gelecekte kullanılmak üzere kaydedilebiliyorsa, 'Parolayı Hatırla' onay kutusu sunulacak. Bu anahtar, onay kutusunun öntanımlı durumunu belirler."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:15
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:17
 msgid "Show the week date in the calendar"
 msgstr "Hafta tarihini takvimde göster"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:16
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:18
 msgid "If true, display the ISO week date in the calendar."
 msgstr "Doğru ise ISO hafta tarihini takvimde göster."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:19
 msgid "Keybinding to open the application menu"
 msgstr "Uygulama menüsünü açmak için klavye kısayolu"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:20
 msgid "Keybinding to open the application menu."
 msgstr "Uygulama menüsünü açmak için klavye kısayolu."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:21
 msgid "Keybinding to open the \"Show Applications\" view"
 msgstr "\"Uygulamaları Göster\" görünümünü açmak için klavye kısayolu"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:22
 msgid ""
 "Keybinding to open the \"Show Applications\" view of the Activities "
 "Overview."
 msgstr "Etkinlikler Genel Görünümünün \"Uygulamaları Göster\" görünümünü açmak için klavye kısayolu."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:23
 msgid "Keybinding to open the overview"
 msgstr "Genel görünümü açmak için klavye kısayolu"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:22
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:24
 msgid "Keybinding to open the Activities Overview."
 msgstr "Etkinlikler Genel Görünümünü açmak için klavye kısayolu"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:23
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:25
 msgid "Keybinding to toggle the visibility of the message tray"
 msgstr "Mesaj tepsisinin görünürlüğünü değiştirmek için klavye kısayolu"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:24
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:26
 msgid "Keybinding to toggle the visibility of the message tray."
 msgstr "Mesaj tepsisinin görünürlüğünü değiştirmek için klavye kısayolu."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:25
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:27
 msgid "Keybinding to focus the active notification"
 msgstr "Etkin bildirime odaklanmak için klavye kısayolu"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:26
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:28
 msgid "Keybinding to focus the active notification."
 msgstr "Etkin bildirime odaklanmak için klavye kısayolu."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:27
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:29
+msgid ""
+"Keybinding that pauses and resumes all running tweens, for debugging "
+"purposes"
+msgstr "Hata ayıklama amacıyla, çalışmakta olan tüm ara çerçeveleri duraklatan ve devam ettiren tuş bağı."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:30
 msgid "Which keyboard to use"
 msgstr "Hangi klavyenin kullanılacağı"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:28
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:31
 msgid "The type of keyboard to use."
 msgstr "Kullanılacak klavye türü."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:29
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:32
 msgid "The maximum accuracy level of location."
 msgstr "Kounumun en yüksek hassasiyet düzeyi."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:30
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:33
 msgid ""
 "Configures the maximum level of location accuracy applications are allowed "
 "to see. Valid options are 'off' (disable location tracking), 'country', "
@@ -213,39 +227,55 @@ msgid ""
 "using network resources (albeit with street-level accuracy at best)."
 msgstr "Uygulamaların görmesine izin verilen en yüksek konum hassasiyetini yapılandırır. Geçerli seçenekler: 'kapalı' (konum izlemeyi devre dışı bırak), 'ülke', 'şehir', 'semt', 'sokak' ve 'kesin' (genelde GPS alıcısı gerektirir). Lütfen unutmayın: Bu, sadece GeoClue'nun uygulamaların neleri görmesine izin vereceğini denetler. Uygulamalar, kullanıcının konumunu (en fazla sokak düzeyindeki bir hassasiyetle de olsa) ağ kaynaklarını kullanarak kendi imkanlarıyla bulabilirler."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:31
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:34
+msgid "Limit switcher to current workspace."
+msgstr "Geçiş menüsünü geçerli çalışma alanıyla sınırla."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:35
+msgid ""
+"If true, only applications that have windows on the current workspace are "
+"shown in the switcher. Otherwise, all applications are included."
+msgstr "Eğer bu seçenek etkinse, sadece geçerli çalışma alanında penceresi olan uygulamalar geçiş menüsünde gösterilir. Aksi halde, tüm uygulamalar görünecektir."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:36
 msgid "The application icon mode."
 msgstr "Uygulama simge kipi."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:32
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:37
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-only' "
 "(shows only the application icon) or 'both'."
 msgstr "Pencerelerin değiştiricideki gösterim şeklini yapılandırır. Uygun olasılıklar; 'thumbnail-only' (pencerenin küçük bir resmini gösterir), 'app-icon-only' (sadece uygulama simgesini gösterir) ya da 'both' (her ikisi) değerleridir."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:33
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:38
+msgid ""
+"If true, only windows from the current workspace are shown in the switcher. "
+"Otherwise, all windows are included."
+msgstr "Eğer bu seçenek etkinse, sadece geçerli çalışma alanındaki pencereler geçiş menüsünde gösterilir. Aksi halde, tüm pencereler görünecektir."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:39
 msgid "Attach modal dialog to the parent window"
 msgstr "Yardımcı iletişim penceresini üst pencereye iliştir"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:34
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:40
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
 msgstr "Bu anahtar, GNOME Shell çalışırken org.gnome.mutter içindeki anahtarı geçersiz kılar."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:35
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:41
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr "Pencereler ekran kenarlarında bırakıldığında kenar döşemeyi etkinleştir."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:36
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:42
 msgid "Workspaces are managed dynamically"
 msgstr "Çalışma alanları dinamik olarak yönetilir"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:37
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:43
 msgid "Workspaces only on primary monitor"
 msgstr "Çalışma alanları sadece birincil ekranda"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:38
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:44
 msgid "Delay focus changes in mouse mode until the pointer stops moving"
 msgstr "Fare kipinde odak değişikliklerini işaretçi hareketi durana kadar beklet"
 
@@ -322,31 +352,31 @@ msgstr "Komut işlenemedi:"
 msgid "Execution of “%s” failed:"
 msgstr "“%s” çalıştırılması başarısız:"
 
-#: ../js/ui/appDisplay.js:640
+#: ../js/ui/appDisplay.js:641
 msgid "Frequently used applications will appear here"
 msgstr "Sık kullanılan uygulamalar burada yer alacak"
 
-#: ../js/ui/appDisplay.js:751
+#: ../js/ui/appDisplay.js:752
 msgid "Frequent"
 msgstr "Sık sık"
 
-#: ../js/ui/appDisplay.js:758
+#: ../js/ui/appDisplay.js:759
 msgid "All"
 msgstr "Hepsi"
 
-#: ../js/ui/appDisplay.js:1571
+#: ../js/ui/appDisplay.js:1569
 msgid "New Window"
 msgstr "Yeni Pencere"
 
-#: ../js/ui/appDisplay.js:1593 ../js/ui/dash.js:285
+#: ../js/ui/appDisplay.js:1591 ../js/ui/dash.js:285
 msgid "Remove from Favorites"
 msgstr "Sık Kullanılanlardan Çıkar"
 
-#: ../js/ui/appDisplay.js:1599
+#: ../js/ui/appDisplay.js:1597
 msgid "Add to Favorites"
 msgstr "Sık Kullanılanlara Ekle"
 
-#: ../js/ui/appDisplay.js:1608
+#: ../js/ui/appDisplay.js:1606
 msgid "Show Details"
 msgstr "Ayrıntıları Göster"
 
@@ -932,15 +962,15 @@ msgstr "Uygulamaları Göster"
 msgid "Dash"
 msgstr "Konsol"
 
-#: ../js/ui/dateMenu.js:97
+#: ../js/ui/dateMenu.js:96
 msgid "Open Calendar"
 msgstr "Takvimi Aç"
 
-#: ../js/ui/dateMenu.js:101
+#: ../js/ui/dateMenu.js:100
 msgid "Open Clocks"
 msgstr "Saati Aç"
 
-#: ../js/ui/dateMenu.js:108
+#: ../js/ui/dateMenu.js:107
 msgid "Date & Time Settings"
 msgstr "Tarih ve Saat Ayarları"
 
@@ -948,7 +978,7 @@ msgstr "Tarih ve Saat Ayarları"
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29
 #. AM").
 #. */
-#: ../js/ui/dateMenu.js:205
+#: ../js/ui/dateMenu.js:204
 msgid "%A %B %e, %Y"
 msgstr "%e %B %A, %Y"
 
@@ -1139,39 +1169,39 @@ msgstr "Kaynağı Görüntüle"
 msgid "Web Page"
 msgstr "Web Sayfası"
 
-#: ../js/ui/messageTray.js:1326
+#: ../js/ui/messageTray.js:1325
 msgid "Open"
 msgstr "Aç"
 
-#: ../js/ui/messageTray.js:1333
+#: ../js/ui/messageTray.js:1332
 msgid "Remove"
 msgstr "Sil"
 
-#: ../js/ui/messageTray.js:1630
+#: ../js/ui/messageTray.js:1629
 msgid "Notifications"
 msgstr "Bildirimler"
 
-#: ../js/ui/messageTray.js:1637
+#: ../js/ui/messageTray.js:1636
 msgid "Clear Messages"
 msgstr "Mesajları Temizle"
 
-#: ../js/ui/messageTray.js:1656
+#: ../js/ui/messageTray.js:1655
 msgid "Notification Settings"
 msgstr "Bildirim Ayarları"
 
-#: ../js/ui/messageTray.js:1709
+#: ../js/ui/messageTray.js:1708
 msgid "Tray Menu"
 msgstr "Tepsi Menüsü"
 
-#: ../js/ui/messageTray.js:1926
+#: ../js/ui/messageTray.js:1925
 msgid "No Messages"
 msgstr "Mesaj Yok"
 
-#: ../js/ui/messageTray.js:1964
+#: ../js/ui/messageTray.js:1963
 msgid "Message Tray"
 msgstr "Mesaj Tepsisi"
 
-#: ../js/ui/messageTray.js:2967
+#: ../js/ui/messageTray.js:2966
 msgid "System Information"
 msgstr "Sistem Bilgisi"
 
@@ -1715,19 +1745,19 @@ msgstr[0] "%u Girdi"
 msgid "System Sounds"
 msgstr "Sistem Sesleri"
 
-#: ../src/main.c:349
+#: ../src/main.c:371
 msgid "Print version"
 msgstr "Sürümü yazdır"
 
-#: ../src/main.c:355
+#: ../src/main.c:377
 msgid "Mode used by GDM for login screen"
 msgstr "Oturum açma ekranında GDM tarafından kullanılan kip"
 
-#: ../src/main.c:361
+#: ../src/main.c:383
 msgid "Use a specific mode, e.g. \"gdm\" for login screen"
 msgstr "Oturum açma için -\"gdm\" gibi- özel bir kip kullan"
 
-#: ../src/main.c:367
+#: ../src/main.c:389
 msgid "List possible modes"
 msgstr "Mevcut kipleri listele"
 
