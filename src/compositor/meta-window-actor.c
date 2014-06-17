@@ -1326,7 +1326,7 @@ meta_window_actor_new (MetaWindow *window)
 
   priv = self->priv;
 
-  meta_window_actor_set_updates_frozen (self, meta_window_updates_are_frozen (priv->window));
+  meta_window_actor_sync_updates_frozen (self);
 
   /* If a window doesn't start off with updates frozen, we should
    * we should send a _NET_WM_FRAME_DRAWN immediately after the first drawn.
@@ -2022,7 +2022,7 @@ meta_window_actor_update_opacity (MetaWindowActor *self)
     clutter_actor_set_opacity (CLUTTER_ACTOR (priv->surface), window->opacity);
 }
 
-void
+static void
 meta_window_actor_set_updates_frozen (MetaWindowActor *self,
                                       gboolean         updates_frozen)
 {
@@ -2038,4 +2038,13 @@ meta_window_actor_set_updates_frozen (MetaWindowActor *self,
       else
         meta_window_actor_thaw (self);
     }
+}
+
+void
+meta_window_actor_sync_updates_frozen (MetaWindowActor *self)
+{
+  MetaWindowActorPrivate *priv = self->priv;
+  MetaWindow *window = priv->window;
+
+  meta_window_actor_set_updates_frozen (self, meta_window_updates_are_frozen (window));
 }

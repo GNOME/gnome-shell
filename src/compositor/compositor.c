@@ -691,12 +691,11 @@ meta_compositor_remove_window (MetaCompositor *compositor,
 }
 
 void
-meta_compositor_set_updates_frozen (MetaCompositor *compositor,
-                                    MetaWindow     *window,
-                                    gboolean        updates_frozen)
+meta_compositor_sync_updates_frozen (MetaCompositor *compositor,
+                                     MetaWindow     *window)
 {
   MetaWindowActor *window_actor = META_WINDOW_ACTOR (meta_window_get_compositor_private (window));
-  meta_window_actor_set_updates_frozen (window_actor, updates_frozen);
+  meta_window_actor_sync_updates_frozen (window_actor);
 }
 
 void
