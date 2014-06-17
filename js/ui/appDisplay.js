@@ -45,6 +45,16 @@ const INDICATORS_BASE_TIME = 0.25;
 const INDICATORS_ANIMATION_DELAY = 0.125;
 const INDICATORS_ANIMATION_MAX_TIME = 0.75;
 
+// Follow iconGrid animations approach and divide by 2 to animate out to
+// not annoy the user when the user wants to quit appDisplay.
+// Also, make sure we don't exceed iconGrid animation total time or
+// views switch time.
+const INDICATORS_BASE_TIME_OUT = 0.125;
+const INDICATORS_ANIMATION_DELAY_OUT = 0.0625;
+const INDICATORS_ANIMATION_MAX_TIME_OUT =
+    Math.min (VIEWS_SWITCH_TIME,
+              IconGrid.ANIMATION_TIME_OUT + IconGrid.ANIMATION_MAX_DELAY_OUT_FOR_ITEM);
+
 const PAGE_SWITCH_TIME = 0.3;
 
 const VIEWS_SWITCH_TIME = 0.4;
@@ -209,8 +219,27 @@ const BaseAppView = new Lang.Class({
                 function () {
                     this._grid.disconnect(animationDoneId);
                     onComplete();
-                }));
+            }));
         }
+    },
+
+    animateSwitch: function(animationDirection) {
+        Tweener.removeTweens(this.actor);
+        Tweener.removeTweens(this._grid.actor);
+
+        let params = { time: VIEWS_SWITCH_TIME,
+                       transition: 'easeOutQuad' };
+        if (animationDirection == IconGrid.AnimationDirection.IN) {
+            this.actor.show();
+            params.opacity = 255;
+            params.delay = VIEWS_SWITCH_ANIMATION_DELAY;
+        } else {
+            params.opacity = 0;
+            params.delay = 0;
+            params.onComplete = Lang.bind(this, function() { this.actor.hide() });
+        }
+
+        Tweener.addTween(this._grid.actor, params);
     }
 });
 Signals.addSignalMethods(BaseAppView.prototype);
@@ -248,7 +277,10 @@ const PageIndicators = new Lang.Class({
         this._currentPage = undefined;
 
         this.actor.connect('notify::mapped',
-                           Lang.bind(this, this._animateIndicators));
+                           Lang.bind(this, function() {
+                               this.animateIndicators(IconGrid.AnimationDirection.IN);
+                           })
+                          );
     },
 
     setNPages: function(nPages) {
@@ -289,7 +321,7 @@ const PageIndicators = new Lang.Class({
             children[i].set_checked(i == this._currentPage);
     },
 
-    _animateIndicators: function() {
+    animateIndicators: function(animationDirection) {
         if (!this.actor.mapped)
             return;
 
@@ -297,24 +329,32 @@ const PageIndicators = new Lang.Class({
         if (children.length == 0)
             return;
 
+        for (let i = 0; i < this._nPages; i++)
+            Tweener.removeTweens(children[i]);
+
         let offset;
         if (this.actor.get_text_direction() == Clutter.TextDirection.RTL)
             offset = -children[0].width;
         else
             offset = children[0].width;
 
-        let delay = INDICATORS_ANIMATION_DELAY;
-        let totalAnimationTime = INDICATORS_BASE_TIME + INDICATORS_ANIMATION_DELAY * this._nPages;
-        if (totalAnimationTime > INDICATORS_ANIMATION_MAX_TIME)
-            delay -= (totalAnimationTime - INDICATORS_ANIMATION_MAX_TIME) / this._nPages;
+        let isAnimationIn = animationDirection == IconGrid.AnimationDirection.IN;
+        let delay = isAnimationIn ? INDICATORS_ANIMATION_DELAY :
+                                    INDICATORS_ANIMATION_DELAY_OUT;
+        let baseTime = isAnimationIn ? INDICATORS_BASE_TIME : INDICATORS_BASE_TIME_OUT;
+        let totalAnimationTime = baseTime + delay * this._nPages;
+        let maxTime = isAnimationIn ? INDICATORS_ANIMATION_MAX_TIME :
+                                      INDICATORS_ANIMATION_MAX_TIME_OUT;
+        if (totalAnimationTime > maxTime)
+            delay -= (totalAnimationTime - maxTime) / this._nPages;
 
         for (let i = 0; i < this._nPages; i++) {
-            children[i].translation_x = offset;
+            children[i].translation_x = isAnimationIn ? offset : 0;
             Tweener.addTween(children[i],
-                             { translation_x: 0,
-                               time: INDICATORS_BASE_TIME + delay * i,
+                             { translation_x: isAnimationIn ? 0 : offset,
+                               time: baseTime + delay * i,
                                transition: 'easeInOutQuad',
-                               delay: VIEWS_SWITCH_ANIMATION_DELAY
+                               delay: isAnimationIn ? VIEWS_SWITCH_ANIMATION_DELAY : 0
                              });
         }
     }
@@ -505,7 +545,26 @@ const AllView = new Lang.Class({
                 }));
         } else {
             this.parent(animationDirection, onComplete);
+            if (animationDirection == IconGrid.AnimationDirection.OUT)
+                this._pageIndicators.animateIndicators(animationDirection);
         }
+    },
+
+    animateSwitch: function(animationDirection) {
+        this.parent(animationDirection);
+
+        if (this._currentPopup && this._displayingPopup &&
+            animationDirection == IconGrid.AnimationDirection.OUT)
+            Tweener.addTween(this._currentPopup.actor,
+                             { time: VIEWS_SWITCH_TIME,
+                               transition: 'easeOutQuad',
+                               opacity: 0,
+                               onComplete: function() {
+                                  this.opacity = 255;
+                               } });
+
+        if (animationDirection == IconGrid.AnimationDirection.OUT)
+            this._pageIndicators.animateIndicators(animationDirection);
     },
 
     getCurrentPageY: function() {
@@ -906,21 +965,14 @@ const AppDisplay = new Lang.Class({
 
     _showView: function(activeIndex) {
         for (let i = 0; i < this._views.length; i++) {
-            let actor = this._views[i].view.actor;
-
-            let params = { time: VIEWS_SWITCH_TIME,
-                           opacity: (i == activeIndex) ? 255 : 0,
-                           delay: (i == activeIndex) ? VIEWS_SWITCH_ANIMATION_DELAY : 0 };
-            if (i == activeIndex)
-                actor.visible = true;
-            else
-                params.onComplete = function() { actor.hide(); };
-            Tweener.addTween(actor, params);
-
             if (i == activeIndex)
                 this._views[i].control.add_style_pseudo_class('checked');
             else
                 this._views[i].control.remove_style_pseudo_class('checked');
+
+            let animationDirection = i == activeIndex ? IconGrid.AnimationDirection.IN :
+                                                        IconGrid.AnimationDirection.OUT;
+            this._views[i].view.animateSwitch(animationDirection);
         }
     },
 
