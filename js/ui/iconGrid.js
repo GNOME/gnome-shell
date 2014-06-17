@@ -530,8 +530,8 @@ const IconGrid = new Lang.Class({
 
     // Note that this is ICON_SIZE as used by BaseIcon, not elsewhere in IconGrid; it's a bit messed up
     _updateChildrenScale: function(scale) {
+        let newIconSize = Math.floor(ICON_SIZE * scale);
         for (let i in this._items) {
-            let newIconSize = Math.floor(ICON_SIZE * scale);
             this._items[i].icon.setIconSize(newIconSize);
         }
     }
