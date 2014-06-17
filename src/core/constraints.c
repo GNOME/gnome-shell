@@ -588,7 +588,7 @@ update_onscreen_requirements (MetaWindow     *window,
   window->require_fully_onscreen =
     meta_rectangle_contained_in_region (info->usable_screen_region,
                                         &info->current);
-  if (old ^ window->require_fully_onscreen)
+  if (old != window->require_fully_onscreen)
     meta_topic (META_DEBUG_GEOMETRY,
                 "require_fully_onscreen for %s toggled to %s\n",
                 window->desc,
@@ -601,7 +601,7 @@ update_onscreen_requirements (MetaWindow     *window,
   window->require_on_single_monitor =
     meta_rectangle_contained_in_region (info->usable_monitor_region,
                                         &info->current);
-  if (old ^ window->require_on_single_monitor)
+  if (old != window->require_on_single_monitor)
     meta_topic (META_DEBUG_GEOMETRY,
                 "require_on_single_monitor for %s toggled to %s\n",
                 window->desc,
@@ -620,7 +620,7 @@ update_onscreen_requirements (MetaWindow     *window,
       window->require_titlebar_visible =
         meta_rectangle_overlaps_with_region (info->usable_screen_region,
                                              &titlebar_rect);
-      if (old ^ window->require_titlebar_visible)
+      if (old != window->require_titlebar_visible)
         meta_topic (META_DEBUG_GEOMETRY,
                     "require_titlebar_visible for %s toggled to %s\n",
                     window->desc,
