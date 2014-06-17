@@ -67,7 +67,7 @@ const WindowCloneLayout = new Lang.Class({
         // paradoxically is the smaller rectangle, containing the positions
         // of the visible frame. The input rect contains everything,
         // including the invisible border padding.
-        let inputRect = window.get_input_rect();
+        let inputRect = window.get_buffer_rect();
 
         let box = new Clutter.ActorBox();
 
