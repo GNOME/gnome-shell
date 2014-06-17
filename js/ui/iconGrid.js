@@ -522,11 +522,6 @@ const IconGrid = new Lang.Class({
             this._fixedHItemSize = Math.max(this._hItemSize - neededSpacePerItem, MIN_ICON_SIZE);
             this._fixedVItemSize = Math.max(this._vItemSize - neededSpacePerItem, MIN_ICON_SIZE);
 
-            if (this._fixedHItemSize < MIN_ICON_SIZE)
-                this._fixedHItemSize = MIN_ICON_SIZE;
-            if (this._fixedVItemSize < MIN_ICON_SIZE)
-                this._fixedVItemSize = MIN_ICON_SIZE;
-
             this._updateSpacingForSize(availWidth, availHeight);
         }
         let scale = Math.min(this._fixedHItemSize, this._fixedVItemSize) / Math.max(this._hItemSize, this._vItemSize);
