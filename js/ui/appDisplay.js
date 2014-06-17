@@ -34,7 +34,9 @@ const MIN_COLUMNS = 4;
 const MIN_ROWS = 4;
 
 const INACTIVE_GRID_OPACITY = 77;
-const INACTIVE_GRID_OPACITY_ANIMATION_TIME = 0.40;
+// This time needs to be less than IconGrid.EXTRA_SPACE_ANIMATION_TIME
+// to not clash with other animations
+const INACTIVE_GRID_OPACITY_ANIMATION_TIME = 0.24;
 const FOLDER_SUBICON_FRACTION = .4;
 
 const MIN_FREQUENT_APPS_COUNT = 3;
@@ -176,6 +178,38 @@ const BaseAppView = new Lang.Class({
                 this.disconnect(signalId);
                 this.selectApp(id);
             }));
+        }
+    },
+
+    _doSpringAnimation: function(animationDirection) {
+        this._grid.actor.opacity = 255;
+        this._grid.animateSpring(animationDirection,
+                                 Main.overview.getShowAppsButton());
+    },
+
+    animate: function(animationDirection, onComplete) {
+        if (animationDirection == IconGrid.AnimationDirection.IN) {
+            let toAnimate = this._grid.actor.connect('notify::allocation', Lang.bind(this,
+                function() {
+                    this._grid.actor.disconnect(toAnimate);
+                    // We need to hide the grid temporary to not flash it
+                    // for a frame
+                    this._grid.actor.opacity = 0;
+                    Meta.later_add(Meta.LaterType.BEFORE_REDRAW,
+                                   Lang.bind(this, function() {
+                                       this._doSpringAnimation(animationDirection)
+                                  }));
+                }));
+        } else {
+            this._doSpringAnimation(animationDirection);
+        }
+
+        if (onComplete) {
+            let animationDoneId = this._grid.connect('animation-done', Lang.bind(this,
+                function () {
+                    this._grid.disconnect(animationDoneId);
+                    onComplete();
+                }));
         }
     }
 });
@@ -323,7 +357,7 @@ const AllView = new Lang.Class({
         this._stack = new St.Widget({ layout_manager: new Clutter.BinLayout() });
         let box = new St.BoxLayout({ vertical: true });
 
-        this._currentPage = 0;
+        this._grid.currentPage = 0;
         this._stack.add_actor(this._grid.actor);
         this._eventBlocker = new St.Widget({ x_expand: true, y_expand: true });
         this._stack.add_actor(this._eventBlocker);
@@ -455,14 +489,33 @@ const AllView = new Lang.Class({
         this._refilterApps();
     },
 
+    // Overriden from BaseAppView
+    animate: function (animationDirection, onComplete) {
+        if (animationDirection == IconGrid.AnimationDirection.OUT &&
+            this._displayingPopup && this._currentPopup) {
+            this._currentPopup.popdown();
+            let spaceClosedId = this._grid.connect('space-closed', Lang.bind(this,
+                function() {
+                    this._grid.disconnect(spaceClosedId);
+                    // Given that we can't call this.parent() inside the
+                    // signal handler, call again animate which will
+                    // call the parent given that popup is already
+                    // closed.
+                    this.animate(animationDirection, onComplete);
+                }));
+        } else {
+            this.parent(animationDirection, onComplete);
+        }
+    },
+
     getCurrentPageY: function() {
-        return this._grid.getPageY(this._currentPage);
+        return this._grid.getPageY(this._grid.currentPage);
     },
 
     goToPage: function(pageNumber) {
         pageNumber = clamp(pageNumber, 0, this._grid.nPages() - 1);
 
-        if (this._currentPage == pageNumber && this._displayingPopup && this._currentPopup)
+        if (this._grid.currentPage == pageNumber && this._displayingPopup && this._currentPopup)
             return;
         if (this._displayingPopup && this._currentPopup)
             this._currentPopup.popdown();
@@ -482,7 +535,7 @@ const AllView = new Lang.Class({
         let time;
         // Only take the velocity into account on page changes, otherwise
         // return smoothly to the current page using the default velocity
-        if (this._currentPage != pageNumber) {
+        if (this._grid.currentPage != pageNumber) {
             let minVelocity = totalHeight / (PAGE_SWITCH_TIME * 1000);
             velocity = Math.max(minVelocity, velocity);
             time = (diffToPage / velocity) / 1000;
@@ -493,9 +546,9 @@ const AllView = new Lang.Class({
         // longer than PAGE_SWITCH_TIME
         time = Math.min(time, PAGE_SWITCH_TIME);
 
-        this._currentPage = pageNumber;
+        this._grid.currentPage = pageNumber;
         Tweener.addTween(this._adjustment,
-                         { value: this._grid.getPageY(this._currentPage),
+                         { value: this._grid.getPageY(this._grid.currentPage),
                            time: time,
                            transition: 'easeOutQuad' });
         this._pageIndicators.setCurrentPage(pageNumber);
@@ -524,9 +577,9 @@ const AllView = new Lang.Class({
 
         let direction = event.get_scroll_direction();
         if (direction == Clutter.ScrollDirection.UP)
-            this.goToPage(this._currentPage - 1);
+            this.goToPage(this._grid.currentPage - 1);
         else if (direction == Clutter.ScrollDirection.DOWN)
-            this.goToPage(this._currentPage + 1);
+            this.goToPage(this._grid.currentPage + 1);
 
         return Clutter.EVENT_STOP;
     },
@@ -566,10 +619,10 @@ const AllView = new Lang.Class({
             return Clutter.EVENT_STOP;
 
         if (event.get_key_symbol() == Clutter.Page_Up) {
-            this.goToPage(this._currentPage - 1);
+            this.goToPage(this._grid.currentPage - 1);
             return Clutter.EVENT_STOP;
         } else if (event.get_key_symbol() == Clutter.Page_Down) {
-            this.goToPage(this._currentPage + 1);
+            this.goToPage(this._grid.currentPage + 1);
             return Clutter.EVENT_STOP;
         }
 
@@ -630,7 +683,7 @@ const AllView = new Lang.Class({
 
         if (this._availWidth != availWidth || this._availHeight != availHeight || oldNPages != this._grid.nPages()) {
             this._adjustment.value = 0;
-            this._currentPage = 0;
+            this._grid.currentPage = 0;
             Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this,
                 function() {
                     this._pageIndicators.setNPages(this._grid.nPages());
@@ -792,6 +845,19 @@ const AppDisplay = new Lang.Class({
         let layout = new ControlsBoxLayout({ homogeneous: true });
         this._controls = new St.Widget({ style_class: 'app-view-controls',
                                          layout_manager: layout });
+        this._controls.connect('notify::mapped', Lang.bind(this,
+            function() {
+                // controls are faded either with their parent or
+                // explicitly in animate(); we can't know how they'll be
+                // shown next, so make sure to restore their opacity
+                // when they are hidden
+                if (this._controls.mapped)
+                  return;
+
+                Tweener.removeTweens(this._controls);
+                this._controls.opacity = 255;
+            }));
+
         layout.hookup_style(this._controls);
         this.actor.add_actor(new St.Bin({ child: this._controls }));
 
@@ -813,6 +879,29 @@ const AppDisplay = new Lang.Class({
             initialView = Views.ALL;
         this._showView(initialView);
         this._updateFrequentVisibility();
+    },
+
+    animate: function(animationDirection, onComplete) {
+        let currentView = this._views[global.settings.get_uint('app-picker-view')].view;
+
+        // Animate controls opacity using iconGrid animation time, since
+        // it will be the time the AllView or FrequentView takes to show
+        // it entirely.
+        let finalOpacity;
+        if (animationDirection == IconGrid.AnimationDirection.IN) {
+            this._controls.opacity = 0;
+            finalOpacity = 255;
+        } else {
+            finalOpacity = 0
+        }
+
+        Tweener.addTween(this._controls,
+                         { time: IconGrid.ANIMATION_TIME_IN,
+                           transition: 'easeInOutQuad',
+                           opacity: finalOpacity,
+                          });
+
+        currentView.animate(animationDirection, onComplete);
     },
 
     _showView: function(activeIndex) {
@@ -964,6 +1053,7 @@ const FolderView = new Lang.Class({
         Util.ensureActorVisibleInScrollView(this.actor, actor);
     },
 
+    // Overriden from BaseAppView
     animate: function(animationDirection) {
         this._grid.animatePulse(animationDirection);
     },

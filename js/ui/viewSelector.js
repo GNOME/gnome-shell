@@ -20,6 +20,7 @@ const ShellEntry = imports.ui.shellEntry;
 const Tweener = imports.ui.tweener;
 const WorkspacesView = imports.ui.workspacesView;
 const EdgeDragAction = imports.ui.edgeDragAction;
+const IconGrid = imports.ui.iconGrid;
 
 const SHELL_KEYBINDINGS_SCHEMA = 'org.gnome.shell.keybindings';
 
@@ -301,18 +302,55 @@ const ViewSelector = new Lang.Class({
         return page;
     },
 
-    _fadePageIn: function(oldPage) {
+    _fadePageIn: function() {
+        Tweener.addTween(this._activePage,
+                         { opacity: 255,
+                           time: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME,
+                           transition: 'easeOutQuad'
+                         });
+    },
+
+    _fadePageOut: function(page) {
+        let oldPage = page;
+        Tweener.addTween(page,
+                         { opacity: 0,
+                           time: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME,
+                           transition: 'easeOutQuad',
+                           onComplete: Lang.bind(this, function() {
+                               this._animateIn(oldPage);
+                           })
+                         });
+    },
+
+    _animateIn: function(oldPage) {
         if (oldPage)
             oldPage.hide();
 
         this.emit('page-empty');
 
         this._activePage.show();
-        Tweener.addTween(this._activePage,
-            { opacity: 255,
-              time: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME,
-              transition: 'easeOutQuad'
-            });
+
+        if (this._activePage == this._appsPage && oldPage == this._workspacesPage) {
+            // Restore opacity, in case we animated via _fadePageOut
+            this._activePage.opacity = 255;
+            this.appDisplay.animate(IconGrid.AnimationDirection.IN);
+        } else {
+            this._fadePageIn();
+        }
+    },
+
+    _animateOut: function(page) {
+        let oldPage = page;
+        if (page == this._appsPage &&
+            this._activePage == this._workspacesPage &&
+            !Main.overview.animationInProgress) {
+            this.appDisplay.animate(IconGrid.AnimationDirection.OUT, Lang.bind(this,
+                function() {
+                    this._animateIn(oldPage)
+                }));
+        } else {
+            this._fadePageOut(page);
+        }
     },
 
     _showPage: function(page) {
@@ -327,17 +365,9 @@ const ViewSelector = new Lang.Class({
         this.emit('page-changed');
 
         if (oldPage)
-            Tweener.addTween(oldPage,
-                             { opacity: 0,
-                               time: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME,
-                               transition: 'easeOutQuad',
-                               onComplete: Lang.bind(this,
-                                   function() {
-                                       this._fadePageIn(oldPage);
-                                   })
-                             });
+            this._animateOut(oldPage)
         else
-            this._fadePageIn();
+            this._animateIn();
     },
 
     _a11yFocusPage: function(page) {

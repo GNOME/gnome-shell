@@ -675,6 +675,10 @@ const Overview = new Lang.Class({
             this.hide();
         else
             this.show();
+    },
+
+    getShowAppsButton: function() {
+        return this._dash.showAppsButton;
     }
 });
 Signals.addSignalMethods(Overview.prototype);
