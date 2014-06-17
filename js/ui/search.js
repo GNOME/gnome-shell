@@ -6,6 +6,7 @@ const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const Meta = imports.gi.Meta;
 const Signals = imports.signals;
+const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 const Atk = imports.gi.Atk;
 
@@ -397,6 +398,7 @@ const ListSearchResults = new Lang.Class({
         this.providerIcon.connect('key-focus-in', Lang.bind(this, this._keyFocusIn));
         this.providerIcon.connect('clicked', Lang.bind(this,
             function() {
+                this.providerIcon.animateLaunch();
                 provider.launchSearch(this._terms);
                 Main.overview.toggle();
             }));
@@ -708,5 +710,12 @@ const ProviderIcon = new Lang.Class({
                                  gicon: provider.appInfo.get_icon() });
         this._content.add_actor(icon);
         this._content.add_actor(this.moreIcon);
+    },
+
+    animateLaunch: function() {
+        let appSys = Shell.AppSystem.get_default();
+        let app = appSys.lookup_app(this.provider.appInfo.get_id());
+        if (app.state == Shell.AppState.STOPPED)
+            IconGrid.zoomOutActor(this._content);
     }
 });

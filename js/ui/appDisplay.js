@@ -1699,12 +1699,19 @@ const AppIcon = new Lang.Class({
                             this.app.state == Shell.AppState.RUNNING ||
                             button && button == 2;
 
+        if (this.app.state == Shell.AppState.STOPPED || openNewWindow)
+            this.animateLaunch();
+
         if (openNewWindow)
             this.app.open_new_window(-1);
         else
             this.app.activate();
 
         Main.overview.hide();
+    },
+
+    animateLaunch: function() {
+        this.icon.animateZoomOut();
     },
 
     shellWorkspaceLaunch : function(params) {
@@ -1788,6 +1795,9 @@ const AppIconMenu = new Lang.Class({
             if (this._source.app.can_open_new_window()) {
                 this._newWindowMenuItem = this._appendMenuItem(_("New Window"));
                 this._newWindowMenuItem.connect('activate', Lang.bind(this, function() {
+                    if (this._source.app.state == Shell.AppState.STOPPED)
+                        this._source.animateLaunch();
+
                     this._source.app.open_new_window(-1);
                     this.emit('activate-window', null);
                 }));

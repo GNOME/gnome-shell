@@ -30,6 +30,9 @@ const AnimationDirection = {
     OUT: 1
 };
 
+const APPICON_ANIMATION_OUT_SCALE = 3;
+const APPICON_ANIMATION_OUT_TIME = 0.25;
+
 const BaseIcon = new Lang.Class({
     Name: 'BaseIcon',
 
@@ -187,8 +190,54 @@ const BaseIcon = new Lang.Class({
 
     _onIconThemeChanged: function() {
         this._createIconTexture(this.iconSize);
+    },
+
+    animateZoomOut: function() {
+        // Animate only the child instead of the entire actor, so the
+        // styles like hover and running are not applied while
+        // animating.
+        zoomOutActor(this.actor.child);
     }
 });
+
+function clamp(value, min, max) {
+    return Math.max(Math.min(value, max), min);
+};
+
+function zoomOutActor(actor) {
+    let actorClone = new Clutter.Clone({ source: actor,
+                                         reactive: false });
+    let [width, height] = actor.get_transformed_size();
+    let [x, y] = actor.get_transformed_position();
+    actorClone.set_size(width, height);
+    actorClone.set_position(x, y);
+    actorClone.opacity = 255;
+    actorClone.set_pivot_point(0.5, 0.5);
+
+    Main.uiGroup.add_actor(actorClone);
+
+    // Avoid monitor edges to not zoom outside the current monitor
+    let monitor = Main.layoutManager.findMonitorForActor(actor);
+    let scaledWidth = width * APPICON_ANIMATION_OUT_SCALE;
+    let scaledHeight = height * APPICON_ANIMATION_OUT_SCALE;
+    let scaledX = x - (scaledWidth - width) / 2;
+    let scaledY = y - (scaledHeight - height) / 2;
+    let containedX = clamp(scaledX, monitor.x, monitor.x + monitor.width - scaledWidth);
+    let containedY = clamp(scaledY, monitor.y, monitor.y + monitor.height - scaledHeight);
+
+    Tweener.addTween(actorClone,
+                     { time: APPICON_ANIMATION_OUT_TIME,
+                       scale_x: APPICON_ANIMATION_OUT_SCALE,
+                       scale_y: APPICON_ANIMATION_OUT_SCALE,
+                       translation_x: containedX - scaledX,
+                       translation_y: containedY - scaledY,
+                       opacity: 0,
+                       transition: 'easeOutQuad',
+                       onComplete: function() {
+                           actorClone.destroy();
+                       }
+                    });
+}
 
 const IconGrid = new Lang.Class({
     Name: 'IconGrid',
