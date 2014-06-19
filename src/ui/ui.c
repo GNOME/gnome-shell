@@ -221,6 +221,9 @@ maybe_redirect_mouse_event (XEvent *xevent)
       gevent->motion.time = xev_d->time;
       gevent->motion.x_root = xev_d->root_x;
       gevent->motion.y_root = xev_d->root_y;
+
+      if (XIMaskIsSet (xev_d->buttons.mask, 1))
+        gevent->motion.state |= GDK_BUTTON1_MASK;
       break;
     case XI_Enter:
     case XI_Leave:

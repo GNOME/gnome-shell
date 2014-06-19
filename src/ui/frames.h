@@ -100,6 +100,12 @@ struct _MetaFrames
   GtkStyleContext *normal_style;
   GHashTable *style_variants;
 
+  MetaGrabOp current_grab_op;
+  MetaUIFrame *grab_frame;
+  guint grab_button;
+  gdouble grab_x;
+  gdouble grab_y;
+
   Window grab_xwindow;
 };
 
