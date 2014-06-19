@@ -51,6 +51,7 @@
 #include "meta-cursor-tracker-private.h"
 #include "meta-backend.h"
 #include "backends/x11/meta-backend-x11.h"
+#include <clutter/x11/clutter-x11.h>
 
 #ifdef HAVE_RANDR
 #include <X11/extensions/Xrandr.h>
@@ -411,6 +412,57 @@ meta_set_gnome_wm_keybindings (const char *wm_keybindings)
   g_return_if_fail (the_display == NULL);
 
   gnome_wm_keybindings = wm_keybindings;
+}
+
+static void
+gesture_tracker_state_changed (MetaGestureTracker   *tracker,
+                               ClutterEventSequence *sequence,
+                               MetaSequenceState     state,
+                               MetaDisplay          *display)
+{
+  MetaBackendX11 *backend = META_BACKEND_X11 (meta_get_backend ());
+  int event_mode;
+
+  if (state == META_SEQUENCE_ACCEPTED)
+    event_mode = XIAcceptTouch;
+  else if (state == META_SEQUENCE_REJECTED)
+    event_mode = XIRejectTouch;
+  else
+    return;
+
+  XIAllowTouchEvents (meta_backend_x11_get_xdisplay (backend),
+                      META_VIRTUAL_CORE_POINTER_ID,
+                      clutter_x11_event_sequence_get_touch_detail (sequence),
+                      DefaultRootWindow (display->xdisplay), event_mode);
+}
+
+static void
+meta_display_grab_window_touch (MetaDisplay *display,
+                                Window       xwindow)
+{
+  MetaBackendX11 *backend = META_BACKEND_X11 (meta_get_backend ());
+  unsigned char mask_bits[XIMaskLen (XI_LASTEVENT)] = { 0 };
+  XIEventMask mask = { META_VIRTUAL_CORE_POINTER_ID, sizeof (mask_bits), mask_bits };
+  XIGrabModifiers mods = { XIAnyModifier, 0 };
+
+  XISetMask (mask.mask, XI_TouchBegin);
+  XISetMask (mask.mask, XI_TouchUpdate);
+  XISetMask (mask.mask, XI_TouchEnd);
+
+  XIGrabTouchBegin (meta_backend_x11_get_xdisplay (backend),
+                    META_VIRTUAL_CORE_POINTER_ID,
+                    xwindow, False, &mask, 1, &mods);
+}
+
+static void
+meta_display_ungrab_window_touch (MetaDisplay *display,
+                                  Window       xwindow)
+{
+  MetaBackendX11 *backend = META_BACKEND_X11 (meta_get_backend ());
+  XIGrabModifiers mods = { XIAnyModifier, 0 };
+
+  XIUngrabTouchBegin (meta_backend_x11_get_xdisplay (backend),
+                      META_VIRTUAL_CORE_POINTER_ID, xwindow, 1, &mods);
 }
 
 /**
@@ -810,6 +862,9 @@ meta_display_open (void)
 
   /* Set up touch support */
   the_display->gesture_tracker = meta_gesture_tracker_new (0);
+  g_signal_connect (the_display->gesture_tracker, "state-changed",
+                    G_CALLBACK (gesture_tracker_state_changed), the_display);
+  meta_display_grab_window_touch (the_display, DefaultRootWindow (the_display->xdisplay));
 
   /* We know that if mutter is running as a Wayland compositor,
    * we start out with no windows.
@@ -979,6 +1034,9 @@ meta_display_close (MetaDisplay *display,
   meta_prefs_remove_listener (prefs_changed_callback, display);
 
   meta_display_remove_autoraise_callback (display);
+
+  meta_display_ungrab_window_touch (display, DefaultRootWindow (display->xdisplay));
+  g_clear_object (&display->gesture_tracker);
 
   if (display->focus_timeout_id)
     g_source_remove (display->focus_timeout_id);
