@@ -109,6 +109,19 @@ meta_window_ensure_frame (MetaWindow *window)
   XChangeWindowAttributes (window->display->xdisplay,
 			   frame->xwindow, CWEventMask, &attrs);
 
+  {
+    unsigned char mask_bits[XIMaskLen (XI_LASTEVENT)] = { 0 };
+    XIEventMask mask = { XIAllMasterDevices, sizeof (mask_bits), mask_bits };
+
+    XISetMask (mask.mask, XI_ButtonPress);
+    XISetMask (mask.mask, XI_ButtonRelease);
+    XISetMask (mask.mask, XI_Motion);
+    XISetMask (mask.mask, XI_Enter);
+    XISetMask (mask.mask, XI_Leave);
+
+    XISelectEvents (window->display->xdisplay, frame->xwindow, &mask, 1);
+  }
+
   meta_display_register_x_window (window->display, &frame->xwindow, window);
 
   meta_error_trap_push (window->display);
