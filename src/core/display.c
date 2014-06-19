@@ -808,6 +808,9 @@ meta_display_open (void)
   meta_screen_init_workspaces (screen);
   meta_screen_create_guard_window (screen);
 
+  /* Set up touch support */
+  the_display->gesture_tracker = meta_gesture_tracker_new (0);
+
   /* We know that if mutter is running as a Wayland compositor,
    * we start out with no windows.
    */
@@ -3151,4 +3154,10 @@ meta_display_create_x_cursor (MetaDisplay *display,
                               MetaCursor   cursor)
 {
   return meta_cursor_create_x_cursor (display->xdisplay, cursor);
+}
+
+MetaGestureTracker *
+meta_display_get_gesture_tracker (MetaDisplay *display)
+{
+  return display->gesture_tracker;
 }

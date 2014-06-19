@@ -35,6 +35,7 @@
 #include <meta/boxes.h>
 #include <meta/display.h>
 #include "keybindings-private.h"
+#include "gesture-tracker-private.h"
 #include <meta/prefs.h>
 #include <meta/barrier.h>
 #include <clutter/clutter.h>
@@ -253,6 +254,8 @@ struct _MetaDisplay
   /* Managed by compositor.c */
   MetaCompositor *compositor;
 
+  MetaGestureTracker *gesture_tracker;
+
   int composite_event_base;
   int composite_error_base;
   int composite_major_version;
@@ -441,5 +444,7 @@ void meta_display_sanity_check_timestamps (MetaDisplay *display,
                                            guint32      timestamp);
 gboolean meta_display_timestamp_too_old (MetaDisplay *display,
                                          guint32     *timestamp);
+
+MetaGestureTracker * meta_display_get_gesture_tracker (MetaDisplay *display);
 
 #endif
