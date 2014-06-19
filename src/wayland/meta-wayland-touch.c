@@ -444,9 +444,8 @@ touch_info_free (MetaWaylandTouchInfo *touch_info)
   g_free (touch_info);
 }
 
-static void
-touch_handle_cancel_event (MetaWaylandTouch      *touch,
-                           struct libinput_event *event)
+void
+meta_wayland_touch_cancel (MetaWaylandTouch *touch)
 {
   GList *surfaces, *s;
 
@@ -495,7 +494,7 @@ evdev_filter_func (struct libinput_event *event,
        * which are not so useful when sending a global signal as the protocol
        * requires.
        */
-      touch_handle_cancel_event (touch, event);
+      meta_wayland_touch_cancel (touch);
       break;
     default:
       break;

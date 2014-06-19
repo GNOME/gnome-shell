@@ -58,5 +58,7 @@ void meta_wayland_touch_create_new_resource (MetaWaylandTouch   *touch,
                                              struct wl_client   *client,
                                              struct wl_resource *seat_resource,
                                              uint32_t            id);
+void meta_wayland_touch_cancel (MetaWaylandTouch *touch);
+
 
 #endif /* META_WAYLAND_TOUCH_H */
