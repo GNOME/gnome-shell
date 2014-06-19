@@ -120,7 +120,9 @@ meta_display_handle_event (MetaDisplay        *display,
   display->current_time = event->any.time;
 
   if (window && !window->override_redirect &&
-      (event->type == CLUTTER_KEY_PRESS || event->type == CLUTTER_BUTTON_PRESS))
+      (event->type == CLUTTER_KEY_PRESS ||
+       event->type == CLUTTER_BUTTON_PRESS ||
+       event->type == CLUTTER_TOUCH_BEGIN))
     {
       if (CurrentTime == display->current_time)
         {
