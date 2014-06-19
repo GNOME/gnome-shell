@@ -106,6 +106,7 @@ meta_display_handle_event (MetaDisplay        *display,
   MetaWindow *window;
   gboolean bypass_clutter = FALSE, bypass_wayland = FALSE;
   MetaWaylandCompositor *compositor = NULL;
+  MetaGestureTracker *tracker;
 
   if (meta_is_wayland_compositor ())
     {
@@ -139,6 +140,15 @@ meta_display_handle_event (MetaDisplay        *display,
           meta_window_set_user_time (window, display->current_time);
           meta_display_sanity_check_timestamps (display, display->current_time);
         }
+    }
+
+  tracker = meta_display_get_gesture_tracker (display);
+
+  if (meta_gesture_tracker_handle_event (tracker, event))
+    {
+      bypass_wayland = TRUE;
+      bypass_clutter = meta_gesture_tracker_consumes_event (tracker, event);
+      goto out;
     }
 
   if (display->grab_window == window &&
