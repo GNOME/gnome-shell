@@ -147,13 +147,6 @@ maybe_redirect_mouse_event (XEvent *xevent)
   gmanager = gdk_display_get_device_manager (gdisplay);
   gdevice = gdk_x11_device_manager_lookup (gmanager, META_VIRTUAL_CORE_POINTER_ID);
 
-  /* If GDK already thinks it has a grab, we better let it see events; this
-   * is the menu-navigation case and events need to get sent to the appropriate
-   * (client-side) subwindow for individual menu items.
-   */
-  if (gdk_display_device_is_grabbed (gdisplay, gdevice))
-    return FALSE;
-
   switch (xev->evtype)
     {
     case XI_TouchBegin:
