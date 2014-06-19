@@ -51,6 +51,7 @@ struct _MetaBackendX11Private
   int xinput_opcode;
   int xinput_event_base;
   int xinput_error_base;
+  Time latest_evtime;
 };
 typedef struct _MetaBackendX11Private MetaBackendX11Private;
 
@@ -71,6 +72,7 @@ static void
 translate_device_event (MetaBackendX11 *x11,
                         XIDeviceEvent  *device_event)
 {
+  MetaBackendX11Private *priv = meta_backend_x11_get_instance_private (x11);
   Window stage_window = meta_backend_x11_get_xwindow (x11);
 
   if (device_event->event != stage_window)
@@ -87,6 +89,21 @@ translate_device_event (MetaBackendX11 *x11,
        * as well... */
       device_event->event_x = device_event->root_x;
       device_event->event_y = device_event->root_y;
+    }
+
+  if (!device_event->send_event && device_event->time != CurrentTime)
+    {
+      if (device_event->time < priv->latest_evtime)
+        {
+          /* Emulated pointer events received after XIRejectTouch is received
+           * on a passive touch grab will contain older timestamps, update those
+           * so we dont get InvalidTime at grabs.
+           */
+          device_event->time = priv->latest_evtime;
+        }
+
+      /* Update the internal latest evtime, for any possible later use */
+      priv->latest_evtime = device_event->time;
     }
 }
 
@@ -312,6 +329,9 @@ meta_backend_x11_grab_device (MetaBackend *backend,
   unsigned char mask_bits[XIMaskLen (XI_LASTEVENT)] = { 0 };
   XIEventMask mask = { XIAllMasterDevices, sizeof (mask_bits), mask_bits };
   int ret;
+
+  if (timestamp != CurrentTime)
+    timestamp = MAX (timestamp, priv->latest_evtime);
 
   XISetMask (mask.mask, XI_ButtonPress);
   XISetMask (mask.mask, XI_ButtonRelease);
