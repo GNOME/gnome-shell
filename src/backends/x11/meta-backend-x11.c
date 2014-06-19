@@ -117,6 +117,9 @@ maybe_spoof_event_as_stage_event (MetaBackendX11 *x11,
         case XI_ButtonRelease:
         case XI_KeyPress:
         case XI_KeyRelease:
+        case XI_TouchBegin:
+        case XI_TouchUpdate:
+        case XI_TouchEnd:
           translate_device_event (x11, (XIDeviceEvent *) input_event);
           break;
         default:
