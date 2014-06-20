@@ -480,7 +480,11 @@ const Calendar = new Lang.Class({
             let customDayAbbrev = _getCalendarDayAbbreviation(iter.getDay());
             let label = new St.Label({ style_class: 'calendar-day-base calendar-day-heading',
                                        text: customDayAbbrev });
-            let col = offsetCols + (7 + iter.getDay() - this._weekStart) % 7;
+            let col;
+            if (this.actor.get_text_direction() == Clutter.TextDirection.RTL)
+                col = 6 - (7 + iter.getDay() - this._weekStart) % 7;
+            else
+                col = offsetCols + (7 + iter.getDay() - this._weekStart) % 7;
             layout.pack(label, col, 1);
             iter.setTime(iter.getTime() + MSECS_IN_DAY);
         }
@@ -648,7 +652,11 @@ const Calendar = new Lang.Class({
             button.style_class = styleClass;
 
             let offsetCols = this._useWeekdate ? 1 : 0;
-            let col = offsetCols + (7 + iter.getDay() - this._weekStart) % 7;
+            let col;
+            if (rtl)
+                col = 6 - (7 + iter.getDay() - this._weekStart) % 7;
+            else
+                col = offsetCols + (7 + iter.getDay() - this._weekStart) % 7;
             layout.pack(button, col, row);
 
             this._buttons.push(button);
@@ -656,7 +664,7 @@ const Calendar = new Lang.Class({
             if (this._useWeekdate && iter.getDay() == 4) {
                 let label = new St.Label({ text: _getCalendarWeekForDate(iter).toString(),
                                            style_class: 'calendar-day-base calendar-week-number'});
-                layout.pack(label, 0, row);
+                layout.pack(label, rtl ? 7 : 0, row);
             }
 
             iter.setTime(iter.getTime() + MSECS_IN_DAY);
