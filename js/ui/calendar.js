@@ -734,8 +734,10 @@ const EventsList = new Lang.Class({
         dayLabel.clutter_text.line_wrap = false;
         dayLabel.clutter_text.ellipsize = false;
 
+        let rtl = this.actor.get_text_direction() == Clutter.TextDirection.RTL;
+
         let layout = this.actor.layout_manager;
-        layout.pack(dayLabel, 0, index);
+        layout.pack(dayLabel, rtl ? 2 : 0, index);
         layout.child_set(dayLabel, { x_expand: false,
                                      x_align: Clutter.TableAlignment.END,
                                      y_align: Clutter.TableAlignment.START });
@@ -756,7 +758,7 @@ const EventsList = new Lang.Class({
         titleLabel.clutter_text.line_wrap = true;
         titleLabel.clutter_text.ellipsize = false;
 
-        layout.pack(titleLabel, 2, index);
+        layout.pack(titleLabel, rtl ? 0 : 2, index);
         layout.child_set(titleLabel, { x_expand: true });
     },
 
