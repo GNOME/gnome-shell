@@ -77,6 +77,7 @@ const NetworkSecretDialog = new Lang.Class({
                                           layout_manager: layout });
         layout.hookup_style(secretTable);
 
+        let rtl = secretTable.get_text_direction() == Clutter.TextDirection.RTL;
         let initialFocusSet = false;
         let pos = 0;
         for (let i = 0; i < this._content.secrets.length; i++) {
@@ -116,10 +117,15 @@ const NetworkSecretDialog = new Lang.Class({
             } else
                 secret.valid = true;
 
-            layout.pack(label, 0, pos);
+            if (rtl) {
+                layout.pack(secret.entry, 0, pos);
+                layout.pack(label, 1, pos);
+            } else {
+                layout.pack(label, 0, pos);
+                layout.pack(secret.entry, 1, pos);
+            }
             layout.child_set(label, { x_expand: false, y_fill: false,
                                       x_align: Clutter.TableAlignment.START });
-            layout.pack(secret.entry, 1, pos);
             pos++;
 
             if (secret.password)
