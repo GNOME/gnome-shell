@@ -953,6 +953,7 @@ const FolderView = new Lang.Class({
         let subSize = Math.floor(FOLDER_SUBICON_FRACTION * size);
 
         let numItems = this._allItems.length;
+        let rtl = icon.get_text_direction() == Clutter.TextDirection.RTL;
         for (let i = 0; i < 4; i++) {
             let bin;
             if (i < numItems) {
@@ -961,7 +962,7 @@ const FolderView = new Lang.Class({
             } else {
                 bin = new St.Bin({ width: subSize, height: subSize });
             }
-            layout.pack(bin, i % 2, Math.floor(i / 2));
+            layout.pack(bin, rtl ? (i + 1) % 2 : i % 2, Math.floor(i / 2));
         }
 
         return icon;
