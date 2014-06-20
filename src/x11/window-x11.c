@@ -3271,7 +3271,7 @@ meta_window_x11_configure_notify (MetaWindow      *window,
   priv->client_rect = window->rect;
   window->buffer_rect = window->rect;
 
-  meta_window_update_monitor (window);
+  meta_window_update_monitor (window, FALSE);
 
   /* Whether an override-redirect window is considered fullscreen depends
    * on its geometry.

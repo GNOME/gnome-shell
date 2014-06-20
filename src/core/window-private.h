@@ -690,7 +690,8 @@ void meta_window_activate_full (MetaWindow     *window,
 
 gboolean meta_window_is_client_decorated (MetaWindow *window);
 
-void meta_window_update_monitor (MetaWindow *window);
+void meta_window_update_monitor (MetaWindow *window,
+                                 gboolean    user_op);
 
 void meta_window_set_urgent (MetaWindow *window,
                              gboolean    urgent);

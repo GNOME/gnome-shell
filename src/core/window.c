@@ -3579,7 +3579,7 @@ meta_window_update_for_monitors_changed (MetaWindow *window)
 
   if (window->override_redirect)
     {
-      meta_window_update_monitor (window);
+      meta_window_update_monitor (window, FALSE);
       return;
     }
 
@@ -3612,7 +3612,8 @@ meta_window_update_for_monitors_changed (MetaWindow *window)
 }
 
 void
-meta_window_update_monitor (MetaWindow *window)
+meta_window_update_monitor (MetaWindow *window,
+                            gboolean    user_op)
 {
   const MetaMonitorInfo *old;
 
@@ -3622,22 +3623,17 @@ meta_window_update_monitor (MetaWindow *window)
     {
       meta_window_update_on_all_workspaces (window);
 
-      /* If workspaces only on primary and we moved back to primary, ensure that the
-       * window is now in that workspace. We do this because while the window is on a
-       * non-primary monitor it is always visible, so it would be very jarring if it
-       * disappeared when it crossed the monitor border.
+      /* If workspaces only on primary and we moved back to primary due to a user action,
+       * ensure that the window is now in that workspace. We do this because while
+       * the window is on a non-primary monitor it is always visible, so it would be
+       * very jarring if it disappeared when it crossed the monitor border.
        * The one time we want it to both change to the primary monitor and a non-active
        * workspace is when dropping the window on some other workspace thumbnail directly.
        * That should be handled by explicitly moving the window before changing the
-       * workspace
-       * Don't do this if old == NULL, because thats what happens when starting up, and
-       * we don't want to move all windows around from a previous WM instance. Nor do
-       * we want it when moving from one primary monitor to another (can happen during
-       * screen reconfiguration.
+       * workspace.
        */
-      if (meta_prefs_get_workspaces_only_on_primary () &&
+      if (meta_prefs_get_workspaces_only_on_primary () && user_op &&
           meta_window_is_on_primary_monitor (window)  &&
-          old != NULL && !old->is_primary &&
           window->screen->active_workspace != window->workspace)
         meta_window_change_workspace (window, window->screen->active_workspace);
 
@@ -3648,6 +3644,7 @@ meta_window_update_monitor (MetaWindow *window)
       /* If we're changing monitors, we need to update the has_maximize_func flag,
        * as the working area has changed. */
       meta_window_recalc_features (window);
+      meta_window_queue (window, META_QUEUE_CALC_SHOWING);
     }
 }
 
@@ -3764,7 +3761,7 @@ meta_window_move_resize_internal (MetaWindow          *window,
 
   old_output_id = window->monitor->output_id;
 
-  meta_window_update_monitor (window);
+  meta_window_update_monitor (window, flags & META_IS_USER_ACTION);
 
   if (old_output_id != window->monitor->output_id &&
       flags & META_IS_MOVE_ACTION && flags & META_IS_USER_ACTION)
