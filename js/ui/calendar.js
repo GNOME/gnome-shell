@@ -348,7 +348,7 @@ var Calendar = GObject.registerClass({
 
         super._init({
             style_class: 'calendar',
-            layout_manager: new Clutter.TableLayout(),
+            layout_manager: new Clutter.GridLayout(),
             reactive: true
         });
 
@@ -394,8 +394,7 @@ var Calendar = GObject.registerClass({
 
         // Top line of the calendar '<| September 2009 |>'
         this._topBox = new St.BoxLayout();
-        layout.pack(this._topBox, 0, 0);
-        layout.set_span(this._topBox, offsetCols + 7, 1);
+        layout.attach(this._topBox, 0, 0, offsetCols + 7, 1);
 
         this._backButton = new St.Button({ style_class: 'calendar-change-month-back pager-button',
                                            accessible_name: _("Previous month"),
@@ -440,7 +439,7 @@ var Calendar = GObject.registerClass({
                 col = 6 - (7 + iter.getDay() - this._weekStart) % 7;
             else
                 col = offsetCols + (7 + iter.getDay() - this._weekStart) % 7;
-            layout.pack(label, col, 1);
+            layout.attach(label, col, 1, 1, 1);
             iter.setTime(iter.getTime() + MSECS_IN_DAY);
         }
 
@@ -611,7 +610,7 @@ var Calendar = GObject.registerClass({
                 col = 6 - (7 + iter.getDay() - this._weekStart) % 7;
             else
                 col = offsetCols + (7 + iter.getDay() - this._weekStart) % 7;
-            layout.pack(button, col, row);
+            layout.attach(button, col, row, 1, 1);
 
             this._buttons.push(button);
 
@@ -621,7 +620,7 @@ var Calendar = GObject.registerClass({
                                            can_focus: true });
                 let weekFormat = Shell.util_translate_time_string(N_("Week %V"));
                 label.accessible_name = iter.toLocaleFormat(weekFormat);
-                layout.pack(label, rtl ? 7 : 0, row);
+                layout.attach(label, rtl ? 7 : 0, row, 1, 1);
             }
 
             iter.setTime(iter.getTime() + MSECS_IN_DAY);
