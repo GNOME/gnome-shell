@@ -1580,9 +1580,8 @@ meta_frames_destroy_event           (GtkWidget           *widget,
 }
 
 
-static void
-clip_region_to_visible_frame_border (cairo_region_t *region,
-                                     MetaUIFrame    *frame)
+static cairo_region_t *
+get_visible_frame_border_region (MetaUIFrame *frame)
 {
   MetaRectangle frame_rect;
   cairo_rectangle_int_t area;
@@ -1620,9 +1619,7 @@ clip_region_to_visible_frame_border (cairo_region_t *region,
 
   /* Visible frame border */
   cairo_region_subtract_rectangle (frame_border, &area);
-  cairo_region_intersect (region, frame_border);
-
-  cairo_region_destroy (frame_border);
+  return frame_border;
 }
 
 #define TAU (2*M_PI)
@@ -1744,28 +1741,19 @@ meta_frames_draw (GtkWidget *widget,
 {
   MetaUIFrame *frame;
   MetaFrames *frames;
-  cairo_rectangle_int_t clip;
   cairo_region_t *region;
 
   frames = META_FRAMES (widget);
-  gdk_cairo_get_clip_rectangle (cr, &clip);
 
   frame = find_frame_to_draw (frames, cr);
   if (frame == NULL)
     return FALSE;
 
-  region = cairo_region_create_rectangle (&clip);
-  clip_region_to_visible_frame_border (region, frame);
-
-  if (cairo_region_is_empty (region))
-    goto out;
-
+  region = get_visible_frame_border_region (frame);
   gdk_cairo_region (cr, region);
   cairo_clip (cr);
 
   meta_frames_paint (frames, frame, cr);
-
- out:
   cairo_region_destroy (region);
 
   return TRUE;
