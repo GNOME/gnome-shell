@@ -1581,28 +1581,6 @@ meta_frames_destroy_event           (GtkWidget           *widget,
 
 
 static void
-setup_bg_cr (cairo_t *cr, GdkWindow *window, int x_offset, int y_offset)
-{
-  GdkWindow *parent = gdk_window_get_parent (window);
-  cairo_pattern_t *bg_pattern;
-
-  bg_pattern = gdk_window_get_background_pattern (window);
-  if (bg_pattern == NULL && parent)
-    {
-      gint window_x, window_y;
-
-      gdk_window_get_position (window, &window_x, &window_y);
-      setup_bg_cr (cr, parent, x_offset + window_x, y_offset + window_y);
-    }
-  else if (bg_pattern)
-    {
-      cairo_translate (cr, - x_offset, - y_offset);
-      cairo_set_source (cr, bg_pattern);
-      cairo_translate (cr, x_offset, y_offset);
-    }
-}
-
-static void
 clip_region_to_visible_frame_border (cairo_region_t *region,
                                      MetaUIFrame    *frame)
 {
@@ -1784,11 +1762,6 @@ meta_frames_draw (GtkWidget *widget,
 
   gdk_cairo_region (cr, region);
   cairo_clip (cr);
-
-  cairo_save (cr);
-  setup_bg_cr (cr, frame->window, 0, 0);
-  cairo_paint (cr);
-  cairo_restore (cr);
 
   meta_frames_paint (frames, frame, cr);
 
