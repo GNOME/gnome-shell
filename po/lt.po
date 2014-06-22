@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-06-02 19:26+0000\n"
-"PO-Revision-Date: 2014-06-02 23:35+0300\n"
+"POT-Creation-Date: 2014-06-22 07:30+0000\n"
+"PO-Revision-Date: 2014-06-22 15:56+0300\n"
 "Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lietuvių <gnome-lt@lists.akl.lt>\n"
 "Language: lt\n"
@@ -126,18 +126,26 @@ msgstr ""
 "srityje."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:9
+msgid "App Picker View"
+msgstr "Programos pasirinkimo vaizdas"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:10
+msgid "Index of the currently selected view in the application picker."
+msgstr "Šiuo metu pasirinkto vaizdo programų vaizde indeksas."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:11
 msgid "History for command (Alt-F2) dialog"
 msgstr "Komandų (Alt-F2) dialogo retrospektyva"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:10
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:12
 msgid "History for the looking glass dialog"
 msgstr "Didinamojo stiklo dialogo retrospektyva"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:11
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:13
 msgid "Always show the 'Log out' menu item in the user menu."
 msgstr "Visada rodyti naudotojo meniu punktą „Atsijungti“."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:12
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:14
 msgid ""
 "This key overrides the automatic hiding of the 'Log out' menu item in single-"
 "user, single-session situations."
@@ -145,13 +153,13 @@ msgstr ""
 "Šis raktas perrašo automatinį meniu punkto „Atsijungti“ slėpimą vieno "
 "naudotojo, vieno seanso situacijose."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:13
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:15
 msgid ""
 "Whether to remember password for mounting encrypted or remote filesystems"
 msgstr ""
 "Ar atsiminti slaptažodį prijungiant šifruotas ar nutolusias failų sistemas"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:14
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:16
 msgid ""
 "The shell will request a password when an encrypted device or a remote "
 "filesystem is mounted. If the password can be saved for future use a "
@@ -163,70 +171,77 @@ msgstr ""
 "žymimasis langelis „Įsiminti slaptažodį“ bus rodomas. Šis raktas nustato "
 "numatytąją žymimojo langelio būseną."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:15
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:17
 msgid "Show the week date in the calendar"
 msgstr "Rodyti savaitės dienas kalendoriuje"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:16
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:18
 msgid "If true, display the ISO week date in the calendar."
 msgstr "Jeigu reikšmė teigiama, kalendoriuje rodyti ISO savaičių datą."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:19
 msgid "Keybinding to open the application menu"
 msgstr "Klavišų susiejimas, kuriuo atveriamas programų meniu"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:20
 msgid "Keybinding to open the application menu."
 msgstr "Klavišų susiejimas, kuriuo atveriamas programų meniu."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:21
 msgid "Keybinding to open the \"Show Applications\" view"
 msgstr "Klavišų susiejimas, kuriuo atveriamas programų paleidimo vaizdas"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:22
 msgid ""
 "Keybinding to open the \"Show Applications\" view of the Activities Overview."
 msgstr ""
 "Klavišų susiejimas, kuriuo atveriamas „Programų paleidimas“ veiklų "
 "apžvalgoje."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:23
 msgid "Keybinding to open the overview"
 msgstr "Klavišų susiejimas, kuriuo atveriama apžvalga"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:22
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:24
 msgid "Keybinding to open the Activities Overview."
 msgstr "Klavišų susiejimas, kuriuo atveriama veiklų apžvalga."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:23
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:25
 msgid "Keybinding to toggle the visibility of the message tray"
 msgstr "Klavišų susiejimas pranešimų juostos matomumui perjungti"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:24
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:26
 msgid "Keybinding to toggle the visibility of the message tray."
 msgstr "Klavišų susiejimas pranešimų juostos matomumui perjungti."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:25
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:27
 msgid "Keybinding to focus the active notification"
 msgstr "Klavišų susiejimas, kuriuo fokusuojamas aktyvus pranešimas"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:26
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:28
 msgid "Keybinding to focus the active notification."
 msgstr "Klavišų susiejimas, kuriuo fokusuojamas aktyvus pranešimas."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:27
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:29
+msgid ""
+"Keybinding that pauses and resumes all running tweens, for debugging purposes"
+msgstr ""
+"Klavišų susiejimas, kuris sustabdo ir pratęsia visus veikiančius elementus, "
+"derinimui"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:30
 msgid "Which keyboard to use"
 msgstr "Kurią klaviatūrą naudoti"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:28
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:31
 msgid "The type of keyboard to use."
 msgstr "Naudotinas klaviatūros tipas."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:29
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:32
 msgid "The maximum accuracy level of location."
 msgstr "Didžiausias vietos tikslumo lygis."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:30
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:33
 msgid ""
 "Configures the maximum level of location accuracy applications are allowed "
 "to see. Valid options are 'off' (disable location tracking), 'country', "
@@ -242,11 +257,23 @@ msgstr ""
 "nustatyti naudotojo vietą pačios naudodamos tinklo išteklius (nors tai "
 "suteikia geriausiu atveju gatvės lygmens tikslumą)."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:31
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:34
+msgid "Limit switcher to current workspace."
+msgstr "Apriboti perjungėją dabartiniu darbalaukiu"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:35
+msgid ""
+"If true, only applications that have windows on the current workspace are "
+"shown in the switcher. Otherwise, all applications are included."
+msgstr ""
+"Jei teigiama, perjungimo lange bus rodomas tik programos, turinčios langų "
+"dabartiniame darbalaukyje. Priešingu atveju įtraukiamos visos programos."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:36
 msgid "The application icon mode."
 msgstr "Programos piktogramos veiksena."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:32
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:37
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-"
@@ -256,28 +283,36 @@ msgstr ""
 "„thumbnail-only“ (rodo lango miniatiūrą), „app-icon-only“ (rodo tik "
 "programos piktogramą) arba „both“ (abu)."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:33
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:38
+msgid ""
+"If true, only windows from the current workspace are shown in the switcher. "
+"Otherwise, all windows are included."
+msgstr ""
+"Jei teigiama, perjungimo lange rodomi tik langai iš dabartinio darbalaukio. "
+"Priešingu atveju įtraukiami visi langai."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:39
 msgid "Attach modal dialog to the parent window"
 msgstr "Prikabinti modalinį dialogą prie tėvinio lango"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:34
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:40
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
 msgstr "Šis raktas perrašo org.gnome.mutter raktą, kai vykdoma GNOME Shell."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:35
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:41
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr "Įjungti kraštų išplėtimą, kai langai numetami ekrano kraštuose"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:36
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:42
 msgid "Workspaces are managed dynamically"
 msgstr "Darbalaukiai yra valdomi dinamiškai"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:37
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:43
 msgid "Workspaces only on primary monitor"
 msgstr "Darbalaukiai tik pagrindiniame monitoriuje"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:38
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:44
 msgid "Delay focus changes in mouse mode until the pointer stops moving"
 msgstr "Atidėti fokuso pakeitimus pelei iki žymiklis nustos judėti"
 
@@ -287,7 +322,6 @@ msgid "There was an error loading the preferences dialog for %s:"
 msgstr "Kilo klaida įkeliant %s nustatymų dialogą:"
 
 #: ../js/extensionPrefs/main.js:157
-#| msgid "Configure GNOME Shell Extensions"
 msgid "GNOME Shell Extensions"
 msgstr "GNOME Shell plėtiniai"
 
@@ -355,31 +389,31 @@ msgstr "Nepavyko perskaityti komandos:"
 msgid "Execution of “%s” failed:"
 msgstr "Nepavyko įvykdyti „%s“:"
 
-#: ../js/ui/appDisplay.js:640
+#: ../js/ui/appDisplay.js:641
 msgid "Frequently used applications will appear here"
 msgstr "Čia bus matomos dažnai naudojamos programos"
 
-#: ../js/ui/appDisplay.js:751
+#: ../js/ui/appDisplay.js:752
 msgid "Frequent"
 msgstr "Dažnai naudojamos"
 
-#: ../js/ui/appDisplay.js:758
+#: ../js/ui/appDisplay.js:759
 msgid "All"
 msgstr "Visos"
 
-#: ../js/ui/appDisplay.js:1571
+#: ../js/ui/appDisplay.js:1569
 msgid "New Window"
 msgstr "Naujas langas"
 
-#: ../js/ui/appDisplay.js:1593 ../js/ui/dash.js:285
+#: ../js/ui/appDisplay.js:1591 ../js/ui/dash.js:285
 msgid "Remove from Favorites"
 msgstr "Pašalinti iš mėgstamų"
 
-#: ../js/ui/appDisplay.js:1599
+#: ../js/ui/appDisplay.js:1597
 msgid "Add to Favorites"
 msgstr "Pridėti prie mėgstamų"
 
-#: ../js/ui/appDisplay.js:1608
+#: ../js/ui/appDisplay.js:1606
 msgid "Show Details"
 msgstr "Rodyti detalią informaciją"
 
@@ -968,22 +1002,22 @@ msgstr "Paleisti programas"
 msgid "Dash"
 msgstr "Paleidimo sritis"
 
-#: ../js/ui/dateMenu.js:97
+#: ../js/ui/dateMenu.js:96
 msgid "Open Calendar"
 msgstr "Atverti kalendorių"
 
-#: ../js/ui/dateMenu.js:101
+#: ../js/ui/dateMenu.js:100
 msgid "Open Clocks"
 msgstr "Atverti laikrodžius"
 
-#: ../js/ui/dateMenu.js:108
+#: ../js/ui/dateMenu.js:107
 msgid "Date & Time Settings"
 msgstr "Datos ir laiko nustatymai"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #. */
-#: ../js/ui/dateMenu.js:205
+#: ../js/ui/dateMenu.js:204
 msgid "%A %B %e, %Y"
 msgstr "%A, %Y m. %B %d d."
 
@@ -1188,39 +1222,39 @@ msgstr "Žiūrėti šaltinį"
 msgid "Web Page"
 msgstr "Tinklalapis"
 
-#: ../js/ui/messageTray.js:1326
+#: ../js/ui/messageTray.js:1325
 msgid "Open"
 msgstr "Atverti"
 
-#: ../js/ui/messageTray.js:1333
+#: ../js/ui/messageTray.js:1332
 msgid "Remove"
 msgstr "Pašalinti"
 
-#: ../js/ui/messageTray.js:1630
+#: ../js/ui/messageTray.js:1629
 msgid "Notifications"
 msgstr "Pranešimai"
 
-#: ../js/ui/messageTray.js:1637
+#: ../js/ui/messageTray.js:1636
 msgid "Clear Messages"
 msgstr "Išvalyti pranešimus"
 
-#: ../js/ui/messageTray.js:1656
+#: ../js/ui/messageTray.js:1655
 msgid "Notification Settings"
 msgstr "Pranešimų nustatymai"
 
-#: ../js/ui/messageTray.js:1709
+#: ../js/ui/messageTray.js:1708
 msgid "Tray Menu"
 msgstr "Dėklo meniu"
 
-#: ../js/ui/messageTray.js:1926
+#: ../js/ui/messageTray.js:1925
 msgid "No Messages"
 msgstr "Nėra pranešimų"
 
-#: ../js/ui/messageTray.js:1964
+#: ../js/ui/messageTray.js:1963
 msgid "Message Tray"
 msgstr "Pranešimų juosta"
 
-#: ../js/ui/messageTray.js:2967
+#: ../js/ui/messageTray.js:2966
 msgid "System Information"
 msgstr "Sistemos informacija"
 
@@ -1771,19 +1805,19 @@ msgstr[2] "%u įvesčių"
 msgid "System Sounds"
 msgstr "Sistemos garsai"
 
-#: ../src/main.c:349
+#: ../src/main.c:371
 msgid "Print version"
 msgstr "Išvesti versijos numerį"
 
-#: ../src/main.c:355
+#: ../src/main.c:377
 msgid "Mode used by GDM for login screen"
 msgstr "Veiksena, naudojama GDM prisijungimo ekrane"
 
-#: ../src/main.c:361
+#: ../src/main.c:383
 msgid "Use a specific mode, e.g. \"gdm\" for login screen"
 msgstr "Naudoti konkrečią veikseną, pvz., „gdm“ prisijungimo ekranui"
 
-#: ../src/main.c:367
+#: ../src/main.c:389
 msgid "List possible modes"
 msgstr "Išvardinti galimas veiksenas"
 
@@ -1803,4 +1837,3 @@ msgstr "Slaptažodis negali būti tuščias"
 #: ../src/shell-polkit-authentication-agent.c:346
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Naudotojas užvėrė tapatybės patvirtinimo dialogą"
-
