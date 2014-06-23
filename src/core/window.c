@@ -1275,6 +1275,12 @@ meta_window_unmanage (MetaWindow  *window,
       g_list_free (attached_children);
     }
 
+  /* Make sure to only show window on all workspaces if requested, to
+   * not confuse other window managers that may take over
+   */
+  if (window->screen->closing && meta_prefs_get_workspaces_only_on_primary ())
+    meta_window_update_on_all_workspaces (window);
+
   if (window->fullscreen)
     {
       MetaGroup *group;
@@ -1405,6 +1411,7 @@ should_be_on_all_workspaces (MetaWindow *window)
     window->on_all_workspaces_requested ||
     window->override_redirect ||
     (meta_prefs_get_workspaces_only_on_primary () &&
+     !window->unmanaging &&
      !meta_window_is_on_primary_monitor (window));
 }
 
