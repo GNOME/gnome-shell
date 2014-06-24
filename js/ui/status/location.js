@@ -43,7 +43,7 @@ const Indicator = new Lang.Class({
     _init: function() {
         this.parent();
 
-        this._settings = new Gio.Settings({ schema: LOCATION_SCHEMA });
+        this._settings = new Gio.Settings({ schema_id: LOCATION_SCHEMA });
         this._settings.connect('changed::' + MAX_ACCURACY_LEVEL,
                                Lang.bind(this, this._onMaxAccuracyLevelChanged));
 

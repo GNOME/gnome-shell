@@ -946,7 +946,7 @@ const ChatNotification = new Lang.Class({
 
         let format;
 
-        let desktopSettings = new Gio.Settings({ schema: 'org.gnome.desktop.interface' });
+        let desktopSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.interface' });
         let clockFormat = desktopSettings.get_string(CLOCK_FORMAT_KEY);
         let hasAmPm = date.toLocaleFormat('%p') != '';
 

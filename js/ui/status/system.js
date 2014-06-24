@@ -95,11 +95,11 @@ const Indicator = new Lang.Class({
     _init: function() {
         this.parent();
 
-        this._screenSaverSettings = new Gio.Settings({ schema: SCREENSAVER_SCHEMA });
-        this._loginScreenSettings = new Gio.Settings({ schema: LOGIN_SCREEN_SCHEMA });
-        this._lockdownSettings = new Gio.Settings({ schema: LOCKDOWN_SCHEMA });
-        this._privacySettings = new Gio.Settings({ schema: PRIVACY_SCHEMA });
-        this._orientationSettings = new Gio.Settings({ schema: 'org.gnome.settings-daemon.peripherals.touchscreen' });
+        this._screenSaverSettings = new Gio.Settings({ schema_id: SCREENSAVER_SCHEMA });
+        this._loginScreenSettings = new Gio.Settings({ schema_id: LOGIN_SCREEN_SCHEMA });
+        this._lockdownSettings = new Gio.Settings({ schema_id: LOCKDOWN_SCHEMA });
+        this._privacySettings = new Gio.Settings({ schema_id: PRIVACY_SCHEMA });
+        this._orientationSettings = new Gio.Settings({ schema_id: 'org.gnome.settings-daemon.peripherals.touchscreen' });
 
         this._session = new GnomeSession.SessionManager();
         this._loginManager = LoginManager.getLoginManager();

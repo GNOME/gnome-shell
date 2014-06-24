@@ -117,7 +117,7 @@ function loadRemoteSearchProviders(callback) {
         }
     }
 
-    let searchSettings = new Gio.Settings({ schema: Search.SEARCH_PROVIDERS_SCHEMA });
+    let searchSettings = new Gio.Settings({ schema_id: Search.SEARCH_PROVIDERS_SCHEMA });
     if (searchSettings.get_boolean('disable-external')) {
         callback([]);
         return;

@@ -209,7 +209,7 @@ const WorkspaceTracker = new Lang.Class({
         let settings = global.get_overrides_settings();
         if (settings.list_keys().indexOf('dynamic-workspaces') > -1)
             return settings;
-        return new Gio.Settings({ schema: 'org.gnome.mutter' });
+        return new Gio.Settings({ schema_id: 'org.gnome.mutter' });
     },
 
     _checkWorkspaces: function() {
@@ -655,13 +655,13 @@ const WindowManager = new Lang.Class({
                                         Lang.bind(this, this._startA11ySwitcher));
 
         this.addKeybinding('pause-resume-tweens',
-                           new Gio.Settings({ schema: SHELL_KEYBINDINGS_SCHEMA }),
+                           new Gio.Settings({ schema_id: SHELL_KEYBINDINGS_SCHEMA }),
                            Meta.KeyBindingFlags.NONE,
                            Shell.KeyBindingMode.ALL,
                            Lang.bind(this, this._toggleTweens));
 
         this.addKeybinding('open-application-menu',
-                           new Gio.Settings({ schema: SHELL_KEYBINDINGS_SCHEMA }),
+                           new Gio.Settings({ schema_id: SHELL_KEYBINDINGS_SCHEMA }),
                            Meta.KeyBindingFlags.NONE,
                            Shell.KeyBindingMode.NORMAL |
                            Shell.KeyBindingMode.TOPBAR_POPUP,

@@ -371,7 +371,7 @@ const AllView = new Lang.Class({
         Shell.AppSystem.get_default().connect('installed-changed', Lang.bind(this, function() {
             Main.queueDeferredWork(this._redisplayWorkId);
         }));
-        this._folderSettings = new Gio.Settings({ schema: 'org.gnome.desktop.app-folders' });
+        this._folderSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.app-folders' });
         this._folderSettings.connect('changed::folder-children', Lang.bind(this, function() {
             Main.queueDeferredWork(this._redisplayWorkId);
         }));
@@ -741,7 +741,7 @@ const AppDisplay = new Lang.Class({
     Name: 'AppDisplay',
 
     _init: function() {
-        this._privacySettings = new Gio.Settings({ schema: 'org.gnome.desktop.privacy' });
+        this._privacySettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.privacy' });
         this._privacySettings.connect('changed::remember-app-usage',
                                       Lang.bind(this, this._updateFrequentVisibility));
 

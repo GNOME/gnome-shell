@@ -278,7 +278,7 @@ const ExtensionRow = new Lang.Class({
 
         this.uuid = uuid;
 
-        this._settings = new Gio.Settings({ schema: 'org.gnome.shell' });
+        this._settings = new Gio.Settings({ schema_id: 'org.gnome.shell' });
         this._settings.connect('changed::enabled-extensions', Lang.bind(this,
             function() {
                 this._switch.state = this._isEnabled();

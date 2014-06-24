@@ -383,7 +383,7 @@ const Calendar = new Lang.Class({
 
     _init: function() {
         this._weekStart = Shell.util_get_week_start();
-        this._settings = new Gio.Settings({ schema: 'org.gnome.shell.calendar' });
+        this._settings = new Gio.Settings({ schema_id: 'org.gnome.shell.calendar' });
 
         this._settings.connect('changed::' + SHOW_WEEKDATE_KEY, Lang.bind(this, this._onSettingsChange));
         this._useWeekdate = this._settings.get_boolean(SHOW_WEEKDATE_KEY);
@@ -704,7 +704,7 @@ const EventsList = new Lang.Class({
                                      layout_manager: layout });
         layout.hookup_style(this.actor);
         this._date = new Date();
-        this._desktopSettings = new Gio.Settings({ schema: 'org.gnome.desktop.interface' });
+        this._desktopSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.interface' });
         this._desktopSettings.connect('changed', Lang.bind(this, this._update));
         this._weekStart = Shell.util_get_week_start();
     },

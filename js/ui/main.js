@@ -160,7 +160,7 @@ function _initializeUI() {
     layoutManager.init();
     overview.init();
 
-    _a11ySettings = new Gio.Settings({ schema: A11Y_SCHEMA });
+    _a11ySettings = new Gio.Settings({ schema_id: A11Y_SCHEMA });
 
     global.display.connect('overlay-key', Lang.bind(overview, function () {
         if (!_a11ySettings.get_boolean (STICKY_KEYS_ENABLE))

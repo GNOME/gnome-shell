@@ -563,7 +563,7 @@ const ScreenShield = new Lang.Class({
                 this._loginSession.connectSignal('Unlock', Lang.bind(this, function() { this.deactivate(false); }));
             }));
 
-        this._settings = new Gio.Settings({ schema: SCREENSAVER_SCHEMA });
+        this._settings = new Gio.Settings({ schema_id: SCREENSAVER_SCHEMA });
 
         this._isModal = false;
         this._hasLockScreen = false;

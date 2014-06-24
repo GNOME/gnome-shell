@@ -128,7 +128,7 @@ const ShellUserVerifier = new Lang.Class({
 
         this._client = client;
 
-        this._settings = new Gio.Settings({ schema: LOGIN_SCREEN_SCHEMA });
+        this._settings = new Gio.Settings({ schema_id: LOGIN_SCREEN_SCHEMA });
         this._settings.connect('changed',
                                Lang.bind(this, this._updateDefaultService));
         this._updateDefaultService();

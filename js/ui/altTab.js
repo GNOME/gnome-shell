@@ -367,7 +367,7 @@ const WindowSwitcherPopup = new Lang.Class({
 
     _init: function(items) {
         this.parent(items);
-        this._settings = new Gio.Settings({ schema: 'org.gnome.shell.window-switcher' });
+        this._settings = new Gio.Settings({ schema_id: 'org.gnome.shell.window-switcher' });
     },
 
     _getWindowList: function() {
@@ -456,7 +456,7 @@ const AppSwitcher = new Lang.Class({
         this._arrows = [];
 
         let windowTracker = Shell.WindowTracker.get_default();
-        let settings = new Gio.Settings({ schema: 'org.gnome.shell.app-switcher' });
+        let settings = new Gio.Settings({ schema_id: 'org.gnome.shell.app-switcher' });
         let workspace = settings.get_boolean('current-workspace-only') ? global.screen.get_active_workspace()
                                                                        : null;
         let allWindows = global.display.get_tab_list(Meta.TabList.NORMAL, workspace);

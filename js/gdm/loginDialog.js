@@ -382,7 +382,7 @@ const LoginDialog = new Lang.Class({
                                   Lang.bind(this, this._onTimedLoginRequested));
         }
 
-        this._settings = new Gio.Settings({ schema: GdmUtil.LOGIN_SCREEN_SCHEMA });
+        this._settings = new Gio.Settings({ schema_id: GdmUtil.LOGIN_SCREEN_SCHEMA });
 
         this._settings.connect('changed::' + GdmUtil.BANNER_MESSAGE_KEY,
                                Lang.bind(this, this._updateBanner));

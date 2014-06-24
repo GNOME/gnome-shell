@@ -23,7 +23,7 @@ const AutomountManager = new Lang.Class({
     Name: 'AutomountManager',
 
     _init: function() {
-        this._settings = new Gio.Settings({ schema: SETTINGS_SCHEMA });
+        this._settings = new Gio.Settings({ schema_id: SETTINGS_SCHEMA });
         this._volumeQueue = [];
         this._session = new GnomeSession.SessionManager();
         this._session.connectSignal('InhibitorAdded',

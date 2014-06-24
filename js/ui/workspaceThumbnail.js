@@ -665,7 +665,7 @@ const ThumbnailsBox = new Lang.Class({
         Main.overview.connect('window-drag-cancelled',
                               Lang.bind(this, this._onDragCancelled));
 
-        this._settings = new Gio.Settings({ schema: OVERRIDE_SCHEMA });
+        this._settings = new Gio.Settings({ schema_id: OVERRIDE_SCHEMA });
         this._settings.connect('changed::dynamic-workspaces',
             Lang.bind(this, this._updateSwitcherVisibility));
     },

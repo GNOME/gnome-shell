@@ -315,7 +315,7 @@ const NotificationGenericPolicy = new Lang.Class({
 
         this.id = 'generic';
 
-        this._masterSettings = new Gio.Settings({ schema: 'org.gnome.desktop.notifications' });
+        this._masterSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.notifications' });
         this._masterSettings.connect('changed', Lang.bind(this, this._changed));
     },
 
@@ -365,8 +365,8 @@ const NotificationApplicationPolicy = new Lang.Class({
         this.id = id;
         this._canonicalId = this._canonicalizeId(id);
 
-        this._masterSettings = new Gio.Settings({ schema: 'org.gnome.desktop.notifications' });
-        this._settings = new Gio.Settings({ schema: 'org.gnome.desktop.notifications.application',
+        this._masterSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.notifications' });
+        this._settings = new Gio.Settings({ schema_id: 'org.gnome.desktop.notifications.application',
                                             path: '/org/gnome/desktop/notifications/application/' + this._canonicalId + '/' });
 
         this._masterSettings.connect('changed', Lang.bind(this, this._changed));
@@ -1900,14 +1900,14 @@ const MessageTray = new Lang.Class({
         Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
 
         Main.wm.addKeybinding('toggle-message-tray',
-                              new Gio.Settings({ schema: SHELL_KEYBINDINGS_SCHEMA }),
+                              new Gio.Settings({ schema_id: SHELL_KEYBINDINGS_SCHEMA }),
                               Meta.KeyBindingFlags.NONE,
                               Shell.KeyBindingMode.NORMAL |
                               Shell.KeyBindingMode.MESSAGE_TRAY |
                               Shell.KeyBindingMode.OVERVIEW,
                               Lang.bind(this, this.toggleAndNavigate));
         Main.wm.addKeybinding('focus-active-notification',
-                              new Gio.Settings({ schema: SHELL_KEYBINDINGS_SCHEMA }),
+                              new Gio.Settings({ schema_id: SHELL_KEYBINDINGS_SCHEMA }),
                               Meta.KeyBindingFlags.NONE,
                               Shell.KeyBindingMode.NORMAL |
                               Shell.KeyBindingMode.MESSAGE_TRAY |

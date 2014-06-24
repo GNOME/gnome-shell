@@ -62,7 +62,7 @@ const UnlockDialog = new Lang.Class({
 
         this.allowCancel = false;
 
-        let screenSaverSettings = new Gio.Settings({ schema: 'org.gnome.desktop.screensaver' });
+        let screenSaverSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.screensaver' });
         if (screenSaverSettings.get_boolean('user-switch-enabled')) {
             let otherUserLabel = new St.Label({ text: _("Log in as another user"),
                                                 style_class: 'login-dialog-not-listed-label' });

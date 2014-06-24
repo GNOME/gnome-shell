@@ -725,7 +725,7 @@ const BackgroundManager = new Lang.Class({
                                         controlPosition: true,
                                         settingsSchema: BACKGROUND_SCHEMA });
 
-        this._settings = new Gio.Settings({ schema: params.settingsSchema });
+        this._settings = new Gio.Settings({ schema_id: params.settingsSchema });
         this._container = params.container;
         this._layoutManager = params.layoutManager;
         this._effects = params.effects;

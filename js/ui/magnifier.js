@@ -441,8 +441,8 @@ const Magnifier = new Lang.Class({
     },
 
     _settingsInit: function(zoomRegion) {
-        this._appSettings = new Gio.Settings({ schema: APPLICATIONS_SCHEMA });
-        this._settings = new Gio.Settings({ schema: MAGNIFIER_SCHEMA });
+        this._appSettings = new Gio.Settings({ schema_id: APPLICATIONS_SCHEMA });
+        this._settings = new Gio.Settings({ schema_id: MAGNIFIER_SCHEMA });
 
         if (zoomRegion) {
             // Mag factor is accurate to two decimal places.

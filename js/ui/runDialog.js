@@ -38,8 +38,8 @@ const RunDialog = new Lang.Class({
         this.parent({ styleClass: 'run-dialog',
                       destroyOnClose: false });
 
-        this._lockdownSettings = new Gio.Settings({ schema: LOCKDOWN_SCHEMA });
-        this._terminalSettings = new Gio.Settings({ schema: TERMINAL_SCHEMA });
+        this._lockdownSettings = new Gio.Settings({ schema_id: LOCKDOWN_SCHEMA });
+        this._terminalSettings = new Gio.Settings({ schema_id: TERMINAL_SCHEMA });
         global.settings.connect('changed::development-tools', Lang.bind(this, function () {
             this._enableInternalCommands = global.settings.get_boolean('development-tools');
         }));

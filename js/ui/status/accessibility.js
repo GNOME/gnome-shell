@@ -48,7 +48,7 @@ const ATIndicator = new Lang.Class({
 
         this.actor.add_child(this._hbox);
 
-        this._a11ySettings = new Gio.Settings({ schema: A11Y_SCHEMA });
+        this._a11ySettings = new Gio.Settings({ schema_id: A11Y_SCHEMA });
         this._a11ySettings.connect('changed::' + KEY_ALWAYS_SHOW, Lang.bind(this, this._queueSyncMenuVisibility));
 
         let highContrast = this._buildHCItem();
@@ -118,7 +118,7 @@ const ATIndicator = new Lang.Class({
     },
 
     _buildItem: function(string, schema, key) {
-        let settings = new Gio.Settings({ schema: schema });
+        let settings = new Gio.Settings({ schema_id: schema });
         let widget = this._buildItemExtended(string,
             settings.get_boolean(key),
             settings.is_writable(key),
@@ -134,8 +134,8 @@ const ATIndicator = new Lang.Class({
     },
 
     _buildHCItem: function() {
-        let interfaceSettings = new Gio.Settings({ schema: DESKTOP_INTERFACE_SCHEMA });
-        let wmSettings = new Gio.Settings({ schema: WM_SCHEMA });
+        let interfaceSettings = new Gio.Settings({ schema_id: DESKTOP_INTERFACE_SCHEMA });
+        let wmSettings = new Gio.Settings({ schema_id: WM_SCHEMA });
         let gtkTheme = interfaceSettings.get_string(KEY_GTK_THEME);
         let iconTheme = interfaceSettings.get_string(KEY_ICON_THEME);
         let wmTheme = wmSettings.get_string(KEY_WM_THEME);
@@ -186,7 +186,7 @@ const ATIndicator = new Lang.Class({
     },
 
     _buildFontItem: function() {
-        let settings = new Gio.Settings({ schema: DESKTOP_INTERFACE_SCHEMA });
+        let settings = new Gio.Settings({ schema_id: DESKTOP_INTERFACE_SCHEMA });
 
         let factor = settings.get_double(KEY_TEXT_SCALING_FACTOR);
         let initial_setting = (factor > 1.0);

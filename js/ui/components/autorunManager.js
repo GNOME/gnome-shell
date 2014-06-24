@@ -96,7 +96,7 @@ const ContentTypeDiscoverer = new Lang.Class({
 
     _init: function(callback) {
         this._callback = callback;
-        this._settings = new Gio.Settings({ schema: SETTINGS_SCHEMA });
+        this._settings = new Gio.Settings({ schema_id: SETTINGS_SCHEMA });
     },
 
     guessContentTypes: function(mount) {
@@ -441,7 +441,7 @@ const AutorunTransientDispatcher = new Lang.Class({
     _init: function(manager) {
         this._manager = manager;
         this._sources = [];
-        this._settings = new Gio.Settings({ schema: SETTINGS_SCHEMA });
+        this._settings = new Gio.Settings({ schema_id: SETTINGS_SCHEMA });
     },
 
     _getAutorunSettingForType: function(contentType) {
