@@ -1429,7 +1429,7 @@ meta_window_update_on_all_workspaces (MetaWindow *window)
         }
       meta_window_current_workspace_changed (window);
 
-      g_object_notify (G_OBJECT (window), "on-all-workspaces");
+      g_object_notify_by_pspec (G_OBJECT (window), obj_props[PROP_ON_ALL_WORKSPACES]);
     }
 }
 
@@ -2438,7 +2438,7 @@ meta_window_show (MetaWindow *window)
 
   if (notify_demands_attention)
     {
-      g_object_notify (G_OBJECT (window), "demands-attention");
+      g_object_notify_by_pspec (G_OBJECT (window), obj_props[PROP_DEMANDS_ATTENTION]);
       g_signal_emit_by_name (window->display, "window-demands-attention",
                              window);
     }
@@ -2565,7 +2565,8 @@ meta_window_minimize (MetaWindow  *window)
                       "Minimizing window %s which doesn't have the focus\n",
                       window->desc);
         }
-      g_object_notify (G_OBJECT (window), "minimized");
+
+      g_object_notify_by_pspec (G_OBJECT (window), obj_props[PROP_MINIMIZED]);
     }
 }
 
@@ -2583,7 +2584,8 @@ meta_window_unminimize (MetaWindow  *window)
       meta_window_foreach_transient (window,
                                      queue_calc_showing_func,
                                      NULL);
-      g_object_notify (G_OBJECT (window), "minimized");
+
+      g_object_notify_by_pspec (G_OBJECT (window), obj_props[PROP_MINIMIZED]);
     }
 }
 
@@ -2674,8 +2676,8 @@ meta_window_maximize_internal (MetaWindow        *window,
   set_net_wm_state (window);
 
   g_object_freeze_notify (G_OBJECT (window));
-  g_object_notify (G_OBJECT (window), "maximized-horizontally");
-  g_object_notify (G_OBJECT (window), "maximized-vertically");
+  g_object_notify_by_pspec (G_OBJECT (window), obj_props[PROP_MAXIMIZED_HORIZONTALLY]);
+  g_object_notify_by_pspec (G_OBJECT (window), obj_props[PROP_MAXIMIZED_VERTICALLY]);
   g_object_thaw_notify (G_OBJECT (window));
 }
 
@@ -3120,8 +3122,8 @@ meta_window_unmaximize_internal (MetaWindow        *window,
     }
 
   g_object_freeze_notify (G_OBJECT (window));
-  g_object_notify (G_OBJECT (window), "maximized-horizontally");
-  g_object_notify (G_OBJECT (window), "maximized-vertically");
+  g_object_notify_by_pspec (G_OBJECT (window), obj_props[PROP_MAXIMIZED_HORIZONTALLY]);
+  g_object_notify_by_pspec (G_OBJECT (window), obj_props[PROP_MAXIMIZED_VERTICALLY]);
   g_object_thaw_notify (G_OBJECT (window));
 }
 
@@ -3186,7 +3188,7 @@ meta_window_set_above (MetaWindow *window,
   meta_window_update_layer (window);
   set_net_wm_state (window);
   meta_window_frame_size_changed (window);
-  g_object_notify (G_OBJECT (window), "above");
+  g_object_notify_by_pspec (G_OBJECT (window), obj_props[PROP_ABOVE]);
 }
 
 void
@@ -3223,7 +3225,7 @@ meta_window_make_fullscreen_internal (MetaWindow  *window)
       /* For the auto-minimize feature, if we fail to get focus */
       meta_screen_queue_check_fullscreen (window->screen);
 
-      g_object_notify (G_OBJECT (window), "fullscreen");
+      g_object_notify_by_pspec (G_OBJECT (window), obj_props[PROP_FULLSCREEN]);
     }
 }
 
@@ -3275,7 +3277,7 @@ meta_window_unmake_fullscreen (MetaWindow  *window)
 
       meta_window_update_layer (window);
 
-      g_object_notify (G_OBJECT (window), "fullscreen");
+      g_object_notify_by_pspec (G_OBJECT (window), obj_props[PROP_FULLSCREEN]);
     }
 }
 
@@ -3618,7 +3620,6 @@ meta_window_update_monitor (MetaWindow *window,
       /* If we're changing monitors, we need to update the has_maximize_func flag,
        * as the working area has changed. */
       meta_window_recalc_features (window);
-      meta_window_queue (window, META_QUEUE_CALC_SHOWING);
     }
 }
 
@@ -4617,7 +4618,7 @@ meta_window_appears_focused_changed (MetaWindow *window)
   set_net_wm_state (window);
   meta_window_frame_size_changed (window);
 
-  g_object_notify (G_OBJECT (window), "appears-focused");
+  g_object_notify_by_pspec (G_OBJECT (window), obj_props[PROP_APPEARS_FOCUSED]);
 
   if (window->frame)
     meta_frame_queue_draw (window->frame);
@@ -4857,8 +4858,8 @@ meta_window_update_icon_now (MetaWindow *window)
       window->mini_icon = mini_icon;
 
       g_object_freeze_notify (G_OBJECT (window));
-      g_object_notify (G_OBJECT (window), "icon");
-      g_object_notify (G_OBJECT (window), "mini-icon");
+      g_object_notify_by_pspec (G_OBJECT (window), obj_props[PROP_ICON]);
+      g_object_notify_by_pspec (G_OBJECT (window), obj_props[PROP_MINI_ICON]);
       g_object_thaw_notify (G_OBJECT (window));
 
       redraw_icon (window);
@@ -4966,9 +4967,9 @@ meta_window_type_changed (MetaWindow *window)
   g_object_freeze_notify (object);
 
   if (old_decorated != window->decorated)
-    g_object_notify (object, "decorated");
+    g_object_notify_by_pspec (G_OBJECT (window), obj_props[PROP_DECORATED]);
 
-  g_object_notify (object, "window-type");
+  g_object_notify_by_pspec (G_OBJECT (window), obj_props[PROP_WINDOW_TYPE]);
 
   g_object_thaw_notify (object);
 }
@@ -5210,7 +5211,7 @@ meta_window_recalc_features (MetaWindow *window)
               window->skip_pager);
 
   if (old_skip_taskbar != window->skip_taskbar)
-    g_object_notify (G_OBJECT (window), "skip-taskbar");
+    g_object_notify_by_pspec (G_OBJECT (window), obj_props[PROP_SKIP_TASKBAR]);
 
   /* FIXME:
    * Lame workaround for recalc_features being used overzealously.
@@ -5227,7 +5228,7 @@ meta_window_recalc_features (MetaWindow *window)
     set_allowed_actions_hint (window);
 
   if (window->has_resize_func != old_has_resize_func)
-    g_object_notify (G_OBJECT (window), "resizeable");
+    g_object_notify_by_pspec (G_OBJECT (window), obj_props[PROP_RESIZEABLE]);
 
   meta_window_frame_size_changed (window);
 
@@ -6685,7 +6686,7 @@ meta_window_set_user_time (MetaWindow *window,
         window->display->allow_terminal_deactivation = FALSE;
     }
 
-  g_object_notify (G_OBJECT (window), "user-time");
+  g_object_notify_by_pspec (G_OBJECT (window), obj_props[PROP_USER_TIME]);
 }
 
 /**
@@ -6765,7 +6766,7 @@ meta_window_set_demands_attention (MetaWindow *window)
 
       window->wm_state_demands_attention = TRUE;
       set_net_wm_state (window);
-      g_object_notify (G_OBJECT (window), "demands-attention");
+      g_object_notify_by_pspec (G_OBJECT (window), obj_props[PROP_DEMANDS_ATTENTION]);
       g_signal_emit_by_name (window->display, "window-demands-attention",
                              window);
     }
@@ -6790,7 +6791,7 @@ meta_window_unset_demands_attention (MetaWindow *window)
     {
       window->wm_state_demands_attention = FALSE;
       set_net_wm_state (window);
-      g_object_notify (G_OBJECT (window), "demands-attention");
+      g_object_notify_by_pspec (G_OBJECT (window), obj_props[PROP_DEMANDS_ATTENTION]);
     }
 }
 
@@ -7437,7 +7438,7 @@ meta_window_set_title (MetaWindow *window,
 
   meta_window_update_desc (window);
 
-  g_object_notify (G_OBJECT (window), "title");
+  g_object_notify_by_pspec (G_OBJECT (window), obj_props[PROP_TITLE]);
 }
 
 void
@@ -7451,7 +7452,7 @@ meta_window_set_wm_class (MetaWindow *window,
   window->res_name = g_strdup (wm_instance);
   window->res_class = g_strdup (wm_class);
 
-  g_object_notify (G_OBJECT (window), "wm-class");
+  g_object_notify_by_pspec (G_OBJECT (window), obj_props[PROP_WM_CLASS]);
 }
 
 void
@@ -7467,27 +7468,27 @@ meta_window_set_gtk_dbus_properties (MetaWindow *window,
 
   g_free (window->gtk_application_id);
   window->gtk_application_id = g_strdup (application_id);
-  g_object_notify (G_OBJECT (window), "gtk-application-id");
+  g_object_notify_by_pspec (G_OBJECT (window), obj_props[PROP_GTK_APPLICATION_ID]);
 
   g_free (window->gtk_unique_bus_name);
   window->gtk_unique_bus_name = g_strdup (unique_bus_name);
-  g_object_notify (G_OBJECT (window), "gtk-unique-bus-name");
+  g_object_notify_by_pspec (G_OBJECT (window), obj_props[PROP_GTK_UNIQUE_BUS_NAME]);
 
   g_free (window->gtk_app_menu_object_path);
   window->gtk_app_menu_object_path = g_strdup (appmenu_path);
-  g_object_notify (G_OBJECT (window), "gtk-app-menu-object-path");
+  g_object_notify_by_pspec (G_OBJECT (window), obj_props[PROP_GTK_APP_MENU_OBJECT_PATH]);
 
   g_free (window->gtk_menubar_object_path);
   window->gtk_menubar_object_path = g_strdup (menubar_path);
-  g_object_notify (G_OBJECT (window), "gtk-menubar-object-path");
+  g_object_notify_by_pspec (G_OBJECT (window), obj_props[PROP_GTK_MENUBAR_OBJECT_PATH]);
 
   g_free (window->gtk_application_object_path);
   window->gtk_application_object_path = g_strdup (application_object_path);
-  g_object_notify (G_OBJECT (window), "gtk-application-object-path");
+  g_object_notify_by_pspec (G_OBJECT (window), obj_props[PROP_GTK_APPLICATION_OBJECT_PATH]);
 
   g_free (window->gtk_window_object_path);
   window->gtk_window_object_path = g_strdup (window_object_path);
-  g_object_notify (G_OBJECT (window), "gtk-window-object-path");
+  g_object_notify_by_pspec (G_OBJECT (window), obj_props[PROP_GTK_WINDOW_OBJECT_PATH]);
 
   g_object_thaw_notify (G_OBJECT (window));
 }
@@ -8018,7 +8019,7 @@ meta_window_set_urgent (MetaWindow *window,
     return;
 
   window->urgent = urgent;
-  g_object_notify (G_OBJECT (window), "urgent");
+  g_object_notify_by_pspec (G_OBJECT (window), obj_props[PROP_URGENT]);
 
   if (urgent)
     g_signal_emit_by_name (window->display, "window-marked-urgent", window);
