@@ -158,8 +158,12 @@ enum {
   PROP_GTK_WINDOW_OBJECT_PATH,
   PROP_GTK_APP_MENU_OBJECT_PATH,
   PROP_GTK_MENUBAR_OBJECT_PATH,
-  PROP_ON_ALL_WORKSPACES
+  PROP_ON_ALL_WORKSPACES,
+
+  LAST_PROP,
 };
+
+static GParamSpec *obj_props[LAST_PROP];
 
 enum
 {
@@ -393,205 +397,161 @@ meta_window_class_init (MetaWindowClass *klass)
   klass->update_struts = meta_window_real_update_struts;
   klass->get_default_skip_hints = meta_window_real_get_default_skip_hints;
 
-  g_object_class_install_property (object_class,
-                                   PROP_TITLE,
-                                   g_param_spec_string ("title",
-                                                        "Title",
-                                                        "The title of the window",
-                                                        NULL,
-                                                        G_PARAM_READABLE));
-  g_object_class_install_property (object_class,
-                                   PROP_ICON,
-                                   g_param_spec_object ("icon",
-                                                        "Icon",
-                                                        "96 pixel sized icon",
-                                                        GDK_TYPE_PIXBUF,
-                                                        G_PARAM_READABLE));
+  obj_props[PROP_TITLE] =
+    g_param_spec_string ("title",
+                         "Title",
+                         "The title of the window",
+                         NULL,
+                         G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
+  obj_props[PROP_ICON] =
+    g_param_spec_object ("icon",
+                         "Icon",
+                         "96 pixel sized icon",
+                         GDK_TYPE_PIXBUF,
+                         G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
+  obj_props[PROP_MINI_ICON] =
+    g_param_spec_object ("mini-icon",
+                         "Mini Icon",
+                         "16 pixel sized icon",
+                         GDK_TYPE_PIXBUF,
+                         G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
+  obj_props[PROP_DECORATED] =
+    g_param_spec_boolean ("decorated",
+                          "Decorated",
+                          "Whether window is decorated",
+                          TRUE,
+                          G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
+  obj_props[PROP_FULLSCREEN] =
+    g_param_spec_boolean ("fullscreen",
+                          "Fullscreen",
+                          "Whether window is fullscreened",
+                          FALSE,
+                          G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
+  obj_props[PROP_MAXIMIZED_HORIZONTALLY] =
+    g_param_spec_boolean ("maximized-horizontally",
+                          "Maximized horizontally",
+                          "Whether window is maximized horizontally",
+                          FALSE,
+                          G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
+  obj_props[PROP_MAXIMIZED_VERTICALLY] =
+    g_param_spec_boolean ("maximized-vertically",
+                          "Maximizing vertically",
+                          "Whether window is maximized vertically",
+                          FALSE,
+                          G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
+  obj_props[PROP_MINIMIZED] =
+    g_param_spec_boolean ("minimized",
+                          "Minimizing",
+                          "Whether window is minimized",
+                          FALSE,
+                          G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
+  obj_props[PROP_WINDOW_TYPE] =
+    g_param_spec_enum ("window-type",
+                       "Window Type",
+                       "The type of the window",
+                       META_TYPE_WINDOW_TYPE,
+                       META_WINDOW_NORMAL,
+                       G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
+  obj_props[PROP_USER_TIME] =
+    g_param_spec_uint ("user-time",
+                       "User time",
+                       "Timestamp of last user interaction",
+                       0,
+                       G_MAXUINT,
+                       0,
+                       G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
+  obj_props[PROP_DEMANDS_ATTENTION] =
+    g_param_spec_boolean ("demands-attention",
+                          "Demands Attention",
+                          "Whether the window has _NET_WM_STATE_DEMANDS_ATTENTION set",
+                          FALSE,
+                          G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
+  obj_props[PROP_URGENT] =
+    g_param_spec_boolean ("urgent",
+                          "Urgent",
+                          "Whether the urgent flag of WM_HINTS is set",
+                          FALSE,
+                          G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
+  obj_props[PROP_SKIP_TASKBAR] =
+    g_param_spec_boolean ("skip-taskbar",
+                          "Skip taskbar",
+                          "Whether the skip-taskbar flag of WM_HINTS is set",
+                          FALSE,
+                          G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
+  obj_props[PROP_MUTTER_HINTS] =
+    g_param_spec_string ("mutter-hints",
+                         "_MUTTER_HINTS",
+                         "Contents of the _MUTTER_HINTS property of this window",
+                         NULL,
+                         G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
+  obj_props[PROP_APPEARS_FOCUSED] =
+    g_param_spec_boolean ("appears-focused",
+                          "Appears focused",
+                          "Whether the window is drawn as being focused",
+                          FALSE,
+                          G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
+  obj_props[PROP_RESIZEABLE] =
+    g_param_spec_boolean ("resizeable",
+                          "Resizeable",
+                          "Whether the window can be resized",
+                          FALSE,
+                          G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
+  obj_props[PROP_ABOVE] =
+    g_param_spec_boolean ("above",
+                          "Above",
+                          "Whether the window is shown as always-on-top",
+                          FALSE,
+                          G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
+  obj_props[PROP_WM_CLASS] =
+    g_param_spec_string ("wm-class",
+                         "WM_CLASS",
+                         "Contents of the WM_CLASS property of this window",
+                         NULL,
+                         G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
+  obj_props[PROP_GTK_APPLICATION_ID] =
+    g_param_spec_string ("gtk-application-id",
+                         "_GTK_APPLICATION_ID",
+                         "Contents of the _GTK_APPLICATION_ID property of this window",
+                         NULL,
+                         G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
+  obj_props[PROP_GTK_UNIQUE_BUS_NAME] =
+    g_param_spec_string ("gtk-unique-bus-name",
+                         "_GTK_UNIQUE_BUS_NAME",
+                         "Contents of the _GTK_UNIQUE_BUS_NAME property of this window",
+                         NULL,
+                         G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
+  obj_props[PROP_GTK_APPLICATION_OBJECT_PATH] =
+    g_param_spec_string ("gtk-application-object-path",
+                         "_GTK_APPLICATION_OBJECT_PATH",
+                         "Contents of the _GTK_APPLICATION_OBJECT_PATH property of this window",
+                         NULL,
+                         G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
+  obj_props[PROP_GTK_WINDOW_OBJECT_PATH] =
+    g_param_spec_string ("gtk-window-object-path",
+                         "_GTK_WINDOW_OBJECT_PATH",
+                         "Contents of the _GTK_WINDOW_OBJECT_PATH property of this window",
+                         NULL,
+                         G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
+  obj_props[PROP_GTK_APP_MENU_OBJECT_PATH] =
+    g_param_spec_string ("gtk-app-menu-object-path",
+                         "_GTK_APP_MENU_OBJECT_PATH",
+                         "Contents of the _GTK_APP_MENU_OBJECT_PATH property of this window",
+                         NULL,
+                         G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
+  obj_props[PROP_GTK_MENUBAR_OBJECT_PATH] =
+    g_param_spec_string ("gtk-menubar-object-path",
+                         "_GTK_MENUBAR_OBJECT_PATH",
+                         "Contents of the _GTK_MENUBAR_OBJECT_PATH property of this window",
+                         NULL,
+                         G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
+  obj_props[PROP_ON_ALL_WORKSPACES] =
+    g_param_spec_boolean ("on-all-workspaces",
+                          "On all workspaces",
+                          "Whether the window is set to appear on all workspaces",
+                          FALSE,
+                          G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
 
-  g_object_class_install_property (object_class,
-                                   PROP_MINI_ICON,
-                                   g_param_spec_object ("mini-icon",
-                                                        "Mini Icon",
-                                                        "16 pixel sized icon",
-                                                        GDK_TYPE_PIXBUF,
-                                                        G_PARAM_READABLE));
-
-  g_object_class_install_property (object_class,
-                                   PROP_DECORATED,
-                                   g_param_spec_boolean ("decorated",
-                                                         "Decorated",
-                                                         "Whether window is decorated",
-                                                         TRUE,
-                                                         G_PARAM_READABLE));
-
-  g_object_class_install_property (object_class,
-                                   PROP_FULLSCREEN,
-                                   g_param_spec_boolean ("fullscreen",
-                                                         "Fullscreen",
-                                                         "Whether window is fullscreened",
-                                                         FALSE,
-                                                         G_PARAM_READABLE));
-
-  g_object_class_install_property (object_class,
-                                   PROP_MAXIMIZED_HORIZONTALLY,
-                                   g_param_spec_boolean ("maximized-horizontally",
-                                                         "Maximized horizontally",
-                                                         "Whether window is maximized horizontally",
-                                                         FALSE,
-                                                         G_PARAM_READABLE));
-
-  g_object_class_install_property (object_class,
-                                   PROP_MAXIMIZED_VERTICALLY,
-                                   g_param_spec_boolean ("maximized-vertically",
-                                                         "Maximizing vertically",
-                                                         "Whether window is maximized vertically",
-                                                         FALSE,
-                                                         G_PARAM_READABLE));
-  g_object_class_install_property (object_class,
-                                   PROP_MINIMIZED,
-                                   g_param_spec_boolean ("minimized",
-                                                         "Minimizing",
-                                                         "Whether window is minimized",
-                                                         FALSE,
-                                                         G_PARAM_READABLE));
-
-  g_object_class_install_property (object_class,
-                                   PROP_WINDOW_TYPE,
-                                   g_param_spec_enum ("window-type",
-                                                      "Window Type",
-                                                      "The type of the window",
-                                                      META_TYPE_WINDOW_TYPE,
-                                                      META_WINDOW_NORMAL,
-                                                      G_PARAM_READABLE));
-
-  g_object_class_install_property (object_class,
-                                   PROP_USER_TIME,
-                                   g_param_spec_uint ("user-time",
-                                                      "User time",
-                                                      "Timestamp of last user interaction",
-                                                      0,
-                                                      G_MAXUINT,
-                                                      0,
-                                                      G_PARAM_READABLE));
-
-  g_object_class_install_property (object_class,
-                                   PROP_DEMANDS_ATTENTION,
-                                   g_param_spec_boolean ("demands-attention",
-                                                         "Demands Attention",
-                                                         "Whether the window has _NET_WM_STATE_DEMANDS_ATTENTION set",
-                                                         FALSE,
-                                                         G_PARAM_READABLE));
-
-  g_object_class_install_property (object_class,
-                                   PROP_URGENT,
-                                   g_param_spec_boolean ("urgent",
-                                                         "Urgent",
-                                                         "Whether the urgent flag of WM_HINTS is set",
-                                                         FALSE,
-                                                         G_PARAM_READABLE));
-
-  g_object_class_install_property (object_class,
-                                   PROP_SKIP_TASKBAR,
-                                   g_param_spec_boolean ("skip-taskbar",
-                                                         "Skip taskbar",
-                                                         "Whether the skip-taskbar flag of WM_HINTS is set",
-                                                         FALSE,
-                                                         G_PARAM_READABLE));
-
-  g_object_class_install_property (object_class,
-                                   PROP_MUTTER_HINTS,
-                                   g_param_spec_string ("mutter-hints",
-                                                        "_MUTTER_HINTS",
-                                                        "Contents of the _MUTTER_HINTS property of this window",
-                                                        NULL,
-                                                        G_PARAM_READABLE));
-  g_object_class_install_property (object_class,
-                                   PROP_APPEARS_FOCUSED,
-                                   g_param_spec_boolean ("appears-focused",
-                                                         "Appears focused",
-                                                         "Whether the window is drawn as being focused",
-                                                         FALSE,
-                                                         G_PARAM_READABLE));
-
-  g_object_class_install_property (object_class,
-                                   PROP_RESIZEABLE,
-                                   g_param_spec_boolean ("resizeable",
-                                                         "Resizeable",
-                                                         "Whether the window can be resized",
-                                                         FALSE,
-                                                         G_PARAM_READABLE));
-
-  g_object_class_install_property (object_class,
-                                   PROP_ABOVE,
-                                   g_param_spec_boolean ("above",
-                                                         "Above",
-                                                         "Whether the window is shown as always-on-top",
-                                                         FALSE,
-                                                         G_PARAM_READABLE));
-
-  g_object_class_install_property (object_class,
-                                   PROP_WM_CLASS,
-                                   g_param_spec_string ("wm-class",
-                                                        "WM_CLASS",
-                                                        "Contents of the WM_CLASS property of this window",
-                                                        NULL,
-                                                        G_PARAM_READABLE));
-
-  g_object_class_install_property (object_class,
-                                   PROP_GTK_APPLICATION_ID,
-                                   g_param_spec_string ("gtk-application-id",
-                                                        "_GTK_APPLICATION_ID",
-                                                        "Contents of the _GTK_APPLICATION_ID property of this window",
-                                                        NULL,
-                                                        G_PARAM_READABLE));
-
-  g_object_class_install_property (object_class,
-                                   PROP_GTK_UNIQUE_BUS_NAME,
-                                   g_param_spec_string ("gtk-unique-bus-name",
-                                                        "_GTK_UNIQUE_BUS_NAME",
-                                                        "Contents of the _GTK_UNIQUE_BUS_NAME property of this window",
-                                                        NULL,
-                                                        G_PARAM_READABLE));
-
-  g_object_class_install_property (object_class,
-                                   PROP_GTK_APPLICATION_OBJECT_PATH,
-                                   g_param_spec_string ("gtk-application-object-path",
-                                                        "_GTK_APPLICATION_OBJECT_PATH",
-                                                        "Contents of the _GTK_APPLICATION_OBJECT_PATH property of this window",
-                                                        NULL,
-                                                        G_PARAM_READABLE));
-
-  g_object_class_install_property (object_class,
-                                   PROP_GTK_WINDOW_OBJECT_PATH,
-                                   g_param_spec_string ("gtk-window-object-path",
-                                                        "_GTK_WINDOW_OBJECT_PATH",
-                                                        "Contents of the _GTK_WINDOW_OBJECT_PATH property of this window",
-                                                        NULL,
-                                                        G_PARAM_READABLE));
-
-  g_object_class_install_property (object_class,
-                                   PROP_GTK_APP_MENU_OBJECT_PATH,
-                                   g_param_spec_string ("gtk-app-menu-object-path",
-                                                        "_GTK_APP_MENU_OBJECT_PATH",
-                                                        "Contents of the _GTK_APP_MENU_OBJECT_PATH property of this window",
-                                                        NULL,
-                                                        G_PARAM_READABLE));
-
-  g_object_class_install_property (object_class,
-                                   PROP_GTK_MENUBAR_OBJECT_PATH,
-                                   g_param_spec_string ("gtk-menubar-object-path",
-                                                        "_GTK_MENUBAR_OBJECT_PATH",
-                                                        "Contents of the _GTK_MENUBAR_OBJECT_PATH property of this window",
-                                                        NULL,
-                                                        G_PARAM_READABLE));
-
-  g_object_class_install_property (object_class,
-                                   PROP_ON_ALL_WORKSPACES,
-                                   g_param_spec_boolean ("on-all-workspaces",
-                                                         "On all workspaces",
-                                                         "Whether the window is set to appear on all workspaces",
-                                                         FALSE,
-                                                         G_PARAM_READABLE));
+  g_object_class_install_properties (object_class, LAST_PROP, obj_props);
 
   window_signals[WORKSPACE_CHANGED] =
     g_signal_new ("workspace-changed",
