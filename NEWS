@@ -1,3 +1,16 @@
+3.13.3
+======
+* Improve behavior of window buttons with compositor menus [Florian; #731058]
+* Implement touch support on wayland [Carlos; #724442]
+* Update window shadows [Nikita; #731866]
+* Keep windows on the preferred output [Florian; #731760]
+* Misc bug fixes [Jonas, Florian, Jasper; #729601, #730681, #731353, #731332,
+  #730527, #662962]
+
+Contributors:
+  Jonas Ådahl, Nikita Churaev, Carlos Garnacho, Florian Müllner,
+  Jasper St. Pierre, Rico Tzschichholz
+
 3.13.2
 ======
 * Add basic HiDPI support on wayland [Adel; #728902]
