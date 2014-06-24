@@ -1,3 +1,24 @@
+3.13.3
+======
+* Don't allow closing windows with attached modals [Florian; #729886]
+* Fix self-restarting on OpenBSD [Antoine; #727763]
+* Improve behavior of window buttons with compositor menus [Florian; #731058]
+* Work around atspi-related performance regression [Alejandro; #730118]
+* Misc bug fixes and cleanups [Florian, Lan, Jasper, Christophe, Debarshi,
+  Zeeshan; #728271, #726460, #703833, #731118, #731220, #695487, #730527,
+  #728170, #731619, #731738, #731882, #731923]
+
+Contributors:
+  Zeeshan Ali (Khattak), Christophe Fergeau, Adel Gadllah, Antoine Jacoutot,
+  Ting-Wei Lan, Florian Müllner, Alejandro Piñeiro, Debarshi Ray,
+  Carlos Soriano, Jasper St. Pierre, Wim Taymans, Rico Tzschichholz
+
+Translations:
+  Philip Withnall [en_GB], Milo Casagrande [it], Aurimas Černius [lt],
+  Enrico Nicoletto [pt_BR], Kjartan Maraas [nb], Balázs Meskó [hu],
+  Muhammet Kara [tr], Daniel Mustieles [es], Yosef Or Boczko [he],
+  Matej Urbančič [sl], Mattias Eriksson [sv]
+
 3.13.2
 ======
 * Make airplane mode menu insensitive in lock screen [Giovanni; #729224]
