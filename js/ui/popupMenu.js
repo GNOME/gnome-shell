@@ -46,32 +46,27 @@ function isPopupMenuItemVisible(child) {
  * @side Side to which the arrow points.
  */
 function arrowIcon(side) {
-    let rotation;
+    let iconName;
     switch (side) {
         case St.Side.TOP:
-            rotation = 180;
+            iconName = 'pan-up-symbolic';
             break;
         case St.Side.RIGHT:
-            rotation = - 90;
+            iconName = 'pan-end-symbolic';
             break;
         case St.Side.BOTTOM:
-            rotation = 0;
+            iconName = 'pan-down-symbolic';
             break;
         case St.Side.LEFT:
-            rotation = 90;
+            iconName = 'pan-start-symbolic';
             break;
     }
 
-    let gicon = new Gio.FileIcon({ file: Gio.File.new_for_path(global.datadir +
-                                             '/theme/menu-arrow-symbolic.svg') });
-
     let arrow = new St.Icon({ style_class: 'popup-menu-arrow',
-                              gicon: gicon,
+                              icon_name: 'pan-end-symbolic',
                               accessible_role: Atk.Role.ARROW,
                               y_expand: true,
                               y_align: Clutter.ActorAlign.CENTER });
-
-    arrow.rotation_angle_z = rotation;
 
     return arrow;
 }
