@@ -63,7 +63,7 @@ function arrowIcon(side) {
     }
 
     let arrow = new St.Icon({ style_class: 'popup-menu-arrow',
-                              icon_name: 'pan-end-symbolic',
+                              icon_name: iconName,
                               accessible_role: Atk.Role.ARROW,
                               y_expand: true,
                               y_align: Clutter.ActorAlign.CENTER });
