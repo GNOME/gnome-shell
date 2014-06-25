@@ -1105,7 +1105,7 @@ process_device_event (ClutterDeviceManagerEvdev *manager_evdev,
         time = libinput_event_keyboard_get_time (key_event);
         key = libinput_event_keyboard_get_key (key_event);
         key_state = libinput_event_keyboard_get_key_state (key_event) ==
-                    LIBINPUT_KEYBOARD_KEY_STATE_PRESSED;
+                    LIBINPUT_KEY_STATE_PRESSED;
         notify_key_device (device, time, key, key_state, TRUE);
 
         break;
@@ -1185,12 +1185,12 @@ process_device_event (ClutterDeviceManagerEvdev *manager_evdev,
 
         switch (axis)
           {
-          case LIBINPUT_POINTER_AXIS_VERTICAL_SCROLL:
+          case LIBINPUT_POINTER_AXIS_SCROLL_VERTICAL:
             dx = 0;
             dy = value;
             break;
 
-          case LIBINPUT_POINTER_AXIS_HORIZONTAL_SCROLL:
+          case LIBINPUT_POINTER_AXIS_SCROLL_HORIZONTAL:
             dx = value;
             dy = 0;
             break;
@@ -1434,7 +1434,7 @@ clutter_device_manager_evdev_constructed (GObject *gobject)
   struct udev *udev;
 
   udev = udev_new ();
-  if (!udev)
+  if (G_UNLIKELY (udev == NULL))
     {
       g_warning ("Failed to create udev object");
       return;
@@ -1443,17 +1443,24 @@ clutter_device_manager_evdev_constructed (GObject *gobject)
   manager_evdev = CLUTTER_DEVICE_MANAGER_EVDEV (gobject);
   priv = manager_evdev->priv;
 
-  priv->libinput = libinput_udev_create_for_seat (&libinput_interface,
-                                                  manager_evdev,
-                                                  udev,
-                                                  "seat0");
-  udev_unref (udev);
-
-  if (!priv->libinput)
+  priv->libinput = libinput_udev_create_context (&libinput_interface,
+                                                 manager_evdev,
+                                                 udev);
+  if (priv->libinput == NULL)
     {
-      g_warning ("Failed to create libinput object");
+      g_critical ("Failed to create the libinput object.");
       return;
     }
+
+  if (libinput_udev_assign_seat (priv->libinput, "seat0") == -1)
+    {
+      g_critical ("Failed to assign a seat to the libinput object.");
+      libinput_unref (priv->libinput);
+      priv->libinput = NULL;
+      return;
+    }
+
+  udev_unref (udev);
 
   priv->main_seat = clutter_seat_evdev_new (manager_evdev);
 
@@ -1500,26 +1507,21 @@ clutter_device_manager_evdev_finalize (GObject *object)
 {
   ClutterDeviceManagerEvdev *manager_evdev;
   ClutterDeviceManagerEvdevPrivate *priv;
-  GSList *l;
 
   manager_evdev = CLUTTER_DEVICE_MANAGER_EVDEV (object);
   priv = manager_evdev->priv;
 
-  for (l = priv->seats; l; l = g_slist_next (l))
-    {
-      ClutterSeatEvdev *seat = l->data;
-
-      clutter_seat_evdev_free (seat);
-    }
-  g_slist_free (priv->seats);
+  g_slist_free_full (priv->seats, (GDestroyNotify) clutter_seat_evdev_free);
   g_slist_free (priv->devices);
 
-  clutter_event_source_free (priv->event_source);
+  if (priv->event_source != NULL)
+    clutter_event_source_free (priv->event_source);
 
-  if (priv->constrain_data_notify)
+  if (priv->constrain_data_notify != NULL)
     priv->constrain_data_notify (priv->constrain_data);
 
-  libinput_destroy (priv->libinput);
+  if (priv->libinput != NULL)
+    libinput_unref (priv->libinput);
 
   G_OBJECT_CLASS (clutter_device_manager_evdev_parent_class)->finalize (object);
 }
