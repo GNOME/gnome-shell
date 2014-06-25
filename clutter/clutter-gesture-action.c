@@ -352,8 +352,8 @@ begin_gesture (ClutterGestureAction *action,
 }
 
 static gboolean
-stage_captured_event_cb (ClutterActor       *stage,
-                         ClutterEvent       *event,
+stage_captured_event_cb (ClutterActor         *stage,
+                         ClutterEvent         *event,
                          ClutterGestureAction *action)
 {
   ClutterGestureActionPrivate *priv = action->priv;
@@ -362,10 +362,14 @@ stage_captured_event_cb (ClutterActor       *stage,
   float threshold_x, threshold_y;
   gboolean return_value;
   GesturePoint *point;
+  ClutterEventType event_type;
 
-  if (event->type != CLUTTER_TOUCH_CANCEL &&
-      event->type != CLUTTER_TOUCH_UPDATE && event->type != CLUTTER_TOUCH_END &&
-      event->type != CLUTTER_MOTION && event->type != CLUTTER_BUTTON_RELEASE)
+  event_type = clutter_event_type (event);
+  if (event_type != CLUTTER_TOUCH_CANCEL &&
+      event_type != CLUTTER_TOUCH_UPDATE &&
+      event_type != CLUTTER_TOUCH_END &&
+      event_type != CLUTTER_MOTION &&
+      event_type != CLUTTER_BUTTON_RELEASE)
     return CLUTTER_EVENT_PROPAGATE;
 
   if ((point = gesture_find_point (action, event, &position)) == NULL)
