@@ -11,6 +11,7 @@ const St = imports.gi.St;
 const Shell = imports.gi.Shell;
 
 const AltTab = imports.ui.altTab;
+const WorkspaceSwitchAction = imports.ui.workspaceSwitchAction;
 const WorkspaceSwitcherPopup = imports.ui.workspaceSwitcherPopup;
 const Main = imports.ui.main;
 const ModalDialog = imports.ui.modalDialog;
@@ -683,6 +684,13 @@ const WindowManager = new Lang.Class({
 
         global.screen.override_workspace_layout(Meta.ScreenCorner.TOPLEFT,
                                                 false, -1, 1);
+
+        let gesture = new WorkspaceSwitchAction.WorkspaceSwitchAction();
+        gesture.connect('activated', Lang.bind(this, function(action, direction) {
+            let newWs = global.screen.get_active_workspace().get_neighbor(direction);
+            this.actionMoveWorkspace(newWs);
+        }));
+        global.stage.add_action(gesture);
     },
 
     keepWorkspaceAlive: function(workspace, duration) {
