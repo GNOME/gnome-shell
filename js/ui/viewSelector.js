@@ -11,6 +11,7 @@ const Lang = imports.lang;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 
+const EdgeDragAction = imports.ui.edgeDragAction;
 const AppDisplay = imports.ui.appDisplay;
 const Main = imports.ui.main;
 const OverviewControls = imports.ui.overviewControls;
@@ -145,6 +146,14 @@ const ViewSelector = new Lang.Class({
                               Shell.KeyBindingMode.OVERVIEW,
                               Lang.bind(Main.overview, Main.overview.toggle));
 
+        let gesture = new EdgeDragAction.EdgeDragAction(St.Side.RIGHT);
+        gesture.connect('activated', Lang.bind(this, function() {
+            if (Main.overview.visible)
+                Main.overview.hide();
+            else
+                this.showApps();
+        }));
+        global.stage.add_action(gesture);
     },
 
     _toggleAppsPage: function() {
