@@ -123,23 +123,25 @@ on_stage_capture (ClutterStage *stage,
   gfloat event_x, event_y;
   ClutterActor *actor, *drag_actor;
   ClutterDropAction *drop_action;
+  ClutterInputDevice *device;
   gboolean was_reactive;
 
   switch (clutter_event_type (event))
     {
     case CLUTTER_MOTION:
     case CLUTTER_BUTTON_RELEASE:
-      {
-        ClutterInputDevice *device;
+      if (clutter_event_type (event) == CLUTTER_MOTION &&
+          !(clutter_event_get_state (event) & CLUTTER_BUTTON1_MASK))
+        return CLUTTER_EVENT_PROPAGATE;
 
-        if (!(clutter_event_get_state (event) & CLUTTER_BUTTON1_MASK))
-          return CLUTTER_EVENT_PROPAGATE;
+      if (clutter_event_type (event) == CLUTTER_BUTTON_RELEASE &&
+          clutter_event_get_button (event) != CLUTTER_BUTTON_PRIMARY)
+        return CLUTTER_EVENT_PROPAGATE;
 
-        device = clutter_event_get_device (event);
-        drag_actor = _clutter_stage_get_pointer_drag_actor (stage, device);
-        if (drag_actor == NULL)
-          return CLUTTER_EVENT_PROPAGATE;
-      }
+      device = clutter_event_get_device (event);
+      drag_actor = _clutter_stage_get_pointer_drag_actor (stage, device);
+      if (drag_actor == NULL)
+        return CLUTTER_EVENT_PROPAGATE;
       break;
 
     case CLUTTER_TOUCH_UPDATE:
