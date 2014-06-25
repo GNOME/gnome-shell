@@ -15,6 +15,7 @@ const Signals = imports.signals;
 const St = imports.gi.St;
 const Tp = imports.gi.TelepathyGLib;
 
+const EdgeDragAction = imports.ui.edgeDragAction;
 const BoxPointer = imports.ui.boxpointer;
 const CtrlAltTab = imports.ui.ctrlAltTab;
 const GnomeSession = imports.misc.gnomeSession;
@@ -1933,6 +1934,10 @@ const MessageTray = new Lang.Class({
 
         this._messageTrayMenuButton = new MessageTrayMenuButton(this);
         this.actor.add_actor(this._messageTrayMenuButton.actor);
+
+        let gesture = new EdgeDragAction.EdgeDragAction(St.Side.BOTTOM);
+        gesture.connect('activated', Lang.bind(this, this.toggle));
+        global.stage.add_action(gesture);
     },
 
     close: function() {
