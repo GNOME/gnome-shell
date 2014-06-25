@@ -363,6 +363,11 @@ stage_captured_event_cb (ClutterActor       *stage,
   gboolean return_value;
   GesturePoint *point;
 
+  if (event->type != CLUTTER_TOUCH_CANCEL &&
+      event->type != CLUTTER_TOUCH_UPDATE && event->type != CLUTTER_TOUCH_END &&
+      event->type != CLUTTER_MOTION && event->type != CLUTTER_BUTTON_RELEASE)
+    return CLUTTER_EVENT_PROPAGATE;
+
   if ((point = gesture_find_point (action, event, &position)) == NULL)
     return CLUTTER_EVENT_PROPAGATE;
 
