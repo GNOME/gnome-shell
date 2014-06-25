@@ -75,6 +75,8 @@ script_tests = \
 	test-script-timeline-markers.json \
 	test-state-1.json
 
+TESTS_ENVIRONMENT += G_ENABLE_DIAGNOSTIC=0 CLUTTER_ENABLE_DIAGNOSTIC=0
+
 # simple rules for generating a Git ignore file for the conformance test suite
 $(srcdir)/.gitignore: Makefile
 	$(AM_V_GEN)( echo "/*.trs" ; \
