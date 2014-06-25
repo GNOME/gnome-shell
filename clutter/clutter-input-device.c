@@ -1532,9 +1532,6 @@ _clutter_input_device_remove_event_sequence (ClutterInputDevice *device,
     }
 
   g_hash_table_remove (device->touch_sequences_info, sequence);
-
-  if (g_hash_table_size (device->touch_sequences_info) == 0)
-    _clutter_input_device_set_stage (device, NULL);
 }
 
 /**
