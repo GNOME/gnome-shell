@@ -1,3 +1,26 @@
+Clutter 1.19.4                                                       2014-06-25
+===============================================================================
+
+  • List of changes since Clutter 1.19.2
+
+    - Depend on libinput 0.4
+    The evdev input backend now depends on libinput 0.4.0.
+
+  • List of bugs fixed since Clutter 1.19.2
+
+    #731268 - Events being clamped to the pre-fullscreen window size when
+              stage goes fullscreen
+    #731178 - evdev: Used floating point instead of fixed point numbers
+    #731254 - evdev: Follow libinput enum rename
+    #731536 - evdev: Add clutter_evdev_warp_pointer
+    #732234 - Touch events may leave a stage-less device, or happen on one
+    #732235 - clutter gesture actions may mistakenly handle enter/leave events
+
+Many thanks to:
+
+  Jonas Ådahl, Chun-wei Fan, Gustavo Noronha Silva, Jasper St. Pierre,
+  Carlos Garnacho.
+
 Clutter 1.19.2                                                       2014-05-28
 ===============================================================================
 
