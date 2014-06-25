@@ -23,6 +23,8 @@
 #include "gesture-tracker-private.h"
 #include "meta-surface-actor.h"
 
+#define DISTANCE_THRESHOLD 30
+
 typedef struct _MetaGestureTrackerPrivate MetaGestureTrackerPrivate;
 typedef struct _GestureActionData GestureActionData;
 typedef struct _MetaSequenceInfo MetaSequenceInfo;
@@ -33,6 +35,8 @@ struct _MetaSequenceInfo
   ClutterEventSequence *sequence;
   MetaSequenceState state;
   guint autodeny_timeout_id;
+  gfloat start_x;
+  gfloat start_y;
 };
 
 struct _GestureActionData
@@ -189,6 +193,8 @@ meta_sequence_info_new (MetaGestureTracker *tracker,
   info->sequence = event->touch.sequence;
   info->state = META_SEQUENCE_NONE;
   info->autodeny_timeout_id = g_timeout_add (ms, autodeny_sequence, info);
+
+  clutter_event_get_coords (event, &info->start_x, &info->start_y);
 
   return info;
 }
@@ -402,6 +408,7 @@ meta_gesture_tracker_handle_event (MetaGestureTracker *tracker,
   ClutterEventSequence *sequence;
   MetaSequenceInfo *info;
   ClutterActor *stage;
+  gfloat x, y;
 
   sequence = clutter_event_get_event_sequence (event);
 
@@ -452,6 +459,18 @@ meta_gesture_tracker_handle_event (MetaGestureTracker *tracker,
         meta_gesture_tracker_untrack_stage (tracker);
       break;
     case CLUTTER_TOUCH_UPDATE:
+      info = g_hash_table_lookup (priv->sequences, sequence);
+
+      if (!info)
+        return FALSE;
+
+      clutter_event_get_coords (event, &x, &y);
+
+      if (info->state == META_SEQUENCE_NONE &&
+          (ABS (info->start_x - x) > DISTANCE_THRESHOLD ||
+           ABS (info->start_y - y) > DISTANCE_THRESHOLD))
+        meta_gesture_tracker_set_sequence_state (tracker, sequence,
+                                                 META_SEQUENCE_REJECTED);
       break;
     default:
       return FALSE;
