@@ -41,6 +41,7 @@
     <file>ui/dash.js</file>
     <file>ui/dateMenu.js</file>
     <file>ui/dnd.js</file>
+    <file>ui/edgeDragAction.js</file>
     <file>ui/endSessionDialog.js</file>
     <file>ui/environment.js</file>
     <file>ui/extensionDownloader.js</file>
