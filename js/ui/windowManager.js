@@ -9,6 +9,7 @@ const Meta = imports.gi.Meta;
 const Pango = imports.gi.Pango;
 const St = imports.gi.St;
 const Shell = imports.gi.Shell;
+const Signals = imports.signals;
 
 const AltTab = imports.ui.altTab;
 const WorkspaceSwitcherPopup = imports.ui.workspaceSwitcherPopup;
@@ -456,6 +457,54 @@ const TilePreview = new Lang.Class({
     }
 });
 
+const WorkspaceSwitchAction = new Lang.Class({
+    Name: 'WorkspaceSwitchAction',
+    Extends: Clutter.GestureAction,
+
+    _init : function() {
+        this.parent();
+        this.set_n_touch_points(4);
+
+        global.display.connect('grab-op-begin', Lang.bind(this, function() {
+            this.cancel();
+        }));
+    },
+
+    vfunc_gesture_prepare : function(action, actor) {
+        return this.get_n_current_points() == this.get_n_touch_points();
+    },
+
+    vfunc_gesture_end : function(action, actor) {
+        const MOTION_THRESHOLD = 50;
+
+        // Just check one touchpoint here
+        let [startX, startY] = this.get_press_coords(0);
+        let [x, y] = this.get_motion_coords(0);
+        let offsetX = x - startX;
+        let offsetY = y - startY;
+        let direction;
+
+        if (Math.abs(offsetX) < MOTION_THRESHOLD &&
+            Math.abs(offsetY) < MOTION_THRESHOLD)
+            return;
+
+        if (Math.abs(offsetY) > Math.abs(offsetX)) {
+            if (offsetY > 0)
+                direction = Meta.MotionDirection.UP;
+            else
+                direction = Meta.MotionDirection.DOWN;
+        } else {
+            if (offsetX > 0)
+                direction = Meta.MotionDirection.LEFT;
+            else
+                direction = Meta.MotionDirection.RIGHT;
+        }
+
+        this.emit('activated', direction);
+    }
+});
+Signals.addSignalMethods(WorkspaceSwitchAction.prototype);
+
 const WindowManager = new Lang.Class({
     Name: 'WindowManager',
 
@@ -683,6 +732,13 @@ const WindowManager = new Lang.Class({
 
         global.screen.override_workspace_layout(Meta.ScreenCorner.TOPLEFT,
                                                 false, -1, 1);
+
+        let gesture = new WorkspaceSwitchAction();
+        gesture.connect('activated', Lang.bind(this, function(action, direction) {
+            let newWs = global.screen.get_active_workspace().get_neighbor(direction);
+            this.actionMoveWorkspace(newWs);
+        }));
+        global.stage.add_action(gesture);
     },
 
     keepWorkspaceAlive: function(workspace, duration) {
