@@ -91,6 +91,7 @@
     <file>ui/windowMenu.js</file>
     <file>ui/windowManager.js</file>
     <file>ui/workspace.js</file>
+    <file>ui/workspaceSwitchAction.js</file>
     <file>ui/workspaceSwitcherPopup.js</file>
     <file>ui/workspaceThumbnail.js</file>
     <file>ui/workspacesView.js</file>
