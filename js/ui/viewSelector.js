@@ -12,6 +12,7 @@ const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 
 const EdgeDragAction = imports.ui.edgeDragAction;
+const ShowOverviewAction = imports.ui.showOverviewAction;
 const AppDisplay = imports.ui.appDisplay;
 const Main = imports.ui.main;
 const OverviewControls = imports.ui.overviewControls;
@@ -152,6 +153,13 @@ const ViewSelector = new Lang.Class({
                 Main.overview.hide();
             else
                 this.showApps();
+        }));
+        global.stage.add_action(gesture);
+
+        gesture = new ShowOverviewAction.ShowOverviewAction();
+        gesture.connect('activated', Lang.bind(this, function(action, areaDiff) {
+            if (areaDiff < 0.7)
+                Main.overview.show();
         }));
         global.stage.add_action(gesture);
     },
