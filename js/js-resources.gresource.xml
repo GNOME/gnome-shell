@@ -80,6 +80,7 @@
     <file>ui/shellDBus.js</file>
     <file>ui/shellEntry.js</file>
     <file>ui/shellMountOperation.js</file>
+    <file>ui/showOverviewAction.js</file>
     <file>ui/slider.js</file>
     <file>ui/switcherPopup.js</file>
     <file>ui/tweener.js</file>
