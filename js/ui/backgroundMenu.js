@@ -55,6 +55,10 @@ function addBackgroundMenu(actor, layoutManager) {
     });
     actor.add_action(clickAction);
 
+    global.display.connect('grab-op-begin', function () {
+        clickAction.release();
+    });
+
     actor.connect('destroy', function() {
         actor._backgroundMenu.destroy();
         actor._backgroundMenu = null;
