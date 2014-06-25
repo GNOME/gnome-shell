@@ -1297,7 +1297,7 @@ fi
 echo ""
 
 # General warning about experimental features
-if test "x$experimental_backend" = "xyes"; then
+if test "x$experimental_backend" = xyes -o "x$experimental_input_backend" = xyes; then
 echo ""
 echo "☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠"
 echo "*WARNING* *WARNING* *WARNING* *WARNING* *WARNING* *WARNING* *WARNING*"
