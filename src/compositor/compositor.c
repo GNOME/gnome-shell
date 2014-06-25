@@ -385,6 +385,10 @@ meta_begin_modal_for_plugin (MetaCompositor   *compositor,
   display->grab_have_pointer = TRUE;
   display->grab_have_keyboard = TRUE;
 
+  g_signal_emit_by_name (display, "grab-op-begin",
+                         meta_plugin_get_screen (plugin),
+                         display->grab_window, display->grab_op);
+
   if (meta_is_wayland_compositor ())
     meta_display_sync_wayland_input_focus (display);
 
@@ -400,6 +404,10 @@ meta_end_modal_for_plugin (MetaCompositor *compositor,
   MetaBackend *backend = meta_get_backend ();
 
   g_return_if_fail (is_modal (display));
+
+  g_signal_emit_by_name (display, "grab-op-end",
+                         meta_plugin_get_screen (plugin),
+                         display->grab_window, display->grab_op);
 
   display->grab_op = META_GRAB_OP_NONE;
   display->grab_window = NULL;
