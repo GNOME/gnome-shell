@@ -1155,6 +1155,14 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
 
 #ifdef HAVE_XINPUT_2_2
     case XI_TouchBegin:
+      {
+        XIDeviceEvent *xev = (XIDeviceEvent *) xi_event;
+        device = g_hash_table_lookup (manager_xi2->devices_by_id,
+                                      GINT_TO_POINTER (xev->deviceid));
+        if (!_clutter_input_device_get_stage (device))
+          _clutter_input_device_set_stage (device, stage);
+      }
+      /* Fall through */
     case XI_TouchEnd:
       {
         XIDeviceEvent *xev = (XIDeviceEvent *) xi_event;
