@@ -813,7 +813,7 @@ meta_wayland_pointer_can_grab_surface (MetaWaylandPointer *pointer,
                                        MetaWaylandSurface *surface,
                                        uint32_t            serial)
 {
-  return (pointer->button_count == 0 &&
+  return (pointer->button_count > 0 &&
           pointer->grab_serial == serial &&
           pointer->focus_surface == surface);
 }
