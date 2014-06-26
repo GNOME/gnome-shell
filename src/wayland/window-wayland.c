@@ -214,8 +214,11 @@ meta_window_wayland_move_resize_internal (MetaWindow                *window,
       if (new_x != window->rect.x || new_y != window->rect.y)
         {
           *result |= META_MOVE_RESIZE_RESULT_MOVED;
-          window->rect.x = window->buffer_rect.x = new_x;
-          window->rect.y = window->buffer_rect.y = new_y;
+          window->rect.x = new_x;
+          window->rect.y = new_y;
+
+          window->buffer_rect.x = new_x - window->custom_frame_extents.left;
+          window->buffer_rect.y = new_y - window->custom_frame_extents.top;
         }
     }
 }
@@ -360,8 +363,6 @@ meta_window_wayland_move_resize (MetaWindow *window,
 
   rect.width = width;
   rect.height = height;
-
-  window->buffer_rect = rect;
 
   if (rect.width != window->rect.width || rect.height != window->rect.height)
     flags |= META_IS_RESIZE_ACTION;
