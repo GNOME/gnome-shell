@@ -6,11 +6,13 @@ data/gnome-shell.desktop.in.in
 data/gnome-shell-extension-prefs.desktop.in.in
 data/gnome-shell-wayland.desktop.in.in
 data/org.gnome.shell.gschema.xml.in.in
+data/org.gnome.Shell.PortalHelper.desktop.in
 js/extensionPrefs/main.js
 js/gdm/authPrompt.js
 js/gdm/loginDialog.js
 js/gdm/util.js
 js/misc/util.js
+js/portalHelper/main.js
 js/ui/appDisplay.js
 js/ui/appFavorites.js
 js/ui/backgroundMenu.js
