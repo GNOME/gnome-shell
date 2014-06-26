@@ -4092,16 +4092,13 @@ meta_window_client_rect_to_frame_rect (MetaWindow    *window,
     }
   else
     {
-      if (window->has_custom_frame_extents)
-        {
-          const GtkBorder *extents = &window->custom_frame_extents;
-          frame_rect->x += extents->left;
-          frame_rect->y += extents->top;
-          if (frame_rect->width != G_MAXINT)
-            frame_rect->width -= extents->left + extents->right;
-          if (frame_rect->height != G_MAXINT)
-            frame_rect->height -= extents->top + extents->bottom;
-        }
+      const GtkBorder *extents = &window->custom_frame_extents;
+      frame_rect->x += extents->left;
+      frame_rect->y += extents->top;
+      if (frame_rect->width != G_MAXINT)
+        frame_rect->width -= extents->left + extents->right;
+      if (frame_rect->height != G_MAXINT)
+        frame_rect->height -= extents->top + extents->bottom;
     }
 }
 
@@ -4136,14 +4133,11 @@ meta_window_frame_rect_to_client_rect (MetaWindow    *window,
     }
   else
     {
-      if (window->has_custom_frame_extents)
-        {
-          const GtkBorder *extents = &window->custom_frame_extents;
-          client_rect->x -= extents->left;
-          client_rect->y -= extents->top;
-          client_rect->width += extents->left + extents->right;
-          client_rect->height += extents->top + extents->bottom;
-        }
+      const GtkBorder *extents = &window->custom_frame_extents;
+      client_rect->x -= extents->left;
+      client_rect->y -= extents->top;
+      client_rect->width += extents->left + extents->right;
+      client_rect->height += extents->top + extents->bottom;
     }
 }
 
@@ -7958,6 +7952,7 @@ meta_window_set_custom_frame_extents (MetaWindow *window,
   else
     {
       window->has_custom_frame_extents = FALSE;
+      memset (&window->custom_frame_extents, 0, sizeof (window->custom_frame_extents));
     }
 
   meta_window_queue (window, META_QUEUE_MOVE_RESIZE);
