@@ -214,8 +214,8 @@ meta_window_wayland_move_resize_internal (MetaWindow                *window,
       if (new_x != window->rect.x || new_y != window->rect.y)
         {
           *result |= META_MOVE_RESIZE_RESULT_MOVED;
-          window->rect.x = new_x;
-          window->rect.y = new_y;
+          window->rect.x = window->buffer_rect.x = new_x;
+          window->rect.y = window->buffer_rect.y = new_y;
         }
     }
 }
