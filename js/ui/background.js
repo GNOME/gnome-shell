@@ -448,7 +448,7 @@ const Background = new Lang.Class({
 
         let image = this._images[index];
         if (image.content)
-            this._cache.removeImageContent(content);
+            this._cache.removeImageContent(image.content);
         image.content = content;
         this._watchCacheFile(filename);
     },
