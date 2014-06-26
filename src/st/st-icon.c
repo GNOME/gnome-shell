@@ -252,7 +252,7 @@ st_icon_class_init (StIconClass *klass)
   pspec = g_param_spec_string ("icon-name",
                                "Icon name",
                                "An icon name",
-                               NULL, ST_PARAM_READWRITE | G_PARAM_DEPRECATED);
+                               NULL, ST_PARAM_READWRITE);
   g_object_class_install_property (object_class, PROP_ICON_NAME, pspec);
 
   pspec = g_param_spec_int ("icon-size",
