@@ -659,7 +659,10 @@ const SystemBackground = new Lang.Class({
     },
 
     _onDestroy: function() {
-        this._cache.removeImageContent(this.actor.content);
+        let content = this.actor.content;
+
+        if (content)
+            this._cache.removeImageContent(content);
     },
 });
 Signals.addSignalMethods(SystemBackground.prototype);
