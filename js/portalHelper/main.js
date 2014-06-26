@@ -82,6 +82,7 @@ const PortalWindow = new Lang.Class({
             // TRANSLATORS: this is the title of the wifi captive portal login
             // window, until we know the title of the actual login page
             this.title = _("Web Authentication Redirect");
+        }
     },
 
     refresh: function() {
