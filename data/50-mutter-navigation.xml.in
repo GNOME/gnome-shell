@@ -45,25 +45,67 @@
 	              _description="Move window one monitor down" />
 
 	<KeyListEntry name="switch-applications"
+	              reverse-entry="switch-applications-backward"
 	              _description="Switch applications"/>
 
+	<KeyListEntry name="switch-applications-backward"
+	              reverse-entry="switch-applications"
+	              hidden="true"
+	              _description="Switch to previous application"/>
+
 	<KeyListEntry name="switch-windows"
+	              reverse-entry="switch-windows-backward"
 	              _description="Switch windows"/>
 
+	<KeyListEntry name="switch-windows-backward"
+	              reverse-entry="switch-windows"
+	              hidden="true"
+	              _description="Switch to previous window"/>
+
 	<KeyListEntry name="switch-group"
+	              reverse-entry="switch-group-backward"
 	              _description="Switch windows of an application"/>
 
+	<KeyListEntry name="switch-group-backward"
+	              reverse-entry="switch-group"
+	              hidden="true"
+	              _description="Switch to previous window of an application"/>
+
 	<KeyListEntry name="switch-panels"
+	              reverse-entry="switch-panels-backward"
 	              _description="Switch system controls"/>
 
+	<KeyListEntry name="switch-panels-backward"
+	              reverse-entry="switch-panels"
+	              hidden="true"
+	              _description="Switch to previous system control"/>
+
 	<KeyListEntry name="cycle-windows"
+	              reverse-entry="cycle-windows-backward"
 	              _description="Switch windows directly"/>
 
+	<KeyListEntry name="cycle-windows-backward"
+	              reverse-entry="cycle-windows"
+	              hidden="true"
+	              _description="Switch directly to previous window"/>
+
 	<KeyListEntry name="cycle-group"
+	              reverse-entry="cycle-group-backward"
 	              _description="Switch windows of an app directly"/>
 
+	<KeyListEntry name="cycle-group-backward"
+	              reverse-entry="cycle-group"
+	              hidden="true"
+	              _description="Switch directly to previous window of an app"/>
+
 	<KeyListEntry name="cycle-panels"
+	              reverse-entry="cycle-panels-backward"
 	              _description="Switch system controls directly"/>
+
+	<KeyListEntry name="cycle-panels-backward"
+	              reverse-entry="cycle-panels"
+	              hidden="true"
+	              _description="Switch directly to previous system control"/>
 
 	<KeyListEntry name="show-desktop"
 	              _description="Hide all normal windows"/>
