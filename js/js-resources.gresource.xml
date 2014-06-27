@@ -32,6 +32,7 @@
     <file>ui/animation.js</file>
     <file>ui/appDisplay.js</file>
     <file>ui/appFavorites.js</file>
+    <file>ui/appSwitchAction.js</file>
     <file>ui/backgroundMenu.js</file>
     <file>ui/background.js</file>
     <file>ui/boxpointer.js</file>
