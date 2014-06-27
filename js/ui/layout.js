@@ -224,7 +224,7 @@ const LayoutManager = new Lang.Class({
 
         // A dummy actor that tracks the mouse or text cursor, based on the
         // position and size set in setDummyCursorGeometry.
-        this.dummyCursor = new St.Widget({ width: 0, height: 0 });
+        this.dummyCursor = new St.Widget({ width: 0, height: 0, visible: false });
         this.uiGroup.add_actor(this.dummyCursor);
 
         global.stage.remove_actor(global.top_window_group);
