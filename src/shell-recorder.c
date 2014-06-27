@@ -751,7 +751,7 @@ recorder_connect_stage_callbacks (ShellRecorder *recorder)
                           G_CALLBACK (recorder_on_stage_paint), recorder);
   g_signal_connect (recorder->stage, "notify::width",
                     G_CALLBACK (recorder_on_stage_notify_size), recorder);
-  g_signal_connect (recorder->stage, "notify::width",
+  g_signal_connect (recorder->stage, "notify::height",
                     G_CALLBACK (recorder_on_stage_notify_size), recorder);
 
   clutter_x11_add_filter (recorder_event_filter, recorder);
