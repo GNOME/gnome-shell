@@ -389,9 +389,17 @@ gnome_shell_plugin_xevent_filter (MetaPlugin *plugin,
        * can send this with a ust of 0. Simplify life for consumers
        * by ignoring such events */
       if (swap_complete_event->ust != 0)
-        shell_perf_log_event_x (shell_perf_log_get_default (),
-                                "glx.swapComplete",
-                                swap_complete_event->ust);
+        {
+          gboolean frame_timestamps;
+          g_object_get (shell_plugin->global,
+                        "frame-timestamps", &frame_timestamps,
+                        NULL);
+
+          if (frame_timestamps)
+            shell_perf_log_event_x (shell_perf_log_get_default (),
+                                    "glx.swapComplete",
+                                    swap_complete_event->ust);
+        }
     }
 #endif
 

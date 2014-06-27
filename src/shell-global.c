@@ -96,6 +96,7 @@ struct _ShellGlobal {
   guint32 xdnd_timestamp;
 
   gboolean has_modal;
+  gboolean frame_timestamps;
 };
 
 enum {
@@ -116,6 +117,7 @@ enum {
   PROP_IMAGEDIR,
   PROP_USERDATADIR,
   PROP_FOCUS_MANAGER,
+  PROP_FRAME_TIMESTAMPS,
 };
 
 /* Signals */
@@ -145,6 +147,9 @@ shell_global_set_property(GObject         *object,
     case PROP_SESSION_MODE:
       g_clear_pointer (&global->session_mode, g_free);
       global->session_mode = g_ascii_strdown (g_value_get_string (value), -1);
+      break;
+    case PROP_FRAME_TIMESTAMPS:
+      global->frame_timestamps = g_value_get_boolean (value);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -216,6 +221,9 @@ shell_global_get_property(GObject         *object,
       break;
     case PROP_FOCUS_MANAGER:
       g_value_set_object (value, global->focus_manager);
+      break;
+    case PROP_FRAME_TIMESTAMPS:
+      g_value_set_boolean (value, global->frame_timestamps);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -500,6 +508,13 @@ shell_global_class_init (ShellGlobalClass *klass)
                                                         "The shell's StFocusManager",
                                                         ST_TYPE_FOCUS_MANAGER,
                                                         G_PARAM_READABLE));
+  g_object_class_install_property (gobject_class,
+                                   PROP_FRAME_TIMESTAMPS,
+                                   g_param_spec_boolean ("frame-timestamps",
+                                                         "Frame Timestamps",
+                                                         "Whether to log frame timestamps in the performance log",
+                                                         FALSE,
+                                                         G_PARAM_READWRITE));
 }
 
 /*
@@ -756,8 +771,11 @@ global_stage_notify_height (GObject    *gobject,
 static gboolean
 global_stage_before_paint (gpointer data)
 {
-  shell_perf_log_event (shell_perf_log_get_default (),
-                        "clutter.stagePaintStart");
+  ShellGlobal *global = SHELL_GLOBAL (data);
+
+  if (global->frame_timestamps)
+    shell_perf_log_event (shell_perf_log_get_default (),
+                          "clutter.stagePaintStart");
 
   return TRUE;
 }
@@ -765,8 +783,11 @@ global_stage_before_paint (gpointer data)
 static gboolean
 global_stage_after_paint (gpointer data)
 {
-  shell_perf_log_event (shell_perf_log_get_default (),
-                        "clutter.stagePaintDone");
+  ShellGlobal *global = SHELL_GLOBAL (data);
+
+  if (global->frame_timestamps)
+    shell_perf_log_event (shell_perf_log_get_default (),
+                          "clutter.stagePaintDone");
 
   return TRUE;
 }
@@ -951,11 +972,11 @@ _shell_global_set_plugin (ShellGlobal *global,
 
   clutter_threads_add_repaint_func_full (CLUTTER_REPAINT_FLAGS_PRE_PAINT,
                                          global_stage_before_paint,
-                                         NULL, NULL);
+                                         global, NULL);
 
   clutter_threads_add_repaint_func_full (CLUTTER_REPAINT_FLAGS_POST_PAINT,
                                          global_stage_after_paint,
-                                         NULL, NULL);
+                                         global, NULL);
 
   shell_perf_log_define_event (shell_perf_log_get_default(),
                                "clutter.stagePaintStart",
