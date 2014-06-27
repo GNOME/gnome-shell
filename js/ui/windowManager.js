@@ -12,6 +12,7 @@ const Shell = imports.gi.Shell;
 
 const AltTab = imports.ui.altTab;
 const WorkspaceSwitchAction = imports.ui.workspaceSwitchAction;
+const AppSwitchAction = imports.ui.appSwitchAction;
 const WorkspaceSwitcherPopup = imports.ui.workspaceSwitcherPopup;
 const Main = imports.ui.main;
 const ModalDialog = imports.ui.modalDialog;
@@ -691,6 +692,46 @@ const WindowManager = new Lang.Class({
             this.actionMoveWorkspace(newWs);
         }));
         global.stage.add_action(gesture);
+
+        gesture = new AppSwitchAction.AppSwitchAction();
+        gesture.connect('activated', Lang.bind(this, this._switchApp));
+        global.stage.add_action(gesture);
+    },
+
+    _lookupIndex: function (windows, metaWindow) {
+        for (let i = 0; i < windows.length; i++) {
+            if (windows[i].metaWindow == metaWindow) {
+                return i;
+            }
+        }
+        return -1;
+    },
+
+    _switchApp : function () {
+        let windows = global.get_window_actors().filter(Lang.bind(this, function(actor) {
+            let win = actor.metaWindow;
+            return (!win.is_override_redirect() &&
+                    win.located_on_workspace(global.screen.get_active_workspace()));
+        }));
+
+        if (windows.length == 0)
+            return;
+
+        let focusWindow = global.display.focus_window;
+        let nextWindow;
+
+        if (focusWindow == null)
+            nextWindow = windows[0].metaWindow;
+        else {
+            let index = this._lookupIndex (windows, focusWindow) + 1;
+
+            if (index >= windows.length)
+                index = 0;
+
+            nextWindow = windows[index].metaWindow;
+        }
+
+        Main.activateWindow(nextWindow);
     },
 
     keepWorkspaceAlive: function(workspace, duration) {
