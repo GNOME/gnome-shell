@@ -903,7 +903,7 @@ const WindowManager = new Lang.Class({
             /* Scale the window from the center of the parent */
             this._checkDimming(actor.get_meta_window().get_transient_for());
             actor.set_scale(1.0, 0.0);
-            actor.scale_gravity = Clutter.Gravity.CENTER;
+            actor.set_pivot_point(0.5, 0.5);
             actor.show();
             this._mapping.push(actor);
 
@@ -977,7 +977,7 @@ const WindowManager = new Lang.Class({
             this._checkDimming(parent, window);
 
             actor.set_scale(1.0, 1.0);
-            actor.scale_gravity = Clutter.Gravity.CENTER;
+            actor.set_pivot_point(0.5, 0.5);
             actor.show();
 
             actor._parentDestroyId = parent.connect('unmanaged', Lang.bind(this, function () {
