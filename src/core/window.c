@@ -4183,8 +4183,8 @@ meta_window_get_outer_rect (const MetaWindow *window,
  * @rect: (out): pointer to a cairo rectangle
  *
  * Gets the rectangle for the boundaries of the client area, relative
- * to the frame. If the window is shaded, the height of the rectangle
- * is 0.
+ * to the buffer rect. If the window is shaded, the height of the
+ * rectangle is 0.
  */
 void
 meta_window_get_client_area_rect (const MetaWindow      *window,
@@ -4197,11 +4197,11 @@ meta_window_get_client_area_rect (const MetaWindow      *window,
   rect->x = borders.total.left;
   rect->y = borders.total.top;
 
-  rect->width = window->rect.width - borders.visible.left - borders.visible.right;
+  rect->width = window->buffer_rect.width - borders.total.left - borders.total.right;
   if (window->shaded)
     rect->height = 0;
   else
-    rect->height = window->rect.height - borders.visible.top - borders.visible.bottom;
+    rect->height = window->buffer_rect.height - borders.total.top - borders.total.bottom;
 }
 
 void
