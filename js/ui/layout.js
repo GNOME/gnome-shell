@@ -163,7 +163,7 @@ const LayoutManager = new Lang.Class({
         // Normally, the stage is always covered so Clutter doesn't need to clear
         // it; however it becomes visible during the startup animation
         // See the comment below for a longer explanation
-        global.stage.color = DEFAULT_BACKGROUND_COLOR;
+        global.stage.background_color = DEFAULT_BACKGROUND_COLOR;
 
         // Set up stage hierarchy to group all UI actors under one container.
         this.uiGroup = new Shell.GenericContainer({ name: 'uiGroup' });
