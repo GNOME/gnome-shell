@@ -498,9 +498,7 @@ create_guard_window (Display *xdisplay, MetaScreen *screen)
 static void
 meta_screen_set_background (MetaScreen *screen)
 {
-  XSetWindowBackground (screen->display->xdisplay,
-                        screen->xroot,
-                        BlackPixel);
+  XSetWindowBackground (screen->display->xdisplay, screen->xroot, 0x00000000);
 }
 
 MetaScreen*
