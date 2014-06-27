@@ -492,6 +492,17 @@ create_guard_window (Display *xdisplay, MetaScreen *screen)
   return guard_window;
 }
 
+/* Set a black background on the root window so that we don't
+ * see confusing old copies of old windows when debugging
+ * and testing. */
+static void
+meta_screen_set_background (MetaScreen *screen)
+{
+  XSetWindowBackground (screen->display->xdisplay,
+                        screen->xroot,
+                        BlackPixel);
+}
+
 MetaScreen*
 meta_screen_new (MetaDisplay *display,
                  int          number,
@@ -699,6 +710,7 @@ meta_screen_new (MetaDisplay *display,
   reload_monitor_infos (screen);
 
   meta_screen_set_cursor (screen, META_CURSOR_DEFAULT);
+  meta_screen_set_background (screen);
 
   /* Handle creating a no_focus_window for this screen */
   screen->no_focus_window =
