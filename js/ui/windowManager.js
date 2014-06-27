@@ -505,6 +505,67 @@ const WorkspaceSwitchAction = new Lang.Class({
 });
 Signals.addSignalMethods(WorkspaceSwitchAction.prototype);
 
+const AppSwitchAction = new Lang.Class({
+    Name: 'AppSwitchAction',
+    Extends: Clutter.GestureAction,
+
+    _init : function() {
+        this.parent();
+        this.set_n_touch_points(3);
+
+        global.display.connect('grab-op-begin', Lang.bind(this, function() {
+            this.cancel();
+        }));
+    },
+
+    vfunc_gesture_prepare : function(action, actor) {
+        return this.get_n_current_points() <= 4;
+    },
+
+    vfunc_gesture_begin : function(action, actor) {
+        // in milliseconds
+        const LONG_PRESS_TIMEOUT = 250;
+
+        let nPoints = this.get_n_current_points();
+        let event = this.get_last_event (nPoints - 1);
+
+        if (nPoints == 3)
+            this._longPressStartTime = event.get_time();
+        else if (nPoints == 4) {
+            // Check whether the 4th finger press happens after a 3-finger long press,
+            // this only needs to be checked on the first 4th finger press
+            if (this._longPressStartTime != null &&
+                event.get_time() < this._longPressStartTime + LONG_PRESS_TIMEOUT)
+                this.cancel();
+            else {
+                this._longPressStartTime = null;
+                this.emit('activated');
+            }
+        }
+
+        return this.get_n_current_points() <= 4;
+    },
+
+    vfunc_gesture_progress : function(action, actor) {
+        const MOTION_THRESHOLD = 30;
+
+        if (this.get_n_current_points() == 3) {
+            for (let i = 0; i < this.get_n_current_points(); i++) {
+                [startX, startY] = this.get_press_coords(i);
+                [x, y] = this.get_motion_coords(i);
+
+                if (Math.abs(x - startX) > MOTION_THRESHOLD ||
+                    Math.abs(y - startY) > MOTION_THRESHOLD)
+                    return false;
+            }
+
+        }
+
+        return true;
+    }
+});
+Signals.addSignalMethods(AppSwitchAction.prototype);
+
 const WindowManager = new Lang.Class({
     Name: 'WindowManager',
 
@@ -739,6 +800,46 @@ const WindowManager = new Lang.Class({
             this.actionMoveWorkspace(newWs);
         }));
         global.stage.add_action(gesture);
+
+        gesture = new AppSwitchAction();
+        gesture.connect('activated', Lang.bind(this, this._switchApp));
+        global.stage.add_action(gesture);
+    },
+
+    _lookupIndex: function (windows, metaWindow) {
+        for (let i = 0; i < windows.length; i++) {
+            if (windows[i].metaWindow == metaWindow) {
+                return i;
+            }
+        }
+        return -1;
+    },
+
+    _switchApp : function () {
+        let windows = global.get_window_actors().filter(Lang.bind(this, function(actor) {
+            let win = actor.metaWindow;
+            return (!win.is_override_redirect() &&
+                    win.located_on_workspace(global.screen.get_active_workspace()));
+        }));
+
+        if (windows.length == 0)
+            return;
+
+        let focusWindow = global.display.focus_window;
+        let nextWindow;
+
+        if (focusWindow == null)
+            nextWindow = windows[0].metaWindow;
+        else {
+            let index = this._lookupIndex (windows, focusWindow) + 1;
+
+            if (index >= windows.length)
+                index = 0;
+
+            nextWindow = windows[index].metaWindow;
+        }
+
+        Main.activateWindow(nextWindow);
     },
 
     keepWorkspaceAlive: function(workspace, duration) {
