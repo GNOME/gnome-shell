@@ -78,7 +78,7 @@ MUTTER_PC_MODULES="
    gsettings-desktop-schemas >= 3.7.3
    xcomposite >= 0.2 xfixes xext xdamage xi >= 1.6.0
    xcursor
-   $CLUTTER_PACKAGE >= 1.17.5
+   $CLUTTER_PACKAGE >= 1.19.5
    clutter-wayland-1.0
    clutter-wayland-compositor-1.0
    clutter-egl-1.0

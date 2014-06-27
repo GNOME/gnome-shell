@@ -528,10 +528,8 @@ meta_compositor_manage (MetaCompositor *compositor)
         }
     }
 
-  clutter_stage_set_paint_callback (CLUTTER_STAGE (compositor->stage),
-                                    after_stage_paint,
-                                    compositor,
-                                    NULL);
+  g_signal_connect (CLUTTER_STAGE (compositor->stage), "after-paint",
+                    G_CALLBACK (after_stage_paint), compositor);
 
   clutter_stage_set_sync_delay (CLUTTER_STAGE (compositor->stage), META_SYNC_DELAY);
 
