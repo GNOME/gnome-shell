@@ -3414,8 +3414,6 @@ meta_keybindings_set_custom_handler (const gchar        *name,
 static void
 init_builtin_key_bindings (MetaDisplay *display)
 {
-#define REVERSES_AND_REVERSED (META_KEY_BINDING_REVERSES |      \
-                               META_KEY_BINDING_IS_REVERSED)
   GSettings *common_keybindings = g_settings_new (SCHEMA_COMMON_KEYBINDINGS);
   GSettings *mutter_keybindings = g_settings_new (SCHEMA_MUTTER_KEYBINDINGS);
   GSettings *mutter_wayland_keybindings = g_settings_new (SCHEMA_MUTTER_WAYLAND_KEYBINDINGS);
@@ -3543,98 +3541,98 @@ init_builtin_key_bindings (MetaDisplay *display)
   add_builtin_keybinding (display,
                           "switch-group",
                           common_keybindings,
-                          META_KEY_BINDING_REVERSES,
+                          META_KEY_BINDING_NONE,
                           META_KEYBINDING_ACTION_SWITCH_GROUP,
                           handle_switch, META_TAB_LIST_GROUP);
 
   add_builtin_keybinding (display,
                           "switch-group-backward",
                           common_keybindings,
-                          REVERSES_AND_REVERSED,
+                          META_KEY_BINDING_IS_REVERSED,
                           META_KEYBINDING_ACTION_SWITCH_GROUP_BACKWARD,
                           handle_switch, META_TAB_LIST_GROUP);
 
   add_builtin_keybinding (display,
                           "switch-applications",
                           common_keybindings,
-                          META_KEY_BINDING_REVERSES,
+                          META_KEY_BINDING_NONE,
                           META_KEYBINDING_ACTION_SWITCH_APPLICATIONS,
                           handle_switch, META_TAB_LIST_NORMAL);
 
   add_builtin_keybinding (display,
                           "switch-applications-backward",
                           common_keybindings,
-                          REVERSES_AND_REVERSED,
+                          META_KEY_BINDING_IS_REVERSED,
                           META_KEYBINDING_ACTION_SWITCH_APPLICATIONS_BACKWARD,
                           handle_switch, META_TAB_LIST_NORMAL);
 
   add_builtin_keybinding (display,
                           "switch-windows",
                           common_keybindings,
-                          META_KEY_BINDING_REVERSES,
+                          META_KEY_BINDING_NONE,
                           META_KEYBINDING_ACTION_SWITCH_WINDOWS,
                           handle_switch, META_TAB_LIST_NORMAL);
 
   add_builtin_keybinding (display,
                           "switch-windows-backward",
                           common_keybindings,
-                          REVERSES_AND_REVERSED,
+                          META_KEY_BINDING_IS_REVERSED,
                           META_KEYBINDING_ACTION_SWITCH_WINDOWS_BACKWARD,
                           handle_switch, META_TAB_LIST_NORMAL);
 
   add_builtin_keybinding (display,
                           "switch-panels",
                           common_keybindings,
-                          META_KEY_BINDING_REVERSES,
+                          META_KEY_BINDING_NONE,
                           META_KEYBINDING_ACTION_SWITCH_PANELS,
                           handle_switch, META_TAB_LIST_DOCKS);
 
   add_builtin_keybinding (display,
                           "switch-panels-backward",
                           common_keybindings,
-                          REVERSES_AND_REVERSED,
+                          META_KEY_BINDING_IS_REVERSED,
                           META_KEYBINDING_ACTION_SWITCH_PANELS_BACKWARD,
                           handle_switch, META_TAB_LIST_DOCKS);
 
   add_builtin_keybinding (display,
                           "cycle-group",
                           common_keybindings,
-                          META_KEY_BINDING_REVERSES,
+                          META_KEY_BINDING_NONE,
                           META_KEYBINDING_ACTION_CYCLE_GROUP,
                           handle_cycle, META_TAB_LIST_GROUP);
 
   add_builtin_keybinding (display,
                           "cycle-group-backward",
                           common_keybindings,
-                          REVERSES_AND_REVERSED,
+                          META_KEY_BINDING_IS_REVERSED,
                           META_KEYBINDING_ACTION_CYCLE_GROUP_BACKWARD,
                           handle_cycle, META_TAB_LIST_GROUP);
 
   add_builtin_keybinding (display,
                           "cycle-windows",
                           common_keybindings,
-                          META_KEY_BINDING_REVERSES,
+                          META_KEY_BINDING_NONE,
                           META_KEYBINDING_ACTION_CYCLE_WINDOWS,
                           handle_cycle, META_TAB_LIST_NORMAL);
 
   add_builtin_keybinding (display,
                           "cycle-windows-backward",
                           common_keybindings,
-                          REVERSES_AND_REVERSED,
+                          META_KEY_BINDING_IS_REVERSED,
                           META_KEYBINDING_ACTION_CYCLE_WINDOWS_BACKWARD,
                           handle_cycle, META_TAB_LIST_NORMAL);
 
   add_builtin_keybinding (display,
                           "cycle-panels",
                           common_keybindings,
-                          META_KEY_BINDING_REVERSES,
+                          META_KEY_BINDING_NONE,
                           META_KEYBINDING_ACTION_CYCLE_PANELS,
                           handle_cycle, META_TAB_LIST_DOCKS);
 
   add_builtin_keybinding (display,
                           "cycle-panels-backward",
                           common_keybindings,
-                          REVERSES_AND_REVERSED,
+                          META_KEY_BINDING_IS_REVERSED,
                           META_KEYBINDING_ACTION_CYCLE_PANELS_BACKWARD,
                           handle_cycle, META_TAB_LIST_DOCKS);
 
@@ -3722,8 +3720,6 @@ init_builtin_key_bindings (MetaDisplay *display)
                               handle_switch_vt, 7);
     }
 #endif /* HAVE_NATIVE_BACKEND */
-
-#undef REVERSES_AND_REVERSED
 
   /************************ PER WINDOW BINDINGS ************************/
 
