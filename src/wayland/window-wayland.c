@@ -180,6 +180,9 @@ meta_window_wayland_move_resize_internal (MetaWindow                *window,
       window->rect.width = unconstrained_rect.width;
       window->rect.height = unconstrained_rect.height;
 
+      window->buffer_rect.width = unconstrained_rect.width;
+      window->buffer_rect.height = unconstrained_rect.height;
+
       /* This is a commit of an attach. We should move the window to match the
        * new position the client wants. */
       should_move = TRUE;
