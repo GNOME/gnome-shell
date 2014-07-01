@@ -667,7 +667,7 @@ meta_monitor_manager_handle_apply_configuration  (MetaDBusDisplayConfig *skeleto
   int new_mode, x, y;
   int new_screen_width, new_screen_height;
   guint transform;
-  guint output_id;
+  guint output_index;
   GPtrArray *crtc_infos, *output_infos;
 
   if (serial != manager->serial)
@@ -767,18 +767,18 @@ meta_monitor_manager_handle_apply_configuration  (MetaDBusDisplayConfig *skeleto
       crtc_info->transform = transform;
 
       first_output = NULL;
-      while (g_variant_iter_loop (nested_outputs, "u", &output_id))
+      while (g_variant_iter_loop (nested_outputs, "u", &output_index))
         {
           MetaOutput *output;
 
-          if (output_id >= manager->n_outputs)
+          if (output_index >= manager->n_outputs)
             {
               g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
                                                      G_DBUS_ERROR_INVALID_ARGS,
                                                      "Invalid output id");
               return TRUE;
             }
-          output = &manager->outputs[output_id];
+          output = &manager->outputs[output_index];
 
           if (!output_can_config (output, crtc, mode))
             {
@@ -823,12 +823,12 @@ meta_monitor_manager_handle_apply_configuration  (MetaDBusDisplayConfig *skeleto
     }
 
   g_variant_iter_init (&output_iter, outputs);
-  while (g_variant_iter_loop (&output_iter, "(u@a{sv})", &output_id, &properties))
+  while (g_variant_iter_loop (&output_iter, "(u@a{sv})", &output_index, &properties))
     {
       MetaOutputInfo *output_info;
       gboolean primary, presentation;
 
-      if (output_id >= manager->n_outputs)
+      if (output_index >= manager->n_outputs)
         {
           g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
                                                  G_DBUS_ERROR_INVALID_ARGS,
@@ -837,7 +837,7 @@ meta_monitor_manager_handle_apply_configuration  (MetaDBusDisplayConfig *skeleto
         }
 
       output_info = g_slice_new0 (MetaOutputInfo);
-      output_info->output = &manager->outputs[output_id];
+      output_info->output = &manager->outputs[output_index];
 
       if (g_variant_lookup (properties, "primary", "b", &primary))
         output_info->is_primary = primary;
@@ -908,7 +908,7 @@ static gboolean
 meta_monitor_manager_handle_change_backlight  (MetaDBusDisplayConfig *skeleton,
                                                GDBusMethodInvocation *invocation,
                                                guint                  serial,
-                                               guint                  output_id,
+                                               guint                  output_index,
                                                gint                   value)
 {
   MetaMonitorManager *manager = META_MONITOR_MANAGER (skeleton);
@@ -922,14 +922,14 @@ meta_monitor_manager_handle_change_backlight  (MetaDBusDisplayConfig *skeleton,
       return TRUE;
     }
 
-  if (output_id >= manager->n_outputs)
+  if (output_index >= manager->n_outputs)
     {
       g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
                                              G_DBUS_ERROR_INVALID_ARGS,
                                              "Invalid output id");
       return TRUE;
     }
-  output = &manager->outputs[output_id];
+  output = &manager->outputs[output_index];
 
   if (value < 0 || value > 100)
     {
