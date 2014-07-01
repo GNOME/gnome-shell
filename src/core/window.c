@@ -3536,7 +3536,7 @@ find_monitor_by_id (MetaWindow *window,
     {
       MetaMonitorInfo *info = &window->screen->monitor_infos[i];
 
-      if (info->output_id != 0 && info->output_id == id)
+      if (info->output_id == id)
         return info;
     }
 
