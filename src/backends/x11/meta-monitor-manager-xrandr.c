@@ -150,7 +150,7 @@ output_get_presentation_xrandr (MetaMonitorManagerXrandr *manager_xrandr,
 
   atom = XInternAtom (manager_xrandr->xdisplay, "_MUTTER_PRESENTATION_OUTPUT", False);
   XRRGetOutputProperty (manager_xrandr->xdisplay,
-                        (XID)output->output_id,
+                        (XID)output->winsys_id,
                         atom,
                         0, G_MAXLONG, False, False, XA_CARDINAL,
                         &actual_type, &actual_format,
@@ -186,7 +186,7 @@ output_get_backlight_xrandr (MetaMonitorManagerXrandr *manager_xrandr,
 
   atom = XInternAtom (manager_xrandr->xdisplay, "Backlight", False);
   XRRGetOutputProperty (manager_xrandr->xdisplay,
-                        (XID)output->output_id,
+                        (XID)output->winsys_id,
                         atom,
                         0, G_MAXLONG, False, False, XA_INTEGER,
                         &actual_type, &actual_format,
@@ -211,7 +211,7 @@ output_get_backlight_limits_xrandr (MetaMonitorManagerXrandr *manager_xrandr,
 
   atom = XInternAtom (manager_xrandr->xdisplay, "Backlight", False);
   info = XRRQueryOutputProperty (manager_xrandr->xdisplay,
-                                 (XID)output->output_id,
+                                 (XID)output->winsys_id,
                                  atom);
 
   if (info == NULL)
@@ -278,25 +278,25 @@ get_edid_property (Display  *dpy,
 
 static GBytes *
 read_output_edid (MetaMonitorManagerXrandr *manager_xrandr,
-                  XID                       output_id)
+                  XID                       winsys_id)
 {
   Atom edid_atom;
   guint8 *result;
   gsize len;
 
   edid_atom = XInternAtom (manager_xrandr->xdisplay, "EDID", FALSE);
-  result = get_edid_property (manager_xrandr->xdisplay, output_id, edid_atom, &len);
+  result = get_edid_property (manager_xrandr->xdisplay, winsys_id, edid_atom, &len);
 
   if (!result)
     {
       edid_atom = XInternAtom (manager_xrandr->xdisplay, "EDID_DATA", FALSE);
-      result = get_edid_property (manager_xrandr->xdisplay, output_id, edid_atom, &len);
+      result = get_edid_property (manager_xrandr->xdisplay, winsys_id, edid_atom, &len);
     }
 
   if (!result)
     {
       edid_atom = XInternAtom (manager_xrandr->xdisplay, "XFree86_DDC_EDID1_RAWDATA", FALSE);
-      result = get_edid_property (manager_xrandr->xdisplay, output_id, edid_atom, &len);
+      result = get_edid_property (manager_xrandr->xdisplay, winsys_id, edid_atom, &len);
     }
 
   if (result)
@@ -312,14 +312,14 @@ read_output_edid (MetaMonitorManagerXrandr *manager_xrandr,
 
 static gboolean
 output_get_hotplug_mode_update (MetaMonitorManagerXrandr *manager_xrandr,
-                                XID                       output_id)
+                                XID                       winsys_id)
 {
   Atom atom;
   XRRPropertyInfo *info;
   gboolean result = FALSE;
 
   atom = XInternAtom (manager_xrandr->xdisplay, "hotplug_mode_update", False);
-  info = XRRQueryOutputProperty (manager_xrandr->xdisplay, output_id,
+  info = XRRQueryOutputProperty (manager_xrandr->xdisplay, winsys_id,
                                  atom);
 
   if (info)
@@ -467,10 +467,10 @@ meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
           GBytes *edid;
           MonitorInfo *parsed_edid;
 
-	  meta_output->output_id = resources->outputs[i];
+	  meta_output->winsys_id = resources->outputs[i];
 	  meta_output->name = g_strdup (output->name);
 
-          edid = read_output_edid (manager_xrandr, meta_output->output_id);
+          edid = read_output_edid (manager_xrandr, meta_output->winsys_id);
           if (edid)
             {
               gsize len;
@@ -504,7 +504,7 @@ meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
 	  meta_output->height_mm = output->mm_height;
 	  meta_output->subpixel_order = COGL_SUBPIXEL_ORDER_UNKNOWN;
           meta_output->hotplug_mode_update =
-              output_get_hotplug_mode_update (manager_xrandr, meta_output->output_id);
+              output_get_hotplug_mode_update (manager_xrandr, meta_output->winsys_id);
 
 	  meta_output->n_modes = output->nmode;
 	  meta_output->modes = g_new0 (MetaMonitorMode *, meta_output->n_modes);
@@ -556,7 +556,7 @@ meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
 	      meta_output->possible_clones[j] = GINT_TO_POINTER (output->clones[j]);
 	    }
 
-	  meta_output->is_primary = ((XID)meta_output->output_id == primary_output);
+	  meta_output->is_primary = ((XID)meta_output->winsys_id == primary_output);
 	  meta_output->is_presentation = output_get_presentation_xrandr (manager_xrandr, meta_output);
 	  output_get_backlight_limits_xrandr (manager_xrandr, meta_output);
 
@@ -589,7 +589,7 @@ meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
 
 	  for (k = 0; k < manager->n_outputs; k++)
 	    {
-	      if (clone == (XID)manager->outputs[k].output_id)
+	      if (clone == (XID)manager->outputs[k].winsys_id)
 		{
 		  meta_output->possible_clones[j] = &manager->outputs[k];
 		  break;
@@ -605,7 +605,7 @@ meta_monitor_manager_xrandr_read_edid (MetaMonitorManager *manager,
 {
   MetaMonitorManagerXrandr *manager_xrandr = META_MONITOR_MANAGER_XRANDR (manager);
 
-  return read_output_edid (manager_xrandr, output->output_id);
+  return read_output_edid (manager_xrandr, output->winsys_id);
 }
 
 static void
@@ -672,7 +672,7 @@ output_set_presentation_xrandr (MetaMonitorManagerXrandr *manager_xrandr,
 
   atom = XInternAtom (manager_xrandr->xdisplay, "_MUTTER_PRESENTATION_OUTPUT", False);
   XRRChangeOutputProperty (manager_xrandr->xdisplay,
-                           (XID)output->output_id,
+                           (XID)output->winsys_id,
                            atom,
                            XA_CARDINAL, 32, PropModeReplace,
                            (unsigned char*) &value, 1);
@@ -828,7 +828,7 @@ meta_monitor_manager_xrandr_apply_configuration (MetaMonitorManager *manager,
               output->crtc = crtc;
               new_controlled_mask |= 1UL << j;
 
-              outputs[j] = output->output_id;
+              outputs[j] = output->winsys_id;
             }
 
           if (crtc->current_mode == mode &&
@@ -891,7 +891,7 @@ meta_monitor_manager_xrandr_apply_configuration (MetaMonitorManager *manager,
         {
           XRRSetOutputPrimary (manager_xrandr->xdisplay,
                                DefaultRootWindow (manager_xrandr->xdisplay),
-                               (XID)output_info->output->output_id);
+                               (XID)output_info->output->winsys_id);
         }
 
       output_set_presentation_xrandr (manager_xrandr,
@@ -934,7 +934,7 @@ meta_monitor_manager_xrandr_change_backlight (MetaMonitorManager *manager,
 
   atom = XInternAtom (manager_xrandr->xdisplay, "Backlight", False);
   XRRChangeOutputProperty (manager_xrandr->xdisplay,
-                           (XID)output->output_id,
+                           (XID)output->winsys_id,
                            atom,
                            XA_INTEGER, 32, PropModeReplace,
                            (unsigned char *) &hw_value, 1);

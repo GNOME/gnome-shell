@@ -125,7 +125,7 @@ make_logical_config (MetaMonitorManager *manager)
           */
           info.is_presentation = TRUE;
           info.in_fullscreen = -1;
-          info.output_id = 0;
+          info.winsys_id = 0;
 
           g_array_append_val (monitor_infos, info);
 
@@ -156,8 +156,8 @@ make_logical_config (MetaMonitorManager *manager)
       info->is_primary = info->is_primary || output->is_primary;
       info->is_presentation = info->is_presentation && output->is_presentation;
 
-      if (output->is_primary || info->output_id == 0)
-        info->output_id = output->output_id;
+      if (output->is_primary || info->winsys_id == 0)
+        info->winsys_id = output->winsys_id;
 
       if (info->is_primary)
         manager->primary_monitor_index = info->number;
@@ -560,7 +560,7 @@ meta_monitor_manager_handle_get_resources (MetaDBusDisplayConfig *skeleton,
 
       g_variant_builder_add (&output_builder, "(uxiausauaua{sv})",
                              i, /* ID */
-                             (gint64)output->output_id,
+                             (gint64)output->winsys_id,
                              (int)(output->crtc ? output->crtc - manager->crtcs : -1),
                              &crtcs,
                              output->name,

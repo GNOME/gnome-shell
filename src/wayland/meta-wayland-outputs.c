@@ -236,15 +236,15 @@ meta_wayland_compositor_update_outputs (MetaWaylandCompositor *compositor,
       /* wayland does not expose disabled outputs */
       if (output->crtc == NULL)
         {
-          g_hash_table_remove (compositor->outputs, GSIZE_TO_POINTER (output->output_id));
+          g_hash_table_remove (compositor->outputs, GSIZE_TO_POINTER (output->winsys_id));
           continue;
         }
 
-      wayland_output = g_hash_table_lookup (compositor->outputs, GSIZE_TO_POINTER (output->output_id));
+      wayland_output = g_hash_table_lookup (compositor->outputs, GSIZE_TO_POINTER (output->winsys_id));
 
       if (wayland_output)
         {
-          g_hash_table_steal (compositor->outputs, GSIZE_TO_POINTER (output->output_id));
+          g_hash_table_steal (compositor->outputs, GSIZE_TO_POINTER (output->winsys_id));
         }
       else
         {
@@ -256,7 +256,7 @@ meta_wayland_compositor_update_outputs (MetaWaylandCompositor *compositor,
         }
 
       wayland_output_update_for_output (wayland_output, output);
-      g_hash_table_insert (new_table, GSIZE_TO_POINTER (output->output_id), wayland_output);
+      g_hash_table_insert (new_table, GSIZE_TO_POINTER (output->winsys_id), wayland_output);
     }
 
   g_hash_table_destroy (compositor->outputs);

@@ -937,7 +937,7 @@ _meta_window_shared_new (MetaDisplay         *display,
   window->compositor_private = NULL;
 
   window->monitor = meta_screen_get_monitor_for_window (window->screen, window);
-  window->preferred_output_id = window->monitor->output_id;
+  window->preferred_output_winsys_id = window->monitor->winsys_id;
 
   window->tile_match = NULL;
 
@@ -3527,8 +3527,8 @@ meta_window_get_monitor (MetaWindow *window)
 }
 
 static MetaMonitorInfo *
-find_monitor_by_id (MetaWindow *window,
-                    guint       id)
+find_monitor_by_winsys_id (MetaWindow *window,
+                           guint       winsys_id)
 {
   int i;
 
@@ -3536,7 +3536,7 @@ find_monitor_by_id (MetaWindow *window,
     {
       MetaMonitorInfo *info = &window->screen->monitor_infos[i];
 
-      if (info->output_id == id)
+      if (info->winsys_id == winsys_id)
         return info;
     }
 
@@ -3562,11 +3562,11 @@ meta_window_update_for_monitors_changed (MetaWindow *window)
   old = window->monitor;
 
   /* Try the preferred output first */
-  new = find_monitor_by_id (window, window->preferred_output_id);
+  new = find_monitor_by_winsys_id (window, window->preferred_output_winsys_id);
 
   /* Otherwise, try to find the old output on a new monitor */
   if (!new)
-    new = find_monitor_by_id (window, old->output_id);
+    new = find_monitor_by_winsys_id (window, old->winsys_id);
 
   /* Fall back to primary if everything else failed */
   if (!new)
@@ -3649,7 +3649,7 @@ meta_window_move_resize_internal (MetaWindow          *window,
    */
 
   gboolean did_placement;
-  guint old_output_id;
+  guint old_output_winsys_id;
   MetaRectangle unconstrained_rect;
   MetaRectangle constrained_rect;
   MetaMoveResizeResultFlags result = 0;
@@ -3734,13 +3734,13 @@ meta_window_move_resize_internal (MetaWindow          *window,
                                               did_placement);
     }
 
-  old_output_id = window->monitor->output_id;
+  old_output_winsys_id = window->monitor->winsys_id;
 
   meta_window_update_monitor (window, flags & META_IS_USER_ACTION);
 
-  if (old_output_id != window->monitor->output_id &&
+  if (old_output_winsys_id != window->monitor->winsys_id &&
       flags & META_IS_MOVE_ACTION && flags & META_IS_USER_ACTION)
-    window->preferred_output_id = window->monitor->output_id;
+    window->preferred_output_winsys_id = window->monitor->winsys_id;
 
   if ((result & META_MOVE_RESIZE_RESULT_FRAME_SHAPE_CHANGED) && window->frame_bounds)
     {
@@ -3860,7 +3860,7 @@ meta_window_move_to_monitor (MetaWindow  *window,
     window->tile_monitor_number = monitor;
 
   meta_window_move_between_rects (window, &old_area, &new_area);
-  window->preferred_output_id = window->monitor->output_id;
+  window->preferred_output_winsys_id = window->monitor->winsys_id;
 
   if (window->fullscreen || window->override_redirect)
     meta_screen_queue_check_fullscreen (window->screen);

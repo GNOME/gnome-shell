@@ -65,7 +65,7 @@ struct _MetaOutput
   /* The CRTC driving this output, NULL if the output is not enabled */
   MetaCRTC *crtc;
   /* The low-level ID of this output, used to apply back configuration */
-  glong output_id;
+  glong winsys_id;
   char *name;
   char *vendor;
   char *product;
@@ -162,14 +162,14 @@ struct _MetaMonitorInfo
   gboolean in_fullscreen;
 
   /* The primary or first output for this monitor, 0 if we can't figure out.
-     It can be matched to an output_id of a MetaOutput.
+     It can be matched to a winsys_id of a MetaOutput.
 
      This is used as an opaque token on reconfiguration when switching from
      clone to extened, to decide on what output the windows should go next
      (it's an attempt to keep windows on the same monitor, and preferably on
      the primary one).
   */
-  glong output_id;
+  glong winsys_id;
 };
 
 /*

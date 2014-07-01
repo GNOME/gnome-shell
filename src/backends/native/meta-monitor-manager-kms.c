@@ -259,7 +259,7 @@ find_output_by_id (MetaOutput *outputs,
   unsigned i;
 
   for (i = 0; i < n_outputs; i++)
-    if (outputs[i].output_id == id)
+    if (outputs[i].winsys_id == id)
       return &outputs[i];
 
   return NULL;
@@ -408,7 +408,7 @@ meta_monitor_manager_kms_read_current (MetaMonitorManager *manager)
           meta_output->driver_private = output_kms = g_slice_new0 (MetaOutputKms);
           meta_output->driver_notify = (GDestroyNotify)meta_output_destroy_notify;
 
-	  meta_output->output_id = connector->connector_id;
+	  meta_output->winsys_id = connector->connector_id;
 	  meta_output->name = make_output_name (connector);
 	  meta_output->width_mm = connector->mmWidth;
 	  meta_output->height_mm = connector->mmHeight;
@@ -491,7 +491,7 @@ meta_monitor_manager_kms_read_current (MetaMonitorManager *manager)
             meta_output->crtc = NULL;
 
           old_output = find_output_by_id (old_outputs, n_old_outputs,
-                                          meta_output->output_id);
+                                          meta_output->winsys_id);
           if (old_output)
             {
               meta_output->is_primary = old_output->is_primary;
@@ -667,7 +667,7 @@ meta_monitor_manager_kms_set_power_save_mode (MetaMonitorManager *manager,
 
       if (output_kms->dpms_prop_id != 0)
         {
-          int ok = drmModeConnectorSetProperty(manager_kms->fd, meta_output->output_id,
+          int ok = drmModeConnectorSetProperty(manager_kms->fd, meta_output->winsys_id,
                                                output_kms->dpms_prop_id, state);
 
           if (ok < 0)
@@ -748,7 +748,7 @@ meta_monitor_manager_kms_apply_configuration (MetaMonitorManager *manager,
             {
               MetaOutput *output = g_ptr_array_index (crtc_info->outputs, j);
 
-              connectors[j] = output->output_id;
+              connectors[j] = output->winsys_id;
 
               output->is_dirty = TRUE;
               output->crtc = crtc;

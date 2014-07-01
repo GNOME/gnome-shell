@@ -75,7 +75,7 @@ meta_monitor_manager_dummy_read_current (MetaMonitorManager *manager)
   manager->n_outputs = 1;
 
   manager->outputs[0].crtc = &manager->crtcs[0];
-  manager->outputs[0].output_id = 1;
+  manager->outputs[0].winsys_id = 1;
   manager->outputs[0].name = g_strdup ("LVDS");
   manager->outputs[0].vendor = g_strdup ("MetaProducts Inc.");
   manager->outputs[0].product = g_strdup ("unknown");

@@ -899,7 +899,7 @@ queue_send_frame_messages_timeout (MetaWindowActor *self)
   outputs = meta_monitor_manager_get_outputs (monitor_manager, &n_outputs);
   for (i = 0; i < n_outputs; i++)
     {
-      if (outputs[i].output_id == window->monitor->output_id && outputs[i].crtc)
+      if (outputs[i].winsys_id == window->monitor->winsys_id && outputs[i].crtc)
         {
           refresh_rate = outputs[i].crtc->current_mode->refresh_rate;
           break;

@@ -109,7 +109,7 @@ meta_surface_actor_wayland_is_unredirected (MetaSurfaceActor *actor)
 }
 
 static int
-get_output_scale (int output_id)
+get_output_scale (int winsys_id)
 {
   MetaMonitorManager *monitor_manager = meta_monitor_manager_get ();
   MetaOutput *outputs;
@@ -120,7 +120,7 @@ get_output_scale (int output_id)
 
   for (i = 0; i < n_outputs; i++)
     {
-      if (outputs[i].output_id == output_id)
+      if (outputs[i].winsys_id == winsys_id)
         {
           output_scale = outputs[i].scale;
           break;
@@ -150,7 +150,7 @@ meta_surface_actor_wayland_get_scale (MetaSurfaceActorWayland *actor)
 
    /* XXX: We do not handle x11 clients yet */
    if (window && window->client_type != META_WINDOW_CLIENT_TYPE_X11)
-     output_scale = get_output_scale (window->monitor->output_id);
+     output_scale = get_output_scale (window->monitor->winsys_id);
 
    return (double)output_scale / (double)priv->surface->scale;
 }

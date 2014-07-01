@@ -166,7 +166,7 @@ struct _MetaWindow
    * that to toggle between normal/tiled or maximized/tiled states. */
   guint saved_maximize : 1;
   int tile_monitor_number;
-  int preferred_output_id;
+  int preferred_output_winsys_id;
 
   /* Whether we're shaded */
   guint shaded : 1;
