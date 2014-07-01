@@ -692,6 +692,12 @@ const FdoNotificationDaemonSource = new Lang.Class({
     }
 });
 
+const PRIORITY_URGENCY_MAP = {
+    low: MessageTray.Urgency.LOW,
+    normal: MessageTray.Urgency.NORMAL,
+    high: MessageTray.Urgency.HIGH,
+    urgent: MessageTray.Urgency.CRITICAL
+};
 
 const GtkNotificationDaemonNotification = new Lang.Class({
     Name: 'GtkNotificationDaemonNotification',
@@ -705,12 +711,20 @@ const GtkNotificationDaemonNotification = new Lang.Class({
               "body": body,
               "icon": gicon,
               "urgent": urgent,
+              "priority": priority,
               "buttons": buttons,
               "default-action": defaultAction,
               "default-action-target": defaultActionTarget } = notification;
 
-        this.setUrgency(urgent.unpack() ? MessageTray.Urgency.CRITICAL
-                                        : MessageTray.Urgency.NORMAL);
+        if (priority) {
+            let urgency = PRIORITY_URGENCY_MAP[priority.unpack()];
+            this.setUrgency(urgency != undefined ? urgency : MessageTray.Urgency.NORMAL);
+        } else if (urgent) {
+            this.setUrgency(urgent.unpack() ? MessageTray.Urgency.CRITICAL
+                            : MessageTray.Urgency.NORMAL);
+        } else {
+            this.setUrgency(MessageTray.Urgency.NORMAL);
+        }
 
         if (buttons) {
             buttons.deep_unpack().forEach(Lang.bind(this, function(button) {
