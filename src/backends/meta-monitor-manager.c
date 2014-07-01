@@ -694,7 +694,6 @@ meta_monitor_manager_handle_apply_configuration  (MetaDBusDisplayConfig *skeleto
       MetaOutput *first_output;
       MetaCRTC *crtc;
       MetaMonitorMode *mode;
-      guint output_id;
 
       crtc_info = g_slice_new (MetaCRTCInfo);
       crtc_info->outputs = g_ptr_array_new ();
