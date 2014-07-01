@@ -486,12 +486,12 @@ meta_compositor_manage (MetaCompositor *compositor)
       MetaWaylandCompositor *wayland_compositor = meta_wayland_compositor_get_default ();
 
       compositor->stage = meta_stage_new ();
-      clutter_actor_show (compositor->stage);
 
       wayland_compositor->stage = compositor->stage;
 
       meta_screen_get_size (screen, &width, &height);
       clutter_actor_set_size (compositor->stage, width, height);
+      clutter_actor_show (compositor->stage);
     }
   else
     {
