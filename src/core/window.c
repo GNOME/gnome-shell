@@ -7786,11 +7786,9 @@ meta_window_handle_ungrabbed_event (MetaWindow         *window,
   /* Some windows might not ask for input, in which case we might be here
    * because we selected for ButtonPress on the root window. In that case,
    * we have to take special care not to act for an override-redirect window.
-   *
-   * Consume the event in this case, though, since we don't want it passed
-   * to the compositor or UI. */
+   */
   if (window->override_redirect)
-    return TRUE;
+    return FALSE;
 
   /* We have three passive button grabs:
    * - on any button, without modifiers => focuses and maybe raises the window
