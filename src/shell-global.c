@@ -784,7 +784,11 @@ update_scale_factor (GtkSettings *settings,
 
   g_value_init (&value, G_TYPE_INT);
   if (gdk_screen_get_setting (global->gdk_screen, "gdk-window-scaling-factor", &value))
-    g_object_set (context, "scale-factor", g_value_get_int (&value), NULL);
+    {
+      g_object_set (context, "scale-factor", g_value_get_int (&value), NULL);
+      if (meta_is_wayland_compositor ())
+        g_object_set (clutter_settings_get_default (), "font-dpi", 96 * 1024 * g_value_get_int (&value), NULL);
+    }
 
   /* Make sure clutter and gdk scaling stays disabled */
   g_object_set (clutter_settings_get_default (), "window-scaling-factor", 1, NULL);
