@@ -80,9 +80,6 @@ typedef struct
    */
   GSList *combos;
 
-  /* for keybindings that can have shift or not like Alt+Tab */
-  gboolean      add_shift:1;
-
   /* for keybindings that apply only to a window */
   gboolean      per_window:1;
 

@@ -377,7 +377,7 @@ typedef enum
   META_KEY_BINDING_NONE,
   META_KEY_BINDING_PER_WINDOW  = 1 << 0,
   META_KEY_BINDING_BUILTIN     = 1 << 1,
-  META_KEY_BINDING_REVERSES    = 1 << 2,
+/* 1 << 2 used to be META_KEY_BINDING_REVERSES which is deprecated */
   META_KEY_BINDING_IS_REVERSED = 1 << 3
 } MetaKeyBindingFlags;
 

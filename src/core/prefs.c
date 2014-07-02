@@ -2033,23 +2033,6 @@ update_binding (MetaKeyPref *binding,
           continue;
         }
 
-      /* Bug 329676: Bindings which can be shifted must not have no modifiers,
-       * nor only SHIFT as a modifier.
-       */
-
-      if (binding->add_shift &&
-          0 != keysym &&
-          (META_VIRTUAL_SHIFT_MASK == mods || 0 == mods))
-        {
-          meta_warning ("Cannot bind \"%s\" to %s: it needs a modifier "
-                        "such as Ctrl or Alt.\n",
-                        binding->name, strokes[i]);
-
-          /* Value is kept and will thus be removed next time we save the key.
-           * Changing the key in response to a modification could lead to cyclic calls. */
-          continue;
-        }
-
       combo = g_malloc0 (sizeof (MetaKeyCombo));
       combo->keysym = keysym;
       combo->keycode = keycode;
@@ -2225,7 +2208,6 @@ meta_prefs_add_keybinding (const char           *name,
   pref->settings = g_object_ref (settings);
   pref->action = action;
   pref->combos = NULL;
-  pref->add_shift = (flags & META_KEY_BINDING_REVERSES) != 0;
   pref->per_window = (flags & META_KEY_BINDING_PER_WINDOW) != 0;
   pref->builtin = (flags & META_KEY_BINDING_BUILTIN) != 0;
 

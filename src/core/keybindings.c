@@ -636,26 +636,6 @@ rebuild_binding_table (MetaKeyBindingManager *keys,
               b->mask = 0;
 
               g_hash_table_add (keys->key_bindings, b);
-
-              if (pref->add_shift &&
-                  (combo->modifiers & META_VIRTUAL_SHIFT_MASK) == 0)
-                {
-                  meta_topic (META_DEBUG_KEYBINDINGS,
-                              "Binding %s also needs Shift grabbed\n",
-                              pref->name);
-
-                  b = g_malloc0 (sizeof (MetaKeyBinding));
-
-                  b->name = pref->name;
-                  b->handler = handler;
-                  b->flags = handler->flags;
-                  b->keysym = combo->keysym;
-                  b->keycode = combo->keycode;
-                  b->modifiers = combo->modifiers | META_VIRTUAL_SHIFT_MASK;
-                  b->mask = 0;
-
-                  g_hash_table_add (keys->key_bindings, b);
-                }
             }
 
           tmp = tmp->next;
@@ -832,10 +812,6 @@ add_builtin_keybinding (MetaDisplay          *display,
  * such as "&lt;Ctl&gt;" and "&lt;Ctrl&gt;". If the key is set to the empty list or a
  * list with a single element of either "" or "disabled", the keybinding is
  * disabled.
- * If %META_KEY_BINDING_REVERSES is specified in @flags, the binding
- * may be reversed by holding down the "shift" key; therefore, "&lt;Shift&gt;"
- * cannot be one of the keys used. @handler is expected to check for the
- * "shift" modifier in this case and reverse its action.
  *
  * Use meta_display_remove_keybinding() to remove the binding.
  *
