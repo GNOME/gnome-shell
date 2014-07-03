@@ -163,6 +163,7 @@ color_composite (const GdkRGBA *bg,
   color->red = color->red + (fg->red - color->red) * alpha;
   color->green = color->green + (fg->green - color->green) * alpha;
   color->blue = color->blue + (fg->blue - color->blue) * alpha;
+  color->alpha = color->alpha + (fg->alpha - color->alpha) * alpha;
 }
 
 /**
@@ -6354,6 +6355,7 @@ gtk_style_shade (GdkRGBA *a,
   b->red = red;
   b->green = green;
   b->blue = blue;
+  b->alpha = a->alpha;
 }
 
 /**
