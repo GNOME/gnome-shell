@@ -65,7 +65,7 @@ free_buffer (guchar *pixels, gpointer data)
 }
 
 static GdkPixbuf*
-blank_pixbuf (int width, int height, gboolean no_padding)
+blank_pixbuf (int width, int height)
 {
   guchar *buf;
   int rowstride;
@@ -73,11 +73,8 @@ blank_pixbuf (int width, int height, gboolean no_padding)
   g_return_val_if_fail (width > 0, NULL);
   g_return_val_if_fail (height > 0, NULL);
 
-  if (no_padding)
-    rowstride = width * 3;
-  else
-    /* Always align rows to 32-bit boundaries */
-    rowstride = 4 * ((3 * width + 3) / 4);
+  /* Always align rows to 32-bit boundaries */
+  rowstride = 4 * ((3 * width + 3) / 4);
 
   buf = g_try_malloc (height * rowstride);
   if (!buf)
@@ -203,7 +200,7 @@ meta_gradient_create_interwoven (int            width,
   unsigned char *pixels;
   int rowstride;
 
-  pixbuf = blank_pixbuf (width, height, FALSE);
+  pixbuf = blank_pixbuf (width, height);
   if (pixbuf == NULL)
     return NULL;
 
@@ -300,7 +297,7 @@ meta_gradient_create_horizontal (int width, int height,
   int rf, gf, bf;
   int rowstride;
 
-  pixbuf = blank_pixbuf (width, height, FALSE);
+  pixbuf = blank_pixbuf (width, height);
   if (pixbuf == NULL)
     return NULL;
 
@@ -368,7 +365,7 @@ meta_gradient_create_vertical (int width, int height,
   int rowstride;
   unsigned char *pixels;
 
-  pixbuf = blank_pixbuf (width, height, FALSE);
+  pixbuf = blank_pixbuf (width, height);
   if (pixbuf == NULL)
     return NULL;
 
@@ -442,7 +439,7 @@ meta_gradient_create_diagonal (int width, int height,
   else if (height == 1)
     return meta_gradient_create_horizontal (width, height, from, to);
 
-  pixbuf = blank_pixbuf (width, height, FALSE);
+  pixbuf = blank_pixbuf (width, height);
   if (pixbuf == NULL)
     return NULL;
 
@@ -488,7 +485,7 @@ meta_gradient_create_multi_horizontal (int width, int height,
 
   g_return_val_if_fail (count > 2, NULL);
 
-  pixbuf = blank_pixbuf (width, height, FALSE);
+  pixbuf = blank_pixbuf (width, height);
   if (pixbuf == NULL)
     return NULL;
 
@@ -560,7 +557,7 @@ meta_gradient_create_multi_vertical (int width, int height,
 
   g_return_val_if_fail (count > 2, NULL);
 
-  pixbuf = blank_pixbuf (width, height, FALSE);
+  pixbuf = blank_pixbuf (width, height);
   if (pixbuf == NULL)
     return NULL;
 
