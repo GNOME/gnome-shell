@@ -166,6 +166,9 @@ static void
 toplevel_surface_commit (MetaWaylandSurface             *surface,
                          MetaWaylandPendingState *pending)
 {
+  if (pending->frame_extents_changed)
+    meta_window_set_custom_frame_extents (surface->window, &pending->frame_extents);
+
   if (pending->newly_attached)
     {
       MetaWindow *window = surface->window;
@@ -187,9 +190,6 @@ toplevel_surface_commit (MetaWaylandSurface             *surface,
             meta_window_wayland_move_resize (window, new_width, new_height, pending->dx, pending->dy);
         }
     }
-
-  if (pending->frame_extents_changed)
-    meta_window_set_custom_frame_extents (surface->window, &pending->frame_extents);
 }
 
 static void
