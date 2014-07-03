@@ -1,3 +1,31 @@
+Cogl 1.18.2                                                        2014-06-03
+
+  • List of changes since Cogl 1.18.0
+
+  » MSVC updates
+  » KMS improvements for use by GNOME Shell
+  » EGL backend improvement to avoid creating a dummy surface if
+    driver supports EGL_KHR_surfacless_context extension
+  » cogl-x11-tfp example fixes
+
+  • Gnome Bugzilla bugs closed since 1.18.0:
+
+  #728064 - New AtlasTextures should keep designated atlas alive
+  #728628 - Fails to link from C++ applications due to excessive
+            symbol mangling
+  #728978 - Don't set EGL_PLATFORM
+  #728979 - Call swap notify handler even when pageflip ioctl fails
+  #730536 - Add apis needed for mutters compositor bypass
+
+Many thanks to:
+
+  Chun-wei Fan
+  Neil Roberts
+  Adel Gadllah
+  Kristian Høgsberg
+  Emanuele Aina
+  Felix Riemann
+
 Cogl 1.18.0                                                        2014-03-21
 
   • List of changes since Cogl 1.17.4
