@@ -455,23 +455,6 @@ const Overview = new Lang.Class({
         this._inDrag = false;
     },
 
-    // show:
-    //
-    // Animates the overview visible and grabs mouse and keyboard input
-    show: function() {
-        if (this.isDummy)
-            return;
-        if (this._shown)
-            return;
-        this._shown = true;
-
-        if (!this._syncGrab())
-            return;
-
-        Main.layoutManager.showOverview();
-        this._animateVisible();
-    },
-
     focusSearch: function() {
         this.show();
         this._searchEntry.grab_key_focus();
@@ -502,69 +485,6 @@ const Overview = new Lang.Class({
                            time: ANIMATION_TIME,
                            transition: 'easeOutQuad'
                          });
-    },
-
-    _animateVisible: function() {
-        if (this.visible || this.animationInProgress)
-            return;
-
-        this.visible = true;
-        this.animationInProgress = true;
-        this.visibleTarget = true;
-        this._activationTime = Date.now() / 1000;
-
-        Meta.disable_unredirect_for_screen(global.screen);
-        this.viewSelector.show();
-
-        this._stack.opacity = 0;
-        Tweener.addTween(this._stack,
-                         { opacity: 255,
-                           transition: 'easeOutQuad',
-                           time: ANIMATION_TIME,
-                           onComplete: this._showDone,
-                           onCompleteScope: this
-                         });
-        this._shadeBackgrounds();
-
-        this._coverPane.raise_top();
-        this._coverPane.show();
-        this.emit('showing');
-    },
-
-    // hide:
-    //
-    // Reverses the effect of show()
-    hide: function() {
-        if (this.isDummy)
-            return;
-
-        if (!this._shown)
-            return;
-
-        let event = Clutter.get_current_event();
-        if (event) {
-            let type = event.type();
-            let button = (type == Clutter.EventType.BUTTON_PRESS ||
-                          type == Clutter.EventType.BUTTON_RELEASE);
-            let ctrl = (event.get_state() & Clutter.ModifierType.CONTROL_MASK) != 0;
-            if (button && ctrl)
-                return;
-        }
-
-        this._animateNotVisible();
-
-        this._shown = false;
-        this._syncGrab();
-    },
-
-    toggle: function() {
-        if (this.isDummy)
-            return;
-
-        if (this.visible)
-            this.hide();
-        else
-            this.show();
     },
 
     // Checks if the Activities button is currently sensitive to
@@ -612,6 +532,92 @@ const Overview = new Lang.Class({
         return true;
     },
 
+    // show:
+    //
+    // Animates the overview visible and grabs mouse and keyboard input
+    show: function() {
+        if (this.isDummy)
+            return;
+        if (this._shown)
+            return;
+        this._shown = true;
+
+        if (!this._syncGrab())
+            return;
+
+        Main.layoutManager.showOverview();
+        this._animateVisible();
+    },
+
+
+    _animateVisible: function() {
+        if (this.visible || this.animationInProgress)
+            return;
+
+        this.visible = true;
+        this.animationInProgress = true;
+        this.visibleTarget = true;
+        this._activationTime = Date.now() / 1000;
+
+        Meta.disable_unredirect_for_screen(global.screen);
+        this.viewSelector.show();
+
+        this._stack.opacity = 0;
+        Tweener.addTween(this._stack,
+                         { opacity: 255,
+                           transition: 'easeOutQuad',
+                           time: ANIMATION_TIME,
+                           onComplete: this._showDone,
+                           onCompleteScope: this
+                         });
+        this._shadeBackgrounds();
+
+        this._coverPane.raise_top();
+        this._coverPane.show();
+        this.emit('showing');
+    },
+
+    _showDone: function() {
+        this.animationInProgress = false;
+        this._desktopFade.hide();
+        this._coverPane.hide();
+
+        this.emit('shown');
+        // Handle any calls to hide* while we were showing
+        if (!this._shown)
+            this._animateNotVisible();
+
+        this._syncGrab();
+        global.sync_pointer();
+    },
+
+    // hide:
+    //
+    // Reverses the effect of show()
+    hide: function() {
+        if (this.isDummy)
+            return;
+
+        if (!this._shown)
+            return;
+
+        let event = Clutter.get_current_event();
+        if (event) {
+            let type = event.type();
+            let button = (type == Clutter.EventType.BUTTON_PRESS ||
+                          type == Clutter.EventType.BUTTON_RELEASE);
+            let ctrl = (event.get_state() & Clutter.ModifierType.CONTROL_MASK) != 0;
+            if (button && ctrl)
+                return;
+        }
+
+        this._animateNotVisible();
+
+        this._shown = false;
+        this._syncGrab();
+    },
+
+
     _animateNotVisible: function() {
         if (!this.visible || this.animationInProgress)
             return;
@@ -634,20 +640,6 @@ const Overview = new Lang.Class({
         this._coverPane.raise_top();
         this._coverPane.show();
         this.emit('hiding');
-    },
-
-    _showDone: function() {
-        this.animationInProgress = false;
-        this._desktopFade.hide();
-        this._coverPane.hide();
-
-        this.emit('shown');
-        // Handle any calls to hide* while we were showing
-        if (!this._shown)
-            this._animateNotVisible();
-
-        this._syncGrab();
-        global.sync_pointer();
     },
 
     _hideDone: function() {
@@ -675,6 +667,16 @@ const Overview = new Lang.Class({
             this._fakePointerEvent();
             this._needsFakePointerEvent = false;
         }
+    },
+
+    toggle: function() {
+        if (this.isDummy)
+            return;
+
+        if (this.visible)
+            this.hide();
+        else
+            this.show();
     }
 });
 Signals.addSignalMethods(Overview.prototype);
