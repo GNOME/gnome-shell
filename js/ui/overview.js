@@ -583,8 +583,6 @@ const Overview = new Lang.Class({
         return false;
     },
 
-    //// Private methods ////
-
     _syncGrab: function() {
         // We delay grab changes during animation so that when removing the
         // overview we don't have a problem with the release of a press/release
