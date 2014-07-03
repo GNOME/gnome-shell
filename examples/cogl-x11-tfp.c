@@ -188,6 +188,8 @@ main (int argc, char **argv)
 
   while (TRUE)
     {
+      XEvent xev;
+
       XWindowEvent (xdpy, xwin, StructureNotifyMask, &xev);
 
       if (xev.xany.type == MapNotify)
@@ -226,7 +228,7 @@ main (int argc, char **argv)
             case ClientMessage:
               if (event.xclient.message_type == atom_wm_protocols &&
                   event.xclient.data.l[0] == atom_wm_delete_window)
-                goto out;
+                return 0;
               break;
             }
           cogl_xlib_renderer_handle_event (renderer, &event);
