@@ -9,16 +9,16 @@ msgstr ""
 "Project-Id-Version: gnome-shell 3.3.90\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-03-19 20:32+0000\n"
-"PO-Revision-Date: 2014-03-21 21:41+0800\n"
-"Last-Translator: Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>\n"
+"POT-Creation-Date: 2014-04-10 08:01+0000\n"
+"PO-Revision-Date: 2014-04-10 23:25+0800\n"
+"Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) <zh-l10n@lists.linux.org.tw>\n"
 "Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 1.6.3\n"
+"X-Generator: Poedit 1.6.4\n"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
 msgid "System"
@@ -308,25 +308,25 @@ msgctxt "button"
 msgid "Sign In"
 msgstr "登入"
 
-#: ../js/gdm/loginDialog.js:270
+#: ../js/gdm/loginDialog.js:271
 msgid "Choose Session"
 msgstr "選擇作業階段"
 
-#: ../js/gdm/loginDialog.js:430
+#: ../js/gdm/loginDialog.js:431
 msgid "Not listed?"
 msgstr "沒有列出來？"
 
-#: ../js/gdm/loginDialog.js:608
+#: ../js/gdm/loginDialog.js:614
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(例如： user 或 %s)"
 
-#: ../js/gdm/loginDialog.js:613 ../js/ui/components/networkAgent.js:262
+#: ../js/gdm/loginDialog.js:619 ../js/ui/components/networkAgent.js:262
 #: ../js/ui/components/networkAgent.js:280
 msgid "Username: "
 msgstr "使用者名稱："
 
-#: ../js/gdm/loginDialog.js:884
+#: ../js/gdm/loginDialog.js:920
 msgid "Login Window"
 msgstr "登入視窗"
 
@@ -351,27 +351,27 @@ msgstr "無法分析指令："
 msgid "Execution of “%s” failed:"
 msgstr "執行「%s」失敗："
 
-#: ../js/ui/appDisplay.js:629
+#: ../js/ui/appDisplay.js:636
 msgid "Frequently used applications will appear here"
 msgstr "經常使用的應用程式會出現在這裡"
 
-#: ../js/ui/appDisplay.js:740
+#: ../js/ui/appDisplay.js:747
 msgid "Frequent"
 msgstr "常用"
 
-#: ../js/ui/appDisplay.js:747
+#: ../js/ui/appDisplay.js:754
 msgid "All"
 msgstr "全部"
 
-#: ../js/ui/appDisplay.js:1555
+#: ../js/ui/appDisplay.js:1566
 msgid "New Window"
 msgstr "新視窗"
 
-#: ../js/ui/appDisplay.js:1577 ../js/ui/dash.js:285
+#: ../js/ui/appDisplay.js:1588 ../js/ui/dash.js:285
 msgid "Remove from Favorites"
 msgstr "自喜好中移除"
 
-#: ../js/ui/appDisplay.js:1583
+#: ../js/ui/appDisplay.js:1594
 msgid "Add to Favorites"
 msgstr "加入喜好"
 
@@ -788,13 +788,13 @@ msgstr "%s 正在邀請您加入 %s"
 #: ../js/ui/components/telepathyClient.js:1164
 #: ../js/ui/components/telepathyClient.js:1199
 #: ../js/ui/components/telepathyClient.js:1233
-#: ../js/ui/components/telepathyClient.js:1290
+#: ../js/ui/components/telepathyClient.js:1291
 msgid "Decline"
 msgstr "拒絕"
 
 #: ../js/ui/components/telepathyClient.js:1170
 #: ../js/ui/components/telepathyClient.js:1239
-#: ../js/ui/components/telepathyClient.js:1295
+#: ../js/ui/components/telepathyClient.js:1296
 msgid "Accept"
 msgstr "接受"
 
@@ -831,118 +831,118 @@ msgstr "%s 正傳送給您 %s"
 msgid "%s would like permission to see when you are online"
 msgstr "%s 想要得到查看您上線狀態的許可"
 
-#: ../js/ui/components/telepathyClient.js:1341
+#: ../js/ui/components/telepathyClient.js:1342
 msgid "Network error"
 msgstr "網路錯誤"
 
-#: ../js/ui/components/telepathyClient.js:1343
+#: ../js/ui/components/telepathyClient.js:1344
 msgid "Authentication failed"
 msgstr "核對失敗"
 
-#: ../js/ui/components/telepathyClient.js:1345
+#: ../js/ui/components/telepathyClient.js:1346
 msgid "Encryption error"
 msgstr "加密發生錯誤"
 
-#: ../js/ui/components/telepathyClient.js:1347
+#: ../js/ui/components/telepathyClient.js:1348
 msgid "Certificate not provided"
 msgstr "沒有提供憑證"
 
-#: ../js/ui/components/telepathyClient.js:1349
+#: ../js/ui/components/telepathyClient.js:1350
 msgid "Certificate untrusted"
 msgstr "憑證不被信任"
 
-#: ../js/ui/components/telepathyClient.js:1351
+#: ../js/ui/components/telepathyClient.js:1352
 msgid "Certificate expired"
 msgstr "憑證已逾期"
 
-#: ../js/ui/components/telepathyClient.js:1353
+#: ../js/ui/components/telepathyClient.js:1354
 msgid "Certificate not activated"
 msgstr "憑證尚未使用"
 
-#: ../js/ui/components/telepathyClient.js:1355
+#: ../js/ui/components/telepathyClient.js:1356
 msgid "Certificate hostname mismatch"
 msgstr "憑證主機名稱不符"
 
-#: ../js/ui/components/telepathyClient.js:1357
+#: ../js/ui/components/telepathyClient.js:1358
 msgid "Certificate fingerprint mismatch"
 msgstr "憑證數位指紋不符"
 
-#: ../js/ui/components/telepathyClient.js:1359
+#: ../js/ui/components/telepathyClient.js:1360
 msgid "Certificate self-signed"
 msgstr "憑證為自我簽署"
 
-#: ../js/ui/components/telepathyClient.js:1361
+#: ../js/ui/components/telepathyClient.js:1362
 msgid "Status is set to offline"
 msgstr "狀態設為離線"
 
-#: ../js/ui/components/telepathyClient.js:1363
+#: ../js/ui/components/telepathyClient.js:1364
 msgid "Encryption is not available"
 msgstr "加密無法使用"
 
-#: ../js/ui/components/telepathyClient.js:1365
+#: ../js/ui/components/telepathyClient.js:1366
 msgid "Certificate is invalid"
 msgstr "憑證無效"
 
-#: ../js/ui/components/telepathyClient.js:1367
+#: ../js/ui/components/telepathyClient.js:1368
 msgid "Connection has been refused"
 msgstr "連線遭到拒絕"
 
-#: ../js/ui/components/telepathyClient.js:1369
+#: ../js/ui/components/telepathyClient.js:1370
 msgid "Connection can't be established"
 msgstr "無法建立連線"
 
-#: ../js/ui/components/telepathyClient.js:1371
+#: ../js/ui/components/telepathyClient.js:1372
 msgid "Connection has been lost"
 msgstr "已失去連線"
 
-#: ../js/ui/components/telepathyClient.js:1373
+#: ../js/ui/components/telepathyClient.js:1374
 msgid "This account is already connected to the server"
 msgstr "這個帳號已連接至該伺服器"
 
-#: ../js/ui/components/telepathyClient.js:1375
+#: ../js/ui/components/telepathyClient.js:1376
 msgid ""
 "Connection has been replaced by a new connection using the same resource"
 msgstr "連線已被使用相同資源的新連線取代"
 
-#: ../js/ui/components/telepathyClient.js:1377
+#: ../js/ui/components/telepathyClient.js:1378
 msgid "The account already exists on the server"
 msgstr "該帳號已經存在於伺服器上"
 
-#: ../js/ui/components/telepathyClient.js:1379
+#: ../js/ui/components/telepathyClient.js:1380
 msgid "Server is currently too busy to handle the connection"
 msgstr "伺服器目前過於忙碌以致於無法處理該連線"
 
-#: ../js/ui/components/telepathyClient.js:1381
+#: ../js/ui/components/telepathyClient.js:1382
 msgid "Certificate has been revoked"
 msgstr "憑證已被撤銷"
 
-#: ../js/ui/components/telepathyClient.js:1383
+#: ../js/ui/components/telepathyClient.js:1384
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr "憑證使用不安全的密碼演算法，或是密碼處理上較弱"
 
-#: ../js/ui/components/telepathyClient.js:1385
+#: ../js/ui/components/telepathyClient.js:1386
 msgid ""
 "The length of the server certificate, or the depth of the server certificate "
 "chain, exceed the limits imposed by the cryptography library"
 msgstr "伺服器憑證的長度，或是伺服器憑證鏈的深度超過密碼函式庫所能處理的範圍"
 
-#: ../js/ui/components/telepathyClient.js:1387
+#: ../js/ui/components/telepathyClient.js:1388
 msgid "Internal error"
 msgstr "內部的錯誤"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example. */
-#: ../js/ui/components/telepathyClient.js:1397
+#: ../js/ui/components/telepathyClient.js:1398
 #, javascript-format
 msgid "Unable to connect to %s"
 msgstr "無法連線到 %s"
 
-#: ../js/ui/components/telepathyClient.js:1402
+#: ../js/ui/components/telepathyClient.js:1403
 msgid "View account"
 msgstr "檢視帳號"
 
-#: ../js/ui/components/telepathyClient.js:1439
+#: ../js/ui/components/telepathyClient.js:1440
 msgid "Unknown reason"
 msgstr "不明原因"
 
@@ -1129,7 +1129,8 @@ msgstr "隱藏錯誤"
 msgid "Show Errors"
 msgstr "顯示錯誤"
 
-#: ../js/ui/lookingGlass.js:716
+#: ../js/ui/lookingGlass.js:716 ../js/ui/status/location.js:59
+#: ../js/ui/status/location.js:167
 msgid "Enabled"
 msgstr "已啟用"
 
@@ -1137,8 +1138,8 @@ msgstr "已啟用"
 #. because it's disabled by rfkill (airplane mode) */
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:719 ../js/ui/status/network.js:555
-#: ../src/gvc/gvc-mixer-control.c:1830
+#: ../js/ui/lookingGlass.js:719 ../js/ui/status/location.js:164
+#: ../js/ui/status/network.js:555 ../src/gvc/gvc-mixer-control.c:1830
 msgid "Disabled"
 msgstr "已停用"
 
@@ -1283,7 +1284,7 @@ msgstr "鎖定被應用程式阻擋"
 msgid "Searching…"
 msgstr "搜尋…"
 
-#: ../js/ui/search.js:646
+#: ../js/ui/search.js:649
 msgid "No results."
 msgstr "沒有結果。"
 
@@ -1359,8 +1360,7 @@ msgstr "大型文字"
 msgid "Bluetooth"
 msgstr "藍牙"
 
-#: ../js/ui/status/bluetooth.js:51 ../js/ui/status/location.js:60
-#: ../js/ui/status/location.js:167 ../js/ui/status/network.js:151
+#: ../js/ui/status/bluetooth.js:51 ../js/ui/status/network.js:151
 #: ../js/ui/status/network.js:323 ../js/ui/status/network.js:1234
 #: ../js/ui/status/network.js:1345 ../js/ui/status/rfkill.js:85
 #: ../js/ui/status/rfkill.js:105
@@ -1393,23 +1393,28 @@ msgstr "顯示鍵盤配置"
 msgid "Location"
 msgstr "位置"
 
-#: ../js/ui/status/location.js:59 ../js/ui/status/location.js:166
-#: ../js/ui/status/rfkill.js:84
-msgid "On"
-msgstr "開啟"
+#: ../js/ui/status/location.js:60 ../js/ui/status/location.js:168
+#| msgid "Disabled"
+msgid "Disable"
+msgstr "停用"
 
-#: ../js/ui/status/location.js:163 ../js/ui/status/network.js:420
-#: ../js/ui/status/network.js:1260 ../js/ui/status/network.js:1464
-msgid "Off"
-msgstr "關閉"
+#: ../js/ui/status/location.js:165
+#| msgid "Enabled"
+msgid "Enable"
+msgstr "啟用"
 
-#: ../js/ui/status/location.js:164 ../js/ui/status/network.js:1234
-msgid "Turn On"
-msgstr "開啟"
+#: ../js/ui/status/location.js:167
+msgid "In Use"
+msgstr "使用中"
 
 #: ../js/ui/status/network.js:74
 msgid "<unknown>"
 msgstr "<不明>"
+
+#: ../js/ui/status/network.js:420 ../js/ui/status/network.js:1260
+#: ../js/ui/status/network.js:1464
+msgid "Off"
+msgstr "關閉"
 
 #: ../js/ui/status/network.js:422
 msgid "Connected"
@@ -1514,6 +1519,10 @@ msgstr "選擇網路"
 msgid "Wi-Fi Settings"
 msgstr "Wi-Fi 設定值"
 
+#: ../js/ui/status/network.js:1234
+msgid "Turn On"
+msgstr "開啟"
+
 #: ../js/ui/status/network.js:1251
 msgid "Hotspot Active"
 msgstr "熱點活動中"
@@ -1579,6 +1588,10 @@ msgstr "電池"
 #: ../js/ui/status/rfkill.js:82
 msgid "Airplane Mode"
 msgstr "飛安模式"
+
+#: ../js/ui/status/rfkill.js:84
+msgid "On"
+msgstr "開啟"
 
 #: ../js/ui/status/system.js:314
 msgid "Switch User"
