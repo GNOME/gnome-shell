@@ -42,8 +42,8 @@ function _showHello() {
 
     let monitor = Main.layoutManager.primaryMonitor;
 
-    text.set_position(Math.floor(monitor.width / 2 - text.width / 2),
-                      Math.floor(monitor.height / 2 - text.height / 2));
+    text.set_position(monitor.x + Math.floor(monitor.width / 2 - text.width / 2),
+                      monitor.y + Math.floor(monitor.height / 2 - text.height / 2));
 
     Tweener.addTween(text,
                      { opacity: 0,
