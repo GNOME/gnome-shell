@@ -1847,6 +1847,38 @@ clutter_evdev_get_keyboard_map (ClutterDeviceManager *evdev)
 }
 
 /**
+ * clutter_evdev_set_keyboard_layout_index: (skip)
+ * @evdev: the #ClutterDeviceManager created by the evdev backend
+ * @idx: the xkb layout index to set
+ *
+ * Sets the xkb layout index on the backend's #xkb_state .
+ *
+ * Since: 1.20
+ * Stability: unstable
+ */
+void
+clutter_evdev_set_keyboard_layout_index (ClutterDeviceManager *evdev,
+                                         xkb_layout_index_t    idx)
+{
+  ClutterDeviceManagerEvdev *manager_evdev;
+  xkb_mod_mask_t depressed_mods;
+  xkb_mod_mask_t latched_mods;
+  xkb_mod_mask_t locked_mods;
+  struct xkb_state *state;
+
+  g_return_val_if_fail (CLUTTER_IS_DEVICE_MANAGER_EVDEV (evdev), NULL);
+
+  manager_evdev = CLUTTER_DEVICE_MANAGER_EVDEV (evdev);
+  state = manager_evdev->priv->main_seat->xkb;
+
+  depressed_mods = xkb_state_serialize_mods (state, XKB_STATE_MODS_DEPRESSED);
+  latched_mods = xkb_state_serialize_mods (state, XKB_STATE_MODS_LATCHED);
+  locked_mods = xkb_state_serialize_mods (state, XKB_STATE_MODS_LOCKED);
+
+  xkb_state_update_mask (state, depressed_mods, latched_mods, locked_mods, 0, 0, idx);
+}
+
+/**
  * clutter_evdev_set_pointer_constrain_callback:
  * @evdev: the #ClutterDeviceManager created by the evdev backend
  * @callback: the callback
