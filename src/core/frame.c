@@ -29,11 +29,7 @@
 
 #define EVENT_MASK (SubstructureRedirectMask |                     \
                     StructureNotifyMask | SubstructureNotifyMask | \
-                    ExposureMask |                                 \
-                    ButtonPressMask | ButtonReleaseMask |          \
-                    PointerMotionMask | PointerMotionHintMask |    \
-                    EnterWindowMask | LeaveWindowMask |            \
-                    FocusChangeMask)
+                    ExposureMask | FocusChangeMask)
 
 void
 meta_window_ensure_frame (MetaWindow *window)
