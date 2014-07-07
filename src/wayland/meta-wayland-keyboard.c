@@ -128,6 +128,13 @@ inform_clients_of_new_keymap (MetaWaylandKeyboard *keyboard,
 			       keyboard->xkb_info.keymap_fd,
 			       keyboard->xkb_info.keymap_size);
     }
+  wl_resource_for_each (keyboard_resource, &keyboard->focus_resource_list)
+    {
+      wl_keyboard_send_keymap (keyboard_resource,
+                               WL_KEYBOARD_KEYMAP_FORMAT_XKB_V1,
+                               keyboard->xkb_info.keymap_fd,
+                               keyboard->xkb_info.keymap_size);
+    }
 }
 
 static void
