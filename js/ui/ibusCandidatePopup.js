@@ -11,6 +11,9 @@ const Main = imports.ui.main;
 
 const MAX_CANDIDATES_PER_PAGE = 16;
 
+const DEFAULT_INDEX_LABELS = [ '1', '2', '3', '4', '5', '6', '7', '8',
+                               '9', '0', 'a', 'b', 'c', 'd', 'e', 'f' ];
+
 const CandidateArea = new Lang.Class({
     Name: 'CandidateArea',
 
@@ -89,7 +92,7 @@ const CandidateArea = new Lang.Class({
             if (!visible)
                 continue;
 
-            box._indexLabel.text = ((indexes && indexes[i]) ? indexes[i] : '%x'.format(i + 1));
+            box._indexLabel.text = ((indexes && indexes[i]) ? indexes[i] : DEFAULT_INDEX_LABELS[i]);
             box._candidateLabel.text = candidates[i];
         }
 
