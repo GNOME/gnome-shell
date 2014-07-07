@@ -225,7 +225,7 @@ meta_gradient_create_interwoven (int            width,
   dr2 = ((colors2[1].red-colors2[0].red)*0xffffff)/(int)height;
   dg2 = ((colors2[1].green-colors2[0].green)*0xffffff)/(int)height;
   db2 = ((colors2[1].blue-colors2[0].blue)*0xffffff)/(int)height;
-  db2 = ((colors2[1].alpha-colors2[0].alpha)*0xffffff)/(int)height;
+  da2 = ((colors2[1].alpha-colors2[0].alpha)*0xffffff)/(int)height;
 
   for (i=0,k=0,l=0,ll=thickness1; i<height; i++)
     {
