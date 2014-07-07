@@ -148,11 +148,12 @@ handle_host_xevent (MetaBackend *backend,
       }
   }
 
-  maybe_spoof_event_as_stage_event (x11, event);
-
  out:
   if (!bypass_clutter)
-    clutter_x11_handle_event (event);
+    {
+      maybe_spoof_event_as_stage_event (x11, event);
+      clutter_x11_handle_event (event);
+    }
 
   XFreeEventData (priv->xdisplay, &event->xcookie);
 }
