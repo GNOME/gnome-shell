@@ -380,6 +380,12 @@ const VPNRequestHandler = new Lang.Class({
             argv.push('-i');
         if (flags & NMClient.SecretAgentGetSecretsFlags.REQUEST_NEW)
             argv.push('-r');
+        if (authHelper.supportsHints) {
+            for (let i = 0; i < hints.length; i++) {
+                argv.push('-t');
+                argv.push(hints[i]);
+            }
+        }
 
         this._newStylePlugin = authHelper.externalUIMode;
 
@@ -598,7 +604,9 @@ const NetworkAgent = new Lang.Class({
     Name: 'NetworkAgent',
 
     _init: function() {
-        this._native = new Shell.NetworkAgent({ identifier: 'org.gnome.Shell.NetworkAgent' });
+        this._native = new Shell.NetworkAgent({ identifier: 'org.gnome.Shell.NetworkAgent',
+                                                capabilities: NMClient.SecretAgentCapabilities.VPN_HINTS
+                                              });
 
         this._dialogs = { };
         this._vpnRequests = { };
@@ -698,16 +706,23 @@ const NetworkAgent = new Lang.Class({
                     let service = keyfile.get_string('VPN Connection', 'service');
                     let binary = keyfile.get_string('GNOME', 'auth-dialog');
                     let externalUIMode = false;
+                    let hints = false;
+
                     try {
                         externalUIMode = keyfile.get_boolean('GNOME', 'supports-external-ui-mode');
                     } catch(e) { } // ignore errors if key does not exist
+
+                    try {
+                        hints = keyfile.get_boolean('GNOME', 'supports-hints');
+                    } catch(e) { } // ignore errors if key does not exist
+
                     let path = binary;
                     if (!GLib.path_is_absolute(path)) {
                         path = GLib.build_filenamev([Config.LIBEXECDIR, path]);
                     }
 
                     if (GLib.file_test(path, GLib.FileTest.IS_EXECUTABLE))
-                        this._vpnBinaries[service] = { fileName: path, externalUIMode: externalUIMode };
+                        this._vpnBinaries[service] = { fileName: path, externalUIMode: externalUIMode, supportsHints: hints };
                     else
                         throw new Error('VPN plugin at %s is not executable'.format(path));
                 } catch(e) {
