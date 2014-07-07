@@ -3690,10 +3690,6 @@ meta_window_move_resize_internal (MetaWindow          *window,
       unconstrained_rect.height = window->rect.height;
     }
 
-  /* Save the unconstrained rectangle to the position we should be at
-   * before constraints kick in. */
-  window->unconstrained_rect = unconstrained_rect;
-
   constrained_rect = unconstrained_rect;
   if (flags & (META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION))
     {
@@ -3713,8 +3709,8 @@ meta_window_move_resize_internal (MetaWindow          *window,
    */
   if (did_placement)
     {
-      window->unconstrained_rect.x = constrained_rect.x;
-      window->unconstrained_rect.y = constrained_rect.y;
+      unconstrained_rect.x = constrained_rect.x;
+      unconstrained_rect.y = constrained_rect.y;
     }
 
   /* Do the protocol-specific move/resize logic */
@@ -3728,6 +3724,8 @@ meta_window_move_resize_internal (MetaWindow          *window,
 
   if ((result & (META_MOVE_RESIZE_RESULT_MOVED | META_MOVE_RESIZE_RESULT_RESIZED)) != 0 || did_placement)
     {
+      window->unconstrained_rect = unconstrained_rect;
+
       if (window->known_to_compositor)
         meta_compositor_sync_window_geometry (window->display->compositor,
                                               window,
