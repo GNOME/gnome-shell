@@ -19,6 +19,12 @@ const Tweener = imports.ui.tweener;
 const WindowMenu = imports.ui.windowMenu;
 
 const SHELL_KEYBINDINGS_SCHEMA = 'org.gnome.shell.keybindings';
+const MAXIMIZE_WINDOW_ANIMATION_TIME = 0.15;
+const UNMAXIMIZE_WINDOW_ANIMATION_TIME = 0.15;
+const MINIMIZE_WINDOW_ANIMATION_TIME = 0.2;
+const SHOW_WINDOW_ANIMATION_TIME = 0.20;
+const MENU_SHOW_WINDOW_ANIMATION_TIME = 0.15;
+const DESTROY_WINDOW_ANIMATION_TIME = 0.20;
 const WINDOW_ANIMATION_TIME = 0.25;
 const DIM_BRIGHTNESS = -0.3;
 const DIM_TIME = 0.500;
@@ -874,12 +880,12 @@ const WindowManager = new Lang.Class({
         return !Main.overview.visible;
     },
 
-    _shouldAnimateActor: function(actor) {
+    _shouldAnimateActor: function(actor, types) {
         if (!this._shouldAnimate())
             return false;
-        let windowType = actor.meta_window.get_window_type();
-        return windowType == Meta.WindowType.NORMAL ||
-            windowType == Meta.WindowType.MODAL_DIALOG;
+
+        let type = actor.meta_window.get_window_type();
+        return types.indexOf(type) >= 0;
     },
 
     _removeEffect : function(list, actor) {
@@ -892,7 +898,10 @@ const WindowManager = new Lang.Class({
     },
 
     _minimizeWindow : function(shellwm, actor) {
-        if (!this._shouldAnimateActor(actor)) {
+        let types = [Meta.WindowType.NORMAL,
+                     Meta.WindowType.MODAL_DIALOG,
+                     Meta.WindowType.DIALOG];
+        if (!this._shouldAnimateActor(actor, types)) {
             shellwm.completed_minimize(actor);
             return;
         }
@@ -904,7 +913,7 @@ const WindowManager = new Lang.Class({
         if (actor.meta_window.is_monitor_sized()) {
             Tweener.addTween(actor,
                          { opacity: 0,
-                           time: WINDOW_ANIMATION_TIME,
+                           time: MINIMIZE_WINDOW_ANIMATION_TIME,
                            transition: 'easeOutQuad',
                            onComplete: this._minimizeWindowDone,
                            onCompleteScope: this,
@@ -936,8 +945,8 @@ const WindowManager = new Lang.Class({
                                scale_y: yScale,
                                x: xDest,
                                y: yDest,
-                               time: WINDOW_ANIMATION_TIME,
-                               transition: 'easeOutQuad',
+                               time: MINIMIZE_WINDOW_ANIMATION_TIME,
+                               transition: 'easeInExpo',
                                onComplete: this._minimizeWindowDone,
                                onCompleteScope: this,
                                onCompleteParams: [shellwm, actor],
@@ -953,7 +962,7 @@ const WindowManager = new Lang.Class({
             Tweener.removeTweens(actor);
             actor.set_scale(1.0, 1.0);
             actor.set_opacity(255);
-            actor.move_anchor_point_from_gravity(Clutter.Gravity.NORTH_WEST);
+            actor.set_pivot_point(0, 0);
 
             shellwm.completed_minimize(actor);
         }
@@ -1051,7 +1060,13 @@ const WindowManager = new Lang.Class({
             actor._windowType = type;
         }));
 
-        if (!this._shouldAnimateActor(actor)) {
+        let types = [Meta.WindowType.NORMAL,
+                     Meta.WindowType.MENU,
+                     Meta.WindowType.DROPDOWN_MENU,
+                     Meta.WindowType.POPUP_MENU,
+                     Meta.WindowType.DIALOG,
+                     Meta.WindowType.MODAL_DIALOG];
+        if (!this._shouldAnimateActor(actor, types)) {
             shellwm.completed_map(actor);
             return;
         }
@@ -1059,15 +1074,23 @@ const WindowManager = new Lang.Class({
         if (actor.meta_window.is_attached_dialog()) {
             /* Scale the window from the center of the parent */
             this._checkDimming(actor.get_meta_window().get_transient_for());
-            actor.set_scale(1.0, 0.0);
-            actor.set_pivot_point(0.5, 0.5);
+        }
+
+        switch (actor._windowType) {
+        case Meta.WindowType.NORMAL:
+            actor.set_pivot_point(0.5, 1.0);
+            actor.scale_x = 0.01;
+            actor.scale_y = 0.1;
+            actor.opacity = 0;
             actor.show();
             this._mapping.push(actor);
 
             Tweener.addTween(actor,
-                             { scale_y: 1,
-                               time: WINDOW_ANIMATION_TIME,
-                               transition: "easeOutQuad",
+                             { opacity: 255,
+                               scale_x: 1,
+                               scale_y: 1,
+                               time: SHOW_WINDOW_ANIMATION_TIME,
+                               transition: 'easeOutExpo',
                                onComplete: this._mapWindowDone,
                                onCompleteScope: this,
                                onCompleteParams: [shellwm, actor],
@@ -1075,15 +1098,22 @@ const WindowManager = new Lang.Class({
                                onOverwriteScope: this,
                                onOverwriteParams: [shellwm, actor]
                              });
-        } else {
-            /* Fade window in */
-            actor.opacity = 0;
+            break;
+        case Meta.WindowType.MENU:
+        case Meta.WindowType.DROPDOWN_MENU:
+        case Meta.WindowType.POPUP_MENU:
+            actor.translation_y = -20;
+            actor.set_pivot_point(0.5, 0);
+            actor.scale_y = 0.9;
+            actor.opacity = 128;
             actor.show();
             this._mapping.push(actor);
 
             Tweener.addTween(actor,
                              { opacity: 255,
-                               time: WINDOW_ANIMATION_TIME,
+                               scale_y: 1,
+                               translation_y: 0,
+                               time: MENU_SHOW_WINDOW_ANIMATION_TIME,
                                transition: 'easeOutQuad',
                                onComplete: this._mapWindowDone,
                                onCompleteScope: this,
@@ -1092,6 +1122,32 @@ const WindowManager = new Lang.Class({
                                onOverwriteScope: this,
                                onOverwriteParams: [shellwm, actor]
                              });
+            break;
+        case Meta.WindowType.MODAL_DIALOG:
+        case Meta.WindowType.DIALOG:
+            actor.set_pivot_point(0.5, 0.5);
+            actor.scale_y = 0;
+            actor.opacity = 0;
+            actor.show();
+            this._mapping.push(actor);
+
+            Tweener.addTween(actor,
+                             { opacity: 255,
+                               scale_x: 1,
+                               scale_y: 1,
+                               time: SHOW_WINDOW_ANIMATION_TIME,
+                               transition: 'easeOutQuad',
+                               onComplete: this._mapWindowDone,
+                               onCompleteScope: this,
+                               onCompleteParams: [shellwm, actor],
+                               onOverwrite: this._mapWindowOverwrite,
+                               onOverwriteScope: this,
+                               onOverwriteParams: [shellwm, actor]
+                             });
+            break;
+        default:
+            shellwm.completed_map(actor);
+            return;
         }
     },
 
@@ -1099,7 +1155,11 @@ const WindowManager = new Lang.Class({
         if (this._removeEffect(this._mapping, actor)) {
             Tweener.removeTweens(actor);
             actor.opacity = 255;
+            actor.set_pivot_point(0, 0);
             actor.scale_y = 1;
+            actor.scale_x = 1;
+            actor.translation_y = 0;
+            actor.translation_x = 0;
             shellwm.completed_map(actor);
         }
     },
@@ -1122,7 +1182,7 @@ const WindowManager = new Lang.Class({
                                                              });
         }
 
-        if (!this._shouldAnimateActor(actor)) {
+        if (!this._shouldAnimateActor(actor, [Meta.WindowType.MODAL_DIALOG])) {
             shellwm.completed_destroy(actor);
             return;
         }
@@ -1144,7 +1204,7 @@ const WindowManager = new Lang.Class({
 
             Tweener.addTween(actor,
                              { scale_y: 0,
-                               time: WINDOW_ANIMATION_TIME,
+                               time: DESTROY_WINDOW_ANIMATION_TIME,
                                transition: "easeOutQuad",
                                onComplete: this._destroyWindowDone,
                                onCompleteScope: this,
