@@ -1258,6 +1258,12 @@ const Workspace = new Lang.Class({
             return;
         }
 
+        // We will reposition windows when enter again overview anyway.
+        // In this way we avoid unwanted animations of windows repositioning while
+        // animating overview
+        if (this.leavingOverview)
+            return;
+
         let initialPositioning = flags & WindowPositionFlags.INITIAL;
         let animate = flags & WindowPositionFlags.ANIMATE;
 
