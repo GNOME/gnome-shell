@@ -1,12 +1,5 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/**
- * \file gesture-tracker-private.h  Manages gestures on windows/desktop
- *
- * Forwards touch events to clutter actors, and accepts/rejects touch sequences
- * based on the outcome of those.
- */
-
 /*
  * Copyright (C) 2014 Red Hat
  *
