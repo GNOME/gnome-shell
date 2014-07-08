@@ -688,8 +688,6 @@ void meta_window_activate_full (MetaWindow     *window,
                                 MetaClientType  source_indication,
                                 MetaWorkspace  *workspace);
 
-gboolean meta_window_is_client_decorated (MetaWindow *window);
-
 void meta_window_update_monitor (MetaWindow *window,
                                  gboolean    user_op);
 
