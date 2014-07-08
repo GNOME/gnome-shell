@@ -28,6 +28,8 @@ data/org.gnome.shell.gschema.xml
 data/org.gnome.shell.gschema.valid
 data/org.gnome.shell.evolution.calendar.gschema.xml
 data/org.gnome.shell.evolution.calendar.gschema.valid
+data/org.gnome.Shell.PortalHelper.desktop
+data/org.gnome.Shell.PortalHelper.service
 docs/reference/*/*.args
 docs/reference/*/*.bak
 docs/reference/*/*.hierarchy
@@ -80,6 +82,7 @@ src/gnome-shell-extension-tool
 src/gnome-shell-hotplug-sniffer
 src/gnome-shell-perf-helper
 src/gnome-shell-perf-tool
+src/gnome-shell-portal-helper
 src/hotplug-sniffer/org.gnome.Shell.HotplugSniffer.service
 src/run-js-test
 src/test-recorder
