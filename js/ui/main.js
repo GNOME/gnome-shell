@@ -233,8 +233,7 @@ function _loadDefaultStylesheet() {
  * Returns: A file path that contains the theme CSS,
  *          null if using the default
  */
-function getThemeStylesheet()
-{
+function getThemeStylesheet() {
     return _cssStylesheet;
 }
 
@@ -245,8 +244,7 @@ function getThemeStylesheet()
  *
  * Set the theme CSS file that the shell will load
  */
-function setThemeStylesheet(cssStylesheet)
-{
+function setThemeStylesheet(cssStylesheet) {
     _cssStylesheet = cssStylesheet;
 }
 
