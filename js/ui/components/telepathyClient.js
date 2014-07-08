@@ -863,13 +863,6 @@ const ChatNotification = new Lang.Class({
             for (let i = 0; i < expired.length; i++)
                 expired[i].actor.destroy();
         }
-
-        let groups = this._contentArea.get_children();
-        for (let i = 0; i < groups.length; i++) {
-            let group = groups[i];
-            if (group.get_n_children() == 0)
-                group.destroy();
-        }
     },
 
     /**
@@ -911,16 +904,19 @@ const ChatNotification = new Lang.Class({
             this._lastGroup = group;
             let emptyLine = new St.Label({ style_class: 'chat-empty-line' });
             this.addActor(emptyLine);
+            this._history.unshift({ actor: emptyLine, time: timestamp,
+                                    realMessage: false });
         }
 
-        this._lastMessageBox = new St.BoxLayout({ vertical: false });
-        this._lastMessageBox.add(body, props.childProps);
-        this.addActor(this._lastMessageBox);
+        let lineBox = new St.BoxLayout({ vertical: false });
+        lineBox.add(body, props.childProps);
+        this.addActor(lineBox);
+        this._lastMessageBox = lineBox;
 
         this.updated();
 
         let timestamp = props.timestamp;
-        this._history.unshift({ actor: body, time: timestamp,
+        this._history.unshift({ actor: lineBox, time: timestamp,
                                 realMessage: group != 'meta' });
 
         if (!props.noTimestamp) {
