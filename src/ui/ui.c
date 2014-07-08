@@ -214,16 +214,19 @@ maybe_redirect_mouse_event (XEvent *xevent)
       gevent->button.y = xev_d->event_y;
       gevent->button.x_root = xev_d->root_x;
       gevent->button.y_root = xev_d->root_y;
-
       break;
     case XI_Motion:
       gevent = gdk_event_new (GDK_MOTION_NOTIFY);
       gevent->motion.window = g_object_ref (gdk_window);
+      gevent->motion.time = xev_d->time;
+      gevent->motion.x_root = xev_d->root_x;
+      gevent->motion.y_root = xev_d->root_y;
       break;
     case XI_Enter:
     case XI_Leave:
       gevent = gdk_event_new (xev_e->evtype == XI_Enter ? GDK_ENTER_NOTIFY : GDK_LEAVE_NOTIFY);
       gevent->crossing.window = g_object_ref (gdk_window);
+      gevent->crossing.time = xev_e->time;
       gevent->crossing.x = xev_e->event_x;
       gevent->crossing.y = xev_e->event_y;
       break;
