@@ -75,12 +75,30 @@ meta_ui_get_screen_number (void)
 #include "display-private.h"
 
 static gboolean
-is_input_event (XEvent *event)
+is_interesting_input_event (XEvent *event)
 {
   MetaDisplay *display = meta_get_display ();
+  XIEvent *input_event;
 
-  return (event->type == GenericEvent &&
-          event->xcookie.extension == display->xinput_opcode);
+  if (event->type != GenericEvent ||
+      event->xcookie.extension == display->xinput_opcode)
+    return FALSE;
+
+  input_event = (XIEvent *) event->xcookie.data;
+  switch (input_event->evtype)
+    {
+    case XI_ButtonPress:
+    case XI_ButtonRelease:
+    case XI_Motion:
+    case XI_Enter:
+    case XI_Leave:
+    case XI_TouchBegin:
+    case XI_TouchUpdate:
+    case XI_TouchEnd:
+      return TRUE;
+    default:
+      return FALSE;
+    }
 }
 
 /* We do some of our event handling in frames.c, which expects
@@ -98,7 +116,7 @@ is_input_event (XEvent *event)
  * use more fields, more fields need to be filled out below.
  */
 
-static gboolean
+static void
 maybe_redirect_mouse_event (XEvent *xevent)
 {
   GdkDisplay *gdisplay;
@@ -111,9 +129,6 @@ maybe_redirect_mouse_event (XEvent *xevent)
   XIEvent *xev;
   XIDeviceEvent *xev_d = NULL;
   XIEnterEvent *xev_e = NULL;
-
-  if (!is_input_event (xevent))
-    return FALSE;
 
   xev = (XIEvent *) xevent->xcookie.data;
 
@@ -131,17 +146,18 @@ maybe_redirect_mouse_event (XEvent *xevent)
       window = xev_e->event;
       break;
     default:
-      return FALSE;
+      /* Not interested in this event. */
+      return;
     }
 
   gdisplay = gdk_x11_lookup_xdisplay (xev->display);
   ui = g_object_get_data (G_OBJECT (gdisplay), "meta-ui");
   if (!ui)
-    return FALSE;
+    return;
 
   gdk_window = gdk_x11_window_lookup_for_display (gdisplay, window);
   if (gdk_window == NULL)
-    return FALSE;
+    return;
 
   gmanager = gdk_display_get_device_manager (gdisplay);
   gdevice = gdk_x11_device_manager_lookup (gmanager, META_VIRTUAL_CORE_POINTER_ID);
@@ -221,8 +237,6 @@ maybe_redirect_mouse_event (XEvent *xevent)
   gdk_event_set_device (gevent, gdevice);
   gtk_main_do_event (gevent);
   gdk_event_free (gevent);
-
-  return TRUE;
 }
 
 static GdkFilterReturn
@@ -230,8 +244,11 @@ ui_filter_func (GdkXEvent *xevent,
                 GdkEvent *event,
                 gpointer data)
 {
-  if (maybe_redirect_mouse_event (xevent))
-    return GDK_FILTER_REMOVE;
+  if (is_interesting_input_event (xevent))
+    {
+      maybe_redirect_mouse_event (xevent);
+      return GDK_FILTER_REMOVE;
+    }
   else
     return GDK_FILTER_CONTINUE;
 }
