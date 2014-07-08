@@ -445,6 +445,9 @@ void meta_display_sanity_check_timestamps (MetaDisplay *display,
 gboolean meta_display_timestamp_too_old (MetaDisplay *display,
                                          guint32     *timestamp);
 
+void meta_display_remove_pending_pings_for_window (MetaDisplay *display,
+                                                   MetaWindow  *window);
+
 MetaGestureTracker * meta_display_get_gesture_tracker (MetaDisplay *display);
 
 #endif

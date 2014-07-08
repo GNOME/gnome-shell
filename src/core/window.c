@@ -1272,6 +1272,8 @@ meta_window_unmanage (MetaWindow  *window,
       meta_stack_thaw (window->screen->stack);
     }
 
+  meta_display_remove_pending_pings_for_window (window->display, window);
+
   meta_window_shutdown_group (window); /* safe to do this early as
                                         * group.c won't re-add to the
                                         * group if window->unmanaging

@@ -296,16 +296,9 @@ ping_data_free (MetaPingData *ping_data)
   g_free (ping_data);
 }
 
-/**
- * remove_pending_pings_for_window:
- * @display: The display the window appears on
- * @xwindow: The X ID of the window whose pings we should remove
- *
- * Frees every pending ping structure for the given X window on the
- * given display. This means that we also destroy the timeouts.
- */
-static void
-remove_pending_pings_for_window (MetaDisplay *display, Window xwindow)
+void
+meta_display_remove_pending_pings_for_window (MetaDisplay *display,
+                                              MetaWindow  *window)
 {
   GSList *tmp;
   GSList *dead;
@@ -318,7 +311,7 @@ remove_pending_pings_for_window (MetaDisplay *display, Window xwindow)
     {
       MetaPingData *ping_data = tmp->data;
 
-      if (ping_data->window->xwindow == xwindow)
+      if (ping_data->window == window)
         dead = g_slist_prepend (dead, ping_data);
     }
 
@@ -1613,9 +1606,6 @@ meta_display_unregister_x_window (MetaDisplay *display,
   g_return_if_fail (g_hash_table_lookup (display->xids, &xwindow) != NULL);
 
   g_hash_table_remove (display->xids, &xwindow);
-
-  /* Remove any pending pings */
-  remove_pending_pings_for_window (display, xwindow);
 }
 
 void
