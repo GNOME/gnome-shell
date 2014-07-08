@@ -1182,40 +1182,73 @@ const WindowManager = new Lang.Class({
                                                              });
         }
 
-        if (!this._shouldAnimateActor(actor, [Meta.WindowType.MODAL_DIALOG])) {
+        let types = [Meta.WindowType.NORMAL,
+                     Meta.WindowType.DIALOG,
+                     Meta.WindowType.MODAL_DIALOG];
+        if (!this._shouldAnimateActor(actor, types)) {
             shellwm.completed_destroy(actor);
             return;
         }
 
-        this._destroying.push(actor);
+        switch (actor._windowType) {
+        case Meta.WindowType.NORMAL:
+            if (!window.is_client_decorated()) {
+                // We cannot animate the destruction of non-client
+                // decorated windows, because the frame window is
+                // repainted by the X server with the background pixmap/
+                // pixel before creating the last composite pixmap
+                // (so we animate a flat gray rectangle with a titlebar)
+                shellwm.completed_destroy(actor);
+                return;
+            }
 
-        if (window.is_attached_dialog()) {
-            let parent = window.get_transient_for();
-            this._checkDimming(parent, window);
-
-            actor.set_scale(1.0, 1.0);
             actor.set_pivot_point(0.5, 0.5);
-            actor.show();
+            this._destroying.push(actor);
 
-            actor._parentDestroyId = parent.connect('unmanaged', Lang.bind(this, function () {
-                Tweener.removeTweens(actor);
-                this._destroyWindowDone(shellwm, actor);
-            }));
+            Tweener.addTween(actor,
+                             { opacity: 0,
+                               scale_x: 0.8,
+                               scale_y: 0.8,
+                               time: DESTROY_WINDOW_ANIMATION_TIME,
+                               transition: 'easeOutQuad',
+                               onComplete: this._mapWindowDone,
+                               onCompleteScope: this,
+                               onCompleteParams: [shellwm, actor],
+                               onOverwrite: this._mapWindowOverwrite,
+                               onOverwriteScope: this,
+                               onOverwriteParams: [shellwm, actor]
+                             });
+            break;
+        case Meta.WindowType.MODAL_DIALOG:
+        case Meta.WindowType.DIALOG:
+            actor.set_pivot_point(0.5, 0.5);
+            this._destroying.push(actor);
+
+            if (window.is_attached_dialog()) {
+                let parent = window.get_transient_for();
+                this._checkDimming(parent, window);
+                actor._parentDestroyId = parent.connect('unmanaged', Lang.bind(this, function () {
+                    Tweener.removeTweens(actor);
+                    this._destroyWindowDone(shellwm, actor);
+                }));
+            }
 
             Tweener.addTween(actor,
                              { scale_y: 0,
                                time: DESTROY_WINDOW_ANIMATION_TIME,
-                               transition: "easeOutQuad",
-                               onComplete: this._destroyWindowDone,
+                               transition: 'easeOutQuad',
+                               onComplete: this._destoyWindowDone,
                                onCompleteScope: this,
                                onCompleteParams: [shellwm, actor],
                                onOverwrite: this._destroyWindowDone,
                                onOverwriteScope: this,
                                onOverwriteParams: [shellwm, actor]
                              });
+            break;
+        default:
+            shellwm.completed_destroy(actor);
             return;
         }
-        shellwm.completed_destroy(actor);
     },
 
     _destroyWindowDone : function(shellwm, actor) {
