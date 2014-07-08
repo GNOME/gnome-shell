@@ -120,15 +120,12 @@ const FdoNotificationDaemon = new Lang.Class({
 
         this._nextNotificationId = 1;
 
+        Shell.WindowTracker.get_default().connect('notify::focus-app', Lang.bind(this, this._onFocusAppChanged));
+        Main.overview.connect('hidden', Lang.bind(this, this._onFocusAppChanged));
+
         this._trayManager = new Shell.TrayManager();
         this._trayIconAddedId = this._trayManager.connect('tray-icon-added', Lang.bind(this, this._onTrayIconAdded));
         this._trayIconRemovedId = this._trayManager.connect('tray-icon-removed', Lang.bind(this, this._onTrayIconRemoved));
-
-        Shell.WindowTracker.get_default().connect('notify::focus-app',
-            Lang.bind(this, this._onFocusAppChanged));
-        Main.overview.connect('hidden',
-            Lang.bind(this, this._onFocusAppChanged));
-
         this._trayManager.manage_screen(global.screen, Main.messageTray.actor);
     },
 
