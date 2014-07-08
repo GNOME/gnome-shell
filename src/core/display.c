@@ -854,7 +854,7 @@ meta_display_open (void)
   meta_screen_create_guard_window (screen);
 
   /* Set up touch support */
-  the_display->gesture_tracker = meta_gesture_tracker_new (0);
+  the_display->gesture_tracker = meta_gesture_tracker_new ();
   g_signal_connect (the_display->gesture_tracker, "state-changed",
                     G_CALLBACK (gesture_tracker_state_changed), the_display);
   meta_display_grab_window_touch (the_display, DefaultRootWindow (the_display->xdisplay));

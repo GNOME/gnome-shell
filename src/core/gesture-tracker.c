@@ -342,11 +342,9 @@ meta_gesture_tracker_init (MetaGestureTracker *tracker)
 }
 
 MetaGestureTracker *
-meta_gesture_tracker_new (guint autodeny_timeout)
+meta_gesture_tracker_new (void)
 {
-  return g_object_new (META_TYPE_GESTURE_TRACKER,
-                       "autodeny-timeout", autodeny_timeout,
-                       NULL);
+  return g_object_new (META_TYPE_GESTURE_TRACKER, NULL);
 }
 
 static void

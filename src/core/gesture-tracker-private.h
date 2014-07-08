@@ -68,7 +68,7 @@ struct _MetaGestureTrackerClass
 
 GType                meta_gesture_tracker_get_type           (void) G_GNUC_CONST;
 
-MetaGestureTracker * meta_gesture_tracker_new                (guint                 autodeny_timeout);
+MetaGestureTracker * meta_gesture_tracker_new                (void);
 
 gboolean             meta_gesture_tracker_handle_event       (MetaGestureTracker   *tracker,
                                                               const ClutterEvent   *event);
