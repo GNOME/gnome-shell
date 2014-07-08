@@ -81,7 +81,7 @@ is_interesting_input_event (XEvent *event)
   XIEvent *input_event;
 
   if (event->type != GenericEvent ||
-      event->xcookie.extension == display->xinput_opcode)
+      event->xcookie.extension != display->xinput_opcode)
     return FALSE;
 
   input_event = (XIEvent *) event->xcookie.data;
