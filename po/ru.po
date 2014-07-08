@@ -18,17 +18,17 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-06-25 07:31+0000\n"
-"PO-Revision-Date: 2014-06-25 22:59+0400\n"
-"Last-Translator: Yuri Myasoedov <ymyasoedov@yandex.ru>\n"
+"POT-Creation-Date: 2014-07-08 07:32+0000\n"
+"PO-Revision-Date: 2014-07-08 17:18+0300\n"
+"Last-Translator: Yuri Myasoedov <omerta13@yandex.ru>\n"
 "Language-Team: русский <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
-"X-Generator: Gtranslator 2.91.6\n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Poedit 1.5.4\n"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
 msgid "System"
@@ -226,10 +226,14 @@ msgstr "Комбинация клавиш для перевода фокуса �
 msgid "Keybinding to focus the active notification."
 msgstr "Комбинация клавиш для перевода фокуса на текущее уведомление."
 
+# tweens? пока непонятно, что это
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:29
+#, fuzzy
 msgid ""
 "Keybinding that pauses and resumes all running tweens, for debugging purposes"
 msgstr ""
+"Комбинация клавиш, которая приостанавливает и возобновляет все запущенные "
+"tweens (для отладки)"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:30
 msgid "Which keyboard to use"
@@ -323,20 +327,23 @@ msgstr "Рабочие места только на основном монит�
 msgid "Delay focus changes in mouse mode until the pointer stops moving"
 msgstr "Задержка изменения фокуса в режиме мыши после остановки указателя"
 
+#: ../data/org.gnome.Shell.PortalHelper.desktop.in.h:1
+msgid "Captive Portal"
+msgstr "Captive-портал"
+
 #: ../js/extensionPrefs/main.js:125
 #, javascript-format
 msgid "There was an error loading the preferences dialog for %s:"
 msgstr "Возникла ошибка загрузки диалогового окна параметров для %s:"
 
 #: ../js/extensionPrefs/main.js:157
-#| msgid "Configure GNOME Shell Extensions"
 msgid "GNOME Shell Extensions"
 msgstr "Расширения GNOME Shell"
 
 #: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:142
 #: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:429
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/network.js:878
+#: ../js/ui/status/network.js:915
 msgid "Cancel"
 msgstr "Отмена"
 
@@ -397,6 +404,11 @@ msgstr "Не удалось разобрать команду:"
 msgid "Execution of “%s” failed:"
 msgstr "Не удалось выполнить «%s»:"
 
+#: ../js/portalHelper/main.js:84
+#| msgid "Authentication Required"
+msgid "Web Authentication Redirect"
+msgstr "Перенаправление для проверки подлинности"
+
 #: ../js/ui/appDisplay.js:641
 msgid "Frequently used applications will appear here"
 msgstr "Здесь появляются часто используемые приложения"
@@ -422,7 +434,6 @@ msgid "Add to Favorites"
 msgstr "Добавить в избранное"
 
 #: ../js/ui/appDisplay.js:1607
-#| msgid "Show Text"
 msgid "Show Details"
 msgstr "Показать подробности"
 
@@ -633,8 +644,8 @@ msgstr "Пароль:"
 msgid "Type again:"
 msgstr "Введите ещё раз:"
 
-#: ../js/ui/components/networkAgent.js:137 ../js/ui/status/network.js:240
-#: ../js/ui/status/network.js:322 ../js/ui/status/network.js:881
+#: ../js/ui/components/networkAgent.js:137 ../js/ui/status/network.js:277
+#: ../js/ui/status/network.js:359 ../js/ui/status/network.js:918
 msgid "Connect"
 msgstr "Соединиться"
 
@@ -1217,7 +1228,7 @@ msgstr "Включено"
 #. translators:
 #. * The device has been disabled
 #: ../js/ui/lookingGlass.js:719 ../js/ui/status/location.js:164
-#: ../js/ui/status/network.js:555 ../src/gvc/gvc-mixer-control.c:1830
+#: ../js/ui/status/network.js:592 ../src/gvc/gvc-mixer-control.c:1830
 msgid "Disabled"
 msgstr "Выключено"
 
@@ -1443,9 +1454,9 @@ msgstr "Крупный текст"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:51 ../js/ui/status/network.js:151
-#: ../js/ui/status/network.js:323 ../js/ui/status/network.js:1234
-#: ../js/ui/status/network.js:1345 ../js/ui/status/rfkill.js:86
+#: ../js/ui/status/bluetooth.js:51 ../js/ui/status/network.js:178
+#: ../js/ui/status/network.js:360 ../js/ui/status/network.js:1281
+#: ../js/ui/status/network.js:1392 ../js/ui/status/rfkill.js:86
 #: ../js/ui/status/rfkill.js:114
 msgid "Turn Off"
 msgstr "Выключить"
@@ -1462,7 +1473,7 @@ msgstr[0] "Подключено %d устройство"
 msgstr[1] "Подключено %d устройства"
 msgstr[2] "Подключено %d устройств"
 
-#: ../js/ui/status/bluetooth.js:106 ../js/ui/status/network.js:1262
+#: ../js/ui/status/bluetooth.js:106 ../js/ui/status/network.js:1309
 msgid "Not Connected"
 msgstr "Не подключено"
 
@@ -1490,161 +1501,156 @@ msgstr "Включить"
 msgid "In Use"
 msgstr "Используется"
 
-#: ../js/ui/status/network.js:74
+#: ../js/ui/status/network.js:101
 msgid "<unknown>"
 msgstr "<неизвестно>"
 
-#: ../js/ui/status/network.js:420 ../js/ui/status/network.js:1260
-#: ../js/ui/status/network.js:1464
+#: ../js/ui/status/network.js:457 ../js/ui/status/network.js:1307
+#: ../js/ui/status/network.js:1511
 msgid "Off"
 msgstr "Выключено"
 
-#: ../js/ui/status/network.js:422
+#: ../js/ui/status/network.js:459
 msgid "Connected"
 msgstr "Подключено"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu) */
-#: ../js/ui/status/network.js:426
-#| msgid "unmanaged"
+#: ../js/ui/status/network.js:463
 msgid "Unmanaged"
 msgstr "Не управляется"
 
-#: ../js/ui/status/network.js:428
-#| msgid "disconnecting..."
+#: ../js/ui/status/network.js:465
 msgid "Disconnecting"
 msgstr "Отключение"
 
-#: ../js/ui/status/network.js:434 ../js/ui/status/network.js:1254
+#: ../js/ui/status/network.js:471 ../js/ui/status/network.js:1301
 msgid "Connecting"
 msgstr "Подключение"
 
 #. Translators: this is for network connections that require some kind of key or password */
-#: ../js/ui/status/network.js:437
-#| msgid "authentication required"
+#: ../js/ui/status/network.js:474
 msgid "Authentication required"
 msgstr "Требуется подтверждение подлинности"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing */
-#: ../js/ui/status/network.js:445
-#| msgid "firmware missing"
+#: ../js/ui/status/network.js:482
 msgid "Firmware missing"
 msgstr "Отсутствует прошивка"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage */
-#: ../js/ui/status/network.js:449
-#| msgid "unavailable"
+#: ../js/ui/status/network.js:486
 msgid "Unavailable"
 msgstr "Недоступно"
 
-#: ../js/ui/status/network.js:451 ../js/ui/status/network.js:1646
+#: ../js/ui/status/network.js:488 ../js/ui/status/network.js:1695
 msgid "Connection failed"
 msgstr "Сбой подключения"
 
-#: ../js/ui/status/network.js:467
+#: ../js/ui/status/network.js:504
 msgid "Wired Settings"
 msgstr "Параметры проводных соединений"
 
-#: ../js/ui/status/network.js:509 ../js/ui/status/network.js:587
+#: ../js/ui/status/network.js:546 ../js/ui/status/network.js:624
 msgid "Mobile Broadband Settings"
 msgstr "Параметры широкополосной мобильной связи"
 
-#: ../js/ui/status/network.js:551 ../js/ui/status/network.js:1258
+#: ../js/ui/status/network.js:588 ../js/ui/status/network.js:1305
 msgid "Hardware Disabled"
 msgstr "Оборудование выключено"
 
-#: ../js/ui/status/network.js:595
+#: ../js/ui/status/network.js:632
 msgid "Use as Internet connection"
 msgstr "Использовать как Интернет-соединение"
 
-#: ../js/ui/status/network.js:776
+#: ../js/ui/status/network.js:813
 msgid "Airplane Mode is On"
 msgstr "Включён режим авиаперелёта"
 
-#: ../js/ui/status/network.js:777
+#: ../js/ui/status/network.js:814
 msgid "Wi-Fi is disabled when airplane mode is on."
 msgstr "Когда включён режим авиаперелёта, адаптер Wi-Fi выключен."
 
-#: ../js/ui/status/network.js:778
+#: ../js/ui/status/network.js:815
 msgid "Turn Off Airplane Mode"
 msgstr "Выключить режим авиаперелёта"
 
-#: ../js/ui/status/network.js:787
+#: ../js/ui/status/network.js:824
 msgid "Wi-Fi is Off"
 msgstr "Wi-Fi выключен"
 
-#: ../js/ui/status/network.js:788
+#: ../js/ui/status/network.js:825
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
 msgstr "Для подключения к сети, адаптер Wi-Fi должен быть включён."
 
-#: ../js/ui/status/network.js:789
+#: ../js/ui/status/network.js:826
 msgid "Turn On Wi-Fi"
 msgstr "Включить Wi-Fi"
 
-#: ../js/ui/status/network.js:814
+#: ../js/ui/status/network.js:851
 msgid "Wi-Fi Networks"
 msgstr "Сети Wi-Fi"
 
-#: ../js/ui/status/network.js:816
+#: ../js/ui/status/network.js:853
 msgid "Select a network"
 msgstr "Выберите сеть"
 
-#: ../js/ui/status/network.js:845
+#: ../js/ui/status/network.js:882
 msgid "No Networks"
 msgstr "Сети отсутствуют"
 
-#: ../js/ui/status/network.js:866 ../js/ui/status/rfkill.js:112
+#: ../js/ui/status/network.js:903 ../js/ui/status/rfkill.js:112
 msgid "Use hardware switch to turn off"
 msgstr "Используйте механический переключатель, чтобы выключить"
 
-#: ../js/ui/status/network.js:1136
+#: ../js/ui/status/network.js:1173
 msgid "Select Network"
 msgstr "Выбрать сеть"
 
-#: ../js/ui/status/network.js:1142
+#: ../js/ui/status/network.js:1179
 msgid "Wi-Fi Settings"
 msgstr "Параметры Wi-Fi"
 
-#: ../js/ui/status/network.js:1234
+#: ../js/ui/status/network.js:1281
 msgid "Turn On"
 msgstr "Включить"
 
-#: ../js/ui/status/network.js:1251
+#: ../js/ui/status/network.js:1298
 msgid "Hotspot Active"
 msgstr "Точка доступа включена"
 
-#: ../js/ui/status/network.js:1362
+#: ../js/ui/status/network.js:1409
 msgid "connecting..."
 msgstr "подключение…"
 
 #. Translators: this is for network connections that require some kind of key or password */
-#: ../js/ui/status/network.js:1365
+#: ../js/ui/status/network.js:1412
 msgid "authentication required"
 msgstr "требуется подтверждение подлинности"
 
-#: ../js/ui/status/network.js:1367
+#: ../js/ui/status/network.js:1414
 msgid "connection failed"
 msgstr "сбой подключения"
 
-#: ../js/ui/status/network.js:1433 ../js/ui/status/rfkill.js:89
+#: ../js/ui/status/network.js:1480 ../js/ui/status/rfkill.js:89
 msgid "Network Settings"
 msgstr "Настроить сеть"
 
-#: ../js/ui/status/network.js:1435
+#: ../js/ui/status/network.js:1482
 msgid "VPN Settings"
 msgstr "Параметры VPN"
 
-#: ../js/ui/status/network.js:1454
+#: ../js/ui/status/network.js:1501
 msgid "VPN"
 msgstr "VPN"
 
-#: ../js/ui/status/network.js:1607
+#: ../js/ui/status/network.js:1656
 msgid "Network Manager"
 msgstr "Диспетчер сети"
 
-#: ../js/ui/status/network.js:1647
+#: ../js/ui/status/network.js:1696
 msgid "Activation of network connection failed"
 msgstr "Не удалось активировать сетевое подключение"
 
@@ -1785,7 +1791,7 @@ msgstr "Изменить размер"
 
 #: ../js/ui/windowMenu.js:65
 msgid "Move Titlebar Onscreen"
-msgstr ""
+msgstr "Переместить панель заголовка на экран"
 
 #: ../js/ui/windowMenu.js:70
 msgid "Always on Top"
