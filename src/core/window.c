@@ -1274,10 +1274,9 @@ meta_window_unmanage (MetaWindow  *window,
 
   meta_display_remove_pending_pings_for_window (window->display, window);
 
-  meta_window_shutdown_group (window); /* safe to do this early as
-                                        * group.c won't re-add to the
-                                        * group if window->unmanaging
-                                        */
+  /* safe to do this early as group.c won't re-add to the
+   * group if window->unmanaging */
+  meta_window_shutdown_group (window);
 
   /* If we have the focus, focus some other window.
    * This is done first, so that if the unmap causes
