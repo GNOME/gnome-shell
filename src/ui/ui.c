@@ -75,13 +75,20 @@ meta_ui_get_screen_number (void)
 #include "display-private.h"
 
 static gboolean
-is_interesting_input_event (XEvent *event)
+is_input_event (XEvent *event)
 {
   MetaDisplay *display = meta_get_display ();
+
+  return (event->type == GenericEvent &&
+          event->xcookie.extension == display->xinput_opcode);
+}
+
+static gboolean
+is_interesting_input_event (XEvent *event)
+{
   XIEvent *input_event;
 
-  if (event->type != GenericEvent ||
-      event->xcookie.extension != display->xinput_opcode)
+  if (!is_input_event (event))
     return FALSE;
 
   input_event = (XIEvent *) event->xcookie.data;
