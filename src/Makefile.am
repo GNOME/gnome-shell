@@ -152,8 +152,8 @@ libmutter_la_SOURCES =				\
 	core/frame.h				\
 	ui/gradient.c				\
 	meta/gradient.h				\
-	core/gesture-tracker.c			\
-	core/gesture-tracker-private.h		\
+	core/meta-gesture-tracker.c		\
+	core/meta-gesture-tracker-private.h	\
 	core/keybindings.c			\
 	core/keybindings-private.h		\
 	core/main.c				\

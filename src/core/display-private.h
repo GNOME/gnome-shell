@@ -35,7 +35,7 @@
 #include <meta/boxes.h>
 #include <meta/display.h>
 #include "keybindings-private.h"
-#include "gesture-tracker-private.h"
+#include "meta-gesture-tracker-private.h"
 #include <meta/prefs.h>
 #include <meta/barrier.h>
 #include <clutter/clutter.h>
