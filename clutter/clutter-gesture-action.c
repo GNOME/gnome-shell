@@ -224,6 +224,9 @@ gesture_unregister_point (ClutterGestureAction *action, gint position)
 {
   ClutterGestureActionPrivate *priv = action->priv;
 
+  if (action->priv->points->len == 0)
+    return;
+
   g_array_remove_index (priv->points, position);
 }
 
@@ -480,7 +483,7 @@ stage_captured_event_cb (ClutterActor         *stage,
       break;
     }
 
-  if (priv->points->len == 0)
+  if (priv->points->len == 0 && priv->stage_capture_id)
     {
       g_signal_handler_disconnect (priv->stage, priv->stage_capture_id);
       priv->stage_capture_id = 0;
