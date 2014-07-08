@@ -14,7 +14,6 @@ const St = imports.gi.St;
 const Signals = imports.signals;
 const Atk = imports.gi.Atk;
 
-
 const Animation = imports.ui.animation;
 const Config = imports.misc.config;
 const CtrlAltTab = imports.ui.ctrlAltTab;
