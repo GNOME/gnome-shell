@@ -508,7 +508,10 @@ const ViewSelector = new Lang.Class({
 
     startSearch: function(event) {
         global.stage.set_key_focus(this._text);
-        this._text.event(event, true);
+
+        let synthEvent = event.copy();
+        synthEvent.set_source(this._text);
+        this._text.event(synthEvent, true);
     },
 
     // the entry does not show the hint
