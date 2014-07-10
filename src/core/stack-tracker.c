@@ -1037,15 +1037,12 @@ stack_tracker_event_received (MetaStackTracker *tracker,
   gboolean need_sync = FALSE;
   gboolean verified;
 
-  meta_stack_op_dump (op, "Stack op event received: ", "\n");
-
+  /* If the event is older than our latest requery, then it's
+   * already included in our tree. Just ignore it. */
   if (op->any.serial < tracker->xserver_serial)
-    {
-      /* g_warning ("Spurious X event received affecting stack; doing full re-query"); */
-      resync_verified_stack_with_xserver_stack (tracker);
-      meta_stack_tracker_dump (tracker);
-      return;
-    }
+    return;
+
+  meta_stack_op_dump (op, "Stack op event received: ", "\n");
 
   tracker->xserver_serial = op->any.serial;
 
