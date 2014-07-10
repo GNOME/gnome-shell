@@ -786,7 +786,6 @@ meta_screen_init_workspaces (MetaScreen *screen)
   else
     meta_verbose ("No _NET_CURRENT_DESKTOP present\n");
 
-  meta_workspace_activate (screen->workspaces->data, timestamp);
   update_num_workspaces (screen, timestamp);
 
   set_workspace_names (screen);
@@ -797,6 +796,8 @@ meta_screen_init_workspaces (MetaScreen *screen)
 
   if (current_workspace != NULL)
     meta_workspace_activate (current_workspace, timestamp);
+  else
+    meta_workspace_activate (screen->workspaces->data, timestamp);
 }
 
 void

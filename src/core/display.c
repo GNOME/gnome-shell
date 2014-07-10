@@ -848,9 +848,10 @@ meta_display_open (void)
 
   the_display->screen = screen;
 
+  meta_screen_init_workspaces (screen);
+
   enable_compositor (the_display);
 
-  meta_screen_init_workspaces (screen);
   meta_screen_create_guard_window (screen);
 
   /* Set up touch support */
