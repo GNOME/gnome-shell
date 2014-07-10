@@ -198,6 +198,7 @@ drag_grab_focus (MetaWaylandPointerGrab *grab,
 {
   MetaWaylandDragGrab *drag_grab = (MetaWaylandDragGrab*) grab;
   MetaWaylandSeat *seat = drag_grab->seat;
+  struct wl_client *client;
   struct wl_resource *resource, *offer = NULL;
   struct wl_display *display;
   guint32 serial;
@@ -221,13 +222,13 @@ drag_grab_focus (MetaWaylandPointerGrab *grab,
       wl_resource_get_client (surface->resource) != drag_grab->drag_client)
     return;
 
-  resource =
-    wl_resource_find_for_client (&seat->data_device_resource_list,
-                                 wl_resource_get_client (surface->resource));
+  client = wl_resource_get_client (surface->resource);
+
+  resource = wl_resource_find_for_client (&seat->data_device_resource_list, client);
   if (!resource)
     return;
 
-  display = wl_client_get_display (wl_resource_get_client (resource));
+  display = wl_client_get_display (client);
   serial = wl_display_next_serial (display);
 
   if (drag_grab->drag_data_source)
