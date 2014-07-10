@@ -184,8 +184,7 @@ reload_prop_value (MetaWindow          *window,
                    MetaPropValue       *value,
                    gboolean             initial)
 {
-  if (hooks && hooks->reload_func != NULL &&
-      !(window->override_redirect && !hooks->include_override_redirect))
+  if (!(window->override_redirect && !hooks->include_override_redirect))
     (* hooks->reload_func) (window, value, initial);
 }
 
@@ -1728,7 +1727,6 @@ meta_display_init_window_prop_hooks (MetaDisplay *display)
     { display->atom__GTK_MENUBAR_OBJECT_PATH,          META_PROP_VALUE_UTF8,         reload_gtk_menubar_object_path,          TRUE, FALSE },
     { display->atom__GTK_FRAME_EXTENTS,                META_PROP_VALUE_CARDINAL_LIST,reload_gtk_frame_extents,                TRUE, FALSE },
     { display->atom__NET_WM_USER_TIME_WINDOW, META_PROP_VALUE_WINDOW, reload_net_wm_user_time_window, TRUE, FALSE },
-    { display->atom_WM_STATE,          META_PROP_VALUE_INVALID,  NULL,                     FALSE, FALSE },
     { display->atom__NET_WM_ICON,      META_PROP_VALUE_INVALID,  reload_net_wm_icon,       FALSE, FALSE },
     { display->atom__KWM_WIN_ICON,     META_PROP_VALUE_INVALID,  reload_kwm_win_icon,      FALSE, FALSE },
     { display->atom__NET_WM_ICON_GEOMETRY, META_PROP_VALUE_CARDINAL_LIST, reload_icon_geometry,     FALSE, FALSE },
