@@ -235,31 +235,35 @@ meta_stack_op_dump (MetaStackOp *op,
 }
 
 static void
-meta_stack_tracker_dump (MetaStackTracker *tracker)
+stack_dump (GArray *stack)
 {
   guint i;
+
+  meta_push_no_msg_prefix ();
+  for (i = 0; i < stack->len; i++)
+    {
+      MetaStackWindow *window = &g_array_index (stack, MetaStackWindow, i);
+      char *window_id = get_window_id (window);
+      meta_topic (META_DEBUG_STACK, "  %s", window_id);
+      g_free (window_id);
+    }
+  meta_topic (META_DEBUG_STACK, "\n");
+  meta_pop_no_msg_prefix ();
+}
+
+static void
+meta_stack_tracker_dump (MetaStackTracker *tracker)
+{
   GList *l;
 
   meta_topic (META_DEBUG_STACK, "MetaStackTracker state (screen=%d)\n", tracker->screen->number);
   meta_push_no_msg_prefix ();
   meta_topic (META_DEBUG_STACK, "  xserver_serial: %ld\n", tracker->xserver_serial);
   meta_topic (META_DEBUG_STACK, "  xserver_stack: ");
-  for (i = 0; i < tracker->xserver_stack->len; i++)
-    {
-      MetaStackWindow *window = &g_array_index (tracker->xserver_stack, MetaStackWindow, i);
-      char *window_id = get_window_id (window);
-      meta_topic (META_DEBUG_STACK, "  %s", window_id);
-      g_free (window_id);
-    }
-  meta_topic (META_DEBUG_STACK, "\n  verfied_stack: ");
-  for (i = 0; i < tracker->verified_stack->len; i++)
-    {
-      MetaStackWindow *window = &g_array_index (tracker->verified_stack, MetaStackWindow, i);
-      char *window_id = get_window_id (window);
-      meta_topic (META_DEBUG_STACK, "  %s", window_id);
-      g_free (window_id);
-    }
-  meta_topic (META_DEBUG_STACK, "\n  unverified_predictions: [");
+  stack_dump (tracker->xserver_stack);
+  meta_topic (META_DEBUG_STACK, "  verfied_stack: ");
+  stack_dump (tracker->verified_stack);
+  meta_topic (META_DEBUG_STACK, "  unverified_predictions: [");
   for (l = tracker->unverified_predictions->head; l; l = l->next)
     {
       MetaStackOp *op = l->data;
@@ -269,15 +273,8 @@ meta_stack_tracker_dump (MetaStackTracker *tracker)
   if (tracker->predicted_stack)
     {
       meta_topic (META_DEBUG_STACK, "\n  predicted_stack: ");
-      for (i = 0; i < tracker->predicted_stack->len; i++)
-        {
-          MetaStackWindow *window = &g_array_index (tracker->predicted_stack, MetaStackWindow, i);
-          char *window_id = get_window_id (window);
-          meta_topic (META_DEBUG_STACK, "  %s", window_id);
-          g_free (window_id);
-        }
+      stack_dump (tracker->predicted_stack);
     }
-  meta_topic (META_DEBUG_STACK, "\n");
   meta_pop_no_msg_prefix ();
 }
 
