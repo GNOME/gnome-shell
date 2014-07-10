@@ -157,7 +157,7 @@ get_output_window (MetaCompositor *compositor)
   unsigned char mask_bits[XIMaskLen (XI_LASTEVENT)] = { 0 };
   XIEventMask mask = { XIAllMasterDevices, sizeof (mask_bits), mask_bits };
 
-  output = XCompositeGetOverlayWindow (xdisplay, DefaultRootWindow (xdisplay));
+  output = compositor->display->screen->composite_overlay_window;
 
   XISetMask (mask.mask, XI_KeyPress);
   XISetMask (mask.mask, XI_KeyRelease);

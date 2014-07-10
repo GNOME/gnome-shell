@@ -2942,7 +2942,7 @@ is_our_xwindow (MetaDisplay       *display,
   if (xwindow == screen->guard_window)
     return TRUE;
 
-  if (xwindow == XCompositeGetOverlayWindow (display->xdisplay, screen->xroot))
+  if (xwindow == screen->composite_overlay_window)
     return TRUE;
 
   /* Any windows created via meta_create_offscreen_window */

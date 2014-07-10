@@ -45,6 +45,7 @@
 #include "meta-cursor-tracker-private.h"
 
 #include <X11/extensions/Xinerama.h>
+#include <X11/extensions/Xcomposite.h>
 
 #include <X11/Xatom.h>
 #include <locale.h>
@@ -699,6 +700,8 @@ meta_screen_new (MetaDisplay *display,
   screen->vertical_workspaces = FALSE;
   screen->starting_corner = META_SCREEN_TOPLEFT;
   screen->guard_window = None;
+
+  screen->composite_overlay_window = XCompositeGetOverlayWindow (xdisplay, xroot);
 
   reload_monitor_infos (screen);
 
