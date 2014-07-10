@@ -23,8 +23,6 @@
 #define META_CURSOR_TRACKER_PRIVATE_H
 
 #include <meta/meta-cursor-tracker.h>
-#include <wayland-server.h>
-#include <gbm.h>
 
 #include "meta-cursor.h"
 #include "meta-cursor-renderer.h"

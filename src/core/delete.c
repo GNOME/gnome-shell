@@ -37,8 +37,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "wayland/meta-wayland-surface.h"
-
 static void
 dialog_exited (GPid pid, int status, gpointer user_data)
 {

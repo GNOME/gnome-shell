@@ -71,7 +71,6 @@
 #include "x11/xprops.h"
 
 #include "wayland/meta-xwayland-private.h"
-#include "meta-surface-actor-wayland.h"
 
 /*
  * SECTION:pings

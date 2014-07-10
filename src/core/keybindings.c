@@ -55,7 +55,6 @@
 #include <X11/XKBlib.h>
 #endif
 
-#include "wayland/meta-wayland.h"
 #include "backends/x11/meta-backend-x11.h"
 #include "x11/window-x11.h"
 
