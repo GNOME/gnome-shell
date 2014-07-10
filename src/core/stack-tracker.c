@@ -726,6 +726,8 @@ stack_tracker_verify_predictions (MetaStackTracker *tracker,
    * passed to this api. */
   g_return_val_if_fail (op->any.window.any.type == META_WINDOW_CLIENT_TYPE_X11, FALSE);
 
+  meta_topic (META_DEBUG_STACK, "Verifying predictions:\n");
+
   if (tracker->unverified_predictions->length)
     {
       GList *l;
@@ -744,6 +746,9 @@ stack_tracker_verify_predictions (MetaStackTracker *tracker,
     }
   else
     predicted_stack = tracker->verified_stack;
+
+  meta_topic (META_DEBUG_STACK, "  predicted_stack: ");
+  stack_dump (predicted_stack);
 
   switch (op->any.type)
     {
