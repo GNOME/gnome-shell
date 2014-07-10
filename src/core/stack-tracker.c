@@ -709,14 +709,10 @@ meta_stack_tracker_record_lower (MetaStackTracker       *tracker,
  *
  * Return value: %TRUE if the predicted state is consistent with
  * receiving the given @op from X, else %FALSE.
- *
- * @modified will be set to %TRUE if tracker->verified_stack is
- * changed by applying any newly validated operations, else %FALSE.
  */
 static gboolean
 stack_tracker_verify_predictions (MetaStackTracker *tracker,
-                                  MetaStackOp      *op,
-                                  gboolean         *modified)
+                                  MetaStackOp      *op)
 {
   GArray *tmp_predicted_stack = NULL;
   GArray *predicted_stack;
@@ -825,7 +821,6 @@ verified:
       meta_stack_op_free (queued_op);
     }
 
-  *modified = modified_stack;
   if (modified_stack)
     {
       g_array_free (tracker->verified_stack, TRUE);
@@ -846,8 +841,6 @@ not_verified:
       g_array_free (tracker->predicted_stack, TRUE);
       tracker->predicted_stack = NULL;
     }
-
-  *modified = FALSE;
 
   return FALSE;
 }
@@ -1036,7 +1029,6 @@ static void
 stack_tracker_event_received (MetaStackTracker *tracker,
 			      MetaStackOp      *op)
 {
-  gboolean need_sync = FALSE;
   gboolean verified;
 
   /* If the event is older than our latest requery, then it's
@@ -1059,7 +1051,7 @@ stack_tracker_event_received (MetaStackTracker *tracker,
    */
   meta_stack_op_apply (op, tracker->xserver_stack);
 
-  verified = stack_tracker_verify_predictions (tracker, op, &need_sync);
+  verified = stack_tracker_verify_predictions (tracker, op);
   if (!verified)
     {
       resync_verified_stack_with_xserver_stack (tracker);
