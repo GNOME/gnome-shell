@@ -75,10 +75,8 @@ struct _MetaWaylandCompositor
 {
   struct wl_display *wayland_display;
   char *display_name;
-  struct wl_event_loop *wayland_loop;
   ClutterActor *stage;
   GHashTable *outputs;
-  GSource *wayland_event_source;
   struct wl_list frame_callbacks;
 
   MetaXWaylandManager xwayland_manager;

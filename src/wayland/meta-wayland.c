@@ -382,6 +382,7 @@ void
 meta_wayland_init (void)
 {
   MetaWaylandCompositor *compositor = &_meta_wayland_compositor;
+  GSource *wayland_event_source;
 
   memset (compositor, 0, sizeof (MetaWaylandCompositor));
 
@@ -400,10 +401,7 @@ meta_wayland_init (void)
 			 compositor, compositor_bind))
     g_error ("Failed to register wayland compositor object");
 
-  compositor->wayland_loop =
-    wl_display_get_event_loop (compositor->wayland_display);
-  compositor->wayland_event_source =
-    wayland_event_source_new (compositor->wayland_display);
+  wayland_event_source = wayland_event_source_new (compositor->wayland_display);
 
   /* XXX: Here we are setting the wayland event source to have a
    * slightly lower priority than the X event source, because we are
@@ -414,9 +412,8 @@ meta_wayland_init (void)
    * At some point we could perhaps try and get the X protocol proxied
    * over the wayland protocol so that we don't have to worry about
    * synchronizing the two command streams. */
-  g_source_set_priority (compositor->wayland_event_source,
-                         GDK_PRIORITY_EVENTS + 1);
-  g_source_attach (compositor->wayland_event_source, NULL);
+  g_source_set_priority (wayland_event_source, GDK_PRIORITY_EVENTS + 1);
+  g_source_attach (wayland_event_source, NULL);
   clutter_wayland_set_compositor_display (compositor->wayland_display);
 
   meta_clutter_init ();
