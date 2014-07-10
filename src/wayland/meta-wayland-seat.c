@@ -108,8 +108,6 @@ meta_wayland_seat_new (struct wl_display *display)
   meta_wayland_keyboard_init (&seat->keyboard, display);
   meta_wayland_touch_init (&seat->touch, display);
 
-  seat->display = display;
-
   wl_global_create (display, &wl_seat_interface, META_WL_SEAT_VERSION, seat, bind_seat);
 
   return seat;

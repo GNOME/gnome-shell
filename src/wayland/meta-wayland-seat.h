@@ -42,8 +42,6 @@ struct _MetaWaylandSeat
   MetaWaylandPointer pointer;
   MetaWaylandKeyboard keyboard;
   MetaWaylandTouch touch;
-
-  struct wl_display *display;
 };
 
 void meta_wayland_seat_init (MetaWaylandCompositor *compositor);
