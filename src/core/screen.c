@@ -620,16 +620,11 @@ meta_screen_new (MetaDisplay *display,
   /* select our root window events */
   meta_error_trap_push (display);
 
-  /* We need to or with the existing event mask since
-   * gtk+ may be interested in other events.
-   */
   {
     long event_mask;
     unsigned char mask_bits[XIMaskLen (XI_LASTEVENT)] = { 0 };
     XIEventMask mask = { XIAllMasterDevices, sizeof (mask_bits), mask_bits };
     XWindowAttributes attr;
-
-    meta_core_add_old_event_mask (xdisplay, xroot, &mask);
 
     XISetMask (mask.mask, XI_KeyPress);
     XISetMask (mask.mask, XI_KeyRelease);

@@ -516,25 +516,3 @@ meta_invalidate_default_icons (void)
 
   g_slist_free (windows);
 }
-
-void
-meta_core_add_old_event_mask (Display     *xdisplay,
-                              Window       xwindow,
-                              XIEventMask *mask)
-{
-  XIEventMask *prev;
-  gint n_masks, i, j;
-
-  prev = XIGetSelectedEvents (xdisplay, xwindow, &n_masks);
-
-  for (i = 0; i < n_masks; i++)
-    {
-      if (prev[i].deviceid != XIAllMasterDevices)
-        continue;
-
-      for (j = 0; j < MIN (mask->mask_len, prev[i].mask_len); j++)
-        mask->mask[j] |= prev[i].mask[j];
-    }
-
-  XFree (prev);
-}

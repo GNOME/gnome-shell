@@ -159,8 +159,6 @@ get_output_window (MetaCompositor *compositor)
 
   output = XCompositeGetOverlayWindow (xdisplay, DefaultRootWindow (xdisplay));
 
-  meta_core_add_old_event_mask (xdisplay, output, &mask);
-
   XISetMask (mask.mask, XI_KeyPress);
   XISetMask (mask.mask, XI_KeyRelease);
   XISetMask (mask.mask, XI_ButtonPress);
@@ -517,8 +515,6 @@ meta_compositor_manage (MetaCompositor *compositor)
           Display *backend_xdisplay = meta_backend_x11_get_xdisplay (backend);
           unsigned char mask_bits[XIMaskLen (XI_LASTEVENT)] = { 0 };
           XIEventMask mask = { XIAllMasterDevices, sizeof (mask_bits), mask_bits };
-
-          meta_core_add_old_event_mask (backend_xdisplay, xwin, &mask);
 
           XISetMask (mask.mask, XI_KeyPress);
           XISetMask (mask.mask, XI_KeyRelease);
