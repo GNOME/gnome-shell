@@ -231,7 +231,41 @@ reload_net_wm_window_type (MetaWindow    *window,
                            MetaPropValue *value,
                            gboolean       initial)
 {
-  meta_window_x11_update_net_wm_type (window);
+  MetaWindowX11 *window_x11 = META_WINDOW_X11 (window);
+  MetaWindowX11Private *priv = window_x11->priv;
+
+  if (value->type != META_PROP_VALUE_INVALID)
+    {
+      int i;
+
+      for (i = 0; i < value->v.atom_list.n_atoms; i++)
+        {
+          Atom atom = value->v.atom_list.atoms[i];
+
+          /* We break as soon as we find one we recognize,
+           * supposed to prefer those near the front of the list
+           */
+          if (atom == window->display->atom__NET_WM_WINDOW_TYPE_DESKTOP ||
+              atom == window->display->atom__NET_WM_WINDOW_TYPE_DOCK ||
+              atom == window->display->atom__NET_WM_WINDOW_TYPE_TOOLBAR ||
+              atom == window->display->atom__NET_WM_WINDOW_TYPE_MENU ||
+              atom == window->display->atom__NET_WM_WINDOW_TYPE_UTILITY ||
+              atom == window->display->atom__NET_WM_WINDOW_TYPE_SPLASH ||
+              atom == window->display->atom__NET_WM_WINDOW_TYPE_DIALOG ||
+              atom == window->display->atom__NET_WM_WINDOW_TYPE_DROPDOWN_MENU ||
+              atom == window->display->atom__NET_WM_WINDOW_TYPE_POPUP_MENU ||
+              atom == window->display->atom__NET_WM_WINDOW_TYPE_TOOLTIP ||
+              atom == window->display->atom__NET_WM_WINDOW_TYPE_NOTIFICATION ||
+              atom == window->display->atom__NET_WM_WINDOW_TYPE_COMBO ||
+              atom == window->display->atom__NET_WM_WINDOW_TYPE_DND ||
+              atom == window->display->atom__NET_WM_WINDOW_TYPE_NORMAL)
+            {
+              priv->type_atom = atom;
+              meta_window_x11_recalc_window_type (window);
+              return;
+            }
+        }
+    }
 }
 
 static void
@@ -1701,7 +1735,7 @@ meta_display_init_window_prop_hooks (MetaDisplay *display)
     { display->atom_WM_CLIENT_LEADER,  META_PROP_VALUE_INVALID, complain_about_broken_client, FALSE, FALSE },
     { display->atom_SM_CLIENT_ID,      META_PROP_VALUE_INVALID, complain_about_broken_client, FALSE, FALSE },
     { display->atom_WM_WINDOW_ROLE,    META_PROP_VALUE_STRING, reload_wm_window_role,         TRUE, FALSE },
-    { display->atom__NET_WM_WINDOW_TYPE, META_PROP_VALUE_INVALID, reload_net_wm_window_type,  TRUE, TRUE },
+    { display->atom__NET_WM_WINDOW_TYPE, META_PROP_VALUE_ATOM_LIST, reload_net_wm_window_type,  TRUE, TRUE },
     { display->atom__NET_WM_STRUT,         META_PROP_VALUE_INVALID, reload_struts,            FALSE, FALSE },
     { display->atom__NET_WM_STRUT_PARTIAL, META_PROP_VALUE_INVALID, reload_struts,            FALSE, FALSE },
     { display->atom__NET_WM_BYPASS_COMPOSITOR, META_PROP_VALUE_CARDINAL,  reload_bypass_compositor, FALSE, FALSE },

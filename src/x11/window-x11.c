@@ -518,8 +518,6 @@ meta_window_x11_manage (MetaWindow *window)
   if (!window->override_redirect)
     update_sm_hints (window); /* must come after transient_for */
 
-  meta_window_x11_update_net_wm_type (window);
-
   if (window->decorated)
     meta_window_ensure_frame (window);
 
@@ -1585,77 +1583,6 @@ meta_window_x11_set_net_wm_state (MetaWindow *window)
           meta_error_trap_pop (window->display);
         }
     }
-}
-
-void
-meta_window_x11_update_net_wm_type (MetaWindow *window)
-{
-  MetaWindowX11 *window_x11 = META_WINDOW_X11 (window);
-  MetaWindowX11Private *priv = meta_window_x11_get_instance_private (window_x11);
-  int n_atoms;
-  Atom *atoms;
-  int i;
-
-  priv->type_atom = None;
-  n_atoms = 0;
-  atoms = NULL;
-
-  meta_prop_get_atom_list (window->display, window->xwindow,
-                           window->display->atom__NET_WM_WINDOW_TYPE,
-                           &atoms, &n_atoms);
-
-  i = 0;
-  while (i < n_atoms)
-    {
-      /* We break as soon as we find one we recognize,
-       * supposed to prefer those near the front of the list
-       */
-      if (atoms[i] == window->display->atom__NET_WM_WINDOW_TYPE_DESKTOP ||
-          atoms[i] == window->display->atom__NET_WM_WINDOW_TYPE_DOCK ||
-          atoms[i] == window->display->atom__NET_WM_WINDOW_TYPE_TOOLBAR ||
-          atoms[i] == window->display->atom__NET_WM_WINDOW_TYPE_MENU ||
-          atoms[i] == window->display->atom__NET_WM_WINDOW_TYPE_UTILITY ||
-          atoms[i] == window->display->atom__NET_WM_WINDOW_TYPE_SPLASH ||
-          atoms[i] == window->display->atom__NET_WM_WINDOW_TYPE_DIALOG ||
-          atoms[i] ==
-	    window->display->atom__NET_WM_WINDOW_TYPE_DROPDOWN_MENU ||
-          atoms[i] == window->display->atom__NET_WM_WINDOW_TYPE_POPUP_MENU ||
-          atoms[i] == window->display->atom__NET_WM_WINDOW_TYPE_TOOLTIP ||
-          atoms[i] ==
-	    window->display->atom__NET_WM_WINDOW_TYPE_NOTIFICATION ||
-          atoms[i] == window->display->atom__NET_WM_WINDOW_TYPE_COMBO ||
-          atoms[i] == window->display->atom__NET_WM_WINDOW_TYPE_DND ||
-          atoms[i] == window->display->atom__NET_WM_WINDOW_TYPE_NORMAL)
-        {
-          priv->type_atom = atoms[i];
-          break;
-        }
-
-      ++i;
-    }
-
-  meta_XFree (atoms);
-
-  if (meta_is_verbose ())
-    {
-      char *str;
-
-      str = NULL;
-      if (priv->type_atom != None)
-        {
-          meta_error_trap_push (window->display);
-          str = XGetAtomName (window->display->xdisplay, priv->type_atom);
-          meta_error_trap_pop (window->display);
-        }
-
-      meta_verbose ("Window %s type atom %s\n", window->desc,
-                    str ? str : "(none)");
-
-      if (str)
-        meta_XFree (str);
-    }
-
-  meta_window_x11_recalc_window_type (window);
 }
 
 static void
