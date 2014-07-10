@@ -1658,29 +1658,6 @@ meta_window_x11_update_net_wm_type (MetaWindow *window)
   meta_window_x11_recalc_window_type (window);
 }
 
-void
-meta_window_x11_update_role (MetaWindow *window)
-{
-  char *str;
-
-  g_return_if_fail (!window->override_redirect);
-
-  if (window->role)
-    g_free (window->role);
-  window->role = NULL;
-
-  if (meta_prop_get_latin1_string (window->display, window->xwindow,
-                                   window->display->atom_WM_WINDOW_ROLE,
-                                   &str))
-    {
-      window->role = g_strdup (str);
-      meta_XFree (str);
-    }
-
-  meta_verbose ("Updated role of %s to '%s'\n",
-                window->desc, window->role ? window->role : "null");
-}
-
 static void
 meta_window_set_opaque_region (MetaWindow     *window,
                                cairo_region_t *region)
