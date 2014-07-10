@@ -50,10 +50,6 @@ typedef struct
 typedef struct
 {
   struct wl_list link;
-
-  /* Pointer back to the compositor */
-  MetaWaylandCompositor *compositor;
-
   struct wl_resource *resource;
 } MetaWaylandFrameCallback;
 

@@ -473,7 +473,6 @@ wl_surface_frame (struct wl_client *client,
     return;
 
   callback = g_slice_new0 (MetaWaylandFrameCallback);
-  callback->compositor = surface->compositor;
   callback->resource = wl_resource_create (client, &wl_callback_interface, META_WL_CALLBACK_VERSION, callback_id);
   wl_resource_set_implementation (callback->resource, NULL, callback, destroy_frame_callback);
 
