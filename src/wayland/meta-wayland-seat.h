@@ -29,19 +29,16 @@
 #include "meta-wayland-pointer.h"
 #include "meta-wayland-keyboard.h"
 #include "meta-wayland-touch.h"
+#include "meta-wayland-data-device.h"
 
 struct _MetaWaylandSeat
 {
   struct wl_list base_resource_list;
 
-  uint32_t selection_serial;
-  MetaWaylandDataSource *selection_data_source;
-  struct wl_listener selection_data_source_listener;
-
-  struct wl_list data_device_resource_list;
   MetaWaylandPointer pointer;
   MetaWaylandKeyboard keyboard;
   MetaWaylandTouch touch;
+  MetaWaylandDataDevice data_device;
 };
 
 void meta_wayland_seat_init (MetaWaylandCompositor *compositor);

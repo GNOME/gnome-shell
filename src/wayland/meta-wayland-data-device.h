@@ -25,10 +25,20 @@
 
 #include <wayland-server.h>
 
-#include "meta-wayland-private.h"
+#include "meta-wayland-types.h"
+
+struct _MetaWaylandDataDevice
+{
+  uint32_t selection_serial;
+  MetaWaylandDataSource *selection_data_source;
+  struct wl_listener selection_data_source_listener;
+  struct wl_list resource_list;
+};
 
 void meta_wayland_data_device_manager_init (MetaWaylandCompositor *compositor);
 
-void meta_wayland_data_device_set_keyboard_focus (MetaWaylandSeat *seat);
+void meta_wayland_data_device_init (MetaWaylandDataDevice *data_device);
+
+void meta_wayland_data_device_set_keyboard_focus (MetaWaylandDataDevice *data_device);
 
 #endif /* META_WAYLAND_DATA_DEVICE_H */

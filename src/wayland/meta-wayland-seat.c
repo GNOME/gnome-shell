@@ -100,13 +100,12 @@ meta_wayland_seat_new (struct wl_display *display)
 {
   MetaWaylandSeat *seat = g_new0 (MetaWaylandSeat, 1);
 
-  seat->selection_data_source = NULL;
   wl_list_init (&seat->base_resource_list);
-  wl_list_init (&seat->data_device_resource_list);
 
   meta_wayland_pointer_init (&seat->pointer, display);
   meta_wayland_keyboard_init (&seat->keyboard, display);
   meta_wayland_touch_init (&seat->touch, display);
+  meta_wayland_data_device_init (&seat->data_device);
 
   wl_global_create (display, &wl_seat_interface, META_WL_SEAT_VERSION, seat, bind_seat);
 
@@ -197,7 +196,7 @@ meta_wayland_seat_set_input_focus (MetaWaylandSeat    *seat,
                                    MetaWaylandSurface *surface)
 {
   meta_wayland_keyboard_set_focus (&seat->keyboard, surface);
-  meta_wayland_data_device_set_keyboard_focus (seat);
+  meta_wayland_data_device_set_keyboard_focus (&seat->data_device);
 }
 
 void
