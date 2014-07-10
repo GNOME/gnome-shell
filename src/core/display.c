@@ -470,6 +470,7 @@ meta_display_ungrab_window_touch (MetaDisplay *display,
 gboolean
 meta_display_open (void)
 {
+  MetaDisplay *display;
   Display *xdisplay;
   MetaScreen *screen;
   int i;
@@ -501,223 +502,223 @@ meta_display_open (void)
     XSynchronize (xdisplay, True);
 
   g_assert (the_display == NULL);
-  the_display = g_object_new (META_TYPE_DISPLAY, NULL);
+  display = the_display = g_object_new (META_TYPE_DISPLAY, NULL);
 
-  the_display->closing = 0;
+  display->closing = 0;
 
   /* here we use XDisplayName which is what the user
    * probably put in, vs. DisplayString(display) which is
    * canonicalized by XOpenDisplay()
    */
-  the_display->name = g_strdup (XDisplayName (NULL));
-  the_display->xdisplay = xdisplay;
-  the_display->display_opening = TRUE;
+  display->name = g_strdup (XDisplayName (NULL));
+  display->xdisplay = xdisplay;
+  display->display_opening = TRUE;
 
-  the_display->pending_pings = NULL;
-  the_display->autoraise_timeout_id = 0;
-  the_display->autoraise_window = NULL;
-  the_display->focus_window = NULL;
-  the_display->focus_serial = 0;
-  the_display->server_focus_window = None;
-  the_display->server_focus_serial = 0;
+  display->pending_pings = NULL;
+  display->autoraise_timeout_id = 0;
+  display->autoraise_window = NULL;
+  display->focus_window = NULL;
+  display->focus_serial = 0;
+  display->server_focus_window = None;
+  display->server_focus_serial = 0;
 
-  the_display->mouse_mode = TRUE; /* Only relevant for mouse or sloppy focus */
-  the_display->allow_terminal_deactivation = TRUE; /* Only relevant for when a
+  display->mouse_mode = TRUE; /* Only relevant for mouse or sloppy focus */
+  display->allow_terminal_deactivation = TRUE; /* Only relevant for when a
                                                   terminal has the focus */
 
-  meta_bell_init (the_display);
+  meta_bell_init (display);
 
-  meta_display_init_keys (the_display);
+  meta_display_init_keys (display);
 
-  update_window_grab_modifiers (the_display);
+  update_window_grab_modifiers (display);
 
-  meta_prefs_add_listener (prefs_changed_callback, the_display);
+  meta_prefs_add_listener (prefs_changed_callback, display);
 
   meta_verbose ("Creating %d atoms\n", (int) G_N_ELEMENTS (atom_names));
-  XInternAtoms (the_display->xdisplay, atom_names, G_N_ELEMENTS (atom_names),
+  XInternAtoms (display->xdisplay, atom_names, G_N_ELEMENTS (atom_names),
                 False, atoms);
   {
     int i = 0;
-#define item(x) the_display->atom_##x = atoms[i++];
+#define item(x) display->atom_##x = atoms[i++];
 #include <meta/atomnames.h>
 #undef item
   }
 
-  the_display->prop_hooks = NULL;
-  meta_display_init_window_prop_hooks (the_display);
-  the_display->group_prop_hooks = NULL;
-  meta_display_init_group_prop_hooks (the_display);
+  display->prop_hooks = NULL;
+  meta_display_init_window_prop_hooks (display);
+  display->group_prop_hooks = NULL;
+  meta_display_init_group_prop_hooks (display);
 
   /* Offscreen unmapped window used for _NET_SUPPORTING_WM_CHECK,
    * created in screen_new
    */
-  the_display->leader_window = None;
-  the_display->timestamp_pinging_window = None;
+  display->leader_window = None;
+  display->timestamp_pinging_window = None;
 
-  the_display->monitor_cache_invalidated = TRUE;
+  display->monitor_cache_invalidated = TRUE;
 
-  the_display->groups_by_leader = NULL;
+  display->groups_by_leader = NULL;
 
-  the_display->screen = NULL;
+  display->screen = NULL;
 
 #ifdef HAVE_STARTUP_NOTIFICATION
-  the_display->sn_display = sn_display_new (the_display->xdisplay,
+  display->sn_display = sn_display_new (display->xdisplay,
                                         sn_error_trap_push,
                                         sn_error_trap_pop);
 #endif
 
   /* Get events */
-  meta_display_init_events (the_display);
+  meta_display_init_events (display);
 
-  the_display->xids = g_hash_table_new (meta_unsigned_long_hash,
+  display->xids = g_hash_table_new (meta_unsigned_long_hash,
                                         meta_unsigned_long_equal);
-  the_display->wayland_windows = g_hash_table_new (NULL, NULL);
+  display->wayland_windows = g_hash_table_new (NULL, NULL);
 
   i = 0;
   while (i < N_IGNORED_CROSSING_SERIALS)
     {
-      the_display->ignored_crossing_serials[i] = 0;
+      display->ignored_crossing_serials[i] = 0;
       ++i;
     }
-  the_display->ungrab_should_not_cause_focus_window = None;
+  display->ungrab_should_not_cause_focus_window = None;
 
-  the_display->current_time = CurrentTime;
-  the_display->sentinel_counter = 0;
+  display->current_time = CurrentTime;
+  display->sentinel_counter = 0;
 
-  the_display->grab_resize_timeout_id = 0;
-  the_display->grab_have_keyboard = FALSE;
+  display->grab_resize_timeout_id = 0;
+  display->grab_have_keyboard = FALSE;
 
 #ifdef HAVE_XKB
-  the_display->last_bell_time = 0;
+  display->last_bell_time = 0;
 #endif
 
-  the_display->grab_op = META_GRAB_OP_NONE;
-  the_display->grab_window = NULL;
-  the_display->grab_tile_mode = META_TILE_NONE;
-  the_display->grab_tile_monitor_number = -1;
+  display->grab_op = META_GRAB_OP_NONE;
+  display->grab_window = NULL;
+  display->grab_tile_mode = META_TILE_NONE;
+  display->grab_tile_monitor_number = -1;
 
-  the_display->grab_edge_resistance_data = NULL;
+  display->grab_edge_resistance_data = NULL;
 
   {
     int major, minor;
 
-    the_display->have_xsync = FALSE;
+    display->have_xsync = FALSE;
 
-    the_display->xsync_error_base = 0;
-    the_display->xsync_event_base = 0;
+    display->xsync_error_base = 0;
+    display->xsync_event_base = 0;
 
     /* I don't think we really have to fill these in */
     major = SYNC_MAJOR_VERSION;
     minor = SYNC_MINOR_VERSION;
 
-    if (!XSyncQueryExtension (the_display->xdisplay,
-                              &the_display->xsync_event_base,
-                              &the_display->xsync_error_base) ||
-        !XSyncInitialize (the_display->xdisplay,
+    if (!XSyncQueryExtension (display->xdisplay,
+                              &display->xsync_event_base,
+                              &display->xsync_error_base) ||
+        !XSyncInitialize (display->xdisplay,
                           &major, &minor))
       {
-        the_display->xsync_error_base = 0;
-        the_display->xsync_event_base = 0;
+        display->xsync_error_base = 0;
+        display->xsync_event_base = 0;
       }
     else
       {
-        the_display->have_xsync = TRUE;
-        XSyncSetPriority (the_display->xdisplay, None, 10);
+        display->have_xsync = TRUE;
+        XSyncSetPriority (display->xdisplay, None, 10);
       }
 
     meta_verbose ("Attempted to init Xsync, found version %d.%d error base %d event base %d\n",
                   major, minor,
-                  the_display->xsync_error_base,
-                  the_display->xsync_event_base);
+                  display->xsync_error_base,
+                  display->xsync_event_base);
   }
 
   {
-    the_display->have_shape = FALSE;
+    display->have_shape = FALSE;
 
-    the_display->shape_error_base = 0;
-    the_display->shape_event_base = 0;
+    display->shape_error_base = 0;
+    display->shape_event_base = 0;
 
-    if (!XShapeQueryExtension (the_display->xdisplay,
-                               &the_display->shape_event_base,
-                               &the_display->shape_error_base))
+    if (!XShapeQueryExtension (display->xdisplay,
+                               &display->shape_event_base,
+                               &display->shape_error_base))
       {
-        the_display->shape_error_base = 0;
-        the_display->shape_event_base = 0;
+        display->shape_error_base = 0;
+        display->shape_event_base = 0;
       }
     else
-      the_display->have_shape = TRUE;
+      display->have_shape = TRUE;
 
     meta_verbose ("Attempted to init Shape, found error base %d event base %d\n",
-                  the_display->shape_error_base,
-                  the_display->shape_event_base);
+                  display->shape_error_base,
+                  display->shape_event_base);
   }
 
   {
-    the_display->have_composite = FALSE;
+    display->have_composite = FALSE;
 
-    the_display->composite_error_base = 0;
-    the_display->composite_event_base = 0;
+    display->composite_error_base = 0;
+    display->composite_event_base = 0;
 
-    if (!XCompositeQueryExtension (the_display->xdisplay,
-                                   &the_display->composite_event_base,
-                                   &the_display->composite_error_base))
+    if (!XCompositeQueryExtension (display->xdisplay,
+                                   &display->composite_event_base,
+                                   &display->composite_error_base))
       {
-        the_display->composite_error_base = 0;
-        the_display->composite_event_base = 0;
+        display->composite_error_base = 0;
+        display->composite_event_base = 0;
       }
     else
       {
-        the_display->composite_major_version = 0;
-        the_display->composite_minor_version = 0;
-        if (XCompositeQueryVersion (the_display->xdisplay,
-                                    &the_display->composite_major_version,
-                                    &the_display->composite_minor_version))
+        display->composite_major_version = 0;
+        display->composite_minor_version = 0;
+        if (XCompositeQueryVersion (display->xdisplay,
+                                    &display->composite_major_version,
+                                    &display->composite_minor_version))
           {
-            the_display->have_composite = TRUE;
+            display->have_composite = TRUE;
           }
         else
           {
-            the_display->composite_major_version = 0;
-            the_display->composite_minor_version = 0;
+            display->composite_major_version = 0;
+            display->composite_minor_version = 0;
           }
       }
 
     meta_verbose ("Attempted to init Composite, found error base %d event base %d "
                   "extn ver %d %d\n",
-                  the_display->composite_error_base,
-                  the_display->composite_event_base,
-                  the_display->composite_major_version,
-                  the_display->composite_minor_version);
+                  display->composite_error_base,
+                  display->composite_event_base,
+                  display->composite_major_version,
+                  display->composite_minor_version);
 
-    the_display->have_damage = FALSE;
+    display->have_damage = FALSE;
 
-    the_display->damage_error_base = 0;
-    the_display->damage_event_base = 0;
+    display->damage_error_base = 0;
+    display->damage_event_base = 0;
 
-    if (!XDamageQueryExtension (the_display->xdisplay,
-                                &the_display->damage_event_base,
-                                &the_display->damage_error_base))
+    if (!XDamageQueryExtension (display->xdisplay,
+                                &display->damage_event_base,
+                                &display->damage_error_base))
       {
-        the_display->damage_error_base = 0;
-        the_display->damage_event_base = 0;
+        display->damage_error_base = 0;
+        display->damage_event_base = 0;
       }
     else
-      the_display->have_damage = TRUE;
+      display->have_damage = TRUE;
 
     meta_verbose ("Attempted to init Damage, found error base %d event base %d\n",
-                  the_display->damage_error_base,
-                  the_display->damage_event_base);
+                  display->damage_error_base,
+                  display->damage_event_base);
 
-    the_display->xfixes_error_base = 0;
-    the_display->xfixes_event_base = 0;
+    display->xfixes_error_base = 0;
+    display->xfixes_event_base = 0;
 
-    if (XFixesQueryExtension (the_display->xdisplay,
-                              &the_display->xfixes_event_base,
-                              &the_display->xfixes_error_base))
+    if (XFixesQueryExtension (display->xdisplay,
+                              &display->xfixes_event_base,
+                              &display->xfixes_error_base))
       {
         int xfixes_major, xfixes_minor;
 
-        XFixesQueryVersion (the_display->xdisplay, &xfixes_major, &xfixes_minor);
+        XFixesQueryVersion (display->xdisplay, &xfixes_major, &xfixes_minor);
 
         if (xfixes_major * 100 + xfixes_minor < 500)
           meta_fatal ("Mutter requires XFixes 5.0");
@@ -728,21 +729,21 @@ meta_display_open (void)
       }
 
     meta_verbose ("Attempted to init XFixes, found error base %d event base %d\n",
-                  the_display->xfixes_error_base,
-                  the_display->xfixes_event_base);
+                  display->xfixes_error_base,
+                  display->xfixes_event_base);
   }
 
   {
     int major = 2, minor = 3;
     gboolean has_xi = FALSE;
 
-    if (XQueryExtension (the_display->xdisplay,
+    if (XQueryExtension (display->xdisplay,
                          "XInputExtension",
-                         &the_display->xinput_opcode,
-                         &the_display->xinput_error_base,
-                         &the_display->xinput_event_base))
+                         &display->xinput_opcode,
+                         &display->xinput_error_base,
+                         &display->xinput_event_base))
       {
-        if (XIQueryVersion (the_display->xdisplay, &major, &minor) == Success)
+        if (XIQueryVersion (display->xdisplay, &major, &minor) == Success)
           {
             int version = (major * 10) + minor;
             if (version >= 22)
@@ -750,7 +751,7 @@ meta_display_open (void)
 
 #ifdef HAVE_XI23
             if (version >= 23)
-              the_display->have_xinput_23 = TRUE;
+              display->have_xinput_23 = TRUE;
 #endif /* HAVE_XI23 */
           }
       }
@@ -774,35 +775,35 @@ meta_display_open (void)
      * this window, so we can't rely on it still being set later.  See bug
      * 354213 for details.
      */
-    the_display->leader_window =
-      meta_create_offscreen_window (the_display->xdisplay,
-                                    DefaultRootWindow (the_display->xdisplay),
+    display->leader_window =
+      meta_create_offscreen_window (display->xdisplay,
+                                    DefaultRootWindow (display->xdisplay),
                                     PropertyChangeMask);
 
-    meta_prop_set_utf8_string_hint (the_display,
-                                    the_display->leader_window,
-                                    the_display->atom__NET_WM_NAME,
+    meta_prop_set_utf8_string_hint (display,
+                                    display->leader_window,
+                                    display->atom__NET_WM_NAME,
                                     net_wm_name);
 
-    meta_prop_set_utf8_string_hint (the_display,
-                                    the_display->leader_window,
-                                    the_display->atom__GNOME_WM_KEYBINDINGS,
+    meta_prop_set_utf8_string_hint (display,
+                                    display->leader_window,
+                                    display->atom__GNOME_WM_KEYBINDINGS,
                                     gnome_wm_keybindings);
 
-    meta_prop_set_utf8_string_hint (the_display,
-                                    the_display->leader_window,
-                                    the_display->atom__MUTTER_VERSION,
+    meta_prop_set_utf8_string_hint (display,
+                                    display->leader_window,
+                                    display->atom__MUTTER_VERSION,
                                     VERSION);
 
-    data[0] = the_display->leader_window;
-    XChangeProperty (the_display->xdisplay,
-                     the_display->leader_window,
-                     the_display->atom__NET_SUPPORTING_WM_CHECK,
+    data[0] = display->leader_window;
+    XChangeProperty (display->xdisplay,
+                     display->leader_window,
+                     display->atom__NET_SUPPORTING_WM_CHECK,
                      XA_WINDOW,
                      32, PropModeReplace, (guchar*) data, 1);
 
-    XWindowEvent (the_display->xdisplay,
-                  the_display->leader_window,
+    XWindowEvent (display->xdisplay,
+                  display->leader_window,
                   PropertyChangeMask,
                   &event);
 
@@ -811,52 +812,52 @@ meta_display_open (void)
     /* Make it painfully clear that we can't rely on PropertyNotify events on
      * this window, as per bug 354213.
      */
-    XSelectInput(the_display->xdisplay,
-                 the_display->leader_window,
+    XSelectInput(display->xdisplay,
+                 display->leader_window,
                  NoEventMask);
   }
 
   /* Make a little window used only for pinging the server for timestamps; note
    * that meta_create_offscreen_window already selects for PropertyChangeMask.
    */
-  the_display->timestamp_pinging_window =
-    meta_create_offscreen_window (the_display->xdisplay,
-                                  DefaultRootWindow (the_display->xdisplay),
+  display->timestamp_pinging_window =
+    meta_create_offscreen_window (display->xdisplay,
+                                  DefaultRootWindow (display->xdisplay),
                                   PropertyChangeMask);
 
-  the_display->last_focus_time = timestamp;
-  the_display->last_user_time = timestamp;
-  the_display->compositor = NULL;
+  display->last_focus_time = timestamp;
+  display->last_user_time = timestamp;
+  display->compositor = NULL;
 
   /* Mutter used to manage all X screens of the display in a single process, but
    * now it always manages exactly one screen as specified by the DISPLAY
    * environment variable.
    */
   i = meta_ui_get_screen_number ();
-  screen = meta_screen_new (the_display, i, timestamp);
+  screen = meta_screen_new (display, i, timestamp);
 
   if (!screen)
     {
       /* This would typically happen because all the screens already
        * have window managers.
        */
-      meta_display_close (the_display, timestamp);
+      meta_display_close (display, timestamp);
       return FALSE;
     }
 
-  the_display->screen = screen;
+  display->screen = screen;
 
   meta_screen_init_workspaces (screen);
 
-  enable_compositor (the_display);
+  enable_compositor (display);
 
   meta_screen_create_guard_window (screen);
 
   /* Set up touch support */
-  the_display->gesture_tracker = meta_gesture_tracker_new ();
-  g_signal_connect (the_display->gesture_tracker, "state-changed",
-                    G_CALLBACK (gesture_tracker_state_changed), the_display);
-  meta_display_grab_window_touch (the_display, DefaultRootWindow (the_display->xdisplay));
+  display->gesture_tracker = meta_gesture_tracker_new ();
+  g_signal_connect (display->gesture_tracker, "state-changed",
+                    G_CALLBACK (gesture_tracker_state_changed), display);
+  meta_display_grab_window_touch (display, DefaultRootWindow (display->xdisplay));
 
   /* We know that if mutter is running as a Wayland compositor,
    * we start out with no windows.
@@ -869,12 +870,12 @@ meta_display_open (void)
     int ret_to;
 
     /* kinda bogus because GetInputFocus has no possible errors */
-    meta_error_trap_push (the_display);
+    meta_error_trap_push (display);
 
     /* FIXME: This is totally broken; see comment 9 of bug 88194 about this */
     focus = None;
     ret_to = RevertToPointerRoot;
-    XGetInputFocus (the_display->xdisplay, &focus, &ret_to);
+    XGetInputFocus (display->xdisplay, &focus, &ret_to);
 
     /* Force a new FocusIn (does this work?) */
 
@@ -883,29 +884,29 @@ meta_display_open (void)
      */
     if (focus == None || focus == PointerRoot)
       /* Just focus the no_focus_window on the first screen */
-      meta_display_focus_the_no_focus_window (the_display,
-                                              the_display->screen,
+      meta_display_focus_the_no_focus_window (display,
+                                              display->screen,
                                               timestamp);
     else
       {
         MetaWindow * window;
-        window  = meta_display_lookup_x_window (the_display, focus);
+        window  = meta_display_lookup_x_window (display, focus);
         if (window)
-          meta_display_set_input_focus_window (the_display, window, FALSE, timestamp);
+          meta_display_set_input_focus_window (display, window, FALSE, timestamp);
         else
           /* Just focus the no_focus_window on the first screen */
-          meta_display_focus_the_no_focus_window (the_display,
-                                                  the_display->screen,
+          meta_display_focus_the_no_focus_window (display,
+                                                  display->screen,
                                                   timestamp);
       }
 
-    meta_error_trap_pop (the_display);
+    meta_error_trap_pop (display);
   }
 
   meta_idle_monitor_init_dbus ();
 
   /* Done opening new display */
-  the_display->display_opening = FALSE;
+  display->display_opening = FALSE;
 
   return TRUE;
 }
