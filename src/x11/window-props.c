@@ -63,6 +63,7 @@ typedef enum {
   NONE       = 0,
   LOAD_INIT  = (1 << 0),
   INCLUDE_OR = (1 << 1),
+  INIT_ONLY  = (1 << 2),
 } MetaPropHookFlags;
 
 struct _MetaWindowPropHooks
@@ -95,6 +96,9 @@ meta_window_reload_property_from_xwindow (MetaWindow      *window,
 
   hooks = find_hooks (window->display, property);
   if (!hooks)
+    return;
+
+  if ((hooks->flags & INIT_ONLY) && !initial)
     return;
 
   init_prop_value (window, hooks, &value);
@@ -1709,14 +1713,14 @@ meta_display_init_window_prop_hooks (MetaDisplay *display)
     { XA_WM_NAME,                      META_PROP_VALUE_TEXT_PROPERTY, reload_wm_name,      LOAD_INIT | INCLUDE_OR },
     { display->atom__MUTTER_HINTS,     META_PROP_VALUE_TEXT_PROPERTY, reload_mutter_hints, LOAD_INIT | INCLUDE_OR },
     { display->atom__NET_WM_OPAQUE_REGION, META_PROP_VALUE_CARDINAL_LIST, reload_opaque_region, LOAD_INIT | INCLUDE_OR },
-    { display->atom__NET_WM_DESKTOP,   META_PROP_VALUE_CARDINAL, reload_net_wm_desktop,    LOAD_INIT },
+    { display->atom__NET_WM_DESKTOP,   META_PROP_VALUE_CARDINAL, reload_net_wm_desktop,    LOAD_INIT | INIT_ONLY },
     { display->atom__NET_STARTUP_ID,   META_PROP_VALUE_UTF8,     reload_net_startup_id,    LOAD_INIT },
     { display->atom__NET_WM_SYNC_REQUEST_COUNTER, META_PROP_VALUE_SYNC_COUNTER_LIST, reload_update_counter, LOAD_INIT | INCLUDE_OR },
     { XA_WM_NORMAL_HINTS,              META_PROP_VALUE_SIZE_HINTS, reload_normal_hints,    LOAD_INIT },
     { display->atom_WM_PROTOCOLS,      META_PROP_VALUE_ATOM_LIST, reload_wm_protocols,     LOAD_INIT },
     { XA_WM_HINTS,                     META_PROP_VALUE_WM_HINTS,  reload_wm_hints,         LOAD_INIT },
     { display->atom__NET_WM_USER_TIME, META_PROP_VALUE_CARDINAL, reload_net_wm_user_time,  LOAD_INIT },
-    { display->atom__NET_WM_STATE,     META_PROP_VALUE_ATOM_LIST, reload_net_wm_state,     LOAD_INIT },
+    { display->atom__NET_WM_STATE,     META_PROP_VALUE_ATOM_LIST, reload_net_wm_state,     LOAD_INIT | INIT_ONLY },
     { display->atom__MOTIF_WM_HINTS,   META_PROP_VALUE_MOTIF_HINTS, reload_mwm_hints,      LOAD_INIT },
     { XA_WM_TRANSIENT_FOR,             META_PROP_VALUE_WINDOW,    reload_transient_for,    LOAD_INIT },
     { display->atom__GTK_THEME_VARIANT, META_PROP_VALUE_UTF8,     reload_gtk_theme_variant, LOAD_INIT },
