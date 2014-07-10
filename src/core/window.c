@@ -948,8 +948,6 @@ _meta_window_shared_new (MetaDisplay         *display,
 
   window->opacity = 0xFF;
 
-  META_WINDOW_GET_CLASS (window)->manage (window);
-
   if (window->override_redirect)
     {
       window->decorated = FALSE;
@@ -959,6 +957,8 @@ _meta_window_shared_new (MetaDisplay         *display,
       window->has_move_func = FALSE;
       window->has_resize_func = FALSE;
     }
+
+  META_WINDOW_GET_CLASS (window)->manage (window);
 
   if (!window->override_redirect)
     meta_window_update_icon_now (window);
