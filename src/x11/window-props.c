@@ -1754,7 +1754,7 @@ meta_display_init_window_prop_hooks (MetaDisplay *display)
   while (cursor->property)
     {
       /* Doing initial loading doesn't make sense if we just want notification */
-      g_assert (!(hooks->load_initially && hooks->type == META_PROP_VALUE_INVALID));
+      g_assert (!(cursor->load_initially && cursor->type == META_PROP_VALUE_INVALID));
 
       /* Atoms are safe to use with GINT_TO_POINTER because it's safe with
        * anything 32 bits or less, and atoms are 32 bits with the top three
