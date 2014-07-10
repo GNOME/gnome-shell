@@ -40,8 +40,6 @@
 #include <meta/errors.h>
 #include "edid.h"
 
-#define ALL_WL_TRANSFORMS ((1 << (WL_OUTPUT_TRANSFORM_FLIPPED_270 + 1)) - 1)
-
 typedef struct {
   drmModeConnector *connector;
 
@@ -363,9 +361,9 @@ meta_monitor_manager_kms_read_current (MetaMonitorManager *manager)
       meta_crtc->rect.width = crtc->width;
       meta_crtc->rect.height = crtc->height;
       meta_crtc->is_dirty = FALSE;
-      meta_crtc->transform = WL_OUTPUT_TRANSFORM_NORMAL;
+      meta_crtc->transform = META_MONITOR_TRANSFORM_NORMAL;
       /* FIXME: implement! */
-      meta_crtc->all_transforms = 1 << WL_OUTPUT_TRANSFORM_NORMAL;
+      meta_crtc->all_transforms = 1 << META_MONITOR_TRANSFORM_NORMAL;
 
       if (crtc->mode_valid)
         {

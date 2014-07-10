@@ -42,7 +42,7 @@
 #include "edid.h"
 #include "meta-monitor-config.h"
 
-#define ALL_WL_TRANSFORMS ((1 << (WL_OUTPUT_TRANSFORM_FLIPPED_270 + 1)) - 1)
+#define ALL_TRANSFORMS ((1 << (META_MONITOR_TRANSFORM_FLIPPED_270 + 1)) - 1)
 
 /* Look for DPI_FALLBACK in:
  * http://git.gnome.org/browse/gnome-settings-daemon/tree/plugins/xsettings/gsd-xsettings-manager.c
@@ -67,31 +67,31 @@ struct _MetaMonitorManagerXrandrClass
 
 G_DEFINE_TYPE (MetaMonitorManagerXrandr, meta_monitor_manager_xrandr, META_TYPE_MONITOR_MANAGER);
 
-static enum wl_output_transform
-wl_transform_from_xrandr (Rotation rotation)
+static MetaMonitorTransform
+meta_monitor_transform_from_xrandr (Rotation rotation)
 {
-  static const enum wl_output_transform y_reflected_map[4] = {
-    WL_OUTPUT_TRANSFORM_FLIPPED_180,
-    WL_OUTPUT_TRANSFORM_FLIPPED_90,
-    WL_OUTPUT_TRANSFORM_FLIPPED,
-    WL_OUTPUT_TRANSFORM_FLIPPED_270
+  static const MetaMonitorTransform y_reflected_map[4] = {
+    META_MONITOR_TRANSFORM_FLIPPED_180,
+    META_MONITOR_TRANSFORM_FLIPPED_90,
+    META_MONITOR_TRANSFORM_FLIPPED,
+    META_MONITOR_TRANSFORM_FLIPPED_270
   };
-  enum wl_output_transform ret;
+  MetaMonitorTransform ret;
 
   switch (rotation & 0x7F)
     {
     default:
     case RR_Rotate_0:
-      ret = WL_OUTPUT_TRANSFORM_NORMAL;
+      ret = META_MONITOR_TRANSFORM_NORMAL;
       break;
     case RR_Rotate_90:
-      ret = WL_OUTPUT_TRANSFORM_90;
+      ret = META_MONITOR_TRANSFORM_90;
       break;
     case RR_Rotate_180:
-      ret = WL_OUTPUT_TRANSFORM_180;
+      ret = META_MONITOR_TRANSFORM_180;
       break;
     case RR_Rotate_270:
-      ret = WL_OUTPUT_TRANSFORM_270;
+      ret = META_MONITOR_TRANSFORM_270;
       break;
     }
 
@@ -105,35 +105,35 @@ wl_transform_from_xrandr (Rotation rotation)
 
 #define ALL_ROTATIONS (RR_Rotate_0 | RR_Rotate_90 | RR_Rotate_180 | RR_Rotate_270)
 
-static unsigned int
-wl_transform_from_xrandr_all (Rotation rotation)
+static MetaMonitorTransform
+meta_monitor_transform_from_xrandr_all (Rotation rotation)
 {
   unsigned ret;
 
   /* Handle the common cases first (none or all) */
   if (rotation == 0 || rotation == RR_Rotate_0)
-    return (1 << WL_OUTPUT_TRANSFORM_NORMAL);
+    return (1 << META_MONITOR_TRANSFORM_NORMAL);
 
   /* All rotations and one reflection -> all of them by composition */
   if ((rotation & ALL_ROTATIONS) &&
       ((rotation & RR_Reflect_X) || (rotation & RR_Reflect_Y)))
-    return ALL_WL_TRANSFORMS;
+    return ALL_TRANSFORMS;
 
-  ret = 1 << WL_OUTPUT_TRANSFORM_NORMAL;
+  ret = 1 << META_MONITOR_TRANSFORM_NORMAL;
   if (rotation & RR_Rotate_90)
-    ret |= 1 << WL_OUTPUT_TRANSFORM_90;
+    ret |= 1 << META_MONITOR_TRANSFORM_90;
   if (rotation & RR_Rotate_180)
-    ret |= 1 << WL_OUTPUT_TRANSFORM_180;
+    ret |= 1 << META_MONITOR_TRANSFORM_180;
   if (rotation & RR_Rotate_270)
-    ret |= 1 << WL_OUTPUT_TRANSFORM_270;
+    ret |= 1 << META_MONITOR_TRANSFORM_270;
   if (rotation & (RR_Rotate_0 | RR_Reflect_X))
-    ret |= 1 << WL_OUTPUT_TRANSFORM_FLIPPED;
+    ret |= 1 << META_MONITOR_TRANSFORM_FLIPPED;
   if (rotation & (RR_Rotate_90 | RR_Reflect_X))
-    ret |= 1 << WL_OUTPUT_TRANSFORM_FLIPPED_90;
+    ret |= 1 << META_MONITOR_TRANSFORM_FLIPPED_90;
   if (rotation & (RR_Rotate_180 | RR_Reflect_X))
-    ret |= 1 << WL_OUTPUT_TRANSFORM_FLIPPED_180;
+    ret |= 1 << META_MONITOR_TRANSFORM_FLIPPED_180;
   if (rotation & (RR_Rotate_270 | RR_Reflect_X))
-    ret |= 1 << WL_OUTPUT_TRANSFORM_FLIPPED_270;
+    ret |= 1 << META_MONITOR_TRANSFORM_FLIPPED_270;
 
   return ret;
 }
@@ -434,8 +434,8 @@ meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
       meta_crtc->rect.width = crtc->width;
       meta_crtc->rect.height = crtc->height;
       meta_crtc->is_dirty = FALSE;
-      meta_crtc->transform = wl_transform_from_xrandr (crtc->rotation);
-      meta_crtc->all_transforms = wl_transform_from_xrandr_all (crtc->rotations);
+      meta_crtc->transform = meta_monitor_transform_from_xrandr (crtc->rotation);
+      meta_crtc->all_transforms = meta_monitor_transform_from_xrandr_all (crtc->rotations);
 
       for (j = 0; j < (unsigned)resources->nmode; j++)
 	{
@@ -637,25 +637,25 @@ meta_monitor_manager_xrandr_set_power_save_mode (MetaMonitorManager *manager,
 }
 
 static Rotation
-wl_transform_to_xrandr (enum wl_output_transform transform)
+meta_monitor_transform_to_xrandr (MetaMonitorTransform transform)
 {
   switch (transform)
     {
-    case WL_OUTPUT_TRANSFORM_NORMAL:
+    case META_MONITOR_TRANSFORM_NORMAL:
       return RR_Rotate_0;
-    case WL_OUTPUT_TRANSFORM_90:
+    case META_MONITOR_TRANSFORM_90:
       return RR_Rotate_90;
-    case WL_OUTPUT_TRANSFORM_180:
+    case META_MONITOR_TRANSFORM_180:
       return RR_Rotate_180;
-    case WL_OUTPUT_TRANSFORM_270:
+    case META_MONITOR_TRANSFORM_270:
       return RR_Rotate_270;
-    case WL_OUTPUT_TRANSFORM_FLIPPED:
+    case META_MONITOR_TRANSFORM_FLIPPED:
       return RR_Reflect_X | RR_Rotate_0;
-    case WL_OUTPUT_TRANSFORM_FLIPPED_90:
+    case META_MONITOR_TRANSFORM_FLIPPED_90:
       return RR_Reflect_X | RR_Rotate_90;
-    case WL_OUTPUT_TRANSFORM_FLIPPED_180:
+    case META_MONITOR_TRANSFORM_FLIPPED_180:
       return RR_Reflect_X | RR_Rotate_180;
-    case WL_OUTPUT_TRANSFORM_FLIPPED_270:
+    case META_MONITOR_TRANSFORM_FLIPPED_270:
       return RR_Reflect_X | RR_Rotate_270;
     }
 
@@ -847,7 +847,7 @@ meta_monitor_manager_xrandr_apply_configuration (MetaMonitorManager *manager,
                                  manager_xrandr->time,
                                  crtc_info->x, crtc_info->y,
                                  (XID)mode->mode_id,
-                                 wl_transform_to_xrandr (crtc_info->transform),
+                                 meta_monitor_transform_to_xrandr (crtc_info->transform),
                                  outputs, n_outputs);
 
           if (ok != Success)

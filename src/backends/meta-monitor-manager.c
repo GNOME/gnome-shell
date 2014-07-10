@@ -477,7 +477,7 @@ meta_monitor_manager_handle_get_resources (MetaDBusDisplayConfig *skeleton,
       GVariantBuilder transforms;
 
       g_variant_builder_init (&transforms, G_VARIANT_TYPE ("au"));
-      for (j = 0; j <= WL_OUTPUT_TRANSFORM_FLIPPED_270; j++)
+      for (j = 0; j <= META_MONITOR_TRANSFORM_FLIPPED_270; j++)
         if (crtc->all_transforms & (1 << j))
           g_variant_builder_add (&transforms, "u", j);
 
@@ -755,8 +755,8 @@ meta_monitor_manager_handle_apply_configuration  (MetaDBusDisplayConfig *skeleto
           crtc_info->y = 0;
         }
 
-      if (transform < WL_OUTPUT_TRANSFORM_NORMAL ||
-          transform > WL_OUTPUT_TRANSFORM_FLIPPED_270 ||
+      if (transform < META_MONITOR_TRANSFORM_NORMAL ||
+          transform > META_MONITOR_TRANSFORM_FLIPPED_270 ||
           ((crtc->all_transforms & (1 << transform)) == 0))
         {
           g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,

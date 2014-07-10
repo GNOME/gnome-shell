@@ -168,12 +168,20 @@ wayland_output_destroy_notify (gpointer data)
   g_slice_free (MetaWaylandOutput, wayland_output);
 }
 
+static inline enum wl_output_transform
+wl_output_transform_from_meta_monitor_transform (MetaMonitorTransform transform)
+{
+  /* The enums are the same. */
+  return (enum wl_output_transform) transform;
+}
+
 static void
 wayland_output_update_for_output (MetaWaylandOutput *wayland_output,
                                   MetaOutput        *output)
 {
   GList *iter;
   guint mode_flags;
+  enum wl_output_transform wl_transform = wl_output_transform_from_meta_monitor_transform (output->crtc->transform);
 
   g_assert (output->crtc->current_mode != NULL);
 
@@ -187,7 +195,7 @@ wayland_output_update_for_output (MetaWaylandOutput *wayland_output,
 
       if (wayland_output->x != output->crtc->rect.x ||
           wayland_output->y != output->crtc->rect.y ||
-          wayland_output->transform != output->crtc->transform)
+          wayland_output->transform != wl_transform)
         {
             wl_resource_post_event (resource,
                                     WL_OUTPUT_GEOMETRY,
@@ -198,7 +206,7 @@ wayland_output_update_for_output (MetaWaylandOutput *wayland_output,
                                     output->subpixel_order,
                                     output->vendor,
                                     output->product,
-                                    output->crtc->transform);
+                                    wl_transform);
         }
 
       wl_resource_post_event (resource,
@@ -214,7 +222,7 @@ wayland_output_update_for_output (MetaWaylandOutput *wayland_output,
   wayland_output->output = output;
   wayland_output->x = output->crtc->rect.x;
   wayland_output->y = output->crtc->rect.y;
-  wayland_output->transform = output->crtc->transform;
+  wayland_output->transform = wl_transform;
 }
 
 static GHashTable *

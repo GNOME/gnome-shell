@@ -42,7 +42,6 @@
 #include <meta/screen.h>
 #include "stack-tracker.h"
 #include "ui.h"
-#include <wayland-server.h>
 
 #include "meta-display-config-shared.h"
 #include "meta-dbus-display-config.h"
@@ -59,6 +58,17 @@ typedef struct _MetaMonitorMode MetaMonitorMode;
 typedef struct _MetaMonitorInfo MetaMonitorInfo;
 typedef struct _MetaCRTCInfo MetaCRTCInfo;
 typedef struct _MetaOutputInfo MetaOutputInfo;
+
+typedef enum {
+  META_MONITOR_TRANSFORM_NORMAL,
+  META_MONITOR_TRANSFORM_90,
+  META_MONITOR_TRANSFORM_180,
+  META_MONITOR_TRANSFORM_270,
+  META_MONITOR_TRANSFORM_FLIPPED,
+  META_MONITOR_TRANSFORM_FLIPPED_90,
+  META_MONITOR_TRANSFORM_FLIPPED_180,
+  META_MONITOR_TRANSFORM_FLIPPED_270,
+} MetaMonitorTransform;
 
 struct _MetaOutput
 {
@@ -114,7 +124,7 @@ struct _MetaCRTC
   glong crtc_id;
   MetaRectangle rect;
   MetaMonitorMode *current_mode;
-  enum wl_output_transform transform;
+  MetaMonitorTransform transform;
   unsigned int all_transforms;
 
   /* Only used to build the logical configuration
@@ -185,7 +195,7 @@ struct _MetaCRTCInfo {
   MetaMonitorMode          *mode;
   int                       x;
   int                       y;
-  enum wl_output_transform  transform;
+  MetaMonitorTransform      transform;
   GPtrArray                *outputs;
 };
 
@@ -339,7 +349,7 @@ gboolean           meta_monitor_manager_has_hotplug_mode_update (MetaMonitorMana
 /* Returns true if transform causes width and height to be inverted
    This is true for the odd transforms in the enum */
 static inline gboolean
-meta_monitor_transform_is_rotated (enum wl_output_transform transform)
+meta_monitor_transform_is_rotated (MetaMonitorTransform transform)
 {
   return (transform % 2);
 }

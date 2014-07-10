@@ -60,7 +60,7 @@ typedef struct {
   gboolean enabled;
   MetaRectangle rect;
   float refresh_rate;
-  enum wl_output_transform transform;
+  MetaMonitorTransform transform;
 
   gboolean is_primary;
   gboolean is_presentation;
@@ -656,20 +656,20 @@ handle_text (GMarkupParseContext *context,
         else if (strcmp (parser->output_field, "rotation") == 0)
           {
             if (strncmp (text, "normal", text_len) == 0)
-              parser->output.transform = WL_OUTPUT_TRANSFORM_NORMAL;
+              parser->output.transform = META_MONITOR_TRANSFORM_NORMAL;
             else if (strncmp (text, "left", text_len) == 0)
-              parser->output.transform = WL_OUTPUT_TRANSFORM_90;
+              parser->output.transform = META_MONITOR_TRANSFORM_90;
             else if (strncmp (text, "upside_down", text_len) == 0)
-              parser->output.transform = WL_OUTPUT_TRANSFORM_180;
+              parser->output.transform = META_MONITOR_TRANSFORM_180;
             else if (strncmp (text, "right", text_len) == 0)
-              parser->output.transform = WL_OUTPUT_TRANSFORM_270;
+              parser->output.transform = META_MONITOR_TRANSFORM_270;
             else
               g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
                            "Invalid rotation type %.*s", (int)text_len, text);
           }
         else if (strcmp (parser->output_field, "reflect_x") == 0)
           parser->output.transform += read_bool (text, text_len, error) ?
-            WL_OUTPUT_TRANSFORM_FLIPPED : 0;
+            META_MONITOR_TRANSFORM_FLIPPED : 0;
         else if (strcmp (parser->output_field, "reflect_y") == 0)
           {
             /* FIXME (look at the rotation map in monitor.c) */
@@ -1115,7 +1115,7 @@ make_default_config (MetaMonitorConfig *self,
       ret->outputs[0].rect.width = outputs[0].preferred_mode->width;
       ret->outputs[0].rect.height = outputs[0].preferred_mode->height;
       ret->outputs[0].refresh_rate = outputs[0].preferred_mode->refresh_rate;
-      ret->outputs[0].transform = WL_OUTPUT_TRANSFORM_NORMAL;
+      ret->outputs[0].transform = META_MONITOR_TRANSFORM_NORMAL;
       ret->outputs[0].is_primary = TRUE;
 
       return ret;
@@ -1167,7 +1167,7 @@ make_default_config (MetaMonitorConfig *self,
                   ret->outputs[j].rect.width = outputs[0].preferred_mode->width;
                   ret->outputs[j].rect.height = outputs[0].preferred_mode->height;
                   ret->outputs[j].refresh_rate = outputs[0].preferred_mode->refresh_rate;
-                  ret->outputs[j].transform = WL_OUTPUT_TRANSFORM_NORMAL;
+                  ret->outputs[j].transform = META_MONITOR_TRANSFORM_NORMAL;
                   ret->outputs[j].is_primary = FALSE;
                   ret->outputs[j].is_presentation = FALSE;
                 }
@@ -1202,7 +1202,7 @@ make_default_config (MetaMonitorConfig *self,
       ret->outputs[i].rect.width = output->preferred_mode->width;
       ret->outputs[i].rect.height = output->preferred_mode->height;
       ret->outputs[i].refresh_rate = output->preferred_mode->refresh_rate;
-      ret->outputs[i].transform = WL_OUTPUT_TRANSFORM_NORMAL;
+      ret->outputs[i].transform = META_MONITOR_TRANSFORM_NORMAL;
       ret->outputs[i].is_primary = (output == primary);
 
       /* Disable outputs that would go beyond framebuffer limits */
@@ -1250,7 +1250,7 @@ ensure_at_least_one_output (MetaMonitorConfig  *self,
           ret->outputs[i].rect.width = output->preferred_mode->width;
           ret->outputs[i].rect.height = output->preferred_mode->height;
           ret->outputs[i].refresh_rate = output->preferred_mode->refresh_rate;
-          ret->outputs[i].transform = WL_OUTPUT_TRANSFORM_NORMAL;
+          ret->outputs[i].transform = META_MONITOR_TRANSFORM_NORMAL;
           ret->outputs[i].is_primary = TRUE;
         }
       else
@@ -1512,7 +1512,7 @@ meta_monitor_config_save (MetaMonitorConfig *self)
                                       output->rect.x,
                                       output->rect.y,
                                       rotation_map[output->transform & 0x3],
-                                      output->transform >= WL_OUTPUT_TRANSFORM_FLIPPED ? "yes" : "no",
+                                      output->transform >= META_MONITOR_TRANSFORM_FLIPPED ? "yes" : "no",
                                       output->is_primary ? "yes" : "no",
                                       output->is_presentation ? "yes" : "no");
             }
@@ -1621,13 +1621,13 @@ output_supports_mode (MetaOutput      *output,
 }
 
 static gboolean
-crtc_assignment_assign (CrtcAssignment            *assign,
-			MetaCRTC                  *crtc,
-			MetaMonitorMode           *mode,
-			int                        x,
-			int                        y,
-			enum wl_output_transform   transform,
-			MetaOutput                *output)
+crtc_assignment_assign (CrtcAssignment       *assign,
+			MetaCRTC             *crtc,
+			MetaMonitorMode      *mode,
+			int                   x,
+			int                   y,
+			MetaMonitorTransform  transform,
+			MetaOutput           *output)
 {
   MetaCRTCInfo *info = g_hash_table_lookup (assign->info, crtc);
 

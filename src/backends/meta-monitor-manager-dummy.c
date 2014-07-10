@@ -27,7 +27,7 @@
 
 #include "meta-monitor-manager-dummy.h"
 
-#define ALL_WL_TRANSFORMS ((1 << (WL_OUTPUT_TRANSFORM_FLIPPED_270 + 1)) - 1)
+#define ALL_TRANSFORMS ((1 << (META_MONITOR_TRANSFORM_FLIPPED_270 + 1)) - 1)
 
 struct _MetaMonitorManagerDummy
 {
@@ -66,8 +66,8 @@ meta_monitor_manager_dummy_read_current (MetaMonitorManager *manager)
   manager->crtcs[0].rect.width = manager->modes[0].width;
   manager->crtcs[0].rect.height = manager->modes[0].height;
   manager->crtcs[0].current_mode = &manager->modes[0];
-  manager->crtcs[0].transform = WL_OUTPUT_TRANSFORM_NORMAL;
-  manager->crtcs[0].all_transforms = ALL_WL_TRANSFORMS;
+  manager->crtcs[0].transform = META_MONITOR_TRANSFORM_NORMAL;
+  manager->crtcs[0].all_transforms = ALL_TRANSFORMS;
   manager->crtcs[0].is_dirty = FALSE;
   manager->crtcs[0].logical_monitor = NULL;
 
