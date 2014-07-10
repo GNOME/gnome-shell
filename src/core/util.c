@@ -49,7 +49,7 @@ meta_topic_real_valist (MetaDebugTopic topic,
                         va_list        args);
 #endif
 
-static gint verbose_topics = META_DEBUG_STACK;
+static gint verbose_topics = 0;
 static gboolean is_debugging = FALSE;
 static gboolean replace_current = FALSE;
 static int no_prefix = 0;
