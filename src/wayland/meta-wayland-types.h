@@ -27,7 +27,6 @@ typedef struct _MetaWaylandPointer MetaWaylandPointer;
 typedef struct _MetaWaylandPointerGrab MetaWaylandPointerGrab;
 typedef struct _MetaWaylandPointerGrabInterface MetaWaylandPointerGrabInterface;
 typedef struct _MetaWaylandKeyboard MetaWaylandKeyboard;
-typedef struct _MetaWaylandDataOffer MetaWaylandDataOffer;
 typedef struct _MetaWaylandDataSource MetaWaylandDataSource;
 typedef struct _MetaWaylandTouch MetaWaylandTouch;
 

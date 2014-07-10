@@ -30,19 +30,6 @@
 #include "meta-wayland-pointer.h"
 #include "meta-wayland-touch.h"
 
-struct _MetaWaylandDataOffer
-{
-  struct wl_resource *resource;
-  MetaWaylandDataSource *source;
-  struct wl_listener source_destroy_listener;
-};
-
-struct _MetaWaylandDataSource
-{
-  struct wl_resource *resource;
-  struct wl_array mime_types;
-};
-
 struct _MetaWaylandSeat
 {
   struct wl_list base_resource_list;
