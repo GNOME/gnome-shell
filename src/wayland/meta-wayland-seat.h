@@ -56,6 +56,9 @@ void meta_wayland_seat_update (MetaWaylandSeat    *seat,
 gboolean meta_wayland_seat_handle_event (MetaWaylandSeat *seat,
                                          const ClutterEvent *event);
 
+void meta_wayland_seat_set_input_focus (MetaWaylandSeat    *seat,
+                                        MetaWaylandSurface *surface);
+
 void meta_wayland_seat_repick (MetaWaylandSeat *seat);
 void meta_wayland_seat_update_cursor_surface (MetaWaylandSeat *seat);
 

@@ -187,9 +187,7 @@ meta_wayland_compositor_set_input_focus (MetaWaylandCompositor *compositor,
 {
   MetaWaylandSurface *surface = window ? window->surface : NULL;
 
-  meta_wayland_keyboard_set_focus (&compositor->seat->keyboard,
-                                   surface);
-  meta_wayland_data_device_set_keyboard_focus (compositor->seat);
+  meta_wayland_seat_set_input_focus (compositor->seat, surface);
 }
 
 void

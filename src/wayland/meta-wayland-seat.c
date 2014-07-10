@@ -25,6 +25,7 @@
 
 #include "meta-wayland-private.h"
 #include "meta-wayland-versions.h"
+#include "meta-wayland-data-device.h"
 
 static void
 unbind_resource (struct wl_resource *resource)
@@ -191,6 +192,14 @@ void
 meta_wayland_seat_repick (MetaWaylandSeat *seat)
 {
   meta_wayland_pointer_repick (&seat->pointer);
+}
+
+void
+meta_wayland_seat_set_input_focus (MetaWaylandSeat    *seat,
+                                   MetaWaylandSurface *surface)
+{
+  meta_wayland_keyboard_set_focus (&seat->keyboard, surface);
+  meta_wayland_data_device_set_keyboard_focus (seat);
 }
 
 void
