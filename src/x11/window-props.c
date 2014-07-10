@@ -269,11 +269,12 @@ reload_net_wm_window_type (MetaWindow    *window,
               atom == window->display->atom__NET_WM_WINDOW_TYPE_NORMAL)
             {
               priv->type_atom = atom;
-              meta_window_x11_recalc_window_type (window);
-              return;
+              break;
             }
         }
     }
+
+  meta_window_x11_recalc_window_type (window);
 }
 
 static void
