@@ -49,6 +49,12 @@ struct _MetaWaylandDataSource
 };
 
 static void
+unbind_resource (struct wl_resource *resource)
+{
+  wl_list_remove (wl_resource_get_link (resource));
+}
+
+static void
 data_offer_accept (struct wl_client *client,
                    struct wl_resource *resource,
                    guint32 serial,
@@ -484,24 +490,17 @@ create_data_source (struct wl_client *client,
 }
 
 static void
-unbind_data_device (struct wl_resource *resource)
-{
-  wl_list_remove (wl_resource_get_link (resource));
-}
-
-static void
 get_data_device (struct wl_client *client,
                  struct wl_resource *manager_resource,
                  guint32 id, struct wl_resource *seat_resource)
 {
   MetaWaylandSeat *seat = wl_resource_get_user_data (seat_resource);
-  struct wl_resource *resource;
+  struct wl_resource *cr;
 
-  resource = wl_resource_create (client, &wl_data_device_interface,
-				 MIN (META_WL_DATA_DEVICE_VERSION,
-				      wl_resource_get_version (manager_resource)), id);
-  wl_resource_set_implementation (resource, &data_device_interface, seat, unbind_data_device);
-  wl_list_insert (&seat->data_device_resource_list, wl_resource_get_link (resource));
+  cr = wl_resource_create (client, &wl_data_device_interface,
+                           MIN (META_WL_DATA_DEVICE_VERSION, wl_resource_get_version (manager_resource)), id);
+  wl_resource_set_implementation (cr, &data_device_interface, seat, unbind_resource);
+  wl_list_insert (&seat->data_device_resource_list, wl_resource_get_link (cr));
 }
 
 static const struct wl_data_device_manager_interface manager_interface = {
