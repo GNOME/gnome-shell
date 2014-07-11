@@ -512,7 +512,6 @@ meta_display_open (void)
    */
   the_display->name = g_strdup (XDisplayName (NULL));
   the_display->xdisplay = xdisplay;
-  the_display->server_grab_count = 0;
   the_display->display_opening = TRUE;
 
   the_display->pending_pings = NULL;
@@ -1076,50 +1075,6 @@ meta_display_close (MetaDisplay *display,
   meta_quit (META_EXIT_SUCCESS);
 }
 
-/* Grab/ungrab routines taken from fvwm.
- * Calling this function will cause X to ignore all other clients until
- * you ungrab. This may not be quite as bad as it sounds, yet there is
- * agreement that avoiding server grabs except when they are clearly needed
- * is a good thing.
- *
- * If you do use such grabs, please clearly explain the necessity for their
- * usage in a comment. Try to keep their scope extremely limited. In
- * particular, try to avoid emitting any signals or notifications while
- * a grab is active (if the signal receiver tries to block on an X request
- * from another client at this point, you will have a deadlock).
- */
-void
-meta_display_grab (MetaDisplay *display)
-{
-  if (display->server_grab_count == 0)
-    {
-      XGrabServer (display->xdisplay);
-    }
-  display->server_grab_count += 1;
-  meta_verbose ("Grabbing display, grab count now %d\n",
-                display->server_grab_count);
-}
-
-void
-meta_display_ungrab (MetaDisplay *display)
-{
-  if (display->server_grab_count == 0)
-    meta_bug ("Ungrabbed non-grabbed server\n");
-
-  display->server_grab_count -= 1;
-  if (display->server_grab_count == 0)
-    {
-      /* FIXME we want to purge all pending "queued" stuff
-       * at this point, such as window hide/show
-       */
-      XUngrabServer (display->xdisplay);
-      XFlush (display->xdisplay);
-    }
-
-  meta_verbose ("Ungrabbing display, grab count now %d\n",
-                display->server_grab_count);
-}
-
 /**
  * meta_display_for_x_display:
  * @xdisplay: An X display
@@ -1554,7 +1509,7 @@ request_xserver_input_focus_change (MetaDisplay *display,
    * we know which is which by making two requests that the server will
    * process at the same time.
    */
-  meta_display_grab (display);
+  XGrabServer (display->xdisplay);
 
   serial = XNextRequest (display->xdisplay);
 
@@ -1567,7 +1522,8 @@ request_xserver_input_focus_change (MetaDisplay *display,
                    display->atom__MUTTER_FOCUS_SET,
                    XA_STRING, 8, PropModeAppend, NULL, 0);
 
-  meta_display_ungrab (display);
+  XUngrabServer (display->xdisplay);
+  XFlush (display->xdisplay);
 
   meta_display_update_focus_window (display,
                                     meta_window,

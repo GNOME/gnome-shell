@@ -146,8 +146,6 @@ struct _MetaDisplay
   GHashTable *xids;
   GHashTable *wayland_windows;
 
-  int server_grab_count;
-
   /* serials of leave/unmap events that may
    * correspond to an enter event we should
    * ignore
@@ -314,8 +312,6 @@ struct _MetaDisplayClass
 gboolean      meta_display_open                (void);
 void          meta_display_close               (MetaDisplay *display,
                                                 guint32      timestamp);
-void          meta_display_grab                (MetaDisplay *display);
-void          meta_display_ungrab              (MetaDisplay *display);
 
 void          meta_display_unmanage_windows_for_screen (MetaDisplay *display,
                                                         MetaScreen  *screen,
