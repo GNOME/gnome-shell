@@ -645,7 +645,8 @@ clutter_event_dispatch (GSource     *g_source,
       _clutter_stage_queue_event (event->any.stage, event, FALSE);
 
       /* update the device states *after* the event */
-      event_state = xkb_state_serialize_mods (seat->xkb, XKB_STATE_MODS_EFFECTIVE);
+      event_state = seat->button_state |
+        xkb_state_serialize_mods (seat->xkb, XKB_STATE_MODS_EFFECTIVE);
       _clutter_input_device_set_state (seat->core_pointer, event_state);
       _clutter_input_device_set_state (seat->core_keyboard, event_state);
     }
