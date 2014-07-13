@@ -1148,7 +1148,7 @@ process_selection_request (MetaDisplay   *display,
   meta_verbose ("Handled selection request\n");
 }
 
-static void
+static gboolean
 process_selection_clear (MetaDisplay   *display,
                          XEvent        *event)
 {
@@ -1169,7 +1169,7 @@ process_selection_clear (MetaDisplay   *display,
 
       meta_XFree (str);
 
-      return;
+      return FALSE;
     }
 
   meta_verbose ("Got selection clear for screen %d on display %s\n",
@@ -1177,6 +1177,7 @@ process_selection_clear (MetaDisplay   *display,
 
   meta_display_unmanage_screen (display, display->screen,
                                 event->xselectionclear.time);
+  return TRUE;
 }
 
 static gboolean
@@ -1772,13 +1773,14 @@ meta_display_handle_xevent (MetaDisplay *display,
 
   if (event->type == SelectionClear)
     {
-      /* Do this here so we can return without any further
-       * processing. */
-      process_selection_clear (display, event);
-      /* Note that processing that may have resulted in
-       * closing the display... */
-      bypass_gtk = bypass_compositor = TRUE;
-      goto out;
+      if (process_selection_clear (display, event))
+        {
+          /* This means we called meta_display_unmanage_screen, which
+           * means the MetaDisplay is effectively dead. We don't want
+           * to poke into display->current_time below, since that would
+           * crash, so just directly return. */
+          return TRUE;
+        }
     }
 
  out:
