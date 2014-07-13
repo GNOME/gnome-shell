@@ -1015,6 +1015,7 @@ meta_display_close (MetaDisplay *display,
                     guint32      timestamp)
 {
   g_assert (display != NULL);
+  g_assert (display == the_display);
 
   if (display->closing != 0)
     {
