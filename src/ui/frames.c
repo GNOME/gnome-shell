@@ -1579,7 +1579,6 @@ meta_frames_motion_notify_event     (GtkWidget           *widget,
   MetaUIFrame *frame;
   MetaFrames *frames;
   MetaFrameControl control;
-  int x, y;
 
   frames = META_FRAMES (widget);
   frame = meta_frames_lookup_window (frames, GDK_WINDOW_XID (event->window));
@@ -1588,9 +1587,7 @@ meta_frames_motion_notify_event     (GtkWidget           *widget,
 
   frames->last_motion_frame = frame;
 
-  gdk_window_get_device_position (frame->window, event->device,
-                                  &x, &y, NULL);
-  control = get_control (frames, frame, x, y);
+  control = get_control (frames, frame, event->x, event->y);
 
   if (frame->button_state == META_BUTTON_STATE_PRESSED)
     {
