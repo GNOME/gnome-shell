@@ -625,7 +625,6 @@ meta_screen_new (MetaDisplay *display,
     long event_mask;
     unsigned char mask_bits[XIMaskLen (XI_LASTEVENT)] = { 0 };
     XIEventMask mask = { XIAllMasterDevices, sizeof (mask_bits), mask_bits };
-    XWindowAttributes attr;
 
     XISetMask (mask.mask, XI_KeyPress);
     XISetMask (mask.mask, XI_KeyRelease);
@@ -645,9 +644,6 @@ meta_screen_new (MetaDisplay *display,
 
     event_mask = (SubstructureRedirectMask | SubstructureNotifyMask |
                   StructureNotifyMask | ColormapChangeMask | PropertyChangeMask);
-    if (XGetWindowAttributes (xdisplay, xroot, &attr))
-      event_mask |= attr.your_event_mask;
-
     XSelectInput (xdisplay, xroot, event_mask);
   }
 
