@@ -347,10 +347,6 @@ struct _MetaWindow
   /* whether or not the window is from a program running on another machine */
   guint is_remote : 1;
 
-  /* Used for Wayland -- surfaces can behave as if they were unmapped if
-   * they have a NULL buffer attached... */
-  guint surface_mapped;
-
   /* if non-NULL, the bounds of the window frame */
   cairo_region_t *frame_bounds;
 
@@ -671,9 +667,6 @@ void meta_window_handle_leave (MetaWindow  *window);
 
 gboolean meta_window_handle_ungrabbed_event (MetaWindow         *window,
                                              const ClutterEvent *event);
-
-void meta_window_set_surface_mapped (MetaWindow *window,
-                                     gboolean    surface_mapped);
 
 void meta_window_get_client_area_rect (const MetaWindow      *window,
                                        cairo_rectangle_int_t *rect);

@@ -163,7 +163,7 @@ cursor_surface_commit (MetaWaylandSurface      *surface,
 }
 
 static void
-toplevel_surface_commit (MetaWaylandSurface             *surface,
+toplevel_surface_commit (MetaWaylandSurface      *surface,
                          MetaWaylandPendingState *pending)
 {
   if (pending->frame_extents_changed)
@@ -174,9 +174,16 @@ toplevel_surface_commit (MetaWaylandSurface             *surface,
       MetaWindow *window = surface->window;
       MetaWaylandBuffer *buffer = pending->buffer;
 
-      meta_window_set_surface_mapped (window, buffer != NULL);
+      if (buffer == NULL)
+        {
+          wl_resource_post_error (surface->resource,
+                                  WL_DISPLAY_ERROR_INVALID_OBJECT,
+                                  "Cannot commit a NULL buffer to an xdg_surface");
+          return;
+        }
+
       /* We resize X based surfaces according to X events */
-      if (buffer != NULL && window->client_type == META_WINDOW_CLIENT_TYPE_WAYLAND)
+      if (window->client_type == META_WINDOW_CLIENT_TYPE_WAYLAND)
         {
           int new_width, new_height;
 

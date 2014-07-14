@@ -2985,8 +2985,6 @@ meta_window_x11_new (MetaDisplay       *display,
       meta_display_grab_focus_window_button (window->display, window);
     }
 
-  meta_window_set_surface_mapped (window, TRUE);
-
   meta_error_trap_pop (display); /* pop the XSync()-reducing trap */
   return window;
 

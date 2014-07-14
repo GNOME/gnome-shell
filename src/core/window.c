@@ -785,7 +785,6 @@ _meta_window_shared_new (MetaDisplay         *display,
   window->client_type = client_type;
   window->surface = surface;
   window->xwindow = xwindow;
-  window->surface_mapped = FALSE;
 
   /* this is in window->screen->display, but that's too annoying to
    * type
@@ -1567,9 +1566,6 @@ gboolean
 meta_window_should_be_showing (MetaWindow  *window)
 {
   gboolean on_workspace;
-
-  if (!window->surface_mapped)
-    return FALSE;
 
   meta_verbose ("Should be showing for window %s\n", window->desc);
 
@@ -7996,17 +7992,6 @@ meta_window_handle_ungrabbed_event (MetaWindow         *window,
     }
 
   return TRUE;
-}
-
-void
-meta_window_set_surface_mapped (MetaWindow *window,
-                                gboolean    surface_mapped)
-{
-  if (window->surface_mapped == (guint) surface_mapped)
-    return;
-
-  window->surface_mapped = surface_mapped;
-  meta_window_queue (window, META_QUEUE_CALC_SHOWING);
 }
 
 void
