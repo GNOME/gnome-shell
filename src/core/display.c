@@ -428,35 +428,6 @@ gesture_tracker_state_changed (MetaGestureTracker   *tracker,
                       DefaultRootWindow (display->xdisplay), event_mode);
 }
 
-static void
-meta_display_grab_window_touch (MetaDisplay *display,
-                                Window       xwindow)
-{
-  MetaBackendX11 *backend = META_BACKEND_X11 (meta_get_backend ());
-  unsigned char mask_bits[XIMaskLen (XI_LASTEVENT)] = { 0 };
-  XIEventMask mask = { META_VIRTUAL_CORE_POINTER_ID, sizeof (mask_bits), mask_bits };
-  XIGrabModifiers mods = { XIAnyModifier, 0 };
-
-  XISetMask (mask.mask, XI_TouchBegin);
-  XISetMask (mask.mask, XI_TouchUpdate);
-  XISetMask (mask.mask, XI_TouchEnd);
-
-  XIGrabTouchBegin (meta_backend_x11_get_xdisplay (backend),
-                    META_VIRTUAL_CORE_POINTER_ID,
-                    xwindow, False, &mask, 1, &mods);
-}
-
-static void
-meta_display_ungrab_window_touch (MetaDisplay *display,
-                                  Window       xwindow)
-{
-  MetaBackendX11 *backend = META_BACKEND_X11 (meta_get_backend ());
-  XIGrabModifiers mods = { XIAnyModifier, 0 };
-
-  XIUngrabTouchBegin (meta_backend_x11_get_xdisplay (backend),
-                      META_VIRTUAL_CORE_POINTER_ID, xwindow, 1, &mods);
-}
-
 /**
  * meta_display_open:
  *
@@ -857,7 +828,6 @@ meta_display_open (void)
   display->gesture_tracker = meta_gesture_tracker_new ();
   g_signal_connect (display->gesture_tracker, "state-changed",
                     G_CALLBACK (gesture_tracker_state_changed), display);
-  meta_display_grab_window_touch (display, DefaultRootWindow (display->xdisplay));
 
   /* We know that if mutter is running as a Wayland compositor,
    * we start out with no windows.
@@ -1029,7 +999,6 @@ meta_display_close (MetaDisplay *display,
 
   meta_display_remove_autoraise_callback (display);
 
-  meta_display_ungrab_window_touch (display, DefaultRootWindow (display->xdisplay));
   g_clear_object (&display->gesture_tracker);
 
   if (display->focus_timeout_id)

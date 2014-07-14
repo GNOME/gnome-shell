@@ -253,6 +253,24 @@ x_event_source_new (MetaBackend *backend)
 }
 
 static void
+take_touch_grab (MetaBackend *backend)
+{
+  MetaBackendX11 *x11 = META_BACKEND_X11 (backend);
+  MetaBackendX11Private *priv = meta_backend_x11_get_instance_private (x11);
+  unsigned char mask_bits[XIMaskLen (XI_LASTEVENT)] = { 0 };
+  XIEventMask mask = { META_VIRTUAL_CORE_POINTER_ID, sizeof (mask_bits), mask_bits };
+  XIGrabModifiers mods = { XIAnyModifier, 0 };
+
+  XISetMask (mask.mask, XI_TouchBegin);
+  XISetMask (mask.mask, XI_TouchUpdate);
+  XISetMask (mask.mask, XI_TouchEnd);
+
+  XIGrabTouchBegin (priv->xdisplay, META_VIRTUAL_CORE_POINTER_ID,
+                    DefaultRootWindow (priv->xdisplay),
+                    False, &mask, 1, &mods);
+}
+
+static void
 meta_backend_x11_post_init (MetaBackend *backend)
 {
   MetaBackendX11 *x11 = META_BACKEND_X11 (backend);
@@ -288,6 +306,8 @@ meta_backend_x11_post_init (MetaBackend *backend)
     if (!has_xi)
       meta_fatal ("X server doesn't have the XInput extension, version 2.2 or newer\n");
   }
+
+  take_touch_grab (backend);
 
   META_BACKEND_CLASS (meta_backend_x11_parent_class)->post_init (backend);
 }
