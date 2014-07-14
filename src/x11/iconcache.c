@@ -550,7 +550,6 @@ meta_icon_cache_init (MetaIconCache *icon_cache)
   icon_cache->ideal_mini_width = -1;
   icon_cache->ideal_mini_height = -1;
 #endif
-  icon_cache->want_fallback = TRUE;
   icon_cache->wm_hints_dirty = TRUE;
   icon_cache->kwm_win_icon_dirty = TRUE;
   icon_cache->net_wm_icon_dirty = TRUE;
@@ -611,13 +610,7 @@ meta_icon_cache_get_icon_invalidated (MetaIconCache *icon_cache)
   else if (icon_cache->origin <= USING_NET_WM_ICON &&
            icon_cache->net_wm_icon_dirty)
     return TRUE;
-  else if (icon_cache->origin < USING_FALLBACK_ICON &&
-           icon_cache->want_fallback)
-    return TRUE;
-  else if (icon_cache->origin == USING_NO_ICON)
-    return TRUE;
-  else if (icon_cache->origin == USING_FALLBACK_ICON &&
-           !icon_cache->want_fallback)
+  else if (icon_cache->origin < USING_FALLBACK_ICON)
     return TRUE;
   else
     return FALSE;
@@ -849,8 +842,7 @@ meta_read_icons (MetaScreen     *screen,
         }
     }
 
-  if (icon_cache->want_fallback &&
-      icon_cache->origin < USING_FALLBACK_ICON)
+  if (icon_cache->origin < USING_FALLBACK_ICON)
     {
       get_fallback_icons (screen,
                           iconp,
@@ -862,15 +854,6 @@ meta_read_icons (MetaScreen     *screen,
 
       replace_cache (icon_cache, USING_FALLBACK_ICON,
                      *iconp, *mini_iconp);
-
-      return TRUE;
-    }
-
-  if (!icon_cache->want_fallback &&
-      icon_cache->origin == USING_FALLBACK_ICON)
-    {
-      /* Get rid of current icon */
-      clear_icon_cache (icon_cache, FALSE);
 
       return TRUE;
     }

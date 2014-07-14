@@ -44,7 +44,6 @@ struct _MetaIconCache
   int origin;
   Pixmap prev_pixmap;
   Pixmap prev_mask;
-  guint want_fallback : 1;
   /* TRUE if these props have changed */
   guint wm_hints_dirty : 1;
   guint kwm_win_icon_dirty : 1;
