@@ -280,7 +280,7 @@ const ViewSelector = new Lang.Class({
 
         let gesture;
 
-        gesture = new EdgeDragAction(St.Side.RIGHT);
+        gesture = new EdgeDragAction(St.Side.LEFT);
         gesture.connect('activated', Lang.bind(this, function() {
             if (Main.overview.visible)
                 Main.overview.hide();
