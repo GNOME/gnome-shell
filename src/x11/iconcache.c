@@ -547,24 +547,10 @@ meta_icon_cache_init (MetaIconCache *icon_cache)
   icon_cache->net_wm_icon_dirty = TRUE;
 }
 
-static void
-clear_icon_cache (MetaIconCache *icon_cache,
-                  gboolean       dirty_all)
-{
-  icon_cache->origin = USING_NO_ICON;
-
-  if (dirty_all)
-    {
-      icon_cache->wm_hints_dirty = TRUE;
-      icon_cache->kwm_win_icon_dirty = TRUE;
-      icon_cache->net_wm_icon_dirty = TRUE;
-    }
-}
-
 void
 meta_icon_cache_free (MetaIconCache *icon_cache)
 {
-  clear_icon_cache (icon_cache, FALSE);
+  icon_cache->origin = USING_NO_ICON;
 }
 
 void
@@ -596,17 +582,6 @@ meta_icon_cache_get_icon_invalidated (MetaIconCache *icon_cache)
     return TRUE;
   else
     return FALSE;
-}
-
-static void
-replace_cache (MetaIconCache *icon_cache,
-               IconOrigin     origin,
-               GdkPixbuf     *new_icon,
-               GdkPixbuf     *new_mini_icon)
-{
-  clear_icon_cache (icon_cache, FALSE);
-
-  icon_cache->origin = origin;
 }
 
 static GdkPixbuf*
@@ -726,9 +701,7 @@ meta_read_icons (MetaScreen     *screen,
 
           if (*iconp && *mini_iconp)
             {
-              replace_cache (icon_cache, USING_NET_WM_ICON,
-                             *iconp, *mini_iconp);
-
+              icon_cache->origin = USING_NET_WM_ICON;
               return TRUE;
             }
           else
@@ -764,10 +737,7 @@ meta_read_icons (MetaScreen     *screen,
             {
               icon_cache->prev_pixmap = pixmap;
               icon_cache->prev_mask = mask;
-
-              replace_cache (icon_cache, USING_WM_HINTS,
-                             *iconp, *mini_iconp);
-
+              icon_cache->origin = USING_WM_HINTS;
               return TRUE;
             }
         }
@@ -790,10 +760,7 @@ meta_read_icons (MetaScreen     *screen,
             {
               icon_cache->prev_pixmap = pixmap;
               icon_cache->prev_mask = mask;
-
-              replace_cache (icon_cache, USING_KWM_WIN_ICON,
-                             *iconp, *mini_iconp);
-
+              icon_cache->origin = USING_KWM_WIN_ICON;
               return TRUE;
             }
         }
@@ -808,10 +775,7 @@ meta_read_icons (MetaScreen     *screen,
                           mini_iconp,
                           ideal_mini_width,
                           ideal_mini_height);
-
-      replace_cache (icon_cache, USING_FALLBACK_ICON,
-                     *iconp, *mini_iconp);
-
+      icon_cache->origin = USING_FALLBACK_ICON;
       return TRUE;
     }
 
