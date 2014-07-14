@@ -174,6 +174,8 @@ meta_window_wayland_move_resize_internal (MetaWindow                *window,
 
   if (flags & META_IS_WAYLAND_RESIZE)
     {
+      CoglTexture *texture;
+
       /* This is a call to wl_surface_commit(), ignore the constrained_rect and
        * update the real client size to match the buffer size.
        */
@@ -182,8 +184,9 @@ meta_window_wayland_move_resize_internal (MetaWindow                *window,
       window->rect.width = unconstrained_rect.width;
       window->rect.height = unconstrained_rect.height;
 
-      window->buffer_rect.width = unconstrained_rect.width;
-      window->buffer_rect.height = unconstrained_rect.height;
+      texture = window->surface->buffer->texture;
+      window->buffer_rect.width = cogl_texture_get_width (texture);
+      window->buffer_rect.height = cogl_texture_get_height (texture);
 
       /* This is a commit of an attach. We should move the window to match the
        * new position the client wants. */
@@ -365,7 +368,8 @@ meta_window_wayland_move_resize (MetaWindow    *window,
         }
       else
         {
-          meta_window_get_frame_rect (window, &rect);
+          rect.x = window->rect.x;
+          rect.y = window->rect.y;
         }
 
       if (dx != 0 || dy != 0)

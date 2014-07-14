@@ -218,6 +218,7 @@ toplevel_surface_commit (MetaWaylandSurface      *surface,
       MetaRectangle geom;
 
       calculate_surface_window_geometry (surface, &geom, 0, 0);
+      meta_window_client_rect_to_frame_rect (window, &geom, &geom);
       meta_window_wayland_move_resize (window, geom, pending->dx, pending->dy);
     }
 }
