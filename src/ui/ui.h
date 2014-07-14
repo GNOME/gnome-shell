@@ -121,9 +121,6 @@ GdkPixbuf* meta_gdk_pixbuf_get_from_pixmap (Pixmap       xpixmap,
                                             int          width,
                                             int          height);
 
-GdkPixbuf* meta_ui_get_default_window_icon (MetaUI *ui);
-GdkPixbuf* meta_ui_get_default_mini_icon (MetaUI *ui);
-
 gboolean  meta_ui_window_should_not_cause_focus (Display *xdisplay,
                                                  Window   xwindow);
 

@@ -281,7 +281,10 @@ static void
 reload_icon (MetaWindow    *window,
              Atom           atom)
 {
-  meta_icon_cache_property_changed (&window->icon_cache,
+  MetaWindowX11 *window_x11 = META_WINDOW_X11 (window);
+  MetaWindowX11Private *priv = window_x11->priv;
+
+  meta_icon_cache_property_changed (&priv->icon_cache,
                                     window->display,
                                     atom);
   meta_window_queue(window, META_QUEUE_UPDATE_ICON);
@@ -1495,6 +1498,8 @@ reload_wm_hints (MetaWindow    *window,
                  MetaPropValue *value,
                  gboolean       initial)
 {
+  MetaWindowX11 *window_x11 = META_WINDOW_X11 (window);
+  MetaWindowX11Private *priv = window_x11->priv;
   Window old_group_leader;
   gboolean urgent;
 
@@ -1504,8 +1509,8 @@ reload_wm_hints (MetaWindow    *window,
   window->input = TRUE;
   window->initially_iconic = FALSE;
   window->xgroup_leader = None;
-  window->wm_hints_pixmap = None;
-  window->wm_hints_mask = None;
+  priv->wm_hints_pixmap = None;
+  priv->wm_hints_mask = None;
   urgent = FALSE;
 
   if (value->type != META_PROP_VALUE_INVALID)
@@ -1522,10 +1527,10 @@ reload_wm_hints (MetaWindow    *window,
         window->xgroup_leader = hints->window_group;
 
       if (hints->flags & IconPixmapHint)
-        window->wm_hints_pixmap = hints->icon_pixmap;
+        priv->wm_hints_pixmap = hints->icon_pixmap;
 
       if (hints->flags & IconMaskHint)
-        window->wm_hints_mask = hints->icon_mask;
+        priv->wm_hints_mask = hints->icon_mask;
 
       if (hints->flags & XUrgencyHint)
         urgent = TRUE;
@@ -1533,8 +1538,8 @@ reload_wm_hints (MetaWindow    *window,
       meta_verbose ("Read WM_HINTS input: %d iconic: %d group leader: 0x%lx pixmap: 0x%lx mask: 0x%lx\n",
                     window->input, window->initially_iconic,
                     window->xgroup_leader,
-                    window->wm_hints_pixmap,
-                    window->wm_hints_mask);
+                    priv->wm_hints_pixmap,
+                    priv->wm_hints_mask);
     }
 
   if (window->xgroup_leader != old_group_leader)
@@ -1547,7 +1552,7 @@ reload_wm_hints (MetaWindow    *window,
 
   meta_window_set_urgent (window, urgent);
 
-  meta_icon_cache_property_changed (&window->icon_cache,
+  meta_icon_cache_property_changed (&priv->icon_cache,
                                     window->display,
                                     XA_WM_HINTS);
 

@@ -503,6 +503,10 @@ static void
 meta_window_x11_manage (MetaWindow *window)
 {
   MetaDisplay *display = window->display;
+  MetaWindowX11 *window_x11 = META_WINDOW_X11 (window);
+  MetaWindowX11Private *priv = meta_window_x11_get_instance_private (window_x11);
+
+  meta_icon_cache_init (&priv->icon_cache);
 
   meta_display_register_x_window (display, &window->xwindow, window);
   meta_window_x11_update_shape_region (window);
@@ -544,9 +548,6 @@ meta_window_x11_manage (MetaWindow *window)
 
   if (window->override_redirect)
     {
-      MetaWindowX11 *window_x11 = META_WINDOW_X11 (window);
-      MetaWindowX11Private *priv = meta_window_x11_get_instance_private (window_x11);
-
       priv->client_rect = window->rect;
       window->buffer_rect = window->rect;
     }
@@ -1448,6 +1449,25 @@ meta_window_x11_get_default_skip_hints (MetaWindow *window,
   *skip_pager_out = priv->wm_state_skip_pager;
 }
 
+static gboolean
+meta_window_x11_update_icon (MetaWindow  *window,
+                             GdkPixbuf  **icon,
+                             GdkPixbuf  **mini_icon)
+{
+  MetaWindowX11 *window_x11 = META_WINDOW_X11 (window);
+  MetaWindowX11Private *priv = meta_window_x11_get_instance_private (window_x11);
+
+  return meta_read_icons (window->screen,
+                          window->xwindow,
+                          &priv->icon_cache,
+                          priv->wm_hints_pixmap,
+                          priv->wm_hints_mask,
+                          icon,
+                          META_ICON_WIDTH, META_ICON_HEIGHT,
+                          mini_icon,
+                          META_MINI_ICON_WIDTH, META_MINI_ICON_HEIGHT);
+}
+
 static void
 meta_window_x11_class_init (MetaWindowX11Class *klass)
 {
@@ -1465,6 +1485,7 @@ meta_window_x11_class_init (MetaWindowX11Class *klass)
   window_class->move_resize_internal = meta_window_x11_move_resize_internal;
   window_class->update_struts = meta_window_x11_update_struts;
   window_class->get_default_skip_hints = meta_window_x11_get_default_skip_hints;
+  window_class->update_icon = meta_window_x11_update_icon;
 }
 
 void

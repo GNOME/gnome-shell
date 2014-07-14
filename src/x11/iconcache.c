@@ -28,22 +28,6 @@
 
 /* The icon-reading code is also in libwnck, please sync bugfixes */
 
-static void
-get_fallback_icons (MetaScreen     *screen,
-                    GdkPixbuf     **iconp,
-                    int             ideal_width,
-                    int             ideal_height,
-                    GdkPixbuf     **mini_iconp,
-                    int             ideal_mini_width,
-                    int             ideal_mini_height)
-{
-  /* we don't scale, should be fixed if we ever un-hardcode the icon
-   * size
-   */
-  *iconp = meta_ui_get_default_window_icon (screen->ui);
-  *mini_iconp = meta_ui_get_default_mini_icon (screen->ui);
-}
-
 static gboolean
 find_largest_sizes (gulong *data,
                     gulong  nitems,
@@ -668,7 +652,6 @@ meta_read_icons (MetaScreen     *screen,
 
   if (icon_cache->origin <= USING_NET_WM_ICON &&
       icon_cache->net_wm_icon_dirty)
-
     {
       guchar *pixdata;
       int w, h;
@@ -764,14 +747,9 @@ meta_read_icons (MetaScreen     *screen,
 
   if (icon_cache->origin < USING_FALLBACK_ICON)
     {
-      get_fallback_icons (screen,
-                          iconp,
-                          ideal_width,
-                          ideal_height,
-                          mini_iconp,
-                          ideal_mini_width,
-                          ideal_mini_height);
       icon_cache->origin = USING_FALLBACK_ICON;
+      *iconp = NULL;
+      *mini_iconp = NULL;
       return TRUE;
     }
 

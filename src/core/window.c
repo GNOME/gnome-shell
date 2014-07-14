@@ -233,6 +233,16 @@ meta_window_real_get_default_skip_hints (MetaWindow *window,
   *skip_pager_out = FALSE;
 }
 
+static gboolean
+meta_window_real_update_icon (MetaWindow  *window,
+                              GdkPixbuf  **icon,
+                              GdkPixbuf  **mini_icon)
+{
+  *icon = NULL;
+  *mini_icon = NULL;
+  return FALSE;
+}
+
 static void
 meta_window_finalize (GObject *object)
 {
@@ -395,6 +405,7 @@ meta_window_class_init (MetaWindowClass *klass)
   klass->current_workspace_changed = meta_window_real_current_workspace_changed;
   klass->update_struts = meta_window_real_update_struts;
   klass->get_default_skip_hints = meta_window_real_get_default_skip_hints;
+  klass->update_icon = meta_window_real_update_icon;
 
   obj_props[PROP_TITLE] =
     g_param_spec_string ("title",
@@ -819,9 +830,6 @@ _meta_window_shared_new (MetaDisplay         *display,
   window->title = NULL;
   window->icon = NULL;
   window->mini_icon = NULL;
-  meta_icon_cache_init (&window->icon_cache);
-  window->wm_hints_pixmap = None;
-  window->wm_hints_mask = None;
 
   window->frame = NULL;
   window->has_focus = FALSE;
@@ -4821,36 +4829,98 @@ redraw_icon (MetaWindow *window)
     meta_ui_queue_frame_draw (window->screen->ui, window->frame->xwindow);
 }
 
+static GdkPixbuf *
+get_default_window_icon (void)
+{
+  static GdkPixbuf *default_icon = NULL;
+
+  if (default_icon == NULL)
+    {
+      GtkIconTheme *theme;
+      gboolean icon_exists;
+
+      theme = gtk_icon_theme_get_default ();
+
+      icon_exists = gtk_icon_theme_has_icon (theme, META_DEFAULT_ICON_NAME);
+
+      if (icon_exists)
+        default_icon = gtk_icon_theme_load_icon (theme,
+                                                 META_DEFAULT_ICON_NAME,
+                                                 META_ICON_WIDTH,
+                                                 0,
+                                                 NULL);
+      else
+        default_icon = gtk_icon_theme_load_icon (theme,
+                                                 "image-missing",
+                                                 META_ICON_WIDTH,
+                                                 0,
+                                                 NULL);
+
+      g_assert (default_icon);
+    }
+
+  return g_object_ref (default_icon);
+}
+
+static GdkPixbuf *
+get_default_mini_icon (void)
+{
+  static GdkPixbuf *default_icon = NULL;
+
+  if (default_icon == NULL)
+    {
+      GtkIconTheme *theme;
+      gboolean icon_exists;
+
+      theme = gtk_icon_theme_get_default ();
+
+      icon_exists = gtk_icon_theme_has_icon (theme, META_DEFAULT_ICON_NAME);
+
+      if (icon_exists)
+        default_icon = gtk_icon_theme_load_icon (theme,
+                                                 META_DEFAULT_ICON_NAME,
+                                                 META_MINI_ICON_WIDTH,
+                                                 0,
+                                                 NULL);
+      else
+        default_icon = gtk_icon_theme_load_icon (theme,
+                                                 "image-missing",
+                                                 META_MINI_ICON_WIDTH,
+                                                 0,
+                                                 NULL);
+
+      g_assert (default_icon);
+    }
+
+  return g_object_ref (default_icon);
+}
+
 static void
 meta_window_update_icon_now (MetaWindow *window)
 {
-  GdkPixbuf *icon;
+  gboolean changed;
+  GdkPixbuf *icon = NULL;
   GdkPixbuf *mini_icon;
 
   g_return_if_fail (!window->override_redirect);
 
-  icon = NULL;
-  mini_icon = NULL;
+  changed = META_WINDOW_GET_CLASS (window)->update_icon (window, &icon, &mini_icon);
 
-  if (meta_read_icons (window->screen,
-                       window->xwindow,
-                       &window->icon_cache,
-                       window->wm_hints_pixmap,
-                       window->wm_hints_mask,
-                       &icon,
-                       META_ICON_WIDTH, META_ICON_HEIGHT,
-                       &mini_icon,
-                       META_MINI_ICON_WIDTH,
-                       META_MINI_ICON_HEIGHT))
+  if (changed)
     {
       if (window->icon)
-        g_object_unref (G_OBJECT (window->icon));
+        g_object_unref (window->icon);
+      if (icon)
+        window->icon = icon;
+      else
+        window->icon = get_default_window_icon ();
 
       if (window->mini_icon)
-        g_object_unref (G_OBJECT (window->mini_icon));
-
-      window->icon = icon;
-      window->mini_icon = mini_icon;
+        g_object_unref (window->mini_icon);
+      if (mini_icon)
+        window->mini_icon = mini_icon;
+      else
+        window->mini_icon = get_default_mini_icon ();
 
       g_object_freeze_notify (G_OBJECT (window));
       g_object_notify_by_pspec (G_OBJECT (window), obj_props[PROP_ICON]);

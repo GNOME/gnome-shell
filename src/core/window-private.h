@@ -43,7 +43,6 @@
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <clutter/clutter.h>
 
-#include "x11/iconcache.h"
 #include "x11/group-private.h"
 
 #include "wayland/meta-wayland-types.h"
@@ -107,9 +106,6 @@ struct _MetaWindow
 
   GdkPixbuf *icon;
   GdkPixbuf *mini_icon;
-  MetaIconCache icon_cache;
-  Pixmap wm_hints_pixmap;
-  Pixmap wm_hints_mask;
 
   MetaWindowType type;
 
@@ -488,6 +484,9 @@ struct _MetaWindowClass
   void (*get_default_skip_hints) (MetaWindow *window,
                                   gboolean   *skip_taskbar_out,
                                   gboolean   *skip_pager_out);
+  gboolean (*update_icon)        (MetaWindow  *window,
+                                  GdkPixbuf  **icon,
+                                  GdkPixbuf  **mini_icon);
 };
 
 /* These differ from window->has_foo_func in that they consider
