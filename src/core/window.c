@@ -117,7 +117,8 @@ static void unminimize_window_and_all_transient_parents (MetaWindow *window);
 
 static void meta_window_propagate_focus_appearance (MetaWindow *window,
                                                     gboolean    focused);
-static void meta_window_update_icon_now (MetaWindow *window);
+static void meta_window_update_icon_now (MetaWindow *window,
+                                         gboolean    force);
 
 /* Idle handlers for the three queues (run with meta_later_add()). The
  * "data" parameter in each case will be a GINT_TO_POINTER of the
@@ -967,7 +968,7 @@ _meta_window_shared_new (MetaDisplay         *display,
   META_WINDOW_GET_CLASS (window)->manage (window);
 
   if (!window->override_redirect)
-    meta_window_update_icon_now (window);
+    meta_window_update_icon_now (window, TRUE);
 
   if (window->initially_iconic)
     {
@@ -4892,7 +4893,8 @@ get_default_mini_icon (void)
 }
 
 static void
-meta_window_update_icon_now (MetaWindow *window)
+meta_window_update_icon_now (MetaWindow *window,
+                             gboolean    force)
 {
   gboolean changed;
   GdkPixbuf *icon = NULL;
@@ -4902,7 +4904,7 @@ meta_window_update_icon_now (MetaWindow *window)
 
   changed = META_WINDOW_GET_CLASS (window)->update_icon (window, &icon, &mini_icon);
 
-  if (changed)
+  if (changed || force)
     {
       if (window->icon)
         g_object_unref (window->icon);
@@ -4957,7 +4959,7 @@ idle_update_icon (gpointer data)
 
       window = tmp->data;
 
-      meta_window_update_icon_now (window);
+      meta_window_update_icon_now (window, FALSE);
       window->is_in_queues &= ~META_QUEUE_UPDATE_ICON;
 
       tmp = tmp->next;
