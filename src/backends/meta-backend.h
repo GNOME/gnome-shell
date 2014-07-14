@@ -38,6 +38,8 @@ GType meta_backend_get_type (void);
 
 MetaBackend * meta_get_backend (void);
 
+void meta_backend_compositor_created (MetaBackend *backend);
+
 MetaIdleMonitor * meta_backend_get_idle_monitor (MetaBackend *backend,
                                                  int          device_id);
 MetaMonitorManager * meta_backend_get_monitor_manager (MetaBackend *backend);
