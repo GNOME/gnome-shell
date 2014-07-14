@@ -653,13 +653,6 @@ meta_read_icons (MetaScreen     *screen,
                  int             ideal_mini_width,
                  int             ideal_mini_height)
 {
-  guchar *pixdata;
-  int w, h;
-  guchar *mini_pixdata;
-  int mini_w, mini_h;
-  Pixmap pixmap;
-  Pixmap mask;
-
   /* Return value is whether the icon changed */
 
   g_return_val_if_fail (icon_cache != NULL, FALSE);
@@ -669,8 +662,6 @@ meta_read_icons (MetaScreen     *screen,
 
   if (!meta_icon_cache_get_icon_invalidated (icon_cache))
     return FALSE; /* we have no new info to use */
-
-  pixdata = NULL;
 
   /* Our algorithm here assumes that we can't have for example origin
    * < USING_NET_WM_ICON and icon_cache->net_wm_icon_dirty == FALSE
@@ -685,6 +676,11 @@ meta_read_icons (MetaScreen     *screen,
       icon_cache->net_wm_icon_dirty)
 
     {
+      guchar *pixdata;
+      int w, h;
+      guchar *mini_pixdata;
+      int mini_w, mini_h;
+
       icon_cache->net_wm_icon_dirty = FALSE;
 
       if (read_rgb_icon (screen->display, xwindow,
@@ -717,6 +713,9 @@ meta_read_icons (MetaScreen     *screen,
   if (icon_cache->origin <= USING_WM_HINTS &&
       icon_cache->wm_hints_dirty)
     {
+      Pixmap pixmap;
+      Pixmap mask;
+
       icon_cache->wm_hints_dirty = FALSE;
 
       pixmap = wm_hints_pixmap;
@@ -746,6 +745,9 @@ meta_read_icons (MetaScreen     *screen,
   if (icon_cache->origin <= USING_KWM_WIN_ICON &&
       icon_cache->kwm_win_icon_dirty)
     {
+      Pixmap pixmap;
+      Pixmap mask;
+
       icon_cache->kwm_win_icon_dirty = FALSE;
 
       get_kwm_win_icon (screen->display, xwindow, &pixmap, &mask);
