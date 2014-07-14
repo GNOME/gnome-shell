@@ -260,6 +260,16 @@ const ViewSelector = new Lang.Class({
                     this._stageKeyPressId = 0;
                 }
             }));
+        Main.overview.connect('shown', Lang.bind(this,
+            function() {
+                // If we were animating from the desktop view to the
+                // apps page the workspace page was visible, allowing
+                // the windows to animate, but now we no longer want to
+                // show it given that we are now on the apps page or
+                // search page.
+                if (this._activePage != this._workspacesPage)
+                    this._workspacesPage.opacity = 0;
+            }));
 
         Main.wm.addKeybinding('toggle-application-view',
                               new Gio.Settings({ schema_id: SHELL_KEYBINDINGS_SCHEMA }),
@@ -295,29 +305,36 @@ const ViewSelector = new Lang.Class({
     },
 
     _toggleAppsPage: function() {
-        Main.overview.show();
         this._showAppsButton.checked = !this._showAppsButton.checked;
+        Main.overview.show();
     },
 
     showApps: function() {
-        Main.overview.show();
         this._showAppsButton.checked = true;
+        Main.overview.show();
     },
 
     show: function() {
         this.reset();
-
-        this._workspacesDisplay.show();
+        this._workspacesDisplay.show(this._showAppsButton.checked);
         this._activePage = null;
-        this._showPage(this._workspacesPage);
+        if (this._showAppsButton.checked)
+            this._showPage(this._appsPage);
+        else
+            this._showPage(this._workspacesPage);
 
         if (!this._workspacesDisplay.activeWorkspaceHasMaximizedWindows())
             Main.overview.fadeOutDesktop();
     },
 
-    zoomFromOverview: function() {
+    animateFromOverview: function() {
+        // Make sure workspace page is fully visible to allow
+        // workspace.js do the animation of the windows
+        this._workspacesPage.opacity = 255;
+
+        this._workspacesDisplay.animateFromOverview(this._activePage != this._workspacesPage);
+
         this._showAppsButton.checked = false;
-        this._workspacesDisplay.zoomFromOverview();
 
         if (!this._workspacesDisplay.activeWorkspaceHasMaximizedWindows())
             Main.overview.fadeInDesktop();
@@ -369,6 +386,9 @@ const ViewSelector = new Lang.Class({
     },
 
     _showPage: function(page) {
+        if (!Main.overview.visible)
+            return;
+
         if (page == this._activePage)
             return;
 

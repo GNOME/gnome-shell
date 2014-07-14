@@ -21,6 +21,11 @@ const WORKSPACE_SWITCH_TIME = 0.25;
 // Note that mutter has a compile-time limit of 36
 const MAX_WORKSPACES = 16;
 
+const AnimationType = {
+    ZOOM: 0,
+    FADE: 1
+};
+
 const OVERRIDE_SCHEMA = 'org.gnome.shell.overrides';
 
 const WorkspacesViewBase = new Lang.Class({
@@ -142,17 +147,25 @@ const WorkspacesView = new Lang.Class({
         return this._workspaces[active];
     },
 
-    zoomToOverview: function() {
-        for (let w = 0; w < this._workspaces.length; w++)
-            this._workspaces[w].zoomToOverview();
+    animateToOverview: function(animationType) {
+        for (let w = 0; w < this._workspaces.length; w++) {
+            if (animationType == AnimationType.ZOOM)
+                this._workspaces[w].zoomToOverview();
+            else
+                this._workspaces[w].fadeToOverview();
+        }
         this._updateWorkspaceActors(false);
     },
 
-    zoomFromOverview: function() {
+    animateFromOverview: function(animationType) {
         this.actor.remove_clip();
 
-        for (let w = 0; w < this._workspaces.length; w++)
-            this._workspaces[w].zoomFromOverview();
+        for (let w = 0; w < this._workspaces.length; w++) {
+            if (animationType == AnimationType.ZOOM)
+                this._workspaces[w].zoomFromOverview();
+            else
+                this._workspaces[w].fadeFromOverview();
+        }
     },
 
     syncStacking: function(stackIndices) {
@@ -365,12 +378,18 @@ const ExtraWorkspaceView = new Lang.Class({
         this._workspace.setActualGeometry(this._actualGeometry);
     },
 
-    zoomToOverview: function() {
-        this._workspace.zoomToOverview();
+    animateToOverview: function(animationType) {
+        if (animationType == AnimationType.ZOOM)
+            this._workspace.zoomToOverview();
+        else
+            this._workspace.fadeToOverview();
     },
 
-    zoomFromOverview: function() {
-        this._workspace.zoomFromOverview();
+    animateFromOverview: function(animationType) {
+        if (animationType == AnimationType.ZOOM)
+            this._workspace.zoomFromOverview();
+        else
+            this._workspace.fadeFromOverview();
     },
 
     syncStacking: function(stackIndices) {
@@ -462,10 +481,16 @@ const WorkspacesDisplay = new Lang.Class({
         return this._getPrimaryView().actor.navigate_focus(from, direction, false);
     },
 
-    show: function() {
+    show: function(fadeOnPrimary) {
         this._updateWorkspacesViews();
-        for (let i = 0; i < this._workspacesViews.length; i++)
-            this._workspacesViews[i].zoomToOverview();
+        for (let i = 0; i < this._workspacesViews.length; i++) {
+            let animationType;
+            if (fadeOnPrimary && i == this._primaryIndex)
+                animationType = AnimationType.FADE;
+            else
+                animationType = AnimationType.ZOOM;
+            this._workspacesViews[i].animateToOverview(animationType);
+        }
 
         this._restackedNotifyId =
             Main.overview.connect('windows-restacked',
@@ -474,9 +499,15 @@ const WorkspacesDisplay = new Lang.Class({
             this._scrollEventId = Main.overview.connect('scroll-event', Lang.bind(this, this._onScrollEvent));
     },
 
-    zoomFromOverview: function() {
-        for (let i = 0; i < this._workspacesViews.length; i++)
-            this._workspacesViews[i].zoomFromOverview();
+    animateFromOverview: function(fadeOnPrimary) {
+        for (let i = 0; i < this._workspacesViews.length; i++) {
+            let animationType;
+            if (fadeOnPrimary && i == this._primaryIndex)
+                animationType = AnimationType.FADE;
+            else
+                animationType = AnimationType.ZOOM;
+            this._workspacesViews[i].animateFromOverview(animationType);
+        }
     },
 
     hide: function() {

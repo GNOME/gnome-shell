@@ -623,7 +623,7 @@ const Overview = new Lang.Class({
         this.animationInProgress = true;
         this.visibleTarget = false;
 
-        this.viewSelector.zoomFromOverview();
+        this.viewSelector.animateFromOverview();
 
         // Make other elements fade out.
         Tweener.addTween(this._stack,

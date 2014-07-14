@@ -34,6 +34,8 @@ const DRAGGING_WINDOW_OPACITY = 100;
 const LAYOUT_SCALE_WEIGHT = 1;
 const LAYOUT_SPACE_WEIGHT = 0.1;
 
+const WINDOW_ANIMATION_MAX_NUMBER_BLENDING = 3;
+
 function _interpolate(start, end, step) {
     return start + (end - start) * step;
 }
@@ -1258,10 +1260,11 @@ const Workspace = new Lang.Class({
             return;
         }
 
-        // We will reposition windows when enter again overview anyway.
+        // We will reposition windows anyway when enter again overview or when ending the windows
+        // animations whith fade animation.
         // In this way we avoid unwanted animations of windows repositioning while
-        // animating overview
-        if (this.leavingOverview)
+        // animating overview.
+        if (this.leavingOverview || this._animatingWindowsFade)
             return;
 
         let initialPositioning = flags & WindowPositionFlags.INITIAL;
@@ -1562,14 +1565,141 @@ const Workspace = new Lang.Class({
         return false;
     },
 
-    // Animate the full-screen to Overview transition.
-    zoomToOverview : function() {
+    fadeToOverview: function() {
+        // We don't want to reposition windows while animating in this way.
+        this._animatingWindowsFade = true;
+        this._overviewShownId = Main.overview.connect('shown', Lang.bind(this,
+                                                                         this._doneShowingOverview));
+        if (this._windows.length == 0)
+            return;
+
+        if (this.metaWorkspace != null && this.metaWorkspace != global.screen.get_active_workspace())
+            return;
+
+        // Special case maximized windows, since it doesn't make sense
+        // to animate windows below in the stack
+        let topMaximizedWindow;
+        // It is ok to treat the case where there is no maximized
+        // window as if the bottom-most window was maximized given that
+        // it won't affect the result of the animation
+        for (topMaximizedWindow = this._windows.length - 1; topMaximizedWindow > 0; topMaximizedWindow--) {
+            let metaWindow = this._windows[topMaximizedWindow].metaWindow;
+            if (metaWindow.maximized_horizontally && metaWindow.maximized_vertically)
+                break;
+        }
+
+        let nTimeSlots = Math.min(WINDOW_ANIMATION_MAX_NUMBER_BLENDING + 1, this._windows.length - topMaximizedWindow);
+        let windowBaseTime = Overview.ANIMATION_TIME / nTimeSlots;
+
+        let topIndex = this._windows.length - 1;
+        for (let i = 0; i < this._windows.length; i++) {
+            if (i < topMaximizedWindow) {
+                // below top-most maximized window, don't animate
+                let overlay = this._windowOverlays[i];
+                if (overlay)
+                    overlay.hide();
+                this._windows[i].actor.opacity = 0;
+            } else {
+                let fromTop = topIndex - i;
+                let time;
+                if (fromTop < nTimeSlots) // animate top-most windows gradually
+                    time = windowBaseTime * (nTimeSlots - fromTop);
+                else
+                    time = windowBaseTime;
+
+                this._windows[i].actor.opacity = 255;
+                this._fadeWindow(i, time, 0);
+            }
+        }
+    },
+
+    fadeFromOverview: function() {
+        this.leavingOverview = true;
+        this._overviewHiddenId = Main.overview.connect('hidden', Lang.bind(this,
+                                                                           this._doneLeavingOverview));
+        if (this._windows.length == 0)
+            return;
+
+        for (let i = 0; i < this._windows.length; i++) {
+            let clone = this._windows[i];
+            Tweener.removeTweens(clone.actor);
+        }
+
+        if (this._repositionWindowsId > 0) {
+            Mainloop.source_remove(this._repositionWindowsId);
+            this._repositionWindowsId = 0;
+        }
+
+        if (this.metaWorkspace != null && this.metaWorkspace != global.screen.get_active_workspace())
+            return;
+
+        // Special case maximized windows, since it doesn't make sense
+        // to animate windows below in the stack
+        let topMaximizedWindow;
+        // It is ok to treat the case where there is no maximized
+        // window as if the bottom-most window was maximized given that
+        // it won't affect the result of the animation
+        for (topMaximizedWindow = this._windows.length - 1; topMaximizedWindow > 0; topMaximizedWindow--) {
+            let metaWindow = this._windows[topMaximizedWindow].metaWindow;
+            if (metaWindow.maximized_horizontally && metaWindow.maximized_vertically)
+                break;
+        }
+
+        let nTimeSlots = Math.min(WINDOW_ANIMATION_MAX_NUMBER_BLENDING + 1, this._windows.length - topMaximizedWindow);
+        let windowBaseTime = Overview.ANIMATION_TIME / nTimeSlots;
+
+        let topIndex = this._windows.length - 1;
+        for (let i = 0; i < this._windows.length; i++) {
+            if (i < topMaximizedWindow) {
+                // below top-most maximized window, don't animate
+                let overlay = this._windowOverlays[i];
+                if (overlay)
+                    overlay.hide();
+                this._windows[i].actor.opacity = 0;
+            } else {
+                let fromTop = topIndex - i;
+                let time;
+                if (fromTop < nTimeSlots) // animate top-most windows gradually
+                    time = windowBaseTime * (fromTop + 1);
+                else
+                    time = windowBaseTime * nTimeSlots;
+
+                this._windows[i].actor.opacity = 0;
+                this._fadeWindow(i, time, 255);
+            }
+        }
+    },
+
+    _fadeWindow: function(index, time, opacity) {
+        let clone = this._windows[index];
+        let overlay = this._windowOverlays[index];
+
+        if (overlay)
+            overlay.hide();
+
+        if (clone.metaWindow.showing_on_its_workspace()) {
+            let [origX, origY] = clone.getOriginalPosition();
+            clone.actor.scale_x = 1;
+            clone.actor.scale_y = 1;
+            clone.actor.x = origX;
+            clone.actor.y = origY;
+            Tweener.addTween(clone.actor,
+                             { time: time,
+                               opacity: opacity,
+                               transition: 'easeOutQuad'
+                             });
+        } else {
+            // The window is hidden
+            clone.actor.opacity = 0;
+        }
+    },
+
+    zoomToOverview: function() {
         // Position and scale the windows.
         this._recalculateWindowPositions(WindowPositionFlags.ANIMATE | WindowPositionFlags.INITIAL);
     },
 
-    // Animates the return from Overview mode
-    zoomFromOverview : function() {
+    zoomFromOverview: function() {
         let currentWorkspace = global.screen.get_active_workspace();
 
         this.leavingOverview = true;
@@ -1590,35 +1720,37 @@ const Workspace = new Lang.Class({
             return;
 
         // Position and scale the windows.
-        for (let i = 0; i < this._windows.length; i++) {
-            let clone = this._windows[i];
-            let overlay = this._windowOverlays[i];
+        for (let i = 0; i < this._windows.length; i++)
+           this._zoomWindowFromOverview(i);
+    },
 
-            if (overlay)
-                overlay.hide();
+    _zoomWindowFromOverview: function(index) {
+        let clone = this._windows[index];
+        let overlay = this._windowOverlays[index];
 
-            if (clone.metaWindow.showing_on_its_workspace()) {
-                let [origX, origY] = clone.getOriginalPosition();
+        if (overlay)
+            overlay.hide();
 
-                Tweener.addTween(clone.actor,
-                                 { x: origX,
-                                   y: origY,
-                                   scale_x: 1.0,
-                                   scale_y: 1.0,
-                                   time: Overview.ANIMATION_TIME,
-                                   opacity: 255,
-                                   transition: 'easeOutQuad'
-                                 });
-            } else {
-                // The window is hidden, make it shrink and fade it out
-                Tweener.addTween(clone.actor,
-                                 { scale_x: 0,
-                                   scale_y: 0,
-                                   opacity: 0,
-                                   time: Overview.ANIMATION_TIME,
-                                   transition: 'easeOutQuad'
-                                 });
-            }
+        if (clone.metaWindow.showing_on_its_workspace()) {
+            let [origX, origY] = clone.getOriginalPosition();
+            Tweener.addTween(clone.actor,
+                             { x: origX,
+                               y: origY,
+                               scale_x: 1.0,
+                               scale_y: 1.0,
+                               time: Overview.ANIMATION_TIME,
+                               opacity: 255,
+                               transition: 'easeOutQuad'
+                             });
+        } else {
+            // The window is hidden, make it shrink and fade it out
+            Tweener.addTween(clone.actor,
+                             { scale_x: 0,
+                               scale_y: 0,
+                               opacity: 0,
+                               time: Overview.ANIMATION_TIME,
+                               transition: 'easeOutQuad'
+                             });
         }
     },
 
@@ -1655,6 +1787,11 @@ const Workspace = new Lang.Class({
     // Sets this.leavingOverview flag to false.
     _doneLeavingOverview : function() {
         this.leavingOverview = false;
+    },
+
+    _doneShowingOverview: function() {
+        this._animatingWindowsFade = false;
+        this._recalculateWindowPositions(WindowPositionFlags.INITIAL);
     },
 
     // Tests if @actor belongs to this workspaces and monitor
