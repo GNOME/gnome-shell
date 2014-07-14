@@ -425,8 +425,6 @@ const Overview = new Lang.Class({
         this.emit('windows-restacked', stackIndices);
     },
 
-    //// Public methods ////
-
     beginItemDrag: function(source) {
         this.emit('item-drag-begin');
         this._inDrag = true;
