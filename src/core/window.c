@@ -3674,29 +3674,40 @@ meta_window_move_resize_internal (MetaWindow          *window,
   /* We don't need it in the idle queue anymore. */
   meta_window_unqueue (window, META_QUEUE_MOVE_RESIZE);
 
-  /* If this is only a resize, then ignore the position given in
-   * the parameters and instead calculate the new position from
-   * resizing the old rectangle with the given gravity. */
-  if ((flags & (META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION)) == META_IS_RESIZE_ACTION)
+  if ((flags & META_IS_RESIZE_ACTION) && (flags & META_IS_MOVE_ACTION))
     {
+      /* We're both moving and resizing. Just use the passed in rect. */
+      unconstrained_rect = frame_rect;
+    }
+  else if ((flags & META_IS_RESIZE_ACTION))
+    {
+      /* If this is only a resize, then ignore the position given in
+       * the parameters and instead calculate the new position from
+       * resizing the old rectangle with the given gravity. */
       meta_rectangle_resize_with_gravity (&window->rect,
                                           &unconstrained_rect,
                                           gravity,
                                           frame_rect.width,
                                           frame_rect.height);
     }
-  else
+  else if ((flags & META_IS_MOVE_ACTION))
     {
-      unconstrained_rect = frame_rect;
-    }
-
-  /* If this is only a move, then ignore the passed in size and
-   * just use the existing size of the window. */
-  if ((flags & (META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION)) == META_IS_MOVE_ACTION)
-    {
+      /* If this is only a move, then ignore the passed in size and
+       * just use the existing size of the window. */
+      unconstrained_rect.x = frame_rect.x;
+      unconstrained_rect.y = frame_rect.y;
       unconstrained_rect.width = window->rect.width;
       unconstrained_rect.height = window->rect.height;
     }
+  else if ((flags & META_IS_WAYLAND_RESIZE))
+    {
+      /* This is a Wayland buffer acking our size. The new rect is
+       * just the existing one we have. Ignore the passed-in rect
+       * completely. */
+      unconstrained_rect = window->rect;
+    }
+  else
+    g_assert_not_reached ();
 
   constrained_rect = unconstrained_rect;
   if (flags & (META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION))
