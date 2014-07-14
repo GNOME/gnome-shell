@@ -1194,9 +1194,8 @@ meta_window_change_keygrabs (MetaWindow *window,
 void
 meta_window_grab_keys (MetaWindow  *window)
 {
-  MetaBackend *backend = meta_get_backend ();
-
-  if (!META_IS_BACKEND_X11 (backend))
+  /* Under Wayland, we don't need to grab at all. */
+  if (meta_is_wayland_compositor ())
     return;
 
   if (window->all_keys_grabbed)
