@@ -256,8 +256,6 @@ meta_window_finalize (GObject *object)
   if (window->transient_for)
     g_object_unref (window->transient_for);
 
-  meta_icon_cache_free (&window->icon_cache);
-
   g_free (window->sm_client_id);
   g_free (window->wm_client_machine);
   g_free (window->startup_id);

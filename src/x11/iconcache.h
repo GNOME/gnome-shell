@@ -51,7 +51,6 @@ struct _MetaIconCache
 };
 
 void           meta_icon_cache_init                 (MetaIconCache *icon_cache);
-void           meta_icon_cache_free                 (MetaIconCache *icon_cache);
 void           meta_icon_cache_property_changed     (MetaIconCache *icon_cache,
                                                      MetaDisplay   *display,
                                                      Atom           atom);
