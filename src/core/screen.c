@@ -56,6 +56,8 @@
 #include "x11/window-x11.h"
 #include "x11/xprops.h"
 
+#include "backends/x11/meta-backend-x11.h"
+
 static char* get_screen_name (MetaDisplay *display,
                               int          number);
 
@@ -470,13 +472,24 @@ create_guard_window (Display *xdisplay, MetaScreen *screen)
   XStoreName (xdisplay, guard_window, "mutter guard window");
 
   {
-    unsigned char mask_bits[XIMaskLen (XI_LASTEVENT)] = { 0 };
-    XIEventMask mask = { XIAllMasterDevices, sizeof (mask_bits), mask_bits };
+    if (!meta_is_wayland_compositor ())
+      {
+        MetaBackendX11 *backend = META_BACKEND_X11 (meta_get_backend ());
+        Display *backend_xdisplay = meta_backend_x11_get_xdisplay (backend);
+        unsigned char mask_bits[XIMaskLen (XI_LASTEVENT)] = { 0 };
+        XIEventMask mask = { XIAllMasterDevices, sizeof (mask_bits), mask_bits };
 
-    XISetMask (mask.mask, XI_ButtonPress);
-    XISetMask (mask.mask, XI_ButtonRelease);
-    XISetMask (mask.mask, XI_Motion);
-    XISelectEvents (xdisplay, guard_window, &mask, 1);
+        XISetMask (mask.mask, XI_ButtonPress);
+        XISetMask (mask.mask, XI_ButtonRelease);
+        XISetMask (mask.mask, XI_Motion);
+
+        /* Sync on the connection we created the window on to
+         * make sure it's created before we select on it on the
+         * backend connection. */
+        XSync (xdisplay, False);
+
+        XISelectEvents (backend_xdisplay, guard_window, &mask, 1);
+      }
   }
 
   stack_window.any.type = META_WINDOW_CLIENT_TYPE_X11;
