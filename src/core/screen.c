@@ -626,13 +626,10 @@ meta_screen_new (MetaDisplay *display,
     unsigned char mask_bits[XIMaskLen (XI_LASTEVENT)] = { 0 };
     XIEventMask mask = { XIAllMasterDevices, sizeof (mask_bits), mask_bits };
 
-    XISetMask (mask.mask, XI_KeyPress);
-    XISetMask (mask.mask, XI_KeyRelease);
     XISetMask (mask.mask, XI_Enter);
     XISetMask (mask.mask, XI_Leave);
     XISetMask (mask.mask, XI_FocusIn);
     XISetMask (mask.mask, XI_FocusOut);
-    XISetMask (mask.mask, XI_Motion);
 #ifdef HAVE_XI23
     if (META_DISPLAY_HAS_XINPUT_23 (display))
       {
