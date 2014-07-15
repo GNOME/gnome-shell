@@ -148,31 +148,6 @@ process_damage (MetaCompositor     *compositor,
   meta_window_actor_process_x11_damage (window_actor, event);
 }
 
-static Window
-get_output_window (MetaCompositor *compositor)
-{
-  MetaBackendX11 *backend = META_BACKEND_X11 (meta_get_backend ());
-  Display *xdisplay = meta_backend_x11_get_xdisplay (backend);
-  Window output;
-  unsigned char mask_bits[XIMaskLen (XI_LASTEVENT)] = { 0 };
-  XIEventMask mask = { XIAllMasterDevices, sizeof (mask_bits), mask_bits };
-
-  output = compositor->display->screen->composite_overlay_window;
-
-  XISetMask (mask.mask, XI_KeyPress);
-  XISetMask (mask.mask, XI_KeyRelease);
-  XISetMask (mask.mask, XI_ButtonPress);
-  XISetMask (mask.mask, XI_ButtonRelease);
-  XISetMask (mask.mask, XI_Enter);
-  XISetMask (mask.mask, XI_Leave);
-  XISetMask (mask.mask, XI_FocusIn);
-  XISetMask (mask.mask, XI_FocusOut);
-  XISetMask (mask.mask, XI_Motion);
-  XISelectEvents (xdisplay, output, &mask, 1);
-
-  return output;
-}
-
 /* compat helper */
 static MetaCompositor *
 get_compositor_for_screen (MetaScreen *screen)
@@ -552,7 +527,8 @@ meta_compositor_manage (MetaCompositor *compositor)
     }
   else
     {
-      compositor->output = get_output_window (compositor);
+      compositor->output = screen->composite_overlay_window;
+
       XReparentWindow (xdisplay, xwin, compositor->output, 0, 0);
 
       meta_empty_stage_input_region (screen);
