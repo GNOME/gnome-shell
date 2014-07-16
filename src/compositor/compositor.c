@@ -507,8 +507,16 @@ meta_compositor_manage (MetaCompositor *compositor)
         }
     }
 
-  g_signal_connect (CLUTTER_STAGE (compositor->stage), "after-paint",
-                    G_CALLBACK (after_stage_paint), compositor);
+  /* We use connect_after() here to accomodate code in GNOME Shell that,
+   * when benchmarking drawing performance, connects to ::after-paint
+   * and calls glFinish(). The timing information from that will be
+   * more accurate if we hold off until that completes before we signal
+   * apps to begin drawing the next frame. If there are no other
+   * connections to ::after-paint, connect() vs. connect_after() doesn't
+   * matter.
+   */
+  g_signal_connect_after (CLUTTER_STAGE (compositor->stage), "after-paint",
+                          G_CALLBACK (after_stage_paint), compositor);
 
   clutter_stage_set_sync_delay (CLUTTER_STAGE (compositor->stage), META_SYNC_DELAY);
 
