@@ -78,7 +78,7 @@ function extractBootTimestamp() {
                                  'MESSAGE_ID=7d4958e842da4a758f6c1cdc7b36dcc5',
                                  'UNIT=graphical.target',
                                  '-o',
-                                 'json-pretty'],
+                                 'json'],
                                 Gio.SubprocessFlags.STDOUT_PIPE);
     let result = null;
 
@@ -88,10 +88,8 @@ function extractBootTimestamp() {
         if (line === null)
             break;
 
-        let m = /.*"__MONOTONIC_TIMESTAMP".*"([0-9]+)"/.exec(line);
-        if (m) {
-            result = Number(m[1]);
-        }
+        let fields = JSON.parse(line);
+        result = Number(fields['__MONOTONIC_TIMESTAMP']);
     }
     datastream.close(null);
     return result;
