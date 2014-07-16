@@ -97,6 +97,7 @@ struct _ShellGlobal {
 
   gboolean has_modal;
   gboolean frame_timestamps;
+  gboolean frame_finish_timestamp;
 };
 
 enum {
@@ -118,6 +119,7 @@ enum {
   PROP_USERDATADIR,
   PROP_FOCUS_MANAGER,
   PROP_FRAME_TIMESTAMPS,
+  PROP_FRAME_FINISH_TIMESTAMP,
 };
 
 /* Signals */
@@ -150,6 +152,9 @@ shell_global_set_property(GObject         *object,
       break;
     case PROP_FRAME_TIMESTAMPS:
       global->frame_timestamps = g_value_get_boolean (value);
+      break;
+    case PROP_FRAME_FINISH_TIMESTAMP:
+      global->frame_finish_timestamp = g_value_get_boolean (value);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -224,6 +229,9 @@ shell_global_get_property(GObject         *object,
       break;
     case PROP_FRAME_TIMESTAMPS:
       g_value_set_boolean (value, global->frame_timestamps);
+      break;
+    case PROP_FRAME_FINISH_TIMESTAMP:
+      g_value_set_boolean (value, global->frame_finish_timestamp);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -515,6 +523,13 @@ shell_global_class_init (ShellGlobalClass *klass)
                                                          "Whether to log frame timestamps in the performance log",
                                                          FALSE,
                                                          G_PARAM_READWRITE));
+  g_object_class_install_property (gobject_class,
+                                   PROP_FRAME_FINISH_TIMESTAMP,
+                                   g_param_spec_boolean ("frame-finish-timestamp",
+                                                         "Frame Finish Timestamps",
+                                                         "Whether at the end of a frame to call glFinish and log paintCompletedTimestamp",
+                                                         FALSE,
+                                                         G_PARAM_READWRITE));
 }
 
 /*
@@ -781,8 +796,56 @@ global_stage_before_paint (gpointer data)
 }
 
 static gboolean
-global_stage_after_paint (gpointer data)
+load_gl_symbol (const char  *name,
+                void       **func)
 {
+  *func = cogl_get_proc_address (name);
+  if (!*func)
+    {
+      g_warning ("failed to resolve required GL symbol \"%s\"\n", name);
+      return FALSE;
+    }
+  return TRUE;
+}
+
+static void
+global_stage_after_paint (ClutterStage *stage,
+                          ShellGlobal  *global)
+{
+  /* At this point, we've finished all layout and painting, but haven't
+   * actually flushed or swapped */
+
+  if (global->frame_timestamps && global->frame_finish_timestamp)
+    {
+      /* It's interesting to find out when the paint actually finishes
+       * on the GPU. We could wait for this asynchronously with
+       * ARB_timer_query (see https://bugzilla.gnome.org/show_bug.cgi?id=732350
+       * for an implementation of this), but what we actually would
+       * find out then is the latency for drawing a frame, not how much
+       * GPU work was needed, since frames can overlap. Calling glFinish()
+       * is a fairly reliable way to separate out adjacent frames
+       * and measure the amount of GPU work. This is turned on with a
+       * separate property from ::frame-timestamps, since it should not
+       * be turned on if we're trying to actual measure latency or frame
+       * rate.
+       */
+      static void (*finish) (void);
+
+      if (!finish)
+        load_gl_symbol ("glFinish", (void **)&finish);
+
+      finish ();
+
+      shell_perf_log_event (shell_perf_log_get_default (),
+                            "clutter.paintCompletedTimestamp");
+    }
+}
+
+static gboolean
+global_stage_after_swap (gpointer data)
+{
+  /* Everything is done, we're ready for a new frame */
+
   ShellGlobal *global = SHELL_GLOBAL (data);
 
   if (global->frame_timestamps)
@@ -974,8 +1037,11 @@ _shell_global_set_plugin (ShellGlobal *global,
                                          global_stage_before_paint,
                                          global, NULL);
 
+  g_signal_connect (global->stage, "after-paint",
+                    G_CALLBACK (global_stage_after_paint), global);
+
   clutter_threads_add_repaint_func_full (CLUTTER_REPAINT_FLAGS_POST_PAINT,
-                                         global_stage_after_paint,
+                                         global_stage_after_swap,
                                          global, NULL);
 
   shell_perf_log_define_event (shell_perf_log_get_default(),
@@ -983,8 +1049,12 @@ _shell_global_set_plugin (ShellGlobal *global,
                                "Start of stage page repaint",
                                "");
   shell_perf_log_define_event (shell_perf_log_get_default(),
+                               "clutter.paintCompletedTimestamp",
+                               "Paint completion on GPU",
+                               "");
+  shell_perf_log_define_event (shell_perf_log_get_default(),
                                "clutter.stagePaintDone",
-                               "End of stage page repaint",
+                               "End of frame, possibly including swap time",
                                "");
 
   g_signal_connect (global->stage, "notify::key-focus",
