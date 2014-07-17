@@ -300,7 +300,7 @@
     </enum>
 
     <event name="configure">
-      <description summary="suggest a surface chnage">
+      <description summary="suggest a surface change">
 	The configure event asks the client to resize its surface.
 
 	The width and height arguments specify a hint to the window
