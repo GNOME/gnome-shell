@@ -348,8 +348,8 @@ meta_window_wayland_move_resize (MetaWindow    *window,
   MetaMoveResizeFlags flags;
 
   /* XXX: Find a better place to store the window geometry offsets. */
-  window->custom_frame_extents.left = -new_geom.x;
-  window->custom_frame_extents.top = -new_geom.y;
+  window->custom_frame_extents.left = new_geom.x;
+  window->custom_frame_extents.top = new_geom.y;
 
   flags = META_IS_WAYLAND_RESIZE;
 
