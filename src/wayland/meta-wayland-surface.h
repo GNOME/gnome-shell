@@ -61,8 +61,8 @@ typedef struct
   /* wl_surface.frame */
   struct wl_list frame_callback_list;
 
-  gboolean frame_extents_changed;
-  GtkBorder frame_extents;
+  MetaRectangle new_geometry;
+  gboolean has_new_geometry;
 } MetaWaylandPendingState;
 
 typedef struct
@@ -108,6 +108,8 @@ struct _MetaWaylandSurface
     gboolean pending_pos;
     GSList *pending_placement_ops;
   } sub;
+
+  gboolean has_set_geometry;
 
   /* All the pending state that wl_surface.commit will apply. */
   MetaWaylandPendingState pending;

@@ -209,16 +209,40 @@ toplevel_surface_commit (MetaWaylandSurface      *surface,
       return;
     }
 
-  if (pending->frame_extents_changed)
-    meta_window_set_custom_frame_extents (surface->window, &pending->frame_extents);
-
   /* We resize X based surfaces according to X events */
   if (window->client_type == META_WINDOW_CLIENT_TYPE_WAYLAND)
     {
       MetaRectangle geom;
 
-      calculate_surface_window_geometry (surface, &geom, 0, 0);
-      meta_window_client_rect_to_frame_rect (window, &geom, &geom);
+      if (pending->has_new_geometry)
+        {
+          /* If we have new geometry, use it. */
+          geom = pending->new_geometry;
+          surface->has_set_geometry = TRUE;
+        }
+      else if (!surface->has_set_geometry)
+        {
+          /* If the surface has never set any geometry, calculate
+           * a default one unioning the surface and all subsurfaces together. */
+          calculate_surface_window_geometry (surface, &geom, 0, 0);
+        }
+      else
+        {
+          /* Otherwise, keep the geometry the same. */
+
+          /* XXX: We don't store the geometry in any consistent place
+           * right now, so we can't re-fetch it. We should change
+           * meta_window_wayland_move_resize. */
+
+          /* XXX: This is the common case. Recognize it to prevent
+           * a warning. */
+          if (pending->dx == 0 && pending->dy == 0)
+            return;
+
+          g_warning ("XXX: Attach-initiated move without a new geometry. This is unimplemented right now.");
+          return;
+        }
+
       meta_window_wayland_move_resize (window, geom, pending->dx, pending->dy);
     }
 }
@@ -247,7 +271,7 @@ pending_state_init (MetaWaylandPendingState *state)
   state->buffer_destroy_listener.notify = surface_handle_pending_buffer_destroy;
   wl_list_init (&state->frame_callback_list);
 
-  state->frame_extents_changed = FALSE;
+  state->has_new_geometry = FALSE;
 }
 
 static void
@@ -757,23 +781,6 @@ xdg_surface_set_parent (struct wl_client *client,
 }
 
 static void
-xdg_surface_set_margin (struct wl_client *client,
-                        struct wl_resource *resource,
-                        int32_t left_margin,
-                        int32_t right_margin,
-                        int32_t top_margin,
-                        int32_t bottom_margin)
-{
-  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
-
-  surface->pending.frame_extents_changed = TRUE;
-  surface->pending.frame_extents.left = left_margin;
-  surface->pending.frame_extents.right = right_margin;
-  surface->pending.frame_extents.top = top_margin;
-  surface->pending.frame_extents.bottom = bottom_margin;
-}
-
-static void
 xdg_surface_set_title (struct wl_client *client,
                        struct wl_resource *resource,
                        const char *title)
@@ -904,6 +911,20 @@ xdg_surface_ack_configure (struct wl_client *client,
 }
 
 static void
+xdg_surface_set_window_geometry (struct wl_client *client,
+                                 struct wl_resource *resource,
+                                 int32_t x, int32_t y, int32_t width, int32_t height)
+{
+  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
+
+  surface->pending.has_new_geometry = TRUE;
+  surface->pending.new_geometry.x = x;
+  surface->pending.new_geometry.y = y;
+  surface->pending.new_geometry.width = width;
+  surface->pending.new_geometry.height = height;
+}
+
+static void
 xdg_surface_set_maximized (struct wl_client *client,
                            struct wl_resource *resource)
 {
@@ -947,13 +968,13 @@ xdg_surface_set_minimized (struct wl_client *client,
 static const struct xdg_surface_interface meta_wayland_xdg_surface_interface = {
   xdg_surface_destroy,
   xdg_surface_set_parent,
-  xdg_surface_set_margin,
   xdg_surface_set_title,
   xdg_surface_set_app_id,
   xdg_surface_show_window_menu,
   xdg_surface_move,
   xdg_surface_resize,
   xdg_surface_ack_configure,
+  xdg_surface_set_window_geometry,
   xdg_surface_set_maximized,
   xdg_surface_unset_maximized,
   xdg_surface_set_fullscreen,
