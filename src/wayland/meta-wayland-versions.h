@@ -37,6 +37,7 @@
 /* Global/master objects (version exported by wl_registry and negotiated through bind) */
 #define META_WL_COMPOSITOR_VERSION          3
 #define META_WL_DATA_DEVICE_MANAGER_VERSION 1
+#define META_XDG_SHELL_VERSION              1
 #define META_WL_SHELL_VERSION               1
 #define META_WL_SEAT_VERSION                3
 #define META_WL_OUTPUT_VERSION              2
