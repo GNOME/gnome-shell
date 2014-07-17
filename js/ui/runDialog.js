@@ -270,7 +270,7 @@ const RunDialog = new Lang.Class({
     _restart: function() {
         this._shouldFadeOut = false;
         this.close();
-        Meta.restart('Restarting...');
+        Meta.restart(_("Restarting…"));
     },
 
     open: function() {
