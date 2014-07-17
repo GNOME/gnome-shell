@@ -174,19 +174,28 @@ meta_window_wayland_move_resize_internal (MetaWindow                *window,
 
   if (flags & META_IS_WAYLAND_RESIZE)
     {
-      CoglTexture *texture;
-
       /* This is a call to wl_surface_commit(), ignore the constrained_rect and
        * update the real client size to match the buffer size.
        */
 
-      *result |= META_MOVE_RESIZE_RESULT_RESIZED;
-      window->rect.width = unconstrained_rect.width;
-      window->rect.height = unconstrained_rect.height;
+      if (window->rect.width != unconstrained_rect.width ||
+          window->rect.height != unconstrained_rect.height)
+        {
+          *result |= META_MOVE_RESIZE_RESULT_RESIZED;
+          window->rect.width = unconstrained_rect.width;
+          window->rect.height = unconstrained_rect.height;
+        }
 
-      texture = window->surface->buffer->texture;
-      window->buffer_rect.width = cogl_texture_get_width (texture);
-      window->buffer_rect.height = cogl_texture_get_height (texture);
+      CoglTexture *texture = window->surface->buffer->texture;
+      int new_buffer_width = cogl_texture_get_width (texture);
+      int new_buffer_height = cogl_texture_get_height (texture);
+      if (window->buffer_rect.width != new_buffer_width ||
+          window->buffer_rect.height != new_buffer_height)
+        {
+          *result |= META_MOVE_RESIZE_RESULT_RESIZED;
+          window->buffer_rect.width = new_buffer_width;
+          window->buffer_rect.height = new_buffer_height;
+        }
 
       /* This is a commit of an attach. We should move the window to match the
        * new position the client wants. */
