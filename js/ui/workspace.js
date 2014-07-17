@@ -87,7 +87,7 @@ const WindowCloneLayout = new Lang.Class({
     },
 
     vfunc_allocate: function(container, box, flags) {
-        let clone = container.get_children().forEach(function (child) {
+        container.get_children().forEach(Lang.bind(this, function (child) {
             let realWindow;
             if (child == container._delegate._windowClone)
                 realWindow = container._delegate.realWindow;
@@ -96,8 +96,8 @@ const WindowCloneLayout = new Lang.Class({
 
             child.allocate(this._makeBoxForWindow(realWindow.meta_window),
                            flags);
-        }, this);
-    },
+        }));
+    }
 });
 
 const WindowClone = new Lang.Class({
