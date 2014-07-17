@@ -1863,18 +1863,19 @@ void
 meta_display_end_grab_op (MetaDisplay *display,
                           guint32      timestamp)
 {
+  MetaWindow *grab_window = display->grab_window;
+  MetaGrabOp grab_op = display->grab_op;
+
   meta_topic (META_DEBUG_WINDOW_OPS,
-              "Ending grab op %u at time %u\n", display->grab_op, timestamp);
+              "Ending grab op %u at time %u\n", grab_op, timestamp);
 
   if (display->grab_op == META_GRAB_OP_NONE)
     return;
 
   g_signal_emit (display, display_signals[GRAB_OP_END], 0,
-                 display->screen, display->grab_window, display->grab_op);
+                 display->screen, grab_window, grab_op);
 
-  meta_window_grab_op_ended (display->grab_window, display->grab_op);
-
-  if (meta_grab_op_is_moving_or_resizing (display->grab_op))
+  if (meta_grab_op_is_moving_or_resizing (grab_op))
     {
       /* Clear out the edge cache */
       meta_display_cleanup_edges (display);
@@ -1900,7 +1901,7 @@ meta_display_end_grab_op (MetaDisplay *display,
     {
       meta_topic (META_DEBUG_WINDOW_OPS,
                   "Ungrabbing all keys timestamp %u\n", timestamp);
-      meta_window_ungrab_all_keys (display->grab_window, timestamp);
+      meta_window_ungrab_all_keys (grab_window, timestamp);
     }
 
   display->grab_timestamp = 0;
@@ -1916,6 +1917,8 @@ meta_display_end_grab_op (MetaDisplay *display,
       g_source_remove (display->grab_resize_timeout_id);
       display->grab_resize_timeout_id = 0;
     }
+
+  meta_window_grab_op_ended (grab_window, grab_op);
 
   if (meta_is_wayland_compositor ())
     meta_display_sync_wayland_input_focus (display);
