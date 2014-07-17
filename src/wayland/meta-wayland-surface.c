@@ -1395,13 +1395,13 @@ gtk_surface_destructor (struct wl_resource *resource)
 
 static void
 set_dbus_properties (struct wl_client   *client,
-		     struct wl_resource *resource,
-		     const char         *application_id,
-		     const char         *app_menu_path,
-		     const char         *menubar_path,
-		     const char         *window_object_path,
-		     const char         *application_object_path,
-		     const char         *unique_bus_name)
+                     struct wl_resource *resource,
+                     const char         *application_id,
+                     const char         *app_menu_path,
+                     const char         *menubar_path,
+                     const char         *window_object_path,
+                     const char         *application_object_path,
+                     const char         *unique_bus_name)
 {
   MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
 
@@ -1427,9 +1427,9 @@ static const struct gtk_surface_interface meta_wayland_gtk_surface_interface = {
 
 static void
 get_gtk_surface (struct wl_client *client,
-		 struct wl_resource *resource,
-		 guint32 id,
-		 struct wl_resource *surface_resource)
+                 struct wl_resource *resource,
+                 guint32 id,
+                 struct wl_resource *surface_resource)
 {
   MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
 
@@ -1453,14 +1453,14 @@ static const struct gtk_shell_interface meta_wayland_gtk_shell_interface = {
 
 static void
 bind_gtk_shell (struct wl_client *client,
-		void             *data,
-		guint32           version,
-		guint32           id)
+                void             *data,
+                guint32           version,
+                guint32           id)
 {
   struct wl_resource *resource;
 
   resource = wl_resource_create (client, &gtk_shell_interface,
-				 MIN (META_GTK_SHELL_VERSION, version), id);
+                                 MIN (META_GTK_SHELL_VERSION, version), id);
   wl_resource_set_implementation (resource, &meta_wayland_gtk_shell_interface, data, NULL);
 
   /* FIXME: ask the plugin */
@@ -1747,7 +1747,7 @@ bind_subcompositor (struct wl_client *client,
   struct wl_resource *resource;
 
   resource = wl_resource_create (client, &wl_subcompositor_interface,
-				 MIN (META_WL_SUBCOMPOSITOR_VERSION, version), id);
+                                 MIN (META_WL_SUBCOMPOSITOR_VERSION, version), id);
   wl_resource_set_implementation (resource, &meta_wayland_subcompositor_interface, data, NULL);
 }
 
@@ -1755,19 +1755,19 @@ void
 meta_wayland_shell_init (MetaWaylandCompositor *compositor)
 {
   if (wl_global_create (compositor->wayland_display,
-			&xdg_shell_interface, 1,
-			compositor, bind_xdg_shell) == NULL)
+                        &xdg_shell_interface, 1,
+                        compositor, bind_xdg_shell) == NULL)
     g_error ("Failed to register a global xdg-shell object");
 
   if (wl_global_create (compositor->wayland_display,
-			&wl_shell_interface, 1,
-			compositor, bind_wl_shell) == NULL)
+                        &wl_shell_interface, 1,
+                        compositor, bind_wl_shell) == NULL)
     g_error ("Failed to register a global wl-shell object");
 
   if (wl_global_create (compositor->wayland_display,
-			&gtk_shell_interface,
-			META_GTK_SHELL_VERSION,
-			compositor, bind_gtk_shell) == NULL)
+                        &gtk_shell_interface,
+                        META_GTK_SHELL_VERSION,
+                        compositor, bind_gtk_shell) == NULL)
     g_error ("Failed to register a global gtk-shell object");
 
   if (wl_global_create (compositor->wayland_display,
@@ -1806,8 +1806,8 @@ fill_states (struct wl_array *states, MetaWindow *window)
 
 void
 meta_wayland_surface_configure_notify (MetaWaylandSurface *surface,
-				       int                 new_width,
-				       int                 new_height)
+                                       int                 new_width,
+                                       int                 new_height)
 {
   if (surface->xdg_surface.resource)
     {
