@@ -227,8 +227,8 @@ meta_window_wayland_move_resize_internal (MetaWindow                *window,
       if (new_buffer_x != window->buffer_rect.x || new_buffer_y != window->buffer_rect.y)
         {
           *result |= META_MOVE_RESIZE_RESULT_MOVED;
-          window->buffer_rect.x = new_x - window->custom_frame_extents.left;
-          window->buffer_rect.y = new_y - window->custom_frame_extents.top;
+          window->buffer_rect.x = new_buffer_x;
+          window->buffer_rect.y = new_buffer_y;
         }
     }
 }
