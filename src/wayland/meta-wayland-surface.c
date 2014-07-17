@@ -1757,7 +1757,8 @@ meta_wayland_shell_init (MetaWaylandCompositor *compositor)
     g_error ("Failed to register a global xdg-shell object");
 
   if (wl_global_create (compositor->wayland_display,
-                        &wl_shell_interface, 1,
+                        &wl_shell_interface,
+                        META_WL_SHELL_VERSION,
                         compositor, bind_wl_shell) == NULL)
     g_error ("Failed to register a global wl-shell object");
 
