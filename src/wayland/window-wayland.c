@@ -337,16 +337,19 @@ meta_window_wayland_new (MetaDisplay        *display,
  * Complete a resize operation from a wayland client.
  */
 void
-meta_window_wayland_move_resize (MetaWindow *window,
-                                 int         width,
-                                 int         height,
-                                 int         dx,
-                                 int         dy)
+meta_window_wayland_move_resize (MetaWindow    *window,
+                                 MetaRectangle  new_geom,
+                                 int            dx,
+                                 int            dy)
 {
   MetaWindowWayland *wl_window = META_WINDOW_WAYLAND (window);
   int gravity;
   MetaRectangle rect;
   MetaMoveResizeFlags flags;
+
+  /* XXX: Find a better place to store the window geometry offsets. */
+  window->custom_frame_extents.left = -new_geom.x;
+  window->custom_frame_extents.top = -new_geom.y;
 
   flags = META_IS_WAYLAND_RESIZE;
 
@@ -373,8 +376,8 @@ meta_window_wayland_move_resize (MetaWindow *window,
         }
     }
 
-  rect.width = width;
-  rect.height = height;
+  rect.width = new_geom.width;
+  rect.height = new_geom.height;
 
   if (rect.width != window->rect.width || rect.height != window->rect.height)
     flags |= META_IS_RESIZE_ACTION;

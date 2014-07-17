@@ -163,6 +163,38 @@ cursor_surface_commit (MetaWaylandSurface      *surface,
 }
 
 static void
+calculate_surface_window_geometry (MetaWaylandSurface *surface,
+                                   MetaRectangle      *total_geometry,
+                                   float               parent_x,
+                                   float               parent_y)
+{
+  ClutterActor *surface_actor = CLUTTER_ACTOR (surface->surface_actor);
+  MetaRectangle geom;
+  float x, y;
+  GList *l;
+
+  /* Unmapped surfaces don't count. */
+  if (!CLUTTER_ACTOR_IS_VISIBLE (surface_actor))
+    return;
+
+  /* XXX: Is there a better way to do this using Clutter APIs? */
+  clutter_actor_get_position (surface_actor, &x, &y);
+
+  geom.x = parent_x + x;
+  geom.y = parent_x + y;
+  geom.width = cogl_texture_get_width (surface->buffer->texture);
+  geom.height = cogl_texture_get_height (surface->buffer->texture);
+
+  meta_rectangle_union (total_geometry, &geom, total_geometry);
+
+  for (l = surface->subsurfaces; l != NULL; l = l->next)
+    {
+      MetaWaylandSurface *subsurface = l->data;
+      calculate_surface_window_geometry (subsurface, total_geometry, x, y);
+    }
+}
+
+static void
 toplevel_surface_commit (MetaWaylandSurface      *surface,
                          MetaWaylandPendingState *pending)
 {
@@ -183,12 +215,10 @@ toplevel_surface_commit (MetaWaylandSurface      *surface,
   /* We resize X based surfaces according to X events */
   if (window->client_type == META_WINDOW_CLIENT_TYPE_WAYLAND)
     {
-      int new_width, new_height;
+      MetaRectangle geom;
 
-      new_width = cogl_texture_get_width (surface->buffer->texture);
-      new_height = cogl_texture_get_height (surface->buffer->texture);
-
-      meta_window_wayland_move_resize (window, new_width, new_height, pending->dx, pending->dy);
+      calculate_surface_window_geometry (surface, &geom, 0, 0);
+      meta_window_wayland_move_resize (window, geom, pending->dx, pending->dy);
     }
 }
 

@@ -45,10 +45,9 @@ typedef struct _MetaWindowWaylandClass MetaWindowWaylandClass;
 MetaWindow * meta_window_wayland_new       (MetaDisplay        *display,
                                             MetaWaylandSurface *surface);
 
-void meta_window_wayland_move_resize (MetaWindow *window,
-                                      int         width,
-                                      int         height,
-                                      int         dx,
-                                      int         dy);
+void meta_window_wayland_move_resize (MetaWindow    *window,
+                                      MetaRectangle  new_geom,
+                                      int            dx,
+                                      int            dy);
 
 #endif
