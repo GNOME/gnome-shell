@@ -781,8 +781,8 @@ xdg_surface_show_window_menu (struct wl_client *client,
                               struct wl_resource *resource,
                               struct wl_resource *seat_resource,
                               uint32_t serial,
-                              uint32_t x,
-                              uint32_t y)
+                              int32_t x,
+                              int32_t y)
 {
   MetaWaylandSeat *seat = wl_resource_get_user_data (seat_resource);
   MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
