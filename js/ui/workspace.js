@@ -1326,7 +1326,7 @@ const Workspace = new Lang.Class({
                                      });
                 }
 
-                this._animateClone(clone, overlay, x, y, scale, initialPositioning);
+                this._animateClone(clone, overlay, x, y, scale);
             } else {
                 // cancel any active tweens (otherwise they might override our changes)
                 Tweener.removeTweens(clone.actor);
@@ -1355,7 +1355,7 @@ const Workspace = new Lang.Class({
         }
     },
 
-    _animateClone: function(clone, overlay, x, y, scale, initialPositioning) {
+    _animateClone: function(clone, overlay, x, y, scale) {
         Tweener.addTween(clone.actor,
                          { x: x,
                            y: y,
