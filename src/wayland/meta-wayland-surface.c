@@ -188,11 +188,7 @@ toplevel_surface_commit (MetaWaylandSurface      *surface,
       new_width = cogl_texture_get_width (surface->buffer->texture);
       new_height = cogl_texture_get_height (surface->buffer->texture);
 
-      if (new_width != window->rect.width ||
-          new_height != window->rect.height ||
-          pending->dx != 0 ||
-          pending->dy != 0)
-        meta_window_wayland_move_resize (window, new_width, new_height, pending->dx, pending->dy);
+      meta_window_wayland_move_resize (window, new_width, new_height, pending->dx, pending->dy);
     }
 }
 
