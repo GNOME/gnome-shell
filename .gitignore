@@ -43,6 +43,7 @@ POTFILES
 po/*.pot
 libmutter.pc
 mutter
+mutter-restart-helper
 org.gnome.mutter.gschema.valid
 org.gnome.mutter.gschema.xml
 org.gnome.mutter.wayland.gschema.valid
@@ -51,16 +52,6 @@ testasyncgetprop
 testboxes
 testgradient
 m4/*
-mutter-grayscale
-mutter-mag
-mutter-message
-mutter-window-demo
-focus-window
-test-attached
-test-focus
-test-gravity
-test-resizing
-test-size-hints
 INSTALL
 mkinstalldirs
 src/mutter-enum-types.[ch]
