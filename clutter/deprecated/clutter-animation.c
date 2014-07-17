@@ -305,6 +305,12 @@ clutter_animation_dispose (GObject *gobject)
   priv->timeline_completed_id = 0;
   priv->timeline_frame_id = 0;
 
+  if (priv->timeline != NULL)
+    {
+      g_object_unref (priv->timeline);
+      priv->timeline = NULL;
+    }
+
   if (priv->alpha != NULL)
     {
       g_object_unref (priv->alpha);
