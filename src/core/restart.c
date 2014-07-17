@@ -53,7 +53,7 @@ meta_restart_init (void)
 {
   Display *xdisplay = meta_ui_get_display ();
   Atom atom_restart_helper = XInternAtom (xdisplay, "_MUTTER_RESTART_HELPER", False);
-  Window restart_helper_window = NULL;
+  Window restart_helper_window = None;
 
   restart_helper_window = XGetSelectionOwner (xdisplay, atom_restart_helper);
   if (restart_helper_window)
