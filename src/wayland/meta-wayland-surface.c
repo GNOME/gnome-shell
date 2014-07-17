@@ -1116,7 +1116,6 @@ bind_xdg_shell (struct wl_client *client,
                 guint32 version,
                 guint32 id)
 {
-  struct wl_resource *resource;
   XdgShell *xdg_shell;
 
   if (version != 1)
@@ -1127,8 +1126,6 @@ bind_xdg_shell (struct wl_client *client,
 
   xdg_shell = g_slice_new (XdgShell);
 
-  resource = wl_resource_create (client, &xdg_shell_interface, 1, id);
-  wl_resource_set_implementation (resource, &meta_wayland_xdg_shell_interface, data, NULL);
   xdg_shell->resource = wl_resource_create (client, &xdg_shell_interface, 1, id);
   wl_resource_set_implementation (xdg_shell->resource, &meta_wayland_xdg_shell_interface, data, NULL);
 
