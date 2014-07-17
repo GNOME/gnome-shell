@@ -877,8 +877,6 @@ meta_display_open (void)
 
   enable_compositor (display);
 
-  meta_backend_compositor_created (meta_get_backend ());
-
   meta_screen_create_guard_window (screen);
 
   /* Set up touch support */

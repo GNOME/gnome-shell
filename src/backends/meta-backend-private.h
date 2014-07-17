@@ -50,7 +50,6 @@ struct _MetaBackendClass
   GObjectClass parent_class;
 
   void (* post_init) (MetaBackend *backend);
-  void (* compositor_created) (MetaBackend *backend);
 
   MetaIdleMonitor * (* create_idle_monitor) (MetaBackend *backend,
                                              int          device_id);

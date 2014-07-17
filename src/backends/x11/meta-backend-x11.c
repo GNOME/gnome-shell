@@ -266,7 +266,7 @@ take_touch_grab (MetaBackend *backend)
   XISetMask (mask.mask, XI_TouchEnd);
 
   XIGrabTouchBegin (priv->xdisplay, META_VIRTUAL_CORE_POINTER_ID,
-                    meta_backend_x11_get_xwindow (x11),
+                    DefaultRootWindow (priv->xdisplay),
                     False, &mask, 1, &mods);
 }
 
@@ -307,13 +307,9 @@ meta_backend_x11_post_init (MetaBackend *backend)
       meta_fatal ("X server doesn't have the XInput extension, version 2.2 or newer\n");
   }
 
-  META_BACKEND_CLASS (meta_backend_x11_parent_class)->post_init (backend);
-}
-
-static void
-meta_backend_x11_compositor_created (MetaBackend *backend)
-{
   take_touch_grab (backend);
+
+  META_BACKEND_CLASS (meta_backend_x11_parent_class)->post_init (backend);
 }
 
 static MetaIdleMonitor *
@@ -412,7 +408,6 @@ meta_backend_x11_class_init (MetaBackendX11Class *klass)
   MetaBackendClass *backend_class = META_BACKEND_CLASS (klass);
 
   backend_class->post_init = meta_backend_x11_post_init;
-  backend_class->compositor_created = meta_backend_x11_compositor_created;
   backend_class->create_idle_monitor = meta_backend_x11_create_idle_monitor;
   backend_class->create_monitor_manager = meta_backend_x11_create_monitor_manager;
   backend_class->create_cursor_renderer = meta_backend_x11_create_cursor_renderer;

@@ -79,11 +79,6 @@ meta_backend_real_post_init (MetaBackend *backend)
   priv->cursor_renderer = META_BACKEND_GET_CLASS (backend)->create_cursor_renderer (backend);
 }
 
-static void
-meta_backend_real_compositor_created (MetaBackend *backend)
-{
-}
-
 static MetaCursorRenderer *
 meta_backend_real_create_cursor_renderer (MetaBackend *backend)
 {
@@ -119,7 +114,6 @@ meta_backend_class_init (MetaBackendClass *klass)
   klass->create_cursor_renderer = meta_backend_real_create_cursor_renderer;
   klass->grab_device = meta_backend_real_grab_device;
   klass->ungrab_device = meta_backend_real_ungrab_device;
-  klass->compositor_created = meta_backend_real_compositor_created;
 }
 
 static void
@@ -149,12 +143,6 @@ static void
 meta_backend_post_init (MetaBackend *backend)
 {
   META_BACKEND_GET_CLASS (backend)->post_init (backend);
-}
-
-void
-meta_backend_compositor_created (MetaBackend *backend)
-{
-  META_BACKEND_GET_CLASS (backend)->compositor_created (backend);
 }
 
 MetaIdleMonitor *
