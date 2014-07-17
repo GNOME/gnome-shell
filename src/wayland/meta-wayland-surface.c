@@ -166,36 +166,33 @@ static void
 toplevel_surface_commit (MetaWaylandSurface      *surface,
                          MetaWaylandPendingState *pending)
 {
+  MetaWindow *window = surface->window;
+
+  /* Sanity check. */
+  if (surface->buffer == NULL)
+    {
+      wl_resource_post_error (surface->resource,
+                              WL_DISPLAY_ERROR_INVALID_OBJECT,
+                              "Cannot commit a NULL buffer to an xdg_surface");
+      return;
+    }
+
   if (pending->frame_extents_changed)
     meta_window_set_custom_frame_extents (surface->window, &pending->frame_extents);
 
-  if (pending->newly_attached)
+  /* We resize X based surfaces according to X events */
+  if (window->client_type == META_WINDOW_CLIENT_TYPE_WAYLAND)
     {
-      MetaWindow *window = surface->window;
-      MetaWaylandBuffer *buffer = pending->buffer;
+      int new_width, new_height;
 
-      if (buffer == NULL)
-        {
-          wl_resource_post_error (surface->resource,
-                                  WL_DISPLAY_ERROR_INVALID_OBJECT,
-                                  "Cannot commit a NULL buffer to an xdg_surface");
-          return;
-        }
+      new_width = cogl_texture_get_width (surface->buffer->texture);
+      new_height = cogl_texture_get_height (surface->buffer->texture);
 
-      /* We resize X based surfaces according to X events */
-      if (window->client_type == META_WINDOW_CLIENT_TYPE_WAYLAND)
-        {
-          int new_width, new_height;
-
-          new_width = cogl_texture_get_width (buffer->texture);
-          new_height = cogl_texture_get_height (buffer->texture);
-
-          if (new_width != window->rect.width ||
-              new_height != window->rect.height ||
-              pending->dx != 0 ||
-              pending->dy != 0)
-            meta_window_wayland_move_resize (window, new_width, new_height, pending->dx, pending->dy);
-        }
+      if (new_width != window->rect.width ||
+          new_height != window->rect.height ||
+          pending->dx != 0 ||
+          pending->dy != 0)
+        meta_window_wayland_move_resize (window, new_width, new_height, pending->dx, pending->dy);
     }
 }
 
@@ -269,22 +266,18 @@ static void
 subsurface_surface_commit (MetaWaylandSurface      *surface,
                            MetaWaylandPendingState *pending)
 {
-  if (pending->newly_attached)
-    {
-      MetaSurfaceActor *surface_actor = surface->surface_actor;
-      MetaWaylandBuffer *buffer = pending->buffer;
-      float x, y;
+  MetaSurfaceActor *surface_actor = surface->surface_actor;
+  float x, y;
 
-      if (buffer != NULL)
-        clutter_actor_show (CLUTTER_ACTOR (surface_actor));
-      else
-        clutter_actor_hide (CLUTTER_ACTOR (surface_actor));
+  if (surface->buffer != NULL)
+    clutter_actor_show (CLUTTER_ACTOR (surface_actor));
+  else
+    clutter_actor_hide (CLUTTER_ACTOR (surface_actor));
 
-      clutter_actor_get_position (CLUTTER_ACTOR (surface_actor), &x, &y);
-      x += pending->dx;
-      y += pending->dy;
-      clutter_actor_set_position (CLUTTER_ACTOR (surface_actor), x, y);
-    }
+  clutter_actor_get_position (CLUTTER_ACTOR (surface_actor), &x, &y);
+  x += pending->dx;
+  y += pending->dy;
+  clutter_actor_set_position (CLUTTER_ACTOR (surface_actor), x, y);
 }
 
 static void
@@ -423,16 +416,13 @@ wl_surface_attach (struct wl_client *client,
   else
     buffer = NULL;
 
-  if (surface->buffer == buffer)
-    return;
-
   if (surface->pending.buffer)
     wl_list_remove (&surface->pending.buffer_destroy_listener.link);
 
+  surface->pending.newly_attached = TRUE;
+  surface->pending.buffer = buffer;
   surface->pending.dx = dx;
   surface->pending.dy = dy;
-  surface->pending.buffer = buffer;
-  surface->pending.newly_attached = TRUE;
 
   if (buffer)
     wl_signal_add (&buffer->destroy_signal,
