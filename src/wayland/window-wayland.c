@@ -133,7 +133,8 @@ static void
 meta_window_wayland_grab_op_began (MetaWindow *window,
                                    MetaGrabOp  op)
 {
-  surface_state_changed (window);
+  if (meta_grab_op_is_resizing (op))
+    surface_state_changed (window);
 
   META_WINDOW_CLASS (meta_window_wayland_parent_class)->grab_op_began (window, op);
 }
@@ -142,7 +143,8 @@ static void
 meta_window_wayland_grab_op_ended (MetaWindow *window,
                                    MetaGrabOp  op)
 {
-  surface_state_changed (window);
+  if (meta_grab_op_is_resizing (op))
+    surface_state_changed (window);
 
   META_WINDOW_CLASS (meta_window_wayland_parent_class)->grab_op_ended (window, op);
 }
