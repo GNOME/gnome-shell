@@ -54,15 +54,17 @@ const Application = new Lang.Class({
         this._startupUuid = null;
         this._loaded = false;
         this._skipMainWindow = false;
+        this._settings = new Gio.Settings({ schema_id: 'org.gnome.shell' });
     },
 
     _extensionAvailable: function(uuid) {
         let extension = ExtensionUtils.extensions[uuid];
+        let checkVersion = !this._settings.get_boolean('disable-extension-version-validation');
 
         if (!extension)
             return false;
 
-        if (ExtensionUtils.isOutOfDate(extension))
+        if (checkVersion && ExtensionUtils.isOutOfDate(extension))
             return false;
 
         if (!extension.dir.get_child('prefs.js').query_exists(null))
