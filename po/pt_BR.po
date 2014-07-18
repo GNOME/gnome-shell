@@ -13,16 +13,16 @@
 # Vladimir Melo <vmelo@gnome.org>, 2009.
 # Antonio Fernandes C. Neto <fernandes@pelivre.org>, 2010.
 # Rodrigo Padula de Oliveira <contato@rodrigopadula.com>, 2011.
+# Rafael Ferreira <rafael.f.f1@gmail.com>, 2013, 2014.
 # Enrico Nicoletto <liverig@gmail.com>, 2012, 2014.
-# Rafael Ferreira <rafael.f.f1@gmail.co>, 2013, 2014.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-02-28 22:53+0000\n"
-"PO-Revision-Date: 2014-02-28 20:24-0300\n"
+"POT-Creation-Date: 2014-07-18 09:51+0000\n"
+"PO-Revision-Date: 2014-07-18 14:53-0300\n"
 "Last-Translator: Enrico Nicoletto <liverig@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
@@ -30,223 +30,432 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 1.6.3\n"
+"X-Generator: Poedit 1.6.5\n"
 
-#: ../src/50-mutter-navigation.xml.in.h:1
+#: ../data/50-mutter-navigation.xml.in.h:1
 msgid "Navigation"
 msgstr "Navegação"
 
-#: ../src/50-mutter-navigation.xml.in.h:2
+#: ../data/50-mutter-navigation.xml.in.h:2
 msgid "Move window to workspace 1"
 msgstr "Mover a janela para o espaço de trabalho 1"
 
-#: ../src/50-mutter-navigation.xml.in.h:3
+#: ../data/50-mutter-navigation.xml.in.h:3
 msgid "Move window to workspace 2"
 msgstr "Mover a janela para o espaço de trabalho 2"
 
-#: ../src/50-mutter-navigation.xml.in.h:4
+#: ../data/50-mutter-navigation.xml.in.h:4
 msgid "Move window to workspace 3"
 msgstr "Mover a janela para o espaço de trabalho 3"
 
-#: ../src/50-mutter-navigation.xml.in.h:5
+#: ../data/50-mutter-navigation.xml.in.h:5
 msgid "Move window to workspace 4"
 msgstr "Mover a janela para o espaço de trabalho 4"
 
-#: ../src/50-mutter-navigation.xml.in.h:6
+#: ../data/50-mutter-navigation.xml.in.h:6
+#| msgid "Move window to workspace 1"
+msgid "Move window to last workspace"
+msgstr "Mover a janela para o último espaço de trabalho"
+
+#: ../data/50-mutter-navigation.xml.in.h:7
 msgid "Move window one workspace to the left"
 msgstr "Mover a janela um espaço de trabalho à esquerda"
 
-#: ../src/50-mutter-navigation.xml.in.h:7
+#: ../data/50-mutter-navigation.xml.in.h:8
 msgid "Move window one workspace to the right"
 msgstr "Mover a janela um espaço de trabalho à direita"
 
-#: ../src/50-mutter-navigation.xml.in.h:8
+#: ../data/50-mutter-navigation.xml.in.h:9
 msgid "Move window one workspace up"
 msgstr "Mover a janela um espaço de trabalho acima"
 
-#: ../src/50-mutter-navigation.xml.in.h:9
+#: ../data/50-mutter-navigation.xml.in.h:10
 msgid "Move window one workspace down"
 msgstr "Mover a janela um espaço de trabalho abaixo"
 
 # Em conformidade com a tradução do gsettings-desktop-schemas --Enrico
-#: ../src/50-mutter-navigation.xml.in.h:10
-#| msgid "Move window one workspace to the left"
+#: ../data/50-mutter-navigation.xml.in.h:11
 msgid "Move window one monitor to the left"
 msgstr "Mover janela para o monitor da esquerda"
 
 # Em conformidade com a tradução do gsettings-desktop-schemas --Enrico
-#: ../src/50-mutter-navigation.xml.in.h:11
-#| msgid "Move window one workspace to the right"
+#: ../data/50-mutter-navigation.xml.in.h:12
 msgid "Move window one monitor to the right"
 msgstr "Mover janela para o monitor da direita"
 
 # Em conformidade com a tradução do gsettings-desktop-schemas --Enrico
-#: ../src/50-mutter-navigation.xml.in.h:12
-#| msgid "Move window one workspace up"
+#: ../data/50-mutter-navigation.xml.in.h:13
 msgid "Move window one monitor up"
 msgstr "Mover janela para o monitor acima"
 
 # Em conformidade com a tradução do gsettings-desktop-schemas --Enrico
-#: ../src/50-mutter-navigation.xml.in.h:13
-#| msgid "Move window one workspace down"
+#: ../data/50-mutter-navigation.xml.in.h:14
 msgid "Move window one monitor down"
 msgstr "Mover janela para o monitor abaixo"
 
-#: ../src/50-mutter-navigation.xml.in.h:14
+#: ../data/50-mutter-navigation.xml.in.h:15
 msgid "Switch applications"
 msgstr "Alternar aplicativos"
 
-#: ../src/50-mutter-navigation.xml.in.h:15
+#: ../data/50-mutter-navigation.xml.in.h:16
 msgid "Switch windows"
 msgstr "Alternar janelas"
 
-#: ../src/50-mutter-navigation.xml.in.h:16
+#: ../data/50-mutter-navigation.xml.in.h:17
 msgid "Switch windows of an application"
 msgstr "Alternar as janelas de um aplicativo"
 
-#: ../src/50-mutter-navigation.xml.in.h:17
+#: ../data/50-mutter-navigation.xml.in.h:18
 msgid "Switch system controls"
 msgstr "Alternar os controles de sistema"
 
-#: ../src/50-mutter-navigation.xml.in.h:18
+#: ../data/50-mutter-navigation.xml.in.h:19
 msgid "Switch windows directly"
 msgstr "Alternar as janelas diretamente"
 
-#: ../src/50-mutter-navigation.xml.in.h:19
+#: ../data/50-mutter-navigation.xml.in.h:20
 msgid "Switch windows of an app directly"
 msgstr "Alternar as janelas de um aplicativo diretamente"
 
-#: ../src/50-mutter-navigation.xml.in.h:20
+#: ../data/50-mutter-navigation.xml.in.h:21
 msgid "Switch system controls directly"
 msgstr "Alternar os controles de sistema diretamente"
 
-#: ../src/50-mutter-navigation.xml.in.h:21
+#: ../data/50-mutter-navigation.xml.in.h:22
 msgid "Hide all normal windows"
 msgstr "Ocultar todas as janelas normais"
 
-#: ../src/50-mutter-navigation.xml.in.h:22
+#: ../data/50-mutter-navigation.xml.in.h:23
 msgid "Switch to workspace 1"
 msgstr "Trocar para o espaço de trabalho 1"
 
-#: ../src/50-mutter-navigation.xml.in.h:23
+#: ../data/50-mutter-navigation.xml.in.h:24
 msgid "Switch to workspace 2"
 msgstr "Trocar para o espaço de trabalho 2"
 
-#: ../src/50-mutter-navigation.xml.in.h:24
+#: ../data/50-mutter-navigation.xml.in.h:25
 msgid "Switch to workspace 3"
 msgstr "Trocar para o espaço de trabalho 3"
 
-#: ../src/50-mutter-navigation.xml.in.h:25
+#: ../data/50-mutter-navigation.xml.in.h:26
 msgid "Switch to workspace 4"
 msgstr "Trocar para o espaço de trabalho 4"
 
-#: ../src/50-mutter-navigation.xml.in.h:26
+#: ../data/50-mutter-navigation.xml.in.h:27
+#| msgid "Switch to workspace 1"
+msgid "Switch to last workspace"
+msgstr "Trocar para o último espaço de trabalho"
+
+#: ../data/50-mutter-navigation.xml.in.h:28
 msgid "Move to workspace left"
 msgstr "Move para o espaço de trabalho à esquerda"
 
-#: ../src/50-mutter-navigation.xml.in.h:27
+#: ../data/50-mutter-navigation.xml.in.h:29
 msgid "Move to workspace right"
 msgstr "Move para o espaço de trabalho à direita"
 
-#: ../src/50-mutter-navigation.xml.in.h:28
+#: ../data/50-mutter-navigation.xml.in.h:30
 msgid "Move to workspace above"
 msgstr "Mover para o espaço de trabalho acima"
 
-#: ../src/50-mutter-navigation.xml.in.h:29
+#: ../data/50-mutter-navigation.xml.in.h:31
 msgid "Move to workspace below"
 msgstr "Mover para o espaço de trabalho abaixo"
 
-#: ../src/50-mutter-system.xml.in.h:1
+#: ../data/50-mutter-system.xml.in.h:1
 msgid "System"
 msgstr "Sistema"
 
-#: ../src/50-mutter-system.xml.in.h:2
+#: ../data/50-mutter-system.xml.in.h:2
 msgid "Show the run command prompt"
 msgstr "Mostrar o prompt de comando de execução"
 
-#: ../src/50-mutter-system.xml.in.h:3
+#: ../data/50-mutter-system.xml.in.h:3
 msgid "Show the activities overview"
 msgstr "Mostrar o panorama de atividades"
 
-#: ../src/50-mutter-windows.xml.in.h:1
+#: ../data/50-mutter-windows.xml.in.h:1
 msgid "Windows"
 msgstr "Janelas"
 
-#: ../src/50-mutter-windows.xml.in.h:2
+#: ../data/50-mutter-windows.xml.in.h:2
 msgid "Activate the window menu"
 msgstr "Ativar o menu da janela"
 
-#: ../src/50-mutter-windows.xml.in.h:3
+#: ../data/50-mutter-windows.xml.in.h:3
 msgid "Toggle fullscreen mode"
 msgstr "Alternar modo de tela inteira"
 
-#: ../src/50-mutter-windows.xml.in.h:4
+#: ../data/50-mutter-windows.xml.in.h:4
 msgid "Toggle maximization state"
 msgstr "Alternar estado de maximização"
 
-#: ../src/50-mutter-windows.xml.in.h:5
+#: ../data/50-mutter-windows.xml.in.h:5
 msgid "Maximize window"
 msgstr "Maximizar a janela"
 
-#: ../src/50-mutter-windows.xml.in.h:6
+#: ../data/50-mutter-windows.xml.in.h:6
 msgid "Restore window"
 msgstr "Restaurar janela"
 
-#: ../src/50-mutter-windows.xml.in.h:7
+#: ../data/50-mutter-windows.xml.in.h:7
 msgid "Toggle shaded state"
 msgstr "Alternar estado sombreado"
 
-#: ../src/50-mutter-windows.xml.in.h:8
+#: ../data/50-mutter-windows.xml.in.h:8
 msgid "Close window"
 msgstr "Fechar janela"
 
-#: ../src/50-mutter-windows.xml.in.h:9
+#: ../data/50-mutter-windows.xml.in.h:9
 msgid "Hide window"
 msgstr "Ocultar janela"
 
-#: ../src/50-mutter-windows.xml.in.h:10
+#: ../data/50-mutter-windows.xml.in.h:10
 msgid "Move window"
 msgstr "Mover janela"
 
-#: ../src/50-mutter-windows.xml.in.h:11
+#: ../data/50-mutter-windows.xml.in.h:11
 msgid "Resize window"
 msgstr "Redimensionar janela"
 
-#: ../src/50-mutter-windows.xml.in.h:12
+#: ../data/50-mutter-windows.xml.in.h:12
 msgid "Toggle window on all workspaces or one"
 msgstr "Alternar a janela em todos os espaços de trabalho ou em apenas um"
 
-#: ../src/50-mutter-windows.xml.in.h:13
+#: ../data/50-mutter-windows.xml.in.h:13
 msgid "Raise window if covered, otherwise lower it"
 msgstr "Elevar a janela se estiver coberta; caso contrário, a abaixa"
 
-#: ../src/50-mutter-windows.xml.in.h:14
+#: ../data/50-mutter-windows.xml.in.h:14
 msgid "Raise window above other windows"
 msgstr "Elevar a janela para frente das outras"
 
-#: ../src/50-mutter-windows.xml.in.h:15
+#: ../data/50-mutter-windows.xml.in.h:15
 msgid "Lower window below other windows"
 msgstr "Colocar a janela atrás das outras"
 
-#: ../src/50-mutter-windows.xml.in.h:16
+#: ../data/50-mutter-windows.xml.in.h:16
 msgid "Maximize window vertically"
 msgstr "Maximizar a janela verticalmente"
 
-#: ../src/50-mutter-windows.xml.in.h:17
+#: ../data/50-mutter-windows.xml.in.h:17
 msgid "Maximize window horizontally"
 msgstr "Maximizar a janela horizontalmente"
 
-#: ../src/50-mutter-windows.xml.in.h:18
+#: ../data/50-mutter-windows.xml.in.h:18
 msgid "View split on left"
 msgstr "Visualizar divisão à esquerda"
 
-#: ../src/50-mutter-windows.xml.in.h:19
+#: ../data/50-mutter-windows.xml.in.h:19
 msgid "View split on right"
 msgstr "Visualizar divisão à direita"
 
+#: ../data/mutter.desktop.in.h:1
+msgid "Mutter"
+msgstr "Mutter"
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:1
+msgid "Modifier to use for extended window management operations"
+msgstr ""
+"Modificador a ser usado para operações de gerenciamento de janelas extendido."
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:2
+msgid ""
+"This key will initiate the \"overlay\", which is a combination window "
+"overview and application launching system. The default is intended to be the "
+"\"Windows key\" on PC hardware. It's expected that this binding either the "
+"default or set to the empty string."
+msgstr ""
+"Esta chave irá iniciar a \"sobreposição\", que é a combinação de visão de "
+"janela e sistema de lançamento de aplicativos. O padrão pretendido é a "
+"\"tecla Windows\" no hardware do computador. É esperada para esta associação "
+"tanto o padrão quanto a definição de uma string vazia."
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:3
+msgid "Attach modal dialogs"
+msgstr "Anexar diálogos modais"
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:4
+msgid ""
+"When true, instead of having independent titlebars, modal dialogs appear "
+"attached to the titlebar of the parent window and are moved together with "
+"the parent window."
+msgstr ""
+"Quando verdadeiro, em vez de terem barras de título independentes, os "
+"diálogos modais surgem anexados à barra de título da janela pai e são "
+"movidos juntamente com a janela pai."
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:5
+msgid "Enable edge tiling when dropping windows on screen edges"
+msgstr ""
+"Habilitar contorno ladrilhado ao arrastar janelas sobre as bordas da tela"
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:6
+msgid ""
+"If enabled, dropping windows on vertical screen edges maximizes them "
+"vertically and resizes them horizontally to cover half of the available "
+"area. Dropping windows on the top screen edge maximizes them completely."
+msgstr ""
+"Caso esteja habilitado, ao arrastar janelas sobre bordas verticais da tela "
+"as maximizará verticalmente e as redimensionarão horizontalmente para cobrir "
+"metade da área disponível. Arrastar janelas no topo da borda da tela as "
+"maximiza completamente."
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:7
+msgid "Workspaces are managed dynamically"
+msgstr "Áreas de trabalho são gerenciadas dinamicamente"
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:8
+msgid ""
+"Determines whether workspaces are managed dynamically or whether there's a "
+"static number of workspaces (determined by the num-workspaces key in org."
+"gnome.desktop.wm.preferences)."
+msgstr ""
+"Determina se as áreas de trabalho são gerenciadas de forma dinâmica ou se há "
+"um número estático de áreas de trabalho (determinado pela chave num-"
+"workspaces em org.gnome.desktop.wm.preferences)."
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:9
+msgid "Workspaces only on primary"
+msgstr "Áreas de trabalho apenas para a principal"
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:10
+msgid ""
+"Determines whether workspace switching should happen for windows on all "
+"monitors or only for windows on the primary monitor."
+msgstr ""
+"Determina se a troca de área de trabalho deve ocorrer para janelas em todos "
+"os monitores ou apenas para janelas no monitor principal."
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:11
+msgid "No tab popup"
+msgstr "Nenhuma aba instantânea"
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:12
+msgid ""
+"Determines whether the use of popup and highlight frame should be disabled "
+"for window cycling."
+msgstr ""
+"Determina se a utilização de quadros instantâneos e destacados devem ser "
+"desabilitados na alternância de janelas."
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:13
+msgid "Delay focus changes until the pointer stops moving"
+msgstr "Atrasar alterações de foco até que o ponteiro pare de mover"
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:14
+msgid ""
+"If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
+"the focus will not be changed immediately when entering a window, but only "
+"after the pointer stops moving."
+msgstr ""
+"Se verdadeiro, e o modo de foco for \"sloppy\" ou \"mouse\", o foco não será "
+"alterado imediatamente quando o ponteiro do mouse entrar na janela, e sim "
+"quando parar de mover."
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:15
+msgid "Draggable border width"
+msgstr "Largura da borda arrastável"
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:16
+msgid ""
+"The amount of total draggable borders. If the theme's visible borders are "
+"not enough, invisible borders will be added to meet this value."
+msgstr ""
+"A quantidade do total de bordas arrastáveis. Se as bordas dos temas visíveis "
+"não são suficientes, as bordas invisíveis serão adicionadas para encontrar "
+"este valor."
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:17
+msgid "Auto maximize nearly monitor sized windows"
+msgstr "Maximizar automaticamente janelas com tamanho próximo ao do monitor"
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:18
+msgid ""
+"If enabled, new windows that are initially the size of the monitor "
+"automatically get maximized."
+msgstr ""
+"Se habilitado, novas janelas que, ao iniciar, possuírem o tamanho do monitor "
+"serão maximizadas automaticamente."
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:19
+msgid "Place new windows in the center"
+msgstr "Posicionar novas janelas ao centro"
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:20
+msgid ""
+"When true, the new windows will always be put in the center of the active "
+"screen of the monitor."
+msgstr ""
+"Quando verdadeiro, as novas janelas serão sempre colocadas no centro da tela "
+"ativa do monitor."
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:21
+msgid "Select window from tab popup"
+msgstr "Selecione a janela a partir da aba instantânea"
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:22
+msgid "Cancel tab popup"
+msgstr "Cancelar aba instantânea"
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:1
+#| msgid "Switch to workspace 1"
+msgid "Switch to VT 1"
+msgstr "Trocar para o VT 1"
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:2
+#| msgid "Switch to workspace 2"
+msgid "Switch to VT 2"
+msgstr "Trocar para o VT 2"
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:3
+#| msgid "Switch to workspace 3"
+msgid "Switch to VT 3"
+msgstr "Trocar para o VT 3"
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:4
+#| msgid "Switch to workspace 4"
+msgid "Switch to VT 4"
+msgstr "Trocar para o VT 4"
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:5
+#| msgid "Switch to workspace 5"
+msgid "Switch to VT 5"
+msgstr "Trocar para o VT 5"
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:6
+#| msgid "Switch to workspace 6"
+msgid "Switch to VT 6"
+msgstr "Trocar para o VT 6"
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:7
+#| msgid "Switch to workspace 7"
+msgid "Switch to VT 7"
+msgstr "Trocar para o VT 7"
+
+#: ../src/backends/meta-monitor-manager.c:412
+msgid "Built-in display"
+msgstr "Tela embutida"
+
+#: ../src/backends/meta-monitor-manager.c:437
+msgid "Unknown"
+msgstr "Desconhecido"
+
+#: ../src/backends/meta-monitor-manager.c:439
+msgid "Unknown Display"
+msgstr "Monitor desconhecido"
+
+#. TRANSLATORS: this is a monitor vendor name, followed by a
+#. * size in inches, like 'Dell 15"'
+#.
+#: ../src/backends/meta-monitor-manager.c:447
+#, c-format
+msgid "%s %s"
+msgstr "%s de %s"
+
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:534
+#: ../src/compositor/compositor.c:445
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
@@ -254,29 +463,24 @@ msgid ""
 msgstr ""
 "Outro compositor de janelas está em execução na tela %i na área \"%s\"."
 
-#: ../src/compositor/meta-background.c:1074
+#: ../src/compositor/meta-background.c:990
 msgid "background texture could not be created from file"
 msgstr "textura de plano de fundo não pôde ser criado de arquivo"
 
-#: ../src/core/bell.c:321
+#: ../src/core/bell.c:215
 msgid "Bell event"
 msgstr "Evento de som"
 
-#: ../src/core/core.c:156
-#, c-format
-msgid "Unknown window information request: %d"
-msgstr "Informação solicitada de janela desconhecida: %d"
-
-#: ../src/core/delete.c:109
+#: ../src/core/delete.c:127
 #, c-format
 msgid "“%s” is not responding."
 msgstr "\"%s\" não está respondendo."
 
-#: ../src/core/delete.c:111
+#: ../src/core/delete.c:129
 msgid "Application is not responding."
 msgstr "O aplicativo não está respondendo."
 
-#: ../src/core/delete.c:116
+#: ../src/core/delete.c:134
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
@@ -284,94 +488,63 @@ msgstr ""
 "Você pode escolher aguardar um pouco e continuar ou forçar o aplicativo a "
 "sair completamente."
 
-#: ../src/core/delete.c:123
+#: ../src/core/delete.c:141
 msgid "_Wait"
 msgstr "_Esperar"
 
-#: ../src/core/delete.c:123
+#: ../src/core/delete.c:141
 msgid "_Force Quit"
 msgstr "_Forçar sair"
 
-#: ../src/core/display.c:405
-#, c-format
-msgid "Missing %s extension required for compositing"
-msgstr "Faltando extensão %s necessária para composição"
-
-#: ../src/core/display.c:497
+#: ../src/core/display.c:519
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Falha ao abrir a exibição \"%s\" do sistema de janelas X\n"
 
-#: ../src/core/keybindings.c:1113
-#, c-format
-msgid ""
-"Some other program is already using the key %s with modifiers %x as a "
-"binding\n"
-msgstr ""
-"Algum outro programa já está usando a chave %s com modificadores %x como uma "
-"tecla de atalho\n"
-
-#: ../src/core/keybindings.c:1310
-#, c-format
-msgid "\"%s\" is not a valid accelerator\n"
-msgstr "\"%s\" não é um acelerador válido\n"
-
-#: ../src/core/main.c:195
+#: ../src/core/main.c:172
 msgid "Disable connection to session manager"
 msgstr "Desabilitar a conexão com o gerenciador de sessões"
 
-#: ../src/core/main.c:201
+#: ../src/core/main.c:178
 msgid "Replace the running window manager"
 msgstr "Substituir o gerenciador de janelas em execução"
 
-#: ../src/core/main.c:207
+#: ../src/core/main.c:184
 msgid "Specify session management ID"
 msgstr "Especificar o ID do gerenciador de sessões"
 
-#: ../src/core/main.c:212
+#: ../src/core/main.c:189
 msgid "X Display to use"
 msgstr "Exibição do X a ser utilizada"
 
-#: ../src/core/main.c:218
+#: ../src/core/main.c:195
 msgid "Initialize session from savefile"
 msgstr "Inicializar a sessão a partir do arquivo salvo"
 
-#: ../src/core/main.c:224
+#: ../src/core/main.c:201
 msgid "Make X calls synchronous"
 msgstr "Fazer X chamadas síncronas"
 
-#: ../src/core/main.c:544
+#: ../src/core/main.c:207
+msgid "Run as a wayland compositor"
+msgstr "Executar como um compositor wayland"
+
+#: ../src/core/main.c:214
+msgid "Run as a full display server, rather than nested"
+msgstr "Executar como um servidor de tela cheia, ao invés de aninhado"
+
+#: ../src/core/main.c:450
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Falha ao varrer a pasta de temas: %s\n"
 
-#: ../src/core/main.c:560
+#: ../src/core/main.c:466
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
 msgstr ""
 "Não foi possível localizar um tema! Verifique se %s existe e contém os temas "
 "comuns.\n"
-
-#: ../src/core/monitor.c:699
-msgid "Built-in display"
-msgstr "Tela embutida"
-
-#: ../src/core/monitor.c:724
-msgid "Unknown"
-msgstr "Desconhecido"
-
-#: ../src/core/monitor.c:726
-msgid "Unknown Display"
-msgstr "Monitor desconhecido"
-
-#. TRANSLATORS: this is a monitor vendor name, followed by a
-#. * size in inches, like 'Dell 15"'
-#.
-#: ../src/core/monitor.c:734
-#, c-format
-msgid "%s %s"
-msgstr "%s de %s"
 
 #: ../src/core/mutter.c:39
 #, c-format
@@ -397,50 +570,17 @@ msgstr "Versão impressa"
 msgid "Mutter plugin to use"
 msgstr "Plug-in do Mutter para usar"
 
-#: ../src/core/prefs.c:1190
-msgid ""
-"Workarounds for broken applications disabled. Some applications may not "
-"behave properly.\n"
-msgstr ""
-"As alternativas para aplicativos quebrados estão desabilitadas. É possível "
-"que alguns aplicativos não funcionem de maneira adequada.\n"
-
-#: ../src/core/prefs.c:1265
-#, c-format
-msgid "Could not parse font description \"%s\" from GSettings key %s\n"
-msgstr ""
-"Não foi possível analisar a descrição da fonte \"%s\" a partir da chave "
-"GSettings %s\n"
-
-#: ../src/core/prefs.c:1331
-#, c-format
-msgid ""
-"\"%s\" found in configuration database is not a valid value for mouse button "
-"modifier\n"
-msgstr ""
-"\"%s\" localizado no banco de dados de configurações não é um valor válido "
-"para o modificador de botão do mouse\n"
-
-#: ../src/core/prefs.c:1894
-#, c-format
-msgid ""
-"\"%s\" found in configuration database is not a valid value for keybinding "
-"\"%s\"\n"
-msgstr ""
-"\"%s\" localizado no banco de dados de configurações não é um valor válido "
-"para a tecla de atalho \"%s\"\n"
-
-#: ../src/core/prefs.c:1984
+#: ../src/core/prefs.c:2086
 #, c-format
 msgid "Workspace %d"
 msgstr "Espaço de trabalho %d"
 
-#: ../src/core/screen.c:539
+#: ../src/core/screen.c:553
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "A tela %d na exibição \"%s\" é inválida\n"
 
-#: ../src/core/screen.c:555
+#: ../src/core/screen.c:569
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -449,517 +589,14 @@ msgstr ""
 "A tela %d na exibição \"%s\" já possui um gerenciador de janelas; tente usar "
 "a opção --replace para substituir o gerenciador de janelas atual.\n"
 
-#: ../src/core/screen.c:582
-#, c-format
-msgid ""
-"Could not acquire window manager selection on screen %d display \"%s\"\n"
-msgstr ""
-"Não foi possível obter a seleção do gerenciador de janelas na exibição \"%2$s"
-"\" da tela %1$d\n"
-
-#: ../src/core/screen.c:660
+#: ../src/core/screen.c:662
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "A tela %d na exibição \"%s\" já possui um gerenciador de janelas\n"
 
-#: ../src/core/screen.c:848
-#, c-format
-msgid "Could not release screen %d on display \"%s\"\n"
-msgstr "Não foi possível liberar a tela %d na exibição \"%s\"\n"
-
-#: ../src/core/session.c:842 ../src/core/session.c:849
-#, c-format
-msgid "Could not create directory '%s': %s\n"
-msgstr "Não foi possível criar o diretório \"%s\": %s\n"
-
-#: ../src/core/session.c:859
-#, c-format
-msgid "Could not open session file '%s' for writing: %s\n"
-msgstr "Não foi possível abrir o arquivo de sessão \"%s\" para gravação: %s\n"
-
-#: ../src/core/session.c:1000
-#, c-format
-msgid "Error writing session file '%s': %s\n"
-msgstr "Erro ao gravar o arquivo de sessão\"%s\": %s\n"
-
-#: ../src/core/session.c:1005
-#, c-format
-msgid "Error closing session file '%s': %s\n"
-msgstr "Erro ao fechar o arquivo de sessão \"%s\": %s\n"
-
-#: ../src/core/session.c:1135
-#, c-format
-msgid "Failed to parse saved session file: %s\n"
-msgstr "Falha ao analisar o arquivo de sessão salvo: %s\n"
-
-#: ../src/core/session.c:1184
-#, c-format
-msgid "<mutter_session> attribute seen but we already have the session ID"
-msgstr "O atributo <mutter_session> foi visto, mas já temos o ID da sessão"
-
-#: ../src/core/session.c:1197 ../src/core/session.c:1272
-#: ../src/core/session.c:1304 ../src/core/session.c:1376
-#: ../src/core/session.c:1436
-#, c-format
-msgid "Unknown attribute %s on <%s> element"
-msgstr "Atributo %s desconhecido no elemento <%s>"
-
-#: ../src/core/session.c:1214
-#, c-format
-msgid "nested <window> tag"
-msgstr "marca de <window> aninhada"
-
-#: ../src/core/session.c:1456
-#, c-format
-msgid "Unknown element %s"
-msgstr "Elemento %s desconhecido"
-
-#: ../src/core/session.c:1808
-msgid ""
-"These windows do not support &quot;save current setup&quot; and will have to "
-"be restarted manually next time you log in."
-msgstr ""
-"Estas janelas não oferecem suporte para a opção &quot;salvar configuração "
-"atual&quot; e precisarão ser reiniciadas manualmente quando você reiniciar a "
-"sessão."
-
-#: ../src/core/util.c:82
-#, c-format
-msgid "Failed to open debug log: %s\n"
-msgstr "Falha ao abrir o log de depuração: %s\n"
-
-#: ../src/core/util.c:92
-#, c-format
-msgid "Failed to fdopen() log file %s: %s\n"
-msgstr "Falha ao executar fdopen() no arquivo de log %s: %s\n"
-
-#: ../src/core/util.c:98
-#, c-format
-msgid "Opened log file %s\n"
-msgstr "Arquivo de log %s aberto\n"
-
-#: ../src/core/util.c:117
+#: ../src/core/util.c:118
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "O Mutter foi compilado sem suporte para modo detalhado\n"
-
-#: ../src/core/util.c:262
-msgid "Window manager: "
-msgstr "Gerenciador de janelas: "
-
-#: ../src/core/util.c:412
-msgid "Bug in window manager: "
-msgstr "Bug no gerenciador de janelas: "
-
-#: ../src/core/util.c:443
-msgid "Window manager warning: "
-msgstr "Aviso do gerenciador de janelas: "
-
-#: ../src/core/util.c:471
-msgid "Window manager error: "
-msgstr "Erro do gerenciador de janelas: "
-
-#. first time through
-#: ../src/core/window.c:7564
-#, c-format
-msgid ""
-"Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
-"window as specified in the ICCCM.\n"
-msgstr ""
-"A janela %s define SM_CLIENT_ID em si mesma, ao invés de definir na janela "
-"WM_CLIENT_LEADER como o ICCCM especifica.\n"
-
-#. We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
-#. * authoritative source for that info. Some apps such as mplayer or
-#. * xine disable resize via MWM but not WM_NORMAL_HINTS, but that
-#. * leads to e.g. us not fullscreening their windows.  Apps that set
-#. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
-#. * about these apps but make them work.
-#.
-#: ../src/core/window.c:8489
-#, c-format
-msgid ""
-"Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
-"%d x %d and max size %d x %d; this doesn't make much sense.\n"
-msgstr ""
-"A janela %s define uma dica MWM indicando que não é redimensionável, mas "
-"define o tamanho mínimo %d x %d e máximo %d x %d; isso não faz muito "
-"sentido.\n"
-
-#: ../src/core/window-props.c:349
-#, c-format
-msgid "Application set a bogus _NET_WM_PID %lu\n"
-msgstr "O aplicativo definiu um _NET_WM_PID %lu inválido\n"
-
-#: ../src/core/window-props.c:465
-#, c-format
-msgid "%s (on %s)"
-msgstr "%s (em %s)"
-
-#: ../src/core/window-props.c:1548
-#, c-format
-msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
-msgstr "Janela WM_TRANSIENT_FOR inválida 0x%lx especificada para %s.\n"
-
-#: ../src/core/window-props.c:1559
-#, c-format
-msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
-msgstr "Janela WM_TRANSIENT_FOR 0x%lx especificada para %s iriar criar loop.\n"
-
-#: ../src/core/xprops.c:153
-#, c-format
-msgid ""
-"Window 0x%lx has property %s\n"
-"that was expected to have type %s format %d\n"
-"and actually has type %s format %d n_items %d.\n"
-"This is most likely an application bug, not a window manager bug.\n"
-"The window has title=\"%s\" class=\"%s\" name=\"%s\"\n"
-msgstr ""
-"A janela 0x%lx tem a propriedade %s\n"
-"que deveria ter tipo %s formato %d\n"
-"e, na verdade, ela tem tipo %s, %d n_items %d.\n"
-"Isso é bem provavelmente um erro do aplicativo, não do gerenciador de "
-"janelas.\n"
-"A janela tem title=\"%s\" class=\"%s\" name=\"%s\"\n"
-
-#: ../src/core/xprops.c:409
-#, c-format
-msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
-msgstr "A propriedade %s na janela 0x%lx continha UTF-8 inválido\n"
-
-#: ../src/core/xprops.c:492
-#, c-format
-msgid ""
-"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
-msgstr ""
-"A propriedade %s na janela 0x%lx continha UTF-8 inválido para o item %d da "
-"lista\n"
-
-#: ../src/mutter.desktop.in.h:1 ../src/mutter-wm.desktop.in.h:1
-msgid "Mutter"
-msgstr "Mutter"
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:1
-msgid "Modifier to use for extended window management operations"
-msgstr ""
-"Modificador a ser usado para operações de gerenciamento de janelas extendido."
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:2
-msgid ""
-"This key will initiate the \"overlay\", which is a combination window "
-"overview and application launching system. The default is intended to be the "
-"\"Windows key\" on PC hardware. It's expected that this binding either the "
-"default or set to the empty string."
-msgstr ""
-"Esta chave irá iniciar a \"sobreposição\", que é a combinação de visão de "
-"janela e sistema de lançamento de aplicativos. O padrão pretendido é a "
-"\"tecla Windows\" no hardware do computador. É esperada para esta associação "
-"tanto o padrão quanto a definição de uma string vazia."
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:3
-msgid "Attach modal dialogs"
-msgstr "Anexar diálogos modais"
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:4
-msgid ""
-"When true, instead of having independent titlebars, modal dialogs appear "
-"attached to the titlebar of the parent window and are moved together with "
-"the parent window."
-msgstr ""
-"Quando verdadeiro, em vez de terem barras de título independentes, os "
-"diálogos modais surgem anexados à barra de título da janela pai e são "
-"movidos juntamente com a janela pai."
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:5
-msgid "Enable edge tiling when dropping windows on screen edges"
-msgstr ""
-"Habilitar contorno ladrilhado ao arrastar janelas sobre as bordas da tela"
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:6
-msgid ""
-"If enabled, dropping windows on vertical screen edges maximizes them "
-"vertically and resizes them horizontally to cover half of the available "
-"area. Dropping windows on the top screen edge maximizes them completely."
-msgstr ""
-"Caso esteja habilitado, ao arrastar janelas sobre bordas verticais da tela "
-"as maximizará verticalmente e as redimensionarão horizontalmente para cobrir "
-"metade da área disponível. Arrastar janelas no topo da borda da tela as "
-"maximiza completamente."
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:7
-msgid "Workspaces are managed dynamically"
-msgstr "Áreas de trabalho são gerenciadas dinamicamente"
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:8
-msgid ""
-"Determines whether workspaces are managed dynamically or whether there's a "
-"static number of workspaces (determined by the num-workspaces key in org."
-"gnome.desktop.wm.preferences)."
-msgstr ""
-"Determina se as áreas de trabalho são gerenciadas de forma dinâmica ou se há "
-"um número estático de áreas de trabalho (determinado pela chave num-"
-"workspaces em org.gnome.desktop.wm.preferences)."
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:9
-msgid "Workspaces only on primary"
-msgstr "Áreas de trabalho apenas para a principal"
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:10
-msgid ""
-"Determines whether workspace switching should happen for windows on all "
-"monitors or only for windows on the primary monitor."
-msgstr ""
-"Determina se a troca de área de trabalho deve ocorrer para janelas em todos "
-"os monitores ou apenas para janelas no monitor principal."
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:11
-msgid "No tab popup"
-msgstr "Nenhuma aba instantânea"
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:12
-msgid ""
-"Determines whether the use of popup and highlight frame should be disabled "
-"for window cycling."
-msgstr ""
-"Determina se a utilização de quadros instantâneos e destacados devem ser "
-"desabilitados na alternância de janelas."
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:13
-msgid "Delay focus changes until the pointer stops moving"
-msgstr "Atrasar alterações de foco até que o ponteiro pare de mover"
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:14
-msgid ""
-"If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
-"the focus will not be changed immediately when entering a window, but only "
-"after the pointer stops moving."
-msgstr ""
-"Se verdadeiro, e o modo de foco for \"sloppy\" ou \"mouse\", o foco não será "
-"alterado imediatamente quando o ponteiro do mouse entrar na janela, e sim "
-"quando parar de mover."
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:15
-msgid "Draggable border width"
-msgstr "Largura da borda arrastável"
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:16
-msgid ""
-"The amount of total draggable borders. If the theme's visible borders are "
-"not enough, invisible borders will be added to meet this value."
-msgstr ""
-"A quantidade do total de bordas arrastáveis. Se as bordas dos temas visíveis "
-"não são suficientes, as bordas invisíveis serão adicionadas para encontrar "
-"este valor."
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:17
-msgid "Auto maximize nearly monitor sized windows"
-msgstr "Maximizar automaticamente janelas com tamanho próximo ao do monitor"
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:18
-msgid ""
-"If enabled, new windows that are initially the size of the monitor "
-"automatically get maximized."
-msgstr ""
-"Se habilitado, novas janelas que, ao iniciar, possuírem o tamanho do monitor "
-"serão maximizadas automaticamente."
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:19
-msgid "Select window from tab popup"
-msgstr "Selecione a janela a partir da aba instantânea"
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:20
-msgid "Cancel tab popup"
-msgstr "Cancelar aba instantânea"
-
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:65
-msgid "Mi_nimize"
-msgstr "Mi_nimizar"
-
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:67
-msgid "Ma_ximize"
-msgstr "Ma_ximizar"
-
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:69
-msgid "Unma_ximize"
-msgstr "Desfazer ma_ximizar"
-
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:71
-msgid "Roll _Up"
-msgstr "_Enrolar"
-
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:73
-msgid "_Unroll"
-msgstr "_Desenrolar"
-
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:75
-msgid "_Move"
-msgstr "_Mover"
-
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:77
-msgid "_Resize"
-msgstr "_Redimensionar"
-
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:79
-msgid "Move Titlebar On_screen"
-msgstr "Mover barra de título para te_la"
-
-#. separator
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:82 ../src/ui/menu.c:84
-msgid "Always on _Top"
-msgstr "Sempre no _topo"
-
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:86
-msgid "_Always on Visible Workspace"
-msgstr "_Sempre no espaço de trabalho visível"
-
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:88
-msgid "_Only on This Workspace"
-msgstr "_Apenas neste espaço de trabalho"
-
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:90
-msgid "Move to Workspace _Left"
-msgstr "Mover para o espaço de trabalho à _esquerda"
-
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:92
-msgid "Move to Workspace R_ight"
-msgstr "Mover para o espaço de trabalho à d_ireita"
-
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:94
-msgid "Move to Workspace _Up"
-msgstr "Mover para o espaço de trabalho _acima"
-
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:96
-msgid "Move to Workspace _Down"
-msgstr "Mover para o espaço de trabalho a_baixo"
-
-#. separator
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:100
-msgid "_Close"
-msgstr "Fe_char"
-
-#: ../src/ui/menu.c:200
-#, c-format
-msgid "Workspace %d%n"
-msgstr "Espaço de trabalho %d%n"
-
-#: ../src/ui/menu.c:210
-#, c-format
-msgid "Workspace 1_0"
-msgstr "Espaço de trabalho 1_0"
-
-#: ../src/ui/menu.c:212
-#, c-format
-msgid "Workspace %s%d"
-msgstr "Espaço de trabalho %s%d"
-
-#: ../src/ui/menu.c:382
-msgid "Move to Another _Workspace"
-msgstr "Mover para _outro espaço de trabalho"
-
-#. This is the text that should appear next to menu accelerators
-#. * that use the shift key. If the text on this key isn't typically
-#. * translated on keyboards used for your language, don't translate
-#. * this.
-#.
-#: ../src/ui/metaaccellabel.c:75
-msgid "Shift"
-msgstr "Shift"
-
-#. This is the text that should appear next to menu accelerators
-#. * that use the control key. If the text on this key isn't typically
-#. * translated on keyboards used for your language, don't translate
-#. * this.
-#.
-#: ../src/ui/metaaccellabel.c:81
-msgid "Ctrl"
-msgstr "Ctrl"
-
-#. This is the text that should appear next to menu accelerators
-#. * that use the alt key. If the text on this key isn't typically
-#. * translated on keyboards used for your language, don't translate
-#. * this.
-#.
-#: ../src/ui/metaaccellabel.c:87
-msgid "Alt"
-msgstr "Alt"
-
-#. This is the text that should appear next to menu accelerators
-#. * that use the meta key. If the text on this key isn't typically
-#. * translated on keyboards used for your language, don't translate
-#. * this.
-#.
-#: ../src/ui/metaaccellabel.c:93
-msgid "Meta"
-msgstr "Meta"
-
-#. This is the text that should appear next to menu accelerators
-#. * that use the super key. If the text on this key isn't typically
-#. * translated on keyboards used for your language, don't translate
-#. * this.
-#.
-#: ../src/ui/metaaccellabel.c:99
-msgid "Super"
-msgstr "Super"
-
-#. This is the text that should appear next to menu accelerators
-#. * that use the hyper key. If the text on this key isn't typically
-#. * translated on keyboards used for your language, don't translate
-#. * this.
-#.
-#: ../src/ui/metaaccellabel.c:105
-msgid "Hyper"
-msgstr "Hyper"
-
-#. This is the text that should appear next to menu accelerators
-#. * that use the mod2 key. If the text on this key isn't typically
-#. * translated on keyboards used for your language, don't translate
-#. * this.
-#.
-#: ../src/ui/metaaccellabel.c:111
-msgid "Mod2"
-msgstr "Mod2"
-
-#. This is the text that should appear next to menu accelerators
-#. * that use the mod3 key. If the text on this key isn't typically
-#. * translated on keyboards used for your language, don't translate
-#. * this.
-#.
-#: ../src/ui/metaaccellabel.c:117
-msgid "Mod3"
-msgstr "Mod3"
-
-#. This is the text that should appear next to menu accelerators
-#. * that use the mod4 key. If the text on this key isn't typically
-#. * translated on keyboards used for your language, don't translate
-#. * this.
-#.
-#: ../src/ui/metaaccellabel.c:123
-msgid "Mod4"
-msgstr "Mod4"
-
-#. This is the text that should appear next to menu accelerators
-#. * that use the mod5 key. If the text on this key isn't typically
-#. * translated on keyboards used for your language, don't translate
-#. * this.
-#.
-#: ../src/ui/metaaccellabel.c:129
-msgid "Mod5"
-msgstr "Mod5"
 
 #. Translators: This represents the size of a window.  The first number is
 #. * the width of the window and the second is the height.
@@ -969,48 +606,48 @@ msgstr "Mod5"
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: ../src/ui/theme.c:234
+#: ../src/ui/theme.c:233
 msgid "top"
 msgstr "superior"
 
-#: ../src/ui/theme.c:236
+#: ../src/ui/theme.c:235
 msgid "bottom"
 msgstr "inferior"
 
-#: ../src/ui/theme.c:238
+#: ../src/ui/theme.c:237
 msgid "left"
 msgstr "esquerda"
 
-#: ../src/ui/theme.c:240
+#: ../src/ui/theme.c:239
 msgid "right"
 msgstr "direita"
 
-#: ../src/ui/theme.c:268
+#: ../src/ui/theme.c:267
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
 msgstr "a geometria do quadro não especifica a dimensão \"%s\""
 
-#: ../src/ui/theme.c:287
+#: ../src/ui/theme.c:286
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
 msgstr "a geometria do quadro não especifica a dimensão \"%s\" da borda \"%s\""
 
-#: ../src/ui/theme.c:324
+#: ../src/ui/theme.c:323
 #, c-format
 msgid "Button aspect ratio %g is not reasonable"
 msgstr "A taxa de proporção %g do botão não é razoável"
 
-#: ../src/ui/theme.c:336
+#: ../src/ui/theme.c:335
 #, c-format
 msgid "Frame geometry does not specify size of buttons"
 msgstr "A geometria do quadro não especifica o tamanho dos botões"
 
-#: ../src/ui/theme.c:1049
+#: ../src/ui/theme.c:1061
 #, c-format
 msgid "Gradients should have at least two colors"
 msgstr "Os degradês devem ter pelo menos duas cores"
 
-#: ../src/ui/theme.c:1201
+#: ../src/ui/theme.c:1211
 #, c-format
 msgid ""
 "GTK custom color specification must have color name and fallback in "
@@ -1020,7 +657,7 @@ msgstr ""
 "fallback em parênteses, por exemplo, gtk:custom[foo,bar]; não foi possível "
 "analisar \"%s\""
 
-#: ../src/ui/theme.c:1217
+#: ../src/ui/theme.c:1227
 #, c-format
 msgid ""
 "Invalid character '%c' in color_name parameter of gtk:custom, only A-Za-z0-9-"
@@ -1029,7 +666,7 @@ msgstr ""
 "Caractere inválido \"%c\" no parâmetro color_name do gtk:custom, somente A-"
 "Za-z0-9-_ são válidos"
 
-#: ../src/ui/theme.c:1231
+#: ../src/ui/theme.c:1241
 #, c-format
 msgid ""
 "Gtk:custom format is \"gtk:custom(color_name,fallback)\", \"%s\" does not "
@@ -1038,7 +675,7 @@ msgstr ""
 "Formato gtk:custom é \"gtk:custom(color_name,fallback)\", \"%s\" não é "
 "adequado ao formato"
 
-#: ../src/ui/theme.c:1276
+#: ../src/ui/theme.c:1286
 #, c-format
 msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
@@ -1048,7 +685,7 @@ msgstr ""
 "exemplo, gtk:fg[NORMAL], onde NORMAL é o estado; não foi possível analisar "
 "\"%s\""
 
-#: ../src/ui/theme.c:1290
+#: ../src/ui/theme.c:1300
 #, c-format
 msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
@@ -1058,18 +695,18 @@ msgstr ""
 "GTK, por exemplo, gtk:fg[NORMAL], onde NORMAL é o estado; não foi possível "
 "analisar \"%s\""
 
-#: ../src/ui/theme.c:1301
+#: ../src/ui/theme.c:1311
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
 msgstr "O estado \"%s\" não foi compreendido na especificação de cor"
 
-#: ../src/ui/theme.c:1314
+#: ../src/ui/theme.c:1324
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
 msgstr ""
 "O componente de cor \"%s\" não foi compreendido na especificação de cor"
 
-#: ../src/ui/theme.c:1343
+#: ../src/ui/theme.c:1352
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
@@ -1078,17 +715,17 @@ msgstr ""
 "O formato de mistura é \"blend/bg_color/fg_color/alpha\"; \"%s\" não é "
 "adequado ao formato"
 
-#: ../src/ui/theme.c:1354
+#: ../src/ui/theme.c:1363
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr "Não foi possível analisar o valor de alfa \"%s\" na cor misturada"
 
-#: ../src/ui/theme.c:1364
+#: ../src/ui/theme.c:1373
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr "O valor de alfa \"%s\" na cor misturada não está entre 0,0 e 1,0"
 
-#: ../src/ui/theme.c:1411
+#: ../src/ui/theme.c:1419
 #, c-format
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
@@ -1096,17 +733,17 @@ msgstr ""
 "O formato de sombra é \"shade/base_color/factor\", \"%s\" não é adequado ao "
 "formato"
 
-#: ../src/ui/theme.c:1422
+#: ../src/ui/theme.c:1430
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr "Não foi possível analisar o fator de sombra \"%s\" na cor sombreada"
 
-#: ../src/ui/theme.c:1432
+#: ../src/ui/theme.c:1440
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
 msgstr "O fator de sombra \"%s\" na cor sombreada é negativo"
 
-#: ../src/ui/theme.c:1461
+#: ../src/ui/theme.c:1469
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr "Não foi possível analisar a cor \"%s\""
@@ -1221,7 +858,7 @@ msgstr "Aparentemente não há operadores nem operandos na expressão coordenada
 msgid "Theme contained an expression that resulted in an error: %s\n"
 msgstr "O tema continha uma expressão que resultou em um erro: %s \n"
 
-#: ../src/ui/theme.c:4498
+#: ../src/ui/theme.c:4455
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -1230,25 +867,25 @@ msgstr ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> deve ser "
 "especificado para este estilo de quadro"
 
-#: ../src/ui/theme.c:5009 ../src/ui/theme.c:5034
+#: ../src/ui/theme.c:4970 ../src/ui/theme.c:4995
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/> ausente"
 
-#: ../src/ui/theme.c:5080
+#: ../src/ui/theme.c:5041
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Falha ao carregar o tema \"%s\": %s\n"
 
-#: ../src/ui/theme.c:5216 ../src/ui/theme.c:5223 ../src/ui/theme.c:5230
-#: ../src/ui/theme.c:5237 ../src/ui/theme.c:5244
+#: ../src/ui/theme.c:5177 ../src/ui/theme.c:5184 ../src/ui/theme.c:5191
+#: ../src/ui/theme.c:5198 ../src/ui/theme.c:5205
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "Nenhum <%s> definido para o tema \"%s\""
 
-#: ../src/ui/theme.c:5252
+#: ../src/ui/theme.c:5213
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -1257,7 +894,7 @@ msgstr ""
 "Nenhum estilo de quadro definido para o tipo de janela \"%s\" no tema \"%s"
 "\", adicione um elemento <window type=\"%s\" style_set=\"whatever\"/>"
 
-#: ../src/ui/theme.c:5659 ../src/ui/theme.c:5721 ../src/ui/theme.c:5784
+#: ../src/ui/theme.c:5620 ../src/ui/theme.c:5682 ../src/ui/theme.c:5745
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
@@ -1265,7 +902,7 @@ msgstr ""
 "As constantes definidas pelo usuário devem iniciar com letra maiúscula; \"%s"
 "\" não inicia"
 
-#: ../src/ui/theme.c:5667 ../src/ui/theme.c:5729 ../src/ui/theme.c:5792
+#: ../src/ui/theme.c:5628 ../src/ui/theme.c:5690 ../src/ui/theme.c:5753
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "A constante \"%s\" já foi definida"
@@ -1658,6 +1295,259 @@ msgstr "<%s> especificado duas vezes para este tema"
 msgid "Failed to find a valid file for theme %s\n"
 msgstr "Falha ao localizar um arquivo válido para o tema %s\n"
 
+#: ../src/x11/session.c:1815
+msgid ""
+"These windows do not support &quot;save current setup&quot; and will have to "
+"be restarted manually next time you log in."
+msgstr ""
+"Estas janelas não oferecem suporte para a opção &quot;salvar configuração "
+"atual&quot; e precisarão ser reiniciadas manualmente quando você reiniciar a "
+"sessão."
+
+#: ../src/x11/window-props.c:513
+#, c-format
+msgid "%s (on %s)"
+msgstr "%s (em %s)"
+
+#~ msgid "Unknown window information request: %d"
+#~ msgstr "Informação solicitada de janela desconhecida: %d"
+
+#~ msgid "Missing %s extension required for compositing"
+#~ msgstr "Faltando extensão %s necessária para composição"
+
+#~ msgid ""
+#~ "Some other program is already using the key %s with modifiers %x as a "
+#~ "binding\n"
+#~ msgstr ""
+#~ "Algum outro programa já está usando a chave %s com modificadores %x como "
+#~ "uma tecla de atalho\n"
+
+#~ msgid "\"%s\" is not a valid accelerator\n"
+#~ msgstr "\"%s\" não é um acelerador válido\n"
+
+#~ msgid ""
+#~ "Workarounds for broken applications disabled. Some applications may not "
+#~ "behave properly.\n"
+#~ msgstr ""
+#~ "As alternativas para aplicativos quebrados estão desabilitadas. É "
+#~ "possível que alguns aplicativos não funcionem de maneira adequada.\n"
+
+#~ msgid "Could not parse font description \"%s\" from GSettings key %s\n"
+#~ msgstr ""
+#~ "Não foi possível analisar a descrição da fonte \"%s\" a partir da chave "
+#~ "GSettings %s\n"
+
+#~ msgid ""
+#~ "\"%s\" found in configuration database is not a valid value for mouse "
+#~ "button modifier\n"
+#~ msgstr ""
+#~ "\"%s\" localizado no banco de dados de configurações não é um valor "
+#~ "válido para o modificador de botão do mouse\n"
+
+#~ msgid ""
+#~ "\"%s\" found in configuration database is not a valid value for "
+#~ "keybinding \"%s\"\n"
+#~ msgstr ""
+#~ "\"%s\" localizado no banco de dados de configurações não é um valor "
+#~ "válido para a tecla de atalho \"%s\"\n"
+
+#~ msgid ""
+#~ "Could not acquire window manager selection on screen %d display \"%s\"\n"
+#~ msgstr ""
+#~ "Não foi possível obter a seleção do gerenciador de janelas na exibição "
+#~ "\"%2$s\" da tela %1$d\n"
+
+#~ msgid "Could not release screen %d on display \"%s\"\n"
+#~ msgstr "Não foi possível liberar a tela %d na exibição \"%s\"\n"
+
+#~ msgid "Could not create directory '%s': %s\n"
+#~ msgstr "Não foi possível criar o diretório \"%s\": %s\n"
+
+#~ msgid "Could not open session file '%s' for writing: %s\n"
+#~ msgstr ""
+#~ "Não foi possível abrir o arquivo de sessão \"%s\" para gravação: %s\n"
+
+#~ msgid "Error writing session file '%s': %s\n"
+#~ msgstr "Erro ao gravar o arquivo de sessão\"%s\": %s\n"
+
+#~ msgid "Error closing session file '%s': %s\n"
+#~ msgstr "Erro ao fechar o arquivo de sessão \"%s\": %s\n"
+
+#~ msgid "Failed to parse saved session file: %s\n"
+#~ msgstr "Falha ao analisar o arquivo de sessão salvo: %s\n"
+
+#~ msgid "<mutter_session> attribute seen but we already have the session ID"
+#~ msgstr "O atributo <mutter_session> foi visto, mas já temos o ID da sessão"
+
+#~ msgid "Unknown attribute %s on <%s> element"
+#~ msgstr "Atributo %s desconhecido no elemento <%s>"
+
+#~ msgid "nested <window> tag"
+#~ msgstr "marca de <window> aninhada"
+
+#~ msgid "Unknown element %s"
+#~ msgstr "Elemento %s desconhecido"
+
+#~ msgid "Failed to open debug log: %s\n"
+#~ msgstr "Falha ao abrir o log de depuração: %s\n"
+
+#~ msgid "Failed to fdopen() log file %s: %s\n"
+#~ msgstr "Falha ao executar fdopen() no arquivo de log %s: %s\n"
+
+#~ msgid "Opened log file %s\n"
+#~ msgstr "Arquivo de log %s aberto\n"
+
+#~ msgid "Window manager: "
+#~ msgstr "Gerenciador de janelas: "
+
+#~ msgid "Bug in window manager: "
+#~ msgstr "Bug no gerenciador de janelas: "
+
+#~ msgid "Window manager warning: "
+#~ msgstr "Aviso do gerenciador de janelas: "
+
+#~ msgid "Window manager error: "
+#~ msgstr "Erro do gerenciador de janelas: "
+
+#~ msgid ""
+#~ "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
+#~ "window as specified in the ICCCM.\n"
+#~ msgstr ""
+#~ "A janela %s define SM_CLIENT_ID em si mesma, ao invés de definir na "
+#~ "janela WM_CLIENT_LEADER como o ICCCM especifica.\n"
+
+#~ msgid ""
+#~ "Window %s sets an MWM hint indicating it isn't resizable, but sets min "
+#~ "size %d x %d and max size %d x %d; this doesn't make much sense.\n"
+#~ msgstr ""
+#~ "A janela %s define uma dica MWM indicando que não é redimensionável, mas "
+#~ "define o tamanho mínimo %d x %d e máximo %d x %d; isso não faz muito "
+#~ "sentido.\n"
+
+#~ msgid "Application set a bogus _NET_WM_PID %lu\n"
+#~ msgstr "O aplicativo definiu um _NET_WM_PID %lu inválido\n"
+
+#~ msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
+#~ msgstr "Janela WM_TRANSIENT_FOR inválida 0x%lx especificada para %s.\n"
+
+#~ msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
+#~ msgstr ""
+#~ "Janela WM_TRANSIENT_FOR 0x%lx especificada para %s iriar criar loop.\n"
+
+#~ msgid ""
+#~ "Window 0x%lx has property %s\n"
+#~ "that was expected to have type %s format %d\n"
+#~ "and actually has type %s format %d n_items %d.\n"
+#~ "This is most likely an application bug, not a window manager bug.\n"
+#~ "The window has title=\"%s\" class=\"%s\" name=\"%s\"\n"
+#~ msgstr ""
+#~ "A janela 0x%lx tem a propriedade %s\n"
+#~ "que deveria ter tipo %s formato %d\n"
+#~ "e, na verdade, ela tem tipo %s, %d n_items %d.\n"
+#~ "Isso é bem provavelmente um erro do aplicativo, não do gerenciador de "
+#~ "janelas.\n"
+#~ "A janela tem title=\"%s\" class=\"%s\" name=\"%s\"\n"
+
+#~ msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
+#~ msgstr "A propriedade %s na janela 0x%lx continha UTF-8 inválido\n"
+
+#~ msgid ""
+#~ "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the "
+#~ "list\n"
+#~ msgstr ""
+#~ "A propriedade %s na janela 0x%lx continha UTF-8 inválido para o item %d "
+#~ "da lista\n"
+
+#~ msgid "Mi_nimize"
+#~ msgstr "Mi_nimizar"
+
+#~ msgid "Ma_ximize"
+#~ msgstr "Ma_ximizar"
+
+#~ msgid "Unma_ximize"
+#~ msgstr "Desfazer ma_ximizar"
+
+#~ msgid "Roll _Up"
+#~ msgstr "_Enrolar"
+
+#~ msgid "_Unroll"
+#~ msgstr "_Desenrolar"
+
+#~ msgid "_Move"
+#~ msgstr "_Mover"
+
+#~ msgid "_Resize"
+#~ msgstr "_Redimensionar"
+
+#~ msgid "Move Titlebar On_screen"
+#~ msgstr "Mover barra de título para te_la"
+
+#~ msgid "Always on _Top"
+#~ msgstr "Sempre no _topo"
+
+#~ msgid "_Always on Visible Workspace"
+#~ msgstr "_Sempre no espaço de trabalho visível"
+
+#~ msgid "_Only on This Workspace"
+#~ msgstr "_Apenas neste espaço de trabalho"
+
+#~ msgid "Move to Workspace _Left"
+#~ msgstr "Mover para o espaço de trabalho à _esquerda"
+
+#~ msgid "Move to Workspace R_ight"
+#~ msgstr "Mover para o espaço de trabalho à d_ireita"
+
+#~ msgid "Move to Workspace _Up"
+#~ msgstr "Mover para o espaço de trabalho _acima"
+
+#~ msgid "Move to Workspace _Down"
+#~ msgstr "Mover para o espaço de trabalho a_baixo"
+
+#~ msgid "_Close"
+#~ msgstr "Fe_char"
+
+#~ msgid "Workspace %d%n"
+#~ msgstr "Espaço de trabalho %d%n"
+
+#~ msgid "Workspace 1_0"
+#~ msgstr "Espaço de trabalho 1_0"
+
+#~ msgid "Workspace %s%d"
+#~ msgstr "Espaço de trabalho %s%d"
+
+#~ msgid "Move to Another _Workspace"
+#~ msgstr "Mover para _outro espaço de trabalho"
+
+#~ msgid "Shift"
+#~ msgstr "Shift"
+
+#~ msgid "Ctrl"
+#~ msgstr "Ctrl"
+
+#~ msgid "Alt"
+#~ msgstr "Alt"
+
+#~ msgid "Meta"
+#~ msgstr "Meta"
+
+#~ msgid "Super"
+#~ msgstr "Super"
+
+#~ msgid "Hyper"
+#~ msgstr "Hyper"
+
+#~ msgid "Mod2"
+#~ msgstr "Mod2"
+
+#~ msgid "Mod3"
+#~ msgstr "Mod3"
+
+#~ msgid "Mod4"
+#~ msgstr "Mod4"
+
+#~ msgid "Mod5"
+#~ msgstr "Mod5"
+
 #~ msgid "Usage: %s\n"
 #~ msgstr "Uso: %s\n"
 
@@ -1817,15 +1707,6 @@ msgstr "Falha ao localizar um arquivo válido para o tema %s\n"
 
 #~ msgid "Live Hidden Windows"
 #~ msgstr "Janelas ocultas ativas"
-
-#~ msgid "Switch to workspace 5"
-#~ msgstr "Trocar para o espaço de trabalho 5"
-
-#~ msgid "Switch to workspace 6"
-#~ msgstr "Trocar para o espaço de trabalho 6"
-
-#~ msgid "Switch to workspace 7"
-#~ msgstr "Trocar para o espaço de trabalho 7"
 
 #~ msgid "Switch to workspace 8"
 #~ msgstr "Trocar para o espaço de trabalho 8"
