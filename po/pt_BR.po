@@ -21,8 +21,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-07-14 07:30+0000\n"
-"PO-Revision-Date: 2014-07-14 13:22-0300\n"
+"POT-Creation-Date: 2014-07-18 07:33+0000\n"
+"PO-Revision-Date: 2014-07-18 13:24-0300\n"
 "Last-Translator: Enrico Nicoletto <liverig@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
@@ -417,7 +417,6 @@ msgid "Execution of “%s” failed:"
 msgstr "A execução de \"%s\" falhou:"
 
 #: ../js/portalHelper/main.js:84
-#| msgid "Authentication Required"
 msgid "Web Authentication Redirect"
 msgstr "Redirecionamento para autenticação web"
 
@@ -433,19 +432,19 @@ msgstr "Frequente"
 msgid "All"
 msgstr "Todos"
 
-#: ../js/ui/appDisplay.js:1570
+#: ../js/ui/appDisplay.js:1613
 msgid "New Window"
 msgstr "Nova janela"
 
-#: ../js/ui/appDisplay.js:1592 ../js/ui/dash.js:285
+#: ../js/ui/appDisplay.js:1635 ../js/ui/dash.js:285
 msgid "Remove from Favorites"
 msgstr "Remover dos favoritos"
 
-#: ../js/ui/appDisplay.js:1598
+#: ../js/ui/appDisplay.js:1641
 msgid "Add to Favorites"
 msgstr "Adicionar aos favoritos"
 
-#: ../js/ui/appDisplay.js:1607
+#: ../js/ui/appDisplay.js:1650
 msgid "Show Details"
 msgstr "Mostrar detalhes"
 
@@ -1333,13 +1332,18 @@ msgstr "Barra superior"
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
-#: ../js/ui/runDialog.js:74
+#: ../js/ui/runDialog.js:70
 msgid "Enter a Command"
 msgstr "Digite um comando"
 
-#: ../js/ui/runDialog.js:114 ../js/ui/windowMenu.js:120
+#: ../js/ui/runDialog.js:110 ../js/ui/windowMenu.js:120
 msgid "Close"
 msgstr "Fechar"
+
+#: ../js/ui/runDialog.js:273
+#| msgid "Estimating…"
+msgid "Restarting…"
+msgstr "Reiniciando…"
 
 #. Translators: This is a time format for a date in
 #. long format */
