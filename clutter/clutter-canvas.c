@@ -389,9 +389,9 @@ clutter_canvas_paint_content (ClutterContent   *content,
   clutter_actor_get_content_scaling_filters (actor, &min_f, &mag_f);
   repeat = clutter_actor_get_content_repeat (actor);
 
-  color.red = paint_opacity;
-  color.green = paint_opacity;
-  color.blue = paint_opacity;
+  color.red = 255;
+  color.green = 255;
+  color.blue = 255;
   color.alpha = paint_opacity;
 
   node = clutter_texture_node_new (priv->texture, &color, min_f, mag_f);
