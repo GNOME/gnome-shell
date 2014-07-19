@@ -174,7 +174,6 @@ gnome_shell_plugin_has_swap_event (GnomeShellPlugin *shell_plugin)
   const char * (* query_extensions_string) (Display *dpy, int screen);
   Bool (* query_extension) (Display *dpy, int *error, int *event);
   MetaScreen *screen;
-  MetaDisplay *display;
   Display *xdisplay;
   const char *glx_extensions;
 
@@ -183,9 +182,8 @@ gnome_shell_plugin_has_swap_event (GnomeShellPlugin *shell_plugin)
     return FALSE;
 
   screen = meta_plugin_get_screen (plugin);
-  display = meta_screen_get_display (screen);
 
-  xdisplay = meta_display_get_xdisplay (display);
+  xdisplay = clutter_x11_get_default_display ();
 
   query_extensions_string =
     (void *) cogl_get_proc_address ("glXQueryExtensionsString");
