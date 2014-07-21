@@ -245,7 +245,7 @@ meta_wayland_touch_update (MetaWaylandTouch   *touch,
       struct wl_client *client = wl_resource_get_client (surface->resource);
       struct wl_display *display = wl_client_get_display (client);
 
-      touch_info->slot_serial = wl_display_next_serial (display);
+      touch_info->slot_serial = wl_display_get_serial (display);
     }
 
   touch_get_relative_coordinates (touch, touch_info->touch_surface->surface,
