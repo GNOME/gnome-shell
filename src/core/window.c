@@ -6121,6 +6121,7 @@ gboolean
 meta_window_handle_mouse_grab_op_event  (MetaWindow         *window,
                                          const ClutterEvent *event)
 {
+  ClutterEventSequence *sequence = clutter_event_get_event_sequence (event);
   ClutterModifierType modifier_state;
   gfloat x, y;
 
@@ -6141,6 +6142,12 @@ meta_window_handle_mouse_grab_op_event  (MetaWindow         *window,
         }
       return TRUE;
 
+    case CLUTTER_TOUCH_END:
+      if (meta_display_is_pointer_emulating_sequence (window->display, sequence))
+        end_grab_op (window, event);
+
+      return TRUE;
+
     case CLUTTER_BUTTON_RELEASE:
       if (event->button.button == 1 ||
           event->button.button == (unsigned int) meta_prefs_get_mouse_button_resize ())
@@ -6150,6 +6157,17 @@ meta_window_handle_mouse_grab_op_event  (MetaWindow         *window,
         }
       return TRUE;
 
+    case CLUTTER_TOUCH_BEGIN:
+      /* This will only catch the keybinding and menu cases, just deal with this
+       * like a CLUTTER_TOUCH_UPDATE rather than a CLUTTER_BUTTON_PRESS, and
+       * wait until CLUTTER_TOUCH_END to undo the grab, just so the window
+       * doesn't warp below the finger and remain there.
+       */
+    case CLUTTER_TOUCH_UPDATE:
+      if (!meta_display_is_pointer_emulating_sequence (window->display, sequence))
+        return FALSE;
+
+      /* Fall through */
     case CLUTTER_MOTION:
       modifier_state = clutter_event_get_state (event);
       clutter_event_get_coords (event, &x, &y);
