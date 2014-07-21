@@ -1529,6 +1529,7 @@ _clutter_input_device_remove_event_sequence (ClutterInputDevice *device,
 
       g_hash_table_replace (device->inv_touch_sequence_actors,
                             info->actor, sequences);
+      _clutter_input_device_set_actor (device, sequence, NULL, TRUE);
     }
 
   g_hash_table_remove (device->touch_sequences_info, sequence);
