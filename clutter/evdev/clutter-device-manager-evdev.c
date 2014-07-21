@@ -121,6 +121,7 @@ struct _ClutterDeviceManagerEvdevPrivate
   GSList *seats;
 
   ClutterSeatEvdev *main_seat;
+  struct xkb_keymap *keymap;
 
   ClutterPointerConstrainCallback constrain_callback;
   gpointer                        constrain_data;
@@ -775,7 +776,7 @@ clutter_seat_evdev_new (ClutterDeviceManagerEvdev *manager_evdev)
       seat->scroll_lock_led =
         xkb_keymap_led_get_index (keymap, XKB_LED_NAME_SCROLL);
 
-      xkb_keymap_unref (keymap);
+      priv->keymap = keymap;
     }
 
   seat->repeat = TRUE;
@@ -1515,6 +1516,9 @@ clutter_device_manager_evdev_finalize (GObject *object)
   g_slist_free_full (priv->seats, (GDestroyNotify) clutter_seat_evdev_free);
   g_slist_free (priv->devices);
 
+  if (priv->keymap)
+    xkb_keymap_unref (priv->keymap);
+
   if (priv->event_source != NULL)
     clutter_event_source_free (priv->event_source);
 
@@ -1687,6 +1691,42 @@ clutter_evdev_release_devices (void)
   priv->released = TRUE;
 }
 
+static void
+clutter_evdev_update_xkb_state (ClutterDeviceManagerEvdev *manager_evdev)
+{
+  ClutterDeviceManagerEvdevPrivate *priv;
+  GSList *iter;
+  ClutterSeatEvdev *seat;
+  xkb_mod_mask_t latched_mods;
+  xkb_mod_mask_t locked_mods;
+
+  priv = manager_evdev->priv;
+
+  for (iter = priv->seats; iter; iter = iter->next)
+    {
+      seat = iter->data;
+
+      latched_mods = xkb_state_serialize_mods (seat->xkb,
+                                               XKB_STATE_MODS_LATCHED);
+      locked_mods = xkb_state_serialize_mods (seat->xkb,
+                                              XKB_STATE_MODS_LOCKED);
+      xkb_state_unref (seat->xkb);
+      seat->xkb = xkb_state_new (priv->keymap);
+
+      xkb_state_update_mask (seat->xkb,
+                             0, /* depressed */
+                             latched_mods,
+                             locked_mods,
+                             0, 0, 0);
+
+      seat->caps_lock_led = xkb_keymap_led_get_index (priv->keymap, XKB_LED_NAME_CAPS);
+      seat->num_lock_led = xkb_keymap_led_get_index (priv->keymap, XKB_LED_NAME_NUM);
+      seat->scroll_lock_led = xkb_keymap_led_get_index (priv->keymap, XKB_LED_NAME_SCROLL);
+
+      clutter_seat_evdev_sync_leds (seat);
+    }
+}
+
 /**
  * clutter_evdev_reclaim_devices:
  *
@@ -1717,6 +1757,7 @@ clutter_evdev_reclaim_devices (void)
     }
 
   libinput_resume (priv->libinput);
+  clutter_evdev_update_xkb_state (manager_evdev);
   process_events (manager_evdev);
 
   priv->released = FALSE;
@@ -1769,39 +1810,17 @@ clutter_evdev_set_keyboard_map (ClutterDeviceManager *evdev,
 {
   ClutterDeviceManagerEvdev *manager_evdev;
   ClutterDeviceManagerEvdevPrivate *priv;
-  GSList *iter;
-  ClutterSeatEvdev *seat;
-  xkb_mod_mask_t latched_mods;
-  xkb_mod_mask_t locked_mods;
 
   g_return_if_fail (CLUTTER_IS_DEVICE_MANAGER_EVDEV (evdev));
 
   manager_evdev = CLUTTER_DEVICE_MANAGER_EVDEV (evdev);
   priv = manager_evdev->priv;
 
-  for (iter = priv->seats; iter; iter = iter->next)
-    {
-      seat = iter->data;
+  if (priv->keymap)
+    xkb_keymap_unref (priv->keymap);
 
-      latched_mods = xkb_state_serialize_mods (seat->xkb,
-                                               XKB_STATE_MODS_LATCHED);
-      locked_mods = xkb_state_serialize_mods (seat->xkb,
-                                              XKB_STATE_MODS_LOCKED);
-      xkb_state_unref (seat->xkb);
-      seat->xkb = xkb_state_new (keymap);
-
-      xkb_state_update_mask (seat->xkb,
-                             0, /* depressed */
-                             latched_mods,
-                             locked_mods,
-                             0, 0, 0);
-
-      seat->caps_lock_led = xkb_keymap_led_get_index (keymap, XKB_LED_NAME_CAPS);
-      seat->num_lock_led = xkb_keymap_led_get_index (keymap, XKB_LED_NAME_NUM);
-      seat->scroll_lock_led = xkb_keymap_led_get_index (keymap, XKB_LED_NAME_SCROLL);
-
-      clutter_seat_evdev_sync_leds (seat);
-    }
+  priv->keymap = xkb_keymap_ref (keymap);
+  clutter_evdev_update_xkb_state (manager_evdev);
 }
 
 /**
