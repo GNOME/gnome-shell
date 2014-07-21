@@ -100,6 +100,62 @@ handle_idletime_for_event (const ClutterEvent *event)
 }
 
 static gboolean
+sequence_is_pointer_emulated (MetaDisplay        *display,
+                              const ClutterEvent *event)
+{
+  ClutterEventSequence *sequence;
+  MetaBackend *backend;
+
+  sequence = clutter_event_get_event_sequence (event);
+
+  if (!sequence)
+    return FALSE;
+
+  if (clutter_event_is_pointer_emulated (event))
+    return TRUE;
+
+  backend = meta_get_backend ();
+
+  /* When using Clutter's native input backend there is no concept of
+   * pointer emulating sequence, we still must make up our own to be
+   * able to implement single-touch (hence pointer alike) behavior.
+   *
+   * This is implemented similarly to X11, where only the first touch
+   * on screen gets the "pointer emulated" flag, and it won't get assigned
+   * to another sequence until the next first touch on an idle touchscreen.
+   */
+  if (META_IS_BACKEND_NATIVE (backend))
+    {
+      MetaGestureTracker *tracker;
+
+      tracker = meta_display_get_gesture_tracker (display);
+
+      if (event->type == CLUTTER_TOUCH_BEGIN &&
+          meta_gesture_tracker_get_n_current_touches (tracker) == 0)
+        return TRUE;
+    }
+
+  return FALSE;
+}
+
+static void
+meta_display_update_pointer_emulating_sequence (MetaDisplay        *display,
+                                                const ClutterEvent *event)
+{
+  ClutterEventSequence *sequence;
+
+  sequence = clutter_event_get_event_sequence (event);
+
+  if (event->type == CLUTTER_TOUCH_BEGIN &&
+      !display->pointer_emulating_sequence &&
+      sequence_is_pointer_emulated (display, event))
+    display->pointer_emulating_sequence = sequence;
+  else if (event->type == CLUTTER_TOUCH_END &&
+           display->pointer_emulating_sequence == sequence)
+    display->pointer_emulating_sequence = NULL;
+}
+
+static gboolean
 meta_display_handle_event (MetaDisplay        *display,
                            const ClutterEvent *event)
 {
@@ -107,6 +163,8 @@ meta_display_handle_event (MetaDisplay        *display,
   gboolean bypass_clutter = FALSE, bypass_wayland = FALSE;
   MetaWaylandCompositor *compositor = NULL;
   MetaGestureTracker *tracker;
+
+  meta_display_update_pointer_emulating_sequence (display, event);
 
   if (meta_is_wayland_compositor ())
     {

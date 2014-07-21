@@ -3239,3 +3239,23 @@ meta_display_request_restart (MetaDisplay *display)
 
   return result;
 }
+
+/**
+ * meta_display_is_pointer_emulating_sequence:
+ * @display: the display
+ * @sequence: (nullable): a #ClutterEventSequence
+ *
+ * Tells whether the event sequence is the used for pointer emulation
+ * and single-touch interaction.
+ *
+ * Returns: #TRUE if the sequence emulates pointer behavior
+ **/
+gboolean
+meta_display_is_pointer_emulating_sequence (MetaDisplay          *display,
+                                            ClutterEventSequence *sequence)
+{
+  if (!sequence)
+    return FALSE;
+
+  return display->pointer_emulating_sequence == sequence;
+}

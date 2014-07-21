@@ -253,6 +253,7 @@ struct _MetaDisplay
   MetaCompositor *compositor;
 
   MetaGestureTracker *gesture_tracker;
+  ClutterEventSequence *pointer_emulating_sequence;
 
   int composite_event_base;
   int composite_error_base;

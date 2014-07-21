@@ -182,4 +182,7 @@ void meta_display_ungrab_keyboard (MetaDisplay *display,
                                    guint32      timestamp);
 void meta_display_unfreeze_keyboard (MetaDisplay *display,
                                      guint32      timestamp);
+gboolean meta_display_is_pointer_emulating_sequence (MetaDisplay          *display,
+                                                     ClutterEventSequence *sequence);
+
 #endif
