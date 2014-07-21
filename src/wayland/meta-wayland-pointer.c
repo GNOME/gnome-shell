@@ -214,6 +214,7 @@ meta_wayland_pointer_init (MetaWaylandPointer *pointer,
 void
 meta_wayland_pointer_release (MetaWaylandPointer *pointer)
 {
+  meta_wayland_pointer_set_focus (pointer, NULL);
   set_cursor_surface (pointer, NULL);
 }
 

@@ -301,6 +301,7 @@ meta_wayland_xkb_info_destroy (MetaWaylandXkbInfo *xkb_info)
 void
 meta_wayland_keyboard_release (MetaWaylandKeyboard *keyboard)
 {
+  meta_wayland_keyboard_set_focus (keyboard, NULL);
   meta_wayland_xkb_info_destroy (&keyboard->xkb_info);
   xkb_context_unref (keyboard->xkb_context);
 
