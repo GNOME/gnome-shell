@@ -204,8 +204,7 @@ meta_display_handle_event (MetaDisplay        *display,
 
   if (meta_gesture_tracker_handle_event (tracker, event))
     {
-      bypass_wayland = TRUE;
-      bypass_clutter = meta_gesture_tracker_consumes_event (tracker, event);
+      bypass_wayland = bypass_clutter = TRUE;
       goto out;
     }
 

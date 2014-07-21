@@ -413,6 +413,7 @@ meta_gesture_tracker_handle_event (MetaGestureTracker *tracker,
 {
   MetaGestureTrackerPrivate *priv;
   ClutterEventSequence *sequence;
+  MetaSequenceState state;
   MetaSequenceInfo *info;
   ClutterActor *stage;
   gfloat x, y;
@@ -446,6 +447,7 @@ meta_gesture_tracker_handle_event (MetaGestureTracker *tracker,
           meta_gesture_tracker_set_sequence_state (tracker, sequence,
                                                    priv->stage_state);
         }
+      state = info->state;
       break;
     case CLUTTER_TOUCH_END:
       info = g_hash_table_lookup (priv->sequences, sequence);
@@ -460,6 +462,7 @@ meta_gesture_tracker_handle_event (MetaGestureTracker *tracker,
         meta_gesture_tracker_set_sequence_state (tracker, sequence,
                                                  META_SEQUENCE_REJECTED);
 
+      state = info->state;
       g_hash_table_remove (priv->sequences, sequence);
 
       if (g_hash_table_size (priv->sequences) == 0)
@@ -478,13 +481,34 @@ meta_gesture_tracker_handle_event (MetaGestureTracker *tracker,
            ABS (info->start_y - y) > DISTANCE_THRESHOLD))
         meta_gesture_tracker_set_sequence_state (tracker, sequence,
                                                  META_SEQUENCE_REJECTED);
+      state = info->state;
       break;
     default:
       return FALSE;
       break;
     }
 
-  return TRUE;
+  /* As soon as a sequence is accepted, we replay it to
+   * the stage as a captured event, and make sure it's never
+   * propagated anywhere else. Since ClutterGestureAction does
+   * all its event handling from a captured-event handler on
+   * the stage, this effectively acts as a "sequence grab" on
+   * gesture actions.
+   *
+   * Sequences that aren't (yet or never) in an accepted state
+   * will go through, these events will get processed through
+   * the compositor, and eventually through clutter, still
+   * triggering the gestures capturing events on the stage, and
+   * possibly resulting in MetaSequenceState changes.
+   */
+  if (state == META_SEQUENCE_ACCEPTED)
+    {
+      clutter_actor_event (CLUTTER_ACTOR (clutter_event_get_stage (event)),
+                           event, TRUE);
+      return TRUE;
+    }
+
+  return FALSE;
 }
 
 gboolean
@@ -544,26 +568,6 @@ meta_gesture_tracker_get_sequence_state (MetaGestureTracker   *tracker,
     return META_SEQUENCE_PENDING_END;
 
   return info->state;
-}
-
-gboolean
-meta_gesture_tracker_consumes_event (MetaGestureTracker *tracker,
-                                     const ClutterEvent *event)
-{
-  ClutterEventSequence *sequence;
-  MetaSequenceState state;
-
-  g_return_val_if_fail (META_IS_GESTURE_TRACKER (tracker), FALSE);
-
-  sequence = clutter_event_get_event_sequence (event);
-
-  if (!sequence)
-    return FALSE;
-
-  state = meta_gesture_tracker_get_sequence_state (tracker, sequence);
-
-  return (event->type != CLUTTER_TOUCH_END &&
-          (state == META_SEQUENCE_REJECTED || state == META_SEQUENCE_PENDING_END));
 }
 
 gint

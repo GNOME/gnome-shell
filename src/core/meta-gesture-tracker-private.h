@@ -70,8 +70,6 @@ gboolean             meta_gesture_tracker_set_sequence_state (MetaGestureTracker
                                                               MetaSequenceState     state);
 MetaSequenceState    meta_gesture_tracker_get_sequence_state (MetaGestureTracker   *tracker,
                                                               ClutterEventSequence *sequence);
-gboolean             meta_gesture_tracker_consumes_event     (MetaGestureTracker   *tracker,
-                                                              const ClutterEvent   *event);
 gint                 meta_gesture_tracker_get_n_current_touches (MetaGestureTracker *tracker);
 
 #endif /* META_GESTURE_TRACKER_PRIVATE_H */
