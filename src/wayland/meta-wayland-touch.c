@@ -543,6 +543,6 @@ meta_wayland_touch_create_new_resource (MetaWaylandTouch   *touch,
 
   cr = wl_resource_create (client, &wl_touch_interface,
 			   MIN (META_WL_TOUCH_VERSION, wl_resource_get_version (seat_resource)), id);
-  wl_resource_set_implementation (cr, NULL, touch, unbind_resource);
+  wl_resource_set_implementation (cr, &touch_interface, touch, unbind_resource);
   wl_list_insert (&touch->resource_list, wl_resource_get_link (cr));
 }
