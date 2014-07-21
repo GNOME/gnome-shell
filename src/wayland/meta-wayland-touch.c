@@ -361,7 +361,7 @@ touch_send_frame_event (MetaWaylandTouch *touch)
 {
   GList *surfaces, *s;
 
-  surfaces = s = touch_get_surfaces (touch, TRUE);
+  surfaces = touch_get_surfaces (touch, TRUE);
 
   for (s = surfaces; s; s = s->next)
     {
@@ -452,7 +452,7 @@ touch_handle_cancel_event (MetaWaylandTouch      *touch,
 
   surfaces = s = touch_get_surfaces (touch, FALSE);
 
-  while (s)
+  for (s = surfaces; s; s = s->next)
     {
       MetaWaylandTouchSurface *touch_surface = s->data;
       struct wl_resource *resource;
