@@ -46,6 +46,8 @@ struct _MetaWaylandTouchInfo
   MetaWaylandTouchSurface *touch_surface;
   guint32 slot_serial;
   gint32 slot;
+  gfloat start_x;
+  gfloat start_y;
   gfloat x;
   gfloat y;
   guint updated : 1;
@@ -231,6 +233,7 @@ meta_wayland_touch_update (MetaWaylandTouch   *touch,
 
       touch_info = touch_get_info (touch, sequence, TRUE);
       touch_info->touch_surface = touch_surface_get (touch, surface);
+      clutter_event_get_coords (event, &touch_info->start_x, &touch_info->start_y);
     }
   else
     touch_info = touch_get_info (touch, sequence, FALSE);
@@ -544,4 +547,53 @@ meta_wayland_touch_create_new_resource (MetaWaylandTouch   *touch,
 			   MIN (META_WL_TOUCH_VERSION, wl_resource_get_version (seat_resource)), id);
   wl_resource_set_implementation (cr, &touch_interface, touch, unbind_resource);
   wl_list_insert (&touch->resource_list, wl_resource_get_link (cr));
+}
+
+ClutterEventSequence *
+meta_wayland_touch_find_grab_sequence (MetaWaylandTouch   *touch,
+                                       MetaWaylandSurface *surface,
+                                       uint32_t            serial)
+{
+  MetaWaylandTouchInfo *touch_info;
+  ClutterEventSequence *sequence;
+  GHashTableIter iter;
+
+  if (!touch->touches)
+    return NULL;
+
+  g_hash_table_iter_init (&iter, touch->touches);
+
+  while (g_hash_table_iter_next (&iter, (gpointer*) &sequence,
+                                 (gpointer*) &touch_info))
+    {
+      if (touch_info->slot_serial == serial &&
+	  touch_info->touch_surface->surface == surface)
+        return sequence;
+    }
+
+  return NULL;
+}
+
+gboolean
+meta_wayland_touch_get_press_coords (MetaWaylandTouch     *touch,
+                                     ClutterEventSequence *sequence,
+                                     gfloat               *x,
+                                     gfloat               *y)
+{
+  MetaWaylandTouchInfo *touch_info;
+
+  if (!touch->touches)
+    return FALSE;
+
+  touch_info = g_hash_table_lookup (touch->touches, sequence);
+
+  if (!touch_info)
+    return FALSE;
+
+  if (x)
+    *x = touch_info->start_x;
+  if (y)
+    *y = touch_info->start_y;
+
+  return TRUE;
 }

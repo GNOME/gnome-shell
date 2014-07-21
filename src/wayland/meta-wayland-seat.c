@@ -320,9 +320,27 @@ meta_wayland_seat_update_cursor_surface (MetaWaylandSeat *seat)
 }
 
 gboolean
-meta_wayland_seat_can_grab_surface (MetaWaylandSeat    *seat,
-                                    MetaWaylandSurface *surface,
-                                    uint32_t            serial)
+meta_wayland_seat_get_grab_info (MetaWaylandSeat    *seat,
+				 MetaWaylandSurface *surface,
+				 uint32_t            serial,
+				 gfloat             *x,
+				 gfloat             *y)
 {
-  return meta_wayland_pointer_can_grab_surface (&seat->pointer, surface, serial);
+  ClutterEventSequence *sequence;
+
+  sequence = meta_wayland_touch_find_grab_sequence (&seat->touch, surface, serial);
+
+  if (sequence)
+    meta_wayland_touch_get_press_coords (&seat->touch, sequence, x, y);
+  else if (meta_wayland_pointer_can_grab_surface (&seat->pointer, surface, serial))
+    {
+      if (x)
+        *x = seat->pointer.grab_x;
+      if (y)
+        *y = seat->pointer.grab_y;
+    }
+  else
+    return FALSE;
+
+  return TRUE;
 }

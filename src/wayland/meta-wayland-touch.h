@@ -61,4 +61,13 @@ void meta_wayland_touch_create_new_resource (MetaWaylandTouch   *touch,
 void meta_wayland_touch_cancel (MetaWaylandTouch *touch);
 
 
+ClutterEventSequence * meta_wayland_touch_find_grab_sequence (MetaWaylandTouch   *touch,
+                                                              MetaWaylandSurface *surface,
+                                                              uint32_t            serial);
+
+gboolean meta_wayland_touch_get_press_coords (MetaWaylandTouch     *touch,
+                                              ClutterEventSequence *sequence,
+                                              gfloat               *x,
+                                              gfloat               *y);
+
 #endif /* META_WAYLAND_TOUCH_H */
