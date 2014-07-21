@@ -60,6 +60,8 @@
 
 #include "meta-wayland-private.h"
 
+static void meta_wayland_keyboard_update_xkb_state (MetaWaylandKeyboard *keyboard);
+
 static void
 unbind_resource (struct wl_resource *resource)
 {
@@ -147,8 +149,7 @@ meta_wayland_keyboard_take_keymap (MetaWaylandKeyboard *keyboard,
   xkb_keymap_unref (xkb_info->keymap);
   xkb_info->keymap = keymap;
 
-  xkb_state_unref (xkb_info->state);
-  xkb_info->state = xkb_state_new (keymap);
+  meta_wayland_keyboard_update_xkb_state (keyboard);
 
   keymap_str = xkb_map_get_as_string (xkb_info->keymap);
   if (keymap_str == NULL)
@@ -257,6 +258,36 @@ notify_modifiers (MetaWaylandKeyboard *keyboard, uint32_t serial,
       wl_keyboard_send_modifiers (resource, serial, mods_depressed,
                                   mods_latched, mods_locked, group);
     }
+}
+
+static void
+meta_wayland_keyboard_update_xkb_state (MetaWaylandKeyboard *keyboard)
+{
+  MetaWaylandXkbInfo *xkb_info = &keyboard->xkb_info;
+  xkb_mod_mask_t latched, locked, group;
+
+  /* Preserve latched/locked modifiers state */
+  if (xkb_info->state)
+    {
+      latched = xkb_state_serialize_mods (xkb_info->state, XKB_STATE_MODS_LATCHED);
+      locked = xkb_state_serialize_mods (xkb_info->state, XKB_STATE_MODS_LOCKED);
+      group = xkb_state_serialize_layout (xkb_info->state, XKB_STATE_LAYOUT_EFFECTIVE);
+      xkb_state_unref (xkb_info->state);
+    }
+  else
+    latched = locked = group = 0;
+
+  xkb_info->state = xkb_state_new (xkb_info->keymap);
+
+  if (latched || locked || group)
+    xkb_state_update_mask (xkb_info->state, 0, latched, locked, 0, 0, group);
+
+  notify_modifiers (keyboard,
+                    wl_display_next_serial (keyboard->display),
+                    xkb_state_serialize_mods (xkb_info->state, XKB_STATE_MODS_DEPRESSED),
+                    xkb_state_serialize_mods (xkb_info->state, XKB_STATE_MODS_LATCHED),
+                    xkb_state_serialize_mods (xkb_info->state, XKB_STATE_MODS_LOCKED),
+                    xkb_state_serialize_layout (xkb_info->state, XKB_STATE_LAYOUT_EFFECTIVE));
 }
 
 void
