@@ -467,20 +467,28 @@ gesture_tracker_state_changed (MetaGestureTracker   *tracker,
                                MetaSequenceState     state,
                                MetaDisplay          *display)
 {
-  MetaBackendX11 *backend = META_BACKEND_X11 (meta_get_backend ());
-  int event_mode;
-
-  if (state == META_SEQUENCE_ACCEPTED)
-    event_mode = XIAcceptTouch;
-  else if (state == META_SEQUENCE_REJECTED)
-    event_mode = XIRejectTouch;
+  if (meta_is_wayland_compositor ())
+    {
+      if (state == META_SEQUENCE_ACCEPTED)
+        meta_display_cancel_touch (display);
+    }
   else
-    return;
+    {
+      MetaBackendX11 *backend = META_BACKEND_X11 (meta_get_backend ());
+      int event_mode;
 
-  XIAllowTouchEvents (meta_backend_x11_get_xdisplay (backend),
-                      META_VIRTUAL_CORE_POINTER_ID,
-                      clutter_x11_event_sequence_get_touch_detail (sequence),
-                      DefaultRootWindow (display->xdisplay), event_mode);
+      if (state == META_SEQUENCE_ACCEPTED)
+        event_mode = XIAcceptTouch;
+      else if (state == META_SEQUENCE_REJECTED)
+        event_mode = XIRejectTouch;
+      else
+        return;
+
+      XIAllowTouchEvents (meta_backend_x11_get_xdisplay (backend),
+                          META_VIRTUAL_CORE_POINTER_ID,
+                          clutter_x11_event_sequence_get_touch_detail (sequence),
+                          DefaultRootWindow (display->xdisplay), event_mode);
+    }
 }
 
 /**
