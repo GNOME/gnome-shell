@@ -6073,9 +6073,13 @@ static void
 end_grab_op (MetaWindow *window,
              const ClutterEvent *event)
 {
-  meta_display_check_threshold_reached (window->display,
-                                        event->button.x,
-                                        event->button.y);
+  ClutterModifierType modifiers;
+  gfloat x, y;
+
+  clutter_event_get_coords (event, &x, &y);
+  modifiers = clutter_event_get_state (event);
+  meta_display_check_threshold_reached (window->display, x, y);
+
   /* If the user was snap moving then ignore the button
    * release because they may have let go of shift before
    * releasing the mouse button and they almost certainly do
@@ -6090,16 +6094,14 @@ end_grab_op (MetaWindow *window,
             meta_window_tile (window);
           else
             update_move (window,
-                         event->button.modifier_state & CLUTTER_SHIFT_MASK,
-                         event->button.x,
-                         event->button.y);
+                         modifiers & CLUTTER_SHIFT_MASK,
+                         x, y);
         }
       else if (meta_grab_op_is_resizing (window->display->grab_op))
         {
           update_resize (window,
-                         event->button.modifier_state & CLUTTER_SHIFT_MASK,
-                         event->button.x,
-                         event->button.y,
+                         modifiers & CLUTTER_SHIFT_MASK,
+                         x, y,
                          TRUE);
 
           /* If a tiled window has been dragged free with a
@@ -6112,13 +6114,16 @@ end_grab_op (MetaWindow *window,
           update_tile_mode (window);
         }
     }
-  meta_display_end_grab_op (window->display, event->any.time);
+  meta_display_end_grab_op (window->display, clutter_event_get_time (event));
 }
 
 gboolean
 meta_window_handle_mouse_grab_op_event  (MetaWindow         *window,
                                          const ClutterEvent *event)
 {
+  ClutterModifierType modifier_state;
+  gfloat x, y;
+
   switch (event->type)
     {
     case CLUTTER_BUTTON_PRESS:
@@ -6146,22 +6151,21 @@ meta_window_handle_mouse_grab_op_event  (MetaWindow         *window,
       return TRUE;
 
     case CLUTTER_MOTION:
-      meta_display_check_threshold_reached (window->display,
-                                            event->motion.x,
-                                            event->motion.y);
+      modifier_state = clutter_event_get_state (event);
+      clutter_event_get_coords (event, &x, &y);
+
+      meta_display_check_threshold_reached (window->display, x, y);
       if (meta_grab_op_is_moving (window->display->grab_op))
         {
           update_move (window,
-                       event->button.modifier_state & CLUTTER_SHIFT_MASK,
-                       event->motion.x,
-                       event->motion.y);
+                       modifier_state & CLUTTER_SHIFT_MASK,
+                       x, y);
         }
       else if (meta_grab_op_is_resizing (window->display->grab_op))
         {
           update_resize (window,
-                         event->button.modifier_state & CLUTTER_SHIFT_MASK,
-                         event->motion.x,
-                         event->motion.y,
+                         modifier_state & CLUTTER_SHIFT_MASK,
+                         x, y,
                          FALSE);
         }
       return TRUE;
