@@ -34,6 +34,7 @@
 G_BEGIN_DECLS
 
 #define CLUTTER_TYPE_EVENT	        (clutter_event_get_type ())
+#define CLUTTER_TYPE_EVENT_SEQUENCE	(clutter_event_sequence_get_type ())
 
 /**
  * CLUTTER_PRIORITY_EVENTS:
@@ -425,6 +426,9 @@ typedef gboolean (* ClutterEventFilterFunc) (const ClutterEvent *event,
 
 CLUTTER_AVAILABLE_IN_ALL
 GType clutter_event_get_type (void) G_GNUC_CONST;
+
+CLUTTER_AVAILABLE_IN_1_20
+GType clutter_event_sequence_get_type (void) G_GNUC_CONST;
 
 CLUTTER_AVAILABLE_IN_ALL
 gboolean                clutter_events_pending                  (void);

@@ -79,6 +79,23 @@ G_DEFINE_BOXED_TYPE (ClutterEvent, clutter_event,
                      clutter_event_copy,
                      clutter_event_free);
 
+static ClutterEventSequence *
+clutter_event_sequence_copy (ClutterEventSequence *sequence)
+{
+  /* Nothing to copy here */
+  return sequence;
+}
+
+static void
+clutter_event_sequence_free (ClutterEventSequence *sequence)
+{
+  /* Nothing to free here */
+}
+
+G_DEFINE_BOXED_TYPE (ClutterEventSequence, clutter_event_sequence,
+                     clutter_event_sequence_copy,
+                     clutter_event_sequence_free);
+
 static gboolean
 is_event_allocated (const ClutterEvent *event)
 {
