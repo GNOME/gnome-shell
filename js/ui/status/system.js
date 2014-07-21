@@ -151,11 +151,11 @@ const Indicator = new Lang.Class({
         Gio.DBus.session.watch_name('org.gnome.SettingsDaemon.Orientation',
                                     Gio.BusNameWatcherFlags.NONE,
                                     Lang.bind(this, function() {
-                                        this._orentationExists = true;
+                                        this._orientationExists = true;
                                         this._updateOrientationLock();
                                     }),
                                     Lang.bind(this, function() {
-                                        this._orentationExists = false;
+                                        this._orientationExists = false;
                                         this._updateOrientationLock();
                                     }));
         this._updateOrientationLock();
