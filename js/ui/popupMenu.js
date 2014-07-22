@@ -106,6 +106,7 @@ const PopupBaseMenuItem = new Lang.Class({
 
         if (this._activatable) {
             this.actor.connect('button-release-event', Lang.bind(this, this._onButtonReleaseEvent));
+            this.actor.connect('touch-event', Lang.bind(this, this._onTouchEvent));
             this.actor.connect('key-press-event', Lang.bind(this, this._onKeyPressEvent));
         }
         if (params.reactive && params.hover)
@@ -130,6 +131,14 @@ const PopupBaseMenuItem = new Lang.Class({
     _onButtonReleaseEvent: function (actor, event) {
         this.activate(event);
         return Clutter.EVENT_STOP;
+    },
+
+    _onTouchEvent: function (actor, event) {
+        if (event.type() == Clutter.EventType.TOUCH_END) {
+            this.activate(event);
+            return Clutter.EVENT_STOP;
+        }
+        return Clutter.EVENT_PROPAGATE;
     },
 
     _onKeyPressEvent: function (actor, event) {
