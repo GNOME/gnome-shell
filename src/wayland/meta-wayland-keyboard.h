@@ -70,6 +70,7 @@ struct _MetaWaylandKeyboard
   uint32_t focus_serial;
 
   MetaWaylandXkbInfo xkb_info;
+  enum xkb_state_component mods_changed;
 
   GSettings *settings;
 };

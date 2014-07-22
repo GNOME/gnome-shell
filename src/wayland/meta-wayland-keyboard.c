@@ -434,16 +434,10 @@ meta_wayland_keyboard_update (MetaWaylandKeyboard *keyboard,
                               const ClutterKeyEvent *event)
 {
   gboolean is_press = event->type == CLUTTER_KEY_PRESS;
-  struct xkb_state *state = keyboard->xkb_info.state;
-  enum xkb_state_component changed_state;
 
-  changed_state = xkb_state_update_key (state,
-                                        event->hardware_keycode,
-                                        is_press ? XKB_KEY_DOWN : XKB_KEY_UP);
-  if (changed_state == 0)
-    return;
-
-  notify_modifiers (keyboard);
+  keyboard->mods_changed = xkb_state_update_key (keyboard->xkb_info.state,
+                                                 event->hardware_keycode,
+                                                 is_press ? XKB_KEY_DOWN : XKB_KEY_UP);
 }
 
 gboolean
@@ -468,6 +462,12 @@ meta_wayland_keyboard_handle_event (MetaWaylandKeyboard *keyboard,
     meta_verbose ("Sent event to wayland client\n");
   else
     meta_verbose ("No wayland surface is focused, continuing normal operation\n");
+
+  if (keyboard->mods_changed != 0)
+    {
+      notify_modifiers (keyboard);
+      keyboard->mods_changed = 0;
+    }
 
   return handled;
 }
