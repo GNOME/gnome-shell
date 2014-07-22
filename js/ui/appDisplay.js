@@ -1382,7 +1382,9 @@ const AppIcon = new Lang.Class({
 
         this.actor.label_actor = this.icon.label;
 
+        this.actor.connect('leave-event', Lang.bind(this, this._onLeaveEvent));
         this.actor.connect('button-press-event', Lang.bind(this, this._onButtonPress));
+        this.actor.connect('touch-event', Lang.bind(this, this._onTouchEvent));
         this.actor.connect('clicked', Lang.bind(this, this._onClicked));
         this.actor.connect('popup-menu', Lang.bind(this, this._onKeyboardPopupMenu));
 
@@ -1438,17 +1440,26 @@ const AppIcon = new Lang.Class({
             this.actor.remove_style_class_name('running');
     },
 
+    _setPopupTimeout: function() {
+        this._removeMenuTimeout();
+        this._menuTimeoutId = Mainloop.timeout_add(MENU_POPUP_TIMEOUT,
+            Lang.bind(this, function() {
+                this._menuTimeoutId = 0;
+                this.popupMenu();
+                return GLib.SOURCE_REMOVE;
+            }));
+        GLib.Source.set_name_by_id(this._menuTimeoutId, '[gnome-shell] this.popupMenu');
+    },
+
+    _onLeaveEvent: function(actor, event) {
+        this.actor.fake_release();
+        this._removeMenuTimeout();
+    },
+
     _onButtonPress: function(actor, event) {
         let button = event.get_button();
         if (button == 1) {
-            this._removeMenuTimeout();
-            this._menuTimeoutId = Mainloop.timeout_add(MENU_POPUP_TIMEOUT,
-                Lang.bind(this, function() {
-                    this._menuTimeoutId = 0;
-                    this.popupMenu();
-                    return GLib.SOURCE_REMOVE;
-                }));
-            GLib.Source.set_name_by_id(this._menuTimeoutId, '[gnome-shell] this.popupMenu');
+            this._setPopupTimeout();
         } else if (button == 3) {
             this.popupMenu();
             return Clutter.EVENT_STOP;
@@ -1456,10 +1467,17 @@ const AppIcon = new Lang.Class({
         return Clutter.EVENT_PROPAGATE;
     },
 
+    _onTouchEvent: function (actor, event) {
+        if (event.type() == Clutter.EventType.TOUCH_BEGIN)
+            this._setPopupTimeout();
+
+        return Clutter.EVENT_PROPAGATE;
+    },
+
     _onClicked: function(actor, button) {
         this._removeMenuTimeout();
 
-        if (button == 1) {
+        if (button == 0 || button == 1) {
             this._onActivate(Clutter.get_current_event());
         } else if (button == 2) {
             this.app.open_new_window(-1);
