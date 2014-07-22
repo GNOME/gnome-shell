@@ -44,9 +44,6 @@
 
 #include "meta-cursor-private.h"
 #include "meta-cursor-tracker-private.h"
-#include "screen-private.h"
-
-#include "wayland/meta-wayland-private.h"
 
 G_DEFINE_TYPE (MetaCursorTracker, meta_cursor_tracker, G_TYPE_OBJECT);
 
@@ -60,10 +57,12 @@ static guint signals[LAST_SIGNAL];
 static MetaCursorReference *
 get_displayed_cursor (MetaCursorTracker *tracker)
 {
+  MetaDisplay *display = meta_get_display ();
+
   if (!tracker->is_showing)
     return NULL;
 
-  if (tracker->screen->display->grab_op == META_GRAB_OP_NONE)
+  if (display->grab_op == META_GRAB_OP_NONE)
     {
       if (tracker->has_window_cursor)
         return tracker->window_cursor;
@@ -97,6 +96,9 @@ sync_cursor (MetaCursorTracker *tracker)
 static void
 meta_cursor_tracker_init (MetaCursorTracker *self)
 {
+  MetaBackend *backend = meta_get_backend ();
+
+  self->renderer = meta_backend_get_cursor_renderer (backend);
   self->is_showing = TRUE;
 }
 
@@ -129,47 +131,9 @@ meta_cursor_tracker_class_init (MetaCursorTrackerClass *klass)
 }
 
 static MetaCursorTracker *
-make_wayland_cursor_tracker (MetaScreen *screen)
+meta_cursor_tracker_new (void)
 {
-  MetaBackend *backend = meta_get_backend ();
-  MetaWaylandCompositor *compositor;
-  MetaCursorTracker *self;
-
-  self = g_object_new (META_TYPE_CURSOR_TRACKER, NULL);
-  self->screen = screen;
-  self->renderer = meta_backend_get_cursor_renderer (backend);
-
-  compositor = meta_wayland_compositor_get_default ();
-  compositor->seat->pointer.cursor_tracker = self;
-  meta_cursor_tracker_update_position (self, 0, 0);
-
-  return self;
-}
-
-static MetaCursorTracker *
-make_x11_cursor_tracker (MetaScreen *screen)
-{
-  MetaBackend *backend = meta_get_backend ();
-  MetaCursorTracker *self;
-
-  self = g_object_new (META_TYPE_CURSOR_TRACKER, NULL);
-  self->screen = screen;
-  self->renderer = meta_backend_get_cursor_renderer (backend);
-
-  XFixesSelectCursorInput (screen->display->xdisplay,
-                           screen->xroot,
-                           XFixesDisplayCursorNotifyMask);
-
-  return self;
-}
-
-static MetaCursorTracker *
-meta_cursor_tracker_new (MetaScreen *screen)
-{
-  if (meta_is_wayland_compositor ())
-    return make_wayland_cursor_tracker (screen);
-  else
-    return make_x11_cursor_tracker (screen);
+  return g_object_new (META_TYPE_CURSOR_TRACKER, NULL);
 }
 
 static MetaCursorTracker *_cursor_tracker;
@@ -186,7 +150,7 @@ MetaCursorTracker *
 meta_cursor_tracker_get_for_screen (MetaScreen *screen)
 {
   if (!_cursor_tracker)
-    _cursor_tracker = meta_cursor_tracker_new (screen);
+    _cursor_tracker = meta_cursor_tracker_new ();
 
   return _cursor_tracker;
 }
@@ -207,12 +171,13 @@ gboolean
 meta_cursor_tracker_handle_xevent (MetaCursorTracker *tracker,
                                    XEvent            *xevent)
 {
+  MetaDisplay *display = meta_get_display ();
   XFixesCursorNotifyEvent *notify_event;
 
   if (meta_is_wayland_compositor ())
     return FALSE;
 
-  if (xevent->xany.type != tracker->screen->display->xfixes_event_base + XFixesCursorNotify)
+  if (xevent->xany.type != display->xfixes_event_base + XFixesCursorNotify)
     return FALSE;
 
   notify_event = (XFixesCursorNotifyEvent *)xevent;
@@ -243,6 +208,7 @@ meta_cursor_reference_take_texture (CoglTexture2D *texture,
 static void
 ensure_xfixes_cursor (MetaCursorTracker *tracker)
 {
+  MetaDisplay *display = meta_get_display ();
   XFixesCursorImage *cursor_image;
   CoglTexture2D *sprite;
   guint8 *cursor_data;
@@ -252,7 +218,7 @@ ensure_xfixes_cursor (MetaCursorTracker *tracker)
   if (tracker->xfixes_cursor)
     return;
 
-  cursor_image = XFixesGetCursorImage (tracker->screen->display->xdisplay);
+  cursor_image = XFixesGetCursorImage (display->xdisplay);
   if (!cursor_image)
     return;
 

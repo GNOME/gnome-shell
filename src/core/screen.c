@@ -667,6 +667,9 @@ meta_screen_new (MetaDisplay *display,
       return NULL;
     }
 
+  /* Select for cursor changes so the cursor tracker is up to date. */
+  XFixesSelectCursorInput (xdisplay, xroot, XFixesDisplayCursorNotifyMask);
+
   screen = g_object_new (META_TYPE_SCREEN, NULL);
   screen->closing = 0;
 

@@ -207,6 +207,8 @@ meta_wayland_pointer_init (MetaWaylandPointer *pointer,
 
   manager = clutter_device_manager_get_default ();
   pointer->device = clutter_device_manager_get_core_device (manager, CLUTTER_POINTER_DEVICE);
+
+  pointer->cursor_tracker = meta_cursor_tracker_get_for_screen (NULL);
 }
 
 void
