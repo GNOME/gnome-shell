@@ -283,12 +283,14 @@ const GrabHelper = new Lang.Class({
             return Clutter.EVENT_STOP;
         }
 
+        let motion = type == Clutter.EventType.MOTION;
         let press = type == Clutter.EventType.BUTTON_PRESS;
         let release = type == Clutter.EventType.BUTTON_RELEASE;
         let button = press || release;
 
-        if (release && this._ignoreRelease) {
-            this._ignoreRelease = false;
+        if (this._ignoreUntilRelease && (motion || release)) {
+            if (release)
+                this._ignoreUntilRelease = false;
             return Clutter.EVENT_STOP;
         }
 
@@ -299,10 +301,11 @@ const GrabHelper = new Lang.Class({
             return Clutter.EVENT_PROPAGATE;
 
         if (button) {
-            // If we have a press event, ignore the next event,
-            // which should be a release event.
+            // If we have a press event, ignore the next
+            // motion/release events.
             if (press)
-                this._ignoreRelease = true;
+                this._ignoreUntilRelease = true;
+
             let i = this._actorInGrabStack(event.get_source()) + 1;
             this.ungrab({ actor: this._grabStack[i].actor, isUser: true });
             return Clutter.EVENT_STOP;
