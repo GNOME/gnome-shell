@@ -52,8 +52,7 @@ const Key = new Lang.Class({
 
     _init : function(key) {
         this._key = key;
-
-        this.actor = this._makeKey();
+        this.actor = this._makeKey(key, GLib.markup_escape_text(key.label, -1));
 
         this._extended_keys = this._key.get_extended_keys();
         this._extended_keyboard = null;
@@ -76,20 +75,19 @@ const Key = new Lang.Class({
         }
     },
 
-    _makeKey: function () {
-        let label = GLib.markup_escape_text(this._key.label, -1);
+    _makeKey: function (key, label) {
         let button = new St.Button ({ label: label,
                                       style_class: 'keyboard-key' });
 
         button.key_width = this._key.width;
         button.connect('button-press-event', Lang.bind(this,
             function () {
-                this._key.press();
+                key.press();
                 return Clutter.EVENT_PROPAGATE;
             }));
         button.connect('button-release-event', Lang.bind(this,
             function () {
-                this._key.release();
+                key.release();
                 return Clutter.EVENT_PROPAGATE;
             }));
 
@@ -112,18 +110,9 @@ const Key = new Lang.Class({
         for (let i = 0; i < this._extended_keys.length; ++i) {
             let extended_key = this._extended_keys[i];
             let label = this._getUnichar(extended_key);
-            let key = new St.Button({ label: label, style_class: 'keyboard-key' });
+            let key = this._makeKey(extended_key, label);
+
             key.extended_key = extended_key;
-            key.connect('button-press-event', Lang.bind(this,
-                function () {
-                    extended_key.press();
-                    return Clutter.EVENT_PROPAGATE;
-                }));
-            key.connect('button-release-event', Lang.bind(this,
-                function () {
-                    extended_key.release();
-                    return Clutter.EVENT_PROPAGATE;
-                }));
             this._extended_keyboard.add(key);
         }
         this._boxPointer.bin.add_actor(this._extended_keyboard);
