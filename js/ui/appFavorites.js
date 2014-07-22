@@ -6,6 +6,26 @@ const Signals = imports.signals;
 
 const Main = imports.ui.main;
 
+const RENAMED_DESKTOP_IDS = {
+    'baobab.desktop': 'org.gnome.baobab.desktop',
+    'cheese.desktop': 'org.gnome.Cheese.desktop',
+    'dconf-editor.desktop': 'ca.desrt.dconf-editor.desktop',
+    'file-roller.desktop': 'org.gnome.FileRoller.desktop',
+    'gcalctool.desktop': 'gnome-calculator.desktop',
+    'gedit.desktop': 'org.gnome.gedit.desktop',
+    'glchess.desktop': 'gnome-chess.desktop',
+    'gnome-clocks.desktop': 'org.gnome.clocks.desktop',
+    'gnome-documents.desktop': 'org.gnome.Documents.desktop',
+    'gnome-font-viewer.desktop': 'org.gnome.font-viewer.desktop',
+    'gnome-photos.desktop': 'org.gnome.Photos.desktop',
+    'gnome-screenshot.desktop': 'org.gnome.Screenshot.desktop',
+    'gnome-software.desktop': 'org.gnome.Software.desktop',
+    'gnome-weather.desktop': 'org.gnome.Weather.Application.desktop',
+    'gnomine.desktop': 'gnome-mines.desktop',
+    'nautilus.desktop': 'org.gnome.Nautilus.desktop',
+    'polari.desktop': 'org.gnome.Polari.desktop',
+};
+
 const AppFavorites = new Lang.Class({
     Name: 'AppFavorites',
 
@@ -24,6 +44,21 @@ const AppFavorites = new Lang.Class({
 
     reload: function() {
         let ids = global.settings.get_strv(this.FAVORITE_APPS_KEY);
+
+        // Map old desktop file names to the current ones
+        let updated = false;
+        ids = ids.map(function (id) {
+            let newId = RENAMED_DESKTOP_IDS[id];
+            if (newId !== undefined) {
+                updated = true;
+                return newId;
+            }
+            return id;
+        });
+        // ... and write back the updated desktop file names
+        if (updated)
+            global.settings.set_strv(this.FAVORITE_APPS_KEY, ids);
+
         let appSys = Shell.AppSystem.get_default();
         let apps = ids.map(function (id) {
                 return appSys.lookup_app(id);
