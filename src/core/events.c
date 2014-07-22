@@ -234,8 +234,15 @@ meta_display_handle_event (MetaDisplay        *display,
 
   if (window)
     {
-      /* Swallow all events on windows that come our way. */
-      bypass_clutter = TRUE;
+      if (!clutter_event_get_event_sequence (event))
+        {
+          /* Swallow all non-touch events on windows that come our way.
+           * Touch events that reach here aren't yet in an accepted state,
+           * so Clutter must see them to maybe trigger gestures into
+           * recognition.
+           */
+          bypass_clutter = TRUE;
+        }
 
       /* Under X11, we have a Sync grab and in order to send it back to
        * clients, we have to explicitly replay it.
@@ -247,7 +254,7 @@ meta_display_handle_event (MetaDisplay        *display,
         {
           bypass_wayland = TRUE;
         }
-      else
+      else if (!clutter_event_get_event_sequence (event))
         {
           MetaBackend *backend = meta_get_backend ();
           if (META_IS_BACKEND_X11 (backend))
