@@ -24,6 +24,7 @@ const Slider = new Lang.Class({
                                           accessible_role: Atk.Role.SLIDER });
         this.actor.connect('repaint', Lang.bind(this, this._sliderRepaint));
         this.actor.connect('button-press-event', Lang.bind(this, this._startDragging));
+        this.actor.connect('touch-event', Lang.bind(this, this._touchDragging));
         this.actor.connect('scroll-event', Lang.bind(this, this._onScrollEvent));
         this.actor.connect('key-press-event', Lang.bind(this, this.onKeyPressEvent));
 
@@ -121,11 +122,21 @@ const Slider = new Lang.Class({
         this._dragging = true;
 
         let device = event.get_device();
-        device.grab(this.actor);
-        this._grabbedDevice = device;
+        let sequence = event.get_event_sequence();
 
-        this._releaseId = this.actor.connect('button-release-event', Lang.bind(this, this._endDragging));
-        this._motionId = this.actor.connect('motion-event', Lang.bind(this, this._motionEvent));
+        if (sequence != null)
+            device.sequence_grab(sequence, this.actor);
+        else
+            device.grab(this.actor);
+
+        this._grabbedDevice = device;
+        this._grabbedSequence = sequence;
+
+        if (sequence == null) {
+            this._releaseId = this.actor.connect('button-release-event', Lang.bind(this, this._endDragging));
+            this._motionId = this.actor.connect('motion-event', Lang.bind(this, this._motionEvent));
+        }
+
         let absX, absY;
         [absX, absY] = event.get_coords();
         this._moveHandle(absX, absY);
@@ -134,16 +145,41 @@ const Slider = new Lang.Class({
 
     _endDragging: function() {
         if (this._dragging) {
-            this.actor.disconnect(this._releaseId);
-            this.actor.disconnect(this._motionId);
+            if (this._releaseId)
+                this.actor.disconnect(this._releaseId);
+            if (this._motionId)
+                this.actor.disconnect(this._motionId);
 
-            this._grabbedDevice.ungrab();
+            if (this._grabbedSequence != null)
+                this._grabbedDevice.sequence_ungrab(this._grabbedSequence);
+            else
+                this._grabbedDevice.ungrab();
+
+            this._grabbedSequence = null;
             this._grabbedDevice = null;
             this._dragging = false;
 
             this.emit('drag-end');
         }
         return Clutter.EVENT_STOP;
+    },
+
+    _touchDragging: function(actor, event) {
+        let device = event.get_device();
+        let sequence = event.get_event_sequence();
+
+        if (!this._dragging &&
+            event.type() == Clutter.EventType.TOUCH_BEGIN) {
+            this.startDragging(event);
+            return Clutter.EVENT_STOP;
+        } else if (device.sequence_get_grabbed_actor(sequence) == actor) {
+            if (event.type() == Clutter.EventType.TOUCH_UPDATE)
+                return this._motionEvent(actor, event);
+            else if (event.type() == Clutter.EventType.TOUCH_END)
+                return this._endDragging();
+        }
+
+        return Clutter.EVENT_PROPAGATE;
     },
 
     scroll: function(event) {
