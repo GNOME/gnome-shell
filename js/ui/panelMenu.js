@@ -100,7 +100,7 @@ const Button = new Lang.Class({
                       accessible_name: nameText ? nameText : "",
                       accessible_role: Atk.Role.MENU });
 
-        this.actor.connect('button-press-event', Lang.bind(this, this._onButtonPress));
+        this.actor.connect('event', Lang.bind(this, this._onEvent));
         this.actor.connect('key-press-event', Lang.bind(this, this._onSourceKeyPress));
         this.actor.connect('notify::visible', Lang.bind(this, this._onVisibilityChanged));
 
@@ -131,11 +131,12 @@ const Button = new Lang.Class({
         }
     },
 
-    _onButtonPress: function(actor, event) {
-        if (!this.menu)
-            return Clutter.EVENT_PROPAGATE;
+    _onEvent: function(actor, event) {
+        if (this.menu &&
+            (event.type() == Clutter.EventType.TOUCH_BEGIN ||
+             event.type() == Clutter.EventType.BUTTON_PRESS))
+            this.menu.toggle();
 
-        this.menu.toggle();
         return Clutter.EVENT_PROPAGATE;
     },
 
