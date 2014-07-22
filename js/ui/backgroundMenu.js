@@ -33,8 +33,7 @@ function addBackgroundMenu(actor, layoutManager) {
     actor._backgroundManager = new PopupMenu.PopupMenuManager({ actor: actor });
     actor._backgroundManager.addMenu(actor._backgroundMenu);
 
-    function openMenu() {
-        let [x, y] = global.get_pointer();
+    function openMenu(x, y) {
         Main.layoutManager.setDummyCursorGeometry(x, y, 0, 0);
         actor._backgroundMenu.open(BoxPointer.PopupAnimation.NONE);
     }
@@ -42,16 +41,21 @@ function addBackgroundMenu(actor, layoutManager) {
     let clickAction = new Clutter.ClickAction();
     clickAction.connect('long-press', function(action, actor, state) {
         if (state == Clutter.LongPressState.QUERY)
-            return action.get_button() == 1 && !actor._backgroundMenu.isOpen;
+            return ((action.get_button() == 0 ||
+                     action.get_button() == 1) &&
+                    !actor._backgroundMenu.isOpen);
         if (state == Clutter.LongPressState.ACTIVATE) {
-            openMenu();
+            let [x, y] = action.get_coords();
+            openMenu(x, y);
             actor._backgroundManager.ignoreRelease();
         }
         return true;
     });
     clickAction.connect('clicked', function(action) {
-        if (action.get_button() == 3)
-            openMenu();
+        if (action.get_button() == 3) {
+            let [x, y] = action.get_coords();
+            openMenu(x, y);
+        }
     });
     actor.add_action(clickAction);
 
