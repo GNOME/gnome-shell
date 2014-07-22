@@ -462,6 +462,18 @@ meta_set_gnome_wm_keybindings (const char *wm_keybindings)
 }
 
 static void
+meta_display_cancel_touch (MetaDisplay *display)
+{
+  MetaWaylandCompositor *compositor;
+
+  if (!meta_is_wayland_compositor ())
+    return;
+
+  compositor = meta_wayland_compositor_get_default ();
+  meta_wayland_touch_cancel (&compositor->seat->touch);
+}
+
+static void
 gesture_tracker_state_changed (MetaGestureTracker   *tracker,
                                ClutterEventSequence *sequence,
                                MetaSequenceState     state,
