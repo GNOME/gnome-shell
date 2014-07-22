@@ -461,7 +461,7 @@ meta_set_gnome_wm_keybindings (const char *wm_keybindings)
   gnome_wm_keybindings = wm_keybindings;
 }
 
-static void
+void
 meta_display_cancel_touch (MetaDisplay *display)
 {
   MetaWaylandCompositor *compositor;
@@ -1869,7 +1869,10 @@ meta_display_begin_grab_op (MetaDisplay *display,
   display->grab_anchor_window_pos = display->grab_initial_window_pos;
 
   if (meta_is_wayland_compositor ())
-    meta_display_sync_wayland_input_focus (display);
+    {
+      meta_display_sync_wayland_input_focus (display);
+      meta_display_cancel_touch (display);
+    }
 
   g_signal_emit (display, display_signals[GRAB_OP_BEGIN], 0,
                  screen, display->grab_window, display->grab_op);

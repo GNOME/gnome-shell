@@ -74,7 +74,7 @@
 #include "meta-window-group.h"
 #include "meta-stage.h"
 #include "window-private.h" /* to check window->hidden */
-#include "display-private.h" /* for meta_display_lookup_x_window() */
+#include "display-private.h" /* for meta_display_lookup_x_window() and meta_display_cancel_touch() */
 #include "util-private.h"
 #include "frame.h"
 #include <X11/extensions/shape.h>
@@ -365,7 +365,10 @@ meta_begin_modal_for_plugin (MetaCompositor   *compositor,
                          display->grab_window, display->grab_op);
 
   if (meta_is_wayland_compositor ())
-    meta_display_sync_wayland_input_focus (display);
+    {
+      meta_display_sync_wayland_input_focus (display);
+      meta_display_cancel_touch (display);
+    }
 
   return TRUE;
 }

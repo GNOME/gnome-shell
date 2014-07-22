@@ -454,4 +454,6 @@ gboolean meta_display_request_restart      (MetaDisplay *display);
 void meta_restart_init (void);
 void meta_restart_finish (void);
 
+void meta_display_cancel_touch (MetaDisplay *display);
+
 #endif
