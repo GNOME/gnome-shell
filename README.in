@@ -303,6 +303,15 @@ Relevant information for developers with existing Clutter applications
 wanting to port to newer releases (see NEWS for general information on new
 features).
 
+Release Notes for Clutter 1.20
+-------------------------------------------------------------------------------
+
+• The clutter_stage_set_paint_callback() experimental function has been
+  removed from the Clutter ABI; it has been replaced by the ::after-paint
+  signal on the ClutterStage class. The set_paint_callback() method was
+  marked as "experimental", required a special definition to be usable, and
+  no guarantees were made on its continued existence.
+
 Release Notes for Clutter 1.18
 -------------------------------------------------------------------------------
 

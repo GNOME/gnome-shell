@@ -1,3 +1,33 @@
+Clutter 1.19.6                                                       2014-07-24
+===============================================================================
+
+  • List of changes since Clutter 1.19.4
+
+    - Add a signal for the end of the frame on ClutterStage
+    The ::after-paint signal is useful to execute custom code after all the
+    painting on a specific ClutterStage has been performend, but before the
+    frame contents have been presented on the screen.
+
+    - Improvements in the reliability of the evdev input backend
+
+    - Improvements in the GestureAction implementation
+
+  • List of bugs fixed since Clutter 1.19.4
+
+    #732342 - ClutterStage: Add an ::after-paint signal
+    #732907 - Allow for calling clutter_gesture_action_cancel() within the
+              ::gesture-end handler
+    #733062 - Evdev: set button state in input devices
+    #733300 - ClutterAnimation: fix memory leak
+    #733561 - Make a GType for ClutterEventSequence
+    #733562 - evdev: update xkb_state when resuming input
+    #733560 - Touch events trigger enter events on press, but no leave events
+              on release
+
+Many thanks to:
+
+  Carlos Garnacho, Giovanni Campagna, Owen W. Taylor
+
 Clutter 1.19.4                                                       2014-06-25
 ===============================================================================
 
