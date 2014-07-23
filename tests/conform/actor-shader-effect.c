@@ -272,7 +272,8 @@ actor_shader_effect (void)
 
   was_painted = FALSE;
   g_signal_connect (stage, "after-paint",
-                    G_CALLBACK (paint_cb), NULL);
+                    G_CALLBACK (paint_cb),
+                    &was_painted);
 
   while (!was_painted)
     g_main_context_iteration (NULL, FALSE);
