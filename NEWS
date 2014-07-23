@@ -1,3 +1,24 @@
+3.13.4
+======
+* Fix move/resize operations for wayland clients [Marek; #731237]
+* Add ::first-frame signal to MetaWindowActor [Owen; #732343]
+* Handle keysyms without the XF86 prefix [Owen; #727993]
+* Add touch gesture support [Carlos]
+* Fix a deadlock when exiting [Owen; #733068]
+* Add framework for restarting the compositor with nice visuals
+  [Owen; #733026]
+* Toggle seat capabilities on VT switch [Carlos; #733563]
+* Misc bug fixes [Florian, Owen; #732695, #732350]
+
+Contributors:
+  Tom Beckmann, Giovanni Campagna, Marek Chalupa, Adel Gadllah,
+  Carlos Garnacho, Florian Müllner, Jasper St. Pierre, Rico Tzschichholz,
+  Owen W. Taylor
+
+Translations:
+  Yuri Myasoedov [ru], Fran Diéguez [gl], Aurimas Černius [lt], MarMav [el],
+  Enrico Nicoletto [pt_BR]
+
 3.13.3
 ======
 * Improve behavior of window buttons with compositor menus [Florian; #731058]
