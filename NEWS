@@ -1,3 +1,28 @@
+3.13.4
+======
+* Handle portal login requests [Giovanni; #704416]
+* Scale fonts on wayland on hiDPI devices [Adel; #732537]
+* Fix default ibus candidate index labels [Rui; #702944]
+* Add gestures for various system actions [Carlos G.]
+* Add performance test script for the perf.gnome.org [Owen; #732350]
+* Use new restart framework to improve restart visuals [Owen; #733026]
+* Improve keynav in app folder popups [Carlos S.; #731477]
+* Fix truncation of app search results [Carlos S.; #732416]
+* Automatically update renamed desktop files in favorites [Kalev; #729429]
+* Misc. bug fixes and cleanups [Giovanni, Yosef, Owen, Bastien, Javier;
+  #729823, #726401, #732301, #732348, #732349, #733498, #733540]
+
+Contributors:
+  Giovanni Campagna, Adel Gadllah, Carlos Garnacho, Javier Hernández,
+  Kalev Lember, Rui Matos, Florian Müllner, Bastien Nocera, Yosef Or Boczko,
+  Carlos Soriano, Jasper St. Pierre, Owen W. Taylor
+
+Translations:
+  Yuri Myasoedov [ru], Daniel Mustieles [es], Fran Diéguez [gl],
+  Cheng-Chia Tseng [zh_TW], A S Alam [pa], Benjamin Steinwender [de],
+  Enrico Nicoletto [pt_BR], MarMav [el], Yosef Or Boczko [he],
+  Kjartan Maraas [nb]
+
 3.13.3
 ======
 * Don't allow closing windows with attached modals [Florian; #729886]
