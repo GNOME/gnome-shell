@@ -528,8 +528,8 @@ void
 meta_wayland_touch_release (MetaWaylandTouch *touch)
 {
   clutter_evdev_remove_filter (evdev_filter_func, touch);
-  g_hash_table_unref (touch->touch_surfaces);
-  g_hash_table_unref (touch->touches);
+  g_clear_pointer (&touch->touch_surfaces, (GDestroyNotify) g_hash_table_unref);
+  g_clear_pointer (&touch->touches, (GDestroyNotify) g_hash_table_unref);
 }
 
 void
