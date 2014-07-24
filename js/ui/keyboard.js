@@ -90,6 +90,25 @@ const Key = new Lang.Class({
                 key.release();
                 return Clutter.EVENT_PROPAGATE;
             }));
+        button.connect('touch-event', Lang.bind(this,
+            function (actor, event) {
+                let device = event.get_device();
+                let sequence = event.get_event_sequence();
+
+                if (!this._touchPressed &&
+                    event.type() == Clutter.EventType.TOUCH_BEGIN) {
+                    device.sequence_grab(sequence, actor);
+                    this._touchPressed = true;
+                    key.press();
+                } else if (this._touchPressed &&
+                           event.type() == Clutter.EventType.TOUCH_END &&
+                           device.sequence_get_grabbed_actor(sequence) == actor) {
+                    device.sequence_ungrab(sequence);
+                    this._touchPressed = false;
+                    key.release();
+                }
+                return Clutter.EVENT_PROPAGATE;
+            }));
 
         return button;
     },
