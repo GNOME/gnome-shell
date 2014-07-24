@@ -498,13 +498,22 @@ set_brightness (MetaBackground *self,
 
   priv->brightness = brightness;
 
-  if (priv->effects & META_BACKGROUND_EFFECTS_VIGNETTE)
+  if (clutter_feature_available (CLUTTER_FEATURE_SHADERS_GLSL) &&
+      priv->effects & META_BACKGROUND_EFFECTS_VIGNETTE)
     {
       ensure_pipeline (self);
       cogl_pipeline_set_uniform_1f (priv->pipeline,
                                     cogl_pipeline_get_uniform_location (priv->pipeline,
                                                                         "brightness"),
                                     priv->brightness);
+    }
+  else
+    {
+      ensure_pipeline (self);
+      CoglColor blend_color;
+      cogl_color_init_from_4f (&blend_color, brightness, brightness, brightness, 1.0);
+      cogl_pipeline_set_layer_combine (priv->pipeline, 1, "RGB=MODULATE(PREVIOUS, CONSTANT) A=REPLACE(PREVIOUS)", NULL);
+      cogl_pipeline_set_layer_combine_constant (priv->pipeline, 1, &blend_color);
     }
 
   clutter_content_invalidate (CLUTTER_CONTENT (self));
@@ -522,6 +531,9 @@ set_vignette_sharpness (MetaBackground *self,
     return;
 
   priv->vignette_sharpness = sharpness;
+
+  if (!clutter_feature_available (CLUTTER_FEATURE_SHADERS_GLSL))
+    return;
 
   if (priv->effects & META_BACKGROUND_EFFECTS_VIGNETTE)
     {
@@ -542,6 +554,9 @@ add_vignette (MetaBackground *self)
 {
   MetaBackgroundPrivate *priv = self->priv;
   static CoglSnippet *snippet = NULL;
+
+  if (!clutter_feature_available (CLUTTER_FEATURE_SHADERS_GLSL))
+    return;
 
   ensure_pipeline (self);
 
