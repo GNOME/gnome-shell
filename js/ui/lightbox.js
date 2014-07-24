@@ -105,8 +105,8 @@ const Lightbox = new Lang.Class({
         this._container = container;
         this._children = container.get_children();
         this._fadeFactor = params.fadeFactor;
-        this._radialEffect = params.radialEffect;
-        if (params.radialEffect)
+        this._radialEffect = Clutter.feature_available(Clutter.FeatureFlags.SHADERS_GLSL) && params.radialEffect;
+        if (this._radialEffect)
             this.actor = new RadialShaderQuad({ x: 0,
                                                 y: 0,
                                                 reactive: params.inhibitEvents });
