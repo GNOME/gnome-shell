@@ -61,6 +61,9 @@
 #include "meta-wayland-private.h"
 
 static void meta_wayland_keyboard_update_xkb_state (MetaWaylandKeyboard *keyboard);
+static void notify_modifiers (MetaWaylandKeyboard *keyboard, uint32_t serial,
+                              uint32_t mods_depressed, uint32_t mods_latched,
+                              uint32_t mods_locked, uint32_t group);
 
 static void
 unbind_resource (struct wl_resource *resource)
@@ -209,6 +212,12 @@ meta_wayland_keyboard_take_keymap (MetaWaylandKeyboard *keyboard,
 
   inform_clients_of_new_keymap (keyboard, flags);
 
+  notify_modifiers (keyboard,
+                    wl_display_next_serial (keyboard->display),
+                    xkb_state_serialize_mods (xkb_info->state, XKB_STATE_MODS_DEPRESSED),
+                    xkb_state_serialize_mods (xkb_info->state, XKB_STATE_MODS_LATCHED),
+                    xkb_state_serialize_mods (xkb_info->state, XKB_STATE_MODS_LOCKED),
+                    xkb_state_serialize_layout (xkb_info->state, XKB_STATE_LAYOUT_EFFECTIVE));
   return;
 
 err_dev_zero:
@@ -288,13 +297,6 @@ meta_wayland_keyboard_update_xkb_state (MetaWaylandKeyboard *keyboard)
 
   if (latched || locked || group)
     xkb_state_update_mask (xkb_info->state, 0, latched, locked, 0, 0, group);
-
-  notify_modifiers (keyboard,
-                    wl_display_next_serial (keyboard->display),
-                    xkb_state_serialize_mods (xkb_info->state, XKB_STATE_MODS_DEPRESSED),
-                    xkb_state_serialize_mods (xkb_info->state, XKB_STATE_MODS_LATCHED),
-                    xkb_state_serialize_mods (xkb_info->state, XKB_STATE_MODS_LOCKED),
-                    xkb_state_serialize_layout (xkb_info->state, XKB_STATE_LAYOUT_EFFECTIVE));
 }
 
 static void
