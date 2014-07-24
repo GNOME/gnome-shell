@@ -104,7 +104,6 @@ sequence_is_pointer_emulated (MetaDisplay        *display,
                               const ClutterEvent *event)
 {
   ClutterEventSequence *sequence;
-  MetaBackend *backend;
 
   sequence = clutter_event_get_event_sequence (event);
 
@@ -114,7 +113,8 @@ sequence_is_pointer_emulated (MetaDisplay        *display,
   if (clutter_event_is_pointer_emulated (event))
     return TRUE;
 
-  backend = meta_get_backend ();
+#ifdef HAVE_NATIVE_BACKEND
+  MetaBackend *backend = meta_get_backend ();
 
   /* When using Clutter's native input backend there is no concept of
    * pointer emulating sequence, we still must make up our own to be
@@ -134,6 +134,7 @@ sequence_is_pointer_emulated (MetaDisplay        *display,
           meta_gesture_tracker_get_n_current_touches (tracker) == 0)
         return TRUE;
     }
+#endif /* HAVE_NATIVE_BACKEND */
 
   return FALSE;
 }
