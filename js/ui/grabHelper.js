@@ -288,8 +288,16 @@ const GrabHelper = new Lang.Class({
         let release = type == Clutter.EventType.BUTTON_RELEASE;
         let button = press || release;
 
-        if (this._ignoreUntilRelease && (motion || release)) {
-            if (release)
+        let touchUpdate = type == Clutter.EventType.TOUCH_UPDATE;
+        let touchBegin = type == Clutter.EventType.TOUCH_BEGIN;
+        let touchEnd = type == Clutter.EventType.TOUCH_END;
+        let touch = touchUpdate || touchBegin || touchEnd;
+
+        if (touch && !global.display.is_pointer_emulating_sequence (event.get_event_sequence()))
+            return Clutter.EVENT_PROPAGATE;
+
+        if (this._ignoreUntilRelease && (motion || release || touch)) {
+            if (release || touchEnd)
                 this._ignoreUntilRelease = false;
             return Clutter.EVENT_STOP;
         }
@@ -300,10 +308,10 @@ const GrabHelper = new Lang.Class({
         if (Main.keyboard.shouldTakeEvent(event))
             return Clutter.EVENT_PROPAGATE;
 
-        if (button) {
+        if (button || touchBegin) {
             // If we have a press event, ignore the next
             // motion/release events.
-            if (press)
+            if (press || touchBegin)
                 this._ignoreUntilRelease = true;
 
             let i = this._actorInGrabStack(event.get_source()) + 1;
