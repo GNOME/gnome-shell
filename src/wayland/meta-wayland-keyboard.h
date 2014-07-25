@@ -73,6 +73,8 @@ struct _MetaWaylandKeyboard
 
   struct xkb_context *xkb_context;
   MetaWaylandXkbInfo xkb_info;
+
+  GSettings *settings;
 };
 
 void meta_wayland_keyboard_init (MetaWaylandKeyboard *keyboard,

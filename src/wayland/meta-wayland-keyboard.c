@@ -290,6 +290,62 @@ meta_wayland_keyboard_update_xkb_state (MetaWaylandKeyboard *keyboard)
                     xkb_state_serialize_layout (xkb_info->state, XKB_STATE_LAYOUT_EFFECTIVE));
 }
 
+static void
+notify_key_repeat_for_resource (MetaWaylandKeyboard *keyboard,
+                                struct wl_resource  *keyboard_resource)
+{
+  if (wl_resource_get_version (keyboard_resource) >= WL_KEYBOARD_REPEAT_INFO_SINCE_VERSION)
+    {
+      gboolean repeat;
+      unsigned int delay, rate;
+
+      repeat = g_settings_get_boolean (keyboard->settings, "repeat");
+
+      if (repeat)
+        {
+          unsigned int interval;
+          interval = g_settings_get_uint (keyboard->settings, "repeat-interval");
+          /* Our setting is in the milliseconds between keys. "rate" is the number
+           * of keys per second. */
+          rate = (1000 / interval);
+          delay = g_settings_get_uint (keyboard->settings, "delay");
+        }
+      else
+        {
+          rate = 0;
+          delay = 0;
+        }
+
+      wl_keyboard_send_repeat_info (keyboard_resource, rate, delay);
+    }
+}
+
+static void
+notify_key_repeat (MetaWaylandKeyboard *keyboard)
+{
+  struct wl_resource *keyboard_resource;
+
+  wl_resource_for_each (keyboard_resource, &keyboard->resource_list)
+    {
+      notify_key_repeat_for_resource (keyboard, keyboard_resource);
+    }
+
+  wl_resource_for_each (keyboard_resource, &keyboard->focus_resource_list)
+    {
+      notify_key_repeat_for_resource (keyboard, keyboard_resource);
+    }
+}
+
+static void
+settings_changed (GSettings           *settings,
+                  const char          *key,
+                  gpointer             data)
+{
+  MetaWaylandKeyboard *keyboard = data;
+
+  notify_key_repeat (keyboard);
+}
+
 void
 meta_wayland_keyboard_init (MetaWaylandKeyboard *keyboard,
                             struct wl_display   *display)
@@ -315,6 +371,10 @@ meta_wayland_keyboard_init (MetaWaylandKeyboard *keyboard,
 					  "evdev",
 					  "pc105",
 					  "us", "", "", 0);
+
+  keyboard->settings = g_settings_new ("org.gnome.settings-daemon.peripherals.keyboard");
+  g_signal_connect (keyboard->settings, "changed",
+                    G_CALLBACK (settings_changed), keyboard);
 }
 
 static void
@@ -338,6 +398,8 @@ meta_wayland_keyboard_release (MetaWaylandKeyboard *keyboard)
 
   /* XXX: What about keyboard->resource_list? */
   wl_array_release (&keyboard->keys);
+
+  g_object_unref (keyboard->settings);
 }
 
 static void
@@ -588,6 +650,8 @@ meta_wayland_keyboard_create_new_resource (MetaWaylandKeyboard *keyboard,
                            WL_KEYBOARD_KEYMAP_FORMAT_XKB_V1,
                            keyboard->xkb_info.keymap_fd,
                            keyboard->xkb_info.keymap_size);
+
+  notify_key_repeat_for_resource (keyboard, cr);
 
   if (keyboard->focus_surface && wl_resource_get_client (keyboard->focus_surface->resource) == client)
     meta_wayland_keyboard_set_focus (keyboard, keyboard->focus_surface);
