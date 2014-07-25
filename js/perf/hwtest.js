@@ -188,7 +188,7 @@ function run() {
     ////////////////////////////////////////
 
     let appSys = Shell.AppSystem.get_default();
-    let app = appSys.lookup_app('gedit.desktop');
+    let app = appSys.lookup_app('org.gnome.gedit.desktop');
 
     Scripting.scriptEvent('geditLaunch');
     app.activate();
