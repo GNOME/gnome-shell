@@ -408,6 +408,12 @@ const LayoutManager = new Lang.Class({
         }
     },
 
+    _updateKeyboardBox: function() {
+        this.keyboardBox.set_position(this.keyboardMonitor.x,
+                                      this.keyboardMonitor.y + this.keyboardMonitor.height);
+        this.keyboardBox.set_size(this.keyboardMonitor.width, -1);
+    },
+
     _updateBoxes: function() {
         this.screenShieldGroup.set_position(0, 0);
         this.screenShieldGroup.set_size(global.screen_width, global.screen_height);
@@ -417,6 +423,8 @@ const LayoutManager = new Lang.Class({
 
         if (this.keyboardIndex < 0)
             this.keyboardIndex = this.primaryIndex;
+        else
+            this._updateKeyboardBox();
 
         this.trayBox.set_position(this.bottomMonitor.x,
                                   this.bottomMonitor.y + this.bottomMonitor.height);
@@ -541,9 +549,7 @@ const LayoutManager = new Lang.Class({
 
     set keyboardIndex(v) {
         this._keyboardIndex = v;
-        this.keyboardBox.set_position(this.keyboardMonitor.x,
-                                      this.keyboardMonitor.y + this.keyboardMonitor.height);
-        this.keyboardBox.set_size(this.keyboardMonitor.width, -1);
+        this._updateKeyboardBox();
     },
 
     get keyboardIndex() {
