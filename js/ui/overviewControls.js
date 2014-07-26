@@ -118,7 +118,6 @@ const SlidingControl = new Lang.Class({
                                      style_class: 'overview-controls',
                                      clip_to_allocation: true });
 
-        Main.overview.connect('showing', Lang.bind(this, this._onOverviewShowing));
         Main.overview.connect('hiding', Lang.bind(this, this._onOverviewHiding));
 
         Main.overview.connect('item-drag-begin', Lang.bind(this, this._onDragBegin));
@@ -177,14 +176,9 @@ const SlidingControl = new Lang.Class({
                                         transition: 'easeOutQuad' });
     },
 
-    _onOverviewShowing: function() {
-        this._visible = true;
-        this.layout.slideX = this._getSlide();
-        this.layout.translationX = this._getTranslation();
-        this.slideIn();
-    },
-
     _onOverviewHiding: function() {
+        // We need to explicitily slideOut since showing pages
+        // doesn't implies to slide out, instead, hiding the overview does.
         this.slideOut();
     },
 
