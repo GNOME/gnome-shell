@@ -834,6 +834,7 @@ global_stage_after_paint (ClutterStage *stage,
       if (!finish)
         load_gl_symbol ("glFinish", (void **)&finish);
 
+      cogl_flush ();
       finish ();
 
       shell_perf_log_event (shell_perf_log_get_default (),
