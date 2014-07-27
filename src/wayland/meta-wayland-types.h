@@ -36,4 +36,6 @@ typedef struct _MetaWaylandBufferReference MetaWaylandBufferReference;
 
 typedef struct _MetaWaylandSurface MetaWaylandSurface;
 
+typedef struct _MetaWaylandSerial MetaWaylandSerial;
+
 #endif

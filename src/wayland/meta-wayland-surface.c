@@ -243,7 +243,10 @@ toplevel_surface_commit (MetaWaylandSurface      *surface,
           return;
         }
 
-      meta_window_wayland_move_resize (window, geom, pending->dx, pending->dy);
+      meta_window_wayland_move_resize (window,
+                                       &surface->acked_configure_serial,
+                                       geom, pending->dx, pending->dy);
+      surface->acked_configure_serial.set = FALSE;
     }
 }
 
@@ -906,11 +909,10 @@ xdg_surface_ack_configure (struct wl_client *client,
                            struct wl_resource *resource,
                            uint32_t serial)
 {
-  /* Do nothing for now. In the future, we'd imagine that
-   * we'd ignore attaches when we have a state pending that
-   * we haven't had the client ACK'd, to prevent a race
-   * condition when we have an in-flight attach when the
-   * client gets the new state. */
+  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
+
+  surface->acked_configure_serial.set = TRUE;
+  surface->acked_configure_serial.value = serial;
 }
 
 static void
@@ -1811,7 +1813,8 @@ fill_states (struct wl_array *states, MetaWindow *window)
 void
 meta_wayland_surface_configure_notify (MetaWaylandSurface *surface,
                                        int                 new_width,
-                                       int                 new_height)
+                                       int                 new_height,
+                                       MetaWaylandSerial  *sent_serial)
 {
   if (surface->xdg_surface.resource)
     {
@@ -1832,6 +1835,12 @@ meta_wayland_surface_configure_notify (MetaWaylandSurface *surface,
       xdg_surface_send_configure (surface->xdg_surface.resource, new_width, new_height, &states, serial);
 
       wl_array_release (&states);
+
+      if (sent_serial)
+        {
+          sent_serial->set = TRUE;
+          sent_serial->value = serial;
+        }
     }
   else if (surface->wl_shell_surface.resource)
     wl_shell_surface_send_configure (surface->wl_shell_surface.resource,

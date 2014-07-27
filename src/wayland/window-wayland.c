@@ -36,6 +36,7 @@ struct _MetaWindowWayland
 {
   MetaWindow parent;
 
+  MetaWaylandSerial pending_configure_serial;
   gboolean has_pending_move;
   int pending_move_x;
   int pending_move_y;
@@ -126,7 +127,8 @@ surface_state_changed (MetaWindow *window)
 
   meta_wayland_surface_configure_notify (window->surface,
                                          wl_window->last_sent_width,
-                                         wl_window->last_sent_height);
+                                         wl_window->last_sent_height,
+                                         &wl_window->pending_configure_serial);
 }
 
 static void
@@ -214,7 +216,8 @@ meta_window_wayland_move_resize_internal (MetaWindow                *window,
 
       meta_wayland_surface_configure_notify (window->surface,
                                              constrained_rect.width,
-                                             constrained_rect.height);
+                                             constrained_rect.height,
+                                             &wl_window->pending_configure_serial);
     }
   else
     {
@@ -349,15 +352,32 @@ meta_window_wayland_new (MetaDisplay        *display,
  * Complete a resize operation from a wayland client.
  */
 void
-meta_window_wayland_move_resize (MetaWindow    *window,
-                                 MetaRectangle  new_geom,
-                                 int            dx,
-                                 int            dy)
+meta_window_wayland_move_resize (MetaWindow        *window,
+                                 MetaWaylandSerial *acked_configure_serial,
+                                 MetaRectangle      new_geom,
+                                 int                dx,
+                                 int                dy)
 {
   MetaWindowWayland *wl_window = META_WINDOW_WAYLAND (window);
   int gravity;
   MetaRectangle rect;
   MetaMoveResizeFlags flags;
+
+  if (wl_window->pending_configure_serial.set)
+    {
+      /* If we're waiting for a configure and this isn't an ACK for
+       * any configure, then fizzle it out. */
+      if (!acked_configure_serial->set)
+        return;
+
+      /* If we're waiting for a configure and this isn't an ACK for
+       * the configure we're waiting for, then fizzle it out. */
+      if (acked_configure_serial->value != wl_window->pending_configure_serial.value)
+        return;
+
+      /* OK, this request is going to ACK the pending configure. */
+      wl_window->pending_configure_serial.set = FALSE;
+    }
 
   /* XXX: Find a better place to store the window geometry offsets. */
   window->custom_frame_extents.left = new_geom.x;

@@ -31,6 +31,11 @@
 #include "meta-wayland-types.h"
 #include "meta-surface-actor.h"
 
+struct _MetaWaylandSerial {
+  gboolean set;
+  uint32_t value;
+};
+
 struct _MetaWaylandBuffer
 {
   struct wl_resource *resource;
@@ -113,6 +118,8 @@ struct _MetaWaylandSurface
 
   /* All the pending state that wl_surface.commit will apply. */
   MetaWaylandPendingState pending;
+
+  MetaWaylandSerial acked_configure_serial;
 };
 
 void                meta_wayland_shell_init     (MetaWaylandCompositor *compositor);
@@ -126,8 +133,9 @@ void                meta_wayland_surface_set_window (MetaWaylandSurface *surface
                                                      MetaWindow         *window);
 
 void                meta_wayland_surface_configure_notify (MetaWaylandSurface *surface,
-							   int                 width,
-							   int                 height);
+                                                           int                 width,
+                                                           int                 height,
+                                                           MetaWaylandSerial  *sent_serial);
 
 void                meta_wayland_surface_ping (MetaWaylandSurface *surface,
                                                guint32             serial);
