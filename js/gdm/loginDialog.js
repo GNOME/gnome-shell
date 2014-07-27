@@ -926,6 +926,8 @@ const LoginDialog = new Lang.Class({
         this.actor.show();
         this.actor.opacity = 0;
 
+        Main.pushModal(this.actor, { keybindingMode: Shell.KeyBindingMode.LOGIN_SCREEN });
+
         Tweener.addTween(this.actor,
                          { opacity: 255,
                            time: 1,
@@ -935,6 +937,7 @@ const LoginDialog = new Lang.Class({
     },
 
     close: function() {
+        Main.popModal(this.actor);
         Main.ctrlAltTabManager.removeGroup(this.actor);
     },
 
