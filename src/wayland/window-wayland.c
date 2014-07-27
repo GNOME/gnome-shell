@@ -36,9 +36,9 @@ struct _MetaWindowWayland
 {
   MetaWindow parent;
 
-  gboolean has_saved_pos;
-  int saved_x;
-  int saved_y;
+  gboolean has_pending_move;
+  int pending_move_x;
+  int pending_move_y;
 
   int last_sent_width;
   int last_sent_height;
@@ -205,9 +205,9 @@ meta_window_wayland_move_resize_internal (MetaWindow                *window,
   if (constrained_rect.width != window->rect.width ||
       constrained_rect.height != window->rect.height)
     {
-      wl_window->has_saved_pos = TRUE;
-      wl_window->saved_x = constrained_rect.x;
-      wl_window->saved_y = constrained_rect.y;
+      wl_window->has_pending_move = TRUE;
+      wl_window->pending_move_x = constrained_rect.x;
+      wl_window->pending_move_y = constrained_rect.y;
 
       wl_window->last_sent_width = constrained_rect.width;
       wl_window->last_sent_height = constrained_rect.height;
@@ -368,11 +368,11 @@ meta_window_wayland_move_resize (MetaWindow    *window,
   /* x/y are ignored when we're doing interactive resizing */
   if (!meta_grab_op_is_resizing (window->display->grab_op))
     {
-      if (wl_window->has_saved_pos)
+      if (wl_window->has_pending_move)
         {
-          rect.x = wl_window->saved_x;
-          rect.y = wl_window->saved_y;
-          wl_window->has_saved_pos = FALSE;
+          rect.x = wl_window->pending_move_x;
+          rect.y = wl_window->pending_move_y;
+          wl_window->has_pending_move = FALSE;
           flags |= META_IS_MOVE_ACTION;
         }
       else
