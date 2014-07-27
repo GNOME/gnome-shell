@@ -5858,45 +5858,23 @@ update_resize (MetaWindow *window,
   if (window->display->grab_op == META_GRAB_OP_KEYBOARD_RESIZING_UNKNOWN)
     {
       if ((dx > 0) && (dy > 0))
-        {
-          window->display->grab_op = META_GRAB_OP_KEYBOARD_RESIZING_SE;
-          meta_window_update_keyboard_resize (window, TRUE);
-        }
+        window->display->grab_op = META_GRAB_OP_KEYBOARD_RESIZING_SE;
       else if ((dx < 0) && (dy > 0))
-        {
-          window->display->grab_op = META_GRAB_OP_KEYBOARD_RESIZING_SW;
-          meta_window_update_keyboard_resize (window, TRUE);
-        }
+        window->display->grab_op = META_GRAB_OP_KEYBOARD_RESIZING_SW;
       else if ((dx > 0) && (dy < 0))
-        {
-          window->display->grab_op = META_GRAB_OP_KEYBOARD_RESIZING_NE;
-          meta_window_update_keyboard_resize (window, TRUE);
-        }
+        window->display->grab_op = META_GRAB_OP_KEYBOARD_RESIZING_NE;
       else if ((dx < 0) && (dy < 0))
-        {
-          window->display->grab_op = META_GRAB_OP_KEYBOARD_RESIZING_NW;
-          meta_window_update_keyboard_resize (window, TRUE);
-        }
+        window->display->grab_op = META_GRAB_OP_KEYBOARD_RESIZING_NW;
       else if (dx < 0)
-        {
-          window->display->grab_op = META_GRAB_OP_KEYBOARD_RESIZING_W;
-          meta_window_update_keyboard_resize (window, TRUE);
-        }
+        window->display->grab_op = META_GRAB_OP_KEYBOARD_RESIZING_W;
       else if (dx > 0)
-        {
-          window->display->grab_op = META_GRAB_OP_KEYBOARD_RESIZING_E;
-          meta_window_update_keyboard_resize (window, TRUE);
-        }
+        window->display->grab_op = META_GRAB_OP_KEYBOARD_RESIZING_E;
       else if (dy > 0)
-        {
-          window->display->grab_op = META_GRAB_OP_KEYBOARD_RESIZING_S;
-          meta_window_update_keyboard_resize (window, TRUE);
-        }
+        window->display->grab_op = META_GRAB_OP_KEYBOARD_RESIZING_S;
       else if (dy < 0)
-        {
-          window->display->grab_op = META_GRAB_OP_KEYBOARD_RESIZING_N;
-          meta_window_update_keyboard_resize (window, TRUE);
-        }
+        window->display->grab_op = META_GRAB_OP_KEYBOARD_RESIZING_N;
+
+      meta_window_update_keyboard_resize (window, TRUE);
     }
 
   new_unmaximize = check_resize_unmaximize (window, dx, dy);
@@ -5920,9 +5898,9 @@ update_resize (MetaWindow *window,
     case META_GRAB_OP_KEYBOARD_RESIZING_W:
       new_w -= dx;
       break;
-	default:
-	  break;
-	}
+    default:
+      break;
+    }
 
   switch (window->display->grab_op)
     {
