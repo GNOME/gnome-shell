@@ -935,7 +935,7 @@ const LoginDialog = new Lang.Class({
     },
 
     close: function() {
-        Main.ctrlAltTabManager.removeGroup(this.dialogLayout);
+        Main.ctrlAltTabManager.removeGroup(this.actor);
     },
 
     cancel: function() {
