@@ -1836,6 +1836,8 @@ meta_wayland_surface_configure_notify (MetaWaylandSurface *surface,
   else if (surface->wl_shell_surface.resource)
     wl_shell_surface_send_configure (surface->wl_shell_surface.resource,
                                      0, new_width, new_height);
+  else
+    g_assert_not_reached ();
 }
 
 void
