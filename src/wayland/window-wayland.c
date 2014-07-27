@@ -160,7 +160,7 @@ meta_window_wayland_move_resize_internal (MetaWindow                *window,
                                           MetaMoveResizeResultFlags *result)
 {
   MetaWindowWayland *wl_window = META_WINDOW_WAYLAND (window);
-  gboolean should_move = FALSE;
+  gboolean can_move_now;
 
   g_assert (window->frame == NULL);
 
@@ -201,16 +201,12 @@ meta_window_wayland_move_resize_internal (MetaWindow                *window,
 
       /* This is a commit of an attach. We should move the window to match the
        * new position the client wants. */
-      should_move = TRUE;
+      can_move_now = TRUE;
     }
 
   if (constrained_rect.width != window->rect.width ||
       constrained_rect.height != window->rect.height)
     {
-      wl_window->has_pending_move = TRUE;
-      wl_window->pending_move_x = constrained_rect.x;
-      wl_window->pending_move_y = constrained_rect.y;
-
       wl_window->last_sent_width = constrained_rect.width;
       wl_window->last_sent_height = constrained_rect.height;
 
@@ -218,15 +214,18 @@ meta_window_wayland_move_resize_internal (MetaWindow                *window,
                                              constrained_rect.width,
                                              constrained_rect.height,
                                              &wl_window->pending_configure_serial);
+
+      /* We need to wait until the resize completes before we can move */
+      can_move_now = FALSE;
     }
   else
     {
       /* We're just moving the window, so we don't need to wait for a configure
        * and then ack to simply move the window. */
-      should_move = TRUE;
+      can_move_now = TRUE;
     }
 
-  if (should_move)
+  if (can_move_now)
     {
       int new_x = constrained_rect.x;
       int new_y = constrained_rect.y;
@@ -246,6 +245,18 @@ meta_window_wayland_move_resize_internal (MetaWindow                *window,
           *result |= META_MOVE_RESIZE_RESULT_MOVED;
           window->buffer_rect.x = new_buffer_x;
           window->buffer_rect.y = new_buffer_y;
+        }
+    }
+  else
+    {
+      int new_x = constrained_rect.x;
+      int new_y = constrained_rect.y;
+
+      if (new_x != window->rect.x || new_y != window->rect.y)
+        {
+          wl_window->has_pending_move = TRUE;
+          wl_window->pending_move_x = new_x;
+          wl_window->pending_move_y = new_y;
         }
     }
 }
