@@ -151,14 +151,20 @@ handle_host_xevent (MetaBackend *backend,
 {
   MetaBackendX11 *x11 = META_BACKEND_X11 (backend);
   MetaBackendX11Private *priv = meta_backend_x11_get_instance_private (x11);
-  MetaDisplay *display = meta_get_display ();
-  MetaCompositor *compositor = display->compositor;
   gboolean bypass_clutter = FALSE;
 
   XGetEventData (priv->xdisplay, &event->xcookie);
 
-  if (meta_plugin_manager_xevent_filter (compositor->plugin_mgr, event))
-    bypass_clutter = TRUE;
+  {
+    MetaDisplay *display = meta_get_display ();
+
+    if (display)
+      {
+        MetaCompositor *compositor = display->compositor;
+        if (meta_plugin_manager_xevent_filter (compositor->plugin_mgr, event))
+          bypass_clutter = TRUE;
+      }
+  }
 
   if (event->type == (priv->xsync_event_base + XSyncAlarmNotify))
     handle_alarm_notify (backend, event);
