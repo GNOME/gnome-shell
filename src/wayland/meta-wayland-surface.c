@@ -212,7 +212,7 @@ toplevel_surface_commit (MetaWaylandSurface      *surface,
   /* We resize X based surfaces according to X events */
   if (window->client_type == META_WINDOW_CLIENT_TYPE_WAYLAND)
     {
-      MetaRectangle geom;
+      MetaRectangle geom = { 0 };
 
       if (pending->has_new_geometry)
         {
