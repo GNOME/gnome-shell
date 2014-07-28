@@ -49,13 +49,14 @@ const PortalWindow = new Lang.Class({
     _init: function(application, url, timestamp, doneCallback) {
         this.parent({ application: application });
 
-        if (url) {
-            this._uri = new Soup.URI(uri);
-        } else {
+        if (!url) {
             url = 'http://www.gnome.org';
-            this._uri = null;
-            this._everSeenRedirect = false;
+            this._originalUrlWasGnome = true;
+        } else {
+            this._originalUrlWasGnome = false;
         }
+        this._uri = new Soup.URI(url);
+        this._everSeenRedirect = false;
         this._originalUrl = url;
         this._doneCallback = doneCallback;
         this._lastRecheck = 0;
@@ -110,37 +111,7 @@ const PortalWindow = new Lang.Class({
         let request = decision.get_request();
         let uri = new Soup.URI(request.get_uri());
 
-        if (this._uri != null) {
-            if (!uri.host_equal(uri, this._uri)) {
-                // We *may* have finished here, but we don't know for
-                // sure. Tell gnome-shell to run another connectivity check
-                // (but ratelimit the checks, we don't want to spam
-                // gnome.org for portals that have 10 or more internal
-                // redirects - and unfortunately they exist)
-                // If we hit the rate limit, we also queue a recheck
-                // when the window is closed, just in case we miss the
-                // final check and don't realize we're connected
-                // This should not be a problem in the cancelled logic,
-                // because if the user doesn't want to start the login,
-                // we should not see any redirect at all, outside this._uri
-
-                let now = GLib.get_monotonic_time();
-                let shouldRecheck = (now - this._lastRecheck) >
-                    CONNECTIVITY_RECHECK_RATELIMIT_TIMEOUT;
-
-                if (shouldRecheck) {
-                    this._lastRecheck = now;
-                    this._recheckAtExit = false;
-                    this._doneCallback(PortalHelperResult.RECHECK);
-                } else {
-                    this._recheckAtExit = true;
-                }
-            }
-
-            // Update the URI, in case of chained redirects, so we still
-            // think we're doing the login until gnome-shell kills us
-            this._uri = uri;
-        } else {
+        if (!uri.host_equal(this._uri) && this._originalUrlWasGnome) {
             if (uri.get_host() == 'www.gnome.org' && this._everSeenRedirect) {
                 // Yay, we got to gnome!
                 decision.ignore();
@@ -150,6 +121,34 @@ const PortalWindow = new Lang.Class({
                 this._everSeenRedirect = true;
             }
         }
+
+        // We *may* have finished here, but we don't know for
+        // sure. Tell gnome-shell to run another connectivity check
+        // (but ratelimit the checks, we don't want to spam
+        // nmcheck.gnome.org for portals that have 10 or more internal
+        // redirects - and unfortunately they exist)
+        // If we hit the rate limit, we also queue a recheck
+        // when the window is closed, just in case we miss the
+        // final check and don't realize we're connected
+        // This should not be a problem in the cancelled logic,
+        // because if the user doesn't want to start the login,
+        // we should not see any redirect at all, outside this._uri
+
+        let now = GLib.get_monotonic_time();
+        let shouldRecheck = (now - this._lastRecheck) >
+            CONNECTIVITY_RECHECK_RATELIMIT_TIMEOUT;
+
+        if (shouldRecheck) {
+            this._lastRecheck = now;
+            this._recheckAtExit = false;
+            this._doneCallback(PortalHelperResult.RECHECK);
+        } else {
+            this._recheckAtExit = true;
+        }
+
+        // Update the URI, in case of chained redirects, so we still
+        // think we're doing the login until gnome-shell kills us
+        this._uri = uri;
 
         decision.use();
         return true;
