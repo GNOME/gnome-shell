@@ -348,6 +348,29 @@ meta_window_wayland_new (MetaDisplay        *display,
   return window;
 }
 
+static gboolean
+should_do_pending_move (MetaWindowWayland *wl_window,
+                        MetaWaylandSerial *acked_configure_serial)
+{
+  if (!wl_window->has_pending_move)
+    return FALSE;
+
+  if (wl_window->pending_configure_serial.set)
+    {
+      /* If we're waiting for a configure and this isn't an ACK for
+       * any configure, then fizzle it out. */
+      if (!acked_configure_serial->set)
+        return FALSE;
+
+      /* If we're waiting for a configure and this isn't an ACK for
+       * the configure we're waiting for, then fizzle it out. */
+      if (acked_configure_serial->value != wl_window->pending_configure_serial.value)
+        return FALSE;
+    }
+
+  return TRUE;
+}
+
 /**
  * meta_window_move_resize_wayland:
  *
@@ -365,22 +388,6 @@ meta_window_wayland_move_resize (MetaWindow        *window,
   MetaRectangle rect;
   MetaMoveResizeFlags flags;
 
-  if (wl_window->pending_configure_serial.set)
-    {
-      /* If we're waiting for a configure and this isn't an ACK for
-       * any configure, then fizzle it out. */
-      if (!acked_configure_serial->set)
-        return;
-
-      /* If we're waiting for a configure and this isn't an ACK for
-       * the configure we're waiting for, then fizzle it out. */
-      if (acked_configure_serial->value != wl_window->pending_configure_serial.value)
-        return;
-
-      /* OK, this request is going to ACK the pending configure. */
-      wl_window->pending_configure_serial.set = FALSE;
-    }
-
   /* XXX: Find a better place to store the window geometry offsets. */
   window->custom_frame_extents.left = new_geom.x;
   window->custom_frame_extents.top = new_geom.y;
@@ -390,7 +397,7 @@ meta_window_wayland_move_resize (MetaWindow        *window,
   /* x/y are ignored when we're doing interactive resizing */
   if (!meta_grab_op_is_resizing (window->display->grab_op))
     {
-      if (wl_window->has_pending_move)
+      if (wl_window->has_pending_move && should_do_pending_move (wl_window, acked_configure_serial))
         {
           rect.x = wl_window->pending_move_x;
           rect.y = wl_window->pending_move_y;
@@ -410,6 +417,8 @@ meta_window_wayland_move_resize (MetaWindow        *window,
           flags |= META_IS_MOVE_ACTION;
         }
     }
+
+  wl_window->pending_configure_serial.set = FALSE;
 
   rect.width = new_geom.width;
   rect.height = new_geom.height;
