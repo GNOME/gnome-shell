@@ -264,6 +264,9 @@ meta_window_finalize (GObject *object)
   if (window->opaque_region)
     cairo_region_destroy (window->opaque_region);
 
+  if (window->input_region)
+    cairo_region_destroy (window->input_region);
+
   if (window->transient_for)
     g_object_unref (window->transient_for);
 
