@@ -1347,26 +1347,10 @@ meta_prefs_get_cursor_theme (void)
   return cursor_theme;
 }
 
-static int
-get_scale_factor (void)
-{
-  GdkScreen *screen;
-  GValue value = G_VALUE_INIT;
-
-  g_value_init (&value, G_TYPE_INT);
-
-  /* XXX: Should this be in ui/ ? Or MetaMonitorManager? */
-  screen = gdk_screen_get_default ();
-  if (gdk_screen_get_setting (screen, "gdk-window-scaling-factor", &value))
-    return g_value_get_int (&value);
-  else
-    return 1;
-}
-
 int
 meta_prefs_get_cursor_size (void)
 {
-  return cursor_size * get_scale_factor ();
+  return cursor_size;
 }
 
 
