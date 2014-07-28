@@ -22,9 +22,10 @@ const SHELL_KEYBINDINGS_SCHEMA = 'org.gnome.shell.keybindings';
 const MAXIMIZE_WINDOW_ANIMATION_TIME = 0.15;
 const UNMAXIMIZE_WINDOW_ANIMATION_TIME = 0.15;
 const MINIMIZE_WINDOW_ANIMATION_TIME = 0.2;
-const SHOW_WINDOW_ANIMATION_TIME = 0.20;
-const MENU_SHOW_WINDOW_ANIMATION_TIME = 0.15;
-const DESTROY_WINDOW_ANIMATION_TIME = 0.20;
+const SHOW_WINDOW_ANIMATION_TIME = 0.15;
+const DIALOG_SHOW_WINDOW_ANIMATION_TIME = 0.1;
+const DESTROY_WINDOW_ANIMATION_TIME = 0.15;
+const DIALOG_DESTROY_WINDOW_ANIMATION_TIME = 0.1;
 const WINDOW_ANIMATION_TIME = 0.25;
 const DIM_BRIGHTNESS = -0.3;
 const DIM_TIME = 0.500;
@@ -1061,9 +1062,6 @@ const WindowManager = new Lang.Class({
         }));
 
         let types = [Meta.WindowType.NORMAL,
-                     Meta.WindowType.MENU,
-                     Meta.WindowType.DROPDOWN_MENU,
-                     Meta.WindowType.POPUP_MENU,
                      Meta.WindowType.DIALOG,
                      Meta.WindowType.MODAL_DIALOG];
         if (!this._shouldAnimateActor(actor, types)) {
@@ -1080,7 +1078,7 @@ const WindowManager = new Lang.Class({
         case Meta.WindowType.NORMAL:
             actor.set_pivot_point(0.5, 1.0);
             actor.scale_x = 0.01;
-            actor.scale_y = 0.1;
+            actor.scale_y = 0.05;
             actor.opacity = 0;
             actor.show();
             this._mapping.push(actor);
@@ -1091,30 +1089,6 @@ const WindowManager = new Lang.Class({
                                scale_y: 1,
                                time: SHOW_WINDOW_ANIMATION_TIME,
                                transition: 'easeOutExpo',
-                               onComplete: this._mapWindowDone,
-                               onCompleteScope: this,
-                               onCompleteParams: [shellwm, actor],
-                               onOverwrite: this._mapWindowOverwrite,
-                               onOverwriteScope: this,
-                               onOverwriteParams: [shellwm, actor]
-                             });
-            break;
-        case Meta.WindowType.MENU:
-        case Meta.WindowType.DROPDOWN_MENU:
-        case Meta.WindowType.POPUP_MENU:
-            actor.translation_y = -20;
-            actor.set_pivot_point(0.5, 0);
-            actor.scale_y = 0.9;
-            actor.opacity = 128;
-            actor.show();
-            this._mapping.push(actor);
-
-            Tweener.addTween(actor,
-                             { opacity: 255,
-                               scale_y: 1,
-                               translation_y: 0,
-                               time: MENU_SHOW_WINDOW_ANIMATION_TIME,
-                               transition: 'easeOutQuad',
                                onComplete: this._mapWindowDone,
                                onCompleteScope: this,
                                onCompleteParams: [shellwm, actor],
@@ -1135,7 +1109,7 @@ const WindowManager = new Lang.Class({
                              { opacity: 255,
                                scale_x: 1,
                                scale_y: 1,
-                               time: SHOW_WINDOW_ANIMATION_TIME,
+                               time: DIALOG_SHOW_WINDOW_ANIMATION_TIME,
                                transition: 'easeOutQuad',
                                onComplete: this._mapWindowDone,
                                onCompleteScope: this,
@@ -1192,16 +1166,6 @@ const WindowManager = new Lang.Class({
 
         switch (actor._windowType) {
         case Meta.WindowType.NORMAL:
-            if (!window.is_client_decorated()) {
-                // We cannot animate the destruction of non-client
-                // decorated windows, because the frame window is
-                // repainted by the X server with the background pixmap/
-                // pixel before creating the last composite pixmap
-                // (so we animate a flat gray rectangle with a titlebar)
-                shellwm.completed_destroy(actor);
-                return;
-            }
-
             actor.set_pivot_point(0.5, 0.5);
             this._destroying.push(actor);
 
@@ -1235,7 +1199,7 @@ const WindowManager = new Lang.Class({
 
             Tweener.addTween(actor,
                              { scale_y: 0,
-                               time: DESTROY_WINDOW_ANIMATION_TIME,
+                               time: DIALOG_DESTROY_WINDOW_ANIMATION_TIME,
                                transition: 'easeOutQuad',
                                onComplete: this._destoyWindowDone,
                                onCompleteScope: this,
