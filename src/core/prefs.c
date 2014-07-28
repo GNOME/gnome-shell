@@ -137,6 +137,10 @@ static void xsettings_overrides_changed (GSettings  *settings,
                                          gchar      *key,
                                          gpointer    data);
 
+static void update_cursor_size (GtkSettings *settings,
+                                GParamSpec *pspec,
+                                gpointer data);
+
 static void queue_changed (MetaPreference  pref);
 
 static void maybe_give_disable_workarounds_warning (void);
@@ -1012,6 +1016,9 @@ meta_prefs_init (void)
       xsettings_overrides_changed (settings, KEY_XSETTINGS_OVERRIDES, NULL);
     }
 
+  g_signal_connect (gtk_settings_get_default (), "notify::gtk-cursor-theme-size",
+                    G_CALLBACK (update_cursor_size), NULL);
+
   settings = g_settings_new (SCHEMA_INPUT_SOURCES);
   g_signal_connect (settings, "changed::" KEY_XKB_OPTIONS,
                     G_CALLBACK (settings_changed), NULL);
@@ -1031,6 +1038,8 @@ meta_prefs_init (void)
   handle_preference_init_string ();
   handle_preference_init_string_array ();
   handle_preference_init_int ();
+
+  update_cursor_size (gtk_settings_get_default (), NULL, NULL);
 
   init_bindings ();
 }
@@ -1269,6 +1278,29 @@ out:
   if (changed)
     queue_changed (META_PREF_BUTTON_LAYOUT);
 }
+
+static void
+update_cursor_size (GtkSettings *settings,
+                    GParamSpec *pspec,
+                    gpointer data)
+{
+  GdkScreen *screen = gdk_screen_get_default ();
+  GValue value = G_VALUE_INIT;
+  int xsettings_cursor_size = 24;
+
+  g_value_init (&value, G_TYPE_INT);
+  if (gdk_screen_get_setting (screen, "gtk-cursor-theme-size", &value))
+    {
+      xsettings_cursor_size = g_value_get_int (&value);
+    }
+
+  if (xsettings_cursor_size != cursor_size)
+    {
+      cursor_size = xsettings_cursor_size;
+      queue_changed (META_PREF_CURSOR_SIZE);
+    }
+}
+
 
 /**
  * maybe_give_disable_workaround_warning:
