@@ -214,6 +214,11 @@ toplevel_surface_commit (MetaWaylandSurface      *surface,
     {
       MetaRectangle geom = { 0 };
 
+      CoglTexture *texture = surface->buffer->texture;
+      /* Update the buffer rect immediately. */
+      window->buffer_rect.width = cogl_texture_get_width (texture);
+      window->buffer_rect.height = cogl_texture_get_height (texture);
+
       if (pending->has_new_geometry)
         {
           /* If we have new geometry, use it. */
