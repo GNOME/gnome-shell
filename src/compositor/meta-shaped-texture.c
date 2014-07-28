@@ -249,21 +249,18 @@ set_cogl_texture (MetaShapedTexture *stex,
       cogl_object_ref (cogl_tex);
       width = cogl_texture_get_width (COGL_TEXTURE (cogl_tex));
       height = cogl_texture_get_height (COGL_TEXTURE (cogl_tex));
-
-      if (width != priv->tex_width ||
-          height != priv->tex_height)
-        {
-          priv->tex_width = width;
-          priv->tex_height = height;
-
-          clutter_actor_queue_relayout (CLUTTER_ACTOR (stex));
-        }
     }
   else
     {
-      /* size changed to 0 going to an invalid handle */
-      priv->tex_width = 0;
-      priv->tex_height = 0;
+      width = 0;
+      height = 0;
+    }
+
+  if (priv->tex_width != width ||
+      priv->tex_height != height)
+    {
+      priv->tex_width = width;
+      priv->tex_height = height;
       clutter_actor_queue_relayout (CLUTTER_ACTOR (stex));
     }
 
