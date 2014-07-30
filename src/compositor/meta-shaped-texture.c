@@ -499,32 +499,23 @@ meta_shaped_texture_get_paint_volume (ClutterActor *actor,
                                       ClutterPaintVolume *volume)
 {
   MetaShapedTexture *self = META_SHAPED_TEXTURE (actor);
+  ClutterActorBox box;
   cairo_rectangle_int_t unobscured_bounds;
 
-  if (!clutter_paint_volume_set_from_allocation (volume, actor))
+  if (!clutter_actor_has_allocation (actor))
     return FALSE;
+
+  clutter_actor_get_allocation_box (actor, &box);
 
   if (meta_shaped_texture_get_unobscured_bounds (self, &unobscured_bounds))
     {
-      ClutterVertex origin;
-      cairo_rectangle_int_t bounds;
-
-      /* I hate ClutterPaintVolume so much... */
-      clutter_paint_volume_get_origin (volume, &origin);
-      bounds.x = origin.x;
-      bounds.y = origin.y;
-      bounds.width = clutter_paint_volume_get_width (volume);
-      bounds.height = clutter_paint_volume_get_height (volume);
-
-      gdk_rectangle_intersect (&bounds, &unobscured_bounds, &bounds);
-
-      origin.x = bounds.x;
-      origin.y = bounds.y;
-      clutter_paint_volume_set_origin (volume, &origin);
-      clutter_paint_volume_set_width (volume, bounds.width);
-      clutter_paint_volume_set_height (volume, bounds.height);
+      box.x1 = MAX (unobscured_bounds.x, box.x1);
+      box.x2 = MIN (unobscured_bounds.x + unobscured_bounds.width, box.x2);
+      box.y1 = MAX (unobscured_bounds.y, box.y1);
+      box.y2 = MIN (unobscured_bounds.y + unobscured_bounds.height, box.y2);
     }
 
+  clutter_paint_volume_union_box (volume, &box);
   return TRUE;
 }
 
