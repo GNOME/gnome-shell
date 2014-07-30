@@ -158,9 +158,14 @@ const CandidatePopup = new Lang.Class({
 
         panelService.connect('set-cursor-location',
                              Lang.bind(this, function(ps, x, y, w, h) {
-                                 Main.layoutManager.setDummyCursorGeometry(x, y, w, h);
-                                 if (this._boxPointer.actor.visible)
-                                     this._boxPointer.setPosition(Main.layoutManager.dummyCursor, 0);
+                                 this._setDummyCursorGeometry(x, y, w, h);
+                             }));
+        panelService.connect('set-cursor-location-relative',
+                             Lang.bind(this, function(ps, x, y, w, h) {
+                                 if (!global.display.focus_window)
+                                     return;
+                                 let window = global.display.focus_window.get_compositor_private();
+                                 this._setDummyCursorGeometry(window.x + x, window.y + y, w, h);
                              }));
         panelService.connect('update-preedit-text',
                              Lang.bind(this, function(ps, text, cursorPosition, visible) {
@@ -244,6 +249,12 @@ const CandidatePopup = new Lang.Class({
                              Lang.bind(this, function(ps) {
                                  this._boxPointer.hide(BoxPointer.PopupAnimation.NONE);
                              }));
+    },
+
+    _setDummyCursorGeometry: function(x, y, w, h) {
+        Main.layoutManager.setDummyCursorGeometry(x, y, w, h);
+        if (this._boxPointer.actor.visible)
+            this._boxPointer.setPosition(Main.layoutManager.dummyCursor, 0);
     },
 
     _updateVisibility: function() {
