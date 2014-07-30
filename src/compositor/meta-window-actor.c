@@ -710,25 +710,16 @@ meta_window_actor_get_paint_volume (ClutterActor       *actor,
 {
   MetaWindowActor *self = META_WINDOW_ACTOR (actor);
   MetaWindowActorPrivate *priv = self->priv;
-  cairo_rectangle_int_t unobscured_bounds, bounds;
   gboolean appears_focused = meta_window_appears_focused (priv->window);
-  ClutterVertex origin;
 
   /* The paint volume is computed before paint functions are called
    * so our bounds might not be updated yet. Force an update. */
   meta_window_actor_handle_updates (self);
 
-  meta_window_actor_get_shape_bounds (self, &bounds);
-
-  if (priv->surface)
-    {
-      if (meta_surface_actor_get_unobscured_bounds (priv->surface, &unobscured_bounds))
-        gdk_rectangle_intersect (&bounds, &unobscured_bounds, &bounds);
-    }
-
   if (appears_focused ? priv->focused_shadow : priv->unfocused_shadow)
     {
       cairo_rectangle_int_t shadow_bounds;
+      ClutterActorBox shadow_box;
 
       /* We could compute an full clip region as we do for the window
        * texture, but the shadow is relatively cheap to draw, and
@@ -738,16 +729,24 @@ meta_window_actor_get_paint_volume (ClutterActor       *actor,
        */
 
       meta_window_actor_get_shadow_bounds (self, appears_focused, &shadow_bounds);
-      gdk_rectangle_union (&bounds, &shadow_bounds, &bounds);
+      shadow_box.x1 = shadow_bounds.x;
+      shadow_box.x2 = shadow_bounds.x + shadow_bounds.width;
+      shadow_box.y1 = shadow_bounds.y;
+      shadow_box.y2 = shadow_bounds.y + shadow_bounds.height;
+
+      clutter_paint_volume_union_box (volume, &shadow_box);
     }
 
-  origin.x = bounds.x;
-  origin.y = bounds.y;
-  origin.z = 0.0f;
-  clutter_paint_volume_set_origin (volume, &origin);
+  if (priv->surface)
+    {
+      const ClutterPaintVolume *child_volume;
 
-  clutter_paint_volume_set_width (volume, bounds.width);
-  clutter_paint_volume_set_height (volume, bounds.height);
+      child_volume = clutter_actor_get_transformed_paint_volume (CLUTTER_ACTOR (priv->surface), actor);
+      if (!child_volume)
+        return FALSE;
+
+      clutter_paint_volume_union (volume, child_volume);
+    }
 
   return TRUE;
 }
