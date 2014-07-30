@@ -452,6 +452,9 @@ meta_wayland_touch_cancel (MetaWaylandTouch *touch)
 {
   GList *surfaces, *s;
 
+  if (touch->display == NULL)
+    return;
+
   surfaces = s = touch_get_surfaces (touch, FALSE);
 
   for (s = surfaces; s; s = s->next)
@@ -533,6 +536,7 @@ meta_wayland_touch_release (MetaWaylandTouch *touch)
   clutter_evdev_remove_filter (evdev_filter_func, touch);
   g_clear_pointer (&touch->touch_surfaces, (GDestroyNotify) g_hash_table_unref);
   g_clear_pointer (&touch->touches, (GDestroyNotify) g_hash_table_unref);
+  touch->display = NULL;
 }
 
 void
@@ -542,6 +546,13 @@ meta_wayland_touch_create_new_resource (MetaWaylandTouch   *touch,
                                         uint32_t            id)
 {
   struct wl_resource *cr;
+
+  if (touch->display == NULL)
+    {
+      wl_resource_post_error (seat_resource, WL_DISPLAY_ERROR_INVALID_METHOD,
+                              "Cannot retrieve touch interface without touch capability");
+      return;
+    }
 
   cr = wl_resource_create (client, &wl_touch_interface,
 			   MIN (META_WL_TOUCH_VERSION, wl_resource_get_version (seat_resource)), id);
