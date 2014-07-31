@@ -514,6 +514,8 @@ meta_shaped_texture_get_paint_volume (ClutterActor *actor,
       box.y1 = MAX (unobscured_bounds.y, box.y1);
       box.y2 = MIN (unobscured_bounds.y + unobscured_bounds.height, box.y2);
     }
+  box.x2 = MAX (box.x2, box.x1);
+  box.y2 = MAX (box.y2, box.y1);
 
   clutter_paint_volume_union_box (volume, &box);
   return TRUE;
