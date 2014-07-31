@@ -549,15 +549,15 @@ blur_xspan (guchar *row,
   for (i = x0 - d + offset; i < x1 + offset; i++)
     {
       if (i >= 0 && i < row_width)
-	sum += row[i];
+        sum += row[i];
 
       if (i >= x0 + offset)
-	{
-	  if (i >= d)
-	    sum -= row[i - d];
+        {
+          if (i >= d)
+            sum -= row[i - d];
 
-	  tmp_buffer[i - offset] = (sum + d / 2) / d;
-	}
+          tmp_buffer[i - offset] = (sum + d / 2) / d;
+        }
     }
 
   memcpy(row + x0, tmp_buffer + x0, x1 - x0);
@@ -567,9 +567,9 @@ static void
 blur_rows (cairo_region_t   *convolve_region,
            int               x_offset,
            int               y_offset,
-	   guchar           *buffer,
-	   int               buffer_width,
-	   int               buffer_height,
+           guchar           *buffer,
+           int               buffer_width,
+           int               buffer_height,
            int               d)
 {
   int i, j;
@@ -586,10 +586,10 @@ blur_rows (cairo_region_t   *convolve_region,
       cairo_region_get_rectangle (convolve_region, i, &rect);
 
       for (j = y_offset + rect.y; j < y_offset + rect.y + rect.height; j++)
-	{
-	  guchar *row = buffer + j * buffer_width;
-	  int x0 = x_offset + rect.x;
-	  int x1 = x0 + rect.width;
+        {
+          guchar *row = buffer + j * buffer_width;
+          int x0 = x_offset + rect.x;
+          int x1 = x0 + rect.width;
 
           /* We want to produce a symmetric blur that spreads a pixel
            * equally far to the left and right. If d is odd that happens
@@ -597,19 +597,19 @@ blur_rows (cairo_region_t   *convolve_region,
            * on either side and then a centered blur of size d + 1.
            * (techique also from the SVG specification)
            */
-	  if (d % 2 == 1)
-	    {
-	      blur_xspan (row, tmp_buffer, buffer_width, x0, x1, d, 0);
-	      blur_xspan (row, tmp_buffer, buffer_width, x0, x1, d, 0);
-	      blur_xspan (row, tmp_buffer, buffer_width, x0, x1, d, 0);
-	    }
-	  else
-	    {
-	      blur_xspan (row, tmp_buffer, buffer_width, x0, x1, d, 1);
-	      blur_xspan (row, tmp_buffer, buffer_width, x0, x1, d, -1);
-	      blur_xspan (row, tmp_buffer, buffer_width, x0, x1, d + 1, 0);
-	    }
-	}
+          if (d % 2 == 1)
+            {
+              blur_xspan (row, tmp_buffer, buffer_width, x0, x1, d, 0);
+              blur_xspan (row, tmp_buffer, buffer_width, x0, x1, d, 0);
+              blur_xspan (row, tmp_buffer, buffer_width, x0, x1, d, 0);
+            }
+          else
+            {
+              blur_xspan (row, tmp_buffer, buffer_width, x0, x1, d, 1);
+              blur_xspan (row, tmp_buffer, buffer_width, x0, x1, d, -1);
+              blur_xspan (row, tmp_buffer, buffer_width, x0, x1, d + 1, 0);
+            }
+        }
     }
 
   g_free (tmp_buffer);
@@ -634,7 +634,7 @@ fade_bytes (guchar *bytes,
  */
 static guchar *
 flip_buffer (guchar *buffer,
-	     int     width,
+             int     width,
              int     height)
 {
   /* Working in blocks increases cache efficiency, compared to reading
@@ -646,33 +646,33 @@ flip_buffer (guchar *buffer,
       int i0, j0;
 
       for (j0 = 0; j0 < height; j0 += BLOCK_SIZE)
-	for (i0 = 0; i0 <= j0; i0 += BLOCK_SIZE)
-	  {
-	    int max_j = MIN(j0 + BLOCK_SIZE, height);
-	    int max_i = MIN(i0 + BLOCK_SIZE, width);
-	    int i, j;
+        for (i0 = 0; i0 <= j0; i0 += BLOCK_SIZE)
+          {
+            int max_j = MIN(j0 + BLOCK_SIZE, height);
+            int max_i = MIN(i0 + BLOCK_SIZE, width);
+            int i, j;
 
-	    if (i0 == j0)
-	      {
-		for (j = j0; j < max_j; j++)
-		  for (i = i0; i < j; i++)
-		    {
-		      guchar tmp = buffer[j * width + i];
-		      buffer[j * width + i] = buffer[i * width + j];
-		      buffer[i * width + j] = tmp;
-		    }
-	      }
-	    else
-	      {
-		for (j = j0; j < max_j; j++)
-		  for (i = i0; i < max_i; i++)
-		    {
-		      guchar tmp = buffer[j * width + i];
-		      buffer[j * width + i] = buffer[i * width + j];
-		      buffer[i * width + j] = tmp;
-		    }
-	      }
-	  }
+            if (i0 == j0)
+              {
+                for (j = j0; j < max_j; j++)
+                  for (i = i0; i < j; i++)
+                    {
+                      guchar tmp = buffer[j * width + i];
+                      buffer[j * width + i] = buffer[i * width + j];
+                      buffer[i * width + j] = tmp;
+                    }
+              }
+            else
+              {
+                for (j = j0; j < max_j; j++)
+                  for (i = i0; i < max_i; i++)
+                    {
+                      guchar tmp = buffer[j * width + i];
+                      buffer[j * width + i] = buffer[i * width + j];
+                      buffer[i * width + j] = tmp;
+                    }
+              }
+          }
 
       return buffer;
     }
@@ -683,15 +683,15 @@ flip_buffer (guchar *buffer,
 
       for (i0 = 0; i0 < width; i0 += BLOCK_SIZE)
         for (j0 = 0; j0 < height; j0 += BLOCK_SIZE)
-	  {
-	    int max_j = MIN(j0 + BLOCK_SIZE, height);
-	    int max_i = MIN(i0 + BLOCK_SIZE, width);
-	    int i, j;
+          {
+            int max_j = MIN(j0 + BLOCK_SIZE, height);
+            int max_i = MIN(i0 + BLOCK_SIZE, width);
+            int i, j;
 
             for (i = i0; i < max_i; i++)
               for (j = j0; j < max_j; j++)
-		new_buffer[i * height + j] = buffer[j * width + i];
-	  }
+                new_buffer[i * height + j] = buffer[j * width + i];
+          }
 
       g_free (buffer);
 
@@ -763,7 +763,7 @@ make_shadow (MetaShadow     *shadow,
 
       cairo_region_get_rectangle (region, k, &rect);
       for (j = y_offset + rect.y; j < y_offset + rect.y + rect.height; j++)
-	memset (buffer + buffer_width * j + x_offset + rect.x, 255, rect.width);
+        memset (buffer + buffer_width * j + x_offset + rect.x, 255, rect.width);
     }
 
   /* Step 2: swap rows and columns */
