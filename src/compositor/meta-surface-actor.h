@@ -55,8 +55,6 @@ MetaShapedTexture *meta_surface_actor_get_texture (MetaSurfaceActor *self);
 MetaWindow        *meta_surface_actor_get_window  (MetaSurfaceActor *self);
 
 gboolean meta_surface_actor_is_obscured (MetaSurfaceActor *self);
-gboolean meta_surface_actor_get_unobscured_bounds (MetaSurfaceActor      *self,
-                                                   cairo_rectangle_int_t *unobscured_bounds);
 
 void meta_surface_actor_set_input_region (MetaSurfaceActor *self,
                                           cairo_region_t   *region);

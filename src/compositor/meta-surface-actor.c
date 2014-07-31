@@ -42,14 +42,6 @@ enum {
 
 static guint signals[LAST_SIGNAL];
 
-gboolean
-meta_surface_actor_get_unobscured_bounds (MetaSurfaceActor      *self,
-                                          cairo_rectangle_int_t *unobscured_bounds)
-{
-  MetaSurfaceActorPrivate *priv = self->priv;
-  return meta_shaped_texture_get_unobscured_bounds (priv->texture, unobscured_bounds);
-}
-
 static void
 meta_surface_actor_pick (ClutterActor       *actor,
                          const ClutterColor *color)

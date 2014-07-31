@@ -494,6 +494,39 @@ meta_shaped_texture_get_preferred_height (ClutterActor *self,
     *natural_height_p = priv->tex_height;
 }
 
+static cairo_region_t *
+effective_unobscured_region (MetaShapedTexture *self)
+{
+  MetaShapedTexturePrivate *priv = self->priv;
+  ClutterActor *parent = clutter_actor_get_parent (CLUTTER_ACTOR (self));
+
+  if (clutter_actor_has_mapped_clones (CLUTTER_ACTOR (self)))
+    return NULL;
+
+  while (parent && !META_IS_WINDOW_ACTOR (parent))
+    parent = clutter_actor_get_parent (parent);
+
+  if (parent && clutter_actor_has_mapped_clones (parent))
+    return NULL;
+
+  return priv->unobscured_region;
+}
+
+static gboolean
+get_unobscured_bounds (MetaShapedTexture     *self,
+                       cairo_rectangle_int_t *unobscured_bounds)
+{
+  cairo_region_t *unobscured_region = effective_unobscured_region (self);
+
+  if (unobscured_region)
+    {
+      cairo_region_get_extents (unobscured_region, unobscured_bounds);
+      return TRUE;
+    }
+  else
+    return FALSE;
+}
+
 static gboolean
 meta_shaped_texture_get_paint_volume (ClutterActor *actor,
                                       ClutterPaintVolume *volume)
@@ -507,7 +540,7 @@ meta_shaped_texture_get_paint_volume (ClutterActor *actor,
 
   clutter_actor_get_allocation_box (actor, &box);
 
-  if (meta_shaped_texture_get_unobscured_bounds (self, &unobscured_bounds))
+  if (get_unobscured_bounds (self, &unobscured_bounds))
     {
       box.x1 = MAX (unobscured_bounds.x, box.x1);
       box.x2 = MIN (unobscured_bounds.x + unobscured_bounds.width, box.x2);
@@ -561,39 +594,6 @@ meta_shaped_texture_set_mask_texture (MetaShapedTexture *stex,
     }
 
   clutter_actor_queue_redraw (CLUTTER_ACTOR (stex));
-}
-
-static cairo_region_t *
-effective_unobscured_region (MetaShapedTexture *self)
-{
-  MetaShapedTexturePrivate *priv = self->priv;
-  ClutterActor *parent = clutter_actor_get_parent (CLUTTER_ACTOR (self));
-
-  if (clutter_actor_has_mapped_clones (CLUTTER_ACTOR (self)))
-    return NULL;
-
-  while (parent && !META_IS_WINDOW_ACTOR (parent))
-    parent = clutter_actor_get_parent (parent);
-
-  if (parent && clutter_actor_has_mapped_clones (parent))
-    return NULL;
-
-  return priv->unobscured_region;
-}
-
-gboolean
-meta_shaped_texture_get_unobscured_bounds (MetaShapedTexture     *self,
-                                           cairo_rectangle_int_t *unobscured_bounds)
-{
-  cairo_region_t *unobscured_region = effective_unobscured_region (self);
-
-  if (unobscured_region)
-    {
-      cairo_region_get_extents (unobscured_region, unobscured_bounds);
-      return TRUE;
-    }
-  else
-    return FALSE;
 }
 
 gboolean
