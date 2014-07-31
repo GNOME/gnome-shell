@@ -138,13 +138,6 @@ void meta_frames_get_borders (MetaFrames *frames,
                               Window xwindow,
                               MetaFrameBorders *borders);
 
-void meta_frames_reset_bg     (MetaFrames *frames,
-                               Window      xwindow);
-void meta_frames_unflicker_bg (MetaFrames *frames,
-                               Window      xwindow,
-                               int         target_width,
-                               int         target_height);
-
 cairo_region_t *meta_frames_get_frame_bounds (MetaFrames *frames,
                                               Window      xwindow,
                                               int         window_width,
