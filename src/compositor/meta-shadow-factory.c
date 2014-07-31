@@ -560,7 +560,7 @@ blur_xspan (guchar *row,
         }
     }
 
-  memcpy(row + x0, tmp_buffer + x0, x1 - x0);
+  memcpy (row + x0, tmp_buffer + x0, x1 - x0);
 }
 
 static void
