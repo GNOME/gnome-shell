@@ -902,17 +902,11 @@ const ScreenShield = new Lang.Class({
     },
 
     showDialog: function() {
-        // Ensure that the stage window is mapped, before taking a grab
-        // otherwise X errors out
-        Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this, function() {
-            if (!this._becomeModal()) {
-                // In the login screen, this is a hard error. Fail-whale
-                log('Could not acquire modal grab for the login screen. Aborting login process.');
-                Meta.quit(Meta.ExitCode.ERROR);
-            }
-
-            return false;
-        }));
+        if (!this._becomeModal()) {
+            // In the login screen, this is a hard error. Fail-whale
+            log('Could not acquire modal grab for the login screen. Aborting login process.');
+            Meta.quit(Meta.ExitCode.ERROR);
+        }
 
         this.actor.show();
         this._isGreeter = Main.sessionMode.isGreeter;
