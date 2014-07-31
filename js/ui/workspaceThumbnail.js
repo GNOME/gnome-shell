@@ -878,9 +878,6 @@ const ThumbnailsBox = new Lang.Class({
         for (let key in ThumbnailState)
             this._stateCounts[ThumbnailState[key]] = 0;
 
-        // The "porthole" is the portion of the screen that we show in the workspaces
-        this._porthole = Main.layoutManager.getWorkAreaForMonitor(Main.layoutManager.primaryIndex);
-
         this.addThumbnails(0, global.screen.n_workspaces);
 
         this._updateSwitcherVisibility();
@@ -904,6 +901,7 @@ const ThumbnailsBox = new Lang.Class({
         for (let w = 0; w < this._thumbnails.length; w++)
             this._thumbnails[w].destroy();
         this._thumbnails = [];
+        this._porthole = null;
     },
 
     _workspacesChanged: function() {
@@ -934,6 +932,7 @@ const ThumbnailsBox = new Lang.Class({
     },
 
     addThumbnails: function(start, count) {
+        this._ensurePorthole();
         for (let k = start; k < start + count; k++) {
             let metaWorkspace = global.screen.get_workspace_by_index(k);
             let thumbnail = new WorkspaceThumbnail(metaWorkspace);
@@ -1121,9 +1120,7 @@ const ThumbnailsBox = new Lang.Class({
         // the size request to our children because we know how big they are and know
         // that the actors aren't depending on the virtual functions being called.
 
-        if (this._thumbnails.length == 0)
-            return;
-
+        this._ensurePorthole();
         let themeNode = this.actor.get_theme_node();
 
         let spacing = themeNode.get_length('spacing');
@@ -1135,8 +1132,7 @@ const ThumbnailsBox = new Lang.Class({
     },
 
     _getPreferredWidth: function(actor, forHeight, alloc) {
-        if (this._thumbnails.length == 0)
-            return;
+        this._ensurePorthole();
 
         let themeNode = this.actor.get_theme_node();
 
@@ -1152,6 +1148,13 @@ const ThumbnailsBox = new Lang.Class({
         let width = Math.round(this._porthole.width * scale);
         alloc.min_size = width;
         alloc.natural_size = width;
+    },
+
+    // The "porthole" is the portion of the screen that we show in the
+    // workspaces
+    _ensurePorthole: function() {
+        if (!this._porthole)
+            this._porthole = Main.layoutManager.getWorkAreaForMonitor(Main.layoutManager.primaryIndex);
     },
 
     _allocate: function(actor, box, flags) {
