@@ -571,7 +571,6 @@ const ActivitiesButton = new Lang.Class({
         this.actor.label_actor = this._label;
 
         this.actor.connect('captured-event', Lang.bind(this, this._onCapturedEvent));
-        this.actor.connect_after('event', Lang.bind(this, this._onEvent));
         this.actor.connect_after('key-release-event', Lang.bind(this, this._onKeyRelease));
 
         Main.overview.connect('showing', Lang.bind(this, function() {
@@ -609,12 +608,12 @@ const ActivitiesButton = new Lang.Class({
     },
 
     _onEvent: function(actor, event) {
-        if (event.type() == Clutter.EventType.TOUCH_END ||
-            event.type() == Clutter.EventType.BUTTON_RELEASE) {
+        this.parent(actor, event);
 
+        if (event.type() == Clutter.EventType.TOUCH_END ||
+            event.type() == Clutter.EventType.BUTTON_RELEASE)
             Main.overview.toggle();
-            this.menu.close();
-        }
+
         return Clutter.EVENT_PROPAGATE;
     },
 
