@@ -65,6 +65,14 @@ G_DEFINE_TYPE_WITH_CODE (MetaShapedTexture, meta_shaped_texture, CLUTTER_TYPE_AC
   (G_TYPE_INSTANCE_GET_PRIVATE ((obj), META_TYPE_SHAPED_TEXTURE, \
                                 MetaShapedTexturePrivate))
 
+enum {
+  SIZE_CHANGED,
+
+  LAST_SIGNAL,
+};
+
+static guint signals[LAST_SIGNAL];
+
 struct _MetaShapedTexturePrivate
 {
   MetaTextureTower *paint_tower;
@@ -96,6 +104,13 @@ meta_shaped_texture_class_init (MetaShapedTextureClass *klass)
   actor_class->get_preferred_height = meta_shaped_texture_get_preferred_height;
   actor_class->paint = meta_shaped_texture_paint;
   actor_class->get_paint_volume = meta_shaped_texture_get_paint_volume;
+
+  signals[SIZE_CHANGED] = g_signal_new ("size-changed",
+                                        G_TYPE_FROM_CLASS (gobject_class),
+                                        G_SIGNAL_RUN_LAST,
+                                        0,
+                                        NULL, NULL, NULL,
+                                        G_TYPE_NONE, 0);
 
   g_type_class_add_private (klass, sizeof (MetaShapedTexturePrivate));
 }
@@ -262,6 +277,7 @@ set_cogl_texture (MetaShapedTexture *stex,
       priv->tex_width = width;
       priv->tex_height = height;
       clutter_actor_queue_relayout (CLUTTER_ACTOR (stex));
+      g_signal_emit (stex, signals[SIZE_CHANGED], 0);
     }
 
   /* NB: We don't queue a redraw of the actor here because we don't

@@ -76,6 +76,7 @@ struct _MetaWindowActorPrivate
   gint64            frame_drawn_time;
 
   guint             repaint_scheduled_id;
+  guint             size_changed_id;
 
   /*
    * These need to be counters rather than flags, since more plugins
@@ -272,10 +273,10 @@ window_appears_focused_notify (MetaWindow *mw,
 }
 
 static void
-window_size_changed (MetaWindow *mw,
-                     gpointer    data)
+surface_size_changed (MetaSurfaceActor *actor,
+                      gpointer          user_data)
 {
-  MetaWindowActor *self = META_WINDOW_ACTOR (data);
+  MetaWindowActor *self = META_WINDOW_ACTOR (user_data);
 
   meta_window_actor_update_shape (self);
 }
@@ -368,6 +369,7 @@ set_surface (MetaWindowActor  *self,
   if (priv->surface)
     {
       g_signal_handler_disconnect (priv->surface, priv->repaint_scheduled_id);
+      g_signal_handler_disconnect (priv->surface, priv->size_changed_id);
       priv->repaint_scheduled_id = 0;
       clutter_actor_remove_child (CLUTTER_ACTOR (self), CLUTTER_ACTOR (priv->surface));
       g_object_unref (priv->surface);
@@ -380,6 +382,8 @@ set_surface (MetaWindowActor  *self,
       g_object_ref_sink (priv->surface);
       priv->repaint_scheduled_id = g_signal_connect (priv->surface, "repaint-scheduled",
                                                      G_CALLBACK (surface_repaint_scheduled), self);
+      priv->size_changed_id = g_signal_connect (priv->surface, "size-changed",
+                                                G_CALLBACK (surface_size_changed), self);
       clutter_actor_add_child (CLUTTER_ACTOR (self), CLUTTER_ACTOR (priv->surface));
 
       /* If the previous surface actor was frozen, start out
@@ -489,8 +493,6 @@ meta_window_actor_set_property (GObject      *object,
       priv->window = g_value_dup_object (value);
       g_signal_connect_object (priv->window, "notify::appears-focused",
                                G_CALLBACK (window_appears_focused_notify), self, 0);
-      g_signal_connect_object (priv->window, "size-changed",
-                               G_CALLBACK (window_size_changed), self, 0);
       break;
     case PROP_NO_SHADOW:
       {

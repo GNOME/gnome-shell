@@ -36,6 +36,7 @@ G_DEFINE_ABSTRACT_TYPE_WITH_CODE (MetaSurfaceActor, meta_surface_actor, CLUTTER_
 
 enum {
   REPAINT_SCHEDULED,
+  SIZE_CHANGED,
 
   LAST_SIGNAL,
 };
@@ -120,6 +121,13 @@ meta_surface_actor_class_init (MetaSurfaceActorClass *klass)
                                              NULL, NULL, NULL,
                                              G_TYPE_NONE, 0);
 
+  signals[SIZE_CHANGED] = g_signal_new ("size-changed",
+                                        G_TYPE_FROM_CLASS (object_class),
+                                        G_SIGNAL_RUN_LAST,
+                                        0,
+                                        NULL, NULL, NULL,
+                                        G_TYPE_NONE, 0);
+
   g_type_class_add_private (klass, sizeof (MetaSurfaceActorPrivate));
 }
 
@@ -145,6 +153,14 @@ cullable_iface_init (MetaCullableInterface *iface)
 }
 
 static void
+texture_size_changed (MetaShapedTexture *texture,
+                      gpointer           user_data)
+{
+  MetaSurfaceActor *actor = META_SURFACE_ACTOR (user_data);
+  g_signal_emit (actor, signals[SIZE_CHANGED], 0);
+}
+
+static void
 meta_surface_actor_init (MetaSurfaceActor *self)
 {
   MetaSurfaceActorPrivate *priv;
@@ -154,6 +170,8 @@ meta_surface_actor_init (MetaSurfaceActor *self)
                                                    MetaSurfaceActorPrivate);
 
   priv->texture = META_SHAPED_TEXTURE (meta_shaped_texture_new ());
+  g_signal_connect_object (priv->texture, "size-changed",
+                           G_CALLBACK (texture_size_changed), self, 0);
   clutter_actor_add_child (CLUTTER_ACTOR (self), CLUTTER_ACTOR (priv->texture));
 }
 
