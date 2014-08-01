@@ -64,6 +64,7 @@ typedef enum {
   LOAD_INIT  = (1 << 0),
   INCLUDE_OR = (1 << 1),
   INIT_ONLY  = (1 << 2),
+  FORCE_INIT = (1 << 3),
 } MetaPropHookFlags;
 
 struct _MetaWindowPropHooks
@@ -157,7 +158,8 @@ meta_window_load_initial_properties (MetaWindow *window)
            * to call the reload function; this is different from a notification
            * where disappearance of a previously present value is significant.
            */
-          if (values[j].type != META_PROP_VALUE_INVALID)
+          if (values[j].type != META_PROP_VALUE_INVALID ||
+              hooks->flags & FORCE_INIT)
             reload_prop_value (window, hooks, &values[j], TRUE);
           ++j;
         }
@@ -1804,8 +1806,8 @@ meta_display_init_window_prop_hooks (MetaDisplay *display)
     { display->atom__NET_WM_ICON_GEOMETRY, META_PROP_VALUE_CARDINAL_LIST, reload_icon_geometry, LOAD_INIT },
     { display->atom_WM_CLIENT_LEADER,  META_PROP_VALUE_INVALID, complain_about_broken_client, NONE },
     { display->atom_SM_CLIENT_ID,      META_PROP_VALUE_INVALID, complain_about_broken_client, NONE },
-    { display->atom_WM_WINDOW_ROLE,    META_PROP_VALUE_STRING, reload_wm_window_role, LOAD_INIT },
-    { display->atom__NET_WM_WINDOW_TYPE, META_PROP_VALUE_ATOM_LIST, reload_net_wm_window_type, LOAD_INIT | INCLUDE_OR },
+    { display->atom_WM_WINDOW_ROLE,    META_PROP_VALUE_STRING, reload_wm_window_role, LOAD_INIT | FORCE_INIT },
+    { display->atom__NET_WM_WINDOW_TYPE, META_PROP_VALUE_ATOM_LIST, reload_net_wm_window_type, LOAD_INIT | INCLUDE_OR | FORCE_INIT },
     { display->atom__NET_WM_STRUT,         META_PROP_VALUE_INVALID, reload_struts, NONE },
     { display->atom__NET_WM_STRUT_PARTIAL, META_PROP_VALUE_INVALID, reload_struts, NONE },
     { display->atom__NET_WM_BYPASS_COMPOSITOR, META_PROP_VALUE_CARDINAL,  reload_bypass_compositor, NONE },
@@ -1825,6 +1827,9 @@ meta_display_init_window_prop_hooks (MetaDisplay *display)
     {
       /* Doing initial loading doesn't make sense if we just want notification */
       g_assert (!((cursor->flags & LOAD_INIT) && cursor->type == META_PROP_VALUE_INVALID));
+
+      /* Forcing initialization doesn't make sense if not loading initially */
+      g_assert ((cursor->flags & LOAD_INIT) || !(cursor->flags & FORCE_INIT));
 
       /* Atoms are safe to use with GINT_TO_POINTER because it's safe with
        * anything 32 bits or less, and atoms are 32 bits with the top three
