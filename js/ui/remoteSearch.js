@@ -110,6 +110,13 @@ function loadRemoteSearchProviders(callback) {
             else
                 remoteProvider = new RemoteSearchProvider(appInfo, busName, objectPath);
 
+            remoteProvider.defaultEnabled = true;
+            try {
+                remoteProvider.defaultEnabled = !keyfile.get_boolean(group, 'DefaultDisabled');
+            } catch(e) {
+                // ignore error
+            }
+
             objectPaths[objectPath] = remoteProvider;
             loadedProviders.push(remoteProvider);
         } catch(e) {
@@ -132,8 +139,14 @@ function loadRemoteSearchProviders(callback) {
 
     loadedProviders = loadedProviders.filter(function(provider) {
         let appId = provider.appInfo.get_id();
-        let disabled = searchSettings.get_strv('disabled');
-        return disabled.indexOf(appId) == -1;
+
+        if (provider.defaultEnabled) {
+            let disabled = searchSettings.get_strv('disabled');
+            return disabled.indexOf(appId) == -1;
+        } else {
+            let enabled = searchSettings.get_strv('enabled');
+            return enabled.indexOf(appId) != -1;
+        }
     });
 
     loadedProviders.sort(function(providerA, providerB) {
