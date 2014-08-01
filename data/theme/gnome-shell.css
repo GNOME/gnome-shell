@@ -478,7 +478,7 @@ StScrollBar StButton#vhandle:active {
 
 /* Common radii */
 
-#searchEntry,
+.search-entry,
 .modal-dialog-button,
 .notification-button,
 .hotplug-notification-item,
@@ -500,7 +500,7 @@ StScrollBar StButton#vhandle:active {
 
 /* Entries */
 
-#searchEntry,
+.search-entry,
 .login-dialog StEntry,
 .notification StEntry,
 .modal-dialog StEntry {
@@ -512,7 +512,7 @@ StScrollBar StButton#vhandle:active {
     padding: 4px 12px;
 }
 
-#searchEntry,
+.search-entry,
 .login-dialog StEntry,
 .run-dialog-entry,
 .notification StEntry {
@@ -524,8 +524,8 @@ StScrollBar StButton#vhandle:active {
     box-shadow: inset 0px 2px 4px rgba(0,0,0,0.6);
 }
 
-#searchEntry:focus,
-#searchEntry:hover,
+.search-entry:focus,
+.search-entry:hover,
 .login-dialog StEntry:focus,
 .notification StEntry:focus,
 .modal-dialog StEntry {
@@ -542,18 +542,18 @@ StScrollBar StButton#vhandle:active {
     border: 2px solid #3465a4;
 }
 
-#searchEntry {
+.search-entry {
     border-color: rgba(245,245,245,0.3);
     color: rgb(192, 192, 192);
     caret-color: rgb(192, 192, 192);
 }
 
-#searchEntry:hover {
+.search-entry:hover {
     color: rgb(128, 128, 128);
     caret-color: rgb(128, 128, 128);
 }
 
-#searchEntry:focus {
+.search-entry:focus {
     color: rgb(64, 64, 64);
     caret-color: rgb(64, 64, 64);
     font-weight: bold;
@@ -917,7 +917,7 @@ StScrollBar StButton#vhandle:active {
 
 /* Search Box */
 
-#searchEntry {
+.search-entry {
     width: 320px;
 }
 
@@ -926,8 +926,8 @@ StScrollBar StButton#vhandle:active {
     color: #c0c0c0;
 }
 
-#searchEntry:hover .search-entry-icon,
-#searchEntry:focus .search-entry-icon {
+.search-entry:hover .search-entry-icon,
+.search-entry:focus .search-entry-icon {
     color: #8d8f8a;
 }
 

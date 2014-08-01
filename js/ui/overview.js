@@ -242,7 +242,7 @@ const Overview = new Lang.Class({
                                         opacity: 0 });
         this._overview.add_actor(this._panelGhost);
 
-        this._searchEntry = new St.Entry({ name: 'searchEntry',
+        this._searchEntry = new St.Entry({ style_class: 'search-entry',
                                            /* Translators: this is the text displayed
                                               in the search entry when no search is
                                               active; it should not exceed ~30
