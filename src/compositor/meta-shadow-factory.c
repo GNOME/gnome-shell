@@ -541,7 +541,7 @@ blur_xspan (guchar *row,
    * be well predicted and there are enough different possibilities
    * that trying to write this as a series of unconditional loops
    * is hard and not an obvious win. The main slow down here seems
-   * to be the integer division for pixel; one possible optimization
+   * to be the integer division per pixel; one possible optimization
    * would be to accumulate into two 16-bit integer buffers and
    * only divide down after all three passes. (SSE parallel implementation
    * of the divide step is possible.)
@@ -595,7 +595,7 @@ blur_rows (cairo_region_t   *convolve_region,
            * equally far to the left and right. If d is odd that happens
            * naturally, but for d even, we approximate by using a blur
            * on either side and then a centered blur of size d + 1.
-           * (techique also from the SVG specification)
+           * (technique also from the SVG specification)
            */
           if (d % 2 == 1)
             {
