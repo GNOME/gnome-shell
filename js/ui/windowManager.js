@@ -1175,10 +1175,10 @@ const WindowManager = new Lang.Class({
                                scale_y: 0.8,
                                time: DESTROY_WINDOW_ANIMATION_TIME,
                                transition: 'easeOutQuad',
-                               onComplete: this._mapWindowDone,
+                               onComplete: this._destroyWindowDone,
                                onCompleteScope: this,
                                onCompleteParams: [shellwm, actor],
-                               onOverwrite: this._mapWindowOverwrite,
+                               onOverwrite: this._destroyWindowDone,
                                onOverwriteScope: this,
                                onOverwriteParams: [shellwm, actor]
                              });
@@ -1201,7 +1201,7 @@ const WindowManager = new Lang.Class({
                              { scale_y: 0,
                                time: DIALOG_DESTROY_WINDOW_ANIMATION_TIME,
                                transition: 'easeOutQuad',
-                               onComplete: this._destoyWindowDone,
+                               onComplete: this._destroyWindowDone,
                                onCompleteScope: this,
                                onCompleteParams: [shellwm, actor],
                                onOverwrite: this._destroyWindowDone,
