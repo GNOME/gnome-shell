@@ -84,8 +84,7 @@ bind_seat (struct wl_client *client,
   MetaWaylandSeat *seat = data;
   struct wl_resource *resource;
 
-  resource = wl_resource_create (client, &wl_seat_interface,
-				 MIN (META_WL_SEAT_VERSION, version), id);
+  resource = wl_resource_create (client, &wl_seat_interface, version, id);
   wl_resource_set_implementation (resource, &seat_interface, seat, unbind_resource);
   wl_list_insert (&seat->base_resource_list, wl_resource_get_link (resource));
 

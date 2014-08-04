@@ -1133,7 +1133,7 @@ bind_xdg_shell (struct wl_client *client,
 
   xdg_shell = g_slice_new (XdgShell);
 
-  xdg_shell->resource = wl_resource_create (client, &xdg_shell_interface, META_XDG_SHELL_VERSION, id);
+  xdg_shell->resource = wl_resource_create (client, &xdg_shell_interface, version, id);
   wl_resource_set_implementation (xdg_shell->resource, &meta_wayland_xdg_shell_interface, data, NULL);
 
   xdg_shell->client_destroy_listener.notify = xdg_shell_handle_client_destroy;
@@ -1385,8 +1385,7 @@ bind_wl_shell (struct wl_client *client,
 {
   struct wl_resource *resource;
 
-  resource = wl_resource_create (client, &wl_shell_interface,
-                                 MIN (META_WL_SHELL_VERSION, version), id);
+  resource = wl_resource_create (client, &wl_shell_interface, version, id);
   wl_resource_set_implementation (resource, &meta_wayland_wl_shell_interface, data, NULL);
 }
 
@@ -1463,8 +1462,7 @@ bind_gtk_shell (struct wl_client *client,
 {
   struct wl_resource *resource;
 
-  resource = wl_resource_create (client, &gtk_shell_interface,
-                                 MIN (META_GTK_SHELL_VERSION, version), id);
+  resource = wl_resource_create (client, &gtk_shell_interface, version, id);
   wl_resource_set_implementation (resource, &meta_wayland_gtk_shell_interface, data, NULL);
 
   /* FIXME: ask the plugin */
@@ -1749,8 +1747,7 @@ bind_subcompositor (struct wl_client *client,
 {
   struct wl_resource *resource;
 
-  resource = wl_resource_create (client, &wl_subcompositor_interface,
-                                 MIN (META_WL_SUBCOMPOSITOR_VERSION, version), id);
+  resource = wl_resource_create (client, &wl_subcompositor_interface, version, id);
   wl_resource_set_implementation (resource, &meta_wayland_subcompositor_interface, data, NULL);
 }
 

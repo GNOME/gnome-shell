@@ -296,8 +296,7 @@ compositor_bind (struct wl_client *client,
   MetaWaylandCompositor *compositor = data;
   struct wl_resource *resource;
 
-  resource = wl_resource_create (client, &wl_compositor_interface,
-				 MIN (META_WL_COMPOSITOR_VERSION, version), id);
+  resource = wl_resource_create (client, &wl_compositor_interface, version, id);
   wl_resource_set_implementation (resource, &meta_wayland_compositor_interface, compositor, NULL);
 }
 

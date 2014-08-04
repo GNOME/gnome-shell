@@ -102,8 +102,7 @@ bind_output (struct wl_client *client,
   struct wl_resource *resource;
   guint mode_flags;
 
-  resource = wl_resource_create (client, &wl_output_interface,
-				 MIN (META_WL_OUTPUT_VERSION, version), id);
+  resource = wl_resource_create (client, &wl_output_interface, version, id);
   wayland_output->resources = g_list_prepend (wayland_output->resources, resource);
 
   wl_resource_set_user_data (resource, wayland_output);

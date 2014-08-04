@@ -508,9 +508,7 @@ bind_manager (struct wl_client *client,
               void *data, guint32 version, guint32 id)
 {
   struct wl_resource *resource;
-
-  resource = wl_resource_create (client, &wl_data_device_manager_interface,
-				 MIN (version, META_WL_DATA_DEVICE_MANAGER_VERSION), id);
+  resource = wl_resource_create (client, &wl_data_device_manager_interface, version, id);
   wl_resource_set_implementation (resource, &manager_interface, NULL, NULL);
 }
 
