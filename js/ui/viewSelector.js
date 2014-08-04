@@ -307,7 +307,7 @@ const ViewSelector = new Lang.Class({
     },
 
     removeSearchProvider: function(provider) {
-        this._searchProvider.removeSearchProvider(provider);
+        this._searchResults.removeSearchProvider(provider);
     },
 
     showApps: function() {

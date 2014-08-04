@@ -46,6 +46,11 @@ const SearchSystem = new Lang.Class({
         this.emit('providers-changed');
     },
 
+    removeProvider: function(provider) {
+        this._unregisterProvider(provider);
+        this.emit('providers-changed');
+    },
+
     _reloadRemoteProviders: function() {
         let remoteProviders = this._providers.filter(function(provider) {
             return provider.isRemoteProvider;
