@@ -56,8 +56,8 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <sys/mman.h>
-#include <clutter/evdev/clutter-evdev.h>
 
+#include "backends/meta-backend.h"
 #include "meta-wayland-private.h"
 
 static void meta_wayland_keyboard_update_xkb_state (MetaWaylandKeyboard *keyboard);
@@ -110,22 +110,12 @@ create_anonymous_file (off_t size,
 }
 
 static void
-inform_clients_of_new_keymap (MetaWaylandKeyboard *keyboard,
-			      int                  flags)
+inform_clients_of_new_keymap (MetaWaylandKeyboard *keyboard)
 {
-  MetaWaylandCompositor *compositor;
-  struct wl_client *xclient;
   struct wl_resource *keyboard_resource;
-
-  compositor = meta_wayland_compositor_get_default ();
-  xclient = compositor->xwayland_manager.client;
 
   wl_resource_for_each (keyboard_resource, &keyboard->resource_list)
     {
-      if ((flags & META_WAYLAND_KEYBOARD_SKIP_XCLIENTS) &&
-	  wl_resource_get_client (keyboard_resource) == xclient)
-	continue;
-
       wl_keyboard_send_keymap (keyboard_resource,
 			       WL_KEYBOARD_KEYMAP_FORMAT_XKB_V1,
 			       keyboard->xkb_info.keymap_fd,
@@ -142,8 +132,7 @@ inform_clients_of_new_keymap (MetaWaylandKeyboard *keyboard,
 
 static void
 meta_wayland_keyboard_take_keymap (MetaWaylandKeyboard *keyboard,
-				   struct xkb_keymap   *keymap,
-				   int                  flags)
+				   struct xkb_keymap   *keymap)
 {
   MetaWaylandXkbInfo  *xkb_info = &keyboard->xkb_info;
   GError *error = NULL;
@@ -157,7 +146,7 @@ meta_wayland_keyboard_take_keymap (MetaWaylandKeyboard *keyboard,
     }
 
   xkb_keymap_unref (xkb_info->keymap);
-  xkb_info->keymap = keymap;
+  xkb_info->keymap = xkb_keymap_ref (keymap);
 
   meta_wayland_keyboard_update_xkb_state (keyboard);
 
@@ -198,19 +187,7 @@ meta_wayland_keyboard_take_keymap (MetaWaylandKeyboard *keyboard,
   strcpy (xkb_info->keymap_area, keymap_str);
   free (keymap_str);
 
-#if defined(CLUTTER_WINDOWING_EGL)
-  /* XXX -- the evdev backend can be used regardless of the
-   * windowing backend. To do this properly we need a Clutter
-   * API to check the input backend. */
-  if (clutter_check_windowing_backend (CLUTTER_WINDOWING_EGL))
-    {
-      ClutterDeviceManager *manager;
-      manager = clutter_device_manager_get_default ();
-      clutter_evdev_set_keyboard_map (manager, xkb_info->keymap);
-    }
-#endif
-
-  inform_clients_of_new_keymap (keyboard, flags);
+  inform_clients_of_new_keymap (keyboard);
 
   notify_modifiers (keyboard,
                     wl_display_next_serial (keyboard->display),
@@ -370,20 +347,14 @@ meta_wayland_keyboard_init (MetaWaylandKeyboard *keyboard,
 
   wl_array_init (&keyboard->pressed_keys);
 
-  keyboard->xkb_context = xkb_context_new (0 /* flags */);
   keyboard->xkb_info.keymap_fd = -1;
-
-  /* Compute a default until gnome-settings-daemon starts and sets
-     the appropriate values
-  */
-  meta_wayland_keyboard_set_keymap_names (keyboard,
-					  "evdev",
-					  "pc105",
-					  "us", "", "", 0);
 
   keyboard->settings = g_settings_new ("org.gnome.settings-daemon.peripherals.keyboard");
   g_signal_connect (keyboard->settings, "changed",
                     G_CALLBACK (settings_changed), keyboard);
+
+  meta_wayland_keyboard_take_keymap (keyboard,
+                                     meta_backend_get_keymap (meta_get_backend ()));
 }
 
 static void
@@ -403,7 +374,6 @@ meta_wayland_keyboard_release (MetaWaylandKeyboard *keyboard)
 {
   meta_wayland_keyboard_set_focus (keyboard, NULL);
   meta_wayland_xkb_info_destroy (&keyboard->xkb_info);
-  xkb_context_unref (keyboard->xkb_context);
 
   /* XXX: What about keyboard->resource_list? */
   wl_array_release (&keyboard->pressed_keys);
@@ -591,30 +561,6 @@ meta_wayland_keyboard_set_focus (MetaWaylandKeyboard *keyboard,
           keyboard->focus_serial = serial;
         }
     }
-}
-
-void
-meta_wayland_keyboard_set_keymap_names (MetaWaylandKeyboard *keyboard,
-					const char          *rules,
-					const char          *model,
-					const char          *layout,
-					const char          *variant,
-					const char          *options,
-					int                  flags)
-{
-  struct xkb_rule_names xkb_names;
-
-  xkb_names.rules = rules;
-  xkb_names.model = model;
-  xkb_names.layout = layout;
-  xkb_names.variant = variant;
-  xkb_names.options = options;
-
-  meta_wayland_keyboard_take_keymap (keyboard,
-				     xkb_keymap_new_from_names (keyboard->xkb_context,
-								&xkb_names,
-								0 /* flags */),
-				     flags);
 }
 
 struct wl_client *

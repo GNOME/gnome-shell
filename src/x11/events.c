@@ -917,40 +917,6 @@ handle_input_xevent (MetaDisplay *display,
 }
 
 static void
-reload_xkb_rules (MetaScreen  *screen)
-{
-  MetaWaylandCompositor *compositor;
-  char **names;
-  int n_names;
-  gboolean ok;
-  const char *rules, *model, *layout, *variant, *options;
-
-  compositor = meta_wayland_compositor_get_default ();
-
-  ok = meta_prop_get_latin1_list (screen->display, screen->xroot,
-                                  screen->display->atom__XKB_RULES_NAMES,
-                                  &names, &n_names);
-  if (!ok)
-    return;
-
-  if (n_names != 5)
-    goto out;
-
-  rules = names[0];
-  model = names[1];
-  layout = names[2];
-  variant = names[3];
-  options = names[4];
-
-  meta_wayland_keyboard_set_keymap_names (&compositor->seat->keyboard,
-                                          rules, model, layout, variant, options,
-                                          META_WAYLAND_KEYBOARD_SKIP_XCLIENTS);
-
- out:
-  g_strfreev (names);
-}
-
-static void
 process_request_frame_extents (MetaDisplay    *display,
                                XEvent         *event)
 {
@@ -1459,10 +1425,6 @@ handle_other_xevent (MetaDisplay *display,
             else if (event->xproperty.atom ==
                      display->atom__NET_DESKTOP_NAMES)
               meta_screen_update_workspace_names (display->screen);
-            else if (meta_is_wayland_compositor () &&
-                     event->xproperty.atom ==
-                     display->atom__XKB_RULES_NAMES)
-              reload_xkb_rules (display->screen);
 
             /* we just use this property as a sentinel to avoid
              * certain race conditions.  See the comment for the
