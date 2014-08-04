@@ -302,6 +302,14 @@ const ViewSelector = new Lang.Class({
         this._showAppsButton.checked = !this._showAppsButton.checked;
     },
 
+    addSearchProvider: function(provider) {
+        this._searchResults.addSearchProvider(provider);
+    },
+
+    removeSearchProvider: function(provider) {
+        this._searchProvider.removeSearchProvider(provider);
+    },
+
     showApps: function() {
         Main.overview.show();
         this._showAppsButton.checked = true;

@@ -602,6 +602,14 @@ const SearchResults = new Lang.Class({
         });
     },
 
+    addSearchProvider: function (provider) {
+        this._searchSystem.addProvider(provider);
+    },
+
+    removeSearchProvider: function (provider) {
+        this._searchSystem.removeProvider(provider);
+    },
+
     reset: function() {
         this._searchSystem.reset();
         this._statusBin.hide();
