@@ -241,7 +241,7 @@ wl_region_subtract (struct wl_client *client,
   cairo_region_subtract_rectangle (region->region, &rectangle);
 }
 
-const struct wl_region_interface meta_wayland_region_interface = {
+static const struct wl_region_interface meta_wayland_region_interface = {
   wl_region_destroy,
   wl_region_add,
   wl_region_subtract

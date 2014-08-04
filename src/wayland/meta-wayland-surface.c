@@ -606,7 +606,7 @@ wl_surface_set_buffer_scale (struct wl_client *client,
     g_warning ("Trying to set invalid buffer_scale of %d\n", scale);
 }
 
-const struct wl_surface_interface meta_wayland_wl_surface_interface = {
+static const struct wl_surface_interface meta_wayland_wl_surface_interface = {
   wl_surface_destroy,
   wl_surface_attach,
   wl_surface_damage,
