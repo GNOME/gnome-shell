@@ -696,8 +696,7 @@ meta_wayland_surface_create (MetaWaylandCompositor *compositor,
   surface->compositor = compositor;
   surface->scale = 1;
 
-  surface->resource = wl_resource_create (client, &wl_surface_interface,
-                                          MIN (META_WL_SURFACE_VERSION, wl_resource_get_version (compositor_resource)), id);
+  surface->resource = wl_resource_create (client, &wl_surface_interface, wl_resource_get_version (compositor_resource), id);
   wl_resource_set_implementation (surface->resource, &meta_wayland_wl_surface_interface, surface, wl_surface_destructor);
 
   surface->buffer_destroy_listener.notify = surface_handle_buffer_destroy;
@@ -715,7 +714,6 @@ destroy_surface_extension (MetaWaylandSurfaceExtension *extension)
 
 static gboolean
 create_surface_extension (MetaWaylandSurfaceExtension *extension,
-                          int                          max_version,
                           const struct wl_interface   *interface,
                           const void                  *implementation,
                           wl_resource_destroy_func_t   destructor,
@@ -729,8 +727,7 @@ create_surface_extension (MetaWaylandSurfaceExtension *extension,
     return FALSE;
 
   client = wl_resource_get_client (surface->resource);
-  extension->resource = wl_resource_create (client, interface,
-                                            MIN (max_version, wl_resource_get_version (master_resource)), id);
+  extension->resource = wl_resource_create (client, interface, wl_resource_get_version (master_resource), id);
   wl_resource_set_implementation (extension->resource, implementation, surface, destructor);
 
   return TRUE;
@@ -1004,7 +1001,6 @@ xdg_shell_get_xdg_surface (struct wl_client *client,
   MetaWindow *window;
 
   if (!create_surface_extension (&surface->xdg_surface,
-                                 META_XDG_SURFACE_VERSION,
                                  &xdg_surface_interface,
                                  &meta_wayland_xdg_surface_interface,
                                  xdg_surface_destructor,
@@ -1061,7 +1057,6 @@ xdg_shell_get_xdg_popup (struct wl_client *client,
     return;
 
   if (!create_surface_extension (&surface->xdg_popup,
-                                 META_XDG_POPUP_VERSION,
                                  &xdg_popup_interface,
                                  &meta_wayland_xdg_popup_interface,
                                  xdg_popup_destructor,
@@ -1363,7 +1358,6 @@ wl_shell_get_shell_surface (struct wl_client *client,
   MetaWindow *window;
 
   if (!create_surface_extension (&surface->wl_shell_surface,
-                                 META_WL_SHELL_SURFACE_VERSION,
                                  &wl_shell_surface_interface,
                                  &meta_wayland_wl_shell_surface_interface,
                                  wl_shell_surface_destructor,
@@ -1445,7 +1439,6 @@ get_gtk_surface (struct wl_client *client,
   MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
 
   if (!create_surface_extension (&surface->gtk_surface,
-                                 META_GTK_SURFACE_VERSION,
                                  &gtk_surface_interface,
                                  &meta_wayland_gtk_surface_interface,
                                  gtk_surface_destructor,
@@ -1719,7 +1712,6 @@ wl_subcompositor_get_subsurface (struct wl_client *client,
   MetaWaylandSurface *parent = wl_resource_get_user_data (parent_resource);
 
   if (!create_surface_extension (&surface->subsurface,
-                                 META_GTK_SURFACE_VERSION,
                                  &wl_subsurface_interface,
                                  &meta_wayland_subsurface_interface,
                                  wl_subsurface_destructor,

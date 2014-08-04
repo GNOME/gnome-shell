@@ -641,8 +641,7 @@ meta_wayland_keyboard_create_new_resource (MetaWaylandKeyboard *keyboard,
 {
   struct wl_resource *cr;
 
-  cr = wl_resource_create (client, &wl_keyboard_interface,
-			   MIN (META_WL_KEYBOARD_VERSION, wl_resource_get_version (seat_resource)), id);
+  cr = wl_resource_create (client, &wl_keyboard_interface, wl_resource_get_version (seat_resource), id);
   wl_resource_set_implementation (cr, &keyboard_interface, keyboard, unbind_resource);
   wl_list_insert (&keyboard->resource_list, wl_resource_get_link (cr));
 

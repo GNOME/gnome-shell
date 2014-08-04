@@ -802,8 +802,7 @@ meta_wayland_pointer_create_new_resource (MetaWaylandPointer *pointer,
 {
   struct wl_resource *cr;
 
-  cr = wl_resource_create (client, &wl_pointer_interface,
-			   MIN (META_WL_POINTER_VERSION, wl_resource_get_version (seat_resource)), id);
+  cr = wl_resource_create (client, &wl_pointer_interface, wl_resource_get_version (seat_resource), id);
   wl_resource_set_implementation (cr, &pointer_interface, pointer, unbind_resource);
   wl_list_insert (&pointer->resource_list, wl_resource_get_link (cr));
 

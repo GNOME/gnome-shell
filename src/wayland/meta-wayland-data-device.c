@@ -125,14 +125,9 @@ meta_wayland_data_source_send_offer (MetaWaylandDataSource *source,
   offer->source = source;
   offer->source_destroy_listener.notify = destroy_offer_data_source;
 
-  offer->resource = wl_resource_create (wl_resource_get_client (target),
-					&wl_data_offer_interface,
-					MIN (META_WL_DATA_OFFER_VERSION,
-					     wl_resource_get_version (target)), 0);
-  wl_resource_set_implementation (offer->resource, &data_offer_interface,
-				  offer, destroy_data_offer);
-  wl_resource_add_destroy_listener (source->resource,
-                                    &offer->source_destroy_listener);
+  offer->resource = wl_resource_create (wl_resource_get_client (target), &wl_data_offer_interface, wl_resource_get_version (target), 0);
+  wl_resource_set_implementation (offer->resource, &data_offer_interface, offer, destroy_data_offer);
+  wl_resource_add_destroy_listener (source->resource, &offer->source_destroy_listener);
 
   wl_data_device_send_data_offer (target, offer->resource);
 
@@ -484,11 +479,8 @@ create_data_source (struct wl_client *client,
 {
   MetaWaylandDataSource *source = g_slice_new0 (MetaWaylandDataSource);
 
-  source->resource = wl_resource_create (client, &wl_data_source_interface,
-					 MIN (META_WL_DATA_SOURCE_VERSION,
-					      wl_resource_get_version (resource)), id);
-  wl_resource_set_implementation (source->resource, &data_source_interface,
-				  source, destroy_data_source);
+  source->resource = wl_resource_create (client, &wl_data_source_interface, wl_resource_get_version (resource), id);
+  wl_resource_set_implementation (source->resource, &data_source_interface, source, destroy_data_source);
 
   wl_array_init (&source->mime_types);
 }
@@ -501,8 +493,7 @@ get_data_device (struct wl_client *client,
   MetaWaylandSeat *seat = wl_resource_get_user_data (seat_resource);
   struct wl_resource *cr;
 
-  cr = wl_resource_create (client, &wl_data_device_interface,
-                           MIN (META_WL_DATA_DEVICE_VERSION, wl_resource_get_version (manager_resource)), id);
+  cr = wl_resource_create (client, &wl_data_device_interface, wl_resource_get_version (manager_resource), id);
   wl_resource_set_implementation (cr, &data_device_interface, &seat->data_device, unbind_resource);
   wl_list_insert (&seat->data_device.resource_list, wl_resource_get_link (cr));
 }

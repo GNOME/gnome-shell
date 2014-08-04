@@ -257,20 +257,14 @@ meta_wayland_region_resource_destroy_cb (struct wl_resource *resource)
 }
 
 static void
-meta_wayland_compositor_create_region (struct wl_client *wayland_client,
+meta_wayland_compositor_create_region (struct wl_client *client,
                                        struct wl_resource *compositor_resource,
                                        uint32_t id)
 {
   MetaWaylandRegion *region = g_slice_new0 (MetaWaylandRegion);
 
-  region->resource = wl_resource_create (wayland_client,
-					 &wl_region_interface,
-					 MIN (META_WL_REGION_VERSION,
-					      wl_resource_get_version (compositor_resource)),
-					 id);
-  wl_resource_set_implementation (region->resource,
-				  &meta_wayland_region_interface, region,
-				  meta_wayland_region_resource_destroy_cb);
+  region->resource = wl_resource_create (client, &wl_region_interface, wl_resource_get_version (compositor_resource), id);
+  wl_resource_set_implementation (region->resource, &meta_wayland_region_interface, region, meta_wayland_region_resource_destroy_cb);
 
   region->region = cairo_region_create ();
 }
