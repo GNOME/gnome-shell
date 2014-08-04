@@ -87,6 +87,9 @@ MUTTER_PC_MODULES="
    wayland-server >= 1.5.90
    upower-glib >= 0.99.0
    gnome-desktop-3.0
+   xkbfile
+   xkeyboard-config
+   xkbcommon-x11
 "
 
 GLIB_GSETTINGS
@@ -234,6 +237,9 @@ CPPFLAGS="$mutter_save_cppflags"
 if test x$have_xinerama = xno; then
    AC_MSG_ERROR([Xinerama extension was not found])
 fi
+
+AC_DEFINE_UNQUOTED([XKB_BASE], ["`$PKG_CONFIG --variable xkb_base xkeyboard-config`"],
+                               [XKB base dir])
 
 RANDR_LIBS=
 found_randr=no

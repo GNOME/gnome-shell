@@ -30,6 +30,9 @@
 
 #include "meta-backend.h"
 
+#define DEFAULT_XKB_RULES_FILE "evdev"
+#define DEFAULT_XKB_MODEL "pc105+inet"
+
 #define META_TYPE_BACKEND             (meta_backend_get_type ())
 #define META_BACKEND(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_BACKEND, MetaBackend))
 #define META_BACKEND_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass),  META_TYPE_BACKEND, MetaBackendClass))
@@ -66,6 +69,16 @@ struct _MetaBackendClass
   void (* warp_pointer) (MetaBackend *backend,
                          int          x,
                          int          y);
+
+  void (* set_keymap) (MetaBackend *backend,
+                       const char  *layouts,
+                       const char  *variants,
+                       const char  *options);
+
+  struct xkb_keymap * (* get_keymap) (MetaBackend *backend);
+
+  void (* lock_layout_group) (MetaBackend *backend,
+                              guint        idx);
 };
 
 #endif /* META_BACKEND_PRIVATE_H */

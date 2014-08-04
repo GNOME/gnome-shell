@@ -27,6 +27,8 @@
 
 #include <glib-object.h>
 
+#include <xkbcommon/xkbcommon.h>
+
 #include <meta/meta-idle-monitor.h>
 #include "meta-monitor-manager.h"
 #include "meta-cursor-renderer.h"
@@ -53,6 +55,16 @@ gboolean meta_backend_ungrab_device (MetaBackend *backend,
 void meta_backend_warp_pointer (MetaBackend *backend,
                                 int          x,
                                 int          y);
+
+void meta_backend_set_keymap (MetaBackend *backend,
+                              const char  *layouts,
+                              const char  *variants,
+                              const char  *options);
+
+struct xkb_keymap * meta_backend_get_keymap (MetaBackend *backend);
+
+void meta_backend_lock_layout_group (MetaBackend *backend,
+                                     guint        idx);
 
 void meta_clutter_init (void);
 

@@ -200,6 +200,29 @@ meta_backend_warp_pointer (MetaBackend *backend,
   META_BACKEND_GET_CLASS (backend)->warp_pointer (backend, x, y);
 }
 
+void
+meta_backend_set_keymap (MetaBackend *backend,
+                         const char  *layouts,
+                         const char  *variants,
+                         const char  *options)
+{
+  META_BACKEND_GET_CLASS (backend)->set_keymap (backend, layouts, variants, options);
+}
+
+struct xkb_keymap *
+meta_backend_get_keymap (MetaBackend *backend)
+
+{
+  return META_BACKEND_GET_CLASS (backend)->get_keymap (backend);
+}
+
+void
+meta_backend_lock_layout_group (MetaBackend *backend,
+                                guint idx)
+{
+  META_BACKEND_GET_CLASS (backend)->lock_layout_group (backend, idx);
+}
+
 static GType
 get_backend_type (void)
 {

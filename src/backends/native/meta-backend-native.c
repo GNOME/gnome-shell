@@ -189,6 +189,49 @@ meta_backend_native_warp_pointer (MetaBackend *backend,
 }
 
 static void
+meta_backend_native_set_keymap (MetaBackend *backend,
+                                const char  *layouts,
+                                const char  *variants,
+                                const char  *options)
+{
+  ClutterDeviceManager *manager = clutter_device_manager_get_default ();
+  struct xkb_rule_names names;
+  struct xkb_keymap *keymap;
+  struct xkb_context *context;
+
+  names.rules = DEFAULT_XKB_RULES_FILE;
+  names.model = DEFAULT_XKB_MODEL;
+  names.layout = layouts;
+  names.variant = variants;
+  names.options = options;
+
+  context = xkb_context_new (XKB_CONTEXT_NO_FLAGS);
+  keymap = xkb_keymap_new_from_names (context, &names, XKB_KEYMAP_COMPILE_NO_FLAGS);
+  xkb_context_unref (context);
+
+  clutter_evdev_set_keyboard_map (manager, keymap);
+
+  /* FIXME: emit keymap changed signal */
+
+  xkb_keymap_unref (keymap);
+}
+
+static struct xkb_keymap *
+meta_backend_native_get_keymap (MetaBackend *backend)
+{
+  ClutterDeviceManager *manager = clutter_device_manager_get_default ();
+  return clutter_evdev_get_keyboard_map (manager);
+}
+
+static void
+meta_backend_native_lock_layout_group (MetaBackend *backend,
+                                       guint        idx)
+{
+  ClutterDeviceManager *manager = clutter_device_manager_get_default ();
+  clutter_evdev_set_keyboard_layout_index (manager, idx);
+}
+
+static void
 meta_backend_native_class_init (MetaBackendNativeClass *klass)
 {
   MetaBackendClass *backend_class = META_BACKEND_CLASS (klass);
@@ -199,6 +242,9 @@ meta_backend_native_class_init (MetaBackendNativeClass *klass)
   backend_class->create_cursor_renderer = meta_backend_native_create_cursor_renderer;
 
   backend_class->warp_pointer = meta_backend_native_warp_pointer;
+  backend_class->set_keymap = meta_backend_native_set_keymap;
+  backend_class->get_keymap = meta_backend_native_get_keymap;
+  backend_class->lock_layout_group = meta_backend_native_lock_layout_group;
 }
 
 static void

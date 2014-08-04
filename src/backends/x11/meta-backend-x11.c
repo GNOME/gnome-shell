@@ -24,11 +24,18 @@
 
 #include "config.h"
 
+#include <string.h>
+#include <stdlib.h>
+
 #include "meta-backend-x11.h"
 
 #include <clutter/x11/clutter-x11.h>
 
 #include <X11/extensions/sync.h>
+#include <X11/XKBlib.h>
+#include <X11/extensions/XKBrules.h>
+#include <X11/Xlib-xcb.h>
+#include <xkbcommon/xkbcommon-x11.h>
 
 #include "meta-idle-monitor-xsync.h"
 #include "meta-monitor-manager-xrandr.h"
@@ -43,6 +50,7 @@ struct _MetaBackendX11Private
 {
   /* The host X11 display */
   Display *xdisplay;
+  xcb_connection_t *xcb;
   GSource *source;
 
   int xsync_event_base;
@@ -52,6 +60,9 @@ struct _MetaBackendX11Private
   int xinput_event_base;
   int xinput_error_base;
   Time latest_evtime;
+
+  uint8_t xkb_event_base;
+  uint8_t xkb_error_base;
 };
 typedef struct _MetaBackendX11Private MetaBackendX11Private;
 
@@ -320,6 +331,17 @@ meta_backend_x11_post_init (MetaBackend *backend)
 
   take_touch_grab (backend);
 
+  priv->xcb = XGetXCBConnection (priv->xdisplay);
+  if (!xkb_x11_setup_xkb_extension (priv->xcb,
+                                    XKB_X11_MIN_MAJOR_XKB_VERSION,
+                                    XKB_X11_MIN_MINOR_XKB_VERSION,
+                                    XKB_X11_SETUP_XKB_EXTENSION_NO_FLAGS,
+                                    NULL, NULL,
+                                    &priv->xkb_event_base,
+                                    &priv->xkb_error_base))
+    meta_fatal ("X server doesn't have the XKB extension, version %d.%d or newer\n",
+                XKB_X11_MIN_MAJOR_XKB_VERSION, XKB_X11_MIN_MINOR_XKB_VERSION);
+
   META_BACKEND_CLASS (meta_backend_x11_parent_class)->post_init (backend);
 }
 
@@ -414,6 +436,163 @@ meta_backend_x11_warp_pointer (MetaBackend *backend,
 }
 
 static void
+get_xkbrf_var_defs (Display           *xdisplay,
+                    const char        *layouts,
+                    const char        *variants,
+                    const char        *options,
+                    char             **rules_p,
+                    XkbRF_VarDefsRec  *var_defs)
+{
+  char *rules = NULL;
+
+  /* Get it from the X property or fallback on defaults */
+  if (!XkbRF_GetNamesProp (xdisplay, &rules, var_defs) || !rules)
+    {
+      rules = strdup (DEFAULT_XKB_RULES_FILE);
+      var_defs->model = strdup (DEFAULT_XKB_MODEL);
+      var_defs->layout = NULL;
+      var_defs->variant = NULL;
+      var_defs->options = NULL;
+    }
+
+  /* Swap in our new options... */
+  free (var_defs->layout);
+  var_defs->layout = strdup (layouts);
+  free (var_defs->variant);
+  var_defs->variant = strdup (variants);
+  free (var_defs->options);
+  var_defs->options = strdup (options);
+
+  /* Sometimes, the property is a file path, and sometimes it's
+     not. Normalize it so it's always a file path. */
+  if (rules[0] == '/')
+    *rules_p = g_strdup (rules);
+  else
+    *rules_p = g_build_filename (XKB_BASE, "rules", rules, NULL);
+
+  free (rules);
+}
+
+static void
+free_xkbrf_var_defs (XkbRF_VarDefsRec *var_defs)
+{
+  free (var_defs->model);
+  free (var_defs->layout);
+  free (var_defs->variant);
+  free (var_defs->options);
+}
+
+static void
+free_xkb_component_names (XkbComponentNamesRec *p)
+{
+  free (p->keymap);
+  free (p->keycodes);
+  free (p->types);
+  free (p->compat);
+  free (p->symbols);
+  free (p->geometry);
+}
+
+static void
+upload_xkb_description (Display              *xdisplay,
+                        const gchar          *rules_file_path,
+                        XkbRF_VarDefsRec     *var_defs,
+                        XkbComponentNamesRec *comp_names)
+{
+  XkbDescRec *xkb_desc;
+  gchar *rules_file;
+
+  /* Upload it to the X server using the same method as setxkbmap */
+  xkb_desc = XkbGetKeyboardByName (xdisplay,
+                                   XkbUseCoreKbd,
+                                   comp_names,
+                                   XkbGBN_AllComponentsMask,
+                                   XkbGBN_AllComponentsMask &
+                                   (~XkbGBN_GeometryMask), True);
+  if (!xkb_desc)
+    {
+      g_warning ("Couldn't upload new XKB keyboard description");
+      return;
+    }
+
+  XkbFreeKeyboard (xkb_desc, 0, True);
+
+  rules_file = g_path_get_basename (rules_file_path);
+
+  if (!XkbRF_SetNamesProp (xdisplay, rules_file, var_defs))
+    g_warning ("Couldn't update the XKB root window property");
+
+  g_free (rules_file);
+}
+
+static void
+meta_backend_x11_set_keymap (MetaBackend *backend,
+                             const char  *layouts,
+                             const char  *variants,
+                             const char  *options)
+{
+  MetaBackendX11 *x11 = META_BACKEND_X11 (backend);
+  MetaBackendX11Private *priv = meta_backend_x11_get_instance_private (x11);
+  XkbRF_RulesRec *xkb_rules;
+  XkbRF_VarDefsRec xkb_var_defs = { 0 };
+  gchar *rules_file_path;
+
+  get_xkbrf_var_defs (priv->xdisplay,
+                      layouts,
+                      variants,
+                      options,
+                      &rules_file_path,
+                      &xkb_var_defs);
+
+  xkb_rules = XkbRF_Load (rules_file_path, NULL, True, True);
+  if (xkb_rules)
+    {
+      XkbComponentNamesRec xkb_comp_names = { 0 };
+
+      XkbRF_GetComponents (xkb_rules, &xkb_var_defs, &xkb_comp_names);
+      upload_xkb_description (priv->xdisplay, rules_file_path, &xkb_var_defs, &xkb_comp_names);
+
+      free_xkb_component_names (&xkb_comp_names);
+      XkbRF_Free (xkb_rules, True);
+    }
+  else
+    {
+      g_warning ("Couldn't load XKB rules");
+    }
+
+  free_xkbrf_var_defs (&xkb_var_defs);
+  g_free (rules_file_path);
+}
+
+static struct xkb_keymap *
+meta_backend_x11_get_keymap (MetaBackend *backend)
+{
+  MetaBackendX11 *x11 = META_BACKEND_X11 (backend);
+  MetaBackendX11Private *priv = meta_backend_x11_get_instance_private (x11);
+  struct xkb_keymap *keymap;
+  struct xkb_context *context;
+
+  context = xkb_context_new (XKB_CONTEXT_NO_FLAGS);
+  keymap = xkb_x11_keymap_new_from_device (context,
+                                           priv->xcb,
+                                           xkb_x11_get_core_keyboard_device_id (priv->xcb),
+                                           XKB_KEYMAP_COMPILE_NO_FLAGS);
+  xkb_context_unref (context);
+
+  return keymap;
+}
+
+static void
+meta_backend_x11_lock_layout_group (MetaBackend *backend,
+                                    guint        idx)
+{
+  MetaBackendX11 *x11 = META_BACKEND_X11 (backend);
+  MetaBackendX11Private *priv = meta_backend_x11_get_instance_private (x11);
+
+  XkbLockGroup (priv->xdisplay, XkbUseCoreKbd, idx);
+}
+
+static void
 meta_backend_x11_class_init (MetaBackendX11Class *klass)
 {
   MetaBackendClass *backend_class = META_BACKEND_CLASS (klass);
@@ -426,6 +605,9 @@ meta_backend_x11_class_init (MetaBackendX11Class *klass)
   backend_class->grab_device = meta_backend_x11_grab_device;
   backend_class->ungrab_device = meta_backend_x11_ungrab_device;
   backend_class->warp_pointer = meta_backend_x11_warp_pointer;
+  backend_class->set_keymap = meta_backend_x11_set_keymap;
+  backend_class->get_keymap = meta_backend_x11_get_keymap;
+  backend_class->lock_layout_group = meta_backend_x11_lock_layout_group;
 }
 
 static void
