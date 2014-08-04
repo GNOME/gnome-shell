@@ -197,9 +197,9 @@ meta_wayland_compositor_repick (MetaWaylandCompositor *compositor)
 }
 
 static void
-meta_wayland_compositor_create_surface (struct wl_client *client,
-                                        struct wl_resource *resource,
-                                        guint32 id)
+wl_compositor_create_surface (struct wl_client *client,
+                              struct wl_resource *resource,
+                              guint32 id)
 {
   MetaWaylandCompositor *compositor = wl_resource_get_user_data (resource);
 
@@ -207,19 +207,19 @@ meta_wayland_compositor_create_surface (struct wl_client *client,
 }
 
 static void
-meta_wayland_region_destroy (struct wl_client *client,
-                             struct wl_resource *resource)
+wl_region_destroy (struct wl_client *client,
+                   struct wl_resource *resource)
 {
   wl_resource_destroy (resource);
 }
 
 static void
-meta_wayland_region_add (struct wl_client *client,
-                         struct wl_resource *resource,
-                         gint32 x,
-                         gint32 y,
-                         gint32 width,
-                         gint32 height)
+wl_region_add (struct wl_client *client,
+               struct wl_resource *resource,
+               gint32 x,
+               gint32 y,
+               gint32 width,
+               gint32 height)
 {
   MetaWaylandRegion *region = wl_resource_get_user_data (resource);
   cairo_rectangle_int_t rectangle = { x, y, width, height };
@@ -228,12 +228,12 @@ meta_wayland_region_add (struct wl_client *client,
 }
 
 static void
-meta_wayland_region_subtract (struct wl_client *client,
-                              struct wl_resource *resource,
-                              gint32 x,
-                              gint32 y,
-                              gint32 width,
-                              gint32 height)
+wl_region_subtract (struct wl_client *client,
+                    struct wl_resource *resource,
+                    gint32 x,
+                    gint32 y,
+                    gint32 width,
+                    gint32 height)
 {
   MetaWaylandRegion *region = wl_resource_get_user_data (resource);
   cairo_rectangle_int_t rectangle = { x, y, width, height };
@@ -242,9 +242,9 @@ meta_wayland_region_subtract (struct wl_client *client,
 }
 
 const struct wl_region_interface meta_wayland_region_interface = {
-  meta_wayland_region_destroy,
-  meta_wayland_region_add,
-  meta_wayland_region_subtract
+  wl_region_destroy,
+  wl_region_add,
+  wl_region_subtract
 };
 
 static void
@@ -257,9 +257,9 @@ meta_wayland_region_resource_destroy_cb (struct wl_resource *resource)
 }
 
 static void
-meta_wayland_compositor_create_region (struct wl_client *client,
-                                       struct wl_resource *compositor_resource,
-                                       uint32_t id)
+wl_compositor_create_region (struct wl_client *client,
+                             struct wl_resource *compositor_resource,
+                             uint32_t id)
 {
   MetaWaylandRegion *region = g_slice_new0 (MetaWaylandRegion);
 
@@ -270,8 +270,8 @@ meta_wayland_compositor_create_region (struct wl_client *client,
 }
 
 const static struct wl_compositor_interface meta_wayland_compositor_interface = {
-  meta_wayland_compositor_create_surface,
-  meta_wayland_compositor_create_region
+  wl_compositor_create_surface,
+  wl_compositor_create_region
 };
 
 void
