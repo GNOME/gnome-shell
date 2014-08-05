@@ -181,17 +181,35 @@ const BaseAppView = new Lang.Class({
 });
 Signals.addSignalMethods(BaseAppView.prototype);
 
+const PageIndicatorsActor = new Lang.Class({
+    Name:'PageIndicatorsActor',
+    Extends: St.BoxLayout,
+
+    _init: function() {
+        this.parent({ style_class: 'page-indicators',
+                      vertical: true,
+                      x_expand: true, y_expand: true,
+                      x_align: Clutter.ActorAlign.END,
+                      y_align: Clutter.ActorAlign.CENTER,
+                      reactive: true,
+                      clip_to_allocation: true });
+    },
+
+    vfunc_get_preferred_height: function(forWidth) {
+        // We want to request the natural height of all our children as our
+        // natural height, so we chain up to St.BoxLayout, but we only request 0
+        // as minimum height, since it's not that important if some indicators
+        // are not shown
+        let [, natHeight] = this.parent(forWidth);
+        return [0, natHeight];
+    }
+});
 
 const PageIndicators = new Lang.Class({
     Name:'PageIndicators',
 
     _init: function() {
-        this.actor = new St.BoxLayout({ style_class: 'page-indicators',
-                                        vertical: true,
-                                        x_expand: true, y_expand: true,
-                                        x_align: Clutter.ActorAlign.END,
-                                        y_align: Clutter.ActorAlign.CENTER,
-                                        reactive: true });
+        this.actor = new PageIndicatorsActor();
         this._nPages = 0;
         this._currentPage = undefined;
 
