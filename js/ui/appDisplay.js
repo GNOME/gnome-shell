@@ -964,7 +964,7 @@ const FolderView = new Lang.Class({
     },
 
     createFolderIcon: function(size) {
-        let layout = new Clutter.TableLayout();
+        let layout = new Clutter.GridLayout();
         let icon = new St.Widget({ layout_manager: layout,
                                    style_class: 'app-folder-icon' });
         layout.hookup_style(icon);
@@ -980,7 +980,7 @@ const FolderView = new Lang.Class({
             } else {
                 bin = new St.Bin({ width: subSize, height: subSize });
             }
-            layout.pack(bin, rtl ? (i + 1) % 2 : i % 2, Math.floor(i / 2));
+            layout.attach(bin, rtl ? (i + 1) % 2 : i % 2, Math.floor(i / 2), 1, 1);
         }
 
         return icon;
