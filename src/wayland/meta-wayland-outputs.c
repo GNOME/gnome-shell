@@ -114,18 +114,17 @@ bind_output (struct wl_client *client,
                 output->crtc->rect.width, output->crtc->rect.height,
                 output->crtc->current_mode->refresh_rate);
 
-  wl_resource_post_event (resource,
-                          WL_OUTPUT_GEOMETRY,
-                          (int)output->crtc->rect.x,
-                          (int)output->crtc->rect.y,
-                          output->width_mm,
-                          output->height_mm,
-                          /* Cogl values reflect XRandR values,
-                             and so does wayland */
-                          output->subpixel_order,
-                          output->vendor,
-                          output->product,
-                          output->crtc->transform);
+  wl_output_send_geometry (resource,
+                           (int)output->crtc->rect.x,
+                           (int)output->crtc->rect.y,
+                           output->width_mm,
+                           output->height_mm,
+                           /* Cogl values reflect XRandR values,
+                              and so does wayland */
+                           output->subpixel_order,
+                           output->vendor,
+                           output->product,
+                           output->crtc->transform);
 
   g_assert (output->crtc->current_mode != NULL);
 
@@ -133,22 +132,18 @@ bind_output (struct wl_client *client,
   if (output->crtc->current_mode == output->preferred_mode)
     mode_flags |= WL_OUTPUT_MODE_PREFERRED;
 
-  wl_resource_post_event (resource,
-                          WL_OUTPUT_MODE,
-                          mode_flags,
-                          (int)output->crtc->current_mode->width,
-                          (int)output->crtc->current_mode->height,
-                          (int)output->crtc->current_mode->refresh_rate);
+  wl_output_send_mode (resource,
+                       mode_flags,
+                       (int)output->crtc->current_mode->width,
+                       (int)output->crtc->current_mode->height,
+                       (int)output->crtc->current_mode->refresh_rate);
 
   output->scale = compute_scale (output);
   if (version >= WL_OUTPUT_SCALE_SINCE_VERSION)
-    wl_resource_post_event (resource,
-                            WL_OUTPUT_SCALE,
-                            output->scale);
+    wl_output_send_scale (resource, output->scale);
 
   if (version >= WL_OUTPUT_DONE_SINCE_VERSION)
-    wl_resource_post_event (resource,
-                            WL_OUTPUT_DONE);
+    wl_output_send_done (resource);
 }
 
 static void
