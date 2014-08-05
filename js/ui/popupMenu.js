@@ -1,9 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Clutter = imports.gi.Clutter;
-const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
-const Gio = imports.gi.Gio;
 const Lang = imports.lang;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
@@ -15,7 +13,6 @@ const GrabHelper = imports.ui.grabHelper;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
 const Separator = imports.ui.separator;
-const Slider = imports.ui.slider;
 const Tweener = imports.ui.tweener;
 
 const Ornament = {
