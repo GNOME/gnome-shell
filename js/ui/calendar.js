@@ -706,7 +706,7 @@ const EventsList = new Lang.Class({
     Name: 'EventsList',
 
     _init: function() {
-        let layout = new Clutter.TableLayout();
+        let layout = new Clutter.GridLayout({ orientation: Clutter.Orientation.VERTICAL });
         this.actor = new St.Widget({ style_class: 'events-table',
                                      layout_manager: layout });
         layout.hookup_style(this.actor);
@@ -729,36 +729,34 @@ const EventsList = new Lang.Class({
             dayString = '';
 
         let dayLabel = new St.Label({ style_class: 'events-day-dayname',
-                                      text: dayString });
+                                      text: dayString,
+                                      x_align: Clutter.ActorAlign.END,
+                                      y_align: Clutter.ActorAlign.START });
         dayLabel.clutter_text.line_wrap = false;
         dayLabel.clutter_text.ellipsize = false;
 
         let rtl = this.actor.get_text_direction() == Clutter.TextDirection.RTL;
 
         let layout = this.actor.layout_manager;
-        layout.pack(dayLabel, rtl ? 2 : 0, index);
-        layout.child_set(dayLabel, { x_expand: false,
-                                     x_align: Clutter.TableAlignment.END,
-                                     y_align: Clutter.TableAlignment.START });
+        layout.attach(dayLabel, rtl ? 2 : 0, index, 1, 1);
 
         let clockFormat = this._desktopSettings.get_string(CLOCK_FORMAT_KEY);
         let timeString = _formatEventTime(event, clockFormat);
         let timeLabel = new St.Label({ style_class: 'events-day-time',
-                                       text: timeString });
+                                       text: timeString,
+                                       y_align: Clutter.ActorAlign.START });
         timeLabel.clutter_text.line_wrap = false;
         timeLabel.clutter_text.ellipsize = false;
 
-        layout.pack(timeLabel, 1, index);
-        layout.child_set(timeLabel, { x_expand: false,
-                                      y_align: Clutter.TableAlignment.START });
+        layout.attach(timeLabel, 1, index, 1, 1);
 
         let titleLabel = new St.Label({ style_class: 'events-day-task',
-                                        text: event.summary });
+                                        text: event.summary,
+                                        x_expand: true });
         titleLabel.clutter_text.line_wrap = true;
         titleLabel.clutter_text.ellipsize = false;
 
-        layout.pack(titleLabel, rtl ? 0 : 2, index);
-        layout.child_set(titleLabel, { x_expand: true });
+        layout.attach(titleLabel, rtl ? 0 : 2, index, 1, 1);
     },
 
     _addPeriod: function(header, index, begin, end, includeDayName, showNothingScheduled) {
@@ -769,8 +767,7 @@ const EventsList = new Lang.Class({
 
         let label = new St.Label({ style_class: 'events-day-header', text: header });
         let layout = this.actor.layout_manager;
-        layout.pack(label, 0, index);
-        layout.child_set(label, { column_span: 3, x_expand: false });
+        layout.attach(label, 0, index, 3, 1);
         index++;
 
         for (let n = 0; n < events.length; n++) {
