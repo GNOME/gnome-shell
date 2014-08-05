@@ -27,12 +27,6 @@
 
 #include <glib-object.h>
 
-#include <xkbcommon/xkbcommon.h>
-
-#include <meta/meta-idle-monitor.h>
-#include "meta-monitor-manager.h"
-#include "meta-cursor-renderer.h"
-
 typedef struct _MetaBackend        MetaBackend;
 typedef struct _MetaBackendClass   MetaBackendClass;
 
@@ -40,28 +34,10 @@ GType meta_backend_get_type (void);
 
 MetaBackend * meta_get_backend (void);
 
-MetaIdleMonitor * meta_backend_get_idle_monitor (MetaBackend *backend,
-                                                 int          device_id);
-MetaMonitorManager * meta_backend_get_monitor_manager (MetaBackend *backend);
-MetaCursorRenderer * meta_backend_get_cursor_renderer (MetaBackend *backend);
-
-gboolean meta_backend_grab_device (MetaBackend *backend,
-                                   int          device_id,
-                                   uint32_t     timestamp);
-gboolean meta_backend_ungrab_device (MetaBackend *backend,
-                                     int          device_id,
-                                     uint32_t     timestamp);
-
-void meta_backend_warp_pointer (MetaBackend *backend,
-                                int          x,
-                                int          y);
-
 void meta_backend_set_keymap (MetaBackend *backend,
                               const char  *layouts,
                               const char  *variants,
                               const char  *options);
-
-struct xkb_keymap * meta_backend_get_keymap (MetaBackend *backend);
 
 void meta_backend_lock_layout_group (MetaBackend *backend,
                                      guint        idx);

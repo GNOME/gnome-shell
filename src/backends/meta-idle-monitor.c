@@ -38,7 +38,7 @@
 #include <meta/meta-idle-monitor.h>
 #include "meta-idle-monitor-private.h"
 #include "meta-idle-monitor-dbus.h"
-#include "meta-backend.h"
+#include "meta-backend-private.h"
 
 G_STATIC_ASSERT(sizeof(unsigned long) == sizeof(gpointer));
 

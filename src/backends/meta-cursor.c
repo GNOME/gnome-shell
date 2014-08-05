@@ -27,7 +27,7 @@
 
 #include "display-private.h"
 #include "screen-private.h"
-#include "meta-backend.h"
+#include "meta-backend-private.h"
 
 #ifdef HAVE_NATIVE_BACKEND
 #include "backends/native/meta-cursor-renderer-native.h"

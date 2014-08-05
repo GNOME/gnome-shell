@@ -67,6 +67,7 @@
 #include <meta/compositor-mutter.h>
 #include <meta/prefs.h>
 #include <meta/main.h>
+#include <meta/meta-backend.h>
 #include <meta/meta-background-actor.h>
 #include <meta/meta-background-group.h>
 #include <meta/meta-shadow-factory.h>
@@ -80,7 +81,6 @@
 #include <X11/extensions/shape.h>
 #include <X11/extensions/Xcomposite.h>
 
-#include "backends/meta-backend.h"
 #include "backends/x11/meta-backend-x11.h"
 
 #include "wayland/meta-wayland-private.h"

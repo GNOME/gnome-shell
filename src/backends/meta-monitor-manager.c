@@ -37,7 +37,7 @@
 #include <meta/errors.h>
 #include "meta-monitor-config.h"
 #include "backends/x11/meta-monitor-manager-xrandr.h"
-#include "meta-backend.h"
+#include "meta-backend-private.h"
 
 enum {
   CONFIRM_DISPLAY_CHANGE,

@@ -24,7 +24,7 @@
 
 #include "config.h"
 
-#include "meta-backend.h"
+#include <meta/meta-backend.h>
 #include "meta-backend-private.h"
 
 #include <clutter/clutter.h>
@@ -37,6 +37,13 @@
 
 static MetaBackend *_backend;
 
+/**
+ * meta_get_backend:
+ *
+ * Accessor for the singleton MetaBackend.
+ *
+ * Returns: (transfer none): The only #MetaBackend there is.
+ */
 MetaBackend *
 meta_get_backend (void)
 {
@@ -145,6 +152,9 @@ meta_backend_post_init (MetaBackend *backend)
   META_BACKEND_GET_CLASS (backend)->post_init (backend);
 }
 
+/**
+ * meta_backend_get_idle_monitor: (skip)
+ */
 MetaIdleMonitor *
 meta_backend_get_idle_monitor (MetaBackend *backend,
                                int          device_id)
@@ -160,6 +170,9 @@ meta_backend_get_idle_monitor (MetaBackend *backend,
   return backend->device_monitors[device_id];
 }
 
+/**
+ * meta_backend_get_monitor_manager: (skip)
+ */
 MetaMonitorManager *
 meta_backend_get_monitor_manager (MetaBackend *backend)
 {
@@ -168,6 +181,9 @@ meta_backend_get_monitor_manager (MetaBackend *backend)
   return priv->monitor_manager;
 }
 
+/**
+ * meta_backend_get_cursor_renderer: (skip)
+ */
 MetaCursorRenderer *
 meta_backend_get_cursor_renderer (MetaBackend *backend)
 {
@@ -176,6 +192,9 @@ meta_backend_get_cursor_renderer (MetaBackend *backend)
   return priv->cursor_renderer;
 }
 
+/**
+ * meta_backend_grab_device: (skip)
+ */
 gboolean
 meta_backend_grab_device (MetaBackend *backend,
                           int          device_id,
@@ -184,6 +203,9 @@ meta_backend_grab_device (MetaBackend *backend,
   return META_BACKEND_GET_CLASS (backend)->grab_device (backend, device_id, timestamp);
 }
 
+/**
+ * meta_backend_ungrab_device: (skip)
+ */
 gboolean
 meta_backend_ungrab_device (MetaBackend *backend,
                             int          device_id,
@@ -192,6 +214,9 @@ meta_backend_ungrab_device (MetaBackend *backend,
   return META_BACKEND_GET_CLASS (backend)->ungrab_device (backend, device_id, timestamp);
 }
 
+/**
+ * meta_backend_warp_pointer: (skip)
+ */
 void
 meta_backend_warp_pointer (MetaBackend *backend,
                            int          x,
@@ -209,6 +234,9 @@ meta_backend_set_keymap (MetaBackend *backend,
   META_BACKEND_GET_CLASS (backend)->set_keymap (backend, layouts, variants, options);
 }
 
+/**
+ * meta_backend_get_keymap: (skip)
+ */
 struct xkb_keymap *
 meta_backend_get_keymap (MetaBackend *backend)
 
@@ -295,6 +323,9 @@ static GSourceFuncs event_funcs = {
   event_dispatch
 };
 
+/**
+ * meta_clutter_init: (skip)
+ */
 void
 meta_clutter_init (void)
 {

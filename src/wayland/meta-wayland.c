@@ -37,7 +37,7 @@
 
 #include <wayland-server.h>
 
-#include "backends/meta-backend.h"
+#include <meta/meta-backend.h>
 
 #include "meta-wayland-private.h"
 #include "meta-xwayland-private.h"

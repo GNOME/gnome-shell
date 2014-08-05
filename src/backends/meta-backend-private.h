@@ -28,7 +28,12 @@
 
 #include <glib-object.h>
 
-#include "meta-backend.h"
+#include <xkbcommon/xkbcommon.h>
+
+#include <meta/meta-backend.h>
+#include <meta/meta-idle-monitor.h>
+#include "meta-cursor-renderer.h"
+#include "meta-monitor-manager.h"
 
 #define DEFAULT_XKB_RULES_FILE "evdev"
 #define DEFAULT_XKB_MODEL "pc105+inet"
@@ -80,5 +85,23 @@ struct _MetaBackendClass
   void (* lock_layout_group) (MetaBackend *backend,
                               guint        idx);
 };
+
+MetaIdleMonitor * meta_backend_get_idle_monitor (MetaBackend *backend,
+                                                 int          device_id);
+MetaMonitorManager * meta_backend_get_monitor_manager (MetaBackend *backend);
+MetaCursorRenderer * meta_backend_get_cursor_renderer (MetaBackend *backend);
+
+gboolean meta_backend_grab_device (MetaBackend *backend,
+                                   int          device_id,
+                                   uint32_t     timestamp);
+gboolean meta_backend_ungrab_device (MetaBackend *backend,
+                                     int          device_id,
+                                     uint32_t     timestamp);
+
+void meta_backend_warp_pointer (MetaBackend *backend,
+                                int          x,
+                                int          y);
+
+struct xkb_keymap * meta_backend_get_keymap (MetaBackend *backend);
 
 #endif /* META_BACKEND_PRIVATE_H */

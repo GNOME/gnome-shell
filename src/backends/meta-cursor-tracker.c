@@ -40,7 +40,7 @@
 #include <gdk/gdk.h>
 #include <gdk/gdkx.h>
 
-#include "meta-backend.h"
+#include "meta-backend-private.h"
 
 #include "meta-cursor-private.h"
 #include "meta-cursor-tracker-private.h"

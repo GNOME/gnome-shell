@@ -49,7 +49,7 @@ wayland_protocols = \
 
 libmutter_la_SOURCES =				\
 	backends/meta-backend.c			\
-	backends/meta-backend.h			\
+	meta/meta-backend.h			\
 	backends/meta-backend-private.h		\
 	backends/meta-cursor.c			\
 	backends/meta-cursor.h			\
@@ -274,6 +274,7 @@ libmutterinclude_headers =			\
 	meta/group.h				\
 	meta/keybindings.h			\
 	meta/main.h				\
+	meta/meta-backend.h			\
 	meta/meta-background-actor.h		\
 	meta/meta-background-group.h		\
 	meta/meta-background.h			\

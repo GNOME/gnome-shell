@@ -23,9 +23,10 @@
 #include "config.h"
 #include "events.h"
 
+#include <meta/meta-backend.h>
+
 #include "display-private.h"
 #include "window-private.h"
-#include "backends/meta-backend.h"
 #include "backends/x11/meta-backend-x11.h"
 
 #ifdef HAVE_NATIVE_BACKEND

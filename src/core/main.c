@@ -52,6 +52,7 @@
 #include "ui.h"
 #include <meta/prefs.h>
 #include <meta/compositor.h>
+#include <meta/meta-backend.h>
 
 #include <glib-object.h>
 #include <glib-unix.h>
@@ -78,7 +79,6 @@
 #include "x11/session.h"
 
 #include "wayland/meta-wayland.h"
-#include "backends/meta-backend.h"
 
 /*
  * The exit code we'll return to our parent process when we eventually die.

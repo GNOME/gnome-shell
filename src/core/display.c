@@ -49,7 +49,7 @@
 #include "mutter-enum-types.h"
 #include "meta-idle-monitor-dbus.h"
 #include "meta-cursor-tracker-private.h"
-#include "meta-backend.h"
+#include <meta/meta-backend.h>
 #include "backends/x11/meta-backend-x11.h"
 #include <clutter/x11/clutter-x11.h>
 

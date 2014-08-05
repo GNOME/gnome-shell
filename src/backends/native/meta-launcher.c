@@ -42,7 +42,7 @@
 #include "meta-dbus-login1.h"
 
 #include "wayland/meta-wayland-private.h"
-#include "backends/meta-backend.h"
+#include "backends/meta-backend-private.h"
 #include "meta-cursor-renderer-native.h"
 
 struct _MetaLauncher

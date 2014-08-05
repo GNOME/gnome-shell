@@ -57,7 +57,8 @@
 #include <unistd.h>
 #include <sys/mman.h>
 
-#include "backends/meta-backend.h"
+#include "backends/meta-backend-private.h"
+
 #include "meta-wayland-private.h"
 
 static void meta_wayland_keyboard_update_xkb_state (MetaWaylandKeyboard *keyboard);
