@@ -18,13 +18,10 @@
  */
 
 #include <X11/Xlib.h>
-#ifdef HAVE_XKB
 #include <X11/XKBlib.h>
-#endif
 #include "display-private.h"
 #include "frame.h"
 
-#ifdef HAVE_XKB
 /**
  * meta_bell_notify:
  * @display: The display the bell event came in on
@@ -37,7 +34,6 @@
  * If the configure script found we had no XKB, this does not exist.
  */
 void meta_bell_notify (MetaDisplay *display, XkbAnyEvent *xkb_ev);
-#endif
 
 /**
  * meta_bell_set_audible:

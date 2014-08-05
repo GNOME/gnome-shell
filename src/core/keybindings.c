@@ -51,9 +51,7 @@
 
 #include <xkbcommon/xkbcommon.h>
 
-#ifdef HAVE_XKB
 #include <X11/XKBlib.h>
-#endif
 
 #include "backends/x11/meta-backend-x11.h"
 #include "x11/window-x11.h"
@@ -930,7 +928,6 @@ meta_display_process_mapping_event (MetaDisplay *display,
   gboolean keymap_changed = FALSE;
   gboolean modmap_changed = FALSE;
 
-#ifdef HAVE_XKB
   if (event->type == display->xkb_base_event_type)
     {
       meta_topic (META_DEBUG_KEYBINDINGS,
@@ -939,9 +936,7 @@ meta_display_process_mapping_event (MetaDisplay *display,
       keymap_changed = TRUE;
       modmap_changed = TRUE;
     }
-  else
-#endif
-  if (event->xmapping.request == MappingModifier)
+  else if (event->xmapping.request == MappingModifier)
     {
       meta_topic (META_DEBUG_KEYBINDINGS,
                   "Received MappingModifier event, will reload modmap and redo keybindings\n");
@@ -3966,11 +3961,9 @@ meta_display_init_keys (MetaDisplay *display)
 
   meta_prefs_add_listener (bindings_changed_callback, display);
 
-#ifdef HAVE_XKB
   /* meta_display_init_keys() should have already called XkbQueryExtension() */
   if (display->xkb_base_event_type != -1)
     XkbSelectEvents (display->xdisplay, XkbUseCoreKbd,
                      XkbNewKeyboardNotifyMask | XkbMapNotifyMask,
                      XkbNewKeyboardNotifyMask | XkbMapNotifyMask);
-#endif
 }

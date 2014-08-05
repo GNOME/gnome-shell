@@ -69,7 +69,6 @@
  *
  * If the configure script found we had no XKB, this does not exist.
  */
-#ifdef HAVE_XKB
 static void
 bell_flash_fullscreen (MetaDisplay *display,
                        XkbAnyEvent *xkb_ev)
@@ -244,12 +243,10 @@ meta_bell_notify (MetaDisplay *display,
     }
 #endif /* HAVE_LIBCANBERRA */
 }
-#endif /* HAVE_XKB */
 
 void
 meta_bell_set_audible (MetaDisplay *display, gboolean audible)
 {
-#ifdef HAVE_XKB
 #ifdef HAVE_LIBCANBERRA
   /* When we are playing sounds using libcanberra support, we handle the
    * bell whether its an audible bell or a visible bell */
@@ -262,13 +259,11 @@ meta_bell_set_audible (MetaDisplay *display, gboolean audible)
                             XkbUseCoreKbd,
                             XkbAudibleBellMask,
                             enable_system_bell ? XkbAudibleBellMask : 0);
-#endif /* HAVE_XKB */
 }
 
 gboolean
 meta_bell_init (MetaDisplay *display)
 {
-#ifdef HAVE_XKB
   int xkb_base_error_type, xkb_opcode;
 
   if (!XkbQueryExtension (display->xdisplay, &xkb_opcode,
@@ -298,20 +293,17 @@ meta_bell_init (MetaDisplay *display)
       }
       return TRUE;
     }
-#endif
   return FALSE;
 }
 
 void
 meta_bell_shutdown (MetaDisplay *display)
 {
-#ifdef HAVE_XKB
   /* TODO: persist initial bell state in display, reset here */
   XkbChangeEnabledControls (display->xdisplay,
 			    XkbUseCoreKbd,
 			    XkbAudibleBellMask,
 			    XkbAudibleBellMask);
-#endif
 }
 
 /**

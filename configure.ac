@@ -235,17 +235,6 @@ if test x$have_xinerama = xno; then
    AC_MSG_ERROR([Xinerama extension was not found])
 fi
 
-found_xkb=no
-AC_CHECK_LIB(X11, XkbQueryExtension,
-               [AC_CHECK_HEADER(X11/XKBlib.h,
-                                found_xkb=yes)],
-	, $ALL_X_LIBS)
-
-if test "x$found_xkb" = "xyes"; then
-   AC_DEFINE(HAVE_XKB, , [Have keyboard extension library])
-fi
-
-
 RANDR_LIBS=
 found_randr=no
 AC_CHECK_LIB(Xrandr, XRRUpdateConfiguration,

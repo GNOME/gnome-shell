@@ -207,10 +207,8 @@ struct _MetaDisplay
    */
   int         sentinel_counter;
 
-#ifdef HAVE_XKB
   int         xkb_base_event_type;
   guint32     last_bell_time;
-#endif
   int	      grab_resize_timeout_id;
 
   /* Keybindings stuff */
