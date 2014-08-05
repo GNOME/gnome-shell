@@ -417,8 +417,8 @@ meta_wayland_init (void)
   meta_wayland_seat_init (compositor);
 
   /* FIXME: find the first free name instead */
-  compositor->display_name = g_strdup ("wayland-0");
-  if (wl_display_add_socket (compositor->wayland_display, compositor->display_name))
+  compositor->display_name = wl_display_add_socket_auto (compositor->wayland_display);
+  if (compositor->display_name == NULL)
     g_error ("Failed to create socket");
 
   /* XXX: It's important that we only try and start xwayland after we

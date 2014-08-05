@@ -70,7 +70,7 @@ typedef struct
 struct _MetaWaylandCompositor
 {
   struct wl_display *wayland_display;
-  char *display_name;
+  const char *display_name;
   ClutterActor *stage;
   GHashTable *outputs;
   struct wl_list frame_callbacks;
