@@ -922,7 +922,7 @@ const Notification = new Lang.Class({
         let [titleMinH, titleNatH] = this._titleLabel.get_preferred_height(availWidth);
         let [bannerMinW, bannerNatW] = this._bannerLabel.get_preferred_width(availWidth);
 
-        let rtl = (this._titleDirection == Clutter.TextDirection.RTL);
+        let rtl = (this._table.text_direction == Clutter.TextDirection.RTL);
         let x = rtl ? availWidth : 0;
 
         if (this._secondaryIcon) {
