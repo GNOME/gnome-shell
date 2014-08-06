@@ -72,7 +72,7 @@ const NetworkSecretDialog = new Lang.Class({
                              expand: true });
         }
 
-        let layout = new Clutter.TableLayout();
+        let layout = new Clutter.GridLayout({ orientation: Clutter.Orientation.VERTICAL });
         let secretTable = new St.Widget({ style_class: 'network-dialog-secret-table',
                                           layout_manager: layout });
         layout.hookup_style(secretTable);
@@ -83,14 +83,17 @@ const NetworkSecretDialog = new Lang.Class({
         for (let i = 0; i < this._content.secrets.length; i++) {
             let secret = this._content.secrets[i];
             let label = new St.Label({ style_class: 'prompt-dialog-password-label',
-                                       text: secret.label });
+                                       text: secret.label,
+                                       x_align: Clutter.ActorAlign.START,
+                                       y_align: Clutter.ActorAlign.CENTER });
             label.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
 
             let reactive = secret.key != null;
 
             secret.entry = new St.Entry({ style_class: 'prompt-dialog-password-entry',
                                           text: secret.value, can_focus: reactive,
-                                          reactive: reactive });
+                                          reactive: reactive,
+                                          x_expand: true });
             ShellEntry.addContextMenu(secret.entry,
                                       { isPassword: secret.password });
 
@@ -118,14 +121,12 @@ const NetworkSecretDialog = new Lang.Class({
                 secret.valid = true;
 
             if (rtl) {
-                layout.pack(secret.entry, 0, pos);
-                layout.pack(label, 1, pos);
+                layout.attach(secret.entry, 0, pos, 1, 1);
+                layout.attach(label, 1, pos, 1, 1);
             } else {
-                layout.pack(label, 0, pos);
-                layout.pack(secret.entry, 1, pos);
+                layout.attach(label, 0, pos, 1, 1);
+                layout.attach(secret.entry, 1, pos, 1, 1);
             }
-            layout.child_set(label, { x_expand: false, y_fill: false,
-                                      x_align: Clutter.TableAlignment.START });
             pos++;
 
             if (secret.password)
