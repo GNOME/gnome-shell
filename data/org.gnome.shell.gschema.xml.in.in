@@ -145,7 +145,6 @@
   </schema>
 
   <enum id="org.gnome.shell.geoclue.AccuracyLevel">
-    <value value="0" nick="off"/>
     <value value="1" nick="country"/>
     <value value="4" nick="city"/>
     <value value="5" nick="neighborhood"/>
@@ -155,17 +154,23 @@
   <schema id="org.gnome.shell.location"
           path="/org/gnome/shell/location/"
           gettext-domain="@GETTEXT_PACKAGE@">
+    <key type="b" name="enabled">
+      <default>true</default>
+      <_summary>Geolocation services are enabled.</_summary>
+      <_description>
+	If true, applications are allowed to access location information.
+      </_description>
+    </key>
     <key name="max-accuracy-level" enum="org.gnome.shell.geoclue.AccuracyLevel">
       <default>'exact'</default>
       <_summary>The maximum accuracy level of location.</_summary>
       <_description>
         Configures the maximum level of location accuracy applications are
-        allowed to see. Valid options are 'off' (disable location tracking),
-        'country', 'city', 'neighborhood', 'street', and 'exact' (typically
-        requires GPS receiver). Please keep in mind that this only controls
-        what GeoClue will allow applications to see and they can find user's
-        location on their own using network resources (albeit with street-level
-        accuracy at best).
+        allowed to see. Valid options are 'country', 'city', 'neighborhood',
+        'street', and 'exact' (typically requires GPS receiver). Please keep in
+        mind that this only controls what GeoClue will allow applications to see
+        and they can find user's location on their own using network resources
+        (albeit with street-level accuracy at best).
       </_description>
     </key>
   </schema>

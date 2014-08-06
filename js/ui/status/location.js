@@ -11,6 +11,7 @@ const Shell = imports.gi.Shell;
 
 const LOCATION_SCHEMA = 'org.gnome.shell.location';
 const MAX_ACCURACY_LEVEL = 'max-accuracy-level';
+const ENABLED = 'enabled';
 
 var GeoclueIface = '<node> \
   <interface name="org.freedesktop.GeoClue2.Manager"> \
@@ -44,6 +45,8 @@ const Indicator = new Lang.Class({
         this.parent();
 
         this._settings = new Gio.Settings({ schema_id: LOCATION_SCHEMA });
+        this._settings.connect('changed::' + ENABLED,
+                               Lang.bind(this, this._onMaxAccuracyLevelChanged));
         this._settings.connect('changed::' + MAX_ACCURACY_LEVEL,
                                Lang.bind(this, this._onMaxAccuracyLevelChanged));
 
@@ -123,7 +126,6 @@ const Indicator = new Lang.Class({
         this._propertiesChangedId = this._proxy.connect('g-properties-changed',
                                                         Lang.bind(this, this._onGeocluePropsChanged));
 
-        this._availableAccuracyLevel = this._proxy.AvailableAccuracyLevel;
         this._syncIndicator();
 
         this._proxy.AddAgentRemote('gnome-shell', Lang.bind(this, this._onAgentRegistered));
@@ -148,10 +150,8 @@ const Indicator = new Lang.Class({
     },
 
     _onOnOffAction: function() {
-        if (this._getMaxAccuracyLevel() == 0)
-            this._settings.set_enum(MAX_ACCURACY_LEVEL, this._availableAccuracyLevel);
-        else
-            this._settings.set_enum(MAX_ACCURACY_LEVEL, 0);
+        let enabled = this._settings.get_boolean(ENABLED);
+        this._settings.set_boolean(ENABLED, !enabled);
     },
 
     _onSessionUpdated: function() {
@@ -160,12 +160,12 @@ const Indicator = new Lang.Class({
     },
 
     _updateMenuLabels: function() {
-        if (this._getMaxAccuracyLevel() == 0) {
-            this._item.status.text = _("Disabled");
-            this._onOffAction.label.text = _("Enable");
-        } else {
+        if (this._settings.get_boolean(ENABLED)) {
             this._item.status.text = this._indicator.visible ? _("In Use") : _("Enabled");
             this._onOffAction.label.text = _("Disable");
+        } else {
+            this._item.status.text = _("Disabled");
+            this._onOffAction.label.text = _("Enable");
         }
     },
 
@@ -179,7 +179,10 @@ const Indicator = new Lang.Class({
     },
 
     _getMaxAccuracyLevel: function() {
-        return this._settings.get_enum(MAX_ACCURACY_LEVEL);
+        if (this._settings.get_boolean(ENABLED))
+            return this._settings.get_enum(MAX_ACCURACY_LEVEL);
+        else
+            return 0;
     },
 
     _notifyMaxAccuracyLevel: function() {
@@ -191,12 +194,6 @@ const Indicator = new Lang.Class({
         let unpacked = properties.deep_unpack();
         if ("InUse" in unpacked)
             this._syncIndicator();
-        if ("AvailableAccuracyLevel" in unpacked) {
-            this._availableAccuracyLevel = this._proxy.AvailableAccuracyLevel;
-
-            if (this._getMaxAccuracyLevel() != 0)
-                this._settings.set_enum(MAX_ACCURACY_LEVEL, this._availableAccuracyLevel);
-        }
     }
 });
 
