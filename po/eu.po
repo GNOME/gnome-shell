@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2014-07-28 07:33+0000\n"
-"PO-Revision-Date: 2014-07-29 20:27+0200\n"
+"PO-Revision-Date: 2014-08-07 12:36+0200\n"
 "Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@zundan.com>\n"
 "Language-Team: Basque <librezale@librezale.org>\n"
 "Language: eu\n"
@@ -222,9 +222,12 @@ msgid "Keybinding to focus the active notification."
 msgstr "Jakinarazpen aktiboa enfokatzeko laster-tekla."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:29
+#, fuzzy
 msgid ""
 "Keybinding that pauses and resumes all running tweens, for debugging purposes"
 msgstr ""
+"Laster-teklak exekutatzen ari diren 'tween' guztiak pausarazi eta jarraitzen "
+"ditu arazketa lantzeko"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:30
 msgid "Which keyboard to use"
@@ -320,7 +323,7 @@ msgstr ""
 
 #: ../data/org.gnome.Shell.PortalHelper.desktop.in.h:1
 msgid "Captive Portal"
-msgstr ""
+msgstr "Ataka gatibua"
 
 #: ../js/extensionPrefs/main.js:127
 #, javascript-format
@@ -398,10 +401,9 @@ msgid "Execution of “%s” failed:"
 msgstr "Huts egin du '%s' exekutatzean:"
 
 #: ../js/portalHelper/main.js:84
-#, fuzzy
 #| msgid "Authentication Required"
 msgid "Web Authentication Redirect"
-msgstr "Webeko autentifikazioaren berbideraketa"
+msgstr "Web autentifikazioaren berbideraketa"
 
 #: ../js/ui/appDisplay.js:641
 msgid "Frequently used applications will appear here"
