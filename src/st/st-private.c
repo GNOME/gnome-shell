@@ -343,6 +343,9 @@ CoglHandle
 _st_create_shadow_material (StShadow   *shadow_spec,
                             CoglHandle  src_texture)
 {
+  ClutterBackend *backend = clutter_get_default_backend ();
+  CoglContext *ctx = clutter_backend_get_cogl_context (backend);
+
   static CoglHandle shadow_material_template = COGL_INVALID_HANDLE;
 
   CoglHandle  material;
@@ -369,13 +372,11 @@ _st_create_shadow_material (StShadow   *shadow_spec,
                             &width_out, &height_out, &rowstride_out);
   g_free (pixels_in);
 
-  texture = cogl_texture_new_from_data (width_out,
-                                        height_out,
-                                        COGL_TEXTURE_NONE,
-                                        COGL_PIXEL_FORMAT_A_8,
-                                        COGL_PIXEL_FORMAT_A_8,
-                                        rowstride_out,
-                                        pixels_out);
+  texture = COGL_TEXTURE (cogl_texture_2d_new_from_data (ctx, width_out, height_out,
+                                                         COGL_PIXEL_FORMAT_A_8,
+                                                         rowstride_out,
+                                                         pixels_out,
+                                                         NULL));
 
   g_free (pixels_out);
 

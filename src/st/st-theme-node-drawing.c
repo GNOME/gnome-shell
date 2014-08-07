@@ -69,6 +69,8 @@ elliptical_arc (cairo_t *cr,
 static CoglHandle
 create_corner_material (StCornerSpec *corner)
 {
+  ClutterBackend *backend = clutter_get_default_backend ();
+  CoglContext *ctx = clutter_backend_get_cogl_context (backend);
   CoglHandle texture;
   cairo_t *cr;
   cairo_surface_t *surface;
@@ -166,12 +168,11 @@ create_corner_material (StCornerSpec *corner)
 
   cairo_surface_destroy (surface);
 
-  texture = cogl_texture_new_from_data (size, size,
-                                        COGL_TEXTURE_NONE,
-                                        CLUTTER_CAIRO_FORMAT_ARGB32,
-                                        COGL_PIXEL_FORMAT_ANY,
-                                        rowstride,
-                                        data);
+  texture = COGL_TEXTURE (cogl_texture_2d_new_from_data (ctx, size, size,
+                                                         CLUTTER_CAIRO_FORMAT_ARGB32,
+                                                         rowstride,
+                                                         data,
+                                                         NULL));
   g_free (data);
   g_assert (texture != COGL_INVALID_HANDLE);
 
@@ -941,6 +942,8 @@ st_theme_node_prerender_background (StThemeNode *node,
                                     float        actor_width,
                                     float        actor_height)
 {
+  ClutterBackend *backend = clutter_get_default_backend ();
+  CoglContext *ctx = clutter_backend_get_cogl_context (backend);
   StBorderImage *border_image;
   CoglHandle texture;
   guint radius[4];
@@ -1256,12 +1259,11 @@ st_theme_node_prerender_background (StThemeNode *node,
   if (interior_path != NULL)
     cairo_path_destroy (interior_path);
 
-  texture = cogl_texture_new_from_data (width, height,
-                                        COGL_TEXTURE_NONE,
-                                        CLUTTER_CAIRO_FORMAT_ARGB32,
-                                        COGL_PIXEL_FORMAT_ANY,
-                                        rowstride,
-                                        data);
+  texture = COGL_TEXTURE (cogl_texture_2d_new_from_data (ctx, width, height,
+                                                         CLUTTER_CAIRO_FORMAT_ARGB32,
+                                                         rowstride,
+                                                         data,
+                                                         NULL));
 
   cairo_destroy (cr);
   cairo_surface_destroy (surface);
