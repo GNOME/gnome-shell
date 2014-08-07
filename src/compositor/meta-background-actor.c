@@ -185,7 +185,7 @@ cullable_iface_init (MetaCullableInterface *iface)
  * meta_background_actor_get_clip_region:
  * @self: a #MetaBackgroundActor
  *
- * Return value (transfer full): a #cairo_region_t that represents the part of
+ * Return value (transfer none): a #cairo_region_t that represents the part of
  * the background not obscured by other #MetaBackgroundActor or
  * #MetaWindowActor objects.
  */
@@ -193,24 +193,5 @@ cairo_region_t *
 meta_background_actor_get_clip_region (MetaBackgroundActor *self)
 {
   MetaBackgroundActorPrivate *priv = self->priv;
-  ClutterActorBox content_box;
-  cairo_rectangle_int_t content_area = { 0 };
-  cairo_region_t *clip_region;
-
-  g_return_val_if_fail (META_IS_BACKGROUND_ACTOR (self), NULL);
-
-  if (!priv->clip_region)
-      return NULL;
-
-  clutter_actor_get_content_box (CLUTTER_ACTOR (self), &content_box);
-
-  content_area.x = content_box.x1;
-  content_area.y = content_box.y1;
-  content_area.width = content_box.x2 - content_box.x1;
-  content_area.height = content_box.y2 - content_box.y1;
-
-  clip_region = cairo_region_create_rectangle (&content_area);
-  cairo_region_intersect (clip_region, priv->clip_region);
-
-  return clip_region;
+  return priv->clip_region;
 }

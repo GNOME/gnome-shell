@@ -441,10 +441,7 @@ meta_background_paint_content (ClutterContent   *content,
       clip_region = meta_background_actor_get_clip_region (META_BACKGROUND_ACTOR (actor));
 
       if (clip_region != NULL)
-        {
-          cairo_region_intersect (paintable_region, clip_region);
-          cairo_region_destroy (clip_region);
-        }
+        cairo_region_intersect (paintable_region, clip_region);
     }
 
   /* Finally, split the paintable region up into distinct areas
