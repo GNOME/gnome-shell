@@ -847,6 +847,7 @@ meta_background_load_color (MetaBackground *self,
   CoglTexture  *texture;
   ClutterActor *stage = meta_get_stage_for_screen (priv->screen);
   ClutterColor  stage_color;
+  uint8_t pixels[4];
 
   ensure_pipeline (self);
 
@@ -859,11 +860,17 @@ meta_background_load_color (MetaBackground *self,
       color = &stage_color;
     }
 
-  texture = meta_create_color_texture_4ub (color->red,
-                                           color->green,
-                                           color->blue,
-                                           0xff,
-                                           COGL_TEXTURE_NO_SLICING);
+  pixels[0] = color->red;
+  pixels[1] = color->green;
+  pixels[2] = color->blue;
+  pixels[3] = 0xFF;
+
+  texture = cogl_texture_new_from_data (1, 1,
+                                        COGL_TEXTURE_NO_SLICING,
+                                        COGL_PIXEL_FORMAT_RGB_888,
+                                        COGL_PIXEL_FORMAT_ANY,
+                                        4,
+                                        pixels);
   set_texture (self, COGL_TEXTURE (texture));
 }
 
