@@ -704,6 +704,8 @@ static void
 make_shadow (MetaShadow     *shadow,
              cairo_region_t *region)
 {
+  ClutterBackend *backend = clutter_get_default_backend ();
+  CoglContext *ctx = clutter_backend_get_cogl_context (backend);
   int d = get_box_filter_size (shadow->key.radius);
   int spread = get_shadow_spread (shadow->key.radius);
   cairo_rectangle_int_t extents;
@@ -793,15 +795,15 @@ make_shadow (MetaShadow     *shadow,
    * in the case of top_fade >= 0. We also account for padding at the left for symmetry
    * though that doesn't currently occur.
    */
-  shadow->texture = cogl_texture_new_from_data (shadow->outer_border_left + extents.width + shadow->outer_border_right,
-                                                shadow->outer_border_top + extents.height + shadow->outer_border_bottom,
-                                                COGL_TEXTURE_NONE,
-                                                COGL_PIXEL_FORMAT_A_8,
-                                                COGL_PIXEL_FORMAT_ANY,
-                                                buffer_width,
-                                                (buffer +
-                                                 (y_offset - shadow->outer_border_top) * buffer_width +
-                                                 (x_offset - shadow->outer_border_left)));
+  shadow->texture = COGL_TEXTURE (cogl_texture_2d_new_from_data (ctx,
+                                                                 shadow->outer_border_left + extents.width + shadow->outer_border_right,
+                                                                 shadow->outer_border_top + extents.height + shadow->outer_border_bottom,
+                                                                 COGL_PIXEL_FORMAT_A_8,
+                                                                 buffer_width,
+                                                                 (buffer +
+                                                                  (y_offset - shadow->outer_border_top) * buffer_width +
+                                                                  (x_offset - shadow->outer_border_left)),
+                                                                 NULL));
 
   cairo_region_destroy (row_convolve_region);
   cairo_region_destroy (column_convolve_region);

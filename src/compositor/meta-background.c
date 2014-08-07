@@ -785,6 +785,8 @@ meta_background_load_gradient (MetaBackground             *self,
                                ClutterColor               *color,
                                ClutterColor               *second_color)
 {
+  ClutterBackend *backend = clutter_get_default_backend ();
+  CoglContext *ctx = clutter_backend_get_cogl_context (backend);
   MetaBackgroundPrivate *priv = self->priv;
   CoglTexture *texture;
   guint width, height;
@@ -820,12 +822,11 @@ meta_background_load_gradient (MetaBackground             *self,
   pixels[6] = second_color->blue;
   pixels[7] = 0xFF;
 
-  texture = cogl_texture_new_from_data (width, height,
-                                        COGL_TEXTURE_NO_SLICING,
-                                        COGL_PIXEL_FORMAT_RGB_888,
-                                        COGL_PIXEL_FORMAT_ANY,
-                                        4,
-                                        pixels);
+  texture = COGL_TEXTURE (cogl_texture_2d_new_from_data (ctx, width, height,
+                                                         COGL_PIXEL_FORMAT_RGB_888,
+                                                         4,
+                                                         pixels,
+                                                         NULL));
   set_texture (self, COGL_TEXTURE (texture));
 }
 
@@ -843,6 +844,8 @@ void
 meta_background_load_color (MetaBackground *self,
                             ClutterColor   *color)
 {
+  ClutterBackend *backend = clutter_get_default_backend ();
+  CoglContext *ctx = clutter_backend_get_cogl_context (backend);
   MetaBackgroundPrivate *priv = self->priv;
   CoglTexture  *texture;
   ClutterActor *stage = meta_get_stage_for_screen (priv->screen);
@@ -865,12 +868,11 @@ meta_background_load_color (MetaBackground *self,
   pixels[2] = color->blue;
   pixels[3] = 0xFF;
 
-  texture = cogl_texture_new_from_data (1, 1,
-                                        COGL_TEXTURE_NO_SLICING,
-                                        COGL_PIXEL_FORMAT_RGB_888,
-                                        COGL_PIXEL_FORMAT_ANY,
-                                        4,
-                                        pixels);
+  texture = COGL_TEXTURE (cogl_texture_2d_new_from_data (ctx, 1, 1,
+                                                         COGL_PIXEL_FORMAT_RGB_888,
+                                                         4,
+                                                         pixels,
+                                                         NULL));
   set_texture (self, COGL_TEXTURE (texture));
 }
 
@@ -968,6 +970,8 @@ meta_background_load_file_finish (MetaBackground  *self,
                                   GAsyncResult    *result,
                                   GError         **error)
 {
+  ClutterBackend *backend = clutter_get_default_backend ();
+  CoglContext *ctx = clutter_backend_get_cogl_context (backend);
   GTask *task;
   LoadFileTaskData *task_data;
   CoglTexture *texture;
@@ -976,6 +980,7 @@ meta_background_load_file_finish (MetaBackground  *self,
   guchar *pixels;
   gboolean has_alpha;
   gboolean loaded = FALSE;
+  CoglPixelFormat pixel_format;
 
   g_return_val_if_fail (g_task_is_valid (result, self), FALSE);
 
@@ -994,15 +999,13 @@ meta_background_load_file_finish (MetaBackground  *self,
   pixels = gdk_pixbuf_get_pixels (pixbuf);
   has_alpha = gdk_pixbuf_get_has_alpha (pixbuf);
 
-  texture = cogl_texture_new_from_data (width,
-                                        height,
-                                        COGL_TEXTURE_NO_ATLAS,
-                                        has_alpha ?
-                                        COGL_PIXEL_FORMAT_RGBA_8888 :
-                                        COGL_PIXEL_FORMAT_RGB_888,
-                                        COGL_PIXEL_FORMAT_ANY,
-                                        row_stride,
-                                        pixels);
+  pixel_format = has_alpha ? COGL_PIXEL_FORMAT_RGBA_8888 : COGL_PIXEL_FORMAT_RGB_888;
+
+  texture = COGL_TEXTURE (cogl_texture_2d_new_from_data (ctx, width, height,
+                                                         pixel_format,
+                                                         row_stride,
+                                                         pixels,
+                                                         NULL));
 
   if (texture == NULL)
     {

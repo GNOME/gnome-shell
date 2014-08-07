@@ -1657,6 +1657,8 @@ build_and_scan_frame_mask (MetaWindowActor       *self,
                            cairo_rectangle_int_t *client_area,
                            cairo_region_t        *shape_region)
 {
+  ClutterBackend *backend = clutter_get_default_backend ();
+  CoglContext *ctx = clutter_backend_get_cogl_context (backend);
   MetaWindowActorPrivate *priv = self->priv;
   guchar *mask_data;
   guint tex_width, tex_height;
@@ -1719,10 +1721,7 @@ build_and_scan_frame_mask (MetaWindowActor       *self,
 
   if (meta_texture_rectangle_check (paint_tex))
     {
-      ClutterBackend *backend = clutter_get_default_backend ();
-      CoglContext *context = clutter_backend_get_cogl_context (backend);
-
-      mask_texture = COGL_TEXTURE (cogl_texture_rectangle_new_with_size (context, tex_width, tex_height));
+      mask_texture = COGL_TEXTURE (cogl_texture_rectangle_new_with_size (ctx, tex_width, tex_height));
       cogl_texture_set_components (mask_texture, COGL_TEXTURE_COMPONENTS_A);
       cogl_texture_set_region (mask_texture,
                                0, 0, /* src_x/y */
@@ -1734,15 +1733,9 @@ build_and_scan_frame_mask (MetaWindowActor       *self,
     }
   else
     {
-      /* Note: we don't allow slicing for this texture because we
-       * need to use it with multi-texturing which doesn't support
-       * sliced textures */
-      mask_texture = cogl_texture_new_from_data (tex_width, tex_height,
-                                                 COGL_TEXTURE_NO_SLICING,
-                                                 COGL_PIXEL_FORMAT_A_8,
-                                                 COGL_PIXEL_FORMAT_ANY,
-                                                 stride,
-                                                 mask_data);
+      mask_texture = COGL_TEXTURE (cogl_texture_2d_new_from_data (ctx, tex_width, tex_height,
+                                                                  COGL_PIXEL_FORMAT_A_8,
+                                                                  stride, mask_data, NULL));
     }
 
   meta_shaped_texture_set_mask_texture (stex, mask_texture);
