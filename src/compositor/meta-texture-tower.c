@@ -432,6 +432,9 @@ texture_tower_revalidate (MetaTextureTower *tower,
                           int               level)
 {
   texture_tower_revalidate_fbo (tower, level);
+
+  tower->invalid[level].x1 = tower->invalid[level].x2 = 0;
+  tower->invalid[level].y1 = tower->invalid[level].y2 = 0;
 }
 
 /**
