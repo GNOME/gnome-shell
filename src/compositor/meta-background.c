@@ -410,8 +410,6 @@ meta_background_paint_content (ClutterContent   *content,
   if (priv->texture == NULL)
     return;
 
-  node = meta_background_paint_node_new (self, actor);
-
   clutter_actor_get_content_box (actor, &actor_box);
 
   /* First figure out where on the monitor the texture is supposed to be painted.
@@ -444,6 +442,11 @@ meta_background_paint_content (ClutterContent   *content,
         cairo_region_intersect (paintable_region, clip_region);
     }
 
+  if (cairo_region_is_empty (paintable_region))
+    goto out;
+
+  node = meta_background_paint_node_new (self, actor);
+
   /* Finally, split the paintable region up into distinct areas
    * and paint each area one by one
    */
@@ -466,10 +469,11 @@ meta_background_paint_content (ClutterContent   *content,
 
       clutter_paint_node_add_texture_rectangle (node, &texture_rectangle, tx1, ty1, tx2, ty2);
     }
-  cairo_region_destroy (paintable_region);
-
   clutter_paint_node_add_child (root, node);
   clutter_paint_node_unref (node);
+
+ out:
+  cairo_region_destroy (paintable_region);
 }
 
 static void
