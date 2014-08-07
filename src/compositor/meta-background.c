@@ -814,15 +814,15 @@ meta_background_load_gradient (MetaBackground             *self,
   pixels[0] = color->red;
   pixels[1] = color->green;
   pixels[2] = color->blue;
-  pixels[3] = color->alpha;
+  pixels[3] = 0xFF;
   pixels[4] = second_color->red;
   pixels[5] = second_color->green;
   pixels[6] = second_color->blue;
-  pixels[7] = second_color->alpha;
+  pixels[7] = 0xFF;
 
   texture = cogl_texture_new_from_data (width, height,
                                         COGL_TEXTURE_NO_SLICING,
-                                        COGL_PIXEL_FORMAT_RGBA_8888,
+                                        COGL_PIXEL_FORMAT_RGB_888,
                                         COGL_PIXEL_FORMAT_ANY,
                                         4,
                                         pixels);
