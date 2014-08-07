@@ -61,6 +61,8 @@ include Makefile-hotplug-sniffer.am
 gnome_shell_cflags =				\
 	$(GNOME_SHELL_CFLAGS)			\
 	-I$(srcdir)/tray			\
+	-DCLUTTER_ENABLE_EXPERIMENTAL_API	\
+	-DCOGL_ENABLE_EXPERIMENTAL_API		\
 	-DVERSION=\"$(VERSION)\"		\
 	-DLOCALEDIR=\"$(datadir)/locale\" 	\
 	-DDATADIR=\"$(datadir)\"		\

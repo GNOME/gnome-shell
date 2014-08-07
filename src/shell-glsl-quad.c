@@ -13,9 +13,6 @@
 
 #include "config.h"
 
-#define CLUTTER_ENABLE_EXPERIMENTAL_API
-#define COGL_ENABLE_EXPERIMENTAL_API
-
 #include <cogl/cogl.h>
 #include "shell-glsl-quad.h"
 

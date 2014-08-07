@@ -4,6 +4,8 @@ st_cflags =					\
 	-DLIBDIR=\""$(libdir)"\"		\
 	-DG_LOG_DOMAIN=\"St\"			\
 	-DST_COMPILATION			\
+	-DCLUTTER_ENABLE_EXPERIMENTAL_API	\
+	-DCOGL_ENABLE_EXPERIMENTAL_API		\
 	-DPACKAGE_DATA_DIR=\"$(pkgdatadir)\"	\
 	$(ST_CFLAGS)				\
 	$(NULL)
