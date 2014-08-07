@@ -288,6 +288,26 @@ get_wrap_mode (MetaBackground *self)
     }
 }
 
+static gboolean
+texture_has_alpha (CoglTexture *texture)
+{
+  if (!texture)
+    return FALSE;
+
+  switch (cogl_texture_get_components (texture))
+    {
+    case COGL_TEXTURE_COMPONENTS_A:
+    case COGL_TEXTURE_COMPONENTS_RGBA:
+      return TRUE;
+    case COGL_TEXTURE_COMPONENTS_RG:
+    case COGL_TEXTURE_COMPONENTS_RGB:
+    case COGL_TEXTURE_COMPONENTS_DEPTH:
+      return FALSE;
+    default:
+      g_assert_not_reached ();
+    }
+}
+
 static ClutterPaintNode *
 meta_background_paint_node_new (MetaBackground *self,
                                 ClutterActor   *actor)
@@ -296,6 +316,7 @@ meta_background_paint_node_new (MetaBackground *self,
   ClutterPaintNode *node;
   guint8 opacity;
   guint8 color_component;
+  gboolean needs_blending;
 
   opacity = clutter_actor_get_paint_opacity (actor);
   color_component = (guint8) (0.5 + opacity * priv->brightness);
@@ -307,6 +328,13 @@ meta_background_paint_node_new (MetaBackground *self,
                               opacity);
 
   node = clutter_pipeline_node_new (priv->pipeline);
+
+  needs_blending = (opacity < 255) || (texture_has_alpha (priv->texture));
+
+  if (needs_blending)
+    cogl_pipeline_set_blend (priv->pipeline, "RGBA = ADD (SRC_COLOR, DST_COLOR*(1-SRC_COLOR[A]))", NULL);
+  else
+    cogl_pipeline_set_blend (priv->pipeline, "RGBA = ADD (SRC_COLOR, 0)", NULL);
 
   return node;
 }
