@@ -27,6 +27,13 @@
 
       <variablelist>
         <varlistentry>
+          <term>CLUTTER_SCALE</term>
+          <listitem>
+            <para>Forces the window scaling factor to that value
+            inside Clutter instead of relying on what backends detect.</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
           <term>CLUTTER_TEXT_DIRECTION</term>
           <listitem>
             <para>Forces the text direction of every Pango layout
