@@ -7,6 +7,7 @@ static const struct {
   const char *settings_property;
   GType       type;
 } _clutter_settings_map[] = {
+  { "gdk-window-scaling-factor", "window-scaling-factor", G_TYPE_INT },
   { "gtk-double-click-time",     "double-click-time",     G_TYPE_INT },
   { "gtk-double-click-distance", "double-click-distance", G_TYPE_INT },
   { "gtk-dnd-drag-threshold",    "dnd-drag-threshold",    G_TYPE_INT },
