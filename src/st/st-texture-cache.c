@@ -21,8 +21,6 @@
 
 #include "config.h"
 
-#define COGL_ENABLE_EXPERIMENTAL_API /* for cogl_framebuffer_allocate */
-
 #include "st-texture-cache.h"
 #include "st-private.h"
 #include <gtk/gtk.h>

@@ -35,8 +35,6 @@
 #define SHELL_IS_INVERT_EFFECT_CLASS(klass)           (G_TYPE_CHECK_CLASS_TYPE ((klass), SHELL_TYPE_INVERT_LIGHTNESS_EFFECT))
 #define SHELL_INVERT_LIGHTNESS_EFFECT_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), SHELL_TYPE_INVERT_LIGHTNESS_EFFEC, ShellInvertLightnessEffectClass))
 
-#define CLUTTER_ENABLE_EXPERIMENTAL_API
-
 #include "shell-invert-lightness-effect.h"
 
 #include <cogl/cogl.h>
