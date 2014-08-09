@@ -96,10 +96,12 @@ const Indicator = new Lang.Class({
     _syncIndicator: function() {
         if (this._proxy == null) {
             this._indicator.visible = false;
+            this._item.actor.visible = false;
             return;
         }
 
         this._indicator.visible = this._proxy.InUse;
+        this._item.actor.visible = this._indicator.visible;
         this._updateMenuLabels();
     },
 
