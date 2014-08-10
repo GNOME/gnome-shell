@@ -270,7 +270,7 @@ function script_redrawTestDone(time) {
 function script_collectTimings(time) {
     for (let timing in redrawTimes) {
         let times = redrawTimes[timing];
-        times.sort();
+        times.sort(function(a, b) { return a - b });
 
         let len = times.length;
         let median;
