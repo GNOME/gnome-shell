@@ -64,3 +64,78 @@ meta_create_texture_pipeline (CoglTexture *src_texture)
 
   return pipeline;
 }
+
+static gboolean is_pot(int x)
+{
+  return x > 0 && (x & (x - 1)) == 0;
+}
+
+/**
+ * meta_create_texture:
+ * @width: width of the texture to create
+ * @height: height of the texture to create
+ * @components; components to store in the texture (color or alpha)
+ * @flags: flags that affect the allocation behavior
+ *
+ * Creates a texture of the given size with the specified components
+ * for use as a frame buffer object.
+ *
+ * If non-power-of-two textures are not supported on the system, then
+ * the texture will be created as a texture rectangle; in this case,
+ * hardware repeating isn't possible, and texture coordinates are also
+ * different, but Cogl hides these issues from the application, except from
+ * GLSL shaders. Since GLSL is never (or at least almost never)
+ * present on such a system, this is not typically an issue.
+ *
+ * If %META_TEXTURE_ALLOW_SLICING is present in @flags, and the texture
+ * is larger than the texture size limits of the system, then the texture
+ * will be created as a sliced texture. This also will cause problems
+ * with using the texture with GLSL, and is more likely to be an issue
+ * since all GL implementations have texture size limits, and they can
+ * be as small as 2048x2048 on reasonably current systems.
+ */
+CoglTexture *
+meta_create_texture (int                   width,
+                     int                   height,
+                     CoglTextureComponents components,
+                     MetaTextureFlags      flags)
+{
+  ClutterBackend *backend = clutter_get_default_backend ();
+  CoglContext *ctx = clutter_backend_get_cogl_context (backend);
+  CoglTexture *texture;
+
+  gboolean should_use_rectangle = FALSE;
+
+  if (!(is_pot (width) && is_pot (height)) &&
+      !cogl_has_feature (ctx, COGL_FEATURE_ID_TEXTURE_NPOT))
+    {
+      if (cogl_has_feature (ctx, COGL_FEATURE_ID_TEXTURE_RECTANGLE))
+        should_use_rectangle = TRUE;
+      else
+        g_error ("Cannot create texture. Support for GL_ARB_texture_non_power_of_two or "
+                 "ARB_texture_rectangle is required");
+    }
+
+  if (should_use_rectangle)
+    texture = COGL_TEXTURE (cogl_texture_rectangle_new_with_size (ctx, width, height));
+  else
+    texture = COGL_TEXTURE (cogl_texture_2d_new_with_size (ctx, width, height));
+  cogl_texture_set_components (texture, components);
+
+  if ((flags & META_TEXTURE_ALLOW_SLICING) != 0)
+    {
+      /* To find out if we need to slice the texture, we have to go ahead and force storage
+       * to be allocated
+       */
+      CoglError *catch_error = NULL;
+      if (!cogl_texture_allocate (texture, &catch_error))
+        {
+          cogl_error_free (catch_error);
+          cogl_object_unref (texture);
+          texture = COGL_TEXTURE (cogl_texture_2d_sliced_new_with_size (ctx, width, height, COGL_TEXTURE_MAX_WASTE));
+          cogl_texture_set_components (texture, components);
+        }
+    }
+
+  return texture;
+}

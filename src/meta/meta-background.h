@@ -1,8 +1,8 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 /*
- * meta-background.h: CoglTexture for paintnig the system background
+ * meta-background-actor.h:  for painting the root window background
  *
- * Copyright 2013 Red Hat, Inc.
+ * Copyright 2010 Red Hat, Inc.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -21,20 +21,16 @@
 #ifndef META_BACKGROUND_H
 #define META_BACKGROUND_H
 
-#include <cogl/cogl.h>
 #include <clutter/clutter.h>
-
-#include <meta/gradient.h>
-#include <meta/screen.h>
-
 #include <gsettings-desktop-schemas/gdesktop-enums.h>
+#include <meta/screen.h>
 
 /**
  * MetaBackground:
  *
- * This class handles loading a background from file, screenshot, or
- * color scheme. The resulting object can be associated with one or
- * more #MetaBackgroundActor objects to handle loading the background.
+ * This class handles tracking and painting the root window background.
+ * By integrating with #MetaWindowGroup we can avoid painting parts of
+ * the background that are obscured by other windows.
  */
 
 #define META_TYPE_BACKGROUND            (meta_background_get_type ())
@@ -48,20 +44,6 @@ typedef struct _MetaBackground        MetaBackground;
 typedef struct _MetaBackgroundClass   MetaBackgroundClass;
 typedef struct _MetaBackgroundPrivate MetaBackgroundPrivate;
 
-/**
- * MetaBackgroundEffects:
- * @META_BACKGROUND_EFFECTS_NONE: No effect
- * @META_BACKGROUND_EFFECTS_VIGNETTE: Vignette
- *
- * Which effects to enable on the background
- */
-
-typedef enum
-{
-  META_BACKGROUND_EFFECTS_NONE       = 0,
-  META_BACKGROUND_EFFECTS_VIGNETTE   = 1 << 1,
-} MetaBackgroundEffects;
-
 struct _MetaBackgroundClass
 {
   /*< private >*/
@@ -70,7 +52,6 @@ struct _MetaBackgroundClass
 
 struct _MetaBackground
 {
-  /*< private >*/
   GObject parent;
 
   MetaBackgroundPrivate *priv;
@@ -78,33 +59,21 @@ struct _MetaBackground
 
 GType meta_background_get_type (void);
 
-MetaBackground *meta_background_new (MetaScreen           *screen,
-                                     int                   monitor,
-				     MetaBackgroundEffects effects);
-MetaBackground *meta_background_copy (MetaBackground        *self,
-                                      int                    monitor,
-				      MetaBackgroundEffects  effects);
+MetaBackground *meta_background_new  (MetaScreen *screen);
 
-void meta_background_load_gradient (MetaBackground            *self,
-                                    GDesktopBackgroundShading  shading_direction,
-                                    ClutterColor              *color,
-                                    ClutterColor              *second_color);
-void meta_background_load_color (MetaBackground *self,
-                                 ClutterColor   *color);
-void meta_background_load_file_async (MetaBackground          *self,
-                                      const char              *filename,
-                                      GDesktopBackgroundStyle  style,
-                                      GCancellable            *cancellable,
-                                      GAsyncReadyCallback      callback,
-                                      gpointer                 user_data);
-gboolean meta_background_load_file_finish (MetaBackground       *self,
-                                           GAsyncResult         *result,
-                                           GError              **error);
-
-const char *meta_background_get_filename (MetaBackground *self);
-GDesktopBackgroundStyle meta_background_get_style (MetaBackground *self);
-GDesktopBackgroundShading meta_background_get_shading (MetaBackground *self);
-const ClutterColor *meta_background_get_color (MetaBackground *self);
-const ClutterColor *meta_background_get_second_color (MetaBackground *self);
+void meta_background_set_color    (MetaBackground            *self,
+                                   ClutterColor              *color);
+void meta_background_set_gradient (MetaBackground            *self,
+                                   GDesktopBackgroundShading  shading_direction,
+                                   ClutterColor              *color,
+                                   ClutterColor              *second_color);
+void meta_background_set_filename (MetaBackground            *self,
+                                   const char                *filename,
+                                   GDesktopBackgroundStyle    style);
+void meta_background_set_blend    (MetaBackground            *self,
+                                   const char                *filename1,
+                                   const char                *filename2,
+                                   double                     blend_factor,
+                                   GDesktopBackgroundStyle    style);
 
 #endif /* META_BACKGROUND_H */

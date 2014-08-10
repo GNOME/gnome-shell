@@ -100,8 +100,10 @@ libmutter_la_SOURCES =				\
 	compositor/compositor.c			\
 	compositor/compositor-private.h		\
 	compositor/meta-background.c		\
+	compositor/meta-background-private.h	\
 	compositor/meta-background-actor.c	\
 	compositor/meta-background-actor-private.h	\
+	compositor/meta-background-image.c	\
 	compositor/meta-background-group.c	\
 	compositor/meta-cullable.c		\
 	compositor/meta-cullable.h		\
@@ -133,6 +135,7 @@ libmutter_la_SOURCES =				\
 	meta/compositor.h			\
 	meta/meta-background.h			\
 	meta/meta-background-actor.h		\
+	meta/meta-background-image.h		\
 	meta/meta-background-group.h		\
 	meta/meta-plugin.h			\
 	meta/meta-shadow-factory.h		\
@@ -282,9 +285,10 @@ libmutterinclude_headers =			\
 	meta/keybindings.h			\
 	meta/main.h				\
 	meta/meta-backend.h			\
-	meta/meta-background-actor.h		\
-	meta/meta-background-group.h		\
 	meta/meta-background.h			\
+	meta/meta-background-actor.h		\
+	meta/meta-background-image.h		\
+	meta/meta-background-group.h		\
 	meta/meta-cursor-tracker.h		\
 	meta/meta-idle-monitor.h		\
 	meta/meta-plugin.h			\

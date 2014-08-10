@@ -303,15 +303,16 @@ on_monitors_changed (MetaScreen *screen,
   for (i = 0; i < n; i++)
     {
       MetaRectangle rect;
-      ClutterActor *background;
+      ClutterActor *background_actor;
+      MetaBackground *background;
       ClutterColor color;
 
       meta_screen_get_monitor_geometry (screen, i, &rect);
 
-      background = meta_background_actor_new ();
+      background_actor = meta_background_actor_new (screen, i);
 
-      clutter_actor_set_position (background, rect.x, rect.y);
-      clutter_actor_set_size (background, rect.width, rect.height);
+      clutter_actor_set_position (background_actor, rect.x, rect.y);
+      clutter_actor_set_size (background_actor, rect.width, rect.height);
 
       /* Don't use rand() here, mesa calls srand() internally when
          parsing the driconf XML, but it's nice if the colors are
@@ -322,9 +323,13 @@ on_monitors_changed (MetaScreen *screen,
                           g_rand_int_range (rand, 0, 255),
                           g_rand_int_range (rand, 0, 255),
                           255);
-      clutter_actor_set_background_color (background, &color);
 
-      clutter_actor_add_child (self->priv->background_group, background);
+      background = meta_background_new (screen);
+      meta_background_set_color (background, &color);
+      meta_background_actor_set_background (META_BACKGROUND_ACTOR (background_actor), background);
+      g_object_unref (background);
+
+      clutter_actor_add_child (self->priv->background_group, background_actor);
     }
 
   g_rand_free (rand);
