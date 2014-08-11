@@ -306,7 +306,7 @@ const WorkspaceThumbnail = new Lang.Class({
     _createBackground: function() {
         this._bgManager = new Background.BackgroundManager({ monitorIndex: Main.layoutManager.primaryIndex,
                                                              container: this._contents,
-                                                             effects: Meta.BackgroundEffects.NONE });
+                                                             vignette: false });
     },
 
     setPorthole: function(x, y, width, height) {

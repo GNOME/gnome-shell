@@ -185,7 +185,7 @@ const Overview = new Lang.Class({
         for (let i = 0; i < Main.layoutManager.monitors.length; i++) {
             let bgManager = new Background.BackgroundManager({ container: this._backgroundGroup,
                                                                monitorIndex: i,
-                                                               effects: Meta.BackgroundEffects.VIGNETTE });
+                                                               vignette: true });
             this._bgManagers.push(bgManager);
         }
     },
