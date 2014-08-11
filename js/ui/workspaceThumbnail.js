@@ -306,7 +306,7 @@ const WorkspaceThumbnail = new Lang.Class({
     _createBackground: function() {
         this._bgManager = new Background.BackgroundManager({ monitorIndex: Main.layoutManager.primaryIndex,
                                                              container: this._contents,
-                                                             effects: Meta.BackgroundEffects.NONE });
+                                                             vignette: false });
     },
 
     setPorthole: function(x, y, width, height) {
@@ -332,7 +332,7 @@ const WorkspaceThumbnail = new Lang.Class({
             let clone = this._windows[i];
             let metaWindow = clone.metaWindow;
             if (i == 0) {
-                clone.setStackAbove(this._bgManager.background.actor);
+                clone.setStackAbove(this._bgManager.backgroundActor);
             } else {
                 let previousClone = this._windows[i - 1];
                 clone.setStackAbove(previousClone.actor);
@@ -531,7 +531,7 @@ const WorkspaceThumbnail = new Lang.Class({
         this._contents.add_actor(clone.actor);
 
         if (this._windows.length == 0)
-            clone.setStackAbove(this._bgManager.background.actor);
+            clone.setStackAbove(this._bgManager.backgroundActor);
         else
             clone.setStackAbove(this._windows[this._windows.length - 1].actor);
 

@@ -185,7 +185,7 @@ const Overview = new Lang.Class({
         for (let i = 0; i < Main.layoutManager.monitors.length; i++) {
             let bgManager = new Background.BackgroundManager({ container: this._backgroundGroup,
                                                                monitorIndex: i,
-                                                               effects: Meta.BackgroundEffects.VIGNETTE });
+                                                               vignette: true });
             this._bgManagers.push(bgManager);
         }
     },
@@ -193,11 +193,9 @@ const Overview = new Lang.Class({
     _unshadeBackgrounds: function() {
         let backgrounds = this._backgroundGroup.get_children();
         for (let i = 0; i < backgrounds.length; i++) {
-            let background = backgrounds[i]._delegate;
-
-            Tweener.addTween(background,
+            Tweener.addTween(backgrounds[i],
                              { brightness: 1.0,
-                               vignetteSharpness: 0.0,
+                               vignette_sharpness: 0.0,
                                time: SHADE_ANIMATION_TIME,
                                transition: 'easeOutQuad'
                              });
@@ -207,11 +205,9 @@ const Overview = new Lang.Class({
     _shadeBackgrounds: function() {
         let backgrounds = this._backgroundGroup.get_children();
         for (let i = 0; i < backgrounds.length; i++) {
-            let background = backgrounds[i]._delegate;
-
-            Tweener.addTween(background,
+            Tweener.addTween(backgrounds[i],
                              { brightness: Lightbox.VIGNETTE_BRIGHTNESS,
-                               vignetteSharpness: Lightbox.VIGNETTE_SHARPNESS,
+                               vignette_sharpness: Lightbox.VIGNETTE_SHARPNESS,
                                time: SHADE_ANIMATION_TIME,
                                transition: 'easeOutQuad'
                              });
