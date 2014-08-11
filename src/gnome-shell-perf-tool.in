@@ -82,6 +82,9 @@ def start_shell(perf_output=None):
     if perf_output is not None:
         env['SHELL_PERF_OUTPUT'] = perf_output
 
+    # A fixed background image
+    env['SHELL_BACKGROUND_IMAGE'] = '@pkgdatadir@/perf-background.xml'
+
     self_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
     args = []
     args.append(os.path.join(self_dir, 'gnome-shell'))

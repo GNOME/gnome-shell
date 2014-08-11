@@ -311,7 +311,8 @@ const Background = new Lang.Class({
         params = Params.parse(params, { monitorIndex: 0,
                                         layoutManager: Main.layoutManager,
                                         effects: Meta.BackgroundEffects.NONE,
-                                        settings: null });
+                                        settings: null,
+                                        overrideImage: null });
         this.actor = new Meta.BackgroundGroup();
         this.actor._delegate = this;
 
@@ -319,6 +320,7 @@ const Background = new Lang.Class({
                                                    Lang.bind(this, this._destroy));
 
         this._settings = params.settings;
+        this._overrideImage = params.overrideImage;
         this._monitorIndex = params.monitorIndex;
         this._layoutManager = params.layoutManager;
         this._effects = params.effects;
@@ -582,18 +584,23 @@ const Background = new Lang.Class({
 
         this._loadPattern();
 
-        this._style = this._settings.get_enum(BACKGROUND_STYLE_KEY);
-        if (this._style == GDesktopEnums.BackgroundStyle.NONE) {
-            this._setLoaded();
-            return;
-        }
-
-        let uri = this._settings.get_string(PICTURE_URI_KEY);
         let filename;
-        if (GLib.uri_parse_scheme(uri) != null)
-            filename = Gio.File.new_for_uri(uri).get_path();
-        else
-            filename = uri;
+        if (this._overrideImage != null) {
+            filename = this._overrideImage;
+            this._style = GDesktopEnums.BackgroundStyle.WALLPAPER; // Hardcode
+        } else {
+            this._style = this._settings.get_enum(BACKGROUND_STYLE_KEY);
+            if (this._style == GDesktopEnums.BackgroundStyle.NONE) {
+                this._setLoaded();
+                return;
+            }
+
+            let uri = this._settings.get_string(PICTURE_URI_KEY);
+            if (GLib.uri_parse_scheme(uri) != null)
+                filename = Gio.File.new_for_uri(uri).get_path();
+            else
+                filename = uri;
+        }
 
         if (!filename) {
             this._setLoaded();
@@ -728,6 +735,8 @@ const BackgroundManager = new Lang.Class({
                                         controlPosition: true,
                                         settingsSchema: BACKGROUND_SCHEMA });
 
+        // Allow override the background image setting for performance testing
+        this._overrideImage = GLib.getenv('SHELL_BACKGROUND_IMAGE');
         this._settings = new Gio.Settings({ schema_id: params.settingsSchema });
         this._container = params.container;
         this._layoutManager = params.layoutManager;
@@ -789,7 +798,8 @@ const BackgroundManager = new Lang.Class({
         let background = new Background({ monitorIndex: this._monitorIndex,
                                           layoutManager: this._layoutManager,
                                           effects: this._effects,
-                                          settings: this._settings });
+                                          settings: this._settings,
+                                          overrideImage: this._overrideImage });
         this._container.add_child(background.actor);
 
         let monitor = this._layoutManager.monitors[this._monitorIndex];

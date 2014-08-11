@@ -74,6 +74,13 @@ dist_theme_DATA =				\
 	theme/ws-switch-arrow-up.png		\
 	theme/ws-switch-arrow-down.png
 
+backgrounddir = $(pkgdatadir)
+background_DATA = perf-background.xml
+
+perf-background.xml: perf-background.xml.in
+	$(AM_V_GEN) sed -e "s|@datadir[@]|$(datadir)|" \
+	    $< > $@ || rm $@
+
 keysdir = @GNOME_KEYBINDINGS_KEYSDIR@
 keys_in_files = 50-gnome-shell-system.xml.in
 keys_DATA = $(keys_in_files:.xml.in=.xml)
@@ -106,6 +113,7 @@ EXTRA_DIST =						\
 	$(menu_DATA)					\
 	$(convert_DATA)					\
 	$(keys_in_files)				\
+	perf-background.xml.in				\
 	org.gnome.Shell.PortalHelper.desktop.in		\
 	org.gnome.Shell.PortalHelper.service.in		\
 	org.gnome.shell.gschema.xml.in.in
@@ -117,6 +125,7 @@ CLEANFILES +=						\
 	$(desktop_DATA)					\
 	$(keys_DATA)					\
 	$(gsettings_SCHEMAS)				\
+	perf-background.xml				\
 	gschemas.compiled				\
 	org.gnome.shell.gschema.valid			\
 	org.gnome.shell.gschema.xml.in
