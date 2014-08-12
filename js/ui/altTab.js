@@ -151,13 +151,13 @@ const AppSwitcherPopup = new Lang.Class({
                                  this._items[this._selectedIndex].cachedWindows.length);
     },
 
-    _keyPressHandler: function(keysym, backwards, action) {
+    _keyPressHandler: function(keysym, action) {
         if (action == Meta.KeyBindingAction.SWITCH_GROUP) {
-            this._select(this._selectedIndex, backwards ? this._previousWindow() : this._nextWindow());
+            this._select(this._selectedIndex, this._nextWindow());
         } else if (action == Meta.KeyBindingAction.SWITCH_GROUP_BACKWARD) {
             this._select(this._selectedIndex, this._previousWindow());
         } else if (action == Meta.KeyBindingAction.SWITCH_APPLICATIONS) {
-            this._select(backwards ? this._previous() : this._next());
+            this._select(this._next());
         } else if (action == Meta.KeyBindingAction.SWITCH_APPLICATIONS_BACKWARD) {
             this._select(this._previous());
         } else if (this._thumbnailsFocused) {

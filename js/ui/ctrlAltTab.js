@@ -156,11 +156,11 @@ const CtrlAltTabPopup = new Lang.Class({
         this._select(this._selectedIndex);
     },
 
-    _keyPressHandler: function(keysym, backwards, action) {
+    _keyPressHandler: function(keysym, action) {
         if (action == Meta.KeyBindingAction.SWITCH_PANELS)
-            this._select(backwards ? this._previous() : this._next());
+            this._select(this._next());
         else if (action == Meta.KeyBindingAction.SWITCH_PANELS_BACKWARD)
-            this._select(backwards ? this._next() : this._previous());
+            this._select(this._previous());
         else if (keysym == Clutter.Left)
             this._select(this._previous());
         else if (keysym == Clutter.Right)

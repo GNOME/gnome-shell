@@ -283,11 +283,11 @@ const InputSourcePopup = new Lang.Class({
         this._select(this._selectedIndex);
     },
 
-    _keyPressHandler: function(keysym, backwards, action) {
+    _keyPressHandler: function(keysym, action) {
         if (action == this._action)
-            this._select(backwards ? this._previous() : this._next());
+            this._select(this._next());
         else if (action == this._actionBackward)
-            this._select(backwards ? this._next() : this._previous());
+            this._select(this._previous());
         else if (keysym == Clutter.Left)
             this._select(this._previous());
         else if (keysym == Clutter.Right)

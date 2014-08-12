@@ -184,13 +184,11 @@ const SwitcherPopup = new Lang.Class({
 
     _keyPressEvent: function(actor, event) {
         let keysym = event.get_key_symbol();
-        let event_state = event.get_state();
-        let backwards = event_state & Clutter.ModifierType.SHIFT_MASK;
-        let action = global.display.get_keybinding_action(event.get_key_code(), event_state);
+        let action = global.display.get_keybinding_action(event.get_key_code(), event.get_state());
 
         this._disableHover();
 
-        if (this._keyPressHandler(keysym, backwards, action) != Clutter.EVENT_PROPAGATE)
+        if (this._keyPressHandler(keysym, action) != Clutter.EVENT_PROPAGATE)
             return Clutter.EVENT_STOP;
 
         if (keysym == Clutter.Escape)
