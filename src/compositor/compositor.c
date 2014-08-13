@@ -73,7 +73,6 @@
 #include <meta/meta-shadow-factory.h>
 #include "meta-window-actor-private.h"
 #include "meta-window-group.h"
-#include "meta-stage.h"
 #include "window-private.h" /* to check window->hidden */
 #include "display-private.h" /* for meta_display_lookup_x_window() and meta_display_cancel_touch() */
 #include "util-private.h"
@@ -450,55 +449,13 @@ meta_compositor_manage (MetaCompositor *compositor)
   MetaDisplay *display = compositor->display;
   Display *xdisplay = display->xdisplay;
   MetaScreen *screen = display->screen;
-  Window xwin = 0;
-  gint width, height;
 
   meta_screen_set_cm_selection (display->screen);
 
-  if (meta_is_wayland_compositor ())
-    {
-      MetaWaylandCompositor *wayland_compositor = meta_wayland_compositor_get_default ();
-
-      compositor->stage = meta_stage_new ();
-
-      wayland_compositor->stage = compositor->stage;
-
-      meta_screen_get_size (screen, &width, &height);
-      clutter_actor_set_size (compositor->stage, width, height);
-      clutter_actor_show (compositor->stage);
-    }
-  else
-    {
-      compositor->stage = clutter_stage_new ();
-
-      meta_screen_get_size (screen, &width, &height);
-      clutter_actor_realize (compositor->stage);
-
-      xwin = clutter_x11_get_stage_window (CLUTTER_STAGE (compositor->stage));
-
-      XResizeWindow (xdisplay, xwin, width, height);
-
-        {
-          MetaBackendX11 *backend = META_BACKEND_X11 (meta_get_backend ());
-          Display *backend_xdisplay = meta_backend_x11_get_xdisplay (backend);
-          unsigned char mask_bits[XIMaskLen (XI_LASTEVENT)] = { 0 };
-          XIEventMask mask = { XIAllMasterDevices, sizeof (mask_bits), mask_bits };
-
-          XISetMask (mask.mask, XI_KeyPress);
-          XISetMask (mask.mask, XI_KeyRelease);
-          XISetMask (mask.mask, XI_ButtonPress);
-          XISetMask (mask.mask, XI_ButtonRelease);
-          XISetMask (mask.mask, XI_Enter);
-          XISetMask (mask.mask, XI_Leave);
-          XISetMask (mask.mask, XI_FocusIn);
-          XISetMask (mask.mask, XI_FocusOut);
-          XISetMask (mask.mask, XI_Motion);
-          XIClearMask (mask.mask, XI_TouchBegin);
-          XIClearMask (mask.mask, XI_TouchEnd);
-          XIClearMask (mask.mask, XI_TouchUpdate);
-          XISelectEvents (backend_xdisplay, xwin, &mask, 1);
-        }
-    }
+  {
+    MetaBackend *backend = meta_get_backend ();
+    compositor->stage = meta_backend_get_stage (backend);
+  }
 
   /* We use connect_after() here to accomodate code in GNOME Shell that,
    * when benchmarking drawing performance, connects to ::after-paint
@@ -528,7 +485,11 @@ meta_compositor_manage (MetaCompositor *compositor)
     }
   else
     {
+      Window xwin;
+
       compositor->output = screen->composite_overlay_window;
+
+      xwin = meta_backend_x11_get_xwindow (META_BACKEND_X11 (meta_get_backend ()));
 
       XReparentWindow (xdisplay, xwin, compositor->output, 0, 0);
 
@@ -1019,43 +980,6 @@ meta_compositor_sync_window_geometry (MetaCompositor *compositor,
 {
   MetaWindowActor *window_actor = META_WINDOW_ACTOR (meta_window_get_compositor_private (window));
   meta_window_actor_sync_actor_geometry (window_actor, did_placement);
-}
-
-void
-meta_compositor_sync_screen_size (MetaCompositor  *compositor,
-				  guint		   width,
-				  guint		   height)
-{
-  MetaDisplay *display = compositor->display;
-
-  if (meta_is_wayland_compositor ())
-    {
-      /* FIXME: when we support a sliced stage, this is the place to do it
-         But! This is not the place to apply KMS config, here we only
-         notify Clutter/Cogl/GL that the framebuffer sizes changed.
-
-         And because for now clutter does not do sliced, we use one
-         framebuffer the size of the whole screen, and when running on
-         bare metal MetaMonitorManager will do the necessary tricks to
-         show the right portions on the right screens.
-      */
-
-      clutter_actor_set_size (compositor->stage, width, height);
-    }
-  else
-    {
-      Display        *xdisplay;
-      Window          xwin;
-
-      xdisplay = meta_display_get_xdisplay (display);
-      xwin = clutter_x11_get_stage_window (CLUTTER_STAGE (compositor->stage));
-
-      XResizeWindow (xdisplay, xwin, width, height);
-    }
-
-  meta_verbose ("Changed size for stage on screen %d to %dx%d\n",
-                meta_screen_get_screen_number (display->screen),
-                width, height);
 }
 
 static void

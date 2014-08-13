@@ -101,15 +101,15 @@ session_unpause (void)
   clutter_egl_thaw_master_clock ();
 
   {
-    MetaWaylandCompositor *compositor = meta_wayland_compositor_get_default ();
     MetaBackend *backend = meta_get_backend ();
     MetaCursorRenderer *renderer = meta_backend_get_cursor_renderer (backend);
+    ClutterActor *stage = meta_backend_get_stage (backend);
 
     /* When we mode-switch back, we need to immediately queue a redraw
      * in case nothing else queued one for us, and force the cursor to
      * update. */
 
-    clutter_actor_queue_redraw (compositor->stage);
+    clutter_actor_queue_redraw (stage);
     meta_cursor_renderer_native_force_update (META_CURSOR_RENDERER_NATIVE (renderer));
   }
 }

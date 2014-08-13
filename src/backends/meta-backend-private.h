@@ -84,6 +84,9 @@ struct _MetaBackendClass
 
   void (* lock_layout_group) (MetaBackend *backend,
                               guint        idx);
+
+  void (* update_screen_size) (MetaBackend *backend, int width, int height);
+  void (* select_stage_events) (MetaBackend *backend);
 };
 
 MetaIdleMonitor * meta_backend_get_idle_monitor (MetaBackend *backend,

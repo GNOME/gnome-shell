@@ -27,6 +27,8 @@
 
 #include <glib-object.h>
 
+#include <clutter/clutter.h>
+
 typedef struct _MetaBackend        MetaBackend;
 typedef struct _MetaBackendClass   MetaBackendClass;
 
@@ -41,6 +43,8 @@ void meta_backend_set_keymap (MetaBackend *backend,
 
 void meta_backend_lock_layout_group (MetaBackend *backend,
                                      guint        idx);
+
+ClutterActor *meta_backend_get_stage (MetaBackend *backend);
 
 void meta_clutter_init (void);
 

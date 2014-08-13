@@ -69,6 +69,8 @@ libmutter_la_SOURCES =				\
 	backends/meta-monitor-manager.h		\
 	backends/meta-monitor-manager-dummy.c	\
 	backends/meta-monitor-manager-dummy.h	\
+	backends/meta-stage.h			\
+	backends/meta-stage.c			\
 	backends/edid-parse.c			\
 	backends/edid.h				\
 	backends/x11/meta-backend-x11.c			\
@@ -115,8 +117,6 @@ libmutter_la_SOURCES =				\
 	compositor/meta-surface-actor-x11.h	\
 	compositor/meta-surface-actor-wayland.c	\
 	compositor/meta-surface-actor-wayland.h	\
-	compositor/meta-stage.h			\
-	compositor/meta-stage.c			\
 	compositor/meta-texture-rectangle.c	\
 	compositor/meta-texture-rectangle.h	\
 	compositor/meta-texture-tower.c		\

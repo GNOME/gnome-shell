@@ -593,6 +593,40 @@ meta_backend_x11_lock_layout_group (MetaBackend *backend,
 }
 
 static void
+meta_backend_x11_update_screen_size (MetaBackend *backend,
+                                     int width, int height)
+{
+  MetaBackendX11 *x11 = META_BACKEND_X11 (backend);
+  MetaBackendX11Private *priv = meta_backend_x11_get_instance_private (x11);
+  Window xwin = meta_backend_x11_get_xwindow (x11);
+  XResizeWindow (priv->xdisplay, xwin, width, height);
+}
+
+static void
+meta_backend_x11_select_stage_events (MetaBackend *backend)
+{
+  MetaBackendX11 *x11 = META_BACKEND_X11 (backend);
+  MetaBackendX11Private *priv = meta_backend_x11_get_instance_private (x11);
+  Window xwin = meta_backend_x11_get_xwindow (x11);
+  unsigned char mask_bits[XIMaskLen (XI_LASTEVENT)] = { 0 };
+  XIEventMask mask = { XIAllMasterDevices, sizeof (mask_bits), mask_bits };
+
+  XISetMask (mask.mask, XI_KeyPress);
+  XISetMask (mask.mask, XI_KeyRelease);
+  XISetMask (mask.mask, XI_ButtonPress);
+  XISetMask (mask.mask, XI_ButtonRelease);
+  XISetMask (mask.mask, XI_Enter);
+  XISetMask (mask.mask, XI_Leave);
+  XISetMask (mask.mask, XI_FocusIn);
+  XISetMask (mask.mask, XI_FocusOut);
+  XISetMask (mask.mask, XI_Motion);
+  XIClearMask (mask.mask, XI_TouchBegin);
+  XIClearMask (mask.mask, XI_TouchEnd);
+  XIClearMask (mask.mask, XI_TouchUpdate);
+  XISelectEvents (priv->xdisplay, xwin, &mask, 1);
+}
+
+static void
 meta_backend_x11_class_init (MetaBackendX11Class *klass)
 {
   MetaBackendClass *backend_class = META_BACKEND_CLASS (klass);
@@ -601,13 +635,14 @@ meta_backend_x11_class_init (MetaBackendX11Class *klass)
   backend_class->create_idle_monitor = meta_backend_x11_create_idle_monitor;
   backend_class->create_monitor_manager = meta_backend_x11_create_monitor_manager;
   backend_class->create_cursor_renderer = meta_backend_x11_create_cursor_renderer;
-
   backend_class->grab_device = meta_backend_x11_grab_device;
   backend_class->ungrab_device = meta_backend_x11_ungrab_device;
   backend_class->warp_pointer = meta_backend_x11_warp_pointer;
   backend_class->set_keymap = meta_backend_x11_set_keymap;
   backend_class->get_keymap = meta_backend_x11_get_keymap;
   backend_class->lock_layout_group = meta_backend_x11_lock_layout_group;
+  backend_class->update_screen_size = meta_backend_x11_update_screen_size;
+  backend_class->select_stage_events = meta_backend_x11_select_stage_events;
 }
 
 static void
@@ -628,12 +663,6 @@ meta_backend_x11_get_xdisplay (MetaBackendX11 *x11)
 Window
 meta_backend_x11_get_xwindow (MetaBackendX11 *x11)
 {
-  MetaDisplay *display = meta_get_display ();
-  MetaCompositor *compositor = display->compositor;
-
-  if (compositor == NULL)
-    return None;
-
-  ClutterStage *stage = CLUTTER_STAGE (compositor->stage);
-  return clutter_x11_get_stage_window (stage);
+  ClutterActor *stage = meta_backend_get_stage (META_BACKEND (x11));
+  return clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
 }

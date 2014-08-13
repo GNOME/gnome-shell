@@ -27,9 +27,8 @@
 #include <meta/meta-backend.h>
 #include "meta-backend-private.h"
 
-#include <clutter/clutter.h>
-
 #include "backends/x11/meta-backend-x11.h"
+#include "meta-stage.h"
 
 #ifdef HAVE_NATIVE_BACKEND
 #include "backends/native/meta-backend-native.h"
@@ -54,6 +53,8 @@ struct _MetaBackendPrivate
 {
   MetaMonitorManager *monitor_manager;
   MetaCursorRenderer *cursor_renderer;
+
+  ClutterActor *stage;
 };
 typedef struct _MetaBackendPrivate MetaBackendPrivate;
 
@@ -78,11 +79,39 @@ meta_backend_finalize (GObject *object)
 }
 
 static void
+meta_backend_sync_screen_size (MetaBackend *backend)
+{
+  MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
+  int width, height;
+
+  meta_monitor_manager_get_screen_size (priv->monitor_manager, &width, &height);
+
+  META_BACKEND_GET_CLASS (backend)->update_screen_size (backend, width, height);
+}
+
+static void
+on_monitors_changed (MetaMonitorManager *monitors,
+                     gpointer user_data)
+{
+  MetaBackend *backend = META_BACKEND (user_data);
+  meta_backend_sync_screen_size (backend);
+}
+
+static void
 meta_backend_real_post_init (MetaBackend *backend)
 {
   MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
 
+  priv->stage = meta_stage_new ();
+  clutter_actor_realize (priv->stage);
+  META_BACKEND_GET_CLASS (backend)->select_stage_events (backend);
+
   priv->monitor_manager = META_BACKEND_GET_CLASS (backend)->create_monitor_manager (backend);
+
+  g_signal_connect (priv->monitor_manager, "monitors-changed",
+                    G_CALLBACK (on_monitors_changed), backend);
+  meta_backend_sync_screen_size (backend);
+
   priv->cursor_renderer = META_BACKEND_GET_CLASS (backend)->create_cursor_renderer (backend);
 }
 
@@ -111,6 +140,21 @@ meta_backend_real_ungrab_device (MetaBackend *backend,
 }
 
 static void
+meta_backend_real_update_screen_size (MetaBackend *backend,
+                                      int width, int height)
+{
+  MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
+
+  clutter_actor_set_size (priv->stage, width, height);
+}
+
+static void
+meta_backend_real_select_stage_events (MetaBackend *backend)
+{
+  /* Do nothing */
+}
+
+static void
 meta_backend_class_init (MetaBackendClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -121,6 +165,8 @@ meta_backend_class_init (MetaBackendClass *klass)
   klass->create_cursor_renderer = meta_backend_real_create_cursor_renderer;
   klass->grab_device = meta_backend_real_grab_device;
   klass->ungrab_device = meta_backend_real_ungrab_device;
+  klass->update_screen_size = meta_backend_real_update_screen_size;
+  klass->select_stage_events = meta_backend_real_select_stage_events;
 }
 
 static void
@@ -249,6 +295,21 @@ meta_backend_lock_layout_group (MetaBackend *backend,
                                 guint idx)
 {
   META_BACKEND_GET_CLASS (backend)->lock_layout_group (backend, idx);
+}
+
+/**
+ * meta_backend_get_stage:
+ * @backend: A #MetaBackend
+ *
+ * Gets the global #ClutterStage that's managed by this backend.
+ *
+ * Returns: (transfer none): the #ClutterStage
+ */
+ClutterActor *
+meta_backend_get_stage (MetaBackend *backend)
+{
+  MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
+  return priv->stage;
 }
 
 static GType

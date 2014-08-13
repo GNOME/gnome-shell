@@ -2522,9 +2522,6 @@ on_monitors_changed (MetaMonitorManager *manager,
                        &changes);
     }
 
-  meta_compositor_sync_screen_size (screen->display->compositor,
-                                    screen->rect.width, screen->rect.height);
-
   /* Queue a resize on all the windows */
   meta_screen_foreach_window (screen, meta_screen_resize_func, 0);
 

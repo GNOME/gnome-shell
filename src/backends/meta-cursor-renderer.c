@@ -27,13 +27,14 @@
 #include "meta-cursor-renderer.h"
 #include "meta-cursor-private.h"
 
+#include <meta/meta-backend.h>
+#include <meta/util.h>
+
 #include <cogl/cogl.h>
 #include <cogl/cogl-wayland-server.h>
 #include <clutter/clutter.h>
 
 #include "meta-stage.h"
-
-#include "wayland/meta-wayland-private.h"
 
 struct _MetaCursorRendererPrivate
 {
@@ -51,8 +52,8 @@ static void
 queue_redraw (MetaCursorRenderer *renderer)
 {
   MetaCursorRendererPrivate *priv = meta_cursor_renderer_get_instance_private (renderer);
-  MetaWaylandCompositor *compositor = meta_wayland_compositor_get_default ();
-  ClutterActor *stage = compositor->stage;
+  MetaBackend *backend = meta_get_backend ();
+  ClutterActor *stage = meta_backend_get_stage (backend);
 
   /* During early initialization, we can have no stage */
   if (!stage)
