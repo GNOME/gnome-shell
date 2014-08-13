@@ -1838,6 +1838,11 @@ meta_wayland_surface_configure_notify (MetaWaylandSurface *surface,
           sent_serial->value = serial;
         }
     }
+  else if (surface->xdg_popup.resource)
+    {
+      /* This can happen if the popup window loses or receives focus.
+       * Just ignore it. */
+    }
   else if (surface->wl_shell_surface.resource)
     wl_shell_surface_send_configure (surface->wl_shell_surface.resource,
                                      0, new_width, new_height);
