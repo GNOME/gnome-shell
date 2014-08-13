@@ -46,8 +46,6 @@
 
 static ShellGlobal *the_object = NULL;
 
-static void grab_notify (GtkWidget *widget, gboolean is_grab, gpointer user_data);
-
 struct _ShellGlobal {
   GObject parent;
 
@@ -62,15 +60,6 @@ struct _ShellGlobal {
   GdkScreen *gdk_screen;
 
   char *session_mode;
-
-  /* We use this window to get a notification from GTK+ when
-   * a widget in our process does a GTK+ grab.  See
-   * http://bugzilla.gnome.org/show_bug.cgi?id=570641
-   * 
-   * This window is never mapped or shown.
-   */
-  GtkWindow *grab_notifier;
-  gboolean gtk_grab_active;
 
   XserverRegion input_region;
 
@@ -285,10 +274,6 @@ shell_global_init (ShellGlobal *global)
   global->runtime_state_path = g_file_new_for_path (path);
 
   global->settings = g_settings_new ("org.gnome.shell");
-  
-  global->grab_notifier = GTK_WINDOW (gtk_window_new (GTK_WINDOW_TOPLEVEL));
-  g_signal_connect (global->grab_notifier, "grab-notify", G_CALLBACK (grab_notify), global);
-  global->gtk_grab_active = FALSE;
 
   global->sound_context = ca_gtk_context_get ();
   ca_context_change_props (global->sound_context,
@@ -348,7 +333,6 @@ shell_global_finalize (GObject *object)
   ShellGlobal *global = SHELL_GLOBAL (object);
 
   g_object_unref (global->js_context);
-  gtk_widget_destroy (GTK_WIDGET (global->grab_notifier));
   g_object_unref (global->settings);
 
   the_object = NULL;
@@ -654,9 +638,7 @@ sync_input_region (ShellGlobal *global)
 {
   MetaScreen *screen = global->meta_screen;
 
-  if (global->gtk_grab_active)
-    meta_empty_stage_input_region (screen);
-  else if (global->has_modal)
+  if (global->has_modal)
     meta_set_stage_input_region (screen, None);
   else
     meta_set_stage_input_region (screen, global->input_region);
@@ -1334,17 +1316,6 @@ shell_global_notify_error (ShellGlobal  *global,
                            const char   *details)
 {
   g_signal_emit_by_name (global, "notify-error", msg, details);
-}
-
-static void
-grab_notify (GtkWidget *widget, gboolean was_grabbed, gpointer user_data)
-{
-  ShellGlobal *global = SHELL_GLOBAL (user_data);
-  
-  global->gtk_grab_active = !was_grabbed;
-
-  /* Update for the new setting of gtk_grab_active */
-  sync_input_region (global);
 }
 
 /**
