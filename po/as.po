@@ -1032,7 +1032,7 @@ msgstr "%A %B %e, %Y"
 #, javascript-format
 msgctxt "title"
 msgid "Log Out %s"
-msgstr "%s লগ আউট কৰক"
+msgstr "%s ক লগ আউট কৰক"
 
 #: ../js/ui/endSessionDialog.js:67
 msgctxt "title"
@@ -1645,7 +1645,7 @@ msgstr "শক্তি সংহতিসমূহ"
 
 #: ../js/ui/status/power.js:65
 msgid "Fully Charged"
-msgstr "সম্পূৰ্ণ চাৰ্জ হৈছে"
+msgstr "সম্পূৰ্ণভাৱে চাৰ্জড্"
 
 #: ../js/ui/status/power.js:72 ../js/ui/status/power.js:78
 msgid "Estimating…"
