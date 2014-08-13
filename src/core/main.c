@@ -319,7 +319,9 @@ meta_init (void)
 #if defined(CLUTTER_WINDOWING_EGL) && defined(HAVE_NATIVE_BACKEND)
   if (opt_display_server)
     clutter_set_windowing_backend (CLUTTER_WINDOWING_EGL);
+  else
 #endif
+    clutter_set_windowing_backend (CLUTTER_WINDOWING_X11);
 
   meta_set_is_wayland_compositor (opt_wayland);
 
