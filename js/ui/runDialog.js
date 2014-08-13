@@ -182,6 +182,10 @@ const RunDialog = new Lang.Class({
         let results = someResults.reduce(function(a, b) {
             return a.concat(b);
         }, []);
+
+        if (!results.length)
+            return null;
+
         let common = results.reduce(_getCommon, null);
         return common.substr(text.length);
     },
