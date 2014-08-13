@@ -415,11 +415,15 @@ enable_compositor (MetaDisplay *display)
       return;
     }
 
-  if (!display->compositor)
-      display->compositor = meta_compositor_new (display);
+  int version = (display->composite_major_version * 10) + display->composite_minor_version;
+  if (version < 3)
+    {
+      meta_warning ("Your version of COMPOSITE is too old.");
+      return;
+    }
 
   if (!display->compositor)
-    return;
+      display->compositor = meta_compositor_new (display);
 
   meta_compositor_manage (display->compositor);
 }
@@ -3093,15 +3097,6 @@ meta_display_modifiers_accelerator_activate (MetaDisplay *display)
   g_signal_emit (display, display_signals[MODIFIERS_ACCELERATOR_ACTIVATED], 0, &freeze);
 
   return freeze;
-}
-
-void
-meta_display_get_compositor_version (MetaDisplay *display,
-                                     int         *major,
-                                     int         *minor)
-{
-  *major = display->composite_major_version;
-  *minor = display->composite_minor_version;
 }
 
 /**

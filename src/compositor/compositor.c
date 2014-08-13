@@ -91,18 +91,6 @@ is_modal (MetaDisplay *display)
   return display->grab_op == META_GRAB_OP_COMPOSITOR;
 }
 
-static inline gboolean
-composite_at_least_version (MetaDisplay *display, int maj, int min)
-{
-  static int major = -1;
-  static int minor = -1;
-
-  if (major == -1)
-    meta_display_get_compositor_version (display, &major, &minor);
-
-  return (major > maj || (major == maj && minor >= min));
-}
-
 static void sync_actor_stacking (MetaCompositor *compositor);
 
 static void
@@ -1197,11 +1185,7 @@ meta_compositor_new (MetaDisplay *display)
 {
   MetaCompositor        *compositor;
 
-  if (!composite_at_least_version (display, 0, 3))
-    return NULL;
-
   compositor = g_new0 (MetaCompositor, 1);
-
   compositor->display = display;
 
   if (g_getenv("META_DISABLE_MIPMAPS"))

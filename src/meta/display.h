@@ -66,9 +66,6 @@ GType meta_display_get_type (void) G_GNUC_CONST;
 
 #define meta_XFree(p) do { if ((p)) XFree ((p)); } while (0)
 
-void meta_display_get_compositor_version (MetaDisplay *display,
-                                          int         *major,
-                                          int         *minor);
 int meta_display_get_xinput_opcode (MetaDisplay *display);
 gboolean meta_display_supports_extended_barriers (MetaDisplay *display);
 Display *meta_display_get_xdisplay (MetaDisplay *display);
