@@ -384,7 +384,7 @@ meta_wayland_init (void)
     g_error ("failed to create wayland display");
 
   wl_display_init_shm (compositor->wayland_display);
-  wl_log_set_handler_server(meta_wayland_log_func);
+  wl_log_set_handler_server (meta_wayland_log_func);
 
   wl_list_init (&compositor->frame_callbacks);
 
