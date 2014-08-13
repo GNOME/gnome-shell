@@ -45,10 +45,8 @@
            w->type == META_WINDOW_MENU ||               \
            w->type == META_WINDOW_UTILITY)
 
-#define WINDOW_TRANSIENT_FOR_WHOLE_GROUP(w)             \
-         ((w->xtransient_for == None ||                 \
-           w->transient_parent_is_root_window) &&       \
-          WINDOW_HAS_TRANSIENT_TYPE (w))
+#define WINDOW_TRANSIENT_FOR_WHOLE_GROUP(w)                     \
+  (WINDOW_HAS_TRANSIENT_TYPE (w) && w->transient_for == NULL)
 
 #define WINDOW_IN_STACK(w) (w->stack_position >= 0)
 
@@ -414,8 +412,7 @@ compute_layer (MetaWindow *window)
    */
   if (window->layer != META_LAYER_DESKTOP &&
       WINDOW_HAS_TRANSIENT_TYPE(window) &&
-      (window->xtransient_for == None ||
-       window->transient_parent_is_root_window))
+      window->transient_for == NULL)
     {
       /* We only do the group thing if the dialog is NOT transient for
        * a particular window. Imagine a group with a normal window, a dock,
@@ -636,13 +633,11 @@ create_constraints (Constraint **constraints,
 
           g_slist_free (group_windows);
         }
-      else if (w->xtransient_for != None &&
-               !w->transient_parent_is_root_window)
+      else if (w->transient_for != NULL)
         {
           MetaWindow *parent;
 
-          parent =
-            meta_display_lookup_x_window (w->display, w->xtransient_for);
+          parent = w->transient_for;
 
           if (parent && WINDOW_IN_STACK (parent) &&
               parent->screen == w->screen)
