@@ -4655,14 +4655,22 @@ meta_window_appears_focused_changed (MetaWindow *window)
 static gboolean
 should_propagate_focus_appearance (MetaWindow *window)
 {
+  /* Parents of attached modal dialogs should appear focused. */
   if (meta_window_is_attached_dialog (window))
     return TRUE;
 
+  /* Parents of these sorts of override-redirect windows should
+   * appear focused. */
   switch (window->type)
     {
     case META_WINDOW_DROPDOWN_MENU:
     case META_WINDOW_POPUP_MENU:
     case META_WINDOW_COMBO:
+    case META_WINDOW_TOOLTIP:
+    case META_WINDOW_NOTIFICATION:
+    case META_WINDOW_COMBO:
+    case META_WINDOW_DND:
+    case META_WINDOW_OVERRIDE_OTHER:
       return TRUE;
     default:
       break;
