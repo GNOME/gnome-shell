@@ -7574,7 +7574,7 @@ void
 meta_window_set_transient_for (MetaWindow *window,
                                MetaWindow *parent)
 {
-  if (meta_window_appears_focused (window) && window->transient_for != None)
+  if (meta_window_appears_focused (window) && window->transient_for != NULL)
     meta_window_propagate_focus_appearance (window, FALSE);
 
   /* may now be a dialog */
@@ -7619,7 +7619,7 @@ meta_window_set_transient_for (MetaWindow *window,
   if (!window->constructing && !window->override_redirect)
     meta_window_queue (window, META_QUEUE_MOVE_RESIZE);
 
-  if (meta_window_appears_focused (window) && window->transient_for != None)
+  if (meta_window_appears_focused (window) && window->transient_for != NULL)
     meta_window_propagate_focus_appearance (window, TRUE);
 }
 
