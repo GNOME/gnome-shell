@@ -1604,16 +1604,12 @@ reload_transient_for (MetaWindow    *window,
 
   window->xtransient_for = transient_for;
 
-  window->transient_parent_is_root_window =
-    window->xtransient_for == window->screen->xroot;
-
   if (window->xtransient_for != None)
-    meta_verbose ("Window %s transient for 0x%lx (root = %d)\n", window->desc,
-        window->xtransient_for, window->transient_parent_is_root_window);
+    meta_verbose ("Window %s transient for 0x%lx\n", window->desc, window->xtransient_for);
   else
     meta_verbose ("Window %s is not transient\n", window->desc);
 
-  if (window->transient_parent_is_root_window || window->xtransient_for == None)
+  if (window->xtransient_for == None || window->xtransient_for == window->screen->xroot)
     meta_window_set_transient_for (window, NULL);
   else
     {

@@ -933,7 +933,6 @@ _meta_window_shared_new (MetaDisplay         *display,
 
   window->xtransient_for = None;
   window->xclient_leader = None;
-  window->transient_parent_is_root_window = FALSE;
 
   window->type = META_WINDOW_NORMAL;
 

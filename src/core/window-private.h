@@ -329,9 +329,6 @@ struct _MetaWindow
    */
   guint calc_placement : 1;
 
-  /* Transient parent is a root window */
-  guint transient_parent_is_root_window : 1;
-
   /* if TRUE, window was maximized at start of current grab op */
   guint shaken_loose : 1;
 
