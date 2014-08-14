@@ -1579,7 +1579,6 @@ handle_other_xevent (MetaDisplay *display,
             /* Let XLib know that there is a new keyboard mapping.
              */
             XRefreshKeyboardMapping (&event->xmapping);
-            meta_display_process_mapping_event (display, event);
           }
       }
       break;
@@ -1598,10 +1597,7 @@ handle_other_xevent (MetaDisplay *display,
                   meta_bell_notify (display, xkb_ev);
                 }
               break;
-            case XkbNewKeyboardNotify:
-            case XkbMapNotify:
-              if (xkb_ev->device == META_VIRTUAL_CORE_KEYBOARD_ID)
-                meta_display_process_mapping_event (display, event);
+            default:
               break;
             }
         }

@@ -159,6 +159,21 @@ maybe_spoof_event_as_stage_event (MetaBackendX11 *x11,
 }
 
 static void
+keymap_changed (MetaBackend *backend)
+{
+  MetaBackendX11 *x11 = META_BACKEND_X11 (backend);
+  MetaBackendX11Private *priv = meta_backend_x11_get_instance_private (x11);
+
+  if (priv->keymap)
+    {
+      xkb_keymap_unref (priv->keymap);
+      priv->keymap = NULL;
+    }
+
+  g_signal_emit_by_name (backend, "keymap-changed", 0);
+}
+
+static void
 handle_host_xevent (MetaBackend *backend,
                     XEvent      *event)
 {
@@ -181,6 +196,23 @@ handle_host_xevent (MetaBackend *backend,
 
   if (event->type == (priv->xsync_event_base + XSyncAlarmNotify))
     handle_alarm_notify (backend, event);
+
+  if (event->type == priv->xkb_event_base)
+    {
+      XkbAnyEvent *xkb_ev = (XkbAnyEvent *) event;
+
+      if (xkb_ev->device == META_VIRTUAL_CORE_KEYBOARD_ID)
+        {
+          switch (xkb_ev->xkb_type)
+            {
+            case XkbNewKeyboardNotify:
+            case XkbMapNotify:
+              keymap_changed (backend);
+            default:
+              break;
+            }
+        }
+    }
 
   {
     MetaMonitorManager *manager = meta_backend_get_monitor_manager (backend);

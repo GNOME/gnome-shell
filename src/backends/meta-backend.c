@@ -167,6 +167,13 @@ meta_backend_class_init (MetaBackendClass *klass)
   klass->ungrab_device = meta_backend_real_ungrab_device;
   klass->update_screen_size = meta_backend_real_update_screen_size;
   klass->select_stage_events = meta_backend_real_select_stage_events;
+
+  g_signal_new ("keymap-changed",
+                G_TYPE_FROM_CLASS (object_class),
+                G_SIGNAL_RUN_LAST,
+                0,
+                NULL, NULL, NULL,
+                G_TYPE_NONE, 0);
 }
 
 static void

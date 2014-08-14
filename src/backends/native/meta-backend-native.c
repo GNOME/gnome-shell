@@ -211,7 +211,7 @@ meta_backend_native_set_keymap (MetaBackend *backend,
 
   clutter_evdev_set_keyboard_map (manager, keymap);
 
-  /* FIXME: emit keymap changed signal */
+  g_signal_emit_by_name (backend, "keymap-changed", 0);
 
   xkb_keymap_unref (keymap);
 }

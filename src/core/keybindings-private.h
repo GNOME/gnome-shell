@@ -126,8 +126,6 @@ void     meta_window_ungrab_all_keys        (MetaWindow  *window,
 gboolean meta_keybindings_process_event     (MetaDisplay        *display,
                                              MetaWindow         *window,
                                              const ClutterEvent *event);
-void     meta_display_process_mapping_event (MetaDisplay *display,
-                                             XEvent      *event);
 
 ClutterModifierType meta_display_get_window_grab_modifiers (MetaDisplay *display);
 

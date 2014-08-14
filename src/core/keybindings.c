@@ -937,10 +937,11 @@ meta_display_get_keybinding_action (MetaDisplay  *display,
     }
 }
 
-void
-meta_display_process_mapping_event (MetaDisplay *display,
-                                    XEvent      *event)
+static void
+on_keymap_changed (MetaBackend *backend,
+                   gpointer     user_data)
 {
+  MetaDisplay *display = user_data;
   MetaKeyBindingManager *keys = &display->key_binding_manager;
 
   ungrab_key_bindings (display);
@@ -4185,7 +4186,10 @@ meta_display_init_keys (MetaDisplay *display)
 
   meta_prefs_add_listener (prefs_changed_callback, display);
 
-  XkbSelectEvents (keys->xdisplay, XkbUseCoreKbd,
-                   XkbNewKeyboardNotifyMask | XkbMapNotifyMask,
-                   XkbNewKeyboardNotifyMask | XkbMapNotifyMask);
+  {
+    MetaBackend *backend = meta_get_backend ();
+
+    g_signal_connect (backend, "keymap-changed",
+                      G_CALLBACK (on_keymap_changed), display);
+  }
 }
