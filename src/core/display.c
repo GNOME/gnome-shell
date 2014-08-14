@@ -145,7 +145,6 @@ static const char *gnome_wm_keybindings = "Mutter";
 static const char *net_wm_name = "Mutter";
 
 static void update_cursor_theme (void);
-static void    update_window_grab_modifiers (MetaDisplay *display);
 
 static void    prefs_changed_callback    (MetaPreference pref,
                                           void          *data);
@@ -585,8 +584,6 @@ meta_display_open (void)
   meta_bell_init (display);
 
   meta_display_init_keys (display);
-
-  update_window_grab_modifiers (display);
 
   meta_prefs_add_listener (prefs_changed_callback, display);
 
@@ -1989,221 +1986,6 @@ meta_display_check_threshold_reached (MetaDisplay *display,
     display->grab_threshold_movement_reached = TRUE;
 }
 
-static void
-meta_change_button_grab (MetaDisplay *display,
-                         Window       xwindow,
-                         gboolean     grab,
-                         gboolean     sync,
-                         int          button,
-                         int          modmask)
-{
-  MetaBackendX11 *backend = META_BACKEND_X11 (meta_get_backend ());
-  Display *xdisplay = meta_backend_x11_get_xdisplay (backend);
-
-  unsigned int ignored_mask;
-  unsigned char mask_bits[XIMaskLen (XI_LASTEVENT)] = { 0 };
-  XIEventMask mask = { XIAllMasterDevices, sizeof (mask_bits), mask_bits };
-
-  XISetMask (mask.mask, XI_ButtonPress);
-  XISetMask (mask.mask, XI_ButtonRelease);
-  XISetMask (mask.mask, XI_Motion);
-
-  ignored_mask = 0;
-  while (ignored_mask <= display->ignored_modifier_mask)
-    {
-      XIGrabModifiers mods;
-
-      if (ignored_mask & ~(display->ignored_modifier_mask))
-        {
-          /* Not a combination of ignored modifiers
-           * (it contains some non-ignored modifiers)
-           */
-          ++ignored_mask;
-          continue;
-        }
-
-      mods = (XIGrabModifiers) { modmask | ignored_mask, 0 };
-
-      /* GrabModeSync means freeze until XAllowEvents */
-
-      if (grab)
-        XIGrabButton (xdisplay,
-                      META_VIRTUAL_CORE_POINTER_ID,
-                      button, xwindow, None,
-                      sync ? XIGrabModeSync : XIGrabModeAsync,
-                      XIGrabModeAsync, False,
-                      &mask, 1, &mods);
-      else
-        XIUngrabButton (xdisplay,
-                        META_VIRTUAL_CORE_POINTER_ID,
-                        button, xwindow, 1, &mods);
-
-      ++ignored_mask;
-    }
-}
-
-void
-meta_display_grab_window_buttons (MetaDisplay *display,
-                                  Window       xwindow)
-{
-  if (meta_is_wayland_compositor ())
-    return;
-
-  /* Grab Alt + button1 for moving window.
-   * Grab Alt + button2 for resizing window.
-   * Grab Alt + button3 for popping up window menu.
-   * Grab Alt + Shift + button1 for snap-moving window.
-   */
-  meta_verbose ("Grabbing window buttons for 0x%lx\n", xwindow);
-
-  /* FIXME If we ignored errors here instead of spewing, we could
-   * put one big error trap around the loop and avoid a bunch of
-   * XSync()
-   */
-
-  if (display->window_grab_modifiers != 0)
-    {
-      gboolean debug = g_getenv ("MUTTER_DEBUG_BUTTON_GRABS") != NULL;
-      int i;
-      for (i = 1; i < 4; i++)
-        {
-          meta_change_button_grab (display, xwindow,
-                                   TRUE,
-                                   FALSE,
-                                   i, display->window_grab_modifiers);
-
-          /* This is for debugging, since I end up moving the Xnest
-           * otherwise ;-)
-           */
-          if (debug)
-            meta_change_button_grab (display, xwindow,
-                                     TRUE,
-                                     FALSE,
-                                     i, ControlMask);
-        }
-
-      /* In addition to grabbing Alt+Button1 for moving the window,
-       * grab Alt+Shift+Button1 for snap-moving the window.  See bug
-       * 112478.  Unfortunately, this doesn't work with
-       * Shift+Alt+Button1 for some reason; so at least part of the
-       * order still matters, which sucks (please FIXME).
-       */
-      meta_change_button_grab (display, xwindow,
-                               TRUE,
-                               FALSE,
-                               1, display->window_grab_modifiers | ShiftMask);
-    }
-}
-
-void
-meta_display_ungrab_window_buttons  (MetaDisplay *display,
-                                     Window       xwindow)
-{
-  gboolean debug;
-  int i;
-
-  if (meta_is_wayland_compositor ())
-    return;
-
-  if (display->window_grab_modifiers == 0)
-    return;
-
-  debug = g_getenv ("MUTTER_DEBUG_BUTTON_GRABS") != NULL;
-  i = 1;
-  while (i < 4)
-    {
-      meta_change_button_grab (display, xwindow,
-                               FALSE, FALSE, i,
-                               display->window_grab_modifiers);
-
-      if (debug)
-        meta_change_button_grab (display, xwindow,
-                                 FALSE, FALSE, i, ControlMask);
-
-      ++i;
-    }
-}
-
-/* Grab buttons we only grab while unfocused in click-to-focus mode */
-#define MAX_FOCUS_BUTTON 4
-void
-meta_display_grab_focus_window_button (MetaDisplay *display,
-                                       MetaWindow  *window)
-{
-  if (meta_is_wayland_compositor ())
-    return;
-
-  /* Grab button 1 for activating unfocused windows */
-  meta_verbose ("Grabbing unfocused window buttons for %s\n", window->desc);
-
-#if 0
-  /* FIXME:115072 */
-  /* Don't grab at all unless in click to focus mode. In click to
-   * focus, we may sometimes be clever about intercepting and eating
-   * the focus click. But in mouse focus, we never do that since the
-   * focus window may not be raised, and who wants to think about
-   * mouse focus anyway.
-   */
-  if (meta_prefs_get_focus_mode () != G_DESKTOP_FOCUS_MODE_CLICK)
-    {
-      meta_verbose (" (well, not grabbing since not in click to focus mode)\n");
-      return;
-    }
-#endif
-
-  if (window->have_focus_click_grab)
-    {
-      meta_verbose (" (well, not grabbing since we already have the grab)\n");
-      return;
-    }
-
-  /* FIXME If we ignored errors here instead of spewing, we could
-   * put one big error trap around the loop and avoid a bunch of
-   * XSync()
-   */
-
-  {
-    int i = 1;
-    while (i < MAX_FOCUS_BUTTON)
-      {
-        meta_change_button_grab (display,
-                                 window->xwindow,
-                                 TRUE, TRUE,
-                                 i, 0);
-
-        ++i;
-      }
-
-    window->have_focus_click_grab = TRUE;
-  }
-}
-
-void
-meta_display_ungrab_focus_window_button (MetaDisplay *display,
-                                         MetaWindow  *window)
-{
-  if (meta_is_wayland_compositor ())
-    return;
-
-  meta_verbose ("Ungrabbing unfocused window buttons for %s\n", window->desc);
-
-  if (!window->have_focus_click_grab)
-    return;
-
-  {
-    int i = 1;
-    while (i < MAX_FOCUS_BUTTON)
-      {
-        meta_change_button_grab (display, window->xwindow,
-                                 FALSE, FALSE, i, 0);
-
-        ++i;
-      }
-
-    window->have_focus_click_grab = FALSE;
-  }
-}
-
 void
 meta_display_increment_event_serial (MetaDisplay *display)
 {
@@ -2854,47 +2636,12 @@ meta_display_sort_windows_by_stacking (MetaDisplay *display,
 }
 
 static void
-update_window_grab_modifiers (MetaDisplay *display)
-{
-  MetaVirtualModifier virtual_mods;
-  unsigned int mods;
-
-  virtual_mods = meta_prefs_get_mouse_button_mods ();
-  meta_display_devirtualize_modifiers (display, virtual_mods,
-                                       &mods);
-
-  display->window_grab_modifiers = mods;
-}
-
-static void
 prefs_changed_callback (MetaPreference pref,
                         void          *data)
 {
   MetaDisplay *display = data;
 
-  if (pref == META_PREF_MOUSE_BUTTON_MODS)
-    {
-      GSList *windows, *l;
-      windows = meta_display_list_windows (display, META_LIST_DEFAULT);
-
-      for (l = windows; l; l = l->next)
-        {
-          MetaWindow *w = l->data;
-          meta_display_ungrab_window_buttons (display, w->xwindow);
-        }
-
-      update_window_grab_modifiers (display);
-
-      for (l = windows; l; l = l->next)
-        {
-          MetaWindow *w = l->data;
-          if (w->type != META_WINDOW_DOCK)
-            meta_display_grab_window_buttons (display, w->xwindow);
-        }
-
-      g_slist_free (windows);
-    }
-  else if (pref == META_PREF_FOCUS_MODE)
+  if (pref == META_PREF_FOCUS_MODE)
     {
       GSList *windows, *l;
       windows = meta_display_list_windows (display, META_LIST_DEFAULT);
