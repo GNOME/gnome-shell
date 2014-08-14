@@ -117,4 +117,8 @@ GList *meta_prefs_get_keybindings (void);
 void meta_prefs_get_overlay_binding (MetaKeyCombo *combo);
 const char *meta_prefs_get_iso_next_group_option (void);
 
+void meta_display_devirtualize_modifiers (MetaDisplay        *display,
+                                          MetaVirtualModifier modifiers,
+                                          unsigned int       *mask);
+
 #endif

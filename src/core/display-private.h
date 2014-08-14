@@ -400,10 +400,6 @@ gboolean meta_grab_op_is_mouse    (MetaGrabOp op);
 gboolean meta_grab_op_is_keyboard (MetaGrabOp op);
 gboolean meta_grab_op_should_block_wayland (MetaGrabOp op);
 
-void meta_display_devirtualize_modifiers (MetaDisplay        *display,
-                                          MetaVirtualModifier modifiers,
-                                          unsigned int       *mask);
-
 void meta_display_increment_focus_sentinel (MetaDisplay *display);
 void meta_display_decrement_focus_sentinel (MetaDisplay *display);
 gboolean meta_display_focus_sentinel_clear (MetaDisplay *display);
