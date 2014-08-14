@@ -31,7 +31,6 @@
 #include <meta/util.h>
 
 #include <cogl/cogl.h>
-#include <cogl/cogl-wayland-server.h>
 #include <clutter/clutter.h>
 
 #include "meta-stage.h"

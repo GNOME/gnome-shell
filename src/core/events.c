@@ -35,7 +35,9 @@
 #endif
 
 #include "x11/events.h"
+#ifdef HAVE_WAYLAND
 #include "wayland/meta-wayland-private.h"
+#endif
 #include "meta-surface-actor.h"
 
 static MetaWindow *
@@ -162,17 +164,20 @@ meta_display_handle_event (MetaDisplay        *display,
                            const ClutterEvent *event)
 {
   MetaWindow *window;
-  gboolean bypass_clutter = FALSE, bypass_wayland = FALSE;
-  MetaWaylandCompositor *compositor = NULL;
+  gboolean bypass_clutter = FALSE;
+  G_GNUC_UNUSED gboolean bypass_wayland = FALSE;
   MetaGestureTracker *tracker;
 
   meta_display_update_pointer_emulating_sequence (display, event);
 
+#ifdef HAVE_WAYLAND
+  MetaWaylandCompositor *compositor = NULL;
   if (meta_is_wayland_compositor ())
     {
       compositor = meta_wayland_compositor_get_default ();
       meta_wayland_compositor_update (compositor, event);
     }
+#endif
 
   handle_idletime_for_event (event);
 
@@ -281,11 +286,13 @@ meta_display_handle_event (MetaDisplay        *display,
   if (display->grab_op == META_GRAB_OP_WAYLAND_POPUP)
     bypass_clutter = TRUE;
 
+#ifdef HAVE_WAYLAND
   if (compositor && !bypass_wayland)
     {
       if (meta_wayland_compositor_handle_event (compositor, event))
         bypass_clutter = TRUE;
     }
+#endif
 
   display->current_time = CurrentTime;
   return bypass_clutter;

@@ -28,13 +28,15 @@ MetaCursorReference * meta_cursor_reference_ref (MetaCursorReference *cursor);
 void meta_cursor_reference_unref (MetaCursorReference *cursor);
 
 #include <meta/common.h>
-#include <wayland-server.h>
 
 MetaCursorReference * meta_cursor_reference_from_theme  (MetaCursor          cursor);
 
+#ifdef HAVE_WAYLAND
+#include <wayland-server.h>
 MetaCursorReference * meta_cursor_reference_from_buffer (struct wl_resource *buffer,
                                                          int                 hot_x,
                                                          int                 hot_y);
+#endif
 
 MetaCursor meta_cursor_reference_get_meta_cursor (MetaCursorReference *cursor);
 

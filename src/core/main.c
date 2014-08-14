@@ -78,7 +78,9 @@
 
 #include "x11/session.h"
 
+#ifdef HAVE_WAYLAND
 #include "wayland/meta-wayland.h"
+#endif
 
 /*
  * The exit code we'll return to our parent process when we eventually die.
@@ -160,7 +162,9 @@ static gchar    *opt_client_id;
 static gboolean  opt_replace_wm;
 static gboolean  opt_disable_sm;
 static gboolean  opt_sync;
+#ifdef HAVE_WAYLAND
 static gboolean  opt_wayland;
+#endif
 #ifdef HAVE_NATIVE_BACKEND
 static gboolean  opt_display_server;
 #endif
@@ -201,12 +205,14 @@ static GOptionEntry meta_options[] = {
     N_("Make X calls synchronous"),
     NULL
   },
+#ifdef HAVE_WAYLAND
   {
     "wayland", 0, 0, G_OPTION_ARG_NONE,
     &opt_wayland,
     N_("Run as a wayland compositor"),
     NULL
   },
+#endif
 #ifdef HAVE_NATIVE_BACKEND
   {
     "display-server", 0, 0, G_OPTION_ARG_NONE,
@@ -271,8 +277,10 @@ meta_finalize (void)
     meta_display_close (display,
                         CurrentTime); /* I doubt correct timestamps matter here */
 
+#ifdef HAVE_WAYLAND
   if (meta_is_wayland_compositor ())
     meta_wayland_finalize ();
+#endif
 }
 
 static gboolean
@@ -323,7 +331,9 @@ meta_init (void)
 #endif
     clutter_set_windowing_backend (CLUTTER_WINDOWING_X11);
 
+#ifdef HAVE_WAYLAND
   meta_set_is_wayland_compositor (opt_wayland);
+#endif
 
   if (g_get_home_dir ())
     if (chdir (g_get_home_dir ()) < 0)
@@ -336,6 +346,7 @@ meta_init (void)
   g_irepository_prepend_search_path (MUTTER_PKGLIBDIR);
 #endif
 
+#ifdef HAVE_WAYLAND
   if (meta_is_wayland_compositor ())
     {
       /* NB: When running as a hybrid wayland compositor we run our own headless X
@@ -343,6 +354,7 @@ meta_init (void)
       meta_wayland_init ();
     }
   else
+#endif
     meta_select_display (opt_display_name);
 
   meta_set_syncing (opt_sync || (g_getenv ("MUTTER_SYNC") != NULL));

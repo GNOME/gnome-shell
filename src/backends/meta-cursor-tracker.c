@@ -34,7 +34,6 @@
 #include <meta/errors.h>
 
 #include <cogl/cogl.h>
-#include <cogl/cogl-wayland-server.h>
 #include <clutter/clutter.h>
 
 #include <gdk/gdk.h>

@@ -39,7 +39,9 @@
 #include <X11/extensions/Xfixes.h>
 #include <X11/Xcursor/Xcursor.h>
 
+#ifdef HAVE_WAYLAND
 #include <cogl/cogl-wayland-server.h>
+#endif
 
 MetaCursorReference *
 meta_cursor_reference_ref (MetaCursorReference *self)
@@ -247,6 +249,7 @@ meta_cursor_reference_from_theme (MetaCursor cursor)
   return self;
 }
 
+#ifdef HAVE_WAYLAND
 static void
 meta_cursor_image_load_from_buffer (MetaCursorImage    *image,
                                     struct wl_resource *buffer,
@@ -345,6 +348,7 @@ meta_cursor_reference_from_buffer (struct wl_resource *buffer,
 
   return self;
 }
+#endif
 
 CoglTexture *
 meta_cursor_reference_get_cogl_texture (MetaCursorReference *cursor,

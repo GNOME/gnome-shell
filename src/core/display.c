@@ -70,7 +70,9 @@
 #include "x11/group-props.h"
 #include "x11/xprops.h"
 
+#ifdef HAVE_WAYLAND
 #include "wayland/meta-xwayland-private.h"
+#endif
 
 /*
  * SECTION:pings
@@ -468,6 +470,7 @@ meta_set_gnome_wm_keybindings (const char *wm_keybindings)
 void
 meta_display_cancel_touch (MetaDisplay *display)
 {
+#ifdef HAVE_WAYLAND
   MetaWaylandCompositor *compositor;
 
   if (!meta_is_wayland_compositor ())
@@ -475,6 +478,7 @@ meta_display_cancel_touch (MetaDisplay *display)
 
   compositor = meta_wayland_compositor_get_default ();
   meta_wayland_touch_cancel (&compositor->seat->touch);
+#endif
 }
 
 static void
@@ -545,8 +549,10 @@ meta_display_open (void)
       return FALSE;
     }
 
+#ifdef HAVE_WAYLAND
   if (meta_is_wayland_compositor ())
     meta_xwayland_complete_init ();
+#endif
 
   if (meta_is_syncing ())
     XSynchronize (xdisplay, True);
@@ -1436,6 +1442,7 @@ meta_display_queue_autoraise_callback (MetaDisplay *display,
 void
 meta_display_sync_wayland_input_focus (MetaDisplay *display)
 {
+#ifdef HAVE_WAYLAND
   MetaWaylandCompositor *compositor = meta_wayland_compositor_get_default ();
   MetaWindow *focus_window = NULL;
 
@@ -1451,6 +1458,7 @@ meta_display_sync_wayland_input_focus (MetaDisplay *display)
   meta_wayland_compositor_set_input_focus (compositor, focus_window);
 
   meta_wayland_seat_repick (compositor->seat);
+#endif
 }
 
 void

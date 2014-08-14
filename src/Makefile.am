@@ -115,8 +115,6 @@ libmutter_la_SOURCES =				\
 	compositor/meta-surface-actor.h		\
 	compositor/meta-surface-actor-x11.c	\
 	compositor/meta-surface-actor-x11.h	\
-	compositor/meta-surface-actor-wayland.c	\
-	compositor/meta-surface-actor-wayland.h	\
 	compositor/meta-texture-rectangle.c	\
 	compositor/meta-texture-rectangle.h	\
 	compositor/meta-texture-tower.c		\
@@ -212,7 +210,12 @@ libmutter_la_SOURCES =				\
 	x11/window-x11-private.h		\
 	x11/xprops.c				\
 	x11/xprops.h				\
-	x11/mutter-Xatomtype.h			\
+	x11/mutter-Xatomtype.h
+
+if HAVE_WAYLAND
+libmutter_la_SOURCES +=				\
+	compositor/meta-surface-actor-wayland.c	\
+	compositor/meta-surface-actor-wayland.h	\
 	wayland/meta-wayland.c			\
 	wayland/meta-wayland.h			\
 	wayland/meta-wayland-private.h		\
@@ -237,6 +240,7 @@ libmutter_la_SOURCES =				\
 	wayland/meta-wayland-outputs.h		\
 	wayland/window-wayland.c		\
 	wayland/window-wayland.h
+endif
 
 if HAVE_NATIVE_BACKEND
 libmutter_la_SOURCES +=					\

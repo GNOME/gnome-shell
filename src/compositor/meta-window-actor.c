@@ -32,7 +32,10 @@
 
 #include "meta-surface-actor.h"
 #include "meta-surface-actor-x11.h"
+
+#ifdef HAVE_WAYLAND
 #include "meta-surface-actor-wayland.h"
+#endif
 
 #include "wayland/meta-wayland-surface.h"
 
@@ -596,6 +599,7 @@ meta_window_actor_get_shape_bounds (MetaWindowActor       *self,
 
   cairo_region_get_extents (priv->shape_region, bounds);
 
+#ifdef HAVE_WAYLAND
   if (META_IS_SURFACE_ACTOR_WAYLAND (priv->surface))
     {
       double scale = priv->surface ?
@@ -605,6 +609,7 @@ meta_window_actor_get_shape_bounds (MetaWindowActor       *self,
       bounds->width *= scale;
       bounds->height *= scale;
     }
+#endif
 }
 
 static void

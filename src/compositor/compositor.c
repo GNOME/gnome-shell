@@ -396,8 +396,10 @@ after_stage_paint (ClutterStage *stage,
   for (l = compositor->windows; l; l = l->next)
     meta_window_actor_post_paint (l->data);
 
+#ifdef HAVE_WAYLAND
   if (meta_is_wayland_compositor ())
     meta_wayland_compositor_paint_finished (meta_wayland_compositor_get_default ());
+#endif
 }
 
 static void

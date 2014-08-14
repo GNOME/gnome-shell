@@ -1448,12 +1448,15 @@ handle_other_xevent (MetaDisplay *display,
     case ClientMessage:
       if (window)
         {
+#ifdef HAVE_WAYLAND
           if (event->xclient.message_type == display->atom_WL_SURFACE_ID)
             {
               guint32 surface_id = event->xclient.data.l[0];
               meta_xwayland_handle_wl_surface_id (window, surface_id);
             }
-          else if (!frame_was_receiver)
+          else
+#endif
+          if (!frame_was_receiver)
             meta_window_x11_client_message (window, event);
         }
       else

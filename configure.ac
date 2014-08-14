@@ -79,12 +79,9 @@ MUTTER_PC_MODULES="
    xcomposite >= 0.2 xfixes xext xdamage xi >= 1.6.0
    xcursor
    $CLUTTER_PACKAGE >= 1.19.5
-   clutter-wayland-1.0
-   clutter-wayland-compositor-1.0
    clutter-egl-1.0
    cogl-1.0 >= 1.17.1
    libinput
-   wayland-server >= 1.5.90
    upower-glib >= 0.99.0
    gnome-desktop-3.0
    xkbfile
@@ -201,6 +198,12 @@ if test $have_native_backend = yes; then
    AC_DEFINE([HAVE_NATIVE_BACKEND],[1],[Define if you want to enable the native (KMS) backend based on systemd])
 fi
 AM_CONDITIONAL([HAVE_NATIVE_BACKEND],[test $have_native_backend = yes])
+
+PKG_CHECK_MODULES(MUTTER_WAYLAND, [clutter-wayland-1.0 clutter-wayland-compositor-1.0 wayland-server >= 1.5.90], [have_wayland=yes], [have_wayland=no])
+if test $have_wayland = yes; then
+   AC_DEFINE([HAVE_WAYLAND],[1],[Define if you want to enable Wayland support])
+fi
+AM_CONDITIONAL([HAVE_WAYLAND],[test $have_wayland = yes])
 
 PKG_CHECK_EXISTS([xi >= 1.6.99.1],
                  AC_DEFINE([HAVE_XI23],[1],[Define if you have support for XInput 2.3 or greater]))

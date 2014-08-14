@@ -49,14 +49,17 @@
 #include <string.h>
 #include <math.h>
 
+#include <meta/meta-cursor-tracker.h>
 #include "meta/compositor-mutter.h"
 
 #include "x11/window-x11.h"
 #include "x11/window-props.h"
 #include "x11/xprops.h"
 
+#ifdef HAVE_WAYLAND
 #include "wayland/window-wayland.h"
 #include "wayland/meta-wayland-private.h"
+#endif
 
 #include "backends/meta-backend-private.h"
 
@@ -779,8 +782,12 @@ _meta_window_shared_new (MetaDisplay         *display,
 
   if (client_type == META_WINDOW_CLIENT_TYPE_X11)
     window = g_object_new (META_TYPE_WINDOW_X11, NULL);
-  else
+#ifdef HAVE_WAYLAND
+  else if (client_type == META_WINDOW_CLIENT_TYPE_WAYLAND)
     window = g_object_new (META_TYPE_WINDOW_WAYLAND, NULL);
+#endif
+  else
+    g_assert_not_reached ();
 
   window->constructing = TRUE;
 
@@ -1221,6 +1228,7 @@ meta_window_unmanage (MetaWindow  *window,
 
   meta_verbose ("Unmanaging %s\n", window->desc);
 
+#ifdef HAVE_WAYLAND
   /* This needs to happen for both Wayland and XWayland clients,
    * so it can't be in MetaWindowWayland. */
   if (window->surface)
@@ -1228,6 +1236,7 @@ meta_window_unmanage (MetaWindow  *window,
       meta_wayland_surface_set_window (window->surface, NULL);
       window->surface = NULL;
     }
+#endif
 
   if (window->visible_to_compositor)
     {
@@ -2434,8 +2443,10 @@ meta_window_show (MetaWindow *window)
   if (did_show)
     meta_screen_queue_check_fullscreen (window->screen);
 
+#ifdef HAVE_WAYLAND
   if (did_show && window->client_type == META_WINDOW_CLIENT_TYPE_WAYLAND)
     meta_wayland_compositor_repick (meta_wayland_compositor_get_default ());
+#endif
 
   /*
    * Now that we have shown the window, we no longer want to consider the
