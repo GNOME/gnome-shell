@@ -630,6 +630,7 @@ const AllView = new Lang.Class({
 
         if (this._availWidth != availWidth || this._availHeight != availHeight || oldNPages != this._grid.nPages()) {
             this._adjustment.value = 0;
+            this._currentPage = 0;
             Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this,
                 function() {
                     this._pageIndicators.setNPages(this._grid.nPages());
