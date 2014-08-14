@@ -1021,6 +1021,20 @@ meta_display_get_window_grab_modifiers (MetaDisplay *display)
   return keys->window_grab_modifiers;
 }
 
+static void
+meta_change_buttons_grab (MetaKeyBindingManager *keys,
+                          Window                 xwindow,
+                          gboolean               grab,
+                          gboolean               sync,
+                          int                    modmask)
+{
+#define MAX_BUTTON 3
+
+  int i;
+  for (i = 1; i <= MAX_BUTTON; i++)
+    meta_change_button_grab (keys, xwindow, grab, sync, i, modmask);
+}
+
 void
 meta_display_grab_window_buttons (MetaDisplay *display,
                                   Window       xwindow)
@@ -1044,14 +1058,8 @@ meta_display_grab_window_buttons (MetaDisplay *display,
 
   if (keys->window_grab_modifiers != 0)
     {
-      int i;
-      for (i = 1; i < 4; i++)
-        {
-          meta_change_button_grab (keys, xwindow,
-                                   TRUE,
-                                   FALSE,
-                                   i, keys->window_grab_modifiers);
-        }
+      meta_change_buttons_grab (keys, xwindow, TRUE, FALSE,
+                                keys->window_grab_modifiers);
 
       /* In addition to grabbing Alt+Button1 for moving the window,
        * grab Alt+Shift+Button1 for snap-moving the window.  See bug
@@ -1071,7 +1079,6 @@ meta_display_ungrab_window_buttons (MetaDisplay *display,
                                     Window       xwindow)
 {
   MetaKeyBindingManager *keys = &display->key_binding_manager;
-  int i;
 
   if (meta_is_wayland_compositor ())
     return;
@@ -1079,15 +1086,8 @@ meta_display_ungrab_window_buttons (MetaDisplay *display,
   if (keys->window_grab_modifiers == 0)
     return;
 
-  i = 1;
-  while (i < 4)
-    {
-      meta_change_button_grab (keys, xwindow,
-                               FALSE, FALSE, i,
-                               keys->window_grab_modifiers);
-
-      ++i;
-    }
+  meta_change_buttons_grab (keys, xwindow, FALSE, FALSE,
+                            keys->window_grab_modifiers);
 }
 
 static void
@@ -1103,7 +1103,6 @@ update_window_grab_modifiers (MetaKeyBindingManager *keys)
 }
 
 /* Grab buttons we only grab while unfocused in click-to-focus mode */
-#define MAX_FOCUS_BUTTON 4
 void
 meta_display_grab_focus_window_button (MetaDisplay *display,
                                        MetaWindow  *window)
@@ -1142,20 +1141,8 @@ meta_display_grab_focus_window_button (MetaDisplay *display,
    * XSync()
    */
 
-  {
-    int i = 1;
-    while (i < MAX_FOCUS_BUTTON)
-      {
-        meta_change_button_grab (keys,
-                                 window->xwindow,
-                                 TRUE, TRUE,
-                                 i, 0);
-
-        ++i;
-      }
-
-    window->have_focus_click_grab = TRUE;
-  }
+  meta_change_buttons_grab (keys, window->xwindow, TRUE, TRUE, 0);
+  window->have_focus_click_grab = TRUE;
 }
 
 void
@@ -1172,18 +1159,8 @@ meta_display_ungrab_focus_window_button (MetaDisplay *display,
   if (!window->have_focus_click_grab)
     return;
 
-  {
-    int i = 1;
-    while (i < MAX_FOCUS_BUTTON)
-      {
-        meta_change_button_grab (keys, window->xwindow,
-                                 FALSE, FALSE, i, 0);
-
-        ++i;
-      }
-
-    window->have_focus_click_grab = FALSE;
-  }
+  meta_change_buttons_grab (keys, window->xwindow, FALSE, FALSE, 0);
+  window->have_focus_click_grab = FALSE;
 }
 
 static void
