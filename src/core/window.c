@@ -6108,6 +6108,16 @@ end_grab_op (MetaWindow *window,
   meta_display_end_grab_op (window->display, clutter_event_get_time (event));
 }
 
+static gboolean
+button_event_is_window_grab (MetaDisplay *display,
+                             const ClutterEvent *event)
+{
+  ClutterModifierType mods = event->button.modifier_state;
+  ClutterModifierType grab_mods = display->window_grab_modifiers;
+
+  return (mods & grab_mods) == grab_mods;
+}
+
 gboolean
 meta_window_handle_mouse_grab_op_event  (MetaWindow         *window,
                                          const ClutterEvent *event)
@@ -6124,7 +6134,7 @@ meta_window_handle_mouse_grab_op_event  (MetaWindow         *window,
        * pressed. */
 
       if ((meta_grab_op_is_mouse (window->display->grab_op) &&
-           (event->button.modifier_state & window->display->window_grab_modifiers) &&
+           button_event_is_window_grab (window->display, event) &&
            window->display->grab_button != (int) event->button.button) ||
           meta_grab_op_is_keyboard (window->display->grab_op))
         {
@@ -7866,9 +7876,8 @@ meta_window_handle_ungrabbed_event (MetaWindow         *window,
                                     const ClutterEvent *event)
 {
   MetaDisplay *display = window->display;
-  ClutterModifierType grab_mask;
   gboolean unmodified;
-  gboolean fully_modified;
+  gboolean is_window_grab;
 
   if (event->type != CLUTTER_BUTTON_PRESS)
     return FALSE;
@@ -7903,9 +7912,8 @@ meta_window_handle_ungrabbed_event (MetaWindow         *window,
    * care about. Just let the event through.
    */
 
-  grab_mask = display->window_grab_modifiers;
-  unmodified = (event->button.modifier_state & grab_mask) == 0;
-  fully_modified = grab_mask && (event->button.modifier_state & grab_mask) == grab_mask;
+  unmodified = event->button.modifier_state == 0;
+  is_window_grab = button_event_is_window_grab (display, event);
 
   if (unmodified)
     {
@@ -7935,7 +7943,7 @@ meta_window_handle_ungrabbed_event (MetaWindow         *window,
                     (unsigned int)event->button.time);
       return FALSE;
     }
-  else if (fully_modified && (int) event->button.button == meta_prefs_get_mouse_button_resize ())
+  else if (is_window_grab && (int) event->button.button == meta_prefs_get_mouse_button_resize ())
     {
       if (window->has_resize_func)
         {
@@ -7985,7 +7993,7 @@ meta_window_handle_ungrabbed_event (MetaWindow         *window,
         }
       return TRUE;
     }
-  else if (fully_modified && (int) event->button.button == meta_prefs_get_mouse_button_menu ())
+  else if (is_window_grab && (int) event->button.button == meta_prefs_get_mouse_button_menu ())
     {
       if (meta_prefs_get_raise_on_click ())
         meta_window_raise (window);
@@ -7995,7 +8003,7 @@ meta_window_handle_ungrabbed_event (MetaWindow         *window,
                              event->button.y);
       return TRUE;
     }
-  else if (fully_modified && (int) event->button.button == 1)
+  else if (is_window_grab && (int) event->button.button == 1)
     {
       if (window->has_move_func)
         {
