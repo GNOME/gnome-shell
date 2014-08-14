@@ -1034,7 +1034,6 @@ meta_display_grab_window_buttons (MetaDisplay *display,
 
   if (display->window_grab_modifiers != 0)
     {
-      gboolean debug = g_getenv ("MUTTER_DEBUG_BUTTON_GRABS") != NULL;
       int i;
       for (i = 1; i < 4; i++)
         {
@@ -1042,15 +1041,6 @@ meta_display_grab_window_buttons (MetaDisplay *display,
                                    TRUE,
                                    FALSE,
                                    i, display->window_grab_modifiers);
-
-          /* This is for debugging, since I end up moving the Xnest
-           * otherwise ;-)
-           */
-          if (debug)
-            meta_change_button_grab (display, xwindow,
-                                     TRUE,
-                                     FALSE,
-                                     i, ControlMask);
         }
 
       /* In addition to grabbing Alt+Button1 for moving the window,
@@ -1070,7 +1060,6 @@ void
 meta_display_ungrab_window_buttons (MetaDisplay *display,
                                     Window       xwindow)
 {
-  gboolean debug;
   int i;
 
   if (meta_is_wayland_compositor ())
@@ -1079,17 +1068,12 @@ meta_display_ungrab_window_buttons (MetaDisplay *display,
   if (display->window_grab_modifiers == 0)
     return;
 
-  debug = g_getenv ("MUTTER_DEBUG_BUTTON_GRABS") != NULL;
   i = 1;
   while (i < 4)
     {
       meta_change_button_grab (display, xwindow,
                                FALSE, FALSE, i,
                                display->window_grab_modifiers);
-
-      if (debug)
-        meta_change_button_grab (display, xwindow,
-                                 FALSE, FALSE, i, ControlMask);
 
       ++i;
     }

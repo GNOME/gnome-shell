@@ -7904,9 +7904,6 @@ meta_window_handle_ungrabbed_event (MetaWindow         *window,
    */
 
   grab_mask = display->window_grab_modifiers;
-  if (g_getenv ("MUTTER_DEBUG_BUTTON_GRABS"))
-    grab_mask |= CLUTTER_CONTROL_MASK;
-
   unmodified = (event->button.modifier_state & grab_mask) == 0;
   fully_modified = grab_mask && (event->button.modifier_state & grab_mask) == grab_mask;
 
