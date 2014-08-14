@@ -57,12 +57,6 @@ void meta_bell_set_audible (MetaDisplay *display, gboolean audible);
  * to send us bell notifications, and then also switching
  * off the audible bell if we're using a visual one ourselves.
  *
- * Unlike most X extensions we use, we only initialise XKB here
- * (rather than in main()). It's possible that XKB is not
- * installed at all, but if that was known at build time
- * we will have HAVE_XKB undefined, which will cause this
- * function to be a no-op.
- *
  * \bug There is a line of code that's never run that tells
  * XKB to reset the bell status after we quit. Bill H said
  * (<http://bugzilla.gnome.org/show_bug.cgi?id=99886#c12>)

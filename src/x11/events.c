@@ -1584,7 +1584,6 @@ handle_other_xevent (MetaDisplay *display,
       }
       break;
     default:
-#ifdef HAVE_XKB
       if (event->type == display->xkb_base_event_type)
         {
           XkbAnyEvent *xkb_ev = (XkbAnyEvent *) event;
@@ -1606,7 +1605,6 @@ handle_other_xevent (MetaDisplay *display,
               break;
             }
         }
-#endif
       break;
     }
 
