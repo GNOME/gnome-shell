@@ -63,6 +63,8 @@ struct _MetaBackendX11Private
 
   uint8_t xkb_event_base;
   uint8_t xkb_error_base;
+
+  struct xkb_keymap *keymap;
 };
 typedef struct _MetaBackendX11Private MetaBackendX11Private;
 
@@ -569,17 +571,18 @@ meta_backend_x11_get_keymap (MetaBackend *backend)
 {
   MetaBackendX11 *x11 = META_BACKEND_X11 (backend);
   MetaBackendX11Private *priv = meta_backend_x11_get_instance_private (x11);
-  struct xkb_keymap *keymap;
-  struct xkb_context *context;
 
-  context = xkb_context_new (XKB_CONTEXT_NO_FLAGS);
-  keymap = xkb_x11_keymap_new_from_device (context,
-                                           priv->xcb,
-                                           xkb_x11_get_core_keyboard_device_id (priv->xcb),
-                                           XKB_KEYMAP_COMPILE_NO_FLAGS);
-  xkb_context_unref (context);
+  if (priv->keymap == NULL)
+    {
+      struct xkb_context *context = xkb_context_new (XKB_CONTEXT_NO_FLAGS);
+      priv->keymap = xkb_x11_keymap_new_from_device (context,
+                                                     priv->xcb,
+                                                     xkb_x11_get_core_keyboard_device_id (priv->xcb),
+                                                     XKB_KEYMAP_COMPILE_NO_FLAGS);
+      xkb_context_unref (context);
+    }
 
-  return keymap;
+  return priv->keymap;
 }
 
 static void
