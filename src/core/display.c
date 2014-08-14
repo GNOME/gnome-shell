@@ -2872,44 +2872,39 @@ prefs_changed_callback (MetaPreference pref,
 {
   MetaDisplay *display = data;
 
-  /* It may not be obvious why we regrab on focus mode
-   * change; it's because we handle focus clicks a
-   * bit differently for the different focus modes.
-   */
-  if (pref == META_PREF_MOUSE_BUTTON_MODS ||
-      pref == META_PREF_FOCUS_MODE)
+  if (pref == META_PREF_MOUSE_BUTTON_MODS)
     {
-      MetaDisplay *display = data;
-      GSList *windows;
-      GSList *tmp;
-
+      GSList *windows, *l;
       windows = meta_display_list_windows (display, META_LIST_DEFAULT);
 
-      /* Ungrab all */
-      tmp = windows;
-      while (tmp != NULL)
+      for (l = windows; l; l = l->next)
         {
-          MetaWindow *w = tmp->data;
+          MetaWindow *w = l->data;
           meta_display_ungrab_window_buttons (display, w->xwindow);
-          meta_display_ungrab_focus_window_button (display, w);
-          tmp = tmp->next;
         }
 
-      /* change our modifier */
-      if (pref == META_PREF_MOUSE_BUTTON_MODS)
-        update_window_grab_modifiers (display);
+      update_window_grab_modifiers (display);
 
-      /* Grab all */
-      tmp = windows;
-      while (tmp != NULL)
+      for (l = windows; l; l = l->next)
         {
-          MetaWindow *w = tmp->data;
+          MetaWindow *w = l->data;
           if (w->type != META_WINDOW_DOCK)
-            {
-              meta_display_grab_focus_window_button (display, w);
-              meta_display_grab_window_buttons (display, w->xwindow);
-            }
-          tmp = tmp->next;
+            meta_display_grab_window_buttons (display, w->xwindow);
+        }
+
+      g_slist_free (windows);
+    }
+  else if (pref == META_PREF_FOCUS_MODE)
+    {
+      GSList *windows, *l;
+      windows = meta_display_list_windows (display, META_LIST_DEFAULT);
+
+      for (l = windows; l; l = l->next)
+        {
+          MetaWindow *w = l->data;
+          meta_display_ungrab_focus_window_button (display, w);
+          if (w->type != META_WINDOW_DOCK)
+            meta_display_grab_focus_window_button (display, w);
         }
 
       g_slist_free (windows);
