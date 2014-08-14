@@ -177,18 +177,6 @@ key_binding_key (guint32 keycode,
   return (key << 16) | (mask & 0xffff);
 }
 
-
-static void
-reload_keymap (MetaKeyBindingManager *keys)
-{
-  meta_XFree (keys->keymap);
-  keys->keymap = XGetKeyboardMapping (keys->xdisplay,
-                                      keys->min_keycode,
-                                      keys->max_keycode -
-                                      keys->min_keycode + 1,
-                                      &keys->keysyms_per_keycode);
-}
-
 static const char *
 keysym_name (xkb_keysym_t keysym)
 {
@@ -238,12 +226,61 @@ reload_modmap (MetaKeyBindingManager *keys)
               keys->meta_mask);
 }
 
+static gboolean
+is_keycode_for_keysym (struct xkb_keymap *keymap,
+                       xkb_keycode_t      keycode,
+                       xkb_keysym_t       keysym)
+{
+  xkb_layout_index_t num_layouts, i;
+
+  num_layouts = xkb_keymap_num_layouts_for_key (keymap, keycode);
+  for (i = 0; i < num_layouts; i++)
+    {
+      xkb_level_index_t num_levels, j;
+
+      num_levels = xkb_keymap_num_levels_for_key (keymap, keycode, i);
+      for (j = 0; j < num_levels; j++)
+        {
+          const xkb_keysym_t *syms;
+          int num_syms, k;
+
+          num_syms = xkb_keymap_key_get_syms_by_level (keymap, keycode, i, j, &syms);
+          for (k = 0; k < num_syms; k++)
+            {
+              if (syms[k] == keysym)
+                return TRUE;
+            }
+        }
+    }
+
+  return FALSE;
+}
+
+typedef struct
+{
+  GArray *keycodes;
+  xkb_keysym_t keysym;
+} FindKeysymData;
+
+static void
+get_keycodes_for_keysym_iter (struct xkb_keymap *keymap,
+                              xkb_keycode_t      keycode,
+                              void              *data)
+{
+  FindKeysymData *search_data = data;
+  GArray *keycodes = search_data->keycodes;
+  xkb_keysym_t keysym = search_data->keysym;
+
+  if (is_keycode_for_keysym (keymap, keycode, keysym))
+    g_array_append_val (keycodes, keycode);
+}
+
 /* Original code from gdk_x11_keymap_get_entries_for_keyval() in
  * gdkkeys-x11.c */
 static int
 get_keycodes_for_keysym (MetaKeyBindingManager  *keys,
-                         int                      keysym,
-                         int                    **keycodes)
+                         int                     keysym,
+                         int                   **keycodes)
 {
   GArray *retval;
   int n_keycodes;
@@ -259,22 +296,12 @@ get_keycodes_for_keysym (MetaKeyBindingManager  *keys,
       goto out;
     }
 
-  keycode = keys->min_keycode;
-  while (keycode <= keys->max_keycode)
-    {
-      const KeySym *syms = keys->keymap + (keycode - keys->min_keycode) * keys->keysyms_per_keycode;
-      int i = 0;
-
-      while (i < keys->keysyms_per_keycode)
-        {
-          if (syms[i] == (unsigned int)keysym)
-            g_array_append_val (retval, keycode);
-
-          ++i;
-        }
-
-      ++keycode;
-    }
+  {
+    MetaBackend *backend = meta_get_backend ();
+    struct xkb_keymap *keymap = meta_backend_get_keymap (backend);
+    FindKeysymData search_data = { retval, keysym };
+    xkb_keymap_key_for_each (keymap, get_keycodes_for_keysym_iter, &search_data);
+  }
 
  out:
   n_keycodes = retval->len;
@@ -861,8 +888,6 @@ on_keymap_changed (MetaBackend *backend,
 
   ungrab_key_bindings (display);
 
-  reload_keymap (keys);
-
   /* Deciphering the modmap depends on the loaded keysyms to find out
    * what modifiers is Super and so forth, so we need to reload it
    * even when only the keymap changes */
@@ -1131,8 +1156,6 @@ meta_display_shutdown_keys (MetaDisplay *display)
   MetaKeyBindingManager *keys = &display->key_binding_manager;
 
   meta_prefs_remove_listener (prefs_changed_callback, display);
-
-  meta_XFree (keys->keymap);
 
   g_hash_table_destroy (keys->key_bindings_index);
   g_hash_table_destroy (keys->key_bindings);
@@ -4011,11 +4034,6 @@ meta_display_init_keys (MetaDisplay *display)
   MetaKeyHandler *handler;
 
   /* Keybindings */
-  keys->xdisplay = display->xdisplay;
-  keys->keymap = NULL;
-  keys->keysyms_per_keycode = 0;
-  keys->min_keycode = 0;
-  keys->max_keycode = 0;
   keys->ignored_modifier_mask = 0;
   keys->hyper_mask = 0;
   keys->super_mask = 0;
@@ -4024,16 +4042,6 @@ meta_display_init_keys (MetaDisplay *display)
   keys->key_bindings = g_hash_table_new_full (NULL, NULL, NULL, g_free);
   keys->key_bindings_index = g_hash_table_new (NULL, NULL);
 
-  XDisplayKeycodes (keys->xdisplay,
-                    &keys->min_keycode,
-                    &keys->max_keycode);
-
-  meta_topic (META_DEBUG_KEYBINDINGS,
-              "Display has keycode range %d to %d\n",
-              keys->min_keycode,
-              keys->max_keycode);
-
-  reload_keymap (keys);
   reload_modmap (keys);
 
   key_handlers = g_hash_table_new_full (g_str_hash, g_str_equal, g_free,

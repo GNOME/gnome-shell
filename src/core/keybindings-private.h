@@ -90,14 +90,8 @@ typedef struct
 
 typedef struct
 {
-  Display *xdisplay;
-
   GHashTable     *key_bindings;
   GHashTable     *key_bindings_index;
-  int             min_keycode;
-  int             max_keycode;
-  KeySym *keymap;
-  int keysyms_per_keycode;
   xkb_mod_mask_t ignored_modifier_mask;
   xkb_mod_mask_t hyper_mask;
   xkb_mod_mask_t super_mask;
