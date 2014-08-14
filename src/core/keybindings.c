@@ -527,10 +527,10 @@ reload_keycodes (MetaDisplay *display)
   g_hash_table_foreach (display->key_bindings, binding_reload_keycode_foreach, display);
 }
 
-void
-meta_display_devirtualize_modifiers (MetaDisplay        *display,
-                                     MetaVirtualModifier modifiers,
-                                     unsigned int       *mask)
+static void
+devirtualize_modifiers (MetaDisplay        *display,
+                        MetaVirtualModifier modifiers,
+                        unsigned int       *mask)
 {
   *mask = 0;
 
@@ -564,9 +564,7 @@ binding_reload_modifiers_foreach (gpointer key,
   MetaDisplay *display = data;
   MetaKeyBinding *binding = value;
 
-  meta_display_devirtualize_modifiers (display,
-                                       binding->modifiers,
-                                       &binding->mask);
+  devirtualize_modifiers (display, binding->modifiers, &binding->mask);
   meta_topic (META_DEBUG_KEYBINDINGS,
               " Devirtualized mods 0x%x -> 0x%x (%s)\n",
               binding->modifiers,
@@ -1104,8 +1102,7 @@ update_window_grab_modifiers (MetaDisplay *display)
   unsigned int mods;
 
   virtual_mods = meta_prefs_get_mouse_button_mods ();
-  meta_display_devirtualize_modifiers (display, virtual_mods,
-                                       &mods);
+  devirtualize_modifiers (display, virtual_mods, &mods);
 
   display->window_grab_modifiers = mods;
 }
@@ -1511,7 +1508,7 @@ meta_display_grab_accelerator (MetaDisplay *display,
       return META_KEYBINDING_ACTION_NONE;
     }
 
-  meta_display_devirtualize_modifiers (display, modifiers, &mask);
+  devirtualize_modifiers (display, modifiers, &mask);
   keycode = get_first_keycode_for_keysym (display, keysym);
 
   if (keycode == 0)
@@ -1565,7 +1562,7 @@ meta_display_ungrab_accelerator (MetaDisplay *display,
   if (!grab)
     return FALSE;
 
-  meta_display_devirtualize_modifiers (display, grab->combo->modifiers, &mask);
+  devirtualize_modifiers (display, grab->combo->modifiers, &mask);
   keycode = get_first_keycode_for_keysym (display, grab->combo->keysym);
 
   binding = display_get_keybinding (display, keycode, mask);
