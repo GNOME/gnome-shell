@@ -106,6 +106,8 @@ gboolean meta_keybindings_process_event     (MetaDisplay        *display,
 void     meta_display_process_mapping_event (MetaDisplay *display,
                                              XEvent      *event);
 
+ClutterModifierType meta_display_get_window_grab_modifiers (MetaDisplay *display);
+
 gboolean meta_prefs_add_keybinding          (const char           *name,
                                              GSettings            *settings,
                                              MetaKeyBindingAction  action,

@@ -6113,7 +6113,7 @@ button_event_is_window_grab (MetaDisplay *display,
                              const ClutterEvent *event)
 {
   ClutterModifierType mods = event->button.modifier_state;
-  ClutterModifierType grab_mods = display->window_grab_modifiers;
+  ClutterModifierType grab_mods = meta_display_get_window_grab_modifiers (display);
 
   return (mods & grab_mods) == grab_mods;
 }

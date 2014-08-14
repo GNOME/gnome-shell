@@ -1013,6 +1013,12 @@ meta_change_button_grab (MetaDisplay *display,
     }
 }
 
+ClutterModifierType
+meta_display_get_window_grab_modifiers (MetaDisplay *display)
+{
+  return display->window_grab_modifiers;
+}
+
 void
 meta_display_grab_window_buttons (MetaDisplay *display,
                                   Window       xwindow)
