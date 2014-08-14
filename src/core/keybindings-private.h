@@ -90,6 +90,29 @@ typedef struct
   gboolean      builtin:1;
 } MetaKeyPref;
 
+typedef struct
+{
+  Display *xdisplay;
+
+  GHashTable     *key_bindings;
+  GHashTable     *key_bindings_index;
+  int             min_keycode;
+  int             max_keycode;
+  KeySym *keymap;
+  int keysyms_per_keycode;
+  unsigned int ignored_modifier_mask;
+  unsigned int hyper_mask;
+  unsigned int super_mask;
+  unsigned int meta_mask;
+  MetaKeyCombo overlay_key_combo;
+  gboolean overlay_key_only_pressed;
+  MetaKeyCombo *iso_next_group_combos;
+  int n_iso_next_group_combos;
+
+  /* Alt+click button grabs */
+  ClutterModifierType window_grab_modifiers;
+} MetaKeyBindingManager;
+
 void     meta_display_init_keys             (MetaDisplay *display);
 void     meta_display_shutdown_keys         (MetaDisplay *display);
 void     meta_screen_grab_keys              (MetaScreen  *screen);

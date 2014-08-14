@@ -174,9 +174,6 @@ struct _MetaDisplay
   guint       autoraise_timeout_id;
   MetaWindow* autoraise_window;
 
-  /* Alt+click button grabs */
-  ClutterModifierType window_grab_modifiers;
-
   /* current window operation */
   MetaGrabOp  grab_op;
   MetaWindow *grab_window;
@@ -211,21 +208,7 @@ struct _MetaDisplay
   guint32     last_bell_time;
   int	      grab_resize_timeout_id;
 
-  /* Keybindings stuff */
-  GHashTable     *key_bindings;
-  GHashTable     *key_bindings_index;
-  int             min_keycode;
-  int             max_keycode;
-  KeySym *keymap;
-  int keysyms_per_keycode;
-  unsigned int ignored_modifier_mask;
-  unsigned int hyper_mask;
-  unsigned int super_mask;
-  unsigned int meta_mask;
-  MetaKeyCombo overlay_key_combo;
-  gboolean overlay_key_only_pressed;
-  MetaKeyCombo *iso_next_group_combos;
-  int n_iso_next_group_combos;
+  MetaKeyBindingManager key_binding_manager;
 
   /* Monitor cache */
   unsigned int monitor_cache_invalidated : 1;
