@@ -279,9 +279,6 @@ clutter_stage_x11_resize (ClutterStageWindow *stage_window,
                         width,
                         height);
 
-          CLUTTER_SET_PRIVATE_FLAGS (stage_cogl->wrapper,
-                                     CLUTTER_IN_RESIZE);
-
           /* XXX: in this case we can rely on a subsequent
            * ConfigureNotify that will result in the stage
            * being reallocated so we don't actively do anything
@@ -1056,8 +1053,6 @@ clutter_stage_x11_translate_event (ClutterEventTranslator *translator,
           clutter_actor_set_size (CLUTTER_ACTOR (stage),
                                   xevent->xconfigure.width / stage_x11->scale_factor,
                                   xevent->xconfigure.height / stage_x11->scale_factor);
-
-          CLUTTER_UNSET_PRIVATE_FLAGS (stage_cogl->wrapper, CLUTTER_IN_RESIZE);
 
           if (size_changed)
             {

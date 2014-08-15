@@ -143,9 +143,6 @@ clutter_stage_gdk_resize (ClutterStageWindow *stage_window,
 
   CLUTTER_NOTE (BACKEND, "New size received: (%d, %d)", width, height);
 
-  CLUTTER_SET_PRIVATE_FLAGS (CLUTTER_STAGE_COGL (stage_gdk)->wrapper,
-			     CLUTTER_IN_RESIZE);
-
   gdk_window_resize (stage_gdk->window, width, height);
 }
 
