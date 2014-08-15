@@ -1022,9 +1022,7 @@ meta_screen_foreach_window (MetaScreen *screen,
         {
           MetaWindow *window = tmp->data;
 
-          if (META_IS_WINDOW (window) &&
-              window->screen == screen &&
-              !window->override_redirect)
+          if (META_IS_WINDOW (window) && !window->override_redirect)
             (* func) (screen, window, data);
         }
 
@@ -2098,16 +2096,13 @@ set_work_area_hint (MetaScreen *screen)
     {
       MetaWorkspace *workspace = tmp_list->data;
 
-      if (workspace->screen == screen)
-        {
-          meta_workspace_get_work_area_all_monitors (workspace, &area);
-          tmp[0] = area.x;
-          tmp[1] = area.y;
-          tmp[2] = area.width;
-          tmp[3] = area.height;
+      meta_workspace_get_work_area_all_monitors (workspace, &area);
+      tmp[0] = area.x;
+      tmp[1] = area.y;
+      tmp[2] = area.width;
+      tmp[3] = area.height;
 
-	  tmp += 4;
-        }
+      tmp += 4;
 
       tmp_list = tmp_list->next;
     }
@@ -2501,8 +2496,7 @@ on_monitors_changed (MetaMonitorManager *manager,
     {
       MetaWindow *window = tmp->data;
 
-      if (window->screen == screen)
-        meta_window_update_for_monitors_changed (window);
+      meta_window_update_for_monitors_changed (window);
     }
 
   g_slist_free (windows);
@@ -2544,8 +2538,7 @@ queue_windows_showing (MetaScreen *screen)
     {
       MetaWindow *w = tmp->data;
 
-      if (w->screen == screen)
-        meta_window_queue (w, META_QUEUE_CALC_SHOWING);
+      meta_window_queue (w, META_QUEUE_CALC_SHOWING);
 
       tmp = tmp->next;
     }
@@ -2567,9 +2560,7 @@ meta_screen_minimize_all_on_active_workspace_except (MetaScreen *screen,
     {
       MetaWindow *w = tmp->data;
 
-      if (w->screen == screen  &&
-          w->has_minimize_func &&
-	  w != keep)
+      if (w->has_minimize_func && w != keep)
 	meta_window_minimize (w);
 
       tmp = tmp->next;
@@ -2597,8 +2588,7 @@ meta_screen_show_desktop (MetaScreen *screen,
     {
       MetaWindow *w = windows->data;
 
-      if (w->screen == screen  &&
-          w->type == META_WINDOW_DESKTOP)
+      if (w->type == META_WINDOW_DESKTOP)
         {
           meta_window_focus (w, timestamp);
           break;

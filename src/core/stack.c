@@ -639,8 +639,7 @@ create_constraints (Constraint **constraints,
 
           parent = w->transient_for;
 
-          if (parent && WINDOW_IN_STACK (parent) &&
-              parent->screen == w->screen)
+          if (parent && WINDOW_IN_STACK (parent))
             {
               meta_topic (META_DEBUG_STACK, "Constraining %s above %s due to transiency\n",
                           w->desc, parent->desc);

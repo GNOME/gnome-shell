@@ -1488,8 +1488,7 @@ gboolean
 meta_window_located_on_workspace (MetaWindow    *window,
                                   MetaWorkspace *workspace)
 {
-  return (window->on_all_workspaces && window->screen == workspace->screen) ||
-    (window->workspace == workspace);
+  return (window->on_all_workspaces) || (window->workspace == workspace);
 }
 
 static gboolean
