@@ -65,6 +65,7 @@
 #include <string.h>
 #include <unistd.h>
 
+#include "x11/events.h"
 #include "x11/window-x11.h"
 #include "x11/window-props.h"
 #include "x11/group-props.h"
@@ -622,6 +623,7 @@ meta_display_open (void)
 
   /* Get events */
   meta_display_init_events (display);
+  meta_display_init_events_x11 (display);
 
   display->xids = g_hash_table_new (meta_unsigned_long_hash,
                                         meta_unsigned_long_equal);
@@ -1086,6 +1088,7 @@ meta_display_close (MetaDisplay *display,
   display->focus_timeout_id = 0;
 
   /* Stop caring about events */
+  meta_display_free_events_x11 (display);
   meta_display_free_events (display);
 
   meta_screen_free (display->screen, timestamp);

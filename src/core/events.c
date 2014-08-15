@@ -34,7 +34,6 @@
 #include "backends/native/meta-idle-monitor-native.h"
 #endif
 
-#include "x11/events.h"
 #ifdef HAVE_WAYLAND
 #include "wayland/meta-wayland-private.h"
 #endif
@@ -315,9 +314,8 @@ event_callback (const ClutterEvent *event,
 }
 
 void
-meta_display_init_events (MetaDisplay *display)
+meta_display_init_events (MetaInputRouter *router)
 {
-  meta_display_init_events_x11 (display);
   display->clutter_event_filter = clutter_event_add_filter (NULL,
                                                             event_callback,
                                                             NULL,
@@ -327,7 +325,6 @@ meta_display_init_events (MetaDisplay *display)
 void
 meta_display_free_events (MetaDisplay *display)
 {
-  meta_display_free_events_x11 (display);
   clutter_event_remove_filter (display->clutter_event_filter);
   display->clutter_event_filter = 0;
 }
