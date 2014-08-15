@@ -43,23 +43,35 @@ static MetaWindow *
 get_window_for_event (MetaDisplay        *display,
                       const ClutterEvent *event)
 {
-  ClutterActor *source;
-
-  /* Always use the key focused window for key events. */
-  switch (event->type)
+  switch (display->event_route)
     {
-    case CLUTTER_KEY_PRESS:
-    case CLUTTER_KEY_RELEASE:
-      return display->focus_window;
+    case META_EVENT_ROUTE_NORMAL:
+      {
+        ClutterActor *source;
+
+        /* Always use the key focused window for key events. */
+        switch (event->type)
+          {
+          case CLUTTER_KEY_PRESS:
+          case CLUTTER_KEY_RELEASE:
+            return display->focus_window;
+          default:
+            break;
+          }
+
+        source = clutter_event_get_source (event);
+        if (META_IS_SURFACE_ACTOR (source))
+          return meta_surface_actor_get_window (META_SURFACE_ACTOR (source));
+        else
+          return NULL;
+      }
+    case META_EVENT_ROUTE_WAYLAND_POPUP:
+    case META_EVENT_ROUTE_WINDOW_OP:
+    case META_EVENT_ROUTE_COMPOSITOR_GRAB:
+      return display->grab_window;
     default:
-      break;
+      g_assert_not_reached ();
     }
-
-  source = clutter_event_get_source (event);
-  if (META_IS_SURFACE_ACTOR (source))
-    return meta_surface_actor_get_window (META_SURFACE_ACTOR (source));
-
-  return NULL;
 }
 
 static void
