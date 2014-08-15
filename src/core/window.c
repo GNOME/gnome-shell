@@ -6120,7 +6120,7 @@ meta_window_handle_mouse_grab_op_event  (MetaWindow         *window,
     {
     case CLUTTER_BUTTON_PRESS:
       {
-        ClutterModifierType grab_mods = meta_display_get_window_grab_modifiers (display);
+        ClutterModifierType grab_mods = meta_display_get_window_grab_modifiers (window->display);
 
         /* This is the keybinding or menu case where we've
          * been dragging around the window without the button
