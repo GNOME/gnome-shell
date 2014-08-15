@@ -1203,12 +1203,6 @@ meta_grab_op_is_moving (MetaGrabOp op)
   return (op & 0xF000) == 0;
 }
 
-gboolean
-meta_grab_op_is_moving_or_resizing (MetaGrabOp op)
-{
-  return GRAB_OP_GET_BASE_TYPE (op) == META_GRAB_OP_WINDOW_BASE;
-}
-
 /**
  * meta_grab_op_windows_are_interactable:
  * @op: A #MetaGrabOp
