@@ -6108,16 +6108,6 @@ end_grab_op (MetaWindow *window,
   meta_display_end_grab_op (window->display, clutter_event_get_time (event));
 }
 
-static gboolean
-button_event_is_window_grab (MetaDisplay *display,
-                             const ClutterEvent *event)
-{
-  ClutterModifierType mods = event->button.modifier_state;
-  ClutterModifierType grab_mods = meta_display_get_window_grab_modifiers (display);
-
-  return (mods & grab_mods) == grab_mods;
-}
-
 gboolean
 meta_window_handle_mouse_grab_op_event  (MetaWindow         *window,
                                          const ClutterEvent *event)
@@ -6129,19 +6119,23 @@ meta_window_handle_mouse_grab_op_event  (MetaWindow         *window,
   switch (event->type)
     {
     case CLUTTER_BUTTON_PRESS:
-      /* This is the keybinding or menu case where we've
-       * been dragging around the window without the button
-       * pressed. */
+      {
+        ClutterModifierType grab_mods = meta_display_get_window_grab_modifiers (display);
 
-      if ((meta_grab_op_is_mouse (window->display->grab_op) &&
-           button_event_is_window_grab (window->display, event) &&
-           window->display->grab_button != (int) event->button.button) ||
-          meta_grab_op_is_keyboard (window->display->grab_op))
-        {
-          end_grab_op (window, event);
-          return FALSE;
-        }
-      return TRUE;
+        /* This is the keybinding or menu case where we've
+         * been dragging around the window without the button
+         * pressed. */
+
+        if ((meta_grab_op_is_mouse (window->display->grab_op) &&
+             (event->button.modifier_state & grab_mods) == grab_mods &&
+             window->display->grab_button != (int) event->button.button) ||
+            meta_grab_op_is_keyboard (window->display->grab_op))
+          {
+            end_grab_op (window, event);
+            return FALSE;
+          }
+        return TRUE;
+      }
 
     case CLUTTER_TOUCH_END:
       if (meta_display_is_pointer_emulating_sequence (window->display, sequence))
@@ -7912,12 +7906,9 @@ meta_window_handle_ungrabbed_event (MetaWindow         *window,
    * care about. Just let the event through.
    */
 
-  const int CLUTTER_BUTTON_MASK = (CLUTTER_BUTTON1_MASK | CLUTTER_BUTTON2_MASK |
-                                   CLUTTER_BUTTON3_MASK | CLUTTER_BUTTON4_MASK |
-                                   CLUTTER_BUTTON5_MASK);
-
-  unmodified = (event->button.modifier_state & ~CLUTTER_BUTTON_MASK) == 0;
-  is_window_grab = button_event_is_window_grab (display, event);
+  ClutterModifierType grab_mods = meta_display_get_window_grab_modifiers (display);
+  unmodified = (event->button.modifier_state & grab_mods) == 0;
+  is_window_grab = (event->button.modifier_state & grab_mods) == grab_mods;
 
   if (unmodified)
     {
