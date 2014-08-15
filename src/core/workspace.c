@@ -579,7 +579,7 @@ meta_workspace_activate_with_focus (MetaWorkspace *workspace,
     return;
 
   move_window = NULL;
-  if (meta_grab_op_is_moving (workspace->screen->display->grab_op)
+  if (meta_grab_op_is_moving (workspace->screen->display->grab_op))
     move_window = workspace->screen->display->grab_window;
 
   if (move_window != NULL)
