@@ -314,7 +314,7 @@ event_callback (const ClutterEvent *event,
 }
 
 void
-meta_display_init_events (MetaInputRouter *router)
+meta_display_init_events (MetaDisplay *display)
 {
   display->clutter_event_filter = clutter_event_add_filter (NULL,
                                                             event_callback,
