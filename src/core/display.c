@@ -1857,7 +1857,6 @@ meta_display_begin_grab_op (MetaDisplay *display,
   display->grab_last_user_action_was_snap = FALSE;
   display->grab_frame_action = frame_action;
   display->grab_resize_unmaximize = 0;
-  display->grab_timestamp = timestamp;
 
   meta_display_update_cursor (display);
 
@@ -1934,7 +1933,6 @@ meta_display_end_grab_op (MetaDisplay *display,
       meta_window_ungrab_all_keys (grab_window, timestamp);
     }
 
-  display->grab_timestamp = 0;
   display->grab_window = NULL;
   display->grab_tile_mode = META_TILE_NONE;
   display->grab_tile_monitor_number = -1;

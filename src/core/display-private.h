@@ -197,7 +197,6 @@ struct _MetaDisplay
   GTimeVal    grab_last_moveresize_time;
   MetaEdgeResistanceData *grab_edge_resistance_data;
   unsigned int grab_last_user_action_was_snap;
-  guint32     grab_timestamp;
 
   /* we use property updates as sentinels for certain window focus events
    * to avoid some race conditions on EnterNotify events
