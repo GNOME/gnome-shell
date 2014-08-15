@@ -687,10 +687,10 @@ const ScreenShield = new Lang.Class({
             return Clutter.EVENT_PROPAGATE;
 
         let delta = 0;
-        if (event.get_scroll_direction() == Clutter.ScrollDirection.UP)
+        if (event.get_scroll_direction() == Clutter.ScrollDirection.SMOOTH)
+            delta = Math.abs(event.get_scroll_delta()[0]);
+        else
             delta = 5;
-        else if (event.get_scroll_direction() == Clutter.ScrollDirection.SMOOTH)
-            delta = Math.max(0, event.get_scroll_delta()[0]);
 
         this._lockScreenScrollCounter += delta;
 
