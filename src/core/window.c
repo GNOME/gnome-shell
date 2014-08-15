@@ -5741,26 +5741,10 @@ check_resize_unmaximize(MetaWindow *window,
        * monitor. If we wanted to only allow resizing smaller than the
        * monitor, we'd use - dx for NE/E/SE and dx for SW/W/NW.
        */
-      switch (window->display->grab_op)
-        {
-        case META_GRAB_OP_RESIZING_NE:
-        case META_GRAB_OP_KEYBOARD_RESIZING_NE:
-        case META_GRAB_OP_RESIZING_E:
-        case META_GRAB_OP_KEYBOARD_RESIZING_E:
-        case META_GRAB_OP_RESIZING_SE:
-        case META_GRAB_OP_KEYBOARD_RESIZING_SE:
-        case META_GRAB_OP_RESIZING_SW:
-        case META_GRAB_OP_KEYBOARD_RESIZING_SW:
-        case META_GRAB_OP_RESIZING_W:
-        case META_GRAB_OP_KEYBOARD_RESIZING_W:
-        case META_GRAB_OP_RESIZING_NW:
-        case META_GRAB_OP_KEYBOARD_RESIZING_NW:
-          x_amount = dx < 0 ? - dx : dx;
-          break;
-        default:
-          x_amount = 0;
-          break;
-        }
+      if ((window->display->grab_op & (META_GRAB_OP_WINDOW_DIR_WEST | META_GRAB_OP_WINDOW_DIR_EAST)) != 0)
+        x_amount = dx < 0 ? - dx : dx;
+      else
+        x_amount = 0;
 
       if (x_amount > threshold)
         new_unmaximize |= META_MAXIMIZE_HORIZONTAL;
@@ -5771,26 +5755,10 @@ check_resize_unmaximize(MetaWindow *window,
     {
       int y_amount;
 
-      switch (window->display->grab_op)
-        {
-        case META_GRAB_OP_RESIZING_N:
-        case META_GRAB_OP_KEYBOARD_RESIZING_N:
-        case META_GRAB_OP_RESIZING_NE:
-        case META_GRAB_OP_KEYBOARD_RESIZING_NE:
-        case META_GRAB_OP_RESIZING_NW:
-        case META_GRAB_OP_KEYBOARD_RESIZING_NW:
-        case META_GRAB_OP_RESIZING_SE:
-        case META_GRAB_OP_KEYBOARD_RESIZING_SE:
-        case META_GRAB_OP_RESIZING_S:
-        case META_GRAB_OP_KEYBOARD_RESIZING_S:
-        case META_GRAB_OP_RESIZING_SW:
-        case META_GRAB_OP_KEYBOARD_RESIZING_SW:
-          y_amount = dy < 0 ? - dy : dy;
-          break;
-        default:
-          y_amount = 0;
-          break;
-        }
+      if ((window->display->grab_op & (META_GRAB_OP_WINDOW_DIR_NORTH | META_GRAB_OP_WINDOW_DIR_SOUTH)) != 0)
+        y_amount = dy < 0 ? - dy : dy;
+      else
+        y_amount = 0;
 
       if (y_amount > threshold)
         new_unmaximize |= META_MAXIMIZE_VERTICAL;
@@ -5870,73 +5838,34 @@ update_resize (MetaWindow *window,
 
   if (window->display->grab_op == META_GRAB_OP_KEYBOARD_RESIZING_UNKNOWN)
     {
-      if ((dx > 0) && (dy > 0))
-        window->display->grab_op = META_GRAB_OP_KEYBOARD_RESIZING_SE;
-      else if ((dx < 0) && (dy > 0))
-        window->display->grab_op = META_GRAB_OP_KEYBOARD_RESIZING_SW;
-      else if ((dx > 0) && (dy < 0))
-        window->display->grab_op = META_GRAB_OP_KEYBOARD_RESIZING_NE;
-      else if ((dx < 0) && (dy < 0))
-        window->display->grab_op = META_GRAB_OP_KEYBOARD_RESIZING_NW;
+      MetaGrabOp op = META_GRAB_OP_WINDOW_BASE | META_GRAB_OP_WINDOW_FLAG_KEYBOARD;
+
+      if (dx > 0)
+        op |= META_GRAB_OP_WINDOW_DIR_EAST;
       else if (dx < 0)
-        window->display->grab_op = META_GRAB_OP_KEYBOARD_RESIZING_W;
-      else if (dx > 0)
-        window->display->grab_op = META_GRAB_OP_KEYBOARD_RESIZING_E;
-      else if (dy > 0)
-        window->display->grab_op = META_GRAB_OP_KEYBOARD_RESIZING_S;
+        op |= META_GRAB_OP_WINDOW_DIR_WEST;
+
+      if (dy > 0)
+        op |= META_GRAB_OP_WINDOW_DIR_SOUTH;
       else if (dy < 0)
-        window->display->grab_op = META_GRAB_OP_KEYBOARD_RESIZING_N;
+        op |= META_GRAB_OP_WINDOW_DIR_NORTH;
+
+      window->display->grab_op = op;
 
       meta_window_update_keyboard_resize (window, TRUE);
     }
 
   new_unmaximize = check_resize_unmaximize (window, dx, dy);
 
-  switch (window->display->grab_op)
-    {
-    case META_GRAB_OP_RESIZING_SE:
-    case META_GRAB_OP_RESIZING_NE:
-    case META_GRAB_OP_RESIZING_E:
-    case META_GRAB_OP_KEYBOARD_RESIZING_SE:
-    case META_GRAB_OP_KEYBOARD_RESIZING_NE:
-    case META_GRAB_OP_KEYBOARD_RESIZING_E:
-      new_w += dx;
-      break;
+  if (window->display->grab_op & META_GRAB_OP_WINDOW_DIR_EAST)
+    new_w += dx;
+  else if (window->display->grab_op & META_GRAB_OP_WINDOW_DIR_WEST)
+    new_w -= dx;
 
-    case META_GRAB_OP_RESIZING_NW:
-    case META_GRAB_OP_RESIZING_SW:
-    case META_GRAB_OP_RESIZING_W:
-    case META_GRAB_OP_KEYBOARD_RESIZING_NW:
-    case META_GRAB_OP_KEYBOARD_RESIZING_SW:
-    case META_GRAB_OP_KEYBOARD_RESIZING_W:
-      new_w -= dx;
-      break;
-    default:
-      break;
-    }
-
-  switch (window->display->grab_op)
-    {
-    case META_GRAB_OP_RESIZING_SE:
-    case META_GRAB_OP_RESIZING_S:
-    case META_GRAB_OP_RESIZING_SW:
-    case META_GRAB_OP_KEYBOARD_RESIZING_SE:
-    case META_GRAB_OP_KEYBOARD_RESIZING_S:
-    case META_GRAB_OP_KEYBOARD_RESIZING_SW:
-      new_h += dy;
-      break;
-
-    case META_GRAB_OP_RESIZING_N:
-    case META_GRAB_OP_RESIZING_NE:
-    case META_GRAB_OP_RESIZING_NW:
-    case META_GRAB_OP_KEYBOARD_RESIZING_N:
-    case META_GRAB_OP_KEYBOARD_RESIZING_NE:
-    case META_GRAB_OP_KEYBOARD_RESIZING_NW:
-      new_h -= dy;
-      break;
-    default:
-      break;
-    }
+  if (window->display->grab_op & META_GRAB_OP_WINDOW_DIR_SOUTH)
+    new_h += dy;
+  else if (window->display->grab_op & META_GRAB_OP_WINDOW_DIR_NORTH)
+    new_h -= dy;
 
   /* If we're waiting for a request for _NET_WM_SYNC_REQUEST, we'll
    * resize the window when the window responds, or when we time
@@ -5976,21 +5905,12 @@ update_resize (MetaWindow *window,
    * aspect ratio windows don't interact nicely with the above stuff.  So,
    * to avoid some nasty flicker, we enforce that.
    */
-  switch (window->display->grab_op)
-    {
-    case META_GRAB_OP_RESIZING_S:
-    case META_GRAB_OP_RESIZING_N:
-      new_w = old.width;
-      break;
 
-    case META_GRAB_OP_RESIZING_E:
-    case META_GRAB_OP_RESIZING_W:
-      new_h = old.height;
-      break;
+  if ((window->display->grab_op & (META_GRAB_OP_WINDOW_DIR_WEST | META_GRAB_OP_WINDOW_DIR_EAST)) == 0)
+    new_w = old.width;
 
-    default:
-      break;
-    }
+  if ((window->display->grab_op & (META_GRAB_OP_WINDOW_DIR_NORTH | META_GRAB_OP_WINDOW_DIR_SOUTH)) == 0)
+    new_h = old.height;
 
   /* compute gravity of client during operation */
   gravity = meta_resize_gravity_from_grab_op (window->display->grab_op);
@@ -6499,57 +6419,19 @@ warp_grab_pointer (MetaWindow          *window,
 
   meta_window_get_frame_rect (window, &rect);
 
-  switch (grab_op)
-    {
-      case META_GRAB_OP_KEYBOARD_MOVING:
-      case META_GRAB_OP_KEYBOARD_RESIZING_UNKNOWN:
-        *x = rect.width / 2;
-        *y = rect.height / 2;
-        break;
+  if (grab_op & META_GRAB_OP_WINDOW_DIR_WEST)
+    *x = 0;
+  else if (grab_op & META_GRAB_OP_WINDOW_DIR_EAST)
+    *x = rect.width - 1;
+  else
+    *x = rect.width / 2;
 
-      case META_GRAB_OP_KEYBOARD_RESIZING_S:
-        *x = rect.width / 2;
-        *y = rect.height - 1;
-        break;
-
-      case META_GRAB_OP_KEYBOARD_RESIZING_N:
-        *x = rect.width / 2;
-        *y = 0;
-        break;
-
-      case META_GRAB_OP_KEYBOARD_RESIZING_W:
-        *x = 0;
-        *y = rect.height / 2;
-        break;
-
-      case META_GRAB_OP_KEYBOARD_RESIZING_E:
-        *x = rect.width - 1;
-        *y = rect.height / 2;
-        break;
-
-      case META_GRAB_OP_KEYBOARD_RESIZING_SE:
-        *x = rect.width - 1;
-        *y = rect.height - 1;
-        break;
-
-      case META_GRAB_OP_KEYBOARD_RESIZING_NE:
-        *x = rect.width - 1;
-        *y = 0;
-        break;
-
-      case META_GRAB_OP_KEYBOARD_RESIZING_SW:
-        *x = 0;
-        *y = rect.height - 1;
-        break;
-
-      case META_GRAB_OP_KEYBOARD_RESIZING_NW:
-        *x = 0;
-        *y = 0;
-        break;
-
-      default:
-        return FALSE;
-    }
+  if (grab_op & META_GRAB_OP_WINDOW_DIR_SOUTH)
+    *y = 0;
+  else if (grab_op & META_GRAB_OP_WINDOW_DIR_NORTH)
+    *y = rect.height - 1;
+  else
+    *y = rect.height / 2;
 
   *x += rect.x;
   *y += rect.y;
@@ -7944,7 +7826,7 @@ meta_window_handle_ungrabbed_event (MetaWindow         *window,
           gboolean north, south;
           gboolean west, east;
           MetaRectangle frame_rect;
-          MetaGrabOp op;
+          MetaGrabOp op = META_GRAB_OP_WINDOW_BASE;
 
           meta_window_get_frame_rect (window, &frame_rect);
 
@@ -7953,26 +7835,16 @@ meta_window_handle_ungrabbed_event (MetaWindow         *window,
           north = event->button.y < (frame_rect.y + 1 * frame_rect.height / 3);
           south = event->button.y > (frame_rect.y + 2 * frame_rect.height / 3);
 
-          if (north && west)
-            op = META_GRAB_OP_RESIZING_NW;
-          else if (north && east)
-            op = META_GRAB_OP_RESIZING_NE;
-          else if (south && west)
-            op = META_GRAB_OP_RESIZING_SW;
-          else if (south && east)
-            op = META_GRAB_OP_RESIZING_SE;
-          else if (north)
-            op = META_GRAB_OP_RESIZING_N;
-          else if (west)
-            op = META_GRAB_OP_RESIZING_W;
-          else if (east)
-            op = META_GRAB_OP_RESIZING_E;
-          else if (south)
-            op = META_GRAB_OP_RESIZING_S;
-          else /* Middle region is no-op to avoid user triggering wrong action */
-            op = META_GRAB_OP_NONE;
+          if (west)
+            op |= META_GRAB_OP_WINDOW_DIR_WEST;
+          if (east)
+            op |= META_GRAB_OP_WINDOW_DIR_EAST;
+          if (north)
+            op |= META_GRAB_OP_WINDOW_DIR_NORTH;
+          if (south)
+            op |= META_GRAB_OP_WINDOW_DIR_SOUTH;
 
-          if (op != META_GRAB_OP_NONE)
+          if (op != META_GRAB_OP_WINDOW_BASE)
             meta_display_begin_grab_op (display,
                                         window->screen,
                                         window,

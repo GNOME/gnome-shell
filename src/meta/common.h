@@ -111,41 +111,76 @@ typedef enum
  * @META_GRAB_OP_COMPOSITOR: Compositor asked for grab
  */
 
-/* when changing this enum, there are various switch statements
- * you have to update
+/* The lower 16 bits of the grab operation is its type.
+ *
+ * Window grab operations have the following layout:
+ *
+ * 0000  0000  | 0000 0011
+ * NSEW  flags | type
+ *
+ * Flags contains whether the operation is a keyboard operation,
+ * and whether the keyboard operation is "unknown".
+ *
+ * The rest of the flags tell you which direction the resize is
+ * going in.
+ *
+ * If the directions field is 0000, then the operation is a move,
+ * not a resize.
+ * If the directions field is 1111, then it's an unknown direction.
  */
+enum
+{
+  META_GRAB_OP_WINDOW_FLAG_KEYBOARD = 0x0100,
+  META_GRAB_OP_WINDOW_DIR_WEST      = 0x1000,
+  META_GRAB_OP_WINDOW_DIR_EAST      = 0x2000,
+  META_GRAB_OP_WINDOW_DIR_SOUTH     = 0x4000,
+  META_GRAB_OP_WINDOW_DIR_NORTH     = 0x8000,
+  META_GRAB_OP_WINDOW_DIR_UNKNOWN   = 0xF000,
+
+  /* WGO = "window grab op". shorthand for below */
+  _WGO_K = META_GRAB_OP_WINDOW_FLAG_KEYBOARD,
+  _WGO_W = META_GRAB_OP_WINDOW_DIR_WEST,
+  _WGO_E = META_GRAB_OP_WINDOW_DIR_EAST,
+  _WGO_S = META_GRAB_OP_WINDOW_DIR_SOUTH,
+  _WGO_N = META_GRAB_OP_WINDOW_DIR_NORTH,
+  _WGO_U = META_GRAB_OP_WINDOW_DIR_UNKNOWN,
+};
+
+#define GRAB_OP_GET_BASE_TYPE(op) (op & 0x00FF)
+
 typedef enum
 {
   META_GRAB_OP_NONE,
-
-  /* Mouse ops */
-  META_GRAB_OP_MOVING,
-  META_GRAB_OP_RESIZING_SE,
-  META_GRAB_OP_RESIZING_S,
-  META_GRAB_OP_RESIZING_SW,
-  META_GRAB_OP_RESIZING_N,
-  META_GRAB_OP_RESIZING_NE,
-  META_GRAB_OP_RESIZING_NW,
-  META_GRAB_OP_RESIZING_W,
-  META_GRAB_OP_RESIZING_E,
-
-  /* Keyboard ops */
-  META_GRAB_OP_KEYBOARD_MOVING,
-  META_GRAB_OP_KEYBOARD_RESIZING_UNKNOWN,
-  META_GRAB_OP_KEYBOARD_RESIZING_S,
-  META_GRAB_OP_KEYBOARD_RESIZING_N,
-  META_GRAB_OP_KEYBOARD_RESIZING_W,
-  META_GRAB_OP_KEYBOARD_RESIZING_E,
-  META_GRAB_OP_KEYBOARD_RESIZING_SE,
-  META_GRAB_OP_KEYBOARD_RESIZING_NE,
-  META_GRAB_OP_KEYBOARD_RESIZING_SW,
-  META_GRAB_OP_KEYBOARD_RESIZING_NW,
 
   /* Special grab op when the compositor asked for a grab */
   META_GRAB_OP_COMPOSITOR,
 
   /* For when a Wayland client takes a popup grab */
   META_GRAB_OP_WAYLAND_POPUP,
+
+  /* Window grab ops. */
+  META_GRAB_OP_WINDOW_BASE,
+
+  _WGO_BASE = META_GRAB_OP_WINDOW_BASE,
+  META_GRAB_OP_MOVING                     = _WGO_BASE,
+  META_GRAB_OP_RESIZING_NW                = _WGO_BASE | _WGO_N | _WGO_W,
+  META_GRAB_OP_RESIZING_N                 = _WGO_BASE | _WGO_N,
+  META_GRAB_OP_RESIZING_NE                = _WGO_BASE | _WGO_N | _WGO_E,
+  META_GRAB_OP_RESIZING_E                 = _WGO_BASE |          _WGO_E,
+  META_GRAB_OP_RESIZING_SW                = _WGO_BASE | _WGO_S | _WGO_W,
+  META_GRAB_OP_RESIZING_S                 = _WGO_BASE | _WGO_S,
+  META_GRAB_OP_RESIZING_SE                = _WGO_BASE | _WGO_S | _WGO_E,
+  META_GRAB_OP_RESIZING_W                 = _WGO_BASE |          _WGO_W,
+  META_GRAB_OP_KEYBOARD_MOVING            = _WGO_BASE |                   _WGO_K,
+  META_GRAB_OP_KEYBOARD_RESIZING_UNKNOWN  = _WGO_BASE | _WGO_U |          _WGO_K,
+  META_GRAB_OP_KEYBOARD_RESIZING_NW       = _WGO_BASE | _WGO_N | _WGO_W | _WGO_K,
+  META_GRAB_OP_KEYBOARD_RESIZING_N        = _WGO_BASE | _WGO_N |          _WGO_K,
+  META_GRAB_OP_KEYBOARD_RESIZING_NE       = _WGO_BASE | _WGO_N | _WGO_E | _WGO_K,
+  META_GRAB_OP_KEYBOARD_RESIZING_E        = _WGO_BASE |          _WGO_E | _WGO_K,
+  META_GRAB_OP_KEYBOARD_RESIZING_SW       = _WGO_BASE | _WGO_S | _WGO_W | _WGO_K,
+  META_GRAB_OP_KEYBOARD_RESIZING_S        = _WGO_BASE | _WGO_S |          _WGO_K,
+  META_GRAB_OP_KEYBOARD_RESIZING_SE       = _WGO_BASE | _WGO_S | _WGO_E | _WGO_K,
+  META_GRAB_OP_KEYBOARD_RESIZING_W        = _WGO_BASE |          _WGO_W | _WGO_K,
 } MetaGrabOp;
 
 /**

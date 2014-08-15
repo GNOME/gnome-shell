@@ -867,28 +867,24 @@ xdg_surface_move (struct wl_client *client,
 static MetaGrabOp
 grab_op_for_xdg_surface_resize_edge (int edge)
 {
-  switch (edge)
+  MetaGrabOp op = META_GRAB_OP_WINDOW_BASE;
+
+  if (edge & XDG_SURFACE_RESIZE_EDGE_TOP)
+    op |= META_GRAB_OP_WINDOW_DIR_NORTH;
+  if (edge & XDG_SURFACE_RESIZE_EDGE_BOTTOM)
+    op |= META_GRAB_OP_WINDOW_DIR_SOUTH;
+  if (edge & XDG_SURFACE_RESIZE_EDGE_LEFT)
+    op |= META_GRAB_OP_WINDOW_DIR_WEST;
+  if (edge & XDG_SURFACE_RESIZE_EDGE_RIGHT)
+    op |= META_GRAB_OP_WINDOW_DIR_EAST;
+
+  if (op == META_GRAB_OP_WINDOW_BASE)
     {
-    case XDG_SURFACE_RESIZE_EDGE_TOP_LEFT:
-      return META_GRAB_OP_RESIZING_NW;
-    case XDG_SURFACE_RESIZE_EDGE_TOP:
-      return META_GRAB_OP_RESIZING_N;
-    case XDG_SURFACE_RESIZE_EDGE_TOP_RIGHT:
-      return META_GRAB_OP_RESIZING_NE;
-    case XDG_SURFACE_RESIZE_EDGE_RIGHT:
-      return META_GRAB_OP_RESIZING_E;
-    case XDG_SURFACE_RESIZE_EDGE_BOTTOM_RIGHT:
-      return META_GRAB_OP_RESIZING_SE;
-    case XDG_SURFACE_RESIZE_EDGE_BOTTOM:
-      return META_GRAB_OP_RESIZING_S;
-    case XDG_SURFACE_RESIZE_EDGE_BOTTOM_LEFT:
-      return META_GRAB_OP_RESIZING_SW;
-    case XDG_SURFACE_RESIZE_EDGE_LEFT:
-      return META_GRAB_OP_RESIZING_W;
-    default:
       g_warning ("invalid edge: %d", edge);
       return META_GRAB_OP_NONE;
     }
+
+  return op;
 }
 
 static void
@@ -1177,28 +1173,24 @@ wl_shell_surface_move (struct wl_client *client,
 static MetaGrabOp
 grab_op_for_wl_shell_surface_resize_edge (int edge)
 {
-  switch (edge)
+  MetaGrabOp op = META_GRAB_OP_WINDOW_BASE;
+
+  if (edge & WL_SHELL_SURFACE_RESIZE_TOP)
+    op |= META_GRAB_OP_WINDOW_DIR_NORTH;
+  if (edge & WL_SHELL_SURFACE_RESIZE_BOTTOM)
+    op |= META_GRAB_OP_WINDOW_DIR_SOUTH;
+  if (edge & WL_SHELL_SURFACE_RESIZE_LEFT)
+    op |= META_GRAB_OP_WINDOW_DIR_WEST;
+  if (edge & WL_SHELL_SURFACE_RESIZE_RIGHT)
+    op |= META_GRAB_OP_WINDOW_DIR_EAST;
+
+  if (op == META_GRAB_OP_WINDOW_BASE)
     {
-    case WL_SHELL_SURFACE_RESIZE_TOP_LEFT:
-      return META_GRAB_OP_RESIZING_NW;
-    case WL_SHELL_SURFACE_RESIZE_TOP:
-      return META_GRAB_OP_RESIZING_N;
-    case WL_SHELL_SURFACE_RESIZE_TOP_RIGHT:
-      return META_GRAB_OP_RESIZING_NE;
-    case WL_SHELL_SURFACE_RESIZE_RIGHT:
-      return META_GRAB_OP_RESIZING_E;
-    case WL_SHELL_SURFACE_RESIZE_BOTTOM_RIGHT:
-      return META_GRAB_OP_RESIZING_SE;
-    case WL_SHELL_SURFACE_RESIZE_BOTTOM:
-      return META_GRAB_OP_RESIZING_S;
-    case WL_SHELL_SURFACE_RESIZE_BOTTOM_LEFT:
-      return META_GRAB_OP_RESIZING_SW;
-    case WL_SHELL_SURFACE_RESIZE_LEFT:
-      return META_GRAB_OP_RESIZING_W;
-    default:
       g_warning ("invalid edge: %d", edge);
       return META_GRAB_OP_NONE;
     }
+
+  return op;
 }
 
 static void

@@ -1170,94 +1170,43 @@ meta_get_display (void)
 gboolean
 meta_grab_op_is_mouse (MetaGrabOp op)
 {
-  switch (op)
-    {
-    case META_GRAB_OP_MOVING:
-    case META_GRAB_OP_RESIZING_SE:
-    case META_GRAB_OP_RESIZING_S:
-    case META_GRAB_OP_RESIZING_SW:
-    case META_GRAB_OP_RESIZING_N:
-    case META_GRAB_OP_RESIZING_NE:
-    case META_GRAB_OP_RESIZING_NW:
-    case META_GRAB_OP_RESIZING_W:
-    case META_GRAB_OP_RESIZING_E:
-      return TRUE;
+  if (GRAB_OP_GET_BASE_TYPE (op) != META_GRAB_OP_WINDOW_BASE)
+    return FALSE;
 
-    default:
-      return FALSE;
-    }
+  return (op & META_GRAB_OP_WINDOW_FLAG_KEYBOARD) == 0;
 }
 
 gboolean
 meta_grab_op_is_keyboard (MetaGrabOp op)
 {
-  switch (op)
-    {
-    case META_GRAB_OP_KEYBOARD_MOVING:
-    case META_GRAB_OP_KEYBOARD_RESIZING_UNKNOWN:
-    case META_GRAB_OP_KEYBOARD_RESIZING_S:
-    case META_GRAB_OP_KEYBOARD_RESIZING_N:
-    case META_GRAB_OP_KEYBOARD_RESIZING_W:
-    case META_GRAB_OP_KEYBOARD_RESIZING_E:
-    case META_GRAB_OP_KEYBOARD_RESIZING_SE:
-    case META_GRAB_OP_KEYBOARD_RESIZING_NE:
-    case META_GRAB_OP_KEYBOARD_RESIZING_SW:
-    case META_GRAB_OP_KEYBOARD_RESIZING_NW:
-      return TRUE;
+  if (GRAB_OP_GET_BASE_TYPE (op) == META_GRAB_OP_WINDOW_BASE)
+    return FALSE;
 
-    default:
-      return FALSE;
-    }
+  return (op & META_GRAB_OP_WINDOW_FLAG_KEYBOARD) != 0;
 }
 
 gboolean
 meta_grab_op_is_resizing (MetaGrabOp op)
 {
-  switch (op)
-    {
-    case META_GRAB_OP_RESIZING_SE:
-    case META_GRAB_OP_RESIZING_S:
-    case META_GRAB_OP_RESIZING_SW:
-    case META_GRAB_OP_RESIZING_N:
-    case META_GRAB_OP_RESIZING_NE:
-    case META_GRAB_OP_RESIZING_NW:
-    case META_GRAB_OP_RESIZING_W:
-    case META_GRAB_OP_RESIZING_E:
-    case META_GRAB_OP_KEYBOARD_RESIZING_UNKNOWN:
-    case META_GRAB_OP_KEYBOARD_RESIZING_S:
-    case META_GRAB_OP_KEYBOARD_RESIZING_N:
-    case META_GRAB_OP_KEYBOARD_RESIZING_W:
-    case META_GRAB_OP_KEYBOARD_RESIZING_E:
-    case META_GRAB_OP_KEYBOARD_RESIZING_SE:
-    case META_GRAB_OP_KEYBOARD_RESIZING_NE:
-    case META_GRAB_OP_KEYBOARD_RESIZING_SW:
-    case META_GRAB_OP_KEYBOARD_RESIZING_NW:
-      return TRUE;
+  if (GRAB_OP_GET_BASE_TYPE (op) != META_GRAB_OP_WINDOW_BASE)
+    return FALSE;
 
-    default:
-      return FALSE;
-    }
+  return (op & 0xF000) != 0;
 }
 
 gboolean
 meta_grab_op_is_moving (MetaGrabOp op)
 {
-  switch (op)
-    {
-    case META_GRAB_OP_MOVING:
-    case META_GRAB_OP_KEYBOARD_MOVING:
-      return TRUE;
+  if (GRAB_OP_GET_BASE_TYPE (op) != META_GRAB_OP_WINDOW_BASE)
+    return FALSE;
 
-    default:
-      return FALSE;
-    }
+  return (op & 0xF000) != 0;
 }
 
 gboolean
 meta_grab_op_is_moving_or_resizing (MetaGrabOp op)
 {
-  return (meta_grab_op_is_moving (op) ||
-          meta_grab_op_is_resizing (op));
+  return GRAB_OP_GET_BASE_TYPE (op) == META_GRAB_OP_WINDOW_BASE;
 }
 
 /**
@@ -1756,31 +1705,13 @@ get_first_freefloating_window (MetaWindow *window)
 static MetaEventRoute
 get_event_route_from_grab_op (MetaGrabOp op)
 {
-  switch (op)
+  switch (GRAB_OP_GET_BASE_TYPE (op))
     {
     case META_GRAB_OP_NONE:
       /* begin_grab_op shouldn't be called with META_GRAB_OP_NONE. */
       g_assert_not_reached ();
 
-    case META_GRAB_OP_MOVING:
-    case META_GRAB_OP_RESIZING_SE:
-    case META_GRAB_OP_RESIZING_S:
-    case META_GRAB_OP_RESIZING_SW:
-    case META_GRAB_OP_RESIZING_N:
-    case META_GRAB_OP_RESIZING_NE:
-    case META_GRAB_OP_RESIZING_NW:
-    case META_GRAB_OP_RESIZING_W:
-    case META_GRAB_OP_RESIZING_E:
-    case META_GRAB_OP_KEYBOARD_MOVING:
-    case META_GRAB_OP_KEYBOARD_RESIZING_UNKNOWN:
-    case META_GRAB_OP_KEYBOARD_RESIZING_S:
-    case META_GRAB_OP_KEYBOARD_RESIZING_N:
-    case META_GRAB_OP_KEYBOARD_RESIZING_W:
-    case META_GRAB_OP_KEYBOARD_RESIZING_E:
-    case META_GRAB_OP_KEYBOARD_RESIZING_SE:
-    case META_GRAB_OP_KEYBOARD_RESIZING_NE:
-    case META_GRAB_OP_KEYBOARD_RESIZING_SW:
-    case META_GRAB_OP_KEYBOARD_RESIZING_NW:
+    case META_GRAB_OP_WINDOW_BASE:
       return META_EVENT_ROUTE_WINDOW_OP;
 
     case META_GRAB_OP_COMPOSITOR:

@@ -1998,53 +1998,33 @@ process_key_event (MetaDisplay     *display,
     {
       if (display->grab_op == META_GRAB_OP_NONE)
         return TRUE;
+
       /* If we get here we have a global grab, because
        * we're in some special keyboard mode such as window move
        * mode.
        */
-      if ((window && window == display->grab_window) || !window)
+      if (window == display->grab_window)
         {
-          switch (display->grab_op)
+          if (display->grab_op & META_GRAB_OP_WINDOW_FLAG_KEYBOARD)
             {
-            case META_GRAB_OP_MOVING:
-            case META_GRAB_OP_RESIZING_SE:
-            case META_GRAB_OP_RESIZING_S:
-            case META_GRAB_OP_RESIZING_SW:
-            case META_GRAB_OP_RESIZING_N:
-            case META_GRAB_OP_RESIZING_NE:
-            case META_GRAB_OP_RESIZING_NW:
-            case META_GRAB_OP_RESIZING_W:
-            case META_GRAB_OP_RESIZING_E:
+              if (display->grab_op == META_GRAB_OP_KEYBOARD_MOVING)
+                {
+                  meta_topic (META_DEBUG_KEYBINDINGS,
+                              "Processing event for keyboard move\n");
+                  keep_grab = process_keyboard_move_grab (display, screen, window, event);
+                }
+              else
+                {
+                  meta_topic (META_DEBUG_KEYBINDINGS,
+                              "Processing event for keyboard resize\n");
+                  keep_grab = process_keyboard_resize_grab (display, screen, window, event);
+                }
+            }
+          else
+            {
               meta_topic (META_DEBUG_KEYBINDINGS,
                           "Processing event for mouse-only move/resize\n");
-              g_assert (window != NULL);
               keep_grab = process_mouse_move_resize_grab (display, screen, window, event);
-              break;
-
-            case META_GRAB_OP_KEYBOARD_MOVING:
-              meta_topic (META_DEBUG_KEYBINDINGS,
-                          "Processing event for keyboard move\n");
-              g_assert (window != NULL);
-              keep_grab = process_keyboard_move_grab (display, screen, window, event);
-              break;
-
-            case META_GRAB_OP_KEYBOARD_RESIZING_UNKNOWN:
-            case META_GRAB_OP_KEYBOARD_RESIZING_S:
-            case META_GRAB_OP_KEYBOARD_RESIZING_N:
-            case META_GRAB_OP_KEYBOARD_RESIZING_W:
-            case META_GRAB_OP_KEYBOARD_RESIZING_E:
-            case META_GRAB_OP_KEYBOARD_RESIZING_SE:
-            case META_GRAB_OP_KEYBOARD_RESIZING_NE:
-            case META_GRAB_OP_KEYBOARD_RESIZING_SW:
-            case META_GRAB_OP_KEYBOARD_RESIZING_NW:
-              meta_topic (META_DEBUG_KEYBINDINGS,
-                          "Processing event for keyboard resize\n");
-              g_assert (window != NULL);
-              keep_grab = process_keyboard_resize_grab (display, screen, window, event);
-              break;
-
-            default:
-              break;
             }
         }
       if (!keep_grab)
