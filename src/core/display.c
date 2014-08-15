@@ -1179,7 +1179,7 @@ meta_grab_op_is_mouse (MetaGrabOp op)
 gboolean
 meta_grab_op_is_keyboard (MetaGrabOp op)
 {
-  if (GRAB_OP_GET_BASE_TYPE (op) == META_GRAB_OP_WINDOW_BASE)
+  if (GRAB_OP_GET_BASE_TYPE (op) != META_GRAB_OP_WINDOW_BASE)
     return FALSE;
 
   return (op & META_GRAB_OP_WINDOW_FLAG_KEYBOARD) != 0;
