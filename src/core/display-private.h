@@ -380,7 +380,7 @@ gboolean meta_grab_op_is_resizing (MetaGrabOp op);
 gboolean meta_grab_op_is_moving_or_resizing (MetaGrabOp op);
 gboolean meta_grab_op_is_mouse    (MetaGrabOp op);
 gboolean meta_grab_op_is_keyboard (MetaGrabOp op);
-gboolean meta_grab_op_should_block_wayland (MetaGrabOp op);
+gboolean meta_grab_op_windows_are_interactable (MetaGrabOp op);
 
 void meta_display_increment_focus_sentinel (MetaDisplay *display);
 void meta_display_decrement_focus_sentinel (MetaDisplay *display);

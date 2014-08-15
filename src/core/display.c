@@ -1261,23 +1261,21 @@ meta_grab_op_is_moving_or_resizing (MetaGrabOp op)
 }
 
 /**
- * meta_grab_op_should_block_wayland:
+ * meta_grab_op_windows_are_interactable:
  * @op: A #MetaGrabOp
  *
- * Starting a grab with one of these grab operations means
- * that we will remove key / pointer focus from the current
- * Wayland focus.
+ * Whether windows can be interacted with in this grab operation.
  */
 gboolean
-meta_grab_op_should_block_wayland (MetaGrabOp op)
+meta_grab_op_windows_are_interactable (MetaGrabOp op)
 {
   switch (op)
     {
     case META_GRAB_OP_WAYLAND_POPUP:
     case META_GRAB_OP_NONE:
-      return FALSE;
-    default:
       return TRUE;
+    default:
+      return FALSE;
     }
 }
 
@@ -1446,7 +1444,7 @@ meta_display_sync_wayland_input_focus (MetaDisplay *display)
   MetaWaylandCompositor *compositor = meta_wayland_compositor_get_default ();
   MetaWindow *focus_window = NULL;
 
-  if (meta_grab_op_should_block_wayland (display->grab_op))
+  if (!meta_grab_op_windows_are_interactable (display->grab_op))
     focus_window = NULL;
   else if (meta_display_xwindow_is_a_no_focus_window (display, display->focus_xwindow))
     focus_window = NULL;
