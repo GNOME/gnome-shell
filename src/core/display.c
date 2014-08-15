@@ -1191,7 +1191,7 @@ meta_grab_op_is_resizing (MetaGrabOp op)
   if (GRAB_OP_GET_BASE_TYPE (op) != META_GRAB_OP_WINDOW_BASE)
     return FALSE;
 
-  return (op & 0xF000) != 0;
+  return (op & META_GRAB_OP_WINDOW_DIR_MASK) != 0;
 }
 
 gboolean
@@ -1200,7 +1200,7 @@ meta_grab_op_is_moving (MetaGrabOp op)
   if (GRAB_OP_GET_BASE_TYPE (op) != META_GRAB_OP_WINDOW_BASE)
     return FALSE;
 
-  return (op & 0xF000) == 0;
+  return (op & META_GRAB_OP_WINDOW_DIR_MASK) == 0;
 }
 
 /**
