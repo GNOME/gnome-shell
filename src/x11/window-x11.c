@@ -1854,27 +1854,8 @@ meta_window_move_resize_request (MetaWindow *window,
    * Still have to do the ConfigureNotify and all, but pretend the
    * app asked for the current size/position instead of the new one.
    */
-  in_grab_op = FALSE;
-  if (window->display->grab_op != META_GRAB_OP_NONE &&
-      window == window->display->grab_window)
-    {
-      switch (window->display->grab_op)
-        {
-        case META_GRAB_OP_MOVING:
-        case META_GRAB_OP_RESIZING_SE:
-        case META_GRAB_OP_RESIZING_S:
-        case META_GRAB_OP_RESIZING_SW:
-        case META_GRAB_OP_RESIZING_N:
-        case META_GRAB_OP_RESIZING_NE:
-        case META_GRAB_OP_RESIZING_NW:
-        case META_GRAB_OP_RESIZING_W:
-        case META_GRAB_OP_RESIZING_E:
-          in_grab_op = TRUE;
-          break;
-        default:
-          break;
-        }
-    }
+  in_grab_op = (window->display->grab_window == window &&
+                meta_grab_op_is_mouse (window->display->grab_op));
 
   /* it's essential to use only the explicitly-set fields,
    * and otherwise use our current up-to-date position.
