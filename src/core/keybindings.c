@@ -207,7 +207,6 @@ reload_modmap (MetaKeyBindingManager *keys)
   XModifierKeymap *modmap;
   int map_size;
   int i;
-  int num_lock_mask = 0;
   int scroll_lock_mask = 0;
 
   modmap = XGetModifierMapping (keys->xdisplay);
@@ -247,16 +246,7 @@ reload_modmap (MetaKeyBindingManager *keys)
                               (1 << ( i / modmap->max_keypermod)));
                 }
 
-              if (syms[j] == XKB_KEY_Num_Lock)
-                {
-                  /* Mod1Mask is 1 << 3 for example, i.e. the
-                   * fourth modifier, i / keyspermod is the modifier
-                   * index
-                   */
-
-                  num_lock_mask |= (1 << ( i / modmap->max_keypermod));
-                }
-              else if (syms[j] == XKB_KEY_Scroll_Lock)
+              if (syms[j] == XKB_KEY_Scroll_Lock)
                 {
                   scroll_lock_mask |= (1 << ( i / modmap->max_keypermod));
                 }
@@ -283,14 +273,11 @@ reload_modmap (MetaKeyBindingManager *keys)
       ++i;
     }
 
-  keys->ignored_modifier_mask = (num_lock_mask |
-                                 scroll_lock_mask |
-                                 LockMask);
+  keys->ignored_modifier_mask = (scroll_lock_mask | Mod2Mask | LockMask);
 
   meta_topic (META_DEBUG_KEYBINDINGS,
-              "Ignoring modmask 0x%x num lock 0x%x scroll lock 0x%x hyper 0x%x super 0x%x meta 0x%x\n",
+              "Ignoring modmask 0x%x scroll lock 0x%x hyper 0x%x super 0x%x meta 0x%x\n",
               keys->ignored_modifier_mask,
-              num_lock_mask,
               scroll_lock_mask,
               keys->hyper_mask,
               keys->super_mask,
