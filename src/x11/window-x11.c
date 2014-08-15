@@ -2803,9 +2803,13 @@ is_our_xwindow (MetaDisplay       *display,
     return TRUE;
 
   {
-    MetaBackendX11 *backend = META_BACKEND_X11 (meta_get_backend ());
-    if (xwindow == meta_backend_x11_get_xwindow (backend))
-      return TRUE;
+    MetaBackend *backend = meta_get_backend ();
+
+    if (META_IS_BACKEND_X11 (backend))
+      {
+        if (xwindow == meta_backend_x11_get_xwindow (META_BACKEND_X11 (backend)))
+          return TRUE;
+      }
   }
 
   /* Any windows created via meta_create_offscreen_window */
