@@ -1784,7 +1784,7 @@ meta_display_begin_grab_op (MetaDisplay *display,
       return FALSE;
     }
 
-  if (meta_grab_op_is_moving (op) || meta_grab_op_is_resizing (op))
+  if (meta_grab_op_is_moving_or_resizing (op))
     {
       if (meta_prefs_get_raise_on_click ())
         meta_window_raise (window);
