@@ -63,7 +63,6 @@ static char* get_screen_name (MetaDisplay *display,
 
 static void update_num_workspaces  (MetaScreen *screen,
                                     guint32     timestamp);
-static void update_focus_mode      (MetaScreen *screen);
 static void set_workspace_names    (MetaScreen *screen);
 static void prefs_changed_callback (MetaPreference pref,
                                     gpointer       data);
@@ -926,10 +925,6 @@ prefs_changed_callback (MetaPreference pref,
         meta_display_get_current_time_roundtrip (screen->display);
       update_num_workspaces (screen, timestamp);
     }
-  else if (pref == META_PREF_FOCUS_MODE)
-    {
-      update_focus_mode (screen);
-    }
   else if (pref == META_PREF_WORKSPACE_NAMES)
     {
       set_workspace_names (screen);
@@ -1384,12 +1379,6 @@ update_num_workspaces (MetaScreen *screen,
     g_signal_emit (screen, screen_signals[WORKSPACE_ADDED], 0, i);
 
   g_object_notify (G_OBJECT (screen), "n-workspaces");
-}
-
-static void
-update_focus_mode (MetaScreen *screen)
-{
-  /* nothing to do anymore */ ;
 }
 
 void
