@@ -48,6 +48,8 @@
 #include "session.h"
 #include "workspace-private.h"
 
+#include "backends/x11/meta-backend-x11.h"
+
 struct _MetaWindowX11Class
 {
   MetaWindowClass parent_class;
@@ -2799,6 +2801,12 @@ is_our_xwindow (MetaDisplay       *display,
 
   if (xwindow == screen->composite_overlay_window)
     return TRUE;
+
+  {
+    MetaBackendX11 *backend = META_BACKEND_X11 (meta_get_backend ());
+    if (xwindow == meta_backend_x11_get_xwindow (backend))
+      return TRUE;
+  }
 
   /* Any windows created via meta_create_offscreen_window */
   if (attrs->override_redirect && attrs->x == -100 && attrs->y == -100 && attrs->width == 1 && attrs->height == 1)
