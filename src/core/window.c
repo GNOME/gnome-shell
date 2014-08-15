@@ -7871,7 +7871,7 @@ meta_window_handle_leave (MetaWindow *window)
     meta_window_lower (window);
 }
 
-gboolean
+void
 meta_window_handle_ungrabbed_event (MetaWindow         *window,
                                     const ClutterEvent *event)
 {
@@ -7880,17 +7880,17 @@ meta_window_handle_ungrabbed_event (MetaWindow         *window,
   gboolean is_window_grab;
 
   if (event->type != CLUTTER_BUTTON_PRESS)
-    return FALSE;
+    return;
 
   if (display->grab_op != META_GRAB_OP_NONE)
-    return FALSE;
+    return;
 
   /* Some windows might not ask for input, in which case we might be here
    * because we selected for ButtonPress on the root window. In that case,
    * we have to take special care not to act for an override-redirect window.
    */
   if (window->override_redirect)
-    return FALSE;
+    return;
 
   /* We have three passive button grabs:
    * - on any button, without modifiers => focuses and maybe raises the window
@@ -7941,7 +7941,6 @@ meta_window_handle_ungrabbed_event (MetaWindow         *window,
 
       meta_verbose ("Allowing events time %u\n",
                     (unsigned int)event->button.time);
-      return FALSE;
     }
   else if (is_window_grab && (int) event->button.button == meta_prefs_get_mouse_button_resize ())
     {
@@ -7991,7 +7990,6 @@ meta_window_handle_ungrabbed_event (MetaWindow         *window,
                                         event->button.x,
                                         event->button.y);
         }
-      return TRUE;
     }
   else if (is_window_grab && (int) event->button.button == meta_prefs_get_mouse_button_menu ())
     {
@@ -8001,7 +7999,6 @@ meta_window_handle_ungrabbed_event (MetaWindow         *window,
                              META_WINDOW_MENU_WM,
                              event->button.x,
                              event->button.y);
-      return TRUE;
     }
   else if (is_window_grab && (int) event->button.button == 1)
     {
@@ -8019,10 +8016,7 @@ meta_window_handle_ungrabbed_event (MetaWindow         *window,
                                       event->button.x,
                                       event->button.y);
         }
-      return TRUE;
     }
-
-  return FALSE;
 }
 
 void

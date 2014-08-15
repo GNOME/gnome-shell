@@ -251,26 +251,33 @@ meta_display_handle_event (MetaDisplay        *display,
           bypass_clutter = TRUE;
         }
 
-      /* Under X11, we have a Sync grab and in order to send it back to
-       * clients, we have to explicitly replay it.
-       *
-       * Under Wayland, we retrieve all events and we have to make sure
-       * to filter them out from Wayland clients.
-       */
-      if (meta_window_handle_ungrabbed_event (window, event))
+      meta_window_handle_ungrabbed_event (window, event);
+
+      /* This might start a grab op. If it does, then filter out the
+       * event, and if it doesn't, replay the event to release our
+       * own sync grab. */
+
+      if (display->grab_window == window &&
+          meta_grab_op_is_moving_or_resizing (display->grab_op))
         {
+          bypass_clutter = TRUE;
           bypass_wayland = TRUE;
         }
-      else if (!clutter_event_get_event_sequence (event))
+      else
         {
-          MetaBackend *backend = meta_get_backend ();
-          if (META_IS_BACKEND_X11 (backend))
+          /* Only replay button press events, since that's where we
+           * have the synchronous grab. */
+          if (event->type == CLUTTER_BUTTON_PRESS)
             {
-              Display *xdisplay = meta_backend_x11_get_xdisplay (META_BACKEND_X11 (backend));
-              meta_verbose ("Allowing events time %u\n",
-                            (unsigned int)event->button.time);
-              XIAllowEvents (xdisplay, clutter_event_get_device_id (event),
-                             XIReplayDevice, event->button.time);
+              MetaBackend *backend = meta_get_backend ();
+              if (META_IS_BACKEND_X11 (backend))
+                {
+                  Display *xdisplay = meta_backend_x11_get_xdisplay (META_BACKEND_X11 (backend));
+                  meta_verbose ("Allowing events time %u\n",
+                                (unsigned int)event->button.time);
+                  XIAllowEvents (xdisplay, clutter_event_get_device_id (event),
+                                 XIReplayDevice, event->button.time);
+                }
             }
         }
 
