@@ -7912,7 +7912,11 @@ meta_window_handle_ungrabbed_event (MetaWindow         *window,
    * care about. Just let the event through.
    */
 
-  unmodified = event->button.modifier_state == 0;
+  const int CLUTTER_BUTTON_MASK = (CLUTTER_BUTTON1_MASK | CLUTTER_BUTTON2_MASK |
+                                   CLUTTER_BUTTON3_MASK | CLUTTER_BUTTON4_MASK |
+                                   CLUTTER_BUTTON5_MASK);
+
+  unmodified = (event->button.modifier_state & ~CLUTTER_BUTTON_MASK) == 0;
   is_window_grab = button_event_is_window_grab (display, event);
 
   if (unmodified)
