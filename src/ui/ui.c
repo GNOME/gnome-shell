@@ -654,20 +654,6 @@ meta_ui_window_is_widget (MetaUI *ui,
     return FALSE;
 }
 
-int
-meta_ui_get_drag_threshold (MetaUI *ui)
-{
-  GtkSettings *settings;
-  int threshold;
-
-  settings = gtk_widget_get_settings (GTK_WIDGET (ui->frames));
-
-  threshold = 8;
-  g_object_get (G_OBJECT (settings), "gtk-dnd-drag-threshold", &threshold, NULL);
-
-  return threshold;
-}
-
 MetaUIDirection
 meta_ui_get_direction (void)
 {

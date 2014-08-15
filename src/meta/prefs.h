@@ -102,7 +102,8 @@ typedef enum
   META_PREF_WORKSPACES_ONLY_ON_PRIMARY,
   META_PREF_DRAGGABLE_BORDER_WIDTH,
   META_PREF_AUTO_MAXIMIZE,
-  META_PREF_CENTER_NEW_WINDOWS
+  META_PREF_CENTER_NEW_WINDOWS,
+  META_PREF_DRAG_THRESHOLD,
 } MetaPreference;
 
 typedef void (* MetaPrefsChangedFunc) (MetaPreference pref,
@@ -166,6 +167,7 @@ void meta_prefs_set_force_fullscreen (gboolean whether);
 gboolean meta_prefs_get_workspaces_only_on_primary (void);
 
 int      meta_prefs_get_draggable_border_width (void);
+int      meta_prefs_get_drag_threshold (void);
 
 gboolean meta_prefs_get_ignore_request_hide_titlebar (void);
 void     meta_prefs_set_ignore_request_hide_titlebar (gboolean whether);

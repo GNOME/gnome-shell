@@ -67,6 +67,7 @@
 #define SCHEMA_INTERFACE       "org.gnome.desktop.interface"
 #define SCHEMA_INPUT_SOURCES   "org.gnome.desktop.input-sources"
 #define SCHEMA_XSETTINGS       "org.gnome.settings-daemon.plugins.xsettings"
+#define SCHEMA_MOUSE           "org.gnome.settings-daemon.peripherals.mouse"
 
 #define SETTINGS(s) g_hash_table_lookup (settings_schemas, (s))
 
@@ -101,6 +102,7 @@ static gboolean gnome_animations = TRUE;
 static char *cursor_theme = NULL;
 static int   cursor_size = 24;
 static int   draggable_border_width = 10;
+static int   drag_threshold;
 static gboolean resize_with_right_button = FALSE;
 static gboolean edge_tiling = FALSE;
 static gboolean force_fullscreen = TRUE;
@@ -491,6 +493,13 @@ static MetaIntPreference preferences_int[] =
         META_PREF_DRAGGABLE_BORDER_WIDTH,
       },
       &draggable_border_width
+    },
+    {
+      { "drag-threshold",
+        SCHEMA_MOUSE,
+        META_PREF_DRAG_THRESHOLD,
+      },
+      &drag_threshold
     },
     { { NULL, 0, 0 }, NULL },
   };
@@ -1924,6 +1933,9 @@ meta_preference_to_string (MetaPreference pref)
     case META_PREF_DRAGGABLE_BORDER_WIDTH:
       return "DRAGGABLE_BORDER_WIDTH";
 
+    case META_PREF_DRAG_THRESHOLD:
+      return "DRAG_TRHESHOLD";
+
     case META_PREF_DYNAMIC_WORKSPACES:
       return "DYNAMIC_WORKSPACES";
 
@@ -2387,6 +2399,12 @@ int
 meta_prefs_get_draggable_border_width (void)
 {
   return draggable_border_width;
+}
+
+int
+meta_prefs_get_drag_threshold (void)
+{
+  return drag_threshold;
 }
 
 void
