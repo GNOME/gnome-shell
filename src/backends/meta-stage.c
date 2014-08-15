@@ -30,7 +30,6 @@
 
 struct _MetaStagePrivate {
   CoglPipeline *pipeline;
-  gboolean should_paint_cursor;
 
   MetaCursorReference *cursor;
 
