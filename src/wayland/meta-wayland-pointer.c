@@ -250,7 +250,7 @@ sync_focus_surface (MetaWaylandPointer *pointer)
   if (meta_grab_op_is_moving_or_resizing (display->grab_op))
     return;
 
-  if (meta_grab_op_should_block_wayland (display->grab_op))
+  if (!meta_grab_op_windows_are_interactable (display->grab_op))
     focus_surface = NULL;
   else
     focus_surface = pointer->current;
