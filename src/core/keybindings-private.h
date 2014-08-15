@@ -29,6 +29,7 @@
 
 #include <gio/gio.h>
 #include <meta/keybindings.h>
+#include <xkbcommon/xkbcommon.h>
 
 typedef struct _MetaKeyHandler MetaKeyHandler;
 struct _MetaKeyHandler
@@ -97,10 +98,10 @@ typedef struct
   int             max_keycode;
   KeySym *keymap;
   int keysyms_per_keycode;
-  unsigned int ignored_modifier_mask;
-  unsigned int hyper_mask;
-  unsigned int super_mask;
-  unsigned int meta_mask;
+  xkb_mod_mask_t ignored_modifier_mask;
+  xkb_mod_mask_t hyper_mask;
+  xkb_mod_mask_t super_mask;
+  xkb_mod_mask_t meta_mask;
   MetaKeyCombo overlay_key_combo;
   gboolean overlay_key_only_pressed;
   MetaKeyCombo *iso_next_group_combos;

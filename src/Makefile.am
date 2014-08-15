@@ -153,6 +153,8 @@ libmutter_la_SOURCES =				\
 	meta/gradient.h				\
 	core/meta-gesture-tracker.c		\
 	core/meta-gesture-tracker-private.h	\
+	core/xkbcommon-hacks.c			\
+	core/xkbcommon-hacks.h			\
 	core/keybindings.c			\
 	core/keybindings-private.h		\
 	core/main.c				\

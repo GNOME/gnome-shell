@@ -39,10 +39,9 @@
 #include "screen-private.h"
 #include <meta/prefs.h>
 #include "meta-accel-parse.h"
+#include "xkbcommon-hacks.h"
 
 #include <linux/input.h>
-
-#include <xkbcommon/xkbcommon.h>
 
 #include "backends/x11/meta-backend-x11.h"
 #include "x11/window-x11.h"
@@ -201,73 +200,31 @@ keysym_name (xkb_keysym_t keysym)
 static void
 reload_modmap (MetaKeyBindingManager *keys)
 {
-  XModifierKeymap *modmap;
-  int map_size;
-  int i;
-  int scroll_lock_mask = 0;
+  MetaBackend *backend = meta_get_backend ();
+  struct xkb_keymap *keymap = meta_backend_get_keymap (backend);
+  xkb_mod_mask_t scroll_lock_mask;
 
-  modmap = XGetModifierMapping (keys->xdisplay);
-  keys->ignored_modifier_mask = 0;
+  /* Modifiers to find. */
+  struct {
+    char *name;
+    xkb_mod_mask_t *mask_p;
+  } mods[] = {
+    { "ScrollLock", &scroll_lock_mask },
+    { "Meta",       &keys->meta_mask },
+    { "Hyper",      &keys->hyper_mask },
+    { "Super",      &keys->super_mask },
+  };
 
-  /* Multiple bits may get set in each of these */
-  keys->meta_mask = 0;
-  keys->hyper_mask = 0;
-  keys->super_mask = 0;
-
-  /* there are 8 modifiers, and the first 3 are shift, shift lock,
-   * and control
-   */
-  map_size = 8 * modmap->max_keypermod;
-  i = 3 * modmap->max_keypermod;
-  while (i < map_size)
+  gsize i;
+  for (i = 0; i < G_N_ELEMENTS (mods); i++)
     {
-      /* get the key code at this point in the map,
-       * see if its keysym is one we're interested in
-       */
-      int keycode = modmap->modifiermap[i];
+      xkb_mod_mask_t *mask_p = mods[i].mask_p;
+      xkb_mod_index_t idx = xkb_keymap_mod_get_index (keymap, mods[i].name);
 
-      if (keycode >= keys->min_keycode &&
-          keycode <= keys->max_keycode)
-        {
-          int j = 0;
-          KeySym *syms = keys->keymap +
-            (keycode - keys->min_keycode) * keys->keysyms_per_keycode;
-
-          while (j < keys->keysyms_per_keycode)
-            {
-              if (syms[j] != 0)
-                {
-                  meta_topic (META_DEBUG_KEYBINDINGS,
-                              "Keysym %s bound to modifier 0x%x\n",
-                              keysym_name (syms[j]),
-                              (1 << ( i / modmap->max_keypermod)));
-                }
-
-              if (syms[j] == XKB_KEY_Scroll_Lock)
-                {
-                  scroll_lock_mask |= (1 << ( i / modmap->max_keypermod));
-                }
-              else if (syms[j] == XKB_KEY_Super_L ||
-                       syms[j] == XKB_KEY_Super_R)
-                {
-                  keys->super_mask |= (1 << ( i / modmap->max_keypermod));
-                }
-              else if (syms[j] == XKB_KEY_Hyper_L ||
-                       syms[j] == XKB_KEY_Hyper_R)
-                {
-                  keys->hyper_mask |= (1 << ( i / modmap->max_keypermod));
-                }
-              else if (syms[j] == XKB_KEY_Meta_L ||
-                       syms[j] == XKB_KEY_Meta_R)
-                {
-                  keys->meta_mask |= (1 << ( i / modmap->max_keypermod));
-                }
-
-              ++j;
-            }
-        }
-
-      ++i;
+      if (idx != XKB_MOD_INVALID)
+        *mask_p = my_xkb_keymap_mod_get_mask (keymap, idx);
+      else
+        *mask_p = 0;
     }
 
   keys->ignored_modifier_mask = (scroll_lock_mask | Mod2Mask | LockMask);
@@ -279,8 +236,6 @@ reload_modmap (MetaKeyBindingManager *keys)
               keys->hyper_mask,
               keys->super_mask,
               keys->meta_mask);
-
-  XFreeModifiermap (modmap);
 }
 
 /* Original code from gdk_x11_keymap_get_entries_for_keyval() in
