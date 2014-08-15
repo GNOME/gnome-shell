@@ -246,14 +246,20 @@ sync_focus_surface (MetaWaylandPointer *pointer)
   MetaDisplay *display = meta_get_display ();
   MetaWaylandSurface *focus_surface;
 
-  /* Don't update the focus surface while we have a move/resize grab. */
-  if (meta_grab_op_is_moving_or_resizing (display->grab_op))
-    return;
+  switch (display->event_route)
+    {
+    case META_EVENT_ROUTE_WINDOW_OP:
+      /* Don't update the focus surface while we're grabbing a window. */
+      return;
 
-  if (!meta_grab_op_windows_are_interactable (display->grab_op))
-    focus_surface = NULL;
-  else
-    focus_surface = pointer->current;
+    case META_EVENT_ROUTE_COMPOSITOR_GRAB:
+      /* The compositor has focus, so remove our focus... */
+      focus_surface = NULL;
+
+    case META_EVENT_ROUTE_NORMAL:
+    case META_EVENT_ROUTE_WAYLAND_POPUP:
+      focus_surface = pointer->current;
+    }
 
   if (focus_surface != pointer->focus_surface)
     {

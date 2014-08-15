@@ -45,9 +45,6 @@ get_window_for_event (MetaDisplay        *display,
 {
   ClutterActor *source;
 
-  if (display->grab_op != META_GRAB_OP_NONE)
-    return display->grab_window;
-
   /* Always use the key focused window for key events. */
   switch (event->type)
     {
@@ -214,8 +211,7 @@ meta_display_handle_event (MetaDisplay        *display,
       goto out;
     }
 
-  if (display->grab_window == window &&
-      meta_grab_op_is_moving_or_resizing (display->grab_op))
+  if (display->event_route == META_EVENT_ROUTE_WINDOW_OP)
     {
       if (meta_window_handle_mouse_grab_op_event (window, event))
         {
@@ -256,8 +252,7 @@ meta_display_handle_event (MetaDisplay        *display,
        * event, and if it doesn't, replay the event to release our
        * own sync grab. */
 
-      if (display->grab_window == window &&
-          meta_grab_op_is_moving_or_resizing (display->grab_op))
+      if (display->event_route == META_EVENT_ROUTE_WINDOW_OP)
         {
           bypass_clutter = TRUE;
           bypass_wayland = TRUE;
@@ -285,11 +280,11 @@ meta_display_handle_event (MetaDisplay        *display,
 
  out:
   /* If the compositor has a grab, don't pass that through to Wayland */
-  if (display->grab_op == META_GRAB_OP_COMPOSITOR)
+  if (display->event_route == META_EVENT_ROUTE_COMPOSITOR_GRAB)
     bypass_wayland = TRUE;
 
   /* If a Wayland client has a grab, don't pass that through to Clutter */
-  if (display->grab_op == META_GRAB_OP_WAYLAND_POPUP)
+  if (display->event_route == META_EVENT_ROUTE_WAYLAND_POPUP)
     bypass_clutter = TRUE;
 
 #ifdef HAVE_WAYLAND

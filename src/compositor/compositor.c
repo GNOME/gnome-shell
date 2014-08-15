@@ -87,7 +87,7 @@
 static gboolean
 is_modal (MetaDisplay *display)
 {
-  return display->grab_op == META_GRAB_OP_COMPOSITOR;
+  return display->event_route == META_EVENT_ROUTE_COMPOSITOR_GRAB;
 }
 
 static void sync_actor_stacking (MetaCompositor *compositor);
@@ -343,6 +343,7 @@ meta_begin_modal_for_plugin (MetaCompositor   *compositor,
     return FALSE;
 
   display->grab_op = META_GRAB_OP_COMPOSITOR;
+  display->event_route = META_EVENT_ROUTE_COMPOSITOR_GRAB;
   display->grab_window = NULL;
   display->grab_have_pointer = TRUE;
   display->grab_have_keyboard = TRUE;
@@ -375,6 +376,7 @@ meta_end_modal_for_plugin (MetaCompositor *compositor,
                          display->grab_window, display->grab_op);
 
   display->grab_op = META_GRAB_OP_NONE;
+  display->event_route = META_EVENT_ROUTE_NORMAL;
   display->grab_window = NULL;
   display->grab_have_pointer = FALSE;
   display->grab_have_keyboard = FALSE;

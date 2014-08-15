@@ -79,6 +79,24 @@ typedef enum {
   META_TILE_MAXIMIZED
 } MetaTileMode;
 
+typedef enum {
+  /* Normal interaction where you're interacting with windows.
+   * Events go to windows normally. */
+  META_EVENT_ROUTE_NORMAL,
+
+  /* In a compositor grab operation. All events go to the
+   * compositor plugin. */
+  META_EVENT_ROUTE_COMPOSITOR_GRAB,
+
+  /* A Wayland application has a popup open. All events go to
+   * the Wayland application. */
+  META_EVENT_ROUTE_WAYLAND_POPUP,
+
+  /* In a window operation like moving or resizing. All events
+   * goes to MetaWindow, but not to the actual client window. */
+  META_EVENT_ROUTE_WINDOW_OP,
+} MetaEventRoute;
+
 struct _MetaDisplay
 {
   GObject parent_instance;
@@ -173,6 +191,9 @@ struct _MetaDisplay
   /* Pending autoraise */
   guint       autoraise_timeout_id;
   MetaWindow* autoraise_window;
+
+  /* Event routing */
+  MetaEventRoute event_route;
 
   /* current window operation */
   MetaGrabOp  grab_op;
@@ -380,7 +401,6 @@ gboolean meta_grab_op_is_resizing (MetaGrabOp op);
 gboolean meta_grab_op_is_moving_or_resizing (MetaGrabOp op);
 gboolean meta_grab_op_is_mouse    (MetaGrabOp op);
 gboolean meta_grab_op_is_keyboard (MetaGrabOp op);
-gboolean meta_grab_op_windows_are_interactable (MetaGrabOp op);
 
 void meta_display_increment_focus_sentinel (MetaDisplay *display);
 void meta_display_decrement_focus_sentinel (MetaDisplay *display);
@@ -431,5 +451,7 @@ void meta_restart_init (void);
 void meta_restart_finish (void);
 
 void meta_display_cancel_touch (MetaDisplay *display);
+
+gboolean meta_display_windows_are_interactable (MetaDisplay *display);
 
 #endif

@@ -1264,15 +1264,15 @@ meta_grab_op_is_moving_or_resizing (MetaGrabOp op)
  * meta_grab_op_windows_are_interactable:
  * @op: A #MetaGrabOp
  *
- * Whether windows can be interacted with in this grab operation.
+ * Whether windows can be interacted with.
  */
 gboolean
-meta_grab_op_windows_are_interactable (MetaGrabOp op)
+meta_display_windows_are_interactable (MetaDisplay *display)
 {
-  switch (op)
+  switch (display->event_route)
     {
-    case META_GRAB_OP_WAYLAND_POPUP:
-    case META_GRAB_OP_NONE:
+    case META_EVENT_ROUTE_NORMAL:
+    case META_EVENT_ROUTE_WAYLAND_POPUP:
       return TRUE;
     default:
       return FALSE;
@@ -1444,7 +1444,7 @@ meta_display_sync_wayland_input_focus (MetaDisplay *display)
   MetaWaylandCompositor *compositor = meta_wayland_compositor_get_default ();
   MetaWindow *focus_window = NULL;
 
-  if (!meta_grab_op_windows_are_interactable (display->grab_op))
+  if (!meta_display_windows_are_interactable (display))
     focus_window = NULL;
   else if (meta_display_xwindow_is_a_no_focus_window (display, display->focus_xwindow))
     focus_window = NULL;
@@ -1753,6 +1753,48 @@ get_first_freefloating_window (MetaWindow *window)
   return window;
 }
 
+static MetaEventRoute
+get_event_route_from_grab_op (MetaGrabOp op)
+{
+  switch (op)
+    {
+    case META_GRAB_OP_NONE:
+      /* begin_grab_op shouldn't be called with META_GRAB_OP_NONE. */
+      g_assert_not_reached ();
+
+    case META_GRAB_OP_MOVING:
+    case META_GRAB_OP_RESIZING_SE:
+    case META_GRAB_OP_RESIZING_S:
+    case META_GRAB_OP_RESIZING_SW:
+    case META_GRAB_OP_RESIZING_N:
+    case META_GRAB_OP_RESIZING_NE:
+    case META_GRAB_OP_RESIZING_NW:
+    case META_GRAB_OP_RESIZING_W:
+    case META_GRAB_OP_RESIZING_E:
+    case META_GRAB_OP_KEYBOARD_MOVING:
+    case META_GRAB_OP_KEYBOARD_RESIZING_UNKNOWN:
+    case META_GRAB_OP_KEYBOARD_RESIZING_S:
+    case META_GRAB_OP_KEYBOARD_RESIZING_N:
+    case META_GRAB_OP_KEYBOARD_RESIZING_W:
+    case META_GRAB_OP_KEYBOARD_RESIZING_E:
+    case META_GRAB_OP_KEYBOARD_RESIZING_SE:
+    case META_GRAB_OP_KEYBOARD_RESIZING_NE:
+    case META_GRAB_OP_KEYBOARD_RESIZING_SW:
+    case META_GRAB_OP_KEYBOARD_RESIZING_NW:
+      return META_EVENT_ROUTE_WINDOW_OP;
+
+    case META_GRAB_OP_COMPOSITOR:
+      /* begin_grab_op shouldn't be called with META_GRAB_OP_COMPOSITOR. */
+      g_assert_not_reached ();
+
+    case META_GRAB_OP_WAYLAND_POPUP:
+      return META_EVENT_ROUTE_WAYLAND_POPUP;
+
+    default:
+      g_assert_not_reached ();
+    }
+}
+
 gboolean
 meta_display_begin_grab_op (MetaDisplay *display,
 			    MetaScreen  *screen,
@@ -1768,6 +1810,7 @@ meta_display_begin_grab_op (MetaDisplay *display,
 {
   MetaBackend *backend = meta_get_backend ();
   MetaWindow *grab_window = NULL;
+  MetaEventRoute event_route;
 
   g_assert (window != NULL);
 
@@ -1784,7 +1827,9 @@ meta_display_begin_grab_op (MetaDisplay *display,
       return FALSE;
     }
 
-  if (meta_grab_op_is_moving_or_resizing (op))
+  event_route = get_event_route_from_grab_op (op);
+
+  if (event_route == META_EVENT_ROUTE_WINDOW_OP)
     {
       if (meta_prefs_get_raise_on_click ())
         meta_window_raise (window);
@@ -1830,8 +1875,8 @@ meta_display_begin_grab_op (MetaDisplay *display,
       return FALSE;
     }
 
-  /* Grab keys for keyboard ops and mouse move/resizes; see #126497 */
-  if (meta_grab_op_is_moving_or_resizing (op))
+  /* Grab keys when beginning window ops; see #126497 */
+  if (event_route == META_EVENT_ROUTE_WINDOW_OP)
     {
       display->grab_have_keyboard = meta_window_grab_all_keys (grab_window, timestamp);
 
@@ -1844,6 +1889,7 @@ meta_display_begin_grab_op (MetaDisplay *display,
         }
     }
 
+  display->event_route = event_route;
   display->grab_op = op;
   display->grab_window = grab_window;
   display->grab_button = button;
@@ -1884,7 +1930,8 @@ meta_display_begin_grab_op (MetaDisplay *display,
   g_signal_emit (display, display_signals[GRAB_OP_BEGIN], 0,
                  screen, display->grab_window, display->grab_op);
 
-  meta_window_grab_op_began (display->grab_window, display->grab_op);
+  if (display->event_route == META_EVENT_ROUTE_WINDOW_OP)
+    meta_window_grab_op_began (display->grab_window, display->grab_op);
 
   return TRUE;
 }
@@ -1899,13 +1946,13 @@ meta_display_end_grab_op (MetaDisplay *display,
   meta_topic (META_DEBUG_WINDOW_OPS,
               "Ending grab op %u at time %u\n", grab_op, timestamp);
 
-  if (display->grab_op == META_GRAB_OP_NONE)
+  if (display->event_route == META_EVENT_ROUTE_NORMAL)
     return;
 
   g_signal_emit (display, display_signals[GRAB_OP_END], 0,
                  display->screen, grab_window, grab_op);
 
-  if (meta_grab_op_is_moving_or_resizing (grab_op))
+  if (display->event_route == META_EVENT_ROUTE_WINDOW_OP)
     {
       /* Clear out the edge cache */
       meta_display_cleanup_edges (display);
@@ -1919,6 +1966,8 @@ meta_display_end_grab_op (MetaDisplay *display,
       if (!meta_prefs_get_raise_on_click () &&
           display->grab_threshold_movement_reached)
         meta_window_raise (display->grab_window);
+
+      meta_window_grab_op_ended (grab_window, grab_op);
     }
 
   if (display->grab_have_pointer)
@@ -1934,10 +1983,11 @@ meta_display_end_grab_op (MetaDisplay *display,
       meta_window_ungrab_all_keys (grab_window, timestamp);
     }
 
+  display->event_route = META_EVENT_ROUTE_NORMAL;
+  display->grab_op = META_GRAB_OP_NONE;
   display->grab_window = NULL;
   display->grab_tile_mode = META_TILE_NONE;
   display->grab_tile_monitor_number = -1;
-  display->grab_op = META_GRAB_OP_NONE;
 
   meta_display_update_cursor (display);
 
@@ -1946,8 +1996,6 @@ meta_display_end_grab_op (MetaDisplay *display,
       g_source_remove (display->grab_resize_timeout_id);
       display->grab_resize_timeout_id = 0;
     }
-
-  meta_window_grab_op_ended (grab_window, grab_op);
 
   if (meta_is_wayland_compositor ())
     meta_display_sync_wayland_input_focus (display);

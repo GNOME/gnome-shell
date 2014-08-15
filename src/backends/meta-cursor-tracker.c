@@ -61,7 +61,7 @@ get_displayed_cursor (MetaCursorTracker *tracker)
   if (!tracker->is_showing)
     return NULL;
 
-  if (meta_grab_op_windows_are_interactable (display->grab_op))
+  if (meta_display_windows_are_interactable (display))
     {
       if (tracker->has_window_cursor)
         return tracker->window_cursor;
