@@ -406,17 +406,13 @@ meta_screen_xinerama_index_to_monitor_index (MetaScreen *screen,
 static void
 reload_monitor_infos (MetaScreen *screen)
 {
-  GList *tmp;
+  GList *l;
   MetaMonitorManager *manager;
 
-  tmp = screen->workspaces;
-  while (tmp != NULL)
+  for (l = screen->workspaces; l != NULL; l = l->next)
     {
-      MetaWorkspace *space = tmp->data;
-
+      MetaWorkspace *space = l->data;
       meta_workspace_invalidate_work_area (space);
-
-      tmp = tmp->next;
     }
 
   /* Any previous screen->monitor_infos or screen->outputs is freed by the caller */
@@ -997,8 +993,7 @@ meta_screen_foreach_window (MetaScreen *screen,
                             MetaScreenWindowFunc func,
                             gpointer data)
 {
-  GSList *winlist;
-  GSList *tmp;
+  GSList *winlist, *l;
 
   /* If we end up doing this often, just keeping a list
    * of windows might be sensible.
@@ -1011,22 +1006,19 @@ meta_screen_foreach_window (MetaScreen *screen,
 
   winlist = g_slist_sort (winlist, ptrcmp);
 
-  tmp = winlist;
-  while (tmp != NULL)
+  for (l = winlist; l != NULL; l = l->next)
     {
       /* If the next node doesn't contain this window
        * a second time, delete the window.
        */
-      if (tmp->next == NULL ||
-          (tmp->next && tmp->next->data != tmp->data))
+      if (l->next == NULL ||
+          (l->next && l->next->data != l->data))
         {
-          MetaWindow *window = tmp->data;
+          MetaWindow *window = l->data;
 
           if (META_IS_WINDOW (window) && !window->override_redirect)
             (* func) (screen, window, data);
         }
-
-      tmp = tmp->next;
     }
   g_slist_free (winlist);
 }
@@ -1133,8 +1125,7 @@ meta_screen_remove_workspace (MetaScreen *screen, MetaWorkspace *workspace,
   gboolean       active_index_changed;
   int            new_num;
 
-  l = screen->workspaces;
-  while (l)
+  for (l = screen->workspaces; l != NULL; l = next)
     {
       MetaWorkspace *w = l->data;
 
@@ -1155,8 +1146,6 @@ meta_screen_remove_workspace (MetaScreen *screen, MetaWorkspace *workspace,
 
           break;
         }
-
-      l = l->next;
     }
 
   if (!neighbour)
@@ -1186,14 +1175,10 @@ meta_screen_remove_workspace (MetaScreen *screen, MetaWorkspace *workspace,
   if (active_index_changed)
       meta_screen_set_active_workspace_hint (screen);
 
-  l = next;
-  while (l)
+  for (l = next; l != NULL; l = l->next)
     {
       MetaWorkspace *w = l->data;
-
       meta_workspace_update_window_hints (w);
-
-      l = l->next;
     }
 
   meta_screen_queue_workarea_recalc (screen);
@@ -1253,7 +1238,7 @@ update_num_workspaces (MetaScreen *screen,
                        guint32     timestamp)
 {
   int new_num, old_num;
-  GList *tmp;
+  GList *l;
   int i;
   GList *extras;
   MetaWorkspace *last_remaining;
@@ -1292,10 +1277,9 @@ update_num_workspaces (MetaScreen *screen,
   last_remaining = NULL;
   extras = NULL;
   i = 0;
-  tmp = screen->workspaces;
-  while (tmp != NULL)
+  for (l = screen->workspaces; l != NULL; l = l->next)
     {
-      MetaWorkspace *w = tmp->data;
+      MetaWorkspace *w = l->data;
 
       if (i >= new_num)
         extras = g_list_prepend (extras, w);
@@ -1303,7 +1287,6 @@ update_num_workspaces (MetaScreen *screen,
         last_remaining = w;
 
       ++i;
-      tmp = tmp->next;
     }
   old_num = i;
 
@@ -1316,32 +1299,26 @@ update_num_workspaces (MetaScreen *screen,
    * is on a removed workspace ;-)
    */
   need_change_space = FALSE;
-  tmp = extras;
-  while (tmp != NULL)
+  for (l = extras; l != NULL; l = l->next)
     {
-      MetaWorkspace *w = tmp->data;
+      MetaWorkspace *w = l->data;
 
       meta_workspace_relocate_windows (w, last_remaining);
 
       if (w == screen->active_workspace)
         need_change_space = TRUE;
-
-      tmp = tmp->next;
     }
 
   if (need_change_space)
     meta_workspace_activate (last_remaining, timestamp);
 
   /* Should now be safe to free the workspaces */
-  tmp = extras;
-  while (tmp != NULL)
+  for (l = extras; l != NULL; l = l->next)
     {
-      MetaWorkspace *w = tmp->data;
+      MetaWorkspace *w = l->data;
 
       g_assert (w->windows == NULL);
       meta_workspace_remove (w);
-
-      tmp = tmp->next;
     }
 
   g_list_free (extras);
@@ -2083,18 +2060,17 @@ static void
 set_work_area_hint (MetaScreen *screen)
 {
   int num_workspaces;
-  GList *tmp_list;
+  GList *l;
   unsigned long *data, *tmp;
   MetaRectangle area;
 
   num_workspaces = meta_screen_get_n_workspaces (screen);
   data = g_new (unsigned long, num_workspaces * 4);
-  tmp_list = screen->workspaces;
   tmp = data;
 
-  while (tmp_list != NULL)
+  for (l = screen->workspaces; l != NULL; l = l->next)
     {
-      MetaWorkspace *workspace = tmp_list->data;
+      MetaWorkspace *workspace = l->data;
 
       meta_workspace_get_work_area_all_monitors (workspace, &area);
       tmp[0] = area.x;
@@ -2103,8 +2079,6 @@ set_work_area_hint (MetaScreen *screen)
       tmp[3] = area.height;
 
       tmp += 4;
-
-      tmp_list = tmp_list->next;
     }
 
   meta_error_trap_push (screen->display);
@@ -2524,8 +2498,7 @@ meta_screen_update_showing_desktop_hint (MetaScreen *screen)
 static void
 queue_windows_showing (MetaScreen *screen)
 {
-  GSList *windows;
-  GSList *tmp;
+  GSList *windows, *l;
 
   /* Must operate on all windows on display instead of just on the
    * active_workspace's window list, because the active_workspace's
@@ -2533,14 +2506,10 @@ queue_windows_showing (MetaScreen *screen)
    */
   windows = meta_display_list_windows (screen->display, META_LIST_DEFAULT);
 
-  tmp = windows;
-  while (tmp != NULL)
+  for (l = windows; l != NULL; l = l->next)
     {
-      MetaWindow *w = tmp->data;
-
+      MetaWindow *w = l->data;
       meta_window_queue (w, META_QUEUE_CALC_SHOWING);
-
-      tmp = tmp->next;
     }
 
   g_slist_free (windows);
@@ -2550,20 +2519,14 @@ void
 meta_screen_minimize_all_on_active_workspace_except (MetaScreen *screen,
                                                      MetaWindow *keep)
 {
-  GList *windows;
-  GList *tmp;
+  GList *l;
 
-  windows = screen->active_workspace->windows;
-
-  tmp = windows;
-  while (tmp != NULL)
+  for (l = screen->active_workspace->windows; l != NULL; l = l->next)
     {
-      MetaWindow *w = tmp->data;
+      MetaWindow *w = l->data;
 
       if (w->has_minimize_func && w != keep)
 	meta_window_minimize (w);
-
-      tmp = tmp->next;
     }
 }
 
@@ -2571,7 +2534,7 @@ void
 meta_screen_show_desktop (MetaScreen *screen,
                           guint32     timestamp)
 {
-  GList *windows;
+  GList *l;
 
   if (screen->active_workspace->showing_desktop)
     return;
@@ -2583,20 +2546,16 @@ meta_screen_show_desktop (MetaScreen *screen,
   /* Focus the most recently used META_WINDOW_DESKTOP window, if there is one;
    * see bug 159257.
    */
-  windows = screen->active_workspace->mru_list;
-  while (windows != NULL)
+  for (l = screen->active_workspace->mru_list; l != NULL; l = l->next)
     {
-      MetaWindow *w = windows->data;
+      MetaWindow *w = l->data;
 
       if (w->type == META_WINDOW_DESKTOP)
         {
           meta_window_focus (w, timestamp);
           break;
         }
-
-      windows = windows->next;
     }
-
 
   meta_screen_update_showing_desktop_hint (screen);
 }
@@ -2726,7 +2685,7 @@ startup_sequence_timeout (void *data)
 {
   MetaScreen *screen = data;
   CollectTimedOutData ctod;
-  GSList *tmp;
+  GSList *l;
 
   ctod.list = NULL;
   g_get_current_time (&ctod.now);
@@ -2734,18 +2693,15 @@ startup_sequence_timeout (void *data)
                    collect_timed_out_foreach,
                    &ctod);
 
-  tmp = ctod.list;
-  while (tmp != NULL)
+  for (l = ctod.list; l != NULL; l = l->next)
     {
-      SnStartupSequence *sequence = tmp->data;
+      SnStartupSequence *sequence = l->data;
 
       meta_topic (META_DEBUG_STARTUP,
                   "Timed out sequence %s\n",
                   sn_startup_sequence_get_id (sequence));
 
       sn_startup_sequence_complete (sequence);
-
-      tmp = tmp->next;
     }
 
   g_slist_free (ctod.list);
@@ -2846,7 +2802,7 @@ meta_screen_apply_startup_properties (MetaScreen *screen,
 {
 #ifdef HAVE_STARTUP_NOTIFICATION
   const char *startup_id;
-  GSList *tmp;
+  GSList *l;
   SnStartupSequence *sequence;
 
   /* Does the window have a startup ID stored? */
@@ -2864,12 +2820,12 @@ meta_screen_apply_startup_properties (MetaScreen *screen,
        * startup-notification library whether there's anything
        * stored for the resource name or resource class hints.
        */
-      tmp = screen->startup_sequences;
-      while (tmp != NULL)
+      for (l = screen->startup_sequences; l != NULL; l = l->next)
         {
           const char *wmclass;
+          SnStartupSequence *seq = l->data;
 
-          wmclass = sn_startup_sequence_get_wmclass (tmp->data);
+          wmclass = sn_startup_sequence_get_wmclass (seq);
 
           if (wmclass != NULL &&
               ((window->res_class &&
@@ -2877,7 +2833,7 @@ meta_screen_apply_startup_properties (MetaScreen *screen,
                (window->res_name &&
                 strcmp (wmclass, window->res_name) == 0)))
             {
-              sequence = tmp->data;
+              sequence = seq;
 
               g_assert (window->startup_id == NULL);
               window->startup_id = g_strdup (sn_startup_sequence_get_id (sequence));
@@ -2891,8 +2847,6 @@ meta_screen_apply_startup_properties (MetaScreen *screen,
               sn_startup_sequence_complete (sequence);
               break;
             }
-
-          tmp = tmp->next;
         }
     }
 
@@ -2906,20 +2860,18 @@ meta_screen_apply_startup_properties (MetaScreen *screen,
    */
   if (sequence == NULL)
     {
-      tmp = screen->startup_sequences;
-      while (tmp != NULL)
+      for (l = screen->startup_sequences; l != NULL; l = l->next)
         {
+          SnStartupSequence *seq = l->data;
           const char *id;
 
-          id = sn_startup_sequence_get_id (tmp->data);
+          id = sn_startup_sequence_get_id (seq);
 
           if (strcmp (id, startup_id) == 0)
             {
-              sequence = tmp->data;
+              sequence = seq;
               break;
             }
-
-          tmp = tmp->next;
         }
     }
 
