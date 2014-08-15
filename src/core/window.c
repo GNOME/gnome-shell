@@ -8022,7 +8022,7 @@ meta_window_handle_ungrabbed_event (MetaWindow         *window,
       return TRUE;
     }
 
-  return TRUE;
+  return FALSE;
 }
 
 void
