@@ -1055,27 +1055,7 @@ MetaWorkspace*
 meta_screen_get_workspace_by_index (MetaScreen  *screen,
                                     int          idx)
 {
-  GList *tmp;
-  int i;
-
-  /* should be robust, idx is maybe from an app */
-  if (idx < 0)
-    return NULL;
-
-  i = 0;
-  tmp = screen->workspaces;
-  while (tmp != NULL)
-    {
-      MetaWorkspace *w = tmp->data;
-
-      if (i == idx)
-        return w;
-
-      ++i;
-      tmp = tmp->next;
-    }
-
-  return NULL;
+  return g_list_nth_data (screen->workspaces, idx);
 }
 
 static void
