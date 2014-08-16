@@ -255,10 +255,12 @@ sync_focus_surface (MetaWaylandPointer *pointer)
     case META_EVENT_ROUTE_COMPOSITOR_GRAB:
       /* The compositor has focus, so remove our focus... */
       focus_surface = NULL;
+      break;
 
     case META_EVENT_ROUTE_NORMAL:
     case META_EVENT_ROUTE_WAYLAND_POPUP:
       focus_surface = pointer->current;
+      break;
     }
 
   if (focus_surface != pointer->focus_surface)
