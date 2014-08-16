@@ -47,12 +47,6 @@
 #include <canberra-gtk.h>
 #endif
 
-enum {
-  PROP_0,
-
-  PROP_N_WINDOWS,
-};
-
 void meta_workspace_queue_calc_showing   (MetaWorkspace *workspace);
 static void focus_ancestor_or_top_window (MetaWorkspace *workspace,
                                           MetaWindow    *not_this_one,
@@ -62,6 +56,16 @@ static void free_this                    (gpointer candidate,
 
 G_DEFINE_TYPE (MetaWorkspace, meta_workspace, G_TYPE_OBJECT);
 
+enum {
+  PROP_0,
+
+  PROP_N_WINDOWS,
+
+  LAST_PROP,
+};
+
+static GParamSpec *obj_props[LAST_PROP];
+
 enum
 {
   WINDOW_ADDED,
@@ -70,7 +74,7 @@ enum
   LAST_SIGNAL
 };
 
-static guint signals [LAST_SIGNAL] = { 0 };
+static guint signals[LAST_SIGNAL] = { 0 };
 
 static void
 meta_workspace_finalize (GObject *object)
@@ -120,8 +124,6 @@ static void
 meta_workspace_class_init (MetaWorkspaceClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-  GParamSpec   *pspec;
-
   object_class->finalize     = meta_workspace_finalize;
   object_class->get_property = meta_workspace_get_property;
   object_class->set_property = meta_workspace_set_property;
@@ -141,15 +143,13 @@ meta_workspace_class_init (MetaWorkspaceClass *klass)
                                           G_TYPE_NONE, 1,
                                           META_TYPE_WINDOW);
 
-  pspec = g_param_spec_uint ("n-windows",
-                             "N Windows",
-                             "Number of windows",
-                             0, G_MAXUINT, 0,
-                             G_PARAM_READABLE);
+  obj_props[PROP_N_WINDOWS] = g_param_spec_uint ("n-windows",
+                                                 "N Windows",
+                                                 "Number of windows",
+                                                 0, G_MAXUINT, 0,
+                                                 G_PARAM_READABLE);
 
-  g_object_class_install_property (object_class,
-                                   PROP_N_WINDOWS,
-                                   pspec);
+  g_object_class_install_properties (object_class, LAST_PROP, obj_props);
 }
 
 static void
@@ -351,7 +351,7 @@ meta_workspace_add_window (MetaWorkspace *workspace,
   meta_window_queue (window, META_QUEUE_CALC_SHOWING|META_QUEUE_MOVE_RESIZE);
 
   g_signal_emit (workspace, signals[WINDOW_ADDED], 0, window);
-  g_object_notify (G_OBJECT (workspace), "n-windows");
+  g_object_notify_by_pspec (G_OBJECT (workspace), obj_props[PROP_N_WINDOWS]);
 }
 
 void
