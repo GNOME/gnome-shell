@@ -179,7 +179,7 @@ meta_workspace_new (MetaScreen *screen)
     g_list_append (workspace->screen->workspaces, workspace);
   workspace->windows = NULL;
   workspace->mru_list = NULL;
-  meta_screen_foreach_window (screen, maybe_add_to_list, &workspace->mru_list);
+  meta_screen_foreach_window (screen, META_LIST_DEFAULT, maybe_add_to_list, &workspace->mru_list);
 
   workspace->work_areas_invalid = TRUE;
   workspace->work_area_monitor = NULL;

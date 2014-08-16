@@ -140,6 +140,7 @@ void          meta_screen_free                (MetaScreen                 *scree
 void          meta_screen_init_workspaces     (MetaScreen                 *screen);
 void          meta_screen_manage_all_windows  (MetaScreen                 *screen);
 void          meta_screen_foreach_window      (MetaScreen                 *screen,
+                                               MetaListWindowsFlags        flags,
                                                MetaScreenWindowFunc        func,
                                                gpointer                    data);
 

@@ -958,17 +958,9 @@ get_screen_name (MetaDisplay *display,
   return scr;
 }
 
-/**
- * meta_screen_foreach_window:
- * @screen: a #MetaScreen
- * @func: function to call for each window
- * @data: user data to pass to @func
- *
- * Calls the specified function for each window on the screen,
- * ignoring override-redirect windows.
- */
 void
 meta_screen_foreach_window (MetaScreen           *screen,
+                            MetaListWindowsFlags  flags,
                             MetaScreenWindowFunc  func,
                             gpointer              data)
 {
@@ -978,7 +970,7 @@ meta_screen_foreach_window (MetaScreen           *screen,
    * of windows might be sensible.
    */
 
-  windows = meta_display_list_windows (screen->display, META_LIST_DEFAULT);
+  windows = meta_display_list_windows (screen->display, flags);
 
   g_slist_foreach (windows, (GFunc) func, data);
 
@@ -2396,8 +2388,6 @@ static void
 on_monitors_changed (MetaMonitorManager *manager,
                      MetaScreen         *screen)
 {
-  GSList *tmp, *windows;
-
   meta_monitor_manager_get_screen_size (manager,
                                         &screen->rect.width,
                                         &screen->rect.height);
@@ -2422,19 +2412,10 @@ on_monitors_changed (MetaMonitorManager *manager,
     }
 
   /* Queue a resize on all the windows */
-  meta_screen_foreach_window (screen, meta_screen_resize_func, 0);
+  meta_screen_foreach_window (screen, META_LIST_DEFAULT, meta_screen_resize_func, 0);
 
   /* Fix up monitor for all windows on this screen */
-  windows = meta_display_list_windows (screen->display,
-                                       META_LIST_INCLUDE_OVERRIDE_REDIRECT);
-  for (tmp = windows; tmp != NULL; tmp = tmp->next)
-    {
-      MetaWindow *window = tmp->data;
-
-      meta_window_update_for_monitors_changed (window);
-    }
-
-  g_slist_free (windows);
+  meta_screen_foreach_window (screen, META_LIST_INCLUDE_OVERRIDE_REDIRECT, (MetaScreenWindowFunc) meta_window_update_for_monitors_changed, 0);
 
   meta_screen_queue_check_fullscreen (screen);
 
