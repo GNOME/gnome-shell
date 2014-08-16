@@ -1073,37 +1073,27 @@ meta_screen_remove_workspace (MetaScreen *screen, MetaWorkspace *workspace,
                               guint32 timestamp)
 {
   GList         *l;
+  GList         *next;
   MetaWorkspace *neighbour = NULL;
-  GList         *next = NULL;
   int            index;
   gboolean       active_index_changed;
   int            new_num;
 
-  for (l = screen->workspaces; l != NULL; l = next)
-    {
-      MetaWorkspace *w = l->data;
-
-      if (w == workspace)
-        {
-          if (l->next)
-            next = l->next;
-
-          if (l->prev)
-            neighbour = l->prev->data;
-          else if (l->next)
-            neighbour = l->next->data;
-          else
-            {
-              /* Cannot remove the only workspace! */
-              return;
-            }
-
-          break;
-        }
-    }
-
-  if (!neighbour)
+  l = g_list_find (screen->workspaces, workspace);
+  if (!l)
     return;
+
+  next = l->next;
+
+  if (l->prev)
+    neighbour = l->prev->data;
+  else if (l->next)
+    neighbour = l->next->data;
+  else
+    {
+      /* Cannot remove the only workspace! */
+      return;
+    }
 
   meta_workspace_relocate_windows (workspace, neighbour);
 
