@@ -316,14 +316,12 @@ meta_workspace_add_window (MetaWorkspace *workspace,
     {
       if (window->workspace == NULL)
         {
-          GList* tmp = window->screen->workspaces;
-          while (tmp)
+          GList *l;
+          for (l = window->screen->workspaces; l != NULL; l = l->next)
             {
-              MetaWorkspace* work = (MetaWorkspace*) tmp->data;
+              MetaWorkspace* work = (MetaWorkspace*) l->data;
               if (!g_list_find (work->mru_list, window))
                 work->mru_list = g_list_prepend (work->mru_list, window);
-
-              tmp = tmp->next;
             }
         }
     }
@@ -371,13 +369,11 @@ meta_workspace_remove_window (MetaWorkspace *workspace,
    */
   if (window->on_all_workspaces)
     {
-      GList* tmp = window->screen->workspaces;
-      while (tmp)
+      GList *l;
+      for (l = window->screen->workspaces; l != NULL; l = l->next)
         {
-          MetaWorkspace* work = (MetaWorkspace*) tmp->data;
+          MetaWorkspace* work = (MetaWorkspace*) l->data;
           work->mru_list = g_list_remove (work->mru_list, window);
-
-          tmp = tmp->next;
         }
     }
   else
@@ -409,23 +405,18 @@ void
 meta_workspace_relocate_windows (MetaWorkspace *workspace,
                                  MetaWorkspace *new_home)
 {
-  GList *tmp;
-  GList *copy;
+  GList *copy, *l;
 
   g_return_if_fail (workspace != new_home);
 
   /* can't modify list we're iterating over */
   copy = g_list_copy (workspace->windows);
 
-  tmp = copy;
-  while (tmp != NULL)
+  for (l = copy; l != NULL; l = l->next)
     {
-      MetaWindow *window = tmp->data;
-
+      MetaWindow *window = l->data;
       meta_workspace_remove_window (workspace, window);
       meta_workspace_add_window (new_home, window);
-
-      tmp = tmp->next;
     }
 
   g_list_free (copy);
@@ -436,15 +427,10 @@ meta_workspace_relocate_windows (MetaWorkspace *workspace,
 void
 meta_workspace_queue_calc_showing  (MetaWorkspace *workspace)
 {
-  GList *tmp;
+  GList *l;
 
-  tmp = workspace->windows;
-  while (tmp != NULL)
-    {
-      meta_window_queue (tmp->data, META_QUEUE_CALC_SHOWING);
-
-      tmp = tmp->next;
-    }
+  for (l = workspace->windows; l != NULL; l = l->next)
+    meta_window_queue (l->data, META_QUEUE_CALC_SHOWING);
 }
 
 static void
@@ -707,14 +693,11 @@ meta_workspace_index (MetaWorkspace *workspace)
 void
 meta_workspace_update_window_hints (MetaWorkspace *workspace)
 {
-  GList *l = workspace->windows;
-  while (l)
+  GList *l;
+  for (l = workspace->windows; l != NULL; l = l->next)
     {
       MetaWindow *win = l->data;
-
       meta_window_current_workspace_changed (win);
-
-      l = l->next;
     }
 }
 
@@ -730,24 +713,20 @@ meta_workspace_update_window_hints (MetaWorkspace *workspace)
 GList*
 meta_workspace_list_windows (MetaWorkspace *workspace)
 {
-  GSList *display_windows;
-  GSList *tmp;
+  GSList *display_windows, *l;
   GList *workspace_windows;
 
   display_windows = meta_display_list_windows (workspace->screen->display,
                                                META_LIST_DEFAULT);
 
   workspace_windows = NULL;
-  tmp = display_windows;
-  while (tmp != NULL)
+  for (l = display_windows; l != NULL; l = l->next)
     {
-      MetaWindow *window = tmp->data;
+      MetaWindow *window = l->data;
 
       if (meta_window_located_on_workspace (window, workspace))
         workspace_windows = g_list_prepend (workspace_windows,
                                             window);
-
-      tmp = tmp->next;
     }
 
   g_slist_free (display_windows);
@@ -758,8 +737,7 @@ meta_workspace_list_windows (MetaWorkspace *workspace)
 void
 meta_workspace_invalidate_work_area (MetaWorkspace *workspace)
 {
-  GList *tmp;
-  GList *windows;
+  GList *windows, *l;
   int i;
 
   if (workspace->work_areas_invalid)
@@ -799,14 +777,11 @@ meta_workspace_invalidate_work_area (MetaWorkspace *workspace)
 
   /* redo the size/position constraints on all windows */
   windows = meta_workspace_list_windows (workspace);
-  tmp = windows;
-  while (tmp != NULL)
+
+  for (l = windows; l != NULL; l = l->next)
     {
-      MetaWindow *w = tmp->data;
-
+      MetaWindow *w = l->data;
       meta_window_queue (w, META_QUEUE_MOVE_RESIZE);
-
-      tmp = tmp->next;
     }
 
   g_list_free (windows);
@@ -825,11 +800,8 @@ copy_strut_list(GSList *original)
 {
   GSList *result = NULL;
 
-  while (original)
-    {
-      result = g_slist_prepend (result, copy_strut (original->data));
-      original = original->next;
-    }
+  for (; original != NULL; original = original->next)
+    result = g_slist_prepend (result, copy_strut (original->data));
 
   return g_slist_reverse (result);
 }
