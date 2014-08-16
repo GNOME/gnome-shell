@@ -147,7 +147,7 @@ meta_workspace_class_init (MetaWorkspaceClass *klass)
                                                  "N Windows",
                                                  "Number of windows",
                                                  0, G_MAXUINT, 0,
-                                                 G_PARAM_READABLE);
+                                                 G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
 
   g_object_class_install_properties (object_class, LAST_PROP, obj_props);
 }
