@@ -958,27 +958,6 @@ get_screen_name (MetaDisplay *display,
   return scr;
 }
 
-static gint
-ptrcmp (gconstpointer a, gconstpointer b)
-{
-  if (a < b)
-    return -1;
-  else if (a > b)
-    return 1;
-  else
-    return 0;
-}
-
-static void
-listify_func (gpointer key, gpointer value, gpointer data)
-{
-  GSList **listp;
-
-  listp = data;
-
-  *listp = g_slist_prepend (*listp, value);
-}
-
 /**
  * meta_screen_foreach_window:
  * @screen: a #MetaScreen
@@ -993,34 +972,21 @@ meta_screen_foreach_window (MetaScreen *screen,
                             MetaScreenWindowFunc func,
                             gpointer data)
 {
-  GSList *winlist, *l;
+  GSList *windows, *l;
 
   /* If we end up doing this often, just keeping a list
    * of windows might be sensible.
    */
 
-  winlist = NULL;
-  g_hash_table_foreach (screen->display->xids,
-                        listify_func,
-                        &winlist);
+  windows = meta_display_list_windows (screen->display, META_LIST_DEFAULT);
 
-  winlist = g_slist_sort (winlist, ptrcmp);
-
-  for (l = winlist; l != NULL; l = l->next)
+  for (l = windows; l != NULL; l = l->next)
     {
-      /* If the next node doesn't contain this window
-       * a second time, delete the window.
-       */
-      if (l->next == NULL ||
-          (l->next && l->next->data != l->data))
-        {
-          MetaWindow *window = l->data;
-
-          if (META_IS_WINDOW (window) && !window->override_redirect)
-            (* func) (screen, window, data);
-        }
+      MetaWindow *window = l->data;
+      func (screen, window, data);
     }
-  g_slist_free (winlist);
+
+  g_slist_free (windows);
 }
 
 int
