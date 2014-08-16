@@ -88,7 +88,6 @@ static void     meta_window_save_rect         (MetaWindow    *window);
 static void     ensure_mru_position_after (MetaWindow *window,
                                            MetaWindow *after_this_one);
 
-
 static void meta_window_move_resize_now (MetaWindow  *window);
 
 static void meta_window_unqueue (MetaWindow *window, guint queuebits);
@@ -122,6 +121,10 @@ static void meta_window_propagate_focus_appearance (MetaWindow *window,
                                                     gboolean    focused);
 static void meta_window_update_icon_now (MetaWindow *window,
                                          gboolean    force);
+
+static void set_workspace_state (MetaWindow    *window,
+                                 gboolean       on_all_workspaces,
+                                 MetaWorkspace *workspace);
 
 /* Idle handlers for the three queues (run with meta_later_add()). The
  * "data" parameter in each case will be a GINT_TO_POINTER of the
@@ -192,8 +195,7 @@ prefs_changed_callback (MetaPreference pref,
 
   if (pref == META_PREF_WORKSPACES_ONLY_ON_PRIMARY)
     {
-      meta_window_update_on_all_workspaces (window);
-      meta_window_queue (window, META_QUEUE_CALC_SHOWING);
+      meta_window_on_all_workspaces_changed (window);
     }
   else if (pref == META_PREF_ATTACH_MODAL_DIALOGS &&
            window->type == META_WINDOW_MODAL_DIALOG)
@@ -576,8 +578,7 @@ meta_window_class_init (MetaWindowClass *klass)
                   G_SIGNAL_RUN_LAST,
                   0,
                   NULL, NULL, NULL,
-                  G_TYPE_NONE, 1,
-                  G_TYPE_INT);
+                  G_TYPE_NONE, 0);
 
   window_signals[FOCUS] =
     g_signal_new ("focus",
@@ -766,7 +767,6 @@ _meta_window_shared_new (MetaDisplay         *display,
                          XWindowAttributes   *attrs)
 {
   MetaWindow *window;
-  MetaWorkspace *space;
 
   g_assert (attrs != NULL);
 
@@ -1053,6 +1053,9 @@ _meta_window_shared_new (MetaDisplay         *display,
 
   if (window->initial_workspace_set)
     {
+      gboolean on_all_workspaces;
+      MetaWorkspace *workspace;
+
       if (window->initial_workspace == (int) 0xFFFFFFFF)
         {
           meta_topic (META_DEBUG_PLACEMENT,
@@ -1063,8 +1066,9 @@ _meta_window_shared_new (MetaDisplay         *display,
 	   * added to all the MRU lists
 	   */
           window->on_all_workspaces_requested = TRUE;
-          window->on_all_workspaces = TRUE;
-          meta_workspace_add_window (window->screen->active_workspace, window);
+
+          on_all_workspaces = TRUE;
+          workspace = NULL;
         }
       else
         {
@@ -1072,13 +1076,12 @@ _meta_window_shared_new (MetaDisplay         *display,
                       "Window %s is initially on space %d\n",
                       window->desc, window->initial_workspace);
 
-          space =
-            meta_screen_get_workspace_by_index (window->screen,
-                                                window->initial_workspace);
-
-          if (space)
-            meta_workspace_add_window (space, window);
+          on_all_workspaces = FALSE;
+          workspace = meta_screen_get_workspace_by_index (window->screen,
+                                                          window->initial_workspace);
         }
+
+      set_workspace_state (window, on_all_workspaces, workspace);
     }
 
   /* override-redirect windows are subtly different from other windows
@@ -1089,26 +1092,15 @@ _meta_window_shared_new (MetaDisplay         *display,
    */
   if (!window->override_redirect)
     {
-      if (window->workspace == NULL &&
-          window->transient_for != NULL)
+      if (window->workspace == NULL && window->transient_for != NULL)
         {
-          /* Try putting dialog on parent's workspace */
-          if (window->transient_for->workspace)
-            {
-              meta_topic (META_DEBUG_PLACEMENT,
-                          "Putting window %s on same workspace as parent %s\n",
-                          window->desc, window->transient_for->desc);
+          meta_topic (META_DEBUG_PLACEMENT,
+                      "Putting window %s on same workspace as parent %s\n",
+                      window->desc, window->transient_for->desc);
 
-              if (window->transient_for->on_all_workspaces_requested)
-                {
-                  window->on_all_workspaces_requested = TRUE;
-                  window->on_all_workspaces = TRUE;
-                }
-
-              /* this will implicitly add to the appropriate MRU lists
-               */
-              meta_workspace_add_window (window->transient_for->workspace, window);
-            }
+          set_workspace_state (window,
+                               window->transient_for->on_all_workspaces_requested,
+                               window->transient_for->workspace);
         }
 
       if (window->workspace == NULL)
@@ -1117,13 +1109,8 @@ _meta_window_shared_new (MetaDisplay         *display,
                       "Putting window %s on active workspace\n",
                       window->desc);
 
-          space = window->screen->active_workspace;
-
-          meta_workspace_add_window (space, window);
+          set_workspace_state (window, FALSE, window->screen->active_workspace);
         }
-
-      /* for the various on_all_workspaces = TRUE possible above */
-      meta_window_current_workspace_changed (window);
 
       meta_window_update_struts (window);
     }
@@ -1273,7 +1260,7 @@ meta_window_unmanage (MetaWindow  *window,
    * not confuse other window managers that may take over
    */
   if (window->screen->closing && meta_prefs_get_workspaces_only_on_primary ())
-    meta_window_update_on_all_workspaces (window);
+    meta_window_on_all_workspaces_changed (window);
 
   if (window->fullscreen)
     {
@@ -1352,8 +1339,7 @@ meta_window_unmanage (MetaWindow  *window,
                                META_QUEUE_UPDATE_ICON);
   meta_window_free_delete_dialog (window);
 
-  if (window->workspace)
-    meta_workspace_remove_window (window->workspace, window);
+  set_workspace_state (window, FALSE, NULL);
 
   g_assert (window->workspace == NULL);
 
@@ -1397,62 +1383,6 @@ meta_window_unmanage (MetaWindow  *window,
   g_signal_emit (window, window_signals[UNMANAGED], 0);
 
   g_object_unref (window);
-}
-
-static gboolean
-should_be_on_all_workspaces (MetaWindow *window)
-{
-  return
-    window->on_all_workspaces_requested ||
-    window->override_redirect ||
-    (meta_prefs_get_workspaces_only_on_primary () &&
-     !window->unmanaging &&
-     !meta_window_is_on_primary_monitor (window));
-}
-
-void
-meta_window_update_on_all_workspaces (MetaWindow *window)
-{
-  gboolean old_value;
-
-  old_value = window->on_all_workspaces;
-
-  window->on_all_workspaces = should_be_on_all_workspaces (window);
-
-  if (window->on_all_workspaces != old_value &&
-      !window->override_redirect)
-    {
-      if (window->on_all_workspaces)
-        {
-          GList* tmp = window->screen->workspaces;
-
-          /* Add to all MRU lists */
-          while (tmp)
-            {
-              MetaWorkspace* work = (MetaWorkspace*) tmp->data;
-              if (!g_list_find (work->mru_list, window))
-                work->mru_list = g_list_prepend (work->mru_list, window);
-
-              tmp = tmp->next;
-            }
-        }
-      else
-        {
-          GList* tmp = window->screen->workspaces;
-
-          /* Remove from MRU lists except the window's workspace */
-          while (tmp)
-            {
-              MetaWorkspace* work = (MetaWorkspace*) tmp->data;
-              if (work != window->workspace)
-                work->mru_list = g_list_remove (work->mru_list, window);
-              tmp = tmp->next;
-            }
-        }
-      meta_window_current_workspace_changed (window);
-
-      g_object_notify_by_pspec (G_OBJECT (window), obj_props[PROP_ON_ALL_WORKSPACES]);
-    }
 }
 
 static void
@@ -1576,27 +1506,10 @@ meta_window_showing_on_its_workspace (MetaWindow *window)
 gboolean
 meta_window_should_be_showing (MetaWindow  *window)
 {
-  gboolean on_workspace;
-
-  meta_verbose ("Should be showing for window %s\n", window->desc);
-
-  /* See if we're on the workspace */
-  on_workspace = meta_window_located_on_workspace (window,
-                                                   window->screen->active_workspace);
-
-  if (!on_workspace)
-    meta_verbose ("Window %s is not on workspace %d\n",
-                  window->desc,
-                  meta_workspace_index (window->screen->active_workspace));
-  else
-    meta_verbose ("Window %s is on the active workspace %d\n",
-                  window->desc,
-                  meta_workspace_index (window->screen->active_workspace));
-
-  if (window->on_all_workspaces)
-    meta_verbose ("Window %s is on all workspaces\n", window->desc);
-
-  return on_workspace && meta_window_showing_on_its_workspace (window);
+  /* Windows should be showing if they're located on the
+   * active workspace and they're showing on their own workspace. */
+  return (meta_window_located_on_workspace (window, window->screen->active_workspace) &&
+          meta_window_showing_on_its_workspace (window));
 }
 
 static void
@@ -3461,6 +3374,7 @@ meta_window_activate_full (MetaWindow     *window,
   meta_topic (META_DEBUG_FOCUS,
               "Focusing window %s due to activation\n",
               window->desc);
+
   if (meta_window_located_on_workspace (window, workspace))
     meta_window_focus (window, timestamp);
   else
@@ -3617,7 +3531,7 @@ meta_window_update_monitor (MetaWindow *window,
   window->monitor = meta_screen_get_monitor_for_window (window->screen, window);
   if (old != window->monitor)
     {
-      meta_window_update_on_all_workspaces (window);
+      meta_window_on_all_workspaces_changed (window);
 
       /* If workspaces only on primary and we moved back to primary due to a user action,
        * ensure that the window is now in that workspace. We do this because while
@@ -4339,10 +4253,8 @@ meta_window_focus (MetaWindow  *window,
       meta_topic (META_DEBUG_FOCUS,
                   "%s has %s as a modal transient, so focusing it instead.\n",
                   window->desc, modal_transient->desc);
-      if (!modal_transient->on_all_workspaces &&
-          modal_transient->workspace != window->screen->active_workspace)
-        meta_window_change_workspace (modal_transient,
-                                      window->screen->active_workspace);
+      if (!meta_window_located_on_workspace (modal_transient, window->screen->active_workspace))
+        meta_window_change_workspace (modal_transient, window->screen->active_workspace);
       window = modal_transient;
     }
 
@@ -4364,35 +4276,130 @@ meta_window_focus (MetaWindow  *window,
 /*  meta_effect_run_focus(window, NULL, NULL); */
 }
 
+/* Workspace management. Invariants:
+ *
+ *  - window->workspace describes the workspace the window is on.
+ *
+ *  - workspace->windows is a list of windows that is located on
+ *    that workspace.
+ *
+ *  - If the window is on_all_workspaces, then then
+ *    window->workspace == NULL, but workspace->windows contains
+ *    the window.
+ */
+
+static void
+set_workspace_state (MetaWindow    *window,
+                     gboolean       on_all_workspaces,
+                     MetaWorkspace *workspace)
+{
+  /* If we're on all workspaces, then our new workspace must be NULL. */
+  if (on_all_workspaces)
+    g_assert (workspace == NULL);
+
+  /* If this is an override-redirect window, ensure that the only
+   * times we're setting the workspace state is either during construction
+   * to mark as on_all_workspaces, or when unmanaging to remove all the
+   * workspaces. */
+  if (window->override_redirect)
+    g_return_if_fail ((window->constructing && on_all_workspaces) || window->unmanaging);
+
+  if (on_all_workspaces == window->on_all_workspaces &&
+      workspace == window->workspace)
+    return;
+
+  if (window->workspace)
+    meta_workspace_remove_window (window->workspace, window);
+  else if (window->on_all_workspaces)
+    {
+      GList *l;
+      for (l = window->screen->workspaces; l != NULL; l = l->next)
+        {
+          MetaWorkspace *workspace = l->data;
+          meta_workspace_remove_window (workspace, window);
+        }
+    }
+
+  window->on_all_workspaces = on_all_workspaces;
+  window->workspace = workspace;
+
+  if (window->workspace)
+    meta_workspace_add_window (window->workspace, window);
+  else if (window->on_all_workspaces)
+    {
+      GList *l;
+      for (l = window->screen->workspaces; l != NULL; l = l->next)
+        {
+          MetaWorkspace *workspace = l->data;
+          meta_workspace_add_window (workspace, window);
+        }
+    }
+
+  /* queue a move_resize since changing workspaces may change
+   * the relevant struts
+   */
+  if (!window->override_redirect)
+    meta_window_queue (window, META_QUEUE_MOVE_RESIZE);
+  meta_window_queue (window, META_QUEUE_CALC_SHOWING);
+  meta_window_current_workspace_changed (window);
+  g_object_notify_by_pspec (G_OBJECT (window), obj_props[PROP_ON_ALL_WORKSPACES]);
+  g_signal_emit (window, window_signals[WORKSPACE_CHANGED], 0);
+}
+
+static gboolean
+should_be_on_all_workspaces (MetaWindow *window)
+{
+  return
+    window->always_sticky ||
+    window->on_all_workspaces_requested ||
+    window->override_redirect ||
+    (meta_prefs_get_workspaces_only_on_primary () &&
+     !window->unmanaging &&
+     !meta_window_is_on_primary_monitor (window));
+}
+
+void
+meta_window_on_all_workspaces_changed (MetaWindow *window)
+{
+  gboolean on_all_workspaces = should_be_on_all_workspaces (window);
+
+  if (window->on_all_workspaces == on_all_workspaces)
+    return;
+
+  MetaWorkspace *workspace;
+
+  if (on_all_workspaces)
+    {
+      workspace = NULL;
+    }
+  else
+    {
+      /* We're coming out of the sticky state. Put the window on
+       * the currently active workspace. */
+      workspace = window->screen->active_workspace;
+    }
+
+  set_workspace_state (window, on_all_workspaces, workspace);
+}
+
 static void
 meta_window_change_workspace_without_transients (MetaWindow    *window,
                                                  MetaWorkspace *workspace)
 {
-  int old_workspace = -1;
-
-  meta_verbose ("Changing window %s to workspace %d\n",
-                window->desc, meta_workspace_index (workspace));
-
-  if (!window->on_all_workspaces_requested)
-    {
-      old_workspace = meta_workspace_index (window->workspace);
-    }
-
-  /* unstick if stuck. meta_window_unstick would call
-   * meta_window_change_workspace recursively if the window
-   * is not in the active workspace.
-   */
+  /* Try to unstick the window if it's stuck. This doesn't
+   * have any guarantee that we'll actually unstick the
+   * window, since it could be stuck for other reasons. */
   if (window->on_all_workspaces_requested)
     meta_window_unstick (window);
 
-  /* See if we're already on this space. If not, make sure we are */
-  if (window->workspace != workspace)
-    {
-      meta_workspace_remove_window (window->workspace, window);
-      meta_workspace_add_window (workspace, window);
-      g_signal_emit (window, window_signals[WORKSPACE_CHANGED], 0,
-                     old_workspace);
-    }
+  /* We failed to unstick the window. */
+  if (window->on_all_workspaces)
+    return;
+
+  if (window->workspace == workspace)
+    return;
+
+  set_workspace_state (window, FALSE, workspace);
 }
 
 static gboolean
@@ -4408,9 +4415,6 @@ meta_window_change_workspace (MetaWindow    *window,
                               MetaWorkspace *workspace)
 {
   g_return_if_fail (!window->override_redirect);
-
-  if (window->always_sticky)
-    return;
 
   meta_window_change_workspace_without_transients (window, workspace);
 
@@ -4434,10 +4438,7 @@ window_stick_impl (MetaWindow  *window)
    * toggled back off.
    */
   window->on_all_workspaces_requested = TRUE;
-  meta_window_frame_size_changed (window);
-  meta_window_update_on_all_workspaces (window);
-
-  meta_window_queue(window, META_QUEUE_CALC_SHOWING);
+  meta_window_on_all_workspaces_changed (window);
 }
 
 static void
@@ -4449,18 +4450,7 @@ window_unstick_impl (MetaWindow  *window)
   /* Revert to window->workspaces */
 
   window->on_all_workspaces_requested = FALSE;
-  meta_window_frame_size_changed (window);
-  meta_window_update_on_all_workspaces (window);
-
-  /* We change ourselves to the active workspace, since otherwise you'd get
-   * a weird window-vaporization effect. Once we have UI for being
-   * on more than one workspace this should probably be add_workspace
-   * not change_workspace.
-   */
-  if (window->screen->active_workspace != window->workspace)
-    meta_window_change_workspace (window, window->screen->active_workspace);
-
-  meta_window_queue(window, META_QUEUE_CALC_SHOWING);
+  meta_window_on_all_workspaces_changed (window);
 }
 
 static gboolean
@@ -5002,8 +4992,10 @@ meta_window_get_workspaces (MetaWindow *window)
     return window->screen->workspaces;
   else if (window->workspace != NULL)
     return window->workspace->list_containing_self;
-  else
+  else if (window->constructing)
     return NULL;
+  else
+    g_assert_not_reached ();
 }
 
 static void
@@ -6697,7 +6689,7 @@ meta_window_set_demands_attention (MetaWindow *window)
   if (window->wm_state_demands_attention)
     return;
 
-  if (workspace!=window->workspace)
+  if (!meta_window_located_on_workspace (window, workspace))
     {
       /* windows on other workspaces are necessarily obscured */
       obscured = TRUE;
@@ -6894,8 +6886,8 @@ meta_window_get_workspace (MetaWindow *window)
 {
   if (window->on_all_workspaces)
     return window->screen->active_workspace;
-
-  return window->workspace;
+  else
+    return window->workspace;
 }
 
 gboolean

@@ -422,7 +422,7 @@ meta_window_apply_session_info (MetaWindow *window,
   if (info->on_all_workspaces_set)
     {
       window->on_all_workspaces_requested = info->on_all_workspaces;
-      meta_window_update_on_all_workspaces (window);
+      meta_window_on_all_workspaces_changed (window);
       meta_topic (META_DEBUG_SM,
                   "Restoring sticky state %d for window %s\n",
                   window->on_all_workspaces_requested, window->desc);
@@ -452,24 +452,19 @@ meta_window_apply_session_info (MetaWindow *window,
 
       if (spaces)
         {
-          /* This briefly breaks the invariant that we are supposed
-           * to always be on some workspace. But we paranoically
-           * ensured that one of the workspaces from the session was
-           * indeed valid, so we know we'll go right back to one.
+          /* XXX: What should we do if there's more than one workspace
+           * listed? We only support one workspace for each window.
+           *
+           * For now, just choose the first one.
            */
-          if (window->workspace)
-            meta_workspace_remove_window (window->workspace, window);
+          MetaWorkspace *workspace = spaces->data;
 
-          /* Only restore to the first workspace if the window
-           * happened to be on more than one, since we have replaces
-           * window->workspaces with window->workspace
-           */
-          meta_workspace_add_window (spaces->data, window);
+          meta_window_change_workspace (window, workspace);
 
           meta_topic (META_DEBUG_SM,
                       "Restoring saved window %s to workspace %d\n",
                       window->desc,
-                      meta_workspace_index (spaces->data));
+                      meta_workspace_index (workspace));
 
           g_slist_free (spaces);
         }

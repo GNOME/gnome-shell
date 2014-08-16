@@ -166,16 +166,6 @@ meta_workspace_init (MetaWorkspace *workspace)
 {
 }
 
-static void
-maybe_add_to_list (MetaWindow *window,
-                   gpointer    data)
-{
-  GList **mru_list = data;
-
-  if (window->on_all_workspaces)
-    *mru_list = g_list_prepend (*mru_list, window);
-}
-
 MetaWorkspace*
 meta_workspace_new (MetaScreen *screen)
 {
@@ -188,7 +178,6 @@ meta_workspace_new (MetaScreen *screen)
     g_list_append (workspace->screen->workspaces, workspace);
   workspace->windows = NULL;
   workspace->mru_list = NULL;
-  meta_screen_foreach_window (screen, META_LIST_DEFAULT, maybe_add_to_list, &workspace->mru_list);
 
   workspace->work_areas_invalid = TRUE;
   workspace->work_area_monitor = NULL;
@@ -260,19 +249,6 @@ meta_workspace_remove (MetaWorkspace *workspace)
 
   g_return_if_fail (workspace != workspace->screen->active_workspace);
 
-  /* Here we assume all the windows are already on another workspace
-   * as well, so they won't be "orphaned"
-   */
-
-  while (workspace->windows != NULL)
-    {
-      MetaWindow *window = workspace->windows->data;
-
-      /* pop front of list we're iterating over */
-      meta_workspace_remove_window (workspace, window);
-      g_assert (window->workspace != NULL);
-    }
-
   g_assert (workspace->windows == NULL);
 
   screen = workspace->screen;
@@ -316,35 +292,10 @@ void
 meta_workspace_add_window (MetaWorkspace *workspace,
                            MetaWindow    *window)
 {
-  g_return_if_fail (window->workspace == NULL);
-
-  /* If the window is on all workspaces, we want to add it to all mru
-   * lists, otherwise just add it to this workspaces mru list
-   */
-  if (window->on_all_workspaces)
-    {
-      if (window->workspace == NULL)
-        {
-          GList *l;
-          for (l = window->screen->workspaces; l != NULL; l = l->next)
-            {
-              MetaWorkspace* work = (MetaWorkspace*) l->data;
-              if (!g_list_find (work->mru_list, window))
-                work->mru_list = g_list_prepend (work->mru_list, window);
-            }
-        }
-    }
-  else
-    {
-      g_assert (g_list_find (workspace->mru_list, window) == NULL);
-      workspace->mru_list = g_list_prepend (workspace->mru_list, window);
-    }
+  g_assert (g_list_find (workspace->mru_list, window) == NULL);
+  workspace->mru_list = g_list_prepend (workspace->mru_list, window);
 
   workspace->windows = g_list_prepend (workspace->windows, window);
-
-  window->workspace = workspace;
-
-  meta_window_current_workspace_changed (window);
 
   if (window->struts)
     {
@@ -354,11 +305,6 @@ meta_workspace_add_window (MetaWorkspace *workspace,
       meta_workspace_invalidate_work_area (workspace);
     }
 
-  /* queue a move_resize since changing workspaces may change
-   * the relevant struts
-   */
-  meta_window_queue (window, META_QUEUE_CALC_SHOWING|META_QUEUE_MOVE_RESIZE);
-
   g_signal_emit (workspace, signals[WINDOW_ADDED], 0, window);
   g_object_notify_by_pspec (G_OBJECT (workspace), obj_props[PROP_N_WINDOWS]);
 }
@@ -367,31 +313,10 @@ void
 meta_workspace_remove_window (MetaWorkspace *workspace,
                               MetaWindow    *window)
 {
-  g_return_if_fail (window->workspace == workspace);
-
   workspace->windows = g_list_remove (workspace->windows, window);
-  window->workspace = NULL;
 
-  /* If the window is on all workspaces, we don't want to remove it
-   * from the MRU list unless this causes it to be removed from all
-   * workspaces
-   */
-  if (window->on_all_workspaces)
-    {
-      GList *l;
-      for (l = window->screen->workspaces; l != NULL; l = l->next)
-        {
-          MetaWorkspace* work = (MetaWorkspace*) l->data;
-          work->mru_list = g_list_remove (work->mru_list, window);
-        }
-    }
-  else
-    {
-      workspace->mru_list = g_list_remove (workspace->mru_list, window);
-      g_assert (g_list_find (workspace->mru_list, window) == NULL);
-    }
-
-  meta_window_current_workspace_changed (window);
+  workspace->mru_list = g_list_remove (workspace->mru_list, window);
+  g_assert (g_list_find (workspace->mru_list, window) == NULL);
 
   if (window->struts)
     {
@@ -400,11 +325,6 @@ meta_workspace_remove_window (MetaWorkspace *workspace,
                   meta_workspace_index (workspace), window->desc);
       meta_workspace_invalidate_work_area (workspace);
     }
-
-  /* queue a move_resize since changing workspaces may change
-   * the relevant struts
-   */
-  meta_window_queue (window, META_QUEUE_CALC_SHOWING|META_QUEUE_MOVE_RESIZE);
 
   g_signal_emit (workspace, signals[WINDOW_REMOVED], 0, window);
   g_object_notify (G_OBJECT (workspace), "n-windows");
@@ -424,8 +344,7 @@ meta_workspace_relocate_windows (MetaWorkspace *workspace,
   for (l = copy; l != NULL; l = l->next)
     {
       MetaWindow *window = l->data;
-      meta_workspace_remove_window (workspace, window);
-      meta_workspace_add_window (new_home, window);
+      meta_window_change_workspace (window, new_home);
     }
 
   g_list_free (copy);
@@ -574,9 +493,6 @@ meta_workspace_activate_with_focus (MetaWorkspace *workspace,
 
   if (move_window != NULL)
     {
-      if (move_window->on_all_workspaces)
-        move_window = NULL; /* don't move it after all */
-
       /* We put the window on the new workspace, flip spaces,
        * then remove from old workspace, so the window
        * never gets unmapped and we maintain the button grab
@@ -584,20 +500,12 @@ meta_workspace_activate_with_focus (MetaWorkspace *workspace,
        *
        * \bug  This comment appears to be the reverse of what happens
        */
-      if (move_window && (move_window->workspace != workspace))
-        {
-          meta_workspace_remove_window (old, move_window);
-          meta_workspace_add_window (workspace, move_window);
-        }
+      if (!meta_window_located_on_workspace (move_window, workspace))
+        meta_window_change_workspace (move_window, workspace);
     }
 
   meta_workspace_queue_calc_showing (old);
   meta_workspace_queue_calc_showing (workspace);
-
-  /* FIXME: Why do we need this?!?  Isn't it handled in the lines above? */
-  if (move_window)
-      /* Removes window from other spaces */
-      meta_window_change_workspace (move_window, workspace);
 
    /*
     * Notify the compositor that the active workspace is changing.

@@ -625,7 +625,7 @@ void meta_window_set_user_time (MetaWindow *window,
                                 guint32     timestamp);
 
 void meta_window_update_for_monitors_changed (MetaWindow *window);
-void meta_window_update_on_all_workspaces (MetaWindow *window);
+void meta_window_on_all_workspaces_changed (MetaWindow *window);
 
 gboolean meta_window_should_attach_to_parent (MetaWindow *window);
 gboolean meta_window_can_tile_side_by_side   (MetaWindow *window);
