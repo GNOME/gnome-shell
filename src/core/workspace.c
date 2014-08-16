@@ -573,7 +573,7 @@ meta_workspace_activate_with_focus (MetaWorkspace *workspace,
    * or the new one *but not both*, then update the
    * _net_showing_desktop hint
    */
-  if (old && (old->showing_desktop ^ workspace->showing_desktop))
+  if (old && (old->showing_desktop != workspace->showing_desktop))
     meta_screen_update_showing_desktop_hint (workspace->screen);
 
   if (old == NULL)
