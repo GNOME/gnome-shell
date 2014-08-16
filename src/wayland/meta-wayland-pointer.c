@@ -261,6 +261,9 @@ sync_focus_surface (MetaWaylandPointer *pointer)
     case META_EVENT_ROUTE_WAYLAND_POPUP:
       focus_surface = pointer->current;
       break;
+
+    default:
+      g_assert_not_reached ();
     }
 
   if (focus_surface != pointer->focus_surface)
