@@ -32,6 +32,9 @@
 #ifdef GDK_WINDOWING_X11
 #include <gdk/gdkx.h>
 #endif
+#ifdef GDK_WINDOWING_WAYLAND
+#include <gdk/gdkwayland.h>
+#endif
 #ifdef GDK_WINDOWING_WIN32
 #include <gdk/gdkwin32.h>
 #endif
@@ -267,6 +270,14 @@ clutter_stage_gdk_realize (ClutterStageWindow *stage_window)
                                                 GDK_WINDOW_XID (stage_gdk->window),
                                                 clutter_stage_gdk_update_foreign_event_mask,
                                                 stage_gdk);
+    }
+  else
+#endif
+#if defined(GDK_WINDOWING_WAYLAND) && defined(COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT)
+  if (GDK_IS_WAYLAND_WINDOW (stage_gdk->window))
+    {
+      cogl_wayland_onscreen_set_foreign_surface (stage_cogl->onscreen,
+                                                 gdk_wayland_window_get_wl_surface (stage_gdk->window));
     }
   else
 #endif
