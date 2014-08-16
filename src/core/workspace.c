@@ -60,6 +60,7 @@ enum {
   PROP_0,
 
   PROP_N_WINDOWS,
+  PROP_WORKSPACE_INDEX,
 
   LAST_PROP,
 };
@@ -114,6 +115,9 @@ meta_workspace_get_property (GObject      *object,
        */
       g_value_set_uint (value, g_list_length (ws->windows));
       break;
+    case PROP_WORKSPACE_INDEX:
+      g_value_set_uint (value, meta_workspace_index (ws));
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -148,6 +152,11 @@ meta_workspace_class_init (MetaWorkspaceClass *klass)
                                                  "Number of windows",
                                                  0, G_MAXUINT, 0,
                                                  G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
+  obj_props[PROP_WORKSPACE_INDEX] = g_param_spec_uint ("workspace-index",
+                                                       "Workspace index",
+                                                       "The workspace's index",
+                                                       0, G_MAXUINT, 0,
+                                                       G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
 
   g_object_class_install_properties (object_class, LAST_PROP, obj_props);
 }
@@ -691,7 +700,7 @@ meta_workspace_index (MetaWorkspace *workspace)
 }
 
 void
-meta_workspace_update_window_hints (MetaWorkspace *workspace)
+meta_workspace_index_changed (MetaWorkspace *workspace)
 {
   GList *l;
   for (l = workspace->windows; l != NULL; l = l->next)
@@ -699,6 +708,8 @@ meta_workspace_update_window_hints (MetaWorkspace *workspace)
       MetaWindow *win = l->data;
       meta_window_current_workspace_changed (win);
     }
+
+  g_object_notify_by_pspec (G_OBJECT (workspace), obj_props[PROP_WORKSPACE_INDEX]);
 }
 
 /**

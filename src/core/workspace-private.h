@@ -94,4 +94,6 @@ void meta_workspace_focus_default_window (MetaWorkspace *workspace,
 
 const char* meta_workspace_get_name (MetaWorkspace *workspace);
 
+void meta_workspace_index_changed (MetaWorkspace *workspace);
+
 #endif

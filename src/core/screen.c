@@ -1122,7 +1122,7 @@ meta_screen_remove_workspace (MetaScreen *screen, MetaWorkspace *workspace,
   for (l = next; l != NULL; l = l->next)
     {
       MetaWorkspace *w = l->data;
-      meta_workspace_update_window_hints (w);
+      meta_workspace_index_changed (w);
     }
 
   meta_screen_queue_workarea_recalc (screen);
