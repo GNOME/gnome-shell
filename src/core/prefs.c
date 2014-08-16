@@ -987,6 +987,10 @@ meta_prefs_init (void)
   g_signal_connect (settings, "changed", G_CALLBACK (settings_changed), NULL);
   g_hash_table_insert (settings_schemas, g_strdup (SCHEMA_MUTTER), settings);
 
+  settings = g_settings_new (SCHEMA_MOUSE);
+  g_signal_connect (settings, "changed", G_CALLBACK (settings_changed), NULL);
+  g_hash_table_insert (settings_schemas, g_strdup (SCHEMA_MOUSE), settings);
+
   /* Individual keys we watch outside of our schemas */
   settings = g_settings_new (SCHEMA_INTERFACE);
   g_signal_connect (settings, "changed::" KEY_GNOME_ACCESSIBILITY,
