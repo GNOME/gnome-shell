@@ -246,7 +246,6 @@ workspace_free_builtin_struts (MetaWorkspace *workspace)
 void
 meta_workspace_remove (MetaWorkspace *workspace)
 {
-  GList *tmp;
   MetaScreen *screen;
   int i;
 
@@ -256,18 +255,13 @@ meta_workspace_remove (MetaWorkspace *workspace)
    * as well, so they won't be "orphaned"
    */
 
-  tmp = workspace->windows;
-  while (tmp != NULL)
+  while (workspace->windows != NULL)
     {
-      GList *next;
-      MetaWindow *window = tmp->data;
-      next = tmp->next;
+      MetaWindow *window = workspace->windows->data;
 
       /* pop front of list we're iterating over */
       meta_workspace_remove_window (workspace, window);
       g_assert (window->workspace != NULL);
-
-      tmp = next;
     }
 
   g_assert (workspace->windows == NULL);
