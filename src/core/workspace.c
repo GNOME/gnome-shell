@@ -158,7 +158,8 @@ meta_workspace_init (MetaWorkspace *workspace)
 }
 
 static void
-maybe_add_to_list (MetaScreen *screen, MetaWindow *window, gpointer data)
+maybe_add_to_list (MetaWindow *window,
+                   gpointer    data)
 {
   GList **mru_list = data;
 

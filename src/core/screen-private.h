@@ -38,8 +38,8 @@
 #include "ui.h"
 #include "meta-monitor-manager.h"
 
-typedef void (* MetaScreenWindowFunc) (MetaScreen *screen, MetaWindow *window,
-                                       gpointer user_data);
+typedef void (* MetaScreenWindowFunc) (MetaWindow *window,
+                                       gpointer    user_data);
 
 typedef enum
 {

@@ -968,11 +968,11 @@ get_screen_name (MetaDisplay *display,
  * ignoring override-redirect windows.
  */
 void
-meta_screen_foreach_window (MetaScreen *screen,
-                            MetaScreenWindowFunc func,
-                            gpointer data)
+meta_screen_foreach_window (MetaScreen           *screen,
+                            MetaScreenWindowFunc  func,
+                            gpointer              data)
 {
-  GSList *windows, *l;
+  GSList *windows;
 
   /* If we end up doing this often, just keeping a list
    * of windows might be sensible.
@@ -980,11 +980,7 @@ meta_screen_foreach_window (MetaScreen *screen,
 
   windows = meta_display_list_windows (screen->display, META_LIST_DEFAULT);
 
-  for (l = windows; l != NULL; l = l->next)
-    {
-      MetaWindow *window = l->data;
-      func (screen, window, data);
-    }
+  g_slist_foreach (windows, (GFunc) func, data);
 
   g_slist_free (windows);
 }
@@ -2384,9 +2380,8 @@ meta_screen_free_workspace_layout (MetaWorkspaceLayout *layout)
 }
 
 static void
-meta_screen_resize_func (MetaScreen *screen,
-                         MetaWindow *window,
-                         void       *user_data)
+meta_screen_resize_func (MetaWindow *window,
+                         gpointer    user_data)
 {
   if (window->struts)
     {
