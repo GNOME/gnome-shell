@@ -35,7 +35,6 @@ mutter_built_sources = \
 	$(dbus_idle_built_sources)		\
 	$(dbus_display_config_built_sources)	\
 	$(dbus_login1_built_sources)		\
-	meta/meta-version.h			\
 	mutter-enum-types.h 			\
 	mutter-enum-types.c			\
 	gtk-shell-protocol.c			\
