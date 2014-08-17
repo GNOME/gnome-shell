@@ -372,9 +372,11 @@ dbus_idle_built_sources = meta-dbus-idle-monitor.c meta-dbus-idle-monitor.h
 
 CLEANFILES =					\
 	$(mutter_built_sources)			\
-	$(libmutterinclude_built_headers)	\
 	$(typelib_DATA)				\
 	$(gir_DATA)
+
+DISTCLEANFILES = 				\
+	$(libmutterinclude_built_headers)
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libmutter.pc
@@ -388,7 +390,10 @@ EXTRA_DIST =				\
 	org.gnome.Mutter.DisplayConfig.xml	\
 	org.gnome.Mutter.IdleMonitor.xml
 
-BUILT_SOURCES = $(mutter_built_sources)
+BUILT_SOURCES =					\
+	$(mutter_built_sources)			\
+	$(libmutterinclude_built_headers)
+
 MUTTER_STAMP_FILES = stamp-mutter-enum-types.h
 CLEANFILES += $(MUTTER_STAMP_FILES)
 
