@@ -1698,42 +1698,42 @@ button_layout_handler (GVariant *value,
 
   /* Invert the button layout for RTL languages */
   if (meta_get_locale_direction() == META_LOCALE_DIRECTION_RTL)
-  {
-    MetaButtonLayout rtl_layout;
-    int j;
+    {
+      MetaButtonLayout rtl_layout;
+      int j;
 
-    for (i = 0; new_layout.left_buttons[i] != META_BUTTON_FUNCTION_LAST; i++);
-    for (j = 0; j < i; j++)
-      {
-        rtl_layout.right_buttons[j] = new_layout.left_buttons[i - j - 1];
-        if (j == 0)
-          rtl_layout.right_buttons_has_spacer[i - 1] = new_layout.left_buttons_has_spacer[i - j - 1];
-        else
-          rtl_layout.right_buttons_has_spacer[j - 1] = new_layout.left_buttons_has_spacer[i - j - 1];
-      }
-    for (; j < MAX_BUTTONS_PER_CORNER; j++)
-      {
-        rtl_layout.right_buttons[j] = META_BUTTON_FUNCTION_LAST;
-        rtl_layout.right_buttons_has_spacer[j] = FALSE;
-      }
+      for (i = 0; new_layout.left_buttons[i] != META_BUTTON_FUNCTION_LAST; i++);
+      for (j = 0; j < i; j++)
+        {
+          rtl_layout.right_buttons[j] = new_layout.left_buttons[i - j - 1];
+          if (j == 0)
+            rtl_layout.right_buttons_has_spacer[i - 1] = new_layout.left_buttons_has_spacer[i - j - 1];
+          else
+            rtl_layout.right_buttons_has_spacer[j - 1] = new_layout.left_buttons_has_spacer[i - j - 1];
+        }
+      for (; j < MAX_BUTTONS_PER_CORNER; j++)
+        {
+          rtl_layout.right_buttons[j] = META_BUTTON_FUNCTION_LAST;
+          rtl_layout.right_buttons_has_spacer[j] = FALSE;
+        }
 
-    for (i = 0; new_layout.right_buttons[i] != META_BUTTON_FUNCTION_LAST; i++);
-    for (j = 0; j < i; j++)
-      {
-        rtl_layout.left_buttons[j] = new_layout.right_buttons[i - j - 1];
-        if (j == 0)
-          rtl_layout.left_buttons_has_spacer[i - 1] = new_layout.right_buttons_has_spacer[i - j - 1];
-        else
-          rtl_layout.left_buttons_has_spacer[j - 1] = new_layout.right_buttons_has_spacer[i - j - 1];
-      }
-    for (; j < MAX_BUTTONS_PER_CORNER; j++)
-      {
-        rtl_layout.left_buttons[j] = META_BUTTON_FUNCTION_LAST;
-        rtl_layout.left_buttons_has_spacer[j] = FALSE;
-      }
+      for (i = 0; new_layout.right_buttons[i] != META_BUTTON_FUNCTION_LAST; i++);
+      for (j = 0; j < i; j++)
+        {
+          rtl_layout.left_buttons[j] = new_layout.right_buttons[i - j - 1];
+          if (j == 0)
+            rtl_layout.left_buttons_has_spacer[i - 1] = new_layout.right_buttons_has_spacer[i - j - 1];
+          else
+            rtl_layout.left_buttons_has_spacer[j - 1] = new_layout.right_buttons_has_spacer[i - j - 1];
+        }
+      for (; j < MAX_BUTTONS_PER_CORNER; j++)
+        {
+          rtl_layout.left_buttons[j] = META_BUTTON_FUNCTION_LAST;
+          rtl_layout.left_buttons_has_spacer[j] = FALSE;
+        }
 
-    new_layout = rtl_layout;
-  }
+      new_layout = rtl_layout;
+    }
 
   if (!button_layout_equal (&button_layout, &new_layout))
     {
