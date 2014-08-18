@@ -4,7 +4,7 @@
 # Chris Leick <c.leick@vollbio.de>
 # Mario Blättermann <mario.blaettermann@gmail.com>, 2011-2013.
 # Christian Kirbach <Christian.Kirbach@gmail.com>, 2011, 2012.
-# Wolfgang Stöggl <c72578@yahoo.de> 2011-2012.
+# Wolfgang Stöggl <c72578@yahoo.de> 2011-2012, 2014.
 # Tobias Endrigkeit <tobiasendrigkeit@googlemail.com>, 2012.
 #
 msgid ""
@@ -12,16 +12,16 @@ msgstr ""
 "Project-Id-Version: clutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-04-28 15:04+0000\n"
-"PO-Revision-Date: 2014-04-28 19:44+0100\n"
-"Last-Translator: Christian Kirbach <christian.kirbach@gmail.com>\n"
+"POT-Creation-Date: 2014-08-18 03:05+0000\n"
+"PO-Revision-Date: 2014-08-18 07:35+0100\n"
+"Last-Translator: Wolfgang Stoeggl <c72578@yahoo.de>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Poedit 1.6.7\n"
 
 #: ../clutter/clutter-actor.c:6224
 msgid "X coordinate"
@@ -47,7 +47,7 @@ msgstr "Position"
 msgid "The position of the origin of the actor"
 msgstr "Die Ursprungsposition des Akteurs"
 
-#: ../clutter/clutter-actor.c:6284 ../clutter/clutter-canvas.c:242
+#: ../clutter/clutter-actor.c:6284 ../clutter/clutter-canvas.c:247
 #: ../clutter/clutter-grid-layout.c:1239
 #: ../clutter/deprecated/clutter-behaviour-ellipse.c:474
 msgid "Width"
@@ -57,7 +57,7 @@ msgstr "Breite"
 msgid "Width of the actor"
 msgstr "Breite des Akteurs"
 
-#: ../clutter/clutter-actor.c:6303 ../clutter/clutter-canvas.c:258
+#: ../clutter/clutter-actor.c:6303 ../clutter/clutter-canvas.c:263
 #: ../clutter/clutter-grid-layout.c:1246
 #: ../clutter/deprecated/clutter-behaviour-ellipse.c:490
 msgid "Height"
@@ -945,31 +945,27 @@ msgstr "Kontrast"
 msgid "The contrast change to apply"
 msgstr "Die anzuwendende Kontraständerung"
 
-#: ../clutter/clutter-canvas.c:243
+#: ../clutter/clutter-canvas.c:248
 msgid "The width of the canvas"
 msgstr "Die Breite der Zeichenfläche"
 
-#: ../clutter/clutter-canvas.c:259
+#: ../clutter/clutter-canvas.c:264
 msgid "The height of the canvas"
 msgstr "Die Höhe der Zeichenfläche"
 
-#: ../clutter/clutter-canvas.c:278
-#| msgid "Selection Color Set"
+#: ../clutter/clutter-canvas.c:283
 msgid "Scale Factor Set"
 msgstr "Skalierungsfaktor festgelegt"
 
-#: ../clutter/clutter-canvas.c:279
-#| msgid "Whether the transform property is set"
+#: ../clutter/clutter-canvas.c:284
 msgid "Whether the scale-factor property is set"
 msgstr "Gibt an, ob die Eigenschaft scale-factor gesetzt ist"
 
-#: ../clutter/clutter-canvas.c:300
-#| msgid "Factor"
+#: ../clutter/clutter-canvas.c:305
 msgid "Scale Factor"
 msgstr "Skalierungsfaktor"
 
-#: ../clutter/clutter-canvas.c:301
-#| msgid "The height of the Cairo surface"
+#: ../clutter/clutter-canvas.c:306
 msgid "The scaling factor for the surface"
 msgstr "Der Skalierungsfaktor für die Zeichenfläche"
 
@@ -1176,43 +1172,37 @@ msgstr "Maximale Zeilenhöhe jeder Reihe"
 msgid "Snap to grid"
 msgstr "Am Gitter ausrichten"
 
-#: ../clutter/clutter-gesture-action.c:668
+#: ../clutter/clutter-gesture-action.c:685
 msgid "Number touch points"
 msgstr "Anzahl der Berührungspunkte"
 
-#: ../clutter/clutter-gesture-action.c:669
+#: ../clutter/clutter-gesture-action.c:686
 msgid "Number of touch points"
 msgstr "Anzahl der Berührungspunkte"
 
-#: ../clutter/clutter-gesture-action.c:684
+#: ../clutter/clutter-gesture-action.c:701
 msgid "Threshold Trigger Edge"
-msgstr ""
+msgstr "Kante des Schwellwert-Auslösers"
 
-#: ../clutter/clutter-gesture-action.c:685
-#, fuzzy
-#| msgid "The timeline used by the animation"
+#: ../clutter/clutter-gesture-action.c:702
 msgid "The trigger edge used by the action"
-msgstr "Die von der Animation benutzte Zeitleiste"
+msgstr "Die von der Aktion verwendete Kante des Auslösers"
 
-#: ../clutter/clutter-gesture-action.c:704
+#: ../clutter/clutter-gesture-action.c:721
 msgid "Threshold Trigger Horizontal Distance"
-msgstr ""
+msgstr "Horizontaler Abstand des Schwellwert-Auslösers"
 
-#: ../clutter/clutter-gesture-action.c:705
-#, fuzzy
-#| msgid "The timeline used by the animation"
+#: ../clutter/clutter-gesture-action.c:722
 msgid "The horizontal trigger distance used by the action"
-msgstr "Die von der Animation benutzte Zeitleiste"
+msgstr "Der von der Aktion verwendete horizontale Abstand des Auslösers"
 
-#: ../clutter/clutter-gesture-action.c:723
+#: ../clutter/clutter-gesture-action.c:740
 msgid "Threshold Trigger Vertical Distance"
-msgstr ""
+msgstr "Vertikaler Abstand des Schwellwert-Auslösers"
 
-#: ../clutter/clutter-gesture-action.c:724
-#, fuzzy
-#| msgid "The timeline used by the animation"
+#: ../clutter/clutter-gesture-action.c:741
 msgid "The vertical trigger distance used by the action"
-msgstr "Die von der Animation benutzte Zeitleiste"
+msgstr "Der von der Aktion verwendete vertikale Abstand des Auslösers"
 
 #: ../clutter/clutter-grid-layout.c:1223
 msgid "Left attachment"
@@ -1617,7 +1607,6 @@ msgid "Window Scaling Factor"
 msgstr "Skalierungsfaktor des Fensters"
 
 #: ../clutter/clutter-settings.c:660
-#| msgid "Add an effect to be applied on the actor"
 msgid "The scaling factor to be applied to windows"
 msgstr "Der Skalierungsfaktor, der auf das Fenster angewendet werden soll"
 
@@ -2011,7 +2000,7 @@ msgid "Whether the selected text color has been set"
 msgstr "Legt fest, ob die Auswahltextfarbe festgelegt ist"
 
 #: ../clutter/clutter-timeline.c:591
-#: ../clutter/deprecated/clutter-animation.c:506
+#: ../clutter/deprecated/clutter-animation.c:512
 msgid "Loop"
 msgstr "Endlosschleife"
 
@@ -2028,7 +2017,7 @@ msgid "Delay before start"
 msgstr "Verzögerung vor dem Start"
 
 #: ../clutter/clutter-timeline.c:622
-#: ../clutter/deprecated/clutter-animation.c:490
+#: ../clutter/deprecated/clutter-animation.c:496
 #: ../clutter/deprecated/clutter-animator.c:1792
 #: ../clutter/deprecated/clutter-media.c:224
 #: ../clutter/deprecated/clutter-state.c:1515
@@ -2108,7 +2097,7 @@ msgid "Constraints the zoom to an axis"
 msgstr "Beschränkt den Zoom in Richtung einer Achse"
 
 #: ../clutter/deprecated/clutter-alpha.c:347
-#: ../clutter/deprecated/clutter-animation.c:521
+#: ../clutter/deprecated/clutter-animation.c:527
 #: ../clutter/deprecated/clutter-animator.c:1809
 msgid "Timeline"
 msgstr "Zeitleiste"
@@ -2126,7 +2115,7 @@ msgid "Alpha value as computed by the alpha"
 msgstr "Alpha-Wert, wie vom Alpha berechnet"
 
 #: ../clutter/deprecated/clutter-alpha.c:386
-#: ../clutter/deprecated/clutter-animation.c:474
+#: ../clutter/deprecated/clutter-animation.c:480
 msgid "Mode"
 msgstr "Modus"
 
@@ -2134,36 +2123,36 @@ msgstr "Modus"
 msgid "Progress mode"
 msgstr "Fortschrittsmodus"
 
-#: ../clutter/deprecated/clutter-animation.c:457
+#: ../clutter/deprecated/clutter-animation.c:463
 msgid "Object"
 msgstr "Objekt"
 
-#: ../clutter/deprecated/clutter-animation.c:458
+#: ../clutter/deprecated/clutter-animation.c:464
 msgid "Object to which the animation applies"
 msgstr "Objekt, für welches die Animation gilt"
 
-#: ../clutter/deprecated/clutter-animation.c:475
+#: ../clutter/deprecated/clutter-animation.c:481
 msgid "The mode of the animation"
 msgstr "Animationsmodus"
 
-#: ../clutter/deprecated/clutter-animation.c:491
+#: ../clutter/deprecated/clutter-animation.c:497
 msgid "Duration of the animation, in milliseconds"
 msgstr "Dauer der Animation in Millisekunden"
 
-#: ../clutter/deprecated/clutter-animation.c:507
+#: ../clutter/deprecated/clutter-animation.c:513
 msgid "Whether the animation should loop"
 msgstr "Legt fest, ob die Animation endlos wiederholt wird"
 
-#: ../clutter/deprecated/clutter-animation.c:522
+#: ../clutter/deprecated/clutter-animation.c:528
 msgid "The timeline used by the animation"
 msgstr "Die von der Animation benutzte Zeitleiste"
 
-#: ../clutter/deprecated/clutter-animation.c:538
+#: ../clutter/deprecated/clutter-animation.c:544
 #: ../clutter/deprecated/clutter-behaviour.c:237
 msgid "Alpha"
 msgstr "Alpha"
 
-#: ../clutter/deprecated/clutter-animation.c:539
+#: ../clutter/deprecated/clutter-animation.c:545
 msgid "The alpha used by the animation"
 msgstr "Der von der Animation verwendete Alpha-Wert"
 
@@ -2860,7 +2849,7 @@ msgstr "Fenster abgebildet"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:600
 msgid "If window is mapped"
-msgstr "Left fest, ob das Fenster abgebildet wird"
+msgstr "Legt fest, ob das Fenster abgebildet wird"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:609
 msgid "Destroyed"
