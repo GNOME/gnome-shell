@@ -139,8 +139,8 @@ meta_monitor_transform_from_xrandr_all (Rotation rotation)
 }
 
 static gboolean
-output_get_presentation_xrandr (MetaMonitorManagerXrandr *manager_xrandr,
-                                MetaOutput               *output)
+output_get_boolean_property (MetaMonitorManagerXrandr *manager_xrandr,
+                             MetaOutput *output, const char *propname)
 {
   gboolean value;
   Atom atom, actual_type;
@@ -148,7 +148,7 @@ output_get_presentation_xrandr (MetaMonitorManagerXrandr *manager_xrandr,
   unsigned long nitems, bytes_after;
   unsigned char *buffer;
 
-  atom = XInternAtom (manager_xrandr->xdisplay, "_MUTTER_PRESENTATION_OUTPUT", False);
+  atom = XInternAtom (manager_xrandr->xdisplay, propname, False);
   XRRGetOutputProperty (manager_xrandr->xdisplay,
                         (XID)output->winsys_id,
                         atom,
@@ -164,6 +164,13 @@ output_get_presentation_xrandr (MetaMonitorManagerXrandr *manager_xrandr,
 
   XFree (buffer);
   return value;
+}
+
+static gboolean
+output_get_presentation_xrandr (MetaMonitorManagerXrandr *manager_xrandr,
+                                MetaOutput               *output)
+{
+  return output_get_boolean_property (manager_xrandr, output, "_MUTTER_PRESENTATION_OUTPUT");
 }
 
 static int
@@ -314,23 +321,8 @@ static gboolean
 output_get_hotplug_mode_update (MetaMonitorManagerXrandr *manager_xrandr,
                                 XID                       winsys_id)
 {
-  Atom atom;
-  XRRPropertyInfo *info;
-  gboolean result = FALSE;
-
-  atom = XInternAtom (manager_xrandr->xdisplay, "hotplug_mode_update", False);
-  info = XRRQueryOutputProperty (manager_xrandr->xdisplay, winsys_id,
-                                 atom);
-
-  if (info)
-    {
-      result = TRUE;
-      XFree (info);
-    }
-
-  return result;
+  return output_get_boolean_property (manager_xrandr, output, "hotplug_mode_update");
 }
-
 
 static void
 meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
@@ -503,8 +495,7 @@ meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
 	  meta_output->width_mm = output->mm_width;
 	  meta_output->height_mm = output->mm_height;
 	  meta_output->subpixel_order = COGL_SUBPIXEL_ORDER_UNKNOWN;
-          meta_output->hotplug_mode_update =
-              output_get_hotplug_mode_update (manager_xrandr, meta_output->winsys_id);
+          meta_output->hotplug_mode_update = output_get_hotplug_mode_update (manager_xrandr, meta_output);
 
 	  meta_output->n_modes = output->nmode;
 	  meta_output->modes = g_new0 (MetaMonitorMode *, meta_output->n_modes);
