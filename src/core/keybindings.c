@@ -37,21 +37,13 @@
 #include "edge-resistance.h"
 #include "ui.h"
 #include "frame.h"
-#include "place.h"
 #include "screen-private.h"
 #include <meta/prefs.h>
-#include "util-private.h"
 #include "meta-accel-parse.h"
-
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
 
 #include <linux/input.h>
 
 #include <xkbcommon/xkbcommon.h>
-
-#include <X11/XKBlib.h>
 
 #include "backends/x11/meta-backend-x11.h"
 #include "x11/window-x11.h"
