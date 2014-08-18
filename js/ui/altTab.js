@@ -400,9 +400,9 @@ const WindowSwitcherPopup = new Lang.Class({
             this._select(1);
     },
 
-    _keyPressHandler: function(keysym, backwards, action) {
+    _keyPressHandler: function(keysym, action) {
         if (action == Meta.KeyBindingAction.SWITCH_WINDOWS) {
-            this._select(backwards ? this._previous() : this._next());
+            this._select(this._next());
         } else if (action == Meta.KeyBindingAction.SWITCH_WINDOWS_BACKWARD) {
             this._select(this._previous());
         } else {

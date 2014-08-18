@@ -178,7 +178,7 @@ const SwitcherPopup = new Lang.Class({
         return mod(this._selectedIndex - 1, this._items.length);
     },
 
-    _keyPressHandler: function(keysym, backwards, action) {
+    _keyPressHandler: function(keysym, action) {
         throw new Error('Not implemented');
     },
 
