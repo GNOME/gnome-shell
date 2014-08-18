@@ -34,12 +34,6 @@ typedef struct _MetaUI MetaUI;
 
 typedef gboolean (* MetaEventFunc) (XEvent *xevent, gpointer data);
 
-typedef enum
-{
-  META_UI_DIRECTION_LTR,
-  META_UI_DIRECTION_RTL
-} MetaUIDirection;
-
 void meta_ui_init (void);
 
 Display* meta_ui_get_display (void);
@@ -122,7 +116,5 @@ gboolean meta_ui_have_a_theme      (void);
 
 gboolean meta_ui_window_is_widget (MetaUI *ui,
                                    Window  xwindow);
-
-MetaUIDirection meta_ui_get_direction (void);
 
 #endif

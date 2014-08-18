@@ -524,7 +524,7 @@ meta_workspace_activate_with_focus (MetaWorkspace *workspace,
    meta_screen_calc_workspace_layout (workspace->screen, num_workspaces,
                                       new_space, &layout2);
 
-   if (meta_ui_get_direction() == META_UI_DIRECTION_RTL)
+   if (meta_get_locale_direction () == META_LOCALE_DIRECTION_RTL)
      {
        if (layout1.current_col > layout2.current_col)
          direction = META_MOTION_RIGHT;
@@ -1087,7 +1087,7 @@ meta_workspace_get_neighbor (MetaWorkspace      *workspace,
   meta_verbose ("Getting neighbor of %d in direction %s\n",
                 current_space, meta_motion_direction_to_string (direction));
 
-  ltr = meta_ui_get_direction() == META_UI_DIRECTION_LTR;
+  ltr = (meta_get_locale_direction () == META_LOCALE_DIRECTION_LTR);
 
   switch (direction)
     {

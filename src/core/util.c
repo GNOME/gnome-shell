@@ -946,5 +946,19 @@ meta_later_remove (guint later_id)
     }
 }
 
+MetaLocaleDirection
+meta_get_locale_direction (void)
+{
+  switch (gtk_get_locale_direction ())
+    {
+    case GTK_TEXT_DIR_LTR:
+      return META_LOCALE_DIRECTION_LTR;
+    case GTK_TEXT_DIR_RTL:
+      return META_LOCALE_DIRECTION_RTL;
+    default:
+      g_assert_not_reached ();
+    }
+}
+
 /* eof util.c */
 

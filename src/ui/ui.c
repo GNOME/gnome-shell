@@ -653,13 +653,3 @@ meta_ui_window_is_widget (MetaUI *ui,
   else
     return FALSE;
 }
-
-MetaUIDirection
-meta_ui_get_direction (void)
-{
-  if (gtk_widget_get_default_direction() == GTK_TEXT_DIR_RTL)
-    return META_UI_DIRECTION_RTL;
-
-  return META_UI_DIRECTION_LTR;
-}
-

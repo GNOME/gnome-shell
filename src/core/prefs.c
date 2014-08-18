@@ -1697,7 +1697,7 @@ button_layout_handler (GVariant *value,
   g_strfreev (sides);
 
   /* Invert the button layout for RTL languages */
-  if (meta_ui_get_direction() == META_UI_DIRECTION_RTL)
+  if (meta_get_locale_direction() == META_LOCALE_DIRECTION_RTL)
   {
     MetaButtonLayout rtl_layout;
     int j;

@@ -181,6 +181,14 @@ guint meta_later_add    (MetaLaterType  when,
                          GDestroyNotify notify);
 void  meta_later_remove (guint          later_id);
 
+typedef enum
+{
+  META_LOCALE_DIRECTION_LTR,
+  META_LOCALE_DIRECTION_RTL,
+} MetaLocaleDirection;
+
+MetaLocaleDirection meta_get_locale_direction (void);
+
 #endif /* META_UTIL_H */
 
 

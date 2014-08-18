@@ -2900,7 +2900,7 @@ handle_activate_window_menu (MetaDisplay     *display,
       meta_window_get_client_area_rect (display->focus_window, &child_rect);
 
       x = frame_rect.x + child_rect.x;
-      if (meta_ui_get_direction() == META_UI_DIRECTION_RTL)
+      if (meta_get_locale_direction () == META_LOCALE_DIRECTION_RTL)
         x += child_rect.width;
 
       y = frame_rect.y + child_rect.y;
