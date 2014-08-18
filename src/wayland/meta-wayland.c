@@ -371,28 +371,41 @@ meta_wayland_log_func (const char *fmt,
   g_free (str);
 }
 
+static void
+meta_wayland_compositor_init (MetaWaylandCompositor *compositor)
+{
+  memset (compositor, 0, sizeof (MetaWaylandCompositor));
+  wl_list_init (&compositor->frame_callbacks);
+}
+
 void
-meta_wayland_init (void)
+meta_wayland_pre_clutter_init (void)
 {
   MetaWaylandCompositor *compositor = &_meta_wayland_compositor;
-  GSource *wayland_event_source;
 
-  memset (compositor, 0, sizeof (MetaWaylandCompositor));
+  meta_wayland_compositor_init (compositor);
+
+  /* Set up our logging. */
+  wl_log_set_handler_server (meta_wayland_log_func);
 
   compositor->wayland_display = wl_display_create ();
   if (compositor->wayland_display == NULL)
-    g_error ("failed to create wayland display");
+    g_error ("Failed to create the global wl_display");
 
-  wl_display_init_shm (compositor->wayland_display);
-  wl_log_set_handler_server (meta_wayland_log_func);
+  clutter_wayland_set_compositor_display (compositor->wayland_display);
+}
 
-  wl_list_init (&compositor->frame_callbacks);
+void
+meta_wayland_init (void)
+{
+  MetaWaylandCompositor *compositor = meta_wayland_compositor_get_default ();
+  GSource *wayland_event_source;
 
   if (!wl_global_create (compositor->wayland_display,
 			 &wl_compositor_interface,
 			 META_WL_COMPOSITOR_VERSION,
 			 compositor, compositor_bind))
-    g_error ("Failed to register wayland compositor object");
+    g_error ("Failed to register the global wl_compositor");
 
   wayland_event_source = wayland_event_source_new (compositor->wayland_display);
 
@@ -407,9 +420,6 @@ meta_wayland_init (void)
    * synchronizing the two command streams. */
   g_source_set_priority (wayland_event_source, GDK_PRIORITY_EVENTS + 1);
   g_source_attach (wayland_event_source, NULL);
-  clutter_wayland_set_compositor_display (compositor->wayland_display);
-
-  meta_clutter_init ();
 
   meta_wayland_outputs_init (compositor);
   meta_wayland_data_device_manager_init (compositor);

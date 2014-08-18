@@ -25,6 +25,7 @@
 
 #include "meta-wayland-types.h"
 
+void                    meta_wayland_pre_clutter_init           (void);
 void                    meta_wayland_init                       (void);
 void                    meta_wayland_finalize                   (void);
 

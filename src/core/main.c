@@ -348,14 +348,21 @@ meta_init (void)
 
 #ifdef HAVE_WAYLAND
   if (meta_is_wayland_compositor ())
-    {
-      /* NB: When running as a hybrid wayland compositor we run our own headless X
-       * server so the user can't control the X display to connect too. */
-      meta_wayland_init ();
-    }
-  else
+    meta_wayland_pre_clutter_init ();
 #endif
+
+  /* NB: When running as a hybrid wayland compositor we run our own headless X
+   * server so the user can't control the X display to connect too. */
+  if (!meta_is_wayland_compositor ())
     meta_select_display (opt_display_name);
+
+  meta_clutter_init ();
+
+#ifdef HAVE_WAYLAND
+  /* Bring up Wayland. This also launches Xwayland and sets DISPLAY as well... */
+  if (meta_is_wayland_compositor ())
+    meta_wayland_init ();
+#endif
 
   meta_set_syncing (opt_sync || (g_getenv ("MUTTER_SYNC") != NULL));
 
@@ -366,13 +373,6 @@ meta_init (void)
     meta_fatal ("Can't specify both SM save file and SM client id\n");
 
   meta_main_loop = g_main_loop_new (NULL, FALSE);
-
-  /* If we are running with wayland then we don't wait until we have
-   * an X connection before initializing clutter we instead initialize
-   * it earlier since we need to initialize the GL driver so the driver
-   * can register any needed wayland extensions. */
-  if (!meta_is_wayland_compositor ())
-    meta_clutter_init ();
 
   meta_ui_init ();
 
