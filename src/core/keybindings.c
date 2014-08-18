@@ -35,7 +35,6 @@
 #include <meta/compositor.h>
 #include <meta/errors.h>
 #include "edge-resistance.h"
-#include "ui.h"
 #include "frame.h"
 #include "screen-private.h"
 #include <meta/prefs.h>

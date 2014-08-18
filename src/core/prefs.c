@@ -28,7 +28,6 @@
 
 #include <config.h>
 #include <meta/prefs.h>
-#include "ui.h"
 #include "util-private.h"
 #include "meta-plugin-manager.h"
 #include <glib.h>

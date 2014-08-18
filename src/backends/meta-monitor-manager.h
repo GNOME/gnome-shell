@@ -41,7 +41,6 @@
 #include "display-private.h"
 #include <meta/screen.h>
 #include "stack-tracker.h"
-#include "ui.h"
 
 #include "meta-display-config-shared.h"
 #include "meta-dbus-display-config.h"
