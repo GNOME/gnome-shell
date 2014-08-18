@@ -29,7 +29,6 @@ guint                meta_key_binding_get_mask      (MetaKeyBinding *binding);
 gboolean             meta_key_binding_is_builtin    (MetaKeyBinding *binding);
 gboolean             meta_key_binding_is_reversed   (MetaKeyBinding *binding);
 
-
 gboolean meta_keybindings_set_custom_handler (const gchar        *name,
 					      MetaKeyHandlerFunc  handler,
 					      gpointer            user_data,

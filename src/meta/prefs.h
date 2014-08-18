@@ -369,7 +369,6 @@ typedef enum _MetaKeyBindingAction
  * @META_KEY_BINDING_NONE: none
  * @META_KEY_BINDING_PER_WINDOW: per-window
  * @META_KEY_BINDING_BUILTIN: built-in
- * @META_KEY_BINDING_REVERSES: reverses
  * @META_KEY_BINDING_IS_REVERSED: is reversed
  */
 typedef enum
@@ -377,8 +376,7 @@ typedef enum
   META_KEY_BINDING_NONE,
   META_KEY_BINDING_PER_WINDOW  = 1 << 0,
   META_KEY_BINDING_BUILTIN     = 1 << 1,
-/* 1 << 2 used to be META_KEY_BINDING_REVERSES which is deprecated */
-  META_KEY_BINDING_IS_REVERSED = 1 << 3
+  META_KEY_BINDING_IS_REVERSED = 1 << 2,
 } MetaKeyBindingFlags;
 
 /**
@@ -407,7 +405,3 @@ gboolean           meta_prefs_bell_is_audible      (void);
 GDesktopVisualBellType meta_prefs_get_visual_bell_type (void);
 
 #endif
-
-
-
-
