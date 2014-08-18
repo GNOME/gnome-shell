@@ -39,7 +39,6 @@
 #include "screen-private.h"
 #include <meta/prefs.h>
 #include "meta-accel-parse.h"
-#include "xkbcommon-hacks.h"
 
 #include <linux/input.h>
 
@@ -190,6 +189,7 @@ reload_modmap (MetaKeyBindingManager *keys)
 {
   MetaBackend *backend = meta_get_backend ();
   struct xkb_keymap *keymap = meta_backend_get_keymap (backend);
+  struct xkb_state *scratch_state;
   xkb_mod_mask_t scroll_lock_mask;
 
   /* Modifiers to find. */
@@ -203,6 +203,8 @@ reload_modmap (MetaKeyBindingManager *keys)
     { "Super",      &keys->super_mask },
   };
 
+  scratch_state = xkb_state_new (keymap);
+
   gsize i;
   for (i = 0; i < G_N_ELEMENTS (mods); i++)
     {
@@ -210,10 +212,15 @@ reload_modmap (MetaKeyBindingManager *keys)
       xkb_mod_index_t idx = xkb_keymap_mod_get_index (keymap, mods[i].name);
 
       if (idx != XKB_MOD_INVALID)
-        *mask_p = my_xkb_keymap_mod_get_mask (keymap, idx);
+        {
+          xkb_state_update_mask (scratch_state, 1 << idx, 0, 0, 0, 0, 0);
+          *mask_p = xkb_state_serialize_mods (scratch_state, XKB_STATE_MODS_DEPRESSED);
+        }
       else
         *mask_p = 0;
     }
+
+  xkb_state_unref (scratch_state);
 
   keys->ignored_modifier_mask = (scroll_lock_mask | Mod2Mask | LockMask);
 
