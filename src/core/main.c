@@ -367,19 +367,14 @@ meta_init (void)
 
   meta_main_loop = g_main_loop_new (NULL, FALSE);
 
-  meta_ui_init ();
-
   /* If we are running with wayland then we don't wait until we have
    * an X connection before initializing clutter we instead initialize
    * it earlier since we need to initialize the GL driver so the driver
    * can register any needed wayland extensions. */
   if (!meta_is_wayland_compositor ())
-    {
-      /*
-       * Clutter can only be initialized after the UI.
-       */
-      meta_clutter_init ();
-    }
+    meta_clutter_init ();
+
+  meta_ui_init ();
 
   meta_restart_init ();
 
