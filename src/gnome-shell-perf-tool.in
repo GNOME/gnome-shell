@@ -107,8 +107,6 @@ def run_shell(perf_output=None):
 def restore_shell():
     pid = os.fork()
     if (pid == 0):
-        if "MUTTER_WM_CLASS_FILTER" in os.environ:
-            del os.environ["MUTTER_WM_CLASS_FILTER"]
         os.execlp("gnome-shell", "gnome-shell", "--replace")
     else:
         sys.exit(0)
