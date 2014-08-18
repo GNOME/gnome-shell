@@ -70,10 +70,8 @@
  * If the configure script found we had no XKB, this does not exist.
  */
 static void
-bell_flash_fullscreen (MetaDisplay *display,
-                       XkbAnyEvent *xkb_ev)
+bell_flash_fullscreen (MetaDisplay *display)
 {
-  g_assert (xkb_ev->xkb_type == XkbBellNotify);
   meta_compositor_flash_screen (display->compositor, display->screen);
 }
 
@@ -138,30 +136,17 @@ bell_flash_window_frame (MetaWindow *window)
  * @display:  The display the bell event came in on
  * @xkb_ev:   The bell event we just received
  *
- * Flashes the frame of the focussed window. If there is no focussed window,
+ * Flashes the frame of the focused window. If there is no focused window,
  * flashes the screen.
  */
 static void
 bell_flash_frame (MetaDisplay *display,
-		  XkbAnyEvent *xkb_ev)
+                  MetaWindow  *window)
 {
-  XkbBellNotifyEvent *xkb_bell_event = (XkbBellNotifyEvent *) xkb_ev;
-  MetaWindow *window;
-
-  g_assert (xkb_ev->xkb_type == XkbBellNotify);
-  window = meta_display_lookup_x_window (display, xkb_bell_event->window);
-  if (!window && (display->focus_window))
-    {
-      window = display->focus_window;
-    }
   if (window && window->frame)
-    {
-      bell_flash_window_frame (window);
-    }
-  else /* revert to fullscreen flash if there's no focussed window */
-    {
-      bell_flash_fullscreen (display, xkb_ev);
-    }
+    bell_flash_window_frame (window);
+  else
+    bell_flash_fullscreen (display);
 }
 
 /**
@@ -171,69 +156,73 @@ bell_flash_frame (MetaDisplay *display,
  *
  * Gives the user some kind of visual bell substitute, in response to a
  * bell event. What this is depends on the "visual bell type" pref.
- *
- * If the configure script found we had no XKB, this does not exist.
- */
-
-/*
- * Bug: This should be merged with meta_bell_notify().
  */
 static void
 bell_visual_notify (MetaDisplay *display,
-			 XkbAnyEvent *xkb_ev)
+                    MetaWindow  *window)
 {
   switch (meta_prefs_get_visual_bell_type ())
     {
     case G_DESKTOP_VISUAL_BELL_FULLSCREEN_FLASH:
-      bell_flash_fullscreen (display, xkb_ev);
+      bell_flash_fullscreen (display);
       break;
     case G_DESKTOP_VISUAL_BELL_FRAME_FLASH:
-      bell_flash_frame (display, xkb_ev); /* does nothing yet */
+      bell_flash_frame (display, window);
       break;
     }
+}
+
+static gboolean
+bell_audible_notify (MetaDisplay *display,
+                     MetaWindow  *window)
+{
+#ifdef HAVE_LIBCANBERRA
+  ca_proplist *p;
+  int res;
+
+  ca_proplist_create (&p);
+  ca_proplist_sets (p, CA_PROP_EVENT_ID, "bell-window-system");
+  ca_proplist_sets (p, CA_PROP_EVENT_DESCRIPTION, _("Bell event"));
+  ca_proplist_sets (p, CA_PROP_CANBERRA_CACHE_CONTROL, "permanent");
+
+  if (window)
+    {
+      ca_proplist_sets (p, CA_PROP_WINDOW_NAME, window->title);
+      ca_proplist_setf (p, CA_PROP_WINDOW_X11_XID, "%lu", (unsigned long)window->xwindow);
+      ca_proplist_sets (p, CA_PROP_APPLICATION_NAME, window->res_name);
+      ca_proplist_setf (p, CA_PROP_APPLICATION_PROCESS_ID, "%d", window->net_wm_pid);
+    }
+
+  res = ca_context_play_full (ca_gtk_context_get (), 1, p, NULL, NULL);
+
+  ca_proplist_destroy (p);
+
+  return res == CA_SUCCESS || res == CA_ERROR_DISABLED;
+#endif /* HAVE_LIBCANBERRA */
+
+  return FALSE;
 }
 
 void
 meta_bell_notify (MetaDisplay *display,
 		  XkbAnyEvent *xkb_ev)
 {
+  MetaWindow *window;
+  XkbBellNotifyEvent *xkb_bell_event = (XkbBellNotifyEvent*) xkb_ev;
+
+  window = meta_display_lookup_x_window (display, xkb_bell_event->window);
+  if (!window && display->focus_window && display->focus_window->frame)
+    window = display->focus_window;
+
   /* flash something */
   if (meta_prefs_get_visual_bell ())
-    bell_visual_notify (display, xkb_ev);
+    bell_visual_notify (display, window);
 
-#ifdef HAVE_LIBCANBERRA
   if (meta_prefs_bell_is_audible ())
     {
-      ca_proplist *p;
-      XkbBellNotifyEvent *xkb_bell_event = (XkbBellNotifyEvent*) xkb_ev;
-      MetaWindow *window;
-      int res;
-
-      ca_proplist_create (&p);
-      ca_proplist_sets (p, CA_PROP_EVENT_ID, "bell-window-system");
-      ca_proplist_sets (p, CA_PROP_EVENT_DESCRIPTION, _("Bell event"));
-      ca_proplist_sets (p, CA_PROP_CANBERRA_CACHE_CONTROL, "permanent");
-
-      window = meta_display_lookup_x_window (display, xkb_bell_event->window);
-      if (!window && (display->focus_window) && (display->focus_window->frame))
-        window = display->focus_window;
-
-      if (window)
+      if (!bell_audible_notify (display, window))
         {
-          ca_proplist_sets (p, CA_PROP_WINDOW_NAME, window->title);
-          ca_proplist_setf (p, CA_PROP_WINDOW_X11_XID, "%lu", (unsigned long)window->xwindow);
-          ca_proplist_sets (p, CA_PROP_APPLICATION_NAME, window->res_name);
-          ca_proplist_setf (p, CA_PROP_APPLICATION_PROCESS_ID, "%d", window->net_wm_pid);
-        }
-
-      /* First, we try to play a real sound ... */
-      res = ca_context_play_full (ca_gtk_context_get (), 1, p, NULL, NULL);
-
-      ca_proplist_destroy (p);
-
-      if (res != CA_SUCCESS && res != CA_ERROR_DISABLED)
-        {
-          /* ...and in case that failed we use the classic X11 bell. */
+          /* Force a classic bell if the libcanberra bell failed. */
           XkbForceDeviceBell (display->xdisplay,
                               xkb_bell_event->device,
                               xkb_bell_event->bell_class,
@@ -241,7 +230,6 @@ meta_bell_notify (MetaDisplay *display,
                               xkb_bell_event->percent);
         }
     }
-#endif /* HAVE_LIBCANBERRA */
 }
 
 void
