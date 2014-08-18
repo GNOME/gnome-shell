@@ -168,7 +168,7 @@ output_get_boolean_property (MetaMonitorManagerXrandr *manager_xrandr,
 
 static gboolean
 output_get_presentation_xrandr (MetaMonitorManagerXrandr *manager_xrandr,
-                                MetaOutput               *output)
+                                MetaOutput *output)
 {
   return output_get_boolean_property (manager_xrandr, output, "_MUTTER_PRESENTATION_OUTPUT");
 }
@@ -319,7 +319,7 @@ read_output_edid (MetaMonitorManagerXrandr *manager_xrandr,
 
 static gboolean
 output_get_hotplug_mode_update (MetaMonitorManagerXrandr *manager_xrandr,
-                                XID                       winsys_id)
+                                MetaOutput               *output)
 {
   return output_get_boolean_property (manager_xrandr, output, "hotplug_mode_update");
 }
