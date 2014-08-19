@@ -747,7 +747,7 @@ const InputSourceIndicator = new Lang.Class({
             let engineDesc = IBusManager.getIBusManager().getEngineDesc(source.id);
             if (engineDesc) {
                 xkbLayout = engineDesc.get_layout();
-                xkbVariant = '';
+                xkbVariant = engineDesc.get_layout_variant();
             }
         }
 
