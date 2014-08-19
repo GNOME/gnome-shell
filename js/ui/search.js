@@ -267,7 +267,7 @@ const GridSearchResult = new Lang.Class({
 
         if (!dragSource)
             // not exactly right, but alignment problems are hard to notice
-            dragSource = content;
+            dragSource = content.actor;
         this._dragActorSource = dragSource;
     },
 
