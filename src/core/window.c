@@ -5604,6 +5604,16 @@ update_move (MetaWindow  *window,
 
       display->grab_initial_window_pos.x = x - window->saved_rect.width * prop;
 
+      /* If we started dragging the window from above the top of the window,
+       * pretend like we started dragging from the middle of the titlebar
+       * instead, as the "correct" anchoring looks wrong. */
+      if (display->grab_anchor_root_y < display->grab_initial_window_pos.y)
+        {
+          MetaRectangle titlebar_rect;
+          meta_window_get_titlebar_rect (window, &titlebar_rect);
+          display->grab_anchor_root_y = display->grab_initial_window_pos.y + titlebar_rect.height / 2;
+        }
+
       window->saved_rect.x = display->grab_initial_window_pos.x;
       window->saved_rect.y = display->grab_initial_window_pos.y;
 
