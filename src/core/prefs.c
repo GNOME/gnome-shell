@@ -1210,8 +1210,9 @@ settings_changed (GSettings *settings,
     }
   else
     {
-      /* Someone added a preference of an unhandled type */
-      g_assert_not_reached ();
+      /* Unknown preference type. This quite likely simply isn't
+       * a preference we track changes to. */
+      return;
     }
 
   g_variant_unref (value);
