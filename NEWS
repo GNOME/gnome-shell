@@ -1,3 +1,28 @@
+3.13.90
+=======
+* Only call XSync() once per frame [Rui; #728464]
+* Update capabilities on device list changes [Carlos; #733563]
+* Make use of GLSL optional [Adel; #733623]
+* Handle gestures and touch events on wayland [Carlos; #733631]
+* Add support for unminimize compositor effects [Cosimo; #733789]
+* Always set the frame background to None [Giovanni; #734054]
+* Add backend methods to handle keymaps [Rui; #734301]
+* Actually mark revalidated MetaTextureTower levels as valid [Owen; #734400]
+* Rely on explicit -backward switcher keybindings instead of <shift>-magic
+  [Christophe; #732295, #732385]
+* Misc. bug fixes and cleanups [Rui, Adel, Christophe; #727178, #734852,
+  #734960]
+
+Contributors:
+  Emmanuele Bassi, Giovanni Campagna, Cosimo Cecchi, Piotr Drąg,
+  Christophe Fergeau, Adel Gadllah, Carlos Garnacho, Rui Matos,
+  Florian Müllner, Jasper St. Pierre, Rico Tzschichholz, Olav Vitters,
+  Owen W. Taylor
+
+Translations:
+  Kjartan Maraas [nb], Inaki Larranaga Murgoitio [eu], Lasse Liehu [fi],
+  ngoswami [as], Daniel Mustieles [es]
+
 3.13.4
 ======
 * Fix move/resize operations for wayland clients [Marek; #731237]
