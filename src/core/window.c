@@ -4165,7 +4165,7 @@ meta_window_get_titlebar_rect (MetaWindow    *window,
     {
       /* Pick an arbitrary height for a titlebar. We might want to
        * eventually have CSD windows expose their borders to us. */
-      rect->height = 15;
+      rect->height = 50;
     }
 }
 
