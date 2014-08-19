@@ -421,6 +421,8 @@ meta_wayland_init (void)
   g_source_set_priority (wayland_event_source, GDK_PRIORITY_EVENTS + 1);
   g_source_attach (wayland_event_source, NULL);
 
+  wl_display_init_shm (compositor->wayland_display);
+
   meta_wayland_outputs_init (compositor);
   meta_wayland_data_device_manager_init (compositor);
   meta_wayland_shell_init (compositor);
