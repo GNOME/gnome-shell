@@ -6419,9 +6419,9 @@ warp_grab_pointer (MetaWindow          *window,
   else
     *x = rect.width / 2;
 
-  if (grab_op & META_GRAB_OP_WINDOW_DIR_SOUTH)
+  if (grab_op & META_GRAB_OP_WINDOW_DIR_NORTH)
     *y = 0;
-  else if (grab_op & META_GRAB_OP_WINDOW_DIR_NORTH)
+  else if (grab_op & META_GRAB_OP_WINDOW_DIR_SOUTH)
     *y = rect.height - 1;
   else
     *y = rect.height / 2;
