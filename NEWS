@@ -1,3 +1,36 @@
+3.13.90
+=======
+* Make use of GLSL optional [Adel; #733623]
+* Update on-screen-keyboard position on monitor changes [Cosimo; #733790]
+* Improve window manager animations [Giovanni; #732857]
+* Handle touch events [Carlos G.; #733633]
+* Try to not show "New Window" action for single-window apps
+  [Giovanni; #722554]
+* Fix overview exceeding screen size with many apps installed
+  [Carlos S.; #723496]
+* Add Software to default favorites [Mathieu; #734406]
+* Improve app picker <-> desktop transition [Carlos S.; #732901]
+* Remove <shift>-magic for switcher popups [Christophe; #732296]
+* Add a special background to use for performance testing [Owen; #734610]
+* Add support for default disabled search providers [Giovanni; #734110]
+* Fix portals that don't redirect properly [Giovanni; #733848]
+* Fix history trimming in chat notifications [Giovanni; #733899]
+* Try to use default calendar application [Florian; #722333]
+* Only show location menu when geolocation is in use [Zeeshan; #731122]
+* Misc. bug fixes and cleanups [Giovanni, Carlos G., Zeeshan, Carlos S.,
+  Cosimo; #711682, #733840, #734483, #734680, #733813, #735062]
+
+Contributors:
+  Zeeshan Ali (Khattak), Mathieu Bridon, Giovanni Campagna, Cosimo Cecchi,
+  Piotr Drąg, Christophe Fergeau, Adel Gadllah, Carlos Garnacho,
+  Florian Müllner, Carlos Soriano, Jasper St. Pierre, Olav Vitters,
+  Owen W. Taylor
+
+Translations:
+  Aurimas Černius [lt], MarMav [el], Inaki Larranaga Murgoitio [eu],
+  Reinout van Schouwen [nl], ngoswami [as], Fabio Tomat [fur],
+  Chao-Hsiung Liao [zh_HK, zh_TW]
+
 3.13.4
 ======
 * Handle portal login requests [Giovanni; #704416]
