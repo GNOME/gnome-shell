@@ -434,7 +434,7 @@ const ListSearchResults = new Lang.Class({
     },
 
     _setMoreIconVisible: function(visible) {
-        this.providerIcon.moreIcon.visible = true;
+        this.providerIcon.moreIcon.visible = visible;
     },
 
     _getMaxDisplayedResults: function() {
