@@ -87,6 +87,7 @@ MUTTER_PC_MODULES="
    xkbfile
    xkeyboard-config
    xkbcommon-x11
+   xcb-randr
 "
 
 GLIB_GSETTINGS

@@ -35,6 +35,8 @@
 #include <X11/Xatom.h>
 #include <X11/extensions/Xrandr.h>
 #include <X11/extensions/dpms.h>
+#include <X11/Xlib-xcb.h>
+#include <xcb/randr.h>
 
 #include "meta-backend-x11.h"
 #include <meta/main.h>
@@ -214,30 +216,34 @@ output_get_backlight_limits_xrandr (MetaMonitorManagerXrandr *manager_xrandr,
                                     MetaOutput               *output)
 {
   Atom atom;
-  XRRPropertyInfo *info;
+  xcb_connection_t *xcb_conn;
+  xcb_randr_query_output_property_reply_t *reply;
 
   atom = XInternAtom (manager_xrandr->xdisplay, "Backlight", False);
-  info = XRRQueryOutputProperty (manager_xrandr->xdisplay,
-                                 (XID)output->winsys_id,
-                                 atom);
 
-  if (info == NULL)
-    {
-      meta_verbose ("could not get output property for %s\n", output->name);
-      return;
-    }
+  xcb_conn = XGetXCBConnection (manager_xrandr->xdisplay);
+  reply = xcb_randr_query_output_property_reply (xcb_conn,
+                                                 xcb_randr_query_output_property (xcb_conn,
+                                                                                  (xcb_randr_output_t) output->winsys_id,
+                                                                                  (xcb_atom_t) atom),
+                                                 NULL);
 
-  if (!info->range || info->num_values != 2)
+  /* This can happen on systems without backlights. */
+  if (reply == NULL)
+    return;
+
+  if (!reply->range || reply->length != 2)
     {
       meta_verbose ("backlight %s was not range\n", output->name);
       goto out;
     }
 
-  output->backlight_min = info->values[0];
-  output->backlight_max = info->values[1];
+  int32_t *values = xcb_randr_query_output_property_valid_values (reply);
+  output->backlight_min = values[0];
+  output->backlight_max = values[1];
 
 out:
-  XFree (info);
+  free (reply);
 }
 
 static int
