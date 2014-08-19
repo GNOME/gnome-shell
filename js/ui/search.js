@@ -243,8 +243,8 @@ const GridSearchResult = new Lang.Class({
             dragSource = icon.icon;
             content = { actor: actor, icon: icon };
         } else {
-            if (content._delegate && content._delegate.getDragActorSource)
-                dragSource = content._delegate.getDragActorSource();
+            if (content.getDragActorSource)
+                dragSource = content.getDragActorSource();
         }
 
         this.actor.set_child(content.actor);
