@@ -21,17 +21,6 @@ const Ornament = {
     CHECK: 2,
 };
 
-function _ensureStyle(actor) {
-    if (actor.get_children) {
-        let children = actor.get_children();
-        for (let i = 0; i < children.length; i++)
-            _ensureStyle(children[i]);
-    }
-
-    if (actor instanceof St.Widget)
-        actor.ensure_style();
-}
-
 function isPopupMenuItemVisible(child) {
     if (child._delegate instanceof PopupMenuSection)
         if (child._delegate.isEmpty())
