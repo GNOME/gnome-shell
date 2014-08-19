@@ -919,7 +919,7 @@ stack_do_relayer (MetaStack *stack)
   GList *tmp;
 
   if (!stack->need_relayer)
-      return;
+    return;
 
   meta_topic (META_DEBUG_STACK,
               "Recomputing layers\n");
@@ -1169,16 +1169,16 @@ raise_window_relative_to_managed_windows (MetaScreen *screen,
 
       /* No sibling to use, just lower ourselves to the bottom
        * to be sure we're below any override redirect windows.
-           */
+       */
       meta_stack_tracker_record_lower (screen->stack_tracker,
                                        window,
                                        serial);
       return;
-        }
+    }
 
   /* window is the topmost managed child */
-              meta_topic (META_DEBUG_STACK,
-                          "Moving 0x%lx above topmost managed child window 0x%lx\n",
+  meta_topic (META_DEBUG_STACK,
+              "Moving 0x%lx above topmost managed child window 0x%lx\n",
               window->any.type == META_WINDOW_CLIENT_TYPE_X11 ? window->x11.xwindow: 0,
               sibling->any.type == META_WINDOW_CLIENT_TYPE_X11 ? sibling->x11.xwindow: 0);
 
@@ -1191,26 +1191,26 @@ raise_window_relative_to_managed_windows (MetaScreen *screen,
       if (x11_sibling)
         {
           changes.sibling = x11_sibling->x11.xwindow;
-              changes.stack_mode = Above;
+          changes.stack_mode = Above;
 
-              meta_error_trap_push (screen->display);
-              XConfigureWindow (screen->display->xdisplay,
+          meta_error_trap_push (screen->display);
+          XConfigureWindow (screen->display->xdisplay,
                             window->x11.xwindow,
-                                CWSibling | CWStackMode,
-                                &changes);
-              meta_error_trap_pop (screen->display);
+                            CWSibling | CWStackMode,
+                            &changes);
+          meta_error_trap_pop (screen->display);
         }
       else
-    {
-      /* No sibling to use, just lower ourselves to the bottom
-       * to be sure we're below any override redirect windows.
-       */
-      meta_error_trap_push (screen->display);
-      XLowerWindow (screen->display->xdisplay,
+        {
+          /* No sibling to use, just lower ourselves to the bottom
+           * to be sure we're below any override redirect windows.
+           */
+          meta_error_trap_push (screen->display);
+          XLowerWindow (screen->display->xdisplay,
                         window->x11.xwindow);
-      meta_error_trap_pop (screen->display);
+          meta_error_trap_pop (screen->display);
+        }
     }
-}
 
   meta_stack_tracker_record_raise_above (screen->stack_tracker,
                                          window,
@@ -1351,7 +1351,7 @@ stack_sync_to_xserver (MetaStack *stack)
           if (x11_root_children_stacked->len > 1)
             {
               serial = XNextRequest (stack->screen->display->xdisplay);
-          XRestackWindows (stack->screen->display->xdisplay,
+              XRestackWindows (stack->screen->display->xdisplay,
                                (Window *) x11_root_children_stacked->data,
                                x11_root_children_stacked->len);
             }
@@ -1484,7 +1484,7 @@ stack_sync_to_xserver (MetaStack *stack)
 
           /* Restack remaining windows */
           meta_topic (META_DEBUG_STACK, "Restacking remaining %d windows\n",
-                        (int) (new_end - newp));
+                      (int) (new_end - newp));
 
           /* rewind until we find the last stacked X window that we can use
            * as a reference point for re-stacking remaining X windows */
