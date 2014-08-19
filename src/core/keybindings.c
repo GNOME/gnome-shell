@@ -213,8 +213,9 @@ reload_modmap (MetaKeyBindingManager *keys)
 
       if (idx != XKB_MOD_INVALID)
         {
-          xkb_state_update_mask (scratch_state, 1 << idx, 0, 0, 0, 0, 0);
-          *mask_p = xkb_state_serialize_mods (scratch_state, XKB_STATE_MODS_DEPRESSED);
+          xkb_mod_mask_t vmodmask = (1 << idx);
+          xkb_state_update_mask (scratch_state, vmodmask, 0, 0, 0, 0, 0);
+          *mask_p = xkb_state_serialize_mods (scratch_state, XKB_STATE_MODS_DEPRESSED) & ~vmodmask;
         }
       else
         *mask_p = 0;
