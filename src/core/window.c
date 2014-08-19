@@ -5602,19 +5602,10 @@ update_move (MetaWindow  *window,
         ((double)(x - display->grab_initial_window_pos.x)) /
         ((double)display->grab_initial_window_pos.width);
 
-      display->grab_initial_window_pos.x =
-        x - window->saved_rect.width * prop;
-      display->grab_initial_window_pos.y = y;
-
-      if (window->frame)
-        {
-          display->grab_initial_window_pos.y += window->frame->child_y / 2;
-        }
+      display->grab_initial_window_pos.x = x - window->saved_rect.width * prop;
 
       window->saved_rect.x = display->grab_initial_window_pos.x;
       window->saved_rect.y = display->grab_initial_window_pos.y;
-      display->grab_anchor_root_x = x;
-      display->grab_anchor_root_y = y;
 
       meta_window_unmaximize (window, META_MAXIMIZE_BOTH);
       return;
@@ -5661,14 +5652,15 @@ update_move (MetaWindow  *window,
                   window->unconstrained_rect.y = window->saved_rect.y;
 
                   meta_window_unmaximize (window, META_MAXIMIZE_BOTH);
+
+                  display->grab_initial_window_pos = work_area;
+                  display->grab_anchor_root_x = x;
+                  display->grab_anchor_root_y = y;
+                  window->shaken_loose = FALSE;
+
+                  meta_window_maximize (window, META_MAXIMIZE_BOTH);
                 }
 
-              display->grab_initial_window_pos = work_area;
-              display->grab_anchor_root_x = x;
-              display->grab_anchor_root_y = y;
-              window->shaken_loose = FALSE;
-
-              meta_window_maximize (window, META_MAXIMIZE_BOTH);
               return;
             }
         }
