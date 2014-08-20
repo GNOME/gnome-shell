@@ -1054,18 +1054,6 @@ const AppSearchProvider = new Lang.Class({
         this.getInitialResultSet(terms, callback, cancellable);
     },
 
-    activateResult: function(result) {
-        let app = this._appSys.lookup_app(result);
-        let event = Clutter.get_current_event();
-        let modifiers = event ? event.get_state() : 0;
-        let openNewWindow = modifiers & Clutter.ModifierType.CONTROL_MASK;
-
-        if (openNewWindow)
-            app.open_new_window(-1);
-        else
-            app.activate();
-    },
-
     dragActivateResult: function(id, params) {
         params = Params.parse(params, { workspace: -1,
                                         timestamp: 0 });
@@ -1650,13 +1638,7 @@ const AppIcon = new Lang.Class({
 
     _onClicked: function(actor, button) {
         this._removeMenuTimeout();
-
-        if (button == 0 || button == 1) {
-            this._onActivate(Clutter.get_current_event());
-        } else if (button == 2) {
-            this.app.open_new_window(-1);
-            Main.overview.hide();
-        }
+        this.activate(button);
     },
 
     _onKeyboardPopupMenu: function() {
@@ -1710,15 +1692,17 @@ const AppIcon = new Lang.Class({
         this.emit('menu-state-changed', false);
     },
 
-    _onActivate: function (event) {
-        let modifiers = event.get_state();
+    activate: function (button) {
+        let event = Clutter.get_current_event();
+        let modifiers = event ? event.get_state() : 0;
+        let openNewWindow = modifiers & Clutter.ModifierType.CONTROL_MASK &&
+                            this.app.state == Shell.AppState.RUNNING ||
+                            button && button == 2;
 
-        if (modifiers & Clutter.ModifierType.CONTROL_MASK
-            && this.app.state == Shell.AppState.RUNNING) {
+        if (openNewWindow)
             this.app.open_new_window(-1);
-        } else {
+        else
             this.app.activate();
-        }
 
         Main.overview.hide();
     },

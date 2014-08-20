@@ -164,13 +164,6 @@ const SearchResult = new Lang.Class({
 
     activate: function() {
         this.emit('activate', this.metaInfo.id);
-    },
-
-    setSelected: function(selected) {
-        if (selected)
-            this.actor.add_style_pseudo_class('selected');
-        else
-            this.actor.remove_style_pseudo_class('selected');
     }
 });
 Signals.addSignalMethods(SearchResult.prototype);
@@ -231,25 +224,11 @@ const GridSearchResult = new Lang.Class({
 
         this.actor.style_class = 'grid-search-result';
 
-        let content = provider.createResultObject(metaInfo);
-        let dragSource = null;
-
-        if (content == null) {
-            let actor = new St.Bin();
-            let icon = new IconGrid.BaseIcon(this.metaInfo['name'],
-                                             { createIcon: this.metaInfo['createIcon'] });
-            actor.set_child(icon.actor);
-            actor.label_actor = icon.label;
-            dragSource = icon.icon;
-            content = { actor: actor, icon: icon };
-        } else {
-            if (content.getDragActorSource)
-                dragSource = content.getDragActorSource();
-        }
-
-        this.actor.set_child(content.actor);
-        this.actor.label_actor = content.actor.label_actor;
-        this.icon = content.icon;
+        this.icon = new IconGrid.BaseIcon(this.metaInfo['name'],
+                                          { createIcon: this.metaInfo['createIcon'] });
+        let content = new St.Bin({ child: this.icon.actor });
+        this.actor.set_child(content);
+        this.actor.label_actor = this.icon.label;
 
         let draggable = DND.makeDraggable(this.actor);
         draggable.connect('drag-begin',
@@ -265,10 +244,7 @@ const GridSearchResult = new Lang.Class({
                               Main.overview.endItemDrag(this);
                           }));
 
-        if (!dragSource)
-            // not exactly right, but alignment problems are hard to notice
-            dragSource = content.actor;
-        this._dragActorSource = dragSource;
+        this._dragActorSource = content;
     },
 
     getDragActorSource: function() {
@@ -315,7 +291,11 @@ const SearchResultsBase = new Lang.Class({
         this._terms = [];
     },
 
-    _clearResultDisplay: function() {
+    _createResultDisplay: function(meta) {
+        if (this.provider.createResultObject)
+            return this.provider.createResultObject(meta);
+
+        return null;
     },
 
     clear: function() {
@@ -446,7 +426,7 @@ const ListSearchResults = new Lang.Class({
     },
 
     _createResultDisplay: function(meta) {
-        return new ListSearchResult(this.provider, meta);
+        return this.parent(meta) || new ListSearchResult(this.provider, meta);
     },
 
     _addItem: function(display) {
@@ -494,7 +474,7 @@ const GridSearchResults = new Lang.Class({
     },
 
     _createResultDisplay: function(meta) {
-        return new GridSearchResult(this.provider, meta);
+        return this.parent(meta) || new GridSearchResult(this.provider, meta);
     },
 
     _addItem: function(display) {
@@ -630,13 +610,8 @@ const SearchResults = new Lang.Class({
         }
 
         if (newDefaultResult != this._defaultResult) {
-            if (this._defaultResult)
-                this._defaultResult.setSelected(false);
-            if (newDefaultResult) {
-                newDefaultResult.setSelected(this._highlightDefault);
-                if (this._highlightDefault)
-                    Util.ensureActorVisibleInScrollView(this._scrollView, newDefaultResult.actor);
-            }
+            this._setSelected(this._defaultResult, false);
+            this._setSelected(newDefaultResult, this._highlightDefault);
 
             this._defaultResult = newDefaultResult;
         }
@@ -673,11 +648,7 @@ const SearchResults = new Lang.Class({
 
     highlightDefault: function(highlight) {
         this._highlightDefault = highlight;
-        if (this._defaultResult) {
-            this._defaultResult.setSelected(highlight);
-            if (highlight)
-                Util.ensureActorVisibleInScrollView(this._scrollView, this._defaultResult.actor);
-        }
+        this._setSelected(this._defaultResult, highlight);
     },
 
     navigateFocus: function(direction) {
@@ -692,6 +663,18 @@ const SearchResults = new Lang.Class({
 
         let from = this._defaultResult ? this._defaultResult.actor : null;
         this.actor.navigate_focus(from, direction, false);
+    },
+
+    _setSelected: function(result, selected) {
+        if (!result)
+            return;
+
+        if (selected) {
+            result.actor.add_style_pseudo_class('selected');
+            Util.ensureActorVisibleInScrollView(this._scrollView, result.actor);
+        } else {
+            result.actor.remove_style_pseudo_class('selected');
+        }
     }
 });
 
