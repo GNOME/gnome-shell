@@ -489,15 +489,6 @@ const GridSearchResults = new Lang.Class({
         return this._grid.columnsForWidth(availableWidth) * this._grid.getRowLimit();
     },
 
-    _renderResults: function(metas) {
-        for (let i = 0; i < metas.length; i++) {
-            let display = new GridSearchResult(this.provider, metas[i]);
-            display.connect('activate', Lang.bind(this, this._activateResult));
-            display.actor.connect('key-focus-in', Lang.bind(this, this._keyFocusIn));
-            this._grid.addItem(display);
-        }
-    },
-
     _clearResultDisplay: function () {
         this._grid.removeAll();
     },
