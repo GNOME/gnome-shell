@@ -44,6 +44,8 @@
 #include "backends/x11/meta-monitor-manager-xrandr.h"
 #include "meta-backend-private.h"
 
+#define DEFAULT_DISPLAY_CONFIGURATION_TIMEOUT 20
+
 enum {
   CONFIRM_DISPLAY_CHANGE,
   SIGNALS_LAST
@@ -1245,6 +1247,12 @@ restore_previous_config (MetaMonitorManager *manager)
   meta_monitor_manager_ensure_configured (manager);
 }
 
+gint
+meta_monitor_manager_get_display_configuration_timeout (void)
+{
+  return DEFAULT_DISPLAY_CONFIGURATION_TIMEOUT;
+}
+
 static gboolean
 save_config_timeout (gpointer user_data)
 {
@@ -1276,7 +1284,7 @@ request_persistent_confirmation (MetaMonitorManager     *manager,
                                  MetaMonitorConfigSystem system)
 {
   manager->pending_persistent_system = system;
-  manager->persistent_timeout_id = g_timeout_add_seconds (20,
+  manager->persistent_timeout_id = g_timeout_add_seconds (meta_monitor_manager_get_display_configuration_timeout (),
                                                           save_config_timeout,
                                                           manager);
   g_source_set_name_by_id (manager->persistent_timeout_id,

@@ -55,4 +55,6 @@ gboolean meta_monitor_manager_can_switch_config (MetaMonitorManager *manager);
 
 MetaMonitorSwitchConfigType meta_monitor_manager_get_switch_config (MetaMonitorManager *manager);
 
+gint meta_monitor_manager_get_display_configuration_timeout (void);
+
 #endif /* META_MONITOR_MANAGER_H */
