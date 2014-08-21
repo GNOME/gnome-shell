@@ -86,6 +86,7 @@ MUTTER_PC_MODULES="
    gnome-desktop-3.0
    xkbfile
    xkeyboard-config
+   xkbcommon >= 0.4.3
    xkbcommon-x11
    x11-xcb
    xcb-randr
