@@ -34,24 +34,10 @@
 struct _MetaSurfaceActorWaylandPrivate
 {
   MetaWaylandSurface *surface;
-  MetaWaylandBuffer *buffer;
-  struct wl_listener buffer_destroy_listener;
 };
 typedef struct _MetaSurfaceActorWaylandPrivate MetaSurfaceActorWaylandPrivate;
 
 G_DEFINE_TYPE_WITH_PRIVATE (MetaSurfaceActorWayland, meta_surface_actor_wayland, META_TYPE_SURFACE_ACTOR)
-
-static void
-meta_surface_actor_handle_buffer_destroy (struct wl_listener *listener, void *data)
-{
-  MetaSurfaceActorWaylandPrivate *priv = wl_container_of (listener, priv, buffer_destroy_listener);
-
-  /* If the buffer is destroyed while we're attached to it,
-   * we want to unset priv->buffer so we don't access freed
-   * memory. Keep the texture set however so the user doesn't
-   * see the window disappear. */
-  priv->buffer = NULL;
-}
 
 static void
 meta_surface_actor_wayland_process_damage (MetaSurfaceActor *actor,
@@ -228,9 +214,6 @@ meta_surface_actor_wayland_class_init (MetaSurfaceActorWaylandClass *klass)
 static void
 meta_surface_actor_wayland_init (MetaSurfaceActorWayland *self)
 {
-  MetaSurfaceActorWaylandPrivate *priv = meta_surface_actor_wayland_get_instance_private (self);
-
-  priv->buffer_destroy_listener.notify = meta_surface_actor_handle_buffer_destroy;
 }
 
 MetaSurfaceActor *
@@ -252,19 +235,14 @@ meta_surface_actor_wayland_set_buffer (MetaSurfaceActorWayland *self,
 {
   MetaSurfaceActorWaylandPrivate *priv = meta_surface_actor_wayland_get_instance_private (self);
   MetaShapedTexture *stex = meta_surface_actor_get_texture (META_SURFACE_ACTOR (self));
+  CoglTexture *texture;
 
-  if (priv->buffer)
-    wl_list_remove (&priv->buffer_destroy_listener.link);
-
-  priv->buffer = buffer;
-
-  if (priv->buffer)
-    {
-      wl_signal_add (&priv->buffer->destroy_signal, &priv->buffer_destroy_listener);
-      meta_shaped_texture_set_texture (stex, priv->buffer->texture);
-    }
+  if (buffer)
+    texture = buffer->texture;
   else
-    meta_shaped_texture_set_texture (stex, NULL);
+    texture = NULL;
+
+  meta_shaped_texture_set_texture (stex, texture);
 }
 
 MetaWaylandSurface *
