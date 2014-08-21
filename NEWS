@@ -1,3 +1,30 @@
+Clutter 1.19.8                                                       2014-08-21
+===============================================================================
+
+  • List of changes since Clutter 1.19.6
+  
+    - Improve the GDK backend
+    The GDK backend is now reporting touch events, as well as supporting
+    foreign Wayland surfaces for the Stage window. The goal is to make the
+    GDK backend the preferred one in the next development cycle.
+
+    - Fix drawing transparent Canvas content inside transparent actors
+
+    - Translation updates
+    German, Assamese
+
+  • List of bugs fixed since Clutter 1.19.6
+
+    #733202 - evdev: Add API to set the xkb layout index
+    #734934 - Add touch event translation code to GDK backend
+    #734935 - Add support for wayland foreign windows in GDK backend
+    #734761 - Memory leak in implicit transition
+
+Many thanks to:
+
+  Lionel Landwerlin Christian Kirbach, Rui Matos, Tom Beckmann, ngoswami,
+  Sunjin Yang
+
 Clutter 1.19.6                                                       2014-07-24
 ===============================================================================
 
