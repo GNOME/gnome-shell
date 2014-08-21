@@ -444,14 +444,12 @@ function clamp(value, min, max) {
 }
 
 /**
- * To test screen shield, make sure to kill gnome-screensaver.
- *
  * If you are setting org.gnome.desktop.session.idle-delay directly in dconf,
  * rather than through System Settings, you also need to set
  * org.gnome.settings-daemon.plugins.power.sleep-display-ac and
  * org.gnome.settings-daemon.plugins.power.sleep-display-battery to the same value.
  * This will ensure that the screen blanks at the right time when it fades out.
- * https://bugzilla.gnome.org/show_bug.cgi?id=668703 explains the dependance.
+ * https://bugzilla.gnome.org/show_bug.cgi?id=668703 explains the dependency.
  */
 const ScreenShield = new Lang.Class({
     Name: 'ScreenShield',
