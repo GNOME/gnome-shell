@@ -188,7 +188,7 @@ meta_surface_actor_get_texture (MetaSurfaceActor *self)
   return self->priv->texture;
 }
 
-void
+static void
 meta_surface_actor_update_area (MetaSurfaceActor *self,
                                 int x, int y, int width, int height)
 {
@@ -261,7 +261,11 @@ meta_surface_actor_process_damage (MetaSurfaceActor *self,
       return;
     }
 
+  if (!meta_surface_actor_is_visible (self))
+    return;
+
   META_SURFACE_ACTOR_GET_CLASS (self)->process_damage (self, x, y, width, height);
+  meta_surface_actor_update_area (self, x, y, width, height);
 }
 
 void

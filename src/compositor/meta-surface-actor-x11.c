@@ -185,11 +185,7 @@ damage_area (MetaSurfaceActorX11 *self,
 {
   MetaSurfaceActorX11Private *priv = meta_surface_actor_x11_get_instance_private (self);
 
-  if (!is_visible (self))
-    return;
-
   cogl_texture_pixmap_x11_update_area (priv->texture, x, y, width, height);
-  meta_surface_actor_update_area (META_SURFACE_ACTOR (self), x, y, width, height);
 }
 
 static void

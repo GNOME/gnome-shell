@@ -109,10 +109,14 @@ surface_process_damage (MetaWaylandSurface *surface,
   int i, n_rectangles;
   cairo_rectangle_int_t buffer_rect;
   int scale = surface->scale;
+  CoglTexture *texture;
+  struct wl_shm_buffer *shm_buffer;
 
   /* Damage without a buffer makes no sense so ignore that, otherwise we would crash */
   if (!surface->buffer)
     return;
+
+  texture = surface->buffer->texture;
 
   buffer_rect.x = 0;
   buffer_rect.y = 0;
@@ -125,10 +129,16 @@ surface_process_damage (MetaWaylandSurface *surface,
 
   n_rectangles = cairo_region_num_rectangles (region);
 
+  shm_buffer = wl_shm_buffer_get (surface->buffer->resource);
+
   for (i = 0; i < n_rectangles; i++)
     {
       cairo_rectangle_int_t rect;
       cairo_region_get_rectangle (region, i, &rect);
+
+      if (shm_buffer)
+        cogl_wayland_texture_set_region_from_shm_buffer (texture, rect.x, rect.y, rect.width, rect.height, shm_buffer, rect.x, rect.y, 0, NULL);
+
       meta_surface_actor_process_damage (surface->surface_actor,
                                          rect.x * scale, rect.y * scale, rect.width * scale, rect.height * scale);
     }

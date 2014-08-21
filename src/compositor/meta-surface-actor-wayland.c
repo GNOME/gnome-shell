@@ -57,22 +57,6 @@ static void
 meta_surface_actor_wayland_process_damage (MetaSurfaceActor *actor,
                                            int x, int y, int width, int height)
 {
-  MetaSurfaceActorWayland *self = META_SURFACE_ACTOR_WAYLAND (actor);
-  MetaSurfaceActorWaylandPrivate *priv = meta_surface_actor_wayland_get_instance_private (self);
-
-  if (priv->buffer)
-    {
-      struct wl_resource *resource = priv->buffer->resource;
-      struct wl_shm_buffer *shm_buffer = wl_shm_buffer_get (resource);
-
-      if (shm_buffer)
-        {
-          CoglTexture2D *texture = COGL_TEXTURE_2D (priv->buffer->texture);
-          cogl_wayland_texture_set_region_from_shm_buffer (texture, x, y, width, height, shm_buffer, x, y, 0, NULL);
-        }
-
-      meta_surface_actor_update_area (META_SURFACE_ACTOR (self), x, y, width, height);
-    }
 }
 
 static void
