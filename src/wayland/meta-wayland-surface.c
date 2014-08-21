@@ -429,6 +429,9 @@ commit_pending_state (MetaWaylandSurface      *surface,
   if (!cairo_region_is_empty (pending->damage))
     surface_process_damage (surface, pending->damage);
 
+  surface->offset_x += pending->dx;
+  surface->offset_y += pending->dy;
+
   if (pending->opaque_region)
     {
       pending->opaque_region = scale_region (pending->opaque_region, surface->scale);

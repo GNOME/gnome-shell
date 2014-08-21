@@ -115,6 +115,8 @@ struct _MetaWaylandSurface
     GSList *pending_placement_ops;
   } sub;
 
+  int32_t offset_x, offset_y;
+
   gboolean has_set_geometry;
 
   /* All the pending state that wl_surface.commit will apply. */
