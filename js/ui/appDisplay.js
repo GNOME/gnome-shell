@@ -1054,14 +1054,6 @@ const AppSearchProvider = new Lang.Class({
         this.getInitialResultSet(terms, callback, cancellable);
     },
 
-    dragActivateResult: function(id, params) {
-        params = Params.parse(params, { workspace: -1,
-                                        timestamp: 0 });
-
-        let app = this._appSys.lookup_app(id);
-        app.open_new_window(workspace);
-    },
-
     createResultObject: function (resultMeta) {
         let app = this._appSys.lookup_app(resultMeta['id']);
         return new AppIcon(app);

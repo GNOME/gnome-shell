@@ -230,37 +230,6 @@ const GridSearchResult = new Lang.Class({
         let content = new St.Bin({ child: this.icon.actor });
         this.actor.set_child(content);
         this.actor.label_actor = this.icon.label;
-
-        let draggable = DND.makeDraggable(this.actor);
-        draggable.connect('drag-begin',
-                          Lang.bind(this, function() {
-                              Main.overview.beginItemDrag(this);
-                          }));
-        draggable.connect('drag-cancelled',
-                          Lang.bind(this, function() {
-                              Main.overview.cancelledItemDrag(this);
-                          }));
-        draggable.connect('drag-end',
-                          Lang.bind(this, function() {
-                              Main.overview.endItemDrag(this);
-                          }));
-
-        this._dragActorSource = content;
-    },
-
-    getDragActorSource: function() {
-        return this._dragActorSource;
-    },
-
-    getDragActor: function() {
-        return this.metaInfo['createIcon'](Main.overview.dashIconSize);
-    },
-
-    shellWorkspaceLaunch: function(params) {
-        if (this.provider.dragActivateResult)
-            this.provider.dragActivateResult(this.metaInfo.id, params);
-        else
-            this.provider.activateResult(this.metaInfo.id, this.terms);
     }
 });
 
