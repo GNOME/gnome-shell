@@ -87,6 +87,7 @@ MUTTER_PC_MODULES="
    xkbfile
    xkeyboard-config
    xkbcommon-x11
+   x11-xcb
    xcb-randr
 "
 
