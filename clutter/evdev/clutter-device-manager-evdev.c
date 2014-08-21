@@ -1866,7 +1866,7 @@ clutter_evdev_set_keyboard_layout_index (ClutterDeviceManager *evdev,
   xkb_mod_mask_t locked_mods;
   struct xkb_state *state;
 
-  g_return_val_if_fail (CLUTTER_IS_DEVICE_MANAGER_EVDEV (evdev), NULL);
+  g_return_if_fail (CLUTTER_IS_DEVICE_MANAGER_EVDEV (evdev));
 
   manager_evdev = CLUTTER_DEVICE_MANAGER_EVDEV (evdev);
   state = manager_evdev->priv->main_seat->xkb;
