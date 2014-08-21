@@ -88,10 +88,10 @@ meta_overlay_set (MetaOverlay   *overlay,
 static void
 meta_overlay_paint (MetaOverlay *overlay)
 {
-  g_assert (meta_is_wayland_compositor ());
-
   if (!overlay->enabled)
     return;
+
+  g_assert (meta_is_wayland_compositor ());
 
   cogl_framebuffer_draw_rectangle (cogl_get_draw_framebuffer (),
                                    overlay->pipeline,
@@ -190,7 +190,7 @@ meta_stage_set_cursor (MetaStage     *stage,
 {
   MetaStagePrivate *priv = meta_stage_get_instance_private (stage);
 
-  g_assert (meta_is_wayland_compositor ());
+  g_assert (meta_is_wayland_compositor () || texture == NULL);
 
   meta_overlay_set (&priv->cursor_overlay, texture, rect);
   queue_redraw_for_overlay (stage, &priv->cursor_overlay);
