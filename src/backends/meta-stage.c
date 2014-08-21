@@ -28,31 +28,82 @@
 #include <meta/meta-backend.h>
 #include <meta/util.h>
 
-struct _MetaStagePrivate {
-  CoglPipeline *pipeline;
+typedef struct {
+  gboolean enabled;
 
-  MetaCursorReference *cursor;
+  CoglPipeline *pipeline;
+  CoglTexture *texture;
 
   MetaRectangle current_rect;
   MetaRectangle previous_rect;
   gboolean previous_is_valid;
+} MetaOverlay;
+
+struct _MetaStagePrivate {
+  MetaOverlay cursor_overlay;
 };
 typedef struct _MetaStagePrivate MetaStagePrivate;
 
 G_DEFINE_TYPE_WITH_PRIVATE (MetaStage, meta_stage, CLUTTER_TYPE_STAGE);
 
 static void
-update_pipeline (MetaStage *stage)
+meta_overlay_init (MetaOverlay *overlay)
 {
-  MetaStagePrivate *priv = meta_stage_get_instance_private (stage);
+  CoglContext *ctx = clutter_backend_get_cogl_context (clutter_get_default_backend ());
 
-  if (priv->cursor)
+  overlay->pipeline = cogl_pipeline_new (ctx);
+}
+
+static void
+meta_overlay_free (MetaOverlay *overlay)
+{
+  if (overlay->pipeline)
+    cogl_object_unref (overlay->pipeline);
+}
+
+static void
+meta_overlay_set (MetaOverlay   *overlay,
+                  CoglTexture   *texture,
+                  MetaRectangle *rect)
+{
+  if (overlay->texture != texture)
     {
-      CoglTexture *texture = meta_cursor_reference_get_cogl_texture (priv->cursor, NULL, NULL);
-      cogl_pipeline_set_layer_texture (priv->pipeline, 0, texture);
+      overlay->texture = texture;
+
+      if (texture)
+        {
+          cogl_pipeline_set_layer_texture (overlay->pipeline, 0, texture);
+          overlay->enabled = TRUE;
+        }
+      else
+        {
+          cogl_pipeline_set_layer_texture (overlay->pipeline, 0, NULL);
+          overlay->enabled = FALSE;
+        }
     }
-  else
-    cogl_pipeline_set_layer_texture (priv->pipeline, 0, NULL);
+
+  overlay->current_rect = *rect;
+}
+
+static void
+meta_overlay_paint (MetaOverlay *overlay)
+{
+  g_assert (meta_is_wayland_compositor ());
+
+  if (!overlay->enabled)
+    return;
+
+  cogl_framebuffer_draw_rectangle (cogl_get_draw_framebuffer (),
+                                   overlay->pipeline,
+                                   overlay->current_rect.x,
+                                   overlay->current_rect.y,
+                                   overlay->current_rect.x +
+                                   overlay->current_rect.width,
+                                   overlay->current_rect.y +
+                                   overlay->current_rect.height);
+
+  overlay->previous_rect = overlay->current_rect;
+  overlay->previous_is_valid = TRUE;
 }
 
 static void
@@ -61,42 +112,18 @@ meta_stage_finalize (GObject *object)
   MetaStage *stage = META_STAGE (object);
   MetaStagePrivate *priv = meta_stage_get_instance_private (stage);
 
-  if (priv->pipeline)
-    cogl_object_unref (priv->pipeline);
-}
-
-static void
-paint_cursor (MetaStage *stage)
-{
-  MetaStagePrivate *priv = meta_stage_get_instance_private (stage);
-
-  g_assert (meta_is_wayland_compositor ());
-
-  if (!priv->cursor)
-    return;
-
-  cogl_framebuffer_draw_rectangle (cogl_get_draw_framebuffer (),
-                                   priv->pipeline,
-                                   priv->current_rect.x,
-                                   priv->current_rect.y,
-                                   priv->current_rect.x +
-                                   priv->current_rect.width,
-                                   priv->current_rect.y +
-                                   priv->current_rect.height);
-
-  priv->previous_rect = priv->current_rect;
-  priv->previous_is_valid = TRUE;
+  meta_overlay_free (&priv->cursor_overlay);
 }
 
 static void
 meta_stage_paint (ClutterActor *actor)
 {
   MetaStage *stage = META_STAGE (actor);
+  MetaStagePrivate *priv = meta_stage_get_instance_private (stage);
 
   CLUTTER_ACTOR_CLASS (meta_stage_parent_class)->paint (actor);
 
-  if (meta_is_wayland_compositor ())
-    paint_cursor (stage);
+  meta_overlay_paint (&priv->cursor_overlay);
 }
 
 static void
@@ -113,10 +140,9 @@ meta_stage_class_init (MetaStageClass *klass)
 static void
 meta_stage_init (MetaStage *stage)
 {
-  CoglContext *ctx = clutter_backend_get_cogl_context (clutter_get_default_backend ());
   MetaStagePrivate *priv = meta_stage_get_instance_private (stage);
 
-  priv->pipeline = cogl_pipeline_new (ctx);
+  meta_overlay_init (&priv->cursor_overlay);
 
   clutter_stage_set_user_resizable (CLUTTER_STAGE (stage), FALSE);
 }
@@ -130,29 +156,29 @@ meta_stage_new (void)
 }
 
 static void
-queue_redraw (MetaStage *stage)
+queue_redraw_for_overlay (MetaStage   *stage,
+                          MetaOverlay *overlay)
 {
-  MetaStagePrivate *priv = meta_stage_get_instance_private (stage);
   cairo_rectangle_int_t clip;
 
-  /* Clear the location the cursor was at before, if we need to. */
-  if (priv->previous_is_valid)
+  /* Clear the location the overlay was at before, if we need to. */
+  if (overlay->previous_is_valid)
     {
-      clip.x = priv->previous_rect.x;
-      clip.y = priv->previous_rect.y;
-      clip.width = priv->previous_rect.width;
-      clip.height = priv->previous_rect.height;
+      clip.x = overlay->previous_rect.x;
+      clip.y = overlay->previous_rect.y;
+      clip.width = overlay->previous_rect.width;
+      clip.height = overlay->previous_rect.height;
       clutter_actor_queue_redraw_with_clip (CLUTTER_ACTOR (stage), &clip);
-      priv->previous_is_valid = FALSE;
+      overlay->previous_is_valid = FALSE;
     }
 
-  /* And queue a redraw for the current cursor location. */
-  if (priv->cursor)
+  /* Draw the overlay at the new position */
+  if (overlay->enabled)
     {
-      clip.x = priv->current_rect.x;
-      clip.y = priv->current_rect.y;
-      clip.width = priv->current_rect.width;
-      clip.height = priv->current_rect.height;
+      clip.x = overlay->current_rect.x;
+      clip.y = overlay->current_rect.y;
+      clip.width = overlay->current_rect.width;
+      clip.height = overlay->current_rect.height;
       clutter_actor_queue_redraw_with_clip (CLUTTER_ACTOR (stage), &clip);
     }
 }
@@ -163,13 +189,15 @@ meta_stage_set_cursor (MetaStage           *stage,
                        MetaRectangle       *rect)
 {
   MetaStagePrivate *priv = meta_stage_get_instance_private (stage);
+  CoglTexture *texture;
 
-  if (priv->cursor != cursor)
-    {
-      priv->cursor = cursor;
-      update_pipeline (stage);
-    }
+  g_assert (meta_is_wayland_compositor ());
 
-  priv->current_rect = *rect;
-  queue_redraw (stage);
+  if (cursor)
+    texture = meta_cursor_reference_get_cogl_texture (cursor, NULL, NULL);
+  else
+    texture = NULL;
+
+  meta_overlay_set (&priv->cursor_overlay, texture, rect);
+  queue_redraw_for_overlay (stage, &priv->cursor_overlay);
 }
