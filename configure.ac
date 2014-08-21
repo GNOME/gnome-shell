@@ -76,14 +76,18 @@ MUTTER_PC_MODULES="
    pango >= 1.2.0
    cairo >= 1.10.0
    gsettings-desktop-schemas >= 3.7.3
-   xcomposite >= 0.2 xfixes xext xdamage xi >= 1.6.0
-   xcursor
    $CLUTTER_PACKAGE >= 1.19.5
    clutter-egl-1.0
    cogl-1.0 >= 1.17.1
    libinput
    upower-glib >= 0.99.0
    gnome-desktop-3.0
+   xcomposite >= 0.2
+   xcursor
+   xdamage
+   xext
+   xfixes
+   xi >= 1.6.0
    xkbfile
    xkeyboard-config
    xkbcommon >= 0.4.3
