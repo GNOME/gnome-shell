@@ -315,14 +315,6 @@ meta_wayland_pointer_update (MetaWaylandPointer *pointer,
   repick_for_event (pointer, event);
 
   pointer->button_count = count_buttons (event);
-
-  if (pointer->cursor_tracker)
-    {
-      ClutterPoint pos;
-
-      clutter_input_device_get_coords (pointer->device, NULL, &pos);
-      meta_cursor_tracker_update_position (pointer->cursor_tracker, pos.x, pos.y);
-    }
 }
 
 static void
