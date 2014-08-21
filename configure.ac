@@ -339,8 +339,6 @@ AS_IF([test "x$enable_wayland" = "xyes"],
         CLUTTER_BACKENDS="$CLUTTER_BACKENDS wayland"
         CLUTTER_INPUT_BACKENDS="$CLUTTER_INPUT_BACKENDS wayland"
 
-        experimental_backend="yes"
-
         SUPPORT_WAYLAND=1
         SUPPORT_COGL=1
 
@@ -507,7 +505,6 @@ AS_IF([test "x$enable_evdev" = "xyes"],
               [
                 CLUTTER_INPUT_BACKENDS="$CLUTTER_INPUT_BACKENDS evdev"
                 BACKEND_PC_FILES_PRIVATE="$BACKEND_PC_FILES_PRIVATE libudev >= $LIBUDEV_REQ_VERSION libinput >= $LIBINPUT_REQ_VERSION xkbcommon"
-                experimental_input_backend="yes"
                 AC_DEFINE([HAVE_EVDEV], [1], [Have evdev support for input handling])
                 SUPPORT_EVDEV=1
               ])
