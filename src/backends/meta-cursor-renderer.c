@@ -53,15 +53,18 @@ queue_redraw (MetaCursorRenderer *renderer)
   MetaCursorRendererPrivate *priv = meta_cursor_renderer_get_instance_private (renderer);
   MetaBackend *backend = meta_get_backend ();
   ClutterActor *stage = meta_backend_get_stage (backend);
+  CoglTexture *texture;
 
   /* During early initialization, we can have no stage */
   if (!stage)
     return;
 
-  if (priv->handled_by_backend)
-    meta_stage_set_cursor (META_STAGE (stage), NULL, &priv->current_rect);
+  if (priv->displayed_cursor && !priv->handled_by_backend)
+    texture = meta_cursor_reference_get_cogl_texture (priv->displayed_cursor, NULL, NULL);
   else
-    meta_stage_set_cursor (META_STAGE (stage), priv->displayed_cursor, &priv->current_rect);
+    texture = NULL;
+
+  meta_stage_set_cursor (META_STAGE (stage), texture, &priv->current_rect);
 }
 
 static gboolean

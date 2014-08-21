@@ -51,9 +51,9 @@ GType             meta_stage_get_type                (void) G_GNUC_CONST;
 
 ClutterActor     *meta_stage_new                     (void);
 
-void meta_stage_set_cursor (MetaStage           *stage,
-                            MetaCursorReference *cursor,
-                            MetaRectangle       *rect);
+void meta_stage_set_cursor (MetaStage     *stage,
+                            CoglTexture   *texture,
+                            MetaRectangle *rect);
 G_END_DECLS
 
 #endif /* META_STAGE_H */

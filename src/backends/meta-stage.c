@@ -184,19 +184,13 @@ queue_redraw_for_overlay (MetaStage   *stage,
 }
 
 void
-meta_stage_set_cursor (MetaStage           *stage,
-                       MetaCursorReference *cursor,
-                       MetaRectangle       *rect)
+meta_stage_set_cursor (MetaStage     *stage,
+                       CoglTexture   *texture,
+                       MetaRectangle *rect)
 {
   MetaStagePrivate *priv = meta_stage_get_instance_private (stage);
-  CoglTexture *texture;
 
   g_assert (meta_is_wayland_compositor ());
-
-  if (cursor)
-    texture = meta_cursor_reference_get_cogl_texture (cursor, NULL, NULL);
-  else
-    texture = NULL;
 
   meta_overlay_set (&priv->cursor_overlay, texture, rect);
   queue_redraw_for_overlay (stage, &priv->cursor_overlay);
