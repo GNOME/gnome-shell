@@ -413,7 +413,7 @@ commit_pending_state (MetaWaylandSurface      *surface,
       if (pending->buffer)
         {
           ensure_buffer_texture (pending->buffer);
-          meta_surface_actor_wayland_set_buffer (META_SURFACE_ACTOR_WAYLAND (surface->surface_actor), pending->buffer);
+          meta_surface_actor_wayland_set_texture (META_SURFACE_ACTOR_WAYLAND (surface->surface_actor), pending->buffer->texture);
         }
     }
 

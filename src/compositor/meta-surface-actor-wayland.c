@@ -183,7 +183,7 @@ meta_surface_actor_wayland_dispose (GObject *object)
 {
   MetaSurfaceActorWayland *self = META_SURFACE_ACTOR_WAYLAND (object);
 
-  meta_surface_actor_wayland_set_buffer (self, NULL);
+  meta_surface_actor_wayland_set_texture (self, NULL);
 
   G_OBJECT_CLASS (meta_surface_actor_wayland_parent_class)->dispose (object);
 }
@@ -230,18 +230,10 @@ meta_surface_actor_wayland_new (MetaWaylandSurface *surface)
 }
 
 void
-meta_surface_actor_wayland_set_buffer (MetaSurfaceActorWayland *self,
-                                       MetaWaylandBuffer       *buffer)
+meta_surface_actor_wayland_set_texture (MetaSurfaceActorWayland *self,
+                                        CoglTexture *texture)
 {
-  MetaSurfaceActorWaylandPrivate *priv = meta_surface_actor_wayland_get_instance_private (self);
   MetaShapedTexture *stex = meta_surface_actor_get_texture (META_SURFACE_ACTOR (self));
-  CoglTexture *texture;
-
-  if (buffer)
-    texture = buffer->texture;
-  else
-    texture = NULL;
-
   meta_shaped_texture_set_texture (stex, texture);
 }
 
