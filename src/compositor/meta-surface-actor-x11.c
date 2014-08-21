@@ -180,15 +180,6 @@ is_visible (MetaSurfaceActorX11 *self)
 }
 
 static void
-damage_area (MetaSurfaceActorX11 *self,
-             int x, int y, int width, int height)
-{
-  MetaSurfaceActorX11Private *priv = meta_surface_actor_x11_get_instance_private (self);
-
-  cogl_texture_pixmap_x11_update_area (priv->texture, x, y, width, height);
-}
-
-static void
 meta_surface_actor_x11_process_damage (MetaSurfaceActor *actor,
                                        int x, int y, int width, int height)
 {
@@ -218,7 +209,7 @@ meta_surface_actor_x11_process_damage (MetaSurfaceActor *actor,
   if (priv->unredirected)
     return;
 
-  damage_area (self, x, y, width, height);
+  cogl_texture_pixmap_x11_update_area (priv->texture, x, y, width, height);
 }
 
 static void
