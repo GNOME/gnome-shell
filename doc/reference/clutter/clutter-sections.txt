@@ -1176,9 +1176,11 @@ clutter_get_current_event_time
 clutter_get_current_event
 
 <SUBSECTION Standard>
+CLUTTER_TYPE_EVENT_SEQUENCE
 CLUTTER_TYPE_EVENT
 <SUBSECTION Private>
 ClutterAnyEvent
+clutter_event_sequence_get_type
 clutter_event_get_type
 </SECTION>
 
