@@ -261,11 +261,10 @@ meta_surface_actor_process_damage (MetaSurfaceActor *self,
       return;
     }
 
-  if (!meta_surface_actor_is_visible (self))
-    return;
-
   META_SURFACE_ACTOR_GET_CLASS (self)->process_damage (self, x, y, width, height);
-  meta_surface_actor_update_area (self, x, y, width, height);
+
+  if (meta_surface_actor_is_visible (self))
+    meta_surface_actor_update_area (self, x, y, width, height);
 }
 
 void
