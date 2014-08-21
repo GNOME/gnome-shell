@@ -205,8 +205,7 @@ meta_surface_actor_x11_process_damage (MetaSurfaceActor *actor,
         priv->does_full_damage = TRUE;
     }
 
-  /* Drop damage event for unredirected windows */
-  if (priv->unredirected)
+  if (!is_visible (actor))
     return;
 
   cogl_texture_pixmap_x11_update_area (priv->texture, x, y, width, height);
