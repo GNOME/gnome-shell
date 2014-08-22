@@ -21,8 +21,8 @@ msgstr ""
 "Project-Id-Version: mutter\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-07-18 09:51+0000\n"
-"PO-Revision-Date: 2014-07-18 14:53-0300\n"
+"POT-Creation-Date: 2014-08-22 09:52+0000\n"
+"PO-Revision-Date: 2014-08-22 16:18-0300\n"
 "Last-Translator: Enrico Nicoletto <liverig@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
@@ -53,7 +53,6 @@ msgid "Move window to workspace 4"
 msgstr "Mover a janela para o espaço de trabalho 4"
 
 #: ../data/50-mutter-navigation.xml.in.h:6
-#| msgid "Move window to workspace 1"
 msgid "Move window to last workspace"
 msgstr "Mover a janela para o último espaço de trabalho"
 
@@ -98,67 +97,100 @@ msgid "Switch applications"
 msgstr "Alternar aplicativos"
 
 #: ../data/50-mutter-navigation.xml.in.h:16
+#| msgid "Switch applications"
+msgid "Switch to previous application"
+msgstr "Alternar para o aplicativo anterior"
+
+#: ../data/50-mutter-navigation.xml.in.h:17
 msgid "Switch windows"
 msgstr "Alternar janelas"
 
-#: ../data/50-mutter-navigation.xml.in.h:17
+#: ../data/50-mutter-navigation.xml.in.h:18
+#| msgid "Switch windows"
+msgid "Switch to previous window"
+msgstr "Alternar para a janela anterior"
+
+#: ../data/50-mutter-navigation.xml.in.h:19
 msgid "Switch windows of an application"
 msgstr "Alternar as janelas de um aplicativo"
 
-#: ../data/50-mutter-navigation.xml.in.h:18
+#: ../data/50-mutter-navigation.xml.in.h:20
+#| msgid "Switch windows of an application"
+msgid "Switch to previous window of an application"
+msgstr "Alternar para a janela anterior de um aplicativo"
+
+#: ../data/50-mutter-navigation.xml.in.h:21
 msgid "Switch system controls"
 msgstr "Alternar os controles de sistema"
 
-#: ../data/50-mutter-navigation.xml.in.h:19
+#: ../data/50-mutter-navigation.xml.in.h:22
+#| msgid "Switch system controls"
+msgid "Switch to previous system control"
+msgstr "Alternar para o controle de sistema anterior"
+
+#: ../data/50-mutter-navigation.xml.in.h:23
 msgid "Switch windows directly"
 msgstr "Alternar as janelas diretamente"
 
-#: ../data/50-mutter-navigation.xml.in.h:20
+#: ../data/50-mutter-navigation.xml.in.h:24
+msgid "Switch directly to previous window"
+msgstr "Alternar diretamente para a janela anterior"
+
+#: ../data/50-mutter-navigation.xml.in.h:25
 msgid "Switch windows of an app directly"
 msgstr "Alternar as janelas de um aplicativo diretamente"
 
-#: ../data/50-mutter-navigation.xml.in.h:21
+#: ../data/50-mutter-navigation.xml.in.h:26
+#| msgid "Switch windows of an application"
+msgid "Switch directly to previous window of an app"
+msgstr "Alternar diretamente para a janela anterior de um aplicativo"
+
+#: ../data/50-mutter-navigation.xml.in.h:27
 msgid "Switch system controls directly"
 msgstr "Alternar os controles de sistema diretamente"
 
-#: ../data/50-mutter-navigation.xml.in.h:22
+#: ../data/50-mutter-navigation.xml.in.h:28
+#| msgid "Switch system controls"
+msgid "Switch directly to previous system control"
+msgstr "Alternar diretamente para o controle de sistema anterior"
+
+#: ../data/50-mutter-navigation.xml.in.h:29
 msgid "Hide all normal windows"
 msgstr "Ocultar todas as janelas normais"
 
-#: ../data/50-mutter-navigation.xml.in.h:23
+#: ../data/50-mutter-navigation.xml.in.h:30
 msgid "Switch to workspace 1"
 msgstr "Trocar para o espaço de trabalho 1"
 
-#: ../data/50-mutter-navigation.xml.in.h:24
+#: ../data/50-mutter-navigation.xml.in.h:31
 msgid "Switch to workspace 2"
 msgstr "Trocar para o espaço de trabalho 2"
 
-#: ../data/50-mutter-navigation.xml.in.h:25
+#: ../data/50-mutter-navigation.xml.in.h:32
 msgid "Switch to workspace 3"
 msgstr "Trocar para o espaço de trabalho 3"
 
-#: ../data/50-mutter-navigation.xml.in.h:26
+#: ../data/50-mutter-navigation.xml.in.h:33
 msgid "Switch to workspace 4"
 msgstr "Trocar para o espaço de trabalho 4"
 
-#: ../data/50-mutter-navigation.xml.in.h:27
-#| msgid "Switch to workspace 1"
+#: ../data/50-mutter-navigation.xml.in.h:34
 msgid "Switch to last workspace"
 msgstr "Trocar para o último espaço de trabalho"
 
-#: ../data/50-mutter-navigation.xml.in.h:28
+#: ../data/50-mutter-navigation.xml.in.h:35
 msgid "Move to workspace left"
 msgstr "Move para o espaço de trabalho à esquerda"
 
-#: ../data/50-mutter-navigation.xml.in.h:29
+#: ../data/50-mutter-navigation.xml.in.h:36
 msgid "Move to workspace right"
 msgstr "Move para o espaço de trabalho à direita"
 
-#: ../data/50-mutter-navigation.xml.in.h:30
+#: ../data/50-mutter-navigation.xml.in.h:37
 msgid "Move to workspace above"
 msgstr "Mover para o espaço de trabalho acima"
 
-#: ../data/50-mutter-navigation.xml.in.h:31
+#: ../data/50-mutter-navigation.xml.in.h:38
 msgid "Move to workspace below"
 msgstr "Mover para o espaço de trabalho abaixo"
 
@@ -399,37 +431,30 @@ msgid "Cancel tab popup"
 msgstr "Cancelar aba instantânea"
 
 #: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:1
-#| msgid "Switch to workspace 1"
 msgid "Switch to VT 1"
 msgstr "Trocar para o VT 1"
 
 #: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:2
-#| msgid "Switch to workspace 2"
 msgid "Switch to VT 2"
 msgstr "Trocar para o VT 2"
 
 #: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:3
-#| msgid "Switch to workspace 3"
 msgid "Switch to VT 3"
 msgstr "Trocar para o VT 3"
 
 #: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:4
-#| msgid "Switch to workspace 4"
 msgid "Switch to VT 4"
 msgstr "Trocar para o VT 4"
 
 #: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:5
-#| msgid "Switch to workspace 5"
 msgid "Switch to VT 5"
 msgstr "Trocar para o VT 5"
 
 #: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:6
-#| msgid "Switch to workspace 6"
 msgid "Switch to VT 6"
 msgstr "Trocar para o VT 6"
 
 #: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:7
-#| msgid "Switch to workspace 7"
 msgid "Switch to VT 7"
 msgstr "Trocar para o VT 7"
 
@@ -455,7 +480,7 @@ msgstr "%s de %s"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:445
+#: ../src/compositor/compositor.c:441
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
@@ -463,11 +488,11 @@ msgid ""
 msgstr ""
 "Outro compositor de janelas está em execução na tela %i na área \"%s\"."
 
-#: ../src/compositor/meta-background.c:990
+#: ../src/compositor/meta-background.c:1044
 msgid "background texture could not be created from file"
 msgstr "textura de plano de fundo não pôde ser criado de arquivo"
 
-#: ../src/core/bell.c:215
+#: ../src/core/bell.c:185
 msgid "Bell event"
 msgstr "Evento de som"
 
@@ -496,49 +521,49 @@ msgstr "_Esperar"
 msgid "_Force Quit"
 msgstr "_Forçar sair"
 
-#: ../src/core/display.c:519
+#: ../src/core/display.c:547
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Falha ao abrir a exibição \"%s\" do sistema de janelas X\n"
 
-#: ../src/core/main.c:172
+#: ../src/core/main.c:176
 msgid "Disable connection to session manager"
 msgstr "Desabilitar a conexão com o gerenciador de sessões"
 
-#: ../src/core/main.c:178
+#: ../src/core/main.c:182
 msgid "Replace the running window manager"
 msgstr "Substituir o gerenciador de janelas em execução"
 
-#: ../src/core/main.c:184
+#: ../src/core/main.c:188
 msgid "Specify session management ID"
 msgstr "Especificar o ID do gerenciador de sessões"
 
-#: ../src/core/main.c:189
+#: ../src/core/main.c:193
 msgid "X Display to use"
 msgstr "Exibição do X a ser utilizada"
 
-#: ../src/core/main.c:195
+#: ../src/core/main.c:199
 msgid "Initialize session from savefile"
 msgstr "Inicializar a sessão a partir do arquivo salvo"
 
-#: ../src/core/main.c:201
+#: ../src/core/main.c:205
 msgid "Make X calls synchronous"
 msgstr "Fazer X chamadas síncronas"
 
-#: ../src/core/main.c:207
+#: ../src/core/main.c:212
 msgid "Run as a wayland compositor"
 msgstr "Executar como um compositor wayland"
 
-#: ../src/core/main.c:214
+#: ../src/core/main.c:220
 msgid "Run as a full display server, rather than nested"
 msgstr "Executar como um servidor de tela cheia, ao invés de aninhado"
 
-#: ../src/core/main.c:450
+#: ../src/core/main.c:459
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Falha ao varrer a pasta de temas: %s\n"
 
-#: ../src/core/main.c:466
+#: ../src/core/main.c:475
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
@@ -570,17 +595,17 @@ msgstr "Versão impressa"
 msgid "Mutter plugin to use"
 msgstr "Plug-in do Mutter para usar"
 
-#: ../src/core/prefs.c:2086
+#: ../src/core/prefs.c:2101
 #, c-format
 msgid "Workspace %d"
 msgstr "Espaço de trabalho %d"
 
-#: ../src/core/screen.c:553
+#: ../src/core/screen.c:548
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "A tela %d na exibição \"%s\" é inválida\n"
 
-#: ../src/core/screen.c:569
+#: ../src/core/screen.c:564
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -589,7 +614,7 @@ msgstr ""
 "A tela %d na exibição \"%s\" já possui um gerenciador de janelas; tente usar "
 "a opção --replace para substituir o gerenciador de janelas atual.\n"
 
-#: ../src/core/screen.c:662
+#: ../src/core/screen.c:657
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "A tela %d na exibição \"%s\" já possui um gerenciador de janelas\n"
@@ -1304,7 +1329,7 @@ msgstr ""
 "atual&quot; e precisarão ser reiniciadas manualmente quando você reiniciar a "
 "sessão."
 
-#: ../src/x11/window-props.c:513
+#: ../src/x11/window-props.c:515
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (em %s)"
