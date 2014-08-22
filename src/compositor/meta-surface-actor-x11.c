@@ -205,7 +205,7 @@ meta_surface_actor_x11_process_damage (MetaSurfaceActor *actor,
         priv->does_full_damage = TRUE;
     }
 
-  if (!is_visible (actor))
+  if (!is_visible (self))
     return;
 
   cogl_texture_pixmap_x11_update_area (priv->texture, x, y, width, height);
