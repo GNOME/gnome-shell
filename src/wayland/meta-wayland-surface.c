@@ -1018,6 +1018,8 @@ xdg_shell_get_xdg_surface (struct wl_client *client,
       return;
     }
 
+  surface->xdg_shell_resource = resource;
+
   window = meta_window_wayland_new (meta_get_display (), surface);
   meta_wayland_surface_set_window (surface, window);
 }
@@ -1074,6 +1076,8 @@ xdg_shell_get_xdg_popup (struct wl_client *client,
       return;
     }
 
+  surface->xdg_shell_resource = resource;
+
   window = meta_window_wayland_new (meta_get_display (), surface);
   meta_window_move_frame (window, FALSE,
                           parent_surf->window->rect.x + x,
@@ -1095,41 +1099,13 @@ static const struct xdg_shell_interface meta_wayland_xdg_shell_interface = {
   xdg_shell_pong,
 };
 
-typedef struct {
-  struct wl_resource *resource;
-  struct wl_listener client_destroy_listener;
-} XdgShell;
-
-static void
-xdg_shell_handle_client_destroy (struct wl_listener *listener, void *data)
-{
-  XdgShell *xdg_shell = wl_container_of (listener, xdg_shell, client_destroy_listener);
-  g_slice_free (XdgShell, xdg_shell);
-}
-
-static struct wl_resource *
-get_xdg_shell_for_client (struct wl_client *client)
-{
-  struct wl_listener *listener;
-  XdgShell *xdg_shell;
-
-  listener = wl_client_get_destroy_listener (client, xdg_shell_handle_client_destroy);
-
-  /* No xdg_shell has been bound for this client */
-  if (listener == NULL)
-    return NULL;
-
-  xdg_shell = wl_container_of (listener, xdg_shell, client_destroy_listener);
-  return xdg_shell->resource;
-}
-
 static void
 bind_xdg_shell (struct wl_client *client,
                 void *data,
                 guint32 version,
                 guint32 id)
 {
-  XdgShell *xdg_shell;
+  struct wl_resource *resource;
 
   if (version != META_XDG_SHELL_VERSION)
     {
@@ -1137,13 +1113,8 @@ bind_xdg_shell (struct wl_client *client,
       return;
     }
 
-  xdg_shell = g_slice_new (XdgShell);
-
-  xdg_shell->resource = wl_resource_create (client, &xdg_shell_interface, version, id);
-  wl_resource_set_implementation (xdg_shell->resource, &meta_wayland_xdg_shell_interface, data, NULL);
-
-  xdg_shell->client_destroy_listener.notify = xdg_shell_handle_client_destroy;
-  wl_client_add_destroy_listener (client, &xdg_shell->client_destroy_listener);
+  resource = wl_resource_create (client, &xdg_shell_interface, version, id);
+  wl_resource_set_implementation (resource, &meta_wayland_xdg_shell_interface, data, NULL);
 }
 
 static void
@@ -1856,23 +1827,10 @@ void
 meta_wayland_surface_ping (MetaWaylandSurface *surface,
                            guint32             serial)
 {
-  if (surface->xdg_surface.resource)
-    {
-      struct wl_client *client = wl_resource_get_client (surface->resource);
-      struct wl_resource *xdg_shell = get_xdg_shell_for_client (client);
-
-      if (xdg_shell == NULL)
-        {
-          g_warning ("Trying to ping a surface without an xdg_shell bound. How does this happen?");
-          return;
-        }
-
-      xdg_shell_send_ping (xdg_shell, serial);
-    }
+  if (surface->xdg_shell_resource)
+    xdg_shell_send_ping (surface->xdg_shell_resource, serial);
   else if (surface->wl_shell_surface.resource)
-    {
-      wl_shell_surface_send_ping (surface->wl_shell_surface.resource, serial);
-    }
+    wl_shell_surface_send_ping (surface->wl_shell_surface.resource, serial);
 }
 
 void

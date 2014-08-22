@@ -81,6 +81,7 @@ struct _MetaWaylandSurface
   MetaWaylandCompositor *compositor;
   MetaSurfaceActor *surface_actor;
   MetaWindow *window;
+  struct wl_resource *xdg_shell_resource;
   MetaWaylandSurfaceExtension xdg_surface;
   MetaWaylandSurfaceExtension xdg_popup;
   MetaWaylandSurfaceExtension wl_shell_surface;
