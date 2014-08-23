@@ -63,6 +63,7 @@
 #include "clutter-event-private.h"
 #include "clutter-main.h"
 #include "clutter-private.h"
+#include "clutter-settings-private.h"
 
 #define clutter_backend_x11_get_type    _clutter_backend_x11_get_type
 
@@ -203,9 +204,9 @@ clutter_backend_x11_xsettings_notify (const char       *name,
                         CLUTTER_SETTING_X11_NAME (i),
                         CLUTTER_SETTING_PROPERTY (i));
 
-          g_object_set_property (G_OBJECT (settings),
-                                 CLUTTER_SETTING_PROPERTY (i),
-                                 &value);
+          clutter_settings_set_property_internal (settings,
+                                                  CLUTTER_SETTING_PROPERTY (i),
+                                                  &value);
 
           g_value_unset (&value);
 

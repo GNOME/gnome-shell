@@ -65,6 +65,7 @@
 #include "clutter-event-private.h"
 #include "clutter-main.h"
 #include "clutter-private.h"
+#include "clutter-settings-private.h"
 
 #define clutter_backend_gdk_get_type _clutter_backend_gdk_get_type
 G_DEFINE_TYPE (ClutterBackendGdk, clutter_backend_gdk, CLUTTER_TYPE_BACKEND);
@@ -88,9 +89,9 @@ clutter_backend_gdk_init_settings (ClutterBackendGdk *backend_gdk)
       gdk_screen_get_setting (backend_gdk->screen,
 			      CLUTTER_SETTING_GDK_NAME(i),
 			      &val);
-      g_object_set_property (G_OBJECT (settings),
-			     CLUTTER_SETTING_PROPERTY(i),
-			     &val);
+      clutter_settings_set_property_internal (settings,
+                                              CLUTTER_SETTING_PROPERTY (i),
+                                              &val);
       g_value_unset (&val);
     }
 }
@@ -112,9 +113,9 @@ _clutter_backend_gdk_update_setting (ClutterBackendGdk *backend_gdk,
 	  gdk_screen_get_setting (backend_gdk->screen,
 				  CLUTTER_SETTING_GDK_NAME (i),
 				  &val);
-	  g_object_set_property (G_OBJECT (settings),
-				 CLUTTER_SETTING_PROPERTY (i),
-				 &val);
+	  clutter_settings_set_property_internal (settings,
+	  	  	  	  	  	  CLUTTER_SETTING_PROPERTY (i),
+	  	  	  	  	  	  &val);
 	  g_value_unset (&val);
 
 	  break;

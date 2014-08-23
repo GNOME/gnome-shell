@@ -355,7 +355,10 @@ clutter_settings_set_property (GObject      *gobject,
 
     case PROP_WINDOW_SCALING_FACTOR:
       if (!self->fixed_scaling_factor)
-        self->window_scaling_factor = g_value_get_int (value);
+        {
+          self->window_scaling_factor = g_value_get_int (value);
+          self->fixed_scaling_factor = TRUE;
+        }
       break;
 
     case PROP_UNSCALED_FONT_DPI:
@@ -367,6 +370,24 @@ clutter_settings_set_property (GObject      *gobject,
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
     }
+}
+
+void
+clutter_settings_set_property_internal (ClutterSettings *self,
+                                        const char *property,
+                                        GValue *value)
+{
+
+  property = g_intern_string (property);
+
+  if (property == I_("window-scaling-factor") &&
+      self->fixed_scaling_factor)
+    return;
+
+  g_object_set_property (G_OBJECT (self), property, value);
+
+  if (property == I_("window-scaling-factor"))
+    self->fixed_scaling_factor = FALSE;
 }
 
 static void
