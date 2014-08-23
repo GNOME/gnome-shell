@@ -330,6 +330,21 @@ output_get_hotplug_mode_update (MetaMonitorManagerXrandr *manager_xrandr,
   return output_get_boolean_property (manager_xrandr, output, "hotplug_mode_update");
 }
 
+static char *
+get_xmode_name (XRRModeInfo *xmode)
+{
+  int width = xmode->width;
+  int height = xmode->height;
+
+  if (xmode->hSkew != 0)
+    {
+      width += 2 * (xmode->hSkew >> 8);
+      height += 2 * (xmode->hSkew & 0xff);
+    }
+
+  return g_strdup_printf ("%dx%d", width, height);
+}
+
 static void
 meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
 {
@@ -415,6 +430,7 @@ meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
       mode->height = xmode->height;
       mode->refresh_rate = (xmode->dotClock /
 			    ((float)xmode->hTotal * xmode->vTotal));
+      mode->name = get_xmode_name (xmode);
     }
 
   for (i = 0; i < (unsigned)resources->ncrtc; i++)
