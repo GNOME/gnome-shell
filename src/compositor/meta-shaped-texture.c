@@ -298,10 +298,8 @@ meta_shaped_texture_paint (ClutterActor *actor)
   guchar opacity;
   CoglContext *ctx;
   CoglFramebuffer *fb;
-  CoglPipeline *pipeline = NULL;
   CoglTexture *paint_tex;
   ClutterActorBox alloc;
-  cairo_region_t *blended_region = NULL;
   CoglPipelineFilter filter;
 
   if (priv->clip_region && cairo_region_is_empty (priv->clip_region))
@@ -339,6 +337,8 @@ meta_shaped_texture_paint (ClutterActor *actor)
   if (tex_width == 0 || tex_height == 0) /* no contents yet */
     return;
 
+  cairo_rectangle_int_t tex_rect = { 0, 0, tex_width, tex_height };
+
   /* Use nearest-pixel interpolation if the texture is unscaled. This
    * improves performance, especially with software rendering.
    */
@@ -354,7 +354,45 @@ meta_shaped_texture_paint (ClutterActor *actor)
   opacity = clutter_actor_get_paint_opacity (actor);
   clutter_actor_get_allocation_box (actor, &alloc);
 
-  if (priv->opaque_region != NULL && opacity == 255)
+  cairo_region_t *blended_region;
+  gboolean use_opaque_region = (priv->opaque_region != NULL && opacity == 255);
+
+  if (use_opaque_region)
+    {
+      if (priv->clip_region != NULL)
+        blended_region = cairo_region_copy (priv->clip_region);
+      else
+        blended_region = cairo_region_create_rectangle (&tex_rect);
+
+      cairo_region_subtract (blended_region, priv->opaque_region);
+    }
+  else
+    {
+      if (priv->clip_region != NULL)
+        blended_region = cairo_region_reference (priv->clip_region);
+      else
+        blended_region = NULL;
+    }
+
+  /* Limit to how many separate rectangles we'll draw; beyond this just
+   * fall back and draw the whole thing */
+#define MAX_RECTS 16
+
+  if (blended_region != NULL)
+    {
+      int n_rects = cairo_region_num_rectangles (blended_region);
+      if (n_rects > MAX_RECTS)
+        {
+          /* Fall back to taking the fully blended path. */
+          use_opaque_region = FALSE;
+
+          cairo_region_destroy (blended_region);
+          blended_region = NULL;
+        }
+    }
+
+  /* First, paint the unblended parts, which are part of the opaque region. */
+  if (use_opaque_region)
     {
       CoglPipeline *opaque_pipeline;
       cairo_region_t *region;
@@ -371,103 +409,75 @@ meta_shaped_texture_paint (ClutterActor *actor)
           region = cairo_region_reference (priv->opaque_region);
         }
 
-      if (cairo_region_is_empty (region))
-        goto paint_blended;
-
-      opaque_pipeline = get_unblended_pipeline (ctx);
-      cogl_pipeline_set_layer_texture (opaque_pipeline, 0, paint_tex);
-      cogl_pipeline_set_layer_filters (opaque_pipeline, 0, filter, filter);
-
-      n_rects = cairo_region_num_rectangles (region);
-      for (i = 0; i < n_rects; i++)
+      if (!cairo_region_is_empty (region))
         {
-          cairo_rectangle_int_t rect;
-          cairo_region_get_rectangle (region, i, &rect);
-          paint_clipped_rectangle (fb, opaque_pipeline, &rect, &alloc);
+          opaque_pipeline = get_unblended_pipeline (ctx);
+          cogl_pipeline_set_layer_texture (opaque_pipeline, 0, paint_tex);
+          cogl_pipeline_set_layer_filters (opaque_pipeline, 0, filter, filter);
+
+          n_rects = cairo_region_num_rectangles (region);
+          for (i = 0; i < n_rects; i++)
+            {
+              cairo_rectangle_int_t rect;
+              cairo_region_get_rectangle (region, i, &rect);
+              paint_clipped_rectangle (fb, opaque_pipeline, &rect, &alloc);
+            }
+
+          cogl_object_unref (opaque_pipeline);
         }
 
-      cogl_object_unref (opaque_pipeline);
-
-      if (priv->clip_region != NULL)
-        {
-          blended_region = cairo_region_copy (priv->clip_region);
-        }
-      else
-        {
-          cairo_rectangle_int_t rect = { 0, 0, tex_width, tex_height };
-          blended_region = cairo_region_create_rectangle (&rect);
-        }
-
-      cairo_region_subtract (blended_region, priv->opaque_region);
-
-    paint_blended:
       cairo_region_destroy (region);
     }
 
-  if (blended_region == NULL && priv->clip_region != NULL)
-    blended_region = cairo_region_reference (priv->clip_region);
-
-  if (blended_region != NULL && cairo_region_is_empty (blended_region))
-    goto out;
-
-  if (priv->mask_texture == NULL)
-    {
-      pipeline = get_unmasked_pipeline (ctx);
-    }
-  else
-    {
-      pipeline = get_masked_pipeline (ctx);
-      cogl_pipeline_set_layer_texture (pipeline, 1, priv->mask_texture);
-      cogl_pipeline_set_layer_filters (pipeline, 1, filter, filter);
-    }
-
-  cogl_pipeline_set_layer_texture (pipeline, 0, paint_tex);
-  cogl_pipeline_set_layer_filters (pipeline, 0, filter, filter);
-
+  /* Now, go ahead and paint the blended parts. */
   {
+    CoglPipeline *blended_pipeline;
+
+    if (priv->mask_texture == NULL)
+      {
+        blended_pipeline = get_unmasked_pipeline (ctx);
+      }
+    else
+      {
+        blended_pipeline = get_masked_pipeline (ctx);
+        cogl_pipeline_set_layer_texture (blended_pipeline, 1, priv->mask_texture);
+        cogl_pipeline_set_layer_filters (blended_pipeline, 1, filter, filter);
+      }
+
+    cogl_pipeline_set_layer_texture (blended_pipeline, 0, paint_tex);
+    cogl_pipeline_set_layer_filters (blended_pipeline, 0, filter, filter);
+
     CoglColor color;
     cogl_color_init_from_4ub (&color, opacity, opacity, opacity, opacity);
-    cogl_pipeline_set_color (pipeline, &color);
+    cogl_pipeline_set_color (blended_pipeline, &color);
+
+    if (blended_region != NULL && !cairo_region_is_empty (blended_region))
+      {
+        int i;
+        int n_rects = cairo_region_num_rectangles (blended_region);
+
+        for (i = 0; i < n_rects; i++)
+          {
+            cairo_rectangle_int_t rect;
+            cairo_region_get_rectangle (blended_region, i, &rect);
+
+            if (!gdk_rectangle_intersect (&tex_rect, &rect, &rect))
+              continue;
+
+            paint_clipped_rectangle (fb, blended_pipeline, &rect, &alloc);
+          }
+      }
+    else
+      {
+        cogl_framebuffer_draw_rectangle (fb, blended_pipeline,
+                                         0, 0,
+                                         alloc.x2 - alloc.x1,
+                                         alloc.y2 - alloc.y1);
+      }
+
+    cogl_object_unref (blended_pipeline);
   }
 
-  if (blended_region != NULL)
-    {
-      int n_rects;
-
-      /* Limit to how many separate rectangles we'll draw; beyond this just
-       * fall back and draw the whole thing */
-#     define MAX_RECTS 16
-
-      n_rects = cairo_region_num_rectangles (blended_region);
-      if (n_rects <= MAX_RECTS)
-	{
-          int i;
-          cairo_rectangle_int_t tex_rect = { 0, 0, tex_width, tex_height };
-
-	  for (i = 0; i < n_rects; i++)
-	    {
-	      cairo_rectangle_int_t rect;
-
-	      cairo_region_get_rectangle (blended_region, i, &rect);
-
-	      if (!gdk_rectangle_intersect (&tex_rect, &rect, &rect))
-		continue;
-
-              paint_clipped_rectangle (fb, pipeline, &rect, &alloc);
-            }
-
-          goto out;
-	}
-    }
-
-  cogl_framebuffer_draw_rectangle (fb, pipeline,
-                                   0, 0,
-                                   alloc.x2 - alloc.x1,
-                                   alloc.y2 - alloc.y1);
-
- out:
-  if (pipeline != NULL)
-    cogl_object_unref (pipeline);
   if (blended_region != NULL)
     cairo_region_destroy (blended_region);
 }
