@@ -587,7 +587,7 @@ const Background = new Lang.Class({
         let filename;
         if (this._overrideImage != null) {
             filename = this._overrideImage;
-            this._style = GDesktopEnums.BackgroundStyle.WALLPAPER; // Hardcode
+            this._style = GDesktopEnums.BackgroundStyle.ZOOM; // Hardcode
         } else {
             this._style = this._settings.get_enum(BACKGROUND_STYLE_KEY);
             if (this._style == GDesktopEnums.BackgroundStyle.NONE) {
