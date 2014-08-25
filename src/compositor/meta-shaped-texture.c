@@ -463,7 +463,7 @@ meta_shaped_texture_paint (ClutterActor *actor)
 
       if (blended_region != NULL)
         {
-          /* 1) blended_region is NULL and not empty. Paint the rectangles. */
+          /* 1) blended_region is not empty. Paint the rectangles. */
           int i;
           int n_rects = cairo_region_num_rectangles (blended_region);
 
