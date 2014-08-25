@@ -241,6 +241,19 @@ workspace_free_builtin_struts (MetaWorkspace *workspace)
   workspace->builtin_struts = NULL;
 }
 
+/* Ensure that the workspace is empty by making sure that
+ * all of our windows are on-all-workspaces. */
+static void
+assert_workspace_empty (MetaWorkspace *workspace)
+{
+  GList *l;
+  for (l = workspace->windows; l != NULL; l = l->next)
+    {
+      MetaWindow *window = l->data;
+      g_assert (window->on_all_workspaces);
+    }
+}
+
 void
 meta_workspace_remove (MetaWorkspace *workspace)
 {
@@ -249,7 +262,7 @@ meta_workspace_remove (MetaWorkspace *workspace)
 
   g_return_if_fail (workspace != workspace->screen->active_workspace);
 
-  g_assert (workspace->windows == NULL);
+  assert_workspace_empty (workspace);
 
   screen = workspace->screen;
 
@@ -349,7 +362,7 @@ meta_workspace_relocate_windows (MetaWorkspace *workspace,
 
   g_list_free (copy);
 
-  g_assert (workspace->windows == NULL);
+  assert_workspace_empty (workspace);
 }
 
 void
