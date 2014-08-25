@@ -357,7 +357,9 @@ meta_workspace_relocate_windows (MetaWorkspace *workspace,
   for (l = copy; l != NULL; l = l->next)
     {
       MetaWindow *window = l->data;
-      meta_window_change_workspace (window, new_home);
+
+      if (!window->override_redirect)
+        meta_window_change_workspace (window, new_home);
     }
 
   g_list_free (copy);
