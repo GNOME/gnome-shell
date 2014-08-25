@@ -1499,6 +1499,7 @@ clutter_device_manager_xi2_constructed (GObject *gobject)
                                             clutter_x11_get_root_window (),
                                             &event_mask);
 
+  XSync (backend_x11->xdpy, False);
   update_client_pointer (manager_xi2);
 
   if (G_OBJECT_CLASS (clutter_device_manager_xi2_parent_class)->constructed)
