@@ -430,53 +430,65 @@ meta_shaped_texture_paint (ClutterActor *actor)
     }
 
   /* Now, go ahead and paint the blended parts. */
-  {
-    CoglPipeline *blended_pipeline;
 
-    if (priv->mask_texture == NULL)
-      {
-        blended_pipeline = get_unmasked_pipeline (ctx);
-      }
-    else
-      {
-        blended_pipeline = get_masked_pipeline (ctx);
-        cogl_pipeline_set_layer_texture (blended_pipeline, 1, priv->mask_texture);
-        cogl_pipeline_set_layer_filters (blended_pipeline, 1, filter, filter);
-      }
+  /* We have three cases:
+   *   1) blended_region has rectangles - paint the rectangles.
+   *   2) blended_region is empty - don't paint anything
+   *   3) blended_region is NULL - paint fully-blended.
+   *
+   *   1) and 3) are the times where we have to paint stuff. This tests
+   *   for 1) and 3).
+   */
+  if (blended_region == NULL || !cairo_region_is_empty (blended_region))
+    {
+      CoglPipeline *blended_pipeline;
 
-    cogl_pipeline_set_layer_texture (blended_pipeline, 0, paint_tex);
-    cogl_pipeline_set_layer_filters (blended_pipeline, 0, filter, filter);
+      if (priv->mask_texture == NULL)
+        {
+          blended_pipeline = get_unmasked_pipeline (ctx);
+        }
+      else
+        {
+          blended_pipeline = get_masked_pipeline (ctx);
+          cogl_pipeline_set_layer_texture (blended_pipeline, 1, priv->mask_texture);
+          cogl_pipeline_set_layer_filters (blended_pipeline, 1, filter, filter);
+        }
 
-    CoglColor color;
-    cogl_color_init_from_4ub (&color, opacity, opacity, opacity, opacity);
-    cogl_pipeline_set_color (blended_pipeline, &color);
+      cogl_pipeline_set_layer_texture (blended_pipeline, 0, paint_tex);
+      cogl_pipeline_set_layer_filters (blended_pipeline, 0, filter, filter);
 
-    if (blended_region != NULL && !cairo_region_is_empty (blended_region))
-      {
-        int i;
-        int n_rects = cairo_region_num_rectangles (blended_region);
+      CoglColor color;
+      cogl_color_init_from_4ub (&color, opacity, opacity, opacity, opacity);
+      cogl_pipeline_set_color (blended_pipeline, &color);
 
-        for (i = 0; i < n_rects; i++)
-          {
-            cairo_rectangle_int_t rect;
-            cairo_region_get_rectangle (blended_region, i, &rect);
+      if (blended_region != NULL)
+        {
+          /* 1) blended_region is NULL and not empty. Paint the rectangles. */
+          int i;
+          int n_rects = cairo_region_num_rectangles (blended_region);
 
-            if (!gdk_rectangle_intersect (&tex_rect, &rect, &rect))
-              continue;
+          for (i = 0; i < n_rects; i++)
+            {
+              cairo_rectangle_int_t rect;
+              cairo_region_get_rectangle (blended_region, i, &rect);
 
-            paint_clipped_rectangle (fb, blended_pipeline, &rect, &alloc);
-          }
-      }
-    else
-      {
-        cogl_framebuffer_draw_rectangle (fb, blended_pipeline,
-                                         0, 0,
-                                         alloc.x2 - alloc.x1,
-                                         alloc.y2 - alloc.y1);
-      }
+              if (!gdk_rectangle_intersect (&tex_rect, &rect, &rect))
+                continue;
 
-    cogl_object_unref (blended_pipeline);
-  }
+              paint_clipped_rectangle (fb, blended_pipeline, &rect, &alloc);
+            }
+        }
+      else
+        {
+          /* 3) blended_region is NULL. Do a full paint. */
+          cogl_framebuffer_draw_rectangle (fb, blended_pipeline,
+                                           0, 0,
+                                           alloc.x2 - alloc.x1,
+                                           alloc.y2 - alloc.y1);
+        }
+
+      cogl_object_unref (blended_pipeline);
+    }
 
   if (blended_region != NULL)
     cairo_region_destroy (blended_region);
