@@ -192,10 +192,6 @@ if test x$found_introspection != xno; then
   AC_SUBST(META_GIR)
 fi
 
-AC_PATH_PROG([WAYLAND_SCANNER],[wayland-scanner],[no])
-AS_IF([test "x$WAYLAND_SCANNER" = "xno"],
-  AC_MSG_ERROR([Could not find wayland-scanner in your PATH, required for parsing wayland extension protocols]))
-AC_SUBST([WAYLAND_SCANNER])
 AC_SUBST(XWAYLAND_PATH)
 
 PKG_CHECK_MODULES(MUTTER, $MUTTER_PC_MODULES)
@@ -208,6 +204,11 @@ AM_CONDITIONAL([HAVE_NATIVE_BACKEND],[test $have_native_backend = yes])
 
 PKG_CHECK_MODULES(MUTTER_WAYLAND, [clutter-wayland-1.0 clutter-wayland-compositor-1.0 wayland-server >= 1.5.90], [have_wayland=yes], [have_wayland=no])
 if test $have_wayland = yes; then
+   AC_PATH_PROG([WAYLAND_SCANNER],[wayland-scanner],[no])
+   AS_IF([test $WAYLAND_SCANNER = "no"],
+     AC_MSG_ERROR([Could not find wayland-scanner in your PATH, required for parsing wayland extension protocols]))
+   AC_SUBST([WAYLAND_SCANNER])
+
    AC_DEFINE([HAVE_WAYLAND],[1],[Define if you want to enable Wayland support])
 fi
 AM_CONDITIONAL([HAVE_WAYLAND],[test $have_wayland = yes])
