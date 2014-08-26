@@ -187,6 +187,9 @@ calculate_surface_window_geometry (MetaWaylandSurface *surface,
   if (!CLUTTER_ACTOR_IS_VISIBLE (surface_actor))
     return;
 
+  if (!surface->buffer)
+    return;
+
   /* XXX: Is there a better way to do this using Clutter APIs? */
   clutter_actor_get_position (surface_actor, &x, &y);
 
