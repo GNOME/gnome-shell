@@ -519,6 +519,7 @@ const WindowOverlay = new Lang.Class({
 
         Tweener.removeTweens(button);
         Tweener.removeTweens(border);
+        Tweener.removeTweens(title);
 
         let [cloneX, cloneY, cloneWidth, cloneHeight] = this._windowClone.slot;
 
