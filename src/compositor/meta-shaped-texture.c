@@ -28,16 +28,14 @@
 #include <config.h>
 
 #include <meta/meta-shaped-texture.h>
-#include <meta/util.h>
+#include "meta-shaped-texture-private.h"
+
+#include <cogl/cogl.h>
+#include <gdk/gdk.h> /* for gdk_rectangle_intersect() */
+
 #include "clutter-utils.h"
 #include "meta-texture-tower.h"
 
-#include "meta-shaped-texture-private.h"
-#include "meta-window-actor-private.h"
-
-#include <clutter/clutter.h>
-#include <cogl/cogl.h>
-#include <gdk/gdk.h> /* for gdk_rectangle_intersect() */
 #include "meta-cullable.h"
 
 static void meta_shaped_texture_dispose  (GObject    *object);
@@ -536,16 +534,17 @@ static cairo_region_t *
 effective_unobscured_region (MetaShapedTexture *self)
 {
   MetaShapedTexturePrivate *priv = self->priv;
-  ClutterActor *parent = clutter_actor_get_parent (CLUTTER_ACTOR (self));
+  ClutterActor *actor;
 
-  if (clutter_actor_has_mapped_clones (CLUTTER_ACTOR (self)))
-    return NULL;
-
-  while (parent && !META_IS_WINDOW_ACTOR (parent))
-    parent = clutter_actor_get_parent (parent);
-
-  if (parent && clutter_actor_has_mapped_clones (parent))
-    return NULL;
+  /* Fail if we have any mapped clones. */
+  actor = CLUTTER_ACTOR (self);
+  do
+    {
+      if (clutter_actor_has_mapped_clones (actor))
+        return NULL;
+      actor = clutter_actor_get_parent (actor);
+    }
+  while (actor != NULL);
 
   return priv->unobscured_region;
 }
