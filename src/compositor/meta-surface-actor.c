@@ -280,9 +280,15 @@ meta_surface_actor_is_argb32 (MetaSurfaceActor *self)
   CoglTexture *texture = meta_shaped_texture_get_texture (stex);
 
   /* If we don't have a texture, like during initialization, assume
-   * that we're ARGB32. */
+   * that we're ARGB32.
+   *
+   * If we are unredirected and we have no texture assume that we are
+   * not ARGB32 otherwise we wouldn't be unredirected in the first
+   * place. This prevents us from continually redirecting and
+   * unredirecting on every paint.
+   */
   if (!texture)
-    return TRUE;
+    return !meta_surface_actor_is_unredirected (self);
 
   switch (cogl_texture_get_components (texture))
     {
