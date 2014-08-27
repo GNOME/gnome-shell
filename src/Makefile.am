@@ -36,11 +36,15 @@ mutter_built_sources = \
 	$(dbus_display_config_built_sources)	\
 	$(dbus_login1_built_sources)		\
 	mutter-enum-types.h 			\
-	mutter-enum-types.c			\
+	mutter-enum-types.c
+
+if HAVE_WAYLAND
+mutter_built_sources += \
 	gtk-shell-protocol.c			\
 	gtk-shell-server-protocol.h		\
 	xdg-shell-protocol.c			\
 	xdg-shell-server-protocol.h
+endif
 
 wayland_protocols = \
 	wayland/protocol/gtk-shell.xml		\
