@@ -31,4 +31,9 @@ gboolean meta_actor_is_untransformed (ClutterActor *actor,
                                       int          *x_origin,
                                       int          *y_origin);
 
+gboolean meta_actor_painting_untransformed (int         paint_width,
+                                            int         paint_height,
+                                            int        *x_origin,
+                                            int        *y_origin);
+
 #endif /* __META_CLUTTER_UTILS_H__ */

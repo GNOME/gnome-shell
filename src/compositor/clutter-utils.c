@@ -51,6 +51,12 @@ round_to_fixed (float x)
   return roundf (x * 256);
 }
 
+/* Help macros to scale from OpenGL <-1,1> coordinates system to
+ * window coordinates ranging [0,window-size]. Borrowed from clutter-utils.c
+ */
+#define MTX_GL_SCALE_X(x,w,v1,v2) ((((((x) / (w)) + 1.0f) / 2.0f) * (v1)) + (v2))
+#define MTX_GL_SCALE_Y(y,w,v1,v2) ((v1) - (((((y) / (w)) + 1.0f) / 2.0f) * (v1)) + (v2))
+
 /* This helper function checks if (according to our fixed point precision)
  * the vertices @verts form a box of width @widthf and height @heightf
  * located at integral coordinates. These coordinates are returned
@@ -116,5 +122,69 @@ meta_actor_is_untransformed (ClutterActor *actor,
   clutter_actor_get_abs_allocation_vertices (actor, verts);
 
   return meta_actor_vertices_are_untransformed (verts, widthf, heightf, x_origin, y_origin);
+}
+
+/**
+ * meta_actor_painting_untransformed:
+ * @paint_width: the width of the painted area
+ * @paint_height: the height of the painted area
+ * @x_origin: if the transform is only an integer translation
+ *  then the X coordinate of the location of the origin under the transformation
+ *  from drawing space to screen pixel space is returned here.
+ * @y_origin: if the transform is only an integer translation
+ *  then the X coordinate of the location of the origin under the transformation
+ *  from drawing space to screen pixel space is returned here.
+ *
+ * Determines if the current painting transform is an integer translation.
+ * This can differ from the result of meta_actor_is_untransformed() when
+ * painting an actor if we're inside a inside a clone paint. @paint_width
+ * and @paint_height are used to determine the vertices of the rectangle
+ * we check to see if the painted area is "close enough" to the integer
+ * transform.
+ */
+gboolean
+meta_actor_painting_untransformed (int              paint_width,
+                                   int              paint_height,
+                                   int             *x_origin,
+                                   int             *y_origin)
+{
+  CoglMatrix modelview, projection, modelview_projection;
+  ClutterVertex vertices[4];
+  float viewport[4];
+  int i;
+
+  cogl_get_modelview_matrix (&modelview);
+  cogl_get_projection_matrix (&projection);
+
+  cogl_matrix_multiply (&modelview_projection,
+                        &projection,
+                        &modelview);
+
+  vertices[0].x = 0;
+  vertices[0].y = 0;
+  vertices[0].z = 0;
+  vertices[1].x = paint_width;
+  vertices[1].y = 0;
+  vertices[1].z = 0;
+  vertices[2].x = 0;
+  vertices[2].y = paint_height;
+  vertices[2].z = 0;
+  vertices[3].x = paint_width;
+  vertices[3].y = paint_height;
+  vertices[3].z = 0;
+
+  cogl_get_viewport (viewport);
+
+  for (i = 0; i < 4; i++)
+    {
+      float w = 1;
+      cogl_matrix_transform_point (&modelview_projection, &vertices[i].x, &vertices[i].y, &vertices[i].z, &w);
+      vertices[i].x = MTX_GL_SCALE_X (vertices[i].x, w,
+                                      viewport[2], viewport[0]);
+      vertices[i].y = MTX_GL_SCALE_Y (vertices[i].y, w,
+                                      viewport[3], viewport[1]);
+    }
+
+  return meta_actor_vertices_are_untransformed (vertices, paint_width, paint_height, x_origin, y_origin);
 }
 
