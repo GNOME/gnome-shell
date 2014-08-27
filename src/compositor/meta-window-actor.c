@@ -406,9 +406,12 @@ meta_window_actor_update_surface (MetaWindowActor *self)
   MetaWindow *window = priv->window;
   MetaSurfaceActor *surface_actor;
 
+#ifdef HAVE_WAYLAND
   if (window->surface)
     surface_actor = window->surface->surface_actor;
-  else if (!meta_is_wayland_compositor ())
+  else
+#endif
+  if (!meta_is_wayland_compositor ())
     surface_actor = meta_surface_actor_x11_new (window);
   else
     surface_actor = NULL;
