@@ -79,7 +79,6 @@ MUTTER_PC_MODULES="
    $CLUTTER_PACKAGE >= 1.19.5
    clutter-egl-1.0
    cogl-1.0 >= 1.17.1
-   libinput
    upower-glib >= 0.99.0
    gnome-desktop-3.0
    xcomposite >= 0.2
@@ -196,7 +195,7 @@ AC_SUBST(XWAYLAND_PATH)
 
 PKG_CHECK_MODULES(MUTTER, $MUTTER_PC_MODULES)
 
-PKG_CHECK_MODULES(MUTTER_NATIVE_BACKEND, [libdrm libsystemd], [have_native_backend=yes], [have_native_backend=no])
+PKG_CHECK_MODULES(MUTTER_NATIVE_BACKEND, [libdrm libsystemd libinput], [have_native_backend=yes], [have_native_backend=no])
 if test $have_native_backend = yes; then
    AC_DEFINE([HAVE_NATIVE_BACKEND],[1],[Define if you want to enable the native (KMS) backend based on systemd])
 fi

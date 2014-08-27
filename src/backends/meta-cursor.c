@@ -362,6 +362,7 @@ meta_cursor_reference_get_cogl_texture (MetaCursorReference *cursor,
   return COGL_TEXTURE (cursor->image.texture);
 }
 
+#ifdef HAVE_NATIVE_BACKEND
 struct gbm_bo *
 meta_cursor_reference_get_gbm_bo (MetaCursorReference *cursor,
                                   int                 *hot_x,
@@ -373,6 +374,7 @@ meta_cursor_reference_get_gbm_bo (MetaCursorReference *cursor,
     *hot_y = cursor->image.hot_y;
   return cursor->image.bo;
 }
+#endif
 
 MetaCursor
 meta_cursor_reference_get_meta_cursor (MetaCursorReference *cursor)

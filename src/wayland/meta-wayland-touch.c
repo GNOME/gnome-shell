@@ -32,6 +32,10 @@
 #include "meta-surface-actor-wayland.h"
 #include "meta-wayland-private.h"
 
+#ifdef HAVE_NATIVE_BACKEND
+#include "backends/native/meta-backend-native.h"
+#endif
+
 struct _MetaWaylandTouchSurface
 {
   MetaWaylandSurface *surface;
@@ -472,6 +476,7 @@ meta_wayland_touch_cancel (MetaWaylandTouch *touch)
   g_list_free (surfaces);
 }
 
+#ifdef HAVE_NATIVE_BACKEND
 static gboolean
 evdev_filter_func (struct libinput_event *event,
                    gpointer               data)
@@ -508,6 +513,7 @@ evdev_filter_func (struct libinput_event *event,
 
   return CLUTTER_EVENT_PROPAGATE;
 }
+#endif
 
 void
 meta_wayland_touch_init (MetaWaylandTouch  *touch,
@@ -527,13 +533,23 @@ meta_wayland_touch_init (MetaWaylandTouch  *touch,
 
   manager = clutter_device_manager_get_default ();
   touch->device = clutter_device_manager_get_core_device (manager, CLUTTER_TOUCHSCREEN_DEVICE);
-  clutter_evdev_add_filter (evdev_filter_func, touch, NULL);
+
+#ifdef HAVE_NATIVE_BACKEND
+  MetaBackend *backend = meta_get_backend ();
+  if (META_IS_BACKEND_NATIVE (backend))
+    clutter_evdev_add_filter (evdev_filter_func, touch, NULL);
+#endif
 }
 
 void
 meta_wayland_touch_release (MetaWaylandTouch *touch)
 {
-  clutter_evdev_remove_filter (evdev_filter_func, touch);
+#ifdef HAVE_NATIVE_BACKEND
+  MetaBackend *backend = meta_get_backend ();
+  if (META_IS_BACKEND_NATIVE (backend))
+    clutter_evdev_remove_filter (evdev_filter_func, touch);
+#endif
+
   g_clear_pointer (&touch->touch_surfaces, (GDestroyNotify) g_hash_table_unref);
   g_clear_pointer (&touch->touches, (GDestroyNotify) g_hash_table_unref);
   touch->display = NULL;
