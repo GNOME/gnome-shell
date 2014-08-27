@@ -82,7 +82,9 @@
 
 #include "backends/x11/meta-backend-x11.h"
 
+#ifdef HAVE_WAYLAND
 #include "wayland/meta-wayland-private.h"
+#endif
 
 static gboolean
 is_modal (MetaDisplay *display)

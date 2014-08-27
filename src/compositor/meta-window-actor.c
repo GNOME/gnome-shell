@@ -35,9 +35,8 @@
 
 #ifdef HAVE_WAYLAND
 #include "meta-surface-actor-wayland.h"
-#endif
-
 #include "wayland/meta-wayland-surface.h"
+#endif
 
 typedef enum {
   INITIALLY_FROZEN,
