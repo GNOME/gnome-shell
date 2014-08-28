@@ -731,6 +731,10 @@ const PopupMenu = new Lang.Class({
         global.focus_manager.add_group(this.actor);
         this.actor.reactive = true;
 
+        if (this.sourceActor)
+            this._keyPressId = this.sourceActor.connect('key-press-event',
+                                                        Lang.bind(this, this._onKeyPress));
+
         this._openedSubMenu = null;
     },
 
@@ -740,6 +744,24 @@ const PopupMenu = new Lang.Class({
 
         this._openedSubMenu = submenu;
     },
+
+    _onKeyPress: function(actor, event) {
+        let symbol = event.get_key_symbol();
+        if (symbol == Clutter.KEY_space || symbol == Clutter.KEY_Return) {
+            this.toggle();
+            return Clutter.EVENT_STOP;
+        } else if (symbol == Clutter.KEY_Escape && this.isOpen) {
+            this.close();
+            return Clutter.EVENT_STOP;
+        } else if (symbol == Clutter.KEY_Down) {
+            if (!this.isOpen)
+                this.toggle();
+            this.actor.navigate_focus(actor, Gtk.DirectionType.DOWN, false);
+            return Clutter.EVENT_STOP;
+        } else
+            return Clutter.EVENT_PROPAGATE;
+    },
+
 
     setArrowOrigin: function(origin) {
         this._boxPointer.setArrowOrigin(origin);
@@ -781,6 +803,12 @@ const PopupMenu = new Lang.Class({
 
         this.isOpen = false;
         this.emit('open-state-changed', false);
+    },
+
+    destroy: function() {
+        if (this._keyPressId)
+            this.sourceActor.disconnect(this._keyPressId);
+        this.parent();
     }
 });
 

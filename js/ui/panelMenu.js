@@ -101,7 +101,6 @@ const Button = new Lang.Class({
                       accessible_role: Atk.Role.MENU });
 
         this.actor.connect('event', Lang.bind(this, this._onEvent));
-        this.actor.connect('key-press-event', Lang.bind(this, this._onSourceKeyPress));
         this.actor.connect('notify::visible', Lang.bind(this, this._onVisibilityChanged));
 
         if (dontCreateMenu)
@@ -138,26 +137,6 @@ const Button = new Lang.Class({
             this.menu.toggle();
 
         return Clutter.EVENT_PROPAGATE;
-    },
-
-    _onSourceKeyPress: function(actor, event) {
-        if (!this.menu)
-            return Clutter.EVENT_PROPAGATE;
-
-        let symbol = event.get_key_symbol();
-        if (symbol == Clutter.KEY_space || symbol == Clutter.KEY_Return) {
-            this.menu.toggle();
-            return Clutter.EVENT_STOP;
-        } else if (symbol == Clutter.KEY_Escape && this.menu.isOpen) {
-            this.menu.close();
-            return Clutter.EVENT_STOP;
-        } else if (symbol == Clutter.KEY_Down) {
-            if (!this.menu.isOpen)
-                this.menu.toggle();
-            this.menu.actor.navigate_focus(this.actor, Gtk.DirectionType.DOWN, false);
-            return Clutter.EVENT_STOP;
-        } else
-            return Clutter.EVENT_PROPAGATE;
     },
 
     _onVisibilityChanged: function() {
