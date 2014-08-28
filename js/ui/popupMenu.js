@@ -746,6 +746,22 @@ const PopupMenu = new Lang.Class({
     },
 
     _onKeyPress: function(actor, event) {
+        let navKey;
+        switch (this._boxPointer.arrowSide) {
+            case St.Side.TOP:
+                navKey = Clutter.KEY_Down;
+                break;
+            case St.Side.BOTTOM:
+                navKey = Clutter.KEY_Up;
+                break;
+            case St.Side.LEFT:
+                navKey = Clutter.KEY_Right;
+                break;
+            case St.Side.RIGHT:
+                navKey = Clutter.KEY_Left;
+                break;
+        }
+
         let symbol = event.get_key_symbol();
         if (symbol == Clutter.KEY_space || symbol == Clutter.KEY_Return) {
             this.toggle();
@@ -753,10 +769,10 @@ const PopupMenu = new Lang.Class({
         } else if (symbol == Clutter.KEY_Escape && this.isOpen) {
             this.close();
             return Clutter.EVENT_STOP;
-        } else if (symbol == Clutter.KEY_Down) {
+        } else if (symbol == navKey) {
             if (!this.isOpen)
                 this.toggle();
-            this.actor.navigate_focus(actor, Gtk.DirectionType.DOWN, false);
+            this.actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
             return Clutter.EVENT_STOP;
         } else
             return Clutter.EVENT_PROPAGATE;
