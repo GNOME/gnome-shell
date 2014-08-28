@@ -56,7 +56,7 @@ const GrabHelper = new Lang.Class({
         this._grabStack = [];
 
         this._actors = [];
-        this._ignoreRelease = false;
+        this._ignoreUntilRelease = false;
 
         this._modalCount = 0;
     },
@@ -215,7 +215,7 @@ const GrabHelper = new Lang.Class({
 
         _popGrabHelper(this);
 
-        this._ignoreRelease = false;
+        this._ignoreUntilRelease = false;
 
         Main.popModal(this._owner);
         global.sync_pointer();
@@ -228,7 +228,7 @@ const GrabHelper = new Lang.Class({
     // like the ComboBoxMenu that go away on press, but need to eat
     // the next release event.
     ignoreRelease: function() {
-        this._ignoreRelease = true;
+        this._ignoreUntilRelease = true;
     },
 
     // ungrab:
