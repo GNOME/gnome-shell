@@ -1417,10 +1417,6 @@ const Workspace = new Lang.Class({
         if (index == -1)
             return;
 
-        // Check if window still should be here
-        if (win && this._isMyWindow(win))
-            return;
-
         let clone = this._windows[index];
 
         this._windows.splice(index, 1);
