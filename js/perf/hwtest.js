@@ -157,9 +157,13 @@ function run() {
 
     yield Scripting.sleep(1500);
 
+    log ("OVERVIEW DRAW START");
+//    Meta.show_pixel_count(true);
     Scripting.scriptEvent('overviewDrawStart');
     yield waitAndDraw(1000);
     Scripting.scriptEvent('overviewDrawDone');
+//    Meta.show_pixel_count(false);
+    log ("OVERVIEW DRAW DONE");
 
     yield Scripting.destroyTestWindows();
     Main.overview.hide();
@@ -186,7 +190,7 @@ function run() {
     yield Scripting.sleep(1000);
 
     ////////////////////////////////////////
-
+if (0) {
     let appSys = Shell.AppSystem.get_default();
     let app = appSys.lookup_app('org.gnome.gedit.desktop');
 
@@ -211,6 +215,8 @@ function run() {
     windows[0].delete(global.get_current_time());
 
     yield Scripting.sleep(1000);
+
+    }
 
     Gtk.Settings.get_default().gtk_enable_animations = true;
 }
@@ -270,7 +276,9 @@ function script_redrawTestDone(time) {
 function script_collectTimings(time) {
     for (let timing in redrawTimes) {
         let times = redrawTimes[timing];
+        log(timing + ': ' + times.join(' '));
         times.sort(function(a, b) { return a - b });
+        log(timing + ': ' + times.join(' '));
 
         let len = times.length;
         let median;
