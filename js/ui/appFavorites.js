@@ -15,6 +15,7 @@ const RENAMED_DESKTOP_IDS = {
     'gedit.desktop': 'org.gnome.gedit.desktop',
     'glchess.desktop': 'gnome-chess.desktop',
     'gnome-clocks.desktop': 'org.gnome.clocks.desktop',
+    'gnome-contacts.desktop': 'org.gnome.Contacts.desktop',
     'gnome-documents.desktop': 'org.gnome.Documents.desktop',
     'gnome-font-viewer.desktop': 'org.gnome.font-viewer.desktop',
     'gnome-photos.desktop': 'org.gnome.Photos.desktop',
@@ -24,6 +25,7 @@ const RENAMED_DESKTOP_IDS = {
     'gnomine.desktop': 'gnome-mines.desktop',
     'nautilus.desktop': 'org.gnome.Nautilus.desktop',
     'polari.desktop': 'org.gnome.Polari.desktop',
+    'totem.desktop': 'org.gnome.Totem.desktop',
 };
 
 const AppFavorites = new Lang.Class({
