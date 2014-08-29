@@ -37,7 +37,7 @@ AC_PATH_PROG([XSLTPROC], [xsltproc])
 GLIB_GSETTINGS
 
 # Get a value to substitute into gnome-shell.in
-AM_PATH_PYTHON([2.5])
+AM_PATH_PYTHON([3])
 AC_SUBST(PYTHON)
 
 # We need at least this, since gst_plugin_register_static() was added
