@@ -217,7 +217,6 @@ const SlidingControl = new Lang.Class({
 
     slideIn: function() {
         this._visible = true;
-        this._updateTranslation();
         // we will update slideX and the translation from pageEmpty
     },
 
