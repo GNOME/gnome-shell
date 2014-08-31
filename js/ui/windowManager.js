@@ -17,6 +17,7 @@ const Main = imports.ui.main;
 const ModalDialog = imports.ui.modalDialog;
 const Tweener = imports.ui.tweener;
 const WindowMenu = imports.ui.windowMenu;
+const Wobbly = imports.ui.wobbly;
 
 const SHELL_KEYBINDINGS_SCHEMA = 'org.gnome.shell.keybindings';
 const MAXIMIZE_WINDOW_ANIMATION_TIME = 0.15;
@@ -811,6 +812,8 @@ const WindowManager = new Lang.Class({
         gesture = new AppSwitchAction();
         gesture.connect('activated', Lang.bind(this, this._switchApp));
         global.stage.add_action(gesture);
+
+        this._wobblyWindows = new Wobbly.WobblyWindowManager();
     },
 
     _lookupIndex: function (windows, metaWindow) {
