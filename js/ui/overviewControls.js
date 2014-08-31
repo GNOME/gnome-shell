@@ -161,7 +161,8 @@ const SlidingControl = new Lang.Class({
         let translationEnd = 0;
         let translation = this._getTranslation();
 
-        if (this._visible) {
+        let shouldShow = (this._getSlide() > 0);
+        if (shouldShow) {
             translationStart = translation;
         } else {
             translationEnd = translation;
@@ -192,7 +193,7 @@ const SlidingControl = new Lang.Class({
 
     _onDragBegin: function() {
         this._inDrag = true;
-        this.layout.translationX = 0;
+        this._updateTranslation();
         this._updateSlide();
     },
 
