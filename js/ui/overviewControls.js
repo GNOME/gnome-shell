@@ -36,7 +36,7 @@ const SlideLayout = new Lang.Class({
 
     _init: function(params) {
         this._slideX = 1;
-        this._translationX = 0;
+        this._translationX = undefined;
         this._direction = SlideDirection.LEFT;
 
         this.parent(params);
