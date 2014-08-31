@@ -102,6 +102,7 @@ shell_public_headers_h =		\
 	shell-util.h			\
 	shell-window-tracker.h		\
 	shell-wm.h			\
+	shell-wobbly-effect.h		\
 	$(NULL)
 
 if HAVE_NETWORKMANAGER
@@ -167,6 +168,7 @@ libgnome_shell_sources =		\
 	shell-util.c			\
 	shell-window-tracker.c		\
 	shell-wm.c			\
+	shell-wobbly-effect.c		\
 	$(NULL)
 
 libgnome_shell_built_sources =		\
