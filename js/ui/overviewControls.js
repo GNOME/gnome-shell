@@ -177,8 +177,8 @@ const SlidingControl = new Lang.Class({
     },
 
     _onOverviewHiding: function() {
-        // We need to explicitily slideOut since showing pages
-        // doesn't implies to slide out, instead, hiding the overview does.
+        // We need to explicitly slideOut since showing pages
+        // doesn't imply sliding out, instead, hiding the overview does.
         this.slideOut();
     },
 
