@@ -518,7 +518,6 @@ MetaWindow * _meta_window_shared_new       (MetaDisplay         *display,
 
 void        meta_window_unmanage           (MetaWindow  *window,
                                             guint32      timestamp);
-void        meta_window_calc_showing       (MetaWindow  *window);
 void        meta_window_queue              (MetaWindow  *window,
                                             guint queuebits);
 void        meta_window_tile               (MetaWindow        *window);

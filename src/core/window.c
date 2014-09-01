@@ -1543,7 +1543,7 @@ implement_showing (MetaWindow *window,
     meta_window_show (window);
 }
 
-void
+static void
 meta_window_calc_showing (MetaWindow  *window)
 {
   implement_showing (window, meta_window_should_be_showing (window));
