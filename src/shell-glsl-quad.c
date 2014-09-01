@@ -23,6 +23,13 @@ struct _ShellGLSLQuadPrivate
   CoglPipeline  *pipeline;
 };
 
+static gboolean
+shell_glsl_quad_get_paint_volume (ClutterActor       *actor,
+                                  ClutterPaintVolume *volume)
+{
+  return clutter_paint_volume_set_from_allocation (volume, actor);
+}
+
 static void
 shell_glsl_quad_paint (ClutterActor *actor)
 {
@@ -151,6 +158,7 @@ shell_glsl_quad_class_init (ShellGLSLQuadClass *klass)
   gobject_class->constructed = shell_glsl_quad_constructed;
   gobject_class->dispose = shell_glsl_quad_dispose;
 
+  actor_class->get_paint_volume = shell_glsl_quad_get_paint_volume;
   actor_class->paint = shell_glsl_quad_paint;
 
   g_type_class_add_private (klass, sizeof (ShellGLSLQuadPrivate));
