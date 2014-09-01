@@ -1157,9 +1157,6 @@ _meta_window_shared_new (MetaDisplay         *display,
   /* disable show desktop mode unless we're a desktop component */
   maybe_leave_show_desktop_mode (window);
 
-  if (!window->override_redirect)
-    sync_client_window_mapped (window);
-
   meta_window_queue (window, META_QUEUE_CALC_SHOWING);
   /* See bug 303284; a transient of the given window can already exist, in which
    * case we think it should probably be shown.
@@ -1523,9 +1520,6 @@ implement_showing (MetaWindow *window,
   meta_verbose ("Implement showing = %d for window %s\n",
                 showing, window->desc);
 
-  if (!window->override_redirect)
-    sync_client_window_mapped (window);
-
   if (!showing)
     {
       /* When we manage a new window, we normally delay placing it
@@ -1541,6 +1535,9 @@ implement_showing (MetaWindow *window,
     }
   else
     meta_window_show (window);
+
+  if (!window->override_redirect)
+    sync_client_window_mapped (window);
 }
 
 static void
