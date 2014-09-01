@@ -101,7 +101,8 @@ shell_public_headers_h =		\
 	shell-tray-manager.h		\
 	shell-util.h			\
 	shell-window-tracker.h		\
-	shell-wm.h
+	shell-wm.h			\
+	$(NULL)
 
 if HAVE_NETWORKMANAGER
 shell_public_headers_h +=  shell-network-agent.h
