@@ -432,6 +432,7 @@ const IconGrid = new Lang.Class({
         for (let index = 0; index < actors.length; index++) {
             let actor = actors[index];
             actor.opacity = 0;
+            actor.reactive = false;
 
             let delay = index / actors.length * ANIMATION_MAX_DELAY_FOR_ITEM;
             let [originalX, originalY] = actor.get_transformed_position();
@@ -465,6 +466,7 @@ const IconGrid = new Lang.Class({
                                                             this._animationDone();
 
                                                         actor.opacity = 255;
+                                                        actor.reactive = true;
                                                         actorClone.destroy();
                                                     })
                                                    });
@@ -508,6 +510,7 @@ const IconGrid = new Lang.Class({
         for (let index = 0; index < actors.length; index++) {
             let actor = actors[index];
             actor.opacity = 0;
+            actor.reactive = false;
 
             let actorClone = new Clutter.Clone({ source: actor });
             Main.uiGroup.add_actor(actorClone);
@@ -542,6 +545,7 @@ const IconGrid = new Lang.Class({
                                            this._animationDone();
 
                                        actor.opacity = 255;
+                                       actor.reactive = true;
                                        actorClone.destroy();
                                    })};
                 fadeParams = { time: ANIMATION_FADE_IN_TIME_FOR_ITEM,
