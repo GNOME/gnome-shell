@@ -77,6 +77,8 @@ struct _CallyUtilClass
 CLUTTER_AVAILABLE_IN_1_4
 GType cally_util_get_type (void) G_GNUC_CONST;
 
+void _cally_util_override_atk_util (void);
+
 G_END_DECLS
 
 #endif /* __CALLY_UTIL_H__ */
