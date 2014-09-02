@@ -319,7 +319,18 @@ setup_pipeline (MetaBackgroundActor   *self,
     }
 
   if (priv->vignette)
-    color_component = priv->brightness * opacity / 255.;
+    {
+      color_component = priv->brightness * opacity / 255.;
+
+      if (!clutter_feature_available (CLUTTER_FEATURE_SHADERS_GLSL))
+        {
+          /* Darken everything to match the average brightness that would
+           * be there if we were drawing the vignette, which is
+           * (1 - (pi/12.) * vignette_sharpness [exercise for the reader :]
+           */
+          color_component *= (1 - 0.74 * priv->vignette_sharpness);
+        }
+    }
   else
     color_component = opacity / 255.;
 
