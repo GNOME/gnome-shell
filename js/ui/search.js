@@ -48,6 +48,11 @@ const SearchSystem = new Lang.Class({
         this.emit('providers-changed');
     },
 
+    removeProvider: function(provider) {
+        this._unregisterProvider(provider);
+        this.emit('providers-changed');
+    },
+
     _reloadRemoteProviders: function() {
         let remoteProviders = this._providers.filter(function(provider) {
             return provider.isRemoteProvider;
@@ -543,6 +548,14 @@ const SearchResults = new Lang.Class({
         this._searchSystem.getProviders().forEach(function(provider) {
             provider.display.clear();
         });
+    },
+
+    addSearchProvider: function (provider) {
+        this._searchSystem.addProvider(provider);
+    },
+
+    removeSearchProvider: function (provider) {
+        this._searchSystem.removeProvider(provider);
     },
 
     reset: function() {

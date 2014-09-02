@@ -240,6 +240,14 @@ const ViewSelector = new Lang.Class({
         Main.overview.show();
     },
 
+    addSearchProvider: function(provider) {
+        this._searchResults.addSearchProvider(provider);
+    },
+
+    removeSearchProvider: function(provider) {
+        this._searchResults.removeSearchProvider(provider);
+    },
+
     showApps: function() {
         this._showAppsButton.checked = true;
         Main.overview.show();
