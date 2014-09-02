@@ -196,7 +196,7 @@ const Keyboard = new Lang.Class({
                                                        }
                                                        this._cursorProxy.connect('g-properties-changed',
                                                                                  Lang.bind(this, this._sync));
-                                                       this._cursorChanged();
+                                                       this._sync();
                                                    }));
         this._sync();
 
