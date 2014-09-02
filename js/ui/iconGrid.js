@@ -519,7 +519,7 @@ const IconGrid = new Lang.Class({
             actorClone.set_size(width, height);
             let scaleX = sourceScaledWidth / width;
             let scaleY = sourceScaledHeight / height;
-            let [adjustedSourcePositionX, adjustedSourcePositionY] = [sourceCenterX - sourceScaledWidth / 2, sourceY - sourceScaledHeight / 2];
+            let [adjustedSourcePositionX, adjustedSourcePositionY] = [sourceCenterX - sourceScaledWidth / 2, sourceCenterY - sourceScaledHeight / 2];
 
             // Defeat onComplete anonymous function closure
             let isLastItem = index == actors.length - 1;
