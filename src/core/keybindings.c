@@ -1877,6 +1877,8 @@ process_iso_next_group (MetaDisplay *display,
 {
   MetaKeyBindingManager *keys = &display->key_binding_manager;
   gboolean activate;
+  guint32 keycode;
+  guint32 modifiers;
   int i;
 
   if (event->type == CLUTTER_KEY_RELEASE)
@@ -1884,10 +1886,13 @@ process_iso_next_group (MetaDisplay *display,
 
   activate = FALSE;
 
+  keycode = event->hardware_keycode;
+  modifiers = event->modifier_state & 0xff & ~keys->ignored_modifier_mask;
+
   for (i = 0; i < keys->n_iso_next_group_combos; ++i)
     {
-      if (event->hardware_keycode == keys->iso_next_group_combos[i].keycode &&
-          event->modifier_state == (unsigned int)keys->iso_next_group_combos[i].modifiers)
+      if (keycode == keys->iso_next_group_combos[i].keycode &&
+          modifiers == keys->iso_next_group_combos[i].modifiers)
         {
           /* If the signal handler returns TRUE the keyboard will
              remain frozen. It's the signal handler's responsibility
