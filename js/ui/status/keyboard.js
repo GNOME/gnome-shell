@@ -269,17 +269,6 @@ const InputSourcePopup = new Lang.Class({
         this._switcherList = new InputSourceSwitcher(this._items);
     },
 
-    _initialSelection: function(backward, binding) {
-        if (binding == 'switch-input-source') {
-            if (backward)
-                this._selectedIndex = this._items.length - 1;
-        } else if (binding == 'switch-input-source-backward') {
-            if (!backward)
-                this._selectedIndex = this._items.length - 1;
-        }
-        this._select(this._selectedIndex);
-    },
-
     _keyPressHandler: function(keysym, action) {
         if (action == this._action)
             this._select(this._next());

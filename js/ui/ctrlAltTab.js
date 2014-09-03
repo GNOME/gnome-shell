@@ -146,17 +146,6 @@ const CtrlAltTabPopup = new Lang.Class({
         this._switcherList = new CtrlAltTabSwitcher(this._items);
     },
 
-    _initialSelection: function(backward, binding) {
-        if (binding == 'switch-panels') {
-            if (backward)
-                this._selectedIndex = this._items.length - 1;
-        } else if (binding == 'switch-panels-backward') {
-            if (!backward)
-                this._selectedIndex = this._items.length - 1;
-        }
-        this._select(this._selectedIndex);
-    },
-
     _keyPressHandler: function(keysym, action) {
         if (action == Meta.KeyBindingAction.SWITCH_PANELS)
             this._select(this._next());

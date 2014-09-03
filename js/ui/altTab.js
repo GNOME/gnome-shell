@@ -378,15 +378,6 @@ const WindowSwitcherPopup = new Lang.Class({
         return global.display.get_tab_list(Meta.TabList.NORMAL, workspace);
     },
 
-    _initialSelection: function(backward, binding) {
-        if (binding == 'switch-windows-backward' || backward)
-            this._select(this._items.length - 1);
-        else if (this._items.length == 1)
-            this._select(0);
-        else
-            this._select(1);
-    },
-
     _keyPressHandler: function(keysym, action) {
         if (action == Meta.KeyBindingAction.SWITCH_WINDOWS) {
             this._select(this._next());
