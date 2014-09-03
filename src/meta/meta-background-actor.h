@@ -67,9 +67,9 @@ ClutterActor *meta_background_actor_new    (MetaScreen *screen,
 void meta_background_actor_set_background  (MetaBackgroundActor *self,
                                             MetaBackground      *background);
 
-void meta_background_actor_set_vignette    (MetaBackgroundActor *self,
-                                            double               brightness,
-                                            double               sharpness);
-void meta_background_actor_unset_vignette  (MetaBackgroundActor *self);
+void meta_background_actor_set_vignette (MetaBackgroundActor *self,
+                                         gboolean             enabled,
+                                         double               brightness,
+                                         double               sharpness);
 
 #endif /* META_BACKGROUND_ACTOR_H */

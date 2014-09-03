@@ -88,6 +88,9 @@ enum
   PROP_META_SCREEN = 1,
   PROP_MONITOR,
   PROP_BACKGROUND,
+  PROP_VIGNETTE,
+  PROP_VIGNETTE_SHARPNESS,
+  PROP_BRIGHTNESS
 };
 
 typedef enum {
@@ -130,8 +133,8 @@ struct _MetaBackgroundActorPrivate
   MetaBackground *background;
 
   gboolean vignette;
-  float brightness;
-  float vignette_sharpness;
+  double brightness;
+  double vignette_sharpness;
 
   ChangedFlags changed;
   CoglPipeline *pipeline;
@@ -473,6 +476,24 @@ meta_background_actor_set_property (GObject      *object,
     case PROP_BACKGROUND:
       meta_background_actor_set_background (self, g_value_get_object (value));
       break;
+    case PROP_VIGNETTE:
+      meta_background_actor_set_vignette (self,
+                                          g_value_get_boolean (value),
+                                          priv->brightness,
+                                          priv->vignette_sharpness);
+      break;
+    case PROP_VIGNETTE_SHARPNESS:
+      meta_background_actor_set_vignette (self,
+                                          priv->vignette,
+                                          priv->brightness,
+                                          g_value_get_double (value));
+      break;
+    case PROP_BRIGHTNESS:
+      meta_background_actor_set_vignette (self,
+                                          priv->vignette,
+                                          g_value_get_double (value),
+                                          priv->vignette_sharpness);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -497,6 +518,15 @@ meta_background_actor_get_property (GObject      *object,
       break;
     case PROP_BACKGROUND:
       g_value_set_object (value, priv->background);
+      break;
+    case PROP_VIGNETTE:
+      g_value_set_boolean (value, priv->vignette);
+      break;
+    case PROP_BRIGHTNESS:
+      g_value_set_double (value, priv->brightness);
+      break;
+    case PROP_VIGNETTE_SHARPNESS:
+      g_value_set_double (value, priv->vignette_sharpness);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -550,14 +580,50 @@ meta_background_actor_class_init (MetaBackgroundActorClass *klass)
   g_object_class_install_property (object_class,
                                    PROP_BACKGROUND,
                                    param_spec);
+
+  param_spec = g_param_spec_boolean ("vignette",
+                                     "Vignette",
+                                     "Whether vignette effect is enabled",
+                                     FALSE,
+                                     G_PARAM_READWRITE);
+
+  g_object_class_install_property (object_class,
+                                   PROP_VIGNETTE,
+                                   param_spec);
+
+  param_spec = g_param_spec_double ("brightness",
+                                    "Brightness",
+                                    "Brightness of vignette effect",
+                                    0.0, 1.0, 1.0,
+                                    G_PARAM_READWRITE);
+
+  g_object_class_install_property (object_class,
+                                   PROP_BRIGHTNESS,
+                                   param_spec);
+
+  param_spec = g_param_spec_double ("vignette-sharpness",
+                                    "Vignette Sharpness",
+                                    "Sharpness of vignette effect",
+                                    0.0, G_MAXDOUBLE, 0.0,
+                                    G_PARAM_READWRITE);
+
+  g_object_class_install_property (object_class,
+                                   PROP_VIGNETTE_SHARPNESS,
+                                   param_spec);
 }
 
 static void
 meta_background_actor_init (MetaBackgroundActor *self)
 {
-  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self,
-                                            META_TYPE_BACKGROUND_ACTOR,
-                                            MetaBackgroundActorPrivate);
+  MetaBackgroundActorPrivate *priv;
+
+  priv = self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self,
+                                                   META_TYPE_BACKGROUND_ACTOR,
+                                                   MetaBackgroundActorPrivate);
+
+  priv->vignette = FALSE;
+  priv->brightness = 1.0;
+  priv->vignette_sharpness = 0.0;
 }
 
 /**
@@ -672,10 +738,12 @@ meta_background_actor_set_background (MetaBackgroundActor *self,
 
 void
 meta_background_actor_set_vignette (MetaBackgroundActor *self,
+                                    gboolean             enabled,
                                     double               brightness,
                                     double               sharpness)
 {
   MetaBackgroundActorPrivate *priv;
+  gboolean changed = FALSE;
 
   g_return_if_fail (META_IS_BACKGROUND_ACTOR (self));
   g_return_if_fail (brightness >= 0. && brightness <= 1.);
@@ -683,31 +751,23 @@ meta_background_actor_set_vignette (MetaBackgroundActor *self,
 
   priv = self->priv;
 
-  if (!priv->vignette)
-    invalidate_pipeline (self, CHANGED_EFFECTS);
+  enabled = enabled != FALSE;
 
-  priv->vignette = TRUE;
-  priv->brightness = brightness;
-  priv->vignette_sharpness = sharpness;
-  invalidate_pipeline (self, CHANGED_VIGNETTE_PARAMETERS);
+  if (enabled != priv->vignette)
+    {
+      priv->vignette = enabled;
+      invalidate_pipeline (self, CHANGED_EFFECTS);
+      changed = TRUE;
+    }
 
-  clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
+  if (brightness != priv->brightness || sharpness != priv->vignette_sharpness)
+    {
+      priv->brightness = brightness;
+      priv->vignette_sharpness = sharpness;
+      invalidate_pipeline (self, CHANGED_VIGNETTE_PARAMETERS);
+      changed = TRUE;
+    }
+
+  if (changed)
+    clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
 }
-
-void
-meta_background_actor_unset_vignette (MetaBackgroundActor *self)
-{
-  MetaBackgroundActorPrivate *priv;
-  priv = self->priv;
-
-  g_return_if_fail (META_IS_BACKGROUND_ACTOR (self));
-
-  if (!priv->vignette)
-    return;
-
-  priv->vignette = FALSE;
-
-  invalidate_pipeline (self, CHANGED_EFFECTS);
-  clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
-}
-
