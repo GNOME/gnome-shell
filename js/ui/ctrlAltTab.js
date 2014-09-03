@@ -140,9 +140,10 @@ const CtrlAltTabPopup = new Lang.Class({
     Name: 'CtrlAltTabPopup',
     Extends: SwitcherPopup.SwitcherPopup,
 
-    _createSwitcher: function() {
+    _init: function(items) {
+        this.parent(items);
+
         this._switcherList = new CtrlAltTabSwitcher(this._items);
-        return true;
     },
 
     _initialSelection: function(backward, binding) {

@@ -265,11 +265,8 @@ const InputSourcePopup = new Lang.Class({
 
         this._action = action;
         this._actionBackward = actionBackward;
-    },
 
-    _createSwitcher: function() {
         this._switcherList = new InputSourceSwitcher(this._items);
-        return true;
     },
 
     _initialSelection: function(backward, binding) {

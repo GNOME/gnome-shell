@@ -58,6 +58,14 @@ const AppSwitcherPopup = new Lang.Class({
         this._currentWindow = -1;
 
         this.thumbnailsVisible = false;
+
+        let apps = Shell.AppSystem.get_default().get_running ();
+
+        if (apps.length == 0)
+            return;
+
+        this._switcherList = new AppSwitcher(apps, this);
+        this._items = this._switcherList.icons;
     },
 
     _allocate: function (actor, box, flags) {
@@ -97,20 +105,6 @@ const AppSwitcherPopup = new Lang.Class({
             childBox.y2 = childBox.y1 + childNaturalHeight;
             this._thumbnails.actor.allocate(childBox, flags);
         }
-    },
-
-    _createSwitcher: function() {
-        let apps = Shell.AppSystem.get_default().get_running ();
-
-        if (apps.length == 0)
-            return false;
-
-        this._switcherList = new AppSwitcher(apps, this);
-        this._items = this._switcherList.icons;
-        if (this._items.length == 0)
-            return false;
-
-        return true;
     },
 
     _initialSelection: function(backward, binding) {
@@ -365,30 +359,23 @@ const WindowSwitcherPopup = new Lang.Class({
     Name: 'WindowSwitcherPopup',
     Extends: SwitcherPopup.SwitcherPopup,
 
-    _init: function(items) {
-        this.parent(items);
+    _init: function() {
+        this.parent();
         this._settings = new Gio.Settings({ schema_id: 'org.gnome.shell.window-switcher' });
+
+        let windows = this._getWindowList();
+
+        if (windows.length == 0)
+            return;
+
+        let mode = this._settings.get_enum('app-icon-mode');
+        this._switcherList = new WindowList(windows, mode);
+        this._items = this._switcherList.icons;
     },
 
     _getWindowList: function() {
         let workspace = this._settings.get_boolean('current-workspace-only') ? global.screen.get_active_workspace() : null;
         return global.display.get_tab_list(Meta.TabList.NORMAL, workspace);
-    },
-
-    _createSwitcher: function() {
-        let windows = this._getWindowList();
-
-        if (windows.length == 0)
-            return false;
-
-        let mode = this._settings.get_enum('app-icon-mode');
-        this._switcherList = new WindowList(windows, mode);
-        this._items = this._switcherList.icons;
-
-        if (this._items.length == 0)
-            return false;
-
-        return true;
     },
 
     _initialSelection: function(backward, binding) {
