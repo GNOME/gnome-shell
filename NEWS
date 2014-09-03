@@ -1,3 +1,16 @@
+3.13.91
+=======
+* Misc. bug fixes [Carlos; #735452]
+
+Contributors:
+  Adel Gadllah, Carlos Garnacho, Rui Matos, Jasper St. Pierre,
+  Rico Tzschichholz
+
+Translations:
+  Chao-Hsiung Liao po/zh_HK, zh_TW.po, Enrico Nicoletto [pt_BR],
+  Kjartan Maraas [nb], Fran Diéguez [gl], Yosef Or Boczko [he],
+  Maria  Mavridou [el], Claude Paroz [fr]
+
 3.13.90
 =======
 * Only call XSync() once per frame [Rui; #728464]
