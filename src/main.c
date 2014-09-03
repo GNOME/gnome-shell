@@ -260,6 +260,8 @@ shell_perf_log_init (void)
 static void
 shell_a11y_init (void)
 {
+  cally_accessibility_init ();
+
   if (clutter_get_accessibility_enabled () == FALSE)
     {
       g_warning ("Accessibility: clutter has no accessibility enabled"
@@ -422,10 +424,7 @@ main (int argc, char **argv)
   meta_set_wm_name (WM_NAME);
   meta_set_gnome_wm_keybindings (GNOME_WM_KEYBINDINGS);
 
-  /* Prevent meta_init() from causing gtk to load gail and at-bridge */
-  g_setenv ("NO_AT_BRIDGE", "1", TRUE);
   meta_init ();
-  g_unsetenv ("NO_AT_BRIDGE");
 
   /* FIXME: Add gjs API to set this stuff and don't depend on the
    * environment.  These propagate to child processes.
