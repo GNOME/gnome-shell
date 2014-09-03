@@ -1,3 +1,24 @@
+3.13.91
+=======
+* Fix keynav into session menu on login screen [Florian; #735614]
+* Add gesture to summon message tray [Carlos G.; #735625]
+* Accept scrolls/swipes either way on the screen shield [Jasper; #734874]
+* Animate opening the app picker and improve app folder animations
+  [Carlos S.; #734726]
+* Animate app icons on launching a new window [Carlos S., Florian; #734726]
+* Show the on-screen keyboard when touch input is being used [David; #702015]
+* Misc. bug fixes [Bastien, Owen, Florian, Carlos G.; #735190, #735385,
+  #735608, #735681]
+
+Contributors:
+  Carlos Garnacho, David King, Kalev Lember, Florian Müllner, Bastien Nocera,
+  Carlos Soriano, Jasper St. Pierre, Owen W. Taylor
+
+Translations:
+  Fran Diéguez [gl], Sweta Kothari [gu], Manoj Kumar Giri [or],
+  Alain Lojewski [fr], Praveen Illa [te], Arash Mousavi [fa],
+  Andika Triwidada [id]
+
 3.13.90
 =======
 * Make use of GLSL optional [Adel; #733623]
