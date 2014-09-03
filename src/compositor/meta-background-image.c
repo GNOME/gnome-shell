@@ -246,8 +246,8 @@ meta_background_image_cache_purge (MetaBackgroundImageCache *cache,
 {
   MetaBackgroundImage *image;
 
-  g_return_val_if_fail (META_IS_BACKGROUND_IMAGE_CACHE (cache), NULL);
-  g_return_val_if_fail (filename != NULL, NULL);
+  g_return_if_fail (META_IS_BACKGROUND_IMAGE_CACHE (cache));
+  g_return_if_fail (filename != NULL);
 
   image = g_hash_table_lookup (cache->images, filename);
   if (image == NULL)

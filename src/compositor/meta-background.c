@@ -677,9 +677,9 @@ meta_background_get_texture (MetaBackground         *self,
   cairo_rectangle_int_t monitor_area;
   CoglTexture *texture1, *texture2;
 
-  g_return_if_fail (META_IS_BACKGROUND (self));
+  g_return_val_if_fail (META_IS_BACKGROUND (self), NULL);
   priv = self->priv;
-  g_return_if_fail (monitor_index <= 0 && monitor_index < priv->n_monitors);
+  g_return_val_if_fail (monitor_index <= 0 && monitor_index < priv->n_monitors, NULL);
 
   monitor = &priv->monitors[monitor_index];
 
