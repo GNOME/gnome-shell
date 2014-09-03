@@ -1270,7 +1270,7 @@ clutter_gesture_action_set_threshold_trigger_edge (ClutterGestureAction      *ac
  *
  * Return value: the edge trigger
  *
- * Since: 1.18
+ * Since: 1.20
  */
 ClutterGestureTriggerEdge
 clutter_gesture_action_get_threshold_trigger_edge (ClutterGestureAction *action)
@@ -1279,6 +1279,25 @@ clutter_gesture_action_get_threshold_trigger_edge (ClutterGestureAction *action)
                         CLUTTER_GESTURE_TRIGGER_EDGE_NONE);
 
   return action->priv->edge;
+}
+
+/**
+ * clutter_gesture_action_get_threshold_trigger_egde:
+ * @action: a #ClutterGestureAction
+ *
+ * Retrieves the edge trigger of the gesture @action, as set using
+ * clutter_gesture_action_set_threshold_trigger_edge().
+ *
+ * Return value: the edge trigger
+ *
+ * Since: 1.18
+ *
+ * Deprecated: 1.20: Use clutter_gesture_action_get_threshold_trigger_edge() instead.
+ */
+ClutterGestureTriggerEdge
+clutter_gesture_action_get_threshold_trigger_egde (ClutterGestureAction *action)
+{
+  return clutter_gesture_action_get_threshold_trigger_edge (action);
 }
 
 /**

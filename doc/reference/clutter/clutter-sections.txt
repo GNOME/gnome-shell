@@ -3019,6 +3019,7 @@ CLUTTER_TYPE_GESTURE_ACTION
 <SUBSECTION Private>
 ClutterGestureActionPrivate
 clutter_gesture_action_get_type
+clutter_gesture_action_get_threshold_trigger_egde
 </SECTION>
 
 <SECTION>
