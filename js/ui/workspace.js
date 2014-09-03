@@ -1209,14 +1209,18 @@ const Workspace = new Lang.Class({
         return this._windows.length == 0;
     },
 
-    setReservedSlot: function(clone) {
-        if (this._reservedSlot == clone)
+    setReservedSlot: function(metaWindow) {
+        if (this._reservedSlotWindow == metaWindow)
             return;
 
-        if (clone && this.containsMetaWindow(clone.metaWindow))
-            clone = null;
+        if (!metaWindow || this.containsMetaWindow(metaWindow)) {
+            this._reservedSlotWindow = null;
+            this._reservedSlot = null;
+        } else {
+            this._reservedSlotWindow = metaWindow;
+            this._reservedSlot = this._windows[this._lookupIndex(metaWindow)];
+        }
 
-        this._reservedSlot = clone;
         this._recalculateWindowPositions(WindowPositionFlags.ANIMATE);
     },
 

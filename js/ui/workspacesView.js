@@ -65,7 +65,7 @@ const WorkspacesViewBase = new Lang.Class({
 
     _dragBegin: function(overview, clone) {
         this._inDrag = true;
-        this._setReservedSlot(clone);
+        this._setReservedSlot(clone.metaWindow);
     },
 
     _dragEnd: function() {
@@ -127,9 +127,9 @@ const WorkspacesView = new Lang.Class({
                                           Lang.bind(this, this._activeWorkspaceChanged));
     },
 
-    _setReservedSlot: function(clone) {
+    _setReservedSlot: function(window) {
         for (let i = 0; i < this._workspaces.length; i++)
-            this._workspaces[i].setReservedSlot(clone);
+            this._workspaces[i].setReservedSlot(window);
     },
 
     _syncFullGeometry: function() {
@@ -366,8 +366,8 @@ const ExtraWorkspaceView = new Lang.Class({
         this.actor.add_actor(this._workspace.actor);
     },
 
-    _setReservedSlot: function(clone) {
-        this._workspace.setReservedSlot(clone);
+    _setReservedSlot: function(window) {
+        this._workspace.setReservedSlot(window);
     },
 
     _syncFullGeometry: function() {
