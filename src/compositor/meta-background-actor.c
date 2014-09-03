@@ -403,6 +403,13 @@ paint_clipped_rectangle (CoglFramebuffer       *fb,
                                             tx1, ty1, tx2, ty2);
 }
 
+static gboolean
+meta_background_actor_get_paint_volume (ClutterActor       *actor,
+                                        ClutterPaintVolume *volume)
+{
+  return clutter_paint_volume_set_from_allocation (volume, actor);
+}
+
 static void
 meta_background_actor_paint (ClutterActor *actor)
 {
@@ -549,6 +556,7 @@ meta_background_actor_class_init (MetaBackgroundActorClass *klass)
 
   actor_class->get_preferred_width = meta_background_actor_get_preferred_width;
   actor_class->get_preferred_height = meta_background_actor_get_preferred_height;
+  actor_class->get_paint_volume = meta_background_actor_get_paint_volume;
   actor_class->paint = meta_background_actor_paint;
 
   param_spec = g_param_spec_object ("meta-screen",
