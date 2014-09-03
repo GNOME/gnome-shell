@@ -63,9 +63,9 @@ const WorkspacesViewBase = new Lang.Class({
         }
     },
 
-    _dragBegin: function(overview, clone) {
+    _dragBegin: function(overview, window) {
         this._inDrag = true;
-        this._setReservedSlot(clone.metaWindow);
+        this._setReservedSlot(window);
     },
 
     _dragEnd: function() {

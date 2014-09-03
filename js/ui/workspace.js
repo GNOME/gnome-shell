@@ -1818,16 +1818,16 @@ const Workspace = new Lang.Class({
                       Lang.bind(this, this._onCloneSelected));
         clone.connect('drag-begin',
                       Lang.bind(this, function() {
-                          Main.overview.beginWindowDrag(clone);
+                          Main.overview.beginWindowDrag(clone.metaWindow);
                           overlay.hide();
                       }));
         clone.connect('drag-cancelled',
                       Lang.bind(this, function() {
-                          Main.overview.cancelledWindowDrag(clone);
+                          Main.overview.cancelledWindowDrag(clone.metaWindow);
                       }));
         clone.connect('drag-end',
                       Lang.bind(this, function() {
-                          Main.overview.endWindowDrag(clone);
+                          Main.overview.endWindowDrag(clone.metaWindow);
                           overlay.show();
                       }));
         clone.connect('size-changed',

@@ -518,15 +518,15 @@ const WorkspaceThumbnail = new Lang.Class({
                       }));
         clone.connect('drag-begin',
                       Lang.bind(this, function() {
-                          Main.overview.beginWindowDrag(clone);
+                          Main.overview.beginWindowDrag(clone.metaWindow);
                       }));
         clone.connect('drag-cancelled',
                       Lang.bind(this, function() {
-                          Main.overview.cancelledWindowDrag(clone);
+                          Main.overview.cancelledWindowDrag(clone.metaWindow);
                       }));
         clone.connect('drag-end',
                       Lang.bind(this, function() {
-                          Main.overview.endWindowDrag(clone);
+                          Main.overview.endWindowDrag(clone.metaWindow);
                       }));
         this._contents.add_actor(clone.actor);
 

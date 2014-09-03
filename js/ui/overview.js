@@ -435,17 +435,17 @@ const Overview = new Lang.Class({
         this._inDrag = false;
     },
 
-    beginWindowDrag: function(clone) {
-        this.emit('window-drag-begin', clone);
+    beginWindowDrag: function(window) {
+        this.emit('window-drag-begin', window);
         this._inDrag = true;
     },
 
-    cancelledWindowDrag: function(clone) {
-        this.emit('window-drag-cancelled', clone);
+    cancelledWindowDrag: function(window) {
+        this.emit('window-drag-cancelled', window);
     },
 
-    endWindowDrag: function(clone) {
-        this.emit('window-drag-end', clone);
+    endWindowDrag: function(window) {
+        this.emit('window-drag-end', window);
         this._inDrag = false;
     },
 
