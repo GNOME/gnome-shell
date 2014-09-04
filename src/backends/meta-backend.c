@@ -97,6 +97,13 @@ on_monitors_changed (MetaMonitorManager *monitors,
   meta_backend_sync_screen_size (backend);
 }
 
+static MetaIdleMonitor *
+meta_backend_create_idle_monitor (MetaBackend *backend,
+                                  int          device_id)
+{
+  return META_BACKEND_GET_CLASS (backend)->create_idle_monitor (backend, device_id);
+}
+
 static void
 create_device_monitor (MetaBackend *backend,
                        int          device_id)
@@ -124,7 +131,7 @@ on_device_added (ClutterDeviceManager *device_manager,
   MetaBackend *backend = META_BACKEND (user_data);
   int device_id = clutter_input_device_get_device_id (device);
 
-  create_idle_monitor (backend, device_id);
+  create_device_monitor (backend, device_id);
 }
 
 static void
@@ -135,7 +142,7 @@ on_device_removed (ClutterDeviceManager *device_manager,
   MetaBackend *backend = META_BACKEND (user_data);
   int device_id = clutter_input_device_get_device_id (device);
 
-  destroy_idle_monitor (backend, device_id);
+  destroy_device_monitor (backend, device_id);
 }
 
 static void
@@ -165,11 +172,11 @@ meta_backend_real_post_init (MetaBackend *backend)
     g_signal_connect_object (manager, "device-removed",
                              G_CALLBACK (on_device_removed), backend, 0);
 
-    devices = clutter_device_manager_list_devices (backend);
+    devices = clutter_device_manager_list_devices (manager);
 
     for (l = devices; l != NULL; l = l->next)
       {
-        ClutterDevice *device = l->data;
+        ClutterInputDevice *device = l->data;
         on_device_added (manager, device, backend);
       }
 
@@ -242,13 +249,6 @@ static void
 meta_backend_init (MetaBackend *backend)
 {
   _backend = backend;
-}
-
-static MetaIdleMonitor *
-meta_backend_create_idle_monitor (MetaBackend *backend,
-                                  int          device_id)
-{
-  return META_BACKEND_GET_CLASS (backend)->create_idle_monitor (backend, device_id);
 }
 
 static void
