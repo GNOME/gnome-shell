@@ -1296,9 +1296,7 @@ meta_window_unmanage (MetaWindow  *window,
       meta_topic (META_DEBUG_FOCUS,
                   "Focusing default window since we're unmanaging %s\n",
                   window->desc);
-      meta_workspace_focus_default_window (window->screen->active_workspace,
-                                           window,
-                                           timestamp);
+      meta_workspace_focus_default_window (window->screen->active_workspace, NULL, timestamp);
     }
   else
     {

@@ -1730,6 +1730,9 @@ get_default_focus_window (MetaStack     *stack,
       if (window->minimized)
         continue;
 
+      if (window->unmanaging)
+        continue;
+
       if (!(window->input || window->take_focus))
         continue;
 
