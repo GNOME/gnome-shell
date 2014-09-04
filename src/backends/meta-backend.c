@@ -119,8 +119,16 @@ destroy_device_monitor (MetaBackend *backend,
                         int          device_id)
 {
   g_clear_object (&backend->device_monitors[device_id]);
+
   if (device_id == backend->device_id_max)
-    backend->device_id_max--;
+    {
+      /* Reset the max device ID */
+      int i, new_max = 0;
+      for (i = 0; i < backend->device_id_max; i++)
+        if (backend->device_monitors[i] != NULL)
+          new_max = i;
+      backend->device_id_max = new_max;
+    }
 }
 
 static void
