@@ -812,7 +812,7 @@ MetaBackground *
 meta_background_new  (MetaScreen *screen)
 {
   return g_object_new (META_TYPE_BACKGROUND,
-                       "screen", screen,
+                       "meta-screen", screen,
                        NULL);
 }
 
