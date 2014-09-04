@@ -35,8 +35,11 @@
 
 #include "x11/window-x11.h"
 #include "x11/xprops.h"
+
+#ifdef HAVE_WAYLAND
 #include "wayland/meta-xwayland.h"
 #include "wayland/meta-wayland-private.h"
+#endif
 
 static XIEvent *
 get_input_event (MetaDisplay *display,
