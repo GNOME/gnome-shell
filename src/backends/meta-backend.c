@@ -98,6 +98,47 @@ on_monitors_changed (MetaMonitorManager *monitors,
 }
 
 static void
+create_device_monitor (MetaBackend *backend,
+                       int          device_id)
+{
+  g_assert (backend->device_monitors[device_id] == NULL);
+
+  backend->device_monitors[device_id] = meta_backend_create_idle_monitor (backend, device_id);
+  backend->device_id_max = MAX (backend->device_id_max, device_id);
+}
+
+static void
+destroy_device_monitor (MetaBackend *backend,
+                        int          device_id)
+{
+  g_clear_object (&backend->device_monitors[device_id]);
+  if (device_id == backend->device_id_max)
+    backend->device_id_max--;
+}
+
+static void
+on_device_added (ClutterDeviceManager *device_manager,
+                 ClutterInputDevice   *device,
+                 gpointer              user_data)
+{
+  MetaBackend *backend = META_BACKEND (user_data);
+  int device_id = clutter_input_device_get_device_id (device);
+
+  create_idle_monitor (backend, device_id);
+}
+
+static void
+on_device_removed (ClutterDeviceManager *device_manager,
+                   ClutterInputDevice   *device,
+                   gpointer              user_data)
+{
+  MetaBackend *backend = META_BACKEND (user_data);
+  int device_id = clutter_input_device_get_device_id (device);
+
+  destroy_idle_monitor (backend, device_id);
+}
+
+static void
 meta_backend_real_post_init (MetaBackend *backend)
 {
   MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
@@ -113,6 +154,27 @@ meta_backend_real_post_init (MetaBackend *backend)
   meta_backend_sync_screen_size (backend);
 
   priv->cursor_renderer = META_BACKEND_GET_CLASS (backend)->create_cursor_renderer (backend);
+
+  {
+    ClutterDeviceManager *manager;
+    GSList *devices, *l;
+
+    manager = clutter_device_manager_get_default ();
+    g_signal_connect_object (manager, "device-added",
+                             G_CALLBACK (on_device_added), backend, 0);
+    g_signal_connect_object (manager, "device-removed",
+                             G_CALLBACK (on_device_removed), backend, 0);
+
+    devices = clutter_device_manager_list_devices (backend);
+
+    for (l = devices; l != NULL; l = l->next)
+      {
+        ClutterDevice *device = l->data;
+        on_device_added (manager, device, backend);
+      }
+
+    g_slist_free (devices);
+  }
 }
 
 static MetaCursorRenderer *
@@ -182,16 +244,6 @@ meta_backend_init (MetaBackend *backend)
   _backend = backend;
 }
 
-/* FIXME -- destroy device monitors at some point */
-G_GNUC_UNUSED static void
-destroy_device_monitor (MetaBackend *backend,
-                        int          device_id)
-{
-  g_clear_object (&backend->device_monitors[device_id]);
-  if (device_id == backend->device_id_max)
-    backend->device_id_max--;
-}
-
 static MetaIdleMonitor *
 meta_backend_create_idle_monitor (MetaBackend *backend,
                                   int          device_id)
@@ -213,12 +265,6 @@ meta_backend_get_idle_monitor (MetaBackend *backend,
                                int          device_id)
 {
   g_return_val_if_fail (device_id >= 0 && device_id < 256, NULL);
-
-  if (!backend->device_monitors[device_id])
-    {
-      backend->device_monitors[device_id] = meta_backend_create_idle_monitor (backend, device_id);
-      backend->device_id_max = MAX (backend->device_id_max, device_id);
-    }
 
   return backend->device_monitors[device_id];
 }
