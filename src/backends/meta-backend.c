@@ -174,6 +174,9 @@ meta_backend_real_post_init (MetaBackend *backend)
     ClutterDeviceManager *manager;
     GSList *devices, *l;
 
+    /* Create the core device monitor. */
+    create_device_monitor (manager, 0);
+
     manager = clutter_device_manager_get_default ();
     g_signal_connect_object (manager, "device-added",
                              G_CALLBACK (on_device_added), backend, 0);
