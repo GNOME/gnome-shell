@@ -204,24 +204,24 @@ function _initializeUI() {
     }
 
     layoutManager.connect('startup-complete', function() {
-                              if (keybindingMode == Shell.KeyBindingMode.NONE) {
-                                  keybindingMode = Shell.KeyBindingMode.NORMAL;
-                              }
-                              if (screenShield) {
-                                  screenShield.lockIfWasLocked();
-                              }
-                              if (LoginManager.haveSystemd() &&
-                                  sessionMode.currentMode != 'gdm' &&
-                                  sessionMode.currentMode != 'initial-setup') {
-                                  // Do not import globally to not depend
-                                  // on systemd on non-systemd systems.
-                                  let GSystem = imports.gi.GSystem;
-                                  GSystem.log_structured_print('GNOME Shell started at ' + _startDate,
-                                                               ['MESSAGE_ID=' + GNOMESHELL_STARTED_MESSAGE_ID]);
-                              } else {
-                                  log('GNOME Shell started at ' + _startDate);
-                              }
-                          });
+        if (keybindingMode == Shell.KeyBindingMode.NONE) {
+            keybindingMode = Shell.KeyBindingMode.NORMAL;
+        }
+        if (screenShield) {
+            screenShield.lockIfWasLocked();
+        }
+        if (LoginManager.haveSystemd() &&
+            sessionMode.currentMode != 'gdm' &&
+            sessionMode.currentMode != 'initial-setup') {
+            // Do not import globally to not depend
+            // on systemd on non-systemd systems.
+            let GSystem = imports.gi.GSystem;
+            GSystem.log_structured_print('GNOME Shell started at ' + _startDate,
+                                         ['MESSAGE_ID=' + GNOMESHELL_STARTED_MESSAGE_ID]);
+        } else {
+            log('GNOME Shell started at ' + _startDate);
+        }
+    });
 }
 
 function _loadDefaultStylesheet() {
