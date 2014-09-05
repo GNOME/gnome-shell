@@ -329,7 +329,7 @@ setup_pipeline (MetaBackgroundActor   *self,
         {
           /* Darken everything to match the average brightness that would
            * be there if we were drawing the vignette, which is
-           * (1 - (pi/12.) * vignette_sharpness [exercise for the reader :]
+           * (1 - (pi/12.) * vignette_sharpness) [exercise for the reader :]
            */
           color_component *= (1 - 0.74 * priv->vignette_sharpness);
         }
