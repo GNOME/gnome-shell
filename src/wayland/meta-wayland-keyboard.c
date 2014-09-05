@@ -497,11 +497,27 @@ move_resources_for_client (struct wl_list *destination,
     }
 }
 
+static void
+broadcast_focus (MetaWaylandKeyboard *keyboard,
+                 struct wl_resource  *resource)
+{
+  struct xkb_state *state = keyboard->xkb_info.state;
+
+  wl_keyboard_send_modifiers (resource, keyboard->focus_serial,
+                              xkb_state_serialize_mods (state, XKB_STATE_MODS_DEPRESSED),
+                              xkb_state_serialize_mods (state, XKB_STATE_MODS_LATCHED),
+                              xkb_state_serialize_mods (state, XKB_STATE_MODS_LOCKED),
+                              xkb_state_serialize_layout (state, XKB_STATE_LAYOUT_EFFECTIVE));
+  wl_keyboard_send_enter (resource, keyboard->focus_serial,
+                          keyboard->focus_surface->resource,
+                          &keyboard->pressed_keys);
+}
+
 void
 meta_wayland_keyboard_set_focus (MetaWaylandKeyboard *keyboard,
                                  MetaWaylandSurface *surface)
 {
-  if (keyboard->focus_surface == surface && !wl_list_empty (&keyboard->focus_resource_list))
+  if (keyboard->focus_surface == surface)
     return;
 
   if (keyboard->focus_surface != NULL)
@@ -545,21 +561,12 @@ meta_wayland_keyboard_set_focus (MetaWaylandKeyboard *keyboard,
         {
           struct wl_client *client = wl_resource_get_client (keyboard->focus_surface->resource);
           struct wl_display *display = wl_client_get_display (client);
-          struct xkb_state *state = keyboard->xkb_info.state;
-          uint32_t serial = wl_display_next_serial (display);
+          keyboard->focus_serial = wl_display_next_serial (display);
 
           wl_resource_for_each (resource, l)
             {
-              wl_keyboard_send_modifiers (resource, serial,
-                                          xkb_state_serialize_mods (state, XKB_STATE_MODS_DEPRESSED),
-                                          xkb_state_serialize_mods (state, XKB_STATE_MODS_LATCHED),
-                                          xkb_state_serialize_mods (state, XKB_STATE_MODS_LOCKED),
-                                          xkb_state_serialize_layout (state, XKB_STATE_LAYOUT_EFFECTIVE));
-              wl_keyboard_send_enter (resource, serial, keyboard->focus_surface->resource,
-                                      &keyboard->pressed_keys);
+              broadcast_focus (keyboard, resource);
             }
-
-          keyboard->focus_serial = serial;
         }
     }
 }
@@ -604,5 +611,5 @@ meta_wayland_keyboard_create_new_resource (MetaWaylandKeyboard *keyboard,
   notify_key_repeat_for_resource (keyboard, cr);
 
   if (keyboard->focus_surface && wl_resource_get_client (keyboard->focus_surface->resource) == client)
-    meta_wayland_keyboard_set_focus (keyboard, keyboard->focus_surface);
+    broadcast_focus (keyboard, cr);
 }

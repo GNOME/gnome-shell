@@ -462,11 +462,21 @@ move_resources_for_client (struct wl_list *destination,
     }
 }
 
+static void
+broadcast_focus (MetaWaylandPointer *pointer,
+                 struct wl_resource *resource)
+{
+  wl_fixed_t sx, sy;
+
+  meta_wayland_pointer_get_relative_coordinates (pointer, pointer->focus_surface, &sx, &sy);
+  wl_pointer_send_enter (resource, pointer->focus_serial, pointer->focus_surface->resource, sx, sy);
+}
+
 void
 meta_wayland_pointer_set_focus (MetaWaylandPointer *pointer,
                                 MetaWaylandSurface *surface)
 {
-  if (pointer->focus_surface == surface && !wl_list_empty (&pointer->focus_resource_list))
+  if (pointer->focus_surface == surface)
     return;
 
   if (pointer->focus_surface)
@@ -518,17 +528,12 @@ meta_wayland_pointer_set_focus (MetaWaylandPointer *pointer,
         {
           struct wl_client *client = wl_resource_get_client (pointer->focus_surface->resource);
           struct wl_display *display = wl_client_get_display (client);
-          uint32_t serial = wl_display_next_serial (display);
+          pointer->focus_serial = wl_display_next_serial (display);
 
           wl_resource_for_each (resource, l)
             {
-              wl_fixed_t sx, sy;
-
-              meta_wayland_pointer_get_relative_coordinates (pointer, pointer->focus_surface, &sx, &sy);
-              wl_pointer_send_enter (resource, serial, pointer->focus_surface->resource, sx, sy);
+              broadcast_focus (pointer, resource);
             }
-
-          pointer->focus_serial = serial;
         }
     }
 }
@@ -810,7 +815,7 @@ meta_wayland_pointer_create_new_resource (MetaWaylandPointer *pointer,
   wl_list_insert (&pointer->resource_list, wl_resource_get_link (cr));
 
   if (pointer->focus_surface && wl_resource_get_client (pointer->focus_surface->resource) == client)
-    meta_wayland_pointer_set_focus (pointer, pointer->focus_surface);
+    broadcast_focus (pointer, cr);
 }
 
 gboolean
