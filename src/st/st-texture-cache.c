@@ -893,11 +893,19 @@ load_gicon_with_colors (StTextureCache    *cache,
   GtkIconTheme *theme;
   GtkIconInfo *info;
   StTextureCachePolicy policy;
+  GtkIconLookupFlags lookup_flags;
 
   /* Do theme lookups in the main thread to avoid thread-unsafety */
   theme = cache->priv->icon_theme;
 
-  info = gtk_icon_theme_lookup_by_gicon_for_scale (theme, icon, size, scale, GTK_ICON_LOOKUP_USE_BUILTIN);
+  lookup_flags = GTK_ICON_LOOKUP_USE_BUILTIN;
+
+  if (clutter_get_default_text_direction () == CLUTTER_TEXT_DIRECTION_RTL)
+    lookup_flags |= GTK_ICON_LOOKUP_DIR_RTL;
+  else
+    lookup_flags |= GTK_ICON_LOOKUP_DIR_LTR;
+
+  info = gtk_icon_theme_lookup_by_gicon_for_scale (theme, icon, size, scale, lookup_flags);
   if (info == NULL)
     return NULL;
 
