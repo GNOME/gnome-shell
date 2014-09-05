@@ -17,8 +17,6 @@ const EntryMenu = new Lang.Class({
     _init: function(entry) {
         this.parent(entry, 0, St.Side.TOP);
 
-        this.actor.add_style_class_name('entry-context-menu');
-
         this._entry = entry;
         this._clipboard = St.Clipboard.get_default();
 
