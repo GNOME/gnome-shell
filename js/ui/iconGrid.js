@@ -267,6 +267,7 @@ var IconGrid = new Lang.Class({
         this.actor = new St.BoxLayout({ style_class: 'icon-grid',
                                         vertical: true });
         this._items = [];
+        this._clonesAnimating = [];
         // Pulled from CSS, but hardcode some defaults here
         this._spacing = 0;
         this._hItemSize = this._vItemSize = ICON_SIZE;
@@ -410,8 +411,13 @@ var IconGrid = new Lang.Class({
         return this._getVisibleChildren();
     },
 
+    _cancelAnimation: function() {
+        this._clonesAnimating.forEach(clone => { clone.destroy(); });
+        this._clonesAnimating = [];
+    },
+
     _animationDone: function() {
-        this._animating = false;
+        this._clonesAnimating = [];
         this.emit('animation-done');
     },
 
@@ -419,10 +425,7 @@ var IconGrid = new Lang.Class({
         if (animationDirection != AnimationDirection.IN)
             throw new Error("Pulse animation only implements 'in' animation direction");
 
-        if (this._animating)
-            return;
-
-        this._animating = true;
+        this._cancelAnimation();
 
         let actors = this._getChildrenToAnimate();
         if (actors.length == 0) {
@@ -470,10 +473,7 @@ var IconGrid = new Lang.Class({
     },
 
     animateSpring: function(animationDirection, sourceActor) {
-        if (this._animating)
-            return;
-
-        this._animating = true;
+        this._cancelAnimation();
 
         let actors = this._getChildrenToAnimate();
         if (actors.length == 0) {
@@ -507,6 +507,7 @@ var IconGrid = new Lang.Class({
             actor.reactive = false;
 
             let actorClone = new Clutter.Clone({ source: actor });
+            this._clonesAnimating.push(actorClone);
             Main.uiGroup.add_actor(actorClone);
 
             let [width, height,,] = this._getAllocatedChildSizeAndSpacing(actor);
