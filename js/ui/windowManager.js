@@ -526,6 +526,11 @@ const AppSwitchAction = new Lang.Class({
     },
 
     vfunc_gesture_prepare : function(action, actor) {
+        if (Main.overview.visible) {
+            this.cancel();
+            return false;
+        }
+
         return this.get_n_current_points() <= 4;
     },
 
