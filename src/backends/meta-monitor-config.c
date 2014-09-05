@@ -1789,7 +1789,6 @@ real_assign_crtcs (CrtcAssignment     *assignment,
                                 output_config->transform,
                                 pass);
 
-
                   if (crtc_assignment_assign (assignment, crtc, &modes[j],
                                               output_config->rect.x, output_config->rect.y,
                                               output_config->transform,
