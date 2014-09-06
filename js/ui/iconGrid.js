@@ -447,7 +447,6 @@ const IconGrid = new Lang.Class({
             actorClone.set_size(originalWidth, originalHeight);
 
             let bounceUpTime = ANIMATION_TIME_IN / 4;
-            // Defeat onComplete anonymous function closure
             let isLastItem = index == actors.length - 1;
             Tweener.addTween(actorClone,
                             { time: bounceUpTime,
