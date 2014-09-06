@@ -679,7 +679,7 @@ meta_background_get_texture (MetaBackground         *self,
 
   g_return_val_if_fail (META_IS_BACKGROUND (self), NULL);
   priv = self->priv;
-  g_return_val_if_fail (monitor_index <= 0 && monitor_index < priv->n_monitors, NULL);
+  g_return_val_if_fail (monitor_index >= 0 && monitor_index < priv->n_monitors, NULL);
 
   monitor = &priv->monitors[monitor_index];
 
