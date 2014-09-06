@@ -281,6 +281,10 @@ const ExtensionRow = new Lang.Class({
             function() {
                 this._switch.state = this._isEnabled();
             }));
+        this._settings.connect('changed::disable-extension-version-validation',
+            Lang.bind(this, function() {
+                this._switch.sensitive = this._canEnable();
+            }));
 
         this._buildUI();
     },
@@ -319,6 +323,7 @@ const ExtensionRow = new Lang.Class({
         this.prefsButton = button;
 
         this._switch = new Gtk.Switch({ valign: Gtk.Align.CENTER,
+                                        sensitive: this._canEnable(),
                                         state: this._isEnabled() });
         this._switch.connect('notify::active', Lang.bind(this,
             function() {
@@ -329,6 +334,13 @@ const ExtensionRow = new Lang.Class({
             }));
         this._switch.connect('state-set', function() { return true; });
         hbox.add(this._switch);
+    },
+
+    _canEnable: function() {
+        let extension = ExtensionUtils.extensions[this.uuid];
+        let checkVersion = !this._settings.get_boolean('disable-extension-version-validation');
+
+        return !(checkVersion && ExtensionUtils.isOutOfDate(extension));
     },
 
     _isEnabled: function() {
