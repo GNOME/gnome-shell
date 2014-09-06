@@ -59,12 +59,8 @@ const Application = new Lang.Class({
 
     _extensionAvailable: function(uuid) {
         let extension = ExtensionUtils.extensions[uuid];
-        let checkVersion = !this._settings.get_boolean('disable-extension-version-validation');
 
         if (!extension)
-            return false;
-
-        if (checkVersion && ExtensionUtils.isOutOfDate(extension))
             return false;
 
         if (!extension.dir.get_child('prefs.js').query_exists(null))
