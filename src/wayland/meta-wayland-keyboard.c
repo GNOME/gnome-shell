@@ -380,6 +380,8 @@ meta_wayland_keyboard_release (MetaWaylandKeyboard *keyboard)
   wl_array_release (&keyboard->pressed_keys);
 
   g_object_unref (keyboard->settings);
+
+  keyboard->display = NULL;
 }
 
 static void
@@ -517,6 +519,9 @@ void
 meta_wayland_keyboard_set_focus (MetaWaylandKeyboard *keyboard,
                                  MetaWaylandSurface *surface)
 {
+  if (keyboard->display == NULL)
+    return;
+
   if (keyboard->focus_surface == surface)
     return;
 

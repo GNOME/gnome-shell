@@ -216,6 +216,8 @@ meta_wayland_pointer_release (MetaWaylandPointer *pointer)
 {
   meta_wayland_pointer_set_focus (pointer, NULL);
   set_cursor_surface (pointer, NULL);
+
+  pointer->display = NULL;
 }
 
 static int
@@ -476,6 +478,9 @@ void
 meta_wayland_pointer_set_focus (MetaWaylandPointer *pointer,
                                 MetaWaylandSurface *surface)
 {
+  if (pointer->display == NULL)
+    return;
+
   if (pointer->focus_surface == surface)
     return;
 
