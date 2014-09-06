@@ -521,11 +521,10 @@ const IconGrid = new Lang.Class({
             let scaleY = sourceScaledHeight / height;
             let [adjustedSourcePositionX, adjustedSourcePositionY] = [sourceCenterX - sourceScaledWidth / 2, sourceCenterY - sourceScaledHeight / 2];
 
-            // Defeat onComplete anonymous function closure
-            let isLastItem = index == actors.length - 1;
-
             let movementParams, fadeParams;
             if (animationDirection == AnimationDirection.IN) {
+                let isLastItem = actor._distance == minDist;
+
                 actorClone.opacity = 0;
                 actorClone.set_scale(scaleX, scaleY);
 
@@ -553,6 +552,8 @@ const IconGrid = new Lang.Class({
                                delay: delay,
                                opacity: 255 };
             } else {
+                let isLastItem = actor._distance == minDist;
+
                 let [startX, startY]  = actor._transformedPosition;
                 actorClone.set_position(startX, startY);
 
