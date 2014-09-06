@@ -271,10 +271,17 @@ function onEnabledExtensionsChanged() {
 }
 
 function _onVersionValidationChanged() {
+    // we want to reload all extensions, but only enable
+    // extensions when allowed by the sessionMode, so
+    // temporarily disable them all
+    enabledExtensions = [];
+    for (let uuid in ExtensionUtils.extensions)
+        reloadExtension(ExtensionUtils.extensions[uuid]);
+    enabledExtensions = getEnabledExtensions();
+
     if (Main.sessionMode.allowExtensions) {
         enabledExtensions.forEach(function(uuid) {
-            if (ExtensionUtils.extensions[uuid])
-                reloadExtension(ExtensionUtils.extensions[uuid]);
+            enableExtension(uuid);
         });
     }
 }
