@@ -551,7 +551,7 @@ const IconGrid = new Lang.Class({
                                delay: delay,
                                opacity: 255 };
             } else {
-                let isLastItem = actor._distance == minDist;
+                let isLastItem = actor._distance == maxDist;
 
                 let [startX, startY]  = actor._transformedPosition;
                 actorClone.set_position(startX, startY);
