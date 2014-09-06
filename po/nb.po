@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter 3.13.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-23 13:36+0200\n"
+"POT-Creation-Date: 2014-09-06 14:13+0200\n"
 "PO-Revision-Date: 2014-08-23 13:37+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-no@lister.ping.uio.no>\n"
@@ -445,16 +445,12 @@ msgstr "%s %s"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:441
+#: ../src/compositor/compositor.c:443
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
 "\"."
 msgstr "En annen compositing manager kjører skjerm %i på display «%s»."
-
-#: ../src/compositor/meta-background.c:1044
-msgid "background texture could not be created from file"
-msgstr "bakgrunnstekstur kunne ikke lages fra fil"
 
 #: ../src/core/bell.c:185
 msgid "Bell event"
@@ -1269,3 +1265,6 @@ msgstr ""
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (på %s)"
+
+#~ msgid "background texture could not be created from file"
+#~ msgstr "bakgrunnstekstur kunne ikke lages fra fil"
