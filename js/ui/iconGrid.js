@@ -569,6 +569,7 @@ const IconGrid = new Lang.Class({
                                            this._animationDone();
                                            this._restoreItemsOpacity();
                                        }
+                                       actor.reactive = true;
                                        actorClone.destroy();
                                    })};
                 fadeParams = { time: ANIMATION_FADE_IN_TIME_FOR_ITEM,
