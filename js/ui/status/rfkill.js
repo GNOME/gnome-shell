@@ -15,6 +15,7 @@ const RfkillManagerInterface = '<node> \
 <interface name="org.gnome.SettingsDaemon.Rfkill"> \
 <property name="AirplaneMode" type="b" access="readwrite" /> \
 <property name="HardwareAirplaneMode" type="b" access="read" /> \
+<property name="ShouldShowAirplaneMode" type="b" access="read" /> \
 </interface> \
 </node>';
 
@@ -46,6 +47,10 @@ const RfkillManager = new Lang.Class({
 
     get hwAirplaneMode() {
         return this._proxy.HardwareAirplaneMode;
+    },
+
+    get shouldShowAirplaneMode() {
+        return this._proxy.ShouldShowAirplaneMode;
     },
 
     _changed: function() {
@@ -101,9 +106,10 @@ const Indicator = new Lang.Class({
     _sync: function() {
         let airplaneMode = this._manager.airplaneMode;
         let hwAirplaneMode = this._manager.hwAirplaneMode;
+        let showAirplaneMode = this._manager.shouldShowAirplaneMode;
 
-        this._indicator.visible = airplaneMode;
-        this._item.actor.visible = airplaneMode;
+        this._indicator.visible = (airplaneMode && showAirplaneMode);
+        this._item.actor.visible = (airplaneMode && showAirplaneMode);
         this._offItem.setSensitive(!hwAirplaneMode);
 
         if (hwAirplaneMode)
