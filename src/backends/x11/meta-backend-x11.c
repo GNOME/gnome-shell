@@ -631,10 +631,20 @@ static void
 meta_backend_x11_update_screen_size (MetaBackend *backend,
                                      int width, int height)
 {
-  MetaBackendX11 *x11 = META_BACKEND_X11 (backend);
-  MetaBackendX11Private *priv = meta_backend_x11_get_instance_private (x11);
-  Window xwin = meta_backend_x11_get_xwindow (x11);
-  XResizeWindow (priv->xdisplay, xwin, width, height);
+  if (meta_is_wayland_compositor ())
+    {
+      /* For a nested wayland session, we want to go through Clutter to update the
+       * toplevel window size, rather than doing it directly.
+       */
+      META_BACKEND_CLASS (meta_backend_x11_parent_class)->update_screen_size (backend, width, height);
+    }
+  else
+    {
+      MetaBackendX11 *x11 = META_BACKEND_X11 (backend);
+      MetaBackendX11Private *priv = meta_backend_x11_get_instance_private (x11);
+      Window xwin = meta_backend_x11_get_xwindow (x11);
+      XResizeWindow (priv->xdisplay, xwin, width, height);
+    }
 }
 
 static void
