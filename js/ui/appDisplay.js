@@ -1687,7 +1687,8 @@ const AppIcon = new Lang.Class({
     activate: function (button) {
         let event = Clutter.get_current_event();
         let modifiers = event ? event.get_state() : 0;
-        let openNewWindow = modifiers & Clutter.ModifierType.CONTROL_MASK &&
+        let openNewWindow = this.app.can_open_new_window () &&
+                            modifiers & Clutter.ModifierType.CONTROL_MASK &&
                             this.app.state == Shell.AppState.RUNNING ||
                             button && button == 2;
 
