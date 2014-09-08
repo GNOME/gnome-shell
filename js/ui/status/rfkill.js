@@ -101,8 +101,6 @@ const Indicator = new Lang.Class({
     _sync: function() {
         let airplaneMode = this._manager.airplaneMode;
         let hwAirplaneMode = this._manager.hwAirplaneMode;
-        let changed = (airplaneMode != this._indicator.visible) ||
-            (hwAirplaneMode != this._offItem.actor.visible);
 
         this._indicator.visible = airplaneMode;
         this._item.actor.visible = airplaneMode;
