@@ -10,7 +10,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
 "cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2014-08-26 07:37+0000\n"
-"PO-Revision-Date: 2014-08-26 16:19+0530\n"
+"PO-Revision-Date: 2014-09-08 12:52+0530\n"
 "Last-Translator: \n"
 "Language-Team: American English <kde-i18n-doc@kde.org>\n"
 "Language: \n"
@@ -125,7 +125,7 @@ msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:10
 msgid "Index of the currently selected view in the application picker."
-msgstr ""
+msgstr "કાર્યક્રમ પસંદકર્તામાં હાલમાં પસંદ થયેલ દૃશ્યની અનુક્રમણિકા."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:11
 msgid "History for command (Alt-F2) dialog"
@@ -136,10 +136,9 @@ msgid "History for the looking glass dialog"
 msgstr "ગ્લાસ સંવાદને જોવા માટે ઇતિહાસ"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:13
-#, fuzzy
 #| msgid "Always show the 'Log out' menuitem in the user menu."
 msgid "Always show the 'Log out' menu item in the user menu."
-msgstr "હંમેશા વપરાશકર્તા મેનુમાં 'બહાર નીકળો' મેનુવસ્તુને બતાવે છે."
+msgstr "વપરાશકર્તા મેનુમાં હંમેશા 'બહાર નીકળો' મેનુ વસ્તુને બતાવો."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:14
 #, fuzzy
@@ -193,16 +192,14 @@ msgid "Keybinding to open the \"Show Applications\" view of the Activities Overv
 msgstr "પ્રવૃત્તિ ઝાંખીનાં  \"કાર્યક્રમો બતાવો\" દૃશ્યને ખોલવા માટે કિબાઇન્ડીંગ."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:23
-#, fuzzy
 #| msgid "Keybinding to open the \"Show Applications\" view"
 msgid "Keybinding to open the overview"
-msgstr "\"કાર્યક્રમો બતાવો\" દૃશ્યને ખોલવા માટે કિબાઇન્ડીંગ"
+msgstr "ઝાંખીને ખોલવા માટે કિબાઇન્ડીંગ"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:24
-#, fuzzy
 #| msgid "Keybinding to open the \"Show Applications\" view"
 msgid "Keybinding to open the Activities Overview."
-msgstr "\"કાર્યક્રમો બતાવો\" દૃશ્યને ખોલવા માટે કિબાઇન્ડીંગ"
+msgstr "પ્રવૃત્તિ ઝાંખીને ખોલવા માટે કિબાઇન્ડીંગ"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:25
 msgid "Keybinding to toggle the visibility of the message tray"
@@ -361,20 +358,19 @@ msgid "Could not parse command:"
 msgstr "આદેશનું પદચ્છેદન કરી શક્યા નથી:"
 
 #: ../js/misc/util.js:156
-#, fuzzy, javascript-format
+#, javascript-format
 #| msgid "Execution of '%s' failed:"
 msgid "Execution of “%s” failed:"
-msgstr "'%s' ને અમલમાં મૂકવાનુ નિષ્ફળ:"
+msgstr "“%s” ને અમલમાં મૂકવાનુ નિષ્ફળ:"
 
 #: ../js/portalHelper/main.js:85
-#, fuzzy
 #| msgid "Authentication Required"
 msgid "Web Authentication Redirect"
-msgstr "સત્તાધિકરણ જરૂરી"
+msgstr "વેબ સત્તાધિકરણ દિશામાન"
 
 #: ../js/ui/appDisplay.js:660
 msgid "Frequently used applications will appear here"
-msgstr ""
+msgstr "વારંવાર વપરાતા કાર્યક્રમો અહિંયા દેખાશે"
 
 #: ../js/ui/appDisplay.js:771
 msgid "Frequent"
@@ -640,14 +636,14 @@ msgid "Authentication required by wireless network"
 msgstr "વાયરલેસ નેટવર્ક દ્દારાસત્તાધિકરણ જરૂરી"
 
 #: ../js/ui/components/networkAgent.js:319
-#, fuzzy, javascript-format
+#, javascript-format
 #| msgid ""
 #| "Passwords or encryption keys are required to access the wireless network "
 #| "'%s'."
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
 "“%s”."
-msgstr "પાસવર્ડ અથવા એનક્રિપ્શન કીઓને વાયરલેસ નેટવર્ક '%s' માં પ્રવેશની જરૂર છે."
+msgstr "પાસવર્ડ અથવા એનક્રિપ્શન કીઓને વાયરલેસ નેટવર્ક “%s” માં પ્રવેશની જરૂર છે."
 
 #: ../js/ui/components/networkAgent.js:323
 msgid "Wired 802.1X authentication"
@@ -1046,11 +1042,10 @@ msgid "Power Off"
 msgstr "પાવર બંધ"
 
 #: ../js/ui/endSessionDialog.js:87
-#, fuzzy
 #| msgid "Install Updates & Restart"
 msgctxt "title"
 msgid "Install Updates & Power Off"
-msgstr "સુધારા સ્થાપિત કરો અને પુન:શરૂ કરો"
+msgstr "સુધારા સ્થાપિત કરો અને પાવર બંધ કરો"
 
 #: ../js/ui/endSessionDialog.js:89
 #, javascript-format
@@ -1062,7 +1057,7 @@ msgstr[1] "સિસ્ટમ %d સેકંડમાં આપમેળે પ
 #: ../js/ui/endSessionDialog.js:93
 msgctxt "checkbox"
 msgid "Install pending software updates"
-msgstr ""
+msgstr "બાકી રહેલા સોફ્ટવેર સુધારાને સ્થાપિત કરો"
 
 #: ../js/ui/endSessionDialog.js:96 ../js/ui/endSessionDialog.js:113
 msgctxt "button"
@@ -1104,25 +1099,25 @@ msgstr[1] "સિસ્ટમ %d સેકંડોમાં આપમેળે 
 #: ../js/ui/endSessionDialog.js:129
 msgctxt "button"
 msgid "Restart &amp; Install"
-msgstr ""
+msgstr "પુન:શરૂ કરો અને સ્થાપિત કરો"
 
 #: ../js/ui/endSessionDialog.js:130
 msgctxt "button"
 msgid "Install &amp; Power Off"
-msgstr ""
+msgstr "સ્થાપિત કરો અને પાવર બંધ "
 
 #: ../js/ui/endSessionDialog.js:131
 msgctxt "checkbox"
 msgid "Power off after updates are installed"
-msgstr ""
+msgstr "સુધારા સ્થાપિત થાય પછી પાવર બંધ કરો"
 
 #: ../js/ui/endSessionDialog.js:315
 msgid "Running on battery power: please plug in before installing updates."
-msgstr ""
+msgstr "બેટરી પાવર પર ચાલી રહ્યુ છે: મહેરબાની કરીને સુધારા સ્થાપિત કરતા પહેલાં પ્લગઇન કરો."
 
 #: ../js/ui/endSessionDialog.js:332
 msgid "Some applications are busy or have unsaved work."
-msgstr ""
+msgstr "અમુક કાર્યક્રમો વ્યસ્ત છે અથવા તેની પાસે અસંગ્રહેલ કામ છે."
 
 #: ../js/ui/endSessionDialog.js:339
 msgid "Other users are logged in."
@@ -1145,10 +1140,10 @@ msgid "Install"
 msgstr "સ્થાપિત કરો"
 
 #: ../js/ui/extensionDownloader.js:204
-#, fuzzy, javascript-format
+#, javascript-format
 #| msgid "Download and install '%s' from extensions.gnome.org?"
 msgid "Download and install “%s” from extensions.gnome.org?"
-msgstr "extensions.gnome.org માંથી '%s' ને સ્થાપિત અને ડાઉનલોડ કરો?"
+msgstr "extensions.gnome.org માંથી “%s” ને સ્થાપિત અને ડાઉનલોડ કરો?"
 
 #: ../js/ui/keyboard.js:653 ../js/ui/status/keyboard.js:339
 msgid "Keyboard"
@@ -1228,7 +1223,7 @@ msgstr "સૂચના સુયોજનો"
 
 #: ../js/ui/messageTray.js:1708
 msgid "Tray Menu"
-msgstr ""
+msgstr "ટ્રે મેનુ"
 
 #: ../js/ui/messageTray.js:1925
 msgid "No Messages"
@@ -1422,12 +1417,12 @@ msgid "Bluetooth Settings"
 msgstr "બ્લુટુથ સુયોજનો"
 
 #: ../js/ui/status/bluetooth.js:104
-#, fuzzy, javascript-format
+#, javascript-format
 #| msgid "Connected (private)"
 msgid "%d Connected Device"
 msgid_plural "%d Connected Devices"
-msgstr[0] "જોડાયેલ (ખાનગી)"
-msgstr[1] "જોડાયેલ (ખાનગી)"
+msgstr[0] "%d જોડાયેલ ઉપકરણ"
+msgstr[1] "%d જોડાયેલ ઉપકરણો"
 
 #: ../js/ui/status/bluetooth.js:106 ../js/ui/status/network.js:1309
 #| msgid "Connect"
@@ -1517,10 +1512,9 @@ msgid "Connection failed"
 msgstr "જોડાણ નિષ્ફળ"
 
 #: ../js/ui/status/network.js:504
-#, fuzzy
 #| msgid "Settings"
 msgid "Wired Settings"
-msgstr "સુયોજનો"
+msgstr "વાયર થયેલ સુયોજનો"
 
 #: ../js/ui/status/network.js:546 ../js/ui/status/network.js:624
 #| msgid "Mobile broadband"
@@ -1534,19 +1528,19 @@ msgstr "હાર્ડવેર નિષ્ક્રિય"
 
 #: ../js/ui/status/network.js:632
 msgid "Use as Internet connection"
-msgstr ""
+msgstr "ઇન્ટરનેટ જોડાણ તરીકે વાપરો"
 
 #: ../js/ui/status/network.js:813
 msgid "Airplane Mode is On"
-msgstr ""
+msgstr "ઍરપ્લેન સ્થિતિ ચાલુ છે"
 
 #: ../js/ui/status/network.js:814
 msgid "Wi-Fi is disabled when airplane mode is on."
-msgstr ""
+msgstr "Wi-Fi નિષ્ક્રિય થયેલ છે જ્યારે ઍરપ્લેન સ્થિતિ ચાલુ હોય."
 
 #: ../js/ui/status/network.js:815
 msgid "Turn Off Airplane Mode"
-msgstr ""
+msgstr "ઍરપ્લેન સ્થિતિને બંધ કરો"
 
 #: ../js/ui/status/network.js:824
 msgid "Wi-Fi is Off"
@@ -1554,11 +1548,11 @@ msgstr "Wi-Fi બંધ છે"
 
 #: ../js/ui/status/network.js:825
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
-msgstr ""
+msgstr "નેટવર્કમાં જોડાવા માટે ક્રમમાં Wi-Fi ને ચાલુ કરવાની જરૂર છે."
 
 #: ../js/ui/status/network.js:826
 msgid "Turn On Wi-Fi"
-msgstr ""
+msgstr "Wi-Fi ચાલુ કરો"
 
 #: ../js/ui/status/network.js:851
 #| msgid "Network"
@@ -1595,7 +1589,7 @@ msgstr "ચાલુ કરો"
 
 #: ../js/ui/status/network.js:1298
 msgid "Hotspot Active"
-msgstr ""
+msgstr "હૉટસ્પોટ સક્રિય"
 
 #: ../js/ui/status/network.js:1409
 msgid "connecting..."
@@ -1646,7 +1640,7 @@ msgstr "અંદાજ કરી રહ્યા છે..."
 #: ../js/ui/status/power.js:86
 #, javascript-format
 msgid "%d∶%02d Remaining (%d%%)"
-msgstr ""
+msgstr "%d∶%02d બાકી રહેલ છે (%d%%)"
 
 #: ../js/ui/status/power.js:91
 #, javascript-format
@@ -1663,7 +1657,7 @@ msgstr "બેટરી"
 
 #: ../js/ui/status/rfkill.js:83
 msgid "Airplane Mode"
-msgstr ""
+msgstr "ઍરપ્લેન સ્થિતિ"
 
 #: ../js/ui/status/rfkill.js:85
 #| msgid "Open"
@@ -1726,16 +1720,15 @@ msgstr "“%s” તૈયાર છે"
 
 #: ../js/ui/windowManager.js:65
 msgid "Do you want to keep these display settings?"
-msgstr ""
+msgstr "શું તમને આ દર્શાવ સુયોજનોને રાખવા માંગો છો?ે"
 
 #. Translators: this and the following message should be limited in lenght,
 #. to avoid ellipsizing the labels.
 #. */
 #: ../js/ui/windowManager.js:84
-#, fuzzy
 #| msgid "Power Settings"
 msgid "Revert Settings"
-msgstr "પાવર સુયોજનો"
+msgstr "સુયોજનોને પાછા લાવો"
 
 #: ../js/ui/windowManager.js:88
 msgid "Keep Changes"
@@ -1770,7 +1763,7 @@ msgstr "માપ બદલો"
 
 #: ../js/ui/windowMenu.js:65
 msgid "Move Titlebar Onscreen"
-msgstr ""
+msgstr "શીર્ષકપટ્ટી ઓનસ્ક્રીનને ખસેડો"
 
 #: ../js/ui/windowMenu.js:70
 msgid "Always on Top"
@@ -1778,15 +1771,15 @@ msgstr "હંમેશા ટોચ ઉપર"
 
 #: ../js/ui/windowMenu.js:89
 msgid "Always on Visible Workspace"
-msgstr ""
+msgstr "હંમેશા દૃશ્ય કામ કરવાની જગ્યા પર"
 
 #: ../js/ui/windowMenu.js:106
 msgid "Move to Workspace Up"
-msgstr ""
+msgstr "ઉપર કામ કરવાની જગ્યા પર ખસેડો"
 
 #: ../js/ui/windowMenu.js:111
 msgid "Move to Workspace Down"
-msgstr ""
+msgstr "નીચે કામ કરવાની જગ્યાએ ખસેડો"
 
 #: ../src/calendar-server/evolution-calendar.desktop.in.in.h:1
 msgid "Evolution Calendar"
