@@ -454,12 +454,20 @@ static GSourceFuncs event_funcs = {
 void
 meta_clutter_init (void)
 {
+  ClutterSettings *clutter_settings;
   GSource *source;
 
   meta_create_backend ();
 
   if (clutter_init (NULL, NULL) != CLUTTER_INIT_SUCCESS)
     g_error ("Unable to initialize Clutter.\n");
+
+  /*
+   * XXX: We cannot handle high dpi scaling yet, so fix the scale to 1
+   * for now.
+   */
+  clutter_settings = clutter_settings_get_default ();
+  g_object_set (clutter_settings, "window-scaling-factor", 1, NULL);
 
   source = g_source_new (&event_funcs, sizeof (GSource));
   g_source_attach (source, NULL);
