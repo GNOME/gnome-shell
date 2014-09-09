@@ -39,6 +39,7 @@
 #include "frame.h"
 #include "screen-private.h"
 #include "stack-tracker.h"
+#include <meta/errors.h>
 #include <meta/util.h>
 
 #include <meta/compositor.h>
@@ -590,54 +591,6 @@ meta_stack_tracker_record_remove (MetaStackTracker *tracker,
 }
 
 void
-meta_stack_tracker_record_restack_windows (MetaStackTracker *tracker,
-                                           const guint64    *windows,
-					   int               n_windows,
-					   gulong            serial)
-{
-  int i;
-  int n_x_windows = 0;
-
-  /* XRestackWindows() isn't actually a X requests - it's broken down
-   * by XLib into a series of XConfigureWindow(StackMode=below); we
-   * mirror that here.
-   *
-   * Since there may be a mixture of X and wayland windows in the
-   * stack it's ambiguous which operations we should associate with an
-   * X serial number. One thing we do know though is that there will
-   * be (n_x_window - 1) X requests made.
-   *
-   * Aside: Having a separate StackOp for this would be possible to
-   * get some extra efficiency in memory allocation and in applying
-   * the op, at the expense of a code complexity. Implementation hint
-   * for that - keep op->restack_window.n_complete, and when receiving
-   * events with intermediate serials, set n_complete rather than
-   * removing the op from the queue.
-   */
-  if (n_windows && META_STACK_ID_IS_X11 (windows[0]))
-    n_x_windows++;
-  for (i = 0; i < n_windows - 1; i++)
-    {
-      guint64 lower = windows[i + 1];
-      gboolean involves_x = FALSE;
-
-      if (META_STACK_ID_IS_X11 (lower))
-        {
-          n_x_windows++;
-
-          /* Since the first X window is a reference point we only
-           * assoicate a serial number with the operations involving
-           * later X windows. */
-          if (n_x_windows > 1)
-            involves_x = TRUE;
-        }
-
-      meta_stack_tracker_record_lower_below (tracker, lower, windows[i],
-                                             involves_x ? serial++ : 0);
-    }
-}
-
-void
 meta_stack_tracker_record_raise_above (MetaStackTracker *tracker,
                                        guint64           window,
                                        guint64           sibling,
@@ -960,3 +913,149 @@ meta_stack_tracker_queue_sync_stack (MetaStackTracker *tracker)
     }
 }
 
+/* When moving an X window we sometimes need an X based sibling.
+ *
+ * If the given sibling is X based this function returns it back
+ * otherwise it searches downwards looking for the nearest X window.
+ *
+ * If no X based sibling could be found return NULL. */
+static Window
+find_x11_sibling_downwards (MetaStackTracker *tracker,
+                            guint64           sibling)
+{
+  guint64 *windows;
+  int n_windows;
+  int i;
+
+  if (META_STACK_ID_IS_X11 (sibling))
+    return (Window)sibling;
+
+  meta_stack_tracker_get_stack (tracker,
+                                &windows, &n_windows);
+
+  /* NB: Children are in order from bottom to top and we
+   * want to search downwards for the nearest X window.
+   */
+
+  for (i = n_windows - 1; i >= 0; i--)
+    if (windows[i] == sibling)
+      break;
+
+  for (; i >= 0; i--)
+    {
+      if (META_STACK_ID_IS_X11 (windows[i]))
+        return (Window)windows[i];
+    }
+
+  return None;
+}
+
+static Window
+find_x11_sibling_upwards (MetaStackTracker *tracker,
+                          guint64           sibling)
+{
+  guint64 *windows;
+  int n_windows;
+  int i;
+
+  if (META_STACK_ID_IS_X11 (sibling))
+    return (Window)sibling;
+
+  meta_stack_tracker_get_stack (tracker,
+                                &windows, &n_windows);
+
+  for (i = 0; i < n_windows; i++)
+    if (windows[i] == sibling)
+      break;
+
+  for (; i < n_windows; i++)
+    {
+      if (META_STACK_ID_IS_X11 (windows[i]))
+        return (Window)windows[i];
+    }
+
+  return None;
+}
+
+void
+meta_stack_tracker_lower_below (MetaStackTracker *tracker,
+                                guint64           window,
+                                guint64           sibling)
+{
+  gulong serial = 0;
+
+  if (META_STACK_ID_IS_X11 (window))
+    {
+      XWindowChanges changes;
+      serial = XNextRequest (tracker->screen->display->xdisplay);
+
+      meta_error_trap_push (tracker->screen->display);
+
+      changes.sibling = sibling ? find_x11_sibling_upwards (tracker,sibling) : None;
+      changes.stack_mode = changes.sibling ? Below : Above;
+
+      XConfigureWindow (tracker->screen->display->xdisplay,
+                        window,
+                        (changes.sibling ? CWSibling : 0) | CWStackMode,
+                        &changes);
+
+      meta_error_trap_pop (tracker->screen->display);
+    }
+
+  meta_stack_tracker_record_lower_below (tracker,
+                                         window, sibling,
+                                         serial);
+}
+
+void
+meta_stack_tracker_lower (MetaStackTracker *tracker,
+                          guint64           window)
+{
+  meta_stack_tracker_raise_above (tracker, window, None);
+}
+
+void
+meta_stack_tracker_raise_above (MetaStackTracker *tracker,
+                                guint64           window,
+                                guint64           sibling)
+{
+  gulong serial = 0;
+
+  if (META_STACK_ID_IS_X11 (window))
+    {
+      XWindowChanges changes;
+      serial = XNextRequest (tracker->screen->display->xdisplay);
+
+      meta_error_trap_push (tracker->screen->display);
+
+      changes.sibling = sibling ? find_x11_sibling_downwards (tracker, sibling) : None;
+      changes.stack_mode = changes.sibling ? Above : Below;
+
+      XConfigureWindow (tracker->screen->display->xdisplay,
+                        (Window)window,
+                        (changes.sibling ? CWSibling : 0) | CWStackMode,
+                        &changes);
+
+      meta_error_trap_pop (tracker->screen->display);
+    }
+
+  meta_stack_tracker_record_raise_above (tracker, window,
+                                         sibling, serial);
+}
+
+void
+meta_stack_tracker_restack_windows (MetaStackTracker *tracker,
+                                    const guint64    *windows,
+                                    int               n_windows)
+{
+  int i;
+
+  /* XRestackWindows() isn't actually a X requests - it's broken down
+   * by XLib into a series of XConfigureWindow(StackMode=below); we
+   * just do the same here directly. The main disadvantage of  is that
+   * we allocate individual ops for each lower, and also that we are
+   * grabbing the libX11 lock separately for individual component.
+   */
+  for (i = 0; i < n_windows - 1; i++)
+    meta_stack_tracker_lower_below (tracker, windows[i + 1], windows[i]);
+}

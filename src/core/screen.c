@@ -490,10 +490,8 @@ create_guard_window (Display *xdisplay, MetaScreen *screen)
                                  guard_window,
                                  create_serial);
 
-  meta_stack_tracker_record_lower (screen->stack_tracker,
-                                   guard_window,
-                                   XNextRequest (xdisplay));
-  XLowerWindow (xdisplay, guard_window);
+  meta_stack_tracker_lower (screen->stack_tracker,
+                            guard_window);
   XMapWindow (xdisplay, guard_window);
   return guard_window;
 }
