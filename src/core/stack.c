@@ -76,8 +76,6 @@ meta_stack_new (MetaScreen *screen)
   stack->removed = NULL;
 
   stack->freeze_count = 0;
-  stack->last_all_root_children_stacked = NULL;
-
   stack->n_positions = 0;
 
   stack->need_resort = FALSE;
@@ -85,13 +83,6 @@ meta_stack_new (MetaScreen *screen)
   stack->need_constrain = FALSE;
 
   return stack;
-}
-
-static void
-free_last_all_root_children_stacked_cache (MetaStack *stack)
-{
-  g_array_free (stack->last_all_root_children_stacked, TRUE);
-  stack->last_all_root_children_stacked = NULL;
 }
 
 void
@@ -102,9 +93,6 @@ meta_stack_free (MetaStack *stack)
   g_list_free (stack->sorted);
   g_list_free (stack->added);
   g_list_free (stack->removed);
-
-  if (stack->last_all_root_children_stacked)
-    free_last_all_root_children_stacked_cache (stack);
 
   g_free (stack);
 }
@@ -1237,21 +1225,7 @@ stack_sync_to_xserver (MetaStack *stack)
 
   meta_error_trap_push (stack->screen->display);
 
-  if (stack->last_all_root_children_stacked == NULL)
-    {
-      /* Just impose our stack, we don't know the previous state.
-       * This involves a ton of circulate requests and may flicker.
-       */
-      meta_topic (META_DEBUG_STACK, "Don't know last stack state, restacking everything\n");
-
-      if (all_root_children_stacked->len > 1)
-        {
-          meta_stack_tracker_restack_windows (stack->screen->stack_tracker,
-                                              (guint64 *) all_root_children_stacked->data,
-                                              all_root_children_stacked->len);
-        }
-    }
-  else if (all_root_children_stacked->len > 0)
+  if (all_root_children_stacked->len > 0)
     {
       /* Try to do minimal window moves to get the stack in order */
       /* A point of note: these arrays include frames not client windows,
@@ -1259,10 +1233,14 @@ stack_sync_to_xserver (MetaStack *stack)
        * was saved, then we may have inefficiency, but I don't think things
        * break...
        */
-      const guint64 *old_stack = (guint64 *) stack->last_all_root_children_stacked->data;
+      guint64 *old_stack;
+      int old_len;
+      meta_stack_tracker_get_stack (stack->screen->stack_tracker,
+                                    &old_stack, &old_len);
+
       const guint64 *new_stack = (guint64 *) all_root_children_stacked->data;
-      const int old_len = stack->last_all_root_children_stacked->len;
       const int new_len = all_root_children_stacked->len;
+
       const guint64 *oldp = old_stack;
       const guint64 *newp = new_stack;
       const guint64 *old_end = old_stack + old_len;
@@ -1281,12 +1259,17 @@ stack_sync_to_xserver (MetaStack *stack)
                 last_xwindow = (Window)*newp;
               last_window = *newp;
               ++newp;
+
+              continue;
             }
-          else if (meta_display_lookup_stack_id (stack->screen->display,
-                                                 *oldp) == NULL)
+
+          MetaWindow *old_window = meta_display_lookup_stack_id (stack->screen->display,
+                                                                 *oldp);
+
+          if (old_window == NULL || old_window->override_redirect)
             {
-              /* *oldp is no longer known to us (probably destroyed),
-               * so we can just skip it
+              /* *oldp is not known to us (probably unmanaged), or override_redirect, so
+               * we should skip it.
                */
               ++oldp;
             }
@@ -1396,10 +1379,7 @@ stack_sync_to_xserver (MetaStack *stack)
                    x11_stacked->len);
 
   g_array_free (x11_stacked, TRUE);
-
-  if (stack->last_all_root_children_stacked)
-    free_last_all_root_children_stacked_cache (stack);
-  stack->last_all_root_children_stacked = all_root_children_stacked;
+  g_array_free (all_root_children_stacked, TRUE);
 
   /* That was scary... */
 }
