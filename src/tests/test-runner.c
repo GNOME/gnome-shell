@@ -512,7 +512,7 @@ test_case_assert_stacking (TestCase *test,
                            GError  **error)
 {
   MetaDisplay *display = meta_get_display ();
-  MetaStackWindow *windows;
+  guint64 *windows;
   int n_windows;
   GString *stack_string = g_string_new (NULL);
   GString *expected_string = g_string_new (NULL);
@@ -521,22 +521,14 @@ test_case_assert_stacking (TestCase *test,
   meta_stack_tracker_get_stack (display->screen->stack_tracker, &windows, &n_windows);
   for (i = 0; i < n_windows; i++)
     {
-      MetaWindow *window;
-
-      if (windows[i].any.type == META_WINDOW_CLIENT_TYPE_X11)
-        window = meta_display_lookup_x_window (display,
-                                               windows[i].x11.xwindow);
-      else
-        window = windows[i].wayland.meta_window;
-
+      MetaWindow *window = meta_display_lookup_stack_id (display, windows[i]);
       if (window != NULL && window->title)
         {
-
           /* See comment in meta_ui_new() about why the dummy window for GTK+ theming
            * is managed as a MetaWindow.
            */
-          if (windows[i].any.type == META_WINDOW_CLIENT_TYPE_X11 &&
-              meta_ui_window_is_dummy (display->screen->ui, windows[i].x11.xwindow))
+          if (META_STACK_ID_IS_X11 (windows[i]) &&
+              meta_ui_window_is_dummy (display->screen->ui, windows[i]))
             continue;
 
           if (stack_string->len > 0)
@@ -579,18 +571,18 @@ test_case_check_xserver_stacking (TestCase *test,
   GString *x11_string = g_string_new (NULL);
   int i;
 
-  MetaStackWindow *windows;
+  guint64 *windows;
   int n_windows;
   meta_stack_tracker_get_stack (display->screen->stack_tracker, &windows, &n_windows);
 
   for (i = 0; i < n_windows; i++)
     {
-      if (windows[i].any.type == META_WINDOW_CLIENT_TYPE_X11)
+      if (META_STACK_ID_IS_X11 (windows[i]))
         {
           if (local_string->len > 0)
             g_string_append_c (local_string, ' ');
 
-          g_string_append_printf (local_string, "%#lx", windows[i].x11.xwindow);
+          g_string_append_printf (local_string, "%#lx", (Window)windows[i]);
         }
     }
 

@@ -71,6 +71,10 @@
 
 static int destroying_windows_disallowed = 0;
 
+// Each window has a "stamp" which is a non-recycled 64-bit ID. They
+// start after the end of the XID space so that, for stacking
+// we can keep a guint64 that represents one or the other
+static guint64 next_window_stamp = G_GUINT64_CONSTANT(0x100000000);
 
 static void     invalidate_work_areas     (MetaWindow     *window);
 static void     set_wm_state              (MetaWindow     *window);
@@ -642,6 +646,7 @@ meta_window_class_init (MetaWindowClass *klass)
 static void
 meta_window_init (MetaWindow *self)
 {
+  self->stamp = next_window_stamp++;
   meta_prefs_add_listener (prefs_changed_callback, self);
 }
 
@@ -803,6 +808,8 @@ _meta_window_shared_new (MetaDisplay         *display,
    * type
    */
   window->display = display;
+  meta_display_register_stamp (window->display, &window->stamp, window);
+
   window->workspace = NULL;
 
   window->sync_request_counter = None;
@@ -1238,6 +1245,8 @@ meta_window_unmanage (MetaWindow  *window,
   if (destroying_windows_disallowed > 0)
     meta_bug ("Tried to destroy window %s while destruction was not allowed\n",
               window->desc);
+
+  meta_display_unregister_stamp (window->display, window->stamp);
 
   window->unmanaging = TRUE;
 

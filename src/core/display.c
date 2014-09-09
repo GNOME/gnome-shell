@@ -627,6 +627,8 @@ meta_display_open (void)
 
   display->xids = g_hash_table_new (meta_unsigned_long_hash,
                                         meta_unsigned_long_equal);
+  display->stamps = g_hash_table_new (g_int64_hash,
+                                      g_int64_equal);
   display->wayland_windows = g_hash_table_new (NULL, NULL);
 
   i = 0;
@@ -1579,6 +1581,68 @@ meta_display_unregister_wayland_window (MetaDisplay *display,
                                         MetaWindow  *window)
 {
   g_hash_table_remove (display->wayland_windows, window);
+}
+
+MetaWindow*
+meta_display_lookup_stamp (MetaDisplay *display,
+                           guint64       stamp)
+{
+  return g_hash_table_lookup (display->stamps, &stamp);
+}
+
+void
+meta_display_register_stamp (MetaDisplay *display,
+                             guint64     *stampp,
+                             MetaWindow  *window)
+{
+  g_return_if_fail (g_hash_table_lookup (display->stamps, stampp) == NULL);
+
+  g_hash_table_insert (display->stamps, stampp, window);
+}
+
+void
+meta_display_unregister_stamp (MetaDisplay *display,
+                               guint64      stamp)
+{
+  g_return_if_fail (g_hash_table_lookup (display->stamps, &stamp) != NULL);
+
+  g_hash_table_remove (display->stamps, &stamp);
+}
+
+MetaWindow*
+meta_display_lookup_stack_id (MetaDisplay *display,
+                              guint64      stack_id)
+{
+  if (META_STACK_ID_IS_X11 (stack_id))
+    return meta_display_lookup_x_window (display, (Window)stack_id);
+  else
+    return meta_display_lookup_stamp (display, stack_id);
+}
+
+/* We return a pointer into a ring of static buffers. This is to make
+ * using this function for debug-logging convenient and avoid tempory
+ * strings that must be freed. */
+const char *
+meta_display_describe_stack_id (MetaDisplay *display,
+                                guint64      stack_id)
+{
+  /* 0x<64-bit: 16 characters> (<10 characters of title>)\0' */
+  static char buffer[5][32];
+  MetaWindow *window;
+  static int pos = 0;
+  char *result;
+
+  result = buffer[pos];
+  pos = (pos + 1) % 5;
+
+  window = meta_display_lookup_stack_id (display, stack_id);
+
+  if (window && window->title)
+    snprintf (result, sizeof(buffer[0]), "%#" G_GINT64_MODIFIER "x (%.10s)", stack_id, window->title);
+  else
+    snprintf (result, sizeof(buffer[0]), "%#" G_GINT64_MODIFIER "x", stack_id);
+
+  return result;
 }
 
 /* We store sync alarms in the window ID hash table, because they are

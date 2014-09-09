@@ -60,11 +60,8 @@ meta_window_wayland_manage (MetaWindow *window)
   meta_display_register_wayland_window (display, window);
 
   {
-    MetaStackWindow stack_window;
-    stack_window.any.type = META_WINDOW_CLIENT_TYPE_WAYLAND;
-    stack_window.wayland.meta_window = window;
     meta_stack_tracker_record_add (window->screen->stack_tracker,
-                                   &stack_window,
+                                   window->stamp,
                                    0);
   }
 }
@@ -73,11 +70,8 @@ static void
 meta_window_wayland_unmanage (MetaWindow *window)
 {
   {
-    MetaStackWindow stack_window;
-    stack_window.any.type = META_WINDOW_CLIENT_TYPE_WAYLAND;
-    stack_window.wayland.meta_window = window;
     meta_stack_tracker_record_remove (window->screen->stack_tracker,
-                                      &stack_window,
+                                      window->stamp,
                                       0);
   }
 

@@ -92,6 +92,7 @@ struct _MetaWindow
 
   MetaDisplay *display;
   MetaScreen *screen;
+  guint64 stamp;
   const MetaMonitorInfo *monitor;
   MetaWorkspace *workspace;
   MetaWindowClientType client_type;

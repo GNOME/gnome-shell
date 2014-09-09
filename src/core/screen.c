@@ -441,7 +441,6 @@ create_guard_window (Display *xdisplay, MetaScreen *screen)
   XSetWindowAttributes attributes;
   Window guard_window;
   gulong create_serial;
-  MetaStackWindow stack_window;
 
   attributes.event_mask = NoEventMask;
   attributes.override_redirect = True;
@@ -487,14 +486,12 @@ create_guard_window (Display *xdisplay, MetaScreen *screen)
       }
   }
 
-  stack_window.any.type = META_WINDOW_CLIENT_TYPE_X11;
-  stack_window.x11.xwindow = guard_window;
   meta_stack_tracker_record_add (screen->stack_tracker,
-                                 &stack_window,
+                                 guard_window,
                                  create_serial);
 
   meta_stack_tracker_record_lower (screen->stack_tracker,
-                                   &stack_window,
+                                   guard_window,
                                    XNextRequest (xdisplay));
   XLowerWindow (xdisplay, guard_window);
   XMapWindow (xdisplay, guard_window);
@@ -884,19 +881,20 @@ meta_screen_create_guard_window (MetaScreen *screen)
 void
 meta_screen_manage_all_windows (MetaScreen *screen)
 {
-  MetaStackWindow *_children;
-  MetaStackWindow *children;
+  guint64 *_children;
+  guint64 *children;
   int n_children, i;
 
   meta_stack_freeze (screen->stack);
   meta_stack_tracker_get_stack (screen->stack_tracker, &_children, &n_children);
 
   /* Copy the stack as it will be modified as part of the loop */
-  children = g_memdup (_children, sizeof (MetaStackWindow) * n_children);
+  children = g_memdup (_children, sizeof (guint64) * n_children);
 
   for (i = 0; i < n_children; ++i)
     {
-      meta_window_x11_new (screen->display, children[i].x11.xwindow, TRUE,
+      g_assert (META_STACK_ID_IS_X11 (children[i]));
+      meta_window_x11_new (screen->display, children[i], TRUE,
                            META_COMP_EFFECT_NONE);
     }
 
