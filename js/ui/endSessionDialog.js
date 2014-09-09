@@ -38,8 +38,6 @@ const UserWidget = imports.ui.userWidget;
 
 let _endSessionDialog = null;
 
-const TRIGGER_OFFLINE_UPDATE = '/usr/libexec/pk-trigger-offline-update';
-
 const _ITEM_ICON_SIZE = 48;
 const _DIALOG_ICON_SIZE = 48;
 
@@ -162,6 +160,19 @@ const LogindSessionIface = '<node> \
 
 const LogindSession = Gio.DBusProxy.makeProxyWrapper(LogindSessionIface);
 
+const PkOfflineIface = '<node> \
+<interface name="org.freedesktop.PackageKit.Offline"> \
+    <property name="UpdatePrepared" type="b" access="read"/> \
+    <property name="TriggerAction" type="s" access="read"/> \
+    <method name="Trigger"> \
+        <arg type="s" name="action" direction="in"/> \
+    </method> \
+    <method name="Cancel"/> \
+</interface> \
+</node>';
+
+const PkOfflineProxy = Gio.DBusProxy.makeProxyWrapper(PkOfflineIface);
+
 const UPowerIface = '<node> \
 <interface name="org.freedesktop.UPower"> \
     <property name="OnBattery" type="b" access="read"/> \
@@ -252,9 +263,14 @@ const EndSessionDialog = new Lang.Class({
         this._loginManager = LoginManager.getLoginManager();
         this._userManager = AccountsService.UserManager.get_default();
         this._user = this._userManager.get_user(GLib.get_user_name());
-        this._updatesFile = Gio.File.new_for_path('/system-update');
-        this._preparedUpdateFile = Gio.File.new_for_path('/var/lib/PackageKit/prepared-update');
 
+        this._pkOfflineProxy = new PkOfflineProxy(Gio.DBus.system,
+                                                  'org.freedesktop.PackageKit',
+                                                  '/org/freedesktop/PackageKit',
+                                                  Lang.bind(this, function(proxy, error) {
+                                                      if (error)
+                                                          log(error.message);
+                                                  }));
         this._powerProxy = new UPowerProxy(Gio.DBus.system,
                                            'org.freedesktop.UPower',
                                            '/org/freedesktop/UPower',
@@ -506,31 +522,29 @@ const EndSessionDialog = new Lang.Class({
     },
 
     _triggerOfflineUpdateReboot: function(callback) {
-        this._pkexecSpawn([TRIGGER_OFFLINE_UPDATE, 'reboot'], callback);
+        this._pkOfflineProxy.TriggerRemote('reboot',
+                                           function (result, error) {
+            if (error)
+                log(error.message);
+
+            callback();
+        });
     },
 
     _triggerOfflineUpdateShutdown: function(callback) {
-        this._pkexecSpawn([TRIGGER_OFFLINE_UPDATE, 'power-off'], callback);
+        this._pkOfflineProxy.TriggerRemote('power-off',
+                                           function (result, error) {
+            if (error)
+                log(error.message);
+
+            callback();
+        });
     },
 
     _triggerOfflineUpdateCancel: function(callback) {
-        this._pkexecSpawn([TRIGGER_OFFLINE_UPDATE, '--cancel'], callback);
-    },
-
-    _pkexecSpawn: function(argv, callback) {
-        let ret, pid;
-        try {
-            [ret, pid] = GLib.spawn_async(null, ['pkexec'].concat(argv), null,
-                                          GLib.SpawnFlags.DO_NOT_REAP_CHILD | GLib.SpawnFlags.SEARCH_PATH,
-                                          null);
-        } catch (e) {
-            log('Error spawning "pkexec %s": %s'.format(argv.join(' '), e.toString()));
-            callback();
-            return;
-        }
-
-        GLib.child_watch_add(GLib.PRIORITY_DEFAULT, pid, function(pid, status) {
-            GLib.spawn_close_pid(pid);
+        this._pkOfflineProxy.CancelRemote(function (result, error) {
+            if (error)
+                log(error.message);
 
             callback();
         });
@@ -685,7 +699,7 @@ const EndSessionDialog = new Lang.Class({
         this._type = type;
 
         if (this._type == DialogType.RESTART &&
-            this._updatesFile.query_exists(null))
+            this._pkOfflineProxy.TriggerAction == 'reboot')
             this._type = DialogType.UPDATE_RESTART;
 
         this._applications = [];
@@ -713,19 +727,19 @@ const EndSessionDialog = new Lang.Class({
         if (dialogContent.showOtherSessions)
             this._loadSessions();
 
-        let preparedUpdate = this._preparedUpdateFile.query_exists(null);
-        let updateAlreadyTriggered = this._updatesFile.query_exists(null);
+        let updateAlreadyTriggered = this._pkOfflineProxy.TriggerAction == 'power-off' || this._pkOfflineProxy.TriggerAction == 'reboot';
+        let updatePrepared = this._pkOfflineProxy.UpdatePrepared;
         let updatesAllowed = this._updatesPermission && this._updatesPermission.allowed;
 
         _setCheckBoxLabel(this._checkBox, dialogContent.checkBoxText);
-        this._checkBox.actor.visible = (dialogContent.checkBoxText && preparedUpdate && updatesAllowed);
-        this._checkBox.actor.checked = (preparedUpdate && updateAlreadyTriggered);
+        this._checkBox.actor.visible = (dialogContent.checkBoxText && updatePrepared && updatesAllowed);
+        this._checkBox.actor.checked = (updatePrepared && updateAlreadyTriggered);
 
         // We show the warning either together with the checkbox, or when
         // updates have already been triggered, but the user doesn't have
         // enough permissions to cancel them.
         this._batteryWarning.visible = (dialogContent.showBatteryWarning &&
-                                        (this._checkBox.actor.visible || preparedUpdate && updateAlreadyTriggered && !updatesAllowed));
+                                        (this._checkBox.actor.visible || updatePrepared && updateAlreadyTriggered && !updatesAllowed));
 
         this._updateButtons();
 
