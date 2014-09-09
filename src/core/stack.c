@@ -101,6 +101,8 @@ void
 meta_stack_add (MetaStack  *stack,
                 MetaWindow *window)
 {
+  g_return_if_fail (window->override_redirect);
+
   meta_topic (META_DEBUG_STACK, "Adding window %s to the stack\n", window->desc);
 
   if (window->stack_position >= 0)
@@ -1141,7 +1143,6 @@ stack_sync_to_xserver (MetaStack *stack)
   GArray *all_root_children_stacked; /* wayland OR x11 */
   GList *tmp;
   GArray *x11_hidden_stack_ids;
-  int n_override_redirect = 0;
 
   /* Bail out if frozen */
   if (stack->freeze_count > 0)
@@ -1178,10 +1179,7 @@ stack_sync_to_xserver (MetaStack *stack)
 		  w->layer, w->stack_position, w->desc);
 
       /* remember, stacked is in reverse order (bottom to top) */
-      if (w->override_redirect)
-	n_override_redirect++;
-      else
-	g_array_prepend_val (x11_stacked, w->xwindow);
+      g_array_prepend_val (x11_stacked, w->xwindow);
 
       if (w->frame)
 	top_level_window = w->frame->xwindow;
@@ -1212,11 +1210,6 @@ stack_sync_to_xserver (MetaStack *stack)
 
   meta_topic (META_DEBUG_STACK, "\n");
   meta_pop_no_msg_prefix ();
-
-  /* All X windows should be in some stacking order */
-  if (x11_stacked->len != stack->xwindows->len - n_override_redirect)
-    meta_bug ("%u windows stacked, %u windows exist in stack\n",
-              x11_stacked->len, stack->xwindows->len);
 
   /* Sync to server */
 
