@@ -918,14 +918,14 @@ const PopupSubMenu = new Lang.Class({
         if (animate && needsScrollbar)
             animate = false;
 
+        let targetAngle = this.actor.text_direction == Clutter.TextDirection.RTL ? -90 : 90;
+
         if (animate) {
             let [minHeight, naturalHeight] = this.actor.get_preferred_height(-1);
             this.actor.height = 0;
             this.actor._arrowRotation = this._arrow.rotation_angle_z;
-            let angle = this.actor._arrowRotation;
-            // animate to the first multiple of 90 greater than current angle
             Tweener.addTween(this.actor,
-                             { _arrowRotation: angle - angle % 90 + 90,
+                             { _arrowRotation: targetAngle,
                                height: naturalHeight,
                                time: 0.25,
                                onUpdateScope: this,
@@ -938,7 +938,7 @@ const PopupSubMenu = new Lang.Class({
                                }
                              });
         } else {
-            this._arrow.rotation_angle_z = this.actor._arrowRotation + 90;
+            this._arrow.rotation_angle_z = targetAngle;
         }
     },
 
@@ -957,10 +957,8 @@ const PopupSubMenu = new Lang.Class({
 
         if (animate) {
             this.actor._arrowRotation = this._arrow.rotation_angle_z;
-            let angle = this.actor._arrowRotation;
-            // animate to the first multiple of 90 less than current angle
             Tweener.addTween(this.actor,
-                             { _arrowRotation: (angle - 1) - (angle - 1) % 90,
+                             { _arrowRotation: 0,
                                height: 0,
                                time: 0.25,
                                onUpdateScope: this,
@@ -974,7 +972,7 @@ const PopupSubMenu = new Lang.Class({
                                },
                              });
         } else {
-            this._arrow.rotation_angle_z = this.actor._arrowRotation - 90;
+            this._arrow.rotation_angle_z = 0;
             this.actor.hide();
         }
     },
@@ -1052,8 +1050,6 @@ const PopupSubMenuMenuItem = new Lang.Class({
         this._triangleBin = new St.Widget({ y_expand: true,
                                             y_align: Clutter.ActorAlign.CENTER });
         this._triangleBin.add_child(this._triangle);
-        if (this._triangleBin.get_text_direction() == Clutter.TextDirection.RTL)
-            this._triangleBin.set_scale(-1.0, 1.0);
 
         this.actor.add_child(this._triangleBin);
         this.actor.add_accessible_state (Atk.StateType.EXPANDABLE);
