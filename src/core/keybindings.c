@@ -1629,12 +1629,22 @@ meta_window_ungrab_all_keys (MetaWindow *window, guint32 timestamp)
 void
 meta_display_freeze_keyboard (MetaDisplay *display, Window window, guint32 timestamp)
 {
+  MetaBackend *backend = meta_get_backend ();
+
+  if (!META_IS_BACKEND_X11 (backend))
+    return;
+
   grab_keyboard (window, timestamp, XIGrabModeSync);
 }
 
 void
 meta_display_ungrab_keyboard (MetaDisplay *display, guint32 timestamp)
 {
+  MetaBackend *backend = meta_get_backend ();
+
+  if (!META_IS_BACKEND_X11 (backend))
+    return;
+
   ungrab_keyboard (timestamp);
 }
 
