@@ -735,14 +735,21 @@ shell_global_get_display (ShellGlobal  *global)
  *
  * Gets the list of #MetaWindowActor for the plugin's screen
  *
- * Return value: (element-type Meta.WindowActor) (transfer none): the list of windows
+ * Return value: (element-type Meta.WindowActor) (transfer container): the list of windows
  */
 GList *
 shell_global_get_window_actors (ShellGlobal *global)
 {
+  GList *filtered = NULL;
+  GList *l;
+
   g_return_val_if_fail (SHELL_IS_GLOBAL (global), NULL);
 
-  return meta_get_window_actors (global->meta_screen);
+  for (l = meta_get_window_actors (global->meta_screen); l; l = l->next)
+    if (!meta_window_actor_is_destroyed (l->data))
+      filtered = g_list_prepend (filtered, l->data);
+
+  return g_list_reverse (filtered);
 }
 
 static void
