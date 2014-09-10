@@ -816,9 +816,6 @@ meta_stack_tracker_get_stack (MetaStackTracker *tracker,
       stack = tracker->predicted_stack;
     }
 
-  meta_topic (META_DEBUG_STACK, "Get Stack\n");
-  meta_stack_tracker_dump (tracker);
-
   if (windows)
     *windows = (guint64 *)stack->data;
   if (n_windows)
@@ -1044,18 +1041,100 @@ meta_stack_tracker_raise_above (MetaStackTracker *tracker,
 }
 
 void
-meta_stack_tracker_restack_windows (MetaStackTracker *tracker,
-                                    const guint64    *windows,
-                                    int               n_windows)
+meta_stack_tracker_restack_managed (MetaStackTracker *tracker,
+                                    const guint64    *managed,
+                                    int               n_managed)
 {
-  int i;
+  guint64 *windows;
+  int n_windows;
+  int old_pos, new_pos;
 
-  /* XRestackWindows() isn't actually a X requests - it's broken down
-   * by XLib into a series of XConfigureWindow(StackMode=below); we
-   * just do the same here directly. The main disadvantage of  is that
-   * we allocate individual ops for each lower, and also that we are
-   * grabbing the libX11 lock separately for individual component.
+  if (n_managed == 0)
+    return;
+
+  meta_stack_tracker_get_stack (tracker, &windows, &n_windows);
+
+  /* If the top window has to be restacked, we don't want to move it to the very
+   * top of the stack, since apps expect override-redirect windows to stay near
+   * the top of the X stack; we instead move it above all managed windows (or
+   * above the guard window if there are no non-hidden managed windows.)
    */
-  for (i = 0; i < n_windows - 1; i++)
-    meta_stack_tracker_lower_below (tracker, windows[i + 1], windows[i]);
+  old_pos = n_windows - 1;
+  for (old_pos = n_windows - 1; old_pos >= 0; old_pos--)
+    {
+      MetaWindow *old_window = meta_display_lookup_stack_id (tracker->screen->display, windows[old_pos]);
+      if ((old_window && !old_window->override_redirect) || windows[old_pos] == tracker->screen->guard_window)
+        break;
+    }
+  g_assert (old_pos >= 0);
+
+  new_pos = n_managed - 1;
+  if (managed[new_pos] != windows[old_pos])
+    {
+      /* Move the first managed window in the new stack above all managed windows */
+      meta_stack_tracker_raise_above (tracker, managed[new_pos], windows[old_pos]);
+      meta_stack_tracker_get_stack (tracker, &windows, &n_windows);
+      /* Moving managed[new_pos] above windows[old_pos], moves the window at old_pos down by one */
+    }
+
+  old_pos--;
+  new_pos--;
+
+  while (old_pos >= 0 && new_pos >= 0)
+    {
+      if (windows[old_pos] == tracker->screen->guard_window)
+        break;
+
+      if (windows[old_pos] == managed[new_pos])
+        {
+          old_pos--;
+          new_pos--;
+          continue;
+        }
+
+      MetaWindow *old_window = meta_display_lookup_stack_id (tracker->screen->display, windows[old_pos]);
+      if (!old_window || old_window->override_redirect)
+        {
+          old_pos--;
+          continue;
+        }
+
+      meta_stack_tracker_lower_below (tracker, managed[new_pos], managed[new_pos + 1]);
+      meta_stack_tracker_get_stack (tracker, &windows, &n_windows);
+      /* Moving managed[new_pos] above windows[old_pos] moves the window at old_pos down by one,
+       * we'll examine it again to see if it matches the next new window */
+      old_pos--;
+      new_pos--;
+    }
+
+  while (new_pos >= 0)
+    {
+      meta_stack_tracker_lower_below (tracker, managed[new_pos], managed[new_pos - 1]);
+      new_pos--;
+    }
+}
+
+void
+meta_stack_tracker_restack_at_bottom (MetaStackTracker *tracker,
+                                      const guint64    *new_order,
+                                      int               n_new_order)
+{
+  guint64 *windows;
+  int n_windows;
+  int pos;
+
+  meta_stack_tracker_get_stack (tracker, &windows, &n_windows);
+
+  for (pos = 0; pos < n_new_order; pos++)
+    {
+      if (pos >= n_windows || windows[pos] != new_order[pos])
+        {
+          if (pos == 0)
+            meta_stack_tracker_lower (tracker, new_order[pos]);
+          else
+            meta_stack_tracker_raise_above (tracker, new_order[pos], new_order[pos - 1]);
+
+          meta_stack_tracker_get_stack (tracker, &windows, &n_windows);
+        }
+    }
 }
