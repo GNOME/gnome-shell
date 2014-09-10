@@ -534,11 +534,11 @@ stack_tracker_apply_prediction (MetaStackTracker *tracker,
 {
   gboolean free_at_end = FALSE;
 
-  /* If this is a wayland operation then it's implicitly verified so
-   * we can apply it immediately so long as it doesn't depend on any
-   * unverified X operations...
+  /* If this operation doesn't involve restacking X windows then it's
+   * implicitly verified. We can apply it immediately unless there
+   * are outstanding X restacks that haven't yet been confirmed.
    */
-  if (!META_STACK_ID_IS_X11 (op->any.window) &&
+  if (op->any.serial == 0 &&
       tracker->unverified_predictions->length == 0)
     {
       if (meta_stack_op_apply (tracker, op, tracker->verified_stack, APPLY_DEFAULT))
@@ -976,19 +976,23 @@ meta_stack_tracker_lower_below (MetaStackTracker *tracker,
   if (META_STACK_ID_IS_X11 (window))
     {
       XWindowChanges changes;
-      serial = XNextRequest (tracker->screen->display->xdisplay);
+      changes.sibling = sibling ? find_x11_sibling_upwards (tracker, sibling) : None;
 
-      meta_error_trap_push (tracker->screen->display);
+      if (changes.sibling != find_x11_sibling_upwards (tracker, window))
+        {
+          serial = XNextRequest (tracker->screen->display->xdisplay);
 
-      changes.sibling = sibling ? find_x11_sibling_upwards (tracker,sibling) : None;
-      changes.stack_mode = changes.sibling ? Below : Above;
+          meta_error_trap_push (tracker->screen->display);
 
-      XConfigureWindow (tracker->screen->display->xdisplay,
-                        window,
-                        (changes.sibling ? CWSibling : 0) | CWStackMode,
-                        &changes);
+          changes.stack_mode = changes.sibling ? Below : Above;
 
-      meta_error_trap_pop (tracker->screen->display);
+          XConfigureWindow (tracker->screen->display->xdisplay,
+                            window,
+                            (changes.sibling ? CWSibling : 0) | CWStackMode,
+                            &changes);
+
+          meta_error_trap_pop (tracker->screen->display);
+        }
     }
 
   meta_stack_tracker_record_lower_below (tracker,
@@ -1013,19 +1017,23 @@ meta_stack_tracker_raise_above (MetaStackTracker *tracker,
   if (META_STACK_ID_IS_X11 (window))
     {
       XWindowChanges changes;
-      serial = XNextRequest (tracker->screen->display->xdisplay);
-
-      meta_error_trap_push (tracker->screen->display);
-
       changes.sibling = sibling ? find_x11_sibling_downwards (tracker, sibling) : None;
-      changes.stack_mode = changes.sibling ? Above : Below;
 
-      XConfigureWindow (tracker->screen->display->xdisplay,
-                        (Window)window,
-                        (changes.sibling ? CWSibling : 0) | CWStackMode,
-                        &changes);
+      if (changes.sibling != find_x11_sibling_downwards (tracker, window))
+        {
+          serial = XNextRequest (tracker->screen->display->xdisplay);
 
-      meta_error_trap_pop (tracker->screen->display);
+          meta_error_trap_push (tracker->screen->display);
+
+          changes.stack_mode = changes.sibling ? Above : Below;
+
+          XConfigureWindow (tracker->screen->display->xdisplay,
+                            (Window)window,
+                            (changes.sibling ? CWSibling : 0) | CWStackMode,
+                            &changes);
+
+          meta_error_trap_pop (tracker->screen->display);
+        }
     }
 
   meta_stack_tracker_record_raise_above (tracker, window,
