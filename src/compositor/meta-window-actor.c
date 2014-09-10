@@ -1171,7 +1171,6 @@ meta_window_actor_destroy (MetaWindowActor *self)
 {
   MetaWindowActorPrivate *priv = self->priv;
   MetaWindow *window = priv->window;
-  MetaCompositor *compositor = priv->compositor;
   MetaWindowType window_type = meta_window_get_window_type (window);
 
   meta_window_set_compositor_private (window, NULL);
@@ -1181,12 +1180,6 @@ meta_window_actor_destroy (MetaWindowActor *self)
       g_source_remove (priv->send_frame_messages_timer);
       priv->send_frame_messages_timer = 0;
     }
-
-  /*
-   * We remove the window from internal lookup hashes and thus any other
-   * unmap events etc fail
-   */
-  compositor->windows = g_list_remove (compositor->windows, (gconstpointer) self);
 
   if (window_type == META_WINDOW_DROPDOWN_MENU ||
       window_type == META_WINDOW_POPUP_MENU ||

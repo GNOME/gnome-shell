@@ -920,7 +920,7 @@ meta_compositor_sync_stack (MetaCompositor  *compositor,
           old_actor = old_stack->data;
           old_window = meta_window_actor_get_meta_window (old_actor);
 
-          if (old_window->hidden &&
+          if ((old_window->hidden || old_window->unmanaging) &&
               !meta_window_actor_effect_in_progress (old_actor))
             {
               old_stack = g_list_delete_link (old_stack, old_stack);
@@ -954,7 +954,7 @@ meta_compositor_sync_stack (MetaCompositor  *compositor,
        * filtered out non-animating hidden windows above.
        */
       if (old_actor &&
-          (!stack_actor || old_window->hidden))
+          (!stack_actor || old_window->hidden || old_window->unmanaging))
         {
           actor = old_actor;
           window = old_window;
