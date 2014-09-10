@@ -207,6 +207,15 @@ err_keymap_str:
 }
 
 static void
+on_keymap_changed (MetaBackend *backend,
+                   gpointer     data)
+{
+  MetaWaylandKeyboard *keyboard = data;
+
+  meta_wayland_keyboard_take_keymap (keyboard, meta_backend_get_keymap (backend));
+}
+
+static void
 keyboard_handle_focus_surface_destroy (struct wl_listener *listener, void *data)
 {
   MetaWaylandKeyboard *keyboard = wl_container_of (listener, keyboard, focus_surface_listener);
@@ -337,6 +346,8 @@ void
 meta_wayland_keyboard_init (MetaWaylandKeyboard *keyboard,
                             struct wl_display   *display)
 {
+  MetaBackend *backend = meta_get_backend ();
+
   memset (keyboard, 0, sizeof *keyboard);
 
   keyboard->display = display;
@@ -354,8 +365,9 @@ meta_wayland_keyboard_init (MetaWaylandKeyboard *keyboard,
   g_signal_connect (keyboard->settings, "changed",
                     G_CALLBACK (settings_changed), keyboard);
 
-  meta_wayland_keyboard_take_keymap (keyboard,
-                                     meta_backend_get_keymap (meta_get_backend ()));
+  g_signal_connect (backend, "keymap-changed",
+                    G_CALLBACK (on_keymap_changed), keyboard);
+  meta_wayland_keyboard_take_keymap (keyboard, meta_backend_get_keymap (backend));
 }
 
 static void
