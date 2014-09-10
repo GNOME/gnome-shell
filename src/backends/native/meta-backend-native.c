@@ -229,6 +229,7 @@ meta_backend_native_lock_layout_group (MetaBackend *backend,
 {
   ClutterDeviceManager *manager = clutter_device_manager_get_default ();
   clutter_evdev_set_keyboard_layout_index (manager, idx);
+  g_signal_emit_by_name (backend, "keymap-layout-group-changed", idx, 0);
 }
 
 static void

@@ -254,6 +254,12 @@ meta_backend_class_init (MetaBackendClass *klass)
                 0,
                 NULL, NULL, NULL,
                 G_TYPE_NONE, 0);
+  g_signal_new ("keymap-layout-group-changed",
+                G_TYPE_FROM_CLASS (object_class),
+                G_SIGNAL_RUN_LAST,
+                0,
+                NULL, NULL, NULL,
+                G_TYPE_NONE, 1, G_TYPE_UINT);
 }
 
 static void
