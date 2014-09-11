@@ -2954,3 +2954,14 @@ meta_display_is_pointer_emulating_sequence (MetaDisplay          *display,
 
   return display->pointer_emulating_sequence == sequence;
 }
+
+gboolean
+meta_display_set_alarm_filter (MetaDisplay    *display,
+                               MetaAlarmFilter filter,
+                               gpointer        data)
+{
+  g_return_if_fail (filter == NULL || display->alarm_filter == NULL);
+
+  display->alarm_filter = filter;
+  display->alarm_filter_data = data;
+}

@@ -97,6 +97,10 @@ typedef enum {
   META_EVENT_ROUTE_WINDOW_OP,
 } MetaEventRoute;
 
+typedef gboolean (*MetaAlarmFilter) (MetaDisplay           *display,
+                                     XSyncAlarmNotifyEvent *event,
+                                     gpointer               data);
+
 struct _MetaDisplay
 {
   GObject parent_instance;
@@ -255,6 +259,9 @@ struct _MetaDisplay
 
   MetaGestureTracker *gesture_tracker;
   ClutterEventSequence *pointer_emulating_sequence;
+
+  MetaAlarmFilter alarm_filter;
+  gpointer alarm_filter_data;
 
   int composite_event_base;
   int composite_error_base;
@@ -452,5 +459,9 @@ void meta_restart_finish (void);
 void meta_display_cancel_touch (MetaDisplay *display);
 
 gboolean meta_display_windows_are_interactable (MetaDisplay *display);
+
+gboolean meta_display_set_alarm_filter (MetaDisplay    *display,
+                                        MetaAlarmFilter filter,
+                                        gpointer        data);
 
 #endif

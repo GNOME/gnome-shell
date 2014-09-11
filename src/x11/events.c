@@ -1188,6 +1188,14 @@ handle_other_xevent (MetaDisplay *display,
           meta_window_x11_update_sync_request_counter (alarm_window, new_counter_value);
           bypass_gtk = TRUE; /* GTK doesn't want to see this really */
         }
+      else
+        {
+          if (display->alarm_filter &&
+              display->alarm_filter (display,
+                                     (XSyncAlarmNotifyEvent*)event,
+                                     display->alarm_filter_data))
+            bypass_gtk = TRUE;
+        }
 
       goto out;
     }
