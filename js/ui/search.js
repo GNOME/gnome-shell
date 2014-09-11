@@ -335,9 +335,10 @@ const SearchResultsBase = new Lang.Class({
             let hasMoreResults = results.length < providerResults.length;
 
             this._ensureResultActors(results, Lang.bind(this, function(successful) {
-                this._clearResultDisplay();
-                if (!successful)
+                if (!successful) {
+                    this._clearResultDisplay();
                     return;
+                }
 
                 // To avoid CSS transitions causing flickering when
                 // the first search result stays the same, we hide the
