@@ -590,7 +590,7 @@ meta_stack_tracker_record_remove (MetaStackTracker *tracker,
   stack_tracker_apply_prediction (tracker, op);
 }
 
-void
+static void
 meta_stack_tracker_record_raise_above (MetaStackTracker *tracker,
                                        guint64           window,
                                        guint64           sibling,
@@ -606,7 +606,7 @@ meta_stack_tracker_record_raise_above (MetaStackTracker *tracker,
   stack_tracker_apply_prediction (tracker, op);
 }
 
-void
+static void
 meta_stack_tracker_record_lower_below (MetaStackTracker *tracker,
                                        guint64           window,
                                        guint64           sibling,
@@ -620,14 +620,6 @@ meta_stack_tracker_record_lower_below (MetaStackTracker *tracker,
   op->lower_below.sibling = sibling;
 
   stack_tracker_apply_prediction (tracker, op);
-}
-
-void
-meta_stack_tracker_record_lower (MetaStackTracker *tracker,
-                                 guint64           window,
-				 gulong            serial)
-{
-  meta_stack_tracker_record_raise_above (tracker, window, None, serial);
 }
 
 static void
