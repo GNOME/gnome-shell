@@ -1,0 +1,85 @@
+This directory implements a framework for automated tests of Mutter. The basic
+idea is that mutter-test-runner acts as the window manager and compositor, and
+forks off instances of mutter-test-client to act as clients.
+
+There's a simple scripting language for tests. A very small test would look like:
+
+---
+# Start up a new X11 client with the client id 1 (doesn't have to be an integer)
+# Windows for this client will be referred to as 1/<window-id>
+new_client 1 x11
+
+# Create and show two windows - again the IDs don't have to be integers
+create 1/1
+show 1/1
+create 1/2
+show 1/2
+
+# Wait for the commands we've executed in the clients to reach Mutter
+wait
+
+# Check that the windows are in the order we expect
+assert_stacking 1/1 1/2
+---
+
+Running
+=======
+
+The tests are installed according to:
+
+https://wiki.gnome.org/Initiatives/GnomeGoals/InstalledTests
+
+if --enable-installed-tests is passed to configure. You can run them
+uninstalled with:
+
+ cd src && make run-tests
+
+Command reference
+=================
+
+The following commands are supported. Quoting and comments follow shell rules.
+
+new_client <client-id> [wayland|x11]
+ Starts a client, connecting by either Wayland or X11. The client
+ will subsequently be known with the given client-id (an arbitrary
+ string)
+
+quit_client <client-id>
+ Destroys all windows for the client, waits for that to be processed,
+ then instructs the client to exit.
+
+create <client-id>/<window-id> [override]
+ Creates a new window. For the X11 backend, the keyword 'override'
+ can be given to create an override-redirect
+
+show <client-id>/<window-id>
+hide <client-id>/<window-id>
+ Ask the client to show (map) or hide (unmap) the given window
+
+activate <client-id>/<window-id>
+ Ask the client to raise and focus the given window. This is currently a no-op
+ for Wayland, where this capability is not supported in the protocol.
+
+local_activate <client-id>-<window-id>
+  The same as 'activate', but the operation is done directly inside Mutter
+  and works for both backends
+
+raise <client-id>/<window-id>
+lower <client-id>/<window-id>
+  Ask the client to raise or lower the given window ID. This is a no-op
+  for Wayland clients. (It's also considered discouraged, but supported, for
+  non-override-redirect X11 clients.)
+
+destroy <client-id>/<window-id>
+  Destroy the given window
+
+wait
+  Wait until all requests sent by Mutter to clients have been received by Mutter,
+  and then wait until all requests by Mutter have been processed by the X server.
+
+assert_stacking <client-id>/<window-id> <client-id>/<window-id> ...
+  Assert that the list of client windows known to Mutter is as given and in
+  the given order, bottom to top.
+
+  This function also queries the X server stack and verifies that Mutter's
+  expectation of the X server stack matches reality.

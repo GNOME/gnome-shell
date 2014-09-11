@@ -44,6 +44,8 @@ po/*.pot
 libmutter.pc
 mutter
 mutter-restart-helper
+mutter-test-client
+mutter-test-runner
 org.gnome.mutter.gschema.valid
 org.gnome.mutter.gschema.xml
 org.gnome.mutter.wayland.gschema.valid

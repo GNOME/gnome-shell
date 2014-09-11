@@ -1,0 +1,26 @@
+new_client w wayland
+new_client x x11
+
+create w/1
+show w/1
+create w/2
+show w/2
+wait
+
+create x/1
+show x/1
+create x/2
+show x/2
+wait
+
+assert_stacking w/1 w/2 x/1 x/2
+
+local_activate w/1
+assert_stacking w/2 x/1 x/2 w/1
+
+local_activate x/1
+assert_stacking w/2 x/2 w/1 x/1
+
+lower x/1
+wait
+assert_stacking x/1 w/2 x/2 w/1

@@ -5,6 +5,8 @@ lib_LTLIBRARIES = libmutter.la
 
 SUBDIRS=compositor/plugins
 
+EXTRA_DIST =
+
 AM_CPPFLAGS = \
 	-DCLUTTER_ENABLE_COMPOSITOR_API					\
 	-DCLUTTER_ENABLE_EXPERIMENTAL_API				\
@@ -325,6 +327,7 @@ nodist_libmutterinclude_HEADERS =		\
 	$(libmutterinclude_built_headers)
 
 bin_PROGRAMS=mutter
+noinst_PROGRAMS=
 
 mutter_SOURCES = core/mutter.c
 mutter_LDADD = $(MUTTER_LIBS) libmutter.la
@@ -332,6 +335,8 @@ mutter_LDADD = $(MUTTER_LIBS) libmutter.la
 libexec_PROGRAMS = mutter-restart-helper
 mutter_restart_helper_SOURCES = core/restart-helper.c
 mutter_restart_helper_LDADD = $(MUTTER_LIBS)
+
+include Makefile-tests.am
 
 if HAVE_INTROSPECTION
 include $(INTROSPECTION_MAKEFILE)
@@ -366,16 +371,6 @@ Meta-$(api_version).gir: libmutter.la
 
 endif
 
-testboxes_SOURCES = core/testboxes.c
-testgradient_SOURCES = ui/testgradient.c
-testasyncgetprop_SOURCES = x11/testasyncgetprop.c
-
-noinst_PROGRAMS=testboxes testgradient testasyncgetprop
-
-testboxes_LDADD = $(MUTTER_LIBS) libmutter.la
-testgradient_LDADD = $(MUTTER_LIBS) libmutter.la
-testasyncgetprop_LDADD = $(MUTTER_LIBS) libmutter.la
-
 dbus_idle_built_sources = meta-dbus-idle-monitor.c meta-dbus-idle-monitor.h
 
 CLEANFILES =					\
@@ -389,7 +384,7 @@ DISTCLEANFILES = 				\
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libmutter.pc
 
-EXTRA_DIST =				\
+EXTRA_DIST +=				\
 	$(wayland_protocols)		\
 	libmutter.pc.in \
 	mutter-enum-types.h.in \

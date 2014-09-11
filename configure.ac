@@ -127,6 +127,12 @@ AC_ARG_WITH([xwayland-path],
             [XWAYLAND_PATH="$withval"],
             [XWAYLAND_PATH="$bindir/Xwayland"])
 
+AC_ARG_ENABLE(installed_tests,
+              AS_HELP_STRING([--enable-installed-tests],
+                             [Install test programs (default: no)]),,
+              [enable_installed_tests=no])
+AM_CONDITIONAL(BUILDOPT_INSTALL_TESTS, test x$enable_installed_tests = xyes)
+
 ## here we get the flags we'll actually use
 
 # Unconditionally use this dir to avoid a circular dep with gnomecc
