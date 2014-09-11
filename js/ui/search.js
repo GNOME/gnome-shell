@@ -24,108 +24,6 @@ const SEARCH_PROVIDERS_SCHEMA = 'org.gnome.desktop.search-providers';
 const MAX_LIST_SEARCH_RESULTS_ROWS = 3;
 const MAX_GRID_SEARCH_RESULTS_ROWS = 1;
 
-const SearchSystem = new Lang.Class({
-    Name: 'SearchSystem',
-
-    _init: function() {
-        this._providers = [];
-
-        this._registerProvider(new AppDisplay.AppSearchProvider());
-
-        this._searchSettings = new Gio.Settings({ schema_id: SEARCH_PROVIDERS_SCHEMA });
-        this._searchSettings.connect('changed::enabled', Lang.bind(this, this._reloadRemoteProviders));
-        this._searchSettings.connect('changed::disabled', Lang.bind(this, this._reloadRemoteProviders));
-        this._searchSettings.connect('changed::disable-external', Lang.bind(this, this._reloadRemoteProviders));
-        this._searchSettings.connect('changed::sort-order', Lang.bind(this, this._reloadRemoteProviders));
-
-        this._reloadRemoteProviders();
-
-        this._cancellable = new Gio.Cancellable();
-    },
-
-    addProvider: function(provider) {
-        this._providers.push(provider);
-        this.emit('providers-changed');
-    },
-
-    _reloadRemoteProviders: function() {
-        let remoteProviders = this._providers.filter(function(provider) {
-            return provider.isRemoteProvider;
-        });
-        remoteProviders.forEach(Lang.bind(this, function(provider) {
-            this._unregisterProvider(provider);
-        }));
-
-        RemoteSearch.loadRemoteSearchProviders(Lang.bind(this, function(providers) {
-            providers.forEach(Lang.bind(this, this._registerProvider));
-        }));
-
-        this.emit('providers-changed');
-    },
-
-    _registerProvider: function (provider) {
-        this._providers.push(provider);
-    },
-
-    _unregisterProvider: function (provider) {
-        let index = this._providers.indexOf(provider);
-        this._providers.splice(index, 1);
-
-        if (provider.display)
-            provider.display.destroy();
-    },
-
-    getProviders: function() {
-        return this._providers;
-    },
-
-    getTerms: function() {
-        return this._terms;
-    },
-
-    reset: function() {
-        this._terms = [];
-        this._results = {};
-    },
-
-    _gotResults: function(results, provider) {
-        this._results[provider.id] = results;
-        this.emit('search-updated', provider, results);
-    },
-
-    setTerms: function(terms) {
-        this._cancellable.cancel();
-        this._cancellable.reset();
-
-        let previousResults = this._results;
-        let previousTerms = this._terms;
-        this.reset();
-
-        if (!terms)
-            return;
-
-        let searchString = terms.join(' ');
-        let previousSearchString = previousTerms.join(' ');
-        if (searchString == previousSearchString)
-            return;
-
-        let isSubSearch = false;
-        if (previousTerms.length > 0)
-            isSubSearch = searchString.indexOf(previousSearchString) == 0;
-
-        this._terms = terms;
-
-        this._providers.forEach(Lang.bind(this, function(provider) {
-            let previousProviderResults = previousResults[provider.id];
-            if (isSubSearch && previousProviderResults)
-                provider.getSubsearchResultSet(previousProviderResults, terms, Lang.bind(this, this._gotResults, provider), this._cancellable);
-            else
-                provider.getInitialResultSet(terms, Lang.bind(this, this._gotResults, provider), this._cancellable);
-        }));
-    }
-});
-Signals.addSignalMethods(SearchSystem.prototype);
-
 const MaxWidthBin = new Lang.Class({
     Name: 'MaxWidthBin',
     Extends: St.Bin,
@@ -504,10 +402,76 @@ const SearchResults = new Lang.Class({
         this._highlightDefault = false;
         this._defaultResult = null;
 
-        this._searchSystem = new SearchSystem();
-        this._searchSystem.connect('search-updated', Lang.bind(this, this._updateResults));
-        this._searchSystem.connect('providers-changed', Lang.bind(this, this._updateProviderDisplays));
-        this._updateProviderDisplays();
+        this._providers = [];
+        this._registerProvider(new AppDisplay.AppSearchProvider());
+
+        this._searchSettings = new Gio.Settings({ schema: SEARCH_PROVIDERS_SCHEMA });
+        this._searchSettings.connect('changed::disabled', Lang.bind(this, this._reloadRemoteProviders));
+        this._searchSettings.connect('changed::disable-external', Lang.bind(this, this._reloadRemoteProviders));
+        this._searchSettings.connect('changed::sort-order', Lang.bind(this, this._reloadRemoteProviders));
+
+        this._reloadRemoteProviders();
+
+        this._cancellable = new Gio.Cancellable();
+    },
+
+    _reloadRemoteProviders: function() {
+        let remoteProviders = this._providers.filter(function(provider) {
+            return provider.isRemoteProvider;
+        });
+        remoteProviders.forEach(Lang.bind(this, function(provider) {
+            this._unregisterProvider(provider);
+        }));
+
+        RemoteSearch.loadRemoteSearchProviders(Lang.bind(this, function(providers) {
+            providers.forEach(Lang.bind(this, this._registerProvider));
+        }));
+    },
+
+    _registerProvider: function (provider) {
+        this._providers.push(provider);
+        this._ensureProviderDisplay(provider);
+    },
+
+    _unregisterProvider: function (provider) {
+        let index = this._providers.indexOf(provider);
+        this._providers.splice(index, 1);
+
+        if (provider.display)
+            provider.display.destroy();
+    },
+
+    _gotResults: function(results, provider) {
+        this._results[provider.id] = results;
+        this._updateResults(provider, results);
+    },
+
+    setTerms: function(terms) {
+        this._cancellable.cancel();
+        this._cancellable.reset();
+
+        if (!terms)
+            return;
+
+        let searchString = terms.join(' ');
+        let previousSearchString = this._terms.join(' ');
+        if (searchString == previousSearchString)
+            return;
+
+        let isSubSearch = false;
+        if (this._terms.length > 0)
+            isSubSearch = searchString.indexOf(previousSearchString) == 0;
+
+        this._terms = terms;
+        this._results = {};
+
+        this._providers.forEach(Lang.bind(this, function(provider) {
+            let previousProviderResults = previousResults[provider.id];
+            if (isSubSearch && previousProviderResults)
+                provider.getSubsearchResultSet(previousProviderResults, terms, Lang.bind(this, this._gotResults, provider), this._cancellable);
+            else
+                provider.getInitialResultSet(terms, Lang.bind(this, this._gotResults, provider), this._cancellable);
+        }));
     },
 
     _onPan: function(action) {
@@ -536,18 +500,15 @@ const SearchResults = new Lang.Class({
         provider.display = providerDisplay;
     },
 
-    _updateProviderDisplays: function() {
-        this._searchSystem.getProviders().forEach(Lang.bind(this, this._ensureProviderDisplay));
-    },
-
     _clearDisplay: function() {
-        this._searchSystem.getProviders().forEach(function(provider) {
+        this._providers.forEach(function(provider) {
             provider.display.clear();
         });
     },
 
     reset: function() {
-        this._searchSystem.reset();
+        this._terms = [];
+        this._results = {};
         this._statusBin.hide();
         this._clearDisplay();
         this._defaultResult = null;
@@ -559,14 +520,10 @@ const SearchResults = new Lang.Class({
         this._statusBin.show();
     },
 
-    setTerms: function(terms) {
-        this._searchSystem.setTerms(terms);
-    },
-
     _maybeSetInitialSelection: function() {
         let newDefaultResult = null;
 
-        let providers = this._searchSystem.getProviders();
+        let providers = this._providers;
         for (let i = 0; i < providers.length; i++) {
             let provider = providers[i];
             let display = provider.display;
@@ -590,7 +547,7 @@ const SearchResults = new Lang.Class({
     },
 
     _updateStatusText: function () {
-        let haveResults = this._searchSystem.getProviders().some(function(provider) {
+        let haveResults = this._providers.some(function(provider) {
             let display = provider.display;
             return (display.getFirstResult() != null);
         });
@@ -603,8 +560,8 @@ const SearchResults = new Lang.Class({
         }
     },
 
-    _updateResults: function(searchSystem, provider, results) {
-        let terms = searchSystem.getTerms();
+    _updateResults: function(provider, results) {
+        let terms = this._terms;
         let display = provider.display;
 
         display.updateSearch(results, terms, Lang.bind(this, function() {
