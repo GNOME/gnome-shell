@@ -13,6 +13,15 @@ const LOCATION_SCHEMA = 'org.gnome.system.location';
 const MAX_ACCURACY_LEVEL = 'max-accuracy-level';
 const ENABLED = 'enabled';
 
+const GeoclueAccuracyLevel = {
+    NONE: 0,
+    COUNTRY: 1,
+    CITY: 4,
+    NEIGHBORHOOD: 5,
+    STREET: 6,
+    EXACT: 8
+};
+
 var GeoclueIface = '<node> \
   <interface name="org.freedesktop.GeoClue2.Manager"> \
     <property name="InUse" type="b" access="read"/> \
@@ -181,10 +190,14 @@ const Indicator = new Lang.Class({
     },
 
     _getMaxAccuracyLevel: function() {
-        if (this._settings.get_boolean(ENABLED))
-            return this._settings.get_enum(MAX_ACCURACY_LEVEL);
-        else
-            return 0;
+        if (this._settings.get_boolean(ENABLED)) {
+            let level = this._settings.get_string(MAX_ACCURACY_LEVEL);
+
+            return GeoclueAccuracyLevel[level.toUpperCase()] ||
+                   GeoclueAccuracyLevel.NONE;
+        } else {
+            return GeoclueAccuracyLevel.NONE;
+        }
     },
 
     _notifyMaxAccuracyLevel: function() {
