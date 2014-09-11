@@ -134,11 +134,18 @@ const restartInstallDialogContent = {
     showOtherSessions: true,
 };
 
+const DialogType = {
+  LOGOUT: 0 /* GSM_SHELL_END_SESSION_DIALOG_TYPE_LOGOUT */,
+  SHUTDOWN: 1 /* GSM_SHELL_END_SESSION_DIALOG_TYPE_SHUTDOWN */,
+  RESTART: 2 /* GSM_SHELL_END_SESSION_DIALOG_TYPE_RESTART */,
+  UPDATE_RESTART: 3
+};
+
 const DialogContent = {
-    0 /* GSM_SHELL_END_SESSION_DIALOG_TYPE_LOGOUT */: logoutDialogContent,
-    1 /* GSM_SHELL_END_SESSION_DIALOG_TYPE_SHUTDOWN */: shutdownDialogContent,
-    2 /* GSM_SHELL_END_SESSION_DIALOG_TYPE_RESTART */: restartDialogContent,
-    3: restartInstallDialogContent
+    DialogType.LOGOUT: logoutDialogContent,
+    DialogType.SHUTDOWN: shutdownDialogContent,
+    DialogType.RESTART: restartDialogContent,
+    DialogType.UPDATE_RESTART: restartInstallDialogContent
 };
 
 const MAX_USERS_IN_SESSION_DIALOG = 5;
@@ -677,8 +684,9 @@ const EndSessionDialog = new Lang.Class({
         this._totalSecondsToStayOpen = totalSecondsToStayOpen;
         this._type = type;
 
-        if (this._type == 2 && this._updatesFile.query_exists(null))
-            this._type = 3;
+        if (this._type == DialogType.RESTART &&
+            this._updatesFile.query_exists(null))
+            this._type = DialogType.UPDATE_RESTART;
 
         this._applications = [];
         this._applicationList.destroy_all_children();
