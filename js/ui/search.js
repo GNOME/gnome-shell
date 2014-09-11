@@ -482,8 +482,8 @@ const SearchResults = new Lang.Class({
 
         if (!terms) {
             if (this._searchTimeoutId > 0) {
-                this._searchTimeoutId = 0;
                 GLib.source_remove(this._searchTimeoutId);
+                this._searchTimeoutId = 0;
             }
             return;
         }
