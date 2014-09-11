@@ -653,3 +653,11 @@ meta_ui_window_is_widget (MetaUI *ui,
   else
     return FALSE;
 }
+
+gboolean
+meta_ui_window_is_dummy (MetaUI *ui,
+                         Window  xwindow)
+{
+  GdkWindow *frames_window = gtk_widget_get_window (GTK_WIDGET (ui->frames));
+  return xwindow == gdk_x11_window_get_xid (frames_window);
+}
