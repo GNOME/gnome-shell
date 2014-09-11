@@ -579,13 +579,13 @@ const SearchResults = new Lang.Class({
         this._scrollView.visible = haveResults;
         this._statusBin.visible = !haveResults;
 
-         if (!haveResults) {
+        if (!haveResults) {
             if (this.searchInProgress) {
                 this._statusText.set_text(_("Searching…"));
             } else {
                 this._statusText.set_text(_("No results."));
             }
-         }
+        }
     },
 
     _updateResults: function(provider, results) {
