@@ -125,7 +125,6 @@ const ViewSelector = new Lang.Class({
         this._activePage = null;
 
         this._searchActive = false;
-        this._searchTimeoutId = 0;
 
         this._entry = searchEntry;
         ShellEntry.addContextMenu(this._entry);
@@ -485,34 +484,21 @@ const ViewSelector = new Lang.Class({
     _onTextChanged: function (se, prop) {
         let terms = getTermsForSearchString(this._entry.get_text());
 
-        let searchPreviouslyActive = this._searchActive;
         this._searchActive = (terms.length > 0);
-
-        let startSearch = this._searchActive && !searchPreviouslyActive;
-        if (startSearch)
-            this._searchResults.startingSearch();
+        this._searchResults.setTerms(terms);
 
         if (this._searchActive) {
+            this._showPage(this._searchPage);
+
             this._entry.set_secondary_icon(this._clearIcon);
 
             if (this._iconClickedId == 0)
                 this._iconClickedId = this._entry.connect('secondary-icon-clicked',
                     Lang.bind(this, this.reset));
-
-            if (this._searchTimeoutId == 0) {
-                this._searchTimeoutId = Mainloop.timeout_add(150,
-                    Lang.bind(this, this._doSearch));
-                GLib.Source.set_name_by_id(this._searchTimeoutId, '[gnome-shell] this._doSearch');
-            }
         } else {
             if (this._iconClickedId > 0) {
                 this._entry.disconnect(this._iconClickedId);
                 this._iconClickedId = 0;
-            }
-
-            if (this._searchTimeoutId > 0) {
-                Mainloop.source_remove(this._searchTimeoutId);
-                this._searchTimeoutId = 0;
             }
 
             this._entry.set_secondary_icon(null);
@@ -552,12 +538,6 @@ const ViewSelector = new Lang.Class({
                 this._searchResults.navigateFocus(nextDirection);
                 return Clutter.EVENT_STOP;
             } else if (symbol == Clutter.Return || symbol == Clutter.KP_Enter) {
-                // We can't connect to 'activate' here because search providers
-                // might want to do something with the modifiers in activateDefault.
-                if (this._searchTimeoutId > 0) {
-                    Mainloop.source_remove(this._searchTimeoutId);
-                    this._doSearch();
-                }
                 this._searchResults.activateDefault();
                 return Clutter.EVENT_STOP;
             }
@@ -578,17 +558,6 @@ const ViewSelector = new Lang.Class({
         }
 
         return Clutter.EVENT_PROPAGATE;
-    },
-
-    _doSearch: function () {
-        this._searchTimeoutId = 0;
-
-        let terms = getTermsForSearchString(this._entry.get_text());
-
-        this._searchResults.setTerms(terms);
-        this._showPage(this._searchPage);
-
-        return GLib.SOURCE_REMOVE;
     },
 
     getActivePage: function() {

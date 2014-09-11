@@ -2,6 +2,7 @@
 
 const Clutter = imports.gi.Clutter;
 const Lang = imports.lang;
+const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const Meta = imports.gi.Meta;
@@ -401,18 +402,23 @@ const SearchResults = new Lang.Class({
 
         this._highlightDefault = false;
         this._defaultResult = null;
+        this._startingSearch = false;
+
+        this._terms = [];
+        this._results = {};
 
         this._providers = [];
-        this._registerProvider(new AppDisplay.AppSearchProvider());
 
         this._searchSettings = new Gio.Settings({ schema: SEARCH_PROVIDERS_SCHEMA });
         this._searchSettings.connect('changed::disabled', Lang.bind(this, this._reloadRemoteProviders));
         this._searchSettings.connect('changed::disable-external', Lang.bind(this, this._reloadRemoteProviders));
         this._searchSettings.connect('changed::sort-order', Lang.bind(this, this._reloadRemoteProviders));
 
-        this._reloadRemoteProviders();
-
+        this._searchTimeoutId = 0;
         this._cancellable = new Gio.Cancellable();
+
+        this._registerProvider(new AppDisplay.AppSearchProvider());
+        this._reloadRemoteProviders();
     },
 
     _reloadRemoteProviders: function() {
@@ -446,14 +452,39 @@ const SearchResults = new Lang.Class({
         this._updateResults(provider, results);
     },
 
-    setTerms: function(terms) {
+    _doSearch: function() {
         this._startingSearch = false;
+
+        let previousResults = this._results;
+        this._results = {};
+
+        this._providers.forEach(Lang.bind(this, function(provider) {
+            provider.searchInProgress = true;
+
+            let previousProviderResults = previousResults[provider.id];
+            if (this._isSubSearch && previousProviderResults)
+                provider.getSubsearchResultSet(previousProviderResults, this._terms, Lang.bind(this, this._gotResults, provider), this._cancellable);
+            else
+                provider.getInitialResultSet(this._terms, Lang.bind(this, this._gotResults, provider), this._cancellable);
+        }));
+
+        this._updateSearchProgress();
+
+        this._searchTimeoutId = 0;
+        return GLib.SOURCE_REMOVE;
+    },
+
+    setTerms: function(terms) {
+        this._startingSearch = true;
 
         this._cancellable.cancel();
         this._cancellable.reset();
 
-        if (!terms)
+        if (!terms) {
+            if (this._searchTimeoutId > 0)
+                GLib.source_remove(this._searchTimeoutId);
             return;
+        }
 
         let searchString = terms.join(' ');
         let previousSearchString = this._terms.join(' ');
@@ -465,19 +496,11 @@ const SearchResults = new Lang.Class({
             isSubSearch = searchString.indexOf(previousSearchString) == 0;
 
         this._terms = terms;
-        this._results = {};
-
-        this._providers.forEach(Lang.bind(this, function(provider) {
-            provider.searchInProgress = true;
-
-            let previousProviderResults = previousResults[provider.id];
-            if (isSubSearch && previousProviderResults)
-                provider.getSubsearchResultSet(previousProviderResults, terms, Lang.bind(this, this._gotResults, provider), this._cancellable);
-            else
-                provider.getInitialResultSet(terms, Lang.bind(this, this._gotResults, provider), this._cancellable);
-        }));
-
+        this._isSubSearch = isSubSearch;
         this._updateSearchProgress();
+
+        if (this._searchTimeoutId == 0)
+            this._searchTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 150, Lang.bind(this, this._doSearch));
     },
 
     _onPan: function(action) {
@@ -510,29 +533,6 @@ const SearchResults = new Lang.Class({
         this._providers.forEach(function(provider) {
             provider.display.clear();
         });
-    },
-
-    reset: function() {
-        this._terms = [];
-        this._results = {};
-        this._clearDisplay();
-        this._defaultResult = null;
-        this._startingSearch = false;
-
-        this._updateSearchProgress();
-    },
-
-    startingSearch: function() {
-        this.reset();
-
-        // We don't call setTerms and do the actual search until
-        // a timeout a little while later, but we don't want to
-        // show "No Results" because we think there's no work
-        // being done, so we keep this flag to know that there's
-        // "pending work". This is cleared in setTerms.
-        this._startingSearch = true;
-
-        this._updateSearchProgress();
     },
 
     _maybeSetInitialSelection: function() {
@@ -601,6 +601,8 @@ const SearchResults = new Lang.Class({
     },
 
     activateDefault: function() {
+        this._doSearch();
+
         if (this._defaultResult)
             this._defaultResult.activate();
     },
