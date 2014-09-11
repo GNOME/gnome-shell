@@ -446,8 +446,20 @@ meta_wayland_init (void)
   if (!meta_xwayland_start (&compositor->xwayland_manager, compositor->wayland_display))
     g_error ("Failed to start X Wayland");
 
-  set_gnome_env ("DISPLAY", compositor->xwayland_manager.display_name);
-  set_gnome_env ("WAYLAND_DISPLAY", compositor->display_name);
+  set_gnome_env ("DISPLAY", meta_wayland_get_xwayland_display_name (compositor));
+  set_gnome_env ("WAYLAND_DISPLAY", meta_wayland_get_wayland_display_name (compositor));
+}
+
+const char *
+meta_wayland_get_wayland_display_name (MetaWaylandCompositor *compositor)
+{
+  return compositor->display_name;
+}
+
+const char *
+meta_wayland_get_xwayland_display_name (MetaWaylandCompositor *compositor)
+{
+  return compositor->xwayland_manager.display_name;
 }
 
 void
