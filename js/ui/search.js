@@ -470,7 +470,15 @@ const SearchResults = new Lang.Class({
 
         this._updateSearchProgress();
 
+        if (this._searchTimeoutId > 0) {
+            GLib.source_remove(this._searchTimeoutId);
+            this._searchTimeoutId = 0;
+        }
+    },
+
+    _onSearchTimeout: function() {
         this._searchTimeoutId = 0;
+        this._doSearch();
         return GLib.SOURCE_REMOVE;
     },
 
@@ -502,7 +510,7 @@ const SearchResults = new Lang.Class({
         this._updateSearchProgress();
 
         if (this._searchTimeoutId == 0)
-            this._searchTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 150, Lang.bind(this, this._doSearch));
+            this._searchTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 150, Lang.bind(this, this._onSearchTimeout));
     },
 
     _onPan: function(action) {
