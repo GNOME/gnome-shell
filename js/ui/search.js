@@ -396,7 +396,7 @@ const SearchResults = new Lang.Class({
         this._statusText = new St.Label({ style_class: 'search-statustext' });
         this._statusBin = new St.Bin({ x_align: St.Align.MIDDLE,
                                        y_align: St.Align.MIDDLE });
-        this._content.add(this._statusBin, { expand: true });
+        this.actor.add(this._statusBin, { expand: true });
         this._statusBin.add_actor(this._statusText);
 
         this._highlightDefault = false;
@@ -447,6 +447,8 @@ const SearchResults = new Lang.Class({
     },
 
     setTerms: function(terms) {
+        this._startingSearch = false;
+
         this._cancellable.cancel();
         this._cancellable.reset();
 
@@ -466,12 +468,16 @@ const SearchResults = new Lang.Class({
         this._results = {};
 
         this._providers.forEach(Lang.bind(this, function(provider) {
+            provider.searchInProgress = true;
+
             let previousProviderResults = previousResults[provider.id];
             if (isSubSearch && previousProviderResults)
                 provider.getSubsearchResultSet(previousProviderResults, terms, Lang.bind(this, this._gotResults, provider), this._cancellable);
             else
                 provider.getInitialResultSet(terms, Lang.bind(this, this._gotResults, provider), this._cancellable);
         }));
+
+        this._updateSearchProgress();
     },
 
     _onPan: function(action) {
@@ -493,7 +499,7 @@ const SearchResults = new Lang.Class({
         if (provider.appInfo)
             providerDisplay = new ListSearchResults(provider);
         else
-            providerDisplay = new GridSearchResults(provider, this._content);
+            providerDisplay = new GridSearchResults(provider, this.actor);
 
         providerDisplay.connect('key-focus-in', Lang.bind(this, this._keyFocusIn));
         this._content.add(providerDisplay.actor);
@@ -509,15 +515,24 @@ const SearchResults = new Lang.Class({
     reset: function() {
         this._terms = [];
         this._results = {};
-        this._statusBin.hide();
         this._clearDisplay();
         this._defaultResult = null;
+        this._startingSearch = false;
+
+        this._updateSearchProgress();
     },
 
     startingSearch: function() {
         this.reset();
-        this._statusText.set_text(_("Searching…"));
-        this._statusBin.show();
+
+        // We don't call setTerms and do the actual search until
+        // a timeout a little while later, but we don't want to
+        // show "No Results" because we think there's no work
+        // being done, so we keep this flag to know that there's
+        // "pending work". This is cleared in setTerms.
+        this._startingSearch = true;
+
+        this._updateSearchProgress();
     },
 
     _maybeSetInitialSelection: function() {
@@ -546,18 +561,31 @@ const SearchResults = new Lang.Class({
         }
     },
 
-    _updateStatusText: function () {
+    get searchInProgress() {
+        if (this._startingSearch)
+            return true;
+
+        return this._providers.some(function(provider) {
+            return provider.searchInProgress;
+        });
+    },
+
+    _updateSearchProgress: function () {
         let haveResults = this._providers.some(function(provider) {
             let display = provider.display;
             return (display.getFirstResult() != null);
         });
 
-        if (!haveResults) {
-            this._statusText.set_text(_("No results."));
-            this._statusBin.show();
-        } else {
-            this._statusBin.hide();
-        }
+        this._scrollView.visible = haveResults;
+        this._statusBin.visible = !haveResults;
+
+         if (!haveResults) {
+            if (this.searchInProgress) {
+                this._statusText.set_text(_("Searching…"));
+            } else {
+                this._statusText.set_text(_("No results."));
+            }
+         }
     },
 
     _updateResults: function(provider, results) {
@@ -565,8 +593,10 @@ const SearchResults = new Lang.Class({
         let display = provider.display;
 
         display.updateSearch(results, terms, Lang.bind(this, function() {
+            provider.searchInProgress = false;
+
             this._maybeSetInitialSelection();
-            this._updateStatusText();
+            this._updateSearchProgress();
         }));
     },
 
