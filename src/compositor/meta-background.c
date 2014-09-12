@@ -331,6 +331,16 @@ meta_background_init (MetaBackground *self)
 }
 
 static void
+set_texture_area_from_monitor_area (cairo_rectangle_int_t *monitor_area,
+                                    cairo_rectangle_int_t *texture_area)
+{
+  texture_area->x = 0;
+  texture_area->y = 0;
+  texture_area->width = monitor_area->width;
+  texture_area->height = monitor_area->height;
+}
+
+static void
 get_texture_area (MetaBackground          *self,
                   cairo_rectangle_int_t   *monitor_rect,
                   CoglTexture             *texture,
@@ -352,7 +362,7 @@ get_texture_area (MetaBackground          *self,
       /* paint region is whole actor, and the texture
        * is scaled disproportionately to fit the actor
        */
-      *texture_area = *monitor_rect;
+      set_texture_area_from_monitor_area (monitor_rect, texture_area);
       break;
     case G_DESKTOP_BACKGROUND_STYLE_WALLPAPER:
       meta_screen_get_size (priv->screen, &screen_width, &screen_height);
@@ -376,8 +386,8 @@ get_texture_area (MetaBackground          *self,
        * and the texture is scaled to the original image size */
       image_area.width = texture_width;
       image_area.height = texture_height;
-      image_area.x = monitor_rect->x + monitor_rect->width / 2 - image_area.width / 2;
-      image_area.y = monitor_rect->y + monitor_rect->height / 2 - image_area.height / 2;
+      image_area.x = monitor_rect->width / 2 - image_area.width / 2;
+      image_area.y = monitor_rect->height / 2 - image_area.height / 2;
 
       *texture_area = image_area;
       break;
@@ -402,8 +412,8 @@ get_texture_area (MetaBackground          *self,
           image_area.height = texture_height * monitor_x_scale;
 
           /* Position image centered vertically in actor */
-          image_area.x = monitor_rect->x;
-          image_area.y = monitor_rect->y + monitor_rect->height / 2 - image_area.height / 2;
+          image_area.x = 0;
+          image_area.y = monitor_rect->height / 2 - image_area.height / 2;
         }
       else
         {
@@ -412,8 +422,8 @@ get_texture_area (MetaBackground          *self,
           image_area.height = monitor_rect->height;
 
           /* Position image centered horizontally in actor */
-          image_area.x = monitor_rect->x + monitor_rect->width / 2 - image_area.width / 2;
-          image_area.y = monitor_rect->y;
+          image_area.x = monitor_rect->width / 2 - image_area.width / 2;
+          image_area.y = 0;
         }
 
       *texture_area = image_area;
@@ -696,7 +706,7 @@ meta_background_get_texture (MetaBackground         *self,
     {
       ensure_color_texture (self);
       if (texture_area)
-        *texture_area = monitor_area;
+        set_texture_area_from_monitor_area (&monitor_area, texture_area);
       if (wrap_mode)
         *wrap_mode = COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE;
       return priv->color_texture;
@@ -802,7 +812,8 @@ meta_background_get_texture (MetaBackground         *self,
     }
 
   if (texture_area)
-    *texture_area = monitor_area;
+    set_texture_area_from_monitor_area (&monitor_area, texture_area);
+
   if (wrap_mode)
     *wrap_mode = COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE;
   return monitor->texture;
