@@ -2869,8 +2869,6 @@ meta_window_x11_new (MetaDisplay       *display,
                     wm_state_to_string (existing_wm_state));
     }
 
-  meta_error_trap_push (display);
-
   /*
    * XAddToSaveSet can only be called on windows created by a different
    * client.  with Mutter we want to be able to create manageable windows
