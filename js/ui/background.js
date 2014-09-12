@@ -242,11 +242,7 @@ const Background = new Lang.Class({
 
     destroy: function() {
         this._cancellable.cancel();
-
-        if (this._updateAnimationTimeoutId) {
-            GLib.source_remove (this._updateAnimationTimeoutId);
-            this._updateAnimationTimeoutId = 0;
-        }
+        this._removeAnimationTimeout();
 
         let i;
         let keys = Object.keys(this._fileWatches);
@@ -258,6 +254,13 @@ const Background = new Lang.Class({
         if (this._settingsChangedSignalId != 0)
             this._settings.disconnect(this._settingsChangedSignalId);
         this._settingsChangedSignalId = 0;
+    },
+
+    updateResolution: function() {
+        if (this._animation) {
+            this._removeAnimationTimeout();
+            this._updateAnimation();
+        }
     },
 
     _setLoaded: function() {
@@ -301,6 +304,13 @@ const Background = new Lang.Class({
                                                }
                                            }));
         this._fileWatches[filename] = signalId;
+    },
+
+    _removeAnimationTimeout: function() {
+        if (this._updateAnimationTimeoutId) {
+            GLib.source_remove(this._updateAnimationTimeoutId);
+            this._updateAnimationTimeoutId = 0;
+        }
     },
 
     _updateAnimation: function() {
@@ -477,6 +487,23 @@ const BackgroundSource = new Lang.Class({
         this._overrideImage = GLib.getenv('SHELL_BACKGROUND_IMAGE');
         this._settings = new Gio.Settings({ schema_id: settingsSchema });
         this._backgrounds = [];
+
+        this._monitorsChangedId = global.screen.connect('monitors-changed',
+                                                        Lang.bind(this, this._onMonitorsChanged));
+    },
+
+    _onMonitorsChanged: function() {
+        for (let monitorIndex in this._backgrounds) {
+            let background = this._backgrounds[monitorIndex];
+
+            if (monitorIndex < this._layoutManager.monitors.length) {
+                background.updateResolution();
+            } else {
+                background.disconnect(background._changedId);
+                background.destroy();
+                delete this._backgrounds[monitorIndex];
+            }
+        }
     },
 
     getBackground: function(monitorIndex) {
@@ -513,8 +540,8 @@ const BackgroundSource = new Lang.Class({
                 style: style
             });
 
-            let changedId = background.connect('changed', Lang.bind(this, function() {
-                background.disconnect(changedId);
+            background._changedId = background.connect('changed', Lang.bind(this, function() {
+                background.disconnect(background._changedId);
                 background.destroy();
                 delete this._backgrounds[monitorIndex];
             }));
@@ -526,8 +553,13 @@ const BackgroundSource = new Lang.Class({
     },
 
     destroy: function() {
-        for (let monitorIndex in this._backgrounds)
-            this._backgrounds[monitorIndex].destroy();
+        global.screen.disconnect(this._monitorsChangedId);
+
+        for (let monitorIndex in this._backgrounds) {
+            let background = this._backgrounds[monitorIndex];
+            background.disconnect(background._changedId);
+            background.destroy();
+        }
 
         this._backgrounds = null;
     }
