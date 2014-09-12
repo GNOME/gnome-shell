@@ -189,7 +189,5 @@ struct MonitorInfo
 };
 
 MonitorInfo *decode_edid (const uchar *data);
-char *make_display_name (const MonitorInfo *info);
-char *make_display_size_string (int width_mm, int height_mm);
 
 #endif
