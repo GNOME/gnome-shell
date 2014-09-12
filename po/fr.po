@@ -19,7 +19,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell master fr\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-08-25 07:37+0000\n"
+"POT-Creation-Date: 2014-09-12 17:00+0000\n"
 "PO-Revision-Date: 2014-08-25 17:00+0200\n"
 "Last-Translator: Alain Lojewski <allomervan@gmail.com>\n"
 "Language-Team: français <gnomefr@traduc.org>\n"
@@ -242,8 +242,8 @@ msgstr "Combinaison de touches pour donner le focus à la notification active."
 msgid ""
 "Keybinding that pauses and resumes all running tweens, for debugging purposes"
 msgstr ""
-"Combinaison de touches pour stopper et fermer toutes les transitions à des fins "
-"de débogage"
+"Combinaison de touches pour stopper et fermer toutes les transitions à des "
+"fins de débogage"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:30
 msgid "Which keyboard to use"
@@ -322,19 +322,19 @@ msgstr ""
 msgid "Captive Portal"
 msgstr "Portail captif"
 
-#: ../js/extensionPrefs/main.js:127
+#: ../js/extensionPrefs/main.js:123
 #, javascript-format
 msgid "There was an error loading the preferences dialog for %s:"
 msgstr ""
 "Une erreur s'est produite lors du chargement de la boîte de dialogue des "
 "préférences de %s :"
 
-#: ../js/extensionPrefs/main.js:159
+#: ../js/extensionPrefs/main.js:155
 msgid "GNOME Shell Extensions"
 msgstr "Extensions GNOME Shell"
 
 #: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:143
-#: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:429
+#: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:452
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
 #: ../js/ui/status/network.js:915
 msgid "Cancel"
@@ -401,40 +401,40 @@ msgstr "Exécution de « %s » impossible :"
 msgid "Web Authentication Redirect"
 msgstr "Redirection de l'authentification Web"
 
-#: ../js/ui/appDisplay.js:660
+#: ../js/ui/appDisplay.js:772
 msgid "Frequently used applications will appear here"
 msgstr "Les applications fréquemment utilisées apparaîtront ici"
 
-#: ../js/ui/appDisplay.js:771
+#: ../js/ui/appDisplay.js:883
 msgid "Frequent"
 msgstr "Fréquemment utilisées"
 
-#: ../js/ui/appDisplay.js:778
+#: ../js/ui/appDisplay.js:890
 msgid "All"
 msgstr "Toutes"
 
-#: ../js/ui/appDisplay.js:1650
+#: ../js/ui/appDisplay.js:1789
 msgid "New Window"
 msgstr "Nouvelle fenêtre"
 
-#: ../js/ui/appDisplay.js:1673 ../js/ui/dash.js:285
+#: ../js/ui/appDisplay.js:1815 ../js/ui/dash.js:285
 msgid "Remove from Favorites"
 msgstr "Enlever des favoris"
 
-#: ../js/ui/appDisplay.js:1679
+#: ../js/ui/appDisplay.js:1821
 msgid "Add to Favorites"
 msgstr "Ajouter aux favoris"
 
-#: ../js/ui/appDisplay.js:1688
+#: ../js/ui/appDisplay.js:1830
 msgid "Show Details"
 msgstr "Afficher les détails"
 
-#: ../js/ui/appFavorites.js:122
+#: ../js/ui/appFavorites.js:124
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "%s a été ajouté à vos favoris."
 
-#: ../js/ui/appFavorites.js:156
+#: ../js/ui/appFavorites.js:158
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "%s a été supprimé de vos favoris."
@@ -647,11 +647,11 @@ msgstr "Ouvrir avec %s"
 msgid "Eject"
 msgstr "Éjecter"
 
-#: ../js/ui/components/keyring.js:93 ../js/ui/components/polkitAgent.js:285
+#: ../js/ui/components/keyring.js:94 ../js/ui/components/polkitAgent.js:285
 msgid "Password:"
 msgstr "Mot de passe :"
 
-#: ../js/ui/components/keyring.js:113
+#: ../js/ui/components/keyring.js:120
 msgid "Type again:"
 msgstr "Saisissez à nouveau :"
 
@@ -1025,7 +1025,7 @@ msgstr "Afficher le compte"
 msgid "Unknown reason"
 msgstr "Raison inconnue"
 
-#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:228
+#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:154
 msgid "Windows"
 msgstr "Fenêtres"
 
@@ -1062,86 +1062,86 @@ msgstr "Paramètres de date et heure"
 msgid "%A %B %e, %Y"
 msgstr "%A %e %B %Y"
 
-#: ../js/ui/endSessionDialog.js:66
+#: ../js/ui/endSessionDialog.js:64
 #, javascript-format
 msgctxt "title"
 msgid "Log Out %s"
 msgstr "Fermer la session de %s"
 
-#: ../js/ui/endSessionDialog.js:67
+#: ../js/ui/endSessionDialog.js:65
 msgctxt "title"
 msgid "Log Out"
 msgstr "Fermer la session"
 
-#: ../js/ui/endSessionDialog.js:69
+#: ../js/ui/endSessionDialog.js:67
 #, javascript-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "%s sera déconnecté automatiquement dans %d seconde."
 msgstr[1] "%s sera déconnecté automatiquement dans %d secondes."
 
-#: ../js/ui/endSessionDialog.js:74
+#: ../js/ui/endSessionDialog.js:72
 #, javascript-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
 msgstr[0] "Vous allez être déconnecté automatiquement dans %d seconde."
 msgstr[1] "Vous allez être déconnecté automatiquement dans %d secondes."
 
-#: ../js/ui/endSessionDialog.js:80
+#: ../js/ui/endSessionDialog.js:78
 msgctxt "button"
 msgid "Log Out"
 msgstr "Fermer la session"
 
-#: ../js/ui/endSessionDialog.js:86
+#: ../js/ui/endSessionDialog.js:84
 msgctxt "title"
 msgid "Power Off"
 msgstr "Éteindre"
 
-#: ../js/ui/endSessionDialog.js:87
+#: ../js/ui/endSessionDialog.js:85
 msgctxt "title"
 msgid "Install Updates & Power Off"
 msgstr "Installer les mises à jour et éteindre"
 
-#: ../js/ui/endSessionDialog.js:89
+#: ../js/ui/endSessionDialog.js:87
 #, javascript-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "Cet ordinateur s'éteindra automatiquement dans %d seconde."
 msgstr[1] "Cet ordinateur s'éteindra automatiquement dans %d secondes."
 
-#: ../js/ui/endSessionDialog.js:93
+#: ../js/ui/endSessionDialog.js:91
 msgctxt "checkbox"
 msgid "Install pending software updates"
 msgstr "Installer les mises à jour logicielles en attente"
 
-#: ../js/ui/endSessionDialog.js:96 ../js/ui/endSessionDialog.js:113
+#: ../js/ui/endSessionDialog.js:94 ../js/ui/endSessionDialog.js:111
 msgctxt "button"
 msgid "Restart"
 msgstr "Redémarrer"
 
-#: ../js/ui/endSessionDialog.js:98
+#: ../js/ui/endSessionDialog.js:96
 msgctxt "button"
 msgid "Power Off"
 msgstr "Éteindre"
 
-#: ../js/ui/endSessionDialog.js:105
+#: ../js/ui/endSessionDialog.js:103
 msgctxt "title"
 msgid "Restart"
 msgstr "Redémarrer"
 
-#: ../js/ui/endSessionDialog.js:107
+#: ../js/ui/endSessionDialog.js:105
 #, javascript-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "Cet ordinateur redémarrera automatiquement dans %d seconde."
 msgstr[1] "Cet ordinateur redémarrera automatiquement dans %d secondes."
 
-#: ../js/ui/endSessionDialog.js:121
+#: ../js/ui/endSessionDialog.js:119
 msgctxt "title"
 msgid "Restart & Install Updates"
 msgstr "Redémarrer et installer les mises à jour"
 
-#: ../js/ui/endSessionDialog.js:123
+#: ../js/ui/endSessionDialog.js:121
 #, javascript-format
 msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
@@ -1149,44 +1149,44 @@ msgid_plural ""
 msgstr[0] "Le système redémarrera automatiquement dans %d seconde."
 msgstr[1] "Le système redémarrera automatiquement dans %d secondes."
 
-#: ../js/ui/endSessionDialog.js:129
+#: ../js/ui/endSessionDialog.js:127
 msgctxt "button"
 msgid "Restart &amp; Install"
 msgstr "Redémarrer et installer"
 
-#: ../js/ui/endSessionDialog.js:130
+#: ../js/ui/endSessionDialog.js:128
 msgctxt "button"
 msgid "Install &amp; Power Off"
 msgstr "Installer et éteindre"
 
-#: ../js/ui/endSessionDialog.js:131
+#: ../js/ui/endSessionDialog.js:129
 msgctxt "checkbox"
 msgid "Power off after updates are installed"
 msgstr "Éteindre après l'installation des mises à jour"
 
-#: ../js/ui/endSessionDialog.js:315
+#: ../js/ui/endSessionDialog.js:338
 msgid "Running on battery power: please plug in before installing updates."
 msgstr ""
 "Fonctionnement sur batterie : veuillez vous brancher avant d'installer les "
 "mises à jour."
 
-#: ../js/ui/endSessionDialog.js:332
+#: ../js/ui/endSessionDialog.js:355
 msgid "Some applications are busy or have unsaved work."
 msgstr ""
 "Certaines applications sont occupées ou ont des travaux non-sauvegardés."
 
-#: ../js/ui/endSessionDialog.js:339
+#: ../js/ui/endSessionDialog.js:362
 msgid "Other users are logged in."
 msgstr "D'autres utilisateurs sont connectés."
 
 #. Translators: Remote here refers to a remote session, like a ssh login */
-#: ../js/ui/endSessionDialog.js:619
+#: ../js/ui/endSessionDialog.js:640
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (distant)"
 
 #. Translators: Console here refers to a tty like a VT console */
-#: ../js/ui/endSessionDialog.js:622
+#: ../js/ui/endSessionDialog.js:643
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (console)"
@@ -1200,7 +1200,7 @@ msgstr "Installer"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Télécharger et installer « %s » à partir de extensions.gnome.org ?"
 
-#: ../js/ui/keyboard.js:653 ../js/ui/status/keyboard.js:339
+#: ../js/ui/keyboard.js:692 ../js/ui/status/keyboard.js:523
 msgid "Keyboard"
 msgstr "Clavier"
 
@@ -1222,8 +1222,8 @@ msgstr "Masquer les erreurs"
 msgid "Show Errors"
 msgstr "Afficher les erreurs"
 
-#: ../js/ui/lookingGlass.js:716 ../js/ui/status/location.js:62
-#: ../js/ui/status/location.js:166
+#: ../js/ui/lookingGlass.js:716 ../js/ui/status/location.js:71
+#: ../js/ui/status/location.js:176
 msgid "Enabled"
 msgstr "Activé"
 
@@ -1231,7 +1231,7 @@ msgstr "Activé"
 #. because it's disabled by rfkill (airplane mode) */
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:719 ../js/ui/status/location.js:169
+#: ../js/ui/lookingGlass.js:719 ../js/ui/status/location.js:179
 #: ../js/ui/status/network.js:592 ../src/gvc/gvc-mixer-control.c:1830
 msgid "Disabled"
 msgstr "Désactivé"
@@ -1256,39 +1256,39 @@ msgstr "Afficher la source"
 msgid "Web Page"
 msgstr "Page Web"
 
-#: ../js/ui/messageTray.js:1325
+#: ../js/ui/messageTray.js:1326
 msgid "Open"
 msgstr "Ouvrir"
 
-#: ../js/ui/messageTray.js:1332
+#: ../js/ui/messageTray.js:1333
 msgid "Remove"
 msgstr "Enlever"
 
-#: ../js/ui/messageTray.js:1629
+#: ../js/ui/messageTray.js:1630
 msgid "Notifications"
 msgstr "Notifications"
 
-#: ../js/ui/messageTray.js:1636
+#: ../js/ui/messageTray.js:1637
 msgid "Clear Messages"
 msgstr "Effacer les messages"
 
-#: ../js/ui/messageTray.js:1655
+#: ../js/ui/messageTray.js:1656
 msgid "Notification Settings"
 msgstr "Paramètres de notifications"
 
-#: ../js/ui/messageTray.js:1708
+#: ../js/ui/messageTray.js:1709
 msgid "Tray Menu"
 msgstr "Menu du tiroir de messagerie"
 
-#: ../js/ui/messageTray.js:1925
+#: ../js/ui/messageTray.js:1926
 msgid "No Messages"
 msgstr "Aucun message"
 
-#: ../js/ui/messageTray.js:1963
+#: ../js/ui/messageTray.js:1968
 msgid "Message Tray"
 msgstr "Tiroir de messagerie"
 
-#: ../js/ui/messageTray.js:2966
+#: ../js/ui/messageTray.js:2971
 msgid "System Information"
 msgstr "Informations du système"
 
@@ -1316,7 +1316,7 @@ msgstr "Vue d'ensemble"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters. */
-#: ../js/ui/overview.js:250
+#: ../js/ui/overview.js:246
 msgid "Type to search…"
 msgstr "Rechercher…"
 
@@ -1379,27 +1379,27 @@ msgstr "Impossible de verrouiller"
 msgid "Lock was blocked by an application"
 msgstr "Le verrouillage a été bloqué par une application"
 
-#: ../js/ui/search.js:606
+#: ../js/ui/search.js:594
 msgid "Searching…"
 msgstr "Recherche en cours…"
 
-#: ../js/ui/search.js:652
+#: ../js/ui/search.js:596
 msgid "No results."
 msgstr "Aucun résultat."
 
-#: ../js/ui/shellEntry.js:27
+#: ../js/ui/shellEntry.js:25
 msgid "Copy"
 msgstr "Copier"
 
-#: ../js/ui/shellEntry.js:32
+#: ../js/ui/shellEntry.js:30
 msgid "Paste"
 msgstr "Coller"
 
-#: ../js/ui/shellEntry.js:99
+#: ../js/ui/shellEntry.js:97
 msgid "Show Text"
 msgstr "Afficher le texte"
 
-#: ../js/ui/shellEntry.js:101
+#: ../js/ui/shellEntry.js:99
 msgid "Hide Text"
 msgstr "Masquer le texte"
 
@@ -1485,23 +1485,27 @@ msgstr "Non connecté"
 msgid "Brightness"
 msgstr "Luminosité"
 
-#: ../js/ui/status/keyboard.js:406
+#: ../js/ui/status/keyboard.js:547
 msgid "Show Keyboard Layout"
 msgstr "Afficher la disposition du clavier"
 
-#: ../js/ui/status/location.js:56
+#: ../js/ui/status/location.js:65
 msgid "Location"
 msgstr "Localisation"
 
-#: ../js/ui/status/location.js:63 ../js/ui/status/location.js:167
+#: ../js/ui/status/location.js:72 ../js/ui/status/location.js:177
 msgid "Disable"
 msgstr "Désactiver"
 
-#: ../js/ui/status/location.js:166
+#: ../js/ui/status/location.js:73
+msgid "Privacy Settings"
+msgstr "Paramètres de confidentialité"
+
+#: ../js/ui/status/location.js:176
 msgid "In Use"
 msgstr "En cours d'utilisation"
 
-#: ../js/ui/status/location.js:170
+#: ../js/ui/status/location.js:180
 msgid "Enable"
 msgstr "Activer"
 
@@ -1736,11 +1740,11 @@ msgstr "Se connecter en tant qu'autre utilisateur"
 msgid "Unlock Window"
 msgstr "Fenêtre de déverrouillage"
 
-#: ../js/ui/viewSelector.js:232
+#: ../js/ui/viewSelector.js:158
 msgid "Applications"
 msgstr "Applications"
 
-#: ../js/ui/viewSelector.js:236
+#: ../js/ui/viewSelector.js:162
 msgid "Search"
 msgstr "Recherche"
 
@@ -1837,20 +1841,20 @@ msgstr[1] "%u entrées"
 msgid "System Sounds"
 msgstr "Sons système"
 
-#: ../src/main.c:371
+#: ../src/main.c:373
 msgid "Print version"
 msgstr "Affiche la version"
 
-#: ../src/main.c:377
+#: ../src/main.c:379
 msgid "Mode used by GDM for login screen"
 msgstr "Mode utilisé par GDM pour l'écran de connexion"
 
-#: ../src/main.c:383
+#: ../src/main.c:385
 msgid "Use a specific mode, e.g. \"gdm\" for login screen"
 msgstr ""
 "Utiliser un mode particulier, par ex. « gdm » pour l'écran de connexion"
 
-#: ../src/main.c:389
+#: ../src/main.c:391
 msgid "List possible modes"
 msgstr "Lister les modes possibles"
 
