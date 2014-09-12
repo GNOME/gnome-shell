@@ -1,0 +1,5 @@
+[Test]
+Description=All Mutter tests
+Exec=@libexecdir@/installed-tests/mutter/mutter-test-runner --all
+Type=session
+Output=TAP

@@ -46,6 +46,7 @@ mutter
 mutter-restart-helper
 mutter-test-client
 mutter-test-runner
+mutter-all.test
 org.gnome.mutter.gschema.valid
 org.gnome.mutter.gschema.xml
 org.gnome.mutter.wayland.gschema.valid
