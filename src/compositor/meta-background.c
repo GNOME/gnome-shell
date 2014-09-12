@@ -505,7 +505,7 @@ ensure_color_texture (MetaBackground *self)
     {
       ClutterBackend *backend = clutter_get_default_backend ();
       CoglContext *ctx = clutter_backend_get_cogl_context (backend);
-      uint8_t pixels[8];
+      uint8_t pixels[6];
       int width, height;
 
       if (priv->shading_direction == G_DESKTOP_BACKGROUND_SHADING_SOLID)
@@ -516,7 +516,6 @@ ensure_color_texture (MetaBackground *self)
           pixels[0] = priv->color.red;
           pixels[1] = priv->color.green;
           pixels[2] = priv->color.blue;
-          pixels[3] = 0xFF;
         }
       else
         {
@@ -537,16 +536,14 @@ ensure_color_texture (MetaBackground *self)
           pixels[0] = priv->color.red;
           pixels[1] = priv->color.green;
           pixels[2] = priv->color.blue;
-          pixels[3] = 0xFF;
-          pixels[4] = priv->second_color.red;
-          pixels[5] = priv->second_color.green;
-          pixels[6] = priv->second_color.blue;
-          pixels[7] = 0xFF;
+          pixels[3] = priv->second_color.red;
+          pixels[4] = priv->second_color.green;
+          pixels[5] = priv->second_color.blue;
         }
 
       priv->color_texture = COGL_TEXTURE (cogl_texture_2d_new_from_data (ctx, width, height,
                                                                          COGL_PIXEL_FORMAT_RGB_888,
-                                                                         4,
+                                                                         width * 3,
                                                                          pixels,
                                                                          NULL));
     }
