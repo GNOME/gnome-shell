@@ -1362,7 +1362,8 @@ handle_other_xevent (MetaDisplay *display,
     case ConfigureNotify:
       if (event->xconfigure.event != event->xconfigure.window)
         {
-          if (event->xconfigure.event == display->screen->xroot)
+          if (event->xconfigure.event == display->screen->xroot &&
+              event->xconfigure.window != display->screen->composite_overlay_window)
             meta_stack_tracker_configure_event (display->screen->stack_tracker,
                                                 &event->xconfigure);
         }
