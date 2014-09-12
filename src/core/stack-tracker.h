@@ -54,12 +54,6 @@ void meta_stack_tracker_record_remove          (MetaStackTracker *tracker,
 
 /* We also have functions that also go ahead and do the work
  */
-void meta_stack_tracker_raise_above     (MetaStackTracker *tracker,
-                                         guint64           window,
-                                         guint64           sibling);
-void meta_stack_tracker_lower_below     (MetaStackTracker  *tracker,
-                                         guint64            window,
-                                         guint64            sibling);
 void meta_stack_tracker_lower           (MetaStackTracker *tracker,
                                          guint64           window);
 

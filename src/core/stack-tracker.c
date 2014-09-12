@@ -966,7 +966,7 @@ find_x11_sibling_upwards (MetaStackTracker *tracker,
   return None;
 }
 
-void
+static void
 meta_stack_tracker_lower_below (MetaStackTracker *tracker,
                                 guint64           window,
                                 guint64           sibling)
@@ -1000,14 +1000,7 @@ meta_stack_tracker_lower_below (MetaStackTracker *tracker,
                                          serial);
 }
 
-void
-meta_stack_tracker_lower (MetaStackTracker *tracker,
-                          guint64           window)
-{
-  meta_stack_tracker_raise_above (tracker, window, None);
-}
-
-void
+static void
 meta_stack_tracker_raise_above (MetaStackTracker *tracker,
                                 guint64           window,
                                 guint64           sibling)
@@ -1038,6 +1031,13 @@ meta_stack_tracker_raise_above (MetaStackTracker *tracker,
 
   meta_stack_tracker_record_raise_above (tracker, window,
                                          sibling, serial);
+}
+
+void
+meta_stack_tracker_lower (MetaStackTracker *tracker,
+                          guint64           window)
+{
+  meta_stack_tracker_raise_above (tracker, window, None);
 }
 
 void
