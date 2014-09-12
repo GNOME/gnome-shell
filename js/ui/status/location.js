@@ -70,6 +70,7 @@ const Indicator = new Lang.Class({
 
         this._item.status.text = _("Enabled");
         this._onOffAction = this._item.menu.addAction(_("Disable"), Lang.bind(this, this._onOnOffAction));
+        this._item.menu.addSettingsAction(_("Privacy Settings"), 'gnome-privacy-panel.desktop');
 
         this.menu.addMenuItem(this._item);
 
