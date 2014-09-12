@@ -611,7 +611,9 @@ const SearchResults = new Lang.Class({
     },
 
     activateDefault: function() {
-        this._doSearch();
+        // If we have a search queued up, force the search now.
+        if (this._searchTimeoutId > 0)
+            this._doSearch();
 
         if (this._defaultResult)
             this._defaultResult.activate();
