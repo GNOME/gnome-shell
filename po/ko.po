@@ -2,336 +2,365 @@
 # Copyright (C) 2011 cogl's COPYRIGHT HOLDER
 # This file is distributed under the same license as the cogl package.
 # Seong-ho Cho <darkcircle.0426@gmail.com>, 2011.
+# Seong-ho Cho <shcho@gnome.org>, 2014.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: cogl master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=clutter\n"
-"POT-Creation-Date: 2012-03-05 23:14+0000\n"
-"PO-Revision-Date: 2011-12-06 20:34+0900\n"
-"Last-Translator: Seong-ho, Cho <darkcircle.0426@gmail.com>\n"
+"product=cogl&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2014-09-11 03:06+0000\n"
+"PO-Revision-Date: 2014-09-11 19:55+0900\n"
+"Last-Translator: Seong-ho Cho <shcho@gnome.org>\n"
 "Language-Team: Korean <gnome-kr@googlegroups.com>\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 1.5.4\n"
 
-#: cogl/cogl-debug.c:172
+#: ../cogl/cogl-debug.c:181
 msgid "Supported debug values:"
-msgstr ""
+msgstr "지원 디버깅 값:"
 
-#: cogl/cogl-debug.c:177
+#: ../cogl/cogl-debug.c:186
 msgid "Special debug values:"
-msgstr ""
+msgstr "특수 디버깅 값:"
 
-#: cogl/cogl-debug.c:179 cogl/cogl-debug.c:181
+#: ../cogl/cogl-debug.c:188 ../cogl/cogl-debug.c:190
 msgid "Enables all non-behavioural debug options"
-msgstr ""
+msgstr "동작과 무관한 모든 디버깅 옵션 활성화"
 
-#: cogl/cogl-debug.c:225
+#: ../cogl/cogl-debug.c:197
+msgid "Additional environment variables:"
+msgstr "추가 환경 변수:"
+
+#: ../cogl/cogl-debug.c:198
+msgid "Comma-separated list of GL extensions to pretend are disabled"
+msgstr "비활성화할 GL 확장의 쉼표 구분 목록"
+
+#: ../cogl/cogl-debug.c:200
+msgid "Override the GL version that Cogl will assume the driver supports"
+msgstr "코글에서 드라이버를 지원한다고 간주하는 GL 버전을 재적용"
+
+#: ../cogl/cogl-debug.c:244
 msgid "Cogl debugging flags to set"
-msgstr ""
+msgstr "코글 디버깅 플래그를 설정으로 표시"
 
-#: cogl/cogl-debug.c:227
+#: ../cogl/cogl-debug.c:246
 msgid "Cogl debugging flags to unset"
-msgstr ""
+msgstr "코글 디버깅 플래그를 설정 안함으로 표시"
 
-#: cogl/cogl-debug.c:276
+#: ../cogl/cogl-debug.c:295
 msgid "Cogl Options"
-msgstr ""
+msgstr "코글 옵션"
 
-#: cogl/cogl-debug.c:277
+#: ../cogl/cogl-debug.c:296
 msgid "Show Cogl options"
-msgstr ""
+msgstr "코글 옵션 표시"
 
-#: cogl/cogl-debug-options.h:25 cogl/cogl-debug-options.h:30
-#: cogl/cogl-debug-options.h:35 cogl/cogl-debug-options.h:40
-#: cogl/cogl-debug-options.h:45 cogl/cogl-debug-options.h:50
-#: cogl/cogl-debug-options.h:55 cogl/cogl-debug-options.h:61
-#: cogl/cogl-debug-options.h:66 cogl/cogl-debug-options.h:71
-#: cogl/cogl-debug-options.h:158 cogl/cogl-debug-options.h:163
-#: cogl/cogl-debug-options.h:168 cogl/cogl-debug-options.h:184
+#: ../cogl/cogl-debug-options.h:32 ../cogl/cogl-debug-options.h:37
+#: ../cogl/cogl-debug-options.h:42 ../cogl/cogl-debug-options.h:47
+#: ../cogl/cogl-debug-options.h:52 ../cogl/cogl-debug-options.h:57
+#: ../cogl/cogl-debug-options.h:62 ../cogl/cogl-debug-options.h:68
+#: ../cogl/cogl-debug-options.h:73 ../cogl/cogl-debug-options.h:78
+#: ../cogl/cogl-debug-options.h:165 ../cogl/cogl-debug-options.h:170
+#: ../cogl/cogl-debug-options.h:175 ../cogl/cogl-debug-options.h:191
+#: ../cogl/cogl-debug-options.h:196
 msgid "Cogl Tracing"
-msgstr ""
+msgstr "코글 추적"
 
-#: cogl/cogl-debug-options.h:27
+#: ../cogl/cogl-debug-options.h:34
 msgid "CoglObject references"
-msgstr ""
+msgstr "CoglObject 참조"
 
-#: cogl/cogl-debug-options.h:28
+#: ../cogl/cogl-debug-options.h:35
 msgid "Debug ref counting issues for CoglObjects"
-msgstr ""
+msgstr "CoglObject의 참조 카운팅 이슈 디버깅"
 
-#: cogl/cogl-debug-options.h:32
+#: ../cogl/cogl-debug-options.h:39
 msgid "Trace Texture Slicing"
-msgstr ""
+msgstr "텍스처 슬라이싱 추적"
 
-#: cogl/cogl-debug-options.h:33
+#: ../cogl/cogl-debug-options.h:40
 msgid "debug the creation of texture slices"
-msgstr ""
+msgstr "텍스처 슬라이스 생성 디버깅"
 
-#: cogl/cogl-debug-options.h:37
+#: ../cogl/cogl-debug-options.h:44
 msgid "Trace Atlas Textures"
-msgstr ""
+msgstr "아틀라스 텍스처 추적"
 
-#: cogl/cogl-debug-options.h:38
+#: ../cogl/cogl-debug-options.h:45
 msgid "Debug texture atlas management"
-msgstr ""
+msgstr "텍스처 아틀라스 관리 디버깅"
 
-#: cogl/cogl-debug-options.h:42
+#: ../cogl/cogl-debug-options.h:49
 msgid "Trace Blend Strings"
-msgstr ""
+msgstr "블렌드 문자열 추적"
 
-#: cogl/cogl-debug-options.h:43
+#: ../cogl/cogl-debug-options.h:50
 msgid "Debug CoglBlendString parsing"
-msgstr ""
+msgstr "CoglBlendString 해석 디버깅"
 
-#: cogl/cogl-debug-options.h:47
+#: ../cogl/cogl-debug-options.h:54
 msgid "Trace Journal"
-msgstr ""
+msgstr "저널 추적"
 
-#: cogl/cogl-debug-options.h:48
+#: ../cogl/cogl-debug-options.h:55
 msgid "View all the geometry passing through the journal"
-msgstr ""
+msgstr "저널을 거쳐가는 모든 영역 보기"
 
-#: cogl/cogl-debug-options.h:52
+#: ../cogl/cogl-debug-options.h:59
 msgid "Trace Batching"
-msgstr ""
+msgstr "일괄 처리 추적"
 
-#: cogl/cogl-debug-options.h:53
+#: ../cogl/cogl-debug-options.h:60
 msgid "Show how geometry is being batched in the journal"
-msgstr ""
+msgstr "저널에서 영역을 어떻게 일괄 처리하는지 표시"
 
-#: cogl/cogl-debug-options.h:57
+#: ../cogl/cogl-debug-options.h:64
 msgid "Trace matrices"
-msgstr ""
+msgstr "매트리스 추적"
 
-#: cogl/cogl-debug-options.h:58
+#: ../cogl/cogl-debug-options.h:65
 msgid "Trace all matrix manipulation"
-msgstr ""
+msgstr "모든 행렬 연산 추적"
 
-#: cogl/cogl-debug-options.h:63
+#: ../cogl/cogl-debug-options.h:70
 msgid "Trace Misc Drawing"
-msgstr ""
+msgstr "기타 그리기 동작 추적"
 
-#: cogl/cogl-debug-options.h:64
+#: ../cogl/cogl-debug-options.h:71
 msgid "Trace some misc drawing operations"
-msgstr ""
+msgstr "일부 기타 그리기 처리 동작 추적"
 
-#: cogl/cogl-debug-options.h:68
+#: ../cogl/cogl-debug-options.h:75
 msgid "Trace Pango Renderer"
-msgstr ""
+msgstr "판고 렌더러 추적"
 
-#: cogl/cogl-debug-options.h:69
+#: ../cogl/cogl-debug-options.h:76
 msgid "Trace the Cogl Pango renderer"
-msgstr ""
+msgstr "코글 판고 렌더러 추적"
 
-#: cogl/cogl-debug-options.h:73
+#: ../cogl/cogl-debug-options.h:80
 msgid "Trace CoglTexturePixmap backend"
-msgstr ""
+msgstr "CoglTexturePixmap 백엔드 추적"
 
-#: cogl/cogl-debug-options.h:74
+#: ../cogl/cogl-debug-options.h:81
 msgid "Trace the Cogl texture pixmap backend"
-msgstr ""
+msgstr "Cogl texture pixmap 백엔드 추적"
 
-#: cogl/cogl-debug-options.h:76 cogl/cogl-debug-options.h:81
+#: ../cogl/cogl-debug-options.h:83 ../cogl/cogl-debug-options.h:88
 msgid "Visualize"
-msgstr ""
+msgstr "시각화"
 
-#: cogl/cogl-debug-options.h:78
+#: ../cogl/cogl-debug-options.h:85
 msgid "Outline rectangles"
-msgstr ""
+msgstr "사각 영역 외곽선 표시"
 
-#: cogl/cogl-debug-options.h:79
+#: ../cogl/cogl-debug-options.h:86
 msgid "Add wire outlines for all rectangular geometry"
-msgstr ""
+msgstr "모든 사각 영역의 외곽선 틀 추가"
 
-#: cogl/cogl-debug-options.h:83
+#: ../cogl/cogl-debug-options.h:90
 msgid "Show wireframes"
-msgstr ""
+msgstr "틀 표시"
 
-#: cogl/cogl-debug-options.h:84
+#: ../cogl/cogl-debug-options.h:91
 msgid "Add wire outlines for all geometry"
-msgstr ""
+msgstr "모든 영역의 외곽선 틀 추가"
 
-#: cogl/cogl-debug-options.h:86 cogl/cogl-debug-options.h:91
-#: cogl/cogl-debug-options.h:96 cogl/cogl-debug-options.h:101
-#: cogl/cogl-debug-options.h:111 cogl/cogl-debug-options.h:116
-#: cogl/cogl-debug-options.h:122 cogl/cogl-debug-options.h:127
-#: cogl/cogl-debug-options.h:132 cogl/cogl-debug-options.h:137
-#: cogl/cogl-debug-options.h:142 cogl/cogl-debug-options.h:147
-#: cogl/cogl-debug-options.h:153 cogl/cogl-debug-options.h:173
-#: cogl/cogl-debug-options.h:178
+#: ../cogl/cogl-debug-options.h:93 ../cogl/cogl-debug-options.h:98
+#: ../cogl/cogl-debug-options.h:103 ../cogl/cogl-debug-options.h:108
+#: ../cogl/cogl-debug-options.h:118 ../cogl/cogl-debug-options.h:123
+#: ../cogl/cogl-debug-options.h:129 ../cogl/cogl-debug-options.h:134
+#: ../cogl/cogl-debug-options.h:139 ../cogl/cogl-debug-options.h:144
+#: ../cogl/cogl-debug-options.h:149 ../cogl/cogl-debug-options.h:154
+#: ../cogl/cogl-debug-options.h:160 ../cogl/cogl-debug-options.h:180
+#: ../cogl/cogl-debug-options.h:185
 msgid "Root Cause"
-msgstr ""
+msgstr "근본 원인"
 
-#: cogl/cogl-debug-options.h:88
+#: ../cogl/cogl-debug-options.h:95
 msgid "Disable Journal batching"
-msgstr ""
+msgstr "저널 일괄 처리 비활성화"
 
-#: cogl/cogl-debug-options.h:89
+#: ../cogl/cogl-debug-options.h:96
 msgid "Disable batching of geometry in the Cogl Journal."
-msgstr ""
+msgstr "코글 저널의 영역 일괄 처리 비활성화."
 
-#: cogl/cogl-debug-options.h:93
+#: ../cogl/cogl-debug-options.h:100
 msgid "Disable GL Vertex Buffers"
-msgstr ""
+msgstr "GL 정점 버퍼 비활성화"
 
-#: cogl/cogl-debug-options.h:94
+#: ../cogl/cogl-debug-options.h:101
 msgid "Disable use of OpenGL vertex buffer objects"
-msgstr ""
+msgstr "OpenGL 정점 버퍼 객체 사용 비활성화"
 
-#: cogl/cogl-debug-options.h:98
+#: ../cogl/cogl-debug-options.h:105
 msgid "Disable GL Pixel Buffers"
-msgstr ""
+msgstr "GL 픽셀 버퍼 비활성화"
 
-#: cogl/cogl-debug-options.h:99
+#: ../cogl/cogl-debug-options.h:106
 msgid "Disable use of OpenGL pixel buffer objects"
-msgstr ""
+msgstr "OpenGL픽셀 버퍼 비활성화"
 
-#: cogl/cogl-debug-options.h:103
+#: ../cogl/cogl-debug-options.h:110
 msgid "Disable software rect transform"
-msgstr ""
+msgstr "소프트웨어 rect 변환 비활성화"
 
-#: cogl/cogl-debug-options.h:104
+#: ../cogl/cogl-debug-options.h:111
 msgid "Use the GPU to transform rectangular geometry"
-msgstr ""
+msgstr "사각 영역 변환에 GPU 사용"
 
-#: cogl/cogl-debug-options.h:106
+#: ../cogl/cogl-debug-options.h:113
 msgid "Cogl Specialist"
-msgstr ""
+msgstr "코글 전문가"
 
-#: cogl/cogl-debug-options.h:108
+#: ../cogl/cogl-debug-options.h:115
 msgid "Dump atlas images"
-msgstr ""
+msgstr "아틀라스 이미지 덤프 기록"
 
-#: cogl/cogl-debug-options.h:109
+#: ../cogl/cogl-debug-options.h:116
 msgid "Dump texture atlas changes to an image file"
-msgstr ""
+msgstr "이미지 파일의 내용을 바꾸는 텍스처 아틀라스 덤프를 기록"
 
-#: cogl/cogl-debug-options.h:113
+#: ../cogl/cogl-debug-options.h:120
 msgid "Disable texture atlasing"
-msgstr ""
+msgstr "텍스처 아틀라싱 비활성화"
 
-#: cogl/cogl-debug-options.h:114
+#: ../cogl/cogl-debug-options.h:121
 msgid "Disable use of texture atlasing"
-msgstr ""
+msgstr "텍스처 아틀라싱 사용 비활성화"
 
-#: cogl/cogl-debug-options.h:118
+#: ../cogl/cogl-debug-options.h:125
 msgid "Disable sharing the texture atlas between text and images"
-msgstr ""
+msgstr "텍스트 및 이미지간의 텍스처 아틀라스 공유 비활성화"
 
-#: cogl/cogl-debug-options.h:119
+#: ../cogl/cogl-debug-options.h:126
 msgid ""
 "When this is set the glyph cache will always use a separate texture for its "
 "atlas. Otherwise it will try to share the atlas with images."
 msgstr ""
+"이 항목을 설정하면 글리프 캐시는 항상 글리프 캐시 아틀라스에 분할 텍스처를 사"
+"용합니다. 설정하지 않으면 이미지가 들어간 아틀라스의 공유를 시도합니다."
 
-#: cogl/cogl-debug-options.h:124
+#: ../cogl/cogl-debug-options.h:131
 msgid "Disable texturing"
-msgstr ""
+msgstr "텍스처 처리 비활성화"
 
-#: cogl/cogl-debug-options.h:125
+#: ../cogl/cogl-debug-options.h:132
 msgid "Disable texturing any primitives"
-msgstr ""
+msgstr "어떤 프리미티브에 대해서든 텍스처 처리 비활성화"
 
-#: cogl/cogl-debug-options.h:129
+#: ../cogl/cogl-debug-options.h:136
 msgid "Disable arbfp"
-msgstr ""
+msgstr "ARBfp 비활성화"
 
-#: cogl/cogl-debug-options.h:130
+#: ../cogl/cogl-debug-options.h:137
 msgid "Disable use of ARB fragment programs"
-msgstr ""
+msgstr "ARB 단편화 프로그램 사용 비활성화"
 
-#: cogl/cogl-debug-options.h:134
+#: ../cogl/cogl-debug-options.h:141
 msgid "Disable fixed"
-msgstr ""
+msgstr "고정 비활성화"
 
-#: cogl/cogl-debug-options.h:135
+#: ../cogl/cogl-debug-options.h:142
 msgid "Disable use of the fixed function pipeline backend"
-msgstr ""
+msgstr "고정 함수 파이프라인 백엔드 사용 비활성화"
 
-#: cogl/cogl-debug-options.h:139
+#: ../cogl/cogl-debug-options.h:146
 msgid "Disable GLSL"
-msgstr ""
+msgstr "GLSL 비활성화"
 
-#: cogl/cogl-debug-options.h:140
+#: ../cogl/cogl-debug-options.h:147
 msgid "Disable use of GLSL"
-msgstr ""
+msgstr "GLSL 사용 비활성화"
 
-#: cogl/cogl-debug-options.h:144
+#: ../cogl/cogl-debug-options.h:151
 msgid "Disable blending"
-msgstr ""
+msgstr "블렌딩 비활성화"
 
-#: cogl/cogl-debug-options.h:145
+#: ../cogl/cogl-debug-options.h:152
 msgid "Disable use of blending"
-msgstr ""
+msgstr "블렌딩 사용 비활성화"
 
-#: cogl/cogl-debug-options.h:149
+#: ../cogl/cogl-debug-options.h:156
 msgid "Disable non-power-of-two textures"
-msgstr ""
+msgstr "2의 비거듭제곱 텍스처 비활성화"
 
-#: cogl/cogl-debug-options.h:150
+#: ../cogl/cogl-debug-options.h:157
 msgid ""
 "Makes Cogl think that the GL driver doesn't support NPOT textures so that it "
 "will create sliced textures or textures with waste instead."
 msgstr ""
+"코글에서 GL 드라이버가 NPOT 텍스처를 지원하지 않는 것으로 간주하게끔 하여 슬"
+"라이싱한 텍스처를 만들거나 불필요한 텍스처를 만듬."
 
-#: cogl/cogl-debug-options.h:155
+#: ../cogl/cogl-debug-options.h:162
 msgid "Disable software clipping"
-msgstr ""
+msgstr "소프트웨어 클리핑 비활성화"
 
-#: cogl/cogl-debug-options.h:156
+#: ../cogl/cogl-debug-options.h:163
 msgid "Disables Cogl's attempts to clip some rectangles in software."
 msgstr ""
+"코글이 소프트웨어 처리 방식으로 일부 사각 영역을 클리핑 하려는 시도를 비활성"
+"화."
 
-#: cogl/cogl-debug-options.h:160
+#: ../cogl/cogl-debug-options.h:167
 msgid "Show source"
-msgstr ""
+msgstr "원본 표시"
 
-#: cogl/cogl-debug-options.h:161
+#: ../cogl/cogl-debug-options.h:168
 msgid "Show generated ARBfp/GLSL source code"
-msgstr ""
+msgstr "생성한 ARBfp/GLSL 소스 코드 표시"
 
-#: cogl/cogl-debug-options.h:165
+#: ../cogl/cogl-debug-options.h:172
 msgid "Trace some OpenGL"
-msgstr ""
+msgstr "일부 OpenGL 추적"
 
-#: cogl/cogl-debug-options.h:166
+#: ../cogl/cogl-debug-options.h:173
 msgid "Traces some select OpenGL calls"
-msgstr ""
+msgstr "일부 OpenGL 호출을 선택하여 추적"
 
-#: cogl/cogl-debug-options.h:170
+#: ../cogl/cogl-debug-options.h:177
 msgid "Trace offscreen support"
-msgstr ""
+msgstr "오프스크린 지원 추적"
 
-#: cogl/cogl-debug-options.h:171
+#: ../cogl/cogl-debug-options.h:178
 msgid "Debug offscreen support"
-msgstr ""
+msgstr "오프스크린 지원 디버깅"
 
-#: cogl/cogl-debug-options.h:175
+#: ../cogl/cogl-debug-options.h:182
 msgid "Disable program caches"
-msgstr ""
+msgstr "프로그램 캐시 비활성화"
 
-#: cogl/cogl-debug-options.h:176
+#: ../cogl/cogl-debug-options.h:183
 msgid "Disable fallback caches for arbfp and glsl programs"
-msgstr ""
+msgstr "ARBfp 및 GLSL 프로그램의 대체 캐시 비활성화"
 
-#: cogl/cogl-debug-options.h:180
+#: ../cogl/cogl-debug-options.h:187
 msgid "Disable read pixel optimization"
-msgstr ""
+msgstr "읽기 픽셀 최적화 비활성화"
 
-#: cogl/cogl-debug-options.h:181
+#: ../cogl/cogl-debug-options.h:188
 msgid ""
 "Disable optimization for reading 1px for simple scenes of opaque rectangles"
-msgstr ""
+msgstr "불투명 사각 객체가 있는 단순 장면에서 1픽셀을 읽을 때 최적화 비활성화"
 
-#: cogl/cogl-debug-options.h:186
+#: ../cogl/cogl-debug-options.h:193
 msgid "Trace clipping"
-msgstr ""
+msgstr "클리핑 추적"
 
-#: cogl/cogl-debug-options.h:187
+#: ../cogl/cogl-debug-options.h:194
 msgid "Logs information about how Cogl is implementing clipping"
-msgstr ""
+msgstr "코글의 클리핑 구현 방법 정보를 기록"
+
+#: ../cogl/cogl-debug-options.h:198
+msgid "Trace performance concerns"
+msgstr "성능 고려 추적"
+
+#: ../cogl/cogl-debug-options.h:199
+msgid "Tries to highlight sub-optimal Cogl usage."
+msgstr "차선의 코글 사용 강조를 시도함."
