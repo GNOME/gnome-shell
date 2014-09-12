@@ -484,8 +484,8 @@ void meta_display_cancel_touch (MetaDisplay *display);
 
 gboolean meta_display_windows_are_interactable (MetaDisplay *display);
 
-gboolean meta_display_set_alarm_filter (MetaDisplay    *display,
-                                        MetaAlarmFilter filter,
-                                        gpointer        data);
+ovid meta_display_set_alarm_filter (MetaDisplay    *display,
+                                    MetaAlarmFilter filter,
+                                    gpointer        data);
 
 #endif

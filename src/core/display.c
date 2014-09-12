@@ -3019,7 +3019,7 @@ meta_display_is_pointer_emulating_sequence (MetaDisplay          *display,
   return display->pointer_emulating_sequence == sequence;
 }
 
-gboolean
+void
 meta_display_set_alarm_filter (MetaDisplay    *display,
                                MetaAlarmFilter filter,
                                gpointer        data)
