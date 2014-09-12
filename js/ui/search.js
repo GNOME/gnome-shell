@@ -409,7 +409,7 @@ const SearchResults = new Lang.Class({
 
         this._providers = [];
 
-        this._searchSettings = new Gio.Settings({ schema: SEARCH_PROVIDERS_SCHEMA });
+        this._searchSettings = new Gio.Settings({ schema_id: SEARCH_PROVIDERS_SCHEMA });
         this._searchSettings.connect('changed::disabled', Lang.bind(this, this._reloadRemoteProviders));
         this._searchSettings.connect('changed::disable-external', Lang.bind(this, this._reloadRemoteProviders));
         this._searchSettings.connect('changed::sort-order', Lang.bind(this, this._reloadRemoteProviders));
