@@ -133,8 +133,13 @@ on_monitors_changed (MetaScreen     *screen,
 
   if (priv->screen)
     {
+      int i;
+
       priv->n_monitors = meta_screen_get_n_monitors (screen);
       priv->monitors = g_new0 (MetaBackgroundMonitor, priv->n_monitors);
+
+      for (i = 0; i < priv->n_monitors; i++)
+        priv->monitors[i].dirty = TRUE;
     }
 }
 
