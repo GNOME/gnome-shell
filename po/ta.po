@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-09-12 17:00+0000\n"
-"PO-Revision-Date: 2014-09-13 21:30+0630\n"
+"POT-Creation-Date: 2014-09-13 16:02+0000\n"
+"PO-Revision-Date: 2014-09-13 21:39+0630\n"
 "Last-Translator: Shantha kumar <shkumar@redhat.com>\n"
 "Language-Team: American English <kde-i18n-doc@kde.org>\n"
 "Language: ta\n"
@@ -85,16 +85,10 @@ msgstr ""
 "உதவும்."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:3
-#| msgid "Uuids of extensions to enable"
 msgid "UUIDs of extensions to enable"
 msgstr "செயல்படுத்த வேண்டிய நீட்சிகளின் UUIDகள்"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:4
-#| msgid ""
-#| "GNOME Shell extensions have a uuid property; this key lists extensions "
-#| "which should be loaded. Any extension that wants to be loaded needs to be "
-#| "in this list. You can also manipulate this list with the EnableExtension "
-#| "and DisableExtension DBus methods on org.gnome.Shell."
 msgid ""
 "GNOME Shell extensions have a UUID property; this key lists extensions which "
 "should be loaded. Any extension that wants to be loaded needs to be in this "
@@ -120,9 +114,12 @@ msgid ""
 "load all extensions regardless of the versions they claim to support."
 msgstr ""
 "GNOME ஷெல் நடப்பு இயக்கப் பதிப்பை ஆதரிப்பதாகக் கூறும் நீட்சிகளை மட்டுமே "
-"ஏற்றும். இந்த விருப்பத்தைச் செயல்படுத்தினால் இந்த சோதனை முடக்கப்படும், பிறகு "
-"நீட்சிகள் எந்தப் பதிப்புகளை ஆதரிப்பதாகக் கூறுகின்றன என்பதைப் பொருட்படுத்தாமல் "
-"எல்லா நீட்சிகளையும் ஏற்ற முயற்சி செய்யப்படும்."
+"ஏற்றும். இந்த "
+"விருப்பத்தைச் செயல்படுத்தினால் இந்த சோதனை முடக்கப்படும், பிறகு நீட்சிகள் "
+"எந்தப் பதிப்புகளை "
+"ஆதரிப்பதாகக் கூறுகின்றன என்பதைப் பொருட்படுத்தாமல் எல்லா நீட்சிகளையும் ஏற்ற "
+"முயற்சி "
+"செய்யப்படும்."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:7
 msgid "List of desktop file IDs for favorite applications"
@@ -154,14 +151,10 @@ msgid "History for the looking glass dialog"
 msgstr "லுக்கிங் க்ளாஸ் உரையாடலுக்கு வரலாறு"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:13
-#| msgid "Always show the 'Log out' menuitem in the user menu."
 msgid "Always show the 'Log out' menu item in the user menu."
 msgstr "எப்போதும் பயனர் மெனுவில் 'வெளியேறு' மெனு உருப்படியைக் காண்பி."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:14
-#| msgid ""
-#| "This key overrides the automatic hiding of the 'Log out' menuitem in "
-#| "single-user, single-session situations."
 msgid ""
 "This key overrides the automatic hiding of the 'Log out' menu item in single-"
 "user, single-session situations."
@@ -247,6 +240,8 @@ msgstr "இயங்கு செய்தி அறிவிப்பை கு
 msgid ""
 "Keybinding that pauses and resumes all running tweens, for debugging purposes"
 msgstr ""
+"இயக்கத்திலிருக்கும் ட்வீன்கள் அனைத்தையும் இடைநிறுத்தி மீண்டும் துவக்கும் "
+"விசைப்பிணைப்பாக்கம், வழுநீக்கத் தேவைகளுக்கானது."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:30
 msgid "Which keyboard to use"
@@ -258,13 +253,16 @@ msgstr "பயன்படுத்த வேண்டிய விசைப்�
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:32
 msgid "Limit switcher to current workspace."
-msgstr ""
+msgstr "மாற்றியை நடப்பு பணியிடத்திற்கு மட்டும் எனக் கட்டுப்படுத்து."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:33
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
 msgstr ""
+"ஆம் என அமைக்கப்பட்டால், நடப்புப் பணியிடத்தில் சாளரங்களைக் கொண்டுள்ள "
+"பயன்பாடுகள் மட்டுமே மாற்றியில் காண்பிக்கப்படும். இல்லாவிட்டால் அனைத்துப் "
+"பயன்பாடுகளும் இருக்கும்."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:34
 msgid "The application icon mode."
@@ -287,6 +285,8 @@ msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
 msgstr ""
+"ஆம் என அமைக்கப்பட்டால், நடப்புப் பணியிடத்தில் உள்ள சாளரங்கள் மட்டுமே "
+"மாற்றியில் காண்பிக்கப்படும். இல்லாவிட்டால் அனைத்து சாளரங்களும் இருக்கும்."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:37
 msgid "Attach modal dialog to the parent window"
@@ -314,10 +314,12 @@ msgstr "பணிக்களங்கள் முதன்மை திரை�
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:42
 msgid "Delay focus changes in mouse mode until the pointer stops moving"
 msgstr ""
+"சொடுக்கி பயன்முறையில் சுட்டி நகர்வது நிற்கும் வரை கவனப் பகுதி மாறுவதைத் "
+"தாமதிக்கவும்"
 
 #: ../data/org.gnome.Shell.PortalHelper.desktop.in.h:1
 msgid "Captive Portal"
-msgstr ""
+msgstr "கட்டுப்படுத்தப்பட்ட வலைவாசல்"
 
 #: ../js/extensionPrefs/main.js:123
 #, javascript-format
@@ -325,10 +327,9 @@ msgid "There was an error loading the preferences dialog for %s:"
 msgstr "%s க்கு விருப்பங்கள் உரையாடலை ஏற்றுகையில் பிழை நேர்ந்தது:"
 
 #: ../js/extensionPrefs/main.js:155
-#, fuzzy
 #| msgid "Configure GNOME Shell Extensions"
 msgid "GNOME Shell Extensions"
-msgstr "க்னோம் ஷெல் நீட்சிகளை வடிவமை"
+msgstr "GNOME ஷெல் நீட்சிகள்"
 
 #: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:143
 #: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:452
@@ -390,20 +391,19 @@ msgid "Could not parse command:"
 msgstr "கட்டளையை அலகிட முடியவில்லை"
 
 #: ../js/misc/util.js:156
-#, fuzzy, javascript-format
+#, javascript-format
 #| msgid "Execution of '%s' failed:"
 msgid "Execution of “%s” failed:"
-msgstr "'%s' ஐ நிறைவேற்றுதல் தோல்வி அடைந்தது:"
+msgstr "“%s” செயல்படுத்தல் தோல்வியடைந்தது:"
 
 #: ../js/portalHelper/main.js:85
-#, fuzzy
 #| msgid "Authentication Required"
 msgid "Web Authentication Redirect"
-msgstr "உறுதிப்படுத்தல் தேவை"
+msgstr "இணைய அங்கீகரிப்பு திருப்பிவிடல்"
 
 #: ../js/ui/appDisplay.js:772
 msgid "Frequently used applications will appear here"
-msgstr ""
+msgstr "அதிகம் பயன்படுத்தப்படும் பயன்பாடுகள் இங்கு காண்பிக்கப்படும்"
 
 #: ../js/ui/appDisplay.js:883
 msgid "Frequent"
@@ -426,10 +426,9 @@ msgid "Add to Favorites"
 msgstr "விருப்பங்களுக்கு சேர்"
 
 #: ../js/ui/appDisplay.js:1830
-#, fuzzy
 #| msgid "Show Text"
 msgid "Show Details"
-msgstr "உரையை காட்டுக"
+msgstr "விவரங்களைக் காட்டு"
 
 #: ../js/ui/appFavorites.js:124
 #, javascript-format
@@ -463,7 +462,7 @@ msgstr "முழு நாள்"
 #: ../js/ui/calendar.js:73
 msgctxt "event list time"
 msgid "%H∶%M"
-msgstr ""
+msgstr "%H∶%M"
 
 #. Translators: Shown in calendar event list, if 12h format,
 #. \u2236 is a ratio character, similar to : and \u2009 is
@@ -471,7 +470,7 @@ msgstr ""
 #: ../js/ui/calendar.js:82
 msgctxt "event list time"
 msgid "%l∶%M %p"
-msgstr ""
+msgstr "%l∶%M %p"
 
 #. Translators: Calendar grid abbreviation for Sunday.
 #. *
@@ -568,11 +567,11 @@ msgstr "ச"
 
 #: ../js/ui/calendar.js:453
 msgid "Previous month"
-msgstr ""
+msgstr "முந்தைய மாதம்"
 
 #: ../js/ui/calendar.js:463
 msgid "Next month"
-msgstr ""
+msgstr "அடுத்த மாதம்"
 
 #. Translators: Text to show if there are no events */
 #: ../js/ui/calendar.js:781
@@ -670,7 +669,7 @@ msgid "Authentication required by wireless network"
 msgstr "கம்பியில்லா வலைப்பின்னலுக்கு உறுதிப்படுத்துதல் தேவை"
 
 #: ../js/ui/components/networkAgent.js:319
-#, fuzzy, javascript-format
+#, javascript-format
 #| msgid ""
 #| "Passwords or encryption keys are required to access the wireless network "
 #| "'%s'."
@@ -678,8 +677,8 @@ msgid ""
 "Passwords or encryption keys are required to access the wireless network "
 "“%s”."
 msgstr ""
-"கம்பியில்லா வலைப்பின்னல் '%s' ஐ அணுக  கடவுச்சொற்கள் அல்லது மறையாக்க விசைகள் "
-"தேவை"
+"வயர்லெஸ் பிணையம் \"%s\" ஐ அணுக கடவுச்சொற்கள் அல்லது மறைகுறியாகக் விசைகள் "
+"தேவைப்படுகிறது."
 
 #: ../js/ui/components/networkAgent.js:323
 msgid "Wired 802.1X authentication"
@@ -710,10 +709,10 @@ msgid "Mobile broadband network password"
 msgstr "அலை அகலப்பட்டைக்கு வலைப்பின்னல் கடவுச்சொல்"
 
 #: ../js/ui/components/networkAgent.js:346
-#, fuzzy, javascript-format
+#, javascript-format
 #| msgid "A password is required to connect to '%s'."
 msgid "A password is required to connect to “%s”."
-msgstr " '%s' க்கு இணைக்க கடவுச்சொல் தேவை"
+msgstr "\"%s\" உடன் இணைப்பதற்கு கடவுச்சொல் தேவைப்படுகிறது."
 
 #: ../js/ui/components/polkitAgent.js:54
 msgid "Authentication Required"
@@ -762,19 +761,17 @@ msgstr "ஒலி நிறுத்தம்"
 #. Translators: Time in 24h format */
 #: ../js/ui/components/telepathyClient.js:953
 msgid "%H∶%M"
-msgstr ""
+msgstr "%H∶%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30" */
 #: ../js/ui/components/telepathyClient.js:960
-#| msgid "<b>Yesterday</b>, <b>%H:%M</b>"
 msgid "Yesterday, %H∶%M"
 msgstr "நேற்று, %H∶%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 24h format. i.e. "Monday, 14:30" */
 #: ../js/ui/components/telepathyClient.js:967
-#| msgid "%A, %B %d"
 msgid "%A, %H∶%M"
 msgstr "%A, %H∶%M"
 
@@ -806,7 +803,6 @@ msgstr "நேற்று, %l∶%M %p"
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm" */
 #: ../js/ui/components/telepathyClient.js:1000
-#| msgid "%A, %B %d"
 msgid "%A, %l∶%M %p"
 msgstr "%A, %l∶%M %p"
 
@@ -1125,8 +1121,6 @@ msgstr "மறுதுவக்கு & புதுப்பிப்புக
 
 #: ../js/ui/endSessionDialog.js:121
 #, javascript-format
-#| msgid "The system will restart automatically in %d second."
-#| msgid_plural "The system will restart automatically in %d seconds."
 msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
 "The system will automatically restart and install updates in %d seconds."
@@ -1181,7 +1175,6 @@ msgstr "நிறுவு"
 
 #: ../js/ui/extensionDownloader.js:204
 #, javascript-format
-#| msgid "Download and install '%s' from extensions.gnome.org?"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "extensions.gnome.org இல் இருந்து '%s' ஐ தரவிறக்கி நிறுவவா?"
 
@@ -1250,7 +1243,6 @@ msgid "Remove"
 msgstr "நீக்கு"
 
 #: ../js/ui/messageTray.js:1630
-#| msgid "Notification Settings"
 msgid "Notifications"
 msgstr "அறிவிப்புகள்"
 
@@ -1333,7 +1325,6 @@ msgid "Close"
 msgstr "மூடுக"
 
 #: ../js/ui/runDialog.js:277
-#| msgid "Estimating…"
 msgid "Restarting…"
 msgstr "மறுதுவக்குகிறது…"
 
@@ -1465,7 +1456,6 @@ msgstr[0] "இணைக்கப்பட்ட சாதனம் %d"
 msgstr[1] "இணைக்கப்பட்ட சாதனங்கள் %d"
 
 #: ../js/ui/status/bluetooth.js:106 ../js/ui/status/network.js:1309
-#| msgid "Connect"
 msgid "Not Connected"
 msgstr "இணைக்கப்படவில்லை"
 
@@ -1478,17 +1468,14 @@ msgid "Show Keyboard Layout"
 msgstr "விசைப்பலகை இடவமைவை காட்டுக"
 
 #: ../js/ui/status/location.js:65
-#| msgid "Applications"
 msgid "Location"
 msgstr "இருப்பிடம்"
 
 #: ../js/ui/status/location.js:72 ../js/ui/status/location.js:177
-#| msgid "Disabled"
 msgid "Disable"
 msgstr "முடக்கு"
 
 #: ../js/ui/status/location.js:73
-#| msgid "Power Settings"
 msgid "Privacy Settings"
 msgstr "தனியுரிமை அமைவுகள்"
 
@@ -1497,7 +1484,6 @@ msgid "In Use"
 msgstr "பயனில் உள்ளது"
 
 #: ../js/ui/status/location.js:180
-#| msgid "Enabled"
 msgid "Enable"
 msgstr "செயல்படுத்து"
 
@@ -1511,44 +1497,37 @@ msgid "Off"
 msgstr "முடக்கு"
 
 #: ../js/ui/status/network.js:459
-#| msgid "Connect"
 msgid "Connected"
 msgstr "இணைக்கப்பட்டது"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu) */
 #: ../js/ui/status/network.js:463
-#| msgid "unmanaged"
 msgid "Unmanaged"
 msgstr "நிர்வகிக்கப்படாதது"
 
 #: ../js/ui/status/network.js:465
-#| msgid "disconnecting..."
 msgid "Disconnecting"
 msgstr "துண்டிக்கப்படுகிறது"
 
 #: ../js/ui/status/network.js:471 ../js/ui/status/network.js:1301
-#| msgid "Connect"
 msgid "Connecting"
 msgstr "இணைக்கிறது"
 
 #. Translators: this is for network connections that require some kind of key or password */
 #: ../js/ui/status/network.js:474
-#| msgid "authentication required"
 msgid "Authentication required"
 msgstr "அங்கீகரிப்பு தேவை"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing */
 #: ../js/ui/status/network.js:482
-#| msgid "firmware missing"
 msgid "Firmware missing"
 msgstr "சாதன நிரல் இல்லை"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage */
 #: ../js/ui/status/network.js:486
-#| msgid "unavailable"
 msgid "Unavailable"
 msgstr "கிடைக்கவில்லை"
 
@@ -1557,17 +1536,14 @@ msgid "Connection failed"
 msgstr "இணைப்பு தோல்வியுற்றது"
 
 #: ../js/ui/status/network.js:504
-#| msgid "Settings"
 msgid "Wired Settings"
 msgstr "வயர்டு அமைவுகள்"
 
 #: ../js/ui/status/network.js:546 ../js/ui/status/network.js:624
-#| msgid "Mobile broadband network password"
 msgid "Mobile Broadband Settings"
 msgstr "மொபைல் பிராட்பேண்டு அமைவுகள்"
 
 #: ../js/ui/status/network.js:588 ../js/ui/status/network.js:1305
-#| msgid "Disabled"
 msgid "Hardware Disabled"
 msgstr "வன்பொருள் முடக்கப்பட்டது"
 
@@ -1576,7 +1552,6 @@ msgid "Use as Internet connection"
 msgstr "இணைய இணைப்பாகப் பயன்படுத்து"
 
 #: ../js/ui/status/network.js:813
-#| msgid "Airplane Mode"
 msgid "Airplane Mode is On"
 msgstr "விமான பயன்முறை இயக்கத்தில்"
 
@@ -1585,7 +1560,6 @@ msgid "Wi-Fi is disabled when airplane mode is on."
 msgstr "விமானப் பயன்முறை இயக்கத்தில் இருக்கும் போது Wi-Fi முடக்கப்படும்."
 
 #: ../js/ui/status/network.js:815
-#| msgid "Airplane Mode"
 msgid "Turn Off Airplane Mode"
 msgstr "விமான பயன்முறையை அணைக்கவும்"
 
@@ -1598,7 +1572,6 @@ msgid "Wi-Fi needs to be turned on in order to connect to a network."
 msgstr "பிணையத்திற்கு இணைக்க வேண்டுமானால் Wi-Fi ஐ இயக்க வேண்டும்."
 
 #: ../js/ui/status/network.js:826
-#| msgid "Turn On"
 msgid "Turn On Wi-Fi"
 msgstr "Wi-Fi ஐ இயக்கு"
 
@@ -1623,7 +1596,6 @@ msgid "Select Network"
 msgstr "பிணையத்தை தெரிவுச்செய்"
 
 #: ../js/ui/status/network.js:1179
-#| msgid "Settings"
 msgid "Wi-Fi Settings"
 msgstr "Wi-Fi அமைவுகள்"
 
@@ -1653,7 +1625,6 @@ msgid "Network Settings"
 msgstr "வலைப்பின்னல் அமைப்புகள்"
 
 #: ../js/ui/status/network.js:1482
-#| msgid "Settings"
 msgid "VPN Settings"
 msgstr "VPN அமைவுகள்"
 
@@ -1683,13 +1654,11 @@ msgstr "கணிக்கிறது…"
 
 #: ../js/ui/status/power.js:86
 #, javascript-format
-#| msgid "%d\\u2236%02d Remaining (%d%%)"
 msgid "%d∶%02d Remaining (%d%%)"
 msgstr "%d∶%02d மீதமுள்ளது (%d%%)"
 
 #: ../js/ui/status/power.js:91
 #, javascript-format
-#| msgid "%d\\u2236%02d Until Full (%d%%)"
 msgid "%d∶%02d Until Full (%d%%)"
 msgstr "%d∶%02d முழுமையாகும் வரை (%d%%)"
 
@@ -1734,7 +1703,6 @@ msgid "Volume changed"
 msgstr "ஒலியளவு மாற்றப்பட்டது"
 
 #: ../js/ui/status/volume.js:162
-#| msgid "Volume changed"
 msgid "Volume"
 msgstr "ஒலியளவு"
 
@@ -1760,7 +1728,6 @@ msgstr "தேடு"
 
 #: ../js/ui/windowAttentionHandler.js:19
 #, javascript-format
-#| msgid "'%s' is ready"
 msgid "“%s” is ready"
 msgstr "“%s” தயாராக உள்ளது"
 
@@ -1772,7 +1739,6 @@ msgstr "இந்தக் காட்சி அமைவுகளை வைத
 #. to avoid ellipsizing the labels.
 #. */
 #: ../js/ui/windowManager.js:84
-#| msgid "Power Settings"
 msgid "Revert Settings"
 msgstr "அமைவுகளை மீட்டமை"
 
@@ -1871,7 +1837,6 @@ msgstr "இயன்ற பாங்குகளின் பட்டியல�
 
 #: ../src/shell-app.c:666
 #, c-format
-#| msgid "Failed to launch '%s'"
 msgid "Failed to launch “%s”"
 msgstr "\"%s\" ஐத் தொடங்குதல் தோல்வியடைந்தது"
 
