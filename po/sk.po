@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-09-05 21:51+0000\n"
-"PO-Revision-Date: 2014-04-04 17:58+0100\n"
+"POT-Creation-Date: 2014-09-14 07:38+0000\n"
+"PO-Revision-Date: 2014-09-14 21:33+0100\n"
 "Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
 "Language-Team: Slovak <gnome-sk-list@gnome.org>\n"
 "Language: sk\n"
@@ -130,13 +130,15 @@ msgstr ""
 "Aplikácie zodpovedajúce týmto identifikátorom budú zobrazené medzi "
 "obľúbenými aplikáciami."
 
+# summary
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:9
 msgid "App Picker View"
-msgstr ""
+msgstr "Zobrazenie výberu aplikácií"
 
+# desc
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:10
 msgid "Index of the currently selected view in the application picker."
-msgstr ""
+msgstr "Číslo aktuálne vybraného zobrazenia vo výbere aplikácií."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:11
 msgid "History for command (Alt-F2) dialog"
@@ -233,10 +235,13 @@ msgstr "Klávesová skratka na zameranie aktívnych oznámení"
 msgid "Keybinding to focus the active notification."
 msgstr "Klávesová skratka, s ktorou sa zamerá na aktívne oznámenia."
 
+# summary
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:29
 msgid ""
 "Keybinding that pauses and resumes all running tweens, for debugging purposes"
 msgstr ""
+"Klávesová skratka, ktorá pozastaví a znovu spustí všetky animácie(tween), "
+"pre ladiace účely"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:30
 msgid "Which keyboard to use"
@@ -246,15 +251,19 @@ msgstr "Ktorú klávesnicu používať"
 msgid "The type of keyboard to use."
 msgstr "Typ klávesnice, ktorá sa má používať."
 
+# summary
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:32
 msgid "Limit switcher to current workspace."
-msgstr ""
+msgstr "Obmedziť prepínač na aktuálny pracovný priestor."
 
+# desc
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:33
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
 msgstr ""
+"Ak je true, iba aplikácie, ktoré majú okná na aktuálnom pracovnom priestore "
+"budú zobrazené v prepínači. Inak budú zahrnuté všetky aplikácie."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:34
 msgid "The application icon mode."
@@ -270,11 +279,14 @@ msgstr ""
 "„thumbnail-only“ (zobrazí miniatúru okna), „app-icon-only“ (zobrazí iba "
 "ikonu aplikácie) alebo „both“ (zobrazí oboje)."
 
+# desc
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:36
 msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
 msgstr ""
+"Ak je true, iba okná z aktuálneho pracovného priestoru budú zobrazené v "
+"prepínači. Inak budú zahrnuté všetky okná."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:37
 msgid "Attach modal dialog to the parent window"
@@ -307,20 +319,19 @@ msgstr ""
 
 #: ../data/org.gnome.Shell.PortalHelper.desktop.in.h:1
 msgid "Captive Portal"
-msgstr ""
+msgstr "Prihlasovací portál"
 
-#: ../js/extensionPrefs/main.js:127
+#: ../js/extensionPrefs/main.js:123
 #, javascript-format
 msgid "There was an error loading the preferences dialog for %s:"
 msgstr "Vyskytla sa chyba pri načítavaní dialógového okna nastavení pre %s:"
 
-#: ../js/extensionPrefs/main.js:159
-#| msgid "Configure GNOME Shell Extensions"
+#: ../js/extensionPrefs/main.js:155
 msgid "GNOME Shell Extensions"
 msgstr "Rozšírenia pre Shell prostredia GNOME"
 
 #: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:143
-#: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:429
+#: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:452
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
 #: ../js/ui/status/network.js:915
 msgid "Cancel"
@@ -389,7 +400,6 @@ msgstr "Spustenie „%s“ zlyhalo:"
 # TRANSLATORS: this is the title of the wifi captive portal login
 # window, until we know the title of the actual login page
 #: ../js/portalHelper/main.js:85
-#, fuzzy
 #| msgid "Authentication Required"
 msgid "Web Authentication Redirect"
 msgstr "Presmerovanie webového overenia totožnosti"
@@ -406,20 +416,19 @@ msgstr "Často používané"
 msgid "All"
 msgstr "Všetky"
 
-#: ../js/ui/appDisplay.js:1788
+#: ../js/ui/appDisplay.js:1789
 msgid "New Window"
 msgstr "Nové okno"
 
-#: ../js/ui/appDisplay.js:1814 ../js/ui/dash.js:285
+#: ../js/ui/appDisplay.js:1815 ../js/ui/dash.js:285
 msgid "Remove from Favorites"
 msgstr "Odstrániť z obľúbených"
 
-#: ../js/ui/appDisplay.js:1820
+#: ../js/ui/appDisplay.js:1821
 msgid "Add to Favorites"
 msgstr "Pridať do obľúbených"
 
-#: ../js/ui/appDisplay.js:1829
-#| msgid "Show Text"
+#: ../js/ui/appDisplay.js:1830
 msgid "Show Details"
 msgstr "Zobraziť podrobnosti"
 
@@ -624,11 +633,11 @@ msgstr "Otvoriť pomocou programu %s"
 msgid "Eject"
 msgstr "Vysunúť"
 
-#: ../js/ui/components/keyring.js:93 ../js/ui/components/polkitAgent.js:285
+#: ../js/ui/components/keyring.js:94 ../js/ui/components/polkitAgent.js:285
 msgid "Password:"
 msgstr "Heslo:"
 
-#: ../js/ui/components/keyring.js:113
+#: ../js/ui/components/keyring.js:120
 msgid "Type again:"
 msgstr "Zadajte znovu:"
 
@@ -1004,7 +1013,7 @@ msgstr "Zobraziť účet"
 msgid "Unknown reason"
 msgstr "Neznámy dôvod"
 
-#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:155
+#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:154
 msgid "Windows"
 msgstr "Okná"
 
@@ -1036,18 +1045,18 @@ msgstr "Nastavenia dátumu a času"
 msgid "%A %B %e, %Y"
 msgstr "%A, %e. %B %Y"
 
-#: ../js/ui/endSessionDialog.js:66
+#: ../js/ui/endSessionDialog.js:64
 #, javascript-format
 msgctxt "title"
 msgid "Log Out %s"
 msgstr "Odhlásenie používateľa %s"
 
-#: ../js/ui/endSessionDialog.js:67
+#: ../js/ui/endSessionDialog.js:65
 msgctxt "title"
 msgid "Log Out"
 msgstr "Odhlásenie"
 
-#: ../js/ui/endSessionDialog.js:69
+#: ../js/ui/endSessionDialog.js:67
 #, javascript-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
@@ -1055,7 +1064,7 @@ msgstr[0] "Používateľ %s bude automaticky odhlásený o %d sekúnd."
 msgstr[1] "Používateľ %s bude automaticky odhlásený o %d sekundu."
 msgstr[2] "Používateľ %s bude automaticky odhlásený o %d sekundy."
 
-#: ../js/ui/endSessionDialog.js:74
+#: ../js/ui/endSessionDialog.js:72
 #, javascript-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
@@ -1063,22 +1072,22 @@ msgstr[0] "Budete automaticky odhlásený o %d sekúnd."
 msgstr[1] "Budete automaticky odhlásený o %d sekundu."
 msgstr[2] "Budete automaticky odhlásený o %d sekundy."
 
-#: ../js/ui/endSessionDialog.js:80
+#: ../js/ui/endSessionDialog.js:78
 msgctxt "button"
 msgid "Log Out"
 msgstr "Odhlásiť sa"
 
-#: ../js/ui/endSessionDialog.js:86
+#: ../js/ui/endSessionDialog.js:84
 msgctxt "title"
 msgid "Power Off"
 msgstr "Vypnutie"
 
-#: ../js/ui/endSessionDialog.js:87
+#: ../js/ui/endSessionDialog.js:85
 msgctxt "title"
 msgid "Install Updates & Power Off"
 msgstr "Inštalácia aktualizácií a vypnutie"
 
-#: ../js/ui/endSessionDialog.js:89
+#: ../js/ui/endSessionDialog.js:87
 #, javascript-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
@@ -1086,27 +1095,27 @@ msgstr[0] "Systém sa automaticky vypne o %d sekúnd."
 msgstr[1] "Systém sa automaticky vypne o %d sekundu."
 msgstr[2] "Systém sa automaticky vypne o %d sekundy."
 
-#: ../js/ui/endSessionDialog.js:93
+#: ../js/ui/endSessionDialog.js:91
 msgctxt "checkbox"
 msgid "Install pending software updates"
 msgstr "Nainštalovať čakajúce aktualizácie softvéru"
 
-#: ../js/ui/endSessionDialog.js:96 ../js/ui/endSessionDialog.js:113
+#: ../js/ui/endSessionDialog.js:94 ../js/ui/endSessionDialog.js:111
 msgctxt "button"
 msgid "Restart"
 msgstr "Reštartovať"
 
-#: ../js/ui/endSessionDialog.js:98
+#: ../js/ui/endSessionDialog.js:96
 msgctxt "button"
 msgid "Power Off"
 msgstr "Vypnúť"
 
-#: ../js/ui/endSessionDialog.js:105
+#: ../js/ui/endSessionDialog.js:103
 msgctxt "title"
 msgid "Restart"
 msgstr "Reštart"
 
-#: ../js/ui/endSessionDialog.js:107
+#: ../js/ui/endSessionDialog.js:105
 #, javascript-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
@@ -1114,12 +1123,12 @@ msgstr[0] "Systém sa automaticky reštartuje o %d sekúnd."
 msgstr[1] "Systém sa automaticky reštartuje o %d sekundu."
 msgstr[2] "Systém sa automaticky reštartuje o %d sekundy."
 
-#: ../js/ui/endSessionDialog.js:121
+#: ../js/ui/endSessionDialog.js:119
 msgctxt "title"
 msgid "Restart & Install Updates"
 msgstr "Reštart a inštalácia aktualizácií"
 
-#: ../js/ui/endSessionDialog.js:123
+#: ../js/ui/endSessionDialog.js:121
 #, javascript-format
 msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
@@ -1131,43 +1140,43 @@ msgstr[1] ""
 msgstr[2] ""
 "Systém sa automaticky reštartuje a nainštaluje aktualizácie o %d sekundy."
 
-#: ../js/ui/endSessionDialog.js:129
+#: ../js/ui/endSessionDialog.js:127
 msgctxt "button"
 msgid "Restart &amp; Install"
 msgstr "Reštartovať a inštalovať"
 
-#: ../js/ui/endSessionDialog.js:130
+#: ../js/ui/endSessionDialog.js:128
 msgctxt "button"
 msgid "Install &amp; Power Off"
 msgstr "Nainštalovať a vvypnúť"
 
-#: ../js/ui/endSessionDialog.js:131
+#: ../js/ui/endSessionDialog.js:129
 msgctxt "checkbox"
 msgid "Power off after updates are installed"
 msgstr "Vypnúť po inštalácii aktualizácií"
 
-#: ../js/ui/endSessionDialog.js:315
+#: ../js/ui/endSessionDialog.js:338
 msgid "Running on battery power: please plug in before installing updates."
 msgstr ""
 "Systém je napájaný z batérie. Pred inštaláciou aktualizácií pripojte "
 "napájací zdroj."
 
-#: ../js/ui/endSessionDialog.js:332
+#: ../js/ui/endSessionDialog.js:355
 msgid "Some applications are busy or have unsaved work."
 msgstr "Niektoré aplikácie sú zaneprázdnené, alebo obsahujú neuloženú prácu."
 
-#: ../js/ui/endSessionDialog.js:339
+#: ../js/ui/endSessionDialog.js:362
 msgid "Other users are logged in."
 msgstr "Sú prihlásení iní používatelia."
 
 #. Translators: Remote here refers to a remote session, like a ssh login */
-#: ../js/ui/endSessionDialog.js:619
+#: ../js/ui/endSessionDialog.js:640
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (vzdialená relácia)"
 
 #. Translators: Console here refers to a tty like a VT console */
-#: ../js/ui/endSessionDialog.js:622
+#: ../js/ui/endSessionDialog.js:643
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (konzola)"
@@ -1181,7 +1190,7 @@ msgstr "Inštalovať"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Stiahnuť a nainštalovať „%s“ z extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:692 ../js/ui/status/keyboard.js:339
+#: ../js/ui/keyboard.js:692 ../js/ui/status/keyboard.js:523
 msgid "Keyboard"
 msgstr "Klávesnica"
 
@@ -1203,8 +1212,8 @@ msgstr "Skryť chyby"
 msgid "Show Errors"
 msgstr "Zobraziť chyby"
 
-#: ../js/ui/lookingGlass.js:716 ../js/ui/status/location.js:62
-#: ../js/ui/status/location.js:166
+#: ../js/ui/lookingGlass.js:716 ../js/ui/status/location.js:71
+#: ../js/ui/status/location.js:176
 msgid "Enabled"
 msgstr "Povolené"
 
@@ -1212,7 +1221,7 @@ msgstr "Povolené"
 #. because it's disabled by rfkill (airplane mode) */
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:719 ../js/ui/status/location.js:169
+#: ../js/ui/lookingGlass.js:719 ../js/ui/status/location.js:179
 #: ../js/ui/status/network.js:592 ../src/gvc/gvc-mixer-control.c:1830
 msgid "Disabled"
 msgstr "Zakázané"
@@ -1334,7 +1343,6 @@ msgid "Close"
 msgstr "Zavrieť"
 
 #: ../js/ui/runDialog.js:277
-#| msgid "Estimating…"
 msgid "Restarting…"
 msgstr "Reštartuje sa…"
 
@@ -1371,11 +1379,11 @@ msgstr "Nepodarilo sa uzamknúť obrazovku"
 msgid "Lock was blocked by an application"
 msgstr "Uzamknutie bolo zablokované aplikáciou"
 
-#: ../js/ui/search.js:557
+#: ../js/ui/search.js:594
 msgid "Searching…"
 msgstr "Hľadá sa…"
 
-#: ../js/ui/search.js:598
+#: ../js/ui/search.js:596
 msgid "No results."
 msgstr "Žiadne výsledky."
 
@@ -1482,23 +1490,28 @@ msgid "Brightness"
 msgstr "Jas"
 
 # menu item
-#: ../js/ui/status/keyboard.js:406
+#: ../js/ui/status/keyboard.js:547
 msgid "Show Keyboard Layout"
 msgstr "Zobraziť rozloženie klávesnice"
 
-#: ../js/ui/status/location.js:56
+#: ../js/ui/status/location.js:65
 msgid "Location"
 msgstr "Poloha"
 
-#: ../js/ui/status/location.js:63 ../js/ui/status/location.js:167
+#: ../js/ui/status/location.js:72 ../js/ui/status/location.js:177
 msgid "Disable"
 msgstr "Zakázať"
 
-#: ../js/ui/status/location.js:166
+#: ../js/ui/status/location.js:73
+#| msgid "Power Settings"
+msgid "Privacy Settings"
+msgstr "Nastavenia súkromia"
+
+#: ../js/ui/status/location.js:176
 msgid "In Use"
 msgstr "Používa sa"
 
-#: ../js/ui/status/location.js:170
+#: ../js/ui/status/location.js:180
 msgid "Enable"
 msgstr "Povoliť"
 
@@ -1520,12 +1533,10 @@ msgstr "Pripojené"
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu) */
 #: ../js/ui/status/network.js:463
-#| msgid "unmanaged"
 msgid "Unmanaged"
 msgstr "Nespravované"
 
 #: ../js/ui/status/network.js:465
-#| msgid "disconnecting..."
 msgid "Disconnecting"
 msgstr "Odpája sa"
 
@@ -1535,21 +1546,18 @@ msgstr "Pripája sa"
 
 #. Translators: this is for network connections that require some kind of key or password */
 #: ../js/ui/status/network.js:474
-#| msgid "authentication required"
 msgid "Authentication required"
 msgstr "Požaduje sa overenie totožnosti"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing */
 #: ../js/ui/status/network.js:482
-#| msgid "firmware missing"
 msgid "Firmware missing"
 msgstr "Chýba firmvér"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage */
 #: ../js/ui/status/network.js:486
-#| msgid "unavailable"
 msgid "Unavailable"
 msgstr "Nedostupné"
 
@@ -1743,11 +1751,11 @@ msgstr "Prihlásiť ako iný používateľ"
 msgid "Unlock Window"
 msgstr "Odomykacie okno"
 
-#: ../js/ui/viewSelector.js:159
+#: ../js/ui/viewSelector.js:158
 msgid "Applications"
 msgstr "Aplikácie"
 
-#: ../js/ui/viewSelector.js:163gedit slovenská kontrola pravopisu
+#: ../js/ui/viewSelector.js:162
 msgid "Search"
 msgstr "Hľadať"
 
@@ -1918,7 +1926,3 @@ msgstr "Dialógové okno overenia totožnosti bolo zatvorené používateľom"
 
 #~ msgid "Select an extension to configure using the combobox above."
 #~ msgstr "Použitím ponuky vyberte rozšírenie na nastavenie"
-
-# turčuje tvar kalendára
-#~ msgid "calendar:MY"
-#~ msgstr "calendar:MY"
