@@ -417,8 +417,8 @@ _clutter_input_device_ensure_touch_info (ClutterInputDevice *device,
 void
 _clutter_input_device_set_coords (ClutterInputDevice   *device,
                                   ClutterEventSequence *sequence,
-                                  gint                  x,
-                                  gint                  y,
+                                  gfloat                x,
+                                  gfloat                y,
                                   ClutterStage         *stage)
 {
   g_return_if_fail (CLUTTER_IS_INPUT_DEVICE (device));
