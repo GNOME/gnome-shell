@@ -111,6 +111,13 @@ IGNORE_HFILES= \
 	xprops.h \
 	$(NULL)
 
+if !HAVE_WAYLAND
+IGNORE_HFILES += \
+	meta-surface-actor-wayland.h	\
+	wayland				\
+	$(NULL)
+endif
+
 MKDB_OPTIONS+=--ignore-files="$(IGNORE_HFILES)"
 
 # Images to copy into HTML directory.
