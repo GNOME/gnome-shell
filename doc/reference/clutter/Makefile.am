@@ -90,6 +90,7 @@ IGNORE_HFILES = \
 	clutter-private.h 		\
 	clutter-profile.h		\
 	clutter-script-private.h 	\
+	clutter-settings-private.h	\
 	clutter-stage-manager-private.h	\
 	clutter-stage-private.h		\
 	clutter-stage-window.h 		\
