@@ -411,6 +411,8 @@ test_client_alarm_filter (TestClient            *client,
 typedef struct {
   GHashTable *clients;
   AsyncWaiter *waiter;
+  guint log_handler_id;
+  GString *warning_messages;
 } TestCase;
 
 static gboolean
@@ -433,10 +435,48 @@ test_case_alarm_filter (MetaDisplay           *display,
   return FALSE;
 }
 
+static gboolean
+test_case_check_warnings (TestCase *test,
+                          GError  **error)
+{
+  if (test->warning_messages != NULL)
+    {
+      g_set_error (error, TEST_RUNNER_ERROR, TEST_RUNNER_ERROR_RUNTIME_ERROR,
+                   "Warning messages:\n   %s", test->warning_messages->str);
+      g_string_free (test->warning_messages, TRUE);
+      test->warning_messages = NULL;
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
+static void
+test_case_log_func (const gchar   *log_domain,
+                    GLogLevelFlags log_level,
+                    const gchar   *message,
+                    gpointer       user_data)
+{
+  TestCase *test = user_data;
+
+  if (test->warning_messages == NULL)
+    test->warning_messages = g_string_new (message);
+  else
+    {
+      g_string_append (test->warning_messages, "\n   ");
+      g_string_append (test->warning_messages, message);
+    }
+}
+
 static TestCase *
 test_case_new (void)
 {
   TestCase *test = g_new0 (TestCase, 1);
+
+  test->log_handler_id = g_log_set_handler ("mutter",
+                                            G_LOG_LEVEL_CRITICAL | G_LOG_LEVEL_WARNING,
+                                            test_case_log_func,
+                                            test);
 
   meta_display_set_alarm_filter (meta_get_display (),
                                  test_case_alarm_filter, test);
@@ -734,7 +774,7 @@ test_case_do (TestCase *test,
       BAD_COMMAND("Unknown command %s", argv[0]);
     }
 
-  return TRUE;
+  return test_case_check_warnings (test, error);
 }
 
 static gboolean
@@ -762,6 +802,9 @@ test_case_destroy (TestCase *test,
   if (!test_case_assert_stacking (test, NULL, 0, error))
     return FALSE;
 
+  if (!test_case_check_warnings (test, error))
+    return FALSE;
+
   g_hash_table_iter_init (&iter, test->clients);
   while (g_hash_table_iter_next (&iter, &key, &value))
     test_client_destroy (value);
@@ -772,6 +815,8 @@ test_case_destroy (TestCase *test,
 
   g_hash_table_destroy (test->clients);
   g_free (test);
+
+  g_log_remove_handler ("mutter", test->log_handler_id);
 
   return TRUE;
 }
