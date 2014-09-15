@@ -76,7 +76,7 @@ typedef struct {
   MetaXWaylandManager *manager;
   MetaWindow *window;
   guint32 surface_id;
-  guint idle_id;
+  guint later_id;
 } AssociateWindowWithSurfaceOp;
 
 static void
@@ -84,12 +84,12 @@ associate_window_with_surface_window_destroyed (gpointer  user_data,
                                                 GObject  *obj)
 {
   AssociateWindowWithSurfaceOp *op = user_data;
-  g_source_remove (op->idle_id);
+  meta_later_remove (op->later_id);
   g_free (op);
 }
 
 static gboolean
-associate_window_with_surface_idle (gpointer user_data)
+associate_window_with_surface_later (gpointer user_data)
 {
   AssociateWindowWithSurfaceOp *op = user_data;
   if (!associate_window_with_surface_id (op->manager, op->window, op->surface_id))
@@ -113,15 +113,17 @@ meta_xwayland_handle_wl_surface_id (MetaWindow *window,
   if (!associate_window_with_surface_id (manager, window, surface_id))
     {
       /* No surface ID yet... it should arrive after the next
-       * iteration through the loop, so queue an idle and see
+       * iteration through the loop, so queue a later and see
        * what happens.
        */
       AssociateWindowWithSurfaceOp *op = g_new0 (AssociateWindowWithSurfaceOp, 1);
       op->manager = manager;
       op->window = window;
       op->surface_id = surface_id;
-      op->idle_id = g_idle_add (associate_window_with_surface_idle, op);
-      g_source_set_name_by_id (op->idle_id, "[mutter] associate_window_with_surface_idle");
+      op->later_id = meta_later_add (META_LATER_BEFORE_REDRAW,
+                                     associate_window_with_surface_later,
+                                     op,
+                                     NULL);
 
       g_object_weak_ref (G_OBJECT (op->window), associate_window_with_surface_window_destroyed, op);
     }
