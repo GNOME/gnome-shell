@@ -665,8 +665,9 @@ test_case_do (TestCase *test,
   else if (strcmp (argv[0], "create") == 0)
     {
       if (!(argc == 2 ||
-            (argc == 3 && strcmp (argv[2], "override") == 0)))
-        BAD_COMMAND("usage: %s <client-id>/<window-id > [override]", argv[0]);
+            (argc == 3 && strcmp (argv[2], "override") == 0) ||
+            (argc == 3 && strcmp (argv[2], "csd") == 0)))
+        BAD_COMMAND("usage: %s <client-id>/<window-id > [override|csd]", argv[0]);
 
       TestClient *client;
       const char *window_id;

@@ -67,7 +67,7 @@ process_line (const char *line)
 
       if (argc  < 2)
         {
-          g_print ("usage: create <id> [override]");
+          g_print ("usage: create <id> [override|csd]");
           goto out;
         }
 
@@ -78,12 +78,30 @@ process_line (const char *line)
         }
 
       gboolean override = FALSE;
+      gboolean csd = FALSE;
       for (i = 2; i < argc; i++)
-        if (strcmp (argv[i], "override") == 0)
-          override = TRUE;
+        {
+          if (strcmp (argv[i], "override") == 0)
+            override = TRUE;
+          if (strcmp (argv[i], "csd") == 0)
+            csd = TRUE;
+        }
+
+      if (override && csd)
+        {
+          g_print ("override and csd keywords are exclusie");
+          goto out;
+        }
 
       GtkWidget *window = gtk_window_new (override ? GTK_WINDOW_POPUP : GTK_WINDOW_TOPLEVEL);
       g_hash_table_insert (windows, g_strdup (argv[1]), window);
+
+      if (csd)
+        {
+          GtkWidget *headerbar = gtk_header_bar_new ();
+          gtk_window_set_titlebar (GTK_WINDOW (window), headerbar);
+          gtk_widget_show (headerbar);
+        }
 
       gtk_window_set_default_size (GTK_WINDOW (window), 100, 100);
 

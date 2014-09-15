@@ -48,9 +48,10 @@ quit_client <client-id>
  Destroys all windows for the client, waits for that to be processed,
  then instructs the client to exit.
 
-create <client-id>/<window-id> [override]
+create <client-id>/<window-id> [override|csd]
  Creates a new window. For the X11 backend, the keyword 'override'
- can be given to create an override-redirect
+ can be given to create an override-redirect and the keyword 'csd'
+ can be given to create a client-side decorated window.
 
 show <client-id>/<window-id>
 hide <client-id>/<window-id>
