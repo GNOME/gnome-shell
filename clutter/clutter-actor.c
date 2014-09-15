@@ -6027,7 +6027,13 @@ clutter_actor_update_default_paint_volume (ClutterActor       *self,
         {
           const ClutterPaintVolume *child_volume;
 
-          if (!CLUTTER_ACTOR_IS_MAPPED (child))
+          /* we ignore unmapped children, since they won't be painted.
+           *
+           * XXX: we also have to ignore mapped children without a valid
+           * allocation, because apparently some code above Clutter allows
+           * them.
+           */
+          if (!CLUTTER_ACTOR_IS_MAPPED (child) || !clutter_actor_has_allocation (child))
             continue;
 
           child_volume = clutter_actor_get_transformed_paint_volume (child, self);
