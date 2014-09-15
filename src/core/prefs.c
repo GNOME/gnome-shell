@@ -52,7 +52,6 @@
 #define KEY_GNOME_ACCESSIBILITY "toolkit-accessibility"
 #define KEY_GNOME_ANIMATIONS "enable-animations"
 #define KEY_GNOME_CURSOR_THEME "cursor-theme"
-#define KEY_GNOME_CURSOR_SIZE "cursor-size"
 #define KEY_XKB_OPTIONS "xkb-options"
 #define KEY_XSETTINGS_OVERRIDES "overrides"
 
@@ -482,13 +481,6 @@ static MetaIntPreference preferences_int[] =
         META_PREF_AUTO_RAISE_DELAY,
       },
       &auto_raise_delay
-    },
-    {
-      { "cursor-size",
-        SCHEMA_INTERFACE,
-        META_PREF_CURSOR_SIZE,
-      },
-      &cursor_size
     },
     {
       { "draggable-border-width",
@@ -1002,8 +994,6 @@ meta_prefs_init (void)
                     G_CALLBACK (settings_changed), NULL);
   g_signal_connect (settings, "changed::" KEY_GNOME_CURSOR_THEME,
                     G_CALLBACK (settings_changed), NULL);
-  g_signal_connect (settings, "changed::" KEY_GNOME_CURSOR_SIZE,
-                    G_CALLBACK (settings_changed), NULL);
   g_hash_table_insert (settings_schemas, g_strdup (SCHEMA_INTERFACE), settings);
 
   settings = get_xsettings_settings ();
@@ -1300,7 +1290,6 @@ update_cursor_size (GtkSettings *settings,
       queue_changed (META_PREF_CURSOR_SIZE);
     }
 }
-
 
 /**
  * maybe_give_disable_workaround_warning:
