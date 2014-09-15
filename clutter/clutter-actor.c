@@ -5969,6 +5969,12 @@ clutter_actor_update_default_paint_volume (ClutterActor       *self,
   ClutterActorPrivate *priv = self->priv;
   gboolean res = TRUE;
 
+  /* this should be checked before we call this function, but it's a
+   * good idea to be explicit when it costs us nothing
+   */
+  if (priv->needs_allocation)
+    return FALSE;
+
   /* we start from the allocation */
   clutter_paint_volume_set_width (volume,
                                   priv->allocation.x2 - priv->allocation.x1);
