@@ -79,26 +79,40 @@ typedef struct {
   guint later_id;
 } AssociateWindowWithSurfaceOp;
 
+static void associate_window_with_surface_window_unmanaged (MetaWindow                   *window,
+                                                            AssociateWindowWithSurfaceOp *op);
 static void
-associate_window_with_surface_window_destroyed (gpointer  user_data,
-                                                GObject  *obj)
+associate_window_with_surface_op_free (AssociateWindowWithSurfaceOp *op)
 {
-  AssociateWindowWithSurfaceOp *op = user_data;
-  meta_later_remove (op->later_id);
+  if (op->later_id != 0)
+    meta_later_remove (op->later_id);
+  g_signal_handlers_disconnect_by_func (op->window,
+                                        (gpointer) associate_window_with_surface_window_unmanaged,
+                                        op);
   g_free (op);
+}
+
+static void
+associate_window_with_surface_window_unmanaged (MetaWindow                   *window,
+                                                AssociateWindowWithSurfaceOp *op)
+{
+  associate_window_with_surface_op_free (op);
 }
 
 static gboolean
 associate_window_with_surface_later (gpointer user_data)
 {
   AssociateWindowWithSurfaceOp *op = user_data;
+
+  op->later_id = 0;
+
   if (!associate_window_with_surface_id (op->manager, op->window, op->surface_id))
     {
       /* Not here? Oh well... nothing we can do */
       g_warning ("Unknown surface ID %d (from window %s)", op->surface_id, op->window->desc);
     }
-  g_object_weak_unref (G_OBJECT (op->window), associate_window_with_surface_window_destroyed, op);
-  g_free (op);
+
+  associate_window_with_surface_op_free (op);
 
   return G_SOURCE_REMOVE;
 }
@@ -125,7 +139,8 @@ meta_xwayland_handle_wl_surface_id (MetaWindow *window,
                                      op,
                                      NULL);
 
-      g_object_weak_ref (G_OBJECT (op->window), associate_window_with_surface_window_destroyed, op);
+      g_signal_connect (op->window, "unmanaged",
+                        G_CALLBACK (associate_window_with_surface_window_unmanaged), op);
     }
 }
 
