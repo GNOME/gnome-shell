@@ -1,5 +1,7 @@
 # A framework for running scripted tests
 
+if HAVE_WAYLAND
+
 if BUILDOPT_INSTALL_TESTS
 stackingdir = $(pkgdatadir)/tests/stacking
 dist_stacking_DATA =				\
@@ -32,6 +34,8 @@ mutter_test_runner_LDADD = $(MUTTER_LIBS) libmutter.la
 
 run-tests: mutter-test-client mutter-test-runner
 	./mutter-test-runner $(dist_stacking_DATA)
+
+endif
 
 # Some random test programs for bits of the code
 
