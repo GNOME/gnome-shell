@@ -1,0 +1,22 @@
+new_client 1 x11
+create 1/1
+show 1/1
+create 1/2 csd
+show 1/2
+wait
+assert_stacking 1/1 1/2
+
+destroy 1/2
+wait
+assert_stacking 1/1
+
+create 1/2 csd
+show 1/2
+create 1/3 csd
+show 1/3
+wait
+assert_stacking 1/1 1/2 1/3
+
+destroy 1/2
+wait
+assert_stacking 1/1 1/3

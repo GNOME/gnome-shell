@@ -1069,6 +1069,9 @@ stack_sync_to_xserver (MetaStack *stack)
       Window top_level_window;
       guint64 stack_id;
 
+      if (w->unmanaging)
+        continue;
+
       meta_topic (META_DEBUG_STACK, "%u:%d - %s ",
 		  w->layer, w->stack_position, w->desc);
 

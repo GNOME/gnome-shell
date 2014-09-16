@@ -1063,7 +1063,8 @@ meta_stack_tracker_restack_managed (MetaStackTracker *tracker,
   for (old_pos = n_windows - 1; old_pos >= 0; old_pos--)
     {
       MetaWindow *old_window = meta_display_lookup_stack_id (tracker->screen->display, windows[old_pos]);
-      if ((old_window && !old_window->override_redirect) || windows[old_pos] == tracker->screen->guard_window)
+      if ((old_window && !old_window->override_redirect && !old_window->unmanaging) ||
+          windows[old_pos] == tracker->screen->guard_window)
         break;
     }
   g_assert (old_pos >= 0);
@@ -1093,7 +1094,7 @@ meta_stack_tracker_restack_managed (MetaStackTracker *tracker,
         }
 
       MetaWindow *old_window = meta_display_lookup_stack_id (tracker->screen->display, windows[old_pos]);
-      if (!old_window || old_window->override_redirect)
+      if (!old_window || old_window->override_redirect || old_window->unmanaging)
         {
           old_pos--;
           continue;
