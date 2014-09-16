@@ -92,6 +92,7 @@ struct _ShellApp
 enum {
   PROP_0,
   PROP_STATE,
+  PROP_BUSY,
   PROP_ID,
   PROP_DBUS_ID,
   PROP_ACTION_GROUP,
@@ -122,6 +123,9 @@ shell_app_get_property (GObject    *gobject,
     {
     case PROP_STATE:
       g_value_set_enum (value, app->state);
+      break;
+    case PROP_BUSY:
+      g_value_set_boolean (value, shell_app_get_busy (app));
       break;
     case PROP_ID:
       g_value_set_string (value, shell_app_get_id (app));
@@ -678,7 +682,6 @@ shell_app_activate_full (ShellApp      *app,
       case SHELL_APP_STATE_STARTING:
         break;
       case SHELL_APP_STATE_RUNNING:
-      case SHELL_APP_STATE_BUSY:
         shell_app_activate_window (app, NULL, timestamp);
         break;
     }
@@ -1060,22 +1063,27 @@ shell_app_on_ws_switch (MetaScreen         *screen,
   g_signal_emit (app, shell_app_signals[WINDOWS_CHANGED], 0);
 }
 
+gboolean
+shell_app_get_busy (ShellApp *app)
+{
+  if (app->running_state != NULL &&
+      app->running_state->application_proxy != NULL &&
+      shell_org_gtk_application_get_busy (app->running_state->application_proxy))
+    return TRUE;
+
+  return FALSE;
+}
+
 static void
 busy_changed_cb (GObject    *object,
                  GParamSpec *pspec,
                  gpointer    user_data)
 {
-  ShellOrgGtkApplication *proxy;
   ShellApp *app = user_data;
 
-  g_assert (SHELL_IS_ORG_GTK_APPLICATION (object));
   g_assert (SHELL_IS_APP (app));
 
-  proxy = SHELL_ORG_GTK_APPLICATION (object);
-  if (shell_org_gtk_application_get_busy (proxy))
-    shell_app_state_transition (app, SHELL_APP_STATE_BUSY);
-  else
-    shell_app_state_transition (app, SHELL_APP_STATE_RUNNING);
+  g_object_notify (G_OBJECT (app), "busy");
 }
 
 static void
@@ -1097,7 +1105,7 @@ get_application_proxy (GObject      *source,
                         G_CALLBACK (busy_changed_cb),
                         app);
       if (shell_org_gtk_application_get_busy (proxy))
-        shell_app_state_transition (app, SHELL_APP_STATE_BUSY);
+        g_object_notify (G_OBJECT (app), "busy");
     }
 
   if (app->running_state != NULL)
@@ -1576,6 +1584,19 @@ shell_app_class_init(ShellAppClass *klass)
                                                       SHELL_TYPE_APP_STATE,
                                                       SHELL_APP_STATE_STOPPED,
                                                       G_PARAM_READABLE));
+
+  /**
+   * ShellApp:busy:
+   *
+   * Whether the application has marked itself as busy.
+   */
+  g_object_class_install_property (gobject_class,
+                                   PROP_BUSY,
+                                   g_param_spec_boolean ("busy",
+                                                         "Busy",
+                                                         "Busy state",
+                                                         FALSE,
+                                                         G_PARAM_READABLE));
 
   /**
    * ShellApp:id:

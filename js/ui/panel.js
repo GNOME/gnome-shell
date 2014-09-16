@@ -181,6 +181,7 @@ const AppMenuButton = new Lang.Class({
         this._targetApp = null;
         this._appMenuNotifyId = 0;
         this._actionGroupNotifyId = 0;
+        this._busyNotifyId = 0;
 
         let bin = new St.Bin({ name: 'appMenu' });
         bin.connect('style-changed', Lang.bind(this, this._onStyleChanged));
@@ -457,12 +458,17 @@ const AppMenuButton = new Lang.Class({
                 this._targetApp.disconnect(this._actionGroupNotifyId);
                 this._actionGroupNotifyId = 0;
             }
+            if (this._busyNotifyId) {
+                this._targetApp.disconnect(this._busyNotifyId);
+                this._busyNotifyId = 0;
+            }
 
             this._targetApp = targetApp;
 
             if (this._targetApp) {
                 this._appMenuNotifyId = this._targetApp.connect('notify::menu', Lang.bind(this, this._sync));
                 this._actionGroupNotifyId = this._targetApp.connect('notify::action-group', Lang.bind(this, this._sync));
+                this._busyNotifyId = this._targetApp.connect('notify::busy', Lang.bind(this, this._sync));
                 this._label.setText(this._targetApp.get_name());
                 this.actor.set_accessible_name(this._targetApp.get_name());
             }
@@ -476,7 +482,7 @@ const AppMenuButton = new Lang.Class({
 
         let isBusy = (this._targetApp != null &&
                       (this._targetApp.get_state() == Shell.AppState.STARTING ||
-                       this._targetApp.get_state() == Shell.AppState.BUSY));
+                       this._targetApp.get_busy()));
         if (isBusy)
             this.startAnimation();
         else

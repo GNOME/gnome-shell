@@ -30,8 +30,7 @@ struct _ShellAppClass
 typedef enum {
   SHELL_APP_STATE_STOPPED,
   SHELL_APP_STATE_STARTING,
-  SHELL_APP_STATE_RUNNING,
-  SHELL_APP_STATE_BUSY
+  SHELL_APP_STATE_RUNNING
 } ShellAppState;
 
 GType shell_app_get_type (void) G_GNUC_CONST;
@@ -86,6 +85,8 @@ int shell_app_compare (ShellApp *app, ShellApp *other);
 
 void shell_app_update_window_actions (ShellApp *app, MetaWindow *window);
 void shell_app_update_app_menu       (ShellApp *app, MetaWindow *window);
+
+gboolean shell_app_get_busy          (ShellApp *app);
 
 G_END_DECLS
 
