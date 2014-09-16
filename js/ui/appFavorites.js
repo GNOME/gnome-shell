@@ -18,6 +18,7 @@ const RENAMED_DESKTOP_IDS = {
     'gnect.desktop': 'four-in-a-row.desktop',
     'gnibbles.desktop': 'gnome-nibbles.desktop',
     'gnobots2.desktop': 'gnome-robots.desktop',
+    'gnome-boxes.desktop': 'org.gnome.Boxes.desktop',
     'gnome-clocks.desktop': 'org.gnome.clocks.desktop',
     'gnome-contacts.desktop': 'org.gnome.Contacts.desktop',
     'gnome-documents.desktop': 'org.gnome.Documents.desktop',
