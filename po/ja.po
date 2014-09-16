@@ -14,9 +14,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-09-05 21:51+0000\n"
-"PO-Revision-Date: 2014-05-21 14:53+0900\n"
-"Last-Translator: Zhou Fang <houshuu@live.jp>\n"
+"POT-Creation-Date: 2014-09-15 22:05+0000\n"
+"PO-Revision-Date: 2014-09-16 22:12+0900\n"
+"Last-Translator: Jiro Matsuzawa <jmatsuzawa@gnome.org>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
@@ -91,7 +91,7 @@ msgstr "拡張機能のバージョン互換の検証を無効にする"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:6
 msgid "GNOME Shell will only load extensions that claim to support the current running version. Enabling this option will disable this check and try to load all extensions regardless of the versions they claim to support."
-msgstr ""
+msgstr "通常では、現在起動中の GNOME Shell のバージョンをサポートする拡張機能だけがロードされます。この設定を true にした場合、バージョンチェック機能が無効になり、拡張機能のサポートバージョンに関係なくすべての拡張機能をロードします。"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:7
 msgid "List of desktop file IDs for favorite applications"
@@ -103,11 +103,11 @@ msgstr "これらの ID で示されるアプリケーションは「お気に�
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:9
 msgid "App Picker View"
-msgstr ""
+msgstr "アプリ一覧画面"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:10
 msgid "Index of the currently selected view in the application picker."
-msgstr ""
+msgstr "現在のアプリケーション一覧画面のインデックスです。"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:11
 msgid "History for command (Alt-F2) dialog"
@@ -183,7 +183,7 @@ msgstr "アクティブな通知にフォーカスを当てるキーバインド
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:29
 msgid "Keybinding that pauses and resumes all running tweens, for debugging purposes"
-msgstr ""
+msgstr "Tween の一時停止および再開を行うキーバインドです。デバッグ用途で使用します。"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:30
 msgid "Which keyboard to use"
@@ -195,11 +195,11 @@ msgstr "使いたいキーボードの種類です。"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:32
 msgid "Limit switcher to current workspace."
-msgstr ""
+msgstr "スイッチャーを現在のワークスペース内に制限する"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:33
 msgid "If true, only applications that have windows on the current workspace are shown in the switcher. Otherwise, all applications are included."
-msgstr ""
+msgstr "true に設定した場合、現在のワークスペースにウィンドウのあるアプリケーションだけをスイッチャーに表示します。false に設定した場合はすべてのアプリケーションを表示します。"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:34
 msgid "The application icon mode."
@@ -211,7 +211,7 @@ msgstr "ウィンドウスイッチャーでのウィンドウの表示方法を
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:36
 msgid "If true, only windows from the current workspace are shown in the switcher. Otherwise, all windows are included."
-msgstr ""
+msgstr "true に設定した場合、現在のワークスペースのウィンドウだけをスイッチャーに表示します。false に設定した場合はすべてのアプリケーションを表示します。"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:37
 msgid "Attach modal dialog to the parent window"
@@ -239,21 +239,19 @@ msgstr "マウスモードにおけるフォーカス遷移をポインターが
 
 #: ../data/org.gnome.Shell.PortalHelper.desktop.in.h:1
 msgid "Captive Portal"
-msgstr ""
+msgstr "キャプティブポータル"
 
-#: ../js/extensionPrefs/main.js:127
+#: ../js/extensionPrefs/main.js:123
 #, javascript-format
 msgid "There was an error loading the preferences dialog for %s:"
 msgstr "%s の設定ダイアログのロード中にエラーが発生しました。"
 
-#: ../js/extensionPrefs/main.js:159
-#, fuzzy
-#| msgid "Configure GNOME Shell Extensions"
+#: ../js/extensionPrefs/main.js:155
 msgid "GNOME Shell Extensions"
-msgstr "GNOME Shell 拡張機能の設定を行います"
+msgstr "GNOME Shell 拡張機能"
 
 #: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:143
-#: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:429
+#: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:452
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
 #: ../js/ui/status/network.js:915
 msgid "Cancel"
@@ -317,10 +315,8 @@ msgid "Execution of “%s” failed:"
 msgstr "”%s”の実行に失敗しました:"
 
 #: ../js/portalHelper/main.js:85
-#, fuzzy
-#| msgid "Authentication Required"
 msgid "Web Authentication Redirect"
-msgstr "認証が要求されました"
+msgstr "Web 認証リダイレクト"
 
 #: ../js/ui/appDisplay.js:772
 msgid "Frequently used applications will appear here"
@@ -334,28 +330,28 @@ msgstr "常用"
 msgid "All"
 msgstr "すべて"
 
-#: ../js/ui/appDisplay.js:1788
+#: ../js/ui/appDisplay.js:1789
 msgid "New Window"
 msgstr "新しいウィンドウで開く"
 
-#: ../js/ui/appDisplay.js:1814 ../js/ui/dash.js:285
+#: ../js/ui/appDisplay.js:1815 ../js/ui/dash.js:285
 msgid "Remove from Favorites"
 msgstr "お気に入りから削除"
 
-#: ../js/ui/appDisplay.js:1820
+#: ../js/ui/appDisplay.js:1821
 msgid "Add to Favorites"
 msgstr "お気に入りに追加"
 
-#: ../js/ui/appDisplay.js:1829
+#: ../js/ui/appDisplay.js:1830
 msgid "Show Details"
-msgstr ""
+msgstr "詳細を表示する"
 
-#: ../js/ui/appFavorites.js:124
+#: ../js/ui/appFavorites.js:131
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "%s をお気に入りに追加しました。"
 
-#: ../js/ui/appFavorites.js:158
+#: ../js/ui/appFavorites.js:165
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "%s をお気に入りから削除しました。"
@@ -547,11 +543,11 @@ msgstr "%s で開く"
 msgid "Eject"
 msgstr "取り出し"
 
-#: ../js/ui/components/keyring.js:93 ../js/ui/components/polkitAgent.js:285
+#: ../js/ui/components/keyring.js:94 ../js/ui/components/polkitAgent.js:285
 msgid "Password:"
 msgstr "パスワード:"
 
-#: ../js/ui/components/keyring.js:113
+#: ../js/ui/components/keyring.js:120
 msgid "Type again:"
 msgstr "再入力:"
 
@@ -911,7 +907,7 @@ msgstr "アカウントを表示"
 msgid "Unknown reason"
 msgstr "原因不明"
 
-#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:155
+#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:154
 msgid "Windows"
 msgstr "ウィンドウ"
 
@@ -942,122 +938,122 @@ msgstr "日時の設定"
 msgid "%A %B %e, %Y"
 msgstr "%Y年%B%-e日 (%a)"
 
-#: ../js/ui/endSessionDialog.js:66
+#: ../js/ui/endSessionDialog.js:64
 #, javascript-format
 msgctxt "title"
 msgid "Log Out %s"
 msgstr "%s のログアウト"
 
-#: ../js/ui/endSessionDialog.js:67
+#: ../js/ui/endSessionDialog.js:65
 msgctxt "title"
 msgid "Log Out"
 msgstr "ログアウト"
 
-#: ../js/ui/endSessionDialog.js:69
+#: ../js/ui/endSessionDialog.js:67
 #, javascript-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "%s は %d 秒後に自動的にログアウトします。"
 
-#: ../js/ui/endSessionDialog.js:74
+#: ../js/ui/endSessionDialog.js:72
 #, javascript-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
 msgstr[0] "%d 秒後に自動的にログアウトします。"
 
-#: ../js/ui/endSessionDialog.js:80
+#: ../js/ui/endSessionDialog.js:78
 msgctxt "button"
 msgid "Log Out"
 msgstr "ログアウト"
 
-#: ../js/ui/endSessionDialog.js:86
+#: ../js/ui/endSessionDialog.js:84
 msgctxt "title"
 msgid "Power Off"
 msgstr "電源オフ"
 
-#: ../js/ui/endSessionDialog.js:87
+#: ../js/ui/endSessionDialog.js:85
 msgctxt "title"
 msgid "Install Updates & Power Off"
 msgstr "更新をインストールして電源オフ"
 
-#: ../js/ui/endSessionDialog.js:89
+#: ../js/ui/endSessionDialog.js:87
 #, javascript-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "%d 秒後に自動的にシステムの電源を切ります。"
 
-#: ../js/ui/endSessionDialog.js:93
+#: ../js/ui/endSessionDialog.js:91
 msgctxt "checkbox"
 msgid "Install pending software updates"
 msgstr "未実行のソフトウェアアップデートをインストールする"
 
-#: ../js/ui/endSessionDialog.js:96 ../js/ui/endSessionDialog.js:113
+#: ../js/ui/endSessionDialog.js:94 ../js/ui/endSessionDialog.js:111
 msgctxt "button"
 msgid "Restart"
 msgstr "再起動"
 
-#: ../js/ui/endSessionDialog.js:98
+#: ../js/ui/endSessionDialog.js:96
 msgctxt "button"
 msgid "Power Off"
 msgstr "電源オフ"
 
-#: ../js/ui/endSessionDialog.js:105
+#: ../js/ui/endSessionDialog.js:103
 msgctxt "title"
 msgid "Restart"
 msgstr "再起動"
 
-#: ../js/ui/endSessionDialog.js:107
+#: ../js/ui/endSessionDialog.js:105
 #, javascript-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "%d 秒後にシステムを再起動します。"
 
-#: ../js/ui/endSessionDialog.js:121
+#: ../js/ui/endSessionDialog.js:119
 msgctxt "title"
 msgid "Restart & Install Updates"
 msgstr "再起動して更新をインストールする"
 
-#: ../js/ui/endSessionDialog.js:123
+#: ../js/ui/endSessionDialog.js:121
 #, javascript-format
 msgid "The system will automatically restart and install updates in %d second."
 msgid_plural "The system will automatically restart and install updates in %d seconds."
 msgstr[0] "%d 秒後にシステムを再起動して更新をインストールします。"
 
-#: ../js/ui/endSessionDialog.js:129
+#: ../js/ui/endSessionDialog.js:127
 msgctxt "button"
 msgid "Restart &amp; Install"
 msgstr "再起動とインストール"
 
-#: ../js/ui/endSessionDialog.js:130
+#: ../js/ui/endSessionDialog.js:128
 msgctxt "button"
 msgid "Install &amp; Power Off"
 msgstr "インストールと電源オフ"
 
-#: ../js/ui/endSessionDialog.js:131
+#: ../js/ui/endSessionDialog.js:129
 msgctxt "checkbox"
 msgid "Power off after updates are installed"
 msgstr "更新をインストール後電源をオフにする"
 
-#: ../js/ui/endSessionDialog.js:315
+#: ../js/ui/endSessionDialog.js:338
 msgid "Running on battery power: please plug in before installing updates."
 msgstr "バッテリーで動作中です: 更新をインストールする前に電源に接続してください。"
 
-#: ../js/ui/endSessionDialog.js:332
+#: ../js/ui/endSessionDialog.js:355
 msgid "Some applications are busy or have unsaved work."
 msgstr "実行中あるいは作業が未保存のアプリケーションがあります。"
 
-#: ../js/ui/endSessionDialog.js:339
+#: ../js/ui/endSessionDialog.js:362
 msgid "Other users are logged in."
 msgstr "他のユーザーがログインしています。"
 
 #. Translators: Remote here refers to a remote session, like a ssh login */
-#: ../js/ui/endSessionDialog.js:619
+#: ../js/ui/endSessionDialog.js:640
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (リモート)"
 
 #. Translators: Console here refers to a tty like a VT console */
-#: ../js/ui/endSessionDialog.js:622
+#: ../js/ui/endSessionDialog.js:643
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (コンソール)"
@@ -1071,7 +1067,7 @@ msgstr "インストール"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "extensions.gnome.org から ”%s” をダウンロードしてインストールしますか?"
 
-#: ../js/ui/keyboard.js:692 ../js/ui/status/keyboard.js:339
+#: ../js/ui/keyboard.js:692 ../js/ui/status/keyboard.js:523
 msgid "Keyboard"
 msgstr "キーボード"
 
@@ -1093,8 +1089,8 @@ msgstr "エラーを非表示"
 msgid "Show Errors"
 msgstr "エラーを表示"
 
-#: ../js/ui/lookingGlass.js:716 ../js/ui/status/location.js:62
-#: ../js/ui/status/location.js:166
+#: ../js/ui/lookingGlass.js:716 ../js/ui/status/location.js:71
+#: ../js/ui/status/location.js:176
 msgid "Enabled"
 msgstr "有効"
 
@@ -1102,7 +1098,7 @@ msgstr "有効"
 #. because it's disabled by rfkill (airplane mode) */
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:719 ../js/ui/status/location.js:169
+#: ../js/ui/lookingGlass.js:719 ../js/ui/status/location.js:179
 #: ../js/ui/status/network.js:592 ../src/gvc/gvc-mixer-control.c:1830
 msgid "Disabled"
 msgstr "無効"
@@ -1217,10 +1213,8 @@ msgid "Close"
 msgstr "閉じる"
 
 #: ../js/ui/runDialog.js:277
-#, fuzzy
-#| msgid "Estimating…"
 msgid "Restarting…"
-msgstr "残量推計中…"
+msgstr "再起動中…"
 
 #. Translators: This is a time format for a date in
 #. long format */
@@ -1250,11 +1244,11 @@ msgstr "ロックできません"
 msgid "Lock was blocked by an application"
 msgstr "アプリケーションによってロックがブロックされました"
 
-#: ../js/ui/search.js:557
+#: ../js/ui/search.js:594
 msgid "Searching…"
 msgstr "検索しています…"
 
-#: ../js/ui/search.js:598
+#: ../js/ui/search.js:596
 msgid "No results."
 msgstr "一致するものがありません。"
 
@@ -1355,23 +1349,27 @@ msgstr "未接続"
 msgid "Brightness"
 msgstr "明るさ"
 
-#: ../js/ui/status/keyboard.js:406
+#: ../js/ui/status/keyboard.js:547
 msgid "Show Keyboard Layout"
 msgstr "キーボードレイアウトの表示"
 
-#: ../js/ui/status/location.js:56
+#: ../js/ui/status/location.js:65
 msgid "Location"
 msgstr "場所"
 
-#: ../js/ui/status/location.js:63 ../js/ui/status/location.js:167
+#: ../js/ui/status/location.js:72 ../js/ui/status/location.js:177
 msgid "Disable"
 msgstr "無効"
 
-#: ../js/ui/status/location.js:166
+#: ../js/ui/status/location.js:73
+msgid "Privacy Settings"
+msgstr "プライバシー設定"
+
+#: ../js/ui/status/location.js:176
 msgid "In Use"
 msgstr "使用中"
 
-#: ../js/ui/status/location.js:170
+#: ../js/ui/status/location.js:180
 msgid "Enable"
 msgstr "有効"
 
@@ -1606,11 +1604,11 @@ msgstr "他のユーザーでログイン"
 msgid "Unlock Window"
 msgstr "ロック解除"
 
-#: ../js/ui/viewSelector.js:159
+#: ../js/ui/viewSelector.js:158
 msgid "Applications"
 msgstr "アプリケーション"
 
-#: ../js/ui/viewSelector.js:163
+#: ../js/ui/viewSelector.js:162
 msgid "Search"
 msgstr "検索"
 
