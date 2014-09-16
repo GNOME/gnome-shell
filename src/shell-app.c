@@ -16,6 +16,7 @@
 #include "shell-window-tracker-private.h"
 #include "st.h"
 #include "gtkactionmuxer.h"
+#include "org-gtk-application.h"
 
 #ifdef HAVE_SYSTEMD
 #include <systemd/sd-journal.h>
@@ -47,14 +48,16 @@ typedef struct {
   /* Whether or not we need to resort the windows; this is done on demand */
   guint window_sort_stale : 1;
 
-  /* DBus property notification subscription */
-  guint properties_changed_id : 1;
-
   /* See GApplication documentation */
   GDBusMenuModel   *remote_menu;
   GtkActionMuxer   *muxer;
   char             *unique_bus_name;
   GDBusConnection  *session;
+
+  /* GDBus Proxy for getting application busy state */
+  ShellOrgGtkApplication *application_proxy;
+  GCancellable           *cancellable;
+
 } ShellAppRunningState;
 
 /**
@@ -1058,37 +1061,49 @@ shell_app_on_ws_switch (MetaScreen         *screen,
 }
 
 static void
-application_properties_changed (GDBusConnection *connection,
-                                const gchar     *sender_name,
-                                const gchar     *object_path,
-                                const gchar     *interface_name,
-                                const gchar     *signal_name,
-                                GVariant        *parameters,
-                                gpointer         user_data)
+busy_changed_cb (GObject    *object,
+                 GParamSpec *pspec,
+                 gpointer    user_data)
 {
+  ShellOrgGtkApplication *proxy;
   ShellApp *app = user_data;
-  GVariant *changed_properties;
-  gboolean busy = FALSE;
-  const gchar *interface_name_for_signal;
 
-  g_variant_get (parameters,
-                 "(&s@a{sv}as)",
-                 &interface_name_for_signal,
-                 &changed_properties,
-                 NULL);
+  g_assert (SHELL_IS_ORG_GTK_APPLICATION (object));
+  g_assert (SHELL_IS_APP (app));
 
-  if (g_strcmp0 (interface_name_for_signal, "org.gtk.Application") != 0)
-    return;
-
-  g_variant_lookup (changed_properties, "Busy", "b", &busy);
-
-  if (busy)
+  proxy = SHELL_ORG_GTK_APPLICATION (object);
+  if (shell_org_gtk_application_get_busy (proxy))
     shell_app_state_transition (app, SHELL_APP_STATE_BUSY);
   else
     shell_app_state_transition (app, SHELL_APP_STATE_RUNNING);
+}
 
-  if (changed_properties != NULL)
-    g_variant_unref (changed_properties);
+static void
+get_application_proxy (GObject      *source,
+                       GAsyncResult *result,
+                       gpointer      user_data)
+{
+  ShellApp *app = user_data;
+  ShellOrgGtkApplication *proxy;
+
+  g_assert (SHELL_IS_APP (app));
+
+  proxy = shell_org_gtk_application_proxy_new_finish (result, NULL);
+  if (proxy != NULL)
+    {
+      app->running_state->application_proxy = proxy;
+      g_signal_connect (proxy,
+                        "notify::busy",
+                        G_CALLBACK (busy_changed_cb),
+                        app);
+      if (shell_org_gtk_application_get_busy (proxy))
+        shell_app_state_transition (app, SHELL_APP_STATE_BUSY);
+    }
+
+  if (app->running_state != NULL)
+    g_clear_object (&app->running_state->cancellable);
+
+  g_object_unref (app);
 }
 
 static void
@@ -1098,7 +1113,8 @@ shell_app_ensure_busy_watch (ShellApp *app)
   MetaWindow *window;
   const gchar *object_path;
 
-  if (running_state->properties_changed_id != 0)
+  if (running_state->application_proxy != NULL ||
+      running_state->cancellable != NULL)
     return;
 
   if (running_state->unique_bus_name == NULL)
@@ -1110,15 +1126,16 @@ shell_app_ensure_busy_watch (ShellApp *app)
   if (object_path == NULL)
     return;
 
-  running_state->properties_changed_id =
-    g_dbus_connection_signal_subscribe (running_state->session,
-                                        running_state->unique_bus_name,
-                                        "org.freedesktop.DBus.Properties",
-                                        "PropertiesChanged",
-                                        object_path,
-                                        "org.gtk.Application",
-                                        G_DBUS_SIGNAL_FLAGS_NONE,
-                                        application_properties_changed, app, NULL);
+  running_state->cancellable = g_cancellable_new();
+  /* Take a reference to app to make sure it isn't finalized before
+     get_application_proxy runs */
+  shell_org_gtk_application_proxy_new (running_state->session,
+                                       G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START,
+                                       running_state->unique_bus_name,
+                                       object_path,
+                                       running_state->cancellable,
+                                       get_application_proxy,
+                                       g_object_ref (app));
 }
 
 void
@@ -1461,8 +1478,13 @@ unref_running_state (ShellAppRunningState *state)
   screen = shell_global_get_screen (shell_global_get ());
   g_signal_handler_disconnect (screen, state->workspace_switch_id);
 
-  if (state->properties_changed_id != 0)
-    g_dbus_connection_signal_unsubscribe (state->session, state->properties_changed_id);
+  g_clear_object (&state->application_proxy);
+
+  if (state->cancellable != NULL)
+    {
+      g_cancellable_cancel (state->cancellable);
+      g_clear_object (&state->cancellable);
+    }
 
   g_clear_object (&state->remote_menu);
   g_clear_object (&state->muxer);
