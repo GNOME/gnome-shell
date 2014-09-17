@@ -1,3 +1,37 @@
+3.13.92
+=======
+* Fix submenu arrow animations [Hashem; #728927]
+* Always initialize clutter accessibility [Alejandro; #735908]
+* Adapt to mutter background changes [Owen; #735638]
+* Improve handling of outOfDate extensions in prefs [Florian; #736185]
+* Port offline updates to PackageKit's DBus interface [Kalev; #736337]
+* location: Translate accuracy levels for geoclue [Zeeshan; #736479]
+* Implement input source switching [Rui; #736435]
+* Fix crash when dragging window from workspace switcher [Carlos G.; #735972]
+* Clean out list of default favorites [Elad; #735682]
+* Add settings link to location submenu [Florian; #736542]
+* Fix keynav of message tray menu button [Florian; #707799]
+* Misc. bug fixes [Carlos G., Florian, Rui; #736110, #736329, #736343,
+  #735927, #735976]
+
+Contributors:
+  Elad Alfassa, Zeeshan Ali (Khattak), Michael Catanzaro, Adel Gadllah,
+  Carlos Garnacho, Kalev Lember, Rui Matos, Florian Müllner, Hashem Nasarat,
+  Alejandro Piñeiro, Carlos Soriano, Jasper St. Pierre, Owen W. Taylor
+
+Translations:
+  Piotr Drąg [pl], Changwoo Ryu [ko], Yuri Myasoedov [ru], Zhou Fang [ja],
+  Peter Mráz [sk], Ville-Pekka Vainio [fi], Sweta Kothari [gu],
+  Marek Černocký [cs], A S Alam [pa], Christian Kirbach [de],
+  Alexandre Franke [fr], Aurimas Černius [lt], Khaled Hosny [ar],
+  Enrico Nicoletto [pt_BR], Andika Triwidada [id], Shantha kumar [ta],
+  Matej Urbančič [sl], Pawan Chitrakar [ne], Yosef Or Boczko [he],
+  Balázs Úr [hu], Dušan Kazik [sk], Gil Forcada [ca],
+  Carles Ferrando [ca@valencia], Nilamdyuti Goswami [as], Ivaylo Valkov [bg],
+  Sandeep Sheshrao Shedmake [mr], Umarzuki Bin Mochlis Moktar [ms],
+  Muhammet Kara [tr], Jiro Matsuzawa [ja], Kris Thomsen [da],
+  Mattias Eriksson [sv]
+
 3.13.91
 =======
 * Fix keynav into session menu on login screen [Florian; #735614]
