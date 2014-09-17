@@ -191,9 +191,6 @@ meta_window_wayland_move_resize_internal (MetaWindow                *window,
       if (constrained_rect.width != window->rect.width ||
           constrained_rect.height != window->rect.height)
         {
-          wl_window->last_sent_width = constrained_rect.width;
-          wl_window->last_sent_height = constrained_rect.height;
-
           meta_wayland_surface_configure_notify (window->surface,
                                                  constrained_rect.width,
                                                  constrained_rect.height,
@@ -208,6 +205,13 @@ meta_window_wayland_move_resize_internal (MetaWindow                *window,
            * and then ack to simply move the window. */
           can_move_now = TRUE;
         }
+    }
+
+  if (wl_window->last_sent_width != constrained_rect.width ||
+      wl_window->last_sent_height != constrained_rect.height)
+    {
+      wl_window->last_sent_width = constrained_rect.width;
+      wl_window->last_sent_height = constrained_rect.height;
     }
 
   if (can_move_now)
