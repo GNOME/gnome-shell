@@ -817,10 +817,16 @@ meta_wayland_pointer_create_new_resource (MetaWaylandPointer *pointer,
 
   cr = wl_resource_create (client, &wl_pointer_interface, wl_resource_get_version (seat_resource), id);
   wl_resource_set_implementation (cr, &pointer_interface, pointer, unbind_resource);
-  wl_list_insert (&pointer->resource_list, wl_resource_get_link (cr));
 
   if (pointer->focus_surface && wl_resource_get_client (pointer->focus_surface->resource) == client)
-    broadcast_focus (pointer, cr);
+    {
+      wl_list_insert (&pointer->focus_resource_list, wl_resource_get_link (cr));
+      broadcast_focus (pointer, cr);
+    }
+  else
+    {
+      wl_list_insert (&pointer->resource_list, wl_resource_get_link (cr));
+    }
 }
 
 gboolean

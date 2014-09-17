@@ -636,7 +636,6 @@ meta_wayland_keyboard_create_new_resource (MetaWaylandKeyboard *keyboard,
 
   cr = wl_resource_create (client, &wl_keyboard_interface, wl_resource_get_version (seat_resource), id);
   wl_resource_set_implementation (cr, &keyboard_interface, keyboard, unbind_resource);
-  wl_list_insert (&keyboard->resource_list, wl_resource_get_link (cr));
 
   wl_keyboard_send_keymap (cr,
                            WL_KEYBOARD_KEYMAP_FORMAT_XKB_V1,
@@ -646,5 +645,12 @@ meta_wayland_keyboard_create_new_resource (MetaWaylandKeyboard *keyboard,
   notify_key_repeat_for_resource (keyboard, cr);
 
   if (keyboard->focus_surface && wl_resource_get_client (keyboard->focus_surface->resource) == client)
-    broadcast_focus (keyboard, cr);
+    {
+      wl_list_insert (&keyboard->focus_resource_list, wl_resource_get_link (cr));
+      broadcast_focus (keyboard, cr);
+    }
+  else
+    {
+      wl_list_insert (&keyboard->resource_list, wl_resource_get_link (cr));
+    }
 }
