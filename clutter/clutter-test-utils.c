@@ -21,7 +21,7 @@ typedef struct {
 
 static ClutterTestEnvironment *test_environ = NULL;
 
-/**
+/*
  * clutter_test_init:
  * @argc:
  * @argv:
@@ -79,7 +79,7 @@ out:
   test_environ->no_display = no_display;
 }
 
-/**
+/*
  * clutter_test_get_stage:
  *
  * Retrieves the #ClutterStage used for testing.
@@ -149,7 +149,7 @@ out:
     }
 }
 
-/**
+/*
  * clutter_test_add: (skip)
  * @test_path:
  * @test_func:
@@ -167,7 +167,7 @@ clutter_test_add (const char *test_path,
   clutter_test_add_data_full (test_path, (GTestDataFunc) test_func, NULL, NULL);
 }
 
-/**
+/*
  * clutter_test_add_data: (skip)
  * @test_path:
  * @test_func:
@@ -187,7 +187,7 @@ clutter_test_add_data (const char    *test_path,
   clutter_test_add_data_full (test_path, test_func, test_data, NULL);
 }
 
-/**
+/*
  * clutter_test_add_data_full:
  * @test_path:
  * @test_func: (scope notified)
@@ -223,7 +223,7 @@ clutter_test_add_data_full (const char     *test_path,
                              g_free);
 }
 
-/**
+/*
  * clutter_test_run:
  *
  * Runs the test suite using the units added by calling
