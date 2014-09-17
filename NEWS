@@ -1,3 +1,24 @@
+3.13.92
+=======
+* Rewrite background code [Owen; #735637, #736568]
+* Fix size in nested mode [Owen; #736279]
+* Fix destroy animation of background windows [Florian; #735927]
+* Wire keymap changes up to the wayland frontend [Rui; #736433]
+* Add a test framework and stacking tests [Owen; #736505]
+* Simplify handling of the merged X and wayland stack [Owen; #736559]
+* Fix cursor size on HiDPI [Adel; #729337]
+* Misc. bug fixes [Owen; #735632, #736589, #736694]
+
+Contributors:
+  Adel Gadllah, Rui Matos, Florian Müllner, Jasper St. Pierre, Owen W. Taylor
+
+Translations:
+  Andika Triwidada [id], Piotr Drąg [pl], Changwoo Ryu [ko],
+  Kjartan Maraas [nb], Ville-Pekka Vainio [fi], Yuri Myasoedov [ru],
+  Aurimas Černius [lt], Balázs Úr [hu], Sweta Kothari [gu], A S Alam [pa],
+  Sandeep Sheshrao Shedmake [mr], Shantha kumar [ta], Gil Forcada [ca],
+  Carles Ferrando [ca@valencia], Mattias Eriksson [sv]
+
 3.13.91
 =======
 * Misc. bug fixes [Carlos; #735452]
