@@ -20409,7 +20409,9 @@ _clutter_actor_queue_relayout_on_clones (ClutterActor *self)
  * clutter_actor_has_mapped_clones:
  * @self: a #ClutterActor
  *
- * Returns whether the actor has any mapped clones.
+ * Returns whether a #ClutterActor has any mapped clones.
+ *
+ * Return: %TRUE if the actor has mapped clones, and %FALSE otherwise
  *
  * Since: 1.16
  */
