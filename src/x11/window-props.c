@@ -350,7 +350,8 @@ gtk_border_equal (GtkBorder *a,
 
 static void
 meta_window_set_custom_frame_extents (MetaWindow *window,
-                                      GtkBorder  *extents)
+                                      GtkBorder  *extents,
+                                      gboolean    is_initial)
 {
   if (extents)
     {
@@ -359,6 +360,17 @@ meta_window_set_custom_frame_extents (MetaWindow *window,
 
       window->has_custom_frame_extents = TRUE;
       window->custom_frame_extents = *extents;
+
+      /* If we're setting the frame extents on map, then this is telling
+       * us to adjust our understanding of the frame rect to match what
+       * GTK+ thinks it is. Future changes to the frame extents should
+       * trigger a resize and send a ConfigureRequest to the application.
+       */
+      if (is_initial)
+        {
+          meta_window_client_rect_to_frame_rect (window, &window->rect, &window->rect);
+          meta_window_client_rect_to_frame_rect (window, &window->unconstrained_rect, &window->unconstrained_rect);
+        }
     }
   else
     {
@@ -391,12 +403,12 @@ reload_gtk_frame_extents (MetaWindow    *window,
           extents.right  = (int)value->v.cardinal_list.cardinals[1];
           extents.top    = (int)value->v.cardinal_list.cardinals[2];
           extents.bottom = (int)value->v.cardinal_list.cardinals[3];
-          meta_window_set_custom_frame_extents (window, &extents);
+          meta_window_set_custom_frame_extents (window, &extents, initial);
         }
     }
   else
     {
-      meta_window_set_custom_frame_extents (window, NULL);
+      meta_window_set_custom_frame_extents (window, NULL, initial);
     }
 }
 
