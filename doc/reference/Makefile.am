@@ -111,6 +111,15 @@ IGNORE_HFILES= \
 	xprops.h \
 	$(NULL)
 
+if !HAVE_NATIVE_BACKEND
+IGNORE_HFILES+= \
+	meta-backend-native.h \
+	meta-cursor-renderer-native.h \
+	meta-idle-monitor-native.h \
+	meta-monitor-manager-kms.h \
+	$(NULL)
+endif
+
 if !HAVE_WAYLAND
 IGNORE_HFILES += \
 	meta-surface-actor-wayland.h	\
