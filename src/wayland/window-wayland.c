@@ -188,6 +188,18 @@ meta_window_wayland_move_resize_internal (MetaWindow                *window,
     }
   else
     {
+      /* If we get a 0x0 size, this means that we're trying to resize
+       * a surface that doesn't have any buffer attached. This can happen
+       * when a client requests an xdg surface before bringing it up.
+       * The constrained_rect will be 1x1 because of how our constraints
+       * code works, and sending that to the window would cause it to
+       * redraw itself, so just don't send anything. Pretend like this
+       * move_resize never happened.
+       */
+      if (unconstrained_rect.width == 0 &&
+          unconstrained_rect.height == 0)
+        return;
+
       if (constrained_rect.width != window->rect.width ||
           constrained_rect.height != window->rect.height)
         {
@@ -296,8 +308,8 @@ meta_window_wayland_new (MetaDisplay        *display,
 
   attrs.x = 0;
   attrs.y = 0;
-  attrs.width = 1;
-  attrs.height = 1;
+  attrs.width = 0;
+  attrs.height = 0;
   attrs.border_width = 0;
   attrs.depth = 24;
   attrs.visual = NULL;
