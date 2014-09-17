@@ -7887,24 +7887,6 @@ meta_window_handle_ungrabbed_event (MetaWindow         *window,
     }
 }
 
-void
-meta_window_set_custom_frame_extents (MetaWindow *window,
-                                      GtkBorder  *extents)
-{
-  if (extents)
-    {
-      window->has_custom_frame_extents = TRUE;
-      window->custom_frame_extents = *extents;
-    }
-  else
-    {
-      window->has_custom_frame_extents = FALSE;
-      memset (&window->custom_frame_extents, 0, sizeof (window->custom_frame_extents));
-    }
-
-  meta_window_queue (window, META_QUEUE_MOVE_RESIZE);
-}
-
 gboolean
 meta_window_can_maximize (MetaWindow *window)
 {

@@ -339,6 +339,24 @@ reload_icon_geometry (MetaWindow    *window,
 }
 
 static void
+meta_window_set_custom_frame_extents (MetaWindow *window,
+                                      GtkBorder  *extents)
+{
+  if (extents)
+    {
+      window->has_custom_frame_extents = TRUE;
+      window->custom_frame_extents = *extents;
+    }
+  else
+    {
+      window->has_custom_frame_extents = FALSE;
+      memset (&window->custom_frame_extents, 0, sizeof (window->custom_frame_extents));
+    }
+
+  meta_window_queue (window, META_QUEUE_MOVE_RESIZE);
+}
+
+static void
 reload_gtk_frame_extents (MetaWindow    *window,
                           MetaPropValue *value,
                           gboolean       initial)
