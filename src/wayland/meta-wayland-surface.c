@@ -1441,12 +1441,15 @@ bind_gtk_shell (struct wl_client *client,
                 guint32           id)
 {
   struct wl_resource *resource;
+  uint32_t capabilities = 0;
 
   resource = wl_resource_create (client, &gtk_shell_interface, version, id);
   wl_resource_set_implementation (resource, &meta_wayland_gtk_shell_interface, data, NULL);
 
-  /* FIXME: ask the plugin */
-  gtk_shell_send_capabilities (resource, GTK_SHELL_CAPABILITY_GLOBAL_APP_MENU);
+  if (!meta_prefs_get_show_fallback_app_menu ())
+    capabilities = GTK_SHELL_CAPABILITY_GLOBAL_APP_MENU;
+
+  gtk_shell_send_capabilities (resource, capabilities);
 }
 
 static void
