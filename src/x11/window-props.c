@@ -338,17 +338,33 @@ reload_icon_geometry (MetaWindow    *window,
     }
 }
 
+static gboolean
+gtk_border_equal (GtkBorder *a,
+                  GtkBorder *b)
+{
+  return (a->left == b->left &&
+          a->right == b->right &&
+          a->top == b->top &&
+          a->bottom == b->bottom);
+}
+
 static void
 meta_window_set_custom_frame_extents (MetaWindow *window,
                                       GtkBorder  *extents)
 {
   if (extents)
     {
+      if (window->has_custom_frame_extents && gtk_border_equal (&window->custom_frame_extents, extents))
+        return;
+
       window->has_custom_frame_extents = TRUE;
       window->custom_frame_extents = *extents;
     }
   else
     {
+      if (!window->has_custom_frame_extents)
+        return;
+
       window->has_custom_frame_extents = FALSE;
       memset (&window->custom_frame_extents, 0, sizeof (window->custom_frame_extents));
     }
@@ -382,9 +398,6 @@ reload_gtk_frame_extents (MetaWindow    *window,
     {
       meta_window_set_custom_frame_extents (window, NULL);
     }
-
-  if (!initial)
-    meta_window_queue(window, META_QUEUE_MOVE_RESIZE);
 }
 
 static void
