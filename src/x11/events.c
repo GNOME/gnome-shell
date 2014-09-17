@@ -884,7 +884,7 @@ handle_input_xevent (MetaDisplay *display,
             break;
 
           if (enter_event->evtype == XI_FocusIn &&
-              enter_event->mode == XINotifyDetailNone)
+              enter_event->detail == XINotifyDetailNone)
             {
               meta_topic (META_DEBUG_FOCUS,
                           "Focus got set to None, probably due to "
