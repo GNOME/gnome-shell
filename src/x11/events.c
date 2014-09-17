@@ -678,8 +678,7 @@ meta_spew_event (MetaDisplay *display,
 static void
 handle_window_focus_event (MetaDisplay  *display,
                            MetaWindow   *window,
-                           XIEnterEvent *event,
-                           unsigned long serial)
+                           XIEnterEvent *event)
 {
   MetaWindow *focus_window;
 #ifdef WITH_VERBOSE_MODE
@@ -758,7 +757,7 @@ handle_window_focus_event (MetaDisplay  *display,
   if (event->evtype == XI_FocusIn)
     {
       display->server_focus_window = event->event;
-      display->server_focus_serial = serial;
+      display->server_focus_serial = event->serial;
       focus_window = window;
     }
   else if (event->evtype == XI_FocusOut)
@@ -772,7 +771,7 @@ handle_window_focus_event (MetaDisplay  *display,
         }
 
       display->server_focus_window = None;
-      display->server_focus_serial = serial;
+      display->server_focus_serial = event->serial;
       focus_window = NULL;
     }
   else
@@ -813,8 +812,7 @@ crossing_serial_is_ignored (MetaDisplay  *display,
 
 static gboolean
 handle_input_xevent (MetaDisplay *display,
-                     XIEvent     *input_event,
-                     gulong       serial)
+                     XIEvent     *input_event)
 {
   XIEnterEvent *enter_event = (XIEnterEvent *) input_event;
   Window modified;
@@ -851,7 +849,7 @@ handle_input_xevent (MetaDisplay *display,
       /* Check if we've entered a window; do this even if window->has_focus to
        * avoid races.
        */
-      if (window && !crossing_serial_is_ignored (display, serial) &&
+      if (window && !crossing_serial_is_ignored (display, input_event->serial) &&
           enter_event->mode != XINotifyGrab &&
           enter_event->mode != XINotifyUngrab &&
           enter_event->detail != XINotifyInferior &&
@@ -876,7 +874,7 @@ handle_input_xevent (MetaDisplay *display,
       break;
     case XI_FocusIn:
     case XI_FocusOut:
-      handle_window_focus_event (display, window, enter_event, serial);
+      handle_window_focus_event (display, window, enter_event);
       if (!window)
         {
           /* Check if the window is a root window. */
@@ -1726,11 +1724,7 @@ meta_display_handle_xevent (MetaDisplay *display,
     }
 #endif /* HAVE_XI23 */
 
-  /* libXi does not properly copy the serial to XI2 events, so pull it
-   * from the parent XAnyEvent and pass it to handle_input_xevent.
-   * See: https://bugs.freedesktop.org/show_bug.cgi?id=64687
-   */
-  if (handle_input_xevent (display, input_event, event->xany.serial))
+  if (handle_input_xevent (display, input_event))
     {
       bypass_gtk = bypass_compositor = TRUE;
       goto out;
