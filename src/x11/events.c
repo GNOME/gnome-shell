@@ -848,7 +848,7 @@ handle_input_xevent (MetaDisplay *display,
   switch (input_event->evtype)
     {
     case XI_Enter:
-      if (display->grab_op == META_GRAB_OP_COMPOSITOR)
+      if (display->event_route != META_EVENT_ROUTE_NORMAL)
         break;
 
       /* Check if we've entered a window; do this even if window->has_focus to
@@ -867,7 +867,7 @@ handle_input_xevent (MetaDisplay *display,
         }
       break;
     case XI_Leave:
-      if (display->grab_op == META_GRAB_OP_COMPOSITOR)
+      if (display->event_route != META_EVENT_ROUTE_NORMAL)
         break;
 
       if (window != NULL &&
@@ -905,7 +905,6 @@ handle_input_xevent (MetaDisplay *display,
                                                    NULL,
                                                    meta_display_get_current_time_roundtrip (display));
             }
-
         }
       break;
     }
