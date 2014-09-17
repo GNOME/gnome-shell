@@ -273,14 +273,19 @@ notify_modifiers (MetaWaylandKeyboard *keyboard)
   state = keyboard->xkb_info.state;
 
   l = &keyboard->focus_resource_list;
-  wl_resource_for_each (resource, l)
+  if (!wl_list_empty (l))
     {
-      wl_keyboard_send_modifiers (resource,
-                                  wl_display_next_serial (keyboard->display),
-                                  xkb_state_serialize_mods (state, XKB_STATE_MODS_DEPRESSED),
-                                  xkb_state_serialize_mods (state, XKB_STATE_MODS_LATCHED),
-                                  xkb_state_serialize_mods (state, XKB_STATE_MODS_LOCKED),
-                                  xkb_state_serialize_layout (state, XKB_STATE_LAYOUT_EFFECTIVE));
+      uint32_t serial = wl_display_next_serial (keyboard->display);
+
+      wl_resource_for_each (resource, l)
+        {
+          wl_keyboard_send_modifiers (resource,
+                                      serial,
+                                      xkb_state_serialize_mods (state, XKB_STATE_MODS_DEPRESSED),
+                                      xkb_state_serialize_mods (state, XKB_STATE_MODS_LATCHED),
+                                      xkb_state_serialize_mods (state, XKB_STATE_MODS_LOCKED),
+                                      xkb_state_serialize_layout (state, XKB_STATE_LAYOUT_EFFECTIVE));
+        }
     }
 }
 

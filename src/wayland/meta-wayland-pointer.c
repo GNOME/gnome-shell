@@ -142,7 +142,7 @@ default_grab_button (MetaWaylandPointerGrab *grab,
   event_type = clutter_event_type (event);
 
   l = &grab->pointer->focus_resource_list;
-  wl_resource_for_each(resource, l)
+  if (!wl_list_empty (l))
     {
       struct wl_client *client = wl_resource_get_client (pointer->focus_surface->resource);
       struct wl_display *display = wl_client_get_display (client);
@@ -168,9 +168,13 @@ default_grab_button (MetaWaylandPointerGrab *grab,
 	}
 
       serial = wl_display_next_serial (display);
-      wl_pointer_send_button (resource, serial,
-			      clutter_event_get_time (event), button,
-			      event_type == CLUTTER_BUTTON_PRESS ? 1 : 0);
+
+      wl_resource_for_each(resource, l)
+        {
+          wl_pointer_send_button (resource, serial,
+                                  clutter_event_get_time (event), button,
+                                  event_type == CLUTTER_BUTTON_PRESS ? 1 : 0);
+        }
     }
 
   if (pointer->button_count == 0 && event_type == CLUTTER_BUTTON_RELEASE)
