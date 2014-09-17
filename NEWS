@@ -1,3 +1,41 @@
+Clutter 1.19.10                                                      2014-09-17
+===============================================================================
+
+  • List of changes since Clutter 1.19.8
+
+    - Honour the desktop window scaling factor in the GDK backend
+    The GDK backend will become the default backend in the next cycle, so we
+    need to improve its functionality out of the box.
+
+    - Ensure accessibility support is correctly initialized
+    We need to make sure that the accessibility implementation that Clutter
+    relies on is initialized the way we expect it to.
+
+    - Improve default paint volume computation
+    We should reduce the cases that lead to an invalid paint volume.
+
+    - Improve input handling on Wayland and X11
+
+    - Translations updates
+    Hebrew
+
+  • List of bugs fixed since Clutter 1.19.8
+
+    #736682 - clutter-actor: Don't ask children that have no allocation for
+              a paint volume
+    #736413 - USB mouse doesn't register slow movements to the right or down
+              in Gnome on Wayland
+    #734480 - Handle CLUTTER_SCALE envvar
+    #734115 - Deprecated property crashes /actor/transforms/anchor-point
+    #735388 - xi2 device manager gets a "0" client pointer if queried very
+              early in app lifetime
+    #735244 - shell forgets the DPI of screen sometimes
+
+Many thanks to:
+
+  Bastien Nocera, Adel Gadllah, Alejandro Piñeiro, Carlos Garnacho, Jonas
+  Ådahl, Yosef Or Boczko
+
 Clutter 1.19.8                                                       2014-08-21
 ===============================================================================
 
