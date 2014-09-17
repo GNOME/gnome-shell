@@ -484,7 +484,7 @@ meta_wayland_pointer_set_focus (MetaWaylandPointer *pointer,
   if (pointer->focus_surface == surface)
     return;
 
-  if (pointer->focus_surface)
+  if (pointer->focus_surface != NULL)
     {
       struct wl_resource *resource;
       struct wl_list *l;
