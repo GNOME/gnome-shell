@@ -20,9 +20,9 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-09-09 13:57+0000\n"
-"PO-Revision-Date: 2014-09-10 19:50+0100\n"
-"Last-Translator: Christian Kirbach <christian.kirbach@gmail.com>\n"
+"POT-Creation-Date: 2014-09-15 07:36+0000\n"
+"PO-Revision-Date: 2014-09-15 18:29+0100\n"
+"Last-Translator:  <dev@hmt.im>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
@@ -66,15 +66,15 @@ msgstr "Fenster verwalten und Anwendungen starten"
 
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:1
 msgid "GNOME Shell Extension Preferences"
-msgstr "Einstellungen für Erweiterungen der GNOME-Shell"
+msgstr "Einstellungen der GNOME-Shell-Erweiterungen"
 
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:2
 msgid "Configure GNOME Shell Extensions"
-msgstr "Erweiterungen der GNOME-Shell einrichten"
+msgstr " GNOME-Shell-Erweiterungen einrichten"
 
 #: ../data/gnome-shell-wayland.desktop.in.in.h:1
 msgid "GNOME Shell (wayland compositor)"
-msgstr "GNOME-Shell (Wayland Composition)"
+msgstr "GNOME-Shell (Wayland Compositor)"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:1
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
@@ -115,14 +115,14 @@ msgid ""
 "running version. Enabling this option will disable this check and try to "
 "load all extensions regardless of the versions they claim to support."
 msgstr ""
-"GNOME-Shell lädt nur Erweiterungen, die angeben die aktuelle Version zu "
-"unterstützen. Durch Aktivieren dieser Option wird die Überprüfung "
-"deaktiviert und alle Erweiterungen werden zu laden versucht, egal welche "
-"Version die Erweiterungen unterstützen."
+"GNOME-Shell lädt nur Erweiterungen, die die aktuelle Version unterstützen. "
+"Durch Aktivieren dieser Option wird die interne Kompatibilitätsprüfung "
+"deaktiviert und alle Erweiterungen werden versucht zu laden, unabhängig von "
+"der Version, die die Erweiterung offiziell unterstützt."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:7
 msgid "List of desktop file IDs for favorite applications"
-msgstr "Liste der Kennungen der Desktop-Dateien für bevorzugte Anwendungen"
+msgstr "Liste von Desktop-Dateikennungen und deren bevorzugte Anwendungen"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:8
 msgid ""
@@ -134,7 +134,7 @@ msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:9
 msgid "App Picker View"
-msgstr "Anwendungsauswahlanzeigen"
+msgstr "Anwendungsauswahlanzeige"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:10
 msgid "Index of the currently selected view in the application picker."
@@ -164,7 +164,7 @@ msgstr ""
 msgid ""
 "Whether to remember password for mounting encrypted or remote filesystems"
 msgstr ""
-"Legt fest, ob Passwörter für eingehängte, verschlüsselte oder ferne "
+"Legt fest, ob Passwörter für eingehängte, verschlüsselte oder entfernte "
 "Dateisysteme gespeichert werden"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:16
@@ -175,8 +175,8 @@ msgid ""
 "state of the checkbox."
 msgstr ""
 "Die Shell wird ein Passwort anfragen, sobald ein verschlüsseltes Gerät oder "
-"ein fernes Dateisystem eingehängt wird. Falls das Passwort für die Zukunft "
-"gespeichert werden kann, wird ein Ankreuzfeld »An Passwort erinnern« "
+"ein entferntes Dateisystem eingehängt wird. Falls das Passwort für die "
+"Zukunft gespeichert werden kann, wird ein Ankreuzfeld »An Passwort erinnern« "
 "angeboten. Dieser Schlüssel stellt den Standardstatus für dieses Ankreuzfeld "
 "ein."
 
@@ -313,7 +313,7 @@ msgstr "Arbeitsflächen nur auf dem primären Bildschirm"
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:42
 msgid "Delay focus changes in mouse mode until the pointer stops moving"
 msgstr ""
-"Fokuswechsel im Mausmodus verzögern, bis sich der Zeiger nicht mehr bewegt."
+"Fokuswechsel im Mausmodus verzögern, bis sich der Zeiger nicht mehr bewegt"
 
 # http://de.wikipedia.org/wiki/Captive_Portal
 #: ../data/org.gnome.Shell.PortalHelper.desktop.in.h:1
@@ -327,10 +327,10 @@ msgstr "Beim Laden des Einstellungsdialogs für %s ist ein Fehler aufgetreten:"
 
 #: ../js/extensionPrefs/main.js:155
 msgid "GNOME Shell Extensions"
-msgstr "Erweiterungen der GNOME-Shell"
+msgstr "GNOME-Shell-Erweiterungen"
 
 #: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:143
-#: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:429
+#: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:452
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
 #: ../js/ui/status/network.js:915
 msgid "Cancel"
@@ -374,7 +374,7 @@ msgstr "Anmeldefenster"
 
 #: ../js/gdm/util.js:323
 msgid "Authentication error"
-msgstr "Legitimationsfehler"
+msgstr "Anmeldung fehlgeschlagen"
 
 #: ../js/gdm/util.js:453
 msgid "(or swipe finger)"
@@ -395,7 +395,7 @@ msgstr "Ausführung von »%s« ist gescheitert:"
 
 #: ../js/portalHelper/main.js:85
 msgid "Web Authentication Redirect"
-msgstr "Umleitung einer Internet-Legitimierung"
+msgstr "Umleitung zu einer Internet-Anmeldung"
 
 #: ../js/ui/appDisplay.js:772
 msgid "Frequently used applications will appear here"
@@ -622,11 +622,11 @@ msgstr "Öffnen mit %s"
 msgid "Eject"
 msgstr "Auswerfen"
 
-#: ../js/ui/components/keyring.js:93 ../js/ui/components/polkitAgent.js:285
+#: ../js/ui/components/keyring.js:94 ../js/ui/components/polkitAgent.js:285
 msgid "Password:"
 msgstr "Passwort:"
 
-#: ../js/ui/components/keyring.js:113
+#: ../js/ui/components/keyring.js:120
 msgid "Type again:"
 msgstr "Erneut eingeben:"
 
@@ -661,7 +661,7 @@ msgstr "Dienst:"
 
 #: ../js/ui/components/networkAgent.js:318
 msgid "Authentication required by wireless network"
-msgstr "Legitimierung für Funknetzwerk wird benötigt"
+msgstr "Anmeldung für Funknetzwerk wird benötigt"
 
 #: ../js/ui/components/networkAgent.js:319
 #, javascript-format
@@ -674,7 +674,7 @@ msgstr ""
 
 #: ../js/ui/components/networkAgent.js:323
 msgid "Wired 802.1X authentication"
-msgstr "Kabelgebundene 802.1X-Legitimierung"
+msgstr "Kabelgebundene 802.1X-Anmeldung"
 
 #: ../js/ui/components/networkAgent.js:325
 msgid "Network name: "
@@ -682,7 +682,7 @@ msgstr "Netzwerkname:"
 
 #: ../js/ui/components/networkAgent.js:330
 msgid "DSL authentication"
-msgstr "DSL-Legitimierung"
+msgstr "DSL-Anmeldung"
 
 #: ../js/ui/components/networkAgent.js:337
 msgid "PIN code required"
@@ -707,7 +707,7 @@ msgstr "Es wird ein Passwort benötigt, um sich mit »%s« zu verbinden."
 
 #: ../js/ui/components/polkitAgent.js:54
 msgid "Authentication Required"
-msgstr "Legitimierung erforderlich"
+msgstr "Anmeldung erforderlich"
 
 #: ../js/ui/components/polkitAgent.js:96
 msgid "Administrator"
@@ -715,7 +715,7 @@ msgstr "Systemverwalter"
 
 #: ../js/ui/components/polkitAgent.js:175
 msgid "Authenticate"
-msgstr "Legitimieren"
+msgstr "Anmelden"
 
 #. Translators: "that didn't work" refers to the fact that the
 #. * requested authentication was not gained; this can happen
@@ -886,7 +886,7 @@ msgstr "Netzwerkfehler"
 
 #: ../js/ui/components/telepathyClient.js:1339
 msgid "Authentication failed"
-msgstr "Legitimierung fehlgeschlagen"
+msgstr "Anmeldung fehlgeschlagen"
 
 #: ../js/ui/components/telepathyClient.js:1341
 msgid "Encryption error"
@@ -1003,7 +1003,7 @@ msgstr "Konto anzeigen"
 msgid "Unknown reason"
 msgstr "Unbekannter Grund"
 
-#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:155
+#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:154
 msgid "Windows"
 msgstr "Fenster"
 
@@ -1035,86 +1035,86 @@ msgstr "Einstellungen für Datum und Uhrzeit"
 msgid "%A %B %e, %Y"
 msgstr "%A, %e. %B %Y"
 
-#: ../js/ui/endSessionDialog.js:66
+#: ../js/ui/endSessionDialog.js:64
 #, javascript-format
 msgctxt "title"
 msgid "Log Out %s"
 msgstr "%s abmelden"
 
-#: ../js/ui/endSessionDialog.js:67
+#: ../js/ui/endSessionDialog.js:65
 msgctxt "title"
 msgid "Log Out"
 msgstr "Abmelden"
 
-#: ../js/ui/endSessionDialog.js:69
+#: ../js/ui/endSessionDialog.js:67
 #, javascript-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "%s wird automatisch in %d Sekunde abgemeldet."
 msgstr[1] "%s wird automatisch in %d Sekunden abgemeldet."
 
-#: ../js/ui/endSessionDialog.js:74
+#: ../js/ui/endSessionDialog.js:72
 #, javascript-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
 msgstr[0] "Sie werden automatisch in %d Sekunde abgemeldet."
 msgstr[1] "Sie werden automatisch in %d Sekunden abgemeldet."
 
-#: ../js/ui/endSessionDialog.js:80
+#: ../js/ui/endSessionDialog.js:78
 msgctxt "button"
 msgid "Log Out"
 msgstr "Abmelden"
 
-#: ../js/ui/endSessionDialog.js:86
+#: ../js/ui/endSessionDialog.js:84
 msgctxt "title"
 msgid "Power Off"
 msgstr "Ausschalten"
 
-#: ../js/ui/endSessionDialog.js:87
+#: ../js/ui/endSessionDialog.js:85
 msgctxt "title"
 msgid "Install Updates & Power Off"
 msgstr "Aktualisierungen installieren und ausschalten"
 
-#: ../js/ui/endSessionDialog.js:89
+#: ../js/ui/endSessionDialog.js:87
 #, javascript-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "Das System wird automatisch in %d Sekunde ausgeschaltet."
 msgstr[1] "Das System wird automatisch in %d Sekunden ausgeschaltet."
 
-#: ../js/ui/endSessionDialog.js:93
+#: ../js/ui/endSessionDialog.js:91
 msgctxt "checkbox"
 msgid "Install pending software updates"
 msgstr "Ausstehende Softwareaktualisierungen installieren"
 
-#: ../js/ui/endSessionDialog.js:96 ../js/ui/endSessionDialog.js:113
+#: ../js/ui/endSessionDialog.js:94 ../js/ui/endSessionDialog.js:111
 msgctxt "button"
 msgid "Restart"
 msgstr "Neu starten"
 
-#: ../js/ui/endSessionDialog.js:98
+#: ../js/ui/endSessionDialog.js:96
 msgctxt "button"
 msgid "Power Off"
 msgstr "Ausschalten"
 
-#: ../js/ui/endSessionDialog.js:105
+#: ../js/ui/endSessionDialog.js:103
 msgctxt "title"
 msgid "Restart"
 msgstr "Neu starten"
 
-#: ../js/ui/endSessionDialog.js:107
+#: ../js/ui/endSessionDialog.js:105
 #, javascript-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "Das System wird automatisch in %d Sekunde neu gestartet."
 msgstr[1] "Das System wird automatisch in %d Sekunden neu gestartet."
 
-#: ../js/ui/endSessionDialog.js:121
+#: ../js/ui/endSessionDialog.js:119
 msgctxt "title"
 msgid "Restart & Install Updates"
 msgstr "Neu starten und Aktualisierungen installieren"
 
-#: ../js/ui/endSessionDialog.js:123
+#: ../js/ui/endSessionDialog.js:121
 #, javascript-format
 msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
@@ -1124,44 +1124,44 @@ msgstr[0] ""
 msgstr[1] ""
 "Das System wird automatisch in %d Sekunden neu gestartet aktualisiert."
 
-#: ../js/ui/endSessionDialog.js:129
+#: ../js/ui/endSessionDialog.js:127
 msgctxt "button"
 msgid "Restart &amp; Install"
 msgstr "Neu starten und installieren"
 
-#: ../js/ui/endSessionDialog.js:130
+#: ../js/ui/endSessionDialog.js:128
 msgctxt "button"
 msgid "Install &amp; Power Off"
 msgstr "Installieren und ausschalten"
 
-#: ../js/ui/endSessionDialog.js:131
+#: ../js/ui/endSessionDialog.js:129
 msgctxt "checkbox"
 msgid "Power off after updates are installed"
 msgstr "Ausschalten nachdem Aktualisierungen installiert wurden"
 
-#: ../js/ui/endSessionDialog.js:315
+#: ../js/ui/endSessionDialog.js:338
 msgid "Running on battery power: please plug in before installing updates."
 msgstr ""
-"Batteriebetrieb: bitte schließen Sie Ihr Gerät am Stromnetz an bevor Sie "
+"Batteriebetrieb: bitte schließen Sie Ihr Gerät am Stromnetz an, bevor Sie "
 "Aktualisierungen installieren."
 
-#: ../js/ui/endSessionDialog.js:332
+#: ../js/ui/endSessionDialog.js:355
 msgid "Some applications are busy or have unsaved work."
 msgstr ""
-"Einige Anwendungen sind beschäftigt oder besitzen nicht-gespeicherte Arbeit."
+"Einige Anwendungen sind beschäftigt oder besitzen nicht gespeicherte Arbeit."
 
-#: ../js/ui/endSessionDialog.js:339
+#: ../js/ui/endSessionDialog.js:362
 msgid "Other users are logged in."
 msgstr "Andere Benutzer sind angemeldet."
 
 #. Translators: Remote here refers to a remote session, like a ssh login */
-#: ../js/ui/endSessionDialog.js:619
+#: ../js/ui/endSessionDialog.js:640
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (Entfernt)"
 
 #. Translators: Console here refers to a tty like a VT console */
-#: ../js/ui/endSessionDialog.js:622
+#: ../js/ui/endSessionDialog.js:643
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (Konsole)"
@@ -1175,7 +1175,7 @@ msgstr "Installieren"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "»%s« von extensions.gnome.org herunterladen und installieren?"
 
-#: ../js/ui/keyboard.js:692 ../js/ui/status/keyboard.js:339
+#: ../js/ui/keyboard.js:692 ../js/ui/status/keyboard.js:523
 msgid "Keyboard"
 msgstr "Tastatur"
 
@@ -1197,8 +1197,8 @@ msgstr "Fehler verbergen"
 msgid "Show Errors"
 msgstr "Fehler anzeigen"
 
-#: ../js/ui/lookingGlass.js:716 ../js/ui/status/location.js:62
-#: ../js/ui/status/location.js:166
+#: ../js/ui/lookingGlass.js:716 ../js/ui/status/location.js:71
+#: ../js/ui/status/location.js:176
 msgid "Enabled"
 msgstr "Aktiviert"
 
@@ -1206,7 +1206,7 @@ msgstr "Aktiviert"
 #. because it's disabled by rfkill (airplane mode) */
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:719 ../js/ui/status/location.js:169
+#: ../js/ui/lookingGlass.js:719 ../js/ui/status/location.js:179
 #: ../js/ui/status/network.js:592 ../src/gvc/gvc-mixer-control.c:1830
 msgid "Disabled"
 msgstr "Deaktiviert"
@@ -1357,11 +1357,11 @@ msgstr "Sperrung fehlgeschlagen"
 msgid "Lock was blocked by an application"
 msgstr "Sperrung wurde von einer Anwendung blockiert"
 
-#: ../js/ui/search.js:557
+#: ../js/ui/search.js:594
 msgid "Searching…"
 msgstr "Suche läuft …"
 
-#: ../js/ui/search.js:598
+#: ../js/ui/search.js:596
 msgid "No results."
 msgstr "Keine Ergebnisse."
 
@@ -1463,23 +1463,28 @@ msgstr "Nicht verbunden"
 msgid "Brightness"
 msgstr "Helligkeit"
 
-#: ../js/ui/status/keyboard.js:406
+#: ../js/ui/status/keyboard.js:547
 msgid "Show Keyboard Layout"
 msgstr "Tastaturbelegung anzeigen"
 
-#: ../js/ui/status/location.js:56
+#: ../js/ui/status/location.js:65
 msgid "Location"
 msgstr "Ort"
 
-#: ../js/ui/status/location.js:63 ../js/ui/status/location.js:167
+#: ../js/ui/status/location.js:72 ../js/ui/status/location.js:177
 msgid "Disable"
 msgstr "Deaktivieren"
 
-#: ../js/ui/status/location.js:166
+#: ../js/ui/status/location.js:73
+#| msgid "Power Settings"
+msgid "Privacy Settings"
+msgstr "Einstellungen zur Privatsphäre"
+
+#: ../js/ui/status/location.js:176
 msgid "In Use"
 msgstr "In Verwendung"
 
-#: ../js/ui/status/location.js:170
+#: ../js/ui/status/location.js:180
 msgid "Enable"
 msgstr "Aktivieren"
 
@@ -1513,7 +1518,7 @@ msgstr "Verbinden"
 #. Translators: this is for network connections that require some kind of key or password */
 #: ../js/ui/status/network.js:474
 msgid "Authentication required"
-msgstr "Legitimierung erforderlich"
+msgstr "Anmeldung erforderlich"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing */
@@ -1613,7 +1618,7 @@ msgstr "Verbindungsaufbau …"
 #. Translators: this is for network connections that require some kind of key or password */
 #: ../js/ui/status/network.js:1412
 msgid "authentication required"
-msgstr "Legitimierung erforderlich"
+msgstr "Anmeldung erforderlich"
 
 #: ../js/ui/status/network.js:1414
 msgid "connection failed"
@@ -1717,11 +1722,11 @@ msgstr "Als anderer Benutzer anmelden"
 msgid "Unlock Window"
 msgstr "Fenster entsperren"
 
-#: ../js/ui/viewSelector.js:159
+#: ../js/ui/viewSelector.js:158
 msgid "Applications"
 msgstr "Anwendungen"
 
-#: ../js/ui/viewSelector.js:163
+#: ../js/ui/viewSelector.js:162
 msgid "Search"
 msgstr "Suchen"
 
@@ -1783,7 +1788,7 @@ msgstr "Immer im Vordergrund"
 
 #: ../js/ui/windowMenu.js:89
 msgid "Always on Visible Workspace"
-msgstr "immer auf der sichtbaren Arbeitsfläche"
+msgstr "Immer auf der sichtbaren Arbeitsfläche"
 
 #: ../js/ui/windowMenu.js:106
 msgid "Move to Workspace Up"
@@ -1847,11 +1852,11 @@ msgstr "Passwörter stimmen nicht überein."
 
 #: ../src/shell-keyring-prompt.c:722
 msgid "Password cannot be blank"
-msgstr "Das Passwort darf nicht leer sein"
+msgstr "Es muss ein Passwort angegeben werden"
 
 #: ../src/shell-polkit-authentication-agent.c:346
 msgid "Authentication dialog was dismissed by the user"
-msgstr "Der Dialog zur Legitimierung wurde vom Benutzer geschlossen"
+msgstr "Der Dialog zur Anmeldung wurde vom Benutzer geschlossen"
 
 #~ msgid "The maximum accuracy level of location."
 #~ msgstr "Maximale Ortsauflösung"
