@@ -1494,6 +1494,10 @@ StScrollBar StButton#vhandle:active {
     text-align: right;
 }
 
+.events-day-time-ellipses {
+    color: rgba(153, 153, 153, 1.0);
+}
+
 .events-day-time:rtl {
     text-align: left;
 }
