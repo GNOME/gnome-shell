@@ -214,8 +214,29 @@ send_configure_notify (MetaWindow *window)
   event.xconfigure.display = window->display->xdisplay;
   event.xconfigure.event = window->xwindow;
   event.xconfigure.window = window->xwindow;
-  event.xconfigure.x = window->rect.x - priv->border_width;
-  event.xconfigure.y = window->rect.y - priv->border_width;
+  event.xconfigure.x = priv->client_rect.x - priv->border_width;
+  event.xconfigure.y = priv->client_rect.y - priv->border_width;
+  if (window->frame)
+    {
+      if (window->withdrawn)
+        {
+          MetaFrameBorders borders;
+          /* We reparent the client window and put it to the position
+           * where the visible top-left of the frame window currently is.
+           */
+
+          meta_frame_calc_borders (window->frame, &borders);
+
+          event.xconfigure.x = window->frame->rect.x + borders.invisible.left;
+          event.xconfigure.y = window->frame->rect.y + borders.invisible.top;
+        }
+      else
+        {
+          /* Need to be in root window coordinates */
+          event.xconfigure.x += window->frame->rect.x;
+          event.xconfigure.y += window->frame->rect.y;
+        }
+    }
   event.xconfigure.width = priv->client_rect.width;
   event.xconfigure.height = priv->client_rect.height;
   event.xconfigure.border_width = priv->border_width; /* requested not actual */
