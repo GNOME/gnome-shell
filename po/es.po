@@ -11,7 +11,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2014-07-22 07:35+0000\n"
-"PO-Revision-Date: 2014-07-22 11:27+0200\n"
+"PO-Revision-Date: 2014-09-18 19:22+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
 "Language: es\n"
@@ -1536,7 +1536,7 @@ msgstr "Falló la conexión"
 
 #: ../js/ui/status/network.js:504
 msgid "Wired Settings"
-msgstr "Configuración de Wi-Fi"
+msgstr "Configuración de red cableada"
 
 #: ../js/ui/status/network.js:546 ../js/ui/status/network.js:624
 msgid "Mobile Broadband Settings"
