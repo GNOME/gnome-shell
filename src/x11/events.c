@@ -1370,22 +1370,33 @@ handle_other_xevent (MetaDisplay *display,
         {
           window = meta_window_x11_new (display, event->xmaprequest.window,
                                         FALSE, META_COMP_EFFECT_CREATE);
+          /* The window might have initial iconic state, but this is a
+           * MapRequest, fall through to ensure it is unminimized in
+           * that case.
+           */
         }
-      /* if frame was receiver it's some malicious send event or something */
-      else if (!frame_was_receiver && window)
+      else if (frame_was_receiver)
         {
-          meta_verbose ("MapRequest on %s mapped = %d minimized = %d\n",
-                        window->desc, window->mapped, window->minimized);
-          if (window->minimized)
+          meta_warning ("Map requests on the frame window are unexpected\n");
+          break;
+        }
+
+      /* Double check that creating the MetaWindow succeeded */
+      if (window == NULL)
+        break;
+
+      meta_verbose ("MapRequest on %s mapped = %d minimized = %d\n",
+                    window->desc, window->mapped, window->minimized);
+
+      if (window->minimized)
+        {
+          meta_window_unminimize (window);
+          if (window->workspace != window->screen->active_workspace)
             {
-              meta_window_unminimize (window);
-              if (window->workspace != window->screen->active_workspace)
-                {
-                  meta_verbose ("Changing workspace due to MapRequest mapped = %d minimized = %d\n",
-                                window->mapped, window->minimized);
-                  meta_window_change_workspace (window,
-                                                window->screen->active_workspace);
-                }
+              meta_verbose ("Changing workspace due to MapRequest mapped = %d minimized = %d\n",
+                            window->mapped, window->minimized);
+              meta_window_change_workspace (window,
+                                            window->screen->active_workspace);
             }
         }
       break;
