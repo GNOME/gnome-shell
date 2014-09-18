@@ -612,9 +612,14 @@ update_onscreen_requirements (MetaWindow     *window,
    */
   if (window->frame && window->decorated)
     {
-      MetaRectangle titlebar_rect;
+      MetaRectangle titlebar_rect, frame_rect;
 
       meta_window_get_titlebar_rect (window, &titlebar_rect);
+      meta_window_get_frame_rect (window, &frame_rect);
+
+      /* translate into screen coordinates */
+      titlebar_rect.x = frame_rect.x;
+      titlebar_rect.y = frame_rect.y;
 
       old = window->require_titlebar_visible;
       window->require_titlebar_visible =
