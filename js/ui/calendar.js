@@ -13,6 +13,13 @@ const Shell = imports.gi.Shell;
 
 const MSECS_IN_DAY = 24 * 60 * 60 * 1000;
 const SHOW_WEEKDATE_KEY = 'show-weekdate';
+const ELLIPSIS_CHAR = '\u2026';
+const EventEllipses = {
+    NONE: 0,
+    BEFORE: 1 << 0,
+    AFTER: 1 << 1,
+    BOTH: ~0
+};
 
 // alias to prevent xgettext from picking up strings translated in GTK+
 const gtk30_ = Gettext_gtk30.gettext;
@@ -59,19 +66,33 @@ function _getEndOfDay(date) {
     return ret;
 }
 
-function _formatEventTime(event, clockFormat) {
+function _ellipsizeEventTime(event, periodBegin, periodEnd) {
+    if (event.allDay)
+        return EventEllipses.NONE;
+
+    let ret = EventEllipses.NONE;
+    if (event.date < periodBegin)
+        ret = EventEllipses.BEFORE;
+    if (event.end > periodEnd)
+        ret |= EventEllipses.AFTER;
+    return ret;
+}
+
+function _formatEventTime(event, clockFormat, periodBegin, periodEnd) {
     let ret;
-    if (event.allDay) {
+    let allDay = (event.allDay || (event.date <= periodBegin && event.end >= periodEnd));
+    if (allDay) {
         /* Translators: Shown in calendar event list for all day events
          * Keep it short, best if you can use less then 10 characters
          */
         ret = C_("event list time", "All Day");
     } else {
+        let date = event.date >= periodBegin ? event.date : event.end;
         switch (clockFormat) {
         case '24h':
             /* Translators: Shown in calendar event list, if 24h format,
                \u2236 is a ratio character, similar to : */
-            ret = event.date.toLocaleFormat(C_("event list time", "%H\u2236%M"));
+            ret = date.toLocaleFormat(C_("event list time", "%H\u2236%M"));
             break;
 
         default:
@@ -80,7 +101,7 @@ function _formatEventTime(event, clockFormat) {
             /* Translators: Shown in calendar event list, if 12h format,
                \u2236 is a ratio character, similar to : and \u2009 is
                a thin space */
-            ret = event.date.toLocaleFormat(C_("event list time", "%l\u2236%M\u2009%p"));
+            ret = date.toLocaleFormat(C_("event list time", "%l\u2236%M\u2009%p"));
             break;
         }
     }
@@ -722,12 +743,16 @@ const EventsList = new Lang.Class({
         this._eventSource.connect('changed', Lang.bind(this, this._update));
     },
 
-    _addEvent: function(event, index, includeDayName) {
+    _addEvent: function(event, index, includeDayName, periodBegin, periodEnd) {
         let dayString;
-        if (includeDayName)
-            dayString = _getEventDayAbbreviation(event.date.getDay());
-        else
+        if (includeDayName) {
+            if (event.date >= periodBegin)
+                dayString = _getEventDayAbbreviation(event.date.getDay());
+            else /* show event end day if it began earlier */
+                dayString = _getEventDayAbbreviation(event.end.getDay());
+        } else {
             dayString = '';
+        }
 
         let dayLabel = new St.Label({ style_class: 'events-day-dayname',
                                       text: dayString,
@@ -740,16 +765,31 @@ const EventsList = new Lang.Class({
 
         let layout = this.actor.layout_manager;
         layout.attach(dayLabel, rtl ? 2 : 0, index, 1, 1);
-
         let clockFormat = this._desktopSettings.get_string(CLOCK_FORMAT_KEY);
-        let timeString = _formatEventTime(event, clockFormat);
+        let timeString = _formatEventTime(event, clockFormat, periodBegin, periodEnd);
         let timeLabel = new St.Label({ style_class: 'events-day-time',
                                        text: timeString,
                                        y_align: Clutter.ActorAlign.START });
         timeLabel.clutter_text.line_wrap = false;
         timeLabel.clutter_text.ellipsize = false;
 
-        layout.attach(timeLabel, 1, index, 1, 1);
+        let ellipses = _ellipsizeEventTime(event, periodBegin, periodEnd);
+        let preEllipsisLabel = new St.Label({ style_class: 'events-day-time-ellipses',
+                                              text: ELLIPSIS_CHAR,
+                                              y_align: Clutter.ActorAlign.START });
+        let postEllipsisLabel = new St.Label({ style_class: 'events-day-time-ellipses',
+                                               text: ELLIPSIS_CHAR,
+                                               y_align: Clutter.ActorAlign.START });
+        if (!(ellipses & EventEllipses.BEFORE))
+            preEllipsisLabel.opacity = 0;
+        if (!(ellipses & EventEllipses.AFTER))
+            postEllipsisLabel.opacity = 0;
+
+        let timeLabelBoxLayout = new St.BoxLayout();
+        timeLabelBoxLayout.add(preEllipsisLabel);
+        timeLabelBoxLayout.add(timeLabel);
+        timeLabelBoxLayout.add(postEllipsisLabel);
+        layout.attach(timeLabelBoxLayout, 1, index, 1, 1);
 
         let titleLabel = new St.Label({ style_class: 'events-day-task',
                                         text: event.summary,
@@ -760,8 +800,8 @@ const EventsList = new Lang.Class({
         layout.attach(titleLabel, rtl ? 0 : 2, index, 1, 1);
     },
 
-    _addPeriod: function(header, index, begin, end, includeDayName, showNothingScheduled) {
-        let events = this._eventSource.getEvents(begin, end);
+    _addPeriod: function(header, index, periodBegin, periodEnd, includeDayName, showNothingScheduled) {
+        let events = this._eventSource.getEvents(periodBegin, periodEnd);
 
         if (events.length == 0 && !showNothingScheduled)
             return index;
@@ -772,15 +812,14 @@ const EventsList = new Lang.Class({
         index++;
 
         for (let n = 0; n < events.length; n++) {
-            this._addEvent(events[n], index, includeDayName);
+            this._addEvent(events[n], index, includeDayName, periodBegin, periodEnd);
             index++;
         }
 
         if (events.length == 0 && showNothingScheduled) {
-            let now = new Date();
             /* Translators: Text to show if there are no events */
-            let nothingEvent = new CalendarEvent(now, now, _("Nothing Scheduled"), true);
-            this._addEvent(nothingEvent, index, false);
+            let nothingEvent = new CalendarEvent(periodBegin, periodBegin, _("Nothing Scheduled"), true);
+            this._addEvent(nothingEvent, index, false, periodBegin, periodEnd);
             index++;
         }
 
