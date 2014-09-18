@@ -5385,7 +5385,7 @@ meta_window_shove_titlebar_onscreen (MetaWindow *window)
 gboolean
 meta_window_titlebar_is_onscreen (MetaWindow *window)
 {
-  MetaRectangle  titlebar_rect;
+  MetaRectangle  titlebar_rect, frame_rect;
   GList         *onscreen_region;
   gboolean       is_onscreen;
 
@@ -5399,6 +5399,11 @@ meta_window_titlebar_is_onscreen (MetaWindow *window)
 
   /* Get the rectangle corresponding to the titlebar */
   meta_window_get_titlebar_rect (window, &titlebar_rect);
+
+  /* Translate into screen coordinates */
+  meta_window_get_frame_rect (window, &frame_rect);
+  titlebar_rect.x = frame_rect.x;
+  titlebar_rect.y = frame_rect.y;
 
   /* Run through the spanning rectangles for the screen and see if one of
    * them overlaps with the titlebar sufficiently to consider it onscreen.
