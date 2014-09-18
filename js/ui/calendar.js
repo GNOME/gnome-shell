@@ -383,6 +383,12 @@ const DBusEventSource = new Lang.Class({
                 result.push(event);
             }
         }
+        result.sort(function(event1, event2) {
+            // sort events by end time on ending day
+            let d1 = event1.date < begin && event1.end <= end ? event1.end : event1.date;
+            let d2 = event2.date < begin && event2.end <= end ? event2.end : event2.date;
+            return d1.getTime() - d2.getTime();
+        });
         return result;
     },
 
