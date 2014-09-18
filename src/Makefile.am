@@ -51,6 +51,12 @@ gnome-shell-extension-tool: gnome-shell-extension-tool.in Makefile
 gnome-shell-perf-tool: gnome-shell-perf-tool.in Makefile
 	$(AM_V_GEN) sed $(generated_script_substitutions) $< > $@.tmp && mv $@.tmp $@ && chmod a+x $@
 
+org-gtk-application.c org-gtk-application.h: org.gtk.Application.xml Makefile
+	$(AM_V_GEN) $(GDBUS_CODEGEN) \
+			--generate-c-code org-gtk-application \
+			--c-namespace Shell \
+			$<
+
 CLEANFILES += gnome-shell $(bin_SCRIPTS)
 
 include Makefile-st.am
@@ -75,6 +81,8 @@ privlib_LTLIBRARIES = libgnome-shell-js.la libgnome-shell-menu.la libgnome-shell
 noinst_LTLIBRARIES += libgnome-shell-base.la
 
 shell_built_sources = \
+	org-gtk-application.h \
+	org-gtk-application.c \
 	shell-enum-types.h \
 	shell-enum-types.c
 
@@ -178,8 +186,12 @@ libgnome_shell_built_sources =		\
 libgnome_shell_la_SOURCES = $(libgnome_shell_sources)
 nodist_libgnome_shell_la_SOURCES = $(libgnome_shell_built_sources)
 
+shell_no_gir_sources = \
+	org-gtk-application.h \
+	org-gtk-application.c
+
 libgnome_shell_la_gir_sources = \
-	$(filter-out %-private.h $(shell_private_sources), $(shell_public_headers_h) $(libgnome_shell_base_la_SOURCES) $(libgnome_shell_sources) $(libgnome_shell_built_sources))
+	$(filter-out %-private.h $(shell_private_sources) $(shell_no_gir_sources), $(shell_public_headers_h) $(libgnome_shell_base_la_SOURCES) $(libgnome_shell_sources) $(libgnome_shell_built_sources))
 
 gnome_shell_SOURCES = main.c
 gnome_shell_CPPFLAGS = \
