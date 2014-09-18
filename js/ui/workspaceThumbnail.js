@@ -161,14 +161,14 @@ const WindowClone = new Lang.Class({
 
     _updateDialogPosition: function(realDialog, cloneDialog) {
         let metaDialog = realDialog.meta_window;
-        let dialogRect = metaDialog.get_outer_rect();
-        let rect = this.metaWindow.get_outer_rect();
+        let dialogRect = metaDialog.get_frame_rect();
+        let rect = this.metaWindow.get_frame_rect();
 
         cloneDialog.set_position(dialogRect.x - rect.x, dialogRect.y - rect.y);
     },
 
     _onPositionChanged: function() {
-        let rect = this.metaWindow.get_outer_rect();
+        let rect = this.metaWindow.get_frame_rect();
         this.actor.set_position(this.realWindow.x, this.realWindow.y);
     },
 

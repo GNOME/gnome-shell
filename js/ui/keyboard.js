@@ -610,7 +610,7 @@ const Keyboard = new Lang.Class({
 
     _moveTemporarily: function () {
         let currentWindow = global.screen.get_display().focus_window;
-        let rect = currentWindow.get_outer_rect();
+        let rect = currentWindow.get_frame_rect();
 
         let newX = rect.x;
         let newY = 3 * this.actor.height / 2;

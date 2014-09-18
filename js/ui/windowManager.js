@@ -413,7 +413,7 @@ const TilePreview = new Lang.Class({
                                                    y: monitor.y,
                                                    width: monitor.width,
                                                    height: monitor.height });
-            let [, rect] = window.get_outer_rect().intersect(monitorRect);
+            let [, rect] = window.get_frame_rect().intersect(monitorRect);
             this.actor.set_size(rect.width, rect.height);
             this.actor.set_position(rect.x, rect.y);
             this.actor.opacity = 0;

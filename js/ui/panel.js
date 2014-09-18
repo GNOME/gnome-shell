@@ -1019,7 +1019,7 @@ const Panel = new Lang.Class({
         if (!dragWindow)
             return Clutter.EVENT_PROPAGATE;
 
-        let rect = dragWindow.get_outer_rect();
+        let rect = dragWindow.get_frame_rect();
         let [stageX, stageY] = event.get_coords();
 
         let allowDrag = dragWindow.maximized_vertically &&

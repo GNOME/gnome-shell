@@ -254,7 +254,7 @@ const WindowClone = new Lang.Class({
     },
 
     _computeBoundingBox: function() {
-        let rect = this.metaWindow.get_outer_rect();
+        let rect = this.metaWindow.get_frame_rect();
 
         this.actor.get_children().forEach(function (child) {
             let realWindow;
@@ -264,7 +264,7 @@ const WindowClone = new Lang.Class({
                 realWindow = child.source;
 
             let metaWindow = realWindow.meta_window;
-            rect = rect.union(metaWindow.get_outer_rect());
+            rect = rect.union(metaWindow.get_frame_rect());
         }, this);
 
         // Convert from a MetaRectangle to a native JS object
