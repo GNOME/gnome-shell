@@ -431,31 +431,21 @@ const IconGrid = new Lang.Class({
 
         for (let index = 0; index < actors.length; index++) {
             let actor = actors[index];
-            actor.opacity = 0;
             actor.reactive = false;
+            actor.set_scale(0, 0);
+            actor.set_pivot_point(0.5, 0.5);
 
             let delay = index / actors.length * ANIMATION_MAX_DELAY_FOR_ITEM;
-            let [originalX, originalY] = actor.get_transformed_position();
-            let [originalWidth, originalHeight,,] = this._getAllocatedChildSizeAndSpacing(actor);
-
-            let actorClone = new Clutter.Clone({ source: actor });
-            Main.uiGroup.add_actor(actorClone);
-
-            actorClone.set_position(originalX, originalY);
-            actorClone.set_scale(0, 0);
-            actorClone.set_pivot_point(0.5, 0.5);
-            actorClone.set_size(originalWidth, originalHeight);
-
             let bounceUpTime = ANIMATION_TIME_IN / 4;
             let isLastItem = index == actors.length - 1;
-            Tweener.addTween(actorClone,
+            Tweener.addTween(actor,
                             { time: bounceUpTime,
                               transition: 'easeInOutQuad',
                               delay: delay,
                               scale_x: ANIMATION_BOUNCE_ICON_SCALE,
                               scale_y: ANIMATION_BOUNCE_ICON_SCALE,
                               onComplete: Lang.bind(this, function() {
-                                  Tweener.addTween(actorClone,
+                                  Tweener.addTween(actor,
                                                    { time: ANIMATION_TIME_IN - bounceUpTime,
                                                      transition: 'easeInOutQuad',
                                                      scale_x: 1,
@@ -463,10 +453,7 @@ const IconGrid = new Lang.Class({
                                                      onComplete: Lang.bind(this, function() {
                                                         if (isLastItem)
                                                             this._animationDone();
-
-                                                        actor.opacity = 255;
                                                         actor.reactive = true;
-                                                        actorClone.destroy();
                                                     })
                                                    });
                               })
