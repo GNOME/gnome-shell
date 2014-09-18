@@ -1267,6 +1267,7 @@ const FolderIcon = new Lang.Class({
             addAppId(appInfo.get_id());
         });
 
+        this.actor.visible = this.view.getAllItems().length > 0;
         this.view.loadGrid();
         this.emit('apps-changed');
     },
