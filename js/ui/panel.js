@@ -273,7 +273,7 @@ const AppMenuButton = new Lang.Class({
     _onStyleChanged: function(actor) {
         let node = actor.get_theme_node();
         let [success, icon] = node.lookup_url('spinner-image', false);
-        if (!success || this._spinnerIcon == icon)
+        if (!success || (this._spinnerIcon && this._spinnerIcon.equal(icon)))
             return;
         this._spinnerIcon = icon;
         this._spinner = new Animation.AnimatedIcon(this._spinnerIcon, PANEL_ICON_SIZE);

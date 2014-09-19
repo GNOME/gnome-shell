@@ -22,6 +22,7 @@
 #define __ST_BORDER_IMAGE_H__
 
 #include <glib-object.h>
+#include <gio/gio.h>
 
 G_BEGIN_DECLS
 
@@ -39,14 +40,14 @@ typedef struct _StBorderImageClass StBorderImageClass;
 
 GType             st_border_image_get_type          (void) G_GNUC_CONST;
 
-StBorderImage *st_border_image_new (const char *filename,
+StBorderImage *st_border_image_new (GFile      *file,
                                     int         border_top,
                                     int         border_right,
                                     int         border_bottom,
                                     int         border_left,
                                     int         scale_factor);
 
-const char *st_border_image_get_filename (StBorderImage *image);
+GFile      *st_border_image_get_file     (StBorderImage *image);
 void        st_border_image_get_borders  (StBorderImage *image,
                                           int           *border_top,
                                           int           *border_right,

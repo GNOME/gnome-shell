@@ -12,7 +12,7 @@ const ANIMATED_ICON_UPDATE_TIMEOUT = 100;
 const Animation = new Lang.Class({
     Name: 'Animation',
 
-    _init: function(filename, width, height, speed) {
+    _init: function(file, width, height, speed) {
         this.actor = new St.Bin();
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
         this._speed = speed;
@@ -23,7 +23,7 @@ const Animation = new Lang.Class({
         this._frame = 0;
 
         let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
-        this._animations = St.TextureCache.get_default().load_sliced_image (filename, width, height, scaleFactor,
+        this._animations = St.TextureCache.get_default().load_sliced_image (file, width, height, scaleFactor,
                                                                             Lang.bind(this, this._animationsLoaded));
         this.actor.set_child(this._animations);
     },
@@ -82,7 +82,7 @@ const AnimatedIcon = new Lang.Class({
     Name: 'AnimatedIcon',
     Extends: Animation,
 
-    _init: function(filename, size) {
-        this.parent(filename, size, size, ANIMATED_ICON_UPDATE_TIMEOUT);
+    _init: function(file, size) {
+        this.parent(file, size, size, ANIMATED_ICON_UPDATE_TIMEOUT);
     }
 });

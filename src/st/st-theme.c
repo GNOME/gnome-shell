@@ -1008,8 +1008,8 @@ _st_theme_get_matched_properties (StTheme        *theme,
   return props;
 }
 
-/* Resolve an url from an url() reference in a stylesheet into an absolute
- * local filename, if possible. The resolution here is distinctly lame and
+/* Resolve an url from an url() reference in a stylesheet into a GFile,
+ * if possible. The resolution here is distinctly lame and
  * will fail on many examples.
  */
 GFile *

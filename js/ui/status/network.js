@@ -876,7 +876,8 @@ const NMWirelessDialog = new Lang.Class({
                                                  x_align: Clutter.ActorAlign.CENTER,
                                                  y_align: Clutter.ActorAlign.CENTER });
 
-        this._noNetworksSpinner = new Animation.AnimatedIcon(global.datadir + '/theme/process-working.svg', 24, 24);
+        let file = Gio.File.new_for_path(global.datadir + '/theme/process-working.svg');
+        this._noNetworksSpinner = new Animation.AnimatedIcon(file, 24, 24);
         this._noNetworksBox.add_actor(this._noNetworksSpinner.actor);
         this._noNetworksBox.add_actor(new St.Label({ style_class: 'no-networks-label',
                                                      text: _("No Networks") }));

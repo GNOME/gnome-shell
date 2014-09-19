@@ -1264,9 +1264,8 @@ const SubscriptionRequestNotification = new Lang.Class({
         let file = contact.get_avatar_file();
 
         if (file) {
-            let uri = file.get_uri();
             let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
-            iconBox.child = textureCache.load_uri_async(uri, iconBox._size, iconBox._size, scaleFactor);
+            iconBox.child = textureCache.load_file_async(file, iconBox._size, iconBox._size, scaleFactor);
         }
         else {
             iconBox.child = new St.Icon({ icon_name: 'avatar-default',

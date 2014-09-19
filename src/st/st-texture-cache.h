@@ -70,7 +70,7 @@ StTextureCache* st_texture_cache_get_default (void);
 
 ClutterActor *
 st_texture_cache_load_sliced_image (StTextureCache *cache,
-                                    const gchar    *path,
+                                    GFile          *file,
                                     gint            grid_width,
                                     gint            grid_height,
                                     gint            scale,
@@ -87,18 +87,18 @@ ClutterActor *st_texture_cache_load_gicon (StTextureCache *cache,
                                            gint            size,
                                            gint            scale);
 
-ClutterActor *st_texture_cache_load_uri_async (StTextureCache    *cache,
-                                               const gchar       *uri,
-                                               int                available_width,
-                                               int                available_height,
-                                               int                scale);
+ClutterActor *st_texture_cache_load_file_async (StTextureCache    *cache,
+                                                GFile             *file,
+                                                int                available_width,
+                                                int                available_height,
+                                                int                scale);
 
 CoglTexture     *st_texture_cache_load_file_to_cogl_texture (StTextureCache *cache,
-                                                             const gchar    *file_path,
+                                                             GFile          *file,
                                                              gint            scale);
 
 cairo_surface_t *st_texture_cache_load_file_to_cairo_surface (StTextureCache *cache,
-                                                              const gchar    *file_path,
+                                                              GFile          *file,
                                                               gint            scale);
 
 /**

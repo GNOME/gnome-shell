@@ -277,26 +277,26 @@ current_paint_state (StWidget *widget)
 
 static void
 st_widget_texture_cache_changed (StTextureCache *cache,
-                                 const char     *uri,
+                                 GFile          *file,
                                  gpointer        user_data)
 {
   StWidget *actor = ST_WIDGET (user_data);
   StThemeNode *node = actor->priv->theme_node;
-  char *path;
   gboolean changed = FALSE;
+  GFile *theme_file;
 
   if (node == NULL)
     return;
 
-  path = g_filename_from_uri (uri, NULL, NULL);
-
-  if (g_strcmp0 (st_theme_node_get_background_image (node), path) == 0)
+  theme_file = st_theme_node_get_background_image (node);
+  if ((theme_file != NULL) && g_file_equal (theme_file, file))
     {
       st_theme_node_invalidate_background_image (node);
       changed = TRUE;
     }
 
-  if (g_strcmp0 (st_border_image_get_filename (st_theme_node_get_border_image (node)), path) == 0)
+  theme_file = st_border_image_get_file (st_theme_node_get_border_image (node));
+  if ((theme_file != NULL) && g_file_equal (theme_file, file))
     {
       st_theme_node_invalidate_border_image (node);
       changed = TRUE;
@@ -317,8 +317,6 @@ st_widget_texture_cache_changed (StTextureCache *cache,
       if (CLUTTER_ACTOR_IS_MAPPED (CLUTTER_ACTOR (actor)))
         clutter_actor_queue_redraw (CLUTTER_ACTOR (actor));
     }
-
-  g_free (path);
 }
 
 static void
