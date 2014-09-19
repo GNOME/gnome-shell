@@ -20,6 +20,7 @@ const EXTRA_SPACE_ANIMATION_TIME = 0.25;
 const ANIMATION_TIME_IN = 0.350;
 const ANIMATION_TIME_OUT = 1/2 * ANIMATION_TIME_IN;
 const ANIMATION_MAX_DELAY_FOR_ITEM = 2/3 * ANIMATION_TIME_IN;
+const ANIMATION_BASE_DELAY_FOR_ITEM = 1/4 * ANIMATION_MAX_DELAY_FOR_ITEM;
 const ANIMATION_MAX_DELAY_OUT_FOR_ITEM = 2/3 * ANIMATION_TIME_OUT;
 const ANIMATION_FADE_IN_TIME_FOR_ITEM = 1/4 * ANIMATION_TIME_IN;
 
@@ -429,13 +430,20 @@ const IconGrid = new Lang.Class({
             return;
         }
 
+        // For few items the animation can be slow, so use a smaller
+        // delay when there are less than 4 items
+        // (ANIMATION_BASE_DELAY_FOR_ITEM = 1/4 *
+        // ANIMATION_MAX_DELAY_FOR_ITEM)
+        let maxDelay = Math.min(ANIMATION_BASE_DELAY_FOR_ITEM * actors.length,
+                                ANIMATION_MAX_DELAY_FOR_ITEM);
+
         for (let index = 0; index < actors.length; index++) {
             let actor = actors[index];
             actor.reactive = false;
             actor.set_scale(0, 0);
             actor.set_pivot_point(0.5, 0.5);
 
-            let delay = index / actors.length * ANIMATION_MAX_DELAY_FOR_ITEM;
+            let delay = index / actors.length * maxDelay;
             let bounceUpTime = ANIMATION_TIME_IN / 4;
             let isLastItem = index == actors.length - 1;
             Tweener.addTween(actor,
