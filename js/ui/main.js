@@ -131,6 +131,9 @@ function _initializeUI() {
     Shell.WindowTracker.get_default();
     Shell.AppUsage.get_default();
 
+    let resource = Gio.Resource.load(global.datadir + '/gnome-shell-theme.gresource');
+    resource._register();
+
     _loadDefaultStylesheet();
 
     // Setup the stage hierarchy early
@@ -228,7 +231,7 @@ function _loadDefaultStylesheet() {
     if (!sessionMode.isPrimary)
         return;
 
-    let stylesheet = Gio.File.new_for_path(global.datadir + '/theme/' + sessionMode.stylesheetName);
+    let stylesheet = Gio.File.new_for_uri('resource:///org/gnome/shell/theme/' + sessionMode.stylesheetName);
     if (_defaultCssStylesheet && _defaultCssStylesheet.equal(stylesheet))
         return;
 

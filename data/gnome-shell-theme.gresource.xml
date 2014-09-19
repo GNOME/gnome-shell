@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/org/gnome/shell/theme">
+    <file>calendar-arrow-left.svg</file>
+    <file>calendar-arrow-right.svg</file>
+    <file>calendar-today.svg</file>
+    <file>checkbox-focused.svg</file>
+    <file>checkbox-off-focused.svg</file>
+    <file>checkbox-off.svg</file>
+    <file>checkbox.svg</file>
+    <file>close-window.svg</file>
+    <file>close.svg</file>
+    <file>corner-ripple-ltr.png</file>
+    <file>corner-ripple-rtl.png</file>
+    <file>dash-placeholder.svg</file>
+    <file>filter-selected-ltr.svg</file>
+    <file>filter-selected-rtl.svg</file>
+    <file>gnome-shell.css</file>
+    <file>logged-in-indicator.svg</file>
+    <file>message-tray-background.png</file>
+    <file>more-results.svg</file>
+    <file>noise-texture.png</file>
+    <file>page-indicator-active.svg</file>
+    <file>page-indicator-inactive.svg</file>
+    <file>page-indicator-checked.svg</file>
+    <file>page-indicator-hover.svg</file>
+    <file>panel-button-border.svg</file>
+    <file>panel-button-highlight-narrow.svg</file>
+    <file>panel-button-highlight-wide.svg</file>
+    <file>process-working.svg</file>
+    <file>running-indicator.svg</file>
+    <file>source-button-border.svg</file>
+    <file>summary-counter.svg</file>
+    <file>toggle-off-us.svg</file>
+    <file>toggle-off-intl.svg</file>
+    <file>toggle-on-us.svg</file>
+    <file>toggle-on-intl.svg</file>
+    <file>ws-switch-arrow-up.png</file>
+    <file>ws-switch-arrow-down.png</file>
+  </gresource>
+</gresources>

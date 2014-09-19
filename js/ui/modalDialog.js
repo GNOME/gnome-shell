@@ -194,7 +194,7 @@ const ModalDialog = new Lang.Class({
     },
 
     placeSpinner: function(layoutInfo) {
-        let spinnerIcon = Gio.File.new_for_path(global.datadir + '/theme/process-working.svg');
+        let spinnerIcon = Gio.File.new_for_uri('resource:///org/gnome/shell/theme/process-working.svg');
         this._workSpinner = new Animation.AnimatedIcon(spinnerIcon, WORK_SPINNER_ICON_SIZE);
         this._workSpinner.actor.opacity = 0;
         this._workSpinner.actor.show();

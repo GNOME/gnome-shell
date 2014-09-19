@@ -459,7 +459,7 @@ const SystemBackground = new Lang.Class({
     Name: 'SystemBackground',
 
     _init: function() {
-        let file = Gio.File.new_for_path(global.datadir + '/theme/noise-texture.png');
+        let file = Gio.File.new_for_uri('resource:///org/gnome/shell/theme/noise-texture.png');
 
         if (_systemBackground == null) {
             _systemBackground = new Meta.Background({ meta_screen: global.screen });
