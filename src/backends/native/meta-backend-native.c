@@ -36,10 +36,23 @@
 struct _MetaBackendNativePrivate
 {
   MetaLauncher *launcher;
+
+  GSettings *keyboard_settings;
 };
 typedef struct _MetaBackendNativePrivate MetaBackendNativePrivate;
 
 G_DEFINE_TYPE_WITH_PRIVATE (MetaBackendNative, meta_backend_native, META_TYPE_BACKEND);
+
+static void
+meta_backend_native_finalize (GObject *object)
+{
+  MetaBackendNative *native = META_BACKEND_NATIVE (object);
+  MetaBackendNativePrivate *priv = meta_backend_native_get_instance_private (native);
+
+  g_clear_object (&priv->keyboard_settings);
+
+  G_OBJECT_CLASS (meta_backend_native_parent_class)->finalize (object);
+}
 
 /*
  * The pointer constrain code is mostly a rip-off of the XRandR code from Xorg.
@@ -143,14 +156,45 @@ pointer_constrain_callback (ClutterInputDevice *device,
 }
 
 static void
+set_keyboard_repeat (MetaBackendNative *native)
+{
+  MetaBackendNativePrivate *priv = meta_backend_native_get_instance_private (native);
+  ClutterDeviceManager *manager = clutter_device_manager_get_default ();
+  gboolean repeat;
+  unsigned int delay, interval;
+
+  repeat = g_settings_get_boolean (priv->keyboard_settings, "repeat");
+  delay = g_settings_get_uint (priv->keyboard_settings, "delay");
+  interval = g_settings_get_uint (priv->keyboard_settings, "repeat-interval");
+
+  clutter_evdev_set_keyboard_repeat (manager, repeat, delay, interval);
+}
+
+static void
+keyboard_settings_changed (GSettings           *settings,
+                           const char          *key,
+                           gpointer             data)
+{
+  MetaBackendNative *native = data;
+  set_keyboard_repeat (native);
+}
+
+static void
 meta_backend_native_post_init (MetaBackend *backend)
 {
+  MetaBackendNative *native = META_BACKEND_NATIVE (backend);
+  MetaBackendNativePrivate *priv = meta_backend_native_get_instance_private (native);
   ClutterDeviceManager *manager = clutter_device_manager_get_default ();
 
   META_BACKEND_CLASS (meta_backend_native_parent_class)->post_init (backend);
 
   clutter_evdev_set_pointer_constrain_callback (manager, pointer_constrain_callback,
                                                 NULL, NULL);
+
+  priv->keyboard_settings = g_settings_new ("org.gnome.settings-daemon.peripherals.keyboard");
+  g_signal_connect (priv->keyboard_settings, "changed",
+                    G_CALLBACK (keyboard_settings_changed), native);
+  set_keyboard_repeat (native);
 }
 
 static MetaIdleMonitor *
@@ -236,6 +280,9 @@ static void
 meta_backend_native_class_init (MetaBackendNativeClass *klass)
 {
   MetaBackendClass *backend_class = META_BACKEND_CLASS (klass);
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
+  object_class->finalize = meta_backend_native_finalize;
 
   backend_class->post_init = meta_backend_native_post_init;
   backend_class->create_idle_monitor = meta_backend_native_create_idle_monitor;
