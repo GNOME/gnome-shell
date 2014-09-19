@@ -53,7 +53,7 @@ struct _MetaBackgroundImageCacheClass
 struct _MetaBackgroundImage
 {
   GObject parent_instance;
-  char *filename;
+  GFile *file;
   MetaBackgroundImageCache *cache;
   gboolean in_cache;
   gboolean loaded;
@@ -70,7 +70,7 @@ G_DEFINE_TYPE (MetaBackgroundImageCache, meta_background_image_cache, G_TYPE_OBJ
 static void
 meta_background_image_cache_init (MetaBackgroundImageCache *cache)
 {
-  cache->images = g_hash_table_new (g_str_hash, g_str_equal);
+  cache->images = g_hash_table_new (g_file_hash, (GEqualFunc) g_file_equal);
 }
 
 static void
@@ -124,9 +124,17 @@ load_file (GTask               *task,
 {
   GError *error = NULL;
   GdkPixbuf *pixbuf;
+  GFileInputStream *stream;
 
-  pixbuf = gdk_pixbuf_new_from_file (image->filename,
-                                     &error);
+  stream = g_file_read (image->file, NULL, &error);
+  if (stream == NULL)
+    {
+      g_task_return_error (task, error);
+      return;
+    }
+
+  pixbuf = gdk_pixbuf_new_from_stream (G_INPUT_STREAM (stream), NULL, &error);
+  g_object_unref (stream);
 
   if (pixbuf == NULL)
     {
@@ -156,9 +164,11 @@ file_loaded (GObject      *source_object,
 
   if (pixbuf == NULL)
     {
+      char *uri = g_file_get_uri (image->file);
       g_warning ("Failed to load background '%s': %s",
-                 image->filename, error->message);
+                 uri, error->message);
       g_clear_error (&error);
+      g_free (uri);
       goto out;
     }
 
@@ -195,7 +205,7 @@ out:
 /**
  * meta_background_image_cache_load:
  * @cache: a #MetaBackgroundImageCache
- * @filename: filename to load
+ * @file: #GFile to load
  *
  * Loads an image to use as a background, or returns a reference to an
  * image that is already in the process of loading or loaded. In either
@@ -209,23 +219,23 @@ out:
  */
 MetaBackgroundImage *
 meta_background_image_cache_load (MetaBackgroundImageCache *cache,
-                                  const char               *filename)
+                                  GFile                    *file)
 {
   MetaBackgroundImage *image;
   GTask *task;
 
   g_return_val_if_fail (META_IS_BACKGROUND_IMAGE_CACHE (cache), NULL);
-  g_return_val_if_fail (filename != NULL, NULL);
+  g_return_val_if_fail (file != NULL, NULL);
 
-  image = g_hash_table_lookup (cache->images, filename);
+  image = g_hash_table_lookup (cache->images, file);
   if (image != NULL)
     return g_object_ref (image);
 
   image = g_object_new (META_TYPE_BACKGROUND_IMAGE, NULL);
   image->cache = cache;
   image->in_cache = TRUE;
-  image->filename = g_strdup (filename);
-  g_hash_table_insert (cache->images, image->filename, image);
+  image->file = g_object_ref (file);
+  g_hash_table_insert (cache->images, image->file, image);
 
   task = g_task_new (image, NULL, file_loaded, NULL);
 
@@ -238,25 +248,25 @@ meta_background_image_cache_load (MetaBackgroundImageCache *cache,
 /**
  * meta_background_image_cache_purge:
  * @cache: a #MetaBackgroundImageCache
- * @filename: filename to remove from the cache
+ * @file: file to remove from the cache
  *
  * Remove an entry from the cache; this would be used if monitoring
  * showed that the file changed.
  */
 void
 meta_background_image_cache_purge (MetaBackgroundImageCache *cache,
-                                   const char               *filename)
+                                   GFile                    *file)
 {
   MetaBackgroundImage *image;
 
   g_return_if_fail (META_IS_BACKGROUND_IMAGE_CACHE (cache));
-  g_return_if_fail (filename != NULL);
+  g_return_if_fail (file != NULL);
 
-  image = g_hash_table_lookup (cache->images, filename);
+  image = g_hash_table_lookup (cache->images, file);
   if (image == NULL)
     return;
 
-  g_hash_table_remove (cache->images, image->filename);
+  g_hash_table_remove (cache->images, image->file);
   image->in_cache = FALSE;
 }
 
@@ -273,12 +283,12 @@ meta_background_image_finalize (GObject *object)
   MetaBackgroundImage *image = META_BACKGROUND_IMAGE (object);
 
   if (image->in_cache)
-    g_hash_table_remove (image->cache->images, image->filename);
+    g_hash_table_remove (image->cache->images, image->file);
 
   if (image->texture)
     cogl_object_unref (image->texture);
-  if (image->filename)
-    g_free (image->filename);
+  if (image->file)
+    g_object_unref (image->file);
 
   G_OBJECT_CLASS (meta_background_image_parent_class)->finalize (object);
 }

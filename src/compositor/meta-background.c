@@ -50,9 +50,9 @@ struct _MetaBackgroundPrivate
   ClutterColor              color;
   ClutterColor              second_color;
 
-  char *filename1;
+  GFile *file1;
   MetaBackgroundImage *background_image1;
-  char *filename2;
+  GFile *file2;
   MetaBackgroundImage *background_image2;
 
   CoglTexture *color_texture;
@@ -241,16 +241,28 @@ on_background_loaded (MetaBackgroundImage *image,
   mark_changed (self);
 }
 
-static void
-set_filename (MetaBackground       *self,
-              char                **filenamep,
-              MetaBackgroundImage **imagep,
-              const char           *filename)
+static gboolean
+file_equal0 (GFile *file1,
+             GFile *file2)
 {
-  if (g_strcmp0 (filename, *filenamep) != 0)
+  if (file1 == file2)
+    return TRUE;
+
+  if ((file1 == NULL) || (file2 == NULL))
+    return FALSE;
+
+  return g_file_equal (file1, file2);
+}
+
+static void
+set_file (MetaBackground       *self,
+          GFile               **filep,
+          MetaBackgroundImage **imagep,
+          GFile                *file)
+{
+  if (!file_equal0 (*filep, file))
     {
-      g_free (*filenamep);
-      *filenamep = g_strdup (filename);
+      g_clear_object (filep);
 
       if (*imagep)
         {
@@ -261,10 +273,12 @@ set_filename (MetaBackground       *self,
           *imagep = NULL;
         }
 
-      if (filename)
+      if (file)
         {
           MetaBackgroundImageCache *cache = meta_background_image_cache_get_default ();
-          *imagep = meta_background_image_cache_load (cache, filename);
+
+          *filep = g_object_ref (file);
+          *imagep = meta_background_image_cache_load (cache, file);
           g_signal_connect (*imagep, "loaded",
                             G_CALLBACK (on_background_loaded), self);
         }
@@ -280,8 +294,8 @@ meta_background_dispose (GObject *object)
   free_color_texture (self);
   free_wallpaper_texture (self);
 
-  set_filename (self, &priv->filename1, &priv->background_image1, NULL);
-  set_filename (self, &priv->filename2, &priv->background_image2, NULL);
+  set_file (self, &priv->file1, &priv->background_image1, NULL);
+  set_file (self, &priv->file2, &priv->background_image2, NULL);
 
   set_screen (self, NULL);
 
@@ -867,19 +881,19 @@ meta_background_set_gradient (MetaBackground            *self,
 }
 
 void
-meta_background_set_filename (MetaBackground            *self,
-                              const char                *filename,
-                              GDesktopBackgroundStyle    style)
+meta_background_set_file (MetaBackground            *self,
+                          GFile                     *file,
+                          GDesktopBackgroundStyle    style)
 {
   g_return_if_fail (META_IS_BACKGROUND (self));
 
-  meta_background_set_blend (self, filename, NULL, 0.0, style);
+  meta_background_set_blend (self, file, NULL, 0.0, style);
 }
 
 void
 meta_background_set_blend (MetaBackground          *self,
-                           const char              *filename1,
-                           const char              *filename2,
+                           GFile                   *file1,
+                           GFile                   *file2,
                            double                   blend_factor,
                            GDesktopBackgroundStyle  style)
 {
@@ -890,8 +904,8 @@ meta_background_set_blend (MetaBackground          *self,
 
   priv = self->priv;
 
-  set_filename (self, &priv->filename1, &priv->background_image1, filename1);
-  set_filename (self, &priv->filename2, &priv->background_image2, filename2);
+  set_file (self, &priv->file1, &priv->background_image1, file1);
+  set_file (self, &priv->file2, &priv->background_image2, file2);
 
   priv->blend_factor = blend_factor;
   priv->style = style;

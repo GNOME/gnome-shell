@@ -67,12 +67,12 @@ void meta_background_set_gradient (MetaBackground            *self,
                                    GDesktopBackgroundShading  shading_direction,
                                    ClutterColor              *color,
                                    ClutterColor              *second_color);
-void meta_background_set_filename (MetaBackground            *self,
-                                   const char                *filename,
+void meta_background_set_file     (MetaBackground            *self,
+                                   GFile                     *file,
                                    GDesktopBackgroundStyle    style);
 void meta_background_set_blend    (MetaBackground            *self,
-                                   const char                *filename1,
-                                   const char                *filename2,
+                                   GFile                     *file1,
+                                   GFile                     *file2,
                                    double                     blend_factor,
                                    GDesktopBackgroundStyle    style);
 

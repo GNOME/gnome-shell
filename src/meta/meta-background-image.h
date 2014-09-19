@@ -69,8 +69,8 @@ MetaBackgroundImageCache *meta_background_image_cache_get_default (void);
 GType meta_background_image_cache_get_type (void);
 
 MetaBackgroundImage *meta_background_image_cache_load  (MetaBackgroundImageCache *cache,
-                                                        const char               *filename);
+                                                        GFile                    *file);
 void                 meta_background_image_cache_purge (MetaBackgroundImageCache *cache,
-                                                        const char               *filename);
+                                                        GFile                    *file);
 
 #endif /* __META_BACKGROUND_IMAGE_H__ */
