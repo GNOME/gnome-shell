@@ -74,7 +74,7 @@ function disableExtension(uuid) {
 
     if (extension.stylesheet) {
         let theme = St.ThemeContext.get_for_stage(global.stage).get_theme();
-        theme.unload_stylesheet(extension.stylesheet.get_path());
+        theme.unload_stylesheet(extension.stylesheet);
     }
 
     try {
@@ -118,7 +118,7 @@ function enableExtension(uuid) {
         let stylesheetFile = extension.dir.get_child(stylesheetNames[i]);
         if (stylesheetFile.query_exists(null)) {
             let theme = St.ThemeContext.get_for_stage(global.stage).get_theme();
-            theme.load_stylesheet(stylesheetFile.get_path());
+            theme.load_stylesheet(stylesheetFile);
             extension.stylesheet = stylesheetFile;
             break;
         }

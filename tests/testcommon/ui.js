@@ -1,6 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Clutter = imports.gi.Clutter;
+const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const St = imports.gi.St;
 
@@ -10,7 +11,7 @@ function init(stage) {
     Environment.init();
     let context = St.ThemeContext.get_for_stage(stage);
     let stylesheetPath = GLib.getenv("GNOME_SHELL_TESTSDIR") + "/testcommon/test.css";
-    let theme = new St.Theme({ application_stylesheet: stylesheetPath });
+    let theme = new St.Theme({ application_stylesheet: Gio.File.new_for_path(stylesheetPath) });
     context.set_theme(theme);
 }
 
