@@ -125,6 +125,16 @@ const ANIMATION_MIN_WAKEUP_INTERVAL = 1.0;
 
 let _backgroundCache = null;
 
+function _fileEqual0(file1, file2) {
+    if (file1 == file2)
+        return true;
+
+    if (!file1 || !file2)
+        return false;
+
+    return file1.equal(file2);
+}
+
 const BackgroundCache = new Lang.Class({
     Name: 'BackgroundCache',
 
@@ -134,25 +144,25 @@ const BackgroundCache = new Lang.Class({
         this._backgroundSources = {};
     },
 
-    monitorFile: function(filename) {
-        if (this._fileMonitors[filename])
+    monitorFile: function(file) {
+        let key = file.hash();
+        if (this._fileMonitors[key])
             return;
 
-        let file = Gio.File.new_for_path(filename);
         let monitor = file.monitor(Gio.FileMonitorFlags.NONE, null);
         monitor.connect('changed',
                         Lang.bind(this, function() {
-                            this.emit('file-changed', filename);
+                            this.emit('file-changed', file);
                         }));
 
-        this._fileMonitors[filename] = monitor;
+        this._fileMonitors[key] = monitor;
     },
 
     getAnimation: function(params) {
-        params = Params.parse(params, { filename: null,
+        params = Params.parse(params, { file: null,
                                         onLoaded: null });
 
-        if (this._animationFilename == params.filename) {
+        if (_fileEqual0(this._animationFile, params.file)) {
             if (params.onLoaded) {
                 let id = GLib.idle_add(GLib.PRIORITY_DEFAULT, Lang.bind(this, function() {
                     params.onLoaded(this._animation);
@@ -162,10 +172,10 @@ const BackgroundCache = new Lang.Class({
             }
         }
 
-        let animation = new Animation({ filename: params.filename });
+        let animation = new Animation({ file: params.file });
 
         animation.load(Lang.bind(this, function() {
-                           this._animationFilename = params.filename;
+                           this._animationFile = params.file;
                            this._animation = animation;
 
                            if (params.onLoaded) {
@@ -218,14 +228,14 @@ const Background = new Lang.Class({
         params = Params.parse(params, { monitorIndex: 0,
                                         layoutManager: Main.layoutManager,
                                         settings: null,
-                                        filename: null,
+                                        file: null,
                                         style: null });
 
         this.background = new Meta.Background({ meta_screen: global.screen });
         this.background._delegate = this;
 
         this._settings = params.settings;
-        this._filename = params.filename;
+        this._file = params.file;
         this._style = params.style;
         this._monitorIndex = params.monitorIndex;
         this._layoutManager = params.layoutManager;
@@ -292,20 +302,21 @@ const Background = new Lang.Class({
             this.background.set_gradient(shadingType, color, secondColor);
     },
 
-    _watchFile: function(filename) {
-        if (this._fileWatches[filename])
+    _watchFile: function(file) {
+        let key = file.hash();
+        if (this._fileWatches[key])
             return;
 
-        this._cache.monitorFile(filename);
+        this._cache.monitorFile(file);
         let signalId = this._cache.connect('file-changed',
                                            Lang.bind(this, function(cache, changedFile) {
-                                               if (changedFile == filename) {
+                                               if (changedFile.equal(file)) {
                                                    let imageCache = Meta.BackgroundImageCache.get_default();
                                                    imageCache.purge(changedFile);
                                                    this.emit('changed');
                                                }
                                            }));
-        this._fileWatches[filename] = signalId;
+        this._fileWatches[key] = signalId;
     },
 
     _removeAnimationTimeout: function() {
@@ -328,9 +339,9 @@ const Background = new Lang.Class({
                                           this._animation.transitionProgress,
                                           this._style);
             } else if (files.length > 0) {
-                this.background.set_filename(files[0], this._style);
+                this.background.set_file(files[0], this._style);
             } else {
-                this.background.set_filename(null, this._style);
+                this.background.set_file(null, this._style);
             }
             this._queueUpdateAnimation();
         });
@@ -387,28 +398,28 @@ const Background = new Lang.Class({
         GLib.Source.set_name_by_id(this._updateAnimationTimeoutId, '[gnome-shell] this._updateAnimation');
     },
 
-    _loadAnimation: function(filename) {
-        this._cache.getAnimation({ filename: filename,
-                                             onLoaded: Lang.bind(this, function(animation) {
-                                                 this._animation = animation;
+    _loadAnimation: function(file) {
+        this._cache.getAnimation({ file: file,
+                                         onLoaded: Lang.bind(this, function(animation) {
+                                             this._animation = animation;
 
-                                                 if (!this._animation || this._cancellable.is_cancelled()) {
-                                                     this._setLoaded();
-                                                     return;
-                                                 }
+                                             if (!this._animation || this._cancellable.is_cancelled()) {
+                                                 this._setLoaded();
+                                                 return;
+                                             }
 
-                                                 this._updateAnimation();
-                                                 this._watchFile(filename);
-                                             })
-                                           });
+                                             this._updateAnimation();
+                                             this._watchFile(file);
+                                         })
+                                 });
     },
 
-    _loadImage: function(filename) {
-        this.background.set_filename(filename, this._style);
-        this._watchFile(filename);
+    _loadImage: function(file) {
+        this.background.set_file(file, this._style);
+        this._watchFile(file);
 
         let cache = Meta.BackgroundImageCache.get_default();
-        let image = cache.load(filename);
+        let image = cache.load(file);
         if (image.is_loaded())
             this._setLoaded();
         else {
@@ -420,11 +431,11 @@ const Background = new Lang.Class({
         }
     },
 
-    _loadFile: function(filename) {
-        if (filename.endsWith('.xml'))
-            this._loadAnimation(filename);
+    _loadFile: function(file) {
+        if (file.get_basename().endsWith('.xml'))
+            this._loadAnimation(file);
         else
-            this._loadImage(filename);
+            this._loadImage(file);
     },
 
     _load: function () {
@@ -432,12 +443,12 @@ const Background = new Lang.Class({
 
         this._loadPattern();
 
-        if (!this._filename) {
+        if (!this._file) {
             this._setLoaded();
             return;
         }
 
-        this._loadFile(this._filename);
+        this._loadFile(this._file);
     },
 });
 Signals.addSignalMethods(Background.prototype);
@@ -448,11 +459,11 @@ const SystemBackground = new Lang.Class({
     Name: 'SystemBackground',
 
     _init: function() {
-        let filename = global.datadir + '/theme/noise-texture.png';
+        let file = Gio.File.new_for_path(global.datadir + '/theme/noise-texture.png');
 
         if (_systemBackground == null) {
             _systemBackground = new Meta.Background({ meta_screen: global.screen });
-            _systemBackground.set_filename(filename, GDesktopEnums.BackgroundStyle.WALLPAPER);
+            _systemBackground.set_file(file, GDesktopEnums.BackgroundStyle.WALLPAPER);
         }
 
         this.actor = new Meta.BackgroundActor({ meta_screen: global.screen,
@@ -460,7 +471,7 @@ const SystemBackground = new Lang.Class({
                                                 background: _systemBackground });
 
         let cache = Meta.BackgroundImageCache.get_default();
-        let image = cache.load(filename);
+        let image = cache.load(file);
         if (image.is_loaded()) {
             image = null;
             let id = GLib.idle_add(GLib.PRIORITY_DEFAULT, Lang.bind(this, function() {
@@ -509,20 +520,17 @@ const BackgroundSource = new Lang.Class({
     },
 
     getBackground: function(monitorIndex) {
-        let filename = null;
+        let file = null;
         let style;
 
         if (this._overrideImage != null) {
-            filename = this._overrideImage;
+            file = Gio.File.new_for_path(this._overrideImage);
             style = GDesktopEnums.BackgroundStyle.ZOOM; // Hardcode
         } else {
             style = this._settings.get_enum(BACKGROUND_STYLE_KEY);
             if (style != GDesktopEnums.BackgroundStyle.NONE) {
                 let uri = this._settings.get_string(PICTURE_URI_KEY);
-                if (GLib.uri_parse_scheme(uri) != null)
-                    filename = Gio.File.new_for_uri(uri).get_path();
-                else
-                    filename = uri;
+                file = Gio.File.new_for_commandline_arg(uri);
             }
         }
 
@@ -530,7 +538,7 @@ const BackgroundSource = new Lang.Class({
         // they can have variants that depend on the aspect ratio and
         // size of the monitor; for other backgrounds we can use the
         // same background object for all monitors.
-        if (filename == null || !filename.endsWith('.xml'))
+        if (file == null || !file.get_basename().endsWith('.xml'))
             monitorIndex = 0;
 
         if (!(monitorIndex in this._backgrounds)) {
@@ -538,7 +546,7 @@ const BackgroundSource = new Lang.Class({
                 monitorIndex: monitorIndex,
                 layoutManager: this._layoutManager,
                 settings: this._settings,
-                filename: filename,
+                file: file,
                 style: style
             });
 
@@ -571,9 +579,9 @@ const Animation = new Lang.Class({
     Name: 'Animation',
 
     _init: function(params) {
-        params = Params.parse(params, { filename: null });
+        params = Params.parse(params, { file: null });
 
-        this.filename = params.filename;
+        this.file = params.file;
         this.keyFrameFiles = [];
         this.transitionProgress = 0.0;
         this.transitionDuration = 0.0;
@@ -581,9 +589,7 @@ const Animation = new Lang.Class({
     },
 
     load: function(callback) {
-        let file = Gio.File.new_for_path(this.filename);
-
-        this._show = new GnomeDesktop.BGSlideShow({ filename: this.filename });
+        this._show = new GnomeDesktop.BGSlideShow({ filename: this.file.get_path() });
 
         this._show.load_async(null,
                               Lang.bind(this,
@@ -603,16 +609,16 @@ const Animation = new Lang.Class({
         if (this._show.get_num_slides() < 1)
             return;
 
-        let [progress, duration, isFixed, file1, file2] = this._show.get_current_slide(monitor.width, monitor.height);
+        let [progress, duration, isFixed, filename1, filename2] = this._show.get_current_slide(monitor.width, monitor.height);
 
         this.transitionDuration = duration;
         this.transitionProgress = progress;
 
-        if (file1)
-            this.keyFrameFiles.push(file1);
+        if (filename1)
+            this.keyFrameFiles.push(Gio.File.new_for_path(filename1));
 
-        if (file2)
-            this.keyFrameFiles.push(file2);
+        if (filename2)
+            this.keyFrameFiles.push(Gio.File.new_for_path(filename2));
     },
 });
 Signals.addSignalMethods(Animation.prototype);
