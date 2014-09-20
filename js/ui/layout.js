@@ -259,7 +259,6 @@ const LayoutManager = new Lang.Class({
 
         this._inOverview = true;
         this._updateVisibility();
-        this._updateRegions();
     },
 
     hideOverview: function() {
@@ -267,7 +266,6 @@ const LayoutManager = new Lang.Class({
 
         this._inOverview = false;
         this._updateVisibility();
-        this._queueUpdateRegions();
     },
 
     _sessionUpdated: function() {
@@ -915,9 +913,6 @@ const LayoutManager = new Lang.Class({
     },
 
     _queueUpdateRegions: function() {
-        if (Main.sessionMode.isGreeter)
-            return;
-
         if (this._startingUp)
             return;
 
@@ -951,13 +946,16 @@ const LayoutManager = new Lang.Class({
     },
 
     _updateRegions: function() {
-        let rects = [], struts = [], i;
-
         if (this._updateRegionIdle) {
             Meta.later_remove(this._updateRegionIdle);
             delete this._updateRegionIdle;
         }
 
+        // No need to update when we have a modal.
+        if (Main.modalCount > 0)
+            return GLib.SOURCE_REMOVE;
+
+        let rects = [], struts = [], i;
         let isPopupMenuVisible = global.top_window_group.get_children().some(isPopupMetaWindow);
         let wantsInputRegion = !isPopupMenuVisible;
 
@@ -1043,7 +1041,13 @@ const LayoutManager = new Lang.Class({
         }
 
         return GLib.SOURCE_REMOVE;
-    }
+    },
+
+    modalEnded: function() {
+        // We don't update the stage input region while in a modal,
+        // so queue an update now.
+        this._queueUpdateRegions();
+    },
 });
 Signals.addSignalMethods(LayoutManager.prototype);
 

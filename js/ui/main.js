@@ -454,6 +454,7 @@ function popModal(actor, timestamp) {
     if (modalCount > 0)
         return;
 
+    layoutManager.modalEnded();
     global.end_modal(timestamp);
     Meta.enable_unredirect_for_screen(global.screen);
     keybindingMode = Shell.KeyBindingMode.NORMAL;
