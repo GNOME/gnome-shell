@@ -75,6 +75,7 @@ const Key = new Lang.Class({
     _init : function(key) {
         this._key = key;
         this.actor = this._makeKey(key, GLib.markup_escape_text(key.label, -1));
+        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
 
         this._extended_keys = this._key.get_extended_keys();
         this._extended_keyboard = null;
@@ -94,6 +95,13 @@ const Key = new Lang.Class({
             this.actor._extended_keys = this._extended_keyboard;
             this._boxPointer.actor.hide();
             Main.layoutManager.addChrome(this._boxPointer.actor);
+        }
+    },
+
+    _onDestroy: function() {
+        if (this._boxPointer) {
+            this._boxPointer.actor.destroy();
+            this._boxPointer = null;
         }
     },
 
