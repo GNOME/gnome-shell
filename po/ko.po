@@ -19,7 +19,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2014-09-13 07:37+0000\n"
-"PO-Revision-Date: 2014-09-14 01:10+0900\n"
+"PO-Revision-Date: 2014-09-18 01:41+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: GNOME Korea <gnome-kr@googlegroups.com>\n"
 "Language: Korean\n"
@@ -292,7 +292,7 @@ msgstr "마우스 포인터가 움직이지 않을 때까지 포커스 전환을
 # http://en.wikipedia.org/wiki/Captive_portal
 #: ../data/org.gnome.Shell.PortalHelper.desktop.in.h:1
 msgid "Captive Portal"
-msgstr "캡티브 포털"
+msgstr "종속 포털"
 
 #: ../js/extensionPrefs/main.js:123
 #, javascript-format
