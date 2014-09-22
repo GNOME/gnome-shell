@@ -1,3 +1,17 @@
+3.14.0
+======
+* Fix exposure of the accessible tree [Alejandro; #736821]
+* Hide empty app folders in app picker [Florian; #736910]
+
+Contributors:
+  Florian Müllner, Alejandro Piñeiro
+
+Translations:
+  Yuri Myasoedov [ru], Pawan Chitrakar [ne], Manoj Kumar Giri [or],
+  Daniel Mustieles [es], GNOME Translation Robot [de], Rajesh Ranjan [hi],
+  Shankar Prasad [kn], Kenneth Nielsen [da], Daniel Korostil [uk],
+  Changwoo Ryu [ko], A S Alam [pa], Tom Tryfonidis [el], Petr Kovar [cs]
+
 3.13.92
 =======
 * Fix submenu arrow animations [Hashem; #728927]
