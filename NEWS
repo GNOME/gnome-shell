@@ -1,3 +1,17 @@
+3.14.0
+======
+* Fix placement of popup windows on wayland [Jasper; #736812]
+* Only increment serial once per event [Jasper; #736840]
+* Fix window positioning regression with non-GTK+ toolkits [Owen; #736719]
+
+Contributors:
+  Jasper St. Pierre, Owen W. Taylor
+
+Translations:
+  Saibal Ray [bn_IN], Dušan Kazik [sk], Manoj Kumar Giri [or],
+  Christian Kirbach [de], Ask H. Larsen [da], YunQiang Su [zh_CN],
+  Bernd Homuth [de], Shankar Prasad [kn], Petr Kovar [cs], Rajesh Ranjan [hi]
+
 3.13.92
 =======
 * Rewrite background code [Owen; #735637, #736568]
