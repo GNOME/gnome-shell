@@ -24,7 +24,7 @@ On X11, Clutter depends on the following extensions:
 * XComposite
 * XDamage
 * XExt
-* XInput (1.x or 2.x)
+* XInput 2.x
 * XKB
 
 If you are building the API reference you will also need:
@@ -53,30 +53,24 @@ The official Clutter website is:
 
 The API references for the latest stable release are available at:
 
-        http://docs.clutter-project.org/docs/clutter/stable/
-        http://docs.clutter-project.org/docs/cogl/stable/
-        http://docs.clutter-project.org/docs/cally/stable/
+        https://developer.gnome.org/clutter/stable/
 
 The Clutter Cookbook is available at:
 
-        http://docs.clutter-project.org/docs/clutter-cookbook/
+        https://developer.gnome.org/clutter-cookbook/
 
 New releases of Clutter are available at:
 
-        http://source.clutter-project.org/sources/clutter/
-
-The Clutter blog is available at:
-
-        http://www.clutter-project.org/blog/
+        https://download.gnome.org/sources/clutter/
 
 To subscribe to the Clutter mailing lists and read the archives, use the
 Mailman web interface available at:
 
-        http://lists.clutter-project.org/
+        https://mail.gnome.org/mailman/listinfo/clutter-list
 
 New bug page on Bugzilla:
 
-        http://bugzilla.gnome.org/enter_bug.cgi?product=clutter
+        https://bugzilla.gnome.org/enter_bug.cgi?product=clutter
 
 Clutter is licensed under the terms of the GNU Lesser General Public
 License, version 2.1 or (at your option) later: see the `COPYING` file
@@ -92,7 +86,7 @@ be followed:
 2. make
 3. make install
 
-To build Clutter from a Git clone, run the autogen.sh script instead
+To build Clutter from a Git clone, run the `autogen.sh` script instead
 of the configure one. The `autogen.sh` script will run the configure script
 for you, unless the `NOCONFIGURE` environment variable is set to a non-empty
 value.
@@ -133,7 +127,7 @@ The usual workflow for contributions should be:
 2. Create a branch (`git checkout -b my_work`)
 3. Commit your changes (`git commit -am "Added my awesome feature"`)
 4. Push to the branch (`git push origin my_work`)
-5. Create an [Bug][1] with a link to your branch
+5. Create an [Bug][bugzilla-clutter] with a link to your branch
 6. Sit back, relax and wait for feedback and eventual merge
 
 Bugs
@@ -141,7 +135,7 @@ Bugs
 
 Bugs should be reported to the Clutter Bugzilla at:
 
-        http://bugzilla.gnome.org/enter_bug.cgi?product=clutter
+        https://bugzilla.gnome.org/enter_bug.cgi?product=clutter
 
 You will need a Bugzilla account.
 
@@ -161,7 +155,5 @@ behaviour.
 If the bug exposes a crash, the exact text printed out and a stack trace
 obtained using gdb are greatly appreciated.
 
-
-
-[building-clutter]: http://wiki.clutter-project.org/wiki/BuildingClutter
-[1]: http://bugzilla.gnome.org/enter_bug.cgi?product=clutter
+[building-clutter]: https://wiki.gnome.org/Projects/Clutter/Building
+[bugzilla-clutter]: https://bugzilla.gnome.org/enter_bug.cgi?product=clutter
