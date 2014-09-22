@@ -1,3 +1,15 @@
+Clutter 1.20.0                                                       2014-09-22
+===============================================================================
+
+  • List of changes since Clutter 1.19.10
+
+    - Translations updated
+    Greek
+
+  • List of bugs fixed since Clutter 1.19.10
+
+    - #736826 - clutter_text_set_font_name invalid example using "pt"
+
 Clutter 1.19.10                                                      2014-09-17
 ===============================================================================
 
