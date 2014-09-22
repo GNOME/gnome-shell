@@ -1,27 +1,25 @@
 # Czech translation of gnome-shell.
 # Copyright (C) 2009, 2010, 2011 the author(s) of gnome-shell.
 # This file is distributed under the same license as the gnome-shell package.
-#
 # Andre Klapper <ak-47@gmx.net>, 2009.
-# Petr Kovar <pknbe@volny.cz>, 2009, 2010, 2011, 2012.
+# Petr Kovar <pknbe@volny.cz>, 2009, 2010, 2011, 2012, 2014.
 # Adam Matoušek <adamatousek@gmail.com>, 2012, 2013.
 # Marek Černocký <marek@manet.cz>, 2012, 2013, 2014.
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-08-23 19:36+0000\n"
-"PO-Revision-Date: 2014-08-24 14:54+0200\n"
-"Last-Translator: Marek Černocký <marek@manet.cz>\n"
+"POT-Creation-Date: 2014-09-22 07:36+0000\n"
+"PO-Revision-Date: 2014-09-22 15:16+0200\n"
+"Last-Translator: Petr Kovar <pknbe@volny.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Gtranslator 2.91.6\n"
+"X-Generator: Virtaal 0.7.1\n"
 "X-Project-Style: gnome\n"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
@@ -298,19 +296,18 @@ msgstr "Se změnou zaměření v režimu myši čekat na zastavení pohybu ukaza
 msgid "Captive Portal"
 msgstr "Přihlašovací portál"
 
-#: ../js/extensionPrefs/main.js:127
+#: ../js/extensionPrefs/main.js:123
 #, javascript-format
 msgid "There was an error loading the preferences dialog for %s:"
 msgstr ""
 "Nastala chyba při načítání dialogového okna předvoleb pro rozšíření %s:"
 
-#: ../js/extensionPrefs/main.js:159
-#| msgid "Configure GNOME Shell Extensions"
+#: ../js/extensionPrefs/main.js:155
 msgid "GNOME Shell Extensions"
 msgstr "Rozšíření GNOME Shell"
 
 #: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:143
-#: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:429
+#: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:452
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
 #: ../js/ui/status/network.js:915
 msgid "Cancel"
@@ -374,44 +371,43 @@ msgid "Execution of “%s” failed:"
 msgstr "Vykonání „%s“ selhalo:"
 
 #: ../js/portalHelper/main.js:85
-#| msgid "Authentication Required"
 msgid "Web Authentication Redirect"
 msgstr "Přesměrováno na ověření přes web"
 
-#: ../js/ui/appDisplay.js:660
+#: ../js/ui/appDisplay.js:772
 msgid "Frequently used applications will appear here"
 msgstr "Zde se objeví často používané aplikace"
 
-#: ../js/ui/appDisplay.js:771
+#: ../js/ui/appDisplay.js:883
 msgid "Frequent"
 msgstr "Časté"
 
-#: ../js/ui/appDisplay.js:778
+#: ../js/ui/appDisplay.js:890
 msgid "All"
 msgstr "Všechny"
 
-#: ../js/ui/appDisplay.js:1650
+#: ../js/ui/appDisplay.js:1790
 msgid "New Window"
 msgstr "Nové okno"
 
-#: ../js/ui/appDisplay.js:1673 ../js/ui/dash.js:285
+#: ../js/ui/appDisplay.js:1816 ../js/ui/dash.js:285
 msgid "Remove from Favorites"
 msgstr "Odstranit z oblíbených"
 
-#: ../js/ui/appDisplay.js:1679
+#: ../js/ui/appDisplay.js:1822
 msgid "Add to Favorites"
 msgstr "Přidat mezi oblíbené"
 
-#: ../js/ui/appDisplay.js:1688
+#: ../js/ui/appDisplay.js:1831
 msgid "Show Details"
 msgstr "Zobrazit podrobnosti"
 
-#: ../js/ui/appFavorites.js:122
+#: ../js/ui/appFavorites.js:132
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "%s byl přidán mezi oblíbené."
 
-#: ../js/ui/appFavorites.js:156
+#: ../js/ui/appFavorites.js:166
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "%s byl odstraněn z oblíbených."
@@ -603,11 +599,11 @@ msgstr "Otevřít s %s"
 msgid "Eject"
 msgstr "Vysunout"
 
-#: ../js/ui/components/keyring.js:93 ../js/ui/components/polkitAgent.js:285
+#: ../js/ui/components/keyring.js:94 ../js/ui/components/polkitAgent.js:285
 msgid "Password:"
 msgstr "Heslo:"
 
-#: ../js/ui/components/keyring.js:113
+#: ../js/ui/components/keyring.js:120
 msgid "Type again:"
 msgstr "Napište znovu:"
 
@@ -979,7 +975,7 @@ msgstr "Zobrazit účet"
 msgid "Unknown reason"
 msgstr "Neznámý důvod"
 
-#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:228
+#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:154
 msgid "Windows"
 msgstr "Okna"
 
@@ -1011,18 +1007,18 @@ msgstr "Nastavení data a času"
 msgid "%A %B %e, %Y"
 msgstr "%A, %e. %B, %Y"
 
-#: ../js/ui/endSessionDialog.js:66
+#: ../js/ui/endSessionDialog.js:64
 #, javascript-format
 msgctxt "title"
 msgid "Log Out %s"
 msgstr "Odhlásit uživatele %s"
 
-#: ../js/ui/endSessionDialog.js:67
+#: ../js/ui/endSessionDialog.js:65
 msgctxt "title"
 msgid "Log Out"
 msgstr "Odhlášení"
 
-#: ../js/ui/endSessionDialog.js:69
+#: ../js/ui/endSessionDialog.js:67
 #, javascript-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
@@ -1030,7 +1026,7 @@ msgstr[0] "Uživatel %s bude automaticky odhlášen za %d sekundu."
 msgstr[1] "Uživatel %s bude automaticky odhlášen za %d sekundy."
 msgstr[2] "Uživatel %s bude automaticky odhlášen za %d sekund."
 
-#: ../js/ui/endSessionDialog.js:74
+#: ../js/ui/endSessionDialog.js:72
 #, javascript-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
@@ -1038,22 +1034,22 @@ msgstr[0] "Budete automaticky odhlášeni za %d sekundu."
 msgstr[1] "Budete automaticky odhlášeni za %d sekundy."
 msgstr[2] "Budete automaticky odhlášeni za %d sekund."
 
-#: ../js/ui/endSessionDialog.js:80
+#: ../js/ui/endSessionDialog.js:78
 msgctxt "button"
 msgid "Log Out"
 msgstr "Odhlásit"
 
-#: ../js/ui/endSessionDialog.js:86
+#: ../js/ui/endSessionDialog.js:84
 msgctxt "title"
 msgid "Power Off"
 msgstr "Vypnutí"
 
-#: ../js/ui/endSessionDialog.js:87
+#: ../js/ui/endSessionDialog.js:85
 msgctxt "title"
 msgid "Install Updates & Power Off"
 msgstr "Nainstalovat aktualizace a vypnout"
 
-#: ../js/ui/endSessionDialog.js:89
+#: ../js/ui/endSessionDialog.js:87
 #, javascript-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
@@ -1061,27 +1057,27 @@ msgstr[0] "Systém bude automaticky vypnut za %d sekundu."
 msgstr[1] "Systém bude automaticky vypnut za %d sekundy."
 msgstr[2] "Systém bude automaticky vypnut za %d sekund."
 
-#: ../js/ui/endSessionDialog.js:93
+#: ../js/ui/endSessionDialog.js:91
 msgctxt "checkbox"
 msgid "Install pending software updates"
 msgstr "Nainstalovat čekající aktualizace softwaru"
 
-#: ../js/ui/endSessionDialog.js:96 ../js/ui/endSessionDialog.js:113
+#: ../js/ui/endSessionDialog.js:94 ../js/ui/endSessionDialog.js:111
 msgctxt "button"
 msgid "Restart"
 msgstr "Restartovat"
 
-#: ../js/ui/endSessionDialog.js:98
+#: ../js/ui/endSessionDialog.js:96
 msgctxt "button"
 msgid "Power Off"
 msgstr "Vypnout"
 
-#: ../js/ui/endSessionDialog.js:105
+#: ../js/ui/endSessionDialog.js:103
 msgctxt "title"
 msgid "Restart"
 msgstr "Restart"
 
-#: ../js/ui/endSessionDialog.js:107
+#: ../js/ui/endSessionDialog.js:105
 #, javascript-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
@@ -1089,12 +1085,12 @@ msgstr[0] "Systém bude automaticky restartován za %d sekundu."
 msgstr[1] "Systém bude automaticky restartován za %d sekundy."
 msgstr[2] "Systém bude automaticky restartován za %d sekund."
 
-#: ../js/ui/endSessionDialog.js:121
+#: ../js/ui/endSessionDialog.js:119
 msgctxt "title"
 msgid "Restart & Install Updates"
 msgstr "Restartovat a nainstalovat aktualizace"
 
-#: ../js/ui/endSessionDialog.js:123
+#: ../js/ui/endSessionDialog.js:121
 #, javascript-format
 msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
@@ -1109,42 +1105,42 @@ msgstr[2] ""
 "Systém bude automaticky restartován za %d sekund a poté se nainstalují "
 "aktualizace."
 
-#: ../js/ui/endSessionDialog.js:129
+#: ../js/ui/endSessionDialog.js:127
 msgctxt "button"
 msgid "Restart &amp; Install"
 msgstr "Restartovat a nainstalovat"
 
-#: ../js/ui/endSessionDialog.js:130
+#: ../js/ui/endSessionDialog.js:128
 msgctxt "button"
 msgid "Install &amp; Power Off"
 msgstr "Nainstalovat a vypnout"
 
-#: ../js/ui/endSessionDialog.js:131
+#: ../js/ui/endSessionDialog.js:129
 msgctxt "checkbox"
 msgid "Power off after updates are installed"
 msgstr "Po nainstalování aktualizací vypnout"
 
-#: ../js/ui/endSessionDialog.js:315
+#: ../js/ui/endSessionDialog.js:338
 msgid "Running on battery power: please plug in before installing updates."
 msgstr ""
 "Počítač běží na baterii: před instalací jej prosím připojte k napájení."
 
-#: ../js/ui/endSessionDialog.js:332
+#: ../js/ui/endSessionDialog.js:355
 msgid "Some applications are busy or have unsaved work."
 msgstr "Některé aplikace jsou zaneprázdněny nebo obsahují neuloženou práci."
 
-#: ../js/ui/endSessionDialog.js:339
+#: ../js/ui/endSessionDialog.js:362
 msgid "Other users are logged in."
 msgstr "Jsou přihlášeni jiní uživatelé."
 
 #. Translators: Remote here refers to a remote session, like a ssh login */
-#: ../js/ui/endSessionDialog.js:619
+#: ../js/ui/endSessionDialog.js:640
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (vzdálený)"
 
 #. Translators: Console here refers to a tty like a VT console */
-#: ../js/ui/endSessionDialog.js:622
+#: ../js/ui/endSessionDialog.js:643
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (konzola)"
@@ -1158,7 +1154,7 @@ msgstr "Instalovat"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Stáhnout a nainstalovat „%s“ z extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:653 ../js/ui/status/keyboard.js:339
+#: ../js/ui/keyboard.js:692 ../js/ui/status/keyboard.js:523
 msgid "Keyboard"
 msgstr "Klávesnice"
 
@@ -1180,8 +1176,8 @@ msgstr "Skrývat chyby"
 msgid "Show Errors"
 msgstr "Zobrazovat chyby"
 
-#: ../js/ui/lookingGlass.js:716 ../js/ui/status/location.js:62
-#: ../js/ui/status/location.js:166
+#: ../js/ui/lookingGlass.js:716 ../js/ui/status/location.js:71
+#: ../js/ui/status/location.js:176
 msgid "Enabled"
 msgstr "Povoleno"
 
@@ -1189,7 +1185,7 @@ msgstr "Povoleno"
 #. because it's disabled by rfkill (airplane mode) */
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:719 ../js/ui/status/location.js:169
+#: ../js/ui/lookingGlass.js:719 ../js/ui/status/location.js:179
 #: ../js/ui/status/network.js:592 ../src/gvc/gvc-mixer-control.c:1830
 msgid "Disabled"
 msgstr "Zakázáno"
@@ -1214,39 +1210,39 @@ msgstr "Zobrazit zdroj"
 msgid "Web Page"
 msgstr "Webová stránka"
 
-#: ../js/ui/messageTray.js:1325
+#: ../js/ui/messageTray.js:1327
 msgid "Open"
 msgstr "Otevřít"
 
-#: ../js/ui/messageTray.js:1332
+#: ../js/ui/messageTray.js:1334
 msgid "Remove"
 msgstr "Odstranit"
 
-#: ../js/ui/messageTray.js:1629
+#: ../js/ui/messageTray.js:1631
 msgid "Notifications"
 msgstr "Upozornění"
 
-#: ../js/ui/messageTray.js:1636
+#: ../js/ui/messageTray.js:1638
 msgid "Clear Messages"
 msgstr "Vymazat zprávy"
 
-#: ../js/ui/messageTray.js:1655
+#: ../js/ui/messageTray.js:1657
 msgid "Notification Settings"
 msgstr "Nastavení upozornění"
 
-#: ../js/ui/messageTray.js:1708
+#: ../js/ui/messageTray.js:1710
 msgid "Tray Menu"
 msgstr "Nabídka lišty zpráv"
 
-#: ../js/ui/messageTray.js:1925
+#: ../js/ui/messageTray.js:1934
 msgid "No Messages"
 msgstr "Žádné zprávy"
 
-#: ../js/ui/messageTray.js:1963
+#: ../js/ui/messageTray.js:1979
 msgid "Message Tray"
 msgstr "Lišta zpráv"
 
-#: ../js/ui/messageTray.js:2966
+#: ../js/ui/messageTray.js:2992
 msgid "System Information"
 msgstr "Informace o systému"
 
@@ -1275,7 +1271,7 @@ msgstr "Přehled"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters. */
-#: ../js/ui/overview.js:250
+#: ../js/ui/overview.js:246
 msgid "Type to search…"
 msgstr "Vyhledávejte psaním…"
 
@@ -1306,7 +1302,6 @@ msgid "Close"
 msgstr "Zavřít"
 
 #: ../js/ui/runDialog.js:277
-#| msgid "Estimating…"
 msgid "Restarting…"
 msgstr "Restartuje se…"
 
@@ -1340,27 +1335,27 @@ msgstr "Nelze uzamknout obrazovku"
 msgid "Lock was blocked by an application"
 msgstr "Zamknutí bylo zablokováno některou z aplikací"
 
-#: ../js/ui/search.js:606
+#: ../js/ui/search.js:594
 msgid "Searching…"
 msgstr "Hledá se…"
 
-#: ../js/ui/search.js:652
+#: ../js/ui/search.js:596
 msgid "No results."
 msgstr "Žádné výsledky."
 
-#: ../js/ui/shellEntry.js:27
+#: ../js/ui/shellEntry.js:25
 msgid "Copy"
 msgstr "Kopírovat"
 
-#: ../js/ui/shellEntry.js:32
+#: ../js/ui/shellEntry.js:30
 msgid "Paste"
 msgstr "Vložit"
 
-#: ../js/ui/shellEntry.js:99
+#: ../js/ui/shellEntry.js:97
 msgid "Show Text"
 msgstr "Zobrazit text"
 
-#: ../js/ui/shellEntry.js:101
+#: ../js/ui/shellEntry.js:99
 msgid "Hide Text"
 msgstr "Skrýt text"
 
@@ -1447,23 +1442,28 @@ msgstr "Nepřipojeno"
 msgid "Brightness"
 msgstr "Jas"
 
-#: ../js/ui/status/keyboard.js:406
+#: ../js/ui/status/keyboard.js:547
 msgid "Show Keyboard Layout"
 msgstr "Zobrazit rozložení klávesnice"
 
-#: ../js/ui/status/location.js:56
+#: ../js/ui/status/location.js:65
 msgid "Location"
 msgstr "Poloha"
 
-#: ../js/ui/status/location.js:63 ../js/ui/status/location.js:167
+#: ../js/ui/status/location.js:72 ../js/ui/status/location.js:177
 msgid "Disable"
 msgstr "Zakázáno"
 
-#: ../js/ui/status/location.js:166
+#: ../js/ui/status/location.js:73
+#| msgid "Power Settings"
+msgid "Privacy Settings"
+msgstr "Nastavení ochrany osobních údajů"
+
+#: ../js/ui/status/location.js:176
 msgid "In Use"
 msgstr "Používá se"
 
-#: ../js/ui/status/location.js:170
+#: ../js/ui/status/location.js:180
 msgid "Enable"
 msgstr "Povoleno"
 
@@ -1698,11 +1698,11 @@ msgstr "Přihlásit se jako jiný uživatel"
 msgid "Unlock Window"
 msgstr "Odemykací okno"
 
-#: ../js/ui/viewSelector.js:232
+#: ../js/ui/viewSelector.js:158
 msgid "Applications"
 msgstr "Aplikace"
 
-#: ../js/ui/viewSelector.js:236
+#: ../js/ui/viewSelector.js:162
 msgid "Search"
 msgstr "Hledat"
 
@@ -1802,19 +1802,19 @@ msgstr[2] "%u vstupů"
 msgid "System Sounds"
 msgstr "Systémové zvuky"
 
-#: ../src/main.c:371
+#: ../src/main.c:373
 msgid "Print version"
 msgstr "Vypsat verzi"
 
-#: ../src/main.c:377
+#: ../src/main.c:379
 msgid "Mode used by GDM for login screen"
 msgstr "Režim použitý GDM pro přihlašovací obrazovku"
 
-#: ../src/main.c:383
+#: ../src/main.c:385
 msgid "Use a specific mode, e.g. \"gdm\" for login screen"
 msgstr "Použít pro přihlašovací obrazovku zadaný režim, např. „gdm“."
 
-#: ../src/main.c:389
+#: ../src/main.c:391
 msgid "List possible modes"
 msgstr "Vypsat možné režimy"
 
