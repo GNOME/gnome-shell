@@ -323,7 +323,7 @@ get_keycodes_for_keysym (MetaKeyBindingManager  *keys,
 
 static guint
 get_first_keycode_for_keysym (MetaKeyBindingManager *keys,
-                              guint                   keysym)
+                              guint                  keysym)
 {
   int *keycodes;
   int n_keycodes;
