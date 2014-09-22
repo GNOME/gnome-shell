@@ -5057,8 +5057,13 @@ clutter_text_get_font_name (ClutterText *text)
  * like:
  *
  * |[
- *   clutter_text_set_font_name (text, "Sans 10pt");
+ *   // Set the font to the system's Sans, 10 points
+ *   clutter_text_set_font_name (text, "Sans 10");
+ *
+ *   // Set the font to the system's Serif, 16 pixels
  *   clutter_text_set_font_name (text, "Serif 16px");
+ *
+ *   // Set the font to Helvetica, 10 points
  *   clutter_text_set_font_name (text, "Helvetica 10");
  * ]|
  *
