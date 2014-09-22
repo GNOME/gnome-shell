@@ -40,7 +40,11 @@
 #include <meta/prefs.h>
 #include "meta-accel-parse.h"
 
+#ifdef __linux__
 #include <linux/input.h>
+#elif !defined KEY_GRAVE
+#define KEY_GRAVE 0x29 /* assume the use of xf86-input-keyboard */
+#endif
 
 #include "backends/x11/meta-backend-x11.h"
 #include "x11/window-x11.h"
