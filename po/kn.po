@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-09-02 07:38+0000\n"
-"PO-Revision-Date: 2014-09-20 00:20+0530\n"
+"POT-Creation-Date: 2014-09-21 19:28+0000\n"
+"PO-Revision-Date: 2014-09-22 12:15+0530\n"
 "Last-Translator: Shankar Prasad <svenkate AT redhat Dot com>\n"
 "Language-Team: Kannada <kde-i18n-doc@kde.org>\n"
 "Language: kn\n"
@@ -82,16 +82,10 @@ msgstr ""
 "ನಿಲುಕಿಸಿಕೊಳ್ಳಲು ಅನುವುಮಾಡಿಕೊಡುತ್ತದೆ."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:3
-#| msgid "Uuids of extensions to enable"
 msgid "UUIDs of extensions to enable"
 msgstr "ಸಕ್ರಿಯಗೊಳಿಸಬೇಕಿರುವ ವಿಸ್ತರಣೆಗಳ UUIDಗಳು"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:4
-#| msgid ""
-#| "GNOME Shell extensions have a uuid property; this key lists extensions "
-#| "which should be loaded. Any extension that wants to be loaded needs to be "
-#| "in this list. You can also manipulate this list with the EnableExtension "
-#| "and DisableExtension DBus methods on org.gnome.Shell."
 msgid ""
 "GNOME Shell extensions have a UUID property; this key lists extensions which "
 "should be loaded. Any extension that wants to be loaded needs to be in this "
@@ -99,11 +93,10 @@ msgid ""
 "DisableExtension D-Bus methods on org.gnome.Shell."
 msgstr ""
 "GNOME ಶೆಲ್ ವಿಸ್ತರಣೆಗಳು ಒಂದು UUID ಗುಣವನ್ನು ಹೊಂದಿರುತ್ತವೆ; ಈ ಕೀಲಿ ಪಟ್ಟಿಯು ಲೋಡ್ "
-"ಮಾಡಬೇಕಿರುವ "
-"ವಿಸ್ತರಣೆಗಳ ಪಟ್ಟಿಯನ್ನು ತೋರಿಸುತ್ತದೆ. ಯಾವುದೆ ವಿಸ್ತರಣೆಗಳನ್ನು ಲೋಡ್‌ ಮಾಡಬೇಕಿದ್ದಲ್ಲಿ "
-"ಅದು ಈ "
-"ಪಟ್ಟಿಯಲ್ಲಿ ಇರುವುದು ಅತ್ಯಗತ್ಯ. org.gnome.Shell ನಲ್ಲಿ EnableExtension ಮತ್ತು "
-"DisableExtension D-Bus ವಿಧಾನಗಳನ್ನು ಬಳಸಿಕೊಂಡೂ ಸಹ ಈ ಪಟ್ಟಿಯನ್ನು ನಿರ್ವಹಿಸಬಹುದು."
+"ಮಾಡಬೇಕಿರುವ ವಿಸ್ತರಣೆಗಳ ಪಟ್ಟಿಯನ್ನು ತೋರಿಸುತ್ತದೆ. ಯಾವುದೆ ವಿಸ್ತರಣೆಗಳನ್ನು ಲೋಡ್‌ "
+"ಮಾಡಬೇಕಿದ್ದಲ್ಲಿ ಅದು ಈ ಪಟ್ಟಿಯಲ್ಲಿ ಇರುವುದು ಅತ್ಯಗತ್ಯ. org.gnome.Shell ನಲ್ಲಿ "
+"EnableExtension ಮತ್ತು DisableExtension D-Bus ವಿಧಾನಗಳನ್ನು ಬಳಸಿಕೊಂಡೂ ಸಹ ಈ "
+"ಪಟ್ಟಿಯನ್ನು ನಿರ್ವಹಿಸಬಹುದು."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:5
 msgid "Disables the validation of extension version compatibility"
@@ -116,9 +109,11 @@ msgid ""
 "load all extensions regardless of the versions they claim to support."
 msgstr ""
 "GNOME ಶೆಲ್‌ ಪ್ರಸಕ್ತ ಚಲಾಯಿಸಲಾಗುತ್ತಿರುವ ಆವೃತ್ತಿಯನ್ನು ಬೆಂಬಲಿಸಲು ಕೇವಲ "
-"ವಿಸ್ತರಣೆಗಳನ್ನು ಮಾತ್ರ ಲೋಡ್ ಮಾಡುತ್ತದೆ. ಈ ಆಯ್ಕೆಯನ್ನು ಸಕ್ರಿಯಗೊಳಿಸುವುದರಿಂದ ಈ "
-"ಪರೀಕ್ಷೆಯನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸುತ್ತದೆ ಮತ್ತು ಬೆಂಬಲವಿರಲಿ ಇಲ್ಲದೆ ಇರಲಿ, ಲಭ್ಯವಿರುವ "
-"ಎಲ್ಲಾ ವಿಸ್ತರಣೆಗಳನ್ನು ಲೋಡ್ ಮಾಡಲು ಪ್ರಯತ್ನಿಸುತ್ತದೆ."
+"ವಿಸ್ತರಣೆಗಳನ್ನು ಮಾತ್ರ "
+"ಲೋಡ್ ಮಾಡುತ್ತದೆ. ಈ ಆಯ್ಕೆಯನ್ನು ಸಕ್ರಿಯಗೊಳಿಸುವುದರಿಂದ ಈ ಪರೀಕ್ಷೆಯನ್ನು "
+"ನಿಷ್ಕ್ರಿಯಗೊಳಿಸುತ್ತದೆ "
+"ಮತ್ತು ಬೆಂಬಲವಿರಲಿ ಇಲ್ಲದೆ ಇರಲಿ, ಲಭ್ಯವಿರುವ ಎಲ್ಲಾ ವಿಸ್ತರಣೆಗಳನ್ನು ಲೋಡ್ ಮಾಡಲು "
+"ಪ್ರಯತ್ನಿಸುತ್ತದೆ."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:7
 msgid "List of desktop file IDs for favorite applications"
@@ -148,14 +143,10 @@ msgid "History for the looking glass dialog"
 msgstr "ನೋಡುವ ಗಾಜಿನ ಸಂವಾದ ಚೌಕಕ್ಕಾಗಿನ ಇತಿಹಾಸ"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:13
-#| msgid "Always show the 'Log out' menuitem in the user menu."
 msgid "Always show the 'Log out' menu item in the user menu."
 msgstr "ಯಾವಾಗಲೂ 'ನಿರ್ಗಮಿಸು' ಮೆನು ಅಂಶವನ್ನು ಬಳಕೆದಾರ ಮೆನುವಿನಲ್ಲಿ ತೋರಿಸು."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:14
-#| msgid ""
-#| "This key overrides the automatic hiding of the 'Log out' menuitem in "
-#| "single-user, single-session situations."
 msgid ""
 "This key overrides the automatic hiding of the 'Log out' menu item in single-"
 "user, single-session situations."
@@ -213,12 +204,10 @@ msgstr ""
 "ಕೀಲಿಬೈಂಡಿಂಗ್."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:23
-#| msgid "Keybinding to open the \"Show Applications\" view"
 msgid "Keybinding to open the overview"
 msgstr "ಅವಲೋಕನವನ್ನು ತೆರೆಯಬೇಕಿರುವ ಕೀಲಿಬೈಂಡಿಂಗ್"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:24
-#| msgid "Keybinding to open the \"Show Applications\" view"
 msgid "Keybinding to open the Activities Overview."
 msgstr "ಚಟುವಟಿಕೆಗಳ ಅವಲೋಕನವನ್ನು ತೆರೆಯಬೇಕಿರುವ ಕೀಲಿಬೈಂಡಿಂಗ್."
 
@@ -243,7 +232,8 @@ msgid ""
 "Keybinding that pauses and resumes all running tweens, for debugging purposes"
 msgstr ""
 "ಡೀಬಗ್‌ ಉದ್ದೇಶಗಳಿಗಾಗಿ ಚಾಲನೆಯಲ್ಲಿರುವ ಎಲ್ಲಾ ಟ್ವೀನ್‌ಗಳನ್ನು ವಿರಮಿಸುತ್ತದೆ ಮತ್ತು "
-"ಮರಳಿ ಆರಂಭಿಸುತ್ತದೆ"
+"ಮರಳಿ "
+"ಆರಂಭಿಸುತ್ತದೆ"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:30
 msgid "Which keyboard to use"
@@ -263,8 +253,8 @@ msgid ""
 "shown in the switcher. Otherwise, all applications are included."
 msgstr ""
 "ಟ್ರೂ ಆದಲ್ಲಿ, ಪ್ರಸಕ್ತ ಕಾರ್ಯಸ್ಥಳದಲ್ಲಿ ಕಿಟಕಿಗಳನ್ನು ಹೊಂದಿರುವ ಅನ್ವಯಗಳನ್ನು ಮಾತ್ರ "
-"ಸ್ವಿಚರ್‌ನಲ್ಲಿ ತೋರಿಸಲಾಗುತ್ತದೆ. ಇಲ್ಲದೆ ಹೋದಲ್ಲಿ, ಎಲ್ಲಾ ಅನ್ವಯಗಳನ್ನು "
-"ಸೇರಿಸಲಾಗುತ್ತದೆ."
+"ಸ್ವಿಚರ್‌ನಲ್ಲಿ "
+"ತೋರಿಸಲಾಗುತ್ತದೆ. ಇಲ್ಲದೆ ಹೋದಲ್ಲಿ, ಎಲ್ಲಾ ಅನ್ವಯಗಳನ್ನು ಸೇರಿಸಲಾಗುತ್ತದೆ."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:34
 msgid "The application icon mode."
@@ -288,7 +278,8 @@ msgid ""
 "Otherwise, all windows are included."
 msgstr ""
 "ಟ್ರೂ ಆದಲ್ಲಿ, ಪ್ರಸಕ್ತ ಕಾರ್ಯಸ್ಥಳದಲ್ಲಿ ಕಿಟಕಿಗಳನ್ನು ಮಾತ್ರ ಸ್ವಿಚರ್‌ನಲ್ಲಿ "
-"ತೋರಿಸಲಾಗುತ್ತದೆ. ಇಲ್ಲದೆ ಹೋದಲ್ಲಿ, ಎಲ್ಲಾ ಕಿಟಕಿಗಳನ್ನು ಸೇರಿಸಲಾಗುತ್ತದೆ."
+"ತೋರಿಸಲಾಗುತ್ತದೆ. ಇಲ್ಲದೆ "
+"ಹೋದಲ್ಲಿ, ಎಲ್ಲಾ ಕಿಟಕಿಗಳನ್ನು ಸೇರಿಸಲಾಗುತ್ತದೆ."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:37
 msgid "Attach modal dialog to the parent window"
@@ -323,25 +314,23 @@ msgstr ""
 msgid "Captive Portal"
 msgstr "ಕ್ಯಾಪ್ಟೀವ್ ಪೋರ್ಟಲ್"
 
-#: ../js/extensionPrefs/main.js:127
+#: ../js/extensionPrefs/main.js:123
 #, javascript-format
 msgid "There was an error loading the preferences dialog for %s:"
 msgstr "%s ಗಾಗಿ ಆದ್ಯತೆಗಳ ಸಂವಾದವನ್ನು ಲೋಡ್ ಮಾಡುವಲ್ಲಿ ದೋಷ ಉಂಟಾಗಿದೆ:"
 
-#: ../js/extensionPrefs/main.js:159
-#| msgid "Configure GNOME Shell Extensions"
+#: ../js/extensionPrefs/main.js:155
 msgid "GNOME Shell Extensions"
 msgstr "GNOME ಶೆಲ್ ಎಕ್ಸ‍ಟೆನ್ಶನ್ಸ್"
 
 #: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:143
-#: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:429
+#: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:452
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
 #: ../js/ui/status/network.js:915
 msgid "Cancel"
 msgstr "ರದ್ದು ಮಾಡು"
 
 #: ../js/gdm/authPrompt.js:169 ../js/gdm/authPrompt.js:217
-#| msgid "Next week"
 msgid "Next"
 msgstr "ಮುಂದಿನ"
 
@@ -395,12 +384,10 @@ msgstr "ಆದೇಶವನ್ನು ಪಾರ್ಸ್ ಮಾಡಲಾಗಿಲ�
 
 #: ../js/misc/util.js:156
 #, javascript-format
-#| msgid "Execution of '%s' failed:"
 msgid "Execution of “%s” failed:"
 msgstr "“%s” ಅನ್ನು ಕಾರ್ಯಗತಗೊಳಿಸುವಲ್ಲಿ ವಿಫಲಗೊಂಡಿದೆ:"
 
 #: ../js/portalHelper/main.js:85
-#| msgid "Authentication Required"
 msgid "Web Authentication Redirect"
 msgstr "ಜಾಲ ದೃಢೀಕರಣದ ಮರುನಿರ್ದೇಶನ"
 
@@ -416,29 +403,28 @@ msgstr "ಪುನರಾವರ್ತನೆ"
 msgid "All"
 msgstr "ಎಲ್ಲಾ"
 
-#: ../js/ui/appDisplay.js:1788
+#: ../js/ui/appDisplay.js:1790
 msgid "New Window"
 msgstr "ಹೊಸ ಕಿಟಕಿ"
 
-#: ../js/ui/appDisplay.js:1814 ../js/ui/dash.js:285
+#: ../js/ui/appDisplay.js:1816 ../js/ui/dash.js:285
 msgid "Remove from Favorites"
 msgstr "ಎಲ್ಲಾ ಅಚ್ಚುಮೆಚ್ಚಿನವುಗಳನ್ನು ತೆಗೆದುಹಾಕು"
 
-#: ../js/ui/appDisplay.js:1820
+#: ../js/ui/appDisplay.js:1822
 msgid "Add to Favorites"
 msgstr "ಅಚ್ಚುಮೆಚ್ಚಿನವುಗಳಿಗೆ ಸೇರಿಸು"
 
-#: ../js/ui/appDisplay.js:1829
-#| msgid "Show Text"
+#: ../js/ui/appDisplay.js:1831
 msgid "Show Details"
 msgstr "ವಿವರಗಳನ್ನು ತೋರಿಸು"
 
-#: ../js/ui/appFavorites.js:124
+#: ../js/ui/appFavorites.js:132
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "%s ಅನ್ನು ನಿಮ್ಮ ಅಚ್ಚುಮೆಚ್ಚಿನವುಗಳನ್ನು ಸೇರಿಸಲಾಗಿದೆ."
 
-#: ../js/ui/appFavorites.js:158
+#: ../js/ui/appFavorites.js:166
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "%s ಅನ್ನು ನಿಮ್ಮ ಅಚ್ಚುಮೆಚ್ಚಿನವುಗಳಿಂದ ತೆಗೆದುಹಾಕಲಾಗಿದೆ."
@@ -630,11 +616,11 @@ msgstr "%s ನೊಂದಿಗೆ ತೆರೆ"
 msgid "Eject"
 msgstr "ಹೊರತಳ್ಳು"
 
-#: ../js/ui/components/keyring.js:93 ../js/ui/components/polkitAgent.js:285
+#: ../js/ui/components/keyring.js:94 ../js/ui/components/polkitAgent.js:285
 msgid "Password:"
 msgstr "ಗುಪ್ತಪದ:"
 
-#: ../js/ui/components/keyring.js:113
+#: ../js/ui/components/keyring.js:120
 msgid "Type again:"
 msgstr "ಇನ್ನೊಮ್ಮೆ ನಮೂದಿಸಿ:"
 
@@ -673,9 +659,6 @@ msgstr "ವೈರ್ಲೆಸ್‌ ಜಾಲಬಂಧಕ್ಕಾಗಿ ದೃ�
 
 #: ../js/ui/components/networkAgent.js:319
 #, javascript-format
-#| msgid ""
-#| "Passwords or encryption keys are required to access the wireless network "
-#| "'%s'."
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
 "“%s”."
@@ -713,7 +696,6 @@ msgstr "ಮೊಬೈಲ್ ಬ್ರಾಡ್‌ಬ್ಯಾಂಡ್ ಜಾಲ�
 
 #: ../js/ui/components/networkAgent.js:346
 #, javascript-format
-#| msgid "A password is required to connect to '%s'."
 msgid "A password is required to connect to “%s”."
 msgstr "“%s” ನೊಂದಿಗೆ ಸಂಪರ್ಕಸಾಧಿಸಲು ಗುಪ್ತಪದದ ಅಗತ್ಯವಿದೆ."
 
@@ -769,14 +751,12 @@ msgstr "%H∶%M"
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30" */
 #: ../js/ui/components/telepathyClient.js:960
-#| msgid "<b>Yesterday</b>, <b>%H:%M</b>"
 msgid "Yesterday, %H∶%M"
 msgstr "ನಿನ್ನೆ, %H∶%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 24h format. i.e. "Monday, 14:30" */
 #: ../js/ui/components/telepathyClient.js:967
-#| msgid "%A, %B %d"
 msgid "%A, %H∶%M"
 msgstr "%A, %H∶%M"
 
@@ -808,7 +788,6 @@ msgstr "ನಿನ್ನೆ, %l∶%M %p"
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm" */
 #: ../js/ui/components/telepathyClient.js:1000
-#| msgid "%A, %B %d"
 msgid "%A, %l∶%M %p"
 msgstr "%A, %l∶%M %p"
 
@@ -1017,7 +996,7 @@ msgstr "ಖಾತೆಯನ್ನು ನೋಡು"
 msgid "Unknown reason"
 msgstr "ಅಜ್ಞಾತ ಕಾರಣ"
 
-#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:159
+#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:154
 msgid "Windows"
 msgstr "ವಿಂಡೋಸ್"
 
@@ -1048,139 +1027,138 @@ msgstr "ದಿನಾಂಕ ಹಾಗು ಸಮಯದ ಸಿದ್ಧತೆಗಳ
 msgid "%A %B %e, %Y"
 msgstr "%A %B %e, %Y"
 
-#: ../js/ui/endSessionDialog.js:66
+#: ../js/ui/endSessionDialog.js:64
 #, javascript-format
 msgctxt "title"
 msgid "Log Out %s"
 msgstr "%s ಇಂದ ನಿರ್ಗಮಿಸು"
 
-#: ../js/ui/endSessionDialog.js:67
+#: ../js/ui/endSessionDialog.js:65
 msgctxt "title"
 msgid "Log Out"
 msgstr "ನಿರ್ಗಮಿಸು"
 
-#: ../js/ui/endSessionDialog.js:69
+#: ../js/ui/endSessionDialog.js:67
 #, javascript-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "%s ರವರು %d ಸೆಕೆಂಡಿನಲ್ಲಿ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ನಿರ್ಗಮಿಸುತ್ತಾರೆ."
 msgstr[1] "%s ರವರು %d ಸೆಕೆಂಡುಗಳಲ್ಲಿ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ನಿರ್ಗಮಿಸಲ್ಪಡುತ್ತಾರೆ."
 
-#: ../js/ui/endSessionDialog.js:74
+#: ../js/ui/endSessionDialog.js:72
 #, javascript-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
 msgstr[0] "ನೀವು %d ಸೆಕೆಂಡಿನಲ್ಲಿ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ನಿರ್ಗಮಿಸಲ್ಪಡುತ್ತೀರಿ."
 msgstr[1] "ನೀವು %d ಸೆಕೆಂಡುಗಳಲ್ಲಿ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ನಿರ್ಗಮಿಸಲ್ಪಡುತ್ತೀರಿ."
 
-#: ../js/ui/endSessionDialog.js:80
+#: ../js/ui/endSessionDialog.js:78
 msgctxt "button"
 msgid "Log Out"
 msgstr "ನಿರ್ಗಮಿಸು"
 
-#: ../js/ui/endSessionDialog.js:86
+#: ../js/ui/endSessionDialog.js:84
 msgctxt "title"
 msgid "Power Off"
 msgstr "ಸ್ಥಗಿತಗೊಳಿಸು"
 
-#: ../js/ui/endSessionDialog.js:87
-#| msgid "Install Updates & Restart"
+#: ../js/ui/endSessionDialog.js:85
 msgctxt "title"
 msgid "Install Updates & Power Off"
 msgstr "ಅಪ್‌ಡೇಟ್‌ಗಳನ್ನು ಅನುಸ್ಥಾಪಿಸುತ್ತದೆ ಮತ್ತು ಮರಳಿಸ್ಥಾಪಿಸುತ್ತದೆ"
 
-#: ../js/ui/endSessionDialog.js:89
+#: ../js/ui/endSessionDialog.js:87
 #, javascript-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "ವ್ಯವಸ್ಥೆಯು %d ಸೆಕೆಂಡಿನಲ್ಲಿ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಸ್ಥಗಿತಗೊಳ್ಳುತ್ತದೆ."
 msgstr[1] "ವ್ಯವಸ್ಥೆಯು %d ಸೆಕೆಂಡುಗಳಲ್ಲಿ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಸ್ಥಗಿತಗೊಳ್ಳುತ್ತದೆ."
 
-#: ../js/ui/endSessionDialog.js:93
+#: ../js/ui/endSessionDialog.js:91
 msgctxt "checkbox"
 msgid "Install pending software updates"
 msgstr "ಬಾಕಿ ಇರುವ ತಂತ್ರಾಂಶ ಅಪ್‌ಡೇಟ್‌ಗಳನ್ನು ಅನುಸ್ಥಾಪಿಸು"
 
-#: ../js/ui/endSessionDialog.js:96 ../js/ui/endSessionDialog.js:113
+#: ../js/ui/endSessionDialog.js:94 ../js/ui/endSessionDialog.js:111
 msgctxt "button"
 msgid "Restart"
 msgstr "ಮರಳಿ ಆರಂಭಿಸು"
 
-#: ../js/ui/endSessionDialog.js:98
+#: ../js/ui/endSessionDialog.js:96
 msgctxt "button"
 msgid "Power Off"
 msgstr "ಸ್ಥಗಿತಗೊಳಿಸು"
 
-#: ../js/ui/endSessionDialog.js:105
+#: ../js/ui/endSessionDialog.js:103
 msgctxt "title"
 msgid "Restart"
 msgstr "ಮರಳಿ ಆರಂಭಿಸು"
 
-#: ../js/ui/endSessionDialog.js:107
+#: ../js/ui/endSessionDialog.js:105
 #, javascript-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "ವ್ಯವಸ್ಥೆಯು %d ಸೆಕೆಂಡಿನಲ್ಲಿ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಮರಳಿ ಆರಂಭಗೊಳ್ಳುತ್ತದೆ."
 msgstr[1] "ವ್ಯವಸ್ಥೆಯು %d ಸೆಕೆಂಡುಗಳಲ್ಲಿ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಮರಳಿ ಆರಂಭಗೊಳ್ಳುತ್ತದೆ."
 
-#: ../js/ui/endSessionDialog.js:121
-#| msgid "Install Updates & Restart"
+#: ../js/ui/endSessionDialog.js:119
 msgctxt "title"
 msgid "Restart & Install Updates"
 msgstr "ಮರಳಿ ಆರಂಭಿಸು ಮತ್ತು ಅಪ್‌ಡೇಟ್‌ಗಳನ್ನು ಅನುಸ್ಥಾಪಿಸು"
 
-#: ../js/ui/endSessionDialog.js:123
+#: ../js/ui/endSessionDialog.js:121
 #, javascript-format
-#| msgid "The system will restart automatically in %d second."
-#| msgid_plural "The system will restart automatically in %d seconds."
 msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
 "The system will automatically restart and install updates in %d seconds."
 msgstr[0] ""
 "%d ಸೆಕೆಂಡಿನಲ್ಲಿ ವ್ಯವಸ್ಥೆಯು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಮರಳಿ ಆರಂಭಗೊಳ್ಳುತ್ತದೆ ಮತ್ತು "
-"ಅಪ್‌ಡೇಟ್‌ಗಳು ಅನುಸ್ಥಾಪನೆಗೊಳ್ಳುತ್ತದೆ."
+"ಅಪ್‌ಡೇಟ್‌ಗಳು "
+"ಅನುಸ್ಥಾಪನೆಗೊಳ್ಳುತ್ತದೆ."
 msgstr[1] ""
 "%d ಸೆಕೆಂಡುಗಳಲ್ಲಿ ವ್ಯವಸ್ಥೆಯು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಮರಳಿ ಆರಂಭಗೊಳ್ಳುತ್ತದೆ ಮತ್ತು "
-"ಅಪ್‌ಡೇಟ್‌ಗಳು ಅನುಸ್ಥಾಪನೆಗೊಳ್ಳುತ್ತವೆ."
+"ಅಪ್‌ಡೇಟ್‌ಗಳು "
+"ಅನುಸ್ಥಾಪನೆಗೊಳ್ಳುತ್ತವೆ."
 
-#: ../js/ui/endSessionDialog.js:129
+#: ../js/ui/endSessionDialog.js:127
 msgctxt "button"
 msgid "Restart &amp; Install"
 msgstr "ಮರಳಿ ಆರಂಭಿಸು ಮತ್ತು ಅನುಸ್ಥಾಪಿಸು"
 
-#: ../js/ui/endSessionDialog.js:130
+#: ../js/ui/endSessionDialog.js:128
 msgctxt "button"
 msgid "Install &amp; Power Off"
 msgstr "ಅನುಸ್ಥಾಪಿಸು ಮತ್ತು ಆಫ್ ಮಾಡು"
 
-#: ../js/ui/endSessionDialog.js:131
+#: ../js/ui/endSessionDialog.js:129
 msgctxt "checkbox"
 msgid "Power off after updates are installed"
 msgstr "ಅಪ್‌ಡೇಟ್‌ಗಳನ್ನು ಅನುಸ್ಥಾಪಿಸಿದ ನಂತರ ಪವರ್ ಆಫ್ ಮಾಡು"
 
-#: ../js/ui/endSessionDialog.js:315
+#: ../js/ui/endSessionDialog.js:338
 msgid "Running on battery power: please plug in before installing updates."
 msgstr ""
 "ಬ್ಯಾಟರಿಯ ವಿದ್ಯುಚ್ಛಕ್ತಿಯಲ್ಲಿ ಕೆಲಸ ಮಾಡುತ್ತಿದೆ: ಅಪ್‌ಡೇಟ್‌ಗಳನ್ನು ಅನುಸ್ಥಾಪಿಸುವ "
-"ಮೊದಲು ಪ್ಲಗ್ ಇನ್ ಮಾಡು."
+"ಮೊದಲು ಪ್ಲಗ್ ಇನ್ "
+"ಮಾಡು."
 
-#: ../js/ui/endSessionDialog.js:332
+#: ../js/ui/endSessionDialog.js:355
 msgid "Some applications are busy or have unsaved work."
 msgstr ""
 "ಕೆಲವು ಅನ್ವಯಗಳು ಕಾರ್ಯನಿರತವಾಗಿರುತ್ತವೆ ಅಥವ ಉಳಿಸದೆ ಇರುವ ಕೆಲಸವನ್ನು ಹೊಂದಿರಬಹುದು."
 
-#: ../js/ui/endSessionDialog.js:339
+#: ../js/ui/endSessionDialog.js:362
 msgid "Other users are logged in."
 msgstr "ಇನ್ನೊಬ್ಬ ಬಳಕೆದಾರರು ಒಳಗೆ ಪ್ರವೇಶಿಸಿದ್ದಾರೆ."
 
 #. Translators: Remote here refers to a remote session, like a ssh login */
-#: ../js/ui/endSessionDialog.js:619
+#: ../js/ui/endSessionDialog.js:640
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (ದೂರದ)"
 
 #. Translators: Console here refers to a tty like a VT console */
-#: ../js/ui/endSessionDialog.js:622
+#: ../js/ui/endSessionDialog.js:643
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (ಕನ್ಸೋಲ್)"
@@ -1191,11 +1169,10 @@ msgstr "ಅನುಸ್ಥಾಪಿಸು"
 
 #: ../js/ui/extensionDownloader.js:204
 #, javascript-format
-#| msgid "Download and install '%s' from extensions.gnome.org?"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "“%s” ಅನ್ನು extensions.gnome.org ಇಂದ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ ಅನುಸ್ಥಾಪಿಸಬೇಕೆ?"
 
-#: ../js/ui/keyboard.js:634 ../js/ui/status/keyboard.js:339
+#: ../js/ui/keyboard.js:692 ../js/ui/status/keyboard.js:523
 msgid "Keyboard"
 msgstr "ಕೀಲಿಮಣೆ"
 
@@ -1217,8 +1194,8 @@ msgstr "ದೋಷಗಳನ್ನು ಅಡಗಿಸು"
 msgid "Show Errors"
 msgstr "ದೋಷಗಳನ್ನು ತೋರಿಸು"
 
-#: ../js/ui/lookingGlass.js:716 ../js/ui/status/location.js:62
-#: ../js/ui/status/location.js:166
+#: ../js/ui/lookingGlass.js:716 ../js/ui/status/location.js:71
+#: ../js/ui/status/location.js:176
 msgid "Enabled"
 msgstr "ಸಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ"
 
@@ -1226,7 +1203,7 @@ msgstr "ಸಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ"
 #. because it's disabled by rfkill (airplane mode) */
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:719 ../js/ui/status/location.js:169
+#: ../js/ui/lookingGlass.js:719 ../js/ui/status/location.js:179
 #: ../js/ui/status/network.js:592 ../src/gvc/gvc-mixer-control.c:1830
 msgid "Disabled"
 msgstr "ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ"
@@ -1251,39 +1228,39 @@ msgstr "ಆಕರವನ್ನು ನೋಡಿ"
 msgid "Web Page"
 msgstr "ಜಾಲ ಪುಟ"
 
-#: ../js/ui/messageTray.js:1326
+#: ../js/ui/messageTray.js:1327
 msgid "Open"
 msgstr "ತೆರೆ"
 
-#: ../js/ui/messageTray.js:1333
+#: ../js/ui/messageTray.js:1334
 msgid "Remove"
 msgstr "ತೆಗೆದು ಹಾಕು"
 
-#: ../js/ui/messageTray.js:1630
+#: ../js/ui/messageTray.js:1631
 msgid "Notifications"
 msgstr "ಸೂಚನೆಗಳು"
 
-#: ../js/ui/messageTray.js:1637
+#: ../js/ui/messageTray.js:1638
 msgid "Clear Messages"
 msgstr "ಸಂದೇಶಗಳನ್ನು ಅಳಿಸು"
 
-#: ../js/ui/messageTray.js:1656
+#: ../js/ui/messageTray.js:1657
 msgid "Notification Settings"
 msgstr "ಸೂಚನೆಯ ಸಿದ್ಧತೆಗಳು"
 
-#: ../js/ui/messageTray.js:1709
+#: ../js/ui/messageTray.js:1710
 msgid "Tray Menu"
 msgstr "ಟ್ರೇ ಮೆನು"
 
-#: ../js/ui/messageTray.js:1926
+#: ../js/ui/messageTray.js:1934
 msgid "No Messages"
 msgstr "ಯಾವುದೆ ಸಂದೇಶವಿಲ್ಲ"
 
-#: ../js/ui/messageTray.js:1968
+#: ../js/ui/messageTray.js:1979
 msgid "Message Tray"
 msgstr "ಸಂದೇಶ ಟ್ರೇ"
 
-#: ../js/ui/messageTray.js:2971
+#: ../js/ui/messageTray.js:2992
 msgid "System Information"
 msgstr "ವ್ಯವಸ್ಥೆಯ ಮಾಹಿತಿ"
 
@@ -1311,7 +1288,7 @@ msgstr "ಅವಲೋಕನ"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters. */
-#: ../js/ui/overview.js:250
+#: ../js/ui/overview.js:246
 msgid "Type to search…"
 msgstr "ಹುಡುಕಲು ನಮೂದಿಸು…"
 
@@ -1342,7 +1319,6 @@ msgid "Close"
 msgstr "ಮುಚ್ಚು"
 
 #: ../js/ui/runDialog.js:277
-#| msgid "Estimating…"
 msgid "Restarting…"
 msgstr "ಮರಳಿ ಆರಂಭಿಸಲಾಗುತ್ತಿದೆ…"
 
@@ -1375,27 +1351,27 @@ msgstr "ಲಾಕ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 msgid "Lock was blocked by an application"
 msgstr "ಲಾಕ್ ಮಾಡದಂತೆ ಒಂದು ಅನ್ವಯವು ತಡೆದಿದೆ"
 
-#: ../js/ui/search.js:557
+#: ../js/ui/search.js:594
 msgid "Searching…"
 msgstr "ಹುಡುಕಲಾಗುತ್ತಿದೆ…"
 
-#: ../js/ui/search.js:598
+#: ../js/ui/search.js:596
 msgid "No results."
 msgstr "ಯಾವುದೆ ಫಲಿತಾಂಶಗಳಿಲ್ಲ."
 
-#: ../js/ui/shellEntry.js:27
+#: ../js/ui/shellEntry.js:25
 msgid "Copy"
 msgstr "ಪ್ರತಿಮಾಡು"
 
-#: ../js/ui/shellEntry.js:32
+#: ../js/ui/shellEntry.js:30
 msgid "Paste"
 msgstr "ಅಂಟಿಸು"
 
-#: ../js/ui/shellEntry.js:99
+#: ../js/ui/shellEntry.js:97
 msgid "Show Text"
 msgstr "ಪಠ್ಯವನ್ನು ತೋರಿಸು"
 
-#: ../js/ui/shellEntry.js:101
+#: ../js/ui/shellEntry.js:99
 msgid "Hide Text"
 msgstr "ಪಠ್ಯವನ್ನು ಅಡಗಿಸು"
 
@@ -1468,14 +1444,12 @@ msgstr "ಬ್ಲೂಟೂತ್ ಸಿದ್ಧತೆಗಳು"
 
 #: ../js/ui/status/bluetooth.js:104
 #, javascript-format
-#| msgid "Connected (private)"
 msgid "%d Connected Device"
 msgid_plural "%d Connected Devices"
 msgstr[0] "%d ಸಂಪರ್ಕಿತಗೊಂಡಿರುವ ಸಾಧನ"
 msgstr[1] "%d ಸಂಪರ್ಕಿತಗೊಂಡಿರುವ ಸಾಧನಗಳು"
 
 #: ../js/ui/status/bluetooth.js:106 ../js/ui/status/network.js:1309
-#| msgid "Connect"
 msgid "Not Connected"
 msgstr "ಸಂಪರ್ಕ ಜೋಡಿಸಲಾಗಿಲ್ಲ"
 
@@ -1483,26 +1457,28 @@ msgstr "ಸಂಪರ್ಕ ಜೋಡಿಸಲಾಗಿಲ್ಲ"
 msgid "Brightness"
 msgstr "ಪ್ರಕಾಶ"
 
-#: ../js/ui/status/keyboard.js:406
+#: ../js/ui/status/keyboard.js:547
 msgid "Show Keyboard Layout"
 msgstr "ಕೀಲಿಮಣೆ ವಿನ್ಯಾಸವನ್ನು ತೋರಿಸು"
 
-#: ../js/ui/status/location.js:56
-#| msgid "Notifications"
+#: ../js/ui/status/location.js:65
 msgid "Location"
 msgstr "ಸ್ಥಳ"
 
-#: ../js/ui/status/location.js:63 ../js/ui/status/location.js:167
-#| msgid "Disabled"
+#: ../js/ui/status/location.js:72 ../js/ui/status/location.js:177
 msgid "Disable"
 msgstr "ನಿಷ್ಕ್ರಿಯಗೊಳಿಸು"
 
-#: ../js/ui/status/location.js:166
+#: ../js/ui/status/location.js:73
+#| msgid "Power Settings"
+msgid "Privacy Settings"
+msgstr "ಗೌಪ್ಯತಾ ಸಿದ್ಧತೆಗಳು"
+
+#: ../js/ui/status/location.js:176
 msgid "In Use"
 msgstr "ಬಳಕೆಯಲ್ಲಿದೆ"
 
-#: ../js/ui/status/location.js:170
-#| msgid "Enabled"
+#: ../js/ui/status/location.js:180
 msgid "Enable"
 msgstr "ಸಕ್ರಿಯಗೊಳಿಸು"
 
@@ -1512,49 +1488,41 @@ msgstr "<ಗೊತ್ತಿರದ>"
 
 #: ../js/ui/status/network.js:457 ../js/ui/status/network.js:1307
 #: ../js/ui/status/network.js:1511
-#| msgid "Offline"
 msgid "Off"
 msgstr "ಆಫ್‌"
 
 #: ../js/ui/status/network.js:459
-#| msgid "Connect"
 msgid "Connected"
 msgstr "ಸಂಪರ್ಕಿತಗೊಂಡಿದೆ"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu) */
 #: ../js/ui/status/network.js:463
-#| msgid "unmanaged"
 msgid "Unmanaged"
 msgstr "ನಿರ್ವಹಿಸಲಾಗದಿರುವ"
 
 #: ../js/ui/status/network.js:465
-#| msgid "disconnecting..."
 msgid "Disconnecting"
 msgstr "ಸಂಪರ್ಕ ಕಡಿದುಹಾಕಲಾಗುತ್ತಿದೆ"
 
 #: ../js/ui/status/network.js:471 ../js/ui/status/network.js:1301
-#| msgid "Connection"
 msgid "Connecting"
 msgstr "ಸಂಪರ್ಕಿತಗೊಳ್ಳುತ್ತಿದೆ"
 
 #. Translators: this is for network connections that require some kind of key or password */
 #: ../js/ui/status/network.js:474
-#| msgid "authentication required"
 msgid "Authentication required"
 msgstr "ದೃಢೀಕರಣದ ಅಗತ್ಯವಿದೆ"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing */
 #: ../js/ui/status/network.js:482
-#| msgid "firmware missing"
 msgid "Firmware missing"
 msgstr "ಫರ್ಮ್‌ವೇರ್ ಕಾಣಿಸುತ್ತಿಲ್ಲ"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage */
 #: ../js/ui/status/network.js:486
-#| msgid "unavailable"
 msgid "Unavailable"
 msgstr "ಅಲಭ್ಯ"
 
@@ -1563,17 +1531,14 @@ msgid "Connection failed"
 msgstr "ಸಂಪರ್ಕವು ವಿಫಲಗೊಂಡಿದೆ"
 
 #: ../js/ui/status/network.js:504
-#| msgid "Settings"
 msgid "Wired Settings"
 msgstr "ವೈರ್ಡ್ ಸಿದ್ಧತೆಗಳು"
 
 #: ../js/ui/status/network.js:546 ../js/ui/status/network.js:624
-#| msgid "Mobile broadband"
 msgid "Mobile Broadband Settings"
 msgstr "ಮೊಬೈಲ್ ಬ್ರಾಡ್‌ಬ್ಯಾಂಡ್ ಸಿದ್ಧತೆಗಳು"
 
 #: ../js/ui/status/network.js:588 ../js/ui/status/network.js:1305
-#| msgid "hardware disabled"
 msgid "Hardware Disabled"
 msgstr "ಯಂತ್ರಾಂಶ ನಿಷ್ಕ್ರಿಯಗೊಂಡಿದೆ"
 
@@ -1611,7 +1576,6 @@ msgid "Wi-Fi Networks"
 msgstr "ವೈ-ಫೈ ಜಾಲಬಂಧಗಳು"
 
 #: ../js/ui/status/network.js:853
-#| msgid "Enable networking"
 msgid "Select a network"
 msgstr "ಒಂದು ಜಾಲಬಂಧವನ್ನು ಆರಿಸಿ"
 
@@ -1628,7 +1592,6 @@ msgid "Select Network"
 msgstr "ಜಾಲಬಂಧವನ್ನು ಆರಿಸಿ"
 
 #: ../js/ui/status/network.js:1179
-#| msgid "Settings"
 msgid "Wi-Fi Settings"
 msgstr "ವೈ-ಫೈ ಸಿದ್ಧತೆಗಳು"
 
@@ -1658,7 +1621,6 @@ msgid "Network Settings"
 msgstr "ಜಾಲಬಂಧ ಸಿದ್ಧತೆಗಳು"
 
 #: ../js/ui/status/network.js:1482
-#| msgid "Settings"
 msgid "VPN Settings"
 msgstr "VPN ಸಿದ್ಧತೆಗಳು"
 
@@ -1709,7 +1671,6 @@ msgid "Airplane Mode"
 msgstr "ಏರ್‌ಪ್ಲೇನ್‌ ಸ್ಥಿತಿ"
 
 #: ../js/ui/status/rfkill.js:85
-#| msgid "Open"
 msgid "On"
 msgstr "ಸಕ್ರಿಯ"
 
@@ -1753,17 +1714,16 @@ msgstr "ಇನ್ನೊಬ್ಬ ಬಳಕೆದಾರನಾಗಿ ಪ್ರವ�
 msgid "Unlock Window"
 msgstr "ಕಿಟಕಿಯನ್ನು ಅನ್‌ಲಾಕ್ ಮಾಡು"
 
-#: ../js/ui/viewSelector.js:163
+#: ../js/ui/viewSelector.js:158
 msgid "Applications"
 msgstr "ಅನ್ವಯಗಳು"
 
-#: ../js/ui/viewSelector.js:167
+#: ../js/ui/viewSelector.js:162
 msgid "Search"
 msgstr "ಹುಡುಕು"
 
 #: ../js/ui/windowAttentionHandler.js:19
 #, javascript-format
-#| msgid "'%s' is ready"
 msgid "“%s” is ready"
 msgstr "“%s” ಸಿದ್ಧಗೊಂಡಿದೆ"
 
@@ -1775,7 +1735,6 @@ msgstr "ನೀವು ಈ ಸಿದ್ಧತೆಗಳನ್ನು ಉಳಿಸಿ
 #. to avoid ellipsizing the labels.
 #. */
 #: ../js/ui/windowManager.js:84
-#| msgid "Power Settings"
 msgid "Revert Settings"
 msgstr "ಸಿದ್ಧತೆಗಳನ್ನು ಹಿಮ್ಮರಳಿಸು"
 
@@ -1856,25 +1815,24 @@ msgstr[1] "%u ಇನ್‌ಪುಟ್‌ಗಳು"
 msgid "System Sounds"
 msgstr "ವ್ಯವಸ್ಥೆಯ ಧ್ವನಿಗಳು"
 
-#: ../src/main.c:371
+#: ../src/main.c:373
 msgid "Print version"
 msgstr "ಮುದ್ರಿಸಬಹುದಾದ ಆವೃತ್ತಿ"
 
-#: ../src/main.c:377
+#: ../src/main.c:379
 msgid "Mode used by GDM for login screen"
 msgstr "ಪ್ರವೇಶದ ತೆರೆಗಾಗಿ GDM ಬಳಸಿದ ಪ್ರಕಾರ"
 
-#: ../src/main.c:383
+#: ../src/main.c:385
 msgid "Use a specific mode, e.g. \"gdm\" for login screen"
 msgstr "ನಿಶ್ಚಿತ ಸ್ಥಿತಿಯನ್ನು ಬಳಸು, ಉದಾ. ಪ್ರವೇಶ ತೆರೆಗಾಗಿ \"gdm\""
 
-#: ../src/main.c:389
+#: ../src/main.c:391
 msgid "List possible modes"
 msgstr "ಸಾಧ್ಯವಿರುವ ಸ್ಥಿತಿಗಳನ್ನು ಪಟ್ಟಿ ಮಾಡು"
 
 #: ../src/shell-app.c:666
 #, c-format
-#| msgid "Failed to launch '%s'"
 msgid "Failed to launch “%s”"
 msgstr "“%s” ಅನ್ನು ಆರಂಭಿಸುವಲ್ಲಿ ವಿಫಲಗೊಂಡಿದೆ"
 
