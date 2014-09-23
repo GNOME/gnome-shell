@@ -22,7 +22,6 @@
     <title>Mutter Core Reference</title>
     <xi:include href="xml/main.xml"/>
     <xi:include href="xml/common.xml"/>
-    <xi:include href="xml/gradient.xml"/>
     <xi:include href="xml/prefs.xml"/>
     <xi:include href="xml/util.xml"/>
     <xi:include href="xml/errors.xml"/>

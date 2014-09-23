@@ -43,7 +43,6 @@
  * @META_PREF_AUTO_RAISE: auto-raise
  * @META_PREF_AUTO_RAISE_DELAY: auto-raise delay
  * @META_PREF_FOCUS_CHANGE_ON_POINTER_REST: focus change on pointer rest
- * @META_PREF_THEME: theme
  * @META_PREF_TITLEBAR_FONT: title-bar font
  * @META_PREF_NUM_WORKSPACES: number of workspaces
  * @META_PREF_DYNAMIC_WORKSPACES: dynamic workspaces
@@ -81,7 +80,6 @@ typedef enum
   META_PREF_AUTO_RAISE,
   META_PREF_AUTO_RAISE_DELAY,
   META_PREF_FOCUS_CHANGE_ON_POINTER_REST,
-  META_PREF_THEME,
   META_PREF_TITLEBAR_FONT,
   META_PREF_NUM_WORKSPACES,
   META_PREF_DYNAMIC_WORKSPACES,
@@ -128,7 +126,6 @@ GDesktopFocusMode           meta_prefs_get_focus_mode         (void);
 GDesktopFocusNewWindows     meta_prefs_get_focus_new_windows  (void);
 gboolean                    meta_prefs_get_attach_modal_dialogs (void);
 gboolean                    meta_prefs_get_raise_on_click     (void);
-const char*                 meta_prefs_get_theme              (void);
 /* returns NULL if GTK default should be used */
 const PangoFontDescription* meta_prefs_get_titlebar_font      (void);
 int                         meta_prefs_get_num_workspaces     (void);

@@ -82,7 +82,6 @@ static GDesktopFocusNewWindows focus_new_windows = G_DESKTOP_FOCUS_NEW_WINDOWS_S
 static gboolean raise_on_click = TRUE;
 static gboolean center_new_windows = FALSE;
 static gboolean attach_modal_dialogs = FALSE;
-static char* current_theme = NULL;
 static int num_workspaces = 4;
 static GDesktopTitlebarAction action_double_click_titlebar = G_DESKTOP_TITLEBAR_ACTION_TOGGLE_MAXIMIZE;
 static GDesktopTitlebarAction action_middle_click_titlebar = G_DESKTOP_TITLEBAR_ACTION_LOWER;
@@ -144,7 +143,6 @@ static void queue_changed (MetaPreference  pref);
 static void maybe_give_disable_workarounds_warning (void);
 
 static gboolean titlebar_handler (GVariant*, gpointer*, gpointer);
-static gboolean theme_name_handler (GVariant*, gpointer*, gpointer);
 static gboolean mouse_button_mods_handler (GVariant*, gpointer*, gpointer);
 static gboolean button_layout_handler (GVariant*, gpointer*, gpointer);
 static gboolean overlay_key_handler (GVariant*, gpointer*, gpointer);
@@ -399,14 +397,6 @@ static MetaStringPreference preferences_string[] =
         META_PREF_MOUSE_BUTTON_MODS,
       },
       mouse_button_mods_handler,
-      NULL,
-    },
-    {
-      { "theme",
-        SCHEMA_GENERAL,
-        META_PREF_THEME,
-      },
-      theme_name_handler,
       NULL,
     },
     {
@@ -1310,12 +1300,6 @@ meta_prefs_get_show_fallback_app_menu (void)
 }
 
 const char*
-meta_prefs_get_theme (void)
-{
-  return current_theme;
-}
-
-const char*
 meta_prefs_get_cursor_theme (void)
 {
   return cursor_theme;
@@ -1366,29 +1350,6 @@ titlebar_handler (GVariant *value,
 
       titlebar_font = desc;
       queue_changed (META_PREF_TITLEBAR_FONT);
-    }
-
-  return TRUE;
-}
-
-static gboolean
-theme_name_handler (GVariant *value,
-                    gpointer *result,
-                    gpointer  data)
-{
-  const gchar *string_value;
-
-  *result = NULL; /* ignored */
-  string_value = g_variant_get_string (value, NULL);
-
-  if (!string_value || !*string_value)
-    return FALSE;
-
-  if (g_strcmp0 (current_theme, string_value) != 0)
-    {
-      g_free (current_theme);
-      current_theme = g_strdup (string_value);
-      queue_changed (META_PREF_THEME);
     }
 
   return TRUE;
@@ -1817,9 +1778,6 @@ meta_preference_to_string (MetaPreference pref)
 
     case META_PREF_RAISE_ON_CLICK:
       return "RAISE_ON_CLICK";
-
-    case META_PREF_THEME:
-      return "THEME";
 
     case META_PREF_TITLEBAR_FONT:
       return "TITLEBAR_FONT";
