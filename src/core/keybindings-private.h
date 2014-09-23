@@ -101,6 +101,8 @@ typedef struct
   MetaKeyCombo *iso_next_group_combos;
   int n_iso_next_group_combos;
 
+  xkb_level_index_t keymap_num_levels;
+
   /* Alt+click button grabs */
   ClutterModifierType window_grab_modifiers;
 } MetaKeyBindingManager;
