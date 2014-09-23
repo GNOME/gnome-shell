@@ -1,7 +1,7 @@
 # Telugu translation for gnome-shell.
 # Copyright (C) 2011, 2012 Swecha telugu translations team <localization@swecha.net>
 # This file is distributed under the same license as the gnome-shell package.
-# Krishnababu Krothapalli <kkrothap@redhat.com>, 2011, 2012, 2013.
+# Krishnababu Krothapalli <kkrothap@redhat.com>, 2011, 2012, 2013, 2014.
 # Hari Krishna <hari@swecha.net>, 2011.
 # Sasi Bhushan Boddepalli <sasi@swecha.net>, 2012.
 # Praveen Illa <mail2ipn@gmail.com>, 2011, 2012, 2013, 2014.
@@ -10,16 +10,16 @@ msgstr ""
 "Project-Id-Version: gnome-shell gnome-3-0\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-08-26 19:34+0000\n"
-"PO-Revision-Date: 2014-08-27 10:45+0530\n"
-"Last-Translator: Praveen Illa <mail2ipn@gmail.com>\n"
-"Language-Team: indlinux-telugu@lists.sourceforge.net\n"
+"POT-Creation-Date: 2014-09-23 07:38+0000\n"
+"PO-Revision-Date: 2014-09-23 15:55+0530\n"
+"Last-Translator: Krishnababu Krothapalli <kkrothap@redhat.com>\n"
+"Language-Team: American English <kde-i18n-doc@kde.org>\n"
 "Language: te\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Virtaal 0.7.1\n"
+"X-Generator: Lokalize 1.5\n"
 "X-Project-Style: gnome\n"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
@@ -69,14 +69,16 @@ msgstr "గ్నోమ్ షెల్ (వేల్యాండ్ సృష�
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:1
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
-msgstr "అభివృద్ధికారులకు మరియు పరీక్షకులకు ఉపయోగపడే సాధనాలను Alt-F2 నుండి చేతనపరుచు"
+msgstr ""
+"అభివృద్ధికారులకు మరియు పరీక్షకులకు ఉపయోగపడే సాధనాలను Alt-F2 నుండి చేతనపరుచు"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:2
 msgid ""
 "Allows access to internal debugging and monitoring tools using the Alt-F2 "
 "dialog."
 msgstr ""
-"Alt-F2 డైలాగుని వాడి అంతర్గత దోషశుద్ది మరియు సాధనాలను పర్యవేక్షించుటకు సౌలభ్యతను అనుమతిస్తుంది."
+"Alt-F2 డైలాగుని వాడి అంతర్గత దోషశుద్ది మరియు సాధనాలను పర్యవేక్షించుటకు "
+"సౌలభ్యతను అనుమతిస్తుంది."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:3
 msgid "UUIDs of extensions to enable"
@@ -89,8 +91,10 @@ msgid ""
 "list. You can also manipulate this list with the EnableExtension and "
 "DisableExtension D-Bus methods on org.gnome.Shell."
 msgstr ""
-"గ్నోమ్ షెల్ పొడిగింతలు ఒక UUID లక్షణాన్ని కలిగివున్నాయి; ఏ పొడిగింతలు లోడుచేయదగినవి కాదో ఈ కీ జాబితాచేయును. "
-"ఏ పొడిగింత లోడవ్వాలో అది ఈ జాబితా నందు ఉండాలి. అంతేకాకుండా మీరు ఈ జాబితాను పాడిగింతను చేతనపరుచు లేదా "
+"గ్నోమ్ షెల్ పొడిగింతలు ఒక UUID లక్షణాన్ని కలిగివున్నాయి; ఏ పొడిగింతలు "
+"లోడుచేయదగినవి కాదో ఈ కీ జాబితాచేయును. "
+"ఏ పొడిగింత లోడవ్వాలో అది ఈ జాబితా నందు ఉండాలి. అంతేకాకుండా మీరు ఈ జాబితాను "
+"పాడిగింతను చేతనపరుచు లేదా "
 "పొడిగింతను అచేతనపరుచు డిబస్ పద్ధతులలో గ్నోమ్ షెల్ నందు మార్చవచ్చును."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:5
@@ -103,8 +107,10 @@ msgid ""
 "running version. Enabling this option will disable this check and try to "
 "load all extensions regardless of the versions they claim to support."
 msgstr ""
-"ప్రస్తుతం నడుస్తున్న రూపాంతరం తోడ్పాటుందని పేర్కొంటేనే గ్నోమ్ షెల్ పొడిగింతలను లోడు చేస్తుంది. ఈ "
-"ఐచ్ఛికాన్ని చేతనం చేస్తే ఈ తనిఖీని అచేనించి, తోడ్పాటు ఉన్నాదా లేదా అనే విషయంతో సంబంధం లేకుండా అన్ని "
+"ప్రస్తుతం నడుస్తున్న రూపాంతరం తోడ్పాటుందని పేర్కొంటేనే గ్నోమ్ షెల్ "
+"పొడిగింతలను లోడు చేస్తుంది. ఈ "
+"ఐచ్ఛికాన్ని చేతనం చేస్తే ఈ తనిఖీని అచేనించి, తోడ్పాటు ఉన్నాదా లేదా అనే "
+"విషయంతో సంబంధం లేకుండా అన్ని "
 "పొడిగింతలను నింపుటకు ప్రయత్నిస్తుంది"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:7
@@ -115,7 +121,8 @@ msgstr "ప్రియమైన అనువర్తనాల కోసం డ
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
-msgstr "ఈ గుర్తింపకాలకు అనుగుణమైన అనువర్తనాలు ప్రియమైన ప్రదేశములో ప్రదర్శించబడతాయి."
+msgstr ""
+"ఈ గుర్తింపకాలకు అనుగుణమైన అనువర్తనాలు ప్రియమైన ప్రదేశములో ప్రదర్శించబడతాయి."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:9
 msgid "App Picker View"
@@ -142,13 +149,16 @@ msgid ""
 "This key overrides the automatic hiding of the 'Log out' menu item in single-"
 "user, single-session situations."
 msgstr ""
-"ఏక-వాడుకరి, ఏక-ఘట్టం పరిస్థితులలో 'నిష్క్రమించు' మెనూ అంశము స్వయంచాలకంగా దాగుటను ఈ మీట భర్తీ "
+"ఏక-వాడుకరి, ఏక-ఘట్టం పరిస్థితులలో 'నిష్క్రమించు' మెనూ అంశము స్వయంచాలకంగా "
+"దాగుటను ఈ మీట భర్తీ "
 "చేస్తుంది."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:15
 msgid ""
 "Whether to remember password for mounting encrypted or remote filesystems"
-msgstr "ఎన్క్రిప్టెడ్ లేదా రిమోట్ దస్త్రవ్యవస్థల మౌంటు చేయుటకు సంకేతపదాలను గుర్తుంచుకోవాలా"
+msgstr ""
+"ఎన్క్రిప్టెడ్ లేదా రిమోట్ దస్త్రవ్యవస్థల మౌంటు చేయుటకు సంకేతపదాలను "
+"గుర్తుంచుకోవాలా"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:16
 msgid ""
@@ -157,8 +167,10 @@ msgid ""
 "'Remember Password' checkbox will be present. This key sets the default "
 "state of the checkbox."
 msgstr ""
-"ఎన్క్రిప్టెడ్ పరికరం లేదా రిమోట్ దస్త్రవ్యవస్థ మౌంటవునప్పుడు షెల్ సంకేతపదం కొరకు అభ్యర్ధించును. భవిష్య "
-"వినియోగం కొరకు సంకేతపదం దాయగలిగితే 'సంకేతపదం గుర్తుంచు' చెక్‌బాక్స్ వస్తుంది. ఈ కీ చెక్‌బాక్స్ యొక్క "
+"ఎన్క్రిప్టెడ్ పరికరం లేదా రిమోట్ దస్త్రవ్యవస్థ మౌంటవునప్పుడు షెల్ సంకేతపదం "
+"కొరకు అభ్యర్ధించును. భవిష్య "
+"వినియోగం కొరకు సంకేతపదం దాయగలిగితే 'సంకేతపదం గుర్తుంచు' చెక్‌బాక్స్ వస్తుంది. "
+"ఈ కీ చెక్‌బాక్స్ యొక్క "
 "అప్రమేయ స్థితిని అమర్చును."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:17
@@ -184,7 +196,8 @@ msgstr "\"అనువర్తనములు చూపు\" దర్శనం
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:22
 msgid ""
 "Keybinding to open the \"Show Applications\" view of the Activities Overview."
-msgstr "కార్యకలాపాల అవలోకనం యొక్క \"అనువర్తనములు చూపించు\" వీక్షణం తెరువుటకు కీ బందనం."
+msgstr ""
+"కార్యకలాపాల అవలోకనం యొక్క \"అనువర్తనములు చూపించు\" వీక్షణం తెరువుటకు కీ బందనం."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:23
 msgid "Keybinding to open the overview"
@@ -214,8 +227,8 @@ msgstr "క్రియాశీల ప్రకటన ఫోకస్‌కు 
 msgid ""
 "Keybinding that pauses and resumes all running tweens, for debugging purposes"
 msgstr ""
-"దోషవిశ్లేషణ కోసం, కీబైండింగు నడుస్తున్న అన్ని ట్వీన్లను తిరిగి కొనసాగిస్తుంది"
-" మరియు నిలిపివేస్తుంది."
+"దోషవిశ్లేషణ కోసం, కీబైండింగు నడుస్తున్న అన్ని ట్వీన్లను తిరిగి కొనసాగిస్తుంది "
+"మరియు నిలిపివేస్తుంది."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:30
 msgid "Which keyboard to use"
@@ -235,7 +248,8 @@ msgid ""
 "shown in the switcher. Otherwise, all applications are included."
 msgstr ""
 "ఒకవేళ నిజమైతే, ప్రస్తుత కార్యక్షేత్రంలో ఉన్న అనువర్తనాల కిటికీలు మాత్రమే "
-"మార్పకంలో చూపించబడతాయి. లేదంటే, అన్ని అనువర్తనాలు ఉంచబడతాయి."
+"మార్పకంలో చూపించబడతాయి. లేదంటే, "
+"అన్ని అనువర్తనాలు ఉంచబడతాయి."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:34
 msgid "The application icon mode."
@@ -247,8 +261,10 @@ msgid ""
 "are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-"
 "only' (shows only the application icon) or 'both'."
 msgstr ""
-"స్విచర్ నందు కిటికీలు ఎలా చూపునో ఆకృతీకరించును. చెల్లునటువంటి సాధ్యాలు 'thumbnail-only' (విండో "
-"థంబ్‌నెయిల్ చూపును), 'app-icon-only' (అనువర్తన ప్రతిమ మాత్రమే చూపును) లేదా 'both'."
+"స్విచర్ నందు కిటికీలు ఎలా చూపునో ఆకృతీకరించును. చెల్లునటువంటి సాధ్యాలు "
+"'thumbnail-only' (విండో "
+"థంబ్‌నెయిల్ చూపును), 'app-icon-only' (అనువర్తన ప్రతిమ మాత్రమే చూపును) లేదా "
+"'both'."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:36
 msgid ""
@@ -256,7 +272,8 @@ msgid ""
 "Otherwise, all windows are included."
 msgstr ""
 "ఒకవేళ నిజమైతే, ప్రస్తుత కార్యక్షేత్రంలో ఉన్న కిటికీలు మాత్రమే మార్పకంలో "
-"చూపించబడతాయి. లేదంటే, అన్ని కిటికీలు ఉంచబడతాయి."
+"చూపించబడతాయి. లేదంటే, అన్ని కిటికీలు "
+"ఉంచబడతాయి."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:37
 msgid "Attach modal dialog to the parent window"
@@ -265,7 +282,9 @@ msgstr "పేరెంట్ కిటికీకు మోడల్ డైల
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:38
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
-msgstr "గ్నోమ్ షెల్ నందు నడుచునప్పుడు ఈ కీ org.gnome.mutter నందలి కీను వోవర్‌రైడ్ చేయును."
+msgstr ""
+"గ్నోమ్ షెల్ నందు నడుచునప్పుడు ఈ కీ org.gnome.mutter నందలి కీను వోవర్‌రైడ్ "
+"చేయును."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:39
 msgid "Enable edge tiling when dropping windows on screen edges"
@@ -287,17 +306,17 @@ msgstr "మౌసు రీతిలో కేంద్రీకరణ మార
 msgid "Captive Portal"
 msgstr "కాప్టివ్ పోర్టల్"
 
-#: ../js/extensionPrefs/main.js:127
+#: ../js/extensionPrefs/main.js:123
 #, javascript-format
 msgid "There was an error loading the preferences dialog for %s:"
 msgstr "%s కొరకు ప్రాధాన్యతల సంభాషణను నింపుటలో అక్కడ ఒక దోషం ఉన్నది:"
 
-#: ../js/extensionPrefs/main.js:159
+#: ../js/extensionPrefs/main.js:155
 msgid "GNOME Shell Extensions"
 msgstr "గ్నోమ్ షెల్ పొడిగింతలు"
 
 #: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:143
-#: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:429
+#: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:452
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
 #: ../js/ui/status/network.js:915
 msgid "Cancel"
@@ -364,40 +383,40 @@ msgstr "“%s” అమలు విఫలమైంది:"
 msgid "Web Authentication Redirect"
 msgstr "జాల ధృవీకరణ దారిమార్పు"
 
-#: ../js/ui/appDisplay.js:660
+#: ../js/ui/appDisplay.js:772
 msgid "Frequently used applications will appear here"
 msgstr "తరచూ వాడే అనువర్తనాలు ఇక్కడ కనిపిస్తాయి"
 
-#: ../js/ui/appDisplay.js:771
+#: ../js/ui/appDisplay.js:883
 msgid "Frequent"
 msgstr "తరచు"
 
-#: ../js/ui/appDisplay.js:778
+#: ../js/ui/appDisplay.js:890
 msgid "All"
 msgstr "అన్ని"
 
-#: ../js/ui/appDisplay.js:1650
+#: ../js/ui/appDisplay.js:1790
 msgid "New Window"
 msgstr "కొత్త కిటికీ"
 
-#: ../js/ui/appDisplay.js:1673 ../js/ui/dash.js:285
+#: ../js/ui/appDisplay.js:1816 ../js/ui/dash.js:285
 msgid "Remove from Favorites"
 msgstr "ఇష్టాంశాల నుండి తొలగించు"
 
-#: ../js/ui/appDisplay.js:1679
+#: ../js/ui/appDisplay.js:1822
 msgid "Add to Favorites"
 msgstr "ఇష్టాంశాలకు జతచేయి"
 
-#: ../js/ui/appDisplay.js:1688
+#: ../js/ui/appDisplay.js:1831
 msgid "Show Details"
 msgstr "వివరాలను చూపించు"
 
-#: ../js/ui/appFavorites.js:122
+#: ../js/ui/appFavorites.js:132
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "%s మీ ఇష్టాంశాలకు జతచేయబడింది."
 
-#: ../js/ui/appFavorites.js:156
+#: ../js/ui/appFavorites.js:166
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "%s మీ ఇష్టాంశాల నుండి తీసివేయబడింది."
@@ -589,11 +608,11 @@ msgstr "%s‍తో తెరువు"
 msgid "Eject"
 msgstr "బయటకునెట్టు"
 
-#: ../js/ui/components/keyring.js:93 ../js/ui/components/polkitAgent.js:285
+#: ../js/ui/components/keyring.js:94 ../js/ui/components/polkitAgent.js:285
 msgid "Password:"
 msgstr "సంకేతపదం:"
 
-#: ../js/ui/components/keyring.js:113
+#: ../js/ui/components/keyring.js:120
 msgid "Type again:"
 msgstr "మళ్ళీ టంకించండి:"
 
@@ -635,7 +654,9 @@ msgstr "వైర్‌లెస్ నెట్‌వర్క్ చేత ధ
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
 "“%s”."
-msgstr "నిస్తంత్రి నెట్‌వర్కు “%s” ప్రాప్యించుటకు సంకేతపదాలు లేదా ఎన్క్రిప్షన్ మీటలు అవసరం."
+msgstr ""
+"నిస్తంత్రి నెట్‌వర్కు “%s” ప్రాప్యించుటకు సంకేతపదాలు లేదా ఎన్క్రిప్షన్ మీటలు "
+"అవసరం."
 
 #: ../js/ui/components/networkAgent.js:323
 msgid "Wired 802.1X authentication"
@@ -933,14 +954,16 @@ msgstr "ధృవీకరణపత్రం కొట్టివేయబడ�
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr ""
-"ధృవీకరణపత్రం సురక్షితం కాని సైఫర్ ఆల్గార్దెమ్ వుపయోగించుచున్నది లేదా క్రిప్టోగ్రఫీ పరంగా బలహీనంగా వుంది"
+"ధృవీకరణపత్రం సురక్షితం కాని సైఫర్ ఆల్గార్దెమ్ వుపయోగించుచున్నది లేదా "
+"క్రిప్టోగ్రఫీ పరంగా బలహీనంగా వుంది"
 
 #: ../js/ui/components/telepathyClient.js:1381
 msgid ""
 "The length of the server certificate, or the depth of the server certificate "
 "chain, exceed the limits imposed by the cryptography library"
 msgstr ""
-"సేవిక ధృవీకరణపత్రం యొక్క పొడవు, లేదా సేవిక ధృవీకరణపత్రం చైన్ యొక్క లోతు, క్రిప్టోగ్రఫీ లైబ్రరీ చేత "
+"సేవిక ధృవీకరణపత్రం యొక్క పొడవు, లేదా సేవిక ధృవీకరణపత్రం చైన్ యొక్క లోతు, "
+"క్రిప్టోగ్రఫీ లైబ్రరీ చేత "
 "నిర్దేశితమైన పరిమితులను మించును"
 
 #: ../js/ui/components/telepathyClient.js:1383
@@ -962,7 +985,7 @@ msgstr "ఖాతాను చూడండి"
 msgid "Unknown reason"
 msgstr "తెలియని కారణం"
 
-#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:228
+#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:154
 msgid "Windows"
 msgstr "కిటికీలు"
 
@@ -993,128 +1016,132 @@ msgstr "తేదీ మరియు సమయం అమరికలు"
 msgid "%A %B %e, %Y"
 msgstr "%A %B %e, %Y"
 
-#: ../js/ui/endSessionDialog.js:66
+#: ../js/ui/endSessionDialog.js:64
 #, javascript-format
 msgctxt "title"
 msgid "Log Out %s"
 msgstr "%s నిష్క్రమించు"
 
-#: ../js/ui/endSessionDialog.js:67
+#: ../js/ui/endSessionDialog.js:65
 msgctxt "title"
 msgid "Log Out"
 msgstr "నిష్క్రమించు"
 
-#: ../js/ui/endSessionDialog.js:69
+#: ../js/ui/endSessionDialog.js:67
 #, javascript-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "%s స్వయంచాలకంగా %d సెకనులో నిష్క్రమించును."
 msgstr[1] "%s స్వయంచాలకంగా %d సెకనులలో నిష్క్రమించును."
 
-#: ../js/ui/endSessionDialog.js:74
+#: ../js/ui/endSessionDialog.js:72
 #, javascript-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
 msgstr[0] "మీరు %d సెకనులో స్వయంచాలకంగా నిష్క్రమిస్తారు."
 msgstr[1] "మీరు %d సెకనులలో స్వయంచాలకంగా నిష్క్రమిస్తారు."
 
-#: ../js/ui/endSessionDialog.js:80
+#: ../js/ui/endSessionDialog.js:78
 msgctxt "button"
 msgid "Log Out"
 msgstr "నిష్క్రమించు"
 
-#: ../js/ui/endSessionDialog.js:86
+#: ../js/ui/endSessionDialog.js:84
 msgctxt "title"
 msgid "Power Off"
 msgstr "విద్యుత్ ఆపు"
 
-#: ../js/ui/endSessionDialog.js:87
+#: ../js/ui/endSessionDialog.js:85
 msgctxt "title"
 msgid "Install Updates & Power Off"
 msgstr "నవీకరణలను స్థాపించి, విద్యుత్ ఆపు"
 
-#: ../js/ui/endSessionDialog.js:89
+#: ../js/ui/endSessionDialog.js:87
 #, javascript-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "%d సెకన్లలో వ్యవస్థ స్వయంచాలకంగా ఆపివేయబడుతుంది."
 msgstr[1] "%d సెకన్లలో వ్యవస్థ స్వయంచాలకంగా ఆపివేయబడుతుంది."
 
-#: ../js/ui/endSessionDialog.js:93
+#: ../js/ui/endSessionDialog.js:91
 msgctxt "checkbox"
 msgid "Install pending software updates"
 msgstr "పెండింగులో ఉన్న సాఫ్ట్‌వేర్ నవీకరణలను స్థాపించు"
 
-#: ../js/ui/endSessionDialog.js:96 ../js/ui/endSessionDialog.js:113
+#: ../js/ui/endSessionDialog.js:94 ../js/ui/endSessionDialog.js:111
 msgctxt "button"
 msgid "Restart"
 msgstr "పునఃప్రారంభించు"
 
-#: ../js/ui/endSessionDialog.js:98
+#: ../js/ui/endSessionDialog.js:96
 msgctxt "button"
 msgid "Power Off"
 msgstr "విద్యుత్ ఆపు"
 
-#: ../js/ui/endSessionDialog.js:105
+#: ../js/ui/endSessionDialog.js:103
 msgctxt "title"
 msgid "Restart"
 msgstr "పునఃప్రారంభించు"
 
-#: ../js/ui/endSessionDialog.js:107
+#: ../js/ui/endSessionDialog.js:105
 #, javascript-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "%d సెకనులో వ్యవస్థ స్వయంచాలకంగా పునఃప్రారంభించబడుతుంది."
 msgstr[1] "%d సెకనులలో వ్యవస్థ స్వయంచాలకంగా పునఃప్రారంభించబడుతుంది."
 
-#: ../js/ui/endSessionDialog.js:121
+#: ../js/ui/endSessionDialog.js:119
 msgctxt "title"
 msgid "Restart & Install Updates"
 msgstr "నవీకరణలను స్థాపించి, పునఃప్రారంభించు"
 
-#: ../js/ui/endSessionDialog.js:123
+#: ../js/ui/endSessionDialog.js:121
 #, javascript-format
 msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
 "The system will automatically restart and install updates in %d seconds."
-msgstr[0] "%d క్షణాలలో నవీకరణలను స్థాపించి, వ్యవస్థ స్వయంచాలకంగా పునఃప్రారంభించబడుతుంది."
-msgstr[1] "%d క్షణాలలో నవీకరణలను స్థాపించి, వ్యవస్థ స్వయంచాలకంగా పునఃప్రారంభించబడుతుంది."
+msgstr[0] ""
+"%d క్షణాలలో నవీకరణలను స్థాపించి, వ్యవస్థ స్వయంచాలకంగా పునఃప్రారంభించబడుతుంది."
+msgstr[1] ""
+"%d క్షణాలలో నవీకరణలను స్థాపించి, వ్యవస్థ స్వయంచాలకంగా పునఃప్రారంభించబడుతుంది."
 
-#: ../js/ui/endSessionDialog.js:129
+#: ../js/ui/endSessionDialog.js:127
 msgctxt "button"
 msgid "Restart &amp; Install"
 msgstr "పునఃప్రారంభించి &amp; స్థాపించు"
 
-#: ../js/ui/endSessionDialog.js:130
+#: ../js/ui/endSessionDialog.js:128
 msgctxt "button"
 msgid "Install &amp; Power Off"
 msgstr "స్థాపించి &amp; విద్యుత్ ఆపు"
 
-#: ../js/ui/endSessionDialog.js:131
+#: ../js/ui/endSessionDialog.js:129
 msgctxt "checkbox"
 msgid "Power off after updates are installed"
 msgstr "నవీకరణలు స్థాపించిన తరువాత విద్యుత్ ఆపు"
 
-#: ../js/ui/endSessionDialog.js:315
+#: ../js/ui/endSessionDialog.js:338
 msgid "Running on battery power: please plug in before installing updates."
-msgstr "బ్యాటరీ శక్తితో నడుస్తూంది: దయచేసి నవీకరణలు స్థాపించే ముందు విద్యుత్ అనుసంధానించండి."
+msgstr ""
+"బ్యాటరీ శక్తితో నడుస్తూంది: దయచేసి నవీకరణలు స్థాపించే ముందు విద్యుత్ "
+"అనుసంధానించండి."
 
-#: ../js/ui/endSessionDialog.js:332
+#: ../js/ui/endSessionDialog.js:355
 msgid "Some applications are busy or have unsaved work."
 msgstr "కొన్ని అనువర్తనాలు బిజీగా ఉన్నాయి లేదా భద్రపరుచని పని ఉండిపోయింది."
 
-#: ../js/ui/endSessionDialog.js:339
+#: ../js/ui/endSessionDialog.js:362
 msgid "Other users are logged in."
 msgstr "వేరే వాడుకరులు లాగిన్ అయివున్నారు."
 
 #. Translators: Remote here refers to a remote session, like a ssh login */
-#: ../js/ui/endSessionDialog.js:619
+#: ../js/ui/endSessionDialog.js:640
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (రిమోట్)"
 
 #. Translators: Console here refers to a tty like a VT console */
-#: ../js/ui/endSessionDialog.js:622
+#: ../js/ui/endSessionDialog.js:643
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (కన్సోల్)"
@@ -1128,7 +1155,7 @@ msgstr "స్థాపించు"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "extensions.gnome.org నుండి “%s” దింపుకొని, స్థాపించాలా?"
 
-#: ../js/ui/keyboard.js:653 ../js/ui/status/keyboard.js:339
+#: ../js/ui/keyboard.js:692 ../js/ui/status/keyboard.js:523
 msgid "Keyboard"
 msgstr "కీబోర్డు"
 
@@ -1150,8 +1177,8 @@ msgstr "దోషాలను దాయి"
 msgid "Show Errors"
 msgstr "దోషాలను చూపించు"
 
-#: ../js/ui/lookingGlass.js:716 ../js/ui/status/location.js:62
-#: ../js/ui/status/location.js:166
+#: ../js/ui/lookingGlass.js:716 ../js/ui/status/location.js:71
+#: ../js/ui/status/location.js:176
 msgid "Enabled"
 msgstr "చేతనమైనది"
 
@@ -1159,7 +1186,7 @@ msgstr "చేతనమైనది"
 #. because it's disabled by rfkill (airplane mode) */
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:719 ../js/ui/status/location.js:169
+#: ../js/ui/lookingGlass.js:719 ../js/ui/status/location.js:179
 #: ../js/ui/status/network.js:592 ../src/gvc/gvc-mixer-control.c:1830
 msgid "Disabled"
 msgstr "అచేతనమైనది"
@@ -1184,39 +1211,39 @@ msgstr "మూలాన్ని చూడు"
 msgid "Web Page"
 msgstr "జాల పుట"
 
-#: ../js/ui/messageTray.js:1325
+#: ../js/ui/messageTray.js:1327
 msgid "Open"
 msgstr "తెరువు"
 
-#: ../js/ui/messageTray.js:1332
+#: ../js/ui/messageTray.js:1334
 msgid "Remove"
 msgstr "తీసివేయి"
 
-#: ../js/ui/messageTray.js:1629
+#: ../js/ui/messageTray.js:1631
 msgid "Notifications"
 msgstr "ప్రకటనలు"
 
-#: ../js/ui/messageTray.js:1636
+#: ../js/ui/messageTray.js:1638
 msgid "Clear Messages"
 msgstr "సందేశాలు తుడిచివేయి"
 
-#: ../js/ui/messageTray.js:1655
+#: ../js/ui/messageTray.js:1657
 msgid "Notification Settings"
 msgstr "ప్రకటనల అమరికలు"
 
-#: ../js/ui/messageTray.js:1708
+#: ../js/ui/messageTray.js:1710
 msgid "Tray Menu"
 msgstr "పళ్ళెం జాబితా"
 
-#: ../js/ui/messageTray.js:1925
+#: ../js/ui/messageTray.js:1934
 msgid "No Messages"
 msgstr "సందేశాలు లేవు"
 
-#: ../js/ui/messageTray.js:1963
+#: ../js/ui/messageTray.js:1979
 msgid "Message Tray"
 msgstr "సందేశ పళ్ళెం"
 
-#: ../js/ui/messageTray.js:2966
+#: ../js/ui/messageTray.js:2992
 msgid "System Information"
 msgstr "వ్యవస్థ సమాచారం"
 
@@ -1244,7 +1271,7 @@ msgstr "పర్యావలోకనం"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters. */
-#: ../js/ui/overview.js:250
+#: ../js/ui/overview.js:246
 msgid "Type to search…"
 msgstr "వెతకడానికి టైపు చేయండి…"
 
@@ -1307,27 +1334,27 @@ msgstr "తాళం వేయలేకపోతూంది"
 msgid "Lock was blocked by an application"
 msgstr "తాళం ఒక అనువర్తనం చేత నిరోధించబడింది"
 
-#: ../js/ui/search.js:606
+#: ../js/ui/search.js:594
 msgid "Searching…"
 msgstr "వెతుకుతోంది..."
 
-#: ../js/ui/search.js:652
+#: ../js/ui/search.js:596
 msgid "No results."
 msgstr "ఏ ఫలితాలు లేవు."
 
-#: ../js/ui/shellEntry.js:27
+#: ../js/ui/shellEntry.js:25
 msgid "Copy"
 msgstr "నకలించు"
 
-#: ../js/ui/shellEntry.js:32
+#: ../js/ui/shellEntry.js:30
 msgid "Paste"
 msgstr "అతికించు"
 
-#: ../js/ui/shellEntry.js:99
+#: ../js/ui/shellEntry.js:97
 msgid "Show Text"
 msgstr "పాఠం చూపించు"
 
-#: ../js/ui/shellEntry.js:101
+#: ../js/ui/shellEntry.js:99
 msgid "Hide Text"
 msgstr "పాఠ్యం దాయి"
 
@@ -1413,23 +1440,28 @@ msgstr "అనుసంధానించబడలేదు"
 msgid "Brightness"
 msgstr "ప్రకాశత"
 
-#: ../js/ui/status/keyboard.js:406
+#: ../js/ui/status/keyboard.js:547
 msgid "Show Keyboard Layout"
 msgstr "కీబోర్డు నమూనాను చూపించు"
 
-#: ../js/ui/status/location.js:56
+#: ../js/ui/status/location.js:65
 msgid "Location"
 msgstr "స్థానం"
 
-#: ../js/ui/status/location.js:63 ../js/ui/status/location.js:167
+#: ../js/ui/status/location.js:72 ../js/ui/status/location.js:177
 msgid "Disable"
 msgstr "అచేతనించు"
 
-#: ../js/ui/status/location.js:166
+#: ../js/ui/status/location.js:73
+#| msgid "Power Settings"
+msgid "Privacy Settings"
+msgstr "గోప్యతా అమరికలు"
+
+#: ../js/ui/status/location.js:176
 msgid "In Use"
 msgstr "వాడుకలో వుంది"
 
-#: ../js/ui/status/location.js:170
+#: ../js/ui/status/location.js:180
 msgid "Enable"
 msgstr "చేతనించు"
 
@@ -1664,11 +1696,11 @@ msgstr "వేరొక వాడుకరి వలె ప్రవేశిం
 msgid "Unlock Window"
 msgstr "కిటికీ తాళంతీయి"
 
-#: ../js/ui/viewSelector.js:232
+#: ../js/ui/viewSelector.js:158
 msgid "Applications"
 msgstr "అనువర్తనాలు"
 
-#: ../js/ui/viewSelector.js:236
+#: ../js/ui/viewSelector.js:162
 msgid "Search"
 msgstr "వెతుకు"
 
@@ -1765,19 +1797,19 @@ msgstr[1] "%u ఇన్‌పుట్‌లు"
 msgid "System Sounds"
 msgstr "వ్యవస్థ శబ్దములు"
 
-#: ../src/main.c:371
+#: ../src/main.c:373
 msgid "Print version"
 msgstr "ముద్రిత రూపాంతరం"
 
-#: ../src/main.c:377
+#: ../src/main.c:379
 msgid "Mode used by GDM for login screen"
 msgstr "ప్రవేశ తెర కొరకు GDM చే ఉపయోగించబడిన రీతి"
 
-#: ../src/main.c:383
+#: ../src/main.c:385
 msgid "Use a specific mode, e.g. \"gdm\" for login screen"
 msgstr "ఒక నిర్దిష్ట రీతిని వాడు, ఉదా. ప్రవేశ తెర కొరకు \"gdm\""
 
-#: ../src/main.c:389
+#: ../src/main.c:391
 msgid "List possible modes"
 msgstr "సాధ్యమగు రీతులను జాబితాగా చేయి"
 
