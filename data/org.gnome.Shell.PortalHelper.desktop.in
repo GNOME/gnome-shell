@@ -1,5 +1,5 @@
 [Desktop Entry]
-_Name=Captive Portal
+_Name=Network Login
 Type=Application
 Exec=gapplication launch org.gnome.Shell.PortalHelper
 DBusActivatable=true
