@@ -42,6 +42,7 @@
 #include <gtk/gtk.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdarg.h>
 #include <math.h>
 
 #define GDK_COLOR_RGBA(color)                                           \
@@ -4999,44 +5000,98 @@ meta_theme_get_title_scale (MetaTheme     *theme,
   return style->layout->title_scale;
 }
 
+static GtkStyleContext *
+create_style_context (GType            widget_type,
+                      GtkStyleContext *parent_style,
+                      GtkCssProvider  *provider,
+                      const char      *first_class,
+                      ...)
+{
+  GtkStyleContext *style;
+  GtkWidgetPath *path;
+  const char *name;
+  va_list ap;
+
+  style = gtk_style_context_new ();
+  gtk_style_context_set_parent (style, parent_style);
+
+  if (parent_style)
+    path = gtk_widget_path_copy (gtk_style_context_get_path (parent_style));
+  else
+    path = gtk_widget_path_new ();
+
+  gtk_widget_path_append_type (path, widget_type);
+
+  va_start (ap, first_class);
+  for (name = first_class; name; name = va_arg (ap, const char *))
+    gtk_widget_path_iter_add_class (path, -1, name);
+  va_end (ap);
+
+  gtk_style_context_set_path (style, path);
+  gtk_widget_path_unref (path);
+
+  gtk_style_context_add_provider (style, GTK_STYLE_PROVIDER (provider),
+                                  GTK_STYLE_PROVIDER_PRIORITY_SETTINGS);
+
+  return style;
+}
+
 MetaStyleInfo *
 meta_theme_create_style_info (GdkScreen   *screen,
                               const gchar *variant)
 {
-  GtkWidgetPath *path;
   MetaStyleInfo *style_info;
-  GtkStyleContext *style;
+  GtkCssProvider *provider;
   char *theme_name;
 
   g_object_get (gtk_settings_get_for_screen (screen),
                 "gtk-theme-name", &theme_name,
                 NULL);
 
+  if (theme_name && *theme_name)
+    provider = gtk_css_provider_get_named (theme_name, variant);
+  else
+    provider = gtk_css_provider_get_default ();
+  g_free (theme_name);
+
   style_info = g_new0 (MetaStyleInfo, 1);
   style_info->refcount = 1;
 
-  path = gtk_widget_path_new ();
-
-  style_info->styles[META_STYLE_ELEMENT_FRAME] = style = gtk_style_context_new ();
-  gtk_widget_path_append_type (path, META_TYPE_FRAMES);
-  gtk_widget_path_iter_add_class (path, -1, GTK_STYLE_CLASS_BACKGROUND);
-  gtk_widget_path_iter_add_class (path, -1, "window-frame");
-  gtk_style_context_set_path (style, path);
-
-  gtk_widget_path_unref (path);
-
-  if (theme_name && *theme_name)
-    {
-      GtkCssProvider *provider;
-
-      provider = gtk_css_provider_get_named (theme_name, variant);
-      gtk_style_context_add_provider (style,
-                                      GTK_STYLE_PROVIDER (provider),
-                                      GTK_STYLE_PROVIDER_PRIORITY_SETTINGS);
-    }
-
-  g_free (theme_name);
-
+  style_info->styles[META_STYLE_ELEMENT_FRAME] =
+    create_style_context (META_TYPE_FRAMES,
+                          NULL,
+                          provider,
+                          GTK_STYLE_CLASS_BACKGROUND,
+                          "window-frame",
+                          "ssd",
+                          NULL);
+  style_info->styles[META_STYLE_ELEMENT_TITLEBAR] =
+    create_style_context (GTK_TYPE_HEADER_BAR,
+                          style_info->styles[META_STYLE_ELEMENT_FRAME],
+                          provider,
+                          GTK_STYLE_CLASS_TITLEBAR,
+                          GTK_STYLE_CLASS_HORIZONTAL,
+                          "default-decoration",
+                          "header-bar",
+                          NULL);
+  style_info->styles[META_STYLE_ELEMENT_TITLE] =
+    create_style_context (GTK_TYPE_LABEL,
+                          style_info->styles[META_STYLE_ELEMENT_TITLEBAR],
+                          provider,
+                          GTK_STYLE_CLASS_TITLE,
+                          NULL);
+  style_info->styles[META_STYLE_ELEMENT_BUTTON] =
+    create_style_context (GTK_TYPE_BUTTON,
+                          style_info->styles[META_STYLE_ELEMENT_TITLEBAR],
+                          provider,
+                          GTK_STYLE_CLASS_BUTTON,
+                          "titlebutton",
+                          NULL);
+  style_info->styles[META_STYLE_ELEMENT_IMAGE] =
+    create_style_context (GTK_TYPE_IMAGE,
+                          style_info->styles[META_STYLE_ELEMENT_BUTTON],
+                          provider,
+                          NULL);
   return style_info;
 }
 
