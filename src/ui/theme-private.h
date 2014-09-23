@@ -1068,16 +1068,17 @@ void meta_theme_draw_frame (MetaTheme              *theme,
                             int                     text_height,
                             const MetaButtonLayout *button_layout,
                             MetaButtonState         button_states[META_BUTTON_TYPE_LAST],
-                            GdkPixbuf              *mini_icon,
-                            GdkPixbuf              *icon);
+                            GdkPixbuf              *mini_icon);
 
 void meta_theme_get_frame_borders (MetaTheme         *theme,
+                                   MetaStyleInfo     *style_info,
                                    MetaFrameType      type,
                                    int                text_height,
                                    MetaFrameFlags     flags,
                                    MetaFrameBorders  *borders);
 
 void meta_theme_calc_geometry (MetaTheme              *theme,
+                               MetaStyleInfo          *style_info,
                                MetaFrameType           type,
                                int                     text_height,
                                MetaFrameFlags          flags,

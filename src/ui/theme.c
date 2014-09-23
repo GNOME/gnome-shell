@@ -609,7 +609,8 @@ meta_frame_layout_sync_with_style (MetaFrameLayout *layout,
 }
 
 static void
-meta_frame_layout_calc_geometry (const MetaFrameLayout  *layout,
+meta_frame_layout_calc_geometry (MetaFrameLayout        *layout,
+                                 MetaStyleInfo          *style_info,
                                  int                     text_height,
                                  MetaFrameFlags          flags,
                                  int                     client_width,
@@ -638,6 +639,8 @@ meta_frame_layout_calc_geometry (const MetaFrameLayout  *layout,
   gboolean right_buttons_has_spacer[MAX_BUTTONS_PER_CORNER];
 
   MetaFrameBorders borders;
+
+  meta_frame_layout_sync_with_style (layout, style_info, flags);
 
   meta_frame_layout_get_borders (layout, text_height,
                                  flags, type,
@@ -4250,28 +4253,21 @@ get_button_rect (MetaButtonType           type,
 }
 
 static void
-meta_frame_style_draw_with_style (MetaFrameStyle          *style,
+meta_frame_style_draw_with_style (MetaFrameStyle          *frame_style,
                                   MetaStyleInfo           *style_info,
                                   cairo_t                 *cr,
                                   const MetaFrameGeometry *fgeom,
-                                  int                      client_width,
-                                  int                      client_height,
                                   PangoLayout             *title_layout,
-                                  int                      text_height,
+                                  MetaFrameFlags           flags,
                                   MetaButtonState          button_states[META_BUTTON_TYPE_LAST],
-                                  GdkPixbuf               *mini_icon,
-                                  GdkPixbuf               *icon)
+                                  GdkPixbuf               *mini_icon)
 {
-  int i, j;
+  GtkStyleContext *style;
+  GtkStateFlags state;
+  MetaButtonType button_type;
   GdkRectangle visible_rect;
   GdkRectangle titlebar_rect;
-  GdkRectangle left_titlebar_edge;
-  GdkRectangle right_titlebar_edge;
-  GdkRectangle bottom_titlebar_edge;
-  GdkRectangle top_titlebar_edge;
-  GdkRectangle left_edge, right_edge, bottom_edge;
-  PangoRectangle logical_rect;
-  MetaDrawInfo draw_info;
+  GdkRectangle button_rect;
   const MetaFrameBorders *borders;
 
   borders = &fgeom->borders;
@@ -4281,211 +4277,144 @@ meta_frame_style_draw_with_style (MetaFrameStyle          *style,
   visible_rect.width = fgeom->width - borders->invisible.left - borders->invisible.right;
   visible_rect.height = fgeom->height - borders->invisible.top - borders->invisible.bottom;
 
+  meta_style_info_set_flags (style_info, flags);
+
+  style = style_info->styles[META_STYLE_ELEMENT_FRAME];
+  gtk_render_background (style, cr,
+                         visible_rect.x, visible_rect.y,
+                         visible_rect.width, visible_rect.height);
+  gtk_render_frame (style, cr,
+                    visible_rect.x, visible_rect.y,
+                    visible_rect.width, visible_rect.height);
+
   titlebar_rect.x = visible_rect.x;
   titlebar_rect.y = visible_rect.y;
   titlebar_rect.width = visible_rect.width;
   titlebar_rect.height = borders->visible.top;
 
-  left_titlebar_edge.x = titlebar_rect.x;
-  left_titlebar_edge.y = titlebar_rect.y + fgeom->top_titlebar_edge;
-  left_titlebar_edge.width = fgeom->left_titlebar_edge;
-  left_titlebar_edge.height = titlebar_rect.height - fgeom->top_titlebar_edge - fgeom->bottom_titlebar_edge;
+  style = style_info->styles[META_STYLE_ELEMENT_TITLEBAR];
+  gtk_render_background (style, cr,
+                         titlebar_rect.x, titlebar_rect.y,
+                         titlebar_rect.width, titlebar_rect.height);
+  gtk_render_frame (style, cr,
+                    titlebar_rect.x, titlebar_rect.y,
+                    titlebar_rect.width, titlebar_rect.height);
 
-  right_titlebar_edge.y = left_titlebar_edge.y;
-  right_titlebar_edge.height = left_titlebar_edge.height;
-  right_titlebar_edge.width = fgeom->right_titlebar_edge;
-  right_titlebar_edge.x = titlebar_rect.x + titlebar_rect.width - right_titlebar_edge.width;
-
-  top_titlebar_edge.x = titlebar_rect.x;
-  top_titlebar_edge.y = titlebar_rect.y;
-  top_titlebar_edge.width = titlebar_rect.width;
-  top_titlebar_edge.height = fgeom->top_titlebar_edge;
-
-  bottom_titlebar_edge.x = titlebar_rect.x;
-  bottom_titlebar_edge.width = titlebar_rect.width;
-  bottom_titlebar_edge.height = fgeom->bottom_titlebar_edge;
-  bottom_titlebar_edge.y = titlebar_rect.y + titlebar_rect.height - bottom_titlebar_edge.height;
-
-  left_edge.x = visible_rect.x;
-  left_edge.y = visible_rect.y + borders->visible.top;
-  left_edge.width = borders->visible.left;
-  left_edge.height = visible_rect.height - borders->visible.top - borders->visible.bottom;
-
-  right_edge.x = visible_rect.x + visible_rect.width - borders->visible.right;
-  right_edge.y = visible_rect.y + borders->visible.top;
-  right_edge.width = borders->visible.right;
-  right_edge.height = visible_rect.height - borders->visible.top - borders->visible.bottom;
-
-  bottom_edge.x = visible_rect.x;
-  bottom_edge.y = visible_rect.y + visible_rect.height - borders->visible.bottom;
-  bottom_edge.width = visible_rect.width;
-  bottom_edge.height = borders->visible.bottom;
-
-  if (title_layout)
-    pango_layout_get_pixel_extents (title_layout,
-                                    NULL, &logical_rect);
-
-  draw_info.mini_icon = mini_icon;
-  draw_info.icon = icon;
-  draw_info.title_layout = title_layout;
-  draw_info.title_layout_width = title_layout ? logical_rect.width : 0;
-  draw_info.title_layout_height = title_layout ? logical_rect.height : 0;
-  draw_info.fgeom = fgeom;
-
-  /* The enum is in the order the pieces should be rendered. */
-  i = 0;
-  while (i < META_FRAME_PIECE_LAST)
+  if (frame_style->layout->has_title && title_layout)
     {
-      GdkRectangle rect;
+      PangoRectangle logical;
+      int text_width, x, y;
 
-      switch ((MetaFramePiece) i)
-        {
-        case META_FRAME_PIECE_ENTIRE_BACKGROUND:
-          rect = visible_rect;
-          break;
+      pango_layout_set_width (title_layout, -1);
+      pango_layout_get_pixel_extents (title_layout, NULL, &logical);
 
-        case META_FRAME_PIECE_TITLEBAR:
-          rect = titlebar_rect;
-          break;
+      text_width = MIN(fgeom->title_rect.width, logical.width);
 
-        case META_FRAME_PIECE_LEFT_TITLEBAR_EDGE:
-          rect = left_titlebar_edge;
-          break;
+      if (text_width < logical.width)
+        pango_layout_set_width (title_layout, PANGO_SCALE * text_width);
 
-        case META_FRAME_PIECE_RIGHT_TITLEBAR_EDGE:
-          rect = right_titlebar_edge;
-          break;
+      /* Center within the frame if possible */
+      x = titlebar_rect.x + (titlebar_rect.width - text_width) / 2;
+      y = titlebar_rect.y + (titlebar_rect.height - logical.height) / 2;
 
-        case META_FRAME_PIECE_TOP_TITLEBAR_EDGE:
-          rect = top_titlebar_edge;
-          break;
+      if (x < fgeom->title_rect.x)
+        x = fgeom->title_rect.x;
+      else if (x + text_width > fgeom->title_rect.x + fgeom->title_rect.width)
+        x = fgeom->title_rect.x + fgeom->title_rect.width - text_width;
 
-        case META_FRAME_PIECE_BOTTOM_TITLEBAR_EDGE:
-          rect = bottom_titlebar_edge;
-          break;
+      style = style_info->styles[META_STYLE_ELEMENT_TITLE];
+      gtk_render_layout (style, cr, x, y, title_layout);
+    }
 
-        case META_FRAME_PIECE_TITLEBAR_MIDDLE:
-          rect.x = left_titlebar_edge.x + left_titlebar_edge.width;
-          rect.y = top_titlebar_edge.y + top_titlebar_edge.height;
-          rect.width = titlebar_rect.width - left_titlebar_edge.width -
-            right_titlebar_edge.width;
-          rect.height = titlebar_rect.height - top_titlebar_edge.height - bottom_titlebar_edge.height;
-          break;
+  style = style_info->styles[META_STYLE_ELEMENT_BUTTON];
+  state = gtk_style_context_get_state (style);
+  for (button_type = META_BUTTON_TYPE_CLOSE; button_type < META_BUTTON_TYPE_LAST; button_type++)
+    {
+      MetaButtonState button_state;
 
-        case META_FRAME_PIECE_TITLE:
-          rect = fgeom->title_rect;
-          break;
+      get_button_rect (button_type, fgeom, 0, &button_rect);
 
-        case META_FRAME_PIECE_LEFT_EDGE:
-          rect = left_edge;
-          break;
+      button_state = map_button_state (button_type, fgeom, 0, button_states);
 
-        case META_FRAME_PIECE_RIGHT_EDGE:
-          rect = right_edge;
-          break;
-
-        case META_FRAME_PIECE_BOTTOM_EDGE:
-          rect = bottom_edge;
-          break;
-
-        case META_FRAME_PIECE_OVERLAY:
-          rect = visible_rect;
-          break;
-
-        case META_FRAME_PIECE_LAST:
-          g_assert_not_reached ();
-          break;
-        }
+      if (button_state == META_BUTTON_STATE_PRELIGHT)
+        gtk_style_context_set_state (style, state | GTK_STATE_PRELIGHT);
+      else if (button_state == META_BUTTON_STATE_PRESSED)
+        gtk_style_context_set_state (style, state | GTK_STATE_ACTIVE);
+      else
+        gtk_style_context_set_state (style, state);
 
       cairo_save (cr);
-
-      gdk_cairo_rectangle (cr, &rect);
+      gdk_cairo_rectangle (cr, &button_rect);
       cairo_clip (cr);
 
       if (gdk_cairo_get_clip_rectangle (cr, NULL))
         {
-          MetaDrawOpList *op_list;
-          MetaFrameStyle *parent;
+          GdkPixbuf *pixbuf = NULL;
+          const char *icon_name = NULL;
 
-          parent = style;
-          op_list = NULL;
-          while (parent && op_list == NULL)
+          gtk_render_background (style, cr,
+                                 button_rect.x, button_rect.y,
+                                 button_rect.width, button_rect.height);
+          gtk_render_frame (style, cr,
+                            button_rect.x, button_rect.y,
+                            button_rect.width, button_rect.height);
+
+          switch (button_type)
             {
-              op_list = parent->pieces[i];
-              parent = parent->parent;
+            case META_BUTTON_TYPE_CLOSE:
+               icon_name = "window-close-symbolic";
+               break;
+            case META_BUTTON_TYPE_MAXIMIZE:
+               if (flags & META_FRAME_MAXIMIZED)
+                 icon_name = "window-restore-symbolic";
+               else
+                 icon_name = "window-maximize-symbolic";
+               break;
+            case META_BUTTON_TYPE_MINIMIZE:
+               icon_name = "window-minimize-symbolic";
+               break;
+            case META_BUTTON_TYPE_MENU:
+               icon_name = "open-menu-symbolic";
+               break;
+            case META_BUTTON_TYPE_APPMENU:
+               pixbuf = g_object_ref (mini_icon);
+               break;
+            default:
+               icon_name = NULL;
+               break;
             }
 
-          if (op_list)
+          if (icon_name)
             {
-              MetaRectangle m_rect;
-              m_rect = meta_rect (rect.x, rect.y, rect.width, rect.height);
-              meta_draw_op_list_draw_with_style (op_list,
-                                                 style_info->styles[META_STYLE_ELEMENT_FRAME],
-                                                 cr,
-                                                 &draw_info,
-                                                 m_rect);
+              GtkIconTheme *theme = gtk_icon_theme_get_default ();
+              GtkIconInfo *info;
+
+              info = gtk_icon_theme_lookup_icon (theme, icon_name, frame_style->layout->icon_size, 0);
+              pixbuf = gtk_icon_info_load_symbolic_for_context (info, style, NULL, NULL);
+            }
+
+          if (pixbuf)
+            {
+              float width, height;
+              int x, y;
+
+              width = gdk_pixbuf_get_width (pixbuf);
+              height = gdk_pixbuf_get_height (pixbuf);
+              x = button_rect.x + (button_rect.width - width) / 2;
+              y = button_rect.y + (button_rect.height - height) / 2;
+
+              cairo_translate (cr, x, y);
+              cairo_scale (cr,
+                           width / frame_style->layout->icon_size,
+                           height / frame_style->layout->icon_size);
+
+              gdk_cairo_set_source_pixbuf (cr, pixbuf, 0, 0);
+              cairo_paint (cr);
+
+              g_object_unref (pixbuf);
             }
         }
-
       cairo_restore (cr);
-
-      /* Draw buttons just before overlay */
-      if ((i + 1) == META_FRAME_PIECE_OVERLAY)
-        {
-          MetaDrawOpList *op_list;
-          int middle_bg_offset;
-
-          middle_bg_offset = 0;
-          j = 0;
-          while (j < META_BUTTON_TYPE_LAST)
-            {
-              MetaButtonState button_state;
-
-              get_button_rect (j, fgeom, middle_bg_offset, &rect);
-
-              button_state = map_button_state (j, fgeom, middle_bg_offset, button_states);
-
-              op_list = get_button (style, j, button_state);
-
-              if (op_list)
-                {
-                  cairo_save (cr);
-                  gdk_cairo_rectangle (cr, &rect);
-                  cairo_clip (cr);
-
-                  if (gdk_cairo_get_clip_rectangle (cr, NULL))
-                    {
-                      MetaRectangle m_rect;
-
-                      m_rect = meta_rect (rect.x, rect.y,
-                                          rect.width, rect.height);
-
-                      meta_draw_op_list_draw_with_style (op_list,
-                                                         style_info->styles[META_STYLE_ELEMENT_FRAME],
-                                                         cr,
-                                                         &draw_info,
-                                                         m_rect);
-                    }
-
-                  cairo_restore (cr);
-                }
-
-              /* MIDDLE_BACKGROUND type may get drawn more than once */
-              if ((j == META_BUTTON_TYPE_RIGHT_MIDDLE_BACKGROUND ||
-                   j == META_BUTTON_TYPE_LEFT_MIDDLE_BACKGROUND) &&
-                  middle_bg_offset < MAX_MIDDLE_BACKGROUNDS)
-                {
-                  ++middle_bg_offset;
-                }
-              else
-                {
-                  middle_bg_offset = 0;
-                  ++j;
-                }
-            }
-        }
-
-      ++i;
     }
 }
 
@@ -5294,8 +5223,7 @@ meta_theme_draw_frame (MetaTheme              *theme,
                        int                     text_height,
                        const MetaButtonLayout *button_layout,
                        MetaButtonState         button_states[META_BUTTON_TYPE_LAST],
-                       GdkPixbuf              *mini_icon,
-                       GdkPixbuf              *icon)
+                       GdkPixbuf              *mini_icon)
 {
   MetaFrameGeometry fgeom;
   MetaFrameStyle *style;
@@ -5309,6 +5237,7 @@ meta_theme_draw_frame (MetaTheme              *theme,
     return;
 
   meta_frame_layout_calc_geometry (style->layout,
+                                   style_info,
                                    text_height,
                                    flags,
                                    client_width, client_height,
@@ -5321,15 +5250,15 @@ meta_theme_draw_frame (MetaTheme              *theme,
                                     style_info,
                                     cr,
                                     &fgeom,
-                                    client_width, client_height,
                                     title_layout,
-                                    text_height,
+                                    flags,
                                     button_states,
-                                    mini_icon, icon);
+                                    mini_icon);
 }
 
 void
 meta_theme_get_frame_borders (MetaTheme        *theme,
+                              MetaStyleInfo    *style_info,
                               MetaFrameType     type,
                               int               text_height,
                               MetaFrameFlags    flags,
@@ -5347,6 +5276,8 @@ meta_theme_get_frame_borders (MetaTheme        *theme,
   if (style == NULL)
     return;
 
+  meta_frame_layout_sync_with_style (style->layout, style_info, flags);
+
   meta_frame_layout_get_borders (style->layout,
                                  text_height,
                                  flags, type,
@@ -5355,6 +5286,7 @@ meta_theme_get_frame_borders (MetaTheme        *theme,
 
 void
 meta_theme_calc_geometry (MetaTheme              *theme,
+                          MetaStyleInfo          *style_info,
                           MetaFrameType           type,
                           int                     text_height,
                           MetaFrameFlags          flags,
@@ -5374,6 +5306,7 @@ meta_theme_calc_geometry (MetaTheme              *theme,
     return;
 
   meta_frame_layout_calc_geometry (style->layout,
+                                   style_info,
                                    text_height,
                                    flags,
                                    client_width, client_height,
