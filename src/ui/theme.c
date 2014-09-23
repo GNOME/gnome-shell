@@ -4158,7 +4158,7 @@ get_button_rect (MetaButtonType           type,
 
 static void
 meta_frame_style_draw_with_style (MetaFrameStyle          *style,
-                                  GtkStyleContext         *style_gtk,
+                                  MetaStyleInfo           *style_info,
                                   cairo_t                 *cr,
                                   const MetaFrameGeometry *fgeom,
                                   int                      client_width,
@@ -4327,7 +4327,7 @@ meta_frame_style_draw_with_style (MetaFrameStyle          *style,
               MetaRectangle m_rect;
               m_rect = meta_rect (rect.x, rect.y, rect.width, rect.height);
               meta_draw_op_list_draw_with_style (op_list,
-                                                 style_gtk,
+                                                 style_info->styles[META_STYLE_ELEMENT_FRAME],
                                                  cr,
                                                  &draw_info,
                                                  m_rect);
@@ -4368,7 +4368,7 @@ meta_frame_style_draw_with_style (MetaFrameStyle          *style,
                                           rect.width, rect.height);
 
                       meta_draw_op_list_draw_with_style (op_list,
-                                                         style_gtk,
+                                                         style_info->styles[META_STYLE_ELEMENT_FRAME],
                                                          cr,
                                                          &draw_info,
                                                          m_rect);
@@ -4999,11 +4999,12 @@ meta_theme_get_title_scale (MetaTheme     *theme,
   return style->layout->title_scale;
 }
 
-GtkStyleContext *
-meta_theme_create_style_context (GdkScreen   *screen,
-                                 const gchar *variant)
+MetaStyleInfo *
+meta_theme_create_style_info (GdkScreen   *screen,
+                              const gchar *variant)
 {
   GtkWidgetPath *path;
+  MetaStyleInfo *style_info;
   GtkStyleContext *style;
   char *theme_name;
 
@@ -5011,11 +5012,17 @@ meta_theme_create_style_context (GdkScreen   *screen,
                 "gtk-theme-name", &theme_name,
                 NULL);
 
-  style = gtk_style_context_new ();
+  style_info = g_new0 (MetaStyleInfo, 1);
+  style_info->refcount = 1;
+
   path = gtk_widget_path_new ();
+
+  style_info->styles[META_STYLE_ELEMENT_FRAME] = style = gtk_style_context_new ();
   gtk_widget_path_append_type (path, META_TYPE_FRAMES);
   gtk_widget_path_iter_add_class (path, -1, GTK_STYLE_CLASS_BACKGROUND);
+  gtk_widget_path_iter_add_class (path, -1, "window-frame");
   gtk_style_context_set_path (style, path);
+
   gtk_widget_path_unref (path);
 
   if (theme_name && *theme_name)
@@ -5030,12 +5037,37 @@ meta_theme_create_style_context (GdkScreen   *screen,
 
   g_free (theme_name);
 
-  return style;
+  return style_info;
+}
+
+MetaStyleInfo *
+meta_style_info_ref (MetaStyleInfo *style_info)
+{
+  g_return_val_if_fail (style_info != NULL, NULL);
+  g_return_val_if_fail (style_info->refcount > 0, NULL);
+
+  g_atomic_int_inc ((volatile int *)&style_info->refcount);
+  return style_info;
+}
+
+void
+meta_style_info_unref (MetaStyleInfo *style_info)
+{
+  g_return_if_fail (style_info != NULL);
+  g_return_if_fail (style_info->refcount > 0);
+
+  if (g_atomic_int_dec_and_test ((volatile int *)&style_info->refcount))
+    {
+      int i;
+      for (i = 0; i < META_STYLE_ELEMENT_LAST; i++)
+        g_object_unref (style_info->styles[i]);
+      g_free (style_info);
+    }
 }
 
 void
 meta_theme_draw_frame (MetaTheme              *theme,
-                       GtkStyleContext        *style_gtk,
+                       MetaStyleInfo          *style_info,
                        cairo_t                *cr,
                        MetaFrameType           type,
                        MetaFrameFlags          flags,
@@ -5069,7 +5101,7 @@ meta_theme_draw_frame (MetaTheme              *theme,
                                    theme);
 
   meta_frame_style_draw_with_style (style,
-                                    style_gtk,
+                                    style_info,
                                     cr,
                                     &fgeom,
                                     client_width, client_height,
