@@ -80,7 +80,10 @@ wait
 
 assert_stacking <client-id>/<window-id> <client-id>/<window-id> ...
   Assert that the list of client windows known to Mutter is as given and in
-  the given order, bottom to top.
+  the given order, bottom to top. The character '|' can be present in the
+  list of windows to indicate the guard window that separates hidden and
+  visible windows. If '|' isn't present, the guard window is asserted to
+  be below all client windows.
 
   This function also queries the X server stack and verifies that Mutter's
   expectation of the X server stack matches reality.

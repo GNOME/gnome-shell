@@ -610,6 +610,13 @@ test_case_assert_stacking (TestCase *test,
           else
             g_string_append_printf (stack_string, "(%s)", window->title);
         }
+      else if (windows[i] == display->screen->guard_window)
+        {
+          if (stack_string->len > 0)
+            g_string_append_c (stack_string, ' ');
+
+          g_string_append_c (stack_string, '|');
+        }
     }
 
   for (i = 0; i < n_expected_windows; i++)
@@ -618,6 +625,16 @@ test_case_assert_stacking (TestCase *test,
         g_string_append_c (expected_string, ' ');
 
       g_string_append (expected_string, expected_windows[i]);
+    }
+
+  /* Don't require '| ' as a prefix if there are no hidden windows - we
+   * remove the prefix from the actual string instead of adding it to the
+   * expected string for clarity of the error message
+   */
+  if (index (expected_string->str, '|') == NULL && stack_string->str[0] == '|')
+    {
+      g_string_erase (stack_string,
+                      0, stack_string->str[1] == ' ' ? 2 : 1);
     }
 
   if (strcmp (expected_string->str, stack_string->str) != 0)

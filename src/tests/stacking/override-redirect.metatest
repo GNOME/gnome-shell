@@ -12,7 +12,7 @@ assert_stacking 1/1 1/2
 
 lower 1/2
 wait
-assert_stacking 1/2 1/1
+assert_stacking 1/2 | 1/1
 
 raise 1/2
 wait
