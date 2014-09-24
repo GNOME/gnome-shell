@@ -1056,10 +1056,6 @@ stack_sync_to_xserver (MetaStack *stack)
   all_root_children_stacked = g_array_new (FALSE, FALSE, sizeof (guint64));
   x11_hidden_stack_ids = g_array_new (FALSE, FALSE, sizeof (guint64));
 
-  /* The screen guard window sits above all hidden windows and acts as
-   * a barrier to input reaching these windows. */
-  g_array_append_val (x11_hidden_stack_ids, stack->screen->guard_window);
-
   meta_topic (META_DEBUG_STACK, "Top to bottom: ");
   meta_push_no_msg_prefix ();
 
@@ -1106,6 +1102,10 @@ stack_sync_to_xserver (MetaStack *stack)
 
   meta_topic (META_DEBUG_STACK, "\n");
   meta_pop_no_msg_prefix ();
+
+  /* The screen guard window sits above all hidden windows and acts as
+   * a barrier to input reaching these windows. */
+  g_array_append_val (x11_hidden_stack_ids, stack->screen->guard_window);
 
   /* Sync to server */
 
