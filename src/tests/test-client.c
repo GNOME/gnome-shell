@@ -263,6 +263,34 @@ process_line (const char *line)
       XSyncSetCounter (gdk_x11_display_get_xdisplay (gdk_display_get_default ()),
                        counter, sync_value);
     }
+  else if (strcmp (argv[0], "minimize") == 0)
+    {
+      if (argc != 2)
+        {
+          g_print ("usage: minimize <id>");
+          goto out;
+        }
+
+      GtkWidget *window = lookup_window (argv[1]);
+      if (!window)
+        goto out;
+
+      gtk_window_iconify (GTK_WINDOW (window));
+    }
+  else if (strcmp (argv[0], "unminimize") == 0)
+    {
+      if (argc != 2)
+        {
+          g_print ("usage: unminimize <id>");
+          goto out;
+        }
+
+      GtkWidget *window = lookup_window (argv[1]);
+      if (!window)
+        goto out;
+
+      gtk_window_deiconify (GTK_WINDOW (window));
+    }
   else
     {
       g_print ("Unknown command %s", argv[0]);

@@ -71,6 +71,11 @@ lower <client-id>/<window-id>
   for Wayland clients. (It's also considered discouraged, but supported, for
   non-override-redirect X11 clients.)
 
+minimize <client-id>/<window-id>
+unminimize <client-id>/<window-id>
+  Ask the client to minimize or unminimize the given window ID. This older
+  term for this operation is "iconify".
+
 destroy <client-id>/<window-id>
   Destroy the given window
 

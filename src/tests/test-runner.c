@@ -773,6 +773,8 @@ test_case_do (TestCase *test,
            strcmp (argv[0], "activate") == 0 ||
            strcmp (argv[0], "raise") == 0 ||
            strcmp (argv[0], "lower") == 0 ||
+           strcmp (argv[0], "minimize") == 0 ||
+           strcmp (argv[0], "unminimize") == 0 ||
            strcmp (argv[0], "destroy") == 0)
     {
       if (argc != 2)
@@ -814,6 +816,7 @@ test_case_do (TestCase *test,
     {
       if (!test_case_assert_stacking (test, argv + 1, argc - 1, error))
         return FALSE;
+
       if (!test_case_check_xserver_stacking (test, error))
         return FALSE;
     }
