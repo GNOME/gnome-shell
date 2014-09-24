@@ -140,34 +140,55 @@ load_cursor_on_client (MetaCursor cursor)
 }
 
 static void
+get_hardware_cursor_size (uint64_t *cursor_width, uint64_t *cursor_height)
+{
+#ifdef HAVE_NATIVE_BACKEND
+  MetaBackend *meta_backend = meta_get_backend ();
+  MetaCursorRenderer *renderer = meta_backend_get_cursor_renderer (meta_backend);
+
+  if (META_IS_CURSOR_RENDERER_NATIVE (renderer))
+    {
+      meta_cursor_renderer_native_get_cursor_size (META_CURSOR_RENDERER_NATIVE (renderer), cursor_width, cursor_height);
+      return;
+    }
+#endif
+
+  g_assert_not_reached ();
+}
+
+static void
 meta_cursor_image_load_gbm_buffer (struct gbm_device *gbm,
                                    MetaCursorImage   *image,
                                    uint8_t           *pixels,
-                                   int                width,
-                                   int                height,
+                                   uint               width,
+                                   uint               height,
                                    int                rowstride,
                                    uint32_t           gbm_format)
 {
-  if (width > 64 || height > 64)
+  uint64_t cursor_width, cursor_height;
+  get_hardware_cursor_size (&cursor_width, &cursor_height);
+
+  if (width > cursor_width || height > cursor_height)
     {
-      meta_warning ("Invalid theme cursor size (must be at most 64x64)\n");
+      meta_warning ("Invalid theme cursor size (must be at most %ux%u)\n",
+                    (unsigned int)cursor_width, (unsigned int)cursor_height);
       return;
     }
 
   if (gbm_device_is_format_supported (gbm, gbm_format,
-                                      GBM_BO_USE_CURSOR_64X64 | GBM_BO_USE_WRITE))
+                                      GBM_BO_USE_CURSOR | GBM_BO_USE_WRITE))
     {
-      uint8_t buf[4 * 64 * 64];
-      int i;
+      uint8_t buf[4 * cursor_width * cursor_height];
+      uint i;
 
-      image->bo = gbm_bo_create (gbm, 64, 64,
-                                 gbm_format, GBM_BO_USE_CURSOR_64X64 | GBM_BO_USE_WRITE);
+      image->bo = gbm_bo_create (gbm, cursor_width, cursor_height,
+                                 gbm_format, GBM_BO_USE_CURSOR | GBM_BO_USE_WRITE);
 
       memset (buf, 0, sizeof(buf));
       for (i = 0; i < height; i++)
-        memcpy (buf + i * 4 * 64, pixels + i * rowstride, width * 4);
+        memcpy (buf + i * 4 * cursor_width, pixels + i * rowstride, width * 4);
 
-      gbm_bo_write (image->bo, buf, 64 * 64 * 4);
+      gbm_bo_write (image->bo, buf, cursor_width * cursor_height * 4);
     }
   else
     meta_warning ("HW cursor for format %d not supported\n", gbm_format);
@@ -191,7 +212,7 @@ static void
 meta_cursor_image_load_from_xcursor_image (MetaCursorImage   *image,
                                            XcursorImage      *xc_image)
 {
-  int width, height, rowstride;
+  uint width, height, rowstride;
   CoglPixelFormat cogl_format;
   uint32_t gbm_format;
   ClutterBackend *clutter_backend;
@@ -262,7 +283,8 @@ meta_cursor_image_load_from_buffer (MetaCursorImage    *image,
   CoglContext *cogl_context;
   struct wl_shm_buffer *shm_buffer;
   uint32_t gbm_format;
-  int width, height;
+  uint64_t cursor_width, cursor_height;
+  uint width, height;
 
   image->hot_x = hot_x;
   image->hot_y = hot_y;
@@ -313,22 +335,23 @@ meta_cursor_image_load_from_buffer (MetaCursorImage    *image,
     }
   else
     {
-      /* HW cursors must be 64x64, but 64x64 is huge, and no cursor theme actually uses
-         that, so themed cursors must be padded with transparent pixels to fill the
-         overlay. This is trivial if we have CPU access to the data, but it's not
-         possible if the buffer is in GPU memory (and possibly tiled too), so if we
-         don't get the right size, we fallback to GL.
-      */
-      if (width != 64 || height != 64)
-        {
-          meta_warning ("Invalid cursor size (must be 64x64), falling back to software (GL) cursors\n");
-          return;
-        }
-
       if (gbm)
         {
-          image->bo = gbm_bo_import (gbm, GBM_BO_IMPORT_WL_BUFFER,
-                                     buffer, GBM_BO_USE_CURSOR_64X64);
+          /* HW cursors have a predefined size (at least 64x64), which usually is bigger than cursor theme
+             size, so themed cursors must be padded with transparent pixels to fill the
+             overlay. This is trivial if we have CPU access to the data, but it's not
+             possible if the buffer is in GPU memory (and possibly tiled too), so if we
+             don't get the right size, we fallback to GL.
+          */
+          get_hardware_cursor_size (&cursor_width, &cursor_height);
+
+          if (width != cursor_width || height != cursor_height)
+            {
+              meta_warning ("Invalid cursor size (must be 64x64), falling back to software (GL) cursors\n");
+              return;
+            }
+
+          image->bo = gbm_bo_import (gbm, GBM_BO_IMPORT_WL_BUFFER, buffer, GBM_BO_USE_CURSOR);
           if (!image->bo)
             meta_warning ("Importing HW cursor from wl_buffer failed\n");
         }
