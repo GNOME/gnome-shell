@@ -7,6 +7,7 @@ stackingdir = $(pkgdatadir)/tests/stacking
 dist_stacking_DATA =				\
 	tests/stacking/basic-x11.metatest	\
 	tests/stacking/basic-wayland.metatest	\
+	tests/stacking/minimized.metatest   	\
 	tests/stacking/mixed-windows.metatest   \
 	tests/stacking/override-redirect.metatest
 
