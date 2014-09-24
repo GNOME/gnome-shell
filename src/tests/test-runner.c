@@ -413,6 +413,7 @@ typedef struct {
   AsyncWaiter *waiter;
   guint log_handler_id;
   GString *warning_messages;
+  GMainLoop *loop;
 } TestCase;
 
 static gboolean
@@ -483,8 +484,19 @@ test_case_new (void)
 
   test->clients = g_hash_table_new (g_str_hash, g_str_equal);
   test->waiter = async_waiter_new ();
+  test->loop = g_main_loop_new (NULL, FALSE);
 
   return test;
+}
+
+static gboolean
+test_case_before_redraw (gpointer data)
+{
+  TestCase *test = data;
+
+  g_main_loop_quit (test->loop);
+
+  return FALSE;
 }
 
 static gboolean
@@ -494,11 +506,30 @@ test_case_wait (TestCase *test,
   GHashTableIter iter;
   gpointer key, value;
 
+  /* First have each client set a XSync counter, and wait until
+   * we receive the resulting event - so we know we've received
+   * everything that the client have sent us.
+   */
   g_hash_table_iter_init (&iter, test->clients);
   while (g_hash_table_iter_next (&iter, &key, &value))
     if (!test_client_wait (value, error))
       return FALSE;
 
+  /* Then wait until we've done any outstanding queued up work.
+   * Though we add this as BEFORE_REDRAW, the iteration that runs the
+   * BEFORE_REDRAW idles will proceed on and do the redraw, so we're
+   * waiting until after *all* frame processing.
+   */
+  meta_later_add (META_LATER_BEFORE_REDRAW,
+                  test_case_before_redraw,
+                  test,
+                  NULL);
+  g_main_loop_run (test->loop);
+
+  /* Then set an XSync counter ourselves and and wait until
+   * we receive the resulting event - this makes sure that we've
+   * received back any X events we generated.
+   */
   async_waiter_set_and_wait (test->waiter);
   return TRUE;
 }
