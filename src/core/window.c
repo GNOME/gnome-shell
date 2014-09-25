@@ -1062,8 +1062,8 @@ _meta_window_shared_new (MetaDisplay         *display,
 
   if (window->initial_workspace_set)
     {
-      gboolean on_all_workspaces;
-      MetaWorkspace *workspace;
+      gboolean on_all_workspaces = window->on_all_workspaces;
+      MetaWorkspace *workspace = NULL;
 
       if (window->initial_workspace == (int) 0xFFFFFFFF)
         {
@@ -1077,15 +1077,13 @@ _meta_window_shared_new (MetaDisplay         *display,
           window->on_all_workspaces_requested = TRUE;
 
           on_all_workspaces = TRUE;
-          workspace = NULL;
         }
-      else
+      else if (!on_all_workspaces)
         {
           meta_topic (META_DEBUG_PLACEMENT,
                       "Window %s is initially on space %d\n",
                       window->desc, window->initial_workspace);
 
-          on_all_workspaces = FALSE;
           workspace = meta_screen_get_workspace_by_index (window->screen,
                                                           window->initial_workspace);
         }
@@ -1112,7 +1110,7 @@ _meta_window_shared_new (MetaDisplay         *display,
                                window->transient_for->workspace);
         }
 
-      if (window->workspace == NULL)
+      if (window->workspace == NULL && !window->on_all_workspaces)
         {
           meta_topic (META_DEBUG_PLACEMENT,
                       "Putting window %s on active workspace\n",
