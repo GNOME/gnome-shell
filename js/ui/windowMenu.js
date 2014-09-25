@@ -75,7 +75,7 @@ const WindowMenu = new Lang.Class({
         }));
         if (window.is_above())
             item.setOrnament(PopupMenu.Ornament.DOT);
-        if (window.get_maximized() ||
+        if (window.get_maximized() == Meta.MaximizeFlags.BOTH ||
             type == Meta.WindowType.DOCK ||
             type == Meta.WindowType.DESKTOP ||
             type == Meta.WindowType.SPLASHSCREEN)
