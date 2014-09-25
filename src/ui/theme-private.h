@@ -33,16 +33,6 @@
  */
 typedef struct _MetaStyleInfo MetaStyleInfo;
 /**
- * MetaFrameStyle: (skip)
- *
- */
-typedef struct _MetaFrameStyle MetaFrameStyle;
-/**
- * MetaFrameStyleSet: (skip)
- *
- */
-typedef struct _MetaFrameStyleSet MetaFrameStyleSet;
-/**
  * MetaFrameLayout: (skip)
  *
  */
@@ -60,8 +50,6 @@ typedef struct _MetaFrameGeometry MetaFrameGeometry;
 
 /**
  * Various parameters used to calculate the geometry of a frame.
- * They are used inside a MetaFrameStyle.
- * This corresponds closely to the <frame_geometry> tag in a theme file.
  **/
 struct _MetaFrameLayout
 {
@@ -224,27 +212,6 @@ struct _MetaStyleInfo
   GtkStyleContext *styles[META_STYLE_ELEMENT_LAST];
 };
 
-/**
- * How to draw a frame in a particular state (say, a focussed, non-maximised,
- * resizable frame). This corresponds closely to the <frame_style> tag
- * in a theme file.
- */
-struct _MetaFrameStyle
-{
-  /** Reference count. */
-  int refcount;
-  /**
-   * Parent style.
-   * Settings which are unspecified here will be taken from there.
-   */
-  MetaFrameStyle *parent;
-  /**
-   * Details such as the height and width of each edge, the corner rounding,
-   * and the aspect ratio of the buttons.
-   */
-  MetaFrameLayout *layout;
-};
-
 /* Kinds of frame...
  *
  *  normal ->   focused / unfocused
@@ -279,36 +246,12 @@ typedef enum
 } MetaFrameFocus;
 
 /**
- * How to draw frames at different times: when it's maximised or not, shaded
- * or not, tiled or not, and when it's focussed or not.
- * Not all window types actually get a frame.
- *
- * A theme contains one of these objects for each type of window (each
- * MetaFrameType), that is, normal, dialogue (modal and non-modal), etc.
- *
- * This corresponds closely to the <frame_style_set> tag in a theme file.
- */
-struct _MetaFrameStyleSet
-{
-  int refcount;
-  MetaFrameStyleSet *parent;
-  MetaFrameStyle *normal_styles[META_FRAME_FOCUS_LAST];
-  MetaFrameStyle *maximized_styles[META_FRAME_FOCUS_LAST];
-  MetaFrameStyle *tiled_left_styles[META_FRAME_FOCUS_LAST];
-  MetaFrameStyle *tiled_right_styles[META_FRAME_FOCUS_LAST];
-  MetaFrameStyle *shaded_styles[META_FRAME_FOCUS_LAST];
-  MetaFrameStyle *maximized_and_shaded_styles[META_FRAME_FOCUS_LAST];
-  MetaFrameStyle *tiled_left_and_shaded_styles[META_FRAME_FOCUS_LAST];
-  MetaFrameStyle *tiled_right_and_shaded_styles[META_FRAME_FOCUS_LAST];
-};
-
-/**
  * A theme. This is a singleton class which groups all settings from a theme
  * together.
  */
 struct _MetaTheme
 {
-  MetaFrameStyleSet *style_sets_by_type[META_FRAME_TYPE_LAST];
+  MetaFrameLayout *layouts[META_FRAME_TYPE_LAST];
 };
 
 MetaFrameLayout* meta_frame_layout_new           (void);
@@ -320,21 +263,12 @@ void             meta_frame_layout_get_borders   (const MetaFrameLayout *layout,
                                                   MetaFrameFlags         flags,
                                                   MetaFrameType          type,
                                                   MetaFrameBorders      *borders);
+void               meta_frame_layout_apply_scale (const MetaFrameLayout *layout,
+                                                  PangoFontDescription  *font_desc);
 
-MetaFrameStyle* meta_frame_style_new   (MetaFrameStyle *parent);
-void            meta_frame_style_ref   (MetaFrameStyle *style);
-void            meta_frame_style_unref (MetaFrameStyle *style);
-
-void            meta_frame_style_apply_scale (const MetaFrameStyle *style,
-                                              PangoFontDescription *font_desc);
-
-MetaFrameStyleSet* meta_frame_style_set_new   (MetaFrameStyleSet *parent);
-void               meta_frame_style_set_ref   (MetaFrameStyleSet *style_set);
-void               meta_frame_style_set_unref (MetaFrameStyleSet *style_set);
-
-MetaFrameStyle* meta_theme_get_frame_style (MetaTheme     *theme,
-                                            MetaFrameType  type,
-                                            MetaFrameFlags flags);
+MetaFrameLayout* meta_theme_get_frame_layout (MetaTheme     *theme,
+                                              MetaFrameType  type,
+                                              MetaFrameFlags flags);
 
 MetaStyleInfo * meta_theme_create_style_info (GdkScreen   *screen,
                                               const gchar *variant);

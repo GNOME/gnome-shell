@@ -383,7 +383,7 @@ meta_frames_ensure_layout (MetaFrames  *frames,
   GtkWidget *widget;
   MetaFrameFlags flags;
   MetaFrameType type;
-  MetaFrameStyle *style;
+  MetaFrameLayout *layout;
 
   widget = GTK_WIDGET (frames);
 
@@ -394,9 +394,9 @@ meta_frames_ensure_layout (MetaFrames  *frames,
                  META_CORE_GET_FRAME_TYPE, &type,
                  META_CORE_GET_END);
 
-  style = meta_theme_get_frame_style (meta_theme_get_default (), type, flags);
+  layout = meta_theme_get_frame_layout (meta_theme_get_default (), type, flags);
 
-  if (style != frame->cache_style)
+  if (layout != frame->cache_layout)
     {
       if (frame->text_layout)
         {
@@ -409,7 +409,7 @@ meta_frames_ensure_layout (MetaFrames  *frames,
         }
     }
 
-  frame->cache_style = style;
+  frame->cache_layout = layout;
 
   if (frame->text_layout == NULL)
     {
@@ -424,7 +424,7 @@ meta_frames_ensure_layout (MetaFrames  *frames,
       pango_layout_set_single_paragraph_mode (frame->text_layout, TRUE);
 
       font_desc = meta_style_info_create_font_desc (frame->style_info);
-      meta_frame_style_apply_scale (style, font_desc);
+      meta_frame_layout_apply_scale (layout, font_desc);
 
       size = pango_font_description_get_size (font_desc);
 
@@ -562,7 +562,7 @@ meta_frames_manage_window (MetaFrames *frames,
   /* Don't set event mask here, it's in frame.c */
 
   frame->xwindow = xwindow;
-  frame->cache_style = NULL;
+  frame->cache_layout = NULL;
   frame->text_layout = NULL;
   frame->text_height = -1;
   frame->title = NULL;

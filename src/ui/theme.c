@@ -168,6 +168,15 @@ meta_frame_layout_get_borders (const MetaFrameLayout *layout,
   borders->total.top    = borders->invisible.top    + borders->visible.top;
 }
 
+void
+meta_frame_layout_apply_scale (const MetaFrameLayout *layout,
+                               PangoFontDescription  *font_desc)
+{
+  int size = pango_font_description_get_size (font_desc);
+  pango_font_description_set_size (font_desc,
+                                   MAX (size * layout->title_scale, 1));
+}
+
 static MetaButtonSpace*
 rect_for_function (MetaFrameGeometry *fgeom,
                    MetaFrameFlags     flags,
@@ -661,77 +670,6 @@ meta_frame_layout_calc_geometry (MetaFrameLayout        *layout,
     fgeom->bottom_right_corner_rounded_radius = layout->bottom_right_corner_rounded_radius;
 }
 
-/**
- * meta_frame_style_new:
- * @parent: The parent style. Data not filled in here will be
- *          looked for in the parent style, and in its parent
- *          style, and so on.
- *
- * Constructor for a MetaFrameStyle.
- *
- * Returns: (transfer full): The newly-constructed style.
- */
-MetaFrameStyle*
-meta_frame_style_new (MetaFrameStyle *parent)
-{
-  MetaFrameStyle *style;
-
-  style = g_new0 (MetaFrameStyle, 1);
-
-  style->refcount = 1;
-
-  style->parent = parent;
-  if (parent)
-    meta_frame_style_ref (parent);
-
-  return style;
-}
-
-/**
- * meta_frame_style_ref:
- * @style: The style.
- *
- * Increases the reference count of a frame style.
- */
-void
-meta_frame_style_ref (MetaFrameStyle *style)
-{
-  g_return_if_fail (style != NULL);
-
-  style->refcount += 1;
-}
-
-void
-meta_frame_style_unref (MetaFrameStyle *style)
-{
-  g_return_if_fail (style != NULL);
-  g_return_if_fail (style->refcount > 0);
-
-  style->refcount -= 1;
-
-  if (style->refcount == 0)
-    {
-      if (style->layout)
-        meta_frame_layout_unref (style->layout);
-
-      /* we hold a reference to any parent style */
-      if (style->parent)
-        meta_frame_style_unref (style->parent);
-
-      DEBUG_FILL_STRUCT (style);
-      g_free (style);
-    }
-}
-
-void
-meta_frame_style_apply_scale (const MetaFrameStyle *style,
-                              PangoFontDescription *font_desc)
-{
-  int size = pango_font_description_get_size (font_desc);
-  pango_font_description_set_size (font_desc,
-                                   MAX (size * style->layout->title_scale, 1));
-}
-
 static void
 get_button_rect (MetaButtonType           type,
                  const MetaFrameGeometry *fgeom,
@@ -790,14 +728,14 @@ get_button_rect (MetaButtonType           type,
 }
 
 static void
-meta_frame_style_draw_with_style (MetaFrameStyle          *frame_style,
-                                  MetaStyleInfo           *style_info,
-                                  cairo_t                 *cr,
-                                  const MetaFrameGeometry *fgeom,
-                                  PangoLayout             *title_layout,
-                                  MetaFrameFlags           flags,
-                                  MetaButtonState          button_states[META_BUTTON_TYPE_LAST],
-                                  GdkPixbuf               *mini_icon)
+meta_frame_layout_draw_with_style (MetaFrameLayout         *layout,
+                                   MetaStyleInfo           *style_info,
+                                   cairo_t                 *cr,
+                                   const MetaFrameGeometry *fgeom,
+                                   PangoLayout             *title_layout,
+                                   MetaFrameFlags           flags,
+                                   MetaButtonState          button_states[META_BUTTON_TYPE_LAST],
+                                   GdkPixbuf               *mini_icon)
 {
   GtkStyleContext *style;
   GtkStateFlags state;
@@ -837,7 +775,7 @@ meta_frame_style_draw_with_style (MetaFrameStyle          *frame_style,
                     titlebar_rect.x, titlebar_rect.y,
                     titlebar_rect.width, titlebar_rect.height);
 
-  if (frame_style->layout->has_title && title_layout)
+  if (layout->has_title && title_layout)
     {
       PangoRectangle logical;
       int text_width, x, y;
@@ -922,7 +860,7 @@ meta_frame_style_draw_with_style (MetaFrameStyle          *frame_style,
               GtkIconTheme *theme = gtk_icon_theme_get_default ();
               GtkIconInfo *info;
 
-              info = gtk_icon_theme_lookup_icon (theme, icon_name, frame_style->layout->icon_size, 0);
+              info = gtk_icon_theme_lookup_icon (theme, icon_name, layout->icon_size, 0);
               pixbuf = gtk_icon_info_load_symbolic_for_context (info, style, NULL, NULL);
             }
 
@@ -938,8 +876,8 @@ meta_frame_style_draw_with_style (MetaFrameStyle          *frame_style,
 
               cairo_translate (cr, x, y);
               cairo_scale (cr,
-                           width / frame_style->layout->icon_size,
-                           height / frame_style->layout->icon_size);
+                           width / layout->icon_size,
+                           height / layout->icon_size);
 
               gdk_cairo_set_source_pixbuf (cr, pixbuf, 0, 0);
               cairo_paint (cr);
@@ -951,111 +889,6 @@ meta_frame_style_draw_with_style (MetaFrameStyle          *frame_style,
     }
 }
 
-MetaFrameStyleSet*
-meta_frame_style_set_new (MetaFrameStyleSet *parent)
-{
-  MetaFrameStyleSet *style_set;
-
-  style_set = g_new0 (MetaFrameStyleSet, 1);
-
-  style_set->parent = parent;
-  if (parent)
-    meta_frame_style_set_ref (parent);
-
-  style_set->refcount = 1;
-
-  return style_set;
-}
-
-static void
-free_focus_styles (MetaFrameStyle *focus_styles[META_FRAME_FOCUS_LAST])
-{
-  int i;
-
-  for (i = 0; i < META_FRAME_FOCUS_LAST; i++)
-    if (focus_styles[i])
-      meta_frame_style_unref (focus_styles[i]);
-}
-
-void
-meta_frame_style_set_ref (MetaFrameStyleSet *style_set)
-{
-  g_return_if_fail (style_set != NULL);
-
-  style_set->refcount += 1;
-}
-
-void
-meta_frame_style_set_unref (MetaFrameStyleSet *style_set)
-{
-  g_return_if_fail (style_set != NULL);
-  g_return_if_fail (style_set->refcount > 0);
-
-  style_set->refcount -= 1;
-
-  if (style_set->refcount == 0)
-    {
-      free_focus_styles (style_set->normal_styles);
-      free_focus_styles (style_set->shaded_styles);
-      free_focus_styles (style_set->maximized_styles);
-      free_focus_styles (style_set->tiled_left_styles);
-      free_focus_styles (style_set->tiled_right_styles);
-      free_focus_styles (style_set->maximized_and_shaded_styles);
-      free_focus_styles (style_set->tiled_left_and_shaded_styles);
-      free_focus_styles (style_set->tiled_right_and_shaded_styles);
-
-      if (style_set->parent)
-        meta_frame_style_set_unref (style_set->parent);
-
-      DEBUG_FILL_STRUCT (style_set);
-      g_free (style_set);
-    }
-}
-
-
-static MetaFrameStyle*
-get_style (MetaFrameStyleSet *style_set,
-           MetaFrameState     state,
-           MetaFrameFocus     focus)
-{
-  MetaFrameStyle **styles;
-
-  styles = NULL;
-
-  switch (state)
-    {
-    case META_FRAME_STATE_NORMAL:
-      styles = style_set->normal_styles;
-      break;
-    case META_FRAME_STATE_MAXIMIZED:
-      styles = style_set->maximized_styles;
-      break;
-    case META_FRAME_STATE_TILED_LEFT:
-      styles = style_set->tiled_left_styles;
-      break;
-    case META_FRAME_STATE_TILED_RIGHT:
-      styles = style_set->tiled_right_styles;
-      break;
-    case META_FRAME_STATE_SHADED:
-      styles = style_set->shaded_styles;
-      break;
-    case META_FRAME_STATE_MAXIMIZED_AND_SHADED:
-      styles = style_set->maximized_and_shaded_styles;
-      break;
-    case META_FRAME_STATE_TILED_LEFT_AND_SHADED:
-      styles = style_set->tiled_left_and_shaded_styles;
-      break;
-    case META_FRAME_STATE_TILED_RIGHT_AND_SHADED:
-      styles = style_set->tiled_right_and_shaded_styles;
-      break;
-    case META_FRAME_STATE_LAST:
-      g_assert_not_reached ();
-      break;
-    }
-
-  return styles[focus];
-}
-
 /**
  * meta_theme_get_default: (skip)
  *
@@ -1064,7 +897,7 @@ MetaTheme*
 meta_theme_get_default (void)
 {
   static MetaTheme *theme = NULL;
-  int i, frame_type;
+  int frame_type;
 
   if (theme)
     return theme;
@@ -1073,10 +906,7 @@ meta_theme_get_default (void)
 
   for (frame_type = 0; frame_type < META_FRAME_TYPE_LAST; frame_type++)
     {
-      MetaFrameStyleSet *style_set = meta_frame_style_set_new (NULL);
-      MetaFrameStyle *style = meta_frame_style_new (NULL);
-
-      style->layout = meta_frame_layout_new ();
+      MetaFrameLayout *layout = meta_frame_layout_new ();
 
       switch (frame_type)
         {
@@ -1085,49 +915,21 @@ meta_theme_get_default (void)
         case META_FRAME_TYPE_DIALOG:
         case META_FRAME_TYPE_MODAL_DIALOG:
         case META_FRAME_TYPE_ATTACHED:
-          style->layout->hide_buttons = TRUE;
+          layout->hide_buttons = TRUE;
           break;
         case META_FRAME_TYPE_MENU:
         case META_FRAME_TYPE_UTILITY:
-          style->layout->title_scale = PANGO_SCALE_SMALL;
+          layout->title_scale = PANGO_SCALE_SMALL;
           break;
         case META_FRAME_TYPE_BORDER:
-          style->layout->has_title = FALSE;
-          style->layout->hide_buttons = TRUE;
+          layout->has_title = FALSE;
+          layout->hide_buttons = TRUE;
           break;
         default:
           g_assert_not_reached ();
         }
 
-      for (i = 0; i < META_FRAME_FOCUS_LAST; i++)
-        {
-          meta_frame_style_ref (style);
-          style_set->normal_styles[i] = style;
-
-          meta_frame_style_ref (style);
-          style_set->shaded_styles[i] = style;
-
-          meta_frame_style_ref (style);
-          style_set->maximized_styles[i] = style;
-
-          meta_frame_style_ref (style);
-          style_set->tiled_left_styles[i] = style;
-
-          meta_frame_style_ref (style);
-          style_set->tiled_right_styles[i] = style;
-
-          meta_frame_style_ref (style);
-          style_set->maximized_and_shaded_styles[i] = style;
-
-          meta_frame_style_ref (style);
-          style_set->tiled_left_and_shaded_styles[i] = style;
-
-          meta_frame_style_ref (style);
-          style_set->tiled_right_and_shaded_styles[i] = style;
-        }
-
-      meta_frame_style_unref (style);
-      theme->style_sets_by_type[frame_type] = style_set;
+      theme->layouts[frame_type] = layout;
     }
   return theme;
 }
@@ -1151,79 +953,21 @@ meta_theme_free (MetaTheme *theme)
   g_return_if_fail (theme != NULL);
 
   for (i = 0; i < META_FRAME_TYPE_LAST; i++)
-    if (theme->style_sets_by_type[i])
-      meta_frame_style_set_unref (theme->style_sets_by_type[i]);
+    if (theme->layouts[i])
+      meta_frame_layout_unref (theme->layouts[i]);
 
   DEBUG_FILL_STRUCT (theme);
   g_free (theme);
 }
 
-static MetaFrameStyle*
-theme_get_style (MetaTheme     *theme,
-                 MetaFrameType  type,
-                 MetaFrameFlags flags)
+MetaFrameLayout*
+meta_theme_get_frame_layout (MetaTheme     *theme,
+                             MetaFrameType  type,
+                             MetaFrameFlags flags)
 {
-  MetaFrameState state;
-  MetaFrameFocus focus;
-  MetaFrameStyleSet *style_set;
-
-  style_set = theme->style_sets_by_type[type];
-
-  switch (flags & (META_FRAME_MAXIMIZED | META_FRAME_SHADED |
-                   META_FRAME_TILED_LEFT | META_FRAME_TILED_RIGHT))
-    {
-    case 0:
-      state = META_FRAME_STATE_NORMAL;
-      break;
-    case META_FRAME_MAXIMIZED:
-      state = META_FRAME_STATE_MAXIMIZED;
-      break;
-    case META_FRAME_TILED_LEFT:
-      state = META_FRAME_STATE_TILED_LEFT;
-      break;
-    case META_FRAME_TILED_RIGHT:
-      state = META_FRAME_STATE_TILED_RIGHT;
-      break;
-    case META_FRAME_SHADED:
-      state = META_FRAME_STATE_SHADED;
-      break;
-    case (META_FRAME_MAXIMIZED | META_FRAME_SHADED):
-      state = META_FRAME_STATE_MAXIMIZED_AND_SHADED;
-      break;
-    case (META_FRAME_TILED_LEFT | META_FRAME_SHADED):
-      state = META_FRAME_STATE_TILED_LEFT_AND_SHADED;
-      break;
-    case (META_FRAME_TILED_RIGHT | META_FRAME_SHADED):
-      state = META_FRAME_STATE_TILED_RIGHT_AND_SHADED;
-      break;
-    default:
-      g_assert_not_reached ();
-      state = META_FRAME_STATE_LAST; /* compiler */
-      break;
-    }
-
-  /* re invert the styles used for focus/unfocussed while flashing a frame */
-  if (((flags & META_FRAME_HAS_FOCUS) && !(flags & META_FRAME_IS_FLASHING))
-      || (!(flags & META_FRAME_HAS_FOCUS) && (flags & META_FRAME_IS_FLASHING)))
-    focus = META_FRAME_FOCUS_YES;
-  else
-    focus = META_FRAME_FOCUS_NO;
-
-  return get_style (style_set, state, focus);
-}
-
-MetaFrameStyle*
-meta_theme_get_frame_style (MetaTheme     *theme,
-                            MetaFrameType  type,
-                            MetaFrameFlags flags)
-{
-  MetaFrameStyle *style;
-
   g_return_val_if_fail (type < META_FRAME_TYPE_LAST, NULL);
 
-  style = theme_get_style (theme, type, flags);
-
-  return style;
+  return theme->layouts[type];
 }
 
 static GtkStyleContext *
@@ -1449,17 +1193,17 @@ meta_theme_draw_frame (MetaTheme              *theme,
                        GdkPixbuf              *mini_icon)
 {
   MetaFrameGeometry fgeom;
-  MetaFrameStyle *style;
+  MetaFrameLayout *layout;
 
   g_return_if_fail (type < META_FRAME_TYPE_LAST);
 
-  style = theme_get_style (theme, type, flags);
+  layout = theme->layouts[type];
 
   /* Parser is not supposed to allow this currently */
-  if (style == NULL)
+  if (layout == NULL)
     return;
 
-  meta_frame_layout_calc_geometry (style->layout,
+  meta_frame_layout_calc_geometry (layout,
                                    style_info,
                                    text_height,
                                    flags,
@@ -1469,14 +1213,14 @@ meta_theme_draw_frame (MetaTheme              *theme,
                                    &fgeom,
                                    theme);
 
-  meta_frame_style_draw_with_style (style,
-                                    style_info,
-                                    cr,
-                                    &fgeom,
-                                    title_layout,
-                                    flags,
-                                    button_states,
-                                    mini_icon);
+  meta_frame_layout_draw_with_style (layout,
+                                     style_info,
+                                     cr,
+                                     &fgeom,
+                                     title_layout,
+                                     flags,
+                                     button_states,
+                                     mini_icon);
 }
 
 void
@@ -1487,21 +1231,21 @@ meta_theme_get_frame_borders (MetaTheme        *theme,
                               MetaFrameFlags    flags,
                               MetaFrameBorders *borders)
 {
-  MetaFrameStyle *style;
+  MetaFrameLayout *layout;
 
   g_return_if_fail (type < META_FRAME_TYPE_LAST);
 
-  style = theme_get_style (theme, type, flags);
+  layout = theme->layouts[type];
 
   meta_frame_borders_clear (borders);
 
   /* Parser is not supposed to allow this currently */
-  if (style == NULL)
+  if (layout == NULL)
     return;
 
-  meta_frame_layout_sync_with_style (style->layout, style_info, flags);
+  meta_frame_layout_sync_with_style (layout, style_info, flags);
 
-  meta_frame_layout_get_borders (style->layout,
+  meta_frame_layout_get_borders (layout,
                                  text_height,
                                  flags, type,
                                  borders);
@@ -1518,17 +1262,17 @@ meta_theme_calc_geometry (MetaTheme              *theme,
                           const MetaButtonLayout *button_layout,
                           MetaFrameGeometry      *fgeom)
 {
-  MetaFrameStyle *style;
+  MetaFrameLayout *layout;
 
   g_return_if_fail (type < META_FRAME_TYPE_LAST);
 
-  style = theme_get_style (theme, type, flags);
+  layout = theme->layouts[type];
 
   /* Parser is not supposed to allow this currently */
-  if (style == NULL)
+  if (layout == NULL)
     return;
 
-  meta_frame_layout_calc_geometry (style->layout,
+  meta_frame_layout_calc_geometry (layout,
                                    style_info,
                                    text_height,
                                    flags,
