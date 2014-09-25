@@ -995,14 +995,8 @@ meta_frame_style_set_unref (MetaFrameStyleSet *style_set)
 
   if (style_set->refcount == 0)
     {
-      int i;
-
-      for (i = 0; i < META_FRAME_RESIZE_LAST; i++)
-        {
-          free_focus_styles (style_set->normal_styles[i]);
-          free_focus_styles (style_set->shaded_styles[i]);
-        }
-
+      free_focus_styles (style_set->normal_styles);
+      free_focus_styles (style_set->shaded_styles);
       free_focus_styles (style_set->maximized_styles);
       free_focus_styles (style_set->tiled_left_styles);
       free_focus_styles (style_set->tiled_right_styles);
@@ -1022,88 +1016,44 @@ meta_frame_style_set_unref (MetaFrameStyleSet *style_set)
 static MetaFrameStyle*
 get_style (MetaFrameStyleSet *style_set,
            MetaFrameState     state,
-           MetaFrameResize    resize,
            MetaFrameFocus     focus)
 {
-  MetaFrameStyle *style;
+  MetaFrameStyle **styles;
 
-  style = NULL;
+  styles = NULL;
 
   switch (state)
     {
     case META_FRAME_STATE_NORMAL:
-    case META_FRAME_STATE_SHADED:
-      {
-        if (state == META_FRAME_STATE_SHADED)
-          style = style_set->shaded_styles[resize][focus];
-        else
-          style = style_set->normal_styles[resize][focus];
-
-        /* Try parent if we failed here */
-        if (style == NULL && style_set->parent)
-          style = get_style (style_set->parent, state, resize, focus);
-
-        /* Allow people to omit the vert/horz/none resize modes */
-        if (style == NULL &&
-            resize != META_FRAME_RESIZE_BOTH)
-          style = get_style (style_set, state, META_FRAME_RESIZE_BOTH, focus);
-      }
+      styles = style_set->normal_styles;
       break;
-    default:
-      {
-        MetaFrameStyle **styles;
-
-        styles = NULL;
-
-        switch (state)
-          {
-          case META_FRAME_STATE_MAXIMIZED:
-            styles = style_set->maximized_styles;
-            break;
-          case META_FRAME_STATE_TILED_LEFT:
-            styles = style_set->tiled_left_styles;
-            break;
-          case META_FRAME_STATE_TILED_RIGHT:
-            styles = style_set->tiled_right_styles;
-            break;
-          case META_FRAME_STATE_MAXIMIZED_AND_SHADED:
-            styles = style_set->maximized_and_shaded_styles;
-            break;
-          case META_FRAME_STATE_TILED_LEFT_AND_SHADED:
-            styles = style_set->tiled_left_and_shaded_styles;
-            break;
-          case META_FRAME_STATE_TILED_RIGHT_AND_SHADED:
-            styles = style_set->tiled_right_and_shaded_styles;
-            break;
-          case META_FRAME_STATE_NORMAL:
-          case META_FRAME_STATE_SHADED:
-          case META_FRAME_STATE_LAST:
-            g_assert_not_reached ();
-            break;
-          }
-
-        style = styles[focus];
-
-        /* Tiled states are optional, try falling back to non-tiled states */
-        if (style == NULL)
-          {
-            if (state == META_FRAME_STATE_TILED_LEFT ||
-                state == META_FRAME_STATE_TILED_RIGHT)
-              style = get_style (style_set, META_FRAME_STATE_NORMAL,
-                                 resize, focus);
-            else if (state == META_FRAME_STATE_TILED_LEFT_AND_SHADED ||
-                     state == META_FRAME_STATE_TILED_RIGHT_AND_SHADED)
-              style = get_style (style_set, META_FRAME_STATE_SHADED,
-                                 resize, focus);
-          }
-
-        /* Try parent if we failed here */
-        if (style == NULL && style_set->parent)
-          style = get_style (style_set->parent, state, resize, focus);
-      }
+    case META_FRAME_STATE_MAXIMIZED:
+      styles = style_set->maximized_styles;
+      break;
+    case META_FRAME_STATE_TILED_LEFT:
+      styles = style_set->tiled_left_styles;
+      break;
+    case META_FRAME_STATE_TILED_RIGHT:
+      styles = style_set->tiled_right_styles;
+      break;
+    case META_FRAME_STATE_SHADED:
+      styles = style_set->shaded_styles;
+      break;
+    case META_FRAME_STATE_MAXIMIZED_AND_SHADED:
+      styles = style_set->maximized_and_shaded_styles;
+      break;
+    case META_FRAME_STATE_TILED_LEFT_AND_SHADED:
+      styles = style_set->tiled_left_and_shaded_styles;
+      break;
+    case META_FRAME_STATE_TILED_RIGHT_AND_SHADED:
+      styles = style_set->tiled_right_and_shaded_styles;
+      break;
+    case META_FRAME_STATE_LAST:
+      g_assert_not_reached ();
+      break;
     }
 
-  return style;
+  return styles[focus];
 }
 
 /**
@@ -1114,7 +1064,7 @@ MetaTheme*
 meta_theme_get_default (void)
 {
   static MetaTheme *theme = NULL;
-  int i, j, frame_type;
+  int i, frame_type;
 
   if (theme)
     return theme;
@@ -1151,14 +1101,11 @@ meta_theme_get_default (void)
 
       for (i = 0; i < META_FRAME_FOCUS_LAST; i++)
         {
-          for (j = 0; j < META_FRAME_RESIZE_LAST; j++)
-            {
-              meta_frame_style_ref (style);
-              style_set->normal_styles[j][i] = style;
+          meta_frame_style_ref (style);
+          style_set->normal_styles[i] = style;
 
-              meta_frame_style_ref (style);
-              style_set->shaded_styles[j][i] = style;
-            }
+          meta_frame_style_ref (style);
+          style_set->shaded_styles[i] = style;
 
           meta_frame_style_ref (style);
           style_set->maximized_styles[i] = style;
@@ -1217,9 +1164,7 @@ theme_get_style (MetaTheme     *theme,
                  MetaFrameFlags flags)
 {
   MetaFrameState state;
-  MetaFrameResize resize;
   MetaFrameFocus focus;
-  MetaFrameStyle *style;
   MetaFrameStyleSet *style_set;
 
   style_set = theme->style_sets_by_type[type];
@@ -1257,26 +1202,6 @@ theme_get_style (MetaTheme     *theme,
       break;
     }
 
-  switch (flags & (META_FRAME_ALLOWS_VERTICAL_RESIZE | META_FRAME_ALLOWS_HORIZONTAL_RESIZE))
-    {
-    case 0:
-      resize = META_FRAME_RESIZE_NONE;
-      break;
-    case META_FRAME_ALLOWS_VERTICAL_RESIZE:
-      resize = META_FRAME_RESIZE_VERTICAL;
-      break;
-    case META_FRAME_ALLOWS_HORIZONTAL_RESIZE:
-      resize = META_FRAME_RESIZE_HORIZONTAL;
-      break;
-    case (META_FRAME_ALLOWS_VERTICAL_RESIZE | META_FRAME_ALLOWS_HORIZONTAL_RESIZE):
-      resize = META_FRAME_RESIZE_BOTH;
-      break;
-    default:
-      g_assert_not_reached ();
-      resize = META_FRAME_RESIZE_LAST; /* compiler */
-      break;
-    }
-
   /* re invert the styles used for focus/unfocussed while flashing a frame */
   if (((flags & META_FRAME_HAS_FOCUS) && !(flags & META_FRAME_IS_FLASHING))
       || (!(flags & META_FRAME_HAS_FOCUS) && (flags & META_FRAME_IS_FLASHING)))
@@ -1284,9 +1209,7 @@ theme_get_style (MetaTheme     *theme,
   else
     focus = META_FRAME_FOCUS_NO;
 
-  style = get_style (style_set, state, resize, focus);
-
-  return style;
+  return get_style (style_set, state, focus);
 }
 
 MetaFrameStyle*
