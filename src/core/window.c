@@ -4311,7 +4311,8 @@ set_workspace_state (MetaWindow    *window,
     g_return_if_fail ((window->constructing && on_all_workspaces) || window->unmanaging);
 
   if (on_all_workspaces == window->on_all_workspaces &&
-      workspace == window->workspace)
+      workspace == window->workspace &&
+      !window->constructing)
     return;
 
   if (window->workspace)
