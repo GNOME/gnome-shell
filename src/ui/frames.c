@@ -372,6 +372,8 @@ meta_frames_style_updated  (GtkWidget *widget)
   g_hash_table_foreach (frames->frames,
                         reattach_style_func, frames);
 
+  meta_retheme_all ();
+
   GTK_WIDGET_CLASS (meta_frames_parent_class)->style_updated (widget);
 }
 
