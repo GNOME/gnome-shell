@@ -5111,6 +5111,78 @@ meta_style_info_unref (MetaStyleInfo *style_info)
     }
 }
 
+static void
+add_toplevel_class (GtkStyleContext *style,
+                    const char      *class_name)
+{
+  if (gtk_style_context_get_parent (style))
+    {
+      GtkWidgetPath *path;
+
+      path = gtk_widget_path_copy (gtk_style_context_get_path (style));
+      gtk_widget_path_iter_add_class (path, 0, class_name);
+      gtk_style_context_set_path (style, path);
+      gtk_widget_path_unref (path);
+    }
+  else
+    gtk_style_context_add_class (style, class_name);
+}
+
+static void
+remove_toplevel_class (GtkStyleContext *style,
+                       const char      *class_name)
+{
+  if (gtk_style_context_get_parent (style))
+    {
+      GtkWidgetPath *path;
+
+      path = gtk_widget_path_copy (gtk_style_context_get_path (style));
+      gtk_widget_path_iter_remove_class (path, 0, class_name);
+      gtk_style_context_set_path (style, path);
+      gtk_widget_path_unref (path);
+    }
+  else
+    gtk_style_context_remove_class (style, class_name);
+}
+
+void
+meta_style_info_set_flags (MetaStyleInfo  *style_info,
+                           MetaFrameFlags  flags)
+{
+  GtkStyleContext *style;
+  const char *class_name = NULL;
+  gboolean backdrop;
+  GtkStateFlags state;
+  int i;
+
+  backdrop = !(flags & META_FRAME_HAS_FOCUS);
+  if (flags & META_FRAME_IS_FLASHING)
+    backdrop = !backdrop;
+
+  if (flags & META_FRAME_MAXIMIZED)
+    class_name = "maximized";
+  else if (flags & META_FRAME_TILED_LEFT ||
+           flags & META_FRAME_TILED_RIGHT)
+    class_name = "tiled";
+
+  for (i = 0; i < META_STYLE_ELEMENT_LAST; i++)
+    {
+      style = style_info->styles[i];
+
+      state = gtk_style_context_get_state (style);
+      if (backdrop)
+        gtk_style_context_set_state (style, state | GTK_STATE_FLAG_BACKDROP);
+      else
+        gtk_style_context_set_state (style, state & ~GTK_STATE_FLAG_BACKDROP);
+
+      remove_toplevel_class (style, "maximized");
+      remove_toplevel_class (style, "tiled");
+
+      if (class_name)
+        add_toplevel_class (style, class_name);
+    }
+}
+
 PangoFontDescription*
 meta_style_info_create_font_desc (MetaStyleInfo *style_info)
 {
