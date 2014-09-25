@@ -395,8 +395,7 @@ meta_frames_ensure_layout (MetaFrames  *frames,
                  META_CORE_GET_FRAME_TYPE, &type,
                  META_CORE_GET_END);
 
-  style = meta_theme_get_frame_style (meta_theme_get_current (),
-                                      type, flags);
+  style = meta_theme_get_frame_style (meta_theme_get_default (), type, flags);
 
   if (style != frame->cache_style)
     {
@@ -480,7 +479,7 @@ meta_frames_calc_geometry (MetaFrames        *frames,
 
   meta_prefs_get_button_layout (&button_layout);
 
-  meta_theme_calc_geometry (meta_theme_get_current (),
+  meta_theme_calc_geometry (meta_theme_get_default (),
                             frame->style_info,
                             type,
                             frame->text_height,
@@ -648,7 +647,7 @@ meta_ui_frame_get_borders (MetaFrames *frames,
    * by the core move/resize code to decide on the client
    * window size
    */
-  meta_theme_get_frame_borders (meta_theme_get_current (),
+  meta_theme_get_frame_borders (meta_theme_get_default (),
                                 frame->style_info,
                                 type,
                                 frame->text_height,
@@ -1560,7 +1559,7 @@ get_visible_frame_border_region (MetaUIFrame *frame)
                  META_CORE_GET_FRAME_RECT, &frame_rect,
                  META_CORE_GET_END);
 
-  meta_theme_get_frame_borders (meta_theme_get_current (), frame->style_info,
+  meta_theme_get_frame_borders (meta_theme_get_default (), frame->style_info,
                                 type, frame->text_height, flags,
                                 &borders);
 
@@ -1751,7 +1750,7 @@ meta_frames_paint (MetaFrames   *frames,
 
   meta_prefs_get_button_layout (&button_layout);
 
-  meta_theme_draw_frame (meta_theme_get_current (),
+  meta_theme_draw_frame (meta_theme_get_default (),
                          frame->style_info,
                          cr,
                          type,

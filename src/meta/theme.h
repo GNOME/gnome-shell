@@ -30,8 +30,7 @@
  */
 typedef struct _MetaTheme MetaTheme;
 
-MetaTheme* meta_theme_get_current (void);
-void       meta_theme_set_current (const char *name);
+MetaTheme* meta_theme_get_default (void);
 
 MetaTheme* meta_theme_new      (void);
 void       meta_theme_free     (MetaTheme *theme);

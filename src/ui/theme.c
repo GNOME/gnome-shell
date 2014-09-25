@@ -4573,23 +4573,19 @@ meta_frame_style_set_validate  (MetaFrameStyleSet *style_set,
 }
 
 /**
- * meta_theme_get_current: (skip)
+ * meta_theme_get_default: (skip)
  *
  */
 MetaTheme*
-meta_theme_get_current (void)
+meta_theme_get_default (void)
 {
-  return meta_current_theme;
-}
-
-void
-meta_theme_set_current (const char *name)
-{
+  static MetaTheme *theme = NULL;
   int i, j, frame_type;
 
-  if (meta_current_theme)
-    return;
-  meta_current_theme = meta_theme_new ();
+  if (theme)
+    return theme;
+
+  theme = meta_theme_new ();
 
   for (frame_type = 0; frame_type < META_FRAME_TYPE_LAST; frame_type++)
     {
@@ -4650,8 +4646,9 @@ meta_theme_set_current (const char *name)
         }
 
       meta_frame_style_unref (style);
-      meta_current_theme->style_sets_by_type[frame_type] = style_set;
+      theme->style_sets_by_type[frame_type] = style_set;
     }
+  return theme;
 }
 
 /**
