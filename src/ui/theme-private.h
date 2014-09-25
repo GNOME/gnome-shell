@@ -1021,6 +1021,8 @@ MetaFrameStyle* meta_frame_style_new   (MetaFrameStyle *parent);
 void            meta_frame_style_ref   (MetaFrameStyle *style);
 void            meta_frame_style_unref (MetaFrameStyle *style);
 
+void            meta_frame_style_apply_scale (const MetaFrameStyle *style,
+                                              PangoFontDescription *font_desc);
 
 gboolean       meta_frame_style_validate (MetaFrameStyle    *style,
                                           guint              current_theme_version,
@@ -1042,14 +1044,12 @@ MetaFrameStyle* meta_theme_get_frame_style (MetaTheme     *theme,
                                             MetaFrameType  type,
                                             MetaFrameFlags flags);
 
-double meta_theme_get_title_scale (MetaTheme     *theme,
-                                   MetaFrameType  type,
-                                   MetaFrameFlags flags);
-
 MetaStyleInfo * meta_theme_create_style_info (GdkScreen   *screen,
                                               const gchar *variant);
 MetaStyleInfo * meta_style_info_ref          (MetaStyleInfo *style);
 void            meta_style_info_unref        (MetaStyleInfo  *style_info);
+
+PangoFontDescription * meta_style_info_create_font_desc (MetaStyleInfo *style_info);
 
 void meta_theme_draw_frame (MetaTheme              *theme,
                             MetaStyleInfo          *style_info,
@@ -1130,9 +1130,6 @@ gboolean     meta_theme_replace_constants     (MetaTheme    *theme,
 
 /* random stuff */
 
-PangoFontDescription* meta_gtk_widget_get_font_desc        (GtkWidget            *widget,
-                                                            double                scale,
-							    const PangoFontDescription *override);
 int                   meta_pango_font_desc_get_text_height (const PangoFontDescription *font_desc,
                                                             PangoContext         *context);
 

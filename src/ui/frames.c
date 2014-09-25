@@ -416,12 +416,7 @@ meta_frames_ensure_layout (MetaFrames  *frames,
     {
       gpointer key, value;
       PangoFontDescription *font_desc;
-      double scale;
       int size;
-
-      scale = meta_theme_get_title_scale (meta_theme_get_current (),
-                                          type,
-                                          flags);
 
       frame->layout = gtk_widget_create_pango_layout (widget, frame->title);
 
@@ -429,8 +424,8 @@ meta_frames_ensure_layout (MetaFrames  *frames,
       pango_layout_set_auto_dir (frame->layout, FALSE);
       pango_layout_set_single_paragraph_mode (frame->layout, TRUE);
 
-      font_desc = meta_gtk_widget_get_font_desc (widget, scale,
-                                                 meta_prefs_get_titlebar_font ());
+      font_desc = meta_style_info_create_font_desc (frame->style_info);
+      meta_frame_style_apply_scale (style, font_desc);
 
       size = pango_font_description_get_size (font_desc);
 
