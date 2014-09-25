@@ -89,21 +89,6 @@ color_composite (const GdkRGBA *bg,
 }
 
 /**
- * init_border:
- * @border: The border whose fields should be reset.
- *
- * Sets all the fields of a border to dummy values.
- */
-static void
-init_border (GtkBorder *border)
-{
-  border->top = -1;
-  border->bottom = -1;
-  border->left = -1;
-  border->right = -1;
-}
-
-/**
  * meta_frame_layout_new: (skip)
  *
  * Creates a new, empty MetaFrameLayout. The fields will be set to dummy
@@ -120,23 +105,6 @@ meta_frame_layout_new  (void)
 
   layout->refcount = 1;
 
-  /* Fill with -1 values to detect invalid themes */
-  layout->left_width = -1;
-  layout->right_width = -1;
-  layout->bottom_height = -1;
-
-  init_border (&layout->title_border);
-
-  layout->title_vertical_pad = -1;
-
-  layout->right_titlebar_edge = -1;
-  layout->left_titlebar_edge = -1;
-
-  layout->button_sizing = META_BUTTON_SIZING_LAST;
-  layout->button_aspect = 1.0;
-  layout->button_width = -1;
-  layout->button_height = -1;
-
   /* Spacing as hardcoded in GTK+:
    * https://git.gnome.org/browse/gtk+/tree/gtk/gtkheaderbar.c?h=gtk-3-14#n53
    */
@@ -144,8 +112,6 @@ meta_frame_layout_new  (void)
   layout->has_title = TRUE;
   layout->title_scale = 1.0;
   layout->icon_size = META_MINI_ICON_WIDTH;
-
-  init_border (&layout->button_border);
 
   return layout;
 }
@@ -4619,32 +4585,72 @@ meta_theme_get_current (void)
 void
 meta_theme_set_current (const char *name)
 {
-  MetaTheme *new_theme;
-  GError *err;
+  int i, j, frame_type;
 
-  meta_topic (META_DEBUG_THEMES, "Setting current theme to \"%s\"\n", name);
-
-  if (meta_current_theme &&
-      strcmp (name, meta_current_theme->name) == 0)
+  if (meta_current_theme)
     return;
+  meta_current_theme = meta_theme_new ();
 
-  err = NULL;
-  new_theme = meta_theme_load (name, &err);
-
-  if (new_theme == NULL)
+  for (frame_type = 0; frame_type < META_FRAME_TYPE_LAST; frame_type++)
     {
-      meta_warning (_("Failed to load theme \"%s\": %s\n"),
-                    name, err->message);
-      g_error_free (err);
-    }
-  else
-    {
-      if (meta_current_theme)
-        meta_theme_free (meta_current_theme);
+      MetaFrameStyleSet *style_set = meta_frame_style_set_new (NULL);
+      MetaFrameStyle *style = meta_frame_style_new (NULL);
 
-      meta_current_theme = new_theme;
+      style->layout = meta_frame_layout_new ();
 
-      meta_topic (META_DEBUG_THEMES, "New theme is \"%s\"\n", meta_current_theme->name);
+      switch (frame_type)
+        {
+        case META_FRAME_TYPE_NORMAL:
+          break;
+        case META_FRAME_TYPE_DIALOG:
+        case META_FRAME_TYPE_MODAL_DIALOG:
+        case META_FRAME_TYPE_ATTACHED:
+          style->layout->hide_buttons = TRUE;
+          break;
+        case META_FRAME_TYPE_MENU:
+        case META_FRAME_TYPE_UTILITY:
+          style->layout->title_scale = PANGO_SCALE_SMALL;
+          break;
+        case META_FRAME_TYPE_BORDER:
+          style->layout->has_title = FALSE;
+          style->layout->hide_buttons = TRUE;
+          break;
+        default:
+          g_assert_not_reached ();
+        }
+
+      for (i = 0; i < META_FRAME_FOCUS_LAST; i++)
+        {
+          for (j = 0; j < META_FRAME_RESIZE_LAST; j++)
+            {
+              meta_frame_style_ref (style);
+              style_set->normal_styles[j][i] = style;
+
+              meta_frame_style_ref (style);
+              style_set->shaded_styles[j][i] = style;
+            }
+
+          meta_frame_style_ref (style);
+          style_set->maximized_styles[i] = style;
+
+          meta_frame_style_ref (style);
+          style_set->tiled_left_styles[i] = style;
+
+          meta_frame_style_ref (style);
+          style_set->tiled_right_styles[i] = style;
+
+          meta_frame_style_ref (style);
+          style_set->maximized_and_shaded_styles[i] = style;
+
+          meta_frame_style_ref (style);
+          style_set->tiled_left_and_shaded_styles[i] = style;
+
+          meta_frame_style_ref (style);
+          style_set->tiled_right_and_shaded_styles[i] = style;
+        }
+
+      meta_frame_style_unref (style);
+      meta_current_theme->style_sets_by_type[frame_type] = style_set;
     }
 }
 
