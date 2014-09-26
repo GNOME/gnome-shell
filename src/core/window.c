@@ -1097,9 +1097,9 @@ _meta_window_shared_new (MetaDisplay         *display,
    * but appear on other workspaces. override-redirect windows are part
    * of no workspace.
    */
-  if (!window->override_redirect)
+  if (!window->override_redirect && window->workspace == NULL)
     {
-      if (window->workspace == NULL && window->transient_for != NULL)
+      if (window->transient_for != NULL)
         {
           meta_topic (META_DEBUG_PLACEMENT,
                       "Putting window %s on same workspace as parent %s\n",
@@ -1110,7 +1110,15 @@ _meta_window_shared_new (MetaDisplay         *display,
                                window->transient_for->workspace);
         }
 
-      if (window->workspace == NULL && !window->on_all_workspaces)
+      if (window->on_all_workspaces)
+        {
+          meta_topic (META_DEBUG_PLACEMENT,
+                      "Putting window %s on all workspaces\n",
+                      window->desc);
+
+          set_workspace_state (window, TRUE, NULL);
+        }
+      else
         {
           meta_topic (META_DEBUG_PLACEMENT,
                       "Putting window %s on active workspace\n",
