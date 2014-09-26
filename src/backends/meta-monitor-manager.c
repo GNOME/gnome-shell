@@ -44,12 +44,6 @@ enum {
   SIGNALS_LAST
 };
 
-enum {
-  PROP_0,
-  PROP_POWER_SAVE_MODE,
-  PROP_LAST
-};
-
 static int signals[SIGNALS_LAST];
 
 static void meta_monitor_manager_display_config_init (MetaDBusDisplayConfigIface *iface);
@@ -168,9 +162,37 @@ make_logical_config (MetaMonitorManager *manager)
 }
 
 static void
+power_save_mode_changed (MetaMonitorManager *manager,
+                         GParamSpec         *pspec,
+                         gpointer            user_data)
+{
+  MetaMonitorManagerClass *klass;
+  int mode = meta_dbus_display_config_get_power_save_mode (META_DBUS_DISPLAY_CONFIG (manager));
+
+  if (mode == META_POWER_SAVE_UNSUPPORTED)
+    return;
+
+  /* If DPMS is unsupported, force the property back. */
+  if (manager->power_save_mode == META_POWER_SAVE_UNSUPPORTED)
+    {
+      meta_dbus_display_config_set_power_save_mode (META_DBUS_DISPLAY_CONFIG (manager), META_POWER_SAVE_UNSUPPORTED);
+      return;
+    }
+
+  klass = META_MONITOR_MANAGER_GET_CLASS (manager);
+  if (klass->set_power_save_mode)
+    klass->set_power_save_mode (manager, mode);
+
+  manager->power_save_mode = mode;
+}
+
+static void
 meta_monitor_manager_constructed (GObject *object)
 {
   MetaMonitorManager *manager = META_MONITOR_MANAGER (object);
+
+  g_signal_connect_object (manager, "notify::power-save-mode",
+                           G_CALLBACK (power_save_mode_changed), manager, 0);
 
   manager->in_init = TRUE;
 
@@ -212,23 +234,6 @@ meta_monitor_manager_constructed (GObject *object)
   initialize_dbus_interface (manager);
 
   manager->in_init = FALSE;
-}
-
-static void
-meta_monitor_manager_set_power_save_mode (MetaMonitorManager *manager,
-                                          MetaPowerSave       mode)
-{
-  MetaMonitorManagerClass *klass;
-
-  if (manager->power_save_mode == META_POWER_SAVE_UNSUPPORTED ||
-      mode == META_POWER_SAVE_UNSUPPORTED)
-    return;
-
-  klass = META_MONITOR_MANAGER_GET_CLASS (manager);
-  if (klass->set_power_save_mode)
-    klass->set_power_save_mode (manager, mode);
-
-  manager->power_save_mode = mode;
 }
 
 void
@@ -298,44 +303,6 @@ meta_monitor_manager_dispose (GObject *object)
   G_OBJECT_CLASS (meta_monitor_manager_parent_class)->dispose (object);
 }
 
-static void
-meta_monitor_manager_set_property (GObject      *object,
-                                   guint         prop_id,
-                                   const GValue *value,
-                                   GParamSpec   *pspec)
-{
-  MetaMonitorManager *self = META_MONITOR_MANAGER (object);
-
-  switch (prop_id)
-    {
-    case PROP_POWER_SAVE_MODE:
-      meta_monitor_manager_set_power_save_mode (self, g_value_get_int (value));
-      break;
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-      break;
-    }
-}
-
-static void
-meta_monitor_manager_get_property (GObject      *object,
-                                   guint         prop_id,
-                                   GValue       *value,
-                                   GParamSpec   *pspec)
-{
-  MetaMonitorManager *self = META_MONITOR_MANAGER (object);
-
-  switch (prop_id)
-    {
-    case PROP_POWER_SAVE_MODE:
-      g_value_set_int (value, self->power_save_mode);
-      break;
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-      break;
-    }
-}
-
 static GBytes *
 meta_monitor_manager_real_read_edid (MetaMonitorManager *manager,
                                      MetaOutput         *output)
@@ -356,8 +323,6 @@ meta_monitor_manager_class_init (MetaMonitorManagerClass *klass)
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
   object_class->constructed = meta_monitor_manager_constructed;
-  object_class->get_property = meta_monitor_manager_get_property;
-  object_class->set_property = meta_monitor_manager_set_property;
   object_class->dispose = meta_monitor_manager_dispose;
   object_class->finalize = meta_monitor_manager_finalize;
 
@@ -371,8 +336,6 @@ meta_monitor_manager_class_init (MetaMonitorManagerClass *klass)
 		  0,
                   NULL, NULL, NULL,
 		  G_TYPE_NONE, 0);
-
-  g_object_class_override_property (object_class, PROP_POWER_SAVE_MODE, "power-save-mode");
 }
 
 static const double known_diagonals[] = {
