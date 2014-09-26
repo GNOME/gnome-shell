@@ -69,7 +69,7 @@ meta_frame_layout_new  (void)
    */
   layout->titlebar_spacing = 6;
   layout->has_title = TRUE;
-  layout->title_scale = 1.0;
+  layout->title_scale = PANGO_SCALE_MEDIUM;
   layout->icon_size = META_MINI_ICON_WIDTH;
 
   return layout;
@@ -119,7 +119,7 @@ meta_frame_layout_get_borders (const MetaFrameLayout *layout,
                                MetaFrameType          type,
                                MetaFrameBorders      *borders)
 {
-  int buttons_height, title_height, draggable_borders;
+  int buttons_height, content_height, draggable_borders;
 
   meta_frame_borders_clear (borders);
 
@@ -132,16 +132,15 @@ meta_frame_layout_get_borders (const MetaFrameLayout *layout,
   if (!layout->has_title)
     text_height = 0;
 
-  buttons_height = layout->button_height +
+  buttons_height = layout->icon_size +
     layout->button_border.top + layout->button_border.bottom;
-  title_height = text_height +
-    layout->title_vertical_pad +
-    layout->title_border.top + layout->title_border.bottom;
+  content_height = MAX (buttons_height, text_height) +
+                   layout->titlebar_border.top + layout->titlebar_border.bottom;
 
-  borders->visible.top    = MAX (buttons_height, title_height);
-  borders->visible.left   = layout->left_width;
-  borders->visible.right  = layout->right_width;
-  borders->visible.bottom = layout->bottom_height;
+  borders->visible.top    = layout->frame_border.top + content_height;
+  borders->visible.left   = layout->frame_border.left;
+  borders->visible.right  = layout->frame_border.right;
+  borders->visible.bottom = layout->frame_border.bottom;
 
   draggable_borders = meta_prefs_get_draggable_border_width ();
 
@@ -300,12 +299,8 @@ meta_frame_layout_sync_with_style (MetaFrameLayout *layout,
   meta_style_info_set_flags (style_info, flags);
 
   style = style_info->styles[META_STYLE_ELEMENT_FRAME];
-  get_padding_and_border (style, &border);
-  scale_border (&border, layout->title_scale);
-
-  layout->left_width = border.left;
-  layout->right_width = border.right;
-  layout->bottom_height = border.bottom;
+  get_padding_and_border (style, &layout->frame_border);
+  scale_border (&layout->frame_border, layout->title_scale);
 
   if (layout->hide_buttons)
     layout->icon_size = 0;
@@ -324,36 +319,26 @@ meta_frame_layout_sync_with_style (MetaFrameLayout *layout,
    */
   layout->top_left_corner_rounded_radius = border_radius;
   layout->top_right_corner_rounded_radius = border_radius;
-  max_radius = MIN (layout->bottom_height, layout->left_width);
+  max_radius = MIN (layout->frame_border.bottom, layout->frame_border.left);
   layout->bottom_left_corner_rounded_radius = MAX (border_radius, max_radius);
-  max_radius = MIN (layout->bottom_height, layout->right_width);
+  max_radius = MIN (layout->frame_border.bottom, layout->frame_border.right);
   layout->bottom_right_corner_rounded_radius = MAX (border_radius, max_radius);
 
-  get_padding_and_border (style, &border);
-  scale_border (&border, layout->title_scale);
-  layout->left_titlebar_edge = border.left;
-  layout->right_titlebar_edge = border.right;
-  layout->title_vertical_pad = border.top;
-
-  layout->button_border.top = border.top;
-  layout->button_border.bottom = border.bottom;
-  layout->button_border.left = 0;
-  layout->button_border.right = 0;
-
-  layout->button_width = layout->icon_size;
-  layout->button_height = layout->icon_size;
+  get_padding_and_border (style, &layout->titlebar_border);
+  scale_border (&layout->titlebar_border, layout->title_scale);
 
   style = style_info->styles[META_STYLE_ELEMENT_BUTTON];
-  get_padding_and_border (style, &border);
-  scale_border (&border, layout->title_scale);
-  layout->button_width += border.left + border.right;
-  layout->button_height += border.top + border.bottom;
+  get_padding_and_border (style, &layout->button_border);
+  scale_border (&layout->button_border, layout->title_scale);
 
   style = style_info->styles[META_STYLE_ELEMENT_IMAGE];
   get_padding_and_border (style, &border);
   scale_border (&border, layout->title_scale);
-  layout->button_width += border.left + border.right;
-  layout->button_height += border.top + border.bottom;
+
+  layout->button_border.left += border.left;
+  layout->button_border.right += border.right;
+  layout->button_border.top += border.top;
+  layout->button_border.bottom += border.bottom;
 }
 
 static void
@@ -373,6 +358,7 @@ meta_frame_layout_calc_geometry (MetaFrameLayout        *layout,
   int button_y;
   int title_right_edge;
   int width, height;
+  int content_width, content_height;
   int button_width, button_height;
   int min_size_for_rounding;
 
@@ -394,6 +380,12 @@ meta_frame_layout_calc_geometry (MetaFrameLayout        *layout,
 
   fgeom->borders = borders;
 
+  fgeom->content_border = layout->frame_border;
+  fgeom->content_border.left   += layout->titlebar_border.left;
+  fgeom->content_border.right  += layout->titlebar_border.right;
+  fgeom->content_border.top    += layout->titlebar_border.top;
+  fgeom->content_border.bottom += layout->titlebar_border.bottom;
+
   width = client_width + borders.total.left + borders.total.right;
 
   height = borders.total.top + borders.total.bottom;
@@ -403,13 +395,15 @@ meta_frame_layout_calc_geometry (MetaFrameLayout        *layout,
   fgeom->width = width;
   fgeom->height = height;
 
-  fgeom->top_titlebar_edge = layout->title_border.top;
-  fgeom->bottom_titlebar_edge = layout->title_border.bottom;
-  fgeom->left_titlebar_edge = layout->left_titlebar_edge;
-  fgeom->right_titlebar_edge = layout->right_titlebar_edge;
+  content_width = width -
+                  (fgeom->content_border.left + borders.invisible.left) -
+                  (fgeom->content_border.right + borders.invisible.right);
+  content_height = borders.visible.top - fgeom->content_border.top - fgeom->content_border.bottom;
 
-  button_width = layout->button_width;
-  button_height = layout->button_height;
+  button_width = layout->icon_size +
+                 layout->button_border.left + layout->button_border.right;
+  button_height = layout->icon_size +
+                  layout->button_border.top + layout->button_border.bottom;
 
   /* FIXME all this code sort of pretends that duplicate buttons
    * with the same function are allowed, but that breaks the
@@ -464,9 +458,6 @@ meta_frame_layout_calc_geometry (MetaFrameLayout        *layout,
   while (n_left > 0 || n_right > 0)
     {
       int space_used_by_buttons;
-      int space_available;
-
-      space_available = fgeom->width - layout->left_titlebar_edge - layout->right_titlebar_edge;
 
       space_used_by_buttons = 0;
 
@@ -478,7 +469,7 @@ meta_frame_layout_calc_geometry (MetaFrameLayout        *layout,
       space_used_by_buttons += (button_width * 0.75) * n_right_spacers;
       space_used_by_buttons += layout->titlebar_spacing * MAX (n_right - 1, 0);
 
-      if (space_used_by_buttons <= space_available)
+      if (space_used_by_buttons <= content_width)
         break; /* Everything fits, bail out */
 
       /* First try to remove separators */
@@ -542,11 +533,11 @@ meta_frame_layout_calc_geometry (MetaFrameLayout        *layout,
   fgeom->n_right_buttons = n_right;
 
   /* center buttons vertically */
-  button_y = (borders.visible.top -
-              (button_height + layout->button_border.top + layout->button_border.bottom)) / 2 + layout->button_border.top + borders.invisible.top;
+  button_y = fgeom->content_border.top + borders.invisible.top +
+             (content_height - button_height) / 2;
 
   /* right edge of farthest-right button */
-  x = width - layout->right_titlebar_edge - borders.invisible.right;
+  x = width - fgeom->content_border.right - borders.invisible.right;
 
   i = n_right - 1;
   while (i >= 0)
@@ -575,7 +566,7 @@ meta_frame_layout_calc_geometry (MetaFrameLayout        *layout,
           rect->clickable.height = button_height + button_y;
 
           if (i == n_right - 1)
-            rect->clickable.width += layout->right_titlebar_edge + layout->right_width;
+            rect->clickable.width += fgeom->content_border.right;
 
         }
       else
@@ -590,12 +581,12 @@ meta_frame_layout_calc_geometry (MetaFrameLayout        *layout,
     }
 
   /* save right edge of titlebar for later use */
-  title_right_edge = x - layout->title_border.right;
+  title_right_edge = x;
 
   /* Now x changes to be position from the left and we go through
    * the left-side buttons
    */
-  x = layout->left_titlebar_edge + borders.invisible.left;
+  x = fgeom->content_border.left + borders.invisible.left;
   for (i = 0; i < n_left; i++)
     {
       MetaButtonSpace *rect;
@@ -633,13 +624,12 @@ meta_frame_layout_calc_geometry (MetaFrameLayout        *layout,
         x += (button_width * 0.75);
     }
 
-  /* We always fill as much vertical space as possible with title rect,
-   * rather than centering it like the buttons
-   */
-  fgeom->title_rect.x = x + layout->title_border.left;
-  fgeom->title_rect.y = layout->title_border.top + borders.invisible.top;
+  /* Center vertically in the available content area */
+  fgeom->title_rect.x = x;
+  fgeom->title_rect.y = fgeom->content_border.top + borders.invisible.top +
+                        (content_height - text_height) / 2;
   fgeom->title_rect.width = title_right_edge - fgeom->title_rect.x;
-  fgeom->title_rect.height = borders.visible.top - layout->title_border.top - layout->title_border.bottom;
+  fgeom->title_rect.height = text_height;
 
   /* Nuke title if it won't fit */
   if (fgeom->title_rect.width < 0 ||

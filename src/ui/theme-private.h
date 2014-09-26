@@ -53,36 +53,13 @@ typedef struct _MetaFrameGeometry MetaFrameGeometry;
  **/
 struct _MetaFrameLayout
 {
-  /** Reference count. */
   int refcount;
 
-  /** Size of left side */
-  int left_width;
-  /** Size of right side */
-  int right_width;
-  /** Size of bottom side */
-  int bottom_height;
-
-  /** Border of blue title region
-   * \bug (blue?!)
-   **/
-  GtkBorder title_border;
-
-  /** Extra height for inside of title region, above the font height */
-  int title_vertical_pad;
-
-  /** Right indent of buttons from edges of frame */
-  int right_titlebar_edge;
-  /** Left indent of buttons from edges of frame */
-  int left_titlebar_edge;
-
-  /** Width of a button; set even when we are using aspect sizing */
-  int button_width;
-
-  /** Height of a button; set even when we are using aspect sizing */
-  int button_height;
-
-  /** Space around buttons */
+  /** Border/padding of the entire frame */
+  GtkBorder frame_border;
+  /** Border/padding of the titlebar region */
+  GtkBorder titlebar_border;
+  /** Border/padding of titlebar buttons */
   GtkBorder button_border;
 
   /** Size of images in buttons */
@@ -136,10 +113,7 @@ struct _MetaFrameGeometry
 
   GdkRectangle title_rect;
 
-  int left_titlebar_edge;
-  int right_titlebar_edge;
-  int top_titlebar_edge;
-  int bottom_titlebar_edge;
+  GtkBorder content_border;
 
   /* used for a memset hack */
 #define ADDRESS_OF_BUTTON_RECTS(fgeom) (((char*)(fgeom)) + G_STRUCT_OFFSET (MetaFrameGeometry, close_rect))
