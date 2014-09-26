@@ -24,6 +24,8 @@
 
 #include "config.h"
 
+#include <X11/extensions/Xfixes.h>
+
 #include "meta-cursor-renderer-x11.h"
 
 #include <X11/extensions/Xfixes.h>
