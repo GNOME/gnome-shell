@@ -27,12 +27,15 @@
 
 #include "meta-wayland-types.h"
 
+typedef struct _MetaWaylandDragGrab MetaWaylandDragGrab;
+
 struct _MetaWaylandDataDevice
 {
   uint32_t selection_serial;
   MetaWaylandDataSource *selection_data_source;
   struct wl_listener selection_data_source_listener;
   struct wl_list resource_list;
+  MetaWaylandDragGrab *current_grab;
 };
 
 void meta_wayland_data_device_manager_init (MetaWaylandCompositor *compositor);

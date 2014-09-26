@@ -162,7 +162,7 @@ static struct wl_data_source_interface data_source_interface = {
   data_source_destroy
 };
 
-typedef struct {
+struct _MetaWaylandDragGrab {
   MetaWaylandPointerGrab  generic;
 
   MetaWaylandSeat        *seat;
@@ -177,7 +177,7 @@ typedef struct {
 
   MetaWaylandDataSource  *drag_data_source;
   struct wl_listener      drag_data_source_listener;
-} MetaWaylandDragGrab;
+};
 
 static void
 destroy_drag_focus (struct wl_listener *listener, void *data)
@@ -271,6 +271,8 @@ data_device_end_drag_grab (MetaWaylandDragGrab *drag_grab)
   if (drag_grab->drag_data_source)
     wl_list_remove (&drag_grab->drag_data_source_listener.link);
 
+  drag_grab->seat->data_device.current_grab = NULL;
+
   drag_grab_focus (&drag_grab->generic, NULL);
 
   meta_wayland_pointer_end_grab (drag_grab->generic.pointer);
@@ -339,10 +341,11 @@ data_device_start_drag (struct wl_client *client,
 
   /* FIXME: Check that the data source type array isn't empty. */
 
-  if (seat->pointer.grab != &seat->pointer.default_grab)
+  if (data_device->current_grab ||
+      seat->pointer.grab != &seat->pointer.default_grab)
     return;
 
-  drag_grab = g_slice_new0 (MetaWaylandDragGrab);
+  data_device->current_grab = drag_grab = g_slice_new0 (MetaWaylandDragGrab);
 
   drag_grab->generic.interface = &drag_grab_interface;
   drag_grab->generic.pointer = &seat->pointer;
