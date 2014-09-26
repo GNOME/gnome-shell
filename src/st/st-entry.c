@@ -662,6 +662,29 @@ st_entry_key_press_event (ClutterActor    *actor,
       return TRUE;
     }
 
+
+  /* delete to beginning of line */
+  if ((event->modifier_state & CLUTTER_CONTROL_MASK)
+      && event->keyval == CLUTTER_u)
+    {
+      int pos = clutter_text_get_cursor_position ((ClutterText *)priv->entry);
+      clutter_text_delete_text ((ClutterText *)priv->entry, 0, pos);
+
+      return TRUE;
+    }
+
+
+  /* delete to end of line */
+  if ((event->modifier_state & CLUTTER_CONTROL_MASK)
+      && event->keyval == CLUTTER_k)
+    {
+      ClutterTextBuffer *buffer = clutter_text_get_buffer ((ClutterText *)priv->entry);
+      int pos = clutter_text_get_cursor_position ((ClutterText *)priv->entry);
+      clutter_text_buffer_delete_text (buffer, pos, -1);
+
+      return TRUE;
+    }
+
   return CLUTTER_ACTOR_CLASS (st_entry_parent_class)->key_press_event (actor, event);
 }
 
