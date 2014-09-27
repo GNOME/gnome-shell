@@ -11,8 +11,9 @@
  *
  */
 
-typedef struct _ShellScreenshot      ShellScreenshot;
-typedef struct _ShellScreenshotClass ShellScreenshotClass;
+typedef struct _ShellScreenshot         ShellScreenshot;
+typedef struct _ShellScreenshotPrivate  ShellScreenshotPrivate;
+typedef struct _ShellScreenshotClass    ShellScreenshotClass;
 
 #define SHELL_TYPE_SCREENSHOT              (shell_screenshot_get_type ())
 #define SHELL_SCREENSHOT(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), SHELL_TYPE_SCREENSHOT, ShellScreenshot))
