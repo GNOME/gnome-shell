@@ -6731,7 +6731,7 @@ meta_window_set_demands_attention (MetaWindow *window)
           other_window = stack->data;
           stack = stack->next;
 
-          if (meta_window_located_on_workspace (other_window, window->workspace))
+          if (meta_window_located_on_workspace (other_window, workspace))
             {
               meta_window_get_frame_rect (other_window, &other_rect);
 
