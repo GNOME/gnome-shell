@@ -4297,7 +4297,7 @@ meta_window_focus (MetaWindow  *window,
  *  - workspace->windows is a list of windows that is located on
  *    that workspace.
  *
- *  - If the window is on_all_workspaces, then then
+ *  - If the window is on_all_workspaces, then
  *    window->workspace == NULL, but workspace->windows contains
  *    the window.
  */
