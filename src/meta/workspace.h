@@ -28,7 +28,7 @@
 #define META_TYPE_WORKSPACE            (meta_workspace_get_type ())
 #define META_WORKSPACE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_WORKSPACE, MetaWorkspace))
 #define META_WORKSPACE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  META_TYPE_WORKSPACE, MetaWorkspaceClass))
-#define META_IS_WORKSPACE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), META_WORKSPACE_TYPE))
+#define META_IS_WORKSPACE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), META_TYPE_WORKSPACE))
 #define META_IS_WORKSPACE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  META_TYPE_WORKSPACE))
 #define META_WORKSPACE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  META_TYPE_WORKSPACE, MetaWorkspaceClass))
 
