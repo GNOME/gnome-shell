@@ -181,6 +181,9 @@ struct _MetaFrameLayout
   /** Space around buttons */
   GtkBorder button_border;
 
+  /** Size of images in buttons */
+  guint icon_size;
+
   /** Space between titlebar elements */
   guint titlebar_spacing;
 
