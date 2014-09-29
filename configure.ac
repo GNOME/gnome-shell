@@ -79,7 +79,7 @@ MUTTER_PC_MODULES="
    $CLUTTER_PACKAGE >= 1.19.5
    clutter-egl-1.0
    cogl-1.0 >= 1.17.1
-   gbm
+   gbm >= 10.3
    upower-glib >= 0.99.0
    gnome-desktop-3.0
    xcomposite >= 0.2
