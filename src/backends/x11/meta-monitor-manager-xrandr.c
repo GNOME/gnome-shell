@@ -144,7 +144,7 @@ static gboolean
 output_get_boolean_property (MetaMonitorManagerXrandr *manager_xrandr,
                              MetaOutput *output, const char *propname)
 {
-  gboolean value;
+  gboolean value = FALSE;
   Atom atom, actual_type;
   int actual_format;
   unsigned long nitems, bytes_after;
@@ -158,12 +158,12 @@ output_get_boolean_property (MetaMonitorManagerXrandr *manager_xrandr,
                         &actual_type, &actual_format,
                         &nitems, &bytes_after, &buffer);
 
-  if (actual_type != XA_CARDINAL || actual_format != 32 ||
-      nitems < 1)
-    return FALSE;
+  if (actual_type != XA_CARDINAL || actual_format != 32 || nitems < 1)
+    goto out;
 
   value = ((int*)buffer)[0];
 
+ out:
   XFree (buffer);
   return value;
 }
@@ -187,7 +187,7 @@ static int
 output_get_backlight_xrandr (MetaMonitorManagerXrandr *manager_xrandr,
                              MetaOutput               *output)
 {
-  gboolean value;
+  int value = -1;
   Atom atom, actual_type;
   int actual_format;
   unsigned long nitems, bytes_after;
@@ -201,14 +201,17 @@ output_get_backlight_xrandr (MetaMonitorManagerXrandr *manager_xrandr,
                         &actual_type, &actual_format,
                         &nitems, &bytes_after, &buffer);
 
-  if (actual_type != XA_INTEGER || actual_format != 32 ||
-      nitems < 1)
-    return -1;
+  if (actual_type != XA_INTEGER || actual_format != 32 || nitems < 1)
+    goto out;
 
   value = ((int*)buffer)[0];
 
+ out:
   XFree (buffer);
-  return normalize_backlight (output, value);
+  if (value > 0)
+    return normalize_backlight (output, value);
+  else
+    return -1;
 }
 
 static void
