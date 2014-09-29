@@ -1187,7 +1187,6 @@ settings_changed (GSettings *settings,
     {
       /* Unknown preference type. This quite likely simply isn't
        * a preference we track changes to. */
-      return;
     }
 
   g_variant_unref (value);
