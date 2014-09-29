@@ -170,6 +170,7 @@ MetaWorkspace*
 meta_workspace_new (MetaScreen *screen)
 {
   MetaWorkspace *workspace;
+  GSList *windows, *l;
 
   workspace = g_object_new (META_TYPE_WORKSPACE, NULL);
 
@@ -178,6 +179,13 @@ meta_workspace_new (MetaScreen *screen)
     g_list_append (workspace->screen->workspaces, workspace);
   workspace->windows = NULL;
   workspace->mru_list = NULL;
+
+  /* make sure sticky windows are in our mru_list */
+  windows = meta_display_list_windows (screen->display, META_LIST_SORTED);
+  for (l = windows; l; l = l->next)
+    if (meta_window_located_on_workspace (l->data, workspace))
+      meta_workspace_add_window (workspace, l->data);
+  g_slist_free (windows);
 
   workspace->work_areas_invalid = TRUE;
   workspace->work_area_monitor = NULL;
