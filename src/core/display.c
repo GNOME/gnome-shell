@@ -150,6 +150,9 @@ static void update_cursor_theme (void);
 static void    prefs_changed_callback    (MetaPreference pref,
                                           void          *data);
 
+static int mru_cmp (gconstpointer a,
+                    gconstpointer b);
+
 static void
 meta_display_get_property(GObject         *object,
                           guint            prop_id,
@@ -1060,6 +1063,9 @@ meta_display_list_windows (MetaDisplay          *display,
 
       tmp = next;
     }
+
+  if (flags & META_LIST_SORTED)
+    winlist = g_slist_sort (winlist, mru_cmp);
 
   return winlist;
 }

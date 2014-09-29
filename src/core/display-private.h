@@ -57,6 +57,7 @@ typedef struct MetaEdgeResistanceData MetaEdgeResistanceData;
 typedef enum {
   META_LIST_DEFAULT                   = 0,      /* normal windows */
   META_LIST_INCLUDE_OVERRIDE_REDIRECT = 1 << 0, /* normal and O-R */
+  META_LIST_SORTED                    = 1 << 1, /* sort list by mru */
 } MetaListWindowsFlags;
 
 #define _NET_WM_STATE_REMOVE        0    /* remove/unset property */
