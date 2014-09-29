@@ -366,7 +366,7 @@ meta_workspace_relocate_windows (MetaWorkspace *workspace,
     {
       MetaWindow *window = l->data;
 
-      if (!window->override_redirect)
+      if (!window->on_all_workspaces)
         meta_window_change_workspace (window, new_home);
     }
 
