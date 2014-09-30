@@ -452,6 +452,13 @@ const SearchResults = new Lang.Class({
         this._updateResults(provider, results);
     },
 
+    _clearSearchTimeout: function() {
+        if (this._searchTimeoutId > 0) {
+            GLib.source_remove(this._searchTimeoutId);
+            this._searchTimeoutId = 0;
+        }
+    },
+
     _doSearch: function() {
         this._startingSearch = false;
 
@@ -470,10 +477,7 @@ const SearchResults = new Lang.Class({
 
         this._updateSearchProgress();
 
-        if (this._searchTimeoutId > 0) {
-            GLib.source_remove(this._searchTimeoutId);
-            this._searchTimeoutId = 0;
-        }
+        this._clearSearchTimeout();
     },
 
     _onSearchTimeout: function() {
@@ -489,10 +493,7 @@ const SearchResults = new Lang.Class({
         this._cancellable.reset();
 
         if (!terms) {
-            if (this._searchTimeoutId > 0) {
-                GLib.source_remove(this._searchTimeoutId);
-                this._searchTimeoutId = 0;
-            }
+            this._clearSearchTimeout();
             return;
         }
 
