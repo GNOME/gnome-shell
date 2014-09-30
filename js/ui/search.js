@@ -535,6 +535,7 @@ const SearchResults = new Lang.Class({
             providerDisplay = new GridSearchResults(provider, this.actor);
 
         providerDisplay.connect('key-focus-in', Lang.bind(this, this._keyFocusIn));
+        providerDisplay.actor.hide();
         this._content.add(providerDisplay.actor);
         provider.display = providerDisplay;
     },
