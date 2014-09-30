@@ -185,6 +185,9 @@ file_loaded (GObject      *source_object,
   image->texture = texture;
 
 out:
+  if (pixbuf != NULL)
+    g_object_unref (pixbuf);
+
   image->loaded = TRUE;
   g_signal_emit (image, signals[LOADED], 0);
 }
