@@ -492,7 +492,7 @@ const SearchResults = new Lang.Class({
         this._cancellable.cancel();
         this._cancellable.reset();
 
-        if (!terms) {
+        if (terms.length == 0) {
             this._clearSearchTimeout();
             return;
         }
