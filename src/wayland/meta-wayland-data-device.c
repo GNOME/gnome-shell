@@ -177,6 +177,11 @@ struct _MetaWaylandDragGrab {
 
   MetaWaylandDataSource  *drag_data_source;
   struct wl_listener      drag_data_source_listener;
+
+  MetaWaylandSurface     *drag_origin;
+  struct wl_listener      drag_origin_listener;
+
+  int                     drag_start_x, drag_start_y;
 };
 
 static void
@@ -262,6 +267,12 @@ drag_grab_motion (MetaWaylandPointerGrab *grab,
 static void
 data_device_end_drag_grab (MetaWaylandDragGrab *drag_grab)
 {
+  if (drag_grab->drag_origin)
+    {
+      drag_grab->drag_origin = NULL;
+      wl_list_remove (&drag_grab->drag_origin_listener.link);
+    }
+
   if (drag_grab->drag_surface)
     {
       drag_grab->drag_surface = NULL;
@@ -304,6 +315,16 @@ static const MetaWaylandPointerGrabInterface drag_grab_interface = {
 };
 
 static void
+destroy_data_device_origin (struct wl_listener *listener, void *data)
+{
+  MetaWaylandDragGrab *drag_grab =
+    wl_container_of (listener, drag_grab, drag_origin_listener);
+
+  drag_grab->drag_origin = NULL;
+  data_device_end_drag_grab (drag_grab);
+}
+
+static void
 destroy_data_device_source (struct wl_listener *listener, void *data)
 {
   MetaWaylandDragGrab *drag_grab =
@@ -331,12 +352,20 @@ data_device_start_drag (struct wl_client *client,
 {
   MetaWaylandDataDevice *data_device = wl_resource_get_user_data (resource);
   MetaWaylandSeat *seat = wl_container_of (data_device, seat, data_device);
+  MetaWaylandSurface *surface = NULL;
   MetaWaylandDragGrab *drag_grab;
+  ClutterPoint pos;
 
-  if ((seat->pointer.button_count == 0 ||
-       seat->pointer.grab_serial != serial ||
-       !seat->pointer.focus_surface ||
-       seat->pointer.focus_surface != wl_resource_get_user_data (origin_resource)))
+  if (origin_resource)
+    surface = wl_resource_get_user_data (origin_resource);
+
+  if (!surface)
+    return;
+
+  if (seat->pointer.button_count == 0 ||
+      seat->pointer.grab_serial != serial ||
+      !seat->pointer.focus_surface ||
+      seat->pointer.focus_surface != surface)
     return;
 
   /* FIXME: Check that the data source type array isn't empty. */
@@ -352,6 +381,17 @@ data_device_start_drag (struct wl_client *client,
 
   drag_grab->drag_client = client;
   drag_grab->seat = seat;
+
+  drag_grab->drag_origin = surface;
+  drag_grab->drag_origin_listener.notify = destroy_data_device_origin;
+  wl_resource_add_destroy_listener (origin_resource,
+                                    &drag_grab->drag_origin_listener);
+
+  clutter_input_device_get_coords (seat->pointer.device, NULL, &pos);
+  clutter_actor_transform_stage_point (CLUTTER_ACTOR (meta_surface_actor_get_texture (surface->surface_actor)),
+                                       pos.x, pos.y, &pos.x, &pos.y);
+  drag_grab->drag_start_x = pos.x;
+  drag_grab->drag_start_y = pos.y;
 
   if (source_resource)
     {
