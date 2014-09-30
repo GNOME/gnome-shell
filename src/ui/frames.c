@@ -573,6 +573,7 @@ meta_frames_manage_window (MetaFrames *frames,
   frame->title = NULL;
   frame->shape_applied = FALSE;
   frame->prelit_control = META_FRAME_CONTROL_NONE;
+  frame->button_state = META_BUTTON_STATE_NORMAL;
 
   meta_core_grab_buttons (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()), frame->xwindow);
 
