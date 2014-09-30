@@ -46,6 +46,7 @@ struct _MetaWaylandDataSource
 {
   struct wl_resource *resource;
   struct wl_array mime_types;
+  gboolean has_target;
 };
 
 static void
@@ -67,7 +68,10 @@ data_offer_accept (struct wl_client *client,
    * this be a wl_data_device request? */
 
   if (offer->source)
-    wl_data_source_send_target (offer->source->resource, mime_type);
+    {
+      wl_data_source_send_target (offer->source->resource, mime_type);
+      offer->source->has_target = mime_type != NULL;
+    }
 }
 
 static void
@@ -280,7 +284,10 @@ data_device_end_drag_grab (MetaWaylandDragGrab *drag_grab)
     }
 
   if (drag_grab->drag_data_source)
-    wl_list_remove (&drag_grab->drag_data_source_listener.link);
+    {
+      drag_grab->drag_data_source->has_target = FALSE;
+      wl_list_remove (&drag_grab->drag_data_source_listener.link);
+    }
 
   drag_grab->seat->data_device.current_grab = NULL;
 
