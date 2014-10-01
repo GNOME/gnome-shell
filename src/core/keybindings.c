@@ -2955,10 +2955,6 @@ do_choose_window (MetaDisplay     *display,
   meta_topic (META_DEBUG_KEYBINDINGS,
               "Tab list = %u\n", type);
 
-  /* reverse direction if shift is down */
-  if (event->modifier_state & CLUTTER_SHIFT_MASK)
-    backward = !backward;
-
   window = meta_display_get_tab_next (display,
                                       type,
                                       screen->active_workspace,
