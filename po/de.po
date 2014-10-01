@@ -20,9 +20,9 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-03-28 20:56+0000\n"
-"PO-Revision-Date: 2014-03-29 08:34+0100\n"
-"Last-Translator: Benjamin Steinwender <b@stbe.at>\n"
+"POT-Creation-Date: 2014-09-30 16:26+0000\n"
+"PO-Revision-Date: 2014-10-01 22:27+0100\n"
+"Last-Translator: Christian Kirbach <christian.kirbach@gmail.com>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
@@ -426,7 +426,7 @@ msgid "%s has been removed from your favorites."
 msgstr "%s wurde aus Ihren Favoriten entfernt"
 
 #: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:809
-#: ../js/ui/status/system.js:334
+#: ../js/ui/status/system.js:337
 msgid "Settings"
 msgstr "Einstellungen"
 
@@ -1169,7 +1169,7 @@ msgstr "Installieren"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "»%s« von extensions.gnome.org herunterladen und installieren?"
 
-#: ../js/ui/keyboard.js:641 ../js/ui/status/keyboard.js:335
+#: ../js/ui/keyboard.js:641 ../js/ui/status/keyboard.js:339
 msgid "Keyboard"
 msgstr "Tastatur"
 
@@ -1331,7 +1331,7 @@ msgid_plural "%d new notifications"
 msgstr[0] "%d neue Benachrichtigung"
 msgstr[1] "%d neue Benachrichtigungen"
 
-#: ../js/ui/screenShield.js:474 ../js/ui/status/system.js:342
+#: ../js/ui/screenShield.js:474 ../js/ui/status/system.js:345
 msgid "Lock"
 msgstr "Sperren"
 
@@ -1339,19 +1339,19 @@ msgstr "Sperren"
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME muss den Bildschirm sperren"
 
-#: ../js/ui/screenShield.js:835 ../js/ui/screenShield.js:1309
+#: ../js/ui/screenShield.js:835 ../js/ui/screenShield.js:1303
 msgid "Unable to lock"
 msgstr "Sperrung fehlgeschlagen"
 
-#: ../js/ui/screenShield.js:836 ../js/ui/screenShield.js:1310
+#: ../js/ui/screenShield.js:836 ../js/ui/screenShield.js:1304
 msgid "Lock was blocked by an application"
 msgstr "Sperrung wurde von einer Anwendung blockiert"
 
-#: ../js/ui/search.js:603
+#: ../js/ui/search.js:606
 msgid "Searching…"
 msgstr "Suche läuft …"
 
-#: ../js/ui/search.js:649
+#: ../js/ui/search.js:652
 msgid "No results."
 msgstr "Keine Ergebnisse."
 
@@ -1401,7 +1401,7 @@ msgstr "Visuelle Warnungen"
 
 #: ../js/ui/status/accessibility.js:75
 msgid "Sticky Keys"
-msgstr "Klebrige Tasten"
+msgstr "Einrastfunktion"
 
 #: ../js/ui/status/accessibility.js:78
 msgid "Slow Keys"
@@ -1409,7 +1409,7 @@ msgstr "Tastenverzögerung"
 
 #: ../js/ui/status/accessibility.js:81
 msgid "Bounce Keys"
-msgstr "Springende Tasten"
+msgstr "Tastenanschlagfunktion"
 
 #: ../js/ui/status/accessibility.js:84
 msgid "Mouse Keys"
@@ -1429,8 +1429,8 @@ msgstr "Bluetooth"
 
 #: ../js/ui/status/bluetooth.js:51 ../js/ui/status/network.js:151
 #: ../js/ui/status/network.js:323 ../js/ui/status/network.js:1234
-#: ../js/ui/status/network.js:1345 ../js/ui/status/rfkill.js:85
-#: ../js/ui/status/rfkill.js:105
+#: ../js/ui/status/network.js:1345 ../js/ui/status/rfkill.js:86
+#: ../js/ui/status/rfkill.js:114
 msgid "Turn Off"
 msgstr "Ausschalten"
 
@@ -1453,7 +1453,7 @@ msgstr "Nicht verbunden"
 msgid "Brightness"
 msgstr "Helligkeit"
 
-#: ../js/ui/status/keyboard.js:403
+#: ../js/ui/status/keyboard.js:407
 msgid "Show Keyboard Layout"
 msgstr "Tastaturbelegung anzeigen"
 
@@ -1462,12 +1462,10 @@ msgid "Location"
 msgstr "Ort"
 
 #: ../js/ui/status/location.js:60 ../js/ui/status/location.js:168
-#| msgid "Disabled"
 msgid "Disable"
 msgstr "Deaktivieren"
 
 #: ../js/ui/status/location.js:165
-#| msgid "Enabled"
 msgid "Enable"
 msgstr "Aktivieren"
 
@@ -1578,7 +1576,7 @@ msgstr "Wählen Sie ein Netzwerk"
 msgid "No Networks"
 msgstr "Keine Netzwerke"
 
-#: ../js/ui/status/network.js:866 ../js/ui/status/rfkill.js:103
+#: ../js/ui/status/network.js:866 ../js/ui/status/rfkill.js:112
 msgid "Use hardware switch to turn off"
 msgstr "Benutzen Sie zum Ausschalten den Gehäuseschalter"
 
@@ -1602,7 +1600,7 @@ msgstr "Hotspot aktiv"
 msgid "Connecting"
 msgstr "Verbinden"
 
-#: ../js/ui/status/network.js:1433 ../js/ui/status/rfkill.js:88
+#: ../js/ui/status/network.js:1433 ../js/ui/status/rfkill.js:89
 msgid "Network Settings"
 msgstr "Netzwerkeinstellungen"
 
@@ -1656,31 +1654,31 @@ msgstr "USV"
 msgid "Battery"
 msgstr "Akku"
 
-#: ../js/ui/status/rfkill.js:82
+#: ../js/ui/status/rfkill.js:83
 msgid "Airplane Mode"
 msgstr "Flugzeugmodus"
 
-#: ../js/ui/status/rfkill.js:84
+#: ../js/ui/status/rfkill.js:85
 msgid "On"
 msgstr "An"
 
-#: ../js/ui/status/system.js:314
+#: ../js/ui/status/system.js:317
 msgid "Switch User"
 msgstr "Benutzer wechseln"
 
-#: ../js/ui/status/system.js:319
+#: ../js/ui/status/system.js:322
 msgid "Log Out"
 msgstr "Abmelden"
 
-#: ../js/ui/status/system.js:338
+#: ../js/ui/status/system.js:341
 msgid "Orientation Lock"
 msgstr "Hoch-/Querformats-Fixierung"
 
-#: ../js/ui/status/system.js:346
+#: ../js/ui/status/system.js:349
 msgid "Suspend"
 msgstr "In Bereitschaft versetzen"
 
-#: ../js/ui/status/system.js:349
+#: ../js/ui/status/system.js:352
 msgid "Power Off"
 msgstr "Ausschalten"
 
