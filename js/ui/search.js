@@ -498,6 +498,15 @@ const SearchResults = new Lang.Class({
     },
 
     setTerms: function(terms) {
+        // Check for the case of making a duplicate previous search before
+        // setting state of the current search or cancelling the search.
+        // This will prevent incorrect state being as a result of a duplicate
+        // search while the previous search is still active.
+        let searchString = terms.join(' ');
+        let previousSearchString = this._terms.join(' ');
+        if (searchString == previousSearchString)
+            return;
+
         this._startingSearch = true;
 
         this._cancellable.cancel();
@@ -507,11 +516,6 @@ const SearchResults = new Lang.Class({
             this._reset();
             return;
         }
-
-        let searchString = terms.join(' ');
-        let previousSearchString = this._terms.join(' ');
-        if (searchString == previousSearchString)
-            return;
 
         let isSubSearch = false;
         if (this._terms.length > 0)
