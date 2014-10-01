@@ -3085,21 +3085,6 @@ check_fullscreen_func (gpointer data)
 
           g_free (monitors);
         }
-
-      /* If we find a window that is fullscreen but not in the FULLSCREEN
-       * layer, it means that we've kicked it out of the layer because
-       * we've focused another window on the same monitor. In this case
-       * it would be confusing to keep the window fullscreen and visible,
-       * so minimize it. We can't do the same thing for override-redirect
-       * windows, so we just hope the application does the right thing.
-       */
-      if (!covers_monitors && window->fullscreen)
-        {
-          meta_window_minimize (window);
-          meta_topic (META_DEBUG_WINDOW_OPS,
-                      "Minimizing %s: was fullscreen but in a lower layer\n",
-                      window->desc);
-        }
     }
 
   g_slist_free (windows);
