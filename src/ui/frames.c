@@ -671,37 +671,6 @@ meta_frames_get_borders (MetaFrames *frames,
   meta_ui_frame_get_borders (frames, frame, borders);
 }
 
-static void
-meta_ui_frame_get_corner_radiuses (MetaFrames  *frames,
-                                   MetaUIFrame *frame,
-                                   float       *top_left,
-                                   float       *top_right,
-                                   float       *bottom_left,
-                                   float       *bottom_right)
-{
-  MetaFrameGeometry fgeom;
-
-  meta_frames_calc_geometry (frames, frame, &fgeom);
-
-  /* For compatibility with the code in get_visible_rect(), there's
-   * a mysterious sqrt() added to the corner radiuses:
-   *
-   *   const float radius = sqrt(corner) + corner;
-   *
-   * It's unclear why the radius is calculated like this, but we
-   * need to be consistent with it.
-   */
-
-  if (top_left)
-    *top_left = fgeom.top_left_corner_rounded_radius + sqrt(fgeom.top_left_corner_rounded_radius);
-  if (top_right)
-    *top_right = fgeom.top_right_corner_rounded_radius + sqrt(fgeom.top_right_corner_rounded_radius);
-  if (bottom_left)
-    *bottom_left = fgeom.bottom_left_corner_rounded_radius + sqrt(fgeom.bottom_left_corner_rounded_radius);
-  if (bottom_right)
-    *bottom_right = fgeom.bottom_right_corner_rounded_radius + sqrt(fgeom.bottom_right_corner_rounded_radius);
-}
-
 /* The client rectangle surrounds client window; it subtracts both
  * the visible and invisible borders from the frame window's size.
  */
@@ -751,7 +720,7 @@ get_visible_region (MetaFrames        *frames,
   if (fgeom->top_left_corner_rounded_radius != 0)
     {
       const int corner = fgeom->top_left_corner_rounded_radius;
-      const float radius = sqrt(corner) + corner;
+      const float radius = corner;
       int i;
 
       for (i=0; i<corner; i++)
@@ -769,7 +738,7 @@ get_visible_region (MetaFrames        *frames,
   if (fgeom->top_right_corner_rounded_radius != 0)
     {
       const int corner = fgeom->top_right_corner_rounded_radius;
-      const float radius = sqrt(corner) + corner;
+      const float radius = corner;
       int i;
 
       for (i=0; i<corner; i++)
@@ -787,7 +756,7 @@ get_visible_region (MetaFrames        *frames,
   if (fgeom->bottom_left_corner_rounded_radius != 0)
     {
       const int corner = fgeom->bottom_left_corner_rounded_radius;
-      const float radius = sqrt(corner) + corner;
+      const float radius = corner;
       int i;
 
       for (i=0; i<corner; i++)
@@ -805,7 +774,7 @@ get_visible_region (MetaFrames        *frames,
   if (fgeom->bottom_right_corner_rounded_radius != 0)
     {
       const int corner = fgeom->bottom_right_corner_rounded_radius;
-      const float radius = sqrt(corner) + corner;
+      const float radius = corner;
       int i;
 
       for (i=0; i<corner; i++)
@@ -1614,8 +1583,6 @@ get_visible_frame_border_region (MetaUIFrame *frame)
   return frame_border;
 }
 
-#define TAU (2*M_PI)
-
 /*
  * Draw the opaque and semi-opaque pixels of this frame into a mask.
  *
@@ -1646,68 +1613,23 @@ meta_frames_get_mask (MetaFrames          *frames,
                       cairo_t             *cr)
 {
   MetaUIFrame *frame = meta_frames_lookup_window (frames, xwindow);
-  float top_left, top_right, bottom_left, bottom_right;
-  int x, y;
   MetaFrameBorders borders;
+  MetaFrameFlags flags;
 
   if (frame == NULL)
     meta_bug ("No such frame 0x%lx\n", xwindow);
 
-  cairo_save (cr);
+  meta_core_get (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()),
+                 xwindow,
+                 META_CORE_GET_FRAME_FLAGS, &flags,
+                 META_CORE_GET_END);
 
+  meta_style_info_set_flags (frame->style_info, flags);
   meta_ui_frame_get_borders (frames, frame, &borders);
-  meta_ui_frame_get_corner_radiuses (frames, frame,
-                                     &top_left, &top_right,
-                                     &bottom_left, &bottom_right);
-
-  /* top left */
-  x = borders.invisible.left;
-  y = borders.invisible.top;
-
-  cairo_arc (cr,
-             x + top_left,
-             y + top_left,
-             top_left,
-             2 * TAU / 4,
-             3 * TAU / 4);
-
-  /* top right */
-  x = width - borders.invisible.right - top_right;
-  y = borders.invisible.top;
-
-  cairo_arc (cr,
-             x,
-             y + top_right,
-             top_right,
-             3 * TAU / 4,
-             4 * TAU / 4);
-
-  /* bottom right */
-  x = width - borders.invisible.right - bottom_right;
-  y = height - borders.invisible.bottom - bottom_right;
-
-  cairo_arc (cr,
-             x,
-             y,
-             bottom_right,
-             0 * TAU / 4,
-             1 * TAU / 4);
-
-  /* bottom left */
-  x = borders.invisible.left;
-  y = height - borders.invisible.bottom - bottom_left;
-
-  cairo_arc (cr,
-             x + bottom_left,
-             y,
-             bottom_left,
-             1 * TAU / 4,
-             2 * TAU / 4);
-
-  cairo_set_source_rgba (cr, 1, 1, 1, 1);
-  cairo_fill (cr);
-
-  cairo_restore (cr);
+  gtk_render_background (frame->style_info->styles[META_STYLE_ELEMENT_FRAME], cr,
+                         borders.invisible.left, borders.invisible.top,
+                         width - borders.invisible.left - borders.invisible.right,
+                         height - borders.invisible.top - borders.invisible.bottom);
 }
 
 /* XXX -- this is disgusting. Find a better approach here.
