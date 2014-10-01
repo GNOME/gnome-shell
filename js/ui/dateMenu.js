@@ -3,6 +3,7 @@
 const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
 const GnomeDesktop = imports.gi.GnomeDesktop;
+const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Cairo = imports.cairo;
@@ -124,14 +125,19 @@ const DateMenuButton = new Lang.Class({
             if (isOpen) {
                 let now = new Date();
                 this._calendar.setDate(now);
+
+                /* Translators: This is the date format to use when the calendar popup is
+                 * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
+                 */
+                let dateFormat = _("%A %B %e, %Y");
+                this._date.set_label(now.toLocaleFormat(dateFormat));
             }
         }));
 
         // Done with hbox for calendar and event list
 
         this._clock = new GnomeDesktop.WallClock();
-        this._clock.connect('notify::clock', Lang.bind(this, this._updateClockAndDate));
-        this._updateClockAndDate();
+        this._clock.bind_property('clock', this._clockDisplay, 'text', GObject.BindingFlags.SYNC_CREATE);
 
         Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
         this._sessionUpdated();
@@ -194,16 +200,6 @@ const DateMenuButton = new Lang.Class({
         // This needs to be handled manually, as the code to
         // autohide separators doesn't work across the vbox
         this._dateAndTimeSeparator.actor.visible = Main.sessionMode.allowSettings;
-    },
-
-    _updateClockAndDate: function() {
-        this._clockDisplay.set_text(this._clock.clock);
-        /* Translators: This is the date format to use when the calendar popup is
-         * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
-         */
-        let dateFormat = _("%A %B %e, %Y");
-        let displayDate = new Date();
-        this._date.set_label(displayDate.toLocaleFormat(dateFormat));
     },
 
     _getCalendarApp: function() {
