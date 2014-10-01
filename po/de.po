@@ -20,9 +20,9 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-09-15 07:36+0000\n"
-"PO-Revision-Date: 2014-09-15 18:29+0100\n"
-"Last-Translator:  <dev@hmt.im>\n"
+"POT-Creation-Date: 2014-10-01 19:43+0000\n"
+"PO-Revision-Date: 2014-10-01 22:16+0100\n"
+"Last-Translator: Christian Kirbach <christian.kirbach@gmail.com>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
@@ -409,28 +409,28 @@ msgstr "Häufig"
 msgid "All"
 msgstr "Alle"
 
-#: ../js/ui/appDisplay.js:1789
+#: ../js/ui/appDisplay.js:1790
 msgid "New Window"
 msgstr "Neues Fenster"
 
-#: ../js/ui/appDisplay.js:1815 ../js/ui/dash.js:285
+#: ../js/ui/appDisplay.js:1816 ../js/ui/dash.js:285
 msgid "Remove from Favorites"
 msgstr "Aus Favoriten entfernen"
 
-#: ../js/ui/appDisplay.js:1821
+#: ../js/ui/appDisplay.js:1822
 msgid "Add to Favorites"
 msgstr "Zu Favoriten hinzufügen"
 
-#: ../js/ui/appDisplay.js:1830
+#: ../js/ui/appDisplay.js:1831
 msgid "Show Details"
 msgstr "Details anzeigen"
 
-#: ../js/ui/appFavorites.js:124
+#: ../js/ui/appFavorites.js:132
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "%s wurde zu Ihren Favoriten hinzugefügt"
 
-#: ../js/ui/appFavorites.js:158
+#: ../js/ui/appFavorites.js:166
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "%s wurde aus Ihren Favoriten entfernt"
@@ -1175,7 +1175,7 @@ msgstr "Installieren"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "»%s« von extensions.gnome.org herunterladen und installieren?"
 
-#: ../js/ui/keyboard.js:692 ../js/ui/status/keyboard.js:523
+#: ../js/ui/keyboard.js:700 ../js/ui/status/keyboard.js:523
 msgid "Keyboard"
 msgstr "Tastatur"
 
@@ -1231,39 +1231,39 @@ msgstr "Quelle zeigen"
 msgid "Web Page"
 msgstr "Webseite"
 
-#: ../js/ui/messageTray.js:1326
+#: ../js/ui/messageTray.js:1327
 msgid "Open"
 msgstr "Öffnen"
 
-#: ../js/ui/messageTray.js:1333
+#: ../js/ui/messageTray.js:1334
 msgid "Remove"
 msgstr "Entfernen"
 
-#: ../js/ui/messageTray.js:1630
+#: ../js/ui/messageTray.js:1631
 msgid "Notifications"
 msgstr "Benachrichtigungen"
 
-#: ../js/ui/messageTray.js:1637
+#: ../js/ui/messageTray.js:1638
 msgid "Clear Messages"
 msgstr "Nachrichten leeren"
 
-#: ../js/ui/messageTray.js:1656
+#: ../js/ui/messageTray.js:1657
 msgid "Notification Settings"
 msgstr "Benachrichtigungseinstellungen"
 
-#: ../js/ui/messageTray.js:1709
+#: ../js/ui/messageTray.js:1710
 msgid "Tray Menu"
 msgstr "Benachrichtigungsfeldmenü"
 
-#: ../js/ui/messageTray.js:1926
+#: ../js/ui/messageTray.js:1934
 msgid "No Messages"
 msgstr "Keine Nachrichten"
 
-#: ../js/ui/messageTray.js:1968
+#: ../js/ui/messageTray.js:1979
 msgid "Message Tray"
 msgstr "Benachrichtigungsfeld"
 
-#: ../js/ui/messageTray.js:2971
+#: ../js/ui/messageTray.js:2992
 msgid "System Information"
 msgstr "Systeminformationen"
 
@@ -1357,11 +1357,11 @@ msgstr "Sperrung fehlgeschlagen"
 msgid "Lock was blocked by an application"
 msgstr "Sperrung wurde von einer Anwendung blockiert"
 
-#: ../js/ui/search.js:594
+#: ../js/ui/search.js:611
 msgid "Searching…"
 msgstr "Suche läuft …"
 
-#: ../js/ui/search.js:596
+#: ../js/ui/search.js:613
 msgid "No results."
 msgstr "Keine Ergebnisse."
 
@@ -1411,7 +1411,7 @@ msgstr "Visuelle Warnungen"
 
 #: ../js/ui/status/accessibility.js:75
 msgid "Sticky Keys"
-msgstr "Klebrige Tasten"
+msgstr "Einrastfunktion"
 
 #: ../js/ui/status/accessibility.js:78
 msgid "Slow Keys"
@@ -1419,7 +1419,7 @@ msgstr "Tastenverzögerung"
 
 #: ../js/ui/status/accessibility.js:81
 msgid "Bounce Keys"
-msgstr "Springende Tasten"
+msgstr "Tastenanschlagfunktion"
 
 #: ../js/ui/status/accessibility.js:84
 msgid "Mouse Keys"
@@ -1476,7 +1476,6 @@ msgid "Disable"
 msgstr "Deaktivieren"
 
 #: ../js/ui/status/location.js:73
-#| msgid "Power Settings"
 msgid "Privacy Settings"
 msgstr "Einstellungen zur Privatsphäre"
 
