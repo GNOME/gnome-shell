@@ -1389,6 +1389,7 @@ meta_ui_frame_get_mask (MetaUIFrame *frame,
   MetaFrameBorders borders;
   MetaFrameFlags flags;
   MetaRectangle frame_rect;
+  int scale = meta_theme_get_window_scaling_factor ();
 
   meta_window_get_frame_rect (frame->meta_window, &frame_rect);
 
@@ -1396,9 +1397,13 @@ meta_ui_frame_get_mask (MetaUIFrame *frame,
 
   meta_style_info_set_flags (frame->style_info, flags);
   meta_ui_frame_get_borders (frame, &borders);
+
+  /* See comment in meta_frame_layout_draw_with_style() for details on HiDPI handling */
+  cairo_scale (cr, scale, scale);
   gtk_render_background (frame->style_info->styles[META_STYLE_ELEMENT_FRAME], cr,
-                         borders.invisible.left, borders.invisible.top,
-                         frame_rect.width, frame_rect.height);
+                         borders.invisible.left / scale,
+                         borders.invisible.top / scale,
+                         frame_rect.width / scale, frame_rect.height / scale);
 }
 
 /* XXX -- this is disgusting. Find a better approach here.
