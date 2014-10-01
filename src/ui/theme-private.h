@@ -176,6 +176,9 @@ struct _MetaFrameLayout
   /** Space around buttons */
   GtkBorder button_border;
 
+  /** Space between titlebar elements */
+  guint titlebar_spacing;
+
   /** scale factor for title text */
   double title_scale;
 
