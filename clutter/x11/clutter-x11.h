@@ -85,7 +85,7 @@ typedef struct _ClutterX11XInputDevice ClutterX11XInputDevice;
  * ClutterX11FilterFunc:
  * @xev: Native X11 event structure
  * @cev: Clutter event structure
- * @data: user data passed to the filter function
+ * @data: (closure): user data passed to the filter function
  *
  * Filter function for X11 native events.
  *
