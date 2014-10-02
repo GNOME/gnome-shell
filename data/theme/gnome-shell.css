@@ -146,81 +146,6 @@
 .no-networks-box {
   spacing: 12px; }
 
-/* Entries */
-.search-entry,
-.login-dialog StEntry,
-.notification StEntry,
-.modal-dialog StEntry {
-  color: #404040;
-  caret-color: #404040;
-  font-size: 12pt;
-  caret-size: 1px;
-  selected-color: white;
-  padding: 4px 12px; }
-
-.search-entry,
-.login-dialog StEntry,
-.run-dialog-entry,
-.notification StEntry {
-  border: 2px solid rgba(245, 245, 245, 0.2);
-  background-gradient-start: rgba(5, 5, 6, 0.1);
-  background-gradient-end: rgba(254, 254, 254, 0.1);
-  background-gradient-direction: vertical;
-  transition-duration: 300ms;
-  box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.6); }
-
-.search-entry:focus,
-.search-entry:hover,
-.login-dialog StEntry:focus,
-.notification StEntry:focus,
-.modal-dialog StEntry {
-  border: 2px solid #888a85;
-  background-gradient-start: #c8c8c8;
-  background-gradient-end: white;
-  background-gradient-direction: vertical;
-  box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.6); }
-
-.login-dialog StEntry:focus,
-.notification StEntry:focus,
-.modal-dialog StEntry:focus {
-  border: 2px solid #3465a4; }
-
-.search-entry {
-  border-color: rgba(245, 245, 245, 0.3);
-  color: silver;
-  caret-color: silver; }
-
-.search-entry:hover {
-  color: gray;
-  caret-color: gray; }
-
-.search-entry:focus {
-  color: #404040;
-  caret-color: #404040;
-  font-weight: bold;
-  transition-duration: 0ms; }
-
-.login-dialog StEntry,
-.notification StEntry,
-.modal-dialog StEntry {
-  border-radius: 5px;
-  padding: 4px 4px; }
-
-.prompt-dialog-password-entry .capslock-warning,
-.login-dialog-prompt-entry .capslock-warning {
-  icon-size: 16px;
-  warning-color: #999;
-  padding: 0 4px; }
-
-.login-dialog StEntry:insensitive,
-.modal-dialog StEntry:insensitive {
-  border-color: #666666;
-  color: #9f9f9f;
-  border: 2px solid #9f9f9f;
-  background-gradient-direction: none;
-  background-color: rgba(102, 102, 102, 0.15);
-  box-shadow: inset 0 0 black; }
-
 /* Panel */
 #panel {
   background-color: black;
@@ -1319,47 +1244,6 @@
   border-radius: 6px 6px 0 0; }
 
 /* Modal Dialogs */
-/* Dialog Subject Text Style */
-.show-processes-dialog-subject,
-.mount-question-dialog-subject,
-.end-session-dialog-subject {
-  font-size: 14pt;
-  font-weight: bold;
-  color: #999999; }
-
-.modal-dialog {
-  border-radius: 24px;
-  background-color: rgba(0, 0, 0, 0.9);
-  border: 2px solid #868686;
-  padding-right: 42px;
-  padding-left: 42px;
-  padding-bottom: 30px;
-  padding-top: 30px; }
-
-.modal-dialog-button-box {
-  spacing: 21px;
-  padding-top: 50px; }
-
-/* Run Dialog */
-.run-dialog-label {
-  font-size: 12pt;
-  font-weight: bold;
-  color: #999999;
-  padding-bottom: .4em; }
-
-.run-dialog-error-box {
-  padding-top: 15px;
-  spacing: 5px; }
-
-.modal-dialog .run-dialog-entry {
-  width: 20em; }
-
-.lightbox {
-  background-color: black; }
-
-.flashspot {
-  background-color: white; }
-
 /* End Session Dialog */
 .end-session-dialog {
   spacing: 42px; }
@@ -2020,6 +1904,28 @@ stage {
     icon-shadow: none; }
 
 /* Entries */
+StEntry {
+  border-radius: 3px;
+  padding: 4px;
+  border-width: 1px;
+  color: #eeeeec;
+  background-color: #292929;
+  border-color: #1c1f1f;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4); }
+  StEntry:focus {
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+    border-color: rgba(154, 154, 142, 0.5); }
+  StEntry:insensitive {
+    color: #939695;
+    border-color: #323636;
+    box-shadow: none; }
+  StEntry .search-entry {
+    padding: 9px;
+    border-radius: 24px; }
+    StEntry .search-entry:focus {
+      padding: 8px;
+      border-width: 2px; }
+
 /* Scrollbars */
 StScrollBar {
   padding: 0; }
@@ -2047,6 +1953,40 @@ StScrollBar {
   color: #4a90d9; }
   .shell-link:hover {
     color: #74aae2; }
+
+/* Modal Dialogs */
+.lightbox {
+  background-color: black; }
+
+.flashspot {
+  background-color: white; }
+
+.modal-dialog {
+  border-radius: 5px;
+  background-color: rgba(33, 36, 36, 0.95);
+  border: 1px solid #1c1f1f;
+  padding: 24px; }
+  .modal-dialog .run-dialog-entry {
+    width: 20em; }
+  .modal-dialog .run-dialog-error-box {
+    padding-top: 16px;
+    spacing: 6px; }
+  .modal-dialog .run-dialog-button-box {
+    padding-top: 1em; }
+  .modal-dialog .run-dialog-label {
+    font-size: fontsize(12.1);
+    font-weight: bold;
+    color: #d6d6d1;
+    padding-bottom: .4em; }
+
+.button-dialog-button-box {
+  spacing: 18px;
+  padding-top: 48px; }
+
+.show-processes-dialog-subject,
+.mount-question-dialog-subject,
+.end-session-dialog-subject {
+  font-size: fontsize(14.3); }
 
 /* Popvers/Menus */
 .popup-menu {

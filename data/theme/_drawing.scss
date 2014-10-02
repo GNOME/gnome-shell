@@ -25,10 +25,6 @@
 
 // entries
 
-@function entry_gradient($c) {
-  @return linear-gradient(to bottom, darken($c,3%), $c 90%);
-}
-
 @mixin entry($t, $fc:$selected_bg_color, $edge: $borders_edge) {
 //
 // Entries drawing function
@@ -39,60 +35,27 @@
 //        use the default one
 //
 // possible $t values:
-// normal, focus, insensitive, backdrop, backdrop-insensitive;
+// normal, focus, insensitive
 //
-  background-color: transparent;
-  background-image: entry_gradient($base_color);
-  $_blank_edge: if($edge == none, none, 0 1px transparentize($edge,1));
-  $_entry_edge: if($edge == none, none, _widget_edge($edge));
-  $_inner_shadows: inset 0 3px transparentize(black, 0.98),
-                   inset 0 2px transparentize(black, 0.97),
-                   inset 0 1px transparentize(black, 0.92);
-
-  // we need to match the same shadow types (inset/outset) in various states
-  // hence transparent shadows istead of resetting them when not needed
-  $_blank_inner_shadows: inset 0 3px transparentize(black, 1),
-                         inset 0 2px transparentize(black, 1),
-                         inset 0 1px transparentize(black, 1);
-  $_focus_glow_color: if($variant=='light', transparentize($fc,0.85),
-                                            transparentize($fc,0.3));
+  $_inner_shadows: inset 0 2px 4px transparentize(black, 0.6);
 
   @if $t==normal {
+    background-color: $base_color;
     border-color: $borders_color;
-    @include _shadows($_inner_shadows,
-                      inset 0 0 0 1px transparentize($fc,1),
-                      $_entry_edge);
-    // the second transparent shadow is needed for the transition to work
-  }
-  @if $t==focus {
-    @include _shadows($_inner_shadows,
-                      inset 0 0 0 1px $_focus_glow_color,
-                      $_entry_edge);
-    @if $variant == 'light' { border-color: $fc; }
-    @else {
-      border-color: if($fc==$selected_bg_color,
-                       $selected_borders_color,
-                       darken($fc,35%));
-    }
-  }
-  @if $t==insensitive {
-    color: $insensitive_fg_color;
-    border-color: $borders_color;
-    background-image: linear-gradient(to bottom, $insensitive_bg_color);
-    @include _shadows($_blank_inner_shadows, $_entry_edge);
+    @include _shadows($_inner_shadows);
 
   }
-  @if $t==backdrop {
-    color: $backdrop_fg_color;
-    border-color: $backdrop_borders_color;
-    background-image: linear-gradient(to bottom, $backdrop_base_color);
-    @include _shadows($_blank_inner_shadows, $_blank_edge);
+  @if $t==focus {
+    @include _shadows($_inner_shadows);
+    border-color: if($fc==$selected_bg_color,
+                     $selected_borders_color,
+                     darken($fc,35%));
   }
-  @if $t==backdrop-insensitive {
-    color: $backdrop_insensitive_color;
-    border-color: $backdrop_borders_color;
-    background-image: linear-gradient(to bottom, $insensitive_bg_color);
-    @include _shadows($_blank_inner_shadows, $_blank_edge);
+  @if $t==hover { }
+  @if $t==insensitive {
+    color: $insensitive_fg_color;
+    border-color: $insensitive_bg_color;
+    box-shadow: none;
   }
 }
 
