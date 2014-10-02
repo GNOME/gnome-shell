@@ -89,6 +89,58 @@ StScrollBar {
   &:hover { color: lighten($link_color,10%); }
 }
 
+/* Popvers/Menus */
+
+.popup-menu {
+  min-width: 200px;  
+  
+  .popup-menu-arrow { } //defined globally in the TOP BAR
+  .popup-sub-menu {
+    background-color: darken($bg_color,2%);
+    border-top: 1px solid lighten($borders_color,5%);
+    border-bottom: 1px solid lighten($borders_color,5%);
+  }
+  
+  .popup-menu-content { padding: 1em 0em; }
+  .popup-menu-item { 
+    spacing: 12px;
+    
+    &:ltr { padding: .4em 1.75em .4em 0em; }
+    &:rtl { padding: .4em 0em .4em 1.75em; }
+    &:active { background-color: lighten($bg_color,10%); }
+    &:insensitive { background-color: transparentize($bg_color,.5); }
+  }
+  .popup-inactive-menu-item { //all icons and other graphical elements
+    color: $fg_color;
+
+    &:insensitive { color: transparentize($fg_color,0.5); }
+  }
+  //.popup-status-menu-item { font-weight: normal;  color: pink; } //dunno what that is  
+}
+
+  .popup-menu-boxpointer,
+  .candidate-popup-boxpointer {
+      -arrow-border-radius: 3px;
+      -arrow-background-color: $bg_color;
+      -arrow-border-width: 1px;
+      -arrow-border-color: $borders_color;
+      -arrow-base: 24px;
+      -arrow-rise: 11px;
+      -arrow-box-shadow: 0 1px 3px red; //dreaming. bug #689995
+  }
+
+  
+/* fallback menu 
+- odd thing for styling App menu when apparently not running under shell. Light Adwaita styled
+  app menu inside the main app window itself rather than the top bar
+*/
+
+
+
 /* TOP BAR */
+
+// not really top bar only
+.popup-menu-arrow { width: 16px; height: 16px; }
+.popup-menu-icon { icon-size: 1.09em; }
 
 /* NOTIFICATIONS & MESSAGE TRAY */
