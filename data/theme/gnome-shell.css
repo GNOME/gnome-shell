@@ -2062,11 +2062,11 @@ StScrollBar {
     min-height: 14px; }
   StScrollBar StBin#trough {
     border-radius: 0;
-    background-color: #2e3436; }
+    background-color: #17191a; }
   StScrollBar StButton#vhandle, StScrollBar StButton#hhandle {
-    border-radius: 6px;
+    border-radius: 8px;
     background-color: #393f3f;
-    border: 3px solid #2e3436; }
+    border: 3px solid #17191a; }
     StScrollBar StButton#vhandle:hover, StScrollBar StButton#hhandle:hover {
       background-color: #515a5a; }
     StScrollBar StButton#vhandle:active, StScrollBar StButton#hhandle:active {
