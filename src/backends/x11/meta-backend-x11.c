@@ -65,8 +65,13 @@ struct _MetaBackendX11Private
   uint8_t xkb_error_base;
 
   struct xkb_keymap *keymap;
+  gchar *keymap_layouts;
+  gchar *keymap_variants;
+  gchar *keymap_options;
 };
 typedef struct _MetaBackendX11Private MetaBackendX11Private;
+
+static void apply_keymap (MetaBackendX11 *x11);
 
 G_DEFINE_TYPE_WITH_PRIVATE (MetaBackendX11, meta_backend_x11, META_TYPE_BACKEND);
 
@@ -327,6 +332,17 @@ take_touch_grab (MetaBackend *backend)
 }
 
 static void
+on_device_added (ClutterDeviceManager *device_manager,
+                 ClutterInputDevice   *device,
+                 gpointer              user_data)
+{
+  MetaBackendX11 *x11 = META_BACKEND_X11 (user_data);
+
+  if (clutter_input_device_get_device_type (device) == CLUTTER_KEYBOARD_DEVICE)
+    apply_keymap (x11);
+}
+
+static void
 meta_backend_x11_post_init (MetaBackend *backend)
 {
   MetaBackendX11 *x11 = META_BACKEND_X11 (backend);
@@ -375,6 +391,9 @@ meta_backend_x11_post_init (MetaBackend *backend)
                                     &priv->xkb_error_base))
     meta_fatal ("X server doesn't have the XKB extension, version %d.%d or newer\n",
                 XKB_X11_MIN_MAJOR_XKB_VERSION, XKB_X11_MIN_MINOR_XKB_VERSION);
+
+  g_signal_connect_object (clutter_device_manager_get_default (), "device-added",
+                           G_CALLBACK (on_device_added), backend, 0);
 
   META_BACKEND_CLASS (meta_backend_x11_parent_class)->post_init (backend);
 }
@@ -560,21 +579,22 @@ upload_xkb_description (Display              *xdisplay,
 }
 
 static void
-meta_backend_x11_set_keymap (MetaBackend *backend,
-                             const char  *layouts,
-                             const char  *variants,
-                             const char  *options)
+apply_keymap (MetaBackendX11 *x11)
 {
-  MetaBackendX11 *x11 = META_BACKEND_X11 (backend);
   MetaBackendX11Private *priv = meta_backend_x11_get_instance_private (x11);
   XkbRF_RulesRec *xkb_rules;
   XkbRF_VarDefsRec xkb_var_defs = { 0 };
   gchar *rules_file_path;
 
+  if (!priv->keymap_layouts ||
+      !priv->keymap_variants ||
+      !priv->keymap_options)
+    return;
+
   get_xkbrf_var_defs (priv->xdisplay,
-                      layouts,
-                      variants,
-                      options,
+                      priv->keymap_layouts,
+                      priv->keymap_variants,
+                      priv->keymap_options,
                       &rules_file_path,
                       &xkb_var_defs);
 
@@ -596,6 +616,25 @@ meta_backend_x11_set_keymap (MetaBackend *backend,
 
   free_xkbrf_var_defs (&xkb_var_defs);
   g_free (rules_file_path);
+}
+
+static void
+meta_backend_x11_set_keymap (MetaBackend *backend,
+                             const char  *layouts,
+                             const char  *variants,
+                             const char  *options)
+{
+  MetaBackendX11 *x11 = META_BACKEND_X11 (backend);
+  MetaBackendX11Private *priv = meta_backend_x11_get_instance_private (x11);
+
+  g_free (priv->keymap_layouts);
+  priv->keymap_layouts = g_strdup (layouts);
+  g_free (priv->keymap_variants);
+  priv->keymap_variants = g_strdup (variants);
+  g_free (priv->keymap_options);
+  priv->keymap_options = g_strdup (options);
+
+  apply_keymap (x11);
 }
 
 static struct xkb_keymap *
