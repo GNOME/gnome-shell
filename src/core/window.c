@@ -2622,6 +2622,9 @@ meta_window_maximize_internal (MetaWindow        *window,
   meta_window_recalc_features (window);
   set_net_wm_state (window);
 
+  if (window->monitor->in_fullscreen)
+    meta_screen_queue_check_fullscreen (window->screen);
+
   g_object_freeze_notify (G_OBJECT (window));
   g_object_notify_by_pspec (G_OBJECT (window), obj_props[PROP_MAXIMIZED_HORIZONTALLY]);
   g_object_notify_by_pspec (G_OBJECT (window), obj_props[PROP_MAXIMIZED_VERTICALLY]);
@@ -3066,6 +3069,8 @@ meta_window_unmaximize_internal (MetaWindow        *window,
 
       meta_window_recalc_features (window);
       set_net_wm_state (window);
+      if (!window->monitor->in_fullscreen)
+        meta_screen_queue_check_fullscreen (window->screen);
     }
 
   g_object_freeze_notify (G_OBJECT (window));

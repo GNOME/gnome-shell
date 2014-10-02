@@ -3021,38 +3021,33 @@ static gboolean
 check_fullscreen_func (gpointer data)
 {
   MetaScreen *screen = data;
-  GSList *windows;
+  MetaWindow *window;
   GSList *tmp;
   GSList *fullscreen_monitors = NULL;
+  GSList *obscured_monitors = NULL;
   gboolean in_fullscreen_changed = FALSE;
   int i;
 
   screen->check_fullscreen_later = 0;
 
-  windows = meta_display_list_windows (screen->display,
-                                       META_LIST_INCLUDE_OVERRIDE_REDIRECT);
-
-  for (tmp = windows; tmp != NULL; tmp = tmp->next)
+  /* We consider a monitor in fullscreen if it contains a fullscreen window;
+   * however we make an exception for maximized windows above the fullscreen
+   * one, as in that case window+chrome fully obscure the fullscreen window.
+   */
+  for (window = meta_stack_get_top (screen->stack);
+       window;
+       window = meta_stack_get_below (screen->stack, window, FALSE))
     {
-      MetaWindow *window = tmp->data;
       gboolean covers_monitors = FALSE;
 
       if (window->screen != screen || window->hidden)
         continue;
 
       if (window->fullscreen)
-        /* The checks for determining a fullscreen window's layer are quite
-         * elaborate, and we do a poor job at keeping it dynamically up-to-date.
-         * (It depends, for example, on whether the focus window is on the
-         * same monitor as the fullscreen window.) But because we minimize
-         * fullscreen windows not in LAYER_FULLSCREEN (see below), if the
-         * layer is stale here, it's really bad, so just force recomputation for
-         * here. This is expensive, but hopefully this function won't be
-         * called too often.
-         */
-        meta_window_update_layer (window);
-
-      if (window->override_redirect)
+        {
+          covers_monitors = TRUE;
+        }
+      else if (window->override_redirect)
         {
           /* We want to handle the case where an application is creating an
            * override-redirect window the size of the screen (monitor) and treat
@@ -3062,10 +3057,14 @@ check_fullscreen_func (gpointer data)
           if (meta_window_is_monitor_sized (window))
             covers_monitors = TRUE;
         }
-      else
+      else if (window->maximized_horizontally &&
+               window->maximized_vertically)
         {
-          if (window->layer == META_LAYER_FULLSCREEN)
-            covers_monitors = TRUE;
+          int monitor_index = meta_window_get_monitor (window);
+          /* + 1 to avoid NULL */
+          gpointer monitor_p = GINT_TO_POINTER(monitor_index + 1);
+          if (!g_slist_find (obscured_monitors, monitor_p))
+            obscured_monitors = g_slist_prepend (obscured_monitors, monitor_p);
         }
 
       if (covers_monitors)
@@ -3079,7 +3078,8 @@ check_fullscreen_func (gpointer data)
             {
               /* + 1 to avoid NULL */
               gpointer monitor_p = GINT_TO_POINTER(monitors[j] + 1);
-              if (!g_slist_find (fullscreen_monitors, monitor_p))
+              if (!g_slist_find (fullscreen_monitors, monitor_p) &&
+                  !g_slist_find (obscured_monitors, monitor_p))
                 fullscreen_monitors = g_slist_prepend (fullscreen_monitors, monitor_p);
             }
 
@@ -3087,7 +3087,7 @@ check_fullscreen_func (gpointer data)
         }
     }
 
-  g_slist_free (windows);
+  g_slist_free (obscured_monitors);
 
   for (i = 0; i < screen->n_monitor_infos; i++)
     {
