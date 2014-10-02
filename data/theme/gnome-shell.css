@@ -1067,12 +1067,7 @@
   spacing: 10px; }
 
 .notification-button {
-  -st-natural-width: 140px;
-  padding: 4px 4px 5px; }
-
-.notification-button:focus {
-  -st-natural-width: 138px;
-  padding: 3px 4px 4px; }
+  -st-natural-width: 140px; }
 
 .notification-icon-button {
   border-radius: 5px;
