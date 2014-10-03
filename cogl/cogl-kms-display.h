@@ -101,7 +101,7 @@ cogl_kms_display_set_layout (CoglDisplay *display,
 
 
 /**
- * cogl_kms_display_set_layout:
+ * cogl_kms_display_set_ignore_crtc:
  * @onscreen: a #CoglDisplay
  * @id: KMS output id
  * @ignore: Ignore ouput or not
