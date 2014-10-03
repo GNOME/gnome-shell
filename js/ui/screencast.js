@@ -117,6 +117,8 @@ const ScreencastService = new Lang.Class({
             this._applyOptionalParameters(recorder, options);
             let [success, fileName] = recorder.record();
             returnValue = [success, fileName ? fileName : ''];
+            if (!success)
+                this._stopRecordingForSender(sender);
         }
 
         invocation.return_value(GLib.Variant.new('(bs)', returnValue));
@@ -150,6 +152,8 @@ const ScreencastService = new Lang.Class({
             this._applyOptionalParameters(recorder, options);
             let [success, fileName] = recorder.record();
             returnValue = [success, fileName ? fileName : ''];
+            if (!success)
+                this._stopRecordingForSender(sender);
         }
 
         invocation.return_value(GLib.Variant.new('(bs)', returnValue));
