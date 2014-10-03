@@ -68,8 +68,8 @@ const ScreencastService = new Lang.Class({
         if (Main.sessionMode.allowScreencast)
             return;
 
-        this._recorders.clear();
-        this.emit('updated');
+        for (let sender of this._recorders.keys())
+            this._stopRecordingForSender(sender);
     },
 
     _onNameVanished: function(connection, name) {
