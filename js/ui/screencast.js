@@ -43,6 +43,8 @@ const ScreencastService = new Lang.Class({
 
         this._recorders = new Map();
 
+        this._lockdownSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.lockdown' });
+
         Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
     },
 
@@ -103,7 +105,8 @@ const ScreencastService = new Lang.Class({
 
     ScreencastAsync: function(params, invocation) {
         let returnValue = [false, ''];
-        if (!Main.sessionMode.allowScreencast) {
+        if (!Main.sessionMode.allowScreencast ||
+            this._lockdownSettings.get_boolean('disable-save-to-disk')) {
             invocation.return_value(GLib.Variant.new('(bs)', returnValue));
             return;
         }
@@ -126,7 +129,8 @@ const ScreencastService = new Lang.Class({
 
     ScreencastAreaAsync: function(params, invocation) {
         let returnValue = [false, ''];
-        if (!Main.sessionMode.allowScreencast) {
+        if (!Main.sessionMode.allowScreencast ||
+            this._lockdownSettings.get_boolean('disable-save-to-disk')) {
             invocation.return_value(GLib.Variant.new('(bs)', returnValue));
             return;
         }
