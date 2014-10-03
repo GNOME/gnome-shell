@@ -67,12 +67,15 @@ const ScreenshotService = new Lang.Class({
 
         this._screenShooter = new Map();
 
+        this._lockdownSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.lockdown' });
+
         Gio.DBus.session.own_name('org.gnome.Shell.Screenshot', Gio.BusNameOwnerFlags.REPLACE, null, null);
     },
 
     _createScreenshot: function(invocation) {
         let sender = invocation.get_sender();
-        if (this._screenShooter.has(sender)) {
+        if (this._screenShooter.has(sender) ||
+            this._lockdownSettings.get_boolean('disable-save-to-disk')) {
             invocation.return_value(GLib.Variant.new('(bs)', [false, '']));
             return null;
         }
