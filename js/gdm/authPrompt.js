@@ -260,6 +260,7 @@ const AuthPrompt = new Lang.Class({
 
     _onVerificationComplete: function() {
         this.verificationStatus = AuthPromptStatus.VERIFICATION_SUCCEEDED;
+	this.cancelButton.reactive = false;
     },
 
     _onReset: function() {
@@ -431,6 +432,7 @@ const AuthPrompt = new Lang.Class({
     reset: function() {
         let oldStatus = this.verificationStatus;
         this.verificationStatus = AuthPromptStatus.NOT_VERIFYING;
+        this.cancelButton.reactive = true;
 
         if (oldStatus == AuthPromptStatus.VERIFYING)
             this._userVerifier.cancel();
@@ -499,6 +501,9 @@ const AuthPrompt = new Lang.Class({
     },
 
     cancel: function() {
+        if (this.verificationStatus == AuthPromptStatus.NOT_VERIFYING || this.verificationStatus == AuthPromptStatus.VERIFICATION_SUCCEEDED) {
+            return;
+        }
         this.reset();
         this.emit('cancelled');
     }
