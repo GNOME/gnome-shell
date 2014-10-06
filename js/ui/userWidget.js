@@ -28,11 +28,12 @@ const Avatar = new Lang.Class({
                                         styleClass: 'framed-user-icon' });
         this._iconSize = params.iconSize;
 
+        let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
         this.actor = new St.Bin({ style_class: params.styleClass,
                                   track_hover: params.reactive,
                                   reactive: params.reactive,
-                                  width: this._iconSize,
-                                  height: this._iconSize });
+                                  width: this._iconSize * scaleFactor,
+                                  height: this._iconSize * scaleFactor });
     },
 
     setSensitive: function(sensitive) {
