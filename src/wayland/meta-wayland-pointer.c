@@ -565,6 +565,8 @@ meta_wayland_pointer_end_grab (MetaWaylandPointer *pointer)
   pointer->grab = &pointer->default_grab;
   interface = pointer->grab->interface;
   interface->focus (pointer->grab, pointer->current);
+
+  meta_wayland_pointer_update_cursor_surface (pointer);
 }
 
 typedef struct {
