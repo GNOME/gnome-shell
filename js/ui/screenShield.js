@@ -919,6 +919,9 @@ const ScreenShield = new Lang.Class({
 
         this._lockScreenState = MessageTray.State.HIDDEN;
         this._lockScreenGroup.hide();
+
+        this._dialog.actor.grab_key_focus();
+        this._dialog.actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
     },
 
     _hideLockScreen: function(animate, velocity) {
