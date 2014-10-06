@@ -1067,6 +1067,7 @@ xdg_shell_get_xdg_popup (struct wl_client *client,
   MetaWaylandSurface *parent_surf = wl_resource_get_user_data (parent_resource);
   MetaWaylandSeat *seat = wl_resource_get_user_data (seat_resource);
   MetaWindow *window;
+  MetaDisplay *display = meta_get_display ();
 
   if (parent_surf == NULL || parent_surf->window == NULL)
     return;
@@ -1085,7 +1086,7 @@ xdg_shell_get_xdg_popup (struct wl_client *client,
 
   surface->xdg_shell_resource = resource;
 
-  window = meta_window_wayland_new (meta_get_display (), surface);
+  window = meta_window_wayland_new (display, surface);
   meta_window_move_frame (window, FALSE,
                           parent_surf->window->rect.x + x,
                           parent_surf->window->rect.y + y);
@@ -1096,6 +1097,7 @@ xdg_shell_get_xdg_popup (struct wl_client *client,
 
   meta_wayland_surface_set_window (surface, window);
 
+  meta_window_focus (window, meta_display_get_current_time (display));
   meta_wayland_pointer_start_popup_grab (&seat->pointer, surface);
 }
 
