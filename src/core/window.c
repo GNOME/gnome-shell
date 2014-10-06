@@ -4652,6 +4652,25 @@ meta_window_appears_focused_changed (MetaWindow *window)
     meta_frame_queue_draw (window->frame);
 }
 
+static gboolean
+should_propagate_focus_appearance (MetaWindow *window)
+{
+  if (meta_window_is_attached_dialog (window))
+    return TRUE;
+
+  switch (window->type)
+    {
+    case META_WINDOW_DROPDOWN_MENU:
+    case META_WINDOW_POPUP_MENU:
+    case META_WINDOW_COMBO:
+      return TRUE;
+    default:
+      break;
+    }
+
+  return FALSE;
+}
+
 /**
  * meta_window_propagate_focus_appearance:
  * @window: the window to start propagating from
@@ -4675,7 +4694,7 @@ meta_window_propagate_focus_appearance (MetaWindow *window,
 
   child = window;
   parent = meta_window_get_transient_for (child);
-  while (parent && (!focused || meta_window_is_attached_dialog (child)))
+  while (parent && (!focused || should_propagate_focus_appearance (child)))
     {
       gboolean child_focus_state_changed;
 
