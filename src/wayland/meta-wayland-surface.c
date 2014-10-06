@@ -176,6 +176,13 @@ cursor_surface_commit (MetaWaylandSurface      *surface,
 }
 
 static void
+dnd_surface_commit (MetaWaylandSurface      *surface,
+                    MetaWaylandPendingState *pending)
+{
+  meta_wayland_data_device_update_dnd_surface (&surface->compositor->seat->data_device);
+}
+
+static void
 calculate_surface_window_geometry (MetaWaylandSurface *surface,
                                    MetaRectangle      *total_geometry,
                                    float               parent_x,
@@ -445,6 +452,8 @@ commit_pending_state (MetaWaylandSurface      *surface,
 
   if (surface == compositor->seat->pointer.cursor_surface)
     cursor_surface_commit (surface, pending);
+  else if (meta_wayland_data_device_is_dnd_surface (&compositor->seat->data_device, surface))
+    dnd_surface_commit (surface, pending);
   else if (surface->window)
     toplevel_surface_commit (surface, pending);
   else if (surface->subsurface.resource)

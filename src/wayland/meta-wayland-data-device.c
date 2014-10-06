@@ -643,3 +643,29 @@ meta_wayland_data_device_set_keyboard_focus (MetaWaylandDataDevice *data_device)
       wl_data_device_send_selection (data_device_resource, offer);
     }
 }
+
+gboolean
+meta_wayland_data_device_is_dnd_surface (MetaWaylandDataDevice *data_device,
+                                         MetaWaylandSurface    *surface)
+{
+  return data_device->current_grab &&
+    data_device->current_grab->drag_surface == surface;
+}
+
+void
+meta_wayland_data_device_update_dnd_surface (MetaWaylandDataDevice *data_device)
+{
+  MetaWaylandDragGrab *drag_grab;
+
+  if (!data_device->current_grab)
+    return;
+
+  drag_grab = data_device->current_grab;
+
+  if (!drag_grab->feedback_actor || !drag_grab->drag_surface)
+    return;
+
+  meta_feedback_actor_set_anchor (META_FEEDBACK_ACTOR (drag_grab->feedback_actor),
+                                  -drag_grab->drag_surface->offset_x,
+                                  -drag_grab->drag_surface->offset_y);
+}
