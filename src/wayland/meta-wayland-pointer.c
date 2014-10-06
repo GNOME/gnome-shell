@@ -305,9 +305,6 @@ repick_for_event (MetaWaylandPointer *pointer,
   else
     pointer->current = NULL;
 
-  if (pointer->cursor_tracker && pointer->current == NULL)
-    meta_cursor_tracker_unset_window_cursor (pointer->cursor_tracker);
-
   sync_focus_surface (pointer);
 }
 
@@ -542,6 +539,8 @@ meta_wayland_pointer_set_focus (MetaWaylandPointer *pointer,
             }
         }
     }
+
+  meta_wayland_pointer_update_cursor_surface (pointer);
 }
 
 void
@@ -750,25 +749,32 @@ meta_wayland_pointer_get_relative_coordinates (MetaWaylandPointer *pointer,
 void
 meta_wayland_pointer_update_cursor_surface (MetaWaylandPointer *pointer)
 {
-  MetaCursorReference *cursor;
-
   if (pointer->cursor_tracker == NULL)
     return;
 
-  if (pointer->cursor_surface && pointer->cursor_surface->buffer)
+  if (pointer->current)
     {
-      struct wl_resource *buffer = pointer->cursor_surface->buffer->resource;
-      cursor = meta_cursor_reference_from_buffer (buffer,
-                                                  pointer->hotspot_x,
-                                                  pointer->hotspot_y);
+      MetaCursorReference *cursor;
+
+      if (pointer->cursor_surface && pointer->cursor_surface->buffer)
+        {
+          struct wl_resource *buffer = pointer->cursor_surface->buffer->resource;
+          cursor = meta_cursor_reference_from_buffer (buffer,
+                                                      pointer->hotspot_x,
+                                                      pointer->hotspot_y);
+        }
+      else
+        cursor = NULL;
+
+      meta_cursor_tracker_set_window_cursor (pointer->cursor_tracker, cursor);
+
+      if (cursor)
+        meta_cursor_reference_unref (cursor);
     }
   else
-    cursor = NULL;
-
-  meta_cursor_tracker_set_window_cursor (pointer->cursor_tracker, cursor);
-
-  if (cursor)
-    meta_cursor_reference_unref (cursor);
+    {
+      meta_cursor_tracker_unset_window_cursor (pointer->cursor_tracker);
+    }
 }
 
 static void
