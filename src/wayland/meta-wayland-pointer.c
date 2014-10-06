@@ -272,11 +272,8 @@ sync_focus_surface (MetaWaylandPointer *pointer)
       g_assert_not_reached ();
     }
 
-  if (focus_surface != pointer->focus_surface)
-    {
-      const MetaWaylandPointerGrabInterface *interface = pointer->grab->interface;
-      interface->focus (pointer->grab, focus_surface);
-    }
+  const MetaWaylandPointerGrabInterface *interface = pointer->grab->interface;
+  interface->focus (pointer->grab, focus_surface);
 }
 
 static void
