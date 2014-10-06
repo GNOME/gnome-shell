@@ -23,7 +23,7 @@ struct _MetaCompositor
   guint           server_time_is_monotonic_time : 1;
   guint           no_mipmaps  : 1;
 
-  ClutterActor          *stage, *window_group, *top_window_group;
+  ClutterActor          *stage, *window_group, *top_window_group, *feedback_group;
   ClutterActor          *background_actor;
   GList                 *windows;
   Window                 output;

@@ -186,6 +186,19 @@ meta_get_top_window_group_for_screen (MetaScreen *screen)
 }
 
 /**
+ * meta_get_feedback_group_for_screen:
+ * @screen: a #MetaScreen
+ *
+ * Returns: (transfer none): The feedback group corresponding to @screen
+ */
+ClutterActor *
+meta_get_feedback_group_for_screen (MetaScreen *screen)
+{
+  MetaCompositor *compositor = get_compositor_for_screen (screen);
+  return compositor->feedback_group;
+}
+
+/**
  * meta_get_window_actors:
  * @screen: a #MetaScreen
  *
@@ -478,9 +491,11 @@ meta_compositor_manage (MetaCompositor *compositor)
 
   compositor->window_group = meta_window_group_new (screen);
   compositor->top_window_group = meta_window_group_new (screen);
+  compositor->feedback_group = meta_window_group_new (screen);
 
   clutter_actor_add_child (compositor->stage, compositor->window_group);
   clutter_actor_add_child (compositor->stage, compositor->top_window_group);
+  clutter_actor_add_child (compositor->stage, compositor->feedback_group);
 
   if (meta_is_wayland_compositor ())
     {
