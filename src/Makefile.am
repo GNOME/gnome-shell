@@ -109,6 +109,8 @@ libmutter_la_SOURCES =				\
 	compositor/meta-background-group.c	\
 	compositor/meta-cullable.c		\
 	compositor/meta-cullable.h		\
+	compositor/meta-dnd-actor.c		\
+	compositor/meta-dnd-actor-private.h	\
 	compositor/meta-feedback-actor.c	\
 	compositor/meta-feedback-actor-private.h	\
 	compositor/meta-module.c		\
