@@ -77,23 +77,33 @@ typedef struct
 
 struct _MetaWaylandSurface
 {
+  /* Generic stuff */
   struct wl_resource *resource;
   MetaWaylandCompositor *compositor;
   MetaSurfaceActor *surface_actor;
   MetaWindow *window;
-  struct wl_resource *xdg_shell_resource;
+  MetaWaylandBuffer *buffer;
+  struct wl_listener buffer_destroy_listener;
+  int scale;
+  int32_t offset_x, offset_y;
+  GList *subsurfaces;
+
+  /* All the pending state that wl_surface.commit will apply. */
+  MetaWaylandPendingState pending;
+
+  /* Extension structs. */
   MetaWaylandSurfaceExtension xdg_surface;
   MetaWaylandSurfaceExtension xdg_popup;
   MetaWaylandSurfaceExtension wl_shell_surface;
   MetaWaylandSurfaceExtension gtk_surface;
   MetaWaylandSurfaceExtension subsurface;
-  int scale;
 
-  MetaWaylandBuffer *buffer;
-  struct wl_listener buffer_destroy_listener;
+  /* xdg_surface stuff */
+  struct wl_resource *xdg_shell_resource;
+  MetaWaylandSerial acked_configure_serial;
+  gboolean has_set_geometry;
 
-  GList *subsurfaces;
-
+  /* wl_subsurface stuff. */
   struct {
     MetaWaylandSurface *parent;
     struct wl_listener parent_destroy_listener;
@@ -114,15 +124,6 @@ struct _MetaWaylandSurface
     gboolean pending_pos;
     GSList *pending_placement_ops;
   } sub;
-
-  int32_t offset_x, offset_y;
-
-  gboolean has_set_geometry;
-
-  /* All the pending state that wl_surface.commit will apply. */
-  MetaWaylandPendingState pending;
-
-  MetaWaylandSerial acked_configure_serial;
 };
 
 void                meta_wayland_shell_init     (MetaWaylandCompositor *compositor);
