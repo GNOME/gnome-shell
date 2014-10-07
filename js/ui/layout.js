@@ -230,6 +230,10 @@ const LayoutManager = new Lang.Class({
         global.stage.remove_actor(global.top_window_group);
         this.uiGroup.add_actor(global.top_window_group);
 
+        let feedbackGroup = Meta.get_feedback_group_for_screen(global.screen);
+        global.stage.remove_actor(feedbackGroup);
+        this.uiGroup.add_actor(feedbackGroup);
+
         this._backgroundGroup = new Meta.BackgroundGroup();
         global.window_group.add_child(this._backgroundGroup);
         this._backgroundGroup.lower_bottom();
