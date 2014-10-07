@@ -383,8 +383,6 @@ meta_wayland_keyboard_init (MetaWaylandKeyboard *keyboard,
 
   keyboard->focus_surface_listener.notify = keyboard_handle_focus_surface_destroy;
 
-  wl_array_init (&keyboard->pressed_keys);
-
   keyboard->xkb_info.keymap_fd = -1;
 
   keyboard->settings = g_settings_new ("org.gnome.settings-daemon.peripherals.keyboard");
@@ -417,45 +415,10 @@ meta_wayland_keyboard_release (MetaWaylandKeyboard *keyboard)
   meta_wayland_xkb_info_destroy (&keyboard->xkb_info);
 
   /* XXX: What about keyboard->resource_list? */
-  wl_array_release (&keyboard->pressed_keys);
 
   g_object_unref (keyboard->settings);
 
   keyboard->display = NULL;
-}
-
-static void
-update_pressed_keys (struct wl_array *keys,
-                     uint32_t         evdev_code,
-                     gboolean         is_press)
-{
-  uint32_t *end = (void *) ((char *) keys->data + keys->size);
-  uint32_t *k;
-
-  if (is_press)
-    {
-      /* Make sure we don't already have this key. */
-      for (k = keys->data; k < end; k++)
-        if (*k == evdev_code)
-          return;
-
-      /* Otherwise add the key to the list of pressed keys */
-      k = wl_array_add (keys, sizeof (*k));
-      *k = evdev_code;
-    }
-  else
-    {
-      /* Remove the key from the array */
-      for (k = keys->data; k < end; k++)
-        if (*k == evdev_code)
-          {
-            *k = *(end - 1);
-            keys->size -= sizeof (*k);
-            return;
-          }
-
-      g_warning ("unexpected key release event for key 0x%x", evdev_code);
-    }
 }
 
 static guint
@@ -473,8 +436,6 @@ meta_wayland_keyboard_update (MetaWaylandKeyboard *keyboard,
   gboolean is_press = event->type == CLUTTER_KEY_PRESS;
   struct xkb_state *state = keyboard->xkb_info.state;
   enum xkb_state_component changed_state;
-
-  update_pressed_keys (&keyboard->pressed_keys, evdev_code (event), is_press);
 
   changed_state = xkb_state_update_key (state,
                                         event->hardware_keycode,
@@ -538,7 +499,26 @@ static void
 broadcast_focus (MetaWaylandKeyboard *keyboard,
                  struct wl_resource  *resource)
 {
+  struct wl_array fake_keys;
   struct xkb_state *state = keyboard->xkb_info.state;
+
+  /* We never want to send pressed keys to wayland clients on
+   * enter. The protocol says that we should send them, presumably so
+   * that clients can trigger their own key repeat routine in case
+   * they are given focus and a key is physically pressed.
+   *
+   * Unfortunately this causes some clients, in particular Xwayland,
+   * to register key events that they really shouldn't handle,
+   * e.g. on an Alt+Tab keybinding, where Alt is released before Tab,
+   * clients would see Tab being pressed on enter followed by a key
+   * release event for Tab, meaning that Tab would be processed by
+   * the client when it really shouldn't.
+   *
+   * Since the use case for the pressed keys array on enter seems weak
+   * to us, we'll just fake that there are no pressed keys instead
+   * which should be spec compliant even if it might not be true.
+   */
+  wl_array_init (&fake_keys);
 
   wl_keyboard_send_modifiers (resource, keyboard->focus_serial,
                               xkb_state_serialize_mods (state, XKB_STATE_MODS_DEPRESSED),
@@ -547,7 +527,7 @@ broadcast_focus (MetaWaylandKeyboard *keyboard,
                               xkb_state_serialize_layout (state, XKB_STATE_LAYOUT_EFFECTIVE));
   wl_keyboard_send_enter (resource, keyboard->focus_serial,
                           keyboard->focus_surface->resource,
-                          &keyboard->pressed_keys);
+                          &fake_keys);
 }
 
 void
