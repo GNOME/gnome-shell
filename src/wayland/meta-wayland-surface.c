@@ -1684,7 +1684,7 @@ wl_subcompositor_get_subsurface (struct wl_client *client,
     }
 
   surface->wl_subsurface = wl_resource_create (client, &wl_subsurface_interface, wl_resource_get_version (resource), id);
-  wl_resource_set_implementation (surface->wl_subsurface, &meta_wayland_subsurface_interface, surface, wl_subsurface_destructor);
+  wl_resource_set_implementation (surface->wl_subsurface, &meta_wayland_wl_subsurface_interface, surface, wl_subsurface_destructor);
 
   pending_state_init (&surface->sub.pending);
   surface->sub.synchronous = TRUE;
