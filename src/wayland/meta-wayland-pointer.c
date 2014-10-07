@@ -716,10 +716,10 @@ meta_wayland_pointer_start_popup_grab (MetaWaylandPointer *pointer,
   popup->grab = grab;
   popup->surface = surface;
   popup->surface_destroy_listener.notify = on_popup_surface_destroy;
-  if (surface->xdg_popup.resource)
-    wl_resource_add_destroy_listener (surface->xdg_popup.resource, &popup->surface_destroy_listener);
-  else if (surface->wl_shell_surface.resource)
-    wl_resource_add_destroy_listener (surface->wl_shell_surface.resource, &popup->surface_destroy_listener);
+  if (surface->xdg_popup)
+    wl_resource_add_destroy_listener (surface->xdg_popup, &popup->surface_destroy_listener);
+  else if (surface->wl_shell_surface)
+    wl_resource_add_destroy_listener (surface->wl_shell_surface, &popup->surface_destroy_listener);
 
   wl_list_insert (&grab->all_popups, &popup->link);
   return TRUE;

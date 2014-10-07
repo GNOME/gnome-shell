@@ -70,11 +70,6 @@ typedef struct
   gboolean has_new_geometry;
 } MetaWaylandPendingState;
 
-typedef struct
-{
-  struct wl_resource *resource;
-} MetaWaylandSurfaceExtension;
-
 struct _MetaWaylandSurface
 {
   /* Generic stuff */
@@ -91,12 +86,12 @@ struct _MetaWaylandSurface
   /* All the pending state that wl_surface.commit will apply. */
   MetaWaylandPendingState pending;
 
-  /* Extension structs. */
-  MetaWaylandSurfaceExtension xdg_surface;
-  MetaWaylandSurfaceExtension xdg_popup;
-  MetaWaylandSurfaceExtension wl_shell_surface;
-  MetaWaylandSurfaceExtension gtk_surface;
-  MetaWaylandSurfaceExtension wl_subsurface;
+  /* Extension resources. */
+  struct wl_resource *xdg_surface;
+  struct wl_resource *xdg_popup;
+  struct wl_resource *wl_shell_surface;
+  struct wl_resource *gtk_surface;
+  struct wl_resource *wl_subsurface;
 
   /* xdg_surface stuff */
   struct wl_resource *xdg_shell_resource;
