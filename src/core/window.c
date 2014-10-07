@@ -4668,7 +4668,6 @@ should_propagate_focus_appearance (MetaWindow *window)
     case META_WINDOW_COMBO:
     case META_WINDOW_TOOLTIP:
     case META_WINDOW_NOTIFICATION:
-    case META_WINDOW_COMBO:
     case META_WINDOW_DND:
     case META_WINDOW_OVERRIDE_OTHER:
       return TRUE;
