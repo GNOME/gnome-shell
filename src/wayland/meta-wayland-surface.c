@@ -463,7 +463,7 @@ commit_pending_state (MetaWaylandSurface      *surface,
     dnd_surface_commit (surface, pending);
   else if (surface->window)
     toplevel_surface_commit (surface, pending);
-  else if (surface->subsurface.resource)
+  else if (surface->wl_subsurface.resource)
     subsurface_surface_commit (surface, pending);
 
   g_list_foreach (surface->subsurfaces, parent_surface_committed, NULL);
@@ -654,7 +654,7 @@ surface_should_be_reactive (MetaWaylandSurface *surface)
     return TRUE;
 
   /* If we're a subsurface, we should be reactive */
-  if (surface->subsurface.resource)
+  if (surface->wl_subsurface.resource)
     return TRUE;
 
   return FALSE;
@@ -1542,7 +1542,7 @@ wl_subsurface_destructor (struct wl_resource *resource)
     }
 
   pending_state_destroy (&surface->sub.pending);
-  destroy_surface_extension (&surface->subsurface);
+  destroy_surface_extension (&surface->wl_subsurface);
 }
 
 static void
@@ -1668,7 +1668,7 @@ wl_subsurface_set_desync (struct wl_client *client,
   surface->sub.synchronous = FALSE;
 }
 
-static const struct wl_subsurface_interface meta_wayland_subsurface_interface = {
+static const struct wl_subsurface_interface meta_wayland_wl_subsurface_interface = {
   wl_subsurface_destroy,
   wl_subsurface_set_position,
   wl_subsurface_place_above,
@@ -1706,9 +1706,9 @@ wl_subcompositor_get_subsurface (struct wl_client *client,
   MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
   MetaWaylandSurface *parent = wl_resource_get_user_data (parent_resource);
 
-  if (!create_surface_extension (&surface->subsurface,
+  if (!create_surface_extension (&surface->wl_subsurface,
                                  &wl_subsurface_interface,
-                                 &meta_wayland_subsurface_interface,
+                                 &meta_wayland_wl_subsurface_interface,
                                  wl_subsurface_destructor,
                                  surface, resource, id))
     {

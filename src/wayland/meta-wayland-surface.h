@@ -96,7 +96,7 @@ struct _MetaWaylandSurface
   MetaWaylandSurfaceExtension xdg_popup;
   MetaWaylandSurfaceExtension wl_shell_surface;
   MetaWaylandSurfaceExtension gtk_surface;
-  MetaWaylandSurfaceExtension subsurface;
+  MetaWaylandSurfaceExtension wl_subsurface;
 
   /* xdg_surface stuff */
   struct wl_resource *xdg_shell_resource;
