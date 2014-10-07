@@ -14,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2014-10-06 22:09+0000\n"
-"PO-Revision-Date: 2014-10-07 20:38+0300\n"
+"PO-Revision-Date: 2014-10-07 20:42+0300\n"
 "Last-Translator: Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>\n"
 "Language-Team: Latvian <lata-l10n@googlegroups.com>\n"
 "Language: lv\n"
@@ -540,11 +540,11 @@ msgstr "Padarīt X izsaukumus sinhronus"
 
 #: ../src/core/main.c:212
 msgid "Run as a wayland compositor"
-msgstr ""
+msgstr "Palaist kā wayland kompozitoru"
 
 #: ../src/core/main.c:220
 msgid "Run as a full display server, rather than nested"
-msgstr ""
+msgstr "Palaist kā pilnu attēlošanas serveri, nevis iegultu"
 
 #: ../src/core/main.c:451
 #, c-format
