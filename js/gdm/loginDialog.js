@@ -643,6 +643,8 @@ const LoginDialog = new Lang.Class({
                                                         realmManager.release();
                                                     }));
         this._updateCancelButton();
+
+        this._authPrompt.updateSensitivity(true);
         this._showPrompt();
     },
 
