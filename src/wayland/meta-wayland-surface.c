@@ -453,6 +453,10 @@ commit_pending_state (MetaWaylandSurface      *surface,
       meta_surface_actor_set_input_region (surface->surface_actor, pending->input_region);
     }
 
+  /* wl_surface.frame */
+  wl_list_insert_list (&compositor->frame_callbacks, &pending->frame_callback_list);
+  wl_list_init (&pending->frame_callback_list);
+
   if (surface == compositor->seat->pointer.cursor_surface)
     cursor_surface_commit (surface, pending);
   else if (meta_wayland_data_device_is_dnd_surface (&compositor->seat->data_device, surface))
@@ -463,10 +467,6 @@ commit_pending_state (MetaWaylandSurface      *surface,
     subsurface_surface_commit (surface, pending);
 
   g_list_foreach (surface->subsurfaces, parent_surface_committed, NULL);
-
-  /* wl_surface.frame */
-  wl_list_insert_list (&compositor->frame_callbacks, &pending->frame_callback_list);
-  wl_list_init (&pending->frame_callback_list);
 
   pending_state_reset (pending);
 }
