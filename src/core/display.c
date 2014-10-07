@@ -1007,7 +1007,7 @@ meta_display_list_windows (MetaDisplay          *display,
     {
       MetaWindow *window = value;
 
-      if (!META_IS_WINDOW (window))
+      if (!META_IS_WINDOW (window) || window->unmanaging)
         continue;
 
       if (!window->override_redirect ||
@@ -1020,7 +1020,7 @@ meta_display_list_windows (MetaDisplay          *display,
     {
       MetaWindow *window = value;
 
-      if (!META_IS_WINDOW (window))
+      if (!META_IS_WINDOW (window) || window->unmanaging)
         continue;
 
       if (!window->override_redirect ||
