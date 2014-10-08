@@ -332,12 +332,6 @@ st_widget_dispose (GObject *gobject)
 
   st_widget_remove_transition (actor);
 
-  /* The real dispose of this accessible is done on
-   * AtkGObjectAccessible weak ref callback
-   */
-  if (priv->accessible)
-    priv->accessible = NULL;
-
   g_clear_pointer (&priv->label_actor, g_object_unref);
 
   if (priv->texture_file_changed_id != 0)
@@ -2495,6 +2489,17 @@ st_widget_get_accessible (ClutterActor *actor)
                       NULL);
 
       atk_object_initialize (widget->priv->accessible, actor);
+
+      /* AtkGObjectAccessible, which StWidgetAccessible derives from, clears
+       * the back reference to the object in a weak notify for the object;
+       * weak-ref notification, which occurs during g_object_real_dispose(),
+       * is then the optimal time to clear the forward reference. We
+       * can't clear the reference in dispose() before chaining up, since
+       * clutter_actor_dispose() causes notifications to be sent out, which
+       * will result in a new accessible object being created.
+       */
+      g_object_add_weak_pointer (G_OBJECT (actor),
+                                 (gpointer *)&widget->priv->accessible);
     }
 
   return widget->priv->accessible;
@@ -2524,14 +2529,25 @@ st_widget_set_accessible (StWidget    *widget,
                           AtkObject   *accessible)
 {
   g_return_if_fail (ST_IS_WIDGET (widget));
+  g_return_if_fail (accessible == NULL || ATK_IS_GOBJECT_ACCESSIBLE (accessible));
 
   if (widget->priv->accessible != accessible)
     {
       if (widget->priv->accessible)
-        g_object_unref (widget->priv->accessible);
+        {
+          g_object_remove_weak_pointer (G_OBJECT (widget),
+                                        (gpointer *)&widget->priv->accessible);
+          g_object_unref (widget->priv->accessible);
+          widget->priv->accessible = NULL;
+        }
 
       if (accessible)
-        widget->priv->accessible =  g_object_ref (accessible);
+        {
+          widget->priv->accessible =  g_object_ref (accessible);
+          /* See note in st_widget_get_accessible() */
+          g_object_add_weak_pointer (G_OBJECT (widget),
+                                     (gpointer *)&widget->priv->accessible);
+        }
       else
         widget->priv->accessible = NULL;
     }
