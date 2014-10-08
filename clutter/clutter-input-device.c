@@ -600,6 +600,9 @@ _clutter_input_device_get_actor (ClutterInputDevice   *device,
 
 static void on_cursor_actor_destroy (ClutterActor       *actor,
                                      ClutterInputDevice *device);
+static void on_cursor_actor_reactive_changed (ClutterActor       *actor,
+                                              GParamSpec         *pspec,
+                                              ClutterInputDevice *device);
 
 static void
 _clutter_input_device_associate_actor (ClutterInputDevice   *device,
@@ -624,6 +627,9 @@ _clutter_input_device_associate_actor (ClutterInputDevice   *device,
 
   g_signal_connect (actor,
                     "destroy", G_CALLBACK (on_cursor_actor_destroy),
+                    device);
+  g_signal_connect (actor,
+                    "notify::reactive", G_CALLBACK (on_cursor_actor_reactive_changed),
                     device);
   _clutter_actor_set_has_pointer (actor, TRUE);
 }
@@ -659,6 +665,9 @@ _clutter_input_device_unassociate_actor (ClutterInputDevice   *device,
       g_signal_handlers_disconnect_by_func (actor,
                                             G_CALLBACK (on_cursor_actor_destroy),
                                             device);
+      g_signal_handlers_disconnect_by_func (actor,
+                                            G_CALLBACK (on_cursor_actor_reactive_changed),
+                                            device);
       _clutter_actor_set_has_pointer (actor, FALSE);
     }
 }
@@ -668,6 +677,15 @@ on_cursor_actor_destroy (ClutterActor       *actor,
                          ClutterInputDevice *device)
 {
   _clutter_input_device_unassociate_actor (device, actor, TRUE);
+}
+
+static void
+on_cursor_actor_reactive_changed (ClutterActor       *actor,
+                                  GParamSpec         *pspec,
+                                  ClutterInputDevice *device)
+{
+  if (!clutter_actor_get_reactive (actor))
+    _clutter_input_device_unassociate_actor (device, actor, FALSE);
 }
 
 /*< private >
