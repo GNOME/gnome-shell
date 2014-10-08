@@ -1861,7 +1861,7 @@ StScrollBar {
     -panel-corner-border-width: 2px;
     -panel-corner-border-color: transparent; }
     #panel .panel-corner:active, #panel .panel-corner:overview, #panel .panel-corner:focus {
-      -panel-corner-border-color: rgba(238, 238, 236, 0.9); }
+      -panel-corner-border-color: #729fcf; }
     #panel .panel-corner.lock-screen, #panel .panel-corner.login-screen, #panel .panel-cornerunlock-screen {
       -panel-corner-radius: 0;
       -panel-corner-background-color: transparent;
@@ -1881,7 +1881,6 @@ StScrollBar {
       text-shadow: black 0 2px 2px; }
     #panel .panel-button:active, #panel .panel-button:overview, #panel .panel-button:focus, #panel .panel-button:checked {
       border-image: url("panel-button-border.svg") 6 10 0 2;
-      background-image: url("panel-button-highlight-wide.svg");
       color: white;
       text-shadow: black 0px 2px 2px; }
       #panel .panel-button:active > .system-status-icon, #panel .panel-button:overview > .system-status-icon, #panel .panel-button:focus > .system-status-icon, #panel .panel-button:checked > .system-status-icon {
@@ -1894,7 +1893,7 @@ StScrollBar {
       .unlock-screen #panel .panel-button:focus, .unlock-screen #panel .panel-button:hover, .unlock-screen #panel .panel-button:active, .login-screen #panel .panel-button:focus, .login-screen #panel .panel-button:hover, .login-screen #panel .panel-button:active, .lock-screen #panel .panel-button:focus, .lock-screen #panel .panel-button:hover, .lock-screen #panel .panel-button:active {
         color: white; }
   #panel .panel-status-button:active, #panel .panel-status-button:overview, #panel .panel-status-button:focus, #panel .panel-status-button:checked {
-    background-image: url("panel-button-highlight-narrow.svg"); }
+    border-image: url("panel-button-border.svg") 6 10 0 2; }
   #panel .panel-menu {
     -boxpointer-gap: 4px; }
   #panel .panel-status-indicators-box,

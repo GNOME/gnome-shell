@@ -263,7 +263,7 @@ StScrollBar {
     -panel-corner-border-width: 2px;
     -panel-corner-border-color: transparent; 
     
-    &:active, &:overview, &:focus { -panel-corner-border-color: transparentize($fg_color, 0.1); }
+    &:active, &:overview, &:focus { -panel-corner-border-color: #729fcf; } //fixed due to SVG image-border
     &.lock-screen, &.login-screen, &unlock-screen {
       -panel-corner-radius: 0;
       -panel-corner-background-color: transparent;
@@ -296,8 +296,7 @@ StScrollBar {
     
     &:active, &:overview, &:focus, &:checked {
       border-image: url("panel-button-border.svg") 6 10 0 2;
-      background-image: url("panel-button-highlight-wide.svg");
-      color: white;
+      color: lighten($fg_color,10%);
       text-shadow: black 0px 2px 2px;
       
       & > .system-status-icon { icon-shadow: black 0 2px 2px; }
@@ -315,7 +314,7 @@ StScrollBar {
   .panel-status-button {
   
     &:active, &:overview, &:focus, &:checked {
-      background-image: url("panel-button-highlight-narrow.svg");
+      border-image: url("panel-button-border.svg") 6 10 0 2;
     }
   }
   
@@ -328,6 +327,8 @@ StScrollBar {
   .screencast-indicator { color: $warning_color; }
 }
 
+  // a little unstructured mess:
+
   .system-switch-user-submenu-icon {
     icon-size: 24px;
     border: 1px solid transparentize($fg_color,0.6);
@@ -336,6 +337,7 @@ StScrollBar {
   #appMenu {
     spinner-image: url("process-working.svg");
     spacing: 4px;
+    
     .label-shadow { color: transparentize(#000,0.5); }
   }
   
@@ -360,9 +362,6 @@ StScrollBar {
     
     & > StIcon { icon-size: 16px; }
   }
-  .system0switch-user0submenu-icon { } //FIXME, what's this?
-  
-
 
 // not really top bar only
 .popup-menu-arrow { width: 16px; height: 16px; }
