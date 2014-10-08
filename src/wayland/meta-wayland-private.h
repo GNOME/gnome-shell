@@ -24,7 +24,6 @@
 #include <clutter/clutter.h>
 
 #include <glib.h>
-#include <cairo.h>
 
 #include "window-private.h"
 #include <meta/meta-cursor-tracker.h>
@@ -33,12 +32,6 @@
 #include "meta-wayland-versions.h"
 #include "meta-wayland-surface.h"
 #include "meta-wayland-seat.h"
-
-typedef struct
-{
-  struct wl_resource *resource;
-  cairo_region_t *region;
-} MetaWaylandRegion;
 
 typedef struct
 {

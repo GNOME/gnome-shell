@@ -236,6 +236,8 @@ libmutter_la_SOURCES +=				\
 	wayland/meta-xwayland-private.h		\
 	wayland/meta-wayland-buffer.c      	\
 	wayland/meta-wayland-buffer.h      	\
+	wayland/meta-wayland-region.c      	\
+	wayland/meta-wayland-region.h      	\
 	wayland/meta-wayland-data-device.c      \
 	wayland/meta-wayland-data-device.h      \
 	wayland/meta-wayland-keyboard.c		\

@@ -36,6 +36,7 @@
 #include "meta-wayland-private.h"
 #include "meta-xwayland-private.h"
 #include "meta-wayland-buffer.h"
+#include "meta-wayland-region.h"
 #include "meta-wayland-seat.h"
 #include "meta-wayland-keyboard.h"
 #include "meta-wayland-pointer.h"

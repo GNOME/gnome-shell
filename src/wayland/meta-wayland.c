@@ -35,6 +35,7 @@
 
 #include "meta-wayland-private.h"
 #include "meta-xwayland-private.h"
+#include "meta-wayland-region.h"
 #include "meta-wayland-seat.h"
 #include "meta-wayland-outputs.h"
 #include "meta-wayland-data-device.h"
@@ -127,56 +128,6 @@ meta_wayland_compositor_repick (MetaWaylandCompositor *compositor)
 }
 
 static void
-wl_region_destroy (struct wl_client *client,
-                   struct wl_resource *resource)
-{
-  wl_resource_destroy (resource);
-}
-
-static void
-wl_region_add (struct wl_client *client,
-               struct wl_resource *resource,
-               gint32 x,
-               gint32 y,
-               gint32 width,
-               gint32 height)
-{
-  MetaWaylandRegion *region = wl_resource_get_user_data (resource);
-  cairo_rectangle_int_t rectangle = { x, y, width, height };
-
-  cairo_region_union_rectangle (region->region, &rectangle);
-}
-
-static void
-wl_region_subtract (struct wl_client *client,
-                    struct wl_resource *resource,
-                    gint32 x,
-                    gint32 y,
-                    gint32 width,
-                    gint32 height)
-{
-  MetaWaylandRegion *region = wl_resource_get_user_data (resource);
-  cairo_rectangle_int_t rectangle = { x, y, width, height };
-
-  cairo_region_subtract_rectangle (region->region, &rectangle);
-}
-
-static const struct wl_region_interface meta_wayland_wl_region_interface = {
-  wl_region_destroy,
-  wl_region_add,
-  wl_region_subtract
-};
-
-static void
-wl_region_destructor (struct wl_resource *resource)
-{
-  MetaWaylandRegion *region = wl_resource_get_user_data (resource);
-
-  cairo_region_destroy (region->region);
-  g_slice_free (MetaWaylandRegion, region);
-}
-
-static void
 wl_compositor_create_surface (struct wl_client *client,
                               struct wl_resource *resource,
                               guint32 id)
@@ -187,15 +138,11 @@ wl_compositor_create_surface (struct wl_client *client,
 
 static void
 wl_compositor_create_region (struct wl_client *client,
-                             struct wl_resource *compositor_resource,
+                             struct wl_resource *resource,
                              uint32_t id)
 {
-  MetaWaylandRegion *region = g_slice_new0 (MetaWaylandRegion);
-
-  region->resource = wl_resource_create (client, &wl_region_interface, wl_resource_get_version (compositor_resource), id);
-  wl_resource_set_implementation (region->resource, &meta_wayland_wl_region_interface, region, wl_region_destructor);
-
-  region->region = cairo_region_create ();
+  MetaWaylandCompositor *compositor = wl_resource_get_user_data (resource);
+  meta_wayland_region_create (compositor, client, resource, id);
 }
 
 const static struct wl_compositor_interface meta_wayland_wl_compositor_interface = {
