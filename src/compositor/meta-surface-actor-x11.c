@@ -383,6 +383,7 @@ window_decorated_notify (MetaWindow *window,
 {
   MetaSurfaceActorX11 *self = META_SURFACE_ACTOR_X11 (user_data);
 
+  detach_pixmap (self);
   free_damage (self);
   create_damage (self);
 }
