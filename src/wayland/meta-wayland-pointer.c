@@ -48,6 +48,7 @@
 
 #include "meta-wayland-pointer.h"
 #include "meta-wayland-private.h"
+#include "meta-wayland-buffer.h"
 #include "meta-cursor.h"
 #include "meta-cursor-tracker-private.h"
 #include "meta-surface-actor-wayland.h"

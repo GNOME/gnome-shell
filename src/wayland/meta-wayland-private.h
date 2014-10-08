@@ -80,8 +80,4 @@ struct _MetaWaylandCompositor
   MetaWaylandSeat *seat;
 };
 
-MetaWaylandBuffer *     meta_wayland_buffer_from_resource       (struct wl_resource    *resource);
-void                    meta_wayland_buffer_ref                 (MetaWaylandBuffer     *buffer);
-void                    meta_wayland_buffer_unref               (MetaWaylandBuffer     *buffer);
-
 #endif /* META_WAYLAND_PRIVATE_H */

@@ -126,61 +126,6 @@ wayland_event_source_new (struct wl_display *display)
   return &source->source;
 }
 
-static void
-meta_wayland_buffer_destroy_handler (struct wl_listener *listener,
-                                     void *data)
-{
-  MetaWaylandBuffer *buffer =
-    wl_container_of (listener, buffer, destroy_listener);
-
-  wl_signal_emit (&buffer->destroy_signal, buffer);
-  g_slice_free (MetaWaylandBuffer, buffer);
-}
-
-void
-meta_wayland_buffer_ref (MetaWaylandBuffer *buffer)
-{
-  buffer->ref_count++;
-}
-
-void
-meta_wayland_buffer_unref (MetaWaylandBuffer *buffer)
-{
-  buffer->ref_count--;
-  if (buffer->ref_count == 0)
-    {
-      g_clear_pointer (&buffer->texture, cogl_object_unref);
-      wl_resource_queue_event (buffer->resource, WL_BUFFER_RELEASE);
-    }
-}
-
-MetaWaylandBuffer *
-meta_wayland_buffer_from_resource (struct wl_resource *resource)
-{
-  MetaWaylandBuffer *buffer;
-  struct wl_listener *listener;
-
-  listener =
-    wl_resource_get_destroy_listener (resource,
-                                      meta_wayland_buffer_destroy_handler);
-
-  if (listener)
-    {
-      buffer = wl_container_of (listener, buffer, destroy_listener);
-    }
-  else
-    {
-      buffer = g_slice_new0 (MetaWaylandBuffer);
-
-      buffer->resource = resource;
-      wl_signal_init (&buffer->destroy_signal);
-      buffer->destroy_listener.notify = meta_wayland_buffer_destroy_handler;
-      wl_resource_add_destroy_listener (resource, &buffer->destroy_listener);
-    }
-
-  return buffer;
-}
-
 void
 meta_wayland_compositor_set_input_focus (MetaWaylandCompositor *compositor,
                                          MetaWindow            *window)

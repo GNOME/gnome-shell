@@ -36,16 +36,6 @@ struct _MetaWaylandSerial {
   uint32_t value;
 };
 
-struct _MetaWaylandBuffer
-{
-  struct wl_resource *resource;
-  struct wl_signal destroy_signal;
-  struct wl_listener destroy_listener;
-
-  CoglTexture *texture;
-  uint32_t ref_count;
-};
-
 typedef struct
 {
   /* wl_surface.attach */
