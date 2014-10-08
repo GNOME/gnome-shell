@@ -193,57 +193,6 @@
 
 /* Panel */
 
-#panel {
-    background-color: black;
-    font-weight: bold;
-    height: 1.86em;
-}
-
-#panel.unlock-screen,
-#panel.login-screen {
-    background-color: transparent;
-}
-
-#panelLeft, #panelCenter {
-    spacing: 4px;
-}
-
-#panelLeft:ltr {
-    padding-right: 4px;
-}
-
-#panelLeft:rtl {
-    padding-left: 4px;
-}
-
-#panelRight:ltr {
-    padding-left: 4px;
-}
-
-#panelRight:rtl {
-    padding-right: 4px;
-}
-
-.panel-corner {
-    -panel-corner-radius: 6px;
-    -panel-corner-background-color: black;
-    -panel-corner-border-width: 2px;
-    -panel-corner-border-color: transparent;
-}
-
-.panel-corner:active,
-.panel-corner:overview,
-.panel-corner:focus {
-    -panel-corner-border-color: rgba(255,255,255,0.8);
-}
-
-.panel-corner.lock-screen,
-.panel-corner.unlock-screen,
-.panel-corner.login-screen {
-    -panel-corner-background-color: transparent;
-    -panel-corner-border-color: transparent;
-}
-
 #appMenu {
     spinner-image: url("process-working.svg");
     spacing: 4px;
