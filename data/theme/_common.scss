@@ -68,10 +68,10 @@ StEntry {
   &:insensitive { @include entry(insensitive);}
   
   .search-entry {
-    padding: 9px;
+    padding: 7px 9px;
     border-radius: 24px;
     &:focus {
-      padding: 8px;
+      padding: 6px 8px;
       border-width: 2px;
     }
   }
