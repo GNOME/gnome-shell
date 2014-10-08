@@ -196,6 +196,34 @@ StScrollBar {
 
 /* TOP BAR */
 
+#panel {
+  background-color: black;
+  font-weight: bold;
+  height: 1.86em;
+  &.unlock-screen,
+  &.login-screen { background-color: transparent; }
+
+  #panelLeft, #panelCenter { // spacing between activities<>app menu and such
+    spacing: 4px;
+  }
+  
+  .panel-corner {
+    -panel-corner-radius: 6px;
+    -panel-corner-background-color: black;
+    -panel-corner-border-width: 2px;
+    -panel-corner-border-color: transparent; 
+    
+    &:active, &:overview, &:focus { -panel-corner-border-color: transparentize($fg_color, 0.1); }
+    &.lock-screen, &.login-screen, &unlock-screen {
+      -panel-corner-radius: 0;
+      -panel-corner-background-color: transparent;
+      -panel-corner-border-color: transparent;
+    }
+  }
+  
+}
+
+
 // not really top bar only
 .popup-menu-arrow { width: 16px; height: 16px; }
 .popup-menu-icon { icon-size: 1.09em; }
