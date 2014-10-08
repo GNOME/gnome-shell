@@ -104,6 +104,12 @@ StScrollBar {
   }
 }
 
+/* Slider */
+
+.slider { //FIXME
+
+}
+
 /* Check Boxes */
 
 .check-box {
@@ -190,6 +196,10 @@ StScrollBar {
   //.popup-status-menu-item { font-weight: normal;  color: pink; } //dunno what that is  
 }
 
+  .popup-menu-ornament {
+      text-align: right;
+      width: 1em;
+  }
   .popup-menu-boxpointer,
   .candidate-popup-boxpointer {
       -arrow-border-radius: 3px;
@@ -215,8 +225,13 @@ StScrollBar {
   background-color: black;
   font-weight: bold;
   height: 1.86em;
+  
   &.unlock-screen,
-  &.login-screen { background-color: transparent; }
+  &.login-screen,
+  &.lock-screen {
+    background-color: transparent;
+    
+  }
 
   #panelLeft, #panelCenter { // spacing between activities<>app menu and such
     spacing: 4px;
@@ -235,8 +250,76 @@ StScrollBar {
       -panel-corner-border-color: transparent;
     }
   }
+
+  .panel-button {
+    -natural-hpadding: 12px;
+    -minimum-hpadding: 6px;
+    font-weight: bold;
+    color: #ccc;
+    transition-duration: 100ms;
+   
+    #appMenuIcon { 
+      app-icon-bottom-clip: 1px;
+      
+      .panel-button:active &, 
+      .panel-button:overview &, 
+      .panel-button:focus &, 
+      .panel-button:checked & {
+        app-icon-bottom-clip: 2px;
+      }
+        
+    }
+    &:hover { 
+      color: lighten($fg_color, 10%);
+      text-shadow: black 0 2px 2px;
+    }
+    
+    &:active, &:overview, &:focus, &:checked {
+      border-image: url("panel-button-border.svg") 6 10 0 2;
+      background-image: url("panel-button-highlight-wide.svg");
+      color: white;
+      text-shadow: black 0px 2px 2px;
+      
+      & > .system-status-icon { icon-shadow: black 0 2px 2px; }
+    }
+    
+    .system-status-icon { icon-size: 1.09em; padding: 0 5px; }
+    .unlock-screen &,
+    .login-screen &,
+    .lock-screen & {
+      color: lighten($fg_color, 10%);
+      &:focus, &:hover, &:active { color: lighten($fg_color, 10%); }
+    }
+  }
   
+  .panel-status-button {
+  
+    &:active, &:overview, &:focus, &:checked {
+      background-image: url("panel-button-highlight-narrow.svg");
+    }
+  }
+  
+  .panel-menu { -boxpointer-gap: 4px; } //FIXME
+  .panel-status-indicators-box, //FIXME
+  .panel-status-menu-box {
+    spacing: 2px;
+  }
 }
+
+  #appMenu {
+    spinner-image: url("process-working.svg");
+    spacing: 4px;
+    .label-shadow { color: transparentize(#000,0.5); }
+  }
+  
+  .aggregate-menu {
+    width: 360px;
+    .popup-menu-icon { padding: 0 4px; }
+  }
+  
+  .system-menu-action { } //FIXME, what's this?
+  .system0switch-user0submenu-icon { } //FIXME, what's this?
+  
 
 
 // not really top bar only
