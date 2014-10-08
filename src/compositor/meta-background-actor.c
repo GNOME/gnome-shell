@@ -708,6 +708,7 @@ on_background_changed (MetaBackground      *background,
                        MetaBackgroundActor *self)
 {
   invalidate_pipeline (self, CHANGED_BACKGROUND);
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
 }
 
 void
