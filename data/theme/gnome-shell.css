@@ -16,43 +16,6 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
-/* Text Styles */
-/* default text style */
-/* Slider */
-.slider {
-  height: 1em;
-  -slider-height: 0.3em;
-  -slider-background-color: #333333;
-  -slider-border-color: #5f5f5f;
-  -slider-active-background-color: #76b0ec;
-  -slider-active-border-color: #1f6dbc;
-  -slider-border-width: 1px;
-  -slider-handle-radius: 6px; }
-
-/* PopupMenu */
-.popup-menu-ornament {
-  text-align: right;
-  width: 1em; }
-
-.popup-sub-menu:scrolled .popup-menu-item:ltr {
-  padding-right: 0em; }
-
-.popup-sub-menu:scrolled .popup-menu-item:rtl {
-  padding-left: 0em; }
-
-.popup-sub-menu StScrollBar {
-  padding: 4px; }
-
-.popup-sub-menu StScrollBar StBin#trough {
-  border-width: 0px; }
-
-.popup-sub-menu StScrollBar StBin#vhandle {
-  background-color: #4c4c4c;
-  border-width: 0px; }
-
-/* The remaining popup-menu sizing is all done in ems, so that if you
- * override .popup-menu.font-size, everything else will scale with it.
- */
 /* Switches */
 .toggle-switch {
   width: 65px;
@@ -1919,6 +1882,7 @@ StScrollBar {
     StScrollBar StButton#vhandle:active, StScrollBar StButton#hhandle:active {
       background-color: #215d9c; }
 
+/* Slider */
 /* Check Boxes */
 .check-box StBoxLayout {
   spacing: .8em; }
@@ -1997,6 +1961,10 @@ StScrollBar {
     .popup-menu .popup-inactive-menu-item:insensitive {
       color: rgba(238, 238, 236, 0.5); }
 
+.popup-menu-ornament {
+  text-align: right;
+  width: 1em; }
+
 .popup-menu-boxpointer,
 .candidate-popup-boxpointer {
   -arrow-border-radius: 3px;
@@ -2016,7 +1984,7 @@ StScrollBar {
   background-color: black;
   font-weight: bold;
   height: 1.86em; }
-  #panel.unlock-screen, #panel.login-screen {
+  #panel.unlock-screen, #panel.login-screen, #panel.lock-screen {
     background-color: transparent; }
   #panel #panelLeft, #panel #panelCenter {
     spacing: 4px; }
@@ -2031,6 +1999,51 @@ StScrollBar {
       -panel-corner-radius: 0;
       -panel-corner-background-color: transparent;
       -panel-corner-border-color: transparent; }
+  #panel .panel-button {
+    -natural-hpadding: 12px;
+    -minimum-hpadding: 6px;
+    font-weight: bold;
+    color: #ccc;
+    transition-duration: 100ms; }
+    #panel .panel-button #appMenuIcon {
+      app-icon-bottom-clip: 1px; }
+      .panel-button:active #panel .panel-button #appMenuIcon, .panel-button:overview #panel .panel-button #appMenuIcon, .panel-button:focus #panel .panel-button #appMenuIcon, .panel-button:checked #panel .panel-button #appMenuIcon {
+        app-icon-bottom-clip: 2px; }
+    #panel .panel-button:hover {
+      color: white;
+      text-shadow: black 0 2px 2px; }
+    #panel .panel-button:active, #panel .panel-button:overview, #panel .panel-button:focus, #panel .panel-button:checked {
+      border-image: url("panel-button-border.svg") 6 10 0 2;
+      background-image: url("panel-button-highlight-wide.svg");
+      color: white;
+      text-shadow: black 0px 2px 2px; }
+      #panel .panel-button:active > .system-status-icon, #panel .panel-button:overview > .system-status-icon, #panel .panel-button:focus > .system-status-icon, #panel .panel-button:checked > .system-status-icon {
+        icon-shadow: black 0 2px 2px; }
+    #panel .panel-button .system-status-icon {
+      icon-size: 1.09em;
+      padding: 0 5px; }
+    .unlock-screen #panel .panel-button, .login-screen #panel .panel-button, .lock-screen #panel .panel-button {
+      color: white; }
+      .unlock-screen #panel .panel-button:focus, .unlock-screen #panel .panel-button:hover, .unlock-screen #panel .panel-button:active, .login-screen #panel .panel-button:focus, .login-screen #panel .panel-button:hover, .login-screen #panel .panel-button:active, .lock-screen #panel .panel-button:focus, .lock-screen #panel .panel-button:hover, .lock-screen #panel .panel-button:active {
+        color: white; }
+  #panel .panel-status-button:active, #panel .panel-status-button:overview, #panel .panel-status-button:focus, #panel .panel-status-button:checked {
+    background-image: url("panel-button-highlight-narrow.svg"); }
+  #panel .panel-menu {
+    -boxpointer-gap: 4px; }
+  #panel .panel-status-indicators-box,
+  #panel .panel-status-menu-box {
+    spacing: 2px; }
+
+#appMenu {
+  spinner-image: url("process-working.svg");
+  spacing: 4px; }
+  #appMenu .label-shadow {
+    color: rgba(0, 0, 0, 0.5); }
+
+.aggregate-menu {
+  width: 360px; }
+  .aggregate-menu .popup-menu-icon {
+    padding: 0 4px; }
 
 .popup-menu-arrow {
   width: 16px;
