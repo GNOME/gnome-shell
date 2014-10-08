@@ -127,16 +127,6 @@ meta_wayland_compositor_repick (MetaWaylandCompositor *compositor)
 }
 
 static void
-wl_compositor_create_surface (struct wl_client *client,
-                              struct wl_resource *resource,
-                              guint32 id)
-{
-  MetaWaylandCompositor *compositor = wl_resource_get_user_data (resource);
-
-  meta_wayland_surface_create (compositor, client, resource, id);
-}
-
-static void
 wl_region_destroy (struct wl_client *client,
                    struct wl_resource *resource)
 {
@@ -171,19 +161,28 @@ wl_region_subtract (struct wl_client *client,
   cairo_region_subtract_rectangle (region->region, &rectangle);
 }
 
-static const struct wl_region_interface meta_wayland_region_interface = {
+static const struct wl_region_interface meta_wayland_wl_region_interface = {
   wl_region_destroy,
   wl_region_add,
   wl_region_subtract
 };
 
 static void
-meta_wayland_region_resource_destroy_cb (struct wl_resource *resource)
+wl_region_destructor (struct wl_resource *resource)
 {
   MetaWaylandRegion *region = wl_resource_get_user_data (resource);
 
   cairo_region_destroy (region->region);
   g_slice_free (MetaWaylandRegion, region);
+}
+
+static void
+wl_compositor_create_surface (struct wl_client *client,
+                              struct wl_resource *resource,
+                              guint32 id)
+{
+  MetaWaylandCompositor *compositor = wl_resource_get_user_data (resource);
+  meta_wayland_surface_create (compositor, client, resource, id);
 }
 
 static void
@@ -194,28 +193,15 @@ wl_compositor_create_region (struct wl_client *client,
   MetaWaylandRegion *region = g_slice_new0 (MetaWaylandRegion);
 
   region->resource = wl_resource_create (client, &wl_region_interface, wl_resource_get_version (compositor_resource), id);
-  wl_resource_set_implementation (region->resource, &meta_wayland_region_interface, region, meta_wayland_region_resource_destroy_cb);
+  wl_resource_set_implementation (region->resource, &meta_wayland_wl_region_interface, region, wl_region_destructor);
 
   region->region = cairo_region_create ();
 }
 
-const static struct wl_compositor_interface meta_wayland_compositor_interface = {
+const static struct wl_compositor_interface meta_wayland_wl_compositor_interface = {
   wl_compositor_create_surface,
   wl_compositor_create_region
 };
-
-void
-meta_wayland_compositor_paint_finished (MetaWaylandCompositor *compositor)
-{
-  while (!wl_list_empty (&compositor->frame_callbacks))
-    {
-      MetaWaylandFrameCallback *callback =
-        wl_container_of (compositor->frame_callbacks.next, callback, link);
-
-      wl_callback_send_done (callback->resource, get_time ());
-      wl_resource_destroy (callback->resource);
-    }
-}
 
 static void
 compositor_bind (struct wl_client *client,
@@ -227,7 +213,7 @@ compositor_bind (struct wl_client *client,
   struct wl_resource *resource;
 
   resource = wl_resource_create (client, &wl_compositor_interface, version, id);
-  wl_resource_set_implementation (resource, &meta_wayland_compositor_interface, compositor, NULL);
+  wl_resource_set_implementation (resource, &meta_wayland_wl_compositor_interface, compositor, NULL);
 }
 
 /**
@@ -244,6 +230,19 @@ meta_wayland_compositor_update (MetaWaylandCompositor *compositor,
                                 const ClutterEvent    *event)
 {
   meta_wayland_seat_update (compositor->seat, event);
+}
+
+void
+meta_wayland_compositor_paint_finished (MetaWaylandCompositor *compositor)
+{
+  while (!wl_list_empty (&compositor->frame_callbacks))
+    {
+      MetaWaylandFrameCallback *callback =
+        wl_container_of (compositor->frame_callbacks.next, callback, link);
+
+      wl_callback_send_done (callback->resource, get_time ());
+      wl_resource_destroy (callback->resource);
+    }
 }
 
 /**
