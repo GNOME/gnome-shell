@@ -281,25 +281,12 @@ static void
 repick_for_event (MetaWaylandPointer *pointer,
                   const ClutterEvent *for_event)
 {
-  ClutterActor *actor = NULL;
+  ClutterActor *actor;
 
   if (for_event)
-    {
-      actor = clutter_event_get_source (for_event);
-    }
+    actor = clutter_event_get_source (for_event);
   else
-    {
-      ClutterStage *stage = clutter_input_device_get_pointer_stage (pointer->device);
-
-      if (stage)
-        {
-          ClutterPoint pos;
-
-          clutter_input_device_get_coords (pointer->device, NULL, &pos);
-          actor = clutter_stage_get_actor_at_pos (stage, CLUTTER_PICK_REACTIVE,
-                                                  pos.x, pos.y);
-        }
-    }
+    actor = clutter_input_device_get_pointer_actor (pointer->device);
 
   if (META_IS_SURFACE_ACTOR_WAYLAND (actor))
     pointer->current = meta_surface_actor_wayland_get_surface (META_SURFACE_ACTOR_WAYLAND (actor));
