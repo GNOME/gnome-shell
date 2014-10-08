@@ -30,15 +30,11 @@
 #include <wayland-server.h>
 #include "meta-wayland-types.h"
 
-typedef struct
-{
-  struct wl_resource *resource;
-  cairo_region_t *region;
-} MetaWaylandRegion;
-
 MetaWaylandRegion * meta_wayland_region_create (MetaWaylandCompositor *compositor,
                                                 struct wl_client      *client,
                                                 struct wl_resource    *compositor_resource,
                                                 guint32                id);
+
+cairo_region_t * meta_wayland_region_peek_cairo_region (MetaWaylandRegion *region);
 
 #endif /* META_WAYLAND_REGION_H */

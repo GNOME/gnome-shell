@@ -32,6 +32,7 @@ typedef struct _MetaWaylandDataSource MetaWaylandDataSource;
 typedef struct _MetaWaylandDataDevice MetaWaylandDataDevice;
 
 typedef struct _MetaWaylandBuffer MetaWaylandBuffer;
+typedef struct _MetaWaylandRegion MetaWaylandRegion;
 
 typedef struct _MetaWaylandSurface MetaWaylandSurface;
 

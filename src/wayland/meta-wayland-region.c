@@ -26,6 +26,12 @@
 
 #include "meta-wayland-region.h"
 
+struct _MetaWaylandRegion
+{
+  struct wl_resource *resource;
+  cairo_region_t *region;
+};
+
 static void
 wl_region_destroy (struct wl_client *client,
                    struct wl_resource *resource)
@@ -90,4 +96,10 @@ meta_wayland_region_create (MetaWaylandCompositor *compositor,
   region->region = cairo_region_create ();
 
   return region;
+}
+
+cairo_region_t *
+meta_wayland_region_peek_cairo_region (MetaWaylandRegion *region)
+{
+  return region->region;
 }
