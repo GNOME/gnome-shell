@@ -1879,10 +1879,10 @@ StEntry {
     border-color: #323636;
     box-shadow: none; }
   StEntry .search-entry {
-    padding: 9px;
+    padding: 7px 9px;
     border-radius: 24px; }
     StEntry .search-entry:focus {
-      padding: 8px;
+      padding: 6px 8px;
       border-width: 2px; }
 
 /* Scrollbars */
