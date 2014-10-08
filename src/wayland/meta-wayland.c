@@ -268,7 +268,6 @@ meta_wayland_pre_clutter_init (void)
 
   meta_wayland_compositor_init (compositor);
 
-  /* Set up our logging. */
   wl_log_set_handler_server (meta_wayland_log_func);
 
   compositor->wayland_display = wl_display_create ();
@@ -297,10 +296,7 @@ meta_wayland_init (void)
    * much more likely to get confused being told about surface changes
    * relating to X clients when we don't know what's happened to them
    * according to the X protocol.
-   *
-   * At some point we could perhaps try and get the X protocol proxied
-   * over the wayland protocol so that we don't have to worry about
-   * synchronizing the two command streams. */
+   */
   g_source_set_priority (wayland_event_source, GDK_PRIORITY_EVENTS + 1);
   g_source_attach (wayland_event_source, NULL);
 
@@ -311,20 +307,9 @@ meta_wayland_init (void)
   meta_wayland_shell_init (compositor);
   meta_wayland_seat_init (compositor);
 
-  /* FIXME: find the first free name instead */
   compositor->display_name = wl_display_add_socket_auto (compositor->wayland_display);
   if (compositor->display_name == NULL)
     g_error ("Failed to create socket");
-
-  /* XXX: It's important that we only try and start xwayland after we
-   * have initialized EGL because EGL implements the "wl_drm"
-   * interface which xwayland requires to determine what drm device
-   * name it should use.
-   *
-   * By waiting until we've shown the stage above we ensure that the
-   * underlying GL resources for the surface have also been allocated
-   * and so EGL must be initialized by this point.
-   */
 
   if (!meta_xwayland_start (&compositor->xwayland_manager, compositor->wayland_display))
     g_error ("Failed to start X Wayland");
