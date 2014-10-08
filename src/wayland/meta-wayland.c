@@ -283,12 +283,6 @@ meta_wayland_init (void)
   MetaWaylandCompositor *compositor = meta_wayland_compositor_get_default ();
   GSource *wayland_event_source;
 
-  if (!wl_global_create (compositor->wayland_display,
-			 &wl_compositor_interface,
-			 META_WL_COMPOSITOR_VERSION,
-			 compositor, compositor_bind))
-    g_error ("Failed to register the global wl_compositor");
-
   wayland_event_source = wayland_event_source_new (compositor->wayland_display);
 
   /* XXX: Here we are setting the wayland event source to have a
@@ -299,6 +293,12 @@ meta_wayland_init (void)
    */
   g_source_set_priority (wayland_event_source, GDK_PRIORITY_EVENTS + 1);
   g_source_attach (wayland_event_source, NULL);
+
+  if (!wl_global_create (compositor->wayland_display,
+			 &wl_compositor_interface,
+			 META_WL_COMPOSITOR_VERSION,
+			 compositor, compositor_bind))
+    g_error ("Failed to register the global wl_compositor");
 
   wl_display_init_shm (compositor->wayland_display);
 
