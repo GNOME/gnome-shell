@@ -19,40 +19,25 @@
  * 02111-1307, USA.
  */
 
-#include <config.h>
+#include "config.h"
+
+#include "meta-wayland.h"
 
 #include <clutter/clutter.h>
 #include <clutter/wayland/clutter-wayland-compositor.h>
 #include <clutter/wayland/clutter-wayland-surface.h>
 
-#include <glib.h>
 #include <sys/time.h>
 #include <string.h>
-#include <sys/types.h>
-#include <sys/stat.h>
 #include <stdlib.h>
-#include <sys/wait.h>
-#include <fcntl.h>
-#include <unistd.h>
 
 #include <wayland-server.h>
 
-#include <meta/meta-backend.h>
-
 #include "meta-wayland-private.h"
 #include "meta-xwayland-private.h"
-#include "meta-window-actor-private.h"
 #include "meta-wayland-seat.h"
-#include "meta-wayland-keyboard.h"
-#include "meta-wayland-pointer.h"
 #include "meta-wayland-outputs.h"
 #include "meta-wayland-data-device.h"
-#include "meta-cursor-tracker-private.h"
-#include "display-private.h"
-#include "window-private.h"
-#include <meta/types.h>
-#include <meta/main.h>
-#include "frame.h"
 
 static MetaWaylandCompositor _meta_wayland_compositor;
 

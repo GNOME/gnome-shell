@@ -23,6 +23,8 @@
 #ifndef META_WAYLAND_H
 #define META_WAYLAND_H
 
+#include <clutter/clutter.h>
+#include <meta/types.h>
 #include "meta-wayland-types.h"
 
 void                    meta_wayland_pre_clutter_init           (void);
