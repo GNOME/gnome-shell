@@ -16,27 +16,6 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
-/* Switches */
-.toggle-switch {
-  width: 65px;
-  height: 22px; }
-
-.toggle-switch-us {
-  background-image: url("toggle-off-us.svg");
-  background-size: contain; }
-
-.toggle-switch-us:checked {
-  background-image: url("toggle-on-us.svg");
-  background-size: contain; }
-
-.toggle-switch-intl {
-  background-image: url("toggle-off-intl.svg");
-  background-size: contain; }
-
-.toggle-switch-intl:checked {
-  background-image: url("toggle-on-intl.svg");
-  background-size: contain; }
-
 /* Network */
 .nm-dialog {
   max-height: 500px;
@@ -1906,6 +1885,22 @@ StScrollBar {
   background-image: url("checkbox.svg"); }
 .check-box:focus:checked Stbin {
   background-image: url("checkbox-focused.svg"); }
+
+/* Switches */
+.toggle-switch {
+  width: 65px;
+  height: 22px;
+  background-size: contain; }
+
+.toggle-switch-us {
+  background-image: url("toggle-off-us.svg"); }
+  .toggle-switch-us:checked {
+    background-image: url("toggle-on-us.svg"); }
+
+.toggle-switch-intl {
+  background-image: url("toggle-off-intl.svg"); }
+  .toggle-switch-intl:checked {
+    background-image: url("toggle-on-intl.svg"); }
 
 /* links */
 .shell-link {

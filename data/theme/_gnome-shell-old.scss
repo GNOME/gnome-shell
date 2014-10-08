@@ -18,30 +18,6 @@
  */
 
 
-/* Switches */
-.toggle-switch {
-    width: 65px;
-    height: 22px;
-}
-
-.toggle-switch-us {
-    background-image: url("toggle-off-us.svg");
-    background-size: contain;
-}
-.toggle-switch-us:checked {
-    background-image: url("toggle-on-us.svg");
-    background-size: contain;
-}
-
-.toggle-switch-intl {
-    background-image: url("toggle-off-intl.svg");
-    background-size: contain;
-}
-.toggle-switch-intl:checked {
-    background-image: url("toggle-on-intl.svg");
-    background-size: contain;
-}
-
 /* Network */
 
 .nm-dialog {
