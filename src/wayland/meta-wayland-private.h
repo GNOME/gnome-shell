@@ -57,7 +57,6 @@ struct _MetaWaylandCompositor
 {
   struct wl_display *wayland_display;
   const char *display_name;
-  ClutterActor *stage;
   GHashTable *outputs;
   struct wl_list frame_callbacks;
 
