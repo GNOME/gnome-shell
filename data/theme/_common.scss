@@ -104,6 +104,21 @@ StScrollBar {
   }
 }
 
+/* Check Boxes */
+
+.check-box {
+  StBoxLayout { spacing: .8em; }
+  StBin {
+    width: 24px;
+    height: 22px;
+    background-image: url("checkbox-off.svg");
+  }
+  &:focus Stbin { background-image: url("checkbox-off-focused.svg"); }
+  &:checked Stbin { background-image: url("checkbox.svg"); }
+  &:focus:checked Stbin { background-image: url("checkbox-focused.svg"); }
+}
+
+
 /* links */
 .shell-link {
   color: $link_color;
