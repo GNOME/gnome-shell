@@ -35,13 +35,6 @@
 
 typedef struct
 {
-  GSource source;
-  GPollFD pfd;
-  struct wl_display *display;
-} WaylandEventSource;
-
-typedef struct
-{
   struct wl_list link;
   struct wl_resource *resource;
 } MetaWaylandFrameCallback;

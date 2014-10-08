@@ -56,6 +56,13 @@ get_time (void)
   return tv.tv_sec * 1000 + tv.tv_usec / 1000;
 }
 
+typedef struct
+{
+  GSource source;
+  GPollFD pfd;
+  struct wl_display *display;
+} WaylandEventSource;
+
 static gboolean
 wayland_event_source_prepare (GSource *base, int *timeout)
 {
