@@ -20,22 +20,14 @@
  * 02111-1307, USA.
  */
 
-#include <config.h>
+#include "config.h"
+
+#include "meta-wayland-surface.h"
 
 #include <clutter/clutter.h>
 #include <clutter/wayland/clutter-wayland-compositor.h>
 #include <clutter/wayland/clutter-wayland-surface.h>
 #include <cogl/cogl-wayland-server.h>
-
-#include <glib.h>
-#include <sys/time.h>
-#include <string.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <stdlib.h>
-#include <sys/wait.h>
-#include <fcntl.h>
-#include <unistd.h>
 
 #include <wayland-server.h>
 #include "gtk-shell-server-protocol.h"
@@ -53,9 +45,6 @@
 #include "display-private.h"
 #include "window-private.h"
 #include "window-wayland.h"
-#include <meta/types.h>
-#include <meta/main.h>
-#include "frame.h"
 
 #include "meta-surface-actor.h"
 #include "meta-surface-actor-wayland.h"
