@@ -295,7 +295,7 @@ on_monitors_changed (MetaScreen *screen,
 {
   MetaDefaultPlugin *self = META_DEFAULT_PLUGIN (plugin);
   int i, n;
-  GRand *rand = g_rand_new_with_seed (12345);
+  GRand *rand = g_rand_new_with_seed (123456);
 
   clutter_actor_destroy_all_children (self->priv->background_group);
 
