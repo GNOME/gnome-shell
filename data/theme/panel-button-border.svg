@@ -13,7 +13,7 @@
    height="10"
    id="svg2"
    version="1.1"
-   inkscape:version="0.48.1 r9760"
+   inkscape:version="0.48.5 r10040"
    sodipodi:docname="panel-button-border.svg">
   <defs
      id="defs4" />
@@ -25,17 +25,17 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:zoom="44.8"
-     inkscape:cx="8.6594891"
+     inkscape:cx="4.7420784"
      inkscape:cy="5.7029946"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
      showguides="true"
      inkscape:guide-bbox="true"
-     inkscape:window-width="1440"
-     inkscape:window-height="843"
-     inkscape:window-x="0"
-     inkscape:window-y="26"
+     inkscape:window-width="2560"
+     inkscape:window-height="1402"
+     inkscape:window-x="2560"
+     inkscape:window-y="0"
      inkscape:window-maximized="1"
      guidetolerance="10000"
      objecttolerance="10000">
@@ -64,7 +64,7 @@
      inkscape:groupmode="layer"
      id="layer1">
     <rect
-       style="opacity:0.8;fill:#ffffff;fill-opacity:1;stroke-width:0.43599999;stroke-miterlimit:4;stroke-dasharray:none"
+       style="opacity:1;fill:#729fcf;fill-opacity:1;stroke-width:0.43599999000000000;stroke-miterlimit:4;stroke-dasharray:none"
        id="rect3796"
        width="7"
        height="2"
