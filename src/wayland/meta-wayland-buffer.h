@@ -26,6 +26,7 @@
 #define META_WAYLAND_BUFFER_H
 
 #include <cogl/cogl.h>
+#include <cairo.h>
 #include <wayland-server.h>
 
 #include "meta-wayland-types.h"
@@ -43,5 +44,8 @@ struct _MetaWaylandBuffer
 MetaWaylandBuffer *     meta_wayland_buffer_from_resource       (struct wl_resource    *resource);
 void                    meta_wayland_buffer_ref                 (MetaWaylandBuffer     *buffer);
 void                    meta_wayland_buffer_unref               (MetaWaylandBuffer     *buffer);
+CoglTexture *           meta_wayland_buffer_ensure_texture      (MetaWaylandBuffer     *buffer);
+void                    meta_wayland_buffer_process_damage      (MetaWaylandBuffer     *buffer,
+                                                                 cairo_region_t        *region);
 
 #endif /* META_WAYLAND_BUFFER_H */

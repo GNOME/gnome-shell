@@ -107,17 +107,12 @@ static void
 surface_process_damage (MetaWaylandSurface *surface,
                         cairo_region_t *region)
 {
-  int i, n_rectangles;
   cairo_rectangle_int_t buffer_rect;
   int scale = surface->scale;
-  CoglTexture *texture;
-  struct wl_shm_buffer *shm_buffer;
+  int i, n_rectangles;
 
-  /* Damage without a buffer makes no sense so ignore that, otherwise we would crash */
   if (!surface->buffer)
     return;
-
-  texture = surface->buffer->texture;
 
   buffer_rect.x = 0;
   buffer_rect.y = 0;
@@ -125,47 +120,23 @@ surface_process_damage (MetaWaylandSurface *surface,
   buffer_rect.height = cogl_texture_get_height (surface->buffer->texture);
 
   /* The region will get destroyed after this call anyway so we can
-     just modify it here to avoid a copy */
+   * just modify it here to avoid a copy. */
   cairo_region_intersect_rectangle (region, &buffer_rect);
 
+  /* First update the buffer. */
+  meta_wayland_buffer_process_damage (surface->buffer, region);
+
+  /* Now damage the actor. */
+  /* XXX: Should this be a signal / callback on MetaWaylandBuffer instead? */
   n_rectangles = cairo_region_num_rectangles (region);
-
-  shm_buffer = wl_shm_buffer_get (surface->buffer->resource);
-
   for (i = 0; i < n_rectangles; i++)
     {
       cairo_rectangle_int_t rect;
       cairo_region_get_rectangle (region, i, &rect);
 
-      if (shm_buffer)
-        cogl_wayland_texture_set_region_from_shm_buffer (texture, rect.x, rect.y, rect.width, rect.height, shm_buffer, rect.x, rect.y, 0, NULL);
-
       meta_surface_actor_process_damage (surface->surface_actor,
                                          rect.x * scale, rect.y * scale, rect.width * scale, rect.height * scale);
     }
-}
-
-static void
-ensure_buffer_texture (MetaWaylandBuffer *buffer)
-{
-  CoglContext *ctx = clutter_backend_get_cogl_context (clutter_get_default_backend ());
-  CoglError *catch_error = NULL;
-  CoglTexture *texture;
-
-  if (buffer->texture)
-    return;
-
-  texture = COGL_TEXTURE (cogl_wayland_texture_2d_new_from_buffer (ctx,
-                                                                   buffer->resource,
-                                                                   &catch_error));
-  if (!texture)
-    {
-      cogl_error_free (catch_error);
-      meta_warning ("Could not import pending buffer, ignoring commit\n");
-      return;
-    }
-
-  buffer->texture = texture;
 }
 
 static void
@@ -426,8 +397,8 @@ commit_pending_state (MetaWaylandSurface      *surface,
 
       if (pending->buffer)
         {
-          ensure_buffer_texture (pending->buffer);
-          meta_surface_actor_wayland_set_texture (META_SURFACE_ACTOR_WAYLAND (surface->surface_actor), pending->buffer->texture);
+          CoglTexture *texture = meta_wayland_buffer_ensure_texture (pending->buffer);
+          meta_surface_actor_wayland_set_texture (META_SURFACE_ACTOR_WAYLAND (surface->surface_actor), texture);
         }
     }
 
