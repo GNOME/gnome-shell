@@ -300,9 +300,10 @@ const ShellUserVerifier = new Lang.Class({
 
         this._fprintManager.GetDefaultDeviceRemote(Gio.DBusCallFlags.NONE, this._cancellable, Lang.bind(this,
             function(device, error) {
-                if (!error && device)
+                if (!error && device) {
                     this._haveFingerprintReader = true;
                     this._updateDefaultService();
+                }
             }));
     },
 
