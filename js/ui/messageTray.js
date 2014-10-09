@@ -1159,6 +1159,7 @@ const SourceActor = new Lang.Class({
         this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
         this.actor.connect('allocate', Lang.bind(this, this._allocate));
         this.actor.connect('destroy', Lang.bind(this, function() {
+            this._source.disconnect(this._iconUpdatedId);
             this._actorDestroyed = true;
         }));
         this._actorDestroyed = false;
@@ -1170,7 +1171,7 @@ const SourceActor = new Lang.Class({
 
         this.actor.add_actor(this._iconBin);
 
-        this._source.connect('icon-updated', Lang.bind(this, this._updateIcon));
+        this._iconUpdatedId = this._source.connect('icon-updated', Lang.bind(this, this._updateIcon));
         this._updateIcon();
     },
 
@@ -1228,8 +1229,12 @@ const SourceActorWithLabel = new Lang.Class({
 
         this.actor.add_actor(this._counterBin);
 
-        this._source.connect('count-updated', Lang.bind(this, this._updateCount));
+        this._countUpdatedId = this._source.connect('count-updated', Lang.bind(this, this._updateCount));
         this._updateCount();
+
+        this.actor.connect('destroy', function() {
+            this._source.disconnect(this._countUpdatedId);
+        });
     },
 
     _allocate: function(actor, box, flags) {
