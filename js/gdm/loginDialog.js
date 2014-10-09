@@ -64,6 +64,8 @@ const UserListItem = new Lang.Class({
                                      reactive: true,
                                      x_align: St.Align.START,
                                      x_fill: true });
+        this.actor.connect('destroy',
+                           Lang.bind(this, this._onDestroy));
 
         this._userWidget = new UserWidget.UserWidget(this.user);
         layout.add(this._userWidget.actor);
@@ -85,6 +87,10 @@ const UserListItem = new Lang.Class({
             this.actor.add_style_pseudo_class('logged-in');
         else
             this.actor.remove_style_pseudo_class('logged-in');
+    },
+
+    _onDestroy: function() {
+        this._user.disconnect(this._userChangedId);
     },
 
     _onClicked: function() {
@@ -373,13 +379,12 @@ const LoginDialog = new Lang.Class({
         if (GLib.getenv('GDM_GREETER_TEST') != '1') {
             this._greeter = gdmClient.get_greeter_sync(null);
 
-            this._greeter.connect('default-session-name-changed',
-                                  Lang.bind(this, this._onDefaultSessionChanged));
-
-            this._greeter.connect('session-opened',
-                                  Lang.bind(this, this._onSessionOpened));
-            this._greeter.connect('timed-login-requested',
-                                  Lang.bind(this, this._onTimedLoginRequested));
+            this._defaultSessionChangedId = this._greeter.connect('default-session-name-changed',
+                                                                  Lang.bind(this, this._onDefaultSessionChanged));
+            this._sessionOpenedId = this._greeter.connect('session-opened',
+                                                          Lang.bind(this, this._onSessionOpened));
+            this._timedLoginRequestedId = this._greeter.connect('timed-login-requested',
+                                                                Lang.bind(this, this._onTimedLoginRequested));
         }
 
         this._settings = new Gio.Settings({ schema_id: GdmUtil.LOGIN_SCREEN_SCHEMA });
@@ -394,8 +399,8 @@ const LoginDialog = new Lang.Class({
                                Lang.bind(this, this._updateLogo));
 
         this._textureCache = St.TextureCache.get_default();
-        this._textureCache.connect('texture-file-changed',
-                                   Lang.bind(this, this._updateLogoTexture));
+        this._updateLogoTextureId = this._textureCache.connect('texture-file-changed',
+                                                               Lang.bind(this, this._updateLogoTexture));
 
         this._userSelectionBox = new St.BoxLayout({ style_class: 'login-dialog-user-selection-box',
                                                     x_align: Clutter.ActorAlign.CENTER,
@@ -476,8 +481,8 @@ const LoginDialog = new Lang.Class({
         // If the user list is enabled, it should take key focus; make sure the
         // screen shield is initialized first to prevent it from stealing the
         // focus later
-        Main.layoutManager.connect('startup-complete',
-                                   Lang.bind(this, this._updateDisableUserList));
+        this._startupCompleteId = Main.layoutManager.connect('startup-complete',
+                                                             Lang.bind(this, this._updateDisableUserList));
     },
 
     _ensureUserListLoaded: function() {
@@ -665,10 +670,12 @@ const LoginDialog = new Lang.Class({
     },
 
     _gotGreeterSessionProxy: function(proxy) {
-        proxy.connect('g-properties-changed', Lang.bind(this, function() {
-            if (proxy.Active)
-                this._loginScreenSessionActivated();
-        }));
+        this._greeterSessionProxy = proxy;
+        this._greeterSessionProxyChangedId =
+            proxy.connect('g-properties-changed', Lang.bind(this, function() {
+                if (proxy.Active)
+                    this._loginScreenSessionActivated();
+            }));
     },
 
     _startSession: function(serviceName) {
@@ -890,6 +897,30 @@ const LoginDialog = new Lang.Class({
             this._userManager.disconnect(this._userManagerLoadedId);
             this._userManagerLoadedId = 0;
         }
+        if (this._userAddedId) {
+            this._userManager.disconnect(this._userAddedId);
+            this._userAddedId = 0;
+        }
+        if (this._userRemovedId) {
+            this._userManager.disconnect(this._userRemovedId);
+            this._userRemovedId = 0;
+        }
+        this._textureCache.disconnect(this._updateLogoTextureId);
+        Main.layoutManager.disconnect(this._startupCompleteId);
+        if (this._settings) {
+            this._settings.run_dispose();
+            this._settings = null;
+        }
+        if (this._greeter) {
+            this._greeter.disconnect(this._defaultSessionChangedId);
+            this._greeter.disconnect(this._sessionOpenedId);
+            this._greeter.disconnect(this._timedLoginRequestedId);
+            this._greeter = null;
+        }
+        if (this._greeterSessionProxy) {
+            this._greeterSessionProxy.disconnect(this._greeterSessionProxyChangedId);
+            this._greeterSessionProxy = null;
+        }
     },
 
     _loadUserList: function() {
@@ -904,15 +935,15 @@ const LoginDialog = new Lang.Class({
             this._userList.addUser(users[i]);
         }
 
-        this._userManager.connect('user-added',
-                                  Lang.bind(this, function(userManager, user) {
-                                      this._userList.addUser(user);
-                                  }));
+        this._userAddedId = this._userManager.connect('user-added',
+                                                      Lang.bind(this, function(userManager, user) {
+                                                          this._userList.addUser(user);
+                                                      }));
 
-        this._userManager.connect('user-removed',
-                                  Lang.bind(this, function(userManager, user) {
-                                      this._userList.removeUser(user);
-                                  }));
+        this._userRemovedId = this._userManager.connect('user-removed',
+                                                        Lang.bind(this, function(userManager, user) {
+                                                            this._userList.removeUser(user);
+                                                        }));
 
         return GLib.SOURCE_REMOVE;
     },

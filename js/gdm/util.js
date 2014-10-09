@@ -142,10 +142,10 @@ const ShellUserVerifier = new Lang.Class({
         // after a user has been picked.
         this._checkForSmartcard();
 
-        this._smartcardManager.connect('smartcard-inserted',
-                                       Lang.bind(this, this._checkForSmartcard));
-        this._smartcardManager.connect('smartcard-removed',
-                                       Lang.bind(this, this._checkForSmartcard));
+        this._smartcardInsertedId = this._smartcardManager.connect('smartcard-inserted',
+                                                                   Lang.bind(this, this._checkForSmartcard));
+        this._smartcardRemovedId = this._smartcardManager.connect('smartcard-removed',
+                                                                  Lang.bind(this, this._checkForSmartcard));
 
         this._messageQueue = [];
         this._messageQueueTimeoutId = 0;
@@ -159,8 +159,8 @@ const ShellUserVerifier = new Lang.Class({
         if (this._oVirtCredentialsManager.hasToken())
             this._oVirtUserAuthenticated(this._oVirtCredentialsManager.getToken());
 
-        this._oVirtCredentialsManager.connect('user-authenticated',
-                                              Lang.bind(this, this._oVirtUserAuthenticated));
+        this._oVirtUserAuthenticatedId = this._oVirtCredentialsManager.connect('user-authenticated',
+                                                                               Lang.bind(this, this._oVirtUserAuthenticated));
     },
 
     begin: function(userName, hold) {
@@ -191,18 +191,35 @@ const ShellUserVerifier = new Lang.Class({
         }
     },
 
+    _clearUserVerifier: function() {
+        if (this._userVerifier) {
+            this._userVerifier.run_dispose();
+            this._userVerifier = null;
+        }
+    },
+
     clear: function() {
         if (this._cancellable) {
             this._cancellable.cancel();
             this._cancellable = null;
         }
 
-        if (this._userVerifier) {
-            this._userVerifier.run_dispose();
-            this._userVerifier = null;
-        }
-
+        this._clearUserVerifier();
         this._clearMessageQueue();
+    },
+
+    destroy: function() {
+        this.clear();
+
+        this._settings.run_dispose();
+        this._settings = null;
+
+        this._smartcardManager.disconnect(this._smartcardInsertedId);
+        this._smartcardManager.disconnect(this._smartcardRemovedId);
+        this._smartcardManager = null;
+
+        this._oVirtCredentialsManager.disconnect(this._oVirtUserAuthenticatedId);
+        this._oVirtCredentialsManager = null;
     },
 
     answerQuery: function(serviceName, answer) {
@@ -326,6 +343,7 @@ const ShellUserVerifier = new Lang.Class({
 
     _reauthenticationChannelOpened: function(client, result) {
         try {
+            this._clearUserVerifier();
             this._userVerifier = client.open_reauthentication_channel_finish(result);
         } catch(e if e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED)) {
             return;
@@ -349,6 +367,7 @@ const ShellUserVerifier = new Lang.Class({
 
     _userVerifierGot: function(client, result) {
         try {
+            this._clearUserVerifier();
             this._userVerifier = client.get_user_verifier_finish(result);
         } catch(e if e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED)) {
             return;
