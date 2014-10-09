@@ -28,6 +28,7 @@
 #include "display-private.h"
 #include "window-private.h"
 #include "backends/x11/meta-backend-x11.h"
+#include "backends/meta-cursor-tracker-private.h"
 
 #ifdef HAVE_NATIVE_BACKEND
 #include "backends/native/meta-backend-native.h"
@@ -35,7 +36,6 @@
 #endif
 
 #ifdef HAVE_WAYLAND
-#include "backends/meta-cursor-tracker-private.h"
 #include "wayland/meta-wayland-private.h"
 #endif
 #include "meta-surface-actor.h"
