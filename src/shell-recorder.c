@@ -17,7 +17,9 @@
 #include <cogl/cogl.h>
 #include <meta/screen.h>
 #include <meta/meta-cursor-tracker.h>
+#include <meta/compositor-mutter.h>
 
+#include "shell-global.h"
 #include "shell-recorder-src.h"
 #include "shell-recorder.h"
 
@@ -1535,6 +1537,9 @@ shell_recorder_record (ShellRecorder  *recorder,
   recorder_update_pointer (recorder);
   recorder_add_update_pointer_timeout (recorder);
 
+  /* Disable unredirection while we are recoring */
+  meta_disable_unredirect_for_screen (shell_global_get_screen (shell_global_get ()));
+
   /* Set up repaint hook */
   recorder->repaint_hook_id = clutter_threads_add_repaint_func(recorder_repaint_hook, recorder->stage, NULL);
 
@@ -1582,6 +1587,9 @@ shell_recorder_close (ShellRecorder *recorder)
     }
 
   recorder->state = RECORDER_STATE_CLOSED;
+
+  /* Reenable unredirection while we are recoring */
+  meta_enable_unredirect_for_screen (shell_global_get_screen (shell_global_get ()));
 
   /* Release the refcount we took when we started recording */
   g_object_unref (recorder);
