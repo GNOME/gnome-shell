@@ -419,11 +419,13 @@ const AuthPrompt = new Lang.Class({
     },
 
     setUser: function(user) {
+        let oldChild = this._userWell.get_child();
+        if (oldChild)
+            oldChild.destroy();
+
         if (user) {
             let userWidget = new UserWidget.UserWidget(user);
             this._userWell.set_child(userWidget.actor);
-        } else {
-            this._userWell.set_child(null);
         }
     },
 
