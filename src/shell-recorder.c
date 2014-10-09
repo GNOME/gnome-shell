@@ -1588,7 +1588,7 @@ shell_recorder_close (ShellRecorder *recorder)
 
   recorder->state = RECORDER_STATE_CLOSED;
 
-  /* Reenable unredirection while we are recoring */
+  /* Reenable after the recording */
   meta_enable_unredirect_for_screen (shell_global_get_screen (shell_global_get ()));
 
   /* Release the refcount we took when we started recording */
