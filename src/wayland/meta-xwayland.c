@@ -522,12 +522,16 @@ meta_xwayland_complete_init (void)
      we won't reset the tty).
   */
   XSetIOErrorHandler (x_io_error);
+
+  meta_xwayland_init_selection ();
 }
 
 void
 meta_xwayland_stop (MetaXWaylandManager *manager)
 {
   char path[256];
+
+  meta_xwayland_shutdown_selection ();
 
   snprintf (path, sizeof path, "/tmp/.X11-unix/X%d", manager->display_index);
   unlink (path);

@@ -243,6 +243,7 @@ libmutter_la_SOURCES +=				\
 	wayland/meta-wayland-private.h		\
 	wayland/meta-xwayland.c			\
 	wayland/meta-xwayland.h			\
+	wayland/meta-xwayland-selection.c	\
 	wayland/meta-xwayland-private.h		\
 	wayland/meta-wayland-buffer.c      	\
 	wayland/meta-wayland-buffer.h      	\

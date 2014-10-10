@@ -39,6 +39,7 @@
 #ifdef HAVE_WAYLAND
 #include "wayland/meta-xwayland.h"
 #include "wayland/meta-wayland-private.h"
+#include "wayland/meta-xwayland-private.h"
 #endif
 
 static XIEvent *
@@ -1670,6 +1671,15 @@ meta_display_handle_xevent (MetaDisplay *display,
 
 #ifdef HAVE_STARTUP_NOTIFICATION
   if (sn_display_process_event (display->sn_display, event))
+    {
+      bypass_gtk = bypass_compositor = TRUE;
+      goto out;
+    }
+#endif
+
+#ifdef HAVE_WAYLAND
+  if (meta_is_wayland_compositor () &&
+      meta_xwayland_selection_handle_event (event))
     {
       bypass_gtk = bypass_compositor = TRUE;
       goto out;

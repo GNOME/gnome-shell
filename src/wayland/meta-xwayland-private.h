@@ -34,4 +34,9 @@ meta_xwayland_complete_init (void);
 void
 meta_xwayland_stop (MetaXWaylandManager *manager);
 
+/* wl_data_device/X11 selection interoperation */
+void     meta_xwayland_init_selection         (void);
+void     meta_xwayland_shutdown_selection     (void);
+gboolean meta_xwayland_selection_handle_event (XEvent *xevent);
+
 #endif /* META_XWAYLAND_PRIVATE_H */
