@@ -11,9 +11,9 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-09-06 20:24+0000\n"
-"PO-Revision-Date: 2014-09-08 10:36+0200\n"
-"Last-Translator: Luca Ferretti <elle.uca@infinito.it>\n"
+"POT-Creation-Date: 2014-10-09 07:37+0000\n"
+"PO-Revision-Date: 2014-10-10 10:01+0100\n"
+"Last-Translator: Milo Casagrande <milo@milo.name>\n"
 "Language-Team: Italiano <tp@lists.linux.it>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-DamnedLies-Scope: partial\n"
-"X-Generator: Gtranslator 2.91.6\n"
+"X-Generator: Poedit 1.6.9\n"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
 msgid "System"
@@ -308,7 +308,7 @@ msgstr ""
 
 #: ../data/org.gnome.Shell.PortalHelper.desktop.in.h:1
 msgid "Captive Portal"
-msgstr ""
+msgstr "Portale di accesso"
 
 #: ../js/extensionPrefs/main.js:123
 #, javascript-format
@@ -318,12 +318,11 @@ msgstr ""
 "preferenze per %s:"
 
 #: ../js/extensionPrefs/main.js:155
-#| msgid "Configure GNOME Shell Extensions"
 msgid "GNOME Shell Extensions"
 msgstr "Estensioni di GNOME Shell"
 
 #: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:143
-#: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:429
+#: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:452
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
 #: ../js/ui/status/network.js:915
 msgid "Cancel"
@@ -387,7 +386,6 @@ msgid "Execution of “%s” failed:"
 msgstr "Esecuzione di «%s» non riuscita:"
 
 #: ../js/portalHelper/main.js:85
-#| msgid "Authentication Required"
 msgid "Web Authentication Redirect"
 msgstr "Redirezione autenticazione web"
 
@@ -403,31 +401,30 @@ msgstr "Frequenti"
 msgid "All"
 msgstr "Tutte"
 
-#: ../js/ui/appDisplay.js:1788
+#: ../js/ui/appDisplay.js:1790
 msgid "New Window"
 msgstr "Nuova finestra"
 
-#: ../js/ui/appDisplay.js:1814 ../js/ui/dash.js:285
+#: ../js/ui/appDisplay.js:1816 ../js/ui/dash.js:285
 msgid "Remove from Favorites"
 msgstr "Rimuovi dai preferiti"
 
-#: ../js/ui/appDisplay.js:1820
+#: ../js/ui/appDisplay.js:1822
 msgid "Add to Favorites"
 msgstr "Aggiungi ai preferiti"
 
-#: ../js/ui/appDisplay.js:1829
-#| msgid "Show Text"
+#: ../js/ui/appDisplay.js:1831
 msgid "Show Details"
 msgstr "Mostra dettagli"
 
 # (ndt) e usare:
 # L'elemento %s è stato rimosso... ?
-#: ../js/ui/appFavorites.js:124
+#: ../js/ui/appFavorites.js:132
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "%s è stato aggiunto ai preferiti."
 
-#: ../js/ui/appFavorites.js:158
+#: ../js/ui/appFavorites.js:166
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "%s è stato rimosso dai preferiti."
@@ -619,11 +616,11 @@ msgstr "Apri con %s"
 msgid "Eject"
 msgstr "Espelli"
 
-#: ../js/ui/components/keyring.js:93 ../js/ui/components/polkitAgent.js:285
+#: ../js/ui/components/keyring.js:94 ../js/ui/components/polkitAgent.js:285
 msgid "Password:"
 msgstr "Password:"
 
-#: ../js/ui/components/keyring.js:113
+#: ../js/ui/components/keyring.js:120
 msgid "Type again:"
 msgstr "Inserire di nuovo:"
 
@@ -1002,7 +999,7 @@ msgstr "Visualizza account"
 msgid "Unknown reason"
 msgstr "Motivo sconosciuto"
 
-#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:155
+#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:154
 msgid "Windows"
 msgstr "Finestre"
 
@@ -1015,105 +1012,105 @@ msgstr "Mostra applicazioni"
 msgid "Dash"
 msgstr "Dash"
 
-#: ../js/ui/dateMenu.js:96
+#: ../js/ui/dateMenu.js:97
 msgid "Open Calendar"
 msgstr "Apri Calendario"
 
-#: ../js/ui/dateMenu.js:100
+#: ../js/ui/dateMenu.js:101
 msgid "Open Clocks"
 msgstr "Apri Orologi"
 
-#: ../js/ui/dateMenu.js:107
+#: ../js/ui/dateMenu.js:108
 msgid "Date & Time Settings"
 msgstr "Impostazioni data e ora"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #. */
-#: ../js/ui/dateMenu.js:204
+#: ../js/ui/dateMenu.js:132
 msgid "%A %B %e, %Y"
 msgstr "%a %e %B %Y"
 
-#: ../js/ui/endSessionDialog.js:66
+#: ../js/ui/endSessionDialog.js:64
 #, javascript-format
 msgctxt "title"
 msgid "Log Out %s"
 msgstr "Termina sessione di %s"
 
-#: ../js/ui/endSessionDialog.js:67
+#: ../js/ui/endSessionDialog.js:65
 msgctxt "title"
 msgid "Log Out"
 msgstr "Termina sessione"
 
-#: ../js/ui/endSessionDialog.js:69
+#: ../js/ui/endSessionDialog.js:67
 #, javascript-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "La sessione di %s verrà terminata automaticamente tra %d secondo."
 msgstr[1] "La sessione di %s verrà terminata automaticamente tra %d secondi."
 
-#: ../js/ui/endSessionDialog.js:74
+#: ../js/ui/endSessionDialog.js:72
 #, javascript-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
 msgstr[0] "La sessione verrà terminata automaticamente tra %d secondo."
 msgstr[1] "La sessione verrà terminata automaticamente tra %d secondi."
 
-#: ../js/ui/endSessionDialog.js:80
+#: ../js/ui/endSessionDialog.js:78
 msgctxt "button"
 msgid "Log Out"
 msgstr "Termina sessione"
 
-#: ../js/ui/endSessionDialog.js:86
+#: ../js/ui/endSessionDialog.js:84
 msgctxt "title"
 msgid "Power Off"
 msgstr "Spegni"
 
-#: ../js/ui/endSessionDialog.js:87
+#: ../js/ui/endSessionDialog.js:85
 msgctxt "title"
 msgid "Install Updates & Power Off"
 msgstr "Installa aggiornamenti e spegni"
 
-#: ../js/ui/endSessionDialog.js:89
+#: ../js/ui/endSessionDialog.js:87
 #, javascript-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "Il sistema verrà spento automaticamente tra %d secondo."
 msgstr[1] "Il sistema verrà spento automaticamente tra %d secondi."
 
-#: ../js/ui/endSessionDialog.js:93
+#: ../js/ui/endSessionDialog.js:91
 msgctxt "checkbox"
 msgid "Install pending software updates"
 msgstr "Installare gli aggiornamenti software in sospeso"
 
-#: ../js/ui/endSessionDialog.js:96 ../js/ui/endSessionDialog.js:113
+#: ../js/ui/endSessionDialog.js:94 ../js/ui/endSessionDialog.js:111
 msgctxt "button"
 msgid "Restart"
 msgstr "Riavvia"
 
-#: ../js/ui/endSessionDialog.js:98
+#: ../js/ui/endSessionDialog.js:96
 msgctxt "button"
 msgid "Power Off"
 msgstr "Spegni"
 
-#: ../js/ui/endSessionDialog.js:105
+#: ../js/ui/endSessionDialog.js:103
 msgctxt "title"
 msgid "Restart"
 msgstr "Riavvia"
 
-#: ../js/ui/endSessionDialog.js:107
+#: ../js/ui/endSessionDialog.js:105
 #, javascript-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "Il sistema verrà riavviato automaticamente tra %d secondo."
 msgstr[1] "Il sistema verrà riavviato automaticamente tra %d secondi."
 
-#: ../js/ui/endSessionDialog.js:121
+#: ../js/ui/endSessionDialog.js:119
 msgctxt "title"
 msgid "Restart & Install Updates"
 msgstr "Riavvia e installa aggiornamenti"
 
-#: ../js/ui/endSessionDialog.js:123
+#: ../js/ui/endSessionDialog.js:121
 #, javascript-format
 msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
@@ -1125,43 +1122,43 @@ msgstr[1] ""
 "Il sistema verrà riavviato automaticamente per installare gli aggiornamenti "
 "tra %d secondi."
 
-#: ../js/ui/endSessionDialog.js:129
+#: ../js/ui/endSessionDialog.js:127
 msgctxt "button"
 msgid "Restart &amp; Install"
 msgstr "Riavvia e installa"
 
-#: ../js/ui/endSessionDialog.js:130
+#: ../js/ui/endSessionDialog.js:128
 msgctxt "button"
 msgid "Install &amp; Power Off"
 msgstr "Installa e spegni"
 
-#: ../js/ui/endSessionDialog.js:131
+#: ../js/ui/endSessionDialog.js:129
 msgctxt "checkbox"
 msgid "Power off after updates are installed"
 msgstr "Spegnere dopo aver installato gli aggiornamenti"
 
-#: ../js/ui/endSessionDialog.js:315
+#: ../js/ui/endSessionDialog.js:338
 msgid "Running on battery power: please plug in before installing updates."
 msgstr ""
 "In funzione con batteria: collegare l'alimentazione prima di installare gli "
 "aggiornamenti."
 
-#: ../js/ui/endSessionDialog.js:332
+#: ../js/ui/endSessionDialog.js:355
 msgid "Some applications are busy or have unsaved work."
 msgstr "Alcune applicazioni risultano occupate o con lavoro non salvato."
 
-#: ../js/ui/endSessionDialog.js:339
+#: ../js/ui/endSessionDialog.js:362
 msgid "Other users are logged in."
 msgstr "Sono connessi altri utenti."
 
 #. Translators: Remote here refers to a remote session, like a ssh login */
-#: ../js/ui/endSessionDialog.js:619
+#: ../js/ui/endSessionDialog.js:640
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (remoto)"
 
 #. Translators: Console here refers to a tty like a VT console */
-#: ../js/ui/endSessionDialog.js:622
+#: ../js/ui/endSessionDialog.js:643
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (console)"
@@ -1175,7 +1172,7 @@ msgstr "Installa"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Scaricare e installare «%s» da extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:692 ../js/ui/status/keyboard.js:339
+#: ../js/ui/keyboard.js:700 ../js/ui/status/keyboard.js:523
 msgid "Keyboard"
 msgstr "Tastiera"
 
@@ -1198,8 +1195,8 @@ msgid "Show Errors"
 msgstr "Mostra errori"
 
 # (ndt) o abilitata?
-#: ../js/ui/lookingGlass.js:716 ../js/ui/status/location.js:62
-#: ../js/ui/status/location.js:166
+#: ../js/ui/lookingGlass.js:716 ../js/ui/status/location.js:71
+#: ../js/ui/status/location.js:176
 msgid "Enabled"
 msgstr "Abilitato"
 
@@ -1208,7 +1205,7 @@ msgstr "Abilitato"
 #. because it's disabled by rfkill (airplane mode) */
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:719 ../js/ui/status/location.js:169
+#: ../js/ui/lookingGlass.js:719 ../js/ui/status/location.js:179
 #: ../js/ui/status/network.js:592 ../src/gvc/gvc-mixer-control.c:1830
 msgid "Disabled"
 msgstr "Disabilitato"
@@ -1233,39 +1230,39 @@ msgstr "Visualizza sorgente"
 msgid "Web Page"
 msgstr "Pagina web"
 
-#: ../js/ui/messageTray.js:1326
+#: ../js/ui/messageTray.js:1327
 msgid "Open"
 msgstr "Apri"
 
-#: ../js/ui/messageTray.js:1333
+#: ../js/ui/messageTray.js:1334
 msgid "Remove"
 msgstr "Rimuovi"
 
-#: ../js/ui/messageTray.js:1630
+#: ../js/ui/messageTray.js:1631
 msgid "Notifications"
 msgstr "Notifiche"
 
-#: ../js/ui/messageTray.js:1637
+#: ../js/ui/messageTray.js:1638
 msgid "Clear Messages"
 msgstr "Pulisci messaggi"
 
-#: ../js/ui/messageTray.js:1656
+#: ../js/ui/messageTray.js:1657
 msgid "Notification Settings"
 msgstr "Impostazioni notifiche"
 
-#: ../js/ui/messageTray.js:1709
+#: ../js/ui/messageTray.js:1710
 msgid "Tray Menu"
 msgstr "Menu tray"
 
-#: ../js/ui/messageTray.js:1926
+#: ../js/ui/messageTray.js:1934
 msgid "No Messages"
 msgstr "Nessun messaggio"
 
-#: ../js/ui/messageTray.js:1968
+#: ../js/ui/messageTray.js:1979
 msgid "Message Tray"
 msgstr "Cassetto messaggi"
 
-#: ../js/ui/messageTray.js:2971
+#: ../js/ui/messageTray.js:2992
 msgid "System Information"
 msgstr "Informazione di sistema"
 
@@ -1324,7 +1321,6 @@ msgid "Close"
 msgstr "Chiudi"
 
 #: ../js/ui/runDialog.js:277
-#| msgid "Estimating…"
 msgid "Restarting…"
 msgstr "Riavvio…"
 
@@ -1349,19 +1345,19 @@ msgstr "Blocca"
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME deve bloccare lo schermo"
 
-#: ../js/ui/screenShield.js:833 ../js/ui/screenShield.js:1304
+#: ../js/ui/screenShield.js:833 ../js/ui/screenShield.js:1309
 msgid "Unable to lock"
 msgstr "Impossibile bloccare"
 
-#: ../js/ui/screenShield.js:834 ../js/ui/screenShield.js:1305
+#: ../js/ui/screenShield.js:834 ../js/ui/screenShield.js:1310
 msgid "Lock was blocked by an application"
 msgstr "Il blocco è stato impedito da un'applicazione."
 
-#: ../js/ui/search.js:557
+#: ../js/ui/search.js:611
 msgid "Searching…"
 msgstr "Ricerca…"
 
-#: ../js/ui/search.js:598
+#: ../js/ui/search.js:613
 msgid "No results."
 msgstr "Nessun risultato."
 
@@ -1464,25 +1460,29 @@ msgstr "Non collegato"
 msgid "Brightness"
 msgstr "Luminosità"
 
-#: ../js/ui/status/keyboard.js:406
+#: ../js/ui/status/keyboard.js:547
 msgid "Show Keyboard Layout"
 msgstr "Mostra disposizione tastiera"
 
-#: ../js/ui/status/location.js:56
+#: ../js/ui/status/location.js:65
 msgid "Location"
 msgstr "Posizione"
 
 # (ndt) o disabilitata?
-#: ../js/ui/status/location.js:63 ../js/ui/status/location.js:167
+#: ../js/ui/status/location.js:72 ../js/ui/status/location.js:177
 msgid "Disable"
 msgstr "Disabilitato"
 
-#: ../js/ui/status/location.js:166
+#: ../js/ui/status/location.js:73
+msgid "Privacy Settings"
+msgstr "Impostazioni privacy"
+
+#: ../js/ui/status/location.js:176
 msgid "In Use"
 msgstr "In uso"
 
 # (ndt) o abilitata?
-#: ../js/ui/status/location.js:170
+#: ../js/ui/status/location.js:180
 msgid "Enable"
 msgstr "Abilita"
 
@@ -1503,7 +1503,6 @@ msgstr "Connesso"
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu) */
 #: ../js/ui/status/network.js:463
-#| msgid "unmanaged"
 msgid "Unmanaged"
 msgstr "Non gestito"
 
@@ -1517,21 +1516,18 @@ msgstr "Connessione"
 
 #. Translators: this is for network connections that require some kind of key or password */
 #: ../js/ui/status/network.js:474
-#| msgid "authentication required"
 msgid "Authentication required"
 msgstr "Richiesta autenticazione"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing */
 #: ../js/ui/status/network.js:482
-#| msgid "firmware missing"
 msgid "Firmware missing"
 msgstr "Firmware mancante"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage */
 #: ../js/ui/status/network.js:486
-#| msgid "unavailable"
 msgid "Unavailable"
 msgstr "Non disponibile"
 
@@ -1724,11 +1720,11 @@ msgstr "Accedi come altro utente"
 msgid "Unlock Window"
 msgstr "Sblocca finestra"
 
-#: ../js/ui/viewSelector.js:159
+#: ../js/ui/viewSelector.js:158
 msgid "Applications"
 msgstr "Applicazioni"
 
-#: ../js/ui/viewSelector.js:163
+#: ../js/ui/viewSelector.js:162
 msgid "Search"
 msgstr "Cerca"
 
