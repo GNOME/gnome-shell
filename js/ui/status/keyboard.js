@@ -298,8 +298,7 @@ const InputSourceManager = new Lang.Class({
         this._inputSources = {};
         this._ibusSources = {};
 
-        let inputSourcesByShortName = {};
-
+        let infosList = [];
         for (let i = 0; i < nSources; i++) {
             let displayName;
             let shortName;
@@ -323,11 +322,24 @@ const InputSourceManager = new Lang.Class({
                 }
             }
 
-            if (!exists)
-                continue;
+            if (exists)
+                infosList.push({ type: type, id: id, displayName: displayName, shortName: shortName });
+        }
 
-            let is = new InputSource(type, id, displayName, shortName, i);
+        if (infosList.length == 0) {
+            let type = INPUT_SOURCE_TYPE_XKB;
+            let id = KeyboardManager.DEFAULT_LAYOUT;
+            let [ , displayName, shortName, , ] = this._xkbInfo.get_layout_info(id);
+            infosList.push({ type: type, id: id, displayName: displayName, shortName: shortName });
+        }
 
+        let inputSourcesByShortName = {};
+        for (let i = 0; i < infosList.length; i++) {
+            let is = new InputSource(infosList[i].type,
+                                     infosList[i].id,
+                                     infosList[i].displayName,
+                                     infosList[i].shortName,
+                                     i);
             is.connect('activate', Lang.bind(this, this._activateInputSource));
 
             if (!(is.shortName in inputSourcesByShortName))
