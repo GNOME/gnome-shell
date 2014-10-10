@@ -119,7 +119,8 @@ st_clipboard_provider (GdkXEvent *xevent_p,
   XSelectionRequestEvent *req_event;
   GdkDisplay *display = gdk_display_get_default ();
 
-  if (xev->type != SelectionRequest)
+  if (xev->type != SelectionRequest ||
+      !clipboard->priv->clipboard_text)
     return GDK_FILTER_CONTINUE;
 
   req_event = &xev->xselectionrequest;
