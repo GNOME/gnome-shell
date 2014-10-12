@@ -1060,10 +1060,6 @@ meta_monitor_manager_xrandr_handle_xevent (MetaMonitorManagerXrandr *manager_xra
 					   XEvent                   *event)
 {
   MetaMonitorManager *manager = META_MONITOR_MANAGER (manager_xrandr);
-  MetaOutput *old_outputs;
-  MetaCRTC *old_crtcs;
-  MetaMonitorMode *old_modes;
-  unsigned int n_old_outputs, n_old_modes;
   gboolean new_config;
   gboolean applied_config = FALSE;
 
@@ -1072,19 +1068,11 @@ meta_monitor_manager_xrandr_handle_xevent (MetaMonitorManagerXrandr *manager_xra
 
   XRRUpdateConfiguration (event);
 
-  /* Save the old structures, so they stay valid during the update */
-  old_outputs = manager->outputs;
-  n_old_outputs = manager->n_outputs;
-  old_modes = manager->modes;
-  n_old_modes = manager->n_modes;
-  old_crtcs = manager->crtcs;
-
-  manager->serial++;
-  meta_monitor_manager_xrandr_read_current (manager);
+  meta_monitor_manager_read_current_config (manager);
 
   /* If this config matches our existing one, don't bother doing anything. */
   if (meta_monitor_config_match_current (manager->config, manager))
-    goto out;
+    return TRUE;
 
   new_config = manager_xrandr->resources->timestamp >= manager_xrandr->resources->configTimestamp;
 
@@ -1094,7 +1082,7 @@ meta_monitor_manager_xrandr_handle_xevent (MetaMonitorManagerXrandr *manager_xra
   if (new_config)
     {
       meta_monitor_manager_rebuild_derived (manager);
-      goto out;
+      return TRUE;
     }
 
   /* If the monitor has hotplug_mode_update (which is used by VMs), don't bother
@@ -1110,11 +1098,6 @@ meta_monitor_manager_xrandr_handle_xevent (MetaMonitorManagerXrandr *manager_xra
   /* If we haven't applied any configuration, apply the default configuration. */
   if (!applied_config)
     meta_monitor_config_make_default (manager->config, manager);
-
- out:
-  meta_monitor_manager_free_output_array (old_outputs, n_old_outputs);
-  meta_monitor_manager_free_mode_array (old_modes, n_old_modes);
-  g_free (old_crtcs);
 
   return TRUE;
 }

@@ -58,14 +58,6 @@ meta_monitor_manager_init (MetaMonitorManager *manager)
 {
 }
 
-static void
-read_current_config (MetaMonitorManager *manager)
-{
-  manager->serial++;
-
-  META_MONITOR_MANAGER_GET_CLASS (manager)->read_current (manager);
-}
-
 /*
  * make_logical_config:
  *
@@ -198,7 +190,7 @@ meta_monitor_manager_constructed (GObject *object)
 
   manager->config = meta_monitor_config_new ();
 
-  read_current_config (manager);
+  meta_monitor_manager_read_current_config (manager);
 
   if (!meta_monitor_config_apply_stored (manager->config, manager))
     meta_monitor_config_make_default (manager->config, manager);
@@ -211,24 +203,7 @@ meta_monitor_manager_constructed (GObject *object)
      so this is not needed.
   */
   if (META_IS_MONITOR_MANAGER_XRANDR (manager))
-    {
-      MetaOutput *old_outputs;
-      MetaCRTC *old_crtcs;
-      MetaMonitorMode *old_modes;
-      unsigned int n_old_outputs, n_old_modes;
-
-      old_outputs = manager->outputs;
-      n_old_outputs = manager->n_outputs;
-      old_modes = manager->modes;
-      n_old_modes = manager->n_modes;
-      old_crtcs = manager->crtcs;
-
-      read_current_config (manager);
-
-      meta_monitor_manager_free_output_array (old_outputs, n_old_outputs);
-      meta_monitor_manager_free_mode_array (old_modes, n_old_modes);
-      g_free (old_crtcs);
-    }
+    meta_monitor_manager_read_current_config (manager);
 
   make_logical_config (manager);
   initialize_dbus_interface (manager);
@@ -236,7 +211,7 @@ meta_monitor_manager_constructed (GObject *object)
   manager->in_init = FALSE;
 }
 
-void
+static void
 meta_monitor_manager_free_output_array (MetaOutput *old_outputs,
                                         int         n_old_outputs)
 {
@@ -259,7 +234,7 @@ meta_monitor_manager_free_output_array (MetaOutput *old_outputs,
   g_free (old_outputs);
 }
 
-void
+static void
 meta_monitor_manager_free_mode_array (MetaMonitorMode *old_modes,
                                       int              n_old_modes)
 {
@@ -1163,6 +1138,31 @@ meta_monitor_manager_get_screen_limits (MetaMonitorManager *manager,
 }
 
 void
+meta_monitor_manager_read_current_config (MetaMonitorManager *manager)
+{
+  MetaOutput *old_outputs;
+  MetaCRTC *old_crtcs;
+  MetaMonitorMode *old_modes;
+  unsigned int n_old_outputs, n_old_modes;
+
+  /* Some implementations of read_current use the existing information
+   * we have available, so don't free the old configuration until after
+   * read_current finishes. */
+  old_outputs = manager->outputs;
+  n_old_outputs = manager->n_outputs;
+  old_modes = manager->modes;
+  n_old_modes = manager->n_modes;
+  old_crtcs = manager->crtcs;
+
+  manager->serial++;
+  META_MONITOR_MANAGER_GET_CLASS (manager)->read_current (manager);
+
+  meta_monitor_manager_free_output_array (old_outputs, n_old_outputs);
+  meta_monitor_manager_free_mode_array (old_modes, n_old_modes);
+  g_free (old_crtcs);
+}
+
+void
 meta_monitor_manager_rebuild_derived (MetaMonitorManager *manager)
 {
   MetaMonitorInfo *old_monitor_infos;
@@ -1178,4 +1178,3 @@ meta_monitor_manager_rebuild_derived (MetaMonitorManager *manager)
 
   g_free (old_monitor_infos);
 }
-
