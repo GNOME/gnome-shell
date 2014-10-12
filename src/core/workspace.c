@@ -180,13 +180,6 @@ meta_workspace_new (MetaScreen *screen)
   workspace->windows = NULL;
   workspace->mru_list = NULL;
 
-  /* make sure sticky windows are in our mru_list */
-  windows = meta_display_list_windows (screen->display, META_LIST_SORTED);
-  for (l = windows; l; l = l->next)
-    if (meta_window_located_on_workspace (l->data, workspace))
-      meta_workspace_add_window (workspace, l->data);
-  g_slist_free (windows);
-
   workspace->work_areas_invalid = TRUE;
   workspace->work_area_monitor = NULL;
   workspace->work_area_screen.x = 0;
@@ -204,6 +197,13 @@ meta_workspace_new (MetaScreen *screen)
   workspace->all_struts = NULL;
 
   workspace->showing_desktop = FALSE;
+
+  /* make sure sticky windows are in our mru_list */
+  windows = meta_display_list_windows (screen->display, META_LIST_SORTED);
+  for (l = windows; l; l = l->next)
+    if (meta_window_located_on_workspace (l->data, workspace))
+      meta_workspace_add_window (workspace, l->data);
+  g_slist_free (windows);
 
   return workspace;
 }
