@@ -1002,16 +1002,6 @@ meta_monitor_manager_xrandr_set_crtc_gamma (MetaMonitorManager *manager,
 }
 
 static void
-meta_monitor_manager_xrandr_rebuild_derived (MetaMonitorManager *manager)
-{
-  /* This will be a no-op if the change was from our side, as
-     we already called it in the DBus method handler */
-  meta_monitor_config_update_current (manager->config, manager);
-
-  meta_monitor_manager_rebuild_derived (manager);
-}
-
-static void
 meta_monitor_manager_xrandr_init (MetaMonitorManagerXrandr *manager_xrandr)
 {
   MetaBackendX11 *backend = META_BACKEND_X11 (meta_get_backend ());
@@ -1092,14 +1082,18 @@ meta_monitor_manager_xrandr_handle_xevent (MetaMonitorManagerXrandr *manager_xra
   manager->serial++;
   meta_monitor_manager_xrandr_read_current (manager);
 
+  /* If this config matches our existing one, don't bother doing anything. */
+  if (meta_monitor_config_match_current (manager->config, manager))
+    goto out;
+
   new_config = manager_xrandr->resources->timestamp >= manager_xrandr->resources->configTimestamp;
 
   /* If this is the X server telling us we set a new configuration,
    * we can simply short-cut to rebuilding our logical configuration.
    */
-  if (new_config || meta_monitor_config_match_current (manager->config, manager))
+  if (new_config)
     {
-      meta_monitor_manager_xrandr_rebuild_derived (manager);
+      meta_monitor_manager_rebuild_derived (manager);
       goto out;
     }
 
