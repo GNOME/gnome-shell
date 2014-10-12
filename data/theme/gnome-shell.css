@@ -232,6 +232,10 @@ StScrollBar StButton#vhandle:active {
     border-width: 0px;
 }
 
+.app-well-menu {
+    max-width: 400px;
+}
+
 /* The remaining popup-menu sizing is all done in ems, so that if you
  * override .popup-menu.font-size, everything else will scale with it.
  */
