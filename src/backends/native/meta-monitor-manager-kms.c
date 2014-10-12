@@ -24,6 +24,7 @@
 #include "config.h"
 
 #include "meta-monitor-manager-kms.h"
+#include "meta-monitor-config.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -39,6 +40,8 @@
 #include <meta/main.h>
 #include <meta/errors.h>
 #include "edid.h"
+
+#include <gudev/gudev.h>
 
 typedef struct {
   drmModeConnector *connector;
@@ -68,6 +71,8 @@ struct _MetaMonitorManagerKms
   unsigned int       n_encoders;
 
   drmModeEncoder    *current_encoder;
+
+  GUdevClient *udev;
 };
 
 struct _MetaMonitorManagerKmsClass
@@ -894,6 +899,29 @@ meta_monitor_manager_kms_set_crtc_gamma (MetaMonitorManager *manager,
 }
 
 static void
+on_uevent (GUdevClient *client,
+           const char  *action,
+           GUdevDevice *device,
+           gpointer     user_data)
+{
+  MetaMonitorManagerKms *manager_kms = META_MONITOR_MANAGER_KMS (user_data);
+  MetaMonitorManager *manager = META_MONITOR_MANAGER (manager_kms);
+
+  if (!g_udev_device_get_property_as_boolean (device, "HOTPLUG"))
+    return;
+
+  meta_monitor_manager_read_current_config (manager);
+
+  /* If this config matches our existing one, don't bother doing anything. */
+  if (meta_monitor_config_match_current (manager->config, manager))
+    return;
+
+  /* This is a hotplug event, so try to make a configuration for our new
+   * set of outputs. */
+  meta_monitor_manager_on_hotplug (manager);
+}
+
+static void
 meta_monitor_manager_kms_init (MetaMonitorManagerKms *manager_kms)
 {
   ClutterBackend *backend;
@@ -907,6 +935,21 @@ meta_monitor_manager_kms_init (MetaMonitorManagerKms *manager_kms)
   cogl_renderer = cogl_display_get_renderer (cogl_display);
 
   manager_kms->fd = cogl_kms_renderer_get_kms_fd (cogl_renderer);
+
+  const char *subsystems[2] = { "drm", NULL };
+  manager_kms->udev = g_udev_client_new (subsystems);
+  g_signal_connect (manager_kms->udev, "uevent",
+                    G_CALLBACK (on_uevent), manager_kms);
+}
+
+static void
+meta_monitor_manager_kms_dispose (GObject *object)
+{
+  MetaMonitorManagerKms *manager_kms = META_MONITOR_MANAGER_KMS (object);
+
+  g_clear_object (&manager_kms->udev);
+
+  G_OBJECT_CLASS (meta_monitor_manager_kms_parent_class)->dispose (object);
 }
 
 static void
@@ -925,6 +968,7 @@ meta_monitor_manager_kms_class_init (MetaMonitorManagerKmsClass *klass)
   MetaMonitorManagerClass *manager_class = META_MONITOR_MANAGER_CLASS (klass);
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
+  object_class->dispose = meta_monitor_manager_kms_dispose;
   object_class->finalize = meta_monitor_manager_kms_finalize;
 
   manager_class->read_current = meta_monitor_manager_kms_read_current;

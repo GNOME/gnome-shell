@@ -201,7 +201,7 @@ AC_SUBST(XWAYLAND_PATH)
 
 PKG_CHECK_MODULES(MUTTER, $MUTTER_PC_MODULES)
 
-PKG_CHECK_MODULES(MUTTER_NATIVE_BACKEND, [clutter-egl-1.0 libdrm libsystemd libinput], [have_native_backend=yes], [have_native_backend=no])
+PKG_CHECK_MODULES(MUTTER_NATIVE_BACKEND, [clutter-egl-1.0 libdrm libsystemd libinput gudev-1.0], [have_native_backend=yes], [have_native_backend=no])
 if test $have_native_backend = yes; then
    AC_DEFINE([HAVE_NATIVE_BACKEND],[1],[Define if you want to enable the native (KMS) backend based on systemd])
 fi
