@@ -1061,7 +1061,6 @@ meta_monitor_manager_xrandr_handle_xevent (MetaMonitorManagerXrandr *manager_xra
 {
   MetaMonitorManager *manager = META_MONITOR_MANAGER (manager_xrandr);
   gboolean new_config;
-  gboolean applied_config = FALSE;
 
   if ((event->type - manager_xrandr->rr_event_base) != RRScreenChangeNotify)
     return FALSE;
@@ -1085,19 +1084,8 @@ meta_monitor_manager_xrandr_handle_xevent (MetaMonitorManagerXrandr *manager_xra
       return TRUE;
     }
 
-  /* If the monitor has hotplug_mode_update (which is used by VMs), don't bother
-   * applying our stored configuration, because it's likely the user just resizing
-   * the window.
-   */
-  if (!meta_monitor_manager_has_hotplug_mode_update (manager))
-    {
-      if (meta_monitor_config_apply_stored (manager->config, manager))
-        applied_config = TRUE;
-    }
-
-  /* If we haven't applied any configuration, apply the default configuration. */
-  if (!applied_config)
-    meta_monitor_config_make_default (manager->config, manager);
-
+  /* Otherwise, this event was gotten from hotplug, so try to make
+   * a configuration for our new set of outputs. */
+  meta_monitor_manager_on_hotplug (manager);
   return TRUE;
 }

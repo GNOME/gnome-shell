@@ -341,6 +341,7 @@ void               meta_output_info_free (MetaOutputInfo *info);
 
 gboolean           meta_monitor_manager_has_hotplug_mode_update (MetaMonitorManager *manager);
 void               meta_monitor_manager_read_current_config (MetaMonitorManager *manager);
+void               meta_monitor_manager_on_hotplug (MetaMonitorManager *manager);
 
 /* Returns true if transform causes width and height to be inverted
    This is true for the odd transforms in the enum */

@@ -1178,3 +1178,23 @@ meta_monitor_manager_rebuild_derived (MetaMonitorManager *manager)
 
   g_free (old_monitor_infos);
 }
+
+void
+meta_monitor_manager_on_hotplug (MetaMonitorManager *manager)
+{
+  gboolean applied_config = FALSE;
+
+  /* If the monitor has hotplug_mode_update (which is used by VMs), don't bother
+   * applying our stored configuration, because it's likely the user just resizing
+   * the window.
+   */
+  if (!meta_monitor_manager_has_hotplug_mode_update (manager))
+    {
+      if (meta_monitor_config_apply_stored (manager->config, manager))
+        applied_config = TRUE;
+    }
+
+  /* If we haven't applied any configuration, apply the default configuration. */
+  if (!applied_config)
+    meta_monitor_config_make_default (manager->config, manager);
+}
