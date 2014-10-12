@@ -509,8 +509,6 @@ meta_window_x11_manage (MetaWindow *window)
   meta_icon_cache_init (&priv->icon_cache);
 
   meta_display_register_x_window (display, &window->xwindow, window);
-  meta_window_x11_update_shape_region (window);
-  meta_window_x11_update_input_region (window);
 
   /* assign the window to its group, or create a new group if needed */
   window->group = NULL;
@@ -568,6 +566,9 @@ meta_window_x11_manage (MetaWindow *window)
       meta_window_client_rect_to_frame_rect (window, &rect, &rect);
       meta_window_move_resize_internal (window, flags, gravity, rect);
     }
+
+  meta_window_x11_update_shape_region (window);
+  meta_window_x11_update_input_region (window);
 }
 
 static void
