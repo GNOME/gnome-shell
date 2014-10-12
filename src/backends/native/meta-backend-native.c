@@ -318,7 +318,7 @@ meta_activate_vt (int vt, GError **error)
  * meta_activate_session:
  *
  * Tells mutter to activate the session. When mutter is a
- * Wayland compositor, this tells logind to switch over to
+ * display server, this tells logind to switch over to
  * the new session.
  */
 gboolean
