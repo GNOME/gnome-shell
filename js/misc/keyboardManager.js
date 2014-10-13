@@ -35,7 +35,7 @@ function releaseKeyboard() {
 }
 
 function holdKeyboard() {
-    global.freeze_keyboard(global.get_current_time());
+    global.display.freeze_keyboard(global.get_current_time());
 }
 
 const KeyboardManager = new Lang.Class({

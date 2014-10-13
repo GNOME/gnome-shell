@@ -1132,14 +1132,6 @@ shell_global_end_modal (ShellGlobal *global,
   sync_input_region (global);
 }
 
-void
-shell_global_freeze_keyboard (ShellGlobal *global,
-                              guint32      timestamp)
-{
-  if (global->stage_xwindow != None)
-    meta_display_freeze_keyboard (global->meta_display, global->stage_xwindow, timestamp);
-}
-
 /* Code to close all file descriptors before we exec; copied from gspawn.c in GLib.
  *
  * Authors: Padraig O'Briain, Matthias Clasen, Lennart Poettering
