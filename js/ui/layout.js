@@ -423,10 +423,7 @@ const LayoutManager = new Lang.Class({
         this.panelBox.set_position(this.primaryMonitor.x, this.primaryMonitor.y);
         this.panelBox.set_size(this.primaryMonitor.width, -1);
 
-        if (this.keyboardIndex < 0)
-            this.keyboardIndex = this.primaryIndex;
-        else
-            this._updateKeyboardBox();
+        this.keyboardIndex = this.primaryIndex;
 
         this.trayBox.set_position(this.bottomMonitor.x,
                                   this.bottomMonitor.y + this.bottomMonitor.height);
