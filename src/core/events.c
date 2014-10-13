@@ -151,23 +151,6 @@ sequence_is_pointer_emulated (MetaDisplay        *display,
   return FALSE;
 }
 
-static void
-meta_display_update_pointer_emulating_sequence (MetaDisplay        *display,
-                                                const ClutterEvent *event)
-{
-  ClutterEventSequence *sequence;
-
-  sequence = clutter_event_get_event_sequence (event);
-
-  if (event->type == CLUTTER_TOUCH_BEGIN &&
-      !display->pointer_emulating_sequence &&
-      sequence_is_pointer_emulated (display, event))
-    display->pointer_emulating_sequence = sequence;
-  else if (event->type == CLUTTER_TOUCH_END &&
-           display->pointer_emulating_sequence == sequence)
-    display->pointer_emulating_sequence = NULL;
-}
-
 static gboolean
 meta_display_handle_event (MetaDisplay        *display,
                            const ClutterEvent *event)
@@ -176,8 +159,15 @@ meta_display_handle_event (MetaDisplay        *display,
   gboolean bypass_clutter = FALSE;
   G_GNUC_UNUSED gboolean bypass_wayland = FALSE;
   MetaGestureTracker *tracker;
+  ClutterEventSequence *sequence;
 
-  meta_display_update_pointer_emulating_sequence (display, event);
+  sequence = clutter_event_get_event_sequence (event);
+
+  /* Set the pointer emulating sequence on touch begin, if eligible */
+  if (event->type == CLUTTER_TOUCH_BEGIN &&
+      !display->pointer_emulating_sequence &&
+      sequence_is_pointer_emulated (display, event))
+    display->pointer_emulating_sequence = sequence;
 
 #ifdef HAVE_WAYLAND
   MetaWaylandCompositor *compositor = NULL;
@@ -313,6 +303,11 @@ meta_display_handle_event (MetaDisplay        *display,
         bypass_clutter = TRUE;
     }
 #endif
+
+  /* Unset the pointer emulating sequence after its end event is processed */
+  if (event->type == CLUTTER_TOUCH_END &&
+      display->pointer_emulating_sequence == sequence)
+    display->pointer_emulating_sequence = NULL;
 
   display->current_time = CurrentTime;
   return bypass_clutter;
