@@ -1,3 +1,36 @@
+3.14.1
+======
+* Fix pulse animation for scrolled app folders [Florian; #736885]
+* Fix updating background on file changes [Owen; #710756]
+* Obtain keyboard variant from IBus [Jinkyu; #735066]
+* Implement Ctrl-u / Ctrl-k keybindings in entries [Florian; #737346]
+* Pass VPN hints to auth dialog [Dan; #737592]
+* Only allow one screenshot request at a time [Adel; #737456]
+* Respect disable-save-to-disc lockdown setting [Florian; #737846]
+* Respect scaling-factor for profile pictures [Darcy; #735419]
+* Focus login screen after lifting the lock screen shield [Ray; #708105]
+* Speed up pulse animation for few items [Carlos S.; #737017]
+* Fix gap between workspace switcher and screen edge [Florian; #728899]
+* Disable unredirection during recordings [Adel; #738226]
+* Ensure there's always at least one input source [Rui; #738303]
+* Restrict width of dash icons' context menus [Adel; #738054]
+* Misc. bug fixes [Jasper, Florian, Carlos G., Owen; #736999, #737382, #737001,
+  #738314, #738256, #738147]
+
+Contributors:
+  Darcy Beurle, Cosimo Cecchi, Adel Gadllah, Carlos Garnacho, Rui Matos,
+  Florian Müllner, Carlos Soriano, Jasper St. Pierre, Ray Strode, Patrick Ward,
+  Dan Williams, Owen W. Taylor, Jinkyu Yi
+
+Translations:
+  Мирослав Николић po/sr, sr@latin.po, Fran Diéguez [gl], Marek Černocký [cs],
+  Saibal Ray [bn_IN], Rajesh Ranjan [hi], Friedel Wolff [af],
+  Zhou Fang [zh_CN], Krishnababu Krothapalli [te], Kjartan Maraas [nb],
+  Rūdolfs Mazurs [lv], Sweta Kothari [gu], Christian Kirbach [de],
+  Cheng-Chia Tseng [zh_TW], Pedro Albuquerque [pt], Daniel Mustieles [es],
+  Luca Ferretti [it], Baurzhan Muftakhidinov [kk], Arash Mousavi [fa],
+  Milo Casagrande [it]
+
 3.14.0
 ======
 * Fix exposure of the accessible tree [Alejandro; #736821]
