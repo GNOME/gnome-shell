@@ -3022,7 +3022,6 @@ check_fullscreen_func (gpointer data)
 {
   MetaScreen *screen = data;
   MetaWindow *window;
-  GSList *tmp;
   GSList *fullscreen_monitors = NULL;
   GSList *obscured_monitors = NULL;
   gboolean in_fullscreen_changed = FALSE;
