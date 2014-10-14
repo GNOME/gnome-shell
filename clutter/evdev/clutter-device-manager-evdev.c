@@ -1017,6 +1017,18 @@ clutter_seat_evdev_sync_leds (ClutterSeatEvdev *seat)
     }
 }
 
+static void
+flush_event_queue (void)
+{
+  ClutterEvent *event;
+
+  while ((event = clutter_event_get ()) != NULL)
+    {
+      _clutter_process_event (event);
+      clutter_event_free (event);
+    }
+}
+
 static gboolean
 process_base_event (ClutterDeviceManagerEvdev *manager_evdev,
                     struct libinput_event *event)
@@ -1034,6 +1046,11 @@ process_base_event (ClutterDeviceManagerEvdev *manager_evdev,
       break;
 
     case LIBINPUT_EVENT_DEVICE_REMOVED:
+      /* Flush all queued events, there
+       * might be some from this device.
+       */
+      flush_event_queue ();
+
       libinput_device = libinput_event_get_device (event);
 
       device = libinput_device_get_user_data (libinput_device);
