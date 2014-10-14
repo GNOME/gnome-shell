@@ -312,6 +312,9 @@ function test() {
 	    button.label = 'NEVER';
 	    break;
         case 'NEVER':
+	    button.label = 'EXTERNAL';
+	    break;
+        case 'EXTERNAL':
 	    button.label = 'AUTOMATIC';
 	    break;
         }

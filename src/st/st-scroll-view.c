@@ -373,6 +373,7 @@ st_scroll_view_get_preferred_width (ClutterActor *actor,
       break;
     case GTK_POLICY_ALWAYS:
     case GTK_POLICY_AUTOMATIC:
+    case GTK_POLICY_EXTERNAL:
       /* Should theoretically use the min width of the hscrollbar,
        * but that's not cleanly defined at the moment */
       min_width = 0;
@@ -382,6 +383,7 @@ st_scroll_view_get_preferred_width (ClutterActor *actor,
   switch (priv->vscrollbar_policy)
     {
     case GTK_POLICY_NEVER:
+    case GTK_POLICY_EXTERNAL:
       account_for_vscrollbar = FALSE;
       break;
     case GTK_POLICY_ALWAYS:
@@ -443,6 +445,7 @@ st_scroll_view_get_preferred_height (ClutterActor *actor,
   switch (priv->vscrollbar_policy)
     {
     case GTK_POLICY_NEVER:
+    case GTK_POLICY_EXTERNAL:
       break;
     case GTK_POLICY_ALWAYS:
     case GTK_POLICY_AUTOMATIC:
@@ -454,6 +457,7 @@ st_scroll_view_get_preferred_height (ClutterActor *actor,
   switch (priv->hscrollbar_policy)
     {
     case GTK_POLICY_NEVER:
+    case GTK_POLICY_EXTERNAL:
       account_for_hscrollbar = FALSE;
       break;
     case GTK_POLICY_ALWAYS:
@@ -480,6 +484,7 @@ st_scroll_view_get_preferred_height (ClutterActor *actor,
       break;
     case GTK_POLICY_ALWAYS:
     case GTK_POLICY_AUTOMATIC:
+    case GTK_POLICY_EXTERNAL:
       /* Should theoretically use the min height of the vscrollbar,
        * but that's not cleanly defined at the moment */
       min_height = 0;
@@ -567,7 +572,7 @@ st_scroll_view_allocate (ClutterActor          *actor,
             }
           else
             {
-              hscrollbar_visible = priv->hscrollbar_policy != GTK_POLICY_NEVER;
+              hscrollbar_visible = priv->hscrollbar_policy == GTK_POLICY_ALWAYS;
 
               /* try without a vertical scrollbar */
               clutter_actor_get_preferred_height (priv->child, avail_width, &child_min_height, NULL);
@@ -576,18 +581,20 @@ st_scroll_view_allocate (ClutterActor          *actor,
         }
       else
         {
-          vscrollbar_visible = priv->vscrollbar_policy != GTK_POLICY_NEVER;
+          vscrollbar_visible = priv->vscrollbar_policy == GTK_POLICY_ALWAYS;
 
           if (priv->hscrollbar_policy == GTK_POLICY_AUTOMATIC)
             hscrollbar_visible = child_min_width > avail_height - (vscrollbar_visible ? 0 : sb_width);
           else
-            hscrollbar_visible = priv->hscrollbar_policy != GTK_POLICY_NEVER;
+            hscrollbar_visible = priv->hscrollbar_policy == GTK_POLICY_ALWAYS;
         }
     }
   else
     {
-      hscrollbar_visible = priv->hscrollbar_policy != GTK_POLICY_NEVER;
-      vscrollbar_visible = priv->vscrollbar_policy != GTK_POLICY_NEVER;
+      hscrollbar_visible = priv->hscrollbar_policy != GTK_POLICY_NEVER &&
+                           priv->hscrollbar_policy != GTK_POLICY_EXTERNAL;
+      vscrollbar_visible = priv->vscrollbar_policy != GTK_POLICY_NEVER &&
+                           priv->vscrollbar_policy != GTK_POLICY_EXTERNAL;
     }
 
   /* Whether or not we show the scrollbars, if the scrollbars are visible
@@ -629,15 +636,19 @@ st_scroll_view_allocate (ClutterActor          *actor,
 
   clutter_actor_allocate (priv->hscroll, &child_box, flags);
 
-  /* In case the scrollbar policy is NEVER or scrollbars should be
-   * overlayed, we don't trim the content box allocation by the
-   * scrollbar size.
+  /* In case the scrollbar policy is NEVER or EXTERNAL or scrollbars
+   * should be overlayed, we don't trim the content box allocation by
+   * the scrollbar size.
    * Fold this into the scrollbar sizes to simplify the rest of the
    * computations.
    */
-  if (priv->hscrollbar_policy == GTK_POLICY_NEVER || priv->overlay_scrollbars)
+  if (priv->hscrollbar_policy == GTK_POLICY_NEVER ||
+      priv->hscrollbar_policy == GTK_POLICY_EXTERNAL ||
+      priv->overlay_scrollbars)
     sb_height = 0;
-  if (priv->vscrollbar_policy == GTK_POLICY_NEVER || priv->overlay_scrollbars)
+  if (priv->vscrollbar_policy == GTK_POLICY_NEVER ||
+      priv->vscrollbar_policy == GTK_POLICY_EXTERNAL ||
+      priv->overlay_scrollbars)
     sb_width = 0;
 
   /* Child */
