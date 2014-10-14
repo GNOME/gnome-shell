@@ -1,3 +1,29 @@
+3.14.1
+======
+* Fix move-titlebar-onscreen function [Florian; #736915]
+* Fix stacking of the guard window [Owen; #737233]
+* Fix keycode lookup for non-default layouts [Rui; #737134]
+* Fix workspaces-only-on-primary handling [Florian; #737178]
+* Don't unstick sticky windows on workspace removal [Florian; #737625]
+* Do not auto-minimize fullscreen windows [Jasper; #705177]
+* Upload keymap to newly added keyboard devices [Rui; #737673]
+* Apply keyboard repeat settings [Rui; #728055]
+* Don't send pressed keys on enter [Rui; #727178]
+* Fix build without wayland/native [Rico; #738225]
+* Send modifiers after the key event [Rui; #738238]
+* Fix unredirect heuristic [Adel; #738271]
+* Do not show system chrome over fullscreen windows [Florian; #693991]
+* Misc. bug fixes [Florian, Adel, Tom; #737135, #737581, #738146, #738384]
+
+Contributors:
+  Tom Beckmann, Adel Gadllah, Carlos Garnacho, Rui Matos, Florian Müllner,
+  Jasper St. Pierre, Rico Tzschichholz, Owen W. Taylor
+
+Translations:
+  Krishnababu Krothapalli [te], Мирослав Николић [sr, sr@latin],
+  Alexander Shopov [bg], Saibal Ray [bn_IN], Milo Casagrande [it],
+  Rūdolfs Mazurs [lv]
+
 3.14.0
 ======
 * Fix placement of popup windows on wayland [Jasper; #736812]
