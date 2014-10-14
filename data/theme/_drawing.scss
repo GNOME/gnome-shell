@@ -183,7 +183,7 @@
 
     color: white;
     border-color: $osd_borders_color;
-    background-color: $_bg;
+    background-color: darken($_bg,5%);
     box-shadow: none;
     text-shadow: none;
     icon-shadow: none;
