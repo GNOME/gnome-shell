@@ -66,15 +66,7 @@ StEntry {
   //&:hover { @include entry(hover);}
   &:focus { @include entry(focus,$fc:transparentize($fg_color,0.5));}
   &:insensitive { @include entry(insensitive);}
-  
-  .search-entry {
-    padding: 7px 9px;
-    border-radius: 24px;
-    &:focus {
-      padding: 6px 8px;
-      border-width: 2px;
-    }
-  }
+ 
 }
 
 
@@ -366,5 +358,268 @@ StScrollBar {
 // not really top bar only
 .popup-menu-arrow { width: 16px; height: 16px; }
 .popup-menu-icon { icon-size: 1.09em; }
+
+//close buttons
+
+.window-close, .notification-close {
+  background-image: url("close-window.svg");
+  background-size: 32px;
+  height: 32px;
+  width: 32px;
+}
+  .window-close { 
+    -shell-close-overlap: 16px;
+    &:rtl { -st-background-image-shadow: 2px 2px 6px rgba(0,0,0,0.5); }
+  }
+  .notification-close {
+    -shell-close-overlap-x: 14px;
+    -shell-close-overlap-y: -12px;
+    
+    &:rtl { -shell-close-overlap-x: -14px; }
+  }
+
+/* OVERVIEW */
+
+#overview {
+  spacing: 24px; //
+
+}
+  .window-picker { //container around window thumbnails
+    -horizontal-spacing: 32px;
+    -vertical-spacing: 32px;
+    padding-left: 32px;
+    padding-right: 32px;
+    padding-bottom: 48px;
+    
+    &.external-monitor { padding: 32px; }
+  }
+
+  .messages-indicator { color: transparentize($fg_color,.2); height: 32px; }
+  .messages-indicator-contents { spacing: 12px; padding-bottom: 12px; }
+
+  //search entry
+  .search-entry {
+    width: 320px;
+    padding: 7px 9px;
+    border-radius: 24px;
+    &:focus {
+      padding: 6px 8px;
+      border-width: 2px;
+    }
+    
+    .search-entry-icon { icon-size: 1em; padding: 0 4px; color: transparentize($fg_color,.3); }
+    
+    &:hover, &:focus {
+      .search-entry-icon { color: $fg_color; }
+    }
+  }
+  
+  //search results
+  
+  #searchResultsBin {
+    max-width: 1000px;
+  }
+
+  #searchResultsContent {
+      padding-left: 20px;
+      padding-right: 20px;
+      spacing: 16px;
+  }
+  
+  .search-selection { spacing: 16px; } // This should be equal to #searchResultsContent spacing
+  .search-selection-content { spacing: 32px; } // This is the space between the provider icon and the results container
+  .search-statustext { // "no results"
+    @extend %status_text;
+  }
+  .list-search-results { spacing: 3px; }
+  
+  .search-section-separator {
+    -gradient-height: 1px;
+    -gradient-start: rgba(255,255,255,0);
+    -gradient-end: rgba(255,255,255,0.1);
+    -margin-horizontal: 1.5em;
+    height: 1px;
+  }
+  
+  .list-search-result-content { spacing: 12px; padding: 12px; }
+  .list-search-result-title { font-size: 1.5em; color: darken($fg_color,5%); }
+  .list-search-result-description { color: darken($fg_color,15%); }
+  .search-provider-icon { padding: 15px; }
+  .search-provider-icon-more {
+    width: 16px;
+    height: 16px;
+    background-image: url("more-results.svg");
+  }
+  
+
+  /* DASHBOARD */
+  
+  #dash {
+    color: red;
+    padding: 4px 0;
+    color: $osd_fg_color;
+    background-color: $osd_bg_color;
+    border: 1px solid transparentize($fg_color,0.8);
+    border-left: 0px;
+    border-radius: 0px 9px 9px 0px;
+    
+    &:rtl {
+      border-left-width: 1px;
+      border-right-width: 0;
+      border-radius: 9px 0 0 9px;
+    }
+    
+    .placeholder {
+      background-image: url("dash-placeholder.svg");
+      background-size: contain;
+      height: 24px;
+    }
+    
+    .empty-dash-drop-target {
+      width: 24px;
+      height: 24px;
+    }
+    
+    .overview-icon {
+      &:hover {
+        background-color: transparentize($osd_bg_color,0.6);
+      }
+    }
+  }
+  
+  .dash-label { //osd tooltip
+    border-radius: 7px;
+    padding: 4px 12px;
+    background-color: transparentize($osd_bg_color,0.3);
+    text-align: center;
+    -x-offset: 8px;
+  }
+  
+  /* App Vault/Grid */
+  .icon-grid {
+    spacing: 30px;
+    -shell-grid-horizontal-item-size: 136px;
+    -shell-grid-vertical-item-size: 136px;
+    
+    //.overview-icon { icon-size: 96px; } FIXME no effect
+  }
+  //.app-display { spacing: 20px; }
+
+  .app-view-controls { //favorties | all toggle container
+    padding-bottom: 32px;
+  }
+  .app-view-control { //favorties | all toggle button
+    padding: 4px 32px; 
+    &:checked { @include button(active); }
+    &:first-child { 
+      border-right-width: 0;
+      border-radius: 3px 0 0 3px;
+    }
+    &:last-child {
+     border-radius: 0 3px 3px 0;
+    }
+  }
+
+  //Icon tile
+  .search-provider-icon,
+  .list-search-result {
+    @extend %icon_tile;
+    &:active, &:checked { background-color: transparentize($osd_bg_color,.1); }
+    &:focus, &:selected, &:hover { background-color: transparentize($osd_bg_color,.5); }
+  }
+  .app-well-app, 
+  .show-apps,
+  .grid-search-result {
+    & > .overview-icon { 
+      @extend %icon_tile;
+    }
+    &:active > .overview-icon, 
+    &:checked > .overview-icon {
+      background-color: transparentize($osd_bg_color,.1);
+    }
+    &:hover > .overview-icon, 
+    &:focus > .overview-icon, 
+    &:selected > .overview-icon { 
+      background-color: transparentize($osd_bg_color,.5); 
+    }
+    
+  }
+  
+  %icon_tile {
+    border-radius: 4px;
+    padding: 6px;
+    border: 1px solid transparent;
+    transition-duration: 100ms;
+    text-align: center;
+  }
+  
+  .app-well-app.running > .overview-icon {
+    text-shadow: black 0px 2px 2px;
+    border-image: url("panel-button-border.svg") 6 10 0 2; //fixme needs to not be blurry and a little narrower
+  }
+  .app-well-app.app-folder > .overview-icon {
+    background-color: transparentize($osd_bg_color,.6);
+  }
+  
+  .show-apps:checked .show-apps-icon,
+  .show-apps:focus .show-apps-icon {
+    color: white;
+    transition-duration: 100ms;
+  }
+
+  
+  // Collections
+  .app-folder-popup { //expanded collection
+    -arrow-border-radius: 8px;
+    -arrow-background-color: transparentize($osd_bg_color,0.7);
+    -arrow-base: 24px;
+    -arrow-rise: 11px;
+  }
+  .app-folder-popup-bin { padding: 5px; }
+  .app-folder-icon {
+    padding: 5px;
+    spacing-rows: 5px;
+    spacing-columns: 5px;
+  }
+  
+  .page-indicator { 
+    padding: 15px 20px;
+    
+    .page-indicator-icon {
+      width: 18px;
+      height: 18px;
+      background-image: url(page-indicator-inactive.svg);
+    }
+    
+    &:hover .page-indicator-icon { background-image: url(page-indicator-hover.svg); }
+    &:active .page-indicator-icon { background-image: url(page-indicator-active.svg); }
+    &:checked .page-indicator-icon,
+    &:checked:active { background-image: url(page-indicator-checked.svg); }
+  }
+  
+  .no-frequent-applications-label { @extend %status_text; }
+  
+  .app-well-app > .overview-icon.overview-icon-with-label,
+  .grid-search-result .overview-icon.overview-icon-with-label {
+    padding: 10px 8px 5px 8px;
+    spacing: 4px;
+  }
+  
+
+
+  //Some hacks I don't even
+  // FIXME
+  .search-display > StBoxLayout,
+  .all-apps,
+  .frequent-apps > StBoxLayout {
+    // horizontal padding to make sure scrollbars or dash don't overlap content
+    padding: 0px 88px 10px 88px;
+  }
+
+%status_text {
+  font-size: 2em;
+  font-weight: bold;
+  color: $fg_color;
+}
 
 /* NOTIFICATIONS & MESSAGE TRAY */
