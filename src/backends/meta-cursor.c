@@ -281,7 +281,6 @@ meta_cursor_image_load_from_buffer (MetaCursorImage    *image,
 
   ClutterBackend *backend;
   CoglContext *cogl_context;
-  struct wl_shm_buffer *shm_buffer;
   uint32_t gbm_format;
   uint64_t cursor_width, cursor_height;
   uint width, height;
@@ -297,10 +296,10 @@ meta_cursor_image_load_from_buffer (MetaCursorImage    *image,
   width = cogl_texture_get_width (COGL_TEXTURE (image->texture));
   height = cogl_texture_get_height (COGL_TEXTURE (image->texture));
 
-  shm_buffer = wl_shm_buffer_get (buffer);
-  if (shm_buffer)
+  if (gbm)
     {
-      if (gbm)
+      struct wl_shm_buffer *shm_buffer = wl_shm_buffer_get (buffer);
+      if (shm_buffer)
         {
           int rowstride = wl_shm_buffer_get_stride (shm_buffer);
 
@@ -332,10 +331,7 @@ meta_cursor_image_load_from_buffer (MetaCursorImage    *image,
                                              width, height, rowstride,
                                              gbm_format);
         }
-    }
-  else
-    {
-      if (gbm)
+      else
         {
           /* HW cursors have a predefined size (at least 64x64), which usually is bigger than cursor theme
              size, so themed cursors must be padded with transparent pixels to fill the
