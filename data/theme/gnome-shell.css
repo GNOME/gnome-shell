@@ -1687,11 +1687,7 @@ StScrollBar {
 
 /* DASHBOARD */
 #dash {
-  color: red;
   padding: 4px 0;
-  color: #eeeeec;
-  background-color: #2e3436;
-  border: 1px solid rgba(238, 238, 236, 0.2);
   border-left: 0px;
   border-radius: 0px 9px 9px 0px; }
   #dash:rtl {
@@ -1818,10 +1814,27 @@ StScrollBar {
   padding: 10px 8px 5px 8px;
   spacing: 4px; }
 
+.workspace-thumbnails {
+  visible-width: 32px;
+  spacing: 11px;
+  padding: 8px;
+  border-radius: 9px 0 0 9px; }
+  .workspace-thumbnails:rtl {
+    border-radius: 0 9px 9px 0; }
+
+.workspace-thumbnail-indicator {
+  border: 4px solid #215d9c;
+  padding: 1px; }
+
 .search-display > StBoxLayout,
 .all-apps,
 .frequent-apps > StBoxLayout {
   padding: 0px 88px 10px 88px; }
+
+#dash, .workspace-thumbnails {
+  color: #eeeeec;
+  background-color: #2e3436;
+  border: 1px solid rgba(238, 238, 236, 0.2); }
 
 .search-statustext, .no-frequent-applications-label {
   font-size: 2em;

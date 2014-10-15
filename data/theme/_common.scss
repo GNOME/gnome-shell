@@ -455,11 +455,8 @@ StScrollBar {
   /* DASHBOARD */
   
   #dash {
-    color: red;
+    @extend %overview-panel;
     padding: 4px 0;
-    color: $osd_fg_color;
-    background-color: $osd_bg_color;
-    border: 1px solid transparentize($fg_color,0.8);
     border-left: 0px;
     border-radius: 0px 9px 9px 0px;
     
@@ -605,7 +602,20 @@ StScrollBar {
     spacing: 4px;
   }
   
-
+  // Workspace pager
+  .workspace-thumbnails { //container ala dash
+    @extend %overview-panel;
+    visible-width: 32px; //amount visible before hover
+    spacing: 11px;
+    padding: 8px;
+    border-radius: 9px 0 0 9px;
+    //border-width: 1px 0 1px 1px; //fixme: can't have non unoform borders :(
+    &:rtl { border-radius: 0 9px 9px 0;}
+  }
+  .workspace-thumbnail-indicator {
+    border: 4px solid $selected_bg_color;
+    padding: 1px;
+  }
 
   //Some hacks I don't even
   // FIXME
@@ -615,6 +625,12 @@ StScrollBar {
     // horizontal padding to make sure scrollbars or dash don't overlap content
     padding: 0px 88px 10px 88px;
   }
+
+%overview-panel {
+  color: $osd_fg_color;
+  background-color: $osd_bg_color;
+  border: 1px solid transparentize($fg_color,0.8);
+}
 
 %status_text {
   font-size: 2em;
