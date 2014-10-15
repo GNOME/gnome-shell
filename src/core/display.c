@@ -1965,7 +1965,7 @@ meta_display_end_grab_op (MetaDisplay *display,
        * beginning of the grab_op.
        */
       if (!meta_prefs_get_raise_on_click () &&
-          display->grab_threshold_movement_reached)
+          !display->grab_threshold_movement_reached)
         meta_window_raise (display->grab_window);
 
       meta_window_grab_op_ended (grab_window, grab_op);
