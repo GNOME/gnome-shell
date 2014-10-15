@@ -29,8 +29,11 @@
 
 typedef struct {
   CoglTexture2D *texture;
-  struct gbm_bo *bo;
   int hot_x, hot_y;
+
+#ifdef HAVE_NATIVE_BACKEND
+  struct gbm_bo *bo;
+#endif
 } MetaCursorImage;
 
 struct _MetaCursorReference {
@@ -44,8 +47,10 @@ CoglTexture *meta_cursor_reference_get_cogl_texture (MetaCursorReference *cursor
                                                      int                 *hot_x,
                                                      int                 *hot_y);
 
+#ifdef HAVE_NATIVE_BACKEND
 struct gbm_bo *meta_cursor_reference_get_gbm_bo (MetaCursorReference *cursor,
                                                  int                 *hot_x,
                                                  int                 *hot_y);
+#endif
 
 #endif /* META_CURSOR_PRIVATE_H */

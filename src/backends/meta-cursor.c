@@ -56,8 +56,11 @@ static void
 meta_cursor_image_free (MetaCursorImage *image)
 {
   cogl_object_unref (image->texture);
+
+#ifdef HAVE_NATIVE_BACKEND
   if (image->bo)
     gbm_bo_destroy (image->bo);
+#endif
 }
 
 static void
@@ -139,10 +142,10 @@ load_cursor_on_client (MetaCursor cursor)
                                   meta_prefs_get_cursor_size ());
 }
 
+#ifdef HAVE_NATIVE_BACKEND
 static void
 get_hardware_cursor_size (uint64_t *cursor_width, uint64_t *cursor_height)
 {
-#ifdef HAVE_NATIVE_BACKEND
   MetaBackend *meta_backend = meta_get_backend ();
   MetaCursorRenderer *renderer = meta_backend_get_cursor_renderer (meta_backend);
 
@@ -151,11 +154,12 @@ get_hardware_cursor_size (uint64_t *cursor_width, uint64_t *cursor_height)
       meta_cursor_renderer_native_get_cursor_size (META_CURSOR_RENDERER_NATIVE (renderer), cursor_width, cursor_height);
       return;
     }
-#endif
 
   g_assert_not_reached ();
 }
+#endif
 
+#ifdef HAVE_NATIVE_BACKEND
 static void
 meta_cursor_image_load_gbm_buffer (struct gbm_device *gbm,
                                    MetaCursorImage   *image,
@@ -193,20 +197,21 @@ meta_cursor_image_load_gbm_buffer (struct gbm_device *gbm,
   else
     meta_warning ("HW cursor for format %d not supported\n", gbm_format);
 }
+#endif
 
+#ifdef HAVE_NATIVE_BACKEND
 static struct gbm_device *
 get_gbm_device (void)
 {
-#ifdef HAVE_NATIVE_BACKEND
   MetaBackend *meta_backend = meta_get_backend ();
   MetaCursorRenderer *renderer = meta_backend_get_cursor_renderer (meta_backend);
 
   if (META_IS_CURSOR_RENDERER_NATIVE (renderer))
     return meta_cursor_renderer_native_get_gbm_device (META_CURSOR_RENDERER_NATIVE (renderer));
-#endif
-
-  return NULL;
+  else
+    return NULL;
 }
+#endif
 
 static void
 meta_cursor_image_load_from_xcursor_image (MetaCursorImage   *image,
@@ -214,16 +219,13 @@ meta_cursor_image_load_from_xcursor_image (MetaCursorImage   *image,
 {
   uint width, height, rowstride;
   CoglPixelFormat cogl_format;
-  uint32_t gbm_format;
   ClutterBackend *clutter_backend;
   CoglContext *cogl_context;
-  struct gbm_device *gbm;
 
   width           = xc_image->width;
   height          = xc_image->height;
   rowstride       = width * 4;
 
-  gbm_format = GBM_FORMAT_ARGB8888;
 #if G_BYTE_ORDER == G_LITTLE_ENDIAN
   cogl_format = COGL_PIXEL_FORMAT_BGRA_8888;
 #else
@@ -242,13 +244,15 @@ meta_cursor_image_load_from_xcursor_image (MetaCursorImage   *image,
                                                   (uint8_t *) xc_image->pixels,
                                                   NULL);
 
-  gbm = get_gbm_device ();
+#ifdef HAVE_NATIVE_BACKEND
+  struct gbm_device *gbm = get_gbm_device ();
   if (gbm)
     meta_cursor_image_load_gbm_buffer (gbm,
                                        image,
                                        (uint8_t *) xc_image->pixels,
                                        width, height, rowstride,
-                                       gbm_format);
+                                       GBM_FORMAT_ARGB8888);
+#endif
 }
 
 MetaCursorReference *
@@ -277,13 +281,8 @@ meta_cursor_image_load_from_buffer (MetaCursorImage    *image,
                                     int                 hot_x,
                                     int                 hot_y)
 {
-  struct gbm_device *gbm = get_gbm_device ();
-
   ClutterBackend *backend;
   CoglContext *cogl_context;
-  uint32_t gbm_format;
-  uint64_t cursor_width, cursor_height;
-  uint width, height;
 
   image->hot_x = hot_x;
   image->hot_y = hot_y;
@@ -293,11 +292,17 @@ meta_cursor_image_load_from_buffer (MetaCursorImage    *image,
 
   image->texture = cogl_wayland_texture_2d_new_from_buffer (cogl_context, buffer, NULL);
 
-  width = cogl_texture_get_width (COGL_TEXTURE (image->texture));
-  height = cogl_texture_get_height (COGL_TEXTURE (image->texture));
-
+#ifdef HAVE_NATIVE_BACKEND
+  struct gbm_device *gbm = get_gbm_device ();
   if (gbm)
     {
+      uint32_t gbm_format;
+      uint64_t cursor_width, cursor_height;
+      uint width, height;
+
+      width = cogl_texture_get_width (COGL_TEXTURE (image->texture));
+      height = cogl_texture_get_height (COGL_TEXTURE (image->texture));
+
       struct wl_shm_buffer *shm_buffer = wl_shm_buffer_get (buffer);
       if (shm_buffer)
         {
@@ -352,6 +357,7 @@ meta_cursor_image_load_from_buffer (MetaCursorImage    *image,
             meta_warning ("Importing HW cursor from wl_buffer failed\n");
         }
     }
+#endif
 }
 
 MetaCursorReference *
@@ -381,6 +387,7 @@ meta_cursor_reference_get_cogl_texture (MetaCursorReference *cursor,
   return COGL_TEXTURE (cursor->image.texture);
 }
 
+#ifdef HAVE_NATIVE_BACKEND
 struct gbm_bo *
 meta_cursor_reference_get_gbm_bo (MetaCursorReference *cursor,
                                   int                 *hot_x,
@@ -392,6 +399,7 @@ meta_cursor_reference_get_gbm_bo (MetaCursorReference *cursor,
     *hot_y = cursor->image.hot_y;
   return cursor->image.bo;
 }
+#endif
 
 MetaCursor
 meta_cursor_reference_get_meta_cursor (MetaCursorReference *cursor)
