@@ -538,7 +538,7 @@ const LoginDialog = new Lang.Class({
     },
 
     _updateLogoTexture: function(cache, file) {
-        if (!this._logoFile.equal(file))
+        if (this._logoFile && !this._logoFile.equal(file))
             return;
 
         this._logoBin.destroy_all_children();
