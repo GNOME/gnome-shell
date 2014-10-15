@@ -149,6 +149,8 @@ make_logical_config (MetaMonitorManager *manager)
         manager->primary_monitor_index = info->number;
     }
 
+  g_free (manager->monitor_infos);
+
   manager->n_monitor_infos = monitor_infos->len;
   manager->monitor_infos = (void*)g_array_free (monitor_infos, FALSE);
 }
@@ -1165,18 +1167,12 @@ meta_monitor_manager_read_current_config (MetaMonitorManager *manager)
 void
 meta_monitor_manager_rebuild_derived (MetaMonitorManager *manager)
 {
-  MetaMonitorInfo *old_monitor_infos;
-
-  old_monitor_infos = manager->monitor_infos;
-
   if (manager->in_init)
     return;
 
   make_logical_config (manager);
 
   g_signal_emit_by_name (manager, "monitors-changed");
-
-  g_free (old_monitor_infos);
 }
 
 void
