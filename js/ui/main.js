@@ -227,11 +227,25 @@ function _initializeUI() {
     });
 }
 
+function _getDefaultStylesheet() {
+    let stylesheet;
+
+    stylesheet = Gio.File.new_for_uri('resource:///org/gnome/shell/theme/' + sessionMode.stylesheetName);
+    if (stylesheet.query_exists(null))
+        return stylesheet;
+
+    stylesheet = Gio.File.new_for_path(global.datadir + '/theme/' + sessionMode.stylesheetName);
+    if (stylesheet.query_exists(null))
+        return stylesheet;
+
+    return null;
+}
+
 function _loadDefaultStylesheet() {
     if (!sessionMode.isPrimary)
         return;
 
-    let stylesheet = Gio.File.new_for_uri('resource:///org/gnome/shell/theme/' + sessionMode.stylesheetName);
+    let stylesheet = _getDefaultStylesheet();
     if (_defaultCssStylesheet && _defaultCssStylesheet.equal(stylesheet))
         return;
 
