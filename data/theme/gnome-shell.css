@@ -1342,7 +1342,9 @@ StEntry {
   color: #eeeeec;
   background-color: #292929;
   border-color: #1c1f1f;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4); }
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+  selection-background-color: #215d9c;
+  selected-color: white; }
   StEntry:focus {
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
     border-color: rgba(154, 154, 142, 0.5); }
