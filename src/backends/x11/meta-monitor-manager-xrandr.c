@@ -57,7 +57,6 @@ struct _MetaMonitorManagerXrandr
 
   Display *xdisplay;
   XRRScreenResources *resources;
-  int time;
   int rr_event_base;
   int rr_error_base;
 };
@@ -413,7 +412,6 @@ meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
     return;
 
   manager_xrandr->resources = resources;
-  manager_xrandr->time = resources->configTimestamp;
   manager->n_outputs = resources->noutput;
   manager->n_crtcs = resources->ncrtc;
   manager->n_modes = resources->nmode;
@@ -747,7 +745,7 @@ meta_monitor_manager_xrandr_apply_configuration (MetaMonitorManager *manager,
           XRRSetCrtcConfig (manager_xrandr->xdisplay,
                             manager_xrandr->resources,
                             (XID)crtc->crtc_id,
-                            manager_xrandr->time,
+                            CurrentTime,
                             0, 0,
                             None,
                             RR_Rotate_0,
@@ -777,7 +775,7 @@ meta_monitor_manager_xrandr_apply_configuration (MetaMonitorManager *manager,
       XRRSetCrtcConfig (manager_xrandr->xdisplay,
                         manager_xrandr->resources,
                         (XID)crtc->crtc_id,
-                        manager_xrandr->time,
+                        CurrentTime,
                         0, 0,
                         None,
                         RR_Rotate_0,
@@ -860,7 +858,7 @@ meta_monitor_manager_xrandr_apply_configuration (MetaMonitorManager *manager,
           ok = XRRSetCrtcConfig (manager_xrandr->xdisplay,
                                  manager_xrandr->resources,
                                  (XID)crtc->crtc_id,
-                                 manager_xrandr->time,
+                                 CurrentTime,
                                  crtc_info->x, crtc_info->y,
                                  (XID)mode->mode_id,
                                  meta_monitor_transform_to_xrandr (crtc_info->transform),
