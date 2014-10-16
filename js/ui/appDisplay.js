@@ -1517,13 +1517,33 @@ const AppIcon = new Lang.Class({
         this.id = app.get_id();
         this.name = app.get_name();
 
-        this.actor = new St.Button({ style_class: 'app-well-app',
+        // We need to make it track_hover so dash item can connect to
+        // the hover signal of the actor in _hookupLabel to call
+        // shouldShowTooltip when hovered.
+        this.actor = new St.Widget({ layout_manager: new Clutter.BinLayout(),
                                      reactive: true,
-                                     button_mask: St.ButtonMask.ONE | St.ButtonMask.TWO,
-                                     can_focus: true,
-                                     x_fill: true,
-                                     y_fill: true });
+                                     track_hover: true });
+
+        this._dot = new St.Widget({ style_class: 'app-well-app-running-dot',
+                                    layout_manager: new Clutter.BinLayout(),
+                                    x_expand: true, y_expand: true,
+                                    x_align: Clutter.ActorAlign.CENTER,
+                                    y_align: Clutter.ActorAlign.END });
+
+        this._dot.hide();
+
+        this._button = new St.Button({ style_class: 'app-well-app',
+                                       reactive: true,
+                                       button_mask: St.ButtonMask.ONE | St.ButtonMask.TWO,
+                                       can_focus: true,
+                                       x_fill: true,
+                                       y_fill: true });
+
+        this.actor.add_actor(this._button);
+        this.actor.add_actor(this._dot);
+
         this.actor._delegate = this;
+        this._button._delegate = this;
 
         if (!iconParams)
             iconParams = {};
@@ -1531,20 +1551,20 @@ const AppIcon = new Lang.Class({
         iconParams['createIcon'] = Lang.bind(this, this._createIcon);
         iconParams['setSizeManually'] = true;
         this.icon = new IconGrid.BaseIcon(app.get_name(), iconParams);
-        this.actor.set_child(this.icon.actor);
+        this._button.set_child(this.icon.actor);
 
         this.actor.label_actor = this.icon.label;
 
-        this.actor.connect('leave-event', Lang.bind(this, this._onLeaveEvent));
-        this.actor.connect('button-press-event', Lang.bind(this, this._onButtonPress));
-        this.actor.connect('touch-event', Lang.bind(this, this._onTouchEvent));
-        this.actor.connect('clicked', Lang.bind(this, this._onClicked));
-        this.actor.connect('popup-menu', Lang.bind(this, this._onKeyboardPopupMenu));
+        this._button.connect('leave-event', Lang.bind(this, this._onLeaveEvent));
+        this._button.connect('button-press-event', Lang.bind(this, this._onButtonPress));
+        this._button.connect('touch-event', Lang.bind(this, this._onTouchEvent));
+        this._button.connect('clicked', Lang.bind(this, this._onClicked));
+        this._button.connect('popup-menu', Lang.bind(this, this._onKeyboardPopupMenu));
 
         this._menu = null;
         this._menuManager = new PopupMenu.PopupMenuManager(this);
 
-        this._draggable = DND.makeDraggable(this.actor);
+        this._draggable = DND.makeDraggable(this._button);
         this._draggable.connect('drag-begin', Lang.bind(this,
             function () {
                 this._removeMenuTimeout();
@@ -1569,6 +1589,18 @@ const AppIcon = new Lang.Class({
         this._updateRunningStyle();
     },
 
+    // Needed for containers that want to track focus of the widget
+    // for i.e. scroll the container when navigating through items
+    getFocusReceiver: function () {
+        return this._button;
+    },
+
+    // Needed for containers that want to change style of the widget
+    // for i.e. set as selected when searching in shell
+    getStyleReceiver: function () {
+        return this._button;
+    },
+
     _onDestroy: function() {
         if (this._stateChangedId > 0)
             this.app.disconnect(this._stateChangedId);
@@ -1588,10 +1620,13 @@ const AppIcon = new Lang.Class({
     },
 
     _updateRunningStyle: function() {
-        if (this.app.state != Shell.AppState.STOPPED)
-            this.actor.add_style_class_name('running');
-        else
-            this.actor.remove_style_class_name('running');
+        if (this.app.state != Shell.AppState.STOPPED) {
+            this._button.add_style_class_name('running');
+            this._dot.show();
+        } else {
+            this._button.remove_style_class_name('running');
+            this._dot.hide();
+        }
     },
 
     _setPopupTimeout: function() {
@@ -1606,7 +1641,7 @@ const AppIcon = new Lang.Class({
     },
 
     _onLeaveEvent: function(actor, event) {
-        this.actor.fake_release();
+        this._button.fake_release();
         this._removeMenuTimeout();
     },
 
@@ -1644,7 +1679,7 @@ const AppIcon = new Lang.Class({
 
     popupMenu: function() {
         this._removeMenuTimeout();
-        this.actor.fake_release();
+        this._button.fake_release();
         this._draggable.fakeRelease();
 
         if (!this._menu) {
@@ -1663,7 +1698,7 @@ const AppIcon = new Lang.Class({
 
         this.emit('menu-state-changed', true);
 
-        this.actor.set_hover(true);
+        this._button.set_hover(true);
         this._menu.popup();
         this._menuManager.ignoreRelease();
         this.emit('sync-tooltip');
@@ -1680,7 +1715,7 @@ const AppIcon = new Lang.Class({
     },
 
     _onMenuPoppedDown: function() {
-        this.actor.sync_hover();
+        this._button.sync_hover();
         this.emit('menu-state-changed', false);
     },
 

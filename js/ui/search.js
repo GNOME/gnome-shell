@@ -659,11 +659,15 @@ const SearchResults = new Lang.Class({
         if (!result)
             return;
 
+        let styleReceiver = result.actor;
+        if (result.getStyleReceiver)
+            styleReceiver = result.getStyleReceiver();
+
         if (selected) {
-            result.actor.add_style_pseudo_class('selected');
+            styleReceiver.add_style_pseudo_class('selected');
             Util.ensureActorVisibleInScrollView(this._scrollView, result.actor);
         } else {
-            result.actor.remove_style_pseudo_class('selected');
+            styleReceiver.remove_style_pseudo_class('selected');
         }
     }
 });

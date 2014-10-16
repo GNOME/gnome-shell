@@ -278,20 +278,6 @@ const IconGrid = new Lang.Class({
         this._grid.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
         this._grid.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
         this._grid.connect('allocate', Lang.bind(this, this._allocate));
-        this._grid.connect('actor-added', Lang.bind(this, this._childAdded));
-        this._grid.connect('actor-removed', Lang.bind(this, this._childRemoved));
-    },
-
-    _keyFocusIn: function(actor) {
-        this.emit('key-focus-in', actor);
-    },
-
-    _childAdded: function(grid, child) {
-        child._iconGridKeyFocusInId = child.connect('key-focus-in', Lang.bind(this, this._keyFocusIn));
-    },
-
-    _childRemoved: function(grid, child) {
-        child.disconnect(child._iconGridKeyFocusInId);
     },
 
     _getPreferredWidth: function (grid, forHeight, alloc) {
@@ -682,6 +668,10 @@ const IconGrid = new Lang.Class({
         this._grid.destroy_all_children();
     },
 
+    _keyFocusIn: function(actor) {
+        this.emit('key-focus-in', actor._associatedItem);
+    },
+
     addItem: function(item, index) {
         if (!item.icon instanceof BaseIcon)
             throw new Error('Only items with a BaseIcon icon property can be added to IconGrid');
@@ -691,9 +681,26 @@ const IconGrid = new Lang.Class({
             this._grid.insert_child_at_index(item.actor, index);
         else
             this._grid.add_actor(item.actor);
+
+        // Maybe the item actor acts as a container, so ask the item if
+        // it has a specific actor to track focus
+        let focusReceiver = item.actor;
+        if (item.getFocusReceiver)
+            focusReceiver = item.getFocusReceiver();
+
+        focusReceiver._associatedItem = item.actor;
+        focusReceiver._iconGridKeyFocusInId = focusReceiver.connect('key-focus-in', Lang.bind(this, this._keyFocusIn));
     },
 
     removeItem: function(item) {
+        let focusReceiver = item.actor;
+        if (item.getFocusReceiver)
+            focusReceiver = item.getFocusReceiver();
+
+
+        focusReceiver._associatedItem = null;
+        focusReceiver.disconnect(focusReceiver._iconGridKeyFocusInId);
+
         this._grid.remove_child(item.actor);
     },
 

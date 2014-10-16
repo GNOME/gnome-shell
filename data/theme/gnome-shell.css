@@ -1399,6 +1399,9 @@ StScrollBar {
     width: 24px;
     height: 24px; }
 
+.dash-item-container > StWidget {
+  padding: 4px 8px; }
+
 .dash-label {
   border-radius: 7px;
   padding: 4px 12px;
@@ -1467,6 +1470,12 @@ StScrollBar {
   transition-duration: 200ms;
   border-image: none;
   background-image: none; }
+
+.app-well-app-running-dot {
+  width: 10px;
+  height: 3px;
+  background-color: #215d9c;
+  margin-bottom: 2px; }
 
 .search-provider-icon,
 .list-search-result, .app-well-app > .overview-icon,

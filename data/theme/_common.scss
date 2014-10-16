@@ -492,7 +492,11 @@ StScrollBar {
     }
     
   }
-  
+
+  .dash-item-container > StWidget {
+    padding: 4px 8px;
+  }
+
   .dash-label { //osd tooltip
     border-radius: 7px;
     padding: 4px 12px;
@@ -560,6 +564,12 @@ StScrollBar {
       background-image: none;
     }
     
+  }
+
+  .app-well-app-running-dot { //running apps indicator
+    width: 10px; height: 3px;
+    background-color: $selected_bg_color;
+    margin-bottom: 2px; //FIXME will happen :)
   }
   
   %icon_tile {
