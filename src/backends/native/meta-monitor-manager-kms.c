@@ -912,12 +912,6 @@ on_uevent (GUdevClient *client,
 
   meta_monitor_manager_read_current_config (manager);
 
-  /* If this config matches our existing one, don't bother doing anything. */
-  if (meta_monitor_config_match_current (manager->config, manager))
-    return;
-
-  /* This is a hotplug event, so try to make a configuration for our new
-   * set of outputs. */
   meta_monitor_manager_on_hotplug (manager);
 }
 

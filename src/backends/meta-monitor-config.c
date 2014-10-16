@@ -797,27 +797,6 @@ make_config_key (MetaConfiguration *key,
 }
 
 gboolean
-meta_monitor_config_match_current (MetaMonitorConfig  *self,
-                                   MetaMonitorManager *manager)
-{
-  MetaOutput *outputs;
-  unsigned n_outputs;
-  MetaConfiguration key;
-  gboolean ok;
-
-  if (self->current == NULL)
-    return FALSE;
-
-  outputs = meta_monitor_manager_get_outputs (manager, &n_outputs);
-
-  make_config_key (&key, outputs, n_outputs, -1);
-  ok = config_equal (&key, self->current);
-
-  config_clear (&key);
-  return ok;
-}
-
-gboolean
 meta_monitor_manager_has_hotplug_mode_update (MetaMonitorManager *manager)
 {
   MetaOutput *outputs;

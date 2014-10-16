@@ -36,9 +36,6 @@ GType meta_monitor_config_get_type (void) G_GNUC_CONST;
 
 MetaMonitorConfig *meta_monitor_config_new (void);
 
-gboolean           meta_monitor_config_match_current (MetaMonitorConfig  *config,
-                                                      MetaMonitorManager *manager);
-
 gboolean           meta_monitor_config_apply_stored (MetaMonitorConfig  *config,
                                                      MetaMonitorManager *manager);
 

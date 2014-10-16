@@ -1069,10 +1069,6 @@ meta_monitor_manager_xrandr_handle_xevent (MetaMonitorManagerXrandr *manager_xra
 
   meta_monitor_manager_read_current_config (manager);
 
-  /* If this config matches our existing one, don't bother doing anything. */
-  if (meta_monitor_config_match_current (manager->config, manager))
-    return TRUE;
-
   hotplug = manager_xrandr->resources->timestamp < manager_xrandr->resources->configTimestamp;
   if (hotplug)
     {
