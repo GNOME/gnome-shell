@@ -1060,7 +1060,7 @@ meta_monitor_manager_xrandr_handle_xevent (MetaMonitorManagerXrandr *manager_xra
 					   XEvent                   *event)
 {
   MetaMonitorManager *manager = META_MONITOR_MANAGER (manager_xrandr);
-  gboolean new_config;
+  gboolean hotplug;
 
   if ((event->type - manager_xrandr->rr_event_base) != RRScreenChangeNotify)
     return FALSE;
@@ -1073,19 +1073,17 @@ meta_monitor_manager_xrandr_handle_xevent (MetaMonitorManagerXrandr *manager_xra
   if (meta_monitor_config_match_current (manager->config, manager))
     return TRUE;
 
-  new_config = manager_xrandr->resources->timestamp >= manager_xrandr->resources->configTimestamp;
-
-  /* If this is the X server telling us we set a new configuration,
-   * we can simply short-cut to rebuilding our logical configuration.
-   */
-  if (new_config)
+  hotplug = manager_xrandr->resources->timestamp < manager_xrandr->resources->configTimestamp;
+  if (hotplug)
     {
+      /* This is a hotplug event, so go ahead and build a new configuration. */
+      meta_monitor_manager_on_hotplug (manager);
+    }
+  else
+    {
+      /* Something else changed -- tell the world about it. */
       meta_monitor_manager_rebuild_derived (manager);
-      return TRUE;
     }
 
-  /* Otherwise, this event was gotten from hotplug, so try to make
-   * a configuration for our new set of outputs. */
-  meta_monitor_manager_on_hotplug (manager);
   return TRUE;
 }
