@@ -478,11 +478,6 @@ StScrollBar {
       height: 24px;
     }
     
-    .overview-icon {
-      &:hover {
-        background-color: transparentize($osd_bg_color,0.6);
-      }
-    }
   }
   
   .dash-label { //osd tooltip
@@ -531,14 +526,20 @@ StScrollBar {
     & > .overview-icon { 
       @extend %icon_tile;
     }
+    &.running > .overview-icon {
+      text-shadow: black 0px 2px 2px;
+    }
     &:active > .overview-icon, 
     &:checked > .overview-icon {
       background-color: transparentize($osd_bg_color,.1);
     }
     &:hover > .overview-icon, 
+    &.running:hover > .overview-icon,
     &:focus > .overview-icon, 
     &:selected > .overview-icon { 
-      background-color: transparentize($osd_bg_color,.5); 
+      background-color: transparentize($osd_bg_color,.5);
+      border-image: none;
+      background-image: none;
     }
     
   }
@@ -551,10 +552,6 @@ StScrollBar {
     text-align: center;
   }
   
-  .app-well-app.running > .overview-icon {
-    text-shadow: black 0px 2px 2px;
-    border-image: url("panel-button-border.svg") 6 10 0 2; //fixme needs to not be blurry and a little narrower
-  }
   .app-well-app.app-folder > .overview-icon {
     background-color: transparentize($osd_bg_color,.6);
   }
