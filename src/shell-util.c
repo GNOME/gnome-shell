@@ -12,6 +12,7 @@
 #include <gdk/gdkx.h>
 #include <X11/extensions/XTest.h>
 
+#include <locale.h>
 #ifdef HAVE__NL_TIME_FIRST_WEEKDAY
 #include <langinfo.h>
 #endif
@@ -206,6 +207,32 @@ shell_util_get_week_start ()
 #endif
 
   return week_start;
+}
+
+/**
+ * shell_util_translate_time_string:
+ * @str: String to translate
+ *
+ * Translate @str according to the locale defined by LC_TIME; unlike
+ * dcgettext(), the translations is still taken from the LC_MESSAGES
+ * catalogue and not the LC_TIME one.
+ *
+ * Returns: the translated string
+ */
+const char *
+shell_util_translate_time_string (const char *str)
+{
+  const char *locale = g_getenv ("LC_TIME");
+  const char *res;
+
+  if (locale)
+    setlocale (LC_MESSAGES, locale);
+
+  res = gettext (str);
+
+  setlocale (LC_MESSAGES, "");
+
+  return res;
 }
 
 /**

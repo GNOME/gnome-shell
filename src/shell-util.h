@@ -21,6 +21,7 @@ int      shell_util_get_week_start             (void);
 
 char    *shell_util_format_date                (const char       *format,
                                                 gint64            time_ms);
+const char *shell_util_translate_time_string   (const char *str);
 
 gboolean shell_write_string_to_stream          (GOutputStream    *stream,
                                                 const char       *str,

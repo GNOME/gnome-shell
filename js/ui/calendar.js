@@ -16,6 +16,7 @@ const SHOW_WEEKDATE_KEY = 'show-weekdate';
 
 // alias to prevent xgettext from picking up strings translated in GTK+
 const gtk30_ = Gettext_gtk30.gettext;
+const NC_ = function(context, str) { return str; };
 
 // in org.gnome.desktop.interface
 const CLOCK_FORMAT_KEY        = 'clock-format';
@@ -792,14 +793,17 @@ const EventsList = new Lang.Class({
         let dayBegin = _getBeginningOfDay(day);
         let dayEnd = _getEndOfDay(day);
 
-        let dayString;
+        let dayFormat;
         let now = new Date();
         if (_sameYear(day, now))
             /* Translators: Shown on calendar heading when selected day occurs on current year */
-            dayString = day.toLocaleFormat(C_("calendar heading", "%A, %B %d"));
+            dayFormat = Shell.util_translate_time_string(NC_("calendar heading",
+                                                             "%A, %B %d"));
         else
             /* Translators: Shown on calendar heading when selected day occurs on different year */
-            dayString = day.toLocaleFormat(C_("calendar heading", "%A, %B %d, %Y"));
+            dayFormat = Shell.util_translate_time_string(NC_("calendar heading",
+                                                             "%A, %B %d, %Y"));
+        let dayString = day.toLocaleFormat(dayFormat);
         this._addPeriod(dayString, 0, dayBegin, dayEnd, false, true);
     },
 

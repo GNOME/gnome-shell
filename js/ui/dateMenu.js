@@ -129,7 +129,7 @@ const DateMenuButton = new Lang.Class({
                 /* Translators: This is the date format to use when the calendar popup is
                  * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
                  */
-                let dateFormat = _("%A %B %e, %Y");
+                let dateFormat = Shell.util_translate_time_string ("%A %B %e, %Y");
                 this._date.set_label(now.toLocaleFormat(dateFormat));
             }
         }));
