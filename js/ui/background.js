@@ -106,6 +106,8 @@ const Main = imports.ui.main;
 const Params = imports.misc.params;
 const Tweener = imports.ui.tweener;
 
+const DEFAULT_BACKGROUND_COLOR = Clutter.Color.from_pixel(0x2e3436ff);
+
 const BACKGROUND_SCHEMA = 'org.gnome.desktop.background';
 const PRIMARY_COLOR_KEY = 'primary-color';
 const SECONDARY_COLOR_KEY = 'secondary-color';
@@ -452,6 +454,7 @@ const SystemBackground = new Lang.Class({
 
         if (_systemBackground == null) {
             _systemBackground = new Meta.Background({ meta_screen: global.screen });
+            _systemBackground.set_color(DEFAULT_BACKGROUND_COLOR);
             _systemBackground.set_filename(filename, GDesktopEnums.BackgroundStyle.WALLPAPER);
         }
 
