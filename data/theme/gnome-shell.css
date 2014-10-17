@@ -1689,7 +1689,7 @@ StScrollBar {
 
 /* DASHBOARD */
 #dash {
-  padding: 4px 0;
+  padding: 4px;
   border-left: 0px;
   border-radius: 0px 9px 9px 0px; }
   #dash:rtl {
@@ -1738,12 +1738,13 @@ StScrollBar {
 .search-provider-icon:active, .search-provider-icon:checked,
 .list-search-result:active,
 .list-search-result:checked {
-  background-color: rgba(46, 52, 54, 0.9); }
+  background-color: rgba(23, 25, 26, 0.9); }
 .search-provider-icon:focus, .search-provider-icon:selected, .search-provider-icon:hover,
 .list-search-result:focus,
 .list-search-result:selected,
 .list-search-result:hover {
-  background-color: rgba(46, 52, 54, 0.5); }
+  background-color: rgba(238, 238, 236, 0.1);
+  transition-duration: 200ms; }
 
 .app-well-app.running > .overview-icon,
 .show-apps.running > .overview-icon,
@@ -1754,7 +1755,8 @@ StScrollBar {
 .show-apps:checked > .overview-icon,
 .grid-search-result:active > .overview-icon,
 .grid-search-result:checked > .overview-icon {
-  background-color: rgba(46, 52, 54, 0.9); }
+  background-color: rgba(23, 25, 26, 0.9);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.7); }
 .app-well-app:hover > .overview-icon, .app-well-app.running:hover > .overview-icon, .app-well-app:focus > .overview-icon, .app-well-app:selected > .overview-icon,
 .show-apps:hover > .overview-icon,
 .show-apps.running:hover > .overview-icon,
@@ -1764,7 +1766,8 @@ StScrollBar {
 .grid-search-result.running:hover > .overview-icon,
 .grid-search-result:focus > .overview-icon,
 .grid-search-result:selected > .overview-icon {
-  background-color: rgba(46, 52, 54, 0.5);
+  background-color: rgba(238, 238, 236, 0.1);
+  transition-duration: 200ms;
   border-image: none;
   background-image: none; }
 
