@@ -457,7 +457,7 @@ StScrollBar {
   
   #dash {
     @extend %overview-panel;
-    padding: 4px 0;
+    padding: 4px;
     border-left: 0px;
     border-radius: 0px 9px 9px 0px;
     
@@ -517,8 +517,11 @@ StScrollBar {
   .search-provider-icon,
   .list-search-result {
     @extend %icon_tile;
-    &:active, &:checked { background-color: transparentize($osd_bg_color,.1); }
-    &:focus, &:selected, &:hover { background-color: transparentize($osd_bg_color,.5); }
+    &:active, &:checked { background-color: transparentize(darken($osd_bg_color,10%),.1); }
+    &:focus, &:selected, &:hover { 
+      background-color: transparentize($fg_color,.9);
+      transition-duration: 200ms;
+    }
   }
   .app-well-app, 
   .show-apps,
@@ -531,13 +534,15 @@ StScrollBar {
     }
     &:active > .overview-icon, 
     &:checked > .overview-icon {
-      background-color: transparentize($osd_bg_color,.1);
+      background-color: transparentize(darken($osd_bg_color,10%),.1); //FIXME not working?
+      box-shadow: inset 0 1px 2px $osd_borders_color;
     }
     &:hover > .overview-icon, 
     &.running:hover > .overview-icon,
     &:focus > .overview-icon, 
     &:selected > .overview-icon { 
-      background-color: transparentize($osd_bg_color,.5);
+      background-color: transparentize($fg_color,.9);
+      transition-duration: 200ms;
       border-image: none;
       background-image: none;
     }
