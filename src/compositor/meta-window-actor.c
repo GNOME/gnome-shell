@@ -939,6 +939,10 @@ static void
 queue_send_frame_messages_timeout (MetaWindowActor *self)
 {
   MetaWindowActorPrivate *priv = self->priv;
+
+  if (priv->send_frame_messages_timer != 0)
+    return;
+
   MetaDisplay *display = meta_window_get_display (priv->window);
   gint64 current_time = meta_compositor_monotonic_time_to_server_time (display, g_get_monotonic_time ());
   MetaMonitorManager *monitor_manager = meta_monitor_manager_get ();
