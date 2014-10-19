@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-10-21 21:50+0000\n"
-"PO-Revision-Date: 2014-10-18 19:43-0500\n"
+"POT-Creation-Date: 2014-10-18 23:46+0000\n"
+"PO-Revision-Date: 2014-10-19 13:38-0500\n"
 "Last-Translator: Bahodir Mansurov <6ahodir@gmail.com>\n"
 "Language-Team: Uzbek (Cyrillic) <>\n"
 "Language: uz@cyrillic\n"
@@ -65,60 +65,299 @@ msgstr "GNOME Shell кенгайтмаларини созлаш"
 msgid "GNOME Shell (wayland compositor)"
 msgstr "GNOME Shell (wayland улагичи)"
 
-#: ../js/extensionPrefs/main.js:189
-msgid "Select an extension to configure using the combobox above."
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:1
+msgid "Enable internal tools useful for developers and testers from Alt-F2"
 msgstr ""
-"Тепадаги очилувчи рўйхатдан фойдаланиб созламоқчи бўлган кенгайтмангизни "
-"танланг."
+"Alt-F2дан тузувчилар ва текширувчилар учун фойдали ички асбобларни ёқиш"
 
-#: ../js/gdm/authPrompt.js:146 ../js/ui/components/networkAgent.js:136
-#: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:351
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:2
+msgid ""
+"Allows access to internal debugging and monitoring tools using the Alt-F2 "
+"dialog."
+msgstr ""
+"Alt-F2 диалог ойнаси орқали ички созлаш ва кузатиш асбобларига рухсат бериш"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:3
+msgid "UUIDs of extensions to enable"
+msgstr "Ёқиладиган кенгайтма UUIDлари"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:4
+msgid ""
+"GNOME Shell extensions have a UUID property; this key lists extensions which "
+"should be loaded. Any extension that wants to be loaded needs to be in this "
+"list. You can also manipulate this list with the EnableExtension and "
+"DisableExtension D-Bus methods on org.gnome.Shell."
+msgstr ""
+"GNOME Shell кенгайтмаларининг UUID хоссаси бор; бу калит юкланиши керак "
+"бўлган кенгайтмаларни рўйхатда кўрсатади. Юкланишни истайдиган кенгайтма "
+"ушбу рўйхатда бўлиши керак. Сиз бу рўйхатни  org.gnome.Shellдаги D-Busнинг "
+"EnableExtension ва DisableExtension функциялари орақли ҳам бошқаришингиз "
+"мумкин."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:5
+msgid "Disables the validation of extension version compatibility"
+msgstr "Кенгайтма версияси мослигини текширишни ўчириб қўяди"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:6
+msgid ""
+"GNOME Shell will only load extensions that claim to support the current "
+"running version. Enabling this option will disable this check and try to "
+"load all extensions regardless of the versions they claim to support."
+msgstr ""
+"GNOME Shell ушбу ишлаётган версияни қўллашини билдирган кенгайтмаларнигина "
+"юклайди. Ушбу танловни белгиласангиз бу текширув ўчириб қўйилади ва, қайси "
+"версияни қўллашидан қатъий назар, барча кенгайтмалар юкланади."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:7
+msgid "List of desktop file IDs for favorite applications"
+msgstr "Танланган дастурлар учун иш столи файл IDлари рўйхати"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:8
+msgid ""
+"The applications corresponding to these identifiers will be displayed in the "
+"favorites area."
+msgstr ""
+"Ушбу идентификаторга мос келувчи дастурлар танланганлар майдонида "
+"кўрсатилади."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:9
+msgid "App Picker View"
+msgstr "Дастур танлагич кўриниши"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:10
+msgid "Index of the currently selected view in the application picker."
+msgstr "Дастур танлагичдаги белгиланган кўриниш индекси."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:11
+msgid "History for command (Alt-F2) dialog"
+msgstr "(Alt-F2) диалог ойначаси буйруқлар тарихи"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:12
+msgid "History for the looking glass dialog"
+msgstr "Шаффоф диалог ойнаси кўришлар тарихи"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:13
+msgid "Always show the 'Log out' menu item in the user menu."
+msgstr "Фойдаланувчи менюсида \"Сеансни якунлаш\" менюсини ҳар доим кўрсатиш."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:14
+msgid ""
+"This key overrides the automatic hiding of the 'Log out' menu item in single-"
+"user, single-session situations."
+msgstr ""
+"Ушбу калит битта фойдаланувчили системада \"Сеансни якунлаш\" менюсини "
+"автоматик яширишни белгилаб беради."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:15
+msgid ""
+"Whether to remember password for mounting encrypted or remote filesystems"
+msgstr ""
+"Шифрланган ёки масофавий файл системаларини улаганда махфий сўзни эслаб "
+"қолиш ёки йўқлиги"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:16
+msgid ""
+"The shell will request a password when an encrypted device or a remote "
+"filesystem is mounted. If the password can be saved for future use a "
+"'Remember Password' checkbox will be present. This key sets the default "
+"state of the checkbox."
+msgstr ""
+"GNOME Shell шифрланган ёки масофавий файл системаларини улаганда махфий "
+"сўзни сўрайди. Агар махфий сўз келажакда ишлатиш учун сақлаб бўлинса "
+"\"Махфий сўзни эслаб қолиш\" белгилаш катакчаси кўрсатилади. Ушбу калит ўша "
+"белгилаш катакчасининг сукут ҳолатини ўрнатади."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:17
+msgid "Show the week date in the calendar"
+msgstr "Тақвимда ҳафта тартибини кўрсатиш"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:18
+msgid "If true, display the ISO week date in the calendar."
+msgstr "Агар белгиланса, тақвимда ISO ҳафта тартибини кўрсатилади."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:19
+msgid "Keybinding to open the application menu"
+msgstr "Дастур менюсини очиш учун клавишалар бирикмаси"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:20
+msgid "Keybinding to open the application menu."
+msgstr "Дастур менюсини очиш учун клавишалар бирикмаси."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:21
+msgid "Keybinding to open the \"Show Applications\" view"
+msgstr "\"Дастурларни кўрсатиш\" кўринишини очиш учун клавишалар бирикмаси"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:22
+msgid ""
+"Keybinding to open the \"Show Applications\" view of the Activities Overview."
+msgstr ""
+"Фаолиятлар обзорида \"Дастурларни кўрсатиш\"кўриниши учун клавишалар "
+"бирикмаси"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:23
+msgid "Keybinding to open the overview"
+msgstr "Обзорни очиш учун клавишалар бирикмаси"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:24
+msgid "Keybinding to open the Activities Overview."
+msgstr "Фаолиятлар обзорини очиш учун клавишалар бирикмаси"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:25
+msgid "Keybinding to toggle the visibility of the message tray"
+msgstr "Хатлар панелини очиб-ёпиш учун клавишалар бирикмаси"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:26
+msgid "Keybinding to toggle the visibility of the message tray."
+msgstr "Хатлар панелини очиб-ёпиш учун клавишалар бирикмаси."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:27
+msgid "Keybinding to focus the active notification"
+msgstr "Фаол хабарномага диққат қилиш учун клавишалар бирикмаси"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:28
+msgid "Keybinding to focus the active notification."
+msgstr "Фаол хабарномага диққат қилиш учун клавишалар бирикмаси."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:29
+msgid ""
+"Keybinding that pauses and resumes all running tweens, for debugging purposes"
+msgstr ""
+"Барча ишлаб турган анимацияларни тўхтатиб туриш ёки давом эттириш учун "
+"клавишалар бирикмаси (созлаш мақсадиди)"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:30
+msgid "Which keyboard to use"
+msgstr "Қайси клавиатурани ишлатиш"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:31
+msgid "The type of keyboard to use."
+msgstr "Ишлатиладиган клавиатура тури."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:32
+msgid "Limit switcher to current workspace."
+msgstr "Переключателни фақат шу иш жойи билан чегаралаш."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:33
+msgid ""
+"If true, only applications that have windows on the current workspace are "
+"shown in the switcher. Otherwise, all applications are included."
+msgstr ""
+"Агар белгиланса, ушбу иш жойида ойнаси бор барча дастурлар ўзгартирувчи "
+"тугмачада кўринади. Акс ҳолда, барча дастурлар ҳисобга олинади."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:34
+msgid "The application icon mode."
+msgstr "Дастур нишончаси режими."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:35
+msgid ""
+"Configures how the windows are shown in the switcher. Valid possibilities "
+"are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-"
+"only' (shows only the application icon) or 'both'."
+msgstr ""
+"Ўзгартирувчи тугмачада ойналар қандай кўринишини мослайди. Мавжуд қийматлар: "
+"\"thumbnail-only\" (ойнанинг миниатурасини кўрсатади), \"app-icon-only"
+"\" (фақтгини дастур нишончасини кўрсатади)."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:36
+msgid ""
+"If true, only windows from the current workspace are shown in the switcher. "
+"Otherwise, all windows are included."
+msgstr ""
+"Агар белгиланса, фақатгина ушбу иш жойидаги ойналар переключателда "
+"кўрсатилади. Акс ҳолда,барча ойналар ҳисобга олинади."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:37
+msgid "Attach modal dialog to the parent window"
+msgstr "Модал диалог ойнани бош ойнасига маҳкамлаш"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:38
+msgid ""
+"This key overrides the key in org.gnome.mutter when running GNOME Shell."
+msgstr ""
+"GNOME Shell ишга тушганида ушбу калит org.gnome.mutterдаги калитни бошқадан "
+"белгилайди."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:39
+msgid "Enable edge tiling when dropping windows on screen edges"
+msgstr ""
+"Ойналар экран четларига олиб борилганда уларнинг ўлчамларини автоматик "
+"равишда ўзгартириш"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:40
+msgid "Workspaces are managed dynamically"
+msgstr "Иш жойлари фаол равишда бошқарилади"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:41
+msgid "Workspaces only on primary monitor"
+msgstr "Иш жойлари фақат асосий мониторда"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:42
+msgid "Delay focus changes in mouse mode until the pointer stops moving"
+msgstr ""
+"Кўрсаткич юришдан тўхтамагунча сичқонча режимида диққатни ўзгратирмаслик"
+
+#: ../data/org.gnome.Shell.PortalHelper.desktop.in.h:1
+msgid "Captive Portal"
+msgstr "Captive Portal"
+
+#: ../js/extensionPrefs/main.js:123
+#, javascript-format
+msgid "There was an error loading the preferences dialog for %s:"
+msgstr "%s учун параметрлар диалог ойнасини юклашда хатолик содир бўлди:"
+
+#: ../js/extensionPrefs/main.js:155
+msgid "GNOME Shell Extensions"
+msgstr "GNOME Shell кенгайтмалари"
+
+#: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:143
+#: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:452
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/bluetooth.js:221 ../js/ui/status/network.js:726
+#: ../js/ui/status/network.js:916
 msgid "Cancel"
 msgstr "Бекор қилиш"
 
-#: ../js/gdm/authPrompt.js:168 ../js/gdm/authPrompt.js:216
+#: ../js/gdm/authPrompt.js:169 ../js/gdm/authPrompt.js:217
 msgid "Next"
 msgstr "Кейинги"
 
-#: ../js/gdm/authPrompt.js:212 ../js/ui/shellMountOperation.js:403
+#: ../js/gdm/authPrompt.js:213 ../js/ui/shellMountOperation.js:403
 #: ../js/ui/unlockDialog.js:59
 msgid "Unlock"
 msgstr "Қулфни ечиш"
 
-#: ../js/gdm/authPrompt.js:214
+#: ../js/gdm/authPrompt.js:215
 msgctxt "button"
 msgid "Sign In"
 msgstr "Кириш"
 
-#: ../js/gdm/loginDialog.js:294
+#: ../js/gdm/loginDialog.js:275
 msgid "Choose Session"
 msgstr "Сеансни танлаш"
 
-#: ../js/gdm/loginDialog.js:454
+#: ../js/gdm/loginDialog.js:434
 msgid "Not listed?"
 msgstr "Рўйхатда йўқми?"
 
-#: ../js/gdm/loginDialog.js:622
+#: ../js/gdm/loginDialog.js:619
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(мас. фойдаланувчи ёки %s)"
 
-#: ../js/gdm/loginDialog.js:627 ../js/ui/components/networkAgent.js:259
-#: ../js/ui/components/networkAgent.js:277
+#: ../js/gdm/loginDialog.js:624 ../js/ui/components/networkAgent.js:269
+#: ../js/ui/components/networkAgent.js:287
 msgid "Username: "
 msgstr "Фойдаланувчи:"
 
-#: ../js/gdm/loginDialog.js:891
+#: ../js/gdm/loginDialog.js:953
 msgid "Login Window"
 msgstr "Кириш Ойнаси"
 
-#: ../js/gdm/util.js:321
+#: ../js/gdm/util.js:341
 msgid "Authentication error"
 msgstr "Хақиқийлигини текширишда хатолик"
 
-#: ../js/gdm/util.js:451
+#: ../js/gdm/util.js:473
 msgid "(or swipe finger)"
 msgstr "(ёки ушбу мослама юзасида бармоғингизни юритинг)"
 
@@ -132,45 +371,53 @@ msgstr "Буйруқни таҳлил қилиб бўлмади:"
 
 #: ../js/misc/util.js:156
 #, javascript-format
-msgid "Execution of '%s' failed:"
+msgid "Execution of “%s” failed:"
 msgstr "\"%s\"ни бажариб бўлмади:"
 
-#: ../js/ui/appDisplay.js:596
+#: ../js/portalHelper/main.js:85
+msgid "Web Authentication Redirect"
+msgstr "Ҳақиқийлигини текшириш учун қайта жўнатиш"
+
+#: ../js/ui/appDisplay.js:772
 msgid "Frequently used applications will appear here"
 msgstr "Тез-тез ишлатиладиган дастурлар шу ерда пайдо бўлади"
 
-#: ../js/ui/appDisplay.js:712
+#: ../js/ui/appDisplay.js:883
 msgid "Frequent"
 msgstr "Тез-тез ишлатиладиган"
 
-#: ../js/ui/appDisplay.js:719
+#: ../js/ui/appDisplay.js:890
 msgid "All"
 msgstr "Барча"
 
-#: ../js/ui/appDisplay.js:1523
+#: ../js/ui/appDisplay.js:1790
 msgid "New Window"
 msgstr "Янги ойна"
 
-#: ../js/ui/appDisplay.js:1526 ../js/ui/dash.js:284
+#: ../js/ui/appDisplay.js:1816 ../js/ui/dash.js:285
 msgid "Remove from Favorites"
 msgstr "Ёқтирганлар рўйхатидан ўчириш"
 
-#: ../js/ui/appDisplay.js:1527
+#: ../js/ui/appDisplay.js:1822
 msgid "Add to Favorites"
 msgstr "Ёқтирганлар рўйхатига қўшиш"
 
-#: ../js/ui/appFavorites.js:87
+#: ../js/ui/appDisplay.js:1831
+msgid "Show Details"
+msgstr "Тафсилотларни кўрсатиш"
+
+#: ../js/ui/appFavorites.js:132
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "\"%s\" танланганлар рўйхатига қўшилди."
 
-#: ../js/ui/appFavorites.js:121
+#: ../js/ui/appFavorites.js:166
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "\"%s\" танланганлар рўйхатидан олиб ташланди."
 
-#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:806
-#: ../js/ui/status/system.js:325
+#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:813
+#: ../js/ui/status/system.js:337
 msgid "Settings"
 msgstr "Мосламалар"
 
@@ -181,14 +428,14 @@ msgstr "Фонни ўзгартириш..."
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #. */
-#: ../js/ui/calendar.js:62
+#: ../js/ui/calendar.js:68
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Куни бўйи"
 
 #. Translators: Shown in calendar event list, if 24h format,
 #. \u2236 is a ratio character, similar to : */
-#: ../js/ui/calendar.js:68
+#: ../js/ui/calendar.js:74
 msgctxt "event list time"
 msgid "%H∶%M"
 msgstr "%H∶%M"
@@ -196,7 +443,7 @@ msgstr "%H∶%M"
 #. Translators: Shown in calendar event list, if 12h format,
 #. \u2236 is a ratio character, similar to : and \u2009 is
 #. a thin space */
-#: ../js/ui/calendar.js:77
+#: ../js/ui/calendar.js:83
 msgctxt "event list time"
 msgid "%l∶%M %p"
 msgstr "%l∶%M %p"
@@ -206,43 +453,43 @@ msgstr "%l∶%M %p"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #. */
-#: ../js/ui/calendar.js:108
+#: ../js/ui/calendar.js:114
 msgctxt "grid sunday"
 msgid "S"
 msgstr "Я"
 
 #. Translators: Calendar grid abbreviation for Monday */
-#: ../js/ui/calendar.js:110
+#: ../js/ui/calendar.js:116
 msgctxt "grid monday"
 msgid "M"
 msgstr "Д"
 
 #. Translators: Calendar grid abbreviation for Tuesday */
-#: ../js/ui/calendar.js:112
+#: ../js/ui/calendar.js:118
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "С"
 
 #. Translators: Calendar grid abbreviation for Wednesday */
-#: ../js/ui/calendar.js:114
+#: ../js/ui/calendar.js:120
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "Ч"
 
 #. Translators: Calendar grid abbreviation for Thursday */
-#: ../js/ui/calendar.js:116
+#: ../js/ui/calendar.js:122
 msgctxt "grid thursday"
 msgid "T"
 msgstr "П"
 
 #. Translators: Calendar grid abbreviation for Friday */
-#: ../js/ui/calendar.js:118
+#: ../js/ui/calendar.js:124
 msgctxt "grid friday"
 msgid "F"
 msgstr "Ж"
 
 #. Translators: Calendar grid abbreviation for Saturday */
-#: ../js/ui/calendar.js:120
+#: ../js/ui/calendar.js:126
 msgctxt "grid saturday"
 msgid "S"
 msgstr "Ш"
@@ -253,205 +500,199 @@ msgstr "Ш"
 #. * so they need to be unique (e.g. Tuesday and Thursday cannot
 #. * both be 'T').
 #. */
-#: ../js/ui/calendar.js:133
+#: ../js/ui/calendar.js:139
 msgctxt "list sunday"
 msgid "Su"
 msgstr "Як"
 
 #. Translators: Event list abbreviation for Monday */
-#: ../js/ui/calendar.js:135
+#: ../js/ui/calendar.js:141
 msgctxt "list monday"
 msgid "M"
 msgstr "Д"
 
 #. Translators: Event list abbreviation for Tuesday */
-#: ../js/ui/calendar.js:137
+#: ../js/ui/calendar.js:143
 msgctxt "list tuesday"
 msgid "T"
 msgstr "С"
 
 #. Translators: Event list abbreviation for Wednesday */
-#: ../js/ui/calendar.js:139
+#: ../js/ui/calendar.js:145
 msgctxt "list wednesday"
 msgid "W"
 msgstr "Ч"
 
 #. Translators: Event list abbreviation for Thursday */
-#: ../js/ui/calendar.js:141
+#: ../js/ui/calendar.js:147
 msgctxt "list thursday"
 msgid "Th"
 msgstr "П"
 
 #. Translators: Event list abbreviation for Friday */
-#: ../js/ui/calendar.js:143
+#: ../js/ui/calendar.js:149
 msgctxt "list friday"
 msgid "F"
 msgstr "Ж"
 
 #. Translators: Event list abbreviation for Saturday */
-#: ../js/ui/calendar.js:145
+#: ../js/ui/calendar.js:151
 msgctxt "list saturday"
 msgid "S"
 msgstr "Ш"
 
-#: ../js/ui/calendar.js:389
-msgid "calendar:MY"
-msgstr "Тақвим:MY"
-
-#: ../js/ui/calendar.js:447
+#: ../js/ui/calendar.js:454
 msgid "Previous month"
 msgstr "Ўтган ой"
 
-#: ../js/ui/calendar.js:457
+#: ../js/ui/calendar.js:464
 msgid "Next month"
 msgstr "Келаси ой"
 
 #. Translators: Text to show if there are no events */
-#: ../js/ui/calendar.js:753
+#: ../js/ui/calendar.js:782
 msgid "Nothing Scheduled"
 msgstr "Ҳеч нарса режалаштирилмаган"
 
-#. Translators: Shown on calendar heading when selected day occurs on current year */
-#: ../js/ui/calendar.js:771
+#: ../js/ui/calendar.js:801
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %B %d"
 
-#. Translators: Shown on calendar heading when selected day occurs on different year */
-#: ../js/ui/calendar.js:774
+#: ../js/ui/calendar.js:805
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %B %d, %Y"
 
-#: ../js/ui/calendar.js:785
+#: ../js/ui/calendar.js:817
 msgid "Today"
 msgstr "Бугун"
 
-#: ../js/ui/calendar.js:789
+#: ../js/ui/calendar.js:821
 msgid "Tomorrow"
 msgstr "Эртага"
 
-#: ../js/ui/calendar.js:800
+#: ../js/ui/calendar.js:832
 msgid "This week"
 msgstr "Шу ҳафта"
 
-#: ../js/ui/calendar.js:808
+#: ../js/ui/calendar.js:840
 msgid "Next week"
 msgstr "Келаси ҳафта"
 
-#: ../js/ui/components/automountManager.js:90
+#: ../js/ui/components/automountManager.js:91
 msgid "External drive connected"
 msgstr "Ташқи диск уланган"
 
-#: ../js/ui/components/automountManager.js:101
+#: ../js/ui/components/automountManager.js:102
 msgid "External drive disconnected"
 msgstr "Ташқи диск узилган"
 
-#: ../js/ui/components/autorunManager.js:294
+#: ../js/ui/components/autorunManager.js:296
 msgid "Removable Devices"
 msgstr "Олинадиган ускуналар"
 
-#: ../js/ui/components/autorunManager.js:594
+#: ../js/ui/components/autorunManager.js:596
 #, javascript-format
 msgid "Open with %s"
 msgstr "%s билан очиш"
 
-#: ../js/ui/components/autorunManager.js:620
+#: ../js/ui/components/autorunManager.js:622
 msgid "Eject"
 msgstr "Чиқариш"
 
-#: ../js/ui/components/keyring.js:89 ../js/ui/components/polkitAgent.js:280
+#: ../js/ui/components/keyring.js:94 ../js/ui/components/polkitAgent.js:285
 msgid "Password:"
 msgstr "Махфий сўз:"
 
-#: ../js/ui/components/keyring.js:108
+#: ../js/ui/components/keyring.js:120
 msgid "Type again:"
 msgstr "Яна ёзинг:"
 
-#: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:132
-#: ../js/ui/status/network.js:295 ../js/ui/status/network.js:729
+#: ../js/ui/components/networkAgent.js:138 ../js/ui/status/network.js:277
+#: ../js/ui/status/network.js:359 ../js/ui/status/network.js:919
 msgid "Connect"
 msgstr "Уланиш"
 
-#: ../js/ui/components/networkAgent.js:222
-#: ../js/ui/components/networkAgent.js:234
-#: ../js/ui/components/networkAgent.js:261
-#: ../js/ui/components/networkAgent.js:281
+#: ../js/ui/components/networkAgent.js:231
+#: ../js/ui/components/networkAgent.js:243
+#: ../js/ui/components/networkAgent.js:271
 #: ../js/ui/components/networkAgent.js:291
+#: ../js/ui/components/networkAgent.js:301
 msgid "Password: "
 msgstr "Махфий сўз:"
 
-#: ../js/ui/components/networkAgent.js:227
+#: ../js/ui/components/networkAgent.js:236
 msgid "Key: "
 msgstr "Калит:"
 
-#: ../js/ui/components/networkAgent.js:265
+#: ../js/ui/components/networkAgent.js:275
 msgid "Identity: "
 msgstr "Шахсият:"
 
-#: ../js/ui/components/networkAgent.js:267
+#: ../js/ui/components/networkAgent.js:277
 msgid "Private key password: "
 msgstr "Шахсий калитнинг махфий сўзи:"
 
-#: ../js/ui/components/networkAgent.js:279
+#: ../js/ui/components/networkAgent.js:289
 msgid "Service: "
 msgstr "Хизмат:"
 
-#: ../js/ui/components/networkAgent.js:308
+#: ../js/ui/components/networkAgent.js:318
 msgid "Authentication required by wireless network"
 msgstr "Симсиз тармоқ ҳақиқийликни текширишни талаб қиляпти"
 
-#: ../js/ui/components/networkAgent.js:309
+#: ../js/ui/components/networkAgent.js:319
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
-"'%s'."
+"“%s”."
 msgstr ""
 "Симсиз \"%s\" тармоққа уланиш учун махфий сўзлар ёки шифрлаш калитлари талаб "
-"қилинади"
+"қилинади."
 
-#: ../js/ui/components/networkAgent.js:313
+#: ../js/ui/components/networkAgent.js:323
 msgid "Wired 802.1X authentication"
 msgstr "Симли 802.1X алоқанинг ҳақиқийлигини текшириш"
 
-#: ../js/ui/components/networkAgent.js:315
+#: ../js/ui/components/networkAgent.js:325
 msgid "Network name: "
 msgstr "Тармоқ номи:"
 
-#: ../js/ui/components/networkAgent.js:320
+#: ../js/ui/components/networkAgent.js:330
 msgid "DSL authentication"
 msgstr "DSL ҳақиқийлигини текшириш"
 
-#: ../js/ui/components/networkAgent.js:327
+#: ../js/ui/components/networkAgent.js:337
 msgid "PIN code required"
 msgstr "PIN код талаб қилинади"
 
-#: ../js/ui/components/networkAgent.js:328
+#: ../js/ui/components/networkAgent.js:338
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "Катта йўлли мобил алоқа ускунаси уччун PIN код керак бўлади"
 
-#: ../js/ui/components/networkAgent.js:329
+#: ../js/ui/components/networkAgent.js:339
 msgid "PIN: "
 msgstr "PIN:"
 
-#: ../js/ui/components/networkAgent.js:335
+#: ../js/ui/components/networkAgent.js:345
 msgid "Mobile broadband network password"
 msgstr "Кенг йўлли мобил алоқа учун махфий сўз"
 
-#: ../js/ui/components/networkAgent.js:336
+#: ../js/ui/components/networkAgent.js:346
 #, javascript-format
-msgid "A password is required to connect to '%s'."
+msgid "A password is required to connect to “%s”."
 msgstr "\"%s\"га уланиш учун махфий сўз талаб қилинади."
 
 #: ../js/ui/components/polkitAgent.js:54
 msgid "Authentication Required"
 msgstr "Ҳақиқийлигини текшириш талаб қилинади"
 
-#: ../js/ui/components/polkitAgent.js:92
+#: ../js/ui/components/polkitAgent.js:96
 msgid "Administrator"
 msgstr "Маъмур"
 
-#: ../js/ui/components/polkitAgent.js:170
+#: ../js/ui/components/polkitAgent.js:175
 msgid "Authenticate"
 msgstr "Ҳақиқийлигини текшириш"
 
@@ -459,64 +700,106 @@ msgstr "Ҳақиқийлигини текшириш"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance. */
-#: ../js/ui/components/polkitAgent.js:266 ../js/ui/shellMountOperation.js:383
+#: ../js/ui/components/polkitAgent.js:271 ../js/ui/shellMountOperation.js:383
 msgid "Sorry, that didn't work. Please try again."
 msgstr "Узр, ишламади. Яна ҳаракат қилиб кўринг."
 
-#: ../js/ui/components/telepathyClient.js:237
+#: ../js/ui/components/telepathyClient.js:242
 msgid "Invitation"
 msgstr "Таклифнома"
 
-#: ../js/ui/components/telepathyClient.js:297
+#: ../js/ui/components/telepathyClient.js:302
 msgid "Call"
 msgstr "Телефон қилиш"
 
-#: ../js/ui/components/telepathyClient.js:313
+#: ../js/ui/components/telepathyClient.js:318
 msgid "File Transfer"
 msgstr "Файлни кўчириш"
 
-#: ../js/ui/components/telepathyClient.js:417
+#: ../js/ui/components/telepathyClient.js:422
 msgid "Chat"
 msgstr "Чатлашиш"
 
-#: ../js/ui/components/telepathyClient.js:480
+#: ../js/ui/components/telepathyClient.js:485
 msgid "Unmute"
 msgstr "Овозини чиқариш"
 
-#: ../js/ui/components/telepathyClient.js:480
+#: ../js/ui/components/telepathyClient.js:485
 msgid "Mute"
 msgstr "Овозини ўчириш"
 
-#. Translators: this is the word "Yesterday" followed by a time string. i.e. "Yesterday, 14:30"*/
-#: ../js/ui/components/telepathyClient.js:941
-msgid "<b>Yesterday</b>, <b>%H:%M</b>"
-msgstr "<b>Кеча</b>, <b>%H:%M</b>"
+#. Translators: Time in 24h format */
+#: ../js/ui/components/telepathyClient.js:955
+msgid "%H∶%M"
+msgstr "%H∶%M"
 
-#. Translators: this is the week day name followed by a time string. i.e. "Monday, 14:30*/
-#: ../js/ui/components/telepathyClient.js:947
-msgid "<b>%A</b>, <b>%H:%M</b>"
-msgstr "<b>%A</b>, <b>%H:%M</b>"
+#. Translators: this is the word "Yesterday" followed by a
+#. time string in 24h format. i.e. "Yesterday, 14:30" */
+#: ../js/ui/components/telepathyClient.js:962
+msgid "Yesterday, %H∶%M"
+msgstr "Кеча, %H∶%M"
 
-#. Translators: this is the month name and day number followed by a time string. i.e. "May 25, 14:30"*/
-#: ../js/ui/components/telepathyClient.js:952
-msgid "<b>%B</b> <b>%d</b>, <b>%H:%M</b>"
-msgstr "<b>%B</b> <b>%d</b>, <b>%H:%M</b>"
+#. Translators: this is the week day name followed by a time
+#. string in 24h format. i.e. "Monday, 14:30" */
+#: ../js/ui/components/telepathyClient.js:969
+msgid "%A, %H∶%M"
+msgstr "%A, %H∶%M"
 
-#. Translators: this is the month name, day number, year number followed by a time string. i.e. "May 25 2012, 14:30"*/
-#: ../js/ui/components/telepathyClient.js:956
-msgid "<b>%B</b> <b>%d</b> <b>%Y</b>, <b>%H:%M</b> "
-msgstr "<b>%B</b> <b>%d</b> <b>%Y</b>, <b>%H:%M</b> "
+#. Translators: this is the month name and day number
+#. followed by a time string in 24h format.
+#. i.e. "May 25, 14:30" */
+#: ../js/ui/components/telepathyClient.js:976
+msgid "%B %d, %H∶%M"
+msgstr "%B %d, %H∶%M"
+
+#. Translators: this is the month name, day number, year
+#. number followed by a time string in 24h format.
+#. i.e. "May 25 2012, 14:30" */
+#: ../js/ui/components/telepathyClient.js:982
+msgid "%B %d %Y, %H∶%M"
+msgstr "%B %d %Y, %H∶%M"
+
+#. Translators: Time in 24h format */
+#: ../js/ui/components/telepathyClient.js:988
+msgid "%l∶%M %p"
+msgstr "%l∶%M %p"
+
+#. Translators: this is the word "Yesterday" followed by a
+#. time string in 12h format. i.e. "Yesterday, 2:30 pm" */
+#: ../js/ui/components/telepathyClient.js:995
+msgid "Yesterday, %l∶%M %p"
+msgstr "Кеча, %l∶%M %p"
+
+#. Translators: this is the week day name followed by a time
+#. string in 12h format. i.e. "Monday, 2:30 pm" */
+#: ../js/ui/components/telepathyClient.js:1002
+msgid "%A, %l∶%M %p"
+msgstr "%A, %l∶%M %p"
+
+#. Translators: this is the month name and day number
+#. followed by a time string in 12h format.
+#. i.e. "May 25, 2:30 pm" */
+#: ../js/ui/components/telepathyClient.js:1009
+msgid "%B %d, %l∶%M %p"
+msgstr "%B %d, %l∶%M %p"
+
+#. Translators: this is the month name, day number, year
+#. number followed by a time string in 12h format.
+#. i.e. "May 25 2012, 2:30 pm"*/
+#: ../js/ui/components/telepathyClient.js:1015
+msgid "%B %d %Y, %l∶%M %p"
+msgstr "%B %d %Y, %l∶%M %p"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name. */
-#: ../js/ui/components/telepathyClient.js:985
+#: ../js/ui/components/telepathyClient.js:1047
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s энди %s сифатида маълум"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example. */
-#: ../js/ui/components/telepathyClient.js:1088
+#: ../js/ui/components/telepathyClient.js:1151
 #, javascript-format
 msgid "Invitation to %s"
 msgstr "%sга таклифнома"
@@ -524,38 +807,38 @@ msgstr "%sга таклифнома"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example. */
-#: ../js/ui/components/telepathyClient.js:1096
+#: ../js/ui/components/telepathyClient.js:1159
 #, javascript-format
 msgid "%s is inviting you to join %s"
 msgstr "%s сизни %sга қўшилишга таклиф қиляпти"
 
-#: ../js/ui/components/telepathyClient.js:1098
-#: ../js/ui/components/telepathyClient.js:1133
-#: ../js/ui/components/telepathyClient.js:1167
-#: ../js/ui/components/telepathyClient.js:1224
+#: ../js/ui/components/telepathyClient.js:1161
+#: ../js/ui/components/telepathyClient.js:1196
+#: ../js/ui/components/telepathyClient.js:1230
+#: ../js/ui/components/telepathyClient.js:1287
 msgid "Decline"
 msgstr "Рад этмоқ"
 
-#: ../js/ui/components/telepathyClient.js:1104
-#: ../js/ui/components/telepathyClient.js:1173
-#: ../js/ui/components/telepathyClient.js:1229
+#: ../js/ui/components/telepathyClient.js:1167
+#: ../js/ui/components/telepathyClient.js:1236
+#: ../js/ui/components/telepathyClient.js:1292
 msgid "Accept"
 msgstr "Қабул қилмоқ"
 
 #. translators: argument is a contact name like Alice for example. */
-#: ../js/ui/components/telepathyClient.js:1123
+#: ../js/ui/components/telepathyClient.js:1186
 #, javascript-format
 msgid "Video call from %s"
 msgstr "%sдан видео қўнғироқ"
 
 #. translators: argument is a contact name like Alice for example. */
-#: ../js/ui/components/telepathyClient.js:1126
+#: ../js/ui/components/telepathyClient.js:1189
 #, javascript-format
 msgid "Call from %s"
 msgstr " %sдан қўнғироқ"
 
 #. translators: this is a button label (verb), not a noun */
-#: ../js/ui/components/telepathyClient.js:1140
+#: ../js/ui/components/telepathyClient.js:1203
 msgid "Answer"
 msgstr "Жавоб"
 
@@ -564,110 +847,110 @@ msgstr "Жавоб"
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
 #. */
-#: ../js/ui/components/telepathyClient.js:1161
+#: ../js/ui/components/telepathyClient.js:1224
 #, javascript-format
 msgid "%s is sending you %s"
 msgstr "%s сизга %sни жўнатяпти"
 
 #. To translators: The parameter is the contact's alias */
-#: ../js/ui/components/telepathyClient.js:1190
+#: ../js/ui/components/telepathyClient.js:1253
 #, javascript-format
 msgid "%s would like permission to see when you are online"
 msgstr "%s синзни онлайн бўлганингизда кўриш учун рухсат сўраяпти"
 
-#: ../js/ui/components/telepathyClient.js:1275
+#: ../js/ui/components/telepathyClient.js:1338
 msgid "Network error"
 msgstr "Тармоқда хатолик"
 
-#: ../js/ui/components/telepathyClient.js:1277
+#: ../js/ui/components/telepathyClient.js:1340
 msgid "Authentication failed"
 msgstr "Ҳақиқийлигини текшириб бўлмади"
 
-#: ../js/ui/components/telepathyClient.js:1279
+#: ../js/ui/components/telepathyClient.js:1342
 msgid "Encryption error"
 msgstr "Шифрлашда хатолик"
 
-#: ../js/ui/components/telepathyClient.js:1281
+#: ../js/ui/components/telepathyClient.js:1344
 msgid "Certificate not provided"
 msgstr "Гувоҳнома берилмаган"
 
-#: ../js/ui/components/telepathyClient.js:1283
+#: ../js/ui/components/telepathyClient.js:1346
 msgid "Certificate untrusted"
 msgstr "Гувоҳнома ишонарсиз"
 
-#: ../js/ui/components/telepathyClient.js:1285
+#: ../js/ui/components/telepathyClient.js:1348
 msgid "Certificate expired"
 msgstr "Гувоҳнома эскирган"
 
-#: ../js/ui/components/telepathyClient.js:1287
+#: ../js/ui/components/telepathyClient.js:1350
 msgid "Certificate not activated"
 msgstr "Гувоҳнома фаоллаштирилмаган"
 
-#: ../js/ui/components/telepathyClient.js:1289
+#: ../js/ui/components/telepathyClient.js:1352
 msgid "Certificate hostname mismatch"
 msgstr "Гувоҳнома тугунининг номи мос келмади"
 
-#: ../js/ui/components/telepathyClient.js:1291
+#: ../js/ui/components/telepathyClient.js:1354
 msgid "Certificate fingerprint mismatch"
 msgstr "Гувоҳнома тамғаси мос келмади"
 
-#: ../js/ui/components/telepathyClient.js:1293
+#: ../js/ui/components/telepathyClient.js:1356
 msgid "Certificate self-signed"
 msgstr "Ўзи имзоланган гувоҳнома"
 
-#: ../js/ui/components/telepathyClient.js:1295
+#: ../js/ui/components/telepathyClient.js:1358
 msgid "Status is set to offline"
 msgstr "Статусингиз офлайн қилинди"
 
-#: ../js/ui/components/telepathyClient.js:1297
+#: ../js/ui/components/telepathyClient.js:1360
 msgid "Encryption is not available"
 msgstr "Шифрлаш мавжуд эмас"
 
-#: ../js/ui/components/telepathyClient.js:1299
+#: ../js/ui/components/telepathyClient.js:1362
 msgid "Certificate is invalid"
 msgstr "Хато гувоҳнома"
 
-#: ../js/ui/components/telepathyClient.js:1301
+#: ../js/ui/components/telepathyClient.js:1364
 msgid "Connection has been refused"
 msgstr "Алоқа рад жавобини олди"
 
-#: ../js/ui/components/telepathyClient.js:1303
+#: ../js/ui/components/telepathyClient.js:1366
 msgid "Connection can't be established"
 msgstr "Алоқа қилиб бўлмади"
 
-#: ../js/ui/components/telepathyClient.js:1305
+#: ../js/ui/components/telepathyClient.js:1368
 msgid "Connection has been lost"
 msgstr "Алоқа йўқотилди"
 
-#: ../js/ui/components/telepathyClient.js:1307
+#: ../js/ui/components/telepathyClient.js:1370
 msgid "This account is already connected to the server"
 msgstr "Бу ҳисоб аллақачон серверга уланган"
 
-#: ../js/ui/components/telepathyClient.js:1309
+#: ../js/ui/components/telepathyClient.js:1372
 msgid ""
 "Connection has been replaced by a new connection using the same resource"
 msgstr "Алоқа олдинги манбани ишлатган ҳолда янгиси билан алмаштирилди"
 
-#: ../js/ui/components/telepathyClient.js:1311
+#: ../js/ui/components/telepathyClient.js:1374
 msgid "The account already exists on the server"
 msgstr "Бу ҳисоб аллақачон серверда бор"
 
-#: ../js/ui/components/telepathyClient.js:1313
+#: ../js/ui/components/telepathyClient.js:1376
 msgid "Server is currently too busy to handle the connection"
 msgstr "Сервер жуда бандлиги туфайли алоқани ушлаб туролмайди"
 
-#: ../js/ui/components/telepathyClient.js:1315
+#: ../js/ui/components/telepathyClient.js:1378
 msgid "Certificate has been revoked"
 msgstr "Гувоҳнома бекор қилинган"
 
-#: ../js/ui/components/telepathyClient.js:1317
+#: ../js/ui/components/telepathyClient.js:1380
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr ""
 "Гувоҳнома хавфсиз бўлмаган шифрлаш алгоритмини ишлатади ёки у криптографик "
 "кучсиз"
 
-#: ../js/ui/components/telepathyClient.js:1319
+#: ../js/ui/components/telepathyClient.js:1382
 msgid ""
 "The length of the server certificate, or the depth of the server certificate "
 "chain, exceed the limits imposed by the cryptography library"
@@ -675,122 +958,125 @@ msgstr ""
 "Сервер гувоҳномасининг узунлиги ёки сервер гувоҳнома занжирининг чуқурлиги "
 "криптография кутубхонаси қўйган чегарадан ошиб кетган"
 
-#: ../js/ui/components/telepathyClient.js:1321
+#: ../js/ui/components/telepathyClient.js:1384
 msgid "Internal error"
 msgstr "Ички хато"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example. */
-#: ../js/ui/components/telepathyClient.js:1331
+#: ../js/ui/components/telepathyClient.js:1394
 #, javascript-format
 msgid "Unable to connect to %s"
 msgstr "%sга уланиб бўлмади"
 
-#: ../js/ui/components/telepathyClient.js:1336
+#: ../js/ui/components/telepathyClient.js:1399
 msgid "View account"
 msgstr "Ҳисобни кўриш"
 
-#: ../js/ui/components/telepathyClient.js:1368
+#: ../js/ui/components/telepathyClient.js:1436
 msgid "Unknown reason"
 msgstr "Номаълум сабаб"
 
-#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:100
+#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:154
 msgid "Windows"
 msgstr "Ойналар"
 
-#: ../js/ui/dash.js:248 ../js/ui/dash.js:286
+#: ../js/ui/dash.js:249 ../js/ui/dash.js:287
 msgid "Show Applications"
 msgstr "Дастурларни кўрсатиш"
 
-#: ../js/ui/dash.js:442
+#: ../js/ui/dash.js:445
 msgid "Dash"
 msgstr "Дастурлар панели"
 
-#: ../js/ui/dateMenu.js:86
+#: ../js/ui/dateMenu.js:97
 msgid "Open Calendar"
 msgstr "Calendarни очиш"
 
-#: ../js/ui/dateMenu.js:90
+#: ../js/ui/dateMenu.js:101
 msgid "Open Clocks"
 msgstr "Clocksни очиш"
 
-#: ../js/ui/dateMenu.js:97
+#: ../js/ui/dateMenu.js:108
 msgid "Date & Time Settings"
 msgstr "Сана ҳамда Вақт Мосламалари"
 
-#. Translators: This is the date format to use when the calendar popup is
-#. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
-#. */
-#: ../js/ui/dateMenu.js:202
-msgid "%A %B %e, %Y"
-msgstr "%A %B %e, %Y"
-
-#: ../js/ui/endSessionDialog.js:62
+#: ../js/ui/endSessionDialog.js:64
 #, javascript-format
 msgctxt "title"
 msgid "Log Out %s"
-msgstr "%s фойдаланувчи сеансини тугатиш"
-
-#: ../js/ui/endSessionDialog.js:63
-msgctxt "title"
-msgid "Log Out"
-msgstr "Чиқиш"
+msgstr "%s фойдаланувчи сеансини якунлаш"
 
 #: ../js/ui/endSessionDialog.js:65
+msgctxt "title"
+msgid "Log Out"
+msgstr "Сеансни якунлаш"
+
+#: ../js/ui/endSessionDialog.js:67
 #, javascript-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "%sнинг сеанси %d сониядан сўнг автоматик равишда тугатилади."
 
-#: ../js/ui/endSessionDialog.js:70
+#: ../js/ui/endSessionDialog.js:72
 #, javascript-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
 msgstr[0] "Сизнинг сеансинги %d сониядан сўнг автоматик равишда тугатилади."
 
-#: ../js/ui/endSessionDialog.js:75
+#: ../js/ui/endSessionDialog.js:78
 msgctxt "button"
 msgid "Log Out"
-msgstr "Чиқиш"
+msgstr "Сеансни якунлаш"
 
-#: ../js/ui/endSessionDialog.js:81
+#: ../js/ui/endSessionDialog.js:84
 msgctxt "title"
 msgid "Power Off"
 msgstr "Ўчириш"
 
-#: ../js/ui/endSessionDialog.js:83
+#: ../js/ui/endSessionDialog.js:85
+msgctxt "title"
+msgid "Install Updates & Power Off"
+msgstr "Янгиликларни ўрнатиш ва компьютерни ўчириш"
+
+#: ../js/ui/endSessionDialog.js:87
 #, javascript-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "Система %d сониядан сўнг автоматик равишда ўчади."
 
-#: ../js/ui/endSessionDialog.js:88 ../js/ui/endSessionDialog.js:104
+#: ../js/ui/endSessionDialog.js:91
+msgctxt "checkbox"
+msgid "Install pending software updates"
+msgstr "Навбатдаги дастурий таъминот янгиликларини ўрнатиш"
+
+#: ../js/ui/endSessionDialog.js:94 ../js/ui/endSessionDialog.js:111
 msgctxt "button"
 msgid "Restart"
 msgstr "Ўчириб ёқиш"
 
-#: ../js/ui/endSessionDialog.js:90
+#: ../js/ui/endSessionDialog.js:96
 msgctxt "button"
 msgid "Power Off"
 msgstr "Ўчириш"
 
-#: ../js/ui/endSessionDialog.js:97
+#: ../js/ui/endSessionDialog.js:103
 msgctxt "title"
 msgid "Restart"
 msgstr "Ўчириб ёқиш"
 
-#: ../js/ui/endSessionDialog.js:99
+#: ../js/ui/endSessionDialog.js:105
 #, javascript-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "Система %d сониядан сўнг автоматик равишда ўчиб ёнади."
 
-#: ../js/ui/endSessionDialog.js:112
+#: ../js/ui/endSessionDialog.js:119
 msgctxt "title"
 msgid "Restart & Install Updates"
 msgstr "Ўчириб ёқиш ва янгиликларни ўрнатиш"
 
-#: ../js/ui/endSessionDialog.js:114
+#: ../js/ui/endSessionDialog.js:121
 #, javascript-format
 msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
@@ -799,27 +1085,43 @@ msgstr[0] ""
 "Система %d сониядан сўнг автоматик равишда ўчиб ёнади ва янгиликларни "
 "ўрнатади."
 
-#: ../js/ui/endSessionDialog.js:119
+#: ../js/ui/endSessionDialog.js:127
 msgctxt "button"
-msgid "Restart & Install"
+msgid "Restart &amp; Install"
 msgstr "Ўчириб ёқиш ва ўрнатиш"
 
-#: ../js/ui/endSessionDialog.js:271
+#: ../js/ui/endSessionDialog.js:128
+msgctxt "button"
+msgid "Install &amp; Power Off"
+msgstr "Ўрнатиш ва компьютерни ўчириш"
+
+#: ../js/ui/endSessionDialog.js:129
+msgctxt "checkbox"
+msgid "Power off after updates are installed"
+msgstr "Янгиликлар ўрнатилгандан кейин компьютерни ўчириш"
+
+#: ../js/ui/endSessionDialog.js:338
+msgid "Running on battery power: please plug in before installing updates."
+msgstr ""
+"Компьютер батарея қувватида ишлаяпти: илтимос янгиликларни ўрнатишдан олдин "
+"заряд ускунасини уланг."
+
+#: ../js/ui/endSessionDialog.js:355
 msgid "Some applications are busy or have unsaved work."
 msgstr "Баъзи дастурлар банд ёки уларнинг сақланмаган ишлари бор."
 
-#: ../js/ui/endSessionDialog.js:277
+#: ../js/ui/endSessionDialog.js:362
 msgid "Other users are logged in."
 msgstr "Системада бошқа фойдаланувчиларнинг фаол сеанслари мавжуд."
 
 #. Translators: Remote here refers to a remote session, like a ssh login */
-#: ../js/ui/endSessionDialog.js:479
+#: ../js/ui/endSessionDialog.js:640
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (масофавий)"
 
 #. Translators: Console here refers to a tty like a VT console */
-#: ../js/ui/endSessionDialog.js:482
+#: ../js/ui/endSessionDialog.js:643
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (терминал)"
@@ -830,32 +1132,33 @@ msgstr "Ўрнатиш"
 
 #: ../js/ui/extensionDownloader.js:204
 #, javascript-format
-msgid "Download and install '%s' from extensions.gnome.org?"
+msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "\"%s\" ни extensions.gnome.org сайтидан юклаб олиб ўрнатасизми?"
 
-#: ../js/ui/keyboard.js:619
+#: ../js/ui/keyboard.js:700 ../js/ui/status/keyboard.js:535
 msgid "Keyboard"
 msgstr "Клавиатура"
 
-#: ../js/ui/lookingGlass.js:689
+#: ../js/ui/lookingGlass.js:643
 msgid "No extensions installed"
 msgstr "Бирорта кенгайтма ўрнатилмаган"
 
 #. Translators: argument is an extension UUID. */
-#: ../js/ui/lookingGlass.js:743
+#: ../js/ui/lookingGlass.js:697
 #, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "%s бирор хато чиқармади."
 
-#: ../js/ui/lookingGlass.js:749
+#: ../js/ui/lookingGlass.js:703
 msgid "Hide Errors"
 msgstr "Хатоларни яшириш"
 
-#: ../js/ui/lookingGlass.js:753 ../js/ui/lookingGlass.js:813
+#: ../js/ui/lookingGlass.js:707 ../js/ui/lookingGlass.js:767
 msgid "Show Errors"
 msgstr "Хатоларни кўрсатиш"
 
-#: ../js/ui/lookingGlass.js:762
+#: ../js/ui/lookingGlass.js:716 ../js/ui/status/location.js:71
+#: ../js/ui/status/location.js:176
 msgid "Enabled"
 msgstr "Ёниқ"
 
@@ -863,83 +1166,83 @@ msgstr "Ёниқ"
 #. because it's disabled by rfkill (airplane mode) */
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:765 ../js/ui/status/network.js:472
-#: ../src/gvc/gvc-mixer-control.c:1830
+#: ../js/ui/lookingGlass.js:719 ../js/ui/status/location.js:179
+#: ../js/ui/status/network.js:592 ../src/gvc/gvc-mixer-control.c:1830
 msgid "Disabled"
 msgstr "Ўчиқ"
 
-#: ../js/ui/lookingGlass.js:767
+#: ../js/ui/lookingGlass.js:721
 msgid "Error"
 msgstr "Хато"
 
-#: ../js/ui/lookingGlass.js:769
+#: ../js/ui/lookingGlass.js:723
 msgid "Out of date"
 msgstr "Эски"
 
-#: ../js/ui/lookingGlass.js:771
+#: ../js/ui/lookingGlass.js:725
 msgid "Downloading"
 msgstr "Юкланяпти"
 
-#: ../js/ui/lookingGlass.js:795
+#: ../js/ui/lookingGlass.js:749
 msgid "View Source"
 msgstr "Манбани кўриш"
 
-#: ../js/ui/lookingGlass.js:804
+#: ../js/ui/lookingGlass.js:758
 msgid "Web Page"
 msgstr "Веб саҳифа"
 
-#: ../js/ui/messageTray.js:1314
+#: ../js/ui/messageTray.js:1332
 msgid "Open"
 msgstr "Очиш"
 
-#: ../js/ui/messageTray.js:1321
+#: ../js/ui/messageTray.js:1339
 msgid "Remove"
 msgstr "Олиб ташлаш"
 
-#: ../js/ui/messageTray.js:1622
+#: ../js/ui/messageTray.js:1636
 msgid "Notifications"
 msgstr "Хабарнома"
 
-#: ../js/ui/messageTray.js:1629
+#: ../js/ui/messageTray.js:1643
 msgid "Clear Messages"
 msgstr "Хатларни тозалаш"
 
-#: ../js/ui/messageTray.js:1648
+#: ../js/ui/messageTray.js:1662
 msgid "Notification Settings"
 msgstr "Хабарнома мосламалари"
 
-#: ../js/ui/messageTray.js:1701
+#: ../js/ui/messageTray.js:1715
 msgid "Tray Menu"
 msgstr "Панел менюси"
 
-#: ../js/ui/messageTray.js:1917
+#: ../js/ui/messageTray.js:1939
 msgid "No Messages"
 msgstr "Бирорта хат йўқ"
 
-#: ../js/ui/messageTray.js:1955
+#: ../js/ui/messageTray.js:1984
 msgid "Message Tray"
 msgstr "Хатлар панели"
 
-#: ../js/ui/messageTray.js:2933
+#: ../js/ui/messageTray.js:2997
 msgid "System Information"
 msgstr "Система ҳақида ахборот"
 
-#: ../js/ui/notificationDaemon.js:534 ../src/shell-app.c:396
+#: ../js/ui/notificationDaemon.js:513 ../src/shell-app.c:425
 msgctxt "program"
 msgid "Unknown"
 msgstr "Номаълум"
 
-#: ../js/ui/overviewControls.js:488 ../js/ui/screenShield.js:153
+#: ../js/ui/overviewControls.js:483 ../js/ui/screenShield.js:152
 #, javascript-format
 msgid "%d new message"
 msgid_plural "%d new messages"
 msgstr[0] "%dта янги хат"
 
-#: ../js/ui/overview.js:82
+#: ../js/ui/overview.js:84
 msgid "Undo"
 msgstr "Ўз ҳолига қайтариш"
 
-#: ../js/ui/overview.js:125
+#: ../js/ui/overview.js:124
 msgid "Overview"
 msgstr "Тепадан кўриниш"
 
@@ -947,85 +1250,83 @@ msgstr "Тепадан кўриниш"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters. */
-#: ../js/ui/overview.js:256
+#: ../js/ui/overview.js:246
 msgid "Type to search…"
 msgstr "Қидириш учун ёзинг..."
 
-#: ../js/ui/panel.js:516
+#: ../js/ui/panel.js:515
 msgid "Quit"
 msgstr "Чиқиш"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview". */
-#: ../js/ui/panel.js:568
+#: ../js/ui/panel.js:567
 msgid "Activities"
 msgstr "Фаолият"
 
-#: ../js/ui/panel.js:900
+#: ../js/ui/panel.js:918
 msgid "Top Bar"
 msgstr "Тепа панели"
 
-#: ../js/ui/popupMenu.js:260
+#: ../js/ui/popupMenu.js:269
 msgid "toggle-switch-us"
 msgstr "toggle-switch-us"
 
-#: ../js/ui/runDialog.js:74
+#: ../js/ui/runDialog.js:70
 msgid "Enter a Command"
 msgstr "Буйруқни киритинг"
 
-#: ../js/ui/runDialog.js:110
+#: ../js/ui/runDialog.js:110 ../js/ui/windowMenu.js:120
 msgid "Close"
 msgstr "Ёпиш"
 
-#. Translators: This is a time format for a date in
-#. long format */
-#: ../js/ui/screenShield.js:89
-msgid "%A, %B %d"
-msgstr "%A, %B %d"
+#: ../js/ui/runDialog.js:277
+msgid "Restarting…"
+msgstr "Ўчириб ёқиляпти..."
 
-#: ../js/ui/screenShield.js:155
+#: ../js/ui/screenShield.js:154
 #, javascript-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%dта янги хабарномалар"
 
-#: ../js/ui/screenShield.js:478 ../js/ui/status/system.js:333
+#: ../js/ui/screenShield.js:473 ../js/ui/status/system.js:345
 msgid "Lock"
 msgstr "Қулфлаш"
 
-#: ../js/ui/screenShield.js:712
+#: ../js/ui/screenShield.js:707
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME экранни қулфлаши керак"
 
-#: ../js/ui/screenShield.js:839 ../js/ui/screenShield.js:1305
+#: ../js/ui/screenShield.js:834 ../js/ui/screenShield.js:1310
 msgid "Unable to lock"
 msgstr "Қулфлаб бўлмади"
 
-#: ../js/ui/screenShield.js:840 ../js/ui/screenShield.js:1306
+#: ../js/ui/screenShield.js:835 ../js/ui/screenShield.js:1311
 msgid "Lock was blocked by an application"
 msgstr "Қайсидир дастур томонидан қулфлаш бекор қилинди"
 
-#: ../js/ui/searchDisplay.js:448
+#: ../js/ui/search.js:611
 msgid "Searching…"
 msgstr "Қидириляпти..."
 
-#: ../js/ui/searchDisplay.js:492
+#: ../js/ui/search.js:613
 msgid "No results."
 msgstr "Натижа йўқ."
 
-#: ../js/ui/shellEntry.js:27
+#: ../js/ui/shellEntry.js:25
 msgid "Copy"
 msgstr "Кўчириш"
 
-#: ../js/ui/shellEntry.js:32
+#: ../js/ui/shellEntry.js:30
 msgid "Paste"
 msgstr "Қўйиш"
 
-#: ../js/ui/shellEntry.js:99
+#: ../js/ui/shellEntry.js:97
 msgid "Show Text"
 msgstr "Матнни кўрсатиш"
 
-#: ../js/ui/shellEntry.js:101
+#: ../js/ui/shellEntry.js:99
 msgid "Hide Text"
 msgstr "Матнни яшириш"
 
@@ -1037,300 +1338,311 @@ msgstr "Махфий сўз"
 msgid "Remember Password"
 msgstr "Махфий сўзни эслаб қолиш"
 
-#: ../js/ui/status/accessibility.js:41
+#: ../js/ui/status/accessibility.js:42
 msgid "Accessibility"
 msgstr "Махсус имкониятлар"
 
-#: ../js/ui/status/accessibility.js:56
+#: ../js/ui/status/accessibility.js:57
 msgid "Zoom"
 msgstr "Миқиёс"
 
-#: ../js/ui/status/accessibility.js:63
+#: ../js/ui/status/accessibility.js:64
 msgid "Screen Reader"
 msgstr "Экран ўқувчи"
 
-#: ../js/ui/status/accessibility.js:67
+#: ../js/ui/status/accessibility.js:68
 msgid "Screen Keyboard"
 msgstr "Экран клавиатураси"
 
-#: ../js/ui/status/accessibility.js:71
+#: ../js/ui/status/accessibility.js:72
 msgid "Visual Alerts"
 msgstr "Кўргазмали огоҳлантиришлар"
 
-#: ../js/ui/status/accessibility.js:74
+#: ../js/ui/status/accessibility.js:75
 msgid "Sticky Keys"
 msgstr "Ёпишқоқ клавишалар"
 
-#: ../js/ui/status/accessibility.js:77
+#: ../js/ui/status/accessibility.js:78
 msgid "Slow Keys"
 msgstr "Секин клавишалар"
 
-#: ../js/ui/status/accessibility.js:80
+#: ../js/ui/status/accessibility.js:81
 msgid "Bounce Keys"
 msgstr "Сакраб турувчи клавиша"
 
-#: ../js/ui/status/accessibility.js:83
+#: ../js/ui/status/accessibility.js:84
 msgid "Mouse Keys"
 msgstr "Сичқонча тугмалари"
 
-#: ../js/ui/status/accessibility.js:142
+#: ../js/ui/status/accessibility.js:144
 msgid "High Contrast"
 msgstr "Юқори контрастли"
 
-#: ../js/ui/status/accessibility.js:191
+#: ../js/ui/status/accessibility.js:193
 msgid "Large Text"
 msgstr "Катта матн"
 
-#: ../js/ui/status/bluetooth.js:27 ../js/ui/status/bluetooth.js:62
-#: ../js/ui/status/bluetooth.js:99 ../js/ui/status/bluetooth.js:127
-#: ../js/ui/status/bluetooth.js:163 ../js/ui/status/bluetooth.js:194
+#: ../js/ui/status/bluetooth.js:49
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:29 ../js/ui/status/network.js:132
-#: ../js/ui/status/network.js:1083 ../js/ui/status/rfkill.js:46
+#: ../js/ui/status/bluetooth.js:51 ../js/ui/status/network.js:178
+#: ../js/ui/status/network.js:360 ../js/ui/status/network.js:1282
+#: ../js/ui/status/network.js:1393 ../js/ui/status/rfkill.js:86
+#: ../js/ui/status/rfkill.js:114
 msgid "Turn Off"
 msgstr "Ўчириш"
 
-#: ../js/ui/status/bluetooth.js:32
+#: ../js/ui/status/bluetooth.js:54
 msgid "Bluetooth Settings"
 msgstr "Bluetooth мосламалари"
 
-#: ../js/ui/status/bluetooth.js:57
+#: ../js/ui/status/bluetooth.js:104
 #, javascript-format
 msgid "%d Connected Device"
 msgid_plural "%d Connected Devices"
 msgstr[0] "%dта уланган ускуналар"
 
-#: ../js/ui/status/bluetooth.js:100 ../js/ui/status/bluetooth.js:128
-#, javascript-format
-msgid "Authorization request from %s"
-msgstr "%sдан ҳақиқийлигини текширишга ижозат"
+#: ../js/ui/status/bluetooth.js:106 ../js/ui/status/network.js:1310
+msgid "Not Connected"
+msgstr "Уланмаган"
 
-#: ../js/ui/status/bluetooth.js:106 ../js/ui/status/bluetooth.js:171
-#: ../js/ui/status/bluetooth.js:202
-#, javascript-format
-msgid "Device %s wants to pair with this computer"
-msgstr "%s ускунаси ушбу компьютер билан жуфтлашмоқчи"
-
-#: ../js/ui/status/bluetooth.js:108
-msgid "Allow"
-msgstr "Рухсат бериш"
-
-#: ../js/ui/status/bluetooth.js:109
-msgid "Deny"
-msgstr "Рад этиш"
-
-#: ../js/ui/status/bluetooth.js:134
-#, javascript-format
-msgid "Device %s wants access to the service '%s'"
-msgstr "\"%s\" ускуна \"%s\" хизматдан фойдаланмоқчи"
-
-#: ../js/ui/status/bluetooth.js:136
-msgid "Always grant access"
-msgstr "Ҳар доим рухсат бериш"
-
-#: ../js/ui/status/bluetooth.js:137
-msgid "Grant this time only"
-msgstr "Фақат шу сафар рухсат бериш"
-
-#: ../js/ui/status/bluetooth.js:138
-msgid "Reject"
-msgstr "Рад этиш"
-
-#. Translators: argument is the device short name */
-#: ../js/ui/status/bluetooth.js:165
-#, javascript-format
-msgid "Pairing confirmation for %s"
-msgstr "%s учун жуфтлаш тасдиғи"
-
-#: ../js/ui/status/bluetooth.js:172
-#, javascript-format
-msgid ""
-"Please confirm whether the Passkey '%06d' matches the one on the device."
-msgstr "Илтимос \"%06d\" калити ускунадагига мос келишини тасдиқланг."
-
-#. Translators: this is the verb, not the noun */
-#: ../js/ui/status/bluetooth.js:175
-msgid "Matches"
-msgstr "Мос келади"
-
-#: ../js/ui/status/bluetooth.js:176
-msgid "Does not match"
-msgstr "Мос келмайди"
-
-#: ../js/ui/status/bluetooth.js:195
-#, javascript-format
-msgid "Pairing request for %s"
-msgstr "%s учун жуфтлашга ижозат"
-
-#: ../js/ui/status/bluetooth.js:203
-msgid "Please enter the PIN mentioned on the device."
-msgstr "Илтимос ускунадаги PINни киритинг."
-
-#: ../js/ui/status/bluetooth.js:220
-msgid "OK"
-msgstr "Хўп"
-
-#: ../js/ui/status/brightness.js:42
+#: ../js/ui/status/brightness.js:44
 msgid "Brightness"
 msgstr "Ёруғлик"
 
-#: ../js/ui/status/network.js:71
+#: ../js/ui/status/keyboard.js:559
+msgid "Show Keyboard Layout"
+msgstr "Клавиатура жойлашувини кўрсатиш"
+
+#: ../js/ui/status/location.js:65
+msgid "Location"
+msgstr "Жойлашув"
+
+#: ../js/ui/status/location.js:72 ../js/ui/status/location.js:177
+msgid "Disable"
+msgstr "Ўчириш"
+
+#: ../js/ui/status/location.js:73
+msgid "Privacy Settings"
+msgstr "Шахсий маълумот мосламалари"
+
+#: ../js/ui/status/location.js:176
+msgid "In Use"
+msgstr "Ишлатилмоқда"
+
+#: ../js/ui/status/location.js:180
+msgid "Enable"
+msgstr "Ёқиш"
+
+#: ../js/ui/status/network.js:101
 msgid "<unknown>"
 msgstr "<номаълум>"
 
-#: ../js/ui/status/network.js:222 ../js/ui/status/network.js:379
-#: ../js/ui/status/network.js:1104
+#: ../js/ui/status/network.js:457 ../js/ui/status/network.js:1308
+#: ../js/ui/status/network.js:1512
 msgid "Off"
 msgstr "Ўчган"
 
+#: ../js/ui/status/network.js:459
+msgid "Connected"
+msgstr "Уланган"
+
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu) */
-#: ../js/ui/status/network.js:385
-msgid "unmanaged"
-msgstr "бошқарилмаган"
+#: ../js/ui/status/network.js:463
+msgid "Unmanaged"
+msgstr "Бошқарилмаган"
 
-#: ../js/ui/status/network.js:387
-msgid "disconnecting..."
-msgstr "узиляпти..."
+#: ../js/ui/status/network.js:465
+msgid "Disconnecting"
+msgstr "Узиляпти"
 
-#: ../js/ui/status/network.js:393 ../js/ui/status/network.js:1158
-msgid "connecting..."
-msgstr "уланяпти..."
+#: ../js/ui/status/network.js:471 ../js/ui/status/network.js:1302
+msgid "Connecting"
+msgstr "Уланяпти"
 
 #. Translators: this is for network connections that require some kind of key or password */
-#: ../js/ui/status/network.js:396 ../js/ui/status/network.js:1161
-msgid "authentication required"
+#: ../js/ui/status/network.js:474
+msgid "Authentication required"
 msgstr "ҳақиқийлигини аниқлаш талаб қилинади"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing */
-#: ../js/ui/status/network.js:404
-msgid "firmware missing"
+#: ../js/ui/status/network.js:482
+msgid "Firmware missing"
 msgstr "Ускуна билан дастур ўртасидаги чок йўқ"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage */
-#: ../js/ui/status/network.js:408
-msgid "unavailable"
+#: ../js/ui/status/network.js:486
+msgid "Unavailable"
 msgstr "мавжуд эмас"
 
-#: ../js/ui/status/network.js:410 ../js/ui/status/network.js:1163
-msgid "connection failed"
-msgstr "алоқа қилиб бўлмади"
-
-#: ../js/ui/status/network.js:426 ../js/ui/status/network.js:512
-msgid "Mobile Broadband Settings"
-msgstr "Кенг йўлли мобил алоқа мосламалари"
-
-#: ../js/ui/status/network.js:468 ../js/ui/status/network.js:1102
-msgid "Hardware Disabled"
-msgstr "Ускуна ўчирилган"
-
-#: ../js/ui/status/network.js:694
-msgid "Wi-Fi Networks"
-msgstr "Wi-Fi тармоқлар"
-
-#: ../js/ui/status/network.js:696
-msgid "Select a network"
-msgstr "Тармоқни танлаш"
-
-#: ../js/ui/status/network.js:720
-msgid "No Networks"
-msgstr "Бирорта тармоқ мавжуд эмас"
-
-#: ../js/ui/status/network.js:989
-msgid "Select Network"
-msgstr "Тармоқни танлаш"
-
-#: ../js/ui/status/network.js:995
-msgid "Wi-Fi Settings"
-msgstr "Wi-Fi Мосламалари"
-
-#: ../js/ui/status/network.js:1083
-msgid "Turn On"
-msgstr "Ёқиш"
-
-#: ../js/ui/status/network.js:1106
-msgid "Not Connected"
-msgstr "Уланмаган"
-
-#: ../js/ui/status/network.js:1226
-msgid "VPN"
-msgstr "VPN"
-
-#: ../js/ui/status/network.js:1366
-msgid "Network Manager"
-msgstr "Тармоқ бошқарувчиси"
-
-#: ../js/ui/status/network.js:1405
+#: ../js/ui/status/network.js:488 ../js/ui/status/network.js:1696
 msgid "Connection failed"
 msgstr "Алоқа қилиб бўлмади"
 
-#: ../js/ui/status/network.js:1406
+#: ../js/ui/status/network.js:504
+msgid "Wired Settings"
+msgstr "Симли алоқа мосламалари"
+
+#: ../js/ui/status/network.js:546 ../js/ui/status/network.js:624
+msgid "Mobile Broadband Settings"
+msgstr "Кенг йўлли мобил алоқа мосламалари"
+
+#: ../js/ui/status/network.js:588 ../js/ui/status/network.js:1306
+msgid "Hardware Disabled"
+msgstr "Ускуна ўчирилган"
+
+#: ../js/ui/status/network.js:632
+msgid "Use as Internet connection"
+msgstr "Интернет алоқаси сифатида ишлатиш"
+
+#: ../js/ui/status/network.js:813
+msgid "Airplane Mode is On"
+msgstr "Самолёт режими ёнган"
+
+#: ../js/ui/status/network.js:814
+msgid "Wi-Fi is disabled when airplane mode is on."
+msgstr "Самолёт режими ёниқ бўлганда Wi-Fi ўчган бўлади."
+
+#: ../js/ui/status/network.js:815
+msgid "Turn Off Airplane Mode"
+msgstr "Самолёт режимини ўчириш"
+
+#: ../js/ui/status/network.js:824
+msgid "Wi-Fi is Off"
+msgstr "Wi-Fi ўчган"
+
+#: ../js/ui/status/network.js:825
+msgid "Wi-Fi needs to be turned on in order to connect to a network."
+msgstr "Тармоққа уланиш учун Wi-Fi ёнган бўлиши керак."
+
+#: ../js/ui/status/network.js:826
+msgid "Turn On Wi-Fi"
+msgstr "Wi-Fiни ёқиш"
+
+#: ../js/ui/status/network.js:851
+msgid "Wi-Fi Networks"
+msgstr "Wi-Fi тармоқлар"
+
+#: ../js/ui/status/network.js:853
+msgid "Select a network"
+msgstr "Тармоқни танлаш"
+
+#: ../js/ui/status/network.js:883
+msgid "No Networks"
+msgstr "Бирорта тармоқ мавжуд эмас"
+
+#: ../js/ui/status/network.js:904 ../js/ui/status/rfkill.js:112
+msgid "Use hardware switch to turn off"
+msgstr "Ўчириш учун ускуна тугмасини ишлатиш"
+
+#: ../js/ui/status/network.js:1174
+msgid "Select Network"
+msgstr "Тармоқни танлаш"
+
+#: ../js/ui/status/network.js:1180
+msgid "Wi-Fi Settings"
+msgstr "Wi-Fi Мосламалари"
+
+#: ../js/ui/status/network.js:1282
+msgid "Turn On"
+msgstr "Ёқиш"
+
+#: ../js/ui/status/network.js:1299
+msgid "Hotspot Active"
+msgstr "Эркин фойдаланиш нуқтаси фаол"
+
+#: ../js/ui/status/network.js:1410
+msgid "connecting..."
+msgstr "уланяпти..."
+
+#. Translators: this is for network connections that require some kind of key or password */
+#: ../js/ui/status/network.js:1413
+msgid "authentication required"
+msgstr "ҳақиқийлигини аниқлаш талаб қилинади"
+
+#: ../js/ui/status/network.js:1415
+msgid "connection failed"
+msgstr "алоқа қилиб бўлмади"
+
+#: ../js/ui/status/network.js:1481 ../js/ui/status/rfkill.js:89
+msgid "Network Settings"
+msgstr "Тармоқ мосламалари"
+
+#: ../js/ui/status/network.js:1483
+msgid "VPN Settings"
+msgstr "VPN мосламалари"
+
+#: ../js/ui/status/network.js:1502
+msgid "VPN"
+msgstr "VPN"
+
+#: ../js/ui/status/network.js:1657
+msgid "Network Manager"
+msgstr "Тармоқ бошқарувчиси"
+
+#: ../js/ui/status/network.js:1697
 msgid "Activation of network connection failed"
 msgstr "Тармоқ алоқасини фаоллаштириб бўлмади"
 
-#: ../js/ui/status/power.js:47
+#: ../js/ui/status/power.js:49
 msgid "Power Settings"
 msgstr "Қувват мосламалари"
 
-#: ../js/ui/status/power.js:63
+#: ../js/ui/status/power.js:65
 msgid "Fully Charged"
 msgstr "Тўлиқ зарядланди"
 
-#: ../js/ui/status/power.js:70 ../js/ui/status/power.js:76
+#: ../js/ui/status/power.js:72 ../js/ui/status/power.js:78
 msgid "Estimating…"
 msgstr "Баҳоланяпти..."
 
-#: ../js/ui/status/power.js:84
+#: ../js/ui/status/power.js:86
 #, javascript-format
 msgid "%d∶%02d Remaining (%d%%)"
 msgstr "%d∶%02d қолди (%d%%)"
 
-#: ../js/ui/status/power.js:89
+#: ../js/ui/status/power.js:91
 #, javascript-format
 msgid "%d∶%02d Until Full (%d%%)"
 msgstr "Тўлишига %d∶%02d қолди (%d%%)"
 
-#: ../js/ui/status/power.js:117
+#: ../js/ui/status/power.js:119
 msgid "UPS"
 msgstr "UPS"
 
-#: ../js/ui/status/power.js:119
+#: ../js/ui/status/power.js:121
 msgid "Battery"
 msgstr "Батарея"
 
-#: ../js/ui/status/rfkill.js:43
+#: ../js/ui/status/rfkill.js:83
 msgid "Airplane Mode"
 msgstr "Самолёт режими"
 
-#: ../js/ui/status/rfkill.js:45
+#: ../js/ui/status/rfkill.js:85
 msgid "On"
 msgstr "Ёнган"
 
-#: ../js/ui/status/rfkill.js:49
-msgid "Network Settings"
-msgstr "Тармоқ мосламалари"
-
-#: ../js/ui/status/system.js:305
+#: ../js/ui/status/system.js:317
 msgid "Switch User"
 msgstr "Фойдаланувчини алмаштириш"
 
-#: ../js/ui/status/system.js:310
+#: ../js/ui/status/system.js:322
 msgid "Log Out"
 msgstr "Сеансни якунлаш"
 
-#: ../js/ui/status/system.js:329
+#: ../js/ui/status/system.js:341
 msgid "Orientation Lock"
 msgstr "Ориентацияни қулфлаш"
 
-#: ../js/ui/status/system.js:337
+#: ../js/ui/status/system.js:349
 msgid "Suspend"
 msgstr "Тўхтатиб қўймоқ"
 
-#: ../js/ui/status/system.js:340
+#: ../js/ui/status/system.js:352
 msgid "Power Off"
 msgstr "Ўчган"
 
@@ -1354,53 +1666,79 @@ msgstr "Бошқа фойдаланувчи сифатида кириш"
 msgid "Unlock Window"
 msgstr "Ойнани қулфини очиш"
 
-#: ../js/ui/viewSelector.js:104
+#: ../js/ui/viewSelector.js:158
 msgid "Applications"
 msgstr "Дастурлар"
 
-#: ../js/ui/viewSelector.js:108
+#: ../js/ui/viewSelector.js:162
 msgid "Search"
 msgstr "Қидириш"
 
-#: ../js/ui/wanda.js:77
-#, javascript-format
-msgid ""
-"Sorry, no wisdom for you today:\n"
-"%s"
-msgstr ""
-"Узр, бугун сиз учун донолик йўқ:\n"
-"%s"
-
-#: ../js/ui/wanda.js:81
-#, javascript-format
-msgid "%s the Oracle says"
-msgstr "\"%s\" дейди пайғамбар"
-
 #: ../js/ui/windowAttentionHandler.js:19
 #, javascript-format
-msgid "'%s' is ready"
+msgid "“%s” is ready"
 msgstr "\"%s\" тайёр"
 
-#: ../js/ui/windowManager.js:56
+#: ../js/ui/windowManager.js:65
 msgid "Do you want to keep these display settings?"
 msgstr "Ушбу экран мосламаларини сақламоқчимисиз?"
 
 #. Translators: this and the following message should be limited in lenght,
 #. to avoid ellipsizing the labels.
 #. */
-#: ../js/ui/windowManager.js:75
+#: ../js/ui/windowManager.js:84
 msgid "Revert Settings"
 msgstr "Мосламаларни ўз ҳолига қайтариш"
 
-#: ../js/ui/windowManager.js:79
+#: ../js/ui/windowManager.js:88
 msgid "Keep Changes"
 msgstr "Ўзгаришларни сақлаш"
 
-#: ../js/ui/windowManager.js:97
+#: ../js/ui/windowManager.js:107
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
 msgstr[0] "Мослама ўзгаришлари %d сониядан кейин ўз ҳолига қайтади"
+
+#: ../js/ui/windowMenu.js:34
+msgid "Minimize"
+msgstr "Йиғиш"
+
+#: ../js/ui/windowMenu.js:41
+msgid "Unmaximize"
+msgstr "Олдинги ўлчамига қайтариш"
+
+#: ../js/ui/windowMenu.js:45
+msgid "Maximize"
+msgstr "Катталаштирмоқ"
+
+#: ../js/ui/windowMenu.js:52
+msgid "Move"
+msgstr "Кўчириш"
+
+#: ../js/ui/windowMenu.js:58
+msgid "Resize"
+msgstr "Ўлчамини ўзгартириш"
+
+#: ../js/ui/windowMenu.js:65
+msgid "Move Titlebar Onscreen"
+msgstr "Сарлавҳа панелини экранга кўчириш"
+
+#: ../js/ui/windowMenu.js:70
+msgid "Always on Top"
+msgstr "Доим тепада"
+
+#: ../js/ui/windowMenu.js:89
+msgid "Always on Visible Workspace"
+msgstr "Доим кўриниб турган иш жойига"
+
+#: ../js/ui/windowMenu.js:106
+msgid "Move to Workspace Up"
+msgstr "Тепадаги иш жойига кўчириш"
+
+#: ../js/ui/windowMenu.js:111
+msgid "Move to Workspace Down"
+msgstr "Пастдаги иш жойига кўчириш"
 
 #: ../src/calendar-server/evolution-calendar.desktop.in.in.h:1
 msgid "Evolution Calendar"
@@ -1426,25 +1764,25 @@ msgstr[0] "%uта товуш кириш йўллари"
 msgid "System Sounds"
 msgstr "Система товушлари"
 
-#: ../src/main.c:353
+#: ../src/main.c:373
 msgid "Print version"
 msgstr "Босма учун версия"
 
-#: ../src/main.c:359
+#: ../src/main.c:379
 msgid "Mode used by GDM for login screen"
 msgstr "Сеансга кириш ойнаси учун GDM ишлатадиган режим"
 
-#: ../src/main.c:365
+#: ../src/main.c:385
 msgid "Use a specific mode, e.g. \"gdm\" for login screen"
 msgstr "Аниқ бир режимни, масалан кириш экрани учун \"gdm\"ни, ишлатиш"
 
-#: ../src/main.c:371
+#: ../src/main.c:391
 msgid "List possible modes"
 msgstr "Мавжуд режимлар рўйхати"
 
-#: ../src/shell-app.c:639
+#: ../src/shell-app.c:666
 #, c-format
-msgid "Failed to launch '%s'"
+msgid "Failed to launch “%s”"
 msgstr "\"%s\"ни ишга тушириб бўлмади"
 
 #: ../src/shell-keyring-prompt.c:714
@@ -1455,6 +1793,85 @@ msgstr "Махфий сўзлар мос келмади."
 msgid "Password cannot be blank"
 msgstr "Махфий сўз бўш бўлмаслиги керак"
 
-#: ../src/shell-polkit-authentication-agent.c:343
+#: ../src/shell-polkit-authentication-agent.c:346
 msgid "Authentication dialog was dismissed by the user"
-msgstr "Ҳақиқийлигини аниқловчи ойна фойдаланувчи томонидан ёпилди"
+msgstr "Ҳақиқийлигини аниқловчи диалог ойна фойдаланувчи томонидан ёпилди"
+
+#~ msgid "Select an extension to configure using the combobox above."
+#~ msgstr ""
+#~ "Тепадаги очилувчи рўйхатдан фойдаланиб созламоқчи бўлган кенгайтмангизни "
+#~ "танланг."
+
+#~ msgid "calendar:MY"
+#~ msgstr "Тақвим:MY"
+
+#~ msgid "<b>%A</b>, <b>%H:%M</b>"
+#~ msgstr "<b>%A</b>, <b>%H:%M</b>"
+
+#~ msgid "<b>%B</b> <b>%d</b>, <b>%H:%M</b>"
+#~ msgstr "<b>%B</b> <b>%d</b>, <b>%H:%M</b>"
+
+#~ msgid "<b>%B</b> <b>%d</b> <b>%Y</b>, <b>%H:%M</b> "
+#~ msgstr "<b>%B</b> <b>%d</b> <b>%Y</b>, <b>%H:%M</b> "
+
+#~ msgid "%A %B %e, %Y"
+#~ msgstr "%A %B %e, %Y"
+
+#~ msgid "%A, %B %d"
+#~ msgstr "%A, %B %d"
+
+#~ msgid "Authorization request from %s"
+#~ msgstr "%sдан ҳақиқийлигини текширишга ижозат"
+
+#~ msgid "Device %s wants to pair with this computer"
+#~ msgstr "%s ускунаси ушбу компьютер билан жуфтлашмоқчи"
+
+#~ msgid "Allow"
+#~ msgstr "Рухсат бериш"
+
+#~ msgid "Deny"
+#~ msgstr "Рад этиш"
+
+#~ msgid "Device %s wants access to the service '%s'"
+#~ msgstr "\"%s\" ускуна \"%s\" хизматдан фойдаланмоқчи"
+
+#~ msgid "Always grant access"
+#~ msgstr "Ҳар доим рухсат бериш"
+
+#~ msgid "Grant this time only"
+#~ msgstr "Фақат шу сафар рухсат бериш"
+
+#~ msgid "Reject"
+#~ msgstr "Рад этиш"
+
+#~ msgid "Pairing confirmation for %s"
+#~ msgstr "%s учун жуфтлаш тасдиғи"
+
+#~ msgid ""
+#~ "Please confirm whether the Passkey '%06d' matches the one on the device."
+#~ msgstr "Илтимос \"%06d\" калити ускунадагига мос келишини тасдиқланг."
+
+#~ msgid "Matches"
+#~ msgstr "Мос келади"
+
+#~ msgid "Does not match"
+#~ msgstr "Мос келмайди"
+
+#~ msgid "Pairing request for %s"
+#~ msgstr "%s учун жуфтлашга ижозат"
+
+#~ msgid "Please enter the PIN mentioned on the device."
+#~ msgstr "Илтимос ускунадаги PINни киритинг."
+
+#~ msgid "OK"
+#~ msgstr "Хўп"
+
+#~ msgid ""
+#~ "Sorry, no wisdom for you today:\n"
+#~ "%s"
+#~ msgstr ""
+#~ "Узр, бугун сиз учун донолик йўқ:\n"
+#~ "%s"
+
+#~ msgid "%s the Oracle says"
+#~ msgstr "\"%s\" дейди пайғамбар"
