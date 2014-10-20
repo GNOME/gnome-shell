@@ -65,6 +65,8 @@ meta_surface_actor_pick (ClutterActor       *actor,
       CoglContext *ctx;
       CoglFramebuffer *fb;
       CoglColor cogl_color;
+      ClutterActorIter iter;
+      ClutterActor *child;
 
       n_rects = cairo_region_num_rectangles (priv->input_region);
       rectangles = g_alloca (sizeof (float) * 4 * n_rects);
@@ -91,6 +93,11 @@ meta_surface_actor_pick (ClutterActor       *actor,
       cogl_pipeline_set_color (pipeline, &cogl_color);
       cogl_framebuffer_draw_rectangles (fb, pipeline, rectangles, n_rects);
       cogl_object_unref (pipeline);
+
+      clutter_actor_iter_init (&iter, actor);
+
+      while (clutter_actor_iter_next (&iter, &child))
+        clutter_actor_paint (child);
     }
 }
 
