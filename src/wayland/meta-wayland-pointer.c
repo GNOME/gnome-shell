@@ -518,10 +518,11 @@ meta_wayland_pointer_set_focus (MetaWaylandPointer *pointer,
 
       clutter_input_device_get_coords (pointer->device, NULL, &pos);
 
-      meta_window_handle_enter (pointer->focus_surface->window,
-                                /* XXX -- can we reliably get a timestamp for setting focus? */
-                                clutter_get_current_event_time (),
-                                pos.x, pos.y);
+      if (pointer->focus_surface->window)
+        meta_window_handle_enter (pointer->focus_surface->window,
+                                  /* XXX -- can we reliably get a timestamp for setting focus? */
+                                  clutter_get_current_event_time (),
+                                  pos.x, pos.y);
 
       move_resources_for_client (&pointer->focus_resource_list,
                                  &pointer->resource_list,
