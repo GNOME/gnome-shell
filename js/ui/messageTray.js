@@ -2432,8 +2432,22 @@ const MessageTray = new Lang.Class({
             if (shouldShowNotification && nextNotification) {
                 let limited = this._busy || Main.layoutManager.bottomMonitor.inFullscreen;
                 let showNextNotification = (!limited || nextNotification.forFeedback || nextNotification.urgency == Urgency.CRITICAL);
-                if (showNextNotification)
-                    this._showNotification();
+                if (showNextNotification) {
+                    let len = this._notificationQueue.length;
+                    if (len > 1) {
+                        this._notificationQueue.length = 0;
+                        let source = new SystemNotificationSource();
+                        this.add(source);
+                        let notification = new Notification(source, ngettext("%d new message", "%d new messages", len).format(len));
+                        notification.setTransient(true);
+                        notification.connect('clicked', Lang.bind(this, function() {
+                            this.openTray();
+                        }));
+                        source.notify(notification);
+                    } else {
+                        this._showNotification();
+                    }
+                }
             }
         } else if (this._notificationState == State.SHOWN) {
             let expired = (this._userActiveWhileNotificationShown &&
