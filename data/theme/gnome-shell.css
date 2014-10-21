@@ -1622,6 +1622,19 @@ StScrollBar {
   .window-picker.external-monitor {
     padding: 32px; }
 
+.window-clone-border {
+  border: 4px solid #215d9c;
+  border-radius: 4px; }
+
+.window-caption {
+  spacing: 25px;
+  background-color: rgba(57, 63, 63, 0.7);
+  border-radius: 8px;
+  padding: 4px 12px;
+  -shell-caption-spacing: 12px; }
+  .window-caption:hover {
+    background-color: #215d9c; }
+
 .messages-indicator {
   color: rgba(238, 238, 236, 0.8);
   height: 32px; }
@@ -1652,10 +1665,10 @@ StScrollBar {
   padding-right: 20px;
   spacing: 16px; }
 
-.search-selection {
+.search-section {
   spacing: 16px; }
 
-.search-selection-content {
+.search-section-content {
   spacing: 32px; }
 
 .list-search-results {
