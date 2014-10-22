@@ -1201,7 +1201,7 @@ ensure_at_least_one_output (MetaMonitorConfig  *self,
                             MetaOutput         *outputs,
                             unsigned            n_outputs)
 {
-  MetaConfiguration *ret;
+  MetaConfiguration *config;
   MetaOutput *primary;
   unsigned i;
 
@@ -1212,9 +1212,9 @@ ensure_at_least_one_output (MetaMonitorConfig  *self,
 
   /* Oh no, we don't! Activate the primary one and disable everything else */
 
-  ret = config_new ();
-  make_config_key (ret, outputs, n_outputs, -1);
-  ret->outputs = g_new0 (MetaOutputConfig, n_outputs);
+  config = config_new ();
+  make_config_key (config, outputs, n_outputs, -1);
+  config->outputs = g_new0 (MetaOutputConfig, n_outputs);
 
   primary = find_primary_output (outputs, n_outputs);
 
@@ -1224,23 +1224,23 @@ ensure_at_least_one_output (MetaMonitorConfig  *self,
 
       if (output == primary)
         {
-          ret->outputs[i].enabled = TRUE;
-          ret->outputs[i].rect.x = 0;
-          ret->outputs[i].rect.y = 0;
-          ret->outputs[i].rect.width = output->preferred_mode->width;
-          ret->outputs[i].rect.height = output->preferred_mode->height;
-          ret->outputs[i].refresh_rate = output->preferred_mode->refresh_rate;
-          ret->outputs[i].transform = META_MONITOR_TRANSFORM_NORMAL;
-          ret->outputs[i].is_primary = TRUE;
+          config->outputs[i].enabled = TRUE;
+          config->outputs[i].rect.x = 0;
+          config->outputs[i].rect.y = 0;
+          config->outputs[i].rect.width = output->preferred_mode->width;
+          config->outputs[i].rect.height = output->preferred_mode->height;
+          config->outputs[i].refresh_rate = output->preferred_mode->refresh_rate;
+          config->outputs[i].transform = META_MONITOR_TRANSFORM_NORMAL;
+          config->outputs[i].is_primary = TRUE;
         }
       else
         {
-          ret->outputs[i].enabled = FALSE;
+          config->outputs[i].enabled = FALSE;
         }
     }
 
-  apply_configuration (self, ret, manager);
-  config_unref (ret);
+  apply_configuration (self, config, manager);
+  config_unref (config);
   return FALSE;
 }
 
