@@ -67,6 +67,7 @@ typedef struct {
 } MetaOutputConfig;
 
 typedef struct {
+  guint refcount;
   MetaOutputKey *keys;
   MetaOutputConfig *outputs;
   unsigned int n_outputs;
@@ -77,7 +78,6 @@ struct _MetaMonitorConfig {
 
   GHashTable *configs;
   MetaConfiguration *current;
-  gboolean current_is_stored;
   gboolean current_is_for_laptop_lid;
   MetaConfiguration *previous;
 
@@ -124,11 +124,29 @@ config_clear (MetaConfiguration *config)
   g_free (config->outputs);
 }
 
-static void
-config_free (gpointer config)
+static MetaConfiguration *
+config_ref (MetaConfiguration *config)
 {
-  config_clear (config);
-  g_slice_free (MetaConfiguration, config);
+  config->refcount++;
+  return config;
+}
+
+static void
+config_unref (MetaConfiguration *config)
+{
+  if (--config->refcount == 0)
+    {
+      config_clear (config);
+      g_slice_free (MetaConfiguration, config);
+    }
+}
+
+static MetaConfiguration *
+config_new (void)
+{
+  MetaConfiguration *config = g_slice_new0 (MetaConfiguration);
+  config->refcount = 1;
+  return config;
 }
 
 static unsigned long
@@ -220,7 +238,7 @@ meta_monitor_config_init (MetaMonitorConfig *self)
   const char *filename;
   char *path;
 
-  self->configs = g_hash_table_new_full (config_hash, config_equal, NULL, config_free);
+  self->configs = g_hash_table_new_full (config_hash, config_equal, NULL, (GDestroyNotify) config_unref);
 
   filename = g_getenv ("MUTTER_MONITOR_FILENAME");
   if (filename == NULL)
@@ -830,11 +848,19 @@ meta_monitor_config_get_stored (MetaMonitorConfig *self,
   return stored;
 }
 
+static void
+set_current (MetaMonitorConfig *self,
+             MetaConfiguration *config)
+{
+  g_clear_pointer (&self->previous, (GDestroyNotify) config_unref);
+  self->previous = self->current;
+  self->current = config_ref (config);
+}
+
 static gboolean
 apply_configuration (MetaMonitorConfig  *self,
                      MetaConfiguration  *config,
-		     MetaMonitorManager *manager,
-                     gboolean            stored)
+		     MetaMonitorManager *manager)
 {
   GPtrArray *crtcs, *outputs;
 
@@ -845,9 +871,7 @@ apply_configuration (MetaMonitorConfig  *self,
     {
       g_ptr_array_unref (crtcs);
       g_ptr_array_unref (outputs);
-      if (!stored)
-        config_free (config);
-
+      config_unref (config);
       return FALSE;
     }
 
@@ -855,43 +879,11 @@ apply_configuration (MetaMonitorConfig  *self,
                                             (MetaCRTCInfo**)crtcs->pdata, crtcs->len,
                                             (MetaOutputInfo**)outputs->pdata, outputs->len);
 
-  /* Stored (persistent) configurations override the previous one always.
-     Also, we clear the previous configuration if the current one (which is
-     about to become previous) is stored, or if the current one has
-     different outputs.
-  */
-  if (stored ||
-      (self->current && self->current_is_stored))
-    {
-      if (self->previous)
-        config_free (self->previous);
-      self->previous = NULL;
-    }
-  else
-    {
-      /* Despite the name, config_equal() only checks the set of outputs,
-         not their modes
-      */
-      if (self->current && config_equal (self->current, config))
-        {
-          self->previous = self->current;
-        }
-      else
-        {
-          if (self->current)
-            config_free (self->current);
-          self->previous = NULL;
-        }
-    }
+  set_current (self, config);
 
-  self->current = config;
-  self->current_is_stored = stored;
   /* If true, we'll be overridden at the end of this call
    * inside turn_off_laptop_display / apply_configuration_with_lid */
   self->current_is_for_laptop_lid = FALSE;
-
-  if (self->current == self->previous)
-    self->previous = NULL;
 
   g_ptr_array_unref (crtcs);
   g_ptr_array_unref (outputs);
@@ -934,7 +926,7 @@ make_laptop_lid_config (MetaConfiguration  *reference)
 
   g_assert (reference->n_outputs > 1);
 
-  new = g_slice_new0 (MetaConfiguration);
+  new = config_new ();
   new->n_outputs = reference->n_outputs;
   new->keys = g_new0 (MetaOutputKey, reference->n_outputs);
   new->outputs = g_new0 (MetaOutputConfig, reference->n_outputs);
@@ -998,16 +990,21 @@ apply_configuration_with_lid (MetaMonitorConfig  *self,
       config->n_outputs > 1 &&
       laptop_display_is_on (config))
     {
-      if (apply_configuration (self, make_laptop_lid_config (config), manager, FALSE))
+      MetaConfiguration *laptop_lid_config = make_laptop_lid_config (config);
+      if (apply_configuration (self, laptop_lid_config, manager))
         {
           self->current_is_for_laptop_lid = TRUE;
+          config_unref (laptop_lid_config);
           return TRUE;
         }
       else
-        return FALSE;
+        {
+          config_unref (laptop_lid_config);
+          return FALSE;
+        }
     }
   else
-    return apply_configuration (self, config, manager, TRUE);
+    return apply_configuration (self, config, manager);
 }
 
 gboolean
@@ -1084,7 +1081,7 @@ make_default_config (MetaMonitorConfig *self,
   MetaConfiguration *ret;
   MetaOutput *primary;
 
-  ret = g_slice_new (MetaConfiguration);
+  ret = config_new ();
   make_config_key (ret, outputs, n_outputs, -1);
   ret->outputs = g_new0 (MetaOutputConfig, n_outputs);
 
@@ -1215,7 +1212,7 @@ ensure_at_least_one_output (MetaMonitorConfig  *self,
 
   /* Oh no, we don't! Activate the primary one and disable everything else */
 
-  ret = g_slice_new (MetaConfiguration);
+  ret = config_new ();
   make_config_key (ret, outputs, n_outputs, -1);
   ret->outputs = g_new0 (MetaOutputConfig, n_outputs);
 
@@ -1242,7 +1239,8 @@ ensure_at_least_one_output (MetaMonitorConfig  *self,
         }
     }
 
-  apply_configuration (self, ret, manager, FALSE);
+  apply_configuration (self, ret, manager);
+  config_unref (ret);
   return FALSE;
 }
 
@@ -1307,7 +1305,7 @@ meta_monitor_config_update_current (MetaMonitorConfig  *self,
 
   outputs = meta_monitor_manager_get_outputs (manager, &n_outputs);
 
-  current = g_slice_new (MetaConfiguration);
+  current = config_new ();
   current->n_outputs = n_outputs;
   current->outputs = g_new0 (MetaOutputConfig, n_outputs);
   current->keys = g_new0 (MetaOutputKey, n_outputs);
@@ -1320,15 +1318,11 @@ meta_monitor_config_update_current (MetaMonitorConfig  *self,
 
   if (self->current && config_equal_full (current, self->current))
     {
-      config_free (current);
+      config_unref (current);
       return;
     }
 
-  if (self->current && !self->current_is_stored)
-    config_free (self->current);
-
-  self->current = current;
-  self->current_is_stored = FALSE;
+  set_current (self, current);
 }
 
 void
@@ -1336,7 +1330,17 @@ meta_monitor_config_restore_previous (MetaMonitorConfig  *self,
                                       MetaMonitorManager *manager)
 {
   if (self->previous)
-    apply_configuration (self, self->previous, manager, FALSE);
+    {
+      /* The user chose to restore the previous configuration. In this
+       * case, restore the previous configuration. */
+      MetaConfiguration *prev_config = config_ref (self->previous);
+      apply_configuration (self, prev_config, manager);
+      config_unref (prev_config);
+
+      /* After this, self->previous contains the rejected configuration.
+       * Since it was rejected, nuke it. */
+      g_clear_pointer (&self->previous, (GDestroyNotify) config_unref);
+    }
   else
     {
       if (!meta_monitor_config_apply_stored (self, manager))
@@ -1354,7 +1358,7 @@ turn_off_laptop_display (MetaMonitorConfig  *self,
     return;
 
   new = make_laptop_lid_config (self->current);
-  apply_configuration (self, new, manager, FALSE);
+  apply_configuration (self, new, manager);
   self->current_is_for_laptop_lid = TRUE;
 }
 
@@ -1513,16 +1517,7 @@ meta_monitor_config_save (MetaMonitorConfig *self)
 void
 meta_monitor_config_make_persistent (MetaMonitorConfig *self)
 {
-  if (self->current_is_stored)
-    return;
-
-  self->current_is_stored = TRUE;
-  g_hash_table_replace (self->configs, self->current, self->current);
-
-  if (self->previous)
-    config_free (self->previous);
-  self->previous = NULL;
-
+  g_hash_table_replace (self->configs, self->current, config_ref (self->current));
   meta_monitor_config_save (self);
 }
 
