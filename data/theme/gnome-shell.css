@@ -71,96 +71,6 @@
   spacing: 12px; }
 
 /* Overview */
-/* LookingGlass */
-#LookingGlassDialog {
-  background-color: rgba(0, 0, 0, 0.8);
-  spacing: 4px;
-  padding: 4px;
-  border: 2px solid grey;
-  border-radius: 4px; }
-
-#LookingGlassDialog > #Toolbar {
-  border: 1px solid grey;
-  border-radius: 4px; }
-
-#LookingGlassDialog .labels {
-  spacing: 4px; }
-
-#LookingGlassDialog .notebook-tab {
-  -natural-hpadding: 12px;
-  -minimum-hpadding: 6px;
-  font-weight: bold;
-  color: #ccc;
-  transition-duration: 100ms;
-  padding-left: .3em;
-  padding-right: .3em; }
-
-#LookingGlassDialog .notebook-tab:hover {
-  color: white;
-  text-shadow: black 0px 2px 2px; }
-
-#LookingGlassDialog .notebook-tab:selected {
-  border-image: url("panel-button-border.svg") 10 10 0 2;
-  background-image: url("panel-button-highlight-wide.svg");
-  color: white;
-  text-shadow: black 0px 2px 2px; }
-
-.lg-dialog StEntry {
-  selection-background-color: #bbbbbb;
-  selected-color: #333333; }
-
-.lg-completions-text {
-  font-size: .9em;
-  font-style: italic; }
-
-.lg-obj-inspector-title {
-  spacing: 4px; }
-
-.lg-obj-inspector-button {
-  border: 1px solid gray;
-  padding: 4px;
-  border-radius: 4px; }
-
-.lg-obj-inspector-button:hover {
-  border: 1px solid #ffffff; }
-
-.lg-dialog .shell-link {
-  color: #999999; }
-
-.lg-dialog .shell-link:hover {
-  color: #dddddd; }
-
-#LookingGlassDialog StBoxLayout#EvalBox {
-  padding: 4px;
-  spacing: 4px; }
-
-#LookingGlassDialog StBoxLayout#ResultsArea {
-  spacing: 4px; }
-
-#lookingGlassExtensions {
-  padding: 4px; }
-
-.lg-extensions-list {
-  padding: 4px;
-  spacing: 6px; }
-
-.lg-extension {
-  border: 1px solid #6f6f6f;
-  border-radius: 4px;
-  padding: 4px; }
-
-.lg-extension-name {
-  font-weight: bold; }
-
-.lg-extension-meta {
-  spacing: 6px; }
-
-#LookingGlassPropertyInspector {
-  background: rgba(0, 0, 0, 0.8);
-  border: 2px solid grey;
-  border-radius: 4px;
-  padding: 6px; }
-
 /* Calendar popup */
 .calendar-vertical-separator {
   -stipple-width: 1px;
@@ -1729,6 +1639,8 @@ StScrollBar {
   spacing: 30px;
   -shell-grid-horizontal-item-size: 136px;
   -shell-grid-vertical-item-size: 136px; }
+  .icon-grid .overview-icon {
+    icon-size: 96px; }
 
 .app-view-controls {
   padding-bottom: 32px; }
@@ -1862,3 +1774,81 @@ StScrollBar {
   color: #eeeeec; }
 
 /* NOTIFICATIONS & MESSAGE TRAY */
+/* Eeeky things */
+#LookingGlassDialog {
+  background-color: rgba(0, 0, 0, 0.8);
+  spacing: 4px;
+  padding: 4px;
+  border: 2px solid grey;
+  border-radius: 4px; }
+  #LookingGlassDialog > #Toolbar {
+    border: 1px solid grey;
+    border-radius: 4px; }
+  #LookingGlassDialog .labels {
+    spacing: 4px; }
+  #LookingGlassDialog .notebook-tab {
+    -natural-hpadding: 12px;
+    -minimum-hpadding: 6px;
+    font-weight: bold;
+    color: #ccc;
+    transition-duration: 100ms;
+    padding-left: .3em;
+    padding-right: .3em; }
+    #LookingGlassDialog .notebook-tab:hover {
+      color: white;
+      text-shadow: black 0px 2px 2px; }
+    #LookingGlassDialog .notebook-tab:selected {
+      border-image: url("panel-button-border.svg") 10 10 0 2;
+      color: white;
+      text-shadow: black 0px 2px 2px; }
+  #LookingGlassDialog StBoxLayout#EvalBox {
+    padding: 4px;
+    spacing: 4px; }
+  #LookingGlassDialog StBoxLayout#ResultsArea {
+    spacing: 4px; }
+
+.lg-dialog StEntry {
+  selection-background-color: #bbbbbb;
+  selected-color: #333333; }
+.lg-dialog .shell-link {
+  color: #999999; }
+  .lg-dialog .shell-link:hover {
+    color: #dddddd; }
+
+.lg-completions-text {
+  font-size: .9em;
+  font-style: italic; }
+
+.lg-obj-inspector-title {
+  spacing: 4px; }
+
+.lg-obj-inspector-button {
+  border: 1px solid gray;
+  padding: 4px;
+  border-radius: 4px; }
+  .lg-obj-inspector-button:hover {
+    border: 1px solid #ffffff; }
+
+#lookingGlassExtensions {
+  padding: 4px; }
+
+.lg-extensions-list {
+  padding: 4px;
+  spacing: 6px; }
+
+.lg-extension {
+  border: 1px solid #6f6f6f;
+  border-radius: 4px;
+  padding: 4px; }
+
+.lg-extension-name {
+  font-weight: bold; }
+
+.lg-extension-meta {
+  spacing: 6px; }
+
+#LookingGlassPropertyInspector {
+  background: rgba(0, 0, 0, 0.8);
+  border: 2px solid grey;
+  border-radius: 4px;
+  padding: 6px; }

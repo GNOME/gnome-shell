@@ -507,7 +507,7 @@ StScrollBar {
     -shell-grid-horizontal-item-size: 136px;
     -shell-grid-vertical-item-size: 136px;
     
-    //.overview-icon { icon-size: 96px; } FIXME no effect
+    .overview-icon { icon-size: 96px; } //FIXME no effect
   }
   //.app-display { spacing: 20px; }
 
@@ -655,3 +655,95 @@ StScrollBar {
 }
 
 /* NOTIFICATIONS & MESSAGE TRAY */
+
+
+/* Eeeky things */
+//Mess that is Looking Glass
+
+#LookingGlassDialog {
+  background-color: rgba(0,0,0,0.80);
+  spacing: 4px;
+  padding: 4px;
+  border: 2px solid grey;
+  border-radius: 4px;
+  & > #Toolbar {
+    border: 1px solid grey;
+    border-radius: 4px;
+  }
+  .labels { spacing: 4px; }
+  .notebook-tab {
+    -natural-hpadding: 12px;
+    -minimum-hpadding: 6px;
+    font-weight: bold;
+    color: #ccc;
+    transition-duration: 100ms;
+    padding-left: .3em;
+    padding-right: .3em;
+    &:hover {
+      color: white;
+      text-shadow: black 0px 2px 2px;
+    }
+    &:selected {
+      border-image: url("panel-button-border.svg") 10 10 0 2;
+      color: white;
+      text-shadow: black 0px 2px 2px;
+    }
+  }
+  StBoxLayout#EvalBox { padding: 4px; spacing: 4px; }
+  StBoxLayout#ResultsArea { spacing: 4px; }
+}
+
+  .lg-dialog {
+    StEntry {
+      selection-background-color: #bbbbbb;
+      selected-color: #333333;
+    }
+    .shell-link { 
+      color: #999999;
+      &:hover { color: #dddddd; }
+     }
+  }
+
+  .lg-completions-text {
+      font-size: .9em;
+      font-style: italic;
+  }
+
+  .lg-obj-inspector-title {
+      spacing: 4px;
+  }
+
+  .lg-obj-inspector-button {
+      border: 1px solid gray;
+      padding: 4px;
+      border-radius: 4px;
+      &:hover { border: 1px solid #ffffff; }
+  }
+
+  #lookingGlassExtensions { padding: 4px; }
+
+  .lg-extensions-list {
+      padding: 4px;
+      spacing: 6px;
+  }
+
+  .lg-extension {
+      border: 1px solid #6f6f6f;
+      border-radius: 4px;
+      padding: 4px;
+  }
+
+  .lg-extension-name {
+      font-weight: bold;
+  }
+
+  .lg-extension-meta {
+      spacing: 6px;
+  }
+
+  #LookingGlassPropertyInspector {
+    background: rgba(0, 0, 0, 0.8);
+    border: 2px solid grey;
+    border-radius: 4px;
+    padding: 6px;
+  }
