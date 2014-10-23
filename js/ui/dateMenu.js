@@ -147,7 +147,7 @@ const DateMenuButton = new Lang.Class({
         let now = new Date();
         return now.getYear() == date.getYear() &&
                now.getMonth() == date.getMonth() &&
-               now.getDay() == date.getDay();
+               now.getDate() == date.getDate();
     },
 
     _appInstalledChanged: function() {
