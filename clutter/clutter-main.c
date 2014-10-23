@@ -3276,7 +3276,6 @@ clutter_clear_glyph_cache (void)
 void
 clutter_set_font_flags (ClutterFontFlags flags)
 {
-  ClutterMainContext *context = _clutter_context_get_default ();
   CoglPangoFontMap *font_map;
   ClutterFontFlags old_flags, changed_flags;
   const cairo_font_options_t *font_options;
@@ -3326,10 +3325,6 @@ clutter_set_font_flags (ClutterFontFlags flags)
   clutter_backend_set_font_options (backend, new_font_options);
 
   cairo_font_options_destroy (new_font_options);
-
-  /* update the default pango context, if any */
-  if (context->pango_context != NULL)
-    update_pango_context (backend, context->pango_context);
 }
 
 /**
