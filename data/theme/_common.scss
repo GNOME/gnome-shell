@@ -656,6 +656,190 @@ StScrollBar {
 
 /* NOTIFICATIONS & MESSAGE TRAY */
 
+#message-tray {
+  background: darken($bg_color,10%) url("noise-texture.png");
+  background-repeat: repeat;
+  height: 72px;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+  .message-tray-summary { height: 72px; }
+  
+  .message-tray-menu-button {
+    StIcon {
+      padding: 0 20px;
+      color: $fg_color;
+      icon-size: 24px;
+      opacity: 1;
+    }
+    &:hover StIcon { color: lighten($fg_color, 15%); } 
+    &:active StIcon { color: lighten($selected_bg_color, 10%); }
+  } 
+  .no-messages-label { color: darken($fg_color,10%); }
+}
+  .url-highlighter { link-color: $selected_bg_color; }
+  
+  // Banners
+  .notification { 
+    font-size: 11pt;
+    width: 34em;
+    border-radius: 6px 6px 0 0;
+    background-color: transparentize(darken($osd_bg_color,8%),.05);
+    border: 1px solid $osd_borders_color;
+    border-bottom-width: 0;
+    //box-shadow: 0 1px 4px black;
+    spacing-rows: 4px;
+    padding: 8px 8px 4px 8px;
+    spacing-columns: 10px;
+    &.multi-line-notification { padding-bottom: 8px; }
+  }
+  .notification-unexpanded {
+    // We want to force the actor at a specific size, irrespective
+    // of its minimum and preferred size, so we override both
+    min-height: 36px;
+    height: 36px;
+  }
+  // We use row-span = 2 for the image cell, which prevents its height preferences to be
+  // taken into account during allocation, so its height ends up being limited by the height
+  // of the content in the other rows. To avoid showing a stretched image, we set the minimum
+  // height of the table to be ICON_SIZE + IMAGE_SIZE + spacing-rows = 24 + 125 + 10 = 159 
+  .notification-with-image {
+    min-height: 159px;
+  }
+  .notification-body { spacing: 5px; }
+  .notification-actions {
+    paddinf-top: 18px;
+    spacing: 6px;
+  }
+  //Message tray items
+  .summary-source {
+    border-radius: 4px;
+    padding: 6px;
+    transition-duration: 100ms;
+  }
+  .summary-source-button { 
+    &:hover .summary-source,
+    &:selected .summary-source,
+    &:focus .summary-source { background-color: lighten($bg_color,2%); }
+  }
+  .summary-source-counter {
+    font-size: 10pt;
+    font-weight: bold;
+    height: 2.4em; width: 2.4em;
+    -shell-counter-overlap-x: 13px;
+    -shell-counter-overlap-y: 13px;
+    background-color: $selected_bg_color;
+    border: 2px solid $fg_color;
+    box-shadow: 0 2px 2px rgba(0,0,0,0.5);
+  }
+  
+  //Message tray popovers
+  .summary-boxpointer {
+    -arrow-border-radius: 15px;
+    -arrow-background-color: transparentize(darken($osd_bg_color,8%),.05);
+    -arrow-base: 36px;
+    -arrow-rise: 18px;
+    color: $fg_color;
+    -boxpointer-gap: 4px;
+    .notification {
+      border-radius: 9px;
+      border-width: 0; //temporary workaround for border brokenness
+      background-color: transparentize(darken($osd_bg_color,8%),.05) !important;
+      padding-bottom: 12px;
+    }
+    #summary-right-click-menu {
+      padding-top: 12px;
+      padding-bottom: 12px;
+    }
+  }
+  .summary-notification-stack-scrollview {
+    max-height: 24em;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    &:ltr { padding-right: 8px; }
+    &:rtl { padding-left: 8px; }
+  }
+  .notification-scrollview {
+    max-height: 18em;
+    -st-vfade-offset: 24px;
+    &:ltr > StScrollBar { padding-left: 6px; }
+    &:rtl > StScrollBar { padding-right: 6px; }
+  }
+  .notification-button { -st-natural-width: 140px; }
+  .notification-icon-button { 
+    border-radius: 5px; 
+    padding: 5px;
+    &:focus { }//FIXME
+    & > StIcon { icons-size: 16px; padding: 8px; }
+  }
+  .secondary-icon { icon-size: 1.09em; } //FIXME
+
+  //chat bubbles
+  .chat-log-message { color: darken($fg_color,10%); }
+  .chat-empty-line { font-size: 4px; }
+  .chat-received { 
+    padding-left: 4px;
+    &:rtl { padding-left: 0px; padding-right: 4px; }
+  }
+  .chat-sent {
+    padding-left: 18pt;
+    color: darken($fg_color, 15%);
+    &:rtl { padding-left: 0; padding-right: 18pt; }
+  }
+  .chat-meta-message {
+    padding-left: 4px;
+    font-size: 9pt;
+    font-weight: bold;
+    color: darken($fg_color,20%);
+    &:rtl { padding-left: 0; padding-right: 4px; }
+  }
+  .chat-notification-scrollview { max-height: 22em; }
+  .subscription-message { font-style: italic; }
+  
+  //hotplug
+  .hotplug-transient-box {
+    spacing: 6px;
+    padding: 2px 72px 2px 12px;//FIXME wat?
+  }
+    .hotplug-notification-item {
+      padding: 2px 10px;
+      &:focus { padding: 1px 71px 1px 11px; } //FIXME wat?
+    }
+
+    .hotplug-notification-item-icon {
+      icon-size: 24px;
+      padding: 2px 5px;
+    }
+
+    .hotplug-resident-box { spacing: 8px; }
+
+    .hotplug-resident-mount { 
+      spacing: 8px;
+      border-radius: 4px;
+      color: green;
+      &:hover {
+        color: red;
+        background-color: blue;
+      }
+    }
+
+    .hotplug-resident-mount-label {
+      color: inherit;
+      padding-left: 6px;
+    }
+
+    .hotplug-resident-mount-icon {
+      icon-size: 24px;
+      padding-left: 6px;
+    }
+
+    .hotplug-resident-eject-icon {
+      icon-size: 16px;
+    }
+
+    .hotplug-resident-eject-button {
+      padding: 7px;
+      border-radius: 5px;
+      color: pink;
+    }
 
 /* Eeeky things */
 //Mess that is Looking Glass
