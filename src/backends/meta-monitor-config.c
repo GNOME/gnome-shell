@@ -863,16 +863,13 @@ apply_configuration (MetaMonitorConfig  *self,
 		     MetaMonitorManager *manager)
 {
   GPtrArray *crtcs, *outputs;
+  gboolean ret = FALSE;
 
   crtcs = g_ptr_array_new_full (config->n_outputs, (GDestroyNotify)meta_crtc_info_free);
   outputs = g_ptr_array_new_full (config->n_outputs, (GDestroyNotify)meta_output_info_free);
 
   if (!meta_monitor_config_assign_crtcs (config, manager, crtcs, outputs))
-    {
-      g_ptr_array_unref (crtcs);
-      g_ptr_array_unref (outputs);
-      return FALSE;
-    }
+    goto out;
 
   meta_monitor_manager_apply_configuration (manager,
                                             (MetaCRTCInfo**)crtcs->pdata, crtcs->len,
@@ -884,9 +881,12 @@ apply_configuration (MetaMonitorConfig  *self,
    * inside turn_off_laptop_display / apply_configuration_with_lid */
   self->current_is_for_laptop_lid = FALSE;
 
+  ret = TRUE;
+
+ out:
   g_ptr_array_unref (crtcs);
   g_ptr_array_unref (outputs);
-  return TRUE;
+  return ret;
 }
 
 static gboolean
