@@ -15474,6 +15474,46 @@ clutter_actor_grab_key_focus (ClutterActor *self)
     clutter_stage_set_key_focus (CLUTTER_STAGE (stage), self);
 }
 
+static void
+update_pango_context (ClutterBackend *backend,
+                      PangoContext   *context)
+{
+  ClutterSettings *settings;
+  PangoFontDescription *font_desc;
+  const cairo_font_options_t *font_options;
+  gchar *font_name;
+  PangoDirection pango_dir;
+  gdouble resolution;
+
+  settings = clutter_settings_get_default ();
+
+  /* update the text direction */
+  if (clutter_get_default_text_direction () == CLUTTER_TEXT_DIRECTION_RTL)
+    pango_dir = PANGO_DIRECTION_RTL;
+  else
+    pango_dir = PANGO_DIRECTION_LTR;
+
+  pango_context_set_base_dir (context, pango_dir);
+
+  g_object_get (settings, "font-name", &font_name, NULL);
+
+  /* get the configuration for the PangoContext from the backend */
+  font_options = clutter_backend_get_font_options (backend);
+  resolution = clutter_backend_get_resolution (backend);
+
+  font_desc = pango_font_description_from_string (font_name);
+
+  if (resolution < 0)
+    resolution = 96.0; /* fall back */
+
+  pango_context_set_font_description (context, font_desc);
+  pango_cairo_context_set_font_options (context, font_options);
+  pango_cairo_context_set_resolution (context, resolution);
+
+  pango_font_description_free (font_desc);
+  g_free (font_name);
+}
+
 /**
  * clutter_actor_get_pango_context:
  * @self: a #ClutterActor
@@ -15500,16 +15540,23 @@ PangoContext *
 clutter_actor_get_pango_context (ClutterActor *self)
 {
   ClutterActorPrivate *priv;
+  ClutterBackend *backend = clutter_get_default_backend ();
 
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), NULL);
 
   priv = self->priv;
 
-  if (priv->pango_context != NULL)
-    return priv->pango_context;
+  if (G_UNLIKELY (priv->pango_context == NULL))
+    {
+      priv->pango_context = clutter_actor_create_pango_context (self);
 
-  priv->pango_context = _clutter_context_get_pango_context ();
-  g_object_ref (priv->pango_context);
+      g_signal_connect_object (backend, "resolution-changed",
+                               G_CALLBACK (update_pango_context), priv->pango_context, 0);
+      g_signal_connect_object (backend, "font-changed",
+                               G_CALLBACK (update_pango_context), priv->pango_context, 0);
+    }
+  else
+    update_pango_context (backend, priv->pango_context);
 
   return priv->pango_context;
 }
@@ -15533,9 +15580,16 @@ clutter_actor_get_pango_context (ClutterActor *self)
 PangoContext *
 clutter_actor_create_pango_context (ClutterActor *self)
 {
-  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), NULL);
+  CoglPangoFontMap *font_map;
+  PangoContext *context;
 
-  return _clutter_context_create_pango_context ();
+  font_map = COGL_PANGO_FONT_MAP (clutter_get_font_map ());
+
+  context = cogl_pango_font_map_create_context (font_map);
+  update_pango_context (clutter_get_default_backend (), context);
+  pango_context_set_language (context, pango_language_get_default ());
+
+  return context;
 }
 
 /**

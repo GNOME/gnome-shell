@@ -198,8 +198,6 @@ ClutterMainContext *    _clutter_context_get_default                    (void);
 void                    _clutter_context_lock                           (void);
 void                    _clutter_context_unlock                         (void);
 gboolean                _clutter_context_is_initialized                 (void);
-PangoContext *          _clutter_context_create_pango_context           (void);
-PangoContext *          _clutter_context_get_pango_context              (void);
 ClutterPickMode         _clutter_context_get_pick_mode                  (void);
 void                    _clutter_context_push_shader_stack              (ClutterActor *actor);
 ClutterActor *          _clutter_context_pop_shader_stack               (ClutterActor *actor);
