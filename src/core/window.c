@@ -5851,7 +5851,7 @@ update_resize (MetaWindow *window,
   int new_w, new_h;
   int gravity;
   MetaRectangle old;
-  double remaining;
+  double remaining = 0;
   MetaMaximizeFlags new_unmaximize;
 
   window->display->grab_latest_motion_x = x;
