@@ -871,7 +871,6 @@ apply_configuration (MetaMonitorConfig  *self,
     {
       g_ptr_array_unref (crtcs);
       g_ptr_array_unref (outputs);
-      config_unref (config);
       return FALSE;
     }
 
