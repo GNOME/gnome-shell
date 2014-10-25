@@ -408,7 +408,8 @@ commit_pending_state (MetaWaylandSurface      *surface,
     }
   if (pending->input_region)
     {
-      pending->input_region = scale_region (pending->input_region, surface->scale);
+      pending->input_region = scale_region (pending->input_region,
+                                            meta_surface_actor_wayland_get_scale (META_SURFACE_ACTOR_WAYLAND (surface->surface_actor)));
       meta_surface_actor_set_input_region (surface->surface_actor, pending->input_region);
     }
 
