@@ -1451,6 +1451,8 @@ StScrollBar {
   transition-duration: 200ms; }
 
 .app-well-app:active .overview-icon, .app-well-app:checked .overview-icon,
+.app-well-app.app-folder:active .overview-icon,
+.app-well-app.app-folder:checked .overview-icon,
 .show-apps:active .overview-icon,
 .show-apps:checked .overview-icon,
 .grid-search-result:active .overview-icon,
@@ -1458,6 +1460,9 @@ StScrollBar {
   background-color: rgba(23, 25, 26, 0.9);
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.7); }
 .app-well-app:hover .overview-icon, .app-well-app:focus .overview-icon, .app-well-app:selected .overview-icon,
+.app-well-app.app-folder:hover .overview-icon,
+.app-well-app.app-folder:focus .overview-icon,
+.app-well-app.app-folder:selected .overview-icon,
 .show-apps:hover .overview-icon,
 .show-apps:focus .overview-icon,
 .show-apps:selected .overview-icon,
@@ -1477,6 +1482,7 @@ StScrollBar {
 
 .search-provider-icon,
 .list-search-result, .app-well-app .overview-icon,
+.app-well-app.app-folder .overview-icon,
 .show-apps .overview-icon,
 .grid-search-result .overview-icon {
   border-radius: 4px;
