@@ -559,7 +559,7 @@ StScrollBar {
     &:focus .overview-icon,
     &:selected .overview-icon {
       background-color: transparentize($fg_color,.9);
-      transition-duration: 200ms;
+      transition-duration: 0ms;
       border-image: none;
       background-image: none;
     }

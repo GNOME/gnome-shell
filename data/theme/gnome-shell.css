@@ -1470,7 +1470,7 @@ StScrollBar {
 .grid-search-result:focus .overview-icon,
 .grid-search-result:selected .overview-icon {
   background-color: rgba(238, 238, 236, 0.1);
-  transition-duration: 200ms;
+  transition-duration: 0ms;
   border-image: none;
   background-image: none; }
 
