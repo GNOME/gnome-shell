@@ -14,12 +14,6 @@ const Shell = imports.gi.Shell;
 const MSECS_IN_DAY = 24 * 60 * 60 * 1000;
 const SHOW_WEEKDATE_KEY = 'show-weekdate';
 const ELLIPSIS_CHAR = '\u2026';
-const EventEllipses = {
-    NONE: 0,
-    BEFORE: 1 << 0,
-    AFTER: 1 << 1,
-    BOTH: ~0
-};
 
 // alias to prevent xgettext from picking up strings translated in GTK+
 const gtk30_ = Gettext_gtk30.gettext;
@@ -62,18 +56,6 @@ function _getEndOfDay(date) {
     ret.setMinutes(59);
     ret.setSeconds(59);
     ret.setMilliseconds(999);
-    return ret;
-}
-
-function _ellipsizeEventTime(event, periodBegin, periodEnd) {
-    if (event.allDay)
-        return EventEllipses.NONE;
-
-    let ret = EventEllipses.NONE;
-    if (event.date < periodBegin)
-        ret = EventEllipses.BEFORE;
-    if (event.end > periodEnd)
-        ret |= EventEllipses.AFTER;
     return ret;
 }
 
@@ -778,16 +760,15 @@ const EventsList = new Lang.Class({
         timeLabel.clutter_text.line_wrap = false;
         timeLabel.clutter_text.ellipsize = false;
 
-        let ellipses = _ellipsizeEventTime(event, periodBegin, periodEnd);
         let preEllipsisLabel = new St.Label({ style_class: 'events-day-time-ellipses',
                                               text: ELLIPSIS_CHAR,
                                               y_align: Clutter.ActorAlign.START });
         let postEllipsisLabel = new St.Label({ style_class: 'events-day-time-ellipses',
                                                text: ELLIPSIS_CHAR,
                                                y_align: Clutter.ActorAlign.START });
-        if (!(ellipses & EventEllipses.BEFORE))
+        if (event.allDay || event.date >= periodBegin)
             preEllipsisLabel.opacity = 0;
-        if (!(ellipses & EventEllipses.AFTER))
+        if (event.allDay || event.end <= periodEnd)
             postEllipsisLabel.opacity = 0;
 
         let timeLabelBoxLayout = new St.BoxLayout();
