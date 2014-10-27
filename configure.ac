@@ -232,7 +232,9 @@ esac
 AM_CFLAGS="$AM_CFLAGS $WARN_CFLAGS"
 AC_SUBST(AM_CFLAGS)
 
-BROWSER_PLUGIN_DIR="${BROWSER_PLUGIN_DIR:-"\${libdir}/mozilla/plugins"}"
+if test -z "${BROWSER_PLUGIN_DIR}"; then
+  BROWSER_PLUGIN_DIR="\${libdir}/mozilla/plugins"
+fi
 AC_ARG_VAR([BROWSER_PLUGIN_DIR],[Where to install the plugin to])
 
 AC_CONFIG_FILES([
