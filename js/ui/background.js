@@ -172,6 +172,7 @@ const BackgroundCache = new Lang.Class({
                 }));
                 GLib.Source.set_name_by_id(id, '[gnome-shell] params.onLoaded');
             }
+            return;
         }
 
         let animation = new Animation({ file: params.file });
