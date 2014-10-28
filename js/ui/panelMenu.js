@@ -13,92 +13,16 @@ const Main = imports.ui.main;
 const Params = imports.misc.params;
 const PopupMenu = imports.ui.popupMenu;
 
-const ButtonBox = new Lang.Class({
-    Name: 'ButtonBox',
-
-    _init: function(params) {
-        params = Params.parse(params, { style_class: 'panel-button' }, true);
-        this.actor = new Shell.GenericContainer(params);
-        this.actor._delegate = this;
-
-        this.container = new St.Bin({ y_fill: true,
-                                      x_fill: true,
-                                      child: this.actor });
-
-        this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
-        this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
-        this.actor.connect('allocate', Lang.bind(this, this._allocate));
-
-        this.actor.connect('style-changed', Lang.bind(this, this._onStyleChanged));
-        this._minHPadding = this._natHPadding = 0.0;
-    },
-
-    _onStyleChanged: function(actor) {
-        let themeNode = actor.get_theme_node();
-
-        this._minHPadding = themeNode.get_length('-minimum-hpadding');
-        this._natHPadding = themeNode.get_length('-natural-hpadding');
-    },
-
-    _getPreferredWidth: function(actor, forHeight, alloc) {
-        let child = actor.get_first_child();
-
-        if (child) {
-            [alloc.min_size, alloc.natural_size] = child.get_preferred_width(-1);
-        } else {
-            alloc.min_size = alloc.natural_size = 0;
-        }
-
-        alloc.min_size += 2 * this._minHPadding;
-        alloc.natural_size += 2 * this._natHPadding;
-    },
-
-    _getPreferredHeight: function(actor, forWidth, alloc) {
-        let child = actor.get_first_child();
-
-        if (child) {
-            [alloc.min_size, alloc.natural_size] = child.get_preferred_height(-1);
-        } else {
-            alloc.min_size = alloc.natural_size = 0;
-        }
-    },
-
-    _allocate: function(actor, box, flags) {
-        let child = actor.get_first_child();
-        if (!child)
-            return;
-
-        let [minWidth, natWidth] = child.get_preferred_width(-1);
-
-        let availWidth = box.x2 - box.x1;
-        let availHeight = box.y2 - box.y1;
-
-        let childBox = new Clutter.ActorBox();
-        if (natWidth + 2 * this._natHPadding <= availWidth) {
-            childBox.x1 = this._natHPadding;
-            childBox.x2 = availWidth - this._natHPadding;
-        } else {
-            childBox.x1 = this._minHPadding;
-            childBox.x2 = availWidth - this._minHPadding;
-        }
-
-        childBox.y1 = 0;
-        childBox.y2 = availHeight;
-
-        child.allocate(childBox, flags);
-    },
-});
-
 const Button = new Lang.Class({
     Name: 'PanelMenuButton',
-    Extends: ButtonBox,
 
     _init: function(menuAlignment, nameText, dontCreateMenu) {
-        this.parent({ reactive: true,
-                      can_focus: true,
-                      track_hover: true,
-                      accessible_name: nameText ? nameText : "",
-                      accessible_role: Atk.Role.MENU });
+        this.actor = new St.Bin({ style_class: 'panel-button',
+                                  reactive: true,
+                                  can_focus: true,
+                                  track_hover: true,
+                                  accessible_name: nameText ? nameText : "",
+                                  accessible_role: Atk.Role.MENU });
 
         this.actor.connect('event', Lang.bind(this, this._onEvent));
         this.actor.connect('notify::visible', Lang.bind(this, this._onVisibilityChanged));
@@ -177,8 +101,6 @@ const Button = new Lang.Class({
     },
 
     destroy: function() {
-        this.actor._delegate = null;
-
         if (this.menu)
             this.menu.destroy();
         this.actor.destroy();
