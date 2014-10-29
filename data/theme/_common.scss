@@ -256,7 +256,7 @@ StScrollBar {
     -panel-corner-border-width: 2px;
     -panel-corner-border-color: transparent; 
     
-    &:active, &:overview, &:focus { -panel-corner-border-color: #729fcf; } //fixed due to SVG image-border
+    &:active, &:overview, &:focus { -panel-corner-border-color: lighten($selected_bg_color,5%); } 
     &.lock-screen, &.login-screen, &unlock-screen {
       -panel-corner-radius: 0;
       -panel-corner-background-color: transparent;
@@ -269,7 +269,7 @@ StScrollBar {
     font-weight: bold;
     color: #ccc;
     transition-duration: 100ms;
-   
+    padding: 2px;
     #appMenuIcon { 
       app-icon-bottom-clip: 1px;
       
@@ -287,7 +287,9 @@ StScrollBar {
     }
     
     &:active, &:overview, &:focus, &:checked {
-      border-image: url("panel-button-border.svg") 6 10 0 2;
+      border-color: lighten($selected_bg_color,5%);
+      border-bottom-width: 2px;
+      padding: 2px 2px 0 2px;
       color: lighten($fg_color,10%);
       text-shadow: black 0px 2px 2px;
       
@@ -306,7 +308,8 @@ StScrollBar {
   .panel-status-button {
   
     &:active, &:overview, &:focus, &:checked {
-      border-image: url("panel-button-border.svg") 6 10 0 2;
+      border-color: lighten($selected_bg_color,5%);
+      border-bottom-width: 2px;
     }
   }
   
