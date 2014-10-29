@@ -26,6 +26,7 @@
 
 #include <meta/meta-backend.h>
 #include "meta-backend-private.h"
+#include "meta-input-settings-private.h"
 
 #include "backends/x11/meta-backend-x11.h"
 #include "meta-stage.h"
@@ -55,6 +56,7 @@ struct _MetaBackendPrivate
 {
   MetaMonitorManager *monitor_manager;
   MetaCursorRenderer *cursor_renderer;
+  MetaInputSettings *input_settings;
 
   ClutterActor *stage;
 };
@@ -69,6 +71,7 @@ meta_backend_finalize (GObject *object)
   MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
 
   g_clear_object (&priv->monitor_manager);
+  g_clear_object (&priv->input_settings);
 
   g_hash_table_destroy (backend->device_monitors);
 
@@ -185,6 +188,8 @@ meta_backend_real_post_init (MetaBackend *backend)
 
     g_slist_free (devices);
   }
+
+  priv->input_settings = meta_input_settings_create ();
 }
 
 static MetaCursorRenderer *
