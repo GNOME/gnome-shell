@@ -31,6 +31,7 @@
 
 #include "meta-backend-private.h"
 #include "meta-input-settings-private.h"
+#include "x11/meta-input-settings-x11.h"
 
 #include <meta/util.h>
 
@@ -603,5 +604,8 @@ meta_input_settings_init (MetaInputSettings *settings)
 MetaInputSettings *
 meta_input_settings_create (void)
 {
+  if (!meta_is_wayland_compositor ())
+    return g_object_new (META_TYPE_INPUT_SETTINGS_X11, NULL);
+
   return NULL;
 }
