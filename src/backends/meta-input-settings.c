@@ -33,6 +33,11 @@
 #include "meta-input-settings-private.h"
 #include "x11/meta-input-settings-x11.h"
 
+#ifdef HAVE_NATIVE_BACKEND
+#include "native/meta-backend-native.h"
+#include "native/meta-input-settings-native.h"
+#endif
+
 #include <meta/util.h>
 
 typedef struct _MetaInputSettingsPrivate MetaInputSettingsPrivate;
@@ -604,6 +609,14 @@ meta_input_settings_init (MetaInputSettings *settings)
 MetaInputSettings *
 meta_input_settings_create (void)
 {
+#ifdef HAVE_NATIVE_BACKEND
+  MetaBackend *backend;
+
+  backend = meta_get_backend ();
+
+  if (META_IS_BACKEND_NATIVE (backend))
+    return g_object_new (META_TYPE_INPUT_SETTINGS_NATIVE, NULL);
+#endif
   if (!meta_is_wayland_compositor ())
     return g_object_new (META_TYPE_INPUT_SETTINGS_X11, NULL);
 

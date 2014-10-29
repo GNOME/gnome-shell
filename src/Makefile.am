@@ -275,6 +275,8 @@ libmutter_la_SOURCES +=					\
 	backends/native/meta-cursor-renderer-native.h	\
 	backends/native/meta-idle-monitor-native.c	\
 	backends/native/meta-idle-monitor-native.h	\
+	backends/native/meta-input-settings-native.c	\
+	backends/native/meta-input-settings-native.h	\
 	backends/native/meta-monitor-manager-kms.c	\
 	backends/native/meta-monitor-manager-kms.h	\
 	backends/native/meta-launcher.c			\
