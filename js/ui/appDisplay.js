@@ -379,9 +379,7 @@ const AllView = new Lang.Class({
         this.actor.add_actor(this._scrollView);
 
         this._scrollView.set_policy(Gtk.PolicyType.NEVER,
-                                    Gtk.PolicyType.AUTOMATIC);
-        // we are only using ScrollView for the fade effect, hide scrollbars
-        this._scrollView.vscroll.hide();
+                                    Gtk.PolicyType.EXTERNAL);
         this._adjustment = this._scrollView.vscroll.adjustment;
 
         this._pageIndicators = new PageIndicators();
