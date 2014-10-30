@@ -1,3 +1,15 @@
+3.15.1
+======
+* Use GResources for theme loading [Cosimo; #736936]
+* Fix headerbar drag getting stuck on xwayland [Carlos; #738411]
+* Fix wayland hiDPI regressions [Adel; #739161]
+* Misc bug fixes and cleanups [Jasper, Rui, Carlos; #662962, #738630, #738888,
+  #738890]
+
+Contributors:
+  Cosimo Cecchi, Adel Gadllah, Carlos Garnacho, Rui Matos, Florian Müllner,
+  Jasper St. Pierre
+
 3.14.1
 ======
 * Fix move-titlebar-onscreen function [Florian; #736915]
