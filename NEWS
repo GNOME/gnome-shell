@@ -1,3 +1,20 @@
+3.15.1
+======
+* Use GResources for theme loading [Cosimo; #736936]
+* Reset the OSK to primary on monitor changes [Rui; #738536]
+* Use LC_TIME locale for format string translations [Florian; #738640]
+* Summarize queued up notifications [Devyani; #702460]
+* Improve handling of multi-day events [Andreas; #727302]
+* Support EXTERNAL scroll policy type [Florian; #739379]
+* Misc. bugfixes [Owen, Rui; #738652, #739252]
+
+Contributors:
+  Andreas Brauchli, Cosimo Cecchi, Devyani Kota, Rui Matos, Florian Müllner,
+  Jasper St. Pierre, Owen W. Taylor
+
+Translations:
+  Bahodir Mansurov [uz@cyrillic]
+
 3.14.1
 ======
 * Fix pulse animation for scrolled app folders [Florian; #736885]
