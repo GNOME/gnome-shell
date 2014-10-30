@@ -1,3 +1,13 @@
+3.14.1.5
+========
+* Fix handing of SystemBackground [Owen; #738652]
+* Summarize queued up notifications [Devyani; #702460]
+* Plug an animation object leak [Rui; #739252]
+* Improve handling of multi-day events [Andreas; #727302]
+
+Contributors:
+  Andreas Brauchli, Devyani Kota, Rui Matos, Owen W. Taylor
+
 3.14.1
 ======
 * Fix pulse animation for scrolled app folders [Florian; #736885]
