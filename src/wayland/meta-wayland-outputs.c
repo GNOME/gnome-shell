@@ -75,6 +75,14 @@ compute_scale (MetaOutput *output)
       output->crtc->rect.width >= SMALLEST_4K_WIDTH)
     goto out;
 
+  /* Somebody encoded the aspect ratio (16/9 or 16/10)
+   * instead of the physical size */
+  if ((output->width_mm == 160 && output->height_mm == 90) ||
+      (output->width_mm == 160 && output->height_mm == 100) ||
+      (output->width_mm == 16 && output->height_mm == 9) ||
+      (output->width_mm == 16 && output->height_mm == 10))
+    goto out;
+
   if (output->width_mm > 0 && output->height_mm > 0)
     {
       double dpi_x, dpi_y;
