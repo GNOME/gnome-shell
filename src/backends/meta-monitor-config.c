@@ -914,6 +914,19 @@ laptop_display_is_on (MetaConfiguration *config)
   return FALSE;
 }
 
+static gboolean
+multiple_outputs_are_enabled (MetaConfiguration *config)
+{
+  unsigned int i, enabled;
+
+  enabled = 0;
+  for (i = 0; i < config->n_outputs; i++)
+    if (config->outputs[i].enabled)
+      enabled++;
+
+  return enabled > 1;
+}
+
 static MetaConfiguration *
 make_laptop_lid_config (MetaConfiguration  *reference)
 {
@@ -923,7 +936,7 @@ make_laptop_lid_config (MetaConfiguration  *reference)
   int x_after, y_after;
   int x_offset, y_offset;
 
-  g_assert (reference->n_outputs > 1);
+  g_assert (multiple_outputs_are_enabled (reference));
 
   new = config_new ();
   new->n_outputs = reference->n_outputs;
@@ -986,7 +999,7 @@ apply_configuration_with_lid (MetaMonitorConfig  *self,
                               MetaMonitorManager *manager)
 {
   if (self->lid_is_closed &&
-      config->n_outputs > 1 &&
+      multiple_outputs_are_enabled (config) &&
       laptop_display_is_on (config))
     {
       MetaConfiguration *laptop_lid_config = make_laptop_lid_config (config);
@@ -1353,7 +1366,7 @@ turn_off_laptop_display (MetaMonitorConfig  *self,
 {
   MetaConfiguration *new;
 
-  if (self->current->n_outputs == 1)
+  if (!multiple_outputs_are_enabled (self->current))
     return;
 
   new = make_laptop_lid_config (self->current);
