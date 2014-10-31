@@ -604,9 +604,15 @@ const NetworkAgent = new Lang.Class({
     Name: 'NetworkAgent',
 
     _init: function() {
-        this._native = new Shell.NetworkAgent({ identifier: 'org.gnome.Shell.NetworkAgent',
-                                                capabilities: NMClient.SecretAgentCapabilities.VPN_HINTS
-                                              });
+        try {
+            this._native = new Shell.NetworkAgent({ identifier: 'org.gnome.Shell.NetworkAgent',
+                                                    capabilities: NMClient.SecretAgentCapabilities.VPN_HINTS
+                                                  });
+        } catch(e) {
+            // Support older versions without NetworkAgent:capabilities
+            this._native = new Shell.NetworkAgent({ identifier: 'org.gnome.Shell.NetworkAgent'
+                                                  });
+        }
 
         this._dialogs = { };
         this._vpnRequests = { };
