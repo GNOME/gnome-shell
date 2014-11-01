@@ -1562,10 +1562,11 @@ const AppIcon = new Lang.Class({
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
 
         this._menuTimeoutId = 0;
-        this._stateChangedId = this.app.connect('notify::state',
-                                                Lang.bind(this,
-                                                          this._onStateChanged));
-        this._onStateChanged();
+        this._stateChangedId = this.app.connect('notify::state', Lang.bind(this,
+            function () {
+                this._updateRunningStyle();
+            }));
+        this._updateRunningStyle();
     },
 
     _onDestroy: function() {
@@ -1586,7 +1587,7 @@ const AppIcon = new Lang.Class({
         }
     },
 
-    _onStateChanged: function() {
+    _updateRunningStyle: function() {
         if (this.app.state != Shell.AppState.STOPPED)
             this.actor.add_style_class_name('running');
         else
