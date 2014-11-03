@@ -1081,6 +1081,21 @@ find_primary_output (MetaOutput *outputs,
   return best;
 }
 
+static void
+init_config_from_preferred_mode (MetaOutputConfig *config,
+                                 MetaOutput *output)
+{
+  config->enabled = TRUE;
+  config->rect.x = 0;
+  config->rect.y = 0;
+  config->rect.width = output.preferred_mode->width;
+  config->rect.height = output.preferred_mode->height;
+  config->refresh_rate = output.preferred_mode->refresh_rate;
+  config->transform = META_MONITOR_TRANSFORM_NORMAL;
+  config->is_primary = FALSE;
+  confog->is_presentation = FALSE;
+}
+
 static MetaConfiguration *
 make_default_config (MetaMonitorConfig *self,
                      MetaOutput        *outputs,
@@ -1101,15 +1116,8 @@ make_default_config (MetaMonitorConfig *self,
      nothing else to do */
   if (n_outputs == 1)
     {
-      ret->outputs[0].enabled = TRUE;
-      ret->outputs[0].rect.x = 0;
-      ret->outputs[0].rect.y = 0;
-      ret->outputs[0].rect.width = outputs[0].preferred_mode->width;
-      ret->outputs[0].rect.height = outputs[0].preferred_mode->height;
-      ret->outputs[0].refresh_rate = outputs[0].preferred_mode->refresh_rate;
-      ret->outputs[0].transform = META_MONITOR_TRANSFORM_NORMAL;
+      init_config_from_preferred_mode (&ret->outputs[0], &outputs[0]);
       ret->outputs[0].is_primary = TRUE;
-
       return ret;
     }
 
@@ -1153,15 +1161,7 @@ make_default_config (MetaMonitorConfig *self,
                 }
               else
                 {
-                  ret->outputs[j].enabled = TRUE;
-                  ret->outputs[j].rect.x = 0;
-                  ret->outputs[j].rect.y = 0;
-                  ret->outputs[j].rect.width = outputs[0].preferred_mode->width;
-                  ret->outputs[j].rect.height = outputs[0].preferred_mode->height;
-                  ret->outputs[j].refresh_rate = outputs[0].preferred_mode->refresh_rate;
-                  ret->outputs[j].transform = META_MONITOR_TRANSFORM_NORMAL;
-                  ret->outputs[j].is_primary = FALSE;
-                  ret->outputs[j].is_presentation = FALSE;
+                  init_config_from_preferred_mode (&ret->outputs[j], &outputs[0]);
                 }
             }
 
@@ -1186,22 +1186,24 @@ make_default_config (MetaMonitorConfig *self,
   x = primary->preferred_mode->width;
   for (i = 0; i < n_outputs; i++)
     {
-      MetaOutput *output = &outputs[i];
+      gboolean is_primary = (outputs[i] == primary);
 
-      ret->outputs[i].enabled = TRUE;
-      ret->outputs[i].rect.x = (output == primary) ? 0 : x;
-      ret->outputs[i].rect.y = 0;
-      ret->outputs[i].rect.width = output->preferred_mode->width;
-      ret->outputs[i].rect.height = output->preferred_mode->height;
-      ret->outputs[i].refresh_rate = output->preferred_mode->refresh_rate;
-      ret->outputs[i].transform = META_MONITOR_TRANSFORM_NORMAL;
-      ret->outputs[i].is_primary = (output == primary);
+      init_config_from_preferred_mode (&ret->outputs[i], &outputs[i]);
+      ret->outputs[i].is_primary = is_primary;
+
+      if (is_primary)
+        {
+          ret->outputs[i].rect = 0;
+        }
+      else
+        {
+          ret->outputs[i].rect.x = x;
+          x += ret->outputs[i].rect.width;
+        }
 
       /* Disable outputs that would go beyond framebuffer limits */
       if (ret->outputs[i].rect.x + ret->outputs[i].rect.width > max_width)
         ret->outputs[i].enabled = FALSE;
-      else if (output != primary)
-        x += output->preferred_mode->width;
     }
 
   return ret;
@@ -1232,17 +1234,11 @@ ensure_at_least_one_output (MetaMonitorConfig  *self,
 
   for (i = 0; i < n_outputs; i++)
     {
-      MetaOutput *output = &outputs[i];
+      gboolean is_primary = (outputs[i] == primary);
 
-      if (output == primary)
+      if (is_primary)
         {
-          config->outputs[i].enabled = TRUE;
-          config->outputs[i].rect.x = 0;
-          config->outputs[i].rect.y = 0;
-          config->outputs[i].rect.width = output->preferred_mode->width;
-          config->outputs[i].rect.height = output->preferred_mode->height;
-          config->outputs[i].refresh_rate = output->preferred_mode->refresh_rate;
-          config->outputs[i].transform = META_MONITOR_TRANSFORM_NORMAL;
+          init_config_from_preferred_mode (&config->outputs[i], &outputs[0]);
           config->outputs[i].is_primary = TRUE;
         }
       else
