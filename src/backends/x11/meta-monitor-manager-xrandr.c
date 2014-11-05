@@ -140,6 +140,30 @@ meta_monitor_transform_from_xrandr_all (Rotation rotation)
 }
 
 static gboolean
+output_get_property_exists (MetaMonitorManagerXrandr *manager_xrandr,
+                            MetaOutput *output, const char *propname)
+{
+  gboolean exists = FALSE;
+  Atom atom, actual_type;
+  int actual_format;
+  unsigned long nitems, bytes_after;
+  unsigned char *buffer;
+
+  atom = XInternAtom (manager_xrandr->xdisplay, propname, False);
+  XRRGetOutputProperty (manager_xrandr->xdisplay,
+                        (XID)output->winsys_id,
+                        atom,
+                        0, G_MAXLONG, False, False, AnyPropertyType,
+                        &actual_type, &actual_format,
+                        &nitems, &bytes_after, &buffer);
+
+  exists = (actual_type != None);
+
+  XFree (buffer);
+  return exists;
+}
+
+static gboolean
 output_get_boolean_property (MetaMonitorManagerXrandr *manager_xrandr,
                              MetaOutput *output, const char *propname)
 {
@@ -329,7 +353,7 @@ static gboolean
 output_get_hotplug_mode_update (MetaMonitorManagerXrandr *manager_xrandr,
                                 MetaOutput               *output)
 {
-  return output_get_boolean_property (manager_xrandr, output, "hotplug_mode_update");
+  return output_get_property_exists (manager_xrandr, output, "hotplug_mode_update");
 }
 
 static char *
