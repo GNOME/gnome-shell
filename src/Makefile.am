@@ -6,6 +6,7 @@ lib_LTLIBRARIES = libmutter.la
 SUBDIRS=compositor/plugins
 
 EXTRA_DIST =
+NULL =
 
 AM_CPPFLAGS = \
 	-DCLUTTER_ENABLE_COMPOSITOR_API					\
@@ -31,26 +32,30 @@ AM_CPPFLAGS = \
 	-DMUTTER_PKGLIBDIR=\"$(pkglibdir)\"				\
 	-DMUTTER_PLUGIN_DIR=\"$(MUTTER_PLUGIN_DIR)\"			\
 	-DGETTEXT_PACKAGE=\"$(GETTEXT_PACKAGE)\"			\
-	-DXWAYLAND_PATH=\"$(XWAYLAND_PATH)\"
+	-DXWAYLAND_PATH=\"$(XWAYLAND_PATH)\"				\
+	$(NULL)
 
 mutter_built_sources = \
 	$(dbus_idle_built_sources)		\
 	$(dbus_display_config_built_sources)	\
 	$(dbus_login1_built_sources)		\
 	mutter-enum-types.h 			\
-	mutter-enum-types.c
+	mutter-enum-types.c			\
+	$(NULL)
 
 if HAVE_WAYLAND
 mutter_built_sources += \
 	gtk-shell-protocol.c			\
 	gtk-shell-server-protocol.h		\
 	xdg-shell-protocol.c			\
-	xdg-shell-server-protocol.h
+	xdg-shell-server-protocol.h		\
+	$(NULL)
 endif
 
-wayland_protocols = \
+wayland_protocols =				\
 	wayland/protocol/gtk-shell.xml		\
-	wayland/protocol/xdg-shell.xml
+	wayland/protocol/xdg-shell.xml		\
+	$(NULL)
 
 libmutter_la_SOURCES =				\
 	backends/meta-backend.c			\
@@ -220,7 +225,8 @@ libmutter_la_SOURCES =				\
 	x11/window-x11-private.h		\
 	x11/xprops.c				\
 	x11/xprops.h				\
-	x11/mutter-Xatomtype.h
+	x11/mutter-Xatomtype.h			\
+	$(NULL)
 
 if HAVE_WAYLAND
 libmutter_la_SOURCES +=				\
@@ -253,7 +259,8 @@ libmutter_la_SOURCES +=				\
 	wayland/meta-wayland-outputs.c		\
 	wayland/meta-wayland-outputs.h		\
 	wayland/window-wayland.c		\
-	wayland/window-wayland.h
+	wayland/window-wayland.h		\
+	$(NULL)
 endif
 
 if HAVE_NATIVE_BACKEND
@@ -269,11 +276,11 @@ libmutter_la_SOURCES +=					\
 	backends/native/meta-launcher.c			\
 	backends/native/meta-launcher.h			\
 	backends/native/dbus-utils.c			\
-	backends/native/dbus-utils.h
+	backends/native/dbus-utils.h			\
+	$(NULL)
 endif
 
-nodist_libmutter_la_SOURCES =			\
-	$(mutter_built_sources)
+nodist_libmutter_la_SOURCES = $(mutter_built_sources)
 
 libmutter_la_LDFLAGS = -no-undefined
 libmutter_la_LIBADD  = $(MUTTER_LIBS) $(MUTTER_NATIVE_BACKEND_LIBS)
@@ -308,7 +315,8 @@ libmutterinclude_headers =			\
 	meta/types.h				\
 	meta/util.h				\
 	meta/window.h				\
-	meta/workspace.h
+	meta/workspace.h			\
+	$(NULL)
 
 libmutterinclude_built_headers =		\
 	meta/meta-version.h
@@ -389,14 +397,15 @@ DISTCLEANFILES = 				\
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libmutter.pc
 
-EXTRA_DIST +=				\
-	$(wayland_protocols)		\
-	libmutter.pc.in \
-	mutter-enum-types.h.in \
-	mutter-enum-types.c.in \
-	org.freedesktop.login1.xml	\
+EXTRA_DIST +=					\
+	$(wayland_protocols)			\
+	libmutter.pc.in				\
+	mutter-enum-types.h.in			\
+	mutter-enum-types.c.in			\
+	org.freedesktop.login1.xml		\
 	org.gnome.Mutter.DisplayConfig.xml	\
-	org.gnome.Mutter.IdleMonitor.xml
+	org.gnome.Mutter.IdleMonitor.xml	\
+	$(NULL)
 
 BUILT_SOURCES =					\
 	$(mutter_built_sources)			\
