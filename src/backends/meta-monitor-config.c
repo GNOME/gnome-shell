@@ -1088,12 +1088,12 @@ init_config_from_preferred_mode (MetaOutputConfig *config,
   config->enabled = TRUE;
   config->rect.x = 0;
   config->rect.y = 0;
-  config->rect.width = output.preferred_mode->width;
-  config->rect.height = output.preferred_mode->height;
-  config->refresh_rate = output.preferred_mode->refresh_rate;
+  config->rect.width = output->preferred_mode->width;
+  config->rect.height = output->preferred_mode->height;
+  config->refresh_rate = output->preferred_mode->refresh_rate;
   config->transform = META_MONITOR_TRANSFORM_NORMAL;
   config->is_primary = FALSE;
-  confog->is_presentation = FALSE;
+  config->is_presentation = FALSE;
 }
 
 static MetaConfiguration *
@@ -1186,14 +1186,14 @@ make_default_config (MetaMonitorConfig *self,
   x = primary->preferred_mode->width;
   for (i = 0; i < n_outputs; i++)
     {
-      gboolean is_primary = (outputs[i] == primary);
+      gboolean is_primary = (&outputs[i] == primary);
 
       init_config_from_preferred_mode (&ret->outputs[i], &outputs[i]);
       ret->outputs[i].is_primary = is_primary;
 
       if (is_primary)
         {
-          ret->outputs[i].rect = 0;
+          ret->outputs[i].rect.x = 0;
         }
       else
         {
@@ -1234,7 +1234,7 @@ ensure_at_least_one_output (MetaMonitorConfig  *self,
 
   for (i = 0; i < n_outputs; i++)
     {
-      gboolean is_primary = (outputs[i] == primary);
+      gboolean is_primary = (&outputs[i] == primary);
 
       if (is_primary)
         {
