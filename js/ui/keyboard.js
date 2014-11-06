@@ -187,14 +187,7 @@ const Keyboard = new Lang.Class({
         this._watchNameId = Gio.bus_watch_name(Gio.BusType.SESSION, CURSOR_BUS_NAME, 0,
                                                Lang.bind(this, this._sync),
                                                Lang.bind(this, this._sync));
-        this._daemonProxy = new CaribouDaemonProxy(Gio.DBus.session, CARIBOU_BUS_NAME,
-                                                   CARIBOU_OBJECT_PATH,
-                                                   Lang.bind(this, function(proxy, error) {
-                                                       if (error) {
-                                                           log(error.message);
-                                                           return;
-                                                       }
-                                                   }));
+        this._daemonProxy = null;
         this._cursorProxy = new CursorManagerProxy(Gio.DBus.session, CURSOR_BUS_NAME,
                                                    CURSOR_OBJECT_PATH,
                                                    Lang.bind(this, function(proxy, error) {
@@ -256,15 +249,28 @@ const Keyboard = new Lang.Class({
         this.actor = null;
 
         this._destroySource();
-        this._daemonProxy.QuitRemote(function (result, error) {
-            if (error) {
-                log(error.message);
-                return;
-            }
-        });
+        if (this._daemonProxy) {
+            this._daemonProxy.QuitRemote(function (result, error) {
+                if (error) {
+                    log(error.message);
+                    return;
+                }
+            });
+            this._daemonProxy = null;
+        }
     },
 
     _setupKeyboard: function() {
+        if (!this._daemonProxy) {
+            this._daemonProxy = new CaribouDaemonProxy(Gio.DBus.session, CARIBOU_BUS_NAME,
+                                                       CARIBOU_OBJECT_PATH,
+                                                       Lang.bind(this, function(proxy, error) {
+                                                           if (error) {
+                                                               log(error.message);
+                                                               return;
+                                                           }
+                                                       }));
+        }
         this._daemonProxy.RunRemote(function (result, error) {
             if (error) {
                 log(error.message);
