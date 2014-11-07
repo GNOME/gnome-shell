@@ -81,7 +81,6 @@ const AppSwitcherPopup = new Lang.Class({
             let leftPadding = this.actor.get_theme_node().get_padding(St.Side.LEFT);
             let rightPadding = this.actor.get_theme_node().get_padding(St.Side.RIGHT);
             let bottomPadding = this.actor.get_theme_node().get_padding(St.Side.BOTTOM);
-            let vPadding = this.actor.get_theme_node().get_vertical_padding();
             let hPadding = leftPadding + rightPadding;
 
             let icon = this._items[this._selectedIndex].actor;
