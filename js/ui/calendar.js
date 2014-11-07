@@ -74,7 +74,7 @@ function _formatEventTime(event, clockFormat, periodBegin, periodEnd) {
         case '24h':
             /* Translators: Shown in calendar event list, if 24h format,
                \u2236 is a ratio character, similar to : */
-            ret = date.toLocaleFormat(C_("event list time", "%H\u2236%M"));
+            ret = date.toLocaleFormat(C_("event list time", "%k\u2236%M"));
             break;
 
         default:
