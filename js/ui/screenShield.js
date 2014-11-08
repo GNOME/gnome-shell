@@ -85,7 +85,7 @@ const Clock = new Lang.Class({
         let date = new Date();
         /* Translators: This is a time format for a date in
            long format */
-        let dateFormat = Shell.util_translate_time_string("%A, %B %d");
+        let dateFormat = Shell.util_translate_time_string(N_("%A, %B %d"));
         this._date.text = date.toLocaleFormat(dateFormat);
     },
 
