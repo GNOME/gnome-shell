@@ -2,23 +2,23 @@
 # Copyright (C) 2011 gnome-shell's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-shell package.
 # FULL NAME <EMAIL@ADDRESS>, 2011.
-# Daniel Martinez <dmartinez@src.gnome.org>, 2011, 2014.
+# Daniel Martinez <entaltoaragon@gmail.com>, 2011, 2014.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-11-04 08:29+0000\n"
-"PO-Revision-Date: 2014-11-04 21:01+0100\n"
-"Last-Translator: Jorge Pérez Pérez <jorgtum@gmail.com>\n"
+"POT-Creation-Date: 2014-11-08 08:31+0000\n"
+"PO-Revision-Date: 2014-11-08 19:15+0100\n"
+"Last-Translator: Daniel Martinez <entaltoaragon@gmail.com>\n"
 "Language-Team: Aragonés <softaragones@googlegroups.com>\n"
 "Language: an\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.6.10\n"
+"X-Generator: Gtranslator 2.91.6\n"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
 msgid "System"
@@ -302,8 +302,9 @@ msgstr ""
 "Retardo en cambiar o foco d'o churi dica que o puntero deixa de mover-se"
 
 #: ../data/org.gnome.Shell.PortalHelper.desktop.in.h:1
-msgid "Captive Portal"
-msgstr "Portal captivo"
+#| msgid "Network error"
+msgid "Network Login"
+msgstr "Encetar sesión en o rete"
 
 #: ../js/extensionPrefs/main.js:123
 #, javascript-format
@@ -394,19 +395,19 @@ msgstr "Freqüent"
 msgid "All"
 msgstr "Todas"
 
-#: ../js/ui/appDisplay.js:1788
+#: ../js/ui/appDisplay.js:1789
 msgid "New Window"
 msgstr "Finestra nueva"
 
-#: ../js/ui/appDisplay.js:1814 ../js/ui/dash.js:285
+#: ../js/ui/appDisplay.js:1815 ../js/ui/dash.js:285
 msgid "Remove from Favorites"
 msgstr "Sacar d'os favoritos"
 
-#: ../js/ui/appDisplay.js:1820
+#: ../js/ui/appDisplay.js:1821
 msgid "Add to Favorites"
 msgstr "Anyadir a os favoritos"
 
-#: ../js/ui/appDisplay.js:1829
+#: ../js/ui/appDisplay.js:1830
 msgid "Show Details"
 msgstr "Amostrar detalles"
 
@@ -429,17 +430,23 @@ msgstr "Configuración"
 msgid "Change Background…"
 msgstr "Cambiar o fondo…"
 
+#. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday). */
+#: ../js/ui/calendar.js:39
+msgctxt "calendar-no-work"
+msgid "06"
+msgstr "06"
+
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #. */
-#: ../js/ui/calendar.js:70
+#: ../js/ui/calendar.js:68
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Tot o diya"
 
 #. Translators: Shown in calendar event list, if 24h format,
 #. \u2236 is a ratio character, similar to : */
-#: ../js/ui/calendar.js:77
+#: ../js/ui/calendar.js:75
 msgctxt "event list time"
 msgid "%H∶%M"
 msgstr "%H∶%M"
@@ -447,7 +454,7 @@ msgstr "%H∶%M"
 #. Translators: Shown in calendar event list, if 12h format,
 #. \u2236 is a ratio character, similar to : and \u2009 is
 #. a thin space */
-#: ../js/ui/calendar.js:86
+#: ../js/ui/calendar.js:84
 msgctxt "event list time"
 msgid "%l∶%M %p"
 msgstr "%l∶%M %p"
@@ -457,43 +464,43 @@ msgstr "%l∶%M %p"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #. */
-#: ../js/ui/calendar.js:117
+#: ../js/ui/calendar.js:115
 msgctxt "grid sunday"
 msgid "S"
 msgstr "D"
 
 #. Translators: Calendar grid abbreviation for Monday */
-#: ../js/ui/calendar.js:119
+#: ../js/ui/calendar.js:117
 msgctxt "grid monday"
 msgid "M"
 msgstr "L"
 
 #. Translators: Calendar grid abbreviation for Tuesday */
-#: ../js/ui/calendar.js:121
+#: ../js/ui/calendar.js:119
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "M"
 
 #. Translators: Calendar grid abbreviation for Wednesday */
-#: ../js/ui/calendar.js:123
+#: ../js/ui/calendar.js:121
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "X"
 
 #. Translators: Calendar grid abbreviation for Thursday */
-#: ../js/ui/calendar.js:125
+#: ../js/ui/calendar.js:123
 msgctxt "grid thursday"
 msgid "T"
 msgstr "Ch"
 
 #. Translators: Calendar grid abbreviation for Friday */
-#: ../js/ui/calendar.js:127
+#: ../js/ui/calendar.js:125
 msgctxt "grid friday"
 msgid "F"
 msgstr "V"
 
 #. Translators: Calendar grid abbreviation for Saturday */
-#: ../js/ui/calendar.js:129
+#: ../js/ui/calendar.js:127
 msgctxt "grid saturday"
 msgid "S"
 msgstr "S"
@@ -504,83 +511,83 @@ msgstr "S"
 #. * so they need to be unique (e.g. Tuesday and Thursday cannot
 #. * both be 'T').
 #. */
-#: ../js/ui/calendar.js:142
+#: ../js/ui/calendar.js:140
 msgctxt "list sunday"
 msgid "Su"
 msgstr "Dom"
 
 #. Translators: Event list abbreviation for Monday */
-#: ../js/ui/calendar.js:144
+#: ../js/ui/calendar.js:142
 msgctxt "list monday"
 msgid "M"
 msgstr "L"
 
 #. Translators: Event list abbreviation for Tuesday */
-#: ../js/ui/calendar.js:146
+#: ../js/ui/calendar.js:144
 msgctxt "list tuesday"
 msgid "T"
 msgstr "M"
 
 #. Translators: Event list abbreviation for Wednesday */
-#: ../js/ui/calendar.js:148
+#: ../js/ui/calendar.js:146
 msgctxt "list wednesday"
 msgid "W"
 msgstr "X"
 
 #. Translators: Event list abbreviation for Thursday */
-#: ../js/ui/calendar.js:150
+#: ../js/ui/calendar.js:148
 msgctxt "list thursday"
 msgid "Th"
 msgstr "Ch"
 
 #. Translators: Event list abbreviation for Friday */
-#: ../js/ui/calendar.js:152
+#: ../js/ui/calendar.js:150
 msgctxt "list friday"
 msgid "F"
 msgstr "V"
 
 #. Translators: Event list abbreviation for Saturday */
-#: ../js/ui/calendar.js:154
+#: ../js/ui/calendar.js:152
 msgctxt "list saturday"
 msgid "S"
 msgstr "D"
 
-#: ../js/ui/calendar.js:463
+#: ../js/ui/calendar.js:461
 msgid "Previous month"
 msgstr "Mes anterior"
 
-#: ../js/ui/calendar.js:473
+#: ../js/ui/calendar.js:471
 msgid "Next month"
 msgstr "Mes siguient"
 
 #. Translators: Text to show if there are no events */
-#: ../js/ui/calendar.js:808
+#: ../js/ui/calendar.js:806
 msgid "Nothing Scheduled"
 msgstr "Cosa programau"
 
-#: ../js/ui/calendar.js:827
+#: ../js/ui/calendar.js:825
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d de %B"
 
-#: ../js/ui/calendar.js:831
+#: ../js/ui/calendar.js:829
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d de %B de %Y"
 
-#: ../js/ui/calendar.js:843
+#: ../js/ui/calendar.js:841
 msgid "Today"
 msgstr "Huei"
 
-#: ../js/ui/calendar.js:847
+#: ../js/ui/calendar.js:845
 msgid "Tomorrow"
 msgstr "Maitin"
 
-#: ../js/ui/calendar.js:858
+#: ../js/ui/calendar.js:856
 msgid "This week"
 msgstr "Ista semana"
 
-#: ../js/ui/calendar.js:866
+#: ../js/ui/calendar.js:864
 msgid "Next week"
 msgstr "A semana vinient"
 
@@ -1146,7 +1153,7 @@ msgstr "Instalar"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Descargar y instalar \"%s\" dende extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:700 ../js/ui/status/keyboard.js:535
+#: ../js/ui/keyboard.js:706 ../js/ui/status/keyboard.js:535
 msgid "Keyboard"
 msgstr "Teclau"
 
@@ -1308,15 +1315,15 @@ msgstr[1] "%d notificacions nuevas"
 msgid "Lock"
 msgstr "Blocar"
 
-#: ../js/ui/screenShield.js:707
+#: ../js/ui/screenShield.js:709
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME ameneste blocar a pantalla"
 
-#: ../js/ui/screenShield.js:834 ../js/ui/screenShield.js:1310
+#: ../js/ui/screenShield.js:836 ../js/ui/screenShield.js:1312
 msgid "Unable to lock"
 msgstr "No se podió blocar"
 
-#: ../js/ui/screenShield.js:835 ../js/ui/screenShield.js:1311
+#: ../js/ui/screenShield.js:837 ../js/ui/screenShield.js:1313
 msgid "Lock was blocked by an application"
 msgstr "Una aplicación impidió o bloqueyo"
 
@@ -1402,8 +1409,8 @@ msgstr "Bluetooth"
 
 #: ../js/ui/status/bluetooth.js:51 ../js/ui/status/network.js:178
 #: ../js/ui/status/network.js:360 ../js/ui/status/network.js:1282
-#: ../js/ui/status/network.js:1393 ../js/ui/status/rfkill.js:86
-#: ../js/ui/status/rfkill.js:114
+#: ../js/ui/status/network.js:1393 ../js/ui/status/rfkill.js:91
+#: ../js/ui/status/rfkill.js:118
 msgid "Turn Off"
 msgstr "Desenchegar"
 
@@ -1550,7 +1557,7 @@ msgstr "Selecciona un ret"
 msgid "No Networks"
 msgstr "No bi ha retz"
 
-#: ../js/ui/status/network.js:904 ../js/ui/status/rfkill.js:112
+#: ../js/ui/status/network.js:904 ../js/ui/status/rfkill.js:116
 msgid "Use hardware switch to turn off"
 msgstr "Fer servir o selector de hardware ta desenchegar-lo"
 
@@ -1583,7 +1590,7 @@ msgstr "s'amenista autenticacion"
 msgid "connection failed"
 msgstr "falló a connexión"
 
-#: ../js/ui/status/network.js:1481 ../js/ui/status/rfkill.js:89
+#: ../js/ui/status/network.js:1481 ../js/ui/status/rfkill.js:94
 msgid "Network Settings"
 msgstr "Configuracion d'o rete"
 
@@ -1633,11 +1640,11 @@ msgstr "SAI"
 msgid "Battery"
 msgstr "Batería"
 
-#: ../js/ui/status/rfkill.js:83
+#: ../js/ui/status/rfkill.js:88
 msgid "Airplane Mode"
 msgstr "Modo avión"
 
-#: ../js/ui/status/rfkill.js:85
+#: ../js/ui/status/rfkill.js:90
 msgid "On"
 msgstr "Enchegau"
 
@@ -1816,6 +1823,9 @@ msgstr "A clau de paso no puede estar vueda"
 #: ../src/shell-polkit-authentication-agent.c:346
 msgid "Authentication dialog was dismissed by the user"
 msgstr "L'usuario refusó o dialogo d'autenticación"
+
+#~ msgid "Captive Portal"
+#~ msgstr "Portal captivo"
 
 #~ msgid "The maximum accuracy level of location."
 #~ msgstr "O maximo libel de precisión d'ubicación."
