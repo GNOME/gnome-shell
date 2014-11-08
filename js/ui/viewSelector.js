@@ -193,8 +193,10 @@ const ViewSelector = new Lang.Class({
                 // the windows to animate, but now we no longer want to
                 // show it given that we are now on the apps page or
                 // search page.
-                if (this._activePage != this._workspacesPage)
+                if (this._activePage != this._workspacesPage) {
                     this._workspacesPage.opacity = 0;
+                    this._workspacesPage.hide();
+                }
             }));
 
         Main.wm.addKeybinding('toggle-application-view',
