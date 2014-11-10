@@ -1,0 +1,94 @@
+//This is the RIGHT PLACE to edit the stylesheet
+
+//let's start by telling people not to edit the generated CSS:
+$cakeisalie: "This stylesheet is generated, DO NOT EDIT";
+/* #{$cakeisalie} */
+
+/* Copyright 2009, Red Hat, Inc.
+ *
+ * Portions adapted from Mx's data/style/default.css
+ *   Copyright 2009 Intel Corporation
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms and conditions of the GNU Lesser General Public License,
+ * version 2.1, as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
+ */
+
+
+/* GLOBALS */
+$font-size: 11;
+$font-family: Cantarell, Sans-Serif;
+
+stage {
+  font-family: $font-family;
+  @include fontsize($font-size);
+  color: $fg_color;
+}
+
+/* WIDGETS */
+
+/* Buttons */
+//one would think we may want a generic button class:
+.candidate-page-button,
+.notification-button,
+.notification-icon-button,
+.hotplug-notification-item,
+.hotplug-resident-eject-button,
+.modal-dialog-button,
+.app-view-control {
+  border-radius: 3px;
+  border-width: 1px;
+  padding: 4px 32px;
+  @include button(normal);
+  &:hover { @include button(hover); }
+  &:focus { @include button(focus); }
+  &:insensitive { @include button(insensitive); }
+  &:active { @include button(active); }
+}
+
+/* Entries */
+
+/* Scrollbars */
+
+StScrollBar {
+  padding: 0;
+  &.vfade { -st-vfade-offset: 68px; }
+  &.hfade { -st-hfade-offset: 68px; }
+
+  StScrollView & {
+    min-width: 14px;
+    min-height: 14px;
+  }
+  
+  StBin#trough {
+    border-radius: 0;
+    background-color: $osd_bg_color;
+  }
+  
+  StButton#vhandle, StButton#hhandle {
+    border-radius: 6px;
+    background-color: $bg_color;
+    border: 3px solid $osd_bg_color;
+    &:hover { background-color: lighten($bg_color,10%); }
+    &:active { background-color: $selected_bg_color; }
+  }
+}
+
+/* links */
+.shell-link {
+  color: $link_color;
+  &:hover { color: lighten($link_color,10%); }
+}
+
+/* TOP BAR */
+
+/* NOTIFICATIONS & MESSAGE TRAY */
