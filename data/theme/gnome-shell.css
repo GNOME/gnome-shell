@@ -1205,8 +1205,7 @@ StScrollBar {
     -minimum-hpadding: 6px;
     font-weight: bold;
     color: #ccc;
-    transition-duration: 100ms;
-    padding: 2px; }
+    transition-duration: 100ms; }
     #panel .panel-button #appMenuIcon {
       app-icon-bottom-clip: 1px; }
       .panel-button:active #panel .panel-button #appMenuIcon, .panel-button:overview #panel .panel-button #appMenuIcon, .panel-button:focus #panel .panel-button #appMenuIcon, .panel-button:checked #panel .panel-button #appMenuIcon {
@@ -1215,9 +1214,8 @@ StScrollBar {
       color: white;
       text-shadow: black 0 2px 2px; }
     #panel .panel-button:active, #panel .panel-button:overview, #panel .panel-button:focus, #panel .panel-button:checked {
-      border-color: #256ab1;
-      border-bottom-width: 2px;
-      padding: 2px 2px 0 2px;
+      background-color: rgba(0, 0, 0, 0.01);
+      box-shadow: inset 0 -2px 0px #256ab1;
       color: white;
       text-shadow: black 0px 2px 2px; }
       #panel .panel-button:active > .system-status-icon, #panel .panel-button:overview > .system-status-icon, #panel .panel-button:focus > .system-status-icon, #panel .panel-button:checked > .system-status-icon {
