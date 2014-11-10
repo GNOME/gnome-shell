@@ -238,7 +238,7 @@ StScrollBar {
   background-color: black;
   font-weight: bold;
   height: 1.86em;
-  
+
   &.unlock-screen,
   &.login-screen,
   &.lock-screen {
@@ -255,7 +255,10 @@ StScrollBar {
     -panel-corner-border-width: 2px;
     -panel-corner-border-color: transparent; 
     
-    &:active, &:overview, &:focus { -panel-corner-border-color: lighten($selected_bg_color,5%); } 
+    &:active, &:overview, &:focus { 
+      -panel-corner-border-color: lighten($selected_bg_color,5%); 
+    }
+
     &.lock-screen, &.login-screen, &unlock-screen {
       -panel-corner-radius: 0;
       -panel-corner-background-color: transparent;
