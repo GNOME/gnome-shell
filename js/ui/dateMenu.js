@@ -19,6 +19,8 @@ const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 const Calendar = imports.ui.calendar;
 
+const N_ = function(s) { return s; };
+
 function _onVertSepRepaint(area) {
     let cr = area.get_context();
     let themeNode = area.get_theme_node();
