@@ -1,0 +1,6 @@
+$variant: 'dark';
+
+@import "_gnome-shell-old.scss"; //temporary
+@import "_colors"; //use gtk colors
+@import "_drawing";
+@import "_common";
