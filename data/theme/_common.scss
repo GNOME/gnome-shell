@@ -85,13 +85,13 @@ StScrollBar {
   
   StBin#trough {
     border-radius: 0;
-    background-color: darken($osd_bg_color,10%);
+    background-color: darken($bg_color,10%);
   }
   
   StButton#vhandle, StButton#hhandle {
     border-radius: 8px;
     background-color: $bg_color;
-    border: 3px solid darken($osd_bg_color,10%); //would be nice to margin or at least to transparent
+    border: 3px solid darken($bg_color,10%); //would be nice to margin or at least to transparent
     &:hover { background-color: lighten($bg_color,10%); }
     &:active { background-color: $selected_bg_color; }
   }
@@ -515,7 +515,7 @@ StScrollBar {
   .dash-label { //osd tooltip
     border-radius: 7px;
     padding: 4px 12px;
-    background-color: transparentize($osd_bg_color,0.3);
+    background-color: transparentize($bg_color,0.3);
     text-align: center;
     -x-offset: 8px;
   }
@@ -549,7 +549,7 @@ StScrollBar {
   .search-provider-icon,
   .list-search-result {
     @extend %icon_tile;
-    &:active, &:checked { background-color: transparentize(darken($osd_bg_color,10%),.1); }
+    &:active, &:checked { background-color: transparentize(darken($bg_color,10%),.1); }
     &:focus, &:selected, &:hover { 
       background-color: transparentize($fg_color,.9);
       transition-duration: 200ms;
@@ -567,8 +567,8 @@ StScrollBar {
     }
     &:active > .overview-icon, 
     &:checked > .overview-icon {
-      background-color: transparentize(darken($osd_bg_color,10%),.1); //FIXME not working?
-      box-shadow: inset 0 1px 2px $osd_borders_color;
+      background-color: transparentize(darken($bg_color,10%),.1); //FIXME not working?
+      box-shadow: inset 0 1px 2px $borders_color;
     }
     &:hover > .overview-icon, 
     &.running:hover > .overview-icon,
@@ -597,7 +597,7 @@ StScrollBar {
   }
   
   .app-well-app.app-folder > .overview-icon {
-    background-color: transparentize($osd_bg_color,.6);
+    background-color: transparentize($bg_color,.6);
   }
   
   .show-apps:checked .show-apps-icon,
@@ -610,7 +610,7 @@ StScrollBar {
   // Collections
   .app-folder-popup { //expanded collection
     -arrow-border-radius: 8px;
-    -arrow-background-color: transparentize($osd_bg_color,0.7);
+    -arrow-background-color: transparentize($bg_color,0.7);
     -arrow-base: 24px;
     -arrow-rise: 11px;
   }
@@ -669,8 +669,8 @@ StScrollBar {
   }
 
 %overview-panel {
-  color: $osd_fg_color;
-  background-color: $osd_bg_color;
+  color: $fg_color;
+  background-color: $bg_color;
   border: 1px solid transparentize($fg_color,0.8);
 }
 
@@ -709,8 +709,8 @@ StScrollBar {
     font-size: 11pt;
     width: 34em;
     border-radius: 6px 6px 0 0;
-    background-color: transparentize(darken($osd_bg_color,8%),.05);
-    border: 1px solid $osd_borders_color;
+    background-color: transparentize(darken($bg_color,8%),.05);
+    border: 1px solid $borders_color;
     border-bottom-width: 0;
     //box-shadow: 0 1px 4px black;
     spacing-rows: 4px;
@@ -763,7 +763,7 @@ StScrollBar {
   //Message tray popovers
   .summary-boxpointer {
     -arrow-border-radius: 15px;
-    -arrow-background-color: transparentize(darken($osd_bg_color,8%),.05);
+    -arrow-background-color: transparentize(darken($bg_color,8%),.05);
     -arrow-base: 36px;
     -arrow-rise: 18px;
     color: $fg_color;
@@ -771,7 +771,7 @@ StScrollBar {
     .notification {
       border-radius: 9px;
       border-width: 0; //temporary workaround for border brokenness
-      background-color: transparentize(darken($osd_bg_color,8%),.05) !important;
+      background-color: transparentize(darken($bg_color,8%),.05) !important;
       padding-bottom: 12px;
     }
     #summary-right-click-menu {
