@@ -203,14 +203,16 @@ const InstallExtensionDialog = new Lang.Class({
 
         let message = _("Download and install “%s” from extensions.gnome.org?").format(info.name);
 
-        let box = new St.BoxLayout();
+        let box = new St.BoxLayout({ style_class: 'prompt-dialog-main-layout',
+                                     vertical: false });
         this.contentLayout.add(box);
 
         let gicon = new Gio.FileIcon({ file: Gio.File.new_for_uri(REPOSITORY_URL_BASE + info.icon) })
         let icon = new St.Icon({ gicon: gicon });
         box.add(icon);
 
-        let label = new St.Label({ text: message });
+        let label = new St.Label({ style_class: 'prompt-dialog-headline',
+                                   text: message });
         box.add(label);
     },
 
