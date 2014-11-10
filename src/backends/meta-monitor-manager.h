@@ -116,6 +116,8 @@ struct _MetaOutput
 
   /* get a new preferred mode on hotplug events, to handle dynamic guest resizing */
   gboolean hotplug_mode_update;
+  gint suggested_x;
+  gint suggested_y;
 };
 
 struct _MetaCRTC

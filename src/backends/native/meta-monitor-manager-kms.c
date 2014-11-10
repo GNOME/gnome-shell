@@ -415,6 +415,8 @@ meta_monitor_manager_kms_read_current (MetaMonitorManager *manager)
 	  meta_output->name = make_output_name (connector);
 	  meta_output->width_mm = connector->mmWidth;
 	  meta_output->height_mm = connector->mmHeight;
+	  meta_output->suggested_x = -1;
+	  meta_output->suggested_y = -1;
 
           switch (connector->subpixel)
             {

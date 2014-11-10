@@ -34,6 +34,7 @@
 
 #include "config.h"
 
+#include "boxes-private.h"
 #include "meta-monitor-config.h"
 
 #include <string.h>
@@ -1096,6 +1097,55 @@ init_config_from_preferred_mode (MetaOutputConfig *config,
   config->is_presentation = FALSE;
 }
 
+/* This function handles configuring the outputs when the driver provides a
+ * suggested layout position for each output. This is done in recent versions
+ * of qxl and allows displays to be aligned on the guest in the same order as
+ * they are aligned on the client.
+ */
+static gboolean
+make_suggested_config (MetaMonitorConfig *self,
+                       MetaOutput        *outputs,
+                       unsigned           n_outputs,
+                       int                max_width,
+                       int                max_height,
+                       MetaConfiguration *config)
+{
+  unsigned int i;
+  MetaOutput *primary;
+  GList *region = NULL;
+
+  g_return_if_fail (config != NULL);
+  primary = find_primary_output (outputs, n_outputs);
+
+  for (i = 0; i < n_outputs; i++)
+    {
+      gboolean is_primary = (&outputs[i] == primary);
+
+      if (outputs[i].suggested_x < 0 || outputs[i].suggested_y < 0)
+          return FALSE;
+
+      init_config_from_preferred_mode (&config->outputs[i], &outputs[i]);
+      config->outputs[i].is_primary = is_primary;
+
+      config->outputs[i].rect.x = outputs[i].suggested_x;
+      config->outputs[i].rect.y = outputs[i].suggested_y;
+
+      /* Reject the configuration if the suggested positions result in
+       * overlapping displays */
+      if (meta_rectangle_overlaps_with_region (region, &config->outputs[i].rect))
+        {
+          g_warning ("Overlapping outputs, rejecting suggested configuration");
+          g_list_free (region);
+          return FALSE;
+        }
+
+      region = g_list_prepend (region, &config->outputs[i].rect);
+    }
+
+  g_list_free (region);
+  return TRUE;
+}
+
 static void
 make_linear_config (MetaMonitorConfig *self,
                     MetaOutput        *outputs,
@@ -1227,6 +1277,9 @@ make_default_config (MetaMonitorConfig *self,
       ret->outputs[0].is_primary = TRUE;
       return ret;
     }
+
+  if (make_suggested_config (self, outputs, n_outputs, max_width, max_height, ret))
+      return ret;
 
   if (use_stored_config &&
       extend_stored_config (self, outputs, n_outputs, max_width, max_height, ret))

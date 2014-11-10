@@ -140,6 +140,34 @@ meta_monitor_transform_from_xrandr_all (Rotation rotation)
 }
 
 static gboolean
+output_get_integer_property (MetaMonitorManagerXrandr *manager_xrandr,
+                             MetaOutput *output, const char *propname,
+                             gint *value)
+{
+  gboolean exists = FALSE;
+  Atom atom, actual_type;
+  int actual_format;
+  unsigned long nitems, bytes_after;
+  unsigned char *buffer;
+
+  atom = XInternAtom (manager_xrandr->xdisplay, propname, False);
+  XRRGetOutputProperty (manager_xrandr->xdisplay,
+                        (XID)output->winsys_id,
+                        atom,
+                        0, G_MAXLONG, False, False, XA_INTEGER,
+                        &actual_type, &actual_format,
+                        &nitems, &bytes_after, &buffer);
+
+  exists = (actual_type == XA_INTEGER && actual_format == 32 && nitems == 1);
+
+  if (exists && value != NULL)
+    *value = ((int*)buffer)[0];
+
+  XFree (buffer);
+  return exists;
+}
+
+static gboolean
 output_get_property_exists (MetaMonitorManagerXrandr *manager_xrandr,
                             MetaOutput *output, const char *propname)
 {
@@ -356,6 +384,28 @@ output_get_hotplug_mode_update (MetaMonitorManagerXrandr *manager_xrandr,
   return output_get_property_exists (manager_xrandr, output, "hotplug_mode_update");
 }
 
+static gint
+output_get_suggested_x (MetaMonitorManagerXrandr *manager_xrandr,
+                        MetaOutput               *output)
+{
+  gint val;
+  if (output_get_integer_property (manager_xrandr, output, "suggested X", &val))
+    return val;
+
+  return -1;
+}
+
+static gint
+output_get_suggested_y (MetaMonitorManagerXrandr *manager_xrandr,
+                        MetaOutput               *output)
+{
+  gint val;
+  if (output_get_integer_property (manager_xrandr, output, "suggested Y", &val))
+    return val;
+
+  return -1;
+}
+
 static char *
 get_xmode_name (XRRModeInfo *xmode)
 {
@@ -543,6 +593,8 @@ meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
 	  meta_output->height_mm = output->mm_height;
 	  meta_output->subpixel_order = COGL_SUBPIXEL_ORDER_UNKNOWN;
           meta_output->hotplug_mode_update = output_get_hotplug_mode_update (manager_xrandr, meta_output);
+	  meta_output->suggested_x = output_get_suggested_x (manager_xrandr, meta_output);
+	  meta_output->suggested_y = output_get_suggested_y (manager_xrandr, meta_output);
 
 	  meta_output->n_modes = output->nmode;
 	  meta_output->modes = g_new0 (MetaMonitorMode *, meta_output->n_modes);
