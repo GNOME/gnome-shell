@@ -1047,11 +1047,11 @@ StScrollBar {
     min-height: 14px; }
   StScrollBar StBin#trough {
     border-radius: 0;
-    background-color: #17191a; }
+    background-color: #212424; }
   StScrollBar StButton#vhandle, StScrollBar StButton#hhandle {
     border-radius: 8px;
     background-color: #393f3f;
-    border: 3px solid #17191a; }
+    border: 3px solid #212424; }
     StScrollBar StButton#vhandle:hover, StScrollBar StButton#hhandle:hover {
       background-color: #515a5a; }
     StScrollBar StButton#vhandle:active, StScrollBar StButton#hhandle:active {
@@ -1416,7 +1416,7 @@ StScrollBar {
 .dash-label {
   border-radius: 7px;
   padding: 4px 12px;
-  background-color: rgba(46, 52, 54, 0.7);
+  background-color: rgba(57, 63, 63, 0.7);
   text-align: center;
   -x-offset: 8px; }
 
@@ -1449,7 +1449,7 @@ StScrollBar {
 .search-provider-icon:active, .search-provider-icon:checked,
 .list-search-result:active,
 .list-search-result:checked {
-  background-color: rgba(23, 25, 26, 0.9); }
+  background-color: rgba(33, 36, 36, 0.9); }
 .search-provider-icon:focus, .search-provider-icon:selected, .search-provider-icon:hover,
 .list-search-result:focus,
 .list-search-result:selected,
@@ -1465,7 +1465,7 @@ StScrollBar {
 .grid-search-result:active .overview-icon,
 .grid-search-result:checked .overview-icon {
   background-color: rgba(23, 25, 26, 0.9);
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.7); }
+  box-shadow: inset 0 1px 2px #1c1f1f; }
 .app-well-app:hover .overview-icon, .app-well-app:focus .overview-icon, .app-well-app:selected .overview-icon,
 .app-well-app.app-folder:hover .overview-icon,
 .app-well-app.app-folder:focus .overview-icon,
@@ -1499,7 +1499,7 @@ StScrollBar {
   text-align: center; }
 
 .app-well-app.app-folder > .overview-icon {
-  background-color: rgba(46, 52, 54, 0.4); }
+  background-color: rgba(57, 63, 63, 0.4); }
 
 .show-apps:checked .show-apps-icon,
 .show-apps:focus .show-apps-icon {
@@ -1508,7 +1508,7 @@ StScrollBar {
 
 .app-folder-popup {
   -arrow-border-radius: 8px;
-  -arrow-background-color: rgba(46, 52, 54, 0.3);
+  -arrow-background-color: rgba(57, 63, 63, 0.3);
   -arrow-base: 24px;
   -arrow-rise: 11px; }
 
@@ -1557,7 +1557,7 @@ StScrollBar {
 
 #dash, .workspace-thumbnails {
   color: #eeeeec;
-  background-color: #2e3436;
+  background-color: #393f3f;
   border: 1px solid rgba(238, 238, 236, 0.2); }
 
 .search-statustext, .no-frequent-applications-label {
@@ -1593,8 +1593,8 @@ StScrollBar {
   font-size: 11pt;
   width: 34em;
   border-radius: 6px 6px 0 0;
-  background-color: rgba(27, 31, 32, 0.95);
-  border: 1px solid rgba(0, 0, 0, 0.7);
+  background-color: rgba(38, 42, 42, 0.95);
+  border: 1px solid #1c1f1f;
   border-bottom-width: 0;
   spacing-rows: 4px;
   padding: 8px 8px 4px 8px;
@@ -1639,7 +1639,7 @@ StScrollBar {
 
 .summary-boxpointer {
   -arrow-border-radius: 15px;
-  -arrow-background-color: rgba(27, 31, 32, 0.95);
+  -arrow-background-color: rgba(38, 42, 42, 0.95);
   -arrow-base: 36px;
   -arrow-rise: 18px;
   color: #eeeeec;
@@ -1647,7 +1647,7 @@ StScrollBar {
   .summary-boxpointer .notification {
     border-radius: 9px;
     border-width: 0;
-    background-color: rgba(27, 31, 32, 0.95) !important;
+    background-color: rgba(38, 42, 42, 0.95) !important;
     padding-bottom: 12px; }
   .summary-boxpointer #summary-right-click-menu {
     padding-top: 12px;
