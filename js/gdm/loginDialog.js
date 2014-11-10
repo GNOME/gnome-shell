@@ -364,12 +364,12 @@ const LoginDialog = new Lang.Class({
     Name: 'LoginDialog',
 
     _init: function(parentActor) {
-        this.actor = new St.Widget({ accessible_role: Atk.Role.WINDOW,
-                                     layout_manager: new Clutter.BinLayout(),
-                                     style_class: 'login-dialog',
-                                     visible: false });
+        this.actor = new Shell.GenericContainer({ style_class: 'login-dialog',
+                                                  visible: false });
+        this.actor.get_accessible().set_role(Atk.Role.WINDOW);
 
         this.actor.add_constraint(new Layout.MonitorConstraint({ primary: true }));
+        this.actor.connect('allocate', Lang.bind(this, this._onAllocate));
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
         parentActor.add_child(this.actor);
 
@@ -405,8 +405,6 @@ const LoginDialog = new Lang.Class({
         this._userSelectionBox = new St.BoxLayout({ style_class: 'login-dialog-user-selection-box',
                                                     x_align: Clutter.ActorAlign.CENTER,
                                                     y_align: Clutter.ActorAlign.CENTER,
-                                                    x_expand: true,
-                                                    y_expand: true,
                                                     vertical: true,
                                                     visible: false });
         this.actor.add_child(this._userSelectionBox);
@@ -452,9 +450,7 @@ const LoginDialog = new Lang.Class({
 
         this._logoBin = new St.Widget({ style_class: 'login-dialog-logo-bin',
                                         x_align: Clutter.ActorAlign.CENTER,
-                                        y_align: Clutter.ActorAlign.END,
-                                        x_expand: true,
-                                        y_expand: true });
+                                        y_align: Clutter.ActorAlign.END });
         this.actor.add_child(this._logoBin);
         this._updateLogo();
 
@@ -483,6 +479,86 @@ const LoginDialog = new Lang.Class({
         // focus later
         this._startupCompleteId = Main.layoutManager.connect('startup-complete',
                                                              Lang.bind(this, this._updateDisableUserList));
+    },
+
+    _getLogoBinAllocation: function (dialogBox) {
+        let actorBox = new Clutter.ActorBox();
+
+        let [minWidth, minHeight, natWidth, natHeight] = this._logoBin.get_preferred_size();
+        let centerX = dialogBox.x1 + (dialogBox.x2 - dialogBox.x1) / 2;
+
+        actorBox.x1 = centerX - natWidth / 2;
+        actorBox.y1 = dialogBox.y2 - natHeight;
+        actorBox.x2 = actorBox.x1 + natWidth;
+        actorBox.y2 = actorBox.y1 + natHeight;
+
+        return actorBox;
+    },
+
+    _getCenterActorAllocation: function (dialogBox, actor) {
+        let actorBox = new Clutter.ActorBox();
+
+        let [minWidth, minHeight, natWidth, natHeight] = actor.get_preferred_size();
+        let centerX = dialogBox.x1 + (dialogBox.x2 - dialogBox.x1) / 2;
+        let centerY = dialogBox.y1 + (dialogBox.y2 - dialogBox.y1) / 2;
+
+        actorBox.x1 = centerX - natWidth / 2;
+        actorBox.y1 = centerY - natHeight / 2;
+        actorBox.x2 = actorBox.x1 + natWidth;
+        actorBox.y2 = actorBox.y1 + natHeight;
+
+        return actorBox;
+    },
+
+    _onAllocate: function (actor, dialogBox, flags) {
+        let dialogHeight = dialogBox.y2 - dialogBox.y1;
+
+        // First find out what space the children require
+        let authPromptAllocation = null;
+        if (this._authPrompt.actor.visible)
+            authPromptAllocation = this._getCenterActorAllocation(dialogBox, this._authPrompt.actor);
+
+        let userSelectionAllocation = null;
+        let userSelectionHeight = 0;
+        if (this._userSelectionBox.visible) {
+            userSelectionAllocation = this._getCenterActorAllocation(dialogBox, this._userSelectionBox);
+            userSelectionHeight = userSelectionAllocation.y2 - userSelectionAllocation.y1;
+        }
+
+        let logoAllocation = null;
+        let logoHeight = 0;
+        if (this._logoBin.visible) {
+            logoAllocation = this._getLogoBinAllocation(dialogBox);
+            logoHeight = logoAllocation.y2 - logoAllocation.y1;
+        }
+
+        // Then figure out what extra space we can hand out
+        let leftOverYSpace = dialogHeight - userSelectionHeight - logoHeight;
+        if (leftOverYSpace > 0) {
+            if (userSelectionAllocation) {
+                let topExpansion = leftOverYSpace / 2;
+
+                // Don't ever expand more than we have space for
+                if (userSelectionAllocation.y1 - topExpansion < 0)
+                    topExpansion = userSelectionAllocation.y1;
+
+                // Always expand the bottom the same as the top since it's centered
+                let bottomExpansion = topExpansion;
+
+                userSelectionAllocation.y1 -= topExpansion;
+                userSelectionAllocation.y2 += bottomExpansion;
+            }
+        }
+
+        // Finally hand out the allocations
+        if (authPromptAllocation)
+            this._authPrompt.actor.allocate(authPromptAllocation, flags);
+
+        if (userSelectionAllocation)
+            this._userSelectionBox.allocate(userSelectionAllocation, flags);
+
+        if (logoAllocation)
+            this._logoBin.allocate(logoAllocation, flags);
     },
 
     _ensureUserListLoaded: function() {
