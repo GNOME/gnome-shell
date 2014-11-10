@@ -1176,6 +1176,15 @@ StScrollBar {
   -arrow-rise: 11px;
   -arrow-box-shadow: 0 1px 3px red; }
 
+.popup-separator-menu-item {
+  -margin-horizontal: 24px;
+  height: 1px;
+  padding: 0;
+  background-color: transparent;
+  border-color: #343a3a;
+  border-bottom-width: 1px;
+  border-bottom-style: solid; }
+
 /* fallback menu 
 - odd thing for styling App menu when apparently not running under shell. Light Adwaita styled
   app menu inside the main app window itself rather than the top bar
@@ -1568,7 +1577,8 @@ StScrollBar {
   background: #212424 url("noise-texture.png");
   background-repeat: repeat;
   height: 72px;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5); }
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+  padding: 4px; }
   #message-tray .message-tray-summary {
     height: 72px; }
   #message-tray .message-tray-menu-button StIcon {
@@ -1614,8 +1624,9 @@ StScrollBar {
   spacing: 6px; }
 
 .summary-source {
-  border-radius: 4px;
-  padding: 6px;
+  border-radius: 0;
+  -st-natural-width: 60px;
+  padding: 9px;
   transition-duration: 100ms; }
 
 .summary-source-button:hover .summary-source, .summary-source-button:selected .summary-source, .summary-source-button:focus .summary-source {
