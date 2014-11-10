@@ -1777,7 +1777,8 @@ StScrollBar {
       color: white;
       text-shadow: black 0px 2px 2px; }
     #LookingGlassDialog .notebook-tab:selected {
-      border-image: url("panel-button-border.svg") 10 10 0 2;
+      border-bottom-width: 2px;
+      border-color: #256ab1;
       color: white;
       text-shadow: black 0px 2px 2px; }
   #LookingGlassDialog StBoxLayout#EvalBox {
