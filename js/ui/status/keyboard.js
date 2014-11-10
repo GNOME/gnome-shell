@@ -381,6 +381,10 @@ const InputSourceManager = new Lang.Class({
 
         if (this._mruSources.length > 0)
             this._mruSources[0].activate();
+
+        // All ibus engines are preloaded here to reduce the launching time
+        // when users switch the input sources.
+        this._ibusManager.preloadEngines(Object.keys(this._ibusSources));
     },
 
     _makeEngineShortName: function(engineDesc) {

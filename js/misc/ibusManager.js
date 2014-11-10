@@ -1,13 +1,14 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
 const Lang = imports.lang;
+const Mainloop = imports.mainloop;
 const Signals = imports.signals;
 
 try {
     var IBus = imports.gi.IBus;
-    if (!('new_async' in IBus.Bus))
-        throw "IBus version is too old";
+    _checkIBusVersion();
     const IBusCandidatePopup = imports.ui.ibusCandidatePopup;
 } catch (e) {
     var IBus = null;
@@ -15,6 +16,22 @@ try {
 }
 
 let _ibusManager = null;
+
+function _checkIBusVersion() {
+    var requiredMajor = 1;
+    var requiredMinor = 5;
+    var requiredMicro = 2;
+
+    if ((IBus.MAJOR_VERSION > requiredMajor) ||
+        (IBus.MAJOR_VERSION == requiredMajor && IBus.MINOR_VERSION > requiredMinor) ||
+        (IBus.MAJOR_VERSION == requiredMajor && IBus.MINOR_VERSION == requiredMinor &&
+         IBus.MICRO_VERSION >= requiredMicro))
+        return;
+
+    throw "Found IBus version %d.%d.%d but required is %d.%d.%d".
+        format(IBus.MAJOR_VERSION, IBus.MINOR_VERSION, IBus.MINOR_VERSION,
+               requiredMajor, requiredMinor, requiredMicro);
+}
 
 function getIBusManager() {
     if (_ibusManager == null)
@@ -28,6 +45,7 @@ const IBusManager = new Lang.Class({
     // This is the longest we'll keep the keyboard frozen until an input
     // source is active.
     _MAX_INPUT_SOURCE_ACTIVATION_TIME: 4000, // ms
+    _PRELOAD_ENGINES_DELAY_TIME: 30, // sec
 
     _init: function() {
         if (!IBus)
@@ -42,6 +60,7 @@ const IBusManager = new Lang.Class({
         this._ready = false;
         this._registerPropertiesId = 0;
         this._currentEngineName = null;
+        this._preloadEnginesId = 0;
 
         this._ibus = IBus.Bus.new_async();
         this._ibus.connect('connected', Lang.bind(this, this._onConnected));
@@ -175,6 +194,28 @@ const IBusManager = new Lang.Class({
 
         this._ibus.set_global_engine_async(id, this._MAX_INPUT_SOURCE_ACTIVATION_TIME,
                                            null, callback);
+    },
+
+    preloadEngines: function(ids) {
+        if (!IBus || !this._ibus || ids.length == 0)
+            return;
+
+        if (this._preloadEnginesId != 0) {
+            Mainloop.source_remove(this._preloadEnginesId);
+            this._preloadEnginesId = 0;
+        }
+
+        this._preloadEnginesId =
+            Mainloop.timeout_add_seconds(this._PRELOAD_ENGINES_DELAY_TIME,
+                                         Lang.bind(this, function() {
+                                             this._ibus.preload_engines_async(
+                                                 ids,
+                                                 -1,
+                                                 null,
+                                                 null);
+                                             this._preloadEnginesId = 0;
+                                             return GLib.SOURCE_REMOVE;
+                                         }));
     },
 });
 Signals.addSignalMethods(IBusManager.prototype);
