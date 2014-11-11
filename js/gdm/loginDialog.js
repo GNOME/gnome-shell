@@ -537,6 +537,7 @@ const LoginDialog = new Lang.Class({
     },
 
     _onAllocate: function (actor, dialogBox, flags) {
+        let dialogWidth = dialogBox.x2 - dialogBox.x1;
         let dialogHeight = dialogBox.y2 - dialogBox.y1;
 
         // First find out what space the children require
@@ -551,9 +552,11 @@ const LoginDialog = new Lang.Class({
 
         let authPromptAllocation = null;
         let authPromptHeight = 0;
+        let authPromptWidth = 0;
         if (this._authPrompt.actor.visible) {
             authPromptAllocation = this._getCenterActorAllocation(dialogBox, this._authPrompt.actor);
             authPromptHeight = authPromptAllocation.y2 - authPromptAllocation.y1;
+            authPromptWidth = authPromptAllocation.x2 - authPromptAllocation.x1;
         }
 
         let userSelectionAllocation = null;
@@ -570,7 +573,9 @@ const LoginDialog = new Lang.Class({
             logoHeight = logoAllocation.y2 - logoAllocation.y1;
         }
 
-        // Then figure out what extra space we can hand out
+        // Then figure out if we're overly constrained and need to
+        // try a different layout, or if we have what extra space we
+        // can hand out
         if (bannerAllocation) {
             let leftOverYSpace = dialogHeight - bannerHeight - authPromptHeight - logoHeight;
 
@@ -584,17 +589,55 @@ const LoginDialog = new Lang.Class({
                  bannerAllocation.y1 += yShift;
                  bannerAllocation.y2 += yShift;
             } else {
-                 // recompute banner height to be constrained if there's no room for its
-                 // requested height
+                 // Then figure out how much space there would be if we switched to a
+                 // wide layout with banner on one side and authprompt on the other.
+                 let leftOverXSpace = dialogWidth - authPromptWidth;
 
-                 // First figure out how much space there is without the banner
-                 leftOverYSpace += bannerHeight;
+                 // In a wide view, half of the available space goes to the banner,
+                 // and the other half goes to the margins.
+                 let wideBannerWidth = leftOverXSpace / 2;
+                 let wideSpacing  = leftOverXSpace - wideBannerWidth;
 
-                 // Then figure out how much of that space is up top
-                 let availableTopSpace = leftOverYSpace / 2;
+                 // If we do go with a wide layout, we need there to be at least enough
+                 // space for the banner and the auth prompt to be the same width,
+                 // so it doesn't look unbalanced.
+                 if (authPromptWidth > 0 && wideBannerWidth > authPromptWidth) {
+                     let centerX = dialogBox.x1 + dialogWidth / 2;
+                     let centerY = dialogBox.y1 + dialogHeight / 2;
 
-                 // Then give all of that space to the banner
-                 bannerAllocation.y2 = bannerAllocation.y1 + availableTopSpace;
+                     // A small portion of the spacing goes down the center of the
+                     // screen to help delimit the two columns of the wide view
+                     let centerGap = wideSpacing / 8;
+
+                     // place the banner along the left edge of the center margin
+                     bannerAllocation.x2 = centerX - centerGap / 2;
+                     bannerAllocation.x1 = bannerAllocation.x2 - wideBannerWidth;
+
+                     // figure out how tall it would like to be and try to accomodate
+                     // but don't let it get too close to the logo
+                     let [wideMinHeight, wideBannerHeight] = this._bannerView.get_preferred_height(wideBannerWidth);
+
+                     let maxWideHeight = dialogHeight - 3 * logoHeight;
+                     wideBannerHeight = Math.min(maxWideHeight, wideBannerHeight);
+                     bannerAllocation.y1 = centerY - wideBannerHeight / 2;
+                     bannerAllocation.y2 = bannerAllocation.y1 + wideBannerHeight;
+
+                     // place the auth prompt along the right edge of the center margin
+                     authPromptAllocation.x1 = centerX + centerGap / 2;
+                     authPromptAllocation.x2 = authPromptAllocation.x1 + authPromptWidth;
+                 } else {
+                     // If we aren't going to do a wide view, then we need to limit
+                     // the height of the banner so it will present scrollbars
+
+                     // First figure out how much space there is without the banner
+                     leftOverYSpace += bannerHeight;
+
+                     // Then figure out how much of that space is up top
+                     let availableTopSpace = leftOverYSpace / 2;
+
+                     // Then give all of that space to the banner
+                     bannerAllocation.y2 = bannerAllocation.y1 + availableTopSpace;
+                 }
             }
         } else if (userSelectionAllocation) {
             // Grow the user list to fill the space
