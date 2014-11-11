@@ -2293,7 +2293,7 @@ StScrollBar StButton#vhandle:active {
 /* Magnifier */
 
 .magnifier-zoom-region {
-    border: 2px solid rgba(128, 0, 0, 255);
+    border: 2px solid rgba(128, 0, 0, 1);
 }
 
 .magnifier-zoom-region.full-screen {
