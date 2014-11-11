@@ -1215,10 +1215,6 @@ StScrollBar {
     font-weight: bold;
     color: #ccc;
     transition-duration: 100ms; }
-    #panel .panel-button #appMenuIcon {
-      app-icon-bottom-clip: 1px; }
-      .panel-button:active #panel .panel-button #appMenuIcon, .panel-button:overview #panel .panel-button #appMenuIcon, .panel-button:focus #panel .panel-button #appMenuIcon, .panel-button:checked #panel .panel-button #appMenuIcon {
-        app-icon-bottom-clip: 2px; }
     #panel .panel-button:hover {
       color: white;
       text-shadow: black 0 2px 2px; }

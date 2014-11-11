@@ -26,6 +26,7 @@ const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
 
 const PANEL_ICON_SIZE = 24;
+const APP_MENU_ICON_MARGIN = 2;
 
 const BUTTON_DND_ACTIVATION_TIMEOUT = 250;
 
@@ -190,33 +191,21 @@ const AppMenuButton = new Lang.Class({
         this.actor.bind_property("reactive", this.actor, "can-focus", 0);
         this.actor.reactive = false;
 
-        this._container = new Shell.GenericContainer();
+        this._container = new St.BoxLayout({ style_class: 'panel-status-menu-box' });
         bin.set_child(this._container);
-        this._container.connect('get-preferred-width', Lang.bind(this, this._getContentPreferredWidth));
-        this._container.connect('get-preferred-height', Lang.bind(this, this._getContentPreferredHeight));
-        this._container.connect('allocate', Lang.bind(this, this._contentAllocate));
 
         let textureCache = St.TextureCache.get_default();
         textureCache.connect('icon-theme-changed',
                              Lang.bind(this, this._onIconThemeChanged));
 
-        this._iconBox = new Shell.Slicer({ name: 'appMenuIcon' });
-        this._iconBox.connect('style-changed',
-                              Lang.bind(this, this._onIconBoxStyleChanged));
-        this._iconBox.connect('notify::allocation',
-                              Lang.bind(this, this._updateIconBoxClip));
+        this._iconBox = new St.Bin();
         this._container.add_actor(this._iconBox);
-
-        this._hbox = new St.BoxLayout({ style_class: 'panel-status-menu-box' });
-        this._container.add_actor(this._hbox);
 
         this._label = new TextShadower();
         this._label.actor.y_align = Clutter.ActorAlign.CENTER;
-        this._hbox.add_actor(this._label.actor);
+        this._container.add_actor(this._label.actor);
         this._arrow = PopupMenu.arrowIcon(St.Side.BOTTOM);
-        this._hbox.add_actor(this._arrow);
-
-        this._iconBottomClip = 0;
+        this._container.add_actor(this._arrow);
 
         this._visible = !Main.overview.visible;
         if (!this._visible)
@@ -278,21 +267,15 @@ const AppMenuButton = new Lang.Class({
             return;
         this._spinnerIcon = icon;
         this._spinner = new Animation.AnimatedIcon(this._spinnerIcon, PANEL_ICON_SIZE);
-        this._hbox.add_actor(this._spinner.actor);
+        this._container.add_actor(this._spinner.actor);
         this._spinner.actor.hide();
-    },
-
-    _onIconBoxStyleChanged: function() {
-        let node = this._iconBox.get_theme_node();
-        this._iconBottomClip = node.get_length('app-icon-bottom-clip');
-        this._updateIconBoxClip();
     },
 
     _syncIcon: function() {
         if (!this._targetApp)
             return;
 
-        let icon = this._targetApp.get_faded_icon(2 * PANEL_ICON_SIZE, this._iconBox.text_direction);
+        let icon = this._targetApp.create_icon_texture(PANEL_ICON_SIZE - APP_MENU_ICON_MARGIN);
         this._iconBox.set_child(icon);
     },
 
@@ -301,16 +284,6 @@ const AppMenuButton = new Lang.Class({
             return;
 
         this._syncIcon();
-    },
-
-    _updateIconBoxClip: function() {
-        let allocation = this._iconBox.allocation;
-        if (this._iconBottomClip > 0)
-            this._iconBox.set_clip(0, 0,
-                                   allocation.x2 - allocation.x1,
-                                   allocation.y2 - allocation.y1 - this._iconBottomClip);
-        else
-            this._iconBox.remove_clip();
     },
 
     stopAnimation: function() {
@@ -343,64 +316,6 @@ const AppMenuButton = new Lang.Class({
 
         this._spinner.play();
         this._spinner.actor.show();
-    },
-
-    _getContentPreferredWidth: function(actor, forHeight, alloc) {
-        let [minSize, naturalSize] = this._iconBox.get_preferred_width(forHeight);
-        alloc.min_size = minSize;
-        alloc.natural_size = naturalSize;
-        [minSize, naturalSize] = this._hbox.get_preferred_width(forHeight);
-        alloc.min_size = alloc.min_size + Math.max(0, minSize - Math.floor(alloc.min_size / 2));
-        alloc.natural_size = alloc.natural_size + Math.max(0, naturalSize - Math.floor(alloc.natural_size / 2));
-    },
-
-    _getContentPreferredHeight: function(actor, forWidth, alloc) {
-        let [minSize, naturalSize] = this._iconBox.get_preferred_height(forWidth);
-        alloc.min_size = minSize;
-        alloc.natural_size = naturalSize;
-        [minSize, naturalSize] = this._hbox.get_preferred_height(forWidth);
-        if (minSize > alloc.min_size)
-            alloc.min_size = minSize;
-        if (naturalSize > alloc.natural_size)
-            alloc.natural_size = naturalSize;
-    },
-
-    _contentAllocate: function(actor, box, flags) {
-        let allocWidth = box.x2 - box.x1;
-        let allocHeight = box.y2 - box.y1;
-        let childBox = new Clutter.ActorBox();
-
-        let [minWidth, minHeight, naturalWidth, naturalHeight] = this._iconBox.get_preferred_size();
-
-        let direction = this.actor.get_text_direction();
-
-        let yPadding = Math.floor(Math.max(0, allocHeight - naturalHeight) / 2);
-        childBox.y1 = yPadding;
-        childBox.y2 = childBox.y1 + Math.min(naturalHeight, allocHeight);
-        if (direction == Clutter.TextDirection.LTR) {
-            childBox.x1 = 0;
-            childBox.x2 = childBox.x1 + Math.min(naturalWidth, allocWidth);
-        } else {
-            childBox.x1 = Math.max(0, allocWidth - naturalWidth);
-            childBox.x2 = allocWidth;
-        }
-        this._iconBox.allocate(childBox, flags);
-
-        let iconWidth = childBox.x2 - childBox.x1;
-
-        [minWidth, naturalWidth] = this._hbox.get_preferred_width(-1);
-
-        childBox.y1 = 0;
-        childBox.y2 = allocHeight;
-
-        if (direction == Clutter.TextDirection.LTR) {
-            childBox.x1 = Math.floor(iconWidth / 2);
-            childBox.x2 = Math.min(childBox.x1 + naturalWidth, allocWidth);
-        } else {
-            childBox.x2 = allocWidth - Math.floor(iconWidth / 2);
-            childBox.x1 = Math.max(0, childBox.x2 - naturalWidth);
-        }
-        this._hbox.allocate(childBox, flags);
     },
 
     _onAppStateChanged: function(appSys, app) {

@@ -283,17 +283,6 @@ StScrollBar {
     color: #ccc;
     transition-duration: 100ms;
 
-    #appMenuIcon { 
-      app-icon-bottom-clip: 1px;
-      
-      .panel-button:active &, 
-      .panel-button:overview &, 
-      .panel-button:focus &, 
-      .panel-button:checked & {
-        app-icon-bottom-clip: 2px;
-      }
-        
-    }
     &:hover { 
       color: lighten($fg_color, 10%);
       text-shadow: black 0 2px 2px;
