@@ -2388,6 +2388,10 @@ StScrollBar StButton#vhandle:active {
 }
 
 /* Login Dialog */
+.login-dialog-banner-view {
+    padding-top: 24px;
+    max-width: 23em;
+}
 
 .framed-user-icon {
     border: 2px solid #8b8b8b;
@@ -2400,11 +2404,7 @@ StScrollBar StButton#vhandle:active {
 }
 
 .login-dialog-banner {
-    font-size: 10pt;
-    font-weight: bold;
-    text-align: center;
     color: #666666;
-    padding-bottom: 1em;
 }
 
 .login-dialog {
