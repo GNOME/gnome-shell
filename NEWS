@@ -1,3 +1,13 @@
+3.14.2
+======
+* Do not hard-depend on latest NetworkManager [Florian; #738485]
+* Fix check for isToday in calendar [Darcy; #738725]
+* Fix workspace changes from app picker [Yuki; #737534]
+* Misc. bug fixes [Yuki; #739497]
+
+Contributors:
+  Darcy, Florian Müllner, Yuki
+
 3.14.1.5
 ========
 * Fix handing of SystemBackground [Owen; #738652]
