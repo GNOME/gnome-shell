@@ -44,8 +44,7 @@ const GnomeShellIface = '<node> \
 </method> \
 <signal name="AcceleratorActivated"> \
     <arg name="action" type="u" /> \
-    <arg name="deviceid" type="u" /> \
-    <arg name="timestamp" type="u" /> \
+    <arg name="parameters" type="a{sv}" /> \
 </signal> \
 <property name="Mode" type="s" access="read" /> \
 <property name="OverviewActive" type="b" access="readwrite" /> \
@@ -196,11 +195,13 @@ const GnomeShell = new Lang.Class({
 
         let connection = this._dbusImpl.get_connection();
         let info = this._dbusImpl.get_info();
+        let params = { 'device-id': GLib.Variant.new('u', deviceid),
+                       'timestamp': GLib.Variant.new('u', timestamp) };
         connection.emit_signal(destination,
                                this._dbusImpl.get_object_path(),
                                info ? info.name : null,
                                'AcceleratorActivated',
-                               GLib.Variant.new('(uuu)', [action, deviceid, timestamp]));
+                               GLib.Variant.new('(ua{sv})', [action, params]));
     },
 
     _grabAcceleratorForSender: function(accelerator, flags, sender) {
