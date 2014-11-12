@@ -1209,7 +1209,8 @@ make_default_config (MetaMonitorConfig *self,
                      MetaOutput        *outputs,
                      unsigned           n_outputs,
                      int                max_width,
-                     int                max_height)
+                     int                max_height,
+                     gboolean           use_stored_config)
 {
   MetaConfiguration *ret = NULL;
 
@@ -1227,7 +1228,8 @@ make_default_config (MetaMonitorConfig *self,
       return ret;
     }
 
-  if (extend_stored_config (self, outputs, n_outputs, max_width, max_height, ret))
+  if (use_stored_config &&
+      extend_stored_config (self, outputs, n_outputs, max_width, max_height, ret))
       return ret;
 
   make_linear_config (self, outputs, n_outputs, max_width, max_height, ret);
@@ -1287,6 +1289,7 @@ meta_monitor_config_make_default (MetaMonitorConfig  *self,
   unsigned n_outputs;
   gboolean ok = FALSE;
   int max_width, max_height;
+  gboolean use_stored_config;
 
   outputs = meta_monitor_manager_get_outputs (manager, &n_outputs);
   meta_monitor_manager_get_screen_limits (manager, &max_width, &max_height);
@@ -1297,7 +1300,16 @@ meta_monitor_config_make_default (MetaMonitorConfig  *self,
       return;
     }
 
-  default_config = make_default_config (self, outputs, n_outputs, max_width, max_height);
+  /* if the device has hotplug_mode_update, it's possible that the
+   * current display configuration does not match a stored configuration.
+   * Since extend_existing_config() tries to build a configuration that is
+   * based on a previously-stored configuration, it's quite likely that the
+   * resulting config will fail. Even if it doesn't fail, it may result in
+   * an unexpected configuration, so don't attempt to use a stored config
+   * in this situation. */
+  use_stored_config = !meta_monitor_manager_has_hotplug_mode_update (manager);
+  default_config = make_default_config (self, outputs, n_outputs, max_width, max_height, use_stored_config);
+
   if (default_config != NULL)
     {
       ok = apply_configuration_with_lid (self, default_config, manager);
