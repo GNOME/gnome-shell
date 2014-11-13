@@ -3213,7 +3213,9 @@ meta_window_unmake_fullscreen (MetaWindow  *window)
       /* Window's size hints may have changed while maximized, making
        * saved_rect invalid.  #329152
        */
+      meta_window_frame_rect_to_client_rect (window, &target_rect, &target_rect);
       ensure_size_hints_satisfied (&target_rect, &window->size_hints);
+      meta_window_client_rect_to_frame_rect (window, &target_rect, &target_rect);
 
       /* Need to update window->has_resize_func before we move_resize()
        */
