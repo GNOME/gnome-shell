@@ -380,8 +380,6 @@ var SessionMenuButton = new Lang.Class({
 
          this._activeSessionId = sessionId;
          this._updateOrnament();
-
-         this.emit('session-activated', this._activeSessionId);
     },
 
     close: function() {
@@ -405,11 +403,9 @@ var SessionMenuButton = new Lang.Class({
             this._menu.addMenuItem(item);
             this._items[id] = item;
 
-            if (!this._activeSessionId)
-                this.setActiveSession(id);
-
             item.connect('activate', Lang.bind(this, function() {
                 this.setActiveSession(id);
+                this.emit('session-activated', this._activeSessionId);
             }));
         }
     }
