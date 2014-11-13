@@ -72,6 +72,16 @@
         This key sets the default state of the checkbox.
       </_description>
     </key>
+    <key name="had-bluetooth-devices-setup" type="b">
+      <default>false</default>
+      <_summary>Whether the default Bluetooth adapter had set up devices associated to it</_summary>
+      <_description>
+        The shell will only show a Bluetooth menu item if a Bluetooth
+        adapter is powered, or if there were devices set up associated
+        with the default adapter. This will be reset if the default
+        adapter is ever seen not to have devices associated to it.
+      </_description>
+    </key>
     <child name="calendar" schema="org.gnome.shell.calendar"/>
     <child name="keybindings" schema="org.gnome.shell.keybindings"/>
     <child name="keyboard" schema="org.gnome.shell.keyboard"/>
