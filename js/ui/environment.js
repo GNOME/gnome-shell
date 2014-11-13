@@ -77,6 +77,7 @@ function init() {
     window._ = Gettext.gettext;
     window.C_ = Gettext.pgettext;
     window.ngettext = Gettext.ngettext;
+    window.N_ = function(s) { return s; };
 
     // Miscellaneous monkeypatching
     _patchContainerClass(St.BoxLayout);
