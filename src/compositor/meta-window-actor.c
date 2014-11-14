@@ -1155,7 +1155,7 @@ gboolean
 meta_window_actor_should_unredirect (MetaWindowActor *self)
 {
   MetaWindowActorPrivate *priv = self->priv;
-  if (priv->surface)
+  if (!meta_window_actor_is_destroyed (self) && priv->surface)
     return meta_surface_actor_should_unredirect (priv->surface);
   else
     return FALSE;
