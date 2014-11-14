@@ -410,7 +410,7 @@ const ShellUserVerifier = new Lang.Class({
     _updateDefaultService: function() {
         if (this._settings.get_boolean(PASSWORD_AUTHENTICATION_KEY))
             this._defaultService = PASSWORD_SERVICE_NAME;
-        else if (this.smartcardDetected)
+        else if (this._settings.get_boolean(SMARTCARD_AUTHENTICATION_KEY))
             this._defaultService = SMARTCARD_SERVICE_NAME;
         else if (this._haveFingerprintReader)
             this._defaultService = FINGERPRINT_SERVICE_NAME;
