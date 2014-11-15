@@ -19,7 +19,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2014-09-13 07:37+0000\n"
-"PO-Revision-Date: 2014-09-18 01:41+0900\n"
+"PO-Revision-Date: 2014-11-16 03:54+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: GNOME Korea <gnome-kr@googlegroups.com>\n"
 "Language: Korean\n"
@@ -1444,7 +1444,7 @@ msgstr "<알 수 없음>"
 #: ../js/ui/status/network.js:457 ../js/ui/status/network.js:1307
 #: ../js/ui/status/network.js:1511
 msgid "Off"
-msgstr "끄기"
+msgstr "끔"
 
 #: ../js/ui/status/network.js:459
 msgid "Connected"
@@ -1626,7 +1626,7 @@ msgstr "비행기 모드"
 
 #: ../js/ui/status/rfkill.js:85
 msgid "On"
-msgstr "켜기"
+msgstr "켬"
 
 #: ../js/ui/status/system.js:317
 msgid "Switch User"
