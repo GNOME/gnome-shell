@@ -317,15 +317,21 @@ _cogl_winsys_egl_onscreen_init (CoglOnscreen *onscreen,
   mir_onscreen = g_slice_new0 (CoglOnscreenMir);
   egl_onscreen->platform = mir_onscreen;
 
-  surfaceparm.name = "CoglSurface";
-  surfaceparm.width = cogl_framebuffer_get_width (framebuffer);
-  surfaceparm.height = cogl_framebuffer_get_height (framebuffer);
-  surfaceparm.pixel_format = _mir_connection_get_valid_format (mir_renderer->mir_connection);
-  surfaceparm.buffer_usage = mir_buffer_usage_hardware;
-  surfaceparm.output_id = mir_display_output_id_invalid;
-
-  mir_onscreen->mir_surface =
-    mir_connection_create_surface_sync (mir_renderer->mir_connection, &surfaceparm);
+  if (mir_surface_is_valid (onscreen->foreign_surface))
+    {
+      mir_onscreen->mir_surface = onscreen->foreign_surface;
+    }
+  else
+    {
+      surfaceparm.name = "CoglSurface";
+      surfaceparm.width = cogl_framebuffer_get_width (framebuffer);
+      surfaceparm.height = cogl_framebuffer_get_height (framebuffer);
+      surfaceparm.pixel_format = _mir_connection_get_valid_format (mir_renderer->mir_connection);
+      surfaceparm.buffer_usage = mir_buffer_usage_hardware;
+      surfaceparm.output_id = mir_display_output_id_invalid;
+      mir_onscreen->mir_surface =
+        mir_connection_create_surface_sync (mir_renderer->mir_connection, &surfaceparm);
+    }
 
   mir_onscreen->last_state = mir_surface_get_state (mir_onscreen->mir_surface);
 
@@ -362,7 +368,7 @@ _cogl_winsys_egl_onscreen_deinit (CoglOnscreen *onscreen)
   CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
   CoglOnscreenMir *mir_onscreen = egl_onscreen->platform;
 
-  if (mir_onscreen->mir_surface)
+  if (mir_onscreen->mir_surface && !onscreen->foreign_surface)
     {
       mir_surface_release (mir_onscreen->mir_surface, NULL, NULL);
       mir_onscreen->mir_surface = NULL;
@@ -431,6 +437,19 @@ cogl_mir_renderer_get_connection (CoglRenderer *renderer)
     }
 
   return NULL;
+}
+
+void
+cogl_mir_onscreen_set_foreign_surface (CoglOnscreen *onscreen,
+                                       MirSurface *surface)
+{
+  CoglFramebuffer *fb;
+  _COGL_RETURN_IF_FAIL (mir_surface_is_valid (surface));
+
+  fb = COGL_FRAMEBUFFER (onscreen);
+  _COGL_RETURN_IF_FAIL (!fb->allocated);
+
+  onscreen->foreign_surface = surface;
 }
 
 MirSurface *

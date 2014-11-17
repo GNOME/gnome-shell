@@ -270,6 +270,24 @@ cogl_wayland_onscreen_resize (CoglOnscreen *onscreen,
 #if defined (COGL_HAS_EGL_PLATFORM_MIR_SUPPORT)
 struct MirSurface *
 cogl_mir_onscreen_get_surface (CoglOnscreen *onscreen);
+
+/**
+ * cogl_mir_onscreen_set_foreign_surface:
+ * @onscreen: An unallocated framebuffer.
+ * @surface A Mir surface to associate with the @onscreen.
+ *
+ * Allows you to explicitly notify Cogl of an existing Mir surface to use,
+ * which prevents Cogl from allocating a surface for the @onscreen.
+ * An allocated surface will not be destroyed when the @onscreen is freed.
+ *
+ * This function must be called before @onscreen is allocated.
+ *
+ * Since: 1.18
+ * Stability: unstable
+ */
+void
+cogl_mir_onscreen_set_foreign_surface (CoglOnscreen *onscreen,
+                                       struct MirSurface *surface);
 #endif /* COGL_HAS_EGL_PLATFORM_MIR_SUPPORT */
 
 /**
