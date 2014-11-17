@@ -267,6 +267,11 @@ cogl_wayland_onscreen_resize (CoglOnscreen *onscreen,
                               int           offset_y);
 #endif /* COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT */
 
+#if defined (COGL_HAS_EGL_PLATFORM_MIR_SUPPORT)
+struct MirSurface *
+cogl_mir_onscreen_get_surface (CoglOnscreen *onscreen);
+#endif /* COGL_HAS_EGL_PLATFORM_MIR_SUPPORT */
+
 /**
  * cogl_onscreen_set_swap_throttled:
  * @onscreen: A #CoglOnscreen framebuffer

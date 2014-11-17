@@ -97,6 +97,7 @@ m4_define([xrandr_req_version],         [1.2])
 m4_define([cairo_req_version],          [1.10])
 m4_define([wayland_req_version],        [1.0.0])
 m4_define([wayland_server_req_version], [1.1.90])
+m4_define([mirclient_req_version],      [0.9.0])
 
 dnl These variables get copied into the generated README
 AC_SUBST([GLIB_REQ_VERSION], [glib_req_version])
@@ -110,6 +111,7 @@ AC_SUBST([GI_REQ_VERSION], [gi_req_version])
 AC_SUBST([UPROF_REQ_VERSION], [uprof_req_version])
 AC_SUBST([WAYLAND_REQ_VERSION], [wayland_req_version])
 AC_SUBST([WAYLAND_SERVER_REQ_VERSION], [wayland_server_req_version])
+AC_SUBST([MIRCLIENT_REQ_VERSION], [mirclient_req_version])
 
 # Save this value here, since automake will set cflags later and we
 # want to know if the user specified custom cflags or not.
@@ -1150,6 +1152,29 @@ AS_IF([test "x$enable_android_egl_platform" = "xyes"],
       ])
 AM_CONDITIONAL(SUPPORT_EGL_PLATFORM_ANDROID,
                [test "x$enable_android_egl_platform" = "xyes"])
+
+
+dnl Mir EGL platform
+AC_ARG_ENABLE(
+  [mir-egl-platform],
+  [AC_HELP_STRING([--enable-mir-egl-platform=@<:@no/yes@:>@], [Enable support for the Mir egl platform @<:@default=no@:>@])],
+  [],
+  enable_mir_egl_platform=no
+)
+AS_IF([test "x$enable_mir_egl_platform" = "xyes"],
+      [
+        EGL_PLATFORM_COUNT=$((EGL_PLATFORM_COUNT+1))
+        NEED_EGL=yes
+        EGL_PLATFORMS="$EGL_PLATFORMS mir"
+
+        PKG_CHECK_MODULES(MIR_CLIENT,
+                          [mirclient >= mirclient_req_version])
+        COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES mirclient >= mirclient_req_version"
+
+        COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_EGL_PLATFORM_MIR_SUPPORT"
+      ])
+AM_CONDITIONAL(SUPPORT_EGL_PLATFORM_MIR,
+               [test "x$enable_mir_egl_platform" = "xyes"])
 
 dnl This should go last, since it's the default fallback and we need
 dnl to check the value of $EGL_PLATFORM_COUNT here.

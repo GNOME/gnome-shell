@@ -503,6 +503,11 @@ cogl_sources_c += \
 	$(srcdir)/winsys/cogl-winsys-egl-android.c \
 	$(srcdir)/winsys/cogl-winsys-egl-android-private.h
 endif
+if SUPPORT_EGL_PLATFORM_MIR
+cogl_sources_c += \
+	$(srcdir)/winsys/cogl-winsys-egl-mir.c \
+	$(srcdir)/winsys/cogl-winsys-egl-mir-private.h
+endif
 if SUPPORT_EGL
 cogl_experimental_h += \
        $(srcdir)/cogl-egl.h
