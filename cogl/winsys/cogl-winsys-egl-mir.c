@@ -63,6 +63,10 @@ typedef struct _CoglOnscreenMir
 {
   MirSurface *mir_surface;
   MirSurfaceState last_state;
+
+  gint last_width;
+  gint last_height;
+  GMutex mir_event_lock;
 } CoglOnscreenMir;
 
 
@@ -299,6 +303,84 @@ _cogl_winsys_egl_context_init (CoglContext *context,
   return TRUE;
 }
 
+static void
+flush_pending_resize_notifications_cb (void *data,
+                                       void *user_data)
+{
+  CoglFramebuffer *framebuffer = data;
+
+  if (framebuffer->type == COGL_FRAMEBUFFER_TYPE_ONSCREEN)
+    {
+      CoglOnscreen *onscreen = COGL_ONSCREEN (framebuffer);
+      CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
+      CoglOnscreenMir *mir_onscreen = egl_onscreen->platform;
+
+      g_mutex_lock (&mir_onscreen->mir_event_lock);
+
+      if (egl_onscreen->pending_resize_notify)
+        {
+          gint w = mir_onscreen->last_width;
+          gint h = mir_onscreen->last_height;
+
+          _cogl_framebuffer_winsys_update_size (framebuffer, w, h);
+          _cogl_onscreen_notify_resize (onscreen);
+
+          egl_onscreen->pending_resize_notify = FALSE;
+        }
+
+      g_mutex_unlock (&mir_onscreen->mir_event_lock);
+    }
+}
+
+static void
+flush_pending_resize_notifications_idle (void *user_data)
+{
+  CoglContext *context = user_data;
+  CoglRenderer *renderer = context->display->renderer;
+  CoglRendererEGL *egl_renderer = renderer->winsys;
+
+  /* This needs to be disconnected before invoking the callbacks in
+   * case the callbacks cause it to be queued again */
+  _cogl_closure_disconnect (egl_renderer->resize_notify_idle);
+  egl_renderer->resize_notify_idle = NULL;
+
+  g_list_foreach (context->framebuffers,
+                  flush_pending_resize_notifications_cb,
+                  NULL);
+}
+
+static void _mir_surface_event_cb(MirSurface* surface, MirEvent const* event, void* data)
+{
+  CoglOnscreen *onscreen = data;
+
+  if (event->type == mir_event_type_resize)
+    {
+      CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
+      CoglContext *context = framebuffer->context;
+      CoglRenderer *renderer = context->display->renderer;
+      CoglRendererEGL *egl_renderer = renderer->winsys;
+      CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
+      CoglOnscreenMir *mir_onscreen = egl_onscreen->platform;
+
+      g_mutex_lock (&mir_onscreen->mir_event_lock);
+
+      egl_onscreen->pending_resize_notify = TRUE;
+      mir_onscreen->last_width = event->resize.width;
+      mir_onscreen->last_height = event->resize.height;
+
+      if (!egl_renderer->resize_notify_idle)
+      {
+        egl_renderer->resize_notify_idle =
+          _cogl_poll_renderer_add_idle (renderer,
+                                        flush_pending_resize_notifications_idle,
+                                        context,
+                                        NULL);
+      }
+
+      g_mutex_unlock (&mir_onscreen->mir_event_lock);
+    }
+}
+
 static CoglBool
 _cogl_winsys_egl_onscreen_init (CoglOnscreen *onscreen,
                                 EGLConfig egl_config,
@@ -313,6 +395,7 @@ _cogl_winsys_egl_onscreen_init (CoglOnscreen *onscreen,
   CoglRendererMir *mir_renderer = egl_renderer->platform;
   MirEGLNativeWindowType mir_egl_native_window;
   MirSurfaceParameters surfaceparm;
+  MirEventDelegate event_handler;
 
   mir_onscreen = g_slice_new0 (CoglOnscreenMir);
   egl_onscreen->platform = mir_onscreen;
@@ -359,6 +442,13 @@ _cogl_winsys_egl_onscreen_init (CoglOnscreen *onscreen,
 
   mir_onscreen->last_state = mir_surface_get_state (mir_onscreen->mir_surface);
 
+  if (!mir_surface_is_valid (onscreen->foreign_surface))
+  {
+    event_handler.callback = _mir_surface_event_cb;
+    event_handler.context = onscreen;
+    mir_surface_set_event_handler (mir_onscreen->mir_surface, &event_handler);
+  }
+
   return TRUE;
 }
 
@@ -370,6 +460,7 @@ _cogl_winsys_egl_onscreen_deinit (CoglOnscreen *onscreen)
 
   if (mir_onscreen->mir_surface && !onscreen->foreign_surface)
     {
+      mir_surface_set_event_handler (mir_onscreen->mir_surface, NULL);
       mir_surface_release (mir_onscreen->mir_surface, NULL, NULL);
       mir_onscreen->mir_surface = NULL;
     }
