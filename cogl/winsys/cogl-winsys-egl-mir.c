@@ -42,6 +42,7 @@
 #include "cogl-winsys-egl-private.h"
 #include "cogl-renderer-private.h"
 #include "cogl-onscreen-private.h"
+#include "cogl-mir-renderer.h"
 #include "cogl-error-private.h"
 
 static const CoglWinsysEGLVtable _cogl_winsys_egl_vtable;
@@ -103,7 +104,10 @@ _cogl_winsys_renderer_disconnect (CoglRenderer *renderer)
     eglTerminate (egl_renderer->edpy);
 
   if (mir_connection_is_valid (mir_renderer->mir_connection))
-    mir_connection_release (mir_renderer->mir_connection);
+    {
+      if (!mir_connection_is_valid (renderer->foreign_mir_connection))
+        mir_connection_release (mir_renderer->mir_connection);
+    }
 
   g_slice_free (CoglRendererMir, egl_renderer->platform);
   g_slice_free (CoglRendererEGL, egl_renderer);
@@ -124,13 +128,20 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
 
   egl_renderer->platform_vtable = &_cogl_winsys_egl_vtable;
 
-  mir_renderer->mir_connection = mir_connect_sync (NULL, __PRETTY_FUNCTION__);
-  if (!mir_connection_is_valid (mir_renderer->mir_connection))
+  if (mir_connection_is_valid (renderer->foreign_mir_connection))
     {
-      _cogl_set_error (error, COGL_WINSYS_ERROR,
-                       COGL_WINSYS_ERROR_INIT,
-                       "Failed to connect mir display");
-      goto error;
+      mir_renderer->mir_connection = renderer->foreign_mir_connection;
+    }
+  else
+    {
+      mir_renderer->mir_connection = mir_connect_sync (NULL, __PRETTY_FUNCTION__);
+      if (!mir_connection_is_valid (mir_renderer->mir_connection))
+        {
+          _cogl_set_error (error, COGL_WINSYS_ERROR,
+                           COGL_WINSYS_ERROR_INIT,
+                           "Failed to connect mir display");
+          goto error;
+        }
     }
 
   mir_native_dpy =
@@ -389,6 +400,37 @@ _cogl_winsys_onscreen_set_visibility (CoglOnscreen *onscreen,
     }
 
   mir_surface_set_state (mir_onscreen->mir_surface, new_state);
+}
+
+void
+cogl_mir_renderer_set_foreign_connection (CoglRenderer *renderer,
+                                              MirConnection *connection)
+{
+  _COGL_RETURN_IF_FAIL (cogl_is_renderer (renderer));
+  _COGL_RETURN_IF_FAIL (mir_connection_is_valid (connection));
+
+  /* NB: Renderers are considered immutable once connected */
+  _COGL_RETURN_IF_FAIL (!renderer->connected);
+
+  renderer->foreign_mir_connection = connection;
+}
+
+MirConnection *
+cogl_mir_renderer_get_connection (CoglRenderer *renderer)
+{
+  _COGL_RETURN_VAL_IF_FAIL (cogl_is_renderer (renderer), NULL);
+
+  if (mir_connection_is_valid (renderer->foreign_mir_connection))
+    return renderer->foreign_mir_connection;
+
+  if (renderer->connected)
+    {
+      CoglRendererEGL *egl_renderer = renderer->winsys;
+      CoglRendererMir *mir_renderer = egl_renderer->platform;
+      return mir_renderer->mir_connection;
+    }
+
+  return NULL;
 }
 
 MirSurface *

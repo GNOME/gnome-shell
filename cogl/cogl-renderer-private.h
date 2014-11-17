@@ -48,6 +48,10 @@
 #include <wayland-client.h>
 #endif
 
+#if defined (COGL_HAS_EGL_PLATFORM_MIR_SUPPORT)
+#include <mir_toolkit/mir_client_library.h>
+#endif
+
 struct _CoglRenderer
 {
   CoglObject _parent;
@@ -86,6 +90,10 @@ struct _CoglRenderer
 #if defined (COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT)
   struct wl_display *foreign_wayland_display;
   CoglBool wayland_enable_event_dispatch;
+#endif
+
+#if defined (COGL_HAS_EGL_PLATFORM_MIR_SUPPORT)
+  MirConnection *foreign_mir_connection;
 #endif
 
 #if defined (COGL_HAS_EGL_PLATFORM_KMS_SUPPORT)
