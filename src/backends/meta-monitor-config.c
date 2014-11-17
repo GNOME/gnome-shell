@@ -1096,40 +1096,63 @@ init_config_from_preferred_mode (MetaOutputConfig *config,
   config->is_presentation = FALSE;
 }
 
-static MetaConfiguration *
-make_default_config (MetaMonitorConfig *self,
-                     MetaOutput        *outputs,
-                     unsigned           n_outputs,
-                     int                max_width,
-                     int                max_height)
+static void
+make_linear_config (MetaMonitorConfig *self,
+                    MetaOutput        *outputs,
+                    unsigned           n_outputs,
+                    int                max_width,
+                    int                max_height,
+                    MetaConfiguration *config)
 {
-  unsigned i, j;
-  int x, y;
-  MetaConfiguration *ret;
   MetaOutput *primary;
+  unsigned i;
+  int x;
 
-  ret = config_new ();
-  make_config_key (ret, outputs, n_outputs, -1);
-  ret->outputs = g_new0 (MetaOutputConfig, n_outputs);
+  g_return_if_fail (config != NULL);
 
-  /* Special case the simple case: one output, primary at preferred mode,
-     nothing else to do */
-  if (n_outputs == 1)
+  primary = find_primary_output (outputs, n_outputs);
+
+  x = primary->preferred_mode->width;
+  for (i = 0; i < n_outputs; i++)
     {
-      init_config_from_preferred_mode (&ret->outputs[0], &outputs[0]);
-      ret->outputs[0].is_primary = TRUE;
-      return ret;
+      gboolean is_primary = (&outputs[i] == primary);
+
+      init_config_from_preferred_mode (&config->outputs[i], &outputs[i]);
+      config->outputs[i].is_primary = is_primary;
+
+      if (is_primary)
+        {
+          config->outputs[i].rect.x = 0;
+        }
+      else
+        {
+          config->outputs[i].rect.x = x;
+          x += config->outputs[i].rect.width;
+        }
+
+      /* Disable outputs that would go beyond framebuffer limits */
+      if (config->outputs[i].rect.x + config->outputs[i].rect.width > max_width)
+        config->outputs[i].enabled = FALSE;
     }
+}
 
-  /* If we reach this point, this is either the first time mutter runs
-     on this system ever, or we just hotplugged a new screen.
-     In the latter case, search for a configuration that includes one
-     less screen, then add the new one as a presentation screen
-     in preferred mode.
-
-     XXX: but presentation mode is not implemented in the control-center
-     or in mutter core, so let's do extended for now.
+/* Search for a configuration that includes one less screen, then add the new
+ * one as a presentation screen in preferred mode.
+ *
+ * XXX: but presentation mode is not implemented in the control-center or in
+ * mutter core, so let's do extended for now.
   */
+static gboolean
+extend_stored_config (MetaMonitorConfig *self,
+                      MetaOutput        *outputs,
+                      unsigned           n_outputs,
+                      int                max_width,
+                      int                max_height,
+                      MetaConfiguration *config)
+{
+  int x, y;
+  unsigned i, j;
+
   x = 0;
   y = 0;
   for (i = 0; i < n_outputs; i++)
@@ -1147,64 +1170,67 @@ make_default_config (MetaMonitorConfig *self,
             {
               if (j < i)
                 {
-                  g_assert (output_key_equal (&ret->keys[j], &ref->keys[j]));
-                  ret->outputs[j] = ref->outputs[j];
+                  g_assert (output_key_equal (&config->keys[j], &ref->keys[j]));
+                  config->outputs[j] = ref->outputs[j];
                   x = MAX (x, ref->outputs[j].rect.x + ref->outputs[j].rect.width);
                   y = MAX (y, ref->outputs[j].rect.y + ref->outputs[j].rect.height);
                 }
               else if (j > i)
                 {
-                  g_assert (output_key_equal (&ret->keys[j], &ref->keys[j - 1]));
-                  ret->outputs[j] = ref->outputs[j - 1];
+                  g_assert (output_key_equal (&config->keys[j], &ref->keys[j - 1]));
+                  config->outputs[j] = ref->outputs[j - 1];
                   x = MAX (x, ref->outputs[j - 1].rect.x + ref->outputs[j - 1].rect.width);
                   y = MAX (y, ref->outputs[j - 1].rect.y + ref->outputs[j - 1].rect.height);
                 }
               else
                 {
-                  init_config_from_preferred_mode (&ret->outputs[j], &outputs[0]);
+                  init_config_from_preferred_mode (&config->outputs[j], &outputs[0]);
                 }
             }
 
           /* Place the new output at the right end of the screen, if it fits,
              otherwise below it, otherwise disable it (or apply_configuration will fail) */
-          if (x + ret->outputs[i].rect.width <= max_width)
-            ret->outputs[i].rect.x = x;
-          else if (y + ret->outputs[i].rect.height <= max_height)
-            ret->outputs[i].rect.y = y;
+          if (x + config->outputs[i].rect.width <= max_width)
+            config->outputs[i].rect.x = x;
+          else if (y + config->outputs[i].rect.height <= max_height)
+            config->outputs[i].rect.y = y;
           else
-            ret->outputs[i].enabled = FALSE;
+            config->outputs[i].enabled = FALSE;
 
-          return ret;
+          return TRUE;
         }
     }
 
-  /* No previous configuration found, try with a really default one, which
-     is one primary that goes first and the rest to the right of it, extended.
-  */
-  primary = find_primary_output (outputs, n_outputs);
+  return FALSE;
+}
 
-  x = primary->preferred_mode->width;
-  for (i = 0; i < n_outputs; i++)
+static MetaConfiguration *
+make_default_config (MetaMonitorConfig *self,
+                     MetaOutput        *outputs,
+                     unsigned           n_outputs,
+                     int                max_width,
+                     int                max_height)
+{
+  MetaConfiguration *ret = NULL;
+
+  ret = config_new ();
+  make_config_key (ret, outputs, n_outputs, -1);
+  ret->outputs = g_new0 (MetaOutputConfig, n_outputs);
+
+  /* Special case the simple case: one output, primary at preferred mode,
+     nothing else to do */
+  if (n_outputs == 1)
     {
-      gboolean is_primary = (&outputs[i] == primary);
 
-      init_config_from_preferred_mode (&ret->outputs[i], &outputs[i]);
-      ret->outputs[i].is_primary = is_primary;
-
-      if (is_primary)
-        {
-          ret->outputs[i].rect.x = 0;
-        }
-      else
-        {
-          ret->outputs[i].rect.x = x;
-          x += ret->outputs[i].rect.width;
-        }
-
-      /* Disable outputs that would go beyond framebuffer limits */
-      if (ret->outputs[i].rect.x + ret->outputs[i].rect.width > max_width)
-        ret->outputs[i].enabled = FALSE;
+      init_config_from_preferred_mode (&ret->outputs[0], &outputs[0]);
+      ret->outputs[0].is_primary = TRUE;
+      return ret;
     }
+
+  if (extend_stored_config (self, outputs, n_outputs, max_width, max_height, ret))
+      return ret;
+
+  make_linear_config (self, outputs, n_outputs, max_width, max_height, ret);
 
   return ret;
 }
