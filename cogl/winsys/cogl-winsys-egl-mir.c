@@ -36,12 +36,12 @@
 
 #include <mir_toolkit/mir_client_library.h>
 #include <string.h>
-#include <errno.h>
 
 #include "cogl-winsys-egl-mir-private.h"
 #include "cogl-winsys-egl-private.h"
 #include "cogl-renderer-private.h"
 #include "cogl-onscreen-private.h"
+#include "cogl-output-private.h"
 #include "cogl-mir-renderer.h"
 #include "cogl-error-private.h"
 
@@ -110,11 +110,118 @@ _cogl_winsys_renderer_disconnect (CoglRenderer *renderer)
   if (mir_connection_is_valid (mir_renderer->mir_connection))
     {
       if (!mir_connection_is_valid (renderer->foreign_mir_connection))
+      {
+        mir_connection_set_display_config_change_callback (mir_renderer->mir_connection,
+                                                           NULL, NULL);
         mir_connection_release (mir_renderer->mir_connection);
+      }
     }
+
+  g_list_free_full (renderer->outputs, (GDestroyNotify)cogl_object_unref);
+  renderer->outputs = NULL;
 
   g_slice_free (CoglRendererMir, egl_renderer->platform);
   g_slice_free (CoglRendererEGL, egl_renderer);
+}
+
+static gchar *
+_mir_output_get_name (MirDisplayOutput *output)
+{
+  g_return_val_if_fail (output, NULL);
+
+  switch (output->type)
+    {
+      case mir_display_output_type_unknown:
+        return g_strdup_printf ("UNKNOWN-%u", output->output_id);
+      case mir_display_output_type_vga:
+        return g_strdup_printf ("VGA-%u", output->output_id);
+      case mir_display_output_type_dvii:
+        return g_strdup_printf ("DVII-%u", output->output_id);
+      case mir_display_output_type_dvid:
+        return g_strdup_printf ("DVID-%u", output->output_id);
+      case mir_display_output_type_dvia:
+        return g_strdup_printf ("DVIA-%u", output->output_id);
+      case mir_display_output_type_composite:
+        return g_strdup_printf ("COMPOSITE-%u", output->output_id);
+      case mir_display_output_type_svideo:
+        return g_strdup_printf ("SVIDEO-%u", output->output_id);
+      case mir_display_output_type_lvds:
+        return g_strdup_printf ("LVDS-%u", output->output_id);
+      case mir_display_output_type_component:
+        return g_strdup_printf ("COMPONENT-%u", output->output_id);
+      case mir_display_output_type_ninepindin:
+        return g_strdup_printf ("NINEPINDIN-%u", output->output_id);
+      case mir_display_output_type_displayport:
+        return g_strdup_printf ("DISPLAYPORT-%u", output->output_id);
+      case mir_display_output_type_hdmia:
+        return g_strdup_printf ("HDMIA-%u", output->output_id);
+      case mir_display_output_type_hdmib:
+        return g_strdup_printf ("HDMIB-%u", output->output_id);
+      case mir_display_output_type_tv:
+        return g_strdup_printf ("TV-%u", output->output_id);
+      case mir_display_output_type_edp:
+        return g_strdup_printf ("EDP-%u", output->output_id);
+    }
+
+  return NULL;
+}
+
+static void
+_mir_update_outputs (CoglRenderer *renderer)
+{
+  CoglRendererEGL *egl_renderer = renderer->winsys;
+  CoglRendererMir *mir_renderer = egl_renderer->platform;
+  MirDisplayConfiguration *dpy_config;
+  gint i;
+
+  g_list_free_full (renderer->outputs, (GDestroyNotify)cogl_object_unref);
+  renderer->outputs = NULL;
+
+  dpy_config = mir_connection_create_display_config (mir_renderer->mir_connection);
+
+  for (i = dpy_config->num_outputs-1; i >= 0 ; i--)
+    {
+      MirDisplayOutput *o = &dpy_config->outputs[i];
+      MirDisplayMode *mode;
+      CoglOutput *output;
+      gchar *output_name;
+
+      if (!o->used)
+        continue;
+
+      output_name = _mir_output_get_name (o);
+      mode = &o->modes[o->current_mode];
+
+      output = _cogl_output_new (output_name);
+      output->x = o->position_x;
+      output->y = o->position_y;
+      output->width = mode->horizontal_resolution;
+      output->height = mode->vertical_resolution;
+      output->mm_width = o->physical_width_mm;
+      output->mm_height = o->physical_height_mm;
+      output->refresh_rate = mode->refresh_rate;
+
+      /* FIXME, mir does not support this yet */
+      output->subpixel_order = COGL_SUBPIXEL_ORDER_UNKNOWN;
+
+      renderer->outputs = g_list_prepend (renderer->outputs, output);
+
+      g_free (output_name);
+    }
+
+  mir_display_config_destroy (dpy_config);
+}
+
+static void
+_mir_display_config_changed_cb(MirConnection* connection, void* data)
+{
+  CoglRenderer *renderer = data;
+  const CoglWinsysVtable *winsys = renderer->winsys_vtable;
+
+  _mir_update_outputs (renderer);
+
+  if (winsys->renderer_outputs_changed != NULL)
+    winsys->renderer_outputs_changed (renderer);
 }
 
 static CoglBool
@@ -138,7 +245,7 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
     }
   else
     {
-      mir_renderer->mir_connection = mir_connect_sync (NULL, __PRETTY_FUNCTION__);
+      mir_renderer->mir_connection = mir_connect_sync (NULL, "Cogl Mir Renderer");
       if (!mir_connection_is_valid (mir_renderer->mir_connection))
         {
           _cogl_set_error (error, COGL_WINSYS_ERROR,
@@ -155,6 +262,17 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
 
   if (!_cogl_winsys_egl_renderer_connect_common (renderer, error))
     goto error;
+
+  _mir_update_outputs (renderer);
+
+  if (!mir_connection_is_valid (renderer->foreign_mir_connection))
+    {
+      /* FIXME: we can't add a config change callback for a foreign connection
+       * or we'll block other callbacks on that */
+      mir_connection_set_display_config_change_callback (mir_renderer->mir_connection,
+                                                         _mir_display_config_changed_cb,
+                                                         renderer);
+    }
 
   return TRUE;
 
