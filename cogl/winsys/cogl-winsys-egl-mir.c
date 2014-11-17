@@ -333,8 +333,6 @@ _cogl_winsys_egl_onscreen_init (CoglOnscreen *onscreen,
         mir_connection_create_surface_sync (mir_renderer->mir_connection, &surfaceparm);
     }
 
-  mir_onscreen->last_state = mir_surface_get_state (mir_onscreen->mir_surface);
-
   if (!mir_surface_is_valid (mir_onscreen->mir_surface))
     {
       _cogl_set_error (error, COGL_WINSYS_ERROR,
@@ -358,6 +356,8 @@ _cogl_winsys_egl_onscreen_init (CoglOnscreen *onscreen,
                             egl_config,
                             (EGLNativeWindowType) mir_egl_native_window,
                             NULL);
+
+  mir_onscreen->last_state = mir_surface_get_state (mir_onscreen->mir_surface);
 
   return TRUE;
 }
