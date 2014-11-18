@@ -64,8 +64,8 @@ typedef struct _CoglOnscreenMir
   MirSurface *mir_surface;
   MirSurfaceState last_state;
 
-  gint last_width;
-  gint last_height;
+  int last_width;
+  int last_height;
   GMutex mir_event_lock;
 } CoglOnscreenMir;
 
@@ -74,8 +74,8 @@ static MirPixelFormat
 _mir_connection_get_valid_format (MirConnection *connection)
 {
   MirPixelFormat formats[mir_pixel_formats];
-  guint valid_formats;
-  guint f;
+  uint32_t valid_formats;
+  uint32_t f;
 
   mir_connection_get_available_surface_formats(connection, formats,
                                                mir_pixel_formats,
@@ -172,7 +172,7 @@ _mir_update_outputs (CoglRenderer *renderer)
   CoglRendererEGL *egl_renderer = renderer->winsys;
   CoglRendererMir *mir_renderer = egl_renderer->platform;
   MirDisplayConfiguration *dpy_config;
-  gint i;
+  int i;
 
   g_list_free_full (renderer->outputs, (GDestroyNotify)cogl_object_unref);
   renderer->outputs = NULL;
@@ -437,8 +437,8 @@ flush_pending_resize_notifications_cb (void *data,
 
       if (egl_onscreen->pending_resize_notify)
         {
-          gint w = mir_onscreen->last_width;
-          gint h = mir_onscreen->last_height;
+          int w = mir_onscreen->last_width;
+          int h = mir_onscreen->last_height;
 
           _cogl_framebuffer_winsys_update_size (framebuffer, w, h);
           _cogl_onscreen_notify_resize (onscreen);
