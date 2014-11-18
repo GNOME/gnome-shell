@@ -252,6 +252,7 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
                            COGL_WINSYS_ERROR_INIT,
                            "Failed to connect mir display: %s",
                            mir_connection_get_error_message (mir_renderer->mir_connection));
+          mir_connection_release (mir_renderer->mir_connection);
           goto error;
         }
     }
