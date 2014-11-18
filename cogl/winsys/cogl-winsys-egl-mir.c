@@ -250,7 +250,8 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
         {
           _cogl_set_error (error, COGL_WINSYS_ERROR,
                            COGL_WINSYS_ERROR_INIT,
-                           "Failed to connect mir display");
+                           "Failed to connect mir display: %s",
+                           mir_connection_get_error_message (mir_renderer->mir_connection));
           goto error;
         }
     }
@@ -314,6 +315,7 @@ make_dummy_surface (CoglDisplay *display,
   MirEGLNativeWindowType dummy_mir_egl_native_window;
   MirSurfaceParameters surfaceparm;
   const char *error_message;
+  const char *error_detail = "";
 
   surfaceparm.name = "CoglDummySurface";
   surfaceparm.width = 1;
@@ -324,9 +326,10 @@ make_dummy_surface (CoglDisplay *display,
 
   mir_display->dummy_mir_surface =
     mir_connection_create_surface_sync (mir_renderer->mir_connection, &surfaceparm);
-  if (!mir_display->dummy_mir_surface)
+  if (!mir_surface_is_valid (mir_display->dummy_mir_surface))
     {
-      error_message= "Failed to create a dummy mir surface";
+      error_message = "Failed to create a dummy mir surface";
+      error_detail = mir_surface_get_error_message (mir_display->dummy_mir_surface);
       goto fail;
     }
 
@@ -334,7 +337,8 @@ make_dummy_surface (CoglDisplay *display,
     mir_surface_get_egl_native_window (mir_display->dummy_mir_surface);
   if (!dummy_mir_egl_native_window)
     {
-      error_message= "Failed to get a dummy mir native egl surface";
+      error_message = "Failed to get a dummy mir native egl surface";
+      error_detail = mir_surface_get_error_message (mir_display->dummy_mir_surface);
       goto fail;
     }
 
@@ -345,7 +349,7 @@ make_dummy_surface (CoglDisplay *display,
                             NULL);
   if (egl_display->dummy_surface == EGL_NO_SURFACE)
     {
-      error_message= "Unable to create dummy window surface";
+      error_message = "Unable to create dummy window surface";
       goto fail;
     }
 
@@ -354,7 +358,9 @@ make_dummy_surface (CoglDisplay *display,
  fail:
   _cogl_set_error (error, COGL_WINSYS_ERROR,
                    COGL_WINSYS_ERROR_CREATE_CONTEXT,
-                   "%s", error_message);
+                   "%s%s%s", error_message,
+                   error_detail != '\0' ? ": " : "",
+                   error_detail);
 
   return FALSE;
 }
@@ -538,7 +544,8 @@ _cogl_winsys_egl_onscreen_init (CoglOnscreen *onscreen,
     {
       _cogl_set_error (error, COGL_WINSYS_ERROR,
                        COGL_WINSYS_ERROR_CREATE_ONSCREEN,
-                      "Error while creating mir surface for CoglOnscreen");
+                      "Error while creating mir surface for CoglOnscreen: %s",
+                      mir_surface_get_error_message (mir_onscreen->mir_surface));
       return FALSE;
     }
 
@@ -548,7 +555,8 @@ _cogl_winsys_egl_onscreen_init (CoglOnscreen *onscreen,
       _cogl_set_error (error, COGL_WINSYS_ERROR,
                        COGL_WINSYS_ERROR_CREATE_ONSCREEN,
                        "Error while getting mir egl native window "
-                       "for CoglOnscreen");
+                       "for CoglOnscreen: %s",
+                       mir_surface_get_error_message (mir_onscreen->mir_surface));
       return FALSE;
     }
 
