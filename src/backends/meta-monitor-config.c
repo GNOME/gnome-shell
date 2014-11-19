@@ -1179,10 +1179,6 @@ make_linear_config (MetaMonitorConfig *self,
           config->outputs[i].rect.x = x;
           x += config->outputs[i].rect.width;
         }
-
-      /* Disable outputs that would go beyond framebuffer limits */
-      if (config->outputs[i].rect.x + config->outputs[i].rect.width > max_width)
-        config->outputs[i].enabled = FALSE;
     }
 }
 
@@ -1263,6 +1259,7 @@ make_default_config (MetaMonitorConfig *self,
                      gboolean           use_stored_config)
 {
   MetaConfiguration *ret = NULL;
+  unsigned i;
 
   ret = config_new ();
   make_config_key (ret, outputs, n_outputs, -1);
@@ -1272,20 +1269,28 @@ make_default_config (MetaMonitorConfig *self,
      nothing else to do */
   if (n_outputs == 1)
     {
-
       init_config_from_preferred_mode (&ret->outputs[0], &outputs[0]);
       ret->outputs[0].is_primary = TRUE;
-      return ret;
+      goto check_limits;
     }
 
   if (make_suggested_config (self, outputs, n_outputs, max_width, max_height, ret))
-      return ret;
+      goto check_limits;
 
   if (use_stored_config &&
       extend_stored_config (self, outputs, n_outputs, max_width, max_height, ret))
-      return ret;
+      goto check_limits;
 
   make_linear_config (self, outputs, n_outputs, max_width, max_height, ret);
+
+check_limits:
+  /* Disable outputs that would go beyond framebuffer limits */
+  for (i = 0; i < n_outputs; i++)
+    {
+        if ((ret->outputs[i].rect.x + ret->outputs[i].rect.width > max_width)
+            || (ret->outputs[i].rect.y + ret->outputs[i].rect.height > max_height))
+          ret->outputs[i].enabled = FALSE;
+    }
 
   return ret;
 }
