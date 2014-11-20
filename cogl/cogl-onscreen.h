@@ -282,10 +282,12 @@ cogl_mir_onscreen_get_surface (CoglOnscreen *onscreen);
  *
  * This function must be called before @onscreen is allocated.
  *
+ * Returns: whether @surface has been marked as been set as surface or not.
+ *
  * Since: 1.18
  * Stability: unstable
  */
-void
+CoglBool
 cogl_mir_onscreen_set_foreign_surface (CoglOnscreen *onscreen,
                                        struct MirSurface *surface);
 #endif /* COGL_HAS_EGL_PLATFORM_MIR_SUPPORT */

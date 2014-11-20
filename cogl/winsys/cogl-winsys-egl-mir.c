@@ -658,17 +658,23 @@ cogl_mir_renderer_get_connection (CoglRenderer *renderer)
   return NULL;
 }
 
-void
+CoglBool
 cogl_mir_onscreen_set_foreign_surface (CoglOnscreen *onscreen,
                                        MirSurface *surface)
 {
   CoglFramebuffer *fb;
-  _COGL_RETURN_IF_FAIL (mir_surface_is_valid (surface));
+  MirSurfaceParameters parameters;
+
+  _COGL_RETURN_VAL_IF_FAIL (mir_surface_is_valid (surface), FALSE);
 
   fb = COGL_FRAMEBUFFER (onscreen);
-  _COGL_RETURN_IF_FAIL (!fb->allocated);
+  _COGL_RETURN_VAL_IF_FAIL (!fb->allocated, FALSE);
+
+  mir_surface_get_parameters (surface, &parameters);
+  _COGL_RETURN_VAL_IF_FAIL (parameters.buffer_usage == mir_buffer_usage_hardware, FALSE);
 
   onscreen->foreign_surface = surface;
+  return TRUE;
 }
 
 MirSurface *
