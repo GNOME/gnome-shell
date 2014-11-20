@@ -49,10 +49,12 @@ COGL_BEGIN_DECLS
  * to work with instead of leaving Cogl to automatically connect to a
  * mir server.
  *
+ * Returns: whether @connection has been marked as been set as connection or not.
+ *
  * Since: 1.8
  * Stability: unstable
  */
-void
+CoglBool
 cogl_mir_renderer_set_foreign_connection (CoglRenderer *renderer,
                                           MirConnection *connection);
 

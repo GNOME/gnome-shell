@@ -626,17 +626,18 @@ _cogl_winsys_onscreen_set_visibility (CoglOnscreen *onscreen,
   mir_surface_set_state (mir_onscreen->mir_surface, new_state);
 }
 
-void
+CoglBool
 cogl_mir_renderer_set_foreign_connection (CoglRenderer *renderer,
-                                              MirConnection *connection)
+                                          MirConnection *connection)
 {
-  _COGL_RETURN_IF_FAIL (cogl_is_renderer (renderer));
-  _COGL_RETURN_IF_FAIL (mir_connection_is_valid (connection));
+  _COGL_RETURN_VAL_IF_FAIL (cogl_is_renderer (renderer), FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (mir_connection_is_valid (connection), FALSE);
 
   /* NB: Renderers are considered immutable once connected */
-  _COGL_RETURN_IF_FAIL (!renderer->connected);
+  _COGL_RETURN_VAL_IF_FAIL (!renderer->connected, FALSE);
 
   renderer->foreign_mir_connection = connection;
+  return TRUE;
 }
 
 MirConnection *
