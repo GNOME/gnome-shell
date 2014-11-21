@@ -548,6 +548,7 @@ _cogl_winsys_egl_onscreen_init (CoglOnscreen *onscreen,
                        COGL_WINSYS_ERROR_CREATE_ONSCREEN,
                       "Error while creating mir surface for CoglOnscreen: %s",
                       mir_surface_get_error_message (mir_onscreen->mir_surface));
+      mir_surface_release_sync (mir_onscreen->mir_surface);
       return FALSE;
     }
 
@@ -559,6 +560,7 @@ _cogl_winsys_egl_onscreen_init (CoglOnscreen *onscreen,
                        "Error while getting mir egl native window "
                        "for CoglOnscreen: %s",
                        mir_surface_get_error_message (mir_onscreen->mir_surface));
+      mir_surface_release_sync (mir_onscreen->mir_surface);
       return FALSE;
     }
 
