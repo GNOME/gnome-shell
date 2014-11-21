@@ -282,7 +282,7 @@ cogl_mir_onscreen_get_surface (CoglOnscreen *onscreen);
  *
  * This function must be called before @onscreen is allocated.
  *
- * Returns: whether @surface has been marked as been set as surface or not.
+ * Returns: whether @surface has been set as surface or not.
  *
  * Since: 1.18
  * Stability: unstable
@@ -290,6 +290,27 @@ cogl_mir_onscreen_get_surface (CoglOnscreen *onscreen);
 CoglBool
 cogl_mir_onscreen_set_foreign_surface (CoglOnscreen *onscreen,
                                        struct MirSurface *surface);
+
+/**
+ * cogl_mir_onscreen_resize:
+ * @onscreen: A #CoglOnscreen framebuffer
+ * @width: The desired width of the framebuffer
+ * @height: The desired height of the framebuffer
+ *
+ * Resizes the backbuffer of the given @onscreen framebuffer to the
+ * given size.
+ *
+ * Note that if some drawing commands have been applied to the
+ * framebuffer since the last swap buffers then the resize will be
+ * queued and will only take effect in the next swap buffers.
+ *
+ * Since: 1.18
+ * Stability: unstable
+ */
+void
+cogl_mir_onscreen_resize (CoglOnscreen *onscreen,
+                          int           width,
+                          int           height);
 #endif /* COGL_HAS_EGL_PLATFORM_MIR_SUPPORT */
 
 /**

@@ -64,8 +64,9 @@ typedef struct _CoglOnscreenMir
   MirSurface *mir_surface;
   MirSurfaceState last_state;
 
-  int last_width;
-  int last_height;
+  CoglBool requested_resize;
+  int requested_width;
+  int requested_height;
   GMutex mir_event_lock;
 } CoglOnscreenMir;
 
@@ -410,7 +411,7 @@ _cogl_winsys_egl_cleanup_context (CoglDisplay *display)
 
   if (mir_display->dummy_mir_surface)
     {
-      mir_surface_release (mir_display->dummy_mir_surface, NULL, NULL);
+      mir_surface_release_sync (mir_display->dummy_mir_surface);
       mir_display->dummy_mir_surface = NULL;
     }
 }
@@ -444,8 +445,8 @@ flush_pending_resize_notifications_cb (void *data,
 
       if (egl_onscreen->pending_resize_notify)
         {
-          int w = mir_onscreen->last_width;
-          int h = mir_onscreen->last_height;
+          int w = mir_onscreen->requested_width;
+          int h = mir_onscreen->requested_height;
 
           _cogl_framebuffer_winsys_update_size (framebuffer, w, h);
           _cogl_onscreen_notify_resize (onscreen);
@@ -490,8 +491,8 @@ static void _mir_surface_event_cb(MirSurface* surface, MirEvent const* event, vo
       g_mutex_lock (&mir_onscreen->mir_event_lock);
 
       egl_onscreen->pending_resize_notify = TRUE;
-      mir_onscreen->last_width = event->resize.width;
-      mir_onscreen->last_height = event->resize.height;
+      mir_onscreen->requested_width = event->resize.width;
+      mir_onscreen->requested_height = event->resize.height;
 
       if (!egl_renderer->resize_notify_idle)
       {
@@ -588,7 +589,7 @@ _cogl_winsys_egl_onscreen_deinit (CoglOnscreen *onscreen)
   if (mir_onscreen->mir_surface && !onscreen->foreign_surface)
     {
       mir_surface_set_event_handler (mir_onscreen->mir_surface, NULL);
-      mir_surface_release (mir_onscreen->mir_surface, NULL, NULL);
+      mir_surface_release_sync (mir_onscreen->mir_surface);
       mir_onscreen->mir_surface = NULL;
     }
 
@@ -624,6 +625,42 @@ _cogl_winsys_onscreen_set_visibility (CoglOnscreen *onscreen,
     }
 
   mir_surface_set_state (mir_onscreen->mir_surface, new_state);
+}
+
+static void
+mir_surface_recreate (CoglOnscreen *onscreen)
+{
+  CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
+  CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
+  CoglOnscreenMir *mir_onscreen = egl_onscreen->platform;
+  const CoglWinsysVtable *winsys = _cogl_framebuffer_get_winsys (framebuffer);
+
+  winsys->onscreen_deinit (onscreen);
+
+  _cogl_framebuffer_winsys_update_size (framebuffer,
+                                        mir_onscreen->requested_width,
+                                        mir_onscreen->requested_height);
+
+  winsys->onscreen_init (onscreen, NULL);
+  _cogl_onscreen_notify_resize (onscreen);
+
+  mir_onscreen->requested_resize = FALSE;
+}
+
+static void
+_cogl_winsys_onscreen_swap_buffers_with_damage (CoglOnscreen *onscreen,
+                                                const int *rectangles,
+                                                int n_rectangles)
+{
+  CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
+  CoglOnscreenMir *mir_onscreen = egl_onscreen->platform;
+
+  if (mir_onscreen->requested_resize)
+    mir_surface_recreate (onscreen);
+
+  parent_vtable->onscreen_swap_buffers_with_damage (onscreen,
+                                                    rectangles,
+                                                    n_rectangles);
 }
 
 CoglBool
@@ -665,6 +702,7 @@ cogl_mir_onscreen_set_foreign_surface (CoglOnscreen *onscreen,
   CoglFramebuffer *fb;
   MirSurfaceParameters parameters;
 
+  _COGL_RETURN_VAL_IF_FAIL (cogl_is_onscreen (surface), FALSE);
   _COGL_RETURN_VAL_IF_FAIL (mir_surface_is_valid (surface), FALSE);
 
   fb = COGL_FRAMEBUFFER (onscreen);
@@ -683,12 +721,55 @@ cogl_mir_onscreen_get_surface (CoglOnscreen *onscreen)
   CoglOnscreenEGL *egl_onscreen;
   CoglOnscreenMir *mir_onscreen;
 
+  _COGL_RETURN_VAL_IF_FAIL (cogl_is_onscreen (onscreen), NULL);
   cogl_framebuffer_allocate (COGL_FRAMEBUFFER (onscreen), NULL);
 
   egl_onscreen = onscreen->winsys;
   mir_onscreen = egl_onscreen->platform;
 
+  _COGL_RETURN_VAL_IF_FAIL (mir_surface_is_valid (mir_onscreen->mir_surface), NULL);
+
   return mir_onscreen->mir_surface;
+}
+
+void
+cogl_mir_onscreen_resize (CoglOnscreen *onscreen,
+                          int           width,
+                          int           height)
+{
+  CoglFramebuffer *framebuffer;
+  CoglOnscreenEGL *egl_onscreen;
+  CoglOnscreenMir *mir_onscreen;
+
+  _COGL_RETURN_VAL_IF_FAIL (cogl_is_onscreen (onscreen), NULL);
+
+  framebuffer = COGL_FRAMEBUFFER (onscreen);
+
+  if (cogl_framebuffer_get_width (framebuffer) == width &&
+      cogl_framebuffer_get_height (framebuffer) == height)
+    {
+      return;
+    }
+
+  if (!framebuffer->allocated)
+    {
+      _cogl_framebuffer_winsys_update_size (framebuffer, width, height);
+      _cogl_onscreen_notify_resize (onscreen);
+    }
+  else
+    {
+      egl_onscreen = onscreen->winsys;
+      mir_onscreen = egl_onscreen->platform;
+
+      g_mutex_lock (&mir_onscreen->mir_event_lock);
+      mir_onscreen->requested_resize = TRUE;
+      mir_onscreen->requested_width = width;
+      mir_onscreen->requested_height = height;
+      g_mutex_unlock (&mir_onscreen->mir_event_lock);
+
+      if (!framebuffer->mid_scene)
+        mir_surface_recreate (onscreen);
+    }
 }
 
 static const CoglWinsysEGLVtable
@@ -725,6 +806,8 @@ _cogl_winsys_egl_mir_get_vtable (void)
 
       vtable.onscreen_set_visibility =
         _cogl_winsys_onscreen_set_visibility;
+      vtable.onscreen_swap_buffers_with_damage =
+        _cogl_winsys_onscreen_swap_buffers_with_damage;
 
       vtable_inited = TRUE;
     }
