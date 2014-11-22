@@ -1114,7 +1114,7 @@ make_suggested_config (MetaMonitorConfig *self,
   MetaOutput *primary;
   GList *region = NULL;
 
-  g_return_if_fail (config != NULL);
+  g_return_val_if_fail (config != NULL, FALSE);
   primary = find_primary_output (outputs, n_outputs);
 
   for (i = 0; i < n_outputs; i++)
