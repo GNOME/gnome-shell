@@ -547,9 +547,16 @@ data_device_set_selection (struct wl_client *client,
   meta_wayland_data_device_set_selection (data_device, source, serial);
 }
 
+static void
+data_device_release(struct wl_client *client, struct wl_resource *resource)
+{
+  wl_resource_destroy(resource);
+}
+
 static const struct wl_data_device_interface data_device_interface = {
   data_device_start_drag,
   data_device_set_selection,
+  data_device_release,
 };
 
 static void
