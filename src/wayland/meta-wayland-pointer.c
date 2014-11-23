@@ -307,6 +307,7 @@ repick_for_event (MetaWaylandPointer *pointer,
     pointer->current = NULL;
 
   sync_focus_surface (pointer);
+  meta_wayland_pointer_update_cursor_surface (pointer);
 }
 
 void
