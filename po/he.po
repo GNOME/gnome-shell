@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-13 23:32+0300\n"
-"PO-Revision-Date: 2014-09-13 23:32+0300\n"
+"POT-Creation-Date: 2014-11-24 20:00+0200\n"
+"PO-Revision-Date: 2014-11-24 20:03+0200\n"
 "Last-Translator: Yosef Or Boczko <yoseforb@gmail.com>\n"
 "Language-Team: עברית <>\n"
 "Language: he\n"
@@ -292,8 +292,8 @@ msgid "Delay focus changes in mouse mode until the pointer stops moving"
 msgstr "Delay focus changes in mouse mode until the pointer stops moving"
 
 #: ../data/org.gnome.Shell.PortalHelper.desktop.in.h:1
-msgid "Captive Portal"
-msgstr "Captive Portal"
+msgid "Network Login"
+msgstr "Network Login"
 
 #: ../js/extensionPrefs/main.js:123
 #, javascript-format
@@ -307,7 +307,7 @@ msgstr "הרחבות GNOME Shell"
 #: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:143
 #: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:452
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/network.js:915
+#: ../js/ui/status/network.js:916
 msgid "Cancel"
 msgstr "ביטול"
 
@@ -325,20 +325,20 @@ msgctxt "button"
 msgid "Sign In"
 msgstr "כניסה"
 
-#: ../js/gdm/loginDialog.js:269
+#: ../js/gdm/loginDialog.js:275
 msgid "Choose Session"
 msgstr "בחירת הפעלה"
 
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:429
+#: ../js/gdm/loginDialog.js:434
 msgid "Not listed?"
 msgstr "לא רשום?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: ../js/gdm/loginDialog.js:614
+#: ../js/gdm/loginDialog.js:619
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(משתמש או %s לדוגמה)"
@@ -346,16 +346,16 @@ msgstr "(משתמש או %s לדוגמה)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:619 ../js/ui/components/networkAgent.js:269
+#: ../js/gdm/loginDialog.js:624 ../js/ui/components/networkAgent.js:269
 #: ../js/ui/components/networkAgent.js:287
 msgid "Username: "
 msgstr "שם משתמש:"
 
-#: ../js/gdm/loginDialog.js:922
+#: ../js/gdm/loginDialog.js:955
 msgid "Login Window"
 msgstr "חלון כניסה"
 
-#: ../js/gdm/util.js:323
+#: ../js/gdm/util.js:341
 msgid "Authentication error"
 msgstr "שגיאת אימות"
 
@@ -364,7 +364,7 @@ msgstr "שגיאת אימות"
 #. as a cue to display our own message.
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: ../js/gdm/util.js:453
+#: ../js/gdm/util.js:473
 msgid "(or swipe finger)"
 msgstr "(או להעביר אצבע)"
 
@@ -389,15 +389,15 @@ msgstr "ההרצה של „%s” נכשלה:"
 msgid "Web Authentication Redirect"
 msgstr "אימות ניתוב הרשת"
 
-#: ../js/ui/appDisplay.js:772
+#: ../js/ui/appDisplay.js:770
 msgid "Frequently used applications will appear here"
 msgstr "יישומים בשימוש תדיר יופיעו כאן"
 
-#: ../js/ui/appDisplay.js:883
+#: ../js/ui/appDisplay.js:881
 msgid "Frequent"
 msgstr "תדיר"
 
-#: ../js/ui/appDisplay.js:890
+#: ../js/ui/appDisplay.js:888
 msgid "All"
 msgstr "הכול"
 
@@ -417,12 +417,12 @@ msgstr "הוספה למועדפים"
 msgid "Show Details"
 msgstr "הצגת פרטים"
 
-#: ../js/ui/appFavorites.js:124
+#: ../js/ui/appFavorites.js:132
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "‏%s נוסף למועדפים שלך."
 
-#: ../js/ui/appFavorites.js:158
+#: ../js/ui/appFavorites.js:166
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "‏%s הוסר מהמועדפים שלך."
@@ -436,17 +436,23 @@ msgstr "הגדרות"
 msgid "Change Background…"
 msgstr "החלפת הרקע…"
 
+#. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
+#: ../js/ui/calendar.js:39
+msgctxt "calendar-no-work"
+msgid "06"
+msgstr "65"
+
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: ../js/ui/calendar.js:67
+#: ../js/ui/calendar.js:68
 msgctxt "event list time"
 msgid "All Day"
 msgstr "יום שלם"
 
 #. Translators: Shown in calendar event list, if 24h format,
 #. \u2236 is a ratio character, similar to :
-#: ../js/ui/calendar.js:73
+#: ../js/ui/calendar.js:75
 msgctxt "event list time"
 msgid "%H∶%M"
 msgstr "%H:%M"
@@ -454,7 +460,7 @@ msgstr "%H:%M"
 #. Translators: Shown in calendar event list, if 12h format,
 #. \u2236 is a ratio character, similar to : and \u2009 is
 #. a thin space
-#: ../js/ui/calendar.js:82
+#: ../js/ui/calendar.js:84
 msgctxt "event list time"
 msgid "%l∶%M %p"
 msgstr "%l\\u2236%M %p"
@@ -464,43 +470,43 @@ msgstr "%l\\u2236%M %p"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: ../js/ui/calendar.js:113
+#: ../js/ui/calendar.js:115
 msgctxt "grid sunday"
 msgid "S"
 msgstr "א"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: ../js/ui/calendar.js:115
+#: ../js/ui/calendar.js:117
 msgctxt "grid monday"
 msgid "M"
 msgstr "ב"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: ../js/ui/calendar.js:117
+#: ../js/ui/calendar.js:119
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "ג"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: ../js/ui/calendar.js:119
+#: ../js/ui/calendar.js:121
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "ד"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: ../js/ui/calendar.js:121
+#: ../js/ui/calendar.js:123
 msgctxt "grid thursday"
 msgid "T"
 msgstr "ה"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: ../js/ui/calendar.js:123
+#: ../js/ui/calendar.js:125
 msgctxt "grid friday"
 msgid "F"
 msgstr "ו"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: ../js/ui/calendar.js:125
+#: ../js/ui/calendar.js:127
 msgctxt "grid saturday"
 msgid "S"
 msgstr "ש"
@@ -511,85 +517,83 @@ msgstr "ש"
 #. * so they need to be unique (e.g. Tuesday and Thursday cannot
 #. * both be 'T').
 #.
-#: ../js/ui/calendar.js:138
+#: ../js/ui/calendar.js:140
 msgctxt "list sunday"
 msgid "Su"
 msgstr "א׳"
 
 #. Translators: Event list abbreviation for Monday
-#: ../js/ui/calendar.js:140
+#: ../js/ui/calendar.js:142
 msgctxt "list monday"
 msgid "M"
 msgstr "ב׳"
 
 #. Translators: Event list abbreviation for Tuesday
-#: ../js/ui/calendar.js:142
+#: ../js/ui/calendar.js:144
 msgctxt "list tuesday"
 msgid "T"
 msgstr "ג׳"
 
 #. Translators: Event list abbreviation for Wednesday
-#: ../js/ui/calendar.js:144
+#: ../js/ui/calendar.js:146
 msgctxt "list wednesday"
 msgid "W"
 msgstr "ד׳"
 
 #. Translators: Event list abbreviation for Thursday
-#: ../js/ui/calendar.js:146
+#: ../js/ui/calendar.js:148
 msgctxt "list thursday"
 msgid "Th"
 msgstr "ה"
 
 #. Translators: Event list abbreviation for Friday
-#: ../js/ui/calendar.js:148
+#: ../js/ui/calendar.js:150
 msgctxt "list friday"
 msgid "F"
 msgstr "ו׳"
 
 #. Translators: Event list abbreviation for Saturday
-#: ../js/ui/calendar.js:150
+#: ../js/ui/calendar.js:152
 msgctxt "list saturday"
 msgid "S"
 msgstr "ש׳"
 
-#: ../js/ui/calendar.js:453
+#: ../js/ui/calendar.js:461
 msgid "Previous month"
 msgstr "חודש קודם"
 
-#: ../js/ui/calendar.js:463
+#: ../js/ui/calendar.js:471
 msgid "Next month"
 msgstr "חודש הבא"
 
 #. Translators: Text to show if there are no events
-#: ../js/ui/calendar.js:781
+#: ../js/ui/calendar.js:806
 msgid "Nothing Scheduled"
 msgstr "היומן ריק"
 
-#. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:799
+#: ../js/ui/calendar.js:825
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, ה־%e ב%B"
 
-#. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:802
+#: ../js/ui/calendar.js:829
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, ה־%e ב%B, %Y"
 
-#: ../js/ui/calendar.js:813
+#: ../js/ui/calendar.js:841
 msgid "Today"
 msgstr "היום"
 
-#: ../js/ui/calendar.js:817
+#: ../js/ui/calendar.js:845
 msgid "Tomorrow"
 msgstr "מחר"
 
-#: ../js/ui/calendar.js:828
+#: ../js/ui/calendar.js:856
 msgid "This week"
 msgstr "השבוע"
 
-#: ../js/ui/calendar.js:836
+#: ../js/ui/calendar.js:864
 msgid "Next week"
 msgstr "בשבוע הבא"
 
@@ -623,7 +627,7 @@ msgid "Type again:"
 msgstr "נא להקליד שוב:"
 
 #: ../js/ui/components/networkAgent.js:138 ../js/ui/status/network.js:277
-#: ../js/ui/status/network.js:359 ../js/ui/status/network.js:918
+#: ../js/ui/status/network.js:359 ../js/ui/status/network.js:919
 msgid "Connect"
 msgstr "התחברות"
 
@@ -719,47 +723,47 @@ msgstr "פעולה זו לא הצליחה, נא לנסות שוב. עמך הסל
 
 #. FIXME: We don't have a 'chat room' icon (bgo #653737) use
 #. system-users for now as Empathy does.
-#: ../js/ui/components/telepathyClient.js:240
+#: ../js/ui/components/telepathyClient.js:242
 msgid "Invitation"
 msgstr "הזמנה"
 
 #. We got the TpContact
-#: ../js/ui/components/telepathyClient.js:300
+#: ../js/ui/components/telepathyClient.js:302
 msgid "Call"
 msgstr "התקשרות"
 
 #. We got the TpContact
-#: ../js/ui/components/telepathyClient.js:316
+#: ../js/ui/components/telepathyClient.js:318
 msgid "File Transfer"
 msgstr "העברת קבצים"
 
-#: ../js/ui/components/telepathyClient.js:420
+#: ../js/ui/components/telepathyClient.js:422
 msgid "Chat"
 msgstr "שיחה"
 
-#: ../js/ui/components/telepathyClient.js:483
+#: ../js/ui/components/telepathyClient.js:485
 msgid "Unmute"
 msgstr "ביטול ההשתקה"
 
-#: ../js/ui/components/telepathyClient.js:483
+#: ../js/ui/components/telepathyClient.js:485
 msgid "Mute"
 msgstr "השתקה"
 
 #. Translators: Time in 24h format
-#: ../js/ui/components/telepathyClient.js:953
+#: ../js/ui/components/telepathyClient.js:955
 msgid "%H∶%M"
 msgstr "%H:%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30"
-#: ../js/ui/components/telepathyClient.js:960
+#: ../js/ui/components/telepathyClient.js:962
 #, no-c-format
 msgid "Yesterday, %H∶%M"
 msgstr "אתמול, %H\\u2236%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 24h format. i.e. "Monday, 14:30"
-#: ../js/ui/components/telepathyClient.js:967
+#: ../js/ui/components/telepathyClient.js:969
 #, no-c-format
 msgid "%A, %H∶%M"
 msgstr "%A, %H:%M"
@@ -767,7 +771,7 @@ msgstr "%A, %H:%M"
 #. Translators: this is the month name and day number
 #. followed by a time string in 24h format.
 #. i.e. "May 25, 14:30"
-#: ../js/ui/components/telepathyClient.js:974
+#: ../js/ui/components/telepathyClient.js:976
 #, no-c-format
 msgid "%B %d, %H∶%M"
 msgstr "%d ב%B, %H:%M"
@@ -775,26 +779,26 @@ msgstr "%d ב%B, %H:%M"
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
 #. i.e. "May 25 2012, 14:30"
-#: ../js/ui/components/telepathyClient.js:980
+#: ../js/ui/components/telepathyClient.js:982
 #, no-c-format
 msgid "%B %d %Y, %H∶%M"
 msgstr "%d ב%B, %H:%M"
 
 #. Translators: Time in 24h format
-#: ../js/ui/components/telepathyClient.js:986
+#: ../js/ui/components/telepathyClient.js:988
 msgid "%l∶%M %p"
 msgstr "%l:%M %p"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 12h format. i.e. "Yesterday, 2:30 pm"
-#: ../js/ui/components/telepathyClient.js:993
+#: ../js/ui/components/telepathyClient.js:995
 #, no-c-format
 msgid "Yesterday, %l∶%M %p"
 msgstr "אתמול, %l\\u2236%M %p"
 
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm"
-#: ../js/ui/components/telepathyClient.js:1000
+#: ../js/ui/components/telepathyClient.js:1002
 #, no-c-format
 msgid "%A, %l∶%M %p"
 msgstr "%l:%M %p"
@@ -802,7 +806,7 @@ msgstr "%l:%M %p"
 #. Translators: this is the month name and day number
 #. followed by a time string in 12h format.
 #. i.e. "May 25, 2:30 pm"
-#: ../js/ui/components/telepathyClient.js:1007
+#: ../js/ui/components/telepathyClient.js:1009
 #, no-c-format
 msgid "%B %d, %l∶%M %p"
 msgstr "%d ב%B, %H:%M"
@@ -810,21 +814,21 @@ msgstr "%d ב%B, %H:%M"
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
 #. i.e. "May 25 2012, 2:30 pm"
-#: ../js/ui/components/telepathyClient.js:1013
+#: ../js/ui/components/telepathyClient.js:1015
 #, no-c-format
 msgid "%B %d %Y, %l∶%M %p"
 msgstr "%d ב%B %Y, %l\\u2236%M %p"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/components/telepathyClient.js:1045
+#: ../js/ui/components/telepathyClient.js:1047
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "השם של %s הוחלף ל־%s"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example.
-#: ../js/ui/components/telepathyClient.js:1149
+#: ../js/ui/components/telepathyClient.js:1151
 #, javascript-format
 msgid "Invitation to %s"
 msgstr "הזמנה ל־%s"
@@ -832,38 +836,38 @@ msgstr "הזמנה ל־%s"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example.
-#: ../js/ui/components/telepathyClient.js:1157
+#: ../js/ui/components/telepathyClient.js:1159
 #, javascript-format
 msgid "%s is inviting you to join %s"
 msgstr "הוזמנת על ידי %s להצטרף אל %s"
 
-#: ../js/ui/components/telepathyClient.js:1159
-#: ../js/ui/components/telepathyClient.js:1194
-#: ../js/ui/components/telepathyClient.js:1228
-#: ../js/ui/components/telepathyClient.js:1286
+#: ../js/ui/components/telepathyClient.js:1161
+#: ../js/ui/components/telepathyClient.js:1196
+#: ../js/ui/components/telepathyClient.js:1230
+#: ../js/ui/components/telepathyClient.js:1287
 msgid "Decline"
 msgstr "דחייה"
 
-#: ../js/ui/components/telepathyClient.js:1165
-#: ../js/ui/components/telepathyClient.js:1234
-#: ../js/ui/components/telepathyClient.js:1291
+#: ../js/ui/components/telepathyClient.js:1167
+#: ../js/ui/components/telepathyClient.js:1236
+#: ../js/ui/components/telepathyClient.js:1292
 msgid "Accept"
 msgstr "אישור"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/components/telepathyClient.js:1184
+#: ../js/ui/components/telepathyClient.js:1186
 #, javascript-format
 msgid "Video call from %s"
 msgstr "שיחת וידאו מאת %s"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/components/telepathyClient.js:1187
+#: ../js/ui/components/telepathyClient.js:1189
 #, javascript-format
 msgid "Call from %s"
 msgstr "שיחה מאת %s"
 
 #. translators: this is a button label (verb), not a noun
-#: ../js/ui/components/telepathyClient.js:1201
+#: ../js/ui/components/telepathyClient.js:1203
 msgid "Answer"
 msgstr "מענה"
 
@@ -872,108 +876,108 @@ msgstr "מענה"
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
 #.
-#: ../js/ui/components/telepathyClient.js:1222
+#: ../js/ui/components/telepathyClient.js:1224
 #, javascript-format
 msgid "%s is sending you %s"
 msgstr "‏%s שולח/ת אליך %s"
 
 #. To translators: The parameter is the contact's alias
-#: ../js/ui/components/telepathyClient.js:1251
+#: ../js/ui/components/telepathyClient.js:1253
 #, javascript-format
 msgid "%s would like permission to see when you are online"
 msgstr "‏%s רוצה לקבל הרשאות כדי לראות מתי מצבך הוא מקוון"
 
-#: ../js/ui/components/telepathyClient.js:1337
+#: ../js/ui/components/telepathyClient.js:1338
 msgid "Network error"
 msgstr "שגיאת רשת"
 
-#: ../js/ui/components/telepathyClient.js:1339
+#: ../js/ui/components/telepathyClient.js:1340
 msgid "Authentication failed"
 msgstr "האימות נכשל"
 
-#: ../js/ui/components/telepathyClient.js:1341
+#: ../js/ui/components/telepathyClient.js:1342
 msgid "Encryption error"
 msgstr "שגיאת הצפנה"
 
-#: ../js/ui/components/telepathyClient.js:1343
+#: ../js/ui/components/telepathyClient.js:1344
 msgid "Certificate not provided"
 msgstr "לא סופק אישור"
 
-#: ../js/ui/components/telepathyClient.js:1345
+#: ../js/ui/components/telepathyClient.js:1346
 msgid "Certificate untrusted"
 msgstr "האישור אינו מהימן"
 
-#: ../js/ui/components/telepathyClient.js:1347
+#: ../js/ui/components/telepathyClient.js:1348
 msgid "Certificate expired"
 msgstr "האישור פג"
 
-#: ../js/ui/components/telepathyClient.js:1349
+#: ../js/ui/components/telepathyClient.js:1350
 msgid "Certificate not activated"
 msgstr "האישור לא מופעל"
 
-#: ../js/ui/components/telepathyClient.js:1351
+#: ../js/ui/components/telepathyClient.js:1352
 msgid "Certificate hostname mismatch"
 msgstr "שם המארח באישור אינו תואם"
 
-#: ../js/ui/components/telepathyClient.js:1353
+#: ../js/ui/components/telepathyClient.js:1354
 msgid "Certificate fingerprint mismatch"
 msgstr "חוסר התאמה בטביעת האצבע של האישור"
 
-#: ../js/ui/components/telepathyClient.js:1355
+#: ../js/ui/components/telepathyClient.js:1356
 msgid "Certificate self-signed"
 msgstr "אישור בחתימה עצמית"
 
-#: ../js/ui/components/telepathyClient.js:1357
+#: ../js/ui/components/telepathyClient.js:1358
 msgid "Status is set to offline"
 msgstr "המצב הוגדר ל'מנותק'"
 
-#: ../js/ui/components/telepathyClient.js:1359
+#: ../js/ui/components/telepathyClient.js:1360
 msgid "Encryption is not available"
 msgstr "ההצפנה אינה זמינה"
 
-#: ../js/ui/components/telepathyClient.js:1361
+#: ../js/ui/components/telepathyClient.js:1362
 msgid "Certificate is invalid"
 msgstr "האישור אינו תקף"
 
-#: ../js/ui/components/telepathyClient.js:1363
+#: ../js/ui/components/telepathyClient.js:1364
 msgid "Connection has been refused"
 msgstr "ההתחברות נשללה"
 
-#: ../js/ui/components/telepathyClient.js:1365
+#: ../js/ui/components/telepathyClient.js:1366
 msgid "Connection can't be established"
 msgstr "לא ניתן להפעיל את החיבור"
 
-#: ../js/ui/components/telepathyClient.js:1367
+#: ../js/ui/components/telepathyClient.js:1368
 msgid "Connection has been lost"
 msgstr "החיבור אבד"
 
-#: ../js/ui/components/telepathyClient.js:1369
+#: ../js/ui/components/telepathyClient.js:1370
 msgid "This account is already connected to the server"
 msgstr "חשבון זה כבר מחובר לשרת"
 
-#: ../js/ui/components/telepathyClient.js:1371
+#: ../js/ui/components/telepathyClient.js:1372
 msgid ""
 "Connection has been replaced by a new connection using the same resource"
 msgstr "החיבור הוחלף בחיבור חדש באמצעות אותו המשאב"
 
-#: ../js/ui/components/telepathyClient.js:1373
+#: ../js/ui/components/telepathyClient.js:1374
 msgid "The account already exists on the server"
 msgstr "החשבון כבר קיים בשרת"
 
-#: ../js/ui/components/telepathyClient.js:1375
+#: ../js/ui/components/telepathyClient.js:1376
 msgid "Server is currently too busy to handle the connection"
 msgstr "השרת עסוק ברגע זה מכדי לטפל בחיבור"
 
-#: ../js/ui/components/telepathyClient.js:1377
+#: ../js/ui/components/telepathyClient.js:1378
 msgid "Certificate has been revoked"
 msgstr "האישור נשלל"
 
-#: ../js/ui/components/telepathyClient.js:1379
+#: ../js/ui/components/telepathyClient.js:1380
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr "האישור משתמש באלגוריתם הצפנה שאינו בטוח או חלש מבחינת הצפנה"
 
-#: ../js/ui/components/telepathyClient.js:1381
+#: ../js/ui/components/telepathyClient.js:1382
 msgid ""
 "The length of the server certificate, or the depth of the server certificate "
 "chain, exceed the limits imposed by the cryptography library"
@@ -981,22 +985,22 @@ msgstr ""
 "אורך אישור השרת, או עומק שרשרת אישור השרת, חורגים מהמגבלות שנכפו על ידי "
 "ספריית ההצפנה"
 
-#: ../js/ui/components/telepathyClient.js:1383
+#: ../js/ui/components/telepathyClient.js:1384
 msgid "Internal error"
 msgstr "שגיאה פנימית"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example.
-#: ../js/ui/components/telepathyClient.js:1393
+#: ../js/ui/components/telepathyClient.js:1394
 #, javascript-format
 msgid "Unable to connect to %s"
 msgstr "לא ניתן להתחבר אל %s"
 
-#: ../js/ui/components/telepathyClient.js:1398
+#: ../js/ui/components/telepathyClient.js:1399
 msgid "View account"
 msgstr "צפייה בחשבון"
 
-#: ../js/ui/components/telepathyClient.js:1435
+#: ../js/ui/components/telepathyClient.js:1436
 msgid "Unknown reason"
 msgstr "סיבה לא ידועה"
 
@@ -1014,22 +1018,22 @@ msgstr "הצגת יישומים"
 msgid "Dash"
 msgstr "חלונית"
 
-#: ../js/ui/dateMenu.js:96
+#: ../js/ui/dateMenu.js:97
 msgid "Open Calendar"
 msgstr "פתיחת היומן"
 
-#: ../js/ui/dateMenu.js:100
+#: ../js/ui/dateMenu.js:101
 msgid "Open Clocks"
 msgstr "פתיחת השעונים"
 
-#: ../js/ui/dateMenu.js:107
+#: ../js/ui/dateMenu.js:108
 msgid "Date & Time Settings"
 msgstr "הגדרות תאריך ושעה"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: ../js/ui/dateMenu.js:204
+#: ../js/ui/dateMenu.js:132
 msgid "%A %B %e, %Y"
 msgstr "%A ה־%e ב%B, %Y"
 
@@ -1168,7 +1172,7 @@ msgstr "התקנה"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "הורדה והתקנה של „%s” מ־extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:692 ../js/ui/status/keyboard.js:523
+#: ../js/ui/keyboard.js:706 ../js/ui/status/keyboard.js:539
 msgid "Keyboard"
 msgstr "מקלדת"
 
@@ -1224,39 +1228,48 @@ msgstr "צפייה במקור"
 msgid "Web Page"
 msgstr "דף אינטרנט"
 
-#: ../js/ui/messageTray.js:1326
+#: ../js/ui/messageTray.js:1332
 msgid "Open"
 msgstr "פתיחה"
 
-#: ../js/ui/messageTray.js:1333
+#: ../js/ui/messageTray.js:1339
 msgid "Remove"
 msgstr "הסרה"
 
-#: ../js/ui/messageTray.js:1630
+#: ../js/ui/messageTray.js:1636
 msgid "Notifications"
 msgstr "התרעות"
 
-#: ../js/ui/messageTray.js:1637
+#: ../js/ui/messageTray.js:1643
 msgid "Clear Messages"
 msgstr "פינוי ההודעות"
 
-#: ../js/ui/messageTray.js:1656
+#: ../js/ui/messageTray.js:1662
 msgid "Notification Settings"
 msgstr "הגדרות התרעה"
 
-#: ../js/ui/messageTray.js:1709
+#: ../js/ui/messageTray.js:1715
 msgid "Tray Menu"
 msgstr "תפריט מגש"
 
-#: ../js/ui/messageTray.js:1926
+#: ../js/ui/messageTray.js:1939
 msgid "No Messages"
 msgstr "אין הודעות"
 
-#: ../js/ui/messageTray.js:1968
+#: ../js/ui/messageTray.js:1984
 msgid "Message Tray"
 msgstr "אזור דיווח ההודעות"
 
-#: ../js/ui/messageTray.js:2971
+# javascript-format
+#: ../js/ui/messageTray.js:2441 ../js/ui/overviewControls.js:483
+#: ../js/ui/screenShield.js:152
+#, c-format
+msgid "%d new message"
+msgid_plural "%d new messages"
+msgstr[0] "הודעה חדשה אחת"
+msgstr[1] "%d הודעות חדשות"
+
+#: ../js/ui/messageTray.js:3011
 msgid "System Information"
 msgstr "פרטי המערכת"
 
@@ -1264,14 +1277,6 @@ msgstr "פרטי המערכת"
 msgctxt "program"
 msgid "Unknown"
 msgstr "לא ידוע"
-
-# javascript-format
-#: ../js/ui/overviewControls.js:482 ../js/ui/screenShield.js:151
-#, c-format
-msgid "%d new message"
-msgid_plural "%d new messages"
-msgstr[0] "הודעה חדשה אחת"
-msgstr[1] "%d הודעות חדשות"
 
 #: ../js/ui/overview.js:84
 msgid "Undo"
@@ -1331,18 +1336,18 @@ msgid "%A, %B %d"
 msgstr "%A, ה־%d ב%B"
 
 # javascript-format
-#: ../js/ui/screenShield.js:153
+#: ../js/ui/screenShield.js:154
 #, c-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "התרעה חדשה אחת"
 msgstr[1] "%d התרעות חדשות"
 
-#: ../js/ui/screenShield.js:472 ../js/ui/status/system.js:345
+#: ../js/ui/screenShield.js:473 ../js/ui/status/system.js:345
 msgid "Lock"
 msgstr "נעילה"
 
-#: ../js/ui/screenShield.js:706
+#: ../js/ui/screenShield.js:709
 msgid "GNOME needs to lock the screen"
 msgstr "על GNOME לנעול את המסך"
 
@@ -1353,19 +1358,19 @@ msgstr "על GNOME לנעול את המסך"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: ../js/ui/screenShield.js:833 ../js/ui/screenShield.js:1304
+#: ../js/ui/screenShield.js:836 ../js/ui/screenShield.js:1312
 msgid "Unable to lock"
 msgstr "לא ניתן לנעול"
 
-#: ../js/ui/screenShield.js:834 ../js/ui/screenShield.js:1305
+#: ../js/ui/screenShield.js:837 ../js/ui/screenShield.js:1313
 msgid "Lock was blocked by an application"
 msgstr "הנעילה נחסמה ע״י היישום"
 
-#: ../js/ui/search.js:594
+#: ../js/ui/search.js:611
 msgid "Searching…"
 msgstr "בחיפוש…"
 
-#: ../js/ui/search.js:596
+#: ../js/ui/search.js:613
 msgid "No results."
 msgstr "אין תוצאות."
 
@@ -1444,9 +1449,9 @@ msgid "Bluetooth"
 msgstr "Bluetooth"
 
 #: ../js/ui/status/bluetooth.js:51 ../js/ui/status/network.js:178
-#: ../js/ui/status/network.js:360 ../js/ui/status/network.js:1281
-#: ../js/ui/status/network.js:1392 ../js/ui/status/rfkill.js:86
-#: ../js/ui/status/rfkill.js:114
+#: ../js/ui/status/network.js:360 ../js/ui/status/network.js:1282
+#: ../js/ui/status/network.js:1393 ../js/ui/status/rfkill.js:91
+#: ../js/ui/status/rfkill.js:118
 msgid "Turn Off"
 msgstr "כיבוי"
 
@@ -1462,7 +1467,7 @@ msgid_plural "%d Connected Devices"
 msgstr[0] "התקן אחד מחובר"
 msgstr[1] "%d התקנים מחוברים"
 
-#: ../js/ui/status/bluetooth.js:106 ../js/ui/status/network.js:1309
+#: ../js/ui/status/bluetooth.js:106 ../js/ui/status/network.js:1310
 msgid "Not Connected"
 msgstr "לא מחובר"
 
@@ -1470,7 +1475,7 @@ msgstr "לא מחובר"
 msgid "Brightness"
 msgstr "בהירות"
 
-#: ../js/ui/status/keyboard.js:547
+#: ../js/ui/status/keyboard.js:563
 msgid "Show Keyboard Layout"
 msgstr "הצגת פריסת המקלדת"
 
@@ -1498,8 +1503,8 @@ msgstr "אפשור"
 msgid "<unknown>"
 msgstr "<לא ידוע>"
 
-#: ../js/ui/status/network.js:457 ../js/ui/status/network.js:1307
-#: ../js/ui/status/network.js:1511
+#: ../js/ui/status/network.js:457 ../js/ui/status/network.js:1308
+#: ../js/ui/status/network.js:1512
 msgid "Off"
 msgstr "כבוי"
 
@@ -1517,7 +1522,7 @@ msgstr "לא מנוהל"
 msgid "Disconnecting"
 msgstr "בהליכי ניתוק"
 
-#: ../js/ui/status/network.js:471 ../js/ui/status/network.js:1301
+#: ../js/ui/status/network.js:471 ../js/ui/status/network.js:1302
 msgid "Connecting"
 msgstr "בהתחברות"
 
@@ -1538,7 +1543,7 @@ msgstr "הקושחה חסרה"
 msgid "Unavailable"
 msgstr "לא זמין"
 
-#: ../js/ui/status/network.js:488 ../js/ui/status/network.js:1695
+#: ../js/ui/status/network.js:488 ../js/ui/status/network.js:1696
 msgid "Connection failed"
 msgstr "ההתחברות נכשלה"
 
@@ -1550,7 +1555,7 @@ msgstr "הגדרות רשת קווית"
 msgid "Mobile Broadband Settings"
 msgstr "הגדרות פס־רחב נייד"
 
-#: ../js/ui/status/network.js:588 ../js/ui/status/network.js:1305
+#: ../js/ui/status/network.js:588 ../js/ui/status/network.js:1306
 msgid "Hardware Disabled"
 msgstr "מנוטרל חומרתית"
 
@@ -1590,60 +1595,60 @@ msgstr "רשתות אלחוטיות"
 msgid "Select a network"
 msgstr "בחירת רשת"
 
-#: ../js/ui/status/network.js:882
+#: ../js/ui/status/network.js:883
 msgid "No Networks"
 msgstr "אין רשתות"
 
-#: ../js/ui/status/network.js:903 ../js/ui/status/rfkill.js:112
+#: ../js/ui/status/network.js:904 ../js/ui/status/rfkill.js:116
 msgid "Use hardware switch to turn off"
 msgstr "שימוש במתג של החומרה לכיבוי"
 
-#: ../js/ui/status/network.js:1173
+#: ../js/ui/status/network.js:1174
 msgid "Select Network"
 msgstr "בחירת רשת"
 
-#: ../js/ui/status/network.js:1179
+#: ../js/ui/status/network.js:1180
 msgid "Wi-Fi Settings"
 msgstr "הגדרות רשת אלחוטית"
 
-#: ../js/ui/status/network.js:1281
+#: ../js/ui/status/network.js:1282
 msgid "Turn On"
 msgstr "הפעלה"
 
-#: ../js/ui/status/network.js:1298
+#: ../js/ui/status/network.js:1299
 msgid "Hotspot Active"
 msgstr "נקודה חמה פעילה"
 
-#: ../js/ui/status/network.js:1409
+#: ../js/ui/status/network.js:1410
 msgid "connecting..."
 msgstr "בהתחברות..."
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:1412
+#: ../js/ui/status/network.js:1413
 msgid "authentication required"
 msgstr "נדרש אימות"
 
-#: ../js/ui/status/network.js:1414
+#: ../js/ui/status/network.js:1415
 msgid "connection failed"
 msgstr "ההתחברות נכשלה"
 
-#: ../js/ui/status/network.js:1480 ../js/ui/status/rfkill.js:89
+#: ../js/ui/status/network.js:1481 ../js/ui/status/rfkill.js:94
 msgid "Network Settings"
 msgstr "הגדרות הרשת"
 
-#: ../js/ui/status/network.js:1482
+#: ../js/ui/status/network.js:1483
 msgid "VPN Settings"
 msgstr "הגדרות VPN"
 
-#: ../js/ui/status/network.js:1501
+#: ../js/ui/status/network.js:1502
 msgid "VPN"
 msgstr "VPN"
 
-#: ../js/ui/status/network.js:1656
+#: ../js/ui/status/network.js:1657
 msgid "Network Manager"
 msgstr "מנהל הרשתות"
 
-#: ../js/ui/status/network.js:1696
+#: ../js/ui/status/network.js:1697
 msgid "Activation of network connection failed"
 msgstr "הפעלת חיבור הרשת נכשלה"
 
@@ -1684,11 +1689,11 @@ msgstr "סוללה"
 #. The menu only appears when airplane mode is on, so just
 #. statically build it as if it was on, rather than dynamically
 #. changing the menu contents.
-#: ../js/ui/status/rfkill.js:83
+#: ../js/ui/status/rfkill.js:88
 msgid "Airplane Mode"
 msgstr "מצב טיסה"
 
-#: ../js/ui/status/rfkill.js:85
+#: ../js/ui/status/rfkill.js:90
 msgid "On"
 msgstr "פועל"
 
@@ -1866,6 +1871,9 @@ msgstr "הססמה לא יכולה להישאר ריקה"
 #: ../src/shell-polkit-authentication-agent.c:346
 msgid "Authentication dialog was dismissed by the user"
 msgstr "המשתמש בחר להתעלם מתיבת דו־שיח האימות"
+
+#~ msgid "Captive Portal"
+#~ msgstr "Captive Portal"
 
 #~ msgid "The maximum accuracy level of location."
 #~ msgstr "The maximum accuracy level of location."
