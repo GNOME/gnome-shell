@@ -222,6 +222,38 @@ is_touch_device (XIAnyClassInfo         **classes,
   return FALSE;
 }
 
+static gboolean
+get_device_ids (ClutterBackendX11  *backend_x11,
+                XIDeviceInfo       *info,
+                gchar             **vendor_id,
+                gchar             **product_id)
+{
+  gulong nitems, bytes_after;
+  guint32 *data;
+  int rc, format;
+  Atom type;
+
+  clutter_x11_trap_x_errors ();
+  rc = XIGetProperty (backend_x11->xdpy,
+                      info->deviceid,
+                      XInternAtom (backend_x11->xdpy, "Device Product ID", False),
+                      0, 2, False, XA_INTEGER, &type, &format, &nitems, &bytes_after,
+                      (guchar **) &data);
+  clutter_x11_untrap_x_errors ();
+
+  if (rc != Success || type != XA_INTEGER || format != 32 || nitems != 2)
+    return FALSE;
+
+  if (vendor_id)
+    *vendor_id = g_strdup_printf ("%.4x", data[0]);
+  if (product_id)
+    *product_id = g_strdup_printf ("%.4x", data[1]);
+
+  XFree (data);
+
+  return TRUE;
+}
+
 static ClutterInputDevice *
 create_device (ClutterDeviceManagerXI2 *manager_xi2,
                ClutterBackendX11       *backend_x11,
@@ -232,6 +264,7 @@ create_device (ClutterDeviceManagerXI2 *manager_xi2,
   ClutterInputMode mode;
   gboolean is_enabled;
   guint num_touches = 0;
+  gchar *vendor_id = NULL, *product_id = NULL;
 
   if (info->use == XIMasterKeyboard || info->use == XISlaveKeyboard)
     source = CLUTTER_KEYBOARD_DEVICE;
@@ -283,6 +316,10 @@ create_device (ClutterDeviceManagerXI2 *manager_xi2,
       break;
     }
 
+  if (info->use != XIMasterKeyboard &&
+      info->use != XIMasterPointer)
+    get_device_ids (backend_x11, info, &vendor_id, &product_id);
+
   retval = g_object_new (CLUTTER_TYPE_INPUT_DEVICE_XI2,
                          "name", info->name,
                          "id", info->deviceid,
@@ -292,11 +329,15 @@ create_device (ClutterDeviceManagerXI2 *manager_xi2,
                          "device-mode", mode,
                          "backend", backend_x11,
                          "enabled", is_enabled,
+                         "vendor-id", vendor_id,
+                         "product-id", product_id,
                          NULL);
 
   translate_device_classes (backend_x11->xdpy, retval,
                             info->classes,
                             info->num_classes);
+  g_free (vendor_id);
+  g_free (product_id);
 
   CLUTTER_NOTE (BACKEND, "Created device '%s' (id: %d, has-cursor: %s)",
                 info->name,
