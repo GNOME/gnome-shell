@@ -324,6 +324,101 @@ StScrollBar {
   
   .screencast-indicator { color: $warning_color; }
 }
+  // calendar popover
+  .calendar { padding: .4em 1.75em .8em 1.75em; }
+
+    .calendar-vertical-separator {
+      width: .3em;
+      -stipple-width: 1px;
+      -stipple-color: transparentize($fg_color,0.8);
+    }
+    
+    .calendar-month-label {
+      color: darken($fg_color,5%);
+      font-weight: bold;
+      padding: 8px 0;
+      &:focus {}
+    }
+    
+    .calendar-change-month-back { //arrow back
+      &:rtl {}
+      &:hover, &:focus {}
+      &:active {}
+    }
+    .calendar-change-month-forward { //arrow foreward
+      &:rtl {}
+      &:hover, &:focus {}
+      &:active {}
+    }
+    .datemenu-date-label {
+      padding: .4em 1.7em;
+      text-align: center;
+      color: darken($fg_color,10%);
+      font-size: 130%;
+      border-radius: 4px;
+    }
+    
+    .calendar-day-base {
+      font-size: 80%;
+      text-align: center;
+      width: 2.4em; height: 2.4em;
+      &:hover,&:focus { background-color: lighten($bg_color,5%); }
+      &:active { color: lighten($fg_color,5%); background-color: darken($bg_color,5%);}
+    }
+      .calendar-day { //border collapse hack - see calendar.js
+        border: 1px solid $borders_color;
+        border-top-width: 0; border-left-width: 0;
+      }
+      .calendar-day-top { border-top-width: 1px; }
+      .calendar-day-left { border-left-width: 1px; }
+      .calendar-work-day {}
+      .calendar-nonwork-day { background-color: darken($bg_color, 2%); color: darken($fg_color,5%); }
+      .calendar-today {
+        font-weight: bold;
+        color: lighten($fg_color,10%);
+        border-bottom-width: 2px;
+        border-color: $selected_bg_color; //FIXME sadly can't have a color per side.
+      }
+      .calendar-day-with-events {
+        color: white;
+        font-weight: bold;
+      }
+      .calendar-other-month-day {
+        color: opacify($fg_color,0.5);
+        background-color: opacify($bg_color,0.5);
+        opacity: 0.5;
+      }
+
+    .events-table {
+      width: 15em;
+      spacing-columns: 1em;
+      padding: 0 1.4em;
+      &:ltr { padding-right: 1.9em; }
+      &:rtl { padding-left: 1.9em; }
+    }
+      .events-day-header {
+        font-weight: bold;
+        color: darken($fg_color,10%);
+        padding-left: 0;
+        padding-top: 1.2em;
+        &:first-child { padding-top: 0; }
+      }
+      .events-day-dayname {
+        color: darken($fg_color,10%);
+        text-align: left;
+        min-width: 20px;
+        &:rtl { text-align: right; }
+        .events-day-time {
+          text-align: right;
+          &:rtl { text-align: left; }
+        }
+        .events-day-task {
+          color: darken($fg_color,10%);
+          &:ltr { padding-left: 8px; }
+          &:rtl { padding-right: 8px; }
+        }
+      }
+        
 
   // a little unstructured mess:
 
