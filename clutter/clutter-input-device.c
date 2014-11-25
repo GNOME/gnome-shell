@@ -66,6 +66,9 @@ enum
 
   PROP_N_AXES,
 
+  PROP_VENDOR_ID,
+  PROP_PRODUCT_ID,
+
   PROP_LAST
 };
 
@@ -82,6 +85,8 @@ clutter_input_device_dispose (GObject *gobject)
   ClutterInputDevice *device = CLUTTER_INPUT_DEVICE (gobject);
 
   g_clear_pointer (&device->device_name, g_free);
+  g_clear_pointer (&device->vendor_id, g_free);
+  g_clear_pointer (&device->product_id, g_free);
 
   if (device->associated != NULL)
     {
@@ -156,6 +161,14 @@ clutter_input_device_set_property (GObject      *gobject,
       clutter_input_device_set_enabled (self, g_value_get_boolean (value));
       break;
 
+    case PROP_VENDOR_ID:
+      self->vendor_id = g_value_dup_string (value);
+      break;
+
+    case PROP_PRODUCT_ID:
+      self->product_id = g_value_dup_string (value);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
@@ -206,6 +219,14 @@ clutter_input_device_get_property (GObject    *gobject,
 
     case PROP_ENABLED:
       g_value_set_boolean (value, self->is_enabled);
+      break;
+
+    case PROP_VENDOR_ID:
+      g_value_set_string (value, self->vendor_id);
+      break;
+
+    case PROP_PRODUCT_ID:
+      g_value_set_string (value, self->product_id);
       break;
 
     default:
@@ -355,6 +376,34 @@ clutter_input_device_class_init (ClutterInputDeviceClass *klass)
                          P_("Backend"),
                          P_("The backend instance"),
                          CLUTTER_TYPE_BACKEND,
+                         CLUTTER_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
+
+  /**
+   * ClutterInputDevice:vendor-id:
+   *
+   * Vendor ID of this device.
+   *
+   * Since: 1.22
+   */
+  obj_props[PROP_VENDOR_ID] =
+    g_param_spec_string ("vendor-id",
+                         P_("Vendor ID"),
+                         P_("Vendor ID"),
+                         NULL,
+                         CLUTTER_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
+
+  /**
+   * ClutterInputDevice:product-id:
+   *
+   * Product ID of this device.
+   *
+   * Since: 1.22
+   */
+  obj_props[PROP_PRODUCT_ID] =
+    g_param_spec_string ("product-id",
+                         P_("Product ID"),
+                         P_("Product ID"),
+                         NULL,
                          CLUTTER_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
 
   gobject_class->dispose = clutter_input_device_dispose;
@@ -1886,4 +1935,42 @@ clutter_input_device_sequence_get_grabbed_actor (ClutterInputDevice   *device,
     return NULL;
 
   return g_hash_table_lookup (device->sequence_grab_actors, sequence);
+}
+
+/**
+ * clutter_input_device_get_vendor_id:
+ * @device: a slave #ClutterInputDevice
+ *
+ * Gets the vendor ID of this device.
+ *
+ * Returns: the vendor ID
+ *
+ * Since: 1.22
+ */
+const gchar *
+clutter_input_device_get_vendor_id (ClutterInputDevice *device)
+{
+  g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (device), NULL);
+  g_return_val_if_fail (clutter_input_device_get_device_mode (device) != CLUTTER_INPUT_MODE_MASTER, NULL);
+
+  return device->vendor_id;
+}
+
+/**
+ * clutter_input_device_get_product_id:
+ * @device: a slave #ClutterInputDevice
+ *
+ * Gets the product ID of this device.
+ *
+ * Returns: the product ID
+ *
+ * Since: 1.22
+ */
+const gchar *
+clutter_input_device_get_product_id (ClutterInputDevice *device)
+{
+  g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (device), NULL);
+  g_return_val_if_fail (clutter_input_device_get_device_mode (device) != CLUTTER_INPUT_MODE_MASTER, NULL);
+
+  return device->product_id;
 }

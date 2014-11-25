@@ -1201,6 +1201,8 @@ clutter_input_device_get_associated_device
 clutter_input_device_get_slave_devices
 clutter_input_device_get_modifier_state
 clutter_input_device_keycode_to_evdev
+clutter_input_device_get_vendor_id
+clutter_input_device_get_product_id
 
 <SUBSECTION>
 clutter_input_device_get_n_keys

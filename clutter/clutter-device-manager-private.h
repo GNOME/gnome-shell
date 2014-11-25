@@ -129,6 +129,9 @@ struct _ClutterInputDevice
 
   GArray *scroll_info;
 
+  gchar *vendor_id;
+  gchar *product_id;
+
   guint has_cursor : 1;
   guint is_enabled : 1;
 };
