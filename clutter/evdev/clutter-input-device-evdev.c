@@ -107,8 +107,11 @@ _clutter_input_device_evdev_new (ClutterDeviceManager *manager,
 {
   ClutterInputDeviceEvdev *device;
   ClutterInputDeviceType type;
+  gchar *vendor, *product;
 
   type = _clutter_input_device_evdev_determine_type (libinput_device);
+  vendor = g_strdup_printf ("%.4x", libinput_device_get_id_vendor (libinput_device));
+  product = g_strdup_printf ("%.4x", libinput_device_get_id_product (libinput_device));
   device = g_object_new (CLUTTER_TYPE_INPUT_DEVICE_EVDEV,
                          "id", global_device_id_next++,
                          "name", libinput_device_get_sysname (libinput_device),
@@ -116,6 +119,8 @@ _clutter_input_device_evdev_new (ClutterDeviceManager *manager,
                          "device-type", type,
                          "device-mode", CLUTTER_INPUT_MODE_SLAVE,
                          "enabled", TRUE,
+                         "vendor-id", vendor,
+                         "product-id", product,
                          NULL);
 
   device->seat = seat;
@@ -123,6 +128,8 @@ _clutter_input_device_evdev_new (ClutterDeviceManager *manager,
 
   libinput_device_set_user_data (libinput_device, device);
   libinput_device_ref (libinput_device);
+  g_free (vendor);
+  g_free (product);
 
   return CLUTTER_INPUT_DEVICE (device);
 }
