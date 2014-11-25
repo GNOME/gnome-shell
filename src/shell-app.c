@@ -418,6 +418,17 @@ shell_app_activate_window (ShellApp     *app,
       guint32 last_user_timestamp = meta_display_get_last_user_time (display);
       MetaWindow *most_recent_transient;
 
+      /* HACK: we shouldn't really get this far with a zero timestamp,
+       * but shell_app_activate_window() can be called from shell_app_activate_full()
+       * which will not be able to fetch a valid timestamp in some cases - e.g.
+       * if we're just activating an app over DBus from Chromium.
+       * Since passing a zero timestamp will trigger focus stealing prevention,
+       * and passing zero to meta_window_activate() will trigger a WM warning,
+       * just fetch the timestamp here instead.
+       */
+      if (timestamp == 0)
+        timestamp = meta_display_get_current_time_roundtrip (display);
+
       if (meta_display_xserver_time_is_before (display, timestamp, last_user_timestamp))
         {
           meta_window_set_demands_attention (window);
