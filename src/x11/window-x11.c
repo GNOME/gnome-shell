@@ -1684,7 +1684,7 @@ meta_window_x11_update_input_region (MetaWindow *window)
       /* Translate the set of XShape rectangles that we
        * get from the X server to a cairo_region. */
       XRectangle *rects = NULL;
-      int n_rects, ordering;
+      int n_rects = -1, ordering;
 
       meta_error_trap_push (window->display);
       rects = XShapeGetRectangles (window->display->xdisplay,
@@ -1694,21 +1694,46 @@ meta_window_x11_update_input_region (MetaWindow *window)
                                    &ordering);
       meta_error_trap_pop (window->display);
 
-      /* XXX: The x shape extension doesn't provide a way to only test if an
-       * input shape has been specified, so we have to query and throw away the
-       * rectangles. */
-      if (rects)
-        {
-          if (n_rects > 1 ||
-              (n_rects == 1 &&
-               (rects[0].x != 0 ||
-                rects[0].y != 0 ||
-                rects[0].width != priv->client_rect.width ||
-                rects[0].height != priv->client_rect.height)))
-            region = region_create_from_x_rectangles (rects, n_rects);
+      /* XXX: The X Shape specification is quite unfortunately specified.
+       *
+       * By default, the window has a shape the same as its bounding region,
+       * which we consider "NULL".
+       *
+       * If the window sets an empty region, then we'll get n_rects as 0
+       * and rects as NULL, which we need to transform back into an empty
+       * region.
+       *
+       * It would be great to have a less-broken extension for this, but
+       * hey, it's X11!
+       */
 
-          XFree (rects);
+      if (n_rects == -1)
+        {
+          /* We had an error. */
+          region = NULL;
         }
+      else if (n_rects == 0)
+        {
+          /* Client set an empty region. */
+          region = cairo_region_create ();
+        }
+      else if (n_rects == 1 &&
+               (rects[0].x == 0 ||
+                rects[0].y == 0 ||
+                rects[0].width == priv->client_rect.width ||
+                rects[0].height == priv->client_rect.height))
+        {
+          /* This is the bounding region case. Keep the
+           * region as NULL. */
+          region = NULL;
+        }
+      else
+        {
+          /* Window has a custom shape. */
+          region = region_create_from_x_rectangles (rects, n_rects);
+        }
+
+      meta_XFree (rects);
     }
 
   if (region != NULL)
