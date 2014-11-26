@@ -190,12 +190,12 @@ ClutterInputDeviceType
 _clutter_input_device_evdev_determine_type (struct libinput_device *ldev)
 {
 
-  if (libinput_device_has_capability (ldev, LIBINPUT_DEVICE_CAP_KEYBOARD))
-    return CLUTTER_KEYBOARD_DEVICE;
-  else if (libinput_device_has_capability (ldev, LIBINPUT_DEVICE_CAP_POINTER))
+  if (libinput_device_has_capability (ldev, LIBINPUT_DEVICE_CAP_POINTER))
     return CLUTTER_POINTER_DEVICE;
   else if (libinput_device_has_capability (ldev, LIBINPUT_DEVICE_CAP_TOUCH))
     return CLUTTER_TOUCHSCREEN_DEVICE;
+  else if (libinput_device_has_capability (ldev, LIBINPUT_DEVICE_CAP_KEYBOARD))
+    return CLUTTER_KEYBOARD_DEVICE;
   else
     return CLUTTER_EXTENSION_DEVICE;
 }
