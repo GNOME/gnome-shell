@@ -66,6 +66,36 @@ unbind_resource (struct wl_resource *resource)
 }
 
 static void
+sync_focus_surface (MetaWaylandPointer *pointer)
+{
+  MetaDisplay *display = meta_get_display ();
+
+  switch (display->event_route)
+    {
+    case META_EVENT_ROUTE_WINDOW_OP:
+      /* Don't update the focus surface while we're grabbing a window. */
+      return;
+
+    case META_EVENT_ROUTE_COMPOSITOR_GRAB:
+      /* The compositor has a grab, so remove our focus... */
+      meta_wayland_pointer_set_focus (pointer, NULL);
+      break;
+
+    case META_EVENT_ROUTE_NORMAL:
+    case META_EVENT_ROUTE_WAYLAND_POPUP:
+      {
+        const MetaWaylandPointerGrabInterface *interface = pointer->grab->interface;
+        interface->focus (pointer->grab, pointer->current);
+      }
+      break;
+
+    default:
+      g_assert_not_reached ();
+    }
+
+}
+
+static void
 set_cursor_surface (MetaWaylandPointer *pointer,
                     MetaWaylandSurface *surface)
 {
@@ -179,7 +209,7 @@ default_grab_button (MetaWaylandPointerGrab *grab,
     }
 
   if (pointer->button_count == 0 && event_type == CLUTTER_BUTTON_RELEASE)
-    meta_wayland_pointer_set_focus (pointer, pointer->current);
+    sync_focus_surface (pointer);
 }
 
 static const MetaWaylandPointerGrabInterface default_pointer_grab_interface = {
@@ -245,36 +275,6 @@ count_buttons (const ClutterEvent *event)
     }
 
   return count;
-}
-
-static void
-sync_focus_surface (MetaWaylandPointer *pointer)
-{
-  MetaDisplay *display = meta_get_display ();
-
-  switch (display->event_route)
-    {
-    case META_EVENT_ROUTE_WINDOW_OP:
-      /* Don't update the focus surface while we're grabbing a window. */
-      return;
-
-    case META_EVENT_ROUTE_COMPOSITOR_GRAB:
-      /* The compositor has a grab, so remove our focus... */
-      meta_wayland_pointer_set_focus (pointer, NULL);
-      break;
-
-    case META_EVENT_ROUTE_NORMAL:
-    case META_EVENT_ROUTE_WAYLAND_POPUP:
-      {
-        const MetaWaylandPointerGrabInterface *interface = pointer->grab->interface;
-        interface->focus (pointer->grab, pointer->current);
-      }
-      break;
-
-    default:
-      g_assert_not_reached ();
-    }
-
 }
 
 static void
