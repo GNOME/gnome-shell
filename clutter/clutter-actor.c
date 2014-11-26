@@ -18790,14 +18790,6 @@ on_transition_stopped (ClutterTransition *transition,
 
       g_signal_emit (actor, actor_signals[TRANSITIONS_COMPLETED], 0);
     }
-
-  if (clos->is_implicit ||
-      clutter_transition_get_remove_on_complete (transition))
-    {
-      /* release the reference we acquired above */
-      g_object_unref (transition);
-    }
-
 }
 
 static void
