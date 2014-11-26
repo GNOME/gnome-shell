@@ -130,8 +130,8 @@ take_device (Login1Session *session_proxy,
 {
   gboolean ret = FALSE;
   GVariant *fd_variant = NULL;
+  GUnixFDList *fd_list = NULL;
   int fd = -1;
-  GUnixFDList *fd_list;
 
   if (!login1_session_call_take_device_sync (session_proxy,
                                              dev_major,
