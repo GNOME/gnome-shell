@@ -1953,6 +1953,11 @@ meta_display_end_grab_op (MetaDisplay *display,
   g_signal_emit (display, display_signals[GRAB_OP_END], 0,
                  display->screen, grab_window, grab_op);
 
+  /* We need to reset this early, since the
+   * meta_window_grab_op_ended callback relies on this being
+   * up to date. */
+  display->grab_op = META_GRAB_OP_NONE;
+
   if (display->event_route == META_EVENT_ROUTE_WINDOW_OP)
     {
       /* Clear out the edge cache */
@@ -1985,7 +1990,6 @@ meta_display_end_grab_op (MetaDisplay *display,
     }
 
   display->event_route = META_EVENT_ROUTE_NORMAL;
-  display->grab_op = META_GRAB_OP_NONE;
   display->grab_window = NULL;
   display->grab_tile_mode = META_TILE_NONE;
   display->grab_tile_monitor_number = -1;
