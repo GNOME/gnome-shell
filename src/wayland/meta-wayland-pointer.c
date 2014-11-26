@@ -73,9 +73,6 @@ sync_focus_surface (MetaWaylandPointer *pointer)
   switch (display->event_route)
     {
     case META_EVENT_ROUTE_WINDOW_OP:
-      /* Don't update the focus surface while we're grabbing a window. */
-      return;
-
     case META_EVENT_ROUTE_COMPOSITOR_GRAB:
       /* The compositor has a grab, so remove our focus... */
       meta_wayland_pointer_set_focus (pointer, NULL);
