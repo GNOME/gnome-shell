@@ -251,7 +251,6 @@ static void
 sync_focus_surface (MetaWaylandPointer *pointer)
 {
   MetaDisplay *display = meta_get_display ();
-  MetaWaylandSurface *focus_surface;
 
   switch (display->event_route)
     {
@@ -260,21 +259,22 @@ sync_focus_surface (MetaWaylandPointer *pointer)
       return;
 
     case META_EVENT_ROUTE_COMPOSITOR_GRAB:
-      /* The compositor has focus, so remove our focus... */
-      focus_surface = NULL;
+      /* The compositor has a grab, so remove our focus... */
+      meta_wayland_pointer_set_focus (pointer, NULL);
       break;
 
     case META_EVENT_ROUTE_NORMAL:
     case META_EVENT_ROUTE_WAYLAND_POPUP:
-      focus_surface = pointer->current;
+      {
+        const MetaWaylandPointerGrabInterface *interface = pointer->grab->interface;
+        interface->focus (pointer->grab, pointer->current);
+      }
       break;
 
     default:
       g_assert_not_reached ();
     }
 
-  const MetaWaylandPointerGrabInterface *interface = pointer->grab->interface;
-  interface->focus (pointer->grab, focus_surface);
 }
 
 static void
