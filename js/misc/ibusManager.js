@@ -8,7 +8,7 @@ const Signals = imports.signals;
 
 try {
     var IBus = imports.gi.IBus;
-    _checkIBusVersion();
+    _checkIBusVersion(1, 5, 2);
     const IBusCandidatePopup = imports.ui.ibusCandidatePopup;
 } catch (e) {
     var IBus = null;
@@ -17,11 +17,7 @@ try {
 
 let _ibusManager = null;
 
-function _checkIBusVersion() {
-    var requiredMajor = 1;
-    var requiredMinor = 5;
-    var requiredMicro = 2;
-
+function _checkIBusVersion(requiredMajor, requiredMinor, requiredMicro) {
     if ((IBus.MAJOR_VERSION > requiredMajor) ||
         (IBus.MAJOR_VERSION == requiredMajor && IBus.MINOR_VERSION > requiredMinor) ||
         (IBus.MAJOR_VERSION == requiredMajor && IBus.MINOR_VERSION == requiredMinor &&
@@ -125,6 +121,16 @@ const IBusManager = new Lang.Class({
                                                          object_path: IBus.PATH_PANEL });
             this._candidatePopup.setPanelService(this._panelService);
             this._panelService.connect('update-property', Lang.bind(this, this._updateProperty));
+            try {
+                // IBus versions older than 1.5.10 have a bug which
+                // causes spurious set-content-type emissions when
+                // switching input focus that temporarily lose purpose
+                // and hints defeating its intended semantics and
+                // confusing users. We thus don't use it in that case.
+                _checkIBusVersion(1, 5, 10);
+                this._panelService.connect('set-content-type', Lang.bind(this, this._setContentType));
+            } catch (e) {
+            }
             // If an engine is already active we need to get its properties
             this._ibus.get_global_engine_async(-1, null, Lang.bind(this, function(i, result) {
                 let engine;
@@ -174,6 +180,10 @@ const IBusManager = new Lang.Class({
         this.emit('property-updated', this._currentEngineName, prop);
     },
 
+    _setContentType: function(panel, purpose, hints) {
+        this.emit('set-content-type', purpose, hints);
+    },
+
     activateProperty: function(key, state) {
         this._panelService.property_activate(key, state);
     },
@@ -186,7 +196,10 @@ const IBusManager = new Lang.Class({
     },
 
     setEngine: function(id, callback) {
-        if (!IBus || !this._ready || id == this._currentEngineName) {
+        // Send id even if id == this._currentEngineName
+        // because 'properties-registered' signal can be emitted
+        // while this._ibusSources == null on a lock screen.
+        if (!IBus || !this._ready) {
             if (callback)
                 callback();
             return;
