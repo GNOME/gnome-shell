@@ -86,6 +86,7 @@ src/gnome-shell-perf-helper
 src/gnome-shell-perf-tool
 src/gnome-shell-portal-helper
 src/hotplug-sniffer/org.gnome.Shell.HotplugSniffer.service
+src/org-gtk-application.[ch]
 src/run-js-test
 src/test-recorder
 src/test-recorder.ogg
