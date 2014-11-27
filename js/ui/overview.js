@@ -605,9 +605,9 @@ const Overview = new Lang.Class({
                 return;
         }
 
-        this._animateNotVisible();
-
         this._shown = false;
+
+        this._animateNotVisible();
         this._syncGrab();
     },
 
