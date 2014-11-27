@@ -1,3 +1,17 @@
+3.15.2
+======
+* Don't enable hiDPI on monitors with broken EDID [Bastien; #734839]
+* Prevent crash applying monitor config for a closed lid [Rui; #739450]
+* Fix "flicker" during startup transition [Ray; #740377]
+* Misc. bug fixes [Lan, Florian, Carlos; #731521, #740133, #738890]
+
+Contributors:
+  Emmanuele Bassi, Carlos Garnacho, Jonathon Jongsma, Ting-Wei Lan, Rui Matos,
+  Florian Müllner, Bastien Nocera, Jasper St. Pierre, Ray Strode
+
+Translations:
+  Kjartan Maraas [nb]
+
 3.15.1
 ======
 * Use GResources for theme loading [Cosimo; #736936]
