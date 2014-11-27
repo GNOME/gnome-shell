@@ -256,7 +256,7 @@ function _loadDefaultStylesheet() {
  *
  * Get the theme CSS file that the shell will load
  *
- * Returns: A file path that contains the theme CSS,
+ * Returns: A #GFile that contains the theme CSS,
  *          null if using the default
  */
 function getThemeStylesheet() {
