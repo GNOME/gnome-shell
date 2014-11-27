@@ -57,6 +57,7 @@ org-gtk-application.c org-gtk-application.h: org.gtk.Application.xml Makefile
 			--c-namespace Shell \
 			$<
 
+EXTRA_DIST += org.gtk.Application.xml
 CLEANFILES += gnome-shell $(bin_SCRIPTS)
 
 include Makefile-st.am
