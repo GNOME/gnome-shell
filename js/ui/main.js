@@ -271,7 +271,7 @@ function getThemeStylesheet() {
  * Set the theme CSS file that the shell will load
  */
 function setThemeStylesheet(cssStylesheet) {
-    _cssStylesheet = Gio.File.new_for_path(cssStylesheet);
+    _cssStylesheet = cssStylesheet ? Gio.File.new_for_path(cssStylesheet) : null;
 }
 
 /**
