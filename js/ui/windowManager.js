@@ -478,7 +478,9 @@ const WorkspaceSwitchAction = new Lang.Class({
     },
 
     vfunc_gesture_prepare : function(action, actor) {
-        return this.get_n_current_points() == this.get_n_touch_points();
+        let allowedModes = Shell.KeyBindingMode.NORMAL | Shell.KeyBindingMode.OVERVIEW;
+        return this.get_n_current_points() == this.get_n_touch_points() &&
+               (allowedModes & Main.keybindingMode);
     },
 
     vfunc_gesture_end : function(action, actor) {
@@ -526,7 +528,7 @@ const AppSwitchAction = new Lang.Class({
     },
 
     vfunc_gesture_prepare : function(action, actor) {
-        if (Main.overview.visible) {
+        if (Main.keybindingMode != Shell.KeyBindingMode.NORMAL) {
             this.cancel();
             return false;
         }

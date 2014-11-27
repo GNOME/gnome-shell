@@ -6,6 +6,8 @@ const Meta = imports.gi.Meta;
 const Clutter = imports.gi.Clutter;
 const St = imports.gi.St;
 
+const Main = imports.ui.main;
+
 const EDGE_THRESHOLD = 20;
 const DRAG_DISTANCE = 80;
 
@@ -13,9 +15,10 @@ const EdgeDragAction = new Lang.Class({
     Name: 'EdgeDragAction',
     Extends: Clutter.GestureAction,
 
-    _init : function(side) {
+    _init : function(side, allowedModes) {
         this.parent();
         this._side = side;
+        this._allowedModes = allowedModes;
         this.set_n_touch_points(1);
 
         global.display.connect('grab-op-begin', Lang.bind(this, function() {
@@ -32,6 +35,9 @@ const EdgeDragAction = new Lang.Class({
 
     vfunc_gesture_prepare : function(action, actor) {
         if (this.get_n_current_points() == 0)
+            return false;
+
+        if (!(this._allowedModes & Main.keybindingMode))
             return false;
 
         let [x, y] = this.get_press_coords(0);

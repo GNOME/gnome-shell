@@ -65,7 +65,8 @@ const ShowOverviewAction = new Lang.Class({
     },
 
     vfunc_gesture_prepare : function(action, actor) {
-        return this.get_n_current_points() == this.get_n_touch_points();
+        return Main.keybindingMode == Shell.KeyBindingMode.NORMAL &&
+               this.get_n_current_points() == this.get_n_touch_points();
     },
 
     _getBoundingRect : function(motion) {
@@ -215,7 +216,8 @@ const ViewSelector = new Lang.Class({
 
         let gesture;
 
-        gesture = new EdgeDragAction.EdgeDragAction(St.Side.LEFT);
+        gesture = new EdgeDragAction.EdgeDragAction(St.Side.LEFT,
+                                                    Shell.KeyBindingMode.NORMAL);
         gesture.connect('activated', Lang.bind(this, function() {
             if (Main.overview.visible)
                 Main.overview.hide();
