@@ -1951,7 +1951,9 @@ const MessageTray = new Lang.Class({
         this._messageTrayMenuButton.actor.connect('key-press-event',
                                                   Lang.bind(this, this._onTrayButtonKeyPress));
 
-        let gesture = new EdgeDragAction.EdgeDragAction(St.Side.BOTTOM);
+        let gesture = new EdgeDragAction.EdgeDragAction(St.Side.BOTTOM,
+                                                        Shell.KeyBindingMode.NORMAL |
+                                                        Shell.KeyBindingMode.OVERVIEW);
         gesture.connect('activated', Lang.bind(this, this.toggle));
         global.stage.add_action(gesture);
     },
