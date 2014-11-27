@@ -1,3 +1,34 @@
+3.15.2
+======
+* Fix visual glitch of window preview outline in overview [Chris; #699044]
+* Change user facing name of "Captive Portal" to "Network Login" [Elad; #737198]
+* Port to Python 3 [Slavek; #732478]
+* Hide Airplane mode indicator when g-s-d says so [Cosimo; #736292]
+* Allow translators to change non-work days [Lavi; #664645]
+* Delay invocation of caribou daemon until really needed [Daiki; #739712]
+* Don't lock screen after crash if locking is disabled [Adel; #704884]
+* Improve layout of extension installation dialog [William; #739888]
+* Fix workspace changes from app picker [Yuki; #737534]
+* Preload all ibus input sources in user configuration [Takao; #695428]
+* Properly remove network connections from list [Ryan; #740227]
+* Support CSS margin property [Carlos; #728437]
+* Improve handling of BUSY application state [Phillip; #736492]
+* Fix erroneous week numbers in calendar [Florian; #736722]
+* Misc. bugfixes and cleanups [Darcy, Yuki, Alexander, Eskild, Bastien, Cosimo, Colin,
+  Ray; #738725, #739497, #739241, #672500, #739822, #740074, #704163, #740141]
+
+Contributors:
+  Yuki, Lavi .A, Elad Alfassa, Cosimo Cecchi, Takao Fujiwara, Adel Gadllah,
+  Eskild Hustvedt, Chris Johns, William Jon McCann, Slavek Kabrda, Ryan Lortie,
+  Florian Müllner, Bastien Nocera, Christian Persch, Carlos Soriano,
+  Jasper St. Pierre, Ray Strode, Alexander Tsoy, Daiki Ueno, Colin Walters,
+  Phillip Wood
+
+Translations:
+  Jorge Perez Perez [an], Daniel Martinez [an], Daniel Mustieles [es],
+  Trần Ngọc Quân [vi], Changwoo Ryu [ko], Kjartan Maraas [nb],
+  Yosef Or Boczko [he], Marek Černocký [cs]
+
 3.15.1
 ======
 * Use GResources for theme loading [Cosimo; #736936]
