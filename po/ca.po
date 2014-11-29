@@ -978,7 +978,7 @@ msgstr "Si l'element que s'hi pot fer clic hauria d'estar en l'estat de premut"
 
 #: ../clutter/clutter-click-action.c:600
 msgid "Held"
-msgstr "Manté"
+msgstr "Mantén"
 
 #: ../clutter/clutter-click-action.c:601
 msgid "Whether the clickable has a grab"
@@ -2640,14 +2640,14 @@ msgstr "El camí al fitxer que conté les dades de la imatge"
 
 #: ../clutter/deprecated/clutter-texture.c:1088
 msgid "Keep Aspect Ratio"
-msgstr "Manté la relació d'aspecte"
+msgstr "Mantén la relació d'aspecte"
 
 #: ../clutter/deprecated/clutter-texture.c:1089
 msgid ""
 "Keep the aspect ratio of the texture when requesting the preferred width or "
 "height"
 msgstr ""
-"Manté la relació d'aspecte de la textura quan es sol·liciti una amplada o "
+"Mantén la relació d'aspecte de la textura quan es sol·liciti una amplada o "
 "alçada preferida"
 
 #: ../clutter/deprecated/clutter-texture.c:1117
