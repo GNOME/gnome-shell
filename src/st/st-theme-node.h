@@ -94,6 +94,12 @@ typedef enum {
   ST_GRADIENT_RADIAL
 } StGradientType;
 
+typedef enum {
+  ST_ICON_STYLE_REQUESTED,
+  ST_ICON_STYLE_REGULAR,
+  ST_ICON_STYLE_SYMBOLIC
+} StIconStyle;
+
 typedef struct _StThemeNodePaintState StThemeNodePaintState;
 
 struct _StThemeNodePaintState {
@@ -219,6 +225,8 @@ int    st_theme_node_get_max_width     (StThemeNode  *node);
 int    st_theme_node_get_max_height    (StThemeNode  *node);
 
 int    st_theme_node_get_transition_duration (StThemeNode *node);
+
+StIconStyle st_theme_node_get_icon_style (StThemeNode *node);
 
 StTextDecoration st_theme_node_get_text_decoration (StThemeNode *node);
 

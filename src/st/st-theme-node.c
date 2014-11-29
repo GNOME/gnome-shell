@@ -2392,6 +2392,48 @@ st_theme_node_get_transition_duration (StThemeNode *node)
   return st_slow_down_factor * node->transition_duration;
 }
 
+StIconStyle
+st_theme_node_get_icon_style (StThemeNode *node)
+{
+  int i;
+
+  ensure_properties (node);
+
+  for (i = node->n_properties - 1; i >= 0; i--)
+    {
+      CRDeclaration *decl = node->properties[i];
+
+      if (strcmp (decl->property->stryng->str, "-st-icon-style") == 0)
+        {
+          CRTerm *term;
+
+          for (term = decl->value; term; term = term->next)
+            {
+              if (term->type != TERM_IDENT)
+                goto next_decl;
+
+              if (strcmp (term->content.str->stryng->str, "requested") == 0)
+                return ST_ICON_STYLE_REQUESTED;
+              else if (strcmp (term->content.str->stryng->str, "regular") == 0)
+                return ST_ICON_STYLE_REGULAR;
+              else if (strcmp (term->content.str->stryng->str, "symbolic") == 0)
+                return ST_ICON_STYLE_SYMBOLIC;
+              else
+                g_warning ("Unknown -st-icon-style \"%s\"",
+                           term->content.str->stryng->str);
+            }
+        }
+
+    next_decl:
+      ;
+    }
+
+  if (node->parent_node)
+    return st_theme_node_get_icon_style (node->parent_node);
+
+  return ST_ICON_STYLE_REQUESTED;
+}
+
 StTextDecoration
 st_theme_node_get_text_decoration (StThemeNode *node)
 {

@@ -842,15 +842,24 @@ st_texture_cache_load_gicon (StTextureCache    *cache,
   GtkIconInfo *info;
   StTextureCachePolicy policy;
   StIconColors *colors = NULL;
+  StIconStyle icon_style = ST_ICON_STYLE_REQUESTED;
   GtkIconLookupFlags lookup_flags;
 
   if (theme_node)
-    colors = st_theme_node_get_icon_colors (theme_node);
+    {
+      colors = st_theme_node_get_icon_colors (theme_node);
+      icon_style = st_theme_node_get_icon_style (theme_node);
+    }
 
   /* Do theme lookups in the main thread to avoid thread-unsafety */
   theme = cache->priv->icon_theme;
 
   lookup_flags = GTK_ICON_LOOKUP_USE_BUILTIN;
+
+  if (icon_style == ST_ICON_STYLE_REGULAR)
+    lookup_flags |= GTK_ICON_LOOKUP_FORCE_REGULAR;
+  else if (icon_style == ST_ICON_STYLE_SYMBOLIC)
+    lookup_flags |= GTK_ICON_LOOKUP_FORCE_SYMBOLIC;
 
   if (clutter_get_default_text_direction () == CLUTTER_TEXT_DIRECTION_RTL)
     lookup_flags |= GTK_ICON_LOOKUP_DIR_RTL;
@@ -871,8 +880,8 @@ st_texture_cache_load_gicon (StTextureCache    *cache,
   if (colors)
     {
       /* This raises some doubts about the practice of using string keys */
-      key = g_strdup_printf (CACHE_PREFIX_ICON "%s,size=%d,scale=%d,colors=%2x%2x%2x%2x,%2x%2x%2x%2x,%2x%2x%2x%2x,%2x%2x%2x%2x",
-                             gicon_string, size, scale,
+      key = g_strdup_printf (CACHE_PREFIX_ICON "%s,size=%d,scale=%d,style=%d,colors=%2x%2x%2x%2x,%2x%2x%2x%2x,%2x%2x%2x%2x,%2x%2x%2x%2x",
+                             gicon_string, size, scale, icon_style,
                              colors->foreground.red, colors->foreground.blue, colors->foreground.green, colors->foreground.alpha,
                              colors->warning.red, colors->warning.blue, colors->warning.green, colors->warning.alpha,
                              colors->error.red, colors->error.blue, colors->error.green, colors->error.alpha,
@@ -880,8 +889,8 @@ st_texture_cache_load_gicon (StTextureCache    *cache,
     }
   else
     {
-      key = g_strdup_printf (CACHE_PREFIX_ICON "%s,size=%d,scale=%d",
-                             gicon_string, size, scale);
+      key = g_strdup_printf (CACHE_PREFIX_ICON "%s,size=%d,scale=%d,style=%d",
+                             gicon_string, size, scale, icon_style);
     }
   g_free (gicon_string);
 
