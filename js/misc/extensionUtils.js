@@ -43,7 +43,7 @@ function getCurrentExtension() {
     let path = match[1];
     let file = Gio.File.new_for_path(path);
 
-    // Walk up the directory tree, looking for an extesion with
+    // Walk up the directory tree, looking for an extension with
     // the same UUID as a directory name.
     while (file != null) {
         let extension = extensions[file.get_basename()];
