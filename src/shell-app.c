@@ -237,6 +237,7 @@ typedef struct {
   int size;
   int scale;
   ClutterTextDirection direction;
+  StThemeNode *theme_node;
 } CreateFadedIconData;
 
 static CoglHandle
@@ -264,19 +265,28 @@ shell_app_create_faded_icon_cpu (StTextureCache *cache,
   guint8 *pixels;
   GIcon *icon;
   GtkIconInfo *info;
+  GtkIconLookupFlags lookup_flags;
+  StIconStyle icon_style;
 
   app = data->app;
   size = data->size;
   scale = data->scale;
+  icon_style = st_theme_node_get_icon_style (data->theme_node);
 
   info = NULL;
+
+  lookup_flags = GTK_ICON_LOOKUP_FORCE_SIZE;
+  if (icon_style == ST_ICON_STYLE_REGULAR)
+    lookup_flags |= GTK_ICON_LOOKUP_FORCE_REGULAR;
+  else if (icon_style == ST_ICON_STYLE_SYMBOLIC)
+    lookup_flags |= GTK_ICON_LOOKUP_FORCE_SYMBOLIC;
 
   icon = g_app_info_get_icon (G_APP_INFO (app->info));
   if (icon != NULL)
     {
       info = gtk_icon_theme_lookup_by_gicon_for_scale (gtk_icon_theme_get_default (),
                                                        icon, size, scale,
-                                                       GTK_ICON_LOOKUP_FORCE_SIZE);
+                                                       lookup_flags);
     }
 
   if (info == NULL)
@@ -284,7 +294,7 @@ shell_app_create_faded_icon_cpu (StTextureCache *cache,
       icon = g_themed_icon_new ("application-x-executable");
       info = gtk_icon_theme_lookup_by_gicon_for_scale (gtk_icon_theme_get_default (),
                                                        icon, size, scale,
-                                                       GTK_ICON_LOOKUP_FORCE_SIZE);
+                                                       lookup_flags);
       g_object_unref (icon);
     }
 
@@ -391,6 +401,7 @@ shell_app_get_faded_icon (ShellApp *app, int size, ClutterTextDirection directio
   data.size = size;
   data.scale = scale;
   data.direction = direction;
+  data.theme_node = st_theme_context_get_root_node (context);
   texture = st_texture_cache_load (st_texture_cache_get_default (),
                                    cache_key,
                                    ST_TEXTURE_CACHE_POLICY_FOREVER,
