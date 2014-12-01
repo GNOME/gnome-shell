@@ -295,8 +295,8 @@ clutter_keyframe_transition_compute_value (ClutterTransition *transition,
   /* update the interval to be used to interpolate the property */
   real_interval = cur_frame->interval;
 
-  /* normalize the progress */
-  real_progress = (p - cur_frame->start) / (cur_frame->end - cur_frame->start);
+  /* normalize the progress and apply the easing mode */
+  real_progress = clutter_easing_for_mode ( cur_frame->mode, (p - cur_frame->start), (cur_frame->end - cur_frame->start));
 
 #ifdef CLUTTER_ENABLE_DEBUG
   if (CLUTTER_HAS_DEBUG (ANIMATION))
