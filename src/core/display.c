@@ -1205,7 +1205,7 @@ meta_grab_op_is_resizing (MetaGrabOp op)
   if (!grab_op_is_window (op))
     return FALSE;
 
-  return (op & META_GRAB_OP_WINDOW_DIR_MASK) != 0;
+  return (op & META_GRAB_OP_WINDOW_DIR_MASK) != 0 || op == META_GRAB_OP_KEYBOARD_RESIZING_UNKNOWN;
 }
 
 gboolean
