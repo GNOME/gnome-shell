@@ -28,6 +28,9 @@
 #endif
 
 #include <cogl/cogl.h>
+
+#define GDK_DISABLE_DEPRECATION_WARNINGS
+
 #include <gdk/gdk.h>
 #ifdef GDK_WINDOWING_X11
 #include <gdk/gdkx.h>
