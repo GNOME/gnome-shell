@@ -228,7 +228,7 @@ clutter_stage_gdk_realize (ClutterStageWindow *stage_window)
           if (!cursor_visible)
             {
               if (stage_gdk->blank_cursor == NULL)
-                stage_gdk->blank_cursor = gdk_cursor_new (GDK_BLANK_CURSOR);
+                stage_gdk->blank_cursor = gdk_cursor_new_for_display (backend_gdk->display, GDK_BLANK_CURSOR);
 
               attributes.cursor = stage_gdk->blank_cursor;
             }
@@ -347,7 +347,11 @@ clutter_stage_gdk_set_cursor_visible (ClutterStageWindow *stage_window,
   else
     {
       if (stage_gdk->blank_cursor == NULL)
-	stage_gdk->blank_cursor = gdk_cursor_new (GDK_BLANK_CURSOR);
+        {
+          GdkDisplay *display = clutter_gdk_get_default_display ();
+
+	  stage_gdk->blank_cursor = gdk_cursor_new_for_display (display, GDK_BLANK_CURSOR);
+        }
 
       gdk_window_set_cursor (stage_gdk->window, stage_gdk->blank_cursor);
     }
