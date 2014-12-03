@@ -246,6 +246,7 @@ clutter_image_set_data (ClutterImage     *image,
                         GError          **error)
 {
   ClutterImagePrivate *priv;
+  CoglTextureFlags flags;
 
   g_return_val_if_fail (CLUTTER_IS_IMAGE (image), FALSE);
   g_return_val_if_fail (data != NULL, FALSE);
@@ -255,8 +256,12 @@ clutter_image_set_data (ClutterImage     *image,
   if (priv->texture != NULL)
     cogl_object_unref (priv->texture);
 
+  flags = COGL_TEXTURE_NONE;
+  if (width >= 512 && height >= 512)
+    flags |= COGL_TEXTURE_NO_ATLAS;
+
   priv->texture = cogl_texture_new_from_data (width, height,
-                                              COGL_TEXTURE_NONE,
+                                              flags,
                                               pixel_format,
                                               COGL_PIXEL_FORMAT_ANY,
                                               row_stride,
@@ -309,6 +314,7 @@ clutter_image_set_bytes (ClutterImage     *image,
                          GError          **error)
 {
   ClutterImagePrivate *priv;
+  CoglTextureFlags flags;
 
   g_return_val_if_fail (CLUTTER_IS_IMAGE (image), FALSE);
   g_return_val_if_fail (data != NULL, FALSE);
@@ -318,8 +324,12 @@ clutter_image_set_bytes (ClutterImage     *image,
   if (priv->texture != NULL)
     cogl_object_unref (priv->texture);
 
+  flags = COGL_TEXTURE_NONE;
+  if (width >= 512 && height >= 512)
+    flags |= COGL_TEXTURE_NO_ATLAS;
+
   priv->texture = cogl_texture_new_from_data (width, height,
-                                              COGL_TEXTURE_NONE,
+                                              flags,
                                               pixel_format,
                                               COGL_PIXEL_FORMAT_ANY,
                                               row_stride,
@@ -384,9 +394,14 @@ clutter_image_set_area (ClutterImage                 *image,
 
   if (priv->texture == NULL)
     {
+      CoglTextureFlags flags = COGL_TEXTURE_NONE;
+
+      if (area->width >= 512 && area->height >= 512)
+        flags |= COGL_TEXTURE_NO_ATLAS;
+
       priv->texture = cogl_texture_new_from_data (area->width,
                                                   area->height,
-                                                  COGL_TEXTURE_NONE,
+                                                  flags,
                                                   pixel_format,
                                                   COGL_PIXEL_FORMAT_ANY,
                                                   row_stride,
