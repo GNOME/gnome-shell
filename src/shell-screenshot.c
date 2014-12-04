@@ -37,6 +37,7 @@ struct _ShellScreenshotPrivate
   cairo_rectangle_int_t screenshot_area;
 
   gboolean include_cursor;
+  gboolean include_frame;
 
   ShellScreenshotCallback callback;
 };
@@ -73,6 +74,8 @@ on_screenshot_written (GObject *source,
   g_clear_pointer (&priv->image, cairo_surface_destroy);
   g_clear_pointer (&priv->filename, g_free);
   g_clear_pointer (&priv->filename_used, g_free);
+
+  meta_enable_unredirect_for_screen (shell_global_get_screen (priv->global));
 }
 
 /* called in an I/O thread */
@@ -407,6 +410,56 @@ grab_area_screenshot (ClutterActor *stage,
   g_object_unref (result);
 }
 
+static void
+grab_window_screenshot (ClutterActor *stage,
+                        ShellScreenshot *screenshot)
+{
+  ShellScreenshotPrivate *priv = screenshot->priv;
+  GSimpleAsyncResult *result;
+  GSettings *settings;
+  MetaScreen *screen = shell_global_get_screen (priv->global);
+  MetaCursorTracker *tracker;
+  MetaDisplay *display = meta_screen_get_display (screen);
+  MetaWindow *window = meta_display_get_focus_window (display);
+  ClutterActor *window_actor;
+  gfloat actor_x, actor_y;
+  MetaShapedTexture *stex;
+  MetaRectangle rect;
+  cairo_rectangle_int_t clip;
+
+  window_actor = CLUTTER_ACTOR (meta_window_get_compositor_private (window));
+  clutter_actor_get_position (window_actor, &actor_x, &actor_y);
+
+  meta_window_get_frame_rect (window, &rect);
+
+  if (!priv->include_frame)
+    meta_window_frame_rect_to_client_rect (window, &rect, &rect);
+
+  priv->screenshot_area.x = rect.x;
+  priv->screenshot_area.y = rect.y;
+  clip.x = rect.x - (gint) actor_x;
+  clip.y = rect.y - (gint) actor_y;
+
+  clip.width = priv->screenshot_area.width = rect.width;
+  clip.height = priv->screenshot_area.height = rect.height;
+
+  stex = META_SHAPED_TEXTURE (meta_window_actor_get_texture (META_WINDOW_ACTOR (window_actor)));
+  priv->image = meta_shaped_texture_get_image (stex, &clip);
+
+  settings = g_settings_new (A11Y_APPS_SCHEMA);
+  if (priv->include_cursor && !g_settings_get_boolean (settings, MAGNIFIER_ACTIVE_KEY))
+    {
+      tracker = meta_cursor_tracker_get_for_screen (screen);
+      _draw_cursor_image (tracker, priv->image, priv->screenshot_area);
+    }
+  g_object_unref (settings);
+
+  g_signal_handlers_disconnect_by_func (stage, (void *)grab_window_screenshot, (gpointer)screenshot);
+  result = g_simple_async_result_new (G_OBJECT (screenshot), on_screenshot_written, NULL, grab_window_screenshot);
+  g_simple_async_result_run_in_thread (result, write_screenshot_thread, G_PRIORITY_DEFAULT, NULL);
+  g_object_unref (result);
+}
+
 /**
  * shell_screenshot_screenshot:
  * @screenshot: the #ShellScreenshot
@@ -439,6 +492,8 @@ shell_screenshot_screenshot (ShellScreenshot *screenshot,
   priv->include_cursor = include_cursor;
 
   stage = CLUTTER_ACTOR (shell_global_get_stage (priv->global));
+
+  meta_disable_unredirect_for_screen (shell_global_get_screen (priv->global));
 
   g_signal_connect_after (stage, "paint", G_CALLBACK (grab_screenshot), (gpointer)screenshot);
 
@@ -487,6 +542,8 @@ shell_screenshot_screenshot_area (ShellScreenshot *screenshot,
 
   stage = CLUTTER_ACTOR (shell_global_get_stage (priv->global));
 
+  meta_disable_unredirect_for_screen (shell_global_get_screen (shell_global_get ()));
+
   g_signal_connect_after (stage, "paint", G_CALLBACK (grab_area_screenshot), (gpointer)screenshot);
 
   clutter_actor_queue_redraw (stage);
@@ -512,19 +569,11 @@ shell_screenshot_screenshot_window (ShellScreenshot *screenshot,
                                     const char *filename,
                                     ShellScreenshotCallback callback)
 {
-  GSimpleAsyncResult *result;
-  GSettings *settings;
   ShellScreenshotPrivate *priv = screenshot->priv;
-
   MetaScreen *screen = shell_global_get_screen (priv->global);
-  MetaCursorTracker *tracker;
+  ClutterActor *stage;
   MetaDisplay *display = meta_screen_get_display (screen);
   MetaWindow *window = meta_display_get_focus_window (display);
-  ClutterActor *window_actor;
-  gfloat actor_x, actor_y;
-  MetaShapedTexture *stex;
-  MetaRectangle rect;
-  cairo_rectangle_int_t clip;
 
   if (priv->filename != NULL || !window) {
     if (callback)
@@ -534,37 +583,16 @@ shell_screenshot_screenshot_window (ShellScreenshot *screenshot,
 
   priv->filename = g_strdup (filename);
   priv->callback = callback;
+  priv->include_frame = include_frame;
+  priv->include_cursor = include_cursor;
 
-  window_actor = CLUTTER_ACTOR (meta_window_get_compositor_private (window));
-  clutter_actor_get_position (window_actor, &actor_x, &actor_y);
+  stage = CLUTTER_ACTOR (shell_global_get_stage (priv->global));
 
-  meta_window_get_frame_rect (window, &rect);
+  meta_disable_unredirect_for_screen (shell_global_get_screen (shell_global_get ()));
 
-  if (!include_frame)
-    meta_window_frame_rect_to_client_rect (window, &rect, &rect);
+  g_signal_connect_after (stage, "paint", G_CALLBACK (grab_window_screenshot), (gpointer)screenshot);
 
-  priv->screenshot_area.x = rect.x;
-  priv->screenshot_area.y = rect.y;
-  clip.x = rect.x - (gint) actor_x;
-  clip.y = rect.y - (gint) actor_y;
-
-  clip.width = priv->screenshot_area.width = rect.width;
-  clip.height = priv->screenshot_area.height = rect.height;
-
-  stex = META_SHAPED_TEXTURE (meta_window_actor_get_texture (META_WINDOW_ACTOR (window_actor)));
-  priv->image = meta_shaped_texture_get_image (stex, &clip);
-
-  settings = g_settings_new (A11Y_APPS_SCHEMA);
-  if (include_cursor && !g_settings_get_boolean (settings, MAGNIFIER_ACTIVE_KEY))
-    {
-      tracker = meta_cursor_tracker_get_for_screen (screen);
-      _draw_cursor_image (tracker, priv->image, priv->screenshot_area);
-    }
-  g_object_unref (settings);
-
-  result = g_simple_async_result_new (G_OBJECT (screenshot), on_screenshot_written, NULL, shell_screenshot_screenshot_window);
-  g_simple_async_result_run_in_thread (result, write_screenshot_thread, G_PRIORITY_DEFAULT, NULL);
-  g_object_unref (result);
+  clutter_actor_queue_redraw (stage);
 }
 
 ShellScreenshot *
