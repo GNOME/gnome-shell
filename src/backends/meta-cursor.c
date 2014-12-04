@@ -55,7 +55,8 @@ meta_cursor_reference_ref (MetaCursorReference *self)
 static void
 meta_cursor_image_free (MetaCursorImage *image)
 {
-  cogl_object_unref (image->texture);
+  if (image->texture)
+    cogl_object_unref (image->texture);
 
 #ifdef HAVE_NATIVE_BACKEND
   if (image->bo)
