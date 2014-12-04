@@ -59,7 +59,7 @@ const DateMenuButton = new Lang.Class({
 
         // Fill up the first column
 
-        vbox = new St.BoxLayout({vertical: true});
+        vbox = new St.BoxLayout({vertical: true, x_expand: true, y_expand: true });
         hbox.add(vbox);
 
         // Date
@@ -96,11 +96,11 @@ const DateMenuButton = new Lang.Class({
 
         this._openCalendarItem = new PopupMenu.PopupMenuItem(_("Open Calendar"));
         this._openCalendarItem.connect('activate', Lang.bind(this, this._onOpenCalendarActivate));
-        vbox.add(this._openCalendarItem.actor, {y_align: St.Align.END, expand: true, y_fill: false});
+        vbox.add(this._openCalendarItem.actor, {y_align: St.Align.END, expand: false, y_fill: false});
 
         this._openClocksItem = new PopupMenu.PopupMenuItem(_("Open Clocks"));
         this._openClocksItem.connect('activate', Lang.bind(this, this._onOpenClocksActivate));
-        vbox.add(this._openClocksItem.actor, {y_align: St.Align.END, expand: true, y_fill: false});
+        vbox.add(this._openClocksItem.actor, {y_align: St.Align.END, expand: false, y_fill: false});
 
         Shell.AppSystem.get_default().connect('installed-changed',
                                               Lang.bind(this, this._appInstalledChanged));

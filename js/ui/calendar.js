@@ -2,6 +2,7 @@
 
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
+const Gtk = imports.gi.Gtk;
 const GLib = imports.gi.GLib;
 const Lang = imports.lang;
 const St = imports.gi.St;
@@ -731,6 +732,8 @@ const EventsList = new Lang.Class({
     },
 
     _addEvent: function(event, index, includeDayName, periodBegin, periodEnd) {
+        let eventBox = new St.BoxLayout();
+        eventBox.set_vertical(false);
         let dayString;
         if (includeDayName) {
             if (event.date >= periodBegin)
@@ -751,7 +754,7 @@ const EventsList = new Lang.Class({
         let rtl = this.actor.get_text_direction() == Clutter.TextDirection.RTL;
 
         let layout = this.actor.layout_manager;
-        layout.attach(dayLabel, rtl ? 2 : 0, index, 1, 1);
+        eventBox.add_actor(dayLabel);
         let clockFormat = this._desktopSettings.get_string(CLOCK_FORMAT_KEY);
         let timeString = _formatEventTime(event, clockFormat, periodBegin, periodEnd);
         let timeLabel = new St.Label({ style_class: 'events-day-time',
@@ -771,11 +774,12 @@ const EventsList = new Lang.Class({
         if (event.allDay || event.end <= periodEnd)
             postEllipsisLabel.opacity = 0;
 
-        let timeLabelBoxLayout = new St.BoxLayout();
+        let timeLabelBoxLayout = new St.BoxLayout({ x_align: Clutter.ActorAlign.START });
         timeLabelBoxLayout.add(preEllipsisLabel);
         timeLabelBoxLayout.add(timeLabel);
         timeLabelBoxLayout.add(postEllipsisLabel);
-        layout.attach(timeLabelBoxLayout, 1, index, 1, 1);
+        timeLabelBoxLayout.set_size(50, 1);
+        eventBox.add_actor(timeLabelBoxLayout);
 
         let titleLabel = new St.Label({ style_class: 'events-day-task',
                                         text: event.summary,
@@ -783,7 +787,8 @@ const EventsList = new Lang.Class({
         titleLabel.clutter_text.line_wrap = true;
         titleLabel.clutter_text.ellipsize = false;
 
-        layout.attach(titleLabel, rtl ? 0 : 2, index, 1, 1);
+        eventBox.add_actor(titleLabel);
+        this._eventListBox.add_actor(eventBox);
     },
 
     _addPeriod: function(header, index, periodBegin, periodEnd, includeDayName, showNothingScheduled) {
@@ -793,8 +798,7 @@ const EventsList = new Lang.Class({
             return index;
 
         let label = new St.Label({ style_class: 'events-day-header', text: header });
-        let layout = this.actor.layout_manager;
-        layout.attach(label, 0, index, 3, 1);
+        this._eventListBox.add_actor(label);
         index++;
 
         for (let n = 0; n < events.length; n++) {
@@ -813,8 +817,6 @@ const EventsList = new Lang.Class({
     },
 
     _showOtherDay: function(day) {
-        this.actor.destroy_all_children();
-
         let dayBegin = _getBeginningOfDay(day);
         let dayEnd = _getEndOfDay(day);
 
@@ -830,7 +832,6 @@ const EventsList = new Lang.Class({
     },
 
     _showToday: function() {
-        this.actor.destroy_all_children();
         let index = 0;
 
         let now = new Date();
@@ -874,6 +875,24 @@ const EventsList = new Lang.Class({
     _update: function() {
         if (this._eventSource.isLoading)
             return;
+
+        this.actor.destroy_all_children();
+
+        let layout = this.actor.layout_manager;
+
+        this._eventListContainer = new St.BoxLayout({ x_expand: true, y_expand: true });
+        this._eventListContainer.set_vertical(true);
+
+        this._eventListBox = new St.BoxLayout();
+        this._eventListBox.set_vertical(true);
+
+        let eventScrollView = new St.ScrollView({style_class: 'vfade',
+                                                hscrollbar_policy: Gtk.PolicyType.NEVER,
+                                                vscrollbar_policy: Gtk.PolicyType.AUTOMATIC});
+        eventScrollView.add_actor(this._eventListBox);
+        this._eventListContainer.add_actor(eventScrollView);
+
+        layout.attach(this._eventListContainer, 0, 0, 1, 1);
 
         let today = new Date();
         if (_sameDay (this._date, today)) {
