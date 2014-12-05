@@ -589,19 +589,28 @@ StScrollBar {
   padding: 0.75em 1.0em; }
 
 .calendar {
-  margin: 0 1.5em;
   margin-bottom: 1em; }
+
+.calendar,
+.datemenu-today-button {
+  margin: 0 1.5em; }
 
 .datemenu-calendar-column {
   spacing: 0.5em;
   padding-bottom: 3em; }
 
-.datemenu-date-label {
-  padding: .4em 1.7em;
-  text-align: center;
-  color: #eeeeec;
-  font-weight: bold;
-  font-size: 110%; }
+.datemenu-today-button {
+  border-radius: 4px;
+  padding: .4em; }
+
+.datemenu-today-button:hover, .datemenu-today-button:focus {
+  background-color: #454c4c; }
+.datemenu-today-button:active {
+  color: white;
+  background-color: #215d9c; }
+
+.datemenu-today-button .date-label {
+  font-size: 1.5em; }
 
 .calendar-month-label {
   color: #e2e2df;
