@@ -1,8 +1,10 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
+const Atk = imports.gi.Atk;
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
+const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const St = imports.gi.St;
 const Signals = imports.signals;
@@ -12,11 +14,15 @@ const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 
+const Main = imports.ui.main;
+const Tweener = imports.ui.tweener;
 const Util = imports.misc.util;
 
 const MSECS_IN_DAY = 24 * 60 * 60 * 1000;
 const SHOW_WEEKDATE_KEY = 'show-weekdate';
 const ELLIPSIS_CHAR = '\u2026';
+
+const MESSAGE_ANIMATION_TIME = 0.1;
 
 // alias to prevent xgettext from picking up strings translated in GTK+
 const gtk30_ = Gettext_gtk30.gettext;
@@ -852,8 +858,323 @@ const Calendar = new Lang.Class({
         }));
     }
 });
-
 Signals.addSignalMethods(Calendar.prototype);
+
+const ScaleLayout = new Lang.Class({
+    Name: 'ScaleLayout',
+    Extends: Clutter.BinLayout,
+
+    _connectContainer: function(container) {
+        if (this._container == container)
+            return;
+
+        if (this._container)
+            for (let id of this._signals)
+                this._container.disconnect(id);
+
+        this._container = container;
+        this._signals = [];
+
+        if (this._container)
+            for (let signal of ['notify::scale-x', 'notify::scale-y']) {
+                let id = this._container.connect(signal, Lang.bind(this,
+                    function() {
+                        this.layout_changed();
+                    }));
+                this._signals.push(id);
+            }
+    },
+
+    vfunc_get_preferred_width: function(container, forHeight) {
+        this._connectContainer(container);
+
+        let [min, nat] = this.parent(container, forHeight);
+        return [Math.floor(min * container.scale_x),
+                Math.floor(nat * container.scale_x)];
+    },
+
+    vfunc_get_preferred_height: function(container, forWidth) {
+        this._connectContainer(container);
+
+        let [min, nat] = this.parent(container, forWidth);
+        return [Math.floor(min * container.scale_y),
+                Math.floor(nat * container.scale_y)];
+    }
+});
+
+const Message = new Lang.Class({
+    Name: 'Message',
+
+    _init: function(title, body) {
+        this.actor = new St.Button({ style_class: 'message',
+                                     accessible_role: Atk.Role.NOTIFICATION,
+                                     can_focus: true,
+                                     x_expand: true, x_fill: true });
+
+        let hbox = new St.BoxLayout();
+        this.actor.set_child(hbox);
+
+        this._iconBin = new St.Bin({ style_class: 'message-icon-bin',
+                                     y_expand: true,
+                                     visible: false });
+        this._iconBin.set_y_align(Clutter.ActorAlign.START);
+        hbox.add_actor(this._iconBin);
+
+        let contentBox = new St.BoxLayout({ style_class: 'message-content',
+                                            vertical: true, x_expand: true });
+        hbox.add_actor(contentBox);
+
+        let titleBox = new St.BoxLayout();
+        contentBox.add_actor(titleBox);
+
+        this.titleLabel = new St.Label({ style_class: 'message-title',
+                                         x_expand: true,
+                                         x_align: Clutter.ActorAlign.START });
+        this.setTitle(title);
+        titleBox.add_actor(this.titleLabel);
+
+        this._secondaryBin = new St.Bin({ style_class: 'message-secondary-bin' });
+        titleBox.add_actor(this._secondaryBin);
+
+        let closeIcon = new St.Icon({ icon_name: 'window-close-symbolic',
+                                      icon_size: 16 });
+        this._closeButton = new St.Button({ child: closeIcon, visible: false });
+        titleBox.add_actor(this._closeButton);
+
+        this.bodyLabel = new URLHighlighter(body, false, this._useBodyMarkup);
+        this.bodyLabel.actor.add_style_class_name('message-body');
+        contentBox.add_actor(this.bodyLabel.actor);
+
+        this._closeButton.connect('clicked', Lang.bind(this,
+            function() {
+                this.emit('close');
+            }));
+        this.actor.connect('notify::hover', Lang.bind(this, this._sync));
+        this.actor.connect('clicked', Lang.bind(this, this._onClicked));
+        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
+        this._sync();
+    },
+
+    setIcon: function(actor) {
+        this._iconBin.child = actor;
+        this._iconBin.visible = (actor != null);
+    },
+
+    setSecondaryActor: function(actor) {
+        this._secondaryBin.child = actor;
+    },
+
+    setTitle: function(text) {
+        let title = text ? _fixMarkup(text.replace(/\n/g, ' '), false) : '';
+        this.titleLabel.text = title;
+    },
+
+    setBody: function(text) {
+        this.bodyLabel.setMarkup(text, this._useBodyMarkup);
+    },
+
+    setUseBodyMarkup: function(enable) {
+        if (this._useBodyMarkup === enable)
+            return;
+        this._useBodyMarkup = enable;
+        if (this.bodyLabel)
+            this.setBody(this.bodyLabel.actor.text);
+    },
+
+    canClear: function() {
+        return true;
+    },
+
+    _sync: function() {
+        let hovered = this.actor.hover;
+        this._closeButton.visible = hovered;
+        this._secondaryBin.visible = !hovered;
+    },
+
+    _onClicked: function() {
+    },
+
+    _onDestroy: function() {
+    }
+});
+Signals.addSignalMethods(Message.prototype);
+
+const MessageListSection = new Lang.Class({
+    Name: 'MessageListSection',
+
+    _init: function(title) {
+        this.actor = new St.BoxLayout({ style_class: 'message-list-section',
+                                        clip_to_allocation: true,
+                                        x_expand: true, vertical: true });
+        let titleBox = new St.BoxLayout({ style_class: 'message-list-section-title-box' });
+        this.actor.add_actor(titleBox);
+
+        this._title = new St.Button({ style_class: 'message-list-section-title',
+                                      label: title,
+                                      can_focus: true,
+                                      x_expand: true,
+                                      x_align: St.Align.START });
+        titleBox.add_actor(this._title);
+
+        this._title.connect('clicked', Lang.bind(this, this._onTitleClicked));
+        this._title.connect('key-focus-in', Lang.bind(this, this._onKeyFocusIn));
+
+        let closeIcon = new St.Icon({ icon_name: 'window-close-symbolic' });
+        this._closeButton = new St.Button({ style_class: 'message-list-section-close',
+                                            child: closeIcon,
+                                            accessible_name: _("Clear section"),
+                                            can_focus: true });
+        this._closeButton.set_x_align(Clutter.ActorAlign.END);
+        titleBox.add_actor(this._closeButton);
+
+        this._closeButton.connect('clicked', Lang.bind(this, this.clear));
+
+        this._list = new St.BoxLayout({ style_class: 'message-list-section-list',
+                                        vertical: true });
+        this.actor.add_actor(this._list);
+
+        this._list.connect('actor-added', Lang.bind(this, this._sync));
+        this._list.connect('actor-removed', Lang.bind(this, this._sync));
+
+        this._messages = new Map();
+        this._date = new Date();
+        this.empty = true;
+        this._sync();
+    },
+
+    _onTitleClicked: function() {
+        Main.overview.hide();
+        Main.panel.closeCalendar();
+    },
+
+    _onKeyFocusIn: function(actor) {
+        this.emit('key-focus-in', actor);
+    },
+
+    setDate: function(date) {
+        if (_sameDay(date, this._date))
+            return;
+        this._date = date;
+        this._sync();
+    },
+
+    addMessage: function(message, animate) {
+        this.addMessageAtIndex(message, 0, animate);
+    },
+
+    addMessageAtIndex: function(message, index, animate) {
+        let obj = {
+            container: null,
+            destroyId: 0,
+            keyFocusId: 0,
+            closeId: 0
+        };
+        let pivot = new Clutter.Point({ x: .5, y: .5 });
+        let scale = animate ? 0 : 1;
+        obj.container = new St.Widget({ layout_manager: new ScaleLayout(),
+                                        pivot_point: pivot,
+                                        scale_x: scale, scale_y: scale });
+        obj.keyFocusId = message.actor.connect('key-focus-in',
+            Lang.bind(this, this._onKeyFocusIn));
+        obj.destroyId = message.actor.connect('destroy',
+            Lang.bind(this, function() {
+                this.removeMessage(message, false);
+            }));
+        obj.closeId = message.connect('close',
+            Lang.bind(this, function() {
+                this.removeMessage(message, true);
+            }));
+
+        this._messages.set(message, obj);
+        obj.container.add_actor(message.actor);
+
+        this._list.insert_child_at_index(obj.container, index);
+
+        if (animate)
+            Tweener.addTween(obj.container, { scale_x: 1,
+                                              scale_y: 1,
+                                              time: MESSAGE_ANIMATION_TIME,
+                                              transition: 'easeOutQuad' });
+    },
+
+    removeMessage: function(message, animate) {
+        let obj = this._messages.get(message);
+
+        message.actor.disconnect(obj.destroyId);
+        message.actor.disconnect(obj.keyFocusId);
+        message.disconnect(obj.closeId);
+
+        this._messages.delete(message);
+
+        if (animate)
+            Tweener.addTween(obj.container, { scale_x: 0, scale_y: 0,
+                                              time: MESSAGE_ANIMATION_TIME,
+                                              transition: 'easeOutQuad',
+                                              onComplete: function() {
+                                                  obj.container.destroy();
+                                              }});
+        else
+            obj.container.destroy();
+    },
+
+    clear: function() {
+        let messages = [...this._messages.keys()].filter(function(message) {
+            return message.canClear();
+        });
+
+        // If there are few messages, letting them all zoom out looks OK
+        if (messages.length < 2) {
+            messages.forEach(Lang.bind(this, function(message) {
+                this.removeMessage(message, true); }));
+        } else {
+            // Otherwise we slide them out one by one, and then zoom them
+            // out "off-screen" in the end to smoothly shrink the parent
+            let delay = MESSAGE_ANIMATION_TIME / Math.max(messages.length, 5);
+            for (let i = 0; i < messages.length; i++) {
+                let message = messages[i];
+                let obj = this._messages.get(message);
+                Tweener.addTween(obj.container,
+                                 { anchor_x: this._list.width,
+                                   opacity: 0,
+                                   time: MESSAGE_ANIMATION_TIME,
+                                   delay: i * delay,
+                                   transition: 'easeOutQuad',
+                                   onComplete: Lang.bind(this, function() {
+                                       this.removeMessage(message, true);
+                                   })});
+            }
+        }
+    },
+
+    _canClear: function() {
+        for (let message of this._messages.keys())
+            if (message.canClear())
+                return true;
+        return false;
+    },
+
+    _isToday: function() {
+        let today = new Date();
+        return _sameDay(this._date, today);
+    },
+
+    _syncVisible: function() {
+        this.actor.visible = !this.empty;
+    },
+
+    _sync: function() {
+        let empty = this._list.get_n_children() == 0;
+        let changed = this.empty !== empty;
+        this.empty = empty;
+
+        if (changed)
+            this.emit('empty-changed');
+
+        this._closeButton.visible = this._canClear();
+        this._syncVisible();
+    }
+});
+Signals.addSignalMethods(MessageListSection.prototype);
 
 const EventsList = new Lang.Class({
     Name: 'EventsList',
@@ -1028,5 +1349,103 @@ const EventsList = new Lang.Class({
         } else {
             this._showOtherDay(this._date);
         }
+    }
+});
+
+const Placeholder = new Lang.Class({
+    Name: 'Placeholder',
+
+    _init: function() {
+        this.actor = new St.BoxLayout({ style_class: 'message-list-placeholder',
+                                        vertical: true });
+
+        this._date = new Date();
+
+        let file = Gio.File.new_for_uri('resource:///org/gnome/shell/theme/no-events.svg');
+        let gicon = new Gio.FileIcon({ file: file });
+
+        this._icon = new St.Icon({ gicon: gicon });
+        this.actor.add_actor(this._icon);
+
+        this._label = new St.Label({ text: _("No Events") });
+        this.actor.add_actor(this._label);
+    }
+});
+
+const MessageList = new Lang.Class({
+    Name: 'MessageList',
+
+    _init: function() {
+        this.actor = new St.Widget({ style_class: 'message-list',
+                                     layout_manager: new Clutter.BinLayout(),
+                                     x_expand: true, y_expand: true });
+
+        this._placeholder = new Placeholder();
+        this.actor.add_actor(this._placeholder.actor);
+
+        this._scrollView = new St.ScrollView({ style_class: 'vfade',
+                                               overlay_scrollbars: true,
+                                               x_expand: true, y_expand: true,
+                                               x_fill: true, y_fill: true });
+        this._scrollView.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
+        this.actor.add_actor(this._scrollView);
+
+        this._sectionList = new St.BoxLayout({ style_class: 'message-list-sections',
+                                               vertical: true,
+                                               y_expand: true,
+                                               y_align: Clutter.ActorAlign.START });
+        this._scrollView.add_actor(this._sectionList);
+        this._sections = new Map();
+    },
+
+    _addSection: function(section) {
+        let obj = {
+            destroyId: 0,
+            visibleId:  0,
+            emptyChangedId: 0,
+            keyFocusId: 0
+        };
+        obj.destroyId = section.actor.connect('destroy', Lang.bind(this,
+            function() {
+                this._removeSection(section);
+            }));
+        obj.visibleId = section.actor.connect('notify::visible',
+                                              Lang.bind(this, this._sync));
+        obj.emptyChangedId = section.connect('empty-changed',
+                                             Lang.bind(this, this._sync));
+        obj.keyFocusId = section.connect('key-focus-in',
+                                         Lang.bind(this, this._onKeyFocusIn));
+
+        this._sections.set(section, obj);
+        this._sectionList.add_actor(section.actor);
+        this._sync();
+    },
+
+    _removeSection: function(section) {
+        let obj = this._sections.get(section);
+        section.actor.disconnect(obj.destroyId);
+        section.actor.disconnect(obj.visibleId);
+        section.disconnect(obj.emptyChangedId);
+        section.disconnect(obj.keyFocusId);
+
+        this._sections.delete(section);
+        this._sectionList.remove_actor(section.actor);
+        this._sync();
+    },
+
+    _onKeyFocusIn: function(section, actor) {
+        Util.ensureActorVisibleInScrollView(this._scrollView, actor);
+    },
+
+    _sync: function() {
+        let showPlaceholder = [...this._sections.keys()].every(function(s) {
+            return s.empty || !s.actor.visible;
+        });
+        this._placeholder.actor.visible = showPlaceholder;
+    },
+
+    setDate: function(date) {
+        for (let section of this._sections.keys())
+            section.setDate(date);
     }
 });

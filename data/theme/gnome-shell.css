@@ -592,25 +592,40 @@ StScrollBar {
   margin-bottom: 1em; }
 
 .calendar,
-.datemenu-today-button {
+.datemenu-today-button,
+.message-list-sections {
   margin: 0 1.5em; }
 
 .datemenu-calendar-column {
   spacing: 0.5em;
   padding-bottom: 3em; }
 
-.datemenu-today-button {
+.datemenu-today-button,
+.message-list-section-title {
   border-radius: 4px;
   padding: .4em; }
 
-.datemenu-today-button:hover, .datemenu-today-button:focus {
+.message-list-section-list:ltr {
+  padding-left: .4em; }
+
+.message-list-section-list:rtl {
+  padding-right: .4em; }
+
+.datemenu-today-button:hover, .datemenu-today-button:focus,
+.message-list-section-title:hover,
+.message-list-section-title:focus {
   background-color: #454c4c; }
-.datemenu-today-button:active {
+.datemenu-today-button:active,
+.message-list-section-title:active {
   color: white;
   background-color: #215d9c; }
 
 .datemenu-today-button .date-label {
   font-size: 1.5em; }
+
+.message-list-section-title {
+  color: #8e8e80;
+  font-weight: bold; }
 
 .calendar-month-label {
   color: #e2e2df;
@@ -680,6 +695,55 @@ StScrollBar {
 .calendar-other-month-day {
   color: rgba(238, 238, 236, 0.15);
   opacity: 0.5; }
+
+/* Message list */
+.message-list {
+  width: 340px; }
+
+.message-list-sections {
+  spacing: 1.5em; }
+
+.message-list-section,
+.message-list-section-list {
+  spacing: 0.7em; }
+
+.message-list-section-title-box {
+  spacing: 0.4em; }
+
+.message-list-section-close > StIcon {
+  icon-size: 16px;
+  border-radius: 8px;
+  color: #393f3f;
+  background-color: #59594f; }
+
+/* FIXME: how do you do this in sass? */
+.message-list-section-close:hover > StIcon,
+.message-list-section-close:focus > StIcon {
+  background-color: #8e8e80; }
+
+.message {
+  background-color: #454c4c; }
+  .message:hover, .message:focus {
+    background-color: #5d6767; }
+
+.message-icon-bin {
+  padding: 5px; }
+
+.message-icon-bin > StIcon {
+  icon-size: 48px; }
+
+.message-secondary-bin {
+  color: #8e8e80; }
+
+.message-secondary-bin > StIcon {
+  icon-size: 16px; }
+
+.message-title {
+  font-weight: bold; }
+
+.message-content {
+  padding: 5px;
+  spacing: 5px; }
 
 .events-table {
   width: 15em;
