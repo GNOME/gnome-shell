@@ -1300,24 +1300,6 @@ shell_app_request_quit (ShellApp   *app)
   return TRUE;
 }
 
-static void
-_gather_pid_callback (GDesktopAppInfo   *gapp,
-                      GPid               pid,
-                      gpointer           data)
-{
-  ShellApp *app;
-  ShellWindowTracker *tracker;
-
-  g_return_if_fail (data != NULL);
-
-  app = SHELL_APP (data);
-  tracker = shell_window_tracker_get_default ();
-
-  _shell_window_tracker_add_child_process_app (tracker,
-                                               pid,
-                                               app);
-}
-
 #ifdef HAVE_SYSTEMD
 /* This sets up the launched application to log to the journal
  * using its own identifier, instead of just "gnome-session".
@@ -1369,13 +1351,13 @@ shell_app_launch (ShellApp     *app,
 
   ret = g_desktop_app_info_launch_uris_as_manager (app->info, NULL,
                                                    context,
-                                                   G_SPAWN_SEARCH_PATH | G_SPAWN_DO_NOT_REAP_CHILD,
+                                                   G_SPAWN_SEARCH_PATH,
 #ifdef HAVE_SYSTEMD
                                                    app_child_setup, (gpointer)shell_app_get_id (app),
 #else
                                                    NULL, NULL,
 #endif
-                                                   _gather_pid_callback, app,
+                                                   NULL, NULL,
                                                    error);
   g_object_unref (context);
 
