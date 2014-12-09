@@ -691,7 +691,9 @@ cogl_mir_renderer_get_connection (CoglRenderer *renderer)
     {
       CoglRendererEGL *egl_renderer = renderer->winsys;
       CoglRendererMir *mir_renderer = egl_renderer->platform;
-      return mir_renderer->mir_connection;
+
+      if (mir_connection_is_valid (mir_renderer->mir_connection))
+        return mir_renderer->mir_connection;
     }
 
   return NULL;
@@ -729,9 +731,10 @@ cogl_mir_onscreen_get_surface (CoglOnscreen *onscreen)
   egl_onscreen = onscreen->winsys;
   mir_onscreen = egl_onscreen->platform;
 
-  _COGL_RETURN_VAL_IF_FAIL (mir_surface_is_valid (mir_onscreen->mir_surface), NULL);
+  if (mir_surface_is_valid (mir_onscreen->mir_surface))
+    return mir_onscreen->mir_surface;
 
-  return mir_onscreen->mir_surface;
+  return NULL;
 }
 
 void
