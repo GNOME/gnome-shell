@@ -532,7 +532,7 @@ _cogl_winsys_egl_onscreen_init (CoglOnscreen *onscreen,
     }
   else
     {
-      surfaceparm.name = "CoglSurface";
+      surfaceparm.name = g_get_prgname ();
       surfaceparm.width = cogl_framebuffer_get_width (framebuffer);
       surfaceparm.height = cogl_framebuffer_get_height (framebuffer);
       surfaceparm.pixel_format = _mir_connection_get_valid_format (mir_renderer->mir_connection);
@@ -577,6 +577,7 @@ _cogl_winsys_egl_onscreen_init (CoglOnscreen *onscreen,
     event_handler.callback = _mir_surface_event_cb;
     event_handler.context = onscreen;
     mir_surface_set_event_handler (mir_onscreen->mir_surface, &event_handler);
+    g_mutex_init (&mir_onscreen->mir_event_lock);
   }
 
   return TRUE;
@@ -592,6 +593,7 @@ _cogl_winsys_egl_onscreen_deinit (CoglOnscreen *onscreen)
     {
       mir_surface_set_event_handler (mir_onscreen->mir_surface, NULL);
       mir_surface_release_sync (mir_onscreen->mir_surface);
+      g_mutex_clear (&mir_onscreen->mir_event_lock);
       mir_onscreen->mir_surface = NULL;
     }
 
