@@ -744,7 +744,9 @@ cogl_mir_onscreen_get_surface (CoglOnscreen *onscreen)
   CoglOnscreenMir *mir_onscreen;
 
   _COGL_RETURN_VAL_IF_FAIL (cogl_is_onscreen (onscreen), NULL);
-  cogl_framebuffer_allocate (COGL_FRAMEBUFFER (onscreen), NULL);
+
+  if (!COGL_FRAMEBUFFER (onscreen)->allocated)
+    return NULL;
 
   egl_onscreen = onscreen->winsys;
   mir_onscreen = egl_onscreen->platform;

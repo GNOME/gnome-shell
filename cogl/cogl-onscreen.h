@@ -268,6 +268,19 @@ cogl_wayland_onscreen_resize (CoglOnscreen *onscreen,
 #endif /* COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT */
 
 #if defined (COGL_HAS_EGL_PLATFORM_MIR_SUPPORT)
+/**
+ * cogl_mir_onscreen_get_surface:
+ * @onscreen: A #CoglOnscreen framebuffer
+ *
+ * Allows you to get the internal #MirSurface linked to the given @onscreen.
+ * This function might return %NULL if the @onscreen has not been allocated
+ * (see cogl_framebuffer_allocate() for more details)
+ *
+ * Returns: (transfer none): a #MirSurface or %NULL.
+ *
+ * Since: 1.18
+ * Stability: unstable
+ */
 struct MirSurface *
 cogl_mir_onscreen_get_surface (CoglOnscreen *onscreen);
 
