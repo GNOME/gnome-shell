@@ -385,7 +385,7 @@ meta_wayland_keyboard_init (MetaWaylandKeyboard *keyboard,
 
   keyboard->xkb_info.keymap_fd = -1;
 
-  keyboard->settings = g_settings_new ("org.gnome.settings-daemon.peripherals.keyboard");
+  keyboard->settings = g_settings_new ("org.gnome.desktop.peripherals.keyboard");
   g_signal_connect (keyboard->settings, "changed",
                     G_CALLBACK (settings_changed), keyboard);
 
