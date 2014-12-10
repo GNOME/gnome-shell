@@ -80,6 +80,66 @@ cogl_mir_renderer_set_foreign_connection (CoglRenderer *renderer,
 MirConnection *
 cogl_mir_renderer_get_connection (CoglRenderer *renderer);
 
+/*
+ * CoglMirEvent:
+ * @onscreen: pointer to a #CoglOnscreen structure
+ * @surface: pointer to a #MirSurface structure
+ * @event: pointer to a #MirEvent structure
+ */
+typedef struct
+{
+  CoglOnscreen *onscreen;
+  MirSurface *surface;
+  MirEvent *event;
+} CoglMirEvent;
+
+/*
+ * CoglMirEventCallback:
+ * @event: pointer to a CoglMirEvent structure
+ * @data: (closure): the data that was given when the filter was added
+ *
+ * A callback function that can be registered with
+ * cogl_mir_renderer_add_event_listener().
+ *
+ * Since: 1.8
+ * Stability: unstable
+ */
+typedef void (* CoglMirEventCallback) (CoglMirEvent *event,
+                                       void *data);
+
+/*
+ * cogl_mir_renderer_add_event_listener:
+ * @renderer: a #CoglRenderer
+ * @func: the callback function
+ * @data: user data passed to @func when called
+ *
+ * Adds a callback function that will receive all native events.
+ *
+ * Since: 1.8
+ * Stability: unstable
+ */
+void
+cogl_mir_renderer_add_event_listener (CoglRenderer *renderer,
+                                      CoglMirEventCallback func,
+                                      void *data);
+
+/*
+ * cogl_mir_renderer_remove_event_listener:
+ * @renderer: a #CoglRenderer
+ * @func: the callback function
+ * @data: user data given when the callback was installed
+ *
+ * Removes a callback that was previously added with
+ * cogl_mir_renderer_add_filter().
+ *
+ * Since: 1.8
+ * Stability: unstable
+ */
+void
+cogl_mir_renderer_remove_event_listener (CoglRenderer *renderer,
+                                         CoglMirEventCallback func,
+                                         void *data);
+
 COGL_END_DECLS
 
 #endif /* __COGL_MIR_RENDERER_H__ */

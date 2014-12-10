@@ -328,6 +328,7 @@ make_dummy_surface (CoglDisplay *display,
 
   mir_display->dummy_mir_surface =
     mir_connection_create_surface_sync (mir_renderer->mir_connection, &surfaceparm);
+
   if (!mir_surface_is_valid (mir_display->dummy_mir_surface))
     {
       error_message = "Failed to create a dummy mir surface";
@@ -475,15 +476,18 @@ flush_pending_resize_notifications_idle (void *user_data)
                   NULL);
 }
 
-static void _mir_surface_event_cb(MirSurface* surface, MirEvent const* event, void* data)
+static void _mir_surface_event_cb (MirSurface *surface,
+                                   MirEvent const *event,
+                                   void *data)
 {
   CoglOnscreen *onscreen = data;
+  CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
+  CoglContext *context = framebuffer->context;
+  CoglRenderer *renderer = context->display->renderer;
+  CoglMirEvent mir_event = { onscreen, surface, (MirEvent *) event };
 
   if (event->type == mir_event_type_resize)
     {
-      CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
-      CoglContext *context = framebuffer->context;
-      CoglRenderer *renderer = context->display->renderer;
       CoglRendererEGL *egl_renderer = renderer->winsys;
       CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
       CoglOnscreenMir *mir_onscreen = egl_onscreen->platform;
@@ -495,16 +499,18 @@ static void _mir_surface_event_cb(MirSurface* surface, MirEvent const* event, vo
       mir_onscreen->requested_height = event->resize.height;
 
       if (!egl_renderer->resize_notify_idle)
-      {
-        egl_renderer->resize_notify_idle =
-          _cogl_poll_renderer_add_idle (renderer,
-                                        flush_pending_resize_notifications_idle,
-                                        context,
-                                        NULL);
-      }
+        {
+          egl_renderer->resize_notify_idle =
+            _cogl_poll_renderer_add_idle (renderer,
+                                          flush_pending_resize_notifications_idle,
+                                          context,
+                                          NULL);
+        }
 
       g_mutex_unlock (&mir_onscreen->mir_event_lock);
     }
+
+  _cogl_renderer_handle_native_event (renderer, &mir_event);
 }
 
 static CoglBool
@@ -715,6 +721,28 @@ cogl_mir_renderer_get_connection (CoglRenderer *renderer)
     }
 
   return NULL;
+}
+
+void
+cogl_mir_renderer_add_event_listener (CoglRenderer *renderer,
+                                      CoglMirEventCallback func,
+                                      void *data)
+{
+  _COGL_RETURN_IF_FAIL (cogl_is_renderer (renderer));
+
+  _cogl_renderer_add_native_filter (renderer,
+                                    (CoglNativeFilterFunc)func, data);
+}
+
+void
+cogl_mir_renderer_remove_event_listener (CoglRenderer *renderer,
+                                         CoglMirEventCallback func,
+                                         void *data)
+{
+  _COGL_RETURN_IF_FAIL (cogl_is_renderer (renderer));
+
+  _cogl_renderer_remove_native_filter (renderer,
+                                       (CoglNativeFilterFunc)func, data);
 }
 
 CoglBool
