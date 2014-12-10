@@ -1110,14 +1110,11 @@ meta_monitor_manager_xrandr_handle_xevent (MetaMonitorManagerXrandr *manager_xra
 {
   MetaMonitorManager *manager = META_MONITOR_MANAGER (manager_xrandr);
   gboolean hotplug;
-  Time old_timestamp;
 
   if ((event->type - manager_xrandr->rr_event_base) != RRScreenChangeNotify)
     return FALSE;
 
   XRRUpdateConfiguration (event);
-
-  old_timestamp = manager_xrandr->resources->timestamp;
 
   meta_monitor_manager_read_current_config (manager);
 
@@ -1129,9 +1126,8 @@ meta_monitor_manager_xrandr_handle_xevent (MetaMonitorManagerXrandr *manager_xra
     }
   else
     {
-      /* If something else changed -- tell the world about it. */
-      if (old_timestamp < manager_xrandr->resources->timestamp)
-        meta_monitor_manager_rebuild_derived (manager);
+      /* Something else changed -- tell the world about it. */
+      meta_monitor_manager_rebuild_derived (manager);
     }
 
   return TRUE;
