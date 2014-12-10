@@ -888,26 +888,12 @@ meta_monitor_manager_xrandr_apply_configuration (MetaMonitorManager *manager,
           unsigned int j, n_outputs;
           int width, height;
           Status ok;
-          unsigned long old_controlled_mask;
-          unsigned long new_controlled_mask;
 
           mode = crtc_info->mode;
 
           n_outputs = crtc_info->outputs->len;
           outputs = g_new (XID, n_outputs);
 
-          old_controlled_mask = 0;
-          for (j = 0; j < manager->n_outputs; j++)
-            {
-              MetaOutput *output;
-
-              output = &manager->outputs[j];
-
-              if (output->crtc == crtc)
-                old_controlled_mask |= 1UL << j;
-            }
-
-          new_controlled_mask = 0;
           for (j = 0; j < n_outputs; j++)
             {
               MetaOutput *output;
@@ -916,19 +902,8 @@ meta_monitor_manager_xrandr_apply_configuration (MetaMonitorManager *manager,
 
               output->is_dirty = TRUE;
               output->crtc = crtc;
-              new_controlled_mask |= 1UL << j;
 
               outputs[j] = output->winsys_id;
-            }
-
-          if (crtc->current_mode == mode &&
-              crtc->rect.x == crtc_info->x &&
-              crtc->rect.y == crtc_info->y &&
-              crtc->transform == crtc_info->transform &&
-              old_controlled_mask == new_controlled_mask)
-            {
-              /* No change */
-              goto next;
             }
 
           ok = XRRSetCrtcConfig (manager_xrandr->xdisplay,
