@@ -252,11 +252,24 @@ const DBusEventSource = new Lang.Class({
         this._initialized = false;
         this._dbusProxy = new CalendarServer();
         this._dbusProxy.init_async(GLib.PRIORITY_DEFAULT, null, Lang.bind(this, function(object, result) {
+            let loaded = false;
+
             try {
                 this._dbusProxy.init_finish(result);
+                loaded = true;
             } catch(e) {
-                log('Error loading calendars: ' + e.message);
-                return;
+                if (e.matches(Gio.DBusError, Gio.DBusError.TIMED_OUT)) {
+                    // Ignore timeouts and install signals as normal, because with high
+                    // probability the service will appear later on, and we will get a
+                    // NameOwnerChanged which will finish loading
+                    //
+                    // (But still _initialized to false, because the proxy does not know
+                    // about the HasCalendars property and would cause an exception trying
+                    // to read it)
+                } else {
+                    log('Error loading calendars: ' + e.message);
+                    return;
+                }
             }
 
             this._dbusProxy.connectSignal('Changed', Lang.bind(this, this._onChanged));
@@ -272,9 +285,11 @@ const DBusEventSource = new Lang.Class({
                 this.emit('notify::has-calendars');
             }));
 
-            this._initialized = true;
-            this.emit('notify::has-calendars');
-            this._onNameAppeared();
+            this._initialized = loaded;
+            if (loaded) {
+                this.emit('notify::has-calendars');
+                this._onNameAppeared();
+            }
         }));
     },
 
@@ -296,6 +311,7 @@ const DBusEventSource = new Lang.Class({
     },
 
     _onNameAppeared: function(owner) {
+        this._initialized = true;
         this._resetCache();
         this._loadEvents(true);
     },
