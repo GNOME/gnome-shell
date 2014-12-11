@@ -1748,6 +1748,8 @@ const AppIconMenu = new Lang.Class({
 
         this.actor.add_style_class_name('app-well-menu');
 
+        this._settings = new Gio.Settings({ schema_id: 'org.gnome.shell' });
+
         // Chain our visibility and lifecycle to that of the source
         source.actor.connect('notify::mapped', Lang.bind(this, function () {
             if (!source.actor.mapped)
@@ -1807,22 +1809,27 @@ const AppIconMenu = new Lang.Class({
                     this.emit('activate-window', null);
                 }));
             }
-            this._appendSeparator();
 
-            let isFavorite = AppFavorites.getAppFavorites().isFavorite(this._source.app.get_id());
+            let canFavorite = this._settings.is_writable('favorite-apps');
 
-            if (isFavorite) {
-                let item = this._appendMenuItem(_("Remove from Favorites"));
-                item.connect('activate', Lang.bind(this, function() {
-                    let favs = AppFavorites.getAppFavorites();
-                    favs.removeFavorite(this._source.app.get_id());
-                }));
-            } else {
-                let item = this._appendMenuItem(_("Add to Favorites"));
-                item.connect('activate', Lang.bind(this, function() {
-                    let favs = AppFavorites.getAppFavorites();
-                    favs.addFavorite(this._source.app.get_id());
-                }));
+            if (canFavorite) {
+                this._appendSeparator();
+
+                let isFavorite = AppFavorites.getAppFavorites().isFavorite(this._source.app.get_id());
+
+                if (isFavorite) {
+                    let item = this._appendMenuItem(_("Remove from Favorites"));
+                    item.connect('activate', Lang.bind(this, function() {
+                        let favs = AppFavorites.getAppFavorites();
+                        favs.removeFavorite(this._source.app.get_id());
+                    }));
+                } else {
+                    let item = this._appendMenuItem(_("Add to Favorites"));
+                    item.connect('activate', Lang.bind(this, function() {
+                        let favs = AppFavorites.getAppFavorites();
+                        favs.addFavorite(this._source.app.get_id());
+                    }));
+                }
             }
 
             if (Shell.AppSystem.get_default().lookup_app('org.gnome.Software.desktop')) {

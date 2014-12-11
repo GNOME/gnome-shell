@@ -1,6 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Clutter = imports.gi.Clutter;
+const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const Signals = imports.signals;
 const Lang = imports.lang;
@@ -269,6 +270,9 @@ const ShowAppsIcon = new Lang.Class({
         if (app == null)
             return false;
 
+        if (!this._settings.is_writable('favorite-apps'))
+            return false;
+
         let id = app.get_id();
         let isFavorite = AppFavorites.getAppFavorites().isFavorite(id);
         return isFavorite;
@@ -423,6 +427,8 @@ const Dash = new Lang.Class({
             }));
 
         this._workId = Main.initializeDeferredWork(this._box, Lang.bind(this, this._redisplay));
+
+        this._settings = new Gio.Settings({ schema_id: 'org.gnome.shell' });
 
         this._appSystem = Shell.AppSystem.get_default();
 
@@ -850,6 +856,9 @@ const Dash = new Lang.Class({
         if (app == null || app.is_window_backed())
             return DND.DragMotionResult.NO_DROP;
 
+        if (!this._settings.is_writable('favorite-apps'))
+            return DND.DragMotionResult.NO_DROP;
+
         let favorites = AppFavorites.getAppFavorites().getFavorites();
         let numFavorites = favorites.length;
 
@@ -925,6 +934,9 @@ const Dash = new Lang.Class({
         if (app == null || app.is_window_backed()) {
             return false;
         }
+
+        if (!this._settings.is_writable('favorite-apps'))
+            return false;
 
         let id = app.get_id();
 
