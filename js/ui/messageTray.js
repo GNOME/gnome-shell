@@ -1852,7 +1852,7 @@ const MessageTray = new Lang.Class({
         this.idleMonitor = Meta.IdleMonitor.get_core();
 
         this._grabHelper = new GrabHelper.GrabHelper(this.actor,
-                                                     { keybindingMode: Shell.KeyBindingMode.MESSAGE_TRAY });
+                                                     { actionMode: Shell.ActionMode.MESSAGE_TRAY });
         this._grabHelper.addActor(this._summaryBoxPointer.actor);
         this._grabHelper.addActor(this.actor);
 
@@ -1916,16 +1916,16 @@ const MessageTray = new Lang.Class({
         Main.wm.addKeybinding('toggle-message-tray',
                               new Gio.Settings({ schema_id: SHELL_KEYBINDINGS_SCHEMA }),
                               Meta.KeyBindingFlags.NONE,
-                              Shell.KeyBindingMode.NORMAL |
-                              Shell.KeyBindingMode.MESSAGE_TRAY |
-                              Shell.KeyBindingMode.OVERVIEW,
+                              Shell.ActionMode.NORMAL |
+                              Shell.ActionMode.MESSAGE_TRAY |
+                              Shell.ActionMode.OVERVIEW,
                               Lang.bind(this, this.toggleAndNavigate));
         Main.wm.addKeybinding('focus-active-notification',
                               new Gio.Settings({ schema_id: SHELL_KEYBINDINGS_SCHEMA }),
                               Meta.KeyBindingFlags.NONE,
-                              Shell.KeyBindingMode.NORMAL |
-                              Shell.KeyBindingMode.MESSAGE_TRAY |
-                              Shell.KeyBindingMode.OVERVIEW,
+                              Shell.ActionMode.NORMAL |
+                              Shell.ActionMode.MESSAGE_TRAY |
+                              Shell.ActionMode.OVERVIEW,
                               Lang.bind(this, this._expandActiveNotification));
 
         this._sources = new Map();
@@ -1952,8 +1952,8 @@ const MessageTray = new Lang.Class({
                                                   Lang.bind(this, this._onTrayButtonKeyPress));
 
         let gesture = new EdgeDragAction.EdgeDragAction(St.Side.BOTTOM,
-                                                        Shell.KeyBindingMode.NORMAL |
-                                                        Shell.KeyBindingMode.OVERVIEW);
+                                                        Shell.ActionMode.NORMAL |
+                                                        Shell.ActionMode.OVERVIEW);
         gesture.connect('activated', Lang.bind(this, this.toggle));
         global.stage.add_action(gesture);
     },

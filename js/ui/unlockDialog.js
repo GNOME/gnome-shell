@@ -154,7 +154,7 @@ const UnlockDialog = new Lang.Class({
             return true;
 
         if (!Main.pushModal(this.actor, { timestamp: timestamp,
-                                          keybindingMode: Shell.KeyBindingMode.UNLOCK_SCREEN }))
+                                          actionMode: Shell.ActionMode.UNLOCK_SCREEN }))
             return false;
 
         this._isModal = true;

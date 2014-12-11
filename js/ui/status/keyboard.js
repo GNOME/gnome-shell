@@ -163,13 +163,13 @@ const InputSourceManager = new Lang.Class({
             Main.wm.addKeybinding('switch-input-source',
                                   new Gio.Settings({ schema_id: "org.gnome.desktop.wm.keybindings" }),
                                   Meta.KeyBindingFlags.NONE,
-                                  Shell.KeyBindingMode.ALL,
+                                  Shell.ActionMode.ALL,
                                   Lang.bind(this, this._switchInputSource));
         this._keybindingActionBackward =
             Main.wm.addKeybinding('switch-input-source-backward',
                                   new Gio.Settings({ schema_id: "org.gnome.desktop.wm.keybindings" }),
                                   Meta.KeyBindingFlags.IS_REVERSED,
-                                  Shell.KeyBindingMode.ALL,
+                                  Shell.ActionMode.ALL,
                                   Lang.bind(this, this._switchInputSource));
         this._settings = new Gio.Settings({ schema_id: DESKTOP_INPUT_SOURCES_SCHEMA });
         this._settings.connect('changed::' + KEY_INPUT_SOURCES, Lang.bind(this, this._inputSourcesChanged));
@@ -239,8 +239,8 @@ const InputSourceManager = new Lang.Class({
         // effect without considerable work to consolidate the usage
         // of pushModal/popModal and grabHelper. See
         // https://bugzilla.gnome.org/show_bug.cgi?id=695143 .
-        if (Main.keybindingMode == Shell.KeyBindingMode.MESSAGE_TRAY ||
-            Main.keybindingMode == Shell.KeyBindingMode.TOPBAR_POPUP) {
+        if (Main.actionMode == Shell.ActionMode.MESSAGE_TRAY ||
+            Main.actionMode == Shell.ActionMode.TOPBAR_POPUP) {
             this._modifiersSwitcher();
             return;
         }

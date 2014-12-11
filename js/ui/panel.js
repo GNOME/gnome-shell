@@ -893,7 +893,7 @@ const Panel = new Lang.Class({
 
         this.statusArea = {};
 
-        this.menuManager = new PopupMenu.PopupMenuManager(this, { keybindingMode: Shell.KeyBindingMode.TOPBAR_POPUP });
+        this.menuManager = new PopupMenu.PopupMenuManager(this, { actionMode: Shell.ActionMode.TOPBAR_POPUP });
 
         this._leftBox = new St.BoxLayout({ name: 'panelLeft' });
         this.actor.add_actor(this._leftBox);

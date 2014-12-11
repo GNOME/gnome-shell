@@ -1155,7 +1155,7 @@ const LoginDialog = new Lang.Class({
         this.actor.show();
         this.actor.opacity = 0;
 
-        Main.pushModal(this.actor, { keybindingMode: Shell.KeyBindingMode.LOGIN_SCREEN });
+        Main.pushModal(this.actor, { actionMode: Shell.ActionMode.LOGIN_SCREEN });
 
         Tweener.addTween(this.actor,
                          { opacity: 255,

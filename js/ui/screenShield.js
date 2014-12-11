@@ -647,14 +647,14 @@ const ScreenShield = new Lang.Class({
         if (this._isModal)
             return true;
 
-        this._isModal = Main.pushModal(this.actor, { keybindingMode: Shell.KeyBindingMode.LOCK_SCREEN });
+        this._isModal = Main.pushModal(this.actor, { actionMode: Shell.ActionMode.LOCK_SCREEN });
         if (this._isModal)
             return true;
 
         // We failed to get a pointer grab, it means that
         // something else has it. Try with a keyboard grab only
         this._isModal = Main.pushModal(this.actor, { options: Meta.ModalOptions.POINTER_ALREADY_GRABBED,
-                                                     keybindingMode: Shell.KeyBindingMode.LOCK_SCREEN });
+                                                     actionMode: Shell.ActionMode.LOCK_SCREEN });
         return this._isModal;
     },
 

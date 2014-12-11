@@ -458,8 +458,8 @@ const LayoutManager = new Lang.Class({
     _setupTrayPressure: function() {
         this._trayPressure = new PressureBarrier(MESSAGE_TRAY_PRESSURE_THRESHOLD,
                                                  MESSAGE_TRAY_PRESSURE_TIMEOUT,
-                                                 Shell.KeyBindingMode.NORMAL |
-                                                 Shell.KeyBindingMode.OVERVIEW);
+                                                 Shell.ActionMode.NORMAL |
+                                                 Shell.ActionMode.OVERVIEW);
         this._trayPressure.setEventFilter(this._trayBarrierEventFilter);
         this._trayPressure.connect('trigger', function(barrier) {
             if (Main.layoutManager.bottomMonitor.inFullscreen)
@@ -1067,8 +1067,8 @@ const HotCorner = new Lang.Class({
 
         this._pressureBarrier = new PressureBarrier(HOT_CORNER_PRESSURE_THRESHOLD,
                                                     HOT_CORNER_PRESSURE_TIMEOUT,
-                                                    Shell.KeyBindingMode.NORMAL |
-                                                    Shell.KeyBindingMode.OVERVIEW);
+                                                    Shell.ActionMode.NORMAL |
+                                                    Shell.ActionMode.OVERVIEW);
         this._pressureBarrier.connect('trigger', Lang.bind(this, this._toggleOverview));
 
         // Cache the three ripples instead of dynamically creating and destroying them.
@@ -1245,10 +1245,10 @@ const HotCorner = new Lang.Class({
 const PressureBarrier = new Lang.Class({
     Name: 'PressureBarrier',
 
-    _init: function(threshold, timeout, keybindingMode) {
+    _init: function(threshold, timeout, actionMode) {
         this._threshold = threshold;
         this._timeout = timeout;
-        this._keybindingMode = keybindingMode;
+        this._actionMode = actionMode;
         this._barriers = [];
         this._eventFilter = null;
 
@@ -1351,7 +1351,7 @@ const PressureBarrier = new Lang.Class({
             return;
 
         // Throw out all events not in the proper keybinding mode
-        if (!(this._keybindingMode & Main.keybindingMode))
+        if (!(this._actionMode & Main.actionMode))
             return;
 
         let slide = this._getDistanceAlongBarrier(barrier, event);

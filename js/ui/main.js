@@ -63,7 +63,7 @@ let shellMountOpDBusService = null;
 let screenSaverDBus = null;
 let screencastService = null;
 let modalCount = 0;
-let keybindingMode = Shell.KeyBindingMode.NONE;
+let actionMode = Shell.ActionMode.NONE;
 let modalActorFocusStack = [];
 let uiGroup = null;
 let magnifier = null;
@@ -80,15 +80,15 @@ function _sessionUpdated() {
         _loadDefaultStylesheet();
 
     wm.setCustomKeybindingHandler('panel-main-menu',
-                                  Shell.KeyBindingMode.NORMAL |
-                                  Shell.KeyBindingMode.OVERVIEW,
+                                  Shell.ActionMode.NORMAL |
+                                  Shell.ActionMode.OVERVIEW,
                                   sessionMode.hasOverview ? Lang.bind(overview, overview.toggle) : null);
-    wm.allowKeybinding('overlay-key', Shell.KeyBindingMode.NORMAL |
-                                      Shell.KeyBindingMode.OVERVIEW);
+    wm.allowKeybinding('overlay-key', Shell.ActionMode.NORMAL |
+                                      Shell.ActionMode.OVERVIEW);
 
     wm.setCustomKeybindingHandler('panel-run-dialog',
-                                  Shell.KeyBindingMode.NORMAL |
-                                  Shell.KeyBindingMode.OVERVIEW,
+                                  Shell.ActionMode.NORMAL |
+                                  Shell.ActionMode.OVERVIEW,
                                   sessionMode.hasRunDialog ? openRunDialog : null);
 
     if (!sessionMode.hasRunDialog) {
@@ -209,8 +209,8 @@ function _initializeUI() {
     }
 
     layoutManager.connect('startup-complete', function() {
-        if (keybindingMode == Shell.KeyBindingMode.NONE) {
-            keybindingMode = Shell.KeyBindingMode.NORMAL;
+        if (actionMode == Shell.ActionMode.NONE) {
+            actionMode = Shell.ActionMode.NORMAL;
         }
         if (screenShield) {
             screenShield.lockIfWasLocked();
@@ -372,7 +372,7 @@ function _findModal(actor) {
  *  - options: Meta.ModalOptions flags to indicate that the pointer is
  *             already grabbed
  *
- *  - keybindingMode: used to set the current Shell.KeyBindingMode to filter
+ *  - actionMode: used to set the current Shell.ActionMode to filter
  *                    global keybindings; the default of NONE will filter
  *                    out all keybindings
  *
@@ -381,7 +381,7 @@ function _findModal(actor) {
 function pushModal(actor, params) {
     params = Params.parse(params, { timestamp: global.get_current_time(),
                                     options: 0,
-                                    keybindingMode: Shell.KeyBindingMode.NONE });
+                                    actionMode: Shell.ActionMode.NONE });
 
     if (modalCount == 0) {
         if (!global.begin_modal(params.timestamp, params.options)) {
@@ -411,9 +411,9 @@ function pushModal(actor, params) {
                                 destroyId: actorDestroyId,
                                 prevFocus: prevFocus,
                                 prevFocusDestroyId: prevFocusDestroyId,
-                                keybindingMode: keybindingMode });
+                                actionMode: actionMode });
 
-    keybindingMode = params.keybindingMode;
+    actionMode = params.actionMode;
     global.stage.set_key_focus(actor);
     return true;
 }
@@ -439,7 +439,7 @@ function popModal(actor, timestamp) {
     if (focusIndex < 0) {
         global.stage.set_key_focus(null);
         global.end_modal(timestamp);
-        keybindingMode = Shell.KeyBindingMode.NORMAL;
+        actionMode = Shell.ActionMode.NORMAL;
 
         throw new Error('incorrect pop');
     }
@@ -452,7 +452,7 @@ function popModal(actor, timestamp) {
     if (focusIndex == modalActorFocusStack.length - 1) {
         if (record.prevFocus)
             record.prevFocus.disconnect(record.prevFocusDestroyId);
-        keybindingMode = record.keybindingMode;
+        actionMode = record.actionMode;
         global.stage.set_key_focus(record.prevFocus);
     } else {
         // If we have:
@@ -477,7 +477,7 @@ function popModal(actor, timestamp) {
         for (let i = modalActorFocusStack.length - 1; i > focusIndex; i--) {
             modalActorFocusStack[i].prevFocus = modalActorFocusStack[i - 1].prevFocus;
             modalActorFocusStack[i].prevFocusDestroyId = modalActorFocusStack[i - 1].prevFocusDestroyId;
-            modalActorFocusStack[i].keybindingMode = modalActorFocusStack[i - 1].keybindingMode;
+            modalActorFocusStack[i].actionMode = modalActorFocusStack[i - 1].actionMode;
         }
     }
     modalActorFocusStack.splice(focusIndex, 1);
@@ -488,7 +488,7 @@ function popModal(actor, timestamp) {
     layoutManager.modalEnded();
     global.end_modal(timestamp);
     Meta.enable_unredirect_for_screen(global.screen);
-    keybindingMode = Shell.KeyBindingMode.NORMAL;
+    actionMode = Shell.ActionMode.NORMAL;
 }
 
 function createLookingGlass() {

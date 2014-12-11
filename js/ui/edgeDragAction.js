@@ -37,7 +37,7 @@ const EdgeDragAction = new Lang.Class({
         if (this.get_n_current_points() == 0)
             return false;
 
-        if (!(this._allowedModes & Main.keybindingMode))
+        if (!(this._allowedModes & Main.actionMode))
             return false;
 
         let [x, y] = this.get_press_coords(0);
