@@ -41,14 +41,27 @@
 #include <meta/util.h>
 
 typedef struct _MetaInputSettingsPrivate MetaInputSettingsPrivate;
+typedef struct _DeviceMappingInfo DeviceMappingInfo;
+
+struct _DeviceMappingInfo
+{
+  MetaInputSettings *input_settings;
+  ClutterInputDevice *device;
+  GSettings *settings;
+};
 
 struct _MetaInputSettingsPrivate
 {
   ClutterDeviceManager *device_manager;
+  MetaMonitorManager *monitor_manager;
+  guint monitors_changed_id;
+
   GSettings *mouse_settings;
   GSettings *touchpad_settings;
   GSettings *trackball_settings;
   GSettings *keyboard_settings;
+
+  GHashTable *mappable_devices;
 };
 
 typedef void (*ConfigBoolFunc)   (MetaInputSettings  *input_settings,
@@ -98,6 +111,17 @@ meta_input_settings_dispose (GObject *object)
   g_clear_object (&priv->touchpad_settings);
   g_clear_object (&priv->trackball_settings);
   g_clear_object (&priv->keyboard_settings);
+  g_clear_pointer (&priv->mappable_devices, g_hash_table_unref);
+
+  if (priv->monitors_changed_id && priv->monitor_manager)
+    {
+      g_signal_handler_disconnect (priv->monitor_manager,
+                                   priv->monitors_changed_id);
+      priv->monitors_changed_id = 0;
+    }
+
+  g_clear_object (&priv->monitor_manager);
+
   G_OBJECT_CLASS (meta_input_settings_parent_class)->dispose (object);
 }
 
@@ -451,6 +475,65 @@ update_keyboard_repeat (MetaInputSettings *input_settings)
                                              repeat, delay, interval);
 }
 
+static MetaOutput *
+meta_input_settings_find_output (MetaInputSettings  *input_settings,
+                                 GSettings          *settings,
+                                 ClutterInputDevice *device)
+{
+  MetaInputSettingsPrivate *priv;
+  guint n_values, n_outputs, i;
+  MetaOutput *outputs;
+  gchar **edid;
+
+  priv = meta_input_settings_get_instance_private (input_settings);
+  edid = g_settings_get_strv (settings, "display");
+  n_values = g_strv_length (edid);
+
+  if (n_values != 3)
+    {
+      g_warning ("EDID configuration for device '%s' "
+                 "is incorrect, must have 3 values",
+                 clutter_input_device_get_device_name (device));
+      return NULL;
+    }
+
+  if (!*edid[0] && !*edid[1] && !*edid[2])
+    return NULL;
+
+  outputs = meta_monitor_manager_get_outputs (priv->monitor_manager,
+                                              &n_outputs);
+  for (i = 0; i < n_outputs; i++)
+    {
+      if (g_strcmp0 (outputs[i].vendor, edid[0]) == 0 &&
+          g_strcmp0 (outputs[i].product, edid[1]) == 0 &&
+          g_strcmp0 (outputs[i].serial, edid[2]) == 0)
+        return &outputs[i];
+    }
+
+  return NULL;
+}
+
+static void
+update_device_display (MetaInputSettings  *input_settings,
+                       GSettings          *settings,
+                       ClutterInputDevice *device)
+{
+  MetaInputSettingsClass *input_settings_class;
+  MetaInputSettingsPrivate *priv;
+  gfloat matrix[6] = { 1, 0, 0, 0, 1, 0 };
+  MetaOutput *output;
+
+  priv = meta_input_settings_get_instance_private (input_settings);
+  input_settings_class = META_INPUT_SETTINGS_GET_CLASS (input_settings);
+  output = meta_input_settings_find_output (input_settings, settings, device);
+
+  if (output)
+    meta_monitor_manager_get_monitor_matrix (priv->monitor_manager,
+                                             output, matrix);
+
+  input_settings_class->set_matrix (input_settings, device, matrix);
+}
+
 static void
 meta_input_settings_changed_cb (GSettings  *settings,
                                 const char *key,
@@ -502,6 +585,100 @@ meta_input_settings_changed_cb (GSettings  *settings,
 }
 
 static void
+mapped_device_changed_cb (GSettings         *settings,
+                          const gchar       *key,
+                          DeviceMappingInfo *info)
+{
+  if (strcmp (key, "display") == 0)
+    update_device_display (info->input_settings, settings, info->device);
+}
+
+static GSettings *
+lookup_device_settings (ClutterInputDevice *device)
+{
+  const gchar *group, *schema, *vendor, *product;
+  ClutterInputDeviceType type;
+  GSettings *settings;
+  gchar *path;
+
+  type = clutter_input_device_get_device_type (device);
+
+  if (type == CLUTTER_TOUCHSCREEN_DEVICE)
+    {
+      group = "touchscreens";
+      schema = "org.gnome.desktop.peripherals.touchscreen";
+    }
+  else if (type == CLUTTER_TABLET_DEVICE ||
+           type == CLUTTER_PEN_DEVICE ||
+           type == CLUTTER_ERASER_DEVICE ||
+           type == CLUTTER_CURSOR_DEVICE)
+    {
+      group = "tablets";
+      schema = "org.gnome.desktop.peripherals.tablet";
+    }
+  else
+    return NULL;
+
+  vendor = clutter_input_device_get_vendor_id (device);
+  product = clutter_input_device_get_product_id (device);
+  path = g_strdup_printf ("/org/gnome/desktop/peripherals/%s/%s:%s/",
+                          group, vendor, product);
+
+  settings = g_settings_new_with_path (schema, path);
+  g_free (path);
+
+  return settings;
+}
+
+static void
+monitors_changed_cb (MetaMonitorManager *monitor_manager,
+                     MetaInputSettings  *input_settings)
+{
+  MetaInputSettingsPrivate *priv;
+  ClutterInputDevice *device;
+  GSettings *settings;
+  GHashTableIter iter;
+
+  priv = meta_input_settings_get_instance_private (input_settings);
+  g_hash_table_iter_init (&iter, priv->mappable_devices);
+
+  while (g_hash_table_iter_next (&iter, (gpointer *) &device,
+                                 (gpointer *) &settings))
+    update_device_display (input_settings, settings, device);
+}
+
+static gboolean
+check_add_mappable_device (MetaInputSettings  *input_settings,
+                           ClutterInputDevice *device)
+{
+  MetaInputSettingsPrivate *priv;
+  DeviceMappingInfo *info;
+  GSettings *settings;
+
+  settings = lookup_device_settings (device);
+
+  if (!settings)
+    return FALSE;
+
+  priv = meta_input_settings_get_instance_private (input_settings);
+
+  info = g_new0 (DeviceMappingInfo, 1);
+  info->input_settings = input_settings;
+  info->device = device;
+  info->settings = settings;
+
+  g_signal_connect_data (settings, "changed",
+                         G_CALLBACK (mapped_device_changed_cb),
+                         info, (GClosureNotify) g_free, 0);
+
+  g_hash_table_insert (priv->mappable_devices, device, settings);
+
+  update_device_display (input_settings, settings, device);
+
+  return TRUE;
+}
+
+static void
 meta_input_settings_device_added (ClutterDeviceManager *device_manager,
                                   ClutterInputDevice   *device,
                                   MetaInputSettings    *input_settings)
@@ -535,6 +712,10 @@ meta_input_settings_device_added (ClutterDeviceManager *device_manager,
       update_device_natural_scroll (input_settings, priv->touchpad_settings,
                                     device, type);
     }
+  else
+    {
+      check_add_mappable_device (input_settings, device);
+    }
 }
 
 static void
@@ -542,6 +723,30 @@ meta_input_settings_device_removed (ClutterDeviceManager *device_manager,
                                     ClutterInputDevice   *device,
                                     MetaInputSettings    *input_settings)
 {
+  MetaInputSettingsPrivate *priv;
+
+  priv = meta_input_settings_get_instance_private (input_settings);
+  g_hash_table_remove (priv->mappable_devices, device);
+}
+
+static void
+check_mappable_devices (MetaInputSettings *input_settings)
+{
+  MetaInputSettingsPrivate *priv;
+  const GSList *devices, *l;
+
+  priv = meta_input_settings_get_instance_private (input_settings);
+  devices = clutter_device_manager_peek_devices (priv->device_manager);
+
+  for (l = devices; l; l = l->next)
+    {
+      ClutterInputDevice *device = l->data;
+
+      if (clutter_input_device_get_device_mode (device) == CLUTTER_INPUT_MODE_MASTER)
+        continue;
+
+      check_add_mappable_device (input_settings, device);
+    }
 }
 
 static void
@@ -566,6 +771,8 @@ meta_input_settings_constructed (GObject *object)
                        CLUTTER_POINTER_DEVICE);
 
   update_keyboard_repeat (input_settings);
+
+  check_mappable_devices (input_settings);
 }
 
 static void
@@ -604,6 +811,13 @@ meta_input_settings_init (MetaInputSettings *settings)
   priv->keyboard_settings = g_settings_new ("org.gnome.desktop.peripherals.keyboard");
   g_signal_connect (priv->keyboard_settings, "changed",
                     G_CALLBACK (meta_input_settings_changed_cb), settings);
+
+  priv->mappable_devices =
+    g_hash_table_new_full (NULL, NULL, NULL, (GDestroyNotify) g_object_unref);
+
+  priv->monitor_manager = g_object_ref (meta_monitor_manager_get ());
+  g_signal_connect (priv->monitor_manager, "monitors-changed",
+                    G_CALLBACK (monitors_changed_cb), settings);
 }
 
 MetaInputSettings *
