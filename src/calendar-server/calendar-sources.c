@@ -176,17 +176,53 @@ static void
 calendar_sources_init (CalendarSources *sources)
 {
   GError *error = NULL;
+  GDBusConnection *session_bus;
+  GVariant *result;
 
   sources->priv = CALENDAR_SOURCES_GET_PRIVATE (sources);
 
-  /* XXX Not sure what to do if this fails.
-   *     Should this class implement GInitable or pass the
-   *     registry in as a G_PARAM_CONSTRUCT_ONLY property? */
-  sources->priv->registry = e_source_registry_new_sync (NULL, &error);
+  /* WORKAROUND: the hardcoded timeout for e_source_registry_new_sync()
+     (and other library calls that eventually call g_dbus_proxy_new[_sync]())
+     is 25 seconds. This has been shown to be too small for
+     evolution-source-registry in certain cases (slow disk, concurrent IO,
+     many configured sources), so we first ensure that the service
+     starts with a manual call and a higher timeout.
+
+     HACK: every time the DBus API is bumped in e-d-s we need
+     to update this!
+  */
+  session_bus = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, &error);
+  if (session_bus == NULL)
+    {
+      g_error ("Failed to connect to the session bus: %s", error->message);
+    }
+
+  result = g_dbus_connection_call_sync (session_bus, "org.freedesktop.DBus",
+                                        "/", "org.freedesktop.DBus",
+                                        "StartServiceByName",
+                                        g_variant_new ("(su)",
+                                                       "org.gnome.evolution.dataserver.Sources3",
+                                                       0),
+                                        NULL,
+                                        G_DBUS_CALL_FLAGS_NONE,
+                                        60 * 1000,
+                                        NULL, &error);
+  if (result != NULL)
+    {
+      g_variant_unref (result);
+      sources->priv->registry = e_source_registry_new_sync (NULL, &error);
+    }
+
   if (error != NULL)
     {
-      g_error ("%s: %s", G_STRFUNC, error->message);
+      /* Any error is fatal, but we don't want to crash gnome-shell-calendar-server
+         because of e-d-s problems. So just exit here.
+      */
+      g_warning ("Failed to start evolution-source-registry: %s", error->message);
+      exit(EXIT_FAILURE);
     }
+
+  g_object_unref (session_bus);
 
   sources->priv->source_added_id   = g_signal_connect (sources->priv->registry,
                                                        "source-added",
