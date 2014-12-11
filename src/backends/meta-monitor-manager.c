@@ -45,6 +45,18 @@ enum {
   SIGNALS_LAST
 };
 
+/* Array index matches MetaMonitorTransform */
+static gfloat transform_matrices[][6] = {
+  {  1,  0,  0,  0,  1,  0 }, /* normal */
+  {  0, -1,  1,  1,  0,  0 }, /* 90° */
+  { -1,  0,  1,  0, -1,  1 }, /* 180° */
+  {  0,  1,  0, -1,  0,  1 }, /* 270° */
+  { -1,  0,  1,  0,  1,  0 }, /* normal flipped */
+  {  0,  1,  0,  1,  0,  0 }, /* 90° flipped */
+  {  1,  0,  0,  0, -1,  1 }, /* 180° flipped */
+  {  0, -1,  1, -1,  0,  1 }, /* 270° flipped */
+};
+
 static int signals[SIGNALS_LAST];
 
 static void meta_monitor_manager_display_config_init (MetaDBusDisplayConfigIface *iface);
@@ -1261,4 +1273,57 @@ meta_monitor_manager_on_hotplug (MetaMonitorManager *manager)
   /* If we haven't applied any configuration, apply the default configuration. */
   if (!applied_config)
     meta_monitor_config_make_default (manager->config, manager);
+}
+
+static gboolean
+calculate_viewport_matrix (MetaMonitorManager *manager,
+                           MetaOutput         *output,
+                           gfloat              viewport[6])
+{
+  gfloat x, y, width, height;
+
+  if (!output->crtc)
+    return FALSE;
+
+  x = (float) output->crtc->rect.x / manager->screen_width;
+  y = (float) output->crtc->rect.y / manager->screen_height;
+  width  = (float) output->crtc->rect.width / manager->screen_width;
+  height = (float) output->crtc->rect.height / manager->screen_height;
+
+  viewport[0] = width;
+  viewport[1] = 0.0f;
+  viewport[2] = x;
+  viewport[3] = 0.0f;
+  viewport[4] = height;
+  viewport[5] = y;
+
+  return TRUE;
+}
+
+static inline void
+multiply_matrix (float a[6],
+		 float b[6],
+		 float res[6])
+{
+  res[0] = a[0] * b[0] + a[1] * b[3];
+  res[1] = a[0] * b[1] + a[1] * b[4];
+  res[2] = a[0] * b[2] + a[1] * b[5] + a[2];
+  res[3] = a[3] * b[0] + a[4] * b[3];
+  res[4] = a[3] * b[1] + a[4] * b[4];
+  res[5] = a[3] * b[2] + a[4] * b[5] + a[5];
+}
+
+gboolean
+meta_monitor_manager_get_monitor_matrix (MetaMonitorManager *manager,
+                                         MetaOutput         *output,
+                                         gfloat              matrix[6])
+{
+  gfloat viewport[9];
+
+  if (!calculate_viewport_matrix (manager, output, viewport))
+    return FALSE;
+
+  multiply_matrix (viewport, transform_matrices[output->crtc->transform],
+                   matrix);
+  return TRUE;
 }

@@ -371,6 +371,10 @@ gboolean           meta_monitor_manager_has_hotplug_mode_update (MetaMonitorMana
 void               meta_monitor_manager_read_current_config (MetaMonitorManager *manager);
 void               meta_monitor_manager_on_hotplug (MetaMonitorManager *manager);
 
+gboolean           meta_monitor_manager_get_monitor_matrix (MetaMonitorManager *manager,
+                                                            MetaOutput         *output,
+                                                            gfloat              matrix[6]);
+
 /* Returns true if transform causes width and height to be inverted
    This is true for the odd transforms in the enum */
 static inline gboolean
