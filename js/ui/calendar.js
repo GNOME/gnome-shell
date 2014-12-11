@@ -121,31 +121,6 @@ function _getCalendarDayAbbreviation(dayNumber) {
     return abbreviations[dayNumber];
 }
 
-function _getEventDayAbbreviation(dayNumber) {
-    let abbreviations = [
-        /* Translators: Event list abbreviation for Sunday.
-         *
-         * NOTE: These list abbreviations are normally not shown together
-         * so they need to be unique (e.g. Tuesday and Thursday cannot
-         * both be 'T').
-         */
-        C_("list sunday", "Su"),
-        /* Translators: Event list abbreviation for Monday */
-        C_("list monday", "M"),
-        /* Translators: Event list abbreviation for Tuesday */
-        C_("list tuesday", "T"),
-        /* Translators: Event list abbreviation for Wednesday */
-        C_("list wednesday", "W"),
-        /* Translators: Event list abbreviation for Thursday */
-        C_("list thursday", "Th"),
-        /* Translators: Event list abbreviation for Friday */
-        C_("list friday", "F"),
-        /* Translators: Event list abbreviation for Saturday */
-        C_("list saturday", "S")
-    ];
-    return abbreviations[dayNumber];
-}
-
 function _fixMarkup(text, allowMarkup) {
     if (allowMarkup) {
         // Support &amp;, &quot;, &apos;, &lt; and &gt;, escape all other
@@ -1176,116 +1151,36 @@ const MessageListSection = new Lang.Class({
 });
 Signals.addSignalMethods(MessageListSection.prototype);
 
-const EventsList = new Lang.Class({
-    Name: 'EventsList',
+const EventsSection = new Lang.Class({
+    Name: 'EventsSection',
+    Extends: MessageListSection,
 
     _init: function() {
-        let layout = new Clutter.GridLayout({ orientation: Clutter.Orientation.VERTICAL });
-        this.actor = new St.Widget({ style_class: 'events-table',
-                                     layout_manager: layout });
-        layout.hookup_style(this.actor);
-        this._date = new Date();
         this._desktopSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.interface' });
-        this._desktopSettings.connect('changed', Lang.bind(this, this._update));
-        this._weekStart = Shell.util_get_week_start();
+        this._desktopSettings.connect('changed', Lang.bind(this, this._reloadEvents));
+        this._eventSource = new EmptyEventSource();
+
+        this.parent('');
+
+        Shell.AppSystem.get_default().connect('installed-changed',
+                                              Lang.bind(this, this._appInstalledChanged));
+        this._appInstalledChanged();
     },
 
     setEventSource: function(eventSource) {
         this._eventSource = eventSource;
-        this._eventSource.connect('changed', Lang.bind(this, this._update));
+        this._eventSource.connect('changed', Lang.bind(this, this._reloadEvents));
     },
 
-    _addEvent: function(event, index, includeDayName, periodBegin, periodEnd) {
-        let dayString;
-        if (includeDayName) {
-            if (event.date >= periodBegin)
-                dayString = _getEventDayAbbreviation(event.date.getDay());
-            else /* show event end day if it began earlier */
-                dayString = _getEventDayAbbreviation(event.end.getDay());
-        } else {
-            dayString = '';
+    _updateTitle: function() {
+        let now = new Date();
+        if (_sameDay(this._date, now)) {
+            this._title.label = _("Events");
+            return;
         }
-
-        let dayLabel = new St.Label({ style_class: 'events-day-dayname',
-                                      text: dayString,
-                                      x_align: Clutter.ActorAlign.END,
-                                      y_align: Clutter.ActorAlign.START });
-        dayLabel.clutter_text.line_wrap = false;
-        dayLabel.clutter_text.ellipsize = false;
-
-        let rtl = this.actor.get_text_direction() == Clutter.TextDirection.RTL;
-
-        let layout = this.actor.layout_manager;
-        layout.attach(dayLabel, rtl ? 2 : 0, index, 1, 1);
-        let clockFormat = this._desktopSettings.get_string(CLOCK_FORMAT_KEY);
-        let timeString = _formatEventTime(event, clockFormat, periodBegin, periodEnd);
-        let timeLabel = new St.Label({ style_class: 'events-day-time',
-                                       text: timeString,
-                                       y_align: Clutter.ActorAlign.START });
-        timeLabel.clutter_text.line_wrap = false;
-        timeLabel.clutter_text.ellipsize = false;
-
-        let preEllipsisLabel = new St.Label({ style_class: 'events-day-time-ellipses',
-                                              text: ELLIPSIS_CHAR,
-                                              y_align: Clutter.ActorAlign.START });
-        let postEllipsisLabel = new St.Label({ style_class: 'events-day-time-ellipses',
-                                               text: ELLIPSIS_CHAR,
-                                               y_align: Clutter.ActorAlign.START });
-        if (event.allDay || event.date >= periodBegin)
-            preEllipsisLabel.opacity = 0;
-        if (event.allDay || event.end <= periodEnd)
-            postEllipsisLabel.opacity = 0;
-
-        let timeLabelBoxLayout = new St.BoxLayout();
-        timeLabelBoxLayout.add(preEllipsisLabel);
-        timeLabelBoxLayout.add(timeLabel);
-        timeLabelBoxLayout.add(postEllipsisLabel);
-        layout.attach(timeLabelBoxLayout, 1, index, 1, 1);
-
-        let titleLabel = new St.Label({ style_class: 'events-day-task',
-                                        text: event.summary,
-                                        x_expand: true });
-        titleLabel.clutter_text.line_wrap = true;
-        titleLabel.clutter_text.ellipsize = false;
-
-        layout.attach(titleLabel, rtl ? 0 : 2, index, 1, 1);
-    },
-
-    _addPeriod: function(header, index, periodBegin, periodEnd, includeDayName, showNothingScheduled) {
-        let events = this._eventSource.getEvents(periodBegin, periodEnd);
-
-        if (events.length == 0 && !showNothingScheduled)
-            return index;
-
-        let label = new St.Label({ style_class: 'events-day-header', text: header });
-        let layout = this.actor.layout_manager;
-        layout.attach(label, 0, index, 3, 1);
-        index++;
-
-        for (let n = 0; n < events.length; n++) {
-            this._addEvent(events[n], index, includeDayName, periodBegin, periodEnd);
-            index++;
-        }
-
-        if (events.length == 0 && showNothingScheduled) {
-            /* Translators: Text to show if there are no events */
-            let nothingEvent = new CalendarEvent(periodBegin, periodBegin, _("Nothing Scheduled"), true);
-            this._addEvent(nothingEvent, index, false, periodBegin, periodEnd);
-            index++;
-        }
-
-        return index;
-    },
-
-    _showOtherDay: function(day) {
-        this.actor.destroy_all_children();
-
-        let dayBegin = _getBeginningOfDay(day);
-        let dayEnd = _getEndOfDay(day);
 
         let dayFormat;
-        let now = new Date();
-        if (_sameYear(day, now))
+        if (_sameYear(this._date, now))
             /* Translators: Shown on calendar heading when selected day occurs on current year */
             dayFormat = Shell.util_translate_time_string(NC_("calendar heading",
                                                              "%A, %B %d"));
@@ -1293,62 +1188,90 @@ const EventsList = new Lang.Class({
             /* Translators: Shown on calendar heading when selected day occurs on different year */
             dayFormat = Shell.util_translate_time_string(NC_("calendar heading",
                                                              "%A, %B %d, %Y"));
-        let dayString = day.toLocaleFormat(dayFormat);
-        this._addPeriod(dayString, 0, dayBegin, dayEnd, false, true);
+        this._title.label = this._date.toLocaleFormat(dayFormat);
     },
 
-    _showToday: function() {
-        this.actor.destroy_all_children();
-        let index = 0;
-
-        let now = new Date();
-        let dayBegin = _getBeginningOfDay(now);
-        let dayEnd = _getEndOfDay(now);
-        index = this._addPeriod(_("Today"), index, dayBegin, dayEnd, false, true);
-
-        let tomorrowBegin = new Date(dayBegin.getTime() + 86400 * 1000);
-        let tomorrowEnd = new Date(dayEnd.getTime() + 86400 * 1000);
-        index = this._addPeriod(_("Tomorrow"), index, tomorrowBegin, tomorrowEnd, false, true);
-
-        let dayInWeek = (dayEnd.getDay() - this._weekStart + 7) % 7;
-
-        if (dayInWeek < 5) {
-            /* If now is within the first 5 days we show "This week" and
-             * include events up until and including Saturday/Sunday
-             * (depending on whether a week starts on Sunday/Monday).
-             */
-            let thisWeekBegin = new Date(dayBegin.getTime() + 2 * 86400 * 1000);
-            let thisWeekEnd = new Date(dayEnd.getTime() + (6 - dayInWeek) * 86400 * 1000);
-            index = this._addPeriod(_("This week"), index, thisWeekBegin, thisWeekEnd, true, false);
-        } else {
-            /* otherwise it's one of the two last days of the week ... show
-             * "Next week" and include events up until and including *next*
-             * Saturday/Sunday
-             */
-            let nextWeekBegin = new Date(dayBegin.getTime() + 2 * 86400 * 1000);
-            let nextWeekEnd = new Date(dayEnd.getTime() + (13 - dayInWeek) * 86400 * 1000);
-            index = this._addPeriod(_("Next week"), index, nextWeekBegin, nextWeekEnd, true, false);
-        }
-    },
-
-    // Sets the event list to show events from a specific date
-    setDate: function(date) {
-        if (!_sameDay(date, this._date)) {
-            this._date = date;
-            this._update();
-        }
-    },
-
-    _update: function() {
+    _reloadEvents: function() {
         if (this._eventSource.isLoading)
             return;
 
-        let today = new Date();
-        if (_sameDay (this._date, today)) {
-            this._showToday();
-        } else {
-            this._showOtherDay(this._date);
+        this._reloading = true;
+
+        this._list.destroy_all_children();
+
+        let periodBegin = _getBeginningOfDay(this._date);
+        let periodEnd = _getEndOfDay(this._date);
+        let events = this._eventSource.getEvents(periodBegin, periodEnd);
+
+        let clockFormat = this._desktopSettings.get_string(CLOCK_FORMAT_KEY);
+        for (let i = 0; i < events.length; i++) {
+            let event = events[i];
+            let title = _formatEventTime(event, clockFormat, periodBegin, periodEnd);
+
+            let rtl = this.actor.get_text_direction() == Clutter.TextDirection.RTL;
+            if (event.date < periodBegin && !event.allDay) {
+                if (rtl)
+                    title = title + ELLIPSIS_CHAR;
+                else
+                    title = ELLIPSIS_CHAR + title;
+            }
+            if (event.end > periodEnd && !event.allDay) {
+                if (rtl)
+                    title = ELLIPSIS_CHAR + title;
+                else
+                    title = title + ELLIPSIS_CHAR;
+            }
+            this.addMessage(new Message(title, event.summary), false);
         }
+
+        this._reloading = false;
+        this._sync();
+    },
+
+    _appInstalledChanged: function() {
+        this._calendarApp = undefined;
+        this._title.reactive = (this._getCalendarApp() != null);
+    },
+
+    _getCalendarApp: function() {
+        if (this._calendarApp !== undefined)
+            return this._calendarApp;
+
+        let apps = Gio.AppInfo.get_recommended_for_type('text/calendar');
+        if (apps && (apps.length > 0)) {
+            let app = Gio.AppInfo.get_default_for_type('text/calendar', false);
+            let defaultInRecommended = apps.some(function(a) { return a.equal(app); });
+            this._calendarApp = defaultInRecommended ? app : apps[0];
+        } else {
+            this._calendarApp = null;
+        }
+        return this._calendarApp;
+    },
+
+    _onTitleClicked: function() {
+        this.parent();
+
+        let app = this._getCalendarApp();
+        if (app.get_id() == 'evolution.desktop')
+            app = Gio.DesktopAppInfo.new('evolution-calendar.desktop');
+        app.launch([], global.create_app_launch_context(0, -1));
+    },
+
+    setDate: function(date) {
+        this.parent(date);
+        this._updateTitle();
+        this._reloadEvents();
+    },
+
+    _syncVisible: function() {
+        this.actor.visible = !this.empty || !this._isToday();
+    },
+
+    _sync: function() {
+        if (this._reloading)
+            return;
+
+        this.parent();
     }
 });
 
@@ -1396,6 +1319,9 @@ const MessageList = new Lang.Class({
                                                y_align: Clutter.ActorAlign.START });
         this._scrollView.add_actor(this._sectionList);
         this._sections = new Map();
+
+        this._eventsSection = new EventsSection();
+        this._addSection(this._eventsSection);
     },
 
     _addSection: function(section) {
@@ -1442,6 +1368,10 @@ const MessageList = new Lang.Class({
             return s.empty || !s.actor.visible;
         });
         this._placeholder.actor.visible = showPlaceholder;
+    },
+
+    setEventSource: function(eventSource) {
+        this._eventsSection.setEventSource(eventSource);
     },
 
     setDate: function(date) {

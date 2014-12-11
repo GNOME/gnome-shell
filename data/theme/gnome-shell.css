@@ -745,40 +745,6 @@ StScrollBar {
   padding: 5px;
   spacing: 5px; }
 
-.events-table {
-  width: 15em;
-  spacing-columns: 1em;
-  padding: 0 1.4em; }
-  .events-table:ltr {
-    padding-right: 1.9em; }
-  .events-table:rtl {
-    padding-left: 1.9em; }
-
-.events-day-header {
-  font-weight: bold;
-  color: #d6d6d1;
-  padding-left: 0;
-  padding-top: 1.2em; }
-  .events-day-header:first-child {
-    padding-top: 0; }
-
-.events-day-dayname {
-  color: #d6d6d1;
-  text-align: left;
-  min-width: 20px; }
-  .events-day-dayname:rtl {
-    text-align: right; }
-  .events-day-dayname .events-day-time {
-    text-align: right; }
-    .events-day-dayname .events-day-time:rtl {
-      text-align: left; }
-  .events-day-dayname .events-day-task {
-    color: #d6d6d1; }
-    .events-day-dayname .events-day-task:ltr {
-      padding-left: 8px; }
-    .events-day-dayname .events-day-task:rtl {
-      padding-right: 8px; }
-
 .system-switch-user-submenu-icon {
   icon-size: 24px;
   border: 1px solid rgba(238, 238, 236, 0.4); }

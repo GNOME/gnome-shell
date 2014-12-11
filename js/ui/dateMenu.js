@@ -104,7 +104,7 @@ const DateMenuButton = new Lang.Class({
         this._calendar = new Calendar.Calendar();
         this._calendar.connect('selected-date-changed',
                                Lang.bind(this, function(calendar, date) {
-                                   this._eventList.setDate(date);
+                                   this._messageList.setDate(date);
                                }));
 
         // Whenever the menu is opened, select today
@@ -117,8 +117,8 @@ const DateMenuButton = new Lang.Class({
         }));
 
         // Fill up the first column
-        this._eventList = new Calendar.EventsList();
-        hbox.add(this._eventList.actor, { expand: true, y_fill: false, y_align: St.Align.START });
+        this._messageList = new Calendar.MessageList();
+        hbox.add(this._messageList.actor, { expand: true, y_fill: false, y_align: St.Align.START });
 
         // Fill up the second column
         vbox = new St.BoxLayout({ style_class: 'datemenu-calendar-column',
@@ -165,7 +165,7 @@ const DateMenuButton = new Lang.Class({
             (this._getCalendarApp() != null);
         this._openClocksItem.actor.visible = visible &&
             (this._getClockApp() != null);
-        this._eventList.actor.visible = visible;
+        this._messageList.actor.visible = visible;
     },
 
     _getEventSource: function() {
@@ -177,7 +177,7 @@ const DateMenuButton = new Lang.Class({
             this._eventSource.destroy();
 
         this._calendar.setEventSource(eventSource);
-        this._eventList.setEventSource(eventSource);
+        this._messageList.setEventSource(eventSource);
 
         this._eventSource = eventSource;
         this._eventSource.connect('notify::has-calendars', Lang.bind(this, function() {
