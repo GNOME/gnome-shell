@@ -144,6 +144,7 @@ const BackgroundCache = new Lang.Class({
         this._pendingFileLoads = [];
         this._fileMonitors = {};
         this._backgroundSources = {};
+        this._animations = {};
     },
 
     monitorFile: function(file) {
@@ -162,12 +163,13 @@ const BackgroundCache = new Lang.Class({
 
     getAnimation: function(params) {
         params = Params.parse(params, { file: null,
+                                        settingsSchema: null,
                                         onLoaded: null });
 
-        if (_fileEqual0(this._animationFile, params.file)) {
+        if (this._animations[params.settingsSchema] && _fileEqual0(this._animationFile, params.file)) {
             if (params.onLoaded) {
                 let id = GLib.idle_add(GLib.PRIORITY_DEFAULT, Lang.bind(this, function() {
-                    params.onLoaded(this._animation);
+                    params.onLoaded(this._animations[params.settingsSchema]);
                     return GLib.SOURCE_REMOVE;
                 }));
                 GLib.Source.set_name_by_id(id, '[gnome-shell] params.onLoaded');
@@ -178,12 +180,11 @@ const BackgroundCache = new Lang.Class({
         let animation = new Animation({ file: params.file });
 
         animation.load(Lang.bind(this, function() {
-                           this._animationFile = params.file;
-                           this._animation = animation;
+                           this._animations[params.settingsSchema] = animation;
 
                            if (params.onLoaded) {
                                let id = GLib.idle_add(GLib.PRIORITY_DEFAULT, Lang.bind(this, function() {
-                                   params.onLoaded(this._animation);
+                                   params.onLoaded(this._animations[params.settingsSchema]);
                                    return GLib.SOURCE_REMOVE;
                                }));
                                GLib.Source.set_name_by_id(id, '[gnome-shell] params.onLoaded');
@@ -403,6 +404,7 @@ const Background = new Lang.Class({
 
     _loadAnimation: function(file) {
         this._cache.getAnimation({ file: file,
+                                   settingsSchema: this._settings.schema_id,
                                    onLoaded: Lang.bind(this, function(animation) {
                                        this._animation = animation;
 
