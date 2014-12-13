@@ -33,6 +33,14 @@ const GnomeShellIface = '<node> \
     <arg type="s" direction="in" name="id"/> \
 </method> \
 <method name="ShowApplications" /> \
+<property name="Mode" type="s" access="read" /> \
+<property name="OverviewActive" type="b" access="readwrite" /> \
+<property name="ShellVersion" type="s" access="read" /> \
+</interface> \
+</node>';
+
+const GnomeShellKeyGrabberIface = '<node> \
+<interface name="org.gnome.Shell.KeyGrabber"> \
 <method name="GrabAccelerator"> \
     <arg type="s" direction="in" name="accelerator"/> \
     <arg type="u" direction="in" name="flags"/> \
@@ -50,9 +58,6 @@ const GnomeShellIface = '<node> \
     <arg name="action" type="u" /> \
     <arg name="parameters" type="a{sv}" /> \
 </signal> \
-<property name="Mode" type="s" access="read" /> \
-<property name="OverviewActive" type="b" access="readwrite" /> \
-<property name="ShellVersion" type="s" access="read" /> \
 </interface> \
 </node>';
 
@@ -82,6 +87,9 @@ const GnomeShell = new Lang.Class({
     _init: function() {
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(GnomeShellIface, this);
         this._dbusImpl.export(Gio.DBus.session, '/org/gnome/Shell');
+
+        this._dbusKeyGrabberImpl = Gio.DBusExportedObject.wrapJSObject(GnomeShellKeyGrabberIface, this);
+        this._dbusKeyGrabberImpl.export(Gio.DBus.session, '/org/gnome/Shell/KeyGrabber');
 
         this._extensionsService = new GnomeShellExtensions();
         this._screenshotService = new Screenshot.ScreenshotService();
@@ -197,13 +205,13 @@ const GnomeShell = new Lang.Class({
         if (!destination)
             return;
 
-        let connection = this._dbusImpl.get_connection();
-        let info = this._dbusImpl.get_info();
+        let connection = this._dbusKeyGrabberImpl.get_connection();
+        let info = this._dbusKeyGrabberImpl.get_info();
         let params = { 'device-id': GLib.Variant.new('u', deviceid),
                        'timestamp': GLib.Variant.new('u', timestamp),
                        'action-mode': GLib.Variant.new('u', Main.actionMode) };
         connection.emit_signal(destination,
-                               this._dbusImpl.get_object_path(),
+                               this._dbusKeyGrabberImpl.get_object_path(),
                                info ? info.name : null,
                                'AcceleratorActivated',
                                GLib.Variant.new('(ua{sv})', [action, params]));
