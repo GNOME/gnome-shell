@@ -19575,6 +19575,9 @@ clutter_actor_set_content (ClutterActor   *self,
 
   priv = self->priv;
 
+  if (priv->content == content)
+    return;
+
   if (priv->content != NULL)
     {
       _clutter_content_detached (priv->content, self);
