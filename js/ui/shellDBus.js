@@ -22,9 +22,6 @@ const GnomeShellIface = '<node> \
     <arg type="s" direction="out" name="result" /> \
 </method> \
 <method name="FocusSearch"/> \
-<method name="ShowOSD"> \
-    <arg type="a{sv}" direction="in" name="params"/> \
-</method> \
 <method name="ShowMonitorLabels"> \
     <arg type="a{uv}" direction="in" name="params" /> \
 </method> \
@@ -61,6 +58,14 @@ const GnomeShellKeyGrabberIface = '<node> \
 </interface> \
 </node>';
 
+const GnomeShellOSDIface = '<node> \
+<interface name="org.gnome.Shell.OSD"> \
+<method name="ShowOSD"> \
+    <arg type="a{sv}" direction="in" name="params"/> \
+</method> \
+</interface> \
+</node>';
+
 const ScreenSaverIface = '<node> \
 <interface name="org.gnome.ScreenSaver"> \
 <method name="Lock"> \
@@ -90,6 +95,9 @@ const GnomeShell = new Lang.Class({
 
         this._dbusKeyGrabberImpl = Gio.DBusExportedObject.wrapJSObject(GnomeShellKeyGrabberIface, this);
         this._dbusKeyGrabberImpl.export(Gio.DBus.session, '/org/gnome/Shell/KeyGrabber');
+
+        this._dbusOSDImpl = Gio.DBusExportedObject.wrapJSObject(GnomeShellOSDIface, this);
+        this._dbusOSDImpl.export(Gio.DBus.session, '/org/gnome/Shell/OSD');
 
         this._extensionsService = new GnomeShellExtensions();
         this._screenshotService = new Screenshot.ScreenshotService();
