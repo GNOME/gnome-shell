@@ -7,14 +7,15 @@
 # Osman Karagöz <osmank3@gmail.com>, 2013.
 # Bayram Güçlü <byrmgcl@yandex.com.tr>, 2014.
 # sabri ünal <yakushabb@gmail.com>, 2014.
+# Gökhan Gurbetoğlu <ggurbet@gmail.com>, 2014.
 # Muhammet Kara <muhammetk@gmail.com>, 2011, 2012, 2013, 2014.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-09-15 09:30+0000\n"
-"PO-Revision-Date: 2014-09-16 09:01+0000\n"
+"POT-Creation-Date: 2014-12-13 08:33+0000\n"
+"PO-Revision-Date: 2014-12-13 17:43+0000\n"
 "Last-Translator: Muhammet Kara <muhammetk@gmail.com>\n"
 "Language-Team: Türkçe <gnome-turk@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -267,8 +268,8 @@ msgid "Delay focus changes in mouse mode until the pointer stops moving"
 msgstr "Fare kipinde odak değişikliklerini işaretçi hareketi durana kadar beklet"
 
 #: ../data/org.gnome.Shell.PortalHelper.desktop.in.h:1
-msgid "Captive Portal"
-msgstr "Esir Portal"
+msgid "Network Login"
+msgstr "Ağ Girişi"
 
 #: ../js/extensionPrefs/main.js:123
 #, javascript-format
@@ -282,7 +283,7 @@ msgstr "GNOME Kabuğu Uzantıları"
 #: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:143
 #: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:452
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/network.js:915
+#: ../js/ui/status/network.js:916
 msgid "Cancel"
 msgstr "İptal"
 
@@ -300,33 +301,33 @@ msgctxt "button"
 msgid "Sign In"
 msgstr "Giriş"
 
-#: ../js/gdm/loginDialog.js:269
+#: ../js/gdm/loginDialog.js:275
 msgid "Choose Session"
 msgstr "Oturum Seçin"
 
-#: ../js/gdm/loginDialog.js:429
+#: ../js/gdm/loginDialog.js:434
 msgid "Not listed?"
 msgstr "Listede yok mu?"
 
-#: ../js/gdm/loginDialog.js:614
+#: ../js/gdm/loginDialog.js:619
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(örneğin, kullanıcı veya %s)"
 
-#: ../js/gdm/loginDialog.js:619 ../js/ui/components/networkAgent.js:269
+#: ../js/gdm/loginDialog.js:624 ../js/ui/components/networkAgent.js:269
 #: ../js/ui/components/networkAgent.js:287
 msgid "Username: "
 msgstr "Kullanıcı Adı: "
 
-#: ../js/gdm/loginDialog.js:922
+#: ../js/gdm/loginDialog.js:955
 msgid "Login Window"
 msgstr "Oturum Açma Penceresi"
 
-#: ../js/gdm/util.js:323
+#: ../js/gdm/util.js:341
 msgid "Authentication error"
 msgstr "Kimlik doğrulama hatası"
 
-#: ../js/gdm/util.js:453
+#: ../js/gdm/util.js:473
 msgid "(or swipe finger)"
 msgstr "(ya da parmak izi okutun)"
 
@@ -347,15 +348,15 @@ msgstr "“%s” çalıştırılması başarısız:"
 msgid "Web Authentication Redirect"
 msgstr "Web Kimlik Doğrulama Yönlendirmesi"
 
-#: ../js/ui/appDisplay.js:772
+#: ../js/ui/appDisplay.js:770
 msgid "Frequently used applications will appear here"
 msgstr "Sık kullanılan uygulamalar burada yer alacak"
 
-#: ../js/ui/appDisplay.js:883
+#: ../js/ui/appDisplay.js:881
 msgid "Frequent"
 msgstr "Sık sık"
 
-#: ../js/ui/appDisplay.js:890
+#: ../js/ui/appDisplay.js:888
 msgid "All"
 msgstr "Hepsi"
 
@@ -375,17 +376,17 @@ msgstr "Sık Kullanılanlara Ekle"
 msgid "Show Details"
 msgstr "Ayrıntıları Göster"
 
-#: ../js/ui/appFavorites.js:124
+#: ../js/ui/appFavorites.js:132
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "%s sık kullanılanlarınıza eklendi."
 
-#: ../js/ui/appFavorites.js:158
+#: ../js/ui/appFavorites.js:166
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "%s sık kullanılanlarınızdan çıkarıldı."
 
-#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:813
+#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:819
 #: ../js/ui/status/system.js:337
 msgid "Settings"
 msgstr "Ayarlar"
@@ -394,17 +395,24 @@ msgstr "Ayarlar"
 msgid "Change Background…"
 msgstr "Arkaplanı Değiştir…"
 
+#. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0"
+#. (Sunday) "6" (Saturday) "06" (Sunday and Saturday). */
+#: ../js/ui/calendar.js:39
+msgctxt "calendar-no-work"
+msgid "06"
+msgstr "06"
+
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #. */
-#: ../js/ui/calendar.js:67
+#: ../js/ui/calendar.js:68
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Tüm Gün"
 
 #. Translators: Shown in calendar event list, if 24h format,
 #. \u2236 is a ratio character, similar to : */
-#: ../js/ui/calendar.js:73
+#: ../js/ui/calendar.js:75
 msgctxt "event list time"
 msgid "%H∶%M"
 msgstr "%H∶%M"
@@ -412,7 +420,7 @@ msgstr "%H∶%M"
 #. Translators: Shown in calendar event list, if 12h format,
 #. \u2236 is a ratio character, similar to : and \u2009 is
 #. a thin space */
-#: ../js/ui/calendar.js:82
+#: ../js/ui/calendar.js:84
 msgctxt "event list time"
 msgid "%l∶%M %p"
 msgstr "%l∶%M %p"
@@ -422,43 +430,43 @@ msgstr "%l∶%M %p"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #. */
-#: ../js/ui/calendar.js:113
+#: ../js/ui/calendar.js:98
 msgctxt "grid sunday"
 msgid "S"
 msgstr "P"
 
 #. Translators: Calendar grid abbreviation for Monday */
-#: ../js/ui/calendar.js:115
+#: ../js/ui/calendar.js:100
 msgctxt "grid monday"
 msgid "M"
 msgstr "P"
 
 #. Translators: Calendar grid abbreviation for Tuesday */
-#: ../js/ui/calendar.js:117
+#: ../js/ui/calendar.js:102
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "S"
 
 #. Translators: Calendar grid abbreviation for Wednesday */
-#: ../js/ui/calendar.js:119
+#: ../js/ui/calendar.js:104
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "Ç"
 
 #. Translators: Calendar grid abbreviation for Thursday */
-#: ../js/ui/calendar.js:121
+#: ../js/ui/calendar.js:106
 msgctxt "grid thursday"
 msgid "T"
 msgstr "P"
 
 #. Translators: Calendar grid abbreviation for Friday */
-#: ../js/ui/calendar.js:123
+#: ../js/ui/calendar.js:108
 msgctxt "grid friday"
 msgid "F"
 msgstr "C"
 
 #. Translators: Calendar grid abbreviation for Saturday */
-#: ../js/ui/calendar.js:125
+#: ../js/ui/calendar.js:110
 msgctxt "grid saturday"
 msgid "S"
 msgstr "C"
@@ -469,87 +477,83 @@ msgstr "C"
 #. * so they need to be unique (e.g. Tuesday and Thursday cannot
 #. * both be 'T').
 #. */
-#: ../js/ui/calendar.js:138
+#: ../js/ui/calendar.js:123
 msgctxt "list sunday"
 msgid "Su"
 msgstr "Pa"
 
 #. Translators: Event list abbreviation for Monday */
-#: ../js/ui/calendar.js:140
+#: ../js/ui/calendar.js:125
 msgctxt "list monday"
 msgid "M"
 msgstr "Pz"
 
 #. Translators: Event list abbreviation for Tuesday */
-#: ../js/ui/calendar.js:142
+#: ../js/ui/calendar.js:127
 msgctxt "list tuesday"
 msgid "T"
 msgstr "S"
 
 #. Translators: Event list abbreviation for Wednesday */
-#: ../js/ui/calendar.js:144
+#: ../js/ui/calendar.js:129
 msgctxt "list wednesday"
 msgid "W"
 msgstr "Ç"
 
 #. Translators: Event list abbreviation for Thursday */
-#: ../js/ui/calendar.js:146
+#: ../js/ui/calendar.js:131
 msgctxt "list thursday"
 msgid "Th"
 msgstr "Pe"
 
 #. Translators: Event list abbreviation for Friday */
-#: ../js/ui/calendar.js:148
+#: ../js/ui/calendar.js:133
 msgctxt "list friday"
 msgid "F"
 msgstr "C"
 
 #. Translators: Event list abbreviation for Saturday */
-#: ../js/ui/calendar.js:150
+#: ../js/ui/calendar.js:135
 msgctxt "list saturday"
 msgid "S"
 msgstr "Ct"
 
-#: ../js/ui/calendar.js:453
+#: ../js/ui/calendar.js:444
 msgid "Previous month"
 msgstr "Önceki ay"
 
-#: ../js/ui/calendar.js:463
+#: ../js/ui/calendar.js:454
 msgid "Next month"
 msgstr "Gelecek ay"
 
 #. Translators: Text to show if there are no events */
-#: ../js/ui/calendar.js:781
+#: ../js/ui/calendar.js:789
 msgid "Nothing Scheduled"
 msgstr "Planınız Boş"
 
-#. Translators: Shown on calendar heading when selected day occurs on current
-#. year */
-#: ../js/ui/calendar.js:799
+#: ../js/ui/calendar.js:808
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d %B"
 
-#. Translators: Shown on calendar heading when selected day occurs on
-#. different year */
-#: ../js/ui/calendar.js:802
+#: ../js/ui/calendar.js:812
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d %B, %Y"
 
-#: ../js/ui/calendar.js:813
+#: ../js/ui/calendar.js:824
 msgid "Today"
 msgstr "Bugün"
 
-#: ../js/ui/calendar.js:817
+#: ../js/ui/calendar.js:828
 msgid "Tomorrow"
 msgstr "Yarın"
 
-#: ../js/ui/calendar.js:828
+#: ../js/ui/calendar.js:839
 msgid "This week"
 msgstr "Bu hafta"
 
-#: ../js/ui/calendar.js:836
+#: ../js/ui/calendar.js:847
 msgid "Next week"
 msgstr "Gelecek hafta"
 
@@ -583,7 +587,7 @@ msgid "Type again:"
 msgstr "Terkar yazın:"
 
 #: ../js/ui/components/networkAgent.js:138 ../js/ui/status/network.js:277
-#: ../js/ui/status/network.js:359 ../js/ui/status/network.js:918
+#: ../js/ui/status/network.js:359 ../js/ui/status/network.js:919
 msgid "Connect"
 msgstr "Bağlan"
 
@@ -675,103 +679,103 @@ msgstr "Doğrula"
 msgid "Sorry, that didn't work. Please try again."
 msgstr "Üzgünüm ama işe yaramadı. Lütfen tekrar deneyin."
 
-#: ../js/ui/components/telepathyClient.js:240
+#: ../js/ui/components/telepathyClient.js:242
 msgid "Invitation"
 msgstr "Davet"
 
-#: ../js/ui/components/telepathyClient.js:300
+#: ../js/ui/components/telepathyClient.js:302
 msgid "Call"
 msgstr "Çağrı"
 
-#: ../js/ui/components/telepathyClient.js:316
+#: ../js/ui/components/telepathyClient.js:318
 msgid "File Transfer"
 msgstr "Dosya Aktarımı"
 
-#: ../js/ui/components/telepathyClient.js:420
+#: ../js/ui/components/telepathyClient.js:422
 msgid "Chat"
 msgstr "Sohbet"
 
-#: ../js/ui/components/telepathyClient.js:483
+#: ../js/ui/components/telepathyClient.js:485
 msgid "Unmute"
 msgstr "Sesi Aç"
 
-#: ../js/ui/components/telepathyClient.js:483
+#: ../js/ui/components/telepathyClient.js:485
 msgid "Mute"
 msgstr "Sesi Kapat"
 
 #. Translators: Time in 24h format */
-#: ../js/ui/components/telepathyClient.js:953
+#: ../js/ui/components/telepathyClient.js:955
 msgid "%H∶%M"
 msgstr "%H∶%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30" */
-#: ../js/ui/components/telepathyClient.js:960
+#: ../js/ui/components/telepathyClient.js:962
 msgid "Yesterday, %H∶%M"
 msgstr "Dün, %H∶%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 24h format. i.e. "Monday, 14:30" */
-#: ../js/ui/components/telepathyClient.js:967
+#: ../js/ui/components/telepathyClient.js:969
 msgid "%A, %H∶%M"
 msgstr "%A, %H∶%M"
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 24h format.
 #. i.e. "May 25, 14:30" */
-#: ../js/ui/components/telepathyClient.js:974
+#: ../js/ui/components/telepathyClient.js:976
 msgid "%B %d, %H∶%M"
 msgstr "%d %B, %H∶%M"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
 #. i.e. "May 25 2012, 14:30" */
-#: ../js/ui/components/telepathyClient.js:980
+#: ../js/ui/components/telepathyClient.js:982
 msgid "%B %d %Y, %H∶%M"
 msgstr "%d %B %Y, %H∶%M"
 
 #. Translators: Time in 24h format */
-#: ../js/ui/components/telepathyClient.js:986
+#: ../js/ui/components/telepathyClient.js:988
 msgid "%l∶%M %p"
 msgstr "%l∶%M %p"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 12h format. i.e. "Yesterday, 2:30 pm" */
-#: ../js/ui/components/telepathyClient.js:993
+#: ../js/ui/components/telepathyClient.js:995
 msgid "Yesterday, %l∶%M %p"
 msgstr "Dün, %l∶%M %p"
 
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm" */
-#: ../js/ui/components/telepathyClient.js:1000
+#: ../js/ui/components/telepathyClient.js:1002
 msgid "%A, %l∶%M %p"
 msgstr "%A, %l∶%M %p"
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 12h format.
 #. i.e. "May 25, 2:30 pm" */
-#: ../js/ui/components/telepathyClient.js:1007
+#: ../js/ui/components/telepathyClient.js:1009
 msgid "%B %d, %l∶%M %p"
 msgstr "%d %B, %l∶%M %p"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
 #. i.e. "May 25 2012, 2:30 pm"*/
-#: ../js/ui/components/telepathyClient.js:1013
+#: ../js/ui/components/telepathyClient.js:1015
 msgid "%B %d %Y, %l∶%M %p"
 msgstr "%d %B %Y, %l∶%M %p"
 
 #. Translators: this is the other person changing their old IM name to their
 #. new
 #. IM name. */
-#: ../js/ui/components/telepathyClient.js:1045
+#: ../js/ui/components/telepathyClient.js:1047
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s, şimdi %s olarak biliniyor"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example. */
-#: ../js/ui/components/telepathyClient.js:1149
+#: ../js/ui/components/telepathyClient.js:1151
 #, javascript-format
 msgid "Invitation to %s"
 msgstr "%s'e Davet"
@@ -779,38 +783,38 @@ msgstr "%s'e Davet"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example. */
-#: ../js/ui/components/telepathyClient.js:1157
+#: ../js/ui/components/telepathyClient.js:1159
 #, javascript-format
 msgid "%s is inviting you to join %s"
 msgstr "%s, sizi %s'e katılmanız için davet ediyor"
 
-#: ../js/ui/components/telepathyClient.js:1159
-#: ../js/ui/components/telepathyClient.js:1194
-#: ../js/ui/components/telepathyClient.js:1228
-#: ../js/ui/components/telepathyClient.js:1286
+#: ../js/ui/components/telepathyClient.js:1161
+#: ../js/ui/components/telepathyClient.js:1196
+#: ../js/ui/components/telepathyClient.js:1230
+#: ../js/ui/components/telepathyClient.js:1287
 msgid "Decline"
 msgstr "Reddet"
 
-#: ../js/ui/components/telepathyClient.js:1165
-#: ../js/ui/components/telepathyClient.js:1234
-#: ../js/ui/components/telepathyClient.js:1291
+#: ../js/ui/components/telepathyClient.js:1167
+#: ../js/ui/components/telepathyClient.js:1236
+#: ../js/ui/components/telepathyClient.js:1292
 msgid "Accept"
 msgstr "Kabul Et"
 
 #. translators: argument is a contact name like Alice for example. */
-#: ../js/ui/components/telepathyClient.js:1184
+#: ../js/ui/components/telepathyClient.js:1186
 #, javascript-format
 msgid "Video call from %s"
 msgstr "%s'den görüntülü arama"
 
 #. translators: argument is a contact name like Alice for example. */
-#: ../js/ui/components/telepathyClient.js:1187
+#: ../js/ui/components/telepathyClient.js:1189
 #, javascript-format
 msgid "Call from %s"
 msgstr "%s'den çağrı"
 
 #. translators: this is a button label (verb), not a noun */
-#: ../js/ui/components/telepathyClient.js:1201
+#: ../js/ui/components/telepathyClient.js:1203
 msgid "Answer"
 msgstr "Cevapla"
 
@@ -819,129 +823,129 @@ msgstr "Cevapla"
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
 #. */
-#: ../js/ui/components/telepathyClient.js:1222
+#: ../js/ui/components/telepathyClient.js:1224
 #, javascript-format
 msgid "%s is sending you %s"
 msgstr "%s, size %s dosyasını gönderiyor"
 
 #. To translators: The parameter is the contact's alias */
-#: ../js/ui/components/telepathyClient.js:1251
+#: ../js/ui/components/telepathyClient.js:1253
 #, javascript-format
 msgid "%s would like permission to see when you are online"
 msgstr "%s, ne zaman çevrimiçi olduğunuzu görmek için izin istiyor"
 
-#: ../js/ui/components/telepathyClient.js:1337
+#: ../js/ui/components/telepathyClient.js:1338
 msgid "Network error"
 msgstr "Ağ hatası"
 
-#: ../js/ui/components/telepathyClient.js:1339
+#: ../js/ui/components/telepathyClient.js:1340
 msgid "Authentication failed"
 msgstr "Kimlik doğrulama başarısız"
 
-#: ../js/ui/components/telepathyClient.js:1341
+#: ../js/ui/components/telepathyClient.js:1342
 msgid "Encryption error"
 msgstr "Şifreleme hatası"
 
-#: ../js/ui/components/telepathyClient.js:1343
+#: ../js/ui/components/telepathyClient.js:1344
 msgid "Certificate not provided"
 msgstr "Sertifika sağlanmamış"
 
-#: ../js/ui/components/telepathyClient.js:1345
+#: ../js/ui/components/telepathyClient.js:1346
 msgid "Certificate untrusted"
 msgstr "Sertifika güvenilmez"
 
-#: ../js/ui/components/telepathyClient.js:1347
+#: ../js/ui/components/telepathyClient.js:1348
 msgid "Certificate expired"
 msgstr "Sertifikanın süresi dolmuş"
 
-#: ../js/ui/components/telepathyClient.js:1349
+#: ../js/ui/components/telepathyClient.js:1350
 msgid "Certificate not activated"
 msgstr "Sertifika etkinleştirilmemiş"
 
-#: ../js/ui/components/telepathyClient.js:1351
+#: ../js/ui/components/telepathyClient.js:1352
 msgid "Certificate hostname mismatch"
 msgstr "Sertifikanın makine adı uyuşmuyor"
 
-#: ../js/ui/components/telepathyClient.js:1353
+#: ../js/ui/components/telepathyClient.js:1354
 msgid "Certificate fingerprint mismatch"
 msgstr "Sertifikanın parmak izi uyuşmuyor"
 
-#: ../js/ui/components/telepathyClient.js:1355
+#: ../js/ui/components/telepathyClient.js:1356
 msgid "Certificate self-signed"
 msgstr "Sertifika kendinden-imzalı"
 
-#: ../js/ui/components/telepathyClient.js:1357
+#: ../js/ui/components/telepathyClient.js:1358
 msgid "Status is set to offline"
 msgstr "Durum çevrimdışına ayarlı"
 
-#: ../js/ui/components/telepathyClient.js:1359
+#: ../js/ui/components/telepathyClient.js:1360
 msgid "Encryption is not available"
 msgstr "Şifreleme kullanılabilir değil"
 
-#: ../js/ui/components/telepathyClient.js:1361
+#: ../js/ui/components/telepathyClient.js:1362
 msgid "Certificate is invalid"
 msgstr "Sertifika geçersiz"
 
-#: ../js/ui/components/telepathyClient.js:1363
+#: ../js/ui/components/telepathyClient.js:1364
 msgid "Connection has been refused"
 msgstr "Bağlantı reddedildi"
 
-#: ../js/ui/components/telepathyClient.js:1365
+#: ../js/ui/components/telepathyClient.js:1366
 msgid "Connection can't be established"
 msgstr "Bağlantı kurulamıyor"
 
-#: ../js/ui/components/telepathyClient.js:1367
+#: ../js/ui/components/telepathyClient.js:1368
 msgid "Connection has been lost"
 msgstr "Bağlantı koptu"
 
-#: ../js/ui/components/telepathyClient.js:1369
+#: ../js/ui/components/telepathyClient.js:1370
 msgid "This account is already connected to the server"
 msgstr "Bu hesap zaten sunucuya bağlı"
 
-#: ../js/ui/components/telepathyClient.js:1371
+#: ../js/ui/components/telepathyClient.js:1372
 msgid ""
 "Connection has been replaced by a new connection using the same resource"
 msgstr "Bağlantı, aynı kaynağı kullanan yeni bir bağlantı ile değiştirildi"
 
-#: ../js/ui/components/telepathyClient.js:1373
+#: ../js/ui/components/telepathyClient.js:1374
 msgid "The account already exists on the server"
 msgstr "Sunucuda böyle bir hesap zaten var"
 
-#: ../js/ui/components/telepathyClient.js:1375
+#: ../js/ui/components/telepathyClient.js:1376
 msgid "Server is currently too busy to handle the connection"
 msgstr "Sunucu, şu anda bağlantıyı işleyemeyecek kadar meşgul"
 
-#: ../js/ui/components/telepathyClient.js:1377
+#: ../js/ui/components/telepathyClient.js:1378
 msgid "Certificate has been revoked"
 msgstr "Sertifika hükümsüz kılınmış"
 
-#: ../js/ui/components/telepathyClient.js:1379
+#: ../js/ui/components/telepathyClient.js:1380
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr "Sertifika güvensiz bir şifreleme algoritması kullanıyor ya da kriptografik olarak zayıf"
 
-#: ../js/ui/components/telepathyClient.js:1381
+#: ../js/ui/components/telepathyClient.js:1382
 msgid ""
 "The length of the server certificate, or the depth of the server certificate"
 " chain, exceed the limits imposed by the cryptography library"
 msgstr "Sunucu sertifikasının uzunluğu ya da sunucu sertifikası zincirinin derinliği, şifreleme kütüphanesi tarafından koyulan sınırları aşıyor"
 
-#: ../js/ui/components/telepathyClient.js:1383
+#: ../js/ui/components/telepathyClient.js:1384
 msgid "Internal error"
 msgstr "İç hata"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example. */
-#: ../js/ui/components/telepathyClient.js:1393
+#: ../js/ui/components/telepathyClient.js:1394
 #, javascript-format
 msgid "Unable to connect to %s"
 msgstr "%s bağlantısı sağlanamadı"
 
-#: ../js/ui/components/telepathyClient.js:1398
+#: ../js/ui/components/telepathyClient.js:1399
 msgid "View account"
 msgstr "Hesabı göster"
 
-#: ../js/ui/components/telepathyClient.js:1435
+#: ../js/ui/components/telepathyClient.js:1436
 msgid "Unknown reason"
 msgstr "Bilinmeyen sebep"
 
@@ -957,15 +961,15 @@ msgstr "Uygulamaları Göster"
 msgid "Dash"
 msgstr "Konsol"
 
-#: ../js/ui/dateMenu.js:96
+#: ../js/ui/dateMenu.js:97
 msgid "Open Calendar"
 msgstr "Takvimi Aç"
 
-#: ../js/ui/dateMenu.js:100
+#: ../js/ui/dateMenu.js:101
 msgid "Open Clocks"
 msgstr "Saati Aç"
 
-#: ../js/ui/dateMenu.js:107
+#: ../js/ui/dateMenu.js:108
 msgid "Date & Time Settings"
 msgstr "Tarih ve Saat Ayarları"
 
@@ -973,9 +977,9 @@ msgstr "Tarih ve Saat Ayarları"
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29
 #. AM").
 #. */
-#: ../js/ui/dateMenu.js:204
+#: ../js/ui/dateMenu.js:132
 msgid "%A %B %e, %Y"
-msgstr "%e %B %A, %Y"
+msgstr "%e %B %Y %A"
 
 #: ../js/ui/endSessionDialog.js:64
 #, javascript-format
@@ -1108,7 +1112,7 @@ msgstr "Kur"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "extensions.gnome.org adresinden “%s” indirilip kurulsun mu?"
 
-#: ../js/ui/keyboard.js:692 ../js/ui/status/keyboard.js:523
+#: ../js/ui/keyboard.js:706 ../js/ui/status/keyboard.js:539
 msgid "Keyboard"
 msgstr "Klavye"
 
@@ -1164,52 +1168,53 @@ msgstr "Kaynağı Görüntüle"
 msgid "Web Page"
 msgstr "Web Sayfası"
 
-#: ../js/ui/messageTray.js:1326
+#: ../js/ui/messageTray.js:1332
 msgid "Open"
 msgstr "Aç"
 
-#: ../js/ui/messageTray.js:1333
+#: ../js/ui/messageTray.js:1339
 msgid "Remove"
 msgstr "Sil"
 
-#: ../js/ui/messageTray.js:1630
+#: ../js/ui/messageTray.js:1636
 msgid "Notifications"
 msgstr "Bildirimler"
 
-#: ../js/ui/messageTray.js:1637
+#: ../js/ui/messageTray.js:1643
 msgid "Clear Messages"
 msgstr "Mesajları Temizle"
 
-#: ../js/ui/messageTray.js:1656
+#: ../js/ui/messageTray.js:1662
 msgid "Notification Settings"
 msgstr "Bildirim Ayarları"
 
-#: ../js/ui/messageTray.js:1709
+#: ../js/ui/messageTray.js:1715
 msgid "Tray Menu"
 msgstr "Tepsi Menüsü"
 
-#: ../js/ui/messageTray.js:1926
+#: ../js/ui/messageTray.js:1939
 msgid "No Messages"
 msgstr "Mesaj Yok"
 
-#: ../js/ui/messageTray.js:1968
+#: ../js/ui/messageTray.js:1984
 msgid "Message Tray"
 msgstr "Mesaj Tepsisi"
 
-#: ../js/ui/messageTray.js:2971
-msgid "System Information"
-msgstr "Sistem Bilgisi"
-
-#: ../js/ui/notificationDaemon.js:513 ../src/shell-app.c:425
-msgctxt "program"
-msgid "Unknown"
-msgstr "Bilinmeyen"
-
-#: ../js/ui/overviewControls.js:482 ../js/ui/screenShield.js:151
+#: ../js/ui/messageTray.js:2441 ../js/ui/overviewControls.js:483
+#: ../js/ui/screenShield.js:152
 #, javascript-format
 msgid "%d new message"
 msgid_plural "%d new messages"
 msgstr[0] "%d yeni mesaj"
+
+#: ../js/ui/messageTray.js:3011
+msgid "System Information"
+msgstr "Sistem Bilgisi"
+
+#: ../js/ui/notificationDaemon.js:513 ../src/shell-app.c:439
+msgctxt "program"
+msgid "Unknown"
+msgstr "Bilinmeyen"
 
 #: ../js/ui/overview.js:84
 msgid "Undo"
@@ -1227,17 +1232,17 @@ msgstr "Genel Görünüm"
 msgid "Type to search…"
 msgstr "Aramak için buraya yazın..."
 
-#: ../js/ui/panel.js:515
+#: ../js/ui/panel.js:521
 msgid "Quit"
 msgstr "Kapat"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview". */
-#: ../js/ui/panel.js:567
+#: ../js/ui/panel.js:573
 msgid "Activities"
 msgstr "Etkinlikler"
 
-#: ../js/ui/panel.js:918
+#: ../js/ui/panel.js:924
 msgid "Top Bar"
 msgstr "Tepe Çubuğu"
 
@@ -1261,35 +1266,35 @@ msgstr "Yeniden başlatılıyor..."
 #. long format */
 #: ../js/ui/screenShield.js:88
 msgid "%A, %B %d"
-msgstr "%d %B, %A"
+msgstr "%d %B %A"
 
-#: ../js/ui/screenShield.js:153
+#: ../js/ui/screenShield.js:154
 #, javascript-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d yeni bildirim"
 
-#: ../js/ui/screenShield.js:472 ../js/ui/status/system.js:345
+#: ../js/ui/screenShield.js:473 ../js/ui/status/system.js:345
 msgid "Lock"
 msgstr "Kilitle"
 
-#: ../js/ui/screenShield.js:706
+#: ../js/ui/screenShield.js:709
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME'un ekranı kilitlemesi gerekiyor"
 
-#: ../js/ui/screenShield.js:833 ../js/ui/screenShield.js:1304
+#: ../js/ui/screenShield.js:836 ../js/ui/screenShield.js:1312
 msgid "Unable to lock"
 msgstr "Kilitlenemedi"
 
-#: ../js/ui/screenShield.js:834 ../js/ui/screenShield.js:1305
+#: ../js/ui/screenShield.js:837 ../js/ui/screenShield.js:1313
 msgid "Lock was blocked by an application"
 msgstr "Kilitleme bir uygulama tarafından engellendi"
 
-#: ../js/ui/search.js:594
+#: ../js/ui/search.js:611
 msgid "Searching…"
 msgstr "Aranıyor…"
 
-#: ../js/ui/search.js:596
+#: ../js/ui/search.js:613
 msgid "No results."
 msgstr "Sonuç yok."
 
@@ -1366,9 +1371,9 @@ msgid "Bluetooth"
 msgstr "Bluetooth"
 
 #: ../js/ui/status/bluetooth.js:51 ../js/ui/status/network.js:178
-#: ../js/ui/status/network.js:360 ../js/ui/status/network.js:1281
-#: ../js/ui/status/network.js:1392 ../js/ui/status/rfkill.js:86
-#: ../js/ui/status/rfkill.js:114
+#: ../js/ui/status/network.js:360 ../js/ui/status/network.js:1282
+#: ../js/ui/status/network.js:1393 ../js/ui/status/rfkill.js:91
+#: ../js/ui/status/rfkill.js:118
 msgid "Turn Off"
 msgstr "Kapat"
 
@@ -1382,7 +1387,7 @@ msgid "%d Connected Device"
 msgid_plural "%d Connected Devices"
 msgstr[0] "%d Bağlı Cihaz"
 
-#: ../js/ui/status/bluetooth.js:106 ../js/ui/status/network.js:1309
+#: ../js/ui/status/bluetooth.js:106 ../js/ui/status/network.js:1310
 msgid "Not Connected"
 msgstr "Bağlı Değil"
 
@@ -1390,7 +1395,7 @@ msgstr "Bağlı Değil"
 msgid "Brightness"
 msgstr "Parlaklık"
 
-#: ../js/ui/status/keyboard.js:547
+#: ../js/ui/status/keyboard.js:563
 msgid "Show Keyboard Layout"
 msgstr "Klavye Düzenini Göster"
 
@@ -1418,8 +1423,8 @@ msgstr "Etkinleştir"
 msgid "<unknown>"
 msgstr "<bilinmeyen>"
 
-#: ../js/ui/status/network.js:457 ../js/ui/status/network.js:1307
-#: ../js/ui/status/network.js:1511
+#: ../js/ui/status/network.js:457 ../js/ui/status/network.js:1308
+#: ../js/ui/status/network.js:1512
 msgid "Off"
 msgstr "Kapalı"
 
@@ -1438,7 +1443,7 @@ msgstr "Yönetilmeyen"
 msgid "Disconnecting"
 msgstr "Bağlantı Kesiliyor"
 
-#: ../js/ui/status/network.js:471 ../js/ui/status/network.js:1301
+#: ../js/ui/status/network.js:471 ../js/ui/status/network.js:1302
 msgid "Connecting"
 msgstr "Bağlantı Kuruluyor"
 
@@ -1462,7 +1467,7 @@ msgstr "Ürün Bilgisi eksik"
 msgid "Unavailable"
 msgstr "Kullanılamaz"
 
-#: ../js/ui/status/network.js:488 ../js/ui/status/network.js:1695
+#: ../js/ui/status/network.js:488 ../js/ui/status/network.js:1696
 msgid "Connection failed"
 msgstr "Bağlantı başarısız oldu"
 
@@ -1474,7 +1479,7 @@ msgstr "Kablolu Ağ Ayarları"
 msgid "Mobile Broadband Settings"
 msgstr "Mobil Geniş Bant Ayarları"
 
-#: ../js/ui/status/network.js:588 ../js/ui/status/network.js:1305
+#: ../js/ui/status/network.js:588 ../js/ui/status/network.js:1306
 msgid "Hardware Disabled"
 msgstr "Donanım Devre Dışı"
 
@@ -1514,61 +1519,61 @@ msgstr "Kablosuz Ağlar"
 msgid "Select a network"
 msgstr "Bir ağ seçin"
 
-#: ../js/ui/status/network.js:882
+#: ../js/ui/status/network.js:883
 msgid "No Networks"
 msgstr "Ağ Yok"
 
-#: ../js/ui/status/network.js:903 ../js/ui/status/rfkill.js:112
+#: ../js/ui/status/network.js:904 ../js/ui/status/rfkill.js:116
 msgid "Use hardware switch to turn off"
 msgstr "Kapatmak için donanım anahtarını kullanın."
 
-#: ../js/ui/status/network.js:1173
+#: ../js/ui/status/network.js:1174
 msgid "Select Network"
 msgstr "Ağ Seç"
 
-#: ../js/ui/status/network.js:1179
+#: ../js/ui/status/network.js:1180
 msgid "Wi-Fi Settings"
 msgstr "Kablosuz Ağ Ayarları"
 
-#: ../js/ui/status/network.js:1281
+#: ../js/ui/status/network.js:1282
 msgid "Turn On"
 msgstr "Aç"
 
-#: ../js/ui/status/network.js:1298
+#: ../js/ui/status/network.js:1299
 msgid "Hotspot Active"
 msgstr "Hotspot Etkin"
 
-#: ../js/ui/status/network.js:1409
+#: ../js/ui/status/network.js:1410
 msgid "connecting..."
 msgstr "bağlanıyor..."
 
 #. Translators: this is for network connections that require some kind of key
 #. or password */
-#: ../js/ui/status/network.js:1412
+#: ../js/ui/status/network.js:1413
 msgid "authentication required"
 msgstr "kimlik doğrulaması gerekli"
 
-#: ../js/ui/status/network.js:1414
+#: ../js/ui/status/network.js:1415
 msgid "connection failed"
 msgstr "bağlantı başarısız"
 
-#: ../js/ui/status/network.js:1480 ../js/ui/status/rfkill.js:89
+#: ../js/ui/status/network.js:1481 ../js/ui/status/rfkill.js:94
 msgid "Network Settings"
 msgstr "Ağ Ayarları"
 
-#: ../js/ui/status/network.js:1482
+#: ../js/ui/status/network.js:1483
 msgid "VPN Settings"
 msgstr "VPN Ayarları"
 
-#: ../js/ui/status/network.js:1501
+#: ../js/ui/status/network.js:1502
 msgid "VPN"
 msgstr "VPN"
 
-#: ../js/ui/status/network.js:1656
+#: ../js/ui/status/network.js:1657
 msgid "Network Manager"
 msgstr "Ağ Yöneticisi"
 
-#: ../js/ui/status/network.js:1696
+#: ../js/ui/status/network.js:1697
 msgid "Activation of network connection failed"
 msgstr "Ağ bağlantısının etkinleştirilmesi başarısız oldu"
 
@@ -1602,11 +1607,11 @@ msgstr "UPS"
 msgid "Battery"
 msgstr "Pil"
 
-#: ../js/ui/status/rfkill.js:83
+#: ../js/ui/status/rfkill.js:88
 msgid "Airplane Mode"
 msgstr "Uçak Kipi"
 
-#: ../js/ui/status/rfkill.js:85
+#: ../js/ui/status/rfkill.js:90
 msgid "On"
 msgstr "Açık"
 
@@ -1764,7 +1769,7 @@ msgstr "Oturum açma için -\"gdm\" gibi- özel bir kip kullan"
 msgid "List possible modes"
 msgstr "Mevcut kipleri listele"
 
-#: ../src/shell-app.c:666
+#: ../src/shell-app.c:680
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "“%s” başlatılamadı"
