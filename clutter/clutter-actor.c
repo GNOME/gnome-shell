@@ -19606,7 +19606,25 @@ clutter_actor_set_content (ClutterActor   *self,
    * do.
    */
   if (priv->content_gravity != CLUTTER_CONTENT_GRAVITY_RESIZE_FILL)
-    g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_CONTENT_BOX]);
+    {
+      if (priv->content_box_valid)
+        {
+          ClutterActorBox from_box, to_box;
+
+          clutter_actor_get_content_box (self, &from_box);
+
+          /* invalidate the cached content box */
+          priv->content_box_valid = FALSE;
+          clutter_actor_get_content_box (self, &to_box);
+
+          if (!clutter_actor_box_equal (&from_box, &to_box))
+            _clutter_actor_create_transition (self, obj_props[PROP_CONTENT_BOX],
+                                              &from_box,
+                                              &to_box);
+        }
+
+      g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_CONTENT_BOX]);
+   }
 }
 
 /**
