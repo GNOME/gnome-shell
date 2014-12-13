@@ -6578,7 +6578,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *                                           &min_height,
    *                                           &natural_height);
    *     }
-   *   else
+   *   else if (mode == CLUTTER_REQUEST_WIDTH_FOR_HEIGHT)
    *     {
    *       clutter_actor_get_preferred_height (child, -1,
    *                                           &min_height,
@@ -6586,6 +6586,16 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *       clutter_actor_get_preferred_width (child, natural_height,
    *                                          &min_width,
    *                                          &natural_width);
+   *     }
+   *   else if (mode == CLUTTER_REQUEST_CONTENT_SIZE)
+   *     {
+   *       ClutterContent *content = clutter_actor_get_content (child);
+   *
+   *       min_width, min_height = 0;
+   *       natural_width = natural_height = 0;
+   *
+   *       if (content != NULL)
+   *         clutter_content_get_preferred_size (content, &natural_width, &natural_height);
    *     }
    * ]|
    *
@@ -9038,7 +9048,7 @@ clutter_actor_get_preferred_size (ClutterActor *self,
                                           &min_height,
                                           &natural_height);
     }
-  else
+  else if (priv->request_mode == CLUTTER_REQUEST_WIDTH_FOR_HEIGHT)
     {
       CLUTTER_NOTE (LAYOUT, "Preferred size (width-for-height)");
       clutter_actor_get_preferred_height (self, -1,
@@ -9047,6 +9057,17 @@ clutter_actor_get_preferred_size (ClutterActor *self,
       clutter_actor_get_preferred_width (self, natural_height,
                                          &min_width,
                                          &natural_width);
+    }
+  else if (priv->request_mode == CLUTTER_REQUEST_CONTENT_SIZE)
+    {
+      CLUTTER_NOTE (LAYOUT, "Preferred size (content-size)");
+
+      if (priv->content != NULL)
+        clutter_content_get_preferred_size (priv->content, &natural_width, &natural_height);
+    }
+  else
+    {
+      CLUTTER_NOTE (LAYOUT, "Unknown request mode");
     }
 
   if (min_width_p)
@@ -9688,6 +9709,14 @@ clutter_actor_adjust_allocation (ClutterActor    *self,
       clutter_actor_get_preferred_width (self, alloc_height,
                                          &min_width,
                                          &nat_width);
+    }
+  else if (req_mode == CLUTTER_REQUEST_CONTENT_SIZE)
+    {
+      min_width = min_height = 0;
+      nat_width = nat_height = 0;
+
+      if (self->priv->content != NULL)
+        clutter_content_get_preferred_size (self->priv->content, &nat_width, &nat_height);
     }
 
 #ifdef CLUTTER_ENABLE_DEBUG
@@ -10791,9 +10820,11 @@ clutter_actor_get_width (ClutterActor *self)
     {
       gfloat natural_width = 0;
 
-      if (self->priv->request_mode == CLUTTER_REQUEST_HEIGHT_FOR_WIDTH)
-        clutter_actor_get_preferred_width (self, -1, NULL, &natural_width);
-      else
+      if (priv->request_mode == CLUTTER_REQUEST_HEIGHT_FOR_WIDTH)
+        {
+          clutter_actor_get_preferred_width (self, -1, NULL, &natural_width);
+        }
+      else if (priv->request_mode == CLUTTER_REQUEST_WIDTH_FOR_HEIGHT)
         {
           gfloat natural_height = 0;
 
@@ -10801,6 +10832,10 @@ clutter_actor_get_width (ClutterActor *self)
           clutter_actor_get_preferred_width (self, natural_height,
                                              NULL,
                                              &natural_width);
+        }
+      else if (priv->request_mode == CLUTTER_REQUEST_CONTENT_SIZE && priv->content != NULL)
+        {
+          clutter_content_get_preferred_size (priv->content, &natural_width, NULL);
         }
 
       return natural_width;
@@ -10855,8 +10890,14 @@ clutter_actor_get_height (ClutterActor *self)
           clutter_actor_get_preferred_height (self, natural_width,
                                               NULL, &natural_height);
         }
-      else
-        clutter_actor_get_preferred_height (self, -1, NULL, &natural_height);
+      else if (priv->request_mode == CLUTTER_REQUEST_WIDTH_FOR_HEIGHT)
+        {
+          clutter_actor_get_preferred_height (self, -1, NULL, &natural_height);
+        }
+      else if (priv->request_mode == CLUTTER_REQUEST_CONTENT_SIZE && priv->content != NULL)
+        {
+          clutter_content_get_preferred_size (priv->content, NULL, &natural_height);
+        }
 
       return natural_height;
     }
@@ -15174,7 +15215,7 @@ clutter_actor_get_stage (ClutterActor *actor)
  *                                           &natural_height);
  *       height = CLAMP (natural_height, min_height, available_height);
  *     }
- *   else
+ *   else if (request_mode == CLUTTER_REQUEST_WIDTH_FOR_HEIGHT)
  *     {
  *       clutter_actor_get_preferred_height (self, available_width,
  *                                           &min_height,
@@ -15185,6 +15226,13 @@ clutter_actor_get_stage (ClutterActor *actor)
  *                                          &min_width,
  *                                          &natural_width);
  *       width = CLAMP (natural_width, min_width, available_width);
+ *     }
+ *   else if (request_mode == CLUTTER_REQUEST_CONTENT_SIZE)
+ *     {
+ *       clutter_content_get_preferred_size (content, &natural_width, &natural_height);
+ *
+ *       width = CLAMP (natural_width, 0, available_width);
+ *       height = CLAMP (natural_height, 0, available_height);
  *     }
  *
  *   box.x1 = x; box.y1 = y;
@@ -15243,6 +15291,16 @@ clutter_actor_allocate_available_size (ClutterActor           *self,
                                          &min_width,
                                          &natural_width);
       width  = CLAMP (natural_width, min_width, available_width);
+      break;
+
+    case CLUTTER_REQUEST_CONTENT_SIZE:
+      if (priv->content != NULL)
+        {
+          clutter_content_get_preferred_size (priv->content, &natural_width, &natural_height);
+
+          width = CLAMP (natural_width, 0, available_width);
+          height = CLAMP (natural_height, 0, available_height);
+        }
       break;
     }
 
@@ -15409,7 +15467,7 @@ clutter_actor_allocate_align_fill (ClutterActor           *self,
           child_height = CLAMP (natural_height, min_height, available_height);
         }
     }
-  else
+  else if (priv->request_mode == CLUTTER_REQUEST_WIDTH_FOR_HEIGHT)
     {
       gfloat min_width, natural_width;
       gfloat min_height, natural_height;
@@ -15431,6 +15489,18 @@ clutter_actor_allocate_align_fill (ClutterActor           *self,
 
           child_width = CLAMP (natural_width, min_width, available_width);
         }
+    }
+  else if (priv->request_mode == CLUTTER_REQUEST_CONTENT_SIZE && priv->content != NULL)
+    {
+      gfloat natural_width, natural_height;
+
+      clutter_content_get_preferred_size (priv->content, &natural_width, &natural_height);
+
+      if (!x_fill)
+        child_width = CLAMP (natural_width, 0, available_width);
+
+      if (!y_fill)
+        child_height = CLAMP (natural_height, 0, available_height);
     }
 
   /* invert the horizontal alignment for RTL languages */

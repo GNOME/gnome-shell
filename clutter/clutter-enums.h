@@ -96,6 +96,8 @@ typedef enum { /*< prefix=CLUTTER_ROTATE >*/
  * ClutterRequestMode:
  * @CLUTTER_REQUEST_HEIGHT_FOR_WIDTH: Height for width requests
  * @CLUTTER_REQUEST_WIDTH_FOR_HEIGHT: Width for height requests
+ * @CLUTTER_REQUEST_CONTENT_SIZE: Use the preferred size of the
+ *   #ClutterContent, if it has any (available since 1.22)
  *
  * Specifies the type of requests for a #ClutterActor.
  *
@@ -103,7 +105,8 @@ typedef enum { /*< prefix=CLUTTER_ROTATE >*/
  */
 typedef enum { /*< prefix=CLUTTER_REQUEST >*/
   CLUTTER_REQUEST_HEIGHT_FOR_WIDTH,
-  CLUTTER_REQUEST_WIDTH_FOR_HEIGHT
+  CLUTTER_REQUEST_WIDTH_FOR_HEIGHT,
+  CLUTTER_REQUEST_CONTENT_SIZE
 } ClutterRequestMode;
 
 /**
