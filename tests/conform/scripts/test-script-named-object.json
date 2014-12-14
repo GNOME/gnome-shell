@@ -2,7 +2,7 @@
   {
     "id" : "layout",
     "type" : "ClutterBoxLayout",
-    "vertical" : true,
+    "orientation" : "vertical",
     "spacing" : 12,
     "pack-start" : false
   },
