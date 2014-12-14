@@ -54,6 +54,8 @@ typedef struct _ClutterAnimatorPrivate ClutterAnimatorPrivate;
  * A key frame inside a #ClutterAnimator
  *
  * Since: 1.2
+ *
+ * Deprecated: 1.12
  */
 typedef struct _ClutterAnimatorKey     ClutterAnimatorKey;
 
