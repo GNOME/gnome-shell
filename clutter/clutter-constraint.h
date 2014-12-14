@@ -113,7 +113,7 @@ CLUTTER_AVAILABLE_IN_1_4
 void               clutter_actor_clear_constraints         (ClutterActor      *self);
 
 CLUTTER_AVAILABLE_IN_1_10
-gboolean           clutter_actor_has_constraints           (ClutterActor *self);
+gboolean           clutter_actor_has_constraints           (ClutterActor      *self);
 
 G_END_DECLS
 

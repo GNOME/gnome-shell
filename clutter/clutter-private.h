@@ -245,10 +245,6 @@ gboolean _clutter_boolean_continue_accumulator (GSignalInvocationHint *ihint,
 
 void _clutter_run_repaint_functions (ClutterRepaintFlags flags);
 
-void _clutter_constraint_update_allocation (ClutterConstraint *constraint,
-                                            ClutterActor      *actor,
-                                            ClutterActorBox   *allocation);
-
 GType _clutter_layout_manager_get_child_meta_type (ClutterLayoutManager *manager);
 
 void  _clutter_util_fully_transform_vertices (const CoglMatrix    *modelview,

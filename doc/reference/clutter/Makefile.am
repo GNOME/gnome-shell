@@ -72,6 +72,7 @@ IGNORE_HFILES = \
 	clutter-cogl-compat.h		\
 	clutter-color-static.h		\
 	clutter-config.h		\
+	clutter-constraint-private.h	\
 	clutter-debug.h 		\
 	clutter-deprecated.h 		\
 	clutter-device-manager-private.h	\

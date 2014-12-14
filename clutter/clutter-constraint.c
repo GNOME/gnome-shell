@@ -1,3 +1,27 @@
+/*
+ * Clutter.
+ *
+ * An OpenGL based 'interactive canvas' library.
+ *
+ * Copyright (C) 2010  Intel Corporation.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Author:
+ *   Emmanuele Bassi <ebassi@linux.intel.com>
+ */
+
 /**
  * SECTION:clutter-constraint
  * @Title: ClutterConstraint
@@ -110,7 +134,7 @@
 
 #include <string.h>
 
-#include "clutter-constraint.h"
+#include "clutter-constraint-private.h"
 
 #include "clutter-actor.h"
 #include "clutter-actor-meta-private.h"
@@ -159,16 +183,32 @@ clutter_constraint_init (ClutterConstraint *self)
 {
 }
 
-void
-_clutter_constraint_update_allocation (ClutterConstraint *constraint,
-                                       ClutterActor      *actor,
-                                       ClutterActorBox   *allocation)
+/*< private >
+ * clutter_constraint_update_allocation:
+ * @constraint: a #ClutterConstraint
+ * @actor: a #ClutterActor
+ * @allocation: (inout): the allocation to modify
+ *
+ * Asks the @constraint to update the @allocation of a #ClutterActor.
+ *
+ * Returns: %TRUE if the allocation was updated
+ */
+gboolean
+clutter_constraint_update_allocation (ClutterConstraint *constraint,
+                                      ClutterActor      *actor,
+                                      ClutterActorBox   *allocation)
 {
-  g_return_if_fail (CLUTTER_IS_CONSTRAINT (constraint));
-  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
-  g_return_if_fail (allocation != NULL);
+  ClutterActorBox old_alloc;
+
+  g_return_val_if_fail (CLUTTER_IS_CONSTRAINT (constraint), FALSE);
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (actor), FALSE);
+  g_return_val_if_fail (allocation != NULL, FALSE);
+
+  old_alloc = *allocation;
 
   CLUTTER_CONSTRAINT_GET_CLASS (constraint)->update_allocation (constraint,
                                                                 actor,
                                                                 allocation);
+
+  return clutter_actor_box_equal (allocation, &old_alloc);
 }

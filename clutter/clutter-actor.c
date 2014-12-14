@@ -611,7 +611,7 @@
 #include "clutter-animatable.h"
 #include "clutter-color-static.h"
 #include "clutter-color.h"
-#include "clutter-constraint.h"
+#include "clutter-constraint-private.h"
 #include "clutter-container.h"
 #include "clutter-content-private.h"
 #include "clutter-debug.h"
@@ -9650,19 +9650,21 @@ clutter_actor_update_constraints (ClutterActor    *self,
 
       if (clutter_actor_meta_get_enabled (meta))
         {
-          _clutter_constraint_update_allocation (constraint,
-                                                 self,
-                                                 allocation);
+          gboolean changed =
+            clutter_constraint_update_allocation (constraint,
+                                                  self,
+                                                  allocation);
 
           CLUTTER_NOTE (LAYOUT,
                         "Allocation of '%s' after constraint '%s': "
-                        "{ %.2f, %.2f, %.2f, %.2f }",
+                        "{ %.2f, %.2f, %.2f, %.2f } (changed:%s)",
                         _clutter_actor_get_debug_name (self),
                         _clutter_actor_meta_get_debug_name (meta),
                         allocation->x1,
                         allocation->y1,
                         allocation->x2,
-                        allocation->y2);
+                        allocation->y2,
+                        changed ? "yes" : "no");
         }
     }
 }

@@ -218,31 +218,32 @@ source_c = \
 # private headers; these should not be distributed or introspected
 source_h_priv = \
 	clutter-actor-meta-private.h		\
-	clutter-actor-private.h		\
+	clutter-actor-private.h			\
 	clutter-backend-private.h		\
 	clutter-bezier.h			\
+	clutter-constraint-private.h		\
 	clutter-content-private.h		\
 	clutter-debug.h 			\
 	clutter-device-manager-private.h	\
 	clutter-easing.h			\
 	clutter-effect-private.h		\
 	clutter-event-translator.h		\
-	clutter-event-private.h		\
+	clutter-event-private.h			\
 	clutter-flatten-effect.h		\
 	clutter-gesture-action-private.h	\
 	clutter-id-pool.h 			\
-	clutter-master-clock.h		\
-	clutter-model-private.h		\
+	clutter-master-clock.h			\
+	clutter-model-private.h			\
 	clutter-offscreen-effect-private.h	\
 	clutter-paint-node-private.h		\
-	clutter-paint-volume-private.h	\
+	clutter-paint-volume-private.h		\
 	clutter-private.h 			\
 	clutter-profile.h			\
 	clutter-script-private.h		\
 	clutter-settings-private.h		\
-	clutter-stage-manager-private.h	\
-	clutter-stage-private.h		\
-	clutter-stage-window.h		\
+	clutter-stage-manager-private.h		\
+	clutter-stage-private.h			\
+	clutter-stage-window.h			\
 	$(NULL)
 
 # private source code; these should not be introspected
