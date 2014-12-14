@@ -9306,6 +9306,46 @@ _clutter_actor_get_cached_size_request (gfloat         for_size,
   return FALSE;
 }
 
+static void
+clutter_actor_update_preferred_size_for_constraints (ClutterActor *self,
+                                                     ClutterOrientation direction,
+                                                     float for_size,
+                                                     float *minimum_size,
+                                                     float *natural_size)
+{
+  ClutterActorPrivate *priv = self->priv;
+  const GList *constraints, *l;
+
+  if (priv->constraints == NULL)
+    return;
+
+  constraints = _clutter_meta_group_peek_metas (priv->constraints);
+  for (l = constraints; l != NULL; l = l->next)
+    {
+      ClutterConstraint *constraint = l->data;
+      ClutterActorMeta *meta = l->data;
+
+      if (!clutter_actor_meta_get_enabled (meta))
+        continue;
+
+      clutter_constraint_update_preferred_size (constraint, self,
+                                                direction,
+                                                for_size,
+                                                minimum_size,
+                                                natural_size);
+
+      CLUTTER_NOTE (LAYOUT,
+                    "Preferred %s of '%s' after constraint '%s': "
+                    "{ min:%.2f, nat:%.2f }",
+                    direction == CLUTTER_ORIENTATION_HORIZONTAL
+                      ? "width"
+                      : "height",
+                    _clutter_actor_get_debug_name (self),
+                    _clutter_actor_meta_get_debug_name (meta),
+                    *minimum_size, *natural_size);
+    }
+}
+
 /**
  * clutter_actor_get_preferred_width:
  * @self: A #ClutterActor
@@ -9403,6 +9443,13 @@ clutter_actor_get_preferred_width (ClutterActor *self,
       klass->get_preferred_width (self, for_height,
                                   &minimum_width,
                                   &natural_width);
+
+      /* adjust for constraints */
+      clutter_actor_update_preferred_size_for_constraints (self,
+                                                           CLUTTER_ORIENTATION_HORIZONTAL,
+                                                           for_height,
+                                                           &minimum_width,
+                                                           &natural_width);
 
       /* adjust for the margin */
       minimum_width += (info->margin.left + info->margin.right);
@@ -9539,6 +9586,13 @@ clutter_actor_get_preferred_height (ClutterActor *self,
       klass->get_preferred_height (self, for_width,
                                    &minimum_height,
                                    &natural_height);
+
+      /* adjust for constraints */
+      clutter_actor_update_preferred_size_for_constraints (self,
+                                                           CLUTTER_ORIENTATION_VERTICAL,
+                                                           for_width,
+                                                           &minimum_height,
+                                                           &natural_height);
 
       /* adjust for margin */
       minimum_height += (info->margin.top + info->margin.bottom);
