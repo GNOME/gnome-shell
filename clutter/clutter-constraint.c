@@ -152,6 +152,16 @@ constraint_update_allocation (ClutterConstraint *constraint,
 }
 
 static void
+constraint_update_preferred_size (ClutterConstraint  *constraint,
+                                  ClutterActor       *actor,
+                                  ClutterOrientation  direction,
+                                  float               for_size,
+                                  float              *minimum_size,
+                                  float              *natural_size)
+{
+}
+
+static void
 clutter_constraint_notify (GObject    *gobject,
                            GParamSpec *pspec)
 {
@@ -176,6 +186,7 @@ clutter_constraint_class_init (ClutterConstraintClass *klass)
   gobject_class->notify = clutter_constraint_notify;
 
   klass->update_allocation = constraint_update_allocation;
+  klass->update_preferred_size = constraint_update_preferred_size;
 }
 
 static void
@@ -211,4 +222,22 @@ clutter_constraint_update_allocation (ClutterConstraint *constraint,
                                                                 allocation);
 
   return clutter_actor_box_equal (allocation, &old_alloc);
+}
+
+void
+clutter_constraint_update_preferred_size (ClutterConstraint  *constraint,
+                                          ClutterActor       *actor,
+                                          ClutterOrientation  direction,
+                                          float               for_size,
+                                          float              *minimum_size,
+                                          float              *natural_size)
+{
+  g_return_if_fail (CLUTTER_IS_CONSTRAINT (constraint));
+  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
+
+  CLUTTER_CONSTRAINT_GET_CLASS (constraint)->update_preferred_size (constraint, actor,
+                                                                    direction,
+                                                                    for_size,
+                                                                    minimum_size,
+                                                                    natural_size);
 }

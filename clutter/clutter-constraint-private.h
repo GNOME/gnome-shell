@@ -30,6 +30,13 @@ gboolean clutter_constraint_update_allocation (ClutterConstraint *constraint,
                                                ClutterActor      *actor,
                                                ClutterActorBox   *allocation);
 
+void clutter_constraint_update_preferred_size (ClutterConstraint  *constraint,
+                                               ClutterActor       *actor,
+                                               ClutterOrientation  direction,
+                                               float               for_size,
+                                               float              *minimum_size,
+                                               float              *natural_size);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_CONSTRAINT_PRIVATE_H__ */

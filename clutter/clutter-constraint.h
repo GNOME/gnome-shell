@@ -76,6 +76,13 @@ struct _ClutterConstraintClass
                               ClutterActor      *actor,
                               ClutterActorBox   *allocation);
 
+  void (* update_preferred_size) (ClutterConstraint  *constraint,
+                                  ClutterActor       *actor,
+                                  ClutterOrientation  direction,
+                                  float               for_size,
+                                  float              *minimum_size,
+                                  float              *natural_size);
+
   /*< private >*/
   void (* _clutter_constraint1) (void);
   void (* _clutter_constraint2) (void);
@@ -84,7 +91,6 @@ struct _ClutterConstraintClass
   void (* _clutter_constraint5) (void);
   void (* _clutter_constraint6) (void);
   void (* _clutter_constraint7) (void);
-  void (* _clutter_constraint8) (void);
 };
 
 CLUTTER_AVAILABLE_IN_1_4
