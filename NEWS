@@ -1,3 +1,40 @@
+Clutter 1.21.2                                                       2014-12-15
+===============================================================================
+
+  • List of changes since Clutter 1.20.0
+
+    - Improve input device handling
+    Both on the evdev input backend, and the XInput2 backend for X11.
+
+    - Allow content implementations to drive actors preferred size
+    If a ClutterActor is only used to paint a ClutterContent implementation,
+    it should be possible to allow the actor to have the same preferred size
+    of its content. We use a ClutterRequestMode to specify this behaviour.
+
+    - Documentation fixes
+
+  • List of bugs fixed since Clutter 1.20.0
+
+    #738520 - evdev: Flush event queue before removing device(s)
+    #739050 - Fix some weird graphical glitches in RTL
+    #741350 - Improve touchpad detection on libinput
+    #740997 - Easing modes are not used when computing the value of a
+              KeyframeTransition
+    #676326 - actor: Add a :request-content-size property
+    #711182 - Incorrect drawing behaviour with clutter content centered
+    #709252 - ensure that all deprecated symbols are correctly annotated for
+              gtk-doc
+    #669743 - ObjectInfo property is_actor not correctly set when updating
+              existing actor using ClutterScriptParser
+    #719962 - clutter/osx: add clutter_osx_disable_event_retrieval
+    #681300 - Miss CLUTTER_INPUT_BACKEND description in doc
+    #729462 - DeviceManagerXi2: Update cached core pointer in getter if NULL
+
+Many thanks to:
+
+  Carlos Garnacho, Jasper St. Pierre, Jonas Ådahl, Rico Tzschichholz,
+  Samuel Degrande, Sjoerd Simons, cee1.
+
 Clutter 1.20.0                                                       2014-09-22
 ===============================================================================
 
