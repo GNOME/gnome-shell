@@ -207,7 +207,7 @@ find_properties (MetaMonitorManagerKms *manager_kms,
                strcmp (prop->name, "EDID") == 0)
         output_kms->edid_blob_id = output_kms->connector->prop_values[i];
 
-      drmModeFreeProperty(prop);
+      drmModeFreeProperty (prop);
     }
 }
 
@@ -229,8 +229,10 @@ read_output_edid (MetaMonitorManagerKms *manager_kms,
     }
 
   if (edid_blob->length > 0)
-    return g_bytes_new_with_free_func (edid_blob->data, edid_blob->length,
-                                       (GDestroyNotify)drmModeFreePropertyBlob, edid_blob);
+    {
+      return g_bytes_new_with_free_func (edid_blob->data, edid_blob->length,
+                                         (GDestroyNotify)drmModeFreePropertyBlob, edid_blob);
+    }
   else
     {
       drmModeFreePropertyBlob (edid_blob);
