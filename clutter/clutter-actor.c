@@ -19592,9 +19592,12 @@ clutter_actor_set_content (ClutterActor   *self,
       _clutter_content_attached (priv->content, self);
     }
 
-  /* given that the content is always painted within the allocation,
-   * we only need to queue a redraw here
+  /* if the actor's preferred size is the content's preferred size,
+   * then we need to conditionally queue a relayout here...
    */
+  if (priv->request_mode == CLUTTER_REQUEST_CONTENT_SIZE)
+    _clutter_actor_queue_only_relayout (self);
+
   clutter_actor_queue_redraw (self);
 
   g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_CONTENT]);
