@@ -49,8 +49,6 @@ struct _ClutterDeviceManagerXI2
   GList *master_devices;
   GList *slave_devices;
 
-  ClutterInputDevice *client_pointer;
-
   int opcode;
 };
 
