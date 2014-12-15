@@ -59,7 +59,6 @@ get_time (void)
 typedef struct
 {
   GSource source;
-  GPollFD pfd;
   struct wl_display *display;
 } WaylandEventSource;
 
@@ -73,13 +72,6 @@ wayland_event_source_prepare (GSource *base, int *timeout)
   wl_display_flush_clients (source->display);
 
   return FALSE;
-}
-
-static gboolean
-wayland_event_source_check (GSource *base)
-{
-  WaylandEventSource *source = (WaylandEventSource *)base;
-  return source->pfd.revents;
 }
 
 static gboolean
@@ -98,7 +90,7 @@ wayland_event_source_dispatch (GSource *base,
 static GSourceFuncs wayland_event_source_funcs =
 {
   wayland_event_source_prepare,
-  wayland_event_source_check,
+  NULL,
   wayland_event_source_dispatch,
   NULL
 };
@@ -112,9 +104,9 @@ wayland_event_source_new (struct wl_display *display)
   source = (WaylandEventSource *) g_source_new (&wayland_event_source_funcs,
                                                 sizeof (WaylandEventSource));
   source->display = display;
-  source->pfd.fd = wl_event_loop_get_fd (loop);
-  source->pfd.events = G_IO_IN | G_IO_ERR;
-  g_source_add_poll (&source->source, &source->pfd);
+  g_source_add_unix_fd (&source->source,
+                        wl_event_loop_get_fd (loop),
+                        G_IO_IN | G_IO_ERR);
 
   return &source->source;
 }
