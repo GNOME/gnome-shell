@@ -303,6 +303,13 @@ Relevant information for developers with existing Clutter applications
 wanting to port to newer releases (see NEWS for general information on new
 features).
 
+Release Notes for Clutter 1.22
+-------------------------------------------------------------------------------
+
+• The ClutterRequestMode enumeration has a new value. Code checking for the
+  values of ClutterRequestMode should already be resilient to changes to this
+  enumerations, like for all enumerations in Clutter.
+
 Release Notes for Clutter 1.20
 -------------------------------------------------------------------------------
 
