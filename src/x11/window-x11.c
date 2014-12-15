@@ -491,7 +491,7 @@ meta_window_apply_session_info (MetaWindow *window,
       window->size_hints.win_gravity = info->gravity;
       gravity = window->size_hints.win_gravity;
 
-      flags = META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION;
+      flags = META_MOVE_RESIZE_MOVE_ACTION | META_MOVE_RESIZE_RESIZE_ACTION;
 
       adjust_for_gravity (window, FALSE, gravity, &rect);
       meta_window_client_rect_to_frame_rect (window, &rect, &rect);
@@ -560,7 +560,7 @@ meta_window_x11_manage (MetaWindow *window)
       rect.width = window->size_hints.width;
       rect.height = window->size_hints.height;
 
-      flags = META_IS_CONFIGURE_REQUEST | META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION;
+      flags = META_MOVE_RESIZE_CONFIGURE_REQUEST | META_MOVE_RESIZE_MOVE_ACTION | META_MOVE_RESIZE_RESIZE_ACTION;
 
       adjust_for_gravity (window, TRUE, gravity, &rect);
       meta_window_client_rect_to_frame_rect (window, &rect, &rect);
@@ -1056,7 +1056,7 @@ meta_window_x11_move_resize_internal (MetaWindow                *window,
 
   gboolean is_configure_request;
 
-  is_configure_request = (flags & META_IS_CONFIGURE_REQUEST) != 0;
+  is_configure_request = (flags & META_MOVE_RESIZE_CONFIGURE_REQUEST) != 0;
 
   meta_frame_calc_borders (window->frame, &borders);
 
@@ -1971,16 +1971,16 @@ meta_window_move_resize_request (MetaWindow *window,
    * windows offscreen when users don't want it if not constrained
    * (e.g. hitting a dropdown triangle in a fileselector to show more
    * options, which makes the window bigger).  Thus we do not set
-   * META_IS_USER_ACTION in flags to the
+   * META_MOVE_RESIZE_USER_ACTION in flags to the
    * meta_window_move_resize_internal() call.
    */
-  flags = META_IS_CONFIGURE_REQUEST;
+  flags = META_MOVE_RESIZE_CONFIGURE_REQUEST;
   if (value_mask & (CWX | CWY))
-    flags |= META_IS_MOVE_ACTION;
+    flags |= META_MOVE_RESIZE_MOVE_ACTION;
   if (value_mask & (CWWidth | CWHeight))
-    flags |= META_IS_RESIZE_ACTION;
+    flags |= META_MOVE_RESIZE_RESIZE_ACTION;
 
-  if (flags & (META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION))
+  if (flags & (META_MOVE_RESIZE_MOVE_ACTION | META_MOVE_RESIZE_RESIZE_ACTION))
     {
       MetaRectangle rect, monitor_rect;
 

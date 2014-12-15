@@ -3044,7 +3044,7 @@ meta_window_unmaximize_internal (MetaWindow        *window,
       meta_window_client_rect_to_frame_rect (window, &target_rect, &target_rect);
 
       meta_window_move_resize_internal (window,
-                                        META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION,
+                                        META_MOVE_RESIZE_MOVE_ACTION | META_MOVE_RESIZE_RESIZE_ACTION,
                                         gravity,
                                         target_rect);
 
@@ -3614,19 +3614,19 @@ meta_window_move_resize_internal (MetaWindow          *window,
   /* The action has to be a move, a resize or the wayland client
    * acking our choice of size.
    */
-  g_assert (flags & (META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION | META_IS_WAYLAND_RESIZE));
+  g_assert (flags & (META_MOVE_RESIZE_MOVE_ACTION | META_MOVE_RESIZE_RESIZE_ACTION | META_MOVE_RESIZE_WAYLAND_RESIZE));
 
   did_placement = !window->placed && window->calc_placement;
 
   /* We don't need it in the idle queue anymore. */
   meta_window_unqueue (window, META_QUEUE_MOVE_RESIZE);
 
-  if ((flags & META_IS_RESIZE_ACTION) && (flags & META_IS_MOVE_ACTION))
+  if ((flags & META_MOVE_RESIZE_RESIZE_ACTION) && (flags & META_MOVE_RESIZE_MOVE_ACTION))
     {
       /* We're both moving and resizing. Just use the passed in rect. */
       unconstrained_rect = frame_rect;
     }
-  else if ((flags & META_IS_RESIZE_ACTION))
+  else if ((flags & META_MOVE_RESIZE_RESIZE_ACTION))
     {
       /* If this is only a resize, then ignore the position given in
        * the parameters and instead calculate the new position from
@@ -3637,7 +3637,7 @@ meta_window_move_resize_internal (MetaWindow          *window,
                                           frame_rect.width,
                                           frame_rect.height);
     }
-  else if ((flags & META_IS_MOVE_ACTION))
+  else if ((flags & META_MOVE_RESIZE_MOVE_ACTION))
     {
       /* If this is only a move, then ignore the passed in size and
        * just use the existing size of the window. */
@@ -3646,7 +3646,7 @@ meta_window_move_resize_internal (MetaWindow          *window,
       unconstrained_rect.width = window->rect.width;
       unconstrained_rect.height = window->rect.height;
     }
-  else if ((flags & META_IS_WAYLAND_RESIZE))
+  else if ((flags & META_MOVE_RESIZE_WAYLAND_RESIZE))
     {
       /* This is a Wayland buffer acking our size. The new rect is
        * just the existing one we have. Ignore the passed-in rect
@@ -3657,7 +3657,7 @@ meta_window_move_resize_internal (MetaWindow          *window,
     g_assert_not_reached ();
 
   constrained_rect = unconstrained_rect;
-  if (flags & (META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION))
+  if (flags & (META_MOVE_RESIZE_MOVE_ACTION | META_MOVE_RESIZE_RESIZE_ACTION))
     {
       MetaRectangle old_rect;
       meta_window_get_frame_rect (window, &old_rect);
@@ -3700,10 +3700,10 @@ meta_window_move_resize_internal (MetaWindow          *window,
 
   old_output_winsys_id = window->monitor->winsys_id;
 
-  meta_window_update_monitor (window, flags & META_IS_USER_ACTION);
+  meta_window_update_monitor (window, flags & META_MOVE_RESIZE_USER_ACTION);
 
   if (old_output_winsys_id != window->monitor->winsys_id &&
-      flags & META_IS_MOVE_ACTION && flags & META_IS_USER_ACTION)
+      flags & META_MOVE_RESIZE_MOVE_ACTION && flags & META_MOVE_RESIZE_USER_ACTION)
     window->preferred_output_winsys_id = window->monitor->winsys_id;
 
   if ((result & META_MOVE_RESIZE_RESULT_FRAME_SHAPE_CHANGED) && window->frame_bounds)
@@ -3741,7 +3741,7 @@ meta_window_move_frame (MetaWindow *window,
 
   g_return_if_fail (!window->override_redirect);
 
-  flags = (user_op ? META_IS_USER_ACTION : 0) | META_IS_MOVE_ACTION;
+  flags = (user_op ? META_MOVE_RESIZE_USER_ACTION : 0) | META_MOVE_RESIZE_MOVE_ACTION;
   meta_window_move_resize_internal (window, flags, NorthWestGravity, rect);
 }
 
@@ -3791,7 +3791,7 @@ meta_window_move_resize_frame (MetaWindow  *window,
 
   g_return_if_fail (!window->override_redirect);
 
-  flags = (user_op ? META_IS_USER_ACTION : 0) | META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION;
+  flags = (user_op ? META_MOVE_RESIZE_USER_ACTION : 0) | META_MOVE_RESIZE_MOVE_ACTION | META_MOVE_RESIZE_RESIZE_ACTION;
 
   meta_window_move_resize_internal (window, flags, NorthWestGravity, rect);
 }
@@ -3843,7 +3843,7 @@ meta_window_resize_frame_with_gravity (MetaWindow *window,
   rect.width = w;
   rect.height = h;
 
-  flags = (user_op ? META_IS_USER_ACTION : 0) | META_IS_RESIZE_ACTION;
+  flags = (user_op ? META_MOVE_RESIZE_USER_ACTION : 0) | META_MOVE_RESIZE_RESIZE_ACTION;
   meta_window_move_resize_internal (window, flags, gravity, rect);
 }
 

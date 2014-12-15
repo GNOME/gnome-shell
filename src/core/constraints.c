@@ -328,17 +328,17 @@ setup_constraint_info (ConstraintInfo      *info,
   info->orig    = *orig;
   info->current = *new;
 
-  if (flags & META_IS_MOVE_ACTION && flags & META_IS_RESIZE_ACTION)
+  if (flags & META_MOVE_RESIZE_MOVE_ACTION && flags & META_MOVE_RESIZE_RESIZE_ACTION)
     info->action_type = ACTION_MOVE_AND_RESIZE;
-  else if (flags & META_IS_RESIZE_ACTION)
+  else if (flags & META_MOVE_RESIZE_RESIZE_ACTION)
     info->action_type = ACTION_RESIZE;
-  else if (flags & META_IS_MOVE_ACTION)
+  else if (flags & META_MOVE_RESIZE_MOVE_ACTION)
     info->action_type = ACTION_MOVE;
   else
     g_error ("BAD, BAD developer!  No treat for you!  (Fix your calls to "
              "meta_window_move_resize_internal()).\n");
 
-  info->is_user_action = (flags & META_IS_USER_ACTION);
+  info->is_user_action = (flags & META_MOVE_RESIZE_USER_ACTION);
 
   info->resize_gravity = resize_gravity;
 

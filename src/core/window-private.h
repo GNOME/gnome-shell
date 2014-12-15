@@ -72,11 +72,11 @@ typedef enum {
 
 typedef enum
 {
-  META_IS_CONFIGURE_REQUEST = 1 << 0,
-  META_IS_USER_ACTION       = 1 << 1,
-  META_IS_MOVE_ACTION       = 1 << 2,
-  META_IS_RESIZE_ACTION     = 1 << 3,
-  META_IS_WAYLAND_RESIZE    = 1 << 4,
+  META_MOVE_RESIZE_CONFIGURE_REQUEST = 1 << 0,
+  META_MOVE_RESIZE_USER_ACTION       = 1 << 1,
+  META_MOVE_RESIZE_MOVE_ACTION       = 1 << 2,
+  META_MOVE_RESIZE_RESIZE_ACTION     = 1 << 3,
+  META_MOVE_RESIZE_WAYLAND_RESIZE    = 1 << 4,
 } MetaMoveResizeFlags;
 
 typedef enum

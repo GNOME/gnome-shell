@@ -168,7 +168,7 @@ meta_window_wayland_move_resize_internal (MetaWindow                *window,
    * it can be for maximized or fullscreen.
    */
 
-  if (flags & META_IS_WAYLAND_RESIZE)
+  if (flags & META_MOVE_RESIZE_WAYLAND_RESIZE)
     {
       /* This is a call to wl_surface_commit(), ignore the constrained_rect and
        * update the real client size to match the buffer size.
@@ -397,7 +397,7 @@ meta_window_wayland_move_resize (MetaWindow        *window,
   window->custom_frame_extents.left = new_geom.x;
   window->custom_frame_extents.top = new_geom.y;
 
-  flags = META_IS_WAYLAND_RESIZE;
+  flags = META_MOVE_RESIZE_WAYLAND_RESIZE;
 
   /* x/y are ignored when we're doing interactive resizing */
   if (!meta_grab_op_is_resizing (window->display->grab_op))
@@ -407,7 +407,7 @@ meta_window_wayland_move_resize (MetaWindow        *window,
           rect.x = wl_window->pending_move_x;
           rect.y = wl_window->pending_move_y;
           wl_window->has_pending_move = FALSE;
-          flags |= META_IS_MOVE_ACTION;
+          flags |= META_MOVE_RESIZE_MOVE_ACTION;
         }
       else
         {
@@ -419,7 +419,7 @@ meta_window_wayland_move_resize (MetaWindow        *window,
         {
           rect.x += dx;
           rect.y += dy;
-          flags |= META_IS_MOVE_ACTION;
+          flags |= META_MOVE_RESIZE_MOVE_ACTION;
         }
     }
 
@@ -429,7 +429,7 @@ meta_window_wayland_move_resize (MetaWindow        *window,
   rect.height = new_geom.height;
 
   if (rect.width != window->rect.width || rect.height != window->rect.height)
-    flags |= META_IS_RESIZE_ACTION;
+    flags |= META_MOVE_RESIZE_RESIZE_ACTION;
 
   gravity = meta_resize_gravity_from_grab_op (window->display->grab_op);
   meta_window_move_resize_internal (window, flags, gravity, rect);
