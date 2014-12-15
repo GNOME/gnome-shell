@@ -77,6 +77,7 @@ typedef enum
   META_MOVE_RESIZE_MOVE_ACTION       = 1 << 2,
   META_MOVE_RESIZE_RESIZE_ACTION     = 1 << 3,
   META_MOVE_RESIZE_WAYLAND_RESIZE    = 1 << 4,
+  META_MOVE_RESIZE_STATE_CHANGED     = 1 << 5,
 } MetaMoveResizeFlags;
 
 typedef enum

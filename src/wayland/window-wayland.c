@@ -188,8 +188,11 @@ meta_window_wayland_move_resize_internal (MetaWindow                *window,
     }
   else
     {
+      /* If the size changed, or the state changed, then we have to wait until
+       * the client acks our configure before moving the window. */
       if (constrained_rect.width != window->rect.width ||
-          constrained_rect.height != window->rect.height)
+          constrained_rect.height != window->rect.height ||
+          (flags & META_MOVE_RESIZE_STATE_CHANGED))
         {
           /* If we get a 0x0 size, this means that we're trying to resize
            * a surface that doesn't have any buffer attached. This can happen

@@ -2690,7 +2690,10 @@ meta_window_maximize (MetaWindow        *window,
 
       meta_window_get_frame_rect (window, &old_rect);
 
-      meta_window_move_resize_now (window);
+      meta_window_move_resize_internal (window,
+                                        META_MOVE_RESIZE_MOVE_ACTION | META_MOVE_RESIZE_RESIZE_ACTION | META_MOVE_RESIZE_STATE_CHANGED,
+                                        NorthWestGravity,
+                                        window->unconstrained_rect);
 
       meta_window_get_frame_rect (window, &new_rect);
       meta_compositor_maximize_window (window->display->compositor,
@@ -3044,7 +3047,7 @@ meta_window_unmaximize_internal (MetaWindow        *window,
       meta_window_client_rect_to_frame_rect (window, &target_rect, &target_rect);
 
       meta_window_move_resize_internal (window,
-                                        META_MOVE_RESIZE_MOVE_ACTION | META_MOVE_RESIZE_RESIZE_ACTION,
+                                        META_MOVE_RESIZE_MOVE_ACTION | META_MOVE_RESIZE_RESIZE_ACTION | META_MOVE_RESIZE_STATE_CHANGED,
                                         gravity,
                                         target_rect);
 
@@ -3189,9 +3192,11 @@ meta_window_make_fullscreen (MetaWindow  *window)
   if (!window->fullscreen)
     {
       meta_window_make_fullscreen_internal (window);
-      /* move_resize with new constraints
-       */
-      meta_window_queue(window, META_QUEUE_MOVE_RESIZE);
+
+      meta_window_move_resize_internal (window,
+                                        META_MOVE_RESIZE_MOVE_ACTION | META_MOVE_RESIZE_RESIZE_ACTION | META_MOVE_RESIZE_STATE_CHANGED,
+                                        NorthWestGravity,
+                                        window->unconstrained_rect);
     }
 }
 
@@ -3222,12 +3227,10 @@ meta_window_unmake_fullscreen (MetaWindow  *window)
       meta_window_recalc_features (window);
       set_net_wm_state (window);
 
-      meta_window_move_resize_frame (window,
-                                     FALSE,
-                                     target_rect.x,
-                                     target_rect.y,
-                                     target_rect.width,
-                                     target_rect.height);
+      meta_window_move_resize_internal (window,
+                                        META_MOVE_RESIZE_MOVE_ACTION | META_MOVE_RESIZE_RESIZE_ACTION | META_MOVE_RESIZE_STATE_CHANGED,
+                                        NorthWestGravity,
+                                        target_rect);
 
       meta_window_update_layer (window);
 
