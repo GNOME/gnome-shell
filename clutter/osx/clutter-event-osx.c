@@ -24,6 +24,7 @@
 
 #include "clutter-osx.h"
 
+#include "clutter-backend-osx.h"
 #include "clutter-device-manager-osx.h"
 #include "clutter-stage-osx.h"
 

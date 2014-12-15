@@ -61,7 +61,13 @@ struct _ClutterBackendOSXClass
 
 GType _clutter_backend_osx_get_type (void) G_GNUC_CONST;
 
-void            _clutter_backend_osx_events_init        (ClutterBackend *backend);
+void _clutter_backend_osx_events_init (ClutterBackend *backend);
+
+#define CLUTTER_OSX_POOL_ALLOC()        NSAutoreleasePool *autorelease_pool = [[NSAutoreleasePool alloc] init]
+#define CLUTTER_OSX_POOL_RELEASE()      [autorelease_pool release];
+
+void _clutter_event_osx_put (NSEvent *nsevent,
+                             ClutterStage *wrapper);
 
 G_END_DECLS
 
