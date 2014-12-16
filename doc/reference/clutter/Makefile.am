@@ -37,11 +37,12 @@ FIXXREF_OPTIONS = \
 HFILE_GLOB = \
 	$(top_srcdir)/clutter/*.h \
 	$(top_builddir)/clutter/*.h \
+	$(top_srcdir)/clutter/deprecated/*.h \
 	$(top_srcdir)/clutter/x11/clutter-x11.h \
 	$(top_srcdir)/clutter/x11/clutter-x11-texture-pixmap.h \
 	$(top_srcdir)/clutter/x11/clutter-glx-texture-pixmap.h \
 	$(top_srcdir)/clutter/egl/clutter-egl.h \
-	$(top_srcdir)/clutter/cex100/clutter-cex100.h \
+	$(top_builddir)/clutter/cex100/clutter-cex100.h \
 	$(top_srcdir)/clutter/win32/clutter-win32.h \
 	$(top_srcdir)/clutter/gdk/clutter-gdk.h \
 	$(top_srcdir)/clutter/wayland/clutter-wayland.h \
@@ -56,7 +57,8 @@ CFILE_GLOB = \
 	$(top_srcdir)/clutter/gdk/*.c \
 	$(top_srcdir)/clutter/cex100/*.c \
 	$(top_srcdir)/clutter/egl/*.c \
-	$(top_srcdir)/clutter/wayland/*.c
+	$(top_srcdir)/clutter/wayland/*.c \
+	$(top_srcdir)/clutter/deprecated/*.c
 
 # Header files to ignore when scanning.
 # e.g. IGNORE_HFILES=gtkdebug.h gtkintl.h
