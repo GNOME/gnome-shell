@@ -60,6 +60,9 @@ struct _ClutterConstraint
  * ClutterConstraintClass:
  * @update_allocation: virtual function used to update the allocation
  *   of the #ClutterActor using the #ClutterConstraint
+ * @update_preferred_size: virtual function used to update the preferred
+ *   size of the #ClutterActor using the #ClutterConstraint; optional,
+ *   since 1.22
  *
  * The #ClutterConstraintClass structure contains
  * only private data
