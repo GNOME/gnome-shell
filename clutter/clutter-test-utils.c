@@ -23,8 +23,8 @@ static ClutterTestEnvironment *test_environ = NULL;
 
 /*
  * clutter_test_init:
- * @argc:
- * @argv:
+ * @argc: (inout): number of arguments in @argv
+ * @argv: (inout) (array length=argc) (nullable): array of arguments
  *
  * Initializes the Clutter test environment.
  *
@@ -79,7 +79,7 @@ out:
   test_environ->no_display = no_display;
 }
 
-/*
+/**
  * clutter_test_get_stage:
  *
  * Retrieves the #ClutterStage used for testing.
@@ -149,7 +149,7 @@ out:
     }
 }
 
-/*
+/**
  * clutter_test_add: (skip)
  * @test_path:
  * @test_func:
@@ -167,7 +167,7 @@ clutter_test_add (const char *test_path,
   clutter_test_add_data_full (test_path, (GTestDataFunc) test_func, NULL, NULL);
 }
 
-/*
+/**
  * clutter_test_add_data: (skip)
  * @test_path:
  * @test_func:
@@ -187,7 +187,7 @@ clutter_test_add_data (const char    *test_path,
   clutter_test_add_data_full (test_path, test_func, test_data, NULL);
 }
 
-/*
+/**
  * clutter_test_add_data_full:
  * @test_path:
  * @test_func: (scope notified)
@@ -223,7 +223,7 @@ clutter_test_add_data_full (const char     *test_path,
                              g_free);
 }
 
-/*
+/**
  * clutter_test_run:
  *
  * Runs the test suite using the units added by calling
@@ -333,6 +333,20 @@ on_key_press_event (ClutterActor *stage,
   return CLUTTER_EVENT_PROPAGATE;
 }
 
+/**
+ * clutter_test_check_actor_at_point:
+ * @stage: a #ClutterStage
+ * @point: coordinates to check
+ * @actor: the expected actor at the given coordinates
+ * @result: (out) (nullable): actor at the coordinates
+ *
+ * Checks the given coordinates of the @stage and compares the
+ * actor found there with the given @actor.
+ *
+ * Returns: %TRUE if the actor at the given coordinates matches
+ *
+ * Since: 1.18
+ */
 gboolean
 clutter_test_check_actor_at_point (ClutterActor        *stage,
                                    const ClutterPoint  *point,
@@ -380,6 +394,21 @@ clutter_test_check_actor_at_point (ClutterActor        *stage,
   return *result == actor;
 }
 
+/**
+ * clutter_test_check_color_at_point:
+ * @stage: a #ClutterStage
+ * @point: coordinates to check
+ * @color: expected color
+ * @result: (out caller-allocates): color at the given coordinates
+ *
+ * Checks the color at the given coordinates on @stage, and matches
+ * it with the red, green, and blue channels of @color. The alpha
+ * component of @color and @result is ignored.
+ *
+ * Returns: %TRUE if the colors match
+ *
+ * Since: 1.18
+ */
 gboolean
 clutter_test_check_color_at_point (ClutterActor       *stage,
                                    const ClutterPoint *point,
