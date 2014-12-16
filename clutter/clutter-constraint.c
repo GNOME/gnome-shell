@@ -221,7 +221,7 @@ clutter_constraint_update_allocation (ClutterConstraint *constraint,
                                                                 actor,
                                                                 allocation);
 
-  return clutter_actor_box_equal (allocation, &old_alloc);
+  return !clutter_actor_box_equal (allocation, &old_alloc);
 }
 
 void
