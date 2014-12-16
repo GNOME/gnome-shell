@@ -98,7 +98,6 @@ IGNORE_HFILES = \
 	clutter-stage-private.h		\
 	clutter-stage-window.h 		\
 	clutter-timeout-interval.h 	\
-	clutter-test-utils.h		\
 	cally				\
 	cex100				\
 	cogl 				\

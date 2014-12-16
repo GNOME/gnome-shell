@@ -1334,6 +1334,18 @@ clutter_ungrab_pointer_for_device
 <SUBSECTION>
 clutter_do_event
 
+<SUBSECTION Private>
+CLUTTER_TEST_UNIT
+CLUTTER_TEST_SUITE
+clutter_test_init
+clutter_test_run
+clutter_test_add
+clutter_test_add_data
+clutter_test_add_data_full
+clutter_test_get_stage
+clutter_test_check_actor_at_point
+clutter_test_check_color_at_point
+
 <SUBSECTION Standard>
 CLUTTER_INIT_ERROR
 <SUBSECTION Private>
