@@ -1,6 +1,5 @@
 desktopfiles_in_files = \
-	mutter.desktop.in \
-	mutter-wayland.desktop.in
+	mutter.desktop.in
 desktopfilesdir = $(datadir)/applications
 desktopfiles_DATA = $(desktopfiles_in_files:.desktop.in=.desktop)
 
