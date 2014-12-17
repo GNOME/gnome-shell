@@ -618,6 +618,7 @@ const WindowManager = new Lang.Class({
         this._shellwm.connect('destroy', Lang.bind(this, this._destroyWindow));
         this._shellwm.connect('filter-keybinding', Lang.bind(this, this._filterKeybinding));
         this._shellwm.connect('confirm-display-change', Lang.bind(this, this._confirmDisplayChange));
+        global.screen.connect('restacked', Lang.bind(this, this._syncStacking));
 
         this._workspaceSwitcherPopup = null;
         this._tilePreview = null;
@@ -1246,6 +1247,24 @@ const WindowManager = new Lang.Class({
             return false;
 
         return !(this._allowedKeybindings[binding.get_name()] & Main.actionMode);
+    },
+
+    _syncStacking: function() {
+        if (this._switchData == null)
+            return;
+
+        // Update stacking of windows in inGroup (aka the workspace we are
+        // switching to). Windows in outGroup are about to be hidden anyway,
+        // so we just ignore them here.
+        let windows = global.get_window_actors();
+        let sibling = null;
+        for (let i = 0; i < windows.length; i++) {
+            if (windows[i].get_parent() != this._switchData.inGroup)
+                continue;
+
+            this._switchData.inGroup.set_child_above_sibling(windows[i], sibling);
+            sibling = windows[i];
+        }
     },
 
     _switchWorkspace : function(shellwm, from, to, direction) {
