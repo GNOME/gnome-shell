@@ -80,6 +80,10 @@
 
 #ifdef HAVE_WAYLAND
 #include "wayland/meta-wayland.h"
+# endif
+
+#if defined(HAVE_NATIVE_BACKEND) && defined(HAVE_WAYLAND)
+#include <systemd/sd-login.h>
 #endif
 
 /*
@@ -291,18 +295,92 @@ on_sigterm (gpointer user_data)
   return G_SOURCE_REMOVE;
 }
 
+#if defined(HAVE_WAYLAND) && defined(HAVE_NATIVE_BACKEND)
+static char *
+find_logind_session_type (void)
+{
+  char **sessions;
+  char *session_id;
+  char *session_type;
+  int ret, i;
+
+  ret = sd_pid_get_session (0, &session_id);
+
+  if (ret == 0 && session_id != NULL)
+    {
+      ret = sd_session_get_type (session_id, &session_type);
+      free (session_id);
+
+      if (ret < 0)
+        session_type = NULL;
+
+      goto out;
+    }
+  session_type = NULL;
+
+  ret = sd_uid_get_sessions (getuid (), TRUE, &sessions);
+
+  if (ret < 0 || sessions == NULL)
+    goto out;
+
+  for (i = 0; sessions[i] != NULL; i++)
+    {
+      ret = sd_session_get_type (sessions[i], &session_type);
+
+      if (ret < 0)
+        continue;
+
+      if (g_strcmp0 (session_type, "x11") == 0||
+          g_strcmp0 (session_type, "wayland") == 0)
+        break;
+
+      g_clear_pointer (&session_type, (GDestroyNotify) free);
+    }
+
+  for (i = 0; sessions[i] != NULL; i++)
+    free (sessions[i]);
+  free (sessions);
+
+out:
+  return session_type;
+}
+
+static gboolean
+check_for_wayland_session_type (void)
+{
+  char *session_type = NULL;
+  gboolean is_wayland = FALSE;
+
+  session_type = find_logind_session_type ();
+
+  if (session_type != NULL)
+    {
+      is_wayland = g_strcmp0 (session_type, "wayland") == 0;
+      free (session_type);
+    }
+
+  return is_wayland;
+}
+#endif
+
 static void
 init_backend (void)
 {
+  gboolean session_type_is_wayland = FALSE;
+
+#if defined(HAVE_WAYLAND) && defined(HAVE_NATIVE_BACKEND)
+  session_type_is_wayland = check_for_wayland_session_type ();
+#endif
+
 #if defined(CLUTTER_WINDOWING_EGL) && defined(HAVE_NATIVE_BACKEND)
-  if (opt_display_server)
+  if (opt_display_server || session_type_is_wayland)
     clutter_set_windowing_backend (CLUTTER_WINDOWING_EGL);
   else
 #endif
     clutter_set_windowing_backend (CLUTTER_WINDOWING_X11);
 
 #ifdef HAVE_WAYLAND
-  meta_set_is_wayland_compositor (opt_wayland);
+  meta_set_is_wayland_compositor (opt_wayland || session_type_is_wayland);
 #endif
 }
 
