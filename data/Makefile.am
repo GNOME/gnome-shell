@@ -2,7 +2,7 @@ CLEANFILES =
 NULL =
 
 desktopdir=$(datadir)/applications
-desktop_DATA = gnome-shell.desktop gnome-shell-wayland.desktop  gnome-shell-extension-prefs.desktop
+desktop_DATA = org.gnome.Shell.desktop gnome-shell-extension-prefs.desktop
 
 if HAVE_NETWORKMANAGER
 desktop_DATA += org.gnome.Shell.PortalHelper.desktop
@@ -104,8 +104,7 @@ convertdir = $(datadir)/GConf/gsettings
 convert_DATA = gnome-shell-overrides.convert
 
 EXTRA_DIST =						\
-	gnome-shell.desktop.in.in			\
-	gnome-shell-wayland.desktop.in.in		\
+	org.gnome.Shell.desktop.in.in			\
 	gnome-shell-extension-prefs.desktop.in.in	\
 	$(introspection_DATA)				\
 	$(menu_DATA)					\
@@ -121,8 +120,7 @@ EXTRA_DIST =						\
 	$(NULL)
 
 CLEANFILES +=						\
-	gnome-shell.desktop.in				\
-	gnome-shell-wayland.desktop.in			\
+	org.gnome.Shell.desktop.in			\
 	gnome-shell-extension-prefs.in			\
 	$(desktop_DATA)					\
 	$(keys_DATA)					\

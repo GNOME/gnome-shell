@@ -140,7 +140,7 @@
 
                 <para>
                         <filename>/usr/share/gnome-session/sessions/gnome.session</filename>,
-                        <filename>/usr/share/applications/gnome-shell.desktop</filename>.</para>
+                        <filename>/usr/share/applications/org.gnome.Shell.desktop</filename>.</para>
         </refsect1>
 
         <refsect1>
