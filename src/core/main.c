@@ -291,6 +291,21 @@ on_sigterm (gpointer user_data)
   return G_SOURCE_REMOVE;
 }
 
+static void
+init_backend (void)
+{
+#if defined(CLUTTER_WINDOWING_EGL) && defined(HAVE_NATIVE_BACKEND)
+  if (opt_display_server)
+    clutter_set_windowing_backend (CLUTTER_WINDOWING_EGL);
+  else
+#endif
+    clutter_set_windowing_backend (CLUTTER_WINDOWING_X11);
+
+#ifdef HAVE_WAYLAND
+  meta_set_is_wayland_compositor (opt_wayland);
+#endif
+}
+
 /**
  * meta_init: (skip)
  *
@@ -323,16 +338,7 @@ meta_init (void)
   if (g_getenv ("MUTTER_DEBUG"))
     meta_set_debugging (TRUE);
 
-#if defined(CLUTTER_WINDOWING_EGL) && defined(HAVE_NATIVE_BACKEND)
-  if (opt_display_server)
-    clutter_set_windowing_backend (CLUTTER_WINDOWING_EGL);
-  else
-#endif
-    clutter_set_windowing_backend (CLUTTER_WINDOWING_X11);
-
-#ifdef HAVE_WAYLAND
-  meta_set_is_wayland_compositor (opt_wayland);
-#endif
+  init_backend ();
 
   if (g_get_home_dir ())
     if (chdir (g_get_home_dir ()) < 0)
