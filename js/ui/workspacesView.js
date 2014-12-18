@@ -18,8 +18,6 @@ const Workspace = imports.ui.workspace;
 const WorkspaceThumbnail = imports.ui.workspaceThumbnail;
 
 const WORKSPACE_SWITCH_TIME = 0.25;
-// Note that mutter has a compile-time limit of 36
-const MAX_WORKSPACES = 16;
 
 const AnimationType = {
     ZOOM: 0,
