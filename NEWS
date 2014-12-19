@@ -1,3 +1,14 @@
+3.15.3
+======
+* Don't leave left-over frames queued [Owen; #738686]
+* Set CRTC configuration even if it might be redundant [Rui; #740838]
+
+Contributors:
+  Rui Matos, Jasper St. Pierre, Rico Tzschichholz, Owen W. Taylor
+
+Translations:
+  Trần Ngọc Quân [vi], Muhammet Kara [tr]
+
 3.15.2
 ======
 * Don't enable hiDPI on monitors with broken EDID [Bastien; #734839]
