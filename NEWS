@@ -1,3 +1,16 @@
+3.14.3
+======
+* Properly remove network connections from list [Ryan; #740227]
+* Fix handling of cancel button on login screen [Ray; #740141]
+* Fix build when using dash as default shell [Alexander; #739241]
+* Make event list in calendar scrollable [Stalin; #705115]
+* Fix calendar-server crash on DBus timeout [Giovanni; #735308]
+* Fix gestures triggering erroneously [Florian; #740237]
+
+Contributors:
+  Giovanni Campagna, Ryan Lortie, Florian Müllner, Stalin Pereira, Ray Strode,
+  Alexander Tsoy
+
 3.14.2
 ======
 * Do not hard-depend on latest NetworkManager [Florian; #738485]
