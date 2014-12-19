@@ -1,3 +1,17 @@
+3.15.3
+======
+* Add support for high-contrast themes [Florian; #740447]
+* Fix banner message on login screen without user list [Ray; #703972]
+* Fix flicker when activating windows on another workspace [Florian; #741680]
+* Misc. bug fixes [Giovanni, Florian; #735308, #740237]
+
+Contributors:
+  Giovanni Campagna, Florian Müllner, Jasper St. Pierre, Ray Strode
+
+Translations:
+  Balázs Úr [hu], Josef Andersson [sv], Muhammet Kara [tr],
+  Baurzhan Muftakhidinov [kk], Inaki Larranaga Murgoitio [eu]
+
 3.15.2
 ======
 * Fix visual glitch of window preview outline in overview [Chris; #699044]
