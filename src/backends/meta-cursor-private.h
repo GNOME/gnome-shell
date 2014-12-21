@@ -25,7 +25,10 @@
 #include "meta-cursor.h"
 
 #include <cogl/cogl.h>
+
+#ifdef HAVE_NATIVE_BACKEND
 #include <gbm.h>
+#endif
 
 typedef struct {
   CoglTexture2D *texture;

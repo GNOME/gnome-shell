@@ -30,8 +30,6 @@
 #include <meta/screen.h>
 #include "meta-cursor.h"
 
-#include <gbm.h>
-
 #define META_TYPE_CURSOR_RENDERER            (meta_cursor_renderer_get_type ())
 #define META_CURSOR_RENDERER(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_CURSOR_RENDERER, MetaCursorRenderer))
 #define META_CURSOR_RENDERER_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  META_TYPE_CURSOR_RENDERER, MetaCursorRendererClass))
