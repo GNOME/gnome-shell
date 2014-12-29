@@ -1263,7 +1263,7 @@ meta_screen_update_cursor (MetaScreen *screen)
 
   cursor_ref = meta_cursor_reference_from_theme (cursor);
   if (cursor_ref == NULL)
-    g_fatal ("Could not find cursor. Perhaps set XCURSOR_PATH?");
+    meta_fatal ("Could not find cursor. Perhaps set XCURSOR_PATH?");
 
   meta_cursor_tracker_set_root_cursor (tracker, cursor_ref);
   meta_cursor_reference_unref (cursor_ref);
