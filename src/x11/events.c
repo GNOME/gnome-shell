@@ -628,7 +628,7 @@ meta_spew_core_event (MetaDisplay *display,
   *extra_p = extra;
 }
 
-G_GNUC_UNUSED static void
+static char *
 meta_spew_event (MetaDisplay *display,
                  XEvent      *event)
 {
@@ -636,7 +636,39 @@ meta_spew_event (MetaDisplay *display,
   const char *name = NULL;
   char *extra = NULL;
   char *winname;
+  char *ret;
   XIEvent *input_event;
+
+  input_event = get_input_event (display, event);
+
+  if (input_event)
+    meta_spew_xi2_event (display, input_event, &name, &extra);
+  else
+    meta_spew_core_event (display, event, &name, &extra);
+
+  if (event->xany.window == screen->xroot)
+    winname = g_strdup_printf ("root %d", screen->number);
+  else
+    winname = g_strdup_printf ("0x%lx", event->xany.window);
+
+  ret = g_strdup_printf ("%s on %s%s %s %sserial %lu", name, winname,
+                         extra ? ":" : "", extra ? extra : "",
+                         event->xany.send_event ? "SEND " : "",
+                         event->xany.serial);
+
+  g_free (winname);
+
+  if (extra)
+    g_free (extra);
+
+  return ret;
+}
+
+G_GNUC_UNUSED static void
+meta_spew_event_print (MetaDisplay *display,
+                       XEvent      *event)
+{
+  char *event_str;
 
   /* filter overnumerous events */
   if (event->type == Expose || event->type == MotionNotify ||
@@ -652,27 +684,9 @@ meta_spew_event (MetaDisplay *display,
   if (event->type == PropertyNotify && event->xproperty.atom == display->atom__NET_WM_USER_TIME)
     return;
 
-  input_event = get_input_event (display, event);
-
-  if (input_event)
-    meta_spew_xi2_event (display, input_event, &name, &extra);
-  else
-    meta_spew_core_event (display, event, &name, &extra);
-
-  if (event->xany.window == screen->xroot)
-    winname = g_strdup_printf ("root %d", screen->number);
-  else
-    winname = g_strdup_printf ("0x%lx", event->xany.window);
-
-  g_print ("%s on %s%s %s %sserial %lu\n", name, winname,
-           extra ? ":" : "", extra ? extra : "",
-           event->xany.send_event ? "SEND " : "",
-           event->xany.serial);
-
-  g_free (winname);
-
-  if (extra)
-    g_free (extra);
+  event_str = meta_spew_event (display, event);
+  g_print ("%s\n", event_str);
+  g_free (event_str);
 }
 
 static gboolean
@@ -1653,7 +1667,7 @@ meta_display_handle_xevent (MetaDisplay *display,
   XIEvent *input_event;
 
 #if 0
-  meta_spew_event (display, event);
+  meta_spew_event_print (display, event);
 #endif
 
 #ifdef HAVE_STARTUP_NOTIFICATION
