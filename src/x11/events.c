@@ -657,9 +657,7 @@ meta_spew_event (MetaDisplay *display,
                          event->xany.serial);
 
   g_free (winname);
-
-  if (extra)
-    g_free (extra);
+  g_free (extra);
 
   return ret;
 }
