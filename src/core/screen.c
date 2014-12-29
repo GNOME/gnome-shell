@@ -2889,7 +2889,7 @@ meta_screen_set_cm_selection (MetaScreen *screen)
 
   timestamp = meta_display_get_current_time_roundtrip (screen->display);
   g_snprintf (selection, sizeof (selection), "_NET_WM_CM_S%d", screen->number);
-  a = XInternAtom (xdisplay, selection, False);
+  a = XInternAtom (screen->display->xdisplay, selection, False);
   screen->wm_cm_selection_window = take_manager_selection (screen->display, screen->xroot, a, timestamp, TRUE);
 }
 
