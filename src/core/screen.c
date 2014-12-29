@@ -835,8 +835,7 @@ meta_screen_free (MetaScreen *screen,
   if (screen->check_fullscreen_later != 0)
     meta_later_remove (screen->check_fullscreen_later);
 
-  if (screen->monitor_infos)
-    g_free (screen->monitor_infos);
+  g_free (screen->monitor_infos);
 
   if (screen->tile_preview_timeout_id)
     g_source_remove (screen->tile_preview_timeout_id);

@@ -609,8 +609,7 @@ meta_frames_unmanage_window (MetaFrames *frames,
       if (frame->layout)
         g_object_unref (G_OBJECT (frame->layout));
 
-      if (frame->title)
-        g_free (frame->title);
+      g_free (frame->title);
 
       g_free (frame);
     }

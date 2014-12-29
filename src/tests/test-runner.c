@@ -330,8 +330,7 @@ test_client_do (TestClient *client,
 
  out:
   g_string_free (command, TRUE);
-  if (line)
-    g_free (line);
+  g_free (line);
 
   return *error == NULL;
 }
