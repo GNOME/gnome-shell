@@ -241,7 +241,7 @@ event_get_time (MetaDisplay *display,
     }
 }
 
-G_GNUC_UNUSED const char*
+const char*
 meta_event_detail_to_string (int d)
 {
   const char *detail = "???";
@@ -278,7 +278,7 @@ meta_event_detail_to_string (int d)
   return detail;
 }
 
-G_GNUC_UNUSED const char*
+const char*
 meta_event_mode_to_string (int m)
 {
   const char *mode = "???";
@@ -321,7 +321,7 @@ stack_mode_to_string (int mode)
   return "Unknown";
 }
 
-G_GNUC_UNUSED static gint64
+static gint64
 sync_value_to_64 (const XSyncValue *value)
 {
   gint64 v;
@@ -332,7 +332,7 @@ sync_value_to_64 (const XSyncValue *value)
   return v;
 }
 
-G_GNUC_UNUSED static const char*
+static const char*
 alarm_state_to_string (XSyncAlarmState state)
 {
   switch (state)
@@ -348,7 +348,7 @@ alarm_state_to_string (XSyncAlarmState state)
     }
 }
 
-G_GNUC_UNUSED static void
+static void
 meta_spew_xi2_event (MetaDisplay *display,
                      XIEvent     *input_event,
                      const char **name_p,
@@ -408,7 +408,7 @@ meta_spew_xi2_event (MetaDisplay *display,
   *extra_p = extra;
 }
 
-G_GNUC_UNUSED static void
+static void
 meta_spew_core_event (MetaDisplay *display,
                       XEvent      *event,
                       const char **name_p,
