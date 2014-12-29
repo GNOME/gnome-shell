@@ -33,8 +33,6 @@
 #include <cogl/cogl.h>
 #include <clutter/clutter.h>
 
-#include <X11/extensions/Xfixes.h>
-
 #include "meta-stage.h"
 
 struct _MetaCursorRendererPrivate

@@ -42,7 +42,6 @@
 #include <gdk/gdkx.h>
 #include <X11/extensions/Xfixes.h>
 
-#include <X11/extensions/Xfixes.h>
 #include "meta-backend-private.h"
 #include "meta-cursor-private.h"
 
