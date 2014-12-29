@@ -45,7 +45,6 @@ void meta_screen_get_size (MetaScreen *screen,
                            int        *height);
 
 void meta_screen_set_cm_selection (MetaScreen *screen);
-void meta_screen_unset_cm_selection (MetaScreen *screen);
 
 GSList *meta_screen_get_startup_sequences (MetaScreen *screen);
 
