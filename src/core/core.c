@@ -161,8 +161,7 @@ lower_window_and_transients (MetaWindow *window,
 
   meta_window_foreach_transient (window, lower_window_and_transients, NULL);
 
-  if (meta_prefs_get_focus_mode () == G_DESKTOP_FOCUS_MODE_CLICK &&
-      meta_prefs_get_raise_on_click ())
+  if (meta_prefs_get_raise_on_click ())
     {
       /* Move window to the back of the focusing workspace's MRU list.
        * Do extra sanity checks to avoid possible race conditions.
