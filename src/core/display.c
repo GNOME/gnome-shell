@@ -122,6 +122,7 @@ enum
   GRAB_OP_END,
   SHOW_RESTART_MESSAGE,
   RESTART,
+  SHOW_RESIZE_POPUP,
   LAST_SIGNAL
 };
 
@@ -328,6 +329,16 @@ meta_display_class_init (MetaDisplayClass *klass)
                   g_signal_accumulator_true_handled,
                   NULL, NULL,
                   G_TYPE_BOOLEAN, 0);
+
+  display_signals[SHOW_RESIZE_POPUP] =
+    g_signal_new ("show-resize-popup",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  g_signal_accumulator_true_handled,
+                  NULL, NULL,
+                  G_TYPE_BOOLEAN, 4,
+                  G_TYPE_BOOLEAN, META_TYPE_RECTANGLE, G_TYPE_INT, G_TYPE_INT);
 
   g_object_class_install_property (object_class,
                                    PROP_FOCUS_WINDOW,
@@ -3014,6 +3025,22 @@ meta_display_request_restart (MetaDisplay *display)
   g_signal_emit (display,
                  display_signals[RESTART], 0,
                  &result);
+
+  return result;
+}
+
+gboolean
+meta_display_show_resize_popup (MetaDisplay *display,
+                                gboolean show,
+                                MetaRectangle *rect,
+                                int display_w,
+                                int display_h)
+{
+  gboolean result = FALSE;
+
+  g_signal_emit (display,
+                 display_signals[SHOW_RESIZE_POPUP], 0,
+                 show, rect, display_w, display_h, &result);
 
   return result;
 }

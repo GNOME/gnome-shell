@@ -25,7 +25,6 @@
 
 #include "window-private.h"
 #include "x11/iconcache.h"
-#include "ui/resizepopup.h"
 
 G_BEGIN_DECLS
 
@@ -56,7 +55,7 @@ struct _MetaWindowX11Private
   /* Requested geometry */
   int border_width;
 
-  MetaResizePopup *grab_resize_popup;
+  gboolean showing_resize_popup;
 
   /* These are in server coordinates. If we have a frame, it's
    * relative to the frame. */

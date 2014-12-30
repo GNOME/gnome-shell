@@ -44,7 +44,6 @@
 #include "window-private.h"
 #include "window-props.h"
 #include "xprops.h"
-#include "resizepopup.h"
 #include "session.h"
 #include "workspace-private.h"
 
@@ -831,18 +830,28 @@ meta_window_refresh_resize_popup (MetaWindow *window)
 {
   MetaWindowX11 *window_x11 = META_WINDOW_X11 (window);
   MetaWindowX11Private *priv = meta_window_x11_get_instance_private (window_x11);
-  MetaRectangle rect;
 
-  meta_window_get_client_root_coords (window, &rect);
+  if (priv->showing_resize_popup)
+    {
+      MetaRectangle rect;
+      int display_w, display_h;
 
-  meta_ui_resize_popup_set (priv->grab_resize_popup,
-                            rect,
-                            window->size_hints.base_width,
-                            window->size_hints.base_height,
-                            window->size_hints.width_inc,
-                            window->size_hints.height_inc);
+      meta_window_get_client_root_coords (window, &rect);
 
-  meta_ui_resize_popup_set_showing (priv->grab_resize_popup, TRUE);
+      display_w = (rect.width - window->size_hints.base_width);
+      if (window->size_hints.width_inc > 0)
+        display_w /= window->size_hints.width_inc;
+
+      display_h = (rect.height - window->size_hints.base_height);
+      if (window->size_hints.height_inc > 0)
+        display_h /= window->size_hints.height_inc;
+
+      meta_display_show_resize_popup (window->display, TRUE, &rect, display_w, display_h);
+    }
+  else
+    {
+      meta_display_show_resize_popup (window->display, FALSE, NULL, 0, 0);
+    }
 }
 
 static void
@@ -859,8 +868,7 @@ meta_window_x11_grab_op_began (MetaWindow *window,
 
       if (window->size_hints.width_inc > 1 || window->size_hints.height_inc > 1)
         {
-          priv->grab_resize_popup = meta_ui_resize_popup_new (window->display->xdisplay,
-                                                              window->screen->number);
+          priv->showing_resize_popup = TRUE;
           meta_window_refresh_resize_popup (window);
         }
     }
@@ -875,10 +883,10 @@ meta_window_x11_grab_op_ended (MetaWindow *window,
   MetaWindowX11 *window_x11 = META_WINDOW_X11 (window);
   MetaWindowX11Private *priv = meta_window_x11_get_instance_private (window_x11);
 
-  if (priv->grab_resize_popup)
+  if (priv->showing_resize_popup)
     {
-      meta_ui_resize_popup_free (priv->grab_resize_popup);
-      priv->grab_resize_popup = NULL;
+      priv->showing_resize_popup = FALSE;
+      meta_window_refresh_resize_popup (window);
     }
 
   META_WINDOW_CLASS (meta_window_x11_parent_class)->grab_op_ended (window, op);
@@ -1264,7 +1272,7 @@ meta_window_x11_move_resize_internal (MetaWindow                *window,
   if (need_configure_notify)
     send_configure_notify (window);
 
-  if (priv->grab_resize_popup)
+  if (priv->showing_resize_popup)
     meta_window_refresh_resize_popup (window);
 
   if (frame_shape_changed)

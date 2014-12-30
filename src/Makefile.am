@@ -198,8 +198,6 @@ libmutter_la_SOURCES =				\
 	ui/ui.h					\
 	ui/frames.c				\
 	ui/frames.h				\
-	ui/resizepopup.c			\
-	ui/resizepopup.h			\
 	ui/theme.c				\
 	meta/theme.h				\
 	ui/theme-private.h			\
