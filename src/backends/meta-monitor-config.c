@@ -1074,7 +1074,7 @@ find_primary_output (MetaOutput *outputs,
 
   for (i = 0; i < n_outputs; i++)
     {
-      if (output_is_laptop (output))
+      if (output_is_laptop (&outputs[i]))
         return &outputs[i];
     }
 
