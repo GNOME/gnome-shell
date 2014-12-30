@@ -580,6 +580,35 @@ const AppSwitchAction = new Lang.Class({
 });
 Signals.addSignalMethods(AppSwitchAction.prototype);
 
+const ResizePopup = new Lang.Class({
+    Name: 'ResizePopup',
+
+    _init: function() {
+        this._widget = new St.Widget({ layout_manager: new Clutter.BinLayout() });
+        this._label = new St.Label({ style_class: 'resize-popup',
+                                     x_align: Clutter.ActorAlign.CENTER,
+                                     y_align: Clutter.ActorAlign.CENTER,
+                                     x_expand: true, y_expand: true });
+        this._widget.add_child(this._label);
+        Main.uiGroup.add_actor(this._widget);
+    },
+
+    set: function(rect, displayW, displayH) {
+        /* Translators: This represents the size of a window. The first number is
+         * the width of the window and the second is the height. */
+        let text = _("%d x %d").format(displayW, displayH);
+        this._label.set_text(text);
+
+        this._widget.set_position(rect.x, rect.y);
+        this._widget.set_size(rect.width, rect.height);
+    },
+
+    destroy: function() {
+        this._widget.destroy();
+        this._widget = null;
+    },
+});
+
 const WindowManager = new Lang.Class({
     Name: 'WindowManager',
 
@@ -791,6 +820,8 @@ const WindowManager = new Lang.Class({
                            Shell.ActionMode.NORMAL |
                            Shell.ActionMode.TOPBAR_POPUP,
                            Lang.bind(this, this._toggleAppMenu));
+
+        global.display.connect('show-resize-popup', Lang.bind(this, this._showResizePopup));
 
         Main.overview.connect('showing', Lang.bind(this, function() {
             for (let i = 0; i < this._dimmedWindows.length; i++)
@@ -1521,5 +1552,17 @@ const WindowManager = new Lang.Class({
     _confirmDisplayChange: function() {
         let dialog = new DisplayChangeDialog(this._shellwm);
         dialog.open();
+    },
+
+    _showResizePopup: function(display, show, rect, displayW, displayH) {
+        if (show) {
+            if (!this._resizePopup)
+                this._resizePopup = new ResizePopup();
+
+            this._resizePopup.set(rect, displayW, displayH);
+        } else {
+            if (this._resizePopup)
+                this._resizePopup.destroy();
+        }
     },
 });

@@ -2107,6 +2107,15 @@ StScrollBar StButton#vhandle:active {
     font-size: 14pt;
 }
 
+/* Resize popup */
+.resize-popup {
+    border-radius: 10px;
+    background-color: rgba(0.0, 0.0, 0.0, 0.9);
+    border: 2px solid #868686;
+    padding: 16px;
+    font-size: 14pt;
+}
+
 /* ShellMountOperation Dialogs */
 .shell-mount-operation-icon {
     icon-size: 48px;
