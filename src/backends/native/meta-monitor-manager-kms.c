@@ -537,6 +537,9 @@ meta_monitor_manager_kms_read_current (MetaMonitorManager *manager)
               meta_output->serial = g_strdup ("unknown");
             }
 
+          /* MetaConnectorType matches DRM's connector types */
+          meta_output->connector_type = (MetaConnectorType) connector->connector_type;
+
           /* FIXME: backlight is a very driver specific thing unfortunately,
              every DDX does its own thing, and the dumb KMS API does not include it.
 

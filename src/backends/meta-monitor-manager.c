@@ -396,6 +396,32 @@ make_display_name (MetaMonitorManager *manager,
   return ret;
 }
 
+static const char *
+get_connector_type_name (MetaConnectorType connector_type)
+{
+  switch (connector_type)
+    {
+    case META_CONNECTOR_TYPE_Unknown: return "Unknown";
+    case META_CONNECTOR_TYPE_VGA: return "VGA";
+    case META_CONNECTOR_TYPE_DVII: return "DVII";
+    case META_CONNECTOR_TYPE_DVID: return "DVID";
+    case META_CONNECTOR_TYPE_DVIA: return "DVIA";
+    case META_CONNECTOR_TYPE_Composite: return "Composite";
+    case META_CONNECTOR_TYPE_SVIDEO: return "SVIDEO";
+    case META_CONNECTOR_TYPE_LVDS: return "LVDS";
+    case META_CONNECTOR_TYPE_Component: return "Component";
+    case META_CONNECTOR_TYPE_9PinDIN: return "9PinDIN";
+    case META_CONNECTOR_TYPE_DisplayPort: return "DisplayPort";
+    case META_CONNECTOR_TYPE_HDMIA: return "HDMIA";
+    case META_CONNECTOR_TYPE_HDMIB: return "HDMIB";
+    case META_CONNECTOR_TYPE_TV: return "TV";
+    case META_CONNECTOR_TYPE_eDP: return "eDP";
+    case META_CONNECTOR_TYPE_VIRTUAL: return "VIRTUAL";
+    case META_CONNECTOR_TYPE_DSI: return "DSI";
+    default: g_assert_not_reached ();
+    }
+}
+
 static gboolean
 meta_monitor_manager_handle_get_resources (MetaDBusDisplayConfig *skeleton,
                                            GDBusMethodInvocation *invocation)
@@ -476,6 +502,8 @@ meta_monitor_manager_handle_get_resources (MetaDBusDisplayConfig *skeleton,
                              g_variant_new_boolean (output->is_primary));
       g_variant_builder_add (&properties, "{sv}", "presentation",
                              g_variant_new_boolean (output->is_presentation));
+      g_variant_builder_add (&properties, "{sv}", "connector-type",
+                             g_variant_new_string (get_connector_type_name (output->connector_type)));
 
       edid_file = manager_class->get_edid_file (manager, output);
       if (edid_file)

@@ -69,6 +69,27 @@ typedef enum {
   META_MONITOR_TRANSFORM_FLIPPED_270,
 } MetaMonitorTransform;
 
+/* This matches the values in drm_mode.h */
+typedef enum {
+  META_CONNECTOR_TYPE_Unknown = 0,
+  META_CONNECTOR_TYPE_VGA = 1,
+  META_CONNECTOR_TYPE_DVII = 2,
+  META_CONNECTOR_TYPE_DVID = 3,
+  META_CONNECTOR_TYPE_DVIA = 4,
+  META_CONNECTOR_TYPE_Composite = 5,
+  META_CONNECTOR_TYPE_SVIDEO = 6,
+  META_CONNECTOR_TYPE_LVDS = 7,
+  META_CONNECTOR_TYPE_Component = 8,
+  META_CONNECTOR_TYPE_9PinDIN = 9,
+  META_CONNECTOR_TYPE_DisplayPort = 10,
+  META_CONNECTOR_TYPE_HDMIA = 11,
+  META_CONNECTOR_TYPE_HDMIB = 12,
+  META_CONNECTOR_TYPE_TV = 13,
+  META_CONNECTOR_TYPE_eDP = 14,
+  META_CONNECTOR_TYPE_VIRTUAL = 15,
+  META_CONNECTOR_TYPE_DSI = 16,
+} MetaConnectorType;
+
 struct _MetaOutput
 {
   /* The CRTC driving this output, NULL if the output is not enabled */
@@ -83,6 +104,8 @@ struct _MetaOutput
   int height_mm;
   CoglSubpixelOrder subpixel_order;
   int scale;
+
+  MetaConnectorType connector_type;
 
   MetaMonitorMode *preferred_mode;
   MetaMonitorMode **modes;

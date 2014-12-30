@@ -406,6 +406,147 @@ output_get_suggested_y (MetaMonitorManagerXrandr *manager_xrandr,
   return -1;
 }
 
+static MetaConnectorType
+connector_type_from_atom (MetaMonitorManagerXrandr *manager_xrandr,
+                          Atom                      atom)
+{
+  Display *xdpy = manager_xrandr->xdisplay;
+
+  if (atom == XInternAtom (xdpy, "HDMI", True))
+    return META_CONNECTOR_TYPE_HDMIA;
+  if (atom == XInternAtom (xdpy, "VGA", True))
+    return META_CONNECTOR_TYPE_VGA;
+  /* Doesn't have a DRM equivalent, but means an internal panel.
+   * We could pick either LVDS or eDP here. */
+  if (atom == XInternAtom (xdpy, "Panel", True))
+    return META_CONNECTOR_TYPE_LVDS;
+  if (atom == XInternAtom (xdpy, "DVI", True) || atom == XInternAtom (xdpy, "DVI-I", True))
+    return META_CONNECTOR_TYPE_DVII;
+  if (atom == XInternAtom (xdpy, "DVI-A", True))
+    return META_CONNECTOR_TYPE_DVIA;
+  if (atom == XInternAtom (xdpy, "DVI-D", True))
+    return META_CONNECTOR_TYPE_DVID;
+  if (atom == XInternAtom (xdpy, "DisplayPort", True))
+    return META_CONNECTOR_TYPE_DisplayPort;
+
+  if (atom == XInternAtom (xdpy, "TV", True))
+    return META_CONNECTOR_TYPE_TV;
+  if (atom == XInternAtom (xdpy, "TV-Composite", True))
+    return META_CONNECTOR_TYPE_Composite;
+  if (atom == XInternAtom (xdpy, "TV-SVideo", True))
+    return META_CONNECTOR_TYPE_SVIDEO;
+  /* Another set of mismatches. */
+  if (atom == XInternAtom (xdpy, "TV-SCART", True))
+    return META_CONNECTOR_TYPE_TV;
+  if (atom == XInternAtom (xdpy, "TV-C4", True))
+    return META_CONNECTOR_TYPE_TV;
+
+  return META_CONNECTOR_TYPE_Unknown;
+}
+
+static MetaConnectorType
+output_get_connector_type_from_prop (MetaMonitorManagerXrandr *manager_xrandr,
+                                     MetaOutput               *output)
+{
+  MetaConnectorType ret = META_CONNECTOR_TYPE_Unknown;
+  Atom atom, actual_type, connector_type_atom;
+  int actual_format;
+  unsigned long nitems, bytes_after;
+  unsigned char *buffer;
+
+  atom = XInternAtom (manager_xrandr->xdisplay, "ConnectorType", False);
+  XRRGetOutputProperty (manager_xrandr->xdisplay,
+                        (XID)output->winsys_id,
+                        atom,
+                        0, G_MAXLONG, False, False, XA_ATOM,
+                        &actual_type, &actual_format,
+                        &nitems, &bytes_after, &buffer);
+
+  if (actual_type != XA_ATOM || actual_format != 32 || nitems < 1)
+    goto out;
+
+  connector_type_atom = ((Atom *) buffer)[0];
+  ret = connector_type_from_atom (manager_xrandr, connector_type_atom);
+
+ out:
+  meta_XFree (buffer);
+  return ret;
+}
+
+static MetaConnectorType
+output_get_connector_type_from_name (MetaMonitorManagerXrandr *manager_xrandr,
+                                     MetaOutput               *output)
+{
+  const char *name = output->name;
+
+  /* drmmode_display.c, which was copy/pasted across all the FOSS
+   * xf86-video-* drivers, seems to name its outputs based on the
+   * connector type, so look for that....
+   *
+   * SNA has its own naming scheme, because what else did you expect
+   * from SNA, but it's not too different, so we can thankfully use
+   * that with minor changes.
+   *
+   * http://cgit.freedesktop.org/xorg/xserver/tree/hw/xfree86/drivers/modesetting/drmmode_display.c#n953
+   * http://cgit.freedesktop.org/xorg/driver/xf86-video-intel/tree/src/sna/sna_display.c#n3486
+   */
+
+  if (g_str_has_prefix (name, "DVI"))
+    return META_CONNECTOR_TYPE_DVII;
+  if (g_str_has_prefix (name, "LVDS"))
+    return META_CONNECTOR_TYPE_LVDS;
+  if (g_str_has_prefix (name, "HDMI"))
+    return META_CONNECTOR_TYPE_HDMIA;
+  if (g_str_has_prefix (name, "VGA"))
+    return META_CONNECTOR_TYPE_VGA;
+  /* SNA uses DP, not DisplayPort. Test for both. */
+  if (g_str_has_prefix (name, "DP") || g_str_has_prefix (name, "DisplayPort"))
+    return META_CONNECTOR_TYPE_DisplayPort;
+  if (g_str_has_prefix (name, "eDP"))
+    return META_CONNECTOR_TYPE_eDP;
+  if (g_str_has_prefix (name, "Virtual"))
+    return META_CONNECTOR_TYPE_VIRTUAL;
+  if (g_str_has_prefix (name, "Composite"))
+    return META_CONNECTOR_TYPE_VGA;
+  if (g_str_has_prefix (name, "S-video"))
+    return META_CONNECTOR_TYPE_SVIDEO;
+  if (g_str_has_prefix (name, "TV"))
+    return META_CONNECTOR_TYPE_TV;
+  if (g_str_has_prefix (name, "CTV"))
+    return META_CONNECTOR_TYPE_Composite;
+  if (g_str_has_prefix (name, "DSI"))
+    return META_CONNECTOR_TYPE_DSI;
+  if (g_str_has_prefix (name, "DIN"))
+    return META_CONNECTOR_TYPE_9PinDIN;
+
+  return META_CONNECTOR_TYPE_Unknown;
+}
+
+static MetaConnectorType
+output_get_connector_type (MetaMonitorManagerXrandr *manager_xrandr,
+                           MetaOutput               *output)
+{
+  MetaConnectorType ret;
+
+  /* The "ConnectorType" property is considered mandatory since RandR 1.3,
+   * but none of the FOSS drivers support it, because we're a bunch of
+   * professional software developers.
+   *
+   * Try poking it first, without any expectations that it will work.
+   * If it's not there, we thankfully have other bonghits to try next.
+   */
+  ret = output_get_connector_type_from_prop (manager_xrandr, output);
+  if (ret != META_CONNECTOR_TYPE_Unknown)
+    return ret;
+
+  /* Fall back to heuristics based on the output name. */
+  ret = output_get_connector_type_from_name (manager_xrandr, output);
+  if (ret != META_CONNECTOR_TYPE_Unknown)
+    return ret;
+
+  return META_CONNECTOR_TYPE_Unknown;
+}
+
 static char *
 get_xmode_name (XRRModeInfo *xmode)
 {
@@ -595,6 +736,7 @@ meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
           meta_output->hotplug_mode_update = output_get_hotplug_mode_update (manager_xrandr, meta_output);
 	  meta_output->suggested_x = output_get_suggested_x (manager_xrandr, meta_output);
 	  meta_output->suggested_y = output_get_suggested_y (manager_xrandr, meta_output);
+          meta_output->connector_type = output_get_connector_type (manager_xrandr, meta_output);
 
 	  meta_output->n_modes = output->nmode;
 	  meta_output->modes = g_new0 (MetaMonitorMode *, meta_output->n_modes);
