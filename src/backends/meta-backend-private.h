@@ -49,8 +49,7 @@ struct _MetaBackend
 {
   GObject parent;
 
-  MetaIdleMonitor *device_monitors[256];
-  int device_id_max;
+  GHashTable *device_monitors;
 };
 
 struct _MetaBackendClass

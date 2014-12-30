@@ -34,6 +34,8 @@
 #include "backends/native/meta-backend-native.h"
 #endif
 
+#include "backends/meta-idle-monitor-private.h"
+
 static MetaBackend *_backend;
 
 /**
@@ -65,15 +67,10 @@ meta_backend_finalize (GObject *object)
 {
   MetaBackend *backend = META_BACKEND (object);
   MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
-  int i;
 
   g_clear_object (&priv->monitor_manager);
 
-  for (i = 0; i <= backend->device_id_max; i++)
-    {
-      if (backend->device_monitors[i])
-        g_object_unref (backend->device_monitors[i]);
-    }
+  g_hash_table_destroy (backend->device_monitors);
 
   G_OBJECT_CLASS (meta_backend_parent_class)->finalize (object);
 }
@@ -108,27 +105,19 @@ static void
 create_device_monitor (MetaBackend *backend,
                        int          device_id)
 {
-  g_assert (backend->device_monitors[device_id] == NULL);
+  MetaIdleMonitor *idle_monitor;
 
-  backend->device_monitors[device_id] = meta_backend_create_idle_monitor (backend, device_id);
-  backend->device_id_max = MAX (backend->device_id_max, device_id);
+  g_assert (g_hash_table_lookup (backend->device_monitors, &device_id) == NULL);
+
+  idle_monitor = meta_backend_create_idle_monitor (backend, device_id);
+  g_hash_table_insert (backend->device_monitors, &idle_monitor->device_id, idle_monitor);
 }
 
 static void
 destroy_device_monitor (MetaBackend *backend,
                         int          device_id)
 {
-  g_clear_object (&backend->device_monitors[device_id]);
-
-  if (device_id == backend->device_id_max)
-    {
-      /* Reset the max device ID */
-      int i, new_max = 0;
-      for (i = 0; i < backend->device_id_max; i++)
-        if (backend->device_monitors[i] != NULL)
-          new_max = i;
-      backend->device_id_max = new_max;
-    }
+  g_hash_table_remove (backend->device_monitors, &device_id);
 }
 
 static void
@@ -169,6 +158,9 @@ meta_backend_real_post_init (MetaBackend *backend)
   meta_backend_sync_screen_size (backend);
 
   priv->cursor_renderer = META_BACKEND_GET_CLASS (backend)->create_cursor_renderer (backend);
+
+  backend->device_monitors = g_hash_table_new_full (g_int_hash, g_int_equal,
+                                                    NULL, (GDestroyNotify) g_object_unref);
 
   {
     ClutterDeviceManager *manager;
@@ -281,9 +273,7 @@ MetaIdleMonitor *
 meta_backend_get_idle_monitor (MetaBackend *backend,
                                int          device_id)
 {
-  g_return_val_if_fail (device_id >= 0 && device_id < 256, NULL);
-
-  return backend->device_monitors[device_id];
+  return g_hash_table_lookup (backend->device_monitors, &device_id);
 }
 
 /**
