@@ -95,6 +95,7 @@ meta_monitor_manager_dummy_read_current (MetaMonitorManager *manager)
   manager->outputs[0].backlight = -1;
   manager->outputs[0].backlight_min = 0;
   manager->outputs[0].backlight_max = 0;
+  manager->outputs[0].connector_type = META_CONNECTOR_TYPE_LVDS;
 }
 
 static void
