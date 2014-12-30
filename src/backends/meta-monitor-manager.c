@@ -344,11 +344,14 @@ make_display_name (MetaMonitorManager *manager,
   char *vendor_name = NULL;
   char *ret;
 
-  if (g_str_has_prefix (output->name, "LVDS") ||
-      g_str_has_prefix (output->name, "eDP"))
+  switch (output->connector_type)
     {
+    case META_CONNECTOR_TYPE_LVDS:
+    case META_CONNECTOR_TYPE_eDP:
       ret = g_strdup (_("Built-in display"));
       goto out;
+    default:
+      break;
     }
 
   if (output->width_mm > 0 && output->height_mm > 0)
