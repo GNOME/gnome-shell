@@ -956,8 +956,7 @@ make_laptop_lid_config (MetaConfiguration  *reference)
       new->keys[i].product = g_strdup (current_key->product);
       new->keys[i].serial = g_strdup (current_key->serial);
 
-      if (g_str_has_prefix (current_key->connector, "LVDS") ||
-          g_str_has_prefix (current_key->connector, "eDP"))
+      if (key_is_laptop (current_key))
         {
           new->outputs[i].enabled = FALSE;
           x_after = current_output->rect.x;
