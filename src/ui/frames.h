@@ -150,6 +150,4 @@ void meta_ui_frame_move_resize (MetaUIFrame *frame,
 
 void meta_ui_frame_queue_draw (MetaUIFrame *frame);
 
-Window meta_frames_get_moving_frame (MetaFrames *frames);
-
 #endif
