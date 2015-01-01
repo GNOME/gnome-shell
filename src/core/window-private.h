@@ -106,8 +106,8 @@ struct _MetaWindow
   char *desc; /* used in debug spew */
   char *title;
 
-  GdkPixbuf *icon;
-  GdkPixbuf *mini_icon;
+  cairo_surface_t *icon;
+  cairo_surface_t *mini_icon;
 
   MetaWindowType type;
 
@@ -479,9 +479,9 @@ struct _MetaWindowClass
   void (*get_default_skip_hints) (MetaWindow *window,
                                   gboolean   *skip_taskbar_out,
                                   gboolean   *skip_pager_out);
-  gboolean (*update_icon)        (MetaWindow  *window,
-                                  GdkPixbuf  **icon,
-                                  GdkPixbuf  **mini_icon);
+  gboolean (*update_icon)        (MetaWindow       *window,
+                                  cairo_surface_t **icon,
+                                  cairo_surface_t **mini_icon);
 };
 
 /* These differ from window->has_foo_func in that they consider

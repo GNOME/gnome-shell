@@ -1673,7 +1673,7 @@ meta_frames_paint (MetaFrames   *frames,
 {
   MetaFrameFlags flags;
   MetaFrameType type;
-  GdkPixbuf *mini_icon;
+  cairo_surface_t *mini_icon;
   int w, h;
   MetaButtonState button_states[META_BUTTON_TYPE_LAST];
   int i;

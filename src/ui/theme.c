@@ -725,7 +725,7 @@ meta_frame_layout_draw_with_style (MetaFrameLayout         *layout,
                                    PangoLayout             *title_layout,
                                    MetaFrameFlags           flags,
                                    MetaButtonState          button_states[META_BUTTON_TYPE_LAST],
-                                   GdkPixbuf               *mini_icon)
+                                   cairo_surface_t         *mini_icon)
 {
   GtkStyleContext *style;
   GtkStateFlags state;
@@ -810,7 +810,7 @@ meta_frame_layout_draw_with_style (MetaFrameLayout         *layout,
 
       if (gdk_cairo_get_clip_rectangle (cr, NULL))
         {
-          GdkPixbuf *pixbuf = NULL;
+          cairo_surface_t *surface = NULL;
           const char *icon_name = NULL;
 
           gtk_render_background (style, cr,
@@ -838,7 +838,7 @@ meta_frame_layout_draw_with_style (MetaFrameLayout         *layout,
                icon_name = "open-menu-symbolic";
                break;
             case META_BUTTON_TYPE_APPMENU:
-               pixbuf = g_object_ref (mini_icon);
+               surface = cairo_surface_reference (mini_icon);
                break;
             default:
                icon_name = NULL;
@@ -849,18 +849,20 @@ meta_frame_layout_draw_with_style (MetaFrameLayout         *layout,
             {
               GtkIconTheme *theme = gtk_icon_theme_get_default ();
               GtkIconInfo *info;
+              GdkPixbuf *pixbuf;
 
               info = gtk_icon_theme_lookup_icon (theme, icon_name, layout->icon_size, 0);
               pixbuf = gtk_icon_info_load_symbolic_for_context (info, style, NULL, NULL);
+              surface = gdk_cairo_surface_create_from_pixbuf (pixbuf, 1, NULL);
             }
 
-          if (pixbuf)
+          if (surface)
             {
               float width, height;
               int x, y;
 
-              width = gdk_pixbuf_get_width (pixbuf);
-              height = gdk_pixbuf_get_height (pixbuf);
+              width = cairo_image_surface_get_width (surface);
+              height = cairo_image_surface_get_height (surface);
               x = button_rect.x + (button_rect.width - width) / 2;
               y = button_rect.y + (button_rect.height - height) / 2;
 
@@ -868,11 +870,10 @@ meta_frame_layout_draw_with_style (MetaFrameLayout         *layout,
               cairo_scale (cr,
                            width / layout->icon_size,
                            height / layout->icon_size);
-
-              gdk_cairo_set_source_pixbuf (cr, pixbuf, 0, 0);
+              cairo_set_source_surface (cr, surface, 0, 0);
               cairo_paint (cr);
 
-              g_object_unref (pixbuf);
+              cairo_surface_destroy (surface);
             }
         }
       cairo_restore (cr);
@@ -1180,7 +1181,7 @@ meta_theme_draw_frame (MetaTheme              *theme,
                        int                     text_height,
                        const MetaButtonLayout *button_layout,
                        MetaButtonState         button_states[META_BUTTON_TYPE_LAST],
-                       GdkPixbuf              *mini_icon)
+                       cairo_surface_t        *mini_icon)
 {
   MetaFrameGeometry fgeom;
   MetaFrameLayout *layout;

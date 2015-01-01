@@ -244,9 +244,9 @@ meta_window_real_get_default_skip_hints (MetaWindow *window,
 }
 
 static gboolean
-meta_window_real_update_icon (MetaWindow  *window,
-                              GdkPixbuf  **icon,
-                              GdkPixbuf  **mini_icon)
+meta_window_real_update_icon (MetaWindow       *window,
+                              cairo_surface_t **icon,
+                              cairo_surface_t **mini_icon)
 {
   *icon = NULL;
   *mini_icon = NULL;
@@ -259,10 +259,10 @@ meta_window_finalize (GObject *object)
   MetaWindow *window = META_WINDOW (object);
 
   if (window->icon)
-    g_object_unref (G_OBJECT (window->icon));
+    cairo_surface_destroy (window->icon);
 
   if (window->mini_icon)
-    g_object_unref (G_OBJECT (window->mini_icon));
+    cairo_surface_destroy (window->mini_icon);
 
   if (window->frame_bounds)
     cairo_region_destroy (window->frame_bounds);
@@ -4890,10 +4890,11 @@ redraw_icon (MetaWindow *window)
     meta_ui_queue_frame_draw (window->screen->ui, window->frame->xwindow);
 }
 
-static GdkPixbuf *
+static cairo_surface_t *
 load_default_window_icon (int size)
 {
   GtkIconTheme *theme = gtk_icon_theme_get_default ();
+  GdkPixbuf *pixbuf;
   const char *icon_name;
 
   if (gtk_icon_theme_has_icon (theme, META_DEFAULT_ICON_NAME))
@@ -4901,13 +4902,14 @@ load_default_window_icon (int size)
   else
     icon_name = "image-missing";
 
-  return gtk_icon_theme_load_icon (theme, icon_name, size, 0, NULL);
+  pixbuf = gtk_icon_theme_load_icon (theme, icon_name, size, 0, NULL);
+  return gdk_cairo_surface_create_from_pixbuf (pixbuf, 1, NULL);
 }
 
-static GdkPixbuf *
+static cairo_surface_t *
 get_default_window_icon (void)
 {
-  static GdkPixbuf *default_icon = NULL;
+  static cairo_surface_t *default_icon = NULL;
 
   if (default_icon == NULL)
     {
@@ -4915,13 +4917,13 @@ get_default_window_icon (void)
       g_assert (default_icon);
     }
 
-  return g_object_ref (default_icon);
+  return cairo_surface_reference (default_icon);
 }
 
-static GdkPixbuf *
+static cairo_surface_t *
 get_default_mini_icon (void)
 {
-  static GdkPixbuf *default_icon = NULL;
+  static cairo_surface_t *default_icon = NULL;
 
   if (default_icon == NULL)
     {
@@ -4929,7 +4931,7 @@ get_default_mini_icon (void)
       g_assert (default_icon);
     }
 
-  return g_object_ref (default_icon);
+  return cairo_surface_reference (default_icon);
 }
 
 static void
@@ -4937,8 +4939,8 @@ meta_window_update_icon_now (MetaWindow *window,
                              gboolean    force)
 {
   gboolean changed;
-  GdkPixbuf *icon = NULL;
-  GdkPixbuf *mini_icon;
+  cairo_surface_t *icon = NULL;
+  cairo_surface_t *mini_icon;
 
   g_return_if_fail (!window->override_redirect);
 
@@ -4947,14 +4949,14 @@ meta_window_update_icon_now (MetaWindow *window,
   if (changed || force)
     {
       if (window->icon)
-        g_object_unref (window->icon);
+        cairo_surface_destroy (window->icon);
       if (icon)
         window->icon = icon;
       else
         window->icon = get_default_window_icon ();
 
       if (window->mini_icon)
-        g_object_unref (window->mini_icon);
+        cairo_surface_destroy (window->mini_icon);
       if (mini_icon)
         window->mini_icon = mini_icon;
       else

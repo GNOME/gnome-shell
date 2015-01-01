@@ -101,13 +101,6 @@ void meta_ui_repaint_frame (MetaUI *ui,
                             Window xwindow);
 
 
-/* FIXME these lack a display arg */
-GdkPixbuf* meta_gdk_pixbuf_get_from_pixmap (Pixmap       xpixmap,
-                                            int          src_x,
-                                            int          src_y,
-                                            int          width,
-                                            int          height);
-
 gboolean  meta_ui_window_should_not_cause_focus (Display *xdisplay,
                                                  Window   xwindow);
 

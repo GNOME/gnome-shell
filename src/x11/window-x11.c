@@ -1459,9 +1459,9 @@ meta_window_x11_get_default_skip_hints (MetaWindow *window,
 }
 
 static gboolean
-meta_window_x11_update_icon (MetaWindow  *window,
-                             GdkPixbuf  **icon,
-                             GdkPixbuf  **mini_icon)
+meta_window_x11_update_icon (MetaWindow       *window,
+                             cairo_surface_t **icon,
+                             cairo_surface_t **mini_icon)
 {
   MetaWindowX11 *window_x11 = META_WINDOW_X11 (window);
   MetaWindowX11Private *priv = meta_window_x11_get_instance_private (window_x11);

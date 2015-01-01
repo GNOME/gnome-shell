@@ -56,17 +56,17 @@ void           meta_icon_cache_property_changed     (MetaIconCache *icon_cache,
                                                      Atom           atom);
 gboolean       meta_icon_cache_get_icon_invalidated (MetaIconCache *icon_cache);
 
-gboolean meta_read_icons         (MetaScreen     *screen,
-                                  Window          xwindow,
-                                  MetaIconCache  *icon_cache,
-                                  Pixmap          wm_hints_pixmap,
-                                  Pixmap          wm_hints_mask,
-                                  GdkPixbuf     **iconp,
-                                  int             ideal_width,
-                                  int             ideal_height,
-                                  GdkPixbuf     **mini_iconp,
-                                  int             ideal_mini_width,
-                                  int             ideal_mini_height);
+gboolean meta_read_icons         (MetaScreen       *screen,
+                                  Window            xwindow,
+                                  MetaIconCache    *icon_cache,
+                                  Pixmap            wm_hints_pixmap,
+                                  Pixmap            wm_hints_mask,
+                                  cairo_surface_t **iconp,
+                                  int               ideal_width,
+                                  int               ideal_height,
+                                  cairo_surface_t **mini_iconp,
+                                  int               ideal_mini_width,
+                                  int               ideal_mini_height);
 
 #endif
 

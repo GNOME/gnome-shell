@@ -120,7 +120,7 @@ meta_core_get (Display *xdisplay,
           *((MetaFrameType*)answer) = meta_window_get_frame_type (window);
           break;
         case META_CORE_GET_MINI_ICON:
-          *((GdkPixbuf**)answer) = window->mini_icon;
+          *((cairo_surface_t**)answer) = window->mini_icon;
           break;
         case META_CORE_GET_FRAME_RECT:
           meta_window_get_frame_rect (window, ((MetaRectangle*)answer));

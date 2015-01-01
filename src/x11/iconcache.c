@@ -19,14 +19,16 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <config.h>
+#include "config.h"
+
 #include "iconcache.h"
-#include "ui.h"
+
 #include <meta/errors.h>
 
-#include <X11/Xatom.h>
+#include <cairo.h>
+#include <cairo-xlib.h>
 
-/* The icon-reading code is also in libwnck, please sync bugfixes */
+#include <X11/Xatom.h>
 
 static gboolean
 find_largest_sizes (gulong *data,
@@ -156,51 +158,40 @@ find_best_size (gulong  *data,
     return FALSE;
 }
 
-static void
-argbdata_to_pixdata (gulong *argb_data, int len, guchar **pixdata)
+static cairo_surface_t *
+argbdata_to_surface (gulong *argb_data, int w, int h)
 {
-  guchar *p;
-  int i;
+  cairo_surface_t *surface;
+  int y, x, stride;
+  uint8_t *data;
 
-  *pixdata = g_new (guchar, len * 4);
-  p = *pixdata;
+  surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, w, h);
+  stride = cairo_image_surface_get_stride (surface);
+  data = cairo_image_surface_get_data (surface);
 
   /* One could speed this up a lot. */
-  i = 0;
-  while (i < len)
+  for (y = 0; y < h; y++)
     {
-      guint argb;
-      guint rgba;
-
-      argb = argb_data[i];
-      rgba = (argb << 8) | (argb >> 24);
-
-      *p = rgba >> 24;
-      ++p;
-      *p = (rgba >> 16) & 0xff;
-      ++p;
-      *p = (rgba >> 8) & 0xff;
-      ++p;
-      *p = rgba & 0xff;
-      ++p;
-
-      ++i;
+      for (x = 0; x < w; x++)
+        {
+          uint32_t *p = (uint32_t *) &data[y * stride + x];
+          gulong *d = &argb_data[y * w + x];
+          *p = *d;
+        }
     }
+
+  return surface;
 }
 
 static gboolean
-read_rgb_icon (MetaDisplay   *display,
-               Window         xwindow,
-               int            ideal_width,
-               int            ideal_height,
-               int            ideal_mini_width,
-               int            ideal_mini_height,
-               int           *width,
-               int           *height,
-               guchar       **pixdata,
-               int           *mini_width,
-               int           *mini_height,
-               guchar       **mini_pixdata)
+read_rgb_icon (MetaDisplay      *display,
+               Window            xwindow,
+               int               ideal_width,
+               int               ideal_height,
+               int               ideal_mini_width,
+               int               ideal_mini_height,
+               cairo_surface_t **icon,
+               cairo_surface_t **mini_icon)
 {
   Atom type;
   int format;
@@ -253,24 +244,12 @@ read_rgb_icon (MetaDisplay   *display,
       return FALSE;
     }
 
-  *width = w;
-  *height = h;
-
-  *mini_width = mini_w;
-  *mini_height = mini_h;
-
-  argbdata_to_pixdata (best, w * h, pixdata);
-  argbdata_to_pixdata (best_mini, mini_w * mini_h, mini_pixdata);
+  *icon = argbdata_to_surface (best, w, h);
+  *mini_icon = argbdata_to_surface (best_mini, mini_w, mini_h);
 
   XFree (data);
 
   return TRUE;
-}
-
-static void
-free_pixels (guchar *pixels, gpointer data)
-{
-  g_free (pixels);
 }
 
 static void
@@ -305,96 +284,44 @@ get_pixmap_geometry (MetaDisplay *display,
     *d = depth;
 }
 
-static void
-apply_foreground_background (GdkPixbuf *pixbuf)
+static cairo_surface_t *
+surface_from_pixmap (Display *xdisplay, Pixmap xpixmap,
+                     int width, int height)
 {
-  int w, h;
-  int i, j;
-  guchar *pixels;
-  int stride;
+  cairo_surface_t *surface;
+  Window root_return;
+  int x_ret, y_ret;
+  unsigned int w_ret, h_ret, bw_ret, depth_ret;
+  XWindowAttributes attrs;
 
-  w = gdk_pixbuf_get_width (pixbuf);
-  h = gdk_pixbuf_get_height (pixbuf);
-  pixels = gdk_pixbuf_get_pixels (pixbuf);
-  stride = gdk_pixbuf_get_rowstride (pixbuf);
+  if (!XGetGeometry (xdisplay, xpixmap, &root_return,
+                     &x_ret, &y_ret, &w_ret, &h_ret, &bw_ret, &depth_ret))
+    return NULL;
 
-  i = 0;
-  while (i < h)
+  if (depth_ret == 1)
     {
-      j = 0;
-      while (j < w)
-        {
-          guchar *p = pixels + i * stride + j * 4;
-          if (p[3] == 0)
-            p[0] = p[1] = p[2] =  0xff; /* white background */
-          else
-            p[0] = p[1] = p[2] = 0x00; /* black foreground */
-
-          p[3] = 0xff;
-
-          ++j;
-        }
-
-      ++i;
+      surface = cairo_xlib_surface_create_for_bitmap (xdisplay, xpixmap, DefaultScreenOfDisplay (xdisplay),
+                                                      w_ret, h_ret);
     }
-}
-
-static GdkPixbuf*
-apply_mask (GdkPixbuf *pixbuf,
-            GdkPixbuf *mask)
-{
-  int w, h;
-  int i, j;
-  GdkPixbuf *with_alpha;
-  guchar *src;
-  guchar *dest;
-  int src_stride;
-  int dest_stride;
-
-  w = MIN (gdk_pixbuf_get_width (mask), gdk_pixbuf_get_width (pixbuf));
-  h = MIN (gdk_pixbuf_get_height (mask), gdk_pixbuf_get_height (pixbuf));
-
-  with_alpha = gdk_pixbuf_add_alpha (pixbuf, FALSE, 0, 0, 0);
-
-  dest = gdk_pixbuf_get_pixels (with_alpha);
-  src = gdk_pixbuf_get_pixels (mask);
-
-  dest_stride = gdk_pixbuf_get_rowstride (with_alpha);
-  src_stride = gdk_pixbuf_get_rowstride (mask);
-
-  i = 0;
-  while (i < h)
+  else
     {
-      j = 0;
-      while (j < w)
-        {
-          guchar *s = src + i * src_stride + j * 4;
-          guchar *d = dest + i * dest_stride + j * 4;
+      if (!XGetWindowAttributes (xdisplay, root_return, &attrs))
+        return NULL;
 
-          d[3] = s[3];
-
-          ++j;
-        }
-
-      ++i;
+      surface = cairo_xlib_surface_create (xdisplay, xpixmap, attrs.visual, w_ret, h_ret);
     }
 
-  return with_alpha;
+  return surface;
 }
 
 static gboolean
-try_pixmap_and_mask (MetaDisplay *display,
-                     Pixmap       src_pixmap,
-                     Pixmap       src_mask,
-                     GdkPixbuf  **iconp,
-                     int          ideal_width,
-                     int          ideal_height,
-                     GdkPixbuf  **mini_iconp,
-                     int          ideal_mini_width,
-                     int          ideal_mini_height)
+try_pixmap_and_mask (MetaDisplay      *display,
+                     Pixmap            src_pixmap,
+                     Pixmap            src_mask,
+                     cairo_surface_t **iconp)
 {
-  GdkPixbuf *unscaled = NULL;
-  GdkPixbuf *mask = NULL;
+  Display *xdisplay = display->xdisplay;
+  cairo_surface_t *icon, *mask = NULL;
   int w, h, d;
 
   if (src_pixmap == None)
@@ -403,72 +330,48 @@ try_pixmap_and_mask (MetaDisplay *display,
   meta_error_trap_push (display);
 
   get_pixmap_geometry (display, src_pixmap, &w, &h, &d);
+  icon = surface_from_pixmap (xdisplay, src_pixmap, w, h);
 
-  unscaled = meta_gdk_pixbuf_get_from_pixmap (src_pixmap,
-                                              0, 0,
-                                              w, h);
-
-  /* A depth 1 pixmap has 0 background, and 1 foreground, but
-   * cairo and meta_gdk_pixbuf_get_from_pixmap consider it
-   * to be 0 transparent, 1 opaque */
-  if (d == 1)
-    apply_foreground_background (unscaled);
-
-  if (unscaled && src_mask != None)
+  if (icon && src_mask != None)
     {
       get_pixmap_geometry (display, src_mask, &w, &h, &d);
+
       if (d == 1)
-        mask = meta_gdk_pixbuf_get_from_pixmap (src_mask,
-                                                0, 0,
-                                                w, h);
+        mask = surface_from_pixmap (xdisplay, src_mask, w, h);
     }
 
   meta_error_trap_pop (display);
 
-  if (mask)
+  if (icon && mask)
     {
-      GdkPixbuf *masked;
+      cairo_surface_t *masked;
+      cairo_t *cr;
 
-      masked = apply_mask (unscaled, mask);
-      g_object_unref (G_OBJECT (unscaled));
-      unscaled = masked;
+      masked = cairo_surface_create_similar_image (icon,
+                                                   CAIRO_FORMAT_ARGB32,
+                                                   cairo_image_surface_get_width (icon),
+                                                   cairo_image_surface_get_height (icon));
+      cr = cairo_create (masked);
 
-      g_object_unref (G_OBJECT (mask));
-      mask = NULL;
+      cairo_set_source_surface (cr, icon, 0, 0);
+      cairo_mask_surface (cr, mask, 0, 0);
+
+      cairo_destroy (cr);
+      cairo_surface_destroy (icon);
+      cairo_surface_destroy (mask);
+
+      icon = masked;
     }
 
-  if (unscaled)
+  if (icon)
     {
-      *iconp =
-        gdk_pixbuf_scale_simple (unscaled,
-                                 ideal_width > 0 ? ideal_width :
-                                 gdk_pixbuf_get_width (unscaled),
-                                 ideal_height > 0 ? ideal_height :
-                                 gdk_pixbuf_get_height (unscaled),
-                                 GDK_INTERP_BILINEAR);
-      *mini_iconp =
-        gdk_pixbuf_scale_simple (unscaled,
-                                 ideal_mini_width > 0 ? ideal_mini_width :
-                                 gdk_pixbuf_get_width (unscaled),
-                                 ideal_mini_height > 0 ? ideal_mini_height :
-                                 gdk_pixbuf_get_height (unscaled),
-                                 GDK_INTERP_BILINEAR);
-
-      g_object_unref (G_OBJECT (unscaled));
-
-      if (*iconp && *mini_iconp)
-        return TRUE;
-      else
-        {
-          if (*iconp)
-            g_object_unref (G_OBJECT (*iconp));
-          if (*mini_iconp)
-            g_object_unref (G_OBJECT (*mini_iconp));
-          return FALSE;
-        }
+      *iconp = icon;
+      return TRUE;
     }
   else
-    return FALSE;
+    {
+      return FALSE;
+    }
 }
 
 static void
@@ -562,74 +465,18 @@ meta_icon_cache_get_icon_invalidated (MetaIconCache *icon_cache)
     return FALSE;
 }
 
-static GdkPixbuf*
-scaled_from_pixdata (guchar *pixdata,
-                     int     w,
-                     int     h,
-                     int     new_w,
-                     int     new_h)
-{
-  GdkPixbuf *src;
-  GdkPixbuf *dest;
-
-  src = gdk_pixbuf_new_from_data (pixdata,
-                                  GDK_COLORSPACE_RGB,
-                                  TRUE,
-                                  8,
-                                  w, h, w * 4,
-                                  free_pixels,
-                                  NULL);
-
-  if (src == NULL)
-    return NULL;
-
-  if (w != h)
-    {
-      GdkPixbuf *tmp;
-      int size;
-
-      size = MAX (w, h);
-
-      tmp = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8, size, size);
-
-      if (tmp)
-	{
-	  gdk_pixbuf_fill (tmp, 0);
-	  gdk_pixbuf_copy_area (src, 0, 0, w, h,
-				tmp,
-				(size - w) / 2, (size - h) / 2);
-
-	  g_object_unref (src);
-	  src = tmp;
-	}
-    }
-
-  if (w != new_w || h != new_h)
-    {
-      dest = gdk_pixbuf_scale_simple (src, new_w, new_h, GDK_INTERP_BILINEAR);
-
-      g_object_unref (G_OBJECT (src));
-    }
-  else
-    {
-      dest = src;
-    }
-
-  return dest;
-}
-
 gboolean
-meta_read_icons (MetaScreen     *screen,
-                 Window          xwindow,
-                 MetaIconCache  *icon_cache,
-                 Pixmap          wm_hints_pixmap,
-                 Pixmap          wm_hints_mask,
-                 GdkPixbuf     **iconp,
-                 int             ideal_width,
-                 int             ideal_height,
-                 GdkPixbuf     **mini_iconp,
-                 int             ideal_mini_width,
-                 int             ideal_mini_height)
+meta_read_icons (MetaScreen       *screen,
+                 Window            xwindow,
+                 MetaIconCache    *icon_cache,
+                 Pixmap            wm_hints_pixmap,
+                 Pixmap            wm_hints_mask,
+                 cairo_surface_t **iconp,
+                 int               ideal_width,
+                 int               ideal_height,
+                 cairo_surface_t **mini_iconp,
+                 int               ideal_mini_width,
+                 int               ideal_mini_height)
 {
   /* Return value is whether the icon changed */
 
@@ -653,37 +500,15 @@ meta_read_icons (MetaScreen     *screen,
   if (icon_cache->origin <= USING_NET_WM_ICON &&
       icon_cache->net_wm_icon_dirty)
     {
-      guchar *pixdata;
-      int w, h;
-      guchar *mini_pixdata;
-      int mini_w, mini_h;
-
       icon_cache->net_wm_icon_dirty = FALSE;
 
       if (read_rgb_icon (screen->display, xwindow,
                          ideal_width, ideal_height,
                          ideal_mini_width, ideal_mini_height,
-                         &w, &h, &pixdata,
-                         &mini_w, &mini_h, &mini_pixdata))
+                         iconp, mini_iconp))
         {
-          *iconp = scaled_from_pixdata (pixdata, w, h,
-                                        ideal_width, ideal_height);
-
-          *mini_iconp = scaled_from_pixdata (mini_pixdata, mini_w, mini_h,
-                                             ideal_mini_width, ideal_mini_height);
-
-          if (*iconp && *mini_iconp)
-            {
-              icon_cache->origin = USING_NET_WM_ICON;
-              return TRUE;
-            }
-          else
-            {
-              if (*iconp)
-                g_object_unref (G_OBJECT (*iconp));
-              if (*mini_iconp)
-                g_object_unref (G_OBJECT (*mini_iconp));
-            }
+          icon_cache->origin = USING_NET_WM_ICON;
+          return TRUE;
         }
     }
 
@@ -706,11 +531,9 @@ meta_read_icons (MetaScreen     *screen,
            mask != icon_cache->prev_mask) &&
           pixmap != None)
         {
-          if (try_pixmap_and_mask (screen->display,
-                                   pixmap, mask,
-                                   iconp, ideal_width, ideal_height,
-                                   mini_iconp, ideal_mini_width, ideal_mini_height))
+          if (try_pixmap_and_mask (screen->display, pixmap, mask, iconp))
             {
+              *mini_iconp = cairo_surface_reference (*iconp);
               icon_cache->prev_pixmap = pixmap;
               icon_cache->prev_mask = mask;
               icon_cache->origin = USING_WM_HINTS;
@@ -733,10 +556,9 @@ meta_read_icons (MetaScreen     *screen,
            mask != icon_cache->prev_mask) &&
           pixmap != None)
         {
-          if (try_pixmap_and_mask (screen->display, pixmap, mask,
-                                   iconp, ideal_width, ideal_height,
-                                   mini_iconp, ideal_mini_width, ideal_mini_height))
+          if (try_pixmap_and_mask (screen->display, pixmap, mask, iconp))
             {
+              *mini_iconp = cairo_surface_reference (*iconp);
               icon_cache->prev_pixmap = pixmap;
               icon_cache->prev_mask = mask;
               icon_cache->origin = USING_KWM_WIN_ICON;
