@@ -64,8 +64,6 @@ void meta_frame_calc_borders      (MetaFrame        *frame,
                                    MetaFrameBorders *borders);
 
 gboolean meta_frame_sync_to_window (MetaFrame         *frame,
-                                    int                gravity,
-                                    gboolean           need_move,
                                     gboolean           need_resize);
 
 void meta_frame_clear_cached_borders (MetaFrame *frame);

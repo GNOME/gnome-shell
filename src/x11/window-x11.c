@@ -1219,9 +1219,7 @@ meta_window_x11_move_resize_internal (MetaWindow                *window,
     configure_frame_first = size_dx + size_dy >= 0;
 
   if (configure_frame_first && window->frame)
-    frame_shape_changed = meta_frame_sync_to_window (window->frame,
-                                                     gravity,
-                                                     need_move_frame, need_resize_frame);
+    frame_shape_changed = meta_frame_sync_to_window (window->frame, need_resize_frame);
 
   values.border_width = 0;
   values.x = client_rect.x;
@@ -1260,9 +1258,7 @@ meta_window_x11_move_resize_internal (MetaWindow                *window,
     }
 
   if (!configure_frame_first && window->frame)
-    frame_shape_changed = meta_frame_sync_to_window (window->frame,
-                                                     gravity,
-                                                     need_move_frame, need_resize_frame);
+    frame_shape_changed = meta_frame_sync_to_window (window->frame, need_resize_frame);
 
   if (window->frame)
     window->buffer_rect = window->frame->rect;

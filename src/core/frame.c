@@ -353,8 +353,6 @@ meta_frame_clear_cached_borders (MetaFrame *frame)
 
 gboolean
 meta_frame_sync_to_window (MetaFrame *frame,
-                           int        resize_gravity,
-                           gboolean   need_move,
                            gboolean   need_resize)
 {
   meta_topic (META_DEBUG_GEOMETRY,
