@@ -113,12 +113,6 @@ meta_core_get (Display *xdisplay,
         case META_CORE_GET_CLIENT_HEIGHT:
           *((gint*)answer) = priv->client_rect.height;
           break;
-        case META_CORE_GET_FRAME_FLAGS:
-          *((MetaFrameFlags*)answer) = meta_frame_get_flags (window->frame);
-          break;
-        case META_CORE_GET_FRAME_TYPE:
-          *((MetaFrameType*)answer) = meta_window_get_frame_type (window);
-          break;
         case META_CORE_GET_MINI_ICON:
           *((cairo_surface_t**)answer) = window->mini_icon;
           break;
