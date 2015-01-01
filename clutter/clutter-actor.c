@@ -713,7 +713,6 @@ struct _ClutterActorPrivate
   gint age;
 
   gchar *name; /* a non-unique name, used for debugging */
-  guint32 id; /* unique id, used for backward compatibility */
 
   gint32 pick_id; /* per-stage unique id, used for picking */
 
@@ -5825,10 +5824,10 @@ clutter_actor_dispose (GObject *object)
   ClutterActor *self = CLUTTER_ACTOR (object);
   ClutterActorPrivate *priv = self->priv;
 
-  CLUTTER_NOTE (MISC, "Disposing of object (id=%d) of type '%s' (ref_count:%d)",
-		priv->id,
-		g_type_name (G_OBJECT_TYPE (self)),
-                object->ref_count);
+  CLUTTER_NOTE (MISC, "Dispose actor (name='%s', ref_count:%d) of type '%s'",
+		_clutter_actor_get_debug_name (self),
+                object->ref_count,
+		g_type_name (G_OBJECT_TYPE (self)));
 
   g_signal_emit (self, actor_signals[DESTROY], 0);
 
@@ -5892,12 +5891,9 @@ clutter_actor_finalize (GObject *object)
 {
   ClutterActorPrivate *priv = CLUTTER_ACTOR (object)->priv;
 
-  CLUTTER_NOTE (MISC, "Finalize actor (name='%s', id=%d) of type '%s'",
-                priv->name != NULL ? priv->name : "<none>",
-                priv->id,
+  CLUTTER_NOTE (MISC, "Finalize actor (name='%s') of type '%s'",
+                _clutter_actor_get_debug_name ((ClutterActor *) object),
                 g_type_name (G_OBJECT_TYPE (object)));
-
-  _clutter_context_release_id (priv->id);
 
   g_free (priv->name);
 
@@ -8415,7 +8411,6 @@ clutter_actor_init (ClutterActor *self)
 
   self->priv = priv = clutter_actor_get_instance_private (self);
 
-  priv->id = _clutter_context_acquire_id (self);
   priv->pick_id = -1;
 
   priv->opacity = 0xff;
@@ -11807,14 +11802,15 @@ clutter_actor_get_name (ClutterActor *self)
  *
  * Since: 0.6
  *
- * Deprecated: 1.8: The id is not used any longer.
+ * Deprecated: 1.8: The id is not used any longer, and this function
+ *   always returns 0.
  */
 guint32
 clutter_actor_get_gid (ClutterActor *self)
 {
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0);
 
-  return self->priv->id;
+  return 0;
 }
 
 static inline void

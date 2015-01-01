@@ -1594,7 +1594,7 @@ _clutter_stage_do_pick (ClutterStage   *stage,
     {
       guint32 id_ = _clutter_pixel_to_id (pixel);
 
-      retval = _clutter_get_actor_by_id (stage, id_);
+      retval = _clutter_stage_get_actor_by_pick_id (stage, id_);
     }
 
   CLUTTER_TIMER_STOP (_clutter_uprof_context, pick_timer);

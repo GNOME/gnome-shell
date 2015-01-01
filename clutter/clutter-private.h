@@ -136,9 +136,6 @@ struct _ClutterMainContext
 
   ClutterPickMode  pick_mode;
 
-  /* mapping between reused integer ids and actors */
-  ClutterIDPool *id_pool;
-
   /* default FPS; this is only used if we cannot sync to vblank */
   guint frame_rate;
 
@@ -202,8 +199,6 @@ ClutterPickMode         _clutter_context_get_pick_mode                  (void);
 void                    _clutter_context_push_shader_stack              (ClutterActor *actor);
 ClutterActor *          _clutter_context_pop_shader_stack               (ClutterActor *actor);
 ClutterActor *          _clutter_context_peek_shader_stack              (void);
-guint32                 _clutter_context_acquire_id                     (gpointer      key);
-void                    _clutter_context_release_id                     (guint32       id_);
 gboolean                _clutter_context_get_motion_events_enabled      (void);
 gboolean                _clutter_context_get_show_fps                   (void);
 
@@ -219,8 +214,6 @@ void            _clutter_diagnostic_message     (const char *fmt, ...);
 guint           _clutter_pixel_to_id            (guchar        pixel[4]);
 void            _clutter_id_to_color            (guint         id,
                                                  ClutterColor *col);
-ClutterActor *  _clutter_get_actor_by_id        (ClutterStage *stage,
-                                                 guint32       actor_id);
 
 void            _clutter_set_sync_to_vblank     (gboolean      sync_to_vblank);
 gboolean        _clutter_get_sync_to_vblank     (void);

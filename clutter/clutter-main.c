@@ -567,20 +567,6 @@ clutter_get_motion_events_enabled (void)
   return _clutter_context_get_motion_events_enabled ();
 }
 
-ClutterActor *
-_clutter_get_actor_by_id (ClutterStage *stage,
-                          guint32       actor_id)
-{
-  if (stage == NULL)
-    {
-      ClutterMainContext *context = _clutter_context_get_default ();
-
-      return _clutter_id_pool_lookup (context->id_pool, actor_id);
-    }
-
-  return _clutter_stage_get_actor_by_pick_id (stage, actor_id);
-}
-
 void
 _clutter_id_to_color (guint         id_,
                       ClutterColor *col)
@@ -1561,8 +1547,6 @@ pre_parse_hook (GOptionContext  *context,
   clutter_config_read ();
 
   clutter_context = _clutter_context_get_default ();
-
-  clutter_context->id_pool = _clutter_id_pool_new (256);
 
   backend = clutter_context->backend;
   g_assert (CLUTTER_IS_BACKEND (backend));
@@ -2693,12 +2677,14 @@ _clutter_process_event (ClutterEvent *event)
  *
  * Since: 0.6
  *
- * Deprecated: 1.8: The id is not used any longer.
+ * Deprecated: 1.8: The id is deprecated, and this function always returns
+ *   %NULL. Use the proper scene graph API in #ClutterActor to find a child
+ *   of the stage.
  */
 ClutterActor *
 clutter_get_actor_by_gid (guint32 id_)
 {
-  return _clutter_get_actor_by_id (NULL, id_);
+  return NULL;
 }
 
 void
@@ -3655,22 +3641,6 @@ _clutter_clear_events_queue (void)
       g_queue_free (context->events_queue);
       context->events_queue = NULL;
     }
-}
-
-guint32
-_clutter_context_acquire_id (gpointer key)
-{
-  ClutterMainContext *context = _clutter_context_get_default ();
-
-  return _clutter_id_pool_add (context->id_pool, key);
-}
-
-void
-_clutter_context_release_id (guint32 id_)
-{
-  ClutterMainContext *context = _clutter_context_get_default ();
-
-  _clutter_id_pool_remove (context->id_pool, id_);
 }
 
 void
