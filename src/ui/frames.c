@@ -1622,7 +1622,7 @@ find_frame_to_draw (MetaFrames *frames,
   MetaUIFrame *frame;
 
   g_hash_table_iter_init (&iter, frames->frames);
-  while (g_hash_table_iter_next (&iter, (gpointer *) &frame, NULL))
+  while (g_hash_table_iter_next (&iter, NULL, (gpointer *) &frame))
     if (gtk_cairo_should_draw_window (cr, frame->window))
       return frame;
 
