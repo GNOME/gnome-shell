@@ -5894,10 +5894,8 @@ clutter_actor_finalize (GObject *object)
 
   CLUTTER_NOTE (MISC, "Finalize actor (name='%s', id=%d) of type '%s'",
                 priv->name != NULL ? priv->name : "<none>",
-		priv->id,
-		g_type_name (G_OBJECT_TYPE (object)));
-
-  clutter_actor_restore_easing_state (CLUTTER_ACTOR (object));
+                priv->id,
+                g_type_name (G_OBJECT_TYPE (object)));
 
   _clutter_context_release_id (priv->id);
 
@@ -8456,6 +8454,9 @@ clutter_actor_init (ClutterActor *self)
    */
   priv->needs_compute_expand = FALSE;
 
+  /* we start with an easing state with duration forcibly set
+   * to 0, for backward compatibility.
+   */
   clutter_actor_save_easing_state (self);
   clutter_actor_set_easing_duration (self, 0);
 }
