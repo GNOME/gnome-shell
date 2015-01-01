@@ -85,15 +85,17 @@ meta_window_ensure_frame (MetaWindow *window)
   else
     visual = NULL;
 
-  frame->xwindow = meta_ui_create_frame_window (window->screen->ui,
-                                                window->display->xdisplay,
-                                                visual,
-                                                frame->rect.x,
-                                                frame->rect.y,
-						frame->rect.width,
-						frame->rect.height,
-						frame->window->screen->number,
-                                                &create_serial);
+  frame->ui_frame = meta_ui_create_frame (window->screen->ui,
+                                          window->display->xdisplay,
+                                          visual,
+                                          frame->rect.x,
+                                          frame->rect.y,
+                                          frame->rect.width,
+                                          frame->rect.height,
+                                          frame->window->screen->number,
+                                          &create_serial);
+  frame->xwindow = frame->ui_frame->xwindow;
+
   meta_stack_tracker_record_add (window->screen->stack_tracker,
                                  frame->xwindow,
                                  create_serial);

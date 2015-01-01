@@ -342,16 +342,16 @@ set_background_none (Display *xdisplay,
                            CWBackPixmap, &attrs);
 }
 
-Window
-meta_ui_create_frame_window (MetaUI *ui,
-                             Display *xdisplay,
-                             Visual *xvisual,
-			     gint x,
-			     gint y,
-			     gint width,
-			     gint height,
-			     gint screen_no,
-                             gulong *create_serial)
+MetaUIFrame *
+meta_ui_create_frame (MetaUI *ui,
+                      Display *xdisplay,
+                      Visual *xvisual,
+                      gint x,
+                      gint y,
+                      gint width,
+                      gint height,
+                      gint screen_no,
+                      gulong *create_serial)
 {
   GdkDisplay *display = gdk_x11_lookup_xdisplay (xdisplay);
   GdkScreen *screen = gdk_display_get_screen (display, screen_no);
@@ -410,9 +410,7 @@ meta_ui_create_frame_window (MetaUI *ui,
   gdk_window_resize (window, width, height);
   set_background_none (xdisplay, GDK_WINDOW_XID (window));
 
-  meta_frames_manage_window (ui->frames, GDK_WINDOW_XID (window), window);
-
-  return GDK_WINDOW_XID (window);
+  return meta_frames_manage_window (ui->frames, GDK_WINDOW_XID (window), window);
 }
 
 void

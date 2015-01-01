@@ -512,7 +512,7 @@ meta_frames_attach_style (MetaUIFrame *frame)
                                                                             variant));
 }
 
-void
+MetaUIFrame *
 meta_frames_manage_window (MetaFrames *frames,
                            Window      xwindow,
                            GdkWindow  *window)
@@ -544,6 +544,8 @@ meta_frames_manage_window (MetaFrames *frames,
   meta_core_grab_buttons (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()), frame->xwindow);
 
   g_hash_table_replace (frames->frames, &frame->xwindow, frame);
+
+  return frame;
 }
 
 void

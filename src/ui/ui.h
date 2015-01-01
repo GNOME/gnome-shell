@@ -31,6 +31,7 @@
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
 typedef struct _MetaUI MetaUI;
+typedef struct _MetaUIFrame MetaUIFrame;
 
 typedef gboolean (* MetaEventFunc) (XEvent *xevent, gpointer data);
 
@@ -58,14 +59,14 @@ void meta_ui_get_frame_mask (MetaUI *ui,
                              guint height,
                              cairo_t *cr);
 
-Window meta_ui_create_frame_window (MetaUI *ui,
+MetaUIFrame * meta_ui_create_frame (MetaUI *ui,
                                     Display *xdisplay,
                                     Visual *xvisual,
-				    gint x,
-				    gint y,
-				    gint width,
-				    gint height,
-				    gint screen_no,
+                                    gint x,
+                                    gint y,
+                                    gint width,
+                                    gint height,
+                                    gint screen_no,
                                     gulong *create_serial);
 void meta_ui_destroy_frame_window (MetaUI *ui,
 				   Window  xwindow);
