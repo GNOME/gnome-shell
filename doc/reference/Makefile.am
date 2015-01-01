@@ -81,6 +81,7 @@ IGNORE_HFILES= \
 	keybindings-private.h \
 	meta-background-actor-private.h \
 	meta-background-group-private.h \
+	meta-dbus-login1.h
 	meta-module.h \
 	meta-plugin-manager.h \
 	meta-shadow-factory-private.h \
