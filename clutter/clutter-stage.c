@@ -1616,7 +1616,7 @@ clutter_stage_real_delete_event (ClutterStage *stage,
   else
     clutter_actor_destroy (CLUTTER_ACTOR (stage));
 
-  return TRUE;
+  return CLUTTER_EVENT_STOP;
 }
 
 static void
