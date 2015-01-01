@@ -12,6 +12,7 @@ compile
 *.lo
 *.la
 *.gcov
+.dirstamp
 README
 stamp-enum-types
 stamp-marshal
