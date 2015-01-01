@@ -72,6 +72,7 @@ typedef struct _MetaUIFrame         MetaUIFrame;
 
 struct _MetaUIFrame
 {
+  MetaFrames *frames;
   Window xwindow;
   GdkWindow *window;
   MetaStyleInfo *style_info;

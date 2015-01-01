@@ -40,8 +40,7 @@ static void meta_frames_destroy       (GtkWidget       *object);
 static void meta_frames_finalize      (GObject         *object);
 static void meta_frames_style_updated (GtkWidget       *widget);
 
-static void meta_frames_update_prelit_control (MetaFrames      *frames,
-                                               MetaUIFrame     *frame,
+static void meta_frames_update_prelit_control (MetaUIFrame     *frame,
                                                MetaFrameControl control);
 static gboolean meta_frames_button_press_event    (GtkWidget           *widget,
                                                    GdkEventButton      *event);
@@ -58,15 +57,12 @@ static gboolean meta_frames_enter_notify_event    (GtkWidget           *widget,
 static gboolean meta_frames_leave_notify_event    (GtkWidget           *widget,
                                                    GdkEventCrossing    *event);
 
-static void meta_frames_attach_style (MetaFrames  *frames,
-                                      MetaUIFrame *frame);
+static void meta_frames_attach_style (MetaUIFrame *frame);
 
-static void meta_frames_paint        (MetaFrames   *frames,
-                                      MetaUIFrame  *frame,
+static void meta_frames_paint        (MetaUIFrame  *frame,
                                       cairo_t      *cr);
 
-static void meta_frames_calc_geometry (MetaFrames        *frames,
-                                       MetaUIFrame         *frame,
+static void meta_frames_calc_geometry (MetaUIFrame       *frame,
                                        MetaFrameGeometry *fgeom);
 
 static MetaUIFrame* meta_frames_lookup_window (MetaFrames *frames,
@@ -78,12 +74,9 @@ static void meta_frames_button_layout_changed (MetaFrames *frames);
 
 static GdkRectangle*    control_rect (MetaFrameControl   control,
                                       MetaFrameGeometry *fgeom);
-static MetaFrameControl get_control  (MetaFrames        *frames,
-                                      MetaUIFrame       *frame,
+static MetaFrameControl get_control  (MetaUIFrame       *frame,
                                       int                x,
                                       int                y);
-static void invalidate_whole_window (MetaFrames *frames,
-                                     MetaUIFrame *frame);
 
 G_DEFINE_TYPE (MetaFrames, meta_frames, GTK_TYPE_WINDOW);
 
@@ -165,6 +158,12 @@ prefs_changed_callback (MetaPreference pref,
     default:
       break;
     }
+}
+
+static void
+invalidate_whole_window (MetaUIFrame *frame)
+{
+  gdk_window_invalidate_rect (frame->window, NULL, FALSE);
 }
 
 static MetaStyleInfo *
@@ -288,13 +287,9 @@ meta_frames_finalize (GObject *object)
 static void
 queue_recalc_func (gpointer key, gpointer value, gpointer data)
 {
-  MetaUIFrame *frame;
-  MetaFrames *frames;
+  MetaUIFrame *frame = value;
 
-  frames = META_FRAMES (data);
-  frame = value;
-
-  invalidate_whole_window (frames, frame);
+  invalidate_whole_window (frame);
   meta_core_queue_frame_resize (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()),
                                 frame->xwindow);
   if (frame->text_layout)
@@ -326,13 +321,8 @@ meta_frames_font_changed (MetaFrames *frames)
 static void
 queue_draw_func (gpointer key, gpointer value, gpointer data)
 {
-  MetaUIFrame *frame;
-  MetaFrames *frames;
-
-  frames = META_FRAMES (data);
-  frame = value;
-
-  invalidate_whole_window (frames, frame);
+  MetaUIFrame *frame = value;
+  invalidate_whole_window (frame);
 }
 
 static void
@@ -345,13 +335,8 @@ meta_frames_button_layout_changed (MetaFrames *frames)
 static void
 reattach_style_func (gpointer key, gpointer value, gpointer data)
 {
-  MetaUIFrame *frame;
-  MetaFrames *frames;
-
-  frames = META_FRAMES (data);
-  frame = value;
-
-  meta_frames_attach_style (frames, frame);
+  MetaUIFrame *frame = value;
+  meta_frames_attach_style (frame);
 }
 
 static void
@@ -365,8 +350,7 @@ meta_frames_style_updated  (GtkWidget *widget)
 
   update_style_contexts (frames);
 
-  g_hash_table_foreach (frames->frames,
-                        reattach_style_func, frames);
+  g_hash_table_foreach (frames->frames, reattach_style_func, NULL);
 
   meta_retheme_all ();
 
@@ -374,10 +358,10 @@ meta_frames_style_updated  (GtkWidget *widget)
 }
 
 static void
-meta_frames_ensure_layout (MetaFrames     *frames,
-                           MetaUIFrame    *frame,
+meta_frames_ensure_layout (MetaUIFrame    *frame,
                            MetaFrameType   type)
 {
+  MetaFrames *frames = frame->frames;
   GtkWidget *widget;
   MetaFrameLayout *layout;
 
@@ -444,8 +428,7 @@ meta_frames_ensure_layout (MetaFrames     *frames,
 }
 
 static void
-meta_frames_calc_geometry (MetaFrames        *frames,
-                           MetaUIFrame       *frame,
+meta_frames_calc_geometry (MetaUIFrame       *frame,
                            MetaFrameGeometry *fgeom)
 {
   int width, height;
@@ -460,7 +443,7 @@ meta_frames_calc_geometry (MetaFrames        *frames,
                  META_CORE_GET_FRAME_TYPE, &type,
                  META_CORE_GET_END);
 
-  meta_frames_ensure_layout (frames, frame, type);
+  meta_frames_ensure_layout (frame, type);
 
   meta_prefs_get_button_layout (&button_layout);
 
@@ -507,9 +490,9 @@ meta_frames_new (int screen_number)
  * and attach separately for each window.
  */
 static void
-meta_frames_attach_style (MetaFrames  *frames,
-                          MetaUIFrame *frame)
+meta_frames_attach_style (MetaUIFrame *frame)
 {
+  MetaFrames *frames = frame->frames;
   gboolean has_frame;
   char *variant = NULL;
 
@@ -540,6 +523,7 @@ meta_frames_manage_window (MetaFrames *frames,
 
   frame = g_new (MetaUIFrame, 1);
 
+  frame->frames = frames;
   frame->window = window;
 
   gdk_window_set_user_data (frame->window, frames);
@@ -611,8 +595,7 @@ meta_frames_lookup_window (MetaFrames *frames,
 }
 
 static void
-meta_ui_frame_get_borders (MetaFrames *frames,
-                           MetaUIFrame *frame,
+meta_ui_frame_get_borders (MetaUIFrame *frame,
                            MetaFrameBorders *borders)
 {
   MetaFrameFlags flags;
@@ -625,7 +608,7 @@ meta_ui_frame_get_borders (MetaFrames *frames,
 
   g_return_if_fail (type < META_FRAME_TYPE_LAST);
 
-  meta_frames_ensure_layout (frames, frame, type);
+  meta_frames_ensure_layout (frame, type);
 
   /* We can't get the full geometry, because that depends on
    * the client window size and probably we're being called
@@ -652,7 +635,7 @@ meta_frames_get_borders (MetaFrames *frames,
   if (frame == NULL)
     meta_bug ("No such frame 0x%lx\n", xwindow);
 
-  meta_ui_frame_get_borders (frames, frame, borders);
+  meta_ui_frame_get_borders (frame, borders);
 }
 
 /* The client rectangle surrounds client window; it subtracts both
@@ -687,8 +670,7 @@ get_visible_frame_rect (MetaFrameGeometry     *fgeom,
 }
 
 static cairo_region_t *
-get_visible_region (MetaFrames        *frames,
-                    MetaUIFrame       *frame,
+get_visible_region (MetaUIFrame       *frame,
                     MetaFrameGeometry *fgeom,
                     int                window_width,
                     int                window_height)
@@ -792,11 +774,9 @@ meta_frames_get_frame_bounds (MetaFrames *frames,
   frame = meta_frames_lookup_window (frames, xwindow);
   g_return_val_if_fail (frame != NULL, NULL);
 
-  meta_frames_calc_geometry (frames, frame, &fgeom);
+  meta_frames_calc_geometry (frame, &fgeom);
 
-  return get_visible_region (frames, frame,
-                             &fgeom,
-                             window_width, window_height);
+  return get_visible_region (frame, &fgeom, window_width, window_height);
 }
 
 void
@@ -816,7 +796,7 @@ meta_frames_move_resize_frame (MetaFrames *frames,
   gdk_window_move_resize (frame->window, x, y, width, height);
 
   if (old_width != width || old_height != height)
-    invalidate_whole_window (frames, frame);
+    invalidate_whole_window (frame);
 }
 
 void
@@ -827,7 +807,7 @@ meta_frames_queue_draw (MetaFrames *frames,
 
   frame = meta_frames_lookup_window (frames, xwindow);
 
-  invalidate_whole_window (frames, frame);
+  invalidate_whole_window (frame);
 }
 
 void
@@ -846,7 +826,7 @@ meta_frames_set_title (MetaFrames *frames,
 
   g_clear_object (&frame->text_layout);
 
-  invalidate_whole_window (frames, frame);
+  invalidate_whole_window (frame);
 }
 
 void
@@ -859,8 +839,8 @@ meta_frames_update_frame_style (MetaFrames *frames,
 
   g_assert (frame);
 
-  meta_frames_attach_style (frames, frame);
-  invalidate_whole_window (frames, frame);
+  meta_frames_attach_style (frame);
+  invalidate_whole_window (frame);
 }
 
 void
@@ -880,14 +860,13 @@ meta_frames_repaint_frame (MetaFrames *frames,
 }
 
 static void
-redraw_control (MetaFrames *frames,
-                MetaUIFrame *frame,
+redraw_control (MetaUIFrame *frame,
                 MetaFrameControl control)
 {
   MetaFrameGeometry fgeom;
   GdkRectangle *rect;
 
-  meta_frames_calc_geometry (frames, frame, &fgeom);
+  meta_frames_calc_geometry (frame, &fgeom);
 
   rect = control_rect (control, &fgeom);
 
@@ -1029,13 +1008,13 @@ meta_frame_right_click_event(MetaUIFrame     *frame,
 }
 
 static gboolean
-meta_frames_try_grab_op (MetaFrames  *frames,
-                         MetaUIFrame *frame,
+meta_frames_try_grab_op (MetaUIFrame *frame,
                          MetaGrabOp   op,
                          gdouble      grab_x,
                          gdouble      grab_y,
                          guint32      time)
 {
+  MetaFrames *frames = frame->frames;
   Display *display;
   gboolean ret;
 
@@ -1106,7 +1085,7 @@ meta_frames_button_press_event (GtkWidget      *widget,
   if (frame == NULL)
     return FALSE;
 
-  control = get_control (frames, frame, event->x, event->y);
+  control = get_control (frame, event->x, event->y);
 
   /* focus on click, even if click was on client area */
   if (event->button == 1 &&
@@ -1161,7 +1140,7 @@ meta_frames_button_press_event (GtkWidget      *widget,
       frame->grab_button = event->button;
       frame->button_state = META_BUTTON_STATE_PRESSED;
       frame->prelit_control = control;
-      redraw_control (frames, frame, control);
+      redraw_control (frame, control);
 
       if (control == META_FRAME_CONTROL_MENU ||
           control == META_FRAME_CONTROL_APPMENU)
@@ -1172,7 +1151,7 @@ meta_frames_button_press_event (GtkWidget      *widget,
           MetaWindowMenuType menu;
           int win_x, win_y;
 
-          meta_frames_calc_geometry (frames, frame, &fgeom);
+          meta_frames_calc_geometry (frame, &fgeom);
 
           rect = control_rect (control, &fgeom);
 
@@ -1245,7 +1224,7 @@ meta_frames_button_press_event (GtkWidget      *widget,
           break;
         }
 
-      meta_frames_try_grab_op (frames, frame, op,
+      meta_frames_try_grab_op (frame, op,
                                event->x_root, event->y_root,
                                event->time);
     }
@@ -1260,7 +1239,7 @@ meta_frames_button_press_event (GtkWidget      *widget,
 
       if (flags & META_FRAME_ALLOWS_MOVE)
         {
-          meta_frames_try_grab_op (frames, frame,
+          meta_frames_try_grab_op (frame,
                                    META_GRAB_OP_MOVING,
                                    event->x_root, event->y_root,
                                    event->time);
@@ -1345,16 +1324,15 @@ meta_frames_button_release_event    (GtkWidget           *widget,
        * prelit so to let the user know that it can now be pressed.
        * :)
        */
-      MetaFrameControl control = get_control (frames, frame, event->x, event->y);
-      meta_frames_update_prelit_control (frames, frame, control);
+      MetaFrameControl control = get_control (frame, event->x, event->y);
+      meta_frames_update_prelit_control (frame, control);
     }
 
   return TRUE;
 }
 
 static void
-meta_frames_update_prelit_control (MetaFrames      *frames,
-                                   MetaUIFrame     *frame,
+meta_frames_update_prelit_control (MetaUIFrame     *frame,
                                    MetaFrameControl control)
 {
   MetaFrameControl old_control;
@@ -1460,8 +1438,8 @@ meta_frames_update_prelit_control (MetaFrames      *frames,
   frame->button_state = META_BUTTON_STATE_PRELIGHT;
   frame->prelit_control = control;
 
-  redraw_control (frames, frame, old_control);
-  redraw_control (frames, frame, control);
+  redraw_control (frame, old_control);
+  redraw_control (frame, control);
 }
 
 static gboolean
@@ -1479,7 +1457,7 @@ meta_frames_motion_notify_event     (GtkWidget           *widget,
 
   frames->last_motion_frame = frame;
 
-  control = get_control (frames, frame, event->x, event->y);
+  control = get_control (frame, event->x, event->y);
 
   if (frame->button_state == META_BUTTON_STATE_PRESSED)
     {
@@ -1488,13 +1466,13 @@ meta_frames_motion_notify_event     (GtkWidget           *widget,
       if (frame->prelit_control != control)
         {
           frame->button_state = META_BUTTON_STATE_NORMAL;
-          redraw_control (frames, frame, frame->prelit_control);
+          redraw_control (frame, frame->prelit_control);
         }
     }
   else
     {
       /* Update prelit control and cursor */
-      meta_frames_update_prelit_control (frames, frame, control);
+      meta_frames_update_prelit_control (frame, control);
     }
 
   if ((event->state & GDK_BUTTON1_MASK) &&
@@ -1605,7 +1583,7 @@ meta_frames_get_mask (MetaFrames          *frames,
                  META_CORE_GET_END);
 
   meta_style_info_set_flags (frame->style_info, flags);
-  meta_ui_frame_get_borders (frames, frame, &borders);
+  meta_ui_frame_get_borders (frame, &borders);
   gtk_render_background (frame->style_info->styles[META_STYLE_ELEMENT_FRAME], cr,
                          borders.invisible.left, borders.invisible.top,
                          width - borders.invisible.left - borders.invisible.right,
@@ -1647,15 +1625,14 @@ meta_frames_draw (GtkWidget *widget,
   gdk_cairo_region (cr, region);
   cairo_clip (cr);
 
-  meta_frames_paint (frames, frame, cr);
+  meta_frames_paint (frame, cr);
   cairo_region_destroy (region);
 
   return TRUE;
 }
 
 static void
-meta_frames_paint (MetaFrames   *frames,
-                   MetaUIFrame  *frame,
+meta_frames_paint (MetaUIFrame  *frame,
                    cairo_t      *cr)
 {
   MetaFrameFlags flags;
@@ -1727,7 +1704,7 @@ meta_frames_paint (MetaFrames   *frames,
                  META_CORE_GET_CLIENT_HEIGHT, &h,
                  META_CORE_GET_END);
 
-  meta_frames_ensure_layout (frames, frame, type);
+  meta_frames_ensure_layout (frame, type);
 
   meta_prefs_get_button_layout (&button_layout);
 
@@ -1760,8 +1737,8 @@ meta_frames_enter_notify_event      (GtkWidget           *widget,
 
   frame->maybe_ignore_leave_notify = FALSE;
 
-  control = get_control (frames, frame, event->x, event->y);
-  meta_frames_update_prelit_control (frames, frame, control);
+  control = get_control (frame, event->x, event->y);
+  meta_frames_update_prelit_control (frame, control);
 
   return TRUE;
 }
@@ -1793,7 +1770,7 @@ meta_frames_leave_notify_event      (GtkWidget           *widget,
   if (frame->maybe_ignore_leave_notify)
     return FALSE;
 
-  meta_frames_update_prelit_control (frames, frame, META_FRAME_CONTROL_NONE);
+  meta_frames_update_prelit_control (frame, META_FRAME_CONTROL_NONE);
 
   return TRUE;
 }
@@ -1872,9 +1849,7 @@ control_rect (MetaFrameControl control,
 #define TOP_RESIZE_HEIGHT 4
 #define CORNER_SIZE_MULT 2
 static MetaFrameControl
-get_control (MetaFrames *frames,
-             MetaUIFrame *frame,
-             int x, int y)
+get_control (MetaUIFrame *frame, int x, int y)
 {
   MetaFrameGeometry fgeom;
   MetaFrameFlags flags;
@@ -1883,7 +1858,7 @@ get_control (MetaFrames *frames,
   gboolean has_north_resize;
   cairo_rectangle_int_t client;
 
-  meta_frames_calc_geometry (frames, frame, &fgeom);
+  meta_frames_calc_geometry (frame, &fgeom);
   get_client_rect (&fgeom, fgeom.width, fgeom.height, &client);
 
   if (POINT_IN_RECT (x, y, client))
@@ -2026,11 +2001,4 @@ get_control (MetaFrames *frames,
     return META_FRAME_CONTROL_NONE;
   else
     return META_FRAME_CONTROL_TITLE;
-}
-
-static void
-invalidate_whole_window (MetaFrames *frames,
-                         MetaUIFrame *frame)
-{
-  gdk_window_invalidate_rect (frame->window, NULL, FALSE);
 }
