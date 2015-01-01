@@ -25,6 +25,7 @@
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>
 #include <meta/common.h>
+#include <meta/types.h>
 #include "theme-private.h"
 
 typedef enum
@@ -73,6 +74,7 @@ typedef struct _MetaUIFrame         MetaUIFrame;
 struct _MetaUIFrame
 {
   MetaFrames *frames;
+  MetaWindow *meta_window;
   Window xwindow;
   GdkWindow *window;
   MetaStyleInfo *style_info;
@@ -119,6 +121,7 @@ GType        meta_frames_get_type               (void) G_GNUC_CONST;
 MetaFrames *meta_frames_new (int screen_number);
 
 MetaUIFrame * meta_frames_manage_window (MetaFrames *frames,
+                                         MetaWindow *meta_window,
                                          Window      xwindow,
                                          GdkWindow  *window);
 

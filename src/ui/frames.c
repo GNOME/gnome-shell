@@ -512,6 +512,7 @@ meta_ui_frame_attach_style (MetaUIFrame *frame)
 
 MetaUIFrame *
 meta_frames_manage_window (MetaFrames *frames,
+                           MetaWindow *meta_window,
                            Window      xwindow,
                            GdkWindow  *window)
 {
@@ -531,6 +532,7 @@ meta_frames_manage_window (MetaFrames *frames,
   /* Don't set event mask here, it's in frame.c */
 
   frame->xwindow = xwindow;
+  frame->meta_window = meta_window;
   frame->cache_layout = NULL;
   frame->text_layout = NULL;
   frame->text_height = -1;
