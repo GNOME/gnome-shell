@@ -535,7 +535,6 @@ meta_frames_manage_window (MetaFrames *frames,
   frame->text_layout = NULL;
   frame->text_height = -1;
   frame->title = NULL;
-  frame->shape_applied = FALSE;
   frame->prelit_control = META_FRAME_CONTROL_NONE;
   frame->button_state = META_BUTTON_STATE_NORMAL;
 
