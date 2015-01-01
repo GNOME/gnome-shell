@@ -47,8 +47,7 @@ typedef enum
  * For example:
  *
  *   meta_core_get (my_display, my_window,
- *                  META_CORE_GET_FRAME_WIDTH, &width,
- *                  META_CORE_GET_FRAME_HEIGHT, &height,
+ *                  META_CORE_GET_FRAME_RECT, &rect,
  *                  META_CORE_GET_END);
  *
  * If the window doesn't have a frame, this will raise a meta_bug. To suppress
