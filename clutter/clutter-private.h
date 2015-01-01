@@ -154,7 +154,6 @@ struct _ClutterMainContext
   gint fb_g_mask_used;
   gint fb_b_mask_used;
 
-  PangoContext *pango_context;  /* Global Pango context */
   CoglPangoFontMap *font_map;   /* Global font map */
 
   /* stack of #ClutterEvent */
