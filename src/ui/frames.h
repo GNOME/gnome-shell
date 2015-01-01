@@ -135,9 +135,7 @@ void meta_ui_frame_repaint (MetaUIFrame *frame);
 void meta_ui_frame_get_borders (MetaUIFrame      *frame,
                                 MetaFrameBorders *borders);
 
-cairo_region_t * meta_ui_frame_get_bounds (MetaUIFrame *frame,
-                                           int          window_width,
-                                           int          window_height);
+cairo_region_t * meta_ui_frame_get_bounds (MetaUIFrame *frame);
 
 void meta_ui_frame_get_mask (MetaUIFrame *frame,
                              cairo_t     *cr);

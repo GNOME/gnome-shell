@@ -379,7 +379,7 @@ meta_frame_sync_to_window (MetaFrame *frame,
 cairo_region_t *
 meta_frame_get_frame_bounds (MetaFrame *frame)
 {
-  return meta_ui_frame_get_bounds (frame->ui_frame, frame->rect.width, frame->rect.height);
+  return meta_ui_frame_get_bounds (frame->ui_frame);
 }
 
 void

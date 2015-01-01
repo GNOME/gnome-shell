@@ -620,21 +620,17 @@ get_client_rect (MetaFrameGeometry     *fgeom,
  */
 static void
 get_visible_frame_rect (MetaFrameGeometry     *fgeom,
-                        int                    window_width,
-                        int                    window_height,
                         cairo_rectangle_int_t *rect)
 {
   rect->x = fgeom->borders.invisible.left;
   rect->y = fgeom->borders.invisible.top;
-  rect->width = window_width - fgeom->borders.invisible.right - rect->x;
-  rect->height = window_height - fgeom->borders.invisible.bottom - rect->y;
+  rect->width = fgeom->width - fgeom->borders.invisible.right - rect->x;
+  rect->height = fgeom->height - fgeom->borders.invisible.bottom - rect->y;
 }
 
 static cairo_region_t *
 get_visible_region (MetaUIFrame       *frame,
-                    MetaFrameGeometry *fgeom,
-                    int                window_width,
-                    int                window_height)
+                    MetaFrameGeometry *fgeom)
 {
   cairo_region_t *corners_region;
   cairo_region_t *visible_region;
@@ -642,7 +638,7 @@ get_visible_region (MetaUIFrame       *frame,
   cairo_rectangle_int_t frame_rect;
 
   corners_region = cairo_region_create ();
-  get_visible_frame_rect (fgeom, window_width, window_height, &frame_rect);
+  get_visible_frame_rect (fgeom, &frame_rect);
 
   if (fgeom->top_left_corner_rounded_radius != 0)
     {
@@ -724,13 +720,11 @@ get_visible_region (MetaUIFrame       *frame,
 }
 
 cairo_region_t *
-meta_ui_frame_get_bounds (MetaUIFrame *frame,
-                          int          window_width,
-                          int          window_height)
+meta_ui_frame_get_bounds (MetaUIFrame *frame)
 {
   MetaFrameGeometry fgeom;
   meta_ui_frame_calc_geometry (frame, &fgeom);
-  return get_visible_region (frame, &fgeom, window_width, window_height);
+  return get_visible_region (frame, &fgeom);
 }
 
 void
