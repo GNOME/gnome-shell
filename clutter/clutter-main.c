@@ -772,7 +772,15 @@ clutter_get_text_direction (void)
 void
 clutter_main_quit (void)
 {
-  g_return_if_fail (main_loops != NULL);
+  if (main_loops == NULL)
+    {
+      g_critical ("Calling clutter_main_quit() without calling clutter_main() "
+                  "is not allowed. If you are using another main loop, use the "
+                  "appropriate API to terminate it.");
+      return;
+    }
+
+  CLUTTER_NOTE (MISC, "Terminating main loop level %d", clutter_main_loop_level);
 
   g_main_loop_quit (main_loops->data);
 }
