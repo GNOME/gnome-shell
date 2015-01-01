@@ -244,11 +244,8 @@ meta_frames_destroy (GtkWidget *object)
   /* Unmanage all frames */
   for (tmp = winlist; tmp != NULL; tmp = tmp->next)
     {
-      MetaUIFrame *frame;
-
-      frame = tmp->data;
-
-      meta_frames_unmanage_window (frames, frame->xwindow);
+      MetaUIFrame *frame = tmp->data;
+      meta_ui_frame_unmanage (frame);
     }
   g_slist_free (winlist);
 
@@ -549,18 +546,9 @@ meta_frames_manage_window (MetaFrames *frames,
 }
 
 void
-meta_frames_unmanage_window (MetaFrames *frames,
-                             Window      xwindow)
+meta_ui_frame_unmanage (MetaUIFrame *frame)
 {
-  MetaUIFrame *frame;
-
-  frame = g_hash_table_lookup (frames->frames, &xwindow);
-
-  if (!frame)
-    {
-      meta_warning ("Frame 0x%lx not managed, can't unmanage\n", xwindow);
-      return;
-    }
+  MetaFrames *frames = frame->frames;
 
   /* restore the cursor */
   meta_core_set_screen_cursor (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()),
@@ -586,18 +574,7 @@ meta_frames_unmanage_window (MetaFrames *frames,
   g_free (frame);
 }
 
-static MetaUIFrame*
-meta_frames_lookup_window (MetaFrames *frames,
-                           Window      xwindow)
-{
-  MetaUIFrame *frame;
-
-  frame = g_hash_table_lookup (frames->frames, &xwindow);
-
-  return frame;
-}
-
-static void
+void
 meta_ui_frame_get_borders (MetaUIFrame *frame,
                            MetaFrameBorders *borders)
 {
@@ -624,21 +601,6 @@ meta_ui_frame_get_borders (MetaUIFrame *frame,
                                 frame->text_height,
                                 flags,
                                 borders);
-}
-
-void
-meta_frames_get_borders (MetaFrames *frames,
-                         Window xwindow,
-                         MetaFrameBorders *borders)
-{
-  MetaUIFrame *frame;
-
-  frame = meta_frames_lookup_window (frames, xwindow);
-
-  if (frame == NULL)
-    meta_bug ("No such frame 0x%lx\n", xwindow);
-
-  meta_ui_frame_get_borders (frame, borders);
 }
 
 /* The client rectangle surrounds client window; it subtracts both
@@ -766,31 +728,19 @@ get_visible_region (MetaUIFrame       *frame,
 }
 
 cairo_region_t *
-meta_frames_get_frame_bounds (MetaFrames *frames,
-                              Window      xwindow,
-                              int         window_width,
-                              int         window_height)
+meta_ui_frame_get_bounds (MetaUIFrame *frame,
+                          int          window_width,
+                          int          window_height)
 {
-  MetaUIFrame *frame;
   MetaFrameGeometry fgeom;
-
-  frame = meta_frames_lookup_window (frames, xwindow);
-  g_return_val_if_fail (frame != NULL, NULL);
-
   meta_frames_calc_geometry (frame, &fgeom);
-
   return get_visible_region (frame, &fgeom, window_width, window_height);
 }
 
 void
-meta_frames_move_resize_frame (MetaFrames *frames,
-                               Window      xwindow,
-                               int         x,
-                               int         y,
-                               int         width,
-                               int         height)
+meta_ui_frame_move_resize (MetaUIFrame *frame,
+                           int x, int y, int width, int height)
 {
-  MetaUIFrame *frame = meta_frames_lookup_window (frames, xwindow);
   int old_width, old_height;
 
   old_width = gdk_window_get_width (frame->window);
@@ -803,27 +753,15 @@ meta_frames_move_resize_frame (MetaFrames *frames,
 }
 
 void
-meta_frames_queue_draw (MetaFrames *frames,
-                        Window      xwindow)
+meta_ui_frame_queue_draw (MetaUIFrame *frame)
 {
-  MetaUIFrame *frame;
-
-  frame = meta_frames_lookup_window (frames, xwindow);
-
   invalidate_whole_window (frame);
 }
 
 void
-meta_frames_set_title (MetaFrames *frames,
-                       Window      xwindow,
-                       const char *title)
+meta_ui_frame_set_title (MetaUIFrame *frame,
+                         const char *title)
 {
-  MetaUIFrame *frame;
-
-  frame = meta_frames_lookup_window (frames, xwindow);
-
-  g_assert (frame);
-
   g_free (frame->title);
   frame->title = g_strdup (title);
 
@@ -833,29 +771,15 @@ meta_frames_set_title (MetaFrames *frames,
 }
 
 void
-meta_frames_update_frame_style (MetaFrames *frames,
-                                Window      xwindow)
+meta_ui_frame_update_style (MetaUIFrame *frame)
 {
-  MetaUIFrame *frame;
-
-  frame = meta_frames_lookup_window (frames, xwindow);
-
-  g_assert (frame);
-
   meta_frames_attach_style (frame);
   invalidate_whole_window (frame);
 }
 
 void
-meta_frames_repaint_frame (MetaFrames *frames,
-                           Window      xwindow)
+meta_ui_frame_repaint (MetaUIFrame *frame)
 {
-  MetaUIFrame *frame;
-
-  frame = meta_frames_lookup_window (frames, xwindow);
-
-  g_assert (frame);
-
   /* repaint everything, so the other frame don't
    * lag behind if they are exposed
    */
@@ -874,6 +798,13 @@ redraw_control (MetaUIFrame *frame,
   rect = control_rect (control, &fgeom);
 
   gdk_window_invalidate_rect (frame->window, rect, FALSE);
+}
+
+static MetaUIFrame*
+meta_frames_lookup_window (MetaFrames *frames,
+                           Window      xwindow)
+{
+  return g_hash_table_lookup (frames->frames, &xwindow);
 }
 
 static gboolean
@@ -1567,21 +1498,16 @@ get_visible_frame_border_region (MetaUIFrame *frame)
  * @cr: Used to draw the resulting mask
  */
 void
-meta_frames_get_mask (MetaFrames          *frames,
-                      Window               xwindow,
-                      guint                width,
-                      guint                height,
-                      cairo_t             *cr)
+meta_ui_frame_get_mask (MetaUIFrame *frame,
+                        guint        width,
+                        guint        height,
+                        cairo_t     *cr)
 {
-  MetaUIFrame *frame = meta_frames_lookup_window (frames, xwindow);
   MetaFrameBorders borders;
   MetaFrameFlags flags;
 
-  if (frame == NULL)
-    meta_bug ("No such frame 0x%lx\n", xwindow);
-
   meta_core_get (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()),
-                 xwindow,
+                 frame->xwindow,
                  META_CORE_GET_FRAME_FLAGS, &flags,
                  META_CORE_GET_END);
 

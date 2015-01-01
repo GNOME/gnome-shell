@@ -123,41 +123,32 @@ MetaFrames *meta_frames_new (int screen_number);
 MetaUIFrame * meta_frames_manage_window (MetaFrames *frames,
                                          Window      xwindow,
                                          GdkWindow  *window);
-void meta_frames_unmanage_window (MetaFrames *frames,
-                                  Window      xwindow);
-void meta_frames_set_title (MetaFrames *frames,
-                            Window      xwindow,
-                            const char *title);
 
-void meta_frames_update_frame_style (MetaFrames *frames,
-                                     Window      xwindow);
+void meta_ui_frame_unmanage (MetaUIFrame *frame);
 
-void meta_frames_repaint_frame (MetaFrames *frames,
-                                Window      xwindow);
+void meta_ui_frame_set_title (MetaUIFrame *frame,
+                              const char *title);
 
-void meta_frames_get_borders (MetaFrames *frames,
-                              Window xwindow,
-                              MetaFrameBorders *borders);
+void meta_ui_frame_update_style (MetaUIFrame *frame);
 
-cairo_region_t *meta_frames_get_frame_bounds (MetaFrames *frames,
-                                              Window      xwindow,
-                                              int         window_width,
-                                              int         window_height);
+void meta_ui_frame_repaint (MetaUIFrame *frame);
 
-void meta_frames_get_mask (MetaFrames *frames,
-                           Window      xwindow,
-                           guint       width,
-                           guint       height,
-                           cairo_t    *cr);
+void meta_ui_frame_get_borders (MetaUIFrame      *frame,
+                                MetaFrameBorders *borders);
 
-void meta_frames_move_resize_frame (MetaFrames *frames,
-				    Window      xwindow,
-				    int         x,
-				    int         y,
-				    int         width,
-				    int         height);
-void meta_frames_queue_draw (MetaFrames *frames,
-                             Window      xwindow);
+cairo_region_t * meta_ui_frame_get_bounds (MetaUIFrame *frame,
+                                           int          window_width,
+                                           int          window_height);
+
+void meta_ui_frame_get_mask (MetaUIFrame *frame,
+                             guint        width,
+                             guint        height,
+                             cairo_t     *cr);
+
+void meta_ui_frame_move_resize (MetaUIFrame *frame,
+                                int x, int y, int width, int height);
+
+void meta_ui_frame_queue_draw (MetaUIFrame *frame);
 
 Window meta_frames_get_moving_frame (MetaFrames *frames);
 
