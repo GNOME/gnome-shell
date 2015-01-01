@@ -4891,32 +4891,27 @@ redraw_icon (MetaWindow *window)
 }
 
 static GdkPixbuf *
+load_default_window_icon (int size)
+{
+  GtkIconTheme *theme = gtk_icon_theme_get_default ();
+  const char *icon_name;
+
+  if (gtk_icon_theme_has_icon (theme, META_DEFAULT_ICON_NAME))
+    icon_name = META_DEFAULT_ICON_NAME;
+  else
+    icon_name = "image-missing";
+
+  return gtk_icon_theme_load_icon (theme, icon_name, size, 0, NULL);
+}
+
+static GdkPixbuf *
 get_default_window_icon (void)
 {
   static GdkPixbuf *default_icon = NULL;
 
   if (default_icon == NULL)
     {
-      GtkIconTheme *theme;
-      gboolean icon_exists;
-
-      theme = gtk_icon_theme_get_default ();
-
-      icon_exists = gtk_icon_theme_has_icon (theme, META_DEFAULT_ICON_NAME);
-
-      if (icon_exists)
-        default_icon = gtk_icon_theme_load_icon (theme,
-                                                 META_DEFAULT_ICON_NAME,
-                                                 META_ICON_WIDTH,
-                                                 0,
-                                                 NULL);
-      else
-        default_icon = gtk_icon_theme_load_icon (theme,
-                                                 "image-missing",
-                                                 META_ICON_WIDTH,
-                                                 0,
-                                                 NULL);
-
+      default_icon = load_default_window_icon (META_ICON_WIDTH);
       g_assert (default_icon);
     }
 
@@ -4930,26 +4925,7 @@ get_default_mini_icon (void)
 
   if (default_icon == NULL)
     {
-      GtkIconTheme *theme;
-      gboolean icon_exists;
-
-      theme = gtk_icon_theme_get_default ();
-
-      icon_exists = gtk_icon_theme_has_icon (theme, META_DEFAULT_ICON_NAME);
-
-      if (icon_exists)
-        default_icon = gtk_icon_theme_load_icon (theme,
-                                                 META_DEFAULT_ICON_NAME,
-                                                 META_MINI_ICON_WIDTH,
-                                                 0,
-                                                 NULL);
-      else
-        default_icon = gtk_icon_theme_load_icon (theme,
-                                                 "image-missing",
-                                                 META_MINI_ICON_WIDTH,
-                                                 0,
-                                                 NULL);
-
+      default_icon = load_default_window_icon (META_MINI_ICON_WIDTH);
       g_assert (default_icon);
     }
 
