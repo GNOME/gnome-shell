@@ -69,9 +69,6 @@ static void meta_frames_calc_geometry (MetaFrames        *frames,
                                        MetaUIFrame         *frame,
                                        MetaFrameGeometry *fgeom);
 
-static void meta_frames_ensure_layout (MetaFrames      *frames,
-                                       MetaUIFrame     *frame);
-
 static MetaUIFrame* meta_frames_lookup_window (MetaFrames *frames,
                                                Window      xwindow);
 
@@ -377,22 +374,16 @@ meta_frames_style_updated  (GtkWidget *widget)
 }
 
 static void
-meta_frames_ensure_layout (MetaFrames  *frames,
-                           MetaUIFrame *frame)
+meta_frames_ensure_layout (MetaFrames     *frames,
+                           MetaUIFrame    *frame,
+                           MetaFrameType   type)
 {
   GtkWidget *widget;
-  MetaFrameFlags flags;
-  MetaFrameType type;
   MetaFrameLayout *layout;
 
   widget = GTK_WIDGET (frames);
 
   g_return_if_fail (gtk_widget_get_realized (widget));
-
-  meta_core_get (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()), frame->xwindow,
-                 META_CORE_GET_FRAME_FLAGS, &flags,
-                 META_CORE_GET_FRAME_TYPE, &type,
-                 META_CORE_GET_END);
 
   layout = meta_theme_get_frame_layout (meta_theme_get_default (), type);
 
@@ -473,7 +464,7 @@ meta_frames_calc_geometry (MetaFrames        *frames,
                  META_CORE_GET_FRAME_TYPE, &type,
                  META_CORE_GET_END);
 
-  meta_frames_ensure_layout (frames, frame);
+  meta_frames_ensure_layout (frames, frame, type);
 
   meta_prefs_get_button_layout (&button_layout);
 
@@ -638,7 +629,7 @@ meta_ui_frame_get_borders (MetaFrames *frames,
 
   g_return_if_fail (type < META_FRAME_TYPE_LAST);
 
-  meta_frames_ensure_layout (frames, frame);
+  meta_frames_ensure_layout (frames, frame, type);
 
   /* We can't get the full geometry, because that depends on
    * the client window size and probably we're being called
@@ -1740,7 +1731,7 @@ meta_frames_paint (MetaFrames   *frames,
                  META_CORE_GET_CLIENT_HEIGHT, &h,
                  META_CORE_GET_END);
 
-  meta_frames_ensure_layout (frames, frame);
+  meta_frames_ensure_layout (frames, frame, type);
 
   meta_prefs_get_button_layout (&button_layout);
 
