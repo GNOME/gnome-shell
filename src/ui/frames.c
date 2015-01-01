@@ -554,33 +554,34 @@ meta_frames_unmanage_window (MetaFrames *frames,
 
   frame = g_hash_table_lookup (frames->frames, &xwindow);
 
-  if (frame)
+  if (!frame)
     {
-      /* restore the cursor */
-      meta_core_set_screen_cursor (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()),
-                                   frame->xwindow,
-                                   META_CURSOR_DEFAULT);
-
-      gdk_window_set_user_data (frame->window, NULL);
-
-      if (frames->last_motion_frame == frame)
-        frames->last_motion_frame = NULL;
-
-      g_hash_table_remove (frames->frames, &frame->xwindow);
-
-      meta_style_info_unref (frame->style_info);
-
-      gdk_window_destroy (frame->window);
-
-      if (frame->text_layout)
-        g_object_unref (G_OBJECT (frame->text_layout));
-
-      g_free (frame->title);
-
-      g_free (frame);
+      meta_warning ("Frame 0x%lx not managed, can't unmanage\n", xwindow);
+      return;
     }
-  else
-    meta_warning ("Frame 0x%lx not managed, can't unmanage\n", xwindow);
+
+  /* restore the cursor */
+  meta_core_set_screen_cursor (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()),
+                               frame->xwindow,
+                               META_CURSOR_DEFAULT);
+
+  gdk_window_set_user_data (frame->window, NULL);
+
+  if (frames->last_motion_frame == frame)
+    frames->last_motion_frame = NULL;
+
+  g_hash_table_remove (frames->frames, &frame->xwindow);
+
+  meta_style_info_unref (frame->style_info);
+
+  gdk_window_destroy (frame->window);
+
+  if (frame->text_layout)
+    g_object_unref (G_OBJECT (frame->text_layout));
+
+  g_free (frame->title);
+
+  g_free (frame);
 }
 
 static MetaUIFrame*
