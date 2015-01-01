@@ -767,7 +767,7 @@ clutter_backend_x11_create_stage (ClutterBackend  *backend,
   translator = CLUTTER_EVENT_TRANSLATOR (stage);
   _clutter_backend_add_event_translator (backend, translator);
 
-  CLUTTER_NOTE (MISC, "X11 stage created (display:%p, screen:%d, root:%u)",
+  CLUTTER_NOTE (BACKEND, "X11 stage created (display:%p, screen:%d, root:%u)",
                 CLUTTER_BACKEND_X11 (backend)->xdpy,
                 CLUTTER_BACKEND_X11 (backend)->xscreen_num,
                 (unsigned int) CLUTTER_BACKEND_X11 (backend)->xwin_root);
