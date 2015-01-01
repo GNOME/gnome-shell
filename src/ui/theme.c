@@ -953,8 +953,7 @@ meta_theme_free (MetaTheme *theme)
 
 MetaFrameLayout*
 meta_theme_get_frame_layout (MetaTheme     *theme,
-                             MetaFrameType  type,
-                             MetaFrameFlags flags)
+                             MetaFrameType  type)
 {
   g_return_val_if_fail (type < META_FRAME_TYPE_LAST, NULL);
 

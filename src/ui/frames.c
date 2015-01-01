@@ -394,7 +394,7 @@ meta_frames_ensure_layout (MetaFrames  *frames,
                  META_CORE_GET_FRAME_TYPE, &type,
                  META_CORE_GET_END);
 
-  layout = meta_theme_get_frame_layout (meta_theme_get_default (), type, flags);
+  layout = meta_theme_get_frame_layout (meta_theme_get_default (), type);
 
   if (layout != frame->cache_layout)
     {

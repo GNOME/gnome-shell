@@ -241,8 +241,7 @@ void               meta_frame_layout_apply_scale (const MetaFrameLayout *layout,
                                                   PangoFontDescription  *font_desc);
 
 MetaFrameLayout* meta_theme_get_frame_layout (MetaTheme     *theme,
-                                              MetaFrameType  type,
-                                              MetaFrameFlags flags);
+                                              MetaFrameType  type);
 
 MetaStyleInfo * meta_theme_create_style_info (GdkScreen   *screen,
                                               const gchar *variant);
