@@ -28,56 +28,6 @@
 #include <meta/common.h>
 #include <meta/boxes.h>
 
-typedef enum
-{
-  META_CORE_GET_END = 0,
-  META_CORE_WINDOW_HAS_FRAME,
-  META_CORE_GET_CLIENT_WIDTH,
-  META_CORE_GET_CLIENT_HEIGHT,
-  META_CORE_GET_MINI_ICON,
-  META_CORE_GET_FRAME_RECT,
-  META_CORE_GET_THEME_VARIANT,
-} MetaCoreGetType;
-
-/* General information function about the given window. Pass in a sequence of
- * pairs of MetaCoreGetTypes and pointers to variables; the variables will be
- * filled with the requested values. End the list with META_CORE_GET_END.
- * For example:
- *
- *   meta_core_get (my_display, my_window,
- *                  META_CORE_GET_FRAME_RECT, &rect,
- *                  META_CORE_GET_END);
- *
- * If the window doesn't have a frame, this will raise a meta_bug. To suppress
- * this behaviour, ask META_CORE_WINDOW_HAS_FRAME as the *first* question in
- * the list. If the window has no frame, the answer to this question will be
- * False, and anything else you asked will be undefined. Otherwise, the answer
- * will be True. The answer will necessarily be True if you ask the question
- * in any other position. The positions of all other questions don't matter.
- *
- * The reason for this function is that some parts of the program don't know
- * about MetaWindows. But they *can* see core.h. So we used to have a whole
- * load of functions which took a display and an X window, looked up the
- * relevant MetaWindow, and returned information about it. The trouble with
- * that is that looking up the MetaWindow is a nontrivial operation, and
- * consolidating the calls in this way makes (for example) frame exposes
- * 33% faster, according to valgrind.
- *
- * This function would perhaps be slightly better if the questions were
- * represented by pointers, perhaps gchar*s, because then we could take
- * advantage of gcc's automatic sentinel checking. On the other hand, this
- * immediately suggests string comparison, and that's slow.
- *
- * Another possible improvement is that core.h still has a bunch of
- * functions which can't be described by the formula "give a display and
- * an X window, get a single value" (meta_core_user_move, for example), but
- * which could theoretically be handled by this function if we relaxed the
- * requirement that all questions should have exactly one argument.
- */
-void meta_core_get (Display *xdisplay,
-                    Window window,
-                    ...);
-
 void meta_core_queue_frame_resize (Display *xdisplay,
                                    Window frame_xwindow);
 
