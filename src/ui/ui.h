@@ -104,8 +104,6 @@ void meta_ui_repaint_frame (MetaUI *ui,
 gboolean  meta_ui_window_should_not_cause_focus (Display *xdisplay,
                                                  Window   xwindow);
 
-gboolean meta_ui_have_a_theme      (void);
-
 gboolean meta_ui_window_is_widget (MetaUI *ui,
                                    Window  xwindow);
 gboolean meta_ui_window_is_dummy  (MetaUI *ui,

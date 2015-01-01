@@ -531,44 +531,31 @@ meta_ui_theme_get_frame_borders (MetaUI *ui,
   const PangoFontDescription *font_desc;
   PangoFontDescription *free_font_desc = NULL;
 
-  if (meta_ui_have_a_theme ())
+  GdkDisplay *display = gdk_x11_lookup_xdisplay (ui->xdisplay);
+  GdkScreen *screen = gdk_display_get_screen (display, XScreenNumberOfScreen (ui->xscreen));
+
+  style_info = meta_theme_create_style_info (screen, NULL);
+
+  context = gtk_widget_get_pango_context (GTK_WIDGET (ui->frames));
+  font_desc = meta_prefs_get_titlebar_font ();
+
+  if (!font_desc)
     {
-      GdkDisplay *display = gdk_x11_lookup_xdisplay (ui->xdisplay);
-      GdkScreen *screen = gdk_display_get_screen (display, XScreenNumberOfScreen (ui->xscreen));
-
-      style_info = meta_theme_create_style_info (screen, NULL);
-
-      context = gtk_widget_get_pango_context (GTK_WIDGET (ui->frames));
-      font_desc = meta_prefs_get_titlebar_font ();
-
-      if (!font_desc)
-        {
-          free_font_desc = meta_style_info_create_font_desc (style_info);
-          font_desc = (const PangoFontDescription *) free_font_desc;
-        }
-
-      text_height = meta_pango_font_desc_get_text_height (font_desc, context);
-
-      meta_theme_get_frame_borders (meta_theme_get_default (),
-                                    style_info, type, text_height, flags,
-                                    borders);
-
-      if (free_font_desc)
-        pango_font_description_free (free_font_desc);
+      free_font_desc = meta_style_info_create_font_desc (style_info);
+      font_desc = (const PangoFontDescription *) free_font_desc;
     }
-  else
-    {
-      meta_frame_borders_clear (borders);
-    }
+
+  text_height = meta_pango_font_desc_get_text_height (font_desc, context);
+
+  meta_theme_get_frame_borders (meta_theme_get_default (),
+                                style_info, type, text_height, flags,
+                                borders);
+
+  if (free_font_desc)
+    pango_font_description_free (free_font_desc);
 
   if (style_info != NULL)
     meta_style_info_unref (style_info);
-}
-
-gboolean
-meta_ui_have_a_theme (void)
-{
-  return meta_theme_get_default () != NULL;
 }
 
 gboolean
