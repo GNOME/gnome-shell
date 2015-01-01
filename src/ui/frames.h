@@ -140,8 +140,6 @@ cairo_region_t * meta_ui_frame_get_bounds (MetaUIFrame *frame,
                                            int          window_height);
 
 void meta_ui_frame_get_mask (MetaUIFrame *frame,
-                             guint        width,
-                             guint        height,
                              cairo_t     *cr);
 
 void meta_ui_frame_move_resize (MetaUIFrame *frame,

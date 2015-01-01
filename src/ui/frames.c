@@ -1487,30 +1487,27 @@ get_visible_frame_border_region (MetaUIFrame *frame)
  *
  * @frame: This frame
  * @xwindow: The X window for the frame, which has the client window as a child
- * @width: The width of the framed window including any invisible borders
- * @height: The height of the framed window including any invisible borders
  * @cr: Used to draw the resulting mask
  */
 void
 meta_ui_frame_get_mask (MetaUIFrame *frame,
-                        guint        width,
-                        guint        height,
                         cairo_t     *cr)
 {
   MetaFrameBorders borders;
   MetaFrameFlags flags;
+  MetaRectangle frame_rect;
 
   meta_core_get (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()),
                  frame->xwindow,
                  META_CORE_GET_FRAME_FLAGS, &flags,
+                 META_CORE_GET_FRAME_RECT, &frame_rect,
                  META_CORE_GET_END);
 
   meta_style_info_set_flags (frame->style_info, flags);
   meta_ui_frame_get_borders (frame, &borders);
   gtk_render_background (frame->style_info->styles[META_STYLE_ELEMENT_FRAME], cr,
                          borders.invisible.left, borders.invisible.top,
-                         width - borders.invisible.left - borders.invisible.right,
-                         height - borders.invisible.top - borders.invisible.bottom);
+                         frame_rect.width, frame_rect.height);
 }
 
 /* XXX -- this is disgusting. Find a better approach here.

@@ -386,7 +386,7 @@ void
 meta_frame_get_mask (MetaFrame                    *frame,
                      cairo_t                      *cr)
 {
-  meta_ui_frame_get_mask (frame->ui_frame, frame->rect.width, frame->rect.height, cr);
+  meta_ui_frame_get_mask (frame->ui_frame, cr);
 }
 
 void
