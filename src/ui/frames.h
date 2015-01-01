@@ -96,7 +96,6 @@ struct _MetaFrames
   GHashTable *text_heights;
 
   GHashTable *frames;
-  MetaUIFrame *last_motion_frame;
 
   MetaStyleInfo *normal_style;
   GHashTable *style_variants;

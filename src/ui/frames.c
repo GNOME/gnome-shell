@@ -557,9 +557,6 @@ meta_ui_frame_unmanage (MetaUIFrame *frame)
 
   gdk_window_set_user_data (frame->window, NULL);
 
-  if (frames->last_motion_frame == frame)
-    frames->last_motion_frame = NULL;
-
   g_hash_table_remove (frames->frames, &frame->xwindow);
 
   meta_style_info_unref (frame->style_info);
@@ -1388,8 +1385,6 @@ meta_frames_motion_notify_event     (GtkWidget           *widget,
   frame = meta_frames_lookup_window (frames, GDK_WINDOW_XID (event->window));
   if (frame == NULL)
     return FALSE;
-
-  frames->last_motion_frame = frame;
 
   control = get_control (frame, event->x, event->y);
 
