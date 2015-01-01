@@ -813,13 +813,9 @@ meta_frame_titlebar_event (MetaUIFrame    *frame,
         if (flags & META_FRAME_ALLOWS_SHADE)
           {
             if (flags & META_FRAME_SHADED)
-              meta_core_unshade (display,
-                                 frame->xwindow,
-                                 event->time);
+              meta_window_unshade (frame->meta_window, event->time);
             else
-              meta_core_shade (display,
-                               frame->xwindow,
-                               event->time);
+              meta_window_shade (frame->meta_window, event->time);
           }
       }
       break;
@@ -854,9 +850,7 @@ meta_frame_titlebar_event (MetaUIFrame    *frame,
     case G_DESKTOP_TITLEBAR_ACTION_MINIMIZE:
       {
         if (flags & META_FRAME_ALLOWS_MINIMIZE)
-          {
-            meta_core_minimize (display, frame->xwindow);
-          }
+          meta_window_minimize (frame->meta_window);
       }
       break;
 
@@ -999,9 +993,7 @@ meta_frames_button_press_event (GtkWidget      *widget,
       meta_topic (META_DEBUG_FOCUS,
                   "Focusing window with frame 0x%lx due to button 1 press\n",
                   frame->xwindow);
-      meta_core_user_focus (display,
-                            frame->xwindow,
-                            event->time);
+      meta_window_focus (frame->meta_window, event->time);
     }
 
   /* don't do the rest of this if on client area */
@@ -1162,10 +1154,8 @@ meta_frames_button_release_event    (GtkWidget           *widget,
 {
   MetaUIFrame *frame;
   MetaFrames *frames;
-  Display *display;
 
   frames = META_FRAMES (widget);
-  display = GDK_DISPLAY_XDISPLAY (gdk_display_get_default ());
   frames->current_grab_op = META_GRAB_OP_NONE;
 
   frame = meta_frames_lookup_window (frames, GDK_WINDOW_XID (event->window));
@@ -1183,36 +1173,40 @@ meta_frames_button_release_event    (GtkWidget           *widget,
       switch (frame->prelit_control)
         {
         case META_FRAME_CONTROL_MINIMIZE:
-          meta_core_minimize (display, frame->xwindow);
+          meta_window_minimize (frame->meta_window);
           break;
         case META_FRAME_CONTROL_MAXIMIZE:
           /* Focus the window on the maximize */
-          meta_core_user_focus (display, frame->xwindow, event->time);
-          meta_core_maximize (display, frame->xwindow);
+          meta_window_focus (frame->meta_window, event->time);
+          if (meta_prefs_get_raise_on_click ())
+            meta_window_raise (frame->meta_window);
+          meta_window_maximize (frame->meta_window, META_MAXIMIZE_BOTH);
           break;
         case META_FRAME_CONTROL_UNMAXIMIZE:
-          meta_core_unmaximize (display, frame->xwindow);
+          if (meta_prefs_get_raise_on_click ())
+            meta_window_raise (frame->meta_window);
+          meta_window_unmaximize (frame->meta_window, META_MAXIMIZE_BOTH);
           break;
         case META_FRAME_CONTROL_DELETE:
-          meta_core_delete (display, frame->xwindow, event->time);
+          meta_window_delete (frame->meta_window, event->time);
           break;
         case META_FRAME_CONTROL_SHADE:
-          meta_core_shade (display, frame->xwindow, event->time);
+          meta_window_shade (frame->meta_window, event->time);
           break;
         case META_FRAME_CONTROL_UNSHADE:
-          meta_core_unshade (display, frame->xwindow, event->time);
+          meta_window_unshade (frame->meta_window, event->time);
           break;
         case META_FRAME_CONTROL_ABOVE:
-          meta_core_make_above (display, frame->xwindow);
+          meta_window_make_above (frame->meta_window);
           break;
         case META_FRAME_CONTROL_UNABOVE:
-          meta_core_unmake_above (display, frame->xwindow);
+          meta_window_unmake_above (frame->meta_window);
           break;
         case META_FRAME_CONTROL_STICK:
-          meta_core_stick (display, frame->xwindow);
+          meta_window_stick (frame->meta_window);
           break;
         case META_FRAME_CONTROL_UNSTICK:
-          meta_core_unstick (display, frame->xwindow);
+          meta_window_unstick (frame->meta_window);
           break;
         default:
           break;

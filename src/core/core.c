@@ -128,37 +128,6 @@ meta_core_user_lower_and_unfocus (Display *xdisplay,
 }
 
 void
-meta_core_user_focus (Display *xdisplay,
-                      Window   frame_xwindow,
-                      guint32  timestamp)
-{
-  MetaWindow *window = get_window (xdisplay, frame_xwindow);
-
-  meta_window_focus (window, timestamp);
-}
-
-void
-meta_core_minimize (Display *xdisplay,
-                    Window   frame_xwindow)
-{
-  MetaWindow *window = get_window (xdisplay, frame_xwindow);
-
-  meta_window_minimize (window);
-}
-
-void
-meta_core_maximize (Display *xdisplay,
-                    Window   frame_xwindow)
-{
-  MetaWindow *window = get_window (xdisplay, frame_xwindow);
-
-  if (meta_prefs_get_raise_on_click ())
-    meta_window_raise (window);
-
-  meta_window_maximize (window, META_MAXIMIZE_BOTH);
-}
-
-void
 meta_core_toggle_maximize_vertically (Display *xdisplay,
 				      Window   frame_xwindow)
 {
@@ -201,84 +170,6 @@ meta_core_toggle_maximize (Display *xdisplay,
     meta_window_unmaximize (window, META_MAXIMIZE_BOTH);
   else
     meta_window_maximize (window, META_MAXIMIZE_BOTH);
-}
-
-void
-meta_core_unmaximize (Display *xdisplay,
-                      Window   frame_xwindow)
-{
-  MetaWindow *window = get_window (xdisplay, frame_xwindow);
-
-  if (meta_prefs_get_raise_on_click ())
-    meta_window_raise (window);
-
-  meta_window_unmaximize (window, META_MAXIMIZE_BOTH);
-}
-
-void
-meta_core_delete (Display *xdisplay,
-                  Window   frame_xwindow,
-                  guint32  timestamp)
-{
-  MetaWindow *window = get_window (xdisplay, frame_xwindow);
-
-  meta_window_delete (window, timestamp);
-}
-
-void
-meta_core_unshade (Display *xdisplay,
-                   Window   frame_xwindow,
-                   guint32  timestamp)
-{
-  MetaWindow *window = get_window (xdisplay, frame_xwindow);
-
-  meta_window_unshade (window, timestamp);
-}
-
-void
-meta_core_shade (Display *xdisplay,
-                 Window   frame_xwindow,
-                 guint32  timestamp)
-{
-  MetaWindow *window = get_window (xdisplay, frame_xwindow);
-
-  meta_window_shade (window, timestamp);
-}
-
-void
-meta_core_unstick (Display *xdisplay,
-                   Window   frame_xwindow)
-{
-  MetaWindow *window = get_window (xdisplay, frame_xwindow);
-
-  meta_window_unstick (window);
-}
-
-void
-meta_core_make_above (Display *xdisplay,
-                      Window   frame_xwindow)
-{
-  MetaWindow *window = get_window (xdisplay, frame_xwindow);
-
-  meta_window_make_above (window);
-}
-
-void
-meta_core_unmake_above (Display *xdisplay,
-                        Window   frame_xwindow)
-{
-  MetaWindow *window = get_window (xdisplay, frame_xwindow);
-
-  meta_window_unmake_above (window);
-}
-
-void
-meta_core_stick (Display *xdisplay,
-                 Window   frame_xwindow)
-{
-  MetaWindow *window = get_window (xdisplay, frame_xwindow);
-
-  meta_window_stick (window);
 }
 
 void

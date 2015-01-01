@@ -35,39 +35,12 @@ void meta_core_user_lower_and_unfocus (Display *xdisplay,
                                        Window   frame_xwindow,
                                        guint32  timestamp);
 
-void meta_core_user_focus   (Display *xdisplay,
-                             Window   frame_xwindow,
-                             guint32  timestamp);
-
-void meta_core_minimize         (Display *xdisplay,
-                                 Window   frame_xwindow);
 void meta_core_toggle_maximize  (Display *xdisplay,
                                  Window   frame_xwindow);
 void meta_core_toggle_maximize_horizontally  (Display *xdisplay,
                                               Window   frame_xwindow);
 void meta_core_toggle_maximize_vertically    (Display *xdisplay,
                                               Window   frame_xwindow);
-void meta_core_unmaximize       (Display *xdisplay,
-                                 Window   frame_xwindow);
-void meta_core_maximize         (Display *xdisplay,
-                                 Window   frame_xwindow);
-void meta_core_delete           (Display *xdisplay,
-                                 Window   frame_xwindow,
-                                 guint32  timestamp);
-void meta_core_unshade          (Display *xdisplay,
-                                 Window   frame_xwindow,
-                                 guint32  timestamp);
-void meta_core_shade            (Display *xdisplay,
-                                 Window   frame_xwindow,
-                                 guint32  timestamp);
-void meta_core_unstick          (Display *xdisplay,
-                                 Window   frame_xwindow);
-void meta_core_stick            (Display *xdisplay,
-                                 Window   frame_xwindow);
-void meta_core_unmake_above     (Display *xdisplay,
-                                 Window   frame_xwindow);
-void meta_core_make_above       (Display *xdisplay,
-                                 Window   frame_xwindow);
 void meta_core_change_workspace (Display *xdisplay,
                                  Window   frame_xwindow,
                                  int      new_workspace);
