@@ -837,8 +837,6 @@ clutter_main (void)
       return;
     }
 
-  clutter_main_loop_level++;
-
 #ifdef CLUTTER_ENABLE_PROFILE
   if (!prev_poll)
     {
@@ -846,6 +844,10 @@ clutter_main (void)
       g_main_context_set_poll_func (NULL, timed_poll);
     }
 #endif
+
+  clutter_main_loop_level++;
+
+  CLUTTER_NOTE (MISC, "Entering main loop level %d", clutter_main_loop_level);
 
   loop = g_main_loop_new (NULL, TRUE);
   main_loops = g_slist_prepend (main_loops, loop);
@@ -860,6 +862,8 @@ clutter_main (void)
   main_loops = g_slist_remove (main_loops, loop);
 
   g_main_loop_unref (loop);
+
+  CLUTTER_NOTE (MISC, "Leaving main loop level %d", clutter_main_loop_level);
 
   clutter_main_loop_level--;
 }
