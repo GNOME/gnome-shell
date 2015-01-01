@@ -76,8 +76,7 @@ void meta_frame_get_mask (MetaFrame *frame,
 void meta_frame_set_screen_cursor (MetaFrame	*frame,
 				   MetaCursor	cursor);
 
+void meta_frame_update_style (MetaFrame *frame);
+void meta_frame_update_title (MetaFrame *frame);
+
 #endif
-
-
-
-

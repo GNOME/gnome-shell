@@ -2885,8 +2885,7 @@ meta_window_tile (MetaWindow *window)
                                    &new_rect);
 
   if (window->frame)
-    meta_ui_queue_frame_draw (window->screen->ui,
-                              window->frame->xwindow);
+    meta_frame_queue_draw (window->frame);
 }
 
 static gboolean
@@ -4887,7 +4886,7 @@ redraw_icon (MetaWindow *window)
    * instead of the whole frame.
    */
   if (window->frame)
-    meta_ui_queue_frame_draw (window->screen->ui, window->frame->xwindow);
+    meta_frame_queue_draw (window->frame);
 }
 
 static cairo_surface_t *
@@ -7430,9 +7429,7 @@ meta_window_set_title (MetaWindow *window,
   window->title = g_strdup (title);
 
   if (window->frame)
-    meta_ui_set_frame_title (window->screen->ui,
-                             window->frame->xwindow,
-                             window->title);
+    meta_frame_update_title (window->frame);
 
   meta_window_update_desc (window);
 

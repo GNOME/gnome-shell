@@ -1684,7 +1684,7 @@ reload_gtk_theme_variant (MetaWindow    *window,
       window->gtk_theme_variant = g_strdup (requested_variant);
 
       if (window->frame)
-        meta_ui_update_frame_style (window->screen->ui, window->frame->xwindow);
+        meta_frame_update_style (window->frame);
     }
 }
 
@@ -1712,7 +1712,7 @@ reload_gtk_hide_titlebar_when_maximized (MetaWindow    *window,
       meta_window_queue (window, META_QUEUE_MOVE_RESIZE);
 
       if (window->frame)
-        meta_ui_update_frame_style (window->screen->ui, window->frame->xwindow);
+        meta_frame_update_style (window->frame);
     }
 }
 
