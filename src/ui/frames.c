@@ -606,14 +606,12 @@ meta_ui_frame_get_borders (MetaUIFrame *frame,
  */
 static void
 get_client_rect (MetaFrameGeometry     *fgeom,
-                 int                    window_width,
-                 int                    window_height,
                  cairo_rectangle_int_t *rect)
 {
   rect->x = fgeom->borders.total.left;
   rect->y = fgeom->borders.total.top;
-  rect->width = window_width - fgeom->borders.total.right - rect->x;
-  rect->height = window_height - fgeom->borders.total.bottom - rect->y;
+  rect->width = fgeom->width - fgeom->borders.total.right - rect->x;
+  rect->height = fgeom->height - fgeom->borders.total.bottom - rect->y;
 }
 
 /* The visible frame rectangle surrounds the visible portion of the
@@ -1784,7 +1782,7 @@ get_control (MetaUIFrame *frame, int x, int y)
   cairo_rectangle_int_t client;
 
   meta_ui_frame_calc_geometry (frame, &fgeom);
-  get_client_rect (&fgeom, fgeom.width, fgeom.height, &client);
+  get_client_rect (&fgeom, &client);
 
   if (POINT_IN_RECT (x, y, client))
     return META_FRAME_CONTROL_CLIENT_AREA;
