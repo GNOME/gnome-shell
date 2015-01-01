@@ -391,11 +391,7 @@ meta_frames_ensure_layout (MetaFrames     *frames,
     {
       if (frame->text_layout)
         {
-          /* save title to recreate layout */
-          g_free (frame->title);
-
-          frame->title = g_strdup (pango_layout_get_text (frame->text_layout));
-
+          g_assert (g_str_equal (frame->title, pango_layout_get_text (frame->text_layout)));
           g_clear_object (&frame->text_layout);
         }
     }
