@@ -127,8 +127,7 @@ installed_test_meta_DATA = $(installed_testcases:=.test)
 %.test: %$(EXEEXT) Makefile
 	$(AM_V_GEN) (echo '[Test]' > $@.tmp; \
 	echo 'Type=session' >> $@.tmp; \
-	echo 'TestEnvironment=G_ENABLE_DIAGNOSTIC=0;CLUTTER_ENABLE_DIAGNOSTIC=0;' >> $@.tmp; \
-	echo 'Exec=$(installed_testdir)/$<' >> $@.tmp; \
+	echo 'Exec=env G_ENABLE_DIAGNOSTIC=0 CLUTTER_ENABLE_DIAGNOSTIC=0 $(installed_testdir)/$<' >> $@.tmp; \
 	mv $@.tmp $@)
 
 CLEANFILES += $(installed_test_meta_DATA)
