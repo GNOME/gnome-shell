@@ -222,7 +222,7 @@ main (int argc, char *argv[])
                     canvas);
 
   /* we use GdkPixbuf to load an image from our data directory */
-  pixbuf = gdk_pixbuf_new_from_file (TESTS_DATADIR G_DIR_SEPARATOR_S "redhand.png", NULL);
+  pixbuf = gdk_pixbuf_new_from_file ("redhand.png", NULL);
   image = clutter_image_new ();
   clutter_image_set_data (CLUTTER_IMAGE (image),
                           gdk_pixbuf_get_pixels (pixbuf),

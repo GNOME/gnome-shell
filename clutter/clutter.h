@@ -61,6 +61,7 @@
 #include "clutter-drop-action.h"
 #include "clutter-effect.h"
 #include "clutter-enums.h"
+#include "clutter-enum-types.h"
 #include "clutter-event.h"
 #include "clutter-feature.h"
 #include "clutter-fixed-layout.h"
@@ -98,8 +99,8 @@
 #include "clutter-snap-constraint.h"
 #include "clutter-stage.h"
 #include "clutter-stage-manager.h"
-#include "clutter-table-layout.h"
 #include "clutter-tap-action.h"
+#include "clutter-test-utils.h"
 #include "clutter-texture.h"
 #include "clutter-text.h"
 #include "clutter-timeline.h"
@@ -108,8 +109,6 @@
 #include "clutter-units.h"
 #include "clutter-version.h"
 #include "clutter-zoom-action.h"
-
-#include "clutter-enum-types.h"
 
 #include "clutter-deprecated.h"
 

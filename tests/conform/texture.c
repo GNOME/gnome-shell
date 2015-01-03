@@ -1,8 +1,6 @@
-#include <glib.h>
+#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
 #include <clutter/clutter.h>
 #include <string.h>
-
-#include "test-conform-common.h"
 
 static CoglHandle
 make_texture (void)
@@ -28,17 +26,16 @@ make_texture (void)
                                      (guchar *)data);
 }
 
-void
-texture_pick_with_alpha (TestConformSimpleFixture *fixture,
-                         gconstpointer data)
+static void
+texture_pick_with_alpha (void)
 {
   ClutterTexture *tex = CLUTTER_TEXTURE (clutter_texture_new ());
-  ClutterStage *stage = CLUTTER_STAGE (clutter_stage_new ());
+  ClutterStage *stage = CLUTTER_STAGE (clutter_test_get_stage ());
   ClutterActor *actor;
 
   clutter_texture_set_cogl_texture (tex, make_texture ());
 
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage), CLUTTER_ACTOR (tex));
+  clutter_actor_add_child (CLUTTER_ACTOR (stage), CLUTTER_ACTOR (tex));
 
   clutter_actor_show (CLUTTER_ACTOR (stage));
 
@@ -80,10 +77,8 @@ texture_pick_with_alpha (TestConformSimpleFixture *fixture,
   if (g_test_verbose ())
     g_print ("actor @ (10, 10) = %p\n", actor);
   g_assert (actor == CLUTTER_ACTOR (tex));
-
-  clutter_actor_destroy (CLUTTER_ACTOR (stage));
-
-  if (g_test_verbose ())
-    g_print ("OK\n");
 }
 
+CLUTTER_TEST_SUITE (
+  CLUTTER_TEST_UNIT ("/texture/pick-with-alpha", texture_pick_with_alpha)
+)

@@ -47,7 +47,7 @@ G_BEGIN_DECLS
 /**
  * ClutterBackend:
  *
- * <structname>ClutterBackend</structname> is an opaque structure whose
+ * #ClutterBackend is an opaque structure whose
  * members cannot be directly accessed.
  *
  * Since: 0.4
@@ -55,18 +55,27 @@ G_BEGIN_DECLS
 typedef struct _ClutterBackend          ClutterBackend;
 typedef struct _ClutterBackendClass     ClutterBackendClass;
 
-GType clutter_backend_get_type    (void) G_GNUC_CONST;
+CLUTTER_AVAILABLE_IN_ALL
+GType clutter_backend_get_type (void) G_GNUC_CONST;
 
-ClutterBackend *clutter_get_default_backend (void);
+CLUTTER_AVAILABLE_IN_ALL
+ClutterBackend *                clutter_get_default_backend             (void);
 
-gdouble                     clutter_backend_get_resolution            (ClutterBackend             *backend);
+CLUTTER_AVAILABLE_IN_1_16
+void                            clutter_set_windowing_backend           (const char *backend_type);
 
-void                        clutter_backend_set_font_options          (ClutterBackend             *backend,
-                                                                       const cairo_font_options_t *options);
-const cairo_font_options_t *clutter_backend_get_font_options          (ClutterBackend             *backend);
+CLUTTER_AVAILABLE_IN_ALL
+gdouble                         clutter_backend_get_resolution          (ClutterBackend             *backend);
+
+CLUTTER_AVAILABLE_IN_ALL
+void                            clutter_backend_set_font_options        (ClutterBackend             *backend,
+                                                                         const cairo_font_options_t *options);
+CLUTTER_AVAILABLE_IN_ALL
+const cairo_font_options_t *    clutter_backend_get_font_options        (ClutterBackend             *backend);
 
 #if defined (COGL_ENABLE_EXPERIMENTAL_API) && defined (CLUTTER_ENABLE_EXPERIMENTAL_API)
-CoglContext                *clutter_backend_get_cogl_context          (ClutterBackend             *backend);
+CLUTTER_AVAILABLE_IN_1_8
+CoglContext *                   clutter_backend_get_cogl_context        (ClutterBackend             *backend);
 #endif
 
 G_END_DECLS

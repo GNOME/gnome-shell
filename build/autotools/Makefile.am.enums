@@ -26,16 +26,17 @@ $(if $(glib_enum_headers),,$(error Need to define glib_enum_headers))
 
 enum_tmpl_h=$(addprefix $(srcdir)/, $(glib_enum_h:.h=.h.in))
 enum_tmpl_c=$(addprefix $(srcdir)/, $(glib_enum_c:.c=.c.in))
+enum_headers=$(addprefix $(srcdir)/, $(glib_enum_headers))
 
 CLEANFILES += stamp-enum-types
 DISTCLEANFILES += $(glib_enum_h) $(glib_enum_c)
 BUILT_SOURCES += $(glib_enum_h) $(glib_enum_c)
 EXTRA_DIST += $(enum_tmpl_h) $(enum_tmpl_c)
 
-stamp-enum-types: $(glib_enum_headers) $(enum_tmpl_h)
+stamp-enum-types: $(enum_headers) $(enum_tmpl_h)
 	$(AM_V_GEN)$(GLIB_MKENUMS) \
 		--template $(enum_tmpl_h) \
-	$(glib_enum_headers) > xgen-eh \
+	$(enum_headers) > xgen-eh \
 	&& (cmp -s xgen-eh $(glib_enum_h) || cp -f xgen-eh $(glib_enum_h)) \
 	&& rm -f xgen-eh \
 	&& echo timestamp > $(@F)
@@ -43,9 +44,9 @@ stamp-enum-types: $(glib_enum_headers) $(enum_tmpl_h)
 $(glib_enum_h): stamp-enum-types
 	@true
 
-$(glib_enum_c): $(glib_enum_headers) $(glib_enum_h) $(enum_tmpl_c)
+$(glib_enum_c): $(enum_headers) $(enum_tmpl_h) $(enum_tmpl_c)
 	$(AM_V_GEN)$(GLIB_MKENUMS) \
 		--template $(enum_tmpl_c) \
-	$(glib_enum_headers) > xgen-ec \
+	$(enum_headers) > xgen-ec \
 	&& cp -f xgen-ec $(glib_enum_c) \
 	&& rm -f xgen-ec

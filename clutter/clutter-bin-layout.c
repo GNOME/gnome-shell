@@ -29,34 +29,16 @@
  * #ClutterBinLayout is a layout manager which implements the following
  * policy:
  *
- * <itemizedlist>
- *   <listitem><simpara>the preferred size is the maximum preferred size
+ *   - the preferred size is the maximum preferred size
  *   between all the children of the container using the
- *   layout;</simpara></listitem>
- *   <listitem><simpara>each child is allocated in "layers", on on top
- *   of the other;</simpara></listitem>
- *   <listitem><simpara>for each layer there are horizontal and vertical
- *   alignment policies.</simpara></listitem>
- * </itemizedlist>
+ *   layout;
+ *   - each child is allocated in "layers", on on top
+ *   of the other;
+ *   - for each layer there are horizontal and vertical
+ *   alignment policies.
  *
- * <figure id="bin-layout">
- *   <title>Bin layout</title>
- *   <para>The image shows a #ClutterBinLayout with three layers:
- *   a background #ClutterCairoTexture, set to fill on both the X
- *   and Y axis; a #ClutterTexture, set to center on both the X and
- *   Y axis; and a #ClutterRectangle, set to %CLUTTER_BIN_ALIGNMENT_END
- *   on both the X and Y axis.</para>
- *   <graphic fileref="bin-layout.png" format="PNG"/>
- * </figure>
- *
- * <example id="example-clutter-bin-layout">
- *  <title>How to pack actors inside a BinLayout</title>
- *  <programlisting>
- * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../examples/bin-layout.c">
- *   <xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback>
- * </xi:include>
- *  </programlisting>
- * </example>
+ * The [bin-layout example](https://git.gnome.org/browse/clutter/tree/examples/bin-layout.c?h=clutter-1.18)
+ * shows how to pack actors inside a #ClutterBinLayout.
  *
  * #ClutterBinLayout is available since Clutter 1.2
  */
@@ -82,8 +64,6 @@
 #define CLUTTER_TYPE_BIN_LAYER          (clutter_bin_layer_get_type ())
 #define CLUTTER_BIN_LAYER(obj)          (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_BIN_LAYER, ClutterBinLayer))
 #define CLUTTER_IS_BIN_LAYER(obj)       (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_BIN_LAYER))
-
-#define CLUTTER_BIN_LAYOUT_GET_PRIVATE(obj)     (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_BIN_LAYOUT, ClutterBinLayoutPrivate))
 
 typedef struct _ClutterBinLayer         ClutterBinLayer;
 typedef struct _ClutterLayoutMetaClass  ClutterBinLayerClass;
@@ -131,11 +111,11 @@ GType clutter_bin_layer_get_type (void);
 
 G_DEFINE_TYPE (ClutterBinLayer,
                clutter_bin_layer,
-               CLUTTER_TYPE_LAYOUT_META);
+               CLUTTER_TYPE_LAYOUT_META)
 
-G_DEFINE_TYPE (ClutterBinLayout,
-               clutter_bin_layout,
-               CLUTTER_TYPE_LAYOUT_MANAGER);
+G_DEFINE_TYPE_WITH_PRIVATE (ClutterBinLayout,
+                            clutter_bin_layout,
+                            CLUTTER_TYPE_LAYOUT_MANAGER)
 
 /*
  * ClutterBinLayer
@@ -491,8 +471,8 @@ clutter_bin_layout_allocate (ClutterLayoutManager   *manager,
       else
         child_alloc.y1 = allocation_y;
 
-      child_alloc.x2 = available_w;
-      child_alloc.y2 = available_h;
+      child_alloc.x2 = allocation_x + available_w;
+      child_alloc.y2 = allocation_y + available_h;
 
       if (clutter_actor_needs_expand (child, CLUTTER_ORIENTATION_HORIZONTAL))
         {
@@ -637,8 +617,6 @@ clutter_bin_layout_class_init (ClutterBinLayoutClass *klass)
   ClutterLayoutManagerClass *layout_class =
     CLUTTER_LAYOUT_MANAGER_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (ClutterBinLayoutPrivate));
-
   /**
    * ClutterBinLayout:x-align:
    *
@@ -694,7 +672,7 @@ clutter_bin_layout_class_init (ClutterBinLayoutClass *klass)
 static void
 clutter_bin_layout_init (ClutterBinLayout *self)
 {
-  self->priv = CLUTTER_BIN_LAYOUT_GET_PRIVATE (self);
+  self->priv = clutter_bin_layout_get_instance_private (self);
 
   self->priv->x_align = CLUTTER_BIN_ALIGNMENT_CENTER;
   self->priv->y_align = CLUTTER_BIN_ALIGNMENT_CENTER;

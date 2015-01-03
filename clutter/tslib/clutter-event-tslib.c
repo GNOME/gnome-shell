@@ -267,8 +267,7 @@ clutter_event_dispatch (GSource     *source,
   if (event)
     {
       /* forward the event into clutter for emission etc. */
-      clutter_do_event (event);
-      clutter_event_free (event);
+      _clutter_stage_queue_event (event->any.stage, event, FALSE);
     }
 
 out:

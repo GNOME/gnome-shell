@@ -4,7 +4,12 @@ NULL =
 
 EXTRA_DIST =
 
-noinst_PROGRAMS = \
+noinst_PROGRAMS =
+examples_DATA =
+
+examplesdir = $(datadir)/clutter-1.0/cookbook/examples
+
+all_examples = \
 	actors-composite-main 			\
 	animations-complex			\
 	animations-looping-animator		\
@@ -51,22 +56,19 @@ noinst_PROGRAMS = \
 	events-buttons-lasso			\
 	$(NULL)
 
-INCLUDES = \
-	-I$(top_srcdir)/ \
-	-I$(top_builddir)/ \
-	-I$(top_srcdir)/clutter \
-	-I$(top_builddir)/clutter \
-	$(NULL)
-
 LDADD = $(top_builddir)/clutter/libclutter-@CLUTTER_API_VERSION@.la -lm
 
 AM_CFLAGS = $(CLUTTER_CFLAGS)
 
 AM_CPPFLAGS = \
+	-I$(top_srcdir)/ \
+	-I$(top_builddir)/ \
+	-I$(top_srcdir)/clutter \
+	-I$(top_builddir)/clutter \
 	-DG_DISABLE_SINGLE_INCLUDES \
-	-DCOGL_DISABLE_DEPRECATED \
+	-DCOGL_DISABLE_DEPRECATION_WARNINGS \
 	-DCLUTTER_DISABLE_DEPRECATION_WARNINGS \
-	-DTESTS_DATA_DIR=\""$(top_srcdir)/tests/data/"\"
+	$(NULL)
 
 AM_LDFLAGS = $(CLUTTER_LIBS) -export-dynamic
 
@@ -129,7 +131,14 @@ ui_data = \
 	$(srcdir)/script-ui.json			\
 	$(NULL)
 
-examplesdir = $(datadir)/clutter-1.0/cookbook/examples
-examples_DATA = $(uidata) $(srcdir)/*.c $(srcdir)/*.h
+img_data = \
+	$(srcdir)/redhand.png \
+	$(srcdir)/smiley.png \
+	$(NULL)
+
+EXTRA_DIST += $(ui_data) $(img_data)
+
+examples_DATA += $(ui_data) $(img_data) $(srcdir)/*.c $(srcdir)/*.h
+noinst_PROGRAMS += $(all_examples)
 
 -include $(top_srcdir)/build/autotools/Makefile.am.gitignore

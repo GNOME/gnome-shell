@@ -43,6 +43,8 @@ void                    _clutter_master_clock_remove_timeline           (Clutter
                                                                          ClutterTimeline    *timeline);
 void                    _clutter_master_clock_start_running             (ClutterMasterClock *master_clock);
 void                    _clutter_master_clock_ensure_next_iteration     (ClutterMasterClock *master_clock);
+void                    _clutter_master_clock_set_paused                (ClutterMasterClock *master_clock,
+                                                                         gboolean            paused);
 
 void                    _clutter_timeline_advance                       (ClutterTimeline    *timeline,
                                                                          gint64              tick_time);

@@ -73,6 +73,7 @@ struct _ClutterGLXTexturePixmap
   ClutterGLXTexturePixmapPrivate *priv;
 };
 
+CLUTTER_DEPRECATED_FOR(clutter_x11_texture_pixmap_get_type)
 GType clutter_glx_texture_pixmap_get_type (void);
 
 CLUTTER_DEPRECATED_FOR(clutter_x11_texture_pixmap_new)

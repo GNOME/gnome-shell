@@ -52,7 +52,7 @@ main (int argc, char *argv[])
                                 clutter_align_constraint_new (stage, CLUTTER_ALIGN_Y_AXIS, 0.5));
   clutter_texture_set_sync_size (CLUTTER_TEXTURE (texture), TRUE);
   clutter_texture_set_from_file (CLUTTER_TEXTURE (texture),
-                                 TESTS_DATA_DIR "/redhand.png",
+                                 "redhand.png",
                                  &error);
 
   if (error != NULL)

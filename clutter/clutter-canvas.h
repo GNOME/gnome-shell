@@ -47,7 +47,7 @@ typedef struct _ClutterCanvasClass      ClutterCanvasClass;
 /**
  * ClutterCanvas:
  *
- * The <structname>ClutterCanvas</structname> structure contains
+ * The #ClutterCanvas structure contains
  * private data and should only be accessed using the provided
  * API.
  *
@@ -65,7 +65,7 @@ struct _ClutterCanvas
  * ClutterCanvasClass:
  * @draw: class handler for the #ClutterCanvas::draw signal
  *
- * The <structname>ClutterCanvasClass</structname> structure contains
+ * The #ClutterCanvasClass structure contains
  * private data.
  *
  * Since: 1.10
@@ -89,11 +89,17 @@ CLUTTER_AVAILABLE_IN_1_10
 GType clutter_canvas_get_type (void) G_GNUC_CONST;
 
 CLUTTER_AVAILABLE_IN_1_10
-ClutterContent *        clutter_canvas_new              (void);
+ClutterContent *        clutter_canvas_new                      (void);
 CLUTTER_AVAILABLE_IN_1_10
-void                    clutter_canvas_set_size         (ClutterCanvas *canvas,
-                                                         int            width,
-                                                         int            height);
+gboolean                clutter_canvas_set_size                 (ClutterCanvas *canvas,
+                                                                 int            width,
+                                                                 int            height);
+
+CLUTTER_AVAILABLE_IN_1_18
+void                    clutter_canvas_set_scale_factor         (ClutterCanvas *canvas,
+                                                                 int            scale);
+CLUTTER_AVAILABLE_IN_1_18
+int                     clutter_canvas_get_scale_factor         (ClutterCanvas *canvas);
 
 G_END_DECLS
 

@@ -65,6 +65,7 @@
 #include "clutter-event-private.h"
 #include "clutter-main.h"
 #include "clutter-private.h"
+#include "clutter-settings-private.h"
 
 #define clutter_backend_gdk_get_type _clutter_backend_gdk_get_type
 G_DEFINE_TYPE (ClutterBackendGdk, clutter_backend_gdk, CLUTTER_TYPE_BACKEND);
@@ -88,9 +89,9 @@ clutter_backend_gdk_init_settings (ClutterBackendGdk *backend_gdk)
       gdk_screen_get_setting (backend_gdk->screen,
 			      CLUTTER_SETTING_GDK_NAME(i),
 			      &val);
-      g_object_set_property (G_OBJECT (settings),
-			     CLUTTER_SETTING_PROPERTY(i),
-			     &val);
+      clutter_settings_set_property_internal (settings,
+                                              CLUTTER_SETTING_PROPERTY (i),
+                                              &val);
       g_value_unset (&val);
     }
 }
@@ -112,9 +113,9 @@ _clutter_backend_gdk_update_setting (ClutterBackendGdk *backend_gdk,
 	  gdk_screen_get_setting (backend_gdk->screen,
 				  CLUTTER_SETTING_GDK_NAME (i),
 				  &val);
-	  g_object_set_property (G_OBJECT (settings),
-				 CLUTTER_SETTING_PROPERTY (i),
-				 &val);
+	  clutter_settings_set_property_internal (settings,
+	  	  	  	  	  	  CLUTTER_SETTING_PROPERTY (i),
+	  	  	  	  	  	  &val);
 	  g_value_unset (&val);
 
 	  break;
@@ -128,9 +129,10 @@ cogl_gdk_filter (GdkXEvent  *xevent,
 		 gpointer    data)
 {
 #ifdef GDK_WINDOWING_X11
+  ClutterBackend *backend = data;
   CoglFilterReturn ret;
 
-  ret = cogl_xlib_handle_event ((XEvent*)xevent);
+  ret = cogl_xlib_renderer_handle_event (backend->cogl_renderer, (XEvent *) xevent);
   switch (ret)
     {
     case COGL_FILTER_REMOVE:
@@ -170,7 +172,7 @@ _clutter_backend_gdk_post_parse (ClutterBackend  *backend,
   backend_gdk->screen = gdk_display_get_default_screen (backend_gdk->display);
 
   /* add event filter for Cogl events */
-  gdk_window_add_filter (NULL, cogl_gdk_filter, NULL);
+  gdk_window_add_filter (NULL, cogl_gdk_filter, backend_gdk);
 
   clutter_backend_gdk_init_settings (backend_gdk);
 
@@ -210,7 +212,7 @@ clutter_backend_gdk_finalize (GObject *gobject)
 {
   ClutterBackendGdk *backend_gdk = CLUTTER_BACKEND_GDK (gobject);
 
-  gdk_window_remove_filter (NULL, cogl_gdk_filter, NULL);
+  gdk_window_remove_filter (NULL, cogl_gdk_filter, backend_gdk);
   g_object_unref (backend_gdk->display);
 
   G_OBJECT_CLASS (clutter_backend_gdk_parent_class)->finalize (gobject);
@@ -278,6 +280,7 @@ clutter_backend_gdk_get_renderer (ClutterBackend  *backend,
     {
       /* Force a WGL winsys on windows */
       cogl_renderer_set_winsys_id (renderer, COGL_WINSYS_ID_WGL);
+      cogl_win32_renderer_set_event_retrieval_enabled (renderer, FALSE);
     }
   else
 #endif

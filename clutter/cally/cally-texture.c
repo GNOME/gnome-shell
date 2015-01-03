@@ -30,9 +30,14 @@
  *
  * In particular it sets a proper role for the texture.
  */
+#include "config.h"
+
+#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
 
 #include "cally-texture.h"
 #include "cally-actor-private.h"
+
+#include "deprecated/clutter-texture.h"
 
 /* AtkObject */
 static void                  cally_texture_real_initialize (AtkObject *obj,

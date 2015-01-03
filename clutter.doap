@@ -7,6 +7,7 @@
 
   <name>Clutter</name>
   <shortname>clutter</shortname>
+  <category rdf:resource="http://api.gnome.org/doap-extensions#core" />
 
   <shortdesc xml:lang="en">A toolkit for creating fast, portable, compelling dynamic UIs</shortdesc>
 

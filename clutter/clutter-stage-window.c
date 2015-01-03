@@ -333,3 +333,30 @@ _clutter_stage_window_can_clip_redraws (ClutterStageWindow *window)
 
   return FALSE;
 }
+
+void
+_clutter_stage_window_set_scale_factor (ClutterStageWindow *window,
+                                        int                 factor)
+{
+  ClutterStageWindowIface *iface;
+
+  g_return_if_fail (CLUTTER_IS_STAGE_WINDOW (window));
+
+  iface = CLUTTER_STAGE_WINDOW_GET_IFACE (window);
+  if (iface->set_scale_factor != NULL)
+    iface->set_scale_factor (window, factor);
+}
+
+int
+_clutter_stage_window_get_scale_factor (ClutterStageWindow *window)
+{
+  ClutterStageWindowIface *iface;
+
+  g_return_val_if_fail (CLUTTER_IS_STAGE_WINDOW (window), 1);
+
+  iface = CLUTTER_STAGE_WINDOW_GET_IFACE (window);
+  if (iface->get_scale_factor != NULL)
+    return iface->get_scale_factor (window);
+
+  return 1;
+}

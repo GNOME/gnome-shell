@@ -29,8 +29,7 @@
  * The CEX100 backend for Clutter provides some Intel CE3100/CE4100
  * specific API
  *
- * You need to include
- * <filename class="headerfile">&lt;clutter/cex100/clutter-cex100.h&gt;</filename>
+ * You need to include `clutter/cex100/clutter-cex100.h`
  * to have access to the functions documented here.
  */
 

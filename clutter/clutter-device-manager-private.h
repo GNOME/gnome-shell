@@ -65,8 +65,8 @@ typedef struct _ClutterTouchInfo
   ClutterEventSequence *sequence;
   ClutterActor *actor;
 
-  gint current_x;
-  gint current_y;
+  gfloat current_x;
+  gfloat current_y;
 } ClutterTouchInfo;
 
 struct _ClutterInputDevice
@@ -106,8 +106,8 @@ struct _ClutterInputDevice
   ClutterStage *stage;
 
   /* the current state */
-  gint current_x;
-  gint current_y;
+  gfloat current_x;
+  gfloat current_y;
   guint32 current_time;
   gint current_button_number;
   ClutterModifierType current_state;
@@ -137,9 +137,6 @@ struct _ClutterInputDeviceClass
 {
   GObjectClass parent_class;
 
-  void (* select_stage_events) (ClutterInputDevice *device,
-                                ClutterStage       *stage,
-                                gint                event_mask);
   gboolean (* keycode_to_evdev) (ClutterInputDevice *device,
                                  guint               hardware_keycode,
                                  guint              *evdev_keycode);
@@ -152,8 +149,7 @@ void            _clutter_device_manager_remove_device           (ClutterDeviceMa
                                                                  ClutterInputDevice   *device);
 void            _clutter_device_manager_update_devices          (ClutterDeviceManager *device_manager);
 void            _clutter_device_manager_select_stage_events     (ClutterDeviceManager *device_manager,
-                                                                 ClutterStage         *stage,
-                                                                 gint                  event_mask);
+                                                                 ClutterStage         *stage);
 ClutterBackend *_clutter_device_manager_get_backend             (ClutterDeviceManager *device_manager);
 
 /* input device */
@@ -165,8 +161,8 @@ void            _clutter_input_device_remove_event_sequence     (ClutterInputDev
                                                                  ClutterEvent         *event);
 void            _clutter_input_device_set_coords                (ClutterInputDevice   *device,
                                                                  ClutterEventSequence *sequence,
-                                                                 gint                  x,
-                                                                 gint                  y,
+                                                                 gfloat                x,
+                                                                 gfloat                y,
                                                                  ClutterStage         *stage);
 void            _clutter_input_device_set_state                 (ClutterInputDevice   *device,
                                                                  ClutterModifierType   state);
@@ -197,10 +193,6 @@ void            _clutter_input_device_add_slave                 (ClutterInputDev
                                                                  ClutterInputDevice   *slave);
 void            _clutter_input_device_remove_slave              (ClutterInputDevice   *master,
                                                                  ClutterInputDevice   *slave);
-
-void            _clutter_input_device_select_stage_events       (ClutterInputDevice   *device,
-                                                                 ClutterStage         *stage,
-                                                                 gint                  event_flags);
 
 gboolean        _clutter_input_device_translate_axis            (ClutterInputDevice   *device,
                                                                  guint                 index_,

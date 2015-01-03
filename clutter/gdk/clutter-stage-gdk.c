@@ -28,9 +28,15 @@
 #endif
 
 #include <cogl/cogl.h>
+
+#define GDK_DISABLE_DEPRECATION_WARNINGS
+
 #include <gdk/gdk.h>
 #ifdef GDK_WINDOWING_X11
 #include <gdk/gdkx.h>
+#endif
+#ifdef GDK_WINDOWING_WAYLAND
+#include <gdk/gdkwayland.h>
 #endif
 #ifdef GDK_WINDOWING_WIN32
 #include <gdk/gdkwin32.h>
@@ -143,9 +149,6 @@ clutter_stage_gdk_resize (ClutterStageWindow *stage_window,
 
   CLUTTER_NOTE (BACKEND, "New size received: (%d, %d)", width, height);
 
-  CLUTTER_SET_PRIVATE_FLAGS (CLUTTER_STAGE_COGL (stage_gdk)->wrapper,
-			     CLUTTER_IN_RESIZE);
-
   gdk_window_resize (stage_gdk->window, width, height);
 }
 
@@ -225,7 +228,7 @@ clutter_stage_gdk_realize (ClutterStageWindow *stage_window)
           if (!cursor_visible)
             {
               if (stage_gdk->blank_cursor == NULL)
-                stage_gdk->blank_cursor = gdk_cursor_new (GDK_BLANK_CURSOR);
+                stage_gdk->blank_cursor = gdk_cursor_new_for_display (backend_gdk->display, GDK_BLANK_CURSOR);
 
               attributes.cursor = stage_gdk->blank_cursor;
             }
@@ -270,6 +273,14 @@ clutter_stage_gdk_realize (ClutterStageWindow *stage_window)
                                                 GDK_WINDOW_XID (stage_gdk->window),
                                                 clutter_stage_gdk_update_foreign_event_mask,
                                                 stage_gdk);
+    }
+  else
+#endif
+#if defined(GDK_WINDOWING_WAYLAND) && defined(COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT)
+  if (GDK_IS_WAYLAND_WINDOW (stage_gdk->window))
+    {
+      cogl_wayland_onscreen_set_foreign_surface (stage_cogl->onscreen,
+                                                 gdk_wayland_window_get_wl_surface (stage_gdk->window));
     }
   else
 #endif
@@ -336,7 +347,11 @@ clutter_stage_gdk_set_cursor_visible (ClutterStageWindow *stage_window,
   else
     {
       if (stage_gdk->blank_cursor == NULL)
-	stage_gdk->blank_cursor = gdk_cursor_new (GDK_BLANK_CURSOR);
+        {
+          GdkDisplay *display = clutter_gdk_get_default_display ();
+
+	  stage_gdk->blank_cursor = gdk_cursor_new_for_display (display, GDK_BLANK_CURSOR);
+        }
 
       gdk_window_set_cursor (stage_gdk->window, stage_gdk->blank_cursor);
     }

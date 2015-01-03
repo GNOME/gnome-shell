@@ -1083,6 +1083,7 @@ clutter_script_parser_object_end (JsonParser *json_parser,
       oinfo = g_slice_new0 (ObjectInfo);
       oinfo->merge_id = _clutter_script_get_last_merge_id (script);
       oinfo->id = g_strdup (id_);
+      oinfo->has_unresolved = TRUE;
 
       class_name = json_object_get_string_member (object, "type");
       oinfo->class_name = g_strdup (class_name);
@@ -1107,6 +1108,8 @@ clutter_script_parser_object_end (JsonParser *json_parser,
       oinfo->children = parse_children (oinfo, val);
 
       json_object_remove_member (object, "children");
+
+      oinfo->has_unresolved = TRUE;
     }
 
   if (json_object_has_member (object, "signals"))
@@ -1115,9 +1118,9 @@ clutter_script_parser_object_end (JsonParser *json_parser,
       oinfo->signals = parse_signals (script, oinfo, val);
 
       json_object_remove_member (object, "signals");
-    }
 
-  oinfo->is_actor = FALSE;
+      oinfo->has_unresolved = TRUE;
+    }
 
   if (strcmp (oinfo->class_name, "ClutterStage") == 0 &&
       json_object_has_member (object, "is-default"))
@@ -1131,9 +1134,6 @@ clutter_script_parser_object_end (JsonParser *json_parser,
     }
   else
     oinfo->is_stage_default = FALSE;
-
-  oinfo->is_unmerged = FALSE;
-  oinfo->has_unresolved = TRUE;
 
   members = json_object_get_members (object);
   for (l = members; l; l = l->next)
@@ -1175,6 +1175,7 @@ clutter_script_parser_object_end (JsonParser *json_parser,
       pinfo->is_layout = g_str_has_prefix (name, "layout::") ? TRUE : FALSE;
 
       oinfo->properties = g_list_prepend (oinfo->properties, pinfo);
+      oinfo->has_unresolved = TRUE;
     }
 
   g_list_free (members);
@@ -2169,11 +2170,11 @@ _clutter_script_construct_object (ClutterScript *script,
 
       if (G_UNLIKELY (oinfo->gtype == G_TYPE_INVALID))
         return;
-
-      oinfo->is_actor = g_type_is_a (oinfo->gtype, CLUTTER_TYPE_ACTOR);
-      if (oinfo->is_actor)
-        oinfo->is_stage = g_type_is_a (oinfo->gtype, CLUTTER_TYPE_STAGE);
     }
+
+  oinfo->is_actor = g_type_is_a (oinfo->gtype, CLUTTER_TYPE_ACTOR);
+  if (oinfo->is_actor)
+    oinfo->is_stage = g_type_is_a (oinfo->gtype, CLUTTER_TYPE_STAGE);
 
   if (oinfo->is_stage && oinfo->is_stage_default)
     {

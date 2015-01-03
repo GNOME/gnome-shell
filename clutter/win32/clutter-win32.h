@@ -43,14 +43,19 @@
 
 G_BEGIN_DECLS
 
+CLUTTER_AVAILABLE_IN_ALL
 HWND          clutter_win32_get_stage_window        (ClutterStage *stage);
+CLUTTER_AVAILABLE_IN_ALL
 ClutterStage *clutter_win32_get_stage_from_window   (HWND          hwnd);
 
+CLUTTER_AVAILABLE_IN_ALL
 gboolean      clutter_win32_set_stage_foreign       (ClutterStage *stage,
                                                      HWND          hwnd);
 
+CLUTTER_AVAILABLE_IN_ALL
 void          clutter_win32_disable_event_retrieval (void);
 
+CLUTTER_AVAILABLE_IN_ALL
 gboolean      clutter_win32_handle_event            (const MSG *msg);
 
 G_END_DECLS

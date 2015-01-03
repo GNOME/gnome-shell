@@ -70,7 +70,6 @@ typedef struct _ClutterVertex4          ClutterVertex4;
 #define CLUTTER_ACTOR_IN_REPARENT(a)            ((CLUTTER_PRIVATE_FLAGS (a) & CLUTTER_IN_REPARENT) != FALSE)
 #define CLUTTER_ACTOR_IN_PAINT(a)               ((CLUTTER_PRIVATE_FLAGS (a) & CLUTTER_IN_PAINT) != FALSE)
 #define CLUTTER_ACTOR_IN_RELAYOUT(a)            ((CLUTTER_PRIVATE_FLAGS (a) & CLUTTER_IN_RELAYOUT) != FALSE)
-#define CLUTTER_STAGE_IN_RESIZE(a)              ((CLUTTER_PRIVATE_FLAGS (a) & CLUTTER_IN_RESIZE) != FALSE)
 
 #define CLUTTER_PARAM_READABLE  (G_PARAM_READABLE | G_PARAM_STATIC_STRINGS)
 #define CLUTTER_PARAM_WRITABLE  (G_PARAM_WRITABLE | G_PARAM_STATIC_STRINGS)
@@ -108,14 +107,8 @@ typedef enum {
   /* Used to avoid recursion */
   CLUTTER_IN_RELAYOUT    = 1 << 4,
 
-  /* Used by the stage if resizing is an asynchronous operation (like on
-   * X11) to delay queueing relayouts until we got a notification from the
-   * event handling
-   */
-  CLUTTER_IN_RESIZE      = 1 << 5,
-
-  /* a flag for internal children of Containers */
-  CLUTTER_INTERNAL_CHILD = 1 << 6
+  /* a flag for internal children of Containers (DEPRECATED) */
+  CLUTTER_INTERNAL_CHILD = 1 << 5
 } ClutterPrivateFlags;
 
 /*
@@ -137,10 +130,11 @@ struct _ClutterMainContext
   /* the main event queue */
   GQueue *events_queue;
 
-  ClutterPickMode  pick_mode;
+  /* the event filters added via clutter_event_add_filter. these are
+   * ordered from least recently added to most recently added */
+  GList *event_filters;
 
-  /* mapping between reused integer ids and actors */
-  ClutterIDPool *id_pool;
+  ClutterPickMode  pick_mode;
 
   /* default FPS; this is only used if we cannot sync to vblank */
   guint frame_rate;
@@ -160,7 +154,6 @@ struct _ClutterMainContext
   gint fb_g_mask_used;
   gint fb_b_mask_used;
 
-  PangoContext *pango_context;  /* Global Pango context */
   CoglPangoFontMap *font_map;   /* Global font map */
 
   /* stack of #ClutterEvent */
@@ -201,14 +194,10 @@ ClutterMainContext *    _clutter_context_get_default                    (void);
 void                    _clutter_context_lock                           (void);
 void                    _clutter_context_unlock                         (void);
 gboolean                _clutter_context_is_initialized                 (void);
-PangoContext *          _clutter_context_create_pango_context           (void);
-PangoContext *          _clutter_context_get_pango_context              (void);
 ClutterPickMode         _clutter_context_get_pick_mode                  (void);
 void                    _clutter_context_push_shader_stack              (ClutterActor *actor);
 ClutterActor *          _clutter_context_pop_shader_stack               (ClutterActor *actor);
 ClutterActor *          _clutter_context_peek_shader_stack              (void);
-guint32                 _clutter_context_acquire_id                     (gpointer      key);
-void                    _clutter_context_release_id                     (guint32       id_);
 gboolean                _clutter_context_get_motion_events_enabled      (void);
 gboolean                _clutter_context_get_show_fps                   (void);
 
@@ -224,9 +213,8 @@ void            _clutter_diagnostic_message     (const char *fmt, ...);
 guint           _clutter_pixel_to_id            (guchar        pixel[4]);
 void            _clutter_id_to_color            (guint         id,
                                                  ClutterColor *col);
-ClutterActor *  _clutter_get_actor_by_id        (ClutterStage *stage,
-                                                 guint32       actor_id);
 
+void            _clutter_set_sync_to_vblank     (gboolean      sync_to_vblank);
 gboolean        _clutter_get_sync_to_vblank     (void);
 
 /* use this function as the accumulator if you have a signal with
@@ -248,10 +236,6 @@ gboolean _clutter_boolean_continue_accumulator (GSignalInvocationHint *ihint,
                                                 gpointer               dummy);
 
 void _clutter_run_repaint_functions (ClutterRepaintFlags flags);
-
-void _clutter_constraint_update_allocation (ClutterConstraint *constraint,
-                                            ClutterActor      *actor,
-                                            ClutterActorBox   *allocation);
 
 GType _clutter_layout_manager_get_child_meta_type (ClutterLayoutManager *manager);
 

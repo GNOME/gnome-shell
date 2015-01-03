@@ -39,17 +39,16 @@
  * a #ClutterActor and then the Cogl vertex buffers API to submit the
  * geometry to the GPU.
  *
- * <refsect2>
- *   <title>Implementing ClutterDeformEffect</title>
- *   <para>Sub-classes of #ClutterDeformEffect should override the
- *   #ClutterDeformEffectClass.deform_vertex() virtual function; this function
- *   is called on every vertex that needs to be deformed by the effect.
- *   Each passed vertex is an in-out parameter that initially contains the
- *   position of the vertex and should be modified according to a specific
- *   deformation algorithm.</para>
- * </refsect2>
- *
  * #ClutterDeformEffect is available since Clutter 1.4
+ *
+ * ## Implementing ClutterDeformEffect
+ *
+ * Sub-classes of #ClutterDeformEffect should override the
+ * #ClutterDeformEffectClass.deform_vertex() virtual function; this function
+ * is called on every vertex that needs to be deformed by the effect.
+ * Each passed vertex is an in-out parameter that initially contains the
+ * position of the vertex and should be modified according to a specific
+ * deformation algorithm.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -102,9 +101,9 @@ enum
 
 static GParamSpec *obj_props[PROP_LAST];
 
-G_DEFINE_ABSTRACT_TYPE (ClutterDeformEffect,
-                        clutter_deform_effect,
-                        CLUTTER_TYPE_OFFSCREEN_EFFECT);
+G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (ClutterDeformEffect,
+                                     clutter_deform_effect,
+                                     CLUTTER_TYPE_OFFSCREEN_EFFECT)
 
 static void
 clutter_deform_effect_real_deform_vertex (ClutterDeformEffect *effect,
@@ -305,7 +304,7 @@ clutter_deform_effect_paint_target (ClutterOffscreenEffect *effect)
          instead we make a temporary copy */
       back_pipeline = cogl_pipeline_copy (priv->back_pipeline);
       cogl_pipeline_set_depth_state (back_pipeline, &depth_state, NULL);
-      cogl_pipeline_set_cull_face_mode (pipeline,
+      cogl_pipeline_set_cull_face_mode (back_pipeline,
                                         COGL_PIPELINE_CULL_FACE_MODE_FRONT);
 
       cogl_framebuffer_draw_primitive (fb, back_pipeline, priv->primitive);
@@ -577,8 +576,6 @@ clutter_deform_effect_class_init (ClutterDeformEffectClass *klass)
   ClutterActorMetaClass *meta_class = CLUTTER_ACTOR_META_CLASS (klass);
   ClutterOffscreenEffectClass *offscreen_class = CLUTTER_OFFSCREEN_EFFECT_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (ClutterDeformEffectPrivate));
-
   klass->deform_vertex = clutter_deform_effect_real_deform_vertex;
 
   /**
@@ -645,9 +642,7 @@ clutter_deform_effect_class_init (ClutterDeformEffectClass *klass)
 static void
 clutter_deform_effect_init (ClutterDeformEffect *self)
 {
-  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, CLUTTER_TYPE_DEFORM_EFFECT,
-                                            ClutterDeformEffectPrivate);
-
+  self->priv = clutter_deform_effect_get_instance_private (self);
   self->priv->x_tiles = self->priv->y_tiles = DEFAULT_N_TILES;
   self->priv->back_pipeline = NULL;
 

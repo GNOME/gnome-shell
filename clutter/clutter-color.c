@@ -624,28 +624,12 @@ parse_hsla (ClutterColor *color,
  *
  * The format of @str can be either one of:
  *
- * <itemizedlist>
- * <listitem>
- *   <para>a standard name (as taken from the X11 rgb.txt file)</para>
- * </listitem>
- * <listitem>
- *   <para>an hexadecimal value in the form: <literal>&num;rgb</literal>,
- *   <literal>&num;rrggbb</literal>, <literal>&num;rgba</literal> or
- *   <literal>&num;rrggbbaa</literal></para>
- * </listitem>
- * <listitem>
- *   <para>a RGB color in the form: <literal>rgb(r, g, b)</literal></para>
- * </listitem>
- * <listitem>
- *   <para>a RGB color in the form: <literal>rgba(r, g, b, a)</literal></para>
- * </listitem>
- * <listitem>
- *   <para>a HSL color in the form: <literal>hsl(h, s, l)</literal></para>
- * </listitem>
- * <listitem>
- *   <para>a HSL color in the form: <literal>hsla(h, s, l, a)</literal></para>
- * </listitem>
- * </itemizedlist>
+ *   - a standard name (as taken from the X11 rgb.txt file)
+ *   - an hexadecimal value in the form: `#rgb`, `#rrggbb`, `#rgba`, or `#rrggbbaa`
+ *   - a RGB color in the form: `rgb(r, g, b)`
+ *   - a RGB color in the form: `rgba(r, g, b, a)`
+ *   - a HSL color in the form: `hsl(h, s, l)`
+ *    -a HSL color in the form: `hsla(h, s, l, a)`
  *
  * where 'r', 'g', 'b' and 'a' are (respectively) the red, green, blue color
  * intensities and the opacity. The 'h', 's' and 'l' are (respectively) the
@@ -656,9 +640,9 @@ parse_hsla (ClutterColor *color,
  * and 100%; the percentages require the '%' character. The 'a' value, if
  * specified, can only be a floating point value between 0.0 and 1.0.
  *
- * In the hls() and hlsa() formats, the 'h' value (hue) it's an angle between
+ * In the hls() and hlsa() formats, the 'h' value (hue) is an angle between
  * 0 and 360.0 degrees; the 'l' and 's' values (luminance and saturation) are
- * a floating point value between 0.0 and 1.0. The 'a' value, if specified,
+ * percentage values in the range between 0% and 100%. The 'a' value, if specified,
  * can only be a floating point value between 0.0 and 1.0.
  *
  * Whitespace inside the definitions is ignored; no leading whitespace

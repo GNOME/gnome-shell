@@ -438,3 +438,15 @@ cally_util_stage_removed_cb (ClutterStageManager *stage_manager,
 
   g_signal_handlers_disconnect_by_func (stage, cally_key_snooper_cb, NULL);
 }
+
+void
+_cally_util_override_atk_util (void)
+{
+  AtkUtilClass *atk_class = ATK_UTIL_CLASS (g_type_class_ref (ATK_TYPE_UTIL));
+
+  atk_class->add_key_event_listener = cally_util_add_key_event_listener;
+  atk_class->remove_key_event_listener = cally_util_remove_key_event_listener;
+  atk_class->get_root = cally_util_get_root;
+  atk_class->get_toolkit_name = cally_util_get_toolkit_name;
+  atk_class->get_toolkit_version = cally_util_get_toolkit_version;
+}

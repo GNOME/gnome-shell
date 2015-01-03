@@ -47,7 +47,7 @@ typedef struct _ClutterRotateActionClass         ClutterRotateActionClass;
 /**
  * ClutterRotateAction:
  *
- * The <structname>ClutterRotateAction</structname> structure contains
+ * The #ClutterRotateAction structure contains
  * only private data and should be accessed using the provided API
  *
  * Since: 1.12
@@ -64,7 +64,7 @@ struct _ClutterRotateAction
  * ClutterRotateActionClass:
  * @rotate: class handler for the #ClutterRotateAction::rotate signal
  *
- * The <structname>ClutterRotateActionClass</structname> structure contains
+ * The #ClutterRotateActionClass structure contains
  * only private data.
  *
  * Since: 1.12

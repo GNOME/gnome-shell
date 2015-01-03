@@ -4,7 +4,7 @@
 
 #include <clutter/clutter.h>
 
-#define TEST_STATE_SCRIPT_FILE  TESTS_DATADIR G_DIR_SEPARATOR_S "test-script-signals.json"
+#define TEST_STATE_SCRIPT_FILE  "test-script-signals.json"
 
 gboolean
 on_button_press (ClutterActor *actor,

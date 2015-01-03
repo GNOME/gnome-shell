@@ -67,6 +67,7 @@ typedef enum {
  * Since: 0.4
  */
 #define CLUTTER_TEXTURE_ERROR   (clutter_texture_error_quark ())
+CLUTTER_AVAILABLE_IN_ALL
 GQuark clutter_texture_error_quark (void);
 
 typedef struct _ClutterTexture        ClutterTexture;
@@ -121,6 +122,7 @@ struct _ClutterTextureClass
   void (*_clutter_texture5) (void);
 };
 
+CLUTTER_AVAILABLE_IN_ALL
 GType clutter_texture_get_type (void) G_GNUC_CONST;
 
 G_END_DECLS

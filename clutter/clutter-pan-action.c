@@ -61,6 +61,7 @@
 
 #include "clutter-debug.h"
 #include "clutter-enum-types.h"
+#include "clutter-gesture-action-private.h"
 #include "clutter-marshal.h"
 #include "clutter-private.h"
 #include <math.h>
@@ -127,8 +128,7 @@ enum
 
 static guint pan_signals[LAST_SIGNAL] = { 0, };
 
-G_DEFINE_TYPE (ClutterPanAction, clutter_pan_action,
-               CLUTTER_TYPE_GESTURE_ACTION);
+G_DEFINE_TYPE_WITH_PRIVATE (ClutterPanAction, clutter_pan_action, CLUTTER_TYPE_GESTURE_ACTION)
 
 static void
 emit_pan (ClutterPanAction *self,
@@ -387,6 +387,15 @@ clutter_pan_action_get_property (GObject    *gobject,
 }
 
 static void
+clutter_pan_action_constructed (GObject *gobject)
+{
+  ClutterGestureAction *gesture;
+
+  gesture = CLUTTER_GESTURE_ACTION (gobject);
+  clutter_gesture_action_set_threshold_trigger_edge (gesture, CLUTTER_GESTURE_TRIGGER_EDGE_AFTER);
+}
+
+static void
 clutter_pan_action_dispose (GObject *gobject)
 {
   ClutterPanActionPrivate *priv = CLUTTER_PAN_ACTION (gobject)->priv;
@@ -423,8 +432,6 @@ clutter_pan_action_class_init (ClutterPanActionClass *klass)
   ClutterActorMetaClass *meta_class = CLUTTER_ACTOR_META_CLASS (klass);
   ClutterGestureActionClass *gesture_class =
       CLUTTER_GESTURE_ACTION_CLASS (klass);
-
-  g_type_class_add_private (klass, sizeof (ClutterPanActionPrivate));
 
   klass->pan = clutter_pan_action_real_pan;
 
@@ -500,6 +507,7 @@ clutter_pan_action_class_init (ClutterPanActionClass *klass)
                          1.0, G_MAXDOUBLE, default_acceleration_factor,
                          CLUTTER_PARAM_READWRITE);
 
+  gobject_class->constructed = clutter_pan_action_constructed;
   gobject_class->set_property = clutter_pan_action_set_property;
   gobject_class->get_property = clutter_pan_action_get_property;
   gobject_class->dispose = clutter_pan_action_dispose;
@@ -559,12 +567,10 @@ clutter_pan_action_class_init (ClutterPanActionClass *klass)
 static void
 clutter_pan_action_init (ClutterPanAction *self)
 {
-  ClutterPanActionPrivate *priv = self->priv =
-    G_TYPE_INSTANCE_GET_PRIVATE (self, CLUTTER_TYPE_PAN_ACTION,
-                                 ClutterPanActionPrivate);
-  priv->deceleration_rate = default_deceleration_rate;
-  priv->acceleration_factor = default_acceleration_factor;
-  priv->state = PAN_STATE_INACTIVE;
+  self->priv = clutter_pan_action_get_instance_private (self);
+  self->priv->deceleration_rate = default_deceleration_rate;
+  self->priv->acceleration_factor = default_acceleration_factor;
+  self->priv->state = PAN_STATE_INACTIVE;
 }
 
 /**

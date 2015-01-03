@@ -31,8 +31,9 @@ struct _CallbackData
 
 static const char
 instructions[] =
-  "Press and drag any of the three mouse buttons to add a clip with different "
-  "shapes. Press 'r' to reset or 'u' to undo the last clip.";
+  "Left button and drag to draw a rectangle, control+left to draw a rotated "
+  "rectangle or shift+left to draw a path. Press 'r' to reset or 'u' "
+  "to undo the last clip.";
 
 static void
 path_shapes (gint x, gint y, gint width, gint height)
@@ -231,10 +232,29 @@ on_button_press (ClutterActor *stage, ClutterButtonEvent *event,
   data->current_clip.x1 = data->current_clip.x2 = event->x;
   data->current_clip.y1 = data->current_clip.y2 = event->y;
 
-  data->current_clip.type
-    = event->button == CLUTTER_BUTTON_PRIMARY ? CLIP_RECTANGLE
-    : event->button == CLUTTER_BUTTON_MIDDLE ? CLIP_SHAPES
-    : CLIP_ROTATED_RECTANGLE;
+  switch (event->button)
+    {
+    case CLUTTER_BUTTON_PRIMARY:
+      if (clutter_event_has_shift_modifier ((ClutterEvent *) event))
+        data->current_clip.type = CLIP_SHAPES;
+      else if (clutter_event_has_control_modifier ((ClutterEvent *) event))
+        data->current_clip.type = CLIP_ROTATED_RECTANGLE;
+      else
+        data->current_clip.type = CLIP_RECTANGLE;
+      break;
+
+    case CLUTTER_BUTTON_SECONDARY:
+      data->current_clip.type = CLIP_ROTATED_RECTANGLE;
+      break;
+
+    case CLUTTER_BUTTON_MIDDLE:
+      data->current_clip.type = CLIP_SHAPES;
+      break;
+
+    default:
+      data->current_clip.type = CLIP_NONE;
+      break;
+    }
 
   clutter_actor_queue_redraw (stage);
 

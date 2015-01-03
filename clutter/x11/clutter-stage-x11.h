@@ -61,13 +61,14 @@ struct _ClutterStageX11
 
   ClutterStageX11State wm_state;
 
+  int scale_factor;
+
   guint is_foreign_xwin       : 1;
   guint fullscreening         : 1;
   guint is_cursor_visible     : 1;
   guint viewport_initialized  : 1;
   guint accept_focus          : 1;
   guint fullscreen_on_realize : 1;
-  guint cursor_hidden_xfixes  : 1;
 };
 
 struct _ClutterStageX11Class
@@ -86,7 +87,7 @@ struct _ClutterStageX11Class
   KeyReleaseMask | \
   ButtonPressMask | \
   ButtonReleaseMask | \
-  PointerMotionMask;
+  PointerMotionMask
 
 GType _clutter_stage_x11_get_type (void) G_GNUC_CONST;
 

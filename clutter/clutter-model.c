@@ -37,8 +37,11 @@
  * The #ClutterModel class is a list model which can accept most GObject 
  * types as a column type.
  * 
- * Creating a simple clutter model:
- * <informalexample><programlisting>
+ * ## Creating a simple ClutterModel
+ *
+ * The example below shows how to create a simple list model.
+ *
+ * |[<!-- language="C" -->
  * enum
  * {
  *   COLUMN_INT,
@@ -51,10 +54,10 @@
  *   ClutterModel *model;
  *   gint i;
  *
- *   model = clutter_model_default_new (N_COLUMNS,
- *                                      /<!-- -->* column type, column title *<!-- -->/
- *                                      G_TYPE_INT,     "my integers",
- *                                      G_TYPE_STRING,  "my strings");
+ *   model = clutter_list_model_new (N_COLUMNS,
+ *                                   // column type, title
+ *                                   G_TYPE_INT,     "my integers",
+ *                                   G_TYPE_STRING,  "my strings");
  *   for (i = 0; i < 10; i++)
  *     {
  *       gchar *string = g_strdup_printf ("String %d", i);
@@ -67,7 +70,9 @@
  *
  *   
  * }
- * </programlisting></informalexample>
+ * ]|
+ *
+ * ## Iterating through a ClutterModel
  *
  * Iterating through the model consists of retrieving a new #ClutterModelIter
  * pointing to the starting row, and calling clutter_model_iter_next() or
@@ -79,8 +84,7 @@
  * after the last row. In an empty sequence, the first and last iterators are
  * the same.
  *
- * Iterating a #ClutterModel:
- * <informalexample><programlisting>
+ * |[<!-- language="C" -->
  * enum
  * {
  *   COLUMN_INT,
@@ -93,10 +97,10 @@
  *   ClutterModel *model;
  *   ClutterModelIter *iter = NULL;
  *
- *   /<!-- -->*  Fill the model *<!-- -->/
+ *   // fill the model
  *   model = populate_model ();
  *
- *   /<!-- -->* Get the first iter *<!-- -->/
+ *   // get the iterator for the first row in the model
  *   iter = clutter_model_get_first_iter (model);
  *   while (!clutter_model_iter_is_last (iter))
  *     {
@@ -105,32 +109,33 @@
  *       iter = clutter_model_iter_next (iter);
  *     }
  *
- *   /<!-- -->* Make sure to unref the iter *<!-- -->/
+ *   // Make sure to unref the iter
  *   g_object_unref (iter);
  * }
- * </programlisting></informalexample>
+ * ]|
  *
  * #ClutterModel is an abstract class. Clutter provides a list model
  * implementation called #ClutterListModel which has been optimised
  * for insertion and look up in sorted lists.
  *
- * <refsect2 id="ClutterModel-script">
- *   <title>ClutterModel custom properties for #ClutterScript</title>
- *   <para>#ClutterModel defines a custom property "columns" for #ClutterScript
- *   which allows defining the column names and types. It also defines a custom
- *   "rows" property which allows filling the #ClutterModel with some
- *   data.</para>
- *   <example id="ClutterModel-script-example">
- *     <title>Example of the "columns" and "rows" custom properties</title>
- *     <para>The definition below will create a #ClutterListModel with three
- *     columns: the first one with name "Name" and containing strings; the
- *     second one with name "Score" and containing integers; the third one with
- *     name "Icon" and containing #ClutterTexture<!-- -->s. The model is filled
- *     with three rows. A row can be defined either with an array that holds
- *     all columns of a row, or an object that holds "column-name" :
- *     "column-value" pairs.
- *     </para>
- *     <programlisting>
+ * #ClutterModel is available since Clutter 0.6
+ *
+ * ## ClutterModel custom properties for ClutterScript
+ *
+ * #ClutterModel defines a custom property "columns" for #ClutterScript
+ * which allows defining the column names and types. It also defines a custom
+ * "rows" property which allows filling the #ClutterModel with some
+ * data.
+ *
+ * The definition below will create a #ClutterListModel with three
+ * columns: the first one with name "Name" and containing strings; the
+ * second one with name "Score" and containing integers; the third one with
+ * name "Icon" and containing #ClutterTextures. The model is filled
+ * with three rows. A row can be defined either with an array that holds
+ * all columns of a row, or an object that holds "column-name" :
+ * "column-value" pairs.
+ *
+ * |[
  *  {
  *    "type" : "ClutterListModel",
  *    "id" : "teams-model",
@@ -145,11 +150,6 @@
  *      { "Name" : "Team 3", "Icon" : "team3-icon-script-id" }
  *    ]
  *  }
- *     </programlisting>
- *   </example>
- * </refsect2>
- *
- * #ClutterModel is available since Clutter 0.6
  */
 
 
@@ -169,13 +169,6 @@
 #include "clutter-debug.h"
 #include "clutter-scriptable.h"
 #include "clutter-script-private.h"
-
-static void clutter_scriptable_iface_init (ClutterScriptableIface *iface);
-
-G_DEFINE_ABSTRACT_TYPE_WITH_CODE
-        (ClutterModel, clutter_model, G_TYPE_OBJECT,
-         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_SCRIPTABLE,
-                                clutter_scriptable_iface_init));
 
 enum
 {
@@ -197,9 +190,6 @@ enum
 };
 
 static guint model_signals[LAST_SIGNAL] = { 0, };
-
-#define CLUTTER_MODEL_GET_PRIVATE(obj) \
-  (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_MODEL, ClutterModelPrivate))
 
 struct _ClutterModelPrivate
 {
@@ -225,6 +215,13 @@ struct _ClutterModelPrivate
   gpointer                sort_data;
   GDestroyNotify          sort_notify;
 };
+
+static void clutter_scriptable_iface_init (ClutterScriptableIface *iface);
+
+G_DEFINE_ABSTRACT_TYPE_WITH_CODE (ClutterModel, clutter_model, G_TYPE_OBJECT,
+                                  G_ADD_PRIVATE (ClutterModel)
+                                  G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_SCRIPTABLE,
+                                                         clutter_scriptable_iface_init))
 
 static GType
 clutter_model_real_get_column_type (ClutterModel *model,
@@ -347,8 +344,6 @@ clutter_model_class_init (ClutterModelClass *klass)
   gobject_class->get_property = clutter_model_get_property;
   gobject_class->finalize = clutter_model_finalize;
 
-  g_type_class_add_private (gobject_class, sizeof (ClutterModelPrivate));
-
   klass->get_column_name  = clutter_model_real_get_column_name;
   klass->get_column_type  = clutter_model_real_get_column_type;
   klass->get_n_columns    = clutter_model_real_get_n_columns;
@@ -470,7 +465,7 @@ clutter_model_init (ClutterModel *self)
 {
   ClutterModelPrivate *priv;
   
-  self->priv = priv = CLUTTER_MODEL_GET_PRIVATE (self);
+  self->priv = priv = clutter_model_get_instance_private (self);
 
   priv->n_columns = -1;
   priv->column_types = NULL;
@@ -1757,18 +1752,14 @@ clutter_model_get_filter_set (ClutterModel *model)
  * #ClutterModelIter is available since Clutter 0.6
  */
 
-G_DEFINE_ABSTRACT_TYPE (ClutterModelIter, clutter_model_iter, G_TYPE_OBJECT);
-
-#define CLUTTER_MODEL_ITER_GET_PRIVATE(obj) \
-  (G_TYPE_INSTANCE_GET_PRIVATE ((obj), \
-  CLUTTER_TYPE_MODEL_ITER, ClutterModelIterPrivate))
-
 struct _ClutterModelIterPrivate
 {
   ClutterModel  *model;
 
   gint row;
 };
+
+G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (ClutterModelIter, clutter_model_iter, G_TYPE_OBJECT)
 
 enum
 {
@@ -1964,19 +1955,12 @@ clutter_model_iter_class_init (ClutterModelIterClass *klass)
                              0, G_MAXUINT, 0,
                              CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, ITER_PROP_ROW, pspec);
-  
-  g_type_class_add_private (gobject_class, sizeof (ClutterModelIterPrivate));
 }
 
 static void
 clutter_model_iter_init (ClutterModelIter *self)
 {
-  ClutterModelIterPrivate *priv;
-  
-  self->priv = priv = CLUTTER_MODEL_ITER_GET_PRIVATE (self);
-
-  priv->model = NULL;
-  priv->row = 0;
+  self->priv = clutter_model_iter_get_instance_private (self);
 }
 
 /*

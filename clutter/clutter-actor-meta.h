@@ -46,7 +46,7 @@ typedef struct _ClutterActorMetaClass           ClutterActorMetaClass;
 /**
  * ClutterActorMeta:
  *
- * The <structname>ClutterActorMeta</structname> structure contains only
+ * The #ClutterActorMeta structure contains only
  * private data and should be accessed using the provided API
  *
  * Since: 1.4
@@ -64,7 +64,7 @@ struct _ClutterActorMeta
  * @set_actor: virtual function, invoked when attaching and detaching
  *   a #ClutterActorMeta instance to a #ClutterActor
  *
- * The <structname>ClutterActorMetaClass</structname> structure contains
+ * The #ClutterActorMetaClass structure contains
  * only private data
  *
  * Since: 1.4
@@ -97,15 +97,21 @@ struct _ClutterActorMetaClass
   void (* _clutter_meta7) (void);
 };
 
+CLUTTER_AVAILABLE_IN_1_4
 GType clutter_actor_meta_get_type (void) G_GNUC_CONST;
 
+CLUTTER_AVAILABLE_IN_1_4
 void            clutter_actor_meta_set_name     (ClutterActorMeta *meta,
                                                  const gchar      *name);
+CLUTTER_AVAILABLE_IN_1_4
 const gchar *   clutter_actor_meta_get_name     (ClutterActorMeta *meta);
+CLUTTER_AVAILABLE_IN_1_4
 void            clutter_actor_meta_set_enabled  (ClutterActorMeta *meta,
                                                  gboolean          is_enabled);
+CLUTTER_AVAILABLE_IN_1_4
 gboolean        clutter_actor_meta_get_enabled  (ClutterActorMeta *meta);
 
+CLUTTER_AVAILABLE_IN_1_4
 ClutterActor *  clutter_actor_meta_get_actor    (ClutterActorMeta *meta);
 
 G_END_DECLS

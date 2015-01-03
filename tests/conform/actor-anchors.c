@@ -1,8 +1,8 @@
-#include <clutter/clutter.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include "test-conform-common.h"
+#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
+#include <clutter/clutter.h>
 
 #define NOTIFY_ANCHOR_X                  (1 << 0)
 #define NOTIFY_ANCHOR_Y                  (1 << 1)
@@ -671,16 +671,16 @@ idle_cb (gpointer data)
   return G_SOURCE_REMOVE;
 }
 
-void
+static void
 actor_anchors (void)
 {
   TestState state;
   ClutterActor *stage;
 
-  stage = clutter_stage_new ();
+  stage = clutter_test_get_stage ();
 
-  state.rect = clutter_rectangle_new ();
-  clutter_container_add (CLUTTER_CONTAINER (stage), state.rect, NULL);
+  state.rect = clutter_actor_new ();
+  clutter_actor_add_child (stage, state.rect);
   clutter_actor_set_position (state.rect, 100, 200);
   clutter_actor_set_size (state.rect, RECT_WIDTH, RECT_HEIGHT);
 
@@ -696,9 +696,46 @@ actor_anchors (void)
   clutter_actor_show (stage);
 
   clutter_main ();
-
-  g_idle_remove_by_data (&state);
-
-  clutter_actor_destroy (stage);
 }
 
+static void
+actor_pivot (void)
+{
+  ClutterActor *stage, *actor_implicit, *actor_explicit;
+  ClutterMatrix transform, result_implicit, result_explicit;
+  ClutterActorBox allocation = CLUTTER_ACTOR_BOX_INIT (0, 0, 90, 30);
+  gfloat angle = 30;
+
+  stage = clutter_test_get_stage ();
+
+  actor_implicit = clutter_actor_new ();
+  actor_explicit = clutter_actor_new ();
+
+  clutter_actor_add_child (stage, actor_implicit);
+  clutter_actor_add_child (stage, actor_explicit);
+
+  /* Fake allocation or pivot-point will not have any effect */
+  clutter_actor_allocate (actor_implicit, &allocation, CLUTTER_ALLOCATION_NONE);
+  clutter_actor_allocate (actor_explicit, &allocation, CLUTTER_ALLOCATION_NONE);
+
+  clutter_actor_set_pivot_point (actor_implicit, 0.5, 0.5);
+  clutter_actor_set_pivot_point (actor_explicit, 0.5, 0.5);
+
+  /* Implict transformation */
+  clutter_actor_set_rotation_angle (actor_implicit, CLUTTER_Z_AXIS, angle);
+
+  /* Explict transformation */
+  clutter_matrix_init_identity(&transform);
+  cogl_matrix_rotate (&transform, angle, 0, 0, 1.0);
+  clutter_actor_set_transform (actor_explicit, &transform);
+
+  clutter_actor_get_transform (actor_implicit, &result_implicit);
+  clutter_actor_get_transform (actor_explicit, &result_explicit);
+
+  g_assert (cogl_matrix_equal (&result_implicit, &result_explicit));
+}
+
+CLUTTER_TEST_SUITE (
+  CLUTTER_TEST_UNIT ("/actor/transforms/anchor-point", actor_anchors)
+  CLUTTER_TEST_UNIT ("/actor/transforms/pivot-point", actor_pivot)
+)

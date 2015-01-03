@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="UserMacros">
+    <VSVer>10</VSVer>
+    <GlibEtcInstallRoot>$(SolutionDir)\..\..\..\..\vs$(VSVer)\$(Platform)</GlibEtcInstallRoot>
+    <ApiVersion>1.0</ApiVersion>
+    <CopyDir>$(GlibEtcInstallRoot)</CopyDir>
+    <DefDir>$(SolutionDir)$(Configuration)\$(PlatformName)\obj\$(ProjectName)\</DefDir>
+    <ClutterLibtoolCompatibleDllPrefix>lib</ClutterLibtoolCompatibleDllPrefix>
+    <ClutterLibtoolCompatibleDllSuffix>-$(ApiVersion)-0</ClutterLibtoolCompatibleDllSuffix>
+    <ClutterSeparateVSDllPrefix />
+    <ClutterSeparateVSDllSuffix>-1-vs$(VSVer)</ClutterSeparateVSDllSuffix>
+    <!-- Change the following 2 entries to ClutterLibtoolCompatibleDllPrefix
+         and ClutterLibtoolCompatibleDllSuffix if the use of LibTool-style
+         DLL names is desired -->
+    <ClutterDllPrefix>$(ClutterSeparateVSDllPrefix)</ClutterDllPrefix>
+    <ClutterDllSuffix>$(ClutterSeparateVSDllSuffix)</ClutterDllSuffix>
+  </PropertyGroup>
+  <PropertyGroup>
+    <_PropertySheetDisplayName>clutterversionpathsprops</_PropertySheetDisplayName>
+  </PropertyGroup>
+  <ItemGroup>
+    <BuildMacro Include="VSVer">
+      <Value>$(VSVer)</Value>
+    </BuildMacro>
+    <BuildMacro Include="GlibEtcInstallRoot">
+      <Value>$(GlibEtcInstallRoot)</Value>
+    </BuildMacro>
+    <BuildMacro Include="CopyDir">
+      <Value>$(CopyDir)</Value>
+    </BuildMacro>
+    <BuildMacro Include="DefDir">
+      <Value>$(DefDir)</Value>
+    </BuildMacro>
+    <BuildMacro Include="ApiVersion">
+      <Value>$(ApiVersion)</Value>
+    </BuildMacro>
+    <BuildMacro Include="ClutterLibtoolCompatibleDllPrefix">
+      <Value>$(ClutterLibtoolCompatibleDllPrefix)</Value>
+    </BuildMacro>
+    <BuildMacro Include="ClutterLibtoolCompatibleDllSuffix">
+      <Value>$(ClutterLibtoolCompatibleDllSuffix)</Value>
+    </BuildMacro>
+    <BuildMacro Include="ClutterSeparateVSDllPrefix">
+      <Value>$(ClutterSeparateVSDllPrefix)</Value>
+    </BuildMacro>
+    <BuildMacro Include="ClutterSeparateVSDllSuffix">
+      <Value>$(ClutterSeparateVSDllSuffix)</Value>
+    </BuildMacro>
+    <BuildMacro Include="ClutterDllPrefix">
+      <Value>$(ClutterDllPrefix)</Value>
+    </BuildMacro>
+    <BuildMacro Include="ClutterDllSuffix">
+      <Value>$(ClutterDllSuffix)</Value>
+    </BuildMacro>
+  </ItemGroup>
+</Project>

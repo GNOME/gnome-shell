@@ -42,15 +42,10 @@
  */
 
 /**
- * ClutterPaintNode:
+ * ClutterPaintNode: (ref-func clutter_paint_node_ref) (unref-func clutter_paint_node_unref) (set-value-func clutter_value_set_paint_node) (get-value-func clutter_value_get_paint_node)
  *
  * The <structname>ClutterPaintNode</structname> structure contains only
  * private data and it should be accessed using the provided API.
- *
- * Ref Func: clutter_paint_node_ref
- * Unref Func: clutter_paint_node_unref
- * Set Value Func: clutter_value_set_paint_node
- * Get Value Func: clutter_value_get_paint_node
  *
  * Since: 1.10
  */
@@ -1122,4 +1117,32 @@ _clutter_paint_node_create (GType gtype)
   _clutter_paint_node_init_types ();
 
   return (gpointer) g_type_create_instance (gtype);
+}
+
+static ClutterPaintNode *
+clutter_paint_node_get_root (ClutterPaintNode *node)
+{
+  ClutterPaintNode *iter;
+
+  iter = node;
+  while (iter != NULL && iter->parent != NULL)
+    iter = iter->parent;
+
+  return iter;
+}
+
+CoglFramebuffer *
+clutter_paint_node_get_framebuffer (ClutterPaintNode *node)
+{
+  ClutterPaintNode *root = clutter_paint_node_get_root (node);
+  ClutterPaintNodeClass *klass;
+
+  if (root == NULL)
+    return NULL;
+
+  klass = CLUTTER_PAINT_NODE_GET_CLASS (root);
+  if (klass->get_framebuffer != NULL)
+    return klass->get_framebuffer (root);
+
+  return cogl_get_draw_framebuffer ();
 }

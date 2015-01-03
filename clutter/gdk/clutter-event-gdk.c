@@ -184,6 +184,33 @@ clutter_gdk_handle_event (GdkEvent *gdk_event)
                     event->button.y);
       break;
 
+    case GDK_TOUCH_BEGIN:
+    case GDK_TOUCH_END:
+    case GDK_TOUCH_CANCEL:
+    case GDK_TOUCH_UPDATE:
+      event = clutter_event_new (gdk_event->type == GDK_TOUCH_BEGIN ?
+                                 CLUTTER_TOUCH_BEGIN :
+                                 ((gdk_event->type == GDK_TOUCH_END) ?
+                                  CLUTTER_TOUCH_END :
+                                  (gdk_event->type == GDK_TOUCH_UPDATE ?
+                                   CLUTTER_TOUCH_UPDATE :
+                                   CLUTTER_TOUCH_CANCEL)));
+      event->touch.time = gdk_event->touch.time;
+      event->touch.x = gdk_event->touch.x;
+      event->touch.y = gdk_event->touch.y;
+      event->touch.sequence = (ClutterEventSequence *) gdk_event->touch.sequence;
+      event->touch.modifier_state = gdk_event->touch.state;
+      clutter_event_set_device (event, device);
+      clutter_event_set_source_device (event, source_device);
+      CLUTTER_NOTE (EVENT, "Touch %p %s [%",
+                    event->touch.sequence,
+                    event->type == CLUTTER_TOUCH_BEGIN ? "begin" :
+                    (event->type == CLUTTER_TOUCH_END ? "end" :
+                     (event->type == CLUTTER_TOUCH_UPDATE ? "update"
+                      : "cancel")),
+                    event->touch.x, event->touch.y);
+      break;
+
     case GDK_2BUTTON_PRESS:
     case GDK_3BUTTON_PRESS:
       /* these are handled by clutter-main.c updating click_count */
@@ -309,8 +336,7 @@ clutter_gdk_handle_event (GdkEvent *gdk_event)
       while (spin > 0 && (event = clutter_event_get ()))
 	{
 	  /* forward the event into clutter for emission etc. */
-	  clutter_do_event (event);
-	  clutter_event_free (event);
+          _clutter_stage_queue_event (event->any.stage, event, FALSE);
 	  --spin;
 	}
 

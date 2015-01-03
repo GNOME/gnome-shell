@@ -27,6 +27,51 @@
 
       <variablelist>
         <varlistentry>
+          <term>CLUTTER_BACKEND</term>
+          <listitem>
+            <para>Changes the windowing system backend used by Clutter.
+            The allowed values for this environment variable depend on
+            the configuration options used when compiling Clutter. The
+            available values are:</para>
+            <itemizedlist>
+              <listitem><simpara>x11, for the X11 backend</simpara></listitem>
+              <listitem><simpara>wayland, for the Wayland backend</simpara></listitem>
+              <listitem><simpara>win32, for the Windows backend</simpara></listitem>
+              <listitem><simpara>osx, for the MacOS X backend</simpara></listitem>
+              <listitem><simpara>gsk, for the GDK backend</simpara></listitem>
+              <listitem><simpara>eglnative, for the EGL/KMS backend</simpara></listitem>
+              <listitem><simpara>cex100, for the CEx100 backend</simpara></listitem>
+            </itemizedlist>
+            <para>All of the above options except for the <varname>eglnative</varname>
+            and <varname>cex100</varname> backends also have an input backend.</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>CLUTTER_INPUT_BACKEND</term>
+          <listitem>
+            <para>Changes the input backend used by Clutter.
+            The allowed values for this environment variable depend on
+            the configuration options used when compiling Clutter. The
+            available values are:</para>
+            <itemizedlist>
+              <listitem><simpara>tslib</simpara></listitem>
+              <listitem><simpara>evdev</simpara></listitem>
+              <listitem><simpara>null</simpara></listitem>
+            </itemizedlist>
+            <para>This environment variable is only useful for setting the input
+            backend when using a windowing system backend that does not have an
+            input API, like the <varname>eglnative</varname> or the <varname>cex100</varname>
+            windowing system backends.</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>CLUTTER_SCALE</term>
+          <listitem>
+            <para>Forces the window scaling factor to that value
+            inside Clutter instead of relying on what backends detect.</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
           <term>CLUTTER_TEXT_DIRECTION</term>
           <listitem>
             <para>Forces the text direction of every Pango layout

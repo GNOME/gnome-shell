@@ -44,7 +44,7 @@ typedef struct _ClutterScrollActorClass         ClutterScrollActorClass;
 /**
  * ClutterScrollActor:
  *
- * The <structname>ClutterScrollActor</structname> structure contains only
+ * The #ClutterScrollActor structure contains only
  * private data, and should be accessed using the provided API.
  *
  * Since: 1.12
@@ -60,7 +60,7 @@ struct _ClutterScrollActor
 /**
  * ClutterScrollActorClass:
  *
- * The <structname>ClutterScrollActor</structname> structure contains only
+ * The #ClutterScrollActor structure contains only
  * private data.
  *
  * Since: 1.12

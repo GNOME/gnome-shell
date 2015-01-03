@@ -29,40 +29,25 @@
  * #ClutterFlowLayout is a layout manager which implements the following
  * policy:
  *
- * <itemizedlist>
- *   <listitem><para>the preferred natural size depends on the value
+ *   - the preferred natural size depends on the value
  *   of the #ClutterFlowLayout:orientation property; the layout will try
  *   to maintain all its children on a single row or
- *   column;</para></listitem>
- *   <listitem><para>if either the width or the height allocated are
+ *   column;
+ *   - if either the width or the height allocated are
  *   smaller than the preferred ones, the layout will wrap; in this case,
  *   the preferred height or width, respectively, will take into account
- *   the amount of columns and rows;</para></listitem>
- *   <listitem><para>each line (either column or row) in reflowing will
+ *   the amount of columns and rows;
+ *   - each line (either column or row) in reflowing will
  *   have the size of the biggest cell on that line; if the
  *   #ClutterFlowLayout:homogeneous property is set to %FALSE the actor
  *   will be allocated within that area, and if set to %TRUE instead the
- *   actor will be given exactly that area;</para></listitem>
- *   <listitem><para>the size of the columns or rows can be controlled
+ *   actor will be given exactly that area;
+ *   - the size of the columns or rows can be controlled
  *   for both minimum and maximum; the spacing can also be controlled
- *   in both columns and rows.</para></listitem>
- * </itemizedlist>
+ *   in both columns and rows.
  *
- * <figure id="flow-layout-image">
- *   <title>Horizontal flow layout</title>
- *   <para>The image shows a #ClutterFlowLayout with the
- *   #ClutterFlowLayout:orientation propert set to
- *   %CLUTTER_FLOW_HORIZONTAL.</para>
- *   <graphic fileref="flow-layout.png" format="PNG"/>
- * </figure>
- *
- * <informalexample>
- *  <programlisting>
- * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../examples/flow-layout.c">
- *   <xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback>
- * </xi:include>
- *  </programlisting>
- * </informalexample>
+ * The [flow-layout example](https://git.gnome.org/browse/clutter/tree/examples/flow-layout.c?h=clutter-1.18)
+ * shows how to use the #ClutterFlowLayout.
  *
  * #ClutterFlowLayout is available since Clutter 1.2
  */
@@ -84,8 +69,6 @@
 #include "clutter-flow-layout.h"
 #include "clutter-layout-meta.h"
 #include "clutter-private.h"
-
-#define CLUTTER_FLOW_LAYOUT_GET_PRIVATE(obj)    (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_FLOW_LAYOUT, ClutterFlowLayoutPrivate))
 
 struct _ClutterFlowLayoutPrivate
 {
@@ -113,6 +96,7 @@ struct _ClutterFlowLayoutPrivate
   guint line_count;
 
   guint is_homogeneous : 1;
+  guint snap_to_grid : 1;
 };
 
 enum
@@ -131,14 +115,16 @@ enum
   PROP_MIN_ROW_HEGHT,
   PROP_MAX_ROW_HEIGHT,
 
+  PROP_SNAP_TO_GRID,
+
   N_PROPERTIES
 };
 
 static GParamSpec *flow_properties[N_PROPERTIES] = { NULL, };
 
-G_DEFINE_TYPE (ClutterFlowLayout,
-               clutter_flow_layout,
-               CLUTTER_TYPE_LAYOUT_MANAGER);
+G_DEFINE_TYPE_WITH_PRIVATE (ClutterFlowLayout,
+                            clutter_flow_layout,
+                            CLUTTER_TYPE_LAYOUT_MANAGER)
 
 static gint
 get_columns (ClutterFlowLayout *self,
@@ -258,7 +244,12 @@ clutter_flow_layout_get_preferred_width (ClutterLayoutManager *manager,
 
       if (priv->orientation == CLUTTER_FLOW_VERTICAL && for_height > 0)
         {
-          if (line_item_count == n_rows)
+          clutter_actor_get_preferred_height (child, -1,
+                                              &child_min,
+                                              &child_natural);
+
+          if ((priv->snap_to_grid && line_item_count == n_rows) ||
+              (!priv->snap_to_grid && item_y + child_natural > for_height))
             {
               total_min_width += line_min_width;
               total_natural_width += line_natural_width;
@@ -275,9 +266,17 @@ clutter_flow_layout_get_preferred_width (ClutterLayoutManager *manager,
               item_y = 0;
             }
 
-          new_y = ((line_item_count + 1) * (for_height + priv->row_spacing))
-                / n_rows;
-          item_height = new_y - item_y - priv->row_spacing;
+          if (priv->snap_to_grid)
+            {
+              new_y = ((line_item_count + 1) * (for_height + priv->row_spacing))
+                    / n_rows;
+              item_height = new_y - item_y - priv->row_spacing;
+            }
+          else
+            {
+              new_y = item_y + child_natural + priv->row_spacing;
+              item_height = child_natural;
+            }
 
           clutter_actor_get_preferred_width (child, item_height,
                                              &child_min,
@@ -436,7 +435,12 @@ clutter_flow_layout_get_preferred_height (ClutterLayoutManager *manager,
 
       if (priv->orientation == CLUTTER_FLOW_HORIZONTAL && for_width > 0)
         {
-          if (line_item_count == n_columns)
+          clutter_actor_get_preferred_width (child, -1,
+                                             &child_min,
+                                             &child_natural);
+
+          if ((priv->snap_to_grid && line_item_count == n_columns) ||
+              (!priv->snap_to_grid && item_x + child_natural > for_width))
             {
               total_min_height += line_min_height;
               total_natural_height += line_natural_height;
@@ -453,9 +457,17 @@ clutter_flow_layout_get_preferred_height (ClutterLayoutManager *manager,
               item_x = 0;
             }
 
-          new_x = ((line_item_count + 1) * (for_width + priv->col_spacing))
-                / n_columns;
-          item_width = new_x - item_x - priv->col_spacing;
+          if (priv->snap_to_grid)
+            {
+              new_x = ((line_item_count + 1) * (for_width + priv->col_spacing))
+                    / n_columns;
+              item_width = new_x - item_x - priv->col_spacing;
+            }
+          else
+            {
+              new_x = item_x + child_natural + priv->col_spacing;
+              item_width = child_natural;
+            }
 
           clutter_actor_get_preferred_height (child, item_width,
                                               &child_min,
@@ -606,15 +618,24 @@ clutter_flow_layout_allocate (ClutterLayoutManager   *manager,
       ClutterActorBox child_alloc;
       gfloat item_width, item_height;
       gfloat new_x, new_y;
+      gfloat child_min, child_natural;
 
       if (!CLUTTER_ACTOR_IS_VISIBLE (child))
         continue;
 
       new_x = new_y = 0;
 
+      if (!priv->snap_to_grid)
+        clutter_actor_get_preferred_size (child,
+                                          NULL, NULL,
+                                          &item_width,
+                                          &item_height);
+
       if (priv->orientation == CLUTTER_FLOW_HORIZONTAL)
         {
-          if (line_item_count == items_per_line && line_item_count > 0)
+          if ((priv->snap_to_grid &&
+               line_item_count == items_per_line && line_item_count > 0) ||
+              (!priv->snap_to_grid && item_x + item_width > avail_width))
             {
               item_y += g_array_index (priv->line_natural,
                                        gfloat,
@@ -629,31 +650,27 @@ clutter_flow_layout_allocate (ClutterLayoutManager   *manager,
               item_x = x_off;
             }
 
-          new_x = x_off + ((line_item_count + 1) * (avail_width + priv->col_spacing))
-                / items_per_line;
-          item_width = new_x - item_x - priv->col_spacing;
+          if (priv->snap_to_grid)
+            {
+              new_x = x_off + ((line_item_count + 1) * (avail_width + priv->col_spacing))
+                    / items_per_line;
+              item_width = new_x - item_x - priv->col_spacing;
+            }
+          else
+            {
+              new_x = item_x + item_width + priv->col_spacing;
+            }
+
           item_height = g_array_index (priv->line_natural,
                                        gfloat,
                                        line_index);
 
-          if (!priv->is_homogeneous)
-            {
-              gfloat child_min, child_natural;
-
-              clutter_actor_get_preferred_width (child, item_height,
-                                                 &child_min,
-                                                 &child_natural);
-              item_width = MIN (item_width, child_natural);
-
-              clutter_actor_get_preferred_height (child, item_width,
-                                                  &child_min,
-                                                  &child_natural);
-              item_height = MIN (item_height, child_natural);
-            }
         }
       else
         {
-          if (line_item_count == items_per_line && line_item_count > 0)
+          if ((priv->snap_to_grid &&
+               line_item_count == items_per_line && line_item_count > 0) ||
+              (!priv->snap_to_grid && item_y + item_height > avail_height))
             {
               item_x += g_array_index (priv->line_natural,
                                        gfloat,
@@ -668,27 +685,40 @@ clutter_flow_layout_allocate (ClutterLayoutManager   *manager,
               item_y = y_off;
             }
 
-          new_y = y_off + ((line_item_count + 1) * (avail_height + priv->row_spacing))
-                / items_per_line;
-          item_height = new_y - item_y - priv->row_spacing;
+          if (priv->snap_to_grid)
+            {
+              new_y = y_off + ((line_item_count + 1) * (avail_height + priv->row_spacing))
+                    / items_per_line;
+              item_height = new_y - item_y - priv->row_spacing;
+            }
+          else
+            {
+              new_y = item_y + item_height + priv->row_spacing;
+            }
+
           item_width = g_array_index (priv->line_natural,
                                       gfloat,
                                       line_index);
+        }
 
-          if (!priv->is_homogeneous)
-            {
-              gfloat child_min, child_natural;
+      if (!priv->is_homogeneous &&
+          !clutter_actor_needs_expand (child,
+                                       CLUTTER_ORIENTATION_HORIZONTAL))
+        {
+          clutter_actor_get_preferred_width (child, item_height,
+                                             &child_min,
+                                             &child_natural);
+          item_width = MIN (item_width, child_natural);
+        }
 
-              clutter_actor_get_preferred_width (child, item_height,
-                                                 &child_min,
-                                                 &child_natural);
-              item_width = MIN (item_width, child_natural);
-
-              clutter_actor_get_preferred_height (child, item_width,
-                                                  &child_min,
-                                                  &child_natural);
-              item_height = MIN (item_height, child_natural);
-            }
+      if (!priv->is_homogeneous &&
+          !clutter_actor_needs_expand (child,
+                                       CLUTTER_ORIENTATION_VERTICAL))
+        {
+          clutter_actor_get_preferred_height (child, item_width,
+                                              &child_min,
+                                              &child_natural);
+          item_height = MIN (item_height, child_natural);
         }
 
       CLUTTER_NOTE (LAYOUT,
@@ -789,6 +819,11 @@ clutter_flow_layout_set_property (GObject      *gobject,
                                           g_value_get_float (value));
       break;
 
+    case PROP_SNAP_TO_GRID:
+      clutter_flow_layout_set_snap_to_grid (self,
+                                            g_value_get_boolean (value));
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
@@ -837,6 +872,10 @@ clutter_flow_layout_get_property (GObject    *gobject,
       g_value_set_float (value, priv->max_row_height);
       break;
 
+    case PROP_SNAP_TO_GRID:
+      g_value_set_boolean (value, priv->snap_to_grid);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
@@ -862,8 +901,6 @@ clutter_flow_layout_class_init (ClutterFlowLayoutClass *klass)
 {
   GObjectClass *gobject_class;
   ClutterLayoutManagerClass *layout_class;
-
-  g_type_class_add_private (klass, sizeof (ClutterFlowLayoutPrivate));
 
   gobject_class = G_OBJECT_CLASS (klass);
   layout_class = CLUTTER_LAYOUT_MANAGER_CLASS (klass);
@@ -1004,6 +1041,21 @@ clutter_flow_layout_class_init (ClutterFlowLayoutClass *klass)
                         -1.0,
                         CLUTTER_PARAM_READWRITE);
 
+  /**
+   * ClutterFlowLayout:snap-to-grid:
+   *
+   * Whether the #ClutterFlowLayout should arrange its children
+   * on a grid
+   *
+   * Since: 1.16
+   */
+  flow_properties[PROP_SNAP_TO_GRID] =
+    g_param_spec_boolean ("snap-to-grid",
+                          P_("Snap to grid"),
+                          P_("Snap to grid"),
+                          TRUE,
+                          CLUTTER_PARAM_READWRITE);
+
   gobject_class->finalize = clutter_flow_layout_finalize;
   gobject_class->set_property = clutter_flow_layout_set_property;
   gobject_class->get_property = clutter_flow_layout_get_property;
@@ -1017,7 +1069,7 @@ clutter_flow_layout_init (ClutterFlowLayout *self)
 {
   ClutterFlowLayoutPrivate *priv;
 
-  self->priv = priv = CLUTTER_FLOW_LAYOUT_GET_PRIVATE (self);
+  self->priv = priv = clutter_flow_layout_get_instance_private (self);
 
   priv->orientation = CLUTTER_FLOW_HORIZONTAL;
 
@@ -1029,6 +1081,7 @@ clutter_flow_layout_init (ClutterFlowLayout *self)
 
   priv->line_min = NULL;
   priv->line_natural = NULL;
+  priv->snap_to_grid = TRUE;
 }
 
 /**
@@ -1433,4 +1486,52 @@ clutter_flow_layout_get_row_height (ClutterFlowLayout *layout,
 
   if (max_height)
     *max_height = layout->priv->max_row_height;
+}
+
+/**
+ * clutter_flow_layout_set_snap_to_grid:
+ * @layout: a #ClutterFlowLayout
+ * @snap_to_grid: %TRUE if @layout should place its children on a grid
+ *
+ * Whether the @layout should place its children on a grid.
+ *
+ * Since: 1.16
+ */
+void
+clutter_flow_layout_set_snap_to_grid (ClutterFlowLayout *layout,
+                                      gboolean           snap_to_grid)
+{
+  ClutterFlowLayoutPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_FLOW_LAYOUT (layout));
+
+  priv = layout->priv;
+
+  if (priv->snap_to_grid != snap_to_grid)
+    {
+      priv->snap_to_grid = snap_to_grid;
+
+      clutter_layout_manager_layout_changed (CLUTTER_LAYOUT_MANAGER (layout));
+
+      g_object_notify_by_pspec (G_OBJECT (layout),
+                                flow_properties[PROP_SNAP_TO_GRID]);
+    }
+}
+
+/**
+ * clutter_flow_layout_get_snap_to_grid:
+ * @layout: a #ClutterFlowLayout
+ *
+ * Retrieves the value of #ClutterFlowLayout:snap-to-grid property
+ *
+ * Return value: %TRUE if the @layout is placing its children on a grid
+ *
+ * Since: 1.16
+ */
+gboolean
+clutter_flow_layout_get_snap_to_grid (ClutterFlowLayout *layout)
+{
+  g_return_val_if_fail (CLUTTER_IS_FLOW_LAYOUT (layout), FALSE);
+
+  return layout->priv->snap_to_grid;
 }

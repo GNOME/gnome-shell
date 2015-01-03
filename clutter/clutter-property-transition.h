@@ -46,7 +46,7 @@ typedef struct _ClutterPropertyTransitionClass          ClutterPropertyTransitio
 /**
  * ClutterPropertyTransition:
  *
- * The <structname>ClutterPropertyTransition</structname> structure contains
+ * The #ClutterPropertyTransition structure contains
  * private data and should only be accessed using the provided API.
  *
  * Since: 1.10
@@ -62,7 +62,7 @@ struct _ClutterPropertyTransition
 /**
  * ClutterPropertyTransitionClass:
  *
- * The <structname>ClutterPropertyTransitionClass</structname> structure
+ * The #ClutterPropertyTransitionClass structure
  * contains private data.
  *
  * Since: 1.10

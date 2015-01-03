@@ -2,6 +2,7 @@
  * Simple scribble application: move mouse over the dark yellow
  * rectangle to draw brighter yellow lines
  */
+
 #include <clutter/clutter.h>
 
 static const ClutterColor stage_color = { 0x33, 0x33, 0x55, 0xff };

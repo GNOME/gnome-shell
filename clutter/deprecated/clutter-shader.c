@@ -71,8 +71,6 @@
 /* global list of shaders */
 static GList *clutter_shaders_list = NULL;
 
-#define CLUTTER_SHADER_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_SHADER, ClutterShaderPrivate))
-
 struct _ClutterShaderPrivate
 {
   guint       compiled         : 1; /* Shader is bound to the GL context */
@@ -103,7 +101,7 @@ enum
 
 static GParamSpec *obj_props[PROP_LAST];
 
-G_DEFINE_TYPE (ClutterShader, clutter_shader, G_TYPE_OBJECT);
+G_DEFINE_TYPE_WITH_PRIVATE (ClutterShader, clutter_shader, G_TYPE_OBJECT)
 
 static inline void
 clutter_shader_release_internal (ClutterShader *shader)
@@ -245,8 +243,6 @@ clutter_shader_class_init (ClutterShaderClass *klass)
   object_class->get_property  = clutter_shader_get_property;
   object_class->constructor   = clutter_shader_constructor;
 
-  g_type_class_add_private (klass, sizeof (ClutterShaderPrivate));
-
   /**
    * ClutterShader:vertex-source:
    *
@@ -323,7 +319,7 @@ clutter_shader_init (ClutterShader *self)
 {
   ClutterShaderPrivate *priv;
 
-  priv = self->priv = CLUTTER_SHADER_GET_PRIVATE (self);
+  priv = self->priv = clutter_shader_get_instance_private (self);
 
   priv->compiled = FALSE;
 

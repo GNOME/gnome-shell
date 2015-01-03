@@ -81,7 +81,7 @@ struct _ClutterTextBufferPrivate
   guint  normal_text_chars;
 };
 
-G_DEFINE_TYPE (ClutterTextBuffer, clutter_text_buffer, G_TYPE_OBJECT);
+G_DEFINE_TYPE_WITH_PRIVATE (ClutterTextBuffer, clutter_text_buffer, G_TYPE_OBJECT)
 
 /* --------------------------------------------------------------------------------
  * DEFAULT IMPLEMENTATIONS OF TEXT BUFFER
@@ -246,16 +246,14 @@ clutter_text_buffer_real_deleted_text (ClutterTextBuffer *buffer,
  */
 
 static void
-clutter_text_buffer_init (ClutterTextBuffer *buffer)
+clutter_text_buffer_init (ClutterTextBuffer *self)
 {
-  ClutterTextBufferPrivate *pv;
+  self->priv = clutter_text_buffer_get_instance_private (self);
 
-  pv = buffer->priv = G_TYPE_INSTANCE_GET_PRIVATE (buffer, CLUTTER_TYPE_TEXT_BUFFER, ClutterTextBufferPrivate);
-
-  pv->normal_text = NULL;
-  pv->normal_text_chars = 0;
-  pv->normal_text_bytes = 0;
-  pv->normal_text_size = 0;
+  self->priv->normal_text = NULL;
+  self->priv->normal_text_chars = 0;
+  self->priv->normal_text_bytes = 0;
+  self->priv->normal_text_size = 0;
 }
 
 static void
@@ -336,8 +334,6 @@ clutter_text_buffer_class_init (ClutterTextBufferClass *klass)
 
   klass->inserted_text = clutter_text_buffer_real_inserted_text;
   klass->deleted_text = clutter_text_buffer_real_deleted_text;
-
-  g_type_class_add_private (gobject_class, sizeof (ClutterTextBufferPrivate));
 
   /**
    * ClutterTextBuffer:text:

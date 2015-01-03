@@ -31,6 +31,7 @@
 
 #include "clutter-debug.h"
 #include "clutter-settings-private.h"
+#include "clutter-stage-private.h"
 #include "clutter-private.h"
 
 #define DEFAULT_FONT_NAME       "Sans 12"
@@ -61,6 +62,7 @@ struct _ClutterSettings
   gdouble resolution;
 
   gchar *font_name;
+  gint font_dpi;
 
   gint xft_hinting;
   gint xft_antialias;
@@ -72,6 +74,10 @@ struct _ClutterSettings
   guint last_fontconfig_timestamp;
 
   guint password_hint_time;
+
+  gint window_scaling_factor;
+  gint unscaled_font_dpi;
+  guint fixed_scaling_factor : 1;
 };
 
 struct _ClutterSettingsClass
@@ -103,6 +109,9 @@ enum
   PROP_FONTCONFIG_TIMESTAMP,
 
   PROP_PASSWORD_HINT_TIME,
+
+  PROP_WINDOW_SCALING_FACTOR,
+  PROP_UNSCALED_FONT_DPI,
 
   PROP_LAST
 };
@@ -173,14 +182,12 @@ settings_update_font_options (ClutterSettings *self)
                 " - antialias:  %d\n"
                 " - hinting:    %d\n"
                 " - hint-style: %s\n"
-                " - rgba:       %s\n"
-                " - dpi:        %.2f",
+                " - rgba:       %s\n",
                 self->font_name != NULL ? self->font_name : DEFAULT_FONT_NAME,
                 self->xft_antialias,
                 self->xft_hinting,
                 self->xft_hint_style != NULL ? self->xft_hint_style : "<null>",
-                self->xft_rgba != NULL ? self->xft_rgba : "<null>",
-                self->resolution);
+                self->xft_rgba != NULL ? self->xft_rgba : "<null>");
 
   clutter_backend_set_font_options (self->backend, options);
   cairo_font_options_destroy (options);
@@ -198,7 +205,24 @@ settings_update_font_name (ClutterSettings *self)
 static void
 settings_update_resolution (ClutterSettings *self)
 {
-  CLUTTER_NOTE (BACKEND, "New resolution: %.2f", self->resolution);
+  const char *scale_env = NULL;
+
+  if (self->font_dpi > 0)
+    self->resolution = (gdouble) self->font_dpi / 1024.0;
+  else
+    self->resolution = 96.0;
+
+  scale_env = g_getenv ("GDK_DPI_SCALE");
+  if (scale_env != NULL)
+    {
+      double scale = g_ascii_strtod (scale_env, NULL);
+      if (scale != 0 && self->resolution > 0)
+        self->resolution *= scale;
+    }
+
+  CLUTTER_NOTE (BACKEND, "New resolution: %.2f (%s)",
+                self->resolution,
+                self->unscaled_font_dpi > 0 ? "unscaled" : "scaled");
 
   if (self->backend != NULL)
     g_signal_emit_by_name (self->backend, "resolution-changed");
@@ -296,7 +320,7 @@ clutter_settings_set_property (GObject      *gobject,
       break;
 
     case PROP_FONT_DPI:
-      self->resolution = (gdouble) g_value_get_int (value) / 1024.0;
+      self->font_dpi = g_value_get_int (value);
       settings_update_resolution (self);
       break;
 
@@ -329,10 +353,41 @@ clutter_settings_set_property (GObject      *gobject,
       self->password_hint_time = g_value_get_uint (value);
       break;
 
+    case PROP_WINDOW_SCALING_FACTOR:
+      if (!self->fixed_scaling_factor)
+        {
+          self->window_scaling_factor = g_value_get_int (value);
+          self->fixed_scaling_factor = TRUE;
+        }
+      break;
+
+    case PROP_UNSCALED_FONT_DPI:
+      self->font_dpi = g_value_get_int (value);
+      settings_update_resolution (self);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
     }
+}
+
+void
+clutter_settings_set_property_internal (ClutterSettings *self,
+                                        const char *property,
+                                        GValue *value)
+{
+
+  property = g_intern_string (property);
+
+  if (property == I_("window-scaling-factor") &&
+      self->fixed_scaling_factor)
+    return;
+
+  g_object_set_property (G_OBJECT (self), property, value);
+
+  if (property == I_("window-scaling-factor"))
+    self->fixed_scaling_factor = FALSE;
 }
 
 static void
@@ -387,6 +442,10 @@ clutter_settings_get_property (GObject    *gobject,
 
     case PROP_PASSWORD_HINT_TIME:
       g_value_set_uint (value, self->password_hint_time);
+      break;
+
+    case PROP_WINDOW_SCALING_FACTOR:
+      g_value_set_int (value, self->window_scaling_factor);
       break;
 
     default:
@@ -532,6 +591,14 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
                       -1,
                       CLUTTER_PARAM_READWRITE);
 
+  obj_props[PROP_UNSCALED_FONT_DPI] =
+    g_param_spec_int ("unscaled-font-dpi",
+                      P_("Font DPI"),
+                      P_("The resolution of the font, in 1024 * dots/inch, or -1 to use the default"),
+                      -1, 1024 * 1024,
+                      -1,
+                      CLUTTER_PARAM_WRITABLE);
+
   /**
    * ClutterSettings:font-hinting:
    *
@@ -554,12 +621,11 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
    *
    * The style of the hinting used when rendering text. Valid values
    * are:
-   * <itemizedlist>
-   *   <listitem><simpara>hintnone</simpara></listitem>
-   *   <listitem><simpara>hintslight</simpara></listitem>
-   *   <listitem><simpara>hintmedium</simpara></listitem>
-   *   <listitem><simpara>hintfull</simpara></listitem>
-   * </itemizedlist>
+   *
+   *   - hintnone
+   *   - hintslight
+   *   - hintmedium
+   *   - hintfull
    *
    * Since: 1.4
    */
@@ -575,13 +641,12 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
    *
    * The type of sub-pixel antialiasing used when rendering text. Valid
    * values are:
-   * <itemizedlist>
-   *   <listitem><simpara>none</simpara></listitem>
-   *   <listitem><simpara>rgb</simpara></listitem>
-   *   <listitem><simpara>bgr</simpara></listitem>
-   *   <listitem><simpara>vrgb</simpara></listitem>
-   *   <listitem><simpara>vbgr</simpara></listitem>
-   * </itemizedlist>
+   *
+   *   - none
+   *   - rgb
+   *   - bgr
+   *   - vrgb
+   *   - vbgr
    *
    * Since: 1.4
    */
@@ -608,6 +673,14 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
                       P_("The minimum duration for a long press gesture to be recognized"),
                       0, G_MAXINT,
                       500,
+                      CLUTTER_PARAM_READWRITE);
+
+  obj_props[PROP_WINDOW_SCALING_FACTOR] =
+    g_param_spec_int ("window-scaling-factor",
+                      P_("Window Scaling Factor"),
+                      P_("The scaling factor to be applied to windows"),
+                      1, G_MAXINT,
+                      1,
                       CLUTTER_PARAM_READWRITE);
 
   obj_props[PROP_FONTCONFIG_TIMESTAMP] =
@@ -647,7 +720,12 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
 static void
 clutter_settings_init (ClutterSettings *self)
 {
+  const char *scale_str;
+
   self->resolution = -1.0;
+
+  self->font_dpi = -1;
+  self->unscaled_font_dpi = -1;
 
   self->double_click_time = 250;
   self->double_click_distance = 5;
@@ -662,6 +740,18 @@ clutter_settings_init (ClutterSettings *self)
   self->xft_rgba = NULL;
 
   self->long_press_duration = 500;
+
+  /* if the scaling factor was set by the environment we ignore
+   * any explicit setting
+   */
+  scale_str = g_getenv ("CLUTTER_SCALE");
+  if (scale_str != NULL)
+    {
+      self->window_scaling_factor = atol (scale_str);
+      self->fixed_scaling_factor = TRUE;
+    }
+  else
+    self->window_scaling_factor = 1;
 }
 
 /**

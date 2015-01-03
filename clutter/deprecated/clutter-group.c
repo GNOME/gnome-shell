@@ -65,8 +65,6 @@
 
 #include "cogl/cogl.h"
 
-#define CLUTTER_GROUP_GET_PRIVATE(obj)  (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_GROUP, ClutterGroupPrivate))
-
 struct _ClutterGroupPrivate
 {
   GList *children;
@@ -77,6 +75,7 @@ struct _ClutterGroupPrivate
 static void clutter_container_iface_init (ClutterContainerIface *iface);
 
 G_DEFINE_TYPE_WITH_CODE (ClutterGroup, clutter_group, CLUTTER_TYPE_ACTOR,
+                         G_ADD_PRIVATE (ClutterGroup)
                          G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_CONTAINER,
                                                 clutter_container_iface_init));
 
@@ -441,8 +440,6 @@ clutter_group_class_init (ClutterGroupClass *klass)
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (ClutterGroupPrivate));
-
   actor_class->get_preferred_width = clutter_group_real_get_preferred_width;
   actor_class->get_preferred_height = clutter_group_real_get_preferred_height;
   actor_class->allocate = clutter_group_real_allocate;
@@ -460,7 +457,7 @@ clutter_group_init (ClutterGroup *self)
 {
   ClutterActor *actor = CLUTTER_ACTOR (self);
 
-  self->priv = CLUTTER_GROUP_GET_PRIVATE (self);
+  self->priv = clutter_group_get_instance_private (self);
 
   /* turn on some optimization
    *

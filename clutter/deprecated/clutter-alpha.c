@@ -32,11 +32,11 @@
  * #ClutterAlpha is a class for calculating an floating point value
  * dependent only on the position of a #ClutterTimeline.
  *
- * <warning>For newly written code, it is recommended to use the
+ * For newly written code, it is recommended to use the
  * #ClutterTimeline:progress-mode property of #ClutterTimeline, or the
  * clutter_timeline_set_progress_func() function instead of #ClutterAlpha.
  * The #ClutterAlpha class will be deprecated in the future, and will not
- * be available any more in the next major version of Clutter.</warning>
+ * be available any more in the next major version of Clutter.
  *
  * A #ClutterAlpha binds a #ClutterTimeline to a progress function which
  * translates the time T into an adimensional factor alpha. The factor can
@@ -62,22 +62,27 @@
  * #ClutterAlpha is used to "drive" a #ClutterBehaviour instance, and it
  * is internally used by the #ClutterAnimation API.
  *
- * <refsect2 id="ClutterAlpha-script">
- *   <title>ClutterAlpha custom properties for #ClutterScript</title>
- *   <para>#ClutterAlpha defines a custom "function" property for
- *   #ClutterScript which allows to reference a custom alpha function
- *   available in the source code. Setting the "function" property
- *   is equivalent to calling clutter_alpha_set_func() with the
- *   specified function name. No user data or #GDestroyNotify is
- *   available to be passed.</para>
- *   <example id="ClutterAlpha-script-example">
- *     <title>Defining a ClutterAlpha in ClutterScript</title>
- *     <para>The following JSON fragment defines a #ClutterAlpha
- *     using a #ClutterTimeline with id "sine-timeline" and an alpha
- *     function called <function>my_sine_alpha</function>. The defined
- *     #ClutterAlpha instance can be reused in multiple #ClutterBehaviour
- *     definitions or for #ClutterAnimation definitions.</para>
- *     <programlisting><![CDATA[
+ * #ClutterAlpha is available since Clutter 0.2.
+ *
+ * #ClutterAlpha is deprecated since Clutter 1.12; use #ClutterTimeline and the
+ * #ClutterTimeline:progress-mode property.
+ *
+ * ## ClutterAlpha custom properties for #ClutterScript
+ *
+ * #ClutterAlpha defines a custom `function` property for
+ * #ClutterScript which allows to reference a custom alpha function
+ * available in the source code. Setting the `function` property
+ * is equivalent to calling clutter_alpha_set_func() with the
+ * specified function name. No user data or #GDestroyNotify is
+ * available to be passed.
+ *
+ * The following JSON fragment defines a #ClutterAlpha
+ * using a #ClutterTimeline with id "sine-timeline" and an alpha
+ * function called `my_sine_alpha`. The defined #ClutterAlpha
+ * instance can be reused in multiple #ClutterBehaviour
+ * definitions or for #ClutterAnimation definitions.
+ *
+ * |[
  * {
  *   "id" : "sine-alpha",
  *   "timeline" : {
@@ -87,19 +92,7 @@
  *   },
  *   "function" : "my_sine_alpha"
  * }
- *    ]]></programlisting>
- *   </example>
- *   <para>For the way to define the #ClutterAlpha:mode property
- *   inside a ClutterScript fragment, see <link
- *   linkend="clutter-AnimationMode-Script">the corresponding section</link>
- *   in #ClutterAnimation.</para>
- * </refsect2>
- *
- * #ClutterAlpha is available since Clutter 0.2.
- *
- * #ClutterAlpha is deprecated since Clutter 1.12; use #ClutterTimeline and the
- * #ClutterTimeline:progress-mode property.
- *
+ * ]|
  */
 
 #ifdef HAVE_CONFIG_H
@@ -121,14 +114,6 @@
 #include "clutter-private.h"
 #include "clutter-scriptable.h"
 #include "clutter-script-private.h"
-
-static void clutter_scriptable_iface_init (ClutterScriptableIface *iface);
-
-G_DEFINE_TYPE_WITH_CODE (ClutterAlpha,
-                         clutter_alpha,
-                         G_TYPE_INITIALLY_UNOWNED,
-                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_SCRIPTABLE,
-                                                clutter_scriptable_iface_init));
 
 struct _ClutterAlphaPrivate
 {
@@ -158,6 +143,15 @@ enum
 };
 
 static GParamSpec *obj_props[PROP_LAST];
+
+static void clutter_scriptable_iface_init (ClutterScriptableIface *iface);
+
+G_DEFINE_TYPE_WITH_CODE (ClutterAlpha,
+                         clutter_alpha,
+                         G_TYPE_INITIALLY_UNOWNED,
+                         G_ADD_PRIVATE (ClutterAlpha)
+                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_SCRIPTABLE,
+                                                clutter_scriptable_iface_init));
 
 static void
 timeline_new_frame_cb (ClutterTimeline *timeline,
@@ -339,8 +333,6 @@ clutter_alpha_class_init (ClutterAlphaClass *klass)
   object_class->finalize     = clutter_alpha_finalize;
   object_class->dispose      = clutter_alpha_dispose;
 
-  g_type_class_add_private (klass, sizeof (ClutterAlphaPrivate));
-
   /**
    * ClutterAlpha:timeline:
    *
@@ -405,10 +397,7 @@ clutter_alpha_class_init (ClutterAlphaClass *klass)
 static void
 clutter_alpha_init (ClutterAlpha *self)
 {
-  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self,
-					    CLUTTER_TYPE_ALPHA,
-					    ClutterAlphaPrivate);
-
+  self->priv = clutter_alpha_get_instance_private (self);
   self->priv->mode = CLUTTER_CUSTOM_MODE;
   self->priv->alpha = 0.0;
 }
@@ -926,7 +915,7 @@ clutter_alpha_register_func (ClutterAlphaFunc func,
 }
 
 /**
- * clutter_alpha_register_closure:
+ * clutter_alpha_register_closure: (rename-to clutter_alpha_register_func)
  * @closure: a #GClosure
  *
  * #GClosure variant of clutter_alpha_register_func().
@@ -935,8 +924,6 @@ clutter_alpha_register_func (ClutterAlphaFunc func,
  * to be used by clutter_alpha_set_mode() or by #ClutterAnimation.
  *
  * The logical id is always greater than %CLUTTER_ANIMATION_LAST.
- *
- * Rename to: clutter_alpha_register_func
  *
  * Return value: the logical id of the alpha function
  *

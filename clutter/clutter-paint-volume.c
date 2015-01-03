@@ -290,20 +290,21 @@ clutter_paint_volume_set_width (ClutterPaintVolume *pv,
  * around the volume. It returns the size of that bounding box as
  * measured along the x-axis.
  *
- * <note><para>If, for example, clutter_actor_get_transformed_paint_volume()
+ * If, for example, clutter_actor_get_transformed_paint_volume()
  * is used to transform a 2D child actor that is 100px wide, 100px
  * high and 0px deep into container coordinates then the width might
  * not simply be 100px if the child actor has a 3D rotation applied to
- * it.</para>
- * <para>Remember; after clutter_actor_get_transformed_paint_volume() is
+ * it.
+ * 
+ * Remember: if clutter_actor_get_transformed_paint_volume() is
  * used then a transformed child volume will be defined relative to the
- * ancestor container actor and so a 2D child actor
- * can have a 3D bounding volume.</para></note>
+ * ancestor container actor and so a 2D child actor can have a 3D
+ * bounding volume.
  *
- * <note>There are no accuracy guarantees for the reported width,
- * except that it must always be >= to the true width. This is
- * because actors may report simple, loose fitting paint-volumes
- * for efficiency</note>
+ * There are no accuracy guarantees for the reported width,
+ * except that it must always be greater than, or equal to, the
+ * actor's width. This is because actors may report simple, loose
+ * fitting paint volumes for efficiency.
 
  * Return value: the width, in units of @pv's local coordinate system.
  *
@@ -381,20 +382,21 @@ clutter_paint_volume_set_height (ClutterPaintVolume *pv,
  * around the volume. It returns the size of that bounding box as
  * measured along the y-axis.
  *
- * <note><para>If, for example, clutter_actor_get_transformed_paint_volume()
+ * If, for example, clutter_actor_get_transformed_paint_volume()
  * is used to transform a 2D child actor that is 100px wide, 100px
  * high and 0px deep into container coordinates then the height might
  * not simply be 100px if the child actor has a 3D rotation applied to
- * it.</para>
- * <para>Remember; after clutter_actor_get_transformed_paint_volume() is
+ * it.
+ *
+ * Remember: if clutter_actor_get_transformed_paint_volume() is
  * used then a transformed child volume will be defined relative to the
  * ancestor container actor and so a 2D child actor
- * can have a 3D bounding volume.</para></note>
+ * can have a 3D bounding volume.
  *
- * <note>There are no accuracy guarantees for the reported height,
- * except that it must always be >= to the true height. This is
- * because actors may report simple, loose fitting paint-volumes
- * for efficiency</note>
+ * There are no accuracy guarantees for the reported height,
+ * except that it must always be greater than, or equal to, the actor's
+ * height. This is because actors may report simple, loose fitting paint
+ * volumes for efficiency.
  *
  * Return value: the height, in units of @pv's local coordinate system.
  *
@@ -473,20 +475,21 @@ clutter_paint_volume_set_depth (ClutterPaintVolume *pv,
  * around the volume. It returns the size of that bounding box as
  * measured along the z-axis.
  *
- * <note><para>If, for example, clutter_actor_get_transformed_paint_volume()
+ * If, for example, clutter_actor_get_transformed_paint_volume()
  * is used to transform a 2D child actor that is 100px wide, 100px
  * high and 0px deep into container coordinates then the depth might
  * not simply be 0px if the child actor has a 3D rotation applied to
- * it.</para>
- * <para>Remember; after clutter_actor_get_transformed_paint_volume() is
+ * it.
+ *
+ * Remember: if clutter_actor_get_transformed_paint_volume() is
  * used then the transformed volume will be defined relative to the
  * container actor and in container coordinates a 2D child actor
- * can have a 3D bounding volume.</para></note>
+ * can have a 3D bounding volume.
  *
- * <note>There are no accuracy guarantees for the reported depth,
- * except that it must always be >= to the true depth. This is
- * because actors may report simple, loose fitting paint-volumes
- * for efficiency.</note>
+ * There are no accuracy guarantees for the reported depth,
+ * except that it must always be greater than, or equal to, the actor's
+ * depth. This is because actors may report simple, loose fitting paint
+ * volumes for efficiency.
  *
  * Return value: the depth, in units of @pv's local coordinate system.
  *
@@ -521,8 +524,8 @@ clutter_paint_volume_get_depth (const ClutterPaintVolume *pv)
  *
  * Updates the geometry of @pv to encompass @pv and @another_pv.
  *
- * <note>There are no guarantees about how precisely the two volumes
- * will be encompassed.</note>
+ * There are no guarantees about how precisely the two volumes
+ * will be unioned.
  *
  * Since: 1.6
  */
@@ -743,9 +746,10 @@ _clutter_paint_volume_complete (ClutterPaintVolume *pv)
  * the paint volume into window coordinates before getting
  * the 2D bounding box.
  *
- * <note>The coordinates of the returned box are not clamped to
- * integer pixel values, if you need them to be clamped you can use
- * clutter_actor_box_clamp_to_pixel()</note>
+ * The coordinates of the returned box are not clamped to
+ * integer pixel values; if you need them to be rounded to the
+ * nearest integer pixel values, you can use the
+ * clutter_actor_box_clamp_to_pixel() function.
  *
  * Since: 1.6
  */

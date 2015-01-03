@@ -72,7 +72,6 @@
     <chapter>
       <title>Base actors</title>
       <xi:include href="xml/clutter-stage.xml"/>
-      <xi:include href="xml/clutter-texture.xml"/>
       <xi:include href="xml/clutter-clone.xml"/>
       <xi:include href="xml/clutter-text.xml"/>
       <xi:include href="xml/clutter-scroll-actor.xml"/>
@@ -85,7 +84,6 @@
       <xi:include href="xml/clutter-bin-layout.xml"/>
       <xi:include href="xml/clutter-flow-layout.xml"/>
       <xi:include href="xml/clutter-box-layout.xml"/>
-      <xi:include href="xml/clutter-table-layout.xml"/>
       <xi:include href="xml/clutter-grid-layout.xml"/>
     </chapter>
 
@@ -222,6 +220,7 @@
     <xi:include href="xml/clutter-egl.xml"/>
     <xi:include href="xml/clutter-cex100.xml"/>
     <xi:include href="xml/clutter-gdk.xml"/>
+    <xi:include href="xml/clutter-wayland.xml"/>
     <xi:include href="xml/clutter-wayland-compositor.xml"/>
     <xi:include href="xml/clutter-wayland-surface.xml"/>
   </part>
@@ -262,6 +261,8 @@
       <xi:include href="xml/clutter-score.xml"/>
       <xi:include href="xml/clutter-shader.xml"/>
       <xi:include href="xml/clutter-state.xml"/>
+      <xi:include href="xml/clutter-table-layout.xml"/>
+      <xi:include href="xml/clutter-texture.xml"/>
   </part>
 
   <part id="clutterobjects">
@@ -355,6 +356,26 @@
   <index role="1.14">
     <title>Index of new symbols in 1.14</title>
     <xi:include href="xml/api-index-1.14.xml"><xi:fallback /></xi:include>
+  </index>
+
+  <index role="1.16">
+    <title>Index of new symbols in 1.16</title>
+    <xi:include href="xml/api-index-1.16.xml"><xi:fallback /></xi:include>
+  </index>
+
+  <index role="1.18">
+    <title>Index of new symbols in 1.18</title>
+    <xi:include href="xml/api-index-1.18.xml"><xi:fallback /></xi:include>
+  </index>
+
+  <index role="1.20">
+    <title>Index of new symbols in 1.20</title>
+    <xi:include href="xml/api-index-1.20.xml"><xi:fallback /></xi:include>
+  </index>
+
+  <index role="1.22">
+    <title>Index of new symbols in 1.22</title>
+    <xi:include href="xml/api-index-1.22.xml"><xi:fallback /></xi:include>
   </index>
 
   <appendix id="license">

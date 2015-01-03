@@ -81,21 +81,30 @@ struct _ClutterX11TexturePixmapClass
                         gint                     height);
 };
 
+CLUTTER_AVAILABLE_IN_ALL
 GType clutter_x11_texture_pixmap_get_type (void) G_GNUC_CONST;
 
+CLUTTER_AVAILABLE_IN_ALL
 ClutterActor *clutter_x11_texture_pixmap_new             (void);
+CLUTTER_AVAILABLE_IN_ALL
 ClutterActor *clutter_x11_texture_pixmap_new_with_pixmap (Pixmap      pixmap);
+CLUTTER_AVAILABLE_IN_ALL
 ClutterActor *clutter_x11_texture_pixmap_new_with_window (Window      window);
 
+CLUTTER_AVAILABLE_IN_ALL
 void          clutter_x11_texture_pixmap_set_automatic   (ClutterX11TexturePixmap *texture,
                                                           gboolean                 setting);
+CLUTTER_AVAILABLE_IN_ALL
 void          clutter_x11_texture_pixmap_set_pixmap      (ClutterX11TexturePixmap *texture,
                                                           Pixmap                   pixmap);
+CLUTTER_AVAILABLE_IN_ALL
 void          clutter_x11_texture_pixmap_set_window      (ClutterX11TexturePixmap *texture,
                                                           Window                   window,
                                                           gboolean                 automatic);
 
+CLUTTER_AVAILABLE_IN_ALL
 void          clutter_x11_texture_pixmap_sync_window     (ClutterX11TexturePixmap *texture);
+CLUTTER_AVAILABLE_IN_ALL
 void          clutter_x11_texture_pixmap_update_area     (ClutterX11TexturePixmap *texture,
                                                           gint                     x,
                                                           gint                     y,

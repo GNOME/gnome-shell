@@ -56,14 +56,45 @@ typedef struct _ClutterEventPrivate {
 
   gpointer platform_data;
 
+  ClutterModifierType button_state;
+  ClutterModifierType base_state;
+  ClutterModifierType latched_state;
+  ClutterModifierType locked_state;
+
   guint is_pointer_emulated : 1;
 } ClutterEventPrivate;
+
+typedef struct _ClutterEventFilter {
+  int id;
+
+  ClutterStage *stage;
+  ClutterEventFilterFunc func;
+  GDestroyNotify notify;
+  gpointer user_data;
+} ClutterEventFilter;
 
 static GHashTable *all_events = NULL;
 
 G_DEFINE_BOXED_TYPE (ClutterEvent, clutter_event,
                      clutter_event_copy,
                      clutter_event_free);
+
+static ClutterEventSequence *
+clutter_event_sequence_copy (ClutterEventSequence *sequence)
+{
+  /* Nothing to copy here */
+  return sequence;
+}
+
+static void
+clutter_event_sequence_free (ClutterEventSequence *sequence)
+{
+  /* Nothing to free here */
+}
+
+G_DEFINE_BOXED_TYPE (ClutterEventSequence, clutter_event_sequence,
+                     clutter_event_sequence_copy,
+                     clutter_event_sequence_free);
 
 static gboolean
 is_event_allocated (const ClutterEvent *event)
@@ -178,7 +209,9 @@ clutter_event_set_time (ClutterEvent *event,
  * clutter_event_get_state:
  * @event: a #ClutterEvent
  *
- * Retrieves the modifier state of the event.
+ * Retrieves the modifier state of the event. In case the window system
+ * supports reporting latched and locked modifiers, this function returns
+ * the effective state.
  *
  * Return value: the modifier state parameter, or 0
  *
@@ -263,6 +296,63 @@ clutter_event_set_state (ClutterEvent        *event,
     default:
       break;
     }
+}
+
+void
+_clutter_event_set_state_full (ClutterEvent        *event,
+			       ClutterModifierType  button_state,
+			       ClutterModifierType  base_state,
+			       ClutterModifierType  latched_state,
+			       ClutterModifierType  locked_state,
+			       ClutterModifierType  effective_state)
+{
+  ClutterEventPrivate *private = (ClutterEventPrivate*) event;
+
+  private->button_state = button_state;
+  private->base_state = base_state;
+  private->latched_state = latched_state;
+  private->locked_state = locked_state;
+
+  clutter_event_set_state (event, effective_state);
+}
+
+/**
+ * clutter_event_get_state_full:
+ * @event: a #ClutterEvent
+ * @button_state: (out) (allow-none): the pressed buttons as a mask
+ * @base_state: (out) (allow-none): the regular pressed modifier keys
+ * @latched_state: (out) (allow-none): the latched modifier keys (currently released but still valid for one key press/release)
+ * @locked_state: (out) (allow-none): the locked modifier keys (valid until the lock key is pressed and released again)
+ * @effective_state: (out) (allow-none): the logical OR of all the state bits above
+ *
+ * Retrieves the decomposition of the keyboard state into button, base,
+ * latched, locked and effective. This can be used to transmit to other
+ * applications, for example when implementing a wayland compositor.
+ *
+ * Since: 1.16
+ */
+void
+clutter_event_get_state_full (const ClutterEvent  *event,
+			      ClutterModifierType *button_state,
+			      ClutterModifierType *base_state,
+			      ClutterModifierType *latched_state,
+			      ClutterModifierType *locked_state,
+			      ClutterModifierType *effective_state)
+{
+  const ClutterEventPrivate *private = (const ClutterEventPrivate*) event;
+
+  g_return_if_fail (event != NULL);
+
+  if (button_state)
+    *button_state = private->button_state;
+  if (base_state)
+    *base_state = private->base_state;
+  if (latched_state)
+    *latched_state = private->latched_state;
+  if (locked_state)
+    *locked_state = private->locked_state;
+  if (effective_state)
+    *effective_state = clutter_event_get_state (event);
 }
 
 /**
@@ -1015,6 +1105,8 @@ clutter_event_set_device (ClutterEvent       *event,
  * @event: a #ClutterEvent
  *
  * Retrieves the #ClutterInputDevice for the event.
+ * If you want the physical device the event originated from, use
+ * clutter_event_get_source_device().
  *
  * The #ClutterInputDevice structure is completely opaque and should
  * be cast to the platform-specific implementation.
@@ -1143,6 +1235,10 @@ clutter_event_copy (const ClutterEvent *event)
       new_real_event->delta_x = real_event->delta_x;
       new_real_event->delta_y = real_event->delta_y;
       new_real_event->is_pointer_emulated = real_event->is_pointer_emulated;
+      new_real_event->base_state = real_event->base_state;
+      new_real_event->button_state = real_event->button_state;
+      new_real_event->latched_state = real_event->latched_state;
+      new_real_event->locked_state = real_event->locked_state;
     }
 
   device = clutter_event_get_device (event);
@@ -1649,4 +1745,101 @@ clutter_event_is_pointer_emulated (const ClutterEvent *event)
     return FALSE;
 
   return ((ClutterEventPrivate *) event)->is_pointer_emulated;
+}
+
+gboolean
+_clutter_event_process_filters (ClutterEvent *event)
+{
+  ClutterMainContext *context = _clutter_context_get_default ();
+  GList *l, *next;
+
+  /* Event filters are handled in order from least recently added to
+   * most recently added */
+
+  for (l = context->event_filters; l; l = next)
+    {
+      ClutterEventFilter *event_filter = l->data;
+
+      next = l->next;
+
+      if (event_filter->stage && event_filter->stage != event->any.stage)
+        continue;
+
+      if (event_filter->func (event, event_filter->user_data) == CLUTTER_EVENT_STOP)
+        return CLUTTER_EVENT_STOP;
+    }
+
+  return CLUTTER_EVENT_PROPAGATE;
+}
+
+/**
+ * clutter_event_add_filter:
+ * @stage: (allow-none): The #ClutterStage to capture events for
+ * @func: The callback function which will be passed all events.
+ * @notify: A #GDestroyNotify
+ * @user_data: A data pointer to pass to the function.
+ *
+ * Adds a function which will be called for all events that Clutter
+ * processes. The function will be called before any signals are
+ * emitted for the event and it will take precedence over any grabs.
+ *
+ * Return value: an identifier for the event filter, to be used
+ *   with clutter_event_remove_filter().
+ *
+ * Since: 1.18
+ */
+guint
+clutter_event_add_filter (ClutterStage          *stage,
+                          ClutterEventFilterFunc func,
+                          GDestroyNotify         notify,
+                          gpointer               user_data)
+{
+  ClutterMainContext *context = _clutter_context_get_default ();
+  ClutterEventFilter *event_filter = g_slice_new (ClutterEventFilter);
+  static guint event_filter_id = 0;
+
+  event_filter->stage = stage;
+  event_filter->id = ++event_filter_id;
+  event_filter->func = func;
+  event_filter->notify = notify;
+  event_filter->user_data = user_data;
+
+  /* The event filters are kept in order from least recently added to
+   * most recently added so we must add it to the end */
+  context->event_filters = g_list_append (context->event_filters, event_filter);
+
+  return event_filter->id;
+}
+
+/**
+ * clutter_event_remove_filter:
+ * @id: The ID of the event filter, as returned from clutter_event_add_filter()
+ *
+ * Removes an event filter that was previously added with
+ * clutter_event_add_filter().
+ *
+ * Since: 1.18
+ */
+void
+clutter_event_remove_filter (guint id)
+{
+  ClutterMainContext *context = _clutter_context_get_default ();
+  GList *l;
+
+  for (l = context->event_filters; l; l = l->next)
+    {
+      ClutterEventFilter *event_filter = l->data;
+
+      if (event_filter->id == id)
+        {
+          if (event_filter->notify)
+            event_filter->notify (event_filter->user_data);
+
+          context->event_filters = g_list_delete_link (context->event_filters, l);
+          g_slice_free (ClutterEventFilter, event_filter);
+          return;
+        }
+    }
+
+  g_warning ("No event filter found for id: %d\n", id);
 }

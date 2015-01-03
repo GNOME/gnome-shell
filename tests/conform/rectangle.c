@@ -1,16 +1,8 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-#include <glib.h>
-
+#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
 #include <clutter/clutter.h>
 
-#include "test-conform-common.h"
-
-void
-rectangle_set_size (TestConformSimpleFixture *fixture,
-		    gconstpointer data)
+static void
+rectangle_set_size (void)
 {
   ClutterActor *rect = clutter_rectangle_new ();
 
@@ -32,9 +24,8 @@ rectangle_set_size (TestConformSimpleFixture *fixture,
   clutter_actor_destroy (rect);
 }
 
-void
-rectangle_set_color (TestConformSimpleFixture *fixture,
-		     gconstpointer data)
+static void
+rectangle_set_color (void)
 {
   ClutterActor *rect = clutter_rectangle_new ();
   ClutterColor white = { 255, 255, 255, 255 };
@@ -54,3 +45,7 @@ rectangle_set_color (TestConformSimpleFixture *fixture,
   clutter_actor_destroy (rect);
 }
 
+CLUTTER_TEST_SUITE (
+  CLUTTER_TEST_UNIT ("/rectangle/set-size", rectangle_set_size)
+  CLUTTER_TEST_UNIT ("/rectangle/set-color", rectangle_set_color)
+)

@@ -49,7 +49,8 @@ UNIT_TESTS = \
 	test-content.c \
 	test-keyframe-transition.c \
 	test-bind-constraint.c \
-	test-touch-events.c
+	test-touch-events.c \
+	test-rotate-zoom.c
 
 if X11_TESTS
 UNIT_TESTS += test-pixmap.c
@@ -67,32 +68,33 @@ SHEXT = $(EXEEXT)
 endif
 
 # For convenience, this provides a way to easily run individual unit tests:
-wrappers: stamp-test-interactive $(top_builddir)/build/win32/test-interactive-clutter.bat
+wrappers: stamp-test-interactive
 	@true
+
+GIT_IGNORE_EXTRA = \
+	stamp-test-interactive \
+	stamp-test-unit-names \
+	test-unit-names.h \
+	$(UNIT_TESTS:.c=$(SHEXT))
+
+include $(top_srcdir)/build/autotools/Makefile.am.gitignore
 
 stamp-test-interactive: Makefile
 	@wrapper=$(abs_builddir)/wrapper.sh ; \
 	chmod +x $$wrapper && \
-	( echo "/stamp-test-interactive" ; \
-	  echo "/stamp-test-unit-names" ; \
-	  echo "/test-interactive" ; \
-	  echo "/test-unit-names.h" ; \
-	  echo "*.o" ; \
-	  echo ".gitignore" ) > .gitignore ; \
 	for i in $(UNIT_TESTS); \
 	do \
 		test_bin=$${i%*.c} ; \
-		echo "  GEN    $$test_bin" ; \
+		echo "  GEN      $$test_bin" ; \
 		( echo "#!/bin/sh" ; \
 		  echo "$$wrapper $$test_bin \$$@" \
 		) > $$test_bin$(SHEXT) ; \
 		chmod +x $$test_bin$(SHEXT) ; \
-		echo "/$$test_bin$(SHEXT)" >> .gitignore ; \
 	done \
 	&& echo timestamp > $(@F)
 
-$(top_builddir)/build/win32/test-interactive-clutter.bat: Makefile test-interactive$(EXEEXT)
-	@echo "  GEN    test-interactive-clutter.bat" ; \
+$(top_builddir)/build/win32/test-interactive-clutter.bat: Makefile
+	@echo "  GEN      test-interactive-clutter.bat" ; \
 	for i in $(UNIT_TESTS); \
 	do \
 		case $$i in \
@@ -106,7 +108,7 @@ $(top_builddir)/build/win32/test-interactive-clutter.bat: Makefile test-interact
 	&& mv -f *.bat $(top_builddir)/build/win32/
 
 $(top_builddir)/build/win32/test-unit-names.h: test-unit-names.h
-	@echo "  CP     "; cp test-unit-names.h $(top_builddir)/build/win32/
+	@echo "  CP       "; cp test-unit-names.h $(top_builddir)/build/win32/
 
 test-unit-names.h: stamp-test-unit-names
 	@true
@@ -127,7 +129,7 @@ clean-wrappers:
 	@for i in $(UNIT_TESTS); \
 	do \
 		test_bin=$${i%*.c} ; \
-		echo "  RM    $$test_bin"; \
+		echo "  RM      $$test_bin"; \
 		rm -f $$test_bin$(SHEXT); \
 	done \
 	&& rm -f $(top_builddir)/build/win32/*.bat \
@@ -136,34 +138,37 @@ clean-wrappers:
 
 .PHONY: wrappers clean-wrappers
 
-INCLUDES = \
-	-I$(top_srcdir)			\
-	-I$(top_builddir)		\
-	-I$(top_srcdir)/clutter 	\
-	-I$(top_builddir)/clutter
-
 common_ldadd = $(top_builddir)/clutter/libclutter-@CLUTTER_API_VERSION@.la
 
-noinst_PROGRAMS = test-interactive
+check_PROGRAMS = test-interactive
+check_SCRIPTS = wrappers $(top_builddir)/build/win32/test-interactive-clutter.bat
 
 test_interactive_SOURCES = test-main.c $(UNIT_TESTS)
 nodist_test_interactive_SOURCES = test-unit-names.h
 test_interactive_CFLAGS = $(CLUTTER_CFLAGS) $(GDK_PIXBUF_CFLAGS)
 test_interactive_CPPFLAGS = \
-	-DTESTS_DATADIR=\""$(abs_top_srcdir)/tests/data"\" \
+	-DTESTS_DATADIR=\""$(abs_srcdir)"\" \
 	-DG_DISABLE_SINGLE_INCLUDES \
 	-DGLIB_DISABLE_DEPRECATION_WARNINGS \
-	-DCLUTTER_DISABLE_DEPRECATION_WARNINGS
+	-DCOGL_DISABLE_DEPRECATION_WARNINGS \
+	-DCLUTTER_DISABLE_DEPRECATION_WARNINGS \
+	-I$(top_srcdir)	\
+	-I$(top_builddir) \
+	-I$(top_srcdir)/clutter \
+	-I$(top_builddir)/clutter
 test_interactive_LDFLAGS = -export-dynamic
 test_interactive_LDADD = $(CLUTTER_LIBS) $(GDK_PIXBUF_LIBS) $(common_ldadd) -lm
 
 EXTRA_DIST = \
-	wrapper.sh.in			\
-	$(top_builddir)/build/win32/test-unit-names.h
+	wrapper.sh.in \
+	$(top_builddir)/build/win32/test-unit-names.h \
+	test-script.json \
+	test-script-signals.json \
+	redhand.png
 
 DISTCLEANFILES = wrapper.sh .gitignore test-unit-names.h
 
-BUILT_SOURCES = test-unit-names.h wrappers
+BUILT_SOURCES = test-unit-names.h
 
 dist-hook: $(top_builddir)/build/win32/vs9/test-interactive-clutter.vcproj $(top_builddir)/build/win32/vs10/test-interactive-clutter.vcxproj $(top_builddir)/build/win32/vs10/test-interactive-clutter.vcxproj.filters
 

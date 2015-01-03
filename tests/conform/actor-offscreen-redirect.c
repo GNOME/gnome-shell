@@ -1,6 +1,5 @@
+#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
 #include <clutter/clutter.h>
-
-#include "test-conform-common.h"
 
 typedef struct _FooActor      FooActor;
 typedef struct _FooActorClass FooActorClass;
@@ -26,6 +25,7 @@ typedef struct
   ClutterActor *container;
   ClutterActor *child;
   ClutterActor *unrelated_actor;
+  gboolean was_painted;
 } Data;
 
 GType foo_actor_get_type (void) G_GNUC_CONST;
@@ -89,15 +89,17 @@ typedef struct _FooGroupClass FooGroupClass;
 
 struct _FooGroupClass
 {
-  ClutterGroupClass parent_class;
+  ClutterActorClass parent_class;
 };
 
 struct _FooGroup
 {
-  ClutterGroup parent;
+  ClutterActor parent;
 };
 
-G_DEFINE_TYPE (FooGroup, foo_group, CLUTTER_TYPE_GROUP);
+GType foo_group_get_type (void);
+
+G_DEFINE_TYPE (FooGroup, foo_group, CLUTTER_TYPE_ACTOR)
 
 static gboolean
 foo_group_has_overlaps (ClutterActor *actor)
@@ -175,7 +177,7 @@ verify_redraw (Data *data, int expected_paint_count)
 }
 
 static gboolean
-timeout_cb (gpointer user_data)
+run_verify (gpointer user_data)
 {
   Data *data = user_data;
 
@@ -288,61 +290,48 @@ timeout_cb (gpointer user_data)
   clutter_actor_set_position (data->unrelated_actor, 0, 1);
   verify_redraw (data, 0);
 
-  clutter_main_quit ();
+  data->was_painted = TRUE;
 
   return G_SOURCE_REMOVE;
 }
 
-void
-actor_offscreen_redirect (TestConformSimpleFixture *fixture,
-                          gconstpointer test_data)
+static void
+actor_offscreen_redirect (void)
 {
-  if (cogl_features_available (COGL_FEATURE_OFFSCREEN))
-    {
-      Data data;
+  Data data;
 
-      data.stage = clutter_stage_new ();
+  if (!cogl_features_available (COGL_FEATURE_OFFSCREEN))
+    return;
 
-      data.parent_container = clutter_group_new ();
+  data.stage = clutter_test_get_stage ();
+  data.parent_container = clutter_actor_new ();
+  data.container = g_object_new (foo_group_get_type (), NULL);
+  data.foo_actor = g_object_new (foo_actor_get_type (), NULL);
+  clutter_actor_set_size (CLUTTER_ACTOR (data.foo_actor), 100, 100);
 
-      data.container = g_object_new (foo_group_get_type (), NULL);
+  clutter_actor_add_child (data.container, CLUTTER_ACTOR (data.foo_actor));
+  clutter_actor_add_child (data.parent_container, data.container);
+  clutter_actor_add_child (data.stage, data.parent_container);
 
-      data.foo_actor = g_object_new (foo_actor_get_type (), NULL);
-      clutter_actor_set_size (CLUTTER_ACTOR (data.foo_actor), 100, 100);
+  data.child = clutter_actor_new ();
+  clutter_actor_set_size (data.child, 1, 1);
+  clutter_actor_add_child (data.container, data.child);
 
-      clutter_container_add_actor (CLUTTER_CONTAINER (data.container),
-                                   CLUTTER_ACTOR (data.foo_actor));
+  data.unrelated_actor = clutter_actor_new ();
+  clutter_actor_set_size (data.child, 1, 1);
+  clutter_actor_add_child (data.stage, data.unrelated_actor);
 
-      clutter_container_add_actor (CLUTTER_CONTAINER (data.parent_container),
-                                   data.container);
+  clutter_actor_show (data.stage);
 
-      clutter_container_add_actor (CLUTTER_CONTAINER (data.stage),
-                                   data.parent_container);
+  clutter_threads_add_repaint_func_full (CLUTTER_REPAINT_FLAGS_POST_PAINT,
+                                         run_verify,
+                                         &data,
+                                         NULL);
 
-      data.child = clutter_rectangle_new ();
-      clutter_actor_set_size (data.child, 1, 1);
-      clutter_container_add_actor (CLUTTER_CONTAINER (data.container),
-                                   data.child);
-
-      data.unrelated_actor = clutter_rectangle_new ();
-      clutter_actor_set_size (data.child, 1, 1);
-      clutter_container_add_actor (CLUTTER_CONTAINER (data.stage),
-                                   data.unrelated_actor);
-
-      clutter_actor_show (data.stage);
-
-      /* Start the test after a short delay to allow the stage to
-         render its initial frames without affecting the results */
-      g_timeout_add_full (G_PRIORITY_LOW, 250, timeout_cb, &data, NULL);
-
-      clutter_main ();
-
-      clutter_actor_destroy (data.stage);
-
-      if (g_test_verbose ())
-        g_print ("OK\n");
-    }
-  else if (g_test_verbose ())
-    g_print ("Skipping\n");
+  while (!data.was_painted)
+    g_main_context_iteration (NULL, FALSE);
 }
 
+CLUTTER_TEST_SUITE (
+  CLUTTER_TEST_UNIT ("/actor/offscreen/redirect", actor_offscreen_redirect)
+)

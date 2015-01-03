@@ -49,6 +49,7 @@
 
 #include "clutter-actor-private.h"
 #include "clutter-animatable.h"
+#include "clutter-backend-private.h"
 #include "clutter-binding-pool.h"
 #include "clutter-color.h"
 #include "clutter-debug.h"
@@ -82,28 +83,7 @@
  */
 #define N_CACHED_LAYOUTS        6
 
-#define CLUTTER_TEXT_GET_PRIVATE(obj)   (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_TEXT, ClutterTextPrivate))
-
 typedef struct _LayoutCache     LayoutCache;
-
-static const ClutterColor default_cursor_color    = {   0,   0,   0, 255 };
-static const ClutterColor default_selection_color = {   0,   0,   0, 255 };
-static const ClutterColor default_text_color      = {   0,   0,   0, 255 };
-static const ClutterColor default_selected_text_color = {   0,   0,   0, 255 };
-
-static ClutterAnimatableIface *parent_animatable_iface = NULL;
-static ClutterScriptableIface *parent_scriptable_iface = NULL;
-
-static void clutter_scriptable_iface_init (ClutterScriptableIface *iface);
-static void clutter_animatable_iface_init (ClutterAnimatableIface *iface);
-
-G_DEFINE_TYPE_WITH_CODE (ClutterText,
-                         clutter_text,
-                         CLUTTER_TYPE_ACTOR,
-                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_SCRIPTABLE,
-                                                clutter_scriptable_iface_init)
-                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_ANIMATABLE,
-                                                clutter_animatable_iface_init));
 
 struct _LayoutCache
 {
@@ -221,6 +201,7 @@ struct _ClutterTextPrivate
   guint paint_volume_valid      : 1;
   guint show_password_hint      : 1;
   guint password_hint_visible   : 1;
+  guint resolved_direction      : 4;
 };
 
 enum
@@ -280,6 +261,26 @@ static void clutter_text_settings_changed_cb (ClutterText *text);
 static void buffer_connect_signals (ClutterText *self);
 static void buffer_disconnect_signals (ClutterText *self);
 static ClutterTextBuffer *get_buffer (ClutterText *self);
+
+static const ClutterColor default_cursor_color    = {   0,   0,   0, 255 };
+static const ClutterColor default_selection_color = {   0,   0,   0, 255 };
+static const ClutterColor default_text_color      = {   0,   0,   0, 255 };
+static const ClutterColor default_selected_text_color = {   0,   0,   0, 255 };
+
+static ClutterAnimatableIface *parent_animatable_iface = NULL;
+static ClutterScriptableIface *parent_scriptable_iface = NULL;
+
+static void clutter_scriptable_iface_init (ClutterScriptableIface *iface);
+static void clutter_animatable_iface_init (ClutterAnimatableIface *iface);
+
+G_DEFINE_TYPE_WITH_CODE (ClutterText,
+                         clutter_text,
+                         CLUTTER_TYPE_ACTOR,
+                         G_ADD_PRIVATE (ClutterText)
+                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_SCRIPTABLE,
+                                                clutter_scriptable_iface_init)
+                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_ANIMATABLE,
+                                                clutter_animatable_iface_init));
 
 static inline void
 clutter_text_dirty_paint_volume (ClutterText *text)
@@ -345,12 +346,31 @@ clutter_text_clear_selection (ClutterText *self)
     }
 }
 
+static gboolean
+clutter_text_is_empty (ClutterText *self)
+{
+  if (self->priv->buffer == NULL)
+    return TRUE;
+
+  if (clutter_text_buffer_get_length (self->priv->buffer) == 0)
+    return TRUE;
+
+  return FALSE;
+}
+
 static gchar *
 clutter_text_get_display_text (ClutterText *self)
 {
   ClutterTextPrivate *priv = self->priv;
   ClutterTextBuffer *buffer;
   const gchar *text;
+
+  /* short-circuit the case where the buffer is unset or it's empty,
+   * to avoid creating a pointless TextBuffer and emitting
+   * notifications with it
+   */
+  if (clutter_text_is_empty (self))
+    return g_strdup ("");
 
   buffer = get_buffer (self);
   text = clutter_text_buffer_get_text (buffer);
@@ -510,7 +530,38 @@ clutter_text_create_layout_no_cache (ClutterText       *text,
       pango_attr_list_unref (tmp_attrs);
     }
   else
-    pango_layout_set_text (layout, contents, contents_len);
+    {
+      PangoDirection pango_dir;
+
+      if (priv->password_char != 0)
+        pango_dir = PANGO_DIRECTION_NEUTRAL;
+      else
+        pango_dir = pango_find_base_dir (contents, contents_len);
+
+      if (pango_dir == PANGO_DIRECTION_NEUTRAL)
+        {
+          ClutterBackend *backend = clutter_get_default_backend ();
+          ClutterTextDirection text_dir;
+
+          if (clutter_actor_has_key_focus (CLUTTER_ACTOR (text)))
+            pango_dir = _clutter_backend_get_keymap_direction (backend);
+          else
+            {
+              text_dir = clutter_actor_get_text_direction (CLUTTER_ACTOR (text));
+
+              if (text_dir == CLUTTER_TEXT_DIRECTION_RTL)
+                pango_dir = PANGO_DIRECTION_RTL;
+              else
+                pango_dir = PANGO_DIRECTION_LTR;
+           }
+        }
+
+      pango_context_set_base_dir (clutter_actor_get_pango_context (CLUTTER_ACTOR (text)), pango_dir);
+
+      priv->resolved_direction = pango_dir;
+
+      pango_layout_set_text (layout, contents, contents_len);
+    }
 
   /* This will merge the markup attributes and the attributes
    * property if needed */
@@ -568,9 +619,12 @@ clutter_text_dirty_cache (ClutterText *text)
  */
 static inline void
 clutter_text_set_font_description_internal (ClutterText          *self,
-                                            PangoFontDescription *desc)
+                                            PangoFontDescription *desc,
+                                            gboolean              is_default_font)
 {
   ClutterTextPrivate *priv = self->priv;
+
+  priv->is_default_font = is_default_font;
 
   if (priv->font_desc == desc ||
       pango_font_description_equal (priv->font_desc, desc))
@@ -619,7 +673,7 @@ clutter_text_settings_changed_cb (ClutterText *text)
                     font_name);
 
       font_desc = pango_font_description_from_string (font_name);
-      clutter_text_set_font_description_internal (text, font_desc);
+      clutter_text_set_font_description_internal (text, font_desc, TRUE);
 
       pango_font_description_free (font_desc);
       g_free (font_name);
@@ -1611,6 +1665,11 @@ selection_paint (ClutterText *self)
           PangoLayout *layout = clutter_text_get_layout (self);
           CoglPath *selection_path = cogl_path_new ();
           CoglColor cogl_color = { 0, };
+          CoglFramebuffer *fb;
+
+          fb = _clutter_actor_get_active_framebuffer (actor);
+          if (G_UNLIKELY (fb == NULL))
+            return;
 
           /* Paint selection background */
           if (priv->selection_color_set)
@@ -1632,8 +1691,7 @@ selection_paint (ClutterText *self)
           cogl_path_fill (selection_path);
 
           /* Paint selected text */
-          cogl_framebuffer_push_path_clip (cogl_get_draw_framebuffer (),
-                                           selection_path);
+          cogl_framebuffer_push_path_clip (fb, selection_path);
           cogl_object_unref (selection_path);
 
           if (priv->selected_text_color_set)
@@ -1649,7 +1707,7 @@ selection_paint (ClutterText *self)
 
           cogl_pango_render_layout (layout, priv->text_x, 0, &cogl_color, 0);
 
-          cogl_clip_pop ();
+          cogl_framebuffer_pop_clip (fb);
         }
     }
 }
@@ -2184,6 +2242,7 @@ clutter_text_paint (ClutterActor *self)
 {
   ClutterText *text = CLUTTER_TEXT (self);
   ClutterTextPrivate *priv = text->priv;
+  CoglFramebuffer *fb;
   PangoLayout *layout;
   ClutterActorBox alloc = { 0, };
   CoglColor color = { 0, };
@@ -2193,6 +2252,16 @@ clutter_text_paint (ClutterActor *self)
   gboolean clip_set = FALSE;
   gboolean bg_color_set = FALSE;
   guint n_chars;
+  float alloc_width;
+  float alloc_height;
+
+  /* FIXME: this should not be needed, but apparently the text-cache
+   * test unit manages to get in a situation where the active frame
+   * buffer is NULL
+   */
+  fb = _clutter_actor_get_active_framebuffer (self);
+  if (fb == NULL)
+    fb = cogl_get_draw_framebuffer ();
 
   /* Note that if anything in this paint method changes it needs to be
      reflected in the get_paint_volume implementation which is tightly
@@ -2200,6 +2269,8 @@ clutter_text_paint (ClutterActor *self)
   n_chars = clutter_text_buffer_get_length (get_buffer (text));
 
   clutter_actor_get_allocation_box (self, &alloc);
+  alloc_width = alloc.x2 - alloc.x1;
+  alloc_height = alloc.y2 - alloc.y1;
 
   g_object_get (self, "background-color-set", &bg_color_set, NULL);
   if (bg_color_set)
@@ -2215,7 +2286,7 @@ clutter_text_paint (ClutterActor *self)
                                 bg_color.green,
                                 bg_color.blue,
                                 bg_color.alpha);
-      cogl_rectangle (0, 0, alloc.x2 - alloc.x1, alloc.y2 - alloc.y1);
+      cogl_rectangle (0, 0, alloc_width, alloc_height);
     }
 
   /* don't bother painting an empty text actor, unless it's
@@ -2235,9 +2306,7 @@ clutter_text_paint (ClutterActor *self)
        */
       if (priv->wrap && priv->ellipsize)
         {
-          layout = clutter_text_create_layout (text,
-                                               alloc.x2 - alloc.x1,
-                                               alloc.y2 - alloc.y1);
+          layout = clutter_text_create_layout (text, alloc_width, alloc_height);
         }
       else
         {
@@ -2254,9 +2323,7 @@ clutter_text_paint (ClutterActor *self)
            * in the assigned width, then we clip the actor if the
            * logical rectangle overflows the allocation.
            */
-          layout = clutter_text_create_layout (text,
-                                               alloc.x2 - alloc.x1,
-                                               -1);
+          layout = clutter_text_create_layout (text, alloc_width, -1);
         }
     }
 
@@ -2267,17 +2334,17 @@ clutter_text_paint (ClutterActor *self)
     {
       PangoRectangle logical_rect = { 0, };
       gint actor_width, text_width;
+      gboolean rtl;
 
       pango_layout_get_extents (layout, NULL, &logical_rect);
 
-      cogl_clip_push_rectangle (0, 0,
-                                (alloc.x2 - alloc.x1),
-                                (alloc.y2 - alloc.y1));
+      cogl_framebuffer_push_rectangle_clip (fb, 0, 0, alloc_width, alloc_height);
       clip_set = TRUE;
 
-      actor_width = (alloc.x2 - alloc.x1)
-                  - 2 * TEXT_PADDING;
+      actor_width = alloc_width - 2 * TEXT_PADDING;
       text_width  = logical_rect.width / PANGO_SCALE;
+
+      rtl = priv->resolved_direction == PANGO_DIRECTION_RTL;
 
       if (actor_width < text_width)
         {
@@ -2285,11 +2352,11 @@ clutter_text_paint (ClutterActor *self)
 
           if (priv->position == -1)
             {
-              text_x = actor_width - text_width;
+              text_x = rtl ? TEXT_PADDING : actor_width - text_width;
             }
           else if (priv->position == 0)
             {
-              text_x = TEXT_PADDING;
+              text_x = rtl ? actor_width - text_width : TEXT_PADDING;
             }
           else
             {
@@ -2305,7 +2372,7 @@ clutter_text_paint (ClutterActor *self)
         }
       else
         {
-          text_x = TEXT_PADDING;
+          text_x = rtl ? actor_width - text_width : TEXT_PADDING;
         }
     }
   else if (!priv->editable && !(priv->wrap && priv->ellipsize))
@@ -2315,12 +2382,10 @@ clutter_text_paint (ClutterActor *self)
       pango_layout_get_pixel_extents (layout, NULL, &logical_rect);
 
       /* don't clip if the layout managed to fit inside our allocation */
-      if (logical_rect.width > (alloc.x2 - alloc.x1) ||
-          logical_rect.height > (alloc.y2 - alloc.y1))
+      if (logical_rect.width > alloc_width ||
+          logical_rect.height > alloc_height)
         {
-          cogl_clip_push_rectangle (0, 0,
-                                    alloc.x2 - alloc.x1,
-                                    alloc.y2 - alloc.y1);
+          cogl_framebuffer_push_rectangle_clip (fb, 0, 0, alloc_width, alloc_height);
           clip_set = TRUE;
         }
 
@@ -2355,7 +2420,7 @@ clutter_text_paint (ClutterActor *self)
   selection_paint (text);
 
   if (clip_set)
-    cogl_clip_pop ();
+    cogl_framebuffer_pop_clip (fb);
 }
 
 static void
@@ -3322,8 +3387,6 @@ clutter_text_class_init (ClutterTextClass *klass)
   ClutterBindingPool *binding_pool;
   GParamSpec *pspec;
 
-  g_type_class_add_private (klass, sizeof (ClutterTextPrivate));
-
   gobject_class->set_property = clutter_text_set_property;
   gobject_class->get_property = clutter_text_get_property;
   gobject_class->dispose = clutter_text_dispose;
@@ -3646,10 +3709,10 @@ clutter_text_class_init (ClutterTextClass *klass)
    * For more informations about the Pango markup format, see
    * pango_layout_set_markup() in the Pango documentation.
    *
-   * <note>It is not possible to round-trip this property between
+   * It is not possible to round-trip this property between
    * %TRUE and %FALSE. Once a string with markup has been set on
    * a #ClutterText actor with :use-markup set to %TRUE, the markup
-   * is stripped from the string.</note>
+   * is stripped from the string.
    *
    * Since: 1.0
    */
@@ -4057,7 +4120,7 @@ clutter_text_init (ClutterText *self)
   gchar *font_name;
   int i, password_hint_time;
 
-  self->priv = priv = CLUTTER_TEXT_GET_PRIVATE (self);
+  self->priv = priv = clutter_text_get_instance_private (self);
 
   priv->alignment     = PANGO_ALIGN_LEFT;
   priv->wrap          = FALSE;
@@ -4227,7 +4290,6 @@ buffer_inserted_text (ClutterTextBuffer *buffer,
   ClutterTextPrivate *priv;
   gint new_position;
   gint new_selection_bound;
-  gsize n_bytes;
 
   priv = self->priv;
   if (priv->position >= 0 || priv->selection_bound >= 0)
@@ -4243,10 +4305,6 @@ buffer_inserted_text (ClutterTextBuffer *buffer,
       if (priv->position != new_position || priv->selection_bound != new_selection_bound)
         clutter_text_set_positions (self, new_position, new_selection_bound);
     }
-
-  n_bytes = g_utf8_offset_to_pointer (chars, n_chars) - chars;
-  g_signal_emit (self, text_signals[INSERT_TEXT], 0, chars,
-                 n_bytes, &position);
 
   /* TODO: What are we supposed to with the out value of position? */
 }
@@ -4275,8 +4333,6 @@ buffer_deleted_text (ClutterTextBuffer *buffer,
       if (priv->position != new_position || priv->selection_bound != new_selection_bound)
         clutter_text_set_positions (self, new_position, new_selection_bound);
     }
-
-  g_signal_emit (self, text_signals[DELETE_TEXT], 0, position, position + n_chars);
 }
 
 static void
@@ -4628,7 +4684,8 @@ clutter_text_set_cursor_visible (ClutterText *self,
     {
       priv->cursor_visible = cursor_visible;
 
-      clutter_text_queue_redraw (CLUTTER_ACTOR (self));
+      clutter_text_dirty_cache (self);
+      clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 
       g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_CURSOR_VISIBLE]);
     }
@@ -4945,7 +5002,8 @@ clutter_text_set_font_description (ClutterText          *self,
 {
   g_return_if_fail (CLUTTER_IS_TEXT (self));
 
-  clutter_text_set_font_description_internal (self, font_desc);
+  clutter_text_set_font_description_internal (self, font_desc,
+                                              font_desc == NULL);
 }
 
 /**
@@ -4999,8 +5057,13 @@ clutter_text_get_font_name (ClutterText *text)
  * like:
  *
  * |[
- *   clutter_text_set_font_name (text, "Sans 10pt");
+ *   // Set the font to the system's Sans, 10 points
+ *   clutter_text_set_font_name (text, "Sans 10");
+ *
+ *   // Set the font to the system's Serif, 16 pixels
  *   clutter_text_set_font_name (text, "Serif 16px");
+ *
+ *   // Set the font to Helvetica, 10 points
  *   clutter_text_set_font_name (text, "Helvetica 10");
  * ]|
  *
@@ -5052,8 +5115,7 @@ clutter_text_set_font_name (ClutterText *self,
     }
 
   /* this will set the font_name field as well */
-  clutter_text_set_font_description_internal (self, desc);
-  priv->is_default_font = is_default_font;
+  clutter_text_set_font_description_internal (self, desc, is_default_font);
 
   g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_FONT_NAME]);
 
@@ -5865,6 +5927,33 @@ clutter_text_get_max_length (ClutterText *self)
   return clutter_text_buffer_get_max_length (get_buffer (self));
 }
 
+static void
+clutter_text_real_insert_text (ClutterText *self,
+                               guint        start_pos,
+                               const gchar *chars,
+                               guint        n_chars)
+{
+  gsize n_bytes;
+
+  n_bytes = g_utf8_offset_to_pointer (chars, n_chars) - chars;
+
+  /*
+   * insert-text is emitted here instead of as part of a
+   * buffer_inserted_text() callback because that should be emitted
+   * before the buffer changes, while ClutterTextBuffer::deleted-text
+   * is emitter after. See BG#722220 for more info.
+   */
+  g_signal_emit (self, text_signals[INSERT_TEXT], 0, chars,
+                 n_bytes, &start_pos);
+
+  /*
+   * The actual insertion from the buffer. This will end firing the
+   * following signal handlers: buffer_inserted_text(),
+   * buffer_notify_text(), buffer_notify_max_length()
+   */
+  clutter_text_buffer_insert_text (get_buffer (self), start_pos, chars, n_chars);
+}
+
 /**
  * clutter_text_insert_unichar:
  * @self: a #ClutterText
@@ -5887,10 +5976,11 @@ clutter_text_insert_unichar (ClutterText *self,
   new = g_string_new ("");
   g_string_append_unichar (new, wc);
 
-  clutter_text_buffer_insert_text (get_buffer (self), priv->position, new->str, 1);
+  clutter_text_real_insert_text (self, priv->position, new->str, 1);
 
   g_string_free (new, TRUE);
 }
+
 
 /**
  * clutter_text_insert_text:
@@ -5915,9 +6005,31 @@ clutter_text_insert_text (ClutterText *self,
   g_return_if_fail (CLUTTER_IS_TEXT (self));
   g_return_if_fail (text != NULL);
 
-  clutter_text_buffer_insert_text (get_buffer (self), position, text,
-                                   g_utf8_strlen (text, -1));
+  clutter_text_real_insert_text (self, position, text, g_utf8_strlen (text, -1));
 }
+
+static
+void clutter_text_real_delete_text (ClutterText *self,
+                                    gssize       start_pos,
+                                    gssize       end_pos)
+{
+  /*
+   * delete-text is emitted here instead of as part of a
+   * buffer_deleted_text() callback because that should be emitted
+   * before the buffer changes, while ClutterTextBuffer::deleted-text
+   * is emitter after. See BG#722220 for more info.
+   */
+  g_signal_emit (self, text_signals[DELETE_TEXT], 0, start_pos, end_pos);
+
+  /*
+   * The actual deletion from the buffer. This will end firing the
+   * following signal handlers: buffer_deleted_text(),
+   * buffer_notify_text(), buffer_notify_max_length()
+   */
+  clutter_text_buffer_delete_text (get_buffer (self), start_pos, end_pos - start_pos);
+}
+
+
 
 /**
  * clutter_text_delete_text:
@@ -5940,7 +6052,7 @@ clutter_text_delete_text (ClutterText *self,
 {
   g_return_if_fail (CLUTTER_IS_TEXT (self));
 
-  clutter_text_buffer_delete_text (get_buffer (self), start_pos, end_pos - start_pos);
+  clutter_text_real_delete_text (self, start_pos, end_pos);
 }
 
 /**
@@ -5966,7 +6078,7 @@ clutter_text_delete_chars (ClutterText *self,
 
   priv = self->priv;
 
-  clutter_text_buffer_delete_text (get_buffer (self), priv->position, n_chars);
+  clutter_text_real_delete_text (self, priv->position, priv->position + n_chars);
 
   if (priv->position > 0)
     clutter_text_set_cursor_position (self, priv->position - n_chars);

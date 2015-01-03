@@ -1,6 +1,5 @@
+#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
 #include <clutter/clutter.h>
-
-#include "test-conform-common.h"
 
 #define STAGE_WIDTH  640
 #define STAGE_HEIGHT 480
@@ -33,6 +32,8 @@ typedef struct _ShiftEffect       ShiftEffect;
 typedef struct _ShiftEffectClass  ShiftEffectClass;
 
 #define TYPE_SHIFT_EFFECT        (shift_effect_get_type ())
+
+GType shift_effect_get_type (void);
 
 G_DEFINE_TYPE (ShiftEffect,
                shift_effect,
@@ -120,8 +121,7 @@ on_timeout (gpointer data)
              isn't visible so it shouldn't affect the picking */
           over_actor = clutter_rectangle_new_with_color (&red);
           clutter_actor_set_size (over_actor, STAGE_WIDTH, STAGE_HEIGHT);
-          clutter_container_add (CLUTTER_CONTAINER (state->stage),
-                                 over_actor, NULL);
+          clutter_actor_add_child (state->stage, over_actor);
           clutter_actor_hide (over_actor);
 
           if (g_test_verbose ())
@@ -165,8 +165,9 @@ on_timeout (gpointer data)
                                                "blur");
 
           clutter_actor_add_effect_with_name (CLUTTER_ACTOR (state->stage),
-            "shift",
-            g_object_new (TYPE_SHIFT_EFFECT, NULL));
+                                              "shift",
+                                              g_object_new (TYPE_SHIFT_EFFECT,
+                                                            NULL));
 
           if (g_test_verbose ())
             g_print ("With shift effect:\n");
@@ -190,12 +191,12 @@ on_timeout (gpointer data)
               if (test_num == 4)
                 pick_x -= SHIFT_STEP;
 
-              actor
-                = clutter_stage_get_actor_at_pos (CLUTTER_STAGE (state->stage),
-                                                  CLUTTER_PICK_ALL,
-                                                  pick_x,
-                                                  y * state->actor_height
-                                                  + state->actor_height / 2);
+              actor =
+                clutter_stage_get_actor_at_pos (CLUTTER_STAGE (state->stage),
+                                                CLUTTER_PICK_ALL,
+                                                pick_x,
+                                                y * state->actor_height
+                                                + state->actor_height / 2);
 
               if (g_test_verbose ())
                 g_print ("% 3i,% 3i / %p -> ",
@@ -239,7 +240,7 @@ on_timeout (gpointer data)
   return G_SOURCE_REMOVE;
 }
 
-void
+static void
 actor_pick (void)
 {
   int y, x;
@@ -247,7 +248,7 @@ actor_pick (void)
   
   state.pass = TRUE;
 
-  state.stage = clutter_stage_new ();
+  state.stage = clutter_test_get_stage ();
 
   state.actor_width = STAGE_WIDTH / ACTORS_X;
   state.actor_height = STAGE_HEIGHT / ACTORS_Y;
@@ -267,7 +268,7 @@ actor_pick (void)
                                 state.actor_width,
                                 state.actor_height);
 
-	clutter_container_add (CLUTTER_CONTAINER (state.stage), rect, NULL);
+	clutter_actor_add_child (state.stage, rect);
 
 	state.actors[y * ACTORS_X + x] = rect;
       }
@@ -278,10 +279,9 @@ actor_pick (void)
 
   clutter_main ();
 
-  if (g_test_verbose ())
-    g_print ("end result: %s\n", state.pass ? "pass" : "FAIL");
-
   g_assert (state.pass);
-
-  clutter_actor_destroy (state.stage);
 }
+
+CLUTTER_TEST_SUITE (
+  CLUTTER_TEST_UNIT ("/actor/pick", actor_pick)
+)

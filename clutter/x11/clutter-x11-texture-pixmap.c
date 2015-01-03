@@ -136,9 +136,9 @@ struct _ClutterX11TexturePixmapPrivate
 
 static int _damage_event_base = 0;
 
-G_DEFINE_TYPE (ClutterX11TexturePixmap,
-               clutter_x11_texture_pixmap,
-               CLUTTER_TYPE_TEXTURE);
+G_DEFINE_TYPE_WITH_PRIVATE (ClutterX11TexturePixmap,
+                            clutter_x11_texture_pixmap,
+                            CLUTTER_TYPE_TEXTURE)
 
 static gboolean
 check_extensions (ClutterX11TexturePixmap *texture)
@@ -384,10 +384,7 @@ clutter_x11_texture_pixmap_real_queue_damage_redraw (
 static void
 clutter_x11_texture_pixmap_init (ClutterX11TexturePixmap *self)
 {
-  self->priv =
-      G_TYPE_INSTANCE_GET_PRIVATE (self,
-                                   CLUTTER_X11_TYPE_TEXTURE_PIXMAP,
-                                   ClutterX11TexturePixmapPrivate);
+  self->priv = clutter_x11_texture_pixmap_get_instance_private (self);
 
   if (!check_extensions (self))
     {
@@ -525,8 +522,6 @@ clutter_x11_texture_pixmap_class_init (ClutterX11TexturePixmapClass *klass)
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
   GParamSpec        *pspec;
 
-  g_type_class_add_private (klass, sizeof (ClutterX11TexturePixmapPrivate));
-
   actor_class->get_paint_volume = clutter_x11_texture_pixmap_get_paint_volume;
 
   object_class->dispose      = clutter_x11_texture_pixmap_dispose;
@@ -649,6 +644,10 @@ clutter_x11_texture_pixmap_class_init (ClutterX11TexturePixmapClass *klass)
   /**
    * ClutterX11TexturePixmap::update-area:
    * @texture: the object which received the signal
+   * @x: X coordinate of the area to update
+   * @y: Y coordinate of the area to update
+   * @width: width of the area to update
+   * @height: height of the area to update
    *
    * The ::update-area signal is emitted to ask the texture to update its
    * content from its source pixmap.

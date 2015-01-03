@@ -22,6 +22,7 @@
 #include "config.h"
 
 #include <math.h>
+#include <stdlib.h>
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
@@ -44,10 +45,6 @@
 #include "clutter-paint-volume-private.h"
 #include "clutter-private.h"
 #include "clutter-stage-private.h"
-
-#ifdef HAVE_XFIXES
-#include <X11/extensions/Xfixes.h>
-#endif
 
 #define STAGE_X11_IS_MAPPED(s)  ((((ClutterStageX11 *) (s))->wm_state & STAGE_X11_WITHDRAWN) == 0)
 
@@ -151,10 +148,10 @@ clutter_stage_x11_fix_window_size (ClutterStageX11 *stage_x11,
                                       &min_height);
 
       if (new_width <= 0)
-        new_width = min_width;
+        new_width = min_width * stage_x11->scale_factor;
 
       if (new_height <= 0)
-        new_height = min_height;
+        new_height = min_height * stage_x11->scale_factor;
 
       size_hints->flags = 0;
 
@@ -164,8 +161,8 @@ clutter_stage_x11_fix_window_size (ClutterStageX11 *stage_x11,
         {
           if (resize)
             {
-              size_hints->min_width = min_width;
-              size_hints->min_height = min_height;
+              size_hints->min_width = min_width * stage_x11->scale_factor;
+              size_hints->min_height = min_height * stage_x11->scale_factor;
               size_hints->flags = PMinSize;
             }
           else
@@ -225,8 +222,8 @@ clutter_stage_x11_get_geometry (ClutterStageWindow    *stage_window,
       return;
     }
 
-  geometry->width = stage_x11->xwin_width;
-  geometry->height = stage_x11->xwin_height;
+  geometry->width = stage_x11->xwin_width / stage_x11->scale_factor;
+  geometry->height = stage_x11->xwin_height / stage_x11->scale_factor;
 }
 
 static void
@@ -244,8 +241,8 @@ clutter_stage_x11_resize (ClutterStageWindow *stage_window,
        * so we need to manually set the size and queue a relayout on the
        * stage here (as is normally done in response to ConfigureNotify).
        */
-      stage_x11->xwin_width = width;
-      stage_x11->xwin_height = height;
+      stage_x11->xwin_width = width * stage_x11->scale_factor;
+      stage_x11->xwin_height = height * stage_x11->scale_factor;
       clutter_actor_queue_relayout (CLUTTER_ACTOR (stage_cogl->wrapper));
       return;
     }
@@ -266,6 +263,9 @@ clutter_stage_x11_resize (ClutterStageWindow *stage_window,
 
   CLUTTER_NOTE (BACKEND, "New size received: (%d, %d)", width, height);
 
+  width *= stage_x11->scale_factor;
+  height *= stage_x11->scale_factor;
+
   if (stage_x11->xwin != None)
     {
       clutter_stage_x11_fix_window_size (stage_x11, width, height);
@@ -279,9 +279,6 @@ clutter_stage_x11_resize (ClutterStageWindow *stage_window,
                         width,
                         height);
 
-          CLUTTER_SET_PRIVATE_FLAGS (stage_cogl->wrapper,
-                                     CLUTTER_IN_RESIZE);
-
           /* XXX: in this case we can rely on a subsequent
            * ConfigureNotify that will result in the stage
            * being reallocated so we don't actively do anything
@@ -291,6 +288,14 @@ clutter_stage_x11_resize (ClutterStageWindow *stage_window,
                          width,
                          height);
         }
+    }
+  else
+    {
+      /* if the backing window hasn't been created yet, we just
+       * need to store the new window size
+       */
+      stage_x11->xwin_width = width;
+      stage_x11->xwin_height = height;
     }
 }
 
@@ -362,22 +367,10 @@ set_cursor_visible (ClutterStageX11 *stage_x11)
 
   if (stage_x11->is_cursor_visible)
     {
-#if HAVE_XFIXES
-      if (stage_x11->cursor_hidden_xfixes)
-        {
-          XFixesShowCursor (backend_x11->xdpy, stage_x11->xwin);
-          stage_x11->cursor_hidden_xfixes = FALSE;
-        }
-#else
       XUndefineCursor (backend_x11->xdpy, stage_x11->xwin);
-#endif /* HAVE_XFIXES */
     }
   else
     {
-#if HAVE_XFIXES
-      XFixesHideCursor (backend_x11->xdpy, stage_x11->xwin);
-      stage_x11->cursor_hidden_xfixes = TRUE;
-#else
       XColor col;
       Pixmap pix;
       Cursor curs;
@@ -390,8 +383,21 @@ set_cursor_visible (ClutterStageX11 *stage_x11)
                                   1, 1);
       XFreePixmap (backend_x11->xdpy, pix);
       XDefineCursor (backend_x11->xdpy, stage_x11->xwin, curs);
-#endif /* HAVE_XFIXES */
     }
+}
+
+static void
+on_window_scaling_factor_notify (GObject         *settings,
+                                 GParamSpec      *pspec,
+                                 ClutterStageX11 *stage_x11)
+{
+  g_object_get (settings,
+                "window-scaling-factor", &stage_x11->scale_factor,
+                NULL);
+
+  clutter_stage_x11_resize (CLUTTER_STAGE_WINDOW (stage_x11),
+                            stage_x11->xwin_width,
+                            stage_x11->xwin_height);
 }
 
 static void
@@ -547,14 +553,10 @@ _clutter_stage_x11_events_device_changed (ClutterStageX11 *stage_x11,
                                           ClutterDeviceManager *device_manager)
 {
   ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_x11);
-  int event_flags = 0;
 
   if (clutter_input_device_get_device_mode (device) == CLUTTER_INPUT_MODE_FLOATING)
-    event_flags = CLUTTER_STAGE_X11_EVENT_MASK;
-
-  _clutter_device_manager_select_stage_events (device_manager,
-                                               stage_cogl->wrapper,
-                                               event_flags);
+    _clutter_device_manager_select_stage_events (device_manager,
+                                                 stage_cogl->wrapper);
 }
 
 static void
@@ -564,12 +566,10 @@ stage_events_device_added (ClutterDeviceManager *device_manager,
 {
   ClutterStageWindow *stage_window = user_data;
   ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_window);
-  int event_flags = CLUTTER_STAGE_X11_EVENT_MASK;
 
   if (clutter_input_device_get_device_mode (device) == CLUTTER_INPUT_MODE_FLOATING)
     _clutter_device_manager_select_stage_events (device_manager,
-                                                 stage_cogl->wrapper,
-                                                 event_flags);
+                                                 stage_cogl->wrapper);
 }
 
 static gboolean
@@ -580,14 +580,20 @@ clutter_stage_x11_realize (ClutterStageWindow *stage_window)
   ClutterBackend *backend = CLUTTER_BACKEND (stage_cogl->backend);
   ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
   ClutterDeviceManager *device_manager;
-  int event_flags;
   gfloat width, height;
 
-  clutter_actor_get_size (CLUTTER_ACTOR (stage_cogl->wrapper),
-			  &width, &height);
+  clutter_actor_get_size (CLUTTER_ACTOR (stage_cogl->wrapper), &width, &height);
 
-  stage_cogl->onscreen = cogl_onscreen_new (backend->cogl_context,
-                                            width, height);
+  CLUTTER_NOTE (BACKEND, "Wrapper size: %.2f x %.2f", width, height);
+
+  width = width * (float) stage_x11->scale_factor;
+  height = height * (float) stage_x11->scale_factor;
+
+  CLUTTER_NOTE (BACKEND, "Creating a new Cogl onscreen surface: %.2f x %.2f (factor: %d)",
+                width, height,
+                stage_x11->scale_factor);
+
+  stage_cogl->onscreen = cogl_onscreen_new (backend->cogl_context, width, height);
 
   /* We just created a window of the size of the actor. No need to fix
      the size of the stage, just update it. */
@@ -623,14 +629,6 @@ clutter_stage_x11_realize (ClutterStageWindow *stage_window)
   set_wm_title (stage_x11);
   set_cursor_visible (stage_x11);
 
-
-  /* the masks for the events we want to select on a stage window;
-   * KeyPressMask and KeyReleaseMask are necessary even with XI1
-   * because key events are broken with that extension, and will
-   * be fixed by XI2
-   */
-  event_flags = CLUTTER_STAGE_X11_EVENT_MASK;
-
   /* we unconditionally select input events even with event retrieval
    * disabled because we need to guarantee that the Clutter internal
    * state is maintained when calling clutter_x11_handle_event() without
@@ -648,7 +646,7 @@ clutter_stage_x11_realize (ClutterStageWindow *stage_window)
    * for an example of things that break if we do conditional event
    * selection.
    */
-  XSelectInput (backend_x11->xdpy, stage_x11->xwin, event_flags);
+  XSelectInput (backend_x11->xdpy, stage_x11->xwin, CLUTTER_STAGE_X11_EVENT_MASK);
 
   /* input events also depent on the actual device, so we need to
    * use the device manager to let every device select them, using
@@ -658,8 +656,7 @@ clutter_stage_x11_realize (ClutterStageWindow *stage_window)
   if (G_UNLIKELY (device_manager != NULL))
     {
       _clutter_device_manager_select_stage_events (device_manager,
-                                                   stage_cogl->wrapper,
-                                                   event_flags);
+                                                   stage_cogl->wrapper);
 
       g_signal_connect (device_manager, "device-added",
                         G_CALLBACK (stage_events_device_added),
@@ -832,10 +829,31 @@ clutter_stage_x11_can_clip_redraws (ClutterStageWindow *stage_window)
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
 
   /* while resizing a window, clipped redraws are disabled in order to
-   * avoid artefacts. see clutter-event-x11.c:event_translate for a more
-   * detailed explanation
+   * avoid artefacts.
    */
   return stage_x11->clipped_redraws_cool_off == 0;
+}
+
+static void
+clutter_stage_x11_set_scale_factor (ClutterStageWindow *stage_window,
+                                    int                 factor)
+{
+  ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
+
+  if (stage_x11->scale_factor == factor)
+    return;
+
+  stage_x11->scale_factor = factor;
+
+  clutter_stage_x11_resize (stage_window, stage_x11->xwin_width, stage_x11->xwin_height);
+}
+
+static int
+clutter_stage_x11_get_scale_factor (ClutterStageWindow *stage_window)
+{
+  ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
+
+  return stage_x11->scale_factor;
 }
 
 static void
@@ -871,6 +889,8 @@ clutter_stage_x11_class_init (ClutterStageX11Class *klass)
 static void
 clutter_stage_x11_init (ClutterStageX11 *stage)
 {
+  ClutterSettings *settings;
+
   stage->xwin = None;
   stage->xwin_width = 640;
   stage->xwin_height = 480;
@@ -880,10 +900,15 @@ clutter_stage_x11_init (ClutterStageX11 *stage)
   stage->is_foreign_xwin = FALSE;
   stage->fullscreening = FALSE;
   stage->is_cursor_visible = TRUE;
-  stage->cursor_hidden_xfixes = FALSE;
   stage->accept_focus = TRUE;
 
   stage->title = NULL;
+
+  settings = clutter_settings_get_default ();
+  g_signal_connect (settings, "notify::window-scaling-factor",
+                    G_CALLBACK (on_window_scaling_factor_notify),
+                    stage);
+  on_window_scaling_factor_notify (G_OBJECT (settings), NULL, stage);
 }
 
 static void
@@ -903,6 +928,8 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
   iface->realize = clutter_stage_x11_realize;
   iface->unrealize = clutter_stage_x11_unrealize;
   iface->can_clip_redraws = clutter_stage_x11_can_clip_redraws;
+  iface->set_scale_factor = clutter_stage_x11_set_scale_factor;
+  iface->get_scale_factor = clutter_stage_x11_get_scale_factor;
 }
 
 static inline void
@@ -1024,10 +1051,8 @@ clutter_stage_x11_translate_event (ClutterEventTranslator *translator,
             }
 
           clutter_actor_set_size (CLUTTER_ACTOR (stage),
-                                  xevent->xconfigure.width,
-                                  xevent->xconfigure.height);
-
-          CLUTTER_UNSET_PRIVATE_FLAGS (stage_cogl->wrapper, CLUTTER_IN_RESIZE);
+                                  xevent->xconfigure.width / stage_x11->scale_factor,
+                                  xevent->xconfigure.height / stage_x11->scale_factor);
 
           if (size_changed)
             {
@@ -1161,26 +1186,6 @@ clutter_stage_x11_translate_event (ClutterEventTranslator *translator,
         }
       break;
 
-    case EnterNotify:
-#if HAVE_XFIXES
-      if (!stage_x11->is_cursor_visible && !stage_x11->cursor_hidden_xfixes)
-        {
-          XFixesHideCursor (backend_x11->xdpy, stage_x11->xwin);
-          stage_x11->cursor_hidden_xfixes = TRUE;
-        }
-#endif
-      break;
-
-    case LeaveNotify:
-#if HAVE_XFIXES
-      if (stage_x11->cursor_hidden_xfixes)
-        {
-          XFixesShowCursor (backend_x11->xdpy, stage_x11->xwin);
-          stage_x11->cursor_hidden_xfixes = FALSE;
-        }
-#endif
-      break;
-
     case Expose:
       {
         XExposeEvent *expose = (XExposeEvent *) xevent;
@@ -1197,10 +1202,10 @@ clutter_stage_x11_translate_event (ClutterEventTranslator *translator,
                       expose->width,
                       expose->height);
 
-        clip.x = expose->x;
-        clip.y = expose->y;
-        clip.width = expose->width;
-        clip.height = expose->height;
+        clip.x = expose->x / stage_x11->scale_factor;
+        clip.y = expose->y / stage_x11->scale_factor;
+        clip.width = expose->width / stage_x11->scale_factor;
+        clip.height = expose->height / stage_x11->scale_factor;
         clutter_actor_queue_redraw_with_clip (CLUTTER_ACTOR (stage), &clip);
       }
       break;
@@ -1366,8 +1371,8 @@ set_foreign_window_callback (ClutterActor *actor,
   fwd->stage_x11->xwin = fwd->xwindow;
   fwd->stage_x11->is_foreign_xwin = TRUE;
 
-  fwd->stage_x11->xwin_width = fwd->geom.width;
-  fwd->stage_x11->xwin_height = fwd->geom.height;
+  fwd->stage_x11->xwin_width = fwd->geom.width * fwd->stage_x11->scale_factor;
+  fwd->stage_x11->xwin_height = fwd->geom.height * fwd->stage_x11->scale_factor;
 
   clutter_actor_set_size (actor, fwd->geom.width, fwd->geom.height);
 
@@ -1467,8 +1472,8 @@ clutter_x11_set_stage_foreign (ClutterStage *stage,
 
   fwd.geom.x = x;
   fwd.geom.y = y;
-  fwd.geom.width = width;
-  fwd.geom.height = height;
+  fwd.geom.width = width / stage_x11->scale_factor;
+  fwd.geom.height = height / stage_x11->scale_factor;
 
   actor = CLUTTER_ACTOR (stage);
 

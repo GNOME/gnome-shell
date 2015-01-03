@@ -1,10 +1,8 @@
+#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
 #include <clutter/clutter.h>
 
-#include "test-conform-common.h"
-
-void
-animator_multi_properties (TestConformSimpleFixture *fixture,
-                           gconstpointer dummy)
+static void
+animator_multi_properties (void)
 {
   ClutterScript *script = clutter_script_new ();
   GObject *animator = NULL, *foo = NULL;
@@ -14,16 +12,15 @@ animator_multi_properties (TestConformSimpleFixture *fixture,
   ClutterAnimatorKey *key;
   GValue value = { 0, };
 
-  test_file = clutter_test_get_data_file ("test-animator-3.json");
+  test_file = g_test_build_filename (G_TEST_DIST,
+                                     "scripts",
+                                     "test-animator-3.json",
+                                     NULL);
   clutter_script_load_from_file (script, test_file, &error);
   if (g_test_verbose () && error)
     g_print ("Error: %s", error->message);
 
-#if GLIB_CHECK_VERSION (2, 20, 0)
   g_assert_no_error (error);
-#else
-  g_assert (error == NULL);
-#endif
 
   foo = clutter_script_get_object (script, "foo");
   g_assert (G_IS_OBJECT (foo));
@@ -105,9 +102,8 @@ animator_multi_properties (TestConformSimpleFixture *fixture,
   g_free (test_file);
 }
 
-void
-animator_properties (TestConformSimpleFixture *fixture,
-                          gconstpointer dummy)
+static void
+animator_properties (void)
 {
   ClutterScript *script = clutter_script_new ();
   GObject *animator = NULL;
@@ -117,16 +113,15 @@ animator_properties (TestConformSimpleFixture *fixture,
   ClutterAnimatorKey *key;
   GValue value = { 0, };
 
-  test_file = clutter_test_get_data_file ("test-animator-2.json");
+  test_file = g_test_build_filename (G_TEST_DIST,
+                                     "scripts",
+                                     "test-animator-2.json",
+                                     NULL);
   clutter_script_load_from_file (script, test_file, &error);
   if (g_test_verbose () && error)
     g_print ("Error: %s", error->message);
 
-#if GLIB_CHECK_VERSION (2, 20, 0)
   g_assert_no_error (error);
-#else
-  g_assert (error == NULL);
-#endif
 
   animator = clutter_script_get_object (script, "animator");
   g_assert (CLUTTER_IS_ANIMATOR (animator));
@@ -168,9 +163,8 @@ animator_properties (TestConformSimpleFixture *fixture,
   g_free (test_file);
 }
 
-void
-animator_base (TestConformSimpleFixture *fixture,
-               gconstpointer dummy)
+static void
+animator_base (void)
 {
   ClutterScript *script = clutter_script_new ();
   GObject *animator = NULL;
@@ -178,16 +172,15 @@ animator_base (TestConformSimpleFixture *fixture,
   guint duration = 0;
   gchar *test_file;
 
-  test_file = clutter_test_get_data_file ("test-animator-1.json");
+  test_file = g_test_build_filename (G_TEST_DIST,
+                                     "scripts",
+                                     "test-animator-1.json",
+                                     NULL);
   clutter_script_load_from_file (script, test_file, &error);
   if (g_test_verbose () && error)
     g_print ("Error: %s", error->message);
 
-#if GLIB_CHECK_VERSION (2, 20, 0)
   g_assert_no_error (error);
-#else
-  g_assert (error == NULL);
-#endif
 
   animator = clutter_script_get_object (script, "animator");
   g_assert (CLUTTER_IS_ANIMATOR (animator));
@@ -198,3 +191,9 @@ animator_base (TestConformSimpleFixture *fixture,
   g_object_unref (script);
   g_free (test_file);
 }
+
+CLUTTER_TEST_SUITE (
+  CLUTTER_TEST_UNIT ("/script/animator/base", animator_base)
+  CLUTTER_TEST_UNIT ("/script/animator/properties", animator_properties)
+  CLUTTER_TEST_UNIT ("/script/animator/multi-properties", animator_multi_properties)
+)

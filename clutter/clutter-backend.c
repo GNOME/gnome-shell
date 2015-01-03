@@ -83,6 +83,9 @@
 /* XXX - should probably warn, here */
 #include "tslib/clutter-event-tslib.h"
 #endif
+#ifdef CLUTTER_WINDOWING_EGL
+#include "egl/clutter-backend-eglnative.h"
+#endif
 #ifdef CLUTTER_INPUT_WAYLAND
 #include "wayland/clutter-device-manager-wayland.h"
 #endif
@@ -93,12 +96,7 @@
 #include "wayland/clutter-wayland-compositor.h"
 #endif
 
-G_DEFINE_ABSTRACT_TYPE (ClutterBackend, clutter_backend, G_TYPE_OBJECT);
-
 #define DEFAULT_FONT_NAME       "Sans 10"
-
-#define CLUTTER_BACKEND_GET_PRIVATE(obj) \
-(G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_BACKEND, ClutterBackendPrivate))
 
 struct _ClutterBackendPrivate
 {
@@ -121,6 +119,8 @@ enum
   LAST_SIGNAL
 };
 
+G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (ClutterBackend, clutter_backend, G_TYPE_OBJECT)
+
 static guint backend_signals[LAST_SIGNAL] = { 0, };
 
 /* Global for being able to specify a compositor side wayland display
@@ -129,6 +129,7 @@ static guint backend_signals[LAST_SIGNAL] = { 0, };
 static struct wl_display *_wayland_compositor_display;
 #endif
 
+static const char *allowed_backend;
 
 static void
 clutter_backend_dispose (GObject *gobject)
@@ -466,6 +467,58 @@ clutter_backend_real_create_stage (ClutterBackend  *backend,
                        NULL);
 }
 
+ClutterBackend *
+_clutter_create_backend (void)
+{
+  const char *backend = allowed_backend;
+  ClutterBackend *retval = NULL;
+
+  if (backend == NULL)
+    {
+      const char *backend_env = g_getenv ("CLUTTER_BACKEND");
+
+      if (backend_env != NULL)
+	backend = g_intern_string (backend_env);
+    }
+
+#ifdef CLUTTER_WINDOWING_OSX
+  if (backend == NULL || backend == I_(CLUTTER_WINDOWING_OSX))
+    retval = g_object_new (CLUTTER_TYPE_BACKEND_OSX, NULL);
+  else
+#endif
+#ifdef CLUTTER_WINDOWING_WIN32
+  if (backend == NULL || backend == I_(CLUTTER_WINDOWING_WIN32))
+    retval = g_object_new (CLUTTER_TYPE_BACKEND_WIN32, NULL);
+  else
+#endif
+#ifdef CLUTTER_WINDOWING_X11
+  if (backend == NULL || backend == I_(CLUTTER_WINDOWING_X11))
+    retval = g_object_new (CLUTTER_TYPE_BACKEND_X11, NULL);
+  else
+#endif
+#ifdef CLUTTER_WINDOWING_WAYLAND
+  if (backend == NULL || backend == I_(CLUTTER_WINDOWING_WAYLAND))
+    retval = g_object_new (CLUTTER_TYPE_BACKEND_WAYLAND, NULL);
+  else
+#endif
+#ifdef CLUTTER_WINDOWING_EGL
+  if (backend == NULL || backend == I_(CLUTTER_WINDOWING_EGL))
+    retval = g_object_new (CLUTTER_TYPE_BACKEND_EGL_NATIVE, NULL);
+  else
+#endif
+#ifdef CLUTTER_WINDOWING_GDK
+  if (backend == NULL || backend == I_(CLUTTER_WINDOWING_GDK))
+    retval = g_object_new (CLUTTER_TYPE_BACKEND_GDK, NULL);
+  else
+#endif
+  if (backend == NULL)
+    g_error ("No default Clutter backend found.");
+  else
+    g_error ("Unsupported Clutter backend: '%s'", backend);
+
+  return retval;
+}
+
 static void
 clutter_backend_real_init_events (ClutterBackend *backend)
 {
@@ -509,8 +562,12 @@ clutter_backend_real_init_events (ClutterBackend *backend)
 #endif
 #ifdef CLUTTER_INPUT_EVDEV
   /* Evdev can be used regardless of the windowing system */
-  if (input_backend != NULL &&
-      strcmp (input_backend, CLUTTER_INPUT_EVDEV) == 0)
+  if ((input_backend != NULL && strcmp (input_backend, CLUTTER_INPUT_EVDEV) == 0)
+#ifdef CLUTTER_WINDOWING_EGL
+      /* but we do want to always use it for EGL native */
+      || clutter_check_windowing_backend (CLUTTER_WINDOWING_EGL)
+#endif
+      )
     {
       _clutter_events_evdev_init (backend);
     }
@@ -591,8 +648,6 @@ clutter_backend_class_init (ClutterBackendClass *klass)
   gobject_class->dispose = clutter_backend_dispose;
   gobject_class->finalize = clutter_backend_finalize;
 
-  g_type_class_add_private (gobject_class, sizeof (ClutterBackendPrivate));
-
   klass->stage_window_type = G_TYPE_INVALID;
 
   /**
@@ -662,14 +717,11 @@ clutter_backend_class_init (ClutterBackendClass *klass)
 }
 
 static void
-clutter_backend_init (ClutterBackend *backend)
+clutter_backend_init (ClutterBackend *self)
 {
-  ClutterBackendPrivate *priv;
-
-  priv = backend->priv = CLUTTER_BACKEND_GET_PRIVATE (backend);
-
-  priv->units_per_em = -1.0;
-  priv->units_serial = 1;
+  self->priv = clutter_backend_get_instance_private (self);
+  self->priv->units_per_em = -1.0;
+  self->priv->units_serial = 1;
 }
 
 void
@@ -1292,14 +1344,14 @@ _clutter_backend_remove_event_translator (ClutterBackend         *backend,
  * @backend. A #CoglContext is required when using some of the
  * experimental 2.0 Cogl API.
  *
- * <note>Since CoglContext is itself experimental API this API should
- * be considered experimental too.</note>
+ * Since CoglContext is itself experimental API this API should
+ * be considered experimental too.
  *
- * <note>This API is not yet supported on OSX because OSX still
+ * This API is not yet supported on OSX because OSX still
  * uses the stub Cogl winsys and the Clutter backend doesn't
- * explicitly create a CoglContext.</note>
+ * explicitly create a CoglContext.
  *
- * Return value: The #CoglContext associated with @backend.
+ * Return value: (transfer none): The #CoglContext associated with @backend.
  *
  * Since: 1.8
  * Stability: unstable
@@ -1334,3 +1386,33 @@ clutter_wayland_set_compositor_display (void *display)
   _wayland_compositor_display = display;
 }
 #endif
+
+/**
+ * clutter_set_windowing_backend:
+ * @backend_type: the name of a clutter window backend
+ *
+ * Restricts clutter to only use the specified backend.
+ * This must be called before the first API call to clutter, including
+ * clutter_get_option_context()
+ *
+ * Since: 1.16
+ */
+void
+clutter_set_windowing_backend (const char *backend_type)
+{
+  g_return_if_fail (backend_type != NULL);
+
+  allowed_backend = g_intern_string (backend_type);
+}
+
+PangoDirection
+_clutter_backend_get_keymap_direction (ClutterBackend *backend)
+{
+  ClutterBackendClass *klass;
+
+  klass = CLUTTER_BACKEND_GET_CLASS (backend);
+  if (klass->get_keymap_direction != NULL)
+    return klass->get_keymap_direction (backend);
+
+  return PANGO_DIRECTION_NEUTRAL;
+}

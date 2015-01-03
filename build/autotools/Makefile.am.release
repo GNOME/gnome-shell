@@ -11,12 +11,12 @@ TAR_OPTIONS = --owner=0 --group=0
 #RELEASE_URL_BASE = http://source.clutter-project.org/sources/clutter
 #RELEASE_URL      = $(RELEASE_URL_BASE)/$(CLUTTER_MAJOR_VERSION).$(CLUTTER_MINOR_VERSION)
 
-RELEASE_ANNOUNCE_LIST = clutter-announce@clutter-project.org
+RELEASE_ANNOUNCE_LIST = clutter-list@gnome.org
 RELEASE_ANNOUNCE_CC   = gnome-announce-list@gnome.org
 
-RELEASE_DOC_URL = http://docs.clutter-project.org/docs/
+RELEASE_DOC_URL = https://developer.gnome.org
 
-BUGS_URL = http://bugzilla.gnome.org/enter_bug.cgi?product=clutter
+BUGS_URL = https://bugzilla.gnome.org/enter_bug.cgi?product=clutter
 
 tar_file    = $(distdir).tar.xz
 sha256_file = $(distdir).sha256sum
@@ -29,7 +29,7 @@ release-tag:
 	  echo "*** Cannot tag a Git version; please, update the Clutter version" >&2; \
 	else \
 	  if test -d "$(top_srcdir)/.git"; then \
-	    echo "  TAG    Tagging release $(CLUTTER_VERSION)..." ; \
+	    echo "  TAG      Tagging release $(CLUTTER_VERSION)..." ; \
 	    $(top_srcdir)/build/missing --run git tag \
 	 	-s \
 	      	-m "Clutter $(CLUTTER_VERSION) ($(CLUTTER_RELEASE_STATUS))" \
@@ -43,7 +43,7 @@ release-check: release-verify-even-micro release-verify-sane-changelogs release-
 	TAR_OPTIONS="$(TAR_OPTIONS)" $(MAKE) $(AM_MAKEFLAGS) distcheck
 
 release-verify-news:
-	@echo -n "  CHK    Checking that the NEWS file has been updated..."
+	@echo -n "  CHK      Checking that the NEWS file has been updated..."
 	@if ! grep -q "$(CLUTTER_VERSION)" $(top_srcdir)/NEWS; then \
 	  (echo "Ouch." && \
 	   echo "*** The version in the NEWS file does not match $(CLUTTER_VERSION)." && \
@@ -52,7 +52,7 @@ release-verify-news:
 	@echo "Good."
 
 release-verify-sane-changelogs: changelogs
-	@echo -n "  CHK    Checking that the ChangeLog files are sane..."
+	@echo -n "  CHK      Checking that the ChangeLog files are sane..."
 	@if grep -q "is required to generate" $(CHANGELOGS); then \
 	  (echo "Ouch." && \
 	   echo "*** Some of the ChangeLogs are not generated correctly." && \
@@ -60,7 +60,7 @@ release-verify-sane-changelogs: changelogs
 	@echo "Good."
 
 release-verify-even-micro:
-	@echo -n "  CHK    Checking that $(VERSION) has an even micro component..."
+	@echo -n "  CHK      Checking that $(VERSION) has an even micro component..."
 	@test "$(CLUTTER_MICRO_VERSION)" = "`echo $(CLUTTER_MICRO_VERSION)/2*2 | bc`" || \
 	  (echo "Ouch." && \
 	   echo "*** The version micro component '$(CLUTTER_MICRO_VERSION)' is not an even number." && \
@@ -69,10 +69,10 @@ release-verify-even-micro:
 	@echo "Good."
 
 release-upload: $(sha256_file)
-	@echo -n "  SCP    Uploading to master.gnome.org... "
+	@echo -n "  SCP      Uploading to master.gnome.org... "
 	@scp $(tar_file) master.gnome.org:
 	@echo "Done."
-	@echo -n "  EXEC   Running ftpadmin install... "
+	@echo -n "  EXEC     Running ftpadmin install... "
 	@ssh master.gnome.org ftpadmin install $(tar_file)
 	@mv -f $(sha256_file) $(top_builddir)/build/$(sha256_file)
 	@echo "Done."
@@ -128,7 +128,7 @@ release-message:
 	 else \
 	   echo "   Clutter: http://developer.gnome.org/clutter/stable/"; \
 	 fi
-	@echo "  Cookbook: $(RELEASE_DOC_URL)/clutter-cookbook/$(CLUTTER_API_VERSION)/"
+	@echo "  Cookbook: $(RELEASE_DOC_URL)/clutter-cookbook/$(CLUTTER_VERSION)/"
 	@echo ""
 	@echo "Release Notes:"
 	@if test "x$(CLUTTER_RELEASE_STATUS)" = "xsnapshot"; then \

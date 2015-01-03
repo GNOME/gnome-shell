@@ -142,7 +142,7 @@ clutter_backend_cex100_init (ClutterBackendCex100 *backend_cex100)
  * the stage will be drawn. By default Clutter will pick UPP_C
  * (GDL_PLANE_ID_UPP_C).
  *
- * <note>This function has to be called before clutter_init()</note>
+ * This function has to be called before clutter_init().
  *
  * Since: 1.6
  */
@@ -164,7 +164,7 @@ clutter_cex100_set_plane (gdl_plane_id_t plane)
  *
  * Clutter defaults to %CLUTTER_CEX100_TRIPLE_BUFFERING.
  *
- * <note>This function has to be called before clutter_init()</note>
+ * This function has to be called before clutter_init().
  *
  * Since: 1.6
  */

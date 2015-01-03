@@ -48,8 +48,6 @@
 #include "clutter-private.h"
 #include "clutter-stage-private.h"
 
-#define CLUTTER_DEVICE_MANAGER_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_DEVICE_MANAGER, ClutterDeviceManagerPrivate))
-
 struct _ClutterDeviceManagerPrivate
 {
   /* back-pointer to the backend */
@@ -77,9 +75,9 @@ enum
 
 static guint manager_signals[LAST_SIGNAL] = { 0, };
 
-G_DEFINE_ABSTRACT_TYPE (ClutterDeviceManager,
-                        clutter_device_manager,
-                        G_TYPE_OBJECT);
+G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (ClutterDeviceManager,
+                                     clutter_device_manager,
+                                     G_TYPE_OBJECT)
 
 static void
 clutter_device_manager_set_property (GObject      *gobject,
@@ -123,8 +121,6 @@ static void
 clutter_device_manager_class_init (ClutterDeviceManagerClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-
-  g_type_class_add_private (klass, sizeof (ClutterDeviceManagerPrivate));
 
   obj_props[PROP_BACKEND] =
     g_param_spec_object ("backend",
@@ -183,7 +179,7 @@ clutter_device_manager_class_init (ClutterDeviceManagerClass *klass)
 static void
 clutter_device_manager_init (ClutterDeviceManager *self)
 {
-  self->priv = CLUTTER_DEVICE_MANAGER_GET_PRIVATE (self);
+  self->priv = clutter_device_manager_get_instance_private (self);
 }
 
 /**
@@ -308,24 +304,15 @@ clutter_device_manager_get_core_device (ClutterDeviceManager   *device_manager,
 
 void
 _clutter_device_manager_select_stage_events (ClutterDeviceManager *device_manager,
-                                             ClutterStage         *stage,
-                                             gint                  event_flags)
+                                             ClutterStage         *stage)
 {
   ClutterDeviceManagerClass *manager_class;
-  const GSList *devices, *d;
 
   g_return_if_fail (CLUTTER_IS_DEVICE_MANAGER (device_manager));
 
   manager_class = CLUTTER_DEVICE_MANAGER_GET_CLASS (device_manager);
-  devices = manager_class->get_devices (device_manager);
-
-  for (d = devices; d != NULL; d = d->next)
-    {
-      ClutterInputDevice *device = d->data;
-
-      if (device->is_enabled)
-        _clutter_input_device_select_stage_events (device, stage, event_flags);
-    }
+  if (manager_class->select_stage_events)
+    manager_class->select_stage_events (device_manager, stage);
 }
 
 /*
@@ -381,9 +368,14 @@ _clutter_device_manager_remove_device (ClutterDeviceManager *device_manager,
   manager_class = CLUTTER_DEVICE_MANAGER_GET_CLASS (device_manager);
   g_assert (manager_class->remove_device != NULL);
 
-  manager_class->remove_device (device_manager, device);
+  /* The subclass remove_device() method will likely unref it but we
+     have to keep it alive during the signal emission. */
+  g_object_ref (device);
 
+  manager_class->remove_device (device_manager, device);
   g_signal_emit (device_manager, manager_signals[DEVICE_REMOVED], 0, device);
+
+  g_object_unref (device);
 }
 
 /*

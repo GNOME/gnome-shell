@@ -88,14 +88,6 @@
 #include "clutter-scriptable.h"
 #include "clutter-script-private.h"
 
-static void clutter_scriptable_iface_init (ClutterScriptableIface *iface);
-
-G_DEFINE_ABSTRACT_TYPE_WITH_CODE (ClutterBehaviour,
-                                  clutter_behaviour,
-                                  G_TYPE_OBJECT,
-                                  G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_SCRIPTABLE,
-                                                         clutter_scriptable_iface_init));
-
 struct _ClutterBehaviourPrivate
 {
   ClutterAlpha *alpha;
@@ -122,10 +114,14 @@ enum {
 
 static guint behave_signals[LAST_SIGNAL] = { 0 };
 
-#define CLUTTER_BEHAVIOUR_GET_PRIVATE(obj)         \
-              (G_TYPE_INSTANCE_GET_PRIVATE ((obj), \
-               CLUTTER_TYPE_BEHAVIOUR,             \
-               ClutterBehaviourPrivate))
+static void clutter_scriptable_iface_init (ClutterScriptableIface *iface);
+
+G_DEFINE_ABSTRACT_TYPE_WITH_CODE (ClutterBehaviour,
+                                  clutter_behaviour,
+                                  G_TYPE_OBJECT,
+                                  G_ADD_PRIVATE (ClutterBehaviour)
+                                  G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_SCRIPTABLE,
+                                                         clutter_scriptable_iface_init))
 
 static gboolean
 clutter_behaviour_parse_custom_node (ClutterScriptable *scriptable,
@@ -291,14 +287,12 @@ clutter_behaviour_class_init (ClutterBehaviourClass *klass)
 		  _clutter_marshal_VOID__OBJECT,
 		  G_TYPE_NONE, 1,
 		  CLUTTER_TYPE_ACTOR);
-
-  g_type_class_add_private (klass, sizeof (ClutterBehaviourPrivate));
 }
 
 static void
 clutter_behaviour_init (ClutterBehaviour *self)
 {
-  self->priv = CLUTTER_BEHAVIOUR_GET_PRIVATE (self);
+  self->priv = clutter_behaviour_get_instance_private (self);
 }
 
 static void

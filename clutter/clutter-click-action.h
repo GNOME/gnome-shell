@@ -51,7 +51,7 @@ typedef struct _ClutterClickActionClass         ClutterClickActionClass;
 /**
  * ClutterClickAction:
  *
- * The <structname>ClutterClickAction</structname> structure contains
+ * The #ClutterClickAction structure contains
  * only private data and should be accessed using the provided API
  *
  * Since: 1.4
@@ -69,7 +69,7 @@ struct _ClutterClickAction
  * @clicked: class handler for the #ClutterClickAction::clicked signal
  * @long_press: class handler for the #ClutterClickAction::long-press signal
  *
- * The <structname>ClutterClickActionClass</structname> structure
+ * The #ClutterClickActionClass structure
  * contains only private data
  *
  * Since: 1.4
@@ -97,16 +97,22 @@ struct _ClutterClickActionClass
   void (* _clutter_click_action7) (void);
 };
 
+CLUTTER_AVAILABLE_IN_1_4
 GType clutter_click_action_get_type (void) G_GNUC_CONST;
 
+CLUTTER_AVAILABLE_IN_1_4
 ClutterAction *        clutter_click_action_new        (void);
 
+CLUTTER_AVAILABLE_IN_1_4
 guint                  clutter_click_action_get_button (ClutterClickAction *action);
+CLUTTER_AVAILABLE_IN_1_4
 ClutterModifierType    clutter_click_action_get_state  (ClutterClickAction *action);
+CLUTTER_AVAILABLE_IN_1_8
 void                   clutter_click_action_get_coords (ClutterClickAction *action,
                                                         gfloat             *press_x,
                                                         gfloat             *press_y);
 
+CLUTTER_AVAILABLE_IN_1_4
 void                   clutter_click_action_release    (ClutterClickAction *action);
 
 G_END_DECLS

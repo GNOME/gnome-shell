@@ -46,7 +46,7 @@ typedef struct _ClutterTransitionClass          ClutterTransitionClass;
 /**
  * ClutterTransition:
  *
- * The <structname>ClutterTransition</structname> structure contains private
+ * The #ClutterTransition structure contains private
  * data and should only be accessed using the provided API.
  *
  * Since: 1.10
@@ -68,7 +68,7 @@ struct _ClutterTransition
  * @compute_value: virtual function; called each frame to compute and apply
  *   the interpolation of the interval
  *
- * The <structname>ClutterTransitionClass</structname> structure contains
+ * The #ClutterTransitionClass structure contains
  * private data.
  *
  * Since: 1.10

@@ -278,6 +278,10 @@
 #define CLUTTER_KEY_dead_invertedbreve 0xfe6d
 #define CLUTTER_KEY_dead_belowcomma 0xfe6e
 #define CLUTTER_KEY_dead_currency 0xfe6f
+#define CLUTTER_KEY_dead_lowline 0xfe90
+#define CLUTTER_KEY_dead_aboveverticalline 0xfe91
+#define CLUTTER_KEY_dead_belowverticalline 0xfe92
+#define CLUTTER_KEY_dead_longsolidusoverlay 0xfe93
 #define CLUTTER_KEY_dead_a 0xfe80
 #define CLUTTER_KEY_dead_A 0xfe81
 #define CLUTTER_KEY_dead_e 0xfe82
@@ -2282,6 +2286,7 @@
 #define CLUTTER_KEY_TouchpadToggle 0x1008ffa9
 #define CLUTTER_KEY_TouchpadOn 0x1008ffb0
 #define CLUTTER_KEY_TouchpadOff 0x1008ffb1
+#define CLUTTER_KEY_AudioMicMute 0x1008ffb2
 #define CLUTTER_KEY_Switch_VT_1 0x1008fe01
 #define CLUTTER_KEY_Switch_VT_2 0x1008fe02
 #define CLUTTER_KEY_Switch_VT_3 0x1008fe03

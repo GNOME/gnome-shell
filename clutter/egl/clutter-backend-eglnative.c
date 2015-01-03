@@ -53,9 +53,15 @@
 #include "clutter-egl.h"
 #endif
 
+#include "clutter-stage-eglnative.h"
+
 #define clutter_backend_egl_native_get_type     _clutter_backend_egl_native_get_type
 
 G_DEFINE_TYPE (ClutterBackendEglNative, clutter_backend_egl_native, CLUTTER_TYPE_BACKEND);
+
+#ifdef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
+static int _kms_fd = -1;
+#endif
 
 static void
 clutter_backend_egl_native_dispose (GObject *gobject)
@@ -71,6 +77,25 @@ clutter_backend_egl_native_dispose (GObject *gobject)
   G_OBJECT_CLASS (clutter_backend_egl_native_parent_class)->dispose (gobject);
 }
 
+static CoglRenderer *
+clutter_backend_egl_native_get_renderer (ClutterBackend  *backend,
+                                         GError         **error)
+{
+  CoglRenderer *renderer;
+
+  renderer = cogl_renderer_new ();
+
+#ifdef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
+  if (_kms_fd > -1)
+    {
+      cogl_renderer_set_winsys_id (renderer, COGL_WINSYS_ID_EGL_KMS);
+      cogl_kms_renderer_set_kms_fd (renderer, _kms_fd);
+    }
+#endif
+
+  return renderer;
+}
+
 static void
 clutter_backend_egl_native_class_init (ClutterBackendEglNativeClass *klass)
 {
@@ -79,7 +104,9 @@ clutter_backend_egl_native_class_init (ClutterBackendEglNativeClass *klass)
 
   gobject_class->dispose = clutter_backend_egl_native_dispose;
 
-  backend_class->stage_window_type = CLUTTER_TYPE_STAGE_COGL;
+  backend_class->stage_window_type = CLUTTER_TYPE_STAGE_EGL_NATIVE;
+
+  backend_class->get_renderer = clutter_backend_egl_native_get_renderer;
 }
 
 static void
@@ -156,4 +183,78 @@ clutter_egl_get_egl_display (void)
 #else
   return 0;
 #endif
+}
+
+#ifdef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
+/**
+ * clutter_egl_set_kms_fd:
+ * @fd: The fd to talk to the kms driver with
+ *
+ * Sets the fd that Cogl should use to talk to the kms driver.
+ * Setting this to a negative value effectively reverts this
+ * call, making Cogl open the device itself.
+ *
+ * This can only be called before clutter_init() is called.
+ *
+ * Since: 1.18
+ */
+void
+clutter_egl_set_kms_fd (int fd)
+{
+  _kms_fd = fd;
+}
+#endif
+
+/**
+ * clutter_egl_freeze_master_clock:
+ *
+ * Freezing the master clock makes Clutter stop processing events,
+ * redrawing, and advancing timelines. This is necessary when implementing
+ * a display server, to ensure that Clutter doesn't keep trying to page
+ * flip when DRM master has been dropped, e.g. when VT switched away.
+ *
+ * The master clock starts out running, so if you are VT switched away on
+ * startup, you need to call this immediately.
+ *
+ * If you're also using the evdev backend, make sure to also use
+ * clutter_evdev_release_devices() to make sure that Clutter doesn't also
+ * access revoked evdev devices when VT switched away.
+ *
+ * To unthaw a frozen master clock, use clutter_egl_thaw_master_clock().
+ *
+ * Since: 1.20
+ */
+void
+clutter_egl_freeze_master_clock (void)
+{
+  ClutterMasterClock *master_clock;
+
+  g_return_if_fail (CLUTTER_IS_BACKEND_EGL_NATIVE (clutter_get_default_backend ()));
+
+  master_clock = _clutter_master_clock_get_default ();
+  _clutter_master_clock_set_paused (master_clock, TRUE);
+}
+
+/**
+ * clutter_egl_thaw_master_clock:
+ *
+ * Thaws a master clock that has previously been frozen with
+ * clutter_egl_freeze_master_clock(), and start pumping the master clock
+ * again at the next iteration. Note that if you're switching back to your
+ * own VT, you should probably also queue a stage redraw with
+ * clutter_stage_ensure_redraw().
+ *
+ * Since: 1.20
+ */
+void
+clutter_egl_thaw_master_clock (void)
+{
+  ClutterMasterClock *master_clock;
+
+  g_return_if_fail (CLUTTER_IS_BACKEND_EGL_NATIVE (clutter_get_default_backend ()));
+
+  master_clock = _clutter_master_clock_get_default ();
+  _clutter_master_clock_set_paused (master_clock, FALSE);
+
+  _clutter_master_clock_start_running (master_clock);
 }

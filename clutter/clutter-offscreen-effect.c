@@ -40,25 +40,26 @@
  * offscreen framebuffer, the redirection and the final paint of the texture on
  * the desired stage.
  *
- * <refsect2 id="ClutterOffscreenEffect-implementing">
- *   <title>Implementing a ClutterOffscreenEffect</title>
- *   <para>Creating a sub-class of #ClutterOffscreenEffect requires, in case
- *   of overriding the #ClutterEffect virtual functions, to chain up to the
- *   #ClutterOffscreenEffect's implementation.</para>
- *   <para>On top of the #ClutterEffect's virtual functions,
- *   #ClutterOffscreenEffect also provides a #ClutterOffscreenEffectClass.paint_target()
- *   function, which encapsulates the effective painting of the texture that
- *   contains the result of the offscreen redirection.</para>
- *   <para>The size of the target material is defined to be as big as the
- *   transformed size of the #ClutterActor using the offscreen effect.
- *   Sub-classes of #ClutterOffscreenEffect can change the texture creation
- *   code to provide bigger textures by overriding the
- *   #ClutterOffscreenEffectClass.create_texture() virtual function; no chain up
- *   to the #ClutterOffscreenEffect implementation is required in this
- *   case.</para>
- * </refsect2>
- *
  * #ClutterOffscreenEffect is available since Clutter 1.4
+ *
+ * ## Implementing a ClutterOffscreenEffect
+ *
+ * Creating a sub-class of #ClutterOffscreenEffect requires, in case
+ * of overriding the #ClutterEffect virtual functions, to chain up to the
+ * #ClutterOffscreenEffect's implementation.
+ *
+ * On top of the #ClutterEffect's virtual functions,
+ * #ClutterOffscreenEffect also provides a #ClutterOffscreenEffectClass.paint_target()
+ * function, which encapsulates the effective painting of the texture that
+ * contains the result of the offscreen redirection.
+ *
+ * The size of the target material is defined to be as big as the
+ * transformed size of the #ClutterActor using the offscreen effect.
+ * Sub-classes of #ClutterOffscreenEffect can change the texture creation
+ * code to provide bigger textures by overriding the
+ * #ClutterOffscreenEffectClass.create_texture() virtual function; no chain up
+ * to the #ClutterOffscreenEffect implementation is required in this
+ * case.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -108,9 +109,9 @@ struct _ClutterOffscreenEffectPrivate
   CoglMatrix last_matrix_drawn;
 };
 
-G_DEFINE_ABSTRACT_TYPE (ClutterOffscreenEffect,
-                        clutter_offscreen_effect,
-                        CLUTTER_TYPE_EFFECT);
+G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (ClutterOffscreenEffect,
+                                     clutter_offscreen_effect,
+                                     CLUTTER_TYPE_EFFECT)
 
 static void
 clutter_offscreen_effect_set_actor (ClutterActorMeta *meta,
@@ -223,9 +224,11 @@ clutter_offscreen_effect_pre_paint (ClutterEffect *effect)
   ClutterOffscreenEffect *self = CLUTTER_OFFSCREEN_EFFECT (effect);
   ClutterOffscreenEffectPrivate *priv = self->priv;
   ClutterActorBox box;
+  ClutterActor *stage;
   CoglMatrix projection;
   CoglColor transparent;
-  gfloat fbo_width, fbo_height;
+  gfloat stage_width, stage_height;
+  gfloat fbo_width = -1, fbo_height = -1;
   gfloat width, height;
   gfloat xexpand, yexpand;
   int texture_width, texture_height;
@@ -236,6 +239,9 @@ clutter_offscreen_effect_pre_paint (ClutterEffect *effect)
   if (priv->actor == NULL)
     return FALSE;
 
+  stage = _clutter_actor_get_stage_internal (priv->actor);
+  clutter_actor_get_size (stage, &stage_width, &stage_height);
+
   /* The paint box is the bounding box of the actor's paint volume in
    * stage coordinates. This will give us the size for the framebuffer
    * we need to redirect its rendering offscreen and its position will
@@ -244,16 +250,20 @@ clutter_offscreen_effect_pre_paint (ClutterEffect *effect)
     {
       clutter_actor_box_get_size (&box, &fbo_width, &fbo_height);
       clutter_actor_box_get_origin (&box, &priv->x_offset, &priv->y_offset);
+
+      fbo_width = MIN (fbo_width, stage_width);
+      fbo_height = MIN (fbo_height, stage_height);
     }
   else
     {
-      /* If we can't get a valid paint box then we fallback to
-       * creating a full stage size fbo. */
-      ClutterActor *stage = _clutter_actor_get_stage_internal (priv->actor);
-      clutter_actor_get_size (stage, &fbo_width, &fbo_height);
-      priv->x_offset = 0.0f;
-      priv->y_offset = 0.0f;
+      fbo_width = stage_width;
+      fbo_height = stage_height;
     }
+
+  if (fbo_width == stage_width)
+    priv->x_offset = 0.0f;
+  if (fbo_height == stage_height)
+    priv->y_offset = 0.0f;
 
   /* First assert that the framebuffer is the right size... */
   if (!update_fbo (effect, fbo_width, fbo_height))
@@ -462,8 +472,6 @@ clutter_offscreen_effect_class_init (ClutterOffscreenEffectClass *klass)
   ClutterEffectClass *effect_class = CLUTTER_EFFECT_CLASS (klass);
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (ClutterOffscreenEffectPrivate));
-
   klass->create_texture = clutter_offscreen_effect_real_create_texture;
   klass->paint_target = clutter_offscreen_effect_real_paint_target;
 
@@ -479,9 +487,7 @@ clutter_offscreen_effect_class_init (ClutterOffscreenEffectClass *klass)
 static void
 clutter_offscreen_effect_init (ClutterOffscreenEffect *self)
 {
-  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self,
-                                            CLUTTER_TYPE_OFFSCREEN_EFFECT,
-                                            ClutterOffscreenEffectPrivate);
+  self->priv = clutter_offscreen_effect_get_instance_private (self);
 }
 
 /**
@@ -591,7 +597,7 @@ clutter_offscreen_effect_create_texture (ClutterOffscreenEffect *effect,
  * paint the actor to which it has been applied.
  *
  * This function should only be called by #ClutterOffscreenEffect
- * implementations, from within the <function>paint_target()</function>
+ * implementations, from within the #ClutterOffscreenEffectClass.paint_target()
  * virtual function.
  *
  * Return value: %TRUE if the offscreen buffer has a valid size,
@@ -633,7 +639,7 @@ clutter_offscreen_effect_get_target_size (ClutterOffscreenEffect *effect,
  * paint the actor to which it has been applied.
  *
  * This function should only be called by #ClutterOffscreenEffect
- * implementations, from within the <function>paint_target()</function>
+ * implementations, from within the #ClutterOffscreenEffectClass.paint_target()
  * virtual function.
  *
  * Return value: %TRUE if the offscreen buffer has a valid rectangle,

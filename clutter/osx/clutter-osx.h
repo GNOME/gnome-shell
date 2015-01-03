@@ -24,19 +24,14 @@
 
 #import <AppKit/AppKit.h>
 
-#include <clutter/clutter-stage.h>
+#include <clutter/clutter.h>
 
 @class NSEvent;
 
 G_BEGIN_DECLS
 
-#define CLUTTER_OSX_POOL_ALLOC()        NSAutoreleasePool *autorelease_pool = [[NSAutoreleasePool alloc] init]
-#define CLUTTER_OSX_POOL_RELEASE()      [autorelease_pool release];
-
-void _clutter_events_osx_init   (void);
-void _clutter_events_osx_uninit (void);
-
-void _clutter_event_osx_put     (NSEvent *nsevent, ClutterStage *wrapper);
+CLUTTER_AVAILABLE_IN_1_22
+void clutter_osx_disable_event_retrieval (void);
 
 G_END_DECLS
 

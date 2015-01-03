@@ -45,6 +45,7 @@
 
 #include "clutter-debug.h"
 #include "clutter-enum-types.h"
+#include "clutter-gesture-action-private.h"
 #include "clutter-marshal.h"
 #include "clutter-private.h"
 
@@ -53,7 +54,7 @@ struct _ClutterSwipeActionPrivate
   ClutterSwipeDirection h_direction;
   ClutterSwipeDirection v_direction;
 
-  int threshold;
+  float distance_x, distance_y;
 };
 
 enum
@@ -66,21 +67,22 @@ enum
 
 static guint swipe_signals[LAST_SIGNAL] = { 0, };
 
-G_DEFINE_TYPE (ClutterSwipeAction, clutter_swipe_action,
-               CLUTTER_TYPE_GESTURE_ACTION);
+G_DEFINE_TYPE_WITH_PRIVATE (ClutterSwipeAction, clutter_swipe_action, CLUTTER_TYPE_GESTURE_ACTION)
 
 static gboolean
 gesture_begin (ClutterGestureAction  *action,
                ClutterActor          *actor)
 {
   ClutterSwipeActionPrivate *priv = CLUTTER_SWIPE_ACTION (action)->priv;
-  ClutterSettings *settings = clutter_settings_get_default ();
 
   /* reset the state at the beginning of a new gesture */
   priv->h_direction = 0;
   priv->v_direction = 0;
 
-  g_object_get (settings, "dnd-drag-threshold", &priv->threshold, NULL);
+  g_object_get (action,
+                "threshold-trigger-distance-x", &priv->distance_x,
+                "threshold-trigger-distance-y", &priv->distance_y,
+                NULL);
 
   return TRUE;
 }
@@ -108,14 +110,14 @@ gesture_progress (ClutterGestureAction *action,
   delta_x = press_x - motion_x;
   delta_y = press_y - motion_y;
 
-  if (delta_x >= priv->threshold)
+  if (delta_x >= priv->distance_x)
     h_direction = CLUTTER_SWIPE_DIRECTION_RIGHT;
-  else if (delta_x < -priv->threshold)
+  else if (delta_x < -priv->distance_x)
     h_direction = CLUTTER_SWIPE_DIRECTION_LEFT;
 
-  if (delta_y >= priv->threshold)
+  if (delta_y >= priv->distance_y)
     v_direction = CLUTTER_SWIPE_DIRECTION_DOWN;
-  else if (delta_y < -priv->threshold)
+  else if (delta_y < -priv->distance_y)
     v_direction = CLUTTER_SWIPE_DIRECTION_UP;
 
   /* cancel gesture on direction reversal */
@@ -152,14 +154,14 @@ gesture_end (ClutterGestureAction *action,
                                              0,
                                              &release_x, &release_y);
 
-  if (release_x - press_x > priv->threshold)
+  if (release_x - press_x > priv->distance_y)
     direction |= CLUTTER_SWIPE_DIRECTION_RIGHT;
-  else if (press_x - release_x > priv->threshold)
+  else if (press_x - release_x > priv->distance_x)
     direction |= CLUTTER_SWIPE_DIRECTION_LEFT;
 
-  if (release_y - press_y > priv->threshold)
+  if (release_y - press_y > priv->distance_y)
     direction |= CLUTTER_SWIPE_DIRECTION_DOWN;
-  else if (press_y - release_y > priv->threshold)
+  else if (press_y - release_y > priv->distance_y)
     direction |= CLUTTER_SWIPE_DIRECTION_UP;
 
   /* XXX:2.0 remove */
@@ -179,12 +181,21 @@ clutter_swipe_action_real_swipe (ClutterSwipeAction    *action,
 }
 
 static void
+clutter_swipe_action_constructed (GObject *object)
+{
+  clutter_gesture_action_set_threshold_trigger_edge (CLUTTER_GESTURE_ACTION (object),
+                                                     CLUTTER_GESTURE_TRIGGER_EDGE_AFTER);
+}
+
+static void
 clutter_swipe_action_class_init (ClutterSwipeActionClass *klass)
 {
   ClutterGestureActionClass *gesture_class =
       CLUTTER_GESTURE_ACTION_CLASS (klass);
+  GObjectClass *object_class =
+      G_OBJECT_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (ClutterSwipeActionPrivate));
+  object_class->constructed = clutter_swipe_action_constructed;
 
   gesture_class->gesture_begin = gesture_begin;
   gesture_class->gesture_progress = gesture_progress;
@@ -247,8 +258,7 @@ clutter_swipe_action_class_init (ClutterSwipeActionClass *klass)
 static void
 clutter_swipe_action_init (ClutterSwipeAction *self)
 {
-  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, CLUTTER_TYPE_SWIPE_ACTION,
-                                            ClutterSwipeActionPrivate);
+  self->priv = clutter_swipe_action_get_instance_private (self);
 }
 
 /**

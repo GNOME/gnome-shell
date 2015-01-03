@@ -60,7 +60,7 @@ static GSourceFuncs clutter_frame_source_funcs =
 };
 
 /**
- * clutter_frame_source_add_full:
+ * clutter_frame_source_add_full: (rename-to clutter_frame_source_add)
  * @priority: the priority of the frame source. Typically this will be in the
  *   range between %G_PRIORITY_DEFAULT and %G_PRIORITY_HIGH.
  * @fps: the number of times per second to call the function
@@ -84,8 +84,6 @@ static GSourceFuncs clutter_frame_source_funcs =
  * 1.5. This function does not however try to invoke the function
  * multiple times to catch up missing frames if @func takes more than
  * @interval ms to execute.
- *
- * Rename to: clutter_frame_source_add
  *
  * Return value: the ID (greater than 0) of the event source.
  *
@@ -183,7 +181,7 @@ clutter_frame_source_dispatch (GSource     *source,
 }
 
 /**
- * clutter_threads_add_frame_source_full:
+ * clutter_threads_add_frame_source_full: (rename-to clutter_threads_add_frame_source)
  * @priority: the priority of the frame source. Typically this will be in the
  *   range between %G_PRIORITY_DEFAULT and %G_PRIORITY_HIGH.
  * @fps: the number of times per second to call the function
@@ -208,8 +206,6 @@ clutter_frame_source_dispatch (GSource     *source,
  * @func takes more than @interval ms to execute.
  *
  * See also clutter_threads_add_idle_full().
- *
- * Rename to: clutter_threads_add_frame_source
  *
  * Return value: the ID (greater than 0) of the event source.
  *

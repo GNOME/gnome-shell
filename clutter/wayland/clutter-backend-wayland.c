@@ -46,6 +46,7 @@
 #include "wayland/clutter-device-manager-wayland.h"
 #include "wayland/clutter-event-wayland.h"
 #include "wayland/clutter-stage-wayland.h"
+#include "wayland/clutter-wayland.h"
 #include "cogl/clutter-stage-cogl.h"
 
 #include <wayland-client.h>
@@ -59,7 +60,8 @@
 
 G_DEFINE_TYPE (ClutterBackendWayland, clutter_backend_wayland, CLUTTER_TYPE_BACKEND);
 
-static void clutter_backend_wayland_load_cursor (ClutterBackendWayland *backend_wayland);
+static struct wl_display *_foreign_display = NULL;
+static gboolean _no_event_dispatch = FALSE;
 
 static void
 clutter_backend_wayland_dispose (GObject *gobject)
@@ -175,7 +177,10 @@ clutter_backend_wayland_post_parse (ClutterBackend  *backend,
   ClutterBackendWayland *backend_wayland = CLUTTER_BACKEND_WAYLAND (backend);
 
   /* TODO: expose environment variable/commandline option for this... */
-  backend_wayland->wayland_display = wl_display_connect (NULL);
+  backend_wayland->wayland_display = _foreign_display;
+  if (backend_wayland->wayland_display == NULL)
+    backend_wayland->wayland_display = wl_display_connect (NULL);
+
   if (!backend_wayland->wayland_display)
     {
       g_set_error (error, CLUTTER_INIT_ERROR,
@@ -217,9 +222,6 @@ clutter_backend_wayland_post_parse (ClutterBackend  *backend,
            backend_wayland->wayland_shell))
     wl_display_roundtrip (backend_wayland->wayland_display);
 
-  /* We need the shm object before we can create the cursor */
-  clutter_backend_wayland_load_cursor (backend_wayland);
-
   return TRUE;
 }
 
@@ -234,14 +236,11 @@ clutter_backend_wayland_get_renderer (ClutterBackend  *backend,
 
   renderer = cogl_renderer_new ();
 
+  cogl_wayland_renderer_set_event_dispatch_enabled (renderer, !_no_event_dispatch);
   cogl_renderer_set_winsys_id (renderer, COGL_WINSYS_ID_EGL_WAYLAND);
 
   cogl_wayland_renderer_set_foreign_display (renderer,
                                              backend_wayland->wayland_display);
-  cogl_wayland_renderer_set_foreign_compositor (renderer,
-                                                backend_wayland->wayland_compositor);
-  cogl_wayland_renderer_set_foreign_shell (renderer,
-                                           backend_wayland->wayland_shell);
 
   return renderer;
 }
@@ -292,8 +291,8 @@ clutter_backend_wayland_class_init (ClutterBackendWaylandClass *klass)
   backend_class->get_display = clutter_backend_wayland_get_display;
 }
 
-static void
-clutter_backend_wayland_load_cursor (ClutterBackendWayland *backend_wayland)
+void
+_clutter_backend_wayland_ensure_cursor (ClutterBackendWayland *backend_wayland)
 {
   struct wl_cursor *cursor;
 
@@ -321,4 +320,60 @@ clutter_backend_wayland_load_cursor (ClutterBackendWayland *backend_wayland)
 static void
 clutter_backend_wayland_init (ClutterBackendWayland *backend_wayland)
 {
+}
+
+/**
+ * clutter_wayland_set_display
+ * @display: pointer to a wayland display
+ *
+ * Sets the display connection Clutter should use; must be called
+ * before clutter_init(), clutter_init_with_args() or other functions
+ * pertaining Clutter's initialization process.
+ *
+ * If you are parsing the command line arguments by retrieving Clutter's
+ * #GOptionGroup with clutter_get_option_group() and calling
+ * g_option_context_parse() yourself, you should also call
+ * clutter_wayland_set_display() before g_option_context_parse().
+ *
+ * Since: 1.16
+ */
+void
+clutter_wayland_set_display (struct wl_display *display)
+{
+  if (_clutter_context_is_initialized ())
+    {
+      g_warning ("%s() can only be used before calling clutter_init()",
+                 G_STRFUNC);
+      return;
+    }
+
+  _foreign_display = display;
+}
+
+/**
+ * clutter_wayland_disable_event_retrieval:
+ *
+ * Disables the dispatch of the events in the main loop.
+ *
+ * This is useful for integrating Clutter with another library that will do the
+ * event dispatch; in general only a single source should be acting on changes
+ * on the Wayland file descriptor.
+ *
+ * This function can only be called before calling clutter_init().
+ *
+ * This function should not be normally used by applications.
+ *
+ * Since: 1.16
+ */
+void
+clutter_wayland_disable_event_retrieval (void)
+{
+  if (_clutter_context_is_initialized ())
+    {
+      g_warning ("%s() can only be used before calling clutter_init()",
+                 G_STRFUNC);
+      return;
+    }
+
+  _no_event_dispatch = TRUE;
 }

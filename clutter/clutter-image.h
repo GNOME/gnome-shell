@@ -70,7 +70,7 @@ typedef enum {
 /**
  * ClutterImage:
  *
- * The <structname>ClutterImage</structname> structure contains
+ * The #ClutterImage structure contains
  * private data and should only be accessed using the provided
  * API.
  *
@@ -87,7 +87,7 @@ struct _ClutterImage
 /**
  * ClutterImageClass:
  *
- * The <structname>ClutterImageClass</structname> structure contains
+ * The #ClutterImageClass structure contains
  * private data.
  *
  * Since: 1.10

@@ -37,6 +37,14 @@
 #endif
 
 typedef struct _ClutterKeymapX11Class   ClutterKeymapX11Class;
+typedef struct _DirectionCacheEntry     DirectionCacheEntry;
+
+struct _DirectionCacheEntry
+{
+  guint serial;
+  Atom group_atom;
+  PangoDirection direction;
+};
 
 struct _ClutterKeymapX11
 {
@@ -52,14 +60,20 @@ struct _ClutterKeymapX11
   ClutterModifierType num_lock_mask;
   ClutterModifierType scroll_lock_mask;
 
+  PangoDirection current_direction;
+
 #ifdef HAVE_XKB
   XkbDescPtr xkb_desc;
   int xkb_event_base;
   guint xkb_map_serial;
+  Atom current_group_atom;
+  guint current_cache_serial;
+  DirectionCacheEntry group_direction_cache[4];
 #endif
 
   guint caps_lock_state : 1;
   guint num_lock_state  : 1;
+  guint has_direction   : 1;
 };
 
 struct _ClutterKeymapX11Class
@@ -217,6 +231,128 @@ update_locked_mods (ClutterKeymapX11 *keymap_x11,
 }
 #endif /* HAVE_XKB */
 
+#ifdef HAVE_XKB
+/* the code to retrieve the keymap direction and cache it
+ * is taken from GDK:
+ *      gdk/x11/gdkkeys-x11.c
+ */
+static PangoDirection
+get_direction (XkbDescPtr xkb,
+               int        group)
+{
+  int rtl_minus_ltr = 0; /* total number of RTL keysyms minus LTR ones */
+  int code;
+
+  for (code = xkb->min_key_code;
+       code <= xkb->max_key_code;
+       code += 1)
+    {
+      int level = 0;
+      KeySym sym = XkbKeySymEntry (xkb, code, level, group);
+      PangoDirection dir = pango_unichar_direction (clutter_keysym_to_unicode (sym));
+
+      switch (dir)
+        {
+        case PANGO_DIRECTION_RTL:
+          rtl_minus_ltr++;
+          break;
+
+        case PANGO_DIRECTION_LTR:
+          rtl_minus_ltr--;
+          break;
+
+        default:
+          break;
+        }
+    }
+
+  if (rtl_minus_ltr > 0)
+    return PANGO_DIRECTION_RTL;
+
+  return PANGO_DIRECTION_LTR;
+}
+
+static PangoDirection
+get_direction_from_cache (ClutterKeymapX11 *keymap_x11,
+                          XkbDescPtr        xkb,
+                          int               group)
+{
+  Atom group_atom = xkb->names->groups[group];
+  gboolean cache_hit = FALSE;
+  DirectionCacheEntry *cache = keymap_x11->group_direction_cache;
+  PangoDirection direction = PANGO_DIRECTION_NEUTRAL;
+  int i;
+
+  if (keymap_x11->has_direction)
+    {
+      /* look up in the cache */
+      for (i = 0; i < G_N_ELEMENTS (keymap_x11->group_direction_cache); i++)
+        {
+          if (cache[i].group_atom == group_atom)
+            {
+              cache_hit = TRUE;
+              cache[i].serial = keymap_x11->current_cache_serial++;
+              direction = cache[i].direction;
+              group_atom = cache[i].group_atom;
+              break;
+            }
+        }
+    }
+  else
+    {
+      /* initialize the cache */
+      for (i = 0; i < G_N_ELEMENTS (keymap_x11->group_direction_cache); i++)
+        {
+          cache[i].group_atom = 0;
+          cache[i].direction = PANGO_DIRECTION_NEUTRAL;
+          cache[i].serial = keymap_x11->current_cache_serial;
+        }
+
+      keymap_x11->current_cache_serial += 1;
+    }
+
+  /* insert the new entry in the cache */
+  if (!cache_hit)
+    {
+      int oldest = 0;
+
+      direction = get_direction (xkb, group);
+
+      /* replace the oldest entry */
+      for (i = 0; i < G_N_ELEMENTS (keymap_x11->group_direction_cache); i++)
+        {
+          if (cache[i].serial < cache[oldest].serial)
+            oldest = i;
+        }
+
+      cache[oldest].group_atom = group_atom;
+      cache[oldest].direction = direction;
+      cache[oldest].serial = keymap_x11->current_cache_serial++;
+    }
+
+  return direction;
+}
+#endif /* HAVE_XKB */
+
+static void
+update_direction (ClutterKeymapX11 *keymap_x11,
+                  int               group)
+{
+#ifdef HAVE_XKB
+  XkbDescPtr xkb = get_xkb (keymap_x11);
+  Atom group_atom;
+
+  group_atom = xkb->names->groups[group];
+
+  if (!keymap_x11->has_direction || keymap_x11->current_group_atom != group_atom)
+    {
+      keymap_x11->current_direction = get_direction_from_cache (keymap_x11, xkb, group);
+      keymap_x11->current_group_atom = group_atom;
+      keymap_x11->has_direction = TRUE;
+    }
+#endif /* HAVE_XKB */
+}
+
 static void
 clutter_keymap_x11_constructed (GObject *gobject)
 {
@@ -332,6 +468,7 @@ clutter_keymap_x11_class_init (ClutterKeymapX11Class *klass)
 static void
 clutter_keymap_x11_init (ClutterKeymapX11 *keymap)
 {
+  keymap->current_direction = PANGO_DIRECTION_NEUTRAL;
 }
 
 static ClutterTranslateReturn
@@ -360,7 +497,8 @@ clutter_keymap_x11_translate_event (ClutterEventTranslator *translator,
       switch (xkb_event->any.xkb_type)
         {
         case XkbStateNotify:
-          CLUTTER_NOTE (EVENT, "Updating locked modifiers");
+          CLUTTER_NOTE (EVENT, "Updating keyboard state");
+          update_direction (keymap_x11, XkbStateGroup (&xkb_event->state));
           update_locked_mods (keymap_x11, xkb_event->state.locked_mods);
           retval = CLUTTER_TRANSLATE_REMOVE;
           break;
@@ -502,4 +640,28 @@ _clutter_keymap_x11_get_is_modifier (ClutterKeymapX11 *keymap,
 #endif /* HAVE_XKB */
 
   return FALSE;
+}
+
+PangoDirection
+_clutter_keymap_x11_get_direction (ClutterKeymapX11 *keymap)
+{
+  g_return_val_if_fail (CLUTTER_IS_KEYMAP_X11 (keymap), PANGO_DIRECTION_NEUTRAL);
+
+#ifdef HAVE_XKB
+  if (CLUTTER_BACKEND_X11 (keymap->backend)->use_xkb)
+    {
+      if (!keymap->has_direction)
+        {
+          Display *xdisplay = CLUTTER_BACKEND_X11 (keymap->backend)->xdpy;
+          XkbStateRec state_rec;
+
+          XkbGetState (xdisplay, XkbUseCoreKbd, &state_rec);
+          update_direction (keymap, XkbStateGroup (&state_rec));
+        }
+
+      return keymap->current_direction;
+    }
+  else
+#endif
+    return PANGO_DIRECTION_NEUTRAL;
 }

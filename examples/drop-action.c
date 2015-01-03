@@ -47,7 +47,6 @@ on_drag_end (ClutterDragAction   *action,
       clutter_actor_set_easing_mode (handle, CLUTTER_EASE_OUT_BOUNCE);
       clutter_actor_set_position (handle, x_pos, y_pos);
       clutter_actor_set_opacity (handle, 0);
-      clutter_actor_restore_easing_state (handle);
 
     }
   else

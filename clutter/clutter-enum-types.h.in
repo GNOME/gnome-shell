@@ -2,7 +2,11 @@
 #ifndef __CLUTTER_ENUM_TYPES_H__
 #define __CLUTTER_ENUM_TYPES_H__
 
-#include <glib-object.h>
+#if !defined(__CLUTTER_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
+#error "Only <clutter/clutter.h> can be included directly."
+#endif
+
+#include <clutter/clutter-types.h>
 
 G_BEGIN_DECLS
 
@@ -12,15 +16,14 @@ G_BEGIN_DECLS
 /* enumerations from "@filename@" */
 /*** END file-production ***/
 
+/*** BEGIN value-header ***/
+CLUTTER_AVAILABLE_IN_ALL GType @enum_name@_get_type (void) G_GNUC_CONST;
+#define CLUTTER_TYPE_@ENUMSHORT@ (@enum_name@_get_type())
+
+/*** END value-header ***/
+
 /*** BEGIN file-tail ***/
 G_END_DECLS
 
 #endif /* !__CLUTTER_ENUM_TYPES_H__ */
 /*** END file-tail ***/
-
-/*** BEGIN value-header ***/
-GType @enum_name@_get_type (void) G_GNUC_CONST;
-#define CLUTTER_TYPE_@ENUMSHORT@ (@enum_name@_get_type())
-
-/*** END value-header ***/
-

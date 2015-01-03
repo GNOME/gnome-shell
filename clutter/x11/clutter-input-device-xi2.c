@@ -27,6 +27,7 @@
 
 #include "clutter-debug.h"
 #include "clutter-device-manager-private.h"
+#include "clutter-event-private.h"
 #include "clutter-private.h"
 #include "clutter-stage-private.h"
 
@@ -52,67 +53,6 @@ struct _ClutterInputDeviceXI2
 G_DEFINE_TYPE (ClutterInputDeviceXI2,
                clutter_input_device_xi2,
                CLUTTER_TYPE_INPUT_DEVICE);
-
-static void
-clutter_input_device_xi2_select_stage_events (ClutterInputDevice *device,
-                                              ClutterStage       *stage,
-                                              gint                event_mask)
-{
-  ClutterInputDeviceXI2 *device_xi2 = CLUTTER_INPUT_DEVICE_XI2 (device);
-  ClutterBackendX11 *backend_x11;
-  ClutterStageX11 *stage_x11;
-  XIEventMask xi_event_mask;
-  unsigned char *mask;
-  int len;
-
-  backend_x11 = CLUTTER_BACKEND_X11 (device->backend);
-  stage_x11 = CLUTTER_STAGE_X11 (_clutter_stage_get_window (stage));
-
-  len = XIMaskLen (XI_LASTEVENT);
-  mask = g_new0 (unsigned char, len);
-
-  if (event_mask & PointerMotionMask)
-    XISetMask (mask, XI_Motion);
-
-  if (event_mask & ButtonPressMask)
-    XISetMask (mask, XI_ButtonPress);
-
-  if (event_mask & ButtonReleaseMask)
-    XISetMask (mask, XI_ButtonRelease);
-
-  if (event_mask & KeyPressMask)
-    XISetMask (mask, XI_KeyPress);
-
-  if (event_mask & KeyReleaseMask)
-    XISetMask (mask, XI_KeyRelease);
-
-  if (event_mask & EnterWindowMask)
-    XISetMask (mask, XI_Enter);
-
-  if (event_mask & LeaveWindowMask)
-    XISetMask (mask, XI_Leave);
-
-#ifdef HAVE_XINPUT_2_2
-  /* enable touch event support if we're running on XInput 2.2 */
-  if (backend_x11->xi_minor >= 2)
-    {
-      XISetMask (mask, XI_TouchBegin);
-      XISetMask (mask, XI_TouchUpdate);
-      XISetMask (mask, XI_TouchEnd);
-    }
-#endif /* HAVE_XINPUT_2_2 */
-
-  xi_event_mask.deviceid = device_xi2->device_id;
-  xi_event_mask.mask = mask;
-  xi_event_mask.mask_len = len;
-
-  CLUTTER_NOTE (BACKEND, "Selecting device id '%d' events",
-                device_xi2->device_id);
-
-  XISelectEvents (backend_x11->xdpy, stage_x11->xwin, &xi_event_mask, 1);
-
-  g_free (mask);
-}
 
 static void
 clutter_input_device_xi2_constructed (GObject *gobject)
@@ -147,7 +87,6 @@ clutter_input_device_xi2_class_init (ClutterInputDeviceXI2Class *klass)
 
   gobject_class->constructed = clutter_input_device_xi2_constructed;
 
-  device_class->select_stage_events = clutter_input_device_xi2_select_stage_events;
   device_class->keycode_to_evdev = clutter_input_device_xi2_keycode_to_evdev;
 }
 
@@ -156,15 +95,44 @@ clutter_input_device_xi2_init (ClutterInputDeviceXI2 *self)
 {
 }
 
-guint
-_clutter_input_device_xi2_translate_state (XIModifierState *modifiers_state,
+static ClutterModifierType
+get_modifier_for_button (int i)
+{
+  switch (i)
+    {
+    case 1:
+      return CLUTTER_BUTTON1_MASK;
+    case 2:
+      return CLUTTER_BUTTON2_MASK;
+    case 3:
+      return CLUTTER_BUTTON3_MASK;
+    case 4:
+      return CLUTTER_BUTTON4_MASK;
+    case 5:
+      return CLUTTER_BUTTON5_MASK;
+    default:
+      return 0;
+    }
+}
+
+void
+_clutter_input_device_xi2_translate_state (ClutterEvent    *event,
+					   XIModifierState *modifiers_state,
                                            XIButtonState   *buttons_state,
                                            XIGroupState    *group_state)
 {
-  guint retval = 0;
+  guint button = 0;
+  guint base = 0;
+  guint latched = 0;
+  guint locked = 0;
+  guint effective;
 
   if (modifiers_state)
-    retval = (guint) modifiers_state->effective;
+    {
+      base = (guint) modifiers_state->base;
+      latched = (guint) modifiers_state->latched;
+      locked = (guint) modifiers_state->locked;
+    }
 
   if (buttons_state)
     {
@@ -177,36 +145,30 @@ _clutter_input_device_xi2_translate_state (XIModifierState *modifiers_state,
           if (!XIMaskIsSet (buttons_state->mask, i))
             continue;
 
-          switch (i)
-            {
-            case 1:
-              retval |= CLUTTER_BUTTON1_MASK;
-              break;
-
-            case 2:
-              retval |= CLUTTER_BUTTON2_MASK;
-              break;
-
-            case 3:
-              retval |= CLUTTER_BUTTON3_MASK;
-              break;
-
-            case 4:
-              retval |= CLUTTER_BUTTON4_MASK;
-              break;
-
-            case 5:
-              retval |= CLUTTER_BUTTON5_MASK;
-              break;
-
-            default:
-              break;
-            }
+          button |= get_modifier_for_button (i);
         }
     }
 
-  if (group_state)
-    retval |= (group_state->effective) << 13;
+  /* The XIButtonState sent in the event specifies the
+   * state of the buttons before the event. In order to
+   * get the current state of the buttons, we need to
+   * filter out the current button.
+   */
+  switch (event->type)
+    {
+    case CLUTTER_BUTTON_PRESS:
+      button |=  (get_modifier_for_button (event->button.button));
+      break;
+    case CLUTTER_BUTTON_RELEASE:
+      button &= ~(get_modifier_for_button (event->button.button));
+      break;
+    default:
+      break;
+    }
 
-  return retval;
+  effective = button | base | latched | locked;
+  if (group_state)
+    effective |= (group_state->effective) << 13;
+
+  _clutter_event_set_state_full (event, button, base, latched, locked, effective);
 }

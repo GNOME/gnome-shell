@@ -36,13 +36,8 @@
  * that can be used to draw. #ClutterCanvas will emit the #ClutterCanvas::draw
  * signal when invalidated using clutter_content_invalidate().
  *
- * <informalexample id="canvas-example">
- *   <programlisting>
- * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../examples/canvas.c">
- *   <xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback>
- * </xi:include>
- *   </programlisting>
- * </informalexample>
+ * See [canvas.c](https://git.gnome.org/browse/clutter/tree/examples/canvas.c?h=clutter-1.18)
+ * for an example of how to use #ClutterCanvas.
  *
  * #ClutterCanvas is available since Clutter 1.10.
  */
@@ -62,10 +57,12 @@
 #include "clutter-cairo.h"
 #include "clutter-color.h"
 #include "clutter-content-private.h"
+#include "clutter-debug.h"
 #include "clutter-marshal.h"
 #include "clutter-paint-node.h"
 #include "clutter-paint-nodes.h"
 #include "clutter-private.h"
+#include "clutter-settings.h"
 
 struct _ClutterCanvasPrivate
 {
@@ -74,7 +71,13 @@ struct _ClutterCanvasPrivate
   int width;
   int height;
 
+  CoglTexture *texture;
+  gboolean dirty;
+
   CoglBitmap *buffer;
+
+  int scale_factor;
+  guint scale_factor_set : 1;
 };
 
 enum
@@ -83,6 +86,8 @@ enum
 
   PROP_WIDTH,
   PROP_HEIGHT,
+  PROP_SCALE_FACTOR,
+  PROP_SCALE_FACTOR_SET,
 
   LAST_PROP
 };
@@ -101,6 +106,7 @@ static guint canvas_signals[LAST_SIGNAL] = { 0, };
 static void clutter_content_iface_init (ClutterContentIface *iface);
 
 G_DEFINE_TYPE_WITH_CODE (ClutterCanvas, clutter_canvas, G_TYPE_OBJECT,
+                         G_ADD_PRIVATE (ClutterCanvas)
                          G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_CONTENT,
                                                 clutter_content_iface_init))
 
@@ -137,6 +143,8 @@ clutter_canvas_finalize (GObject *gobject)
       priv->buffer = NULL;
     }
 
+  g_clear_pointer (&priv->texture, cogl_object_unref);
+
   G_OBJECT_CLASS (clutter_canvas_parent_class)->finalize (gobject);
 }
 
@@ -151,19 +159,34 @@ clutter_canvas_set_property (GObject      *gobject,
   switch (prop_id)
     {
     case PROP_WIDTH:
-      if (priv->width != g_value_get_int (value))
-        {
-          priv->width = g_value_get_int (value);
-          clutter_content_invalidate (CLUTTER_CONTENT (gobject));
-        }
+      {
+        gint new_size = g_value_get_int (value);
+
+        if (priv->width != new_size)
+          {
+            priv->width = new_size;
+
+            clutter_content_invalidate (CLUTTER_CONTENT (gobject));
+          }
+      }
       break;
 
     case PROP_HEIGHT:
-      if (priv->height != g_value_get_int (value))
-        {
-          priv->height = g_value_get_int (value);
-          clutter_content_invalidate (CLUTTER_CONTENT (gobject));
-        }
+      {
+        gint new_size = g_value_get_int (value);
+
+        if (priv->height != new_size)
+          {
+            priv->height = new_size;
+
+            clutter_content_invalidate (CLUTTER_CONTENT (gobject));
+          }
+      }
+      break;
+
+    case PROP_SCALE_FACTOR:
+      clutter_canvas_set_scale_factor (CLUTTER_CANVAS (gobject),
+                                       g_value_get_int (value));
       break;
 
     default:
@@ -190,6 +213,17 @@ clutter_canvas_get_property (GObject    *gobject,
       g_value_set_int (value, priv->height);
       break;
 
+    case PROP_SCALE_FACTOR:
+      if (priv->scale_factor_set)
+        g_value_set_int (value, priv->scale_factor);
+      else
+        g_value_set_int (value, -1);
+      break;
+
+    case PROP_SCALE_FACTOR_SET:
+      g_value_set_boolean (value, priv->scale_factor_set);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
@@ -200,8 +234,6 @@ static void
 clutter_canvas_class_init (ClutterCanvasClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-
-  g_type_class_add_private (klass, sizeof (ClutterCanvasPrivate));
 
   /**
    * ClutterCanvas:width:
@@ -234,6 +266,47 @@ clutter_canvas_class_init (ClutterCanvasClass *klass)
                       -1,
                       G_PARAM_READWRITE |
                       G_PARAM_STATIC_STRINGS);
+
+  /**
+   * ClutterCanvas:scale-factor-set:
+   *
+   * Whether the #ClutterCanvas:scale-factor property is set.
+   *
+   * If the #ClutterCanvas:scale-factor-set property is %FALSE
+   * then #ClutterCanvas will use the #ClutterSettings:window-scaling-factor
+   * property.
+   *
+   * Since: 1.18
+   */
+  obj_props[PROP_SCALE_FACTOR_SET] =
+    g_param_spec_boolean ("scale-factor-set",
+                          P_("Scale Factor Set"),
+                          P_("Whether the scale-factor property is set"),
+                          FALSE,
+                          G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
+
+  /**
+   * ClutterCanvas:scale-factor:
+   *
+   * The scaling factor to be applied to the Cairo surface used for
+   * drawing.
+   *
+   * If #ClutterCanvas:scale-factor is set to a negative value, the
+   * value of the #ClutterSettings:window-scaling-factor property is
+   * used instead.
+   *
+   * Use #ClutterCanvas:scale-factor-set to check if the scale factor
+   * is set.
+   *
+   * Since: 1.18
+   */
+  obj_props[PROP_SCALE_FACTOR] =
+    g_param_spec_int ("scale-factor",
+                      P_("Scale Factor"),
+                      P_("The scaling factor for the surface"),
+                      -1, 1000,
+                      -1,
+                      G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
 
   /**
    * ClutterCanvas::draw:
@@ -276,11 +349,11 @@ clutter_canvas_class_init (ClutterCanvasClass *klass)
 static void
 clutter_canvas_init (ClutterCanvas *self)
 {
-  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, CLUTTER_TYPE_CANVAS,
-                                            ClutterCanvasPrivate);
+  self->priv = clutter_canvas_get_instance_private (self);
 
   self->priv->width = -1;
   self->priv->height = -1;
+  self->priv->scale_factor = -1;
 }
 
 static void
@@ -289,21 +362,26 @@ clutter_canvas_paint_content (ClutterContent   *content,
                               ClutterPaintNode *root)
 {
   ClutterCanvas *self = CLUTTER_CANVAS (content);
+  ClutterCanvasPrivate *priv = self->priv;
   ClutterPaintNode *node;
-  CoglTexture *texture;
   ClutterActorBox box;
   ClutterColor color;
   guint8 paint_opacity;
   ClutterScalingFilter min_f, mag_f;
   ClutterContentRepeat repeat;
 
-  if (self->priv->buffer == NULL)
+  if (priv->buffer == NULL)
     return;
 
-  texture = cogl_texture_new_from_bitmap (self->priv->buffer,
-                                          COGL_TEXTURE_NO_SLICING,
-                                          CLUTTER_CAIRO_FORMAT_ARGB32);
-  if (texture == NULL)
+  if (priv->texture && priv->dirty)
+    g_clear_pointer (&priv->texture, cogl_object_unref);
+
+  if (!priv->texture)
+    priv->texture = cogl_texture_new_from_bitmap (self->priv->buffer,
+                                                  COGL_TEXTURE_NO_SLICING,
+                                                  CLUTTER_CAIRO_FORMAT_ARGB32);
+
+  if (priv->texture == NULL)
     return;
 
   clutter_actor_get_content_box (actor, &box);
@@ -311,13 +389,12 @@ clutter_canvas_paint_content (ClutterContent   *content,
   clutter_actor_get_content_scaling_filters (actor, &min_f, &mag_f);
   repeat = clutter_actor_get_content_repeat (actor);
 
-  color.red = paint_opacity;
-  color.green = paint_opacity;
-  color.blue = paint_opacity;
+  color.red = 255;
+  color.green = 255;
+  color.blue = 255;
   color.alpha = paint_opacity;
 
-  node = clutter_texture_node_new (texture, &color, min_f, mag_f);
-  cogl_object_unref (texture);
+  node = clutter_texture_node_new (priv->texture, &color, min_f, mag_f);
 
   clutter_paint_node_set_name (node, "Canvas");
 
@@ -328,10 +405,10 @@ clutter_canvas_paint_content (ClutterContent   *content,
       float t_w = 1.f, t_h = 1.f;
 
       if ((repeat & CLUTTER_REPEAT_X_AXIS) != FALSE)
-        t_w = (box.x2 - box.x1) / cogl_texture_get_width (texture);
+        t_w = (box.x2 - box.x1) / cogl_texture_get_width (priv->texture);
 
       if ((repeat & CLUTTER_REPEAT_Y_AXIS) != FALSE)
-        t_h = (box.y2 - box.y1) / cogl_texture_get_height (texture);
+        t_h = (box.y2 - box.y1) / cogl_texture_get_height (priv->texture);
 
       clutter_paint_node_add_texture_rectangle (node, &box,
                                                 0.f, 0.f,
@@ -340,20 +417,41 @@ clutter_canvas_paint_content (ClutterContent   *content,
 
   clutter_paint_node_add_child (root, node);
   clutter_paint_node_unref (node);
+
+  priv->dirty = FALSE;
 }
 
 static void
 clutter_canvas_emit_draw (ClutterCanvas *self)
 {
   ClutterCanvasPrivate *priv = self->priv;
+  int real_width, real_height;
   cairo_surface_t *surface;
   gboolean mapped_buffer;
   unsigned char *data;
   CoglBuffer *buffer;
+  int window_scale = 1;
   gboolean res;
   cairo_t *cr;
 
   g_assert (priv->width > 0 && priv->width > 0);
+
+  priv->dirty = TRUE;
+
+  if (priv->scale_factor_set)
+    window_scale = priv->scale_factor;
+  else
+    g_object_get (clutter_settings_get_default (),
+                  "window-scaling-factor", &window_scale,
+                  NULL);
+
+  real_width = priv->width * window_scale;
+  real_height = priv->height * window_scale;
+
+  CLUTTER_NOTE (MISC, "Creating Cairo surface with size %d x %d (real: %d x %d, scale: %d)",
+                priv->width, priv->height,
+                real_width, real_height,
+                window_scale);
 
   if (priv->buffer == NULL)
     {
@@ -361,8 +459,8 @@ clutter_canvas_emit_draw (ClutterCanvas *self)
 
       ctx = clutter_backend_get_cogl_context (clutter_get_default_backend ());
       priv->buffer = cogl_bitmap_new_with_size (ctx,
-                                                priv->width,
-                                                priv->height,
+                                                real_width,
+                                                real_height,
                                                 CLUTTER_CAIRO_FORMAT_ARGB32);
     }
 
@@ -382,19 +480,23 @@ clutter_canvas_emit_draw (ClutterCanvas *self)
 
       surface = cairo_image_surface_create_for_data (data,
                                                      CAIRO_FORMAT_ARGB32,
-                                                     priv->width,
-                                                     priv->height,
+                                                     real_width,
+                                                     real_height,
                                                      bitmap_stride);
       mapped_buffer = TRUE;
     }
   else
     {
       surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
-                                            priv->width,
-                                            priv->height);
+                                            real_width,
+                                            real_height);
 
       mapped_buffer = FALSE;
     }
+
+#ifdef HAVE_CAIRO_SURFACE_SET_DEVICE_SCALE
+  cairo_surface_set_device_scale (surface, window_scale, window_scale);
+#endif
 
   self->priv->cr = cr = cairo_create (surface);
 
@@ -494,28 +596,14 @@ clutter_canvas_new (void)
   return g_object_new (CLUTTER_TYPE_CANVAS, NULL);
 }
 
-/**
- * clutter_canvas_set_size:
- * @canvas: a #ClutterCanvas
- * @width: the width of the canvas, in pixels
- * @height: the height of the canvas, in pixels
- *
- * Sets the size of the @canvas.
- *
- * This function will cause the @canvas to be invalidated.
- *
- * Since: 1.10
- */
-void
-clutter_canvas_set_size (ClutterCanvas *canvas,
-                         int            width,
-                         int            height)
+static gboolean
+clutter_canvas_invalidate_internal (ClutterCanvas *canvas,
+                                    int            width,
+                                    int            height)
 {
-  GObject *obj;
   gboolean width_changed = FALSE, height_changed = FALSE;
-
-  g_return_if_fail (CLUTTER_IS_CANVAS (canvas));
-  g_return_if_fail (width >= -1 && height >= -1);
+  gboolean res = FALSE;
+  GObject *obj;
 
   obj = G_OBJECT (canvas);
 
@@ -538,7 +626,126 @@ clutter_canvas_set_size (ClutterCanvas *canvas,
     }
 
   if (width_changed || height_changed)
-    clutter_content_invalidate (CLUTTER_CONTENT (canvas));
+    {
+      clutter_content_invalidate (CLUTTER_CONTENT (canvas));
+      res = TRUE;
+    }
 
   g_object_thaw_notify (obj);
+
+  return res;
+}
+
+/**
+ * clutter_canvas_set_size:
+ * @canvas: a #ClutterCanvas
+ * @width: the width of the canvas, in pixels
+ * @height: the height of the canvas, in pixels
+ *
+ * Sets the size of the @canvas, and invalidates the content.
+ *
+ * This function will cause the @canvas to be invalidated only
+ * if the size of the canvas surface has changed.
+ *
+ * If you want to invalidate the contents of the @canvas when setting
+ * the size, you can use the return value of the function to conditionally
+ * call clutter_content_invalidate():
+ *
+ * |[
+ *   if (!clutter_canvas_set_size (canvas, width, height))
+ *     clutter_content_invalidate (CLUTTER_CONTENT (canvas));
+ * ]|
+ *
+ * Return value: this function returns %TRUE if the size change
+ *   caused a content invalidation, and %FALSE otherwise
+ *
+ * Since: 1.10
+ */
+gboolean
+clutter_canvas_set_size (ClutterCanvas *canvas,
+                         int            width,
+                         int            height)
+{
+  g_return_val_if_fail (CLUTTER_IS_CANVAS (canvas), FALSE);
+  g_return_val_if_fail (width >= -1 && height >= -1, FALSE);
+
+  return clutter_canvas_invalidate_internal (canvas, width, height);
+}
+
+/**
+ * clutter_canvas_set_scale_factor:
+ * @canvas: a #ClutterCanvas
+ * @scale: the scale factor, or -1 for the default
+ *
+ * Sets the scaling factor for the Cairo surface used by @canvas.
+ *
+ * This function should rarely be used.
+ *
+ * The default scaling factor of a #ClutterCanvas content uses the
+ * #ClutterSettings:window-scaling-factor property, which is set by
+ * the windowing system. By using this function it is possible to
+ * override that setting.
+ *
+ * Changing the scale factor will invalidate the @canvas.
+ *
+ * Since: 1.18
+ */
+void
+clutter_canvas_set_scale_factor (ClutterCanvas *canvas,
+                                 int            scale)
+{
+  ClutterCanvasPrivate *priv;
+  GObject *obj;
+
+  g_return_if_fail (CLUTTER_IS_CANVAS (canvas));
+  g_return_if_fail (scale != 0);
+
+  priv = canvas->priv;
+
+  if (scale < 0)
+    {
+      if (!priv->scale_factor_set)
+        return;
+
+      priv->scale_factor_set = FALSE;
+      priv->scale_factor = -1;
+    }
+  else
+    {
+      if (priv->scale_factor_set && priv->scale_factor == scale)
+        return;
+
+      priv->scale_factor_set = TRUE;
+      priv->scale_factor = scale;
+    }
+
+  clutter_content_invalidate (CLUTTER_CONTENT (canvas));
+
+  obj = G_OBJECT (canvas);
+
+  g_object_notify_by_pspec (obj, obj_props[PROP_SCALE_FACTOR]);
+  g_object_notify_by_pspec (obj, obj_props[PROP_SCALE_FACTOR_SET]);
+}
+
+/**
+ * clutter_canvas_get_scale_factor:
+ * @canvas: a #ClutterCanvas
+ *
+ * Retrieves the scaling factor of @canvas, as set using
+ * clutter_canvas_set_scale_factor().
+ *
+ * Return value: the scaling factor, or -1 if the @canvas
+ *   uses the default from #ClutterSettings
+ *
+ * Since: 1.18
+ */
+int
+clutter_canvas_get_scale_factor (ClutterCanvas *canvas)
+{
+  g_return_val_if_fail (CLUTTER_IS_CANVAS (canvas), -1);
+
+  if (!canvas->priv->scale_factor_set)
+    return -1;
+
+  return canvas->priv->scale_factor;
 }

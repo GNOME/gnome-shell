@@ -1,7 +1,7 @@
 # Catalan translation for clutter.
 # Copyright (C) 2011 clutter's COPYRIGHT HOLDER
 # This file is distributed under the same license as the clutter package.
-# Gil Forcada <gilforcada@guifi.net>, 2011, 2012.
+# Gil Forcada <gilforcada@guifi.net>, 2011, 2012, 2013.
 # Jordi Serratosa <jordis@softcatala.cat>, 2012.
 #
 msgid ""
@@ -9,702 +9,702 @@ msgstr ""
 "Project-Id-Version: clutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter\n"
-"POT-Creation-Date: 2012-09-21 21:37+0200\n"
-"PO-Revision-Date: 2012-09-21 21:34+0200\n"
-"Last-Translator: Gil Forcada <gilforcada@guifi.net>\n"
+"POT-Creation-Date: 2014-05-12 23:45+0200\n"
+"PO-Revision-Date: 2014-03-21 05:55+0100\n"
+"Last-Translator: Pau Iranzo <paugnu@gmail.com>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
 "Language: ca-XV\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bits\n"
+"Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: ../clutter/clutter-actor.c:6125
+#: ../clutter/clutter-actor.c:6224
 msgid "X coordinate"
 msgstr "Coordenada X"
 
-#: ../clutter/clutter-actor.c:6126
+#: ../clutter/clutter-actor.c:6225
 msgid "X coordinate of the actor"
 msgstr "Coordenada X de l'actor"
 
-#: ../clutter/clutter-actor.c:6144
+#: ../clutter/clutter-actor.c:6243
 msgid "Y coordinate"
 msgstr "Coordenada Y"
 
-#: ../clutter/clutter-actor.c:6145
+#: ../clutter/clutter-actor.c:6244
 msgid "Y coordinate of the actor"
 msgstr "Coordenada Y de l'actor"
 
-#: ../clutter/clutter-actor.c:6167
+#: ../clutter/clutter-actor.c:6266
 msgid "Position"
 msgstr "Posició"
 
-#: ../clutter/clutter-actor.c:6168
+#: ../clutter/clutter-actor.c:6267
 msgid "The position of the origin of the actor"
 msgstr "La posició de l'origen de l'actor"
 
-#: ../clutter/clutter-actor.c:6185 ../clutter/clutter-canvas.c:215
-#: ../clutter/clutter-grid-layout.c:1238
-#: ../clutter/deprecated/clutter-behaviour-ellipse.c:481
+#: ../clutter/clutter-actor.c:6284 ../clutter/clutter-canvas.c:247
+#: ../clutter/clutter-grid-layout.c:1239
+#: ../clutter/deprecated/clutter-behaviour-ellipse.c:474
 msgid "Width"
 msgstr "Amplada"
 
-#: ../clutter/clutter-actor.c:6186
+#: ../clutter/clutter-actor.c:6285
 msgid "Width of the actor"
 msgstr "Amplada de l'actor"
 
-#: ../clutter/clutter-actor.c:6204 ../clutter/clutter-canvas.c:231
-#: ../clutter/clutter-grid-layout.c:1245
-#: ../clutter/deprecated/clutter-behaviour-ellipse.c:497
+#: ../clutter/clutter-actor.c:6303 ../clutter/clutter-canvas.c:263
+#: ../clutter/clutter-grid-layout.c:1246
+#: ../clutter/deprecated/clutter-behaviour-ellipse.c:490
 msgid "Height"
 msgstr "Alçada"
 
-#: ../clutter/clutter-actor.c:6205
+#: ../clutter/clutter-actor.c:6304
 msgid "Height of the actor"
 msgstr "Alçada de l'actor"
 
-#: ../clutter/clutter-actor.c:6226
+#: ../clutter/clutter-actor.c:6325
 msgid "Size"
 msgstr "Mida"
 
-#: ../clutter/clutter-actor.c:6227
+#: ../clutter/clutter-actor.c:6326
 msgid "The size of the actor"
 msgstr "La mida de l'actor"
 
-#: ../clutter/clutter-actor.c:6245
+#: ../clutter/clutter-actor.c:6344
 msgid "Fixed X"
 msgstr "X fixada"
 
-#: ../clutter/clutter-actor.c:6246
+#: ../clutter/clutter-actor.c:6345
 msgid "Forced X position of the actor"
 msgstr "Posició X forçada de l'actor"
 
-#: ../clutter/clutter-actor.c:6263
+#: ../clutter/clutter-actor.c:6362
 msgid "Fixed Y"
 msgstr "Y fixada"
 
-#: ../clutter/clutter-actor.c:6264
+#: ../clutter/clutter-actor.c:6363
 msgid "Forced Y position of the actor"
 msgstr "Posició Y forçada de l'actor"
 
-#: ../clutter/clutter-actor.c:6279
+#: ../clutter/clutter-actor.c:6378
 msgid "Fixed position set"
 msgstr "Ús de la posició fixa"
 
-#: ../clutter/clutter-actor.c:6280
+#: ../clutter/clutter-actor.c:6379
 msgid "Whether to use fixed positioning for the actor"
 msgstr "Si s'ha d'utilitzar el posicionament fixat per a l'actor"
 
-#: ../clutter/clutter-actor.c:6298
+#: ../clutter/clutter-actor.c:6397
 msgid "Min Width"
 msgstr "Amplada mínima"
 
-#: ../clutter/clutter-actor.c:6299
+#: ../clutter/clutter-actor.c:6398
 msgid "Forced minimum width request for the actor"
-msgstr "Amplada mínima forçada soŀlicitada per l'actor"
+msgstr "Amplada mínima forçada sol·licitada per l'actor"
 
-#: ../clutter/clutter-actor.c:6317
+#: ../clutter/clutter-actor.c:6416
 msgid "Min Height"
 msgstr "Alçada mínima"
 
-#: ../clutter/clutter-actor.c:6318
+#: ../clutter/clutter-actor.c:6417
 msgid "Forced minimum height request for the actor"
-msgstr "Alçada mínima forçada soŀlicitada per l'actor"
+msgstr "Alçada mínima forçada sol·licitada per l'actor"
 
-#: ../clutter/clutter-actor.c:6336
+#: ../clutter/clutter-actor.c:6435
 msgid "Natural Width"
 msgstr "Amplada natural"
 
-#: ../clutter/clutter-actor.c:6337
+#: ../clutter/clutter-actor.c:6436
 msgid "Forced natural width request for the actor"
-msgstr "Amplada natural forçada soŀlicitada per l'actor"
+msgstr "Amplada natural forçada sol·licitada per l'actor"
 
-#: ../clutter/clutter-actor.c:6355
+#: ../clutter/clutter-actor.c:6454
 msgid "Natural Height"
 msgstr "Alçada natural"
 
-#: ../clutter/clutter-actor.c:6356
+#: ../clutter/clutter-actor.c:6455
 msgid "Forced natural height request for the actor"
-msgstr "Alçada natural forçada soŀlicitada per l'actor"
+msgstr "Alçada natural forçada sol·licitada per l'actor"
 
-#: ../clutter/clutter-actor.c:6371
+#: ../clutter/clutter-actor.c:6470
 msgid "Minimum width set"
 msgstr "Ús de l'amplada mínima"
 
-#: ../clutter/clutter-actor.c:6372
+#: ../clutter/clutter-actor.c:6471
 msgid "Whether to use the min-width property"
 msgstr "Si s'ha d'utilitzar la propietat «amplada mínima»"
 
-#: ../clutter/clutter-actor.c:6386
+#: ../clutter/clutter-actor.c:6485
 msgid "Minimum height set"
 msgstr "Ús de l'alçada mínima"
 
-#: ../clutter/clutter-actor.c:6387
+#: ../clutter/clutter-actor.c:6486
 msgid "Whether to use the min-height property"
 msgstr "Si s'ha d'utilitzar la propietat «alçada mínima»"
 
-#: ../clutter/clutter-actor.c:6401
+#: ../clutter/clutter-actor.c:6500
 msgid "Natural width set"
 msgstr "Ús de l'amplada natural"
 
-#: ../clutter/clutter-actor.c:6402
+#: ../clutter/clutter-actor.c:6501
 msgid "Whether to use the natural-width property"
 msgstr "Si s'ha d'utilitzar la propietat «amplada natural»"
 
-#: ../clutter/clutter-actor.c:6416
+#: ../clutter/clutter-actor.c:6515
 msgid "Natural height set"
 msgstr "Ús de l'alçada natural"
 
-#: ../clutter/clutter-actor.c:6417
+#: ../clutter/clutter-actor.c:6516
 msgid "Whether to use the natural-height property"
 msgstr "Si s'ha d'utilitzar la propietat «alçada natural»"
 
-#: ../clutter/clutter-actor.c:6433
+#: ../clutter/clutter-actor.c:6532
 msgid "Allocation"
 msgstr "Ubicació"
 
-#: ../clutter/clutter-actor.c:6434
+#: ../clutter/clutter-actor.c:6533
 msgid "The actor's allocation"
 msgstr "La ubicació de l'actor"
 
-#: ../clutter/clutter-actor.c:6491
+#: ../clutter/clutter-actor.c:6590
 msgid "Request Mode"
-msgstr "Mode soŀlicitat"
+msgstr "Mode sol·licitat"
 
-#: ../clutter/clutter-actor.c:6492
+#: ../clutter/clutter-actor.c:6591
 msgid "The actor's request mode"
-msgstr "El mode soŀlicitat per l'actor"
+msgstr "El mode sol·licitat per l'actor"
 
-#: ../clutter/clutter-actor.c:6516
+#: ../clutter/clutter-actor.c:6615
 msgid "Depth"
 msgstr "Profunditat"
 
-#: ../clutter/clutter-actor.c:6517
+#: ../clutter/clutter-actor.c:6616
 msgid "Position on the Z axis"
 msgstr "Posició en l'eix de la Z"
 
-#: ../clutter/clutter-actor.c:6544
+#: ../clutter/clutter-actor.c:6643
 msgid "Z Position"
 msgstr "Posició Z"
 
-#: ../clutter/clutter-actor.c:6545
+#: ../clutter/clutter-actor.c:6644
 msgid "The actor's position on the Z axis"
 msgstr "La posició de l'actor en l'eix de la Z"
 
-#: ../clutter/clutter-actor.c:6562
+#: ../clutter/clutter-actor.c:6661
 msgid "Opacity"
 msgstr "Opacitat"
 
-#: ../clutter/clutter-actor.c:6563
+#: ../clutter/clutter-actor.c:6662
 msgid "Opacity of an actor"
 msgstr "Opacitat d'un actor"
 
-#: ../clutter/clutter-actor.c:6583
+#: ../clutter/clutter-actor.c:6682
 msgid "Offscreen redirect"
 msgstr "Redireccionament fora de pantalla"
 
-#: ../clutter/clutter-actor.c:6584
+#: ../clutter/clutter-actor.c:6683
 msgid "Flags controlling when to flatten the actor into a single image"
 msgstr ""
 "Senyaladors que controlen quan s'ha d'aplanar l'actor a una sola imatge"
 
-#: ../clutter/clutter-actor.c:6598
+#: ../clutter/clutter-actor.c:6697
 msgid "Visible"
 msgstr "Visible"
 
-#: ../clutter/clutter-actor.c:6599
+#: ../clutter/clutter-actor.c:6698
 msgid "Whether the actor is visible or not"
 msgstr "Si l'actor és visible"
 
-#: ../clutter/clutter-actor.c:6613
+#: ../clutter/clutter-actor.c:6712
 msgid "Mapped"
 msgstr "Mapat"
 
-#: ../clutter/clutter-actor.c:6614
+#: ../clutter/clutter-actor.c:6713
 msgid "Whether the actor will be painted"
 msgstr "Si l'actor es pintarà"
 
-#: ../clutter/clutter-actor.c:6627
+#: ../clutter/clutter-actor.c:6726
 msgid "Realized"
 msgstr "Realitzat"
 
-#: ../clutter/clutter-actor.c:6628
+#: ../clutter/clutter-actor.c:6727
 msgid "Whether the actor has been realized"
 msgstr "Si l'actor s'ha realitzat"
 
-#: ../clutter/clutter-actor.c:6643
+#: ../clutter/clutter-actor.c:6742
 msgid "Reactive"
 msgstr "Reactiu"
 
-#: ../clutter/clutter-actor.c:6644
+#: ../clutter/clutter-actor.c:6743
 msgid "Whether the actor is reactive to events"
 msgstr "Si l'actor reacciona a esdeveniments"
 
-#: ../clutter/clutter-actor.c:6655
+#: ../clutter/clutter-actor.c:6754
 msgid "Has Clip"
 msgstr "Té un retallat"
 
-#: ../clutter/clutter-actor.c:6656
+#: ../clutter/clutter-actor.c:6755
 msgid "Whether the actor has a clip set"
 msgstr "Si l'actor té un retallat establit"
 
-#: ../clutter/clutter-actor.c:6669
+#: ../clutter/clutter-actor.c:6768
 msgid "Clip"
 msgstr "Retallat"
 
-#: ../clutter/clutter-actor.c:6670
+#: ../clutter/clutter-actor.c:6769
 msgid "The clip region for the actor"
 msgstr "La regió de retallat de l'actor"
 
-#: ../clutter/clutter-actor.c:6689
+#: ../clutter/clutter-actor.c:6788
 msgid "Clip Rectangle"
 msgstr "Rectangle retallat"
 
-#: ../clutter/clutter-actor.c:6690
+#: ../clutter/clutter-actor.c:6789
 msgid "The visible region of the actor"
 msgstr "La regió visible de l'actor"
 
-#: ../clutter/clutter-actor.c:6704 ../clutter/clutter-actor-meta.c:207
-#: ../clutter/clutter-binding-pool.c:319 ../clutter/clutter-input-device.c:258
+#: ../clutter/clutter-actor.c:6803 ../clutter/clutter-actor-meta.c:205
+#: ../clutter/clutter-binding-pool.c:318 ../clutter/clutter-input-device.c:247
 msgid "Name"
 msgstr "Nom"
 
-#: ../clutter/clutter-actor.c:6705
+#: ../clutter/clutter-actor.c:6804
 msgid "Name of the actor"
 msgstr "El nom de l'actor"
 
-#: ../clutter/clutter-actor.c:6726
+#: ../clutter/clutter-actor.c:6825
 msgid "Pivot Point"
 msgstr "Punt de pivotació"
 
-#: ../clutter/clutter-actor.c:6727
+#: ../clutter/clutter-actor.c:6826
 msgid "The point around which the scaling and rotation occur"
 msgstr "El punt sobre el qual es fa l'escalat i la rotació"
 
-#: ../clutter/clutter-actor.c:6745
+#: ../clutter/clutter-actor.c:6844
 msgid "Pivot Point Z"
 msgstr "El punt de pivotació sobre la Z"
 
-#: ../clutter/clutter-actor.c:6746
+#: ../clutter/clutter-actor.c:6845
 msgid "Z component of the pivot point"
 msgstr "Component Z del punt de pivotació"
 
-#: ../clutter/clutter-actor.c:6764
+#: ../clutter/clutter-actor.c:6863
 msgid "Scale X"
 msgstr "Escala X"
 
-#: ../clutter/clutter-actor.c:6765
+#: ../clutter/clutter-actor.c:6864
 msgid "Scale factor on the X axis"
 msgstr "El factor d'escala en l'eix de les X"
 
-#: ../clutter/clutter-actor.c:6783
+#: ../clutter/clutter-actor.c:6882
 msgid "Scale Y"
 msgstr "Escala Y"
 
-#: ../clutter/clutter-actor.c:6784
+#: ../clutter/clutter-actor.c:6883
 msgid "Scale factor on the Y axis"
 msgstr "El factor d'escala en l'eix de les Y"
 
-#: ../clutter/clutter-actor.c:6802
+#: ../clutter/clutter-actor.c:6901
 msgid "Scale Z"
 msgstr "Escala Z"
 
-#: ../clutter/clutter-actor.c:6803
+#: ../clutter/clutter-actor.c:6902
 msgid "Scale factor on the Z axis"
 msgstr "El factor d'escala en l'eix de les Z"
 
-#: ../clutter/clutter-actor.c:6821
+#: ../clutter/clutter-actor.c:6920
 msgid "Scale Center X"
 msgstr "Centre de l'escala X"
 
-#: ../clutter/clutter-actor.c:6822
+#: ../clutter/clutter-actor.c:6921
 msgid "Horizontal scale center"
 msgstr "Centre horitzontal de l'escala"
 
-#: ../clutter/clutter-actor.c:6840
+#: ../clutter/clutter-actor.c:6939
 msgid "Scale Center Y"
 msgstr "Centre de l'escala Y"
 
-#: ../clutter/clutter-actor.c:6841
+#: ../clutter/clutter-actor.c:6940
 msgid "Vertical scale center"
 msgstr "Centre vertical de l'escala"
 
-#: ../clutter/clutter-actor.c:6859
+#: ../clutter/clutter-actor.c:6958
 msgid "Scale Gravity"
 msgstr "Gravetat de l'escala"
 
-#: ../clutter/clutter-actor.c:6860
+#: ../clutter/clutter-actor.c:6959
 msgid "The center of scaling"
 msgstr "El centre de l'escalat"
 
-#: ../clutter/clutter-actor.c:6878
+#: ../clutter/clutter-actor.c:6977
 msgid "Rotation Angle X"
 msgstr "Angle de rotació X"
 
-#: ../clutter/clutter-actor.c:6879
+#: ../clutter/clutter-actor.c:6978
 msgid "The rotation angle on the X axis"
 msgstr "L'angle de rotació en l'eix de les X"
 
-#: ../clutter/clutter-actor.c:6897
+#: ../clutter/clutter-actor.c:6996
 msgid "Rotation Angle Y"
 msgstr "Angle de rotació Y"
 
-#: ../clutter/clutter-actor.c:6898
+#: ../clutter/clutter-actor.c:6997
 msgid "The rotation angle on the Y axis"
 msgstr "L'angle de rotació en l'eix de les Y"
 
-#: ../clutter/clutter-actor.c:6916
+#: ../clutter/clutter-actor.c:7015
 msgid "Rotation Angle Z"
 msgstr "Angle de rotació Z"
 
-#: ../clutter/clutter-actor.c:6917
+#: ../clutter/clutter-actor.c:7016
 msgid "The rotation angle on the Z axis"
 msgstr "L'angle de rotació en l'eix de les Z"
 
-#: ../clutter/clutter-actor.c:6935
+#: ../clutter/clutter-actor.c:7034
 msgid "Rotation Center X"
 msgstr "Centre de rotació X"
 
-#: ../clutter/clutter-actor.c:6936
+#: ../clutter/clutter-actor.c:7035
 msgid "The rotation center on the X axis"
 msgstr "El centre de rotació en l'eix de les X"
 
-#: ../clutter/clutter-actor.c:6953
+#: ../clutter/clutter-actor.c:7052
 msgid "Rotation Center Y"
 msgstr "Centre de rotació Y"
 
-#: ../clutter/clutter-actor.c:6954
+#: ../clutter/clutter-actor.c:7053
 msgid "The rotation center on the Y axis"
 msgstr "El centre de rotació en l'eix de les Y"
 
-#: ../clutter/clutter-actor.c:6971
+#: ../clutter/clutter-actor.c:7070
 msgid "Rotation Center Z"
 msgstr "Centre de rotació Z"
 
-#: ../clutter/clutter-actor.c:6972
+#: ../clutter/clutter-actor.c:7071
 msgid "The rotation center on the Z axis"
 msgstr "El centre de rotació en l'eix de les Z"
 
-#: ../clutter/clutter-actor.c:6989
+#: ../clutter/clutter-actor.c:7088
 msgid "Rotation Center Z Gravity"
 msgstr "Gravetat del centre de rotació Z"
 
-#: ../clutter/clutter-actor.c:6990
+#: ../clutter/clutter-actor.c:7089
 msgid "Center point for rotation around the Z axis"
 msgstr "Punt del centre de rotació al voltant de l'eix de les Z"
 
-#: ../clutter/clutter-actor.c:7018
+#: ../clutter/clutter-actor.c:7117
 msgid "Anchor X"
 msgstr "Àncora X"
 
-#: ../clutter/clutter-actor.c:7019
+#: ../clutter/clutter-actor.c:7118
 msgid "X coordinate of the anchor point"
 msgstr "Coordenada X del punt de l'àncora"
 
-#: ../clutter/clutter-actor.c:7047
+#: ../clutter/clutter-actor.c:7146
 msgid "Anchor Y"
 msgstr "Àncora Y"
 
-#: ../clutter/clutter-actor.c:7048
+#: ../clutter/clutter-actor.c:7147
 msgid "Y coordinate of the anchor point"
 msgstr "Coordenada Y del punt de l'àncora"
 
-#: ../clutter/clutter-actor.c:7075
+#: ../clutter/clutter-actor.c:7174
 msgid "Anchor Gravity"
 msgstr "Gravetat de l'àncora"
 
-#: ../clutter/clutter-actor.c:7076
+#: ../clutter/clutter-actor.c:7175
 msgid "The anchor point as a ClutterGravity"
 msgstr "El punt d'àncora com a «ClutterGravity»"
 
-#: ../clutter/clutter-actor.c:7095
+#: ../clutter/clutter-actor.c:7194
 msgid "Translation X"
 msgstr "Translació X"
 
-#: ../clutter/clutter-actor.c:7096
+#: ../clutter/clutter-actor.c:7195
 msgid "Translation along the X axis"
 msgstr "La translació en l'eix de les X"
 
-#: ../clutter/clutter-actor.c:7115
+#: ../clutter/clutter-actor.c:7214
 msgid "Translation Y"
 msgstr "Translació Y"
 
-#: ../clutter/clutter-actor.c:7116
+#: ../clutter/clutter-actor.c:7215
 msgid "Translation along the Y axis"
 msgstr "La translació en l'eix de les Y"
 
-#: ../clutter/clutter-actor.c:7135
+#: ../clutter/clutter-actor.c:7234
 msgid "Translation Z"
 msgstr "Translació Z"
 
-#: ../clutter/clutter-actor.c:7136
+#: ../clutter/clutter-actor.c:7235
 msgid "Translation along the Z axis"
 msgstr "La translació en l'eix de les Z"
 
-#: ../clutter/clutter-actor.c:7166
+#: ../clutter/clutter-actor.c:7265
 msgid "Transform"
 msgstr "Transformació"
 
-#: ../clutter/clutter-actor.c:7167
+#: ../clutter/clutter-actor.c:7266
 msgid "Transformation matrix"
 msgstr "Matriu de transformació"
 
-#: ../clutter/clutter-actor.c:7182
+#: ../clutter/clutter-actor.c:7281
 msgid "Transform Set"
 msgstr "Establiment de la transformació"
 
-#: ../clutter/clutter-actor.c:7183
+#: ../clutter/clutter-actor.c:7282
 msgid "Whether the transform property is set"
 msgstr "Si la propietat de transformació té un valor"
 
-#: ../clutter/clutter-actor.c:7204
+#: ../clutter/clutter-actor.c:7303
 msgid "Child Transform"
 msgstr "Transformació filla"
 
-#: ../clutter/clutter-actor.c:7205
+#: ../clutter/clutter-actor.c:7304
 msgid "Children transformation matrix"
 msgstr "Matriu de la transformació filla"
 
-#: ../clutter/clutter-actor.c:7220
+#: ../clutter/clutter-actor.c:7319
 msgid "Child Transform Set"
 msgstr "Establiment de la transformació filla"
 
-#: ../clutter/clutter-actor.c:7221
+#: ../clutter/clutter-actor.c:7320
 msgid "Whether the child-transform property is set"
 msgstr "Si la propietat de transformació filla té un valor"
 
-#: ../clutter/clutter-actor.c:7238
+#: ../clutter/clutter-actor.c:7337
 msgid "Show on set parent"
 msgstr "Mostra si és pare"
 
-#: ../clutter/clutter-actor.c:7239
+#: ../clutter/clutter-actor.c:7338
 msgid "Whether the actor is shown when parented"
 msgstr "Si s'ha de mostrar l'actor si se'l fa pare d'un element"
 
-#: ../clutter/clutter-actor.c:7256
+#: ../clutter/clutter-actor.c:7355
 msgid "Clip to Allocation"
 msgstr "Retalla a la ubicació"
 
-#: ../clutter/clutter-actor.c:7257
+#: ../clutter/clutter-actor.c:7356
 msgid "Sets the clip region to track the actor's allocation"
 msgstr ""
 "Estableix la regió de retallat per fer un seguiment de la ubicació de l'actor"
 
-#: ../clutter/clutter-actor.c:7270
+#: ../clutter/clutter-actor.c:7369
 msgid "Text Direction"
 msgstr "Direcció del text"
 
-#: ../clutter/clutter-actor.c:7271
+#: ../clutter/clutter-actor.c:7370
 msgid "Direction of the text"
 msgstr "La direcció del text"
 
-#: ../clutter/clutter-actor.c:7286
+#: ../clutter/clutter-actor.c:7385
 msgid "Has Pointer"
 msgstr "Té un punter"
 
-#: ../clutter/clutter-actor.c:7287
+#: ../clutter/clutter-actor.c:7386
 msgid "Whether the actor contains the pointer of an input device"
 msgstr "Si l'actor conté el punter d'un dispositiu d'entrada"
 
-#: ../clutter/clutter-actor.c:7300
+#: ../clutter/clutter-actor.c:7399
 msgid "Actions"
 msgstr "Accions"
 
-#: ../clutter/clutter-actor.c:7301
+#: ../clutter/clutter-actor.c:7400
 msgid "Adds an action to the actor"
 msgstr "Afig una acció a l'actor"
 
-#: ../clutter/clutter-actor.c:7314
+#: ../clutter/clutter-actor.c:7413
 msgid "Constraints"
 msgstr "Restriccions"
 
-#: ../clutter/clutter-actor.c:7315
+#: ../clutter/clutter-actor.c:7414
 msgid "Adds a constraint to the actor"
 msgstr "Afig una restricció a l'actor"
 
-#: ../clutter/clutter-actor.c:7328
+#: ../clutter/clutter-actor.c:7427
 msgid "Effect"
 msgstr "Efecte"
 
-#: ../clutter/clutter-actor.c:7329
+#: ../clutter/clutter-actor.c:7428
 msgid "Add an effect to be applied on the actor"
 msgstr "Afig un efecte que s'aplicarà a l'actor"
 
-#: ../clutter/clutter-actor.c:7343
+#: ../clutter/clutter-actor.c:7442
 msgid "Layout Manager"
 msgstr "Gestor de disposició"
 
-#: ../clutter/clutter-actor.c:7344
+#: ../clutter/clutter-actor.c:7443
 msgid "The object controlling the layout of an actor's children"
 msgstr "L'objecte que controla la disposició dels fills de l'actor"
 
-#: ../clutter/clutter-actor.c:7358
+#: ../clutter/clutter-actor.c:7457
 msgid "X Expand"
 msgstr "Expansió X"
 
-#: ../clutter/clutter-actor.c:7359
+#: ../clutter/clutter-actor.c:7458
 msgid "Whether extra horizontal space should be assigned to the actor"
 msgstr "Si l'actor hauria de tindre assignat un espai horitzontal extra"
 
-#: ../clutter/clutter-actor.c:7374
+#: ../clutter/clutter-actor.c:7473
 msgid "Y Expand"
 msgstr "Expansió Y"
 
-#: ../clutter/clutter-actor.c:7375
+#: ../clutter/clutter-actor.c:7474
 msgid "Whether extra vertical space should be assigned to the actor"
 msgstr "Si l'actor hauria de tindre assignat un espai vertical extra"
 
-#: ../clutter/clutter-actor.c:7391
+#: ../clutter/clutter-actor.c:7490
 msgid "X Alignment"
 msgstr "Alineació X"
 
-#: ../clutter/clutter-actor.c:7392
+#: ../clutter/clutter-actor.c:7491
 msgid "The alignment of the actor on the X axis within its allocation"
 msgstr "L'alineació de l'actor en l'eix de les X dins la seua ubicació"
 
-#: ../clutter/clutter-actor.c:7407
+#: ../clutter/clutter-actor.c:7506
 msgid "Y Alignment"
 msgstr "Alineació Y"
 
-#: ../clutter/clutter-actor.c:7408
+#: ../clutter/clutter-actor.c:7507
 msgid "The alignment of the actor on the Y axis within its allocation"
 msgstr "L'alineació de l'actor en l'eix de les Y dins la seua ubicació"
 
-#: ../clutter/clutter-actor.c:7427
+#: ../clutter/clutter-actor.c:7526
 msgid "Margin Top"
 msgstr "Marge superior"
 
-#: ../clutter/clutter-actor.c:7428
+#: ../clutter/clutter-actor.c:7527
 msgid "Extra space at the top"
 msgstr "Espai extra a la part superior"
 
-#: ../clutter/clutter-actor.c:7449
+#: ../clutter/clutter-actor.c:7548
 msgid "Margin Bottom"
 msgstr "Marge inferior"
 
-#: ../clutter/clutter-actor.c:7450
+#: ../clutter/clutter-actor.c:7549
 msgid "Extra space at the bottom"
 msgstr "Espai extra a la part inferior"
 
-#: ../clutter/clutter-actor.c:7471
+#: ../clutter/clutter-actor.c:7570
 msgid "Margin Left"
 msgstr "Marge esquerra"
 
-#: ../clutter/clutter-actor.c:7472
+#: ../clutter/clutter-actor.c:7571
 msgid "Extra space at the left"
 msgstr "Espai extra a l'esquerra"
 
-#: ../clutter/clutter-actor.c:7493
+#: ../clutter/clutter-actor.c:7592
 msgid "Margin Right"
 msgstr "Marge dret"
 
-#: ../clutter/clutter-actor.c:7494
+#: ../clutter/clutter-actor.c:7593
 msgid "Extra space at the right"
 msgstr "Espai extra a la dreta"
 
-#: ../clutter/clutter-actor.c:7510
+#: ../clutter/clutter-actor.c:7609
 msgid "Background Color Set"
 msgstr "Establiment del color de fons"
 
-#: ../clutter/clutter-actor.c:7511 ../clutter/deprecated/clutter-box.c:275
+#: ../clutter/clutter-actor.c:7610 ../clutter/deprecated/clutter-box.c:269
 msgid "Whether the background color is set"
 msgstr "Si hi ha cap color de fons"
 
-#: ../clutter/clutter-actor.c:7527
+#: ../clutter/clutter-actor.c:7626
 msgid "Background color"
 msgstr "Color de fons"
 
-#: ../clutter/clutter-actor.c:7528
+#: ../clutter/clutter-actor.c:7627
 msgid "The actor's background color"
 msgstr "El color de fons de l'actor"
 
-#: ../clutter/clutter-actor.c:7543
+#: ../clutter/clutter-actor.c:7642
 msgid "First Child"
 msgstr "Primer fill"
 
-#: ../clutter/clutter-actor.c:7544
+#: ../clutter/clutter-actor.c:7643
 msgid "The actor's first child"
 msgstr "El primer fill de l'actor"
 
-#: ../clutter/clutter-actor.c:7557
+#: ../clutter/clutter-actor.c:7656
 msgid "Last Child"
 msgstr "Últim fill"
 
-#: ../clutter/clutter-actor.c:7558
+#: ../clutter/clutter-actor.c:7657
 msgid "The actor's last child"
 msgstr "L'últim fill de l'actor"
 
-#: ../clutter/clutter-actor.c:7572
+#: ../clutter/clutter-actor.c:7671
 msgid "Content"
 msgstr "Contingut"
 
-#: ../clutter/clutter-actor.c:7573
+#: ../clutter/clutter-actor.c:7672
 msgid "Delegate object for painting the actor's content"
 msgstr "L'objecte al que es delega el pintat del contingut de l'actor"
 
-#: ../clutter/clutter-actor.c:7598
+#: ../clutter/clutter-actor.c:7697
 msgid "Content Gravity"
 msgstr "Gravetat del contingut"
 
-#: ../clutter/clutter-actor.c:7599
+#: ../clutter/clutter-actor.c:7698
 msgid "Alignment of the actor's content"
 msgstr "L'alineació del contingut de l'actor"
 
-#: ../clutter/clutter-actor.c:7619
+#: ../clutter/clutter-actor.c:7718
 msgid "Content Box"
 msgstr "Caixa del contingut"
 
-#: ../clutter/clutter-actor.c:7620
+#: ../clutter/clutter-actor.c:7719
 msgid "The bounding box of the actor's content"
 msgstr "La caixa de limitació que conté el contingut de l'actor"
 
-#: ../clutter/clutter-actor.c:7628
+#: ../clutter/clutter-actor.c:7727
 msgid "Minification Filter"
 msgstr "Filtre de minimització"
 
-#: ../clutter/clutter-actor.c:7629
+#: ../clutter/clutter-actor.c:7728
 msgid "The filter used when reducing the size of the content"
 msgstr "El filtre que s'utilitzarà per reduir la mida del contingut"
 
-#: ../clutter/clutter-actor.c:7636
+#: ../clutter/clutter-actor.c:7735
 msgid "Magnification Filter"
 msgstr "Filtre d'ampliació"
 
-#: ../clutter/clutter-actor.c:7637
+#: ../clutter/clutter-actor.c:7736
 msgid "The filter used when increasing the size of the content"
 msgstr "El filtre que s'utilitzarà per ampliar la mida del contingut"
 
-#: ../clutter/clutter-actor.c:7651
+#: ../clutter/clutter-actor.c:7750
 msgid "Content Repeat"
 msgstr "Repetició del contingut"
 
-#: ../clutter/clutter-actor.c:7652
+#: ../clutter/clutter-actor.c:7751
 msgid "The repeat policy for the actor's content"
 msgstr "La política de repetició del contingut de l'actor"
 
-#: ../clutter/clutter-actor-meta.c:193 ../clutter/clutter-child-meta.c:142
+#: ../clutter/clutter-actor-meta.c:191 ../clutter/clutter-child-meta.c:142
 msgid "Actor"
 msgstr "Actor"
 
-#: ../clutter/clutter-actor-meta.c:194
+#: ../clutter/clutter-actor-meta.c:192
 msgid "The actor attached to the meta"
 msgstr "L'actor acoblat a un meta"
 
-#: ../clutter/clutter-actor-meta.c:208
+#: ../clutter/clutter-actor-meta.c:206
 msgid "The name of the meta"
 msgstr "El nom del meta"
 
-#: ../clutter/clutter-actor-meta.c:221 ../clutter/clutter-input-device.c:337
-#: ../clutter/deprecated/clutter-shader.c:313
+#: ../clutter/clutter-actor-meta.c:219 ../clutter/clutter-input-device.c:326
+#: ../clutter/deprecated/clutter-shader.c:309
 msgid "Enabled"
 msgstr "Habilitat"
 
-#: ../clutter/clutter-actor-meta.c:222
+#: ../clutter/clutter-actor-meta.c:220
 msgid "Whether the meta is enabled"
 msgstr "Si el meta és habilitat"
 
 #: ../clutter/clutter-align-constraint.c:279
-#: ../clutter/clutter-bind-constraint.c:358 ../clutter/clutter-clone.c:345
+#: ../clutter/clutter-bind-constraint.c:343 ../clutter/clutter-clone.c:341
 #: ../clutter/clutter-snap-constraint.c:321
 msgid "Source"
 msgstr "Font"
@@ -730,82 +730,86 @@ msgstr "Factor"
 msgid "The alignment factor, between 0.0 and 1.0"
 msgstr "El factor d'alineació, entre 0.0 i 1.0"
 
-#: ../clutter/clutter-backend.c:379
+#: ../clutter/clutter-backend.c:380
 msgid "Unable to initialize the Clutter backend"
 msgstr "No s'ha pogut inicialitzar el rerefons de la Clutter"
 
-#: ../clutter/clutter-backend.c:453
+#: ../clutter/clutter-backend.c:454
 #, c-format
 msgid "The backend of type '%s' does not support creating multiple stages"
 msgstr "El rerefons, de tipus «%s», no permet crear múltiples escenaris"
 
-#: ../clutter/clutter-bind-constraint.c:359
+#: ../clutter/clutter-bind-constraint.c:344
 msgid "The source of the binding"
 msgstr "La font de la vinculació"
 
-#: ../clutter/clutter-bind-constraint.c:372
+#: ../clutter/clutter-bind-constraint.c:357
 msgid "Coordinate"
 msgstr "Coordenada"
 
-#: ../clutter/clutter-bind-constraint.c:373
+#: ../clutter/clutter-bind-constraint.c:358
 msgid "The coordinate to bind"
 msgstr "La coordenada a vincular"
 
-#: ../clutter/clutter-bind-constraint.c:387
+#: ../clutter/clutter-bind-constraint.c:372
 #: ../clutter/clutter-path-constraint.c:226
 #: ../clutter/clutter-snap-constraint.c:366
 msgid "Offset"
 msgstr "Desplaçament"
 
-#: ../clutter/clutter-bind-constraint.c:388
+#: ../clutter/clutter-bind-constraint.c:373
 msgid "The offset in pixels to apply to the binding"
 msgstr "El desplaçament, en píxels, que s'ha d'aplicar a la vinculació"
 
-#: ../clutter/clutter-binding-pool.c:320
+#: ../clutter/clutter-binding-pool.c:319
 msgid "The unique name of the binding pool"
 msgstr "El nom únic del conjunt de vinculacions"
 
-#: ../clutter/clutter-bin-layout.c:240 ../clutter/clutter-bin-layout.c:649
-#: ../clutter/clutter-box-layout.c:390 ../clutter/clutter-table-layout.c:610
+#: ../clutter/clutter-bin-layout.c:220 ../clutter/clutter-bin-layout.c:633
+#: ../clutter/clutter-box-layout.c:374
+#: ../clutter/deprecated/clutter-table-layout.c:602
 msgid "Horizontal Alignment"
 msgstr "Alineació horitzontal"
 
-#: ../clutter/clutter-bin-layout.c:241
+#: ../clutter/clutter-bin-layout.c:221
 msgid "Horizontal alignment for the actor inside the layout manager"
 msgstr "L'alineació horitzontal de l'actor dins del gestor de disposició"
 
-#: ../clutter/clutter-bin-layout.c:249 ../clutter/clutter-bin-layout.c:669
-#: ../clutter/clutter-box-layout.c:399 ../clutter/clutter-table-layout.c:625
+#: ../clutter/clutter-bin-layout.c:229 ../clutter/clutter-bin-layout.c:653
+#: ../clutter/clutter-box-layout.c:383
+#: ../clutter/deprecated/clutter-table-layout.c:617
 msgid "Vertical Alignment"
 msgstr "Alineació vertical"
 
-#: ../clutter/clutter-bin-layout.c:250
+#: ../clutter/clutter-bin-layout.c:230
 msgid "Vertical alignment for the actor inside the layout manager"
 msgstr "L'alineació vertical de l'actor dins del gestor de disposició"
 
-#: ../clutter/clutter-bin-layout.c:650
+#: ../clutter/clutter-bin-layout.c:634
 msgid "Default horizontal alignment for the actors inside the layout manager"
 msgstr ""
 "L'alineació horitzontal per defecte dels actors dins del gestor de disposició"
 
-#: ../clutter/clutter-bin-layout.c:670
+#: ../clutter/clutter-bin-layout.c:654
 msgid "Default vertical alignment for the actors inside the layout manager"
 msgstr ""
 "L'alineació vertical per defecte dels actors dins del gestor de disposició"
 
-#: ../clutter/clutter-box-layout.c:365
+#: ../clutter/clutter-box-layout.c:349
 msgid "Expand"
 msgstr "Expandeix"
 
-#: ../clutter/clutter-box-layout.c:366
+#: ../clutter/clutter-box-layout.c:350
 msgid "Allocate extra space for the child"
 msgstr "Ubica espai extra per al fill"
 
-#: ../clutter/clutter-box-layout.c:372 ../clutter/clutter-table-layout.c:589
+#: ../clutter/clutter-box-layout.c:356
+#: ../clutter/deprecated/clutter-table-layout.c:581
 msgid "Horizontal Fill"
 msgstr "Emplena horitzontalment"
 
-#: ../clutter/clutter-box-layout.c:373 ../clutter/clutter-table-layout.c:590
+#: ../clutter/clutter-box-layout.c:357
+#: ../clutter/deprecated/clutter-table-layout.c:582
 msgid ""
 "Whether the child should receive priority when the container is allocating "
 "spare space on the horizontal axis"
@@ -813,11 +817,13 @@ msgstr ""
 "Si el fill hauria de tindre prioritat quan el contenidor ubiqui espai extra "
 "en l'eix horitzontal"
 
-#: ../clutter/clutter-box-layout.c:381 ../clutter/clutter-table-layout.c:596
+#: ../clutter/clutter-box-layout.c:365
+#: ../clutter/deprecated/clutter-table-layout.c:588
 msgid "Vertical Fill"
 msgstr "Emplena verticalment"
 
-#: ../clutter/clutter-box-layout.c:382 ../clutter/clutter-table-layout.c:597
+#: ../clutter/clutter-box-layout.c:366
+#: ../clutter/deprecated/clutter-table-layout.c:589
 msgid ""
 "Whether the child should receive priority when the container is allocating "
 "spare space on the vertical axis"
@@ -825,80 +831,88 @@ msgstr ""
 "Si el fill hauria de tindre prioritat quan el contenidor ubiqui espai extra "
 "en l'eix vertical"
 
-#: ../clutter/clutter-box-layout.c:391 ../clutter/clutter-table-layout.c:611
+#: ../clutter/clutter-box-layout.c:375
+#: ../clutter/deprecated/clutter-table-layout.c:603
 msgid "Horizontal alignment of the actor within the cell"
-msgstr "L'alineació horitzontal de l'actor dins la ceŀla"
+msgstr "L'alineació horitzontal de l'actor dins la cel·la"
 
-#: ../clutter/clutter-box-layout.c:400 ../clutter/clutter-table-layout.c:626
+#: ../clutter/clutter-box-layout.c:384
+#: ../clutter/deprecated/clutter-table-layout.c:618
 msgid "Vertical alignment of the actor within the cell"
-msgstr "L'alineació vertical de l'actor dins la ceŀla"
+msgstr "L'alineació vertical de l'actor dins la cel·la"
 
-#: ../clutter/clutter-box-layout.c:1365
+#: ../clutter/clutter-box-layout.c:1345
 msgid "Vertical"
 msgstr "Vertical"
 
-#: ../clutter/clutter-box-layout.c:1366
+#: ../clutter/clutter-box-layout.c:1346
 msgid "Whether the layout should be vertical, rather than horizontal"
 msgstr "Si la disposició hauria de ser vertical en comptes d'horitzontal"
 
-#: ../clutter/clutter-box-layout.c:1383 ../clutter/clutter-flow-layout.c:890
-#: ../clutter/clutter-grid-layout.c:1547
+#: ../clutter/clutter-box-layout.c:1363 ../clutter/clutter-flow-layout.c:927
+#: ../clutter/clutter-grid-layout.c:1549
 msgid "Orientation"
 msgstr "Orientació"
 
-#: ../clutter/clutter-box-layout.c:1384 ../clutter/clutter-flow-layout.c:891
-#: ../clutter/clutter-grid-layout.c:1548
+#: ../clutter/clutter-box-layout.c:1364 ../clutter/clutter-flow-layout.c:928
+#: ../clutter/clutter-grid-layout.c:1550
 msgid "The orientation of the layout"
 msgstr "L'orientació de la disposició"
 
-#: ../clutter/clutter-box-layout.c:1400 ../clutter/clutter-flow-layout.c:906
+#: ../clutter/clutter-box-layout.c:1380 ../clutter/clutter-flow-layout.c:943
 msgid "Homogeneous"
 msgstr "Homogeni"
 
-#: ../clutter/clutter-box-layout.c:1401
+#: ../clutter/clutter-box-layout.c:1381
 msgid ""
 "Whether the layout should be homogeneous, i.e. all childs get the same size"
 msgstr ""
 "Si la disposició hauria de ser homogènia, és a dir, que tots els fills "
 "tinguen la mateixa mida"
 
-#: ../clutter/clutter-box-layout.c:1416
+#: ../clutter/clutter-box-layout.c:1396
 msgid "Pack Start"
 msgstr "Ajunta al principi"
 
-#: ../clutter/clutter-box-layout.c:1417
+#: ../clutter/clutter-box-layout.c:1397
 msgid "Whether to pack items at the start of the box"
 msgstr "Si s'ha d'ajuntar els elements a l'inici de la caixa"
 
-#: ../clutter/clutter-box-layout.c:1430
+#: ../clutter/clutter-box-layout.c:1410
 msgid "Spacing"
 msgstr "Espaiat"
 
-#: ../clutter/clutter-box-layout.c:1431
+#: ../clutter/clutter-box-layout.c:1411
 msgid "Spacing between children"
 msgstr "Espaiat entre fills"
 
-#: ../clutter/clutter-box-layout.c:1448 ../clutter/clutter-table-layout.c:1675
+#: ../clutter/clutter-box-layout.c:1428
+#: ../clutter/deprecated/clutter-table-layout.c:1669
 msgid "Use Animations"
 msgstr "Utilitza animacions"
 
-#: ../clutter/clutter-box-layout.c:1449 ../clutter/clutter-table-layout.c:1676
+#: ../clutter/clutter-box-layout.c:1429
+#: ../clutter/deprecated/clutter-table-layout.c:1670
 msgid "Whether layout changes should be animated"
 msgstr "Si s'han d'animar els canvis de disposició"
 
-#: ../clutter/clutter-box-layout.c:1473 ../clutter/clutter-table-layout.c:1700
+#: ../clutter/clutter-box-layout.c:1453
+#: ../clutter/deprecated/clutter-table-layout.c:1694
 msgid "Easing Mode"
 msgstr "Mode del camí"
 
-#: ../clutter/clutter-box-layout.c:1474 ../clutter/clutter-table-layout.c:1701
+#: ../clutter/clutter-box-layout.c:1454
+#: ../clutter/deprecated/clutter-table-layout.c:1695
 msgid "The easing mode of the animations"
 msgstr "El mode del camí de les animacions"
 
-#: ../clutter/clutter-box-layout.c:1494 ../clutter/clutter-table-layout.c:1721
+#: ../clutter/clutter-box-layout.c:1474
+#: ../clutter/deprecated/clutter-table-layout.c:1715
 msgid "Easing Duration"
 msgstr "Durada del camí"
 
-#: ../clutter/clutter-box-layout.c:1495 ../clutter/clutter-table-layout.c:1722
+#: ../clutter/clutter-box-layout.c:1475
+#: ../clutter/deprecated/clutter-table-layout.c:1716
 msgid "The duration of the animations"
 msgstr "La durada de les animacions"
 
@@ -918,13 +932,29 @@ msgstr "Contrast"
 msgid "The contrast change to apply"
 msgstr "El canvi de contrast a aplicar"
 
-#: ../clutter/clutter-canvas.c:216
+#: ../clutter/clutter-canvas.c:248
 msgid "The width of the canvas"
 msgstr "L'amplada del llenç"
 
-#: ../clutter/clutter-canvas.c:232
+#: ../clutter/clutter-canvas.c:264
 msgid "The height of the canvas"
 msgstr "L'alçada del llenç"
+
+#: ../clutter/clutter-canvas.c:283
+msgid "Scale Factor Set"
+msgstr "Establit el factor d'escalat"
+
+#: ../clutter/clutter-canvas.c:284
+msgid "Whether the scale-factor property is set"
+msgstr "Si la propietat de factor d'escalat té un valor"
+
+#: ../clutter/clutter-canvas.c:305
+msgid "Scale Factor"
+msgstr "Factor d'escalat"
+
+#: ../clutter/clutter-canvas.c:306
+msgid "The scaling factor for the surface"
+msgstr "El factor d'escalat de la superfície"
 
 #: ../clutter/clutter-child-meta.c:127
 msgid "Container"
@@ -938,39 +968,39 @@ msgstr "El contenidor que ha creat esta dada"
 msgid "The actor wrapped by this data"
 msgstr "L'actor envoltat per esta dada"
 
-#: ../clutter/clutter-click-action.c:559
+#: ../clutter/clutter-click-action.c:586
 msgid "Pressed"
 msgstr "Premut"
 
-#: ../clutter/clutter-click-action.c:560
+#: ../clutter/clutter-click-action.c:587
 msgid "Whether the clickable should be in pressed state"
 msgstr "Si l'element que s'hi pot fer clic hauria d'estar en l'estat de premut"
 
-#: ../clutter/clutter-click-action.c:573
+#: ../clutter/clutter-click-action.c:600
 msgid "Held"
 msgstr "Manté"
 
-#: ../clutter/clutter-click-action.c:574
+#: ../clutter/clutter-click-action.c:601
 msgid "Whether the clickable has a grab"
 msgstr "Si l'element que s'hi pot fer clic té un mantenidor"
 
-#: ../clutter/clutter-click-action.c:591 ../clutter/clutter-settings.c:599
+#: ../clutter/clutter-click-action.c:618 ../clutter/clutter-settings.c:651
 msgid "Long Press Duration"
 msgstr "Durada de la premuda llarga"
 
-#: ../clutter/clutter-click-action.c:592
+#: ../clutter/clutter-click-action.c:619
 msgid "The minimum duration of a long press to recognize the gesture"
 msgstr "La durada mínima perquè es reconegui el gest d'una premuda llarga"
 
-#: ../clutter/clutter-click-action.c:610
+#: ../clutter/clutter-click-action.c:637
 msgid "Long Press Threshold"
 msgstr "Llindar de la premuda llarga"
 
-#: ../clutter/clutter-click-action.c:611
+#: ../clutter/clutter-click-action.c:638
 msgid "The maximum threshold before a long press is cancelled"
-msgstr "El llindar màxim abans de canceŀlar una premuda llarga"
+msgstr "El llindar màxim abans de cancel·lar una premuda llarga"
 
-#: ../clutter/clutter-clone.c:346
+#: ../clutter/clutter-clone.c:342
 msgid "Specifies the actor to be cloned"
 msgstr "Especifica l'actor a ser clonat"
 
@@ -982,27 +1012,27 @@ msgstr "Matís"
 msgid "The tint to apply"
 msgstr "El matís a aplicar"
 
-#: ../clutter/clutter-deform-effect.c:588
+#: ../clutter/clutter-deform-effect.c:591
 msgid "Horizontal Tiles"
 msgstr "Quadres horitzontals"
 
-#: ../clutter/clutter-deform-effect.c:589
+#: ../clutter/clutter-deform-effect.c:592
 msgid "The number of horizontal tiles"
 msgstr "El nombre de quadres horitzontals"
 
-#: ../clutter/clutter-deform-effect.c:604
+#: ../clutter/clutter-deform-effect.c:607
 msgid "Vertical Tiles"
 msgstr "Quadres verticals"
 
-#: ../clutter/clutter-deform-effect.c:605
+#: ../clutter/clutter-deform-effect.c:608
 msgid "The number of vertical tiles"
 msgstr "El nombre de quadres verticals"
 
-#: ../clutter/clutter-deform-effect.c:622
+#: ../clutter/clutter-deform-effect.c:625
 msgid "Back Material"
 msgstr "Material de fons"
 
-#: ../clutter/clutter-deform-effect.c:623
+#: ../clutter/clutter-deform-effect.c:626
 msgid "The material to be used when painting the back of the actor"
 msgstr "El material que s'utilitzarà quan es pinti el fons de l'actor"
 
@@ -1010,259 +1040,297 @@ msgstr "El material que s'utilitzarà quan es pinti el fons de l'actor"
 msgid "The desaturation factor"
 msgstr "El factor de dessaturació"
 
-#: ../clutter/clutter-device-manager.c:131
-#: ../clutter/clutter-input-device.c:366
-#: ../clutter/x11/clutter-keymap-x11.c:316
+#: ../clutter/clutter-device-manager.c:127
+#: ../clutter/clutter-input-device.c:355
+#: ../clutter/x11/clutter-keymap-x11.c:457
 msgid "Backend"
 msgstr "Rerefons"
 
-#: ../clutter/clutter-device-manager.c:132
+#: ../clutter/clutter-device-manager.c:128
 msgid "The ClutterBackend of the device manager"
 msgstr "El «ClutterBackend» del gestor del dispositiu"
 
-#: ../clutter/clutter-drag-action.c:742
+#: ../clutter/clutter-drag-action.c:733
 msgid "Horizontal Drag Threshold"
 msgstr "Llindar d'arrossegament horitzontal"
 
-#: ../clutter/clutter-drag-action.c:743
+#: ../clutter/clutter-drag-action.c:734
 msgid "The horizontal amount of pixels required to start dragging"
 msgstr ""
 "El nombre de píxels horitzontals necessaris per iniciar un arrossegament"
 
-#: ../clutter/clutter-drag-action.c:770
+#: ../clutter/clutter-drag-action.c:761
 msgid "Vertical Drag Threshold"
 msgstr "Llindar d'arrossegament vertical"
 
-#: ../clutter/clutter-drag-action.c:771
+#: ../clutter/clutter-drag-action.c:762
 msgid "The vertical amount of pixels required to start dragging"
 msgstr "El nombre de píxels verticals necessaris per iniciar un arrossegament"
 
-#: ../clutter/clutter-drag-action.c:792
+#: ../clutter/clutter-drag-action.c:783
 msgid "Drag Handle"
 msgstr "Nansa d'arrossegament"
 
-#: ../clutter/clutter-drag-action.c:793
+#: ../clutter/clutter-drag-action.c:784
 msgid "The actor that is being dragged"
 msgstr "L'actor que s'està arrossegant"
 
-#: ../clutter/clutter-drag-action.c:806
+#: ../clutter/clutter-drag-action.c:797
 msgid "Drag Axis"
 msgstr "Eix d'arrossegament"
 
-#: ../clutter/clutter-drag-action.c:807
+#: ../clutter/clutter-drag-action.c:798
 msgid "Constraints the dragging to an axis"
 msgstr "Restringeix l'arrossegament a un eix"
 
-#: ../clutter/clutter-drag-action.c:823
+#: ../clutter/clutter-drag-action.c:814
 msgid "Drag Area"
 msgstr "Àrea d'arrossegament"
 
-#: ../clutter/clutter-drag-action.c:824
+#: ../clutter/clutter-drag-action.c:815
 msgid "Constrains the dragging to a rectangle"
 msgstr "Restringeix l'arrossegament a un rectangle"
 
-#: ../clutter/clutter-drag-action.c:837
+#: ../clutter/clutter-drag-action.c:828
 msgid "Drag Area Set"
 msgstr "Establiment de l'àrea d'arrossegament"
 
-#: ../clutter/clutter-drag-action.c:838
+#: ../clutter/clutter-drag-action.c:829
 msgid "Whether the drag area is set"
 msgstr "Si la propietat d'àrea d'arrossegament té un valor"
 
-#: ../clutter/clutter-flow-layout.c:907
+#: ../clutter/clutter-flow-layout.c:944
 msgid "Whether each item should receive the same allocation"
 msgstr "Si cada element hauria de rebre la mateixa ubicació"
 
-#: ../clutter/clutter-flow-layout.c:922 ../clutter/clutter-table-layout.c:1637
+#: ../clutter/clutter-flow-layout.c:959
+#: ../clutter/deprecated/clutter-table-layout.c:1629
 msgid "Column Spacing"
 msgstr "Espaiat de columna"
 
-#: ../clutter/clutter-flow-layout.c:923
+#: ../clutter/clutter-flow-layout.c:960
 msgid "The spacing between columns"
 msgstr "L'espaiat entre columnes"
 
-#: ../clutter/clutter-flow-layout.c:939 ../clutter/clutter-table-layout.c:1651
+#: ../clutter/clutter-flow-layout.c:976
+#: ../clutter/deprecated/clutter-table-layout.c:1645
 msgid "Row Spacing"
 msgstr "Espaiat de fila"
 
-#: ../clutter/clutter-flow-layout.c:940
+#: ../clutter/clutter-flow-layout.c:977
 msgid "The spacing between rows"
 msgstr "L'espaiat entre files"
 
-#: ../clutter/clutter-flow-layout.c:954
+#: ../clutter/clutter-flow-layout.c:991
 msgid "Minimum Column Width"
 msgstr "Amplada mínima de columna"
 
-#: ../clutter/clutter-flow-layout.c:955
+#: ../clutter/clutter-flow-layout.c:992
 msgid "Minimum width for each column"
 msgstr "L'amplada mínima per a cada columna"
 
-#: ../clutter/clutter-flow-layout.c:970
+#: ../clutter/clutter-flow-layout.c:1007
 msgid "Maximum Column Width"
 msgstr "Amplada màxima de columna"
 
-#: ../clutter/clutter-flow-layout.c:971
+#: ../clutter/clutter-flow-layout.c:1008
 msgid "Maximum width for each column"
 msgstr "L'amplada màxima per a cada columna"
 
-#: ../clutter/clutter-flow-layout.c:985
+#: ../clutter/clutter-flow-layout.c:1022
 msgid "Minimum Row Height"
 msgstr "Alçada mínima de columna"
 
-#: ../clutter/clutter-flow-layout.c:986
+#: ../clutter/clutter-flow-layout.c:1023
 msgid "Minimum height for each row"
 msgstr "L'alçada mínima per a cada columna"
 
-#: ../clutter/clutter-flow-layout.c:1001
+#: ../clutter/clutter-flow-layout.c:1038
 msgid "Maximum Row Height"
 msgstr "Alçada màxima de columna"
 
-#: ../clutter/clutter-flow-layout.c:1002
+#: ../clutter/clutter-flow-layout.c:1039
 msgid "Maximum height for each row"
 msgstr "L'alçada màxima per a cada columna"
 
-#: ../clutter/clutter-grid-layout.c:1222
+#: ../clutter/clutter-flow-layout.c:1054 ../clutter/clutter-flow-layout.c:1055
+msgid "Snap to grid"
+msgstr "Ajusta a la graella"
+
+#: ../clutter/clutter-gesture-action.c:668
+msgid "Number touch points"
+msgstr "Nombre de punts tàctils"
+
+#: ../clutter/clutter-gesture-action.c:669
+msgid "Number of touch points"
+msgstr "El nombre de punts tàctils"
+
+#: ../clutter/clutter-gesture-action.c:684
+msgid "Threshold Trigger Edge"
+msgstr "Vora del llindar d'activació"
+
+#: ../clutter/clutter-gesture-action.c:685
+msgid "The trigger edge used by the action"
+msgstr "La vora d'activació que utilitza l'acció"
+
+#: ../clutter/clutter-gesture-action.c:704
+msgid "Threshold Trigger Horizontal Distance"
+msgstr "Llindar d'activació de distància horitzontal"
+
+#: ../clutter/clutter-gesture-action.c:705
+msgid "The horizontal trigger distance used by the action"
+msgstr "La distància d'activació horitzontal que utilitza l'acció"
+
+#: ../clutter/clutter-gesture-action.c:723
+msgid "Threshold Trigger Vertical Distance"
+msgstr "Llindar d'activació de distància vertical"
+
+#: ../clutter/clutter-gesture-action.c:724
+msgid "The vertical trigger distance used by the action"
+msgstr "La distància d'activació vertical que utilitza l'acció"
+
+#: ../clutter/clutter-grid-layout.c:1223
 msgid "Left attachment"
 msgstr "Adjunció esquerra"
 
-#: ../clutter/clutter-grid-layout.c:1223
+#: ../clutter/clutter-grid-layout.c:1224
 msgid "The column number to attach the left side of the child to"
 msgstr "El número de columna al que adjuntar-hi la part esquerra del fill"
 
-#: ../clutter/clutter-grid-layout.c:1230
+#: ../clutter/clutter-grid-layout.c:1231
 msgid "Top attachment"
 msgstr "Adjunció superior"
 
-#: ../clutter/clutter-grid-layout.c:1231
+#: ../clutter/clutter-grid-layout.c:1232
 msgid "The row number to attach the top side of a child widget to"
 msgstr "El número de columna al que adjuntar-hi la part superior del giny fill"
 
-#: ../clutter/clutter-grid-layout.c:1239
+#: ../clutter/clutter-grid-layout.c:1240
 msgid "The number of columns that a child spans"
 msgstr "El nombre de columnes que hauria d'abastir el fill"
 
-#: ../clutter/clutter-grid-layout.c:1246
+#: ../clutter/clutter-grid-layout.c:1247
 msgid "The number of rows that a child spans"
 msgstr "El nombre de files que hauria d'abastir el fill"
 
-#: ../clutter/clutter-grid-layout.c:1562
+#: ../clutter/clutter-grid-layout.c:1564
 msgid "Row spacing"
 msgstr "Espaiat de files"
 
-#: ../clutter/clutter-grid-layout.c:1563
+#: ../clutter/clutter-grid-layout.c:1565
 msgid "The amount of space between two consecutive rows"
 msgstr "La quantitat d'espai entre dues files consecutives"
 
-#: ../clutter/clutter-grid-layout.c:1576
+#: ../clutter/clutter-grid-layout.c:1578
 msgid "Column spacing"
 msgstr "Espaiat de columnes"
 
-#: ../clutter/clutter-grid-layout.c:1577
+#: ../clutter/clutter-grid-layout.c:1579
 msgid "The amount of space between two consecutive columns"
 msgstr "La quantitat d'espai entre dues columnes consecutives"
 
-#: ../clutter/clutter-grid-layout.c:1591
+#: ../clutter/clutter-grid-layout.c:1593
 msgid "Row Homogeneous"
 msgstr "Files homogènies"
 
-#: ../clutter/clutter-grid-layout.c:1592
+#: ../clutter/clutter-grid-layout.c:1594
 msgid "If TRUE, the rows are all the same height"
 msgstr "Si és «TRUE» (cert), totes les files tenen la mateixa alçada"
 
-#: ../clutter/clutter-grid-layout.c:1605
+#: ../clutter/clutter-grid-layout.c:1607
 msgid "Column Homogeneous"
 msgstr "Columnes homogènies"
 
-#: ../clutter/clutter-grid-layout.c:1606
+#: ../clutter/clutter-grid-layout.c:1608
 msgid "If TRUE, the columns are all the same width"
 msgstr "Si és «TRUE» (cert), totes les columnes tenen la mateixa amplada"
 
-#: ../clutter/clutter-image.c:248 ../clutter/clutter-image.c:311
-#: ../clutter/clutter-image.c:399
+#: ../clutter/clutter-image.c:268 ../clutter/clutter-image.c:331
+#: ../clutter/clutter-image.c:419
 msgid "Unable to load image data"
 msgstr "No s'han pogut carregar les dades de la imatge"
 
-#: ../clutter/clutter-input-device.c:242
+#: ../clutter/clutter-input-device.c:231
 msgid "Id"
 msgstr "Identificador"
 
-#: ../clutter/clutter-input-device.c:243
+#: ../clutter/clutter-input-device.c:232
 msgid "Unique identifier of the device"
 msgstr "L'identificador únic del dispositiu"
 
-#: ../clutter/clutter-input-device.c:259
+#: ../clutter/clutter-input-device.c:248
 msgid "The name of the device"
 msgstr "El nom del dispositiu"
 
-#: ../clutter/clutter-input-device.c:273
+#: ../clutter/clutter-input-device.c:262
 msgid "Device Type"
 msgstr "Tipus de dispositiu"
 
-#: ../clutter/clutter-input-device.c:274
+#: ../clutter/clutter-input-device.c:263
 msgid "The type of the device"
 msgstr "El tipus de dispositiu"
 
-#: ../clutter/clutter-input-device.c:289
+#: ../clutter/clutter-input-device.c:278
 msgid "Device Manager"
 msgstr "Gestor de dispositiu"
 
-#: ../clutter/clutter-input-device.c:290
+#: ../clutter/clutter-input-device.c:279
 msgid "The device manager instance"
 msgstr "La instància del gestor de dispositiu"
 
-#: ../clutter/clutter-input-device.c:303
+#: ../clutter/clutter-input-device.c:292
 msgid "Device Mode"
 msgstr "Mode del dispositiu"
 
-#: ../clutter/clutter-input-device.c:304
+#: ../clutter/clutter-input-device.c:293
 msgid "The mode of the device"
 msgstr "El mode del dispositiu"
 
-#: ../clutter/clutter-input-device.c:318
+#: ../clutter/clutter-input-device.c:307
 msgid "Has Cursor"
 msgstr "Té un cursor"
 
-#: ../clutter/clutter-input-device.c:319
+#: ../clutter/clutter-input-device.c:308
 msgid "Whether the device has a cursor"
 msgstr "Si el dispositiu té un cursor"
 
-#: ../clutter/clutter-input-device.c:338
+#: ../clutter/clutter-input-device.c:327
 msgid "Whether the device is enabled"
 msgstr "Si el dispositiu és habilitat"
 
-#: ../clutter/clutter-input-device.c:351
+#: ../clutter/clutter-input-device.c:340
 msgid "Number of Axes"
 msgstr "Nombre d'eixos"
 
-#: ../clutter/clutter-input-device.c:352
+#: ../clutter/clutter-input-device.c:341
 msgid "The number of axes on the device"
 msgstr "El nombre d'eixos en el dispositiu"
 
-#: ../clutter/clutter-input-device.c:367
+#: ../clutter/clutter-input-device.c:356
 msgid "The backend instance"
 msgstr "La instància del rerefons"
 
-#: ../clutter/clutter-interval.c:506
+#: ../clutter/clutter-interval.c:557
 msgid "Value Type"
 msgstr "Tipus de valor"
 
-#: ../clutter/clutter-interval.c:507
+#: ../clutter/clutter-interval.c:558
 msgid "The type of the values in the interval"
 msgstr "El tipus dels valors en l'interval"
 
-#: ../clutter/clutter-interval.c:522
+#: ../clutter/clutter-interval.c:573
 msgid "Initial Value"
 msgstr "Valor inicial"
 
-#: ../clutter/clutter-interval.c:523
+#: ../clutter/clutter-interval.c:574
 msgid "Initial value of the interval"
 msgstr "El valor inicial de l'interval"
 
-#: ../clutter/clutter-interval.c:537
+#: ../clutter/clutter-interval.c:588
 msgid "Final Value"
 msgstr "Valor final"
 
-#: ../clutter/clutter-interval.c:538
+#: ../clutter/clutter-interval.c:589
 msgid "Final value of the interval"
 msgstr "El valor final de l'interval"
 
@@ -1281,96 +1349,96 @@ msgstr "El gestor que ha creat esta dada"
 #. * Do NOT translate it to non-English e.g. "predefinito:LTR"! If
 #. * it isn't default:LTR or default:RTL it will not work.
 #.
-#: ../clutter/clutter-main.c:762
+#: ../clutter/clutter-main.c:751
 msgid "default:LTR"
 msgstr "default:LTR"
 
-#: ../clutter/clutter-main.c:1633
+#: ../clutter/clutter-main.c:1577
 msgid "Show frames per second"
 msgstr "Mostra els fotogrames per segon"
 
-#: ../clutter/clutter-main.c:1635
+#: ../clutter/clutter-main.c:1579
 msgid "Default frame rate"
 msgstr "Fotogrames per segon per defecte"
 
-#: ../clutter/clutter-main.c:1637
+#: ../clutter/clutter-main.c:1581
 msgid "Make all warnings fatal"
 msgstr "Fes que tots els avisos siguen fatals"
 
-#: ../clutter/clutter-main.c:1640
+#: ../clutter/clutter-main.c:1584
 msgid "Direction for the text"
 msgstr "Direcció del text"
 
-#: ../clutter/clutter-main.c:1643
+#: ../clutter/clutter-main.c:1587
 msgid "Disable mipmapping on text"
 msgstr "Inhabilita el mapat MIP en el text"
 
-#: ../clutter/clutter-main.c:1646
+#: ../clutter/clutter-main.c:1590
 msgid "Use 'fuzzy' picking"
 msgstr "Utilitza una selecció «difusa»"
 
-#: ../clutter/clutter-main.c:1649
+#: ../clutter/clutter-main.c:1593
 msgid "Clutter debugging flags to set"
 msgstr "Senyaladors de depuració de la Clutter a establir"
 
-#: ../clutter/clutter-main.c:1651
+#: ../clutter/clutter-main.c:1595
 msgid "Clutter debugging flags to unset"
 msgstr "Senyaladors de depuració de la Clutter a inhabilitar"
 
-#: ../clutter/clutter-main.c:1655
+#: ../clutter/clutter-main.c:1599
 msgid "Clutter profiling flags to set"
 msgstr "Senyaladors de perfilació de la Clutter a establir"
 
-#: ../clutter/clutter-main.c:1657
+#: ../clutter/clutter-main.c:1601
 msgid "Clutter profiling flags to unset"
 msgstr "Senyaladors de perfilació de la Clutter a inhabilitar"
 
-#: ../clutter/clutter-main.c:1660
+#: ../clutter/clutter-main.c:1604
 msgid "Enable accessibility"
 msgstr "Habilita l'accessibilitat"
 
-#: ../clutter/clutter-main.c:1852
+#: ../clutter/clutter-main.c:1796
 msgid "Clutter Options"
 msgstr "Opcions de la Clutter"
 
-#: ../clutter/clutter-main.c:1853
+#: ../clutter/clutter-main.c:1797
 msgid "Show Clutter Options"
 msgstr "Mostra les opcions de la Clutter"
 
-#: ../clutter/clutter-pan-action.c:451
+#: ../clutter/clutter-pan-action.c:455
 msgid "Pan Axis"
 msgstr "Eix de panorama"
 
-#: ../clutter/clutter-pan-action.c:452
+#: ../clutter/clutter-pan-action.c:456
 msgid "Constraints the panning to an axis"
 msgstr "Restringeix el panorama a un eix"
 
-#: ../clutter/clutter-pan-action.c:466
+#: ../clutter/clutter-pan-action.c:470
 msgid "Interpolate"
 msgstr "Interpolació"
 
-#: ../clutter/clutter-pan-action.c:467
+#: ../clutter/clutter-pan-action.c:471
 msgid "Whether interpolated events emission is enabled."
 msgstr "Si l'emissió d'esdeveniments interpolats és habilitat."
 
-#: ../clutter/clutter-pan-action.c:483
+#: ../clutter/clutter-pan-action.c:487
 msgid "Deceleration"
 msgstr "Desacceleració"
 
-#: ../clutter/clutter-pan-action.c:484
+#: ../clutter/clutter-pan-action.c:488
 msgid "Rate at which the interpolated panning will decelerate in"
 msgstr "La ràtio en la que la interpolació del panorama desaccelerarà"
 
-#: ../clutter/clutter-pan-action.c:501
+#: ../clutter/clutter-pan-action.c:505
 msgid "Initial acceleration factor"
 msgstr "Factor d'acceleració inicial"
 
-#: ../clutter/clutter-pan-action.c:502
+#: ../clutter/clutter-pan-action.c:506
 msgid "Factor applied to the momentum when starting the interpolated phase"
 msgstr "El factor aplicat al moment quan s'inicie la fase d'interpolació"
 
 #: ../clutter/clutter-path-constraint.c:212
-#: ../clutter/deprecated/clutter-behaviour-path.c:225
+#: ../clutter/deprecated/clutter-behaviour-path.c:221
 msgid "Path"
 msgstr "Camí"
 
@@ -1382,89 +1450,89 @@ msgstr "El camí utilitzat per restringir un actor"
 msgid "The offset along the path, between -1.0 and 2.0"
 msgstr "El desplaçament al llarg del camí, entre -1.0 i 2.0"
 
-#: ../clutter/clutter-property-transition.c:271
+#: ../clutter/clutter-property-transition.c:269
 msgid "Property Name"
 msgstr "Nom de la propietat"
 
-#: ../clutter/clutter-property-transition.c:272
+#: ../clutter/clutter-property-transition.c:270
 msgid "The name of the property to animate"
 msgstr "El nom de la propietat que s'animarà"
 
-#: ../clutter/clutter-script.c:466
+#: ../clutter/clutter-script.c:464
 msgid "Filename Set"
 msgstr "Té nom de fitxer"
 
-#: ../clutter/clutter-script.c:467
+#: ../clutter/clutter-script.c:465
 msgid "Whether the :filename property is set"
 msgstr "Si la propietat «:filename» té un valor"
 
-#: ../clutter/clutter-script.c:481
-#: ../clutter/deprecated/clutter-texture.c:1082
+#: ../clutter/clutter-script.c:479
+#: ../clutter/deprecated/clutter-texture.c:1080
 msgid "Filename"
 msgstr "Nom de fitxer"
 
-#: ../clutter/clutter-script.c:482
+#: ../clutter/clutter-script.c:480
 msgid "The path of the currently parsed file"
 msgstr "El camí al fitxer analitzat actualment"
 
-#: ../clutter/clutter-script.c:499
+#: ../clutter/clutter-script.c:497
 msgid "Translation Domain"
 msgstr "Domini de la traducció"
 
-#: ../clutter/clutter-script.c:500
+#: ../clutter/clutter-script.c:498
 msgid "The translation domain used to localize string"
 msgstr "El domini de traducció utilitzat per ubicar una cadena"
 
-#: ../clutter/clutter-scroll-actor.c:263
+#: ../clutter/clutter-scroll-actor.c:184
 msgid "Scroll Mode"
 msgstr "Mode de desplaçament"
 
-#: ../clutter/clutter-scroll-actor.c:264
+#: ../clutter/clutter-scroll-actor.c:185
 msgid "The scrolling direction"
 msgstr "La direcció del desplaçament"
 
-#: ../clutter/clutter-settings.c:440
+#: ../clutter/clutter-settings.c:486
 msgid "Double Click Time"
 msgstr "Temps del doble clic"
 
-#: ../clutter/clutter-settings.c:441
+#: ../clutter/clutter-settings.c:487
 msgid "The time between clicks necessary to detect a multiple click"
 msgstr "El temps entre clics necessari per detectar un clic múltiple"
 
-#: ../clutter/clutter-settings.c:456
+#: ../clutter/clutter-settings.c:502
 msgid "Double Click Distance"
 msgstr "Distància de doble clic"
 
-#: ../clutter/clutter-settings.c:457
+#: ../clutter/clutter-settings.c:503
 msgid "The distance between clicks necessary to detect a multiple click"
 msgstr "La distància entre clics necessària per detectar un clic múltiple"
 
-#: ../clutter/clutter-settings.c:472
+#: ../clutter/clutter-settings.c:518
 msgid "Drag Threshold"
 msgstr "Llindar d'arrossegament"
 
-#: ../clutter/clutter-settings.c:473
+#: ../clutter/clutter-settings.c:519
 msgid "The distance the cursor should travel before starting to drag"
 msgstr ""
 "La distància que ha de desplaçar-se el cursor abans de començar un "
 "arrossegament"
 
-#: ../clutter/clutter-settings.c:488 ../clutter/clutter-text.c:3368
+#: ../clutter/clutter-settings.c:534 ../clutter/clutter-text.c:3437
 msgid "Font Name"
 msgstr "Nom del tipus de lletra"
 
-#: ../clutter/clutter-settings.c:489
+#: ../clutter/clutter-settings.c:535
 msgid ""
 "The description of the default font, as one that could be parsed by Pango"
 msgstr ""
 "La descripció del tipus de lletra per defecte, tal com l'hauria d'analitzar "
 "la Pango"
 
-#: ../clutter/clutter-settings.c:504
+#: ../clutter/clutter-settings.c:550
 msgid "Font Antialias"
 msgstr "Antialiàsing del tipus de lletra"
 
-#: ../clutter/clutter-settings.c:505
+#: ../clutter/clutter-settings.c:551
 msgid ""
 "Whether to use antialiasing (1 to enable, 0 to disable, and -1 to use the "
 "default)"
@@ -1472,73 +1540,81 @@ msgstr ""
 "Si s'ha d'utilitzar l'antialiàsing (1 l'habilita, 0 l'inhabilita i -1 "
 "utilitza el per defecte)"
 
-#: ../clutter/clutter-settings.c:521
+#: ../clutter/clutter-settings.c:567 ../clutter/clutter-settings.c:575
 msgid "Font DPI"
 msgstr "PPP del tipus de lletra"
 
-#: ../clutter/clutter-settings.c:522
+#: ../clutter/clutter-settings.c:568 ../clutter/clutter-settings.c:576
 msgid ""
 "The resolution of the font, in 1024 * dots/inch, or -1 to use the default"
 msgstr ""
 "La resolució del tipus de lletra, en 1024 * punts/polzada, o -1 utilitza la "
 "per defecte"
 
-#: ../clutter/clutter-settings.c:538
+#: ../clutter/clutter-settings.c:592
 msgid "Font Hinting"
 msgstr "Contorn del tipus de lletra"
 
-#: ../clutter/clutter-settings.c:539
+#: ../clutter/clutter-settings.c:593
 msgid ""
 "Whether to use hinting (1 to enable, 0 to disable and -1 to use the default)"
 msgstr ""
 "Si s'ha d'utilitzar el contorn (1 l'habilita, 0 l'inhabilita i -1 per "
 "utilitzar el per defecte)"
 
-#: ../clutter/clutter-settings.c:560
+#: ../clutter/clutter-settings.c:613
 msgid "Font Hint Style"
 msgstr "Estil del contorn del tipus de lletra"
 
-#: ../clutter/clutter-settings.c:561
+#: ../clutter/clutter-settings.c:614
 msgid "The style of hinting (hintnone, hintslight, hintmedium, hintfull)"
 msgstr ""
 "L'estil del contorn (sense contorn, contorn lleuger, contorn mitjà, contorn "
 "complet)"
 
-#: ../clutter/clutter-settings.c:582
+#: ../clutter/clutter-settings.c:634
 msgid "Font Subpixel Order"
 msgstr "Orde de subpíxels del tipus de lletra"
 
-#: ../clutter/clutter-settings.c:583
+#: ../clutter/clutter-settings.c:635
 msgid "The type of subpixel antialiasing (none, rgb, bgr, vrgb, vbgr)"
 msgstr "El tipus d'antialiàsing de subpíxel (cap, rgb, bgr, vrgb, vbgr)"
 
-#: ../clutter/clutter-settings.c:600
+#: ../clutter/clutter-settings.c:652
 msgid "The minimum duration for a long press gesture to be recognized"
 msgstr "La durada mínima d'una premuda llarga perquè es reconegui"
 
-#: ../clutter/clutter-settings.c:607
+#: ../clutter/clutter-settings.c:659
+msgid "Window Scaling Factor"
+msgstr "El factor d'escalat de la finestra"
+
+#: ../clutter/clutter-settings.c:660
+msgid "The scaling factor to be applied to windows"
+msgstr "El factor d'escalat que s'ha d'aplicar a les finestres"
+
+#: ../clutter/clutter-settings.c:667
 msgid "Fontconfig configuration timestamp"
 msgstr "Marca horària de la configuració de la Fontconfig"
 
-#: ../clutter/clutter-settings.c:608
+#: ../clutter/clutter-settings.c:668
 msgid "Timestamp of the current fontconfig configuration"
 msgstr "Marca horària de la configuració actual de la Fontconfig"
 
-#: ../clutter/clutter-settings.c:625
+#: ../clutter/clutter-settings.c:685
 msgid "Password Hint Time"
 msgstr "Temps de pista de la contrasenya"
 
-#: ../clutter/clutter-settings.c:626
+#: ../clutter/clutter-settings.c:686
 msgid "How long to show the last input character in hidden entries"
 msgstr ""
 "Temps de durada de visualització de l'últim caràcter introduït en les "
 "entrades d'ocultes"
 
-#: ../clutter/clutter-shader-effect.c:486
+#: ../clutter/clutter-shader-effect.c:487
 msgid "Shader Type"
 msgstr "Tipus de shader"
 
-#: ../clutter/clutter-shader-effect.c:487
+#: ../clutter/clutter-shader-effect.c:488
 msgid "The type of shader used"
 msgstr "El tipus de shader que s'utilitza"
 
@@ -1566,760 +1642,704 @@ msgstr "La vora de la font que s'hauria de trencar"
 msgid "The offset in pixels to apply to the constraint"
 msgstr "El desplaçament, en píxels, a aplicar a la restricció"
 
-#: ../clutter/clutter-stage.c:1895
+#: ../clutter/clutter-stage.c:1918
 msgid "Fullscreen Set"
 msgstr "A pantalla completa"
 
-#: ../clutter/clutter-stage.c:1896
+#: ../clutter/clutter-stage.c:1919
 msgid "Whether the main stage is fullscreen"
 msgstr "Si l'escenari principal és a pantalla completa"
 
-#: ../clutter/clutter-stage.c:1910
+#: ../clutter/clutter-stage.c:1933
 msgid "Offscreen"
 msgstr "Fora de pantalla"
 
-#: ../clutter/clutter-stage.c:1911
+#: ../clutter/clutter-stage.c:1934
 msgid "Whether the main stage should be rendered offscreen"
 msgstr "Si l'escenari principal hauria de renderitzar-se fora de pantalla"
 
-#: ../clutter/clutter-stage.c:1923 ../clutter/clutter-text.c:3482
+#: ../clutter/clutter-stage.c:1946 ../clutter/clutter-text.c:3551
 msgid "Cursor Visible"
 msgstr "Visibilitat del cursor"
 
-#: ../clutter/clutter-stage.c:1924
+#: ../clutter/clutter-stage.c:1947
 msgid "Whether the mouse pointer is visible on the main stage"
 msgstr "Si el punter del ratolí és visible a l'escenari principal"
 
-#: ../clutter/clutter-stage.c:1938
+#: ../clutter/clutter-stage.c:1961
 msgid "User Resizable"
 msgstr "Redimensionable per l'usuari"
 
-#: ../clutter/clutter-stage.c:1939
+#: ../clutter/clutter-stage.c:1962
 msgid "Whether the stage is able to be resized via user interaction"
 msgstr "Si l'usuari pot redimensionar l'escenari"
 
-#: ../clutter/clutter-stage.c:1954 ../clutter/deprecated/clutter-box.c:260
-#: ../clutter/deprecated/clutter-rectangle.c:273
+#: ../clutter/clutter-stage.c:1977 ../clutter/deprecated/clutter-box.c:254
+#: ../clutter/deprecated/clutter-rectangle.c:270
 msgid "Color"
 msgstr "Color"
 
-#: ../clutter/clutter-stage.c:1955
+#: ../clutter/clutter-stage.c:1978
 msgid "The color of the stage"
 msgstr "El color de l'escenari"
 
-#: ../clutter/clutter-stage.c:1970
+#: ../clutter/clutter-stage.c:1993
 msgid "Perspective"
 msgstr "Perspectiva"
 
-#: ../clutter/clutter-stage.c:1971
+#: ../clutter/clutter-stage.c:1994
 msgid "Perspective projection parameters"
 msgstr "Els paràmetres de projecció de la perspectiva"
 
-#: ../clutter/clutter-stage.c:1986
+#: ../clutter/clutter-stage.c:2009
 msgid "Title"
 msgstr "Títol"
 
-#: ../clutter/clutter-stage.c:1987
+#: ../clutter/clutter-stage.c:2010
 msgid "Stage Title"
 msgstr "Títol de l'escenari"
 
-#: ../clutter/clutter-stage.c:2004
+#: ../clutter/clutter-stage.c:2027
 msgid "Use Fog"
 msgstr "Utilitza la boira"
 
-#: ../clutter/clutter-stage.c:2005
+#: ../clutter/clutter-stage.c:2028
 msgid "Whether to enable depth cueing"
 msgstr "Si s'habilita la percepció de profunditat"
 
-#: ../clutter/clutter-stage.c:2021
+#: ../clutter/clutter-stage.c:2044
 msgid "Fog"
 msgstr "Boira"
 
-#: ../clutter/clutter-stage.c:2022
+#: ../clutter/clutter-stage.c:2045
 msgid "Settings for the depth cueing"
 msgstr "Paràmetres de la percepció de profunditat"
 
-#: ../clutter/clutter-stage.c:2038
+#: ../clutter/clutter-stage.c:2061
 msgid "Use Alpha"
 msgstr "Utilitza l'alfa"
 
-#: ../clutter/clutter-stage.c:2039
+#: ../clutter/clutter-stage.c:2062
 msgid "Whether to honour the alpha component of the stage color"
 msgstr "Si s'ha de respectar el component alfa del color de l'escenari"
 
-#: ../clutter/clutter-stage.c:2055
+#: ../clutter/clutter-stage.c:2078
 msgid "Key Focus"
 msgstr "Focus clau"
 
-#: ../clutter/clutter-stage.c:2056
+#: ../clutter/clutter-stage.c:2079
 msgid "The currently key focused actor"
 msgstr "L'actor clau que té el focus"
 
-#: ../clutter/clutter-stage.c:2072
+#: ../clutter/clutter-stage.c:2095
 msgid "No Clear Hint"
 msgstr "Sense indicació de neteja"
 
-#: ../clutter/clutter-stage.c:2073
+#: ../clutter/clutter-stage.c:2096
 msgid "Whether the stage should clear its contents"
 msgstr "Si l'escenari hauria de netejar els seus continguts"
 
-#: ../clutter/clutter-stage.c:2086
+#: ../clutter/clutter-stage.c:2109
 msgid "Accept Focus"
 msgstr "Accepta el focus"
 
-#: ../clutter/clutter-stage.c:2087
+#: ../clutter/clutter-stage.c:2110
 msgid "Whether the stage should accept focus on show"
 msgstr "Si l'escenari hauria d'acceptar el focus en mostrar-se"
 
-#: ../clutter/clutter-table-layout.c:543
-msgid "Column Number"
-msgstr "Número de columna"
-
-#: ../clutter/clutter-table-layout.c:544
-msgid "The column the widget resides in"
-msgstr "La columna en la que està el giny"
-
-#: ../clutter/clutter-table-layout.c:551
-msgid "Row Number"
-msgstr "Número de fila"
-
-#: ../clutter/clutter-table-layout.c:552
-msgid "The row the widget resides in"
-msgstr "La fila en la que està el giny"
-
-#: ../clutter/clutter-table-layout.c:559
-msgid "Column Span"
-msgstr "Abast en columnes"
-
-#: ../clutter/clutter-table-layout.c:560
-msgid "The number of columns the widget should span"
-msgstr "El nombre de columnes que hauria d'abastir el giny"
-
-#: ../clutter/clutter-table-layout.c:567
-msgid "Row Span"
-msgstr "Abast en files"
-
-#: ../clutter/clutter-table-layout.c:568
-msgid "The number of rows the widget should span"
-msgstr "El nombre de files que hauria d'abastir el giny"
-
-#: ../clutter/clutter-table-layout.c:575
-msgid "Horizontal Expand"
-msgstr "Expansió horitzontal"
-
-#: ../clutter/clutter-table-layout.c:576
-msgid "Allocate extra space for the child in horizontal axis"
-msgstr "Ubica espai extra per al fill en l'eix horitzontal"
-
-#: ../clutter/clutter-table-layout.c:582
-msgid "Vertical Expand"
-msgstr "Expansió vertical"
-
-#: ../clutter/clutter-table-layout.c:583
-msgid "Allocate extra space for the child in vertical axis"
-msgstr "Ubica espai extra per al fill en l'eix vertical"
-
-#: ../clutter/clutter-table-layout.c:1638
-msgid "Spacing between columns"
-msgstr "Espaiat entre columnes"
-
-#: ../clutter/clutter-table-layout.c:1652
-msgid "Spacing between rows"
-msgstr "Espaiat entre files"
-
-#: ../clutter/clutter-text-buffer.c:351 ../clutter/clutter-text.c:3403
+#: ../clutter/clutter-text-buffer.c:347 ../clutter/clutter-text.c:3472
 msgid "Text"
 msgstr "Text"
 
-#: ../clutter/clutter-text-buffer.c:352
+#: ../clutter/clutter-text-buffer.c:348
 msgid "The contents of the buffer"
 msgstr "El contingut de la memòria intermèdia"
 
-#: ../clutter/clutter-text-buffer.c:365
+#: ../clutter/clutter-text-buffer.c:361
 msgid "Text length"
 msgstr "Llargada del text"
 
-#: ../clutter/clutter-text-buffer.c:366
+#: ../clutter/clutter-text-buffer.c:362
 msgid "Length of the text currently in the buffer"
 msgstr "La llargada del text que hi ha actualment a la memòria intermèdia"
 
-#: ../clutter/clutter-text-buffer.c:379
+#: ../clutter/clutter-text-buffer.c:375
 msgid "Maximum length"
 msgstr "Llargada màxima"
 
-#: ../clutter/clutter-text-buffer.c:380
+#: ../clutter/clutter-text-buffer.c:376
 msgid "Maximum number of characters for this entry. Zero if no maximum"
 msgstr "Nombre màxim de caràcters per esta entrada. Zero si no té màxim"
 
-#: ../clutter/clutter-text.c:3350
+#: ../clutter/clutter-text.c:3419
 msgid "Buffer"
 msgstr "Memòria intermèdia"
 
-#: ../clutter/clutter-text.c:3351
+#: ../clutter/clutter-text.c:3420
 msgid "The buffer for the text"
 msgstr "La memòria intermèdia del text"
 
-#: ../clutter/clutter-text.c:3369
+#: ../clutter/clutter-text.c:3438
 msgid "The font to be used by the text"
 msgstr "El tipus de lletra per al text"
 
-#: ../clutter/clutter-text.c:3386
+#: ../clutter/clutter-text.c:3455
 msgid "Font Description"
 msgstr "Descripció del tipus de lletra"
 
-#: ../clutter/clutter-text.c:3387
+#: ../clutter/clutter-text.c:3456
 msgid "The font description to be used"
 msgstr "La descripció del tipus de lletra que s'utilitzarà"
 
-#: ../clutter/clutter-text.c:3404
+#: ../clutter/clutter-text.c:3473
 msgid "The text to render"
 msgstr "El text a renderitzar"
 
-#: ../clutter/clutter-text.c:3418
+#: ../clutter/clutter-text.c:3487
 msgid "Font Color"
 msgstr "Color del tipus de lletra"
 
-#: ../clutter/clutter-text.c:3419
+#: ../clutter/clutter-text.c:3488
 msgid "Color of the font used by the text"
 msgstr "El color del tipus de lletra que utilitzarà el text"
 
-#: ../clutter/clutter-text.c:3434
+#: ../clutter/clutter-text.c:3503
 msgid "Editable"
 msgstr "Editable"
 
-#: ../clutter/clutter-text.c:3435
+#: ../clutter/clutter-text.c:3504
 msgid "Whether the text is editable"
 msgstr "Si el text es pot editar"
 
-#: ../clutter/clutter-text.c:3450
+#: ../clutter/clutter-text.c:3519
 msgid "Selectable"
 msgstr "Seleccionable"
 
-#: ../clutter/clutter-text.c:3451
+#: ../clutter/clutter-text.c:3520
 msgid "Whether the text is selectable"
 msgstr "Si el text es pot seleccionar"
 
-#: ../clutter/clutter-text.c:3465
+#: ../clutter/clutter-text.c:3534
 msgid "Activatable"
 msgstr "Activable"
 
-#: ../clutter/clutter-text.c:3466
+#: ../clutter/clutter-text.c:3535
 msgid "Whether pressing return causes the activate signal to be emitted"
 msgstr "Si s'emet el senyal d'activació en prémer la tecla de retorn"
 
-#: ../clutter/clutter-text.c:3483
+#: ../clutter/clutter-text.c:3552
 msgid "Whether the input cursor is visible"
 msgstr "Si és visible el cursor d'entrada"
 
-#: ../clutter/clutter-text.c:3497 ../clutter/clutter-text.c:3498
+#: ../clutter/clutter-text.c:3566 ../clutter/clutter-text.c:3567
 msgid "Cursor Color"
 msgstr "Color del cursor"
 
-#: ../clutter/clutter-text.c:3513
+#: ../clutter/clutter-text.c:3582
 msgid "Cursor Color Set"
 msgstr "Establit el color del cursor"
 
-#: ../clutter/clutter-text.c:3514
+#: ../clutter/clutter-text.c:3583
 msgid "Whether the cursor color has been set"
 msgstr "Si s'ha establit el color del cursor"
 
-#: ../clutter/clutter-text.c:3529
+#: ../clutter/clutter-text.c:3598
 msgid "Cursor Size"
 msgstr "Mida del cursor"
 
-#: ../clutter/clutter-text.c:3530
+#: ../clutter/clutter-text.c:3599
 msgid "The width of the cursor, in pixels"
 msgstr "L'amplada del cursor, en píxels"
 
-#: ../clutter/clutter-text.c:3546 ../clutter/clutter-text.c:3564
+#: ../clutter/clutter-text.c:3615 ../clutter/clutter-text.c:3633
 msgid "Cursor Position"
 msgstr "Posició del cursor"
 
-#: ../clutter/clutter-text.c:3547 ../clutter/clutter-text.c:3565
+#: ../clutter/clutter-text.c:3616 ../clutter/clutter-text.c:3634
 msgid "The cursor position"
 msgstr "La posició del cursor"
 
-#: ../clutter/clutter-text.c:3580
+#: ../clutter/clutter-text.c:3649
 msgid "Selection-bound"
 msgstr "Extrem de selecció"
 
-#: ../clutter/clutter-text.c:3581
+#: ../clutter/clutter-text.c:3650
 msgid "The cursor position of the other end of the selection"
 msgstr "La posició del cursor a l'altre extrem de la selecció"
 
-#: ../clutter/clutter-text.c:3596 ../clutter/clutter-text.c:3597
+#: ../clutter/clutter-text.c:3665 ../clutter/clutter-text.c:3666
 msgid "Selection Color"
 msgstr "Color de la selecció"
 
-#: ../clutter/clutter-text.c:3612
+#: ../clutter/clutter-text.c:3681
 msgid "Selection Color Set"
 msgstr "Establit el color de selecció"
 
-#: ../clutter/clutter-text.c:3613
+#: ../clutter/clutter-text.c:3682
 msgid "Whether the selection color has been set"
 msgstr "Si s'ha establit el color de selecció"
 
-#: ../clutter/clutter-text.c:3628
+#: ../clutter/clutter-text.c:3697
 msgid "Attributes"
 msgstr "Atributs"
 
-#: ../clutter/clutter-text.c:3629
+#: ../clutter/clutter-text.c:3698
 msgid "A list of style attributes to apply to the contents of the actor"
 msgstr "Una llista d'atributs d'estil per aplicar als continguts de l'actor"
 
-#: ../clutter/clutter-text.c:3651
+#: ../clutter/clutter-text.c:3720
 msgid "Use markup"
 msgstr "Utilitza l'etiquetatge"
 
-#: ../clutter/clutter-text.c:3652
+#: ../clutter/clutter-text.c:3721
 msgid "Whether or not the text includes Pango markup"
 msgstr "Si el text inclou etiquetatge de la Pango"
 
-#: ../clutter/clutter-text.c:3668
+#: ../clutter/clutter-text.c:3737
 msgid "Line wrap"
 msgstr "Ajustament de línia"
 
-#: ../clutter/clutter-text.c:3669
+#: ../clutter/clutter-text.c:3738
 msgid "If set, wrap the lines if the text becomes too wide"
 msgstr "Si s'estableix, ajusta les línies si el text és massa ample"
 
-#: ../clutter/clutter-text.c:3684
+#: ../clutter/clutter-text.c:3753
 msgid "Line wrap mode"
 msgstr "Mode d'ajust de línia"
 
-#: ../clutter/clutter-text.c:3685
+#: ../clutter/clutter-text.c:3754
 msgid "Control how line-wrapping is done"
 msgstr "Controla com s'ajusten les línies"
 
-#: ../clutter/clutter-text.c:3700
+#: ../clutter/clutter-text.c:3769
 msgid "Ellipsize"
 msgstr "Punts suspensius"
 
-#: ../clutter/clutter-text.c:3701
+#: ../clutter/clutter-text.c:3770
 msgid "The preferred place to ellipsize the string"
 msgstr "El lloc preferit on posar punts suspensius al segment"
 
-#: ../clutter/clutter-text.c:3717
+#: ../clutter/clutter-text.c:3786
 msgid "Line Alignment"
 msgstr "Alineació de la línia"
 
-#: ../clutter/clutter-text.c:3718
+#: ../clutter/clutter-text.c:3787
 msgid "The preferred alignment for the string, for multi-line text"
 msgstr ""
 "L'alineació preferida per al segment quan és un text de més d'una línia"
 
-#: ../clutter/clutter-text.c:3734
+#: ../clutter/clutter-text.c:3803
 msgid "Justify"
 msgstr "Justifica"
 
-#: ../clutter/clutter-text.c:3735
+#: ../clutter/clutter-text.c:3804
 msgid "Whether the text should be justified"
 msgstr "Si el text s'hauria de justificar"
 
-#: ../clutter/clutter-text.c:3750
+#: ../clutter/clutter-text.c:3819
 msgid "Password Character"
 msgstr "Caràcter de contrasenya"
 
-#: ../clutter/clutter-text.c:3751
+#: ../clutter/clutter-text.c:3820
 msgid "If non-zero, use this character to display the actor's contents"
 msgstr ""
 "Si no és zero, utilitza este caràcter per mostrar els continguts de l'actor"
 
-#: ../clutter/clutter-text.c:3765
+#: ../clutter/clutter-text.c:3834
 msgid "Max Length"
 msgstr "Llargada màxima"
 
-#: ../clutter/clutter-text.c:3766
+#: ../clutter/clutter-text.c:3835
 msgid "Maximum length of the text inside the actor"
 msgstr "Llargada màxima del text dins de l'actor"
 
-#: ../clutter/clutter-text.c:3789
+#: ../clutter/clutter-text.c:3858
 msgid "Single Line Mode"
 msgstr "Mode d'una línia sola"
 
-#: ../clutter/clutter-text.c:3790
+#: ../clutter/clutter-text.c:3859
 msgid "Whether the text should be a single line"
 msgstr "Si el text hauria de ser una sola línia"
 
-#: ../clutter/clutter-text.c:3804 ../clutter/clutter-text.c:3805
+#: ../clutter/clutter-text.c:3873 ../clutter/clutter-text.c:3874
 msgid "Selected Text Color"
 msgstr "Color del text seleccionat"
 
-#: ../clutter/clutter-text.c:3820
+#: ../clutter/clutter-text.c:3889
 msgid "Selected Text Color Set"
 msgstr "Establit el color del text seleccionat"
 
-#: ../clutter/clutter-text.c:3821
+#: ../clutter/clutter-text.c:3890
 msgid "Whether the selected text color has been set"
 msgstr "Si s'ha establit el color del text seleccionat"
 
-#: ../clutter/clutter-timeline.c:561
-#: ../clutter/deprecated/clutter-animation.c:560
+#: ../clutter/clutter-timeline.c:591
+#: ../clutter/deprecated/clutter-animation.c:506
 msgid "Loop"
 msgstr "Repetició"
 
-#: ../clutter/clutter-timeline.c:562
+#: ../clutter/clutter-timeline.c:592
 msgid "Should the timeline automatically restart"
 msgstr "Si s'hauria de reiniciar automàticament la línia del temps"
 
-#: ../clutter/clutter-timeline.c:576
+#: ../clutter/clutter-timeline.c:606
 msgid "Delay"
 msgstr "Retard"
 
-#: ../clutter/clutter-timeline.c:577
+#: ../clutter/clutter-timeline.c:607
 msgid "Delay before start"
 msgstr "El retard abans d'iniciar"
 
-#: ../clutter/clutter-timeline.c:592
-#: ../clutter/deprecated/clutter-animation.c:544
-#: ../clutter/deprecated/clutter-animator.c:1803
+#: ../clutter/clutter-timeline.c:622
+#: ../clutter/deprecated/clutter-animation.c:490
+#: ../clutter/deprecated/clutter-animator.c:1792
 #: ../clutter/deprecated/clutter-media.c:224
-#: ../clutter/deprecated/clutter-state.c:1522
+#: ../clutter/deprecated/clutter-state.c:1515
 msgid "Duration"
 msgstr "Durada"
 
-#: ../clutter/clutter-timeline.c:593
+#: ../clutter/clutter-timeline.c:623
 msgid "Duration of the timeline in milliseconds"
-msgstr "La durada de la línia del temps en miŀlisegons"
+msgstr "La durada de la línia del temps en mil·lisegons"
 
-#: ../clutter/clutter-timeline.c:608
-#: ../clutter/deprecated/clutter-behaviour-ellipse.c:528
-#: ../clutter/deprecated/clutter-behaviour-rotate.c:337
+#: ../clutter/clutter-timeline.c:638
+#: ../clutter/deprecated/clutter-behaviour-ellipse.c:521
+#: ../clutter/deprecated/clutter-behaviour-rotate.c:330
 msgid "Direction"
 msgstr "Direcció"
 
-#: ../clutter/clutter-timeline.c:609
+#: ../clutter/clutter-timeline.c:639
 msgid "Direction of the timeline"
 msgstr "La direcció de la línia del temps"
 
-#: ../clutter/clutter-timeline.c:624
+#: ../clutter/clutter-timeline.c:654
 msgid "Auto Reverse"
 msgstr "Capgira automàticament"
 
-#: ../clutter/clutter-timeline.c:625
+#: ../clutter/clutter-timeline.c:655
 msgid "Whether the direction should be reversed when reaching the end"
 msgstr "Si la direcció s'hauria de capgirar quan s'arribe al final"
 
-#: ../clutter/clutter-timeline.c:643
+#: ../clutter/clutter-timeline.c:673
 msgid "Repeat Count"
 msgstr "Comptador de repeticions"
 
-#: ../clutter/clutter-timeline.c:644
+#: ../clutter/clutter-timeline.c:674
 msgid "How many times the timeline should repeat"
 msgstr "Nombre de vegades que s'hauria de repetir la línia de temps"
 
-#: ../clutter/clutter-timeline.c:658
+#: ../clutter/clutter-timeline.c:688
 msgid "Progress Mode"
 msgstr "Mode de progrés"
 
-#: ../clutter/clutter-timeline.c:659
+#: ../clutter/clutter-timeline.c:689
 msgid "How the timeline should compute the progress"
 msgstr "Com s'ha de calcular el progrés de la línia del temps"
 
-#: ../clutter/clutter-transition.c:246
+#: ../clutter/clutter-transition.c:244
 msgid "Interval"
 msgstr "Interval"
 
-#: ../clutter/clutter-transition.c:247
+#: ../clutter/clutter-transition.c:245
 msgid "The interval of values to transition"
 msgstr "L'interval de valors en que es farà la transició"
 
-#: ../clutter/clutter-transition.c:261
+#: ../clutter/clutter-transition.c:259
 msgid "Animatable"
 msgstr "Es pot animar"
 
-#: ../clutter/clutter-transition.c:262
+#: ../clutter/clutter-transition.c:260
 msgid "The animatable object"
 msgstr "L'objecte que es pot animar"
 
-#: ../clutter/clutter-transition.c:283
+#: ../clutter/clutter-transition.c:281
 msgid "Remove on Complete"
 msgstr "Suprimeix en completar"
 
-#: ../clutter/clutter-transition.c:284
+#: ../clutter/clutter-transition.c:282
 msgid "Detach the transition when completed"
 msgstr "Desacobla la transició quan es completi"
 
-#: ../clutter/clutter-zoom-action.c:353
+#: ../clutter/clutter-zoom-action.c:365
 msgid "Zoom Axis"
 msgstr "Eix d'ampliació"
 
-#: ../clutter/clutter-zoom-action.c:354
+#: ../clutter/clutter-zoom-action.c:366
 msgid "Constraints the zoom to an axis"
 msgstr "Restringeix l'ampliació a un eix"
 
-#: ../clutter/deprecated/clutter-alpha.c:355
-#: ../clutter/deprecated/clutter-animation.c:575
-#: ../clutter/deprecated/clutter-animator.c:1820
+#: ../clutter/deprecated/clutter-alpha.c:347
+#: ../clutter/deprecated/clutter-animation.c:521
+#: ../clutter/deprecated/clutter-animator.c:1809
 msgid "Timeline"
 msgstr "Línia del temps"
 
-#: ../clutter/deprecated/clutter-alpha.c:356
+#: ../clutter/deprecated/clutter-alpha.c:348
 msgid "Timeline used by the alpha"
 msgstr "La línia del temps que utilitzarà l'alfa"
 
-#: ../clutter/deprecated/clutter-alpha.c:372
+#: ../clutter/deprecated/clutter-alpha.c:364
 msgid "Alpha value"
 msgstr "Valor alfa"
 
-#: ../clutter/deprecated/clutter-alpha.c:373
+#: ../clutter/deprecated/clutter-alpha.c:365
 msgid "Alpha value as computed by the alpha"
 msgstr "El valor alfa calculat per l'alfa"
 
-#: ../clutter/deprecated/clutter-alpha.c:394
-#: ../clutter/deprecated/clutter-animation.c:528
+#: ../clutter/deprecated/clutter-alpha.c:386
+#: ../clutter/deprecated/clutter-animation.c:474
 msgid "Mode"
 msgstr "Mode"
 
-#: ../clutter/deprecated/clutter-alpha.c:395
+#: ../clutter/deprecated/clutter-alpha.c:387
 msgid "Progress mode"
 msgstr "Mode de progrés"
 
-#: ../clutter/deprecated/clutter-animation.c:511
+#: ../clutter/deprecated/clutter-animation.c:457
 msgid "Object"
 msgstr "Objecte"
 
-#: ../clutter/deprecated/clutter-animation.c:512
+#: ../clutter/deprecated/clutter-animation.c:458
 msgid "Object to which the animation applies"
 msgstr "L'objecte al que s'aplica l'animació"
 
-#: ../clutter/deprecated/clutter-animation.c:529
+#: ../clutter/deprecated/clutter-animation.c:475
 msgid "The mode of the animation"
 msgstr "El mode de l'animació"
 
-#: ../clutter/deprecated/clutter-animation.c:545
+#: ../clutter/deprecated/clutter-animation.c:491
 msgid "Duration of the animation, in milliseconds"
-msgstr "Durada de l'animació, en miŀlisegons"
+msgstr "Durada de l'animació, en mil·lisegons"
 
-#: ../clutter/deprecated/clutter-animation.c:561
+#: ../clutter/deprecated/clutter-animation.c:507
 msgid "Whether the animation should loop"
 msgstr "Si l'animació s'hauria de repetir"
 
-#: ../clutter/deprecated/clutter-animation.c:576
+#: ../clutter/deprecated/clutter-animation.c:522
 msgid "The timeline used by the animation"
 msgstr "La línia del temps que utilitzarà l'animació"
 
-#: ../clutter/deprecated/clutter-animation.c:592
-#: ../clutter/deprecated/clutter-behaviour.c:241
+#: ../clutter/deprecated/clutter-animation.c:538
+#: ../clutter/deprecated/clutter-behaviour.c:237
 msgid "Alpha"
 msgstr "Alfa"
 
-#: ../clutter/deprecated/clutter-animation.c:593
+#: ../clutter/deprecated/clutter-animation.c:539
 msgid "The alpha used by the animation"
 msgstr "L'alfa que utilitzarà l'animació"
 
-#: ../clutter/deprecated/clutter-animator.c:1804
+#: ../clutter/deprecated/clutter-animator.c:1793
 msgid "The duration of the animation"
 msgstr "La durada de l'animació"
 
-#: ../clutter/deprecated/clutter-animator.c:1821
+#: ../clutter/deprecated/clutter-animator.c:1810
 msgid "The timeline of the animation"
 msgstr "La línia del temps de l'animació"
 
-#: ../clutter/deprecated/clutter-behaviour.c:242
+#: ../clutter/deprecated/clutter-behaviour.c:238
 msgid "Alpha Object to drive the behaviour"
 msgstr "L'objecte alfa que estableix el comportament"
 
-#: ../clutter/deprecated/clutter-behaviour-depth.c:182
+#: ../clutter/deprecated/clutter-behaviour-depth.c:180
 msgid "Start Depth"
 msgstr "Profunditat inicial"
 
-#: ../clutter/deprecated/clutter-behaviour-depth.c:183
+#: ../clutter/deprecated/clutter-behaviour-depth.c:181
 msgid "Initial depth to apply"
 msgstr "La profunditat inicial a aplicar"
 
-#: ../clutter/deprecated/clutter-behaviour-depth.c:198
+#: ../clutter/deprecated/clutter-behaviour-depth.c:196
 msgid "End Depth"
 msgstr "Profunditat final"
 
-#: ../clutter/deprecated/clutter-behaviour-depth.c:199
+#: ../clutter/deprecated/clutter-behaviour-depth.c:197
 msgid "Final depth to apply"
 msgstr "La profunditat final a aplicar"
 
-#: ../clutter/deprecated/clutter-behaviour-ellipse.c:401
+#: ../clutter/deprecated/clutter-behaviour-ellipse.c:394
 msgid "Start Angle"
 msgstr "Angle d'inici"
 
-#: ../clutter/deprecated/clutter-behaviour-ellipse.c:402
-#: ../clutter/deprecated/clutter-behaviour-rotate.c:284
+#: ../clutter/deprecated/clutter-behaviour-ellipse.c:395
+#: ../clutter/deprecated/clutter-behaviour-rotate.c:277
 msgid "Initial angle"
 msgstr "Angle inicial"
 
-#: ../clutter/deprecated/clutter-behaviour-ellipse.c:417
+#: ../clutter/deprecated/clutter-behaviour-ellipse.c:410
 msgid "End Angle"
 msgstr "Angle de fi"
 
-#: ../clutter/deprecated/clutter-behaviour-ellipse.c:418
-#: ../clutter/deprecated/clutter-behaviour-rotate.c:302
+#: ../clutter/deprecated/clutter-behaviour-ellipse.c:411
+#: ../clutter/deprecated/clutter-behaviour-rotate.c:295
 msgid "Final angle"
 msgstr "Angle final"
 
-#: ../clutter/deprecated/clutter-behaviour-ellipse.c:433
+#: ../clutter/deprecated/clutter-behaviour-ellipse.c:426
 msgid "Angle x tilt"
 msgstr "Angle d'inclinació X"
 
-#: ../clutter/deprecated/clutter-behaviour-ellipse.c:434
+#: ../clutter/deprecated/clutter-behaviour-ellipse.c:427
 msgid "Tilt of the ellipse around x axis"
-msgstr "La inclinació de l'eŀlipse al voltant de l'eix de les X"
+msgstr "La inclinació de l'el·lipse al voltant de l'eix de les X"
 
-#: ../clutter/deprecated/clutter-behaviour-ellipse.c:449
+#: ../clutter/deprecated/clutter-behaviour-ellipse.c:442
 msgid "Angle y tilt"
 msgstr "Angle d'inclinació Y"
 
-#: ../clutter/deprecated/clutter-behaviour-ellipse.c:450
+#: ../clutter/deprecated/clutter-behaviour-ellipse.c:443
 msgid "Tilt of the ellipse around y axis"
-msgstr "La inclinació de l'eŀlipse al voltant de l'eix de les Y"
+msgstr "La inclinació de l'el·lipse al voltant de l'eix de les Y"
 
-#: ../clutter/deprecated/clutter-behaviour-ellipse.c:465
+#: ../clutter/deprecated/clutter-behaviour-ellipse.c:458
 msgid "Angle z tilt"
 msgstr "Angle d'inclinació Z"
 
-#: ../clutter/deprecated/clutter-behaviour-ellipse.c:466
+#: ../clutter/deprecated/clutter-behaviour-ellipse.c:459
 msgid "Tilt of the ellipse around z axis"
-msgstr "La inclinació de l'eŀlipse al voltant de l'eix de les Z"
+msgstr "La inclinació de l'el·lipse al voltant de l'eix de les Z"
 
-#: ../clutter/deprecated/clutter-behaviour-ellipse.c:482
+#: ../clutter/deprecated/clutter-behaviour-ellipse.c:475
 msgid "Width of the ellipse"
-msgstr "Amplada de l'eŀlipse"
+msgstr "Amplada de l'el·lipse"
 
-#: ../clutter/deprecated/clutter-behaviour-ellipse.c:498
+#: ../clutter/deprecated/clutter-behaviour-ellipse.c:491
 msgid "Height of ellipse"
-msgstr "Alçada de l'eŀlipse"
+msgstr "Alçada de l'el·lipse"
 
-#: ../clutter/deprecated/clutter-behaviour-ellipse.c:513
+#: ../clutter/deprecated/clutter-behaviour-ellipse.c:506
 msgid "Center"
 msgstr "Centre"
 
-#: ../clutter/deprecated/clutter-behaviour-ellipse.c:514
+#: ../clutter/deprecated/clutter-behaviour-ellipse.c:507
 msgid "Center of ellipse"
-msgstr "El centre de l'eŀlipse"
+msgstr "El centre de l'el·lipse"
 
-#: ../clutter/deprecated/clutter-behaviour-ellipse.c:529
-#: ../clutter/deprecated/clutter-behaviour-rotate.c:338
+#: ../clutter/deprecated/clutter-behaviour-ellipse.c:522
+#: ../clutter/deprecated/clutter-behaviour-rotate.c:331
 msgid "Direction of rotation"
 msgstr "Direcció de la rotació"
 
-#: ../clutter/deprecated/clutter-behaviour-opacity.c:184
+#: ../clutter/deprecated/clutter-behaviour-opacity.c:177
 msgid "Opacity Start"
 msgstr "Opacitat inicial"
 
-#: ../clutter/deprecated/clutter-behaviour-opacity.c:185
+#: ../clutter/deprecated/clutter-behaviour-opacity.c:178
 msgid "Initial opacity level"
 msgstr "El nivell d'opacitat inicial"
 
-#: ../clutter/deprecated/clutter-behaviour-opacity.c:202
+#: ../clutter/deprecated/clutter-behaviour-opacity.c:195
 msgid "Opacity End"
 msgstr "Opacitat final"
 
-#: ../clutter/deprecated/clutter-behaviour-opacity.c:203
+#: ../clutter/deprecated/clutter-behaviour-opacity.c:196
 msgid "Final opacity level"
 msgstr "El nivell d'opacitat final"
 
-#: ../clutter/deprecated/clutter-behaviour-path.c:226
+#: ../clutter/deprecated/clutter-behaviour-path.c:222
 msgid "The ClutterPath object representing the path to animate along"
 msgstr "L'objecte «ClutterPath» que representa el camí en el que s'anima"
 
-#: ../clutter/deprecated/clutter-behaviour-rotate.c:283
+#: ../clutter/deprecated/clutter-behaviour-rotate.c:276
 msgid "Angle Begin"
 msgstr "Angle inicial"
 
-#: ../clutter/deprecated/clutter-behaviour-rotate.c:301
+#: ../clutter/deprecated/clutter-behaviour-rotate.c:294
 msgid "Angle End"
 msgstr "Angle final"
 
-#: ../clutter/deprecated/clutter-behaviour-rotate.c:319
+#: ../clutter/deprecated/clutter-behaviour-rotate.c:312
 msgid "Axis"
 msgstr "Eix"
 
-#: ../clutter/deprecated/clutter-behaviour-rotate.c:320
+#: ../clutter/deprecated/clutter-behaviour-rotate.c:313
 msgid "Axis of rotation"
 msgstr "L'eix de rotació"
 
-#: ../clutter/deprecated/clutter-behaviour-rotate.c:355
+#: ../clutter/deprecated/clutter-behaviour-rotate.c:348
 msgid "Center X"
 msgstr "Centre X"
 
-#: ../clutter/deprecated/clutter-behaviour-rotate.c:356
+#: ../clutter/deprecated/clutter-behaviour-rotate.c:349
 msgid "X coordinate of the center of rotation"
 msgstr "La coordenada X del centre de rotació"
 
-#: ../clutter/deprecated/clutter-behaviour-rotate.c:373
+#: ../clutter/deprecated/clutter-behaviour-rotate.c:366
 msgid "Center Y"
 msgstr "Centre Y"
 
-#: ../clutter/deprecated/clutter-behaviour-rotate.c:374
+#: ../clutter/deprecated/clutter-behaviour-rotate.c:367
 msgid "Y coordinate of the center of rotation"
 msgstr "La coordenada Y del centre de rotació"
 
-#: ../clutter/deprecated/clutter-behaviour-rotate.c:391
+#: ../clutter/deprecated/clutter-behaviour-rotate.c:384
 msgid "Center Z"
 msgstr "Centre Z"
 
-#: ../clutter/deprecated/clutter-behaviour-rotate.c:392
+#: ../clutter/deprecated/clutter-behaviour-rotate.c:385
 msgid "Z coordinate of the center of rotation"
 msgstr "La coordenada Z del centre de rotació"
 
-#: ../clutter/deprecated/clutter-behaviour-scale.c:226
+#: ../clutter/deprecated/clutter-behaviour-scale.c:222
 msgid "X Start Scale"
 msgstr "Escala inicial X"
 
-#: ../clutter/deprecated/clutter-behaviour-scale.c:227
+#: ../clutter/deprecated/clutter-behaviour-scale.c:223
 msgid "Initial scale on the X axis"
 msgstr "L'escala inicial en l'eix de les X"
 
-#: ../clutter/deprecated/clutter-behaviour-scale.c:245
+#: ../clutter/deprecated/clutter-behaviour-scale.c:241
 msgid "X End Scale"
 msgstr "Escala final X"
 
-#: ../clutter/deprecated/clutter-behaviour-scale.c:246
+#: ../clutter/deprecated/clutter-behaviour-scale.c:242
 msgid "Final scale on the X axis"
 msgstr "L'escala final en l'eix de les X"
 
-#: ../clutter/deprecated/clutter-behaviour-scale.c:264
+#: ../clutter/deprecated/clutter-behaviour-scale.c:260
 msgid "Y Start Scale"
 msgstr "Escala inicial Y"
 
-#: ../clutter/deprecated/clutter-behaviour-scale.c:265
+#: ../clutter/deprecated/clutter-behaviour-scale.c:261
 msgid "Initial scale on the Y axis"
 msgstr "L'escala inicial en l'eix de les Y"
 
-#: ../clutter/deprecated/clutter-behaviour-scale.c:283
+#: ../clutter/deprecated/clutter-behaviour-scale.c:279
 msgid "Y End Scale"
 msgstr "Escala final Y"
 
-#: ../clutter/deprecated/clutter-behaviour-scale.c:284
+#: ../clutter/deprecated/clutter-behaviour-scale.c:280
 msgid "Final scale on the Y axis"
 msgstr "L'escala final en l'eix de les Y"
 
-#: ../clutter/deprecated/clutter-box.c:261
+#: ../clutter/deprecated/clutter-box.c:255
 msgid "The background color of the box"
 msgstr "El color de fons de la caixa"
 
-#: ../clutter/deprecated/clutter-box.c:274
+#: ../clutter/deprecated/clutter-box.c:268
 msgid "Color Set"
 msgstr "Té color"
 
-#: ../clutter/deprecated/clutter-cairo-texture.c:597
+#: ../clutter/deprecated/clutter-cairo-texture.c:585
 msgid "Surface Width"
 msgstr "Amplada de la superfície"
 
-#: ../clutter/deprecated/clutter-cairo-texture.c:598
+#: ../clutter/deprecated/clutter-cairo-texture.c:586
 msgid "The width of the Cairo surface"
 msgstr "L'amplada de la superfície Cairo"
 
-#: ../clutter/deprecated/clutter-cairo-texture.c:615
+#: ../clutter/deprecated/clutter-cairo-texture.c:603
 msgid "Surface Height"
 msgstr "Alçada de la superfície"
 
-#: ../clutter/deprecated/clutter-cairo-texture.c:616
+#: ../clutter/deprecated/clutter-cairo-texture.c:604
 msgid "The height of the Cairo surface"
 msgstr "L'alçada de la superfície Cairo"
 
-#: ../clutter/deprecated/clutter-cairo-texture.c:636
+#: ../clutter/deprecated/clutter-cairo-texture.c:624
 msgid "Auto Resize"
 msgstr "Redimensiona automàticament"
 
-#: ../clutter/deprecated/clutter-cairo-texture.c:637
+#: ../clutter/deprecated/clutter-cairo-texture.c:625
 msgid "Whether the surface should match the allocation"
 msgstr "Si la superfície hauria de coincidir amb la ubicació"
 
@@ -2391,104 +2411,160 @@ msgstr "El nivell d'emplenament de la memòria intermèdia"
 msgid "The duration of the stream, in seconds"
 msgstr "La durada del flux, en segons"
 
-#: ../clutter/deprecated/clutter-rectangle.c:274
+#: ../clutter/deprecated/clutter-rectangle.c:271
 msgid "The color of the rectangle"
 msgstr "El color del rectangle"
 
-#: ../clutter/deprecated/clutter-rectangle.c:287
+#: ../clutter/deprecated/clutter-rectangle.c:284
 msgid "Border Color"
 msgstr "Color de la vora"
 
-#: ../clutter/deprecated/clutter-rectangle.c:288
+#: ../clutter/deprecated/clutter-rectangle.c:285
 msgid "The color of the border of the rectangle"
 msgstr "El color de la vora del rectangle"
 
-#: ../clutter/deprecated/clutter-rectangle.c:303
+#: ../clutter/deprecated/clutter-rectangle.c:300
 msgid "Border Width"
 msgstr "Amplada de la vora"
 
-#: ../clutter/deprecated/clutter-rectangle.c:304
+#: ../clutter/deprecated/clutter-rectangle.c:301
 msgid "The width of the border of the rectangle"
 msgstr "L'amplada de la vora del rectangle"
 
-#: ../clutter/deprecated/clutter-rectangle.c:318
+#: ../clutter/deprecated/clutter-rectangle.c:315
 msgid "Has Border"
 msgstr "Té vora"
 
-#: ../clutter/deprecated/clutter-rectangle.c:319
+#: ../clutter/deprecated/clutter-rectangle.c:316
 msgid "Whether the rectangle should have a border"
 msgstr "Si el rectangle hauria de tindre vora"
 
-#: ../clutter/deprecated/clutter-shader.c:261
+#: ../clutter/deprecated/clutter-shader.c:257
 msgid "Vertex Source"
 msgstr "Font del vèrtex"
 
-#: ../clutter/deprecated/clutter-shader.c:262
+#: ../clutter/deprecated/clutter-shader.c:258
 msgid "Source of vertex shader"
 msgstr "Font del shader del vèrtex"
 
-#: ../clutter/deprecated/clutter-shader.c:278
+#: ../clutter/deprecated/clutter-shader.c:274
 msgid "Fragment Source"
 msgstr "Font del fragment"
 
-#: ../clutter/deprecated/clutter-shader.c:279
+#: ../clutter/deprecated/clutter-shader.c:275
 msgid "Source of fragment shader"
 msgstr "Font del shader del fragment"
 
-#: ../clutter/deprecated/clutter-shader.c:296
+#: ../clutter/deprecated/clutter-shader.c:292
 msgid "Compiled"
 msgstr "Compilat"
 
-#: ../clutter/deprecated/clutter-shader.c:297
+#: ../clutter/deprecated/clutter-shader.c:293
 msgid "Whether the shader is compiled and linked"
 msgstr "Si el shader és compilat i enllaçat"
 
-#: ../clutter/deprecated/clutter-shader.c:314
+#: ../clutter/deprecated/clutter-shader.c:310
 msgid "Whether the shader is enabled"
 msgstr "Si el shader és habilitat"
 
-#: ../clutter/deprecated/clutter-shader.c:525
+#: ../clutter/deprecated/clutter-shader.c:521
 #, c-format
 msgid "%s compilation failed: %s"
 msgstr "Ha fallat la compilació del %s: %s"
 
-#: ../clutter/deprecated/clutter-shader.c:526
+#: ../clutter/deprecated/clutter-shader.c:522
 msgid "Vertex shader"
 msgstr "Shader de vèrtex"
 
-#: ../clutter/deprecated/clutter-shader.c:527
+#: ../clutter/deprecated/clutter-shader.c:523
 msgid "Fragment shader"
 msgstr "Shader del fragment"
 
-#: ../clutter/deprecated/clutter-state.c:1504
+#: ../clutter/deprecated/clutter-state.c:1497
 msgid "State"
 msgstr "Estat"
 
-#: ../clutter/deprecated/clutter-state.c:1505
+#: ../clutter/deprecated/clutter-state.c:1498
 msgid "Currently set state, (transition to this state might not be complete)"
 msgstr ""
 "L'estat establit actualment (potser encara no s'ha completat la transició a "
 "este estat)"
 
-#: ../clutter/deprecated/clutter-state.c:1523
+#: ../clutter/deprecated/clutter-state.c:1516
 msgid "Default transition duration"
 msgstr "La durada per defecte de la transició"
 
-#: ../clutter/deprecated/clutter-texture.c:994
+#: ../clutter/deprecated/clutter-table-layout.c:535
+msgid "Column Number"
+msgstr "Número de columna"
+
+#: ../clutter/deprecated/clutter-table-layout.c:536
+msgid "The column the widget resides in"
+msgstr "La columna en la que està el giny"
+
+#: ../clutter/deprecated/clutter-table-layout.c:543
+msgid "Row Number"
+msgstr "Número de fila"
+
+#: ../clutter/deprecated/clutter-table-layout.c:544
+msgid "The row the widget resides in"
+msgstr "La fila en la que està el giny"
+
+#: ../clutter/deprecated/clutter-table-layout.c:551
+msgid "Column Span"
+msgstr "Abast en columnes"
+
+#: ../clutter/deprecated/clutter-table-layout.c:552
+msgid "The number of columns the widget should span"
+msgstr "El nombre de columnes que hauria d'abastir el giny"
+
+#: ../clutter/deprecated/clutter-table-layout.c:559
+msgid "Row Span"
+msgstr "Abast en files"
+
+#: ../clutter/deprecated/clutter-table-layout.c:560
+msgid "The number of rows the widget should span"
+msgstr "El nombre de files que hauria d'abastir el giny"
+
+#: ../clutter/deprecated/clutter-table-layout.c:567
+msgid "Horizontal Expand"
+msgstr "Expansió horitzontal"
+
+#: ../clutter/deprecated/clutter-table-layout.c:568
+msgid "Allocate extra space for the child in horizontal axis"
+msgstr "Ubica espai extra per al fill en l'eix horitzontal"
+
+#: ../clutter/deprecated/clutter-table-layout.c:574
+msgid "Vertical Expand"
+msgstr "Expansió vertical"
+
+#: ../clutter/deprecated/clutter-table-layout.c:575
+msgid "Allocate extra space for the child in vertical axis"
+msgstr "Ubica espai extra per al fill en l'eix vertical"
+
+#: ../clutter/deprecated/clutter-table-layout.c:1630
+msgid "Spacing between columns"
+msgstr "Espaiat entre columnes"
+
+#: ../clutter/deprecated/clutter-table-layout.c:1646
+msgid "Spacing between rows"
+msgstr "Espaiat entre files"
+
+#: ../clutter/deprecated/clutter-texture.c:992
 msgid "Sync size of actor"
 msgstr "Sincronitza la mida de l'actor"
 
-#: ../clutter/deprecated/clutter-texture.c:995
+#: ../clutter/deprecated/clutter-texture.c:993
 msgid "Auto sync size of actor to underlying pixbuf dimensions"
 msgstr ""
 "Sincronitza automàticament la mida de l'actor amb les mides de la memòria de "
 "píxels de rerefons"
 
-#: ../clutter/deprecated/clutter-texture.c:1002
+#: ../clutter/deprecated/clutter-texture.c:1000
 msgid "Disable Slicing"
 msgstr "Inhabilita el tallat"
 
-#: ../clutter/deprecated/clutter-texture.c:1003
+#: ../clutter/deprecated/clutter-texture.c:1001
 msgid ""
 "Forces the underlying texture to be singular and not made of smaller space "
 "saving individual textures"
@@ -2496,100 +2572,100 @@ msgstr ""
 "Força la textura de rerefons a ser una de sola i no estar formada per "
 "diverses de més petites"
 
-#: ../clutter/deprecated/clutter-texture.c:1012
+#: ../clutter/deprecated/clutter-texture.c:1010
 msgid "Tile Waste"
 msgstr "Desaprofitament de quadre"
 
-#: ../clutter/deprecated/clutter-texture.c:1013
+#: ../clutter/deprecated/clutter-texture.c:1011
 msgid "Maximum waste area of a sliced texture"
 msgstr "Àrea màxima de desaprofitament d'una textura tallada"
 
-#: ../clutter/deprecated/clutter-texture.c:1021
+#: ../clutter/deprecated/clutter-texture.c:1019
 msgid "Horizontal repeat"
 msgstr "Repetició horitzontal"
 
-#: ../clutter/deprecated/clutter-texture.c:1022
+#: ../clutter/deprecated/clutter-texture.c:1020
 msgid "Repeat the contents rather than scaling them horizontally"
 msgstr "Repeteix els continguts en comptes d'escalar-los horitzontalment"
 
-#: ../clutter/deprecated/clutter-texture.c:1029
+#: ../clutter/deprecated/clutter-texture.c:1027
 msgid "Vertical repeat"
 msgstr "Repetició vertical"
 
-#: ../clutter/deprecated/clutter-texture.c:1030
+#: ../clutter/deprecated/clutter-texture.c:1028
 msgid "Repeat the contents rather than scaling them vertically"
 msgstr "Repeteix els continguts en comptes d'escalar-los verticalment"
 
-#: ../clutter/deprecated/clutter-texture.c:1037
+#: ../clutter/deprecated/clutter-texture.c:1035
 msgid "Filter Quality"
 msgstr "Qualitat del filtre"
 
-#: ../clutter/deprecated/clutter-texture.c:1038
+#: ../clutter/deprecated/clutter-texture.c:1036
 msgid "Rendering quality used when drawing the texture"
 msgstr "La qualitat de la renderització quan es dibuixi una textura"
 
-#: ../clutter/deprecated/clutter-texture.c:1046
+#: ../clutter/deprecated/clutter-texture.c:1044
 msgid "Pixel Format"
 msgstr "Format del píxel"
 
-#: ../clutter/deprecated/clutter-texture.c:1047
+#: ../clutter/deprecated/clutter-texture.c:1045
 msgid "The Cogl pixel format to use"
 msgstr "El format de píxel de Cogl a utilitzar"
 
-#: ../clutter/deprecated/clutter-texture.c:1055
-#: ../clutter/wayland/clutter-wayland-surface.c:449
+#: ../clutter/deprecated/clutter-texture.c:1053
+#: ../clutter/wayland/clutter-wayland-surface.c:445
 msgid "Cogl Texture"
 msgstr "Textura de Cogl"
 
-#: ../clutter/deprecated/clutter-texture.c:1056
-#: ../clutter/wayland/clutter-wayland-surface.c:450
+#: ../clutter/deprecated/clutter-texture.c:1054
+#: ../clutter/wayland/clutter-wayland-surface.c:446
 msgid "The underlying Cogl texture handle used to draw this actor"
 msgstr ""
 "El gestor de la textura de Cogl de rerefons que s'utilitza per dibuixar este "
 "actor"
 
-#: ../clutter/deprecated/clutter-texture.c:1063
+#: ../clutter/deprecated/clutter-texture.c:1061
 msgid "Cogl Material"
 msgstr "Material de Cogl"
 
-#: ../clutter/deprecated/clutter-texture.c:1064
+#: ../clutter/deprecated/clutter-texture.c:1062
 msgid "The underlying Cogl material handle used to draw this actor"
 msgstr ""
 "El gestor del material de Cogl de rerefons que s'utilitza per dibuixar este "
 "actor"
 
-#: ../clutter/deprecated/clutter-texture.c:1083
+#: ../clutter/deprecated/clutter-texture.c:1081
 msgid "The path of the file containing the image data"
 msgstr "El camí al fitxer que conté les dades de la imatge"
 
-#: ../clutter/deprecated/clutter-texture.c:1090
+#: ../clutter/deprecated/clutter-texture.c:1088
 msgid "Keep Aspect Ratio"
 msgstr "Manté la relació d'aspecte"
 
-#: ../clutter/deprecated/clutter-texture.c:1091
+#: ../clutter/deprecated/clutter-texture.c:1089
 msgid ""
 "Keep the aspect ratio of the texture when requesting the preferred width or "
 "height"
 msgstr ""
-"Manté la relació d'aspecte de la textura quan es soŀliciti una amplada o "
+"Manté la relació d'aspecte de la textura quan es sol·liciti una amplada o "
 "alçada preferida"
 
-#: ../clutter/deprecated/clutter-texture.c:1119
+#: ../clutter/deprecated/clutter-texture.c:1117
 msgid "Load asynchronously"
 msgstr "Carrega asíncronament"
 
-#: ../clutter/deprecated/clutter-texture.c:1120
+#: ../clutter/deprecated/clutter-texture.c:1118
 msgid ""
 "Load files inside a thread to avoid blocking when loading images from disk"
 msgstr ""
 "Carrega els fitxers en un altre fil d'execució per evitar el blocatge quan "
 "es carreguin imatges del disc"
 
-#: ../clutter/deprecated/clutter-texture.c:1138
+#: ../clutter/deprecated/clutter-texture.c:1136
 msgid "Load data asynchronously"
 msgstr "Carrega les dades asíncronament"
 
-#: ../clutter/deprecated/clutter-texture.c:1139
+#: ../clutter/deprecated/clutter-texture.c:1137
 msgid ""
 "Decode image data files inside a thread to reduce blocking when loading "
 "images from disk"
@@ -2597,197 +2673,178 @@ msgstr ""
 "Descodifica els fitxers de dades d'imatge en un altre fil d'execució per "
 "reduir el blocatge quan es carreguin imatges del disc"
 
-#: ../clutter/deprecated/clutter-texture.c:1165
+#: ../clutter/deprecated/clutter-texture.c:1163
 msgid "Pick With Alpha"
 msgstr "Selecció amb transparència"
 
-#: ../clutter/deprecated/clutter-texture.c:1166
+#: ../clutter/deprecated/clutter-texture.c:1164
 msgid "Shape actor with alpha channel when picking"
 msgstr "Modela l'actor amb un canal de transparència quan es seleccioni"
 
-#: ../clutter/deprecated/clutter-texture.c:1599
-#: ../clutter/deprecated/clutter-texture.c:1994
-#: ../clutter/deprecated/clutter-texture.c:2090
-#: ../clutter/deprecated/clutter-texture.c:2388
+#: ../clutter/deprecated/clutter-texture.c:1597
+#: ../clutter/deprecated/clutter-texture.c:1992
+#: ../clutter/deprecated/clutter-texture.c:2088
+#: ../clutter/deprecated/clutter-texture.c:2386
 #, c-format
 msgid "Failed to load the image data"
 msgstr "No s'han pogut carregar les dades de la imatge"
 
-#: ../clutter/deprecated/clutter-texture.c:1758
+#: ../clutter/deprecated/clutter-texture.c:1756
 #, c-format
 msgid "YUV textures are not supported"
 msgstr "No es poden utilitzar textures YUV"
 
-#: ../clutter/deprecated/clutter-texture.c:1767
+#: ../clutter/deprecated/clutter-texture.c:1765
 #, c-format
 msgid "YUV2 textues are not supported"
 msgstr "No es poden utilitzar textures YUV2"
 
-#: ../clutter/evdev/clutter-input-device-evdev.c:159
-msgid "sysfs Path"
-msgstr "Camí al sysfs"
-
-#: ../clutter/evdev/clutter-input-device-evdev.c:160
-msgid "Path of the device in sysfs"
-msgstr "Camí al dispositiu a sysfs"
-
-#: ../clutter/evdev/clutter-input-device-evdev.c:175
-msgid "Device Path"
-msgstr "Camí al dispositiu"
-
-#: ../clutter/evdev/clutter-input-device-evdev.c:176
-msgid "Path of the device node"
-msgstr "Camí al node del dispositiu"
-
-#: ../clutter/gdk/clutter-backend-gdk.c:296
+#: ../clutter/gdk/clutter-backend-gdk.c:289
 #, c-format
 msgid "Could not find a suitable CoglWinsys for a GdkDisplay of type %s"
 msgstr "No s'ha pogut trobar cap CoglWinsys per a una GdkDisplay del tipus %s"
 
-#: ../clutter/wayland/clutter-wayland-surface.c:423
+#: ../clutter/wayland/clutter-wayland-surface.c:419
 msgid "Surface"
 msgstr "Superfície"
 
-#: ../clutter/wayland/clutter-wayland-surface.c:424
+#: ../clutter/wayland/clutter-wayland-surface.c:420
 msgid "The underlying wayland surface"
 msgstr "La superfície de Wayland de rerefons"
 
-#: ../clutter/wayland/clutter-wayland-surface.c:431
+#: ../clutter/wayland/clutter-wayland-surface.c:427
 msgid "Surface width"
 msgstr "Amplada de la superfície"
 
-#: ../clutter/wayland/clutter-wayland-surface.c:432
+#: ../clutter/wayland/clutter-wayland-surface.c:428
 msgid "The width of the underlying wayland surface"
 msgstr "L'amplada de la superfície Wayland subjacent"
 
-#: ../clutter/wayland/clutter-wayland-surface.c:440
+#: ../clutter/wayland/clutter-wayland-surface.c:436
 msgid "Surface height"
 msgstr "Alçada de la superfície"
 
-#: ../clutter/wayland/clutter-wayland-surface.c:441
+#: ../clutter/wayland/clutter-wayland-surface.c:437
 msgid "The height of the underlying wayland surface"
 msgstr "L'alçada de la superfície Wayland subjacent"
 
-#: ../clutter/x11/clutter-backend-x11.c:516
+#: ../clutter/x11/clutter-backend-x11.c:488
 msgid "X display to use"
 msgstr "El monitor d'X a utilitzar"
 
-#: ../clutter/x11/clutter-backend-x11.c:522
+#: ../clutter/x11/clutter-backend-x11.c:494
 msgid "X screen to use"
 msgstr "La pantalla d'X a utilitzar"
 
-#: ../clutter/x11/clutter-backend-x11.c:527
+#: ../clutter/x11/clutter-backend-x11.c:499
 msgid "Make X calls synchronous"
 msgstr "Fes les crides síncrones a l'X"
 
-#: ../clutter/x11/clutter-backend-x11.c:534
-msgid "Enable XInput support"
-msgstr "Habilita l'XInput"
+#: ../clutter/x11/clutter-backend-x11.c:506
+msgid "Disable XInput support"
+msgstr "Inhabilita l'XInput"
 
-#: ../clutter/x11/clutter-keymap-x11.c:317
+#: ../clutter/x11/clutter-keymap-x11.c:458
 msgid "The Clutter backend"
 msgstr "El rerefons de la Clutter"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:539
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:534
 msgid "Pixmap"
 msgstr "Mapa de píxels"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:540
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:535
 msgid "The X11 Pixmap to be bound"
 msgstr "El mapa de píxels X11 que es vincularà"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:548
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:543
 msgid "Pixmap width"
 msgstr "Amplada del mapa de píxels"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:549
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:544
 msgid "The width of the pixmap bound to this texture"
 msgstr "L'amplada del mapa de píxels vinculat a esta textura"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:557
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:552
 msgid "Pixmap height"
 msgstr "Alçada del mapa de píxels"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:558
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:553
 msgid "The height of the pixmap bound to this texture"
 msgstr "L'alçada del mapa de píxels vinculat a esta textura"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:566
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:561
 msgid "Pixmap Depth"
 msgstr "Profunditat del mapa de píxels"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:567
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:562
 msgid "The depth (in number of bits) of the pixmap bound to this texture"
 msgstr ""
 "La profunditat (en nombre de bits) del mapa de píxels vinculat a esta textura"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:575
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:570
 msgid "Automatic Updates"
 msgstr "Actualitzacions automàtiques"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:576
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:571
 msgid "If the texture should be kept in sync with any pixmap changes."
 msgstr ""
 "Si la textura s'hauria de mantindre sincronitzada amb els canvis al mapa de "
 "píxels."
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:584
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:579
 msgid "Window"
 msgstr "Finestra"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:585
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:580
 msgid "The X11 Window to be bound"
 msgstr "La finestra X11 que es vincularà"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:593
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:588
 msgid "Window Redirect Automatic"
 msgstr "Redireccions automàtiques de finestres"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:594
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:589
 msgid "If composite window redirects are set to Automatic (or Manual if false)"
 msgstr ""
 "Si les redireccions de les finestres compostes són automàtiques (o manuals "
 "si «false» (fals))"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:604
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:599
 msgid "Window Mapped"
 msgstr "Finestra mapada"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:605
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:600
 msgid "If window is mapped"
 msgstr "Si la finestra és mapada"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:614
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:609
 msgid "Destroyed"
 msgstr "Destruïda"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:615
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:610
 msgid "If window has been destroyed"
 msgstr "Si s'ha destruït la finestra"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:623
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:618
 msgid "Window X"
 msgstr "X de la finestra"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:624
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:619
 msgid "X position of window on screen according to X11"
 msgstr "La posició X de la finestra a la pantalla segons l'X11"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:632
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:627
 msgid "Window Y"
 msgstr "Y de la finestra"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:633
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:628
 msgid "Y position of window on screen according to X11"
 msgstr "La posició Y de la finestra a la pantalla segons l'X11"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:640
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:635
 msgid "Window Override Redirect"
 msgstr "Redirecció de la sobreescriptura de la finestra"
 
-#: ../clutter/x11/clutter-x11-texture-pixmap.c:641
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:636
 msgid "If this is an override-redirect window"
 msgstr "Si és una finestra de redirecció de la sobreescriptura"
-
-#~ msgid "The layout manager used by the box"
-#~ msgstr "El gestor de disposició utilitzat per la caixa"

@@ -56,7 +56,7 @@ typedef struct _ClutterTapActionClass         ClutterTapActionClass;
 /**
  * ClutterTapAction:
  *
- * The <structname>ClutterTapAction</structname> structure contains
+ * The #ClutterTapAction structure contains
  * only private data and should be accessed using the provided API
  *
  * Since: 1.14
@@ -71,7 +71,7 @@ struct _ClutterTapAction
  * ClutterTapActionClass:
  * @tap: class handler for the #ClutterTapAction::tap signal
  *
- * The <structname>ClutterTapActionClass</structname> structure contains
+ * The #ClutterTapActionClass structure contains
  * only private data.
  */
 struct _ClutterTapActionClass

@@ -9,8 +9,8 @@
 # - increase clutter_micro_version to the next odd number
 # - increase clutter_interface_version to the next odd number
 m4_define([clutter_major_version], [1])
-m4_define([clutter_minor_version], [15])
-m4_define([clutter_micro_version], [1])
+m4_define([clutter_minor_version], [21])
+m4_define([clutter_micro_version], [3])
 
 # • for stable releases: increase the interface age by 1 for each release;
 #   if the API changes, set to 0. interface_age and binary_age are used to
@@ -135,18 +135,19 @@ LT_INIT([disable-static])
 AC_HEADER_STDC
 
 # required versions for dependencies
-m4_define([glib_req_version],           [2.31.19])
-m4_define([cogl_req_version],           [1.14.0])
+m4_define([glib_req_version],           [2.39.0])
+m4_define([cogl_req_version],           [1.17.5])
 m4_define([json_glib_req_version],      [0.12.0])
 m4_define([atk_req_version],            [2.5.3])
-m4_define([cairo_req_version],          [1.10])
+m4_define([cairo_req_version],          [1.12.0])
 m4_define([pango_req_version],          [1.30])
-m4_define([gi_req_version],             [0.9.5])
+m4_define([gi_req_version],             [1.39.0])
 m4_define([uprof_req_version],          [0.3])
-m4_define([gtk_doc_req_version],        [1.15])
-m4_define([xfixes_req_version],         [3])
+m4_define([gtk_doc_req_version],        [1.20])
 m4_define([xcomposite_req_version],     [0.4])
 m4_define([gdk_req_version],            [3.3.18])
+m4_define([libinput_req_version],       [0.4.0])
+m4_define([libudev_req_version],        [136])
 
 AC_SUBST([GLIB_REQ_VERSION],       [glib_req_version])
 AC_SUBST([COGL_REQ_VERSION],       [cogl_req_version])
@@ -157,9 +158,10 @@ AC_SUBST([PANGO_REQ_VERSION],      [pango_req_version])
 AC_SUBST([GI_REQ_VERSION],         [gi_req_version])
 AC_SUBST([UPROF_REQ_VERSION],      [uprof_req_version])
 AC_SUBST([GTK_DOC_REQ_VERSION],    [gtk_doc_req_version])
-AC_SUBST([XFIXES_REQ_VERSION],     [xfixes_req_version])
 AC_SUBST([XCOMPOSITE_REQ_VERSION], [xcomposite_req_version])
 AC_SUBST([GDK_REQ_VERSION],        [gdk_req_version])
+AC_SUBST([LIBINPUT_REQ_VERSION],   [libinput_req_version])
+AC_SUBST([LIBUDEV_REQ_VERSION],    [libudev_req_version])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AM_PATH_GLIB_2_0([glib_req_version],
@@ -191,6 +193,36 @@ AC_ARG_ENABLE([Bsymbolic],
 AS_IF([test "x$enable_Bsymbolic" = "xyes"], [CLUTTER_LINK_FLAGS=-Wl[,]-Bsymbolic-functions])
 AC_SUBST(CLUTTER_LINK_FLAGS)
 
+# Check for the visibility flags
+CLUTTER_HIDDEN_VISIBILITY_CFLAGS=""
+case "$host" in
+  *-*-mingw*)
+    dnl on mingw32 we do -fvisibility=hidden and __declspec(dllexport)
+    AC_DEFINE([_CLUTTER_EXTERN], [__attribute__((visibility("default"))) __declspec(dllexport) extern],
+              [defines how to decorate public symbols while building])
+    CFLAGS="${CFLAGS} -fvisibility=hidden"
+    ;;
+  *)
+    dnl on other compilers, check if we can do -fvisibility=hidden
+    SAVED_CFLAGS="${CFLAGS}"
+    CFLAGS="-fvisibility=hidden"
+    AC_MSG_CHECKING([for -fvisibility=hidden compiler flag])
+    AC_TRY_COMPILE([], [int main (void) { return 0; }],
+                   AC_MSG_RESULT(yes)
+                   enable_fvisibility_hidden=yes,
+                   AC_MSG_RESULT(no)
+                   enable_fvisibility_hidden=no)
+    CFLAGS="${SAVED_CFLAGS}"
+
+    AS_IF([test "${enable_fvisibility_hidden}" = "yes"], [
+      AC_DEFINE([_CLUTTER_EXTERN], [__attribute__((visibility("default"))) extern],
+                [defines how to decorate public symbols while building])
+      CLUTTER_HIDDEN_VISIBILITY_CFLAGS="-fvisibility=hidden"
+    ])
+    ;;
+esac
+AC_SUBST(CLUTTER_HIDDEN_VISIBILITY_CFLAGS)
+
 AC_CACHE_SAVE
 
 dnl ========================================================================
@@ -205,7 +237,7 @@ experimental_backend=no
 experimental_input_backend=no
 
 # base dependencies for core
-CLUTTER_BASE_PC_FILES="cogl-1.0 >= $COGL_REQ_VERSION cairo-gobject >= $CAIRO_REQ_VERSION atk >= $ATK_REQ_VERSION pangocairo >= $PANGO_REQ_VERSION cogl-pango-1.0 json-glib-1.0 >= $JSON_GLIB_REQ_VERSION"
+CLUTTER_BASE_PC_FILES="cogl-1.0 >= $COGL_REQ_VERSION cogl-path-1.0 cairo-gobject >= $CAIRO_REQ_VERSION atk >= $ATK_REQ_VERSION pangocairo >= $PANGO_REQ_VERSION cogl-pango-1.0 json-glib-1.0 >= $JSON_GLIB_REQ_VERSION"
 
 # private base dependencies
 CLUTTER_BASE_PC_FILES_PRIVATE=""
@@ -307,9 +339,8 @@ AS_IF([test "x$enable_wayland" = "xyes"],
         CLUTTER_BACKENDS="$CLUTTER_BACKENDS wayland"
         CLUTTER_INPUT_BACKENDS="$CLUTTER_INPUT_BACKENDS wayland"
 
-        experimental_backend="yes"
-
         SUPPORT_WAYLAND=1
+        SUPPORT_COGL=1
 
         PKG_CHECK_EXISTS([wayland-client wayland-cursor xkbcommon gdk-pixbuf-2.0],
                          [
@@ -337,7 +368,10 @@ AS_IF([test "x$enable_wayland_compositor" = "xyes"],
       [
         PKG_CHECK_EXISTS([wayland-server],
 			 [BACKEND_PC_FILES="$BACKEND_PC_FILES wayland-server"], [])
+
         SUPPORT_WAYLAND_COMPOSITOR=1
+        SUPPORT_COGL=1
+
 	CLUTTER_CONFIG_DEFINES="$CLUTTER_CONFIG_DEFINES
 #define CLUTTER_HAS_WAYLAND_COMPOSITOR_SUPPORT 1"
         AC_DEFINE([HAVE_CLUTTER_WAYLAND_COMPOSITOR], [1], [Have Wayland compositor support])
@@ -359,8 +393,8 @@ AS_IF([test "x$enable_cex100" = "xyes"],
 
         experimental_backend="yes"
 
-        SUPPORT_COGL=1
         SUPPORT_CEX100=1
+        SUPPORT_COGL=1
 
         have_gdl=no
         AC_CHECK_HEADERS([libgdl.h], [have_gdl=yes])
@@ -470,8 +504,7 @@ AS_IF([test "x$enable_evdev" = "xyes"],
         AS_IF([test "x$have_evdev" = "xyes"],
               [
                 CLUTTER_INPUT_BACKENDS="$CLUTTER_INPUT_BACKENDS evdev"
-                BACKEND_PC_FILES="$BACKEND_PC_FILES gudev-1.0 xkbcommon"
-                experimental_input_backend="yes"
+                BACKEND_PC_FILES_PRIVATE="$BACKEND_PC_FILES_PRIVATE libudev >= $LIBUDEV_REQ_VERSION libinput >= $LIBINPUT_REQ_VERSION xkbcommon"
                 AC_DEFINE([HAVE_EVDEV], [1], [Have evdev support for input handling])
                 SUPPORT_EVDEV=1
               ])
@@ -623,22 +656,6 @@ AS_IF([test "x$SUPPORT_X11" = "x1"],
               [AC_MSG_ERROR([Not found])]
         )
 
-        # XFIXES (required)
-        AC_MSG_CHECKING([for XFIXES extension >= $XFIXES_REQ_VERSION])
-        PKG_CHECK_EXISTS([xfixes >= $XFIXES_REQ_VERSION], [have_xfixes=yes], [have_xfixes=no])
-        AS_IF([test "x$have_xfixes" = "xyes"],
-              [
-                AC_DEFINE(HAVE_XFIXES, [1], [Define to 1 if we have the XFIXES X extension])
-
-                X11_LIBS="$X11_LIBS -lXfixes"
-                X11_PC_FILES="$X11_PC_FILES xfixes >= $XFIXES_REQ_VERSION"
-                X11_EXTS="$X11_EXTS xfixes"
-
-                AC_MSG_RESULT([found])
-              ],
-              [AC_MSG_ERROR([Not found])]
-        )
-
         # XDAMAGE (required)
         AC_MSG_CHECKING([for XDAMAGE extension])
         PKG_CHECK_EXISTS([xdamage], [have_xdamage=yes], [have_xdamage=no])
@@ -713,12 +730,6 @@ AS_IF([test "x$SUPPORT_X11" = "x1"],
                                      AC_DEFINE([HAVE_XINPUT_2],
                                                [1],
                                                [Define to 1 if XI2 is available])
-                                   ],
-                                   [
-                                     have_xinput2=no
-                                     AC_DEFINE([HAVE_XINPUT],
-                                               [1],
-                                               [Define to 1 if XInput is available])
                                    ])
 
                   clutter_save_LIBS="$LIBS"
@@ -810,6 +821,18 @@ AS_CASE([$enable_pixbuf],
 )
 
 AM_CONDITIONAL([PIXBUF_TESTS], [test "x$pixbuf_tests" = "xyes"])
+
+# Check for cairo_set_device_scale, as we don't want to depend hard on
+# this until there is a stable release with it
+saved_CFLAGS="$CFLAGS"
+saved_LIBS="$LIBS"
+CAIRO_CFLAGS=`$PKG_CONFIG --cflags cairo`
+CAIRO_LIBS=`$PKG_CONFIG --libs cairo`
+CFLAGS="$CFLAGS $CAIRO_CFLAGS"
+LIBS="$CAIRO_LIBS $LIBS"
+AC_CHECK_FUNCS(cairo_surface_set_device_scale)
+LIBS="$saved_LIBS"
+CFLAGS="$saved_CFLAGS"
 
 dnl === Enable debug level ====================================================
 
@@ -924,6 +947,7 @@ MAINTAINER_COMPILER_FLAGS="$MAINTAINER_COMPILER_FLAGS
                            -Wcast-align
                            -Wuninitialized
                            -Wno-strict-aliasing
+                           -Werror=logical-op
                            -Werror=pointer-arith
                            -Werror=missing-declarations
                            -Werror=redundant-decls
@@ -1009,7 +1033,7 @@ AS_IF([test "x$use_gcov" = "xyes"],
           AC_MSG_ERROR([ccache must be disabled when --enable-gcov option is used. You can disable ccache by setting environment variable CCACHE_DISABLE=1.])
         fi
 
-        ltp_version_list="1.6 1.7 1.8 1.9"
+        ltp_version_list="1.6 1.7 1.8 1.9 1.10"
         AC_CHECK_PROG(LTP, lcov, lcov)
         AC_CHECK_PROG(LTP_GENHTML, genhtml, genhtml)
 
@@ -1137,16 +1161,7 @@ dnl = Build optionals =========================================================
 
 dnl === Conformance test suite ================================================
 
-AC_ARG_ENABLE([conformance],
-              [AS_HELP_STRING([--disable-conformance], [Whether the conformance tests should be built])],
-              [],
-              [enable_conformance=yes])
-
-AC_ARG_ENABLE([tests],
-              [AS_HELP_STRING([--disable-tests], [Whether tests should be built])],
-              [],
-              [enable_tests=yes])
-AM_CONDITIONAL(BUILD_TESTS, [test "x$enable_tests" = "xyes" && test "x$enable_conformance" = "xyes"])
+GLIB_TESTS
 
 AC_ARG_ENABLE([examples],
               [AS_HELP_STRING([--disable-examples], [Whether examples should be built])],
@@ -1180,8 +1195,6 @@ AC_CONFIG_FILES([
 	tests/Makefile
 	tests/accessibility/Makefile
 	tests/conform/Makefile
-	tests/conform/test-launcher.sh
-	tests/data/Makefile
 	tests/interactive/Makefile
 	tests/interactive/wrapper.sh
 	tests/micro-bench/Makefile
@@ -1236,11 +1249,13 @@ echo "        Build Additional Documentation: ${enable_docs} (Generate PDF: ${en
 echo ""
 echo " • Extra:"
 echo "        Build introspection data: ${enable_introspection}"
-echo "        Build test suites: ${enable_tests}"
-if test "x$enable_tests" = "xyes"; then
+if test "x$x11_tests" = "xyes"; then
 echo "        Build X11-specific tests: ${x11_tests}"
+fi
+if test "x$pixbuf_tests" = "xyes"; then
 echo "        Build tests using GDK-Pixbuf: ${pixbuf_tests}"
 fi
+echo "        Install test suites: ${enable_installed_tests}"
 echo "        Build examples: ${enable_examples}"
 
 # Clutter backend related flags
@@ -1279,7 +1294,7 @@ fi
 echo ""
 
 # General warning about experimental features
-if test "x$experimental_backend" = "xyes"; then
+if test "x$experimental_backend" = xyes -o "x$experimental_input_backend" = xyes; then
 echo ""
 echo "☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠"
 echo "*WARNING* *WARNING* *WARNING* *WARNING* *WARNING* *WARNING* *WARNING*"

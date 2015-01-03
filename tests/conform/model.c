@@ -2,8 +2,6 @@
 #include <string.h>
 #include <clutter/clutter.h>
 
-#include "test-conform-common.h"
-
 typedef struct _ModelData
 {
   ClutterModel *model;
@@ -171,9 +169,8 @@ filter_odd_rows (ClutterModel     *model,
   return FALSE;
 }
 
-void
-list_model_filter (TestConformSimpleFixture *fixture,
-                   gconstpointer             data)
+static void
+list_model_filter (void)
 {
   ModelData test_data = { NULL, 0 };
   ClutterModelIter *iter;
@@ -259,9 +256,8 @@ list_model_filter (TestConformSimpleFixture *fixture,
   g_object_unref (test_data.model);
 }
 
-void
-list_model_iterate (TestConformSimpleFixture *fixture,
-                    gconstpointer             data)
+static void
+list_model_iterate (void)
 {
   ModelData test_data = { NULL, 0 };
   ClutterModelIter *iter;
@@ -334,9 +330,8 @@ list_model_iterate (TestConformSimpleFixture *fixture,
   g_object_unref (test_data.model);
 }
 
-void
-list_model_populate (TestConformSimpleFixture *fixture,
-                     gconstpointer             data)
+static void
+list_model_populate (void)
 {
   ModelData test_data = { NULL, 0 };
   gint i;
@@ -365,9 +360,8 @@ list_model_populate (TestConformSimpleFixture *fixture,
   g_object_unref (test_data.model);
 }
 
-void
-list_model_from_script (TestConformSimpleFixture *fixture,
-                        gconstpointer dummy)
+static void
+list_model_from_script (void)
 {
   ClutterScript *script = clutter_script_new ();
   GObject *model;
@@ -378,7 +372,7 @@ list_model_from_script (TestConformSimpleFixture *fixture,
   ClutterModelIter *iter;
   GValue value = { 0, };
 
-  test_file = clutter_test_get_data_file ("test-script-model.json");
+  test_file = g_test_build_filename (G_TEST_DIST, "scripts", "test-script-model.json", NULL);
   clutter_script_load_from_file (script, test_file, &error);
   if (g_test_verbose () && error)
     g_print ("Error: %s", error->message);
@@ -406,7 +400,7 @@ list_model_from_script (TestConformSimpleFixture *fixture,
     g_print ("column[2]: %s, type: %s\n", name, g_type_name (type));
 
   g_assert (strcmp (name, "actor-column") == 0);
-  g_assert (type == CLUTTER_TYPE_RECTANGLE);
+  g_assert (g_type_is_a (type, CLUTTER_TYPE_ACTOR));
 
   g_assert (clutter_model_get_n_rows (CLUTTER_MODEL (model)) == 3);
 
@@ -429,13 +423,13 @@ list_model_from_script (TestConformSimpleFixture *fixture,
   iter = clutter_model_iter_next (iter);
   clutter_model_iter_get_value (iter, 2, &value);
   g_assert (G_VALUE_HOLDS_OBJECT (&value));
-  g_assert (CLUTTER_IS_RECTANGLE (g_value_get_object (&value)));
+  g_assert (CLUTTER_IS_ACTOR (g_value_get_object (&value)));
   g_value_unset (&value);
 
   iter = clutter_model_iter_next (iter);
   clutter_model_iter_get_value (iter, 2, &value);
   g_assert (G_VALUE_HOLDS_OBJECT (&value));
-  g_assert (CLUTTER_IS_RECTANGLE (g_value_get_object (&value)));
+  g_assert (CLUTTER_IS_ACTOR (g_value_get_object (&value)));
   g_assert (strcmp (clutter_actor_get_name (g_value_get_object (&value)),
                     "actor-row-3") == 0);
   g_value_unset (&value);
@@ -460,9 +454,8 @@ on_row_changed (ClutterModel *model,
   data->n_emissions += 1;
 }
 
-void
-list_model_row_changed (TestConformSimpleFixture *fixture,
-                        gconstpointer             data)
+static void
+list_model_row_changed (void)
 {
   ChangedData test_data = { NULL, NULL, 0, 0 };
   GValue value = { 0, };
@@ -524,3 +517,11 @@ list_model_row_changed (TestConformSimpleFixture *fixture,
   g_object_unref (test_data.iter);
   g_object_unref (test_data.model);
 }
+
+CLUTTER_TEST_SUITE (
+  CLUTTER_TEST_UNIT ("/list-model/populate", list_model_populate)
+  CLUTTER_TEST_UNIT ("/list-model/iterate", list_model_iterate)
+  CLUTTER_TEST_UNIT ("/list-model/filter", list_model_filter)
+  CLUTTER_TEST_UNIT ("/list-model/row-changed", list_model_row_changed)
+  CLUTTER_TEST_UNIT ("/list-model/from-script", list_model_from_script)
+)

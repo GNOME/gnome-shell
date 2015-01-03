@@ -48,7 +48,7 @@ typedef struct _ClutterDragActionClass          ClutterDragActionClass;
 /**
  * ClutterDragAction:
  *
- * The <structname>ClutterDragAction</structname> structure contains only
+ * The #ClutterDragAction structure contains only
  * private data and should be accessed using the provided API
  *
  * Since: 1.4
@@ -68,7 +68,7 @@ struct _ClutterDragAction
  * @drag_end: class handler of the #ClutterDragAction::drag-end signal
  * @drag_progress: class handler of the #ClutterDragAction::drag-progress signal
  *
- * The <structname>ClutterDragActionClass</structname> structure contains
+ * The #ClutterDragActionClass structure contains
  * only private data
  *
  * Since: 1.4
@@ -105,26 +105,36 @@ struct _ClutterDragActionClass
   void (* _clutter_drag_action4) (void);
 };
 
+CLUTTER_AVAILABLE_IN_1_4
 GType clutter_drag_action_get_type (void) G_GNUC_CONST;
 
+CLUTTER_AVAILABLE_IN_1_4
 ClutterAction * clutter_drag_action_new                   (void);
 
+CLUTTER_AVAILABLE_IN_1_4
 void            clutter_drag_action_set_drag_threshold (ClutterDragAction *action,
                                                         gint               x_threshold,
                                                         gint               y_threshold);
+CLUTTER_AVAILABLE_IN_1_4
 void            clutter_drag_action_get_drag_threshold (ClutterDragAction *action,
                                                         guint             *x_threshold,
                                                         guint             *y_threshold);
+CLUTTER_AVAILABLE_IN_1_4
 void            clutter_drag_action_set_drag_handle    (ClutterDragAction *action,
                                                         ClutterActor      *handle);
+CLUTTER_AVAILABLE_IN_1_4
 ClutterActor *  clutter_drag_action_get_drag_handle    (ClutterDragAction *action);
+CLUTTER_AVAILABLE_IN_1_4
 void            clutter_drag_action_set_drag_axis      (ClutterDragAction *action,
                                                         ClutterDragAxis    axis);
+CLUTTER_AVAILABLE_IN_1_4
 ClutterDragAxis clutter_drag_action_get_drag_axis      (ClutterDragAction *action);
 
+CLUTTER_AVAILABLE_IN_1_4
 void            clutter_drag_action_get_press_coords   (ClutterDragAction *action,
                                                         gfloat            *press_x,
                                                         gfloat            *press_y);
+CLUTTER_AVAILABLE_IN_1_4
 void            clutter_drag_action_get_motion_coords  (ClutterDragAction *action,
                                                         gfloat            *motion_x,
                                                         gfloat            *motion_y);

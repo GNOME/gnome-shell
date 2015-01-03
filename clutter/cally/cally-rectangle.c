@@ -30,10 +30,15 @@
  * In particular it sets a proper role for the rectangle.
  */
 
+#include "config.h"
+
 #define CLUTTER_DISABLE_DEPRECATION_WARNINGS
 
 #include "cally-rectangle.h"
 #include "cally-actor-private.h"
+
+#include "clutter-color.h"
+#include "deprecated/clutter-rectangle.h"
 
 /* AtkObject */
 static void                  cally_rectangle_real_initialize (AtkObject *obj,

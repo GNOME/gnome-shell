@@ -53,6 +53,7 @@ struct _ClutterInputDeviceWayland
   guint                   repeat_time;
   guint                   repeat_source;
   gboolean                is_initial_repeat;
+  ClutterModifierType     button_modifier_state;
 };
 
 GType _clutter_input_device_wayland_get_type (void) G_GNUC_CONST;

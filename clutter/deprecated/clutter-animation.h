@@ -50,6 +50,8 @@ typedef struct _ClutterAnimationClass           ClutterAnimationClass;
  * be accessed using the provided functions.
  *
  * Since: 1.0
+ *
+ * Deprecated: 1.12: Use the implicit animation on #ClutterActor
  */
 struct _ClutterAnimation
 {
@@ -68,6 +70,8 @@ struct _ClutterAnimation
  * should be accessed using the provided functions.
  *
  * Since: 1.0
+ *
+ * Deprecated: 1.12: Use the implicit animation on #ClutterActor
  */
 struct _ClutterAnimationClass
 {

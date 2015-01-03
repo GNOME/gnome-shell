@@ -48,7 +48,7 @@ typedef struct _ClutterGestureActionClass         ClutterGestureActionClass;
 /**
  * ClutterGestureAction:
  *
- * The <structname>ClutterGestureAction</structname> structure contains
+ * The #ClutterGestureAction structure contains
  * only private data and should be accessed using the provided API
  *
  * Since: 1.8
@@ -70,7 +70,7 @@ struct _ClutterGestureAction
  * @gesture_prepare: virtual function called before emitting the
  *   #ClutterGestureAction::gesture-cancel signal
  *
- * The <structname>ClutterGestureClass</structname> structure contains only
+ * The #ClutterGestureClass structure contains only
  * private data.
  *
  * Since: 1.8
@@ -101,17 +101,23 @@ struct _ClutterGestureActionClass
   void (* _clutter_gesture_action6) (void);
 };
 
+CLUTTER_AVAILABLE_IN_1_8
 GType clutter_gesture_action_get_type (void) G_GNUC_CONST;
 
+CLUTTER_AVAILABLE_IN_1_8
 ClutterAction *        clutter_gesture_action_new                      (void);
 
+CLUTTER_AVAILABLE_IN_1_8
 gint                   clutter_gesture_action_get_n_touch_points   (ClutterGestureAction *action);
+CLUTTER_AVAILABLE_IN_1_8
 void                   clutter_gesture_action_set_n_touch_points   (ClutterGestureAction *action,
                                                                     gint                  nb_points);
+CLUTTER_AVAILABLE_IN_1_8
 void                   clutter_gesture_action_get_press_coords     (ClutterGestureAction *action,
                                                                     guint                 point,
                                                                     gfloat               *press_x,
                                                                     gfloat               *press_y);
+CLUTTER_AVAILABLE_IN_1_8
 void                   clutter_gesture_action_get_motion_coords    (ClutterGestureAction *action,
                                                                     guint                 point,
                                                                     gfloat               *motion_x,
@@ -121,6 +127,7 @@ gfloat                 clutter_gesture_action_get_motion_delta     (ClutterGestu
                                                                     guint                 point,
                                                                     gfloat               *delta_x,
                                                                     gfloat               *delta_y);
+CLUTTER_AVAILABLE_IN_1_8
 void                   clutter_gesture_action_get_release_coords   (ClutterGestureAction *action,
                                                                     guint                 point,
                                                                     gfloat               *release_x,
@@ -148,6 +155,24 @@ const ClutterEvent *   clutter_gesture_action_get_last_event       (ClutterGestu
 
 CLUTTER_AVAILABLE_IN_1_12
 void                   clutter_gesture_action_cancel               (ClutterGestureAction *action);
+
+CLUTTER_AVAILABLE_IN_1_18
+void                            clutter_gesture_action_set_threshold_trigger_edge       (ClutterGestureAction      *action,
+                                                                                         ClutterGestureTriggerEdge  edge);
+CLUTTER_DEPRECATED_IN_1_20_FOR(clutter_gesture_action_get_threshold_trigger_edge)
+ClutterGestureTriggerEdge       clutter_gesture_action_get_threshold_trigger_egde       (ClutterGestureAction      *action);
+CLUTTER_AVAILABLE_IN_1_20
+ClutterGestureTriggerEdge       clutter_gesture_action_get_threshold_trigger_edge       (ClutterGestureAction      *action);
+
+CLUTTER_AVAILABLE_IN_1_18
+void                            clutter_gesture_action_set_threshold_trigger_distance   (ClutterGestureAction      *action,
+                                                                                         float                      x,
+                                                                                         float                      y);
+
+CLUTTER_AVAILABLE_IN_1_18
+void                            clutter_gesture_action_get_threshold_trigger_distance   (ClutterGestureAction *action,
+                                                                                         float                *x,
+                                                                                         float                *y);
 
 G_END_DECLS
 

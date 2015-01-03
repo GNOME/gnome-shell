@@ -77,8 +77,10 @@ struct _ClutterBoxLayoutClass
   ClutterLayoutManagerClass parent_class;
 };
 
+CLUTTER_AVAILABLE_IN_1_2
 GType clutter_box_layout_get_type (void) G_GNUC_CONST;
 
+CLUTTER_AVAILABLE_IN_1_2
 ClutterLayoutManager *  clutter_box_layout_new                 (void);
 
 CLUTTER_AVAILABLE_IN_1_12
@@ -87,14 +89,20 @@ void                    clutter_box_layout_set_orientation      (ClutterBoxLayou
 CLUTTER_AVAILABLE_IN_1_12
 ClutterOrientation      clutter_box_layout_get_orientation      (ClutterBoxLayout    *layout);
 
+CLUTTER_AVAILABLE_IN_1_2
 void                    clutter_box_layout_set_spacing          (ClutterBoxLayout    *layout,
                                                                  guint                spacing);
+CLUTTER_AVAILABLE_IN_1_2
 guint                   clutter_box_layout_get_spacing          (ClutterBoxLayout    *layout);
+CLUTTER_AVAILABLE_IN_1_2
 void                    clutter_box_layout_set_homogeneous      (ClutterBoxLayout    *layout,
                                                                  gboolean             homogeneous);
+CLUTTER_AVAILABLE_IN_1_2
 gboolean                clutter_box_layout_get_homogeneous      (ClutterBoxLayout    *layout);
+CLUTTER_AVAILABLE_IN_1_2
 void                    clutter_box_layout_set_pack_start       (ClutterBoxLayout    *layout,
                                                                  gboolean             pack_start);
+CLUTTER_AVAILABLE_IN_1_2
 gboolean                clutter_box_layout_get_pack_start       (ClutterBoxLayout    *layout);
 
 CLUTTER_DEPRECATED_IN_1_12_FOR(clutter_box_layout_set_orientation)
@@ -103,6 +111,7 @@ void                    clutter_box_layout_set_vertical         (ClutterBoxLayou
 CLUTTER_DEPRECATED_IN_1_12_FOR(clutter_box_layout_get_orientation)
 gboolean                clutter_box_layout_get_vertical         (ClutterBoxLayout    *layout);
 
+CLUTTER_AVAILABLE_IN_1_2
 void                    clutter_box_layout_pack                 (ClutterBoxLayout    *layout,
                                                                  ClutterActor        *actor,
                                                                  gboolean             expand,

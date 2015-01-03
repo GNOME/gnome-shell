@@ -62,7 +62,8 @@ gboolean            _clutter_stage_needs_update          (ClutterStage          
 gboolean            _clutter_stage_do_update             (ClutterStage          *stage);
 
 void     _clutter_stage_queue_event                       (ClutterStage *stage,
-					                   ClutterEvent *event);
+                                                           ClutterEvent *event,
+                                                           gboolean      copy_event);
 gboolean _clutter_stage_has_queued_events                 (ClutterStage *stage);
 void     _clutter_stage_process_queued_events             (ClutterStage *stage);
 void     _clutter_stage_update_input_devices              (ClutterStage *stage);
@@ -118,6 +119,9 @@ gboolean                _clutter_stage_is_fullscreen    (ClutterStage      *stag
 gboolean                _clutter_stage_update_state     (ClutterStage      *stage,
                                                          ClutterStageState  unset_state,
                                                          ClutterStageState  set_state);
+
+void                    _clutter_stage_set_scale_factor (ClutterStage      *stage,
+                                                         int                factor);
 
 G_END_DECLS
 

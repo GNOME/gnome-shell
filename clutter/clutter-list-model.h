@@ -75,10 +75,13 @@ struct _ClutterListModelClass
   ClutterModelClass parent_class;
 };
 
+CLUTTER_AVAILABLE_IN_ALL
 GType         clutter_list_model_get_type (void) G_GNUC_CONST;
 
+CLUTTER_AVAILABLE_IN_ALL
 ClutterModel *clutter_list_model_new      (guint                n_columns,
                                               ...);
+CLUTTER_AVAILABLE_IN_ALL
 ClutterModel *clutter_list_model_newv     (guint                n_columns,
                                            GType               *types,
                                            const gchar * const  names[]);

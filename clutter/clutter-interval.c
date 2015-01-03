@@ -46,9 +46,7 @@
  * #ClutterInterval is available since Clutter 1.0
  */
 
-#ifdef HAVE_CONFIG_H
 #include "config.h"
-#endif
 
 #include <stdlib.h>
 #include <string.h>
@@ -61,7 +59,10 @@
 #include "clutter-interval.h"
 #include "clutter-private.h"
 #include "clutter-units.h"
+#include "clutter-scriptable.h"
+#include "clutter-script-private.h"
 
+#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
 #include "deprecated/clutter-fixed.h"
 
 enum
@@ -86,8 +87,6 @@ enum
   N_VALUES
 };
 
-#define CLUTTER_INTERVAL_GET_PRIVATE(obj)  (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_INTERVAL, ClutterIntervalPrivate))
-
 struct _ClutterIntervalPrivate
 {
   GType value_type;
@@ -95,13 +94,23 @@ struct _ClutterIntervalPrivate
   GValue *values;
 };
 
-G_DEFINE_TYPE (ClutterInterval, clutter_interval, G_TYPE_INITIALLY_UNOWNED);
+static void clutter_scriptable_iface_init (ClutterScriptableIface *iface);
+
+G_DEFINE_TYPE_WITH_CODE (ClutterInterval,
+                         clutter_interval,
+                         G_TYPE_INITIALLY_UNOWNED,
+                         G_ADD_PRIVATE (ClutterInterval)
+                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_SCRIPTABLE,
+                                                clutter_scriptable_iface_init));
+
 
 static gboolean
 clutter_interval_real_validate (ClutterInterval *interval,
                                 GParamSpec      *pspec)
 {
   GType pspec_gtype = G_PARAM_SPEC_VALUE_TYPE (pspec);
+
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS;
 
   /* check the GTypes we provide first */
   if (pspec_gtype == COGL_TYPE_FIXED)
@@ -117,6 +126,8 @@ clutter_interval_real_validate (ClutterInterval *interval,
       else
         return FALSE;
     }
+
+G_GNUC_END_IGNORE_DEPRECATIONS;
 
   /* then check the fundamental types */
   switch (G_TYPE_FUNDAMENTAL (pspec_gtype))
@@ -420,7 +431,8 @@ clutter_interval_set_property (GObject      *gobject,
                                const GValue *value,
                                GParamSpec   *pspec)
 {
-  ClutterIntervalPrivate *priv = CLUTTER_INTERVAL_GET_PRIVATE (gobject);
+  ClutterInterval *self = CLUTTER_INTERVAL (gobject);
+  ClutterIntervalPrivate *priv = clutter_interval_get_instance_private (self);
 
   switch (prop_id)
     {
@@ -430,16 +442,14 @@ clutter_interval_set_property (GObject      *gobject,
 
     case PROP_INITIAL:
       if (g_value_get_boxed (value) != NULL)
-        clutter_interval_set_initial_value (CLUTTER_INTERVAL (gobject),
-                                            g_value_get_boxed (value));
+        clutter_interval_set_initial_value (self, g_value_get_boxed (value));
       else if (G_IS_VALUE (&priv->values[INITIAL]))
         g_value_unset (&priv->values[INITIAL]);
       break;
 
     case PROP_FINAL:
       if (g_value_get_boxed (value) != NULL)
-        clutter_interval_set_final_value (CLUTTER_INTERVAL (gobject),
-                                          g_value_get_boxed (value));
+        clutter_interval_set_final_value (self, g_value_get_boxed (value));
       else if (G_IS_VALUE (&priv->values[FINAL]))
         g_value_unset (&priv->values[FINAL]);
       break;
@@ -456,7 +466,9 @@ clutter_interval_get_property (GObject    *gobject,
                                GValue     *value,
                                GParamSpec *pspec)
 {
-  ClutterIntervalPrivate *priv = CLUTTER_INTERVAL_GET_PRIVATE (gobject);
+  ClutterIntervalPrivate *priv;
+  
+  priv = clutter_interval_get_instance_private (CLUTTER_INTERVAL (gobject));
 
   switch (prop_id)
     {
@@ -480,12 +492,51 @@ clutter_interval_get_property (GObject    *gobject,
     }
 }
 
+static gboolean
+clutter_interval_parse_custom_node (ClutterScriptable *scriptable,
+                                    ClutterScript     *script,
+                                    GValue            *value,
+                                    const gchar       *name,
+                                    JsonNode          *node)
+{
+  ClutterIntervalPrivate *priv = CLUTTER_INTERVAL (scriptable)->priv;
+
+  if ((strcmp (name, "initial") == 0) || (strcmp (name, "final") == 0))
+    {
+      g_value_init (value, priv->value_type);
+      return _clutter_script_parse_node (script, value, name, node, NULL);
+    }
+
+  return FALSE;
+}
+
+static void
+clutter_interval_set_custom_property (ClutterScriptable *scriptable,
+                                      ClutterScript     *script,
+                                      const gchar       *name,
+                                      const GValue      *value)
+{
+  ClutterInterval *self = CLUTTER_INTERVAL (scriptable);
+
+  if (strcmp (name, "initial") == 0)
+    clutter_interval_set_initial_value (self, value);
+  else if (strcmp (name, "final") == 0)
+    clutter_interval_set_final_value (self, value);
+  else
+    g_object_set_property (G_OBJECT (scriptable), name, value);
+}
+
+static void
+clutter_scriptable_iface_init (ClutterScriptableIface *iface)
+{
+  iface->parse_custom_node = clutter_interval_parse_custom_node;
+  iface->set_custom_property = clutter_interval_set_custom_property;
+}
+
 static void
 clutter_interval_class_init (ClutterIntervalClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-
-  g_type_class_add_private (klass, sizeof (ClutterIntervalPrivate));
 
   klass->validate = clutter_interval_real_validate;
   klass->compute_value = clutter_interval_real_compute_value;
@@ -546,12 +597,10 @@ clutter_interval_class_init (ClutterIntervalClass *klass)
 static void
 clutter_interval_init (ClutterInterval *self)
 {
-  ClutterIntervalPrivate *priv;
+  self->priv = clutter_interval_get_instance_private (self);
 
-  self->priv = priv = CLUTTER_INTERVAL_GET_PRIVATE (self);
-
-  priv->value_type = G_TYPE_INVALID;
-  priv->values = g_malloc0 (sizeof (GValue) * N_VALUES);
+  self->priv->value_type = G_TYPE_INVALID;
+  self->priv->values = g_malloc0 (sizeof (GValue) * N_VALUES);
 }
 
 static inline void
@@ -836,14 +885,12 @@ clutter_interval_get_value_type (ClutterInterval *interval)
 }
 
 /**
- * clutter_interval_set_initial_value:
+ * clutter_interval_set_initial_value: (rename-to clutter_interval_set_initial)
  * @interval: a #ClutterInterval
  * @value: a #GValue
  *
  * Sets the initial value of @interval to @value. The value is copied
  * inside the #ClutterInterval.
- *
- * Rename to: clutter_interval_set_initial
  *
  * Since: 1.0
  */
@@ -928,14 +975,12 @@ clutter_interval_peek_initial_value (ClutterInterval *interval)
 }
 
 /**
- * clutter_interval_set_final_value:
+ * clutter_interval_set_final_value: (rename-to clutter_interval_set_final)
  * @interval: a #ClutterInterval
  * @value: a #GValue
  *
  * Sets the final value of @interval to @value. The value is
  * copied inside the #ClutterInterval.
- *
- * Rename to: clutter_interval_set_final
  *
  * Since: 1.0
  */

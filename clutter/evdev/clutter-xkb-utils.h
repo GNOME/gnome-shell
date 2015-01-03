@@ -32,14 +32,15 @@
 #include "clutter-input-device.h"
 
 ClutterEvent *    _clutter_key_event_new_from_evdev (ClutterInputDevice *device,
+						     ClutterInputDevice *core_keyboard,
                                                      ClutterStage       *stage,
                                                      struct xkb_state   *xkb_state,
+						     uint32_t            button_state,
                                                      uint32_t            _time,
                                                      uint32_t            key,
                                                      uint32_t            state);
-struct xkb_state * _clutter_xkb_state_new           (const gchar *model,
-                                                     const gchar *layout,
-                                                     const gchar *variant,
-                                                     const gchar *options);
+void               _clutter_xkb_translate_state     (ClutterEvent       *event,
+						     struct xkb_state   *xkb_state,
+						     uint32_t            button_state);
 
 #endif /* __CLUTTER_XKB_UTILS_H__ */

@@ -78,9 +78,9 @@ struct _ClutterWaylandSurfacePrivate
   CoglPipeline *pipeline;
 };
 
-G_DEFINE_TYPE (ClutterWaylandSurface,
-               clutter_wayland_surface,
-               CLUTTER_TYPE_ACTOR);
+G_DEFINE_TYPE_WITH_PRIVATE (ClutterWaylandSurface,
+                            clutter_wayland_surface,
+                            CLUTTER_TYPE_ACTOR)
 
 static gboolean
 clutter_wayland_surface_get_paint_volume (ClutterActor *self,
@@ -156,11 +156,9 @@ opacity_change_cb (ClutterWaylandSurface *self)
 static void
 clutter_wayland_surface_init (ClutterWaylandSurface *self)
 {
-  ClutterWaylandSurfacePrivate *priv =
-      G_TYPE_INSTANCE_GET_PRIVATE (self,
-                                   CLUTTER_WAYLAND_TYPE_SURFACE,
-                                   ClutterWaylandSurfacePrivate);
-
+  ClutterWaylandSurfacePrivate *priv;
+  
+  priv = clutter_wayland_surface_get_instance_private (self);
   priv->surface = NULL;
   priv->width = 0;
   priv->height = 0;
@@ -405,8 +403,6 @@ clutter_wayland_surface_class_init (ClutterWaylandSurfaceClass *klass)
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
   GParamSpec *pspec;
 
-  g_type_class_add_private (klass, sizeof (ClutterWaylandSurfacePrivate));
-
   actor_class->get_paint_volume = clutter_wayland_surface_get_paint_volume;
   actor_class->paint = clutter_wayland_surface_paint;
   actor_class->get_preferred_width =
@@ -515,7 +511,7 @@ clutter_wayland_surface_new (struct wl_surface *surface)
 /**
  * clutter_wayland_surface_attach_buffer:
  * @self: A #ClutterWaylandSurface actor
- * @buffer: A compositor side struct wl_buffer pointer
+ * @buffer: A compositor side resource representing a wl_buffer
  * @error: A #GError
  *
  * This associates a client's buffer with the #ClutterWaylandSurface
@@ -527,7 +523,7 @@ clutter_wayland_surface_new (struct wl_surface *surface)
  */
 gboolean
 clutter_wayland_surface_attach_buffer (ClutterWaylandSurface *self,
-                                       struct wl_buffer *buffer,
+                                       struct wl_resource *buffer,
                                        GError **error)
 {
   ClutterWaylandSurfacePrivate *priv;
@@ -539,8 +535,6 @@ clutter_wayland_surface_attach_buffer (ClutterWaylandSurface *self,
   priv = self->priv;
 
   free_surface_buffers (self);
-
-  set_size (self, buffer->width, buffer->height);
 
   priv->buffer =
     cogl_wayland_texture_2d_new_from_buffer (context, buffer, error);
@@ -555,13 +549,17 @@ clutter_wayland_surface_attach_buffer (ClutterWaylandSurface *self,
   if (!priv->buffer)
     return FALSE;
 
+  set_size (self,
+            cogl_texture_get_width (COGL_TEXTURE (priv->buffer)),
+            cogl_texture_get_height (COGL_TEXTURE (priv->buffer)));
+
   return TRUE;
 }
 
 /**
  * clutter_wayland_surface_damage_buffer:
  * @self: A #ClutterWaylandSurface actor
- * @buffer: A compositor side struct wl_buffer pointer
+ * @buffer: A wayland resource for a buffer
  * @x: The x coordinate of the damaged rectangle
  * @y: The y coordinate of the damaged rectangle
  * @width: The width of the damaged rectangle
@@ -579,23 +577,26 @@ clutter_wayland_surface_attach_buffer (ClutterWaylandSurface *self,
  */
 void
 clutter_wayland_surface_damage_buffer (ClutterWaylandSurface *self,
-                                       struct wl_buffer *buffer,
+                                       struct wl_resource *buffer,
                                        gint32 x,
                                        gint32 y,
                                        gint32 width,
                                        gint32 height)
 {
   ClutterWaylandSurfacePrivate *priv;
+  struct wl_shm_buffer *shm_buffer;
 
   g_return_if_fail (CLUTTER_WAYLAND_IS_SURFACE (self));
 
   priv = self->priv;
 
-  if (priv->buffer && wl_buffer_is_shm (buffer))
+  shm_buffer = wl_shm_buffer_get (buffer);
+
+  if (priv->buffer && shm_buffer)
     {
       CoglPixelFormat format;
 
-      switch (wl_shm_buffer_get_format (buffer))
+      switch (wl_shm_buffer_get_format (shm_buffer))
         {
 #if G_BYTE_ORDER == G_BIG_ENDIAN
           case WL_SHM_FORMAT_ARGB8888:
@@ -623,8 +624,8 @@ clutter_wayland_surface_damage_buffer (ClutterWaylandSurface *self,
                                width, height,
                                width, height,
                                format,
-                               wl_shm_buffer_get_stride (buffer),
-                               wl_shm_buffer_get_data (buffer));
+                               wl_shm_buffer_get_stride (shm_buffer),
+                               wl_shm_buffer_get_data (shm_buffer));
     }
 
   g_signal_emit (self, signals[QUEUE_DAMAGE_REDRAW],

@@ -47,6 +47,9 @@
 #include "config.h"
 #endif
 
+/* sadly, we are still using ClutterShader internally */
+#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
+
 /* This file depends on the glib enum types which aren't exposed
  * by cogl.h when COGL_ENABLE_EXPERIMENTAL_2_0_API is defined.
  *
@@ -57,9 +60,6 @@
 #include <cogl/cogl.h>
 
 #define CLUTTER_ENABLE_EXPERIMENTAL_API
-
-/* sadly, we are still using ClutterShader internally */
-#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
 
 #include "clutter-texture.h"
 
@@ -77,16 +77,6 @@
 #include "deprecated/clutter-shader.h"
 #include "deprecated/clutter-texture.h"
 #include "deprecated/clutter-util.h"
-
-static void clutter_scriptable_iface_init (ClutterScriptableIface *iface);
-
-G_DEFINE_TYPE_WITH_CODE (ClutterTexture,
-                         clutter_texture,
-                         CLUTTER_TYPE_ACTOR,
-                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_SCRIPTABLE,
-                                                clutter_scriptable_iface_init));
-
-#define CLUTTER_TEXTURE_GET_PRIVATE(obj)        (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_TEXTURE, ClutterTexturePrivate))
 
 typedef struct _ClutterTextureAsyncData ClutterTextureAsyncData;
 
@@ -193,6 +183,16 @@ static CoglPipeline *texture_template_pipeline = NULL;
 
 static void
 texture_fbo_free_resources (ClutterTexture *texture);
+
+static void clutter_scriptable_iface_init (ClutterScriptableIface *iface);
+
+G_DEFINE_TYPE_WITH_CODE (ClutterTexture,
+                         clutter_texture,
+                         CLUTTER_TYPE_ACTOR,
+                         G_ADD_PRIVATE (ClutterTexture)
+                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_SCRIPTABLE,
+                                                clutter_scriptable_iface_init));
+
 
 GQuark
 clutter_texture_error_quark (void)
@@ -972,8 +972,6 @@ clutter_texture_class_init (ClutterTextureClass *klass)
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
   GParamSpec *pspec;
 
-  g_type_class_add_private (klass, sizeof (ClutterTexturePrivate));
-
   actor_class->paint            = clutter_texture_paint;
   actor_class->pick             = clutter_texture_pick;
   actor_class->get_paint_volume = clutter_texture_get_paint_volume;
@@ -1296,7 +1294,7 @@ clutter_texture_init (ClutterTexture *self)
 {
   ClutterTexturePrivate *priv;
 
-  self->priv = priv = CLUTTER_TEXTURE_GET_PRIVATE (self);
+  self->priv = priv = clutter_texture_get_instance_private (self);
 
   priv->repeat_x          = FALSE;
   priv->repeat_y          = FALSE;
@@ -2516,13 +2514,8 @@ fbo_source_queue_relayout_cb (ClutterActor *source,
  *
  * Some tips on usage:
  *
- * <itemizedlist>
- *   <listitem>
- *     <para>The source actor must be made visible (i.e by calling
- *     #clutter_actor_show).</para>
- *   </listitem>
- *   <listitem>
- *     <para>The source actor must have a parent in order for it to be
+ *   - The source actor must be visible
+ *   - The source actor must have a parent in order for it to be
  *     allocated a size from the layouting mechanism. If the source
  *     actor does not have a parent when this function is called then
  *     the ClutterTexture will adopt it and allocate it at its
@@ -2531,10 +2524,8 @@ fbo_source_queue_relayout_cb (ClutterActor *source,
  *     intend to display the source actor then you must make sure that
  *     the actor is parented before calling
  *     clutter_texture_new_from_actor() or that you unparent it before
- *     adding it to a container.</para>
- *   </listitem>
- *   <listitem>
- *     <para>When getting the image for the clone texture, Clutter
+ *     adding it to a container.
+ *   - When getting the image for the clone texture, Clutter
  *     will attempt to render the source actor exactly as it would
  *     appear if it was rendered on screen. The source actor's parent
  *     transformations are taken into account. Therefore if your
@@ -2546,33 +2537,21 @@ fbo_source_queue_relayout_cb (ClutterActor *source,
  *     actor will be projected as if a small section of the screen was
  *     being viewed. Before version 0.8.2, an orthogonal identity
  *     projection was used which meant that the source actor would be
- *     clipped if any part of it was not on the zero Z-plane.</para>
- *   </listitem>
- *   <listitem>
- *     <para>Avoid reparenting the source with the created texture.</para>
- *   </listitem>
- *   <listitem>
- *     <para>A group can be padded with a transparent rectangle as to
+ *     clipped if any part of it was not on the zero Z-plane.
+ *   - Avoid reparenting the source with the created texture.
+ *   - A group can be padded with a transparent rectangle as to
  *     provide a border to contents for shader output (blurring text
- *     for example).</para>
- *   </listitem>
- *   <listitem>
- *     <para>The texture will automatically resize to contain a further
+ *     for example).
+ *   - The texture will automatically resize to contain a further
  *     transformed source. However, this involves overhead and can be
  *     avoided by placing the source actor in a bounding group
- *     sized large enough to contain any child tranformations.</para>
- *   </listitem>
- *   <listitem>
- *     <para>Uploading pixel data to the texture (e.g by using
+ *     sized large enough to contain any child tranformations.
+ *   -  Uploading pixel data to the texture (e.g by using
  *     clutter_texture_set_from_file()) will destroy the offscreen texture
- *     data and end redirection.</para>
- *   </listitem>
- *   <listitem>
- *     <para>cogl_texture_get_data() with the handle returned by
+ *     data and end redirection.
+ *   - cogl_texture_get_data() with the handle returned by
  *     clutter_texture_get_cogl_texture() can be used to read the
  *     offscreen texture pixels into a pixbuf.</para>
- *   </listitem>
- * </itemizedlist>
  *
  * Return value: A newly created #ClutterTexture object, or %NULL on failure.
  *

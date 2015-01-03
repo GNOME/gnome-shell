@@ -79,15 +79,6 @@
 
 #include "cogl/cogl.h"
 
-static void clutter_container_iface_init (ClutterContainerIface *iface);
-
-G_DEFINE_TYPE_WITH_CODE (ClutterStage, clutter_stage, CLUTTER_TYPE_GROUP,
-                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_CONTAINER,
-                                                clutter_container_iface_init))
-
-#define CLUTTER_STAGE_GET_PRIVATE(obj) \
-(G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_STAGE, ClutterStagePrivate))
-
 /* <private>
  * ClutterStageHint:
  * @CLUTTER_STAGE_NONE: No hint set
@@ -134,15 +125,11 @@ struct _ClutterStagePrivate
 
   ClutterStageHint stage_hints;
 
-  gint picks_per_frame;
-
   GArray *paint_volume_stack;
 
   ClutterPlane current_clip_planes[4];
 
   GList *pending_queue_redraws;
-
-  ClutterPickMode pick_buffer_mode;
 
   CoglFramebuffer *active_framebuffer;
 
@@ -159,6 +146,9 @@ struct _ClutterStagePrivate
 
   ClutterStageState current_state;
 
+  gpointer paint_data;
+  GDestroyNotify paint_notify;
+
   guint relayout_pending       : 1;
   guint redraw_pending         : 1;
   guint is_fullscreen          : 1;
@@ -170,7 +160,6 @@ struct _ClutterStagePrivate
   guint min_size_changed       : 1;
   guint dirty_viewport         : 1;
   guint dirty_projection       : 1;
-  guint have_valid_pick_buffer : 1;
   guint accept_focus           : 1;
   guint motion_events_enabled  : 1;
   guint has_custom_perspective : 1;
@@ -202,6 +191,7 @@ enum
   ACTIVATE,
   DEACTIVATE,
   DELETE_EVENT,
+  AFTER_PAINT,
 
   LAST_SIGNAL
 };
@@ -210,8 +200,15 @@ static guint stage_signals[LAST_SIGNAL] = { 0, };
 
 static const ClutterColor default_stage_color = { 255, 255, 255, 255 };
 
-static void _clutter_stage_maybe_finish_queue_redraws (ClutterStage *stage);
+static void clutter_stage_maybe_finish_queue_redraws (ClutterStage *stage);
 static void free_queue_redraw_entry (ClutterStageQueueRedrawEntry *entry);
+
+static void clutter_container_iface_init (ClutterContainerIface *iface);
+
+G_DEFINE_TYPE_WITH_CODE (ClutterStage, clutter_stage, CLUTTER_TYPE_GROUP,
+                         G_ADD_PRIVATE (ClutterStage)
+                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_CONTAINER,
+                                                clutter_container_iface_init))
 
 static void
 clutter_stage_real_add (ClutterContainer *container,
@@ -368,6 +365,7 @@ clutter_stage_allocate (ClutterActor           *self,
   float new_width, new_height;
   float width, height;
   cairo_rectangle_int_t window_size;
+  int scale_factor;
 
   if (priv->impl == NULL)
     return;
@@ -447,11 +445,10 @@ clutter_stage_allocate (ClutterActor           *self,
       override.y2 = window_size.height;
 
       CLUTTER_NOTE (LAYOUT,
-                    "Overriding original allocation of %dx%d "
+                    "Overriding original allocation of %.2fx%.2f "
                     "with %.2fx%.2f (absolute origin %s)",
                     width, height,
-                    (int) (override.x2),
-                    (int) (override.y2),
+                    override.x2, override.y2,
                     (flags & CLUTTER_ABSOLUTE_ORIGIN_CHANGED)
                       ? "changed"
                       : "not changed");
@@ -468,6 +465,12 @@ clutter_stage_allocate (ClutterActor           *self,
    * allocation.
    */
   _clutter_stage_window_get_geometry (priv->impl, &window_size);
+
+  scale_factor = _clutter_stage_window_get_scale_factor (priv->impl);
+
+  window_size.width *= scale_factor;
+  window_size.height *= scale_factor;
+
   cogl_onscreen_clutter_backend_set_size (window_size.width,
                                           window_size.height);
 
@@ -478,10 +481,13 @@ clutter_stage_allocate (ClutterActor           *self,
   if (CLUTTER_NEARBYINT (old_width) != CLUTTER_NEARBYINT (new_width) ||
       CLUTTER_NEARBYINT (old_height) != CLUTTER_NEARBYINT (new_height))
     {
+      int real_width = CLUTTER_NEARBYINT (new_width);
+      int real_height = CLUTTER_NEARBYINT (new_height);
+
       _clutter_stage_set_viewport (CLUTTER_STAGE (self),
                                    0, 0,
-                                   CLUTTER_NEARBYINT (new_width),
-                                   CLUTTER_NEARBYINT (new_height));
+                                   real_width,
+                                   real_height);
 
       /* Note: we don't assume that set_viewport will queue a full redraw
        * since it may bail-out early if something preemptively set the
@@ -626,18 +632,29 @@ _clutter_stage_do_paint (ClutterStage                *stage,
 {
   ClutterStagePrivate *priv = stage->priv;
   float clip_poly[8];
+  float viewport[4];
   cairo_rectangle_int_t geom;
+  int window_scale;
+
+  if (priv->impl == NULL)
+    return;
 
   _clutter_stage_window_get_geometry (priv->impl, &geom);
+  window_scale = _clutter_stage_window_get_scale_factor (priv->impl);
+
+  viewport[0] = priv->viewport[0] * window_scale;
+  viewport[1] = priv->viewport[1] * window_scale;
+  viewport[2] = priv->viewport[2] * window_scale;
+  viewport[3] = priv->viewport[3] * window_scale;
 
   if (clip)
     {
-      clip_poly[0] = MAX (clip->x, 0);
-      clip_poly[1] = MAX (clip->y, 0);
-      clip_poly[2] = MIN (clip->x + clip->width, geom.width);
+      clip_poly[0] = MAX (clip->x * window_scale, 0);
+      clip_poly[1] = MAX (clip->y * window_scale, 0);
+      clip_poly[2] = MIN ((clip->x + clip->width) * window_scale, geom.width * window_scale);
       clip_poly[3] = clip_poly[1];
       clip_poly[4] = clip_poly[2];
-      clip_poly[5] = MIN (clip->y + clip->height, geom.height);
+      clip_poly[5] = MIN ((clip->y + clip->height) * window_scale, geom.height * window_scale);
       clip_poly[6] = clip_poly[0];
       clip_poly[7] = clip_poly[5];
     }
@@ -645,12 +662,12 @@ _clutter_stage_do_paint (ClutterStage                *stage,
     {
       clip_poly[0] = 0;
       clip_poly[1] = 0;
-      clip_poly[2] = geom.width;
+      clip_poly[2] = geom.width * window_scale;
       clip_poly[3] = 0;
-      clip_poly[4] = geom.width;
-      clip_poly[5] = geom.height;
+      clip_poly[4] = geom.width * window_scale;
+      clip_poly[5] = geom.height * window_scale;
       clip_poly[6] = 0;
-      clip_poly[7] = geom.height;
+      clip_poly[7] = geom.height * window_scale;
     }
 
   CLUTTER_NOTE (CLIPPING, "Setting stage clip too: "
@@ -661,7 +678,7 @@ _clutter_stage_do_paint (ClutterStage                *stage,
 
   _cogl_util_get_eye_planes_for_screen_poly (clip_poly,
                                              4,
-                                             priv->viewport,
+                                             viewport,
                                              &priv->projection,
                                              &priv->inverse_projection,
                                              priv->current_clip_planes);
@@ -669,8 +686,27 @@ _clutter_stage_do_paint (ClutterStage                *stage,
   _clutter_stage_paint_volume_stack_free_all (stage);
   _clutter_stage_update_active_framebuffer (stage);
   clutter_actor_paint (CLUTTER_ACTOR (stage));
+
+  g_signal_emit (stage, stage_signals[AFTER_PAINT], 0);
 }
 
+/* If we don't implement this here, we get the paint function
+ * from the deprecated clutter-group class, which doesn't
+ * respect the Z order as it uses our empty sort_depth_order.
+ */
+static void
+clutter_stage_paint (ClutterActor *self)
+{
+  ClutterActorIter iter;
+  ClutterActor *child;
+
+  clutter_actor_iter_init (&iter, self);
+  while (clutter_actor_iter_next (&iter, &child))
+    clutter_actor_paint (child);
+}
+
+#if 0
+/* the Stage is cleared in clutter_actor_paint_node() */
 static void
 clutter_stage_paint (ClutterActor *self)
 {
@@ -717,6 +753,7 @@ clutter_stage_paint (ClutterActor *self)
   while (clutter_actor_iter_next (&iter, &child))
     clutter_actor_paint (child);
 }
+#endif
 
 static void
 clutter_stage_pick (ClutterActor       *self,
@@ -914,7 +951,8 @@ clutter_stage_real_fullscreen (ClutterStage *stage)
 
 void
 _clutter_stage_queue_event (ClutterStage *stage,
-			    ClutterEvent *event)
+                            ClutterEvent *event,
+                            gboolean      copy_event)
 {
   ClutterStagePrivate *priv;
   gboolean first_event;
@@ -926,7 +964,10 @@ _clutter_stage_queue_event (ClutterStage *stage,
 
   first_event = priv->event_queue->length == 0;
 
-  g_queue_push_tail (priv->event_queue, clutter_event_copy (event));
+  if (copy_event)
+    event = clutter_event_copy (event);
+
+  g_queue_push_tail (priv->event_queue, event);
 
   if (first_event)
     {
@@ -1012,19 +1053,31 @@ _clutter_stage_process_queued_events (ClutterStage *stage)
         check_device = TRUE;
 
       /* Skip consecutive motion events coming from the same device */
-      if (priv->throttle_motion_events &&
-          next_event != NULL &&
-	  event->type == CLUTTER_MOTION &&
-	  (next_event->type == CLUTTER_MOTION ||
-	   next_event->type == CLUTTER_LEAVE) &&
-          (!check_device || (device == next_device)))
-	{
-          CLUTTER_NOTE (EVENT,
-                        "Omitting motion event at %d, %d",
-                        (int) event->motion.x,
-                        (int) event->motion.y);
-          goto next_event;
-	}
+      if (priv->throttle_motion_events && next_event != NULL)
+        {
+          if (event->type == CLUTTER_MOTION &&
+              (next_event->type == CLUTTER_MOTION ||
+               next_event->type == CLUTTER_LEAVE) &&
+              (!check_device || (device == next_device)))
+            {
+              CLUTTER_NOTE (EVENT,
+                            "Omitting motion event at %d, %d",
+                            (int) event->motion.x,
+                            (int) event->motion.y);
+              goto next_event;
+            }
+          else if (event->type == CLUTTER_TOUCH_UPDATE &&
+                   next_event->type == CLUTTER_TOUCH_UPDATE &&
+                   event->touch.sequence == next_event->touch.sequence &&
+                   (!check_device || (device == next_device)))
+            {
+              CLUTTER_NOTE (EVENT,
+                            "Omitting touch update event at %d, %d",
+                            (int) event->touch.x,
+                            (int) event->touch.y);
+              goto next_event;
+            }
+        }
 
       _clutter_process_event (event);
 
@@ -1105,28 +1158,6 @@ _clutter_stage_maybe_relayout (ClutterActor *actor)
     }
 }
 
-static gboolean
-_clutter_stage_get_pick_buffer_valid (ClutterStage *stage, ClutterPickMode mode)
-{
-  g_return_val_if_fail (CLUTTER_IS_STAGE (stage), FALSE);
-
-  if (stage->priv->pick_buffer_mode != mode)
-    return FALSE;
-
-  return stage->priv->have_valid_pick_buffer;
-}
-
-static void
-_clutter_stage_set_pick_buffer_valid (ClutterStage   *stage,
-                                      gboolean        valid,
-                                      ClutterPickMode mode)
-{
-  g_return_if_fail (CLUTTER_IS_STAGE (stage));
-
-  stage->priv->have_valid_pick_buffer = !!valid;
-  stage->priv->pick_buffer_mode = mode;
-}
-
 static void
 clutter_stage_do_redraw (ClutterStage *stage)
 {
@@ -1153,9 +1184,6 @@ clutter_stage_do_redraw (ClutterStage *stage)
   CLUTTER_NOTE (PAINT, "Redraw started for stage '%s'[%p]",
                 _clutter_actor_get_debug_name (actor),
                 stage);
-
-  _clutter_stage_set_pick_buffer_valid (stage, FALSE, -1);
-  priv->picks_per_frame = 0;
 
   _clutter_backend_ensure_context (backend, stage);
 
@@ -1226,7 +1254,7 @@ _clutter_stage_do_update (ClutterStage *stage)
   if (!priv->redraw_pending)
     return FALSE;
 
-  _clutter_stage_maybe_finish_queue_redraws (stage);
+  clutter_stage_maybe_finish_queue_redraws (stage);
 
   clutter_stage_do_redraw (stage);
 
@@ -1300,6 +1328,9 @@ clutter_stage_real_queue_redraw (ClutterActor *actor,
       _clutter_stage_window_add_redraw_clip (stage_window, NULL);
       return;
     }
+
+  if (redraw_clip->is_empty)
+    return;
 
   _clutter_paint_volume_get_stage_paint_box (redraw_clip,
                                              stage,
@@ -1416,16 +1447,20 @@ _clutter_stage_do_pick (ClutterStage   *stage,
                         gint            y,
                         ClutterPickMode mode)
 {
-  ClutterStagePrivate *priv;
+  ClutterActor *actor = CLUTTER_ACTOR (stage);
+  ClutterStagePrivate *priv = stage->priv;
   ClutterMainContext *context;
   guchar pixel[4] = { 0xff, 0xff, 0xff, 0xff };
   CoglColor stage_pick_id;
   gboolean dither_enabled_save;
+  ClutterActor *retval;
   CoglFramebuffer *fb;
-  ClutterActor *actor;
-  gboolean is_clipped;
+  gint dirty_x;
+  gint dirty_y;
   gint read_x;
   gint read_y;
+  float stage_width, stage_height;
+  int window_scale;
 
   CLUTTER_STATIC_COUNTER (do_pick_counter,
                           "_clutter_stage_do_pick counter",
@@ -1452,12 +1487,20 @@ _clutter_stage_do_pick (ClutterStage   *stage,
                         "The time spent issuing a read pixels",
                         0 /* no application private data */);
 
-  g_return_val_if_fail (CLUTTER_IS_STAGE (stage), NULL);
-
   priv = stage->priv;
 
+  if (CLUTTER_ACTOR_IN_DESTRUCTION (stage))
+    return actor;
+
   if (G_UNLIKELY (clutter_pick_debug_flags & CLUTTER_DEBUG_NOP_PICKING))
-    return CLUTTER_ACTOR (stage);
+    return actor;
+
+  if (G_UNLIKELY (priv->impl == NULL))
+    return actor;
+
+  clutter_actor_get_size (CLUTTER_ACTOR (stage), &stage_width, &stage_height);
+  if (x < 0 || x >= stage_width || y < 0 || y >= stage_height)
+    return actor;
 
 #ifdef CLUTTER_ENABLE_PROFILE
   if (clutter_profile_flags & CLUTTER_PROFILE_PICKING_ONLY)
@@ -1469,73 +1512,36 @@ _clutter_stage_do_pick (ClutterStage   *stage,
 
   context = _clutter_context_get_default ();
   clutter_stage_ensure_current (stage);
+  window_scale = _clutter_stage_window_get_scale_factor (priv->impl);
 
-  /* It's possible that we currently have a static scene and have renderered a
-   * full, unclipped pick buffer. If so we can simply continue to read from
-   * this cached buffer until the scene next changes. */
-  if (_clutter_stage_get_pick_buffer_valid (stage, mode))
-    {
-      CLUTTER_TIMER_START (_clutter_uprof_context, pick_read);
-      cogl_read_pixels (x, y, 1, 1,
-                        COGL_READ_PIXELS_COLOR_BUFFER,
-                        COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                        pixel);
-      CLUTTER_TIMER_STOP (_clutter_uprof_context, pick_read);
-
-      CLUTTER_NOTE (PICK, "Reusing pick buffer from previous render to fetch "
-                    "actor at %i,%i", x, y);
-
-      goto check_pixel;
-    }
-
-  priv->picks_per_frame++;
+  fb = cogl_get_draw_framebuffer ();
 
   _clutter_backend_ensure_context (context->backend, stage);
 
   /* needed for when a context switch happens */
   _clutter_stage_maybe_setup_viewport (stage);
 
-  /* If we are seeing multiple picks per frame that means the scene is static
-   * so we promote to doing a non-scissored pick render so that all subsequent
-   * picks for the same static scene won't require additional renders */
-  if (priv->picks_per_frame < 2)
-    {
-       gint dirty_x;
-       gint dirty_y;
+  _clutter_stage_window_get_dirty_pixel (priv->impl, &dirty_x, &dirty_y);
 
-      _clutter_stage_window_get_dirty_pixel (priv->impl, &dirty_x, &dirty_y);
+  if (G_LIKELY (!(clutter_pick_debug_flags & CLUTTER_DEBUG_DUMP_PICK_BUFFERS)))
+    cogl_framebuffer_push_scissor_clip (fb, dirty_x * window_scale, dirty_y * window_scale, 1, 1);
 
-      if (G_LIKELY (!(clutter_pick_debug_flags & CLUTTER_DEBUG_DUMP_PICK_BUFFERS)))
-        cogl_clip_push_window_rectangle (dirty_x, dirty_y, 1, 1);
+  cogl_set_viewport (priv->viewport[0] * window_scale - x * window_scale + dirty_x * window_scale,
+                     priv->viewport[1] * window_scale - y * window_scale + dirty_y * window_scale,
+                     priv->viewport[2] * window_scale,
+                     priv->viewport[3] * window_scale);
 
-      cogl_set_viewport (priv->viewport[0] - x + dirty_x,
-                         priv->viewport[1] - y + dirty_y,
-                         priv->viewport[2],
-                         priv->viewport[3]);
+  read_x = dirty_x * window_scale;
+  read_y = dirty_y * window_scale;
 
-      read_x = dirty_x;
-      read_y = dirty_y;
-      is_clipped = TRUE;
-    }
-  else
-    {
-      read_x = x;
-      read_y = y;
-      is_clipped = FALSE;
-    }
+  CLUTTER_NOTE (PICK, "Performing pick at %i,%i", x, y);
 
-  CLUTTER_NOTE (PICK, "Performing %s pick at %i,%i",
-                is_clipped ? "clipped" : "full", x, y);
-
-  cogl_color_init_from_4ub (&stage_pick_id, 255, 255, 255, 255);
   CLUTTER_TIMER_START (_clutter_uprof_context, pick_clear);
-  cogl_clear (&stage_pick_id,
-	      COGL_BUFFER_BIT_COLOR |
-	      COGL_BUFFER_BIT_DEPTH);
+  cogl_color_init_from_4ub (&stage_pick_id, 255, 255, 255, 255);
+  cogl_clear (&stage_pick_id, COGL_BUFFER_BIT_COLOR | COGL_BUFFER_BIT_DEPTH);
   CLUTTER_TIMER_STOP (_clutter_uprof_context, pick_clear);
 
   /* Disable dithering (if any) when doing the painting in pick mode */
-  fb = cogl_get_draw_framebuffer ();
   dither_enabled_save = cogl_framebuffer_get_dither_enabled (fb);
   cogl_framebuffer_set_dither_enabled (fb, FALSE);
 
@@ -1566,12 +1572,10 @@ _clutter_stage_do_pick (ClutterStage   *stage,
     {
       char *file_name =
         g_strconcat ("pick-buffer-",
-                     _clutter_actor_get_debug_name (CLUTTER_ACTOR (stage)),
+                     _clutter_actor_get_debug_name (actor),
                      NULL);
 
-      read_pixels_to_file (file_name, 0, 0,
-                           clutter_actor_get_width (CLUTTER_ACTOR (stage)),
-                           clutter_actor_get_height (CLUTTER_ACTOR (stage)));
+      read_pixels_to_file (file_name, 0, 0, stage_width, stage_height);
 
       g_free (file_name);
     }
@@ -1579,34 +1583,18 @@ _clutter_stage_do_pick (ClutterStage   *stage,
   /* Restore whether GL_DITHER was enabled */
   cogl_framebuffer_set_dither_enabled (fb, dither_enabled_save);
 
-  if (is_clipped)
-  {
-     if (G_LIKELY (!(clutter_pick_debug_flags & CLUTTER_DEBUG_DUMP_PICK_BUFFERS)))
-      cogl_clip_pop ();
+  if (G_LIKELY (!(clutter_pick_debug_flags & CLUTTER_DEBUG_DUMP_PICK_BUFFERS)))
+    cogl_framebuffer_pop_clip (fb);
 
-     _clutter_stage_dirty_viewport (stage);
+  _clutter_stage_dirty_viewport (stage);
 
-    _clutter_stage_set_pick_buffer_valid (stage, FALSE, -1);
-  }
-  else
-  {
-    /* Notify the backend that we have trashed the contents of
-     * the back buffer... */
-    _clutter_stage_window_dirty_back_buffer (priv->impl);
-
-    _clutter_stage_set_pick_buffer_valid (stage, TRUE, mode);
-  }
-
-check_pixel:
   if (pixel[0] == 0xff && pixel[1] == 0xff && pixel[2] == 0xff)
-    {
-      actor = CLUTTER_ACTOR (stage);
-    }
+    retval = actor;
   else
     {
       guint32 id_ = _clutter_pixel_to_id (pixel);
 
-      actor = _clutter_get_actor_by_id (stage, id_);
+      retval = _clutter_stage_get_actor_by_pick_id (stage, id_);
     }
 
   CLUTTER_TIMER_STOP (_clutter_uprof_context, pick_timer);
@@ -1616,10 +1604,8 @@ check_pixel:
     _clutter_profile_suspend ();
 #endif
 
-  return actor;
+  return retval;
 }
-
-
 
 static gboolean
 clutter_stage_real_delete_event (ClutterStage *stage,
@@ -1630,7 +1616,7 @@ clutter_stage_real_delete_event (ClutterStage *stage,
   else
     clutter_actor_destroy (CLUTTER_ACTOR (stage));
 
-  return TRUE;
+  return CLUTTER_EVENT_STOP;
 }
 
 static void
@@ -1848,7 +1834,7 @@ clutter_stage_dispose (GObject *object)
       priv->impl = NULL;
     }
 
-  clutter_actor_remove_all_children (CLUTTER_ACTOR (object));
+  clutter_actor_destroy_all_children (CLUTTER_ACTOR (object));
 
   g_list_free_full (priv->pending_queue_redraws,
                     (GDestroyNotify) free_queue_redraw_entry);
@@ -1878,6 +1864,9 @@ clutter_stage_finalize (GObject *object)
 
   if (priv->fps_timer != NULL)
     g_timer_destroy (priv->fps_timer);
+
+  if (priv->paint_notify != NULL)
+    priv->paint_notify (priv->paint_data);
 
   G_OBJECT_CLASS (clutter_stage_parent_class)->finalize (object);
 }
@@ -2205,9 +2194,9 @@ clutter_stage_class_init (ClutterStageClass *klass)
    * It is possible to override the default behaviour by connecting
    * a new handler and returning %TRUE there.
    *
-   * <note>This signal is emitted only on Clutter backends that
+   * This signal is emitted only on Clutter backends that
    * embed #ClutterStage in native windows. It is not emitted for
-   * backends that use a static frame buffer.</note>
+   * backends that use a static frame buffer.
    *
    * Since: 1.2
    */
@@ -2221,12 +2210,27 @@ clutter_stage_class_init (ClutterStageClass *klass)
                   G_TYPE_BOOLEAN, 1,
                   CLUTTER_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
 
+  /**
+   * ClutterStage::after-paint:
+   * @stage: the stage that received the event
+   *
+   * The ::after-paint signal is emitted after the stage is painted,
+   * but before the results are displayed on the screen.
+   *
+   * Since: 1.20
+   */
+  stage_signals[AFTER_PAINT] =
+    g_signal_new (I_("after-paint"),
+                  G_TYPE_FROM_CLASS (gobject_class),
+                  G_SIGNAL_RUN_LAST,
+                  0, /* no corresponding vfunc */
+                  NULL, NULL, NULL,
+                  G_TYPE_NONE, 0);
+
   klass->fullscreen = clutter_stage_real_fullscreen;
   klass->activate = clutter_stage_real_activate;
   klass->deactivate = clutter_stage_real_deactivate;
   klass->delete_event = clutter_stage_real_delete_event;
-
-  g_type_class_add_private (gobject_class, sizeof (ClutterStagePrivate));
 }
 
 static void
@@ -2242,12 +2246,13 @@ clutter_stage_init (ClutterStage *self)
   ClutterStagePrivate *priv;
   ClutterStageWindow *impl;
   ClutterBackend *backend;
+  int window_scale = 1;
   GError *error;
 
   /* a stage is a top-level object */
   CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_IS_TOPLEVEL);
 
-  self->priv = priv = CLUTTER_STAGE_GET_PRIVATE (self);
+  self->priv = priv = clutter_stage_get_instance_private (self);
 
   CLUTTER_NOTE (BACKEND, "Creating stage from the default backend");
   backend = clutter_get_default_backend ();
@@ -2259,6 +2264,7 @@ clutter_stage_init (ClutterStage *self)
     {
       _clutter_stage_set_window (self, impl);
       _clutter_stage_window_get_geometry (priv->impl, &geom);
+      window_scale = _clutter_stage_window_get_scale_factor (priv->impl);
     }
   else
     {
@@ -2312,8 +2318,8 @@ clutter_stage_init (ClutterStage *self)
                                       priv->perspective.aspect,
                                       priv->perspective.z_near,
                                       50, /* distance to 2d plane */
-                                      geom.width,
-                                      geom.height);
+                                      geom.width * window_scale,
+                                      geom.height * window_scale);
 
 
   /* FIXME - remove for 2.0 */
@@ -2331,10 +2337,10 @@ clutter_stage_init (ClutterStage *self)
   g_signal_connect (self, "notify::min-height",
                     G_CALLBACK (clutter_stage_notify_min_size), NULL);
 
-  _clutter_stage_set_viewport (self, 0, 0, geom.width, geom.height);
-
-  _clutter_stage_set_pick_buffer_valid (self, FALSE, CLUTTER_PICK_ALL);
-  priv->picks_per_frame = 0;
+  _clutter_stage_set_viewport (self,
+                               0, 0,
+                               geom.width,
+                               geom.height);
 
   priv->paint_volume_stack =
     g_array_new (FALSE, FALSE, sizeof (ClutterPaintVolume));
@@ -2917,6 +2923,8 @@ clutter_stage_get_actor_at_pos (ClutterStage    *stage,
                                 gint             x,
                                 gint             y)
 {
+  g_return_val_if_fail (CLUTTER_IS_STAGE (stage), NULL);
+
   return _clutter_stage_do_pick (stage, x, y, pick_mode);
 }
 
@@ -3218,29 +3226,29 @@ clutter_stage_set_use_fog (ClutterStage *stage,
  *     ClutterColor stage_color = { 0, };
  *     CoglColor fog_color = { 0, };
  *
- *     /&ast; set the fog color to the stage background color &ast;/
- *     clutter_stage_get_color (CLUTTER_STAGE (actor), &amp;stage_color);
- *     cogl_color_init_from_4ub (&amp;fog_color,
+ *     // set the fog color to the stage background color
+ *     clutter_stage_get_color (CLUTTER_STAGE (actor), &stage_color);
+ *     cogl_color_init_from_4ub (&fog_color,
  *                               stage_color.red,
  *                               stage_color.green,
  *                               stage_color.blue,
  *                               stage_color.alpha);
  *
- *     /&ast; enable fog &ast;/
- *     cogl_set_fog (&amp;fog_color,
- *                   COGL_FOG_MODE_EXPONENTIAL, /&ast; mode &ast;/
- *                   0.5,                       /&ast; density &ast;/
- *                   5.0, 30.0);                /&ast; z_near and z_far &ast;/
+ *     // enable fog //
+ *     cogl_set_fog (&fog_color,
+ *                   COGL_FOG_MODE_EXPONENTIAL, // mode
+ *                   0.5,                       // density
+ *                   5.0, 30.0);                // z_near and z_far
  *   }
  * ]|
  *
- * <note>The fogging functions only work correctly when the visible actors use
+ * The fogging functions only work correctly when the visible actors use
  * unmultiplied alpha colors. By default Cogl will premultiply textures and
  * cogl_set_source_color() will premultiply colors, so unless you explicitly
  * load your textures requesting an unmultiplied internal format and use
  * cogl_material_set_color() you can only use fogging with fully opaque actors.
  * Support for premultiplied colors will improve in the future when we can
- * depend on fragment shaders.</note>
+ * depend on fragment shaders.
  *
  * Since: 0.6
  *
@@ -3386,6 +3394,18 @@ clutter_stage_ensure_viewport (ClutterStage *stage)
   clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
 }
 
+static void
+clutter_stage_apply_scale (ClutterStage *stage)
+{
+  int factor;
+
+  factor = _clutter_stage_window_get_scale_factor (stage->priv->impl);
+  if (factor != 1)
+    cogl_matrix_scale (&stage->priv->view, factor, factor, 1.f);
+}
+
+# define _DEG_TO_RAD(d)         ((d) * ((float) G_PI / 180.0f))
+
 /* This calculates a distance into the view frustum to position the
  * stage so there is a decent amount of space to position geometry
  * between the stage and the near clipping plane.
@@ -3498,13 +3518,26 @@ calculate_z_translation (float z_near)
    *  z_2d = --------------------------- + z_near
    *                 sin (0.5°)
    */
-#define _DEG_TO_RAD (G_PI / 180.0)
-  return z_near * tanf (30.0f * _DEG_TO_RAD) *
-         sinf (120.0f * _DEG_TO_RAD) * cosf (30.5f * _DEG_TO_RAD) /
-         sinf (0.5f * _DEG_TO_RAD) +
-         z_near;
-#undef _DEG_TO_RAD
-   /* We expect the compiler should boil this down to z_near * CONSTANT */
+
+   /* We expect the compiler should boil this down to z_near * CONSTANT
+    * already, but just in case we use precomputed constants
+    */
+#if 0
+# define A      tanf (_DEG_TO_RAD (30.f))
+# define B      sinf (_DEG_TO_RAD (120.f))
+# define C      cosf (_DEG_TO_RAD (30.5f))
+# define D      sinf (_DEG_TO_RAD (.5f))
+#else
+# define A      0.57735025882720947265625f
+# define B      0.866025388240814208984375f
+# define C      0.86162912845611572265625f
+# define D      0.00872653536498546600341796875f
+#endif
+
+  return z_near
+       * A * B * C
+       / D
+       + z_near;
 }
 
 void
@@ -3515,16 +3548,20 @@ _clutter_stage_maybe_setup_viewport (ClutterStage *stage)
   if (priv->dirty_viewport)
     {
       ClutterPerspective perspective;
+      int window_scale;
       float z_2d;
 
       CLUTTER_NOTE (PAINT,
                     "Setting up the viewport { w:%f, h:%f }",
-                    priv->viewport[2], priv->viewport[3]);
+                    priv->viewport[2],
+                    priv->viewport[3]);
 
-      cogl_set_viewport (priv->viewport[0],
-                         priv->viewport[1],
-                         priv->viewport[2],
-                         priv->viewport[3]);
+      window_scale = _clutter_stage_window_get_scale_factor (priv->impl);
+
+      cogl_set_viewport (priv->viewport[0] * window_scale,
+                         priv->viewport[1] * window_scale,
+                         priv->viewport[2] * window_scale,
+                         priv->viewport[3] * window_scale);
 
       perspective = priv->perspective;
 
@@ -3536,15 +3573,13 @@ _clutter_stage_maybe_setup_viewport (ClutterStage *stage)
           perspective.aspect = priv->viewport[2] / priv->viewport[3];
           z_2d = calculate_z_translation (perspective.z_near);
 
-#define _DEG_TO_RAD (G_PI / 180.0)
           /* NB: z_2d is only enough room for 85% of the stage_height between
            * the stage and the z_near plane. For behind the stage plane we
            * want a more consistent gap of 10 times the stage_height before
            * hitting the far plane so we calculate that relative to the final
            * height of the stage plane at the z_2d_distance we got... */
           perspective.z_far = z_2d +
-            tanf ((perspective.fovy / 2.0f) * _DEG_TO_RAD) * z_2d * 20.0f;
-#undef _DEG_TO_RAD
+            tanf (_DEG_TO_RAD (perspective.fovy / 2.0f)) * z_2d * 20.0f;
 
           clutter_stage_set_perspective_internal (stage, &perspective);
         }
@@ -3557,8 +3592,10 @@ _clutter_stage_maybe_setup_viewport (ClutterStage *stage)
                                           perspective.aspect,
                                           perspective.z_near,
                                           z_2d,
-                                          priv->viewport[2],
-                                          priv->viewport[3]);
+                                          priv->viewport[2] * window_scale,
+                                          priv->viewport[3] * window_scale);
+
+      clutter_stage_apply_scale (stage);
 
       priv->dirty_viewport = FALSE;
     }
@@ -3570,6 +3607,8 @@ _clutter_stage_maybe_setup_viewport (ClutterStage *stage)
       priv->dirty_projection = FALSE;
     }
 }
+
+#undef _DEG_TO_RAD
 
 /**
  * clutter_stage_ensure_redraw:
@@ -3609,8 +3648,8 @@ clutter_stage_ensure_redraw (ClutterStage *stage)
  *
  * Queues a redraw for the passed stage.
  *
- * <note>Applications should call clutter_actor_queue_redraw() and not
- * this function.</note>
+ * Applications should call clutter_actor_queue_redraw() and not
+ * this function.
  *
  * Since: 0.8
  *
@@ -3918,12 +3957,12 @@ _clutter_stage_clear_update_time (ClutterStage *stage)
  * if the stage is always covered - for instance, in a full-screen
  * video player or in a game with a background texture.
  *
- * <note><para>This setting is a hint; Clutter might discard this
- * hint depending on its internal state.</para></note>
+ * This setting is a hint; Clutter might discard this hint
+ * depending on its internal state.
  *
- * <warning><para>If parts of the stage are visible and you disable
- * clearing you might end up with visual artifacts while painting the
- * contents of the stage.</para></warning>
+ * If parts of the stage are visible and you disable clearing you
+ * might end up with visual artifacts while painting the contents of
+ * the stage.
  *
  * Since: 1.4
  */
@@ -4052,16 +4091,6 @@ _clutter_stage_queue_actor_redraw (ClutterStage *stage,
     }
 #endif /* CLUTTER_ENABLE_DEBUG */
 
-  /* We have an optimization in _clutter_stage_do_pick to detect when
-   * the scene is static so we can cache a full, un-clipped pick
-   * buffer to avoid continuous pick renders.
-   *
-   * Currently the assumption is that actors queue a redraw when some
-   * state changes that affects painting *or* picking so we can use
-   * this point to invalidate any currently cached pick buffer.
-   */
-  _clutter_stage_set_pick_buffer_valid (stage, FALSE, -1);
-
   if (entry)
     {
       /* Ignore all requests to queue a redraw for an actor if a full
@@ -4137,7 +4166,7 @@ _clutter_stage_queue_redraw_entry_invalidate (ClutterStageQueueRedrawEntry *entr
 }
 
 static void
-_clutter_stage_maybe_finish_queue_redraws (ClutterStage *stage)
+clutter_stage_maybe_finish_queue_redraws (ClutterStage *stage)
 {
   /* Note: we have to repeat until the pending_queue_redraws list is
    * empty because actors are allowed to queue redraws in response to
@@ -4235,14 +4264,12 @@ clutter_stage_get_accept_focus (ClutterStage *stage)
  *
  * The default is %TRUE.
  *
- * If @enable is %FALSE the following events will not be delivered
- * to the actors children of @stage.
+ * If @enable is %FALSE the following signals will not be emitted
+ * by the actors children of @stage:
  *
- * <itemizedlist>
- *   <listitem><para>#ClutterActor::motion-event</para></listitem>
- *   <listitem><para>#ClutterActor::enter-event</para></listitem>
- *   <listitem><para>#ClutterActor::leave-event</para></listitem>
- * </itemizedlist>
+ *  - #ClutterActor::motion-event
+ *  - #ClutterActor::enter-event
+ *  - #ClutterActor::leave-event
  *
  * The events will still be delivered to the #ClutterStage.
  *
@@ -4580,4 +4607,21 @@ clutter_stage_skip_sync_delay (ClutterStage *stage)
   stage_window = _clutter_stage_get_window (stage);
   if (stage_window)
     _clutter_stage_window_schedule_update (stage_window, -1);
+}
+
+void
+_clutter_stage_set_scale_factor (ClutterStage *stage,
+                                 int           factor)
+{
+  ClutterStagePrivate *priv = stage->priv;
+
+  if (CLUTTER_ACTOR_IN_DESTRUCTION (stage))
+    return;
+
+  if (priv->impl == NULL)
+    return;
+
+  _clutter_stage_window_set_scale_factor (priv->impl, factor);
+
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
 }

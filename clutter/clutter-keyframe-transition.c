@@ -96,9 +96,9 @@ struct _ClutterKeyframeTransitionPrivate
   gint current_frame;
 };
 
-G_DEFINE_TYPE (ClutterKeyframeTransition,
-               clutter_keyframe_transition,
-               CLUTTER_TYPE_PROPERTY_TRANSITION)
+G_DEFINE_TYPE_WITH_PRIVATE (ClutterKeyframeTransition,
+                            clutter_keyframe_transition,
+                            CLUTTER_TYPE_PROPERTY_TRANSITION)
 
 static void
 key_frame_free (gpointer data)
@@ -295,8 +295,8 @@ clutter_keyframe_transition_compute_value (ClutterTransition *transition,
   /* update the interval to be used to interpolate the property */
   real_interval = cur_frame->interval;
 
-  /* normalize the progress */
-  real_progress = (p - cur_frame->start) / (cur_frame->end - cur_frame->start);
+  /* normalize the progress and apply the easing mode */
+  real_progress = clutter_easing_for_mode ( cur_frame->mode, (p - cur_frame->start), (cur_frame->end - cur_frame->start));
 
 #ifdef CLUTTER_ENABLE_DEBUG
   if (CLUTTER_HAS_DEBUG (ANIMATION))
@@ -375,8 +375,6 @@ clutter_keyframe_transition_class_init (ClutterKeyframeTransitionClass *klass)
   ClutterTimelineClass *timeline_class = CLUTTER_TIMELINE_CLASS (klass);
   ClutterTransitionClass *transition_class = CLUTTER_TRANSITION_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (ClutterKeyframeTransitionPrivate));
-
   gobject_class->finalize = clutter_keyframe_transition_finalize;
 
   timeline_class->started = clutter_keyframe_transition_started;
@@ -388,9 +386,7 @@ clutter_keyframe_transition_class_init (ClutterKeyframeTransitionClass *klass)
 static void
 clutter_keyframe_transition_init (ClutterKeyframeTransition *self)
 {
-  self->priv =
-    G_TYPE_INSTANCE_GET_PRIVATE (self, CLUTTER_TYPE_KEYFRAME_TRANSITION,
-                                 ClutterKeyframeTransitionPrivate);
+  self->priv = clutter_keyframe_transition_get_instance_private (self);
 }
 
 /**

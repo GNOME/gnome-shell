@@ -51,7 +51,7 @@ struct _ClutterTransitionGroupPrivate
   GHashTable *transitions;
 };
 
-G_DEFINE_TYPE (ClutterTransitionGroup, clutter_transition_group, CLUTTER_TYPE_TRANSITION)
+G_DEFINE_TYPE_WITH_PRIVATE (ClutterTransitionGroup, clutter_transition_group, CLUTTER_TYPE_TRANSITION)
 
 static void
 clutter_transition_group_new_frame (ClutterTimeline *timeline,
@@ -155,8 +155,6 @@ clutter_transition_group_class_init (ClutterTransitionGroupClass *klass)
   ClutterTimelineClass *timeline_class = CLUTTER_TIMELINE_CLASS (klass);
   ClutterTransitionClass *transition_class = CLUTTER_TRANSITION_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (ClutterTransitionGroupPrivate));
-
   gobject_class->finalize = clutter_transition_group_finalize;
 
   timeline_class->started = clutter_transition_group_started;
@@ -169,10 +167,7 @@ clutter_transition_group_class_init (ClutterTransitionGroupClass *klass)
 static void
 clutter_transition_group_init (ClutterTransitionGroup *self)
 {
-  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self,
-                                            CLUTTER_TYPE_TRANSITION_GROUP,
-                                            ClutterTransitionGroupPrivate);
-
+  self->priv = clutter_transition_group_get_instance_private (self);
   self->priv->transitions =
     g_hash_table_new_full (NULL, NULL, (GDestroyNotify) g_object_unref, NULL);
 }

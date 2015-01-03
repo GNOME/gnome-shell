@@ -69,11 +69,16 @@ struct _ClutterStageManagerClass
                           ClutterStage        *stage);
 };
 
+CLUTTER_AVAILABLE_IN_1_0
 GType clutter_stage_manager_get_type (void) G_GNUC_CONST;
 
+CLUTTER_AVAILABLE_IN_1_0
 ClutterStageManager *clutter_stage_manager_get_default       (void);
+CLUTTER_AVAILABLE_IN_1_0
 ClutterStage *       clutter_stage_manager_get_default_stage (ClutterStageManager *stage_manager);
+CLUTTER_AVAILABLE_IN_1_0
 GSList *             clutter_stage_manager_list_stages       (ClutterStageManager *stage_manager);
+CLUTTER_AVAILABLE_IN_1_0
 const GSList *       clutter_stage_manager_peek_stages       (ClutterStageManager *stage_manager);
 
 G_END_DECLS

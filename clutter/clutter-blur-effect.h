@@ -40,7 +40,7 @@ G_BEGIN_DECLS
 /**
  * ClutterBlurEffect:
  *
- * <structname>ClutterBlurEffect</structname> is an opaque structure
+ * #ClutterBlurEffect is an opaque structure
  * whose members cannot be accessed directly
  *
  * Since: 1.4
@@ -48,8 +48,10 @@ G_BEGIN_DECLS
 typedef struct _ClutterBlurEffect       ClutterBlurEffect;
 typedef struct _ClutterBlurEffectClass  ClutterBlurEffectClass;
 
+CLUTTER_AVAILABLE_IN_1_4
 GType clutter_blur_effect_get_type (void) G_GNUC_CONST;
 
+CLUTTER_AVAILABLE_IN_1_4
 ClutterEffect *clutter_blur_effect_new (void);
 
 G_END_DECLS

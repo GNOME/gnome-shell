@@ -1,329 +1,94 @@
-include $(top_srcdir)/build/autotools/Makefile.am.silent
+include $(top_srcdir)/build/autotools/glib-tap.mk
 
-NULL =
+AM_CFLAGS = -g $(CLUTTER_CFLAGS) $(MAINTAINER_CFLAGS)
+LDADD = $(top_builddir)/clutter/libclutter-1.0.la $(CLUTTER_LIBS) -lm
+AM_LDFLAGS = -export-dynamic
+AM_CPPFLAGS = \
+	-DG_LOG_DOMAIN=\"Clutter-Conform\"	\
+	-I$(top_srcdir) 			\
+	-I$(top_builddir)			\
+	-DCOGL_DISABLE_DEPRECATION_WARNINGS	\
+	$(CLUTTER_DEPRECATED_CFLAGS)		\
+	$(CLUTTER_DEBUG_CFLAGS)			\
+	$(CLUTTER_PROFILE_CFLAGS)
 
-noinst_PROGRAMS = test-conformance
-
-# the common sources
-common_sources = \
-	test-conform-common.h 	\
-	test-conform-common.c 	\
-	test-conform-main.c	\
+# Basic actor API
+actor_tests = \
+	actor-anchors \
+	actor-destroy \
+	actor-graph \
+	actor-invariants \
+	actor-iter \
+	actor-layout \
+	actor-meta \
+	actor-offscreen-limit-max-size \
+	actor-offscreen-redirect \
+	actor-paint-opacity \
+	actor-pick \
+	actor-shader-effect \
+	actor-size \
 	$(NULL)
 
-# the unit-specific sources; please: keep all sections in alphabetical order!
-units_sources =
-
-# animation tests
-units_sources += \
-	animator.c			\
-	behaviours.c			\
-	score.c				\
-	state.c				\
-	timeline.c			\
-	timeline-interpolate.c 		\
-	timeline-progress.c		\
-	timeline-rewind.c 		\
+# Actor classes
+classes_tests = \
+	text \
 	$(NULL)
 
-# cogl tests
-units_sources += \
-	test-cogl-fixed.c 			\
-	test-cogl-materials.c			\
-	test-cogl-viewport.c			\
-	test-cogl-multitexture.c        	\
-	test-cogl-npot-texture.c        	\
-	test-cogl-object.c			\
-	test-cogl-premult.c			\
-	test-cogl-readpixels.c			\
-	test-cogl-texture-get-set-data.c 	\
-	test-cogl-texture-mipmaps.c     	\
-	test-cogl-texture-pixmap-x11.c  	\
-	test-cogl-texture-rectangle.c   	\
-	test-cogl-atlas-migration.c		\
-	test-cogl-vertex-buffer-contiguous.c 	\
-	test-cogl-vertex-buffer-interleved.c 	\
-	test-cogl-vertex-buffer-mutability.c 	\
+# General API
+general_tests = \
+	binding-pool \
+	color \
+	events-touch \
+	interval \
+	model \
+	script-parser \
+	units \
 	$(NULL)
 
-# actors tests
-units_sources += \
-	actor-anchors.c                	\
-	actor-graph.c			\
-	actor-destroy.c			\
-	actor-invariants.c 		\
-	actor-iter.c			\
-	actor-layout.c			\
-	actor-offscreen-redirect.c	\
-	actor-paint-opacity.c 		\
-	actor-pick.c 			\
-	actor-shader-effect.c		\
-	actor-size.c			\
-	binding-pool.c			\
-	cairo-texture.c    		\
-	group.c				\
-	interval.c			\
-	path.c 				\
-	rectangle.c 			\
-	texture-fbo.c			\
-	texture.c			\
-        text-cache.c               	\
-        text.c             		\
+# Test for deprecated functionality
+deprecated_tests = \
+	animator \
+	behaviours \
+	group \
+	rectangle \
+	texture \
 	$(NULL)
 
-# objects tests
-units_sources += \
-	color.c				\
-	model.c				\
-	script-parser.c			\
-	units.c				\
-        $(NULL)
+test_programs = $(actor_tests) $(general_tests) $(classes_tests) $(deprecated_tests)
 
-# cally tests
-units_sources += \
-	cally-text.c			\
-	$(NULL)
+dist_test_data = $(script_ui_files)
+script_ui_files = $(addprefix scripts/,$(script_tests))
+script_tests = \
+	test-animator-1.json \
+	test-animator-2.json \
+	test-animator-3.json \
+	test-script-animation.json \
+	test-script-child.json \
+	test-script-implicit-alpha.json \
+	test-script-interval.json \
+	test-script-layout-property.json \
+	test-script-margin.json \
+	test-script-model.json \
+	test-script-named-object.json \
+	test-script-object-property.json \
+	test-script-single.json \
+	test-script-timeline-markers.json \
+	test-state-1.json
 
-# events tests
-units_sources += \
-	events-touch.c			\
-	$(NULL)
+TESTS_ENVIRONMENT += G_ENABLE_DIAGNOSTIC=0 CLUTTER_ENABLE_DIAGNOSTIC=0
 
-test_conformance_SOURCES = $(common_sources) $(units_sources)
+# simple rules for generating a Git ignore file for the conformance test suite
+$(srcdir)/.gitignore: Makefile
+	$(AM_V_GEN)( echo "/*.trs" ; \
+		     echo "/*.log" ; \
+		     echo "/*.test" ; \
+		     echo "/.gitignore" ; \
+		     for p in $(test_programs); do \
+			echo "/$$p" ; \
+		     done ) > $(@F)
 
-if OS_WIN32
-SHEXT =
-else
-SHEXT = $(EXEEXT)
-endif
+gitignore: $(srcdir)/.gitignore
 
-# For convenience, this provides a way to easily run individual unit tests:
-.PHONY: wrappers clean-wrappers
+all-am: gitignore
 
-#UNIT_TESTS = `./test-conformance -l -m thorough | $(GREP) '^/'`
-
-wrappers: stamp-test-conformance
-	@true
-stamp-test-conformance: Makefile $(srcdir)/test-conform-main.c
-	@mkdir -p wrappers
-	@sed -n \
-		-e 's/^ \{1,\}TEST_CONFORM_SIMPLE *(.*"\([^",]\{1,\}\)", *\([a-zA-Z0-9_]\{1,\}\).*/\/conform\1\/\2/p' \
-		-e 's/^ \{1,\}TEST_CONFORM_SKIP *(.*"\([^",]\{1,\}\)", *\([a-zA-Z0-9_]\{1,\}\).*/\/conform\1\/\2/p' \
-		-e 's/^ \{1,\}TEST_CONFORM_TODO *(.*"\([^",]\{1,\}\)", *\([a-zA-Z0-9_]\{1,\}\).*/\/conform\1\/\2/p' \
-	$(srcdir)/test-conform-main.c > unit-tests
-	@chmod +x test-launcher.sh
-	@( echo "/stamp-test-conformance" ; \
-	   echo "/test-conformance" ; \
-	   echo "*.o" ; \
-	   echo "*.xml" ; \
-	   echo "*.html" ; \
-	   echo ".gitignore" ; \
-	   echo "unit-tests" ; \
-	   echo "/wrappers/" ) > .gitignore
-	@for i in `cat unit-tests`; \
-	do \
-		unit=`basename $$i | sed -e s/_/-/g`; \
-		echo "  GEN    $$unit"; \
-		( echo "#!/bin/sh" ; echo "$(abs_builddir)/test-launcher.sh '$$i' \"\$$@\"" ) > $$unit$(SHEXT) ; \
-		( echo "#!/bin/sh" ; echo "exec $(abs_builddir)/test-conformance$(EXEEXT) -p $$i \"\$$@\"" ) > wrappers/$$unit$(SHEXT) ; \
-		( echo "test-conformance-clutter$(EXEEXT) -p $$i" ) > $(top_builddir)/build/win32/$$unit-clutter.bat ; \
-		( echo "test-conformance-clutter$(EXEEXT) -p $$i" ) >> $(top_builddir)/build/win32/test-conformance-clutter.bat ; \
-		chmod +x $$unit$(SHEXT); \
-		chmod +x wrappers/$$unit$(SHEXT); \
-		echo "/$$unit$(SHEXT)" >> .gitignore; \
-	done \
-	&& echo timestamp > $(@F)
-
-clean-wrappers:
-	@for i in `cat unit-tests`; \
-	do \
-		unit=`basename $$i | sed -e s/_/-/g`; \
-		echo "  RM     $$unit"; \
-		rm -f $$unit$(SHEXT) ; \
-		rm -f wrappers/$$unit$(SHEXT) ; \
-	done \
-	&& rm -f unit-tests \
-	&& rm -f $(top_builddir)/build/win32/*.bat \
-	&& rm -f stamp-test-conformance
-
-# NB: BUILT_SOURCES here a misnomer. We aren't building source, just inserting
-# a phony rule that will generate symlink scripts for running individual tests
-BUILT_SOURCES = wrappers
-
-INCLUDES = \
-	-I$(top_srcdir) \
-	-I$(top_builddir) \
-	-I$(top_srcdir)/clutter \
-	-I$(top_builddir)/clutter
-
-test_conformance_CPPFLAGS = \
-	-DG_DISABLE_SINGLE_INCLUDES \
-	-DCOGL_ENABLE_EXPERIMENTAL_API \
-	-DG_DISABLE_DEPRECATION_WARNINGS \
-	-DCLUTTER_DISABLE_DEPRECATION_WARNINGS \
-	-DTESTS_DATADIR=\""$(top_srcdir)/tests/data"\"
-
-test_conformance_CFLAGS = -g $(CLUTTER_CFLAGS)
-
-test_conformance_LDADD = $(top_builddir)/clutter/libclutter-@CLUTTER_API_VERSION@.la $(CLUTTER_LIBS) -lm
-
-test_conformance_LDFLAGS = -export-dynamic
-
-test: wrappers
-	@$(top_srcdir)/tests/conform/run-tests.sh \
-	  ./test-conformance$(EXEEXT) -o test-report.xml
-
-test-verbose: wrappers
-	@$(top_srcdir)/tests/conform/run-tests.sh \
-	  ./test-conformance$(EXEEXT) -o test-report.xml --verbose
-
-GTESTER = gtester
-GTESTER_REPORT = gtester-report
-
-# XXX: we could prevent the conformance test suite from running
-#      by simply defining this variable conditionally
-TEST_PROGS = test-conformance
-
-.PHONY: test
-.PHONY: test-report perf-report full-report
-.PHONY: test-report-npot perf-report-npot full-report-npot
-
-# test-report: run tests and generate report
-# perf-report: run tests with -m perf and generate report
-# full-report: like test-report: with -m perf and -m slow
-test-report perf-report full-report:	${TEST_PROGS}
-	@test -z "${TEST_PROGS}" || { \
-	  export GTESTER_LOGDIR=`mktemp -d "$(srcdir)/.testlogs-XXXXXX"` ; \
-	  if test -d "$(top_srcdir)/.git"; then \
-	    export REVISION="`git describe`" ;  \
-	  else \
-	    export REVISION="$(VERSION) $(CLUTTER_RELEASE_STATUS)" ; \
-	  fi ; \
-	  export TIMESTAMP=`date +%Y-%m-%dT%H:%M:%S%z` ; \
-	  case $@ in \
-	  test-report) test_options="-k";; \
-	  perf-report) test_options="-k -m=perf";; \
-	  full-report) test_options="-k -m=perf -m=slow";; \
-	  esac ; \
-	  $(top_srcdir)/tests/conform/run-tests.sh \
-	    ./test-conformance$(EXEEXT) \
-	    --verbose \
-	    $$test_options \
-	    -o `mktemp "$$GTESTER_LOGDIR/log-XXXXXX"` ; \
-	  echo '<?xml version="1.0"?>'              > $@.xml ; \
-	  echo '<report-collection>'               >> $@.xml ; \
-	  echo '<info>'                            >> $@.xml ; \
-	  echo '  <package>$(PACKAGE)</package>'   >> $@.xml ; \
-	  echo '  <version>$(VERSION)</version>'   >> $@.xml ; \
-	  echo "  <revision>$$REVISION</revision>" >> $@.xml ; \
-	  echo "  <date>$$TIMESTAMP</date>"        >> $@.xml ; \
-	  echo '</info>'                           >> $@.xml ; \
-	  for lf in `ls -L "$$GTESTER_LOGDIR"/.` ; do \
-	    sed '1,1s/^<?xml\b[^>?]*?>//' <"$$GTESTER_LOGDIR"/"$$lf" >> $@.xml ; \
-	  done ; \
-	  echo >> $@.xml ; \
-	  echo '</report-collection>' >> $@.xml ; \
-	  ${GTESTER_REPORT} --version 2>/dev/null 1>&2 ; test "$$?" != 0 || ${GTESTER_REPORT} $@.xml >$@.html ; \
-	  rm -rf "$$GTESTER_LOGDIR" ; \
-	}
-
-# same as above, but with a wrapper that forcibly disables non-power of
-# two textures
-test-report-npot perf-report-npot full-report-npot:	${TEST_PROGS}
-	@test -z "${TEST_PROGS}" || { \
-	  export COGL_DEBUG="$COGL_DEBUG,disable-npot-textures"; \
-	  export GTESTER_LOGDIR=`mktemp -d "$(srcdir)/.testlogs-XXXXXX"` ; \
-	  if test -d "$(top_srcdir)/.git"; then \
-	    export REVISION="`git describe`" ;  \
-	  else \
-	    export REVISION="$(VERSION) $(CLUTTER_RELEASE_STATUS)" ; \
-	  fi ; \
-	  export TIMESTAMP=`date +%Y-%m-%dT%H:%M:%S%z` ; \
-	  case $@ in \
-	  test-report-npot) test_options="-k";; \
-	  perf-report-npot) test_options="-k -m=perf";; \
-	  full-report-npot) test_options="-k -m=perf -m=slow";; \
-	  esac ; \
-	  $(top_srcdir)/tests/conform/run-tests.sh \
-	    ./test-conformance$(EXEEXT) \
-	    --verbose \
-	    $$test_options \
-	    -o `mktemp "$$GTESTER_LOGDIR/log-XXXXXX"` ; \
-	  echo '<?xml version="1.0"?>'              > $@.xml ; \
-	  echo '<report-collection>'               >> $@.xml ; \
-	  echo '<info>'                            >> $@.xml ; \
-	  echo '  <package>$(PACKAGE)</package>'   >> $@.xml ; \
-	  echo '  <version>$(VERSION)</version>'   >> $@.xml ; \
-	  echo "  <revision>$$REVISION</revision>" >> $@.xml ; \
-	  echo "  <date>$$TIMESTAMP</date>"        >> $@.xml ; \
-	  echo '</info>'                           >> $@.xml ; \
-	  for lf in `ls -L "$$GTESTER_LOGDIR"/.` ; do \
-	    sed '1,1s/^<?xml\b[^>?]*?>//' <"$$GTESTER_LOGDIR"/"$$lf" >> $@.xml ; \
-	  done ; \
-	  echo >> $@.xml ; \
-	  echo '</report-collection>' >> $@.xml ; \
-	  ${GTESTER_REPORT} --version 2>/dev/null 1>&2 ; test "$$?" != 0 || ${GTESTER_REPORT} $@.xml >$@.html ; \
-	  rm -rf "$$GTESTER_LOGDIR" ; \
-	}
-
-XML_REPORTS = \
-	test-report.xml 	\
-	perf-report.xml 	\
-	full-report.xml 	\
-	test-report-npot.xml 	\
-	perf-report-npot.xml 	\
-	full-report-npot.xml
-
-HTML_REPORTS = \
-	test-report.html 	\
-	perf-report.html 	\
-	full-report.html 	\
-	test-report-npot.html 	\
-	perf-report-npot.html 	\
-	full-report-npot.html
-
-EXTRA_DIST = ADDING_NEW_TESTS test-launcher.sh.in run-tests.sh
-DISTCLEANFILES = test-launcher.sh .gitignore
-
-dist-hook: $(top_builddir)/build/win32/vs9/test-conformance-clutter.vcproj $(top_builddir)/build/win32/vs10/test-conformance-clutter.vcxproj $(top_builddir)/build/win32/vs10/test-conformance-clutter.vcxproj.filters
-
-$(top_builddir)/build/win32/vs9/test-conformance-clutter.vcproj: $(top_srcdir)/build/win32/vs9/test-conformance-clutter.vcprojin
-	@for F in $(test_conformance_SOURCES); do \
-		case $$F in \
-		*.c)	echo '   <File RelativePath="..\..\..\tests\conform\'$$F'" />' \
-			;; \
-		esac; \
-	done > testconformance.sourcefiles
-	$(CPP) -P - <$(top_srcdir)/build/win32/vs9/test-conformance-clutter.vcprojin >$@
-	rm -f testconformance.sourcefiles
-
-$(top_builddir)/build/win32/vs10/test-conformance-clutter.vcxproj: $(top_srcdir)/build/win32/vs10/test-conformance-clutter.vcxprojin
-	@for F in $(test_conformance_SOURCES); do \
-		case $$F in \
-		*.c)	echo '    <ClCompile Include="..\..\..\tests\conform\'$$F'" />' \
-			;; \
-		esac; \
-	done >testconformance.vs10.sourcefiles
-	$(CPP) -P - <$(top_srcdir)/build/win32/vs10/test-conformance-clutter.vcxprojin >$@
-	rm -f testconformance.vs10.sourcefiles
-	
-$(top_builddir)/build/win32/vs10/test-conformance-clutter.vcxproj.filters: $(top_srcdir)/build/win32/vs10/test-conformance-clutter.vcxproj.filtersin
-	@for F in $(test_conformance_SOURCES); do \
-		case $$F in \
-		*.c)	echo '    <ClCompile Include="..\..\..\tests\conform\'$$F'"><Filter>Sources</Filter></ClCompile>' \
-			;; \
-		esac; \
-	done > testconformance.vs10.sourcefiles.filters
-	$(CPP) -P - < $(top_srcdir)/build/win32/vs10/test-conformance-clutter.vcxproj.filtersin > $@
-	rm -f testconformance.vs10.sourcefiles.filters
-
-# Let the VS9/VS10 Project files be cleared out before they are re-expanded...
-DISTCLEANFILES += \
-	$(top_builddir)/build/win32/vs9/test-conformance-clutter.vcproj	\
-	$(top_builddir)/build/win32/vs10/test-conformance-clutter.vcxproj \
-	$(top_builddir)/build/win32/vs10/test-conformance-clutter.vcxproj.filters
-
-# we override the clean-generic target to clean up the wrappers so
-# we cannot use CLEANFILES
-clean-generic: clean-wrappers
-	$(QUIET_RM)rm -f $(XML_REPORTS) $(HTML_REPORTS)
+DISTCLEANFILES += .gitignore

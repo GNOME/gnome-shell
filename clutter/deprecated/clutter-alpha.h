@@ -58,6 +58,8 @@ typedef struct _ClutterAlphaPrivate     ClutterAlphaPrivate;
  * Return value: a floating point value
  *
  * Since: 0.2
+ *
+ * Deprecated: 1.12: Use #ClutterTimelineProgressFunc instead.
  */
 typedef gdouble (*ClutterAlphaFunc) (ClutterAlpha *alpha,
                                      gpointer      user_data); 
@@ -70,6 +72,8 @@ typedef gdouble (*ClutterAlphaFunc) (ClutterAlpha *alpha,
  * only be accessed using the provided API.
  *
  * Since: 0.2
+ *
+ * Deprecated: 1.12: Use #ClutterTimeline instead
  */
 struct _ClutterAlpha
 {
@@ -85,6 +89,8 @@ struct _ClutterAlpha
  * Base class for #ClutterAlpha
  *
  * Since: 0.2
+ *
+ * Deprecated: 1.12: Use #ClutterTimeline instead
  */
 struct _ClutterAlphaClass
 {

@@ -28,13 +28,10 @@
  * @Short_Description: Image data content
  *
  * #ClutterImage is a #ClutterContent implementation that displays
- * image data.
+ * image data inside a #ClutterActor.
  *
- * <informalexample><programlisting>
- * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../examples/image-content.c">
- *   <xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback>
- * </xi:include>
- * </programlisting></informalexample>
+ * See [image.c](https://git.gnome.org/browse/clutter/tree/examples/image-content.c?h=clutter-1.18)
+ * for an example of how to use #ClutterImage.
  *
  * #ClutterImage is available since Clutter 1.10.
  */
@@ -62,6 +59,7 @@ struct _ClutterImagePrivate
 static void clutter_content_iface_init (ClutterContentIface *iface);
 
 G_DEFINE_TYPE_WITH_CODE (ClutterImage, clutter_image, G_TYPE_OBJECT,
+                         G_ADD_PRIVATE (ClutterImage)
                          G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_CONTENT,
                                                 clutter_content_iface_init))
 
@@ -88,16 +86,13 @@ clutter_image_finalize (GObject *gobject)
 static void
 clutter_image_class_init (ClutterImageClass *klass)
 {
-  g_type_class_add_private (klass, sizeof (ClutterImagePrivate));
-
   G_OBJECT_CLASS (klass)->finalize = clutter_image_finalize;
 }
 
 static void
 clutter_image_init (ClutterImage *self)
 {
-  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, CLUTTER_TYPE_IMAGE,
-                                            ClutterImagePrivate);
+  self->priv = clutter_image_get_instance_private (self);
 }
 
 static void
@@ -121,9 +116,12 @@ clutter_image_paint_content (ClutterContent   *content,
   clutter_actor_get_content_scaling_filters (actor, &min_f, &mag_f);
   repeat = clutter_actor_get_content_repeat (actor);
 
-  color.red = paint_opacity;
-  color.green = paint_opacity;
-  color.blue = paint_opacity;
+  /* ClutterTextureNode will premultiply the blend color, so we
+   * want it to be white with the paint opacity
+   */
+  color.red = 255;
+  color.green = 255;
+  color.blue = 255;
   color.alpha = paint_opacity;
 
   node = clutter_texture_node_new (priv->texture, &color, min_f, mag_f);
@@ -211,6 +209,28 @@ clutter_image_new (void)
  *
  * The image data is copied in texture memory.
  *
+ * The image data is expected to be a linear array of RGBA or RGB pixel data;
+ * how to retrieve that data is left to platform specific image loaders. For
+ * instance, if you use the GdkPixbuf library:
+ *
+ * |[<!-- language="C" -->
+ *   ClutterContent *image = clutter_image_new ();
+ *
+ *   GdkPixbuf *pixbuf = gdk_pixbuf_new_from_file (filename, NULL);
+ *
+ *   clutter_image_set_data (CLUTTER_IMAGE (image),
+ *                           gdk_pixbuf_get_pixels (pixbuf),
+ *                           gdk_pixbuf_has_alpha (pixbuf)
+ *                             ? COGL_PIXEL_FORMAT_RGBA_8888
+ *                             : COGL_PIXEL_FORMAT_RGB_888,
+ *                           gdk_pixbuf_get_width (pixbuf),
+ *                           gdk_pixbuf_get_height (pixbuf),
+ *                           gdk_pixbuf_get_rowstride (pixbuf),
+ *                           &error);
+ *
+ *   g_object_unref (pixbuf);
+ * ]|
+ *
  * Return value: %TRUE if the image data was successfully loaded,
  *   and %FALSE otherwise.
  *
@@ -226,6 +246,7 @@ clutter_image_set_data (ClutterImage     *image,
                         GError          **error)
 {
   ClutterImagePrivate *priv;
+  CoglTextureFlags flags;
 
   g_return_val_if_fail (CLUTTER_IS_IMAGE (image), FALSE);
   g_return_val_if_fail (data != NULL, FALSE);
@@ -235,8 +256,12 @@ clutter_image_set_data (ClutterImage     *image,
   if (priv->texture != NULL)
     cogl_object_unref (priv->texture);
 
+  flags = COGL_TEXTURE_NONE;
+  if (width >= 512 && height >= 512)
+    flags |= COGL_TEXTURE_NO_ATLAS;
+
   priv->texture = cogl_texture_new_from_data (width, height,
-                                              COGL_TEXTURE_NONE,
+                                              flags,
                                               pixel_format,
                                               COGL_PIXEL_FORMAT_ANY,
                                               row_stride,
@@ -289,6 +314,7 @@ clutter_image_set_bytes (ClutterImage     *image,
                          GError          **error)
 {
   ClutterImagePrivate *priv;
+  CoglTextureFlags flags;
 
   g_return_val_if_fail (CLUTTER_IS_IMAGE (image), FALSE);
   g_return_val_if_fail (data != NULL, FALSE);
@@ -298,8 +324,12 @@ clutter_image_set_bytes (ClutterImage     *image,
   if (priv->texture != NULL)
     cogl_object_unref (priv->texture);
 
+  flags = COGL_TEXTURE_NONE;
+  if (width >= 512 && height >= 512)
+    flags |= COGL_TEXTURE_NO_ATLAS;
+
   priv->texture = cogl_texture_new_from_data (width, height,
-                                              COGL_TEXTURE_NONE,
+                                              flags,
                                               pixel_format,
                                               COGL_PIXEL_FORMAT_ANY,
                                               row_stride,
@@ -364,9 +394,14 @@ clutter_image_set_area (ClutterImage                 *image,
 
   if (priv->texture == NULL)
     {
+      CoglTextureFlags flags = COGL_TEXTURE_NONE;
+
+      if (area->width >= 512 && area->height >= 512)
+        flags |= COGL_TEXTURE_NO_ATLAS;
+
       priv->texture = cogl_texture_new_from_data (area->width,
                                                   area->height,
-                                                  COGL_TEXTURE_NONE,
+                                                  flags,
                                                   pixel_format,
                                                   COGL_PIXEL_FORMAT_ANY,
                                                   row_stride,

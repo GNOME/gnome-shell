@@ -4,16 +4,16 @@ QUIET_GEN = $(AM_V_GEN)
 
 QUIET_LN     = $(QUIET_LN_$(V))
 QUIET_LN_    = $(QUIET_LN_$(AM_DEFAULT_VERBOSITY))
-QUIET_LN_0   = @echo '  LN     '$@;
+QUIET_LN_0   = @echo '  LN       '$@;
 
 QUIET_RM     = $(QUIET_RM_$(V))
 QUIET_RM_    = $(QUIET_RM_$(AM_DEFAULT_VERBOSITY))
-QUIET_RM_0   = @echo '  RM     '$@;
+QUIET_RM_0   = @echo '  RM       '$@;
 
 QUIET_SCAN   = $(QUIET_SCAN_$(V))
 QUIET_SCAN_  = $(QUIET_SCAN_$(AM_DEFAULT_VERBOSITY))
-QUIET_SCAN_0 = @echo '  GISCAN '$@;
+QUIET_SCAN_0 = @echo '  GISCAN   '$@;
 
 QUIET_COMP   = $(QUIET_COMP_$(V))
 QUIET_COMP_  = $(QUIET_COMP_$(AM_DEFAULT_VERBOSITY))
-QUIET_COMP_0 = @echo '  GICOMP '$@;
+QUIET_COMP_0 = @echo '  GICOMP   '$@;

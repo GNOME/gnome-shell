@@ -36,78 +36,50 @@
  * actor without sub-classing the actor itself and overriding the
  * #ClutterActorClass.paint()_ virtual function.
  *
- * <refsect2 id="ClutterEffect-implementation">
- *   <title>Implementing a ClutterEffect</title>
- *   <para>
- *     Creating a sub-class of #ClutterEffect requires overriding the
- *     ‘paint’ method. The implementation of the function should look
- *     something like this:
- *   </para>
- *   <programlisting>
+ * ## Implementing a ClutterEffect
+ *
+ * Creating a sub-class of #ClutterEffect requires overriding the
+ * #ClutterEffectClass.paint() method. The implementation of the function should look
+ * something like this:
+ *
+ * |[
  * void effect_paint (ClutterEffect *effect, ClutterEffectPaintFlags flags)
  * {
- *   /&ast; Set up initialisation of the paint such as binding a
- *      CoglOffscreen or other operations &ast;/
+ *   // Set up initialisation of the paint such as binding a
+ *   // CoglOffscreen or other operations
  *
- *   /&ast; Chain to the next item in the paint sequence. This will either call
- *      ‘paint’ on the next effect or just paint the actor if this is
- *      the last effect. &ast;/
+ *   // Chain to the next item in the paint sequence. This will either call
+ *   // ‘paint’ on the next effect or just paint the actor if this is
+ *   // the last effect.
  *   ClutterActor *actor =
  *     clutter_actor_meta_get_actor (CLUTTER_ACTOR_META (effect));
+ *
  *   clutter_actor_continue_paint (actor);
  *
- *   /&ast; perform any cleanup of state, such as popping the
- *      CoglOffscreen &ast;/
+ *   // perform any cleanup of state, such as popping the CoglOffscreen
  * }
- *   </programlisting>
- *   <para>
- *     The effect can optionally avoid calling
- *     clutter_actor_continue_paint() to skip any further stages of
- *     the paint sequence. This is useful for example if the effect
- *     contains a cached image of the actor. In that case it can
- *     optimise painting by avoiding the actor paint and instead
- *     painting the cached image. The %CLUTTER_EFFECT_PAINT_ACTOR_DIRTY
- *     flag is useful in this case. Clutter will set this flag when a
- *     redraw has been queued on the actor since it was last
- *     painted. The effect can use this information to decide if the
- *     cached image is still valid.
- *   </para>
- *   <para>
- *     The ‘paint’ virtual was added in Clutter 1.8. Prior to that there
- *     were two separate functions as follows.
- *   </para>
- *   <itemizedlist>
- *     <listitem><simpara><function>pre_paint()</function>, which is called
- *     before painting the #ClutterActor.</simpara></listitem>
- *     <listitem><simpara><function>post_paint()</function>, which is called
- *     after painting the #ClutterActor.</simpara></listitem>
- *   </itemizedlist>
- *   <para>The <function>pre_paint()</function> function was used to set
- *   up the #ClutterEffect right before the #ClutterActor's paint
- *   sequence. This function can fail, and return %FALSE; in that case, no
- *   <function>post_paint()</function> invocation will follow.</para>
- *   <para>The <function>post_paint()</function> function was called after the
- *   #ClutterActor's paint sequence.</para>
- *   <para>
- *     With these two functions it is not possible to skip the rest of
- *     the paint sequence. The default implementation of the ‘paint’
- *     virtual calls #ClutterEffectClass.pre_paint(), clutter_actor_continue_paint()
- *     and then #ClutterEffectClass.post_paint() so that existing actors that aren't
- *     using the #ClutterEffectClass.paint() virtual will continue to work. New
- *     effects using the #ClutterEffectClass.paint() virtual do not need to implement
- *     pre or post paint.
- *   </para>
- *   <example id="ClutterEffect-example">
- *     <title>A simple ClutterEffect implementation</title>
- *     <para>The example below creates two rectangles: one will be
- *     painted "behind" the actor, while another will be painted "on
- *     top" of the actor.  The #ClutterActorMetaClass.set_actor()
- *     implementation will create the two materials used for the two
- *     different rectangles; the #ClutterEffectClass.paint() implementation
- *     will paint the first material using cogl_rectangle(), before
- *     continuing and then it will paint paint the second material
- *     after.</para>
- *     <programlisting>
+ * ]|
+ *
+ * The effect can optionally avoid calling clutter_actor_continue_paint() to skip any
+ * further stages of the paint sequence. This is useful for example if the effect
+ * contains a cached image of the actor. In that case it can optimise painting by
+ * avoiding the actor paint and instead painting the cached image.
+ *
+ * The %CLUTTER_EFFECT_PAINT_ACTOR_DIRTY flag is useful in this case. Clutter will set
+ * this flag when a redraw has been queued on the actor since it was last painted. The
+ * effect can use this information to decide if the cached image is still valid.
+ *
+ * ## A simple ClutterEffect implementation
+ *
+ * The example below creates two rectangles: one will be painted "behind" the actor,
+ * while another will be painted "on top" of the actor.
+ *
+ * The #ClutterActorMetaClass.set_actor() implementation will create the two materials
+ * used for the two different rectangles; the #ClutterEffectClass.paint() implementation
+ * will paint the first material using cogl_rectangle(), before continuing and then it
+ * will paint paint the second material after.
+ *
+ *  |[
  *  typedef struct {
  *    ClutterEffect parent_instance;
  *
@@ -125,35 +97,33 @@
  *  {
  *    MyEffect *self = MY_EFFECT (meta);
  *
- *    /&ast; Clear the previous state &ast;/
- *    if (self-&gt;rect_1)
+ *    // Clear the previous state //
+ *    if (self->rect_1)
  *      {
- *        cogl_handle_unref (self-&gt;rect_1);
- *        self-&gt;rect_1 = NULL;
+ *        cogl_handle_unref (self->rect_1);
+ *        self->rect_1 = NULL;
  *      }
  *
- *    if (self-&gt;rect_2)
+ *    if (self->rect_2)
  *      {
- *        cogl_handle_unref (self-&gt;rect_2);
- *        self-&gt;rect_2 = NULL;
+ *        cogl_handle_unref (self->rect_2);
+ *        self->rect_2 = NULL;
  *      }
  *
- *    /&ast; Maintain a pointer to the actor &ast;
- *    self-&gt;actor = actor;
+ *    // Maintain a pointer to the actor
+ *    self->actor = actor;
  *
- *    /&ast; If we've been detached by the actor then we should
- *     &ast; just bail out here
- *     &ast;/
- *    if (self-&gt;actor == NULL)
+ *    // If we've been detached by the actor then we should just bail out here
+ *    if (self->actor == NULL)
  *      return;
  *
- *    /&ast; Create a red material &ast;/
- *    self-&gt;rect_1 = cogl_material_new ();
- *    cogl_material_set_color4f (self-&gt;rect_1, 1.0, 0.0, 0.0, 1.0);
+ *    // Create a red material
+ *    self->rect_1 = cogl_material_new ();
+ *    cogl_material_set_color4f (self->rect_1, 1.0, 0.0, 0.0, 1.0);
  *
- *    /&ast; Create a green material &ast;/
- *    self-&gt;rect_2 = cogl_material_new ();
- *    cogl_material_set_color4f (self-&gt;rect_2, 0.0, 1.0, 0.0, 1.0);
+ *    // Create a green material
+ *    self->rect_2 = cogl_material_new ();
+ *    cogl_material_set_color4f (self->rect_2, 0.0, 1.0, 0.0, 1.0);
  *  }
  *
  *  static gboolean
@@ -162,17 +132,17 @@
  *    MyEffect *self = MY_EFFECT (effect);
  *    gfloat width, height;
  *
- *    clutter_actor_get_size (self-&gt;actor, &amp;width, &amp;height);
+ *    clutter_actor_get_size (self->actor, &width, &height);
  *
- *    /&ast; Paint the first rectangle in the upper left quadrant &ast;/
- *    cogl_set_source (self-&gt;rect_1);
+ *    // Paint the first rectangle in the upper left quadrant
+ *    cogl_set_source (self->rect_1);
  *    cogl_rectangle (0, 0, width / 2, height / 2);
  *
- *    /&ast; Continue to the rest of the paint sequence &ast;/
- *    clutter_actor_continue_paint (self-&gt;actor);
+ *    // Continue to the rest of the paint sequence
+ *    clutter_actor_continue_paint (self->actor);
  *
- *    /&ast; Paint the second rectangle in the lower right quadrant &ast;/
- *    cogl_set_source (self-&gt;rect_2);
+ *    // Paint the second rectangle in the lower right quadrant
+ *    cogl_set_source (self->rect_2);
  *    cogl_rectangle (width / 2, height / 2, width, height);
  *  }
  *
@@ -181,13 +151,11 @@
  *  {
  *    ClutterActorMetaClas *meta_class = CLUTTER_ACTOR_META_CLASS (klass);
  *
- *    meta_class-&gt;set_actor = my_effect_set_actor;
+ *    meta_class->set_actor = my_effect_set_actor;
  *
- *    klass-&gt;paint = my_effect_paint;
+ *    klass->paint = my_effect_paint;
  *  }
- *     </programlisting>
- *   </example>
- * </refsect2>
+ * ]|
  *
  * #ClutterEffect is available since Clutter 1.4
  */

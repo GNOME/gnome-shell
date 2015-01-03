@@ -25,6 +25,7 @@
 #define __CLUTTER_KEYMAP_X11_H__
 
 #include <glib-object.h>
+#include <pango/pango.h>
 #include <clutter/clutter-event.h>
 
 G_BEGIN_DECLS
@@ -47,6 +48,8 @@ gint     _clutter_keymap_x11_translate_key_state (ClutterKeymapX11    *keymap,
                                                   ClutterModifierType *mods_p);
 gboolean _clutter_keymap_x11_get_is_modifier     (ClutterKeymapX11    *keymap,
                                                   gint                 keycode);
+
+PangoDirection _clutter_keymap_x11_get_direction (ClutterKeymapX11    *keymap);
 
 G_END_DECLS
 

@@ -3,12 +3,14 @@
 # generator of Git ignore files, and it's not meant to be used as
 # the top-level Git ignore file generator.
 
+GIT_IGNORE_FILES = $(noinst_PROGRAMS) $(check_PROGRAMS) $(check_SCRIPTS) $(GIT_IGNORE_EXTRA)
+
 $(srcdir)/.gitignore: Makefile.am
 	$(QUIET_GEN)( \
 	  echo "*.o" ; \
 	  echo ".gitignore" ; \
 	) > $(srcdir)/.gitignore ; \
-	for p in $(noinst_PROGRAMS); do \
+	for p in $(GIT_IGNORE_FILES); do \
 		echo "/$$p" >> $(srcdir)/.gitignore ; \
 	done
 

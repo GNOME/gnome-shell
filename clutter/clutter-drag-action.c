@@ -34,7 +34,7 @@
  * a #ClutterActor and setting it as reactive; for instance, the following
  * code:
  *
- * |[
+ * |[<!-- language="C" -->
  *   clutter_actor_add_action (actor, clutter_drag_action_new ());
  *   clutter_actor_set_reactive (actor, TRUE);
  * ]|
@@ -54,19 +54,11 @@
  * parented and exist between the emission of #ClutterDragAction::drag-begin
  * and #ClutterDragAction::drag-end.
  *
- * <example id="drag-action-example">
- *   <title>A simple draggable actor</title>
- *   <programlisting>
- * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../examples/drag-action.c">
- *   <xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback>
- * </xi:include>
- *   </programlisting>
- *   <para>The example program above allows dragging the rectangle around
- *   the stage using a #ClutterDragAction. When pressing the
- *   <keycap>Shift</keycap> key the actor that is going to be dragged is a
- *   separate rectangle, and when the drag ends, the original rectangle will
- *   be animated to the final coordinates.</para>
- * </example>
+ * The [drag-action example](https://git.gnome.org/browse/clutter/tree/examples/drag-action.c?h=clutter-1.18)
+ * allows dragging the rectangle around the stage using a #ClutterDragAction.
+ * When pressing the `Shift` key the actor that is being dragged will be a
+ * separate rectangle, and when the drag ends, the original rectangle will be
+ * animated to the final drop coordinates.
  *
  * #ClutterDragAction is available since Clutter 1.4
  */
@@ -150,7 +142,7 @@ static gboolean on_captured_event (ClutterActor      *stage,
                                    ClutterEvent      *event,
                                    ClutterDragAction *action);
 
-G_DEFINE_TYPE (ClutterDragAction, clutter_drag_action, CLUTTER_TYPE_ACTION);
+G_DEFINE_TYPE_WITH_PRIVATE (ClutterDragAction, clutter_drag_action, CLUTTER_TYPE_ACTION)
 
 static void
 get_drag_threshold (ClutterDragAction *action,
@@ -364,14 +356,14 @@ on_captured_event (ClutterActor      *stage,
   if (!priv->in_drag)
     return CLUTTER_EVENT_PROPAGATE;
 
-  if (clutter_event_get_device (event) != priv->device)
+  if (clutter_event_get_device (event) != priv->device ||
+      clutter_event_get_event_sequence (event) != priv->sequence)
     return CLUTTER_EVENT_PROPAGATE;
 
   switch (clutter_event_type (event))
     {
     case CLUTTER_TOUCH_UPDATE:
-      if (clutter_event_get_event_sequence (event) == priv->sequence)
-        emit_drag_motion (action, actor, event);
+      emit_drag_motion (action, actor, event);
       break;
 
     case CLUTTER_MOTION:
@@ -391,8 +383,7 @@ on_captured_event (ClutterActor      *stage,
 
     case CLUTTER_TOUCH_END:
     case CLUTTER_TOUCH_CANCEL:
-      if (clutter_event_get_event_sequence (event) == priv->sequence)
-        emit_drag_end (action, actor, event);
+      emit_drag_end (action, actor, event);
       break;
 
     case CLUTTER_BUTTON_RELEASE:
@@ -427,6 +418,8 @@ on_drag_begin (ClutterActor      *actor,
   switch (clutter_event_type (event))
     {
     case CLUTTER_BUTTON_PRESS:
+      if (priv->sequence != NULL)
+        return CLUTTER_EVENT_PROPAGATE;
       if (clutter_event_get_button (event) != CLUTTER_BUTTON_PRIMARY)
         return CLUTTER_EVENT_PROPAGATE;
       break;
@@ -710,8 +703,6 @@ clutter_drag_action_class_init (ClutterDragActionClass *klass)
   ClutterActorMetaClass *meta_class = CLUTTER_ACTOR_META_CLASS (klass);
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (ClutterDragActionPrivate));
-
   meta_class->set_actor = clutter_drag_action_set_actor;
 
   klass->drag_progress = clutter_drag_action_real_drag_progress;
@@ -991,8 +982,7 @@ clutter_drag_action_class_init (ClutterDragActionClass *klass)
 static void
 clutter_drag_action_init (ClutterDragAction *self)
 {
-  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, CLUTTER_TYPE_DRAG_ACTION,
-                                            ClutterDragActionPrivate);
+  self->priv = clutter_drag_action_get_instance_private (self);
 }
 
 /**
@@ -1141,14 +1131,18 @@ clutter_drag_action_set_drag_handle (ClutterDragAction *action,
 
   priv->transformed_press_x = priv->press_x;
   priv->transformed_press_y = priv->press_y;
-  clutter_actor_transform_stage_point (handle, priv->press_x, priv->press_y,
-                                       &priv->transformed_press_x,
-                                       &priv->transformed_press_y);
 
   if (priv->drag_handle != NULL)
-    g_signal_connect (priv->drag_handle, "destroy",
-                      G_CALLBACK (on_drag_handle_destroy),
-                      action);
+    {
+      clutter_actor_transform_stage_point (priv->drag_handle,
+                                           priv->press_x,
+                                           priv->press_y,
+					   &priv->transformed_press_x,
+					   &priv->transformed_press_y);
+      g_signal_connect (priv->drag_handle, "destroy",
+			G_CALLBACK (on_drag_handle_destroy),
+			action);
+    }
 
   g_object_notify_by_pspec (G_OBJECT (action), drag_props[PROP_DRAG_HANDLE]);
 }

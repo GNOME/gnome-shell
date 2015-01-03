@@ -73,7 +73,7 @@ main (int argc, char *argv[])
   ClutterAction *click;
   GError *error = NULL;
 
-  gchar *filename = TESTS_DATA_DIR "/redhand.png";
+  const gchar *filename = "redhand.png";
 
   if (argc > 1)
     filename = argv[1];

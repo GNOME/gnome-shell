@@ -36,7 +36,7 @@
  * #ClutterDropAction::drop signal and handling the drop from there,
  * for instance:
  *
- * |[
+ * |[<!-- language="C" -->
  *   ClutterAction *action = clutter_drop_action ();
  *
  *   g_signal_connect (action, "drop", G_CALLBACK (on_drop), NULL);
@@ -49,17 +49,11 @@
  * cause the #ClutterDropAction::drop signal to be skipped when the input
  * device button is released.
  *
- * <example id="drop-action-example">
- *   <title>Drop targets</title>
- *   <programlisting>
- * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../examples/drop-action.c">
- *   <xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback>
- * </xi:include>
- *   </programlisting>
- * </example>
- *
  * It's important to note that #ClutterDropAction will only work with
  * actors dragged using #ClutterDragAction.
+ *
+ * See [drop-action.c](https://git.gnome.org/browse/clutter/tree/examples/drop-action.c?h=clutter-1.18)
+ * for an example of how to use #ClutterDropAction.
  *
  * #ClutterDropAction is available since Clutter 1.8
  */
@@ -108,7 +102,7 @@ enum
 
 static guint drop_signals[LAST_SIGNAL] = { 0, };
 
-G_DEFINE_TYPE (ClutterDropAction, clutter_drop_action, CLUTTER_TYPE_ACTION)
+G_DEFINE_TYPE_WITH_PRIVATE (ClutterDropAction, clutter_drop_action, CLUTTER_TYPE_ACTION)
 
 static void
 drop_target_free (gpointer _data)
@@ -129,23 +123,25 @@ on_stage_capture (ClutterStage *stage,
   gfloat event_x, event_y;
   ClutterActor *actor, *drag_actor;
   ClutterDropAction *drop_action;
+  ClutterInputDevice *device;
   gboolean was_reactive;
 
   switch (clutter_event_type (event))
     {
     case CLUTTER_MOTION:
     case CLUTTER_BUTTON_RELEASE:
-      {
-        ClutterInputDevice *device;
+      if (clutter_event_type (event) == CLUTTER_MOTION &&
+          !(clutter_event_get_state (event) & CLUTTER_BUTTON1_MASK))
+        return CLUTTER_EVENT_PROPAGATE;
 
-        if (!(clutter_event_get_state (event) & CLUTTER_BUTTON1_MASK))
-          return CLUTTER_EVENT_PROPAGATE;
+      if (clutter_event_type (event) == CLUTTER_BUTTON_RELEASE &&
+          clutter_event_get_button (event) != CLUTTER_BUTTON_PRIMARY)
+        return CLUTTER_EVENT_PROPAGATE;
 
-        device = clutter_event_get_device (event);
-        drag_actor = _clutter_stage_get_pointer_drag_actor (stage, device);
-        if (drag_actor == NULL)
-          return CLUTTER_EVENT_PROPAGATE;
-      }
+      device = clutter_event_get_device (event);
+      drag_actor = _clutter_stage_get_pointer_drag_actor (stage, device);
+      if (drag_actor == NULL)
+        return CLUTTER_EVENT_PROPAGATE;
       break;
 
     case CLUTTER_TOUCH_UPDATE:
@@ -384,8 +380,6 @@ clutter_drop_action_class_init (ClutterDropActionClass *klass)
 {
   ClutterActorMetaClass *meta_class = CLUTTER_ACTOR_META_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (ClutterDropActionPrivate));
-
   meta_class->set_actor = clutter_drop_action_set_actor;
 
   klass->can_drop = clutter_drop_action_real_can_drop;
@@ -518,8 +512,7 @@ clutter_drop_action_class_init (ClutterDropActionClass *klass)
 static void
 clutter_drop_action_init (ClutterDropAction *self)
 {
-  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, CLUTTER_TYPE_DROP_ACTION,
-                                            ClutterDropActionPrivate);
+  self->priv = clutter_drop_action_get_instance_private (self);
 }
 
 /**

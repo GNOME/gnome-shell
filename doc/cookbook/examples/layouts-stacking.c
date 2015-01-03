@@ -20,7 +20,7 @@ main (int argc, char *argv[])
   GError *error = NULL;
   gfloat width;
 
-  gchar *filename = TESTS_DATA_DIR "/redhand.png";
+  const gchar *filename = "redhand.png";
 
   if (argc > 1)
     filename = argv[1];

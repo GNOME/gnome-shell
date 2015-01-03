@@ -46,6 +46,8 @@
 #include "clutter-private.h"
 #include "clutter-stage-private.h"
 
+#include <math.h>
+
 enum
 {
   PROP_0,
@@ -79,7 +81,7 @@ clutter_input_device_dispose (GObject *gobject)
 {
   ClutterInputDevice *device = CLUTTER_INPUT_DEVICE (gobject);
 
-  g_free (device->device_name);
+  g_clear_pointer (&device->device_name, g_free);
 
   if (device->associated != NULL)
     {
@@ -91,23 +93,10 @@ clutter_input_device_dispose (GObject *gobject)
       device->associated = NULL;
     }
 
-  if (device->axes != NULL)
-    {
-      g_array_free (device->axes, TRUE);
-      device->axes = NULL;
-    }
-
-  if (device->keys != NULL)
-    {
-      g_array_free (device->keys, TRUE);
-      device->keys = NULL;
-    }
-
-  if (device->touch_sequences_info)
-    {
-      g_hash_table_unref (device->touch_sequences_info);
-      device->touch_sequences_info = NULL;
-    }
+  g_clear_pointer (&device->axes, g_array_unref);
+  g_clear_pointer (&device->keys, g_array_unref);
+  g_clear_pointer (&device->scroll_info, g_array_unref);
+  g_clear_pointer (&device->touch_sequences_info, g_hash_table_unref);
 
   if (device->inv_touch_sequence_actors)
     {
@@ -428,8 +417,8 @@ _clutter_input_device_ensure_touch_info (ClutterInputDevice *device,
 void
 _clutter_input_device_set_coords (ClutterInputDevice   *device,
                                   ClutterEventSequence *sequence,
-                                  gint                  x,
-                                  gint                  y,
+                                  gfloat                x,
+                                  gfloat                y,
                                   ClutterStage         *stage)
 {
   g_return_if_fail (CLUTTER_IS_INPUT_DEVICE (device));
@@ -465,6 +454,25 @@ _clutter_input_device_set_state (ClutterInputDevice  *device,
   g_return_if_fail (CLUTTER_IS_INPUT_DEVICE (device));
 
   device->current_state = state;
+}
+
+/**
+ * clutter_input_device_get_modifier_state:
+ * @device: a #ClutterInputDevice
+ *
+ * Retrieves the current modifiers state of the device, as seen
+ * by the last event Clutter processed.
+ *
+ * Return value: the last known modifier state
+ *
+ * Since: 1.16
+ */
+ClutterModifierType
+clutter_input_device_get_modifier_state (ClutterInputDevice *device)
+{
+  g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (device), 0);
+
+  return device->current_state;
 }
 
 /*< private >
@@ -1028,9 +1036,9 @@ clutter_input_device_get_device_mode (ClutterInputDevice *device)
  * |[
  *   ClutterEvent c_event;
  *
- *   translate_native_event_to_clutter (native_event, &amp;c_event);
+ *   translate_native_event_to_clutter (native_event, &c_event);
  *
- *   clutter_do_event (&amp;c_event);
+ *   clutter_do_event (&c_event);
  * ]|
  *
  * Before letting clutter_do_event() process the event, it is necessary to call
@@ -1041,20 +1049,18 @@ clutter_input_device_get_device_mode (ClutterInputDevice *device)
  *   ClutterDeviceManager *manager;
  *   ClutterInputDevice *device;
  *
- *   translate_native_event_to_clutter (native_event, &amp;c_event);
+ *   translate_native_event_to_clutter (native_event, &c_event);
  *
- *   /&ast; get the device manager &ast;/
+ *   // get the device manager
  *   manager = clutter_device_manager_get_default ();
  *
- *   /&ast; use the default Core Pointer that Clutter
- *    &ast; backends register by default
- *    &ast;/
+ *   // use the default Core Pointer that Clutter backends register by default
  *   device = clutter_device_manager_get_core_device (manager, %CLUTTER_POINTER_DEVICE);
  *
- *   /&ast; update the state of the input device &ast;/
- *   clutter_input_device_update_from_event (device, &amp;c_event, FALSE);
+ *   // update the state of the input device
+ *   clutter_input_device_update_from_event (device, &c_event, FALSE);
  *
- *   clutter_do_event (&amp;c_event);
+ *   clutter_do_event (&c_event);
  * ]|
  *
  * The @update_stage boolean argument should be used when the input device
@@ -1199,6 +1205,9 @@ _clutter_input_device_translate_axis (ClutterInputDevice *device,
       info->axis == CLUTTER_INPUT_AXIS_Y)
     return FALSE;
 
+  if (fabs (info->max_value - info->min_value) < 0.0000001)
+    return FALSE;
+
   width = info->max_value - info->min_value;
   real_value = (info->max_axis * (value - info->min_value)
              + info->min_axis * (info->max_value - value))
@@ -1261,7 +1270,7 @@ clutter_input_device_get_axis (ClutterInputDevice *device,
  *
  *   clutter_input_device_get_axis_value (device, axes,
  *                                        CLUTTER_INPUT_AXIS_PRESSURE,
- *                                        &amp;pressure_value);
+ *                                        &pressure_value);
  * ]|
  *
  * Return value: %TRUE if the value was set, and %FALSE otherwise
@@ -1520,12 +1529,10 @@ _clutter_input_device_remove_event_sequence (ClutterInputDevice *device,
 
       g_hash_table_replace (device->inv_touch_sequence_actors,
                             info->actor, sequences);
+      _clutter_input_device_set_actor (device, sequence, NULL, TRUE);
     }
 
   g_hash_table_remove (device->touch_sequences_info, sequence);
-
-  if (g_hash_table_size (device->touch_sequences_info) == 0)
-    _clutter_input_device_set_stage (device, NULL);
 }
 
 /**
@@ -1613,28 +1620,6 @@ clutter_input_device_get_associated_device (ClutterInputDevice *device)
   g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (device), NULL);
 
   return device->associated;
-}
-
-/*< internal >
- * clutter_input_device_select_stage_events:
- * @device: a #ClutterInputDevice
- * @stage: the #ClutterStage to select events on
- * @event_mask: platform-specific mask of events
- *
- * Selects input device events on @stage.
- *
- * The implementation of this function depends on the backend used.
- */
-void
-_clutter_input_device_select_stage_events (ClutterInputDevice *device,
-                                           ClutterStage       *stage,
-                                           gint                event_mask)
-{
-  ClutterInputDeviceClass *device_class;
-
-  device_class = CLUTTER_INPUT_DEVICE_GET_CLASS (device);
-  if (device_class->select_stage_events != NULL)
-    device_class->select_stage_events (device, stage, event_mask);
 }
 
 /**

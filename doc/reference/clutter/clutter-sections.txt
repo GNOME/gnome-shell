@@ -297,6 +297,7 @@ clutter_actor_unrealize
 clutter_actor_paint
 clutter_actor_continue_paint
 clutter_actor_queue_redraw
+clutter_actor_queue_redraw_with_clip
 clutter_actor_queue_relayout
 clutter_actor_destroy
 clutter_actor_event
@@ -304,6 +305,7 @@ clutter_actor_should_pick_paint
 clutter_actor_map
 clutter_actor_unmap
 clutter_actor_has_overlaps
+clutter_actor_has_mapped_clones
 
 <SUBSECTION>
 ClutterAllocationFlags
@@ -624,26 +626,14 @@ clutter_texture_get_type
 <TITLE>ClutterStage</TITLE>
 ClutterStage
 ClutterStageClass
-CLUTTER_STAGE_WIDTH
-CLUTTER_STAGE_HEIGHT
-clutter_stage_get_default
 clutter_stage_new
-clutter_stage_is_default
 
 <SUBSECTION>
-clutter_stage_set_color
-clutter_stage_get_color
-clutter_stage_set_fullscreen
-clutter_stage_get_fullscreen
-clutter_stage_show_cursor
-clutter_stage_hide_cursor
 ClutterPickMode
 clutter_stage_get_actor_at_pos
 clutter_stage_ensure_current
 clutter_stage_ensure_viewport
 clutter_stage_ensure_redraw
-clutter_stage_queue_redraw
-clutter_actor_queue_redraw_with_clip
 clutter_stage_event
 clutter_stage_set_key_focus
 clutter_stage_get_key_focus
@@ -657,8 +647,6 @@ clutter_stage_get_minimum_size
 clutter_stage_set_no_clear_hint
 clutter_stage_get_no_clear_hint
 clutter_stage_get_redraw_clip_bounds
-clutter_stage_set_accept_focus
-clutter_stage_get_accept_focus
 clutter_stage_get_motion_events_enabled
 clutter_stage_set_motion_events_enabled
 
@@ -672,8 +660,25 @@ clutter_stage_set_title
 clutter_stage_get_title
 clutter_stage_set_user_resizable
 clutter_stage_get_user_resizable
+clutter_stage_set_fullscreen
+clutter_stage_get_fullscreen
+clutter_stage_show_cursor
+clutter_stage_hide_cursor
+clutter_stage_set_accept_focus
+clutter_stage_get_accept_focus
 
 <SUBSECTION>
+clutter_stage_set_sync_delay
+clutter_stage_skip_sync_delay
+
+<SUBSECTION>
+CLUTTER_STAGE_WIDTH
+CLUTTER_STAGE_HEIGHT
+clutter_stage_get_default
+clutter_stage_is_default
+clutter_stage_set_color
+clutter_stage_get_color
+clutter_stage_queue_redraw
 ClutterFog
 clutter_stage_set_use_fog
 clutter_stage_get_use_fog
@@ -971,6 +976,7 @@ clutter_backend_get_cogl_context
 
 <SUBSECTION>
 clutter_check_windowing_backend
+clutter_set_windowing_backend
 
 <SUBSECTION Standard>
 CLUTTER_BACKEND
@@ -1101,6 +1107,7 @@ clutter_event_set_coords
 clutter_event_get_coords
 clutter_event_set_state
 clutter_event_get_state
+clutter_event_get_state_full
 clutter_event_set_time
 clutter_event_get_time
 clutter_event_set_source
@@ -1123,6 +1130,9 @@ clutter_event_get
 clutter_event_peek
 clutter_event_put
 clutter_events_pending
+ClutterEventFilterFunc
+clutter_event_add_filter
+clutter_event_remove_filter
 
 <SUBSECTION>
 CLUTTER_BUTTON_PRIMARY
@@ -1165,9 +1175,11 @@ clutter_get_current_event_time
 clutter_get_current_event
 
 <SUBSECTION Standard>
+CLUTTER_TYPE_EVENT_SEQUENCE
 CLUTTER_TYPE_EVENT
 <SUBSECTION Private>
 ClutterAnyEvent
+clutter_event_sequence_get_type
 clutter_event_get_type
 </SECTION>
 
@@ -1187,6 +1199,7 @@ clutter_input_device_set_enabled
 clutter_input_device_get_enabled
 clutter_input_device_get_associated_device
 clutter_input_device_get_slave_devices
+clutter_input_device_get_modifier_state
 clutter_input_device_keycode_to_evdev
 
 <SUBSECTION>
@@ -1321,6 +1334,18 @@ clutter_ungrab_pointer_for_device
 <SUBSECTION>
 clutter_do_event
 
+<SUBSECTION Private>
+CLUTTER_TEST_UNIT
+CLUTTER_TEST_SUITE
+clutter_test_init
+clutter_test_run
+clutter_test_add
+clutter_test_add_data
+clutter_test_add_data_full
+clutter_test_get_stage
+clutter_test_check_actor_at_point
+clutter_test_check_color_at_point
+
 <SUBSECTION Standard>
 CLUTTER_INIT_ERROR
 <SUBSECTION Private>
@@ -1424,6 +1449,17 @@ clutter_glx_texture_pixmap_get_type
 </SECTION>
 
 <SECTION>
+<FILE>clutter-wayland</FILE>
+<TITLE>Wayland specific support</TITLE>
+clutter_wayland_input_device_get_wl_seat
+clutter_wayland_stage_get_wl_shell_surface
+clutter_wayland_stage_get_wl_surface
+clutter_wayland_stage_set_wl_surface
+clutter_wayland_set_display
+clutter_wayland_disable_event_retrieval
+</SECTION>
+
+<SECTION>
 <FILE>clutter-wayland-compositor</FILE>
 <TITLE>Wayland compositor specific support</TITLE>
 clutter_wayland_set_compositor_display
@@ -1501,6 +1537,10 @@ CLUTTER_VERSION_1_8
 CLUTTER_VERSION_1_10
 CLUTTER_VERSION_1_12
 CLUTTER_VERSION_1_14
+CLUTTER_VERSION_1_16
+CLUTTER_VERSION_1_18
+CLUTTER_VERSION_1_20
+CLUTTER_VERSION_1_22
 CLUTTER_VERSION_MAX_ALLOWED
 CLUTTER_VERSION_MIN_REQUIRED
 
@@ -1513,6 +1553,7 @@ clutter_check_version
 <SUBSECTION Private>
 CLUTTER_VERSION_CUR_STABLE
 CLUTTER_VERSION_PREV_STABLE
+CLUTTER_AVAILABLE_IN_ALL
 CLUTTER_AVAILABLE_IN_1_0
 CLUTTER_AVAILABLE_IN_1_2
 CLUTTER_AVAILABLE_IN_1_4
@@ -1521,6 +1562,10 @@ CLUTTER_AVAILABLE_IN_1_8
 CLUTTER_AVAILABLE_IN_1_10
 CLUTTER_AVAILABLE_IN_1_12
 CLUTTER_AVAILABLE_IN_1_14
+CLUTTER_AVAILABLE_IN_1_16
+CLUTTER_AVAILABLE_IN_1_18
+CLUTTER_AVAILABLE_IN_1_20
+CLUTTER_AVAILABLE_IN_1_22
 CLUTTER_DEPRECATED_IN_1_0
 CLUTTER_DEPRECATED_IN_1_0_FOR
 CLUTTER_DEPRECATED_IN_1_2
@@ -1537,6 +1582,14 @@ CLUTTER_DEPRECATED_IN_1_12
 CLUTTER_DEPRECATED_IN_1_12_FOR
 CLUTTER_DEPRECATED_IN_1_14
 CLUTTER_DEPRECATED_IN_1_14_FOR
+CLUTTER_DEPRECATED_IN_1_16
+CLUTTER_DEPRECATED_IN_1_16_FOR
+CLUTTER_DEPRECATED_IN_1_18
+CLUTTER_DEPRECATED_IN_1_18_FOR
+CLUTTER_DEPRECATED_IN_1_20
+CLUTTER_DEPRECATED_IN_1_20_FOR
+CLUTTER_DEPRECATED_IN_1_22
+CLUTTER_DEPRECATED_IN_1_22_FOR
 CLUTTER_UNAVAILABLE
 </SECTION>
 
@@ -2038,6 +2091,7 @@ clutter_text_set_cursor_visible
 clutter_text_get_cursor_visible
 clutter_text_set_cursor_size
 clutter_text_get_cursor_size
+clutter_text_get_cursor_rect
 
 <SUBSECTION>
 clutter_text_activate
@@ -2120,6 +2174,10 @@ clutter_binding_pool_get_type
 clutter_egl_display
 clutter_eglx_display
 clutter_egl_get_egl_display
+clutter_egl_set_kms_fd
+clutter_egl_freeze_master_clock
+clutter_egl_thaw_master_clock
+
 </SECTION>
 
 <SECTION>
@@ -2298,6 +2356,8 @@ clutter_flow_layout_set_homogeneous
 clutter_flow_layout_get_homogeneous
 clutter_flow_layout_set_orientation
 clutter_flow_layout_get_orientation
+clutter_flow_layout_set_snap_to_grid
+clutter_flow_layout_get_snap_to_grid
 
 <SUBSECTION>
 clutter_flow_layout_set_column_spacing
@@ -2958,6 +3018,11 @@ clutter_gesture_action_set_n_touch_points
 clutter_gesture_action_get_n_current_points
 clutter_gesture_action_get_sequence
 clutter_gesture_action_get_device
+clutter_gesture_action_get_threshold_trigger_distance
+clutter_gesture_action_set_threshold_trigger_distance
+ClutterGestureTriggerEdge
+clutter_gesture_action_set_threshold_trigger_edge
+clutter_gesture_action_get_threshold_trigger_edge
 clutter_gesture_action_cancel
 <SUBSECTION Standard>
 CLUTTER_GESTURE_ACTION
@@ -2969,6 +3034,7 @@ CLUTTER_TYPE_GESTURE_ACTION
 <SUBSECTION Private>
 ClutterGestureActionPrivate
 clutter_gesture_action_get_type
+clutter_gesture_action_get_threshold_trigger_egde
 </SECTION>
 
 <SECTION>
@@ -3192,6 +3258,8 @@ ClutterCanvas
 ClutterCanvasClass
 clutter_canvas_new
 clutter_canvas_set_size
+clutter_canvas_set_scale_factor
+clutter_canvas_get_scale_factor
 <SUBSECTION Standard>
 CLUTTER_TYPE_CANVAS
 CLUTTER_CANVAS

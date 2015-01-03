@@ -50,20 +50,11 @@
 #include "clutter-private.h"
 #include "clutter-debug.h"
 
-G_DEFINE_TYPE (ClutterBehaviourOpacity,
-               clutter_behaviour_opacity,
-	       CLUTTER_TYPE_BEHAVIOUR);
-
 struct _ClutterBehaviourOpacityPrivate
 {
   guint8 opacity_start;
   guint8 opacity_end;
 };
-
-#define CLUTTER_BEHAVIOUR_OPACITY_GET_PRIVATE(obj)    \
-              (G_TYPE_INSTANCE_GET_PRIVATE ((obj),    \
-               CLUTTER_TYPE_BEHAVIOUR_OPACITY,        \
-               ClutterBehaviourOpacityPrivate))
 
 enum
 {
@@ -76,6 +67,10 @@ enum
 };
 
 static GParamSpec *obj_props[PROP_LAST];
+
+G_DEFINE_TYPE_WITH_PRIVATE (ClutterBehaviourOpacity,
+                            clutter_behaviour_opacity,
+                            CLUTTER_TYPE_BEHAVIOUR)
 
 static void
 alpha_notify_foreach (ClutterBehaviour *behaviour,
@@ -166,8 +161,6 @@ clutter_behaviour_opacity_class_init (ClutterBehaviourOpacityClass *klass)
   ClutterBehaviourClass *behave_class = CLUTTER_BEHAVIOUR_CLASS (klass);
   GParamSpec *pspec;
 
-  g_type_class_add_private (klass, sizeof (ClutterBehaviourOpacityPrivate));
-
   gobject_class->set_property = clutter_behaviour_opacity_set_property;
   gobject_class->get_property = clutter_behaviour_opacity_get_property;
 
@@ -213,10 +206,7 @@ clutter_behaviour_opacity_class_init (ClutterBehaviourOpacityClass *klass)
 static void
 clutter_behaviour_opacity_init (ClutterBehaviourOpacity *self)
 {
-  self->priv = CLUTTER_BEHAVIOUR_OPACITY_GET_PRIVATE (self);
-
-  self->priv->opacity_start = 0;
-  self->priv->opacity_end = 0;
+  self->priv = clutter_behaviour_opacity_get_instance_private (self);
 }
 
 /**

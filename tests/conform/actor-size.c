@@ -3,8 +3,6 @@
 
 #include <clutter/clutter.h>
 
-#include "test-conform-common.h"
-
 #define TEST_TYPE_ACTOR         (test_actor_get_type ())
 
 typedef struct _TestActor               TestActor;
@@ -17,6 +15,8 @@ struct _TestActor
   guint preferred_width_called  : 1;
   guint preferred_height_called : 1;
 };
+
+GType test_actor_get_type (void);
 
 G_DEFINE_TYPE (TestActor, test_actor, CLUTTER_TYPE_ACTOR);
 
@@ -78,7 +78,7 @@ test_actor_init (TestActor *self)
 {
 }
 
-void
+static void
 actor_preferred_size (void)
 {
   ClutterActor *test;
@@ -138,7 +138,7 @@ actor_preferred_size (void)
   clutter_actor_destroy (test);
 }
 
-void
+static void
 actor_fixed_size (void)
 {
   ClutterActor *rect;
@@ -209,3 +209,8 @@ actor_fixed_size (void)
   clutter_actor_destroy (rect);
   g_object_unref (rect);
 }
+
+CLUTTER_TEST_SUITE (
+  CLUTTER_TEST_UNIT ("/actor/size/preferred", actor_preferred_size)
+  CLUTTER_TEST_UNIT ("/actor/size/fixed", actor_fixed_size)
+)

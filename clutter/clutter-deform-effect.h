@@ -48,7 +48,7 @@ typedef struct _ClutterDeformEffectClass        ClutterDeformEffectClass;
 /**
  * ClutterDeformEffect:
  *
- * The <structname>ClutterDeformEffect</structname> structure contains
+ * The #ClutterDeformEffect structure contains
  * only private data and should be accessed using the provided API
  *
  * Since: 1.4
@@ -66,7 +66,7 @@ struct _ClutterDeformEffect
  * @deform_vertex: virtual function; sub-classes should override this
  *   function to compute the deformation of each vertex
  *
- * The <structname>ClutterDeformEffectClass</structname> structure contains
+ * The #ClutterDeformEffectClass structure contains
  * only private data
  *
  * Since: 1.4
@@ -92,19 +92,25 @@ struct _ClutterDeformEffectClass
   void (*_clutter_deform7) (void);
 };
 
+CLUTTER_AVAILABLE_IN_1_4
 GType clutter_deform_effect_get_type (void) G_GNUC_CONST;
 
-void       clutter_deform_effect_set_back_material (ClutterDeformEffect *effect,
-                                                    CoglHandle           material);
-CoglHandle clutter_deform_effect_get_back_material (ClutterDeformEffect *effect);
-void       clutter_deform_effect_set_n_tiles       (ClutterDeformEffect *effect,
-                                                    guint                x_tiles,
-                                                    guint                y_tiles);
-void       clutter_deform_effect_get_n_tiles       (ClutterDeformEffect *effect,
-                                                    guint               *x_tiles,
-                                                    guint               *y_tiles);
+CLUTTER_AVAILABLE_IN_1_4
+void            clutter_deform_effect_set_back_material (ClutterDeformEffect *effect,
+                                                         CoglHandle           material);
+CLUTTER_AVAILABLE_IN_1_4
+CoglHandle      clutter_deform_effect_get_back_material (ClutterDeformEffect *effect);
+CLUTTER_AVAILABLE_IN_1_4
+void            clutter_deform_effect_set_n_tiles       (ClutterDeformEffect *effect,
+                                                         guint                x_tiles,
+                                                         guint                y_tiles);
+CLUTTER_AVAILABLE_IN_1_4
+void            clutter_deform_effect_get_n_tiles       (ClutterDeformEffect *effect,
+                                                         guint               *x_tiles,
+                                                         guint               *y_tiles);
 
-void       clutter_deform_effect_invalidate        (ClutterDeformEffect *effect);
+CLUTTER_AVAILABLE_IN_1_4
+void            clutter_deform_effect_invalidate        (ClutterDeformEffect *effect);
 
 G_END_DECLS
 

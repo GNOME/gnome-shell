@@ -52,10 +52,6 @@
 #include "clutter-main.h"
 #include "clutter-private.h"
 
-G_DEFINE_TYPE (ClutterBehaviourRotate,
-               clutter_behaviour_rotate,
-               CLUTTER_TYPE_BEHAVIOUR);
-
 struct _ClutterBehaviourRotatePrivate
 {
   gdouble angle_start;
@@ -68,11 +64,6 @@ struct _ClutterBehaviourRotatePrivate
   gint center_y;
   gint center_z;
 };
-
-#define CLUTTER_BEHAVIOUR_ROTATE_GET_PRIVATE(obj) \
-        (G_TYPE_INSTANCE_GET_PRIVATE ((obj), \
-         CLUTTER_TYPE_BEHAVIOUR_ROTATE, \
-         ClutterBehaviourRotatePrivate))
 
 enum
 {
@@ -90,6 +81,10 @@ enum
 };
 
 static GParamSpec *obj_props[PROP_LAST];
+
+G_DEFINE_TYPE_WITH_PRIVATE (ClutterBehaviourRotate,
+                            clutter_behaviour_rotate,
+                            CLUTTER_TYPE_BEHAVIOUR)
 
 typedef struct {
   gdouble angle;
@@ -265,8 +260,6 @@ clutter_behaviour_rotate_class_init (ClutterBehaviourRotateClass *klass)
   ClutterBehaviourClass *behaviour_class = CLUTTER_BEHAVIOUR_CLASS (klass);
   GParamSpec *pspec = NULL;
 
-  g_type_class_add_private (klass, sizeof (ClutterBehaviourRotatePrivate));
-
   gobject_class->set_property = clutter_behaviour_rotate_set_property;
   gobject_class->get_property = clutter_behaviour_rotate_get_property;
 
@@ -400,19 +393,19 @@ clutter_behaviour_rotate_class_init (ClutterBehaviourRotateClass *klass)
 }
 
 static void
-clutter_behaviour_rotate_init (ClutterBehaviourRotate *rotate)
+clutter_behaviour_rotate_init (ClutterBehaviourRotate *self)
 {
-  ClutterBehaviourRotatePrivate *priv;
+  self->priv = clutter_behaviour_rotate_get_instance_private (self);
 
-  rotate->priv = priv = CLUTTER_BEHAVIOUR_ROTATE_GET_PRIVATE (rotate);
+  self->priv->angle_start = 0.0;
+  self->priv->angle_end = 0.0;
 
-  priv->angle_start = priv->angle_end = 0;
+  self->priv->axis = CLUTTER_Z_AXIS;
+  self->priv->direction = CLUTTER_ROTATE_CW;
 
-  priv->axis = CLUTTER_Z_AXIS;
-
-  priv->direction = CLUTTER_ROTATE_CW;
-
-  priv->center_x = priv->center_y = priv->center_z = 0;
+  self->priv->center_x = 0;
+  self->priv->center_y = 0;
+  self->priv->center_z = 0;
 }
 
 /**

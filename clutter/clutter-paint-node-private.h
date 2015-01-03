@@ -68,6 +68,8 @@ struct _ClutterPaintNodeClass
   void     (* post_draw) (ClutterPaintNode *node);
 
   JsonNode*(* serialize) (ClutterPaintNode *node);
+
+  CoglFramebuffer *(* get_framebuffer) (ClutterPaintNode *node);
 };
 
 #define PAINT_OP_INIT   { PAINT_OP_INVALID }
@@ -107,8 +109,7 @@ gpointer                _clutter_paint_node_create                      (GType g
 
 ClutterPaintNode *      _clutter_root_node_new                          (CoglFramebuffer             *framebuffer,
                                                                          const ClutterColor          *clear_color,
-                                                                         CoglBufferBit                clear_flags,
-                                                                         const CoglMatrix            *matrix);
+                                                                         CoglBufferBit                clear_flags);
 ClutterPaintNode *      _clutter_transform_node_new                     (const CoglMatrix            *matrix);
 ClutterPaintNode *      _clutter_dummy_node_new                         (ClutterActor                *actor);
 
@@ -138,6 +139,8 @@ G_GNUC_INTERNAL
 ClutterPaintNode *      clutter_paint_node_get_last_child               (ClutterPaintNode      *node);
 G_GNUC_INTERNAL
 ClutterPaintNode *      clutter_paint_node_get_parent                   (ClutterPaintNode      *node);
+G_GNUC_INTERNAL
+CoglFramebuffer *       clutter_paint_node_get_framebuffer              (ClutterPaintNode      *node);
 
 #define CLUTTER_TYPE_LAYER_NODE                 (_clutter_layer_node_get_type ())
 #define CLUTTER_LAYER_NODE(obj)                 (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_LAYER_NODE, ClutterLayerNode))
@@ -146,7 +149,7 @@ ClutterPaintNode *      clutter_paint_node_get_parent                   (Clutter
 /*
  * ClutterLayerNode:
  *
- * The <structname>ClutterLayerNode</structname> structure is an opaque
+ * The #ClutterLayerNode structure is an opaque
  * type whose members cannot be directly accessed.
  *
  * Since: 1.10

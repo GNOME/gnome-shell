@@ -45,7 +45,7 @@ typedef struct _ClutterConstraintClass          ClutterConstraintClass;
 /**
  * ClutterConstraint:
  *
- * The <structname>ClutterConstraint</structname> structure contains only
+ * The #ClutterConstraint structure contains only
  * private data and should be accessed using the provided API
  *
  * Since: 1.4
@@ -58,8 +58,13 @@ struct _ClutterConstraint
 
 /**
  * ClutterConstraintClass:
+ * @update_allocation: virtual function used to update the allocation
+ *   of the #ClutterActor using the #ClutterConstraint
+ * @update_preferred_size: virtual function used to update the preferred
+ *   size of the #ClutterActor using the #ClutterConstraint; optional,
+ *   since 1.22
  *
- * The <structname>ClutterConstraintClass</structname> structure contains
+ * The #ClutterConstraintClass structure contains
  * only private data
  *
  * Since: 1.4
@@ -69,9 +74,17 @@ struct _ClutterConstraintClass
   /*< private >*/
   ClutterActorMetaClass parent_class;
 
+  /*< public >*/
   void (* update_allocation) (ClutterConstraint *constraint,
                               ClutterActor      *actor,
                               ClutterActorBox   *allocation);
+
+  void (* update_preferred_size) (ClutterConstraint  *constraint,
+                                  ClutterActor       *actor,
+                                  ClutterOrientation  direction,
+                                  float               for_size,
+                                  float              *minimum_size,
+                                  float              *natural_size);
 
   /*< private >*/
   void (* _clutter_constraint1) (void);
@@ -81,27 +94,35 @@ struct _ClutterConstraintClass
   void (* _clutter_constraint5) (void);
   void (* _clutter_constraint6) (void);
   void (* _clutter_constraint7) (void);
-  void (* _clutter_constraint8) (void);
 };
 
+CLUTTER_AVAILABLE_IN_1_4
 GType clutter_constraint_get_type (void) G_GNUC_CONST;
 
 /* ClutterActor API */
+CLUTTER_AVAILABLE_IN_1_4
 void               clutter_actor_add_constraint            (ClutterActor      *self,
                                                             ClutterConstraint *constraint);
+CLUTTER_AVAILABLE_IN_1_4
 void               clutter_actor_add_constraint_with_name  (ClutterActor      *self,
                                                             const gchar       *name,
                                                             ClutterConstraint *constraint);
+CLUTTER_AVAILABLE_IN_1_4
 void               clutter_actor_remove_constraint         (ClutterActor      *self,
                                                             ClutterConstraint *constraint);
+CLUTTER_AVAILABLE_IN_1_4
 void               clutter_actor_remove_constraint_by_name (ClutterActor      *self,
                                                             const gchar       *name);
+CLUTTER_AVAILABLE_IN_1_4
 GList *            clutter_actor_get_constraints           (ClutterActor      *self);
+CLUTTER_AVAILABLE_IN_1_4
 ClutterConstraint *clutter_actor_get_constraint            (ClutterActor      *self,
                                                             const gchar       *name);
+CLUTTER_AVAILABLE_IN_1_4
 void               clutter_actor_clear_constraints         (ClutterActor      *self);
 
-gboolean           clutter_actor_has_constraints           (ClutterActor *self);
+CLUTTER_AVAILABLE_IN_1_10
+gboolean           clutter_actor_has_constraints           (ClutterActor      *self);
 
 G_END_DECLS
 

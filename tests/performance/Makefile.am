@@ -1,6 +1,6 @@
 include $(top_srcdir)/build/autotools/Makefile.am.silent
 
-noinst_PROGRAMS = \
+check_PROGRAMS = \
 	test-picking \
 	test-text-perf \
 	test-state \
@@ -9,22 +9,22 @@ noinst_PROGRAMS = \
 	test-state-mini \
 	test-state-pick
 
-INCLUDES = \
-	-I$(top_srcdir) \
-	-I$(top_builddir) \
-	-I$(top_srcdir)/clutter \
-	-I$(top_builddir)/clutter
-
 common_ldadd = $(top_builddir)/clutter/libclutter-@CLUTTER_API_VERSION@.la
 
 LDADD = $(common_ldadd) $(CLUTTER_LIBS) -lm
 
-AM_CFLAGS = \
-	$(CLUTTER_CFLAGS) \
+AM_CFLAGS = $(CLUTTER_CFLAGS)
+
+AM_CPPFLAGS = \
 	-DG_DISABLE_SINGLE_INCLUDES \
 	-DGLIB_DISABLE_DEPRECATION_WARNINGS \
+	-DCOGL_DISABLE_DEPRECATION_WARNINGS \
 	-DCLUTTER_DISABLE_DEPRECATION_WARNINGS \
-	-DTESTS_DATA_DIR=\""$(top_srcdir)/tests/data/"\"
+	-DTESTS_DATA_DIR=\""$(top_srcdir)/tests/data/"\" \
+	-I$(top_srcdir) \
+	-I$(top_builddir) \
+	-I$(top_srcdir)/clutter \
+	-I$(top_builddir)/clutter
 
 perf-report: check
 

@@ -21,7 +21,6 @@ When building the X11 backend, Clutter depends on the following extensions:
   • XComposite ≥ @XCOMPOSITE_REQ_VERSION@
   • XDamage
   • XExt
-  • XFixes ≥ @XFIXES_REQ_VERSION@
   • XInput (1.x or 2.x)
   • XKB
 
@@ -37,6 +36,12 @@ When building the GDK backend, Clutter also depends on:
 When building the CEx100 backend, Clutter also depends on:
 
   • libgdl
+
+When building the evdev input backend, Clutter also depends on:
+
+  • xkbcommon
+  • libudev ≥ @LIBUDEV_REQ_VERSION@
+  • libinput ≥ @LIBINPUT_REQ_VERSION@
 
 If you are building the API reference you will also need:
 
@@ -287,9 +292,9 @@ if possible, add new unit tests for the conformance test suite in case of new
 features. Ensure you run the conformance test suite every for every patch you
 wish to submit, by using:
 
-  cd tests/conform && make test
+  make -C tests/conform check
 
-and verifying that the test suite passes.
+and verifying that the whole test suite passes.
 
 RELEASE NOTES
 -------------------------------------------------------------------------------
@@ -297,6 +302,61 @@ RELEASE NOTES
 Relevant information for developers with existing Clutter applications
 wanting to port to newer releases (see NEWS for general information on new
 features).
+
+Release Notes for Clutter 1.22
+-------------------------------------------------------------------------------
+
+• The ClutterRequestMode enumeration has a new value. Code checking for the
+  values of ClutterRequestMode should already be resilient to changes to this
+  enumerations, like for all enumerations in Clutter.
+
+Release Notes for Clutter 1.20
+-------------------------------------------------------------------------------
+
+• The clutter_stage_set_paint_callback() experimental function has been
+  removed from the Clutter ABI; it has been replaced by the ::after-paint
+  signal on the ClutterStage class. The set_paint_callback() method was
+  marked as "experimental", required a special definition to be usable, and
+  no guarantees were made on its continued existence.
+
+Release Notes for Clutter 1.18
+-------------------------------------------------------------------------------
+
+• Until 1.18, ClutterStage removed its children during its dispose()
+  implementation, before the default ClutterActor::destroy() implementation
+  would run. ClutterStage will now destroy the children when it is destroyed
+  to ensure that the children are destroyed, and that custom code can remove
+  references through the ClutterActor::destroy signal.
+
+• Clutter does not depend on the XFIXES extension API on X11 any more. Before
+  1.18 Clutter used the XFIXES API to hide the cursor; the API is less than
+  useful for toolkits and applications, so Clutter unconditionally uses the
+  fall back code that was in place in case XFIXES was not available.
+
+• ClutterText emits the ::insert-text and ::delete-text signals before the
+  contents of the ClutterTextBuffer are changed, as documented. The signal
+  emission cannot be guaranteed if the ClutterTextBuffer API is used instead
+  of the ClutterText API.
+
+• Starting from 1.18, the Clutter evdev input device backend no longer uses
+  libevdev and libgudev directly, but relies on libinput for discovering,
+  reading and processing input devices.
+
+• The Clutter evdev input device backend was already considered
+  experimental and not subject to Clutter's API and ABI stabitility
+  guarantees. Starting from 1.18, users have to explicitly acknowldge
+  this by having to #define CLUTTER_ENABLE_COMPOSITOR_API to use its
+  public API.
+
+Release Notes for Clutter 1.16
+-------------------------------------------------------------------------------
+
+• Implicit transitions will not be created on actors that are not mapped,
+  unless they are in a cloned branch of the scene graph. This was never an
+  approved case, as ClutterActor would implicitly skip layout and paint on
+  unmapped actors, but now it's being enforced through the animation machinery
+  as well. Using explicit transitions still works, as explicit transitions
+  completely place the developer in charge.
 
 Release Notes for Clutter 1.14
 -------------------------------------------------------------------------------

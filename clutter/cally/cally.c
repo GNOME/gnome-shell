@@ -53,8 +53,6 @@
 #include "clutter-debug.h"
 #include "clutter-private.h"
 
-static int cally_initialized = FALSE;
-
 /* factories initialization*/
 CALLY_ACCESSIBLE_FACTORY (CALLY_TYPE_ACTOR, cally_actor, cally_actor_new)
 CALLY_ACCESSIBLE_FACTORY (CALLY_TYPE_GROUP, cally_group, cally_group_new)
@@ -77,11 +75,6 @@ CALLY_ACCESSIBLE_FACTORY (CALLY_TYPE_CLONE, cally_clone, cally_clone_new)
 gboolean
 cally_accessibility_init (void)
 {
-  if (cally_initialized)
-    return TRUE;
-
-  cally_initialized = TRUE;
-
   /* setting the factories */
   CALLY_ACTOR_SET_FACTORY (CLUTTER_TYPE_ACTOR, cally_actor);
   CALLY_ACTOR_SET_FACTORY (CLUTTER_TYPE_GROUP, cally_group);
@@ -92,11 +85,11 @@ cally_accessibility_init (void)
   CALLY_ACTOR_SET_FACTORY (CLUTTER_TYPE_CLONE, cally_clone);
 
   /* Initialize the CallyUtility class */
-  g_type_class_unref (g_type_class_ref (CALLY_TYPE_UTIL));
+  _cally_util_override_atk_util ();
 
   CLUTTER_NOTE (MISC, "Clutter Accessibility initialized");
 
-  return cally_initialized;
+  return TRUE;
 }
 
 /**
@@ -111,5 +104,5 @@ cally_accessibility_init (void)
  */
 gboolean cally_get_cally_initialized (void)
 {
-  return cally_initialized;
+  return !g_strcmp0 (atk_get_toolkit_name (), "clutter");
 }

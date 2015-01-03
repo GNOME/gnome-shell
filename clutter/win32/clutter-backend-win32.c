@@ -178,6 +178,24 @@ clutter_win32_disable_event_retrieval (void)
   _no_event_retrieval = TRUE;
 }
 
+static CoglRenderer *
+clutter_backend_win32_get_renderer (ClutterBackend  *backend,
+                                    GError         **error)
+{
+  CoglRenderer *renderer;
+
+  CLUTTER_NOTE (BACKEND, "Creating a new WGL renderer");
+
+  renderer = cogl_renderer_new ();
+  cogl_renderer_set_winsys_id (renderer, COGL_WINSYS_ID_WGL);
+
+  /* We don't want Cogl to install its default event handler because
+   * we'll handle them manually */
+  cogl_win32_renderer_set_event_retrieval_enabled (renderer, FALSE);
+
+  return renderer;
+}
+
 static void
 clutter_backend_win32_class_init (ClutterBackendWin32Class *klass)
 {
@@ -192,6 +210,7 @@ clutter_backend_win32_class_init (ClutterBackendWin32Class *klass)
 
   backend_class->init_events = clutter_backend_win32_init_events;
   backend_class->get_features = clutter_backend_win32_get_features;
+  backend_class->get_renderer = clutter_backend_win32_get_renderer;
 }
 
 static void

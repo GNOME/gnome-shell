@@ -24,6 +24,7 @@
  */
 
 #include "clutter-keysyms.h"
+#include "clutter-event-private.h"
 #include "clutter-xkb-utils.h"
 
 /*
@@ -42,8 +43,10 @@
  */
 ClutterEvent *
 _clutter_key_event_new_from_evdev (ClutterInputDevice *device,
+				   ClutterInputDevice *core_device,
                                    ClutterStage       *stage,
                                    struct xkb_state   *xkb_state,
+				   uint32_t            button_state,
                                    uint32_t            _time,
                                    xkb_keycode_t       key,
                                    uint32_t            state)
@@ -71,13 +74,13 @@ _clutter_key_event_new_from_evdev (ClutterInputDevice *device,
   else
     sym = XKB_KEY_NoSymbol;
 
-  event->key.device = device;
+  event->key.device = core_device;
   event->key.stage = stage;
   event->key.time = _time;
-  event->key.modifier_state =
-    xkb_state_serialize_mods (xkb_state, XKB_STATE_EFFECTIVE);
+  _clutter_xkb_translate_state (event, xkb_state, button_state);
   event->key.hardware_keycode = key;
   event->key.keyval = sym;
+  clutter_event_set_source_device (event, device);
 
   n = xkb_keysym_to_utf8 (sym, buffer, sizeof (buffer));
 
@@ -96,45 +99,15 @@ _clutter_key_event_new_from_evdev (ClutterInputDevice *device,
   return event;
 }
 
-/*
- * _clutter_xkb_state_new:
- *
- * Create a new xkbcommon keymap and state object.
- *
- * FIXME: We need a way to override the layout here, a fixed or runtime
- * detected layout is provided by the backend calling _clutter_xkb_state_new();
- */
-struct xkb_state *
-_clutter_xkb_state_new (const gchar *model,
-                        const gchar *layout,
-                        const gchar *variant,
-                        const gchar *options)
+void
+_clutter_xkb_translate_state (ClutterEvent     *event,
+			      struct xkb_state *state,
+			      uint32_t          button_state)
 {
-  struct xkb_context *ctx;
-  struct xkb_keymap *keymap;
-  struct xkb_state *state;
-  struct xkb_rule_names names;
-
-  ctx = xkb_context_new(0);
-  if (!ctx)
-    return NULL;
-
-  names.rules = "evdev";
-  if (model)
-    names.model = model;
-  else
-    names.model = "pc105";
-  names.layout = layout;
-  names.variant = variant;
-  names.options = options;
-
-  keymap = xkb_map_new_from_names(ctx, &names, 0);
-  xkb_context_unref(ctx);
-  if (!keymap)
-    return NULL;
-
-  state = xkb_state_new(keymap);
-  xkb_map_unref(keymap);
-
-  return state;
+  _clutter_event_set_state_full (event,
+				 button_state,
+				 xkb_state_serialize_mods (state, XKB_STATE_MODS_DEPRESSED),
+				 xkb_state_serialize_mods (state, XKB_STATE_MODS_LATCHED),
+				 xkb_state_serialize_mods (state, XKB_STATE_MODS_LOCKED),
+				 xkb_state_serialize_mods (state, XKB_STATE_MODS_EFFECTIVE) | button_state);
 }

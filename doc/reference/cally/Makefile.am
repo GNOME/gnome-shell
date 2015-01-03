@@ -29,7 +29,7 @@ SCAN_OPTIONS=--deprecated-guards="CALLY_DISABLE_DEPRECATED"
 
 # Extra options to supply to gtkdoc-mkdb.
 # e.g. MKDB_OPTIONS=--sgml-mode --output-format=xml
-MKDB_OPTIONS=--sgml-mode --output-format=xml --name-space=cally
+MKDB_OPTIONS=--output-format=xml --name-space=cally
 
 # Extra options to supply to gtkdoc-mktmpl
 # e.g. MKTMPL_OPTIONS=--only-section-tmpl
@@ -78,7 +78,12 @@ expand_content_files= \
 # e.g. INCLUDES=-I$(top_srcdir) -I$(top_builddir) $(GTK_DEBUG_FLAGS)
 # e.g. GTKDOC_LIBS=$(top_builddir)/gtk/$(gtktargetlib)
 
-INCLUDES=-I$(top_srcdir) -I$(top_srcdir)/clutter -I$(top_srcdir)/clutter/cogl -I$(top_builddir) -I$(top_builddir)/clutter -I$(top_builddir)/clutter/cogl $(CLUTTER_CFLAGS)
+AM_CPPFLAGS = \
+	-I$(top_srcdir) \
+	-I$(top_srcdir)/clutter \
+	-I$(top_builddir) \
+	-I$(top_builddir)/clutter
+AM_CFLAGS = $(CLUTTER_CFLAGS)
 GTKDOC_LIBS=$(top_builddir)/clutter/libclutter-@CLUTTER_API_VERSION@.la $(CLUTTER_LIBS)
 
 # This includes the standard gtk-doc make rules, copied by gtkdocize.

@@ -141,43 +141,55 @@ struct _ClutterContainerIface
                           GParamSpec       *pspec);
 };
 
-GType         clutter_container_get_type         (void) G_GNUC_CONST;
+CLUTTER_AVAILABLE_IN_ALL
+GType clutter_container_get_type (void) G_GNUC_CONST;
 
-ClutterActor *clutter_container_find_child_by_name     (ClutterContainer *container,
-                                                        const gchar      *child_name);
+CLUTTER_AVAILABLE_IN_ALL
+ClutterActor *          clutter_container_find_child_by_name            (ClutterContainer *container,
+                                                                         const gchar      *child_name);
 
-GParamSpec *      clutter_container_class_find_child_property   (GObjectClass     *klass,
-                                                                 const gchar      *property_name);
-GParamSpec **     clutter_container_class_list_child_properties (GObjectClass     *klass,
-                                                                 guint            *n_properties);
+CLUTTER_AVAILABLE_IN_ALL
+GParamSpec *            clutter_container_class_find_child_property     (GObjectClass     *klass,
+                                                                         const gchar      *property_name);
+CLUTTER_AVAILABLE_IN_ALL
+GParamSpec **           clutter_container_class_list_child_properties   (GObjectClass     *klass,
+                                                                         guint            *n_properties);
 
-void              clutter_container_create_child_meta           (ClutterContainer *container,
-                                                                 ClutterActor     *actor);
-void              clutter_container_destroy_child_meta          (ClutterContainer *container,
-                                                                 ClutterActor     *actor);
-ClutterChildMeta *clutter_container_get_child_meta              (ClutterContainer *container,
-                                                                 ClutterActor     *actor);
+CLUTTER_AVAILABLE_IN_ALL
+void                    clutter_container_create_child_meta             (ClutterContainer *container,
+                                                                         ClutterActor     *actor);
+CLUTTER_AVAILABLE_IN_ALL
+void                    clutter_container_destroy_child_meta            (ClutterContainer *container,
+                                                                         ClutterActor     *actor);
+CLUTTER_AVAILABLE_IN_ALL
+ClutterChildMeta *      clutter_container_get_child_meta                (ClutterContainer *container,
+                                                                         ClutterActor     *actor);
 
-void              clutter_container_child_set_property          (ClutterContainer *container,
-                                                                 ClutterActor     *child,
-                                                                 const gchar      * property,
-                                                                 const GValue     *value);
-void              clutter_container_child_get_property          (ClutterContainer *container,
-                                                                 ClutterActor     *child,
-                                                                 const gchar      *property,
-                                                                 GValue           *value);
-void              clutter_container_child_set                   (ClutterContainer *container,
-                                                                 ClutterActor     *actor,
-                                                                 const gchar      *first_prop,
-                                                                 ...) G_GNUC_NULL_TERMINATED;
-void              clutter_container_child_get                   (ClutterContainer *container,
-                                                                 ClutterActor     *actor,
-                                                                 const gchar      *first_prop,
-                                                                 ...) G_GNUC_NULL_TERMINATED;
+CLUTTER_AVAILABLE_IN_ALL
+void                    clutter_container_child_set_property            (ClutterContainer *container,
+                                                                         ClutterActor     *child,
+                                                                         const gchar      * property,
+                                                                         const GValue     *value);
+CLUTTER_AVAILABLE_IN_ALL
+void                    clutter_container_child_get_property            (ClutterContainer *container,
+                                                                         ClutterActor     *child,
+                                                                         const gchar      *property,
+                                                                         GValue           *value);
+CLUTTER_AVAILABLE_IN_ALL
+void                    clutter_container_child_set                     (ClutterContainer *container,
+                                                                         ClutterActor     *actor,
+                                                                         const gchar      *first_prop,
+                                                                         ...) G_GNUC_NULL_TERMINATED;
+CLUTTER_AVAILABLE_IN_ALL
+void                    clutter_container_child_get                     (ClutterContainer *container,
+                                                                         ClutterActor     *actor,
+                                                                         const gchar      *first_prop,
+                                                                         ...) G_GNUC_NULL_TERMINATED;
 
-void              clutter_container_child_notify                (ClutterContainer *container,
-                                                                 ClutterActor     *child,
-                                                                 GParamSpec       *pspec);
+CLUTTER_AVAILABLE_IN_ALL
+void                    clutter_container_child_notify                  (ClutterContainer *container,
+                                                                         ClutterActor     *child,
+                                                                         GParamSpec       *pspec);
 
 G_END_DECLS
 

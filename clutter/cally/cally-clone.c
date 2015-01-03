@@ -69,6 +69,7 @@
  * a11y POV should still be managed as a image (with the proper properties,
  * position, size, etc.).
  */
+#include "config.h"
 
 #include "cally-clone.h"
 #include "cally-actor-private.h"
