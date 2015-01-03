@@ -23,6 +23,7 @@
 #ifndef __CLUTTER_STAGE_GDK_H__
 #define __CLUTTER_STAGE_GDK_H__
 
+#include <clutter/clutter-group.h>
 #include <clutter/clutter-stage.h>
 #include <gdk/gdk.h>
 

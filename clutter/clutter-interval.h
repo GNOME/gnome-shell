@@ -49,7 +49,7 @@ typedef struct _ClutterIntervalClass            ClutterIntervalClass;
  * The #ClutterInterval structure contains only private data and should
  * be accessed using the provided functions.
  *
- *
+ * Since: 1.0
  */
 struct _ClutterInterval
 {
@@ -68,7 +68,7 @@ struct _ClutterInterval
  *
  * The #ClutterIntervalClass contains only private data.
  *
- *
+ * Since: 1.0
  */
 struct _ClutterIntervalClass
 {
@@ -133,7 +133,7 @@ gboolean         clutter_interval_compute_value      (ClutterInterval *interval,
 const GValue *   clutter_interval_compute            (ClutterInterval *interval,
                                                       gdouble          factor);
 
-
+CLUTTER_AVAILABLE_IN_1_12
 gboolean         clutter_interval_is_valid           (ClutterInterval *interval);
 
 G_END_DECLS

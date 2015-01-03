@@ -38,17 +38,11 @@
 #define __CLUTTER_X11_H__
 
 #include <glib.h>
-
-/* Include clutter-types.h conditionally; users including clutter-x11.h will
- * have to include clutter.h as well.
- */
-#ifdef CLUTTER_COMPILATION
-#include <clutter/clutter-types.h>
-#endif
-
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
 #include <X11/Xutil.h>
+#include <clutter/clutter.h>
+#include <clutter/x11/clutter-x11-texture-pixmap.h>
 
 G_BEGIN_DECLS
 
@@ -62,7 +56,7 @@ G_BEGIN_DECLS
  *
  * Return values for the #ClutterX11FilterFunc function.
  *
- *
+ * Since: 0.6
  */
 typedef enum {
   CLUTTER_X11_FILTER_CONTINUE,
@@ -97,7 +91,7 @@ typedef struct _ClutterX11XInputDevice ClutterX11XInputDevice;
  *
  * Return value: the result of the filtering
  *
- *
+ * Since: 0.6
  */
 typedef ClutterX11FilterReturn (*ClutterX11FilterFunc) (XEvent        *xev,
                                                         ClutterEvent  *cev,
@@ -111,6 +105,9 @@ int      clutter_x11_get_default_screen  (void);
 Window   clutter_x11_get_root_window     (void);
 XVisualInfo *clutter_x11_get_visual_info (void);
 void     clutter_x11_set_display         (Display * xdpy);
+
+CLUTTER_DEPRECATED_FOR(clutter_x11_get_visual_info)
+XVisualInfo *clutter_x11_get_stage_visual  (ClutterStage *stage);
 
 Window       clutter_x11_get_stage_window  (ClutterStage *stage);
 gboolean     clutter_x11_set_stage_foreign (ClutterStage *stage,
@@ -128,6 +125,10 @@ gboolean clutter_x11_has_event_retrieval (void);
 
 ClutterStage *clutter_x11_get_stage_from_window (Window win);
 
+CLUTTER_DEPRECATED_FOR(clutter_device_manager_peek_devices)
+const GSList* clutter_x11_get_input_devices (void);
+
+CLUTTER_DEPRECATED_IN_1_14
 void     clutter_x11_enable_xinput (void);
 gboolean clutter_x11_has_xinput (void);
 

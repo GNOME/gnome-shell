@@ -9,7 +9,6 @@ static gboolean is_homogeneous = FALSE;
 static gboolean vertical       = FALSE;
 static gboolean random_size    = FALSE;
 static gboolean fixed_size     = FALSE;
-static gboolean snap_to_grid   = TRUE;
 
 static gint     n_rects        = N_RECTS;
 static gint     x_spacing      = 0;
@@ -65,13 +64,6 @@ static GOptionEntry entries[] = {
     &fixed_size,
     "Fix the layout size", NULL
   },
-  {
-    "no-snap-to-grid", 's',
-    G_OPTION_FLAG_REVERSE,
-    G_OPTION_ARG_NONE,
-    &snap_to_grid,
-    "Don't snap elements to grid", NULL
-  },
   { NULL }
 };
 
@@ -110,8 +102,6 @@ main (int argc, char *argv[])
                                           x_spacing);
   clutter_flow_layout_set_row_spacing (CLUTTER_FLOW_LAYOUT (layout),
                                        y_spacing);
-  clutter_flow_layout_set_snap_to_grid (CLUTTER_FLOW_LAYOUT (layout),
-                                        snap_to_grid);
 
   box = clutter_actor_new ();
   clutter_actor_set_layout_manager (box, layout);

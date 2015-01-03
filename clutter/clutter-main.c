@@ -170,9 +170,9 @@ guint clutter_pick_debug_flags  = 0;
 /* profile flags */
 guint clutter_profile_flags     = 0;
 
-static const guint clutter_major_version = CLUTTER_MAJOR_VERSION;
-static const guint clutter_minor_version = CLUTTER_MINOR_VERSION;
-static const guint clutter_micro_version = CLUTTER_MICRO_VERSION;
+const guint clutter_major_version = CLUTTER_MAJOR_VERSION;
+const guint clutter_minor_version = CLUTTER_MINOR_VERSION;
+const guint clutter_micro_version = CLUTTER_MICRO_VERSION;
 
 #ifdef CLUTTER_ENABLE_DEBUG
 static const GDebugKey clutter_debug_keys[] = {
@@ -441,7 +441,7 @@ clutter_config_read (void)
   gchar *config_path;
 
   config_path = g_build_filename (CLUTTER_SYSCONFDIR,
-                                  "clutter-2.0",
+                                  "clutter-1.0",
                                   "settings.ini",
                                   NULL);
   if (g_file_test (config_path, G_FILE_TEST_EXISTS))
@@ -450,7 +450,7 @@ clutter_config_read (void)
   g_free (config_path);
 
   config_path = g_build_filename (g_get_user_config_dir (),
-                                  "clutter-2.0",
+                                  "clutter-1.0",
                                   "settings.ini",
                                   NULL);
   if (g_file_test (config_path, G_FILE_TEST_EXISTS))
@@ -459,20 +459,34 @@ clutter_config_read (void)
   g_free (config_path);
 }
 
+/**
+ * clutter_get_show_fps:
+ *
+ * Returns whether Clutter should print out the frames per second on the
+ * console. You can enable this setting either using the
+ * <literal>CLUTTER_SHOW_FPS</literal> environment variable or passing
+ * the <literal>--clutter-show-fps</literal> command line argument. *
+ *
+ * Return value: %TRUE if Clutter should show the FPS.
+ *
+ * Since: 0.4
+ *
+ * Deprecated: 1.10: This function does not do anything. Use the environment
+ *   variable or the configuration file to determine whether Clutter should
+ *   print out the FPS counter on the console.
+ */
+gboolean
+clutter_get_show_fps (void)
+{
+  return FALSE;
+}
+
 gboolean
 _clutter_context_get_show_fps (void)
 {
   ClutterMainContext *context = _clutter_context_get_default ();
 
   return context->show_fps;
-}
-
-guint
-_clutter_context_get_frame_rate (void)
-{
-  ClutterMainContext *context = _clutter_context_get_default ();
-
-  return context->frame_rate;
 }
 
 /**
@@ -484,7 +498,7 @@ _clutter_context_get_frame_rate (void)
  *
  * Return value: %TRUE if Clutter has accessibility support enabled
  *
- *
+ * Since: 1.4
  */
 gboolean
 clutter_get_accessibility_enabled (void)
@@ -499,6 +513,8 @@ clutter_get_accessibility_enabled (void)
  * as setting the environment variable
  * CLUTTER_DISABLE_ACCESSIBILITY. For the same reason, this method
  * should be called before clutter_init().
+ *
+ * Since: 1.14
  */
 void
 clutter_disable_accessibility (void)
@@ -511,6 +527,88 @@ clutter_disable_accessibility (void)
     }
 
   clutter_enable_accessibility = FALSE;
+}
+
+/**
+ * clutter_redraw:
+ *
+ * Forces a redraw of the entire stage. Applications should never use this
+ * function, but queue a redraw using clutter_actor_queue_redraw().
+ *
+ * This function should only be used by libraries integrating Clutter from
+ * within another toolkit.
+ *
+ * Deprecated: 1.10: Use clutter_stage_ensure_redraw() instead.
+ */
+void
+clutter_redraw (ClutterStage *stage)
+{
+  g_return_if_fail (CLUTTER_IS_STAGE (stage));
+
+  clutter_stage_ensure_redraw (stage);
+}
+
+/**
+ * clutter_set_motion_events_enabled:
+ * @enable: %TRUE to enable per-actor motion events
+ *
+ * Sets whether per-actor motion events should be enabled or not on
+ * all #ClutterStage<!-- -->s managed by Clutter.
+ *
+ * If @enable is %FALSE the following events will not work:
+ * <itemizedlist>
+ *   <listitem><para>ClutterActor::motion-event, unless on the
+ *     #ClutterStage</para></listitem>
+ *   <listitem><para>ClutterActor::enter-event</para></listitem>
+ *   <listitem><para>ClutterActor::leave-event</para></listitem>
+ * </itemizedlist>
+ *
+ * Since: 0.6
+ *
+ * Deprecated: 1.8: Use clutter_stage_set_motion_events_enabled() instead.
+ */
+void
+clutter_set_motion_events_enabled (gboolean enable)
+{
+  ClutterStageManager *stage_manager;
+  ClutterMainContext *context;
+  const GSList *l;
+
+  enable = !!enable;
+
+  context = _clutter_context_get_default ();
+  if (context->motion_events_per_actor == enable)
+    return;
+
+  /* store the flag for later query and for newly created stages */
+  context->motion_events_per_actor = enable;
+
+  /* propagate the change to all stages */
+  stage_manager = clutter_stage_manager_get_default ();
+
+  for (l = clutter_stage_manager_peek_stages (stage_manager);
+       l != NULL;
+       l = l->next)
+    {
+      clutter_stage_set_motion_events_enabled (l->data, enable);
+    }
+}
+
+/**
+ * clutter_get_motion_events_enabled:
+ *
+ * Gets whether the per-actor motion events are enabled.
+ *
+ * Return value: %TRUE if the motion events are enabled
+ *
+ * Since: 0.6
+ *
+ * Deprecated: 1.8: Use clutter_stage_get_motion_events_enabled() instead.
+ */
+gboolean
+clutter_get_motion_events_enabled (void)
+{
+  return _clutter_context_get_motion_events_enabled ();
 }
 
 ClutterActor *
@@ -847,6 +945,14 @@ void
 clutter_main (void)
 {
   GMainLoop *loop;
+  CLUTTER_STATIC_TIMER (mainloop_timer,
+                        NULL, /* no parent */
+                        "Mainloop",
+                        "The time spent in the clutter mainloop",
+                        0 /* no application private data */);
+
+  if (clutter_main_loop_level == 0)
+    CLUTTER_TIMER_START (uprof_get_mainloop_context (), mainloop_timer);
 
   if (!_clutter_context_is_initialized ())
     {
@@ -880,6 +986,32 @@ clutter_main (void)
   g_main_loop_unref (loop);
 
   clutter_main_loop_level--;
+
+  if (clutter_main_loop_level == 0)
+    CLUTTER_TIMER_STOP (uprof_get_mainloop_context (), mainloop_timer);
+}
+
+/**
+ * clutter_threads_init:
+ *
+ * Initialises the Clutter threading mechanism, so that Clutter API can be
+ * called by multiple threads, using clutter_threads_enter() and
+ * clutter_threads_leave() to mark the critical sections.
+ *
+ * You must call g_thread_init() before this function.
+ *
+ * This function must be called before clutter_init().
+ *
+ * It is safe to call this function multiple times.
+ *
+ * Since: 0.4
+ *
+ * Deprecated: 1.10: This function does not do anything. Threading support
+ *   is initialized when Clutter is initialized.
+ */
+void
+clutter_threads_init (void)
+{
 }
 
 /**
@@ -909,7 +1041,7 @@ clutter_main (void)
  * This method must be called before clutter_init(), and cannot
  * be called multiple times.
  *
- *
+ * Since: 0.4
  */
 void
 clutter_threads_set_lock_functions (GCallback enter_fn,
@@ -1048,7 +1180,7 @@ _clutter_threads_dispatch_free (gpointer data)
  *
  * Return value: the ID (greater than 0) of the event source.
  *
- *
+ * Since: 0.4
  */
 guint
 clutter_threads_add_idle_full (gint           priority,
@@ -1080,7 +1212,7 @@ clutter_threads_add_idle_full (gint           priority,
  *
  * Return value: the ID (greater than 0) of the event source.
  *
- *
+ * Since: 0.4
  */
 guint
 clutter_threads_add_idle (GSourceFunc func,
@@ -1120,7 +1252,7 @@ clutter_threads_add_idle (GSourceFunc func,
  *
  * Return value: the ID (greater than 0) of the event source.
  *
- *
+ * Since: 0.4
  */
 guint
 clutter_threads_add_timeout_full (gint           priority,
@@ -1154,7 +1286,7 @@ clutter_threads_add_timeout_full (gint           priority,
  *
  * Return value: the ID (greater than 0) of the event source.
  *
- *
+ * Since: 0.4
  */
 guint
 clutter_threads_add_timeout (guint       interval,
@@ -1181,6 +1313,60 @@ _clutter_threads_release_lock (void)
 {
   if (clutter_threads_unlock != NULL)
     (* clutter_threads_unlock) ();
+}
+
+/**
+ * clutter_threads_enter:
+ *
+ * Locks the Clutter thread lock.
+ *
+ * Since: 0.4
+ *
+ * Deprecated: 1.12: This function should not be used by application
+ *   code; marking critical sections is not portable on various
+ *   platforms. Instead of acquiring the Clutter lock, schedule UI
+ *   updates from the main loop using clutter_threads_add_idle() or
+ *   clutter_threads_add_timeout().
+ */
+void
+clutter_threads_enter (void)
+{
+  _clutter_threads_acquire_lock ();
+}
+
+/**
+ * clutter_threads_leave:
+ *
+ * Unlocks the Clutter thread lock.
+ *
+ * Since: 0.4
+ *
+ * Deprecated: 1.12: This function should not be used by application
+ *   code; marking critical sections is not portable on various
+ *   platforms. Instead of acquiring the Clutter lock, schedule UI
+ *   updates from the main loop using clutter_threads_add_idle() or
+ *   clutter_threads_add_timeout().
+ */
+void
+clutter_threads_leave (void)
+{
+  _clutter_threads_release_lock ();
+}
+
+
+/**
+ * clutter_get_debug_enabled:
+ *
+ * Check if Clutter has debugging enabled.
+ *
+ * Return value: %FALSE
+ *
+ * Deprecated: 1.10: This function does not do anything.
+ */
+gboolean
+clutter_get_debug_enabled (void)
+{
+  return FALSE;
 }
 
 void
@@ -1292,6 +1478,36 @@ _clutter_context_get_default (void)
   return retval;
 }
 
+/**
+ * clutter_get_timestamp:
+ *
+ * Returns the approximate number of microseconds passed since Clutter was
+ * intialised.
+ *
+ * This function shdould not be used by application code.
+ *
+ * The output of this function depends on whether Clutter was configured to
+ * enable its debugging code paths, so it's less useful than intended.
+ *
+ * Since Clutter 1.10, this function is an alias to g_get_monotonic_time()
+ * if Clutter was configured to enable the debugging code paths.
+ *
+ * Return value: Number of microseconds since clutter_init() was called, or
+ *   zero if Clutter was not configured with debugging code paths.
+ *
+ * Deprecated: 1.10: Use #GTimer or g_get_monotonic_time() for a proper
+ *   timing source
+ */
+gulong
+clutter_get_timestamp (void)
+{
+#ifdef CLUTTER_ENABLE_DEBUG
+  return (gulong) g_get_monotonic_time ();
+#else
+  return 0L;
+#endif
+}
+
 static gboolean
 clutter_arg_direction_cb (const char *key,
                           const char *value,
@@ -1368,14 +1584,6 @@ clutter_init_real (GError **error)
   ClutterMainContext *ctx;
   ClutterBackend *backend;
 
-#ifdef CLUTTER_ENABLE_PROFILE
-  CLUTTER_STATIC_TIMER (mainloop_timer,
-                        NULL, /* no parent */
-                        "Mainloop",
-                        "The time spent in the clutter mainloop",
-                        0 /* no application private data */);
-#endif
-
   /* Note, creates backend if not already existing, though parse args will
    * have likely created it
    */
@@ -1436,8 +1644,6 @@ clutter_init_real (GError **error)
    */
   uprof_init (NULL, NULL);
   _clutter_uprof_init ();
-
-  CLUTTER_TIMER_START (uprof_get_mainloop_context (), mainloop_timer);
 
   if (clutter_profile_flags & CLUTTER_PROFILE_PICKING_ONLY)
     _clutter_profile_suspend ();
@@ -1666,7 +1872,7 @@ post_parse_hook (GOptionContext  *context,
  * Return value: (transfer full): a #GOptionGroup for the commandline arguments
  *   recognized by Clutter
  *
- *
+ * Since: 0.2
  */
 GOptionGroup *
 clutter_get_option_group (void)
@@ -1711,7 +1917,7 @@ clutter_get_option_group (void)
  * Return value: (transfer full): a #GOptionGroup for the commandline arguments
  *   recognized by Clutter
  *
- *
+ * Since: 0.8.2
  */
 GOptionGroup *
 clutter_get_option_group_without_init (void)
@@ -1765,7 +1971,7 @@ clutter_get_option_group_without_init (void)
  *   initialised, or other values or #ClutterInitError in case of
  *   error.
  *
- *
+ * Since: 0.2
  */
 ClutterInitError
 clutter_init_with_args (int            *argc,
@@ -2219,7 +2425,7 @@ is_off_stage (ClutterActor *stage,
  * This function is only useful when embedding Clutter inside another
  * toolkit, and it should never be called by applications.
  *
- *
+ * Since: 0.4
  */
 void
 clutter_do_event (ClutterEvent *event)
@@ -2620,6 +2826,25 @@ _clutter_process_event (ClutterEvent *event)
   context->current_event = g_slist_delete_link (context->current_event, context->current_event);
 }
 
+/**
+ * clutter_get_actor_by_gid:
+ * @id_: a #ClutterActor unique id.
+ *
+ * Retrieves the #ClutterActor with @id_.
+ *
+ * Return value: (transfer none): the actor with the passed id or %NULL.
+ *   The returned actor does not have its reference count increased.
+ *
+ * Since: 0.6
+ *
+ * Deprecated: 1.8: The id is not used any longer.
+ */
+ClutterActor *
+clutter_get_actor_by_gid (guint32 id_)
+{
+  return _clutter_get_actor_by_id (NULL, id_);
+}
+
 void
 clutter_base_init (void)
 {
@@ -2640,6 +2865,43 @@ clutter_base_init (void)
       /* initialise the Big Clutter Lock™ if necessary */
       clutter_threads_init_default ();
     }
+}
+
+/**
+ * clutter_get_default_frame_rate:
+ *
+ * Retrieves the default frame rate. See clutter_set_default_frame_rate().
+ *
+ * Return value: the default frame rate
+ *
+ * Since: 0.6
+ */
+guint
+clutter_get_default_frame_rate (void)
+{
+  ClutterMainContext *context;
+
+  context = _clutter_context_get_default ();
+
+  return context->frame_rate;
+}
+
+/**
+ * clutter_set_default_frame_rate:
+ * @frames_per_sec: the new default frame rate
+ *
+ * Sets the default frame rate. This frame rate will be used to limit
+ * the number of frames drawn if Clutter is not able to synchronize
+ * with the vertical refresh rate of the display. When synchronization
+ * is possible, this value is ignored.
+ *
+ * Since: 0.6
+ *
+ * Deprecated: 1.10: This function does not do anything any more.
+ */
+void
+clutter_set_default_frame_rate (guint frames_per_sec)
+{
 }
 
 static void
@@ -2694,7 +2956,7 @@ on_grab_actor_destroy (ClutterActor       *actor,
  * If a grab is required, you are strongly encouraged to use a specific
  * input device by calling clutter_input_device_grab().
  *
- *
+ * Since: 0.6
  */
 void
 clutter_grab_pointer (ClutterActor *actor)
@@ -2743,7 +3005,7 @@ clutter_grab_pointer (ClutterActor *actor)
  * Only #ClutterInputDevice of types %CLUTTER_POINTER_DEVICE and
  * %CLUTTER_KEYBOARD_DEVICE can hold a grab.
  *
- *
+ * Since: 1.10
  */
 void
 clutter_input_device_grab (ClutterInputDevice *device,
@@ -2790,7 +3052,7 @@ clutter_input_device_grab (ClutterInputDevice *device,
  *
  * Releases the grab on the @device, if one is in place.
  *
- *
+ * Since: 1.10
  */
 void
 clutter_input_device_ungrab (ClutterInputDevice *device)
@@ -2832,7 +3094,7 @@ clutter_input_device_ungrab (ClutterInputDevice *device)
  *
  * Return value: (transfer none): a #ClutterActor, or %NULL
  *
- *
+ * Since: 1.10
  */
 ClutterActor *
 clutter_input_device_get_grabbed_actor (ClutterInputDevice *device)
@@ -2855,11 +3117,62 @@ clutter_input_device_get_grabbed_actor (ClutterInputDevice *device)
 }
 
 /**
+ * clutter_grab_pointer_for_device:
+ * @actor: a #ClutterActor
+ * @id_: a device id, or -1
+ *
+ * Grabs all the pointer events coming from the device @id for @actor.
+ *
+ * If @id is -1 then this function is equivalent to clutter_grab_pointer().
+ *
+ * Since: 0.8
+ *
+ * Deprecated: 1.10: Use clutter_input_device_grab() instead.
+ */
+void
+clutter_grab_pointer_for_device (ClutterActor *actor,
+                                 gint          id_)
+{
+  ClutterDeviceManager *manager;
+  ClutterInputDevice *dev;
+
+  g_return_if_fail (actor == NULL || CLUTTER_IS_ACTOR (actor));
+
+  /* essentially a global grab */
+  if (id_ == -1)
+    {
+      if (actor == NULL)
+        clutter_ungrab_pointer ();
+      else
+        clutter_grab_pointer (actor);
+
+      return;
+    }
+
+  manager = clutter_device_manager_get_default ();
+  if (manager == NULL)
+    return;
+
+  dev = clutter_device_manager_get_device (manager, id_);
+  if (dev == NULL)
+    return;
+
+  if (dev->device_type != CLUTTER_POINTER_DEVICE)
+    return;
+
+  if (actor == NULL)
+    clutter_input_device_ungrab (dev);
+  else
+    clutter_input_device_grab (dev, actor);
+}
+
+
+/**
  * clutter_ungrab_pointer:
  *
  * Removes an existing grab of the pointer.
  *
- *
+ * Since: 0.6
  */
 void
 clutter_ungrab_pointer (void)
@@ -2868,13 +3181,39 @@ clutter_ungrab_pointer (void)
 }
 
 /**
+ * clutter_ungrab_pointer_for_device:
+ * @id_: a device id
+ *
+ * Removes an existing grab of the pointer events for device @id_.
+ *
+ * Since: 0.8
+ *
+ * Deprecated: 1.10: Use clutter_input_device_ungrab() instead.
+ */
+void
+clutter_ungrab_pointer_for_device (gint id_)
+{
+  ClutterDeviceManager *manager;
+  ClutterInputDevice *device;
+
+  manager = clutter_device_manager_get_default ();
+  if (manager == NULL)
+    return;
+
+  device = clutter_device_manager_get_device (manager, id_);
+  if (device != NULL)
+    clutter_input_device_ungrab (device);
+}
+
+
+/**
  * clutter_get_pointer_grab:
  *
  * Queries the current pointer grab of clutter.
  *
  * Return value: (transfer none): the actor currently holding the pointer grab, or NULL if there is no grab.
  *
- *
+ * Since: 0.6
  */
 ClutterActor *
 clutter_get_pointer_grab (void)
@@ -2902,7 +3241,7 @@ clutter_get_pointer_grab (void)
  * See also clutter_stage_set_key_focus() and clutter_actor_grab_key_focus()
  * to perform a "soft" key grab and assign key focus to a specific actor.
  *
- *
+ * Since: 0.6
  */
 void
 clutter_grab_keyboard (ClutterActor *actor)
@@ -2939,7 +3278,7 @@ clutter_grab_keyboard (ClutterActor *actor)
  *
  * Removes an existing grab of the keyboard.
  *
- *
+ * Since: 0.6
  */
 void
 clutter_ungrab_keyboard (void)
@@ -2954,7 +3293,7 @@ clutter_ungrab_keyboard (void)
  *
  * Return value: (transfer none): the actor currently holding the keyboard grab, or NULL if there is no grab.
  *
- *
+ * Since: 0.6
  */
 ClutterActor *
 clutter_get_keyboard_grab (void)
@@ -2967,6 +3306,175 @@ clutter_get_keyboard_grab (void)
 }
 
 /**
+ * clutter_clear_glyph_cache:
+ *
+ * Clears the internal cache of glyphs used by the Pango
+ * renderer. This will free up some memory and GL texture
+ * resources. The cache will be automatically refilled as more text is
+ * drawn.
+ *
+ * Since: 0.8
+ *
+ * Deprecated: 1.10: Use clutter_get_font_map() and
+ *   cogl_pango_font_map_clear_glyph_cache() instead.
+ */
+void
+clutter_clear_glyph_cache (void)
+{
+  CoglPangoFontMap *font_map;
+
+  font_map = clutter_context_get_pango_fontmap ();
+  cogl_pango_font_map_clear_glyph_cache (font_map);
+}
+
+/**
+ * clutter_set_font_flags:
+ * @flags: The new flags
+ *
+ * Sets the font quality options for subsequent text rendering
+ * operations.
+ *
+ * Using mipmapped textures will improve the quality for scaled down
+ * text but will use more texture memory.
+ *
+ * Enabling hinting improves text quality for static text but may
+ * introduce some artifacts if the text is animated.
+ *
+ * Since: 1.0
+ *
+ * Deprecated: 1.10: Use clutter_backend_set_font_options() and the
+ *   #cairo_font_option_t API.
+ */
+void
+clutter_set_font_flags (ClutterFontFlags flags)
+{
+  ClutterMainContext *context = _clutter_context_get_default ();
+  CoglPangoFontMap *font_map;
+  ClutterFontFlags old_flags, changed_flags;
+  const cairo_font_options_t *font_options;
+  cairo_font_options_t *new_font_options;
+  cairo_hint_style_t hint_style;
+  gboolean use_mipmapping;
+  ClutterBackend *backend;
+
+  backend = clutter_get_default_backend ();
+  font_map = clutter_context_get_pango_fontmap ();
+  font_options = clutter_backend_get_font_options (backend);
+  old_flags = 0;
+
+  if (cogl_pango_font_map_get_use_mipmapping (font_map))
+    old_flags |= CLUTTER_FONT_MIPMAPPING;
+
+  hint_style = cairo_font_options_get_hint_style (font_options);
+  if (hint_style != CAIRO_HINT_STYLE_DEFAULT &&
+      hint_style != CAIRO_HINT_STYLE_NONE)
+    old_flags |= CLUTTER_FONT_HINTING;
+
+  if (old_flags == flags)
+    return;
+
+  new_font_options = cairo_font_options_copy (font_options);
+
+  /* Only set the font options that have actually changed so we don't
+     override a detailed setting from the backend */
+  changed_flags = old_flags ^ flags;
+
+  if ((changed_flags & CLUTTER_FONT_MIPMAPPING))
+    {
+      use_mipmapping = (changed_flags & CLUTTER_FONT_MIPMAPPING) != 0;
+
+      cogl_pango_font_map_set_use_mipmapping (font_map, use_mipmapping);
+    }
+
+  if ((changed_flags & CLUTTER_FONT_HINTING))
+    {
+      hint_style = (flags & CLUTTER_FONT_HINTING)
+                 ? CAIRO_HINT_STYLE_FULL
+                 : CAIRO_HINT_STYLE_NONE;
+
+      cairo_font_options_set_hint_style (new_font_options, hint_style);
+    }
+
+  clutter_backend_set_font_options (backend, new_font_options);
+
+  cairo_font_options_destroy (new_font_options);
+
+  /* update the default pango context, if any */
+  if (context->pango_context != NULL)
+    update_pango_context (backend, context->pango_context);
+}
+
+/**
+ * clutter_get_font_flags:
+ *
+ * Gets the current font flags for rendering text. See
+ * clutter_set_font_flags().
+ *
+ * Return value: The font flags
+ *
+ * Since: 1.0
+ *
+ * Deprecated: 1.10: Use clutter_backend_get_font_options() and the
+ *   #cairo_font_options_t API.
+ */
+ClutterFontFlags
+clutter_get_font_flags (void)
+{
+  CoglPangoFontMap *font_map = NULL;
+  const cairo_font_options_t *font_options;
+  ClutterFontFlags flags = 0;
+  cairo_hint_style_t hint_style;
+
+  font_map = clutter_context_get_pango_fontmap ();
+  if (cogl_pango_font_map_get_use_mipmapping (font_map))
+    flags |= CLUTTER_FONT_MIPMAPPING;
+
+  font_options =
+    clutter_backend_get_font_options (clutter_get_default_backend ());
+
+  hint_style = cairo_font_options_get_hint_style (font_options);
+  if (hint_style != CAIRO_HINT_STYLE_DEFAULT &&
+      hint_style != CAIRO_HINT_STYLE_NONE)
+    flags |= CLUTTER_FONT_HINTING;
+
+  return flags;
+}
+
+/**
+ * clutter_get_input_device_for_id:
+ * @id_: the unique id for a device
+ *
+ * Retrieves the #ClutterInputDevice from its @id_. This is a convenience
+ * wrapper for clutter_device_manager_get_device() and it is functionally
+ * equivalent to:
+ *
+ * |[
+ *   ClutterDeviceManager *manager;
+ *   ClutterInputDevice *device;
+ *
+ *   manager = clutter_device_manager_get_default ();
+ *   device = clutter_device_manager_get_device (manager, id);
+ * ]|
+ *
+ * Return value: (transfer none): a #ClutterInputDevice, or %NULL
+ *
+ * Since: 0.8
+ *
+ * Deprecated: 1.10: Use clutter_device_manager_get_device() instead.
+ */
+ClutterInputDevice *
+clutter_get_input_device_for_id (gint id_)
+{
+  ClutterDeviceManager *manager;
+
+  manager = clutter_device_manager_get_default ();
+  if (manager == NULL)
+    return NULL;
+
+  return clutter_device_manager_get_device (manager, id_);
+}
+
+/**
  * clutter_get_font_map:
  *
  * Retrieves the #PangoFontMap instance used by Clutter.
@@ -2976,7 +3484,7 @@ clutter_get_keyboard_grab (void)
  * Return value: (transfer none): the #PangoFontMap instance. The returned
  *   value is owned by Clutter and it should never be unreferenced.
  *
- *
+ * Since: 1.0
  */
 PangoFontMap *
 clutter_get_font_map (void)
@@ -2999,7 +3507,7 @@ typedef struct _ClutterRepaintFunction
  *
  * Removes the repaint function with @handle_id as its id
  *
- *
+ * Since: 1.0
  */
 void
 clutter_threads_remove_repaint_func (guint handle_id)
@@ -3076,7 +3584,7 @@ clutter_threads_remove_repaint_func (guint handle_id)
  *   can use the returned integer to remove the repaint function by
  *   calling clutter_threads_remove_repaint_func().
  *
- *
+ * Since: 1.0
  */
 guint
 clutter_threads_add_repaint_func (GSourceFunc    func,
@@ -3124,7 +3632,7 @@ clutter_threads_add_repaint_func (GSourceFunc    func,
  *   can use the returned integer to remove the repaint function by
  *   calling clutter_threads_remove_repaint_func().
  *
- *
+ * Since: 1.10
  */
 guint
 clutter_threads_add_repaint_func_full (ClutterRepaintFlags flags,
@@ -3243,7 +3751,7 @@ _clutter_run_repaint_functions (ClutterRepaintFlags flags)
  * Return value: %TRUE if the version of the Clutter library is
  *   greater than (@major, @minor, @micro), and %FALSE otherwise
  *
- *
+ * Since: 1.2
  */
 gboolean
 clutter_check_version (guint major,
@@ -3270,7 +3778,7 @@ clutter_check_version (guint major,
  *
  * Return value: the default text direction
  *
- *
+ * Since: 1.2
  */
 ClutterTextDirection
 clutter_get_default_text_direction (void)
@@ -3417,7 +3925,7 @@ _clutter_context_get_motion_events_enabled (void)
  * Return value: %TRUE if the current Clutter windowing system backend is
  *   the one checked, and %FALSE otherwise
  *
- *
+ * Since: 1.10
  */
 gboolean
 clutter_check_windowing_backend (const char *backend_type)

@@ -51,7 +51,7 @@ typedef struct _ClutterDragActionClass          ClutterDragActionClass;
  * The <structname>ClutterDragAction</structname> structure contains only
  * private data and should be accessed using the provided API
  *
- *
+ * Since: 1.4
  */
 struct _ClutterDragAction
 {
@@ -71,7 +71,7 @@ struct _ClutterDragAction
  * The <structname>ClutterDragActionClass</structname> structure contains
  * only private data
  *
- *
+ * Since: 1.4
  */
 struct _ClutterDragActionClass
 {
@@ -129,11 +129,11 @@ void            clutter_drag_action_get_motion_coords  (ClutterDragAction *actio
                                                         gfloat            *motion_x,
                                                         gfloat            *motion_y);
 
-
+CLUTTER_AVAILABLE_IN_1_12
 gboolean        clutter_drag_action_get_drag_area      (ClutterDragAction *action,
                                                         ClutterRect       *drag_area);
 
-
+CLUTTER_AVAILABLE_IN_1_12
 void            clutter_drag_action_set_drag_area      (ClutterDragAction *action,
                                                         const ClutterRect *drag_area);
 

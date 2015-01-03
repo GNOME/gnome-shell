@@ -49,7 +49,7 @@ typedef struct _ClutterLayoutManagerClass       ClutterLayoutManagerClass;
  * The #ClutterLayoutManager structure contains only private data
  * and should be accessed using the provided API
  *
- *
+ * Since: 1.2
  */
 struct _ClutterLayoutManager
 {
@@ -79,13 +79,24 @@ struct _ClutterLayoutManager
  * @create_child_meta: virtual function; override to create a
  *   #ClutterLayoutMeta instance associated to a #ClutterContainer and a
  *   child #ClutterActor, used to maintain layout manager specific properties
+ * @begin_animation: virtual function; override to control the animation
+ *   of a #ClutterLayoutManager with the given duration and easing mode.
+ *   This virtual function is deprecated, and it should not be overridden
+ *   in newly written code.
+ * @end_animation: virtual function; override to end an animation started
+ *   by clutter_layout_manager_begin_animation(). This virtual function is
+ *   deprecated, and it should not be overriden in newly written code.
+ * @get_animation_progress: virtual function; override to control the
+ *   progress of the animation of a #ClutterLayoutManager. This virtual
+ *   function is deprecated, and it should not be overridden in newly written
+ *   code.
  * @layout_changed: class handler for the #ClutterLayoutManager::layout-changed
  *   signal
  *
  * The #ClutterLayoutManagerClass structure contains only private
  * data and should be accessed using the provided API
  *
- *
+ * Since: 1.2
  */
 struct _ClutterLayoutManagerClass
 {
@@ -115,6 +126,15 @@ struct _ClutterLayoutManagerClass
   ClutterLayoutMeta *(* create_child_meta)      (ClutterLayoutManager   *manager,
                                                  ClutterContainer       *container,
                                                  ClutterActor           *actor);
+
+  /* deprecated */
+  ClutterAlpha *     (* begin_animation)        (ClutterLayoutManager   *manager,
+                                                 guint                   duration,
+                                                 gulong                  mode);
+  /* deprecated */
+  gdouble            (* get_animation_progress) (ClutterLayoutManager   *manager);
+  /* deprecated */
+  void               (* end_animation)          (ClutterLayoutManager   *manager);
 
   void               (* layout_changed)         (ClutterLayoutManager   *manager);
 
@@ -180,6 +200,15 @@ void               clutter_layout_manager_child_get_property    (ClutterLayoutMa
                                                                  ClutterActor           *actor,
                                                                  const gchar            *property_name,
                                                                  GValue                 *value);
+
+CLUTTER_DEPRECATED_IN_1_12
+ClutterAlpha *     clutter_layout_manager_begin_animation       (ClutterLayoutManager   *manager,
+                                                                 guint                   duration,
+                                                                 gulong                  mode);
+CLUTTER_DEPRECATED_IN_1_12
+void               clutter_layout_manager_end_animation         (ClutterLayoutManager   *manager);
+CLUTTER_DEPRECATED_IN_1_12
+gdouble            clutter_layout_manager_get_animation_progress (ClutterLayoutManager   *manager);
 
 G_END_DECLS
 

@@ -46,11 +46,13 @@ typedef struct _ClutterAnimatableIface          ClutterAnimatableIface;
  * #ClutterAnimatable is an opaque structure whose members cannot be directly
  * accessed
  *
- *
+ * Since: 1.0
  */
 
 /**
  * ClutterAnimatableIface:
+ * @animate_property: virtual function for custom interpolation of a
+ *   property. This virtual function is deprecated
  * @find_property: virtual function for retrieving the #GParamSpec of
  *   an animatable property
  * @get_initial_state: virtual function for retrieving the initial
@@ -63,7 +65,7 @@ typedef struct _ClutterAnimatableIface          ClutterAnimatableIface;
  * Base interface for #GObject<!-- -->s that can be animated by a
  * a #ClutterAnimation.
  *
- *
+ * Since: 1.0
  */
 struct _ClutterAnimatableIface
 {
@@ -71,6 +73,13 @@ struct _ClutterAnimatableIface
   GTypeInterface parent_iface;
 
   /*< public >*/
+  gboolean    (* animate_property)  (ClutterAnimatable *animatable,
+                                     ClutterAnimation  *animation,
+                                     const gchar       *property_name,
+                                     const GValue      *initial_value,
+                                     const GValue      *final_value,
+                                     gdouble            progress,
+                                     GValue            *value);
   GParamSpec *(* find_property)     (ClutterAnimatable *animatable,
                                      const gchar       *property_name);
   void        (* get_initial_state) (ClutterAnimatable *animatable,

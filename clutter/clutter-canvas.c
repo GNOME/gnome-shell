@@ -74,9 +74,6 @@ struct _ClutterCanvasPrivate
   int width;
   int height;
 
-  CoglTexture *texture;
-  gboolean dirty;
-
   CoglBitmap *buffer;
 };
 
@@ -139,8 +136,6 @@ clutter_canvas_finalize (GObject *gobject)
       cogl_object_unref (priv->buffer);
       priv->buffer = NULL;
     }
-
-  g_clear_pointer (&priv->texture, cogl_object_unref);
 
   G_OBJECT_CLASS (clutter_canvas_parent_class)->finalize (gobject);
 }
@@ -213,7 +208,7 @@ clutter_canvas_class_init (ClutterCanvasClass *klass)
    *
    * The width of the canvas.
    *
-   *
+   * Since: 1.10
    */
   obj_props[PROP_WIDTH] =
     g_param_spec_int ("width",
@@ -229,7 +224,7 @@ clutter_canvas_class_init (ClutterCanvasClass *klass)
    *
    * The height of the canvas.
    *
-   *
+   * Since: 1.10
    */
   obj_props[PROP_HEIGHT] =
     g_param_spec_int ("height",
@@ -257,7 +252,7 @@ clutter_canvas_class_init (ClutterCanvasClass *klass)
    * Return value: %TRUE if the signal emission should stop, and
    *   %FALSE otherwise
    *
-   *
+   * Since: 1.10
    */
   canvas_signals[DRAW] =
     g_signal_new (I_("draw"),
@@ -294,26 +289,21 @@ clutter_canvas_paint_content (ClutterContent   *content,
                               ClutterPaintNode *root)
 {
   ClutterCanvas *self = CLUTTER_CANVAS (content);
-  ClutterCanvasPrivate *priv = self->priv;
   ClutterPaintNode *node;
+  CoglTexture *texture;
   ClutterActorBox box;
   ClutterColor color;
   guint8 paint_opacity;
   ClutterScalingFilter min_f, mag_f;
   ClutterContentRepeat repeat;
 
-  if (priv->buffer == NULL)
+  if (self->priv->buffer == NULL)
     return;
 
-  if (priv->texture && priv->dirty)
-    g_clear_pointer (&priv->texture, cogl_object_unref);
-
-  if (!priv->texture)
-    priv->texture = cogl_texture_new_from_bitmap (self->priv->buffer,
-                                                  COGL_TEXTURE_NO_SLICING,
-                                                  CLUTTER_CAIRO_FORMAT_ARGB32);
-
-  if (priv->texture == NULL)
+  texture = cogl_texture_new_from_bitmap (self->priv->buffer,
+                                          COGL_TEXTURE_NO_SLICING,
+                                          CLUTTER_CAIRO_FORMAT_ARGB32);
+  if (texture == NULL)
     return;
 
   clutter_actor_get_content_box (actor, &box);
@@ -326,7 +316,8 @@ clutter_canvas_paint_content (ClutterContent   *content,
   color.blue = paint_opacity;
   color.alpha = paint_opacity;
 
-  node = clutter_texture_node_new (priv->texture, &color, min_f, mag_f);
+  node = clutter_texture_node_new (texture, &color, min_f, mag_f);
+  cogl_object_unref (texture);
 
   clutter_paint_node_set_name (node, "Canvas");
 
@@ -337,10 +328,10 @@ clutter_canvas_paint_content (ClutterContent   *content,
       float t_w = 1.f, t_h = 1.f;
 
       if ((repeat & CLUTTER_REPEAT_X_AXIS) != FALSE)
-        t_w = (box.x2 - box.x1) / cogl_texture_get_width (priv->texture);
+        t_w = (box.x2 - box.x1) / cogl_texture_get_width (texture);
 
       if ((repeat & CLUTTER_REPEAT_Y_AXIS) != FALSE)
-        t_h = (box.y2 - box.y1) / cogl_texture_get_height (priv->texture);
+        t_h = (box.y2 - box.y1) / cogl_texture_get_height (texture);
 
       clutter_paint_node_add_texture_rectangle (node, &box,
                                                 0.f, 0.f,
@@ -349,8 +340,6 @@ clutter_canvas_paint_content (ClutterContent   *content,
 
   clutter_paint_node_add_child (root, node);
   clutter_paint_node_unref (node);
-
-  priv->dirty = FALSE;
 }
 
 static void
@@ -365,8 +354,6 @@ clutter_canvas_emit_draw (ClutterCanvas *self)
   cairo_t *cr;
 
   g_assert (priv->width > 0 && priv->width > 0);
-
-  priv->dirty = TRUE;
 
   if (priv->buffer == NULL)
     {
@@ -499,7 +486,7 @@ clutter_content_iface_init (ClutterContentIface *iface)
  * Return value: (transfer full): The newly allocated instance of
  *   #ClutterCanvas. Use g_object_unref() when done.
  *
- *
+ * Since: 1.10
  */
 ClutterContent *
 clutter_canvas_new (void)
@@ -517,7 +504,7 @@ clutter_canvas_new (void)
  *
  * This function will cause the @canvas to be invalidated.
  *
- *
+ * Since: 1.10
  */
 void
 clutter_canvas_set_size (ClutterCanvas *canvas,

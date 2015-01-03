@@ -49,7 +49,7 @@ typedef struct _ClutterTransitionClass          ClutterTransitionClass;
  * The <structname>ClutterTransition</structname> structure contains private
  * data and should only be accessed using the provided API.
  *
- *
+ * Since: 1.10
  */
 struct _ClutterTransition
 {
@@ -71,7 +71,7 @@ struct _ClutterTransition
  * The <structname>ClutterTransitionClass</structname> structure contains
  * private data.
  *
- *
+ * Since: 1.10
  */
 struct _ClutterTransitionClass
 {
@@ -93,38 +93,38 @@ struct _ClutterTransitionClass
   gpointer _padding[8];
 };
 
-
+CLUTTER_AVAILABLE_IN_1_10
 GType clutter_transition_get_type (void) G_GNUC_CONST;
 
-
+CLUTTER_AVAILABLE_IN_1_10
 void                    clutter_transition_set_interval                 (ClutterTransition *transition,
                                                                          ClutterInterval   *interval);
-
+CLUTTER_AVAILABLE_IN_1_10
 ClutterInterval *       clutter_transition_get_interval                 (ClutterTransition *transition);
-
+CLUTTER_AVAILABLE_IN_1_12
 void                    clutter_transition_set_from_value               (ClutterTransition *transition,
                                                                          const GValue      *value);
-
+CLUTTER_AVAILABLE_IN_1_12
 void                    clutter_transition_set_to_value                 (ClutterTransition *transition,
                                                                          const GValue      *value);
-
+CLUTTER_AVAILABLE_IN_1_12
 void                    clutter_transition_set_from                     (ClutterTransition *transition,
                                                                          GType              value_type,
                                                                          ...);
-
+CLUTTER_AVAILABLE_IN_1_12
 void                    clutter_transition_set_to                       (ClutterTransition *transition,
                                                                          GType              value_type,
                                                                          ...);
 
-
+CLUTTER_AVAILABLE_IN_1_10
 void                    clutter_transition_set_animatable               (ClutterTransition *transition,
                                                                          ClutterAnimatable *animatable);
-
+CLUTTER_AVAILABLE_IN_1_10
 ClutterAnimatable *     clutter_transition_get_animatable               (ClutterTransition *transition);
-
+CLUTTER_AVAILABLE_IN_1_10
 void                    clutter_transition_set_remove_on_complete       (ClutterTransition *transition,
                                                                          gboolean           remove_complete);
-
+CLUTTER_AVAILABLE_IN_1_10
 gboolean                clutter_transition_get_remove_on_complete       (ClutterTransition *transition);
 
 G_END_DECLS

@@ -49,7 +49,7 @@ typedef struct _ClutterPropertyTransitionClass          ClutterPropertyTransitio
  * The <structname>ClutterPropertyTransition</structname> structure contains
  * private data and should only be accessed using the provided API.
  *
- *
+ * Since: 1.10
  */
 struct _ClutterPropertyTransition
 {
@@ -65,7 +65,7 @@ struct _ClutterPropertyTransition
  * The <structname>ClutterPropertyTransitionClass</structname> structure
  * contains private data.
  *
- *
+ * Since: 1.10
  */
 struct _ClutterPropertyTransitionClass
 {
@@ -75,15 +75,15 @@ struct _ClutterPropertyTransitionClass
   gpointer _padding[8];
 };
 
-
+CLUTTER_AVAILABLE_IN_1_10
 GType clutter_property_transition_get_type (void) G_GNUC_CONST;
 
-
+CLUTTER_AVAILABLE_IN_1_10
 ClutterTransition *     clutter_property_transition_new                 (const char                *property_name);
-
+CLUTTER_AVAILABLE_IN_1_10
 void                    clutter_property_transition_set_property_name   (ClutterPropertyTransition *transition,
                                                                          const char                *property_name);
-
+CLUTTER_AVAILABLE_IN_1_10
 const char *            clutter_property_transition_get_property_name   (ClutterPropertyTransition *transition);
 
 G_END_DECLS

@@ -16,27 +16,66 @@ units_sources =
 
 # animation tests
 units_sources += \
+	animator.c			\
+	behaviours.c			\
+	score.c				\
+	state.c				\
 	timeline.c			\
 	timeline-interpolate.c 		\
 	timeline-progress.c		\
 	timeline-rewind.c 		\
 	$(NULL)
 
+# cogl tests
+units_sources += \
+	test-cogl-fixed.c 			\
+	test-cogl-materials.c			\
+	test-cogl-viewport.c			\
+	test-cogl-multitexture.c        	\
+	test-cogl-npot-texture.c        	\
+	test-cogl-object.c			\
+	test-cogl-premult.c			\
+	test-cogl-readpixels.c			\
+	test-cogl-texture-get-set-data.c 	\
+	test-cogl-texture-mipmaps.c     	\
+	test-cogl-texture-pixmap-x11.c  	\
+	test-cogl-texture-rectangle.c   	\
+	test-cogl-atlas-migration.c		\
+	test-cogl-vertex-buffer-contiguous.c 	\
+	test-cogl-vertex-buffer-interleved.c 	\
+	test-cogl-vertex-buffer-mutability.c 	\
+	$(NULL)
+
 # actors tests
 units_sources += \
+	actor-anchors.c                	\
 	actor-graph.c			\
+	actor-destroy.c			\
 	actor-invariants.c 		\
 	actor-iter.c			\
+	actor-layout.c			\
+	actor-offscreen-redirect.c	\
+	actor-paint-opacity.c 		\
+	actor-pick.c 			\
+	actor-shader-effect.c		\
 	actor-size.c			\
 	binding-pool.c			\
+	cairo-texture.c    		\
+	group.c				\
 	interval.c			\
 	path.c 				\
+	rectangle.c 			\
+	texture-fbo.c			\
+	texture.c			\
+        text-cache.c               	\
         text.c             		\
 	$(NULL)
 
 # objects tests
 units_sources += \
 	color.c				\
+	model.c				\
+	script-parser.c			\
 	units.c				\
         $(NULL)
 
@@ -286,30 +325,5 @@ DISTCLEANFILES += \
 
 # we override the clean-generic target to clean up the wrappers so
 # we cannot use CLEANFILES
-clean-generic: clean-wrappers clean-tests
+clean-generic: clean-wrappers
 	$(QUIET_RM)rm -f $(XML_REPORTS) $(HTML_REPORTS)
-
-if ENABLE_INSTALLED_TESTS
-# installed tests
-insttestdir = $(libexecdir)/installed-tests/$(PACKAGE)/conform
-insttest_PROGRAMS = test-conformance
-
-testmetadir = $(datadir)/installed-tests/$(PACKAGE)
-testmeta_DATA = $(wildcard *.test)
-
-BUILT_SOURCES += tests
-endif
-
-.PHONY: tests clean-tests
-
-tests: stamp-test-conformance
-	@for i in `cat unit-tests`; do \
-		unit=`basename $$i | sed -e s/_/-/g`; \
-		echo "  GEN      $$unit"; \
-		echo "[Test]" > $$unit.test; \
-		echo "Type=session" >> $$unit.test; \
-		echo "Exec=$(libexecdir)/installed-tests/$(PACKAGE)/conform/test-conformance -p $$i" >> $$unit.test; \
-	done
-
-clean-tests:
-	$(QUIET_RM) rm -f *.test

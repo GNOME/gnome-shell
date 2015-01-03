@@ -12,7 +12,9 @@
  * Library General Public License for more details.
  *
  * You should have received a copy of the GNU Library General Public
- * License along with this library; if not, see <http://www.gnu.org/licenses/>.
+ * License along with this library; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
  *
  * Author: Stef Walter <stefw@collabora.co.uk>
  */
@@ -40,7 +42,7 @@ G_BEGIN_DECLS
  *
  * Maximum size of text buffer, in bytes.
  *
- *
+ * Since: 1.10
  */
 #define CLUTTER_TEXT_BUFFER_MAX_SIZE        G_MAXUSHORT
 
@@ -54,7 +56,7 @@ typedef struct _ClutterTextBufferPrivate     ClutterTextBufferPrivate;
  * The <structname>ClutterTextBuffer</structname> structure contains private
  * data and it should only be accessed using the provided API.
  *
- *
+ * Since: 1.10
  */
 struct _ClutterTextBuffer
 {
@@ -76,7 +78,7 @@ struct _ClutterTextBuffer
  * The <structname>ClutterTextBufferClass</structname> structure contains
  * only private data.
  *
- *
+ * Since: 1.10
  */
 struct _ClutterTextBufferClass
 {
@@ -121,46 +123,46 @@ struct _ClutterTextBufferClass
   void (*_clutter_reserved8) (void);
 };
 
-
+CLUTTER_AVAILABLE_IN_1_10
 GType               clutter_text_buffer_get_type            (void) G_GNUC_CONST;
 
-
+CLUTTER_AVAILABLE_IN_1_10
 ClutterTextBuffer*  clutter_text_buffer_new                 (void);
-
+CLUTTER_AVAILABLE_IN_1_10
 ClutterTextBuffer*  clutter_text_buffer_new_with_text       (const gchar       *text,
                                                              gssize             text_len);
 
-
+CLUTTER_AVAILABLE_IN_1_10
 gsize               clutter_text_buffer_get_bytes           (ClutterTextBuffer *buffer);
-
+CLUTTER_AVAILABLE_IN_1_10
 guint               clutter_text_buffer_get_length          (ClutterTextBuffer *buffer);
-
+CLUTTER_AVAILABLE_IN_1_10
 const gchar*        clutter_text_buffer_get_text            (ClutterTextBuffer *buffer);
-
+CLUTTER_AVAILABLE_IN_1_10
 void                clutter_text_buffer_set_text            (ClutterTextBuffer *buffer,
                                                              const gchar       *chars,
                                                              gint               n_chars);
-
+CLUTTER_AVAILABLE_IN_1_10
 void                clutter_text_buffer_set_max_length      (ClutterTextBuffer *buffer,
                                                              gint               max_length);
-
+CLUTTER_AVAILABLE_IN_1_10
 gint                clutter_text_buffer_get_max_length      (ClutterTextBuffer  *buffer);
 
-
+CLUTTER_AVAILABLE_IN_1_10
 guint               clutter_text_buffer_insert_text         (ClutterTextBuffer *buffer,
                                                              guint              position,
                                                              const gchar       *chars,
                                                              gint               n_chars);
-
+CLUTTER_AVAILABLE_IN_1_10
 guint               clutter_text_buffer_delete_text         (ClutterTextBuffer *buffer,
                                                              guint              position,
                                                              gint               n_chars);
-
+CLUTTER_AVAILABLE_IN_1_10
 void                clutter_text_buffer_emit_inserted_text  (ClutterTextBuffer *buffer,
                                                              guint              position,
                                                              const gchar       *chars,
                                                              guint              n_chars);
-
+CLUTTER_AVAILABLE_IN_1_10
 void                clutter_text_buffer_emit_deleted_text   (ClutterTextBuffer *buffer,
                                                              guint              position,
                                                              guint              n_chars);

@@ -9,7 +9,7 @@
 # - increase clutter_micro_version to the next odd number
 # - increase clutter_interface_version to the next odd number
 m4_define([clutter_major_version], [1])
-m4_define([clutter_minor_version], [99])
+m4_define([clutter_minor_version], [15])
 m4_define([clutter_micro_version], [1])
 
 # • for stable releases: increase the interface age by 1 for each release;
@@ -43,8 +43,7 @@ m4_define([clutter_release_status],
 m4_define([clutter_version], [clutter_major_version.clutter_minor_version.clutter_micro_version])
 
 # change this only when breaking the API
-m4_define([clutter_api_version], [2.0])
-m4_define([clutter_api_version_am], [2_0])
+m4_define([clutter_api_version], [1.0])
 
 AC_PREREQ([2.63])
 
@@ -67,7 +66,7 @@ AC_SUBST([CLUTTER_MINOR_VERSION],  [clutter_minor_version])
 AC_SUBST([CLUTTER_MICRO_VERSION],  [clutter_micro_version])
 AC_SUBST([CLUTTER_VERSION],        [clutter_version])
 AC_SUBST([CLUTTER_API_VERSION],    [clutter_api_version])
-AC_SUBST([CLUTTER_API_VERSION_AM], [clutter_api_version_am])
+AC_SUBST([CLUTTER_API_VERSION_AM], [$CLUTTER_MAJOR_VERSION\_0])
 AC_SUBST([CLUTTER_RELEASE_STATUS], [clutter_release_status])
 
 m4_define([lt_current],  [m4_eval(100 * clutter_minor_version + clutter_micro_version - clutter_interface_age)])
@@ -191,12 +190,6 @@ AC_ARG_ENABLE([Bsymbolic],
 
 AS_IF([test "x$enable_Bsymbolic" = "xyes"], [CLUTTER_LINK_FLAGS=-Wl[,]-Bsymbolic-functions])
 AC_SUBST(CLUTTER_LINK_FLAGS)
-
-AC_ARG_ENABLE(installed_tests,
-              AS_HELP_STRING([--enable-installed-tests],
-                             [Install test programs (default: no)]),,
-              [enable_installed_tests=no])
-AM_CONDITIONAL(ENABLE_INSTALLED_TESTS, test x$enable_installed_tests = xyes)
 
 AC_CACHE_SAVE
 
@@ -1133,7 +1126,7 @@ dnl === I18N ==================================================================
 AM_GNU_GETTEXT_VERSION([0.17])
 AM_GNU_GETTEXT([external])
 
-GETTEXT_PACKAGE="clutter-2.0"
+GETTEXT_PACKAGE="clutter-1.0"
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE],
                    ["$GETTEXT_PACKAGE"],
@@ -1199,9 +1192,9 @@ AC_CONFIG_FILES([
 	doc/Makefile
 	doc/reference/Makefile
 	doc/reference/clutter/Makefile
-	doc/reference/clutter/clutter2-docs.xml
+	doc/reference/clutter/clutter-docs.xml
 	doc/reference/cally/Makefile
-	doc/reference/cally/cally2-docs.xml
+	doc/reference/cally/cally-docs.xml
 	doc/common/Makefile
 	doc/cookbook/Makefile
 	doc/cookbook/clutter-cookbook.xml

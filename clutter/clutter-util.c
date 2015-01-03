@@ -23,6 +23,13 @@
  *
  */
 
+/**
+ * SECTION:clutter-util
+ * @short_description: Utility functions
+ *
+ * Various miscellaneous utilility functions.
+ */
+
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -35,6 +42,29 @@
 #include "clutter-main.h"
 #include "clutter-interval.h"
 #include "clutter-private.h"
+
+#include "deprecated/clutter-util.h"
+
+/**
+ * clutter_util_next_p2:
+ * @a: Value to get the next power
+ *
+ * Calculates the nearest power of two, greater than or equal to @a.
+ *
+ * Return value: The nearest power of two, greater or equal to @a.
+ *
+ * Deprecated: 1.2
+ */
+gint
+clutter_util_next_p2 (gint a)
+{
+  int rval = 1;
+
+  while (rval < a)
+    rval <<= 1;
+
+  return rval;
+}
 
 /*< private >
  * _clutter_gettext:
@@ -587,7 +617,7 @@ progress_data_destroy (gpointer data_)
  * To unset a previously set progress function of a #GType, pass %NULL
  * for @func.
  *
- *
+ * Since: 1.0
  */
 void
 clutter_interval_register_progress_func (GType               value_type,

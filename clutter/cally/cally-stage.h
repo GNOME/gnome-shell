@@ -52,7 +52,7 @@ typedef struct _CallyStagePrivate CallyStagePrivate;
 struct _CallyStage
 {
   /*< private >*/
-  CallyActor parent;
+  CallyGroup parent;
 
   CallyStagePrivate *priv;
 };
@@ -68,7 +68,7 @@ struct _CallyStage
 struct _CallyStageClass
 {
   /*< private >*/
-  CallyActorClass parent_class;
+  CallyGroupClass parent_class;
 
   /* padding for future expansion */
   gpointer _padding_dummy[16];

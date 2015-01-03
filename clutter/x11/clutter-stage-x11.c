@@ -1258,7 +1258,7 @@ clutter_event_translator_iface_init (ClutterEventTranslatorIface *iface)
  *
  * Return value: An XID for the stage window.
  *
- *
+ * Since: 0.4
  */
 Window
 clutter_x11_get_stage_window (ClutterStage *stage)
@@ -1292,7 +1292,7 @@ clutter_x11_get_stage_window_from_window (Window win)
  * Return value: (transfer none): A #ClutterStage, or% NULL if a stage
  *   does not exist for the window
  *
- *
+ * Since: 0.8
  */
 ClutterStage *
 clutter_x11_get_stage_from_window (Window win)
@@ -1305,6 +1305,37 @@ clutter_x11_get_stage_from_window (Window win)
     return stage_cogl->wrapper;
 
   return NULL;
+}
+
+/**
+ * clutter_x11_get_stage_visual: (skip)
+ * @stage: a #ClutterStage
+ *
+ * Returns an XVisualInfo suitable for creating a foreign window for the given
+ * stage. NOTE: It doesn't do as the name may suggest, which is return the
+ * XVisualInfo that was used to create an existing window for the given stage.
+ *
+ * XXX: It might be best to deprecate this function and replace with something
+ * along the lines of clutter_backend_x11_get_foreign_visual () or perhaps
+ * clutter_stage_x11_get_foreign_visual ()
+ *
+ * Return value: (transfer full): An XVisualInfo suitable for creating a
+ *   foreign stage. Use XFree() to free the returned value instead
+ *
+ * Deprecated: 1.2: Use clutter_x11_get_visual_info() instead
+ *
+ * Since: 0.4
+ */
+XVisualInfo *
+clutter_x11_get_stage_visual (ClutterStage *stage)
+{
+  ClutterBackend *backend = clutter_get_default_backend ();
+  ClutterBackendX11 *backend_x11;
+
+  g_return_val_if_fail (CLUTTER_IS_BACKEND_X11 (backend), NULL);
+  backend_x11 = CLUTTER_BACKEND_X11 (backend);
+
+  return _clutter_backend_x11_get_visual_info (backend_x11);
 }
 
 typedef struct {
@@ -1363,7 +1394,7 @@ set_foreign_window_callback (ClutterActor *actor,
  *
  * Return value: %TRUE if foreign window is valid
  *
- *
+ * Since: 0.4
  */
 gboolean
 clutter_x11_set_stage_foreign (ClutterStage *stage,

@@ -138,26 +138,11 @@ get_full_window_size (ClutterStageWin32 *stage_win32,
     = clutter_stage_get_user_resizable (stage_win32->wrapper);
   /* The window size passed to CreateWindow includes the window
      decorations */
-  gint frame_width, frame_height;
-
-#if !defined (_MSC_VER) || (_MSC_VER < 1700)
-  frame_width = GetSystemMetrics (resizable ? SM_CXSIZEFRAME : SM_CXFIXEDFRAME);
-  frame_height = GetSystemMetrics (resizable ? SM_CYSIZEFRAME : SM_CYFIXEDFRAME);
-#else
-  /* MSVC 2012 and later returns wrong values from GetSystemMetrics()
-   * http://connect.microsoft.com/VisualStudio/feedback/details/753224/regression-getsystemmetrics-delivers-different-values
-   *
-   * For AdjustWindowRectEx(), it doesn't matter much whether the Window is resizble.
-   */
-
-  RECT cxrect = {0, 0, 0, 0};
-  AdjustWindowRectEx (&cxrect, WS_POPUP | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_THICKFRAME | WS_DLGFRAME, FALSE, 0);
-
-  frame_width = abs (cxrect.bottom);
-  frame_height = abs (cxrect.left);
-#endif
-  *width_out = width_in + frame_width * 2;
-  *height_out = height_in + frame_height * 2 + GetSystemMetrics (SM_CYCAPTION);
+  *width_out = width_in + GetSystemMetrics (resizable ? SM_CXSIZEFRAME
+					    : SM_CXFIXEDFRAME) * 2;
+  *height_out = height_in + GetSystemMetrics (resizable ? SM_CYSIZEFRAME
+					      : SM_CYFIXEDFRAME) * 2
+    + GetSystemMetrics (SM_CYCAPTION);
 }
 
 void
@@ -676,7 +661,7 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
  *
  * Return value: An HWND for the stage window.
  *
- *
+ * Since: 0.8
  */
 HWND
 clutter_win32_get_stage_window (ClutterStage *stage)
@@ -701,7 +686,7 @@ clutter_win32_get_stage_window (ClutterStage *stage)
  * Return value: The stage or NULL if a stage does not exist for the
  * window.
  *
- *
+ * Since: 0.8
  */
 ClutterStage *
 clutter_win32_get_stage_from_window (HWND hwnd)
@@ -786,7 +771,7 @@ set_foreign_window_callback (ClutterActor *actor,
  *
  * Return value: %TRUE if foreign window is valid
  *
- *
+ * Since: 0.8
  */
 gboolean
 clutter_win32_set_stage_foreign (ClutterStage *stage,

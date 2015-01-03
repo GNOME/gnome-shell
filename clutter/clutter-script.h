@@ -58,7 +58,7 @@ typedef struct _ClutterScriptClass      ClutterScriptClass;
  * intended for interpreted language bindings, but could be useful where the
  * programmer wants more control over the signal connection process.
  *
- *
+ * Since: 0.6
  */
 typedef void (* ClutterScriptConnectFunc) (ClutterScript *script,
                                            GObject       *object,
@@ -77,7 +77,7 @@ typedef void (* ClutterScriptConnectFunc) (ClutterScript *script,
  *
  * #ClutterScript error enumeration.
  *
- *
+ * Since: 0.6
  */
 typedef enum {
   CLUTTER_SCRIPT_ERROR_INVALID_TYPE_FUNCTION,
@@ -90,7 +90,7 @@ typedef enum {
  *
  * Error domain for the #ClutterScript errors
  *
- *
+ * Since: 0.6
  */
 #define CLUTTER_SCRIPT_ERROR    (clutter_script_error_quark ())
 GQuark clutter_script_error_quark (void);
@@ -101,7 +101,7 @@ GQuark clutter_script_error_quark (void);
  * The #ClutterScript structure contains only private data
  * and should be accessed using the provided API
  *
- *
+ * Since: 0.6
  */
 struct _ClutterScript
 {
@@ -120,7 +120,7 @@ struct _ClutterScript
  *
  * The #ClutterScriptClass structure contains only private data
  *
- *
+ * Since: 0.6
  */
 struct _ClutterScriptClass
 {
@@ -153,7 +153,7 @@ guint           clutter_script_load_from_data           (ClutterScript          
                                                          const gchar               *data,
                                                          gssize                     length,
                                                          GError                   **error);
-
+CLUTTER_AVAILABLE_IN_1_10
 guint           clutter_script_load_from_resource       (ClutterScript             *script,
                                                          const gchar               *resource_path,
                                                          GError                   **error);
@@ -167,6 +167,15 @@ GList *         clutter_script_list_objects             (ClutterScript          
 void            clutter_script_unmerge_objects          (ClutterScript             *script,
                                                          guint                      merge_id);
 void            clutter_script_ensure_objects           (ClutterScript             *script);
+
+CLUTTER_DEPRECATED_IN_1_12
+void            clutter_script_add_states               (ClutterScript             *script,
+                                                         const gchar               *name,
+                                                         ClutterState              *state);
+
+CLUTTER_DEPRECATED_IN_1_12
+ClutterState *  clutter_script_get_states               (ClutterScript             *script,
+                                                         const gchar               *name);
 
 void            clutter_script_connect_signals          (ClutterScript             *script,
                                                          gpointer                   user_data);
@@ -182,10 +191,10 @@ gchar *         clutter_script_lookup_filename          (ClutterScript          
 GType           clutter_script_get_type_from_name       (ClutterScript             *script,
                                                          const gchar               *type_name);
 
-
+CLUTTER_AVAILABLE_IN_1_10
 void            clutter_script_set_translation_domain   (ClutterScript             *script,
                                                          const gchar               *domain);
-
+CLUTTER_AVAILABLE_IN_1_10
 const gchar *   clutter_script_get_translation_domain   (ClutterScript             *script);
 
 const gchar *   clutter_get_script_id                   (GObject                   *gobject);

@@ -51,7 +51,7 @@ G_BEGIN_DECLS
  *
  * Error conditions returned by clutter_init() and clutter_init_with_args().
  *
- *
+ * Since: 0.2
  */
 typedef enum {
   CLUTTER_INIT_SUCCESS        =  1,
@@ -72,7 +72,7 @@ GQuark clutter_init_error_quark (void);
  * continually animating (and thus able to starve GTK+) than
  * vice-versa.
  *
- *
+ * Since: 0.8
  */
 #define CLUTTER_PRIORITY_REDRAW         (G_PRIORITY_HIGH_IDLE + 50)
 
@@ -123,7 +123,7 @@ guint                   clutter_threads_add_timeout_full        (gint           
 guint                   clutter_threads_add_repaint_func        (GSourceFunc    func,
                                                                  gpointer       data,
                                                                  GDestroyNotify notify);
-
+CLUTTER_AVAILABLE_IN_1_10
 guint                   clutter_threads_add_repaint_func_full   (ClutterRepaintFlags flags,
                                                                  GSourceFunc    func,
                                                                  gpointer       data,
@@ -140,6 +140,8 @@ ClutterActor *          clutter_get_keyboard_grab               (void);
 PangoFontMap *          clutter_get_font_map                    (void);
 
 ClutterTextDirection    clutter_get_default_text_direction      (void);
+
+guint                   clutter_get_default_frame_rate          (void);
 
 G_END_DECLS
 

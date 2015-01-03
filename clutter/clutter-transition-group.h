@@ -45,7 +45,7 @@ typedef struct _ClutterTransitionGroupClass             ClutterTransitionGroupCl
  * The <structname>ClutterTransitionGroup</structname> structure contains
  * private data and should only be accessed using the provided API.
  *
- *
+ * Since: 1.12
  */
 struct _ClutterTransitionGroup
 {
@@ -61,7 +61,7 @@ struct _ClutterTransitionGroup
  * The <structname>ClutterTransitionGroupClass</structname> structure
  * contains only private data.
  *
- *
+ * Since: 1.12
  */
 struct _ClutterTransitionGroupClass
 {
@@ -71,19 +71,19 @@ struct _ClutterTransitionGroupClass
   gpointer _padding[8];
 };
 
-
+CLUTTER_AVAILABLE_IN_1_12
 GType clutter_transition_group_get_type (void) G_GNUC_CONST;
 
-
+CLUTTER_AVAILABLE_IN_1_12
 ClutterTransition *     clutter_transition_group_new            (void);
 
-
+CLUTTER_AVAILABLE_IN_1_12
 void                    clutter_transition_group_add_transition         (ClutterTransitionGroup *group,
                                                                          ClutterTransition      *transition);
-
+CLUTTER_AVAILABLE_IN_1_12
 void                    clutter_transition_group_remove_transition      (ClutterTransitionGroup *group,
                                                                          ClutterTransition      *transition);
-
+CLUTTER_AVAILABLE_IN_1_12
 void                    clutter_transition_group_remove_all             (ClutterTransitionGroup *group);
 
 G_END_DECLS

@@ -15,7 +15,9 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, see <http://www.gnu.org/licenses/>.
+ * License along with this library; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
  */
 
 /**
@@ -53,7 +55,7 @@ static void                  cally_stage_deactivate_cb   (ClutterStage *stage,
 
 G_DEFINE_TYPE_WITH_CODE (CallyStage,
                          cally_stage,
-                         CALLY_TYPE_ACTOR,
+                         CALLY_TYPE_GROUP,
                          G_IMPLEMENT_INTERFACE (ATK_TYPE_WINDOW,
                                                 cally_stage_window_interface_init));
 

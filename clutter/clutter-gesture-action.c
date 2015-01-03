@@ -79,6 +79,8 @@
  *   gesture is cancelled, in which case the "cancel" gesture will be used
  *   instead.</para>
  * </refsect2>
+ *
+ * Since: 1.8
  */
 
 #ifdef HAVE_CONFIG_H
@@ -128,15 +130,6 @@ struct _ClutterGestureActionPrivate
 
 enum
 {
-  PROP_0,
-
-  PROP_N_TOUCH_POINTS,
-
-  PROP_LAST
-};
-
-enum
-{
   GESTURE_BEGIN,
   GESTURE_PROGRESS,
   GESTURE_END,
@@ -145,7 +138,6 @@ enum
   LAST_SIGNAL
 };
 
-static GParamSpec *gesture_props[PROP_LAST];
 static guint gesture_signals[LAST_SIGNAL] = { 0, };
 
 G_DEFINE_TYPE (ClutterGestureAction, clutter_gesture_action, CLUTTER_TYPE_ACTION);
@@ -221,67 +213,13 @@ gesture_unregister_point (ClutterGestureAction *action, gint position)
   g_array_remove_index (priv->points, position);
 }
 
-static void
-gesture_update_motion_point (GesturePoint *point,
-                             ClutterEvent *event)
-{
-  gfloat motion_x, motion_y;
-  gint64 _time;
-
-  clutter_event_get_coords (event, &motion_x, &motion_y);
-
-  clutter_event_free (point->last_event);
-  point->last_event = clutter_event_copy (event);
-
-  point->last_delta_x = motion_x - point->last_motion_x;
-  point->last_delta_y = motion_y - point->last_motion_y;
-  point->last_motion_x = motion_x;
-  point->last_motion_y = motion_y;
-
-  _time = clutter_event_get_time (event);
-  point->last_delta_time = _time - point->last_motion_time;
-  point->last_motion_time = _time;
-}
-
-static void
-gesture_update_release_point (GesturePoint *point,
-                              ClutterEvent *event)
-{
-  gint64 _time;
-
-  clutter_event_get_coords (event, &point->release_x, &point->release_y);
-
-  clutter_event_free (point->last_event);
-  point->last_event = clutter_event_copy (event);
-
-  /* Treat the release event as the continuation of the last motion,
-   * in case the user keeps the pointer still for a while before
-   * releasing it. */
-   _time = clutter_event_get_time (event);
-   point->last_delta_time += _time - point->last_motion_time;
-}
-
 static gint
-gesture_get_threshold (void)
+gesture_get_threshold (ClutterGestureAction *action)
 {
   gint threshold;
   ClutterSettings *settings = clutter_settings_get_default ();
   g_object_get (settings, "dnd-drag-threshold", &threshold, NULL);
   return threshold;
-}
-
-static gboolean
-gesture_point_pass_threshold (GesturePoint *point, ClutterEvent *event)
-{
-  gint drag_threshold = gesture_get_threshold ();
-  gfloat motion_x, motion_y;
-
-  clutter_event_get_coords (event, &motion_x, &motion_y);
-
-  if ((fabsf (point->press_y - motion_y) < drag_threshold) &&
-      (fabsf (point->press_x - motion_x) < drag_threshold))
-    return TRUE;
-  return FALSE;
 }
 
 static void
@@ -352,6 +290,8 @@ stage_captured_event_cb (ClutterActor       *stage,
   gint position, drag_threshold;
   gboolean return_value;
   GesturePoint *point;
+  gfloat motion_x, motion_y;
+  gint64 time;
 
   if ((point = gesture_find_point (action, event, &position)) == NULL)
     return CLUTTER_EVENT_PROPAGATE;
@@ -377,31 +317,39 @@ stage_captured_event_cb (ClutterActor       *stage,
       /* Follow same code path as a touch event update */
 
     case CLUTTER_TOUCH_UPDATE:
+      clutter_event_get_coords (event,
+                                &motion_x,
+                                &motion_y);
+
+      if (priv->points->len < priv->requested_nb_points)
+        return CLUTTER_EVENT_PROPAGATE;
+
+      drag_threshold = gesture_get_threshold (action);
+
       if (!priv->in_gesture)
         {
-          if (priv->points->len < priv->requested_nb_points)
-            {
-              gesture_update_motion_point (point, event);
-              return CLUTTER_EVENT_PROPAGATE;
-            }
-
           /* Wait until the drag threshold has been exceeded
            * before starting _TRIGGER_EDGE_AFTER gestures. */
           if (priv->edge == CLUTTER_GESTURE_TRIGGER_EDGE_AFTER &&
-              gesture_point_pass_threshold (point, event))
-            {
-              gesture_update_motion_point (point, event);
-              return CLUTTER_EVENT_PROPAGATE;
-            }
+              (fabsf (point->press_y - motion_y) < drag_threshold) &&
+              (fabsf (point->press_x - motion_x) < drag_threshold))
+            return CLUTTER_EVENT_PROPAGATE;
 
           if (!begin_gesture(action, actor))
-            {
-              gesture_update_motion_point (point, event);
-              return CLUTTER_EVENT_PROPAGATE;
-            }
+            return CLUTTER_EVENT_PROPAGATE;
         }
 
-      gesture_update_motion_point (point, event);
+      clutter_event_free (point->last_event);
+      point->last_event = clutter_event_copy (event);
+
+      point->last_delta_x = motion_x - point->last_motion_x;
+      point->last_delta_y = motion_y - point->last_motion_y;
+      point->last_motion_x = motion_x;
+      point->last_motion_y = motion_y;
+
+      time = clutter_event_get_time (event);
+      point->last_delta_time = time - point->last_motion_time;
+      point->last_motion_time = time;
 
       g_signal_emit (action, gesture_signals[GESTURE_PROGRESS], 0, actor,
                      &return_value);
@@ -413,10 +361,9 @@ stage_captured_event_cb (ClutterActor       *stage,
 
       /* Check if a _TRIGGER_EDGE_BEFORE gesture needs to be cancelled because
        * the drag threshold has been exceeded. */
-      drag_threshold = gesture_get_threshold ();
       if (priv->edge == CLUTTER_GESTURE_TRIGGER_EDGE_BEFORE &&
-          ((fabsf (point->press_y - point->last_motion_y) > drag_threshold) ||
-           (fabsf (point->press_x - point->last_motion_x) > drag_threshold)))
+          ((fabsf (point->press_y - motion_y) > drag_threshold) ||
+           (fabsf (point->press_x - motion_x) > drag_threshold)))
         {
           cancel_gesture (action);
           return CLUTTER_EVENT_PROPAGATE;
@@ -426,11 +373,20 @@ stage_captured_event_cb (ClutterActor       *stage,
     case CLUTTER_BUTTON_RELEASE:
     case CLUTTER_TOUCH_END:
       {
-        gesture_update_release_point (point, event);
+        clutter_event_get_coords (event, &point->release_x, &point->release_y);
+
+        clutter_event_free (point->last_event);
+        point->last_event = clutter_event_copy (event);
 
         if (priv->in_gesture &&
             ((priv->points->len - 1) < priv->requested_nb_points))
           {
+            /* Treat the release event as the continuation of the last motion,
+             * in case the user keeps the pointer still for a while before
+             * releasing it. */
+            time = clutter_event_get_time (event);
+            point->last_delta_time += time - point->last_motion_time;
+
             priv->in_gesture = FALSE;
             g_signal_emit (action, gesture_signals[GESTURE_END], 0, actor);
           }
@@ -441,8 +397,6 @@ stage_captured_event_cb (ClutterActor       *stage,
 
     case CLUTTER_TOUCH_CANCEL:
       {
-        gesture_update_release_point (point, event);
-
         if (priv->in_gesture)
           {
             priv->in_gesture = FALSE;
@@ -494,8 +448,7 @@ actor_captured_event_cb (ClutterActor *actor,
 
   /* Start the gesture immediately if the gesture has no
    * _TRIGGER_EDGE_AFTER drag threshold. */
-  if ((priv->points->len < priv->requested_nb_points) &&
-      (priv->edge != CLUTTER_GESTURE_TRIGGER_EDGE_AFTER))
+  if (priv->edge != CLUTTER_GESTURE_TRIGGER_EDGE_AFTER)
     begin_gesture (action, actor);
 
   return CLUTTER_EVENT_PROPAGATE;
@@ -556,6 +509,8 @@ default_event_handler (ClutterGestureAction *action,
  *
  * This function can be called by #ClutterGestureAction subclasses that needs
  * to change the %CLUTTER_GESTURE_TRIGGER_EDGE_AFTER default.
+ *
+ * Since: 1.14
  */
 void
 _clutter_gesture_action_set_threshold_trigger_edge  (ClutterGestureAction     *action,
@@ -565,90 +520,17 @@ _clutter_gesture_action_set_threshold_trigger_edge  (ClutterGestureAction     *a
 }
 
 static void
-clutter_gesture_action_set_property (GObject      *gobject,
-                                     guint         prop_id,
-                                     const GValue *value,
-                                     GParamSpec   *pspec)
-{
-  ClutterGestureAction *self = CLUTTER_GESTURE_ACTION (gobject);
-
-  switch (prop_id)
-    {
-    case PROP_N_TOUCH_POINTS:
-      clutter_gesture_action_set_n_touch_points (self, g_value_get_int (value));
-      break;
-
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
-      break;
-    }
-}
-
-static void
-clutter_gesture_action_get_property (GObject    *gobject,
-                                     guint       prop_id,
-                                     GValue     *value,
-                                     GParamSpec *pspec)
-{
-  ClutterGestureAction *self = CLUTTER_GESTURE_ACTION (gobject);
-
-  switch (prop_id)
-    {
-    case PROP_N_TOUCH_POINTS:
-      g_value_set_int (value, self->priv->requested_nb_points);
-      break;
-
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
-      break;
-    }
-}
-
-static void
-clutter_gesture_action_finalize (GObject *gobject)
-{
-  ClutterGestureActionPrivate *priv = CLUTTER_GESTURE_ACTION (gobject)->priv;
-
-  g_array_unref (priv->points);
-
-  G_OBJECT_CLASS (clutter_gesture_action_parent_class)->finalize (gobject);
-}
-
-static void
 clutter_gesture_action_class_init (ClutterGestureActionClass *klass)
 {
-  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorMetaClass *meta_class = CLUTTER_ACTOR_META_CLASS (klass);
 
   g_type_class_add_private (klass, sizeof (ClutterGestureActionPrivate));
-
-  gobject_class->finalize = clutter_gesture_action_finalize;
-  gobject_class->set_property = clutter_gesture_action_set_property;
-  gobject_class->get_property = clutter_gesture_action_get_property;
 
   meta_class->set_actor = clutter_gesture_action_set_actor;
 
   klass->gesture_begin = default_event_handler;
   klass->gesture_progress = default_event_handler;
   klass->gesture_prepare = default_event_handler;
-
-  /**
-   * ClutterGestureAction:n-touch-points:
-   *
-   * Number of touch points to trigger a gesture action.
-   *
-   * Since: 1.16
-   */
-  gesture_props[PROP_N_TOUCH_POINTS] =
-    g_param_spec_int ("n-touch-points",
-                      P_("Number touch points"),
-                      P_("Number of touch points"),
-                      1, G_MAXINT, 1,
-                      CLUTTER_PARAM_READWRITE);
-
-  g_object_class_install_properties (gobject_class,
-                                     PROP_LAST,
-                                     gesture_props);
 
   /**
    * ClutterGestureAction::gesture-begin:
@@ -661,7 +543,7 @@ clutter_gesture_action_class_init (ClutterGestureActionClass *klass)
    * Return value: %TRUE if the gesture should start, and %FALSE if
    *   the gesture should be ignored.
    *
-   *
+   * Since: 1.8
    */
   gesture_signals[GESTURE_BEGIN] =
     g_signal_new (I_("gesture-begin"),
@@ -684,7 +566,7 @@ clutter_gesture_action_class_init (ClutterGestureActionClass *klass)
    * Return value: %TRUE if the gesture should continue, and %FALSE if
    *   the gesture should be cancelled.
    *
-   *
+   * Since: 1.8
    */
   gesture_signals[GESTURE_PROGRESS] =
     g_signal_new (I_("gesture-progress"),
@@ -707,7 +589,7 @@ clutter_gesture_action_class_init (ClutterGestureActionClass *klass)
    * This signal is emitted if and only if the #ClutterGestureAction::gesture-begin
    * signal has been emitted first.
    *
-   *
+   * Since: 1.8
    */
   gesture_signals[GESTURE_END] =
     g_signal_new (I_("gesture-end"),
@@ -730,7 +612,7 @@ clutter_gesture_action_class_init (ClutterGestureActionClass *klass)
    * This signal is emitted if and only if the #ClutterGestureAction::gesture-begin
    * signal has been emitted first.
    *
-   *
+   * Since: 1.8
    */
   gesture_signals[GESTURE_CANCEL] =
     g_signal_new (I_("gesture-cancel"),
@@ -763,7 +645,7 @@ clutter_gesture_action_init (ClutterGestureAction *self)
  *
  * Return value: the newly created #ClutterGestureAction
  *
- *
+ * Since: 1.8
  */
 ClutterAction *
 clutter_gesture_action_new (void)
@@ -784,7 +666,7 @@ clutter_gesture_action_new (void)
  * Retrieves the coordinates, in stage space, of the press event
  * that started the dragging for a specific touch point.
  *
- *
+ * Since: 1.8
  */
 void
 clutter_gesture_action_get_press_coords (ClutterGestureAction *action,
@@ -819,7 +701,7 @@ clutter_gesture_action_get_press_coords (ClutterGestureAction *action,
  * Retrieves the coordinates, in stage space, of the latest motion
  * event during the dragging.
  *
- *
+ * Since: 1.8
  */
 void
 clutter_gesture_action_get_motion_coords (ClutterGestureAction *action,
@@ -855,6 +737,8 @@ clutter_gesture_action_get_motion_coords (ClutterGestureAction *action,
  * during the dragging.
  *
  * Return value: the distance since last motion event
+ *
+ * Since: 1.12
  */
 gfloat
 clutter_gesture_action_get_motion_delta (ClutterGestureAction *action,
@@ -896,7 +780,7 @@ clutter_gesture_action_get_motion_delta (ClutterGestureAction *action,
  * Retrieves the coordinates, in stage space, where the touch point was
  * last released.
  *
- *
+ * Since: 1.8
  */
 void
 clutter_gesture_action_get_release_coords (ClutterGestureAction *action,
@@ -930,6 +814,8 @@ clutter_gesture_action_get_release_coords (ClutterGestureAction *action,
  *
  * Retrieves the velocity, in stage pixels per millisecond, of the
  * latest motion event during the dragging.
+ *
+ * Since: 1.12
  */
 gfloat
 clutter_gesture_action_get_velocity (ClutterGestureAction *action,
@@ -968,7 +854,7 @@ clutter_gesture_action_get_velocity (ClutterGestureAction *action,
  *
  * Return value: the number of points to trigger the gesture.
  *
- *
+ * Since: 1.12
  */
 gint
 clutter_gesture_action_get_n_touch_points (ClutterGestureAction *action)
@@ -985,7 +871,7 @@ clutter_gesture_action_get_n_touch_points (ClutterGestureAction *action)
  *
  * Sets the number of points needed to trigger the gesture.
  *
- *
+ * Since: 1.12
  */
 void
 clutter_gesture_action_set_n_touch_points (ClutterGestureAction *action,
@@ -997,9 +883,6 @@ clutter_gesture_action_set_n_touch_points (ClutterGestureAction *action,
   g_return_if_fail (nb_points >= 1);
 
   priv = action->priv;
-
-  if (priv->requested_nb_points == nb_points)
-    return;
 
   priv->requested_nb_points = nb_points;
 
@@ -1016,7 +899,7 @@ clutter_gesture_action_set_n_touch_points (ClutterGestureAction *action,
             clutter_actor_meta_get_actor (CLUTTER_ACTOR_META (action));
           gint i, drag_threshold;
 
-          drag_threshold = gesture_get_threshold ();
+          drag_threshold = gesture_get_threshold (action);
 
           for (i = 0; i < priv->points->len; i++)
             {
@@ -1031,9 +914,6 @@ clutter_gesture_action_set_n_touch_points (ClutterGestureAction *action,
             }
         }
     }
-
-  g_object_notify_by_pspec (G_OBJECT (action),
-                            gesture_props[PROP_N_TOUCH_POINTS]);
 }
 
 /**
@@ -1043,6 +923,8 @@ clutter_gesture_action_set_n_touch_points (ClutterGestureAction *action,
  * Retrieves the number of points currently active.
  *
  * Return value: the number of points currently active.
+ *
+ * Since: 1.12
  */
 guint
 clutter_gesture_action_get_n_current_points (ClutterGestureAction *action)
@@ -1060,6 +942,8 @@ clutter_gesture_action_get_n_current_points (ClutterGestureAction *action)
  * Retrieves the #ClutterEventSequence of a touch point.
  *
  * Return value: (transfer none): the #ClutterEventSequence of a touch point.
+ *
+ * Since: 1.12
  */
 ClutterEventSequence *
 clutter_gesture_action_get_sequence (ClutterGestureAction *action,
@@ -1080,6 +964,8 @@ clutter_gesture_action_get_sequence (ClutterGestureAction *action,
  * Retrieves the #ClutterInputDevice of a touch point.
  *
  * Return value: (transfer none): the #ClutterInputDevice of a touch point.
+ *
+ * Since: 1.12
  */
 ClutterInputDevice *
 clutter_gesture_action_get_device (ClutterGestureAction *action,
@@ -1100,6 +986,8 @@ clutter_gesture_action_get_device (ClutterGestureAction *action,
  * clutter_event_copy() if you need to store the reference somewhere.
  *
  * Return value: (transfer none): the last #ClutterEvent for a touch point.
+ *
+ * Since: 1.14
  */
 const ClutterEvent *
 clutter_gesture_action_get_last_event (ClutterGestureAction *action,
@@ -1120,6 +1008,8 @@ clutter_gesture_action_get_last_event (ClutterGestureAction *action,
  * @action: a #ClutterGestureAction
  *
  * Cancel a #ClutterGestureAction before it begins
+ *
+ * Since: 1.12
  */
 void
 clutter_gesture_action_cancel (ClutterGestureAction *action)

@@ -51,7 +51,7 @@ typedef struct _ClutterTextClass   ClutterTextClass;
  *
  * The #ClutterText struct contains only private data.
  *
- *
+ * Since: 1.0
  */
 struct _ClutterText
 {
@@ -65,11 +65,12 @@ struct _ClutterText
  * ClutterTextClass:
  * @text_changed: class handler for the #ClutterText::text-changed signal
  * @activate: class handler for the #ClutterText::activate signal
+ * @cursor_event: class handler for the #ClutterText::cursor-event signal
  * @cursor_changed: class handler for the #ClutterText::cursor-changed signal
  *
  * The #ClutterTextClass struct contains only private data.
  *
- *
+ * Since: 1.0
  */
 struct _ClutterTextClass
 {
@@ -80,6 +81,8 @@ struct _ClutterTextClass
   /* signals, not vfuncs */
   void (* text_changed)   (ClutterText           *self);
   void (* activate)       (ClutterText           *self);
+  void (* cursor_event)   (ClutterText           *self,
+                           const ClutterGeometry *geometry);
   void (* cursor_changed) (ClutterText           *self);
 
   /*< private >*/
@@ -101,11 +104,11 @@ ClutterActor *        clutter_text_new_full             (const gchar          *f
                                                          const ClutterColor   *color);
 ClutterActor *        clutter_text_new_with_text        (const gchar          *font_name,
                                                          const gchar          *text);
-
+CLUTTER_AVAILABLE_IN_1_10
 ClutterActor *        clutter_text_new_with_buffer      (ClutterTextBuffer    *buffer);
-
+CLUTTER_AVAILABLE_IN_1_10
 ClutterTextBuffer *   clutter_text_get_buffer           (ClutterText          *self);
-
+CLUTTER_AVAILABLE_IN_1_10
 void                  clutter_text_set_buffer           (ClutterText          *self,
                                                          ClutterTextBuffer    *buffer);
 const gchar *         clutter_text_get_text             (ClutterText          *self);
@@ -213,7 +216,7 @@ void                  clutter_text_get_selected_text_color  (ClutterText        
                                                              ClutterColor         *color);
 
 gboolean              clutter_text_activate             (ClutterText          *self);
-
+CLUTTER_AVAILABLE_IN_1_10
 gint                  clutter_text_coords_to_position   (ClutterText          *self,
                                                          gfloat                x,
                                                          gfloat                y);

@@ -50,7 +50,7 @@ typedef struct _ClutterRotateActionClass         ClutterRotateActionClass;
  * The <structname>ClutterRotateAction</structname> structure contains
  * only private data and should be accessed using the provided API
  *
- *
+ * Since: 1.12
  */
 struct _ClutterRotateAction
 {
@@ -67,7 +67,7 @@ struct _ClutterRotateAction
  * The <structname>ClutterRotateActionClass</structname> structure contains
  * only private data.
  *
- *
+ * Since: 1.12
  */
 struct _ClutterRotateActionClass
 {
@@ -89,10 +89,10 @@ struct _ClutterRotateActionClass
   void (* _clutter_rotate_action7) (void);
 };
 
-
+CLUTTER_AVAILABLE_IN_1_12
 GType clutter_rotate_action_get_type (void) G_GNUC_CONST;
 
-
+CLUTTER_AVAILABLE_IN_1_12
 ClutterAction *clutter_rotate_action_new        (void);
 
 G_END_DECLS

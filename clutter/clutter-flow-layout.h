@@ -50,7 +50,7 @@ typedef struct _ClutterFlowLayoutClass          ClutterFlowLayoutClass;
  * The #ClutterFlowLayout structure contains only private data
  * and should be accessed using the provided API
  *
- *
+ * Since: 1.2
  */
 struct _ClutterFlowLayout
 {
@@ -66,7 +66,7 @@ struct _ClutterFlowLayout
  * The #ClutterFlowLayoutClass structure contains only private data
  * and should be accessed using the provided API
  *
- *
+ * Since: 1.2
  */
 struct _ClutterFlowLayoutClass
 {
@@ -104,9 +104,6 @@ void                   clutter_flow_layout_set_row_height     (ClutterFlowLayout
 void                   clutter_flow_layout_get_row_height     (ClutterFlowLayout      *layout,
                                                                gfloat                 *min_height,
                                                                gfloat                 *max_height);
-void                   clutter_flow_layout_set_snap_to_grid   (ClutterFlowLayout      *layout,
-                                                               gboolean                snap_to_grid);
-gboolean               clutter_flow_layout_get_snap_to_grid   (ClutterFlowLayout      *layout);
 
 G_END_DECLS
 

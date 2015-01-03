@@ -51,7 +51,7 @@ typedef struct _ClutterCanvasClass      ClutterCanvasClass;
  * private data and should only be accessed using the provided
  * API.
  *
- *
+ * Since: 1.10
  */
 struct _ClutterCanvas
 {
@@ -68,7 +68,7 @@ struct _ClutterCanvas
  * The <structname>ClutterCanvasClass</structname> structure contains
  * private data.
  *
- *
+ * Since: 1.10
  */
 struct _ClutterCanvasClass
 {
@@ -85,12 +85,12 @@ struct _ClutterCanvasClass
   gpointer _padding[16];
 };
 
-
+CLUTTER_AVAILABLE_IN_1_10
 GType clutter_canvas_get_type (void) G_GNUC_CONST;
 
-
+CLUTTER_AVAILABLE_IN_1_10
 ClutterContent *        clutter_canvas_new              (void);
-
+CLUTTER_AVAILABLE_IN_1_10
 void                    clutter_canvas_set_size         (ClutterCanvas *canvas,
                                                          int            width,
                                                          int            height);
