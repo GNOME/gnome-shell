@@ -361,6 +361,9 @@ void                meta_monitor_manager_apply_configuration (MetaMonitorManager
 void                meta_monitor_manager_confirm_configuration (MetaMonitorManager *manager,
                                                                 gboolean            ok);
 
+void               meta_output_parse_edid (MetaOutput *output,
+                                           GBytes     *edid);
+
 void               meta_crtc_info_free   (MetaCRTCInfo   *info);
 void               meta_output_info_free (MetaOutputInfo *info);
 

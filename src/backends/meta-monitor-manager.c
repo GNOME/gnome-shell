@@ -35,6 +35,7 @@
 #include <meta/main.h>
 #include "util-private.h"
 #include <meta/errors.h>
+#include "edid.h"
 #include "meta-monitor-config.h"
 #include "backends/x11/meta-monitor-manager-xrandr.h"
 #include "meta-backend-private.h"
@@ -1208,6 +1209,38 @@ meta_monitor_manager_rebuild_derived (MetaMonitorManager *manager)
   g_signal_emit_by_name (manager, "monitors-changed");
 
   g_free (old_monitor_infos);
+}
+
+void
+meta_output_parse_edid (MetaOutput *meta_output,
+                        GBytes     *edid)
+{
+  MonitorInfo *parsed_edid;
+  gsize len;
+
+  parsed_edid = decode_edid (g_bytes_get_data (edid, &len));
+
+  if (parsed_edid)
+    {
+      meta_output->vendor = g_strndup (parsed_edid->manufacturer_code, 4);
+      if (parsed_edid->dsc_product_name[0])
+        meta_output->product = g_strndup (parsed_edid->dsc_product_name, 14);
+      else
+        meta_output->product = g_strdup_printf ("0x%04x", (unsigned) parsed_edid->product_code);
+      if (parsed_edid->dsc_serial_number[0])
+        meta_output->serial = g_strndup (parsed_edid->dsc_serial_number, 14);
+      else
+        meta_output->serial = g_strdup_printf ("0x%08x", parsed_edid->serial_number);
+
+      g_free (parsed_edid);
+    }
+
+  if (!meta_output->vendor)
+    {
+      meta_output->vendor = g_strdup ("unknown");
+      meta_output->product = g_strdup ("unknown");
+      meta_output->serial = g_strdup ("unknown");
+    }
 }
 
 void

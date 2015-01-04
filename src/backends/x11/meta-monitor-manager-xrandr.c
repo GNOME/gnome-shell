@@ -41,7 +41,6 @@
 #include "meta-backend-x11.h"
 #include <meta/main.h>
 #include <meta/errors.h>
-#include "edid.h"
 #include "meta-monitor-config.h"
 
 #define ALL_TRANSFORMS ((1 << (META_MONITOR_TRANSFORM_FLIPPED_270 + 1)) - 1)
@@ -689,7 +688,6 @@ meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
       if (output->connection != RR_Disconnected)
 	{
           GBytes *edid;
-          MonitorInfo *parsed_edid;
 
 	  meta_output->winsys_id = resources->outputs[i];
 	  meta_output->name = g_strdup (output->name);
@@ -697,33 +695,10 @@ meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
           edid = read_output_edid (manager_xrandr, meta_output->winsys_id);
           if (edid)
             {
-              gsize len;
-
-              parsed_edid = decode_edid (g_bytes_get_data (edid, &len));
-              if (parsed_edid)
-                {
-                  meta_output->vendor = g_strndup (parsed_edid->manufacturer_code, 4);
-                  if (parsed_edid->dsc_product_name[0])
-                    meta_output->product = g_strndup (parsed_edid->dsc_product_name, 14);
-                  else
-                    meta_output->product = g_strdup_printf ("0x%04x", (unsigned)parsed_edid->product_code);
-                  if (parsed_edid->dsc_serial_number[0])
-                    meta_output->serial = g_strndup (parsed_edid->dsc_serial_number, 14);
-                  else
-                    meta_output->serial = g_strdup_printf ("0x%08x", parsed_edid->serial_number);
-
-                  g_free (parsed_edid);
-                }
-
+              meta_output_parse_edid (meta_output, edid);
               g_bytes_unref (edid);
             }
 
-          if (!meta_output->vendor)
-            {
-              meta_output->vendor = g_strdup ("unknown");
-              meta_output->product = g_strdup ("unknown");
-              meta_output->serial = g_strdup ("unknown");
-            }
 	  meta_output->width_mm = output->mm_width;
 	  meta_output->height_mm = output->mm_height;
 	  meta_output->subpixel_order = COGL_SUBPIXEL_ORDER_UNKNOWN;

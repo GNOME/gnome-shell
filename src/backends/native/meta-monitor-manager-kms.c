@@ -39,7 +39,6 @@
 
 #include <meta/main.h>
 #include <meta/errors.h>
-#include "edid.h"
 
 #include <gudev/gudev.h>
 
@@ -515,26 +514,8 @@ meta_monitor_manager_kms_read_current (MetaMonitorManager *manager)
           edid = read_output_edid (manager_kms, meta_output);
           if (edid)
             {
-              MonitorInfo *parsed_edid;
-              gsize len;
-
-              parsed_edid = decode_edid (g_bytes_get_data (edid, &len));
-              if (parsed_edid)
-                {
-                  meta_output->vendor = g_strndup (parsed_edid->manufacturer_code, 4);
-                  meta_output->product = g_strndup (parsed_edid->dsc_product_name, 14);
-                  meta_output->serial = g_strndup (parsed_edid->dsc_serial_number, 14);
-
-                  g_free (parsed_edid);
-                }
-
+              meta_output_parse_edid (meta_output, edid);
               g_bytes_unref (edid);
-            }
-          if (!meta_output->vendor)
-            {
-              meta_output->vendor = g_strdup ("unknown");
-              meta_output->product = g_strdup ("unknown");
-              meta_output->serial = g_strdup ("unknown");
             }
 
           /* MetaConnectorType matches DRM's connector types */
