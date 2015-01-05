@@ -1059,7 +1059,7 @@ meta_monitor_manager_xrandr_apply_configuration (MetaMonitorManager *manager,
 
           if (ok != Success)
             {
-              meta_warning ("Configuring CRTC %d with mode %d (%d x %d @ %f) at position %d, %d and transfrom %u failed\n",
+              meta_warning ("Configuring CRTC %d with mode %d (%d x %d @ %f) at position %d, %d and transform %u failed\n",
                             (unsigned)(crtc->crtc_id), (unsigned)(mode->mode_id),
                             mode->width, mode->height, (float)mode->refresh_rate,
                             crtc_info->x, crtc_info->y, crtc_info->transform);
