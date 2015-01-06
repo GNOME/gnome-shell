@@ -601,6 +601,7 @@ const Calendar = new Lang.Class({
         beginDate.setHours(12);
 
         this._calendarBegin = new Date(beginDate);
+        this._markedAsToday = now;
 
         let year = beginDate.getYear();
 
@@ -692,7 +693,7 @@ const Calendar = new Lang.Class({
         else
             this._monthLabel.text = this._selectedDate.toLocaleFormat(this._headerFormat);
 
-        if (!this._calendarBegin || !_sameMonth(this._selectedDate, this._calendarBegin))
+        if (!this._calendarBegin || !_sameMonth(this._selectedDate, this._calendarBegin) || !_sameDay(now, this._markedAsToday))
             this._rebuildCalendar();
 
         this._buttons.forEach(Lang.bind(this, function(button) {
