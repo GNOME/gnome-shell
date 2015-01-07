@@ -204,7 +204,8 @@ const SearchResultsBase = new Lang.Class({
                     return;
                 }
                 if (metas.length != metasNeeded.length) {
-                    log('Wrong number of result metas returned by search provider');
+                    log('Wrong number of result metas returned by search provider ' + this.provider.id +
+                        ': expected ' + metasNeeded.length + ' but got ' + metas.length);
                     callback(false);
                     return;
                 }
