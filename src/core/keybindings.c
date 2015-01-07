@@ -489,41 +489,6 @@ reload_iso_next_group_combos (MetaKeyBindingManager *keys)
 }
 
 static void
-binding_reload_keycode_foreach (gpointer key,
-                                gpointer value,
-                                gpointer data)
-{
-  MetaKeyBindingManager *keys = data;
-  MetaKeyBinding *binding = value;
-
-  if (binding->keysym)
-    binding->keycode = get_first_keycode_for_keysym (keys, binding->keysym);
-}
-
-static void
-reload_keycodes (MetaKeyBindingManager *keys)
-{
-  meta_topic (META_DEBUG_KEYBINDINGS,
-              "Reloading keycodes for binding tables\n");
-
-  determine_keymap_num_levels (keys);
-
-  if (keys->overlay_key_combo.keysym != 0)
-    {
-      keys->overlay_key_combo.keycode =
-        get_first_keycode_for_keysym (keys, keys->overlay_key_combo.keysym);
-    }
-  else
-    {
-      keys->overlay_key_combo.keycode = 0;
-    }
-
-  reload_iso_next_group_combos (keys);
-
-  g_hash_table_foreach (keys->key_bindings, binding_reload_keycode_foreach, keys);
-}
-
-static void
 devirtualize_modifiers (MetaKeyBindingManager *keys,
                         MetaVirtualModifier     modifiers,
                         unsigned int           *mask)
@@ -553,28 +518,37 @@ devirtualize_modifiers (MetaKeyBindingManager *keys,
 }
 
 static void
-binding_reload_modifiers_foreach (gpointer key,
-                                  gpointer value,
-                                  gpointer data)
+binding_reload_combos_foreach (gpointer key,
+                               gpointer value,
+                               gpointer data)
 {
   MetaKeyBindingManager *keys = data;
   MetaKeyBinding *binding = value;
 
+  if (binding->keysym)
+    binding->keycode = get_first_keycode_for_keysym (keys, binding->keysym);
+
   devirtualize_modifiers (keys, binding->modifiers, &binding->mask);
-  meta_topic (META_DEBUG_KEYBINDINGS,
-              " Devirtualized mods 0x%x -> 0x%x (%s)\n",
-              binding->modifiers,
-              binding->mask,
-              binding->name);
 }
 
 static void
-reload_modifiers (MetaKeyBindingManager *keys)
+reload_combos (MetaKeyBindingManager *keys)
 {
-  meta_topic (META_DEBUG_KEYBINDINGS,
-              "Reloading keycodes for binding tables\n");
+  determine_keymap_num_levels (keys);
 
-  g_hash_table_foreach (keys->key_bindings, binding_reload_modifiers_foreach, keys);
+  if (keys->overlay_key_combo.keysym != 0)
+    {
+      keys->overlay_key_combo.keycode =
+        get_first_keycode_for_keysym (keys, keys->overlay_key_combo.keysym);
+    }
+  else
+    {
+      keys->overlay_key_combo.keycode = 0;
+    }
+
+  reload_iso_next_group_combos (keys);
+
+  g_hash_table_foreach (keys->key_bindings, binding_reload_combos_foreach, keys);
 }
 
 static void
@@ -925,9 +899,7 @@ on_keymap_changed (MetaBackend *backend,
    * even when only the keymap changes */
   reload_modmap (keys);
 
-  reload_keycodes (keys);
-
-  reload_modifiers (keys);
+  reload_combos (keys);
 
   rebuild_binding_index (keys);
 
@@ -1149,8 +1121,7 @@ prefs_changed_callback (MetaPreference pref,
       ungrab_key_bindings (display);
       rebuild_key_binding_table (keys);
       rebuild_special_bindings (keys);
-      reload_keycodes (keys);
-      reload_modifiers (keys);
+      reload_combos (keys);
       rebuild_binding_index (keys);
       grab_key_bindings (display);
       break;
@@ -4112,8 +4083,7 @@ meta_display_init_keys (MetaDisplay *display)
   rebuild_key_binding_table (keys);
   rebuild_special_bindings (keys);
 
-  reload_keycodes (keys);
-  reload_modifiers (keys);
+  reload_combos (keys);
   rebuild_binding_index (keys);
 
   update_window_grab_modifiers (keys);
