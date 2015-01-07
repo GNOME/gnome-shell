@@ -180,14 +180,6 @@ key_binding_key (guint32 keycode,
   return (key << 16) | (mask & 0xffff);
 }
 
-static const char *
-keysym_name (xkb_keysym_t keysym)
-{
-  static char name[32] = "";
-  xkb_keysym_get_name (keysym, name, sizeof (name));
-  return name;
-}
-
 static void
 reload_modmap (MetaKeyBindingManager *keys)
 {
@@ -1207,7 +1199,6 @@ static void
 meta_change_keygrab (MetaKeyBindingManager *keys,
                      Window                  xwindow,
                      gboolean                grab,
-                     int                     keysym,
                      unsigned int            keycode,
                      int                     modmask)
 {
@@ -1228,10 +1219,9 @@ meta_change_keygrab (MetaKeyBindingManager *keys,
    */
 
   meta_topic (META_DEBUG_KEYBINDINGS,
-              "%s keybinding %s keycode %d mask 0x%x on 0x%lx\n",
+              "%s keybinding keycode %d mask 0x%x on 0x%lx\n",
               grab ? "Grabbing" : "Ungrabbing",
-              keysym_name (keysym), keycode,
-              modmask, xwindow);
+              keycode, modmask, xwindow);
 
   ignored_mask = 0;
   while (ignored_mask <= keys->ignored_modifier_mask)
@@ -1288,7 +1278,6 @@ change_keygrab_foreach (gpointer key,
     return;
 
   meta_change_keygrab (data->keys, data->xwindow, data->grab,
-                       binding->keysym,
                        binding->keycode,
                        binding->mask);
 }
@@ -1318,7 +1307,6 @@ meta_screen_change_keygrabs (MetaScreen *screen,
 
   if (keys->overlay_key_combo.keycode != 0)
     meta_change_keygrab (keys, screen->xroot, grab,
-                         keys->overlay_key_combo.keysym,
                          keys->overlay_key_combo.keycode,
                          keys->overlay_key_combo.modifiers);
 
@@ -1330,7 +1318,6 @@ meta_screen_change_keygrabs (MetaScreen *screen,
           if (keys->iso_next_group_combos[i].keycode != 0)
             {
               meta_change_keygrab (keys, screen->xroot, grab,
-                                   keys->iso_next_group_combos[i].keysym,
                                    keys->iso_next_group_combos[i].keycode,
                                    keys->iso_next_group_combos[i].modifiers);
             }
@@ -1482,7 +1469,7 @@ meta_display_grab_accelerator (MetaDisplay *display,
     return META_KEYBINDING_ACTION_NONE;
 
   if (META_IS_BACKEND_X11 (backend))
-    meta_change_keygrab (keys, display->screen->xroot, TRUE, keysym, keycode, mask);
+    meta_change_keygrab (keys, display->screen->xroot, TRUE, keycode, mask);
 
   grab = g_new0 (MetaKeyGrab, 1);
   grab->action = next_dynamic_keybinding_action ();
@@ -1537,7 +1524,6 @@ meta_display_ungrab_accelerator (MetaDisplay *display,
 
       if (META_IS_BACKEND_X11 (backend))
         meta_change_keygrab (keys, display->screen->xroot, FALSE,
-                             binding->keysym,
                              binding->keycode,
                              binding->mask);
 
