@@ -153,14 +153,13 @@ typedef struct _MetaKeyGrab MetaKeyGrab;
 struct _MetaKeyGrab {
   char *name;
   guint action;
-  MetaKeyCombo *combo;
+  MetaKeyCombo combo;
 };
 
 static void
 meta_key_grab_free (MetaKeyGrab *grab)
 {
   g_free (grab->name);
-  g_free (grab->combo);
   g_free (grab);
 }
 
@@ -654,7 +653,7 @@ rebuild_binding_table (MetaKeyBindingManager *keys,
   while (g)
     {
       MetaKeyGrab *grab = (MetaKeyGrab*)g->data;
-      if (grab->combo && (grab->combo->keysym != None || grab->combo->keycode != 0))
+      if (grab->combo.keysym != None || grab->combo.keycode != 0)
         {
           MetaKeyHandler *handler = HANDLER ("external-grab");
 
@@ -663,9 +662,9 @@ rebuild_binding_table (MetaKeyBindingManager *keys,
           b->name = grab->name;
           b->handler = handler;
           b->flags = handler->flags;
-          b->keysym = grab->combo->keysym;
-          b->keycode = grab->combo->keycode;
-          b->modifiers = grab->combo->modifiers;
+          b->keysym = grab->combo.keysym;
+          b->keycode = grab->combo.keycode;
+          b->modifiers = grab->combo.modifiers;
           b->mask = 0;
 
           g_hash_table_add (keys->key_bindings, b);
@@ -1474,19 +1473,18 @@ meta_display_grab_accelerator (MetaDisplay *display,
   grab = g_new0 (MetaKeyGrab, 1);
   grab->action = next_dynamic_keybinding_action ();
   grab->name = meta_external_binding_name_for_action (grab->action);
-  grab->combo = g_malloc0 (sizeof (MetaKeyCombo));
-  grab->combo->keysym = keysym;
-  grab->combo->keycode = keycode;
-  grab->combo->modifiers = modifiers;
+  grab->combo.keysym = keysym;
+  grab->combo.keycode = keycode;
+  grab->combo.modifiers = modifiers;
 
   g_hash_table_insert (external_grabs, grab->name, grab);
 
   binding = g_malloc0 (sizeof (MetaKeyBinding));
   binding->name = grab->name;
   binding->handler = HANDLER ("external-grab");
-  binding->keysym = grab->combo->keysym;
-  binding->keycode = grab->combo->keycode;
-  binding->modifiers = grab->combo->modifiers;
+  binding->keysym = grab->combo.keysym;
+  binding->keycode = grab->combo.keycode;
+  binding->modifiers = grab->combo.modifiers;
   binding->mask = mask;
 
   g_hash_table_add (keys->key_bindings, binding);
@@ -1514,8 +1512,8 @@ meta_display_ungrab_accelerator (MetaDisplay *display,
   if (!grab)
     return FALSE;
 
-  devirtualize_modifiers (keys, grab->combo->modifiers, &mask);
-  keycode = get_first_keycode_for_keysym (keys, grab->combo->keysym);
+  devirtualize_modifiers (keys, grab->combo.modifiers, &mask);
+  keycode = get_first_keycode_for_keysym (keys, grab->combo.keysym);
 
   binding = get_keybinding (keys, keycode, mask);
   if (binding)
