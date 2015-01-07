@@ -164,8 +164,7 @@ meta_key_grab_free (MetaKeyGrab *grab)
 }
 
 static guint32
-key_binding_key (guint32 keycode,
-                 guint32 mask)
+key_combo_key (MetaKeyDevirtCombo *devirt_combo)
 {
   /* On X, keycodes are only 8 bits while libxkbcommon supports 32 bit
      keycodes, but since we're using the same XKB keymaps that X uses,
@@ -175,8 +174,8 @@ key_binding_key (guint32 keycode,
      can use a 32 bit integer to safely concatenate both keycode and
      mask and thus making it easy to use them as an index in a
      GHashTable. */
-  guint32 key = keycode & 0xffff;
-  return (key << 16) | (mask & 0xffff);
+  guint32 key = devirt_combo->keycode & 0xffff;
+  return (key << 16) | (devirt_combo->mask & 0xffff);
 }
 
 static void
@@ -552,7 +551,7 @@ index_binding (MetaKeyBindingManager *keys,
 {
   guint32 index_key;
 
-  index_key = key_binding_key (binding->devirt_combo.keycode, binding->devirt_combo.mask);
+  index_key = key_combo_key (&binding->devirt_combo);
   g_hash_table_replace (keys->key_bindings_index,
                         GINT_TO_POINTER (index_key), binding);
 }
@@ -701,14 +700,10 @@ grab_key_bindings (MetaDisplay *display)
 
 static MetaKeyBinding *
 get_keybinding (MetaKeyBindingManager *keys,
-                guint32                 keycode,
-                guint32                 mask)
+                MetaKeyDevirtCombo    *devirt_combo)
 {
   guint32 key;
-
-  mask = mask & 0xff & ~keys->ignored_modifier_mask;
-  key = key_binding_key (keycode, mask);
-
+  key = key_combo_key (devirt_combo);
   return g_hash_table_lookup (keys->key_bindings_index, GINT_TO_POINTER (key));
 }
 
@@ -827,6 +822,46 @@ meta_display_remove_keybinding (MetaDisplay *display,
   return TRUE;
 }
 
+static guint
+get_keybinding_action (MetaKeyBindingManager *keys,
+                       MetaKeyDevirtCombo    *devirt_combo)
+{
+  MetaKeyBinding *binding;
+
+  /* This is much more vague than the MetaDisplay::overlay-key signal,
+   * which is only emitted if the overlay-key is the only key pressed;
+   * as this method is primarily intended for plugins to allow processing
+   * of mutter keybindings while holding a grab, the overlay-key-only-pressed
+   * tracking is left to the plugin here.
+   */
+  if (devirt_combo->keycode == (unsigned int)keys->overlay_key_devirt_combo.keycode)
+    return META_KEYBINDING_ACTION_OVERLAY_KEY;
+
+  binding = get_keybinding (keys, devirt_combo);
+  if (binding)
+    {
+      MetaKeyGrab *grab = g_hash_table_lookup (external_grabs, binding->name);
+      if (grab)
+        return grab->action;
+      else
+        return (guint) meta_prefs_get_keybinding_action (binding->name);
+    }
+  else
+    {
+      return META_KEYBINDING_ACTION_NONE;
+    }
+}
+
+static void
+devirt_combo_from_event_params (MetaKeyDevirtCombo *devirt_combo,
+                                MetaKeyBindingManager *keys,
+                                unsigned int keycode,
+                                unsigned long mask)
+{
+  devirt_combo->keycode = keycode;
+  devirt_combo->mask = mask & 0xff & ~keys->ignored_modifier_mask;
+}
+
 /**
  * meta_display_get_keybinding_action:
  * @display: A #MetaDisplay
@@ -847,31 +882,9 @@ meta_display_get_keybinding_action (MetaDisplay  *display,
                                     unsigned long mask)
 {
   MetaKeyBindingManager *keys = &display->key_binding_manager;
-  MetaKeyBinding *binding;
-
-  /* This is much more vague than the MetaDisplay::overlay-key signal,
-   * which is only emitted if the overlay-key is the only key pressed;
-   * as this method is primarily intended for plugins to allow processing
-   * of mutter keybindings while holding a grab, the overlay-key-only-pressed
-   * tracking is left to the plugin here.
-   */
-  if (keycode == (unsigned int)keys->overlay_key_devirt_combo.keycode)
-    return META_KEYBINDING_ACTION_OVERLAY_KEY;
-
-  binding = get_keybinding (keys, keycode, mask);
-
-  if (binding)
-    {
-      MetaKeyGrab *grab = g_hash_table_lookup (external_grabs, binding->name);
-      if (grab)
-        return grab->action;
-      else
-        return (guint) meta_prefs_get_keybinding_action (binding->name);
-    }
-  else
-    {
-      return META_KEYBINDING_ACTION_NONE;
-    }
+  MetaKeyDevirtCombo devirt_combo;
+  devirt_combo_from_event_params (&devirt_combo, keys, keycode, mask);
+  return get_keybinding_action (keys, &devirt_combo);
 }
 
 static void
@@ -1381,9 +1394,8 @@ handle_external_grab (MetaDisplay     *display,
                       MetaKeyBinding  *binding,
                       gpointer         user_data)
 {
-  guint action = meta_display_get_keybinding_action (display,
-                                                     binding->devirt_combo.keycode,
-                                                     binding->devirt_combo.mask);
+  MetaKeyBindingManager *keys = &display->key_binding_manager;
+  guint action = get_keybinding_action (keys, &binding->devirt_combo);
   meta_display_accelerator_activate (display, action, event);
 }
 
@@ -1413,7 +1425,7 @@ meta_display_grab_accelerator (MetaDisplay *display,
   if (devirt_combo.keycode == 0)
     return META_KEYBINDING_ACTION_NONE;
 
-  if (get_keybinding (keys, devirt_combo.keycode, devirt_combo.mask))
+  if (get_keybinding (keys, &devirt_combo))
     return META_KEYBINDING_ACTION_NONE;
 
   if (META_IS_BACKEND_X11 (backend))
@@ -1447,8 +1459,7 @@ meta_display_ungrab_accelerator (MetaDisplay *display,
   MetaKeyBinding *binding;
   MetaKeyGrab *grab;
   char *key;
-  guint mask = 0;
-  guint keycode = 0;
+  MetaKeyDevirtCombo devirt_combo;
 
   g_return_val_if_fail (action != META_KEYBINDING_ACTION_NONE, FALSE);
 
@@ -1457,10 +1468,8 @@ meta_display_ungrab_accelerator (MetaDisplay *display,
   if (!grab)
     return FALSE;
 
-  devirtualize_modifiers (keys, grab->combo.modifiers, &mask);
-  keycode = get_first_keycode_for_keysym (keys, grab->combo.keysym);
-
-  binding = get_keybinding (keys, keycode, mask);
+  devirtualize_key_combo (keys, &grab->combo, &devirt_combo);
+  binding = get_keybinding (keys, &devirt_combo);
   if (binding)
     {
       guint32 index_key;
@@ -1468,7 +1477,7 @@ meta_display_ungrab_accelerator (MetaDisplay *display,
       if (META_IS_BACKEND_X11 (backend))
         meta_change_keygrab (keys, display->screen->xroot, FALSE, &binding->devirt_combo);
 
-      index_key = key_binding_key (binding->devirt_combo.keycode, binding->devirt_combo.mask);
+      index_key = key_combo_key (&binding->devirt_combo);
       g_hash_table_remove (keys->key_bindings_index, GINT_TO_POINTER (index_key));
 
       g_hash_table_remove (keys->key_bindings, binding);
@@ -1684,15 +1693,19 @@ process_event (MetaDisplay          *display,
                ClutterKeyEvent      *event)
 {
   MetaKeyBindingManager *keys = &display->key_binding_manager;
+  MetaKeyDevirtCombo devirt_combo;
   MetaKeyBinding *binding;
 
   /* we used to have release-based bindings but no longer. */
   if (event->type == CLUTTER_KEY_RELEASE)
     return FALSE;
 
-  binding = get_keybinding (keys,
-                            event->hardware_keycode,
-                            event->modifier_state);
+  devirt_combo_from_event_params (&devirt_combo, keys,
+                                  event->hardware_keycode,
+                                  event->modifier_state);
+
+  binding = get_keybinding (keys, &devirt_combo);
+
   if (!binding ||
       (!window && binding->flags & META_KEY_BINDING_PER_WINDOW))
     goto not_found;
@@ -1796,7 +1809,7 @@ process_overlay_key (MetaDisplay *display,
                            clutter_input_device_get_device_id (event->device),
                            XIAsyncDevice, event->time);
 
-          binding = get_keybinding (keys, keys->overlay_key_devirt_combo.keycode, 0);
+          binding = get_keybinding (keys, &keys->overlay_key_devirt_combo);
           if (binding &&
               meta_compositor_filter_keybinding (display->compositor, binding))
             return TRUE;
@@ -1848,8 +1861,7 @@ process_iso_next_group (MetaDisplay *display,
 {
   MetaKeyBindingManager *keys = &display->key_binding_manager;
   gboolean activate;
-  guint32 keycode;
-  guint32 modifiers;
+  MetaKeyDevirtCombo devirt_combo;
   int i;
 
   if (event->type == CLUTTER_KEY_RELEASE)
@@ -1857,13 +1869,14 @@ process_iso_next_group (MetaDisplay *display,
 
   activate = FALSE;
 
-  keycode = event->hardware_keycode;
-  modifiers = event->modifier_state & 0xff & ~keys->ignored_modifier_mask;
+  devirt_combo_from_event_params (&devirt_combo, keys,
+                                  event->hardware_keycode,
+                                  event->modifier_state);
 
   for (i = 0; i < keys->n_iso_next_group_combos; ++i)
     {
-      if (keycode == keys->iso_next_group_combos[i].keycode &&
-          modifiers == keys->iso_next_group_combos[i].mask)
+      if (devirt_combo.keycode == keys->iso_next_group_combos[i].keycode &&
+          devirt_combo.mask == keys->iso_next_group_combos[i].mask)
         {
           /* If the signal handler returns TRUE the keyboard will
              remain frozen. It's the signal handler's responsibility
