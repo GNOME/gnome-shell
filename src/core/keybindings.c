@@ -91,7 +91,7 @@ meta_key_binding_get_name (MetaKeyBinding *binding)
 MetaVirtualModifier
 meta_key_binding_get_modifiers (MetaKeyBinding *binding)
 {
-  return binding->modifiers;
+  return binding->combo.modifiers;
 }
 
 gboolean
@@ -103,7 +103,7 @@ meta_key_binding_is_reversed (MetaKeyBinding *binding)
 guint
 meta_key_binding_get_mask (MetaKeyBinding *binding)
 {
-  return binding->mask;
+  return binding->devirt_combo.mask;
 }
 
 gboolean
@@ -362,7 +362,7 @@ static void
 reload_iso_next_group_combos (MetaKeyBindingManager *keys)
 {
   const char *iso_next_group_option;
-  MetaKeyCombo *combos;
+  MetaKeyDevirtCombo *combos;
   int *keycodes;
   int n_keycodes;
   int n_combos;
@@ -390,39 +390,36 @@ reload_iso_next_group_combos (MetaKeyBindingManager *keys)
       g_str_equal (iso_next_group_option, "caps_toggle"))
     {
       n_combos = n_keycodes;
-      combos = g_new (MetaKeyCombo, n_combos);
+      combos = g_new (MetaKeyDevirtCombo, n_combos);
 
       for (i = 0; i < n_keycodes; ++i)
         {
-          combos[i].keysym = XKB_KEY_ISO_Next_Group;
           combos[i].keycode = keycodes[i];
-          combos[i].modifiers = 0;
+          combos[i].mask = 0;
         }
     }
   else if (g_str_equal (iso_next_group_option, "shift_caps_toggle") ||
            g_str_equal (iso_next_group_option, "shifts_toggle"))
     {
       n_combos = n_keycodes;
-      combos = g_new (MetaKeyCombo, n_combos);
+      combos = g_new (MetaKeyDevirtCombo, n_combos);
 
       for (i = 0; i < n_keycodes; ++i)
         {
-          combos[i].keysym = XKB_KEY_ISO_Next_Group;
           combos[i].keycode = keycodes[i];
-          combos[i].modifiers = ShiftMask;
+          combos[i].mask = ShiftMask;
         }
     }
   else if (g_str_equal (iso_next_group_option, "alt_caps_toggle") ||
            g_str_equal (iso_next_group_option, "alt_space_toggle"))
     {
       n_combos = n_keycodes;
-      combos = g_new (MetaKeyCombo, n_combos);
+      combos = g_new (MetaKeyDevirtCombo, n_combos);
 
       for (i = 0; i < n_keycodes; ++i)
         {
-          combos[i].keysym = XKB_KEY_ISO_Next_Group;
           combos[i].keycode = keycodes[i];
-          combos[i].modifiers = Mod1Mask;
+          combos[i].mask = Mod1Mask;
         }
     }
   else if (g_str_equal (iso_next_group_option, "ctrl_shift_toggle") ||
@@ -430,50 +427,44 @@ reload_iso_next_group_combos (MetaKeyBindingManager *keys)
            g_str_equal (iso_next_group_option, "rctrl_rshift_toggle"))
     {
       n_combos = n_keycodes * 2;
-      combos = g_new (MetaKeyCombo, n_combos);
+      combos = g_new (MetaKeyDevirtCombo, n_combos);
 
       for (i = 0; i < n_keycodes; ++i)
         {
-          combos[i].keysym = XKB_KEY_ISO_Next_Group;
           combos[i].keycode = keycodes[i];
-          combos[i].modifiers = ShiftMask;
+          combos[i].mask = ShiftMask;
 
-          combos[i + n_keycodes].keysym = XKB_KEY_ISO_Next_Group;
           combos[i + n_keycodes].keycode = keycodes[i];
-          combos[i + n_keycodes].modifiers = ControlMask;
+          combos[i + n_keycodes].mask = ControlMask;
         }
     }
   else if (g_str_equal (iso_next_group_option, "ctrl_alt_toggle"))
     {
       n_combos = n_keycodes * 2;
-      combos = g_new (MetaKeyCombo, n_combos);
+      combos = g_new (MetaKeyDevirtCombo, n_combos);
 
       for (i = 0; i < n_keycodes; ++i)
         {
-          combos[i].keysym = XKB_KEY_ISO_Next_Group;
           combos[i].keycode = keycodes[i];
-          combos[i].modifiers = Mod1Mask;
+          combos[i].mask = Mod1Mask;
 
-          combos[i + n_keycodes].keysym = XKB_KEY_ISO_Next_Group;
           combos[i + n_keycodes].keycode = keycodes[i];
-          combos[i + n_keycodes].modifiers = ControlMask;
+          combos[i + n_keycodes].mask = ControlMask;
         }
     }
   else if (g_str_equal (iso_next_group_option, "alt_shift_toggle") ||
            g_str_equal (iso_next_group_option, "lalt_lshift_toggle"))
     {
       n_combos = n_keycodes * 2;
-      combos = g_new (MetaKeyCombo, n_combos);
+      combos = g_new (MetaKeyDevirtCombo, n_combos);
 
       for (i = 0; i < n_keycodes; ++i)
         {
-          combos[i].keysym = XKB_KEY_ISO_Next_Group;
           combos[i].keycode = keycodes[i];
-          combos[i].modifiers = Mod1Mask;
+          combos[i].mask = Mod1Mask;
 
-          combos[i + n_keycodes].keysym = XKB_KEY_ISO_Next_Group;
           combos[i + n_keycodes].keycode = keycodes[i];
-          combos[i + n_keycodes].modifiers = ShiftMask;
+          combos[i + n_keycodes].mask = ShiftMask;
         }
     }
   else
@@ -518,6 +509,19 @@ devirtualize_modifiers (MetaKeyBindingManager *keys,
 }
 
 static void
+devirtualize_key_combo (MetaKeyBindingManager *keys,
+                        MetaKeyCombo          *combo,
+                        MetaKeyDevirtCombo    *devirt_combo)
+{
+  if (combo->keysym != 0)
+    devirt_combo->keycode = get_first_keycode_for_keysym (keys, combo->keysym);
+  else
+    devirt_combo->keycode = combo->keycode;
+
+  devirtualize_modifiers (keys, combo->modifiers, &devirt_combo->mask);
+}
+
+static void
 binding_reload_combos_foreach (gpointer key,
                                gpointer value,
                                gpointer data)
@@ -525,10 +529,7 @@ binding_reload_combos_foreach (gpointer key,
   MetaKeyBindingManager *keys = data;
   MetaKeyBinding *binding = value;
 
-  if (binding->keysym)
-    binding->keycode = get_first_keycode_for_keysym (keys, binding->keysym);
-
-  devirtualize_modifiers (keys, binding->modifiers, &binding->mask);
+  devirtualize_key_combo (keys, &binding->combo, &binding->devirt_combo);
 }
 
 static void
@@ -536,8 +537,9 @@ reload_combos (MetaKeyBindingManager *keys)
 {
   determine_keymap_num_levels (keys);
 
-  if (keys->overlay_key_combo.keysym != 0)
-    keys->overlay_key_combo.keycode = get_first_keycode_for_keysym (keys, keys->overlay_key_combo.keysym);
+  devirtualize_key_combo (keys,
+                          &keys->overlay_key_combo,
+                          &keys->overlay_key_devirt_combo);
 
   reload_iso_next_group_combos (keys);
 
@@ -550,7 +552,7 @@ index_binding (MetaKeyBindingManager *keys,
 {
   guint32 index_key;
 
-  index_key = key_binding_key (binding->keycode, binding->mask);
+  index_key = key_binding_key (binding->devirt_combo.keycode, binding->devirt_combo.mask);
   g_hash_table_replace (keys->key_bindings_index,
                         GINT_TO_POINTER (index_key), binding);
 }
@@ -602,10 +604,7 @@ rebuild_binding_table (MetaKeyBindingManager *keys,
               b->name = pref->name;
               b->handler = handler;
               b->flags = handler->flags;
-              b->keysym = combo->keysym;
-              b->keycode = combo->keycode;
-              b->modifiers = combo->modifiers;
-              b->mask = 0;
+              b->combo = *combo;
 
               g_hash_table_add (keys->key_bindings, b);
             }
@@ -629,10 +628,7 @@ rebuild_binding_table (MetaKeyBindingManager *keys,
           b->name = grab->name;
           b->handler = handler;
           b->flags = handler->flags;
-          b->keysym = grab->combo.keysym;
-          b->keycode = grab->combo.keycode;
-          b->modifiers = grab->combo.modifiers;
-          b->mask = 0;
+          b->combo = grab->combo;
 
           g_hash_table_add (keys->key_bindings, b);
         }
@@ -859,7 +855,7 @@ meta_display_get_keybinding_action (MetaDisplay  *display,
    * of mutter keybindings while holding a grab, the overlay-key-only-pressed
    * tracking is left to the plugin here.
    */
-  if (keycode == (unsigned int)keys->overlay_key_combo.keycode)
+  if (keycode == (unsigned int)keys->overlay_key_devirt_combo.keycode)
     return META_KEYBINDING_ACTION_OVERLAY_KEY;
 
   binding = get_keybinding (keys, keycode, mask);
@@ -1237,12 +1233,12 @@ change_keygrab_foreach (gpointer key,
   if (data->only_per_window != binding_is_per_window)
     return;
 
-  if (binding->keycode == 0)
+  if (binding->devirt_combo.keycode == 0)
     return;
 
   meta_change_keygrab (data->keys, data->xwindow, data->grab,
-                       binding->keycode,
-                       binding->mask);
+                       binding->devirt_combo.keycode,
+                       binding->devirt_combo.mask);
 }
 
 static void
@@ -1268,10 +1264,10 @@ meta_screen_change_keygrabs (MetaScreen *screen,
   MetaDisplay *display = screen->display;
   MetaKeyBindingManager *keys = &display->key_binding_manager;
 
-  if (keys->overlay_key_combo.keycode != 0)
+  if (keys->overlay_key_devirt_combo.keycode != 0)
     meta_change_keygrab (keys, screen->xroot, grab,
-                         keys->overlay_key_combo.keycode,
-                         keys->overlay_key_combo.modifiers);
+                         keys->overlay_key_devirt_combo.keycode,
+                         keys->overlay_key_devirt_combo.mask);
 
   if (keys->iso_next_group_combos)
     {
@@ -1282,7 +1278,7 @@ meta_screen_change_keygrabs (MetaScreen *screen,
             {
               meta_change_keygrab (keys, screen->xroot, grab,
                                    keys->iso_next_group_combos[i].keycode,
-                                   keys->iso_next_group_combos[i].modifiers);
+                                   keys->iso_next_group_combos[i].mask);
             }
           ++i;
         }
@@ -1394,8 +1390,8 @@ handle_external_grab (MetaDisplay     *display,
                       gpointer         user_data)
 {
   guint action = meta_display_get_keybinding_action (display,
-                                                     binding->keycode,
-                                                     binding->mask);
+                                                     binding->devirt_combo.keycode,
+                                                     binding->devirt_combo.mask);
   meta_display_accelerator_activate (display, action, event);
 }
 
@@ -1408,12 +1404,10 @@ meta_display_grab_accelerator (MetaDisplay *display,
   MetaKeyBindingManager *keys = &display->key_binding_manager;
   MetaKeyBinding *binding;
   MetaKeyGrab *grab;
-  guint keysym = 0;
-  guint keycode = 0;
-  guint mask = 0;
-  MetaVirtualModifier modifiers = 0;
+  MetaKeyCombo combo;
+  MetaKeyDevirtCombo devirt_combo;
 
-  if (!meta_parse_accelerator (accelerator, &keysym, &keycode, &modifiers))
+  if (!meta_parse_accelerator (accelerator, &combo.keysym, &combo.keycode, &combo.modifiers))
     {
       meta_topic (META_DEBUG_KEYBINDINGS,
                   "Failed to parse accelerator\n");
@@ -1422,36 +1416,29 @@ meta_display_grab_accelerator (MetaDisplay *display,
       return META_KEYBINDING_ACTION_NONE;
     }
 
-  devirtualize_modifiers (keys, modifiers, &mask);
+  devirtualize_key_combo (keys, &combo, &devirt_combo);
 
-  if (keysym != 0)
-    keycode = get_first_keycode_for_keysym (keys, keysym);
-
-  if (keycode == 0)
+  if (devirt_combo.keycode == 0)
     return META_KEYBINDING_ACTION_NONE;
 
-  if (get_keybinding (keys, keycode, mask))
+  if (get_keybinding (keys, devirt_combo.keycode, devirt_combo.mask))
     return META_KEYBINDING_ACTION_NONE;
 
   if (META_IS_BACKEND_X11 (backend))
-    meta_change_keygrab (keys, display->screen->xroot, TRUE, keycode, mask);
+    meta_change_keygrab (keys, display->screen->xroot, TRUE, devirt_combo.keycode, devirt_combo.mask);
 
   grab = g_new0 (MetaKeyGrab, 1);
   grab->action = next_dynamic_keybinding_action ();
   grab->name = meta_external_binding_name_for_action (grab->action);
-  grab->combo.keysym = keysym;
-  grab->combo.keycode = keycode;
-  grab->combo.modifiers = modifiers;
+  grab->combo = combo;
 
   g_hash_table_insert (external_grabs, grab->name, grab);
 
   binding = g_malloc0 (sizeof (MetaKeyBinding));
   binding->name = grab->name;
   binding->handler = HANDLER ("external-grab");
-  binding->keysym = grab->combo.keysym;
-  binding->keycode = grab->combo.keycode;
-  binding->modifiers = grab->combo.modifiers;
-  binding->mask = mask;
+  binding->combo = combo;
+  binding->devirt_combo = devirt_combo;
 
   g_hash_table_add (keys->key_bindings, binding);
   index_binding (keys, binding);
@@ -1488,10 +1475,10 @@ meta_display_ungrab_accelerator (MetaDisplay *display,
 
       if (META_IS_BACKEND_X11 (backend))
         meta_change_keygrab (keys, display->screen->xroot, FALSE,
-                             binding->keycode,
-                             binding->mask);
+                             binding->devirt_combo.keycode,
+                             binding->devirt_combo.mask);
 
-      index_key = key_binding_key (binding->keycode, binding->mask);
+      index_key = key_binding_key (binding->devirt_combo.keycode, binding->devirt_combo.mask);
       g_hash_table_remove (keys->key_bindings_index, GINT_TO_POINTER (index_key));
 
       g_hash_table_remove (keys->key_bindings, binding);
@@ -1766,7 +1753,7 @@ process_overlay_key (MetaDisplay *display,
 
   if (keys->overlay_key_only_pressed)
     {
-      if (event->hardware_keycode != (int)keys->overlay_key_combo.keycode)
+      if (event->hardware_keycode != (int)keys->overlay_key_devirt_combo.keycode)
         {
           keys->overlay_key_only_pressed = FALSE;
 
@@ -1819,7 +1806,7 @@ process_overlay_key (MetaDisplay *display,
                            clutter_input_device_get_device_id (event->device),
                            XIAsyncDevice, event->time);
 
-          binding = get_keybinding (keys, keys->overlay_key_combo.keycode, 0);
+          binding = get_keybinding (keys, keys->overlay_key_devirt_combo.keycode, 0);
           if (binding &&
               meta_compositor_filter_keybinding (display->compositor, binding))
             return TRUE;
@@ -1848,7 +1835,7 @@ process_overlay_key (MetaDisplay *display,
       return TRUE;
     }
   else if (event->type == CLUTTER_KEY_PRESS &&
-           event->hardware_keycode == (int)keys->overlay_key_combo.keycode)
+           event->hardware_keycode == (int)keys->overlay_key_devirt_combo.keycode)
     {
       keys->overlay_key_only_pressed = TRUE;
       /* We keep the keyboard frozen - this allows us to use ReplayKeyboard
@@ -1886,7 +1873,7 @@ process_iso_next_group (MetaDisplay *display,
   for (i = 0; i < keys->n_iso_next_group_combos; ++i)
     {
       if (keycode == keys->iso_next_group_combos[i].keycode &&
-          modifiers == keys->iso_next_group_combos[i].modifiers)
+          modifiers == keys->iso_next_group_combos[i].mask)
         {
           /* If the signal handler returns TRUE the keyboard will
              remain frozen. It's the signal handler's responsibility

@@ -42,16 +42,10 @@ struct _MetaKeyHandler
   GDestroyNotify user_data_free_func;
 };
 
-struct _MetaKeyBinding
-{
-  const char *name;
-  KeySym keysym;
-  KeyCode keycode;
-  unsigned int mask;
-  MetaVirtualModifier modifiers;
-  gint flags;
-  MetaKeyHandler *handler;
-};
+typedef struct _MetaKeyDevirtCombo {
+  xkb_keycode_t keycode;
+  xkb_mod_mask_t mask;
+} MetaKeyDevirtCombo;
 
 /**
  * MetaKeyCombo:
@@ -65,6 +59,15 @@ struct _MetaKeyCombo
   unsigned int keysym;
   unsigned int keycode;
   MetaVirtualModifier modifiers;
+};
+
+struct _MetaKeyBinding
+{
+  const char *name;
+  MetaKeyCombo combo;
+  MetaKeyDevirtCombo devirt_combo;
+  gint flags;
+  MetaKeyHandler *handler;
 };
 
 typedef struct
@@ -97,8 +100,9 @@ typedef struct
   xkb_mod_mask_t super_mask;
   xkb_mod_mask_t meta_mask;
   MetaKeyCombo overlay_key_combo;
+  MetaKeyDevirtCombo overlay_key_devirt_combo;
   gboolean overlay_key_only_pressed;
-  MetaKeyCombo *iso_next_group_combos;
+  MetaKeyDevirtCombo *iso_next_group_combos;
   int n_iso_next_group_combos;
 
   xkb_level_index_t keymap_num_levels;
