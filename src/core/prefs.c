@@ -1672,9 +1672,10 @@ overlay_key_handler (GVariant *value,
   *result = NULL; /* ignored */
   string_value = g_variant_get_string (value, NULL);
 
-  if (string_value && meta_parse_accelerator (string_value, &combo.keysym,
+  if (string_value && meta_parse_accelerator (string_value,
+                                              &combo.keysym,
                                               &combo.keycode,
-                                              &combo.modifiers))
+                                              NULL))
     ;
   else
     {
@@ -1684,8 +1685,7 @@ overlay_key_handler (GVariant *value,
     }
 
   if (overlay_key_combo.keysym != combo.keysym ||
-      overlay_key_combo.keycode != combo.keycode ||
-      overlay_key_combo.modifiers != combo.modifiers)
+      overlay_key_combo.keycode != combo.keycode)
     {
       overlay_key_combo = combo;
       queue_changed (META_PREF_KEYBINDINGS);
