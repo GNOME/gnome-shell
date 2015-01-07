@@ -1407,7 +1407,7 @@ meta_display_grab_accelerator (MetaDisplay *display,
   MetaKeyCombo combo;
   MetaKeyDevirtCombo devirt_combo;
 
-  if (!meta_parse_accelerator (accelerator, &combo.keysym, &combo.keycode, &combo.modifiers))
+  if (!meta_parse_accelerator (accelerator, &combo))
     {
       meta_topic (META_DEBUG_KEYBINDINGS,
                   "Failed to parse accelerator\n");

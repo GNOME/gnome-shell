@@ -25,6 +25,7 @@
 #include "config.h"
 
 #include "meta-accel-parse.h"
+#include "keybindings-private.h"
 
 #include <xkbcommon/xkbcommon.h>
 #include <string.h>
@@ -173,21 +174,16 @@ is_keycode (const gchar *string)
 
 static gboolean
 accelerator_parse (const gchar         *accelerator,
-                   guint               *accelerator_key,
-                   guint               *accelerator_keycode,
-                   MetaVirtualModifier *accelerator_mods)
+                   MetaKeyCombo        *combo)
 {
   gboolean error = FALSE;
   guint keyval, keycode;
   MetaVirtualModifier mods;
   gint len;
 
-  if (accelerator_key)
-    *accelerator_key = 0;
-  if (accelerator_keycode)
-    *accelerator_keycode = 0;
-  if (accelerator_mods)
-    *accelerator_mods = 0;
+  combo->keysym = 0;
+  combo->keycode = 0;
+  combo->modifiers = 0;
 
   if (accelerator == NULL)
     {
@@ -330,34 +326,35 @@ out:
   if (error)
     return FALSE;
 
-  if (accelerator_key)
-    *accelerator_key = keyval;
-  if (accelerator_keycode)
-    *accelerator_keycode = keycode;
-  if (accelerator_mods)
-    *accelerator_mods = mods;
+  combo->keysym = keyval;
+  combo->keycode = keycode;
+  combo->modifiers = mods;
 
   return TRUE;
 }
 
 gboolean
-meta_parse_accelerator (const char          *accel,
-                        unsigned int        *keysym,
-                        unsigned int        *keycode,
-                        MetaVirtualModifier *mask)
+meta_parse_accelerator (const char   *accel,
+                        MetaKeyCombo *combo)
 {
   if (!accel[0] || strcmp (accel, "disabled") == 0)
     return TRUE;
 
-  return accelerator_parse (accel, keysym, keycode, mask);
+  return accelerator_parse (accel, combo);
 }
 
 gboolean
 meta_parse_modifier (const char          *accel,
                      MetaVirtualModifier *mask)
 {
+  MetaKeyCombo combo;
+
   if (accel == NULL || !accel[0] || strcmp (accel, "disabled") == 0)
     return TRUE;
 
-  return accelerator_parse (accel, NULL, NULL, mask);
+  if (!accelerator_parse (accel, &combo))
+    return FALSE;
+
+  *mask = combo.modifiers;
+  return TRUE;
 }

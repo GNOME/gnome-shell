@@ -1672,10 +1672,7 @@ overlay_key_handler (GVariant *value,
   *result = NULL; /* ignored */
   string_value = g_variant_get_string (value, NULL);
 
-  if (string_value && meta_parse_accelerator (string_value,
-                                              &combo.keysym,
-                                              &combo.keycode,
-                                              NULL))
+  if (string_value && meta_parse_accelerator (string_value, &combo))
     ;
   else
     {
@@ -1683,6 +1680,8 @@ overlay_key_handler (GVariant *value,
                   "Failed to parse value for overlay-key\n");
       return FALSE;
     }
+
+  combo.modifiers = 0;
 
   if (overlay_key_combo.keysym != combo.keysym ||
       overlay_key_combo.keycode != combo.keycode)
@@ -1916,10 +1915,6 @@ update_binding (MetaKeyPref *binding,
 {
   GSList *old_combos, *a, *b;
   gboolean changed;
-  unsigned int keysym;
-  unsigned int keycode;
-  MetaVirtualModifier mods;
-  MetaKeyCombo *combo;
   int i;
 
   meta_topic (META_DEBUG_KEYBINDINGS,
@@ -1931,31 +1926,25 @@ update_binding (MetaKeyPref *binding,
 
   for (i = 0; strokes && strokes[i]; i++)
     {
-      keysym = 0;
-      keycode = 0;
-      mods = 0;
+      MetaKeyCombo *combo;
 
-      if (!meta_parse_accelerator (strokes[i], &keysym, &keycode, &mods))
+      combo = g_malloc0 (sizeof (MetaKeyCombo));
+
+      if (!meta_parse_accelerator (strokes[i], combo))
         {
           meta_topic (META_DEBUG_KEYBINDINGS,
                       "Failed to parse new GSettings value\n");
           meta_warning ("\"%s\" found in configuration database is not a valid value for keybinding \"%s\"\n",
                         strokes[i], binding->name);
 
+          g_free (combo);
+
           /* Value is kept and will thus be removed next time we save the key.
            * Changing the key in response to a modification could lead to cyclic calls. */
           continue;
         }
 
-      combo = g_malloc0 (sizeof (MetaKeyCombo));
-      combo->keysym = keysym;
-      combo->keycode = keycode;
-      combo->modifiers = mods;
       binding->combos = g_slist_prepend (binding->combos, combo);
-
-      meta_topic (META_DEBUG_KEYBINDINGS,
-                      "New keybinding for \"%s\" is keysym = 0x%x keycode = 0x%x mods = 0x%x\n",
-                      binding->name, keysym, keycode, mods);
     }
 
   binding->combos = g_slist_reverse (binding->combos);
