@@ -1423,7 +1423,9 @@ meta_display_grab_accelerator (MetaDisplay *display,
     }
 
   devirtualize_modifiers (keys, modifiers, &mask);
-  keycode = get_first_keycode_for_keysym (keys, keysym);
+
+  if (keysym != 0)
+    keycode = get_first_keycode_for_keysym (keys, keysym);
 
   if (keycode == 0)
     return META_KEYBINDING_ACTION_NONE;
