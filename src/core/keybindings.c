@@ -537,14 +537,7 @@ reload_combos (MetaKeyBindingManager *keys)
   determine_keymap_num_levels (keys);
 
   if (keys->overlay_key_combo.keysym != 0)
-    {
-      keys->overlay_key_combo.keycode =
-        get_first_keycode_for_keysym (keys, keys->overlay_key_combo.keysym);
-    }
-  else
-    {
-      keys->overlay_key_combo.keycode = 0;
-    }
+    keys->overlay_key_combo.keycode = get_first_keycode_for_keysym (keys, keys->overlay_key_combo.keysym);
 
   reload_iso_next_group_combos (keys);
 
