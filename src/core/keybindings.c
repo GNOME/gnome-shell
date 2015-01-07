@@ -1156,10 +1156,9 @@ meta_display_shutdown_keys (MetaDisplay *display)
 /* Grab/ungrab, ignoring all annoying modifiers like NumLock etc. */
 static void
 meta_change_keygrab (MetaKeyBindingManager *keys,
-                     Window                  xwindow,
-                     gboolean                grab,
-                     unsigned int            keycode,
-                     int                     modmask)
+                     Window                 xwindow,
+                     gboolean               grab,
+                     MetaKeyDevirtCombo    *devirt_combo)
 {
   unsigned int ignored_mask;
 
@@ -1180,7 +1179,7 @@ meta_change_keygrab (MetaKeyBindingManager *keys,
   meta_topic (META_DEBUG_KEYBINDINGS,
               "%s keybinding keycode %d mask 0x%x on 0x%lx\n",
               grab ? "Grabbing" : "Ungrabbing",
-              keycode, modmask, xwindow);
+              devirt_combo->keycode, devirt_combo->mask, xwindow);
 
   ignored_mask = 0;
   while (ignored_mask <= keys->ignored_modifier_mask)
@@ -1196,18 +1195,18 @@ meta_change_keygrab (MetaKeyBindingManager *keys,
           continue;
         }
 
-      mods = (XIGrabModifiers) { modmask | ignored_mask, 0 };
+      mods = (XIGrabModifiers) { devirt_combo->mask | ignored_mask, 0 };
 
       if (grab)
         XIGrabKeycode (xdisplay,
                        META_VIRTUAL_CORE_KEYBOARD_ID,
-                       keycode, xwindow,
+                       devirt_combo->keycode, xwindow,
                        XIGrabModeSync, XIGrabModeAsync,
                        False, &mask, 1, &mods);
       else
         XIUngrabKeycode (xdisplay,
                          META_VIRTUAL_CORE_KEYBOARD_ID,
-                         keycode, xwindow, 1, &mods);
+                         devirt_combo->keycode, xwindow, 1, &mods);
 
       ++ignored_mask;
     }
@@ -1236,9 +1235,7 @@ change_keygrab_foreach (gpointer key,
   if (binding->devirt_combo.keycode == 0)
     return;
 
-  meta_change_keygrab (data->keys, data->xwindow, data->grab,
-                       binding->devirt_combo.keycode,
-                       binding->devirt_combo.mask);
+  meta_change_keygrab (data->keys, data->xwindow, data->grab, &binding->devirt_combo);
 }
 
 static void
@@ -1265,9 +1262,7 @@ meta_screen_change_keygrabs (MetaScreen *screen,
   MetaKeyBindingManager *keys = &display->key_binding_manager;
 
   if (keys->overlay_key_devirt_combo.keycode != 0)
-    meta_change_keygrab (keys, screen->xroot, grab,
-                         keys->overlay_key_devirt_combo.keycode,
-                         keys->overlay_key_devirt_combo.mask);
+    meta_change_keygrab (keys, screen->xroot, grab, &keys->overlay_key_devirt_combo);
 
   if (keys->iso_next_group_combos)
     {
@@ -1275,11 +1270,8 @@ meta_screen_change_keygrabs (MetaScreen *screen,
       while (i < keys->n_iso_next_group_combos)
         {
           if (keys->iso_next_group_combos[i].keycode != 0)
-            {
-              meta_change_keygrab (keys, screen->xroot, grab,
-                                   keys->iso_next_group_combos[i].keycode,
-                                   keys->iso_next_group_combos[i].mask);
-            }
+            meta_change_keygrab (keys, screen->xroot, grab, &keys->iso_next_group_combos[i]);
+
           ++i;
         }
     }
@@ -1425,7 +1417,7 @@ meta_display_grab_accelerator (MetaDisplay *display,
     return META_KEYBINDING_ACTION_NONE;
 
   if (META_IS_BACKEND_X11 (backend))
-    meta_change_keygrab (keys, display->screen->xroot, TRUE, devirt_combo.keycode, devirt_combo.mask);
+    meta_change_keygrab (keys, display->screen->xroot, TRUE, &devirt_combo);
 
   grab = g_new0 (MetaKeyGrab, 1);
   grab->action = next_dynamic_keybinding_action ();
@@ -1474,9 +1466,7 @@ meta_display_ungrab_accelerator (MetaDisplay *display,
       guint32 index_key;
 
       if (META_IS_BACKEND_X11 (backend))
-        meta_change_keygrab (keys, display->screen->xroot, FALSE,
-                             binding->devirt_combo.keycode,
-                             binding->devirt_combo.mask);
+        meta_change_keygrab (keys, display->screen->xroot, FALSE, &binding->devirt_combo);
 
       index_key = key_binding_key (binding->devirt_combo.keycode, binding->devirt_combo.mask);
       g_hash_table_remove (keys->key_bindings_index, GINT_TO_POINTER (index_key));
