@@ -42,10 +42,10 @@ struct _MetaKeyHandler
   GDestroyNotify user_data_free_func;
 };
 
-typedef struct _MetaKeyDevirtCombo {
+typedef struct _MetaResolvedKeyCombo {
   xkb_keycode_t keycode;
   xkb_mod_mask_t mask;
-} MetaKeyDevirtCombo;
+} MetaResolvedKeyCombo;
 
 /**
  * MetaKeyCombo:
@@ -65,7 +65,7 @@ struct _MetaKeyBinding
 {
   const char *name;
   MetaKeyCombo combo;
-  MetaKeyDevirtCombo devirt_combo;
+  MetaResolvedKeyCombo resolved_combo;
   gint flags;
   MetaKeyHandler *handler;
 };
@@ -100,9 +100,9 @@ typedef struct
   xkb_mod_mask_t super_mask;
   xkb_mod_mask_t meta_mask;
   MetaKeyCombo overlay_key_combo;
-  MetaKeyDevirtCombo overlay_key_devirt_combo;
+  MetaResolvedKeyCombo overlay_resolved_key_combo;
   gboolean overlay_key_only_pressed;
-  MetaKeyDevirtCombo *iso_next_group_combos;
+  MetaResolvedKeyCombo *iso_next_group_combos;
   int n_iso_next_group_combos;
 
   xkb_level_index_t keymap_num_levels;
