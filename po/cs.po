@@ -568,7 +568,7 @@ msgid ""
 "to replace the current window manager."
 msgstr ""
 "Displej „%s“ již správce oken má; zkuste prosím nahradit aktuálního správce "
-"oken pomocí přepínače --replace.\n"
+"oken pomocí přepínače --replace."
 
 #: ../src/core/screen.c:607
 #, c-format
