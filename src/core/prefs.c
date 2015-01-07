@@ -2185,7 +2185,7 @@ meta_prefs_remove_keybinding (const char *name)
 }
 
 GList *
-meta_prefs_get_keybindings ()
+meta_prefs_get_keybindings (void)
 {
   return g_hash_table_get_values (key_bindings);
 }
@@ -2233,25 +2233,25 @@ meta_prefs_get_auto_raise_delay (void)
 }
 
 gboolean
-meta_prefs_get_focus_change_on_pointer_rest ()
+meta_prefs_get_focus_change_on_pointer_rest (void)
 {
   return focus_change_on_pointer_rest;
 }
 
 gboolean
-meta_prefs_get_gnome_accessibility ()
+meta_prefs_get_gnome_accessibility (void)
 {
   return gnome_accessibility;
 }
 
 gboolean
-meta_prefs_get_gnome_animations ()
+meta_prefs_get_gnome_animations (void)
 {
   return gnome_animations;
 }
 
 gboolean
-meta_prefs_get_edge_tiling ()
+meta_prefs_get_edge_tiling (void)
 {
   return edge_tiling;
 }
