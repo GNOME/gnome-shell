@@ -199,10 +199,6 @@ const SearchResultsBase = new Lang.Class({
             this._cancellable.reset();
 
             this.provider.getResultMetas(metasNeeded, Lang.bind(this, function(metas) {
-                if (metas.length == 0) {
-                    callback(false);
-                    return;
-                }
                 if (metas.length != metasNeeded.length) {
                     log('Wrong number of result metas returned by search provider ' + this.provider.id +
                         ': expected ' + metasNeeded.length + ' but got ' + metas.length);
