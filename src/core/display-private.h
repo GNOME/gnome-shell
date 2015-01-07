@@ -448,8 +448,8 @@ void meta_display_accelerator_activate (MetaDisplay     *display,
 gboolean meta_display_modifiers_accelerator_activate (MetaDisplay *display);
 
 #ifdef HAVE_XI23
-gboolean meta_display_process_barrier_event (MetaDisplay *display,
-                                             XIEvent     *event);
+gboolean meta_display_process_barrier_xevent (MetaDisplay *display,
+                                              XIEvent     *event);
 #endif /* HAVE_XI23 */
 
 void meta_display_set_input_focus_xwindow (MetaDisplay *display,

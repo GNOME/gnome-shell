@@ -1729,7 +1729,7 @@ meta_display_handle_xevent (MetaDisplay *display,
     }
 
 #ifdef HAVE_XI23
-  if (meta_display_process_barrier_event (display, input_event))
+  if (meta_display_process_barrier_xevent (display, input_event))
     {
       bypass_gtk = bypass_compositor = TRUE;
       goto out;

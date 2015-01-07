@@ -366,8 +366,8 @@ meta_barrier_fire_event (MetaBarrier    *barrier,
 }
 
 gboolean
-meta_display_process_barrier_event (MetaDisplay *display,
-                                    XIEvent     *event)
+meta_display_process_barrier_xevent (MetaDisplay *display,
+                                     XIEvent     *event)
 {
   MetaBarrier *barrier;
   XIBarrierEvent *xev;
