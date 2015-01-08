@@ -761,6 +761,12 @@ StScrollBar {
   color: $fg_color;
 }
 
+/* LOGIN DIALOG */
+.login-dialog-banner-view {
+  padding-top: 24px;
+   max-width: 23em;
+}
+
 /* NOTIFICATIONS & MESSAGE TRAY */
 
 #message-tray {

@@ -501,11 +501,7 @@
   border: 2px solid #bbbbbb; }
 
 .login-dialog-banner {
-  font-size: 10pt;
-  font-weight: bold;
-  text-align: center;
-  color: #666666;
-  padding-bottom: 1em; }
+  color: #666666; }
 
 .login-dialog {
   /* Reset border and background */
@@ -1490,6 +1486,11 @@ StScrollBar {
   font-weight: bold;
   color: #eeeeec; }
 
+/* LOGIN DIALOG */
+.login-dialog-banner-view {
+  padding-top: 24px;
+  max-width: 23em; }
+
 /* NOTIFICATIONS & MESSAGE TRAY */
 #message-tray {
   background: #212424 url("noise-texture.png");
@@ -1761,3 +1762,5 @@ StScrollBar {
   border: 2px solid grey;
   border-radius: 4px;
   padding: 6px; }
+
+/*# sourceMappingURL=gnome-shell.css.map */
