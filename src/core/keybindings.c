@@ -508,6 +508,17 @@ devirtualize_modifiers (MetaKeyBindingManager *keys,
 }
 
 static void
+index_binding (MetaKeyBindingManager *keys,
+               MetaKeyBinding         *binding)
+{
+  guint32 index_key;
+
+  index_key = key_combo_key (&binding->resolved_combo);
+  g_hash_table_replace (keys->key_bindings_index,
+                        GINT_TO_POINTER (index_key), binding);
+}
+
+static void
 resolve_key_combo (MetaKeyBindingManager *keys,
                    MetaKeyCombo          *combo,
                    MetaResolvedKeyCombo  *resolved_combo)
@@ -529,11 +540,14 @@ binding_reload_combos_foreach (gpointer key,
   MetaKeyBinding *binding = value;
 
   resolve_key_combo (keys, &binding->combo, &binding->resolved_combo);
+  index_binding (keys, binding);
 }
 
 static void
 reload_combos (MetaKeyBindingManager *keys)
 {
+  g_hash_table_remove_all (keys->key_bindings_index);
+
   determine_keymap_num_levels (keys);
 
   resolve_key_combo (keys,
@@ -543,35 +557,6 @@ reload_combos (MetaKeyBindingManager *keys)
   reload_iso_next_group_combos (keys);
 
   g_hash_table_foreach (keys->key_bindings, binding_reload_combos_foreach, keys);
-}
-
-static void
-index_binding (MetaKeyBindingManager *keys,
-               MetaKeyBinding         *binding)
-{
-  guint32 index_key;
-
-  index_key = key_combo_key (&binding->resolved_combo);
-  g_hash_table_replace (keys->key_bindings_index,
-                        GINT_TO_POINTER (index_key), binding);
-}
-
-static void
-binding_index_foreach (gpointer key,
-                       gpointer value,
-                       gpointer data)
-{
-  MetaKeyBindingManager *keys = data;
-  MetaKeyBinding *binding = value;
-
-  index_binding (keys, binding);
-}
-
-static void
-rebuild_binding_index (MetaKeyBindingManager *keys)
-{
-  g_hash_table_remove_all (keys->key_bindings_index);
-  g_hash_table_foreach (keys->key_bindings, binding_index_foreach, keys);
 }
 
 static void
@@ -903,8 +888,6 @@ on_keymap_changed (MetaBackend *backend,
 
   reload_combos (keys);
 
-  rebuild_binding_index (keys);
-
   grab_key_bindings (display);
 }
 
@@ -1124,7 +1107,6 @@ prefs_changed_callback (MetaPreference pref,
       rebuild_key_binding_table (keys);
       rebuild_special_bindings (keys);
       reload_combos (keys);
-      rebuild_binding_index (keys);
       grab_key_bindings (display);
       break;
     case META_PREF_MOUSE_BUTTON_MODS:
@@ -4069,7 +4051,6 @@ meta_display_init_keys (MetaDisplay *display)
   rebuild_special_bindings (keys);
 
   reload_combos (keys);
-  rebuild_binding_index (keys);
 
   update_window_grab_modifiers (keys);
 
