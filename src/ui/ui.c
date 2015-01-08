@@ -48,10 +48,19 @@ struct _MetaUI
 void
 meta_ui_init (void)
 {
+  const char *gdk_gl_env = NULL;
   gdk_set_allowed_backends ("x11");
+
+  gdk_gl_env = g_getenv ("GDK_GL");
+  g_setenv("GDK_GL", "disable", TRUE);
 
   if (!gtk_init_check (NULL, NULL))
     meta_fatal ("Unable to open X display %s\n", XDisplayName (NULL));
+
+  if (gdk_gl_env)
+    g_setenv("GDK_GL", gdk_gl_env, TRUE);
+  else
+    unsetenv("GDK_GL");
 
   /* We need to be able to fully trust that the window and monitor sizes
      that Gdk reports corresponds to the X ones, so we disable the automatic
