@@ -221,8 +221,20 @@ meta_display_handle_event (MetaDisplay        *display,
 
   if (meta_is_wayland_compositor () && event->type == CLUTTER_MOTION)
     {
-      meta_cursor_tracker_update_position (meta_cursor_tracker_get_for_screen (NULL),
-                                           event->motion.x, event->motion.y);
+      MetaWaylandCompositor *compositor;
+
+      compositor = meta_wayland_compositor_get_default ();
+
+      if (meta_wayland_tablet_manager_consumes_event (compositor->tablet_manager, event))
+        {
+          meta_wayland_tablet_manager_update_cursor_position (compositor->tablet_manager, event);
+        }
+      else
+        {
+          MetaCursorTracker *tracker = meta_cursor_tracker_get_for_screen (NULL);
+          meta_cursor_tracker_update_position (tracker, event->motion.x, event->motion.y);
+        }
+
       display->monitor_cache_invalidated = TRUE;
     }
 
