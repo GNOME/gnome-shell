@@ -2111,7 +2111,6 @@ meta_prefs_add_keybinding (const char           *name,
   pref->settings = g_object_ref (settings);
   pref->action = action;
   pref->combos = NULL;
-  pref->per_window = (flags & META_KEY_BINDING_PER_WINDOW) != 0;
   pref->builtin = (flags & META_KEY_BINDING_BUILTIN) != 0;
 
   strokes = g_settings_get_strv (settings, name);

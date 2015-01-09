@@ -84,9 +84,6 @@ typedef struct
    */
   GSList *combos;
 
-  /* for keybindings that apply only to a window */
-  gboolean      per_window:1;
-
   /* for keybindings not added with meta_display_add_keybinding() */
   gboolean      builtin:1;
 } MetaKeyPref;
