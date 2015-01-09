@@ -317,6 +317,8 @@ meta_cursor_image_load_from_buffer (MetaCursorImage    *image,
         {
           int rowstride = wl_shm_buffer_get_stride (shm_buffer);
 
+          wl_shm_buffer_begin_access (shm_buffer);
+
           switch (wl_shm_buffer_get_format (shm_buffer))
             {
 #if G_BYTE_ORDER == G_BIG_ENDIAN
@@ -344,6 +346,8 @@ meta_cursor_image_load_from_buffer (MetaCursorImage    *image,
                                              (uint8_t *) wl_shm_buffer_get_data (shm_buffer),
                                              width, height, rowstride,
                                              gbm_format);
+
+          wl_shm_buffer_end_access (shm_buffer);
         }
       else
         {

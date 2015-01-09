@@ -91,13 +91,23 @@ meta_wayland_buffer_ensure_texture (MetaWaylandBuffer *buffer)
   CoglContext *ctx = clutter_backend_get_cogl_context (clutter_get_default_backend ());
   CoglError *catch_error = NULL;
   CoglTexture *texture;
+  struct wl_shm_buffer *shm_buffer;
 
   if (buffer->texture)
     goto out;
 
+  shm_buffer = wl_shm_buffer_get (buffer->resource);
+
+  if (shm_buffer)
+    wl_shm_buffer_begin_access (shm_buffer);
+
   texture = COGL_TEXTURE (cogl_wayland_texture_2d_new_from_buffer (ctx,
                                                                    buffer->resource,
                                                                    &catch_error));
+
+  if (shm_buffer)
+    wl_shm_buffer_end_access (shm_buffer);
+
   if (!texture)
     {
       cogl_error_free (catch_error);
@@ -124,6 +134,8 @@ meta_wayland_buffer_process_damage (MetaWaylandBuffer *buffer,
 
       n_rectangles = cairo_region_num_rectangles (region);
 
+      wl_shm_buffer_begin_access (shm_buffer);
+
       for (i = 0; i < n_rectangles; i++)
         {
           cairo_rectangle_int_t rect;
@@ -133,5 +145,7 @@ meta_wayland_buffer_process_damage (MetaWaylandBuffer *buffer,
                                                            shm_buffer,
                                                            rect.x, rect.y, 0, NULL);
         }
+
+      wl_shm_buffer_end_access (shm_buffer);
     }
 }
