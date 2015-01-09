@@ -65,6 +65,7 @@ struct _ClutterInputDeviceEvdev
 
   struct libinput_device *libinput_device;
   ClutterSeatEvdev *seat;
+  ClutterInputDeviceTool *last_tool;
 };
 
 GType                     _clutter_input_device_evdev_get_type        (void) G_GNUC_CONST;

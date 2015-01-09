@@ -53,6 +53,7 @@
 #include "clutter-backend-private.h"
 #include "clutter-evdev.h"
 #include "clutter-stage-private.h"
+#include "clutter-input-device-tool-evdev.h"
 
 #include "clutter-device-manager-evdev.h"
 
@@ -450,7 +451,8 @@ new_absolute_motion_event (ClutterInputDevice *input_device,
 
   event = clutter_event_new (CLUTTER_MOTION);
 
-  if (manager_evdev->priv->constrain_callback)
+  if (manager_evdev->priv->constrain_callback &&
+      clutter_input_device_get_device_type (input_device) != CLUTTER_TABLET_DEVICE)
     {
       manager_evdev->priv->constrain_callback (seat->core_pointer,
                                                us2ms (time_us),
@@ -473,8 +475,15 @@ new_absolute_motion_event (ClutterInputDevice *input_device,
   event->motion.x = x;
   event->motion.y = y;
   event->motion.axes = axes;
-  clutter_event_set_device (event, seat->core_pointer);
   clutter_event_set_source_device (event, input_device);
+
+  if (clutter_input_device_get_device_type (input_device) == CLUTTER_TABLET_DEVICE)
+    {
+      clutter_event_set_device_tool (event, device_evdev->last_tool);
+      clutter_event_set_device (event, input_device);
+    }
+  else
+    clutter_event_set_device (event, seat->core_pointer);
 
   _clutter_input_device_set_stage (seat->core_pointer, stage);
 
@@ -683,20 +692,26 @@ notify_button (ClutterInputDevice *input_device,
   switch (button)
     {
     case BTN_LEFT:
+    case BTN_TOUCH:
       button_nr = CLUTTER_BUTTON_PRIMARY;
       break;
 
     case BTN_RIGHT:
+    case BTN_STYLUS:
       button_nr = CLUTTER_BUTTON_SECONDARY;
       break;
 
     case BTN_MIDDLE:
+    case BTN_STYLUS2:
       button_nr = CLUTTER_BUTTON_MIDDLE;
       break;
 
     default:
       /* For compatibility reasons, all additional buttons go after the old 4-7 scroll ones */
-      button_nr = button - (BTN_LEFT - 1) + 4;
+      if (clutter_input_device_get_device_type (input_device) == CLUTTER_TABLET_DEVICE)
+        button_nr = button - BTN_TOOL_PEN + 4;
+      else
+        button_nr = button - (BTN_LEFT - 1) + 4;
       break;
     }
 
@@ -711,24 +726,46 @@ notify_button (ClutterInputDevice *input_device,
   else
     event = clutter_event_new (CLUTTER_BUTTON_RELEASE);
 
-  /* Update the modifiers */
-  if (state)
-    seat->button_state |= maskmap[button - BTN_LEFT];
-  else
-    seat->button_state &= ~maskmap[button - BTN_LEFT];
+  if (button_nr < G_N_ELEMENTS (maskmap))
+    {
+      /* Update the modifiers */
+      if (state)
+        seat->button_state |= maskmap[button_nr - 1];
+      else
+        seat->button_state &= ~maskmap[button_nr - 1];
+    }
 
   _clutter_evdev_event_set_time_usec (event, time_us);
   event->button.time = us2ms (time_us);
   event->button.stage = CLUTTER_STAGE (stage);
-  event->button.device = seat->core_pointer;
   _clutter_xkb_translate_state (event, seat->xkb, seat->button_state);
   event->button.button = button_nr;
-  event->button.x = seat->pointer_x;
-  event->button.y = seat->pointer_y;
-  clutter_event_set_device (event, seat->core_pointer);
+
+  if (clutter_input_device_get_device_type (input_device) == CLUTTER_TABLET_DEVICE)
+    {
+      ClutterPoint point;
+
+      clutter_input_device_get_coords (input_device, NULL, &point);
+      event->button.x = point.x;
+      event->button.y = point.y;
+    }
+  else
+    {
+      event->button.x = seat->pointer_x;
+      event->button.y = seat->pointer_y;
+    }
+
   clutter_event_set_source_device (event, input_device);
 
   _clutter_evdev_event_set_event_code (event, button);
+
+  if (clutter_input_device_get_device_type (input_device) == CLUTTER_TABLET_DEVICE)
+    {
+      clutter_event_set_device_tool (event, device_evdev->last_tool);
+      clutter_event_set_device (event, input_device);
+    }
+  else
+    clutter_event_set_device (event, seat->core_pointer);
 
   _clutter_input_device_set_stage (seat->core_pointer, stage);
 
@@ -867,6 +904,44 @@ notify_swipe_gesture_event (ClutterInputDevice          *input_device,
 
   clutter_event_set_device (event, seat->core_pointer);
   clutter_event_set_source_device (event, input_device);
+
+  queue_event (event);
+}
+
+static void
+notify_proximity (ClutterInputDevice *input_device,
+                  guint64             time_us,
+                  gboolean            in)
+{
+  ClutterInputDeviceEvdev *device_evdev;
+  ClutterSeatEvdev *seat;
+  ClutterStage *stage;
+  ClutterEvent *event = NULL;
+
+  /* We can drop the event on the floor if no stage has been
+   * associated with the device yet. */
+  stage = _clutter_input_device_get_stage (input_device);
+  if (stage == NULL)
+    return;
+
+  device_evdev = CLUTTER_INPUT_DEVICE_EVDEV (input_device);
+  seat = _clutter_input_device_evdev_get_seat (device_evdev);
+
+  if (in)
+    event = clutter_event_new (CLUTTER_PROXIMITY_IN);
+  else
+    event = clutter_event_new (CLUTTER_PROXIMITY_OUT);
+
+  _clutter_evdev_event_set_time_usec (event, time_us);
+
+  event->proximity.time = us2ms (time_us);
+  event->proximity.stage = CLUTTER_STAGE (stage);
+  event->proximity.device = seat->core_pointer;
+  clutter_event_set_device_tool (event, device_evdev->last_tool);
+  clutter_event_set_device (event, seat->core_pointer);
+  clutter_event_set_source_device (event, input_device);
+
+  _clutter_input_device_set_stage (seat->core_pointer, stage);
 
   queue_event (event);
 }
@@ -1433,6 +1508,122 @@ translate_scroll_source (enum libinput_pointer_axis_source source)
     }
 }
 
+static ClutterInputDeviceToolType
+translate_tool_type (struct libinput_tablet_tool *libinput_tool)
+{
+  enum libinput_tablet_tool_type tool;
+
+  tool = libinput_tablet_tool_get_type (libinput_tool);
+
+  switch (tool)
+    {
+    case LIBINPUT_TABLET_TOOL_TYPE_PEN:
+      return CLUTTER_INPUT_DEVICE_TOOL_PEN;
+    case LIBINPUT_TABLET_TOOL_TYPE_ERASER:
+      return CLUTTER_INPUT_DEVICE_TOOL_ERASER;
+    case LIBINPUT_TABLET_TOOL_TYPE_BRUSH:
+      return CLUTTER_INPUT_DEVICE_TOOL_BRUSH;
+    case LIBINPUT_TABLET_TOOL_TYPE_PENCIL:
+      return CLUTTER_INPUT_DEVICE_TOOL_PENCIL;
+    case LIBINPUT_TABLET_TOOL_TYPE_AIRBRUSH:
+      return CLUTTER_INPUT_DEVICE_TOOL_AIRBRUSH;
+    case LIBINPUT_TABLET_TOOL_TYPE_MOUSE:
+      return CLUTTER_INPUT_DEVICE_TOOL_MOUSE;
+    case LIBINPUT_TABLET_TOOL_TYPE_LENS:
+      return CLUTTER_INPUT_DEVICE_TOOL_LENS;
+    default:
+      return CLUTTER_INPUT_DEVICE_TOOL_NONE;
+    }
+}
+
+static void
+input_device_update_tool (ClutterInputDevice          *input_device,
+                          struct libinput_tablet_tool *libinput_tool)
+{
+  ClutterInputDeviceEvdev *evdev_device = CLUTTER_INPUT_DEVICE_EVDEV (input_device);
+  ClutterInputDeviceTool *tool = NULL;
+  ClutterInputDeviceToolType tool_type;
+  guint64 tool_serial;
+
+  if (libinput_tool)
+    {
+      tool_serial = libinput_tablet_tool_get_serial (libinput_tool);
+      tool_type = translate_tool_type (libinput_tool);
+      tool = clutter_input_device_lookup_tool (input_device,
+                                               tool_serial, tool_type);
+
+      if (!tool)
+        {
+          tool = clutter_input_device_tool_evdev_new (libinput_tool,
+                                                      tool_serial, tool_type);
+          clutter_input_device_add_tool (input_device, tool);
+        }
+    }
+
+  evdev_device->last_tool = tool;
+}
+
+static gdouble *
+translate_tablet_axes (struct libinput_event_tablet_tool *tablet_event)
+{
+  GArray *axes = g_array_new (FALSE, FALSE, sizeof (gdouble));
+  struct libinput_tablet_tool *libinput_tool;
+  gdouble value;
+
+  libinput_tool = libinput_event_tablet_tool_get_tool (tablet_event);
+
+  value = libinput_event_tablet_tool_get_x (tablet_event);
+  g_array_append_val (axes, value);
+  value = libinput_event_tablet_tool_get_y (tablet_event);
+  g_array_append_val (axes, value);
+
+  if (libinput_tablet_tool_has_distance (libinput_tool))
+    {
+      value = libinput_event_tablet_tool_get_distance (tablet_event);
+      g_array_append_val (axes, value);
+    }
+
+  if (libinput_tablet_tool_has_pressure (libinput_tool))
+    {
+      value = libinput_event_tablet_tool_get_pressure (tablet_event);
+      g_array_append_val (axes, value);
+    }
+
+  if (libinput_tablet_tool_has_tilt (libinput_tool))
+    {
+      value = libinput_event_tablet_tool_get_tilt_x (tablet_event);
+      g_array_append_val (axes, value);
+      value = libinput_event_tablet_tool_get_tilt_y (tablet_event);
+      g_array_append_val (axes, value);
+    }
+
+  if (libinput_tablet_tool_has_rotation (libinput_tool))
+    {
+      value = libinput_event_tablet_tool_get_rotation (tablet_event);
+      g_array_append_val (axes, value);
+    }
+
+  if (libinput_tablet_tool_has_slider (libinput_tool))
+    {
+      value = libinput_event_tablet_tool_get_slider_position (tablet_event);
+      g_array_append_val (axes, value);
+    }
+
+  if (libinput_tablet_tool_has_wheel (libinput_tool))
+    {
+      value = libinput_event_tablet_tool_get_wheel_delta (tablet_event);
+      g_array_append_val (axes, value);
+    }
+
+  if (axes->len == 0)
+    {
+      g_array_free (axes, TRUE);
+      return NULL;
+    }
+  else
+    return (gdouble *) g_array_free (axes, FALSE);
+}
+
 static gboolean
 process_device_event (ClutterDeviceManagerEvdev *manager_evdev,
                       struct libinput_event *event)
@@ -1810,6 +2001,84 @@ process_device_event (ClutterDeviceManagerEvdev *manager_evdev,
         notify_swipe_gesture_event (device,
                                     CLUTTER_TOUCHPAD_GESTURE_PHASE_UPDATE,
                                     time_us, n_fingers, dx, dy);
+        break;
+      }
+    case LIBINPUT_EVENT_TABLET_TOOL_AXIS:
+      {
+        guint64 time;
+        double x, y, *axes;
+        gfloat stage_width, stage_height;
+        ClutterStage *stage;
+        struct libinput_event_tablet_tool *tablet_event =
+          libinput_event_get_tablet_tool_event (event);
+        device = libinput_device_get_user_data (libinput_device);
+
+        stage = _clutter_input_device_get_stage (device);
+        if (!stage)
+          break;
+
+        axes = translate_tablet_axes (tablet_event);
+        if (!axes)
+          break;
+
+        stage_width = clutter_actor_get_width (CLUTTER_ACTOR (stage));
+        stage_height = clutter_actor_get_height (CLUTTER_ACTOR (stage));
+
+        time = libinput_event_tablet_tool_get_time_usec (tablet_event);
+        x = libinput_event_tablet_tool_get_x_transformed (tablet_event, stage_width);
+        y = libinput_event_tablet_tool_get_y_transformed (tablet_event, stage_height);
+
+        notify_absolute_motion (device, time, x, y, axes);
+        break;
+      }
+    case LIBINPUT_EVENT_TABLET_TOOL_PROXIMITY:
+      {
+        guint64 time;
+        struct libinput_event_tablet_tool *tablet_event =
+          libinput_event_get_tablet_tool_event (event);
+        struct libinput_tablet_tool *libinput_tool = NULL;
+        enum libinput_tablet_tool_proximity_state state;
+
+        state = libinput_event_tablet_tool_get_proximity_state (tablet_event);
+        time = libinput_event_tablet_tool_get_time_usec (tablet_event);
+        device = libinput_device_get_user_data (libinput_device);
+
+        libinput_tool = libinput_event_tablet_tool_get_tool (tablet_event);
+
+        input_device_update_tool (device, libinput_tool);
+        notify_proximity (device, time, state == LIBINPUT_TABLET_TOOL_PROXIMITY_STATE_IN);
+        break;
+      }
+    case LIBINPUT_EVENT_TABLET_TOOL_BUTTON:
+      {
+        guint64 time;
+        guint32 button_state;
+        struct libinput_event_tablet_tool *tablet_event =
+          libinput_event_get_tablet_tool_event (event);
+        guint tablet_button;
+
+        device = libinput_device_get_user_data (libinput_device);
+        time = libinput_event_tablet_tool_get_time_usec (tablet_event);
+        tablet_button = libinput_event_tablet_tool_get_button (tablet_event);
+
+        button_state = libinput_event_tablet_tool_get_button_state (tablet_event) ==
+                       LIBINPUT_BUTTON_STATE_PRESSED;
+        notify_button (device, time, tablet_button, button_state);
+        break;
+      }
+    case LIBINPUT_EVENT_TABLET_TOOL_TIP:
+      {
+        guint64 time;
+        guint32 button_state;
+        struct libinput_event_tablet_tool *tablet_event =
+          libinput_event_get_tablet_tool_event (event);
+
+        device = libinput_device_get_user_data (libinput_device);
+        time = libinput_event_tablet_tool_get_time_usec (tablet_event);
+
+        button_state = libinput_event_tablet_tool_get_tip_state (tablet_event) ==
+                       LIBINPUT_TABLET_TOOL_TIP_DOWN;
+        notify_button (device, time, BTN_TOUCH, button_state);
         break;
       }
     default:
