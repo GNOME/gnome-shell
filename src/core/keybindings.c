@@ -583,8 +583,7 @@ rebuild_binding_table (MetaKeyBindingManager *keys,
             {
               MetaKeyHandler *handler = HANDLER (pref->name);
 
-              b = g_malloc0 (sizeof (MetaKeyBinding));
-
+              b = g_slice_new0 (MetaKeyBinding);
               b->name = pref->name;
               b->handler = handler;
               b->flags = handler->flags;
@@ -607,8 +606,7 @@ rebuild_binding_table (MetaKeyBindingManager *keys,
         {
           MetaKeyHandler *handler = HANDLER ("external-grab");
 
-          b = g_malloc0 (sizeof (MetaKeyBinding));
-
+          b = g_slice_new0 (MetaKeyBinding);
           b->name = grab->name;
           b->handler = handler;
           b->flags = handler->flags;
@@ -1420,7 +1418,7 @@ meta_display_grab_accelerator (MetaDisplay *display,
 
   g_hash_table_insert (external_grabs, grab->name, grab);
 
-  binding = g_malloc0 (sizeof (MetaKeyBinding));
+  binding = g_slice_new0 (MetaKeyBinding);
   binding->name = grab->name;
   binding->handler = HANDLER ("external-grab");
   binding->combo = combo;
@@ -4014,7 +4012,7 @@ meta_display_init_keys (MetaDisplay *display)
   keys->super_mask = 0;
   keys->meta_mask = 0;
 
-  keys->key_bindings = g_hash_table_new_full (NULL, NULL, NULL, g_free);
+  keys->key_bindings = g_hash_table_new_full (NULL, NULL, NULL, (GDestroyNotify) meta_key_binding_free);
   keys->key_bindings_index = g_hash_table_new (NULL, NULL);
 
   reload_modmap (keys);
