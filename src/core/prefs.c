@@ -439,7 +439,7 @@ static MetaStringArrayPreference preferences_string_array[] =
     {
       { KEY_WORKSPACE_NAMES,
         SCHEMA_GENERAL,
-        META_PREF_KEYBINDINGS,
+        META_PREF_WORKSPACE_NAMES,
       },
       NULL,
       &workspace_names,
