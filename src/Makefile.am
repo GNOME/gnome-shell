@@ -62,6 +62,8 @@ mutter_built_sources += \
 	relative-pointer-unstable-v1-server-protocol.h			\
 	pointer-constraints-unstable-v1-protocol.c			\
 	pointer-constraints-unstable-v1-server-protocol.h		\
+	tablet-unstable-v1-protocol.c					\
+	tablet-unstable-v1-server-protocol.h				\
 	$(NULL)
 endif
 
