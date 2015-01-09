@@ -92,6 +92,7 @@ typedef struct _ClutterAnimation                ClutterAnimation;
 typedef struct _ClutterAnimator         	ClutterAnimator;
 typedef struct _ClutterState            	ClutterState;
 
+typedef struct _ClutterInputDeviceTool          ClutterInputDeviceTool;
 typedef struct _ClutterInputDevice              ClutterInputDevice;
 
 typedef CoglMatrix                              ClutterMatrix;

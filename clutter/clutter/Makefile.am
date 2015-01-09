@@ -87,6 +87,7 @@ source_h =					\
 	clutter-group.h 		\
 	clutter-image.h		\
 	clutter-input-device.h	\
+	clutter-input-device-tool.h	\
         clutter-interval.h            \
 	clutter-keyframe-transition.h	\
 	clutter-keysyms.h 		\
@@ -167,6 +168,7 @@ source_c = \
 	clutter-grid-layout.c 	\
 	clutter-image.c		\
 	clutter-input-device.c	\
+	clutter-input-device-tool.c	\
 	clutter-interval.c            \
 	clutter-keyframe-transition.c	\
 	clutter-keysyms-table.c	\

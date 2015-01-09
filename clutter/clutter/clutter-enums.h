@@ -1488,6 +1488,32 @@ typedef enum {
   CLUTTER_SCROLL_FINISHED_VERTICAL   = 1 << 1
 } ClutterScrollFinishFlags;
 
+/**
+ * ClutterInputDeviceToolType:
+ * @CLUTTER_INPUT_DEVICE_TOOL_NONE: No tool
+ * @CLUTTER_INPUT_DEVICE_TOOL_PEN: The tool is a pen
+ * @CLUTTER_INPUT_DEVICE_TOOL_ERASER: The tool is an eraser
+ * @CLUTTER_INPUT_DEVICE_TOOL_BRUSH: The tool is a brush
+ * @CLUTTER_INPUT_DEVICE_TOOL_PENCIL: The tool is a pencil
+ * @CLUTTER_INPUT_DEVICE_TOOL_AIRBRUSH: The tool is an airbrush
+ * @CLUTTER_INPUT_DEVICE_TOOL_MOUSE: The tool is a mouse
+ * @CLUTTER_INPUT_DEVICE_TOOL_LENS: The tool is a lens
+ *
+ * Defines the type of tool that a #ClutterInputDeviceTool represents.
+ *
+ * Since: 1.28
+ */
+typedef enum {
+  CLUTTER_INPUT_DEVICE_TOOL_NONE,
+  CLUTTER_INPUT_DEVICE_TOOL_PEN,
+  CLUTTER_INPUT_DEVICE_TOOL_ERASER,
+  CLUTTER_INPUT_DEVICE_TOOL_BRUSH,
+  CLUTTER_INPUT_DEVICE_TOOL_PENCIL,
+  CLUTTER_INPUT_DEVICE_TOOL_AIRBRUSH,
+  CLUTTER_INPUT_DEVICE_TOOL_MOUSE,
+  CLUTTER_INPUT_DEVICE_TOOL_LENS
+} ClutterInputDeviceToolType;
+
 G_END_DECLS
 
 #endif /* __CLUTTER_ENUMS_H__ */

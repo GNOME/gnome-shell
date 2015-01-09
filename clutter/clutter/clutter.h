@@ -71,6 +71,7 @@
 #include "clutter-group.h"
 #include "clutter-image.h"
 #include "clutter-input-device.h"
+#include "clutter-input-device-tool.h"
 #include "clutter-interval.h"
 #include "clutter-keyframe-transition.h"
 #include "clutter-keysyms.h"
