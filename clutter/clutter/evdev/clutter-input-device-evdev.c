@@ -112,7 +112,7 @@ _clutter_input_device_evdev_new (ClutterDeviceManager *manager,
   device_id = _clutter_device_manager_evdev_acquire_device_id (manager_evdev);
   device = g_object_new (CLUTTER_TYPE_INPUT_DEVICE_EVDEV,
                          "id", device_id,
-                         "name", libinput_device_get_sysname (libinput_device),
+                         "name", libinput_device_get_name (libinput_device),
                          "device-manager", manager,
                          "device-type", type,
                          "device-mode", CLUTTER_INPUT_MODE_SLAVE,
