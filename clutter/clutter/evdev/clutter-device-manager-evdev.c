@@ -430,7 +430,8 @@ static ClutterEvent *
 new_absolute_motion_event (ClutterInputDevice *input_device,
                            guint64             time_us,
                            gfloat              x,
-                           gfloat              y)
+                           gfloat              y,
+                           gdouble            *axes)
 {
   gfloat stage_width, stage_height;
   ClutterDeviceManagerEvdev *manager_evdev;
@@ -471,6 +472,7 @@ new_absolute_motion_event (ClutterInputDevice *input_device,
   _clutter_xkb_translate_state (event, seat->xkb, seat->button_state);
   event->motion.x = x;
   event->motion.y = y;
+  event->motion.axes = axes;
   clutter_event_set_device (event, seat->core_pointer);
   clutter_event_set_source_device (event, input_device);
 
@@ -485,12 +487,13 @@ new_absolute_motion_event (ClutterInputDevice *input_device,
 static void
 notify_absolute_motion (ClutterInputDevice *input_device,
                         guint64             time_us,
-			gfloat              x,
-			gfloat              y)
+                        gfloat              x,
+                        gfloat              y,
+                        gdouble            *axes)
 {
   ClutterEvent *event;
 
-  event = new_absolute_motion_event (input_device, time_us, x, y);
+  event = new_absolute_motion_event (input_device, time_us, x, y, axes);
 
   queue_event (event);
 }
@@ -523,7 +526,7 @@ notify_relative_motion (ClutterInputDevice *input_device,
   new_y = seat->pointer_y + dy;
 
   time_us = libinput_event_pointer_get_time_usec (pointer_event);
-  event = new_absolute_motion_event (input_device, time_us, new_x, new_y);
+  event = new_absolute_motion_event (input_device, time_us, new_x, new_y, NULL);
 
   dx_unaccel = libinput_event_pointer_get_dx_unaccelerated (pointer_event);
   dy_unaccel = libinput_event_pointer_get_dy_unaccelerated (pointer_event);
@@ -1500,7 +1503,7 @@ process_device_event (ClutterDeviceManagerEvdev *manager_evdev,
                                                                stage_width);
         y = libinput_event_pointer_get_absolute_y_transformed (motion_event,
                                                                stage_height);
-        notify_absolute_motion (device, time_us, x, y);
+        notify_absolute_motion (device, time_us, x, y, NULL);
 
         break;
       }
@@ -2604,5 +2607,5 @@ clutter_evdev_warp_pointer (ClutterInputDevice   *pointer_device,
                             int                   x,
                             int                   y)
 {
-  notify_absolute_motion (pointer_device, ms2us(time_), x, y);
+  notify_absolute_motion (pointer_device, ms2us(time_), x, y, NULL);
 }
