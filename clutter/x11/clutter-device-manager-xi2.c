@@ -660,8 +660,8 @@ translate_coords (ClutterStageX11 *stage_x11,
 
   clutter_actor_get_size (stage, &stage_width, &stage_height);
 
-  *x_out = CLAMP (event_x, 0, stage_width)  / stage_x11->scale_factor;
-  *y_out = CLAMP (event_y, 0, stage_height) / stage_x11->scale_factor;
+  *x_out = CLAMP (event_x / stage_x11->scale_factor, 0, stage_width);
+  *y_out = CLAMP (event_y / stage_x11->scale_factor, 0, stage_height);
 }
 
 static gdouble
