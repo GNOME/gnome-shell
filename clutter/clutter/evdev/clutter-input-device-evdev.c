@@ -203,6 +203,8 @@ _clutter_input_device_evdev_determine_type (struct libinput_device *ldev)
    */
   if (libinput_device_config_tap_get_finger_count (ldev) > 0)
     return CLUTTER_TOUCHPAD_DEVICE;
+  else if (libinput_device_has_capability (ldev, LIBINPUT_DEVICE_CAP_TABLET_TOOL))
+    return CLUTTER_TABLET_DEVICE;
   else if (libinput_device_has_capability (ldev, LIBINPUT_DEVICE_CAP_POINTER))
     return CLUTTER_POINTER_DEVICE;
   else if (libinput_device_has_capability (ldev, LIBINPUT_DEVICE_CAP_TOUCH))
