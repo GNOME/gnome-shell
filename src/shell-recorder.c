@@ -1261,7 +1261,7 @@ recorder_pipeline_closed (RecorderPipeline *pipeline)
 
 /*
  * Replaces '%T' in the passed pipeline with the thread count,
- * the maximum possible value is 64 (limit of what vp8enc supports)
+ * the maximum possible value is 64 (limit of what vp9enc supports)
  *
  * It is assumes that %T occurs only once.
  */
@@ -1291,7 +1291,7 @@ substitute_thread_count (const char *pipeline)
   g_string_append_printf (result, "%d", n_threads);
   g_string_append (result, tmp + 2);
 
-  return g_string_free (result, FALSE);;
+  return g_string_free (result, FALSE);
 }
 
 static gboolean
@@ -1303,7 +1303,7 @@ recorder_open_pipeline (ShellRecorder *recorder)
   GError *error = NULL;
   GstBus *bus;
 
-  pipeline = g_new0(RecorderPipeline, 1);
+  pipeline = g_new0 (RecorderPipeline, 1);
   pipeline->recorder = g_object_ref (recorder);
   pipeline->outfile = - 1;
 
