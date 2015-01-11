@@ -437,7 +437,7 @@ recorder_record_frame (ShellRecorder *recorder)
 
   size = recorder->area.width * recorder->area.height * 4;
 
-  data = g_malloc (recorder->area.width * 4 * recorder->area.height);
+  data = g_malloc (size);
   cogl_framebuffer_read_pixels (cogl_get_draw_framebuffer (),
                                 recorder->area.x,
                                 recorder->area.y,
