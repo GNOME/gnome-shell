@@ -189,9 +189,9 @@ window_backed_app_get_icon (ShellApp *app,
     }
 
   window = window_backed_app_get_window (app);
-  actor = st_texture_cache_bind_pixbuf_property (st_texture_cache_get_default (),
-                                                               G_OBJECT (window),
-                                                               "icon");
+  actor = st_texture_cache_bind_cairo_surface_property (st_texture_cache_get_default (),
+                                                        G_OBJECT (window),
+                                                        "icon");
   g_object_set (actor, "width", (float) size, "height", (float) size, NULL);
   return actor;
 }

@@ -28,7 +28,6 @@
 
 #include <gio/gio.h>
 #include <gtk/gtk.h>
-#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <clutter/clutter.h>
 
 #include <st/st-types.h>
@@ -77,9 +76,9 @@ st_texture_cache_load_sliced_image (StTextureCache *cache,
                                     GFunc           load_callback,
                                     gpointer        user_data);
 
-ClutterActor *st_texture_cache_bind_pixbuf_property (StTextureCache    *cache,
-                                                     GObject           *object,
-                                                     const char        *property_name);
+ClutterActor *st_texture_cache_bind_cairo_surface_property (StTextureCache    *cache,
+                                                            GObject           *object,
+                                                            const char        *property_name);
 
 ClutterActor *st_texture_cache_load_gicon (StTextureCache *cache,
                                            StThemeNode    *theme_node,

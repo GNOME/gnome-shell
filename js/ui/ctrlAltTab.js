@@ -100,7 +100,7 @@ const CtrlAltTabManager = new Lang.Class({
                     if (app)
                         icon = app.create_icon_texture(POPUP_APPICON_SIZE);
                     else
-                        icon = textureCache.bind_pixbuf_property(windows[i], 'icon');
+                        icon = textureCache.bind_cairo_surface_property(windows[i], 'icon');
                 }
 
                 items.push({ name: windows[i].title,

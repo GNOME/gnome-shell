@@ -628,18 +628,26 @@ static void
 st_texture_cache_reset_texture (StTextureCachePropertyBind *bind,
                                 const char                 *propname)
 {
-  GdkPixbuf *pixbuf;
+  cairo_surface_t *surface;
   CoglTexture *texdata;
+  ClutterBackend *backend = clutter_get_default_backend ();
+  CoglContext *ctx = clutter_backend_get_cogl_context (backend);
 
-  g_object_get (bind->source, propname, &pixbuf, NULL);
+  g_object_get (bind->source, propname, &surface, NULL);
 
-  g_return_if_fail (pixbuf == NULL || GDK_IS_PIXBUF (pixbuf));
-
-  if (pixbuf != NULL)
+  if (surface != NULL &&
+      cairo_surface_get_type (surface) == CAIRO_SURFACE_TYPE_IMAGE &&
+      (cairo_image_surface_get_format (surface) == CAIRO_FORMAT_ARGB32 ||
+       cairo_image_surface_get_format (surface) == CAIRO_FORMAT_RGB24))
     {
-      texdata = pixbuf_to_cogl_texture (pixbuf);
-      g_object_unref (pixbuf);
-
+      texdata = COGL_TEXTURE (cogl_texture_2d_new_from_data (ctx,
+                                                             cairo_image_surface_get_width (surface),
+                                                             cairo_image_surface_get_height (surface),
+                                                             cairo_image_surface_get_format (surface) == CAIRO_FORMAT_ARGB32 ?
+                                                             COGL_PIXEL_FORMAT_BGRA_8888 : COGL_PIXEL_FORMAT_BGR_888,
+                                                             cairo_image_surface_get_stride (surface),
+                                                             cairo_image_surface_get_data (surface),
+                                                             NULL));
       clutter_texture_set_cogl_texture (bind->texture, texdata);
       cogl_object_unref (texdata);
 
@@ -677,12 +685,12 @@ st_texture_cache_free_bind (gpointer data)
 }
 
 /**
- * st_texture_cache_bind_pixbuf_property:
+ * st_texture_cache_bind_cairo_surface_property:
  * @cache:
  * @object: A #GObject with a property @property_name of type #GdkPixbuf
  * @property_name: Name of a property
  *
- * Create a #ClutterTexture which tracks the #GdkPixbuf value of a GObject property
+ * Create a #ClutterTexture which tracks the #cairo_surface_t value of a GObject property
  * named by @property_name.  Unlike other methods in StTextureCache, the underlying
  * #CoglTexture is not shared by default with other invocations to this method.
  *
@@ -692,9 +700,9 @@ st_texture_cache_free_bind (gpointer data)
  * Return value: (transfer none): A new #ClutterActor
  */
 ClutterActor *
-st_texture_cache_bind_pixbuf_property (StTextureCache    *cache,
-                                       GObject           *object,
-                                       const char        *property_name)
+st_texture_cache_bind_cairo_surface_property (StTextureCache    *cache,
+                                              GObject           *object,
+                                              const char        *property_name)
 {
   ClutterTexture *texture;
   gchar *notify_key;
