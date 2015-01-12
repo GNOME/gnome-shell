@@ -1046,22 +1046,23 @@ typedef enum {
 /**
  * ClutterTextureFlags:
  * @CLUTTER_TEXTURE_NONE: No flags
- * @CLUTTER_TEXTURE_RGB_FLAG_BGR: FIXME
- * @CLUTTER_TEXTURE_RGB_FLAG_PREMULT: FIXME
- * @CLUTTER_TEXTURE_YUV_FLAG_YUV2: FIXME
+ * @CLUTTER_TEXTURE_RGB_FLAG_BGR: Unused flag
+ * @CLUTTER_TEXTURE_RGB_FLAG_PREMULT: Unused flag
+ * @CLUTTER_TEXTURE_YUV_FLAG_YUV2: Unused flag
  *
  * Flags for clutter_texture_set_from_rgb_data() and
  * clutter_texture_set_from_yuv_data().
  *
  * Since: 0.4
+ *
+ * Deprecated: 1.22: The #ClutterTexture class was the only used of
+ *   this API
  */
 typedef enum { /*< prefix=CLUTTER_TEXTURE >*/
   CLUTTER_TEXTURE_NONE             = 0,
   CLUTTER_TEXTURE_RGB_FLAG_BGR     = 1 << 1,
   CLUTTER_TEXTURE_RGB_FLAG_PREMULT = 1 << 2, /* FIXME: not handled */
   CLUTTER_TEXTURE_YUV_FLAG_YUV2    = 1 << 3
-
-  /* FIXME: add compressed types ? */
 } ClutterTextureFlags;
 
 /**
