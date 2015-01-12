@@ -46,7 +46,8 @@ typedef struct _ClutterKeyframeTransitionClass          ClutterKeyframeTransitio
 /**
  * ClutterKeyframeTransition:
  *
- * FIXME
+ * The `ClutterKeyframeTransition` structure contains only private
+ * data and should be accessed using the provided API.
  *
  * Since: 1.12
  */
@@ -61,7 +62,8 @@ struct _ClutterKeyframeTransition
 /**
  * ClutterKeyframeTransitionClass:
  *
- * FIXME
+ * The `ClutterKeyframeTransitionClass` structure contains only
+ * private data.
  *
  * Since: 1.12
  */
