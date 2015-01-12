@@ -16,108 +16,6 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
-/* OSD */
-.osd-window {
-  text-align: center;
-  font-weight: bold;
-  spacing: 1em; }
-
-.osd-window .level {
-  height: 0.6em;
-  border-radius: 0.3em;
-  background-color: rgba(190, 190, 190, 0.2); }
-
-/* App Switcher */
-.switcher-popup {
-  padding: 8px;
-  spacing: 16px; }
-
-.osd-window,
-.switcher-list {
-  background: rgba(0, 0, 0, 0.8);
-  border: 1px solid rgba(128, 128, 128, 0.4);
-  border-radius: 24px;
-  padding: 20px; }
-
-.switcher-list-item-container {
-  spacing: 8px; }
-
-.switcher-list .item-box {
-  padding: 8px;
-  border-radius: 8px; }
-
-.switcher-list .item-box:outlined {
-  padding: 6px;
-  border: 2px solid #555555; }
-
-.switcher-list .item-box:selected {
-  background: rgba(255, 255, 255, 0.33); }
-
-.switcher-list .thumbnail-box {
-  padding: 2px;
-  spacing: 4px; }
-
-.switcher-list .thumbnail {
-  width: 256px; }
-
-.switcher-list .separator {
-  width: 1px;
-  background: rgba(255, 255, 255, 0.33); }
-
-.ripple-box {
-  width: 52px;
-  height: 52px;
-  background-image: url("corner-ripple-ltr.png");
-  background-size: contain; }
-
-.ripple-box:rtl {
-  background-image: url("corner-ripple-rtl.png"); }
-
-.switcher-arrow {
-  border-color: transparent;
-  color: #808080; }
-
-.switcher-arrow:highlighted {
-  border-color: transparent;
-  color: white; }
-
-/* Workspace Switcher */
-.workspace-switcher-group {
-  padding: 12px; }
-
-.workspace-switcher-container {
-  background: rgba(0, 0, 0, 0.8);
-  border: 1px solid rgba(128, 128, 128, 0.4);
-  border-radius: 24px;
-  padding: 20px; }
-
-.workspace-switcher {
-  background: transparent;
-  border: 0px;
-  border-radius: 0px;
-  padding: 0px;
-  spacing: 8px; }
-
-.ws-switcher-active-up {
-  height: 100px;
-  border: 0px;
-  background: rgba(255, 255, 255, 0.5);
-  background-image: url("ws-switch-arrow-up.png");
-  border-radius: 8px; }
-
-.ws-switcher-active-down {
-  height: 100px;
-  border: 0px;
-  background: rgba(255, 255, 255, 0.5);
-  background-image: url("ws-switch-arrow-down.png");
-  border-radius: 8px; }
-
-.ws-switcher-box {
-  height: 96px;
-  border: 2px solid rgba(85, 85, 85, 0.5);
-  background: transparent;
-  border-radius: 8px; }
-
 /* Tile previews */
 .tile-preview {
   background-color: rgba(74, 144, 217, 0.35);
@@ -965,6 +863,84 @@ StScrollBar {
 - odd thing for styling App menu when apparently not running under shell. Light Adwaita styled
   app menu inside the main app window itself rather than the top bar
 */
+/* OSD */
+.osd-window {
+  text-align: center;
+  font-weight: bold;
+  spacing: 1em; }
+  .osd-window .level {
+    height: 0.6em;
+    border-radius: 0.3em;
+    background-color: #215d9c; }
+
+/* App Switcher */
+.switcher-popup {
+  padding: 8px;
+  spacing: 16px; }
+
+.switcher-list-item-container {
+  spacing: 8px; }
+
+.switcher-list .item-box {
+  padding: 8px;
+  border-radius: 4px; }
+
+.switcher-list .item-box:outlined {
+  padding: 6px;
+  border: 2px solid #040404; }
+
+.switcher-list .item-box:selected {
+  background: #215d9c; }
+
+.switcher-list .thumbnail-box {
+  padding: 2px;
+  spacing: 4px; }
+
+.switcher-list .thumbnail {
+  width: 256px; }
+
+.switcher-list .separator {
+  width: 1px;
+  background: #1c1f1f; }
+
+.switcher-arrow {
+  border-color: transparent;
+  color: #1c1f1f; }
+
+.switcher-arrow:highlighted {
+  color: #eeeeec; }
+
+/* Workspace Switcher */
+.workspace-switcher-group {
+  padding: 12px; }
+
+.workspace-switcher {
+  background: transparent;
+  border: 0px;
+  border-radius: 0px;
+  padding: 0px;
+  spacing: 8px; }
+
+.ws-switcher-active-up, .ws-switcher-active-down {
+  height: 50px;
+  background-color: #215d9c;
+  background-size: 32px;
+  border-radius: 8px; }
+
+.ws-switcher-box {
+  height: 50px;
+  border: 1px solid rgba(238, 238, 236, 0.5);
+  background: transparent;
+  border-radius: 8px; }
+
+.osd-window,
+.switcher-list, .workspace-switcher-container {
+  color: #eeeeec;
+  background-color: rgba(57, 63, 63, 0.8);
+  border: 1px solid rgba(238, 238, 236, 0.2);
+  border-radius: 12px;
+  padding: 12px; }
+
 /* TOP BAR */
 #panel {
   background-color: black;
@@ -1144,6 +1120,15 @@ StScrollBar {
     background-color: #282c2c; }
   .system-menu-action > StIcon {
     icon-size: 16px; }
+
+.ripple-box {
+  width: 52px;
+  height: 52px;
+  background-image: url("corner-ripple-ltr.png");
+  background-size: contain; }
+
+.ripple-box:rtl {
+  background-image: url("corner-ripple-rtl.png"); }
 
 .popup-menu-arrow {
   width: 16px;
@@ -1762,5 +1747,3 @@ StScrollBar {
   border: 2px solid grey;
   border-radius: 4px;
   padding: 6px; }
-
-/*# sourceMappingURL=gnome-shell.css.map */

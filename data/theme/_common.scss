@@ -241,6 +241,106 @@ StScrollBar {
 */
 
 
+/* OSD */
+.osd-window {
+  text-align: center;
+  font-weight: bold;
+  spacing: 1em;
+
+  .level {
+    height: 0.6em;
+    border-radius: 0.3em;
+    background-color: $selected_bg_color;
+  }
+}
+
+/* App Switcher */
+.switcher-popup {
+    padding: 8px;
+    spacing: 16px;
+}
+
+.osd-window,
+.switcher-list {
+  @extend %osd-panel;
+}
+
+  .switcher-list-item-container { spacing: 8px;  }
+
+  .switcher-list .item-box {
+    padding: 8px;
+    border-radius: 4px;
+  }
+
+  .switcher-list .item-box:outlined {
+    padding: 6px;
+    border: 2px solid darken($borders_color,10%);
+  }
+
+  .switcher-list .item-box:selected {
+    background: $selected_bg_color;
+  }
+
+  .switcher-list .thumbnail-box {
+    padding: 2px;
+    spacing: 4px;
+  }
+
+  .switcher-list .thumbnail {
+    width:  256px;
+  }
+
+  .switcher-list .separator {
+    width: 1px;
+    background: $borders_color;
+  }
+
+  .switcher-arrow {
+    border-color: rgba(0,0,0,0);
+    color: $borders_color;
+  }
+
+  .switcher-arrow:highlighted {
+    color: $fg_color;
+  }
+
+/* Workspace Switcher */
+.workspace-switcher-group { padding: 12px; }
+
+  .workspace-switcher-container {
+    @extend %osd-panel;
+  }
+
+  .workspace-switcher {
+    background: transparent;
+    border: 0px;
+    border-radius: 0px;
+    padding: 0px;
+    spacing: 8px;
+  }
+
+  .ws-switcher-active-up, .ws-switcher-active-down {
+    height: 50px;
+    background-color: $selected_bg_color;
+    //background-image: url("ws-switch-arrow-up.png");
+    background-size: 32px;
+    border-radius: 8px;
+  }
+
+  .ws-switcher-box {
+      height: 50px;
+      border: 1px solid transparentize($fg_color,0.5);
+      background: transparent;
+      border-radius: 8px;
+  }
+
+%osd-panel {
+  color: $fg_color;
+  background-color: transparentize($bg_color,0.2);
+  border: 1px solid transparentize($fg_color,0.8);
+  border-radius: 12px;
+  padding: 12px;
+}
 
 /* TOP BAR */
 
@@ -455,6 +555,18 @@ StScrollBar {
     
     & > StIcon { icon-size: 16px; }
   }
+
+//Activities Ripples
+.ripple-box {
+    width: 52px;
+    height: 52px;
+    background-image: url("corner-ripple-ltr.png");
+    background-size: contain;
+}
+
+.ripple-box:rtl {
+    background-image: url("corner-ripple-rtl.png");
+}
 
 // not really top bar only
 .popup-menu-arrow { width: 16px; height: 16px; }
