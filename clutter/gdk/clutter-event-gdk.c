@@ -269,8 +269,8 @@ clutter_gdk_handle_event (GdkEvent *gdk_event)
 
         clutter_actor_get_size (CLUTTER_ACTOR (stage), &w, &h);
 
-        if (w != gdk_event->configure.width ||
-            h != gdk_event->configure.height)
+        if ((int) w != gdk_event->configure.width ||
+            (int) h != gdk_event->configure.height)
           {
             clutter_actor_set_size (CLUTTER_ACTOR (stage),
                                     gdk_event->configure.width,
