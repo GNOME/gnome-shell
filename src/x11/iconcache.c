@@ -163,18 +163,18 @@ argbdata_to_surface (gulong *argb_data, int w, int h)
 {
   cairo_surface_t *surface;
   int y, x, stride;
-  uint8_t *data;
+  uint32_t *data;
 
   surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, w, h);
-  stride = cairo_image_surface_get_stride (surface);
-  data = cairo_image_surface_get_data (surface);
+  stride = cairo_image_surface_get_stride (surface) / sizeof (uint32_t);
+  data = (uint32_t *) cairo_image_surface_get_data (surface);
 
   /* One could speed this up a lot. */
   for (y = 0; y < h; y++)
     {
       for (x = 0; x < w; x++)
         {
-          uint32_t *p = (uint32_t *) &data[y * stride + x];
+          uint32_t *p = &data[y * stride + x];
           gulong *d = &argb_data[y * w + x];
           *p = *d;
         }
