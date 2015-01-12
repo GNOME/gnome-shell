@@ -433,6 +433,17 @@ clutter_stage_gdk_can_clip_redraws (ClutterStageWindow *stage_window)
   return TRUE;
 }
 
+static int
+clutter_stage_gdk_get_scale_factor (ClutterStageWindow *stage_window)
+{
+  ClutterStageGdk *stage_gdk = CLUTTER_STAGE_GDK (stage_window);
+
+  if (stage_gdk->window == NULL)
+    return 1;
+
+  return gdk_window_get_scale_factor (stage_gdk->window);
+}
+
 static void
 clutter_stage_gdk_dispose (GObject *gobject)
 {
@@ -489,6 +500,7 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
   iface->realize = clutter_stage_gdk_realize;
   iface->unrealize = clutter_stage_gdk_unrealize;
   iface->can_clip_redraws = clutter_stage_gdk_can_clip_redraws;
+  iface->get_scale_factor = clutter_stage_gdk_get_scale_factor;
 }
 
 /**
