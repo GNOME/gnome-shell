@@ -312,10 +312,10 @@ meta_window_get_property(GObject         *object,
       g_value_set_string (value, win->title);
       break;
     case PROP_ICON:
-      g_value_set_object (value, win->icon);
+      g_value_set_pointer (value, win->icon);
       break;
     case PROP_MINI_ICON:
-      g_value_set_object (value, win->mini_icon);
+      g_value_set_pointer (value, win->mini_icon);
       break;
     case PROP_DECORATED:
       g_value_set_boolean (value, win->decorated);
@@ -427,17 +427,15 @@ meta_window_class_init (MetaWindowClass *klass)
                          NULL,
                          G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
   obj_props[PROP_ICON] =
-    g_param_spec_object ("icon",
-                         "Icon",
-                         "96 pixel sized icon",
-                         GDK_TYPE_PIXBUF,
-                         G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
+    g_param_spec_pointer ("icon",
+                          "Icon",
+                          "96 pixel sized icon",
+                          G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
   obj_props[PROP_MINI_ICON] =
-    g_param_spec_object ("mini-icon",
-                         "Mini Icon",
-                         "16 pixel sized icon",
-                         GDK_TYPE_PIXBUF,
-                         G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
+    g_param_spec_pointer ("mini-icon",
+                          "Mini Icon",
+                          "16 pixel sized icon",
+                          G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
   obj_props[PROP_DECORATED] =
     g_param_spec_boolean ("decorated",
                           "Decorated",
