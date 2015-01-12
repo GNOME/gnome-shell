@@ -45,8 +45,16 @@
 #include <cogl/cogl-xlib.h>
 #endif
 
+#if defined(GDK_WINDOWING_WAYLAND) && defined(COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT)
+#include <cogl/cogl-wayland-client.h>
+#endif
+
 #ifdef GDK_WINDOWING_X11
 #include <gdk/gdkx.h>
+#endif
+
+#ifdef GDK_WINDOWING_WAYLAND
+#include <gdk/gdkwayland.h>
 #endif
 
 #ifdef GDK_WINDOWING_WIN32
@@ -272,6 +280,17 @@ clutter_backend_gdk_get_renderer (ClutterBackend  *backend,
       Display *xdisplay = gdk_x11_display_get_xdisplay (backend_gdk->display);
 
       cogl_xlib_renderer_set_foreign_display (renderer, xdisplay);
+    }
+  else
+#endif
+#if defined(GDK_WINDOWING_WAYLAND) && defined(COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT)
+  if (GDK_IS_WAYLAND_DISPLAY (backend_gdk->display))
+    {
+      struct wl_display *display = gdk_wayland_display_get_wl_display (backend_gdk->display);
+
+      /* Force a Wayland winsys */
+      cogl_renderer_set_winsys_id (renderer, COGL_WINSYS_ID_EGL_WAYLAND);
+      cogl_wayland_renderer_set_foreign_display (renderer, display);
     }
   else
 #endif
