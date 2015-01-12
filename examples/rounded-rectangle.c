@@ -75,7 +75,8 @@ main (int argc, char *argv[])
                                              CLUTTER_SCALING_FILTER_TRILINEAR,
                                              CLUTTER_SCALING_FILTER_LINEAR);
   clutter_actor_set_pivot_point (actor, 0.5f, 0.5f);
-  clutter_actor_add_constraint (actor, clutter_bind_constraint_new (stage, CLUTTER_BIND_SIZE, 0.f));
+  clutter_actor_add_constraint (actor, clutter_align_constraint_new (stage, CLUTTER_ALIGN_BOTH, 0.5));
+  clutter_actor_set_request_mode (actor, CLUTTER_REQUEST_CONTENT_SIZE);
   clutter_actor_add_child (stage, actor);
 
   /* the actor now owns the canvas */
