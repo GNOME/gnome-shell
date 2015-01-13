@@ -16,25 +16,6 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
-/* Tile previews */
-.tile-preview {
-  background-color: rgba(74, 144, 217, 0.35);
-  border: 1px solid #4a90d9;
-  /* Adwaita selected bg color */ }
-
-.tile-preview-left.on-primary {
-  /* keep in sync with -panel-corner-radius */
-  border-radius: 6px 0 0 0; }
-
-.tile-preview-right.on-primary {
-  /* keep in sync with -panel-corner-radius */
-  border-radius: 0 6px 0 0; }
-
-.tile-preview-left.tile-preview-right.on-primary {
-  /* keep in sync with -panel-corner-radius */
-  border-radius: 6px 6px 0 0; }
-
-/* Modal Dialogs */
 /* End Session Dialog */
 .end-session-dialog {
   spacing: 42px; }
@@ -941,6 +922,20 @@ StScrollBar {
   border: 1px solid rgba(238, 238, 236, 0.2);
   border-radius: 12px;
   padding: 12px; }
+
+/* Tiled window previews */
+.tile-preview {
+  background-color: rgba(33, 93, 156, 0.5);
+  border: 1px solid #215d9c; }
+
+.tile-preview-left.on-primary {
+  border-radius: 6px 6px 0 0 0; }
+
+.tile-preview-right.on-primary {
+  border-radius: 0 6px 0 0; }
+
+.tile-preview-left.tile-preview-right.on-primary {
+  border-radius: 6px 6px 0 0; }
 
 /* TOP BAR */
 #panel {

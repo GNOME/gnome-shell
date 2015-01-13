@@ -4,6 +4,8 @@
 $cakeisalie: "This stylesheet is generated, DO NOT EDIT";
 /* #{$cakeisalie} */
 
+$panel-corner-radius: 6px;
+
 /* Copyright 2009, Red Hat, Inc.
  *
  * Portions adapted from Mx's data/style/default.css
@@ -343,6 +345,24 @@ StScrollBar {
   padding: 12px;
 }
 
+/* Tiled window previews */
+.tile-preview {
+  background-color: transparentize($selected_bg_color,0.5);
+  border: 1px solid $selected_bg_color;
+}
+
+  .tile-preview-left.on-primary {
+    border-radius: $panel-corner-radius $panel-corner-radius 0 0 0;
+  }
+
+  .tile-preview-right.on-primary {
+    border-radius: 0 $panel-corner-radius 0 0;
+  }
+
+  .tile-preview-left.tile-preview-right.on-primary {
+    border-radius: $panel-corner-radius $panel-corner-radius 0 0;
+  }
+
 /* TOP BAR */
 
 #panel {
@@ -361,7 +381,7 @@ StScrollBar {
   }
   
   .panel-corner {
-    -panel-corner-radius: 6px;
+    -panel-corner-radius: $panel-corner-radius;
     -panel-corner-background-color: black;
     -panel-corner-border-width: 2px;
     -panel-corner-border-color: transparent; 
