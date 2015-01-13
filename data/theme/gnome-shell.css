@@ -828,7 +828,7 @@ StScrollBar {
     .popup-menu .popup-menu-item:rtl {
       padding: .4em 0em .4em 1.75em; }
     .popup-menu .popup-menu-item:active {
-      background-color: #515a5a; }
+      background-color: #215d9c; }
     .popup-menu .popup-menu-item:insensitive {
       background-color: rgba(57, 63, 63, 0.5); }
   .popup-menu .popup-inactive-menu-item {
@@ -871,7 +871,8 @@ StScrollBar {
   .osd-window .level {
     height: 0.6em;
     border-radius: 0.3em;
-    background-color: #215d9c; }
+    background-color: #151717;
+    color: #eeeeec; }
 
 /* App Switcher */
 .switcher-popup {

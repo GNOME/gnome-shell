@@ -198,7 +198,7 @@ StScrollBar {
     
     &:ltr { padding: .4em 1.75em .4em 0em; }
     &:rtl { padding: .4em 0em .4em 1.75em; }
-    &:active { background-color: lighten($bg_color,10%); }
+    &:active { background-color: $selected_bg_color; }
     &:insensitive { background-color: transparentize($bg_color,.5); }
   }
   .popup-inactive-menu-item { //all icons and other graphical elements
@@ -250,7 +250,8 @@ StScrollBar {
   .level {
     height: 0.6em;
     border-radius: 0.3em;
-    background-color: $selected_bg_color;
+    background-color: darken($bg_color,15%);
+    color: $fg_color;
   }
 }
 
