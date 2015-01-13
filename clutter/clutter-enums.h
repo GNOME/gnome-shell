@@ -48,6 +48,8 @@ G_BEGIN_DECLS
  * of the specified portion at the same coordinates.
  *
  * Since: 0.2
+ *
+ * Deprecated: 1.22: Use the normalized #ClutterActor pivot point instead
  */
 typedef enum { /*< prefix=CLUTTER_GRAVITY >*/
   CLUTTER_GRAVITY_NONE       = 0,
@@ -86,6 +88,8 @@ typedef enum { /*< prefix=CLUTTER >*/
  * Direction of a rotation.
  *
  * Since: 0.4
+ *
+ * Deprecated: 1.22
  */
 typedef enum { /*< prefix=CLUTTER_ROTATE >*/
   CLUTTER_ROTATE_CW,
@@ -277,6 +281,8 @@ typedef enum {
  * clutter_set_font_flags().
  *
  * Since: 1.0
+ *
+ * Deprecated: 1.22: Use #cairo_font_options_t instead
  */
 typedef enum { /*< prefix=CLUTTER_FONT >*/
   CLUTTER_FONT_MIPMAPPING = (1 << 0),
@@ -480,6 +486,8 @@ typedef enum { /*< prefix=CLUTTER_ALIGN >*/
  * The mode of interpolation between key frames
  *
  * Since: 1.2
+ *
+ * Deprecated: 1.22
  */
 typedef enum {
   CLUTTER_INTERPOLATION_LINEAR,
@@ -832,7 +840,7 @@ typedef enum {
  * @CLUTTER_FEATURE_SWAP_EVENTS: Set if the GLX_INTEL_swap_event is supported.
  *
  * Runtime flags indicating specific features available via Clutter window
- * sysytem and graphics backend.
+ * system and graphics backend.
  *
  * Since: 0.4
  */
@@ -1036,6 +1044,8 @@ typedef enum { /*< prefix=CLUTTER_PAN >*/
  * The alignment policies available on each axis of the #ClutterTableLayout
  *
  * Since: 1.4
+ *
+ * Deprecated: 1.22: Use the alignment properties of #ClutterActor
  */
 typedef enum {
   CLUTTER_TABLE_ALIGNMENT_START,
@@ -1055,7 +1065,7 @@ typedef enum {
  *
  * Since: 0.4
  *
- * Deprecated: 1.22: The #ClutterTexture class was the only used of
+ * Deprecated: 1.22: The #ClutterTexture class was the only user of
  *   this API
  */
 typedef enum { /*< prefix=CLUTTER_TEXTURE >*/
@@ -1077,6 +1087,10 @@ typedef enum { /*< prefix=CLUTTER_TEXTURE >*/
  * Enumaration controlling the texture quality.
  *
  * Since: 0.8
+ *
+ * Deprecated: 1.22: The #ClutterTexture class was the only used ot
+ *   this API; use #ClutterImage and clutter_actor_set_content_scaling_filters()
+ *   instead.
  */
 typedef enum { /*< prefix=CLUTTER_TEXTURE_QUALITY >*/
   CLUTTER_TEXTURE_QUALITY_LOW,
