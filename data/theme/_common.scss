@@ -548,11 +548,11 @@ StScrollBar {
     
     &:hover, &:focus {
       color: lighten($fg_color, 10%);
-      background-color: lighten($bg_color,10%);
+      background-color: $selected_bg_color;
       border: none;
       padding: 14px;
     }
-    &:active { background-color: lighten($borders_color,5%); }
+    &:active { background-color: darken($selected_bg_color,5%); }
     
     & > StIcon { icon-size: 16px; }
   }

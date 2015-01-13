@@ -1114,11 +1114,11 @@ StScrollBar {
   border: 1px solid #282c2c; }
   .system-menu-action:hover, .system-menu-action:focus {
     color: white;
-    background-color: #515a5a;
+    background-color: #215d9c;
     border: none;
     padding: 14px; }
   .system-menu-action:active {
-    background-color: #282c2c; }
+    background-color: #1c5187; }
   .system-menu-action > StIcon {
     icon-size: 16px; }
 
