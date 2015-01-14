@@ -114,7 +114,7 @@ const AppMenuButton = new Lang.Class({
         textureCache.connect('icon-theme-changed',
                              Lang.bind(this, this._onIconThemeChanged));
 
-        this._iconBox = new St.Bin();
+        this._iconBox = new St.Bin({ style_class: 'app-menu-icon' });
         this._container.add_actor(this._iconBox);
 
         this._label = new St.Label();

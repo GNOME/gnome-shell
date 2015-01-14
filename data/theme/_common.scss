@@ -482,7 +482,11 @@ StScrollBar {
     color: #ccc;
     transition-duration: 100ms;
 
-    &:hover { 
+    .app-menu-icon {
+      -st-icon-style: symbolic;
+    }
+
+    &:hover {
       color: lighten($fg_color, 10%);
       text-shadow: black 0 2px 2px;
     }

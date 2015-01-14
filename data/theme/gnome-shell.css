@@ -954,6 +954,8 @@ StScrollBar {
     font-weight: bold;
     color: #ccc;
     transition-duration: 100ms; }
+    #panel .panel-button .app-menu-icon {
+      -st-icon-style: symbolic; }
     #panel .panel-button:hover {
       color: white;
       text-shadow: black 0 2px 2px; }
