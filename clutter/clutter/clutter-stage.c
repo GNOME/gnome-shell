@@ -930,7 +930,9 @@ _clutter_stage_queue_event (ClutterStage *stage,
    * event processing function
    */
   device = clutter_event_get_device (event);
-  if (device != NULL)
+  if (device != NULL &&
+      event->type != CLUTTER_PROXIMITY_IN &&
+      event->type != CLUTTER_PROXIMITY_OUT)
     {
       ClutterModifierType event_state = clutter_event_get_state (event);
       ClutterEventSequence *sequence = clutter_event_get_event_sequence (event);

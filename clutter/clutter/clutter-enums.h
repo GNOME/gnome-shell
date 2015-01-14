@@ -761,6 +761,10 @@ typedef enum { /*< flags prefix=CLUTTER_EVENT >*/
  *   determined by its phase field; event added in 1.24
  * @CLUTTER_TOUCHPAD_SWIPE: A swipe gesture event, the current state is
  *   determined by its phase field; event added in 1.24
+ * @CLUTTER_PROXIMITY_IN: A tool entered in proximity to a tablet;
+ *   event added in 1.28
+ * @CLUTTER_PROXIMITY_OUT: A tool left from the proximity area of a tablet;
+ *   event added in 1.28
  * @CLUTTER_EVENT_LAST: Marks the end of the #ClutterEventType enumeration;
  *   added in 1.10
  *
@@ -788,6 +792,8 @@ typedef enum { /*< prefix=CLUTTER >*/
   CLUTTER_TOUCH_CANCEL,
   CLUTTER_TOUCHPAD_PINCH,
   CLUTTER_TOUCHPAD_SWIPE,
+  CLUTTER_PROXIMITY_IN,
+  CLUTTER_PROXIMITY_OUT,
 
   CLUTTER_EVENT_LAST            /* helper */
 } ClutterEventType;

@@ -117,6 +117,7 @@ typedef struct _ClutterCrossingEvent    ClutterCrossingEvent;
 typedef struct _ClutterTouchEvent       ClutterTouchEvent;
 typedef struct _ClutterTouchpadPinchEvent ClutterTouchpadPinchEvent;
 typedef struct _ClutterTouchpadSwipeEvent ClutterTouchpadSwipeEvent;
+typedef struct _ClutterProximityEvent   ClutterProximityEvent;
 
 /**
  * ClutterAnyEvent:
@@ -210,6 +211,30 @@ struct _ClutterButtonEvent
   guint32 button;
   guint click_count;
   gdouble *axes; /* Future use */
+  ClutterInputDevice *device;
+};
+
+/**
+ * ClutterProximityEvent:
+ * @type: event type
+ * @time: event time
+ * @flags: event flags
+ * @stage: event source stage
+ * @source: event source actor
+ * @device: the device that originated the event. If you want the physical
+ * device the event originated from, use clutter_event_get_source_device()
+ *
+ * Event for tool proximity in tablet devices
+ *
+ * Since: 1.28
+ */
+struct _ClutterProximityEvent
+{
+  ClutterEventType type;
+  guint32 time;
+  ClutterEventFlags flags;
+  ClutterStage *stage;
+  ClutterActor *source;
   ClutterInputDevice *device;
 };
 
@@ -490,6 +515,7 @@ union _ClutterEvent
   ClutterTouchEvent touch;
   ClutterTouchpadPinchEvent touchpad_pinch;
   ClutterTouchpadSwipeEvent touchpad_swipe;
+  ClutterProximityEvent proximity;
 };
 
 /**

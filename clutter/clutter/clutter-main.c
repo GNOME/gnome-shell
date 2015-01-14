@@ -2487,6 +2487,19 @@ _clutter_process_event_details (ClutterActor        *stage,
           break;
         }
 
+      case CLUTTER_PROXIMITY_IN:
+      case CLUTTER_PROXIMITY_OUT:
+        if (_clutter_event_process_filters (event))
+          break;
+
+        if (!clutter_actor_event (stage, event, TRUE))
+          {
+            /* and bubbling phase */
+            clutter_actor_event (stage, event, FALSE);
+          }
+
+        break;
+
       case CLUTTER_STAGE_STATE:
         /* fullscreen / focus - forward to stage */
         event->any.source = stage;
