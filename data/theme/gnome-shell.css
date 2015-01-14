@@ -16,79 +16,6 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
-/* End Session Dialog */
-.end-session-dialog {
-  spacing: 42px; }
-
-.end-session-dialog-list {
-  padding-top: 20px; }
-
-.end-session-dialog-layout {
-  padding-left: 17px; }
-
-.end-session-dialog-layout:rtl {
-  padding-right: 17px; }
-
-.end-session-dialog-description {
-  width: 28em;
-  padding-bottom: 10px; }
-
-.end-session-dialog-description:rtl {
-  width: 28em;
-  padding-bottom: 10px;
-  text-align: right; }
-
-.end-session-dialog-warning {
-  width: 28em;
-  color: #f57900;
-  padding-top: 6px; }
-
-.end-session-dialog-warning:rtl {
-  width: 28em;
-  color: #f57900;
-  padding-top: 6px;
-  text-align: right; }
-
-.end-session-dialog-logout-icon {
-  border: 2px solid #8b8b8b;
-  border-radius: 5px;
-  width: 48px;
-  height: 48px;
-  background-size: contain; }
-
-.end-session-dialog-shutdown-icon {
-  color: #bebebe;
-  width: 48px;
-  height: 48px; }
-
-.end-session-dialog-inhibitor-layout {
-  spacing: 16px;
-  max-height: 200px;
-  padding-right: 65px;
-  padding-left: 65px; }
-
-.end-session-dialog-session-list,
-.end-session-dialog-app-list {
-  spacing: 1em; }
-
-.end-session-dialog-list-header {
-  font-weight: bold; }
-
-.end-session-dialog-list-header:rtl {
-  text-align: right; }
-
-.end-session-dialog-app-list-item,
-.end-session-dialog-session-list-item {
-  spacing: 1em; }
-
-.end-session-dialog-app-list-item-name,
-.end-session-dialog-session-list-item-name {
-  font-weight: bold; }
-
-.end-session-dialog-app-list-item-description {
-  color: #cccccc;
-  font-size: 10pt; }
-
 /* Restart message */
 .restart-message {
   font-size: 14pt; }
@@ -792,6 +719,70 @@ StScrollBar {
 .mount-question-dialog-subject,
 .end-session-dialog-subject {
   font-size: fontsize(14.3); }
+
+/* End Session Dialog */
+.end-session-dialog {
+  spacing: 42px;
+  border: 3px solid rgba(238, 238, 236, 0.2); }
+
+.end-session-dialog-list {
+  padding-top: 20px; }
+
+.end-session-dialog-layout {
+  padding-left: 17px; }
+  .end-session-dialog-layout:rtl {
+    padding-right: 17px; }
+
+.end-session-dialog-description {
+  width: 28em;
+  padding-bottom: 10px; }
+  .end-session-dialog-description:rtl {
+    text-align: right; }
+
+.end-session-dialog-warning {
+  width: 28em;
+  color: #f57900;
+  padding-top: 6px; }
+  .end-session-dialog-warning:rtl {
+    text-align: right; }
+
+.end-session-dialog-logout-icon {
+  border-radius: 5px;
+  width: 48px;
+  height: 48px;
+  background-size: contain; }
+
+.end-session-dialog-shutdown-icon {
+  color: #eeeeec;
+  width: 48px;
+  height: 48px; }
+
+.end-session-dialog-inhibitor-layout {
+  spacing: 16px;
+  max-height: 200px;
+  padding-right: 65px;
+  padding-left: 65px; }
+
+.end-session-dialog-session-list,
+.end-session-dialog-app-list {
+  spacing: 1em; }
+
+.end-session-dialog-list-header {
+  font-weight: bold; }
+  .end-session-dialog-list-header:rtl {
+    text-align: right; }
+
+.end-session-dialog-app-list-item,
+.end-session-dialog-session-list-item {
+  spacing: 1em; }
+
+.end-session-dialog-app-list-item-name,
+.end-session-dialog-session-list-item-name {
+  font-weight: bold; }
+
+.end-session-dialog-app-list-item-description {
+  color: #e2e2df;
+  font-size: 10pt; }
 
 /* Popvers/Menus */
 .popup-menu {

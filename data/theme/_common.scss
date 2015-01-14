@@ -182,6 +182,84 @@ StScrollBar {
     font-size: fontsize($font-size * 1.3);
   }
 
+/* End Session Dialog */
+.end-session-dialog {
+    spacing: 42px;
+    border: 3px solid transparentize($fg_color,0.8);
+}
+
+  .end-session-dialog-list {
+      padding-top: 20px;
+  }
+
+  .end-session-dialog-layout {
+    padding-left: 17px;
+    &:rtl { padding-right: 17px; }
+  }
+
+  .end-session-dialog-description {
+    width: 28em;
+    padding-bottom: 10px;
+    &:rtl {
+      text-align: right;
+    }
+  }
+
+  .end-session-dialog-warning {
+    width: 28em;
+    color: $warning_color;
+    padding-top: 6px;
+    &:rtl {
+      text-align: right;
+    }
+  }
+
+  .end-session-dialog-logout-icon {
+    //border: 2px solid #8b8b8b;
+    border-radius: 5px;
+    width: 48px;
+    height: 48px;
+    background-size: contain;
+  }
+
+  .end-session-dialog-shutdown-icon {
+    color: $fg_color;
+    width: 48px;
+    height: 48px;
+  }
+
+  .end-session-dialog-inhibitor-layout {
+    spacing: 16px;
+    max-height: 200px;
+    padding-right: 65px;
+    padding-left: 65px;
+  }
+
+  .end-session-dialog-session-list,
+  .end-session-dialog-app-list {
+    spacing: 1em;
+  }
+
+  .end-session-dialog-list-header {
+    font-weight: bold;
+    &:rtl { text-align: right; }
+  }
+
+  .end-session-dialog-app-list-item,
+  .end-session-dialog-session-list-item {
+    spacing: 1em;
+  }
+
+  .end-session-dialog-app-list-item-name,
+  .end-session-dialog-session-list-item-name {
+    font-weight: bold;
+  }
+
+  .end-session-dialog-app-list-item-description {
+    color: darken($fg_color,5%);
+    font-size: 10pt;
+  }
+
 /* Popvers/Menus */
 
 .popup-menu {
