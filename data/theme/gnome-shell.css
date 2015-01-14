@@ -985,6 +985,13 @@ StScrollBar {
 .calendar {
   padding: .4em 1.75em .8em 1.75em; }
 
+.datemenu-date-label {
+  padding: .4em 1.7em;
+  text-align: center;
+  color: #eeeeec;
+  font-weight: bold;
+  font-size: 110%; }
+
 .calendar-vertical-separator {
   width: .3em;
   -stipple-width: 1px;
@@ -995,12 +1002,26 @@ StScrollBar {
   font-weight: bold;
   padding: 8px 0; }
 
-.datemenu-date-label {
-  padding: .4em 1.7em;
-  text-align: center;
-  color: #d6d6d1;
-  font-size: 130%;
-  border-radius: 4px; }
+.pager-button {
+  color: white;
+  background-color: transparent;
+  width: 32px;
+  background-position: center;
+  boder-radius: 4px; }
+  .pager-button:hover, .pager-button:focus {
+    background-color: rgba(238, 238, 236, 0.05); }
+  .pager-button:active {
+    background-color: rgba(57, 63, 63, 0.05); }
+
+.calendar-change-month-back {
+  background-image: url("calendar-arrow-left.svg"); }
+  .calendar-change-month-back:rtl {
+    background-image: url("calendar-arrow-right.svg"); }
+
+.calendar-change-month-forward {
+  background-image: url("calendar-arrow-right.svg"); }
+  .calendar-change-month-forward:rtl {
+    background-image: url("calendar-arrow-left.svg"); }
 
 .calendar-day-base {
   font-size: 80%;
@@ -1012,6 +1033,10 @@ StScrollBar {
   .calendar-day-base:active {
     color: #fafaf9;
     background-color: #2d3232; }
+  .calendar-day-base.calendar-day-heading {
+    color: #8e8e80;
+    margin-top: 1em;
+    font-size: 90%; }
 
 .calendar-day {
   border: 1px solid #1c1f1f;
@@ -1032,7 +1057,7 @@ StScrollBar {
   font-weight: bold;
   color: white;
   border-bottom-width: 2px;
-  border-color: #215d9c; }
+  border-bottom-color: #215d9c; }
 
 .calendar-day-with-events {
   color: white;

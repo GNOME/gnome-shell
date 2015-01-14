@@ -526,6 +526,14 @@ StScrollBar {
   // calendar popover
   .calendar { padding: .4em 1.75em .8em 1.75em; }
 
+    .datemenu-date-label { //topmost date label
+      padding: .4em 1.7em;
+      text-align: center;
+      color: $fg_color;
+      font-weight: bold;
+      font-size: 110%;
+    }
+
     .calendar-vertical-separator {
       width: .3em;
       -stipple-width: 1px;
@@ -538,31 +546,37 @@ StScrollBar {
       padding: 8px 0;
       &:focus {}
     }
-    
-    .calendar-change-month-back { //arrow back
-      &:rtl {}
-      &:hover, &:focus {}
-      &:active {}
+
+    .pager-button {
+      color: white;
+      background-color: transparent;
+      width: 32px;
+      background-position: center;
+      boder-radius: 4px;
+      &:hover, &:focus { background-color: transparentize($fg_color,0.95); }
+      &:active { background-color: transparentize($bg_color,0.95); }
     }
-    .calendar-change-month-forward { //arrow foreward
-      &:rtl {}
-      &:hover, &:focus {}
-      &:active {}
-    }
-    .datemenu-date-label {
-      padding: .4em 1.7em;
-      text-align: center;
-      color: darken($fg_color,10%);
-      font-size: 130%;
-      border-radius: 4px;
-    }
-    
+
+      .calendar-change-month-back { //arrow back
+        background-image: url("calendar-arrow-left.svg");
+        &:rtl { background-image: url("calendar-arrow-right.svg"); }
+      }
+      .calendar-change-month-forward { //arrow foreward
+        background-image: url("calendar-arrow-right.svg");
+        &:rtl { background-image: url("calendar-arrow-left.svg"); }
+      }
+
     .calendar-day-base {
       font-size: 80%;
       text-align: center;
       width: 2.4em; height: 2.4em;
       &:hover,&:focus { background-color: lighten($bg_color,5%); }
       &:active { color: lighten($fg_color,5%); background-color: darken($bg_color,5%);}
+      &.calendar-day-heading {  //day of week heading
+        color: darken($fg_color,40%); 
+        margin-top: 1em;
+        font-size: 90%;
+      }
     }
       .calendar-day { //border collapse hack - see calendar.js
         border: 1px solid $borders_color;
@@ -576,7 +590,7 @@ StScrollBar {
         font-weight: bold;
         color: lighten($fg_color,10%);
         border-bottom-width: 2px;
-        border-color: $selected_bg_color; //FIXME sadly can't have a color per side.
+        border-bottom-color: $selected_bg_color; //FIXME sadly can't have a color per side.
       }
       .calendar-day-with-events {
         color: white;
@@ -588,7 +602,7 @@ StScrollBar {
         opacity: 0.5;
       }
 
-    .events-table {
+    .events-table { //right hand side
       width: 15em;
       spacing-columns: 1em;
       padding: 0 1.4em;
