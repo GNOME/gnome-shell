@@ -330,7 +330,7 @@ StScrollBar {
   .level {
     height: 0.6em;
     border-radius: 0.3em;
-    background-color: darken($bg_color,15%);
+    background-color: transparentize(darken($bg_color,15%),0.5);
     color: $fg_color;
   }
 }

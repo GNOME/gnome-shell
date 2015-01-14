@@ -843,7 +843,7 @@ StScrollBar {
   .osd-window .level {
     height: 0.6em;
     border-radius: 0.3em;
-    background-color: black;
+    background-color: rgba(0, 0, 0, 0.5);
     color: #fff; }
 
 /* App Switcher */
