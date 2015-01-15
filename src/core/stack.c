@@ -1137,6 +1137,7 @@ stack_sync_to_xserver (MetaStack *stack)
                    x11_stacked->len);
 
   g_array_free (x11_stacked, TRUE);
+  g_array_free (x11_hidden_stack_ids, TRUE);
   g_array_free (all_root_children_stacked, TRUE);
 }
 
