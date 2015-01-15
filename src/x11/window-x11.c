@@ -756,15 +756,12 @@ meta_window_x11_focus (MetaWindow *window,
       (window->shaded ||
        !(window->input || window->take_focus)))
     {
-      if (window->frame)
-        {
-          meta_topic (META_DEBUG_FOCUS,
-                      "Focusing frame of %s\n", window->desc);
-          meta_display_set_input_focus_window (window->display,
-                                               window,
-                                               TRUE,
-                                               timestamp);
-        }
+      meta_topic (META_DEBUG_FOCUS,
+                  "Focusing frame of %s\n", window->desc);
+      meta_display_set_input_focus_window (window->display,
+                                           window,
+                                           TRUE,
+                                           timestamp);
     }
   else
     {
