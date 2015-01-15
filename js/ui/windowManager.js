@@ -913,6 +913,16 @@ const WindowManager = new Lang.Class({
                 return;
             window.change_workspace_by_index(index + 1, true);
         });
+
+        // If the new workspace was inserted before the active workspace,
+        // activate the workspace to which its windows went
+        let activeIndex = global.screen.get_active_workspace_index();
+        if (activeIndex >= pos) {
+            let newWs = global.screen.get_workspace_by_index(activeIndex + 1);
+            this._blockAnimations = true;
+            newWs.activate(global.get_current_time());
+            this._blockAnimations = false;
+        }
     },
 
 
@@ -945,7 +955,7 @@ const WindowManager = new Lang.Class({
     },
 
     _shouldAnimate: function() {
-        return !Main.overview.visible;
+        return !(Main.overview.visible || this._blockAnimations);
     },
 
     _shouldAnimateActor: function(actor, types) {
