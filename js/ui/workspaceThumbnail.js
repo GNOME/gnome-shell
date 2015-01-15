@@ -795,35 +795,13 @@ const ThumbnailsBox = new Lang.Class({
 
             let isWindow = !!source.realWindow;
 
-            // To create a new workspace, we first slide all the windows on workspaces
-            // below us to the next workspace, leaving a blank workspace for us to recycle.
             let newWorkspaceIndex;
             [newWorkspaceIndex, this._dropPlaceholderPos] = [this._dropPlaceholderPos, -1];
-
-            // Nab all the windows below us.
-            let windows = global.get_window_actors().filter(function(winActor) {
-                // If the window is attached to an ancestor, we don't need/want to move it
-                let window = winActor.meta_window;
-
-                if (window.get_transient_for() != null)
-                    return false;
-
-                if (isWindow)
-                    return window.get_workspace().index() >= newWorkspaceIndex && winActor != source;
-                else
-                    return window.get_workspace().index() >= newWorkspaceIndex;
-            });
-
             this._spliceIndex = newWorkspaceIndex;
 
-            // ... move them down one.
-            windows.forEach(function(winActor) {
-                let window = winActor.meta_window;
-                window.change_workspace_by_index(window.get_workspace().index() + 1, true);
-            });
+            Main.wm.insertWorkspace(newWorkspaceIndex);
 
             if (isWindow) {
-                // ... and bam, a workspace, good as new.
                 // Move the window to our monitor first if necessary.
                 let thumbMonitor = this._thumbnails[newWorkspaceIndex].monitorIndex;
                 if (source.metaWindow.get_monitor() != thumbMonitor)

@@ -888,6 +888,31 @@ const WindowManager = new Lang.Class({
         Main.activateWindow(nextWindow);
     },
 
+    insertWorkspace: function(pos) {
+        if (!Meta.prefs_get_dynamic_workspaces())
+            return;
+
+        let windows = global.get_window_actors().map(function(winActor) {
+            return winActor.meta_window;
+        });
+
+        // To create a new workspace, we slide all the windows on workspaces
+        // below us to the next workspace, leaving a blank workspace for us
+        // to recycle.
+        windows.forEach(function(window) {
+            // If the window is attached to an ancestor, we don't need/want
+            // to move it
+            if (window.get_transient_for() != null)
+                return;
+            // Windows on workspaces below pos don't need moving
+            let index = window.get_workspace().index();
+            if (index < pos)
+                return;
+            window.change_workspace_by_index(index + 1, true);
+        });
+    },
+
+
     keepWorkspaceAlive: function(workspace, duration) {
         if (!this._workspaceTracker)
             return;
