@@ -789,7 +789,7 @@ meta_window_x11_focus (MetaWindow *window,
                * want us to send a WM_TAKE_FOCUS.
                *
                * Normally, we want to just leave the focus undisturbed until
-               * the window respnds to WM_TAKE_FOCUS, but if we're unmanaging
+               * the window responds to WM_TAKE_FOCUS, but if we're unmanaging
                * the current focus window we *need* to move the focus away, so
                * we focus the no_focus_window now (and set
                * display->focus_window to that) before sending WM_TAKE_FOCUS.
