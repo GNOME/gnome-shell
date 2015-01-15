@@ -1527,6 +1527,11 @@ const WindowManager = new Lang.Class({
             direction = Meta.MotionDirection.DOWN;
             newWs = screen.get_workspace_by_index(screen.n_workspaces - 1);
         } else if (isNaN(target)) {
+            // Prepend a new workspace dynamically
+            if (screen.get_active_workspace_index() == 0 &&
+                action == 'move' && target == 'up')
+                this.insertWorkspace(0);
+
             direction = Meta.MotionDirection[target.toUpperCase()];
             newWs = screen.get_active_workspace().get_neighbor(direction);
         } else if (target > 0) {
