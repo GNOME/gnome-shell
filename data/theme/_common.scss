@@ -1215,7 +1215,7 @@ StScrollBar {
 /* LOGIN DIALOG */
 .login-dialog-banner-view {
   padding-top: 24px;
-   max-width: 23em;
+  max-width: 23em;
 }
 
 /* NOTIFICATIONS & MESSAGE TRAY */
@@ -1330,12 +1330,16 @@ StScrollBar {
     &:ltr > StScrollBar { padding-left: 6px; }
     &:rtl > StScrollBar { padding-right: 6px; }
   }
-  .notification-button { -st-natural-width: 140px; }
+  .notification-button {
+    //-st-natural-width: 140px;
+    height: 24px;
+  }
   .notification-icon-button { 
     border-radius: 5px; 
     padding: 5px;
+    height: 24px; width: 24px;
     &:focus { }//FIXME
-    & > StIcon { icons-size: 16px; padding: 8px; }
+    & > StIcon { icons-size: 16px; width: 16px; height: 16px; padding: 2px; }
   }
   .secondary-icon { icon-size: 1.09em; } //FIXME
 

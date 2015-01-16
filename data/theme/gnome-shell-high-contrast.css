@@ -1595,14 +1595,18 @@ StScrollBar {
     padding-right: 6px; }
 
 .notification-button {
-  -st-natural-width: 140px; }
+  height: 24px; }
 
 .notification-icon-button {
   border-radius: 5px;
-  padding: 5px; }
+  padding: 5px;
+  height: 24px;
+  width: 24px; }
   .notification-icon-button > StIcon {
     icons-size: 16px;
-    padding: 8px; }
+    width: 16px;
+    height: 16px;
+    padding: 2px; }
 
 .secondary-icon {
   icon-size: 1.09em; }
