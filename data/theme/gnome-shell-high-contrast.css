@@ -16,141 +16,6 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
-/* Restart message */
-.restart-message {
-  font-size: 14pt; }
-
-/* ShellMountOperation Dialogs */
-.shell-mount-operation-icon {
-  icon-size: 48px; }
-
-.show-processes-dialog,
-.mount-question-dialog {
-  spacing: 24px; }
-
-.show-processes-dialog-subject,
-.mount-question-dialog-subject {
-  padding-top: 10px;
-  padding-left: 17px;
-  padding-bottom: 6px; }
-
-.mount-question-dialog-subject {
-  max-width: 500px; }
-
-.show-processes-dialog-subject:rtl,
-.mount-question-dialog-subject:rtl {
-  padding-left: 0px;
-  padding-right: 17px; }
-
-.show-processes-dialog-description,
-.mount-question-dialog-description {
-  padding-left: 17px;
-  width: 28em; }
-
-.show-processes-dialog-description:rtl,
-.mount-question-dialog-description:rtl {
-  padding-right: 17px; }
-
-.show-processes-dialog-app-list {
-  font-size: 10pt;
-  max-height: 200px;
-  padding-top: 24px;
-  padding-left: 49px;
-  padding-right: 32px; }
-
-.show-processes-dialog-app-list:rtl {
-  padding-right: 49px;
-  padding-left: 32px; }
-
-.show-processes-dialog-app-list-item {
-  color: #ccc; }
-
-.show-processes-dialog-app-list-item:hover {
-  color: white; }
-
-.show-processes-dialog-app-list-item:ltr {
-  padding-right: 1em; }
-
-.show-processes-dialog-app-list-item:rtl {
-  padding-left: 1em; }
-
-.show-processes-dialog-app-list-item-icon:ltr {
-  padding-right: 17px; }
-
-.show-processes-dialog-app-list-item-icon:rtl {
-  padding-left: 17px; }
-
-.show-processes-dialog-app-list-item-name {
-  font-size: 10pt; }
-
-/* Password or Authentication Dialog */
-.prompt-dialog {
-  /* this is the width of the entire modal popup */
-  width: 500px; }
-
-.prompt-dialog-main-layout {
-  spacing: 24px;
-  padding: 10px; }
-
-.prompt-dialog-message-layout {
-  spacing: 16px; }
-
-.prompt-dialog-headline {
-  font-size: 12pt;
-  font-weight: bold;
-  color: #666666; }
-
-.prompt-dialog-description:rtl {
-  text-align: right; }
-
-.prompt-dialog-password-box {
-  spacing: 1em;
-  padding-bottom: 1em; }
-
-.prompt-dialog-error-label {
-  font-size: 10pt;
-  color: #ffff00;
-  padding-bottom: 8px; }
-
-.prompt-dialog-info-label {
-  font-size: 10pt;
-  padding-bottom: 8px; }
-
-.hidden {
-  color: transparent; }
-
-.prompt-dialog-null-label {
-  font-size: 10pt;
-  padding-bottom: 8px; }
-
-/* Polkit Dialog */
-.polkit-dialog-user-layout {
-  padding-left: 10px;
-  spacing: 10px; }
-
-.polkit-dialog-user-layout:rtl {
-  padding-left: 0px;
-  padding-right: 10px; }
-
-.polkit-dialog-user-root-label {
-  color: #ff0000; }
-
-.polkit-dialog-user-icon {
-  border: 2px solid #8b8b8b;
-  border-radius: 5px;
-  background-size: contain;
-  width: 48px;
-  height: 48px; }
-
-/* Network Agent Dialog */
-.network-dialog-secret-table {
-  spacing-rows: 15px;
-  spacing-columns: 1em; }
-
-.keyring-dialog-control-table {
-  spacing-rows: 15px;
-  spacing-columns: 1em; }
-
 /* Magnifier */
 .magnifier-zoom-region {
   border: 2px solid maroon; }
@@ -687,6 +552,9 @@ StScrollBar {
     color: #74aae2; }
 
 /* Modal Dialogs */
+.headline {
+  font-size: 110%; }
+
 .lightbox {
   background-color: black; }
 
@@ -783,6 +651,129 @@ StScrollBar {
 .end-session-dialog-app-list-item-description {
   color: #f2f2f2;
   font-size: 10pt; }
+
+/* ShellMountOperation Dialogs */
+.shell-mount-operation-icon {
+  icon-size: 48px; }
+
+.show-processes-dialog,
+.mount-question-dialog {
+  spacing: 24px; }
+
+.show-processes-dialog-subject,
+.mount-question-dialog-subject {
+  padding-top: 10px;
+  padding-left: 17px;
+  padding-bottom: 6px; }
+
+.mount-question-dialog-subject {
+  max-width: 500px; }
+
+.show-processes-dialog-subject:rtl,
+.mount-question-dialog-subject:rtl {
+  padding-left: 0px;
+  padding-right: 17px; }
+
+.show-processes-dialog-description,
+.mount-question-dialog-description {
+  padding-left: 17px;
+  width: 28em; }
+
+.show-processes-dialog-description:rtl,
+.mount-question-dialog-description:rtl {
+  padding-right: 17px; }
+
+.show-processes-dialog-app-list {
+  max-height: 200px;
+  padding-top: 24px;
+  padding-left: 49px;
+  padding-right: 32px; }
+
+.show-processes-dialog-app-list:rtl {
+  padding-right: 49px;
+  padding-left: 32px; }
+
+.show-processes-dialog-app-list-item {
+  color: #e6e6e6; }
+  .show-processes-dialog-app-list-item:hover {
+    color: #fff; }
+  .show-processes-dialog-app-list-item:ltr {
+    padding-right: 1em; }
+  .show-processes-dialog-app-list-item:rtl {
+    padding-left: 1em; }
+
+.show-processes-dialog-app-list-item-icon:ltr {
+  padding-right: 17px; }
+.show-processes-dialog-app-list-item-icon:rtl {
+  padding-left: 17px; }
+
+.show-processes-dialog-app-list-item-name {
+  font-size: 10pt; }
+
+/* Password or Authentication Dialog */
+.prompt-dialog {
+  width: 500px;
+  border: 3px solid rgba(255, 255, 255, 0.2); }
+
+.prompt-dialog-main-layout {
+  spacing: 24px;
+  padding: 10px; }
+
+.prompt-dialog-message-layout {
+  spacing: 16px; }
+
+.prompt-dialog-headline {
+  font-weight: bold;
+  color: #b3b3b3; }
+
+.prompt-dialog-description:rtl {
+  text-align: right; }
+
+.prompt-dialog-password-box {
+  spacing: 1em;
+  padding-bottom: 1em; }
+
+.prompt-dialog-error-label {
+  font-size: 10pt;
+  color: #cc0000;
+  padding-bottom: 8px; }
+
+.prompt-dialog-info-label {
+  font-size: 10pt;
+  padding-bottom: 8px; }
+
+.hidden {
+  color: transparent; }
+
+.prompt-dialog-null-label {
+  font-size: 10pt;
+  padding-bottom: 8px; }
+
+/* Polkit Dialog */
+.polkit-dialog-user-layout {
+  padding-left: 10px;
+  spacing: 10px; }
+  .polkit-dialog-user-layout:rtl {
+    padding-left: 0px;
+    padding-right: 10px; }
+
+.polkit-dialog-user-root-label {
+  color: #f57900; }
+
+.polkit-dialog-user-icon {
+  border-radius: 5px;
+  background-size: contain;
+  width: 48px;
+  height: 48px; }
+
+/* Network Agent Dialog */
+.network-dialog-secret-table {
+  spacing-rows: 15px;
+  spacing-columns: 1em; }
+
+.keyring-dialog-control-table {
+  spacing-rows: 15px;
+  spacing-columns: 1em; }
 
 /* Popvers/Menus */
 .popup-menu {
@@ -1184,7 +1175,6 @@ StScrollBar {
   spacing: 12px; }
 
 .nm-dialog-airplane-headline {
-  font-size: 110%;
   font-weight: bold;
   text-align: center; }
 

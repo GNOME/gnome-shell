@@ -653,7 +653,7 @@ const RestartMessage = new Lang.Class({
 
     _init : function(message) {
         this.parent({ shellReactive: true,
-                      styleClass: 'restart-message',
+                      styleClass: 'restart-message headline',
                       shouldFadeIn: false,
                       destroyOnClose: true });
 

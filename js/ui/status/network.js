@@ -888,7 +888,7 @@ const NMWirelessDialog = new Lang.Class({
                                                x_align: Clutter.ActorAlign.CENTER,
                                                y_align: Clutter.ActorAlign.CENTER });
         this._airplaneIcon = new St.Icon({ icon_size: 48 });
-        this._airplaneHeadline = new St.Label({ style_class: 'nm-dialog-airplane-headline' });
+        this._airplaneHeadline = new St.Label({ style_class: 'nm-dialog-airplane-headline headline' });
         this._airplaneText = new St.Label({ style_class: 'nm-dialog-airplane-text' });
 
         let airplaneSubStack = new St.Widget({ layout_manager: new Clutter.BinLayout });

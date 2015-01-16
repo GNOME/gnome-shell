@@ -50,7 +50,7 @@ const AuthenticationDialog = new Lang.Class({
         mainContentBox.add(messageBox,
                            { expand: true, y_align: St.Align.START });
 
-        this._subjectLabel = new St.Label({ style_class: 'prompt-dialog-headline',
+        this._subjectLabel = new St.Label({ style_class: 'prompt-dialog-headline headline',
                                             text: _("Authentication Required") });
 
         messageBox.add(this._subjectLabel,

@@ -54,7 +54,7 @@ const NetworkSecretDialog = new Lang.Class({
         mainContentBox.add(messageBox,
                            { y_align: St.Align.START });
 
-        let subjectLabel = new St.Label({ style_class: 'prompt-dialog-headline',
+        let subjectLabel = new St.Label({ style_class: 'prompt-dialog-headline headline',
                                             text: this._content.title });
         messageBox.add(subjectLabel,
                        { y_fill:  false,

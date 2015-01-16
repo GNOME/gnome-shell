@@ -148,6 +148,7 @@ StScrollBar {
 
 /* Modal Dialogs */
 
+.headline { font-size: 110%; }
 .lightbox { background-color: black; } //FIXME where is this?
 .flashspot { background-color: white; } //FIXME where is this?
 
@@ -259,6 +260,157 @@ StScrollBar {
     color: darken($fg_color,5%);
     font-size: 10pt;
   }
+
+/* ShellMountOperation Dialogs */
+.shell-mount-operation-icon { icon-size: 48px; }
+
+  .show-processes-dialog,
+  .mount-question-dialog {
+    spacing: 24px;
+  }
+
+  .show-processes-dialog-subject,
+  .mount-question-dialog-subject {
+    padding-top: 10px;
+    padding-left: 17px;
+    padding-bottom: 6px;
+  }
+
+  .mount-question-dialog-subject {
+      max-width: 500px;
+  }
+
+  .show-processes-dialog-subject:rtl,
+  .mount-question-dialog-subject:rtl {
+    padding-left: 0px;
+    padding-right: 17px;
+  }
+
+  .show-processes-dialog-description,
+  .mount-question-dialog-description {
+    padding-left: 17px;
+    width: 28em;
+  }
+
+  .show-processes-dialog-description:rtl,
+  .mount-question-dialog-description:rtl {
+    padding-right: 17px;
+  }
+
+  .show-processes-dialog-app-list {
+    max-height: 200px;
+    padding-top: 24px;
+    padding-left: 49px;
+    padding-right: 32px;
+  }
+
+  .show-processes-dialog-app-list:rtl {
+    padding-right: 49px;
+    padding-left: 32px;
+  }
+
+  .show-processes-dialog-app-list-item {
+    color: darken($fg_color,10%);
+    &:hover { color: $fg_color; }
+    &:ltr { padding-right: 1em; }
+    &:rtl { padding-left: 1em; }
+  }
+
+  .show-processes-dialog-app-list-item-icon {
+    &:ltr { padding-right: 17px; }
+    &:rtl { padding-left: 17px; }
+  }
+  
+  .show-processes-dialog-app-list-item-name {
+    font-size: 10pt;
+  }
+
+
+/* Password or Authentication Dialog */
+
+.prompt-dialog {
+  //this is the width of the entire modal popup
+  width: 500px;
+  border: 3px solid transparentize($fg_color,0.8);
+}
+
+  .prompt-dialog-main-layout {
+    spacing: 24px;
+    padding: 10px;
+  }
+
+  .prompt-dialog-message-layout {
+    spacing: 16px;
+  }
+
+  .prompt-dialog-headline {
+    font-weight: bold;
+    color: darken($fg_color,30%);
+  }
+
+  .prompt-dialog-description:rtl {
+    text-align: right;
+  }
+
+  .prompt-dialog-password-box {
+    spacing: 1em;
+    padding-bottom: 1em;
+  }
+
+  .prompt-dialog-error-label {
+    font-size: 10pt;
+    color: $error_color;
+    padding-bottom: 8px;
+  }
+
+  .prompt-dialog-info-label {
+    font-size: 10pt;
+    padding-bottom: 8px;
+  }
+
+  .hidden {
+    color: rgba(0,0,0,0);
+  }
+
+  .prompt-dialog-null-label {
+    font-size: 10pt;
+    padding-bottom: 8px;
+  }
+
+
+/* Polkit Dialog */
+
+.polkit-dialog-user-layout {
+  padding-left: 10px;
+  spacing: 10px;
+  &:rtl {
+    padding-left: 0px;
+    padding-right: 10px;
+  }
+}
+
+  .polkit-dialog-user-root-label {
+      color: $warning_color;
+  }
+
+  .polkit-dialog-user-icon {
+      border-radius: 5px;
+      background-size: contain;
+      width: 48px;
+      height: 48px;
+  }
+
+/* Network Agent Dialog */
+
+.network-dialog-secret-table {
+  spacing-rows: 15px;
+  spacing-columns: 1em;
+}
+
+.keyring-dialog-control-table {
+  spacing-rows: 15px;
+  spacing-columns: 1em;
+}
 
 /* Popvers/Menus */
 
@@ -730,7 +882,6 @@ StScrollBar {
   }
 
   .nm-dialog-airplane-headline {
-      font-size: 110%;
       font-weight: bold;
       text-align: center;
   }
