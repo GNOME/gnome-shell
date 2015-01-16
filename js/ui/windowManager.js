@@ -904,6 +904,9 @@ const WindowManager = new Lang.Class({
             // to move it
             if (window.get_transient_for() != null)
                 return;
+            // Same for OR windows
+            if (window.is_override_redirect())
+                return;
             // Windows on workspaces below pos don't need moving
             let index = window.get_workspace().index();
             if (index < pos)
