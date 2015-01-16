@@ -564,10 +564,11 @@ StScrollBar {
 .modal-dialog {
   border-radius: 5px;
   background-color: rgba(0, 0, 0, 0.95);
-  border: 1px solid black;
+  border: 3px solid rgba(255, 255, 255, 0.2);
   padding: 24px; }
   .modal-dialog .run-dialog-entry {
-    width: 20em; }
+    width: 20em;
+    margin-bottom: 6px; }
   .modal-dialog .run-dialog-error-box {
     padding-top: 16px;
     spacing: 6px; }

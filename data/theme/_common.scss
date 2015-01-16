@@ -155,10 +155,10 @@ StScrollBar {
 .modal-dialog {
   border-radius: 5px;
   background-color: transparentize(darken($bg_color,10%),0.05);
-  border: 1px solid $borders_color;
+  border: 3px solid transparentize($fg_color, 0.8);
   padding: 24px;
 
-  .run-dialog-entry { width: 20em; }
+  .run-dialog-entry { width: 20em; margin-bottom: 6px; }
   .run-dialog-error-box {
     padding-top: 16px;
     spacing: 6px;
