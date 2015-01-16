@@ -1191,29 +1191,43 @@ process_device_event (ClutterDeviceManagerEvdev *manager_evdev,
 
     case LIBINPUT_EVENT_POINTER_AXIS:
       {
-        gdouble value, dx = 0.0, dy = 0.0;
+        gdouble dx = 0.0, dy = 0.0;
         guint32 time;
+        gboolean wheel = FALSE;
         enum libinput_pointer_axis axis;
+        enum libinput_pointer_axis_source source;
         struct libinput_event_pointer *axis_event =
           libinput_event_get_pointer_event (event);
+
         device = libinput_device_get_user_data (libinput_device);
 
         time = libinput_event_pointer_get_time (axis_event);
-        value = libinput_event_pointer_get_axis_value (axis_event);
-        axis = libinput_event_pointer_get_axis (axis_event);
+        source = libinput_event_pointer_get_axis_source (axis_event);
 
-        switch (axis)
+        /* libinput < 0.8 sent wheel click events with value 10. Since 0.8
+           the value is the angle of the click in degrees. To keep
+           backwards-compat with existing clients, we just send multiples of
+           the click count. */
+
+        if (source == LIBINPUT_POINTER_AXIS_SOURCE_WHEEL)
+            wheel = TRUE;
+
+        axis = LIBINPUT_POINTER_AXIS_SCROLL_VERTICAL;
+        if (libinput_event_pointer_has_axis (axis_event, axis))
           {
-          case LIBINPUT_POINTER_AXIS_SCROLL_VERTICAL:
-            dx = 0;
-            dy = value;
-            break;
+            if (wheel)
+              dy = 10 * libinput_event_pointer_get_axis_value_discrete (axis_event, axis);
+            else
+              dy = libinput_event_pointer_get_axis_value (axis_event, axis);
+          }
 
-          case LIBINPUT_POINTER_AXIS_SCROLL_HORIZONTAL:
-            dx = value;
-            dy = 0;
-            break;
-
+        axis = LIBINPUT_POINTER_AXIS_SCROLL_HORIZONTAL;
+        if (libinput_event_pointer_has_axis (axis_event, axis))
+          {
+            if (wheel)
+              dx = 10 * libinput_event_pointer_get_axis_value_discrete (axis_event, axis);
+            else
+              dx = libinput_event_pointer_get_axis_value (axis_event, axis);
           }
 
         notify_scroll (device, time, dx, dy);
