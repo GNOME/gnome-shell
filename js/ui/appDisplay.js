@@ -903,14 +903,14 @@ const AppDisplay = new Lang.Class({
         let view, button;
         view = new FrequentView();
         button = new St.Button({ label: _("Frequent"),
-                                 style_class: 'app-view-control',
+                                 style_class: 'app-view-control button',
                                  can_focus: true,
                                  x_expand: true });
         this._views[Views.FREQUENT] = { 'view': view, 'control': button };
 
         view = new AllView();
         button = new St.Button({ label: _("All"),
-                                 style_class: 'app-view-control',
+                                 style_class: 'app-view-control button',
                                  can_focus: true,
                                  x_expand: true });
         this._views[Views.ALL] = { 'view': view, 'control': button };

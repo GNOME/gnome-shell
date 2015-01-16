@@ -41,11 +41,11 @@ const CandidateArea = new Lang.Class({
 
         this._buttonBox = new St.BoxLayout({ style_class: 'candidate-page-button-box' });
 
-        this._previousButton = new St.Button({ style_class: 'candidate-page-button candidate-page-button-previous' });
+        this._previousButton = new St.Button({ style_class: 'candidate-page-button candidate-page-button-previous button' });
         this._previousButton.child = new St.Icon({ style_class: 'candidate-page-button-icon' });
         this._buttonBox.add(this._previousButton, { expand: true });
 
-        this._nextButton = new St.Button({ style_class: 'candidate-page-button candidate-page-button-next' });
+        this._nextButton = new St.Button({ style_class: 'candidate-page-button candidate-page-button-next button' });
         this._nextButton.child = new St.Icon({ style_class: 'candidate-page-button-icon' });
         this._buttonBox.add(this._nextButton, { expand: true });
 

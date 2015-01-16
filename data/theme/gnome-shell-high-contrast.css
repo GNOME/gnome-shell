@@ -395,13 +395,7 @@ stage {
 
 /* WIDGETS */
 /* Buttons */
-.candidate-page-button,
-.notification-button,
-.notification-icon-button,
-.hotplug-notification-item,
-.hotplug-resident-eject-button,
-.modal-dialog-button,
-.app-view-control {
+.button {
   border-radius: 3px;
   border-width: 1px;
   padding: 4px 32px;
@@ -411,51 +405,27 @@ stage {
   box-shadow: inset 0 1px #454f52;
   text-shadow: 0 1px black;
   icon-shadow: 0 1px black; }
-  .candidate-page-button:hover,
-  .notification-button:hover,
-  .notification-icon-button:hover,
-  .hotplug-notification-item:hover,
-  .hotplug-resident-eject-button:hover,
-  .modal-dialog-button:hover,
-  .app-view-control:hover {
+  .button:hover {
     color: white;
     border-color: rgba(0, 0, 0, 0.7);
     background-color: #454f52;
     box-shadow: inset 0 1px #5d696d;
     text-shadow: 0 1px black;
     icon-shadow: 0 1px black; }
-  .candidate-page-button:focus,
-  .notification-button:focus,
-  .notification-icon-button:focus,
-  .hotplug-notification-item:focus,
-  .hotplug-resident-eject-button:focus,
-  .modal-dialog-button:focus,
-  .app-view-control:focus {
+  .button:focus {
     color: #eeeeec;
     border-color: #215d9c;
     box-shadow: inset 0 1px #454f52;
     text-shadow: 0 1px black;
     icon-shadow: 0 1px black; }
-  .candidate-page-button:insensitive,
-  .notification-button:insensitive,
-  .notification-icon-button:insensitive,
-  .hotplug-notification-item:insensitive,
-  .hotplug-resident-eject-button:insensitive,
-  .modal-dialog-button:insensitive,
-  .app-view-control:insensitive {
+  .button:insensitive {
     color: #7f7f7f;
     border-color: rgba(0, 0, 0, 0.7);
     background-color: rgba(62, 67, 68, 0.7);
     box-shadow: none;
     text-shadow: none;
     icon-shadow: none; }
-  .candidate-page-button:active,
-  .notification-button:active,
-  .notification-icon-button:active,
-  .hotplug-notification-item:active,
-  .hotplug-resident-eject-button:active,
-  .modal-dialog-button:active,
-  .app-view-control:active {
+  .button:active {
     color: white;
     border-color: rgba(0, 0, 0, 0.7);
     background-color: #222728;

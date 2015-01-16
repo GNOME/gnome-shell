@@ -39,15 +39,7 @@ stage {
 /* WIDGETS */
 
 /* Buttons */
-// one would think we may want a generic button class:
-// bug #737785
-.candidate-page-button,
-.notification-button,
-.notification-icon-button,
-.hotplug-notification-item,
-.hotplug-resident-eject-button,
-.modal-dialog-button,
-.app-view-control {
+.button {
   border-radius: 3px;
   border-width: 1px;
   padding: 4px 32px;
