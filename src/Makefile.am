@@ -271,6 +271,9 @@ if HAVE_NATIVE_BACKEND
 libmutter_la_SOURCES +=					\
 	backends/native/meta-backend-native.c		\
 	backends/native/meta-backend-native.h		\
+	backends/native/meta-backend-native-private.h	\
+	backends/native/meta-barrier-native.c		\
+	backends/native/meta-barrier-native.h		\
 	backends/native/meta-cursor-renderer-native.c	\
 	backends/native/meta-cursor-renderer-native.h	\
 	backends/native/meta-idle-monitor-native.c	\

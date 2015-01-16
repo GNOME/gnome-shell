@@ -24,10 +24,13 @@
 
 #include "config.h"
 
+#include "meta-backend-native.h"
+#include "meta-backend-native-private.h"
+
 #include <meta/main.h>
 #include <clutter/evdev/clutter-evdev.h>
-#include "meta-backend-native.h"
 
+#include "meta-barrier-native.h"
 #include "meta-idle-monitor-native.h"
 #include "meta-monitor-manager-kms.h"
 #include "meta-cursor-renderer-native.h"
@@ -36,6 +39,10 @@
 struct _MetaBackendNativePrivate
 {
   MetaLauncher *launcher;
+
+  MetaBarrierManagerNative *barrier_manager;
+
+  GSettings *keyboard_settings;
 };
 typedef struct _MetaBackendNativePrivate MetaBackendNativePrivate;
 
@@ -50,6 +57,22 @@ meta_backend_native_finalize (GObject *object)
   meta_launcher_free (priv->launcher);
 
   G_OBJECT_CLASS (meta_backend_native_parent_class)->finalize (object);
+}
+
+static void
+constrain_to_barriers (ClutterInputDevice *device,
+                       guint32             time,
+                       float              *new_x,
+                       float              *new_y)
+{
+  MetaBackendNative *native = META_BACKEND_NATIVE (meta_get_backend ());
+  MetaBackendNativePrivate *priv =
+    meta_backend_native_get_instance_private (native);
+
+  meta_barrier_manager_native_process (priv->barrier_manager,
+                                       device,
+                                       time,
+                                       new_x, new_y);
 }
 
 /*
@@ -140,6 +163,9 @@ pointer_constrain_callback (ClutterInputDevice *device,
   MetaMonitorInfo *monitors;
   unsigned int n_monitors;
   gboolean ret;
+
+  /* Constrain to barriers */
+  constrain_to_barriers (device, time, new_x, new_y);
 
   monitor_manager = meta_monitor_manager_get ();
   monitors = meta_monitor_manager_get_monitor_infos (monitor_manager, &n_monitors);
@@ -269,6 +295,8 @@ meta_backend_native_init (MetaBackendNative *native)
 
   /* We're a display server, so start talking to weston-launch. */
   priv->launcher = meta_launcher_new ();
+
+  priv->barrier_manager = meta_barrier_manager_native_new ();
 }
 
 gboolean
@@ -279,6 +307,15 @@ meta_activate_vt (int vt, GError **error)
   MetaBackendNativePrivate *priv = meta_backend_native_get_instance_private (native);
 
   return meta_launcher_activate_vt (priv->launcher, vt, error);
+}
+
+MetaBarrierManagerNative *
+meta_backend_native_get_barrier_manager (MetaBackendNative *native)
+{
+  MetaBackendNativePrivate *priv =
+    meta_backend_native_get_instance_private (native);
+
+  return priv->barrier_manager;
 }
 
 /**

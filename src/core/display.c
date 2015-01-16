@@ -50,6 +50,7 @@
 #include "meta-idle-monitor-dbus.h"
 #include "meta-cursor-tracker-private.h"
 #include <meta/meta-backend.h>
+#include "backends/native/meta-backend-native.h"
 #include "backends/x11/meta-backend-x11.h"
 #include <clutter/x11/clutter-x11.h>
 
@@ -2906,9 +2907,11 @@ meta_display_get_xinput_opcode (MetaDisplay *display)
  * meta_display_supports_extended_barriers:
  * @display: a #MetaDisplay
  *
- * Returns: whether the X server supports extended barrier
- * features as defined in version 2.3 of the XInput 2
- * specification.
+ * Returns: whether pointer barriers can be supported.
+ *
+ * When running as an X compositor the X server needs XInput 2
+ * version 2.3. When running as a display server it is supported
+ * when running on the native backend.
  *
  * Clients should use this method to determine whether their
  * interfaces should depend on new barrier features.
@@ -2916,7 +2919,18 @@ meta_display_get_xinput_opcode (MetaDisplay *display)
 gboolean
 meta_display_supports_extended_barriers (MetaDisplay *display)
 {
-  return META_DISPLAY_HAS_XINPUT_23 (display) && !meta_is_wayland_compositor ();
+#ifdef HAVE_NATIVE_BACKEND
+  if (META_IS_BACKEND_NATIVE (meta_get_backend ()))
+    return TRUE;
+#endif
+
+  if (META_IS_BACKEND_X11 (meta_get_backend ()))
+    {
+      return (META_DISPLAY_HAS_XINPUT_23 (display) &&
+              !meta_is_wayland_compositor());
+    }
+
+  g_assert_not_reached ();
 }
 
 /**
