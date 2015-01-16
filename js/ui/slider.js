@@ -7,7 +7,7 @@ const Lang = imports.lang;
 const St = imports.gi.St;
 const Signals = imports.signals;
 
-const SLIDER_SCROLL_STEP = 0.05; /* Slider scrolling step in % */
+const SLIDER_SCROLL_STEP = 0.02; /* Slider scrolling step in % */
 
 const Slider = new Lang.Class({
     Name: "Slider",
