@@ -29,7 +29,7 @@
 G_BEGIN_DECLS
 
 #define META_TYPE_BARRIER_IMPL            (meta_barrier_impl_get_type ())
-#define META_BARRIER_IMPL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_BARRIER, MetaBarrierImpl))
+#define META_BARRIER_IMPL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_BARRIER_IMPL, MetaBarrierImpl))
 #define META_BARRIER_IMPL_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  META_TYPE_BARRIER_IMPL, MetaBarrierImplClass))
 #define META_IS_BARRIER_IMPL(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), META_TYPE_BARRIER_IMPL))
 #define META_IS_BARRIER_IMPL_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  META_TYPE_BARRIER_IMPL))
