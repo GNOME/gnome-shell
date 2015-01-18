@@ -50,6 +50,8 @@ struct _MetaBarrierImplX11Class
   MetaBarrierImplClass parent_class;
 };
 
+GType meta_barrier_impl_x11_get_type (void) G_GNUC_CONST;
+
 MetaBarrierImpl *meta_barrier_impl_x11_new (MetaBarrier *barrier);
 
 G_END_DECLS
