@@ -651,7 +651,6 @@ meta_display_open (void)
       display->ignored_crossing_serials[i] = 0;
       ++i;
     }
-  display->ungrab_should_not_cause_focus_window = None;
 
   display->current_time = CurrentTime;
   display->sentinel_counter = 0;

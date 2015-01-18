@@ -1717,16 +1717,6 @@ meta_display_handle_xevent (MetaDisplay *display,
                       event->xany.serial);
         }
     }
-  else if (input_event &&
-           input_event->evtype == XI_Leave &&
-           ((XILeaveEvent *)input_event)->mode == XINotifyUngrab &&
-           modified == display->ungrab_should_not_cause_focus_window)
-    {
-      meta_display_add_ignored_crossing_serial (display, event->xany.serial);
-      meta_topic (META_DEBUG_FOCUS,
-                  "Adding LeaveNotify serial %lu to ignored focus serials\n",
-                  event->xany.serial);
-    }
 
 #ifdef HAVE_XI23
   if (meta_display_process_barrier_xevent (display, input_event))

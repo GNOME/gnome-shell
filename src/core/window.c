@@ -7559,8 +7559,6 @@ reset_ignored_crossing_serials (MetaDisplay *display)
       display->ignored_crossing_serials[i] = 0;
       ++i;
     }
-
-  display->ungrab_should_not_cause_focus_window = None;
 }
 
 typedef struct

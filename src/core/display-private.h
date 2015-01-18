@@ -175,7 +175,6 @@ struct _MetaDisplay
    * ignore
    */
   unsigned long ignored_crossing_serials[N_IGNORED_CROSSING_SERIALS];
-  Window ungrab_should_not_cause_focus_window;
 
   guint32 current_time;
 
