@@ -24,8 +24,8 @@ pkglib_LTLIBRARIES = default.la
 # (There is no way to stop libtool generating static libs locally, and we
 # cannot do this globally because of libmutter-private.so).
 install-exec-hook:
-	-rm $(DESTDIR)$(pkglibdir)/*.a
-	-rm $(DESTDIR)$(pkglibdir)/*.la
+	-rm -f $(DESTDIR)$(pkglibdir)/*.a
+	-rm -f $(DESTDIR)$(pkglibdir)/*.la
 
 # Since we removed the .la file, 'make uninstall' doesn't work properly,
 # since it counts on libtool to remove the .la files, so just kill the
