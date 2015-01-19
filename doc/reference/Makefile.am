@@ -115,8 +115,10 @@ IGNORE_HFILES= \
 if !HAVE_NATIVE_BACKEND
 IGNORE_HFILES+= \
 	meta-backend-native.h \
+	meta-barrier-native.h \
 	meta-cursor-renderer-native.h \
 	meta-idle-monitor-native.h \
+	meta-input-settings-native.h \
 	meta-monitor-manager-kms.h \
 	$(NULL)
 endif
