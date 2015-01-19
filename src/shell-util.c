@@ -10,7 +10,6 @@
 #include <gtk/gtk.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gdk/gdkx.h>
-#include <X11/extensions/XTest.h>
 
 #include <locale.h>
 #ifdef HAVE__NL_TIME_FIRST_WEEKDAY

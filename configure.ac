@@ -97,7 +97,6 @@ SHARED_PCS="gio-unix-2.0 >= $GIO_MIN_VERSION
             gjs-internals-1.0 >= $GJS_MIN_VERSION
             $recorder_modules
             gdk-x11-3.0 libsoup-2.4
-            xtst
             clutter-x11-1.0 >= $CLUTTER_MIN_VERSION
             clutter-glx-1.0 >= $CLUTTER_MIN_VERSION
             libstartup-notification-1.0 >= $STARTUP_NOTIFICATION_MIN_VERSION
