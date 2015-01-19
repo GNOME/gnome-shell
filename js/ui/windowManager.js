@@ -1146,10 +1146,8 @@ const WindowManager = new Lang.Class({
             return;
         }
 
-        if (actor.meta_window.is_attached_dialog()) {
-            /* Scale the window from the center of the parent */
+        if (actor.meta_window.is_attached_dialog())
             this._checkDimming(actor.get_meta_window().get_transient_for());
-        }
 
         switch (actor._windowType) {
         case Meta.WindowType.NORMAL:
