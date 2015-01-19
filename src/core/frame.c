@@ -106,19 +106,6 @@ meta_window_ensure_frame (MetaWindow *window)
   XChangeWindowAttributes (window->display->xdisplay,
 			   frame->xwindow, CWEventMask, &attrs);
 
-  {
-    unsigned char mask_bits[XIMaskLen (XI_LASTEVENT)] = { 0 };
-    XIEventMask mask = { XIAllMasterDevices, sizeof (mask_bits), mask_bits };
-
-    XISetMask (mask.mask, XI_ButtonPress);
-    XISetMask (mask.mask, XI_ButtonRelease);
-    XISetMask (mask.mask, XI_Motion);
-    XISetMask (mask.mask, XI_Enter);
-    XISetMask (mask.mask, XI_Leave);
-
-    XISelectEvents (window->display->xdisplay, frame->xwindow, &mask, 1);
-  }
-
   meta_display_register_x_window (window->display, &frame->xwindow, window);
 
   meta_error_trap_push (window->display);
@@ -158,10 +145,23 @@ meta_window_ensure_frame (MetaWindow *window)
     MetaBackend *backend = meta_get_backend ();
     if (META_IS_BACKEND_X11 (backend))
       {
-        /* Since the backend takes keygrabs on another connection, make sure
-         * to sync the GTK+ connection to ensure that the frame window has
-         * been created on the server at this point. */
+        Display *xdisplay = meta_backend_x11_get_xdisplay (META_BACKEND_X11 (backend));
+
+        /* Since the backend selects for events on another connection,
+         * make sure to sync the GTK+ connection to ensure that the
+         * frame window has been created on the server at this point. */
         XSync (window->display->xdisplay, False);
+
+        unsigned char mask_bits[XIMaskLen (XI_LASTEVENT)] = { 0 };
+        XIEventMask mask = { XIAllMasterDevices, sizeof (mask_bits), mask_bits };
+
+        XISetMask (mask.mask, XI_ButtonPress);
+        XISetMask (mask.mask, XI_ButtonRelease);
+        XISetMask (mask.mask, XI_Motion);
+        XISetMask (mask.mask, XI_Enter);
+        XISetMask (mask.mask, XI_Leave);
+
+        XISelectEvents (xdisplay, frame->xwindow, &mask, 1);
       }
   }
 

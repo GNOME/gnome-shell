@@ -152,14 +152,17 @@ typedef enum
 {
   META_GRAB_OP_NONE,
 
+  /* Window grab ops. */
+  META_GRAB_OP_WINDOW_BASE,
+
   /* Special grab op when the compositor asked for a grab */
   META_GRAB_OP_COMPOSITOR,
 
-  /* For when a Wayland client takes a popup grab */
+  /* For when a Wayland client takes a popup grab. */
   META_GRAB_OP_WAYLAND_POPUP,
 
-  /* Window grab ops. */
-  META_GRAB_OP_WINDOW_BASE,
+  /* For when the user clicks on a frame button. */
+  META_GRAB_OP_FRAME_BUTTON,
 
   META_GRAB_OP_MOVING                     = META_GRAB_OP_WINDOW_BASE,
   META_GRAB_OP_RESIZING_NW                = META_GRAB_OP_WINDOW_BASE | _WGO_N | _WGO_W,

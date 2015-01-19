@@ -85,6 +85,10 @@ typedef enum {
    * Events go to windows normally. */
   META_EVENT_ROUTE_NORMAL,
 
+  /* In a window operation like moving or resizing. All events
+   * goes to MetaWindow, but not to the actual client window. */
+  META_EVENT_ROUTE_WINDOW_OP,
+
   /* In a compositor grab operation. All events go to the
    * compositor plugin. */
   META_EVENT_ROUTE_COMPOSITOR_GRAB,
@@ -93,9 +97,8 @@ typedef enum {
    * the Wayland application. */
   META_EVENT_ROUTE_WAYLAND_POPUP,
 
-  /* In a window operation like moving or resizing. All events
-   * goes to MetaWindow, but not to the actual client window. */
-  META_EVENT_ROUTE_WINDOW_OP,
+  /* The user is clicking on a window button. */
+  META_EVENT_ROUTE_FRAME_BUTTON,
 } MetaEventRoute;
 
 typedef gboolean (*MetaAlarmFilter) (MetaDisplay           *display,

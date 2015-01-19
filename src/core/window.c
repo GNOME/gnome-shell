@@ -7773,6 +7773,9 @@ meta_window_handle_ungrabbed_event (MetaWindow         *window,
   gboolean unmodified;
   gboolean is_window_grab;
 
+  if (window->frame && meta_ui_frame_handle_event (window->frame->ui_frame, event))
+    return;
+
   if (event->type != CLUTTER_BUTTON_PRESS)
     return;
 

@@ -45,18 +45,8 @@ static void meta_frames_destroy       (GtkWidget       *object);
 static void meta_frames_finalize      (GObject         *object);
 static void meta_frames_style_updated (GtkWidget       *widget);
 
-static gboolean meta_frames_button_press_event    (GtkWidget           *widget,
-                                                   GdkEventButton      *event);
-static gboolean meta_frames_button_release_event  (GtkWidget           *widget,
-                                                   GdkEventButton      *event);
-static gboolean meta_frames_motion_notify_event   (GtkWidget           *widget,
-                                                   GdkEventMotion      *event);
 static gboolean meta_frames_draw                  (GtkWidget           *widget,
                                                    cairo_t             *cr);
-static gboolean meta_frames_enter_notify_event    (GtkWidget           *widget,
-                                                   GdkEventCrossing    *event);
-static gboolean meta_frames_leave_notify_event    (GtkWidget           *widget,
-                                                   GdkEventCrossing    *event);
 
 static void meta_ui_frame_attach_style (MetaUIFrame *frame);
 
@@ -68,9 +58,6 @@ static void meta_ui_frame_calc_geometry (MetaUIFrame       *frame,
 
 static void meta_ui_frame_update_prelit_control (MetaUIFrame     *frame,
                                                  MetaFrameControl control);
-
-static MetaUIFrame* meta_frames_lookup_window (MetaFrames *frames,
-                                               Window      xwindow);
 
 static void meta_frames_font_changed          (MetaFrames *frames);
 static void meta_frames_button_layout_changed (MetaFrames *frames);
@@ -119,11 +106,6 @@ meta_frames_class_init (MetaFramesClass *class)
   widget_class->style_updated = meta_frames_style_updated;
 
   widget_class->draw = meta_frames_draw;
-  widget_class->button_press_event = meta_frames_button_press_event;
-  widget_class->button_release_event = meta_frames_button_release_event;
-  widget_class->motion_notify_event = meta_frames_motion_notify_event;
-  widget_class->enter_notify_event = meta_frames_enter_notify_event;
-  widget_class->leave_notify_event = meta_frames_leave_notify_event;
 }
 
 static gint
@@ -790,17 +772,10 @@ redraw_control (MetaUIFrame *frame,
   gdk_window_invalidate_rect (frame->window, rect, FALSE);
 }
 
-static MetaUIFrame*
-meta_frames_lookup_window (MetaFrames *frames,
-                           Window      xwindow)
-{
-  return g_hash_table_lookup (frames->frames, &xwindow);
-}
-
 static gboolean
-meta_frame_titlebar_event (MetaUIFrame    *frame,
-                           GdkEventButton *event,
-                           int            action)
+meta_frame_titlebar_event (MetaUIFrame *frame,
+                           ClutterButtonEvent *event,
+                           int action)
 {
   MetaFrameFlags flags;
   Display *display;
@@ -871,8 +846,8 @@ meta_frame_titlebar_event (MetaUIFrame    *frame,
       meta_core_show_window_menu (display,
                                   frame->xwindow,
                                   META_WINDOW_MENU_WM,
-                                  event->x_root,
-                                  event->y_root,
+                                  event->x,
+                                  event->y,
                                   event->time);
       break;
     }
@@ -881,8 +856,8 @@ meta_frame_titlebar_event (MetaUIFrame    *frame,
 }
 
 static gboolean
-meta_frame_double_click_event (MetaUIFrame    *frame,
-                               GdkEventButton *event)
+meta_frame_double_click_event (MetaUIFrame  *frame,
+                               ClutterButtonEvent *event)
 {
   int action = meta_prefs_get_action_double_click_titlebar ();
 
@@ -890,8 +865,8 @@ meta_frame_double_click_event (MetaUIFrame    *frame,
 }
 
 static gboolean
-meta_frame_middle_click_event (MetaUIFrame    *frame,
-                               GdkEventButton *event)
+meta_frame_middle_click_event (MetaUIFrame *frame,
+                               ClutterButtonEvent *event)
 {
   int action = meta_prefs_get_action_middle_click_titlebar();
 
@@ -899,8 +874,8 @@ meta_frame_middle_click_event (MetaUIFrame    *frame,
 }
 
 static gboolean
-meta_frame_right_click_event(MetaUIFrame     *frame,
-                             GdkEventButton  *event)
+meta_frame_right_click_event (MetaUIFrame *frame,
+                              ClutterButtonEvent *event)
 {
   int action = meta_prefs_get_action_right_click_titlebar();
 
@@ -966,24 +941,13 @@ meta_frames_retry_grab_op (MetaFrames *frames,
 }
 
 static gboolean
-meta_frames_button_press_event (GtkWidget      *widget,
-                                GdkEventButton *event)
+handle_button_press_event (MetaUIFrame *frame,
+                           ClutterButtonEvent *event)
 {
-  MetaUIFrame *frame;
-  MetaFrames *frames;
   MetaFrameControl control;
   Display *display;
 
-  frames = META_FRAMES (widget);
   display = GDK_DISPLAY_XDISPLAY (gdk_display_get_default ());
-
-  /* Remember that the display may have already done something with this event.
-   * If so there's probably a GrabOp in effect.
-   */
-
-  frame = meta_frames_lookup_window (frames, GDK_WINDOW_XID (event->window));
-  if (frame == NULL)
-    return FALSE;
 
   control = get_control (frame, event->x, event->y);
 
@@ -1008,7 +972,7 @@ meta_frames_button_press_event (GtkWidget      *widget,
    */
   if (control == META_FRAME_CONTROL_TITLE &&
       event->button == 1 &&
-      event->type == GDK_2BUTTON_PRESS)
+      event->click_count == 2)
     {
       meta_core_end_grab_op (display, event->time);
       return meta_frame_double_click_event (frame, event);
@@ -1033,8 +997,6 @@ meta_frames_button_press_event (GtkWidget      *widget,
        control == META_FRAME_CONTROL_MENU ||
        control == META_FRAME_CONTROL_APPMENU))
     {
-      frames->grab_xwindow = frame->xwindow;
-
       frame->grab_button = event->button;
       frame->button_state = META_BUTTON_STATE_PRESSED;
       frame->prelit_control = control;
@@ -1053,9 +1015,7 @@ meta_frames_button_press_event (GtkWidget      *widget,
 
           rect = control_rect (control, &fgeom);
 
-          /* convert to root coords */
-          win_x = event->x_root - event->x;
-          win_y = event->y_root - event->y;
+          gdk_window_get_position (frame->window, &win_x, &win_y);
 
           root_rect.x = win_x + rect->x;
           root_rect.y = win_y + rect->y;
@@ -1075,6 +1035,12 @@ meta_frames_button_press_event (GtkWidget      *widget,
                                                menu,
                                                &root_rect,
                                                event->time);
+        }
+      else
+        {
+          meta_frames_try_grab_op (frame, META_GRAB_OP_FRAME_BUTTON,
+                                   event->x, event->y,
+                                   event->time);
         }
     }
   else if (event->button == 1 &&
@@ -1123,7 +1089,7 @@ meta_frames_button_press_event (GtkWidget      *widget,
         }
 
       meta_frames_try_grab_op (frame, op,
-                               event->x_root, event->y_root,
+                               event->x, event->y,
                                event->time);
     }
   else if (control == META_FRAME_CONTROL_TITLE &&
@@ -1135,7 +1101,7 @@ meta_frames_button_press_event (GtkWidget      *widget,
         {
           meta_frames_try_grab_op (frame,
                                    META_GRAB_OP_MOVING,
-                                   event->x_root, event->y_root,
+                                   event->x, event->y,
                                    event->time);
         }
     }
@@ -1152,25 +1118,18 @@ meta_frames_button_press_event (GtkWidget      *widget,
 }
 
 static gboolean
-meta_frames_button_release_event    (GtkWidget           *widget,
-                                     GdkEventButton      *event)
+handle_button_release_event (MetaUIFrame *frame,
+                             ClutterButtonEvent *event)
 {
-  MetaUIFrame *frame;
-  MetaFrames *frames;
+  Display *display = GDK_DISPLAY_XDISPLAY (gdk_display_get_default ());
 
-  frames = META_FRAMES (widget);
-  frames->current_grab_op = META_GRAB_OP_NONE;
-
-  frame = meta_frames_lookup_window (frames, GDK_WINDOW_XID (event->window));
-  if (frame == NULL)
-    return FALSE;
+  meta_core_end_grab_op (display, event->time);
 
   /* We only handle the releases we handled the presses for (things
    * involving frame controls). Window ops that don't require a
    * frame are handled in the Xlib part of the code, display.c/window.c
    */
-  if (frame->xwindow == frames->grab_xwindow &&
-      ((int) event->button) == frame->grab_button &&
+  if (((int) event->button) == frame->grab_button &&
       frame->button_state == META_BUTTON_STATE_PRESSED)
     {
       switch (frame->prelit_control)
@@ -1339,17 +1298,11 @@ meta_ui_frame_update_prelit_control (MetaUIFrame     *frame,
 }
 
 static gboolean
-meta_frames_motion_notify_event     (GtkWidget           *widget,
-                                     GdkEventMotion      *event)
+handle_motion_notify_event (MetaUIFrame *frame,
+                            ClutterMotionEvent *event)
 {
-  MetaUIFrame *frame;
-  MetaFrames *frames;
+  MetaFrames *frames = frame->frames;
   MetaFrameControl control;
-
-  frames = META_FRAMES (widget);
-  frame = meta_frames_lookup_window (frames, GDK_WINDOW_XID (event->window));
-  if (frame == NULL)
-    return FALSE;
 
   control = get_control (frame, event->x, event->y);
 
@@ -1369,7 +1322,7 @@ meta_frames_motion_notify_event     (GtkWidget           *widget,
       meta_ui_frame_update_prelit_control (frame, control);
     }
 
-  if ((event->state & GDK_BUTTON1_MASK) &&
+  if ((event->modifier_state & CLUTTER_BUTTON1_MASK) &&
       frames->current_grab_op != META_GRAB_OP_NONE)
     meta_frames_retry_grab_op (frames, event->time);
 
@@ -1578,18 +1531,10 @@ meta_ui_frame_paint (MetaUIFrame  *frame,
 }
 
 static gboolean
-meta_frames_enter_notify_event      (GtkWidget           *widget,
-                                     GdkEventCrossing    *event)
+handle_enter_notify_event (MetaUIFrame *frame,
+                           ClutterCrossingEvent *event)
 {
-  MetaUIFrame *frame;
-  MetaFrames *frames;
   MetaFrameControl control;
-
-  frames = META_FRAMES (widget);
-
-  frame = meta_frames_lookup_window (frames, GDK_WINDOW_XID (event->window));
-  if (frame == NULL)
-    return FALSE;
 
   frame->maybe_ignore_leave_notify = FALSE;
 
@@ -1600,19 +1545,11 @@ meta_frames_enter_notify_event      (GtkWidget           *widget,
 }
 
 static gboolean
-meta_frames_leave_notify_event      (GtkWidget           *widget,
-                                     GdkEventCrossing    *event)
+handle_leave_notify_event (MetaUIFrame *frame,
+                           ClutterCrossingEvent *event)
 {
-  MetaUIFrame *frame;
-  MetaFrames *frames;
   Display *display;
   MetaGrabOp grab_op;
-
-  frames = META_FRAMES (widget);
-
-  frame = meta_frames_lookup_window (frames, GDK_WINDOW_XID (event->window));
-  if (frame == NULL)
-    return FALSE;
 
   display = GDK_DISPLAY_XDISPLAY (gdk_display_get_default ());
   grab_op = meta_core_get_grab_op (display);
@@ -1629,6 +1566,27 @@ meta_frames_leave_notify_event      (GtkWidget           *widget,
   meta_ui_frame_update_prelit_control (frame, META_FRAME_CONTROL_NONE);
 
   return TRUE;
+}
+
+gboolean
+meta_ui_frame_handle_event (MetaUIFrame *frame,
+                            const ClutterEvent *event)
+{
+  switch (event->any.type)
+    {
+    case CLUTTER_BUTTON_PRESS:
+      return handle_button_press_event (frame, (ClutterButtonEvent *) event);
+    case CLUTTER_BUTTON_RELEASE:
+      return handle_button_release_event (frame, (ClutterButtonEvent *) event);
+    case CLUTTER_MOTION:
+      return handle_motion_notify_event (frame, (ClutterMotionEvent *) event);
+    case CLUTTER_ENTER:
+      return handle_enter_notify_event (frame, (ClutterCrossingEvent *) event);
+    case CLUTTER_LEAVE:
+      return handle_leave_notify_event (frame, (ClutterCrossingEvent *) event);
+    default:
+      return FALSE;
+    }
 }
 
 static GdkRectangle*
@@ -1705,7 +1663,7 @@ control_rect (MetaFrameControl control,
 #define TOP_RESIZE_HEIGHT 4
 #define CORNER_SIZE_MULT 2
 static MetaFrameControl
-get_control (MetaUIFrame *frame, int x, int y)
+get_control (MetaUIFrame *frame, int root_x, int root_y)
 {
   MetaFrameGeometry fgeom;
   MetaFrameFlags flags;
@@ -1713,6 +1671,12 @@ get_control (MetaUIFrame *frame, int x, int y)
   gboolean has_vert, has_horiz;
   gboolean has_north_resize;
   cairo_rectangle_int_t client;
+  int x, y;
+  int win_x, win_y;
+
+  gdk_window_get_position (frame->window, &win_x, &win_y);
+  x = root_x - win_x;
+  y = root_y - win_y;
 
   meta_ui_frame_calc_geometry (frame, &fgeom);
   get_client_rect (&fgeom, &client);

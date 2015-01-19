@@ -106,8 +106,6 @@ struct _MetaFrames
   guint grab_button;
   gdouble grab_x;
   gdouble grab_y;
-
-  Window grab_xwindow;
 };
 
 struct _MetaFramesClass
@@ -146,5 +144,7 @@ void meta_ui_frame_move_resize (MetaUIFrame *frame,
                                 int x, int y, int width, int height);
 
 void meta_ui_frame_queue_draw (MetaUIFrame *frame);
+
+gboolean meta_ui_frame_handle_event (MetaUIFrame *frame, const ClutterEvent *event);
 
 #endif

@@ -1802,6 +1802,9 @@ get_event_route_from_grab_op (MetaGrabOp op)
     case META_GRAB_OP_WAYLAND_POPUP:
       return META_EVENT_ROUTE_WAYLAND_POPUP;
 
+    case META_GRAB_OP_FRAME_BUTTON:
+      return META_EVENT_ROUTE_FRAME_BUTTON;
+
     default:
       g_assert_not_reached ();
     }

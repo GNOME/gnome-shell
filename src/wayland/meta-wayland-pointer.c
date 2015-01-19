@@ -74,6 +74,7 @@ sync_focus_surface (MetaWaylandPointer *pointer)
     {
     case META_EVENT_ROUTE_WINDOW_OP:
     case META_EVENT_ROUTE_COMPOSITOR_GRAB:
+    case META_EVENT_ROUTE_FRAME_BUTTON:
       /* The compositor has a grab, so remove our focus... */
       meta_wayland_pointer_set_focus (pointer, NULL);
       break;
