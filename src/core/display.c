@@ -1225,7 +1225,7 @@ meta_grab_op_is_moving (MetaGrabOp op)
   if (!grab_op_is_window (op))
     return FALSE;
 
-  return (op & META_GRAB_OP_WINDOW_DIR_MASK) == 0;
+  return !meta_grab_op_is_resizing (op);
 }
 
 /**
