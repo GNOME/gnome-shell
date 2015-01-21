@@ -1177,6 +1177,7 @@ cogl_kms_display_set_layout (CoglDisplay *display,
        height != kms_display->height) &&
       kms_display->onscreen)
     {
+      CoglContext *context = COGL_FRAMEBUFFER (kms_display->onscreen)->context;
       CoglOnscreenEGL *egl_onscreen = kms_display->onscreen->winsys;
       CoglOnscreenKMS *kms_onscreen = egl_onscreen->platform;
       struct gbm_surface *new_surface;
@@ -1219,6 +1220,7 @@ cogl_kms_display_set_layout (CoglDisplay *display,
       egl_onscreen->egl_surface = new_egl_surface;
 
       _cogl_framebuffer_winsys_update_size (COGL_FRAMEBUFFER (kms_display->onscreen), width, height);
+      context->current_draw_buffer_changes |= COGL_FRAMEBUFFER_STATE_BIND;
     }
 
   kms_display->width = width;
