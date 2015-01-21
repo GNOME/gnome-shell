@@ -1,3 +1,24 @@
+3.15.4
+======
+* Add mode parameter to AcceleratorActivated signal [Florian; #711682]
+* Fix PID based window/app association [Sebastian; #736527]
+* Fix current day highlight on day change [Sebastian; #742492]
+* Switch to vp9 for screencast recordings [Adel; #742744]
+* Disable IBus input sources on password entries [Takao; #730628]
+* Make slider scrolling smoother [Adel; #742648]
+* Allow move-up shortcut to move window above top workspace [Florian; #665764]
+* Misc. bug fixes [Adel, Rui; #742748, #742824, #741114]
+
+Contributors:
+  Cosimo Cecchi, Takao Fujiwara, Adel Gadllah, Sebastian Keller, Rui Matos,
+  Florian Müllner, Jasper St. Pierre
+
+Translations:
+  Andika Triwidada [id], Matej Urbančič [sl], Saibal Ray [bn_IN],
+  Inaki Larranaga Murgoitio [eu], Stas Solovey [ru], Kjartan Maraas [nb],
+  Balázs Úr [hu], Marek Černocký [cs], Rafael Ferreira [pt_BR],
+  Bernd Homuth [de], Daniel Mustieles [es], Fabio Tomat [fur]
+
 3.15.3
 ======
 * Add support for high-contrast themes [Florian; #740447]
