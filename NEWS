@@ -1,3 +1,23 @@
+3.15.4
+======
+* Use GTK+ theme for window decorations instead of metacity [Florian; #741917]
+* Export the same EDID information on X11 and wayland [Carlos; #742882]
+* Apply input device configuration on wayland [Carlos; #739397]
+* Implement pointer barriers on wayland [Jonas; #706655]
+* Misc. bug fixes (Ting-Wei, Rui, Ikey, Florian, Marek, Jonas; #741829,
+  #738630, #737463, #698995, #727893, #742825, #742824, #742841, #743173,
+  #743189, #743217, #743254]
+
+Contributors:
+  Jonas Ådahl, Giovanni Campagna, Marek Chalupa, Ikey Doherty, Adel Gadllah,
+  Carlos Garnacho, Ting-Wei Lan, Rui Matos, Florian Müllner, Jasper St. Pierre,
+  Rico Tzschichholz
+
+Translations:
+  Matej Urbančič [sl], Balázs Úr [hu], Marek Černocký [cs],
+  Inaki Larranaga Murgoitio [eu], Rafael Ferreira [pt_BR],
+  Daniel Mustieles [es], Fran Dieguez [gl]
+
 3.15.3
 ======
 * Don't leave left-over frames queued [Owen; #738686]
