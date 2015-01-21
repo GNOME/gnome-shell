@@ -1075,10 +1075,12 @@ const PopupSubMenuMenuItem = new Lang.Class({
             this.actor.add_style_pseudo_class('open');
             this._getTopMenu()._setOpenedSubMenu(this.menu);
             this.actor.add_accessible_state (Atk.StateType.EXPANDED);
+            this.actor.add_style_pseudo_class('checked');
         } else {
             this.actor.remove_style_pseudo_class('open');
             this._getTopMenu()._setOpenedSubMenu(null);
             this.actor.remove_accessible_state (Atk.StateType.EXPANDED);
+            this.actor.remove_style_pseudo_class('checked');
         }
     },
 

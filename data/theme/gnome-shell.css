@@ -751,8 +751,7 @@ StScrollBar {
   min-width: 200px; }
   .popup-menu .popup-sub-menu {
     background-color: #343a3a;
-    border-top: 1px solid #282c2c;
-    border-bottom: 1px solid #282c2c; }
+    box-shadow: inset 0 -1px 0px #282c2c; }
   .popup-menu .popup-menu-content {
     padding: 1em 0em; }
   .popup-menu .popup-menu-item {
@@ -761,6 +760,9 @@ StScrollBar {
       padding: .4em 1.75em .4em 0em; }
     .popup-menu .popup-menu-item:rtl {
       padding: .4em 0em .4em 1.75em; }
+    .popup-menu .popup-menu-item:checked {
+      background-color: #343a3a;
+      box-shadow: inset 0 1px 0px #282c2c; }
     .popup-menu .popup-menu-item:active {
       background-color: #215d9c; }
     .popup-menu .popup-menu-item:insensitive {
