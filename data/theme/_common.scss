@@ -947,7 +947,7 @@ StScrollBar {
     // For window decorations with round corners we can't match
     // the exact shape when the window is scaled. So apply a shadow
     // to fix that case
-    box-shadow: inset 0px 0px 0px 1px $selected_bg_color;;
+    box-shadow: inset 0px 0px 0px 1px $selected_bg_color;
   }
   .window-caption {
     spacing: 25px;
