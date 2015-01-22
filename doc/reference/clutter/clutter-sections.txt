@@ -1347,6 +1347,8 @@ clutter_test_add_data_full
 clutter_test_get_stage
 clutter_test_check_actor_at_point
 clutter_test_check_color_at_point
+clutter_test_assert_actor_at_point
+clutter_test_assert_color_at_point
 
 <SUBSECTION Standard>
 CLUTTER_INIT_ERROR
