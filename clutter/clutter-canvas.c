@@ -494,9 +494,7 @@ clutter_canvas_emit_draw (ClutterCanvas *self)
       mapped_buffer = FALSE;
     }
 
-#ifdef HAVE_CAIRO_SURFACE_SET_DEVICE_SCALE
   cairo_surface_set_device_scale (surface, window_scale, window_scale);
-#endif
 
   self->priv->cr = cr = cairo_create (surface);
 
