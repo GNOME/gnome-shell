@@ -375,18 +375,7 @@ const LoginDialog = new Lang.Class({
         parentActor.add_child(this.actor);
 
         this._userManager = AccountsService.UserManager.get_default()
-        let gdmClient = new Gdm.Client();
-
-        if (GLib.getenv('GDM_GREETER_TEST') != '1') {
-            this._greeter = gdmClient.get_greeter_sync(null);
-
-            this._defaultSessionChangedId = this._greeter.connect('default-session-name-changed',
-                                                                  Lang.bind(this, this._onDefaultSessionChanged));
-            this._sessionOpenedId = this._greeter.connect('session-opened',
-                                                          Lang.bind(this, this._onSessionOpened));
-            this._timedLoginRequestedId = this._greeter.connect('timed-login-requested',
-                                                                Lang.bind(this, this._onTimedLoginRequested));
-        }
+        this._gdmClient = new Gdm.Client();
 
         this._settings = new Gio.Settings({ schema_id: GdmUtil.LOGIN_SCREEN_SCHEMA });
 
@@ -416,7 +405,7 @@ const LoginDialog = new Lang.Class({
                                      x_fill: true,
                                      y_fill: true });
 
-        this._authPrompt = new AuthPrompt.AuthPrompt(gdmClient, AuthPrompt.AuthPromptMode.UNLOCK_OR_LOG_IN);
+        this._authPrompt = new AuthPrompt.AuthPrompt(this._gdmClient, AuthPrompt.AuthPromptMode.UNLOCK_OR_LOG_IN);
         this._authPrompt.connect('prompted', Lang.bind(this, this._onPrompted));
         this._authPrompt.connect('reset', Lang.bind(this, this._onReset));
         this._authPrompt.hide();
@@ -759,7 +748,24 @@ const LoginDialog = new Lang.Class({
         this._showPrompt();
     },
 
+    _resetGreeterProxy: function() {
+        if (GLib.getenv('GDM_GREETER_TEST') != '1') {
+            if (this._greeter) {
+                this._greeter.run_dispose();
+            }
+            this._greeter = this._gdmClient.get_greeter_sync(null);
+
+            this._defaultSessionChangedId = this._greeter.connect('default-session-name-changed',
+                                                                  Lang.bind(this, this._onDefaultSessionChanged));
+            this._sessionOpenedId = this._greeter.connect('session-opened',
+                                                          Lang.bind(this, this._onSessionOpened));
+            this._timedLoginRequestedId = this._greeter.connect('timed-login-requested',
+                                                                Lang.bind(this, this._onTimedLoginRequested));
+        }
+    },
+
     _onReset: function(authPrompt, beginRequest) {
+        this._resetGreeterProxy();
         this._sessionMenuButton.updateSensitivity(true);
 
         this._user = null;
