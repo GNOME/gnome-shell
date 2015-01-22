@@ -166,7 +166,11 @@ _clutter_backend_gdk_post_parse (ClutterBackend  *backend,
 
   /* Init Gdk, if outside code did not already */
   if (!gdk_init_check (NULL, NULL))
-    return FALSE;
+    {
+      g_set_error (error, CLUTTER_INIT_ERROR, CLUTTER_INIT_ERROR_BACKEND,
+                   _("Could not initialize Gdk"));
+      return FALSE;
+    }
 
   /*
    * Only open connection if not already set by prior call to
