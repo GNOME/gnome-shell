@@ -1,3 +1,46 @@
+Clutter 1.21.4                                                       2015-01-22
+===============================================================================
+
+  • List of changes since Clutter 1.21.2
+
+    - Use the GDK backend by default when possible
+    Instead of using the X11 or the Wayland backend by default, Clutter now
+    uses the GDK backend for both input and output. This improves the
+    integration with the windowing system. Backends can still be selected
+    programmatically, or via environment variables. On Windows and MacOS, we
+    still prefer the native backend, if available, because of asymmetries in
+    the GDK API.
+
+    - Use libinput 0.8
+    For the evdev input backend, the dependency for libinput has been bumped
+    to the newly released 0.8, which improves wheel and scroll events.
+
+    - Allow access to vendor and product ID for input devices
+
+    - Allow ClutterConstraint implementations to change the preferred size
+    ClutterConstraint classes can now update an actor's preferred size,
+    along with its allocation; this means that querying the preferred size
+    of actors using constraints will take constraints into consideration, and
+    improves the integration of constraints inside the layout system.
+
+    - Improve the GDK backend
+    Properly support high DPI displays, as well as Wayland.
+
+    - Updated translations
+    Czech, Basque, Spanish, Hungarian.
+
+  • List of bugs fixed since Clutter 1.21.2
+
+    #730815 - Mouse events limited to upper left rectangle
+    #740759 - Add getters for input device vendor/product IDs
+    #734587 - Position gdk backend before x11/wayland/egl ones
+    #742829 - Update to new libinput API for pointer_axis events
+
+Many thanks to:
+
+  Jonas Danielsson, Carlos Garnacho, Peter Hutterer, Marek Černocký,
+  Inaki Larranaga Murgoitio, Daniel Mustieles, Balázs Úr.
+
 Clutter 1.21.2                                                       2014-12-15
 ===============================================================================
 
