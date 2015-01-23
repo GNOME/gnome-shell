@@ -512,11 +512,8 @@ meta_monitor_manager_kms_read_current (MetaMonitorManager *manager)
           find_properties (manager_kms, output_kms);
 
           edid = read_output_edid (manager_kms, meta_output);
-          if (edid)
-            {
-              meta_output_parse_edid (meta_output, edid);
-              g_bytes_unref (edid);
-            }
+          meta_output_parse_edid (meta_output, edid);
+          g_bytes_unref (edid);
 
           /* MetaConnectorType matches DRM's connector types */
           meta_output->connector_type = (MetaConnectorType) connector->connector_type;

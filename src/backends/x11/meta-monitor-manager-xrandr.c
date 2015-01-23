@@ -693,11 +693,8 @@ meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
 	  meta_output->name = g_strdup (output->name);
 
           edid = read_output_edid (manager_xrandr, meta_output->winsys_id);
-          if (edid)
-            {
-              meta_output_parse_edid (meta_output, edid);
-              g_bytes_unref (edid);
-            }
+          meta_output_parse_edid (meta_output, edid);
+          g_bytes_unref (edid);
 
 	  meta_output->width_mm = output->mm_width;
 	  meta_output->height_mm = output->mm_height;

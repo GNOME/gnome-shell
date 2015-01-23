@@ -1230,6 +1230,9 @@ meta_output_parse_edid (MetaOutput *meta_output,
   MonitorInfo *parsed_edid;
   gsize len;
 
+  if (!edid)
+    goto out;
+
   parsed_edid = decode_edid (g_bytes_get_data (edid, &len));
 
   if (parsed_edid)
@@ -1247,6 +1250,7 @@ meta_output_parse_edid (MetaOutput *meta_output,
       g_free (parsed_edid);
     }
 
+ out:
   if (!meta_output->vendor)
     {
       meta_output->vendor = g_strdup ("unknown");
