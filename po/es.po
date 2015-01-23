@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: clutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-01-12 04:09+0000\n"
-"PO-Revision-Date: 2015-01-12 11:52+0100\n"
+"POT-Creation-Date: 2015-01-23 04:08+0000\n"
+"PO-Revision-Date: 2015-01-23 10:20+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
 "Language: \n"
@@ -2706,7 +2706,12 @@ msgstr "Las texturas YUV no están soportadas"
 msgid "YUV2 textues are not supported"
 msgstr "Las texturas YUV2 no están soportadas"
 
-#: ../clutter/gdk/clutter-backend-gdk.c:290
+#: ../clutter/gdk/clutter-backend-gdk.c:171
+#, c-format
+msgid "Could not initialize Gdk"
+msgstr "No se pudo inicializar GDK"
+
+#: ../clutter/gdk/clutter-backend-gdk.c:313
 #, c-format
 msgid "Could not find a suitable CoglWinsys for a GdkDisplay of type %s"
 msgstr ""
