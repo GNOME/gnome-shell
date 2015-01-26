@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: Clutter\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter\n"
-"POT-Creation-Date: 2014-08-28 18:08+0300\n"
-"PO-Revision-Date: 2014-08-28 18:09+0300\n"
+"POT-Creation-Date: 2015-01-26 22:15+0200\n"
+"PO-Revision-Date: 2015-01-26 22:15+0200\n"
 "Last-Translator: Yosef Or Boczko <yoseforb@gmail.com>\n"
 "Language-Team: עברית <>\n"
 "Language: he\n"
@@ -23,664 +23,664 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Generator: Gtranslator 2.91.6\n"
 
-#: ../clutter/clutter-actor.c:6224
+#: ../clutter/clutter-actor.c:6230
 msgid "X coordinate"
 msgstr "X coordinate"
 
-#: ../clutter/clutter-actor.c:6225
+#: ../clutter/clutter-actor.c:6231
 msgid "X coordinate of the actor"
 msgstr "X coordinate of the actor"
 
-#: ../clutter/clutter-actor.c:6243
+#: ../clutter/clutter-actor.c:6249
 msgid "Y coordinate"
 msgstr "Y coordinate"
 
-#: ../clutter/clutter-actor.c:6244
+#: ../clutter/clutter-actor.c:6250
 msgid "Y coordinate of the actor"
 msgstr "Y coordinate of the actor"
 
-#: ../clutter/clutter-actor.c:6266
+#: ../clutter/clutter-actor.c:6272
 msgid "Position"
 msgstr "Position"
 
-#: ../clutter/clutter-actor.c:6267
+#: ../clutter/clutter-actor.c:6273
 msgid "The position of the origin of the actor"
 msgstr "The position of the origin of the actor"
 
-#: ../clutter/clutter-actor.c:6284 ../clutter/clutter-canvas.c:247
+#: ../clutter/clutter-actor.c:6290 ../clutter/clutter-canvas.c:247
 #: ../clutter/clutter-grid-layout.c:1239
 #: ../clutter/deprecated/clutter-behaviour-ellipse.c:474
 msgid "Width"
 msgstr "Width"
 
-#: ../clutter/clutter-actor.c:6285
+#: ../clutter/clutter-actor.c:6291
 msgid "Width of the actor"
 msgstr "Width of the actor"
 
-#: ../clutter/clutter-actor.c:6303 ../clutter/clutter-canvas.c:263
+#: ../clutter/clutter-actor.c:6309 ../clutter/clutter-canvas.c:263
 #: ../clutter/clutter-grid-layout.c:1246
 #: ../clutter/deprecated/clutter-behaviour-ellipse.c:490
 msgid "Height"
 msgstr "Height"
 
-#: ../clutter/clutter-actor.c:6304
+#: ../clutter/clutter-actor.c:6310
 msgid "Height of the actor"
 msgstr "Height of the actor"
 
-#: ../clutter/clutter-actor.c:6325
+#: ../clutter/clutter-actor.c:6331
 msgid "Size"
 msgstr "Size"
 
-#: ../clutter/clutter-actor.c:6326
+#: ../clutter/clutter-actor.c:6332
 msgid "The size of the actor"
 msgstr "The size of the actor"
 
-#: ../clutter/clutter-actor.c:6344
+#: ../clutter/clutter-actor.c:6350
 msgid "Fixed X"
 msgstr "Fixed X"
 
-#: ../clutter/clutter-actor.c:6345
+#: ../clutter/clutter-actor.c:6351
 msgid "Forced X position of the actor"
 msgstr "Forced X position of the actor"
 
-#: ../clutter/clutter-actor.c:6362
+#: ../clutter/clutter-actor.c:6368
 msgid "Fixed Y"
 msgstr "Fixed Y"
 
-#: ../clutter/clutter-actor.c:6363
+#: ../clutter/clutter-actor.c:6369
 msgid "Forced Y position of the actor"
 msgstr "Forced Y position of the actor"
 
-#: ../clutter/clutter-actor.c:6378
+#: ../clutter/clutter-actor.c:6384
 msgid "Fixed position set"
 msgstr "Fixed position set"
 
-#: ../clutter/clutter-actor.c:6379
+#: ../clutter/clutter-actor.c:6385
 msgid "Whether to use fixed positioning for the actor"
 msgstr "Whether to use fixed positioning for the actor"
 
-#: ../clutter/clutter-actor.c:6397
+#: ../clutter/clutter-actor.c:6403
 msgid "Min Width"
 msgstr "Min Width"
 
-#: ../clutter/clutter-actor.c:6398
+#: ../clutter/clutter-actor.c:6404
 msgid "Forced minimum width request for the actor"
 msgstr "Forced minimum width request for the actor"
 
-#: ../clutter/clutter-actor.c:6416
+#: ../clutter/clutter-actor.c:6422
 msgid "Min Height"
 msgstr "Min Height"
 
-#: ../clutter/clutter-actor.c:6417
+#: ../clutter/clutter-actor.c:6423
 msgid "Forced minimum height request for the actor"
 msgstr "Forced minimum height request for the actor"
 
-#: ../clutter/clutter-actor.c:6435
+#: ../clutter/clutter-actor.c:6441
 msgid "Natural Width"
 msgstr "Natural Width"
 
-#: ../clutter/clutter-actor.c:6436
+#: ../clutter/clutter-actor.c:6442
 msgid "Forced natural width request for the actor"
 msgstr "Forced natural width request for the actor"
 
-#: ../clutter/clutter-actor.c:6454
+#: ../clutter/clutter-actor.c:6460
 msgid "Natural Height"
 msgstr "Natural Height"
 
-#: ../clutter/clutter-actor.c:6455
+#: ../clutter/clutter-actor.c:6461
 msgid "Forced natural height request for the actor"
 msgstr "Forced natural height request for the actor"
 
-#: ../clutter/clutter-actor.c:6470
+#: ../clutter/clutter-actor.c:6476
 msgid "Minimum width set"
 msgstr "Minimum width set"
 
-#: ../clutter/clutter-actor.c:6471
+#: ../clutter/clutter-actor.c:6477
 msgid "Whether to use the min-width property"
 msgstr "Whether to use the min-width property"
 
-#: ../clutter/clutter-actor.c:6485
+#: ../clutter/clutter-actor.c:6491
 msgid "Minimum height set"
 msgstr "Minimum height set"
 
-#: ../clutter/clutter-actor.c:6486
+#: ../clutter/clutter-actor.c:6492
 msgid "Whether to use the min-height property"
 msgstr "Whether to use the min-height property"
 
-#: ../clutter/clutter-actor.c:6500
+#: ../clutter/clutter-actor.c:6506
 msgid "Natural width set"
 msgstr "Natural width set"
 
-#: ../clutter/clutter-actor.c:6501
+#: ../clutter/clutter-actor.c:6507
 msgid "Whether to use the natural-width property"
 msgstr "Whether to use the natural-width property"
 
-#: ../clutter/clutter-actor.c:6515
+#: ../clutter/clutter-actor.c:6521
 msgid "Natural height set"
 msgstr "Natural height set"
 
-#: ../clutter/clutter-actor.c:6516
+#: ../clutter/clutter-actor.c:6522
 msgid "Whether to use the natural-height property"
 msgstr "Whether to use the natural-height property"
 
-#: ../clutter/clutter-actor.c:6532
+#: ../clutter/clutter-actor.c:6538
 msgid "Allocation"
 msgstr "Allocation"
 
-#: ../clutter/clutter-actor.c:6533
+#: ../clutter/clutter-actor.c:6539
 msgid "The actor's allocation"
 msgstr "The actor's allocation"
 
-#: ../clutter/clutter-actor.c:6590
+#: ../clutter/clutter-actor.c:6606
 msgid "Request Mode"
 msgstr "Request Mode"
 
-#: ../clutter/clutter-actor.c:6591
+#: ../clutter/clutter-actor.c:6607
 msgid "The actor's request mode"
 msgstr "The actor's request mode"
 
-#: ../clutter/clutter-actor.c:6615
+#: ../clutter/clutter-actor.c:6631
 msgid "Depth"
 msgstr "Depth"
 
-#: ../clutter/clutter-actor.c:6616
+#: ../clutter/clutter-actor.c:6632
 msgid "Position on the Z axis"
 msgstr "Position on the Z axis"
 
-#: ../clutter/clutter-actor.c:6643
+#: ../clutter/clutter-actor.c:6659
 msgid "Z Position"
 msgstr "Z Position"
 
-#: ../clutter/clutter-actor.c:6644
+#: ../clutter/clutter-actor.c:6660
 msgid "The actor's position on the Z axis"
 msgstr "The actor's position on the Z axis"
 
-#: ../clutter/clutter-actor.c:6661
+#: ../clutter/clutter-actor.c:6677
 msgid "Opacity"
 msgstr "Opacity"
 
-#: ../clutter/clutter-actor.c:6662
+#: ../clutter/clutter-actor.c:6678
 msgid "Opacity of an actor"
 msgstr "Opacity of an actor"
 
-#: ../clutter/clutter-actor.c:6682
+#: ../clutter/clutter-actor.c:6698
 msgid "Offscreen redirect"
 msgstr "Offscreen redirect"
 
-#: ../clutter/clutter-actor.c:6683
+#: ../clutter/clutter-actor.c:6699
 msgid "Flags controlling when to flatten the actor into a single image"
 msgstr "Flags controlling when to flatten the actor into a single image"
 
-#: ../clutter/clutter-actor.c:6697
+#: ../clutter/clutter-actor.c:6713
 msgid "Visible"
 msgstr "Visible"
 
-#: ../clutter/clutter-actor.c:6698
+#: ../clutter/clutter-actor.c:6714
 msgid "Whether the actor is visible or not"
 msgstr "Whether the actor is visible or not"
 
-#: ../clutter/clutter-actor.c:6712
+#: ../clutter/clutter-actor.c:6728
 msgid "Mapped"
 msgstr "Mapped"
 
-#: ../clutter/clutter-actor.c:6713
+#: ../clutter/clutter-actor.c:6729
 msgid "Whether the actor will be painted"
 msgstr "Whether the actor will be painted"
 
-#: ../clutter/clutter-actor.c:6726
+#: ../clutter/clutter-actor.c:6742
 msgid "Realized"
 msgstr "Realized"
 
-#: ../clutter/clutter-actor.c:6727
+#: ../clutter/clutter-actor.c:6743
 msgid "Whether the actor has been realized"
 msgstr "Whether the actor has been realized"
 
-#: ../clutter/clutter-actor.c:6742
+#: ../clutter/clutter-actor.c:6758
 msgid "Reactive"
 msgstr "Reactive"
 
-#: ../clutter/clutter-actor.c:6743
+#: ../clutter/clutter-actor.c:6759
 msgid "Whether the actor is reactive to events"
 msgstr "Whether the actor is reactive to events"
 
-#: ../clutter/clutter-actor.c:6754
+#: ../clutter/clutter-actor.c:6770
 msgid "Has Clip"
 msgstr "Has Clip"
 
-#: ../clutter/clutter-actor.c:6755
+#: ../clutter/clutter-actor.c:6771
 msgid "Whether the actor has a clip set"
 msgstr "Whether the actor has a clip set"
 
-#: ../clutter/clutter-actor.c:6768
+#: ../clutter/clutter-actor.c:6784
 msgid "Clip"
 msgstr "Clip"
 
-#: ../clutter/clutter-actor.c:6769
+#: ../clutter/clutter-actor.c:6785
 msgid "The clip region for the actor"
 msgstr "The clip region for the actor"
 
-#: ../clutter/clutter-actor.c:6788
+#: ../clutter/clutter-actor.c:6804
 msgid "Clip Rectangle"
 msgstr "Clip Rectangle"
 
-#: ../clutter/clutter-actor.c:6789
+#: ../clutter/clutter-actor.c:6805
 msgid "The visible region of the actor"
 msgstr "The visible region of the actor"
 
-#: ../clutter/clutter-actor.c:6803 ../clutter/clutter-actor-meta.c:205
-#: ../clutter/clutter-binding-pool.c:318 ../clutter/clutter-input-device.c:247
+#: ../clutter/clutter-actor.c:6819 ../clutter/clutter-actor-meta.c:205
+#: ../clutter/clutter-binding-pool.c:318 ../clutter/clutter-input-device.c:268
 msgid "Name"
 msgstr "Name"
 
-#: ../clutter/clutter-actor.c:6804
+#: ../clutter/clutter-actor.c:6820
 msgid "Name of the actor"
 msgstr "Name of the actor"
 
-#: ../clutter/clutter-actor.c:6825
+#: ../clutter/clutter-actor.c:6841
 msgid "Pivot Point"
 msgstr "Pivot Point"
 
-#: ../clutter/clutter-actor.c:6826
+#: ../clutter/clutter-actor.c:6842
 msgid "The point around which the scaling and rotation occur"
 msgstr "The point around which the scaling and rotation occur"
 
-#: ../clutter/clutter-actor.c:6844
+#: ../clutter/clutter-actor.c:6860
 msgid "Pivot Point Z"
 msgstr "Pivot Point Z"
 
-#: ../clutter/clutter-actor.c:6845
+#: ../clutter/clutter-actor.c:6861
 msgid "Z component of the pivot point"
 msgstr "Z component of the pivot point"
 
-#: ../clutter/clutter-actor.c:6863
+#: ../clutter/clutter-actor.c:6879
 msgid "Scale X"
 msgstr "Scale X"
 
-#: ../clutter/clutter-actor.c:6864
+#: ../clutter/clutter-actor.c:6880
 msgid "Scale factor on the X axis"
 msgstr "Scale factor on the X axis"
 
-#: ../clutter/clutter-actor.c:6882
+#: ../clutter/clutter-actor.c:6898
 msgid "Scale Y"
 msgstr "Scale Y"
 
-#: ../clutter/clutter-actor.c:6883
+#: ../clutter/clutter-actor.c:6899
 msgid "Scale factor on the Y axis"
 msgstr "Scale factor on the Y axis"
 
-#: ../clutter/clutter-actor.c:6901
+#: ../clutter/clutter-actor.c:6917
 msgid "Scale Z"
 msgstr "Scale Z"
 
-#: ../clutter/clutter-actor.c:6902
+#: ../clutter/clutter-actor.c:6918
 msgid "Scale factor on the Z axis"
 msgstr "Scale factor on the Z axis"
 
-#: ../clutter/clutter-actor.c:6920
+#: ../clutter/clutter-actor.c:6936
 msgid "Scale Center X"
 msgstr "Scale Center X"
 
-#: ../clutter/clutter-actor.c:6921
+#: ../clutter/clutter-actor.c:6937
 msgid "Horizontal scale center"
 msgstr "Horizontal scale center"
 
-#: ../clutter/clutter-actor.c:6939
+#: ../clutter/clutter-actor.c:6955
 msgid "Scale Center Y"
 msgstr "Scale Center Y"
 
-#: ../clutter/clutter-actor.c:6940
+#: ../clutter/clutter-actor.c:6956
 msgid "Vertical scale center"
 msgstr "Vertical scale center"
 
-#: ../clutter/clutter-actor.c:6958
+#: ../clutter/clutter-actor.c:6974
 msgid "Scale Gravity"
 msgstr "Scale Gravity"
 
-#: ../clutter/clutter-actor.c:6959
+#: ../clutter/clutter-actor.c:6975
 msgid "The center of scaling"
 msgstr "The center of scaling"
 
-#: ../clutter/clutter-actor.c:6977
+#: ../clutter/clutter-actor.c:6993
 msgid "Rotation Angle X"
 msgstr "Rotation Angle X"
 
-#: ../clutter/clutter-actor.c:6978
+#: ../clutter/clutter-actor.c:6994
 msgid "The rotation angle on the X axis"
 msgstr "The rotation angle on the X axis"
 
-#: ../clutter/clutter-actor.c:6996
+#: ../clutter/clutter-actor.c:7012
 msgid "Rotation Angle Y"
 msgstr "Rotation Angle Y"
 
-#: ../clutter/clutter-actor.c:6997
+#: ../clutter/clutter-actor.c:7013
 msgid "The rotation angle on the Y axis"
 msgstr "The rotation angle on the Y axis"
 
-#: ../clutter/clutter-actor.c:7015
+#: ../clutter/clutter-actor.c:7031
 msgid "Rotation Angle Z"
 msgstr "Rotation Angle Z"
 
-#: ../clutter/clutter-actor.c:7016
+#: ../clutter/clutter-actor.c:7032
 msgid "The rotation angle on the Z axis"
 msgstr "The rotation angle on the Z axis"
 
-#: ../clutter/clutter-actor.c:7034
+#: ../clutter/clutter-actor.c:7050
 msgid "Rotation Center X"
 msgstr "Rotation Center X"
 
-#: ../clutter/clutter-actor.c:7035
+#: ../clutter/clutter-actor.c:7051
 msgid "The rotation center on the X axis"
 msgstr "The rotation center on the X axis"
 
-#: ../clutter/clutter-actor.c:7052
+#: ../clutter/clutter-actor.c:7068
 msgid "Rotation Center Y"
 msgstr "Rotation Center Y"
 
-#: ../clutter/clutter-actor.c:7053
+#: ../clutter/clutter-actor.c:7069
 msgid "The rotation center on the Y axis"
 msgstr "The rotation center on the Y axis"
 
-#: ../clutter/clutter-actor.c:7070
+#: ../clutter/clutter-actor.c:7086
 msgid "Rotation Center Z"
 msgstr "Rotation Center Z"
 
-#: ../clutter/clutter-actor.c:7071
+#: ../clutter/clutter-actor.c:7087
 msgid "The rotation center on the Z axis"
 msgstr "The rotation center on the Z axis"
 
-#: ../clutter/clutter-actor.c:7088
+#: ../clutter/clutter-actor.c:7104
 msgid "Rotation Center Z Gravity"
 msgstr "Rotation Center Z Gravity"
 
-#: ../clutter/clutter-actor.c:7089
+#: ../clutter/clutter-actor.c:7105
 msgid "Center point for rotation around the Z axis"
 msgstr "Center point for rotation around the Z axis"
 
-#: ../clutter/clutter-actor.c:7117
+#: ../clutter/clutter-actor.c:7133
 msgid "Anchor X"
 msgstr "Anchor X"
 
-#: ../clutter/clutter-actor.c:7118
+#: ../clutter/clutter-actor.c:7134
 msgid "X coordinate of the anchor point"
 msgstr "X coordinate of the anchor point"
 
-#: ../clutter/clutter-actor.c:7146
+#: ../clutter/clutter-actor.c:7162
 msgid "Anchor Y"
 msgstr "Anchor Y"
 
-#: ../clutter/clutter-actor.c:7147
+#: ../clutter/clutter-actor.c:7163
 msgid "Y coordinate of the anchor point"
 msgstr "Y coordinate of the anchor point"
 
-#: ../clutter/clutter-actor.c:7174
+#: ../clutter/clutter-actor.c:7190
 msgid "Anchor Gravity"
 msgstr "Anchor Gravity"
 
-#: ../clutter/clutter-actor.c:7175
+#: ../clutter/clutter-actor.c:7191
 msgid "The anchor point as a ClutterGravity"
 msgstr "The anchor point as a ClutterGravity"
 
-#: ../clutter/clutter-actor.c:7194
+#: ../clutter/clutter-actor.c:7210
 msgid "Translation X"
 msgstr "Translation X"
 
-#: ../clutter/clutter-actor.c:7195
+#: ../clutter/clutter-actor.c:7211
 msgid "Translation along the X axis"
 msgstr "Translation along the X axis"
 
-#: ../clutter/clutter-actor.c:7214
+#: ../clutter/clutter-actor.c:7230
 msgid "Translation Y"
 msgstr "Translation Y"
 
-#: ../clutter/clutter-actor.c:7215
+#: ../clutter/clutter-actor.c:7231
 msgid "Translation along the Y axis"
 msgstr "Translation along the Y axis"
 
-#: ../clutter/clutter-actor.c:7234
+#: ../clutter/clutter-actor.c:7250
 msgid "Translation Z"
 msgstr "Translation Z"
 
-#: ../clutter/clutter-actor.c:7235
+#: ../clutter/clutter-actor.c:7251
 msgid "Translation along the Z axis"
 msgstr "Translation along the Z axis"
 
-#: ../clutter/clutter-actor.c:7265
+#: ../clutter/clutter-actor.c:7281
 msgid "Transform"
 msgstr "Transform"
 
-#: ../clutter/clutter-actor.c:7266
+#: ../clutter/clutter-actor.c:7282
 msgid "Transformation matrix"
 msgstr "Transformation matrix"
 
-#: ../clutter/clutter-actor.c:7281
+#: ../clutter/clutter-actor.c:7297
 msgid "Transform Set"
 msgstr "Transform Set"
 
-#: ../clutter/clutter-actor.c:7282
+#: ../clutter/clutter-actor.c:7298
 msgid "Whether the transform property is set"
 msgstr "Whether the transform property is set"
 
-#: ../clutter/clutter-actor.c:7303
+#: ../clutter/clutter-actor.c:7319
 msgid "Child Transform"
 msgstr "Child Transform"
 
-#: ../clutter/clutter-actor.c:7304
+#: ../clutter/clutter-actor.c:7320
 msgid "Children transformation matrix"
 msgstr "Children transformation matrix"
 
-#: ../clutter/clutter-actor.c:7319
+#: ../clutter/clutter-actor.c:7335
 msgid "Child Transform Set"
 msgstr "Child Transform Set"
 
-#: ../clutter/clutter-actor.c:7320
+#: ../clutter/clutter-actor.c:7336
 msgid "Whether the child-transform property is set"
 msgstr "Whether the child-transform property is set"
 
-#: ../clutter/clutter-actor.c:7337
+#: ../clutter/clutter-actor.c:7353
 msgid "Show on set parent"
 msgstr "Show on set parent"
 
-#: ../clutter/clutter-actor.c:7338
+#: ../clutter/clutter-actor.c:7354
 msgid "Whether the actor is shown when parented"
 msgstr "Whether the actor is shown when parented"
 
-#: ../clutter/clutter-actor.c:7355
+#: ../clutter/clutter-actor.c:7371
 msgid "Clip to Allocation"
 msgstr "Clip to Allocation"
 
-#: ../clutter/clutter-actor.c:7356
+#: ../clutter/clutter-actor.c:7372
 msgid "Sets the clip region to track the actor's allocation"
 msgstr "Sets the clip region to track the actor's allocation"
 
-#: ../clutter/clutter-actor.c:7369
+#: ../clutter/clutter-actor.c:7385
 msgid "Text Direction"
 msgstr "Text Direction"
 
-#: ../clutter/clutter-actor.c:7370
+#: ../clutter/clutter-actor.c:7386
 msgid "Direction of the text"
 msgstr "Direction of the text"
 
-#: ../clutter/clutter-actor.c:7385
+#: ../clutter/clutter-actor.c:7401
 msgid "Has Pointer"
 msgstr "Has Pointer"
 
-#: ../clutter/clutter-actor.c:7386
+#: ../clutter/clutter-actor.c:7402
 msgid "Whether the actor contains the pointer of an input device"
 msgstr "Whether the actor contains the pointer of an input device"
 
-#: ../clutter/clutter-actor.c:7399
+#: ../clutter/clutter-actor.c:7415
 msgid "Actions"
 msgstr "Actions"
 
-#: ../clutter/clutter-actor.c:7400
+#: ../clutter/clutter-actor.c:7416
 msgid "Adds an action to the actor"
 msgstr "Adds an action to the actor"
 
-#: ../clutter/clutter-actor.c:7413
+#: ../clutter/clutter-actor.c:7429
 msgid "Constraints"
 msgstr "Constraints"
 
-#: ../clutter/clutter-actor.c:7414
+#: ../clutter/clutter-actor.c:7430
 msgid "Adds a constraint to the actor"
 msgstr "Adds a constraint to the actor"
 
-#: ../clutter/clutter-actor.c:7427
+#: ../clutter/clutter-actor.c:7443
 msgid "Effect"
 msgstr "Effect"
 
-#: ../clutter/clutter-actor.c:7428
+#: ../clutter/clutter-actor.c:7444
 msgid "Add an effect to be applied on the actor"
 msgstr "Add an effect to be applied on the actor"
 
-#: ../clutter/clutter-actor.c:7442
+#: ../clutter/clutter-actor.c:7458
 msgid "Layout Manager"
 msgstr "Layout Manager"
 
-#: ../clutter/clutter-actor.c:7443
+#: ../clutter/clutter-actor.c:7459
 msgid "The object controlling the layout of an actor's children"
 msgstr "The object controlling the layout of an actor's children"
 
-#: ../clutter/clutter-actor.c:7457
+#: ../clutter/clutter-actor.c:7473
 msgid "X Expand"
 msgstr "X Expand"
 
-#: ../clutter/clutter-actor.c:7458
+#: ../clutter/clutter-actor.c:7474
 msgid "Whether extra horizontal space should be assigned to the actor"
 msgstr "Whether extra horizontal space should be assigned to the actor"
 
-#: ../clutter/clutter-actor.c:7473
+#: ../clutter/clutter-actor.c:7489
 msgid "Y Expand"
 msgstr "Y Expand"
 
-#: ../clutter/clutter-actor.c:7474
+#: ../clutter/clutter-actor.c:7490
 msgid "Whether extra vertical space should be assigned to the actor"
 msgstr "Whether extra vertical space should be assigned to the actor"
 
-#: ../clutter/clutter-actor.c:7490
+#: ../clutter/clutter-actor.c:7506
 msgid "X Alignment"
 msgstr "X Alignment"
 
-#: ../clutter/clutter-actor.c:7491
+#: ../clutter/clutter-actor.c:7507
 msgid "The alignment of the actor on the X axis within its allocation"
 msgstr "The alignment of the actor on the X axis within its allocation"
 
-#: ../clutter/clutter-actor.c:7506
+#: ../clutter/clutter-actor.c:7522
 msgid "Y Alignment"
 msgstr "Y Alignment"
 
-#: ../clutter/clutter-actor.c:7507
+#: ../clutter/clutter-actor.c:7523
 msgid "The alignment of the actor on the Y axis within its allocation"
 msgstr "The alignment of the actor on the Y axis within its allocation"
 
-#: ../clutter/clutter-actor.c:7526
+#: ../clutter/clutter-actor.c:7542
 msgid "Margin Top"
 msgstr "Margin Top"
 
-#: ../clutter/clutter-actor.c:7527
+#: ../clutter/clutter-actor.c:7543
 msgid "Extra space at the top"
 msgstr "Extra space at the top"
 
-#: ../clutter/clutter-actor.c:7548
+#: ../clutter/clutter-actor.c:7564
 msgid "Margin Bottom"
 msgstr "Margin Bottom"
 
-#: ../clutter/clutter-actor.c:7549
+#: ../clutter/clutter-actor.c:7565
 msgid "Extra space at the bottom"
 msgstr "Extra space at the bottom"
 
-#: ../clutter/clutter-actor.c:7570
+#: ../clutter/clutter-actor.c:7586
 msgid "Margin Left"
 msgstr "Margin Left"
 
-#: ../clutter/clutter-actor.c:7571
+#: ../clutter/clutter-actor.c:7587
 msgid "Extra space at the left"
 msgstr "Extra space at the left"
 
-#: ../clutter/clutter-actor.c:7592
+#: ../clutter/clutter-actor.c:7608
 msgid "Margin Right"
 msgstr "Margin Right"
 
-#: ../clutter/clutter-actor.c:7593
+#: ../clutter/clutter-actor.c:7609
 msgid "Extra space at the right"
 msgstr "Extra space at the right"
 
-#: ../clutter/clutter-actor.c:7609
+#: ../clutter/clutter-actor.c:7625
 msgid "Background Color Set"
 msgstr "Background Color Set"
 
-#: ../clutter/clutter-actor.c:7610 ../clutter/deprecated/clutter-box.c:269
+#: ../clutter/clutter-actor.c:7626 ../clutter/deprecated/clutter-box.c:269
 msgid "Whether the background color is set"
 msgstr "Whether the background color is set"
 
-#: ../clutter/clutter-actor.c:7626
+#: ../clutter/clutter-actor.c:7642
 msgid "Background color"
 msgstr "Background color"
 
-#: ../clutter/clutter-actor.c:7627
+#: ../clutter/clutter-actor.c:7643
 msgid "The actor's background color"
 msgstr "The actor's background color"
 
-#: ../clutter/clutter-actor.c:7642
+#: ../clutter/clutter-actor.c:7658
 msgid "First Child"
 msgstr "First Child"
 
-#: ../clutter/clutter-actor.c:7643
+#: ../clutter/clutter-actor.c:7659
 msgid "The actor's first child"
 msgstr "The actor's first child"
 
-#: ../clutter/clutter-actor.c:7656
+#: ../clutter/clutter-actor.c:7672
 msgid "Last Child"
 msgstr "Last Child"
 
-#: ../clutter/clutter-actor.c:7657
+#: ../clutter/clutter-actor.c:7673
 msgid "The actor's last child"
 msgstr "The actor's last child"
 
-#: ../clutter/clutter-actor.c:7671
+#: ../clutter/clutter-actor.c:7687
 msgid "Content"
 msgstr "Content"
 
-#: ../clutter/clutter-actor.c:7672
+#: ../clutter/clutter-actor.c:7688
 msgid "Delegate object for painting the actor's content"
 msgstr "Delegate object for painting the actor's content"
 
-#: ../clutter/clutter-actor.c:7697
+#: ../clutter/clutter-actor.c:7713
 msgid "Content Gravity"
 msgstr "Content Gravity"
 
-#: ../clutter/clutter-actor.c:7698
+#: ../clutter/clutter-actor.c:7714
 msgid "Alignment of the actor's content"
 msgstr "Alignment of the actor's content"
 
-#: ../clutter/clutter-actor.c:7718
+#: ../clutter/clutter-actor.c:7734
 msgid "Content Box"
 msgstr "Content Box"
 
-#: ../clutter/clutter-actor.c:7719
+#: ../clutter/clutter-actor.c:7735
 msgid "The bounding box of the actor's content"
 msgstr "The bounding box of the actor's content"
 
-#: ../clutter/clutter-actor.c:7727
+#: ../clutter/clutter-actor.c:7743
 msgid "Minification Filter"
 msgstr "Minification Filter"
 
-#: ../clutter/clutter-actor.c:7728
+#: ../clutter/clutter-actor.c:7744
 msgid "The filter used when reducing the size of the content"
 msgstr "The filter used when reducing the size of the content"
 
-#: ../clutter/clutter-actor.c:7735
+#: ../clutter/clutter-actor.c:7751
 msgid "Magnification Filter"
 msgstr "Magnification Filter"
 
-#: ../clutter/clutter-actor.c:7736
+#: ../clutter/clutter-actor.c:7752
 msgid "The filter used when increasing the size of the content"
 msgstr "The filter used when increasing the size of the content"
 
-#: ../clutter/clutter-actor.c:7750
+#: ../clutter/clutter-actor.c:7766
 msgid "Content Repeat"
 msgstr "Content Repeat"
 
-#: ../clutter/clutter-actor.c:7751
+#: ../clutter/clutter-actor.c:7767
 msgid "The repeat policy for the actor's content"
 msgstr "The repeat policy for the actor's content"
 
@@ -696,7 +696,7 @@ msgstr "The actor attached to the meta"
 msgid "The name of the meta"
 msgstr "The name of the meta"
 
-#: ../clutter/clutter-actor-meta.c:219 ../clutter/clutter-input-device.c:326
+#: ../clutter/clutter-actor-meta.c:219 ../clutter/clutter-input-device.c:347
 #: ../clutter/deprecated/clutter-shader.c:309
 msgid "Enabled"
 msgstr "Enabled"
@@ -1040,7 +1040,7 @@ msgid "The desaturation factor"
 msgstr "The desaturation factor"
 
 #: ../clutter/clutter-device-manager.c:127
-#: ../clutter/clutter-input-device.c:355
+#: ../clutter/clutter-input-device.c:376
 #: ../clutter/x11/clutter-keymap-x11.c:457
 msgid "Backend"
 msgstr "Backend"
@@ -1243,70 +1243,78 @@ msgstr "Column Homogeneous"
 msgid "If TRUE, the columns are all the same width"
 msgstr "If TRUE, the columns are all the same width"
 
-#: ../clutter/clutter-image.c:268 ../clutter/clutter-image.c:331
-#: ../clutter/clutter-image.c:419
+#: ../clutter/clutter-image.c:273 ../clutter/clutter-image.c:341
+#: ../clutter/clutter-image.c:434
 msgid "Unable to load image data"
 msgstr "Unable to load image data"
 
-#: ../clutter/clutter-input-device.c:231
+#: ../clutter/clutter-input-device.c:252
 msgid "Id"
 msgstr "Id"
 
-#: ../clutter/clutter-input-device.c:232
+#: ../clutter/clutter-input-device.c:253
 msgid "Unique identifier of the device"
 msgstr "Unique identifier of the device"
 
-#: ../clutter/clutter-input-device.c:248
+#: ../clutter/clutter-input-device.c:269
 msgid "The name of the device"
 msgstr "The name of the device"
 
-#: ../clutter/clutter-input-device.c:262
+#: ../clutter/clutter-input-device.c:283
 msgid "Device Type"
 msgstr "Device Type"
 
-#: ../clutter/clutter-input-device.c:263
+#: ../clutter/clutter-input-device.c:284
 msgid "The type of the device"
 msgstr "The type of the device"
 
-#: ../clutter/clutter-input-device.c:278
+#: ../clutter/clutter-input-device.c:299
 msgid "Device Manager"
 msgstr "Device Manager"
 
-#: ../clutter/clutter-input-device.c:279
+#: ../clutter/clutter-input-device.c:300
 msgid "The device manager instance"
 msgstr "The device manager instance"
 
-#: ../clutter/clutter-input-device.c:292
+#: ../clutter/clutter-input-device.c:313
 msgid "Device Mode"
 msgstr "Device Mode"
 
-#: ../clutter/clutter-input-device.c:293
+#: ../clutter/clutter-input-device.c:314
 msgid "The mode of the device"
 msgstr "The mode of the device"
 
-#: ../clutter/clutter-input-device.c:307
+#: ../clutter/clutter-input-device.c:328
 msgid "Has Cursor"
 msgstr "Has Cursor"
 
-#: ../clutter/clutter-input-device.c:308
+#: ../clutter/clutter-input-device.c:329
 msgid "Whether the device has a cursor"
 msgstr "Whether the device has a cursor"
 
-#: ../clutter/clutter-input-device.c:327
+#: ../clutter/clutter-input-device.c:348
 msgid "Whether the device is enabled"
 msgstr "Whether the device is enabled"
 
-#: ../clutter/clutter-input-device.c:340
+#: ../clutter/clutter-input-device.c:361
 msgid "Number of Axes"
 msgstr "Number of Axes"
 
-#: ../clutter/clutter-input-device.c:341
+#: ../clutter/clutter-input-device.c:362
 msgid "The number of axes on the device"
 msgstr "The number of axes on the device"
 
-#: ../clutter/clutter-input-device.c:356
+#: ../clutter/clutter-input-device.c:377
 msgid "The backend instance"
 msgstr "The backend instance"
+
+#: ../clutter/clutter-input-device.c:390 ../clutter/clutter-input-device.c:391
+msgid "Vendor ID"
+msgstr "Vendor ID"
+
+#: ../clutter/clutter-input-device.c:404 ../clutter/clutter-input-device.c:405
+msgid "Product ID"
+msgstr "Product ID"
 
 #: ../clutter/clutter-interval.c:557
 msgid "Value Type"
@@ -1347,59 +1355,59 @@ msgstr "The manager that created this data"
 #. * Do NOT translate it to non-English e.g. "predefinito:LTR"! If
 #. * it isn't default:LTR or default:RTL it will not work.
 #.
-#: ../clutter/clutter-main.c:751
+#: ../clutter/clutter-main.c:737
 msgid "default:LTR"
 msgstr "default:RTL"
 
-#: ../clutter/clutter-main.c:1577
+#: ../clutter/clutter-main.c:1491
 msgid "Show frames per second"
 msgstr "Show frames per second"
 
-#: ../clutter/clutter-main.c:1579
+#: ../clutter/clutter-main.c:1493
 msgid "Default frame rate"
 msgstr "Default frame rate"
 
-#: ../clutter/clutter-main.c:1581
+#: ../clutter/clutter-main.c:1495
 msgid "Make all warnings fatal"
 msgstr "Make all warnings fatal"
 
-#: ../clutter/clutter-main.c:1584
+#: ../clutter/clutter-main.c:1498
 msgid "Direction for the text"
 msgstr "Direction for the text"
 
-#: ../clutter/clutter-main.c:1587
+#: ../clutter/clutter-main.c:1501
 msgid "Disable mipmapping on text"
 msgstr "Disable mipmapping on text"
 
-#: ../clutter/clutter-main.c:1590
+#: ../clutter/clutter-main.c:1504
 msgid "Use 'fuzzy' picking"
 msgstr "Use 'fuzzy' picking"
 
-#: ../clutter/clutter-main.c:1593
+#: ../clutter/clutter-main.c:1507
 msgid "Clutter debugging flags to set"
 msgstr "Clutter debugging flags to set"
 
-#: ../clutter/clutter-main.c:1595
+#: ../clutter/clutter-main.c:1509
 msgid "Clutter debugging flags to unset"
 msgstr "Clutter debugging flags to unset"
 
-#: ../clutter/clutter-main.c:1599
+#: ../clutter/clutter-main.c:1513
 msgid "Clutter profiling flags to set"
 msgstr "Clutter profiling flags to set"
 
-#: ../clutter/clutter-main.c:1601
+#: ../clutter/clutter-main.c:1515
 msgid "Clutter profiling flags to unset"
 msgstr "Clutter profiling flags to unset"
 
-#: ../clutter/clutter-main.c:1604
+#: ../clutter/clutter-main.c:1518
 msgid "Enable accessibility"
 msgstr "Enable accessibility"
 
-#: ../clutter/clutter-main.c:1796
+#: ../clutter/clutter-main.c:1708
 msgid "Clutter Options"
 msgstr "Clutter Options"
 
-#: ../clutter/clutter-main.c:1797
+#: ../clutter/clutter-main.c:1709
 msgid "Show Clutter Options"
 msgstr "Show Clutter Options"
 
@@ -2677,7 +2685,12 @@ msgstr "YUV textures are not supported"
 msgid "YUV2 textues are not supported"
 msgstr "YUV2 textues are not supported"
 
-#: ../clutter/gdk/clutter-backend-gdk.c:290
+#: ../clutter/gdk/clutter-backend-gdk.c:171
+#, c-format
+msgid "Could not initialize Gdk"
+msgstr "Could not initialize Gdk"
+
+#: ../clutter/gdk/clutter-backend-gdk.c:313
 #, c-format
 msgid "Could not find a suitable CoglWinsys for a GdkDisplay of type %s"
 msgstr "Could not find a suitable CoglWinsys for a GdkDisplay of type %s"
