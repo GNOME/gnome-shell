@@ -64,6 +64,7 @@
     <file>ui/modalDialog.js</file>
     <file>ui/notificationDaemon.js</file>
     <file>ui/osdWindow.js</file>
+    <file>ui/osdMonitorLabeler.js</file>
     <file>ui/overview.js</file>
     <file>ui/overviewControls.js</file>
     <file>ui/panel.js</file>

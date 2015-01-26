@@ -25,6 +25,10 @@ const GnomeShellIface = '<node> \
 <method name="ShowOSD"> \
     <arg type="a{sv}" direction="in" name="params"/> \
 </method> \
+<method name="ShowMonitorLabels"> \
+    <arg type="a{uv}" direction="in" name="params" /> \
+</method> \
+<method name="HideMonitorLabels" /> \
 <method name="FocusApp"> \
     <arg type="s" direction="in" name="id"/> \
 </method> \
@@ -238,6 +242,17 @@ const GnomeShell = new Lang.Class({
         }
         Gio.bus_unwatch_name(this._grabbers.get(name));
         this._grabbers.delete(name);
+    },
+
+    ShowMonitorLabelsAsync: function(params, invocation) {
+        let sender = invocation.get_sender();
+        let [dict] = params;
+        Main.osdMonitorLabeler.show(sender, dict);
+    },
+
+    HideMonitorLabelsAsync: function(params, invocation) {
+        let sender = invocation.get_sender();
+        Main.osdMonitorLabeler.hide(sender);
     },
 
 

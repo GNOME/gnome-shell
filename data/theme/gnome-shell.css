@@ -1812,12 +1812,19 @@ StScrollBar StButton#vhandle:active {
     text-align: center;
     font-weight: bold;
     spacing: 1em;
+    margin: 32px;
+    min-width: 64px;
+    min-height: 64px;
 }
 
 .osd-window .level {
     height: 0.6em;
     border-radius: 0.3em;
     background-color: rgba(190,190,190,0.2);
+}
+
+.osd-monitor-label {
+    font-size: 3em;
 }
 
 /* App Switcher */
