@@ -361,32 +361,94 @@ subsurface_surface_commit (MetaWaylandSurface      *surface,
   clutter_actor_set_position (CLUTTER_ACTOR (surface_actor), x, y);
 }
 
-static void
-subsurface_parent_surface_committed (MetaWaylandSurface *surface);
-
-static void
-parent_surface_committed (gpointer data, gpointer user_data)
+/* A non-subsurface is always desynchronized.
+ *
+ * A subsurface is effectively synchronized if either its parent is
+ * synchronized or itself is in synchronized mode. */
+static gboolean
+is_surface_effectively_synchronized (MetaWaylandSurface *surface)
 {
-  subsurface_parent_surface_committed (data);
+  if (surface->wl_subsurface == NULL)
+    {
+      return FALSE;
+    }
+  else
+    {
+      if (surface->sub.synchronous)
+        return TRUE;
+      else
+        return is_surface_effectively_synchronized (surface->sub.parent);
+    }
 }
 
 static void
-commit_pending_state (MetaWaylandSurface      *surface,
-                      MetaWaylandPendingState *pending)
+apply_pending_state (MetaWaylandSurface      *surface,
+                     MetaWaylandPendingState *pending);
+
+static void
+parent_surface_state_applied (gpointer data, gpointer user_data)
+{
+  MetaWaylandSurface *surface = data;
+
+  if (surface->sub.pending_pos)
+    {
+      clutter_actor_set_position (CLUTTER_ACTOR (surface->surface_actor),
+                                  surface->sub.pending_x,
+                                  surface->sub.pending_y);
+      surface->sub.pending_pos = FALSE;
+    }
+
+  if (surface->sub.pending_placement_ops)
+    {
+      GSList *it;
+      for (it = surface->sub.pending_placement_ops; it; it = it->next)
+        {
+          MetaWaylandSubsurfacePlacementOp *op = it->data;
+          ClutterActor *surface_actor;
+          ClutterActor *parent_actor;
+          ClutterActor *sibling_actor;
+
+          if (!op->sibling)
+            {
+              g_slice_free (MetaWaylandSubsurfacePlacementOp, op);
+              continue;
+            }
+
+          surface_actor = CLUTTER_ACTOR (surface->surface_actor);
+          parent_actor = clutter_actor_get_parent (CLUTTER_ACTOR (surface->sub.parent));
+          sibling_actor = CLUTTER_ACTOR (op->sibling->surface_actor);
+
+          switch (op->placement)
+            {
+            case META_WAYLAND_SUBSURFACE_PLACEMENT_ABOVE:
+              clutter_actor_set_child_above_sibling (parent_actor,
+                                                     surface_actor,
+                                                     sibling_actor);
+              break;
+            case META_WAYLAND_SUBSURFACE_PLACEMENT_BELOW:
+              clutter_actor_set_child_below_sibling (parent_actor,
+                                                     surface_actor,
+                                                     sibling_actor);
+              break;
+            }
+
+          wl_list_remove (&op->sibling_destroy_listener.link);
+          g_slice_free (MetaWaylandSubsurfacePlacementOp, op);
+        }
+
+      g_slist_free (surface->sub.pending_placement_ops);
+      surface->sub.pending_placement_ops = NULL;
+    }
+
+  if (is_surface_effectively_synchronized (surface))
+    apply_pending_state (surface, &surface->sub.pending);
+}
+
+static void
+apply_pending_state (MetaWaylandSurface      *surface,
+                     MetaWaylandPendingState *pending)
 {
   MetaWaylandCompositor *compositor = surface->compositor;
-
-  /* If this surface is a subsurface in in synchronous mode, commit
-   * has a special-case and should not apply the pending state immediately.
-   *
-   * Instead, we move it to another pending state, which will be
-   * actually committed when the parent commits.
-   */
-  if (surface->sub.synchronous)
-    {
-      move_pending_state (pending, &surface->sub.pending);
-      return;
-    }
 
   if (pending->newly_attached)
     {
@@ -438,15 +500,26 @@ commit_pending_state (MetaWaylandSurface      *surface,
   else if (surface->wl_subsurface)
     subsurface_surface_commit (surface, pending);
 
-  g_list_foreach (surface->subsurfaces, parent_surface_committed, NULL);
-
   pending_state_reset (pending);
+
+  g_list_foreach (surface->subsurfaces, parent_surface_state_applied, NULL);
 }
 
 static void
 meta_wayland_surface_commit (MetaWaylandSurface *surface)
 {
-  commit_pending_state (surface, &surface->pending);
+  /*
+   * If this is a sub-surface and it is in effective synchronous mode, only
+   * cache the pending surface state until either one of the following two
+   * scenarios happens:
+   *  1) Its parent surface gets its state applied.
+   *  2) Its mode changes from synchronized to desynchronized and its parent
+   *     surface is in effective desynchronized mode.
+   */
+  if (is_surface_effectively_synchronized (surface))
+    move_pending_state (&surface->pending, &surface->sub.pending);
+  else
+    apply_pending_state (surface, &surface->pending);
 }
 
 static void
@@ -1555,59 +1628,6 @@ bind_gtk_shell (struct wl_client *client,
 }
 
 static void
-subsurface_parent_surface_committed (MetaWaylandSurface *surface)
-{
-  if (surface->sub.pending_pos)
-    {
-      clutter_actor_set_position (CLUTTER_ACTOR (surface->surface_actor),
-                                  surface->sub.pending_x,
-                                  surface->sub.pending_y);
-      surface->sub.pending_pos = FALSE;
-    }
-
-  if (surface->sub.pending_placement_ops)
-    {
-      GSList *it;
-      for (it = surface->sub.pending_placement_ops; it; it = it->next)
-        {
-          MetaWaylandSubsurfacePlacementOp *op = it->data;
-          ClutterActor *surface_actor;
-          ClutterActor *parent_actor;
-          ClutterActor *sibling_actor;
-
-          if (!op->sibling)
-            {
-              g_slice_free (MetaWaylandSubsurfacePlacementOp, op);
-              continue;
-            }
-
-          surface_actor = CLUTTER_ACTOR (surface->surface_actor);
-          parent_actor = clutter_actor_get_parent (CLUTTER_ACTOR (surface->sub.parent));
-          sibling_actor = CLUTTER_ACTOR (op->sibling->surface_actor);
-
-          switch (op->placement)
-            {
-            case META_WAYLAND_SUBSURFACE_PLACEMENT_ABOVE:
-              clutter_actor_set_child_above_sibling (parent_actor, surface_actor, sibling_actor);
-              break;
-            case META_WAYLAND_SUBSURFACE_PLACEMENT_BELOW:
-              clutter_actor_set_child_below_sibling (parent_actor, surface_actor, sibling_actor);
-              break;
-            }
-
-          wl_list_remove (&op->sibling_destroy_listener.link);
-          g_slice_free (MetaWaylandSubsurfacePlacementOp, op);
-        }
-
-      g_slist_free (surface->sub.pending_placement_ops);
-      surface->sub.pending_placement_ops = NULL;
-    }
-
-  if (surface->sub.synchronous)
-    commit_pending_state (surface, &surface->sub.pending);
-}
-
-static void
 unparent_actor (MetaWaylandSurface *surface)
 {
   ClutterActor *parent_actor;
@@ -1751,11 +1771,13 @@ wl_subsurface_set_desync (struct wl_client *client,
                           struct wl_resource *resource)
 {
   MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
+  gboolean was_effectively_synchronized;
 
-  if (surface->sub.synchronous)
-    subsurface_parent_surface_committed (surface);
-
+  was_effectively_synchronized = is_surface_effectively_synchronized (surface);
   surface->sub.synchronous = FALSE;
+  if (was_effectively_synchronized &&
+      !is_surface_effectively_synchronized (surface))
+    apply_pending_state (surface, &surface->sub.pending);
 }
 
 static const struct wl_subsurface_interface meta_wayland_wl_subsurface_interface = {
