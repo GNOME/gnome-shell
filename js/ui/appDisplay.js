@@ -366,6 +366,8 @@ const AllView = new Lang.Class({
     Extends: BaseAppView,
 
     _init: function() {
+        this._settings = new Gio.Settings({ schema_id: 'org.gnome.shell' });
+
         this.parent({ usePagination: true }, null);
         this._scrollView = new St.ScrollView({ style_class: 'all-apps',
                                                x_expand: true,
@@ -517,9 +519,19 @@ const AllView = new Lang.Class({
             this.folderIcons.push(icon);
         }));
 
+        // Allow dragging of the icon only if the Dash would accept a drop to
+        // change favorite-apps. There are no other possible drop targets from
+        // the app picker, so there's no other need for a drag to start,
+        // at least on single-monitor setups.
+        // This also disables drag-to-launch on multi-monitor setups,
+        // but we hope that is not used much.
+        let favoritesWritable = this._settings.is_writable('favorite-apps');
+
         apps.forEach(Lang.bind(this, function(appId) {
             let app = appSys.lookup_app(appId);
-            let icon = new AppIcon(app);
+
+            let icon = new AppIcon(app,
+                                   { isDraggable: favoritesWritable });
             this.addItem(icon);
         }));
 
@@ -763,6 +775,9 @@ const FrequentView = new Lang.Class({
 
     _init: function() {
         this.parent(null, { fillParent: true });
+
+        this._settings = new Gio.Settings({ schema_id: 'org.gnome.shell' });
+
         this.actor = new St.Widget({ style_class: 'frequent-apps',
                                      layout_manager: new Clutter.BinLayout(),
                                      x_expand: true, y_expand: true });
@@ -799,10 +814,19 @@ const FrequentView = new Lang.Class({
         if(!hasUsefulData)
             return;
 
+        // Allow dragging of the icon only if the Dash would accept a drop to
+        // change favorite-apps. There are no other possible drop targets from
+        // the app picker, so there's no other need for a drag to start,
+        // at least on single-monitor setups.
+        // This also disables drag-to-launch on multi-monitor setups,
+        // but we hope that is not used much.
+        let favoritesWritable = this._settings.is_writable('favorite-apps');
+
         for (let i = 0; i < mostUsed.length; i++) {
             if (!mostUsed[i].get_app_info().should_show())
                 continue;
-            let appIcon = new AppIcon(mostUsed[i]);
+            let appIcon = new AppIcon(mostUsed[i],
+                                      { isDraggable: favoritesWritable });
             this._grid.addItem(appIcon, -1);
         }
     },
@@ -1528,6 +1552,11 @@ const AppIcon = new Lang.Class({
         if (!iconParams)
             iconParams = {};
 
+        // Get the isDraggable property without passing it on to the BaseIcon:
+        let appIconParams = Params.parse(iconParams, { isDraggable: true }, true);
+        let isDraggable = appIconParams['isDraggable'];
+        delete iconParams['isDraggable'];
+
         iconParams['createIcon'] = Lang.bind(this, this._createIcon);
         iconParams['setSizeManually'] = true;
         this.icon = new IconGrid.BaseIcon(app.get_name(), iconParams);
@@ -1544,20 +1573,22 @@ const AppIcon = new Lang.Class({
         this._menu = null;
         this._menuManager = new PopupMenu.PopupMenuManager(this);
 
-        this._draggable = DND.makeDraggable(this.actor);
-        this._draggable.connect('drag-begin', Lang.bind(this,
-            function () {
-                this._removeMenuTimeout();
-                Main.overview.beginItemDrag(this);
-            }));
-        this._draggable.connect('drag-cancelled', Lang.bind(this,
-            function () {
-                Main.overview.cancelledItemDrag(this);
-            }));
-        this._draggable.connect('drag-end', Lang.bind(this,
-            function () {
-               Main.overview.endItemDrag(this);
-            }));
+        if (isDraggable) {
+            this._draggable = DND.makeDraggable(this.actor);
+            this._draggable.connect('drag-begin', Lang.bind(this,
+                function () {
+                    this._removeMenuTimeout();
+                    Main.overview.beginItemDrag(this);
+                }));
+            this._draggable.connect('drag-cancelled', Lang.bind(this,
+                function () {
+                    Main.overview.cancelledItemDrag(this);
+                }));
+            this._draggable.connect('drag-end', Lang.bind(this,
+                function () {
+                   Main.overview.endItemDrag(this);
+                }));
+        }
 
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
 
@@ -1645,7 +1676,9 @@ const AppIcon = new Lang.Class({
     popupMenu: function() {
         this._removeMenuTimeout();
         this.actor.fake_release();
-        this._draggable.fakeRelease();
+
+        if (this._draggable)
+            this._draggable.fakeRelease();
 
         if (!this._menu) {
             this._menu = new AppIconMenu(this);

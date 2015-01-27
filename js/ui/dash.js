@@ -535,14 +535,17 @@ const Dash = new Lang.Class({
         let appIcon = new AppDisplay.AppIcon(app,
                                              { setSizeManually: true,
                                                showLabel: false });
-        appIcon._draggable.connect('drag-begin',
-                                   Lang.bind(this, function() {
-                                       appIcon.actor.opacity = 50;
-                                   }));
-        appIcon._draggable.connect('drag-end',
-                                   Lang.bind(this, function() {
-                                       appIcon.actor.opacity = 255;
-                                   }));
+        if (appIcon._draggable) {
+            appIcon._draggable.connect('drag-begin',
+                                       Lang.bind(this, function() {
+                                           appIcon.actor.opacity = 50;
+                                       }));
+            appIcon._draggable.connect('drag-end',
+                                       Lang.bind(this, function() {
+                                           appIcon.actor.opacity = 255;
+                                       }));
+        }
+
         appIcon.connect('menu-state-changed',
                         Lang.bind(this, function(appIcon, opened) {
                             this._itemMenuStateChanged(item, opened);
