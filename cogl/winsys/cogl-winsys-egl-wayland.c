@@ -115,6 +115,14 @@ registry_handle_global_cb (void *data,
 }
 
 static void
+registry_handle_global_remove_cb (void *data,
+                                  struct wl_registry *registry,
+                                  uint32_t name)
+{
+  /* Nothing to do for now */
+}
+
+static void
 _cogl_winsys_renderer_disconnect (CoglRenderer *renderer)
 {
   CoglRendererEGL *egl_renderer = renderer->winsys;
@@ -137,6 +145,7 @@ _cogl_winsys_renderer_disconnect (CoglRenderer *renderer)
 
 static const struct wl_registry_listener registry_listener = {
   registry_handle_global_cb,
+  registry_handle_global_remove_cb
 };
 
 static int64_t
