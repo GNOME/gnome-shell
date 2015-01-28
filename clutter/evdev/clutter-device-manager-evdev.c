@@ -1116,7 +1116,7 @@ process_device_event (ClutterDeviceManagerEvdev *manager_evdev,
     {
     case LIBINPUT_EVENT_KEYBOARD_KEY:
       {
-        guint32 time, key, key_state;
+        guint32 time, key, key_state, seat_key_count;
         struct libinput_event_keyboard *key_event =
           libinput_event_get_keyboard_event (event);
         device = libinput_device_get_user_data (libinput_device);
@@ -1125,6 +1125,16 @@ process_device_event (ClutterDeviceManagerEvdev *manager_evdev,
         key = libinput_event_keyboard_get_key (key_event);
         key_state = libinput_event_keyboard_get_key_state (key_event) ==
                     LIBINPUT_KEY_STATE_PRESSED;
+        seat_key_count =
+          libinput_event_keyboard_get_seat_key_count (key_event);
+
+	/* Ignore key events that are not seat wide state changes. */
+	if ((key_state == LIBINPUT_KEY_STATE_PRESSED &&
+	     seat_key_count != 1) ||
+	    (key_state == LIBINPUT_KEY_STATE_RELEASED &&
+	     seat_key_count != 0))
+          break;
+
         notify_key_device (device, time, key, key_state, TRUE);
 
         break;
