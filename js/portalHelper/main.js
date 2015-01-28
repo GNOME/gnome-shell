@@ -80,8 +80,8 @@ const PortalWindow = new Lang.Class({
         if (title) {
             this.title = title;
         } else {
-            // TRANSLATORS: this is the title of the wifi captive portal login
-            // window, until we know the title of the actual login page
+            /* TRANSLATORS: this is the title of the wifi captive portal login
+             * window, until we know the title of the actual login page */
             this.title = _("Web Authentication Redirect");
         }
     },
