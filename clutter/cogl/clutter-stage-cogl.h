@@ -58,7 +58,10 @@ struct _ClutterStageCogl
   guint dirty_backbuffer     : 1;
 
   /* Stores a list of previous damaged areas */
-  GSList *damage_history;
+#define DAMAGE_HISTORY_MAX 16
+#define DAMAGE_HISTORY(x) ((x) & (DAMAGE_HISTORY_MAX - 1))
+  cairo_rectangle_int_t damage_history[DAMAGE_HISTORY_MAX];
+  unsigned damage_index;
 };
 
 struct _ClutterStageCoglClass
