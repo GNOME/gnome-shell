@@ -1185,7 +1185,7 @@ process_device_event (ClutterDeviceManagerEvdev *manager_evdev,
 
     case LIBINPUT_EVENT_POINTER_BUTTON:
       {
-        guint32 time, button, button_state;
+        guint32 time, button, button_state, seat_button_count;
         struct libinput_event_pointer *button_event =
           libinput_event_get_pointer_event (event);
         device = libinput_device_get_user_data (libinput_device);
@@ -1194,6 +1194,16 @@ process_device_event (ClutterDeviceManagerEvdev *manager_evdev,
         button = libinput_event_pointer_get_button (button_event);
         button_state = libinput_event_pointer_get_button_state (button_event) ==
                        LIBINPUT_BUTTON_STATE_PRESSED;
+        seat_button_count =
+          libinput_event_pointer_get_seat_button_count (button_event);
+
+        /* Ignore button events that are not seat wide state changes. */
+        if ((button_state == LIBINPUT_BUTTON_STATE_PRESSED &&
+             seat_button_count != 1) ||
+            (button_state == LIBINPUT_BUTTON_STATE_RELEASED &&
+             seat_button_count != 0))
+          break;
+
         notify_button (device, time, button, button_state);
 
         break;
