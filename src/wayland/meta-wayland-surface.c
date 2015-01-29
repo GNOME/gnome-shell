@@ -296,9 +296,10 @@ move_pending_state (MetaWaylandPendingState *from,
   if (from->buffer)
     wl_list_remove (&from->buffer_destroy_listener.link);
 
-  wl_list_insert_list (&to->frame_callback_list, &from->frame_callback_list);
-
   *to = *from;
+
+  wl_list_init (&to->frame_callback_list);
+  wl_list_insert_list (&to->frame_callback_list, &from->frame_callback_list);
 
   if (to->buffer)
     wl_signal_add (&to->buffer->destroy_signal, &to->buffer_destroy_listener);
