@@ -1419,8 +1419,62 @@ StScrollBar {
     }
 
 /* Eeeky things */
-//Mess that is Looking Glass
 
+//magnifier
+
+.magnifier-zoom-region { 
+  border: 2px solid $selected_bg_color;
+  &.full-screen { border-width: 0; }
+}
+
+//Keyboard
+/* On-screen Keyboard */
+
+#keyboard {
+    background: transparentize($osd_bg_color, 0.3);
+}
+
+  .keyboard-layout {
+      spacing: 10px;
+      padding: 10px;
+  }
+
+  .keyboard-row {
+      spacing: 15px;
+  }
+
+  .keyboard-key {
+    @include button(normal);
+    min-height: 2em;
+    min-width: 2em;
+    font-size: 14pt;
+    font-weight: bold;
+    border-radius: 5px;
+    border: 1px solid $borders-color;
+    color: white;
+    &:focus { @include button(focus); }
+    &:hover,&:checked { @include button(hover); }
+    &:active { @include button(active);}
+    &:grayed {
+      background-color: green;
+      color: red;
+      border-color: blue;
+    }
+  }
+
+  .keyboard-subkeys {
+      color: white;
+      padding: 5px;
+      -arrow-border-radius: 10px;
+      -arrow-background-color: #090909;
+      -arrow-border-width: 2px;
+      -arrow-border-color: white;
+      -arrow-base: 20px;
+      -arrow-rise: 10px;
+      -boxpointer-gap: 5px;
+  }
+
+//Mess that is Looking Glass
 #LookingGlassDialog {
   background-color: rgba(0,0,0,0.80);
   spacing: 4px;
