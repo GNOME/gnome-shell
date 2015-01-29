@@ -1431,7 +1431,7 @@ StScrollBar {
 /* On-screen Keyboard */
 
 #keyboard {
-    background: transparentize($osd_bg_color, 0.3);
+    background-color: transparentize($osd_bg_color, 0.3);
 }
 
   .keyboard-layout {
@@ -1462,13 +1462,13 @@ StScrollBar {
     }
   }
 
-  .keyboard-subkeys {
+  .keyboard-subkeys { //long press on a key popup
       color: white;
       padding: 5px;
       -arrow-border-radius: 10px;
-      -arrow-background-color: #090909;
+      -arrow-background-color: transparentize($osd_bg_color, 0.3);
       -arrow-border-width: 2px;
-      -arrow-border-color: white;
+      -arrow-border-color: transparentize($fg_color,0.8);
       -arrow-base: 20px;
       -arrow-rise: 10px;
       -boxpointer-gap: 5px;

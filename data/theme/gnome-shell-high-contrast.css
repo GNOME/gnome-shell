@@ -1618,7 +1618,7 @@ StScrollBar {
 
 /* On-screen Keyboard */
 #keyboard {
-  background: rgba(46, 52, 54, 0.7); }
+  background-color: rgba(46, 52, 54, 0.7); }
 
 .keyboard-layout {
   spacing: 10px;
@@ -1670,9 +1670,9 @@ StScrollBar {
   color: white;
   padding: 5px;
   -arrow-border-radius: 10px;
-  -arrow-background-color: #090909;
+  -arrow-background-color: rgba(46, 52, 54, 0.7);
   -arrow-border-width: 2px;
-  -arrow-border-color: white;
+  -arrow-border-color: rgba(255, 255, 255, 0.2);
   -arrow-base: 20px;
   -arrow-rise: 10px;
   -boxpointer-gap: 5px; }
