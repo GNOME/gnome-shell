@@ -1474,6 +1474,35 @@ StScrollBar {
       -boxpointer-gap: 5px;
   }
 
+// IBus Candidate Popup
+
+.candidate-popup-content {
+  padding: 0.5em;
+  spacing: 0.3em;
+}
+
+  .candidate-index {
+    padding: 0 0.5em 0 0;
+    color: darken($fg_color,10%);
+  }
+
+  .candidate-box { 
+    padding: 0.3em 0.5em 0.3em 0.5em;
+    border-radius: 4px;
+    &:selected,&:hover { background-color: $selected_bg_color; }
+  }
+
+  .candidate-page-button-box {
+    height: 2em;
+    width: 80px;
+    .vertical & { padding-top: 0.5em; }
+    .horizontal & { padding-left: 0.5em; }
+  }
+
+  .candidate-page-button-previous { border-radius: 4px 0px 0px 4px; }
+  .candidate-page-button-next { border-radius: 0px 4px 4px 0px;  }
+  .candidate-page-button-icon { icon-size: 1em; }
+
 //Mess that is Looking Glass
 #LookingGlassDialog {
   background-color: rgba(0,0,0,0.80);

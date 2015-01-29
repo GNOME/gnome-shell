@@ -16,45 +16,6 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
-/* IBus Candidate Popup */
-.candidate-popup-content {
-  padding: 0.5em;
-  spacing: 0.3em; }
-
-.candidate-index {
-  padding: 0 0.5em 0 0;
-  color: #cccccc; }
-
-.candidate-box {
-  padding: 0.3em 0.5em 0.3em 0.5em; }
-
-.candidate-box:selected {
-  border-radius: 4px;
-  background-color: rgba(255, 255, 255, 0.2); }
-
-.candidate-box:hover {
-  border-radius: 4px;
-  background-color: rgba(255, 255, 255, 0.1); }
-
-.candidate-page-button-box {
-  height: 2em;
-  width: 80px; }
-
-.vertical .candidate-page-button-box {
-  padding-top: 0.5em; }
-
-.horizontal .candidate-page-button-box {
-  padding-left: 0.5em; }
-
-.candidate-page-button-previous {
-  border-radius: 4px 0px 0px 4px; }
-
-.candidate-page-button-next {
-  border-radius: 0px 4px 4px 0px; }
-
-.candidate-page-button-icon {
-  icon-size: 1em; }
-
 /* Login Dialog */
 .framed-user-icon {
   border: 2px solid #8b8b8b;
@@ -1668,6 +1629,37 @@ StScrollBar {
   -arrow-base: 20px;
   -arrow-rise: 10px;
   -boxpointer-gap: 5px; }
+
+.candidate-popup-content {
+  padding: 0.5em;
+  spacing: 0.3em; }
+
+.candidate-index {
+  padding: 0 0.5em 0 0;
+  color: #d6d6d1; }
+
+.candidate-box {
+  padding: 0.3em 0.5em 0.3em 0.5em;
+  border-radius: 4px; }
+  .candidate-box:selected, .candidate-box:hover {
+    background-color: #215d9c; }
+
+.candidate-page-button-box {
+  height: 2em;
+  width: 80px; }
+  .vertical .candidate-page-button-box {
+    padding-top: 0.5em; }
+  .horizontal .candidate-page-button-box {
+    padding-left: 0.5em; }
+
+.candidate-page-button-previous {
+  border-radius: 4px 0px 0px 4px; }
+
+.candidate-page-button-next {
+  border-radius: 0px 4px 4px 0px; }
+
+.candidate-page-button-icon {
+  icon-size: 1em; }
 
 #LookingGlassDialog {
   background-color: rgba(0, 0, 0, 0.8);
