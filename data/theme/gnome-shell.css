@@ -271,11 +271,6 @@
   width: 96px;
   height: 96px; }
 
-/* Background menu */
-.background-menu {
-  -boxpointer-gap: 4px;
-  -arrow-rise: 0px; }
-
 /* This stylesheet is generated, DO NOT EDIT */
 /* Copyright 2009, Red Hat, Inc.
  *
@@ -707,6 +702,10 @@ StScrollBar {
   border-color: #343a3a;
   border-bottom-width: 1px;
   border-bottom-style: solid; }
+
+.background-menu {
+  -boxpointer-gap: 4px;
+  -arrow-rise: 0px; }
 
 /* fallback menu 
 - odd thing for styling App menu when apparently not running under shell. Light Adwaita styled

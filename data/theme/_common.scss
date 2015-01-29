@@ -468,6 +468,9 @@ StScrollBar {
     border-bottom-style: solid;
   }
 
+
+// Background menu
+.background-menu { -boxpointer-gap: 4px; -arrow-rise: 0px; }
   
 /* fallback menu 
 - odd thing for styling App menu when apparently not running under shell. Light Adwaita styled
