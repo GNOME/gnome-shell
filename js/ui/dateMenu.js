@@ -19,21 +19,6 @@ const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 const Calendar = imports.ui.calendar;
 
-function _onVertSepRepaint(area) {
-    let cr = area.get_context();
-    let themeNode = area.get_theme_node();
-    let [width, height] = area.get_surface_size();
-    let stippleColor = themeNode.get_color('-stipple-color');
-    let stippleWidth = themeNode.get_length('-stipple-width');
-    let x = Math.floor(width/2) + 0.5;
-    cr.moveTo(x, 0);
-    cr.lineTo(x, height);
-    Clutter.cairo_set_source_color(cr, stippleColor);
-    cr.setDash([1, 3], 1); // Hard-code for now
-    cr.setLineWidth(stippleWidth);
-    cr.stroke();
-    cr.$dispose();
-}
 
 const DateMenuButton = new Lang.Class({
     Name: 'DateMenuButton',
@@ -44,7 +29,7 @@ const DateMenuButton = new Lang.Class({
         let hbox;
         let vbox;
 
-        let menuAlignment = 0.25;
+        let menuAlignment = 0.5;
         if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL)
             menuAlignment = 1.0 - menuAlignment;
         this.parent(menuAlignment);
@@ -57,9 +42,36 @@ const DateMenuButton = new Lang.Class({
         hbox = new St.BoxLayout({ name: 'calendarArea' });
         this.menu.box.add_child(hbox);
 
-        // Fill up the first column
+        this._calendar = new Calendar.Calendar();
+        this._calendar.connect('selected-date-changed',
+                               Lang.bind(this, function(calendar, date) {
+                                   this._eventList.setDate(date);
 
-        vbox = new St.BoxLayout({vertical: true});
+                                   // Make the button reactive only if the selected date is not the current date.
+                                   this._date.can_focus = this._date.reactive = !this._isToday(date)
+                               }));
+
+        // Whenever the menu is opened, select today
+        this.menu.connect('open-state-changed', Lang.bind(this, function(menu, isOpen) {
+            if (isOpen) {
+                let now = new Date();
+                this._calendar.setDate(now);
+
+                /* Translators: This is the date format to use when the calendar popup is
+                 * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
+                 */
+                let dateFormat = Shell.util_translate_time_string (N_("%A %B %e, %Y"));
+                this._date.set_label(now.toLocaleFormat(dateFormat));
+            }
+        }));
+
+        // Fill up the first column
+        this._eventList = new Calendar.EventsList();
+        hbox.add(this._eventList.actor, { expand: true, y_fill: false, y_align: St.Align.START });
+
+        // Fill up the second column
+        vbox = new St.BoxLayout({ style_class: 'datemenu-calendar-column',
+                                  vertical: true });
         hbox.add(vbox);
 
         // Date
@@ -75,16 +87,6 @@ const DateMenuButton = new Lang.Class({
                            }));
         vbox.add(this._date, { x_fill: false  });
 
-        this._eventList = new Calendar.EventsList();
-        this._calendar = new Calendar.Calendar();
-
-        this._calendar.connect('selected-date-changed',
-                               Lang.bind(this, function(calendar, date) {
-                                   this._eventList.setDate(date);
-
-                                   // Make the button reactive only if the selected date is not the current date.
-                                   this._date.can_focus = this._date.reactive = !this._isToday(date)
-                               }));
         vbox.add(this._calendar.actor);
 
         let separator = new PopupMenu.PopupSeparatorMenuItem();
@@ -108,27 +110,6 @@ const DateMenuButton = new Lang.Class({
             this._dateAndTimeSeparator = separator;
         }
 
-        this._separator = new St.DrawingArea({ style_class: 'calendar-vertical-separator',
-                                               pseudo_class: 'highlighted' });
-        this._separator.connect('repaint', Lang.bind(this, _onVertSepRepaint));
-        hbox.add(this._separator);
-
-        // Fill up the second column
-        hbox.add(this._eventList.actor, { expand: true, y_fill: false, y_align: St.Align.START });
-
-        // Whenever the menu is opened, select today
-        this.menu.connect('open-state-changed', Lang.bind(this, function(menu, isOpen) {
-            if (isOpen) {
-                let now = new Date();
-                this._calendar.setDate(now);
-
-                /* Translators: This is the date format to use when the calendar popup is
-                 * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
-                 */
-                let dateFormat = Shell.util_translate_time_string (N_("%A %B %e, %Y"));
-                this._date.set_label(now.toLocaleFormat(dateFormat));
-            }
-        }));
 
         // Done with hbox for calendar and event list
 
@@ -157,16 +138,7 @@ const DateMenuButton = new Lang.Class({
             (this._getCalendarApp() != null);
         this._openClocksItem.actor.visible = visible &&
             (this._getClockApp() != null);
-        this._separator.visible = visible;
         this._eventList.actor.visible = visible;
-        if (visible) {
-            let alignment = 0.25;
-            if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL)
-                alignment = 1.0 - alignment;
-            this.menu._arrowAlignment = alignment;
-        } else {
-            this.menu._arrowAlignment = 0.5;
-        }
     },
 
     _getEventSource: function() {
