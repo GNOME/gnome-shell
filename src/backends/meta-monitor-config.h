@@ -23,7 +23,7 @@
 #ifndef META_MONITOR_CONFIG_H
 #define META_MONITOR_CONFIG_H
 
-#include "meta-monitor-manager.h"
+#include "meta-monitor-manager-private.h"
 
 #define META_TYPE_MONITOR_CONFIG            (meta_monitor_config_get_type ())
 #define META_MONITOR_CONFIG(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_MONITOR_CONFIG, MetaMonitorConfig))

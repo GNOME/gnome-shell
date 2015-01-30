@@ -30,7 +30,7 @@
 #include <xf86drm.h>
 
 #include "meta-cursor-private.h"
-#include "meta-monitor-manager.h"
+#include "meta-monitor-manager-private.h"
 
 #ifndef DRM_CAP_CURSOR_WIDTH
 #define DRM_CAP_CURSOR_WIDTH 0x8

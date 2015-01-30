@@ -80,7 +80,8 @@ libmutter_la_SOURCES =				\
 	backends/meta-monitor-config.c		\
 	backends/meta-monitor-config.h		\
 	backends/meta-monitor-manager.c		\
-	backends/meta-monitor-manager.h		\
+	meta/meta-monitor-manager.h		\
+	backends/meta-monitor-manager-private.h	\
 	backends/meta-monitor-manager-dummy.c	\
 	backends/meta-monitor-manager-dummy.h	\
 	backends/meta-stage.h			\
@@ -315,6 +316,7 @@ libmutterinclude_headers =			\
 	meta/meta-cursor-tracker.h		\
 	meta/meta-idle-monitor.h		\
 	meta/meta-plugin.h			\
+	meta/meta-monitor-manager.h		\
 	meta/meta-shaped-texture.h		\
 	meta/meta-shadow-factory.h		\
 	meta/meta-window-actor.h		\

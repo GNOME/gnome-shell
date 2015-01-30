@@ -41,18 +41,17 @@
 #include "display-private.h"
 #include <meta/screen.h>
 #include "stack-tracker.h"
+#include <meta/meta-monitor-manager.h>
 
 #include "meta-display-config-shared.h"
 #include "meta-dbus-display-config.h"
 #include "meta-cursor.h"
 
-typedef struct _MetaMonitorManagerClass    MetaMonitorManagerClass;
-typedef struct _MetaMonitorManager         MetaMonitorManager;
 typedef struct _MetaMonitorConfigClass    MetaMonitorConfigClass;
 typedef struct _MetaMonitorConfig         MetaMonitorConfig;
 
-typedef struct _MetaOutput MetaOutput;
 typedef struct _MetaCRTC MetaCRTC;
+typedef struct _MetaOutput MetaOutput;
 typedef struct _MetaMonitorMode MetaMonitorMode;
 typedef struct _MetaMonitorInfo MetaMonitorInfo;
 typedef struct _MetaCRTCInfo MetaCRTCInfo;
@@ -321,10 +320,6 @@ struct _MetaMonitorManagerClass
                           unsigned short     *,
                           unsigned short     *);
 };
-
-GType meta_monitor_manager_get_type (void);
-
-MetaMonitorManager *meta_monitor_manager_get  (void);
 
 void                meta_monitor_manager_rebuild_derived   (MetaMonitorManager *manager);
 

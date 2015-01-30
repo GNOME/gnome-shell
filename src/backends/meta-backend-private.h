@@ -33,7 +33,7 @@
 #include <meta/meta-backend.h>
 #include <meta/meta-idle-monitor.h>
 #include "meta-cursor-renderer.h"
-#include "meta-monitor-manager.h"
+#include "meta-monitor-manager-private.h"
 
 #define DEFAULT_XKB_RULES_FILE "evdev"
 #define DEFAULT_XKB_MODEL "pc105+inet"

@@ -25,7 +25,7 @@
 
 #include "config.h"
 
-#include "meta-monitor-manager.h"
+#include "meta-monitor-manager-private.h"
 
 #include <string.h>
 #include <math.h>
@@ -1107,6 +1107,13 @@ initialize_dbus_interface (MetaMonitorManager *manager)
                                           g_object_unref);
 }
 
+/**
+ * meta_monitor_manager_get:
+ *
+ * Accessor for the singleton MetaMonitorManager.
+ *
+ * Returns: (transfer none): The only #MetaMonitorManager there is.
+ */
 MetaMonitorManager *
 meta_monitor_manager_get (void)
 {

@@ -36,7 +36,7 @@
 #include <X11/Xutil.h>
 #include "stack-tracker.h"
 #include "ui.h"
-#include "meta-monitor-manager.h"
+#include "meta-monitor-manager-private.h"
 
 typedef void (* MetaScreenWindowFunc) (MetaWindow *window,
                                        gpointer    user_data);
