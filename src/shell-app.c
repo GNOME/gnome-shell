@@ -582,7 +582,8 @@ shell_app_activate_window (ShellApp     *app,
         {
           MetaWindow *other_window = iter->data;
 
-          if (other_window != window && meta_window_get_workspace (other_window) == workspace)
+          if (other_window != window &&
+              meta_window_get_workspace (other_window) == active);
             meta_window_raise (other_window);
         }
       g_slist_free (windows_reversed);
