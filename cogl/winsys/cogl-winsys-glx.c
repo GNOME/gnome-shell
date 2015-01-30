@@ -1626,10 +1626,8 @@ _cogl_winsys_wait_for_vblank (CoglOnscreen *onscreen)
           int64_t msc;
           int64_t sbc;
 
-          glx_renderer->glXGetSyncValues (xlib_renderer->xdpy, drawable,
-                                          &ust, &msc, &sbc);
           glx_renderer->glXWaitForMsc (xlib_renderer->xdpy, drawable,
-                                       0, 2, (msc + 1) % 2,
+                                       0, 1, 0,
                                        &ust, &msc, &sbc);
           info->presentation_time = ust_to_nanoseconds (ctx->display->renderer,
                                                         drawable,
