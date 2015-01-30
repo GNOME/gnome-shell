@@ -31,4 +31,7 @@ GType meta_monitor_manager_get_type (void);
 
 MetaMonitorManager *meta_monitor_manager_get  (void);
 
+gint meta_monitor_manager_get_monitor_for_output (MetaMonitorManager *manager,
+                                                  guint               id);
+
 #endif /* META_MONITOR_MANAGER_H */

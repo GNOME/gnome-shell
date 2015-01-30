@@ -1338,3 +1338,33 @@ meta_monitor_manager_get_monitor_matrix (MetaMonitorManager *manager,
                    matrix);
   return TRUE;
 }
+
+/**
+ * meta_monitor_manager_get_output_geometry:
+ * @manager: A #MetaMonitorManager
+ * @id: A valid #MetaOutput id
+ *
+ * Returns: The monitor index or -1 if @id isn't valid or the output
+ * isn't associated with a logical monitor.
+ */
+gint
+meta_monitor_manager_get_monitor_for_output (MetaMonitorManager *manager,
+                                             guint               id)
+{
+  MetaOutput *output;
+  guint i;
+
+  g_return_val_if_fail (META_IS_MONITOR_MANAGER (manager), -1);
+  g_return_val_if_fail (id < manager->n_outputs, -1);
+
+  output = &manager->outputs[id];
+  if (!output || !output->crtc)
+    return -1;
+
+  for (i = 0; i < manager->n_monitor_infos; i++)
+    if (meta_rectangle_contains_rect (&manager->monitor_infos[i].rect,
+                                      &output->crtc->rect))
+      return i;
+
+  return -1;
+}
