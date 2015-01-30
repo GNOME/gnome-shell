@@ -365,15 +365,6 @@ meta_frame_sync_to_window (MetaFrame *frame,
 			     frame->rect.width,
 			     frame->rect.height);
 
-  if (need_resize)
-    {
-      /* If we're interactively resizing the frame, repaint
-       * it immediately so we don't start to lag.
-       */
-      if (frame->window->display->grab_window == frame->window)
-        meta_ui_frame_repaint (frame->ui_frame);
-    }
-
   return need_resize;
 }
 

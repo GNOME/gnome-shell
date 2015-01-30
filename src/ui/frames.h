@@ -130,8 +130,6 @@ void meta_ui_frame_set_title (MetaUIFrame *frame,
 
 void meta_ui_frame_update_style (MetaUIFrame *frame);
 
-void meta_ui_frame_repaint (MetaUIFrame *frame);
-
 void meta_ui_frame_get_borders (MetaUIFrame      *frame,
                                 MetaFrameBorders *borders);
 

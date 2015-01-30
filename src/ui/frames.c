@@ -749,15 +749,6 @@ meta_ui_frame_update_style (MetaUIFrame *frame)
   invalidate_whole_window (frame);
 }
 
-void
-meta_ui_frame_repaint (MetaUIFrame *frame)
-{
-  /* repaint everything, so the other frame don't
-   * lag behind if they are exposed
-   */
-  gdk_window_process_all_updates ();
-}
-
 static void
 redraw_control (MetaUIFrame *frame,
                 MetaFrameControl control)
