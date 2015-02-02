@@ -31,15 +31,6 @@
 
 #include <string.h>
 
-typedef struct {
-  MetaMonitorInfo          *monitor_info;
-  struct wl_global         *global;
-  int                       x, y;
-  enum wl_output_transform  transform;
-
-  GList                    *resources;
-} MetaWaylandOutput;
-
 static void
 output_resource_destroy (struct wl_resource *res)
 {

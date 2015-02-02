@@ -25,7 +25,18 @@
 #ifndef META_WAYLAND_OUTPUTS_H
 #define META_WAYLAND_OUTPUTS_H
 
+#include "backends/meta-monitor-manager-private.h"
 #include "meta-wayland-private.h"
+
+typedef struct
+{
+  MetaMonitorInfo          *monitor_info;
+  struct wl_global         *global;
+  int                       x, y;
+  enum wl_output_transform  transform;
+
+  GList                    *resources;
+} MetaWaylandOutput;
 
 void meta_wayland_outputs_init (MetaWaylandCompositor *compositor);
 
