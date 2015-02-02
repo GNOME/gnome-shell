@@ -614,6 +614,7 @@ set_unredirected_window (MetaCompositor *compositor,
       meta_window_actor_set_unredirected (window_actor, FALSE);
     }
 
+  meta_shape_cow_for_window (compositor, window);
   compositor->unredirected_window = window;
 
   if (compositor->unredirected_window != NULL)
@@ -621,8 +622,6 @@ set_unredirected_window (MetaCompositor *compositor,
       MetaWindowActor *window_actor = META_WINDOW_ACTOR (meta_window_get_compositor_private (compositor->unredirected_window));
       meta_window_actor_set_unredirected (window_actor, TRUE);
     }
-
-  meta_shape_cow_for_window (compositor, compositor->unredirected_window);
 }
 
 void
