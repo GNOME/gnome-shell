@@ -100,6 +100,7 @@ struct _MetaWaylandSurface
   int scale;
   int32_t offset_x, offset_y;
   GList *subsurfaces;
+  GHashTable *outputs;
 
   struct {
     const MetaWaylandDragDestFuncs *funcs;
@@ -186,5 +187,7 @@ void                meta_wayland_surface_drag_dest_motion    (MetaWaylandSurface
                                                               const ClutterEvent   *event);
 void                meta_wayland_surface_drag_dest_focus_out (MetaWaylandSurface   *surface);
 void                meta_wayland_surface_drag_dest_drop      (MetaWaylandSurface   *surface);
+
+void                meta_wayland_surface_update_outputs (MetaWaylandSurface *surface);
 
 #endif

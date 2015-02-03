@@ -39,6 +39,8 @@ typedef struct _MetaWaylandRegion MetaWaylandRegion;
 
 typedef struct _MetaWaylandSurface MetaWaylandSurface;
 
+typedef struct _MetaWaylandOutput MetaWaylandOutput;
+
 typedef struct _MetaWaylandSerial MetaWaylandSerial;
 
 #endif

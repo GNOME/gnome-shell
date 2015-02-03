@@ -35,7 +35,6 @@
 #define META_IS_WAYLAND_OUTPUT_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  META_TYPE_WAYLAND_OUTPUT))
 #define META_WAYLAND_OUTPUT_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  META_TYPE_WAYLAND_OUTPUT, MetaWaylandOutputClass))
 
-typedef struct _MetaWaylandOutput       MetaWaylandOutput;
 typedef struct _MetaWaylandOutputClass  MetaWaylandOutputClass;
 
 struct _MetaWaylandOutput

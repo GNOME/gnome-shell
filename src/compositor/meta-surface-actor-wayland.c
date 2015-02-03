@@ -26,6 +26,7 @@
 
 #include "meta-surface-actor-wayland.h"
 
+#include <math.h>
 #include <cogl/cogl-wayland-server.h>
 #include "meta-shaped-texture-private.h"
 
@@ -195,6 +196,40 @@ meta_surface_actor_wayland_sync_state_recursive (MetaSurfaceActorWayland *self)
     }
 }
 
+gboolean
+meta_surface_actor_wayland_is_on_monitor (MetaSurfaceActorWayland *self,
+                                          MetaMonitorInfo         *monitor)
+{
+  float x, y, width, height;
+  cairo_rectangle_int_t actor_rect;
+  cairo_region_t *region;
+  gboolean is_on_monitor;
+
+  clutter_actor_get_transformed_position (CLUTTER_ACTOR (self), &x, &y);
+  clutter_actor_get_transformed_size (CLUTTER_ACTOR (self), &width, &height);
+
+  actor_rect.x = (int)roundf (x);
+  actor_rect.y = (int)roundf (y);
+  actor_rect.width = (int)roundf (x + width) - actor_rect.x;
+  actor_rect.height = (int)roundf (y + height) - actor_rect.y;
+
+  /* Calculate the scaled surface actor region. */
+  region = cairo_region_create_rectangle (&actor_rect);
+
+  cairo_region_intersect_rectangle (region,
+				    &((cairo_rectangle_int_t) {
+				      .x = monitor->rect.x,
+				      .y = monitor->rect.y,
+				      .width = monitor->rect.width,
+				      .height = monitor->rect.height,
+				    }));
+
+  is_on_monitor = !cairo_region_is_empty (region);
+  cairo_region_destroy (region);
+
+  return is_on_monitor;
+}
+
 static MetaWindow *
 meta_surface_actor_wayland_get_window (MetaSurfaceActor *actor)
 {
@@ -240,6 +275,19 @@ meta_surface_actor_wayland_get_preferred_height  (ClutterActor *self,
 }
 
 static void
+meta_surface_actor_wayland_paint (ClutterActor *actor)
+{
+  MetaSurfaceActorWayland *self = META_SURFACE_ACTOR_WAYLAND (actor);
+  MetaSurfaceActorWaylandPrivate *priv =
+    meta_surface_actor_wayland_get_instance_private (self);
+
+  if (priv->surface)
+    meta_wayland_surface_update_outputs (priv->surface);
+
+  CLUTTER_ACTOR_CLASS (meta_surface_actor_wayland_parent_class)->paint (actor);
+}
+
+static void
 meta_surface_actor_wayland_dispose (GObject *object)
 {
   MetaSurfaceActorWayland *self = META_SURFACE_ACTOR_WAYLAND (object);
@@ -258,6 +306,7 @@ meta_surface_actor_wayland_class_init (MetaSurfaceActorWaylandClass *klass)
 
   actor_class->get_preferred_width = meta_surface_actor_wayland_get_preferred_width;
   actor_class->get_preferred_height = meta_surface_actor_wayland_get_preferred_height;
+  actor_class->paint = meta_surface_actor_wayland_paint;
 
   surface_actor_class->process_damage = meta_surface_actor_wayland_process_damage;
   surface_actor_class->pre_paint = meta_surface_actor_wayland_pre_paint;

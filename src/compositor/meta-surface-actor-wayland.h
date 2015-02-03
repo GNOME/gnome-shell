@@ -31,6 +31,8 @@
 
 #include "wayland/meta-wayland.h"
 
+#include "backends/meta-monitor-manager-private.h"
+
 G_BEGIN_DECLS
 
 #define META_TYPE_SURFACE_ACTOR_WAYLAND            (meta_surface_actor_wayland_get_type ())
@@ -67,6 +69,9 @@ double meta_surface_actor_wayland_get_scale (MetaSurfaceActorWayland *actor);
 void meta_surface_actor_wayland_sync_state (MetaSurfaceActorWayland *self);
 
 void meta_surface_actor_wayland_sync_state_recursive (MetaSurfaceActorWayland *self);
+
+gboolean meta_surface_actor_wayland_is_on_monitor (MetaSurfaceActorWayland *self,
+                                                   MetaMonitorInfo         *monitor);
 
 G_END_DECLS
 

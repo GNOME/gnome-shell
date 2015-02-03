@@ -31,6 +31,14 @@
 
 #include <string.h>
 
+enum {
+  OUTPUT_DESTROYED,
+
+  LAST_SIGNAL
+};
+
+static guint signals[LAST_SIGNAL];
+
 G_DEFINE_TYPE (MetaWaylandOutput, meta_wayland_output, G_TYPE_OBJECT)
 
 static void
@@ -102,6 +110,7 @@ wayland_output_destroy_notify (gpointer data)
 {
   MetaWaylandOutput *wayland_output = data;
 
+  g_signal_emit (wayland_output, signals[OUTPUT_DESTROYED], 0);
   g_object_unref (wayland_output);
 }
 
@@ -243,6 +252,13 @@ meta_wayland_output_class_init (MetaWaylandOutputClass *klass)
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
   object_class->finalize = meta_wayland_output_finalize;
+
+  signals[OUTPUT_DESTROYED] = g_signal_new ("output-destroyed",
+                                            G_TYPE_FROM_CLASS (object_class),
+                                            G_SIGNAL_RUN_LAST,
+                                            0,
+                                            NULL, NULL, NULL,
+                                            G_TYPE_NONE, 0);
 }
 
 void

@@ -42,6 +42,7 @@
 #include "meta-wayland-pointer.h"
 #include "meta-wayland-popup.h"
 #include "meta-wayland-data-device.h"
+#include "meta-wayland-outputs.h"
 
 #include "meta-cursor-tracker-private.h"
 #include "display-private.h"
@@ -773,6 +774,114 @@ sync_drag_dest_funcs (MetaWaylandSurface *surface)
     surface->dnd.funcs = meta_wayland_data_device_get_drag_dest_funcs ();
 }
 
+static void
+surface_entered_output (MetaWaylandSurface *surface,
+                        MetaWaylandOutput *wayland_output)
+{
+  GList *iter;
+  struct wl_resource *resource;
+
+  for (iter = wayland_output->resources; iter != NULL; iter = iter->next)
+    {
+      resource = iter->data;
+
+      if (wl_resource_get_client (resource) !=
+          wl_resource_get_client (surface->resource))
+        continue;
+
+      wl_surface_send_enter (surface->resource, resource);
+    }
+}
+
+static void
+surface_left_output (MetaWaylandSurface *surface,
+                     MetaWaylandOutput *wayland_output)
+{
+  GList *iter;
+  struct wl_resource *resource;
+
+  for (iter = wayland_output->resources; iter != NULL; iter = iter->next)
+    {
+      resource = iter->data;
+
+      if (wl_resource_get_client (resource) !=
+          wl_resource_get_client (surface->resource))
+        continue;
+
+      wl_surface_send_leave (surface->resource, resource);
+    }
+}
+
+static void
+set_surface_is_on_output (MetaWaylandSurface *surface,
+                          MetaWaylandOutput *wayland_output,
+                          gboolean is_on_output);
+
+static void
+surface_handle_output_destroy (MetaWaylandOutput *wayland_output,
+                               GParamSpec *pspec,
+                               MetaWaylandSurface *surface)
+{
+  set_surface_is_on_output (surface, wayland_output, FALSE);
+}
+
+static void
+set_surface_is_on_output (MetaWaylandSurface *surface,
+                          MetaWaylandOutput *wayland_output,
+                          gboolean is_on_output)
+{
+  gboolean was_on_output = g_hash_table_contains (surface->outputs,
+                                                  wayland_output);
+
+  if (!was_on_output && is_on_output)
+    {
+      g_signal_connect (wayland_output, "output-destroyed",
+                        G_CALLBACK (surface_handle_output_destroy),
+                        surface);
+      g_hash_table_add (surface->outputs, wayland_output);
+      surface_entered_output (surface, wayland_output);
+    }
+  else if (was_on_output && !is_on_output)
+    {
+      g_hash_table_remove (surface->outputs, wayland_output);
+      g_signal_handlers_disconnect_by_func  (
+        wayland_output, (gpointer)surface_handle_output_destroy, surface);
+      surface_left_output (surface, wayland_output);
+    }
+}
+
+static void
+update_surface_output_state (gpointer key, gpointer value, gpointer user_data)
+{
+  MetaWaylandOutput *wayland_output = value;
+  MetaWaylandSurface *surface = user_data;
+  MetaSurfaceActorWayland *actor =
+    META_SURFACE_ACTOR_WAYLAND (surface->surface_actor);
+  MetaMonitorInfo *monitor;
+  gboolean is_on_output;
+
+  monitor = wayland_output->monitor_info;
+  if (!monitor)
+    {
+      set_surface_is_on_output (surface, wayland_output, FALSE);
+      return;
+    }
+
+  is_on_output = meta_surface_actor_wayland_is_on_monitor (actor, monitor);
+  set_surface_is_on_output (surface, wayland_output, is_on_output);
+}
+
+void
+meta_wayland_surface_update_outputs (MetaWaylandSurface *surface)
+{
+  if (!surface->compositor)
+    return;
+
+  g_hash_table_foreach (surface->compositor->outputs,
+                        update_surface_output_state,
+                        surface);
+}
+
 void
 meta_wayland_surface_set_window (MetaWaylandSurface *surface,
                                  MetaWindow         *window)
@@ -808,6 +917,8 @@ wl_surface_destructor (struct wl_resource *resource)
   g_object_unref (surface->surface_actor);
 
   meta_wayland_compositor_destroy_frame_callbacks (compositor, surface);
+
+  g_hash_table_unref (surface->outputs);
 
   if (surface->resource)
     wl_resource_set_user_data (surface->resource, NULL);
@@ -846,6 +957,8 @@ meta_wayland_surface_create (MetaWaylandCompositor *compositor,
   surface->surface_actor = g_object_ref_sink (meta_surface_actor_wayland_new (surface));
 
   sync_drag_dest_funcs (surface);
+
+  surface->outputs = g_hash_table_new (NULL, NULL);
 
   pending_state_init (&surface->pending);
   return surface;
