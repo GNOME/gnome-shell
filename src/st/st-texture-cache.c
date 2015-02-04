@@ -983,6 +983,12 @@ ensure_monitor_for_file (StTextureCache *cache,
 {
   StTextureCachePrivate *priv = cache->priv;
 
+  /* No point in trying to monitor files that are part of a
+   * GResource, since it does not support file monitoring.
+   */
+  if (g_file_has_uri_scheme (file, "resource"))
+    return;
+
   if (g_hash_table_lookup (priv->file_monitors, file) == NULL)
     {
       GFileMonitor *monitor = g_file_monitor_file (file, G_FILE_MONITOR_NONE,
