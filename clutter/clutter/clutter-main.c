@@ -2489,6 +2489,9 @@ _clutter_process_event_details (ClutterActor        *stage,
 
       case CLUTTER_PROXIMITY_IN:
       case CLUTTER_PROXIMITY_OUT:
+        clutter_input_device_update_from_tool (clutter_event_get_source_device (event),
+                                               clutter_event_get_device_tool (event));
+
         if (_clutter_event_process_filters (event))
           break;
 
