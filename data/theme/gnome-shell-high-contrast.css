@@ -861,7 +861,8 @@ StScrollBar {
     color: #f57900; }
 
 .calendar {
-  padding: .4em 1.75em .8em 1.75em; }
+  padding: .4em 1.75em .8em 1.75em;
+  margin-bottom: 2em; }
 
 .datemenu-date-label {
   padding: .4em 1.7em;
@@ -885,7 +886,7 @@ StScrollBar {
   background-color: transparent;
   width: 32px;
   background-position: center;
-  boder-radius: 4px; }
+  border-radius: 4px; }
   .pager-button:hover, .pager-button:focus {
     background-color: rgba(255, 255, 255, 0.05); }
   .pager-button:active {
@@ -905,21 +906,22 @@ StScrollBar {
   font-size: 80%;
   text-align: center;
   width: 2.4em;
-  height: 2.4em; }
+  height: 2.4em;
+  padding: 0.1em;
+  margin: 2px; }
   .calendar-day-base:hover, .calendar-day-base:focus {
     background-color: #0d0d0d; }
   .calendar-day-base:active {
     color: white;
-    background-color: black; }
+    background-color: #215d9c;
+    border-color: transparent; }
   .calendar-day-base.calendar-day-heading {
     color: #999999;
     margin-top: 1em;
-    font-size: 90%; }
+    font-size: 70%; }
 
 .calendar-day {
-  border: 1px solid black;
-  border-top-width: 0;
-  border-left-width: 0; }
+  border-width: 0; }
 
 .calendar-day-top {
   border-top-width: 1px; }
@@ -927,23 +929,24 @@ StScrollBar {
 .calendar-day-left {
   border-left-width: 1px; }
 
+.calendar-work-day {
+  border-radius: 1.4em; }
+
 .calendar-nonwork-day {
   background-color: black;
   color: #f2f2f2; }
 
 .calendar-today {
   font-weight: bold;
-  color: white;
-  border-bottom-width: 2px;
-  border-bottom-color: #215d9c; }
+  border: 1px solid rgba(0, 0, 0, 0.5); }
 
 .calendar-day-with-events {
   color: white;
   font-weight: bold; }
 
 .calendar-other-month-day {
-  color: white;
-  background-color: black;
+  color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(0, 0, 0, 0.3);
   opacity: 0.5; }
 
 .events-table {

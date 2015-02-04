@@ -685,7 +685,10 @@ StScrollBar {
   .screencast-indicator { color: $warning_color; }
 }
   // calendar popover
-  .calendar { padding: .4em 1.75em .8em 1.75em; }
+  .calendar {
+    padding: .4em 1.75em .8em 1.75em;
+    margin-bottom: 2em;
+  }
 
     .datemenu-date-label { //topmost date label
       padding: .4em 1.7em;
@@ -713,7 +716,7 @@ StScrollBar {
       background-color: transparent;
       width: 32px;
       background-position: center;
-      boder-radius: 4px;
+      border-radius: 4px;
       &:hover, &:focus { background-color: transparentize($fg_color,0.95); }
       &:active { background-color: transparentize($bg_color,0.95); }
     }
@@ -731,35 +734,45 @@ StScrollBar {
       font-size: 80%;
       text-align: center;
       width: 2.4em; height: 2.4em;
+      padding: 0.1em;
+      margin: 2px;
       &:hover,&:focus { background-color: lighten($bg_color,5%); }
-      &:active { color: lighten($fg_color,5%); background-color: darken($bg_color,5%);}
+      &:active {
+        color: lighten($fg_color,5%);
+        background-color: $selected_bg_color;
+        border-color: transparent; //avoid jumparound due to today
+      }
       &.calendar-day-heading {  //day of week heading
         color: darken($fg_color,40%); 
         margin-top: 1em;
-        font-size: 90%;
+        font-size: 70%;
       }
     }
       .calendar-day { //border collapse hack - see calendar.js
-        border: 1px solid $borders_color;
-        border-top-width: 0; border-left-width: 0;
+        border-width: 0;
       }
       .calendar-day-top { border-top-width: 1px; }
       .calendar-day-left { border-left-width: 1px; }
-      .calendar-work-day {}
-      .calendar-nonwork-day { background-color: darken($bg_color, 2%); color: darken($fg_color,5%); }
+      .calendar-work-day {
+        border-radius: 1.4em;
+      }
+      .calendar-nonwork-day {
+        background-color: darken($bg_color, 2%);
+        color: darken($fg_color,5%);
+      }
       .calendar-today {
         font-weight: bold;
-        color: lighten($fg_color,10%);
-        border-bottom-width: 2px;
-        border-bottom-color: $selected_bg_color; //FIXME sadly can't have a color per side.
+        //color: lighten($fg_color,10%);
+        //background-color: darken($bg_color,5%);
+        border: 1px solid transparentize($borders_color,0.5);
       }
       .calendar-day-with-events {
         color: white;
         font-weight: bold;
       }
       .calendar-other-month-day {
-        color: opacify($fg_color,0.5);
-        background-color: opacify($bg_color,0.5);
+        color: transparentize($fg_color,0.7);
+        background-color: transparentize($bg_color,0.7);
         opacity: 0.5;
       }
 
