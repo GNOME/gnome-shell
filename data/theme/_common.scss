@@ -736,6 +736,7 @@ StScrollBar {
       width: 2.4em; height: 2.4em;
       padding: 0.1em;
       margin: 2px;
+      border-radius: 1.4em;
       &:hover,&:focus { background-color: lighten($bg_color,5%); }
       &:active {
         color: lighten($fg_color,5%);
@@ -754,11 +755,10 @@ StScrollBar {
       .calendar-day-top { border-top-width: 1px; }
       .calendar-day-left { border-left-width: 1px; }
       .calendar-work-day {
-        border-radius: 1.4em;
+        
       }
       .calendar-nonwork-day {
-        background-color: darken($bg_color, 2%);
-        color: darken($fg_color,5%);
+        color: $insensitive_fg_color;
       }
       .calendar-today {
         font-weight: bold;
@@ -771,8 +771,7 @@ StScrollBar {
         font-weight: bold;
       }
       .calendar-other-month-day {
-        color: transparentize($fg_color,0.7);
-        background-color: transparentize($bg_color,0.7);
+        color: transparentize($fg_color,0.85);
         opacity: 0.5;
       }
 

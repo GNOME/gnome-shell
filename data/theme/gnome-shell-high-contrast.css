@@ -908,7 +908,8 @@ StScrollBar {
   width: 2.4em;
   height: 2.4em;
   padding: 0.1em;
-  margin: 2px; }
+  margin: 2px;
+  border-radius: 1.4em; }
   .calendar-day-base:hover, .calendar-day-base:focus {
     background-color: #0d0d0d; }
   .calendar-day-base:active {
@@ -929,12 +930,8 @@ StScrollBar {
 .calendar-day-left {
   border-left-width: 1px; }
 
-.calendar-work-day {
-  border-radius: 1.4em; }
-
 .calendar-nonwork-day {
-  background-color: black;
-  color: #f2f2f2; }
+  color: #7f7f7f; }
 
 .calendar-today {
   font-weight: bold;
@@ -945,8 +942,7 @@ StScrollBar {
   font-weight: bold; }
 
 .calendar-other-month-day {
-  color: rgba(255, 255, 255, 0.3);
-  background-color: rgba(0, 0, 0, 0.3);
+  color: rgba(255, 255, 255, 0.15);
   opacity: 0.5; }
 
 .events-table {
