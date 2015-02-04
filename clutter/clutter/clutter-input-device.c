@@ -73,7 +73,11 @@ enum
 };
 
 static void _clutter_input_device_free_touch_info (gpointer data);
-
+static void on_cursor_actor_destroy (ClutterActor       *actor,
+                                     ClutterInputDevice *device);
+static void on_cursor_actor_reactive_changed (ClutterActor       *actor,
+                                              GParamSpec         *pspec,
+                                              ClutterInputDevice *device);
 
 static GParamSpec *obj_props[PROP_LAST] = { NULL, };
 
@@ -103,6 +107,18 @@ clutter_input_device_dispose (GObject *gobject)
   g_clear_pointer (&device->scroll_info, g_array_unref);
   g_clear_pointer (&device->touch_sequences_info, g_hash_table_unref);
 
+  if (device->cursor_actor)
+    {
+      g_signal_handlers_disconnect_by_func (device->cursor_actor,
+                                            G_CALLBACK (on_cursor_actor_destroy),
+                                            device);
+      g_signal_handlers_disconnect_by_func (device->cursor_actor,
+                                            G_CALLBACK (on_cursor_actor_reactive_changed),
+                                            device);
+      _clutter_actor_set_has_pointer (device->cursor_actor, FALSE);
+      device->cursor_actor = NULL;
+    }
+
   if (device->inv_touch_sequence_actors)
     {
       GHashTableIter iter;
@@ -110,7 +126,16 @@ clutter_input_device_dispose (GObject *gobject)
 
       g_hash_table_iter_init (&iter, device->inv_touch_sequence_actors);
       while (g_hash_table_iter_next (&iter, &key, &value))
-        g_list_free (value);
+        {
+          g_signal_handlers_disconnect_by_func (key,
+                                                G_CALLBACK (on_cursor_actor_destroy),
+                                                device);
+          g_signal_handlers_disconnect_by_func (device->cursor_actor,
+                                                G_CALLBACK (on_cursor_actor_reactive_changed),
+                                                device);
+          _clutter_actor_set_has_pointer (key, FALSE);
+          g_list_free (value);
+        }
 
       g_hash_table_unref (device->inv_touch_sequence_actors);
       device->inv_touch_sequence_actors = NULL;
@@ -597,12 +622,6 @@ _clutter_input_device_get_actor (ClutterInputDevice   *device,
 
   return info->actor;
 }
-
-static void on_cursor_actor_destroy (ClutterActor       *actor,
-                                     ClutterInputDevice *device);
-static void on_cursor_actor_reactive_changed (ClutterActor       *actor,
-                                              GParamSpec         *pspec,
-                                              ClutterInputDevice *device);
 
 static void
 _clutter_input_device_associate_actor (ClutterInputDevice   *device,
