@@ -285,7 +285,7 @@ const Indicator = new Lang.Class({
         let disabled = Main.sessionMode.isLocked ||
                        (Main.sessionMode.isGreeter &&
                         this._loginScreenSettings.get_boolean(DISABLE_RESTART_KEY));
-        this._suspendAction.visible = this._haveShutdown && !disabled;
+        this._suspendAction.visible = this._haveSuspend && !disabled;
         this._updateActionsVisibility();
     },
 
