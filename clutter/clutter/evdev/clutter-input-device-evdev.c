@@ -30,6 +30,7 @@
 #include "clutter/clutter-device-manager-private.h"
 #include "clutter-private.h"
 #include "clutter-evdev.h"
+#include "clutter-input-device-tool-evdev.h"
 
 #include "clutter-input-device-evdev.h"
 #include "clutter-device-manager-evdev.h"
@@ -72,12 +73,49 @@ clutter_input_device_evdev_keycode_to_evdev (ClutterInputDevice *device,
 }
 
 static void
+clutter_input_device_evdev_update_from_tool (ClutterInputDevice     *device,
+                                             ClutterInputDeviceTool *tool)
+{
+  ClutterInputDeviceToolEvdev *evdev_tool;
+
+  evdev_tool = CLUTTER_INPUT_DEVICE_TOOL_EVDEV (tool);
+
+  g_object_freeze_notify (G_OBJECT (device));
+
+  _clutter_input_device_reset_axes (device);
+
+  _clutter_input_device_add_axis (device, CLUTTER_INPUT_AXIS_X, 0, 0, 0);
+  _clutter_input_device_add_axis (device, CLUTTER_INPUT_AXIS_Y, 0, 0, 0);
+
+  if (libinput_tablet_tool_has_distance (evdev_tool->tool))
+    _clutter_input_device_add_axis (device, CLUTTER_INPUT_AXIS_DISTANCE, 0, 1, 0);
+
+  if (libinput_tablet_tool_has_pressure (evdev_tool->tool))
+    _clutter_input_device_add_axis (device, CLUTTER_INPUT_AXIS_PRESSURE, 0, 1, 0);
+
+  if (libinput_tablet_tool_has_tilt (evdev_tool->tool))
+    {
+      _clutter_input_device_add_axis (device, CLUTTER_INPUT_AXIS_XTILT, -90, 90, 0);
+      _clutter_input_device_add_axis (device, CLUTTER_INPUT_AXIS_YTILT, -90, 90, 0);
+    }
+
+  if (libinput_tablet_tool_has_rotation (evdev_tool->tool))
+    _clutter_input_device_add_axis (device, CLUTTER_INPUT_AXIS_ROTATION, 0, 360, 0);
+
+  if (libinput_tablet_tool_has_slider (evdev_tool->tool))
+    _clutter_input_device_add_axis (device, CLUTTER_INPUT_AXIS_SLIDER, -1, 1, 0);
+
+  g_object_thaw_notify (G_OBJECT (device));
+}
+
+static void
 clutter_input_device_evdev_class_init (ClutterInputDeviceEvdevClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
   object_class->finalize = clutter_input_device_evdev_finalize;
   klass->keycode_to_evdev = clutter_input_device_evdev_keycode_to_evdev;
+  klass->update_from_tool = clutter_input_device_evdev_update_from_tool;
 }
 
 static void
