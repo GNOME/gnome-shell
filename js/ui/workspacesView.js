@@ -536,6 +536,7 @@ const WorkspacesDisplay = new Lang.Class({
         for (let i = 0; i < this._workspacesViews.length; i++)
             this._workspacesViews[i].destroy();
 
+        this._primaryIndex = Main.layoutManager.primaryIndex;
         this._workspacesViews = [];
         let monitors = Main.layoutManager.monitors;
         for (let i = 0; i < monitors.length; i++) {
