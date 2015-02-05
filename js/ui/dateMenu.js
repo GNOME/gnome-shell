@@ -294,11 +294,6 @@ const DateMenuButton = new Lang.Class({
         this._sessionUpdated();
     },
 
-    _updateEventsVisibility: function() {
-        let visible = this._eventSource.hasCalendars;
-        this._messageList.actor.visible = visible;
-    },
-
     _getEventSource: function() {
         return new Calendar.DBusEventSource();
     },
@@ -311,9 +306,6 @@ const DateMenuButton = new Lang.Class({
         this._messageList.setEventSource(eventSource);
 
         this._eventSource = eventSource;
-        this._eventSource.connect('notify::has-calendars', Lang.bind(this, function() {
-            this._updateEventsVisibility();
-        }));
     },
 
     _sessionUpdated: function() {
@@ -325,6 +317,5 @@ const DateMenuButton = new Lang.Class({
             eventSource = new Calendar.EmptyEventSource();
         }
         this._setEventSource(eventSource);
-        this._updateEventsVisibility();
     }
 });
