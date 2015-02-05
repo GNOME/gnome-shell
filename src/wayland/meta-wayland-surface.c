@@ -528,14 +528,25 @@ apply_pending_state (MetaWaylandSurface      *surface,
   wl_list_insert_list (&compositor->frame_callbacks, &pending->frame_callback_list);
   wl_list_init (&pending->frame_callback_list);
 
-  if (surface == compositor->seat->pointer.cursor_surface)
-    cursor_surface_commit (surface, pending);
-  else if (meta_wayland_data_device_is_dnd_surface (&compositor->seat->data_device, surface))
-    dnd_surface_commit (surface, pending);
-  else if (surface->window)
-    toplevel_surface_commit (surface, pending);
-  else if (surface->wl_subsurface)
-    subsurface_surface_commit (surface, pending);
+  switch (surface->role)
+    {
+    case META_WAYLAND_SURFACE_ROLE_NONE:
+      break;
+    case META_WAYLAND_SURFACE_ROLE_CURSOR:
+      cursor_surface_commit (surface, pending);
+      break;
+    case META_WAYLAND_SURFACE_ROLE_DND:
+      dnd_surface_commit (surface, pending);
+      break;
+    case META_WAYLAND_SURFACE_ROLE_XDG_SURFACE:
+    case META_WAYLAND_SURFACE_ROLE_XDG_POPUP:
+    case META_WAYLAND_SURFACE_ROLE_WL_SHELL_SURFACE:
+      toplevel_surface_commit (surface, pending);
+      break;
+    case META_WAYLAND_SURFACE_ROLE_SUBSURFACE:
+      subsurface_surface_commit (surface, pending);
+      break;
+    }
 
   pending_state_reset (pending);
 
