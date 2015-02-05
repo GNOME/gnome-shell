@@ -29,6 +29,8 @@ $panel-corner-radius: 6px;
 /* GLOBALS */
 $font-size: 11;
 $font-family: Cantarell, Sans-Serif;
+$_bubble_bg_color: transparentize(darken($bg_color,8%),.05);
+$_bubble_border_color: transparentize($fg_color,0.8);
 
 stage {
   font-family: $font-family;
@@ -79,13 +81,14 @@ StScrollBar {
   
   StBin#trough {
     border-radius: 0;
-    background-color: darken($bg_color,10%);
+    background-color: transparent;
   }
   
   StButton#vhandle, StButton#hhandle {
     border-radius: 8px;
     background-color: $bg_color;
-    border: 3px solid darken($bg_color,10%); //would be nice to margin or at least to transparent
+    //border: 3px solid transparent; //would be nice to margin or at least to transparent
+    margin: 3px;
     &:hover { background-color: lighten($bg_color,10%); }
     &:active { background-color: $selected_bg_color; }
   }
@@ -178,7 +181,7 @@ StScrollBar {
 /* End Session Dialog */
 .end-session-dialog {
     spacing: 42px;
-    border: 3px solid transparentize($fg_color,0.8);
+    border: 3px solid $_bubble_border_color;
 }
 
   .end-session-dialog-list {
@@ -323,7 +326,7 @@ StScrollBar {
 .prompt-dialog {
   //this is the width of the entire modal popup
   width: 500px;
-  border: 3px solid transparentize($fg_color,0.8);
+  border: 3px solid $_bubble_border_color;
 }
 
   .prompt-dialog-main-layout {
@@ -542,6 +545,12 @@ StScrollBar {
     color: $fg_color;
   }
 
+  .input-source-switcher-symbol {
+     font-size: 34pt;
+     width: 96px;
+     height: 96px;
+  }
+  
 /* Workspace Switcher */
 .workspace-switcher-group { padding: 12px; }
 
@@ -575,7 +584,7 @@ StScrollBar {
 %osd-panel {
   color: $fg_color;
   background-color: transparentize($bg_color,0.2);
-  border: 1px solid transparentize($fg_color,0.8);
+  border: 1px solid $_bubble_border_color;
   border-radius: 12px;
   padding: 12px;
 }
@@ -701,7 +710,7 @@ StScrollBar {
     .calendar-vertical-separator {
       width: .3em;
       -stipple-width: 1px;
-      -stipple-color: transparentize($fg_color,0.8);
+      -stipple-color: $_bubble_border_color;
     }
     
     .calendar-month-label {
@@ -1224,19 +1233,13 @@ StScrollBar {
 %overview-panel {
   color: $fg_color;
   background-color: $bg_color;
-  border: 1px solid transparentize($fg_color,0.8);
+  border: 1px solid $_bubble_border_color;
 }
 
 %status_text {
   font-size: 2em;
   font-weight: bold;
   color: $fg_color;
-}
-
-/* LOGIN DIALOG */
-.login-dialog-banner-view {
-  padding-top: 24px;
-  max-width: 23em;
 }
 
 /* NOTIFICATIONS & MESSAGE TRAY */
@@ -1268,7 +1271,7 @@ StScrollBar {
     font-size: 11pt;
     width: 34em;
     border-radius: 6px 6px 0 0;
-    background-color: transparentize(darken($bg_color,8%),.05);
+    background-color: $_bubble_bg_color;
     border: 1px solid $borders_color;
     border-bottom-width: 0;
     //box-shadow: 0 1px 4px black;
@@ -1322,7 +1325,7 @@ StScrollBar {
   //Message tray popovers
   .summary-boxpointer {
     -arrow-border-radius: 15px;
-    -arrow-background-color: transparentize(darken($bg_color,8%),.05);
+    -arrow-background-color: $_bubble_bg_color;
     -arrow-base: 36px;
     -arrow-rise: 18px;
     color: $fg_color;
@@ -1483,7 +1486,7 @@ StScrollBar {
       -arrow-border-radius: 10px;
       -arrow-background-color: transparentize($osd_bg_color, 0.3);
       -arrow-border-width: 2px;
-      -arrow-border-color: transparentize($fg_color,0.8);
+      -arrow-border-color: $_bubble_border_color;
       -arrow-base: 20px;
       -arrow-rise: 10px;
       -boxpointer-gap: 5px;
@@ -1518,7 +1521,208 @@ StScrollBar {
   .candidate-page-button-next { border-radius: 0px 4px 4px 0px;  }
   .candidate-page-button-icon { icon-size: 1em; }
 
-//Mess that is Looking Glass
+/* Auth Dialogs & Screen Shield */
+
+.framed-user-icon { 
+  background-size: contain; 
+  border: 2px solid $borders_color;
+  border-radius: 3px;
+  &:hover {
+    border-color: lighten($borders_color,30%);
+  }
+}
+
+// LOGIN DIALOG
+
+.login-dialog-banner-view {
+  padding-top: 24px;
+  max-width: 23em;
+}
+
+.login-dialog {
+  //reset
+  border: none;
+  background-color: transparent;
+  
+  .modal-dialog-button-box { spacing: 3px; }
+  .modal-dialog-button {
+    padding: 3px 18px;
+    &:default {
+      @include button(normal,$c:$selected_bg_color);
+      &:hover,&:focus { @include button(hover,$c:$selected_bg_color); }
+      &:active { @include button(active,$c:$selected_bg_color); }
+      &:insensitive { @include button(insensitive); }
+      
+    }
+  } 
+  
+}
+
+  .login-dialog-logo-bin { padding: 24px 0px; }
+  .login-dialog-banner { color: darken($fg_color,10%); }
+  .login-dialog-button-box { spacing: 5px; }
+  .login-dialog-message-warning { color: $warning_color; }
+  .login-dialog-0message-hint { padding-top: 0; padding-bottom: 20px; }
+  .login-dialog-user-selection-box { 
+    padding: 100px 0;
+    .login-dialog-not-listed-label { 
+      padding-left: 2px;
+      .login-dialog-not-listed-button:focus &,
+      .login-dialog-not-listed-button:hover & {
+        color: $fg_color; //FIXME
+      }
+    }
+  }
+  
+  .login-dialog-user-list-view { -st-vfade-offset: 1em; }
+  .login-dialog-user-list {
+    spacing: 12px;
+    padding: .2em;
+    width: 23em;
+    &:expanded .login-dialog-user-list-item:focus { background-color: $selected_bg_color; }
+    &:expanded .login-dialog-user-list-item:logged-in { border-right: 2px solid $selected_bg_color; }
+  }
+  .login-dialog-user-list-item {
+    border-radius: 5px;
+    padding: .2em;
+    color: darken($fg_color,30%);
+    &:ltr { padding-right: 1em; }
+    &:rtl { padding-left: 1em; }
+    &:hover { background-color: $selected_bg_color; color: $selected_fg_color; }
+    .login-dialog-timed-login-indicator {
+      height: 2px;
+      //background-color: rgba(0,0,0,0.0);
+      background-color: transparent;
+    }
+    &:focus .login-dialog-timed-login-indicator { background-color: $bg_color; }
+  }
+  
+  .login-dialog-not-listed-label {
+    font-size: 90%;
+    font-weight: bold;
+    color: darken($fg_color,30%);
+    padding-top: 1em;
+  }
+  
+  .login-dialog-username,
+  .user-widget-label {
+      font-size: 120%;
+      font-weight: bold;
+      text-align: left;
+      padding-left: 15px;
+  }  
+    .user-widget-label {
+      &:ltr { padding-left: 18px; }
+      &:rtl { padding-right: 18px; }
+    }
+  
+  .login-dialog-prompt-layout {
+      padding-top: 24px;
+      padding-bottom: 12px;
+      spacing: 8px;
+      width: 23em;
+  }
+  
+  .login-dialog-prompt-label {
+      color: darken($fg_color, 20%);
+      font-size: 110%; 
+      padding-top: 1em;
+  }
+
+  .login-dialog-session-list-button StIcon {
+      icon-size: 1.25em;
+  }
+
+  .login-dialog-session-list-button {
+      color: darken($fg_color,30%);
+      &:hover,&:focus { color: $fg_color; }
+      &:active { color: darken($fg_color, 50%); }
+  }
+
+//SCREEN SHIELD
+
+.screen-shield-arrows {
+    padding-bottom: 3em;
+}
+
+.screen-shield-arrows Gjs_Arrow {
+    color: white;
+    width: 80px;
+    height: 48px;
+    -arrow-thickness: 12px;
+    -arrow-shadow: 0 1px 1px rgba(0,0,0,0.4);
+}
+
+.screen-shield-contents-box { spacing: 48px; }
+
+.screen-shield-clock {
+  color: white;
+  text-shadow: 0px 1px 2px rgba(0,0,0,0.6);
+  font-weight: bold;
+  text-align: center;
+  padding-bottom: 1.5em;
+}
+
+.screen-shield-clock-time {
+  font-size: 72pt;
+  text-shadow: 0px 2px 2px rgba(0,0,0,0.4);
+}
+
+.screen-shield-clock-date { font-size: 28pt; }
+
+.screen-shield-notifications-container {
+  width: 30em;
+  background-color: transparent;
+  max-height: 500px;
+  .summary-notification-stack-scrollview {
+    padding-top: 0;
+    padding-bottom: 0;
+  }  
+  .notification-button, .notification-icon-button { border: 1px solid transparentize($fg_color,0.5); }
+  .notification, .screen-shield-notifications-box {
+    background-color: transparentize($_bubble_bg_color,0.5);
+    color: $fg_color;
+    border: 1px solid $_bubble_border_color;
+    margin: 6px 0;
+    padding: 12px;
+    spacing: 24px; //FIXME I need a proper margin so the items are spaced with transparency
+  }
+}
+
+.screen-shield-notification-source {
+  padding: 3px 6px;
+  spacing: 5px;
+}
+
+.screen-shield-notification-label {
+  font-weight: bold;
+  padding: 0px 0px 0px 12px;
+}
+
+.screen-shield-notification-count-text { padding: 0px 0px 0px 12px; }
+
+#panel.lock-screen { background-color: transparentize($_bubble_bg_color, 0.5); }
+
+.screen-shield-background { //just the shadow, really
+  background: black;
+  box-shadow: 0px 2px 4px transparentize(black,0.6);
+}
+
+#lockDialogGroup {
+  background: #2e3436 url(noise-texture.png);
+  background-repeat: repeat;
+}
+
+#screenShieldNotifications {
+  StButton#vhandle, StButton#hhandle {
+    background-color: transparentize($bg_color,0.7);
+    &:hover, &:focus { background-color: transparentize($bg_color,0.5); }
+    &:active { background-color: transparentize($selected_bg_color,0.5); }
+  }
+}
+
+
+// Looking Glass
 #LookingGlassDialog {
   background-color: rgba(0,0,0,0.80);
   spacing: 4px;
