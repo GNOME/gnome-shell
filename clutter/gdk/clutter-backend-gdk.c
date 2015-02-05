@@ -295,6 +295,7 @@ clutter_backend_gdk_get_renderer (ClutterBackend  *backend,
       /* Force a Wayland winsys */
       cogl_renderer_set_winsys_id (renderer, COGL_WINSYS_ID_EGL_WAYLAND);
       cogl_wayland_renderer_set_foreign_display (renderer, display);
+      cogl_wayland_renderer_set_event_dispatch_enabled (renderer, !disable_event_retrieval);
     }
   else
 #endif
