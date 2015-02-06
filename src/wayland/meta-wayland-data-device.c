@@ -410,6 +410,12 @@ data_device_start_drag (struct wl_client *client,
       seat->pointer.grab != &seat->pointer.default_grab)
     return;
 
+  if (meta_wayland_surface_set_role (surface,
+                                     META_WAYLAND_SURFACE_ROLE_DND,
+                                     resource,
+                                     WL_DATA_DEVICE_ERROR_ROLE) != 0)
+    return;
+
   data_device->current_grab = drag_grab = g_slice_new0 (MetaWaylandDragGrab);
 
   drag_grab->generic.interface = &drag_grab_interface;

@@ -786,6 +786,15 @@ pointer_set_cursor (struct wl_client *client,
   if (pointer->focus_serial - serial > G_MAXUINT32 / 2)
     return;
 
+  if (surface)
+    {
+      if (meta_wayland_surface_set_role (surface,
+                                         META_WAYLAND_SURFACE_ROLE_CURSOR,
+                                         resource,
+                                         WL_POINTER_ERROR_ROLE) != 0)
+        return;
+    }
+
   pointer->hotspot_x = x;
   pointer->hotspot_y = y;
   set_cursor_surface (pointer, surface);

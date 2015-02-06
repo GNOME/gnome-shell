@@ -63,6 +63,27 @@ typedef struct
   struct wl_listener sibling_destroy_listener;
 } MetaWaylandSubsurfacePlacementOp;
 
+int
+meta_wayland_surface_set_role (MetaWaylandSurface    *surface,
+                               MetaWaylandSurfaceRole role,
+                               struct wl_resource    *error_resource,
+                               uint32_t               error_code)
+{
+  if (surface->role == META_WAYLAND_SURFACE_ROLE_NONE ||
+      surface->role == role)
+    {
+      surface->role = role;
+      return 0;
+    }
+  else
+    {
+      wl_resource_post_error (error_resource, error_code,
+                              "wl_surface@%d already has a different role",
+                              wl_resource_get_id (surface->resource));
+      return -1;
+    }
+}
+
 static void
 surface_set_buffer (MetaWaylandSurface *surface,
                     MetaWaylandBuffer  *buffer)
@@ -979,6 +1000,12 @@ xdg_shell_get_xdg_surface (struct wl_client *client,
       return;
     }
 
+  if (meta_wayland_surface_set_role (surface,
+                                     META_WAYLAND_SURFACE_ROLE_XDG_SURFACE,
+                                     surface_resource,
+                                     XDG_SHELL_ERROR_ROLE) != 0)
+    return;
+
   surface->xdg_surface = wl_resource_create (client, &xdg_surface_interface, wl_resource_get_version (resource), id);
   wl_resource_set_implementation (surface->xdg_surface, &meta_wayland_xdg_surface_interface, surface, xdg_surface_destructor);
 
@@ -1035,6 +1062,12 @@ xdg_shell_get_xdg_popup (struct wl_client *client,
                               "xdg_shell::get_xdg_popup already requested");
       return;
     }
+
+  if (meta_wayland_surface_set_role (surface,
+                                     META_WAYLAND_SURFACE_ROLE_XDG_POPUP,
+                                     surface_resource,
+                                     XDG_SHELL_ERROR_ROLE) != 0)
+    return;
 
   surface->xdg_popup = wl_resource_create (client, &xdg_popup_interface, wl_resource_get_version (resource), id);
   wl_resource_set_implementation (surface->xdg_popup, &meta_wayland_xdg_popup_interface, surface, xdg_popup_destructor);
@@ -1302,6 +1335,12 @@ wl_shell_get_shell_surface (struct wl_client *client,
                               "wl_shell::get_shell_surface already requested");
       return;
     }
+
+  if (meta_wayland_surface_set_role (surface,
+                                     META_WAYLAND_SURFACE_ROLE_WL_SHELL_SURFACE,
+                                     surface_resource,
+                                     WL_SHELL_ERROR_ROLE) != 0)
+    return;
 
   surface->wl_shell_surface = wl_resource_create (client, &wl_shell_surface_interface, wl_resource_get_version (resource), id);
   wl_resource_set_implementation (surface->wl_shell_surface, &meta_wayland_wl_shell_surface_interface, surface, wl_shell_surface_destructor);
@@ -1655,6 +1694,12 @@ wl_subcompositor_get_subsurface (struct wl_client *client,
                               "wl_subcompositor::get_subsurface already requested");
       return;
     }
+
+  if (meta_wayland_surface_set_role (surface,
+                                     META_WAYLAND_SURFACE_ROLE_SUBSURFACE,
+                                     surface_resource,
+                                     WL_SHELL_ERROR_ROLE) != 0)
+    return;
 
   surface->wl_subsurface = wl_resource_create (client, &wl_subsurface_interface, wl_resource_get_version (resource), id);
   wl_resource_set_implementation (surface->wl_subsurface, &meta_wayland_wl_subsurface_interface, surface, wl_subsurface_destructor);
