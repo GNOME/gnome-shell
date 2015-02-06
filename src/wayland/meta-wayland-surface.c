@@ -701,6 +701,13 @@ meta_wayland_surface_create (MetaWaylandCompositor *compositor,
 }
 
 static void
+xdg_shell_destroy (struct wl_client *client,
+                   struct wl_resource *resource)
+{
+  wl_resource_destroy (resource);
+}
+
+static void
 xdg_shell_use_unstable_version (struct wl_client *client,
                                 struct wl_resource *resource,
                                 int32_t version)
@@ -1010,8 +1017,7 @@ xdg_shell_get_xdg_popup (struct wl_client *client,
                          struct wl_resource *seat_resource,
                          uint32_t serial,
                          int32_t x,
-                         int32_t y,
-                         uint32_t flags)
+                         int32_t y)
 {
   MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
   MetaWaylandSurface *parent_surf = wl_resource_get_user_data (parent_resource);
@@ -1051,6 +1057,7 @@ xdg_shell_get_xdg_popup (struct wl_client *client,
 }
 
 static const struct xdg_shell_interface meta_wayland_xdg_shell_interface = {
+  xdg_shell_destroy,
   xdg_shell_use_unstable_version,
   xdg_shell_get_xdg_surface,
   xdg_shell_get_xdg_popup,
@@ -1801,12 +1808,8 @@ meta_wayland_surface_delete (MetaWaylandSurface *surface)
 void
 meta_wayland_surface_popup_done (MetaWaylandSurface *surface)
 {
-  struct wl_client *client = wl_resource_get_client (surface->resource);
-  struct wl_display *display = wl_client_get_display (client);
-  uint32_t serial = wl_display_next_serial (display);
-
   if (surface->xdg_popup)
-    xdg_popup_send_popup_done (surface->xdg_popup, serial);
+    xdg_popup_send_popup_done (surface->xdg_popup);
   else if (surface->wl_shell_surface)
     wl_shell_surface_send_popup_done (surface->wl_shell_surface);
 }
