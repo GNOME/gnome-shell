@@ -984,7 +984,7 @@ const ChatNotification = new Lang.Class({
         } else {
             // Show only the time if date is on today
             if(daysAgo < 1){
-                /* Translators: Time in 24h format */
+                /* Translators: Time in 12h format */
                 format = N_("%l\u2236%M %p");
             }
             // Show the word "Yesterday" and time if date is on yesterday
