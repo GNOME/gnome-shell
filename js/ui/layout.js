@@ -45,11 +45,16 @@ const MonitorConstraint = new Lang.Class({
                  'index': GObject.ParamSpec.int('index',
                                                 'Monitor index', 'Track specific monitor',
                                                 GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE,
-                                                -1, 64, -1)},
+                                                -1, 64, -1),
+                 'work-area': GObject.ParamSpec.boolean('work-area',
+                                                        'Work-area', 'Track monitor\'s work-area',
+                                                        GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE,
+                                                        false)},
 
     _init: function(props) {
         this._primary = false;
         this._index = -1;
+        this._workArea = false;
 
         this.parent(props);
     },
@@ -79,6 +84,19 @@ const MonitorConstraint = new Lang.Class({
         this.notify('index');
     },
 
+    get work_area() {
+        return this._workArea;
+    },
+
+    set work_area(v) {
+        if (v == this._workArea)
+            return;
+        this._workArea = v;
+        if (this.actor)
+            this.actor.queue_relayout();
+        this.notify('work-area');
+    },
+
     vfunc_set_actor: function(actor) {
         if (actor) {
             if (!this._monitorsChangedId) {
@@ -86,10 +104,21 @@ const MonitorConstraint = new Lang.Class({
                     this.actor.queue_relayout();
                 }));
             }
+
+            if (!this._workareasChangedId) {
+                this._workareasChangedId = global.screen.connect('workareas-changed', Lang.bind(this, function() {
+                    if (this._workArea)
+                        this.actor.queue_relayout();
+                }));
+            }
         } else {
             if (this._monitorsChangedId)
                 Main.layoutManager.disconnect(this._monitorsChangedId);
             this._monitorsChangedId = 0;
+
+            if (this._workareasChangedId)
+                global.screen.disconnect(this._workareasChangedId);
+            this._workareasChangedId = 0;
         }
 
         this.parent(actor);
@@ -99,15 +128,21 @@ const MonitorConstraint = new Lang.Class({
         if (!this._primary && this._index < 0)
             return;
 
-        let monitor;
-        if (this._primary) {
-            monitor = Main.layoutManager.primaryMonitor;
+        let index;
+        if (this._primary)
+            index = Main.layoutManager.primaryIndex;
+        else
+            index = Math.min(this._index, Main.layoutManager.monitors.length - 1);
+
+        let rect;
+        if (this._workArea) {
+            let ws = global.screen.get_workspace_by_index(0);
+            rect = ws.get_work_area_for_monitor(index);
         } else {
-            let index = Math.min(this._index, Main.layoutManager.monitors.length - 1);
-            monitor = Main.layoutManager.monitors[index];
+            rect = Main.layoutManager.monitors[index];
         }
 
-        actorBox.init_rect(monitor.x, monitor.y, monitor.width, monitor.height);
+        actorBox.init_rect(rect.x, rect.y, rect.width, rect.height);
     }
 });
 
