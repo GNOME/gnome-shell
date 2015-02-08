@@ -973,46 +973,39 @@ const LayoutManager = new Lang.Class({
                 let y1 = Math.max(y, 0);
                 let y2 = Math.min(y + h, global.screen_height);
 
-                // NetWM struts are not really powerful enought to handle
-                // a multi-monitor scenario, they only describe what happens
-                // around the outer sides of the full display region. However
-                // it can describe a partial region along each side, so
-                // we can support having the struts only affect the
-                // primary monitor. This should be enough as we only have
-                // chrome affecting the struts on the primary monitor so
-                // far.
-                //
-                // Metacity wants to know what side of the screen the
-                // strut is considered to be attached to. If the actor is
+                // Metacity wants to know what side of the monitor the
+                // strut is considered to be attached to. First, we find
+                // the monitor that contains the strut. If the actor is
                 // only touching one edge, or is touching the entire
-                // border of the primary monitor, then it's obvious which
-                // side to call it. If it's in a corner, we pick a side
-                // arbitrarily. If it doesn't touch any edges, or it spans
-                // the width/height across the middle of the screen, then
-                // we don't create a strut for it at all.
+                // border of that monitor, then it's obvious which side
+                // to call it. If it's in a corner, we pick a side
+                // arbitrarily. If it doesn't touch any edges, or it
+                // spans the width/height across the middle of the
+                // screen, then we don't create a strut for it at all.
+
+                let monitor = this.findMonitorForActor(actorData.actor);
                 let side;
-                let primary = this.primaryMonitor;
-                if (x1 <= primary.x && x2 >= primary.x + primary.width) {
-                    if (y1 <= primary.y)
+                if (x1 <= monitor.x && x2 >= monitor.x + monitor.width) {
+                    if (y1 <= monitor.y)
                         side = Meta.Side.TOP;
-                    else if (y2 >= primary.y + primary.height)
+                    else if (y2 >= monitor.y + monitor.height)
                         side = Meta.Side.BOTTOM;
                     else
                         continue;
-                } else if (y1 <= primary.y && y2 >= primary.y + primary.height) {
-                    if (x1 <= 0)
+                } else if (y1 <= monitor.y && y2 >= monitor.y + monitor.height) {
+                    if (x1 <= monitor.x)
                         side = Meta.Side.LEFT;
-                    else if (x2 >= primary.x + primary.width)
+                    else if (x2 >= monitor.x + monitor.width)
                         side = Meta.Side.RIGHT;
                     else
                         continue;
-                } else if (x1 <= 0)
+                } else if (x1 <= monitor.x)
                     side = Meta.Side.LEFT;
-                else if (y1 <= 0)
+                else if (y1 <= monitor.y)
                     side = Meta.Side.TOP;
-                else if (x2 >= global.screen_width)
+                else if (x2 >= monitor.x + monitor.width)
                     side = Meta.Side.RIGHT;
-                else if (y2 >= global.screen_height)
+                else if (y2 >= monitor.y + monitor.height)
                     side = Meta.Side.BOTTOM;
                 else
                     continue;
