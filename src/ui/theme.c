@@ -17,23 +17,6 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * SECTION:theme
- * @title: MetaTheme
- * @short_description: Metacity Theme Rendering
- *
- * The window decorations drawn by Metacity are described by files on disk
- * known internally as "themes" (externally as "window border themes" on
- * http://art.gnome.org/themes/metacity/ or "Metacity themes"). This file
- * contains most of the code necessary to support themes; it does not
- * contain the XML parser, which is in theme-parser.c.
- */
-
-/*
- * FIXME: This is a big file with lots of different subsystems, which might
- *        be better split out into separate files.
- */
-
 #include <config.h>
 #include "theme-private.h"
 #include "frames.h" /* for META_TYPE_FRAMES */
