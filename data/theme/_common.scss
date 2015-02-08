@@ -1147,7 +1147,7 @@ StScrollBar {
   .app-well-app-running-dot { //running apps indicator
     width: 10px; height: 3px;
     background-color: $selected_bg_color;
-    margin-bottom: 2px; //FIXME will happen :)
+    margin-bottom: 2px;
   }
   
   %icon_tile {
@@ -1654,8 +1654,6 @@ StScrollBar {
     -arrow-shadow: 0 1px 1px rgba(0,0,0,0.4);
 }
 
-.screen-shield-contents-box { spacing: 48px; }
-
 .screen-shield-clock {
   color: white;
   text-shadow: 0px 1px 2px rgba(0,0,0,0.6);
@@ -1672,6 +1670,7 @@ StScrollBar {
 .screen-shield-clock-date { font-size: 28pt; }
 
 .screen-shield-notifications-container {
+  spacing: 20px;
   width: 30em;
   background-color: transparent;
   max-height: 500px;
@@ -1691,7 +1690,11 @@ StScrollBar {
 }
 
 .screen-shield-notification-source {
-  padding: 3px 6px;
+  padding: 12px 6px;
+  border-width: 2px;
+  border-radius: 5px;
+  border-color: white;
+  background-color: transparentize($bg_color,0.7);
   spacing: 5px;
 }
 

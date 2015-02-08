@@ -106,7 +106,7 @@ const NotificationsBox = new Lang.Class({
         this._scrollView = new St.ScrollView({ x_fill: false, x_align: St.Align.START,
                                                hscrollbar_policy: Gtk.PolicyType.NEVER });
         this._notificationBox = new St.BoxLayout({ vertical: true,
-                                                   style_class: 'screen-shield-notifications-box' });
+                                                   style_class: 'screen-shield-notifications-container' });
         this._scrollView.add_actor(this._notificationBox);
 
         this.actor.add(this._scrollView, { x_fill: true, x_align: St.Align.START });
@@ -230,7 +230,8 @@ const NotificationsBox = new Lang.Class({
             countLabel: null,
         };
 
-        obj.sourceBox = new St.BoxLayout({ style_class: 'screen-shield-notification-source' });
+        obj.sourceBox = new St.BoxLayout({ style_class: 'screen-shield-notification-source',
+                                           x_expand: true });
         this._showSource(source, obj, obj.sourceBox);
         this._notificationBox.add(obj.sourceBox, { x_fill: false, x_align: St.Align.START });
 
