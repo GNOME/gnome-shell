@@ -186,7 +186,7 @@ StScrollBar {
 /* End Session Dialog */
 .end-session-dialog {
   spacing: 42px;
-  border: 3px solid rgba(238, 238, 236, 0.5); }
+  border: 3px solid rgba(238, 238, 236, 0.2); }
 
 .end-session-dialog-list {
   padding-top: 20px; }
@@ -308,7 +308,7 @@ StScrollBar {
 /* Password or Authentication Dialog */
 .prompt-dialog {
   width: 500px;
-  border: 3px solid rgba(238, 238, 236, 0.5); }
+  border: 3px solid rgba(238, 238, 236, 0.2); }
 
 .prompt-dialog-main-layout {
   spacing: 24px;
@@ -442,7 +442,7 @@ StScrollBar {
   .osd-window .level {
     height: 0.6em;
     border-radius: 0.3em;
-    background-color: rgba(21, 23, 23, 0.5);
+    background-color: rgba(11, 12, 13, 0.5);
     color: #eeeeec; }
 
 /* App Switcher */
@@ -516,7 +516,7 @@ StScrollBar {
 .switcher-list, .workspace-switcher-container {
   color: #eeeeec;
   background-color: #2e3436;
-  border: 1px solid rgba(238, 238, 236, 0.5);
+  border: 1px solid rgba(238, 238, 236, 0.2);
   border-radius: 12px;
   padding: 12px; }
 
@@ -602,7 +602,7 @@ StScrollBar {
 .calendar-vertical-separator {
   width: .3em;
   -stipple-width: 1px;
-  -stipple-color: rgba(238, 238, 236, 0.5); }
+  -stipple-color: rgba(238, 238, 236, 0.2); }
 
 .calendar-month-label {
   color: #e2e2df;
@@ -1086,7 +1086,7 @@ StScrollBar {
 #dash, .workspace-thumbnails {
   color: #eeeeec;
   background-color: #2e3436;
-  border: 1px solid rgba(238, 238, 236, 0.5); }
+  border: 1px solid rgba(238, 238, 236, 0.2); }
 
 .search-statustext, .no-frequent-applications-label {
   font-size: 2em;
@@ -1353,7 +1353,7 @@ StScrollBar {
   -arrow-border-radius: 10px;
   -arrow-background-color: rgba(46, 52, 54, 0.7);
   -arrow-border-width: 2px;
-  -arrow-border-color: rgba(238, 238, 236, 0.5);
+  -arrow-border-color: rgba(238, 238, 236, 0.2);
   -arrow-base: 20px;
   -arrow-rise: 10px;
   -boxpointer-gap: 5px; }
@@ -1564,7 +1564,7 @@ StScrollBar {
     padding-bottom: 0; }
   .screen-shield-notifications-container .screen-shield-notification-source {
     padding: 12px 6px;
-    border: 1px solid rgba(238, 238, 236, 0.5);
+    border: 1px solid rgba(238, 238, 236, 0.2);
     background-color: rgba(46, 52, 54, 0.5);
     color: #eeeeec;
     border-radius: 4px; }

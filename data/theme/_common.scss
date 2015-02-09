@@ -31,7 +31,7 @@ $font-size: 11;
 $font-family: Cantarell, Sans-Serif;
 $_bubble_bg_color: opacify($osd_bg_color,0.25);
 $_bubble_fg_color: $osd_fg_color;
-$_bubble_borders_color: transparentize($osd_fg_color,0.5);
+$_bubble_borders_color: transparentize($osd_fg_color,0.8);
 
 stage {
   font-family: $font-family;
@@ -491,8 +491,8 @@ StScrollBar {
   .level {
     height: 0.6em;
     border-radius: 0.3em;
-    background-color: transparentize(darken($bg_color,15%),0.5);
-    color: $fg_color;
+    background-color: transparentize(darken($osd_bg_color,15%),0.5);
+    color: $osd_fg_color;
   }
 }
 
