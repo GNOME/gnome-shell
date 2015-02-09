@@ -983,6 +983,7 @@ StScrollBar {
   }
   .window-caption {
     spacing: 25px;
+    color: $osd_fg_color;
     background-color: transparentize($osd_bg_color,0.3);
     border-radius: 8px;
     padding: 4px 12px;
@@ -1003,7 +1004,7 @@ StScrollBar {
       border-width: 2px;
     }
     
-    .search-entry-icon { icon-size: 1em; padding: 0 4px; color: transparentize($osd_fg_color,.3); }
+    .search-entry-icon { icon-size: 1em; padding: 0 4px; color: transparentize($fg_color,.3); }
     
     &:hover, &:focus {
       .search-entry-icon { color: $fg_color; }
