@@ -666,7 +666,7 @@ StScrollBar {
   border: 1px solid rgba(0, 0, 0, 0.5); }
 
 .calendar-day-with-events {
-  color: white;
+  color: #f2f2f2;
   font-weight: bold; }
 
 .calendar-other-month-day {

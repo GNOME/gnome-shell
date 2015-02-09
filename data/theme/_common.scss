@@ -777,7 +777,7 @@ StScrollBar {
         border: 1px solid transparentize($borders_color,0.5);
       }
       .calendar-day-with-events {
-        color: white;
+        color: darken($fg_color,5%);
         font-weight: bold;
       }
       .calendar-other-month-day {
