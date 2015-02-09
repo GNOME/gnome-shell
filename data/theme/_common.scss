@@ -1565,19 +1565,25 @@ StScrollBar {
 }
 
   .login-dialog-logo-bin { padding: 24px 0px; }
-  .login-dialog-banner { color: darken($fg_color,10%); }
+  .login-dialog-banner { color: darken($osd_fg_color,10%); }
   .login-dialog-button-box { spacing: 5px; }
   .login-dialog-message-warning { color: $warning_color; }
-  .login-dialog-0message-hint { padding-top: 0; padding-bottom: 20px; }
+  .login-dialog-message-hint { padding-top: 0; padding-bottom: 20px; }
   .login-dialog-user-selection-box {
-    padding: 100px 0;
+    padding: 100px 0px;
     .login-dialog-not-listed-label {
       padding-left: 2px;
       .login-dialog-not-listed-button:focus &,
       .login-dialog-not-listed-button:hover & {
-        color: $fg_color; //FIXME
+        color: $osd_fg_color; //FIXME
       }
     }
+  }
+  .login-dialog-not-listed-label {
+    font-size: 90%;
+    font-weight: bold;
+    color: darken($osd_fg_color,30%);
+    padding-top: 1em;
   }
 
   .login-dialog-user-list-view { -st-vfade-offset: 1em; }
@@ -1591,7 +1597,7 @@ StScrollBar {
   .login-dialog-user-list-item {
     border-radius: 5px;
     padding: .2em;
-    color: darken($fg_color,30%);
+    color: darken($osd_fg_color,30%);
     &:ltr { padding-right: 1em; }
     &:rtl { padding-left: 1em; }
     &:hover { background-color: $selected_bg_color; color: $selected_fg_color; }
@@ -1600,22 +1606,16 @@ StScrollBar {
       //background-color: rgba(0,0,0,0.0);
       background-color: transparent;
     }
-    &:focus .login-dialog-timed-login-indicator { background-color: $bg_color; }
-  }
-
-  .login-dialog-not-listed-label {
-    font-size: 90%;
-    font-weight: bold;
-    color: darken($fg_color,30%);
-    padding-top: 1em;
+    &:focus .login-dialog-timed-login-indicator { background-color: $osd_bg_color; }
   }
 
   .login-dialog-username,
   .user-widget-label {
-      font-size: 120%;
-      font-weight: bold;
-      text-align: left;
-      padding-left: 15px;
+    color: $osd_fg_color;
+    font-size: 120%;
+    font-weight: bold;
+    text-align: left;
+    padding-left: 15px;
   }
     .user-widget-label {
       &:ltr { padding-left: 18px; }
@@ -1630,7 +1630,7 @@ StScrollBar {
   }
 
   .login-dialog-prompt-label {
-      color: darken($fg_color, 20%);
+      color: darken($osd_fg_color, 20%);
       font-size: 110%;
       padding-top: 1em;
   }
@@ -1640,9 +1640,9 @@ StScrollBar {
   }
 
   .login-dialog-session-list-button {
-      color: darken($fg_color,30%);
-      &:hover,&:focus { color: $fg_color; }
-      &:active { color: darken($fg_color, 50%); }
+      color: darken($osd_fg_color,30%);
+      &:hover,&:focus { color: $osd_fg_color; }
+      &:active { color: darken($osd_fg_color, 50%); }
   }
 
 //SCREEN SHIELD
@@ -1692,7 +1692,7 @@ StScrollBar {
     color: $_bubble_fg_color;
     border-radius: 4px;
   }
-
+  .notification { margin-right: 15px; } //compensate for space allocated to the scrollbar
 }
 
 

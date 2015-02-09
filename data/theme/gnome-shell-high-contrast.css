@@ -1442,7 +1442,7 @@ StScrollBar {
   padding: 24px 0px; }
 
 .login-dialog-banner {
-  color: #e6e6e6; }
+  color: #d6d6d1; }
 
 .login-dialog-button-box {
   spacing: 5px; }
@@ -1450,16 +1450,22 @@ StScrollBar {
 .login-dialog-message-warning {
   color: #f57900; }
 
-.login-dialog-0message-hint {
+.login-dialog-message-hint {
   padding-top: 0;
   padding-bottom: 20px; }
 
 .login-dialog-user-selection-box {
-  padding: 100px 0; }
+  padding: 100px 0px; }
   .login-dialog-user-selection-box .login-dialog-not-listed-label {
     padding-left: 2px; }
     .login-dialog-not-listed-button:focus .login-dialog-user-selection-box .login-dialog-not-listed-label, .login-dialog-not-listed-button:hover .login-dialog-user-selection-box .login-dialog-not-listed-label {
-      color: #fff; }
+      color: #eeeeec; }
+
+.login-dialog-not-listed-label {
+  font-size: 90%;
+  font-weight: bold;
+  color: #a6a69b;
+  padding-top: 1em; }
 
 .login-dialog-user-list-view {
   -st-vfade-offset: 1em; }
@@ -1477,7 +1483,7 @@ StScrollBar {
 .login-dialog-user-list-item {
   border-radius: 5px;
   padding: .2em;
-  color: #b3b3b3; }
+  color: #a6a69b; }
   .login-dialog-user-list-item:ltr {
     padding-right: 1em; }
   .login-dialog-user-list-item:rtl {
@@ -1489,16 +1495,11 @@ StScrollBar {
     height: 2px;
     background-color: transparent; }
   .login-dialog-user-list-item:focus .login-dialog-timed-login-indicator {
-    background-color: #000; }
-
-.login-dialog-not-listed-label {
-  font-size: 90%;
-  font-weight: bold;
-  color: #b3b3b3;
-  padding-top: 1em; }
+    background-color: #2e3436; }
 
 .login-dialog-username,
 .user-widget-label {
+  color: #eeeeec;
   font-size: 120%;
   font-weight: bold;
   text-align: left;
@@ -1516,7 +1517,7 @@ StScrollBar {
   width: 23em; }
 
 .login-dialog-prompt-label {
-  color: #cccccc;
+  color: #bebeb6;
   font-size: 110%;
   padding-top: 1em; }
 
@@ -1524,11 +1525,11 @@ StScrollBar {
   icon-size: 1.25em; }
 
 .login-dialog-session-list-button {
-  color: #b3b3b3; }
+  color: #a6a69b; }
   .login-dialog-session-list-button:hover, .login-dialog-session-list-button:focus {
-    color: #fff; }
+    color: #eeeeec; }
   .login-dialog-session-list-button:active {
-    color: gray; }
+    color: #747467; }
 
 .screen-shield-arrows {
   padding-bottom: 3em; }
@@ -1569,6 +1570,8 @@ StScrollBar {
     background-color: rgba(46, 52, 54, 0.5);
     color: #eeeeec;
     border-radius: 4px; }
+  .screen-shield-notifications-container .notification {
+    margin-right: 15px; }
 
 .screen-shield-notification-label {
   font-weight: bold;
