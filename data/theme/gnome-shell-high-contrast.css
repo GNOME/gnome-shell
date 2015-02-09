@@ -713,6 +713,8 @@ StScrollBar {
 #appMenu {
   spinner-image: url("process-working.svg");
   spacing: 4px; }
+  #appMenu .label-shadow {
+    color: transparent; }
 
 .aggregate-menu {
   width: 360px; }
@@ -1687,5 +1689,3 @@ StScrollBar {
 
 stage {
   -st-icon-style: symbolic; }
-
-/*# sourceMappingURL=gnome-shell-high-contrast.css.map */

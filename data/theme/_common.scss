@@ -826,7 +826,7 @@ StScrollBar {
     spinner-image: url("process-working.svg");
     spacing: 4px;
     
-    .label-shadow { }
+    .label-shadow { color: transparent; }
   }
   
   .aggregate-menu {
