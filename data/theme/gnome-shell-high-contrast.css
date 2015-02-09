@@ -1562,6 +1562,7 @@ StScrollBar {
   .screen-shield-notifications-container .summary-notification-stack-scrollview {
     padding-top: 0;
     padding-bottom: 0; }
+  .screen-shield-notifications-container .notification,
   .screen-shield-notifications-container .screen-shield-notification-source {
     padding: 12px 6px;
     border: 1px solid rgba(238, 238, 236, 0.2);
