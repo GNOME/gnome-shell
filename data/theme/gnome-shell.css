@@ -156,8 +156,9 @@ StScrollBar {
 
 .modal-dialog {
   border-radius: 5px;
-  background-color: rgba(33, 36, 36, 0.95);
-  border: 3px solid rgba(238, 238, 236, 0.2);
+  color: #eeeeec;
+  background-color: rgba(23, 25, 26, 0.95);
+  border: 3px solid rgba(238, 238, 236, 0.5);
   padding: 24px; }
   .modal-dialog .run-dialog-entry {
     width: 20em;
@@ -185,7 +186,7 @@ StScrollBar {
 /* End Session Dialog */
 .end-session-dialog {
   spacing: 42px;
-  border: 3px solid rgba(255, 255, 255, 0.2); }
+  border: 3px solid rgba(238, 238, 236, 0.5); }
 
 .end-session-dialog-list {
   padding-top: 20px; }
@@ -307,7 +308,7 @@ StScrollBar {
 /* Password or Authentication Dialog */
 .prompt-dialog {
   width: 500px;
-  border: 3px solid rgba(255, 255, 255, 0.2); }
+  border: 3px solid rgba(238, 238, 236, 0.5); }
 
 .prompt-dialog-main-layout {
   spacing: 24px;
@@ -514,8 +515,8 @@ StScrollBar {
 .osd-window,
 .switcher-list, .workspace-switcher-container {
   color: #eeeeec;
-  background-color: rgba(0, 0, 0, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: #2e3436;
+  border: 1px solid rgba(238, 238, 236, 0.5);
   border-radius: 12px;
   padding: 12px; }
 
@@ -601,7 +602,7 @@ StScrollBar {
 .calendar-vertical-separator {
   width: .3em;
   -stipple-width: 1px;
-  -stipple-color: rgba(255, 255, 255, 0.2); }
+  -stipple-color: rgba(238, 238, 236, 0.5); }
 
 .calendar-month-label {
   color: #e2e2df;
@@ -844,7 +845,7 @@ StScrollBar {
 
 .window-caption {
   spacing: 25px;
-  background-color: rgba(57, 63, 63, 0.7);
+  background-color: rgba(46, 52, 54, 0.7);
   border-radius: 8px;
   padding: 4px 12px;
   -shell-caption-spacing: 12px; }
@@ -940,7 +941,8 @@ StScrollBar {
 .dash-label {
   border-radius: 7px;
   padding: 4px 12px;
-  background-color: rgba(0, 0, 0, 0.4);
+  color: #eeeeec;
+  background-color: rgba(46, 52, 54, 0.7);
   text-align: center;
   -x-offset: 8px; }
 
@@ -973,7 +975,7 @@ StScrollBar {
 .search-provider-icon:active, .search-provider-icon:checked,
 .list-search-result:active,
 .list-search-result:checked {
-  background-color: rgba(33, 36, 36, 0.9); }
+  background-color: rgba(23, 25, 26, 0.9); }
 .search-provider-icon:focus, .search-provider-icon:selected, .search-provider-icon:hover,
 .list-search-result:focus,
 .list-search-result:selected,
@@ -988,8 +990,8 @@ StScrollBar {
 .show-apps:checked .overview-icon,
 .grid-search-result:active .overview-icon,
 .grid-search-result:checked .overview-icon {
-  background-color: rgba(33, 36, 36, 0.9);
-  box-shadow: inset 0 1px 2px #1c1f1f; }
+  background-color: rgba(23, 25, 26, 0.9);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.7); }
 .app-well-app:hover .overview-icon, .app-well-app:focus .overview-icon, .app-well-app:selected .overview-icon,
 .app-well-app.app-folder:hover .overview-icon,
 .app-well-app.app-folder:focus .overview-icon,
@@ -1016,6 +1018,7 @@ StScrollBar {
 .app-well-app.app-folder .overview-icon,
 .show-apps .overview-icon,
 .grid-search-result .overview-icon {
+  color: #eeeeec;
   border-radius: 4px;
   padding: 6px;
   border: 1px solid transparent;
@@ -1023,7 +1026,7 @@ StScrollBar {
   text-align: center; }
 
 .app-well-app.app-folder > .overview-icon {
-  background-color: rgba(57, 63, 63, 0.4); }
+  background-color: rgba(46, 52, 54, 0.4); }
 
 .show-apps:checked .show-apps-icon,
 .show-apps:focus .show-apps-icon {
@@ -1032,7 +1035,7 @@ StScrollBar {
 
 .app-folder-popup {
   -arrow-border-radius: 8px;
-  -arrow-background-color: rgba(57, 63, 63, 0.3);
+  -arrow-background-color: rgba(46, 52, 54, 0.3);
   -arrow-base: 24px;
   -arrow-rise: 11px; }
 
@@ -1081,8 +1084,8 @@ StScrollBar {
 
 #dash, .workspace-thumbnails {
   color: #eeeeec;
-  background-color: rgba(0, 0, 0, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.2); }
+  background-color: #2e3436;
+  border: 1px solid rgba(238, 238, 236, 0.5); }
 
 .search-statustext, .no-frequent-applications-label {
   font-size: 2em;
@@ -1091,7 +1094,7 @@ StScrollBar {
 
 /* NOTIFICATIONS & MESSAGE TRAY */
 #message-tray {
-  background: #212424 url("noise-texture.png");
+  background: #17191a url("noise-texture.png");
   background-repeat: repeat;
   height: 72px;
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
@@ -1117,7 +1120,8 @@ StScrollBar {
   font-size: 11pt;
   width: 34em;
   border-radius: 6px 6px 0 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  color: #eeeeec;
+  background-color: #2e3436;
   border: 1px solid #1c1f1f;
   border-bottom-width: 0;
   spacing-rows: 4px;
@@ -1164,7 +1168,7 @@ StScrollBar {
 
 .summary-boxpointer {
   -arrow-border-radius: 15px;
-  -arrow-background-color: rgba(0, 0, 0, 0.5);
+  -arrow-background-color: #2e3436;
   -arrow-base: 36px;
   -arrow-rise: 18px;
   color: #eeeeec;
@@ -1348,7 +1352,7 @@ StScrollBar {
   -arrow-border-radius: 10px;
   -arrow-background-color: rgba(46, 52, 54, 0.7);
   -arrow-border-width: 2px;
-  -arrow-border-color: rgba(255, 255, 255, 0.2);
+  -arrow-border-color: rgba(238, 238, 236, 0.5);
   -arrow-base: 20px;
   -arrow-rise: 10px;
   -boxpointer-gap: 5px; }
@@ -1559,8 +1563,8 @@ StScrollBar {
     padding-bottom: 0; }
   .screen-shield-notifications-container .screen-shield-notification-source {
     padding: 12px 6px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    background-color: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(238, 238, 236, 0.5);
+    background-color: rgba(46, 52, 54, 0.5);
     color: #eeeeec;
     border-radius: 4px; }
 
@@ -1572,7 +1576,7 @@ StScrollBar {
   padding: 0px 0px 0px 12px; }
 
 #panel.lock-screen {
-  background-color: transparent; }
+  background-color: rgba(46, 52, 54, 0.5); }
 
 .screen-shield-background {
   background: black;
