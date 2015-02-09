@@ -185,7 +185,7 @@ StScrollBar {
 /* End Session Dialog */
 .end-session-dialog {
   spacing: 42px;
-  border: 3px solid rgba(255, 255, 255, 0.1); }
+  border: 3px solid rgba(255, 255, 255, 0.2); }
 
 .end-session-dialog-list {
   padding-top: 20px; }
@@ -307,7 +307,7 @@ StScrollBar {
 /* Password or Authentication Dialog */
 .prompt-dialog {
   width: 500px;
-  border: 3px solid rgba(255, 255, 255, 0.1); }
+  border: 3px solid rgba(255, 255, 255, 0.2); }
 
 .prompt-dialog-main-layout {
   spacing: 24px;
@@ -515,7 +515,7 @@ StScrollBar {
 .switcher-list, .workspace-switcher-container {
   color: #eeeeec;
   background-color: rgba(0, 0, 0, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 12px;
   padding: 12px; }
 
@@ -601,7 +601,7 @@ StScrollBar {
 .calendar-vertical-separator {
   width: .3em;
   -stipple-width: 1px;
-  -stipple-color: rgba(255, 255, 255, 0.1); }
+  -stipple-color: rgba(255, 255, 255, 0.2); }
 
 .calendar-month-label {
   color: #e2e2df;
@@ -1082,7 +1082,7 @@ StScrollBar {
 #dash, .workspace-thumbnails {
   color: #eeeeec;
   background-color: rgba(0, 0, 0, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.1); }
+  border: 1px solid rgba(255, 255, 255, 0.2); }
 
 .search-statustext, .no-frequent-applications-label {
   font-size: 2em;
@@ -1348,7 +1348,7 @@ StScrollBar {
   -arrow-border-radius: 10px;
   -arrow-background-color: rgba(46, 52, 54, 0.7);
   -arrow-border-width: 2px;
-  -arrow-border-color: rgba(255, 255, 255, 0.1);
+  -arrow-border-color: rgba(255, 255, 255, 0.2);
   -arrow-base: 20px;
   -arrow-rise: 10px;
   -boxpointer-gap: 5px; }
@@ -1550,30 +1550,19 @@ StScrollBar {
   font-size: 28pt; }
 
 .screen-shield-notifications-container {
-  spacing: 20px;
+  spacing: 6px;
   width: 30em;
   background-color: transparent;
   max-height: 500px; }
   .screen-shield-notifications-container .summary-notification-stack-scrollview {
     padding-top: 0;
     padding-bottom: 0; }
-  .screen-shield-notifications-container .notification-button, .screen-shield-notifications-container .notification-icon-button {
-    border: 1px solid rgba(238, 238, 236, 0.5); }
-  .screen-shield-notifications-container .notification, .screen-shield-notifications-container .screen-shield-notifications-box {
-    background-color: transparent;
+  .screen-shield-notifications-container .screen-shield-notification-source {
+    padding: 12px 6px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background-color: rgba(0, 0, 0, 0.5);
     color: #eeeeec;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    margin: 6px 0;
-    padding: 12px;
-    spacing: 24px; }
-
-.screen-shield-notification-source {
-  padding: 12px 6px;
-  border-width: 2px;
-  border-radius: 5px;
-  border-color: white;
-  background-color: rgba(57, 63, 63, 0.3);
-  spacing: 5px; }
+    border-radius: 4px; }
 
 .screen-shield-notification-label {
   font-weight: bold;

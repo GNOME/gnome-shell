@@ -31,7 +31,7 @@ $font-size: 11;
 $font-family: Cantarell, Sans-Serif;
 $_bubble_bg_color: transparentize($osd_borders_color,.2);
 $_bubble_fg_color: $osd_fg_color;
-$_bubble_border_color: $osd_outer_borders_color;
+$_bubble_border_color: opacify($osd_outer_borders_color, 0.1);
 
 stage {
   font-family: $font-family;
@@ -1670,33 +1670,25 @@ StScrollBar {
 .screen-shield-clock-date { font-size: 28pt; }
 
 .screen-shield-notifications-container {
-  spacing: 20px;
+  spacing: 6px;
   width: 30em;
   background-color: transparent;
   max-height: 500px;
   .summary-notification-stack-scrollview {
     padding-top: 0;
     padding-bottom: 0;
-  }
-  .notification-button, .notification-icon-button { border: 1px solid transparentize($fg_color,0.5); }
-  .notification, .screen-shield-notifications-box {
-    background-color: transparentize($_bubble_bg_color,0.5);
-    color: $fg_color;
+  }  
+
+  .screen-shield-notification-source {
+    padding: 12px 6px;
     border: 1px solid $_bubble_border_color;
-    margin: 6px 0;
-    padding: 12px;
-    spacing: 24px; //FIXME I need a proper margin so the items are spaced with transparency
+    background-color: $_bubble_bg_color;
+    color: $_bubble_fg_color;
+    border-radius: 4px;
   }
+
 }
 
-.screen-shield-notification-source {
-  padding: 12px 6px;
-  border-width: 2px;
-  border-radius: 5px;
-  border-color: white;
-  background-color: transparentize($bg_color,0.7);
-  spacing: 5px;
-}
 
 .screen-shield-notification-label {
   font-weight: bold;
