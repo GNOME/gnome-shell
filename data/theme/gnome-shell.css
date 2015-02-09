@@ -1152,7 +1152,7 @@ StScrollBar {
   transition-duration: 100ms; }
 
 .summary-source-button:hover .summary-source, .summary-source-button:selected .summary-source, .summary-source-button:focus .summary-source {
-  background-color: #3e4444; }
+  background-color: #33393c; }
 
 .summary-source-counter {
   font-size: 10pt;
