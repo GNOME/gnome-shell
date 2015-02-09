@@ -729,7 +729,7 @@ StScrollBar {
   padding: 13px;
   border: 1px solid #282c2c; }
   .system-menu-action:hover, .system-menu-action:focus {
-    color: white;
+    color: #ffffff;
     background-color: #215d9c;
     border: none;
     padding: 14px; }

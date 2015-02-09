@@ -842,7 +842,7 @@ StScrollBar {
     border: 1px solid lighten($borders_color,5%);
     
     &:hover, &:focus {
-      color: lighten($fg_color, 10%);
+      color: $selected_fg_color;
       background-color: $selected_bg_color;
       border: none;
       padding: 14px;
