@@ -1069,6 +1069,14 @@ xdg_shell_get_xdg_popup (struct wl_client *client,
                                      XDG_SHELL_ERROR_ROLE) != 0)
     return;
 
+  if (parent_surf->xdg_popup == NULL && parent_surf->xdg_surface == NULL)
+    {
+      wl_resource_post_error (resource,
+                              XDG_POPUP_ERROR_INVALID_PARENT,
+                              "invalid parent surface");
+      return;
+    }
+
   surface->xdg_popup = wl_resource_create (client, &xdg_popup_interface, wl_resource_get_version (resource), id);
   wl_resource_set_implementation (surface->xdg_popup, &meta_wayland_xdg_popup_interface, surface, xdg_popup_destructor);
 
