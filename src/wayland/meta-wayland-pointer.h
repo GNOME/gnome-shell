@@ -114,4 +114,7 @@ gboolean meta_wayland_pointer_can_grab_surface (MetaWaylandPointer *pointer,
                                                 MetaWaylandSurface *surface,
                                                 uint32_t            serial);
 
+gboolean meta_wayland_pointer_can_popup (MetaWaylandPointer *pointer,
+                                         uint32_t            serial);
+
 #endif /* META_WAYLAND_POINTER_H */

@@ -1046,6 +1046,7 @@ xdg_shell_get_xdg_popup (struct wl_client *client,
                          int32_t x,
                          int32_t y)
 {
+  struct wl_resource *popup_resource;
   MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
   MetaWaylandSurface *parent_surf = wl_resource_get_user_data (parent_resource);
   MetaWaylandSeat *seat = wl_resource_get_user_data (seat_resource);
@@ -1077,9 +1078,20 @@ xdg_shell_get_xdg_popup (struct wl_client *client,
       return;
     }
 
-  surface->xdg_popup = wl_resource_create (client, &xdg_popup_interface, wl_resource_get_version (resource), id);
-  wl_resource_set_implementation (surface->xdg_popup, &meta_wayland_xdg_popup_interface, surface, xdg_popup_destructor);
+  popup_resource = wl_resource_create (client, &xdg_popup_interface,
+                                       wl_resource_get_version (resource), id);
+  wl_resource_set_implementation (popup_resource,
+                                  &meta_wayland_xdg_popup_interface,
+                                  surface,
+                                  xdg_popup_destructor);
 
+  if (!meta_wayland_pointer_can_popup (&seat->pointer, serial))
+    {
+      xdg_popup_send_popup_done (popup_resource);
+      return;
+    }
+
+  surface->xdg_popup = popup_resource;
   surface->xdg_shell_resource = resource;
 
   window = meta_window_wayland_new (display, surface);
@@ -1274,6 +1286,12 @@ wl_shell_surface_set_popup (struct wl_client *client,
   MetaWaylandSeat *seat = wl_resource_get_user_data (seat_resource);
 
   wl_shell_surface_set_state (surface, SURFACE_STATE_TOPLEVEL);
+
+  if (!meta_wayland_pointer_can_popup (&seat->pointer, serial))
+    {
+      wl_shell_surface_send_popup_done (resource);
+      return;
+    }
 
   meta_window_set_transient_for (surface->window, parent_surf->window);
   meta_window_move_frame (surface->window, FALSE,

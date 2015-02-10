@@ -844,3 +844,9 @@ meta_wayland_pointer_can_grab_surface (MetaWaylandPointer *pointer,
           pointer->grab_serial == serial &&
           pointer->focus_surface == surface);
 }
+
+gboolean
+meta_wayland_pointer_can_popup (MetaWaylandPointer *pointer, uint32_t serial)
+{
+  return pointer->grab_serial == serial;
+}
