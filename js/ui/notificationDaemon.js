@@ -357,20 +357,14 @@ const FdoNotificationDaemon = new Lang.Class({
         let gicon = this._iconForNotificationData(icon, hints);
         let gimage = this._imageForNotificationData(hints);
 
-        let image = null;
-
         // If an icon is not specified, we use 'image-data' or 'image-path' hint for an icon
         // and don't show a large image. There are currently many applications that use
         // notify_notification_set_icon_from_pixbuf() from libnotify, which in turn sets
         // the 'image-data' hint. These applications don't typically pass in 'app_icon'
         // argument to Notify() and actually expect the pixbuf to be shown as an icon.
         // So the logic here does the right thing for this case. If both an icon and either
-        // one of 'image-data' or 'image-path' are specified, we show both an icon and
-        // a large image.
-        if (gicon && gimage)
-            image = new St.Icon({ gicon: gimage,
-                                  icon_size: notification.IMAGE_SIZE });
-        else if (!gicon && gimage)
+        // one of 'image-data' or 'image-path' are specified, the icon and takes precedence.
+        if (!gicon && gimage)
             gicon = gimage;
         else if (!gicon)
             gicon = this._fallbackIconForNotificationData(hints);
@@ -380,7 +374,6 @@ const FdoNotificationDaemon = new Lang.Class({
                                              clear: true,
                                              soundFile: hints['sound-file'],
                                              soundName: hints['sound-name'] });
-        notification.setImage(image);
 
         let hasDefaultAction = false;
 
