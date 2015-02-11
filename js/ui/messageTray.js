@@ -1255,11 +1255,6 @@ const Source = new Lang.Class({
         return this.notifications.length;
     },
 
-    get indicatorCount() {
-        let notifications = this.notifications.filter(function(n) { return !n.isTransient && !n.resident; });
-        return notifications.length;
-    },
-
     get unseenCount() {
         return this.notifications.filter(function(n) { return !n.acknowledged; }).length;
     },
