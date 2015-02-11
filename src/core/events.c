@@ -161,6 +161,7 @@ meta_display_handle_event (MetaDisplay        *display,
   G_GNUC_UNUSED gboolean bypass_wayland = FALSE;
   MetaGestureTracker *tracker;
   ClutterEventSequence *sequence;
+  ClutterInputDevice *source;
 
   sequence = clutter_event_get_event_sequence (event);
 
@@ -178,6 +179,14 @@ meta_display_handle_event (MetaDisplay        *display,
       meta_wayland_compositor_update (compositor, event);
     }
 #endif
+
+  source = clutter_event_get_source_device (event);
+
+  if (source)
+    {
+      meta_backend_update_last_device (meta_get_backend (),
+                                       clutter_input_device_get_device_id (source));
+    }
 
   if (meta_is_wayland_compositor () && event->type == CLUTTER_MOTION)
     {
