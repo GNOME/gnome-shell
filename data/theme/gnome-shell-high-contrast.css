@@ -816,7 +816,7 @@ StScrollBar {
 .popup-menu-icon {
   icon-size: 1.09em; }
 
-.window-close, .notification-close {
+.window-close {
   background-image: url("resource:///org/gnome/shell/theme/close-window.svg");
   background-size: 32px;
   height: 32px;
@@ -826,12 +826,6 @@ StScrollBar {
   -shell-close-overlap: 16px; }
   .window-close:rtl {
     -st-background-image-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5); }
-
-.notification-close {
-  -shell-close-overlap-x: 14px;
-  -shell-close-overlap-y: -12px; }
-  .notification-close:rtl {
-    -shell-close-overlap-x: -14px; }
 
 /* NETWORK DIALOGS */
 .nm-dialog {
@@ -1188,32 +1182,6 @@ StScrollBar {
     .notification-banner .notification-button:hover, .notification-banner .notification-buttonfocus {
       background-color: #292f30; }
 
-.notification {
-  font-size: 11pt;
-  width: 34em;
-  margin: 5px;
-  border-radius: 6px;
-  color: #eeeeec;
-  background-color: #2e3436;
-  border: 1px solid black;
-  spacing-rows: 4px;
-  padding: 8px;
-  spacing-columns: 10px; }
-
-.notification-unexpanded {
-  min-height: 48px;
-  height: 48px; }
-
-.notification-with-image {
-  min-height: 159px; }
-
-.notification-body {
-  spacing: 5px; }
-
-.notification-actions {
-  paddinf-top: 18px;
-  spacing: 6px; }
-
 .summary-source-counter {
   font-size: 10pt;
   font-weight: bold;
@@ -1226,28 +1194,6 @@ StScrollBar {
   border: 2px solid #eeeeec;
   box-shadow: 0 2px 2px rgba(0, 0, 0, 0.5);
   border-radius: 0.9em; }
-
-.notification-scrollview {
-  max-height: 18em;
-  -st-vfade-offset: 24px; }
-  .notification-scrollview:ltr > StScrollBar {
-    padding-left: 6px; }
-  .notification-scrollview:rtl > StScrollBar {
-    padding-right: 6px; }
-
-.notification-button {
-  height: 24px; }
-
-.notification-icon-button {
-  border-radius: 5px;
-  padding: 5px;
-  height: 24px;
-  width: 24px; }
-  .notification-icon-button > StIcon {
-    icons-size: 16px;
-    width: 16px;
-    height: 16px;
-    padding: 2px; }
 
 .secondary-icon {
   icon-size: 1.09em; }
