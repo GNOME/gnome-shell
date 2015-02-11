@@ -1143,26 +1143,6 @@ StScrollBar {
   color: #eeeeec; }
 
 /* NOTIFICATIONS & MESSAGE TRAY */
-#message-tray {
-  background: #17191a url("noise-texture.png");
-  background-repeat: repeat;
-  height: 72px;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
-  padding: 4px; }
-  #message-tray .message-tray-summary {
-    height: 72px; }
-  #message-tray .message-tray-menu-button StIcon {
-    padding: 0 20px;
-    color: #eeeeec;
-    icon-size: 24px;
-    opacity: 1; }
-  #message-tray .message-tray-menu-button:hover StIcon {
-    color: white; }
-  #message-tray .message-tray-menu-button:active StIcon {
-    color: #2a76c6; }
-  #message-tray .no-messages-label {
-    color: #d6d6d1; }
-
 .url-highlighter {
   link-color: #215d9c; }
 
