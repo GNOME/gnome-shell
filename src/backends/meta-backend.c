@@ -137,6 +137,55 @@ on_device_added (ClutterDeviceManager *device_manager,
   create_device_monitor (backend, device_id);
 }
 
+static inline gboolean
+device_is_slave_touchscreen (ClutterInputDevice *device)
+{
+  return (clutter_input_device_get_device_mode (device) != CLUTTER_INPUT_MODE_MASTER &&
+          clutter_input_device_get_device_type (device) == CLUTTER_TOUCHSCREEN_DEVICE);
+}
+
+static inline gboolean
+check_has_pointing_device (ClutterDeviceManager *manager)
+{
+  const GSList *devices;
+
+  devices = clutter_device_manager_peek_devices (manager);
+
+  for (; devices; devices = devices->next)
+    {
+      ClutterInputDevice *device = devices->data;
+
+      if (clutter_input_device_get_device_mode (device) == CLUTTER_INPUT_MODE_MASTER)
+        continue;
+      if (clutter_input_device_get_device_type (device) == CLUTTER_TOUCHSCREEN_DEVICE ||
+          clutter_input_device_get_device_type (device) == CLUTTER_KEYBOARD_DEVICE)
+        continue;
+
+      return TRUE;
+    }
+
+  return FALSE;
+}
+
+static inline gboolean
+check_has_slave_touchscreen (ClutterDeviceManager *manager)
+{
+  const GSList *devices;
+
+  devices = clutter_device_manager_peek_devices (manager);
+
+  for (; devices; devices = devices->next)
+    {
+      ClutterInputDevice *device = devices->data;
+
+      if (clutter_input_device_get_device_mode (device) != CLUTTER_INPUT_MODE_MASTER &&
+          clutter_input_device_get_device_type (device) == CLUTTER_TOUCHSCREEN_DEVICE)
+        return TRUE;
+    }
+
+  return FALSE;
+}
+
 static void
 on_device_removed (ClutterDeviceManager *device_manager,
                    ClutterInputDevice   *device,
@@ -146,6 +195,32 @@ on_device_removed (ClutterDeviceManager *device_manager,
   int device_id = clutter_input_device_get_device_id (device);
 
   destroy_device_monitor (backend, device_id);
+
+  /* If the device the user last interacted goes away, check again pointer
+   * visibility.
+   */
+  if (backend->current_device_id == device_id)
+    {
+      MetaCursorTracker *cursor_tracker = meta_cursor_tracker_get_for_screen (NULL);
+      gboolean has_touchscreen, has_pointing_device;
+      ClutterInputDeviceType device_type;
+
+      device_type = clutter_input_device_get_device_type (device);
+      has_touchscreen = check_has_slave_touchscreen (device_manager);
+
+      if (device_type == CLUTTER_TOUCHSCREEN_DEVICE && has_touchscreen)
+        {
+          /* There's more touchscreens left, keep the pointer hidden */
+          meta_cursor_tracker_set_pointer_visible (cursor_tracker, FALSE);
+        }
+      else if (device_type != CLUTTER_KEYBOARD_DEVICE)
+        {
+          has_pointing_device = check_has_pointing_device (device_manager);
+          meta_cursor_tracker_set_pointer_visible (cursor_tracker,
+                                                   has_pointing_device &&
+                                                   !has_touchscreen);
+        }
+    }
 }
 
 static MetaMonitorManager *
@@ -178,7 +253,9 @@ meta_backend_real_post_init (MetaBackend *backend)
                                                     NULL, (GDestroyNotify) g_object_unref);
 
   {
+    MetaCursorTracker *cursor_tracker;
     ClutterDeviceManager *manager;
+    gboolean has_touchscreen = FALSE;
     GSList *devices, *l;
 
     /* Create the core device monitor. */
@@ -196,7 +273,11 @@ meta_backend_real_post_init (MetaBackend *backend)
       {
         ClutterInputDevice *device = l->data;
         on_device_added (manager, device, backend);
+        has_touchscreen |= device_is_slave_touchscreen (device);
       }
+
+    cursor_tracker = meta_cursor_tracker_get_for_screen (NULL);
+    meta_cursor_tracker_set_pointer_visible (cursor_tracker, !has_touchscreen);
 
     g_slist_free (devices);
   }
