@@ -50,6 +50,7 @@ struct _MetaBackend
   GObject parent;
 
   GHashTable *device_monitors;
+  gint current_device_id;
 };
 
 struct _MetaBackendClass
@@ -105,5 +106,8 @@ void meta_backend_warp_pointer (MetaBackend *backend,
                                 int          y);
 
 struct xkb_keymap * meta_backend_get_keymap (MetaBackend *backend);
+
+void meta_backend_update_last_device (MetaBackend *backend,
+                                      int          device_id);
 
 #endif /* META_BACKEND_PRIVATE_H */

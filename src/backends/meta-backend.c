@@ -29,6 +29,7 @@
 #include "meta-input-settings-private.h"
 
 #include "backends/x11/meta-backend-x11.h"
+#include "meta-cursor-tracker-private.h"
 #include "meta-stage.h"
 
 #ifdef HAVE_NATIVE_BACKEND
@@ -268,6 +269,12 @@ meta_backend_class_init (MetaBackendClass *klass)
                 0,
                 NULL, NULL, NULL,
                 G_TYPE_NONE, 1, G_TYPE_UINT);
+  g_signal_new ("last-device-changed",
+                G_TYPE_FROM_CLASS (object_class),
+                G_SIGNAL_RUN_LAST,
+                0,
+                NULL, NULL, NULL,
+                G_TYPE_NONE, 1, G_TYPE_INT);
 }
 
 static void
@@ -386,6 +393,45 @@ meta_backend_get_stage (MetaBackend *backend)
 {
   MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
   return priv->stage;
+}
+
+void
+meta_backend_update_last_device (MetaBackend *backend,
+                                 int          device_id)
+{
+  ClutterInputDeviceType device_type;
+  MetaCursorTracker *cursor_tracker;
+  ClutterDeviceManager *manager;
+  ClutterInputDevice *device;
+
+  if (backend->current_device_id == device_id)
+    return;
+
+  manager = clutter_device_manager_get_default ();
+  device = clutter_device_manager_get_device (manager, device_id);
+
+  if (!device ||
+      clutter_input_device_get_device_mode (device) == CLUTTER_INPUT_MODE_MASTER)
+    return;
+
+  device_type = clutter_input_device_get_device_type (device);
+
+  cursor_tracker = meta_cursor_tracker_get_for_screen (NULL);
+  backend->current_device_id = device_id;
+  g_signal_emit_by_name (backend, "last-device-changed", device_id);
+
+  if (device_type == CLUTTER_KEYBOARD_DEVICE)
+    return;
+
+  switch (device_type)
+    {
+    case CLUTTER_TOUCHSCREEN_DEVICE:
+      meta_cursor_tracker_set_pointer_visible (cursor_tracker, FALSE);
+      break;
+    default:
+      meta_cursor_tracker_set_pointer_visible (cursor_tracker, TRUE);
+      break;
+    }
 }
 
 static GType
