@@ -418,9 +418,8 @@ StScrollBar {
   -arrow-box-shadow: 0 1px 3px red; }
 
 .popup-separator-menu-item {
-  -margin-horizontal: 24px;
   height: 1px;
-  padding: 0;
+  margin: 6px 64px;
   background-color: transparent;
   border-color: #343a3a;
   border-bottom-width: 1px;
@@ -508,7 +507,7 @@ StScrollBar {
 
 .ws-switcher-box {
   height: 50px;
-  border: 1px solid rgba(238, 238, 236, 0.5);
+  border: 1px solid rgba(238, 238, 236, 0.1);
   background: transparent;
   border-radius: 8px; }
 
