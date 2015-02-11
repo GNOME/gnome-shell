@@ -61,8 +61,6 @@ struct _ShellRecorder {
   int pointer_x;
   int pointer_y;
 
-  int xinput_opcode;
-
   GSettings *a11y_settings;
   gboolean draw_cursor;
   MetaCursorTracker *cursor_tracker;
