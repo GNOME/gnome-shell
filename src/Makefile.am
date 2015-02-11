@@ -253,6 +253,8 @@ libmutter_la_SOURCES +=				\
 	wayland/meta-wayland-keyboard.h		\
 	wayland/meta-wayland-pointer.c		\
 	wayland/meta-wayland-pointer.h		\
+	wayland/meta-wayland-popup.c		\
+	wayland/meta-wayland-popup.h		\
 	wayland/meta-wayland-seat.c		\
 	wayland/meta-wayland-seat.h		\
 	wayland/meta-wayland-touch.c		\

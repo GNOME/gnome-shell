@@ -85,6 +85,12 @@ void meta_wayland_pointer_update (MetaWaylandPointer *pointer,
 gboolean meta_wayland_pointer_handle_event (MetaWaylandPointer *pointer,
                                             const ClutterEvent *event);
 
+void meta_wayland_pointer_send_motion (MetaWaylandPointer *pointer,
+                                       const ClutterEvent *event);
+
+void meta_wayland_pointer_send_button (MetaWaylandPointer *pointer,
+                                       const ClutterEvent *event);
+
 void meta_wayland_pointer_set_focus (MetaWaylandPointer *pointer,
                                      MetaWaylandSurface *surface);
 
@@ -95,6 +101,8 @@ void meta_wayland_pointer_end_grab (MetaWaylandPointer *pointer);
 
 gboolean meta_wayland_pointer_start_popup_grab (MetaWaylandPointer *pointer,
                                                 MetaWaylandSurface *popup);
+
+void meta_wayland_pointer_end_popup_grab (MetaWaylandPointer *pointer);
 
 void meta_wayland_pointer_repick (MetaWaylandPointer *pointer);
 

@@ -40,6 +40,7 @@
 #include "meta-wayland-seat.h"
 #include "meta-wayland-keyboard.h"
 #include "meta-wayland-pointer.h"
+#include "meta-wayland-popup.h"
 #include "meta-wayland-data-device.h"
 
 #include "meta-cursor-tracker-private.h"
