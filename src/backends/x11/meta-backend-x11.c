@@ -144,6 +144,24 @@ translate_crossing_event (MetaBackendX11 *x11,
   enter_event->event = meta_backend_x11_get_xwindow (x11);
 }
 
+static void
+handle_device_change (MetaBackendX11 *x11,
+                      XIEvent        *event)
+{
+  XIDeviceChangedEvent *device_changed;
+
+  if (event->evtype != XI_DeviceChanged)
+    return;
+
+  device_changed = (XIDeviceChangedEvent *) event;
+
+  if (device_changed->reason != XISlaveSwitch)
+    return;
+
+  meta_backend_update_last_device (META_BACKEND (x11),
+                                   device_changed->sourceid);
+}
+
 /* Clutter makes the assumption that there is only one X window
  * per stage, which is a valid assumption to make for a generic
  * application toolkit. As such, it will ignore any events sent
@@ -155,7 +173,32 @@ translate_crossing_event (MetaBackendX11 *x11,
  */
 static void
 maybe_spoof_event_as_stage_event (MetaBackendX11 *x11,
-                                  XEvent         *event)
+                                  XIEvent        *input_event)
+{
+  switch (input_event->evtype)
+    {
+    case XI_Motion:
+    case XI_ButtonPress:
+    case XI_ButtonRelease:
+    case XI_KeyPress:
+    case XI_KeyRelease:
+    case XI_TouchBegin:
+    case XI_TouchUpdate:
+    case XI_TouchEnd:
+      translate_device_event (x11, (XIDeviceEvent *) input_event);
+      break;
+    case XI_Enter:
+    case XI_Leave:
+      translate_crossing_event (x11, (XIEnterEvent *) input_event);
+      break;
+    default:
+      break;
+    }
+}
+
+static void
+handle_input_event (MetaBackendX11 *x11,
+                    XEvent         *event)
 {
   MetaBackendX11Private *priv = meta_backend_x11_get_instance_private (x11);
 
@@ -164,25 +207,10 @@ maybe_spoof_event_as_stage_event (MetaBackendX11 *x11,
     {
       XIEvent *input_event = (XIEvent *) event->xcookie.data;
 
-      switch (input_event->evtype)
-        {
-        case XI_Motion:
-        case XI_ButtonPress:
-        case XI_ButtonRelease:
-        case XI_KeyPress:
-        case XI_KeyRelease:
-        case XI_TouchBegin:
-        case XI_TouchUpdate:
-        case XI_TouchEnd:
-          translate_device_event (x11, (XIDeviceEvent *) input_event);
-          break;
-        case XI_Enter:
-        case XI_Leave:
-          translate_crossing_event (x11, (XIEnterEvent *) input_event);
-          break;
-        default:
-          break;
-        }
+      if (input_event->evtype == XI_DeviceChanged)
+        handle_device_change (x11, input_event);
+      else
+        maybe_spoof_event_as_stage_event (x11, input_event);
     }
 }
 
@@ -251,7 +279,7 @@ handle_host_xevent (MetaBackend *backend,
 
   if (!bypass_clutter)
     {
-      maybe_spoof_event_as_stage_event (x11, event);
+      handle_input_event (x11, event);
       clutter_x11_handle_event (event);
     }
 
