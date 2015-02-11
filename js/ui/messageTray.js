@@ -1499,11 +1499,6 @@ const MessageTray = new Lang.Class({
         this._banner = null;
         this._bannerClickedId = 0;
 
-        this._closeButton = Util.makeCloseButton();
-        this._closeButton.hide();
-        this._closeButton.connect('clicked', Lang.bind(this, this._closeNotification));
-        this.actor.add_actor(this._closeButton);
-
         this._userActiveWhileNotificationShown = false;
 
         this.idleMonitor = Meta.IdleMonitor.get_core();
@@ -1529,7 +1524,6 @@ const MessageTray = new Lang.Class({
 
         Main.layoutManager.trayBox.add_actor(this.actor);
         Main.layoutManager.trackChrome(this.actor, { affectsInputRegion: true });
-        Main.layoutManager.trackChrome(this._closeButton);
 
         global.screen.connect('in-fullscreen-changed', Lang.bind(this, this._updateState));
 
@@ -1564,14 +1558,6 @@ const MessageTray = new Lang.Class({
     _expireNotification: function() {
         this._notificationExpired = true;
         this._updateState();
-    },
-
-    _closeNotification: function() {
-        if (this._notificationState == State.SHOWN) {
-            this._closeButton.hide();
-            this._notification.emit('done-displaying');
-            this._notification.destroy();
-        }
     },
 
     get queueCount() {
@@ -2038,7 +2024,6 @@ const MessageTray = new Lang.Class({
         if (notification.isTransient)
             notification.destroy(NotificationDestroyedReason.EXPIRED);
 
-        this._closeButton.hide();
         this._pointerInNotification = false;
         this._notificationRemoved = false;
 
