@@ -250,22 +250,6 @@ do_grab_screenshot (ShellScreenshot *screenshot,
 }
 
 static void
-get_pointer_coords (int *x,
-                    int *y)
-{
-  ClutterDeviceManager *manager;
-  ClutterInputDevice *device;
-  ClutterPoint point;
-
-  manager = clutter_device_manager_get_default ();
-  device = clutter_device_manager_get_device (manager, META_VIRTUAL_CORE_POINTER_ID);
-
-  clutter_input_device_get_coords (device, NULL, &point);
-  *x = point.x;
-  *y = point.y;
-}
-
-static void
 _draw_cursor_image (MetaCursorTracker     *tracker,
                     cairo_surface_t       *surface,
                     cairo_rectangle_int_t  area)
@@ -281,7 +265,7 @@ _draw_cursor_image (MetaCursorTracker     *tracker,
   int xhot, yhot;
 
   screenshot_region = cairo_region_create_rectangle (&area);
-  get_pointer_coords (&x, &y);
+  meta_cursor_tracker_get_pointer (tracker, &x, &y, NULL);
 
   if (!cairo_region_contains_point (screenshot_region, x, y))
     {
