@@ -15,6 +15,7 @@ const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 
 const Main = imports.ui.main;
+const MessageTray = imports.ui.messageTray;
 const Tweener = imports.ui.tweener;
 const Util = imports.misc.util;
 
@@ -974,6 +975,61 @@ const Message = new Lang.Class({
 });
 Signals.addSignalMethods(Message.prototype);
 
+const NotificationMessage = new Lang.Class({
+    Name: 'NotificationMessage',
+    Extends: Message,
+
+    _init: function(notification) {
+        this.notification = notification;
+
+        this.setUseBodyMarkup(notification.bannerBodyMarkup);
+        this.parent(notification.title, notification.bannerBodyText);
+
+        this.setIcon(this._getIcon());
+
+        this.connect('close', Lang.bind(this,
+            function() {
+                this._closed = true;
+                this.notification.destroy(MessageTray.NotificationDestroyedReason.DISMISSED);
+            }));
+        notification.connect('destroy', Lang.bind(this,
+            function() {
+                if (!this._closed)
+                    this.emit('close');
+            }));
+        this._updatedId = notification.connect('updated',
+                                               Lang.bind(this, this._onUpdated));
+    },
+
+    _getIcon: function() {
+        if (this.notification.gicon)
+            return new St.Icon({ gicon: this.notification.gicon, icon_size: 48 });
+        else
+            return this.notification.source.createIcon(48);
+    },
+
+    _onUpdated: function(n, clear) {
+        this.setIcon(this._getIcon());
+        this.setTitle(n.title);
+        this.setBody(n.bannerBodyText);
+        this.setUseBodyMarkup(n.bannerBodyMarkup);
+    },
+
+    canClear: function() {
+        return !this.notification.resident;
+    },
+
+    _onClicked: function() {
+        this.notification.activate();
+    },
+
+    _onDestroy: function() {
+        if (this._updatedId)
+            this.notification.disconnect(this._updatedId);
+        this._updatedId = 0;
+    }
+});
+
 const MessageListSection = new Lang.Class({
     Name: 'MessageListSection',
 
@@ -1275,6 +1331,109 @@ const EventsSection = new Lang.Class({
     }
 });
 
+const NotificationSection = new Lang.Class({
+    Name: 'NotificationSection',
+    Extends: MessageListSection,
+
+    _init: function() {
+        this.parent('Notifications');
+
+        this._sources = new Map();
+        this._nUrgent = 0;
+
+        Main.messageTray.connect('source-added', Lang.bind(this, this._sourceAdded));
+        Main.messageTray.getSources().forEach(Lang.bind(this, function(source) {
+            this._sourceAdded(Main.messageTray, source);
+        }));
+
+        this.actor.connect('notify::mapped', Lang.bind(this, this._onMapped));
+
+        Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
+        this._sessionUpdated();
+    },
+
+    _sourceAdded: function(tray, source) {
+        let obj = {
+            destroyId: 0,
+            notificationAddedId: 0,
+        };
+
+        obj.destroyId = source.connect('destroy', Lang.bind(this, function(source) {
+            this._onSourceDestroy(source, obj);
+        }));
+        obj.notificationAddedId = source.connect('notification-added',
+                                                 Lang.bind(this, this._onNotificationAdded));
+
+        this._sources.set(source, obj);
+    },
+
+    _onNotificationAdded: function(source, notification) {
+        let message = new NotificationMessage(notification);
+
+        let time = new Date().toLocaleFormat(C_("event list time", "%H\u2236%M"));
+        message.setSecondaryActor(new St.Label({ style_class: 'event-time',
+                                                 x_align: Clutter.ActorAlign.END,
+                                                 text: time }));
+
+        let isUrgent = notification.urgency == MessageTray.Urgency.CRITICAL;
+        if (isUrgent) {
+            // Keep track of urgent notifications to keep them on top
+            this._nUrgent++;
+
+            let id = notification.connect('destroy', Lang.bind(this,
+                function() {
+                    notification.disconnect(id);
+                    this._nUrgent--;
+                }));
+        } else if (this.mapped) {
+            // Only acknowledge non-urgent notifications in case it
+            // has important actions that are inaccessible when not
+            // shown as banner
+            notification.acknowledged = true;
+        }
+
+        let index = isUrgent ? 0 : this._nUrgent;
+        this.addMessageAtIndex(message, index, this.actor.mapped);
+    },
+
+    _onSourceDestroy: function(source, obj) {
+        source.disconnect(obj.destroyId);
+        source.disconnect(obj.notificationAddedId);
+
+        this._sources.delete(source);
+    },
+
+    _onMapped: function() {
+        if (!this.actor.mapped)
+            return;
+
+        for (let message of this._messages.keys())
+            if (message.notification.urgency != MessageTray.Urgency.CRITICAL)
+                message.notification.acknowledged = true;
+    },
+
+    _onTitleClicked: function() {
+        this.parent();
+
+        let app = Shell.AppSystem.get_default().lookup_app('gnome-notifications-panel.desktop');
+
+        if (!app) {
+            log('Settings panel for desktop file ' + desktopFile + ' could not be loaded!');
+            return;
+        }
+
+        app.activate();
+    },
+
+    _syncVisible: function() {
+        this.actor.visible = !this.empty && this._isToday();
+    },
+
+    _sessionUpdated: function() {
+        this._title.reactive = Main.sessionMode.allowSettings;
+    }
+});
+
 const Placeholder = new Lang.Class({
     Name: 'Placeholder',
 
@@ -1284,14 +1443,41 @@ const Placeholder = new Lang.Class({
 
         this._date = new Date();
 
-        let file = Gio.File.new_for_uri('resource:///org/gnome/shell/theme/no-events.svg');
-        let gicon = new Gio.FileIcon({ file: file });
+        let todayFile = Gio.File.new_for_uri('resource:///org/gnome/shell/theme/no-notifications.svg');
+        let otherFile = Gio.File.new_for_uri('resource:///org/gnome/shell/theme/no-events.svg');
+        this._todayIcon = new Gio.FileIcon({ file: todayFile });
+        this._otherIcon = new Gio.FileIcon({ file: otherFile });
 
-        this._icon = new St.Icon({ gicon: gicon });
+        this._icon = new St.Icon();
         this.actor.add_actor(this._icon);
 
-        this._label = new St.Label({ text: _("No Events") });
+        this._label = new St.Label();
         this.actor.add_actor(this._label);
+
+        this._sync();
+    },
+
+    setDate: function(date) {
+        if (_sameDay(this._date, date))
+            return;
+        this._date = date;
+        this._sync();
+    },
+
+    _sync: function() {
+        let isToday = _sameDay(this._date, new Date());
+        if (isToday && this._icon.gicon == this._todayIcon)
+            return;
+        if (!isToday && this._icon.gicon == this._otherIcon)
+            return;
+
+        if (isToday) {
+            this._icon.gicon = this._todayIcon;
+            this._label.text = _("No Notifications");
+        } else {
+            this._icon.gicon = this._otherIcon;
+            this._label.text = _("No Events");
+        }
     }
 });
 
@@ -1319,6 +1505,9 @@ const MessageList = new Lang.Class({
                                                y_align: Clutter.ActorAlign.START });
         this._scrollView.add_actor(this._sectionList);
         this._sections = new Map();
+
+        this._notificationSection = new NotificationSection();
+        this._addSection(this._notificationSection);
 
         this._eventsSection = new EventsSection();
         this._addSection(this._eventsSection);
@@ -1377,5 +1566,6 @@ const MessageList = new Lang.Class({
     setDate: function(date) {
         for (let section of this._sections.keys())
             section.setDate(date);
+        this._placeholder.setDate(date);
     }
 });
