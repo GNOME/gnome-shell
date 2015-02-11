@@ -103,16 +103,12 @@ const NotificationsBox = new Lang.Class({
                                         name: 'screenShieldNotifications',
                                         style_class: 'screen-shield-notifications-box' });
 
-        this._musicBin = new St.Bin({ style_class: 'screen-shield-notifications-box',
-                                      visible: false });
-
         this._scrollView = new St.ScrollView({ x_fill: false, x_align: St.Align.START,
                                                hscrollbar_policy: Gtk.PolicyType.NEVER });
         this._notificationBox = new St.BoxLayout({ vertical: true,
                                                    style_class: 'screen-shield-notifications-box' });
         this._scrollView.add_actor(this._notificationBox);
 
-        this.actor.add(this._musicBin);
         this.actor.add(this._scrollView, { x_fill: true, x_align: St.Align.START });
 
         this._sources = new Map();
@@ -139,12 +135,11 @@ const NotificationsBox = new Lang.Class({
     },
 
     _updateVisibility: function() {
-        this._musicBin.visible = this._musicBin.child != null && this._musicBin.child.visible;
         this._notificationBox.visible = this._notificationBox.get_children().some(function(a) {
             return a.visible;
         });
 
-        this.actor.visible = this._musicBin.visible || this._notificationBox.visible;
+        this.actor.visible = this._notificationBox.visible;
     },
 
     _makeNotificationCountText: function(count, isChat) {
@@ -192,7 +187,7 @@ const NotificationsBox = new Lang.Class({
         for (let i = 0; i < source.notifications.length; i++) {
             let n = source.notifications[i];
 
-            if (n.acknowledged || n.isMusic)
+            if (n.acknowledged)
                 continue;
 
             let body = '';
@@ -213,29 +208,13 @@ const NotificationsBox = new Lang.Class({
     },
 
     _showSource: function(source, obj, box) {
-        let musicNotification = source.getMusicNotification();
-
-        if (musicNotification != null &&
-            this._musicBin.child == null) {
-            musicNotification.acknowledged = true;
-            if (musicNotification.actor.get_parent() != null)
-                musicNotification.actor.get_parent().remove_actor(musicNotification.actor);
-            this._musicBin.child = musicNotification.actor;
-            this._musicBin.child.visible = obj.visible;
-
-            musicNotification.expand(false /* animate */);
-
-            obj.musicNotification = musicNotification;
-        }
-
         if (obj.detailed) {
             [obj.titleLabel, obj.countLabel] = this._makeNotificationDetailedSource(source, box);
         } else {
             [obj.titleLabel, obj.countLabel] = this._makeNotificationSource(source, box);
         }
 
-        box.visible = obj.visible &&
-            (source.unseenCount > (musicNotification ? 1 : 0));
+        box.visible = obj.visible && (source.unseenCount > 0);
     },
 
     _sourceAdded: function(tray, source, initial) {
@@ -246,8 +225,6 @@ const NotificationsBox = new Lang.Class({
             sourceCountChangedId: 0,
             sourceTitleChangedId: 0,
             sourceUpdatedId: 0,
-            sourceNotifyId: 0,
-            musicNotification: null,
             sourceBox: null,
             titleLabel: null,
             countLabel: null,
@@ -256,12 +233,6 @@ const NotificationsBox = new Lang.Class({
         obj.sourceBox = new St.BoxLayout({ style_class: 'screen-shield-notification-source' });
         this._showSource(source, obj, obj.sourceBox);
         this._notificationBox.add(obj.sourceBox, { x_fill: false, x_align: St.Align.START });
-
-        if (obj.musicNotification) {
-            obj.sourceNotifyId = source.connect('notify', Lang.bind(this, function(source, notification) {
-                notification.acknowledged = true;
-            }));
-        }
 
         obj.sourceCountChangedId = source.connect('count-updated', Lang.bind(this, function(source) {
             this._countChanged(source, obj);
@@ -323,8 +294,7 @@ const NotificationsBox = new Lang.Class({
             obj.countLabel.text = this._makeNotificationCountText(count, source.isChat);
         }
 
-        obj.sourceBox.visible = obj.visible &&
-            (source.unseenCount > (obj.musicNotification ? 1 : 0));
+        obj.sourceBox.visible = obj.visible && (source.unseenCount > 0);
 
         this._updateVisibility();
         if (obj.sourceBox.visible)
@@ -336,10 +306,7 @@ const NotificationsBox = new Lang.Class({
             return;
 
         obj.visible = source.policy.showInLockScreen;
-        if (obj.musicNotification)
-            obj.musicNotification.actor.visible = obj.visible;
-        obj.sourceBox.visible = obj.visible &&
-            source.unseenCount > (obj.musicNotification ? 1 : 0);
+        obj.sourceBox.visible = obj.visible && source.unseenCount > 0;
 
         this._updateVisibility();
         if (obj.sourceBox.visible)
@@ -365,13 +332,6 @@ const NotificationsBox = new Lang.Class({
     _removeSource: function(source, obj) {
         obj.sourceBox.destroy();
         obj.sourceBox = obj.titleLabel = obj.countLabel = null;
-
-        if (obj.musicNotification) {
-            this._musicBin.child = null;
-            obj.musicNotification = null;
-
-            source.disconnect(obj.sourceNotifyId);
-        }
 
         source.disconnect(obj.sourceDestroyId);
         source.disconnect(obj.sourceCountChangedId);

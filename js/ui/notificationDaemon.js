@@ -351,9 +351,6 @@ const FdoNotificationDaemon = new Lang.Class({
                 }));
         }
 
-        // Mark music notifications so they can be shown in the screen shield
-        notification.isMusic = (ndata.hints['category'] == 'x-gnome.music');
-
         let gicon = this._iconForNotificationData(icon, hints);
         let gimage = this._imageForNotificationData(hints);
 

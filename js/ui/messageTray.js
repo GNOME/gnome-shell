@@ -494,7 +494,6 @@ const Notification = new Lang.Class({
         this.resident = false;
         // 'transient' is a reserved keyword in JS, so we have to use an alternate variable name
         this.isTransient = false;
-        this.isMusic = false;
         this.forFeedback = false;
         this.expanded = false;
         this.focused = false;
@@ -1426,16 +1425,7 @@ const Source = new Lang.Class({
     // Default implementation is to destroy this source, but subclasses can override
     _lastNotificationRemoved: function() {
         this.destroy();
-    },
-
-    getMusicNotification: function() {
-        for (let i = 0; i < this.notifications.length; i++) {
-            if (this.notifications[i].isMusic)
-                return this.notifications[i];
-        }
-
-        return null;
-    },
+    }
 });
 Signals.addSignalMethods(Source.prototype);
 
