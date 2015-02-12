@@ -277,17 +277,4 @@ void meta_theme_calc_geometry (MetaTheme              *theme,
 int                   meta_pango_font_desc_get_text_height (const PangoFontDescription *font_desc,
                                                             PangoContext         *context);
 
-#define META_THEME_ALLOWS(theme, feature) (theme->format_version >= feature)
-
-/* What version of the theme file format were various features introduced in? */
-#define META_THEME_SHADE_STICK_ABOVE_BUTTONS 2
-#define META_THEME_UBIQUITOUS_CONSTANTS 2
-#define META_THEME_VARIED_ROUND_CORNERS 2
-#define META_THEME_IMAGES_FROM_ICON_THEMES 2
-#define META_THEME_UNRESIZABLE_SHADED_STYLES 2
-#define META_THEME_DEGREES_IN_ARCS 2
-#define META_THEME_HIDDEN_BUTTONS 2
-#define META_THEME_COLOR_CONSTANTS 2
-#define META_THEME_FRAME_BACKGROUNDS 2
-
 #endif /* META_THEME_PRIVATE_H */
