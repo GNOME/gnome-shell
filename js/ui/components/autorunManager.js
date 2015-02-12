@@ -167,7 +167,7 @@ const AutorunManager = new Lang.Class({
         this._session = new GnomeSession.SessionManager();
         this._volumeMonitor = Gio.VolumeMonitor.get();
 
-        this._transDispatcher = new AutorunTransientDispatcher(this);
+        this._dispatcher = new AutorunDispatcher(this);
     },
 
     enable: function() {
@@ -187,13 +187,13 @@ const AutorunManager = new Lang.Class({
             return;
 
         let discoverer = new ContentTypeDiscoverer(Lang.bind(this, function(mount, apps, contentTypes) {
-            this._transDispatcher.addMount(mount, apps, contentTypes);
+            this._dispatcher.addMount(mount, apps, contentTypes);
         }));
         discoverer.guessContentTypes(mount);
     },
 
     _onMountRemoved: function(monitor, mount) {
-        this._transDispatcher.removeMount(mount);
+        this._dispatcher.removeMount(mount);
     },
 
     ejectMount: function(mount) {
@@ -256,8 +256,8 @@ const AutorunManager = new Lang.Class({
     },
 });
 
-const AutorunTransientDispatcher = new Lang.Class({
-    Name: 'AutorunTransientDispatcher',
+const AutorunDispatcher = new Lang.Class({
+    Name: 'AutorunDispatcher',
 
     _init: function(manager) {
         this._manager = manager;
@@ -303,7 +303,7 @@ const AutorunTransientDispatcher = new Lang.Class({
             return;
      
         // add a new source
-        this._sources.push(new AutorunTransientSource(this._manager, mount, apps));
+        this._sources.push(new AutorunSource(this._manager, mount, apps));
     },
 
     addMount: function(mount, apps, contentTypes) {
@@ -352,8 +352,8 @@ const AutorunTransientDispatcher = new Lang.Class({
     }
 });
 
-const AutorunTransientSource = new Lang.Class({
-    Name: 'AutorunTransientSource',
+const AutorunSource = new Lang.Class({
+    Name: 'AutorunSource',
     Extends: MessageTray.Source,
 
     _init: function(manager, mount, apps) {
@@ -363,7 +363,7 @@ const AutorunTransientSource = new Lang.Class({
 
         this.parent(mount.get_name());
 
-        this._notification = new AutorunTransientNotification(this._manager, this);
+        this._notification = new AutorunNotification(this._manager, this);
 
         // add ourselves as a source, and popup the notification
         Main.messageTray.add(this);
@@ -375,34 +375,24 @@ const AutorunTransientSource = new Lang.Class({
     }
 });
 
-const AutorunTransientNotification = new Lang.Class({
-    Name: 'AutorunTransientNotification',
+const AutorunNotification = new Lang.Class({
+    Name: 'AutorunNotification',
     Extends: MessageTray.Notification,
 
     _init: function(manager, source) {
-        this.parent(source, source.title, null, { customContent: true });
+        this.parent(source, source.title);
 
         this._manager = manager;
-        this._box = new St.BoxLayout({ style_class: 'hotplug-transient-box',
-                                       vertical: true });
-        this.addActor(this._box);
-
         this._mount = source.mount;
 
         source.apps.forEach(Lang.bind(this, function (app) {
             let actor = this._buttonForApp(app);
 
             if (actor)
-                this._box.add(actor, { x_fill: true,
-                                       x_align: St.Align.START });
+                this.addButton(actor);
         }));
 
-        this._box.add(this._buttonForEject(), { x_fill: true,
-                                                x_align: St.Align.START });
-
-        // set the notification to transient and urgent, so that it
-        // expands out
-        this.setTransient(true);
+        // set the notification to urgent, so that it expands out
         this.setUrgency(MessageTray.Urgency.CRITICAL);
     },
 
@@ -432,29 +422,11 @@ const AutorunTransientNotification = new Lang.Class({
         return button;
     },
 
-    _buttonForEject: function() {
-        let box = new St.BoxLayout();
-        let icon = new St.Icon({ icon_name: 'media-eject-symbolic',
-                                 style_class: 'hotplug-notification-item-icon' });
-        box.add(icon);
+    _onClicked: function() {
+        this.parent();
 
-        let label = new St.Bin({ y_align: St.Align.MIDDLE,
-                                 child: new St.Label
-                                 ({ text: _("Eject") })
-                               });
-        box.add(label);
-
-        let button = new St.Button({ child: box,
-                                     x_fill: true,
-                                     x_align: St.Align.START,
-                                     button_mask: St.ButtonMask.ONE,
-                                     style_class: 'hotplug-notification-item' });
-
-        button.connect('clicked', Lang.bind(this, function() {
-            this._manager.ejectMount(this._mount);
-        }));
-
-        return button;
+        let app = Gio.app_info_get_default_for_type('inode/directory', false);
+        startAppForMount(app, this._mount);
     }
 });
 
