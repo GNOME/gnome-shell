@@ -46,19 +46,6 @@ static GOptionEntry entries[] = {
   { NULL }
 };
 
-static GdkFilterReturn
-event_filter (GdkXEvent *xevent,
-              GdkEvent  *event,
-              gpointer   data)
-{
-  XEvent *xev = (XEvent *)xevent;
-
-  if (clutter_x11_handle_event (xev) == CLUTTER_X11_FILTER_CONTINUE)
-    return GDK_FILTER_CONTINUE;
-  else
-    return GDK_FILTER_REMOVE;
-}
-
 int
 main(int argc, char **argv)
 {
@@ -75,12 +62,9 @@ main(int argc, char **argv)
   gtk_init (&argc, &argv);
 
   clutter_x11_set_display (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()));
-  clutter_x11_disable_event_retrieval ();
 
   if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
     return 1;
-
-  gdk_window_add_filter (NULL, event_filter, NULL);
 
   context = g_option_context_new (NULL);
 
