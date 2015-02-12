@@ -61,6 +61,7 @@ struct _MetaWaylandPopup
   MetaWaylandPopupGrab *grab;
   MetaWaylandSurface   *surface;
   struct wl_listener    surface_destroy_listener;
+  struct wl_signal      destroy_signal;
 
   struct wl_list        link;
 };
@@ -180,6 +181,8 @@ meta_wayland_pointer_grab_is_popup_grab (MetaWaylandPointerGrab *grab)
 void
 meta_wayland_popup_destroy (MetaWaylandPopup *popup)
 {
+  wl_signal_emit (&popup->destroy_signal, popup);
+
   wl_list_remove (&popup->surface_destroy_listener.link);
   wl_list_remove (&popup->link);
   g_slice_free (MetaWaylandPopup, popup);
@@ -194,6 +197,12 @@ meta_wayland_popup_dismiss (MetaWaylandPopup *popup)
 
   if (wl_list_empty (&popup_grab->all_popups))
     meta_wayland_pointer_end_popup_grab (popup_grab->generic.pointer);
+}
+
+struct wl_signal *
+meta_wayland_popup_get_destroy_signal (MetaWaylandPopup *popup)
+{
+  return &popup->destroy_signal;
 }
 
 static void
@@ -220,6 +229,7 @@ meta_wayland_popup_create (MetaWaylandSurface   *surface,
   popup->grab = grab;
   popup->surface = surface;
   popup->surface_destroy_listener.notify = on_popup_surface_destroy;
+  wl_signal_init (&popup->destroy_signal);
 
   if (surface->xdg_popup)
     {

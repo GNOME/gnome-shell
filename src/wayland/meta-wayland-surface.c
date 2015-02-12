@@ -1021,7 +1021,9 @@ xdg_popup_destructor (struct wl_resource *resource)
 {
   MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
 
-  destroy_window (surface);
+  if (surface->popup.popup)
+    meta_wayland_popup_dismiss (surface->popup.popup);
+
   surface->xdg_popup = NULL;
 }
 
@@ -1035,6 +1037,17 @@ xdg_popup_destroy (struct wl_client *client,
 static const struct xdg_popup_interface meta_wayland_xdg_popup_interface = {
   xdg_popup_destroy,
 };
+
+static void
+handle_popup_destroyed (struct wl_listener *listener, void *data)
+{
+  MetaWaylandSurface *surface =
+    wl_container_of (listener, surface, popup.destroy_listener);
+
+  surface->popup.popup = NULL;
+
+  destroy_window (surface);
+}
 
 static void
 xdg_shell_get_xdg_popup (struct wl_client *client,
@@ -1053,6 +1066,7 @@ xdg_shell_get_xdg_popup (struct wl_client *client,
   MetaWaylandSeat *seat = wl_resource_get_user_data (seat_resource);
   MetaWindow *window;
   MetaDisplay *display = meta_get_display ();
+  MetaWaylandPopup *popup;
 
   if (parent_surf == NULL || parent_surf->window == NULL)
     return;
@@ -1107,7 +1121,17 @@ xdg_shell_get_xdg_popup (struct wl_client *client,
   meta_wayland_surface_set_window (surface, window);
 
   meta_window_focus (window, meta_display_get_current_time (display));
-  meta_wayland_pointer_start_popup_grab (&seat->pointer, surface);
+  popup = meta_wayland_pointer_start_popup_grab (&seat->pointer, surface);
+  if (popup == NULL)
+    {
+      destroy_window (surface);
+      return;
+    }
+
+  surface->popup.destroy_listener.notify = handle_popup_destroyed;
+  surface->popup.popup = popup;
+  wl_signal_add (meta_wayland_popup_get_destroy_signal (popup),
+                 &surface->popup.destroy_listener);
 }
 
 static const struct xdg_shell_interface meta_wayland_xdg_shell_interface = {

@@ -46,4 +46,6 @@ void meta_wayland_popup_destroy (MetaWaylandPopup *popup);
 
 void meta_wayland_popup_dismiss (MetaWaylandPopup *popup);
 
+struct wl_signal *meta_wayland_popup_get_destroy_signal (MetaWaylandPopup *popup);
+
 #endif /* META_WAYLAND_POPUP_H */

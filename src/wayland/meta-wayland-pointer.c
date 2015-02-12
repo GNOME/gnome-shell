@@ -581,7 +581,7 @@ meta_wayland_pointer_end_popup_grab (MetaWaylandPointer *pointer)
   meta_wayland_popup_grab_destroy (popup_grab);
 }
 
-gboolean
+MetaWaylandPopup *
 meta_wayland_pointer_start_popup_grab (MetaWaylandPointer *pointer,
 				       MetaWaylandSurface *surface)
 {
@@ -589,7 +589,7 @@ meta_wayland_pointer_start_popup_grab (MetaWaylandPointer *pointer,
 
   if (pointer->grab != &pointer->default_grab &&
       !meta_wayland_pointer_grab_is_popup_grab (pointer->grab))
-    return FALSE;
+    return NULL;
 
   if (pointer->grab == &pointer->default_grab)
     {
@@ -601,10 +601,7 @@ meta_wayland_pointer_start_popup_grab (MetaWaylandPointer *pointer,
   else
     grab = (MetaWaylandPopupGrab*)pointer->grab;
 
-  if (meta_wayland_popup_create (surface, grab) == NULL)
-    return FALSE;
-
-  return TRUE;
+  return meta_wayland_popup_create (surface, grab);
 }
 
 void

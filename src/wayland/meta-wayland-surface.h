@@ -100,6 +100,12 @@ struct _MetaWaylandSurface
   MetaWaylandSerial acked_configure_serial;
   gboolean has_set_geometry;
 
+  /* xdg_popup */
+  struct {
+      MetaWaylandPopup *popup;
+      struct wl_listener destroy_listener;
+  } popup;
+
   /* wl_subsurface stuff. */
   struct {
     MetaWaylandSurface *parent;
