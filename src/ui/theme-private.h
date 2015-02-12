@@ -226,13 +226,6 @@ struct _MetaTheme
   MetaFrameLayout *layouts[META_FRAME_TYPE_LAST];
 };
 
-MetaFrameLayout* meta_frame_layout_new           (void);
-void             meta_frame_layout_free          (MetaFrameLayout       *layout);
-void             meta_frame_layout_get_borders   (const MetaFrameLayout *layout,
-                                                  int                    text_height,
-                                                  MetaFrameFlags         flags,
-                                                  MetaFrameType          type,
-                                                  MetaFrameBorders      *borders);
 void               meta_frame_layout_apply_scale (const MetaFrameLayout *layout,
                                                   PangoFontDescription  *font_desc);
 

@@ -30,15 +30,7 @@
 
 #define DEBUG_FILL_STRUCT(s) memset ((s), 0xef, sizeof (*(s)))
 
-/**
- * meta_frame_layout_new: (skip)
- *
- * Creates a new, empty MetaFrameLayout. The fields will be set to dummy
- * values.
- *
- * Returns: The newly created MetaFrameLayout.
- */
-MetaFrameLayout*
+static MetaFrameLayout *
 meta_frame_layout_new  (void)
 {
   MetaFrameLayout *layout;
@@ -56,7 +48,7 @@ meta_frame_layout_new  (void)
   return layout;
 }
 
-void
+static void
 meta_frame_layout_free (MetaFrameLayout *layout)
 {
   g_return_if_fail (layout != NULL);
@@ -65,7 +57,7 @@ meta_frame_layout_free (MetaFrameLayout *layout)
   g_free (layout);
 }
 
-void
+static void
 meta_frame_layout_get_borders (const MetaFrameLayout *layout,
                                int                    text_height,
                                MetaFrameFlags         flags,
