@@ -45,8 +45,6 @@ meta_frame_layout_new  (void)
 
   layout = g_new0 (MetaFrameLayout, 1);
 
-  layout->refcount = 1;
-
   /* Spacing as hardcoded in GTK+:
    * https://git.gnome.org/browse/gtk+/tree/gtk/gtkheaderbar.c?h=gtk-3-14#n53
    */
@@ -58,41 +56,13 @@ meta_frame_layout_new  (void)
   return layout;
 }
 
-MetaFrameLayout*
-meta_frame_layout_copy (const MetaFrameLayout *src)
-{
-  MetaFrameLayout *layout;
-
-  layout = g_new0 (MetaFrameLayout, 1);
-
-  *layout = *src;
-
-  layout->refcount = 1;
-
-  return layout;
-}
-
 void
-meta_frame_layout_ref (MetaFrameLayout *layout)
+meta_frame_layout_free (MetaFrameLayout *layout)
 {
   g_return_if_fail (layout != NULL);
 
-  layout->refcount += 1;
-}
-
-void
-meta_frame_layout_unref (MetaFrameLayout *layout)
-{
-  g_return_if_fail (layout != NULL);
-  g_return_if_fail (layout->refcount > 0);
-
-  layout->refcount -= 1;
-
-  if (layout->refcount == 0)
-    {
-      DEBUG_FILL_STRUCT (layout);
-      g_free (layout);
-    }
+  DEBUG_FILL_STRUCT (layout);
+  g_free (layout);
 }
 
 void
@@ -928,7 +898,7 @@ meta_theme_free (MetaTheme *theme)
 
   for (i = 0; i < META_FRAME_TYPE_LAST; i++)
     if (theme->layouts[i])
-      meta_frame_layout_unref (theme->layouts[i]);
+      meta_frame_layout_free (theme->layouts[i]);
 
   DEBUG_FILL_STRUCT (theme);
   g_free (theme);
