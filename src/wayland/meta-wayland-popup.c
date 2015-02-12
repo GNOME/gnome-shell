@@ -172,6 +172,17 @@ meta_wayland_popup_grab_end (MetaWaylandPopupGrab *grab)
   meta_wayland_pointer_end_grab (grab->generic.pointer);
 }
 
+MetaWaylandSurface *
+meta_wayland_popup_grab_get_top_popup (MetaWaylandPopupGrab *grab)
+{
+  MetaWaylandPopup *popup;
+
+  g_assert (!wl_list_empty (&grab->all_popups));
+  popup = wl_container_of (grab->all_popups.next, popup, link);
+
+  return popup->surface;
+}
+
 gboolean
 meta_wayland_pointer_grab_is_popup_grab (MetaWaylandPointerGrab *grab)
 {
@@ -197,6 +208,12 @@ meta_wayland_popup_dismiss (MetaWaylandPopup *popup)
 
   if (wl_list_empty (&popup_grab->all_popups))
     meta_wayland_pointer_end_popup_grab (popup_grab->generic.pointer);
+}
+
+MetaWaylandSurface *
+meta_wayland_popup_get_top_popup (MetaWaylandPopup *popup)
+{
+  return meta_wayland_popup_grab_get_top_popup (popup->grab);
 }
 
 struct wl_signal *

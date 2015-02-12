@@ -1041,8 +1041,18 @@ static const struct xdg_popup_interface meta_wayland_xdg_popup_interface = {
 static void
 handle_popup_destroyed (struct wl_listener *listener, void *data)
 {
+  MetaWaylandPopup *popup = data;
+  MetaWaylandSurface *top_popup;
   MetaWaylandSurface *surface =
     wl_container_of (listener, surface, popup.destroy_listener);
+
+  top_popup = meta_wayland_popup_get_top_popup (popup);
+  if (surface != top_popup)
+    {
+      wl_resource_post_error (surface->xdg_popup,
+                              XDG_POPUP_ERROR_NOT_THE_TOPMOST_POPUP,
+                              "destroyed popup not top most popup");
+    }
 
   surface->popup.popup = NULL;
 
@@ -1063,6 +1073,7 @@ xdg_shell_get_xdg_popup (struct wl_client *client,
   struct wl_resource *popup_resource;
   MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
   MetaWaylandSurface *parent_surf = wl_resource_get_user_data (parent_resource);
+  MetaWaylandSurface *top_popup;
   MetaWaylandSeat *seat = wl_resource_get_user_data (seat_resource);
   MetaWindow *window;
   MetaDisplay *display = meta_get_display ();
@@ -1090,6 +1101,16 @@ xdg_shell_get_xdg_popup (struct wl_client *client,
       wl_resource_post_error (resource,
                               XDG_POPUP_ERROR_INVALID_PARENT,
                               "invalid parent surface");
+      return;
+    }
+
+  top_popup = meta_wayland_pointer_get_top_popup (&seat->pointer);
+  if ((top_popup == NULL && parent_surf->xdg_surface == NULL) ||
+      (top_popup != NULL && parent_surf != top_popup))
+    {
+      wl_resource_post_error (resource,
+                              XDG_POPUP_ERROR_NOT_THE_TOPMOST_POPUP,
+                              "parent not top most surface");
       return;
     }
 

@@ -37,6 +37,8 @@ void meta_wayland_popup_grab_begin (MetaWaylandPopupGrab *grab,
 
 void meta_wayland_popup_grab_end (MetaWaylandPopupGrab *grab);
 
+MetaWaylandSurface *meta_wayland_popup_grab_get_top_popup (MetaWaylandPopupGrab *grab);
+
 gboolean meta_wayland_pointer_grab_is_popup_grab (MetaWaylandPointerGrab *grab);
 
 MetaWaylandPopup *meta_wayland_popup_create (MetaWaylandSurface   *surface,
@@ -45,6 +47,8 @@ MetaWaylandPopup *meta_wayland_popup_create (MetaWaylandSurface   *surface,
 void meta_wayland_popup_destroy (MetaWaylandPopup *popup);
 
 void meta_wayland_popup_dismiss (MetaWaylandPopup *popup);
+
+MetaWaylandSurface *meta_wayland_popup_get_top_popup (MetaWaylandPopup *popup);
 
 struct wl_signal *meta_wayland_popup_get_destroy_signal (MetaWaylandPopup *popup);
 

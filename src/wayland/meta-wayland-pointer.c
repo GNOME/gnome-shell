@@ -741,3 +741,15 @@ meta_wayland_pointer_can_popup (MetaWaylandPointer *pointer, uint32_t serial)
 {
   return pointer->grab_serial == serial;
 }
+
+MetaWaylandSurface *
+meta_wayland_pointer_get_top_popup (MetaWaylandPointer *pointer)
+{
+  MetaWaylandPopupGrab *grab;
+
+  if (!meta_wayland_pointer_grab_is_popup_grab (pointer->grab))
+    return NULL;
+
+  grab = (MetaWaylandPopupGrab*)pointer->grab;
+  return meta_wayland_popup_grab_get_top_popup(grab);
+}
