@@ -29,7 +29,7 @@ msgstr "Systém"
 
 #: ../data/50-gnome-shell-system.xml.in.h:2
 msgid "Show the message tray"
-msgstr "Zobrazit lištu zpráv"
+msgstr "Zobrazit pořadač zpráv"
 
 #: ../data/50-gnome-shell-system.xml.in.h:3
 msgid "Focus the active notification"
@@ -179,44 +179,44 @@ msgstr "Je-li zapnuto, zobrazovat v kalendáři čísla týdnů dle ISO."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:19
 msgid "Keybinding to open the application menu"
-msgstr "Klávesová zkratka na otevření nabídky aplikace"
+msgstr "Klávesová zkratka otevírající nabidku aplikací"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:20
 msgid "Keybinding to open the application menu."
-msgstr "Klávesová zkratka na otevření nabídky aplikace."
+msgstr "Klávesová zkratka sloužící k otevření nabídky aplikací."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:21
 msgid "Keybinding to open the \"Show Applications\" view"
-msgstr "Klávesová zkratka k otevření nabídky aplikací"
+msgstr "Klávesová zkratka otevírající zobrazení aplikací"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:22
 msgid ""
 "Keybinding to open the \"Show Applications\" view of the Activities Overview."
-msgstr "Klávesová zkratka k otevření nabídky aplikací v Přehledu aktivit"
+msgstr "Klávesová zkratka sloužící k otevření nabídky aplikací v Přehledu činností."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:23
 msgid "Keybinding to open the overview"
-msgstr "Klávesová zkratka k otevření přehledu"
+msgstr "Klávesová zkratka otevírající přehled"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:24
 msgid "Keybinding to open the Activities Overview."
-msgstr "Klávesová zkratka k otevření přehledu činností"
+msgstr "Klávesová zkratka sloužící k otevření přehledu činností"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:25
 msgid "Keybinding to toggle the visibility of the message tray"
-msgstr "Klávesová zkratka k přepnutí viditelnosti lišty zpráv"
+msgstr "Klávesová zkratka přepínající viditelnost pořadače zpráv"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:26
 msgid "Keybinding to toggle the visibility of the message tray."
-msgstr "Klávesová zkratka k přepnutí viditelnosti lišty zpráv."
+msgstr "Klávesová zkratka sloužící k přepnutí viditelnosti pořadače zpráv."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:27
 msgid "Keybinding to focus the active notification"
-msgstr "Klávesová zkratka k zaměření aktivního upozornění"
+msgstr "Klávesová zkratka zaměřující aktivního upozornění"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:28
 msgid "Keybinding to focus the active notification."
-msgstr "Klávesová zkratka k zaměření aktivního upozornění."
+msgstr "Klávesová zkratka sloužící k zaměření aktivního upozornění."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:29
 msgid ""
@@ -1236,7 +1236,7 @@ msgstr "Nastavení upozornění"
 
 #: ../js/ui/messageTray.js:1715
 msgid "Tray Menu"
-msgstr "Nabídka lišty zpráv"
+msgstr "Nabídka pořadače zpráv"
 
 #: ../js/ui/messageTray.js:1939
 msgid "No Messages"
@@ -1244,7 +1244,7 @@ msgstr "Žádné zprávy"
 
 #: ../js/ui/messageTray.js:1986
 msgid "Message Tray"
-msgstr "Lišta zpráv"
+msgstr "Pořadač zpráv"
 
 #: ../js/ui/messageTray.js:2443 ../js/ui/overviewControls.js:483
 #: ../js/ui/screenShield.js:152
