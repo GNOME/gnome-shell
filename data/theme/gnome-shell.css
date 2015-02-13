@@ -715,6 +715,7 @@ StScrollBar StButton#vhandle:active {
 
 .panel-menu {
     -boxpointer-gap: 4px;
+    margin-bottom: 1.75em;
 }
 
 .panel-status-indicators-box,
