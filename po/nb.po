@@ -1822,11 +1822,11 @@ msgstr "Alltid på synlig arbeidsområde"
 
 #: ../js/ui/windowMenu.js:106
 msgid "Move to Workspace Up"
-msgstr "Gå til arbeidsområdet over"
+msgstr "Flytt til arbeidsområdet over"
 
 #: ../js/ui/windowMenu.js:111
 msgid "Move to Workspace Down"
-msgstr "Gå til arbeidsområdet under"
+msgstr "Flytt til arbeidsområdet under"
 
 #: ../src/calendar-server/evolution-calendar.desktop.in.in.h:1
 msgid "Evolution Calendar"
