@@ -1365,6 +1365,7 @@ const MessageTray = new Lang.Class({
             this._onStatusChanged(proxy.status);
         }));
         this._busy = false;
+        this._bannerBlocked = false;
         this._presence.connectSignal('StatusChanged', Lang.bind(this, function(proxy, senderName, [status]) {
             this._onStatusChanged(status);
         }));
@@ -1476,6 +1477,13 @@ const MessageTray = new Lang.Class({
 
     get queueCount() {
         return this._notificationQueue.length;
+    },
+
+    set bannerBlocked(v) {
+        if (this._bannerBlocked == v)
+            return;
+        this._bannerBlocked = v;
+        this._updateState();
     },
 
     contains: function(source) {
@@ -1688,6 +1696,10 @@ const MessageTray = new Lang.Class({
     // _updateState() figures out what (if anything) needs to be done
     // at the present time.
     _updateState: function() {
+        this.actor.visible = !this._bannerBlocked;
+        if (this._bannerBlocked)
+            return;
+
         // If our state changes caused _updateState to be called,
         // just exit now to prevent reentrancy issues.
         if (this._updatingState)

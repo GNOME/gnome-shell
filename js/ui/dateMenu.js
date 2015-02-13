@@ -358,13 +358,15 @@ const DateMenuButton = new Lang.Class({
                                    this._messageList.setDate(date);
                                }));
 
-        // Whenever the menu is opened, select today
         this.menu.connect('open-state-changed', Lang.bind(this, function(menu, isOpen) {
+            // Whenever the menu is opened, select today
             if (isOpen) {
                 let now = new Date();
                 this._calendar.setDate(now);
                 this._date.setDate(now);
             }
+            // Block notification banners while the menu is open
+            Main.messageTray.bannerBlocked = isOpen;
         }));
 
         // Fill up the first column
