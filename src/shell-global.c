@@ -28,6 +28,12 @@
 #include <meta/meta-shaped-texture.h>
 #include <meta/meta-cursor-tracker.h>
 
+#ifdef HAVE_SYSTEMD
+#include <systemd/sd-journal.h>
+#include <errno.h>
+#include <unistd.h>
+#endif
+
 /* Memory report bits */
 #ifdef HAVE_MALLINFO
 #include <malloc.h>
@@ -1295,6 +1301,52 @@ shell_global_reexec_self (ShellGlobal *global)
   g_free (buf);
 #elif defined __OpenBSD__
   g_free (args);
+#endif
+}
+
+/**
+ * shell_global_log_structured:
+ * @message: A message to print
+ * @keys: (allow-none) (array zero-terminated=1) (element-type utf8): Optional structured data
+ *
+ * Log structured data in an operating-system specific fashion.  The
+ * parameter @opts should be an array of UTF-8 KEY=VALUE strings.
+ * This function does not support binary data.  See
+ * http://www.freedesktop.org/software/systemd/man/systemd.journal-fields.html
+ * or more information about fields that can be used on a systemd
+ * system.
+ *
+ */
+void
+shell_global_log_structured (const char *message,
+                             const char *const *keys)
+{
+#ifdef HAVE_SYSTEMD
+    const char *const*iter;
+    char *msgkey;
+    guint i, n_opts;
+    struct iovec *iovs;
+
+    for (n_opts = 0, iter = keys; *iter; iter++, n_opts++)
+        ;
+
+    n_opts++; /* Add one for MESSAGE= */
+    iovs = g_alloca (sizeof (struct iovec) * n_opts);
+
+    for (i = 0, iter = keys; *iter; iter++, i++) {
+        iovs[i].iov_base = (char*)keys[i];
+        iovs[i].iov_len = strlen (keys[i]);
+    }
+    g_assert(i == n_opts-1);
+    msgkey = g_strconcat ("MESSAGE=", message, NULL);
+    iovs[i].iov_base = msgkey;
+    iovs[i].iov_len = strlen (msgkey);
+
+    // The code location isn't useful since we're wrapping
+    sd_journal_sendv (iovs, n_opts);
+    g_free (msgkey);
+#else
+    g_print ("%s\n", message);
 #endif
 }
 
