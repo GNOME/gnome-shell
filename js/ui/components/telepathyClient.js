@@ -1129,14 +1129,12 @@ const RoomInviteNotification = new Lang.Class({
                     /* translators: argument is a room name like
                      * room@jabber.org for example. */
                     _("Invitation to %s").format(channel.get_identifier()),
-                    null,
-                    { customContent: true });
+                    /* translators: first argument is the name of a contact and the second
+                     * one the name of a room. "Alice is inviting you to join room@jabber.org
+                     * for example. */
+                    _("%s is inviting you to join %s").format(inviter.get_alias(), channel.get_identifier()));
         this.setResident(true);
 
-        /* translators: first argument is the name of a contact and the second
-         * one the name of a room. "Alice is inviting you to join room@jabber.org
-         * for example. */
-        this.addBody(_("%s is inviting you to join %s").format(inviter.get_alias(), channel.get_identifier()));
 
         this.addAction(_("Decline"), Lang.bind(this, function() {
             dispatchOp.leave_channels_async(Tp.ChannelGroupChangeReason.NONE, '', function(src, result) {
@@ -1168,7 +1166,7 @@ const AudioVideoNotification = new Lang.Class({
              /* translators: argument is a contact name like Alice for example. */
             title = _("Call from %s").format(contact.get_alias());
 
-        this.parent(source, title, null, { customContent: true });
+        this.parent(source, title);
         this.setResident(true);
 
         this.setUrgency(MessageTray.Urgency.CRITICAL);
@@ -1202,9 +1200,7 @@ const FileTransferNotification = new Lang.Class({
                      * like: "Alice is sending you test.ogg"
                      */
                     _("%s is sending you %s").format(contact.get_alias(),
-                                                     channel.get_filename()),
-                    null,
-                    { customContent: true });
+                                                     channel.get_filename()));
         this.setResident(true);
 
         this.addAction(_("Decline"), Lang.bind(this, function() {
