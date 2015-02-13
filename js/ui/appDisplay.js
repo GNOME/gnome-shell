@@ -1820,7 +1820,10 @@ const AppIconMenu = new Lang.Class({
         if (!this._source.app.is_window_backed()) {
             this._appendSeparator();
 
-            if (this._source.app.can_open_new_window()) {
+            let appInfo = this._source.app.get_app_info();
+            let actions = appInfo.list_actions();
+            if (this._source.app.can_open_new_window() &&
+                actions.indexOf('new-window') == -1) {
                 this._newWindowMenuItem = this._appendMenuItem(_("New Window"));
                 this._newWindowMenuItem.connect('activate', Lang.bind(this, function() {
                     if (this._source.app.state == Shell.AppState.STOPPED)
@@ -1832,8 +1835,6 @@ const AppIconMenu = new Lang.Class({
                 this._appendSeparator();
             }
 
-            let appInfo = this._source.app.get_app_info();
-            let actions = appInfo.list_actions();
             for (let i = 0; i < actions.length; i++) {
                 let action = actions[i];
                 let item = this._appendMenuItem(appInfo.get_action_name(action));
