@@ -28,6 +28,7 @@ const HIDE_TIMEOUT = 0.2;
 const LONGER_HIDE_TIMEOUT = 0.6;
 
 const MAX_NOTIFICATIONS_IN_QUEUE = 3;
+const MAX_NOTIFICATIONS_PER_SOURCE = 3;
 
 // We delay hiding of the tray if the mouse is within MOUSE_LEFT_ACTOR_THRESHOLD
 // range from the point where it left the tray.
@@ -43,10 +44,10 @@ const State = {
 };
 
 // These reasons are useful when we destroy the notifications received through
-// the notification daemon. We use EXPIRED for transient notifications that the
-// user did not interact with, DISMISSED for all other notifications that were
-// destroyed as a result of a user action, and SOURCE_CLOSED for the notifications
-// that were requested to be destroyed by the associated source.
+// the notification daemon. We use EXPIRED for notifications that we dismiss
+// and the user did not interact with, DISMISSED for all other notifications
+// that were destroyed as a result of a user action, and SOURCE_CLOSED for the
+// notifications that were requested to be destroyed by the associated source.
 const NotificationDestroyedReason = {
     EXPIRED: 1,
     DISMISSED: 2,
@@ -1303,6 +1304,9 @@ const Source = new Lang.Class({
     pushNotification: function(notification) {
         if (this.notifications.indexOf(notification) >= 0)
             return;
+
+        while (this.notifications.length >= MAX_NOTIFICATIONS_PER_SOURCE)
+            this.notifications.shift().destroy(NotificationDestroyedReason.EXPIRED);
 
         notification.connect('destroy', Lang.bind(this, this._onNotificationDestroy));
         notification.connect('acknowledged-changed', Lang.bind(this, this.countUpdated));
