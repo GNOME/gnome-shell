@@ -891,6 +891,18 @@ const Panel = new Lang.Class({
             menu.actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
     },
 
+    closeCalendar: function() {
+        let indicator = this.statusArea.dateMenu;
+        if (!indicator) // calendar not supported by current session mode
+            return;
+
+        let menu = indicator.menu;
+        if (!indicator.actor.reactive)
+            return;
+
+        menu.close();
+    },
+
     set boxOpacity(value) {
         let isReactive = value > 0;
 
