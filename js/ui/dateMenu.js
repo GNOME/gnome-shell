@@ -21,6 +21,13 @@ const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 const Calendar = imports.ui.calendar;
 
+function _isToday(date) {
+    let now = new Date();
+    return now.getYear() == date.getYear() &&
+           now.getMonth() == date.getMonth() &&
+           now.getDate() == date.getDate();
+}
+
 const TodayButton = new Lang.Class({
     Name: 'TodayButton',
 
@@ -52,7 +59,7 @@ const TodayButton = new Lang.Class({
             function(calendar, date) {
                 // Make the button reactive only if the selected date is not the
                 // current date.
-                this.actor.can_focus = this.actor.reactive = !this._isToday(date)
+                this.actor.can_focus = this.actor.reactive = !_isToday(date)
             }));
     },
 
@@ -71,13 +78,6 @@ const TodayButton = new Lang.Class({
          */
         let dateFormat = Shell.util_translate_time_string (N_("%A %B %e %Y"));
         this.actor.accessible_name = date.toLocaleFormat(dateFormat);
-    },
-
-    _isToday: function(date) {
-        let now = new Date();
-        return now.getYear() == date.getYear() &&
-               now.getMonth() == date.getMonth() &&
-               now.getDate() == date.getDate();
     }
 });
 
@@ -220,6 +220,40 @@ const WorldClocksSection = new Lang.Class({
     }
 });
 
+const FreezableBinLayout = new Lang.Class({
+    Name: 'FreezableBinLayout',
+    Extends: Clutter.BinLayout,
+
+    _init: function() {
+        this.parent();
+
+        this._frozen = false;
+        this._savedWidth = [NaN, NaN];
+        this._savedHeight = [NaN, NaN];
+    },
+
+    set frozen(v) {
+        if (this._frozen == v)
+            return;
+
+        this._frozen = v;
+        if (!this._frozen)
+            this.layout_changed();
+    },
+
+    vfunc_get_preferred_width: function(container, forHeight) {
+        if (!this._frozen || this._savedWidth.some(isNaN))
+            this._savedWidth = this.parent(container, forHeight);
+        return this._savedWidth;
+    },
+
+    vfunc_get_preferred_height: function(container, forWidth) {
+        if (!this._frozen || this._savedHeight.some(isNaN))
+            this._savedHeight = this.parent(container, forWidth);
+        return this._savedHeight;
+    }
+});
+
 const DateMenuButton = new Lang.Class({
     Name: 'DateMenuButton',
     Extends: PanelMenu.Button,
@@ -239,12 +273,17 @@ const DateMenuButton = new Lang.Class({
         this.actor.add_actor(this._clockDisplay);
         this.actor.add_style_class_name ('clock-display');
 
+        let layout = new FreezableBinLayout();
+        let bin = new St.Widget({ layout_manager: layout });
+        this.menu.box.add_child(bin);
+
         hbox = new St.BoxLayout({ name: 'calendarArea' });
-        this.menu.box.add_child(hbox);
+        bin.add_actor(hbox);
 
         this._calendar = new Calendar.Calendar();
         this._calendar.connect('selected-date-changed',
                                Lang.bind(this, function(calendar, date) {
+                                   layout.frozen = !_isToday(date);
                                    this._messageList.setDate(date);
                                }));
 
