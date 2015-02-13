@@ -220,8 +220,8 @@ function _initializeUI() {
         }
         if (sessionMode.currentMode != 'gdm' &&
             sessionMode.currentMode != 'initial-setup') {
-            Shell.log_structured_print('GNOME Shell started at ' + _startDate,
-                                       ['MESSAGE_ID=' + GNOMESHELL_STARTED_MESSAGE_ID]);
+            Shell.Global.log_structured('GNOME Shell started at ' + _startDate,
+                                        ['MESSAGE_ID=' + GNOMESHELL_STARTED_MESSAGE_ID]);
         }
     });
 }
