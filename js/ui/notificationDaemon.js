@@ -716,11 +716,17 @@ const GtkNotificationDaemonAppSource = new Lang.Class({
     activateAction: function(actionId, target) {
         let app = this._createApp();
         app.ActivateActionRemote(actionId, target ? [target] : [], getPlatformData());
+
+        Main.overview.hide();
+        Main.panel.closeCalendar();
     },
 
     open: function() {
         let app = this._createApp();
         app.ActivateRemote(getPlatformData());
+
+        Main.overview.hide();
+        Main.panel.closeCalendar();
     },
 
     addNotification: function(notificationId, notificationParams, showBanner) {
