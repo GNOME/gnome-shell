@@ -363,6 +363,7 @@ libmutter_la_SOURCES +=					\
 	backends/native/meta-clutter-backend-native.h	\
 	backends/native/meta-cursor-renderer-native.c	\
 	backends/native/meta-cursor-renderer-native.h	\
+	backends/native/meta-default-modes.h		\
 	backends/native/meta-idle-monitor-native.c	\
 	backends/native/meta-idle-monitor-native.h	\
 	backends/native/meta-input-settings-native.c	\
@@ -508,6 +509,7 @@ EXTRA_DIST +=					\
 	org.freedesktop.login1.xml		\
 	org.gnome.Mutter.DisplayConfig.xml	\
 	org.gnome.Mutter.IdleMonitor.xml	\
+	backends/native/gen-default-modes.py	\
 	$(NULL)
 
 BUILT_SOURCES =					\
@@ -564,6 +566,12 @@ $(dbus_login1_built_sources) : Makefile.am org.freedesktop.login1.xml
 		--generate-c-code meta-dbus-login1					\
 		--c-generate-autocleanup all						\
 		$(srcdir)/org.freedesktop.login1.xml
+
+backends/native/meta-default-modes.h: backends/native/gen-default-modes.py Makefile.am
+	@if test -n "$(CVT)"; then \
+		if $(AM_V_P); then PS4= set -x; else echo "  GEN      $@"; fi; \
+		python $< > $@; \
+	fi
 
 .SECONDEXPANSION:
 

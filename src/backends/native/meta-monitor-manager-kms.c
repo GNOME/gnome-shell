@@ -45,8 +45,11 @@
 
 #include <gudev/gudev.h>
 
+#include "meta-default-modes.h"
+
 #define ALL_TRANSFORMS (META_MONITOR_TRANSFORM_FLIPPED_270 + 1)
 #define ALL_TRANSFORMS_MASK ((1 << ALL_TRANSFORMS) - 1)
+#define SYNC_TOLERANCE 0.01    /* 1 percent */
 
 typedef struct {
   drmModeConnector *connector;
@@ -69,6 +72,8 @@ typedef struct {
   int suggested_x;
   int suggested_y;
   uint32_t hotplug_mode_update;
+
+  gboolean has_scaling;
 } MetaOutputKms;
 
 typedef struct {
@@ -267,7 +272,9 @@ find_connector_properties (MetaMonitorManagerKms *manager_kms,
       else if ((prop->flags & DRM_MODE_PROP_RANGE) &&
                strcmp (prop->name, "hotplug_mode_update") == 0)
         output_kms->hotplug_mode_update = output_kms->connector->prop_values[i];
-      
+      else if (strcmp (prop->name, "scaling mode") == 0)
+        output_kms->has_scaling = TRUE;
+
       drmModeFreeProperty (prop);
     }
 }
@@ -389,31 +396,61 @@ find_meta_mode (MetaMonitorManager    *manager,
   return NULL;
 }
 
+static float
+drm_mode_vrefresh (const drmModeModeInfo *mode)
+{
+  float refresh = 0.0;
+
+  if (mode->vrefresh > 0.0)
+    return mode->vrefresh;
+
+  if (mode->htotal > 0 && mode->vtotal > 0)
+    {
+      /* Calculate refresh rate in milliHz first for extra precision. */
+      refresh = (mode->clock * 1000000LL) / mode->htotal;
+      refresh += (mode->vtotal / 2);
+      refresh /= mode->vtotal;
+      if (mode->flags & DRM_MODE_FLAG_INTERLACE)
+        refresh *= 2;
+      if (mode->flags & DRM_MODE_FLAG_DBLSCAN)
+        refresh /= 2;
+      if (mode->vscan > 1)
+        refresh /= mode->vscan;
+      refresh /= 1000.0;
+    }
+  return refresh;
+}
+
 static void
-init_mode (MetaMonitorMode *mode,
-           drmModeModeInfo *drm_mode,
-           long             mode_id)
+init_mode (MetaMonitorMode       *mode,
+           const drmModeModeInfo *drm_mode,
+           long                   mode_id)
 {
   mode->mode_id = mode_id;
   mode->name = g_strndup (drm_mode->name, DRM_DISPLAY_MODE_LEN);
   mode->width = drm_mode->hdisplay;
   mode->height = drm_mode->vdisplay;
   mode->flags = drm_mode->flags;
-
-  /* Calculate refresh rate in milliHz first for extra precision. */
-  mode->refresh_rate = (drm_mode->clock * 1000000LL) / drm_mode->htotal;
-  mode->refresh_rate += (drm_mode->vtotal / 2);
-  mode->refresh_rate /= drm_mode->vtotal;
-  if (drm_mode->flags & DRM_MODE_FLAG_INTERLACE)
-    mode->refresh_rate *= 2;
-  if (drm_mode->flags & DRM_MODE_FLAG_DBLSCAN)
-    mode->refresh_rate /= 2;
-  if (drm_mode->vscan > 1)
-    mode->refresh_rate /= drm_mode->vscan;
-  mode->refresh_rate /= 1000.0;
-
+  mode->refresh_rate = drm_mode_vrefresh (drm_mode);
   mode->driver_private = g_slice_dup (drmModeModeInfo, drm_mode);
   mode->driver_notify = (GDestroyNotify)meta_monitor_mode_destroy_notify;
+}
+
+static int
+compare_modes (const void *one,
+               const void *two)
+{
+  MetaMonitorMode *a = *(MetaMonitorMode **) one;
+  MetaMonitorMode *b = *(MetaMonitorMode **) two;
+
+  if (a->width != b->width)
+    return a->width > b->width ? -1 : 1;
+  if (a->height != b->height)
+    return a->height > b->height ? -1 : 1;
+  if (a->refresh_rate != b->refresh_rate)
+    return a->refresh_rate > b->refresh_rate ? -1 : 1;
+
+  return g_strcmp0 (b->name, a->name);
 }
 
 static MetaOutput *
@@ -629,6 +666,47 @@ init_crtc_rotations (MetaMonitorManager *manager,
 }
 
 static void
+add_common_modes (MetaMonitorManager *manager,
+                  MetaOutput         *output)
+{
+  const drmModeModeInfo *mode;
+  GPtrArray *array;
+  unsigned i;
+  unsigned max_hdisplay = 0;
+  unsigned max_vdisplay = 0;
+  float max_vrefresh = 0.0;
+
+  for (i = 0; i < output->n_modes; i++)
+    {
+      mode = output->modes[i]->driver_private;
+      max_hdisplay = MAX (max_hdisplay, mode->hdisplay);
+      max_vdisplay = MAX (max_vdisplay, mode->vdisplay);
+      max_vrefresh = MAX (max_vrefresh, drm_mode_vrefresh (mode));
+    }
+
+  max_vrefresh = MAX (max_vrefresh, 60.0);
+  max_vrefresh *= (1 + SYNC_TOLERANCE);
+
+  array = g_ptr_array_new ();
+  for (i = 0; i < G_N_ELEMENTS (meta_default_drm_mode_infos); i++)
+    {
+      mode = &meta_default_drm_mode_infos[i];
+      if (mode->hdisplay > max_hdisplay ||
+          mode->vdisplay > max_vdisplay ||
+          drm_mode_vrefresh (mode) > max_vrefresh)
+        continue;
+
+      g_ptr_array_add (array, find_meta_mode (manager, mode));
+    }
+
+  output->modes = g_renew (MetaMonitorMode *, output->modes, output->n_modes + array->len);
+  memcpy (output->modes + output->n_modes, array->pdata, array->len * sizeof (MetaMonitorMode *));
+  output->n_modes += array->len;
+
+  g_ptr_array_free (array, TRUE);
+}
+
+static void
 init_crtc (MetaCRTC           *crtc,
            MetaMonitorManager *manager,
            drmModeCrtc        *drm_crtc)
@@ -719,6 +797,17 @@ init_output (MetaOutput         *output,
     output->preferred_mode = output->modes[0];
 
   output_kms->connector = connector;
+  find_connector_properties (manager_kms, output_kms);
+
+  /* FIXME: MSC feature bit? */
+  /* Presume that if the output supports scaling, then we have
+   * a panel fitter capable of adjusting any mode to suit.
+   */
+  if (output_kms->has_scaling)
+    add_common_modes (manager, output);
+
+  qsort (output->modes, output->n_modes, sizeof (MetaMonitorMode *), compare_modes);
+
   output_kms->n_encoders = connector->count_encoders;
   output_kms->encoders = g_new0 (drmModeEncoderPtr, output_kms->n_encoders);
 
@@ -782,7 +871,6 @@ init_output (MetaOutput         *output,
       output->is_presentation = FALSE;
     }
 
-  find_connector_properties (manager_kms, output_kms);
   output->suggested_x = output_kms->suggested_x;
   output->suggested_y = output_kms->suggested_y;
   output->hotplug_mode_update = output_kms->hotplug_mode_update;
@@ -951,7 +1039,7 @@ init_modes (MetaMonitorManager *manager,
         }
     }
 
-  manager->n_modes = g_hash_table_size (modes);
+  manager->n_modes = g_hash_table_size (modes) + G_N_ELEMENTS (meta_default_drm_mode_infos);
   manager->modes = g_new0 (MetaMonitorMode, manager->n_modes);
 
   g_hash_table_iter_init (&iter, modes);
@@ -967,6 +1055,16 @@ init_modes (MetaMonitorManager *manager,
     }
 
   g_hash_table_destroy (modes);
+
+  for (i = 0; i < G_N_ELEMENTS (meta_default_drm_mode_infos); i++)
+    {
+      MetaMonitorMode *mode;
+
+      mode = &manager->modes[mode_id];
+      init_mode (mode, &meta_default_drm_mode_infos[i], (long) mode_id);
+
+      mode_id++;
+    }
 }
 
 static void

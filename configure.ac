@@ -376,6 +376,8 @@ AC_CHECK_DECL([GL_EXT_x11_sync_object],
               [AC_MSG_ERROR([GL_EXT_x11_sync_object definition not found, please update your GL headers])],
               [#include <GL/glx.h>])
 
+AC_PATH_PROG([CVT],[cvt],[])
+
 #### Warnings (last since -Werror can disturb other tests)
 
 # Stay command-line compatible with the gnome-common configure option. Here
