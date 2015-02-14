@@ -220,6 +220,69 @@ const WorldClocksSection = new Lang.Class({
     }
 });
 
+const MessagesIndicator = new Lang.Class({
+    Name: 'MessagesIndicator',
+
+    _init: function() {
+        this.actor = new St.Label({ text: '⚫', visible: false, y_expand: true,
+                                    y_align: Clutter.ActorAlign.CENTER });
+
+        this._sources = [];
+
+        Main.messageTray.connect('source-added', Lang.bind(this, this._onSourceAdded));
+        Main.messageTray.connect('source-removed', Lang.bind(this, this._onSourceRemoved));
+
+        let sources = Main.messageTray.getSources();
+        sources.forEach(Lang.bind(this, function(source) { this._onSourceAdded(null, source); }));
+    },
+
+    _onSourceAdded: function(tray, source) {
+        source.connect('count-updated', Lang.bind(this, this._updateCount));
+        this._sources.push(source);
+        this._updateCount();
+    },
+
+    _onSourceRemoved: function(tray, source) {
+        this._sources.splice(this._sources.indexOf(source), 1);
+        this._updateCount();
+    },
+
+    _updateCount: function() {
+        let count = 0;
+        this._sources.forEach(Lang.bind(this,
+            function(source) {
+                count += source.unseenCount;
+            }));
+        count -= Main.messageTray.queueCount;
+
+        this.actor.visible = (count > 0);
+    }
+});
+
+const IndicatorPad = new Lang.Class({
+    Name: 'IndicatorPad',
+    Extends: St.Widget,
+
+    _init: function(actor) {
+        this._source = actor;
+        this._source.connect('notify::visible',
+                             Lang.bind(this, this.queue_relayout));
+        this.parent();
+    },
+
+    vfunc_get_preferred_width: function(container, forHeight) {
+        if (this._source.visible)
+            return this._source.get_preferred_width(forHeight);
+        return [0, 0];
+    },
+
+    vfunc_get_preferred_height: function(container, forWidth) {
+        if (this._source.visible)
+            return this._source.get_preferred_height(forWidth);
+        return [0, 0];
+    }
+});
+
 const FreezableBinLayout = new Lang.Class({
     Name: 'FreezableBinLayout',
     Extends: Clutter.BinLayout,
@@ -269,9 +332,17 @@ const DateMenuButton = new Lang.Class({
         this.parent(menuAlignment);
 
         this._clockDisplay = new St.Label({ y_align: Clutter.ActorAlign.CENTER });
+        this._indicator = new MessagesIndicator();
+
+        let box = new St.BoxLayout();
+        box.add_actor(new IndicatorPad(this._indicator.actor));
+        box.add_actor(this._clockDisplay);
+        box.add_actor(this._indicator.actor);
+
         this.actor.label_actor = this._clockDisplay;
-        this.actor.add_actor(this._clockDisplay);
+        this.actor.add_actor(box);
         this.actor.add_style_class_name ('clock-display');
+
 
         let layout = new FreezableBinLayout();
         let bin = new St.Widget({ layout_manager: layout });

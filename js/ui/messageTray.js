@@ -1456,6 +1456,10 @@ const MessageTray = new Lang.Class({
         }
     },
 
+    get queueCount() {
+        return this._notificationQueue.length;
+    },
+
     contains: function(source) {
         return this._sources.has(source);
     },
