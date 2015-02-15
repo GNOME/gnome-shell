@@ -225,7 +225,7 @@ shell_generic_container_set_skip_paint (ShellGenericContainer  *self,
   gboolean currently_skipping;
 
   currently_skipping = g_hash_table_lookup (self->priv->skip_paint, child) != NULL;
-  if (!!skip == currently_skipping)
+  if ((!!skip) == currently_skipping)
     return;
 
   if (!skip)
