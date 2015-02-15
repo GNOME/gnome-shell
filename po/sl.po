@@ -2,15 +2,15 @@
 # Copyright (C) 2006 Free Software Foundation, Inc.
 # This file is distributed under the same license as the gnome-shell package.
 #
-# Matej Urbančič <mateju@svn.gnome.org>, 2009-2014.
+# Matej Urbančič <mateju@svn.gnome.org>, 2009-2015.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-12-19 16:26+0000\n"
-"PO-Revision-Date: 2014-12-25 19:18+0100\n"
+"POT-Creation-Date: 2015-02-15 16:54+0000\n"
+"PO-Revision-Date: 2015-02-15 21:09+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: Slovenian\n"
@@ -299,8 +299,8 @@ msgstr ""
 "premikati"
 
 #: ../data/org.gnome.Shell.PortalHelper.desktop.in.h:1
-msgid "Captive Portal"
-msgstr "Združen pogled"
+msgid "Network Login"
+msgstr "Omrežna prijava"
 
 #: ../js/extensionPrefs/main.js:123
 #, javascript-format
@@ -311,46 +311,46 @@ msgstr "Prišlo je do napake med nalaganjem pogovornega okna z možnosti za %s:"
 msgid "GNOME Shell Extensions"
 msgstr "Razširitve lupine Gnome"
 
-#: ../js/gdm/authPrompt.js:146 ../js/ui/components/networkAgent.js:143
+#: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:143
 #: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:452
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/network.js:915
+#: ../js/ui/status/network.js:916
 msgid "Cancel"
 msgstr "Prekliči"
 
-#: ../js/gdm/authPrompt.js:168 ../js/gdm/authPrompt.js:216
+#: ../js/gdm/authPrompt.js:169 ../js/gdm/authPrompt.js:217
 msgid "Next"
 msgstr "Naslednji"
 
-#: ../js/gdm/authPrompt.js:212 ../js/ui/shellMountOperation.js:403
+#: ../js/gdm/authPrompt.js:213 ../js/ui/shellMountOperation.js:403
 #: ../js/ui/unlockDialog.js:59
 msgid "Unlock"
 msgstr "Odkleni"
 
-#: ../js/gdm/authPrompt.js:214
+#: ../js/gdm/authPrompt.js:215
 msgctxt "button"
 msgid "Sign In"
 msgstr "Prijava"
 
-#: ../js/gdm/loginDialog.js:275
+#: ../js/gdm/loginDialog.js:276
 msgid "Choose Session"
 msgstr "Izbor seje"
 
-#: ../js/gdm/loginDialog.js:434
+#: ../js/gdm/loginDialog.js:417
 msgid "Not listed?"
 msgstr "Ali je ni na seznamu?"
 
-#: ../js/gdm/loginDialog.js:619
+#: ../js/gdm/loginDialog.js:822
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(na primer, uporabnika ali %s)"
 
-#: ../js/gdm/loginDialog.js:624 ../js/ui/components/networkAgent.js:269
+#: ../js/gdm/loginDialog.js:827 ../js/ui/components/networkAgent.js:269
 #: ../js/ui/components/networkAgent.js:287
 msgid "Username: "
 msgstr "Uporabniško ime: "
 
-#: ../js/gdm/loginDialog.js:955
+#: ../js/gdm/loginDialog.js:1159
 msgid "Login Window"
 msgstr "Prijavno okno"
 
@@ -375,35 +375,37 @@ msgstr "Ukaza ni mogoče razčleniti:"
 msgid "Execution of “%s” failed:"
 msgstr "Izvedba “%s” je spodletela:"
 
+#. TRANSLATORS: this is the title of the wifi captive portal login
+#. * window, until we know the title of the actual login page */
 #: ../js/portalHelper/main.js:85
 msgid "Web Authentication Redirect"
 msgstr "Preusmeritev spletnega overjanja"
 
-#: ../js/ui/appDisplay.js:772
+#: ../js/ui/appDisplay.js:785
 msgid "Frequently used applications will appear here"
 msgstr "Pogosto uporabljeni programi bodo prikazani tu"
 
-#: ../js/ui/appDisplay.js:883
+#: ../js/ui/appDisplay.js:905
 msgid "Frequent"
 msgstr "Pogosto"
 
-#: ../js/ui/appDisplay.js:890
+#: ../js/ui/appDisplay.js:912
 msgid "All"
 msgstr "Vse"
 
-#: ../js/ui/appDisplay.js:1791
+#: ../js/ui/appDisplay.js:1827
 msgid "New Window"
 msgstr "Novo okno"
 
-#: ../js/ui/appDisplay.js:1817 ../js/ui/dash.js:285
+#: ../js/ui/appDisplay.js:1855 ../js/ui/dash.js:289
 msgid "Remove from Favorites"
 msgstr "Odstrani iz priljubljenih"
 
-#: ../js/ui/appDisplay.js:1823
+#: ../js/ui/appDisplay.js:1861
 msgid "Add to Favorites"
 msgstr "Dodaj med priljubljene"
 
-#: ../js/ui/appDisplay.js:1832
+#: ../js/ui/appDisplay.js:1871
 msgid "Show Details"
 msgstr "Pokaži besedilo"
 
@@ -417,7 +419,7 @@ msgstr "Program \"%s\" je dodan med priljubljeno."
 msgid "%s has been removed from your favorites."
 msgstr "Program \"%s\" je odstranjen iz priljubljenih."
 
-#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:813
+#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:819
 #: ../js/ui/status/system.js:337
 msgid "Settings"
 msgstr "Nastavitve"
@@ -426,17 +428,23 @@ msgstr "Nastavitve"
 msgid "Change Background…"
 msgstr "Spremeni ozadje ..."
 
+#. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday). */
+#: ../js/ui/calendar.js:39
+msgctxt "calendar-no-work"
+msgid "06"
+msgstr "06"
+
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #. */
-#: ../js/ui/calendar.js:70
+#: ../js/ui/calendar.js:68
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Celodnevno"
 
 #. Translators: Shown in calendar event list, if 24h format,
 #. \u2236 is a ratio character, similar to : */
-#: ../js/ui/calendar.js:77
+#: ../js/ui/calendar.js:75
 msgctxt "event list time"
 msgid "%H∶%M"
 msgstr "%H∶%M"
@@ -444,7 +452,7 @@ msgstr "%H∶%M"
 #. Translators: Shown in calendar event list, if 12h format,
 #. \u2236 is a ratio character, similar to : and \u2009 is
 #. a thin space */
-#: ../js/ui/calendar.js:86
+#: ../js/ui/calendar.js:84
 msgctxt "event list time"
 msgid "%l∶%M %p"
 msgstr "%l∶%M %p"
@@ -454,43 +462,43 @@ msgstr "%l∶%M %p"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #. */
-#: ../js/ui/calendar.js:100
+#: ../js/ui/calendar.js:98
 msgctxt "grid sunday"
 msgid "S"
 msgstr "N"
 
 #. Translators: Calendar grid abbreviation for Monday */
-#: ../js/ui/calendar.js:102
+#: ../js/ui/calendar.js:100
 msgctxt "grid monday"
 msgid "M"
 msgstr "P"
 
 #. Translators: Calendar grid abbreviation for Tuesday */
-#: ../js/ui/calendar.js:104
+#: ../js/ui/calendar.js:102
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "T"
 
 #. Translators: Calendar grid abbreviation for Wednesday */
-#: ../js/ui/calendar.js:106
+#: ../js/ui/calendar.js:104
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "S"
 
 #. Translators: Calendar grid abbreviation for Thursday */
-#: ../js/ui/calendar.js:108
+#: ../js/ui/calendar.js:106
 msgctxt "grid thursday"
 msgid "T"
 msgstr "Č"
 
 #. Translators: Calendar grid abbreviation for Friday */
-#: ../js/ui/calendar.js:110
+#: ../js/ui/calendar.js:108
 msgctxt "grid friday"
 msgid "F"
 msgstr "P"
 
 #. Translators: Calendar grid abbreviation for Saturday */
-#: ../js/ui/calendar.js:112
+#: ../js/ui/calendar.js:110
 msgctxt "grid saturday"
 msgid "S"
 msgstr "S"
@@ -501,85 +509,83 @@ msgstr "S"
 #. * so they need to be unique (e.g. Tuesday and Thursday cannot
 #. * both be 'T').
 #. */
-#: ../js/ui/calendar.js:125
+#: ../js/ui/calendar.js:123
 msgctxt "list sunday"
 msgid "Su"
 msgstr "Ne"
 
 #. Translators: Event list abbreviation for Monday */
-#: ../js/ui/calendar.js:127
+#: ../js/ui/calendar.js:125
 msgctxt "list monday"
 msgid "M"
 msgstr "P"
 
 #. Translators: Event list abbreviation for Tuesday */
-#: ../js/ui/calendar.js:129
+#: ../js/ui/calendar.js:127
 msgctxt "list tuesday"
 msgid "T"
 msgstr "T"
 
 #. Translators: Event list abbreviation for Wednesday */
-#: ../js/ui/calendar.js:131
+#: ../js/ui/calendar.js:129
 msgctxt "list wednesday"
 msgid "W"
 msgstr "S"
 
 #. Translators: Event list abbreviation for Thursday */
-#: ../js/ui/calendar.js:133
+#: ../js/ui/calendar.js:131
 msgctxt "list thursday"
 msgid "Th"
 msgstr "Če"
 
 #. Translators: Event list abbreviation for Friday */
-#: ../js/ui/calendar.js:135
+#: ../js/ui/calendar.js:133
 msgctxt "list friday"
 msgid "F"
 msgstr "Pe"
 
 #. Translators: Event list abbreviation for Saturday */
-#: ../js/ui/calendar.js:137
+#: ../js/ui/calendar.js:135
 msgctxt "list saturday"
 msgid "S"
 msgstr "S"
 
-#: ../js/ui/calendar.js:462
+#: ../js/ui/calendar.js:460
 msgid "Previous month"
 msgstr "Predhodni mesec"
 
-#: ../js/ui/calendar.js:472
+#: ../js/ui/calendar.js:470
 msgid "Next month"
 msgstr "Naslednji mesec"
 
 #. Translators: Text to show if there are no events */
-#: ../js/ui/calendar.js:810
+#: ../js/ui/calendar.js:806
 msgid "Nothing Scheduled"
 msgstr "Nič ni razporejeno"
 
-#. Translators: Shown on calendar heading when selected day occurs on current year */
-#: ../js/ui/calendar.js:826
+#: ../js/ui/calendar.js:825
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d. %m."
 
-#. Translators: Shown on calendar heading when selected day occurs on different year */
 #: ../js/ui/calendar.js:829
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d %B %Y"
 
-#: ../js/ui/calendar.js:839
+#: ../js/ui/calendar.js:841
 msgid "Today"
 msgstr "Danes"
 
-#: ../js/ui/calendar.js:843
+#: ../js/ui/calendar.js:845
 msgid "Tomorrow"
 msgstr "Jutri"
 
-#: ../js/ui/calendar.js:854
+#: ../js/ui/calendar.js:856
 msgid "This week"
 msgstr "Ta teden"
 
-#: ../js/ui/calendar.js:862
+#: ../js/ui/calendar.js:864
 msgid "Next week"
 msgstr "Naslednji teden"
 
@@ -613,7 +619,7 @@ msgid "Type again:"
 msgstr "Vpišite znova:"
 
 #: ../js/ui/components/networkAgent.js:138 ../js/ui/status/network.js:277
-#: ../js/ui/status/network.js:359 ../js/ui/status/network.js:918
+#: ../js/ui/status/network.js:359 ../js/ui/status/network.js:919
 msgid "Connect"
 msgstr "Poveži"
 
@@ -707,102 +713,102 @@ msgstr "Overi"
 msgid "Sorry, that didn't work. Please try again."
 msgstr "Dejanje je spodletelo. Poskusite znova."
 
-#: ../js/ui/components/telepathyClient.js:240
+#: ../js/ui/components/telepathyClient.js:242
 msgid "Invitation"
 msgstr "Povabilo"
 
-#: ../js/ui/components/telepathyClient.js:300
+#: ../js/ui/components/telepathyClient.js:302
 msgid "Call"
 msgstr "Pokliči"
 
-#: ../js/ui/components/telepathyClient.js:316
+#: ../js/ui/components/telepathyClient.js:318
 msgid "File Transfer"
 msgstr "Prenos datotek"
 
-#: ../js/ui/components/telepathyClient.js:420
+#: ../js/ui/components/telepathyClient.js:422
 msgid "Chat"
 msgstr "Klepet"
 
-#: ../js/ui/components/telepathyClient.js:483
+#: ../js/ui/components/telepathyClient.js:485
 msgid "Unmute"
 msgstr "Povrni glasnost"
 
-#: ../js/ui/components/telepathyClient.js:483
+#: ../js/ui/components/telepathyClient.js:485
 msgid "Mute"
 msgstr "Utišaj"
 
 #. Translators: Time in 24h format */
-#: ../js/ui/components/telepathyClient.js:953
+#: ../js/ui/components/telepathyClient.js:955
 msgid "%H∶%M"
 msgstr "%H∶%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30" */
-#: ../js/ui/components/telepathyClient.js:960
+#: ../js/ui/components/telepathyClient.js:962
 msgid "Yesterday, %H∶%M"
 msgstr "Včeraj, %H:%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 24h format. i.e. "Monday, 14:30" */
-#: ../js/ui/components/telepathyClient.js:967
+#: ../js/ui/components/telepathyClient.js:969
 msgid "%A, %H∶%M"
 msgstr "%A, %H∶%M"
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 24h format.
 #. i.e. "May 25, 14:30" */
-#: ../js/ui/components/telepathyClient.js:974
+#: ../js/ui/components/telepathyClient.js:976
 msgid "%B %d, %H∶%M"
 msgstr "%B %d, %H∶%M"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
 #. i.e. "May 25 2012, 14:30" */
-#: ../js/ui/components/telepathyClient.js:980
+#: ../js/ui/components/telepathyClient.js:982
 msgid "%B %d %Y, %H∶%M"
 msgstr "%B %d %Y, %H∶%M"
 
-#. Translators: Time in 24h format */
-#: ../js/ui/components/telepathyClient.js:986
+#. Translators: Time in 12h format */
+#: ../js/ui/components/telepathyClient.js:988
 msgid "%l∶%M %p"
 msgstr "%l∶%M %p"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 12h format. i.e. "Yesterday, 2:30 pm" */
-#: ../js/ui/components/telepathyClient.js:993
+#: ../js/ui/components/telepathyClient.js:995
 msgid "Yesterday, %l∶%M %p"
 msgstr "Včeraj, %l∶%M %p"
 
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm" */
-#: ../js/ui/components/telepathyClient.js:1000
+#: ../js/ui/components/telepathyClient.js:1002
 msgid "%A, %l∶%M %p"
 msgstr "%A, %l∶%M %p"
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 12h format.
 #. i.e. "May 25, 2:30 pm" */
-#: ../js/ui/components/telepathyClient.js:1007
+#: ../js/ui/components/telepathyClient.js:1009
 msgid "%B %d, %l∶%M %p"
 msgstr "%B %d, %l∶%M %p"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
 #. i.e. "May 25 2012, 2:30 pm"*/
-#: ../js/ui/components/telepathyClient.js:1013
+#: ../js/ui/components/telepathyClient.js:1015
 msgid "%B %d %Y, %l∶%M %p"
 msgstr "%B %d %Y, %l∶%M %p"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name. */
-#: ../js/ui/components/telepathyClient.js:1045
+#: ../js/ui/components/telepathyClient.js:1047
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s je sedaj znan kot v %s"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example. */
-#: ../js/ui/components/telepathyClient.js:1149
+#: ../js/ui/components/telepathyClient.js:1151
 #, javascript-format
 msgid "Invitation to %s"
 msgstr "Povabilo v %s"
@@ -810,38 +816,38 @@ msgstr "Povabilo v %s"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example. */
-#: ../js/ui/components/telepathyClient.js:1157
+#: ../js/ui/components/telepathyClient.js:1159
 #, javascript-format
 msgid "%s is inviting you to join %s"
 msgstr "%s vas vabi, da se pridružite v %s"
 
-#: ../js/ui/components/telepathyClient.js:1159
-#: ../js/ui/components/telepathyClient.js:1194
-#: ../js/ui/components/telepathyClient.js:1228
-#: ../js/ui/components/telepathyClient.js:1286
+#: ../js/ui/components/telepathyClient.js:1161
+#: ../js/ui/components/telepathyClient.js:1196
+#: ../js/ui/components/telepathyClient.js:1230
+#: ../js/ui/components/telepathyClient.js:1287
 msgid "Decline"
 msgstr "Zavrni"
 
-#: ../js/ui/components/telepathyClient.js:1165
-#: ../js/ui/components/telepathyClient.js:1234
-#: ../js/ui/components/telepathyClient.js:1291
+#: ../js/ui/components/telepathyClient.js:1167
+#: ../js/ui/components/telepathyClient.js:1236
+#: ../js/ui/components/telepathyClient.js:1292
 msgid "Accept"
 msgstr "Sprejmi"
 
 #. translators: argument is a contact name like Alice for example. */
-#: ../js/ui/components/telepathyClient.js:1184
+#: ../js/ui/components/telepathyClient.js:1186
 #, javascript-format
 msgid "Video call from %s"
 msgstr "%s želi vzpostaviti video klic"
 
 #. translators: argument is a contact name like Alice for example. */
-#: ../js/ui/components/telepathyClient.js:1187
+#: ../js/ui/components/telepathyClient.js:1189
 #, javascript-format
 msgid "Call from %s"
 msgstr "%s kliče"
 
 #. translators: this is a button label (verb), not a noun */
-#: ../js/ui/components/telepathyClient.js:1201
+#: ../js/ui/components/telepathyClient.js:1203
 msgid "Answer"
 msgstr "Odgovori"
 
@@ -850,109 +856,109 @@ msgstr "Odgovori"
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
 #. */
-#: ../js/ui/components/telepathyClient.js:1222
+#: ../js/ui/components/telepathyClient.js:1224
 #, javascript-format
 msgid "%s is sending you %s"
 msgstr "%s pošilja %s"
 
 #. To translators: The parameter is the contact's alias */
-#: ../js/ui/components/telepathyClient.js:1251
+#: ../js/ui/components/telepathyClient.js:1253
 #, javascript-format
 msgid "%s would like permission to see when you are online"
 msgstr "%s želi dovoljenje za pogled dosegljivosti"
 
-#: ../js/ui/components/telepathyClient.js:1337
+#: ../js/ui/components/telepathyClient.js:1338
 msgid "Network error"
 msgstr "Napaka omrežja"
 
-#: ../js/ui/components/telepathyClient.js:1339
+#: ../js/ui/components/telepathyClient.js:1340
 msgid "Authentication failed"
 msgstr "Overitev je spodletela"
 
-#: ../js/ui/components/telepathyClient.js:1341
+#: ../js/ui/components/telepathyClient.js:1342
 msgid "Encryption error"
 msgstr "Napaka šifriranja"
 
-#: ../js/ui/components/telepathyClient.js:1343
+#: ../js/ui/components/telepathyClient.js:1344
 msgid "Certificate not provided"
 msgstr "Potrdilo ni na voljo"
 
-#: ../js/ui/components/telepathyClient.js:1345
+#: ../js/ui/components/telepathyClient.js:1346
 msgid "Certificate untrusted"
 msgstr "Potrdilo ni zaupljivo"
 
-#: ../js/ui/components/telepathyClient.js:1347
+#: ../js/ui/components/telepathyClient.js:1348
 msgid "Certificate expired"
 msgstr "Potrdilo je preteklo"
 
-#: ../js/ui/components/telepathyClient.js:1349
+#: ../js/ui/components/telepathyClient.js:1350
 msgid "Certificate not activated"
 msgstr "Potrdilo ni potrjeno"
 
-#: ../js/ui/components/telepathyClient.js:1351
+#: ../js/ui/components/telepathyClient.js:1352
 msgid "Certificate hostname mismatch"
 msgstr "Neustrezno ime gostitelja potrdila"
 
-#: ../js/ui/components/telepathyClient.js:1353
+#: ../js/ui/components/telepathyClient.js:1354
 msgid "Certificate fingerprint mismatch"
 msgstr "Neustrezen prstni odtis potrdila"
 
-#: ../js/ui/components/telepathyClient.js:1355
+#: ../js/ui/components/telepathyClient.js:1356
 msgid "Certificate self-signed"
 msgstr "Potrdilo je samo-podpisano"
 
-#: ../js/ui/components/telepathyClient.js:1357
+#: ../js/ui/components/telepathyClient.js:1358
 msgid "Status is set to offline"
 msgstr "Stanje je nastavljeno na brez povezave"
 
-#: ../js/ui/components/telepathyClient.js:1359
+#: ../js/ui/components/telepathyClient.js:1360
 msgid "Encryption is not available"
 msgstr "Šifriranje ni na voljo."
 
-#: ../js/ui/components/telepathyClient.js:1361
+#: ../js/ui/components/telepathyClient.js:1362
 msgid "Certificate is invalid"
 msgstr "Potrdilo je neveljavno."
 
-#: ../js/ui/components/telepathyClient.js:1363
+#: ../js/ui/components/telepathyClient.js:1364
 msgid "Connection has been refused"
 msgstr "Povezava je zavrnjena."
 
-#: ../js/ui/components/telepathyClient.js:1365
+#: ../js/ui/components/telepathyClient.js:1366
 msgid "Connection can't be established"
 msgstr "Povezave ni mogoče vzpostaviti."
 
-#: ../js/ui/components/telepathyClient.js:1367
+#: ../js/ui/components/telepathyClient.js:1368
 msgid "Connection has been lost"
 msgstr "Povezava je prekinjena."
 
-#: ../js/ui/components/telepathyClient.js:1369
+#: ../js/ui/components/telepathyClient.js:1370
 msgid "This account is already connected to the server"
 msgstr "Račun je s strežnikom že povezan"
 
-#: ../js/ui/components/telepathyClient.js:1371
+#: ../js/ui/components/telepathyClient.js:1372
 msgid ""
 "Connection has been replaced by a new connection using the same resource"
 msgstr "Povezava je zamenjana z novo povezavo, ki uporablja isti vir."
 
-#: ../js/ui/components/telepathyClient.js:1373
+#: ../js/ui/components/telepathyClient.js:1374
 msgid "The account already exists on the server"
 msgstr "Račun na strežniku že obstaja"
 
-#: ../js/ui/components/telepathyClient.js:1375
+#: ../js/ui/components/telepathyClient.js:1376
 msgid "Server is currently too busy to handle the connection"
 msgstr "Strežnik je trenutno preveč zaposlen za upravljanje s povezavo."
 
-#: ../js/ui/components/telepathyClient.js:1377
+#: ../js/ui/components/telepathyClient.js:1378
 msgid "Certificate has been revoked"
 msgstr "Potrdilo je preklicano"
 
-#: ../js/ui/components/telepathyClient.js:1379
+#: ../js/ui/components/telepathyClient.js:1380
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr ""
 "Potrdilo ne uporablja varnega algoritma ali pa uporablja šibko šifriranje."
 
-#: ../js/ui/components/telepathyClient.js:1381
+#: ../js/ui/components/telepathyClient.js:1382
 msgid ""
 "The length of the server certificate, or the depth of the server certificate "
 "chain, exceed the limits imposed by the cryptography library"
@@ -960,22 +966,22 @@ msgstr ""
 "Dolžina potrdila strežnika ali pa globina verige potrdila presega omejitev, "
 "ki je določena s šifrirno knjižnico."
 
-#: ../js/ui/components/telepathyClient.js:1383
+#: ../js/ui/components/telepathyClient.js:1384
 msgid "Internal error"
 msgstr "Notranja napaka"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example. */
-#: ../js/ui/components/telepathyClient.js:1393
+#: ../js/ui/components/telepathyClient.js:1394
 #, javascript-format
 msgid "Unable to connect to %s"
 msgstr "Povezava z %s ni mogoča."
 
-#: ../js/ui/components/telepathyClient.js:1398
+#: ../js/ui/components/telepathyClient.js:1399
 msgid "View account"
 msgstr "Poglej račun"
 
-#: ../js/ui/components/telepathyClient.js:1435
+#: ../js/ui/components/telepathyClient.js:1436
 msgid "Unknown reason"
 msgstr "Neznan vzrok"
 
@@ -983,11 +989,11 @@ msgstr "Neznan vzrok"
 msgid "Windows"
 msgstr "Okna"
 
-#: ../js/ui/dash.js:249 ../js/ui/dash.js:287
+#: ../js/ui/dash.js:250 ../js/ui/dash.js:291
 msgid "Show Applications"
 msgstr "Pokaži programe"
 
-#: ../js/ui/dash.js:445
+#: ../js/ui/dash.js:451
 msgid "Dash"
 msgstr "Pregledna plošča"
 
@@ -1162,7 +1168,7 @@ msgstr "Namesti"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Prejmi in namesti “%s” preko povezave na extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:700 ../js/ui/status/keyboard.js:535
+#: ../js/ui/keyboard.js:706 ../js/ui/status/keyboard.js:577
 msgid "Keyboard"
 msgstr "Tipkovnica"
 
@@ -1251,7 +1257,7 @@ msgid "Message Tray"
 msgstr "Sporočilna vrstica"
 
 #: ../js/ui/messageTray.js:2443 ../js/ui/overviewControls.js:483
-#: ../js/ui/screenShield.js:151
+#: ../js/ui/screenShield.js:152
 #, javascript-format
 msgid "%d new message"
 msgid_plural "%d new messages"
@@ -1264,7 +1270,7 @@ msgstr[3] "%d nova sporočila"
 msgid "System Information"
 msgstr "Podrobnosti sistema"
 
-#: ../js/ui/notificationDaemon.js:513 ../src/shell-app.c:425
+#: ../js/ui/notificationDaemon.js:513 ../src/shell-app.c:439
 msgctxt "program"
 msgid "Unknown"
 msgstr "Neznano"
@@ -1285,17 +1291,17 @@ msgstr "Pregled"
 msgid "Type to search…"
 msgstr "Vnos niza za iskanje ..."
 
-#: ../js/ui/panel.js:515
+#: ../js/ui/panel.js:521
 msgid "Quit"
 msgstr "Končaj"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview". */
-#: ../js/ui/panel.js:567
+#: ../js/ui/panel.js:573
 msgid "Activities"
 msgstr "Dejavnosti"
 
-#: ../js/ui/panel.js:918
+#: ../js/ui/panel.js:924
 msgid "Top Bar"
 msgstr "Vrhnja vrstica"
 
@@ -1321,7 +1327,7 @@ msgstr "Ponovno zaganjanje ...."
 msgid "%A, %B %d"
 msgstr "%A, %d. %m."
 
-#: ../js/ui/screenShield.js:153
+#: ../js/ui/screenShield.js:154
 #, javascript-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
@@ -1330,27 +1336,27 @@ msgstr[1] "%d novo obvestilo"
 msgstr[2] "%d novi obvestili"
 msgstr[3] "%d nova obvestila"
 
-#: ../js/ui/screenShield.js:472 ../js/ui/status/system.js:345
+#: ../js/ui/screenShield.js:473 ../js/ui/status/system.js:345
 msgid "Lock"
 msgstr "Zakleni"
 
-#: ../js/ui/screenShield.js:706
+#: ../js/ui/screenShield.js:709
 msgid "GNOME needs to lock the screen"
 msgstr "Zakleniti je treba zaslon"
 
-#: ../js/ui/screenShield.js:833 ../js/ui/screenShield.js:1309
+#: ../js/ui/screenShield.js:836 ../js/ui/screenShield.js:1312
 msgid "Unable to lock"
 msgstr "Zaklep ni mogoč"
 
-#: ../js/ui/screenShield.js:834 ../js/ui/screenShield.js:1310
+#: ../js/ui/screenShield.js:837 ../js/ui/screenShield.js:1313
 msgid "Lock was blocked by an application"
 msgstr "Zaklep je preprečil program"
 
-#: ../js/ui/search.js:611
+#: ../js/ui/search.js:609
 msgid "Searching…"
 msgstr "Iskanje ..."
 
-#: ../js/ui/search.js:613
+#: ../js/ui/search.js:611
 msgid "No results."
 msgstr "Ni najdenih zadetkov."
 
@@ -1427,9 +1433,9 @@ msgid "Bluetooth"
 msgstr "Bluetooth"
 
 #: ../js/ui/status/bluetooth.js:51 ../js/ui/status/network.js:178
-#: ../js/ui/status/network.js:360 ../js/ui/status/network.js:1281
-#: ../js/ui/status/network.js:1392 ../js/ui/status/rfkill.js:86
-#: ../js/ui/status/rfkill.js:114
+#: ../js/ui/status/network.js:360 ../js/ui/status/network.js:1282
+#: ../js/ui/status/network.js:1393 ../js/ui/status/rfkill.js:91
+#: ../js/ui/status/rfkill.js:118
 msgid "Turn Off"
 msgstr "Onemogoči"
 
@@ -1446,7 +1452,7 @@ msgstr[1] "%d povezana naprava"
 msgstr[2] "%d povezani napravi"
 msgstr[3] "%d povezane naprave"
 
-#: ../js/ui/status/bluetooth.js:106 ../js/ui/status/network.js:1309
+#: ../js/ui/status/bluetooth.js:106 ../js/ui/status/network.js:1310
 msgid "Not Connected"
 msgstr "Ni vzpostavljene povezave"
 
@@ -1454,7 +1460,7 @@ msgstr "Ni vzpostavljene povezave"
 msgid "Brightness"
 msgstr "Svetlost"
 
-#: ../js/ui/status/keyboard.js:559
+#: ../js/ui/status/keyboard.js:601
 msgid "Show Keyboard Layout"
 msgstr "Pokaži razporeditev tipkovnice"
 
@@ -1482,8 +1488,8 @@ msgstr "Omogoči"
 msgid "<unknown>"
 msgstr "<neznano>"
 
-#: ../js/ui/status/network.js:457 ../js/ui/status/network.js:1307
-#: ../js/ui/status/network.js:1511
+#: ../js/ui/status/network.js:457 ../js/ui/status/network.js:1308
+#: ../js/ui/status/network.js:1512
 msgid "Off"
 msgstr "Nepovezano"
 
@@ -1501,7 +1507,7 @@ msgstr "Neupravljano"
 msgid "Disconnecting"
 msgstr "Prekinjanje povezave"
 
-#: ../js/ui/status/network.js:471 ../js/ui/status/network.js:1301
+#: ../js/ui/status/network.js:471 ../js/ui/status/network.js:1302
 msgid "Connecting"
 msgstr "Poteka povezovanje"
 
@@ -1522,7 +1528,7 @@ msgstr "Manjka strojna programska oprema"
 msgid "Unavailable"
 msgstr "Nedostopno"
 
-#: ../js/ui/status/network.js:488 ../js/ui/status/network.js:1695
+#: ../js/ui/status/network.js:488 ../js/ui/status/network.js:1696
 msgid "Connection failed"
 msgstr "Povezava je spodletela"
 
@@ -1534,7 +1540,7 @@ msgstr "Nastavitve žičnega omrežja"
 msgid "Mobile Broadband Settings"
 msgstr "Nastavitve mobilega širokopasovnega dostopa"
 
-#: ../js/ui/status/network.js:588 ../js/ui/status/network.js:1305
+#: ../js/ui/status/network.js:588 ../js/ui/status/network.js:1306
 msgid "Hardware Disabled"
 msgstr "Strojna oprema je onemogočena"
 
@@ -1574,60 +1580,60 @@ msgstr "Omrežja Wi-Fi"
 msgid "Select a network"
 msgstr "Izbor omrežja"
 
-#: ../js/ui/status/network.js:882
+#: ../js/ui/status/network.js:883
 msgid "No Networks"
 msgstr "Ni omrežij"
 
-#: ../js/ui/status/network.js:903 ../js/ui/status/rfkill.js:112
+#: ../js/ui/status/network.js:904 ../js/ui/status/rfkill.js:116
 msgid "Use hardware switch to turn off"
 msgstr "Uporabite strojni gumb za izklop"
 
-#: ../js/ui/status/network.js:1173
+#: ../js/ui/status/network.js:1174
 msgid "Select Network"
 msgstr "Izbor omrežja"
 
-#: ../js/ui/status/network.js:1179
+#: ../js/ui/status/network.js:1180
 msgid "Wi-Fi Settings"
 msgstr "Nastavitve Wi-Fi"
 
-#: ../js/ui/status/network.js:1281
+#: ../js/ui/status/network.js:1282
 msgid "Turn On"
 msgstr "Omogoči"
 
-#: ../js/ui/status/network.js:1298
+#: ../js/ui/status/network.js:1299
 msgid "Hotspot Active"
 msgstr "Vroča točka je dejavna"
 
-#: ../js/ui/status/network.js:1409
+#: ../js/ui/status/network.js:1410
 msgid "connecting..."
 msgstr "povezovanje ..."
 
 #. Translators: this is for network connections that require some kind of key or password */
-#: ../js/ui/status/network.js:1412
+#: ../js/ui/status/network.js:1413
 msgid "authentication required"
 msgstr "zahtevana je overitev"
 
-#: ../js/ui/status/network.js:1414
+#: ../js/ui/status/network.js:1415
 msgid "connection failed"
 msgstr "povezovanje je spodletelo"
 
-#: ../js/ui/status/network.js:1480 ../js/ui/status/rfkill.js:89
+#: ../js/ui/status/network.js:1481 ../js/ui/status/rfkill.js:94
 msgid "Network Settings"
 msgstr "Omrežne nastavitve"
 
-#: ../js/ui/status/network.js:1482
+#: ../js/ui/status/network.js:1483
 msgid "VPN Settings"
 msgstr "Nastavitve VPN"
 
-#: ../js/ui/status/network.js:1501
+#: ../js/ui/status/network.js:1502
 msgid "VPN"
 msgstr "VPN"
 
-#: ../js/ui/status/network.js:1656
+#: ../js/ui/status/network.js:1657
 msgid "Network Manager"
 msgstr "Upravljalnik omrežij"
 
-#: ../js/ui/status/network.js:1696
+#: ../js/ui/status/network.js:1697
 msgid "Activation of network connection failed"
 msgstr "Omogočanje omrežne povezave je spodletelo."
 
@@ -1661,11 +1667,11 @@ msgstr "UPS"
 msgid "Battery"
 msgstr "Baterija"
 
-#: ../js/ui/status/rfkill.js:83
+#: ../js/ui/status/rfkill.js:88
 msgid "Airplane Mode"
 msgstr "Način letala"
 
-#: ../js/ui/status/rfkill.js:85
+#: ../js/ui/status/rfkill.js:90
 msgid "On"
 msgstr "Povezano"
 
@@ -1745,6 +1751,13 @@ msgstr[0] "Spremembe nastavitev bodo povrnjene v %d sekundah."
 msgstr[1] "Spremembe nastavitev bodo povrnjene v %d sekundi."
 msgstr[2] "Spremembe nastavitev bodo povrnjene v %d sekundah."
 msgstr[3] "Spremembe nastavitev bodo povrnjene v %d sekundah."
+
+#. Translators: This represents the size of a window. The first number is
+#. * the width of the window and the second is the height. */
+#: ../js/ui/windowManager.js:599
+#, javascript-format
+msgid "%d x %d"
+msgstr "%d x %d"
 
 #: ../js/ui/windowMenu.js:34
 msgid "Minimize"
@@ -1832,7 +1845,7 @@ msgstr "Uporabi poseben način, npr.: \"gdm\" za prijavni zaslon"
 msgid "List possible modes"
 msgstr "Seznam mogočih načinov"
 
-#: ../src/shell-app.c:666
+#: ../src/shell-app.c:680
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "Zaganjanje “%s” je spodletelo"
@@ -1848,6 +1861,9 @@ msgstr "Geslo ne more biti prazno"
 #: ../src/shell-polkit-authentication-agent.c:346
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Uporabnik je zavrnil pogovorno okno overitve"
+
+#~ msgid "Captive Portal"
+#~ msgstr "Združen pogled"
 
 #~ msgid "The maximum accuracy level of location."
 #~ msgstr "Raven natančnosti določanja mesta."
