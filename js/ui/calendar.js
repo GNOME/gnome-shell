@@ -416,7 +416,7 @@ const Calendar = new Lang.Class({
         this._shouldDateGrabFocus = false;
 
         this.actor = new St.Widget({ style_class: 'calendar',
-                                     layout_manager: new Clutter.GridLayout(),
+                                     layout_manager: new Clutter.TableLayout(),
                                      reactive: true });
 
         this.actor.connect('scroll-event',
@@ -454,7 +454,8 @@ const Calendar = new Lang.Class({
 
         // Top line of the calendar '<| September 2009 |>'
         this._topBox = new St.BoxLayout();
-        layout.attach(this._topBox, 0, 0, offsetCols + 7, 1);
+        layout.pack(this._topBox, 0, 0);
+        layout.set_span(this._topBox, offsetCols + 7, 1);
 
         this._backButton = new St.Button({ style_class: 'calendar-change-month-back pager-button',
                                            accessible_name: _("Previous month"),
@@ -491,7 +492,7 @@ const Calendar = new Lang.Class({
                 col = 6 - (7 + iter.getDay() - this._weekStart) % 7;
             else
                 col = offsetCols + (7 + iter.getDay() - this._weekStart) % 7;
-            layout.attach(label, col, 1, 1, 1);
+            layout.pack(label, col, 1);
             iter.setTime(iter.getTime() + MSECS_IN_DAY);
         }
 
@@ -664,14 +665,14 @@ const Calendar = new Lang.Class({
                 col = 6 - (7 + iter.getDay() - this._weekStart) % 7;
             else
                 col = offsetCols + (7 + iter.getDay() - this._weekStart) % 7;
-            layout.attach(button, col, row, 1, 1);
+            layout.pack(button, col, row);
 
             this._buttons.push(button);
 
             if (this._useWeekdate && iter.getDay() == 4) {
                 let label = new St.Label({ text: iter.toLocaleFormat('%V'),
                                            style_class: 'calendar-day-base calendar-week-number'});
-                layout.attach(label, rtl ? 7 : 0, row, 1, 1);
+                layout.pack(label, rtl ? 7 : 0, row);
             }
 
             iter.setTime(iter.getTime() + MSECS_IN_DAY);
