@@ -99,7 +99,7 @@ const ScreencastService = new Lang.Class({
             recorder.set_pipeline(options['pipeline']);
         if (options['framerate'])
             recorder.set_framerate(options['framerate']);
-        if (options['draw-cursor'])
+        if ('draw-cursor' in options)
             recorder.set_draw_cursor(options['draw-cursor']);
     },
 
