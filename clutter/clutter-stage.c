@@ -4532,7 +4532,7 @@ _clutter_stage_update_state (ClutterStage      *stage,
                              ClutterStageState  set_flags)
 {
   ClutterStageState new_state;
-  ClutterEvent *event;
+  ClutterEvent event;
 
   new_state = stage->priv->current_state;
   new_state |= set_flags;
@@ -4541,15 +4541,16 @@ _clutter_stage_update_state (ClutterStage      *stage,
   if (new_state == stage->priv->current_state)
     return FALSE;
 
-  event = clutter_event_new (CLUTTER_STAGE_STATE);
-  clutter_event_set_stage (event, stage);
+  memset (&event, 0, sizeof (event));
+  event.type = CLUTTER_STAGE_STATE;
+  clutter_event_set_stage (&event, stage);
 
-  event->stage_state.new_state = new_state;
-  event->stage_state.changed_mask = new_state ^ stage->priv->current_state;
+  event.stage_state.new_state = new_state;
+  event.stage_state.changed_mask = new_state ^ stage->priv->current_state;
 
   stage->priv->current_state = new_state;
 
-  _clutter_event_push (event, FALSE);
+  clutter_stage_event (stage, &event);
 
   return TRUE;
 }
