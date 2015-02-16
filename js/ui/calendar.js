@@ -9,7 +9,10 @@ const Signals = imports.signals;
 const Pango = imports.gi.Pango;
 const Gettext_gtk30 = imports.gettext.domain('gtk30');
 const Mainloop = imports.mainloop;
+const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
+
+const Util = imports.misc.util;
 
 const MSECS_IN_DAY = 24 * 60 * 60 * 1000;
 const SHOW_WEEKDATE_KEY = 'show-weekdate';
@@ -136,6 +139,147 @@ function _getEventDayAbbreviation(dayNumber) {
     ];
     return abbreviations[dayNumber];
 }
+
+function _fixMarkup(text, allowMarkup) {
+    if (allowMarkup) {
+        // Support &amp;, &quot;, &apos;, &lt; and &gt;, escape all other
+        // occurrences of '&'.
+        let _text = text.replace(/&(?!amp;|quot;|apos;|lt;|gt;)/g, '&amp;');
+
+        // Support <b>, <i>, and <u>, escape anything else
+        // so it displays as raw markup.
+        _text = _text.replace(/<(?!\/?[biu]>)/g, '&lt;');
+
+        try {
+            Pango.parse_markup(_text, -1, '');
+            return _text;
+        } catch (e) {}
+    }
+
+    // !allowMarkup, or invalid markup
+    return GLib.markup_escape_text(text, -1);
+}
+
+const URLHighlighter = new Lang.Class({
+    Name: 'URLHighlighter',
+
+    _init: function(text, lineWrap, allowMarkup) {
+        if (!text)
+            text = '';
+        this.actor = new St.Label({ reactive: true, style_class: 'url-highlighter' });
+        this._linkColor = '#ccccff';
+        this.actor.connect('style-changed', Lang.bind(this, function() {
+            let [hasColor, color] = this.actor.get_theme_node().lookup_color('link-color', false);
+            if (hasColor) {
+                let linkColor = color.to_string().substr(0, 7);
+                if (linkColor != this._linkColor) {
+                    this._linkColor = linkColor;
+                    this._highlightUrls();
+                }
+            }
+        }));
+        this.actor.clutter_text.line_wrap = lineWrap;
+        this.actor.clutter_text.line_wrap_mode = Pango.WrapMode.WORD_CHAR;
+
+        this.setMarkup(text, allowMarkup);
+        this.actor.connect('button-press-event', Lang.bind(this, function(actor, event) {
+            // Don't try to URL highlight when invisible.
+            // The MessageTray doesn't actually hide us, so
+            // we need to check for paint opacities as well.
+            if (!actor.visible || actor.get_paint_opacity() == 0)
+                return Clutter.EVENT_PROPAGATE;
+
+            // Keep Notification.actor from seeing this and taking
+            // a pointer grab, which would block our button-release-event
+            // handler, if an URL is clicked
+            return this._findUrlAtPos(event) != -1;
+        }));
+        this.actor.connect('button-release-event', Lang.bind(this, function (actor, event) {
+            if (!actor.visible || actor.get_paint_opacity() == 0)
+                return Clutter.EVENT_PROPAGATE;
+
+            let urlId = this._findUrlAtPos(event);
+            if (urlId != -1) {
+                let url = this._urls[urlId].url;
+                if (url.indexOf(':') == -1)
+                    url = 'http://' + url;
+
+                Gio.app_info_launch_default_for_uri(url, global.create_app_launch_context(0, -1));
+                return Clutter.EVENT_STOP;
+            }
+            return Clutter.EVENT_PROPAGATE;
+        }));
+        this.actor.connect('motion-event', Lang.bind(this, function(actor, event) {
+            if (!actor.visible || actor.get_paint_opacity() == 0)
+                return Clutter.EVENT_PROPAGATE;
+
+            let urlId = this._findUrlAtPos(event);
+            if (urlId != -1 && !this._cursorChanged) {
+                global.screen.set_cursor(Meta.Cursor.POINTING_HAND);
+                this._cursorChanged = true;
+            } else if (urlId == -1) {
+                global.screen.set_cursor(Meta.Cursor.DEFAULT);
+                this._cursorChanged = false;
+            }
+            return Clutter.EVENT_PROPAGATE;
+        }));
+        this.actor.connect('leave-event', Lang.bind(this, function() {
+            if (!this.actor.visible || this.actor.get_paint_opacity() == 0)
+                return Clutter.EVENT_PROPAGATE;
+
+            if (this._cursorChanged) {
+                this._cursorChanged = false;
+                global.screen.set_cursor(Meta.Cursor.DEFAULT);
+            }
+            return Clutter.EVENT_PROPAGATE;
+        }));
+    },
+
+    setMarkup: function(text, allowMarkup) {
+        text = text ? _fixMarkup(text, allowMarkup) : '';
+        this._text = text;
+
+        this.actor.clutter_text.set_markup(text);
+        /* clutter_text.text contain text without markup */
+        this._urls = Util.findUrls(this.actor.clutter_text.text);
+        this._highlightUrls();
+    },
+
+    _highlightUrls: function() {
+        // text here contain markup
+        let urls = Util.findUrls(this._text);
+        let markup = '';
+        let pos = 0;
+        for (let i = 0; i < urls.length; i++) {
+            let url = urls[i];
+            let str = this._text.substr(pos, url.pos - pos);
+            markup += str + '<span foreground="' + this._linkColor + '"><u>' + url.url + '</u></span>';
+            pos = url.pos + url.url.length;
+        }
+        markup += this._text.substr(pos);
+        this.actor.clutter_text.set_markup(markup);
+    },
+
+    _findUrlAtPos: function(event) {
+        let success;
+        let [x, y] = event.get_coords();
+        [success, x, y] = this.actor.transform_stage_point(x, y);
+        let find_pos = -1;
+        for (let i = 0; i < this.actor.clutter_text.text.length; i++) {
+            let [success, px, py, line_height] = this.actor.clutter_text.position_to_coords(i);
+            if (py > y || py + line_height < y || x < px)
+                continue;
+            find_pos = i;
+        }
+        if (find_pos != -1) {
+            for (let i = 0; i < this._urls.length; i++)
+            if (find_pos >= this._urls[i].pos &&
+                this._urls[i].pos + this._urls[i].url.length > find_pos)
+                return i;
+        }
+        return -1;
+    }
+});
 
 // Abstraction for an appointment/event in a calendar
 
