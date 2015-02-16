@@ -415,7 +415,7 @@ StScrollBar {
   -arrow-border-color: #1c1f1f;
   -arrow-base: 24px;
   -arrow-rise: 11px;
-  -arrow-box-shadow: 0 1px 3px red; }
+  -arrow-box-shadow: 0 1px 3px black; }
 
 .popup-separator-menu-item {
   height: 1px;
@@ -1268,11 +1268,9 @@ StScrollBar {
 
 .hotplug-resident-mount {
   spacing: 8px;
-  border-radius: 4px;
-  color: green; }
+  border-radius: 4px; }
   .hotplug-resident-mount:hover {
-    color: red;
-    background-color: blue; }
+    background-color: rgba(57, 63, 63, 0.3); }
 
 .hotplug-resident-mount-label {
   color: inherit;
@@ -1342,9 +1340,9 @@ StScrollBar {
     text-shadow: none;
     icon-shadow: none; }
   .keyboard-key:grayed {
-    background-color: green;
-    color: red;
-    border-color: blue; }
+    background-color: #2e3436;
+    color: #eeeeec;
+    border-color: rgba(0, 0, 0, 0.7); }
 
 .keyboard-subkeys {
   color: white;
