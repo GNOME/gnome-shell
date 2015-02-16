@@ -311,19 +311,6 @@ const FdoNotificationDaemon = new Lang.Class({
         return invocation.return_value(GLib.Variant.new('(u)', [id]));
     },
 
-    _makeButton: function(id, label, useActionIcons) {
-        let button = new St.Button({ can_focus: true });
-        let iconName = id.endsWith('-symbolic') ? id : id + '-symbolic';
-        if (useActionIcons && Gtk.IconTheme.get_default().has_icon(iconName)) {
-            button.add_style_class_name('notification-icon-button');
-            button.child = new St.Icon({ icon_name: iconName });
-        } else {
-            button.add_style_class_name('notification-button');
-            button.label = label;
-        }
-        return button;
-    },
-
     _notifyForSource: function(source, ndata) {
         let [id, icon, summary, body, actions, hints, notification] =
             [ndata.id, ndata.icon, ndata.summary, ndata.body,
@@ -375,17 +362,14 @@ const FdoNotificationDaemon = new Lang.Class({
         let hasDefaultAction = false;
 
         if (actions.length) {
-            let useActionIcons = (hints['action-icons'] == true);
-
             for (let i = 0; i < actions.length - 1; i += 2) {
                 let [actionId, label] = [actions[i], actions[i+1]];
-                if (actionId == 'default') {
+                if (actionId == 'default')
                     hasDefaultAction = true;
-                } else {
-                    notification.addButton(this._makeButton(actionId, label, useActionIcons), Lang.bind(this, function() {
+                else
+                    notification.addAction(label, Lang.bind(this, function() {
                         this._emitActionInvoked(ndata.id, actionId);
                     }));
-                }
             }
         }
 
@@ -431,7 +415,7 @@ const FdoNotificationDaemon = new Lang.Class({
     GetCapabilities: function() {
         return [
             'actions',
-            'action-icons',
+            // 'action-icons',
             'body',
             // 'body-hyperlinks',
             // 'body-images',
