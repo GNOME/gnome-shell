@@ -37,6 +37,8 @@
 
 #include "backends/meta-idle-monitor-private.h"
 
+#include "backends/meta-monitor-manager-dummy.h"
+
 static MetaBackend *_backend;
 
 /**
@@ -145,6 +147,15 @@ on_device_removed (ClutterDeviceManager *device_manager,
   destroy_device_monitor (backend, device_id);
 }
 
+static MetaMonitorManager *
+create_monitor_manager (MetaBackend *backend)
+{
+  if (g_getenv ("META_DUMMY_MONITORS"))
+    return g_object_new (META_TYPE_MONITOR_MANAGER_DUMMY, NULL);
+
+  return META_BACKEND_GET_CLASS (backend)->create_monitor_manager (backend);
+}
+
 static void
 meta_backend_real_post_init (MetaBackend *backend)
 {
@@ -154,7 +165,7 @@ meta_backend_real_post_init (MetaBackend *backend)
   clutter_actor_realize (priv->stage);
   META_BACKEND_GET_CLASS (backend)->select_stage_events (backend);
 
-  priv->monitor_manager = META_BACKEND_GET_CLASS (backend)->create_monitor_manager (backend);
+  priv->monitor_manager = create_monitor_manager (backend);
 
   g_signal_connect (priv->monitor_manager, "monitors-changed",
                     G_CALLBACK (on_monitors_changed), backend);
