@@ -180,6 +180,7 @@ source_c = \
 	clutter-list-model.c		\
 	clutter-main.c 		\
 	clutter-master-clock.c	\
+	clutter-master-clock-default.c	\
 	clutter-model.c		\
 	clutter-offscreen-effect.c	\
 	clutter-page-turn-effect.c	\
@@ -233,6 +234,7 @@ source_h_priv = \
 	clutter-gesture-action-private.h	\
 	clutter-id-pool.h 			\
 	clutter-master-clock.h			\
+	clutter-master-clock-default.h		\
 	clutter-model-private.h			\
 	clutter-offscreen-effect-private.h	\
 	clutter-paint-node-private.h		\
@@ -502,8 +504,8 @@ endif
 gdk_source_c = \
 	gdk/clutter-backend-gdk.c 		\
 	gdk/clutter-device-manager-gdk.c 	\
-	gdk/clutter-input-device-gdk.c 	\
 	gdk/clutter-event-gdk.c 		\
+	gdk/clutter-input-device-gdk.c 	\
 	gdk/clutter-stage-gdk.c		\
 	$(NULL)
 

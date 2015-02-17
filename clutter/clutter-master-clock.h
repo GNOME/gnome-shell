@@ -28,11 +28,28 @@
 
 G_BEGIN_DECLS
 
-#define CLUTTER_TYPE_MASTER_CLOCK       (_clutter_master_clock_get_type ())
-#define CLUTTER_MASTER_CLOCK(obj)       (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_MASTER_CLOCK, ClutterMasterClock))
-#define CLUTTER_IS_MASTER_CLOCK(obj)    (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_MASTER_CLOCK))
+#define CLUTTER_TYPE_MASTER_CLOCK               (_clutter_master_clock_get_type ())
+#define CLUTTER_MASTER_CLOCK(obj)               (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_MASTER_CLOCK, ClutterMasterClock))
+#define CLUTTER_IS_MASTER_CLOCK(obj)            (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_MASTER_CLOCK))
+#define CLUTTER_MASTER_CLOCK_GET_IFACE(obj)     (G_TYPE_INSTANCE_GET_INTERFACE ((obj), CLUTTER_TYPE_MASTER_CLOCK, ClutterMasterClockIface))
 
-typedef struct _ClutterMasterClock      ClutterMasterClock;
+typedef struct _ClutterMasterClock      ClutterMasterClock; /* dummy */
+typedef struct _ClutterMasterClockIface ClutterMasterClockIface;
+
+struct _ClutterMasterClockIface
+{
+  /*< private >*/
+  GTypeInterface parent_iface;
+
+  void (* add_timeline)           (ClutterMasterClock *master_clock,
+                                   ClutterTimeline    *timeline);
+  void (* remove_timeline)        (ClutterMasterClock *master_clock,
+                                   ClutterTimeline    *timeline);
+  void (* start_running)          (ClutterMasterClock *master_clock);
+  void (* ensure_next_iteration)  (ClutterMasterClock *master_clock);
+  void (* set_paused)             (ClutterMasterClock *master_clock,
+                                   gboolean            paused);
+};
 
 GType _clutter_master_clock_get_type (void) G_GNUC_CONST;
 
