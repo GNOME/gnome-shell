@@ -1026,7 +1026,7 @@ StEntry {
   border-color: #1c1f1f;
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
   selection-background-color: #215d9c;
-  selected-color: white; }
+  selected-color: #ffffff; }
   StEntry:focus {
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
     border-color: rgba(154, 154, 142, 0.5); }
@@ -1399,6 +1399,9 @@ StScrollBar {
     width: 24px;
     height: 24px; }
 
+.dash-item-container > StWidget {
+  padding: 4px 8px; }
+
 .dash-label {
   border-radius: 7px;
   padding: 4px 12px;
@@ -1443,35 +1446,35 @@ StScrollBar {
   background-color: rgba(238, 238, 236, 0.1);
   transition-duration: 200ms; }
 
-.app-well-app.running > .overview-icon,
-.show-apps.running > .overview-icon,
-.grid-search-result.running > .overview-icon {
-  text-shadow: black 0px 2px 2px; }
-.app-well-app:active > .overview-icon, .app-well-app:checked > .overview-icon,
-.show-apps:active > .overview-icon,
-.show-apps:checked > .overview-icon,
-.grid-search-result:active > .overview-icon,
-.grid-search-result:checked > .overview-icon {
+.app-well-app:active .overview-icon, .app-well-app:checked .overview-icon,
+.show-apps:active .overview-icon,
+.show-apps:checked .overview-icon,
+.grid-search-result:active .overview-icon,
+.grid-search-result:checked .overview-icon {
   background-color: rgba(23, 25, 26, 0.9);
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.7); }
-.app-well-app:hover > .overview-icon, .app-well-app.running:hover > .overview-icon, .app-well-app:focus > .overview-icon, .app-well-app:selected > .overview-icon,
-.show-apps:hover > .overview-icon,
-.show-apps.running:hover > .overview-icon,
-.show-apps:focus > .overview-icon,
-.show-apps:selected > .overview-icon,
-.grid-search-result:hover > .overview-icon,
-.grid-search-result.running:hover > .overview-icon,
-.grid-search-result:focus > .overview-icon,
-.grid-search-result:selected > .overview-icon {
+.app-well-app:hover .overview-icon, .app-well-app:focus .overview-icon, .app-well-app:selected .overview-icon,
+.show-apps:hover .overview-icon,
+.show-apps:focus .overview-icon,
+.show-apps:selected .overview-icon,
+.grid-search-result:hover .overview-icon,
+.grid-search-result:focus .overview-icon,
+.grid-search-result:selected .overview-icon {
   background-color: rgba(238, 238, 236, 0.1);
   transition-duration: 200ms;
   border-image: none;
   background-image: none; }
 
+.app-well-app-running-dot {
+  width: 10px;
+  height: 3px;
+  background-color: #215d9c;
+  margin-bottom: 2px; }
+
 .search-provider-icon,
-.list-search-result, .app-well-app > .overview-icon,
-.show-apps > .overview-icon,
-.grid-search-result > .overview-icon {
+.list-search-result, .app-well-app .overview-icon,
+.show-apps .overview-icon,
+.grid-search-result .overview-icon {
   border-radius: 4px;
   padding: 6px;
   border: 1px solid transparent;

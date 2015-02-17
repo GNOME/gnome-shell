@@ -1547,6 +1547,19 @@ const AppIcon = new Lang.Class({
                                      can_focus: true,
                                      x_fill: true,
                                      y_fill: true });
+
+        this._dot = new St.Widget({ style_class: 'app-well-app-running-dot',
+                                    layout_manager: new Clutter.BinLayout(),
+                                    x_expand: true, y_expand: true,
+                                    x_align: Clutter.ActorAlign.CENTER,
+                                    y_align: Clutter.ActorAlign.END });
+
+        this._iconContainer = new St.Widget({ layout_manager: new Clutter.BinLayout(),
+                                              x_expand: true, y_expand: true });
+
+        this.actor.set_child(this._iconContainer);
+        this._iconContainer.add_child(this._dot);
+
         this.actor._delegate = this;
 
         if (!iconParams)
@@ -1560,7 +1573,7 @@ const AppIcon = new Lang.Class({
         iconParams['createIcon'] = Lang.bind(this, this._createIcon);
         iconParams['setSizeManually'] = true;
         this.icon = new IconGrid.BaseIcon(app.get_name(), iconParams);
-        this.actor.set_child(this.icon.actor);
+        this._iconContainer.add_child(this.icon.actor);
 
         this.actor.label_actor = this.icon.label;
 
@@ -1620,9 +1633,9 @@ const AppIcon = new Lang.Class({
 
     _updateRunningStyle: function() {
         if (this.app.state != Shell.AppState.STOPPED)
-            this.actor.add_style_class_name('running');
+            this._dot.show();
         else
-            this.actor.remove_style_class_name('running');
+            this._dot.hide();
     },
 
     _setPopupTimeout: function() {
