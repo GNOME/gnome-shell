@@ -99,20 +99,21 @@ G_DEFINE_TYPE_WITH_CODE (ClutterMasterClockGdk,
                                                 clutter_master_clock_iface_init));
 
 static void
-master_clock_schedule_stages_updates (ClutterMasterClockGdk *master_clock)
+master_clock_schedule_forced_stages_updates (ClutterMasterClockGdk *master_clock)
 {
-  ClutterStageManager *stage_manager = clutter_stage_manager_get_default ();
-  const GSList *stages, *l;
+  GHashTableIter iter;
+  gpointer stage, frame_clock;
 
-  stages = clutter_stage_manager_peek_stages (stage_manager);
-
-  for (l = stages; l != NULL; l = l->next)
-    _clutter_stage_schedule_update (l->data);
+  g_hash_table_iter_init (&iter, master_clock->stage_to_clock);
+  while (g_hash_table_iter_next (&iter, &stage, &frame_clock))
+    gdk_frame_clock_request_phase (GDK_FRAME_CLOCK (frame_clock),
+                                   GDK_FRAME_CLOCK_PHASE_UPDATE);
 }
 
 static void
-master_clock_reschedule_stage_update (ClutterMasterClockGdk *master_clock,
-                                      ClutterStage          *stage)
+master_clock_schedule_stage_update (ClutterMasterClockGdk *master_clock,
+                                    ClutterStage          *stage,
+                                    GdkFrameClock         *frame_clock)
 {
   /* Clear the old update time */
   _clutter_stage_clear_update_time (stage);
@@ -121,6 +122,13 @@ master_clock_reschedule_stage_update (ClutterMasterClockGdk *master_clock,
   if (_clutter_stage_has_queued_events (stage) ||
       _clutter_stage_needs_update (stage))
     _clutter_stage_schedule_update (stage);
+
+  /* We can avoid to schedule a new frame if the stage doesn't need
+   * anymore redrawing. But in the case we still have timelines alive,
+   * we have no choice, we need to advance the timelines for the next
+   * frame. */
+  if (master_clock->timelines != NULL)
+    gdk_frame_clock_request_phase (frame_clock, GDK_FRAME_CLOCK_PHASE_UPDATE);
 }
 
 static void
@@ -287,7 +295,7 @@ clutter_master_clock_gdk_update (GdkFrameClock         *frame_clock,
   if (g_hash_table_lookup (master_clock->clock_to_stage, frame_clock) != NULL)
     {
       master_clock_update_stage (master_clock, stage);
-      master_clock_reschedule_stage_update (master_clock, stage);
+      master_clock_schedule_stage_update (master_clock, stage, frame_clock);
     }
 
   master_clock->prev_tick = master_clock->cur_tick;
@@ -326,6 +334,9 @@ clutter_master_clock_gdk_add_stage_clock (ClutterMasterClockGdk *master_clock,
   g_signal_connect (frame_clock, "update",
                     G_CALLBACK (clutter_master_clock_gdk_update),
                     master_clock);
+
+  if (master_clock->timelines != NULL)
+    _clutter_master_clock_start_running ((ClutterMasterClock *) clock);
 }
 
 static void
@@ -474,10 +485,7 @@ clutter_master_clock_gdk_add_timeline (ClutterMasterClock *clock,
                                              timeline);
 
   if (is_first)
-    {
-      master_clock_schedule_stages_updates (master_clock);
-      _clutter_master_clock_start_running (clock);
-    }
+    _clutter_master_clock_start_running (clock);
 }
 
 static void
@@ -493,13 +501,13 @@ clutter_master_clock_gdk_remove_timeline (ClutterMasterClock *clock,
 static void
 clutter_master_clock_gdk_start_running (ClutterMasterClock *clock)
 {
-  master_clock_schedule_stages_updates ((ClutterMasterClockGdk *) clock);
+  master_clock_schedule_forced_stages_updates ((ClutterMasterClockGdk *) clock);
 }
 
 static void
 clutter_master_clock_gdk_ensure_next_iteration (ClutterMasterClock *clock)
 {
-  master_clock_schedule_stages_updates ((ClutterMasterClockGdk *) clock);
+  master_clock_schedule_forced_stages_updates ((ClutterMasterClockGdk *) clock);
 }
 
 static void
