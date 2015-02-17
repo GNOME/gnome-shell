@@ -3,6 +3,7 @@
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
+const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Shell = imports.gi.Shell;
@@ -30,6 +31,8 @@ const SCROLLBACK_HISTORY_LINES = 10;
 
 // See Notification._onEntryChanged
 const COMPOSING_STOP_TIMEOUT = 5;
+
+const CHAT_EXPAND_LINES = 12;
 
 const NotificationDirection = {
     SENT: 'chat-sent',
@@ -273,12 +276,12 @@ const ChatSource = new Lang.Class({
 
         this._notification = new ChatNotification(this);
         this._notification.connect('activated', Lang.bind(this, this.open));
-        this._notification.setUrgency(MessageTray.Urgency.HIGH);
+        this._notification.connect('updated', Lang.bind(this,
+            function() {
+                if (this._banner && this._banner.expanded)
+                    this._ackMessages();
+            }));
         this._notifyTimeoutId = 0;
-
-        // We ack messages when the user expands the new notification or views the summary
-        // notification, in which case the notification is also expanded.
-        this._notification.connect('expanded', Lang.bind(this, this._ackMessages));
 
         this._presence = contact.get_presence_type();
 
@@ -299,6 +302,20 @@ const ChatSource = new Lang.Class({
 
     _createPolicy: function() {
         return new MessageTray.NotificationApplicationPolicy('empathy');
+    },
+
+    createBanner: function() {
+        this._banner = new ChatNotificationBanner(this._notification);
+
+        // We ack messages when the user expands the new notification
+        let id = this._banner.connect('expanded', Lang.bind(this, this._ackMessages));
+        this._banner.actor.connect('destroy', Lang.bind(this,
+            function() {
+                this._banner.disconnect(id);
+                this._banner = null;
+            }));
+
+        return this._banner;
     },
 
     _updateAlias: function() {
@@ -354,7 +371,7 @@ const ChatSource = new Lang.Class({
         this.iconUpdated();
         this._notification.update(this._notification.title,
                                   this._notification.bannerBodyText,
-                                  { gicon: this.getIcon(), customContent: true });
+                                  { gicon: this.getIcon() });
     },
 
     open: function() {
@@ -550,7 +567,7 @@ const ChatSource = new Lang.Class({
     _presenceChanged: function (contact, presence, status, message) {
         this._notification.update(this._notification.title,
                                   this._notification.bannerBodyText,
-                                  { customContent: true, secondaryGIcon: this.getSecondaryIcon() });
+                                  { secondaryGIcon: this.getSecondaryIcon() });
     },
 
     _pendingRemoved: function(channel, message) {
@@ -574,42 +591,13 @@ const ChatNotification = new Lang.Class({
     Extends: MessageTray.Notification,
 
     _init: function(source) {
-        this.parent(source, source.title, null, { customContent: true, secondaryGIcon: source.getSecondaryIcon() });
+        this.parent(source, source.title, null,
+                    { secondaryGIcon: source.getSecondaryIcon() });
+        this.setUrgency(MessageTray.Urgency.HIGH);
         this.setResident(true);
 
-        this._responseEntry = new St.Entry({ style_class: 'chat-response',
-                                             can_focus: true });
-        this._responseEntry.clutter_text.connect('activate', Lang.bind(this, this._onEntryActivated));
-        this._responseEntry.clutter_text.connect('text-changed', Lang.bind(this, this._onEntryChanged));
-        this.setActionArea(this._responseEntry);
-
-        this._responseEntry.clutter_text.connect('key-focus-in', Lang.bind(this, function() {
-            this.focused = true;
-        }));
-        this._responseEntry.clutter_text.connect('key-focus-out', Lang.bind(this, function() {
-            this.focused = false;
-            this.emit('unfocused');
-        }));
-
-        this._createScrollArea();
-        this._lastGroup = null;
-
-        // Keep track of the bottom position for the current adjustment and
-        // force a scroll to the bottom if things change while we were at the
-        // bottom
-        this._oldMaxScrollValue = this._scrollArea.vscroll.adjustment.value;
-        this._scrollArea.add_style_class_name('chat-notification-scrollview');
-        this._scrollArea.vscroll.adjustment.connect('changed', Lang.bind(this, function(adjustment) {
-            if (adjustment.value == this._oldMaxScrollValue)
-                this.scrollTo(St.Side.BOTTOM);
-            this._oldMaxScrollValue = Math.max(adjustment.lower, adjustment.upper - adjustment.page_size);
-        }));
-
-        this._inputHistory = new History.HistoryManager({ entry: this._responseEntry.clutter_text });
-
-        this._history = [];
+        this.messages = [];
         this._timestampTimeoutId = 0;
-        this._composingTimeoutId = 0;
     },
 
     /**
@@ -635,10 +623,8 @@ const ChatNotification = new Lang.Class({
             styles.push('chat-action');
         }
 
-        if (message.direction == NotificationDirection.RECEIVED) {
-            this.update(this.source.title, messageBody, { customContent: true,
-                                                          bannerMarkup: true });
-        }
+        if (message.direction == NotificationDirection.RECEIVED)
+            this.update(this.source.title, messageBody, { bannerMarkup: true });
 
         let group = (message.direction == NotificationDirection.RECEIVED ?
                      'received' : 'sent');
@@ -651,10 +637,10 @@ const ChatNotification = new Lang.Class({
     },
 
     _filterMessages: function() {
-        if (this._history.length < 1)
+        if (this.messages.length < 1)
             return;
 
-        let lastMessageTime = this._history[0].time;
+        let lastMessageTime = this.messages[0].timestamp;
         let currentTime = (Date.now() / 1000);
 
         // Keep the scrollback from growing too long. If the most
@@ -666,12 +652,12 @@ const ChatNotification = new Lang.Class({
         let maxLength = (lastMessageTime < currentTime - SCROLLBACK_RECENT_TIME) ?
             SCROLLBACK_IDLE_LENGTH : SCROLLBACK_RECENT_LENGTH;
 
-        let filteredHistory = this._history.filter(function(item) { return item.realMessage });
+        let filteredHistory = this.messages.filter(function(item) { return item.realMessage });
         if (filteredHistory.length > maxLength) {
             let lastMessageToKeep = filteredHistory[maxLength];
-            let expired = this._history.splice(this._history.indexOf(lastMessageToKeep));
+            let expired = this.messages.splice(this.messages.indexOf(lastMessageToKeep));
             for (let i = 0; i < expired.length; i++)
-                expired[i].actor.destroy();
+                this.emit('message-removed', expired[i]);
         }
     },
 
@@ -684,7 +670,6 @@ const ChatNotification = new Lang.Class({
      *  styles: Style class names for the message to have.
      *  timestamp: The timestamp of the message.
      *  noTimestamp: suppress timestamp signal?
-     *  childProps: props to add the actor with.
      */
     _append: function(props) {
         let currentTime = (Date.now() / 1000);
@@ -692,44 +677,22 @@ const ChatNotification = new Lang.Class({
                                       group: null,
                                       styles: [],
                                       timestamp: currentTime,
-                                      noTimestamp: false,
-                                      childProps: null });
+                                      noTimestamp: false });
 
         // Reset the old message timeout
         if (this._timestampTimeoutId)
             Mainloop.source_remove(this._timestampTimeoutId);
 
-        let highlighter = new MessageTray.URLHighlighter(props.body,
-                                                         true,  // line wrap?
-                                                         true); // allow markup?
+        let message = { realMessage: props.group != 'meta',
+                        showTimestamp: false };
+        Lang.copyProperties(props, message);
+        delete message.noTimestamp;
 
-        let body = highlighter.actor;
-
-        let styles = props.styles;
-        for (let i = 0; i < styles.length; i++)
-            body.add_style_class_name(styles[i]);
-
-        let group = props.group;
-        if (group != this._lastGroup) {
-            this._lastGroup = group;
-            let emptyLine = new St.Label({ style_class: 'chat-empty-line' });
-            this.addActor(emptyLine);
-            this._history.unshift({ actor: emptyLine, time: timestamp,
-                                    realMessage: false });
-        }
-
-        let lineBox = new St.BoxLayout({ vertical: false });
-        lineBox.add(body, props.childProps);
-        this.addActor(lineBox);
-        this._lastMessageBox = lineBox;
-
-        this.updated();
-
-        let timestamp = props.timestamp;
-        this._history.unshift({ actor: lineBox, time: timestamp,
-                                realMessage: group != 'meta' });
+        this.messages.unshift(message);
+        this.emit('message-added', message);
 
         if (!props.noTimestamp) {
+            let timestamp = props.timestamp;
             if (timestamp < currentTime - SCROLLBACK_IMMEDIATE_TIME) {
                 this.appendTimestamp();
             } else {
@@ -748,15 +711,8 @@ const ChatNotification = new Lang.Class({
     appendTimestamp: function() {
         this._timestampTimeoutId = 0;
 
-        let lastMessageTime = this._history[0].time;
-        let lastMessageDate = new Date(lastMessageTime * 1000);
-
-        let timeLabel = Util.createTimeLabel(lastMessageDate);
-        timeLabel.style_class = 'chat-meta-message';
-        timeLabel.x_expand = timeLabel.y_expand = true;
-        timeLabel.x_align = timeLabel.y_align = Clutter.ActorAlign.END;
-
-        this._lastMessageBox.add_actor(timeLabel);
+        this.messages[0].showTimestamp = true;
+        this.emit('timestamp-changed', this.messages[0]);
 
         this._filterMessages();
 
@@ -771,13 +727,150 @@ const ChatNotification = new Lang.Class({
            IM name. */
         let message = '<i>' + _("%s is now known as %s").format(oldAlias, newAlias) + '</i>';
 
-        let label = this._append({ body: message,
-                                   group: 'meta',
-                                   styles: ['chat-meta-message'] });
-
-        this.update(newAlias, null, { customContent: true });
+        this._append({ body: message,
+                       group: 'meta',
+                       styles: ['chat-meta-message'] });
 
         this._filterMessages();
+    }
+});
+
+const ChatLineBox = new Lang.Class({
+    Name: 'ChatLineBox',
+    Extends: St.BoxLayout,
+
+    vfunc_get_preferred_height: function(forWidth) {
+        let [, natHeight] = this.parent(forWidth);
+        return [natHeight, natHeight];
+    }
+});
+
+const ChatNotificationBanner = new Lang.Class({
+    Name: 'ChatNotificationBanner',
+    Extends: MessageTray.NotificationBanner,
+
+    _init: function(notification) {
+        this.parent(notification);
+
+        this._responseEntry = new St.Entry({ style_class: 'chat-response',
+                                             x_expand: true,
+                                             can_focus: true });
+        this._responseEntry.clutter_text.connect('activate', Lang.bind(this, this._onEntryActivated));
+        this._responseEntry.clutter_text.connect('text-changed', Lang.bind(this, this._onEntryChanged));
+        this.setActionArea(this._responseEntry);
+
+        this._responseEntry.clutter_text.connect('key-focus-in', Lang.bind(this, function() {
+            this.focused = true;
+        }));
+        this._responseEntry.clutter_text.connect('key-focus-out', Lang.bind(this, function() {
+            this.focused = false;
+            this.emit('unfocused');
+        }));
+
+        this._scrollArea = new St.ScrollView({ style_class: 'chat-scrollview vfade',
+                                               vscrollbar_policy: Gtk.PolicyType.AUTOMATIC,
+                                               hscrollbar_policy: Gtk.PolicyType.NEVER,
+                                               visible: this.expanded });
+        this._contentArea = new St.BoxLayout({ style_class: 'chat-body',
+                                               vertical: true });
+        this._scrollArea.add_actor(this._contentArea);
+
+        this.setExpandedBody(this._scrollArea);
+        this.setExpandedLines(CHAT_EXPAND_LINES);
+
+        this._lastGroup = null;
+
+        // Keep track of the bottom position for the current adjustment and
+        // force a scroll to the bottom if things change while we were at the
+        // bottom
+        this._oldMaxScrollValue = this._scrollArea.vscroll.adjustment.value;
+        this._scrollArea.vscroll.adjustment.connect('changed', Lang.bind(this, function(adjustment) {
+            if (adjustment.value == this._oldMaxScrollValue)
+                this.scrollTo(St.Side.BOTTOM);
+            this._oldMaxScrollValue = Math.max(adjustment.lower, adjustment.upper - adjustment.page_size);
+        }));
+
+        this._inputHistory = new History.HistoryManager({ entry: this._responseEntry.clutter_text });
+
+        this._composingTimeoutId = 0;
+
+        this._messageActors = new Map();
+
+        this._messageAddedId = this.notification.connect('message-added',
+            Lang.bind(this, function(n, message) {
+                this._addMessage(message);
+            }));
+        this._messageRemovedId = this.notification.connect('message-removed',
+            Lang.bind(this, function(n, message) {
+                let actor = this._messageActors.get(message);
+                if (this._messageActors.delete(message))
+                    actor.destroy();
+            }));
+        this._timestampChangedId = this.notification.connect('timestamp-changed',
+            Lang.bind(this, function(n, message) {
+                this._updateTimestamp(message);
+            }));
+
+        for (let i = this.notification.messages.length - 1; i >= 0; i--)
+            this._addMessage(this.notification.messages[i]);
+    },
+
+    _onDestroy: function() {
+        this.parent();
+        this.notification.disconnect(this._messageAddedId);
+        this.notification.disconnect(this._messageRemovedId);
+        this.notification.disconnect(this._timestampChangedId);
+    },
+
+    scrollTo: function(side) {
+        let adjustment = this._scrollArea.vscroll.adjustment;
+        if (side == St.Side.TOP)
+            adjustment.value = adjustment.lower;
+        else if (side == St.Side.BOTTOM)
+            adjustment.value = adjustment.upper;
+    },
+
+    _addMessage: function(message) {
+        let highlighter = new Calendar.URLHighlighter(message.body, true, true);
+        let body = highlighter.actor;
+
+        let styles = message.styles;
+        for (let i = 0; i < styles.length; i++)
+            body.add_style_class_name(styles[i]);
+
+        let group = message.group;
+        if (group != this._lastGroup) {
+            this._lastGroup = group;
+            body.add_style_class_name('chat-new-group');
+        }
+
+        let lineBox = new ChatLineBox();
+        lineBox.add(body);
+        this._contentArea.add_actor(lineBox);
+        this._messageActors.set(message, lineBox);
+
+        this._updateTimestamp(message);
+    },
+
+    _updateTimestamp: function(message) {
+        let actor = this._messageActors.get(message);
+        if (!actor)
+            return;
+
+        while (actor.get_n_children() > 1)
+            actor.get_child_at_index(1).destroy();
+
+        if (message.showTimestamp) {
+            let lastMessageTime = message.timestamp;
+            let lastMessageDate = new Date(lastMessageTime * 1000);
+
+            let timeLabel = Util.createTimeLabel(lastMessageDate);
+            timeLabel.style_class = 'chat-meta-message';
+            timeLabel.x_expand = timeLabel.y_expand = true;
+            timeLabel.x_align = timeLabel.y_align = Clutter.ActorAlign.END;
+
+            actor.add_actor(timeLabel);
+        }
     },
 
     _onEntryActivated: function() {
@@ -790,13 +883,13 @@ const ChatNotification = new Lang.Class({
         // Telepathy sends out the Sent signal for us.
         // see Source._messageSent
         this._responseEntry.set_text('');
-        this.source.respond(text);
+        this.notification.source.respond(text);
     },
 
     _composingStopTimeout: function() {
         this._composingTimeoutId = 0;
 
-        this.source.setChatState(Tp.ChannelChatState.PAUSED);
+        this.notification.source.setChatState(Tp.ChannelChatState.PAUSED);
 
         return GLib.SOURCE_REMOVE;
     },
@@ -816,14 +909,14 @@ const ChatNotification = new Lang.Class({
         }
 
         if (text != '') {
-            this.source.setChatState(Tp.ChannelChatState.COMPOSING);
+            this.notification.source.setChatState(Tp.ChannelChatState.COMPOSING);
 
             this._composingTimeoutId = Mainloop.timeout_add_seconds(
                 COMPOSING_STOP_TIMEOUT,
                 Lang.bind(this, this._composingStopTimeout));
             GLib.Source.set_name_by_id(this._composingTimeoutId, '[gnome-shell] this._composingStopTimeout');
         } else {
-            this.source.setChatState(Tp.ChannelChatState.ACTIVE);
+            this.notification.source.setChatState(Tp.ChannelChatState.ACTIVE);
         }
     }
 });
