@@ -43,7 +43,6 @@ shell_recorder_src_init (ShellRecorderSrc      *src)
 {
   gst_base_src_set_format (GST_BASE_SRC (src), GST_FORMAT_TIME);
   gst_base_src_set_live (GST_BASE_SRC (src), TRUE);
-  gst_base_src_set_do_timestamp (GST_BASE_SRC (src), TRUE);
 
   src->queue = g_async_queue_new ();
   src->mutex = &src->mutex_data;

@@ -79,7 +79,6 @@ struct _ShellRecorder {
   RecorderPipeline *current_pipeline; /* current pipeline */
   GSList *pipelines; /* all pipelines */
 
-  GstClockTime start_time; /* When we started recording */
   GstClockTime last_frame_time; /* Timestamp for the last frame */
 
   /* GSource IDs for different timeouts and idles */
@@ -388,22 +387,6 @@ recorder_draw_cursor (ShellRecorder *recorder,
   gst_buffer_unmap (buffer, &info);
 }
 
-/* We want to time-stamp each frame based on the actual time it was
- * recorded. We probably should use the pipeline clock rather than
- * gettimeofday(): that would be needed to get sync'ed audio correct.
- * I'm not immediately sure how to handle the adjustment we currently
- * do when pausing recording - is pausing the pipeline enough?
- */
-static GstClockTime
-get_wall_time (void)
-{
-  GTimeVal tv;
-
-  g_get_current_time (&tv);
-
-  return tv.tv_sec * 1000000000LL + tv.tv_usec * 1000LL;
-}
-
 /* Retrieve a frame and feed it into the pipeline
  */
 static void
@@ -412,7 +395,8 @@ recorder_record_frame (ShellRecorder *recorder)
   GstBuffer *buffer;
   guint8 *data;
   guint size;
-  GstClockTime now;
+  GstClock *clock;
+  GstClockTime now, base_time;
 
   g_return_if_fail (recorder->current_pipeline != NULL);
 
@@ -427,10 +411,19 @@ recorder_record_frame (ShellRecorder *recorder)
    * drop frames if the interval since the last frame is less than 75% of the
    * desired inter-frame interval.
    */
-  now = get_wall_time();
-  if (now - recorder->last_frame_time < (3 * 1000000000LL / (4 * recorder->framerate)))
+  clock = gst_element_get_clock (recorder->current_pipeline->src);
+
+  /* If we have no clock yet, the pipeline is not yet in PLAYING */
+  if (!clock)
     return;
 
+  base_time = gst_element_get_base_time (recorder->current_pipeline->src);
+  now = gst_clock_get_time (clock) - base_time;
+  gst_object_unref (clock);
+
+  if (GST_CLOCK_TIME_IS_VALID (recorder->last_frame_time) &&
+      now - recorder->last_frame_time < gst_util_uint64_scale_int (GST_SECOND, 3, 4 * recorder->framerate))
+    return;
   recorder->last_frame_time = now;
 
   size = recorder->area.width * recorder->area.height * 4;
@@ -449,7 +442,7 @@ recorder_record_frame (ShellRecorder *recorder)
                             gst_memory_new_wrapped (0, data, size, 0,
                                                     size, data, g_free));
 
-  GST_BUFFER_PTS(buffer) = now - recorder->start_time;
+  GST_BUFFER_PTS(buffer) = now;
 
   if (recorder->draw_cursor &&
       !g_settings_get_boolean (recorder->a11y_settings, MAGNIFIER_ACTIVE_KEY))
@@ -1528,8 +1521,7 @@ shell_recorder_record (ShellRecorder  *recorder,
 
   recorder_connect_stage_callbacks (recorder);
 
-  recorder->start_time = get_wall_time();
-  recorder->last_frame_time = 0;
+  recorder->last_frame_time = GST_CLOCK_TIME_NONE;
 
   recorder->state = RECORDER_STATE_RECORDING;
   recorder_update_pointer (recorder);
