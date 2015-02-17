@@ -326,15 +326,21 @@ const AutorunNotification = new Lang.Class({
         this._manager = manager;
         this._mount = source.mount;
 
-        source.apps.forEach(Lang.bind(this, function (app) {
+        // set the notification to urgent, so that it expands out
+        this.setUrgency(MessageTray.Urgency.CRITICAL);
+    },
+
+    createBanner: function() {
+        let banner = new MessageTray.NotificationBanner(this);
+
+        this.source.apps.forEach(Lang.bind(this, function (app) {
             let actor = this._buttonForApp(app);
 
             if (actor)
-                this.addButton(actor);
+                banner.addButton(actor);
         }));
 
-        // set the notification to urgent, so that it expands out
-        this.setUrgency(MessageTray.Urgency.CRITICAL);
+        return banner;
     },
 
     _buttonForApp: function(app) {
@@ -352,6 +358,7 @@ const AutorunNotification = new Lang.Class({
         let button = new St.Button({ child: box,
                                      x_fill: true,
                                      x_align: St.Align.START,
+                                     x_expand: true,
                                      button_mask: St.ButtonMask.ONE,
                                      style_class: 'hotplug-notification-item button' });
 
