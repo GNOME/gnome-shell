@@ -589,7 +589,6 @@ const InputSourceIndicator = new Lang.Class({
         this._hbox.add_child(PopupMenu.arrowIcon(St.Side.BOTTOM));
 
         this.actor.add_child(this._hbox);
-        this.actor.add_style_class_name('panel-status-button');
 
         this._propSeparator = new PopupMenu.PopupSeparatorMenuItem();
         this.menu.addMenuItem(this._propSeparator);

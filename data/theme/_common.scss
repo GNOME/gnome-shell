@@ -684,14 +684,6 @@ StScrollBar {
     }
   }
   
-  .panel-status-button {
-  
-    &:active, &:overview, &:focus, &:checked {
-      border-color: lighten($selected_bg_color,5%);
-      border-bottom-width: 2px;
-    }
-  }
-  
   .panel-status-indicators-box,
   .panel-status-menu-box {
     spacing: 2px;
