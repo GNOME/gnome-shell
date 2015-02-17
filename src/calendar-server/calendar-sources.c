@@ -201,7 +201,7 @@ calendar_sources_init (CalendarSources *sources)
                                         "/", "org.freedesktop.DBus",
                                         "StartServiceByName",
                                         g_variant_new ("(su)",
-                                                       "org.gnome.evolution.dataserver.Sources3",
+                                                       "org.gnome.evolution.dataserver.Sources4",
                                                        0),
                                         NULL,
                                         G_DBUS_CALL_FLAGS_NONE,
