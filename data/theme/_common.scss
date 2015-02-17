@@ -447,6 +447,8 @@ StScrollBar {
   //.popup-status-menu-item { font-weight: normal;  color: pink; } //dunno what that is  
 }
 
+.panel-menu { -boxpointer-gap: 4px; margin-bottom: 1.75em; }
+
   .popup-menu-ornament {
       text-align: right;
       width: 1em;
@@ -686,7 +688,6 @@ StScrollBar {
     }
   }
   
-  .panel-menu { -boxpointer-gap: 4px; margin-bottom: 1.75em; }
   .panel-status-indicators-box,
   .panel-status-menu-box {
     spacing: 2px;
@@ -694,6 +695,7 @@ StScrollBar {
   
   .screencast-indicator { color: $warning_color; }
 }
+
   // calendar popover
   .calendar {
     padding: .4em 1.75em .8em 1.75em;
