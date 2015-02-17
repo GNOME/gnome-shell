@@ -1051,14 +1051,15 @@ StScrollBar {
   /* DASHBOARD */
   
   #dash {
-    @extend %overview-panel;
-    padding: 4px;
+    font-size: 9pt;
+    color: $_bubble_fg_color;
+    background-color: $_bubble_bg_color;
+    padding: 4px 0;
+    border: 1px solid rgba(128, 128, 128, 0.4);
     border-left: 0px;
     border-radius: 0px 9px 9px 0px;
     
     &:rtl {
-      border-left-width: 1px;
-      border-right-width: 0;
       border-radius: 9px 0 0 9px;
     }
     
@@ -1076,7 +1077,7 @@ StScrollBar {
   }
 
   .dash-item-container > StWidget {
-    padding: 4px;
+    padding: 4px 8px;
   }
 
   .dash-label { //osd tooltip

@@ -920,12 +920,14 @@ StScrollBar {
 
 /* DASHBOARD */
 #dash {
-  padding: 4px;
+  font-size: 9pt;
+  color: #eeeeec;
+  background-color: #2e3436;
+  padding: 4px 0;
+  border: 1px solid rgba(128, 128, 128, 0.4);
   border-left: 0px;
   border-radius: 0px 9px 9px 0px; }
   #dash:rtl {
-    border-left-width: 1px;
-    border-right-width: 0;
     border-radius: 9px 0 0 9px; }
   #dash .placeholder {
     background-image: url("dash-placeholder.svg");
@@ -936,7 +938,7 @@ StScrollBar {
     height: 24px; }
 
 .dash-item-container > StWidget {
-  padding: 4px; }
+  padding: 4px 8px; }
 
 .dash-label {
   border-radius: 7px;
@@ -1082,7 +1084,7 @@ StScrollBar {
 .frequent-apps > StBoxLayout {
   padding: 0px 88px 10px 88px; }
 
-#dash, .workspace-thumbnails {
+.workspace-thumbnails {
   color: #eeeeec;
   background-color: #2e3436;
   border: 1px solid rgba(238, 238, 236, 0.2); }
