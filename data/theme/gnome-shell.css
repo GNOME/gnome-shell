@@ -1146,6 +1146,39 @@ StScrollBar {
 .url-highlighter {
   link-color: #215d9c; }
 
+.notification-banner {
+  font-size: 11pt;
+  width: 34em;
+  margin: 5px;
+  border-radius: 6px;
+  color: #eeeeec;
+  background-color: #2e3436;
+  border: 1px solid #1c1f1f; }
+  .notification-banner:hover {
+    background-color: #2e3436; }
+  .notification-banner:focus {
+    background-color: #2e3436; }
+  .notification-banner .notification-icon {
+    padding: 5px; }
+  .notification-banner .notification-content {
+    padding: 5px;
+    spacing: 5px; }
+  .notification-banner .secondary-icon {
+    icon-size: 1.09em; }
+  .notification-banner .notification-actions {
+    background-color: #1c1f1f;
+    padding-top: 2px;
+    spacing: 1px; }
+  .notification-banner .notification-button {
+    padding: 4px 4px 5px;
+    background-color: #222728; }
+    .notification-banner .notification-button:first-child {
+      border-radius: 0 0 0 6px; }
+    .notification-banner .notification-button:last-child {
+      border-radius: 0 0 6px 0; }
+    .notification-banner .notification-button:hover, .notification-banner .notification-buttonfocus {
+      background-color: #292f30; }
+
 .notification {
   font-size: 11pt;
   width: 34em;

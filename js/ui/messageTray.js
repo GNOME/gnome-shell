@@ -13,6 +13,7 @@ const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const St = imports.gi.St;
 
+const Calendar = imports.ui.calendar;
 const GnomeSession = imports.misc.gnomeSession;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
@@ -1104,6 +1105,97 @@ const Notification = new Lang.Class({
     }
 });
 Signals.addSignalMethods(Notification.prototype);
+
+const NotificationBanner = new Lang.Class({
+    Name: 'NotificationBanner',
+    Extends: Calendar.NotificationMessage,
+
+    _init: function(notification) {
+        this.parent(notification);
+
+        this.actor.add_style_class_name('notification-banner');
+        this.actor.connect('destroy', Lang.bind(this, this._onDestroyed));
+
+        this._buttonBox = null;
+
+        this._addActions();
+        this._addSecondaryIcon();
+
+        this._activatedId = this.notification.connect('activated',
+            Lang.bind(this, function() {
+                // We hide all types of notifications once the user clicks on
+                // them because the common outcome of clicking should be the
+                // relevant window being brought forward and the user's
+                // attention switching to the window.
+                this.emit('done-displaying');
+            }));
+    },
+
+    _onDestroyed: function() {
+        this.notification.disconnect(this._activatedId);
+    },
+
+    _onUpdated: function(n, clear) {
+        this.parent(n, clear);
+
+        if (clear) {
+            this.setSecondaryActor(null);
+            this.setActionArea(null);
+            this._buttonBox = null;
+        }
+
+        this._addActions();
+        this._addSecondaryIcon();
+    },
+
+    _addActions: function() {
+        this.notification.actions.forEach(Lang.bind(this,
+            function(action) {
+                this.addAction(action.label, action.callback);
+            }));
+    },
+
+    _addSecondaryIcon: function() {
+        if (this.notification.secondaryGIcon) {
+            let icon = new St.Icon({ gicon: this.notification.secondaryGIcon });
+            this.setSecondaryActor(icon);
+        }
+    },
+
+    addButton: function(button, callback) {
+        if (!this._buttonBox) {
+            this._buttonBox = new St.BoxLayout({ style_class: 'notification-actions',
+                                                 x_expand: true });
+            this.setActionArea(this._buttonBox);
+            global.focus_manager.add_group(this._buttonBox);
+        }
+
+        this._buttonBox.add(button);
+        button.connect('clicked', Lang.bind(this, function() {
+            callback();
+
+            if (!this.notification.resident) {
+                // We don't hide a resident notification when the user invokes one of its actions,
+                // because it is common for such notifications to update themselves with new
+                // information based on the action. We'd like to display the updated information
+                // in place, rather than pop-up a new notification.
+                this.emit('done-displaying');
+                this.notification.destroy();
+            }
+        }));
+
+        return button;
+    },
+
+    addAction: function(label, callback) {
+        let button = new St.Button({ style_class: 'notification-button',
+                                     label: label,
+                                     x_expand: true,
+                                     can_focus: true });
+
+        return this.addButton(button, callback);
+    }
+});
 
 const SourceActor = new Lang.Class({
     Name: 'SourceActor',
