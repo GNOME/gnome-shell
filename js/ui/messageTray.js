@@ -1080,6 +1080,15 @@ const Notification = new Lang.Class({
         this.actor.add_style_class_name('notification-unexpanded');
     },
 
+    // Allow customizing the banner UI:
+    // the default implementation defers the creation to
+    // the source (which will create a NotificationBanner),
+    // so customization can be done by subclassing either
+    // Notification or Source
+    createBanner: function() {
+        return this.source.createBanner(this);
+    },
+
     activate: function() {
         this.emit('activated');
         // We hide all types of notifications once the user clicks on them because the common
@@ -1374,6 +1383,10 @@ const Source = new Lang.Class({
     setTitle: function(newTitle) {
         this.title = newTitle;
         this.emit('title-changed');
+    },
+
+    createBanner: function(notification) {
+        return new NotificationBanner(notification);
     },
 
     // Called to create a new icon actor.
@@ -1876,7 +1889,7 @@ const MessageTray = new Lang.Class({
             this.idleMonitor.add_user_active_watch(Lang.bind(this, this._onIdleMonitorBecameActive));
         }
 
-        this._banner = new NotificationBanner(this._notification);
+        this._banner = this._notification.createBanner();
         this._bannerClickedId = this._banner.connect('done-displaying',
                                                      Lang.bind(this, this._escapeTray));
         this._bannerUnfocusedId = this._banner.connect('unfocused', Lang.bind(this, function() {
