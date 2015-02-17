@@ -1252,11 +1252,17 @@ StScrollBar {
 .secondary-icon {
   icon-size: 1.09em; }
 
+.chat-body {
+  spacing: 5px; }
+
+.chat-response {
+  margin: 5px; }
+
 .chat-log-message {
   color: #e6e6e6; }
 
-.chat-empty-line {
-  font-size: 4px; }
+.chat-new-group {
+  padding-top: 1em; }
 
 .chat-received {
   padding-left: 4px; }
@@ -1279,9 +1285,6 @@ StScrollBar {
   .chat-meta-message:rtl {
     padding-left: 0;
     padding-right: 4px; }
-
-.chat-notification-scrollview {
-  max-height: 22em; }
 
 .hotplug-transient-box {
   spacing: 6px;
