@@ -444,10 +444,14 @@ StScrollBar {
 
     &:insensitive { color: transparentize($fg_color,0.5); }
   }
-  //.popup-status-menu-item { font-weight: normal;  color: pink; } //dunno what that is  
+  //.popup-status-menu-item { font-weight: normal;  color: pink; } //dunno what that is
+  &.panel-menu { 
+    -boxpointer-gap: 4px;
+    margin-bottom: 1.75em; 
+  }
 }
 
-.panel-menu { -boxpointer-gap: 4px; margin-bottom: 1.75em; }
+
 
   .popup-menu-ornament {
       text-align: right;

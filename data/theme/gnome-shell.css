@@ -402,10 +402,9 @@ StScrollBar {
     color: #eeeeec; }
     .popup-menu .popup-inactive-menu-item:insensitive {
       color: rgba(238, 238, 236, 0.5); }
-
-.panel-menu {
-  -boxpointer-gap: 4px;
-  margin-bottom: 1.75em; }
+  .popup-menu.panel-menu {
+    -boxpointer-gap: 4px;
+    margin-bottom: 1.75em; }
 
 .popup-menu-ornament {
   text-align: right;

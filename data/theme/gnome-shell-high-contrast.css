@@ -402,6 +402,9 @@ StScrollBar {
     color: #fff; }
     .popup-menu .popup-inactive-menu-item:insensitive {
       color: rgba(255, 255, 255, 0.5); }
+  .popup-menu.panel-menu {
+    -boxpointer-gap: 4px;
+    margin-bottom: 1.75em; }
 
 .popup-menu-ornament {
   text-align: right;
@@ -579,8 +582,6 @@ StScrollBar {
   #panel .panel-status-button:active, #panel .panel-status-button:overview, #panel .panel-status-button:focus, #panel .panel-status-button:checked {
     border-color: #256ab1;
     border-bottom-width: 2px; }
-  #panel .panel-menu {
-    -boxpointer-gap: 4px; }
   #panel .panel-status-indicators-box,
   #panel .panel-status-menu-box {
     spacing: 2px; }
