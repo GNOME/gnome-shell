@@ -30,6 +30,7 @@ const LONGER_HIDE_TIMEOUT = 0.6;
 
 const MAX_NOTIFICATIONS_IN_QUEUE = 3;
 const MAX_NOTIFICATIONS_PER_SOURCE = 3;
+const MAX_NOTIFICATION_BUTTONS = 3;
 
 // We delay hiding of the tray if the mouse is within MOUSE_LEFT_ACTOR_THRESHOLD
 // range from the point where it left the tray.
@@ -1169,6 +1170,9 @@ const NotificationBanner = new Lang.Class({
             this.setActionArea(this._buttonBox);
             global.focus_manager.add_group(this._buttonBox);
         }
+
+        if (this._buttonBox.get_n_children() >= MAX_NOTIFICATION_BUTTONS)
+            return null;
 
         this._buttonBox.add(button);
         button.connect('clicked', Lang.bind(this, function() {
