@@ -4,6 +4,7 @@ const Atk = imports.gi.Atk;
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
+const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const St = imports.gi.St;
@@ -24,6 +25,8 @@ const SHOW_WEEKDATE_KEY = 'show-weekdate';
 const ELLIPSIS_CHAR = '\u2026';
 
 const MESSAGE_ANIMATION_TIME = 0.1;
+
+const DEFAULT_EXPAND_LINES = 6;
 
 // alias to prevent xgettext from picking up strings translated in GTK+
 const gtk30_ = Gettext_gtk30.gettext;
@@ -878,17 +881,116 @@ const ScaleLayout = new Lang.Class({
     }
 });
 
+const LabelExpanderLayout = new Lang.Class({
+    Name: 'LabelExpanderLayout',
+    Extends: Clutter.LayoutManager,
+    Properties: { 'expansion': GObject.ParamSpec.double('expansion',
+                                                        'Expansion',
+                                                        'Expansion of the layout, between 0 (collapsed) ' +
+                                                        'and 1 (fully expanded',
+                                                         GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE,
+                                                         0, 1, 0)},
+
+    _init: function(params) {
+        this._expansion = 0;
+        this._expandLines = DEFAULT_EXPAND_LINES;
+
+        this.parent(params);
+    },
+
+    get expansion() {
+        return this._expansion;
+    },
+
+    set expansion(v) {
+        if (v == this._expansion)
+            return;
+        this._expansion = v;
+        this.notify('expansion');
+
+        let visibleIndex = this._expansion > 0 ? 1 : 0;
+        for (let i = 0; this._container && i < this._container.get_n_children(); i++)
+            this._container.get_child_at_index(i).visible = (i == visibleIndex);
+
+        this.layout_changed();
+    },
+
+    set expandLines(v) {
+        if (v == this._expandLines)
+            return;
+        this._expandLines = v;
+        if (this._expansion > 0)
+            this.layout_changed();
+    },
+
+    vfunc_set_container: function(container) {
+        this._container = container;
+    },
+
+    vfunc_get_preferred_width: function(container, forHeight) {
+        let [min, nat] = [0, 0];
+
+        for (let i = 0; i < container.get_n_children(); i++) {
+            if (i > 1)
+                break; // we support one unexpanded + one expanded child
+
+            let child = container.get_child_at_index(i);
+            let [childMin, childNat] = child.get_preferred_width(forHeight);
+            [min, nat] = [Math.max(min, childMin), Math.max(nat, childNat)];
+        }
+
+        return [min, nat];
+    },
+
+    vfunc_get_preferred_height: function(container, forWidth) {
+        let [min, nat] = [0, 0];
+
+        let children = container.get_children();
+        if (children[0])
+            [min, nat] = children[0].get_preferred_height(forWidth);
+
+        if (children[1]) {
+            let [min2, nat2] = children[1].get_preferred_height(forWidth);
+            let [expMin, expNat] = [Math.min(min2, min * this._expandLines),
+                                    Math.min(nat2, nat * this._expandLines)];
+            [min, nat] = [min + this._expansion * (expMin - min),
+                          nat + this._expansion * (expNat - nat)];
+        }
+
+        return [min, nat];
+    },
+
+    vfunc_allocate: function(container, box, flags) {
+        for (let i = 0; i < container.get_n_children(); i++) {
+            let child = container.get_child_at_index(i);
+
+            if (child.visible)
+                child.allocate(box, flags);
+        }
+
+    }
+});
+
 const Message = new Lang.Class({
     Name: 'Message',
 
     _init: function(title, body) {
+        this.expanded = false;
+
         this.actor = new St.Button({ style_class: 'message',
                                      accessible_role: Atk.Role.NOTIFICATION,
                                      can_focus: true,
                                      x_expand: true, x_fill: true });
 
+        let vbox = new St.BoxLayout({ vertical: true });
+        this.actor.set_child(vbox);
+
         let hbox = new St.BoxLayout();
-        this.actor.set_child(hbox);
+        vbox.add_actor(hbox);
+
+        this._actionBin = new St.Widget({ layout_manager: new ScaleLayout(),
+                                          visible: false });
+        vbox.add_actor(this._actionBin);
 
         this._iconBin = new St.Bin({ style_class: 'message-icon-bin',
                                      y_expand: true,
@@ -917,9 +1019,14 @@ const Message = new Lang.Class({
         this._closeButton = new St.Button({ child: closeIcon, visible: false });
         titleBox.add_actor(this._closeButton);
 
+        this._bodyStack = new St.Widget({ x_expand: true,
+                                          x_align: Clutter.ActorAlign.START });
+        this._bodyStack.layout_manager = new LabelExpanderLayout();
+        contentBox.add_actor(this._bodyStack);
+
         this.bodyLabel = new URLHighlighter(body, false, this._useBodyMarkup);
         this.bodyLabel.actor.add_style_class_name('message-body');
-        contentBox.add_actor(this.bodyLabel.actor);
+        this._bodyStack.add_actor(this.bodyLabel.actor);
 
         this._closeButton.connect('clicked', Lang.bind(this,
             function() {
@@ -955,6 +1062,86 @@ const Message = new Lang.Class({
         this._useBodyMarkup = enable;
         if (this.bodyLabel)
             this.setBody(this.bodyLabel.actor.text);
+    },
+
+    setActionArea: function(actor) {
+        if (actor == null) {
+            if (this._actionBin.get_n_children() > 0)
+                this._actionBin.get_child_at_index(0).destroy();
+            return;
+        }
+
+        if (this._actionBin.get_n_children() > 0)
+            throw new Error('Message already has an action area');
+
+        this._actionBin.add_actor(actor);
+        this._actionBin.visible = this.expanded;
+    },
+
+    setExpandedBody: function(actor) {
+        if (actor == null) {
+            if (this._bodyStack.get_n_children() > 1)
+                this._bodyStack.get_child_at_index(1).destroy();
+            return;
+        }
+
+        if (this._bodyStack.get_n_children() > 1)
+            throw new Error('Message already has an expanded body actor');
+
+        this._bodyStack.insert_child_at_index(actor, 1);
+    },
+
+    setExpandedLines: function(nLines) {
+        this._bodyStack.layout_manager.expandLines = nLines;
+    },
+
+    expand: function(animate) {
+        this.expanded = true;
+
+        this._actionBin.visible = (this._actionBin.get_n_children() > 0);
+
+        if (this._bodyStack.get_n_children() < 2) {
+            let expandedLabel = new URLHighlighter(this.bodyLabel.actor.text,
+                                                   true, this._useBodyMarkup);
+            this.setExpandedBody(expandedLabel.actor);
+        }
+
+        if (animate) {
+            Tweener.addTween(this._bodyStack.layout_manager,
+                             { expansion: 1,
+                               time: MessageTray.ANIMATION_TIME,
+                               transition: 'easeOutQuad' });
+            this._actionBin.scale_y = 0;
+            Tweener.addTween(this._actionBin,
+                             { scale_y: 1,
+                               time: MessageTray.ANIMATION_TIME,
+                               transition: 'easeOutQuad' });
+        } else {
+            this._bodyStack.layout_manager.expansion = 1;
+            this._actionBin.scale_y = 1;
+        }
+    },
+
+    unexpand: function(animate) {
+        if (animate) {
+            Tweener.addTween(this._bodyStack.layout_manager,
+                             { expansion: 0,
+                               time: MessageTray.ANIMATION_TIME,
+                               transition: 'easeOutQuad' });
+            Tweener.addTween(this._actionBin,
+                             { scale_y: 0,
+                               time: MessageTray.ANIMATION_TIME,
+                               transition: 'easeOutQuad',
+                               onCompleteScope: this,
+                               onComplete: function() {
+                                   this._actionBin.hide();
+                                   this.expanded = false;
+                               }});
+        } else {
+            this._bodyStack.layout_manager.expansion = 0;
+            this._actionBin.scale_y = 0;
+            this.expanded = false;
+        }
     },
 
     canClear: function() {
