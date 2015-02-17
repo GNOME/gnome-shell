@@ -11,6 +11,7 @@ const St = imports.gi.St;
 const Tpl = imports.gi.TelepathyLogger;
 const Tp = imports.gi.TelepathyGLib;
 
+const Calendar = imports.ui.calendar;
 const History = imports.misc.history;
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
@@ -1227,10 +1228,19 @@ const SubscriptionRequestNotification = new Lang.Class({
         this.parent(source,
                     /* To translators: The parameter is the contact's alias */
                     _("%s would like permission to see when you are online").format(contact.get_alias()),
-                    null, { customContent: true });
+                    null);
 
         this._contact = contact;
         this._connection = contact.get_connection();
+
+        this._changedId = contact.connect('subscription-states-changed',
+            Lang.bind(this, this._subscriptionStatesChangedCb));
+        this._invalidatedId = this._connection.connect('invalidated',
+            Lang.bind(this, this.destroy));
+    },
+
+    createBanner: function() {
+        let banner = new MessageTray.NotificationBanner(this);
 
         let layout = new St.BoxLayout({ vertical: false });
 
@@ -1239,7 +1249,7 @@ const SubscriptionRequestNotification = new Lang.Class({
         iconBox._size = 48;
 
         let textureCache = St.TextureCache.get_default();
-        let file = contact.get_avatar_file();
+        let file = this._contact.get_avatar_file();
 
         if (file) {
             let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
@@ -1254,32 +1264,29 @@ const SubscriptionRequestNotification = new Lang.Class({
 
         // subscription request message
         let label = new St.Label({ style_class: 'subscription-message',
-                                   text: contact.get_publish_request() });
+                                   text: this._contact.get_publish_request() });
 
         layout.add(label);
 
-        this.addActor(layout);
+        banner.setExpandedBody(layout);
 
-        this.addAction(_("Decline"), Lang.bind(this, function() {
-            contact.remove_async(function(src, result) {
+        banner.addAction(_("Decline"), Lang.bind(this, function() {
+            this._contact.remove_async(function(src, result) {
                 src.remove_finish(result);
             });
         }));
-        this.addAction(_("Accept"), Lang.bind(this, function() {
+        banner.addAction(_("Accept"), Lang.bind(this, function() {
             // Authorize the contact and request to see his status as well
-            contact.authorize_publication_async(function(src, result) {
+            this._contact.authorize_publication_async(function(src, result) {
                 src.authorize_publication_finish(result);
             });
 
-            contact.request_subscription_async('', function(src, result) {
+            this._contact.request_subscription_async('', function(src, result) {
                 src.request_subscription_finish(result);
             });
         }));
 
-        this._changedId = contact.connect('subscription-states-changed',
-            Lang.bind(this, this._subscriptionStatesChangedCb));
-        this._invalidatedId = this._connection.connect('invalidated',
-            Lang.bind(this, this.destroy));
+        return banner;
     },
 
     destroy: function() {
