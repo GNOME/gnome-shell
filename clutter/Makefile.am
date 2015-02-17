@@ -506,6 +506,7 @@ gdk_source_c = \
 	gdk/clutter-device-manager-gdk.c 	\
 	gdk/clutter-event-gdk.c 		\
 	gdk/clutter-input-device-gdk.c 	\
+	gdk/clutter-master-clock-gdk.c 	\
 	gdk/clutter-stage-gdk.c		\
 	$(NULL)
 
@@ -518,6 +519,7 @@ gdk_source_h_priv = \
 	gdk/clutter-backend-gdk.h 		\
 	gdk/clutter-device-manager-gdk.h 	\
 	gdk/clutter-input-device-gdk.h 	\
+	gdk/clutter-master-clock-gdk.h 	\
 	gdk/clutter-stage-gdk.h		\
 	$(NULL)
 

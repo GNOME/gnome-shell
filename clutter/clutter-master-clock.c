@@ -38,6 +38,10 @@
 #include "clutter-master-clock.h"
 #include "clutter-master-clock-default.h"
 #include "clutter-private.h"
+#ifdef CLUTTER_WINDOWING_GDK
+#include "gdk/clutter-backend-gdk.h"
+#include "gdk/clutter-master-clock-gdk.h"
+#endif
 
 #define clutter_master_clock_get_type   _clutter_master_clock_get_type
 
@@ -56,7 +60,14 @@ _clutter_master_clock_get_default (void)
   ClutterMainContext *context = _clutter_context_get_default ();
 
   if (G_UNLIKELY (context->master_clock == NULL))
-    context->master_clock = g_object_new (CLUTTER_TYPE_MASTER_CLOCK_DEFAULT, NULL);
+    {
+#ifdef CLUTTER_WINDOWING_GDK
+    if (CLUTTER_IS_BACKEND_GDK (context->backend))
+      context->master_clock = g_object_new (CLUTTER_TYPE_MASTER_CLOCK_GDK, NULL);
+    else
+#endif
+      context->master_clock = g_object_new (CLUTTER_TYPE_MASTER_CLOCK_DEFAULT, NULL);
+  }
 
   return context->master_clock;
 
