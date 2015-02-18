@@ -110,6 +110,9 @@ typedef struct _CoglOnscreenKMS
   struct gbm_bo *current_bo;
   struct gbm_bo *next_bo;
   CoglBool pending_swap_notify;
+
+  EGLSurface *pending_egl_surface;
+  struct gbm_surface *pending_surface;
 } CoglOnscreenKMS;
 
 static const char device_name[] = "/dev/dri/card0";
@@ -868,10 +871,27 @@ _cogl_winsys_onscreen_swap_buffers_with_damage (CoglOnscreen *onscreen,
   while (kms_onscreen->next_fb_id != 0)
     handle_drm_event (kms_renderer);
 
+  if (kms_onscreen->pending_egl_surface)
+    {
+      eglDestroySurface (egl_renderer->edpy, egl_onscreen->egl_surface);
+      egl_onscreen->egl_surface = kms_onscreen->pending_egl_surface;
+      kms_onscreen->pending_egl_surface = NULL;
+
+      _cogl_framebuffer_winsys_update_size (COGL_FRAMEBUFFER (kms_display->onscreen),
+                                            kms_display->width, kms_display->height);
+      context->current_draw_buffer_changes |= COGL_FRAMEBUFFER_STATE_BIND;
+    }
   parent_vtable->onscreen_swap_buffers_with_damage (onscreen,
                                                     rectangles,
                                                     n_rectangles);
 
+  if (kms_onscreen->pending_surface)
+    {
+      free_current_bo (onscreen);
+      gbm_surface_destroy (kms_onscreen->surface);
+      kms_onscreen->surface = kms_onscreen->pending_surface;
+      kms_onscreen->pending_surface = NULL;
+    }
   /* Now we need to set the CRTC to whatever is the front buffer */
   kms_onscreen->next_bo = gbm_surface_lock_front_buffer (kms_onscreen->surface);
 
@@ -1177,7 +1197,6 @@ cogl_kms_display_set_layout (CoglDisplay *display,
        height != kms_display->height) &&
       kms_display->onscreen)
     {
-      CoglContext *context = COGL_FRAMEBUFFER (kms_display->onscreen)->context;
       CoglOnscreenEGL *egl_onscreen = kms_display->onscreen->winsys;
       CoglOnscreenKMS *kms_onscreen = egl_onscreen->platform;
       struct gbm_surface *new_surface;
@@ -1213,14 +1232,13 @@ cogl_kms_display_set_layout (CoglDisplay *display,
           return FALSE;
         }
 
-      eglDestroySurface (egl_renderer->edpy, egl_onscreen->egl_surface);
-      gbm_surface_destroy (kms_onscreen->surface);
+      if (kms_onscreen->pending_egl_surface)
+        eglDestroySurface (egl_renderer->edpy, kms_onscreen->pending_egl_surface);
+      if (kms_onscreen->pending_surface)
+        gbm_surface_destroy (kms_onscreen->pending_surface);
 
-      kms_onscreen->surface = new_surface;
-      egl_onscreen->egl_surface = new_egl_surface;
-
-      _cogl_framebuffer_winsys_update_size (COGL_FRAMEBUFFER (kms_display->onscreen), width, height);
-      context->current_draw_buffer_changes |= COGL_FRAMEBUFFER_STATE_BIND;
+      kms_onscreen->pending_surface = new_surface;
+      kms_onscreen->pending_egl_surface = new_egl_surface;
     }
 
   kms_display->width = width;
