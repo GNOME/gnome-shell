@@ -103,7 +103,6 @@ shell_public_headers_h =		\
 	shell-mount-operation.h		\
 	shell-perf-log.h		\
 	shell-screenshot.h		\
-	shell-slicer.h			\
 	shell-stack.h			\
 	shell-tp-client.h		\
 	shell-tray-icon.h		\
@@ -148,7 +147,6 @@ libgnome_shell_base_la_SOURCES = 	\
 	shell-polkit-authentication-agent.c	\
 	shell-secure-text-buffer.c	\
 	shell-secure-text-buffer.h	\
-	shell-slicer.c			\
 	shell-stack.c			\
 	shell-tp-client.c		\
 	$(NULL)
