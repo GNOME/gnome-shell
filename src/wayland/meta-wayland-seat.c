@@ -242,10 +242,55 @@ meta_wayland_seat_free (MetaWaylandSeat *seat)
   g_slice_free (MetaWaylandSeat, seat);
 }
 
+static gboolean
+event_from_supported_hardware_device (MetaWaylandSeat    *seat,
+                                      const ClutterEvent *event)
+{
+  ClutterInputDevice     *input_device;
+  ClutterInputMode        input_mode;
+  ClutterInputDeviceType  device_type;
+  gboolean                hardware_device = FALSE;
+  gboolean                supported_device = FALSE;
+
+  input_device = clutter_event_get_source_device (event);
+
+  if (input_device == NULL)
+    goto out;
+
+  input_mode = clutter_input_device_get_device_mode (input_device);
+
+  if (input_mode != CLUTTER_INPUT_MODE_SLAVE)
+    goto out;
+
+  hardware_device = TRUE;
+
+  device_type = clutter_input_device_get_device_type (input_device);
+
+  switch (device_type)
+    {
+    case CLUTTER_TOUCHPAD_DEVICE:
+    case CLUTTER_POINTER_DEVICE:
+    case CLUTTER_KEYBOARD_DEVICE:
+    case CLUTTER_TOUCHSCREEN_DEVICE:
+      supported_device = TRUE;
+      break;
+
+    default:
+      supported_device = FALSE;
+      break;
+    }
+
+out:
+  return hardware_device && supported_device;
+}
+
 void
 meta_wayland_seat_update (MetaWaylandSeat    *seat,
                           const ClutterEvent *event)
 {
+  if (!event_from_supported_hardware_device (seat, event))
+    return;
+
   switch (event->type)
     {
     case CLUTTER_MOTION:
@@ -275,6 +320,9 @@ gboolean
 meta_wayland_seat_handle_event (MetaWaylandSeat *seat,
                                 const ClutterEvent *event)
 {
+  if (!event_from_supported_hardware_device (seat, event))
+    return FALSE;
+
   switch (event->type)
     {
     case CLUTTER_MOTION:
