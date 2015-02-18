@@ -1703,13 +1703,6 @@ const MessageTray = new Lang.Class({
 
         Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
 
-        Main.wm.addKeybinding('toggle-message-tray',
-                              new Gio.Settings({ schema_id: SHELL_KEYBINDINGS_SCHEMA }),
-                              Meta.KeyBindingFlags.NONE,
-                              Shell.ActionMode.NORMAL |
-                              Shell.ActionMode.MESSAGE_TRAY |
-                              Shell.ActionMode.OVERVIEW,
-                              Lang.bind(this, this.toggleAndNavigate));
         Main.wm.addKeybinding('focus-active-notification',
                               new Gio.Settings({ schema_id: SHELL_KEYBINDINGS_SCHEMA }),
                               Meta.KeyBindingFlags.NONE,

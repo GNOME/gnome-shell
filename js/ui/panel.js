@@ -877,9 +877,8 @@ const Panel = new Lang.Class({
         return Clutter.EVENT_STOP;
     },
 
-    toggleAppMenu: function() {
-        let indicator = this.statusArea.appMenu;
-        if (!indicator) // appMenu not supported by current session mode
+    _toggleMenu: function(indicator) {
+        if (!indicator) // menu not supported by current session mode
             return;
 
         let menu = indicator.menu;
@@ -889,6 +888,14 @@ const Panel = new Lang.Class({
         menu.toggle();
         if (menu.isOpen)
             menu.actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
+    },
+
+    toggleAppMenu: function() {
+        this._toggleMenu(this.statusArea.appMenu);
+    },
+
+    toggleCalendar: function() {
+        this._toggleMenu(this.statusArea.dateMenu);
     },
 
     closeCalendar: function() {

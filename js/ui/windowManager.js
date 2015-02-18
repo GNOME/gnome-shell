@@ -834,6 +834,13 @@ const WindowManager = new Lang.Class({
                            Shell.ActionMode.TOPBAR_POPUP,
                            Lang.bind(this, this._toggleAppMenu));
 
+        this.addKeybinding('toggle-message-tray',
+                           new Gio.Settings({ schema_id: SHELL_KEYBINDINGS_SCHEMA }),
+                           Meta.KeyBindingFlags.NONE,
+                           Shell.ActionMode.NORMAL |
+                           Shell.ActionMode.TOPBAR_POPUP,
+                           Lang.bind(this, this._toggleCalendar));
+
         global.display.connect('show-resize-popup', Lang.bind(this, this._showResizePopup));
 
         Main.overview.connect('showing', Lang.bind(this, function() {
@@ -1512,6 +1519,10 @@ const WindowManager = new Lang.Class({
 
     _toggleAppMenu : function(display, screen, window, event, binding) {
         Main.panel.toggleAppMenu();
+    },
+
+    _toggleCalendar: function(display, screen, window, event, binding) {
+        Main.panel.toggleCalendar();
     },
 
     _toggleTweens: function() {

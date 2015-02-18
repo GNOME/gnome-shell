@@ -6,7 +6,7 @@
                 package="gnome-shell">
 
 	<KeyListEntry name="toggle-message-tray"
-                      _description="Show the message tray"/>
+                      _description="Show the message list"/>
 
 	<KeyListEntry name="focus-active-notification"
                       _description="Focus the active notification"/>
