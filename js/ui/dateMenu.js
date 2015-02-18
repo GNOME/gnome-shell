@@ -80,10 +80,6 @@ const DateMenuButton = new Lang.Class({
 
         this._calendar.connect('selected-date-changed',
                                Lang.bind(this, function(calendar, date) {
-                                  // we know this._eventList is defined here, because selected-data-changed
-                                  // only gets emitted when the user clicks a date in the calendar,
-                                  // and the calender makes those dates unclickable when instantiated with
-                                  // a null event source
                                    this._eventList.setDate(date);
 
                                    // Make the button reactive only if the selected date is not the current date.
