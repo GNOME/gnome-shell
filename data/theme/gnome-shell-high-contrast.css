@@ -763,10 +763,14 @@ StScrollBar {
     .popup-menu .popup-menu-item:checked {
       background-color: black;
       box-shadow: inset 0 1px 0px #0d0d0d; }
-    .popup-menu .popup-menu-item:active {
+    .popup-menu .popup-menu-item:hover {
       background-color: #215d9c; }
+    .popup-menu .popup-menu-item:active {
+      background-color: #1c5187; }
     .popup-menu .popup-menu-item:insensitive {
       background-color: rgba(0, 0, 0, 0.5); }
+  .popup-menu .active {
+    background-color: #215d9c; }
   .popup-menu .popup-inactive-menu-item {
     color: #fff; }
     .popup-menu .popup-inactive-menu-item:insensitive {

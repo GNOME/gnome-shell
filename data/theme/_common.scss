@@ -312,7 +312,7 @@ StScrollBar {
     &:ltr { padding-right: 17px; }
     &:rtl { padding-left: 17px; }
   }
-  
+
   .show-processes-dialog-app-list-item-name {
     font-size: 10pt;
   }
@@ -425,9 +425,15 @@ StScrollBar {
       background-color: darken($bg_color,2%);
       box-shadow: inset 0 1px 0px lighten($borders_color,5%);
     }
-    &:active { background-color: $selected_bg_color; }
+    &:hover { background-color: $selected_bg_color; }
+    &:active { background-color: darken($selected_bg_color,5%); }
     &:insensitive { background-color: transparentize($bg_color,.5); }
   }
+
+  .active {
+    background-color: $selected_bg_color;
+  }
+
   .popup-inactive-menu-item { //all icons and other graphical elements
     color: $fg_color;
 
