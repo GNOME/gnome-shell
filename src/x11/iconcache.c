@@ -27,8 +27,10 @@
 
 #include <cairo.h>
 #include <cairo-xlib.h>
+#include <cairo-xlib-xrender.h>
 
 #include <X11/Xatom.h>
+#include <X11/extensions/Xrender.h>
 
 static gboolean
 find_largest_sizes (gulong *data,
@@ -284,34 +286,42 @@ get_pixmap_geometry (MetaDisplay *display,
     *d = depth;
 }
 
+static int
+standard_pict_format_for_depth (int depth)
+{
+  switch (depth)
+    {
+    case 1:
+      return PictStandardA1;
+    case 24:
+      return PictStandardRGB24;
+    case 32:
+      return PictStandardARGB32;
+    default:
+      g_assert_not_reached ();
+    }
+}
+
+static XRenderPictFormat *
+pict_format_for_depth (Display *xdisplay, int depth)
+{
+  return XRenderFindStandardFormat (xdisplay, standard_pict_format_for_depth (depth));
+}
+
 static cairo_surface_t *
 surface_from_pixmap (Display *xdisplay, Pixmap xpixmap,
                      int width, int height)
 {
-  cairo_surface_t *surface;
   Window root_return;
   int x_ret, y_ret;
   unsigned int w_ret, h_ret, bw_ret, depth_ret;
-  XWindowAttributes attrs;
 
   if (!XGetGeometry (xdisplay, xpixmap, &root_return,
                      &x_ret, &y_ret, &w_ret, &h_ret, &bw_ret, &depth_ret))
     return NULL;
 
-  if (depth_ret == 1)
-    {
-      surface = cairo_xlib_surface_create_for_bitmap (xdisplay, xpixmap, DefaultScreenOfDisplay (xdisplay),
-                                                      w_ret, h_ret);
-    }
-  else
-    {
-      if (!XGetWindowAttributes (xdisplay, root_return, &attrs))
-        return NULL;
-
-      surface = cairo_xlib_surface_create (xdisplay, xpixmap, attrs.visual, w_ret, h_ret);
-    }
-
-  return surface;
+  return cairo_xlib_surface_create_with_xrender_format (xdisplay, xpixmap, DefaultScreenOfDisplay (xdisplay),
+                                                        pict_format_for_depth (xdisplay, depth_ret), w_ret, h_ret);
 }
 
 static gboolean
