@@ -513,7 +513,7 @@ const Notification = new Lang.Class({
         this.actor = new St.Button({ accessible_role: Atk.Role.NOTIFICATION });
         this.actor.add_style_class_name('notification-unexpanded');
         this.actor._delegate = this;
-        this.actor.connect('clicked', Lang.bind(this, this._onClicked));
+        this.actor.connect('clicked', Lang.bind(this, this.activate));
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
 
         this._table = new St.Table({ style_class: 'notification',
@@ -1077,8 +1077,8 @@ const Notification = new Lang.Class({
         this.actor.add_style_class_name('notification-unexpanded');
     },
 
-    _onClicked: function() {
-        this.emit('clicked');
+    activate: function() {
+        this.emit('activated');
         // We hide all types of notifications once the user clicks on them because the common
         // outcome of clicking should be the relevant window being brought forward and the user's
         // attention switching to the window.
@@ -2390,7 +2390,7 @@ const MessageTray = new Lang.Class({
                         this.add(source);
                         let notification = new Notification(source, ngettext("%d new message", "%d new messages", len).format(len));
                         notification.setTransient(true);
-                        notification.connect('clicked', Lang.bind(this, function() {
+                        notification.connect('activated', Lang.bind(this, function() {
                             this.openTray();
                         }));
                         source.notify(notification);

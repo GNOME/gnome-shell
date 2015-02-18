@@ -363,7 +363,7 @@ const AutorunNotification = new Lang.Class({
         return button;
     },
 
-    _onClicked: function() {
+    activate: function() {
         this.parent();
 
         let app = Gio.app_info_get_default_for_type('inode/directory', false);

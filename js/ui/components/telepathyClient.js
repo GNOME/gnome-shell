@@ -451,7 +451,7 @@ const ChatSource = new Lang.Class({
         this._closedId = this._channel.connect('invalidated', Lang.bind(this, this._channelClosed));
 
         this._notification = new ChatNotification(this);
-        this._notification.connect('clicked', Lang.bind(this, this.open));
+        this._notification.connect('activated', Lang.bind(this, this.open));
         this._notification.setUrgency(MessageTray.Urgency.HIGH);
         this._notifyTimeoutId = 0;
 

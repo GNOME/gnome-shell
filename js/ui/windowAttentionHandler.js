@@ -39,7 +39,7 @@ const WindowAttentionHandler = new Lang.Class({
         let [title, banner] = this._getTitleAndBanner(app, window);
 
         let notification = new MessageTray.Notification(source, title, banner);
-        notification.connect('clicked', function() {
+        notification.connect('activated', function() {
             source.open();
         });
         notification.setForFeedback(true);

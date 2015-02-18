@@ -374,11 +374,11 @@ const FdoNotificationDaemon = new Lang.Class({
         }
 
         if (hasDefaultAction) {
-            notification.connect('clicked', Lang.bind(this, function() {
+            notification.connect('activated', Lang.bind(this, function() {
                 this._emitActionInvoked(ndata.id, 'default');
             }));
         } else {
-            notification.connect('clicked', Lang.bind(this, function() {
+            notification.connect('activated', Lang.bind(this, function() {
                 source.open();
             }));
         }
@@ -648,7 +648,7 @@ const GtkNotificationDaemonNotification = new Lang.Class({
         this._activateAction(action.unpack(), actionTarget);
     },
 
-    _onClicked: function() {
+    activate: function() {
         this._activateAction(this._defaultAction, this._defaultActionTarget);
         this.parent();
     },
