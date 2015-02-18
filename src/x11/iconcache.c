@@ -349,8 +349,8 @@ try_pixmap_and_mask (MetaDisplay      *display,
 
       masked = cairo_surface_create_similar_image (icon,
                                                    CAIRO_FORMAT_ARGB32,
-                                                   cairo_image_surface_get_width (icon),
-                                                   cairo_image_surface_get_height (icon));
+                                                   cairo_xlib_surface_get_width (icon),
+                                                   cairo_xlib_surface_get_height (icon));
       cr = cairo_create (masked);
 
       cairo_set_source_surface (cr, icon, 0, 0);
