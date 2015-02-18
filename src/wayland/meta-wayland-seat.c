@@ -117,6 +117,7 @@ lookup_device_capabilities (ClutterDeviceManager *device_manager)
 
       switch (device_type)
         {
+        case CLUTTER_TOUCHPAD_DEVICE:
         case CLUTTER_POINTER_DEVICE:
           capabilities |= WL_SEAT_CAPABILITY_POINTER;
           break;
