@@ -678,7 +678,10 @@ meta_screen_new (MetaDisplay *display,
   screen->starting_corner = META_SCREEN_TOPLEFT;
   screen->guard_window = None;
 
-  screen->composite_overlay_window = XCompositeGetOverlayWindow (xdisplay, xroot);
+  /* If we're a Wayland compositor, then we don't grab the COW, since it
+   * will map it. */
+  if (!meta_is_wayland_compositor ())
+    screen->composite_overlay_window = XCompositeGetOverlayWindow (xdisplay, xroot);
 
   /* Now that we've gotten taken a reference count on the COW, we
    * can close the helper that is holding on to it */
