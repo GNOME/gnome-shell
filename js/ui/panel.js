@@ -75,90 +75,6 @@ function _unpremultiply(color) {
                                blue: blue, alpha: color.alpha });
 };
 
-const TextShadower = new Lang.Class({
-    Name: 'TextShadower',
-
-    _init: function() {
-        this.actor = new Shell.GenericContainer();
-        this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
-        this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
-        this.actor.connect('allocate', Lang.bind(this, this._allocate));
-
-        this._label = new St.Label();
-        this.actor.add_actor(this._label);
-        for (let i = 0; i < 4; i++) {
-            let actor = new St.Label({ style_class: 'label-shadow' });
-            actor.clutter_text.ellipsize = Pango.EllipsizeMode.END;
-            this.actor.add_actor(actor);
-        }
-        this._label.raise_top();
-    },
-
-    setText: function(text) {
-        let children = this.actor.get_children();
-        for (let i = 0; i < children.length; i++)
-            children[i].set_text(text);
-    },
-
-    _getPreferredWidth: function(actor, forHeight, alloc) {
-        let [minWidth, natWidth] = this._label.get_preferred_width(forHeight);
-        alloc.min_size = minWidth + 2;
-        alloc.natural_size = natWidth + 2;
-    },
-
-    _getPreferredHeight: function(actor, forWidth, alloc) {
-        let [minHeight, natHeight] = this._label.get_preferred_height(forWidth);
-        alloc.min_size = minHeight + 2;
-        alloc.natural_size = natHeight + 2;
-    },
-
-    _allocate: function(actor, box, flags) {
-        let children = this.actor.get_children();
-
-        let availWidth = box.x2 - box.x1;
-        let availHeight = box.y2 - box.y1;
-
-        let [minChildWidth, minChildHeight, natChildWidth, natChildHeight] =
-            this._label.get_preferred_size();
-
-        let childWidth = Math.min(natChildWidth, availWidth - 2);
-        let childHeight = Math.min(natChildHeight, availHeight - 2);
-
-        for (let i = 0; i < children.length; i++) {
-            let child = children[i];
-            let childBox = new Clutter.ActorBox();
-            // The order of the labels here is arbitrary, except
-            // we know the "real" label is at the end because Clutter.Actor
-            // sorts by Z order
-            switch (i) {
-                case 0: // top
-                    childBox.x1 = 1;
-                    childBox.y1 = 0;
-                    break;
-                case 1: // right
-                    childBox.x1 = 2;
-                    childBox.y1 = 1;
-                    break;
-                case 2: // bottom
-                    childBox.x1 = 1;
-                    childBox.y1 = 2;
-                    break;
-                case 3: // left
-                    childBox.x1 = 0;
-                    childBox.y1 = 1;
-                    break;
-                case 4: // center
-                    childBox.x1 = 1;
-                    childBox.y1 = 1;
-                    break;
-            }
-            childBox.x2 = childBox.x1 + childWidth;
-            childBox.y2 = childBox.y1 + childHeight;
-            child.allocate(childBox, flags);
-        }
-    }
-});
-
 /**
  * AppMenuButton:
  *
@@ -201,9 +117,8 @@ const AppMenuButton = new Lang.Class({
         this._iconBox = new St.Bin();
         this._container.add_actor(this._iconBox);
 
-        this._label = new TextShadower();
-        this._label.actor.y_align = Clutter.ActorAlign.CENTER;
-        this._container.add_actor(this._label.actor);
+        this._label = new St.Label();
+        this._container.add_actor(this._label);
         this._arrow = PopupMenu.arrowIcon(St.Side.BOTTOM);
         this._container.add_actor(this._arrow);
 
@@ -384,7 +299,7 @@ const AppMenuButton = new Lang.Class({
                 this._appMenuNotifyId = this._targetApp.connect('notify::menu', Lang.bind(this, this._sync));
                 this._actionGroupNotifyId = this._targetApp.connect('notify::action-group', Lang.bind(this, this._sync));
                 this._busyNotifyId = this._targetApp.connect('notify::busy', Lang.bind(this, this._sync));
-                this._label.setText(this._targetApp.get_name());
+                this._label.set_text(this._targetApp.get_name());
                 this.actor.set_accessible_name(this._targetApp.get_name());
             }
         }
