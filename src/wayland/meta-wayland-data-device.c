@@ -410,7 +410,8 @@ data_device_start_drag (struct wl_client *client,
       seat->pointer.grab != &seat->pointer.default_grab)
     return;
 
-  if (meta_wayland_surface_set_role (surface,
+  if (icon_resource &&
+      meta_wayland_surface_set_role (wl_resource_get_user_data (icon_resource),
                                      META_WAYLAND_SURFACE_ROLE_DND,
                                      resource,
                                      WL_DATA_DEVICE_ERROR_ROLE) != 0)
