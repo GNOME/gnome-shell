@@ -240,10 +240,6 @@ page_flip_handler (int fd,
       CoglOnscreen *onscreen = flip->onscreen;
       CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
       CoglOnscreenKMS *kms_onscreen = egl_onscreen->platform;
-      CoglContext *context = COGL_FRAMEBUFFER (onscreen)->context;
-      CoglRenderer *renderer = context->display->renderer;
-      CoglRendererEGL *egl_renderer = renderer->winsys;
-      CoglRendererKMS *kms_renderer = egl_renderer->platform;
 
       queue_swap_notify_for_onscreen (onscreen);
 
