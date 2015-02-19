@@ -476,22 +476,6 @@ const ChatSource = new Lang.Class({
         this._getLogMessages();
     },
 
-    buildRightClickMenu: function() {
-        let item;
-
-        let rightClickMenu = this.parent();
-        item = new PopupMenu.PopupMenuItem('');
-        item.actor.connect('notify::mapped', Lang.bind(this, function() {
-            item.label.set_text(this.isMuted ? _("Unmute") : _("Mute"));
-        }));
-        item.connect('activate', Lang.bind(this, function() {
-            this.setMuted(!this.isMuted);
-            this.emit('done-displaying-content', false);
-        }));
-        rightClickMenu.add(item.actor);
-        return rightClickMenu;
-    },
-
     _createPolicy: function() {
         return new MessageTray.NotificationApplicationPolicy('empathy');
     },

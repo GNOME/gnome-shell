@@ -1246,7 +1246,6 @@ const Source = new Lang.Class({
 
         this.isChat = false;
         this.isMuted = false;
-        this.keepTrayOnSummaryClick = false;
 
         this.notifications = [];
 
@@ -1282,27 +1281,6 @@ const Source = new Lang.Class({
         return new NotificationPolicy();
     },
 
-    buildRightClickMenu: function() {
-        let item;
-        let rightClickMenu = new St.BoxLayout({ name: 'summary-right-click-menu',
-                                                vertical: true });
-
-        item = new PopupMenu.PopupMenuItem(_("Open"));
-        item.connect('activate', Lang.bind(this, function() {
-            this.open();
-            this.emit('done-displaying-content', true);
-        }));
-        rightClickMenu.add(item.actor);
-
-        item = new PopupMenu.PopupMenuItem(_("Remove"));
-        item.connect('activate', Lang.bind(this, function() {
-            this.destroy();
-            this.emit('done-displaying-content', false);
-        }));
-        rightClickMenu.add(item.actor);
-        return rightClickMenu;
-    },
-
     setTitle: function(newTitle) {
         this.title = newTitle;
         this.emit('title-changed');
@@ -1325,20 +1303,6 @@ const Source = new Lang.Class({
 
     getIcon: function() {
         return new Gio.ThemedIcon({ name: this.iconName });
-    },
-
-    _ensureMainIcon: function() {
-        if (this._mainIcon)
-            return;
-
-        this._mainIcon = new SourceActorWithLabel(this, this.SOURCE_ICON_SIZE);
-    },
-
-    // Unlike createIcon, this always returns the same actor;
-    // there is only one summary icon actor for a Source.
-    getSummaryIcon: function() {
-        this._ensureMainIcon();
-        return this._mainIcon.actor;
     },
 
     _onNotificationDestroy: function(notification) {
@@ -1392,23 +1356,8 @@ const Source = new Lang.Class({
         this.emit('destroy', reason);
     },
 
-    // A subclass can redefine this to "steal" clicks from the
-    // summaryitem; Use Clutter.get_current_event() to get the
-    // details, return true to prevent the default handling from
-    // ocurring.
-    handleSummaryClick: function() {
-        return false;
-    },
-
     iconUpdated: function() {
         this.emit('icon-updated');
-    },
-
-    //// Protected methods ////
-    _setSummaryIcon: function(icon) {
-        this._ensureMainIcon();
-        this._mainIcon.setIcon(icon);
-        this.iconUpdated();
     },
 
     // To be overridden by subclasses
