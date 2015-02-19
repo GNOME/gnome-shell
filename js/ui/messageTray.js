@@ -677,6 +677,7 @@ const Notification = new Lang.Class({
         }
 
         this.updated();
+        this.emit('updated', params.clear);
     },
 
     setIconVisible: function(visible) {
