@@ -495,6 +495,7 @@ const Notification = new Lang.Class({
         this._soundName = null;
         this._soundFile = null;
         this._soundPlayed = false;
+        this.actions = [];
 
         this.actor = new St.Button({ accessible_role: Atk.Role.NOTIFICATION });
         this.actor.add_style_class_name('notification-unexpanded');
@@ -594,6 +595,7 @@ const Notification = new Lang.Class({
             this._actionArea.destroy();
             this._actionArea = null;
             this._buttonBox = null;
+            this.actions = [];
         }
         if (!this._scrollArea && !this._actionArea)
             this._table.remove_style_class_name('multi-line-notification');
@@ -818,6 +820,7 @@ const Notification = new Lang.Class({
     // action buttons will appear in a single row at the bottom of
     // the notification.
     addAction: function(label, callback) {
+        this.actions.push({ label: label, callback: callback });
         let button = new St.Button({ style_class: 'notification-button',
                                      label: label,
                                      can_focus: true });
