@@ -652,6 +652,14 @@ const WindowManager = new Lang.Class({
         this._workspaceSwitcherPopup = null;
         this._tilePreview = null;
 
+        this.allowKeybinding('switch-to-session-1', Shell.ActionMode.ALL);
+        this.allowKeybinding('switch-to-session-2', Shell.ActionMode.ALL);
+        this.allowKeybinding('switch-to-session-3', Shell.ActionMode.ALL);
+        this.allowKeybinding('switch-to-session-4', Shell.ActionMode.ALL);
+        this.allowKeybinding('switch-to-session-5', Shell.ActionMode.ALL);
+        this.allowKeybinding('switch-to-session-6', Shell.ActionMode.ALL);
+        this.allowKeybinding('switch-to-session-7', Shell.ActionMode.ALL);
+
         this.setCustomKeybindingHandler('switch-to-workspace-left',
                                         Shell.ActionMode.NORMAL |
                                         Shell.ActionMode.OVERVIEW,
