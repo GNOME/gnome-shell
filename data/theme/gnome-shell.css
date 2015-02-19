@@ -1149,20 +1149,18 @@ StScrollBar {
 .notification {
   font-size: 11pt;
   width: 34em;
-  border-radius: 6px 6px 0 0;
+  margin: 5px;
+  border-radius: 6px;
   color: #eeeeec;
   background-color: #2e3436;
   border: 1px solid #1c1f1f;
-  border-bottom-width: 0;
   spacing-rows: 4px;
-  padding: 8px 8px 4px 8px;
+  padding: 8px;
   spacing-columns: 10px; }
-  .notification.multi-line-notification {
-    padding-bottom: 8px; }
 
 .notification-unexpanded {
-  min-height: 36px;
-  height: 36px; }
+  min-height: 48px;
+  height: 48px; }
 
 .notification-with-image {
   min-height: 159px; }
@@ -1171,7 +1169,7 @@ StScrollBar {
   spacing: 5px; }
 
 .notification-actions {
-  paddinf-top: 18px;
+  padding-top: 18px;
   spacing: 6px; }
 
 .summary-source-counter {

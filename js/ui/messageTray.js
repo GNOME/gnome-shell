@@ -1428,7 +1428,7 @@ const MessageTray = new Lang.Class({
         this.clearableCount = 0;
 
         Main.layoutManager.trayBox.add_actor(this.actor);
-        Main.layoutManager.trackChrome(this.actor);
+        Main.layoutManager.trackChrome(this.actor, { affectsInputRegion: true });
         Main.layoutManager.trackChrome(this._closeButton);
 
         global.screen.connect('in-fullscreen-changed', Lang.bind(this, this._updateState));
@@ -1656,10 +1656,9 @@ const MessageTray = new Lang.Class({
 
     _onNotificationLeftTimeout: function() {
         let [x, y, mods] = global.get_pointer();
-        // We extend the timeout once if the mouse moved no further than MOUSE_LEFT_ACTOR_THRESHOLD to either side or up.
-        // We don't check how far down the mouse moved because any point above the tray, but below the exit coordinate,
-        // is close to the tray.
+        // We extend the timeout once if the mouse moved no further than MOUSE_LEFT_ACTOR_THRESHOLD to either side.
         if (this._notificationLeftMouseX > -1 &&
+            y < this._notificationLeftMouseY + MOUSE_LEFT_ACTOR_THRESHOLD &&
             y > this._notificationLeftMouseY - MOUSE_LEFT_ACTOR_THRESHOLD &&
             x < this._notificationLeftMouseX + MOUSE_LEFT_ACTOR_THRESHOLD &&
             x > this._notificationLeftMouseX - MOUSE_LEFT_ACTOR_THRESHOLD) {
@@ -1760,6 +1759,10 @@ const MessageTray = new Lang.Class({
         this._updateState();
     },
 
+    _clampOpacity: function() {
+        this.actor.opacity = Math.max(0, Math.min(this.actor._opacity, 255));
+    },
+
     _onIdleMonitorBecameActive: function() {
         this._userActiveWhileNotificationShown = true;
         this._updateNotificationTimeout(2000);
@@ -1784,7 +1787,7 @@ const MessageTray = new Lang.Class({
         this.actor.add_actor(this._notification.actor);
 
         this.actor.opacity = 0;
-        this.actor.y = 0;
+        this.actor.y = -this._notification.actor.height;
         this.actor.show();
 
         this._updateShowingNotification();
@@ -1827,10 +1830,12 @@ const MessageTray = new Lang.Class({
         // We use this._showNotificationCompleted() onComplete callback to extend the time the updated
         // notification is being shown.
 
-        let tweenParams = { opacity: 255,
-                            y: -this.actor.height,
+        let tweenParams = { y: 0,
+                            _opacity: 255,
                             time: ANIMATION_TIME,
-                            transition: 'easeOutQuad',
+                            transition: 'easeOutBack',
+                            onUpdate: this._clampOpacity,
+                            onUpdateScope: this,
                             onComplete: this._showNotificationCompleted,
                             onCompleteScope: this
                           };
@@ -1858,7 +1863,7 @@ const MessageTray = new Lang.Class({
 
     _notificationTimeout: function() {
         let [x, y, mods] = global.get_pointer();
-        if (y > this._lastSeenMouseY + 10 && !this._notificationHovered) {
+        if (y < this._lastSeenMouseY - 10 && !this._notificationHovered) {
             // The mouse is moving towards the notification, so don't
             // hide it yet. (We just create a new timeout (and destroy
             // the old one) each time because the bookkeeping is
@@ -1900,16 +1905,18 @@ const MessageTray = new Lang.Class({
 
         if (animate) {
             this._tween(this.actor, '_notificationState', State.HIDDEN,
-                        { y: this.actor.height,
-                          opacity: 0,
+                        { y: -this.actor.height,
+                          _opacity: 0,
                           time: ANIMATION_TIME,
-                          transition: 'easeOutQuad',
+                          transition: 'easeOutBack',
+                          onUpdate: this._clampOpacity,
+                          onUpdateScope: this,
                           onComplete: this._hideNotificationCompleted,
                           onCompleteScope: this
                         });
         } else {
             Tweener.removeTweens(this.actor);
-            this.actor.y = this.actor.height;
+            this.actor.y = -this.actor.height;
             this.actor.opacity = 0;
             this._notificationState = State.HIDDEN;
             this._hideNotificationCompleted();
@@ -1939,42 +1946,12 @@ const MessageTray = new Lang.Class({
     },
 
     _expandNotification: function(autoExpanding) {
-        if (!this._notificationExpandedId)
-            this._notificationExpandedId =
-                this._notification.connect('expanded',
-                                           Lang.bind(this, this._onNotificationExpanded));
         // Don't animate changes in notifications that are auto-expanding.
         this._notification.expand(!autoExpanding);
 
         // Don't focus notifications that are auto-expanding.
         if (!autoExpanding)
             this._ensureNotificationFocused();
-    },
-
-    _onNotificationExpanded: function() {
-        let expandedY = - this.actor.height;
-        this.actor.set_child_above_sibling(this._closeButton, null);
-        this._closeButton.show();
-
-        // Don't animate the notification to its new position if it has shrunk:
-        // there will be a very visible "gap" that breaks the illusion.
-        if (this.actor.y < expandedY) {
-            this.actor.y = expandedY;
-        } else if (this._notification.y != expandedY) {
-            // Tween also opacity here, to override a possible tween that's
-            // currently hiding the notification.
-            Tweener.addTween(this.actor,
-                             { y: expandedY,
-                               opacity: 255,
-                               time: ANIMATION_TIME,
-                               transition: 'easeOutQuad',
-                               // HACK: Drive the state machine here better,
-                               // instead of overwriting tweens
-                               onComplete: Lang.bind(this, function() {
-                                   this._notificationState = State.SHOWN;
-                               }),
-                             });
-        }
     },
 
     _ensureNotificationFocused: function() {

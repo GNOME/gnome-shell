@@ -238,8 +238,9 @@ const LayoutManager = new Lang.Class({
                               Lang.bind(this, this._panelBoxChanged));
 
         this.trayBox = new St.Widget({ name: 'trayBox',
+                                       clip_to_allocation: true,
                                        layout_manager: new Clutter.BinLayout() }); 
-        this.addChrome(this.trayBox);
+        this.addChrome(this.trayBox, { affectsInputRegion: false });
 
         this.modalDialogGroup = new St.Widget({ name: 'modalDialogGroup',
                                                 layout_manager: new Clutter.BinLayout() });
@@ -283,6 +284,9 @@ const LayoutManager = new Lang.Class({
     // This is called by Main after everything else is constructed
     init: function() {
         Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
+
+        let trayConstraint = new MonitorConstraint({ primary: true, work_area: true });
+        this.trayBox.add_constraint(trayConstraint);
 
         this._loadBackground();
     },
@@ -453,10 +457,6 @@ const LayoutManager = new Lang.Class({
         this.panelBox.set_size(this.primaryMonitor.width, -1);
 
         this.keyboardIndex = this.primaryIndex;
-
-        this.trayBox.set_position(this.bottomMonitor.x,
-                                  this.bottomMonitor.y + this.bottomMonitor.height);
-        this.trayBox.set_size(this.bottomMonitor.width, -1);
     },
 
     _panelBoxChanged: function() {
