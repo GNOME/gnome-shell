@@ -3636,6 +3636,41 @@ init_builtin_key_bindings (MetaDisplay *display)
                               META_KEY_BINDING_NONE,
                               META_KEYBINDING_ACTION_NONE,
                               handle_switch_vt, 7);
+
+      add_builtin_keybinding (display,
+                              "switch-to-session-8",
+                              mutter_wayland_keybindings,
+                              META_KEY_BINDING_NONE,
+                              META_KEYBINDING_ACTION_NONE,
+                              handle_switch_vt, 8);
+
+      add_builtin_keybinding (display,
+                              "switch-to-session-9",
+                              mutter_wayland_keybindings,
+                              META_KEY_BINDING_NONE,
+                              META_KEYBINDING_ACTION_NONE,
+                              handle_switch_vt, 9);
+
+      add_builtin_keybinding (display,
+                              "switch-to-session-10",
+                              mutter_wayland_keybindings,
+                              META_KEY_BINDING_NONE,
+                              META_KEYBINDING_ACTION_NONE,
+                              handle_switch_vt, 10);
+
+      add_builtin_keybinding (display,
+                              "switch-to-session-11",
+                              mutter_wayland_keybindings,
+                              META_KEY_BINDING_NONE,
+                              META_KEYBINDING_ACTION_NONE,
+                              handle_switch_vt, 11);
+
+      add_builtin_keybinding (display,
+                              "switch-to-session-12",
+                              mutter_wayland_keybindings,
+                              META_KEY_BINDING_NONE,
+                              META_KEYBINDING_ACTION_NONE,
+                              handle_switch_vt, 12);
     }
 #endif /* HAVE_NATIVE_BACKEND */
 

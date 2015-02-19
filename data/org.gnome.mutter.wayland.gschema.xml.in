@@ -29,5 +29,25 @@
       <default><![CDATA[['<Primary><Alt>F7']]]></default>
       <_summary>Switch to VT 7</_summary>
     </key>
+    <key name="switch-to-session-8" type="as">
+      <default><![CDATA[['<Primary><Alt>F8']]]></default>
+      <_summary>Switch to VT 8</_summary>
+    </key>
+    <key name="switch-to-session-9" type="as">
+      <default><![CDATA[['<Primary><Alt>F9']]]></default>
+      <_summary>Switch to VT 9</_summary>
+    </key>
+    <key name="switch-to-session-10" type="as">
+      <default><![CDATA[['<Primary><Alt>F10']]]></default>
+      <_summary>Switch to VT 10</_summary>
+    </key>
+    <key name="switch-to-session-11" type="as">
+      <default><![CDATA[['<Primary><Alt>F11']]]></default>
+      <_summary>Switch to VT 11</_summary>
+    </key>
+    <key name="switch-to-session-12" type="as">
+      <default><![CDATA[['<Primary><Alt>F12']]]></default>
+      <_summary>Switch to VT 12</_summary>
+    </key>
   </schema>
 </schemalist>
