@@ -194,66 +194,7 @@ const AutorunManager = new Lang.Class({
 
     _onMountRemoved: function(monitor, mount) {
         this._dispatcher.removeMount(mount);
-    },
-
-    ejectMount: function(mount) {
-        let mountOp = new ShellMountOperation.ShellMountOperation(mount);
-
-        // first, see if we have a drive
-        let drive = mount.get_drive();
-        let volume = mount.get_volume();
-
-        if (drive &&
-            drive.get_start_stop_type() == Gio.DriveStartStopType.SHUTDOWN &&
-            drive.can_stop()) {
-            drive.stop(0, mountOp.mountOp, null,
-                       Lang.bind(this, this._onStop));
-        } else {
-            if (mount.can_eject()) {
-                mount.eject_with_operation(0, mountOp.mountOp, null,
-                                           Lang.bind(this, this._onEject));
-            } else if (volume && volume.can_eject()) {
-                volume.eject_with_operation(0, mountOp.mountOp, null,
-                                            Lang.bind(this, this._onEject));
-            } else if (drive && drive.can_eject()) {
-                drive.eject_with_operation(0, mountOp.mountOp, null,
-                                           Lang.bind(this, this._onEject));
-            } else if (mount.can_unmount()) {
-                mount.unmount_with_operation(0, mountOp.mountOp, null,
-                                             Lang.bind(this, this._onUnmount));
-            }
-        }
-    },
-
-    _onUnmount: function(mount, res) {
-        try {
-            mount.unmount_with_operation_finish(res);
-        } catch (e) {
-            if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.FAILED_HANDLED))
-                log('Unable to eject the mount ' + mount.get_name() 
-                    + ': ' + e.toString());
-        }
-    },
-
-    _onEject: function(source, res) {
-        try {
-            source.eject_with_operation_finish(res);
-        } catch (e) {
-            if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.FAILED_HANDLED))
-                log('Unable to eject the drive ' + source.get_name()
-                    + ': ' + e.toString());
-        }
-    },
-
-    _onStop: function(drive, res) {
-        try {
-            drive.stop_finish(res);
-        } catch (e) {
-            if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.FAILED_HANDLED))
-                log('Unable to stop the drive ' + drive.get_name() 
-                    + ': ' + e.toString());
-        }
-    },
+    }
 });
 
 const AutorunDispatcher = new Lang.Class({
