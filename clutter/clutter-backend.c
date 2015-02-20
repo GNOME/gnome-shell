@@ -89,6 +89,12 @@
 #ifdef CLUTTER_INPUT_WAYLAND
 #include "wayland/clutter-device-manager-wayland.h"
 #endif
+#ifdef CLUTTER_WINDOWING_MIR
+#include "mir/clutter-backend-mir.h"
+#endif
+#ifdef CLUTTER_INPUT_MIR
+#include "mir/clutter-device-manager-mir.h"
+#endif
 
 #ifdef HAVE_CLUTTER_WAYLAND_COMPOSITOR
 #include <cogl/cogl-wayland-server.h>
@@ -511,6 +517,11 @@ _clutter_create_backend (void)
     retval = g_object_new (CLUTTER_TYPE_BACKEND_EGL_NATIVE, NULL);
   else
 #endif
+#ifdef CLUTTER_WINDOWING_MIR
+  if (backend == NULL || backend == I_(CLUTTER_WINDOWING_MIR))
+    retval = g_object_new (CLUTTER_TYPE_BACKEND_MIR, NULL);
+  else
+#endif
   if (backend == NULL)
     g_error ("No default Clutter backend found.");
   else
@@ -587,6 +598,14 @@ clutter_backend_real_init_events (ClutterBackend *backend)
       (input_backend == NULL || input_backend == I_(CLUTTER_INPUT_WAYLAND)))
     {
       _clutter_events_wayland_init (backend);
+    }
+  else
+#endif
+#ifdef CLUTTER_INPUT_MIR
+  if (clutter_check_windowing_backend (CLUTTER_WINDOWING_MIR) &&
+      (input_backend == NULL || input_backend == I_(CLUTTER_INPUT_MIR)))
+    {
+      _clutter_events_mir_init (backend);
     }
   else
 #endif
