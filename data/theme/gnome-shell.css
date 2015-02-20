@@ -1,5 +1,5 @@
 /* This stylesheet is generated, DO NOT EDIT */
-/* Copyright 2009, Red Hat, Inc.
+/* Copyright 2009, 2015 Red Hat, Inc.
  *
  * Portions adapted from Mx's data/style/default.css
  *   Copyright 2009 Intel Corporation
@@ -432,7 +432,7 @@ StScrollBar {
   -boxpointer-gap: 4px;
   -arrow-rise: 0px; }
 
-/* fallback menu 
+/* fallback menu
 - odd thing for styling App menu when apparently not running under shell. Light Adwaita styled
   app menu inside the main app window itself rather than the top bar
 */
