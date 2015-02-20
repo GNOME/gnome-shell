@@ -35,6 +35,20 @@ introspection_DATA =				\
 	org.gnome.ShellSearchProvider.xml	\
 	org.gnome.ShellSearchProvider2.xml
 
+theme_sources = 						\
+	theme/HACKING						\
+	theme/gnome-shell-high-contrast.scss			\
+	theme/gnome-shell.scss					\
+	theme/gnome-shell-sass/COPYING				\
+	theme/gnome-shell-sass/HACKING				\
+	theme/gnome-shell-sass/NEWS				\
+	theme/gnome-shell-sass/README				\
+	theme/gnome-shell-sass/_colors.scss			\
+	theme/gnome-shell-sass/_common.scss			\
+	theme/gnome-shell-sass/_drawing.scss			\
+	theme/gnome-shell-sass/_high-contrast-colors.scss	\
+	theme/gnome-shell-sass/gnome-shell-sass.doap
+
 resource_files = $(shell $(GLIB_COMPILE_RESOURCES) --sourcedir=$(srcdir)/theme --generate-dependencies $(srcdir)/gnome-shell-theme.gresource.xml)
 gnome-shell-theme.gresource: gnome-shell-theme.gresource.xml $(resource_files)
 	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(srcdir)/theme $<
@@ -80,6 +94,7 @@ EXTRA_DIST =						\
 	$(menu_DATA)					\
 	$(convert_DATA)					\
 	$(keys_in_files)				\
+	$(theme_sources)				\
 	perf-background.xml.in				\
 	org.gnome.Shell.PortalHelper.desktop.in		\
 	org.gnome.Shell.PortalHelper.service.in		\
