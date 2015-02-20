@@ -1,3 +1,32 @@
+3.15.90
+=======
+* gdm: Fix reactivity of first user in user list [Ray; #743370]
+* Prevent DND to dash when favorites are locked down [David; #741325]
+* Prevent DND in app picker when favorites are locked down [Murray; #741325]
+* Implement Display panel's OSD monitor labels in the shell [Rui; #743744]
+* Remove GSystem dependency [Colin; #744457]
+* Do not duplicate "New Window" action in dash [Florian; #744446]
+* Fix 'draw-cursor' option of screen recorder [Alexander; #744599]
+* Fix screencast timestamps [Sebastian; #744642]
+* Allow keybindings for switching to VT8-VT12 [Ray; #744800]
+* Implement notification redesign [Florian; #744498, #744815, #744817, #744850]
+* Fix struts computation of chrome on non-primary monitors [Sylvain; #744183]
+* Visual refresh based on GTK+ theme redesign [Jakub, Carlos; #737785, #744680]
+* Misc. bug fixes and cleanups [Ray, Bastien, Cosimo, Rui, Florian; #743371,
+  #736182, #744013, #743993, #744665]
+
+Contributors:
+  Cosimo Cecchi, Murray Cumming, Sebastian Dröge, David King,
+  Alexander Larsson, Rui Matos, Florian Müllner, Bastien Nocera,
+  Sylvain Pasche, Carlos Soriano, Jakub Steiner, Jasper St. Pierre, Ray Strode,
+  Colin Walters
+
+Translations:
+  Daniel Martinez [an], Sveinn í Felli [is], GNOME Translation Robot [de],
+  Yosef Or Boczko [he], Kristjan SCHMIDT [eo], Dušan Kazik [sk],
+  Andika Triwidada [id], Marek Černocký [cs], Muhammet Kara [tr],
+  Matej Urbančič [sl], Milo Casagrande [it], Anders Jonsson [sv]
+
 3.15.4
 ======
 * Add mode parameter to AcceleratorActivated signal [Florian; #711682]
