@@ -1,3 +1,21 @@
+3.15.90
+=======
+* Initialize MetaOutput even when we can't get the EDID [Rui; #743412]
+* Expose MetaMonitorManager to introspection [Rui; #743745]
+* Fix flash on unredirection [Chris; #743858]
+* Update xdg-shell implementation to v5 [Jonas; #744452]
+* Do not try to use seat devices that aren't (yet) present [Ray; #744640]
+* Add keybindings for switching to VT8-VT12 [Ray; #744800]
+* Misc bug fixes [Jonas, Cosimo; #743678, #744500]
+
+Contributors:
+  Jonas Ådahl, Cosimo Cecchi, Carlos Garnacho, Rui Matos, Jasper St. Pierre,
+  Ray Strode, Chris Wilson
+
+Translations:
+  Yosef Or Boczko [he], Yuri Myasoedov [ru], Kristjan SCHMIDT [eo],
+  Matej Urbančič [sl], Dušan Kazik [sk]
+
 3.15.4
 ======
 * Use GTK+ theme for window decorations instead of metacity [Florian; #741917]
