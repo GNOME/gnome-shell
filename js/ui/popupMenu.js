@@ -264,8 +264,8 @@ const PopupSeparatorMenuItem = new Lang.Class({
                            Lang.bind(this, this._syncVisibility));
         this._syncVisibility();
 
-        this._separator = new Separator.HorizontalSeparator({ style_class: 'popup-separator-menu-item' });
-        this.actor.add(this._separator.actor, { expand: true });
+        this._separator = new St.Widget({ style_class: 'popup-separator-menu-item' });
+        this.actor.add(this._separator, { expand: true });
     },
 
     _syncVisibility: function() {
