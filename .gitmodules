@@ -3,4 +3,4 @@
 	url = git://git.gnome.org/libgnome-volume-control
 [submodule "data/theme/gnome-shell-sass"]
 	path = data/theme/gnome-shell-sass
-	url = https://git.gnome.org/browse/gnome-shell-sass
+	url = git://git.gnome.org/browse/gnome-shell-sass
