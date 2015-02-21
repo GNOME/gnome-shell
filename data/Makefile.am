@@ -39,17 +39,21 @@ introspection_DATA =				\
 	$(NULL)
 
 theme_sources = 						\
-	theme/HACKING						\
 	theme/gnome-shell-high-contrast.scss			\
 	theme/gnome-shell.scss					\
-	theme/gnome-shell-sass/COPYING				\
-	theme/gnome-shell-sass/HACKING				\
-	theme/gnome-shell-sass/NEWS				\
-	theme/gnome-shell-sass/README				\
 	theme/gnome-shell-sass/_colors.scss			\
 	theme/gnome-shell-sass/_common.scss			\
 	theme/gnome-shell-sass/_drawing.scss			\
 	theme/gnome-shell-sass/_high-contrast-colors.scss	\
+	$(NULL)
+
+dist_theme_files =						\
+	$(theme_sources)					\
+	theme/HACKING						\
+	theme/gnome-shell-sass/COPYING				\
+	theme/gnome-shell-sass/HACKING				\
+	theme/gnome-shell-sass/NEWS				\
+	theme/gnome-shell-sass/README				\
 	theme/gnome-shell-sass/gnome-shell-sass.doap		\
 	$(NULL)
 
@@ -98,7 +102,7 @@ EXTRA_DIST =						\
 	$(menu_DATA)					\
 	$(convert_DATA)					\
 	$(keys_in_files)				\
-	$(theme_sources)				\
+	$(dist_theme_files)				\
 	perf-background.xml.in				\
 	org.gnome.Shell.PortalHelper.desktop.in		\
 	org.gnome.Shell.PortalHelper.service.in		\
