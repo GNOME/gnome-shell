@@ -232,14 +232,6 @@ shell_app_create_icon_texture (ShellApp   *app,
   return ret;
 }
 
-typedef struct {
-  ShellApp *app;
-  int size;
-  int scale;
-  ClutterTextDirection direction;
-  StThemeNode *theme_node;
-} CreateFadedIconData;
-
 const char *
 shell_app_get_name (ShellApp *app)
 {
