@@ -231,6 +231,7 @@ const MessagesIndicator = new Lang.Class({
 
         Main.messageTray.connect('source-added', Lang.bind(this, this._onSourceAdded));
         Main.messageTray.connect('source-removed', Lang.bind(this, this._onSourceRemoved));
+        Main.messageTray.connect('queue-changed', Lang.bind(this, this._updateCount));
 
         let sources = Main.messageTray.getSources();
         sources.forEach(Lang.bind(this, function(source) { this._onSourceAdded(null, source); }));

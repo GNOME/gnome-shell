@@ -1662,8 +1662,10 @@ const MessageTray = new Lang.Class({
         }
 
         let index = this._notificationQueue.indexOf(notification);
-        if (index != -1)
+        if (index != -1) {
             this._notificationQueue.splice(index, 1);
+            this.emit('queue-changed');
+        }
     },
 
     _onNotify: function(source, notification) {
@@ -1686,6 +1688,7 @@ const MessageTray = new Lang.Class({
                 this._notificationQueue.sort(function(notification1, notification2) {
                     return (notification2.urgency - notification1.urgency);
                 });
+                this.emit('queue-changed');
             }
         }
         this._updateState();
@@ -1806,9 +1809,14 @@ const MessageTray = new Lang.Class({
         this._updatingState = true;
 
         // Filter out acknowledged notifications.
+        let changed = false;
         this._notificationQueue = this._notificationQueue.filter(function(n) {
+            changed = changed || n.acknowledged;
             return !n.acknowledged;
         });
+
+        if (changed)
+            this.emit('queue-changed');
 
         let hasNotifications = Main.sessionMode.hasNotifications;
 
@@ -1881,6 +1889,7 @@ const MessageTray = new Lang.Class({
 
     _showNotification: function() {
         this._notification = this._notificationQueue.shift();
+        this.emit('queue-changed');
 
         this._userActiveWhileNotificationShown = this.idleMonitor.get_idletime() <= IDLE_TIME;
         if (!this._userActiveWhileNotificationShown) {
