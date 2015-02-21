@@ -8,21 +8,22 @@
 # sabri ünal <yakushabb@gmail.com>, 2014.
 # Gökhan Gurbetoğlu <ggurbet@gmail.com>, 2014.
 # Muhammet Kara <muhammetk@gmail.com>, 2011, 2012, 2013, 2014, 2015.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-02-13 20:42+0000\n"
-"PO-Revision-Date: 2015-02-14 09:45+0300\n"
+"POT-Creation-Date: 2015-02-21 20:56+0000\n"
+"PO-Revision-Date: 2015-02-21 23:53+0200\n"
 "Last-Translator: Muhammet Kara <muhammetk@gmail.com>\n"
-"Language-Team: gnome-turk@gnome.org\n"
+"Language-Team: Turkish <gnome-turk@gnome.org>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Virtaal 0.7.1\n"
+"X-Generator: Gtranslator 2.91.6\n"
 "X-Project-Style: gnome\n"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
@@ -30,8 +31,9 @@ msgid "System"
 msgstr "Sistem"
 
 #: ../data/50-gnome-shell-system.xml.in.h:2
-msgid "Show the message tray"
-msgstr "Mesaj tepsisini göster"
+#| msgid "Show the message tray"
+msgid "Show the message list"
+msgstr "İleti listesini göster"
 
 #: ../data/50-gnome-shell-system.xml.in.h:3
 msgid "Focus the active notification"
@@ -398,19 +400,19 @@ msgstr "Sık sık"
 msgid "All"
 msgstr "Hepsi"
 
-#: ../js/ui/appDisplay.js:1824
+#: ../js/ui/appDisplay.js:1840
 msgid "New Window"
 msgstr "Yeni Pencere"
 
-#: ../js/ui/appDisplay.js:1854 ../js/ui/dash.js:289
+#: ../js/ui/appDisplay.js:1868 ../js/ui/dash.js:289
 msgid "Remove from Favorites"
 msgstr "Sık Kullanılanlardan Çıkar"
 
-#: ../js/ui/appDisplay.js:1860
+#: ../js/ui/appDisplay.js:1874
 msgid "Add to Favorites"
 msgstr "Sık Kullanılanlara Ekle"
 
-#: ../js/ui/appDisplay.js:1870
+#: ../js/ui/appDisplay.js:1884
 msgid "Show Details"
 msgstr "Ayrıntıları Göster"
 
@@ -424,7 +426,7 @@ msgstr "%s sık kullanılanlarınıza eklendi."
 msgid "%s has been removed from your favorites."
 msgstr "%s sık kullanılanlarınızdan çıkarıldı."
 
-#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:819
+#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:649
 #: ../js/ui/status/system.js:337
 msgid "Settings"
 msgstr "Ayarlar"
@@ -434,7 +436,7 @@ msgid "Change Background…"
 msgstr "Arkaplanı Değiştir…"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday). */
-#: ../js/ui/calendar.js:39
+#: ../js/ui/calendar.js:52
 msgctxt "calendar-no-work"
 msgid "06"
 msgstr "06"
@@ -442,14 +444,14 @@ msgstr "06"
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #. */
-#: ../js/ui/calendar.js:68
+#: ../js/ui/calendar.js:81
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Tüm Gün"
 
 #. Translators: Shown in calendar event list, if 24h format,
 #. \u2236 is a ratio character, similar to : */
-#: ../js/ui/calendar.js:75
+#: ../js/ui/calendar.js:88 ../js/ui/calendar.js:1562
 msgctxt "event list time"
 msgid "%H∶%M"
 msgstr "%H∶%M"
@@ -457,7 +459,7 @@ msgstr "%H∶%M"
 #. Translators: Shown in calendar event list, if 12h format,
 #. \u2236 is a ratio character, similar to : and \u2009 is
 #. a thin space */
-#: ../js/ui/calendar.js:84
+#: ../js/ui/calendar.js:97
 msgctxt "event list time"
 msgid "%l∶%M %p"
 msgstr "%l∶%M %p"
@@ -467,132 +469,81 @@ msgstr "%l∶%M %p"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #. */
-#: ../js/ui/calendar.js:98
+#: ../js/ui/calendar.js:111
 msgctxt "grid sunday"
 msgid "S"
 msgstr "P"
 
 #. Translators: Calendar grid abbreviation for Monday */
-#: ../js/ui/calendar.js:100
+#: ../js/ui/calendar.js:113
 msgctxt "grid monday"
 msgid "M"
 msgstr "P"
 
 #. Translators: Calendar grid abbreviation for Tuesday */
-#: ../js/ui/calendar.js:102
+#: ../js/ui/calendar.js:115
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "S"
 
 #. Translators: Calendar grid abbreviation for Wednesday */
-#: ../js/ui/calendar.js:104
+#: ../js/ui/calendar.js:117
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "Ç"
 
 #. Translators: Calendar grid abbreviation for Thursday */
-#: ../js/ui/calendar.js:106
+#: ../js/ui/calendar.js:119
 msgctxt "grid thursday"
 msgid "T"
 msgstr "P"
 
 #. Translators: Calendar grid abbreviation for Friday */
-#: ../js/ui/calendar.js:108
+#: ../js/ui/calendar.js:121
 msgctxt "grid friday"
 msgid "F"
 msgstr "C"
 
 #. Translators: Calendar grid abbreviation for Saturday */
-#: ../js/ui/calendar.js:110
+#: ../js/ui/calendar.js:123
 msgctxt "grid saturday"
 msgid "S"
 msgstr "C"
 
-#. Translators: Event list abbreviation for Sunday.
-#. *
-#. * NOTE: These list abbreviations are normally not shown together
-#. * so they need to be unique (e.g. Tuesday and Thursday cannot
-#. * both be 'T').
-#. */
-#: ../js/ui/calendar.js:123
-msgctxt "list sunday"
-msgid "Su"
-msgstr "Pa"
-
-#. Translators: Event list abbreviation for Monday */
-#: ../js/ui/calendar.js:125
-msgctxt "list monday"
-msgid "M"
-msgstr "Pz"
-
-#. Translators: Event list abbreviation for Tuesday */
-#: ../js/ui/calendar.js:127
-msgctxt "list tuesday"
-msgid "T"
-msgstr "S"
-
-#. Translators: Event list abbreviation for Wednesday */
-#: ../js/ui/calendar.js:129
-msgctxt "list wednesday"
-msgid "W"
-msgstr "Ç"
-
-#. Translators: Event list abbreviation for Thursday */
-#: ../js/ui/calendar.js:131
-msgctxt "list thursday"
-msgid "Th"
-msgstr "Pe"
-
-#. Translators: Event list abbreviation for Friday */
-#: ../js/ui/calendar.js:133
-msgctxt "list friday"
-msgid "F"
-msgstr "C"
-
-#. Translators: Event list abbreviation for Saturday */
-#: ../js/ui/calendar.js:135
-msgctxt "list saturday"
-msgid "S"
-msgstr "Ct"
-
-#: ../js/ui/calendar.js:460
+#: ../js/ui/calendar.js:590
 msgid "Previous month"
 msgstr "Önceki ay"
 
-#: ../js/ui/calendar.js:470
+#: ../js/ui/calendar.js:600
 msgid "Next month"
 msgstr "Gelecek ay"
 
-#. Translators: Text to show if there are no events */
-#: ../js/ui/calendar.js:806
-msgid "Nothing Scheduled"
-msgstr "Planınız Boş"
+#: ../js/ui/calendar.js:1245
+msgid "Clear section"
+msgstr "Bölümü temizle"
 
-#: ../js/ui/calendar.js:825
+#: ../js/ui/calendar.js:1423
+msgid "Events"
+msgstr "Olaylar"
+
+#: ../js/ui/calendar.js:1431
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d %B"
 
-#: ../js/ui/calendar.js:829
+#: ../js/ui/calendar.js:1435
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d %B, %Y"
 
-#: ../js/ui/calendar.js:841
-msgid "Today"
-msgstr "Bugün"
+#: ../js/ui/calendar.js:1665
+#| msgid "Notifications"
+msgid "No Notifications"
+msgstr "Bildirim Yok"
 
-#: ../js/ui/calendar.js:845
-msgid "Tomorrow"
-msgstr "Yarın"
-
-#: ../js/ui/calendar.js:856
-msgid "This week"
-msgstr "Bu hafta"
-
-#: ../js/ui/calendar.js:864
-msgid "Next week"
-msgstr "Gelecek hafta"
+#: ../js/ui/calendar.js:1668
+msgid "No Events"
+msgstr "Olay Yok"
 
 #: ../js/ui/components/automountManager.js:91
 msgid "External drive connected"
@@ -602,18 +553,10 @@ msgstr "Harici sürücü bağlandı"
 msgid "External drive disconnected"
 msgstr "Harici sürücü ayrıldı"
 
-#: ../js/ui/components/autorunManager.js:296
-msgid "Removable Devices"
-msgstr "Çıkarılabilir Aygıtlar"
-
-#: ../js/ui/components/autorunManager.js:596
+#: ../js/ui/components/autorunManager.js:354
 #, javascript-format
 msgid "Open with %s"
 msgstr "%s ile Aç"
-
-#: ../js/ui/components/autorunManager.js:622
-msgid "Eject"
-msgstr "Çıkart"
 
 #: ../js/ui/components/keyring.js:94 ../js/ui/components/polkitAgent.js:285
 msgid "Password:"
@@ -718,102 +661,94 @@ msgstr "Doğrula"
 msgid "Sorry, that didn't work. Please try again."
 msgstr "Üzgünüm ama işe yaramadı. Lütfen tekrar deneyin."
 
-#: ../js/ui/components/telepathyClient.js:242
+#: ../js/ui/components/telepathyClient.js:243
 msgid "Invitation"
 msgstr "Davet"
 
-#: ../js/ui/components/telepathyClient.js:302
+#: ../js/ui/components/telepathyClient.js:303
 msgid "Call"
 msgstr "Çağrı"
 
-#: ../js/ui/components/telepathyClient.js:318
+#: ../js/ui/components/telepathyClient.js:319
 msgid "File Transfer"
 msgstr "Dosya Aktarımı"
 
-#: ../js/ui/components/telepathyClient.js:422
+#: ../js/ui/components/telepathyClient.js:423
 msgid "Chat"
 msgstr "Sohbet"
 
-#: ../js/ui/components/telepathyClient.js:485
-msgid "Unmute"
-msgstr "Sesi Aç"
-
-#: ../js/ui/components/telepathyClient.js:485
-msgid "Mute"
-msgstr "Sesi Kapat"
-
 #. Translators: Time in 24h format */
-#: ../js/ui/components/telepathyClient.js:955
+#: ../js/ui/components/telepathyClient.js:936 ../js/ui/dateMenu.js:209
 msgid "%H∶%M"
 msgstr "%H∶%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30" */
-#: ../js/ui/components/telepathyClient.js:962
+#: ../js/ui/components/telepathyClient.js:943
 msgid "Yesterday, %H∶%M"
 msgstr "Dün, %H∶%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 24h format. i.e. "Monday, 14:30" */
-#: ../js/ui/components/telepathyClient.js:969
+#: ../js/ui/components/telepathyClient.js:950
 msgid "%A, %H∶%M"
 msgstr "%A, %H∶%M"
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 24h format.
 #. i.e. "May 25, 14:30" */
-#: ../js/ui/components/telepathyClient.js:976
+#: ../js/ui/components/telepathyClient.js:957
 msgid "%B %d, %H∶%M"
 msgstr "%d %B, %H∶%M"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
 #. i.e. "May 25 2012, 14:30" */
-#: ../js/ui/components/telepathyClient.js:982
+#: ../js/ui/components/telepathyClient.js:963
 msgid "%B %d %Y, %H∶%M"
 msgstr "%d %B %Y, %H∶%M"
 
-#. Translators: Time in 24h format */
-#: ../js/ui/components/telepathyClient.js:988
+#. Translators: Time in 12h format */
+#: ../js/ui/components/telepathyClient.js:969 ../js/ui/dateMenu.js:212
 msgid "%l∶%M %p"
 msgstr "%l∶%M %p"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 12h format. i.e. "Yesterday, 2:30 pm" */
-#: ../js/ui/components/telepathyClient.js:995
+#: ../js/ui/components/telepathyClient.js:976
 msgid "Yesterday, %l∶%M %p"
 msgstr "Dün, %l∶%M %p"
 
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm" */
-#: ../js/ui/components/telepathyClient.js:1002
+#: ../js/ui/components/telepathyClient.js:983
 msgid "%A, %l∶%M %p"
 msgstr "%A, %l∶%M %p"
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 12h format.
 #. i.e. "May 25, 2:30 pm" */
-#: ../js/ui/components/telepathyClient.js:1009
+#: ../js/ui/components/telepathyClient.js:990
 msgid "%B %d, %l∶%M %p"
 msgstr "%d %B, %l∶%M %p"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
 #. i.e. "May 25 2012, 2:30 pm"*/
-#: ../js/ui/components/telepathyClient.js:1015
+#: ../js/ui/components/telepathyClient.js:996
 msgid "%B %d %Y, %l∶%M %p"
 msgstr "%d %B %Y, %l∶%M %p"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name. */
-#: ../js/ui/components/telepathyClient.js:1047
+#: ../js/ui/components/telepathyClient.js:1028
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s, şimdi %s olarak biliniyor"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example. */
-#: ../js/ui/components/telepathyClient.js:1151
+#: ../js/ui/components/telepathyClient.js:1132
 #, javascript-format
 msgid "Invitation to %s"
 msgstr "%s'e Davet"
@@ -821,38 +756,38 @@ msgstr "%s'e Davet"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example. */
-#: ../js/ui/components/telepathyClient.js:1159
+#: ../js/ui/components/telepathyClient.js:1136
 #, javascript-format
 msgid "%s is inviting you to join %s"
 msgstr "%s, sizi %s'e katılmanız için davet ediyor"
 
-#: ../js/ui/components/telepathyClient.js:1161
-#: ../js/ui/components/telepathyClient.js:1196
-#: ../js/ui/components/telepathyClient.js:1230
-#: ../js/ui/components/telepathyClient.js:1287
+#: ../js/ui/components/telepathyClient.js:1140
+#: ../js/ui/components/telepathyClient.js:1175
+#: ../js/ui/components/telepathyClient.js:1207
+#: ../js/ui/components/telepathyClient.js:1273
 msgid "Decline"
 msgstr "Reddet"
 
-#: ../js/ui/components/telepathyClient.js:1167
-#: ../js/ui/components/telepathyClient.js:1236
-#: ../js/ui/components/telepathyClient.js:1292
+#: ../js/ui/components/telepathyClient.js:1146
+#: ../js/ui/components/telepathyClient.js:1213
+#: ../js/ui/components/telepathyClient.js:1278
 msgid "Accept"
 msgstr "Kabul Et"
 
 #. translators: argument is a contact name like Alice for example. */
-#: ../js/ui/components/telepathyClient.js:1186
+#: ../js/ui/components/telepathyClient.js:1165
 #, javascript-format
 msgid "Video call from %s"
 msgstr "%s'den görüntülü arama"
 
 #. translators: argument is a contact name like Alice for example. */
-#: ../js/ui/components/telepathyClient.js:1189
+#: ../js/ui/components/telepathyClient.js:1168
 #, javascript-format
 msgid "Call from %s"
 msgstr "%s'den çağrı"
 
 #. translators: this is a button label (verb), not a noun */
-#: ../js/ui/components/telepathyClient.js:1203
+#: ../js/ui/components/telepathyClient.js:1182
 msgid "Answer"
 msgstr "Cevapla"
 
@@ -861,110 +796,110 @@ msgstr "Cevapla"
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
 #. */
-#: ../js/ui/components/telepathyClient.js:1224
+#: ../js/ui/components/telepathyClient.js:1203
 #, javascript-format
 msgid "%s is sending you %s"
 msgstr "%s, size %s dosyasını gönderiyor"
 
 #. To translators: The parameter is the contact's alias */
-#: ../js/ui/components/telepathyClient.js:1253
+#: ../js/ui/components/telepathyClient.js:1230
 #, javascript-format
 msgid "%s would like permission to see when you are online"
 msgstr "%s, ne zaman çevrimiçi olduğunuzu görmek için izin istiyor"
 
-#: ../js/ui/components/telepathyClient.js:1338
+#: ../js/ui/components/telepathyClient.js:1321
 msgid "Network error"
 msgstr "Ağ hatası"
 
-#: ../js/ui/components/telepathyClient.js:1340
+#: ../js/ui/components/telepathyClient.js:1323
 msgid "Authentication failed"
 msgstr "Kimlik doğrulama başarısız"
 
-#: ../js/ui/components/telepathyClient.js:1342
+#: ../js/ui/components/telepathyClient.js:1325
 msgid "Encryption error"
 msgstr "Şifreleme hatası"
 
-#: ../js/ui/components/telepathyClient.js:1344
+#: ../js/ui/components/telepathyClient.js:1327
 msgid "Certificate not provided"
 msgstr "Sertifika sağlanmamış"
 
-#: ../js/ui/components/telepathyClient.js:1346
+#: ../js/ui/components/telepathyClient.js:1329
 msgid "Certificate untrusted"
 msgstr "Sertifika güvenilmez"
 
-#: ../js/ui/components/telepathyClient.js:1348
+#: ../js/ui/components/telepathyClient.js:1331
 msgid "Certificate expired"
 msgstr "Sertifikanın süresi dolmuş"
 
-#: ../js/ui/components/telepathyClient.js:1350
+#: ../js/ui/components/telepathyClient.js:1333
 msgid "Certificate not activated"
 msgstr "Sertifika etkinleştirilmemiş"
 
-#: ../js/ui/components/telepathyClient.js:1352
+#: ../js/ui/components/telepathyClient.js:1335
 msgid "Certificate hostname mismatch"
 msgstr "Sertifikanın makine adı uyuşmuyor"
 
-#: ../js/ui/components/telepathyClient.js:1354
+#: ../js/ui/components/telepathyClient.js:1337
 msgid "Certificate fingerprint mismatch"
 msgstr "Sertifikanın parmak izi uyuşmuyor"
 
-#: ../js/ui/components/telepathyClient.js:1356
+#: ../js/ui/components/telepathyClient.js:1339
 msgid "Certificate self-signed"
 msgstr "Sertifika kendinden-imzalı"
 
-#: ../js/ui/components/telepathyClient.js:1358
+#: ../js/ui/components/telepathyClient.js:1341
 msgid "Status is set to offline"
 msgstr "Durum çevrimdışına ayarlı"
 
-#: ../js/ui/components/telepathyClient.js:1360
+#: ../js/ui/components/telepathyClient.js:1343
 msgid "Encryption is not available"
 msgstr "Şifreleme kullanılabilir değil"
 
-#: ../js/ui/components/telepathyClient.js:1362
+#: ../js/ui/components/telepathyClient.js:1345
 msgid "Certificate is invalid"
 msgstr "Sertifika geçersiz"
 
-#: ../js/ui/components/telepathyClient.js:1364
+#: ../js/ui/components/telepathyClient.js:1347
 msgid "Connection has been refused"
 msgstr "Bağlantı reddedildi"
 
-#: ../js/ui/components/telepathyClient.js:1366
+#: ../js/ui/components/telepathyClient.js:1349
 msgid "Connection can't be established"
 msgstr "Bağlantı kurulamıyor"
 
-#: ../js/ui/components/telepathyClient.js:1368
+#: ../js/ui/components/telepathyClient.js:1351
 msgid "Connection has been lost"
 msgstr "Bağlantı koptu"
 
-#: ../js/ui/components/telepathyClient.js:1370
+#: ../js/ui/components/telepathyClient.js:1353
 msgid "This account is already connected to the server"
 msgstr "Bu hesap zaten sunucuya bağlı"
 
-#: ../js/ui/components/telepathyClient.js:1372
+#: ../js/ui/components/telepathyClient.js:1355
 msgid ""
 "Connection has been replaced by a new connection using the same resource"
 msgstr "Bağlantı, aynı kaynağı kullanan yeni bir bağlantı ile değiştirildi"
 
-#: ../js/ui/components/telepathyClient.js:1374
+#: ../js/ui/components/telepathyClient.js:1357
 msgid "The account already exists on the server"
 msgstr "Sunucuda böyle bir hesap zaten var"
 
-#: ../js/ui/components/telepathyClient.js:1376
+#: ../js/ui/components/telepathyClient.js:1359
 msgid "Server is currently too busy to handle the connection"
 msgstr "Sunucu, şu anda bağlantıyı işleyemeyecek kadar meşgul"
 
-#: ../js/ui/components/telepathyClient.js:1378
+#: ../js/ui/components/telepathyClient.js:1361
 msgid "Certificate has been revoked"
 msgstr "Sertifika hükümsüz kılınmış"
 
-#: ../js/ui/components/telepathyClient.js:1380
+#: ../js/ui/components/telepathyClient.js:1363
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr ""
 "Sertifika güvensiz bir şifreleme algoritması kullanıyor ya da kriptografik "
 "olarak zayıf"
 
-#: ../js/ui/components/telepathyClient.js:1382
+#: ../js/ui/components/telepathyClient.js:1365
 msgid ""
 "The length of the server certificate, or the depth of the server certificate "
 "chain, exceed the limits imposed by the cryptography library"
@@ -972,22 +907,22 @@ msgstr ""
 "Sunucu sertifikasının uzunluğu ya da sunucu sertifikası zincirinin "
 "derinliği, şifreleme kütüphanesi tarafından koyulan sınırları aşıyor"
 
-#: ../js/ui/components/telepathyClient.js:1384
+#: ../js/ui/components/telepathyClient.js:1367
 msgid "Internal error"
 msgstr "İç hata"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example. */
-#: ../js/ui/components/telepathyClient.js:1394
+#: ../js/ui/components/telepathyClient.js:1377
 #, javascript-format
 msgid "Unable to connect to %s"
 msgstr "%s bağlantısı sağlanamadı"
 
-#: ../js/ui/components/telepathyClient.js:1399
+#: ../js/ui/components/telepathyClient.js:1382
 msgid "View account"
 msgstr "Hesabı göster"
 
-#: ../js/ui/components/telepathyClient.js:1436
+#: ../js/ui/components/telepathyClient.js:1419
 msgid "Unknown reason"
 msgstr "Bilinmeyen sebep"
 
@@ -1003,24 +938,31 @@ msgstr "Uygulamaları Göster"
 msgid "Dash"
 msgstr "Konsol"
 
-#: ../js/ui/dateMenu.js:97
-msgid "Open Calendar"
-msgstr "Takvimi Aç"
-
-#: ../js/ui/dateMenu.js:101
-msgid "Open Clocks"
-msgstr "Saati Aç"
-
-#: ../js/ui/dateMenu.js:108
-msgid "Date & Time Settings"
-msgstr "Tarih ve Saat Ayarları"
-
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #. */
-#: ../js/ui/dateMenu.js:132
-msgid "%A %B %e, %Y"
+#: ../js/ui/dateMenu.js:72
+#| msgid "%A %B %e, %Y"
+msgid "%B %e %Y"
+msgstr "%e %B %Y"
+
+#. Translators: This is the accessible name of the date button shown
+#. * below the time in the shell; it should combine the weekday and the
+#. * date, e.g. "Tuesday February 17 2015".
+#. */
+#: ../js/ui/dateMenu.js:79
+#| msgid "%A %B %e, %Y"
+msgid "%A %B %e %Y"
 msgstr "%e %B %Y %A"
+
+#: ../js/ui/dateMenu.js:159
+msgid "Add world clocks…"
+msgstr "Dünya saatlerini ekle…"
+
+#: ../js/ui/dateMenu.js:160
+#| msgid "Open Clocks"
+msgid "World Clocks"
+msgstr "Dünya Saatleri"
 
 #: ../js/ui/endSessionDialog.js:64
 #, javascript-format
@@ -1211,53 +1153,9 @@ msgstr "Kaynağı Görüntüle"
 msgid "Web Page"
 msgstr "Web Sayfası"
 
-#: ../js/ui/messageTray.js:1332
-msgid "Open"
-msgstr "Aç"
-
-#: ../js/ui/messageTray.js:1339
-msgid "Remove"
-msgstr "Sil"
-
-#: ../js/ui/messageTray.js:1636
-msgid "Notifications"
-msgstr "Bildirimler"
-
-#: ../js/ui/messageTray.js:1643
-msgid "Clear Messages"
-msgstr "Mesajları Temizle"
-
-#: ../js/ui/messageTray.js:1662
-msgid "Notification Settings"
-msgstr "Bildirim Ayarları"
-
-#: ../js/ui/messageTray.js:1715
-msgid "Tray Menu"
-msgstr "Tepsi Menüsü"
-
-#: ../js/ui/messageTray.js:1939
-msgid "No Messages"
-msgstr "Mesaj Yok"
-
-#: ../js/ui/messageTray.js:1986
-msgid "Message Tray"
-msgstr "Mesaj Tepsisi"
-
-#: ../js/ui/messageTray.js:2443 ../js/ui/overviewControls.js:483
-#: ../js/ui/screenShield.js:152
-#, javascript-format
-msgid "%d new message"
-msgid_plural "%d new messages"
-msgstr[0] "%d yeni mesaj"
-
-#: ../js/ui/messageTray.js:3013
+#: ../js/ui/messageTray.js:2092
 msgid "System Information"
 msgstr "Sistem Bilgisi"
-
-#: ../js/ui/notificationDaemon.js:513 ../src/shell-app.c:439
-msgctxt "program"
-msgid "Unknown"
-msgstr "Bilinmeyen"
 
 #: ../js/ui/overview.js:84
 msgid "Undo"
@@ -1275,21 +1173,21 @@ msgstr "Genel Görünüm"
 msgid "Type to search…"
 msgstr "Aramak için buraya yazın..."
 
-#: ../js/ui/panel.js:521
+#: ../js/ui/panel.js:351
 msgid "Quit"
 msgstr "Kapat"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview". */
-#: ../js/ui/panel.js:573
+#: ../js/ui/panel.js:403
 msgid "Activities"
 msgstr "Etkinlikler"
 
-#: ../js/ui/panel.js:924
+#: ../js/ui/panel.js:754
 msgid "Top Bar"
 msgstr "Tepe Çubuğu"
 
-#: ../js/ui/popupMenu.js:269
+#: ../js/ui/popupMenu.js:288
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -1311,25 +1209,31 @@ msgstr "Yeniden başlatılıyor..."
 msgid "%A, %B %d"
 msgstr "%d %B %A"
 
-#: ../js/ui/screenShield.js:154
+#: ../js/ui/screenShield.js:147
+#, javascript-format
+msgid "%d new message"
+msgid_plural "%d new messages"
+msgstr[0] "%d yeni mesaj"
+
+#: ../js/ui/screenShield.js:149
 #, javascript-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d yeni bildirim"
 
-#: ../js/ui/screenShield.js:473 ../js/ui/status/system.js:345
+#: ../js/ui/screenShield.js:434 ../js/ui/status/system.js:345
 msgid "Lock"
 msgstr "Kilitle"
 
-#: ../js/ui/screenShield.js:709
+#: ../js/ui/screenShield.js:670
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME'un ekranı kilitlemesi gerekiyor"
 
-#: ../js/ui/screenShield.js:836 ../js/ui/screenShield.js:1312
+#: ../js/ui/screenShield.js:797 ../js/ui/screenShield.js:1273
 msgid "Unable to lock"
 msgstr "Kilitlenemedi"
 
-#: ../js/ui/screenShield.js:837 ../js/ui/screenShield.js:1313
+#: ../js/ui/screenShield.js:798 ../js/ui/screenShield.js:1274
 msgid "Lock was blocked by an application"
 msgstr "Kilitleme bir uygulama tarafından engellendi"
 
@@ -1438,7 +1342,7 @@ msgstr "Bağlı Değil"
 msgid "Brightness"
 msgstr "Parlaklık"
 
-#: ../js/ui/status/keyboard.js:601
+#: ../js/ui/status/keyboard.js:600
 msgid "Show Keyboard Layout"
 msgstr "Klavye Düzenini Göster"
 
@@ -1814,7 +1718,12 @@ msgstr "Oturum açma için -\"gdm\" gibi- özel bir kip kullan"
 msgid "List possible modes"
 msgstr "Mevcut kipleri listele"
 
-#: ../src/shell-app.c:680
+#: ../src/shell-app.c:247
+msgctxt "program"
+msgid "Unknown"
+msgstr "Bilinmeyen"
+
+#: ../src/shell-app.c:488
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "“%s” başlatılamadı"
@@ -1830,3 +1739,85 @@ msgstr "Parola boş bırakılamaz"
 #: ../src/shell-polkit-authentication-agent.c:346
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Kimlik doğrulama penceresi kullanıcı tarafından kapatıldı"
+
+#~ msgctxt "list sunday"
+#~ msgid "Su"
+#~ msgstr "Pa"
+
+#~ msgctxt "list monday"
+#~ msgid "M"
+#~ msgstr "Pz"
+
+#~ msgctxt "list tuesday"
+#~ msgid "T"
+#~ msgstr "S"
+
+#~ msgctxt "list wednesday"
+#~ msgid "W"
+#~ msgstr "Ç"
+
+#~ msgctxt "list thursday"
+#~ msgid "Th"
+#~ msgstr "Pe"
+
+#~ msgctxt "list friday"
+#~ msgid "F"
+#~ msgstr "C"
+
+#~ msgctxt "list saturday"
+#~ msgid "S"
+#~ msgstr "Ct"
+
+#~ msgid "Nothing Scheduled"
+#~ msgstr "Planınız Boş"
+
+#~ msgid "Today"
+#~ msgstr "Bugün"
+
+#~ msgid "Tomorrow"
+#~ msgstr "Yarın"
+
+#~ msgid "This week"
+#~ msgstr "Bu hafta"
+
+#~ msgid "Next week"
+#~ msgstr "Gelecek hafta"
+
+#~ msgid "Removable Devices"
+#~ msgstr "Çıkarılabilir Aygıtlar"
+
+#~ msgid "Eject"
+#~ msgstr "Çıkart"
+
+#~ msgid "Unmute"
+#~ msgstr "Sesi Aç"
+
+#~ msgid "Mute"
+#~ msgstr "Sesi Kapat"
+
+#~ msgid "Open Calendar"
+#~ msgstr "Takvimi Aç"
+
+#~ msgid "Date & Time Settings"
+#~ msgstr "Tarih ve Saat Ayarları"
+
+#~ msgid "Open"
+#~ msgstr "Aç"
+
+#~ msgid "Remove"
+#~ msgstr "Sil"
+
+#~ msgid "Clear Messages"
+#~ msgstr "Mesajları Temizle"
+
+#~ msgid "Notification Settings"
+#~ msgstr "Bildirim Ayarları"
+
+#~ msgid "Tray Menu"
+#~ msgstr "Tepsi Menüsü"
+
+#~ msgid "No Messages"
+#~ msgstr "Mesaj Yok"
+
+#~ msgid "Message Tray"
+#~ msgstr "Mesaj Tepsisi"
