@@ -520,6 +520,7 @@ StScrollBar {
   border-radius: 8px; }
 
 .osd-window,
+.resize-popup,
 .switcher-list, .workspace-switcher-container {
   color: #eeeeec;
   background-color: #2e3436;
