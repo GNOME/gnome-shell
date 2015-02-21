@@ -1112,7 +1112,8 @@ StScrollBar {
   visible-width: 32px;
   spacing: 11px;
   padding: 8px;
-  border-radius: 9px 0 0 9px; }
+  border-radius: 9px 0 0 9px;
+  margin-bottom: 14px; }
   .workspace-thumbnails:rtl {
     border-radius: 0 9px 9px 0; }
 
