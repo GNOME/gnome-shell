@@ -242,6 +242,8 @@ if test -z "$GDBUS_CODEGEN"; then
   AC_MSG_ERROR([gdbus-codegen not found])
 fi
 
+AC_PATH_PROG([SASS],[sass],[])
+
 AC_CONFIG_FILES([
   Makefile
   data/Makefile
