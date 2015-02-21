@@ -37,6 +37,7 @@ const TodayButton = new Lang.Class({
         // until the selected date changes.
         this.actor = new St.Button({ style_class: 'datemenu-today-button',
                                      x_align: St.Align.START,
+                                     can_focus: true,
                                      reactive: false
                                    });
         this.actor.connect('clicked', Lang.bind(this,
@@ -59,7 +60,7 @@ const TodayButton = new Lang.Class({
             function(calendar, date) {
                 // Make the button reactive only if the selected date is not the
                 // current date.
-                this.actor.can_focus = this.actor.reactive = !_isToday(date)
+                this.actor.reactive = !_isToday(date)
             }));
     },
 
