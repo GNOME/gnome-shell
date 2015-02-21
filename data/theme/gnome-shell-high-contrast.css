@@ -114,13 +114,13 @@ StScrollBar {
 .check-box StBin {
   width: 24px;
   height: 22px;
-  background-image: url("checkbox-off.svg"); }
+  background-image: url("resource:///org/gnome/shell/theme/checkbox-off.svg"); }
 .check-box:focus Stbin {
-  background-image: url("checkbox-off-focused.svg"); }
+  background-image: url("resource:///org/gnome/shell/theme/checkbox-off-focused.svg"); }
 .check-box:checked Stbin {
-  background-image: url("checkbox.svg"); }
+  background-image: url("resource:///org/gnome/shell/theme/checkbox.svg"); }
 .check-box:focus:checked Stbin {
-  background-image: url("checkbox-focused.svg"); }
+  background-image: url("resource:///org/gnome/shell/theme/checkbox-focused.svg"); }
 
 /* Switches */
 .toggle-switch {
@@ -129,14 +129,14 @@ StScrollBar {
   background-size: contain; }
 
 .toggle-switch-us {
-  background-image: url("toggle-off-us.svg"); }
+  background-image: url("resource:///org/gnome/shell/theme/toggle-off-us.svg"); }
   .toggle-switch-us:checked {
-    background-image: url("toggle-on-us.svg"); }
+    background-image: url("resource:///org/gnome/shell/theme/toggle-on-us.svg"); }
 
 .toggle-switch-intl {
-  background-image: url("toggle-off-intl.svg"); }
+  background-image: url("resource:///org/gnome/shell/theme/toggle-off-intl.svg"); }
   .toggle-switch-intl:checked {
-    background-image: url("toggle-on-intl.svg"); }
+    background-image: url("resource:///org/gnome/shell/theme/toggle-on-intl.svg"); }
 
 /* links */
 .shell-link {
@@ -169,7 +169,7 @@ StScrollBar {
   .modal-dialog .run-dialog-button-box {
     padding-top: 1em; }
   .modal-dialog .run-dialog-label {
-    font-size: fontsize(12.1);
+    font-size: 12pt;
     font-weight: bold;
     color: #d6d6d1;
     padding-bottom: .4em; }
@@ -181,7 +181,7 @@ StScrollBar {
 .show-processes-dialog-subject,
 .mount-question-dialog-subject,
 .end-session-dialog-subject {
-  font-size: fontsize(14.3); }
+  font-size: 14pt; }
 
 /* End Session Dialog */
 .end-session-dialog {
@@ -585,21 +585,56 @@ StScrollBar {
   #panel .screencast-indicator {
     color: #f57900; }
 
+#calendarArea {
+  padding: 0.75em 1.0em; }
+
 .calendar {
-  padding: .4em 1.75em .8em 1.75em;
-  margin-bottom: 2em; }
+  margin-bottom: 1em; }
 
-.datemenu-date-label {
-  padding: .4em 1.7em;
-  text-align: center;
-  color: #fff;
-  font-weight: bold;
-  font-size: 110%; }
+.calendar,
+.datemenu-today-button,
+.datemenu-displays-box,
+.message-list-sections {
+  margin: 0 1.5em; }
 
-.calendar-vertical-separator {
-  width: .3em;
-  -stipple-width: 1px;
-  -stipple-color: rgba(238, 238, 236, 0.2); }
+.datemenu-calendar-column {
+  spacing: 0.5em;
+  padding-bottom: 3em; }
+
+.datemenu-today-button,
+.world-clocks-button,
+.message-list-section-title {
+  border-radius: 4px;
+  padding: .4em; }
+
+.message-list-section-list:ltr {
+  padding-left: .4em; }
+
+.message-list-section-list:rtl {
+  padding-right: .4em; }
+
+.datemenu-today-button:hover, .datemenu-today-button:focus,
+.world-clocks-button:hover,
+.world-clocks-button:focus,
+.message-list-section-title:hover,
+.message-list-section-title:focus {
+  background-color: #0d0d0d; }
+.datemenu-today-button:active,
+.world-clocks-button:active,
+.message-list-section-title:active {
+  color: white;
+  background-color: #215d9c; }
+
+.datemenu-today-button .date-label {
+  font-size: 1.5em; }
+
+.world-clocks-header,
+.message-list-section-title {
+  color: #999999;
+  font-weight: bold; }
+
+.world-clocks-grid {
+  spacing-rows: 0.4em; }
 
 .calendar-month-label {
   color: #f2f2f2;
@@ -618,14 +653,14 @@ StScrollBar {
     background-color: rgba(0, 0, 0, 0.05); }
 
 .calendar-change-month-back {
-  background-image: url("calendar-arrow-left.svg"); }
+  background-image: url("resource:///org/gnome/shell/theme/calendar-arrow-left.svg"); }
   .calendar-change-month-back:rtl {
-    background-image: url("calendar-arrow-right.svg"); }
+    background-image: url("resource:///org/gnome/shell/theme/calendar-arrow-right.svg"); }
 
 .calendar-change-month-forward {
-  background-image: url("calendar-arrow-right.svg"); }
+  background-image: url("resource:///org/gnome/shell/theme/calendar-arrow-right.svg"); }
   .calendar-change-month-forward:rtl {
-    background-image: url("calendar-arrow-left.svg"); }
+    background-image: url("resource:///org/gnome/shell/theme/calendar-arrow-left.svg"); }
 
 .calendar-day-base {
   font-size: 80%;
@@ -670,46 +705,61 @@ StScrollBar {
   color: rgba(255, 255, 255, 0.15);
   opacity: 0.5; }
 
-.events-table {
-  width: 15em;
-  spacing-columns: 1em;
-  padding: 0 1.4em; }
-  .events-table:ltr {
-    padding-right: 1.9em; }
-  .events-table:rtl {
-    padding-left: 1.9em; }
+/* Message list */
+.message-list {
+  width: 340px; }
 
-.events-day-header {
-  font-weight: bold;
-  color: #e6e6e6;
-  padding-left: 0;
-  padding-top: 1.2em; }
-  .events-day-header:first-child {
-    padding-top: 0; }
+.message-list-sections {
+  spacing: 1.5em; }
 
-.events-day-dayname {
-  color: #e6e6e6;
-  text-align: left;
-  min-width: 20px; }
-  .events-day-dayname:rtl {
-    text-align: right; }
-  .events-day-dayname .events-day-time {
-    text-align: right; }
-    .events-day-dayname .events-day-time:rtl {
-      text-align: left; }
-  .events-day-dayname .events-day-task {
-    color: #e6e6e6; }
-    .events-day-dayname .events-day-task:ltr {
-      padding-left: 8px; }
-    .events-day-dayname .events-day-task:rtl {
-      padding-right: 8px; }
+.message-list-section,
+.message-list-section-list {
+  spacing: 0.7em; }
+
+.message-list-section-title-box {
+  spacing: 0.4em; }
+
+.message-list-section-close > StIcon {
+  icon-size: 16px;
+  border-radius: 8px;
+  color: #000;
+  background-color: #666666; }
+
+/* FIXME: how do you do this in sass? */
+.message-list-section-close:hover > StIcon,
+.message-list-section-close:focus > StIcon {
+  background-color: #999999; }
+
+.message {
+  background-color: #0d0d0d; }
+  .message:hover, .message:focus {
+    background-color: #262626; }
+
+.message-icon-bin {
+  padding: 5px; }
+
+.message-icon-bin > StIcon {
+  icon-size: 48px; }
+
+.message-secondary-bin {
+  color: #999999; }
+
+.message-secondary-bin > StIcon {
+  icon-size: 16px; }
+
+.message-title {
+  font-weight: bold; }
+
+.message-content {
+  padding: 5px;
+  spacing: 5px; }
 
 .system-switch-user-submenu-icon {
   icon-size: 24px;
   border: 1px solid rgba(255, 255, 255, 0.4); }
 
 #appMenu {
-  spinner-image: url("process-working.svg");
+  spinner-image: url("resource:///org/gnome/shell/theme/process-working.svg");
   spacing: 4px; }
   #appMenu .label-shadow {
     color: transparent; }
@@ -739,11 +789,11 @@ StScrollBar {
 .ripple-box {
   width: 52px;
   height: 52px;
-  background-image: url("corner-ripple-ltr.png");
+  background-image: url("resource:///org/gnome/shell/theme/corner-ripple-ltr.png");
   background-size: contain; }
 
 .ripple-box:rtl {
-  background-image: url("corner-ripple-rtl.png"); }
+  background-image: url("resource:///org/gnome/shell/theme/corner-ripple-rtl.png"); }
 
 .popup-menu-arrow {
   width: 16px;
@@ -753,7 +803,7 @@ StScrollBar {
   icon-size: 1.09em; }
 
 .window-close, .notification-close {
-  background-image: url("close-window.svg");
+  background-image: url("resource:///org/gnome/shell/theme/close-window.svg");
   background-size: 32px;
   height: 32px;
   width: 32px; }
@@ -851,14 +901,6 @@ StScrollBar {
     background-color: #215d9c;
     color: #ffffff; }
 
-.messages-indicator {
-  color: rgba(238, 238, 236, 0.8);
-  height: 32px; }
-
-.messages-indicator-contents {
-  spacing: 12px;
-  padding-bottom: 12px; }
-
 .search-entry {
   width: 320px;
   padding: 7px 9px;
@@ -914,7 +956,7 @@ StScrollBar {
 .search-provider-icon-more {
   width: 16px;
   height: 16px;
-  background-image: url("more-results.svg"); }
+  background-image: url("resource:///org/gnome/shell/theme/more-results.svg"); }
 
 /* DASHBOARD */
 #dash {
@@ -928,7 +970,7 @@ StScrollBar {
   #dash:rtl {
     border-radius: 9px 0 0 9px; }
   #dash .placeholder {
-    background-image: url("dash-placeholder.svg");
+    background-image: url("resource:///org/gnome/shell/theme/dash-placeholder.svg");
     background-size: contain;
     height: 24px; }
   #dash .empty-dash-drop-target {
@@ -1052,13 +1094,13 @@ StScrollBar {
   .page-indicator .page-indicator-icon {
     width: 18px;
     height: 18px;
-    background-image: url(page-indicator-inactive.svg); }
+    background-image: url(resource:///org/gnome/shell/theme/page-indicator-inactive.svg); }
   .page-indicator:hover .page-indicator-icon {
-    background-image: url(page-indicator-hover.svg); }
+    background-image: url(resource:///org/gnome/shell/theme/page-indicator-hover.svg); }
   .page-indicator:active .page-indicator-icon {
-    background-image: url(page-indicator-active.svg); }
+    background-image: url(resource:///org/gnome/shell/theme/page-indicator-active.svg); }
   .page-indicator:checked .page-indicator-icon, .page-indicator:checked:active {
-    background-image: url(page-indicator-checked.svg); }
+    background-image: url(resource:///org/gnome/shell/theme/page-indicator-checked.svg); }
 
 .app-well-app > .overview-icon.overview-icon-with-label,
 .grid-search-result .overview-icon.overview-icon-with-label {
@@ -1093,46 +1135,57 @@ StScrollBar {
   color: #fff; }
 
 /* NOTIFICATIONS & MESSAGE TRAY */
-#message-tray {
-  background: #17191a url("noise-texture.png");
-  background-repeat: repeat;
-  height: 72px;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
-  padding: 4px; }
-  #message-tray .message-tray-summary {
-    height: 72px; }
-  #message-tray .message-tray-menu-button StIcon {
-    padding: 0 20px;
-    color: #fff;
-    icon-size: 24px;
-    opacity: 1; }
-  #message-tray .message-tray-menu-button:hover StIcon {
-    color: white; }
-  #message-tray .message-tray-menu-button:active StIcon {
-    color: #2a76c6; }
-  #message-tray .no-messages-label {
-    color: #e6e6e6; }
-
 .url-highlighter {
   link-color: #215d9c; }
+
+.notification-banner {
+  font-size: 11pt;
+  width: 34em;
+  margin: 5px;
+  border-radius: 6px;
+  color: #eeeeec;
+  background-color: #2e3436;
+  border: 1px solid black; }
+  .notification-banner:hover {
+    background-color: #2e3436; }
+  .notification-banner:focus {
+    background-color: #2e3436; }
+  .notification-banner .notification-icon {
+    padding: 5px; }
+  .notification-banner .notification-content {
+    padding: 5px;
+    spacing: 5px; }
+  .notification-banner .secondary-icon {
+    icon-size: 1.09em; }
+  .notification-banner .notification-actions {
+    background-color: black;
+    padding-top: 2px;
+    spacing: 1px; }
+  .notification-banner .notification-button {
+    padding: 4px 4px 5px;
+    background-color: #222728; }
+    .notification-banner .notification-button:first-child {
+      border-radius: 0 0 0 6px; }
+    .notification-banner .notification-button:last-child {
+      border-radius: 0 0 6px 0; }
+    .notification-banner .notification-button:hover, .notification-banner .notification-buttonfocus {
+      background-color: #292f30; }
 
 .notification {
   font-size: 11pt;
   width: 34em;
-  border-radius: 6px 6px 0 0;
+  margin: 5px;
+  border-radius: 6px;
   color: #eeeeec;
   background-color: #2e3436;
   border: 1px solid black;
-  border-bottom-width: 0;
   spacing-rows: 4px;
-  padding: 8px 8px 4px 8px;
+  padding: 8px;
   spacing-columns: 10px; }
-  .notification.multi-line-notification {
-    padding-bottom: 8px; }
 
 .notification-unexpanded {
-  min-height: 36px;
-  height: 36px; }
+  min-height: 48px;
+  height: 48px; }
 
 .notification-with-image {
   min-height: 159px; }
@@ -1143,15 +1196,6 @@ StScrollBar {
 .notification-actions {
   paddinf-top: 18px;
   spacing: 6px; }
-
-.summary-source {
-  border-radius: 0;
-  -st-natural-width: 60px;
-  padding: 9px;
-  transition-duration: 100ms; }
-
-.summary-source-button:hover .summary-source, .summary-source-button:selected .summary-source, .summary-source-button:focus .summary-source {
-  background-color: #33393c; }
 
 .summary-source-counter {
   font-size: 10pt;
@@ -1165,31 +1209,6 @@ StScrollBar {
   border: 2px solid #eeeeec;
   box-shadow: 0 2px 2px rgba(0, 0, 0, 0.5);
   border-radius: 0.9em; }
-
-.summary-boxpointer {
-  -arrow-border-radius: 15px;
-  -arrow-background-color: #2e3436;
-  -arrow-base: 36px;
-  -arrow-rise: 18px;
-  color: #fff;
-  -boxpointer-gap: 4px; }
-  .summary-boxpointer .notification {
-    border-radius: 9px;
-    border-width: 0;
-    background-color: transparent !important;
-    padding-bottom: 12px; }
-  .summary-boxpointer #summary-right-click-menu {
-    padding-top: 12px;
-    padding-bottom: 12px; }
-
-.summary-notification-stack-scrollview {
-  max-height: 24em;
-  padding-top: 8px;
-  padding-bottom: 8px; }
-  .summary-notification-stack-scrollview:ltr {
-    padding-right: 8px; }
-  .summary-notification-stack-scrollview:rtl {
-    padding-left: 8px; }
 
 .notification-scrollview {
   max-height: 18em;
@@ -1585,7 +1604,7 @@ StScrollBar {
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4); }
 
 #lockDialogGroup {
-  background: #2e3436 url(noise-texture.png);
+  background: #2e3436 url(resource:///org/gnome/shell/theme/noise-texture.png);
   background-repeat: repeat; }
 
 #screenShieldNotifications StButton#vhandle, #screenShieldNotifications StButton#hhandle {
