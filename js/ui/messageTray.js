@@ -1939,11 +1939,7 @@ const MessageTray = new Lang.Class({
             this.idleMonitor.add_user_active_watch(Lang.bind(this, this._onIdleMonitorBecameActive));
         }
 
-        // HACK: didn't manage to get chat into a proper state in time
-        if (this._notification.source.isChat)
-            this._banner = this._notification;
-        else
-            this._banner = this._notification.createBanner();
+        this._banner = this._notification.createBanner();
         this._bannerClickedId = this._banner.connect('done-displaying',
                                                      Lang.bind(this, this._escapeTray));
         this._bannerUnfocusedId = this._banner.connect('unfocused', Lang.bind(this, function() {
