@@ -1024,9 +1024,10 @@ const Message = new Lang.Class({
         this._bodyStack.layout_manager = new LabelExpanderLayout();
         contentBox.add_actor(this._bodyStack);
 
-        this.bodyLabel = new URLHighlighter(body, false, this._useBodyMarkup);
+        this.bodyLabel = new URLHighlighter('', false, this._useBodyMarkup);
         this.bodyLabel.actor.add_style_class_name('message-body');
         this._bodyStack.add_actor(this.bodyLabel.actor);
+        this.setBody(body);
 
         this._closeButton.connect('clicked', Lang.bind(this,
             function() {
@@ -1053,6 +1054,7 @@ const Message = new Lang.Class({
     },
 
     setBody: function(text) {
+        this._bodyText = text;
         this.bodyLabel.setMarkup(text, this._useBodyMarkup);
     },
 
@@ -1061,7 +1063,7 @@ const Message = new Lang.Class({
             return;
         this._useBodyMarkup = enable;
         if (this.bodyLabel)
-            this.setBody(this.bodyLabel.actor.text);
+            this.setBody(this._bodyText);
     },
 
     setActionArea: function(actor) {
@@ -1101,7 +1103,7 @@ const Message = new Lang.Class({
         this._actionBin.visible = (this._actionBin.get_n_children() > 0);
 
         if (this._bodyStack.get_n_children() < 2) {
-            let expandedLabel = new URLHighlighter(this.bodyLabel.actor.text,
+            let expandedLabel = new URLHighlighter(this._bodyText,
                                                    true, this._useBodyMarkup);
             this.setExpandedBody(expandedLabel.actor);
         }
