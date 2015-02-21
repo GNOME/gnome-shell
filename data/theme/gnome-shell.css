@@ -645,7 +645,6 @@ StScrollBar {
   color: white;
   background-color: transparent;
   width: 32px;
-  background-position: center;
   border-radius: 4px; }
   .pager-button:hover, .pager-button:focus {
     background-color: rgba(238, 238, 236, 0.05); }
