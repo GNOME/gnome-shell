@@ -1902,6 +1902,7 @@ const MessageTray = new Lang.Class({
 
         this.actor.add_actor(this._banner.actor);
 
+        this.actor._opacity = 0;
         this.actor.opacity = 0;
         this.actor.y = -this._banner.actor.height;
         this.actor.show();
