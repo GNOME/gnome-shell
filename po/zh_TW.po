@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: metacity 3.3.4\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-08-19 09:51+0000\n"
-"PO-Revision-Date: 2014-08-21 09:52+0800\n"
+"POT-Creation-Date: 2015-02-20 23:22+0000\n"
+"PO-Revision-Date: 2015-02-21 16:33+0800\n"
 "Last-Translator: Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>\n"
 "Language-Team: Chinese (Taiwan) <zh-l10n@lists.linux.org.tw>\n"
 "Language: zh_TW\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 1.6.5\n"
+"X-Generator: Poedit 1.7.4\n"
 
 #: ../data/50-mutter-navigation.xml.in.h:1
 msgid "Navigation"
@@ -42,7 +42,6 @@ msgid "Move window to workspace 4"
 msgstr "將視窗移至第 4 個工作區"
 
 #: ../data/50-mutter-navigation.xml.in.h:6
-#| msgid "Move window to workspace 1"
 msgid "Move window to last workspace"
 msgstr "將視窗移至上一個工作區"
 
@@ -83,7 +82,6 @@ msgid "Switch applications"
 msgstr "切換程式"
 
 #: ../data/50-mutter-navigation.xml.in.h:16
-#| msgid "Switch applications"
 msgid "Switch to previous application"
 msgstr "切換至上一個應用程式"
 
@@ -92,7 +90,6 @@ msgid "Switch windows"
 msgstr "切換視窗"
 
 #: ../data/50-mutter-navigation.xml.in.h:18
-#| msgid "Switch windows"
 msgid "Switch to previous window"
 msgstr "切換至上一個視窗"
 
@@ -101,7 +98,6 @@ msgid "Switch windows of an application"
 msgstr "切換程式的視窗"
 
 #: ../data/50-mutter-navigation.xml.in.h:20
-#| msgid "Switch windows of an application"
 msgid "Switch to previous window of an application"
 msgstr "切換至上一個應用程式的視窗"
 
@@ -110,7 +106,6 @@ msgid "Switch system controls"
 msgstr "切換系統控制"
 
 #: ../data/50-mutter-navigation.xml.in.h:22
-#| msgid "Switch system controls"
 msgid "Switch to previous system control"
 msgstr "切換至上一個系統控制"
 
@@ -127,7 +122,6 @@ msgid "Switch windows of an app directly"
 msgstr "直接切換程式的視窗"
 
 #: ../data/50-mutter-navigation.xml.in.h:26
-#| msgid "Switch windows of an application"
 msgid "Switch directly to previous window of an app"
 msgstr "直接切換至上一個程式視窗"
 
@@ -136,7 +130,6 @@ msgid "Switch system controls directly"
 msgstr "直接切換系統控制"
 
 #: ../data/50-mutter-navigation.xml.in.h:28
-#| msgid "Switch system controls"
 msgid "Switch directly to previous system control"
 msgstr "直接切換至上一個系統控制"
 
@@ -161,7 +154,6 @@ msgid "Switch to workspace 4"
 msgstr "切換至第 4 個工作區"
 
 #: ../data/50-mutter-navigation.xml.in.h:34
-#| msgid "Switch to workspace 1"
 msgid "Switch to last workspace"
 msgstr "切換至上一個工作區"
 
@@ -400,56 +392,69 @@ msgid "Cancel tab popup"
 msgstr "取消分頁彈出項"
 
 #: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:1
-#| msgid "Switch to workspace 1"
 msgid "Switch to VT 1"
 msgstr "切換至 VT 1"
 
 #: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:2
-#| msgid "Switch to workspace 2"
 msgid "Switch to VT 2"
 msgstr "切換至 VT 2"
 
 #: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:3
-#| msgid "Switch to workspace 3"
 msgid "Switch to VT 3"
 msgstr "切換至 VT 3"
 
 #: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:4
-#| msgid "Switch to workspace 4"
 msgid "Switch to VT 4"
 msgstr "切換至 VT 4"
 
 #: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:5
-#| msgid "Switch to workspace 1"
 msgid "Switch to VT 5"
 msgstr "切換至 VT 5"
 
 #: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:6
-#| msgid "Switch to workspace 1"
 msgid "Switch to VT 6"
 msgstr "切換至 VT 6"
 
 #: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:7
-#| msgid "Switch to workspace 1"
 msgid "Switch to VT 7"
 msgstr "切換至 VT 7"
 
-#: ../src/backends/meta-monitor-manager.c:412
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:8
+msgid "Switch to VT 8"
+msgstr "切換至 VT 8"
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:9
+msgid "Switch to VT 9"
+msgstr "切換至 VT 9"
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:10
+msgid "Switch to VT 10"
+msgstr "切換至 VT 10"
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:11
+msgid "Switch to VT 11"
+msgstr "切換至 VT 11"
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:12
+msgid "Switch to VT 12"
+msgstr "切換至 VT 12"
+
+#: ../src/backends/meta-monitor-manager.c:364
 msgid "Built-in display"
 msgstr "內建顯示"
 
-#: ../src/backends/meta-monitor-manager.c:437
+#: ../src/backends/meta-monitor-manager.c:391
 msgid "Unknown"
 msgstr "不明"
 
-#: ../src/backends/meta-monitor-manager.c:439
+#: ../src/backends/meta-monitor-manager.c:393
 msgid "Unknown Display"
 msgstr "不明的顯示器"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: ../src/backends/meta-monitor-manager.c:447
+#: ../src/backends/meta-monitor-manager.c:401
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
@@ -457,16 +462,12 @@ msgstr "%s %s"
 # FIXME: I'm still unclear about the meaning of XGetSelectionOwner -- Abel
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:441
+#: ../src/compositor/compositor.c:456
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
 "\"."
 msgstr "在畫面「%2$s」中的第 %1$i 個螢幕中已啟動另一個組合視窗管理員。"
-
-#: ../src/compositor/meta-background.c:1044
-msgid "background texture could not be created from file"
-msgstr "背景材質無法從檔案建立"
 
 #: ../src/core/bell.c:185
 msgid "Bell event"
@@ -495,7 +496,7 @@ msgstr "等待(_W)"
 msgid "_Force Quit"
 msgstr "強制結束(_F)"
 
-#: ../src/core/display.c:547
+#: ../src/core/display.c:562
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "無法開啟 X Window 畫面‘%s’\n"
@@ -532,17 +533,6 @@ msgstr "以 wayland 組合器執行"
 msgid "Run as a full display server, rather than nested"
 msgstr "以完全顯示伺服器執行，而非巢狀"
 
-#: ../src/core/main.c:459
-#, c-format
-msgid "Failed to scan themes directory: %s\n"
-msgstr "找不到佈景主題目錄：%s\n"
-
-#: ../src/core/main.c:475
-#, c-format
-msgid ""
-"Could not find a theme! Be sure %s exists and contains the usual themes.\n"
-msgstr "找不到任何佈景主題！請確定 %s 存在及其中存放了平常使用的佈景主題。\n"
-
 #: ../src/core/mutter.c:39
 #, c-format
 msgid ""
@@ -566,682 +556,28 @@ msgid "Mutter plugin to use"
 msgstr "要使用的 Mutter 外掛程式"
 
 # (Abel) take care of the same string in libwnck
-#: ../src/core/prefs.c:2100
+#: ../src/core/prefs.c:2004
 #, c-format
 msgid "Workspace %d"
 msgstr "工作區 %d"
 
-#: ../src/core/screen.c:548
+#: ../src/core/screen.c:525
+#, c-format
+msgid ""
+"Display \"%s\" already has a window manager; try using the --replace option "
+"to replace the current window manager."
+msgstr ""
+"畫面「%s」已經有了視窗管理員；請嘗試使用 --replace 選項來替換目前的視窗管理"
+"員。"
+
+#: ../src/core/screen.c:607
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "畫面‘%2$s’中的第 %1$d 個螢幕無效\n"
 
-#: ../src/core/screen.c:564
-#, c-format
-msgid ""
-"Screen %d on display \"%s\" already has a window manager; try using the --"
-"replace option to replace the current window manager.\n"
-msgstr ""
-"畫面‘%2$s’中的第 %1$d 個螢幕已經有了視窗管理員；請嘗試使用 --replace 選項來替"
-"換目前的視窗管理員。\n"
-
-#: ../src/core/screen.c:657
-#, c-format
-msgid "Screen %d on display \"%s\" already has a window manager\n"
-msgstr "畫面“%2$s”中的第 %1$d 個螢幕已經有了視窗總管\n"
-
 #: ../src/core/util.c:118
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "編譯 Mutter 時並沒有加入詳細偵錯模式的支援\n"
-
-#. Translators: This represents the size of a window.  The first number is
-#. * the width of the window and the second is the height.
-#.
-#: ../src/ui/resizepopup.c:134
-#, c-format
-msgid "%d x %d"
-msgstr "%d x %d"
-
-#: ../src/ui/theme.c:233
-msgid "top"
-msgstr "頂"
-
-#: ../src/ui/theme.c:235
-msgid "bottom"
-msgstr "底"
-
-#: ../src/ui/theme.c:237
-msgid "left"
-msgstr "左"
-
-#: ../src/ui/theme.c:239
-msgid "right"
-msgstr "右"
-
-#: ../src/ui/theme.c:267
-#, c-format
-msgid "frame geometry does not specify \"%s\" dimension"
-msgstr "邊框的位置大小中沒有指定“%s”部分的大小"
-
-#: ../src/ui/theme.c:286
-#, c-format
-msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
-msgstr "邊框的位置大小中沒有指定“%2$s”邊框中的“%1$s”部分"
-
-#: ../src/ui/theme.c:323
-#, c-format
-msgid "Button aspect ratio %g is not reasonable"
-msgstr "按鈕的長寬比 %g 不合理"
-
-#: ../src/ui/theme.c:335
-#, c-format
-msgid "Frame geometry does not specify size of buttons"
-msgstr "邊框的位置大小規格內未有指定按鈕的大小"
-
-#: ../src/ui/theme.c:1061
-#, c-format
-msgid "Gradients should have at least two colors"
-msgstr "漸層至少應該有兩種顏色"
-
-#: ../src/ui/theme.c:1211
-#, c-format
-msgid ""
-"GTK custom color specification must have color name and fallback in "
-"parentheses, e.g. gtk:custom(foo,bar); could not parse \"%s\""
-msgstr ""
-"GTK 自訂顏色規格規定必須有顏色名稱並加上封閉括號，例如 gtk:custom(foo,bar)；"
-"無法分析「%s」"
-
-#: ../src/ui/theme.c:1227
-#, c-format
-msgid ""
-"Invalid character '%c' in color_name parameter of gtk:custom, only A-Za-z0-9-"
-"_ are valid"
-msgstr "gtk:custom 的 color_name 參數 '%c' 中有無效字元，只能使用 A-Za-z0-9-_ "
-
-#: ../src/ui/theme.c:1241
-#, c-format
-msgid ""
-"Gtk:custom format is \"gtk:custom(color_name,fallback)\", \"%s\" does not "
-"fit the format"
-msgstr ""
-"Gtk:custom 的格式是「gtk:custom(color_name,fallback)」，但「%s」不符合格式"
-
-#: ../src/ui/theme.c:1286
-#, c-format
-msgid ""
-"GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
-"where NORMAL is the state; could not parse \"%s\""
-msgstr ""
-"GTK 色彩規格規定必須在狀態外加上方括號，例如 gtk:fg[NORMAL]，這裡 NORMAL 表示"
-"狀態；無法分析“%s”"
-
-#: ../src/ui/theme.c:1300
-#, c-format
-msgid ""
-"GTK color specification must have a close bracket after the state, e.g. gtk:"
-"fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
-msgstr ""
-"GTK 色彩規格規定必須在狀態後加上閉方括號，例如 gtk:fg[NORMAL]，這裡 NORMAL 表"
-"示狀態；無法分析“%s”"
-
-#: ../src/ui/theme.c:1311
-#, c-format
-msgid "Did not understand state \"%s\" in color specification"
-msgstr "無法將“%s”理解為色彩規格中的狀態"
-
-#: ../src/ui/theme.c:1324
-#, c-format
-msgid "Did not understand color component \"%s\" in color specification"
-msgstr "無法將“%s”理解為色彩規格中的色彩部分"
-
-#: ../src/ui/theme.c:1352
-#, c-format
-msgid ""
-"Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
-"format"
-msgstr "指定混色的格式是“blend/背景顏色/前景顏色/透明度”，“%s”不符合規格"
-
-#: ../src/ui/theme.c:1363
-#, c-format
-msgid "Could not parse alpha value \"%s\" in blended color"
-msgstr "無法理解“%s”作為混色的透明度數值"
-
-#: ../src/ui/theme.c:1373
-#, c-format
-msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
-msgstr "混色的透明度數值“%s”不是在 0.0 至 1.0 之間"
-
-#: ../src/ui/theme.c:1419
-#, c-format
-msgid ""
-"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
-msgstr "陰影的格式是“shade/基本顏色/比重”，但“%s”不符合格式"
-
-#: ../src/ui/theme.c:1430
-#, c-format
-msgid "Could not parse shade factor \"%s\" in shaded color"
-msgstr "在陰影顏色中無法將“%s”理解為陰影比重"
-
-#: ../src/ui/theme.c:1440
-#, c-format
-msgid "Shade factor \"%s\" in shaded color is negative"
-msgstr "在陰影顏色中陰影比重“%s”是負數"
-
-#: ../src/ui/theme.c:1469
-#, c-format
-msgid "Could not parse color \"%s\""
-msgstr "無法分析顏色“%s”"
-
-#: ../src/ui/theme.c:1778
-#, c-format
-msgid "Coordinate expression contains character '%s' which is not allowed"
-msgstr "座標表達式中出現不可接受的字元‘%s’"
-
-#: ../src/ui/theme.c:1805
-#, c-format
-msgid ""
-"Coordinate expression contains floating point number '%s' which could not be "
-"parsed"
-msgstr "座標表達式中出現無法分析的浮點小數‘%s’"
-
-#: ../src/ui/theme.c:1819
-#, c-format
-msgid "Coordinate expression contains integer '%s' which could not be parsed"
-msgstr "座標表達式中出現無法分析的整數‘%s’"
-
-#: ../src/ui/theme.c:1940
-#, c-format
-msgid ""
-"Coordinate expression contained unknown operator at the start of this text: "
-"\"%s\""
-msgstr "在座標表達式中，以下文字的開始部分含有不明的運算符：“%s”"
-
-#: ../src/ui/theme.c:1997
-#, c-format
-msgid "Coordinate expression was empty or not understood"
-msgstr "座標表達式是空白的或是無法分析"
-
-#: ../src/ui/theme.c:2110 ../src/ui/theme.c:2120 ../src/ui/theme.c:2154
-#, c-format
-msgid "Coordinate expression results in division by zero"
-msgstr "座標表達式中出現被 0 整除的錯誤"
-
-#: ../src/ui/theme.c:2162
-#, c-format
-msgid ""
-"Coordinate expression tries to use mod operator on a floating-point number"
-msgstr "座標表達式中出現將浮點數使用於餘數運算符 (mod) 的錯誤"
-
-#: ../src/ui/theme.c:2218
-#, c-format
-msgid ""
-"Coordinate expression has an operator \"%s\" where an operand was expected"
-msgstr "在座標表達式中，應該有運算子的地方出現了運算符“%s”"
-
-#: ../src/ui/theme.c:2227
-#, c-format
-msgid "Coordinate expression had an operand where an operator was expected"
-msgstr "在座標表達式中，應該有運算符的地方出現了運算子"
-
-#: ../src/ui/theme.c:2235
-#, c-format
-msgid "Coordinate expression ended with an operator instead of an operand"
-msgstr "結束座標表達式的是一個運算符而非運算子"
-
-#: ../src/ui/theme.c:2245
-#, c-format
-msgid ""
-"Coordinate expression has operator \"%c\" following operator \"%c\" with no "
-"operand in between"
-msgstr "在座標表達式中，運算符“%c”緊隨運算符“%c”出現，但中間沒有任何運算子"
-
-#: ../src/ui/theme.c:2396 ../src/ui/theme.c:2441
-#, c-format
-msgid "Coordinate expression had unknown variable or constant \"%s\""
-msgstr "座標表達式中出現不明的變數或常數“%s”"
-
-#: ../src/ui/theme.c:2495
-#, c-format
-msgid "Coordinate expression parser overflowed its buffer."
-msgstr "座標表達式分析器令緩衝溢位。"
-
-#: ../src/ui/theme.c:2524
-#, c-format
-msgid "Coordinate expression had a close parenthesis with no open parenthesis"
-msgstr "座標表達式中的閉括號沒有相應的開括號"
-
-#: ../src/ui/theme.c:2588
-#, c-format
-msgid "Coordinate expression had an open parenthesis with no close parenthesis"
-msgstr "座標表達式中的開括號沒有相應的閉括號"
-
-#: ../src/ui/theme.c:2599
-#, c-format
-msgid "Coordinate expression doesn't seem to have any operators or operands"
-msgstr "座標表達式中似乎沒有任何運算符或運算子"
-
-#: ../src/ui/theme.c:2812 ../src/ui/theme.c:2832 ../src/ui/theme.c:2852
-#, c-format
-msgid "Theme contained an expression that resulted in an error: %s\n"
-msgstr "佈景主題中含有引致錯誤的表達式：%s\n"
-
-#: ../src/ui/theme.c:4455
-#, c-format
-msgid ""
-"<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
-"specified for this frame style"
-msgstr ""
-"此邊框款式必須指定 <button function=\"%s\" state=\"%s\" draw_ops=\"whatever"
-"\"/>"
-
-#: ../src/ui/theme.c:4970 ../src/ui/theme.c:4995
-#, c-format
-msgid ""
-"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr ""
-"缺少了 <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-
-#: ../src/ui/theme.c:5041
-#, c-format
-msgid "Failed to load theme \"%s\": %s\n"
-msgstr "無法載入佈景主題“%s”：%s\n"
-
-#: ../src/ui/theme.c:5177 ../src/ui/theme.c:5184 ../src/ui/theme.c:5191
-#: ../src/ui/theme.c:5198 ../src/ui/theme.c:5205
-#, c-format
-msgid "No <%s> set for theme \"%s\""
-msgstr "佈景主題“%s”未指定 <%s>"
-
-#: ../src/ui/theme.c:5213
-#, c-format
-msgid ""
-"No frame style set for window type \"%s\" in theme \"%s\", add a <window "
-"type=\"%s\" style_set=\"whatever\"/> element"
-msgstr ""
-"在佈景主題“%2$s”中，視窗類型“%1$s”沒有指定任何邊框款式。請加上 <window type="
-"\"%3$s\" style_set=\"whatever\"/> 元素"
-
-#: ../src/ui/theme.c:5620 ../src/ui/theme.c:5682 ../src/ui/theme.c:5745
-#, c-format
-msgid ""
-"User-defined constants must begin with a capital letter; \"%s\" does not"
-msgstr "自行定義的常數必須以大寫字母開始；但“%s”不是"
-
-#: ../src/ui/theme.c:5628 ../src/ui/theme.c:5690 ../src/ui/theme.c:5753
-#, c-format
-msgid "Constant \"%s\" has already been defined"
-msgstr "已定義了“%s”常數"
-
-#. Translators: This means that an attribute which should have been found
-#. * on an XML element was not in fact found.
-#.
-#: ../src/ui/theme-parser.c:234
-#, c-format
-msgid "No \"%s\" attribute on element <%s>"
-msgstr "在元素 <%2$s> 中沒有「%1$s」屬性"
-
-#: ../src/ui/theme-parser.c:263 ../src/ui/theme-parser.c:281
-#, c-format
-msgid "Line %d character %d: %s"
-msgstr "第 %d 列第 %d 字：%s"
-
-#: ../src/ui/theme-parser.c:481
-#, c-format
-msgid "Attribute \"%s\" repeated twice on the same <%s> element"
-msgstr "屬性「%s」在同一個 <%s> 元素中重複了兩次"
-
-#: ../src/ui/theme-parser.c:505 ../src/ui/theme-parser.c:554
-#, c-format
-msgid "Attribute \"%s\" is invalid on <%s> element in this context"
-msgstr "在此關聯選單中，屬性「%s」在 <%s> 元素中是無效的"
-
-#: ../src/ui/theme-parser.c:596
-#, c-format
-msgid "Could not parse \"%s\" as an integer"
-msgstr "無法以整數的方式分析“%s”"
-
-#: ../src/ui/theme-parser.c:605 ../src/ui/theme-parser.c:660
-#, c-format
-msgid "Did not understand trailing characters \"%s\" in string \"%s\""
-msgstr "無法理解字串“%2$s”中的結束字元“%1$s”"
-
-#: ../src/ui/theme-parser.c:615
-#, c-format
-msgid "Integer %ld must be positive"
-msgstr "整數 %ld 必須為正數"
-
-#: ../src/ui/theme-parser.c:623
-#, c-format
-msgid "Integer %ld is too large, current max is %d"
-msgstr "整數 %ld 太大，目前可接受的最大值為 %d"
-
-#: ../src/ui/theme-parser.c:651 ../src/ui/theme-parser.c:767
-#, c-format
-msgid "Could not parse \"%s\" as a floating point number"
-msgstr "無法以浮點小數的方式分析“%s”"
-
-#: ../src/ui/theme-parser.c:682 ../src/ui/theme-parser.c:710
-#, c-format
-msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
-msgstr "布林值必須為“true”或“false”，不是“%s”"
-
-#: ../src/ui/theme-parser.c:737
-#, c-format
-msgid "Angle must be between 0.0 and 360.0, was %g\n"
-msgstr "角度必須在 0.0 至 360.0 之間，此處的值為 %g\n"
-
-#: ../src/ui/theme-parser.c:800
-#, c-format
-msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
-msgstr "透明度必須在 0.0（完全透明）至 1.0（完全不透明）之間，此處的值為 %g\n"
-
-#: ../src/ui/theme-parser.c:865
-#, c-format
-msgid ""
-"Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
-"large,x-large,xx-large)\n"
-msgstr ""
-"無效的標題大小“%s”(必須為 xx-small、x-small、small、medium、large、\n"
-"x-large、xx-large 其中一個)\n"
-
-#: ../src/ui/theme-parser.c:1021 ../src/ui/theme-parser.c:1084
-#: ../src/ui/theme-parser.c:1118 ../src/ui/theme-parser.c:1221
-#, c-format
-msgid "<%s> name \"%s\" used a second time"
-msgstr "<%s> 的 name 屬性“%s”用了超過一次"
-
-#: ../src/ui/theme-parser.c:1033 ../src/ui/theme-parser.c:1130
-#: ../src/ui/theme-parser.c:1233
-#, c-format
-msgid "<%s> parent \"%s\" has not been defined"
-msgstr "<%s> 的主元素“%s”沒有任何定義"
-
-#: ../src/ui/theme-parser.c:1143
-#, c-format
-msgid "<%s> geometry \"%s\" has not been defined"
-msgstr "<%s> 元素的位置大小“%s”沒有任何定義"
-
-#: ../src/ui/theme-parser.c:1156
-#, c-format
-msgid "<%s> must specify either a geometry or a parent that has a geometry"
-msgstr "<%s> 必須自己指定位置大小或指定有位置大小的主元素"
-
-#: ../src/ui/theme-parser.c:1198
-msgid "You must specify a background for an alpha value to be meaningful"
-msgstr "必須指定背景使得透明 ( alpha) 值的變得有意義"
-
-#: ../src/ui/theme-parser.c:1266
-#, c-format
-msgid "Unknown type \"%s\" on <%s> element"
-msgstr "<%2$s> 元素之內出現不明的類型“%1$s”"
-
-#: ../src/ui/theme-parser.c:1277
-#, c-format
-msgid "Unknown style_set \"%s\" on <%s> element"
-msgstr "<%2$s> 元素之內出現不明的 style_set“%1$s”"
-
-#: ../src/ui/theme-parser.c:1285
-#, c-format
-msgid "Window type \"%s\" has already been assigned a style set"
-msgstr "視窗類型“%s”已經分配了 style set"
-
-#: ../src/ui/theme-parser.c:1315 ../src/ui/theme-parser.c:1379
-#: ../src/ui/theme-parser.c:1605 ../src/ui/theme-parser.c:2840
-#: ../src/ui/theme-parser.c:2886 ../src/ui/theme-parser.c:3036
-#: ../src/ui/theme-parser.c:3272 ../src/ui/theme-parser.c:3310
-#: ../src/ui/theme-parser.c:3348 ../src/ui/theme-parser.c:3386
-#, c-format
-msgid "Element <%s> is not allowed below <%s>"
-msgstr "元素 <%s> 不允許在 <%s> 之下"
-
-#: ../src/ui/theme-parser.c:1429 ../src/ui/theme-parser.c:1443
-#: ../src/ui/theme-parser.c:1488
-msgid ""
-"Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio\" "
-"for buttons"
-msgstr ""
-"不可能同時指定按鈕的寬度/長度 (button_width/button_height) 及長寬比"
-"(aspect_ratio)"
-
-#: ../src/ui/theme-parser.c:1452
-#, c-format
-msgid "Distance \"%s\" is unknown"
-msgstr "不明的距離“%s”"
-
-#: ../src/ui/theme-parser.c:1497
-#, c-format
-msgid "Aspect ratio \"%s\" is unknown"
-msgstr "不明的長寬比“%s”"
-
-#: ../src/ui/theme-parser.c:1559
-#, c-format
-msgid "Border \"%s\" is unknown"
-msgstr "不明的邊框“%s”"
-
-#: ../src/ui/theme-parser.c:1870
-#, c-format
-msgid "No \"start_angle\" or \"from\" attribute on element <%s>"
-msgstr "元素 <%s> 中沒有“start_angle”或“from”屬性"
-
-#: ../src/ui/theme-parser.c:1877
-#, c-format
-msgid "No \"extent_angle\" or \"to\" attribute on element <%s>"
-msgstr "元素 <%s> 中沒有“extent_angle”或“to”屬性"
-
-#: ../src/ui/theme-parser.c:2117
-#, c-format
-msgid "Did not understand value \"%s\" for type of gradient"
-msgstr "無法將“%s”理解為漸層的樣式"
-
-#: ../src/ui/theme-parser.c:2195 ../src/ui/theme-parser.c:2570
-#, c-format
-msgid "Did not understand fill type \"%s\" for <%s> element"
-msgstr "無法理解 <%2$s> 元素中的填充類型“%1$s”"
-
-#: ../src/ui/theme-parser.c:2362 ../src/ui/theme-parser.c:2445
-#: ../src/ui/theme-parser.c:2508
-#, c-format
-msgid "Did not understand state \"%s\" for <%s> element"
-msgstr "無法將“%s”理解為 <%s> 元素的狀態"
-
-#: ../src/ui/theme-parser.c:2372 ../src/ui/theme-parser.c:2455
-#, c-format
-msgid "Did not understand shadow \"%s\" for <%s> element"
-msgstr "無法將“%s”理解為 <%s> 元素的陰影"
-
-#: ../src/ui/theme-parser.c:2382
-#, c-format
-msgid "Did not understand arrow \"%s\" for <%s> element"
-msgstr "無法將“%s”理解為 <%s> 元素的箭頭"
-
-#: ../src/ui/theme-parser.c:2696 ../src/ui/theme-parser.c:2792
-#, c-format
-msgid "No <draw_ops> called \"%s\" has been defined"
-msgstr "沒有定義任何名稱為“%s”的 <draw_ops>"
-
-#: ../src/ui/theme-parser.c:2708 ../src/ui/theme-parser.c:2804
-#, c-format
-msgid "Including draw_ops \"%s\" here would create a circular reference"
-msgstr "這裡的 draw_ops“%s”會造成循環"
-
-#: ../src/ui/theme-parser.c:2919
-#, c-format
-msgid "Unknown position \"%s\" for frame piece"
-msgstr "邊框組件指定了不明的位置“%s”"
-
-#: ../src/ui/theme-parser.c:2927
-#, c-format
-msgid "Frame style already has a piece at position %s"
-msgstr "邊框款式已經在位置 %s 中指定了一件邊框組件"
-
-#: ../src/ui/theme-parser.c:2944 ../src/ui/theme-parser.c:3021
-#, c-format
-msgid "No <draw_ops> with the name \"%s\" has been defined"
-msgstr "沒有定義任何名稱為“%s”的 <draw_ops>"
-
-#: ../src/ui/theme-parser.c:2974
-#, c-format
-msgid "Unknown function \"%s\" for button"
-msgstr "按鈕擁有不明的功能“%s”"
-
-#: ../src/ui/theme-parser.c:2984
-#, c-format
-msgid "Button function \"%s\" does not exist in this version (%d, need %d)"
-msgstr "按鈕功能“%s”不存在於這個 版本（%d，要求 %d）"
-
-#: ../src/ui/theme-parser.c:2996
-#, c-format
-msgid "Unknown state \"%s\" for button"
-msgstr "無法理解“%s”為按鈕的狀態"
-
-#: ../src/ui/theme-parser.c:3004
-#, c-format
-msgid "Frame style already has a button for function %s state %s"
-msgstr "邊框款式已經指定了一個擁有 %s 功能及 %s 狀態的按鈕"
-
-#: ../src/ui/theme-parser.c:3075
-#, c-format
-msgid "\"%s\" is not a valid value for focus attribute"
-msgstr "“%s”不是 focus 屬性的有效設定值"
-
-#: ../src/ui/theme-parser.c:3084
-#, c-format
-msgid "\"%s\" is not a valid value for state attribute"
-msgstr "“%s”不是 state 屬性的有效設定值"
-
-#: ../src/ui/theme-parser.c:3094
-#, c-format
-msgid "A style called \"%s\" has not been defined"
-msgstr "沒有定義任何稱為“%s”的款式"
-
-#: ../src/ui/theme-parser.c:3115 ../src/ui/theme-parser.c:3138
-#, c-format
-msgid "\"%s\" is not a valid value for resize attribute"
-msgstr "“%s”不是 resize 屬性的有效設定值"
-
-#: ../src/ui/theme-parser.c:3149
-#, c-format
-msgid ""
-"Should not have \"resize\" attribute on <%s> element for maximized/shaded "
-"states"
-msgstr "元素 <%s> 不應在最大化或捲起的狀態中指定“resize”屬性"
-
-#: ../src/ui/theme-parser.c:3163
-#, c-format
-msgid ""
-"Should not have \"resize\" attribute on <%s> element for maximized states"
-msgstr "不應在元素 <%s> 最大化的狀態中指定“resize”屬性"
-
-#: ../src/ui/theme-parser.c:3177 ../src/ui/theme-parser.c:3221
-#, c-format
-msgid "Style has already been specified for state %s resize %s focus %s"
-msgstr "當 state=%s resize=%s focus=%s 時，樣式早已經被指定了"
-
-#: ../src/ui/theme-parser.c:3188 ../src/ui/theme-parser.c:3199
-#: ../src/ui/theme-parser.c:3210 ../src/ui/theme-parser.c:3232
-#: ../src/ui/theme-parser.c:3243 ../src/ui/theme-parser.c:3254
-#, c-format
-msgid "Style has already been specified for state %s focus %s"
-msgstr "當 state=%s focus=%s 時，樣式早已經被指定了"
-
-#: ../src/ui/theme-parser.c:3293
-msgid ""
-"Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
-"attribute and also a <draw_ops> element, or specified two elements)"
-msgstr ""
-"一個 <piece> 元素不可同時使用兩個 draw_ops (佈景主題同時指定了一個 draw_ops "
-"屬性及一個 <draw_ops> 元素，或是指定了兩個元素)"
-
-#: ../src/ui/theme-parser.c:3331
-msgid ""
-"Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
-"attribute and also a <draw_ops> element, or specified two elements)"
-msgstr ""
-"一個 <button> 元素不可同時使用兩個 draw_ops (佈景主題同時指定了一個 draw_ops "
-"屬性及一個 <draw_ops> 元素，或是指定了兩個元素)"
-
-#: ../src/ui/theme-parser.c:3369
-msgid ""
-"Can't have a two draw_ops for a <menu_icon> element (theme specified a "
-"draw_ops attribute and also a <draw_ops> element, or specified two elements)"
-msgstr ""
-"一個 <menu_icon> 元素不可同時使用兩個 draw_ops (佈景主題同時指定了一個 "
-"draw_ops 屬性及一個 <draw_ops> 元素，或是指定了兩個元素)"
-
-#: ../src/ui/theme-parser.c:3433
-#, c-format
-msgid "Bad version specification '%s'"
-msgstr "不正確的版本規格「%s」"
-
-#: ../src/ui/theme-parser.c:3506
-msgid ""
-"\"version\" attribute cannot be used in metacity-theme-1.xml or metacity-"
-"theme-2.xml"
-msgstr "「version」屬性不能用在 metacity-theme-1.xml 或 metacity-theme-2.xml"
-
-#: ../src/ui/theme-parser.c:3529
-#, c-format
-msgid "Theme requires version %s but latest supported theme version is %d.%d"
-msgstr "佈景主題需要 %s 版但是最新支援的佈景主題版本為 %d.%d"
-
-#: ../src/ui/theme-parser.c:3561
-#, c-format
-msgid "Outermost element in theme must be <metacity_theme> not <%s>"
-msgstr "佈景主題中最外層的元素必須為 <metacity_theme> 而不是 <%s>"
-
-#: ../src/ui/theme-parser.c:3581
-#, c-format
-msgid ""
-"Element <%s> is not allowed inside a name/author/date/description element"
-msgstr "元素 <%s> 不許在名稱/作者/日期/描述元素內出現"
-
-#: ../src/ui/theme-parser.c:3586
-#, c-format
-msgid "Element <%s> is not allowed inside a <constant> element"
-msgstr "<%s> 元素不可出現在 <constant> 元素內"
-
-#: ../src/ui/theme-parser.c:3598
-#, c-format
-msgid ""
-"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
-msgstr "<%s> 元素不可出現於 distance/border/aspect_ratio 元素之內"
-
-#: ../src/ui/theme-parser.c:3620
-#, c-format
-msgid "Element <%s> is not allowed inside a draw operation element"
-msgstr "元素 <%s> 不允許在有關繪圖操作的元素內出現"
-
-#: ../src/ui/theme-parser.c:3630 ../src/ui/theme-parser.c:3660
-#: ../src/ui/theme-parser.c:3665 ../src/ui/theme-parser.c:3670
-#, c-format
-msgid "Element <%s> is not allowed inside a <%s> element"
-msgstr "<%s> 元素不可出現在 <%s> 元素內"
-
-#: ../src/ui/theme-parser.c:3898
-msgid "No draw_ops provided for frame piece"
-msgstr "邊框沒有提供任何 draw_ops 屬性"
-
-#: ../src/ui/theme-parser.c:3913
-msgid "No draw_ops provided for button"
-msgstr "按鈕沒有提供任何 draw_ops 屬性"
-
-#: ../src/ui/theme-parser.c:3967
-#, c-format
-msgid "No text is allowed inside element <%s>"
-msgstr "<%s> 元素內不可出現任何文字"
-
-#: ../src/ui/theme-parser.c:4025 ../src/ui/theme-parser.c:4037
-#: ../src/ui/theme-parser.c:4049 ../src/ui/theme-parser.c:4061
-#: ../src/ui/theme-parser.c:4073
-#, c-format
-msgid "<%s> specified twice for this theme"
-msgstr "<%s> 指定了這個佈景主題兩次"
-
-#: ../src/ui/theme-parser.c:4335
-#, c-format
-msgid "Failed to find a valid file for theme %s\n"
-msgstr "無法佈景主題的有效檔案 %s\n"
 
 #: ../src/x11/session.c:1815
 msgid ""
@@ -1249,10 +585,448 @@ msgid ""
 "be restarted manually next time you log in."
 msgstr "這些視窗不支援 &quot;儲存目前的設定&quot; ，必須在下次登入後自行啟動。"
 
-#: ../src/x11/window-props.c:515
+#: ../src/x11/window-props.c:549
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s（在 %s）"
+
+#~ msgid "background texture could not be created from file"
+#~ msgstr "背景材質無法從檔案建立"
+
+#~ msgid "Failed to scan themes directory: %s\n"
+#~ msgstr "找不到佈景主題目錄：%s\n"
+
+#~ msgid ""
+#~ "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
+#~ msgstr ""
+#~ "找不到任何佈景主題！請確定 %s 存在及其中存放了平常使用的佈景主題。\n"
+
+#~ msgid "Screen %d on display \"%s\" already has a window manager\n"
+#~ msgstr "畫面“%2$s”中的第 %1$d 個螢幕已經有了視窗總管\n"
+
+#~ msgid "%d x %d"
+#~ msgstr "%d x %d"
+
+#~ msgid "top"
+#~ msgstr "頂"
+
+#~ msgid "bottom"
+#~ msgstr "底"
+
+#~ msgid "left"
+#~ msgstr "左"
+
+#~ msgid "right"
+#~ msgstr "右"
+
+#~ msgid "frame geometry does not specify \"%s\" dimension"
+#~ msgstr "邊框的位置大小中沒有指定“%s”部分的大小"
+
+#~ msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
+#~ msgstr "邊框的位置大小中沒有指定“%2$s”邊框中的“%1$s”部分"
+
+#~ msgid "Button aspect ratio %g is not reasonable"
+#~ msgstr "按鈕的長寬比 %g 不合理"
+
+#~ msgid "Frame geometry does not specify size of buttons"
+#~ msgstr "邊框的位置大小規格內未有指定按鈕的大小"
+
+#~ msgid "Gradients should have at least two colors"
+#~ msgstr "漸層至少應該有兩種顏色"
+
+#~ msgid ""
+#~ "GTK custom color specification must have color name and fallback in "
+#~ "parentheses, e.g. gtk:custom(foo,bar); could not parse \"%s\""
+#~ msgstr ""
+#~ "GTK 自訂顏色規格規定必須有顏色名稱並加上封閉括號，例如 gtk:custom(foo,"
+#~ "bar)；無法分析「%s」"
+
+#~ msgid ""
+#~ "Invalid character '%c' in color_name parameter of gtk:custom, only A-Za-"
+#~ "z0-9-_ are valid"
+#~ msgstr ""
+#~ "gtk:custom 的 color_name 參數 '%c' 中有無效字元，只能使用 A-Za-z0-9-_ "
+
+#~ msgid ""
+#~ "Gtk:custom format is \"gtk:custom(color_name,fallback)\", \"%s\" does not "
+#~ "fit the format"
+#~ msgstr ""
+#~ "Gtk:custom 的格式是「gtk:custom(color_name,fallback)」，但「%s」不符合格式"
+
+#~ msgid ""
+#~ "GTK color specification must have the state in brackets, e.g. gtk:"
+#~ "fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
+#~ msgstr ""
+#~ "GTK 色彩規格規定必須在狀態外加上方括號，例如 gtk:fg[NORMAL]，這裡 NORMAL "
+#~ "表示狀態；無法分析“%s”"
+
+#~ msgid ""
+#~ "GTK color specification must have a close bracket after the state, e.g. "
+#~ "gtk:fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
+#~ msgstr ""
+#~ "GTK 色彩規格規定必須在狀態後加上閉方括號，例如 gtk:fg[NORMAL]，這裡 "
+#~ "NORMAL 表示狀態；無法分析“%s”"
+
+#~ msgid "Did not understand state \"%s\" in color specification"
+#~ msgstr "無法將“%s”理解為色彩規格中的狀態"
+
+#~ msgid "Did not understand color component \"%s\" in color specification"
+#~ msgstr "無法將“%s”理解為色彩規格中的色彩部分"
+
+#~ msgid ""
+#~ "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit "
+#~ "the format"
+#~ msgstr "指定混色的格式是“blend/背景顏色/前景顏色/透明度”，“%s”不符合規格"
+
+#~ msgid "Could not parse alpha value \"%s\" in blended color"
+#~ msgstr "無法理解“%s”作為混色的透明度數值"
+
+#~ msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
+#~ msgstr "混色的透明度數值“%s”不是在 0.0 至 1.0 之間"
+
+#~ msgid ""
+#~ "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the "
+#~ "format"
+#~ msgstr "陰影的格式是“shade/基本顏色/比重”，但“%s”不符合格式"
+
+#~ msgid "Could not parse shade factor \"%s\" in shaded color"
+#~ msgstr "在陰影顏色中無法將“%s”理解為陰影比重"
+
+#~ msgid "Shade factor \"%s\" in shaded color is negative"
+#~ msgstr "在陰影顏色中陰影比重“%s”是負數"
+
+#~ msgid "Could not parse color \"%s\""
+#~ msgstr "無法分析顏色“%s”"
+
+#~ msgid "Coordinate expression contains character '%s' which is not allowed"
+#~ msgstr "座標表達式中出現不可接受的字元‘%s’"
+
+#~ msgid ""
+#~ "Coordinate expression contains floating point number '%s' which could not "
+#~ "be parsed"
+#~ msgstr "座標表達式中出現無法分析的浮點小數‘%s’"
+
+#~ msgid ""
+#~ "Coordinate expression contains integer '%s' which could not be parsed"
+#~ msgstr "座標表達式中出現無法分析的整數‘%s’"
+
+#~ msgid ""
+#~ "Coordinate expression contained unknown operator at the start of this "
+#~ "text: \"%s\""
+#~ msgstr "在座標表達式中，以下文字的開始部分含有不明的運算符：“%s”"
+
+#~ msgid "Coordinate expression was empty or not understood"
+#~ msgstr "座標表達式是空白的或是無法分析"
+
+#~ msgid "Coordinate expression results in division by zero"
+#~ msgstr "座標表達式中出現被 0 整除的錯誤"
+
+#~ msgid ""
+#~ "Coordinate expression tries to use mod operator on a floating-point number"
+#~ msgstr "座標表達式中出現將浮點數使用於餘數運算符 (mod) 的錯誤"
+
+#~ msgid ""
+#~ "Coordinate expression has an operator \"%s\" where an operand was expected"
+#~ msgstr "在座標表達式中，應該有運算子的地方出現了運算符“%s”"
+
+#~ msgid "Coordinate expression had an operand where an operator was expected"
+#~ msgstr "在座標表達式中，應該有運算符的地方出現了運算子"
+
+#~ msgid "Coordinate expression ended with an operator instead of an operand"
+#~ msgstr "結束座標表達式的是一個運算符而非運算子"
+
+#~ msgid ""
+#~ "Coordinate expression has operator \"%c\" following operator \"%c\" with "
+#~ "no operand in between"
+#~ msgstr "在座標表達式中，運算符“%c”緊隨運算符“%c”出現，但中間沒有任何運算子"
+
+#~ msgid "Coordinate expression had unknown variable or constant \"%s\""
+#~ msgstr "座標表達式中出現不明的變數或常數“%s”"
+
+#~ msgid "Coordinate expression parser overflowed its buffer."
+#~ msgstr "座標表達式分析器令緩衝溢位。"
+
+#~ msgid ""
+#~ "Coordinate expression had a close parenthesis with no open parenthesis"
+#~ msgstr "座標表達式中的閉括號沒有相應的開括號"
+
+#~ msgid ""
+#~ "Coordinate expression had an open parenthesis with no close parenthesis"
+#~ msgstr "座標表達式中的開括號沒有相應的閉括號"
+
+#~ msgid "Coordinate expression doesn't seem to have any operators or operands"
+#~ msgstr "座標表達式中似乎沒有任何運算符或運算子"
+
+#~ msgid "Theme contained an expression that resulted in an error: %s\n"
+#~ msgstr "佈景主題中含有引致錯誤的表達式：%s\n"
+
+#~ msgid ""
+#~ "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
+#~ "specified for this frame style"
+#~ msgstr ""
+#~ "此邊框款式必須指定 <button function=\"%s\" state=\"%s\" draw_ops="
+#~ "\"whatever\"/>"
+
+#~ msgid ""
+#~ "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/"
+#~ ">"
+#~ msgstr ""
+#~ "缺少了 <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+
+#~ msgid "Failed to load theme \"%s\": %s\n"
+#~ msgstr "無法載入佈景主題“%s”：%s\n"
+
+#~ msgid "No <%s> set for theme \"%s\""
+#~ msgstr "佈景主題“%s”未指定 <%s>"
+
+#~ msgid ""
+#~ "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
+#~ "type=\"%s\" style_set=\"whatever\"/> element"
+#~ msgstr ""
+#~ "在佈景主題“%2$s”中，視窗類型“%1$s”沒有指定任何邊框款式。請加上 <window "
+#~ "type=\"%3$s\" style_set=\"whatever\"/> 元素"
+
+#~ msgid ""
+#~ "User-defined constants must begin with a capital letter; \"%s\" does not"
+#~ msgstr "自行定義的常數必須以大寫字母開始；但“%s”不是"
+
+#~ msgid "Constant \"%s\" has already been defined"
+#~ msgstr "已定義了“%s”常數"
+
+#~ msgid "No \"%s\" attribute on element <%s>"
+#~ msgstr "在元素 <%2$s> 中沒有「%1$s」屬性"
+
+#~ msgid "Line %d character %d: %s"
+#~ msgstr "第 %d 列第 %d 字：%s"
+
+#~ msgid "Attribute \"%s\" repeated twice on the same <%s> element"
+#~ msgstr "屬性「%s」在同一個 <%s> 元素中重複了兩次"
+
+#~ msgid "Attribute \"%s\" is invalid on <%s> element in this context"
+#~ msgstr "在此關聯選單中，屬性「%s」在 <%s> 元素中是無效的"
+
+#~ msgid "Could not parse \"%s\" as an integer"
+#~ msgstr "無法以整數的方式分析“%s”"
+
+#~ msgid "Did not understand trailing characters \"%s\" in string \"%s\""
+#~ msgstr "無法理解字串“%2$s”中的結束字元“%1$s”"
+
+#~ msgid "Integer %ld must be positive"
+#~ msgstr "整數 %ld 必須為正數"
+
+#~ msgid "Integer %ld is too large, current max is %d"
+#~ msgstr "整數 %ld 太大，目前可接受的最大值為 %d"
+
+#~ msgid "Could not parse \"%s\" as a floating point number"
+#~ msgstr "無法以浮點小數的方式分析“%s”"
+
+#~ msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
+#~ msgstr "布林值必須為“true”或“false”，不是“%s”"
+
+#~ msgid "Angle must be between 0.0 and 360.0, was %g\n"
+#~ msgstr "角度必須在 0.0 至 360.0 之間，此處的值為 %g\n"
+
+#~ msgid ""
+#~ "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
+#~ msgstr ""
+#~ "透明度必須在 0.0（完全透明）至 1.0（完全不透明）之間，此處的值為 %g\n"
+
+#~ msgid ""
+#~ "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
+#~ "large,x-large,xx-large)\n"
+#~ msgstr ""
+#~ "無效的標題大小“%s”(必須為 xx-small、x-small、small、medium、large、\n"
+#~ "x-large、xx-large 其中一個)\n"
+
+#~ msgid "<%s> name \"%s\" used a second time"
+#~ msgstr "<%s> 的 name 屬性“%s”用了超過一次"
+
+#~ msgid "<%s> parent \"%s\" has not been defined"
+#~ msgstr "<%s> 的主元素“%s”沒有任何定義"
+
+#~ msgid "<%s> geometry \"%s\" has not been defined"
+#~ msgstr "<%s> 元素的位置大小“%s”沒有任何定義"
+
+#~ msgid "<%s> must specify either a geometry or a parent that has a geometry"
+#~ msgstr "<%s> 必須自己指定位置大小或指定有位置大小的主元素"
+
+#~ msgid "You must specify a background for an alpha value to be meaningful"
+#~ msgstr "必須指定背景使得透明 ( alpha) 值的變得有意義"
+
+#~ msgid "Unknown type \"%s\" on <%s> element"
+#~ msgstr "<%2$s> 元素之內出現不明的類型“%1$s”"
+
+#~ msgid "Unknown style_set \"%s\" on <%s> element"
+#~ msgstr "<%2$s> 元素之內出現不明的 style_set“%1$s”"
+
+#~ msgid "Window type \"%s\" has already been assigned a style set"
+#~ msgstr "視窗類型“%s”已經分配了 style set"
+
+#~ msgid "Element <%s> is not allowed below <%s>"
+#~ msgstr "元素 <%s> 不允許在 <%s> 之下"
+
+#~ msgid ""
+#~ "Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio"
+#~ "\" for buttons"
+#~ msgstr ""
+#~ "不可能同時指定按鈕的寬度/長度 (button_width/button_height) 及長寬比"
+#~ "(aspect_ratio)"
+
+#~ msgid "Distance \"%s\" is unknown"
+#~ msgstr "不明的距離“%s”"
+
+#~ msgid "Aspect ratio \"%s\" is unknown"
+#~ msgstr "不明的長寬比“%s”"
+
+#~ msgid "Border \"%s\" is unknown"
+#~ msgstr "不明的邊框“%s”"
+
+#~ msgid "No \"start_angle\" or \"from\" attribute on element <%s>"
+#~ msgstr "元素 <%s> 中沒有“start_angle”或“from”屬性"
+
+#~ msgid "No \"extent_angle\" or \"to\" attribute on element <%s>"
+#~ msgstr "元素 <%s> 中沒有“extent_angle”或“to”屬性"
+
+#~ msgid "Did not understand value \"%s\" for type of gradient"
+#~ msgstr "無法將“%s”理解為漸層的樣式"
+
+#~ msgid "Did not understand fill type \"%s\" for <%s> element"
+#~ msgstr "無法理解 <%2$s> 元素中的填充類型“%1$s”"
+
+#~ msgid "Did not understand state \"%s\" for <%s> element"
+#~ msgstr "無法將“%s”理解為 <%s> 元素的狀態"
+
+#~ msgid "Did not understand shadow \"%s\" for <%s> element"
+#~ msgstr "無法將“%s”理解為 <%s> 元素的陰影"
+
+#~ msgid "Did not understand arrow \"%s\" for <%s> element"
+#~ msgstr "無法將“%s”理解為 <%s> 元素的箭頭"
+
+#~ msgid "No <draw_ops> called \"%s\" has been defined"
+#~ msgstr "沒有定義任何名稱為“%s”的 <draw_ops>"
+
+#~ msgid "Including draw_ops \"%s\" here would create a circular reference"
+#~ msgstr "這裡的 draw_ops“%s”會造成循環"
+
+#~ msgid "Unknown position \"%s\" for frame piece"
+#~ msgstr "邊框組件指定了不明的位置“%s”"
+
+#~ msgid "Frame style already has a piece at position %s"
+#~ msgstr "邊框款式已經在位置 %s 中指定了一件邊框組件"
+
+#~ msgid "No <draw_ops> with the name \"%s\" has been defined"
+#~ msgstr "沒有定義任何名稱為“%s”的 <draw_ops>"
+
+#~ msgid "Unknown function \"%s\" for button"
+#~ msgstr "按鈕擁有不明的功能“%s”"
+
+#~ msgid "Button function \"%s\" does not exist in this version (%d, need %d)"
+#~ msgstr "按鈕功能“%s”不存在於這個 版本（%d，要求 %d）"
+
+#~ msgid "Unknown state \"%s\" for button"
+#~ msgstr "無法理解“%s”為按鈕的狀態"
+
+#~ msgid "Frame style already has a button for function %s state %s"
+#~ msgstr "邊框款式已經指定了一個擁有 %s 功能及 %s 狀態的按鈕"
+
+#~ msgid "\"%s\" is not a valid value for focus attribute"
+#~ msgstr "“%s”不是 focus 屬性的有效設定值"
+
+#~ msgid "\"%s\" is not a valid value for state attribute"
+#~ msgstr "“%s”不是 state 屬性的有效設定值"
+
+#~ msgid "A style called \"%s\" has not been defined"
+#~ msgstr "沒有定義任何稱為“%s”的款式"
+
+#~ msgid "\"%s\" is not a valid value for resize attribute"
+#~ msgstr "“%s”不是 resize 屬性的有效設定值"
+
+#~ msgid ""
+#~ "Should not have \"resize\" attribute on <%s> element for maximized/shaded "
+#~ "states"
+#~ msgstr "元素 <%s> 不應在最大化或捲起的狀態中指定“resize”屬性"
+
+#~ msgid ""
+#~ "Should not have \"resize\" attribute on <%s> element for maximized states"
+#~ msgstr "不應在元素 <%s> 最大化的狀態中指定“resize”屬性"
+
+#~ msgid "Style has already been specified for state %s resize %s focus %s"
+#~ msgstr "當 state=%s resize=%s focus=%s 時，樣式早已經被指定了"
+
+#~ msgid "Style has already been specified for state %s focus %s"
+#~ msgstr "當 state=%s focus=%s 時，樣式早已經被指定了"
+
+#~ msgid ""
+#~ "Can't have a two draw_ops for a <piece> element (theme specified a "
+#~ "draw_ops attribute and also a <draw_ops> element, or specified two "
+#~ "elements)"
+#~ msgstr ""
+#~ "一個 <piece> 元素不可同時使用兩個 draw_ops (佈景主題同時指定了一個 "
+#~ "draw_ops 屬性及一個 <draw_ops> 元素，或是指定了兩個元素)"
+
+#~ msgid ""
+#~ "Can't have a two draw_ops for a <button> element (theme specified a "
+#~ "draw_ops attribute and also a <draw_ops> element, or specified two "
+#~ "elements)"
+#~ msgstr ""
+#~ "一個 <button> 元素不可同時使用兩個 draw_ops (佈景主題同時指定了一個 "
+#~ "draw_ops 屬性及一個 <draw_ops> 元素，或是指定了兩個元素)"
+
+#~ msgid ""
+#~ "Can't have a two draw_ops for a <menu_icon> element (theme specified a "
+#~ "draw_ops attribute and also a <draw_ops> element, or specified two "
+#~ "elements)"
+#~ msgstr ""
+#~ "一個 <menu_icon> 元素不可同時使用兩個 draw_ops (佈景主題同時指定了一個 "
+#~ "draw_ops 屬性及一個 <draw_ops> 元素，或是指定了兩個元素)"
+
+#~ msgid "Bad version specification '%s'"
+#~ msgstr "不正確的版本規格「%s」"
+
+#~ msgid ""
+#~ "\"version\" attribute cannot be used in metacity-theme-1.xml or metacity-"
+#~ "theme-2.xml"
+#~ msgstr ""
+#~ "「version」屬性不能用在 metacity-theme-1.xml 或 metacity-theme-2.xml"
+
+#~ msgid ""
+#~ "Theme requires version %s but latest supported theme version is %d.%d"
+#~ msgstr "佈景主題需要 %s 版但是最新支援的佈景主題版本為 %d.%d"
+
+#~ msgid "Outermost element in theme must be <metacity_theme> not <%s>"
+#~ msgstr "佈景主題中最外層的元素必須為 <metacity_theme> 而不是 <%s>"
+
+#~ msgid ""
+#~ "Element <%s> is not allowed inside a name/author/date/description element"
+#~ msgstr "元素 <%s> 不許在名稱/作者/日期/描述元素內出現"
+
+#~ msgid "Element <%s> is not allowed inside a <constant> element"
+#~ msgstr "<%s> 元素不可出現在 <constant> 元素內"
+
+#~ msgid ""
+#~ "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+#~ msgstr "<%s> 元素不可出現於 distance/border/aspect_ratio 元素之內"
+
+#~ msgid "Element <%s> is not allowed inside a draw operation element"
+#~ msgstr "元素 <%s> 不允許在有關繪圖操作的元素內出現"
+
+#~ msgid "Element <%s> is not allowed inside a <%s> element"
+#~ msgstr "<%s> 元素不可出現在 <%s> 元素內"
+
+#~ msgid "No draw_ops provided for frame piece"
+#~ msgstr "邊框沒有提供任何 draw_ops 屬性"
+
+#~ msgid "No draw_ops provided for button"
+#~ msgstr "按鈕沒有提供任何 draw_ops 屬性"
+
+#~ msgid "No text is allowed inside element <%s>"
+#~ msgstr "<%s> 元素內不可出現任何文字"
+
+#~ msgid "<%s> specified twice for this theme"
+#~ msgstr "<%s> 指定了這個佈景主題兩次"
+
+#~ msgid "Failed to find a valid file for theme %s\n"
+#~ msgstr "無法佈景主題的有效檔案 %s\n"
 
 #~ msgid "Unknown window information request: %d"
 #~ msgstr "未知的視窗資訊要求：%d"
