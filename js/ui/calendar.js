@@ -1049,7 +1049,7 @@ const Message = new Lang.Class({
 
     setTitle: function(text) {
         let title = text ? _fixMarkup(text.replace(/\n/g, ' '), false) : '';
-        this.titleLabel.text = title;
+        this.titleLabel.clutter_text.set_markup(title);
     },
 
     setBody: function(text) {
