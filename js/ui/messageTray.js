@@ -1555,6 +1555,25 @@ const MessageTray = new Lang.Class({
 
         Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
 
+        Main.overview.connect('window-drag-begin',
+                              Lang.bind(this, this._onDragBegin));
+        Main.overview.connect('window-drag-cancelled',
+                              Lang.bind(this, this._onDragEnd));
+        Main.overview.connect('window-drag-end',
+                              Lang.bind(this, this._onDragEnd));
+
+        Main.overview.connect('item-drag-begin',
+                              Lang.bind(this, this._onDragBegin));
+        Main.overview.connect('item-drag-cancelled',
+                              Lang.bind(this, this._onDragEnd));
+        Main.overview.connect('item-drag-end',
+                              Lang.bind(this, this._onDragEnd));
+
+        Main.xdndHandler.connect('drag-begin',
+                                 Lang.bind(this, this._onDragBegin));
+        Main.xdndHandler.connect('drag-end',
+                                 Lang.bind(this, this._onDragEnd));
+
         Main.wm.addKeybinding('focus-active-notification',
                               new Gio.Settings({ schema_id: SHELL_KEYBINDINGS_SCHEMA }),
                               Meta.KeyBindingFlags.NONE,
@@ -1569,6 +1588,14 @@ const MessageTray = new Lang.Class({
 
     _sessionUpdated: function() {
         this._updateState();
+    },
+
+    _onDragBegin: function() {
+        Shell.util_set_hidden_from_pick(this.actor, true);
+    },
+
+    _onDragEnd: function() {
+        Shell.util_set_hidden_from_pick(this.actor, false);
     },
 
     _onNotificationKeyRelease: function(actor, event) {
