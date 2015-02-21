@@ -106,10 +106,6 @@ struct _GnomeShellPlugin
 {
   MetaPlugin parent;
 
-  Atom panel_action;
-  Atom panel_action_run_dialog;
-  Atom panel_action_main_menu;
-
   int glx_error_base;
   int glx_event_base;
   guint have_swap_event : 1;
