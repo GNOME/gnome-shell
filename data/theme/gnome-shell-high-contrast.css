@@ -563,7 +563,9 @@ StScrollBar {
     color: #ccc;
     transition-duration: 100ms; }
     #panel .panel-button .app-menu-icon {
-      -st-icon-style: symbolic; }
+      -st-icon-style: symbolic;
+      margin-left: 4px;
+      margin-right: 4px; }
     #panel .panel-button:hover {
       color: white; }
     #panel .panel-button:active, #panel .panel-button:overview, #panel .panel-button:focus, #panel .panel-button:checked {
