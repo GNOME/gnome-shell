@@ -99,6 +99,18 @@ out:
   return scale;
 }
 
+static GSettings *desktop_settings;
+
+static int
+get_output_scale (MetaOutput *output)
+{
+  int scale = g_settings_get_uint (desktop_settings, "scaling-factor");
+  if (scale > 0)
+    return scale;
+  else
+    return compute_scale (output);
+}
+
 static void
 bind_output (struct wl_client *client,
              void *data,
@@ -146,7 +158,7 @@ bind_output (struct wl_client *client,
                        (int)output->crtc->current_mode->height,
                        (int)output->crtc->current_mode->refresh_rate);
 
-  output->scale = compute_scale (output);
+  output->scale = get_output_scale (output);
   if (version >= WL_OUTPUT_SCALE_SINCE_VERSION)
     wl_output_send_scale (resource, output->scale);
 
@@ -282,6 +294,8 @@ void
 meta_wayland_outputs_init (MetaWaylandCompositor *compositor)
 {
   MetaMonitorManager *monitors;
+
+  desktop_settings = g_settings_new ("org.gnome.desktop.interface");
 
   monitors = meta_monitor_manager_get ();
   g_signal_connect (monitors, "monitors-changed",
