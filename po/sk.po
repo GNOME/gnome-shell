@@ -14,8 +14,8 @@ msgstr ""
 "Project-Id-Version: mutter\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-02-18 11:12+0000\n"
-"PO-Revision-Date: 2015-02-18 16:54+0100\n"
+"POT-Creation-Date: 2015-02-21 23:27+0000\n"
+"PO-Revision-Date: 2015-02-22 11:11+0100\n"
 "Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
 "Language-Team: Slovak <gnome-sk-list@gnome.org>\n"
 "Language: sk\n"
@@ -521,6 +521,26 @@ msgstr "Prepnúť na VT č. 6"
 #: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:7
 msgid "Switch to VT 7"
 msgstr "Prepnúť na VT č. 7"
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:8
+msgid "Switch to VT 8"
+msgstr "Prepnúť na VT č. 8"
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:9
+msgid "Switch to VT 9"
+msgstr "Prepnúť na VT č. 9"
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:10
+msgid "Switch to VT 10"
+msgstr "Prepnúť na VT č. 10"
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:11
+msgid "Switch to VT 11"
+msgstr "Prepnúť na VT č. 11"
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:12
+msgid "Switch to VT 12"
+msgstr "Prepnúť na VT č. 12"
 
 #: ../src/backends/meta-monitor-manager.c:364
 msgid "Built-in display"
