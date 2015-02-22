@@ -883,6 +883,9 @@ StScrollBar {
 #overview {
   spacing: 24px; }
 
+.overview-controls {
+  padding-bottom: 32px; }
+
 .window-picker {
   -horizontal-spacing: 32px;
   -vertical-spacing: 32px;
@@ -1118,8 +1121,7 @@ StScrollBar {
   visible-width: 32px;
   spacing: 11px;
   padding: 8px;
-  border-radius: 9px 0 0 9px;
-  margin-bottom: 14px; }
+  border-radius: 9px 0 0 9px; }
   .workspace-thumbnails:rtl {
     border-radius: 0 9px 9px 0; }
 
