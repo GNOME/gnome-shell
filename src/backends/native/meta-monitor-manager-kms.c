@@ -72,6 +72,8 @@ struct _MetaMonitorManagerKms
   drmModeEncoder    *current_encoder;
 
   GUdevClient *udev;
+
+  GSettings *desktop_settings;
 };
 
 struct _MetaMonitorManagerKmsClass
@@ -267,6 +269,68 @@ find_output_by_id (MetaOutput *outputs,
       return &outputs[i];
 
   return NULL;
+}
+
+/* The minimum resolution at which we turn on a window-scale of 2 */
+#define HIDPI_LIMIT 192
+
+/* The minimum screen height at which we turn on a window-scale of 2;
+ * below this there just isn't enough vertical real estate for GNOME
+ * apps to work, and it's better to just be tiny */
+#define HIDPI_MIN_HEIGHT 1200
+
+/* From http://en.wikipedia.org/wiki/4K_resolution#Resolutions_of_common_formats */
+#define SMALLEST_4K_WIDTH 3656
+
+/* Based on code from gnome-settings-daemon */
+static int
+compute_scale (MetaOutput *output)
+{
+  int scale = 1;
+
+  /* Scaling makes no sense */
+  if (output->crtc->rect.width < HIDPI_MIN_HEIGHT)
+    goto out;
+
+  /* 4K TV */
+  if (output->name != NULL && strstr(output->name, "HDMI") != NULL &&
+      output->crtc->rect.width >= SMALLEST_4K_WIDTH)
+    goto out;
+
+  /* Somebody encoded the aspect ratio (16/9 or 16/10)
+   * instead of the physical size */
+  if ((output->width_mm == 160 && output->height_mm == 90) ||
+      (output->width_mm == 160 && output->height_mm == 100) ||
+      (output->width_mm == 16 && output->height_mm == 9) ||
+      (output->width_mm == 16 && output->height_mm == 10))
+    goto out;
+
+  if (output->width_mm > 0 && output->height_mm > 0)
+    {
+      double dpi_x, dpi_y;
+      dpi_x = (double)output->crtc->rect.width / (output->width_mm / 25.4);
+      dpi_y = (double)output->crtc->rect.height / (output->height_mm / 25.4);
+      /* We don't completely trust these values so both
+         must be high, and never pick higher ratio than
+         2 automatically */
+      if (dpi_x > HIDPI_LIMIT && dpi_y > HIDPI_LIMIT)
+        scale = 2;
+    }
+
+out:
+  return scale;
+}
+
+static int
+get_output_scale (MetaMonitorManager *manager,
+                  MetaOutput         *output)
+{
+  MetaMonitorManagerKms *manager_kms = META_MONITOR_MANAGER_KMS (manager);
+  int scale = g_settings_get_uint (manager_kms->desktop_settings, "scaling-factor");
+  if (scale > 0)
+    return scale;
+  else
+    return compute_scale (output);
 }
 
 static void
@@ -517,6 +581,8 @@ meta_monitor_manager_kms_read_current (MetaMonitorManager *manager)
 
           /* MetaConnectorType matches DRM's connector types */
           meta_output->connector_type = (MetaConnectorType) connector->connector_type;
+
+          meta_output->scale = get_output_scale (manager, meta_output);
 
           /* FIXME: backlight is a very driver specific thing unfortunately,
              every DDX does its own thing, and the dumb KMS API does not include it.
@@ -919,6 +985,8 @@ meta_monitor_manager_kms_init (MetaMonitorManagerKms *manager_kms)
   manager_kms->udev = g_udev_client_new (subsystems);
   g_signal_connect (manager_kms->udev, "uevent",
                     G_CALLBACK (on_uevent), manager_kms);
+
+  manager_kms->desktop_settings = g_settings_new ("org.gnome.desktop.interface");
 }
 
 static void
@@ -927,6 +995,7 @@ meta_monitor_manager_kms_dispose (GObject *object)
   MetaMonitorManagerKms *manager_kms = META_MONITOR_MANAGER_KMS (object);
 
   g_clear_object (&manager_kms->udev);
+  g_clear_object (&manager_kms->desktop_settings);
 
   G_OBJECT_CLASS (meta_monitor_manager_kms_parent_class)->dispose (object);
 }
