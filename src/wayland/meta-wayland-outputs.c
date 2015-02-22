@@ -199,24 +199,22 @@ wayland_output_update_for_output (MetaWaylandOutput *wayland_output,
           wayland_output->y != output->crtc->rect.y ||
           wayland_output->transform != wl_transform)
         {
-            wl_resource_post_event (resource,
-                                    WL_OUTPUT_GEOMETRY,
-                                    (int)output->crtc->rect.x,
-                                    (int)output->crtc->rect.y,
-                                    output->width_mm,
-                                    output->height_mm,
-                                    output->subpixel_order,
-                                    output->vendor,
-                                    output->product,
-                                    wl_transform);
+          wl_output_send_geometry (resource,
+                                   (int)output->crtc->rect.x,
+                                   (int)output->crtc->rect.y,
+                                   output->width_mm,
+                                   output->height_mm,
+                                   output->subpixel_order,
+                                   output->vendor,
+                                   output->product,
+                                   wl_transform);
         }
 
-      wl_resource_post_event (resource,
-                              WL_OUTPUT_MODE,
-                              mode_flags,
-                              (int)output->crtc->current_mode->width,
-                              (int)output->crtc->current_mode->height,
-                              (int)output->crtc->current_mode->refresh_rate);
+      wl_output_send_mode (resource,
+                           mode_flags,
+                           (int)output->crtc->current_mode->width,
+                           (int)output->crtc->current_mode->height,
+                           (int)output->crtc->current_mode->refresh_rate);
     }
 
   /* It's very important that we change the output pointer here, as
