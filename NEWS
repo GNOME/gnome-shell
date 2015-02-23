@@ -1,3 +1,25 @@
+Cogl 1.20.0                                                        2015-03-23
+
+  • List of changes since Cogl 1.18.2
+
+  » Support for "quad buffer" based stereo rendering
+  » Support for Mir window system
+  » A number of updates for the Wayland support
+  » Improved vblank sync when using glXWaitForMSC
+
+Many thanks to:
+
+  Marco Trevisan (Treviño)
+  Owen W. Taylor
+  Robert Bragg
+  Rui Matos
+  Adel Gadllah
+  Chris Wilson
+  Necdet Yücel
+  Sebastian Rasmussen
+  Seong-ho Cho
+  Ting-Wei Lan
+
 Cogl 1.18.2                                                        2014-06-03
 
   • List of changes since Cogl 1.18.0
