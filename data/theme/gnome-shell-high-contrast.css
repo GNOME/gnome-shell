@@ -74,6 +74,10 @@ StEntry {
     color: #7f7f7f;
     border-color: #0d0d0d;
     box-shadow: none; }
+  StEntry StIcon.capslock-warning {
+    icon-size: 16px;
+    warning-color: #f57900;
+    padding: 0 4px; }
 
 /* Scrollbars */
 StScrollBar {
@@ -115,11 +119,11 @@ StScrollBar {
   width: 24px;
   height: 22px;
   background-image: url("resource:///org/gnome/shell/theme/checkbox-off.svg"); }
-.check-box:focus Stbin {
+.check-box:focus StBin {
   background-image: url("resource:///org/gnome/shell/theme/checkbox-off-focused.svg"); }
-.check-box:checked Stbin {
+.check-box:checked StBin {
   background-image: url("resource:///org/gnome/shell/theme/checkbox.svg"); }
-.check-box:focus:checked Stbin {
+.check-box:focus:checked StBin {
   background-image: url("resource:///org/gnome/shell/theme/checkbox-focused.svg"); }
 
 /* Switches */
