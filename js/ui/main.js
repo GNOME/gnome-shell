@@ -529,6 +529,7 @@ function activateWindow(window, time, workspaceNum) {
     }
 
     overview.hide();
+    panel.closeCalendar();
 }
 
 // TODO - replace this timeout with some system to guess when the user might
