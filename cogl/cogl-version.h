@@ -321,6 +321,16 @@
  */
 #define COGL_VERSION_1_18 (COGL_VERSION_ENCODE (1, 18, 0))
 
+/**
+ * COGL_VERSION_1_20:
+ *
+ * A macro that evaluates to the 1.20 version of Cogl, in a format
+ * that can be used by the C pre-processor.
+ *
+ * Since: 1.20
+ */
+#define COGL_VERSION_1_20 (COGL_VERSION_ENCODE (1, 20, 0))
+
 /* evaluates to the current stable version; for development cycles,
  * this means the next stable target
  */
