@@ -723,7 +723,7 @@ const Panel = new Lang.Class({
 
         this.statusArea = {};
 
-        this.menuManager = new PopupMenu.PopupMenuManager(this, { actionMode: Shell.ActionMode.TOPBAR_POPUP });
+        this.menuManager = new PopupMenu.PopupMenuManager(this);
 
         this._leftBox = new St.BoxLayout({ name: 'panelLeft' });
         this.actor.add_actor(this._leftBox);
