@@ -19,18 +19,17 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
-"shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-01-07 23:26+0000\n"
-"PO-Revision-Date: 2014-12-24 08:58-0300\n"
-"Last-Translator: Ricardo Barbosa <barbosa.cisco@gmail.com>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2015-02-23 08:38+0000\n"
+"PO-Revision-Date: 2015-02-23 16:24-0300\n"
+"Last-Translator: Rafael Ferreira <rafael.f.f1@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 1.7.1\n"
+"X-Generator: Poedit 1.7.4\n"
 "X-Project-Style: gnome\n"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
@@ -38,8 +37,8 @@ msgid "System"
 msgstr "Sistema"
 
 #: ../data/50-gnome-shell-system.xml.in.h:2
-msgid "Show the message tray"
-msgstr "Mostra a área de notificação"
+msgid "Show the message list"
+msgstr "Mostra a lista de mensagem"
 
 #: ../data/50-gnome-shell-system.xml.in.h:3
 msgid "Focus the active notification"
@@ -61,8 +60,7 @@ msgstr "Abre o menu do aplicativo"
 msgid "GNOME Shell"
 msgstr "GNOME Shell"
 
-#: ../data/gnome-shell.desktop.in.in.h:2
-#: ../data/gnome-shell-wayland.desktop.in.in.h:2
+#: ../data/gnome-shell.desktop.in.in.h:2 ../data/gnome-shell-wayland.desktop.in.in.h:2
 msgid "Window management and application launching"
 msgstr "Gerenciamento de janelas e lançador de aplicativos"
 
@@ -81,17 +79,11 @@ msgstr "GNOME Shell (compositor wayland)"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:1
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
-msgstr ""
-"Habilitar ferramentas internas úteis para desenvolvedores e testadores a "
-"partir do Alt-F2"
+msgstr "Habilitar ferramentas internas úteis para desenvolvedores e testadores a partir do Alt-F2"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:2
-msgid ""
-"Allows access to internal debugging and monitoring tools using the Alt-F2 "
-"dialog."
-msgstr ""
-"Permite acesso a ferramentas internas de depuração e monitoramento usando o "
-"diálogo Alt-F2."
+msgid "Allows access to internal debugging and monitoring tools using the Alt-F2 dialog."
+msgstr "Permite acesso a ferramentas internas de depuração e monitoramento usando o diálogo Alt-F2."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:3
 msgid "UUIDs of extensions to enable"
@@ -99,16 +91,13 @@ msgstr "UUIDs das extensões para habilitar"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:4
 msgid ""
-"GNOME Shell extensions have a UUID property; this key lists extensions which "
-"should be loaded. Any extension that wants to be loaded needs to be in this "
-"list. You can also manipulate this list with the EnableExtension and "
-"DisableExtension D-Bus methods on org.gnome.Shell."
+"GNOME Shell extensions have a UUID property; this key lists extensions which should be loaded. Any extension that wants "
+"to be loaded needs to be in this list. You can also manipulate this list with the EnableExtension and DisableExtension D-"
+"Bus methods on org.gnome.Shell."
 msgstr ""
-"As extensões do GNOME Shell possuem uma propriedade UUID; esta chave lista "
-"as extensões que devem ser carregadas. Qualquer extensão que quiser ser "
-"carregada precisa estar nesta lista. Você também pode manipular esta lista "
-"com os métodos do DBus EnableExtension e DisableExtensions em org.gnome."
-"Shell."
+"As extensões do GNOME Shell possuem uma propriedade UUID; esta chave lista as extensões que devem ser carregadas. "
+"Qualquer extensão que quiser ser carregada precisa estar nesta lista. Você também pode manipular esta lista com os "
+"métodos do DBus EnableExtension e DisableExtensions em org.gnome.Shell."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:5
 msgid "Disables the validation of extension version compatibility"
@@ -116,27 +105,20 @@ msgstr "Desabilita a validação de compatibilidade da versão da extensão"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:6
 msgid ""
-"GNOME Shell will only load extensions that claim to support the current "
-"running version. Enabling this option will disable this check and try to "
-"load all extensions regardless of the versions they claim to support."
+"GNOME Shell will only load extensions that claim to support the current running version. Enabling this option will "
+"disable this check and try to load all extensions regardless of the versions they claim to support."
 msgstr ""
-"O GNOME Shell somente carregará extensões que declaram possuir suporte a "
-"versão atual em execução. Ao habilitar esta opção, esta verificação será "
-"desabilitada e haverá tentativas de carregar todas as extensões independente "
-"das versões que estas declaram suportar."
+"O GNOME Shell somente carregará extensões que declaram possuir suporte a versão atual em execução. Ao habilitar esta "
+"opção, esta verificação será desabilitada e haverá tentativas de carregar todas as extensões independente das versões "
+"que estas declaram suportar."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:7
 msgid "List of desktop file IDs for favorite applications"
-msgstr ""
-"Lista dos IDs de arquivo de área de trabalho para os aplicativos favoritos"
+msgstr "Lista dos IDs de arquivo de área de trabalho para os aplicativos favoritos"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:8
-msgid ""
-"The applications corresponding to these identifiers will be displayed in the "
-"favorites area."
-msgstr ""
-"Os aplicativos correspondentes a estes identificadores serão exibidos na "
-"área de favoritos."
+msgid "The applications corresponding to these identifiers will be displayed in the favorites area."
+msgstr "Os aplicativos correspondentes a estes identificadores serão exibidos na área de favoritos."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:9
 msgid "App Picker View"
@@ -144,8 +126,7 @@ msgstr "Visualização do seletor de aplicativos"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:10
 msgid "Index of the currently selected view in the application picker."
-msgstr ""
-"Índice da visualização atualmente selecionada no seletor de aplicativos."
+msgstr "Índice da visualização atualmente selecionada no seletor de aplicativos."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:11
 msgid "History for command (Alt-F2) dialog"
@@ -160,32 +141,23 @@ msgid "Always show the 'Log out' menu item in the user menu."
 msgstr "Sempre mostrar o item de menu \"Encerrar sessão\" no menu de usuário."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:14
-msgid ""
-"This key overrides the automatic hiding of the 'Log out' menu item in single-"
-"user, single-session situations."
+msgid "This key overrides the automatic hiding of the 'Log out' menu item in single-user, single-session situations."
 msgstr ""
-"Essa chave sobrescreve a ocultação automática do item de menu \"Encerrar "
-"sessão\" quando houver somente um usuário, em situações de somente uma "
-"sessão."
+"Essa chave sobrescreve a ocultação automática do item de menu \"Encerrar sessão\" quando houver somente um usuário, em "
+"situações de somente uma sessão."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:15
-msgid ""
-"Whether to remember password for mounting encrypted or remote filesystems"
-msgstr ""
-"Se lembra ou não as senhas para montar sistemas de arquivos criptografados "
-"ou remotos"
+msgid "Whether to remember password for mounting encrypted or remote filesystems"
+msgstr "Se lembra ou não as senhas para montar sistemas de arquivos criptografados ou remotos"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:16
 msgid ""
-"The shell will request a password when an encrypted device or a remote "
-"filesystem is mounted. If the password can be saved for future use a "
-"'Remember Password' checkbox will be present. This key sets the default "
-"state of the checkbox."
+"The shell will request a password when an encrypted device or a remote filesystem is mounted. If the password can be "
+"saved for future use a 'Remember Password' checkbox will be present. This key sets the default state of the checkbox."
 msgstr ""
-"O shell irá pedir uma senha quando um dispositivo criptografado ou um "
-"sistema de arquivo remoto for montado. Caso a senha possa ser salva para uso "
-"posterior, a caixa de seleção 'Lembrar senha' estará presente. Esta chave "
-"ajusta o estado padrão da caixa de seleção."
+"O shell irá pedir uma senha quando um dispositivo criptografado ou um sistema de arquivo remoto for montado. Caso a "
+"senha possa ser salva para uso posterior, a caixa de seleção 'Lembrar senha' estará presente. Esta chave ajusta o estado "
+"padrão da caixa de seleção."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:17
 msgid "Show the week date in the calendar"
@@ -208,11 +180,8 @@ msgid "Keybinding to open the \"Show Applications\" view"
 msgstr "Atalho de teclado para abrir a visualização \"Mostrar aplicativos\""
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:22
-msgid ""
-"Keybinding to open the \"Show Applications\" view of the Activities Overview."
-msgstr ""
-"Atalho de teclado para abrir a visualização \"Mostrar aplicativos\" do "
-"panorama de atividades."
+msgid "Keybinding to open the \"Show Applications\" view of the Activities Overview."
+msgstr "Atalho de teclado para abrir a visualização \"Mostrar aplicativos\" do panorama de atividades."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:23
 msgid "Keybinding to open the overview"
@@ -240,11 +209,8 @@ msgstr "Atalho de teclado para ativar a notificação ativa."
 
 # Tween pode significar uma contração de Between ou se referir a um termo "in-between" usado em animação gráfica. -- Enrico
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:29
-msgid ""
-"Keybinding that pauses and resumes all running tweens, for debugging purposes"
-msgstr ""
-"Atalho de teclado que pausa e continua todos os intermediários em execução, "
-"a fim de depuração"
+msgid "Keybinding that pauses and resumes all running tweens, for debugging purposes"
+msgstr "Atalho de teclado que pausa e continua todos os intermediários em execução, a fim de depuração"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:30
 msgid "Which keyboard to use"
@@ -260,12 +226,11 @@ msgstr "Limitar o alternador ao espaço de trabalho atual."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:33
 msgid ""
-"If true, only applications that have windows on the current workspace are "
-"shown in the switcher. Otherwise, all applications are included."
+"If true, only applications that have windows on the current workspace are shown in the switcher. Otherwise, all "
+"applications are included."
 msgstr ""
-"Se verdadeiro, o alternador mostrará somente os aplicativos que possuem "
-"janelas no espaço de trabalho atual. Caso contrário, todos os aplicativos "
-"serão incluídos."
+"Se verdadeiro, o alternador mostrará somente os aplicativos que possuem janelas no espaço de trabalho atual. Caso "
+"contrário, todos os aplicativos serão incluídos."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:34
 msgid "The application icon mode."
@@ -273,37 +238,29 @@ msgstr "O modo ícone do aplicativo."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:35
 msgid ""
-"Configures how the windows are shown in the switcher. Valid possibilities "
-"are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-"
-"only' (shows only the application icon) or 'both'."
+"Configures how the windows are shown in the switcher. Valid possibilities are 'thumbnail-only' (shows a thumbnail of the "
+"window), 'app-icon-only' (shows only the application icon) or 'both'."
 msgstr ""
-"Configura como as janelas são mostradas no alternador. As possibilidades "
-"válidas são 'thumbnail-only' (mostra uma miniatura da janela), 'app-icon-"
-"only' (mostra apenas o ícone do aplicativo) ou 'both'."
+"Configura como as janelas são mostradas no alternador. As possibilidades válidas são 'thumbnail-only' (mostra uma "
+"miniatura da janela), 'app-icon-only' (mostra apenas o ícone do aplicativo) ou 'both'."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:36
-msgid ""
-"If true, only windows from the current workspace are shown in the switcher. "
-"Otherwise, all windows are included."
+msgid "If true, only windows from the current workspace are shown in the switcher. Otherwise, all windows are included."
 msgstr ""
-"Se verdadeiro, o alternador mostrará somente as janelas do espaço de "
-"trabalho atual. Caso contrário, todos as janelas serão incluídas."
+"Se verdadeiro, o alternador mostrará somente as janelas do espaço de trabalho atual. Caso contrário, todos as janelas "
+"serão incluídas."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:37
 msgid "Attach modal dialog to the parent window"
 msgstr "Anexar diálogo modal à janela pai"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:38
-msgid ""
-"This key overrides the key in org.gnome.mutter when running GNOME Shell."
-msgstr ""
-"Esta chave sobrescreve a chave em org.gnome.mutter ao executar o Shell do "
-"GNOME."
+msgid "This key overrides the key in org.gnome.mutter when running GNOME Shell."
+msgstr "Esta chave sobrescreve a chave em org.gnome.mutter ao executar o Shell do GNOME."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:39
 msgid "Enable edge tiling when dropping windows on screen edges"
-msgstr ""
-"Habilitar contorno ladrilhado ao arrastar janelas sobre as bordas da tela"
+msgstr "Habilitar contorno ladrilhado ao arrastar janelas sobre as bordas da tela"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:40
 msgid "Workspaces are managed dynamically"
@@ -330,9 +287,8 @@ msgstr "Ocorreu um erro ao carregar o dialogo de preferências para %s:"
 msgid "GNOME Shell Extensions"
 msgstr "Extensões do Shell do GNOME"
 
-#: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:143
-#: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:452
-#: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
+#: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:143 ../js/ui/components/polkitAgent.js:166
+#: ../js/ui/endSessionDialog.js:452 ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
 #: ../js/ui/status/network.js:916
 msgid "Cancel"
 msgstr "Cancelar"
@@ -341,8 +297,7 @@ msgstr "Cancelar"
 msgid "Next"
 msgstr "Próximo"
 
-#: ../js/gdm/authPrompt.js:213 ../js/ui/shellMountOperation.js:403
-#: ../js/ui/unlockDialog.js:59
+#: ../js/gdm/authPrompt.js:213 ../js/ui/shellMountOperation.js:403 ../js/ui/unlockDialog.js:59
 msgid "Unlock"
 msgstr "Desbloquear"
 
@@ -355,21 +310,20 @@ msgstr "Entrar"
 msgid "Choose Session"
 msgstr "Escolher sessão"
 
-#: ../js/gdm/loginDialog.js:428
+#: ../js/gdm/loginDialog.js:417
 msgid "Not listed?"
 msgstr "Não está listado?"
 
-#: ../js/gdm/loginDialog.js:814
+#: ../js/gdm/loginDialog.js:822
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(ex.: usuário ou %s)"
 
-#: ../js/gdm/loginDialog.js:819 ../js/ui/components/networkAgent.js:269
-#: ../js/ui/components/networkAgent.js:287
+#: ../js/gdm/loginDialog.js:827 ../js/ui/components/networkAgent.js:269 ../js/ui/components/networkAgent.js:287
 msgid "Username: "
 msgstr "Nome de usuário: "
 
-#: ../js/gdm/loginDialog.js:1151
+#: ../js/gdm/loginDialog.js:1159
 msgid "Login Window"
 msgstr "Janela de sessão"
 
@@ -394,35 +348,37 @@ msgstr "Não foi possível analisar comando:"
 msgid "Execution of “%s” failed:"
 msgstr "A execução de \"%s\" falhou:"
 
+#. TRANSLATORS: this is the title of the wifi captive portal login
+#. * window, until we know the title of the actual login page */
 #: ../js/portalHelper/main.js:85
 msgid "Web Authentication Redirect"
 msgstr "Redirecionamento para autenticação web"
 
-#: ../js/ui/appDisplay.js:770
+#: ../js/ui/appDisplay.js:785
 msgid "Frequently used applications will appear here"
 msgstr "Aplicativos usados frequentemente vão aparecer aqui"
 
-#: ../js/ui/appDisplay.js:881
+#: ../js/ui/appDisplay.js:905
 msgid "Frequent"
 msgstr "Frequente"
 
-#: ../js/ui/appDisplay.js:888
+#: ../js/ui/appDisplay.js:912
 msgid "All"
 msgstr "Todos"
 
-#: ../js/ui/appDisplay.js:1789
+#: ../js/ui/appDisplay.js:1840
 msgid "New Window"
 msgstr "Nova janela"
 
-#: ../js/ui/appDisplay.js:1815 ../js/ui/dash.js:285
+#: ../js/ui/appDisplay.js:1868 ../js/ui/dash.js:289
 msgid "Remove from Favorites"
 msgstr "Remover dos favoritos"
 
-#: ../js/ui/appDisplay.js:1821
+#: ../js/ui/appDisplay.js:1874
 msgid "Add to Favorites"
 msgstr "Adicionar aos favoritos"
 
-#: ../js/ui/appDisplay.js:1830
+#: ../js/ui/appDisplay.js:1884
 msgid "Show Details"
 msgstr "Mostrar detalhes"
 
@@ -436,8 +392,7 @@ msgstr "%s foi adicionado aos seus favoritos."
 msgid "%s has been removed from your favorites."
 msgstr "%s foi removido dos seus favoritos."
 
-#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:819
-#: ../js/ui/status/system.js:337
+#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:649 ../js/ui/status/system.js:337
 msgid "Settings"
 msgstr "Configurações"
 
@@ -446,7 +401,7 @@ msgid "Change Background…"
 msgstr "Alterar plano de fundo…"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday). */
-#: ../js/ui/calendar.js:39
+#: ../js/ui/calendar.js:52
 msgctxt "calendar-no-work"
 msgid "06"
 msgstr "06"
@@ -454,14 +409,14 @@ msgstr "06"
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #. */
-#: ../js/ui/calendar.js:68
+#: ../js/ui/calendar.js:81
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Dia todo"
 
 #. Translators: Shown in calendar event list, if 24h format,
 #. \u2236 is a ratio character, similar to : */
-#: ../js/ui/calendar.js:75
+#: ../js/ui/calendar.js:88 ../js/ui/calendar.js:1562
 msgctxt "event list time"
 msgid "%H∶%M"
 msgstr "%H∶%M"
@@ -469,7 +424,7 @@ msgstr "%H∶%M"
 #. Translators: Shown in calendar event list, if 12h format,
 #. \u2236 is a ratio character, similar to : and \u2009 is
 #. a thin space */
-#: ../js/ui/calendar.js:84
+#: ../js/ui/calendar.js:97
 msgctxt "event list time"
 msgid "%l∶%M %p"
 msgstr "%l∶%M %p"
@@ -479,132 +434,80 @@ msgstr "%l∶%M %p"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #. */
-#: ../js/ui/calendar.js:98
+#: ../js/ui/calendar.js:111
 msgctxt "grid sunday"
 msgid "S"
 msgstr "D"
 
 #. Translators: Calendar grid abbreviation for Monday */
-#: ../js/ui/calendar.js:100
+#: ../js/ui/calendar.js:113
 msgctxt "grid monday"
 msgid "M"
 msgstr "S"
 
 #. Translators: Calendar grid abbreviation for Tuesday */
-#: ../js/ui/calendar.js:102
+#: ../js/ui/calendar.js:115
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "T"
 
 #. Translators: Calendar grid abbreviation for Wednesday */
-#: ../js/ui/calendar.js:104
+#: ../js/ui/calendar.js:117
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "Q"
 
 #. Translators: Calendar grid abbreviation for Thursday */
-#: ../js/ui/calendar.js:106
+#: ../js/ui/calendar.js:119
 msgctxt "grid thursday"
 msgid "T"
 msgstr "Q"
 
 #. Translators: Calendar grid abbreviation for Friday */
-#: ../js/ui/calendar.js:108
+#: ../js/ui/calendar.js:121
 msgctxt "grid friday"
 msgid "F"
 msgstr "S"
 
 #. Translators: Calendar grid abbreviation for Saturday */
-#: ../js/ui/calendar.js:110
+#: ../js/ui/calendar.js:123
 msgctxt "grid saturday"
 msgid "S"
 msgstr "S"
 
-#. Translators: Event list abbreviation for Sunday.
-#. *
-#. * NOTE: These list abbreviations are normally not shown together
-#. * so they need to be unique (e.g. Tuesday and Thursday cannot
-#. * both be 'T').
-#. */
-#: ../js/ui/calendar.js:123
-msgctxt "list sunday"
-msgid "Su"
-msgstr "Dom"
-
-#. Translators: Event list abbreviation for Monday */
-#: ../js/ui/calendar.js:125
-msgctxt "list monday"
-msgid "M"
-msgstr "Seg"
-
-#. Translators: Event list abbreviation for Tuesday */
-#: ../js/ui/calendar.js:127
-msgctxt "list tuesday"
-msgid "T"
-msgstr "Ter"
-
-#. Translators: Event list abbreviation for Wednesday */
-#: ../js/ui/calendar.js:129
-msgctxt "list wednesday"
-msgid "W"
-msgstr "Qua"
-
-#. Translators: Event list abbreviation for Thursday */
-#: ../js/ui/calendar.js:131
-msgctxt "list thursday"
-msgid "Th"
-msgstr "Qui"
-
-#. Translators: Event list abbreviation for Friday */
-#: ../js/ui/calendar.js:133
-msgctxt "list friday"
-msgid "F"
-msgstr "Sex"
-
-#. Translators: Event list abbreviation for Saturday */
-#: ../js/ui/calendar.js:135
-msgctxt "list saturday"
-msgid "S"
-msgstr "Sab"
-
-#: ../js/ui/calendar.js:460
+#: ../js/ui/calendar.js:590
 msgid "Previous month"
 msgstr "Mês anterior"
 
-#: ../js/ui/calendar.js:470
+#: ../js/ui/calendar.js:600
 msgid "Next month"
 msgstr "Próximo mês"
 
-#. Translators: Text to show if there are no events */
-#: ../js/ui/calendar.js:805
-msgid "Nothing Scheduled"
-msgstr "Nada agendado"
+#: ../js/ui/calendar.js:1245
+msgid "Clear section"
+msgstr "Limpar seção"
 
-#: ../js/ui/calendar.js:824
+#: ../js/ui/calendar.js:1423
+msgid "Events"
+msgstr "Eventos"
+
+#: ../js/ui/calendar.js:1431
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d de %B"
 
-#: ../js/ui/calendar.js:828
+#: ../js/ui/calendar.js:1435
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d de %B de %Y"
 
-#: ../js/ui/calendar.js:840
-msgid "Today"
-msgstr "Hoje"
+#: ../js/ui/calendar.js:1665
+msgid "No Notifications"
+msgstr "Nenhuma notificação"
 
-#: ../js/ui/calendar.js:844
-msgid "Tomorrow"
-msgstr "Amanhã"
-
-#: ../js/ui/calendar.js:855
-msgid "This week"
-msgstr "Esta semana"
-
-#: ../js/ui/calendar.js:863
-msgid "Next week"
-msgstr "Próxima semana"
+#: ../js/ui/calendar.js:1668
+msgid "No Events"
+msgstr "Nenhum evento"
 
 #: ../js/ui/components/automountManager.js:91
 msgid "External drive connected"
@@ -614,18 +517,10 @@ msgstr "Unidade externa conectada"
 msgid "External drive disconnected"
 msgstr "Unidade externa desconectada"
 
-#: ../js/ui/components/autorunManager.js:296
-msgid "Removable Devices"
-msgstr "Dispositivos removíveis"
-
-#: ../js/ui/components/autorunManager.js:596
+#: ../js/ui/components/autorunManager.js:354
 #, javascript-format
 msgid "Open with %s"
 msgstr "Abrir com %s"
-
-#: ../js/ui/components/autorunManager.js:622
-msgid "Eject"
-msgstr "Ejetar"
 
 #: ../js/ui/components/keyring.js:94 ../js/ui/components/polkitAgent.js:285
 msgid "Password:"
@@ -635,16 +530,13 @@ msgstr "Senha:"
 msgid "Type again:"
 msgstr "Digite novamente:"
 
-#: ../js/ui/components/networkAgent.js:138 ../js/ui/status/network.js:277
-#: ../js/ui/status/network.js:359 ../js/ui/status/network.js:919
+#: ../js/ui/components/networkAgent.js:138 ../js/ui/status/network.js:277 ../js/ui/status/network.js:359
+#: ../js/ui/status/network.js:919
 msgid "Connect"
 msgstr "Conectar"
 
-#: ../js/ui/components/networkAgent.js:231
-#: ../js/ui/components/networkAgent.js:243
-#: ../js/ui/components/networkAgent.js:271
-#: ../js/ui/components/networkAgent.js:291
-#: ../js/ui/components/networkAgent.js:301
+#: ../js/ui/components/networkAgent.js:231 ../js/ui/components/networkAgent.js:243 ../js/ui/components/networkAgent.js:271
+#: ../js/ui/components/networkAgent.js:291 ../js/ui/components/networkAgent.js:301
 msgid "Password: "
 msgstr "Senha: "
 
@@ -670,12 +562,8 @@ msgstr "Autenticação requisitada pela rede sem fio"
 
 #: ../js/ui/components/networkAgent.js:319
 #, javascript-format
-msgid ""
-"Passwords or encryption keys are required to access the wireless network "
-"“%s”."
-msgstr ""
-"Senhas ou chaves criptografadas são necessárias para acessar a rede sem fio "
-"\"%s\"."
+msgid "Passwords or encryption keys are required to access the wireless network “%s”."
+msgstr "Senhas ou chaves criptografadas são necessárias para acessar a rede sem fio \"%s\"."
 
 #: ../js/ui/components/networkAgent.js:323
 msgid "Wired 802.1X authentication"
@@ -730,102 +618,94 @@ msgstr "Autenticação"
 msgid "Sorry, that didn't work. Please try again."
 msgstr "Desculpe, isto não funcionou. Por favor, tente novamente."
 
-#: ../js/ui/components/telepathyClient.js:242
+#: ../js/ui/components/telepathyClient.js:243
 msgid "Invitation"
 msgstr "Convite"
 
-#: ../js/ui/components/telepathyClient.js:302
+#: ../js/ui/components/telepathyClient.js:303
 msgid "Call"
 msgstr "Chamada"
 
-#: ../js/ui/components/telepathyClient.js:318
+#: ../js/ui/components/telepathyClient.js:319
 msgid "File Transfer"
 msgstr "Transferência de arquivo"
 
-#: ../js/ui/components/telepathyClient.js:422
+#: ../js/ui/components/telepathyClient.js:423
 msgid "Chat"
 msgstr "Conversar"
 
-#: ../js/ui/components/telepathyClient.js:485
-msgid "Unmute"
-msgstr "Ativar áudio"
-
-#: ../js/ui/components/telepathyClient.js:485
-msgid "Mute"
-msgstr "Sem áudio"
-
 #. Translators: Time in 24h format */
-#: ../js/ui/components/telepathyClient.js:955
+#: ../js/ui/components/telepathyClient.js:936 ../js/ui/dateMenu.js:209
 msgid "%H∶%M"
 msgstr "%H∶%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30" */
-#: ../js/ui/components/telepathyClient.js:962
+#: ../js/ui/components/telepathyClient.js:943
 msgid "Yesterday, %H∶%M"
 msgstr "Ontem, %H∶%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 24h format. i.e. "Monday, 14:30" */
-#: ../js/ui/components/telepathyClient.js:969
+#: ../js/ui/components/telepathyClient.js:950
 msgid "%A, %H∶%M"
 msgstr "%A, %H∶%M"
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 24h format.
 #. i.e. "May 25, 14:30" */
-#: ../js/ui/components/telepathyClient.js:976
+#: ../js/ui/components/telepathyClient.js:957
 msgid "%B %d, %H∶%M"
 msgstr "%d de %B, %H∶%M"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
 #. i.e. "May 25 2012, 14:30" */
-#: ../js/ui/components/telepathyClient.js:982
+#: ../js/ui/components/telepathyClient.js:963
 msgid "%B %d %Y, %H∶%M"
 msgstr "%d de %B de %Y, %H∶%M"
 
-#. Translators: Time in 24h format */
-#: ../js/ui/components/telepathyClient.js:988
+#. Translators: Time in 12h format */
+#: ../js/ui/components/telepathyClient.js:969 ../js/ui/dateMenu.js:212
 msgid "%l∶%M %p"
 msgstr "%l∶%M %p"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 12h format. i.e. "Yesterday, 2:30 pm" */
-#: ../js/ui/components/telepathyClient.js:995
+#: ../js/ui/components/telepathyClient.js:976
 msgid "Yesterday, %l∶%M %p"
 msgstr "Ontem, %l∶%M %p"
 
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm" */
-#: ../js/ui/components/telepathyClient.js:1002
+#: ../js/ui/components/telepathyClient.js:983
 msgid "%A, %l∶%M %p"
 msgstr "%A, %l∶%M %p"
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 12h format.
 #. i.e. "May 25, 2:30 pm" */
-#: ../js/ui/components/telepathyClient.js:1009
+#: ../js/ui/components/telepathyClient.js:990
 msgid "%B %d, %l∶%M %p"
 msgstr "%d de %B, %l∶%M %p"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
 #. i.e. "May 25 2012, 2:30 pm"*/
-#: ../js/ui/components/telepathyClient.js:1015
+#: ../js/ui/components/telepathyClient.js:996
 msgid "%B %d %Y, %l∶%M %p"
 msgstr "%d de %B de %Y, %l∶%M %p"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name. */
-#: ../js/ui/components/telepathyClient.js:1047
+#: ../js/ui/components/telepathyClient.js:1028
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s agora é conhecido como %s"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example. */
-#: ../js/ui/components/telepathyClient.js:1151
+#: ../js/ui/components/telepathyClient.js:1132
 #, javascript-format
 msgid "Invitation to %s"
 msgstr "Convite para %s"
@@ -833,38 +713,35 @@ msgstr "Convite para %s"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example. */
-#: ../js/ui/components/telepathyClient.js:1159
+#: ../js/ui/components/telepathyClient.js:1136
 #, javascript-format
 msgid "%s is inviting you to join %s"
 msgstr "%s está convidando você para participar de %s"
 
-#: ../js/ui/components/telepathyClient.js:1161
-#: ../js/ui/components/telepathyClient.js:1196
-#: ../js/ui/components/telepathyClient.js:1230
-#: ../js/ui/components/telepathyClient.js:1287
+#: ../js/ui/components/telepathyClient.js:1140 ../js/ui/components/telepathyClient.js:1175
+#: ../js/ui/components/telepathyClient.js:1207 ../js/ui/components/telepathyClient.js:1273
 msgid "Decline"
 msgstr "Recusar"
 
-#: ../js/ui/components/telepathyClient.js:1167
-#: ../js/ui/components/telepathyClient.js:1236
-#: ../js/ui/components/telepathyClient.js:1292
+#: ../js/ui/components/telepathyClient.js:1146 ../js/ui/components/telepathyClient.js:1213
+#: ../js/ui/components/telepathyClient.js:1278
 msgid "Accept"
 msgstr "Aceitar"
 
 #. translators: argument is a contact name like Alice for example. */
-#: ../js/ui/components/telepathyClient.js:1186
+#: ../js/ui/components/telepathyClient.js:1165
 #, javascript-format
 msgid "Video call from %s"
 msgstr "Chamada de vídeo para %s"
 
 #. translators: argument is a contact name like Alice for example. */
-#: ../js/ui/components/telepathyClient.js:1189
+#: ../js/ui/components/telepathyClient.js:1168
 #, javascript-format
 msgid "Call from %s"
 msgstr "Chamada de %s"
 
 #. translators: this is a button label (verb), not a noun */
-#: ../js/ui/components/telepathyClient.js:1203
+#: ../js/ui/components/telepathyClient.js:1182
 msgid "Answer"
 msgstr "Atender"
 
@@ -873,133 +750,129 @@ msgstr "Atender"
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
 #. */
-#: ../js/ui/components/telepathyClient.js:1224
+#: ../js/ui/components/telepathyClient.js:1203
 #, javascript-format
 msgid "%s is sending you %s"
 msgstr "%s está enviando %s"
 
 #. To translators: The parameter is the contact's alias */
-#: ../js/ui/components/telepathyClient.js:1253
+#: ../js/ui/components/telepathyClient.js:1230
 #, javascript-format
 msgid "%s would like permission to see when you are online"
 msgstr "%s quer permissão para vê-lo quando conectado"
 
-#: ../js/ui/components/telepathyClient.js:1338
+#: ../js/ui/components/telepathyClient.js:1321
 msgid "Network error"
 msgstr "Erro de rede"
 
-#: ../js/ui/components/telepathyClient.js:1340
+#: ../js/ui/components/telepathyClient.js:1323
 msgid "Authentication failed"
 msgstr "Falha de autenticação"
 
-#: ../js/ui/components/telepathyClient.js:1342
+#: ../js/ui/components/telepathyClient.js:1325
 msgid "Encryption error"
 msgstr "Erro de criptografia"
 
-#: ../js/ui/components/telepathyClient.js:1344
+#: ../js/ui/components/telepathyClient.js:1327
 msgid "Certificate not provided"
 msgstr "Certificado não fornecido"
 
-#: ../js/ui/components/telepathyClient.js:1346
+#: ../js/ui/components/telepathyClient.js:1329
 msgid "Certificate untrusted"
 msgstr "Certificado não confiável"
 
-#: ../js/ui/components/telepathyClient.js:1348
+#: ../js/ui/components/telepathyClient.js:1331
 msgid "Certificate expired"
 msgstr "Certificado expirado"
 
-#: ../js/ui/components/telepathyClient.js:1350
+#: ../js/ui/components/telepathyClient.js:1333
 msgid "Certificate not activated"
 msgstr "Certificado não ativado"
 
-#: ../js/ui/components/telepathyClient.js:1352
+#: ../js/ui/components/telepathyClient.js:1335
 msgid "Certificate hostname mismatch"
 msgstr "Máquina do certificado não confere"
 
-#: ../js/ui/components/telepathyClient.js:1354
+#: ../js/ui/components/telepathyClient.js:1337
 msgid "Certificate fingerprint mismatch"
 msgstr "Impressão digital do certificado não confere"
 
-#: ../js/ui/components/telepathyClient.js:1356
+#: ../js/ui/components/telepathyClient.js:1339
 msgid "Certificate self-signed"
 msgstr "Certificado auto-assinado"
 
-#: ../js/ui/components/telepathyClient.js:1358
+#: ../js/ui/components/telepathyClient.js:1341
 msgid "Status is set to offline"
 msgstr "O status está definido como desconectado."
 
-#: ../js/ui/components/telepathyClient.js:1360
+#: ../js/ui/components/telepathyClient.js:1343
 msgid "Encryption is not available"
 msgstr "Criptografia não disponível"
 
-#: ../js/ui/components/telepathyClient.js:1362
+#: ../js/ui/components/telepathyClient.js:1345
 msgid "Certificate is invalid"
 msgstr "O certificado é inválido"
 
-#: ../js/ui/components/telepathyClient.js:1364
+#: ../js/ui/components/telepathyClient.js:1347
 msgid "Connection has been refused"
 msgstr "A conexão foi recusada"
 
-#: ../js/ui/components/telepathyClient.js:1366
+#: ../js/ui/components/telepathyClient.js:1349
 msgid "Connection can't be established"
 msgstr "A conexão não pode ser estabelecida"
 
-#: ../js/ui/components/telepathyClient.js:1368
+#: ../js/ui/components/telepathyClient.js:1351
 msgid "Connection has been lost"
 msgstr "Conexão perdida"
 
-#: ../js/ui/components/telepathyClient.js:1370
+#: ../js/ui/components/telepathyClient.js:1353
 msgid "This account is already connected to the server"
 msgstr "Esta conta já está conectada ao servidor"
 
-#: ../js/ui/components/telepathyClient.js:1372
-msgid ""
-"Connection has been replaced by a new connection using the same resource"
+#: ../js/ui/components/telepathyClient.js:1355
+msgid "Connection has been replaced by a new connection using the same resource"
 msgstr "A conexão foi substituída por uma nova conexão usando o mesmo recurso"
 
-#: ../js/ui/components/telepathyClient.js:1374
+#: ../js/ui/components/telepathyClient.js:1357
 msgid "The account already exists on the server"
 msgstr "A conta já existe no servidor"
 
-#: ../js/ui/components/telepathyClient.js:1376
+#: ../js/ui/components/telepathyClient.js:1359
 msgid "Server is currently too busy to handle the connection"
 msgstr "O servidor está atualmente muito ocupado para controlar a conexão"
 
-#: ../js/ui/components/telepathyClient.js:1378
+#: ../js/ui/components/telepathyClient.js:1361
 msgid "Certificate has been revoked"
 msgstr "O certificado foi revogado"
 
-#: ../js/ui/components/telepathyClient.js:1380
-msgid ""
-"Certificate uses an insecure cipher algorithm or is cryptographically weak"
-msgstr ""
-"O certificado usa um algoritmo de cifragem inseguro ou é criptograficamente "
-"fraco"
+#: ../js/ui/components/telepathyClient.js:1363
+msgid "Certificate uses an insecure cipher algorithm or is cryptographically weak"
+msgstr "O certificado usa um algoritmo de cifragem inseguro ou é criptograficamente fraco"
 
-#: ../js/ui/components/telepathyClient.js:1382
+#: ../js/ui/components/telepathyClient.js:1365
 msgid ""
-"The length of the server certificate, or the depth of the server certificate "
-"chain, exceed the limits imposed by the cryptography library"
+"The length of the server certificate, or the depth of the server certificate chain, exceed the limits imposed by the "
+"cryptography library"
 msgstr ""
-"O comprimento do certificado do servidor, ou a profundidade da cadeia do "
-"certificado excedeu os limites impostos pela biblioteca de criptografia"
+"O comprimento do certificado do servidor, ou a profundidade da cadeia do certificado excedeu os limites impostos pela "
+"biblioteca de criptografia"
 
-#: ../js/ui/components/telepathyClient.js:1384
+#: ../js/ui/components/telepathyClient.js:1367
 msgid "Internal error"
 msgstr "Erro interno"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example. */
-#: ../js/ui/components/telepathyClient.js:1394
+#: ../js/ui/components/telepathyClient.js:1377
 #, javascript-format
 msgid "Unable to connect to %s"
 msgstr "Não foi possível conectar-se a %s"
 
-#: ../js/ui/components/telepathyClient.js:1399
+#: ../js/ui/components/telepathyClient.js:1382
 msgid "View account"
 msgstr "Visualizar conta"
 
-#: ../js/ui/components/telepathyClient.js:1436
+#: ../js/ui/components/telepathyClient.js:1419
 msgid "Unknown reason"
 msgstr "Razão desconhecida"
 
@@ -1007,33 +880,36 @@ msgstr "Razão desconhecida"
 msgid "Windows"
 msgstr "Janelas"
 
-#: ../js/ui/dash.js:249 ../js/ui/dash.js:287
+#: ../js/ui/dash.js:250 ../js/ui/dash.js:291
 msgid "Show Applications"
 msgstr "Mostrar aplicativos"
 
-#: ../js/ui/dash.js:445
+#: ../js/ui/dash.js:451
 msgid "Dash"
 msgstr "Dash"
-
-#: ../js/ui/dateMenu.js:97
-msgid "Open Calendar"
-msgstr "Abrir agenda"
-
-#: ../js/ui/dateMenu.js:101
-msgid "Open Clocks"
-msgstr "Abrir relógios"
-
-# O "&" foi inserido como "e" para versão 3.8.0 no gnome-control-center
-#: ../js/ui/dateMenu.js:108
-msgid "Date & Time Settings"
-msgstr "Configurações de data & hora"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #. */
-#: ../js/ui/dateMenu.js:132
-msgid "%A %B %e, %Y"
+#: ../js/ui/dateMenu.js:72
+msgid "%B %e %Y"
+msgstr "%e de %B de %Y"
+
+#. Translators: This is the accessible name of the date button shown
+#. * below the time in the shell; it should combine the weekday and the
+#. * date, e.g. "Tuesday February 17 2015".
+#. */
+#: ../js/ui/dateMenu.js:79
+msgid "%A %B %e %Y"
 msgstr "%A, %e de %B de %Y"
+
+#: ../js/ui/dateMenu.js:159
+msgid "Add world clocks…"
+msgstr "Adicionar relógios mundiais…"
+
+#: ../js/ui/dateMenu.js:160
+msgid "World Clocks"
+msgstr "Relógios mundiais"
 
 #: ../js/ui/endSessionDialog.js:64
 #, javascript-format
@@ -1117,14 +993,9 @@ msgstr "Reiniciar & instalar atualizações"
 #: ../js/ui/endSessionDialog.js:121
 #, javascript-format
 msgid "The system will automatically restart and install updates in %d second."
-msgid_plural ""
-"The system will automatically restart and install updates in %d seconds."
-msgstr[0] ""
-"O sistema irá reiniciar e instalar atualizações automaticamente em %d "
-"segundo."
-msgstr[1] ""
-"O sistema irá reiniciar e instalar atualizações automaticamente em %d "
-"segundos."
+msgid_plural "The system will automatically restart and install updates in %d seconds."
+msgstr[0] "O sistema irá reiniciar e instalar atualizações automaticamente em %d segundo."
+msgstr[1] "O sistema irá reiniciar e instalar atualizações automaticamente em %d segundos."
 
 #: ../js/ui/endSessionDialog.js:127
 msgctxt "button"
@@ -1143,9 +1014,7 @@ msgstr "Desligar após atualizações serem instaladas"
 
 #: ../js/ui/endSessionDialog.js:338
 msgid "Running on battery power: please plug in before installing updates."
-msgstr ""
-"Funcionando na bateria: por favor, conecte na tomada antes de instalar "
-"atualizações."
+msgstr "Funcionando na bateria: por favor, conecte na tomada antes de instalar atualizações."
 
 #: ../js/ui/endSessionDialog.js:355
 msgid "Some applications are busy or have unsaved work."
@@ -1176,7 +1045,7 @@ msgstr "Instalar"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Baixar e instalar \"%s\" de extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:706 ../js/ui/status/keyboard.js:539
+#: ../js/ui/keyboard.js:706 ../js/ui/status/keyboard.js:577
 msgid "Keyboard"
 msgstr "Teclado"
 
@@ -1198,8 +1067,7 @@ msgstr "Ocultar erros"
 msgid "Show Errors"
 msgstr "Exibir erros"
 
-#: ../js/ui/lookingGlass.js:716 ../js/ui/status/location.js:71
-#: ../js/ui/status/location.js:176
+#: ../js/ui/lookingGlass.js:716 ../js/ui/status/location.js:71 ../js/ui/status/location.js:176
 msgid "Enabled"
 msgstr "Habilitado"
 
@@ -1207,8 +1075,8 @@ msgstr "Habilitado"
 #. because it's disabled by rfkill (airplane mode) */
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:719 ../js/ui/status/location.js:179
-#: ../js/ui/status/network.js:592 ../src/gvc/gvc-mixer-control.c:1830
+#: ../js/ui/lookingGlass.js:719 ../js/ui/status/location.js:179 ../js/ui/status/network.js:592
+#: ../src/gvc/gvc-mixer-control.c:1830
 msgid "Disabled"
 msgstr "Desabilitado"
 
@@ -1232,54 +1100,9 @@ msgstr "Ver fonte"
 msgid "Web Page"
 msgstr "Página web"
 
-#: ../js/ui/messageTray.js:1332
-msgid "Open"
-msgstr "Abrir"
-
-#: ../js/ui/messageTray.js:1339
-msgid "Remove"
-msgstr "Remover"
-
-#: ../js/ui/messageTray.js:1636
-msgid "Notifications"
-msgstr "Notificações"
-
-#: ../js/ui/messageTray.js:1643
-msgid "Clear Messages"
-msgstr "Sem mensagens"
-
-#: ../js/ui/messageTray.js:1662
-msgid "Notification Settings"
-msgstr "Configurações de notificação"
-
-#: ../js/ui/messageTray.js:1715
-msgid "Tray Menu"
-msgstr "Menu de notificação"
-
-#: ../js/ui/messageTray.js:1939
-msgid "No Messages"
-msgstr "Sem mensagens"
-
-#: ../js/ui/messageTray.js:1986
-msgid "Message Tray"
-msgstr "Área de notificação"
-
-#: ../js/ui/messageTray.js:2443 ../js/ui/overviewControls.js:483
-#: ../js/ui/screenShield.js:152
-#, javascript-format
-msgid "%d new message"
-msgid_plural "%d new messages"
-msgstr[0] "%d nova mensagem"
-msgstr[1] "%d novas mensagens"
-
-#: ../js/ui/messageTray.js:3013
+#: ../js/ui/messageTray.js:2092
 msgid "System Information"
 msgstr "Informações do sistema"
-
-#: ../js/ui/notificationDaemon.js:513 ../src/shell-app.c:439
-msgctxt "program"
-msgid "Unknown"
-msgstr "Desconhecido"
 
 #: ../js/ui/overview.js:84
 msgid "Undo"
@@ -1297,21 +1120,21 @@ msgstr "Panorama"
 msgid "Type to search…"
 msgstr "Digite para pesquisar…"
 
-#: ../js/ui/panel.js:521
+#: ../js/ui/panel.js:351
 msgid "Quit"
 msgstr "Sair"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview". */
-#: ../js/ui/panel.js:573
+#: ../js/ui/panel.js:403
 msgid "Activities"
 msgstr "Atividades"
 
-#: ../js/ui/panel.js:924
+#: ../js/ui/panel.js:754
 msgid "Top Bar"
 msgstr "Barra superior"
 
-#: ../js/ui/popupMenu.js:269
+#: ../js/ui/popupMenu.js:288
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -1333,26 +1156,33 @@ msgstr "Reiniciando…"
 msgid "%A, %B %d"
 msgstr "%A, %d de %B"
 
-#: ../js/ui/screenShield.js:154
+#: ../js/ui/screenShield.js:147
+#, javascript-format
+msgid "%d new message"
+msgid_plural "%d new messages"
+msgstr[0] "%d nova mensagem"
+msgstr[1] "%d novas mensagens"
+
+#: ../js/ui/screenShield.js:149
 #, javascript-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d nova notificação"
 msgstr[1] "%d novas notificações"
 
-#: ../js/ui/screenShield.js:473 ../js/ui/status/system.js:345
+#: ../js/ui/screenShield.js:434 ../js/ui/status/system.js:345
 msgid "Lock"
 msgstr "Bloquear"
 
-#: ../js/ui/screenShield.js:709
+#: ../js/ui/screenShield.js:670
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME precisa bloquear a tela"
 
-#: ../js/ui/screenShield.js:836 ../js/ui/screenShield.js:1312
+#: ../js/ui/screenShield.js:797 ../js/ui/screenShield.js:1273
 msgid "Unable to lock"
 msgstr "Não foi possível bloquear"
 
-#: ../js/ui/screenShield.js:837 ../js/ui/screenShield.js:1313
+#: ../js/ui/screenShield.js:798 ../js/ui/screenShield.js:1274
 msgid "Lock was blocked by an application"
 msgstr "O bloqueio foi impedido por um aplicativo"
 
@@ -1436,9 +1266,8 @@ msgstr "Texto grande"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:51 ../js/ui/status/network.js:178
-#: ../js/ui/status/network.js:360 ../js/ui/status/network.js:1282
-#: ../js/ui/status/network.js:1393 ../js/ui/status/rfkill.js:91
+#: ../js/ui/status/bluetooth.js:51 ../js/ui/status/network.js:178 ../js/ui/status/network.js:360
+#: ../js/ui/status/network.js:1282 ../js/ui/status/network.js:1393 ../js/ui/status/rfkill.js:91
 #: ../js/ui/status/rfkill.js:118
 msgid "Turn Off"
 msgstr "Desligar"
@@ -1462,7 +1291,7 @@ msgstr "Não conectado"
 msgid "Brightness"
 msgstr "Brilho"
 
-#: ../js/ui/status/keyboard.js:563
+#: ../js/ui/status/keyboard.js:600
 msgid "Show Keyboard Layout"
 msgstr "Exibir disposição de teclado"
 
@@ -1490,8 +1319,7 @@ msgstr "Habilitar"
 msgid "<unknown>"
 msgstr "<desconhecido>"
 
-#: ../js/ui/status/network.js:457 ../js/ui/status/network.js:1308
-#: ../js/ui/status/network.js:1512
+#: ../js/ui/status/network.js:457 ../js/ui/status/network.js:1308 ../js/ui/status/network.js:1512
 msgid "Off"
 msgstr "Off"
 
@@ -1844,7 +1672,12 @@ msgstr "Utilizar um modo específico, ex.: \"gdm\" para a tela de login"
 msgid "List possible modes"
 msgstr "Listar modos possíveis"
 
-#: ../src/shell-app.c:680
+#: ../src/shell-app.c:247
+msgctxt "program"
+msgid "Unknown"
+msgstr "Desconhecido"
+
+#: ../src/shell-app.c:488
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "Erro ao lançar \"%s\""
@@ -1861,6 +1694,89 @@ msgstr "A senha não pode estar em branco"
 msgid "Authentication dialog was dismissed by the user"
 msgstr "O diálogo de autenticação foi descartado pelo usuário"
 
+#~ msgctxt "list sunday"
+#~ msgid "Su"
+#~ msgstr "Dom"
+
+#~ msgctxt "list monday"
+#~ msgid "M"
+#~ msgstr "Seg"
+
+#~ msgctxt "list tuesday"
+#~ msgid "T"
+#~ msgstr "Ter"
+
+#~ msgctxt "list wednesday"
+#~ msgid "W"
+#~ msgstr "Qua"
+
+#~ msgctxt "list thursday"
+#~ msgid "Th"
+#~ msgstr "Qui"
+
+#~ msgctxt "list friday"
+#~ msgid "F"
+#~ msgstr "Sex"
+
+#~ msgctxt "list saturday"
+#~ msgid "S"
+#~ msgstr "Sab"
+
+#~ msgid "Nothing Scheduled"
+#~ msgstr "Nada agendado"
+
+#~ msgid "Today"
+#~ msgstr "Hoje"
+
+#~ msgid "Tomorrow"
+#~ msgstr "Amanhã"
+
+#~ msgid "This week"
+#~ msgstr "Esta semana"
+
+#~ msgid "Next week"
+#~ msgstr "Próxima semana"
+
+#~ msgid "Removable Devices"
+#~ msgstr "Dispositivos removíveis"
+
+#~ msgid "Eject"
+#~ msgstr "Ejetar"
+
+#~ msgid "Unmute"
+#~ msgstr "Ativar áudio"
+
+#~ msgid "Mute"
+#~ msgstr "Sem áudio"
+
+#~ msgid "Open Calendar"
+#~ msgstr "Abrir agenda"
+
+# O "&" foi inserido como "e" para versão 3.8.0 no gnome-control-center
+#~ msgid "Date & Time Settings"
+#~ msgstr "Configurações de data & hora"
+
+#~ msgid "Open"
+#~ msgstr "Abrir"
+
+#~ msgid "Remove"
+#~ msgstr "Remover"
+
+#~ msgid "Clear Messages"
+#~ msgstr "Sem mensagens"
+
+#~ msgid "Notification Settings"
+#~ msgstr "Configurações de notificação"
+
+#~ msgid "Tray Menu"
+#~ msgstr "Menu de notificação"
+
+#~ msgid "No Messages"
+#~ msgstr "Sem mensagens"
+
+#~ msgid "Message Tray"
+#~ msgstr "Área de notificação"
+
 #~ msgid "Captive Portal"
 #~ msgstr "Portal cativo"
 
@@ -1868,39 +1784,28 @@ msgstr "O diálogo de autenticação foi descartado pelo usuário"
 #~ msgstr "O nível máximo de precisão de local."
 
 #~ msgid ""
-#~ "Configures the maximum level of location accuracy applications are "
-#~ "allowed to see. Valid options are 'off' (disable location tracking), "
-#~ "'country', 'city', 'neighborhood', 'street', and 'exact' (typically "
-#~ "requires GPS receiver). Please keep in mind that this only controls what "
-#~ "GeoClue will allow applications to see and they can find user's location "
-#~ "on their own using network resources (albeit with street-level accuracy "
-#~ "at best)."
+#~ "Configures the maximum level of location accuracy applications are allowed to see. Valid options are 'off' (disable "
+#~ "location tracking), 'country', 'city', 'neighborhood', 'street', and 'exact' (typically requires GPS receiver). "
+#~ "Please keep in mind that this only controls what GeoClue will allow applications to see and they can find user's "
+#~ "location on their own using network resources (albeit with street-level accuracy at best)."
 #~ msgstr ""
-#~ "Configura o nível máximo de precisão de local a que os aplicativos com "
-#~ "permissão podem ver. Opções válidas são \"off\" (desabilita o "
-#~ "rastreamento de local), \"country\", \"city\", \"neighborhood\", \"street"
-#~ "\" e \"exact\" (geralmente necessita de receptor de GPS). Por gentileza, "
-#~ "tenha em mente que estes são os únicos controles que o GeoClue permitirá "
-#~ "aos aplicativos observarem e eles podem localizar o local do usuário por "
-#~ "si só, usando recursos de rede (apesar de na melhor hipótese usarem "
-#~ "precisão à nível de rua)."
+#~ "Configura o nível máximo de precisão de local a que os aplicativos com permissão podem ver. Opções válidas são \"off"
+#~ "\" (desabilita o rastreamento de local), \"country\", \"city\", \"neighborhood\", \"street\" e \"exact\" (geralmente "
+#~ "necessita de receptor de GPS). Por gentileza, tenha em mente que estes são os únicos controles que o GeoClue "
+#~ "permitirá aos aplicativos observarem e eles podem localizar o local do usuário por si só, usando recursos de rede "
+#~ "(apesar de na melhor hipótese usarem precisão à nível de rua)."
 
 #~ msgid "Arrangement of buttons on the titlebar"
 #~ msgstr "Organização dos botões na barra de título"
 
-#~ msgid ""
-#~ "This key overrides the key in org.gnome.desktop.wm.preferences when "
-#~ "running GNOME Shell."
-#~ msgstr ""
-#~ "Esta chave sobrescreve a chave em org.gnome.desktop.wm.preferences ao "
-#~ "executar o Shell do GNOME."
+#~ msgid "This key overrides the key in org.gnome.desktop.wm.preferences when running GNOME Shell."
+#~ msgstr "Esta chave sobrescreve a chave em org.gnome.desktop.wm.preferences ao executar o Shell do GNOME."
 
 #~ msgid "Extension"
 #~ msgstr "Extensão"
 
 #~ msgid "Select an extension to configure using the combobox above."
-#~ msgstr ""
-#~ "Selecione uma extensão para configurar usando a caixa de seleção abaixo."
+#~ msgstr "Selecione uma extensão para configurar usando a caixa de seleção abaixo."
 
 #~ msgid "calendar:MY"
 #~ msgstr "calendar:MY"
@@ -1918,12 +1823,11 @@ msgstr "O diálogo de autenticação foi descartado pelo usuário"
 #~ msgstr "Lista de categorias que devem ser exibidas como pastas"
 
 #~ msgid ""
-#~ "Each category name in this list will be represented as folder in the "
-#~ "application view, rather than being displayed inline in the main view."
+#~ "Each category name in this list will be represented as folder in the application view, rather than being displayed "
+#~ "inline in the main view."
 #~ msgstr ""
-#~ "Cada nome de categoria nesta lista será representado como uma pasta na "
-#~ "visão do aplicativo, ao invés de ser exibido incorporado à visão "
-#~ "principal."
+#~ "Cada nome de categoria nesta lista será representado como uma pasta na visão do aplicativo, ao invés de ser exibido "
+#~ "incorporado à visão principal."
 
 #~ msgctxt "event list time"
 #~ msgid "%H\\u2236%M"
