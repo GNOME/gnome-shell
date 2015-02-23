@@ -3,8 +3,51 @@ RELEASING
 
 When making a new release;
 
+
+== Add version defines + macros if applicable ==
+
  - If it's a new stable release that increments the Cogl minor version
-   remember to add a new COGL_VERSION_1_X define to cogl/cogl-macros.h
+   remember to add a new COGL_VERSION_1_X define to cogl/cogl-version.h
+   and update cogl/cogl-macros.h accordingly
+
+
+== Update the documentation ==
+
+ - Update the NEWS with:
+
+     - new feature details, bugs fixed, acknowledgements
+     - Use git shortlog -n -s to get the list of authors
+     - The following bash snippet may help with extracting the list of
+       bugs closed:
+     - Grep the source code for "XXX: ONGOING BUG" and add a
+       section about workarounds for un-resolved upstream bugs.
+
+URLS=$(git log $1|grep bugzilla|sort|uniq)
+for i in $URLS
+do
+  ID=$(echo $i|cut -d'=' -f2)
+  TITLE=$(wget --quiet -O - $i|grep -e '<title>.*</title>'|sed -e 's/<title>Bug [0-9]\+ &ndash; \(.*\)<\/title>/\1/')
+  echo "    #$ID - $TITLE"
+done
+
+     - README: dependencies, any behavioural changes relevant to
+       developers;
+
+   then commit the changes.
+
+
+== Update the package version ==
+
+ - Read the release comments in configure.ac
+    - Bump cogl_1_micro_version to the next even number
+    - Don't change the 2.0 version number
+    - Update the libtool versioning
+    - Update the cogl_release_status status to "release" or "snapshot"
+      as appropriate.
+    - commit the changes.
+
+
+== Test the release ==
 
  - Verify that you don't have uncommitted changes; both:
 
@@ -52,47 +95,27 @@ When making a new release;
    build directory to make sure that all of the download links still
    work.
 
- - Update the release documentation:
 
-     - NEWS: new feature details, bugs fixed, acknowledgements
-        - Use git shortlog -n -s to get the list of authors
-        - The following bash snippet may help with extracting the list of
-          bugs closed:
-        - Grep the source code for "XXX: ONGOING BUG" and add a
-          section about workarounds for un-resolved upstream bugs.
-
-
-URLS=$(git log $1|grep bugzilla|sort|uniq)
-for i in $URLS
-do
-  ID=$(echo $i|cut -d'=' -f2)
-  TITLE=$(wget --quiet -O - $i|grep -e '<title>.*</title>'|sed -e 's/<title>Bug [0-9]\+ &ndash; \(.*\)<\/title>/\1/')
-  echo "    #$ID - $TITLE"
-done
-
-     - README: dependencies, any behavioural changes relevant to
-       developers;
-
-   then commit the changes.
-
- - Read the release comments in configure.ac
-    - Bump cogl_1_micro_version to the next even number
-    - Don't change the 2.0 version number
-    - Update the libtool versioning
-    - Update the cogl_release_status status to "release" or "snapshot"
-      as appropriate.
-    - commit the changes.
+== Make the release ==
 
  - Run:
 
      $ make release-publish
 
-   which will:
+   Note: if you want to break this into multiple steps see
+   build/autotools/Makefile.am.release for details. You may prefer to first
+   `make release-check` and then manually use `make release-tag`, `make
+   release-upload` and `make release-message`.
+
+   `make release-publish` will:
 
      - do sanity checks on the build
      - distcheck the release
      - tag the repository with the version number
      - upload the tarball to the remote server (needs SSH account)
+
+
+== Prepare for the next development branch ==
 
  - Bump cogl_1_micro_version to the next odd number
  - Revert cogl_release_status to "git"
