@@ -102,8 +102,11 @@ struct _MetaWaylandSurface
 
   /* xdg_popup */
   struct {
-      MetaWaylandPopup *popup;
-      struct wl_listener destroy_listener;
+    MetaWaylandSurface *parent;
+    struct wl_listener parent_destroy_listener;
+
+    MetaWaylandPopup *popup;
+    struct wl_listener destroy_listener;
   } popup;
 
   /* wl_subsurface stuff. */
