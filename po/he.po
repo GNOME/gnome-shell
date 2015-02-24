@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD.he\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-26 22:19+0200\n"
-"PO-Revision-Date: 2015-01-26 22:20+0200\n"
+"POT-Creation-Date: 2015-02-24 19:33+0200\n"
+"PO-Revision-Date: 2015-02-24 19:34+0200\n"
 "Last-Translator: Yosef Or Boczko <yoseforb@gmail.com>\n"
 "Language-Team: עברית <>\n"
 "Language: he\n"
@@ -433,6 +433,26 @@ msgstr "מעבר ל־VT ‏6"
 msgid "Switch to VT 7"
 msgstr "מעבר ל־VT ‏7"
 
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:8
+msgid "Switch to VT 8"
+msgstr "מעבר ל־VT ‏8"
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:9
+msgid "Switch to VT 9"
+msgstr "מעבר ל־VT ‏9"
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:10
+msgid "Switch to VT 10"
+msgstr "מעבר ל־VT ‏10"
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:11
+msgid "Switch to VT 11"
+msgstr "מעבר ל־VT ‏11"
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:12
+msgid "Switch to VT 12"
+msgstr "מעבר ל־VT ‏12"
+
 #: ../src/backends/meta-monitor-manager.c:364
 msgid "Built-in display"
 msgstr "תצוגה מובנית"
@@ -580,7 +600,7 @@ msgstr ""
 "חלונות אלו אינם תומכים ב&quot;שמירת ההגדרות הנוכחיות&quot;, ויהיה צורך "
 "באתחול ידני בכניסה הבאה שלך."
 
-#: ../src/x11/window-props.c:558
+#: ../src/x11/window-props.c:549
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (מעל %s)"
