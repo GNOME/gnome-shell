@@ -7,18 +7,18 @@
 # Andrew w. Nosenko <awn@bcs.zp.ua>, 2003.
 # Leonid Kanter <leon@asplinux.ru>, 2004, 2005, 2006.
 # Yuri Kozlov <yuray@komyakino.ru>, 2011.
-# Ivan Komaritsyn <vantu5z@mail.ru>, 2015.
 # Yuri Myasoedov <ymyasoedov@yandex.ru>, 2012-2014, 2015.
+# Ivan Komaritsyn <vantu5z@mail.ru>, 2015.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity ru\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-02-13 23:49+0000\n"
-"PO-Revision-Date: 2015-02-14 17:12+0300\n"
-"Last-Translator: Yuri Myasoedov <ymyasoedov@yandex.ru>\n"
-"Language-Team: русский <gnome-cyr@gnome.org>\n"
+"POT-Creation-Date: 2015-02-19 23:11+0000\n"
+"PO-Revision-Date: 2015-02-20 13:59+0300\n"
+"Last-Translator: Ivan Komaritsyn <vantu5z@mail.ru>\n"
+"Language-Team: Русский <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -439,6 +439,31 @@ msgstr "Переключиться на виртуальный терминал 
 #: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:7
 msgid "Switch to VT 7"
 msgstr "Переключиться на виртуальный терминал 7"
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:8
+#| msgid "Switch to VT 1"
+msgid "Switch to VT 8"
+msgstr "Переключиться на виртуальный терминал 8"
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:9
+#| msgid "Switch to VT 1"
+msgid "Switch to VT 9"
+msgstr "Переключиться на виртуальный терминал 9"
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:10
+#| msgid "Switch to VT 1"
+msgid "Switch to VT 10"
+msgstr "Переключиться на виртуальный терминал 10"
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:11
+#| msgid "Switch to VT 1"
+msgid "Switch to VT 11"
+msgstr "Переключиться на виртуальный терминал 11"
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:12
+#| msgid "Switch to VT 1"
+msgid "Switch to VT 12"
+msgstr "Переключиться на виртуальный терминал 12"
 
 #: ../src/backends/meta-monitor-manager.c:364
 msgid "Built-in display"
