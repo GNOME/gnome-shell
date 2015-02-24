@@ -1525,7 +1525,7 @@ const NotificationSection = new Lang.Class({
     Extends: MessageListSection,
 
     _init: function() {
-        this.parent('Notifications');
+        this.parent(_("Notifications"));
 
         this._sources = new Map();
         this._nUrgent = 0;
