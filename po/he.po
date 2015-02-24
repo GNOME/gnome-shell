@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-24 11:52+0200\n"
-"PO-Revision-Date: 2015-02-24 12:06+0200\n"
+"POT-Creation-Date: 2015-02-24 20:05+0200\n"
+"PO-Revision-Date: 2015-02-24 20:20+0200\n"
 "Last-Translator: Yosef Or Boczko <yoseforb@gmail.com>\n"
 "Language-Team: עברית <>\n"
 "Language: he\n"
@@ -455,7 +455,7 @@ msgstr "יום שלם"
 #: ../js/ui/calendar.js:88 ../js/ui/calendar.js:1562
 msgctxt "event list time"
 msgid "%H∶%M"
-msgstr "%H:%M"
+msgstr "‎%H:%M"
 
 #. Translators: Shown in calendar event list, if 12h format,
 #. \u2236 is a ratio character, similar to : and \u2009 is
@@ -463,7 +463,7 @@ msgstr "%H:%M"
 #: ../js/ui/calendar.js:97
 msgctxt "event list time"
 msgid "%l∶%M %p"
-msgstr "%l\\u2236%M %p"
+msgstr "%l:%M %p"
 
 #. Translators: Calendar grid abbreviation for Sunday.
 #. *
@@ -536,6 +536,10 @@ msgstr "%A, ה־%e ב%B"
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, ה־%e ב%B, %Y"
+
+#: ../js/ui/calendar.js:1528
+msgid "Notifications"
+msgstr "התרעות"
 
 #: ../js/ui/calendar.js:1665
 msgid "No Notifications"
@@ -684,7 +688,7 @@ msgstr "שיחה"
 #. Translators: Time in 24h format
 #: ../js/ui/components/telepathyClient.js:936 ../js/ui/dateMenu.js:209
 msgid "%H∶%M"
-msgstr "%H:%M"
+msgstr "‎%H\\u2236%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30"
@@ -733,7 +737,7 @@ msgstr "אתמול, %l\\u2236%M %p"
 #: ../js/ui/components/telepathyClient.js:983
 #, no-c-format
 msgid "%A, %l∶%M %p"
-msgstr "%l:%M %p"
+msgstr "%A, %l:%M %p"
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 12h format.
@@ -955,7 +959,7 @@ msgstr "חלונית"
 #.
 #: ../js/ui/dateMenu.js:72
 msgid "%B %e %Y"
-msgstr "%B, %e %Y"
+msgstr "%e ב%B %Y"
 
 #. Translators: This is the accessible name of the date button shown
 #. * below the time in the shell; it should combine the weekday and the
