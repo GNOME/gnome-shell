@@ -1161,8 +1161,6 @@ xdg_shell_get_xdg_popup (struct wl_client *client,
                           parent_surf->window->rect.y + y);
   window->showing_for_first_time = FALSE;
   window->placed = TRUE;
-  meta_window_set_transient_for (window, parent_surf->window);
-  meta_window_set_type (window, META_WINDOW_DROPDOWN_MENU);
 
   meta_wayland_surface_set_window (surface, window);
 

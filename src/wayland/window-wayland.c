@@ -64,6 +64,16 @@ meta_window_wayland_manage (MetaWindow *window)
                                    window->stamp,
                                    0);
   }
+
+  if (window->surface->role == META_WAYLAND_SURFACE_ROLE_XDG_POPUP)
+    {
+      MetaWaylandSurface *parent = window->surface->popup.parent;
+
+      g_assert (parent);
+
+      meta_window_set_transient_for (window, parent->window);
+      meta_window_set_type (window, META_WINDOW_DROPDOWN_MENU);
+    }
 }
 
 static void
