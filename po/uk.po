@@ -2,13 +2,13 @@
 # Copyright (C) 2010 Free Software Foundation
 # This file is distributed under the same license as the gnome-shell package.
 # Maxim V. Dziumanenko <dziumanenko@gmail.com>, 2010.
-# Daniel Korostil <ted.korostiled@gmail.com>, 2013, 2014.
+# Daniel Korostil <ted.korostiled@gmail.com>, 2013, 2014, 2015.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-20 22:26+0300\n"
-"PO-Revision-Date: 2014-09-20 23:17+0300\n"
+"POT-Creation-Date: 2015-02-24 22:45+0200\n"
+"PO-Revision-Date: 2015-02-24 22:51+0300\n"
 "Last-Translator: Daniel Korostil <ted.korostiled@gmail.com>\n"
 "Language-Team: linux.org.ua\n"
 "Language: uk\n"
@@ -25,8 +25,8 @@ msgid "System"
 msgstr "Система"
 
 #: ../data/50-gnome-shell-system.xml.in.h:2
-msgid "Show the message tray"
-msgstr "Показати лоток повідомлень"
+msgid "Show the message list"
+msgstr "Показати перелік повідомлень"
 
 #: ../data/50-gnome-shell-system.xml.in.h:3
 msgid "Focus the active notification"
@@ -292,8 +292,8 @@ msgid "Delay focus changes in mouse mode until the pointer stops moving"
 msgstr "Затримувати зміни фокусу миші, поки вказівник не перестане рухатись"
 
 #: ../data/org.gnome.Shell.PortalHelper.desktop.in.h:1
-msgid "Captive Portal"
-msgstr "Прив'язаний портал"
+msgid "Network Login"
+msgstr "Мережевий вхід"
 
 #: ../js/extensionPrefs/main.js:123
 #, javascript-format
@@ -307,7 +307,7 @@ msgstr "Розширення GNOME Shell"
 #: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:143
 #: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:452
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/network.js:915
+#: ../js/ui/status/network.js:916
 msgid "Cancel"
 msgstr "Скасувати"
 
@@ -325,20 +325,20 @@ msgctxt "button"
 msgid "Sign In"
 msgstr "Увійти"
 
-#: ../js/gdm/loginDialog.js:269
+#: ../js/gdm/loginDialog.js:276
 msgid "Choose Session"
 msgstr "Виберіть сеанс"
 
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:429
+#: ../js/gdm/loginDialog.js:417
 msgid "Not listed?"
 msgstr "Немає в переліку?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: ../js/gdm/loginDialog.js:614
+#: ../js/gdm/loginDialog.js:822
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(наприклад, користувач або %s)"
@@ -346,16 +346,16 @@ msgstr "(наприклад, користувач або %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:619 ../js/ui/components/networkAgent.js:269
+#: ../js/gdm/loginDialog.js:827 ../js/ui/components/networkAgent.js:269
 #: ../js/ui/components/networkAgent.js:287
 msgid "Username: "
 msgstr "Користувач:"
 
-#: ../js/gdm/loginDialog.js:922
+#: ../js/gdm/loginDialog.js:1159
 msgid "Login Window"
 msgstr "Вікно входу"
 
-#: ../js/gdm/util.js:323
+#: ../js/gdm/util.js:341
 msgid "Authentication error"
 msgstr "Помилка розпізнавання"
 
@@ -364,7 +364,7 @@ msgstr "Помилка розпізнавання"
 #. as a cue to display our own message.
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: ../js/gdm/util.js:453
+#: ../js/gdm/util.js:473
 msgid "(or swipe finger)"
 msgstr "(або проведіть пальцем)"
 
@@ -384,36 +384,36 @@ msgid "Execution of “%s” failed:"
 msgstr "Не вдалось виконати «%s»:"
 
 #. TRANSLATORS: this is the title of the wifi captive portal login
-#. window, until we know the title of the actual login page
+#. * window, until we know the title of the actual login page
 #: ../js/portalHelper/main.js:85
 msgid "Web Authentication Redirect"
 msgstr "Переадресування інтернетного засвідчення"
 
-#: ../js/ui/appDisplay.js:772
+#: ../js/ui/appDisplay.js:785
 msgid "Frequently used applications will appear here"
 msgstr "Часто використовувані програми будуть з'являтись тут"
 
-#: ../js/ui/appDisplay.js:883
+#: ../js/ui/appDisplay.js:905
 msgid "Frequent"
 msgstr "Частовживане"
 
-#: ../js/ui/appDisplay.js:890
+#: ../js/ui/appDisplay.js:912
 msgid "All"
 msgstr "Усе"
 
-#: ../js/ui/appDisplay.js:1790
+#: ../js/ui/appDisplay.js:1840
 msgid "New Window"
 msgstr "Нове вікно"
 
-#: ../js/ui/appDisplay.js:1816 ../js/ui/dash.js:285
+#: ../js/ui/appDisplay.js:1868 ../js/ui/dash.js:289
 msgid "Remove from Favorites"
 msgstr "Вилучити з улюбленого"
 
-#: ../js/ui/appDisplay.js:1822
+#: ../js/ui/appDisplay.js:1874
 msgid "Add to Favorites"
 msgstr "Додати до улюбленого"
 
-#: ../js/ui/appDisplay.js:1831
+#: ../js/ui/appDisplay.js:1884
 msgid "Show Details"
 msgstr "Показати подробиці"
 
@@ -427,7 +427,7 @@ msgstr "%s додано до улюбленого."
 msgid "%s has been removed from your favorites."
 msgstr "%s вилучено з улюбленого."
 
-#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:813
+#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:649
 #: ../js/ui/status/system.js:337
 msgid "Settings"
 msgstr "Параметри"
@@ -436,17 +436,23 @@ msgstr "Параметри"
 msgid "Change Background…"
 msgstr "Змінити тло…"
 
+#. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
+#: ../js/ui/calendar.js:52
+msgctxt "calendar-no-work"
+msgid "06"
+msgstr "06"
+
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: ../js/ui/calendar.js:67
+#: ../js/ui/calendar.js:81
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Увесь день"
 
 #. Translators: Shown in calendar event list, if 24h format,
 #. \u2236 is a ratio character, similar to :
-#: ../js/ui/calendar.js:73
+#: ../js/ui/calendar.js:88 ../js/ui/calendar.js:1562
 msgctxt "event list time"
 msgid "%H∶%M"
 msgstr "%H:%M"
@@ -454,7 +460,7 @@ msgstr "%H:%M"
 #. Translators: Shown in calendar event list, if 12h format,
 #. \u2236 is a ratio character, similar to : and \u2009 is
 #. a thin space
-#: ../js/ui/calendar.js:82
+#: ../js/ui/calendar.js:97
 msgctxt "event list time"
 msgid "%l∶%M %p"
 msgstr "%l∶%M %p"
@@ -464,134 +470,84 @@ msgstr "%l∶%M %p"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: ../js/ui/calendar.js:113
+#: ../js/ui/calendar.js:111
 msgctxt "grid sunday"
 msgid "S"
 msgstr "Н"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: ../js/ui/calendar.js:115
+#: ../js/ui/calendar.js:113
 msgctxt "grid monday"
 msgid "M"
 msgstr "П"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: ../js/ui/calendar.js:117
+#: ../js/ui/calendar.js:115
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "В"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: ../js/ui/calendar.js:119
+#: ../js/ui/calendar.js:117
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "С"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: ../js/ui/calendar.js:121
+#: ../js/ui/calendar.js:119
 msgctxt "grid thursday"
 msgid "T"
 msgstr "Ч"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: ../js/ui/calendar.js:123
+#: ../js/ui/calendar.js:121
 msgctxt "grid friday"
 msgid "F"
 msgstr "П"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: ../js/ui/calendar.js:125
+#: ../js/ui/calendar.js:123
 msgctxt "grid saturday"
 msgid "S"
 msgstr "С"
 
-#. Translators: Event list abbreviation for Sunday.
-#. *
-#. * NOTE: These list abbreviations are normally not shown together
-#. * so they need to be unique (e.g. Tuesday and Thursday cannot
-#. * both be 'T').
-#.
-#: ../js/ui/calendar.js:138
-msgctxt "list sunday"
-msgid "Su"
-msgstr "Нд"
-
-#. Translators: Event list abbreviation for Monday
-#: ../js/ui/calendar.js:140
-msgctxt "list monday"
-msgid "M"
-msgstr "Пн"
-
-#. Translators: Event list abbreviation for Tuesday
-#: ../js/ui/calendar.js:142
-msgctxt "list tuesday"
-msgid "T"
-msgstr "Вт"
-
-#. Translators: Event list abbreviation for Wednesday
-#: ../js/ui/calendar.js:144
-msgctxt "list wednesday"
-msgid "W"
-msgstr "Ср"
-
-#. Translators: Event list abbreviation for Thursday
-#: ../js/ui/calendar.js:146
-msgctxt "list thursday"
-msgid "Th"
-msgstr "Чт"
-
-#. Translators: Event list abbreviation for Friday
-#: ../js/ui/calendar.js:148
-msgctxt "list friday"
-msgid "F"
-msgstr "Пт"
-
-#. Translators: Event list abbreviation for Saturday
-#: ../js/ui/calendar.js:150
-msgctxt "list saturday"
-msgid "S"
-msgstr "Сб"
-
-#: ../js/ui/calendar.js:453
+#: ../js/ui/calendar.js:590
 msgid "Previous month"
 msgstr "Попередній місяць"
 
-#: ../js/ui/calendar.js:463
+#: ../js/ui/calendar.js:600
 msgid "Next month"
 msgstr "Наступний місяць"
 
-#. Translators: Text to show if there are no events
-#: ../js/ui/calendar.js:781
-msgid "Nothing Scheduled"
-msgstr "Нічого не заплановано"
+#: ../js/ui/calendar.js:1245
+msgid "Clear section"
+msgstr "Очистити розділ"
 
-#. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:799
+#: ../js/ui/calendar.js:1423
+msgid "Events"
+msgstr "Події"
+
+#: ../js/ui/calendar.js:1431
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %B %d"
 
-#. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:802
+#: ../js/ui/calendar.js:1435
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %B %d, %Y"
 
-#: ../js/ui/calendar.js:813
-msgid "Today"
-msgstr "Сьогодні"
+#: ../js/ui/calendar.js:1528
+msgid "Notifications"
+msgstr "Сповіщення"
 
-#: ../js/ui/calendar.js:817
-msgid "Tomorrow"
-msgstr "Завтра"
+#: ../js/ui/calendar.js:1665
+msgid "No Notifications"
+msgstr "Немає сповіщень"
 
-#: ../js/ui/calendar.js:828
-msgid "This week"
-msgstr "Цей тиждень"
-
-#: ../js/ui/calendar.js:836
-msgid "Next week"
-msgstr "Наступний тиждень"
+#: ../js/ui/calendar.js:1668
+msgid "No Events"
+msgstr "Немає подій"
 
 #: ../js/ui/components/automountManager.js:91
 msgid "External drive connected"
@@ -601,18 +557,10 @@ msgstr "Зовнішній пристрій під'єднано"
 msgid "External drive disconnected"
 msgstr "Зовнішній пристрій від'єднано"
 
-#: ../js/ui/components/autorunManager.js:296
-msgid "Removable Devices"
-msgstr "Змінні носії"
-
-#: ../js/ui/components/autorunManager.js:596
+#: ../js/ui/components/autorunManager.js:354
 #, javascript-format
 msgid "Open with %s"
 msgstr "Відкрити через %s"
-
-#: ../js/ui/components/autorunManager.js:622
-msgid "Eject"
-msgstr "Витягнути"
 
 #: ../js/ui/components/keyring.js:94 ../js/ui/components/polkitAgent.js:285
 msgid "Password:"
@@ -623,7 +571,7 @@ msgid "Type again:"
 msgstr "Введіть знову:"
 
 #: ../js/ui/components/networkAgent.js:138 ../js/ui/status/network.js:277
-#: ../js/ui/status/network.js:359 ../js/ui/status/network.js:918
+#: ../js/ui/status/network.js:359 ../js/ui/status/network.js:919
 msgid "Connect"
 msgstr "З'єднатись"
 
@@ -719,47 +667,39 @@ msgstr "Вибачте, це не працює. Спробуйте ще."
 
 #. FIXME: We don't have a 'chat room' icon (bgo #653737) use
 #. system-users for now as Empathy does.
-#: ../js/ui/components/telepathyClient.js:240
+#: ../js/ui/components/telepathyClient.js:243
 msgid "Invitation"
 msgstr "Запрошення"
 
 #. We got the TpContact
-#: ../js/ui/components/telepathyClient.js:300
+#: ../js/ui/components/telepathyClient.js:303
 msgid "Call"
 msgstr "Виклик"
 
 #. We got the TpContact
-#: ../js/ui/components/telepathyClient.js:316
+#: ../js/ui/components/telepathyClient.js:319
 msgid "File Transfer"
 msgstr "Пересилання файла"
 
-#: ../js/ui/components/telepathyClient.js:420
+#: ../js/ui/components/telepathyClient.js:423
 msgid "Chat"
 msgstr "Балачка"
 
-#: ../js/ui/components/telepathyClient.js:483
-msgid "Unmute"
-msgstr "Озвучити"
-
-#: ../js/ui/components/telepathyClient.js:483
-msgid "Mute"
-msgstr "Приглушити"
-
 #. Translators: Time in 24h format
-#: ../js/ui/components/telepathyClient.js:953
+#: ../js/ui/components/telepathyClient.js:936 ../js/ui/dateMenu.js:209
 msgid "%H∶%M"
 msgstr "%H:%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30"
-#: ../js/ui/components/telepathyClient.js:960
+#: ../js/ui/components/telepathyClient.js:943
 #, no-c-format
 msgid "Yesterday, %H∶%M"
 msgstr "Учора, %H∶%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 24h format. i.e. "Monday, 14:30"
-#: ../js/ui/components/telepathyClient.js:967
+#: ../js/ui/components/telepathyClient.js:950
 #, no-c-format
 msgid "%A, %H∶%M"
 msgstr "%A, %H∶%M"
@@ -767,7 +707,7 @@ msgstr "%A, %H∶%M"
 #. Translators: this is the month name and day number
 #. followed by a time string in 24h format.
 #. i.e. "May 25, 14:30"
-#: ../js/ui/components/telepathyClient.js:974
+#: ../js/ui/components/telepathyClient.js:957
 #, no-c-format
 msgid "%B %d, %H∶%M"
 msgstr "%d %B, %H∶%M"
@@ -775,26 +715,26 @@ msgstr "%d %B, %H∶%M"
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
 #. i.e. "May 25 2012, 14:30"
-#: ../js/ui/components/telepathyClient.js:980
+#: ../js/ui/components/telepathyClient.js:963
 #, no-c-format
 msgid "%B %d %Y, %H∶%M"
 msgstr "%d %B %Y, %H∶%M"
 
-#. Translators: Time in 24h format
-#: ../js/ui/components/telepathyClient.js:986
+#. Translators: Time in 12h format
+#: ../js/ui/components/telepathyClient.js:969 ../js/ui/dateMenu.js:212
 msgid "%l∶%M %p"
 msgstr "%l∶%M %p"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 12h format. i.e. "Yesterday, 2:30 pm"
-#: ../js/ui/components/telepathyClient.js:993
+#: ../js/ui/components/telepathyClient.js:976
 #, no-c-format
 msgid "Yesterday, %l∶%M %p"
 msgstr "Учора, %l∶%M %p"
 
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm"
-#: ../js/ui/components/telepathyClient.js:1000
+#: ../js/ui/components/telepathyClient.js:983
 #, no-c-format
 msgid "%A, %l∶%M %p"
 msgstr "%A, %l∶%M %p"
@@ -802,7 +742,7 @@ msgstr "%A, %l∶%M %p"
 #. Translators: this is the month name and day number
 #. followed by a time string in 12h format.
 #. i.e. "May 25, 2:30 pm"
-#: ../js/ui/components/telepathyClient.js:1007
+#: ../js/ui/components/telepathyClient.js:990
 #, no-c-format
 msgid "%B %d, %l∶%M %p"
 msgstr "%d %B, %l∶%M %p"
@@ -810,21 +750,21 @@ msgstr "%d %B, %l∶%M %p"
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
 #. i.e. "May 25 2012, 2:30 pm"
-#: ../js/ui/components/telepathyClient.js:1013
+#: ../js/ui/components/telepathyClient.js:996
 #, no-c-format
 msgid "%B %d %Y, %l∶%M %p"
 msgstr "%d %B %Y, %l∶%M %p"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/components/telepathyClient.js:1045
+#: ../js/ui/components/telepathyClient.js:1028
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s тепер відомий як %s"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example.
-#: ../js/ui/components/telepathyClient.js:1149
+#: ../js/ui/components/telepathyClient.js:1132
 #, javascript-format
 msgid "Invitation to %s"
 msgstr "Запрошення на %s"
@@ -832,38 +772,38 @@ msgstr "Запрошення на %s"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example.
-#: ../js/ui/components/telepathyClient.js:1157
+#: ../js/ui/components/telepathyClient.js:1136
 #, javascript-format
 msgid "%s is inviting you to join %s"
 msgstr "%s запрошує долучитись до %s"
 
-#: ../js/ui/components/telepathyClient.js:1159
-#: ../js/ui/components/telepathyClient.js:1194
-#: ../js/ui/components/telepathyClient.js:1228
-#: ../js/ui/components/telepathyClient.js:1286
+#: ../js/ui/components/telepathyClient.js:1140
+#: ../js/ui/components/telepathyClient.js:1175
+#: ../js/ui/components/telepathyClient.js:1207
+#: ../js/ui/components/telepathyClient.js:1273
 msgid "Decline"
 msgstr "Відмовити"
 
-#: ../js/ui/components/telepathyClient.js:1165
-#: ../js/ui/components/telepathyClient.js:1234
-#: ../js/ui/components/telepathyClient.js:1291
+#: ../js/ui/components/telepathyClient.js:1146
+#: ../js/ui/components/telepathyClient.js:1213
+#: ../js/ui/components/telepathyClient.js:1278
 msgid "Accept"
 msgstr "Прийняти"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/components/telepathyClient.js:1184
+#: ../js/ui/components/telepathyClient.js:1165
 #, javascript-format
 msgid "Video call from %s"
 msgstr "Відеовиклик від %s"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/components/telepathyClient.js:1187
+#: ../js/ui/components/telepathyClient.js:1168
 #, javascript-format
 msgid "Call from %s"
 msgstr "Виклик від %s"
 
 #. translators: this is a button label (verb), not a noun
-#: ../js/ui/components/telepathyClient.js:1201
+#: ../js/ui/components/telepathyClient.js:1182
 msgid "Answer"
 msgstr "Відповісти"
 
@@ -872,110 +812,110 @@ msgstr "Відповісти"
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
 #.
-#: ../js/ui/components/telepathyClient.js:1222
+#: ../js/ui/components/telepathyClient.js:1203
 #, javascript-format
 msgid "%s is sending you %s"
 msgstr "%s надсилає %s"
 
 #. To translators: The parameter is the contact's alias
-#: ../js/ui/components/telepathyClient.js:1251
+#: ../js/ui/components/telepathyClient.js:1230
 #, javascript-format
 msgid "%s would like permission to see when you are online"
 msgstr "%s бажає дозволу бачити, коли ви у мережі"
 
-#: ../js/ui/components/telepathyClient.js:1337
+#: ../js/ui/components/telepathyClient.js:1321
 msgid "Network error"
 msgstr "Помилка мережі"
 
-#: ../js/ui/components/telepathyClient.js:1339
+#: ../js/ui/components/telepathyClient.js:1323
 msgid "Authentication failed"
 msgstr "Помилка автентифікації"
 
-#: ../js/ui/components/telepathyClient.js:1341
+#: ../js/ui/components/telepathyClient.js:1325
 msgid "Encryption error"
 msgstr "Помилка шифрування"
 
-#: ../js/ui/components/telepathyClient.js:1343
+#: ../js/ui/components/telepathyClient.js:1327
 msgid "Certificate not provided"
 msgstr "Сертифікат не надано"
 
-#: ../js/ui/components/telepathyClient.js:1345
+#: ../js/ui/components/telepathyClient.js:1329
 msgid "Certificate untrusted"
 msgstr "Сертифікат ненадійний"
 
-#: ../js/ui/components/telepathyClient.js:1347
+#: ../js/ui/components/telepathyClient.js:1331
 msgid "Certificate expired"
 msgstr "Сертифікат застарів"
 
-#: ../js/ui/components/telepathyClient.js:1349
+#: ../js/ui/components/telepathyClient.js:1333
 msgid "Certificate not activated"
 msgstr "Сертифікат не активовано"
 
-#: ../js/ui/components/telepathyClient.js:1351
+#: ../js/ui/components/telepathyClient.js:1335
 msgid "Certificate hostname mismatch"
 msgstr "Сертифікат не збігається з назвою вузла"
 
-#: ../js/ui/components/telepathyClient.js:1353
+#: ../js/ui/components/telepathyClient.js:1337
 msgid "Certificate fingerprint mismatch"
 msgstr "Сертифікат не збігається з відбитком"
 
-#: ../js/ui/components/telepathyClient.js:1355
+#: ../js/ui/components/telepathyClient.js:1339
 msgid "Certificate self-signed"
 msgstr "Сертифікат самопідписано"
 
-#: ../js/ui/components/telepathyClient.js:1357
+#: ../js/ui/components/telepathyClient.js:1341
 msgid "Status is set to offline"
 msgstr "Стан змінено на «поза мережею»"
 
-#: ../js/ui/components/telepathyClient.js:1359
+#: ../js/ui/components/telepathyClient.js:1343
 msgid "Encryption is not available"
 msgstr "Шифрування недоступне"
 
-#: ../js/ui/components/telepathyClient.js:1361
+#: ../js/ui/components/telepathyClient.js:1345
 msgid "Certificate is invalid"
 msgstr "Сертифікат недійсний"
 
-#: ../js/ui/components/telepathyClient.js:1363
+#: ../js/ui/components/telepathyClient.js:1347
 msgid "Connection has been refused"
 msgstr "З'єднання відкинуто"
 
-#: ../js/ui/components/telepathyClient.js:1365
+#: ../js/ui/components/telepathyClient.js:1349
 msgid "Connection can't be established"
 msgstr "З'єднання неможливо встановити"
 
-#: ../js/ui/components/telepathyClient.js:1367
+#: ../js/ui/components/telepathyClient.js:1351
 msgid "Connection has been lost"
 msgstr "З'єднання втрачено"
 
-#: ../js/ui/components/telepathyClient.js:1369
+#: ../js/ui/components/telepathyClient.js:1353
 msgid "This account is already connected to the server"
 msgstr "Цей обліковий запис уже з'єднано із сервером"
 
-#: ../js/ui/components/telepathyClient.js:1371
+#: ../js/ui/components/telepathyClient.js:1355
 msgid ""
 "Connection has been replaced by a new connection using the same resource"
 msgstr "З'єднання заміщено новим через той самий ресурс"
 
-#: ../js/ui/components/telepathyClient.js:1373
+#: ../js/ui/components/telepathyClient.js:1357
 msgid "The account already exists on the server"
 msgstr "Обліковий запис уже існує на сервері"
 
-#: ../js/ui/components/telepathyClient.js:1375
+#: ../js/ui/components/telepathyClient.js:1359
 msgid "Server is currently too busy to handle the connection"
 msgstr "Сервер надто зайнятий, щоб обробити з'єднання"
 
-#: ../js/ui/components/telepathyClient.js:1377
+#: ../js/ui/components/telepathyClient.js:1361
 msgid "Certificate has been revoked"
 msgstr "Сертифікат відкликано"
 
-#: ../js/ui/components/telepathyClient.js:1379
+#: ../js/ui/components/telepathyClient.js:1363
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr ""
 "Сертифікат використовує небезпечні алгоритми шифрування або криптографічно "
 "заслабкий"
 
-#: ../js/ui/components/telepathyClient.js:1381
+#: ../js/ui/components/telepathyClient.js:1365
 msgid ""
 "The length of the server certificate, or the depth of the server certificate "
 "chain, exceed the limits imposed by the cryptography library"
@@ -983,57 +923,61 @@ msgstr ""
 "Тривалість сертифіката сервера, або глибина його ланцюга, перевищує "
 "обмеження, які накладає бібліотека криптографії"
 
-#: ../js/ui/components/telepathyClient.js:1383
+#: ../js/ui/components/telepathyClient.js:1367
 msgid "Internal error"
 msgstr "Внутрішня помилка"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example.
-#: ../js/ui/components/telepathyClient.js:1393
+#: ../js/ui/components/telepathyClient.js:1377
 #, javascript-format
 msgid "Unable to connect to %s"
 msgstr "Неможливо під'єднатись до %s"
 
-#: ../js/ui/components/telepathyClient.js:1398
+#: ../js/ui/components/telepathyClient.js:1382
 msgid "View account"
 msgstr "Переглянути обліковий запис"
 
-#: ../js/ui/components/telepathyClient.js:1435
+#: ../js/ui/components/telepathyClient.js:1419
 msgid "Unknown reason"
 msgstr "Невідома причина"
 
-#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:154
+#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:155
 msgid "Windows"
 msgstr "Вікна"
 
-#: ../js/ui/dash.js:249 ../js/ui/dash.js:287
+#: ../js/ui/dash.js:250 ../js/ui/dash.js:291
 msgid "Show Applications"
 msgstr "Показати програми"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/dash.js:445
+#: ../js/ui/dash.js:451
 msgid "Dash"
 msgstr "Риска"
-
-#: ../js/ui/dateMenu.js:96
-msgid "Open Calendar"
-msgstr "Відкрити календар"
-
-#: ../js/ui/dateMenu.js:100
-msgid "Open Clocks"
-msgstr "Відкрити годинники"
-
-#: ../js/ui/dateMenu.js:107
-msgid "Date & Time Settings"
-msgstr "Параметри дати та часу"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: ../js/ui/dateMenu.js:204
-msgid "%A %B %e, %Y"
-msgstr "%A %B %e, %Y"
+#: ../js/ui/dateMenu.js:72
+msgid "%B %e %Y"
+msgstr "%e %B %Y"
+
+#. Translators: This is the accessible name of the date button shown
+#. * below the time in the shell; it should combine the weekday and the
+#. * date, e.g. "Tuesday February 17 2015".
+#.
+#: ../js/ui/dateMenu.js:79
+msgid "%A %B %e %Y"
+msgstr "%A %e %B %Y"
+
+#: ../js/ui/dateMenu.js:159
+msgid "Add world clocks…"
+msgstr "Додати світові годинники…"
+
+#: ../js/ui/dateMenu.js:160
+msgid "World Clocks"
+msgstr "Світові годинники"
 
 #: ../js/ui/endSessionDialog.js:64
 #, javascript-format
@@ -1178,7 +1122,7 @@ msgstr "Встановити"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Звантажити і встановити «%s» з extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:692 ../js/ui/status/keyboard.js:523
+#: ../js/ui/keyboard.js:706 ../js/ui/status/keyboard.js:577
 msgid "Keyboard"
 msgstr "Клавіатура"
 
@@ -1234,54 +1178,9 @@ msgstr "Переглянути джерело"
 msgid "Web Page"
 msgstr "Веб-сторінка"
 
-#: ../js/ui/messageTray.js:1327
-msgid "Open"
-msgstr "Відкрити"
-
-#: ../js/ui/messageTray.js:1334
-msgid "Remove"
-msgstr "Вилучити"
-
-#: ../js/ui/messageTray.js:1631
-msgid "Notifications"
-msgstr "Сповіщення"
-
-#: ../js/ui/messageTray.js:1638
-msgid "Clear Messages"
-msgstr "Очистити повідомлення"
-
-#: ../js/ui/messageTray.js:1657
-msgid "Notification Settings"
-msgstr "Параметри сповіщення"
-
-#: ../js/ui/messageTray.js:1710
-msgid "Tray Menu"
-msgstr "Меню лотка"
-
-#: ../js/ui/messageTray.js:1934
-msgid "No Messages"
-msgstr "Немає повідомлень"
-
-#: ../js/ui/messageTray.js:1979
-msgid "Message Tray"
-msgstr "Лоток повідомлень"
-
-#: ../js/ui/messageTray.js:2992
+#: ../js/ui/messageTray.js:2092
 msgid "System Information"
 msgstr "Інформація про систему"
-
-#: ../js/ui/notificationDaemon.js:513 ../src/shell-app.c:425
-msgctxt "program"
-msgid "Unknown"
-msgstr "Невідомо"
-
-#: ../js/ui/overviewControls.js:482 ../js/ui/screenShield.js:151
-#, javascript-format
-msgid "%d new message"
-msgid_plural "%d new messages"
-msgstr[0] "%d нове повідомлення"
-msgstr[1] "%d нових повідомлення"
-msgstr[2] "%d нових повідомлень"
 
 #: ../js/ui/overview.js:84
 msgid "Undo"
@@ -1299,17 +1198,17 @@ msgstr "Огляд"
 msgid "Type to search…"
 msgstr "Введіть для пошуку…"
 
-#: ../js/ui/panel.js:515
+#: ../js/ui/panel.js:351
 msgid "Quit"
 msgstr "Вийти"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:567
+#: ../js/ui/panel.js:403
 msgid "Activities"
 msgstr "Діяльність"
 
-#: ../js/ui/panel.js:918
+#: ../js/ui/panel.js:754
 msgid "Top Bar"
 msgstr "Верхня панель"
 
@@ -1318,7 +1217,7 @@ msgstr "Верхня панель"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:269
+#: ../js/ui/popupMenu.js:288
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -1340,7 +1239,15 @@ msgstr "Перезапускання…"
 msgid "%A, %B %d"
 msgstr "%A, %B %d"
 
-#: ../js/ui/screenShield.js:153
+#: ../js/ui/screenShield.js:147
+#, javascript-format
+msgid "%d new message"
+msgid_plural "%d new messages"
+msgstr[0] "%d нове повідомлення"
+msgstr[1] "%d нових повідомлення"
+msgstr[2] "%d нових повідомлень"
+
+#: ../js/ui/screenShield.js:149
 #, javascript-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
@@ -1348,11 +1255,11 @@ msgstr[0] "%d нове сповіщення"
 msgstr[1] "%d нових сповіщення"
 msgstr[2] "%d нових сповіщень"
 
-#: ../js/ui/screenShield.js:472 ../js/ui/status/system.js:345
+#: ../js/ui/screenShield.js:434 ../js/ui/status/system.js:345
 msgid "Lock"
 msgstr "Заблокувати"
 
-#: ../js/ui/screenShield.js:706
+#: ../js/ui/screenShield.js:670
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME потребує заблокувати екран"
 
@@ -1363,19 +1270,19 @@ msgstr "GNOME потребує заблокувати екран"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: ../js/ui/screenShield.js:833 ../js/ui/screenShield.js:1304
+#: ../js/ui/screenShield.js:797 ../js/ui/screenShield.js:1273
 msgid "Unable to lock"
 msgstr "Неможливо заблокувати"
 
-#: ../js/ui/screenShield.js:834 ../js/ui/screenShield.js:1305
+#: ../js/ui/screenShield.js:798 ../js/ui/screenShield.js:1274
 msgid "Lock was blocked by an application"
 msgstr "Блокування заборонено програмою"
 
-#: ../js/ui/search.js:594
+#: ../js/ui/search.js:609
 msgid "Searching…"
 msgstr "Пошуки…"
 
-#: ../js/ui/search.js:596
+#: ../js/ui/search.js:611
 msgid "No results."
 msgstr "Безрезультатно."
 
@@ -1454,9 +1361,9 @@ msgid "Bluetooth"
 msgstr "Bluetooth"
 
 #: ../js/ui/status/bluetooth.js:51 ../js/ui/status/network.js:178
-#: ../js/ui/status/network.js:360 ../js/ui/status/network.js:1281
-#: ../js/ui/status/network.js:1392 ../js/ui/status/rfkill.js:86
-#: ../js/ui/status/rfkill.js:114
+#: ../js/ui/status/network.js:360 ../js/ui/status/network.js:1282
+#: ../js/ui/status/network.js:1393 ../js/ui/status/rfkill.js:91
+#: ../js/ui/status/rfkill.js:118
 msgid "Turn Off"
 msgstr "Вимкнути"
 
@@ -1472,7 +1379,7 @@ msgstr[0] "Під'єднано %d пристрій"
 msgstr[1] "Під'єднано %d пристрої"
 msgstr[2] "Під'єднано %d пристроїв"
 
-#: ../js/ui/status/bluetooth.js:106 ../js/ui/status/network.js:1309
+#: ../js/ui/status/bluetooth.js:106 ../js/ui/status/network.js:1310
 msgid "Not Connected"
 msgstr "Роз'єднано"
 
@@ -1480,7 +1387,7 @@ msgstr "Роз'єднано"
 msgid "Brightness"
 msgstr "Яскравість"
 
-#: ../js/ui/status/keyboard.js:547
+#: ../js/ui/status/keyboard.js:600
 msgid "Show Keyboard Layout"
 msgstr "Показати розкладку клавіатури"
 
@@ -1508,8 +1415,8 @@ msgstr "Увімкнути"
 msgid "<unknown>"
 msgstr "<невідомо>"
 
-#: ../js/ui/status/network.js:457 ../js/ui/status/network.js:1307
-#: ../js/ui/status/network.js:1511
+#: ../js/ui/status/network.js:457 ../js/ui/status/network.js:1308
+#: ../js/ui/status/network.js:1512
 msgid "Off"
 msgstr "Вимкнено"
 
@@ -1527,7 +1434,7 @@ msgstr "Некерований"
 msgid "Disconnecting"
 msgstr "Від'єднання"
 
-#: ../js/ui/status/network.js:471 ../js/ui/status/network.js:1301
+#: ../js/ui/status/network.js:471 ../js/ui/status/network.js:1302
 msgid "Connecting"
 msgstr "З'єднання"
 
@@ -1548,7 +1455,7 @@ msgstr "Бракує мікропрограми"
 msgid "Unavailable"
 msgstr "Недоступний"
 
-#: ../js/ui/status/network.js:488 ../js/ui/status/network.js:1695
+#: ../js/ui/status/network.js:488 ../js/ui/status/network.js:1696
 msgid "Connection failed"
 msgstr "Не вдалось з'єднатись"
 
@@ -1560,7 +1467,7 @@ msgstr "Параметри радіомережі"
 msgid "Mobile Broadband Settings"
 msgstr "параметри мобільної радіомережі"
 
-#: ../js/ui/status/network.js:588 ../js/ui/status/network.js:1305
+#: ../js/ui/status/network.js:588 ../js/ui/status/network.js:1306
 msgid "Hardware Disabled"
 msgstr "Пристрій вимкнено"
 
@@ -1600,60 +1507,60 @@ msgstr "Мережі Wi-Fi"
 msgid "Select a network"
 msgstr "Вибрати мережу"
 
-#: ../js/ui/status/network.js:882
+#: ../js/ui/status/network.js:883
 msgid "No Networks"
 msgstr "Немає мереж"
 
-#: ../js/ui/status/network.js:903 ../js/ui/status/rfkill.js:112
+#: ../js/ui/status/network.js:904 ../js/ui/status/rfkill.js:116
 msgid "Use hardware switch to turn off"
 msgstr "Натисніть апаратну кнопку, щоб вимкнути"
 
-#: ../js/ui/status/network.js:1173
+#: ../js/ui/status/network.js:1174
 msgid "Select Network"
 msgstr "Виберіть мережу"
 
-#: ../js/ui/status/network.js:1179
+#: ../js/ui/status/network.js:1180
 msgid "Wi-Fi Settings"
 msgstr "Параметри Wi-Fi"
 
-#: ../js/ui/status/network.js:1281
+#: ../js/ui/status/network.js:1282
 msgid "Turn On"
 msgstr "Увімкнути"
 
-#: ../js/ui/status/network.js:1298
+#: ../js/ui/status/network.js:1299
 msgid "Hotspot Active"
 msgstr "Доступні точки доступу"
 
-#: ../js/ui/status/network.js:1409
+#: ../js/ui/status/network.js:1410
 msgid "connecting..."
 msgstr "з'єднання…"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:1412
+#: ../js/ui/status/network.js:1413
 msgid "authentication required"
 msgstr "Потрібна аутентифікація"
 
-#: ../js/ui/status/network.js:1414
+#: ../js/ui/status/network.js:1415
 msgid "connection failed"
 msgstr "не вдалось з'єднатись"
 
-#: ../js/ui/status/network.js:1480 ../js/ui/status/rfkill.js:89
+#: ../js/ui/status/network.js:1481 ../js/ui/status/rfkill.js:94
 msgid "Network Settings"
 msgstr "Налаштування мережі"
 
-#: ../js/ui/status/network.js:1482
+#: ../js/ui/status/network.js:1483
 msgid "VPN Settings"
 msgstr "Параметри VPN"
 
-#: ../js/ui/status/network.js:1501
+#: ../js/ui/status/network.js:1502
 msgid "VPN"
 msgstr "VPN"
 
-#: ../js/ui/status/network.js:1656
+#: ../js/ui/status/network.js:1657
 msgid "Network Manager"
 msgstr "Керування мережею"
 
-#: ../js/ui/status/network.js:1696
+#: ../js/ui/status/network.js:1697
 msgid "Activation of network connection failed"
 msgstr "Не вдалось увімкнути мережеве з'єднання"
 
@@ -1694,11 +1601,11 @@ msgstr "Батарея"
 #. The menu only appears when airplane mode is on, so just
 #. statically build it as if it was on, rather than dynamically
 #. changing the menu contents.
-#: ../js/ui/status/rfkill.js:83
+#: ../js/ui/status/rfkill.js:88
 msgid "Airplane Mode"
 msgstr "У літаку"
 
-#: ../js/ui/status/rfkill.js:85
+#: ../js/ui/status/rfkill.js:90
 msgid "On"
 msgstr "Увімкнено"
 
@@ -1742,11 +1649,11 @@ msgstr "Увійти як інший користувач"
 msgid "Unlock Window"
 msgstr "Розблокувати вікно"
 
-#: ../js/ui/viewSelector.js:158
+#: ../js/ui/viewSelector.js:159
 msgid "Applications"
 msgstr "Програми"
 
-#: ../js/ui/viewSelector.js:162
+#: ../js/ui/viewSelector.js:163
 msgid "Search"
 msgstr "Пошук"
 
@@ -1777,6 +1684,13 @@ msgid_plural "Settings changes will revert in %d seconds"
 msgstr[0] "Зміни параметрів буде повернуто через %d секунду"
 msgstr[1] "Зміни параметрів буде повернуто через %d секунди"
 msgstr[2] "Зміни параметрів буде повернуто через %d секунд"
+
+#. Translators: This represents the size of a window. The first number is
+#. * the width of the window and the second is the height.
+#: ../js/ui/windowManager.js:599
+#, javascript-format
+msgid "%d x %d"
+msgstr "%d x %d"
 
 #: ../js/ui/windowMenu.js:34
 msgid "Minimize"
@@ -1862,7 +1776,12 @@ msgstr "Використовувати вказаний режим, прикла
 msgid "List possible modes"
 msgstr "Перелік можливих режимів"
 
-#: ../src/shell-app.c:666
+#: ../src/shell-app.c:247
+msgctxt "program"
+msgid "Unknown"
+msgstr "Невідомо"
+
+#: ../src/shell-app.c:488
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "Не вдалося запустити «%s»"
@@ -1878,6 +1797,91 @@ msgstr "Пароль не може бути порожнім"
 #: ../src/shell-polkit-authentication-agent.c:346
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Вікно авторизації відхилено користувачем"
+
+#~ msgid "Captive Portal"
+#~ msgstr "Прив'язаний портал"
+
+#~ msgctxt "list sunday"
+#~ msgid "Su"
+#~ msgstr "Нд"
+
+#~ msgctxt "list monday"
+#~ msgid "M"
+#~ msgstr "Пн"
+
+#~ msgctxt "list tuesday"
+#~ msgid "T"
+#~ msgstr "Вт"
+
+#~ msgctxt "list wednesday"
+#~ msgid "W"
+#~ msgstr "Ср"
+
+#~ msgctxt "list thursday"
+#~ msgid "Th"
+#~ msgstr "Чт"
+
+#~ msgctxt "list friday"
+#~ msgid "F"
+#~ msgstr "Пт"
+
+#~ msgctxt "list saturday"
+#~ msgid "S"
+#~ msgstr "Сб"
+
+#~ msgid "Nothing Scheduled"
+#~ msgstr "Нічого не заплановано"
+
+#~ msgid "Today"
+#~ msgstr "Сьогодні"
+
+#~ msgid "Tomorrow"
+#~ msgstr "Завтра"
+
+#~ msgid "This week"
+#~ msgstr "Цей тиждень"
+
+#~ msgid "Next week"
+#~ msgstr "Наступний тиждень"
+
+#~ msgid "Removable Devices"
+#~ msgstr "Змінні носії"
+
+#~ msgid "Eject"
+#~ msgstr "Витягнути"
+
+#~ msgid "Unmute"
+#~ msgstr "Озвучити"
+
+#~ msgid "Mute"
+#~ msgstr "Приглушити"
+
+#~ msgid "Open Calendar"
+#~ msgstr "Відкрити календар"
+
+#~ msgid "Date & Time Settings"
+#~ msgstr "Параметри дати та часу"
+
+#~ msgid "Open"
+#~ msgstr "Відкрити"
+
+#~ msgid "Remove"
+#~ msgstr "Вилучити"
+
+#~ msgid "Clear Messages"
+#~ msgstr "Очистити повідомлення"
+
+#~ msgid "Notification Settings"
+#~ msgstr "Параметри сповіщення"
+
+#~ msgid "Tray Menu"
+#~ msgstr "Меню лотка"
+
+#~ msgid "No Messages"
+#~ msgstr "Немає повідомлень"
+
+#~ msgid "Message Tray"
+#~ msgstr "Лоток повідомлень"
 
 #~ msgid "The maximum accuracy level of location."
 #~ msgstr "Максимальний рівень точності місця перебування."
