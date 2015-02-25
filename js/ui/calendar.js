@@ -1574,10 +1574,10 @@ const NotificationSection = new Lang.Class({
     _onNotificationAdded: function(source, notification) {
         let message = new NotificationMessage(notification);
 
-        let time = Util.formatTime(new Date());
-        message.setSecondaryActor(new St.Label({ style_class: 'event-time',
-                                                 x_align: Clutter.ActorAlign.END,
-                                                 text: time }));
+        let timeLabel = Util.createTimeLabel(new Date());
+        timeLabel.style_class = 'event-time',
+        timeLabel.x_align = Clutter.ActorAlign.END;
+        message.setSecondaryActor(timeLabel);
 
         let isUrgent = notification.urgency == MessageTray.Urgency.CRITICAL;
         if (isUrgent) {

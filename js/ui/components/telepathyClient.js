@@ -751,12 +751,10 @@ const ChatNotification = new Lang.Class({
         let lastMessageTime = this._history[0].time;
         let lastMessageDate = new Date(lastMessageTime * 1000);
 
-        let timeLabel = new St.Label({ text: Util.formatTime(lastMessageDate),
-                                       style_class: 'chat-meta-message',
-                                       x_expand: true,
-                                       y_expand: true,
-                                       x_align: Clutter.ActorAlign.END,
-                                       y_align: Clutter.ActorAlign.END });
+        let timeLabel = Util.createTimeLabel(lastMessageDate);
+        timeLabel.style_class = 'chat-meta-message';
+        timeLabel.x_expand = timeLabel.y_expand = true;
+        timeLabel.x_align = timeLabel.y_align = Clutter.ActorAlign.END;
 
         this._lastMessageBox.add_actor(timeLabel);
 
