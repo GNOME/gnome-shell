@@ -1327,6 +1327,28 @@ const MessageListSection = new Lang.Class({
                                               transition: 'easeOutQuad' });
     },
 
+    moveMessage: function(message, index, animate) {
+        let obj = this._messages.get(message);
+
+        if (!animate) {
+            this._list.set_child_at_index(obj.container, index);
+            return;
+        }
+
+        let onComplete = Lang.bind(this, function() {
+            this._list.set_child_at_index(obj.container, index);
+            Tweener.addTween(obj.container, { scale_x: 1,
+                                              scale_y: 1,
+                                              time: MESSAGE_ANIMATION_TIME,
+                                              transition: 'easeOutQuad' });
+        });
+        Tweener.addTween(obj.container, { scale_x: 0,
+                                          scale_y: 0,
+                                          time: MESSAGE_ANIMATION_TIME,
+                                          transition: 'easeOutQuad',
+                                          onComplete: onComplete });
+    },
+
     removeMessage: function(message, animate) {
         let obj = this._messages.get(message);
 
@@ -1556,6 +1578,13 @@ const NotificationSection = new Lang.Class({
                !Main.sessionMode.isGreeter;
     },
 
+    _createTimeLabel: function() {
+        let label = Util.createTimeLabel(new Date());
+        label.style_class = 'event-time',
+        label.x_align = Clutter.ActorAlign.END;
+        return label;
+    },
+
     _sourceAdded: function(tray, source) {
         let obj = {
             destroyId: 0,
@@ -1573,22 +1602,26 @@ const NotificationSection = new Lang.Class({
 
     _onNotificationAdded: function(source, notification) {
         let message = new NotificationMessage(notification);
-
-        let timeLabel = Util.createTimeLabel(new Date());
-        timeLabel.style_class = 'event-time',
-        timeLabel.x_align = Clutter.ActorAlign.END;
-        message.setSecondaryActor(timeLabel);
+        message.setSecondaryActor(this._createTimeLabel());
 
         let isUrgent = notification.urgency == MessageTray.Urgency.CRITICAL;
+
+        let updatedId = notification.connect('updated', Lang.bind(this,
+            function() {
+                message.setSecondaryActor(this._createTimeLabel());
+                this.moveMessage(message, isUrgent ? 0 : this._nUrgent, this.actor.mapped);
+            }));
+        let destroyId = notification.connect('destroy', Lang.bind(this,
+            function() {
+                notification.disconnect(destroyId);
+                notification.disconnect(updatedId);
+                if (isUrgent)
+                    this._nUrgent--;
+            }));
+
         if (isUrgent) {
             // Keep track of urgent notifications to keep them on top
             this._nUrgent++;
-
-            let id = notification.connect('destroy', Lang.bind(this,
-                function() {
-                    notification.disconnect(id);
-                    this._nUrgent--;
-                }));
         } else if (this.mapped) {
             // Only acknowledge non-urgent notifications in case it
             // has important actions that are inaccessible when not
