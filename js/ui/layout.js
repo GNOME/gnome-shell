@@ -236,11 +236,6 @@ const LayoutManager = new Lang.Class({
         this.panelBox.connect('allocation-changed',
                               Lang.bind(this, this._panelBoxChanged));
 
-        this.trayBox = new St.Widget({ name: 'trayBox',
-                                       clip_to_allocation: true,
-                                       layout_manager: new Clutter.BinLayout() }); 
-        this.addChrome(this.trayBox, { affectsInputRegion: false });
-
         this.modalDialogGroup = new St.Widget({ name: 'modalDialogGroup',
                                                 layout_manager: new Clutter.BinLayout() });
         this.uiGroup.add_actor(this.modalDialogGroup);
@@ -283,12 +278,6 @@ const LayoutManager = new Lang.Class({
     // This is called by Main after everything else is constructed
     init: function() {
         Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
-
-        let trayConstraint = new MonitorConstraint({ primary: true, work_area: true });
-        this.trayBox.add_constraint(trayConstraint);
-        this.panelBox.bind_property('visible', trayConstraint, 'work-area',
-                                    GObject.BindingFlags.SYNC_CREATE);
-
 
         this._loadBackground();
     },
@@ -599,7 +588,6 @@ const LayoutManager = new Lang.Class({
             // the UI group to get the correct allocation for the struts.
             this._updateRegions();
 
-            this.trayBox.hide();
             this.keyboardBox.hide();
 
             let monitor = this.primaryMonitor;
@@ -666,7 +654,6 @@ const LayoutManager = new Lang.Class({
 
         this._startingUp = false;
 
-        this.trayBox.show();
         this.keyboardBox.show();
 
         if (!Main.sessionMode.isGreeter) {

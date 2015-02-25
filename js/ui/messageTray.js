@@ -3,6 +3,7 @@
 const Clutter = imports.gi.Clutter;
 const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
+const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Atk = imports.gi.Atk;
 const Lang = imports.lang;
@@ -15,6 +16,7 @@ const St = imports.gi.St;
 
 const Calendar = imports.ui.calendar;
 const GnomeSession = imports.misc.gnomeSession;
+const Layout = imports.ui.layout;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
 const Tweener = imports.ui.tweener;
@@ -1494,19 +1496,30 @@ const MessageTray = new Lang.Class({
                     global.sync_pointer();
             }));
 
-        this.actor = new St.Widget({ name: 'notification-container',
-                                     reactive: true,
-                                     track_hover: true,
-                                     y_align: Clutter.ActorAlign.START,
-                                     x_align: Clutter.ActorAlign.CENTER,
-                                     y_expand: true,
-                                     x_expand: true,
+        this.actor = new St.Widget({ visible: false,
+                                     clip_to_allocation: true,
                                      layout_manager: new Clutter.BinLayout() });
-        this.actor.connect('key-release-event', Lang.bind(this, this._onNotificationKeyRelease));
-        this.actor.connect('notify::hover', Lang.bind(this, this._onNotificationHoverChanged));
+        let constraint = new Layout.MonitorConstraint({ primary: true });
+        Main.layoutManager.panelBox.bind_property('visible',
+                                                  constraint, 'work-area',
+                                                  GObject.BindingFlags.SYNC_CREATE);
+        this.actor.add_constraint(constraint);
 
-        this.actor.hide();
-        this._notificationFocusGrabber = new FocusGrabber(this.actor);
+        this._bannerBin = new St.Widget({ name: 'notification-container',
+                                          reactive: true,
+                                          track_hover: true,
+                                          y_align: Clutter.ActorAlign.START,
+                                          x_align: Clutter.ActorAlign.CENTER,
+                                          y_expand: true,
+                                          x_expand: true,
+                                          layout_manager: new Clutter.BinLayout() });
+        this._bannerBin.connect('key-release-event',
+                                Lang.bind(this, this._onNotificationKeyRelease));
+        this._bannerBin.connect('notify::hover',
+                                Lang.bind(this, this._onNotificationHoverChanged));
+        this.actor.add_actor(this._bannerBin);
+
+        this._notificationFocusGrabber = new FocusGrabber(this._bannerBin);
         this._notificationQueue = [];
         this._notification = null;
         this._banner = null;
@@ -1525,7 +1538,7 @@ const MessageTray = new Lang.Class({
         // state of the pointer when a notification pops up.
         this._pointerInNotification = false;
 
-        // This tracks this.actor.hover and is used to fizzle
+        // This tracks this._bannerBin.hover and is used to fizzle
         // out non-changing hover notifications in onNotificationHoverChanged.
         this._notificationHovered = false;
 
@@ -1535,8 +1548,8 @@ const MessageTray = new Lang.Class({
 
         this.clearableCount = 0;
 
-        Main.layoutManager.trayBox.add_actor(this.actor);
-        Main.layoutManager.trackChrome(this.actor, { affectsInputRegion: true });
+        Main.layoutManager.addChrome(this.actor, { affectsInputRegion: false });
+        Main.layoutManager.trackChrome(this._bannerBin, { affectsInputRegion: true });
 
         global.screen.connect('in-fullscreen-changed', Lang.bind(this, this._updateState));
 
@@ -1704,10 +1717,10 @@ const MessageTray = new Lang.Class({
     },
 
     _onNotificationHoverChanged: function() {
-        if (this.actor.hover == this._notificationHovered)
+        if (this._bannerBin.hover == this._notificationHovered)
             return;
 
-        this._notificationHovered = this.actor.hover;
+        this._notificationHovered = this._bannerBin.hover;
         if (this._notificationHovered) {
             this._resetNotificationLeftTimeout();
 
@@ -1721,7 +1734,7 @@ const MessageTray = new Lang.Class({
                 // automatically. Instead, the user is able to expand the notification by mousing away from it and then
                 // mousing back in. Because this is an expected action, we set the boolean flag that indicates that a longer
                 // timeout should be used before popping down the notification.
-                if (this.actor.contains(actorAtShowNotificationPosition)) {
+                if (this._bannerBin.contains(actorAtShowNotificationPosition)) {
                     this._useLongerNotificationLeftTimeout = true;
                     return;
                 }
@@ -1877,7 +1890,7 @@ const MessageTray = new Lang.Class({
     },
 
     _clampOpacity: function() {
-        this.actor.opacity = Math.max(0, Math.min(this.actor._opacity, 255));
+        this._bannerBin.opacity = Math.max(0, Math.min(this._bannerBin._opacity, 255));
     },
 
     _onIdleMonitorBecameActive: function() {
@@ -1908,11 +1921,11 @@ const MessageTray = new Lang.Class({
             this._updateState();
         }));
 
-        this.actor.add_actor(this._banner.actor);
+        this._bannerBin.add_actor(this._banner.actor);
 
-        this.actor._opacity = 0;
-        this.actor.opacity = 0;
-        this.actor.y = -this._banner.actor.height;
+        this._bannerBin._opacity = 0;
+        this._bannerBin.opacity = 0;
+        this._bannerBin.y = -this._banner.actor.height;
         this.actor.show();
 
         this._updateShowingNotification();
@@ -1965,7 +1978,7 @@ const MessageTray = new Lang.Class({
                             onCompleteScope: this
                           };
 
-        this._tween(this.actor, '_notificationState', State.SHOWN, tweenParams);
+        this._tween(this._bannerBin, '_notificationState', State.SHOWN, tweenParams);
    },
 
     _showNotificationCompleted: function() {
@@ -2025,8 +2038,8 @@ const MessageTray = new Lang.Class({
         this._resetNotificationLeftTimeout();
 
         if (animate) {
-            this._tween(this.actor, '_notificationState', State.HIDDEN,
-                        { y: -this.actor.height,
+            this._tween(this._bannerBin, '_notificationState', State.HIDDEN,
+                        { y: -this._bannerBin.height,
                           _opacity: 0,
                           time: ANIMATION_TIME,
                           transition: 'easeOutBack',
@@ -2036,9 +2049,9 @@ const MessageTray = new Lang.Class({
                           onCompleteScope: this
                         });
         } else {
-            Tweener.removeTweens(this.actor);
-            this.actor.y = -this.actor.height;
-            this.actor.opacity = 0;
+            Tweener.removeTweens(this._bannerBin);
+            this._bannerBin.y = -this._bannerBin.height;
+            this._bannerBin.opacity = 0;
             this._notificationState = State.HIDDEN;
             this._hideNotificationCompleted();
         }
@@ -2054,7 +2067,7 @@ const MessageTray = new Lang.Class({
         this._notificationRemoved = false;
 
         if (notification.resident)
-            this.actor.remove_actor(this._banner.actor);
+            this._bannerBin.remove_actor(this._banner.actor);
         else
             this._banner.actor.destroy();
         this._banner = null;
