@@ -1796,7 +1796,7 @@ const MessageTray = new Lang.Class({
     // _updateState() figures out what (if anything) needs to be done
     // at the present time.
     _updateState: function() {
-        this.actor.visible = !this._bannerBlocked;
+        this.actor.visible = !this._bannerBlocked && this._banner != null;
         if (this._bannerBlocked)
             return;
 
