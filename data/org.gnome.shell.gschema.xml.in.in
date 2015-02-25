@@ -112,10 +112,10 @@
       </_description>
     </key>
     <key name="toggle-message-tray" type="as">
-      <default>["&lt;Super&gt;m"]</default>
-      <_summary>Keybinding to toggle the visibility of the message tray</_summary>
+      <default>["&lt;Super&gt;v","&lt;Super&gt;m"]</default>
+      <_summary>Keybinding to toggle the visibility of the notification list</_summary>
       <_description>
-        Keybinding to toggle the visibility of the message tray.
+        Keybinding to toggle the visibility of the notification list.
       </_description>
     </key>
     <key name="focus-active-notification" type="as">
