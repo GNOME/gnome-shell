@@ -60,9 +60,6 @@ const CURTAIN_SLIDE_TIME = 0.3;
 const Clock = new Lang.Class({
     Name: 'ScreenShieldClock',
 
-    CLOCK_FORMAT_KEY: 'clock-format',
-    CLOCK_SHOW_SECONDS_KEY: 'clock-show-seconds',
-
     _init: function() {
         this.actor = new St.BoxLayout({ style_class: 'screen-shield-clock',
                                         vertical: true });
