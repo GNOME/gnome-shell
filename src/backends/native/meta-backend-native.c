@@ -180,14 +180,45 @@ pointer_constrain_callback (ClutterInputDevice *device,
 }
 
 static void
+on_monitors_changed (MetaMonitorManager *monitor_manager,
+                     MetaBackend        *backend)
+{
+  ClutterDeviceManager *manager = clutter_device_manager_get_default ();
+  ClutterInputDevice *device = clutter_device_manager_get_core_device (manager, CLUTTER_POINTER_DEVICE);
+  MetaMonitorInfo *monitors, *primary;
+  unsigned int n_monitors;
+  ClutterPoint point;
+
+  if (!clutter_input_device_get_coords (device, NULL, &point))
+    return;
+
+  monitors = meta_monitor_manager_get_monitor_infos (monitor_manager, &n_monitors);
+
+  /* if we're inside a monitor, we're fine */
+  if (check_all_screen_monitors (monitors, n_monitors, point.x, point.y))
+    return;
+
+  /* warp the pointer to the primary monitor so it isn't lost */
+  primary = &monitors[meta_monitor_manager_get_primary_index (monitor_manager)];
+  meta_backend_warp_pointer (backend,
+                             primary->rect.x + primary->rect.width / 2,
+                             primary->rect.y + primary->rect.height / 2);
+}
+
+static void
 meta_backend_native_post_init (MetaBackend *backend)
 {
+  MetaMonitorManager *monitor_manager;
   ClutterDeviceManager *manager = clutter_device_manager_get_default ();
 
   META_BACKEND_CLASS (meta_backend_native_parent_class)->post_init (backend);
 
   clutter_evdev_set_pointer_constrain_callback (manager, pointer_constrain_callback,
                                                 NULL, NULL);
+
+  monitor_manager = meta_backend_get_monitor_manager (backend);
+  g_signal_connect_object (monitor_manager, "monitors-changed",
+                           G_CALLBACK (on_monitors_changed), backend, G_CONNECT_AFTER);
 }
 
 static MetaIdleMonitor *
