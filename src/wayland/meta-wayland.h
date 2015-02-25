@@ -46,6 +46,9 @@ void                    meta_wayland_compositor_set_input_focus (MetaWaylandComp
 
 void                    meta_wayland_compositor_paint_finished  (MetaWaylandCompositor *compositor);
 
+void                    meta_wayland_compositor_destroy_frame_callbacks (MetaWaylandCompositor *compositor,
+                                                                         MetaWaylandSurface    *surface);
+
 const char             *meta_wayland_get_wayland_display_name   (MetaWaylandCompositor *compositor);
 const char             *meta_wayland_get_xwayland_display_name  (MetaWaylandCompositor *compositor);
 

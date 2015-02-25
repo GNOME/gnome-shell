@@ -523,6 +523,7 @@ wl_surface_frame (struct wl_client *client,
     return;
 
   callback = g_slice_new0 (MetaWaylandFrameCallback);
+  callback->surface = surface;
   callback->resource = wl_resource_create (client, &wl_callback_interface, META_WL_CALLBACK_VERSION, callback_id);
   wl_resource_set_implementation (callback->resource, NULL, callback, destroy_frame_callback);
 
@@ -679,6 +680,8 @@ wl_surface_destructor (struct wl_resource *resource)
 
   g_object_unref (surface->surface_actor);
 
+  meta_wayland_compositor_destroy_frame_callbacks (compositor, surface);
+
   if (surface->resource)
     wl_resource_set_user_data (surface->resource, NULL);
   g_slice_free (MetaWaylandSurface, surface);
@@ -739,6 +742,8 @@ xdg_surface_destructor (struct wl_resource *resource)
 {
   MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
 
+  meta_wayland_compositor_destroy_frame_callbacks (surface->compositor,
+                                                   surface);
   destroy_window (surface);
   surface->xdg_surface = NULL;
 }
@@ -1006,6 +1011,8 @@ xdg_popup_destructor (struct wl_resource *resource)
 {
   MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
 
+  meta_wayland_compositor_destroy_frame_callbacks (surface->compositor,
+                                                   surface);
   if (surface->popup.parent)
     {
       wl_list_remove (&surface->popup.parent_destroy_listener.link);
@@ -1194,6 +1201,8 @@ wl_shell_surface_destructor (struct wl_resource *resource)
 {
   MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
 
+  meta_wayland_compositor_destroy_frame_callbacks (surface->compositor,
+                                                   surface);
   surface->wl_shell_surface = NULL;
 }
 
@@ -1593,6 +1602,8 @@ wl_subsurface_destructor (struct wl_resource *resource)
 {
   MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
 
+  meta_wayland_compositor_destroy_frame_callbacks (surface->compositor,
+                                                   surface);
   if (surface->sub.parent)
     {
       wl_list_remove (&surface->sub.parent_destroy_listener.link);

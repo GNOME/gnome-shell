@@ -37,6 +37,7 @@ typedef struct
 {
   struct wl_list link;
   struct wl_resource *resource;
+  MetaWaylandSurface *surface;
 } MetaWaylandFrameCallback;
 
 typedef struct

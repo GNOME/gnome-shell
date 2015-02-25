@@ -207,6 +207,19 @@ meta_wayland_compositor_handle_event (MetaWaylandCompositor *compositor,
   return meta_wayland_seat_handle_event (compositor->seat, event);
 }
 
+void
+meta_wayland_compositor_destroy_frame_callbacks (MetaWaylandCompositor *compositor,
+                                                 MetaWaylandSurface    *surface)
+{
+  MetaWaylandFrameCallback *callback, *next;
+
+  wl_list_for_each_safe (callback, next, &compositor->frame_callbacks, link)
+    {
+      if (callback->surface == surface)
+        wl_resource_destroy (callback->resource);
+    }
+}
+
 static void
 set_gnome_env (const char *name,
 	       const char *value)
