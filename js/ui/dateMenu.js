@@ -200,23 +200,11 @@ const WorldClocksSection = new Lang.Class({
     },
 
     _updateLabels: function() {
-        let desktopSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.interface' });
-        let clockFormat = desktopSettings.get_string('clock-format');
-        let hasAmPm = new Date().toLocaleFormat('%p') != '';
-
-        let format;
-        if (clockFormat == '24h' || !hasAmPm)
-            /* Translators: Time in 24h format */
-            format = N_("%H\u2236%M");
-        else
-            /* Translators: Time in 12h format */
-            format = N_("%l\u2236%M %p");
-
         for (let i = 0; i < this._locations.length; i++) {
             let l = this._locations[i];
             let tz = GLib.TimeZone.new(l.location.get_timezone().get_tzid());
             let now = GLib.DateTime.new_now(tz);
-            l.actor.text = now.format(format);
+            l.actor.text = Util.formatTime(now, { timeOnly: true });
         }
     }
 });
