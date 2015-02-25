@@ -317,14 +317,14 @@ meta_launcher_new (void)
     {
       g_warning ("Could not take control: %s", error->message);
       g_error_free (error);
-      return NULL;
+      goto out;
     }
 
   if (!get_kms_fd (session_proxy, &kms_fd))
-    return NULL;
+    goto out;
 
   self = g_slice_new0 (MetaLauncher);
-  self->session_proxy = session_proxy;
+  self->session_proxy = g_object_ref (session_proxy);
   self->seat_proxy = get_seat_proxy (NULL);
 
   self->session_active = TRUE;
@@ -335,6 +335,9 @@ meta_launcher_new (void)
                                       self);
 
   g_signal_connect (self->session_proxy, "notify::active", G_CALLBACK (on_active_changed), self);
+
+out:
+  g_object_unref (session_proxy);
 
   return self;
 }
