@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-02-23 08:38+0000\n"
-"PO-Revision-Date: 2015-02-23 19:02+0100\n"
+"POT-Creation-Date: 2015-02-25 08:43+0000\n"
+"PO-Revision-Date: 2015-02-25 11:00+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
 "Language: es\n"
@@ -26,7 +26,6 @@ msgid "System"
 msgstr "Sistema"
 
 #: ../data/50-gnome-shell-system.xml.in.h:2
-#| msgid "Show the message tray"
 msgid "Show the message list"
 msgstr "Mostrar la lista de mensajes"
 
@@ -535,8 +534,12 @@ msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d de %B de %Y"
 
+#: ../js/ui/calendar.js:1528
+#| msgid "No Notifications"
+msgid "Notifications"
+msgstr "Notificaciones"
+
 #: ../js/ui/calendar.js:1665
-#| msgid "Notifications"
 msgid "No Notifications"
 msgstr "No hay notificaciones"
 
@@ -944,7 +947,6 @@ msgstr "Tablero"
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #. */
 #: ../js/ui/dateMenu.js:72
-#| msgid "%A %B %e, %Y"
 msgid "%B %e %Y"
 msgstr "%B %e %Y"
 
@@ -953,7 +955,6 @@ msgstr "%B %e %Y"
 #. * date, e.g. "Tuesday February 17 2015".
 #. */
 #: ../js/ui/dateMenu.js:79
-#| msgid "%A %B %e, %Y"
 msgid "%A %B %e %Y"
 msgstr "%A %e de %B de %Y"
 
@@ -962,7 +963,6 @@ msgid "Add world clocks…"
 msgstr "Añadir relojes del mundo…"
 
 #: ../js/ui/dateMenu.js:160
-#| msgid "Open Clocks"
 msgid "World Clocks"
 msgstr "Relojes del mundo"
 
