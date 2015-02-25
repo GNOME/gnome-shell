@@ -12,16 +12,17 @@
 # Valery Kirichenko <valera5505@gmail.com>, 2014.
 # Yuri Myasoedov <ymyasoedov@yandex.ru>, 2012, 2013, 2014.
 # Stas Solovey <whats_up@tut.by>, 2011, 2013, 2014, 2015.
+# Ivan Komaritsyn <vantu5z@mail.ru>, 2015.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-02-24 08:40+0000\n"
-"PO-Revision-Date: 2015-02-24 14:05+0300\n"
-"Last-Translator: Stas Solovey <whats_up@tut.by>\n"
-"Language-Team: Русский <gnome-cyr@gnome.org>\n"
+"POT-Creation-Date: 2015-02-25 08:43+0000\n"
+"PO-Revision-Date: 2015-02-25 14:25+0300\n"
+"Last-Translator: Ivan Komaritsyn <vantu5z@mail.ru>\n"
+"Language-Team: русский <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -537,6 +538,11 @@ msgstr "%A, %d %b."
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d %b., %Y"
+
+#: ../js/ui/calendar.js:1528
+#| msgid "No Notifications"
+msgid "Notifications"
+msgstr "Уведомления"
 
 #: ../js/ui/calendar.js:1665
 msgid "No Notifications"
