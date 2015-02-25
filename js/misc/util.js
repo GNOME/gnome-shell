@@ -161,17 +161,26 @@ function _handleSpawnError(command, err) {
     Main.notifyError(title, err.message);
 }
 
-function formatTime(date, params) {
-    let now = new Date();
+function formatTime(time, params) {
+    let date;
+    // HACK: The built-in Date type sucks at timezones, which we need for the
+    //       world clock; it's often more convenient though, so allow either
+    //       Date or GLib.DateTime as parameter
+    if (time instanceof Date)
+        date = GLib.DateTime.new_from_unix_local(time.getTime() / 1000);
+    else
+        date = time;
 
-    let daysAgo = (now.getTime() - date.getTime()) / (24 * 60 * 60 * 1000);
+    let now = GLib.DateTime.new_now_local();
+
+    let daysAgo = now.difference(date) / (24 * 60 * 60 * 1000 * 1000);
 
     let format;
 
     if (_desktopSettings == null)
         _desktopSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.interface' });
     let clockFormat = _desktopSettings.get_string('clock-format');
-    let hasAmPm = date.toLocaleFormat('%p') != '';
+    let hasAmPm = date.format('%p') != '';
 
     params = Params.parse(params, { timeOnly: false });
 
@@ -192,7 +201,7 @@ function formatTime(date, params) {
              string in 24h format. i.e. "Monday, 14:30" */
             // xgettext:no-c-format
             format = N_("%A, %H\u2236%M");
-        else if (date.getYear() == now.getYear())
+        else if (date.get_year() == now.get_year())
             /* Translators: this is the month name and day number
              followed by a time string in 24h format.
              i.e. "May 25, 14:30" */
@@ -221,7 +230,7 @@ function formatTime(date, params) {
              string in 12h format. i.e. "Monday, 2:30 pm" */
             // xgettext:no-c-format
             format = N_("%A, %l\u2236%M %p");
-        else if (date.getYear() == now.getYear())
+        else if (date.get_year() == now.get_year())
             /* Translators: this is the month name and day number
              followed by a time string in 12h format.
              i.e. "May 25, 2:30 pm" */
@@ -234,7 +243,7 @@ function formatTime(date, params) {
             // xgettext:no-c-format
             format = N_("%B %d %Y, %l\u2236%M %p");
     }
-    return date.toLocaleFormat(Shell.util_translate_time_string(format));
+    return date.format(Shell.util_translate_time_string(format));
 }
 
 // lowerBound:
