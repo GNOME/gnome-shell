@@ -17,6 +17,7 @@ const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
 const Params = imports.misc.params;
 const PopupMenu = imports.ui.popupMenu;
+const Util = imports.misc.util;
 
 // See Notification.appendMessage
 const SCROLLBACK_IMMEDIATE_TIME = 3 * 60; // 3 minutes
@@ -29,8 +30,6 @@ const SCROLLBACK_HISTORY_LINES = 10;
 
 // See Notification._onEntryChanged
 const COMPOSING_STOP_TIMEOUT = 5;
-
-const CLOCK_FORMAT_KEY = 'clock-format';
 
 const NotificationDirection = {
     SENT: 'chat-sent',
@@ -746,94 +745,13 @@ const ChatNotification = new Lang.Class({
         this._filterMessages();
     },
 
-    _formatTimestamp: function(date) {
-        let now = new Date();
-
-        var daysAgo = (now.getTime() - date.getTime()) / (24 * 60 * 60 * 1000);
-
-        let format;
-
-        let desktopSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.interface' });
-        let clockFormat = desktopSettings.get_string(CLOCK_FORMAT_KEY);
-        let hasAmPm = date.toLocaleFormat('%p') != '';
-
-        if (clockFormat == '24h' || !hasAmPm) {
-            // Show only the time if date is on today
-            if(daysAgo < 1){
-                /* Translators: Time in 24h format */
-                format = N_("%H\u2236%M");
-            }
-            // Show the word "Yesterday" and time if date is on yesterday
-            else if(daysAgo <2){
-                /* Translators: this is the word "Yesterday" followed by a
-                 time string in 24h format. i.e. "Yesterday, 14:30" */
-                // xgettext:no-c-format
-                format = N_("Yesterday, %H\u2236%M");
-            }
-            // Show a week day and time if date is in the last week
-            else if (daysAgo < 7) {
-                /* Translators: this is the week day name followed by a time
-                 string in 24h format. i.e. "Monday, 14:30" */
-                // xgettext:no-c-format
-                format = N_("%A, %H\u2236%M");
-
-            } else if (date.getYear() == now.getYear()) {
-                /* Translators: this is the month name and day number
-                 followed by a time string in 24h format.
-                 i.e. "May 25, 14:30" */
-                // xgettext:no-c-format
-                format = N_("%B %d, %H\u2236%M");
-            } else {
-                /* Translators: this is the month name, day number, year
-                 number followed by a time string in 24h format.
-                 i.e. "May 25 2012, 14:30" */
-                // xgettext:no-c-format
-                format = N_("%B %d %Y, %H\u2236%M");
-            }
-        } else {
-            // Show only the time if date is on today
-            if(daysAgo < 1){
-                /* Translators: Time in 12h format */
-                format = N_("%l\u2236%M %p");
-            }
-            // Show the word "Yesterday" and time if date is on yesterday
-            else if(daysAgo <2){
-                /* Translators: this is the word "Yesterday" followed by a
-                 time string in 12h format. i.e. "Yesterday, 2:30 pm" */
-                // xgettext:no-c-format
-                format = N_("Yesterday, %l\u2236%M %p");
-            }
-            // Show a week day and time if date is in the last week
-            else if (daysAgo < 7) {
-                /* Translators: this is the week day name followed by a time
-                 string in 12h format. i.e. "Monday, 2:30 pm" */
-                // xgettext:no-c-format
-                format = N_("%A, %l\u2236%M %p");
-
-            } else if (date.getYear() == now.getYear()) {
-                /* Translators: this is the month name and day number
-                 followed by a time string in 12h format.
-                 i.e. "May 25, 2:30 pm" */
-                // xgettext:no-c-format
-                format = N_("%B %d, %l\u2236%M %p");
-            } else {
-                /* Translators: this is the month name, day number, year
-                 number followed by a time string in 12h format.
-                 i.e. "May 25 2012, 2:30 pm"*/
-                // xgettext:no-c-format
-                format = N_("%B %d %Y, %l\u2236%M %p");
-            }
-        }
-        return date.toLocaleFormat(Shell.util_translate_time_string(format));
-    },
-
     appendTimestamp: function() {
         this._timestampTimeoutId = 0;
 
         let lastMessageTime = this._history[0].time;
         let lastMessageDate = new Date(lastMessageTime * 1000);
 
-        let timeLabel = new St.Label({ text: this._formatTimestamp(lastMessageDate),
+        let timeLabel = new St.Label({ text: Util.formatTime(lastMessageDate),
                                        style_class: 'chat-meta-message',
                                        x_expand: true,
                                        y_expand: true,

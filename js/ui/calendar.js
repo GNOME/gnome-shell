@@ -32,9 +32,6 @@ const DEFAULT_EXPAND_LINES = 6;
 const gtk30_ = Gettext_gtk30.gettext;
 const NC_ = function(context, str) { return context + '\u0004' + str; };
 
-// in org.gnome.desktop.interface
-const CLOCK_FORMAT_KEY        = 'clock-format';
-
 function _sameYear(dateA, dateB) {
     return (dateA.getYear() == dateB.getYear());
 }
@@ -71,7 +68,7 @@ function _getEndOfDay(date) {
     return ret;
 }
 
-function _formatEventTime(event, clockFormat, periodBegin, periodEnd) {
+function _formatEventTime(event, periodBegin, periodEnd) {
     let ret;
     let allDay = (event.allDay || (event.date <= periodBegin && event.end >= periodEnd));
     if (allDay) {
@@ -81,22 +78,7 @@ function _formatEventTime(event, clockFormat, periodBegin, periodEnd) {
         ret = C_("event list time", "All Day");
     } else {
         let date = event.date >= periodBegin ? event.date : event.end;
-        switch (clockFormat) {
-        case '24h':
-            /* Translators: Shown in calendar event list, if 24h format,
-               \u2236 is a ratio character, similar to : */
-            ret = date.toLocaleFormat(C_("event list time", "%H\u2236%M"));
-            break;
-
-        default:
-            /* explicit fall-through */
-        case '12h':
-            /* Translators: Shown in calendar event list, if 12h format,
-               \u2236 is a ratio character, similar to : and \u2009 is
-               a thin space */
-            ret = date.toLocaleFormat(C_("event list time", "%l\u2236%M\u2009%p"));
-            break;
-        }
+        ret = Util.formatTime(date, { timeOnly: true });
     }
     return ret;
 }
@@ -1480,10 +1462,9 @@ const EventsSection = new Lang.Class({
         let periodEnd = _getEndOfDay(this._date);
         let events = this._eventSource.getEvents(periodBegin, periodEnd);
 
-        let clockFormat = this._desktopSettings.get_string(CLOCK_FORMAT_KEY);
         for (let i = 0; i < events.length; i++) {
             let event = events[i];
-            let title = _formatEventTime(event, clockFormat, periodBegin, periodEnd);
+            let title = _formatEventTime(event, periodBegin, periodEnd);
 
             let rtl = this.actor.get_text_direction() == Clutter.TextDirection.RTL;
             if (event.date < periodBegin && !event.allDay) {
@@ -1593,7 +1574,7 @@ const NotificationSection = new Lang.Class({
     _onNotificationAdded: function(source, notification) {
         let message = new NotificationMessage(notification);
 
-        let time = new Date().toLocaleFormat(C_("event list time", "%H\u2236%M"));
+        let time = Util.formatTime(new Date());
         message.setSecondaryActor(new St.Label({ style_class: 'event-time',
                                                  x_align: Clutter.ActorAlign.END,
                                                  text: time }));
