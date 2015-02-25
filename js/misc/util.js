@@ -4,10 +4,12 @@ const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const Lang = imports.lang;
+const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 
 const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
+const Params = imports.misc.params;
 
 const SCROLL_TIME = 0.1;
 
@@ -37,6 +39,8 @@ const _urlRegexp = new RegExp(
             _notTrailingJunk +                    // last non-junk char
         ')' +
     ')', 'gi');
+
+let _desktopSettings = null;
 
 // findUrls:
 // @str: string to find URLs in
@@ -155,6 +159,82 @@ function trySpawnCommandLine(command_line) {
 function _handleSpawnError(command, err) {
     let title = _("Execution of “%s” failed:").format(command);
     Main.notifyError(title, err.message);
+}
+
+function formatTime(date, params) {
+    let now = new Date();
+
+    let daysAgo = (now.getTime() - date.getTime()) / (24 * 60 * 60 * 1000);
+
+    let format;
+
+    if (_desktopSettings == null)
+        _desktopSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.interface' });
+    let clockFormat = _desktopSettings.get_string('clock-format');
+    let hasAmPm = date.toLocaleFormat('%p') != '';
+
+    params = Params.parse(params, { timeOnly: false });
+
+    if (clockFormat == '24h' || !hasAmPm) {
+        // Show only the time if date is on today
+        if (daysAgo < 1 || params.timeOnly)
+            /* Translators: Time in 24h format */
+            format = N_("%H\u2236%M");
+        // Show the word "Yesterday" and time if date is on yesterday
+        else if (daysAgo <2)
+            /* Translators: this is the word "Yesterday" followed by a
+             time string in 24h format. i.e. "Yesterday, 14:30" */
+            // xgettext:no-c-format
+            format = N_("Yesterday, %H\u2236%M");
+        // Show a week day and time if date is in the last week
+        else if (daysAgo < 7)
+            /* Translators: this is the week day name followed by a time
+             string in 24h format. i.e. "Monday, 14:30" */
+            // xgettext:no-c-format
+            format = N_("%A, %H\u2236%M");
+        else if (date.getYear() == now.getYear())
+            /* Translators: this is the month name and day number
+             followed by a time string in 24h format.
+             i.e. "May 25, 14:30" */
+            // xgettext:no-c-format
+            format = N_("%B %d, %H\u2236%M");
+        else
+            /* Translators: this is the month name, day number, year
+             number followed by a time string in 24h format.
+             i.e. "May 25 2012, 14:30" */
+            // xgettext:no-c-format
+            format = N_("%B %d %Y, %H\u2236%M");
+    } else {
+        // Show only the time if date is on today
+        if (daysAgo < 1 || params.timeOnly)
+            /* Translators: Time in 12h format */
+            format = N_("%l\u2236%M %p");
+        // Show the word "Yesterday" and time if date is on yesterday
+        else if (daysAgo <2)
+            /* Translators: this is the word "Yesterday" followed by a
+             time string in 12h format. i.e. "Yesterday, 2:30 pm" */
+            // xgettext:no-c-format
+            format = N_("Yesterday, %l\u2236%M %p");
+        // Show a week day and time if date is in the last week
+        else if (daysAgo < 7)
+            /* Translators: this is the week day name followed by a time
+             string in 12h format. i.e. "Monday, 2:30 pm" */
+            // xgettext:no-c-format
+            format = N_("%A, %l\u2236%M %p");
+        else if (date.getYear() == now.getYear())
+            /* Translators: this is the month name and day number
+             followed by a time string in 12h format.
+             i.e. "May 25, 2:30 pm" */
+            // xgettext:no-c-format
+            format = N_("%B %d, %l\u2236%M %p");
+        else
+            /* Translators: this is the month name, day number, year
+             number followed by a time string in 12h format.
+             i.e. "May 25 2012, 2:30 pm"*/
+            // xgettext:no-c-format
+            format = N_("%B %d %Y, %l\u2236%M %p");
+    }
+    return date.toLocaleFormat(Shell.util_translate_time_string(format));
 }
 
 // lowerBound:
