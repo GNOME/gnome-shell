@@ -246,6 +246,20 @@ function formatTime(time, params) {
     return date.format(Shell.util_translate_time_string(format));
 }
 
+function createTimeLabel(date, params) {
+    if (_desktopSettings == null)
+        _desktopSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.interface' });
+
+    let label = new St.Label({ text: formatTime(date, params) });
+    let id = _desktopSettings.connect('changed::clock-format', function() {
+        label.text = formatTime(date, params);
+    });
+    label.connect('destroy', function() {
+        _desktopSettings.disconnect(id);
+    });
+    return label;
+}
+
 // lowerBound:
 // @array: an array or array-like object, already sorted
 //         according to @cmp
