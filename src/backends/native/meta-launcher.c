@@ -307,7 +307,7 @@ get_kms_fd (Login1Session *session_proxy,
 MetaLauncher *
 meta_launcher_new (void)
 {
-  MetaLauncher *self;
+  MetaLauncher *self = NULL;
   Login1Session *session_proxy;
   GError *error = NULL;
   int kms_fd;
