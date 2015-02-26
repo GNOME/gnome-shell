@@ -301,7 +301,8 @@ const NotificationsBox = new Lang.Class({
                              });
 
             this._updateVisibility();
-            this.emit('wake-up-screen');
+            if (obj.sourceBox.visible)
+                this.emit('wake-up-screen');
         }
     },
 
