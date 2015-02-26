@@ -10,8 +10,6 @@
  * @SHELL_ACTION_MODE_UNLOCK_SCREEN: allow action in the unlock
  *     dialog
  * @SHELL_ACTION_MODE_LOGIN_SCREEN: allow action in the login screen
- * @SHELL_ACTION_MODE_MESSAGE_TRAY: allow action while the message
- *     tray is popped up
  * @SHELL_ACTION_MODE_SYSTEM_MODAL: allow action when a system modal
  *     dialog (e.g. authentification or session dialogs) is open
  * @SHELL_ACTION_MODE_LOOKING_GLASS: allow action in looking glass
@@ -28,10 +26,9 @@ typedef enum {
   SHELL_ACTION_MODE_LOCK_SCREEN   = 1 << 2,
   SHELL_ACTION_MODE_UNLOCK_SCREEN = 1 << 3,
   SHELL_ACTION_MODE_LOGIN_SCREEN  = 1 << 4,
-  SHELL_ACTION_MODE_MESSAGE_TRAY  = 1 << 5,
-  SHELL_ACTION_MODE_SYSTEM_MODAL  = 1 << 6,
-  SHELL_ACTION_MODE_LOOKING_GLASS = 1 << 7,
-  SHELL_ACTION_MODE_POPUP         = 1 << 8,
+  SHELL_ACTION_MODE_SYSTEM_MODAL  = 1 << 5,
+  SHELL_ACTION_MODE_LOOKING_GLASS = 1 << 6,
+  SHELL_ACTION_MODE_POPUP         = 1 << 7,
 
   SHELL_ACTION_MODE_ALL = ~0,
 } ShellActionMode;

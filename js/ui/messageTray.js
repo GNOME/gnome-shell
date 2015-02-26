@@ -1546,7 +1546,6 @@ const MessageTray = new Lang.Class({
                               new Gio.Settings({ schema_id: SHELL_KEYBINDINGS_SCHEMA }),
                               Meta.KeyBindingFlags.NONE,
                               Shell.ActionMode.NORMAL |
-                              Shell.ActionMode.MESSAGE_TRAY |
                               Shell.ActionMode.OVERVIEW,
                               Lang.bind(this, this._expandActiveNotification));
 
