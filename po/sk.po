@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-02-20 20:44+0000\n"
-"PO-Revision-Date: 2015-02-21 09:04+0100\n"
+"POT-Creation-Date: 2015-02-26 08:45+0000\n"
+"PO-Revision-Date: 2015-02-26 11:46+0100\n"
 "Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
 "Language-Team: Slovak <gnome-sk-list@gnome.org>\n"
 "Language: sk\n"
@@ -399,7 +399,7 @@ msgstr "Celý deň"
 
 #. Translators: Shown in calendar event list, if 24h format,
 #. \u2236 is a ratio character, similar to : */
-#: ../js/ui/calendar.js:88 ../js/ui/calendar.js:1560
+#: ../js/ui/calendar.js:88 ../js/ui/calendar.js:1562
 msgctxt "event list time"
 msgid "%H∶%M"
 msgstr "%H∶%M"
@@ -469,29 +469,33 @@ msgstr "Predchádzajúci mesiac"
 msgid "Next month"
 msgstr "Nasledujúci mesiac"
 
-#: ../js/ui/calendar.js:1243
+#: ../js/ui/calendar.js:1245
 msgid "Clear section"
 msgstr "Vymazať úsek"
 
-#: ../js/ui/calendar.js:1421
+#: ../js/ui/calendar.js:1423
 msgid "Events"
 msgstr "Udalosti"
 
-#: ../js/ui/calendar.js:1429
+#: ../js/ui/calendar.js:1431
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %e. %B"
 
-#: ../js/ui/calendar.js:1433
+#: ../js/ui/calendar.js:1435
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %e. %B %Y"
 
-#: ../js/ui/calendar.js:1663
+#: ../js/ui/calendar.js:1528
+msgid "Notifications"
+msgstr "Oznámenia"
+
+#: ../js/ui/calendar.js:1665
 msgid "No Notifications"
 msgstr "Žiadne oznámenia"
 
-#: ../js/ui/calendar.js:1666
+#: ../js/ui/calendar.js:1668
 msgid "No Events"
 msgstr "Žiadne udalosti"
 
@@ -1034,7 +1038,7 @@ msgstr "Inštalovať"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Stiahnuť a nainštalovať „%s“ z extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:706 ../js/ui/status/keyboard.js:577
+#: ../js/ui/keyboard.js:706 ../js/ui/status/keyboard.js:576
 msgid "Keyboard"
 msgstr "Klávesnica"
 
@@ -1089,7 +1093,7 @@ msgstr "Zobraziť zdroj"
 msgid "Web Page"
 msgstr "Webová stránka"
 
-#: ../js/ui/messageTray.js:2082
+#: ../js/ui/messageTray.js:2091
 msgid "System Information"
 msgstr "Informácie o systéme"
 
@@ -1145,11 +1149,11 @@ msgstr "Reštartuje sa…"
 # v ostatnych retazcoch je pouzite %e, tak to bude asi OK
 #. Translators: This is a time format for a date in
 #. long format */
-#: ../js/ui/screenShield.js:88
+#: ../js/ui/screenShield.js:85
 msgid "%A, %B %d"
 msgstr "%A, %e. %B"
 
-#: ../js/ui/screenShield.js:147
+#: ../js/ui/screenShield.js:144
 #, javascript-format
 msgid "%d new message"
 msgid_plural "%d new messages"
@@ -1157,7 +1161,7 @@ msgstr[0] "%d nových správ"
 msgstr[1] "%d nová správa"
 msgstr[2] "%d nové správy"
 
-#: ../js/ui/screenShield.js:149
+#: ../js/ui/screenShield.js:146
 #, javascript-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
@@ -1165,19 +1169,19 @@ msgstr[0] "%d nových oznámení"
 msgstr[1] "%d nové oznámenie"
 msgstr[2] "%d nové oznámenia"
 
-#: ../js/ui/screenShield.js:434 ../js/ui/status/system.js:345
+#: ../js/ui/screenShield.js:431 ../js/ui/status/system.js:345
 msgid "Lock"
 msgstr "Uzamknúť"
 
-#: ../js/ui/screenShield.js:670
+#: ../js/ui/screenShield.js:667
 msgid "GNOME needs to lock the screen"
 msgstr "Prostredie GNOME vyžaduje uzamknutie obrazovky"
 
-#: ../js/ui/screenShield.js:797 ../js/ui/screenShield.js:1273
+#: ../js/ui/screenShield.js:794 ../js/ui/screenShield.js:1270
 msgid "Unable to lock"
 msgstr "Nepodarilo sa uzamknúť obrazovku"
 
-#: ../js/ui/screenShield.js:798 ../js/ui/screenShield.js:1274
+#: ../js/ui/screenShield.js:795 ../js/ui/screenShield.js:1271
 msgid "Lock was blocked by an application"
 msgstr "Uzamknutie bolo zablokované aplikáciou"
 
@@ -1289,7 +1293,7 @@ msgid "Brightness"
 msgstr "Jas"
 
 # menu item
-#: ../js/ui/status/keyboard.js:600
+#: ../js/ui/status/keyboard.js:599
 msgid "Show Keyboard Layout"
 msgstr "Zobraziť rozloženie klávesnice"
 
@@ -1677,12 +1681,12 @@ msgstr "Použitie zvláštneho režimu, napr. „gdm“  pre prihlasovaciu obraz
 msgid "List possible modes"
 msgstr "Zoznam možných režimov"
 
-#: ../src/shell-app.c:255
+#: ../src/shell-app.c:247
 msgctxt "program"
 msgid "Unknown"
 msgstr "Neznámy"
 
-#: ../src/shell-app.c:496
+#: ../src/shell-app.c:488
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "Zlyhalo spustenie „%s“"
