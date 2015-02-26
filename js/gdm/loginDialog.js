@@ -473,6 +473,10 @@ const LoginDialog = new Lang.Class({
         this._disableUserList = undefined;
         this._userListLoaded = false;
 
+        this._realmManager = new Realmd.Manager();
+        this._realmSignalId = this._realmManager.connect('login-format-changed',
+                                                         Lang.bind(this, this._showRealmLoginHint));
+
         LoginManager.getLoginManager().getCurrentSessionProxy(Lang.bind(this, this._gotGreeterSessionProxy));
 
         // If the user list is enabled, it should take key focus; make sure the
@@ -826,25 +830,22 @@ const LoginDialog = new Lang.Class({
         this._authPrompt.setPasswordChar('');
         this._authPrompt.setQuestion(_("Username: "));
 
-        let realmManager = new Realmd.Manager();
-        let realmSignalId = realmManager.connect('login-format-changed',
-                                                 Lang.bind(this, this._showRealmLoginHint));
-        this._showRealmLoginHint(realmManager.loginFormat);
+        this._showRealmLoginHint(this._realmManager.loginFormat);
 
-        let nextSignalId = this._authPrompt.connect('next',
-                                                    Lang.bind(this, function() {
-                                                        this._authPrompt.disconnect(nextSignalId);
-                                                        this._authPrompt.updateSensitivity(false);
-                                                        let answer = this._authPrompt.getAnswer();
-                                                        this._user = this._userManager.get_user(answer);
-                                                        this._authPrompt.clear();
-                                                        this._authPrompt.startSpinning();
-                                                        this._authPrompt.begin({ userName: answer });
-                                                        this._updateCancelButton();
-
-                                                        realmManager.disconnect(realmSignalId)
-                                                        realmManager.release();
-                                                    }));
+        if (this._nextSignalId)
+            this._authPrompt.disconnect(this._nextSignalId);
+        this._nextSignalId = this._authPrompt.connect('next',
+                                                      Lang.bind(this, function() {
+                                                          this._authPrompt.disconnect(this._nextSignalId);
+                                                          this._nextSignalId = 0;
+                                                          this._authPrompt.updateSensitivity(false);
+                                                          let answer = this._authPrompt.getAnswer();
+                                                          this._user = this._userManager.get_user(answer);
+                                                          this._authPrompt.clear();
+                                                          this._authPrompt.startSpinning();
+                                                          this._authPrompt.begin({ userName: answer });
+                                                          this._updateCancelButton();
+                                                      }));
         this._updateCancelButton();
 
         this._authPrompt.updateSensitivity(true);
@@ -1126,6 +1127,12 @@ const LoginDialog = new Lang.Class({
         if (this._greeterSessionProxy) {
             this._greeterSessionProxy.disconnect(this._greeterSessionProxyChangedId);
             this._greeterSessionProxy = null;
+        }
+        if (this._realmManager) {
+            this._realmManager.disconnect(this._realmSignalId);
+            this._realmSignalId = 0;
+            this._realmManager.release();
+            this._realmManager = null;
         }
     },
 
