@@ -718,7 +718,7 @@ StScrollBar {
 
 /* Message list */
 .message-list {
-  width: 340px; }
+  width: 420px; }
 
 .message-list-sections {
   spacing: 1.5em; }
@@ -742,12 +742,15 @@ StScrollBar {
   background-color: #999999; }
 
 .message {
-  background-color: #0d0d0d; }
+  background-color: #0d0d0d;
+  border-radius: 3px; }
   .message:hover, .message:focus {
     background-color: #262626; }
 
 .message-icon-bin {
-  padding: 5px; }
+  padding: 8px 0px 8px 8px; }
+  .message-icon-bin:rtl {
+    padding: 8px 8px 8px 0px; }
 
 .message-icon-bin > StIcon {
   icon-size: 48px; }
@@ -762,8 +765,7 @@ StScrollBar {
   font-weight: bold; }
 
 .message-content {
-  padding: 5px;
-  spacing: 5px; }
+  padding: 8px; }
 
 .system-switch-user-submenu-icon {
   icon-size: 24px;
