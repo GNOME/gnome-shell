@@ -243,7 +243,7 @@ const InputSourceManager = new Lang.Class({
         // of pushModal/popModal and grabHelper. See
         // https://bugzilla.gnome.org/show_bug.cgi?id=695143 .
         if (Main.actionMode == Shell.ActionMode.MESSAGE_TRAY ||
-            Main.actionMode == Shell.ActionMode.TOPBAR_POPUP) {
+            Main.actionMode == Shell.ActionMode.POPUP) {
             this._modifiersSwitcher();
             return;
         }

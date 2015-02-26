@@ -831,14 +831,14 @@ const WindowManager = new Lang.Class({
                            new Gio.Settings({ schema_id: SHELL_KEYBINDINGS_SCHEMA }),
                            Meta.KeyBindingFlags.NONE,
                            Shell.ActionMode.NORMAL |
-                           Shell.ActionMode.TOPBAR_POPUP,
+                           Shell.ActionMode.POPUP,
                            Lang.bind(this, this._toggleAppMenu));
 
         this.addKeybinding('toggle-message-tray',
                            new Gio.Settings({ schema_id: SHELL_KEYBINDINGS_SCHEMA }),
                            Meta.KeyBindingFlags.NONE,
                            Shell.ActionMode.NORMAL |
-                           Shell.ActionMode.TOPBAR_POPUP,
+                           Shell.ActionMode.POPUP,
                            Lang.bind(this, this._toggleCalendar));
 
         global.display.connect('show-resize-popup', Lang.bind(this, this._showResizePopup));
