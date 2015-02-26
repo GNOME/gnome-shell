@@ -156,7 +156,6 @@ const WindowClone = new Lang.Class({
         this.actor.add_action(clickAction);
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
         this.actor.connect('key-press-event', Lang.bind(this, this._onKeyPress));
-        this.actor.connect('enter-event', Lang.bind(this, this._onEnter));
 
         this._draggable = DND.makeDraggable(this.actor,
                                             { restoreOnSuccess: true,
@@ -351,10 +350,6 @@ const WindowClone = new Lang.Class({
         }
 
         return false;
-    },
-
-    _onEnter: function() {
-        this.actor.grab_key_focus();
     },
 
     _onClicked: function(action, actor) {
