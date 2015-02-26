@@ -1,0 +1,178 @@
+const Clutter = imports.gi.Clutter;
+const GObject = imports.gi.GObject;
+const Shell = imports.gi.Shell;
+const St = imports.gi.St;
+
+const Lang = imports.lang;
+const Layout = imports.ui.layout;
+const Main = imports.ui.main;
+const Overview = imports.ui.overview;
+const OverviewControls = imports.ui.overviewControls;
+const Tweener = imports.ui.tweener;
+
+const STANDARD_TRAY_ICON_IMPLEMENTATIONS = {
+    'bluetooth-applet': 'bluetooth',
+    'gnome-volume-control-applet': 'volume', // renamed to gnome-sound-applet
+                                             // when moved to control center
+    'gnome-sound-applet': 'volume',
+    'nm-applet': 'network',
+    'gnome-power-manager': 'battery',
+    'keyboard': 'keyboard',
+    'a11y-keyboard': 'a11y',
+    'kbd-scrolllock': 'keyboard',
+    'kbd-numlock': 'keyboard',
+    'kbd-capslock': 'keyboard',
+    'ibus-ui-gtk': 'keyboard'
+};
+
+// Offset of the original position from the bottom-right corner
+const CONCEALED_VISIBLE_FRACTION = 0.2;
+const REVEAL_ANIMATION_TIME = 0.2;
+
+const LegacyTray = new Lang.Class({
+    Name: 'LegacyTray',
+
+    _init: function() {
+        this.actor = new St.Widget({ clip_to_allocation: true,
+                                     layout_manager: new Clutter.BinLayout() });
+        let constraint = new Layout.MonitorConstraint({ primary: true,
+                                                        work_area: true });
+        this.actor.add_constraint(constraint);
+
+        this._slideLayout = new OverviewControls.SlideLayout();
+        this._slideLayout.translationX = 0;
+        this._slideLayout.slideDirection = OverviewControls.SlideDirection.LEFT;
+
+        this._slider = new St.Widget({ style_class: 'legacy-tray',
+                                       x_expand: true, y_expand: true,
+                                       x_align: Clutter.ActorAlign.START,
+                                       y_align: Clutter.ActorAlign.END,
+                                       layout_manager: this._slideLayout });
+        this.actor.add_actor(this._slider);
+
+        this._box = new St.BoxLayout();
+        this._slider.add_actor(this._box);
+
+        this._concealHandle = new St.Button({ style_class: 'legacy-tray-handle' });
+        this._concealHandle.child = new St.Icon({ icon_name: 'go-previous-symbolic' });
+        this._box.add_child(this._concealHandle);
+
+        this._iconBox = new St.BoxLayout({ style_class: 'legacy-tray-icon-box' });
+        this._box.add_actor(this._iconBox);
+
+        this._revealHandle = new St.Button({ style_class: 'legacy-tray-handle' });
+        this._revealHandle.child = new St.Icon({ icon_name: 'go-next-symbolic' });
+        this._box.add_child(this._revealHandle);
+
+        this._revealHandle.bind_property('visible',
+                                         this._concealHandle, 'visible',
+                                         GObject.BindingFlags.BIDIRECTIONAL |
+                                         GObject.BindingFlags.INVERT_BOOLEAN);
+        this._revealHandle.connect('notify::visible',
+                                   Lang.bind(this, this._sync));
+        this._revealHandle.connect('notify::hover',
+                                   Lang.bind(this ,this._sync));
+        this._revealHandle.connect('clicked', Lang.bind(this,
+            function() {
+                this._concealHandle.show();
+            }));
+        this._concealHandle.connect('clicked', Lang.bind(this,
+            function() {
+                this._revealHandle.show();
+            }));
+
+        Main.layoutManager.addChrome(this.actor, { affectsInputRegion: false });
+        Main.layoutManager.trackChrome(this._slider, { affectsInputRegion: true });
+
+        this._trayManager = new Shell.TrayManager();
+        this._trayManager.connect('tray-icon-added', Lang.bind(this, this._onTrayIconAdded));
+        this._trayManager.connect('tray-icon-removed', Lang.bind(this, this._onTrayIconRemoved));
+        this._trayManager.manage_screen(global.screen, this.actor);
+
+        Main.overview.connect('showing', Lang.bind(this,
+            function() {
+                Tweener.removeTweens(this._slider);
+                Tweener.addTween(this._slider, { opacity: 0,
+                                                 time: Overview.ANIMATION_TIME,
+                                                 transition: 'easeOutQuad' });
+            }));
+        Main.overview.connect('shown', Lang.bind(this, this._sync));
+        Main.overview.connect('hiding', Lang.bind(this,
+            function() {
+                this._sync();
+                Tweener.removeTweens(this._slider);
+                Tweener.addTween(this._slider, { opacity: 255,
+                                                 time: Overview.ANIMATION_TIME,
+                                                 transition: 'easeOutQuad' });
+            }));
+
+        Main.layoutManager.connect('monitors-changed',
+                                   Lang.bind(this, this._sync));
+        global.screen.connect('in-fullscreen-changed',
+                              Lang.bind(this, this._sync));
+        Main.sessionMode.connect('updated', Lang.bind(this, this._sync));
+
+        this._sync();
+    },
+
+    _onTrayIconAdded: function(tm, icon) {
+        let wmClass = icon.wm_class ? icon.wm_class.toLowerCase() : '';
+        if (STANDARD_TRAY_ICON_IMPLEMENTATIONS[wmClass] !== undefined)
+            return;
+
+        let button = new St.Button({ child: icon,
+                                     button_mask: St.ButtonMask.ONE |
+                                                  St.ButtonMask.TWO |
+                                                  St.ButtonMask.THREE,
+                                     x_fill: true, y_fill: true });
+        button.connect('clicked',
+            function() {
+                icon.click(Clutter.get_current_event());
+            });
+
+        this._iconBox.add_actor(button);
+        this._sync();
+    },
+
+    _onTrayIconRemoved: function(tm, icon) {
+        if (!this.actor.contains(icon))
+            return;
+
+        icon.get_parent().destroy();
+        this._sync();
+    },
+
+    _sync: function() {
+        // FIXME: we no longer treat tray icons as notifications
+        let allowed = Main.sessionMode.hasNotifications;
+        let hasIcons = this._iconBox.get_n_children() > 0;
+        let inOverview = Main.overview.visible && !Main.overview.animationInProgress;
+        let inFullscreen = Main.layoutManager.primaryMonitor.inFullscreen;
+        this.actor.visible = allowed && hasIcons && !inOverview && !inFullscreen;
+
+        if (!hasIcons)
+            this._concealHandle.hide();
+
+        let targetSlide;
+        if (this._concealHandle.visible) {
+            targetSlide = 1.0;
+        } else if (!hasIcons) {
+            targetSlide = 0.0;
+        } else {
+            let [, boxWidth] = this._box.get_preferred_width(-1);
+            let [, handleWidth] = this._revealHandle.get_preferred_width(-1);
+
+            targetSlide = handleWidth / boxWidth;
+            if (!this._revealHandle.hover)
+                targetSlide *= CONCEALED_VISIBLE_FRACTION;
+        }
+
+        if (this.actor.visible)
+            Tweener.addTween(this._slideLayout,
+                             { slideX: targetSlide,
+                               time: REVEAL_ANIMATION_TIME,
+                               transition: 'easeOutQuad' });
+        else
+            this._slideLayout.slideX = targetSlide;
+    }
+});
