@@ -67,6 +67,7 @@ struct _StIMTextPrivate
   GdkWindow *window;
 
   guint need_im_reset : 1;
+  guint has_preedit   : 1;
 };
 
 G_DEFINE_TYPE (StIMText, st_im_text, CLUTTER_TYPE_TEXT)
@@ -135,6 +136,8 @@ st_im_text_preedit_changed_cb (GtkIMContext *context,
                                    preedit_str,
                                    preedit_attrs,
                                    cursor_pos);
+
+  imtext->priv->has_preedit = preedit_str && *preedit_str;
 
   g_free (preedit_str);
   pango_attr_list_unref (preedit_attrs);
@@ -621,4 +624,18 @@ st_im_text_get_input_hints (StIMText *imtext)
                 NULL);
 
   return hints;
+}
+
+/**
+ * st_im_text_has_preedit:
+ * @imtext: a #StIMText
+ *
+ * Returns: wether @imtext currently has preedit text
+ */
+gboolean
+st_im_text_has_preedit (StIMText *imtext)
+{
+  g_return_val_if_fail (ST_IS_IM_TEXT (imtext), FALSE);
+
+  return imtext->priv->has_preedit;
 }

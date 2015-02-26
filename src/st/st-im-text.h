@@ -67,6 +67,7 @@ GtkInputPurpose st_im_text_get_input_purpose (StIMText       *imtext);
 void            st_im_text_set_input_hints   (StIMText       *imtext,
                                               GtkInputHints   hints);
 GtkInputHints   st_im_text_get_input_hints   (StIMText       *imtext);
+gboolean        st_im_text_has_preedit       (StIMText       *imtext);
 
 void            st_im_text_set_event_window  (GdkWindow      *window);
 
