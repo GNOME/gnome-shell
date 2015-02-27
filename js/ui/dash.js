@@ -519,10 +519,13 @@ const Dash = new Lang.Class({
             this._syncLabel(item, appIcon);
         }));
 
-        Main.overview.connect('hiding', Lang.bind(this, function() {
+        let id = Main.overview.connect('hiding', Lang.bind(this, function() {
             this._labelShowing = false;
             item.hideLabel();
         }));
+        item.child.connect('destroy', function() {
+            Main.overview.disconnect(id);
+        });
 
         if (appIcon) {
             appIcon.connect('sync-tooltip', Lang.bind(this, function() {
