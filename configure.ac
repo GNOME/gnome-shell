@@ -119,7 +119,6 @@ PKG_CHECK_MODULES(SHELL_HOTPLUG_SNIFFER, gio-2.0 gdk-pixbuf-2.0)
 PKG_CHECK_MODULES(TRAY, gtk+-3.0)
 PKG_CHECK_MODULES(GVC, libpulse >= $PULSE_MIN_VERS libpulse-mainloop-glib gobject-2.0)
 PKG_CHECK_MODULES(DESKTOP_SCHEMAS, gsettings-desktop-schemas >= 3.13.1)
-PKG_CHECK_MODULES(CARIBOU, caribou-1.0 >= 0.4.8)
 
 AC_ARG_ENABLE(browser-plugin,
               [AS_HELP_STRING([--enable-browser-plugin],
