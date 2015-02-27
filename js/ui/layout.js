@@ -180,7 +180,6 @@ const LayoutManager = new Lang.Class({
 
         this._keyboardIndex = -1;
         this._rightPanelBarrier = null;
-        this._trayBarrier = null;
 
         this._inOverview = false;
         this._updateRegionIdle = 0;
