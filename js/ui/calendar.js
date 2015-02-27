@@ -981,6 +981,8 @@ const Message = new Lang.Class({
                                      accessible_role: Atk.Role.NOTIFICATION,
                                      can_focus: true,
                                      x_expand: true, x_fill: true });
+        this.actor.connect('key-press-event',
+                           Lang.bind(this, this._onKeyPressed));
 
         let vbox = new St.BoxLayout({ vertical: true });
         this.actor.set_child(vbox);
@@ -1160,6 +1162,17 @@ const Message = new Lang.Class({
     },
 
     _onDestroy: function() {
+    },
+
+    _onKeyPressed: function(a, event) {
+        let keysym = event.get_key_symbol();
+
+        if (keysym == Clutter.KEY_Delete ||
+            keysym == Clutter.KEY_KP_Delete) {
+            this.emit('close');
+            return Clutter.EVENT_STOP;
+        }
+        return Clutter.EVENT_PROPAGATE;
     }
 });
 Signals.addSignalMethods(Message.prototype);
