@@ -20,8 +20,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-02-24 20:40+0000\n"
-"PO-Revision-Date: 2015-02-25 01:49-0300\n"
+"POT-Creation-Date: 2015-02-27 20:42+0000\n"
+"PO-Revision-Date: 2015-02-27 18:00-0300\n"
 "Last-Translator: Rafael Ferreira <rafael.f.f1@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
@@ -37,8 +37,8 @@ msgid "System"
 msgstr "Sistema"
 
 #: ../data/50-gnome-shell-system.xml.in.h:2
-msgid "Show the message list"
-msgstr "Mostra a lista de mensagem"
+msgid "Show the notification list"
+msgstr "Mostra a lista de notificação"
 
 #: ../data/50-gnome-shell-system.xml.in.h:3
 msgid "Focus the active notification"
@@ -192,12 +192,12 @@ msgid "Keybinding to open the Activities Overview."
 msgstr "Atalho de teclado para abrir o panorama de atividades."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:25
-msgid "Keybinding to toggle the visibility of the message tray"
-msgstr "Atalho de teclado para alternar a visibilidade da área de notificação"
+msgid "Keybinding to toggle the visibility of the notification list"
+msgstr "Atalho de teclado para alternar a visibilidade da lista de notificação"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:26
-msgid "Keybinding to toggle the visibility of the message tray."
-msgstr "Atalho de teclado para alternar a visibilidade da área de notificação."
+msgid "Keybinding to toggle the visibility of the notification list."
+msgstr "Atalho de teclado para alternar a visibilidade da lista de notificação."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:27
 msgid "Keybinding to focus the active notification"
@@ -314,16 +314,16 @@ msgstr "Escolher sessão"
 msgid "Not listed?"
 msgstr "Não está listado?"
 
-#: ../js/gdm/loginDialog.js:822
+#: ../js/gdm/loginDialog.js:826
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(ex.: usuário ou %s)"
 
-#: ../js/gdm/loginDialog.js:827 ../js/ui/components/networkAgent.js:269 ../js/ui/components/networkAgent.js:287
+#: ../js/gdm/loginDialog.js:831 ../js/ui/components/networkAgent.js:269 ../js/ui/components/networkAgent.js:287
 msgid "Username: "
 msgstr "Nome de usuário: "
 
-#: ../js/gdm/loginDialog.js:1159
+#: ../js/gdm/loginDialog.js:1166
 msgid "Login Window"
 msgstr "Janela de sessão"
 
@@ -416,7 +416,7 @@ msgstr "Dia todo"
 
 #. Translators: Shown in calendar event list, if 24h format,
 #. \u2236 is a ratio character, similar to : */
-#: ../js/ui/calendar.js:88 ../js/ui/calendar.js:1562
+#: ../js/ui/calendar.js:88 ../js/ui/calendar.js:1575
 msgctxt "event list time"
 msgid "%H∶%M"
 msgstr "%H∶%M"
@@ -483,33 +483,33 @@ msgstr "Mês anterior"
 msgid "Next month"
 msgstr "Próximo mês"
 
-#: ../js/ui/calendar.js:1245
+#: ../js/ui/calendar.js:1258
 msgid "Clear section"
 msgstr "Limpar seção"
 
-#: ../js/ui/calendar.js:1423
+#: ../js/ui/calendar.js:1436
 msgid "Events"
 msgstr "Eventos"
 
-#: ../js/ui/calendar.js:1431
+#: ../js/ui/calendar.js:1444
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d de %B"
 
-#: ../js/ui/calendar.js:1435
+#: ../js/ui/calendar.js:1448
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d de %B de %Y"
 
-#: ../js/ui/calendar.js:1528
+#: ../js/ui/calendar.js:1541
 msgid "Notifications"
 msgstr "Notificações"
 
-#: ../js/ui/calendar.js:1665
+#: ../js/ui/calendar.js:1678
 msgid "No Notifications"
 msgstr "Nenhuma notificação"
 
-#: ../js/ui/calendar.js:1668
+#: ../js/ui/calendar.js:1681
 msgid "No Events"
 msgstr "Nenhum evento"
 
@@ -1049,7 +1049,7 @@ msgstr "Instalar"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Baixar e instalar \"%s\" de extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:706 ../js/ui/status/keyboard.js:577
+#: ../js/ui/keyboard.js:706 ../js/ui/status/keyboard.js:576
 msgid "Keyboard"
 msgstr "Teclado"
 
@@ -1104,7 +1104,7 @@ msgstr "Ver fonte"
 msgid "Web Page"
 msgstr "Página web"
 
-#: ../js/ui/messageTray.js:2092
+#: ../js/ui/messageTray.js:2131
 msgid "System Information"
 msgstr "Informações do sistema"
 
@@ -1156,37 +1156,37 @@ msgstr "Reiniciando…"
 
 #. Translators: This is a time format for a date in
 #. long format */
-#: ../js/ui/screenShield.js:88
+#: ../js/ui/screenShield.js:85
 msgid "%A, %B %d"
 msgstr "%A, %d de %B"
 
-#: ../js/ui/screenShield.js:147
+#: ../js/ui/screenShield.js:144
 #, javascript-format
 msgid "%d new message"
 msgid_plural "%d new messages"
 msgstr[0] "%d nova mensagem"
 msgstr[1] "%d novas mensagens"
 
-#: ../js/ui/screenShield.js:149
+#: ../js/ui/screenShield.js:146
 #, javascript-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d nova notificação"
 msgstr[1] "%d novas notificações"
 
-#: ../js/ui/screenShield.js:434 ../js/ui/status/system.js:345
+#: ../js/ui/screenShield.js:432 ../js/ui/status/system.js:345
 msgid "Lock"
 msgstr "Bloquear"
 
-#: ../js/ui/screenShield.js:670
+#: ../js/ui/screenShield.js:668
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME precisa bloquear a tela"
 
-#: ../js/ui/screenShield.js:797 ../js/ui/screenShield.js:1273
+#: ../js/ui/screenShield.js:795 ../js/ui/screenShield.js:1271
 msgid "Unable to lock"
 msgstr "Não foi possível bloquear"
 
-#: ../js/ui/screenShield.js:798 ../js/ui/screenShield.js:1274
+#: ../js/ui/screenShield.js:796 ../js/ui/screenShield.js:1272
 msgid "Lock was blocked by an application"
 msgstr "O bloqueio foi impedido por um aplicativo"
 
@@ -1295,7 +1295,7 @@ msgstr "Não conectado"
 msgid "Brightness"
 msgstr "Brilho"
 
-#: ../js/ui/status/keyboard.js:600
+#: ../js/ui/status/keyboard.js:599
 msgid "Show Keyboard Layout"
 msgstr "Exibir disposição de teclado"
 
@@ -1697,6 +1697,9 @@ msgstr "A senha não pode estar em branco"
 #: ../src/shell-polkit-authentication-agent.c:346
 msgid "Authentication dialog was dismissed by the user"
 msgstr "O diálogo de autenticação foi descartado pelo usuário"
+
+#~ msgid "Show the message list"
+#~ msgstr "Mostra a lista de mensagem"
 
 #~ msgctxt "list sunday"
 #~ msgid "Su"
