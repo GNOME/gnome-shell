@@ -29,6 +29,8 @@ ShellWM *shell_wm_new                        (MetaPlugin      *plugin);
 
 void     shell_wm_completed_minimize         (ShellWM         *wm,
                                               MetaWindowActor *actor);
+void     shell_wm_completed_unminimize       (ShellWM         *wm,
+                                              MetaWindowActor *actor);
 void     shell_wm_completed_maximize         (ShellWM         *wm,
                                               MetaWindowActor *actor);
 void     shell_wm_completed_unmaximize       (ShellWM         *wm,

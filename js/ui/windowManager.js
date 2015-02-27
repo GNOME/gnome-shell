@@ -616,6 +616,7 @@ const WindowManager = new Lang.Class({
         this._shellwm =  global.window_manager;
 
         this._minimizing = [];
+        this._unminimizing = [];
         this._maximizing = [];
         this._unmaximizing = [];
         this._mapping = [];
@@ -641,6 +642,7 @@ const WindowManager = new Lang.Class({
         this._shellwm.connect('hide-tile-preview', Lang.bind(this, this._hideTilePreview));
         this._shellwm.connect('show-window-menu', Lang.bind(this, this._showWindowMenu));
         this._shellwm.connect('minimize', Lang.bind(this, this._minimizeWindow));
+        this._shellwm.connect('unminimize', Lang.bind(this, this._unminimizeWindow));
         this._shellwm.connect('maximize', Lang.bind(this, this._maximizeWindow));
         this._shellwm.connect('unmaximize', Lang.bind(this, this._unmaximizeWindow));
         this._shellwm.connect('map', Lang.bind(this, this._mapWindow));
@@ -1071,6 +1073,84 @@ const WindowManager = new Lang.Class({
             shellwm.completed_minimize(actor);
         }
     },
+
+    _unminimizeWindow : function(shellwm, actor) {
+        let types = [Meta.WindowType.NORMAL,
+                     Meta.WindowType.MODAL_DIALOG,
+                     Meta.WindowType.DIALOG];
+        if (!this._shouldAnimateActor(actor, types)) {
+            shellwm.completed_unminimize(actor);
+            return;
+        }
+
+        this._unminimizing.push(actor);
+
+        if (actor.meta_window.is_monitor_sized()) {
+            actor.opacity = 0;
+            actor.set_scale(1.0, 1.0);
+            Tweener.addTween(actor,
+                         { opacity: 255,
+                           time: MINIMIZE_WINDOW_ANIMATION_TIME,
+                           transition: 'easeOutQuad',
+                           onComplete: this._unminimizeWindowDone,
+                           onCompleteScope: this,
+                           onCompleteParams: [shellwm, actor],
+                           onOverwrite: this._unminimizeWindowOverwritten,
+                           onOverwriteScope: this,
+                           onOverwriteParams: [shellwm, actor]
+                         });
+        } else {
+            let [success, geom] = actor.meta_window.get_icon_geometry();
+            if (success) {
+                actor.set_position(geom.x, geom.y);
+                actor.set_scale(geom.width / actor.width,
+                                geom.height / actor.height);
+            } else {
+                let monitor = Main.layoutManager.monitors[actor.meta_window.get_monitor()];
+                actor.set_position(monitor.x, monitor.y);
+                if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL)
+                    actor.x += monitor.width;
+                actor.set_scale(0, 0);
+            }
+
+            let rect = actor.meta_window.get_frame_rect();
+            let [xDest, yDest] = [rect.x, rect.y];
+
+            actor.show();
+            Tweener.addTween(actor,
+                             { scale_x: 1.0,
+                               scale_y: 1.0,
+                               x: xDest,
+                               y: yDest,
+                               time: MINIMIZE_WINDOW_ANIMATION_TIME,
+                               transition: 'easeInExpo',
+                               onComplete: this._unminimizeWindowDone,
+                               onCompleteScope: this,
+                               onCompleteParams: [shellwm, actor],
+                               onOverwrite: this._unminimizeWindowOverwritten,
+                               onOverwriteScope: this,
+                               onOverwriteParams: [shellwm, actor]
+                             });
+        }
+    },
+
+    _unminimizeWindowDone : function(shellwm, actor) {
+        if (this._removeEffect(this._unminimizing, actor)) {
+            Tweener.removeTweens(actor);
+            actor.set_scale(1.0, 1.0);
+            actor.set_opacity(255);
+            actor.set_pivot_point(0, 0);
+
+            shellwm.completed_unminimize(actor);
+        }
+    },
+
+    _unminimizeWindowOverwritten : function(shellwm, actor) {
+        if (this._removeEffect(this._unminimizing, actor)) {
+            shellwm.completed_unminimize(actor);
+        }
+    },
+
 
     _maximizeWindow : function(shellwm, actor, targetX, targetY, targetWidth, targetHeight) {
         shellwm.completed_maximize(actor);

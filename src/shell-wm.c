@@ -19,6 +19,7 @@ struct _ShellWM {
 enum
 {
   MINIMIZE,
+  UNMINIMIZE,
   MAXIMIZE,
   UNMAXIMIZE,
   MAP,
@@ -59,6 +60,14 @@ shell_wm_class_init (ShellWMClass *klass)
 
   shell_wm_signals[MINIMIZE] =
     g_signal_new ("minimize",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL, NULL,
+                  G_TYPE_NONE, 1,
+                  META_TYPE_WINDOW_ACTOR);
+  shell_wm_signals[UNMINIMIZE] =
+    g_signal_new ("unminimize",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   0,
@@ -198,6 +207,20 @@ shell_wm_completed_minimize (ShellWM         *wm,
 }
 
 /**
+ * shell_wm_completed_unminimize:
+ * @wm: the ShellWM
+ * @actor: the MetaWindowActor actor
+ *
+ * The plugin must call this when it has completed a window unminimize effect.
+ **/
+void
+shell_wm_completed_unminimize (ShellWM         *wm,
+                               MetaWindowActor *actor)
+{
+  meta_plugin_unminimize_completed (wm->plugin, actor);
+}
+
+/**
  * shell_wm_completed_maximize:
  * @wm: the ShellWM
  * @actor: the MetaWindowActor actor
@@ -326,6 +349,13 @@ _shell_wm_minimize (ShellWM         *wm,
                     MetaWindowActor *actor)
 {
   g_signal_emit (wm, shell_wm_signals[MINIMIZE], 0, actor);
+}
+
+void
+_shell_wm_unminimize (ShellWM         *wm,
+                      MetaWindowActor *actor)
+{
+  g_signal_emit (wm, shell_wm_signals[UNMINIMIZE], 0, actor);
 }
 
 void

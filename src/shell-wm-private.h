@@ -10,6 +10,8 @@ G_BEGIN_DECLS
 
 void _shell_wm_minimize   (ShellWM         *wm,
                            MetaWindowActor *actor);
+void _shell_wm_unminimize (ShellWM         *wm,
+                           MetaWindowActor *actor);
 void _shell_wm_maximize   (ShellWM         *wm,
                            MetaWindowActor *actor,
                            gint             x,
