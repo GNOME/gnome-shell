@@ -950,6 +950,23 @@ sync_request_timeout (gpointer data)
 }
 
 static void
+reset_sync_request_timeout (MetaWindow *window)
+{
+  if (window->sync_request_timeout_id != 0)
+    g_source_remove (window->sync_request_timeout_id);
+
+  /* We give the window 1 sec to respond to _NET_WM_SYNC_REQUEST;
+   * if this time expires, we consider the window unresponsive
+   * and resize it unsynchonized.
+   */
+  window->sync_request_timeout_id = g_timeout_add (1000,
+                                                   sync_request_timeout,
+                                                   window);
+  g_source_set_name_by_id (window->sync_request_timeout_id,
+                           "[mutter] sync_request_timeout");
+}
+
+static void
 send_sync_request (MetaWindow *window)
 {
   XClientMessageEvent ev;
@@ -987,15 +1004,7 @@ send_sync_request (MetaWindow *window)
   XSendEvent (window->display->xdisplay,
 	      window->xwindow, False, 0, (XEvent*) &ev);
 
-  /* We give the window 1 sec to respond to _NET_WM_SYNC_REQUEST;
-   * if this time expires, we consider the window unresponsive
-   * and resize it unsynchonized.
-   */
-  window->sync_request_timeout_id = g_timeout_add (1000,
-                                                   sync_request_timeout,
-                                                   window);
-  g_source_set_name_by_id (window->sync_request_timeout_id,
-                           "[mutter] sync_request_timeout");
+  reset_sync_request_timeout (window);
 
   meta_compositor_sync_updates_frozen (window->display->compositor, window);
 }
@@ -3338,27 +3347,34 @@ meta_window_x11_update_sync_request_counter (MetaWindow *window,
   window->sync_request_serial = new_counter_value;
   meta_compositor_sync_updates_frozen (window->display->compositor, window);
 
-  if (window == window->display->grab_window &&
-      meta_grab_op_is_resizing (window->display->grab_op) &&
-      new_counter_value >= window->sync_request_wait_serial &&
-      (!window->extended_sync_request_counter || new_counter_value % 2 == 0) &&
-      window->sync_request_timeout_id)
+  if (window->sync_request_timeout_id)
     {
-      meta_topic (META_DEBUG_RESIZING,
-                  "Alarm event received last motion x = %d y = %d\n",
-                  window->display->grab_latest_motion_x,
-                  window->display->grab_latest_motion_y);
+      if (new_counter_value < window->sync_request_wait_serial)
+        {
+          reset_sync_request_timeout (window);
+        }
+      else if (!window->extended_sync_request_counter || new_counter_value % 2 == 0)
+        {
+          g_source_remove (window->sync_request_timeout_id);
+          window->sync_request_timeout_id = 0;
 
-      g_source_remove (window->sync_request_timeout_id);
-      window->sync_request_timeout_id = 0;
+          if (window == window->display->grab_window &&
+              meta_grab_op_is_resizing (window->display->grab_op))
+            {
+              meta_topic (META_DEBUG_RESIZING,
+                          "Alarm event received last motion x = %d y = %d\n",
+                          window->display->grab_latest_motion_x,
+                          window->display->grab_latest_motion_y);
 
-      /* This means we are ready for another configure;
-       * no pointer round trip here, to keep in sync */
-      meta_window_update_resize (window,
-                                 window->display->grab_last_user_action_was_snap,
-                                 window->display->grab_latest_motion_x,
-                                 window->display->grab_latest_motion_y,
-                                 TRUE);
+              /* This means we are ready for another configure;
+               * no pointer round trip here, to keep in sync */
+              meta_window_update_resize (window,
+                                         window->display->grab_last_user_action_was_snap,
+                                         window->display->grab_latest_motion_x,
+                                         window->display->grab_latest_motion_y,
+                                         TRUE);
+            }
+        }
     }
 
   /* If sync was previously disabled, turn it back on and hope
