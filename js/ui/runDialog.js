@@ -272,6 +272,10 @@ const RunDialog = new Lang.Class({
     },
 
     _restart: function() {
+        if (Meta.is_wayland_compositor()) {
+            this._showError('Restart is not available on Wayland');
+            return;
+        }
         this._shouldFadeOut = false;
         this.close();
         Meta.restart(_("Restarting…"));
