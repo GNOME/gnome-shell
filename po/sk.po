@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-02-26 08:45+0000\n"
-"PO-Revision-Date: 2015-02-26 11:46+0100\n"
+"POT-Creation-Date: 2015-02-28 08:42+0000\n"
+"PO-Revision-Date: 2015-02-28 11:00+0100\n"
 "Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
 "Language-Team: Slovak <gnome-sk-list@gnome.org>\n"
 "Language: sk\n"
@@ -25,10 +25,9 @@ msgstr ""
 msgid "System"
 msgstr "Systém"
 
-# nazov klavesovej skratky
 #: ../data/50-gnome-shell-system.xml.in.h:2
-msgid "Show the message list"
-msgstr "Zobraziť zoznam správ"
+msgid "Show the notification list"
+msgstr "Zobraziť zoznam s oznámeniami"
 
 # nazov klavesovej skratky
 #: ../data/50-gnome-shell-system.xml.in.h:3
@@ -178,12 +177,12 @@ msgid "Keybinding to open the Activities Overview."
 msgstr "Klávesová skratka na otvorenie prehľadu aktivít."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:25
-msgid "Keybinding to toggle the visibility of the message tray"
-msgstr "Klávesová skratka na prepnutie viditeľnosti lišty správ"
+msgid "Keybinding to toggle the visibility of the notification list"
+msgstr "Klávesová skratka na prepnutie viditeľnosti zoznamu s oznámeniami"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:26
-msgid "Keybinding to toggle the visibility of the message tray."
-msgstr "Klávesová skratka na prepnutie viditeľnosti lišty správ."
+msgid "Keybinding to toggle the visibility of the notification list."
+msgstr "Klávesová skratka na prepnutie viditeľnosti zoznamu s oznámeniami."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:27
 msgid "Keybinding to focus the active notification"
@@ -294,16 +293,16 @@ msgstr "Vybrať reláciu"
 msgid "Not listed?"
 msgstr "Nie ste v zozname?"
 
-#: ../js/gdm/loginDialog.js:822
+#: ../js/gdm/loginDialog.js:826
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(napr., používateľ alebo %s)"
 
-#: ../js/gdm/loginDialog.js:827 ../js/ui/components/networkAgent.js:269 ../js/ui/components/networkAgent.js:287
+#: ../js/gdm/loginDialog.js:831 ../js/ui/components/networkAgent.js:269 ../js/ui/components/networkAgent.js:287
 msgid "Username: "
 msgstr "Používateľské meno: "
 
-#: ../js/gdm/loginDialog.js:1159
+#: ../js/gdm/loginDialog.js:1166
 msgid "Login Window"
 msgstr "Prihlasovacie okno"
 
@@ -399,7 +398,7 @@ msgstr "Celý deň"
 
 #. Translators: Shown in calendar event list, if 24h format,
 #. \u2236 is a ratio character, similar to : */
-#: ../js/ui/calendar.js:88 ../js/ui/calendar.js:1562
+#: ../js/ui/calendar.js:88 ../js/ui/calendar.js:1575
 msgctxt "event list time"
 msgid "%H∶%M"
 msgstr "%H∶%M"
@@ -469,33 +468,33 @@ msgstr "Predchádzajúci mesiac"
 msgid "Next month"
 msgstr "Nasledujúci mesiac"
 
-#: ../js/ui/calendar.js:1245
+#: ../js/ui/calendar.js:1258
 msgid "Clear section"
 msgstr "Vymazať úsek"
 
-#: ../js/ui/calendar.js:1423
+#: ../js/ui/calendar.js:1436
 msgid "Events"
 msgstr "Udalosti"
 
-#: ../js/ui/calendar.js:1431
+#: ../js/ui/calendar.js:1444
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %e. %B"
 
-#: ../js/ui/calendar.js:1435
+#: ../js/ui/calendar.js:1448
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %e. %B %Y"
 
-#: ../js/ui/calendar.js:1528
+#: ../js/ui/calendar.js:1541
 msgid "Notifications"
 msgstr "Oznámenia"
 
-#: ../js/ui/calendar.js:1665
+#: ../js/ui/calendar.js:1678
 msgid "No Notifications"
 msgstr "Žiadne oznámenia"
 
-#: ../js/ui/calendar.js:1668
+#: ../js/ui/calendar.js:1681
 msgid "No Events"
 msgstr "Žiadne udalosti"
 
@@ -1093,7 +1092,7 @@ msgstr "Zobraziť zdroj"
 msgid "Web Page"
 msgstr "Webová stránka"
 
-#: ../js/ui/messageTray.js:2091
+#: ../js/ui/messageTray.js:2131
 msgid "System Information"
 msgstr "Informácie o systéme"
 
@@ -1169,19 +1168,19 @@ msgstr[0] "%d nových oznámení"
 msgstr[1] "%d nové oznámenie"
 msgstr[2] "%d nové oznámenia"
 
-#: ../js/ui/screenShield.js:431 ../js/ui/status/system.js:345
+#: ../js/ui/screenShield.js:432 ../js/ui/status/system.js:345
 msgid "Lock"
 msgstr "Uzamknúť"
 
-#: ../js/ui/screenShield.js:667
+#: ../js/ui/screenShield.js:668
 msgid "GNOME needs to lock the screen"
 msgstr "Prostredie GNOME vyžaduje uzamknutie obrazovky"
 
-#: ../js/ui/screenShield.js:794 ../js/ui/screenShield.js:1270
+#: ../js/ui/screenShield.js:795 ../js/ui/screenShield.js:1271
 msgid "Unable to lock"
 msgstr "Nepodarilo sa uzamknúť obrazovku"
 
-#: ../js/ui/screenShield.js:795 ../js/ui/screenShield.js:1271
+#: ../js/ui/screenShield.js:796 ../js/ui/screenShield.js:1272
 msgid "Lock was blocked by an application"
 msgstr "Uzamknutie bolo zablokované aplikáciou"
 
@@ -1703,6 +1702,10 @@ msgstr "Heslo nemôže byť prázdne"
 #: ../src/shell-polkit-authentication-agent.c:346
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Dialógové okno overenia totožnosti bolo zatvorené používateľom"
+
+# nazov klavesovej skratky
+#~ msgid "Show the message list"
+#~ msgstr "Zobraziť zoznam správ"
 
 #~ msgctxt "list sunday"
 #~ msgid "Su"
