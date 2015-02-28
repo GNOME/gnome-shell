@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-02-23 20:39+0000\n"
-"PO-Revision-Date: 2015-02-23 23:03+0200\n"
+"POT-Creation-Date: 2015-02-28 08:42+0000\n"
+"PO-Revision-Date: 2015-02-28 16:11+0200\n"
 "Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lietuvių <gnome-lt@lists.akl.lt>\n"
 "Language: lt\n"
@@ -29,8 +29,9 @@ msgid "System"
 msgstr "Sistema"
 
 #: ../data/50-gnome-shell-system.xml.in.h:2
-#| msgid "Show the message tray"
-msgid "Show the message list"
+#| msgid "%d new notification"
+#| msgid_plural "%d new notifications"
+msgid "Show the notification list"
 msgstr "Rodyti pranešimų sąrašą"
 
 #: ../data/50-gnome-shell-system.xml.in.h:3
@@ -208,11 +209,13 @@ msgid "Keybinding to open the Activities Overview."
 msgstr "Klavišų susiejimas, kuriuo atveriama veiklų apžvalga."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:25
-msgid "Keybinding to toggle the visibility of the message tray"
+#| msgid "Keybinding to toggle the visibility of the message tray"
+msgid "Keybinding to toggle the visibility of the notification list"
 msgstr "Klavišų susiejimas pranešimų juostos matomumui perjungti"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:26
-msgid "Keybinding to toggle the visibility of the message tray."
+#| msgid "Keybinding to toggle the visibility of the message tray."
+msgid "Keybinding to toggle the visibility of the notification list."
 msgstr "Klavišų susiejimas pranešimų juostos matomumui perjungti."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:27
@@ -298,7 +301,6 @@ msgid "Delay focus changes in mouse mode until the pointer stops moving"
 msgstr "Atidėti fokuso pakeitimus pelei iki žymiklis nustos judėti"
 
 #: ../data/org.gnome.Shell.PortalHelper.desktop.in.h:1
-#| msgid "Network error"
 msgid "Network Login"
 msgstr "Tinklo prisijungimas"
 
@@ -340,17 +342,17 @@ msgstr "Pasirinkite seansą"
 msgid "Not listed?"
 msgstr "Nėra sąraše?"
 
-#: ../js/gdm/loginDialog.js:822
+#: ../js/gdm/loginDialog.js:826
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(pvz., naudotojas arba %s)"
 
-#: ../js/gdm/loginDialog.js:827 ../js/ui/components/networkAgent.js:269
+#: ../js/gdm/loginDialog.js:831 ../js/ui/components/networkAgent.js:269
 #: ../js/ui/components/networkAgent.js:287
 msgid "Username: "
 msgstr "Naudotojo vardas: "
 
-#: ../js/gdm/loginDialog.js:1159
+#: ../js/gdm/loginDialog.js:1166
 msgid "Login Window"
 msgstr "Prisijungimo langas"
 
@@ -444,7 +446,7 @@ msgstr "Visa diena"
 
 #. Translators: Shown in calendar event list, if 24h format,
 #. \u2236 is a ratio character, similar to : */
-#: ../js/ui/calendar.js:88 ../js/ui/calendar.js:1562
+#: ../js/ui/calendar.js:88 ../js/ui/calendar.js:1575
 msgctxt "event list time"
 msgid "%H∶%M"
 msgstr "%H∶%M"
@@ -511,30 +513,34 @@ msgstr "Ankstesnis mėnuo"
 msgid "Next month"
 msgstr "Kitas mėnuo"
 
-#: ../js/ui/calendar.js:1245
+#: ../js/ui/calendar.js:1258
 msgid "Clear section"
 msgstr "Išvalyti skiltį"
 
-#: ../js/ui/calendar.js:1423
+#: ../js/ui/calendar.js:1436
 msgid "Events"
 msgstr "Įvykiai"
 
-#: ../js/ui/calendar.js:1431
+#: ../js/ui/calendar.js:1444
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %B %d d."
 
-#: ../js/ui/calendar.js:1435
+#: ../js/ui/calendar.js:1448
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %Y m. %B %d d."
 
-#: ../js/ui/calendar.js:1665
-#| msgid "Notifications"
+#: ../js/ui/calendar.js:1541
+#| msgid "No Notifications"
+msgid "Notifications"
+msgstr "Pranešimai"
+
+#: ../js/ui/calendar.js:1678
 msgid "No Notifications"
 msgstr "Nėra pranešimų"
 
-#: ../js/ui/calendar.js:1668
+#: ../js/ui/calendar.js:1681
 msgid "No Events"
 msgstr "Nėra įvykių"
 
@@ -935,7 +941,6 @@ msgstr "Paleidimo sritis"
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #. */
 #: ../js/ui/dateMenu.js:72
-#| msgid "%A %B %e, %Y"
 msgid "%B %e %Y"
 msgstr "%B %e %Y"
 
@@ -944,7 +949,6 @@ msgstr "%B %e %Y"
 #. * date, e.g. "Tuesday February 17 2015".
 #. */
 #: ../js/ui/dateMenu.js:79
-#| msgid "%A %B %e, %Y"
 msgid "%A %B %e %Y"
 msgstr "%A, %Y %B %d"
 
@@ -953,7 +957,6 @@ msgid "Add world clocks…"
 msgstr "Pridėti pasaulio laikrodžius…"
 
 #: ../js/ui/dateMenu.js:160
-#| msgid "Open Clocks"
 msgid "World Clocks"
 msgstr "Pasaulio laikrodžiai"
 
@@ -1102,7 +1105,7 @@ msgstr "Įdiegti"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Parsiųsti ir įdiegti „%s“ iš extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:706 ../js/ui/status/keyboard.js:577
+#: ../js/ui/keyboard.js:706 ../js/ui/status/keyboard.js:576
 msgid "Keyboard"
 msgstr "Klaviatūra"
 
@@ -1158,7 +1161,7 @@ msgstr "Žiūrėti šaltinį"
 msgid "Web Page"
 msgstr "Tinklalapis"
 
-#: ../js/ui/messageTray.js:2092
+#: ../js/ui/messageTray.js:2131
 msgid "System Information"
 msgstr "Sistemos informacija"
 
@@ -1210,11 +1213,11 @@ msgstr "Perleidžiama…"
 
 #. Translators: This is a time format for a date in
 #. long format */
-#: ../js/ui/screenShield.js:88
+#: ../js/ui/screenShield.js:85
 msgid "%A, %B %d"
 msgstr "%A, %B %d d."
 
-#: ../js/ui/screenShield.js:147
+#: ../js/ui/screenShield.js:144
 #, javascript-format
 msgid "%d new message"
 msgid_plural "%d new messages"
@@ -1222,7 +1225,7 @@ msgstr[0] "%d naujas pranešimas"
 msgstr[1] "%d nauji pranešimai"
 msgstr[2] "%d naujų pranešimų"
 
-#: ../js/ui/screenShield.js:149
+#: ../js/ui/screenShield.js:146
 #, javascript-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
@@ -1230,19 +1233,19 @@ msgstr[0] "%d naujas pranešimas"
 msgstr[1] "%d nauji pranešimai"
 msgstr[2] "%d naujų pranešimų"
 
-#: ../js/ui/screenShield.js:434 ../js/ui/status/system.js:345
+#: ../js/ui/screenShield.js:432 ../js/ui/status/system.js:345
 msgid "Lock"
 msgstr "Užrakinti"
 
-#: ../js/ui/screenShield.js:670
+#: ../js/ui/screenShield.js:668
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME aplinkai reikia užrakinti ekraną"
 
-#: ../js/ui/screenShield.js:797 ../js/ui/screenShield.js:1273
+#: ../js/ui/screenShield.js:795 ../js/ui/screenShield.js:1271
 msgid "Unable to lock"
 msgstr "Nepavyksta užrakinti"
 
-#: ../js/ui/screenShield.js:798 ../js/ui/screenShield.js:1274
+#: ../js/ui/screenShield.js:796 ../js/ui/screenShield.js:1272
 msgid "Lock was blocked by an application"
 msgstr "Programa užblokavo užrakinimą"
 
@@ -1353,7 +1356,7 @@ msgstr "Atsijungta"
 msgid "Brightness"
 msgstr "Ryškumas"
 
-#: ../js/ui/status/keyboard.js:600
+#: ../js/ui/status/keyboard.js:599
 msgid "Show Keyboard Layout"
 msgstr "Rodyti klaviatūros išdėstymą"
 
@@ -1756,6 +1759,10 @@ msgstr "Slaptažodis negali būti tuščias"
 #: ../src/shell-polkit-authentication-agent.c:346
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Naudotojas užvėrė tapatybės patvirtinimo dialogą"
+
+#~| msgid "Show the message tray"
+#~ msgid "Show the message list"
+#~ msgstr "Rodyti pranešimų sąrašą"
 
 #~ msgid "Captive Portal"
 #~ msgstr "Pagavimo portalas"
