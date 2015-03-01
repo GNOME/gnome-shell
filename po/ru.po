@@ -11,18 +11,18 @@
 # JDronova <juliette.tux@gmail.com>, 2013.
 # Valery Kirichenko <valera5505@gmail.com>, 2014.
 # Yuri Myasoedov <ymyasoedov@yandex.ru>, 2012, 2013, 2014.
-# Stas Solovey <whats_up@tut.by>, 2011, 2013, 2014, 2015.
 # Ivan Komaritsyn <vantu5z@mail.ru>, 2015.
+# Stas Solovey <whats_up@tut.by>, 2011, 2013, 2014, 2015.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-02-25 08:43+0000\n"
-"PO-Revision-Date: 2015-02-25 14:25+0300\n"
-"Last-Translator: Ivan Komaritsyn <vantu5z@mail.ru>\n"
-"Language-Team: русский <gnome-cyr@gnome.org>\n"
+"POT-Creation-Date: 2015-03-01 08:48+0000\n"
+"PO-Revision-Date: 2015-03-01 22:07+0300\n"
+"Last-Translator: Stas Solovey <whats_up@tut.by>\n"
+"Language-Team: Русский <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -36,7 +36,9 @@ msgid "System"
 msgstr "Система"
 
 #: ../data/50-gnome-shell-system.xml.in.h:2
-msgid "Show the message list"
+#| msgid "%d new notification"
+#| msgid_plural "%d new notifications"
+msgid "Show the notification list"
 msgstr "Показать список уведомлений"
 
 #: ../data/50-gnome-shell-system.xml.in.h:3
@@ -212,12 +214,12 @@ msgid "Keybinding to open the Activities Overview."
 msgstr "Комбинация клавиш для перехода в режим обзора."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:25
-msgid "Keybinding to toggle the visibility of the message tray"
-msgstr "Комбинация клавиш для отображения или скрытия панели сообщений"
+msgid "Keybinding to toggle the visibility of the notification list"
+msgstr "Комбинация клавиш для отображения или скрытия списка уведомлений"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:26
-msgid "Keybinding to toggle the visibility of the message tray."
-msgstr "Комбинация клавиш для отображения или скрытия панели сообщений."
+msgid "Keybinding to toggle the visibility of the notification list."
+msgstr "Комбинация клавиш для отображения или скрытия списка уведомлений."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:27
 msgid "Keybinding to focus the active notification"
@@ -348,17 +350,17 @@ msgstr "Выбрать сеанс"
 msgid "Not listed?"
 msgstr "Нет в списке?"
 
-#: ../js/gdm/loginDialog.js:822
+#: ../js/gdm/loginDialog.js:826
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(например, пользователь или %s)"
 
-#: ../js/gdm/loginDialog.js:827 ../js/ui/components/networkAgent.js:269
+#: ../js/gdm/loginDialog.js:831 ../js/ui/components/networkAgent.js:269
 #: ../js/ui/components/networkAgent.js:287
 msgid "Username: "
 msgstr "Имя пользователя: "
 
-#: ../js/gdm/loginDialog.js:1159
+#: ../js/gdm/loginDialog.js:1166
 msgid "Login Window"
 msgstr "Окно входа в систему"
 
@@ -434,7 +436,7 @@ msgstr "Параметры"
 
 #: ../js/ui/backgroundMenu.js:21
 msgid "Change Background…"
-msgstr "Изменить фон рабочего стола…"
+msgstr "Изменить фон…"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday). */
 #: ../js/ui/calendar.js:52
@@ -452,7 +454,7 @@ msgstr "Весь день"
 
 #. Translators: Shown in calendar event list, if 24h format,
 #. \u2236 is a ratio character, similar to : */
-#: ../js/ui/calendar.js:88 ../js/ui/calendar.js:1562
+#: ../js/ui/calendar.js:88 ../js/ui/calendar.js:1575
 msgctxt "event list time"
 msgid "%H∶%M"
 msgstr "%H∶%M"
@@ -519,36 +521,35 @@ msgstr "Предыдущий месяц"
 msgid "Next month"
 msgstr "Следующий месяц"
 
-#: ../js/ui/calendar.js:1245
+#: ../js/ui/calendar.js:1258
 msgid "Clear section"
 msgstr "Очистить секцию"
 
-#: ../js/ui/calendar.js:1423
+#: ../js/ui/calendar.js:1436
 msgid "Events"
 msgstr "События"
 
 # fix для даты в календаре и на экране блокировки, за разъяснением обращаться к Stas Solovey <whats_up@tut.by>
-#: ../js/ui/calendar.js:1431
+#: ../js/ui/calendar.js:1444
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d %b."
 
 # fix для даты в календаре и на экране блокировки
-#: ../js/ui/calendar.js:1435
+#: ../js/ui/calendar.js:1448
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d %b., %Y"
 
-#: ../js/ui/calendar.js:1528
-#| msgid "No Notifications"
+#: ../js/ui/calendar.js:1541
 msgid "Notifications"
 msgstr "Уведомления"
 
-#: ../js/ui/calendar.js:1665
+#: ../js/ui/calendar.js:1678
 msgid "No Notifications"
 msgstr "Уведомлений нет"
 
-#: ../js/ui/calendar.js:1668
+#: ../js/ui/calendar.js:1681
 msgid "No Events"
 msgstr "Событий нет"
 
@@ -714,7 +715,7 @@ msgstr "%d %b., %H∶%M"
 #. i.e. "May 25 2012, 14:30" */
 #: ../js/ui/components/telepathyClient.js:963
 msgid "%B %d %Y, %H∶%M"
-msgstr "%d %b., %Y, %H∶%M"
+msgstr "%d %b. %Y, %H∶%M"
 
 # по всей видимости разрабы коммент перепутали c "Translators: Time in 12h format"
 #. Translators: Time in 12h format */
@@ -748,7 +749,7 @@ msgstr "%d %b., %l∶%M %p"
 #. i.e. "May 25 2012, 2:30 pm"*/
 #: ../js/ui/components/telepathyClient.js:996
 msgid "%B %d %Y, %l∶%M %p"
-msgstr "%d %b., %Y, %l∶%M %p"
+msgstr "%d %b. %Y, %l∶%M %p"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name. */
@@ -1122,7 +1123,7 @@ msgstr "Установить"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Загрузить и установить расширение «%s» из extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:706 ../js/ui/status/keyboard.js:577
+#: ../js/ui/keyboard.js:706 ../js/ui/status/keyboard.js:576
 msgid "Keyboard"
 msgstr "Клавиатура"
 
@@ -1178,7 +1179,7 @@ msgstr "Показать код"
 msgid "Web Page"
 msgstr "Веб-страница"
 
-#: ../js/ui/messageTray.js:2092
+#: ../js/ui/messageTray.js:2131
 msgid "System Information"
 msgstr "Системная информация"
 
@@ -1231,11 +1232,11 @@ msgstr "Перезапуск…"
 # fix для даты в календаре и на экране блокировки
 #. Translators: This is a time format for a date in
 #. long format */
-#: ../js/ui/screenShield.js:88
+#: ../js/ui/screenShield.js:85
 msgid "%A, %B %d"
 msgstr "%A, %d %b."
 
-#: ../js/ui/screenShield.js:147
+#: ../js/ui/screenShield.js:144
 #, javascript-format
 msgid "%d new message"
 msgid_plural "%d new messages"
@@ -1243,7 +1244,7 @@ msgstr[0] "%d новое сообщение"
 msgstr[1] "%d новых сообщения"
 msgstr[2] "%d новых сообщений"
 
-#: ../js/ui/screenShield.js:149
+#: ../js/ui/screenShield.js:146
 #, javascript-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
@@ -1251,19 +1252,19 @@ msgstr[0] "%d новое уведомление"
 msgstr[1] "%d новых уведомления"
 msgstr[2] "%d новых уведомлений"
 
-#: ../js/ui/screenShield.js:434 ../js/ui/status/system.js:345
+#: ../js/ui/screenShield.js:432 ../js/ui/status/system.js:345
 msgid "Lock"
 msgstr "Заблокировать"
 
-#: ../js/ui/screenShield.js:670
+#: ../js/ui/screenShield.js:668
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME необходимо заблокировать экран"
 
-#: ../js/ui/screenShield.js:797 ../js/ui/screenShield.js:1273
+#: ../js/ui/screenShield.js:795 ../js/ui/screenShield.js:1271
 msgid "Unable to lock"
 msgstr "Не удалось заблокировать"
 
-#: ../js/ui/screenShield.js:798 ../js/ui/screenShield.js:1274
+#: ../js/ui/screenShield.js:796 ../js/ui/screenShield.js:1272
 msgid "Lock was blocked by an application"
 msgstr "Блокировке помешало приложение"
 
@@ -1374,7 +1375,7 @@ msgstr "Не подключено"
 msgid "Brightness"
 msgstr "Яркость"
 
-#: ../js/ui/status/keyboard.js:600
+#: ../js/ui/status/keyboard.js:599
 msgid "Show Keyboard Layout"
 msgstr "Показать раскладку клавиатуры"
 
@@ -1779,3 +1780,6 @@ msgstr "Пароль не может быть пустым"
 #: ../src/shell-polkit-authentication-agent.c:346
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Аутентификация отклонена пользователем"
+
+#~ msgid "Show the message list"
+#~ msgstr "Показать список уведомлений"
