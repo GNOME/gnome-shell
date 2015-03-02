@@ -356,36 +356,6 @@ parent_surface_committed (gpointer data, gpointer user_data)
   subsurface_parent_surface_committed (data);
 }
 
-static cairo_region_t*
-scale_region (cairo_region_t *region, int scale)
-{
-  int n_rects, i;
-  cairo_rectangle_int_t *rects;
-  cairo_region_t *scaled_region;
-
-  if (scale == 1)
-    return region;
-
-  n_rects = cairo_region_num_rectangles (region);
-
-  rects = g_malloc (sizeof(cairo_rectangle_int_t) * n_rects);
-  for (i = 0; i < n_rects; i++)
-    {
-      cairo_region_get_rectangle (region, i, &rects[i]);
-      rects[i].x *= scale;
-      rects[i].y *= scale;
-      rects[i].width *= scale;
-      rects[i].height *= scale;
-    }
-
-  scaled_region = cairo_region_create_rectangles (rects, n_rects);
-
-  g_free (rects);
-  cairo_region_destroy (region);
-
-  return scaled_region;
-}
-
 static void
 commit_pending_state (MetaWaylandSurface      *surface,
                       MetaWaylandPendingState *pending)
@@ -426,18 +396,20 @@ commit_pending_state (MetaWaylandSurface      *surface,
 
   if (pending->opaque_region)
     {
-      pending->opaque_region = scale_region (pending->opaque_region, surface->scale);
-      meta_surface_actor_set_opaque_region (surface->surface_actor, pending->opaque_region);
-    }
-  if (pending->input_region)
-    {
-      pending->input_region = scale_region (pending->input_region,
-                                            meta_surface_actor_wayland_get_scale (META_SURFACE_ACTOR_WAYLAND (surface->surface_actor)));
-      meta_surface_actor_set_input_region (surface->surface_actor, pending->input_region);
+      if (surface->opaque_region)
+        cairo_region_destroy (surface->opaque_region);
+      surface->opaque_region = cairo_region_reference (pending->opaque_region);
     }
 
-  /* scale surface texture */
-  meta_surface_actor_wayland_scale_texture (META_SURFACE_ACTOR_WAYLAND (surface->surface_actor));
+  if (pending->input_region)
+    {
+      if (surface->input_region)
+        cairo_region_destroy (surface->input_region);
+      surface->input_region = cairo_region_reference (pending->input_region);
+    }
+
+  meta_surface_actor_wayland_sync_state (
+    META_SURFACE_ACTOR_WAYLAND (surface->surface_actor));
 
   /* wl_surface.frame */
   wl_list_insert_list (&compositor->frame_callbacks, &pending->frame_callback_list);
@@ -691,6 +663,11 @@ wl_surface_destructor (struct wl_resource *resource)
 
   surface_set_buffer (surface, NULL);
   pending_state_destroy (&surface->pending);
+
+  if (surface->opaque_region)
+    cairo_region_destroy (surface->opaque_region);
+  if (surface->input_region)
+    cairo_region_destroy (surface->input_region);
 
   g_object_unref (surface->surface_actor);
 

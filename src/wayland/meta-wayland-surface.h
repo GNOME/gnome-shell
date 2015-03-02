@@ -81,6 +81,8 @@ struct _MetaWaylandSurface
   MetaWindow *window;
   MetaWaylandBuffer *buffer;
   struct wl_listener buffer_destroy_listener;
+  cairo_region_t *input_region;
+  cairo_region_t *opaque_region;
   int scale;
   int32_t offset_x, offset_y;
   GList *subsurfaces;

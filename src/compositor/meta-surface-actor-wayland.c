@@ -31,6 +31,8 @@
 
 #include "wayland/meta-wayland-private.h"
 
+#include "compositor/region-utils.h"
+
 struct _MetaSurfaceActorWaylandPrivate
 {
   MetaWaylandSurface *surface;
@@ -126,12 +128,51 @@ meta_surface_actor_wayland_get_scale (MetaSurfaceActorWayland *actor)
 }
 
 void
-meta_surface_actor_wayland_scale_texture (MetaSurfaceActorWayland *actor)
+meta_surface_actor_wayland_sync_state (MetaSurfaceActorWayland *self)
 {
-  MetaShapedTexture *stex = meta_surface_actor_get_texture (META_SURFACE_ACTOR (actor));
-  double output_scale = meta_surface_actor_wayland_get_scale (actor);
+  MetaWaylandSurface *surface = meta_surface_actor_wayland_get_surface (self);
+  MetaShapedTexture *stex =
+    meta_surface_actor_get_texture (META_SURFACE_ACTOR (self));
+  double texture_scale;
 
-  clutter_actor_set_scale (CLUTTER_ACTOR (stex), output_scale, output_scale);
+  /* Given the surface's window type and what output the surface actor has the
+   * largest region, scale the actor with the determined scale. */
+  texture_scale = meta_surface_actor_wayland_get_scale (self);
+
+  /* Actor scale. */
+  clutter_actor_set_scale (CLUTTER_ACTOR (stex), texture_scale, texture_scale);
+
+  /* Input region */
+  if (surface->input_region)
+    {
+      cairo_region_t *scaled_input_region;
+      int region_scale;
+
+      /* The input region from the Wayland surface is in the Wayland surface
+       * coordinate space, while the surface actor input region is in the
+       * physical pixel coordinate space. */
+      region_scale = (int)(surface->scale * texture_scale);
+      scaled_input_region = meta_region_scale (surface->input_region,
+                                               region_scale);
+      meta_surface_actor_set_input_region (META_SURFACE_ACTOR (self),
+                                           scaled_input_region);
+      cairo_region_destroy (scaled_input_region);
+    }
+
+  /* Opaque region */
+  if (surface->opaque_region)
+    {
+      cairo_region_t *scaled_opaque_region;
+
+      /* The opaque region from the Wayland surface is in Wayland surface
+       * coordinate space, while the surface actor opaque region is in the
+       * same coordinate space as the unscaled buffer texture. */
+      scaled_opaque_region = meta_region_scale (surface->opaque_region,
+                                                surface->scale);
+      meta_surface_actor_set_opaque_region (META_SURFACE_ACTOR (self),
+                                            scaled_opaque_region);
+      cairo_region_destroy (scaled_opaque_region);
+    }
 }
 
 static MetaWindow *
