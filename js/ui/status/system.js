@@ -48,8 +48,14 @@ const AltSwitcher = new Lang.Class({
 
         this._capturedEventId = global.stage.connect('captured-event', Lang.bind(this, this._onCapturedEvent));
 
+        this._flipped = false;
+
+        this._clickAction = new Clutter.ClickAction();
+        this._clickAction.connect('long-press', Lang.bind(this, this._onLongPress));
+
         this.actor = new St.Bin();
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
+        this.actor.connect('notify::mapped', () => { this._flipped = false; });
     },
 
     _sync: function() {
@@ -58,14 +64,25 @@ const AltSwitcher = new Lang.Class({
         if (this._standard.visible && this._alternate.visible) {
             let [x, y, mods] = global.get_pointer();
             let altPressed = (mods & Clutter.ModifierType.MOD1_MASK) != 0;
-            childToShow = altPressed ? this._alternate : this._standard;
+            if (this._flipped)
+                childToShow = altPressed ? this._standard : this._alternate;
+            else
+                childToShow = altPressed ? this._alternate : this._standard;
         } else if (this._standard.visible) {
             childToShow = this._standard;
         } else if (this._alternate.visible) {
             childToShow = this._alternate;
         }
 
-        if (this.actor.get_child() != childToShow) {
+        let childShown = this.actor.get_child();
+        if (childShown != childToShow) {
+            if (childShown) {
+                if (childShown.fake_release)
+                    childShown.fake_release();
+                childShown.remove_action(this._clickAction);
+            }
+            childToShow.add_action(this._clickAction);
+
             let hasFocus = this.actor.contains(global.stage.get_key_focus());
             this.actor.set_child(childToShow);
             if (hasFocus)
@@ -96,6 +113,16 @@ const AltSwitcher = new Lang.Class({
 
         return Clutter.EVENT_PROPAGATE;
     },
+
+    _onLongPress: function(action, actor, state) {
+        if (state == Clutter.LongPressState.QUERY ||
+            state == Clutter.LongPressState.CANCEL)
+            return true;
+
+        this._flipped = !this._flipped;
+        this._sync();
+        return true;
+    }
 });
 
 const Indicator = new Lang.Class({
