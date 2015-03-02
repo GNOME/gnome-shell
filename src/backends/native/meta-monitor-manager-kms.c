@@ -280,6 +280,9 @@ compute_scale (MetaOutput *output)
 {
   int scale = 1;
 
+  if (!output->crtc)
+    goto out;
+
   /* Scaling makes no sense */
   if (output->crtc->rect.width < HIDPI_MIN_HEIGHT)
     goto out;
