@@ -365,6 +365,7 @@ const DateMenuButton = new Lang.Class({
                 let now = new Date();
                 this._calendar.setDate(now);
                 this._date.setDate(now);
+                this._messageList.setDate(now);
             }
             // Block notification banners while the menu is open
             Main.messageTray.bannerBlocked = isOpen;
