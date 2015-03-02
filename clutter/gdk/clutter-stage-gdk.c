@@ -185,6 +185,12 @@ clutter_stage_gdk_realize (ClutterStageWindow *stage_window)
   gboolean use_alpha;
   gfloat   width, height;
 
+  if (backend->cogl_context == NULL)
+    {
+      g_warning ("Missing Cogl context: was Clutter correctly initialized?");
+      return FALSE;
+    }
+
   if (stage_gdk->foreign_window)
     {
       width = gdk_window_get_width (stage_gdk->window);
