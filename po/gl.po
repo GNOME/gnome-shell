@@ -7,20 +7,21 @@
 # Fran Diéguez <frandieguez@gnome.org>, 2009, 2010, 2011, 2012.
 # Leandro Regueiro <leandro.regueiro@gmail.com>, 2012.
 # Fran Dieguez <frandieguez@gnome.org>, 2012, 2013, 2014, 2015.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-24 23:52+0100\n"
-"PO-Revision-Date: 2015-02-24 23:54+0200\n"
+"POT-Creation-Date: 2015-03-03 00:15+0100\n"
+"PO-Revision-Date: 2015-03-03 00:17+0100\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
-"Language-Team: gnome-l10n-gl@gnome.org\n"
+"Language-Team: Galician <>\n"
 "Language: gl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Virtaal 0.7.1\n"
+"X-Generator: Gtranslator 2.91.6\n"
 "X-Project-Style: gnome\n"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
@@ -28,8 +29,8 @@ msgid "System"
 msgstr "Sistema"
 
 #: ../data/50-gnome-shell-system.xml.in.h:2
-msgid "Show the message list"
-msgstr "Mostrar a lista de mensaxes"
+msgid "Show the notification list"
+msgstr "Mostrar a lista de notificacións"
 
 #: ../data/50-gnome-shell-system.xml.in.h:3
 msgid "Focus the active notification"
@@ -208,12 +209,14 @@ msgid "Keybinding to open the Activities Overview."
 msgstr "Combinación de teclas para abrir a Vista de actividades."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:25
-msgid "Keybinding to toggle the visibility of the message tray"
-msgstr "Combinación de teclas para mostrar/ocultar a área de mensaxes"
+msgid "Keybinding to toggle the visibility of the notification list"
+msgstr ""
+"Combinación de teclas para trocar a visibilidade da área de notificacións"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:26
-msgid "Keybinding to toggle the visibility of the message tray."
-msgstr "Combinación de teclas para mostrar/ocultar a área de mensaxes."
+msgid "Keybinding to toggle the visibility of the notification list."
+msgstr ""
+"Combinación de teclas para trocar a visibilidade da área de notificacións."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:27
 msgid "Keybinding to focus the active notification"
@@ -343,7 +346,7 @@ msgstr "Non está na lista?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: ../js/gdm/loginDialog.js:822
+#: ../js/gdm/loginDialog.js:826
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(p.ex., usuario ou %s)"
@@ -351,12 +354,12 @@ msgstr "(p.ex., usuario ou %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:827 ../js/ui/components/networkAgent.js:269
+#: ../js/gdm/loginDialog.js:831 ../js/ui/components/networkAgent.js:269
 #: ../js/ui/components/networkAgent.js:287
 msgid "Username: "
 msgstr "Nome de usuario: "
 
-#: ../js/gdm/loginDialog.js:1159
+#: ../js/gdm/loginDialog.js:1166
 msgid "Login Window"
 msgstr "Xanela de inicio de sesión"
 
@@ -457,7 +460,7 @@ msgstr "Todo o día"
 
 #. Translators: Shown in calendar event list, if 24h format,
 #. \u2236 is a ratio character, similar to :
-#: ../js/ui/calendar.js:88 ../js/ui/calendar.js:1562
+#: ../js/ui/calendar.js:88 ../js/ui/calendar.js:1575
 msgctxt "event list time"
 msgid "%H∶%M"
 msgstr "%H∶%M"
@@ -524,33 +527,33 @@ msgstr "Anterior mes"
 msgid "Next month"
 msgstr "Seguinte mes"
 
-#: ../js/ui/calendar.js:1245
+#: ../js/ui/calendar.js:1258
 msgid "Clear section"
 msgstr "Limpar sección"
 
-#: ../js/ui/calendar.js:1423
+#: ../js/ui/calendar.js:1436
 msgid "Events"
 msgstr "Eventos"
 
-#: ../js/ui/calendar.js:1431
+#: ../js/ui/calendar.js:1444
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d de %B"
 
-#: ../js/ui/calendar.js:1435
+#: ../js/ui/calendar.js:1448
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d de %B de %Y"
 
-#: ../js/ui/calendar.js:1528
+#: ../js/ui/calendar.js:1541
 msgid "Notifications"
 msgstr "Notificacións"
 
-#: ../js/ui/calendar.js:1665
+#: ../js/ui/calendar.js:1678
 msgid "No Notifications"
 msgstr "Non hai notificacións"
 
-#: ../js/ui/calendar.js:1668
+#: ../js/ui/calendar.js:1681
 msgid "No Events"
 msgstr "Non hai eventos"
 
@@ -1128,7 +1131,7 @@ msgstr "Instalar"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Desexa descargar e instalar «%s» desde extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:706 ../js/ui/status/keyboard.js:577
+#: ../js/ui/keyboard.js:706 ../js/ui/status/keyboard.js:576
 msgid "Keyboard"
 msgstr "Teclado"
 
@@ -1184,7 +1187,7 @@ msgstr "Ver fonte"
 msgid "Web Page"
 msgstr "Páxina web"
 
-#: ../js/ui/messageTray.js:2092
+#: ../js/ui/messageTray.js:2131
 msgid "System Information"
 msgstr "Información do sistema"
 
@@ -1241,29 +1244,29 @@ msgstr "Restimando…"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: ../js/ui/screenShield.js:88
+#: ../js/ui/screenShield.js:85
 msgid "%A, %B %d"
 msgstr "%A, %d de %B"
 
-#: ../js/ui/screenShield.js:147
+#: ../js/ui/screenShield.js:144
 #, javascript-format
 msgid "%d new message"
 msgid_plural "%d new messages"
 msgstr[0] "%d mensaxe nova"
 msgstr[1] "%d mensaxes novas"
 
-#: ../js/ui/screenShield.js:149
+#: ../js/ui/screenShield.js:146
 #, javascript-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d notificación nova"
 msgstr[1] "%d notificacións novas"
 
-#: ../js/ui/screenShield.js:434 ../js/ui/status/system.js:345
+#: ../js/ui/screenShield.js:432 ../js/ui/status/system.js:345
 msgid "Lock"
 msgstr "Bloquear"
 
-#: ../js/ui/screenShield.js:670
+#: ../js/ui/screenShield.js:668
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME precisa bloquear a pantalla"
 
@@ -1274,11 +1277,11 @@ msgstr "GNOME precisa bloquear a pantalla"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: ../js/ui/screenShield.js:797 ../js/ui/screenShield.js:1273
+#: ../js/ui/screenShield.js:795 ../js/ui/screenShield.js:1271
 msgid "Unable to lock"
 msgstr "Non foi posíbel bloquear"
 
-#: ../js/ui/screenShield.js:798 ../js/ui/screenShield.js:1274
+#: ../js/ui/screenShield.js:796 ../js/ui/screenShield.js:1272
 msgid "Lock was blocked by an application"
 msgstr "Un aplicativo impediu o bloqueo"
 
@@ -1390,7 +1393,7 @@ msgstr "Non conectado"
 msgid "Brightness"
 msgstr "Brillo"
 
-#: ../js/ui/status/keyboard.js:600
+#: ../js/ui/status/keyboard.js:599
 msgid "Show Keyboard Layout"
 msgstr "Mostrar a distribución do teclado"
 
@@ -1799,6 +1802,9 @@ msgstr "O contrasinal non pode estar baleiro"
 #: ../src/shell-polkit-authentication-agent.c:346
 msgid "Authentication dialog was dismissed by the user"
 msgstr "O usuario rexeitou o diálogo de autenticación"
+
+#~ msgid "Show the message list"
+#~ msgstr "Mostrar a lista de mensaxes"
 
 #~ msgid "Captive Portal"
 #~ msgstr "Portal cautivo"
