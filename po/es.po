@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-02-25 08:43+0000\n"
-"PO-Revision-Date: 2015-02-25 11:00+0100\n"
+"POT-Creation-Date: 2015-03-02 08:44+0000\n"
+"PO-Revision-Date: 2015-03-02 18:37+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
 "Language: es\n"
@@ -26,8 +26,10 @@ msgid "System"
 msgstr "Sistema"
 
 #: ../data/50-gnome-shell-system.xml.in.h:2
-msgid "Show the message list"
-msgstr "Mostrar la lista de mensajes"
+#| msgid "%d new notification"
+#| msgid_plural "%d new notifications"
+msgid "Show the notification list"
+msgstr "Mostrar la lista de notificaciones"
 
 #: ../data/50-gnome-shell-system.xml.in.h:3
 msgid "Focus the active notification"
@@ -209,12 +211,18 @@ msgid "Keybinding to open the Activities Overview."
 msgstr "Asociación de teclas para abrir la Vista de actividades"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:25
-msgid "Keybinding to toggle the visibility of the message tray"
-msgstr "Asociación de teclas cambiar la visibilidad de la bandeja de mensajes"
+#| msgid "Keybinding to toggle the visibility of the message tray"
+msgid "Keybinding to toggle the visibility of the notification list"
+msgstr ""
+"Asociación de teclas para cambiar la visibilidad de la lista de "
+"notificaciones"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:26
-msgid "Keybinding to toggle the visibility of the message tray."
-msgstr "Asociación de teclas cambiar la visibilidad de la bandeja de mensajes."
+#| msgid "Keybinding to toggle the visibility of the message tray."
+msgid "Keybinding to toggle the visibility of the notification list."
+msgstr ""
+"Asociación de teclas para cambiar la visibilidad de la lista de "
+"notificaciones."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:27
 msgid "Keybinding to focus the active notification"
@@ -345,17 +353,17 @@ msgstr "Elegir sesión"
 msgid "Not listed?"
 msgstr "¿No está en la lista?"
 
-#: ../js/gdm/loginDialog.js:822
+#: ../js/gdm/loginDialog.js:826
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(ej., usuario o %s)"
 
-#: ../js/gdm/loginDialog.js:827 ../js/ui/components/networkAgent.js:269
+#: ../js/gdm/loginDialog.js:831 ../js/ui/components/networkAgent.js:269
 #: ../js/ui/components/networkAgent.js:287
 msgid "Username: "
 msgstr "Nombre de usuario:"
 
-#: ../js/gdm/loginDialog.js:1159
+#: ../js/gdm/loginDialog.js:1166
 msgid "Login Window"
 msgstr "Ventana de inicio de sesión"
 
@@ -449,7 +457,7 @@ msgstr "Todo el día"
 
 #. Translators: Shown in calendar event list, if 24h format,
 #. \u2236 is a ratio character, similar to : */
-#: ../js/ui/calendar.js:88 ../js/ui/calendar.js:1562
+#: ../js/ui/calendar.js:88 ../js/ui/calendar.js:1575
 msgctxt "event list time"
 msgid "%H∶%M"
 msgstr "%H∶%M"
@@ -516,34 +524,33 @@ msgstr "Mes anterior"
 msgid "Next month"
 msgstr "Siguiente mes"
 
-#: ../js/ui/calendar.js:1245
+#: ../js/ui/calendar.js:1258
 msgid "Clear section"
 msgstr "Limpiar la sección"
 
-#: ../js/ui/calendar.js:1423
+#: ../js/ui/calendar.js:1436
 msgid "Events"
 msgstr "Eventos"
 
-#: ../js/ui/calendar.js:1431
+#: ../js/ui/calendar.js:1444
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d de %B"
 
-#: ../js/ui/calendar.js:1435
+#: ../js/ui/calendar.js:1448
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d de %B de %Y"
 
-#: ../js/ui/calendar.js:1528
-#| msgid "No Notifications"
+#: ../js/ui/calendar.js:1541
 msgid "Notifications"
 msgstr "Notificaciones"
 
-#: ../js/ui/calendar.js:1665
+#: ../js/ui/calendar.js:1678
 msgid "No Notifications"
 msgstr "No hay notificaciones"
 
-#: ../js/ui/calendar.js:1668
+#: ../js/ui/calendar.js:1681
 msgid "No Events"
 msgstr "No hay eventos"
 
@@ -1106,7 +1113,7 @@ msgstr "Instalar"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "¿Descargar e instalar «%s» desde extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:706 ../js/ui/status/keyboard.js:577
+#: ../js/ui/keyboard.js:706 ../js/ui/status/keyboard.js:576
 msgid "Keyboard"
 msgstr "Teclado"
 
@@ -1162,7 +1169,7 @@ msgstr "Ver fuente"
 msgid "Web Page"
 msgstr "Página web"
 
-#: ../js/ui/messageTray.js:2092
+#: ../js/ui/messageTray.js:2131
 msgid "System Information"
 msgstr "Información del sistema"
 
@@ -1214,37 +1221,37 @@ msgstr "Reiniciando…"
 
 #. Translators: This is a time format for a date in
 #. long format */
-#: ../js/ui/screenShield.js:88
+#: ../js/ui/screenShield.js:85
 msgid "%A, %B %d"
 msgstr "%A, %d de %B"
 
-#: ../js/ui/screenShield.js:147
+#: ../js/ui/screenShield.js:144
 #, javascript-format
 msgid "%d new message"
 msgid_plural "%d new messages"
 msgstr[0] "%d mensaje nuevo"
 msgstr[1] "%d mensajes nuevos"
 
-#: ../js/ui/screenShield.js:149
+#: ../js/ui/screenShield.js:146
 #, javascript-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d notificación nueva"
 msgstr[1] "%d notificaciones nuevas"
 
-#: ../js/ui/screenShield.js:434 ../js/ui/status/system.js:345
+#: ../js/ui/screenShield.js:432 ../js/ui/status/system.js:345
 msgid "Lock"
 msgstr "Bloquear"
 
-#: ../js/ui/screenShield.js:670
+#: ../js/ui/screenShield.js:668
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME necesita bloquear la pantalla"
 
-#: ../js/ui/screenShield.js:797 ../js/ui/screenShield.js:1273
+#: ../js/ui/screenShield.js:795 ../js/ui/screenShield.js:1271
 msgid "Unable to lock"
 msgstr "No se pudo bloquear"
 
-#: ../js/ui/screenShield.js:798 ../js/ui/screenShield.js:1274
+#: ../js/ui/screenShield.js:796 ../js/ui/screenShield.js:1272
 msgid "Lock was blocked by an application"
 msgstr "Una aplicación impidió el bloqueo"
 
@@ -1354,7 +1361,7 @@ msgstr "No conectado"
 msgid "Brightness"
 msgstr "Brillo"
 
-#: ../js/ui/status/keyboard.js:600
+#: ../js/ui/status/keyboard.js:599
 msgid "Show Keyboard Layout"
 msgstr "Mostrar la distribución del teclado"
 
@@ -1756,6 +1763,9 @@ msgstr "La contraseña no puede estar vacía"
 #: ../src/shell-polkit-authentication-agent.c:346
 msgid "Authentication dialog was dismissed by the user"
 msgstr "El usuario rechazó el diálogo de autenticación"
+
+#~ msgid "Show the message list"
+#~ msgstr "Mostrar la lista de mensajes"
 
 #~ msgctxt "list sunday"
 #~ msgid "Su"
