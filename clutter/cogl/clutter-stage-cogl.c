@@ -405,6 +405,7 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
   gboolean has_buffer_age;
   ClutterActor *wrapper;
   cairo_rectangle_int_t *clip_region;
+  int damage[4], ndamage;
   gboolean force_swap;
   int window_scale;
 
@@ -591,35 +592,43 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
       cogl_object_unref (prim);
     }
 
+  /* XXX: It seems there will be a race here in that the stage
+   * window may be resized before the cogl_onscreen_swap_region
+   * is handled and so we may copy the wrong region. I can't
+   * really see how we can handle this with the current state of X
+   * but at least in this case a full redraw should be queued by
+   * the resize anyway so it should only exhibit temporary
+   * artefacts.
+   */
+  if (use_clipped_redraw || force_swap)
+    {
+      damage[0] = clip_region->x * window_scale;
+      damage[1] = clip_region->y * window_scale;
+      damage[2] = clip_region->width * window_scale;
+      damage[3] = clip_region->height * window_scale;
+      ndamage = 1;
+    }
+  else
+    {
+      damage[0] = 0;
+      damage[1] = 0;
+      damage[2] = geom.width;
+      damage[3] = geom.height;
+      ndamage = -1;
+    }
+
   /* push on the screen */
   if (use_clipped_redraw && !force_swap)
     {
-      cairo_rectangle_int_t *clip = clip_region;
-      int copy_area[4];
-
-      /* XXX: It seems there will be a race here in that the stage
-       * window may be resized before the cogl_onscreen_swap_region
-       * is handled and so we may copy the wrong region. I can't
-       * really see how we can handle this with the current state of X
-       * but at least in this case a full redraw should be queued by
-       * the resize anyway so it should only exhibit temporary
-       * artefacts.
-       */
-
-      copy_area[0] = clip->x * window_scale;
-      copy_area[1] = clip->y * window_scale;
-      copy_area[2] = clip->width * window_scale;
-      copy_area[3] = clip->height * window_scale;
-
       CLUTTER_NOTE (BACKEND,
                     "cogl_onscreen_swap_region (onscreen: %p, "
                                                 "x: %d, y: %d, "
                                                 "width: %d, height: %d)",
                     stage_cogl->onscreen,
-                    copy_area[0], copy_area[1], copy_area[2], copy_area[3]);
+                    damage[0], damage[1], damage[2], damage[3]);
 
-
-      cogl_onscreen_swap_region (stage_cogl->onscreen, copy_area, 1);
+      cogl_onscreen_swap_region (stage_cogl->onscreen,
+				 damage, ndamage);
     }
   else
     {
@@ -632,7 +641,8 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
       if (clutter_feature_available (CLUTTER_FEATURE_SWAP_EVENTS))
         stage_cogl->pending_swaps++;
 
-      cogl_onscreen_swap_buffers (stage_cogl->onscreen);
+      cogl_onscreen_swap_buffers_with_damage (stage_cogl->onscreen,
+					      damage, ndamage);
     }
 
   /* reset the redraw clipping for the next paint... */
