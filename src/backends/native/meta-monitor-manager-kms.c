@@ -66,11 +66,6 @@ struct _MetaMonitorManagerKms
   drmModeConnector **connectors;
   unsigned int       n_connectors;
 
-  drmModeEncoder   **encoders;
-  unsigned int       n_encoders;
-
-  drmModeEncoder    *current_encoder;
-
   GUdevClient *udev;
 
   GSettings *desktop_settings;
@@ -88,12 +83,9 @@ free_resources (MetaMonitorManagerKms *manager_kms)
 {
   unsigned i;
 
-  for (i = 0; i < manager_kms->n_encoders; i++)
-    drmModeFreeEncoder (manager_kms->encoders[i]);
   for (i = 0; i < manager_kms->n_connectors; i++)
     drmModeFreeConnector (manager_kms->connectors[i]);
 
-  g_free (manager_kms->encoders);
   g_free (manager_kms->connectors);
 }
 
@@ -338,6 +330,7 @@ meta_monitor_manager_kms_read_current (MetaMonitorManager *manager)
 {
   MetaMonitorManagerKms *manager_kms = META_MONITOR_MANAGER_KMS (manager);
   drmModeRes *resources;
+  drmModeEncoder **encoders;
   GHashTable *modes;
   GHashTableIter iter;
   drmModeModeInfo *mode;
@@ -381,13 +374,9 @@ meta_monitor_manager_kms_read_current (MetaMonitorManager *manager)
         }
     }
 
-  manager_kms->n_encoders = resources->count_encoders;
-  manager_kms->encoders = g_new (drmModeEncoder *, manager_kms->n_encoders);
-  for (i = 0; i < manager_kms->n_encoders; i++)
-    {
-      manager_kms->encoders[i] = drmModeGetEncoder (manager_kms->fd,
-                                                    resources->encoders[i]);
-    }
+  encoders = g_new (drmModeEncoder *, resources->count_encoders);
+  for (i = 0; i < (unsigned)resources->count_encoders; i++)
+    encoders[i] = drmModeGetEncoder (manager_kms->fd, resources->encoders[i]);
 
   manager->n_modes = g_hash_table_size (modes);
   manager->modes = g_new0 (MetaMonitorMode, manager->n_modes);
@@ -625,9 +614,9 @@ meta_monitor_manager_kms_read_current (MetaMonitorManager *manager)
 
       for (j = 0; j < output_kms->n_encoders; j++)
 	{
-	  for (k = 0; k < manager_kms->n_encoders; k++)
+	  for (k = 0; k < (unsigned)resources->count_encoders; k++)
 	    {
-	      if (output_kms->encoders[j]->encoder_id == manager_kms->encoders[k]->encoder_id)
+	      if (output_kms->encoders[j]->encoder_id == encoders[k]->encoder_id)
 		{
                   output_kms->encoder_mask |= (1 << k);
 		  break;
@@ -673,6 +662,10 @@ meta_monitor_manager_kms_read_current (MetaMonitorManager *manager)
             }
         }
     }
+
+  for (i = 0; i < (unsigned)resources->count_encoders; i++)
+    drmModeFreeEncoder (encoders[i]);
+  g_free (encoders);
 
   drmModeFreeResources (resources);
 }
