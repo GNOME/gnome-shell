@@ -100,7 +100,7 @@ check_all_screen_monitors(MetaMonitorInfo *monitors,
       left = monitor->rect.x;
       right = left + monitor->rect.width;
       top = monitor->rect.y;
-      bottom = left + monitor->rect.height;
+      bottom = top + monitor->rect.height;
 
       if ((x >= left) && (x < right) && (y >= top) && (y < bottom))
 	return TRUE;
@@ -118,25 +118,25 @@ constrain_all_screen_monitors (ClutterInputDevice *device,
 {
   ClutterPoint current;
   unsigned int i;
+  float cx, cy;
 
   clutter_input_device_get_coords (device, NULL, &current);
+
+  cx = current.x;
+  cy = current.y;
 
   /* if we're trying to escape, clamp to the CRTC we're coming from */
   for (i = 0; i < n_monitors; i++)
     {
       MetaMonitorInfo *monitor = &monitors[i];
       int left, right, top, bottom;
-      float nx, ny;
 
       left = monitor->rect.x;
       right = left + monitor->rect.width;
       top = monitor->rect.y;
-      bottom = left + monitor->rect.height;
+      bottom = top + monitor->rect.height;
 
-      nx = current.x;
-      ny = current.y;
-
-      if ((nx >= left) && (nx < right) && (ny >= top) && (ny < bottom))
+      if ((cx >= left) && (cx < right) && (cy >= top) && (cy < bottom))
 	{
 	  if (*x < left)
 	    *x = left;
