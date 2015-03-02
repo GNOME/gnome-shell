@@ -537,10 +537,17 @@ const ChatSource = new Lang.Class({
 
     open: function() {
         if (this._client.is_handling_channel(this._channel)) {
-            // We are handling the channel, try to pass it to Empathy
-            this._client.delegate_channels_async([this._channel],
-                                                 global.get_current_time(),
-                                                 'org.freedesktop.Telepathy.Client.Empathy.Chat', null);
+            // We are handling the channel, try to pass it to Empathy or Polari
+            // (depending on the channel type)
+            // We don't check if either app is availble - mission control will
+            // fallback to something else if activation fails
+
+            let target;
+            if (this._channel.connection.protocol_name == 'irc')
+                target = 'org.freedesktop.Telepathy.Client.Polari';
+            else
+                target = 'org.freedesktop.Telepathy.Client.Empathy.Chat';
+            this._client.delegate_channels_async([this._channel], global.get_current_time(), target, null);
         } else {
             // We are not the handler, just ask to present the channel
             let dbus = Tp.DBusDaemon.dup();
