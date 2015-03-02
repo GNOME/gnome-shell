@@ -366,7 +366,7 @@ meta_monitor_manager_kms_read_current (MetaMonitorManager *manager)
       connector = drmModeGetConnector (manager_kms->fd, resources->connectors[i]);
       manager_kms->connectors[i] = connector;
 
-      if (connector->connection == DRM_MODE_CONNECTED)
+      if (connector && connector->connection == DRM_MODE_CONNECTED)
         {
           /* Collect all modes for this connector */
           for (j = 0; j < (unsigned)connector->count_modes; j++)
@@ -460,7 +460,7 @@ meta_monitor_manager_kms_read_current (MetaMonitorManager *manager)
       connector = manager_kms->connectors[i];
       meta_output = &manager->outputs[n_actual_outputs];
 
-      if (connector->connection == DRM_MODE_CONNECTED)
+      if (connector && connector->connection == DRM_MODE_CONNECTED)
 	{
           meta_output->driver_private = output_kms = g_slice_new0 (MetaOutputKms);
           meta_output->driver_notify = (GDestroyNotify)meta_output_destroy_notify;
@@ -509,6 +509,8 @@ meta_monitor_manager_kms_read_current (MetaMonitorManager *manager)
 	  for (j = 0; j < output_kms->n_encoders; j++)
 	    {
               output_kms->encoders[j] = drmModeGetEncoder (manager_kms->fd, connector->encoders[j]);
+              if (!output_kms->encoders[j])
+                continue;
 
               /* We only list CRTCs as supported if they are supported by all encoders
                  for this connectors.
@@ -616,7 +618,8 @@ meta_monitor_manager_kms_read_current (MetaMonitorManager *manager)
 	{
 	  for (k = 0; k < (unsigned)resources->count_encoders; k++)
 	    {
-	      if (output_kms->encoders[j]->encoder_id == encoders[k]->encoder_id)
+              if (output_kms->encoders[j] && encoders[k] &&
+                  output_kms->encoders[j]->encoder_id == encoders[k]->encoder_id)
 		{
                   output_kms->encoder_mask |= (1 << k);
 		  break;
