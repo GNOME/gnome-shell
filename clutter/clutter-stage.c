@@ -1986,7 +1986,7 @@ clutter_stage_class_init (ClutterStageClass *klass)
    * The parameters used for the perspective projection from 3D
    * coordinates to 2D
    *
-   * Since: 0.8.2
+   * Since: 0.8
    */
   pspec = g_param_spec_boxed ("perspective",
                               P_("Perspective"),

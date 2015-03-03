@@ -12315,7 +12315,7 @@ clutter_actor_remove_clip (ClutterActor *self)
  *
  * Return value: %TRUE if the actor has a clip area set.
  *
- * Since: 0.1.1
+ * Since: 0.2
  */
 gboolean
 clutter_actor_has_clip (ClutterActor *self)
@@ -13082,7 +13082,7 @@ clutter_actor_get_parent (ClutterActor *self)
  *
  * Return Value: %TRUE if the actor is visibile and will be painted.
  *
- * Since: 0.8.4
+ * Since: 0.8
  */
 gboolean
 clutter_actor_get_paint_visibility (ClutterActor *actor)
@@ -13297,7 +13297,7 @@ clutter_actor_replace_child (ClutterActor *self,
  * This function should only be called by legacy #ClutterActor<!-- -->s
  * implementing the #ClutterContainer interface.
  *
- * Since: 0.1.1
+ * Since: 0.2
  *
  * Deprecated: 1.10: Use clutter_actor_remove_child() instead.
  */

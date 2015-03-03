@@ -1740,7 +1740,7 @@ clutter_get_option_group (void)
  * Return value: (transfer full): a #GOptionGroup for the commandline arguments
  *   recognized by Clutter
  *
- * Since: 0.8.2
+ * Since: 0.8
  */
 GOptionGroup *
 clutter_get_option_group_without_init (void)

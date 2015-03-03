@@ -80,7 +80,7 @@ typedef struct _ClutterTexturePrivate ClutterTexturePrivate;
  * The #ClutterTexture structure contains only private data
  * and should be accessed using the provided API
  *
- * Since: 0.1
+ * Since: 0.2
  */
 struct _ClutterTexture
 {
@@ -98,7 +98,7 @@ struct _ClutterTexture
  *
  * The #ClutterTextureClass structure contains only private data
  *
- * Since: 0.1
+ * Since: 0.2
  */
 struct _ClutterTextureClass
 {

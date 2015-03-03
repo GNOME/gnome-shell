@@ -1397,7 +1397,7 @@ clutter_script_lookup_filename (ClutterScript *script,
  *   #ClutterScript instance. Use g_list_free() on the returned list when
  *   done.
  *
- * Since: 0.8.2
+ * Since: 0.8
  */
 GList *
 clutter_script_list_objects (ClutterScript *script)

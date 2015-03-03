@@ -50,7 +50,7 @@ typedef struct _ClutterStagePrivate ClutterStagePrivate;
  * The #ClutterStage structure contains only private data
  * and should be accessed using the provided API
  *
- * Since: 0.1
+ * Since: 0.2
  */
 struct _ClutterStage
 {
@@ -69,7 +69,7 @@ struct _ClutterStage
  *
  * The #ClutterStageClass structure contains only private data
  *
- * Since: 0.1
+ * Since: 0.2
  */
 
 struct _ClutterStageClass

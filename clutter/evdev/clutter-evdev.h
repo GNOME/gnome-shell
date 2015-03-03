@@ -68,7 +68,7 @@ void  clutter_evdev_reclaim_devices (void);
  * @time: the event time in milliseconds
  * @x: (inout): the new X coordinate
  * @y: (inout): the new Y coordinate
- * @user_data:
+ * @user_data: user data passed to this function
  *
  * This callback will be called for all pointer motion events, and should
  * update (@x, @y) to constrain the pointer position appropriately.
@@ -77,6 +77,8 @@ void  clutter_evdev_reclaim_devices (void);
  * must make sure that this happens before it returns.
  * Also note that the event will be emitted even if the pointer is constrained
  * to be in the same position.
+ *
+ * Since: 1.16
  */
 typedef void (*ClutterPointerConstrainCallback) (ClutterInputDevice *device,
 						 guint32             time,

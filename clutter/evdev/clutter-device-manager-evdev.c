@@ -1933,8 +1933,8 @@ clutter_evdev_set_keyboard_layout_index (ClutterDeviceManager *evdev,
  * clutter_evdev_set_pointer_constrain_callback:
  * @evdev: the #ClutterDeviceManager created by the evdev backend
  * @callback: the callback
- * @user_data:
- * @user_data_notify:
+ * @user_data: data to pass to the callback
+ * @user_data_notify: function to be called when removing the callback
  *
  * Sets a callback to be invoked for every pointer motion. The callback
  * can then modify the new pointer coordinates to constrain movement within

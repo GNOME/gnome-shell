@@ -151,8 +151,8 @@ out:
 
 /**
  * clutter_test_add: (skip)
- * @test_path:
- * @test_func:
+ * @test_path: unique path for identifying the test
+ * @test_func: function containing the test
  *
  * Adds a test unit to the Clutter test environment.
  *
@@ -169,9 +169,9 @@ clutter_test_add (const char *test_path,
 
 /**
  * clutter_test_add_data: (skip)
- * @test_path:
- * @test_func:
- * @test_data:
+ * @test_path: unique path for identifying the test
+ * @test_func: function containing the test
+ * @test_data: data to pass to the test function
  *
  * Adds a test unit to the Clutter test environment.
  *
@@ -189,10 +189,10 @@ clutter_test_add_data (const char    *test_path,
 
 /**
  * clutter_test_add_data_full:
- * @test_path:
- * @test_func: (scope notified)
- * @test_data:
- * @test_notify:
+ * @test_path: unique path for identifying the test
+ * @test_func: (scope notified): function containing the test
+ * @test_data: (closure): data to pass to the test function
+ * @test_notify: function called when the test function ends
  *
  * Adds a test unit to the Clutter test environment.
  *
