@@ -7,16 +7,16 @@ msgstr ""
 "Project-Id-Version: gnome-shell.po.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-03-01 08:48+0000\n"
-"PO-Revision-Date: 2015-03-01 12:21+0200\n"
-"Last-Translator: Tom Tryfonidis <tomtryf@gmail.com>\n"
+"POT-Creation-Date: 2015-03-03 20:40+0000\n"
+"PO-Revision-Date: 2015-03-04 00:03+0200\n"
+"Last-Translator: Efstathios Iosifidis <iosifidis@opensuse.org>\n"
 "Language-Team: team@lists.gnome.gr\n"
 "Language: el\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.7.4\n"
+"X-Generator: Poedit 1.5.7\n"
 "X-DamnedLies-Scope: partial\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Project-Style: gnome\n"
@@ -313,7 +313,6 @@ msgid "Network Login"
 msgstr "Σύνδεση δικτύου"
 
 #: ../js/extensionPrefs/main.js:123
-#, javascript-format
 msgid "There was an error loading the preferences dialog for %s:"
 msgstr ""
 "Προέκυψε ένα σφάλμα κατά τη φόρτωση του παραθύρου διαλόγου των προτιμήσεων "
@@ -353,7 +352,6 @@ msgid "Not listed?"
 msgstr "Δεν είστε στη λίστα;"
 
 #: ../js/gdm/loginDialog.js:826
-#, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(π.χ, χρήστης ή %s)"
 
@@ -383,7 +381,6 @@ msgid "Could not parse command:"
 msgstr "Δεν ήταν δυνατό να γίνει ανάλυση της εντολής:"
 
 #: ../js/misc/util.js:156
-#, javascript-format
 msgid "Execution of “%s” failed:"
 msgstr "Απέτυχε η εκτέλεση του “%s”:"
 
@@ -422,12 +419,10 @@ msgid "Show Details"
 msgstr "Εμφάνιση λεπτομερειών"
 
 #: ../js/ui/appFavorites.js:132
-#, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "Tο %s προστέθηκε στα αγαπημένα σας."
 
 #: ../js/ui/appFavorites.js:166
-#, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "Tο %s αφαιρέθηκε από τα αγαπημένα σας."
 
@@ -456,7 +451,7 @@ msgstr "Όλη μέρα"
 
 #. Translators: Shown in calendar event list, if 24h format,
 #. \u2236 is a ratio character, similar to : */
-#: ../js/ui/calendar.js:88 ../js/ui/calendar.js:1575
+#: ../js/ui/calendar.js:88 ../js/ui/calendar.js:1596
 msgctxt "event list time"
 msgid "%H∶%M"
 msgstr "%H∶%M"
@@ -523,33 +518,37 @@ msgstr "Προηγούμενος μήνας"
 msgid "Next month"
 msgstr "Επόμενος μήνας"
 
-#: ../js/ui/calendar.js:1258
+#: ../js/ui/calendar.js:807
+msgid "Week %V"
+msgstr "Εβδομάδα %V"
+
+#: ../js/ui/calendar.js:1263
 msgid "Clear section"
 msgstr "Εκκαθάριση περιοχής"
 
-#: ../js/ui/calendar.js:1436
+#: ../js/ui/calendar.js:1455
 msgid "Events"
 msgstr "Συμβάντα"
 
-#: ../js/ui/calendar.js:1444
+#: ../js/ui/calendar.js:1463
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %B %d"
 
-#: ../js/ui/calendar.js:1448
+#: ../js/ui/calendar.js:1467
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %B %d, %Y"
 
-#: ../js/ui/calendar.js:1541
+#: ../js/ui/calendar.js:1560
 msgid "Notifications"
 msgstr "Ειδοποιήσεις"
 
-#: ../js/ui/calendar.js:1678
+#: ../js/ui/calendar.js:1700
 msgid "No Notifications"
 msgstr "Καμία ειδοποίηση"
 
-#: ../js/ui/calendar.js:1681
+#: ../js/ui/calendar.js:1703
 msgid "No Events"
 msgstr "Κανένα συμβάν"
 
@@ -562,7 +561,6 @@ msgid "External drive disconnected"
 msgstr "Αποσυνδέθηκε εξωτερικός δίσκος"
 
 #: ../js/ui/components/autorunManager.js:354
-#, javascript-format
 msgid "Open with %s"
 msgstr "Άνοιγμα με %s"
 
@@ -608,7 +606,6 @@ msgid "Authentication required by wireless network"
 msgstr "Απαιτείται πιστοποίηση από το ασύρματο δίκτυο"
 
 #: ../js/ui/components/networkAgent.js:319
-#, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
 "“%s”."
@@ -645,7 +642,6 @@ msgid "Mobile broadband network password"
 msgstr "Κωδικός πρόσβασης δικτύου κινητής ευρυζωνικής σύνδεσης"
 
 #: ../js/ui/components/networkAgent.js:346
-#, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "Απαιτείται κωδικός πρόσβασης για σύνδεση στο “%s”."
 
@@ -686,116 +682,111 @@ msgid "Chat"
 msgstr "Συνομιλία"
 
 #. Translators: Time in 24h format */
-#: ../js/ui/components/telepathyClient.js:936 ../js/ui/dateMenu.js:209
+#: ../js/ui/components/telepathyClient.js:943 ../js/ui/dateMenu.js:210
 msgid "%H∶%M"
 msgstr "%H∶%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30" */
-#: ../js/ui/components/telepathyClient.js:943
+#: ../js/ui/components/telepathyClient.js:950
 msgid "Yesterday, %H∶%M"
 msgstr "Χθες, %H∶%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 24h format. i.e. "Monday, 14:30" */
-#: ../js/ui/components/telepathyClient.js:950
+#: ../js/ui/components/telepathyClient.js:957
 msgid "%A, %H∶%M"
 msgstr "%A, %H∶%M"
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 24h format.
 #. i.e. "May 25, 14:30" */
-#: ../js/ui/components/telepathyClient.js:957
+#: ../js/ui/components/telepathyClient.js:964
 msgid "%B %d, %H∶%M"
 msgstr "%B %d, %H∶%M"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
 #. i.e. "May 25 2012, 14:30" */
-#: ../js/ui/components/telepathyClient.js:963
+#: ../js/ui/components/telepathyClient.js:970
 msgid "%B %d %Y, %H∶%M"
 msgstr "%B %d %Y, %H∶%M"
 
 #. Translators: Time in 12h format */
-#: ../js/ui/components/telepathyClient.js:969 ../js/ui/dateMenu.js:212
+#: ../js/ui/components/telepathyClient.js:976 ../js/ui/dateMenu.js:213
 msgid "%l∶%M %p"
 msgstr "%l∶%M %p"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 12h format. i.e. "Yesterday, 2:30 pm" */
-#: ../js/ui/components/telepathyClient.js:976
+#: ../js/ui/components/telepathyClient.js:983
 msgid "Yesterday, %l∶%M %p"
 msgstr "Χθες %l:%M %p"
 
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm" */
-#: ../js/ui/components/telepathyClient.js:983
+#: ../js/ui/components/telepathyClient.js:990
 msgid "%A, %l∶%M %p"
 msgstr "%A, %l∶%M %p"
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 12h format.
 #. i.e. "May 25, 2:30 pm" */
-#: ../js/ui/components/telepathyClient.js:990
+#: ../js/ui/components/telepathyClient.js:997
 msgid "%B %d, %l∶%M %p"
 msgstr "%B %d, %l∶%M %p"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
 #. i.e. "May 25 2012, 2:30 pm"*/
-#: ../js/ui/components/telepathyClient.js:996
+#: ../js/ui/components/telepathyClient.js:1003
 msgid "%B %d %Y, %l∶%M %p"
 msgstr "%B %d %Y, %l∶%M %p"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name. */
-#: ../js/ui/components/telepathyClient.js:1028
-#, javascript-format
+#: ../js/ui/components/telepathyClient.js:1035
 msgid "%s is now known as %s"
 msgstr "Ο %s είναι τώρα γνωστός ως %s"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example. */
-#: ../js/ui/components/telepathyClient.js:1132
-#, javascript-format
+#: ../js/ui/components/telepathyClient.js:1139
 msgid "Invitation to %s"
 msgstr "Πρόσκληση στο %s"
 
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example. */
-#: ../js/ui/components/telepathyClient.js:1136
-#, javascript-format
+#: ../js/ui/components/telepathyClient.js:1143
 msgid "%s is inviting you to join %s"
 msgstr "Ο %s σας προσκαλεί να μπείτε στο %s"
 
-#: ../js/ui/components/telepathyClient.js:1140
-#: ../js/ui/components/telepathyClient.js:1175
-#: ../js/ui/components/telepathyClient.js:1207
-#: ../js/ui/components/telepathyClient.js:1273
+#: ../js/ui/components/telepathyClient.js:1147
+#: ../js/ui/components/telepathyClient.js:1182
+#: ../js/ui/components/telepathyClient.js:1214
+#: ../js/ui/components/telepathyClient.js:1280
 msgid "Decline"
 msgstr "Απόρριψη"
 
-#: ../js/ui/components/telepathyClient.js:1146
-#: ../js/ui/components/telepathyClient.js:1213
-#: ../js/ui/components/telepathyClient.js:1278
+#: ../js/ui/components/telepathyClient.js:1153
+#: ../js/ui/components/telepathyClient.js:1220
+#: ../js/ui/components/telepathyClient.js:1285
 msgid "Accept"
 msgstr "Αποδοχή"
 
 #. translators: argument is a contact name like Alice for example. */
-#: ../js/ui/components/telepathyClient.js:1165
-#, javascript-format
+#: ../js/ui/components/telepathyClient.js:1172
 msgid "Video call from %s"
 msgstr "Βιντεοκλήση από %s"
 
 #. translators: argument is a contact name like Alice for example. */
-#: ../js/ui/components/telepathyClient.js:1168
-#, javascript-format
+#: ../js/ui/components/telepathyClient.js:1175
 msgid "Call from %s"
 msgstr "Κλήση από %s"
 
 #. translators: this is a button label (verb), not a noun */
-#: ../js/ui/components/telepathyClient.js:1182
+#: ../js/ui/components/telepathyClient.js:1189
 msgid "Answer"
 msgstr "Απάντηση"
 
@@ -804,112 +795,110 @@ msgstr "Απάντηση"
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
 #. */
-#: ../js/ui/components/telepathyClient.js:1203
-#, javascript-format
+#: ../js/ui/components/telepathyClient.js:1210
 msgid "%s is sending you %s"
 msgstr "Ο %s σας στέλνει το %s"
 
 #. To translators: The parameter is the contact's alias */
-#: ../js/ui/components/telepathyClient.js:1230
-#, javascript-format
+#: ../js/ui/components/telepathyClient.js:1237
 msgid "%s would like permission to see when you are online"
 msgstr "Ο %s ζητάει άδεια για να βλέπει πότε είστε συνδεδεμένος"
 
-#: ../js/ui/components/telepathyClient.js:1321
+#: ../js/ui/components/telepathyClient.js:1328
 msgid "Network error"
 msgstr "Σφάλμα δικτύου"
 
-#: ../js/ui/components/telepathyClient.js:1323
+#: ../js/ui/components/telepathyClient.js:1330
 msgid "Authentication failed"
 msgstr "Απέτυχε η πιστοποίηση"
 
-#: ../js/ui/components/telepathyClient.js:1325
+#: ../js/ui/components/telepathyClient.js:1332
 msgid "Encryption error"
 msgstr "Σφάλμα κρυπτογράφησης"
 
-#: ../js/ui/components/telepathyClient.js:1327
+#: ../js/ui/components/telepathyClient.js:1334
 msgid "Certificate not provided"
 msgstr "Δεν υπάρχει πιστοποιητικό"
 
-#: ../js/ui/components/telepathyClient.js:1329
+#: ../js/ui/components/telepathyClient.js:1336
 msgid "Certificate untrusted"
 msgstr "Μη έμπιστο πιστοποιητικό"
 
-#: ../js/ui/components/telepathyClient.js:1331
+#: ../js/ui/components/telepathyClient.js:1338
 msgid "Certificate expired"
 msgstr "Ληγμένο πιστοποιητικό"
 
-#: ../js/ui/components/telepathyClient.js:1333
+#: ../js/ui/components/telepathyClient.js:1340
 msgid "Certificate not activated"
 msgstr "Το πιστοποιητικό δεν ενεργοποιήθηκε"
 
-#: ../js/ui/components/telepathyClient.js:1335
+#: ../js/ui/components/telepathyClient.js:1342
 msgid "Certificate hostname mismatch"
 msgstr "Αναντιστοιχία ονόματος κεντρικού υπολογιστή στο πιστοποιητικό"
 
-#: ../js/ui/components/telepathyClient.js:1337
+#: ../js/ui/components/telepathyClient.js:1344
 msgid "Certificate fingerprint mismatch"
 msgstr "Αναντιστοιχία αποτυπώματος πιστοποιητικού"
 
-#: ../js/ui/components/telepathyClient.js:1339
+#: ../js/ui/components/telepathyClient.js:1346
 msgid "Certificate self-signed"
 msgstr "Αυτο-υπογεγραμμένο πιστοποιητικό"
 
-#: ../js/ui/components/telepathyClient.js:1341
+#: ../js/ui/components/telepathyClient.js:1348
 msgid "Status is set to offline"
 msgstr "Η κατάσταση έχει ορισθεί σε εκτός σύνδεσης"
 
-#: ../js/ui/components/telepathyClient.js:1343
+#: ../js/ui/components/telepathyClient.js:1350
 msgid "Encryption is not available"
 msgstr "Δεν υπάρχει διαθέσιμη κρυπτογράφηση"
 
-#: ../js/ui/components/telepathyClient.js:1345
+#: ../js/ui/components/telepathyClient.js:1352
 msgid "Certificate is invalid"
 msgstr "Μη έγκυρο πιστοποιητικό"
 
-#: ../js/ui/components/telepathyClient.js:1347
+#: ../js/ui/components/telepathyClient.js:1354
 msgid "Connection has been refused"
 msgstr "Άρνηση σύνδεσης"
 
-#: ../js/ui/components/telepathyClient.js:1349
+#: ../js/ui/components/telepathyClient.js:1356
 msgid "Connection can't be established"
 msgstr "Δεν είναι δυνατή η σύνδεση"
 
-#: ../js/ui/components/telepathyClient.js:1351
+#: ../js/ui/components/telepathyClient.js:1358
 msgid "Connection has been lost"
 msgstr "Χάθηκε η σύνδεση"
 
-#: ../js/ui/components/telepathyClient.js:1353
+#: ../js/ui/components/telepathyClient.js:1360
 msgid "This account is already connected to the server"
 msgstr "Αυτός ο λογαριασμός είναι ήδη συνδεδεμένος στον διακομιστή"
 
-#: ../js/ui/components/telepathyClient.js:1355
+#: ../js/ui/components/telepathyClient.js:1362
 msgid ""
 "Connection has been replaced by a new connection using the same resource"
 msgstr ""
 "Η σύνδεση έχει αντικατασταθεί από μια νέα σύνδεση που χρησιμοποιεί τον ίδιο "
 "πόρο"
 
-#: ../js/ui/components/telepathyClient.js:1357
+#: ../js/ui/components/telepathyClient.js:1364
 msgid "The account already exists on the server"
 msgstr "Ο λογαριασμός υπάρχει ήδη στον διακομιστή"
 
-#: ../js/ui/components/telepathyClient.js:1359
+#: ../js/ui/components/telepathyClient.js:1366
 msgid "Server is currently too busy to handle the connection"
 msgstr "Ο διακομιστής είναι πολύ απασχολημένος ώστε να χειριστεί τη σύνδεση"
 
-#: ../js/ui/components/telepathyClient.js:1361
+#: ../js/ui/components/telepathyClient.js:1368
 msgid "Certificate has been revoked"
 msgstr "Το πιστοποιητικό έχει ανακληθεί"
 
-#: ../js/ui/components/telepathyClient.js:1363
+#: ../js/ui/components/telepathyClient.js:1370
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr ""
 "Το πιστοποιητικό χρησιμοποιεί έναν μη ασφαλή αλγόριθμο αποκρυπτογράφησης "
 "αποτυπώματος ή είναι κρυπτογραφικά ασθενές"
 
-#: ../js/ui/components/telepathyClient.js:1365
+#: ../js/ui/components/telepathyClient.js:1372
 msgid ""
 "The length of the server certificate, or the depth of the server certificate "
 "chain, exceed the limits imposed by the cryptography library"
@@ -918,22 +907,21 @@ msgstr ""
 "πιστοποιητικού του διακομιστή υπερβαίνει τα όρια που επιτρέπει η βιβλιοθήκη "
 "κρυπτογραφίας"
 
-#: ../js/ui/components/telepathyClient.js:1367
+#: ../js/ui/components/telepathyClient.js:1374
 msgid "Internal error"
 msgstr "Εσωτερικό σφάλμα"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example. */
-#: ../js/ui/components/telepathyClient.js:1377
-#, javascript-format
+#: ../js/ui/components/telepathyClient.js:1384
 msgid "Unable to connect to %s"
 msgstr "Αδυναμία σύνδεσης με %s"
 
-#: ../js/ui/components/telepathyClient.js:1382
+#: ../js/ui/components/telepathyClient.js:1389
 msgid "View account"
 msgstr "Προβολή λογαριασμού"
 
-#: ../js/ui/components/telepathyClient.js:1419
+#: ../js/ui/components/telepathyClient.js:1426
 msgid "Unknown reason"
 msgstr "Άγνωστος λόγος"
 
@@ -952,7 +940,7 @@ msgstr "Ταμπλό"
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #. */
-#: ../js/ui/dateMenu.js:72
+#: ../js/ui/dateMenu.js:73
 msgid "%B %e %Y"
 msgstr "%B %e %Y"
 
@@ -960,20 +948,19 @@ msgstr "%B %e %Y"
 #. * below the time in the shell; it should combine the weekday and the
 #. * date, e.g. "Tuesday February 17 2015".
 #. */
-#: ../js/ui/dateMenu.js:79
+#: ../js/ui/dateMenu.js:80
 msgid "%A %B %e %Y"
 msgstr "%A %e %B %Y"
 
-#: ../js/ui/dateMenu.js:159
+#: ../js/ui/dateMenu.js:160
 msgid "Add world clocks…"
 msgstr "Προσθήκη παγκόσμιων ρολογιών…"
 
-#: ../js/ui/dateMenu.js:160
+#: ../js/ui/dateMenu.js:161
 msgid "World Clocks"
 msgstr "Παγκόσμια ρολόγια"
 
 #: ../js/ui/endSessionDialog.js:64
-#, javascript-format
 msgctxt "title"
 msgid "Log Out %s"
 msgstr "Αποσύνδεση %s"
@@ -984,14 +971,12 @@ msgid "Log Out"
 msgstr "Αποσύνδεση"
 
 #: ../js/ui/endSessionDialog.js:67
-#, javascript-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "Ο %s θα αποσυνδεθεί αυτόματα σε %d δευτερόλεπτο."
 msgstr[1] "Ο %s θα αποσυνδεθεί αυτόματα σε %d δευτερόλεπτα."
 
 #: ../js/ui/endSessionDialog.js:72
-#, javascript-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
 msgstr[0] "Θα αποσυνδεθείτε αυτόματα σε %d δευτερόλεπτο."
@@ -1013,7 +998,6 @@ msgid "Install Updates & Power Off"
 msgstr "Εγκατάσταση ενημερώσεων & τερματισμός"
 
 #: ../js/ui/endSessionDialog.js:87
-#, javascript-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "Το σύστημα θα τερματισθεί αυτόματα σε %d δευτερόλεπτο."
@@ -1040,7 +1024,6 @@ msgid "Restart"
 msgstr "Επανεκκίνηση"
 
 #: ../js/ui/endSessionDialog.js:105
-#, javascript-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "Το σύστημα θα επανεκκινήσει αυτόματα σε %d δευτερόλεπτο."
@@ -1052,7 +1035,6 @@ msgid "Restart & Install Updates"
 msgstr "Επανεκκίνηση & εγκατάσταση ενημερώσεων"
 
 #: ../js/ui/endSessionDialog.js:121
-#, javascript-format
 msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
 "The system will automatically restart and install updates in %d seconds."
@@ -1095,13 +1077,11 @@ msgstr "Είναι συνδεδεμένοι άλλοι χρήστες."
 
 #. Translators: Remote here refers to a remote session, like a ssh login */
 #: ../js/ui/endSessionDialog.js:640
-#, javascript-format
 msgid "%s (remote)"
 msgstr "%s (απομακρυσμένο)"
 
 #. Translators: Console here refers to a tty like a VT console */
 #: ../js/ui/endSessionDialog.js:643
-#, javascript-format
 msgid "%s (console)"
 msgstr "%s (κονσόλα)"
 
@@ -1110,7 +1090,6 @@ msgid "Install"
 msgstr "Εγκατάσταση"
 
 #: ../js/ui/extensionDownloader.js:204
-#, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Λήψη και εγκατάσταση του “%s” από το extensions.gnome.org;"
 
@@ -1124,7 +1103,6 @@ msgstr "Δεν υπάρχουν εγκατεστημένες επεκτάσει�
 
 #. Translators: argument is an extension UUID. */
 #: ../js/ui/lookingGlass.js:697
-#, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "Το %s δεν έδωσε σφάλματα."
 
@@ -1216,7 +1194,7 @@ msgstr "Πληκτρολογήστε μια εντολή"
 msgid "Close"
 msgstr "Κλείσιμο"
 
-#: ../js/ui/runDialog.js:277
+#: ../js/ui/runDialog.js:281
 msgid "Restarting…"
 msgstr "Επανεκκίνηση…"
 
@@ -1227,14 +1205,12 @@ msgid "%A, %B %d"
 msgstr "%A, %B %d"
 
 #: ../js/ui/screenShield.js:144
-#, javascript-format
 msgid "%d new message"
 msgid_plural "%d new messages"
 msgstr[0] "%d νέο μήνυμα"
 msgstr[1] "%d νέα μηνύματα"
 
 #: ../js/ui/screenShield.js:146
-#, javascript-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d νέα ειδοποίηση"
@@ -1348,7 +1324,6 @@ msgid "Bluetooth Settings"
 msgstr "Ρυθμίσεις Bluetooth"
 
 #: ../js/ui/status/bluetooth.js:104
-#, javascript-format
 msgid "%d Connected Device"
 msgid_plural "%d Connected Devices"
 msgstr[0] "%d συνδεδεμένη συσκευή"
@@ -1553,12 +1528,10 @@ msgid "Estimating…"
 msgstr "Εκτίμηση…"
 
 #: ../js/ui/status/power.js:86
-#, javascript-format
 msgid "%d∶%02d Remaining (%d%%)"
 msgstr "%d∶%02d Απομένει (%d%%)"
 
 #: ../js/ui/status/power.js:91
-#, javascript-format
 msgid "%d∶%02d Until Full (%d%%)"
 msgstr "%d∶%02d Πλήρης μέχρι (%d%%)"
 
@@ -1627,7 +1600,6 @@ msgid "Search"
 msgstr "Αναζήτηση"
 
 #: ../js/ui/windowAttentionHandler.js:19
-#, javascript-format
 msgid "“%s” is ready"
 msgstr "Το “%s” είναι έτοιμο"
 
@@ -1647,7 +1619,6 @@ msgid "Keep Changes"
 msgstr "Διατήρηση αλλαγών"
 
 #: ../js/ui/windowManager.js:107
-#, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
 msgstr[0] "Οι αλλαγές ρυθμίσεων θα επανέλθουν σε %d δευτερόλεπτο"
@@ -1656,7 +1627,6 @@ msgstr[1] "Οι αλλαγές ρυθμίσεων θα επανέλθουν σε
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height. */
 #: ../js/ui/windowManager.js:599
-#, javascript-format
 msgid "%d x %d"
 msgstr "%d x %d"
 
