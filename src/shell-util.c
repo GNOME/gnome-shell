@@ -223,11 +223,13 @@ shell_util_translate_time_string (const char *str)
 {
   const char *locale = g_getenv ("LC_TIME");
   const char *res;
+  char *sep;
 
   if (locale)
     setlocale (LC_MESSAGES, locale);
 
-  res = gettext (str);
+  sep = strchr (str, '\004');
+  res = g_dpgettext (NULL, str, sep ? str - sep : 0);
 
   setlocale (LC_MESSAGES, "");
 
