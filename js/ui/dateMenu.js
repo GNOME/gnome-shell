@@ -386,15 +386,15 @@ const DateMenuButton = new Lang.Class({
 
         vbox.add(this._calendar.actor);
 
-        let scroll = new St.ScrollView({ style_class: 'vfade',
-                                         x_expand: true, x_fill: true,
-                                         overlay_scrollbars: true });
-        scroll.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
-        vbox.add_actor(scroll);
+        this._displaysSection = new St.ScrollView({ style_class: 'datemenu-displays-section vfade',
+                                                    x_expand: true, x_fill: true,
+                                                    overlay_scrollbars: true });
+        this._displaysSection.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
+        vbox.add_actor(this._displaysSection);
 
         let displaysBox = new St.BoxLayout({ vertical: true,
                                              style_class: 'datemenu-displays-box' });
-        scroll.add_actor(displaysBox);
+        this._displaysSection.add_actor(displaysBox);
 
         this._clocksItem = new WorldClocksSection();
         displaysBox.add(this._clocksItem.actor, { x_fill: true });
@@ -432,5 +432,10 @@ const DateMenuButton = new Lang.Class({
             eventSource = new Calendar.EmptyEventSource();
         }
         this._setEventSource(eventSource);
+
+        // Displays are not actually expected to launch Settings when activated
+        // but the corresponding app (clocks, weather); however we can consider
+        // that display-specific settings, so re-use "allowSettings" here ...
+        this._displaysSection.visible = Main.sessionMode.allowSettings;
     }
 });
