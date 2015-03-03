@@ -399,7 +399,7 @@ StScrollBar {
       background-color: #1c5187;
       color: #ffffff; }
     .popup-menu .popup-menu-item:insensitive {
-      background-color: rgba(0, 0, 0, 0.5); }
+      color: rgba(255, 255, 255, 0.5); }
   .popup-menu .active {
     background-color: #215d9c; }
   .popup-menu .popup-inactive-menu-item {
@@ -718,7 +718,7 @@ StScrollBar {
 
 /* Message list */
 .message-list {
-  width: 420px; }
+  width: 340px; }
 
 .message-list-sections {
   spacing: 1.5em; }
@@ -742,15 +742,12 @@ StScrollBar {
   background-color: #999999; }
 
 .message {
-  background-color: #0d0d0d;
-  border-radius: 3px; }
+  background-color: #0d0d0d; }
   .message:hover, .message:focus {
     background-color: #262626; }
 
 .message-icon-bin {
-  padding: 8px 0px 8px 8px; }
-  .message-icon-bin:rtl {
-    padding: 8px 8px 8px 0px; }
+  padding: 5px; }
 
 .message-icon-bin > StIcon {
   icon-size: 48px; }
@@ -765,7 +762,8 @@ StScrollBar {
   font-weight: bold; }
 
 .message-content {
-  padding: 8px; }
+  padding: 5px;
+  spacing: 5px; }
 
 .system-switch-user-submenu-icon {
   icon-size: 24px;
