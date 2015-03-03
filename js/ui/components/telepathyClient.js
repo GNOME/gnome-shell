@@ -248,10 +248,6 @@ const TelepathyClient = new Lang.Class({
 
         if (chanType == Tp.IFACE_CHANNEL_TYPE_TEXT)
             this._approveTextChannel(account, conn, channel, dispatchOp, context);
-        else if (chanType == Tp.IFACE_CHANNEL_TYPE_CALL)
-            this._approveCall(account, conn, channel, dispatchOp, context);
-        else if (chanType == Tp.IFACE_CHANNEL_TYPE_FILE_TRANSFER)
-            this._approveFileTransfer(account, conn, channel, dispatchOp, context);
         else
             context.fail(new Tp.Error({ code: Tp.Error.INVALID_ARGUMENT,
                                         message: 'Unsupported channel type' }));
@@ -275,40 +271,6 @@ const TelepathyClient = new Lang.Class({
         } else {
             this._displayRoomInvitation(conn, channel, dispatchOp, context);
         }
-    },
-
-    _approveCall: function(account, conn, channel, dispatchOp, context) {
-        let isVideo = false;
-
-        let props = channel.borrow_immutable_properties();
-
-        if (props[Tp.PROP_CHANNEL_TYPE_CALL_INITIAL_VIDEO])
-          isVideo = true;
-
-        // We got the TpContact
-        let source = new ApproverSource(dispatchOp, _("Call"), isVideo ?
-                                        Gio.icon_new_for_string('camera-web') :
-                                        Gio.icon_new_for_string('audio-input-microphone'));
-        Main.messageTray.add(source);
-
-        let notif = new AudioVideoNotification(source, dispatchOp, channel,
-            channel.get_target_contact(), isVideo);
-        source.notify(notif);
-        context.accept();
-    },
-
-    _approveFileTransfer: function(account, conn, channel, dispatchOp, context) {
-        // Use the icon of the file being transferred
-        let gicon = Gio.content_type_get_icon(channel.get_mime_type());
-
-        // We got the TpContact
-        let source = new ApproverSource(dispatchOp, _("File Transfer"), gicon);
-        Main.messageTray.add(source);
-
-        let notif = new FileTransferNotification(source, dispatchOp, channel,
-            channel.get_target_contact());
-        source.notify(notif);
-        context.accept();
     },
 
     _delegatedChannelsCb: function(client, channels) {
@@ -1027,73 +989,6 @@ const RoomInviteNotification = new Lang.Class({
                     _("%s is inviting you to join %s").format(inviter.get_alias(), channel.get_identifier()));
         this.setResident(true);
 
-
-        this.addAction(_("Decline"), Lang.bind(this, function() {
-            dispatchOp.leave_channels_async(Tp.ChannelGroupChangeReason.NONE, '', function(src, result) {
-                src.leave_channels_finish(result);
-            });
-            this.destroy();
-        }));
-        this.addAction(_("Accept"), Lang.bind(this, function() {
-            dispatchOp.handle_with_time_async('', global.get_current_time(), function(src, result) {
-                src.handle_with_time_finish(result);
-            });
-            this.destroy();
-        }));
-    }
-});
-
-// Audio Video
-const AudioVideoNotification = new Lang.Class({
-    Name: 'AudioVideoNotification',
-    Extends: MessageTray.Notification,
-
-    _init: function(source, dispatchOp, channel, contact, isVideo) {
-        let title = '';
-
-        if (isVideo)
-             /* translators: argument is a contact name like Alice for example. */
-            title = _("Video call from %s").format(contact.get_alias());
-        else
-             /* translators: argument is a contact name like Alice for example. */
-            title = _("Call from %s").format(contact.get_alias());
-
-        this.parent(source, title);
-        this.setResident(true);
-
-        this.setUrgency(MessageTray.Urgency.CRITICAL);
-
-        this.addAction(_("Decline"), Lang.bind(this, function() {
-            dispatchOp.leave_channels_async(Tp.ChannelGroupChangeReason.NONE, '', function(src, result) {
-                src.leave_channels_finish(result);
-            });
-            this.destroy();
-        }));
-        /* translators: this is a button label (verb), not a noun */
-        this.addAction(_("Answer"), Lang.bind(this, function() {
-            dispatchOp.handle_with_time_async('', global.get_current_time(), function(src, result) {
-                src.handle_with_time_finish(result);
-            });
-            this.destroy();
-        }));
-    }
-});
-
-// File Transfer
-const FileTransferNotification = new Lang.Class({
-    Name: 'FileTransferNotification',
-    Extends: MessageTray.Notification,
-
-    _init: function(source, dispatchOp, channel, contact) {
-        this.parent(source,
-                    /* To translators: The first parameter is
-                     * the contact's alias and the second one is the
-                     * file name. The string will be something
-                     * like: "Alice is sending you test.ogg"
-                     */
-                    _("%s is sending you %s").format(contact.get_alias(),
-                                                     channel.get_filename()));
-        this.setResident(true);
 
         this.addAction(_("Decline"), Lang.bind(this, function() {
             dispatchOp.leave_channels_async(Tp.ChannelGroupChangeReason.NONE, '', function(src, result) {
