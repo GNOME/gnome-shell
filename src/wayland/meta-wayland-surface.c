@@ -48,6 +48,8 @@
 #include "window-private.h"
 #include "window-wayland.h"
 
+#include "compositor/region-utils.h"
+
 #include "meta-surface-actor.h"
 #include "meta-surface-actor-wayland.h"
 
@@ -119,8 +121,8 @@ static void
 surface_process_damage (MetaWaylandSurface *surface,
                         cairo_region_t *region)
 {
+  cairo_region_t *scaled_region;
   cairo_rectangle_int_t buffer_rect;
-  int scale = surface->scale;
   int i, n_rectangles;
 
   if (!surface->buffer)
@@ -131,24 +133,30 @@ surface_process_damage (MetaWaylandSurface *surface,
   buffer_rect.width = cogl_texture_get_width (surface->buffer->texture);
   buffer_rect.height = cogl_texture_get_height (surface->buffer->texture);
 
-  /* The region will get destroyed after this call anyway so we can
-   * just modify it here to avoid a copy. */
-  cairo_region_intersect_rectangle (region, &buffer_rect);
+  /* The damage region must be in the same coordinate space as the buffer,
+   * i.e. scaled with surface->scale. */
+  scaled_region = meta_region_scale (region, surface->scale);
+
+  cairo_region_intersect_rectangle (scaled_region, &buffer_rect);
 
   /* First update the buffer. */
-  meta_wayland_buffer_process_damage (surface->buffer, region);
+  meta_wayland_buffer_process_damage (surface->buffer, scaled_region);
 
-  /* Now damage the actor. */
+  /* Now damage the actor. The actor expects damage in the unscaled texture
+   * coordinate space, i.e. same as the buffer. */
   /* XXX: Should this be a signal / callback on MetaWaylandBuffer instead? */
-  n_rectangles = cairo_region_num_rectangles (region);
+  n_rectangles = cairo_region_num_rectangles (scaled_region);
   for (i = 0; i < n_rectangles; i++)
     {
       cairo_rectangle_int_t rect;
-      cairo_region_get_rectangle (region, i, &rect);
+      cairo_region_get_rectangle (scaled_region, i, &rect);
 
       meta_surface_actor_process_damage (surface->surface_actor,
-                                         rect.x * scale, rect.y * scale, rect.width * scale, rect.height * scale);
+                                         rect.x, rect.y,
+                                         rect.width, rect.height);
     }
+
+  cairo_region_destroy (scaled_region);
 }
 
 static void
