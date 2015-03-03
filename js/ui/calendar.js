@@ -615,7 +615,9 @@ const Calendar = new Lang.Class({
             // and we want, ideally, a single character for e.g. S M T W T F S
             let customDayAbbrev = _getCalendarDayAbbreviation(iter.getDay());
             let label = new St.Label({ style_class: 'calendar-day-base calendar-day-heading',
-                                       text: customDayAbbrev });
+                                       text: customDayAbbrev,
+                                       can_focus: true });
+            label.accessible_name = iter.toLocaleFormat('%A');
             let col;
             if (this.actor.get_text_direction() == Clutter.TextDirection.RTL)
                 col = 6 - (7 + iter.getDay() - this._weekStart) % 7;
@@ -800,7 +802,10 @@ const Calendar = new Lang.Class({
 
             if (this._useWeekdate && iter.getDay() == 4) {
                 let label = new St.Label({ text: iter.toLocaleFormat('%V'),
-                                           style_class: 'calendar-day-base calendar-week-number'});
+                                           style_class: 'calendar-day-base calendar-week-number',
+                                           can_focus: true });
+                let weekFormat = Shell.util_translate_time_string(N_("Week %V"));
+                label.accessible_name = iter.toLocaleFormat(weekFormat);
                 layout.pack(label, rtl ? 7 : 0, row);
             }
 
