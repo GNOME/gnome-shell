@@ -1730,6 +1730,8 @@ const MessageList = new Lang.Class({
 
         this._eventsSection = new EventsSection();
         this._addSection(this._eventsSection);
+
+        Main.sessionMode.connect('updated', Lang.bind(this, this._sync));
     },
 
     _addSection: function(section) {
@@ -1772,7 +1774,15 @@ const MessageList = new Lang.Class({
     },
 
     _sync: function() {
-        let showPlaceholder = [...this._sections.keys()].every(function(s) {
+        let sections = [...this._sections.keys()];
+        let visible = sections.some(function(s) {
+            return s.allowed;
+        });
+        this.actor.visible = visible;
+        if (!visible)
+            return;
+
+        let showPlaceholder = sections.every(function(s) {
             return s.empty || !s.actor.visible;
         });
         this._placeholder.actor.visible = showPlaceholder;
