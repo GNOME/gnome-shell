@@ -65,6 +65,8 @@ double meta_surface_actor_wayland_get_scale (MetaSurfaceActorWayland *actor);
 
 void meta_surface_actor_wayland_sync_state (MetaSurfaceActorWayland *self);
 
+void meta_surface_actor_wayland_sync_state_recursive (MetaSurfaceActorWayland *self);
+
 G_END_DECLS
 
 #endif /* __META_SURFACE_ACTOR_WAYLAND_H__ */

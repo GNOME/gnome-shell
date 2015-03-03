@@ -482,6 +482,8 @@ struct _MetaWindowClass
   gboolean (*update_icon)        (MetaWindow       *window,
                                   cairo_surface_t **icon,
                                   cairo_surface_t **mini_icon);
+  void (*main_monitor_changed)   (MetaWindow *window,
+                                  const MetaMonitorInfo *old);
 };
 
 /* These differ from window->has_foo_func in that they consider

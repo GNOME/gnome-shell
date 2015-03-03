@@ -31,6 +31,7 @@
 #include "boxes-private.h"
 #include "stack-tracker.h"
 #include "meta-wayland-surface.h"
+#include "compositor/meta-surface-actor-wayland.h"
 
 struct _MetaWindowWayland
 {
@@ -271,6 +272,21 @@ meta_window_wayland_move_resize_internal (MetaWindow                *window,
 }
 
 static void
+meta_window_wayland_main_monitor_changed (MetaWindow *window,
+                                          const MetaMonitorInfo *old)
+{
+  MetaWaylandSurface *surface = window->surface;
+
+  if (surface)
+    {
+      MetaSurfaceActorWayland *actor =
+        META_SURFACE_ACTOR_WAYLAND (surface->surface_actor);
+
+      meta_surface_actor_wayland_sync_state_recursive (actor);
+    }
+}
+
+static void
 appears_focused_changed (GObject    *object,
                          GParamSpec *pspec,
                          gpointer    user_data)
@@ -308,6 +324,7 @@ meta_window_wayland_class_init (MetaWindowWaylandClass *klass)
   window_class->grab_op_began = meta_window_wayland_grab_op_began;
   window_class->grab_op_ended = meta_window_wayland_grab_op_ended;
   window_class->move_resize_internal = meta_window_wayland_move_resize_internal;
+  window_class->main_monitor_changed = meta_window_wayland_main_monitor_changed;
 }
 
 MetaWindow *

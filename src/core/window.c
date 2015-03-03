@@ -761,6 +761,20 @@ meta_window_update_desc (MetaWindow *window)
     window->desc = g_strdup_printf ("0x%lx", window->xwindow);
 }
 
+static void
+meta_window_main_monitor_changed (MetaWindow *window,
+                                  const MetaMonitorInfo *old)
+{
+  META_WINDOW_GET_CLASS (window)->main_monitor_changed (window, old);
+
+  if (old)
+    g_signal_emit_by_name (window->screen, "window-left-monitor",
+                           old->number, window);
+  if (window->monitor)
+    g_signal_emit_by_name (window->screen, "window-entered-monitor",
+                           window->monitor->number, window);
+}
+
 MetaWindow *
 _meta_window_shared_new (MetaDisplay         *display,
                          MetaScreen          *screen,
@@ -1128,7 +1142,7 @@ _meta_window_shared_new (MetaDisplay         *display,
       meta_window_update_struts (window);
     }
 
-  g_signal_emit_by_name (window->screen, "window-entered-monitor", window->monitor->number, window);
+  meta_window_main_monitor_changed (window, NULL);
 
   /* Must add window to stack before doing move/resize, since the
    * window might have fullscreen size (i.e. should have been
@@ -1369,9 +1383,10 @@ meta_window_unmanage (MetaWindow  *window,
 
   if (window->monitor)
     {
-      g_signal_emit_by_name (window->screen, "window-left-monitor",
-                             window->monitor->number, window);
+      const MetaMonitorInfo *old = window->monitor;
+
       window->monitor = NULL;
+      meta_window_main_monitor_changed (window, old);
     }
 
   if (!window->override_redirect)
@@ -3568,9 +3583,7 @@ meta_window_update_monitor (MetaWindow *window,
           window->screen->active_workspace != window->workspace)
         meta_window_change_workspace (window, window->screen->active_workspace);
 
-      if (old)
-        g_signal_emit_by_name (window->screen, "window-left-monitor", old->number, window);
-      g_signal_emit_by_name (window->screen, "window-entered-monitor", window->monitor->number, window);
+      meta_window_main_monitor_changed (window, old);
 
       /* If we're changing monitors, we need to update the has_maximize_func flag,
        * as the working area has changed. */

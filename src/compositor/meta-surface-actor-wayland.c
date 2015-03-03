@@ -175,6 +175,23 @@ meta_surface_actor_wayland_sync_state (MetaSurfaceActorWayland *self)
     }
 }
 
+void
+meta_surface_actor_wayland_sync_state_recursive (MetaSurfaceActorWayland *self)
+{
+  MetaWaylandSurface *surface = meta_surface_actor_wayland_get_surface (self);
+  GList *iter;
+
+  meta_surface_actor_wayland_sync_state (self);
+
+  for (iter = surface->subsurfaces; iter != NULL; iter = iter->next)
+    {
+      MetaWaylandSurface *subsurf = iter->data;
+
+      meta_surface_actor_wayland_sync_state_recursive (
+        META_SURFACE_ACTOR_WAYLAND (subsurf->surface_actor));
+    }
+}
+
 static MetaWindow *
 meta_surface_actor_wayland_get_window (MetaSurfaceActor *actor)
 {
