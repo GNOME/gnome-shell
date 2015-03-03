@@ -60,14 +60,6 @@ GObject-Introspection is available from:
 
   git://git.gnome.org/gobject-introspection
 
-If you want support for profiling Clutter you will also need:
-
-  • UProf ≥ @UPROF_REQ_VERSION@
-
-UProf is available from:
-
-  git://github.com/rib/UProf.git
-
 RESOURCES
 -------------------------------------------------------------------------------
 
@@ -161,10 +153,6 @@ Clutter has additional command line options for the configure script:
  --enable-gcov=[no/yes]
         Build Clutter with coverage report support, provided by gcov. This
         feature only works with the GNU Compiler Suite and gcov installed.
-
- --enable-profile=[no/yes]
-        Build Clutter with profiling instrumentation. Requires the GNU
-        C Compiler and the UProf library.
 
  --disable-tests
         Disable building the Clutter tests suite.

@@ -143,7 +143,6 @@ m4_define([atk_req_version],            [2.5.3])
 m4_define([cairo_req_version],          [1.14.0])
 m4_define([pango_req_version],          [1.30])
 m4_define([gi_req_version],             [1.39.0])
-m4_define([uprof_req_version],          [0.3])
 m4_define([gtk_doc_req_version],        [1.20])
 m4_define([xcomposite_req_version],     [0.4])
 m4_define([gdk_req_version],            [3.3.18])
@@ -157,7 +156,6 @@ AC_SUBST([ATK_REQ_VERSION],        [atk_req_version])
 AC_SUBST([CAIRO_REQ_VERSION],      [cairo_req_version])
 AC_SUBST([PANGO_REQ_VERSION],      [pango_req_version])
 AC_SUBST([GI_REQ_VERSION],         [gi_req_version])
-AC_SUBST([UPROF_REQ_VERSION],      [uprof_req_version])
 AC_SUBST([GTK_DOC_REQ_VERSION],    [gtk_doc_req_version])
 AC_SUBST([XCOMPOSITE_REQ_VERSION], [xcomposite_req_version])
 AC_SUBST([GDK_REQ_VERSION],        [gdk_req_version])
@@ -930,44 +928,6 @@ AS_CASE([$enable_deprecated],
 
 AC_SUBST([CLUTTER_DEPRECATED_CFLAGS])
 
-dnl === Profiling =============================================================
-
-m4_define([profile_default], [no])
-AC_ARG_ENABLE(profile,
-              AS_HELP_STRING([--enable-profile=@<:@no/yes@:>@],
-                             [Turn on profiling support. yes; All profiling probe points are compiled in and may be runtime enabled. no; No profiling support will built into clutter.  @<:@default=no@:>@]),
-              [],
-              [enable_profile=profile_default])
-
-AS_CASE([$enable_profile],
-
-        [yes],
-        [
-          AS_IF([test "x$GCC" = "xyes"],
-                [
-                  PKG_CHECK_MODULES([PROFILE_DEP], [uprof-0.3])
-                  CLUTTER_PROFILE_CFLAGS="-DCLUTTER_ENABLE_PROFILE $PROFILE_DEP_CFLAGS"
-                  CLUTTER_PROFILE_LDFLAGS="$PROFILE_DEP_LIBS"
-
-                  AS_IF([test "x$enable_debug" = "xyes"], [CLUTTER_PROFILE_CFLAGS+=" -DUPROF_DEBUG"])
-                ],
-                [
-                  AC_MSG_ERROR([--enable-profile is currently only supported if using GCC])
-                ])
-        ],
-
-        [no],
-        [
-          CLUTTER_PROFILE_CFLAGS=""
-          CLUTTER_PROFILE_LDFLAGS=""
-        ],
-
-        [*], [AC_MSG_ERROR([Invalid value for --enable-profile])]
-)
-AM_CONDITIONAL(PROFILE, test "x$enable_profile" != "xno")
-AC_SUBST(CLUTTER_PROFILE_CFLAGS)
-AC_SUBST(CLUTTER_PROFILE_LDFLAGS)
-
 dnl === Enable strict compiler flags ==========================================
 
 # use strict compiler flags only when building from git; the rules for
@@ -1043,8 +1003,8 @@ AS_IF([test "x$CLUTTER_BASE_PC_FILES_PRIVATE" = "x" && test "x$BACKEND_PC_FILES_
 AC_SUBST(CLUTTER_REQUIRES)
 AC_SUBST(CLUTTER_REQUIRES_PRIVATE)
 
-CLUTTER_CFLAGS="$FLAVOUR_CFLAGS $CLUTTER_DEPS_CFLAGS $CLUTTER_DEPS_PRIVATE_CFLAGS $CLUTTER_PROFILE_CFLAGS $GLIB_CFLAGS"
-CLUTTER_LIBS="$FLAVOUR_LIBS $CLUTTER_DEPS_LIBS $CLUTTER_DEPS_PRIVATE_LIBS $CLUTTER_PROFILE_LDFLAGS $GLIB_LIBS"
+CLUTTER_CFLAGS="$FLAVOUR_CFLAGS $CLUTTER_DEPS_CFLAGS $CLUTTER_DEPS_PRIVATE_CFLAGS $GLIB_CFLAGS"
+CLUTTER_LIBS="$FLAVOUR_LIBS $CLUTTER_DEPS_LIBS $CLUTTER_DEPS_PRIVATE_LIBS $GLIB_LIBS"
 AC_SUBST(CLUTTER_CFLAGS)
 AC_SUBST(CLUTTER_LIBS)
 
@@ -1272,7 +1232,6 @@ echo ""
 echo " • Compiler options:"
 echo "        Clutter debug level: ${enable_debug}"
 echo "        Compiler flags: ${CFLAGS} ${MAINTAINER_CFLAGS}"
-echo "        Profiling enabled: ${enable_profile}"
 echo "        Enable coverage tests: ${use_gcov}"
 echo "        Enable deprecated symbols: ${enable_deprecated}"
 

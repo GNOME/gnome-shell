@@ -627,7 +627,6 @@
 #include "clutter-paint-node-private.h"
 #include "clutter-paint-volume-private.h"
 #include "clutter-private.h"
-#include "clutter-profile.h"
 #include "clutter-property-transition.h"
 #include "clutter-scriptable.h"
 #include "clutter-script-private.h"
@@ -3676,16 +3675,6 @@ clutter_actor_paint (ClutterActor *self)
   gboolean shader_applied = FALSE;
   ClutterStage *stage;
 
-  CLUTTER_STATIC_COUNTER (actor_paint_counter,
-                          "Actor real-paint counter",
-                          "Increments each time any actor is painted",
-                          0 /* no application private data */);
-  CLUTTER_STATIC_COUNTER (actor_pick_counter,
-                          "Actor pick-paint counter",
-                          "Increments each time any actor is painted "
-                          "for picking",
-                          0 /* no application private data */);
-
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
   if (CLUTTER_ACTOR_IN_DESTRUCTION (self))
@@ -3796,16 +3785,12 @@ clutter_actor_paint (ClutterActor *self)
 
   if (pick_mode == CLUTTER_PICK_NONE)
     {
-      CLUTTER_COUNTER_INC (_clutter_uprof_context, actor_paint_counter);
-
       /* We check whether we need to add the flatten effect before
          each paint so that we can avoid having a mechanism for
          applications to notify when the value of the
          has_overlaps virtual changes. */
       add_or_remove_flatten_effect (self);
     }
-  else
-    CLUTTER_COUNTER_INC (_clutter_uprof_context, actor_pick_counter);
 
   /* We save the current paint volume so that the next time the
    * actor queues a redraw we can constrain the redraw to just

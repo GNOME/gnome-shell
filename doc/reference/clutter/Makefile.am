@@ -93,7 +93,6 @@ IGNORE_HFILES = \
 	clutter-paint-node-private.h	\
 	clutter-paint-volume-private.h	\
 	clutter-private.h 		\
-	clutter-profile.h		\
 	clutter-script-private.h 	\
 	clutter-settings-private.h	\
 	clutter-stage-manager-private.h	\

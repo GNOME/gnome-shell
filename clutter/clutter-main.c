@@ -65,7 +65,6 @@
 #include "clutter-main.h"
 #include "clutter-master-clock.h"
 #include "clutter-private.h"
-#include "clutter-profile.h"
 #include "clutter-settings-private.h"
 #include "clutter-stage-manager.h"
 #include "clutter-stage-private.h"
@@ -128,9 +127,6 @@ guint clutter_debug_flags       = 0;
 guint clutter_paint_debug_flags = 0;
 guint clutter_pick_debug_flags  = 0;
 
-/* profile flags */
-guint clutter_profile_flags     = 0;
-
 const guint clutter_major_version = CLUTTER_MAJOR_VERSION;
 const guint clutter_minor_version = CLUTTER_MINOR_VERSION;
 const guint clutter_micro_version = CLUTTER_MICRO_VERSION;
@@ -170,13 +166,6 @@ static const GDebugKey clutter_paint_debug_keys[] = {
   { "continuous-redraw", CLUTTER_DEBUG_CONTINUOUS_REDRAW },
   { "paint-deform-tiles", CLUTTER_DEBUG_PAINT_DEFORM_TILES },
 };
-
-#ifdef CLUTTER_ENABLE_PROFILE
-static const GDebugKey clutter_profile_keys[] = {
-  {"picking-only", CLUTTER_PROFILE_PICKING_ONLY },
-  {"disable-report", CLUTTER_PROFILE_DISABLE_REPORT }
-};
-#endif /* CLUTTER_ENABLE_DEBUG */
 
 static void
 clutter_threads_impl_lock (void)
@@ -787,28 +776,6 @@ clutter_main_level (void)
   return clutter_main_loop_level;
 }
 
-#ifdef CLUTTER_ENABLE_PROFILE
-static gint (*prev_poll) (GPollFD *ufds, guint nfsd, gint timeout_) = NULL;
-
-static gint
-timed_poll (GPollFD *ufds,
-            guint nfsd,
-            gint timeout_)
-{
-  gint ret;
-  CLUTTER_STATIC_TIMER (poll_timer,
-                        "Mainloop", /* parent */
-                        "Mainloop Idle",
-                        "The time spent idle in poll()",
-                        0 /* no application private data */);
-
-  CLUTTER_TIMER_START (uprof_get_mainloop_context (), poll_timer);
-  ret = prev_poll (ufds, nfsd, timeout_);
-  CLUTTER_TIMER_STOP (uprof_get_mainloop_context (), poll_timer);
-  return ret;
-}
-#endif
-
 /**
  * clutter_main:
  *
@@ -825,14 +792,6 @@ clutter_main (void)
 		 "You must call clutter_init() first.");
       return;
     }
-
-#ifdef CLUTTER_ENABLE_PROFILE
-  if (!prev_poll)
-    {
-      prev_poll = g_main_context_get_poll_func (NULL);
-      g_main_context_set_poll_func (NULL, timed_poll);
-    }
-#endif
 
   clutter_main_loop_level++;
 
@@ -1361,32 +1320,6 @@ clutter_arg_no_debug_cb (const char *key,
 }
 #endif /* CLUTTER_ENABLE_DEBUG */
 
-#ifdef CLUTTER_ENABLE_PROFILE
-static gboolean
-clutter_arg_profile_cb (const char *key,
-                        const char *value,
-                        gpointer    user_data)
-{
-  clutter_profile_flags |=
-    g_parse_debug_string (value,
-                          clutter_profile_keys,
-                          G_N_ELEMENTS (clutter_profile_keys));
-  return TRUE;
-}
-
-static gboolean
-clutter_arg_no_profile_cb (const char *key,
-                           const char *value,
-                           gpointer    user_data)
-{
-  clutter_profile_flags &=
-    ~g_parse_debug_string (value,
-                           clutter_profile_keys,
-                           G_N_ELEMENTS (clutter_profile_keys));
-  return TRUE;
-}
-#endif /* CLUTTER_ENABLE_PROFILE */
-
 GQuark
 clutter_init_error_quark (void)
 {
@@ -1398,14 +1331,6 @@ clutter_init_real (GError **error)
 {
   ClutterMainContext *ctx;
   ClutterBackend *backend;
-
-#ifdef CLUTTER_ENABLE_PROFILE
-  CLUTTER_STATIC_TIMER (mainloop_timer,
-                        NULL, /* no parent */
-                        "Mainloop",
-                        "The time spent in the clutter mainloop",
-                        0 /* no application private data */);
-#endif
 
   /* Note, creates backend if not already existing, though parse args will
    * have likely created it
@@ -1453,27 +1378,6 @@ clutter_init_real (GError **error)
   if (!_clutter_feature_init (error))
     return CLUTTER_INIT_ERROR_BACKEND;
 
-#ifdef CLUTTER_ENABLE_PROFILE
-  /* We need to be absolutely sure that uprof has been initialized
-   * before calling _clutter_uprof_init. uprof_init (NULL, NULL)
-   * will be a NOP if it has been initialized but it will also
-   * mean subsequent parsing of the UProf GOptionGroup will have no
-   * affect.
-   *
-   * Sadly GOptionGroup based library initialization is extremly
-   * fragile by design because GOptionGroups have no notion of
-   * dependencies and our post_parse_hook may be called before
-   * the cogl or uprof groups get parsed.
-   */
-  uprof_init (NULL, NULL);
-  _clutter_uprof_init ();
-
-  CLUTTER_TIMER_START (uprof_get_mainloop_context (), mainloop_timer);
-
-  if (clutter_profile_flags & CLUTTER_PROFILE_PICKING_ONLY)
-    _clutter_profile_suspend ();
-#endif
-
   clutter_text_direction = clutter_get_text_direction ();
 
   /* Initiate event collection */
@@ -1511,12 +1415,6 @@ static GOptionEntry clutter_args[] = {
   { "clutter-no-debug", 0, 0, G_OPTION_ARG_CALLBACK, clutter_arg_no_debug_cb,
     N_("Clutter debugging flags to unset"), "FLAGS" },
 #endif /* CLUTTER_ENABLE_DEBUG */
-#ifdef CLUTTER_ENABLE_PROFILE
-  { "clutter-profile", 0, 0, G_OPTION_ARG_CALLBACK, clutter_arg_profile_cb,
-    N_("Clutter profiling flags to set"), "FLAGS" },
-  { "clutter-no-profile", 0, 0, G_OPTION_ARG_CALLBACK, clutter_arg_no_profile_cb,
-    N_("Clutter profiling flags to unset"), "FLAGS" },
-#endif /* CLUTTER_ENABLE_PROFILE */
   { "clutter-enable-accessibility", 0, 0, G_OPTION_ARG_NONE, &clutter_enable_accessibility,
     N_("Enable accessibility"), NULL },
   { NULL, },
@@ -1565,18 +1463,6 @@ pre_parse_hook (GOptionContext  *context,
       env_string = NULL;
     }
 #endif /* CLUTTER_ENABLE_DEBUG */
-
-#ifdef CLUTTER_ENABLE_PROFILE
-  env_string = g_getenv ("CLUTTER_PROFILE");
-  if (env_string != NULL)
-    {
-      clutter_profile_flags =
-        g_parse_debug_string (env_string,
-                              clutter_profile_keys,
-                              G_N_ELEMENTS (clutter_profile_keys));
-      env_string = NULL;
-    }
-#endif /* CLUTTER_ENABLE_PROFILE */
 
   env_string = g_getenv ("CLUTTER_PICK");
   if (env_string != NULL)
@@ -1831,14 +1717,6 @@ clutter_init_with_args (int            *argc,
       group = cogl_get_option_group ();
       g_option_context_add_group (context, group);
 
-      /* Note: That due to the implementation details of glib's goption
-       * parsing; cogl and uprof will not actually have there arguments
-       * parsed before the post_parse_hook is called! */
-#ifdef CLUTTER_ENABLE_PROFILE
-      group = uprof_get_option_group ();
-      g_option_context_add_group (context, group);
-#endif
-
       if (entries)
 	g_option_context_add_main_entries (context, entries, translation_domain);
 
@@ -1872,9 +1750,6 @@ clutter_parse_args (int      *argc,
 {
   GOptionContext *option_context;
   GOptionGroup *clutter_group, *cogl_group;
-#ifdef CLUTTER_ENABLE_PROFILE
-  GOptionGroup *uprof_group;
-#endif
   GError *internal_error = NULL;
   gboolean ret = TRUE;
 
@@ -1891,11 +1766,6 @@ clutter_parse_args (int      *argc,
 
   cogl_group = cogl_get_option_group ();
   g_option_context_add_group (option_context, cogl_group);
-
-#ifdef CLUTTER_ENABLE_PROFILE
-  uprof_group = uprof_get_option_group ();
-  g_option_context_add_group (option_context, uprof_group);
-#endif
 
   if (!g_option_context_parse (option_context, argc, argv, &internal_error))
     {
@@ -3849,11 +3719,6 @@ _clutter_debug_messagev (const char *format,
   g_free (stamp);
 
   g_logv (G_LOG_DOMAIN, G_LOG_LEVEL_MESSAGE, fmt, var_args);
-
-#ifdef CLUTTER_ENABLE_PROFILE
-  if (_clutter_uprof_context != NULL)
-    uprof_context_vtrace_message (_clutter_uprof_context, format, var_args);
-#endif
 
   g_free (fmt);
 }

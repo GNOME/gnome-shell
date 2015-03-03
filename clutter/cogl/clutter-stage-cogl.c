@@ -44,7 +44,6 @@
 #include "clutter-feature.h"
 #include "clutter-main.h"
 #include "clutter-private.h"
-#include "clutter-profile.h"
 #include "clutter-stage-private.h"
 
 static void clutter_stage_window_iface_init (ClutterStageWindowIface *iface);
@@ -409,28 +408,10 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
   gboolean force_swap;
   int window_scale;
 
-  CLUTTER_STATIC_TIMER (painting_timer,
-                        "Redrawing", /* parent */
-                        "Painting actors",
-                        "The time spent painting actors",
-                        0 /* no application private data */);
-  CLUTTER_STATIC_TIMER (swapbuffers_timer,
-                        "Redrawing", /* parent */
-                        "SwapBuffers",
-                        "The time spent blocked by SwapBuffers",
-                        0 /* no application private data */);
-  CLUTTER_STATIC_TIMER (blit_sub_buffer_timer,
-                        "Redrawing", /* parent */
-                        "blit_sub_buffer",
-                        "The time spent in blit_sub_buffer",
-                        0 /* no application private data */);
-
   wrapper = CLUTTER_ACTOR (stage_cogl->wrapper);
 
   if (!stage_cogl->onscreen)
     return;
-
-  CLUTTER_TIMER_START (_clutter_uprof_context, painting_timer);
 
   can_blit_sub_buffer =
     cogl_clutter_winsys_has_feature (COGL_WINSYS_FEATURE_SWAP_REGION);
@@ -610,8 +591,6 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
       cogl_object_unref (prim);
     }
 
-  CLUTTER_TIMER_STOP (_clutter_uprof_context, painting_timer);
-
   /* push on the screen */
   if (use_clipped_redraw && !force_swap)
     {
@@ -640,11 +619,7 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
                     copy_area[0], copy_area[1], copy_area[2], copy_area[3]);
 
 
-      CLUTTER_TIMER_START (_clutter_uprof_context, blit_sub_buffer_timer);
-
       cogl_onscreen_swap_region (stage_cogl->onscreen, copy_area, 1);
-
-      CLUTTER_TIMER_STOP (_clutter_uprof_context, blit_sub_buffer_timer);
     }
   else
     {
@@ -657,9 +632,7 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
       if (clutter_feature_available (CLUTTER_FEATURE_SWAP_EVENTS))
         stage_cogl->pending_swaps++;
 
-      CLUTTER_TIMER_START (_clutter_uprof_context, swapbuffers_timer);
       cogl_onscreen_swap_buffers (stage_cogl->onscreen);
-      CLUTTER_TIMER_STOP (_clutter_uprof_context, swapbuffers_timer);
     }
 
   /* reset the redraw clipping for the next paint... */

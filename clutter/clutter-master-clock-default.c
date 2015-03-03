@@ -37,7 +37,6 @@
 #include "clutter-master-clock-default.h"
 #include "clutter-debug.h"
 #include "clutter-private.h"
-#include "clutter-profile.h"
 #include "clutter-stage-manager-private.h"
 #include "clutter-stage-private.h"
 
@@ -354,19 +353,9 @@ master_clock_process_events (ClutterMasterClockDefault *master_clock,
   gint64 start = g_get_monotonic_time ();
 #endif
 
-  CLUTTER_STATIC_TIMER (master_event_process,
-                        "Master Clock",
-                        "Event Processing",
-                        "The time spent processing events on all stages",
-                        0);
-
-  CLUTTER_TIMER_START (_clutter_uprof_context, master_event_process);
-
   /* Process queued events */
   for (l = stages; l != NULL; l = l->next)
     _clutter_stage_process_queued_events (l->data);
-
-  CLUTTER_TIMER_STOP (_clutter_uprof_context, master_event_process);
 
 #ifdef CLUTTER_ENABLE_DEBUG
   if (_clutter_diagnostic_enabled ())
@@ -392,12 +381,6 @@ master_clock_advance_timelines (ClutterMasterClockDefault *master_clock)
   gint64 start = g_get_monotonic_time ();
 #endif
 
-  CLUTTER_STATIC_TIMER (master_timeline_advance,
-                        "Master Clock",
-                        "Timelines Advancement",
-                        "The time spent advancing all timelines",
-                        0);
-
   /* we protect ourselves from timelines being removed during
    * the advancement by other timelines by copying the list of
    * timelines, taking a reference on them, iterating over the
@@ -421,12 +404,8 @@ master_clock_advance_timelines (ClutterMasterClockDefault *master_clock)
   timelines = g_slist_copy (master_clock->timelines);
   g_slist_foreach (timelines, (GFunc) g_object_ref, NULL);
 
-  CLUTTER_TIMER_START (_clutter_uprof_context, master_timeline_advance);
-
   for (l = timelines; l != NULL; l = l->next)
     _clutter_timeline_do_tick (l->data, master_clock->cur_tick / 1000);
-
-  CLUTTER_TIMER_STOP (_clutter_uprof_context, master_timeline_advance);
 
   g_slist_foreach (timelines, (GFunc) g_object_unref, NULL);
   g_slist_free (timelines);
@@ -548,14 +527,6 @@ clutter_clock_dispatch (GSource     *source,
   gboolean stages_updated = FALSE;
   GSList *stages;
 
-  CLUTTER_STATIC_TIMER (master_dispatch_timer,
-                        "Mainloop",
-                        "Master Clock",
-                        "Master clock dispatch",
-                        0);
-
-  CLUTTER_TIMER_START (_clutter_uprof_context, master_dispatch_timer);
-
   CLUTTER_NOTE (SCHEDULER, "Master clock [tick]");
 
   _clutter_threads_acquire_lock ();
@@ -602,8 +573,6 @@ clutter_clock_dispatch (GSource     *source,
   master_clock->prev_tick = master_clock->cur_tick;
 
   _clutter_threads_release_lock ();
-
-  CLUTTER_TIMER_STOP (_clutter_uprof_context, master_dispatch_timer);
 
   return TRUE;
 }

@@ -30,7 +30,6 @@ AM_CPPFLAGS = \
 	-I$(top_builddir)/clutter		\
 	$(CLUTTER_DEPRECATED_CFLAGS)		\
 	$(CLUTTER_DEBUG_CFLAGS)			\
-	$(CLUTTER_PROFILE_CFLAGS)		\
 	$(CLUTTER_HIDDEN_VISIBILITY_CFLAGS)	\
 	$(NULL)
 
@@ -240,7 +239,6 @@ source_h_priv = \
 	clutter-paint-node-private.h		\
 	clutter-paint-volume-private.h		\
 	clutter-private.h 			\
-	clutter-profile.h			\
 	clutter-script-private.h		\
 	clutter-settings-private.h		\
 	clutter-stage-manager-private.h		\
@@ -253,7 +251,6 @@ source_c_priv = \
 	clutter-easing.c		\
 	clutter-event-translator.c	\
 	clutter-id-pool.c 		\
-	clutter-profile.c		\
 	$(NULL)
 
 # deprecated installed headers
@@ -844,7 +841,7 @@ clutter_deprecated_HEADERS = $(deprecated_h)
 
 lib_LTLIBRARIES += libclutter-@CLUTTER_API_VERSION@.la
 
-libclutter_@CLUTTER_API_VERSION@_la_LIBADD = $(LIBM) $(CLUTTER_LIBS) $(CLUTTER_PROFILE_LIBS)
+libclutter_@CLUTTER_API_VERSION@_la_LIBADD = $(LIBM) $(CLUTTER_LIBS)
 libclutter_@CLUTTER_API_VERSION@_la_DEPENDENCIES = $(win32_resources)
 
 libclutter_@CLUTTER_API_VERSION@_la_SOURCES = \

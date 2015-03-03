@@ -71,7 +71,6 @@
 #include "clutter-master-clock.h"
 #include "clutter-paint-volume-private.h"
 #include "clutter-private.h"
-#include "clutter-profile.h"
 #include "clutter-stage-manager-private.h"
 #include "clutter-stage-private.h"
 #include "clutter-version.h" 	/* For flavour */
@@ -705,56 +704,6 @@ clutter_stage_paint (ClutterActor *self)
     clutter_actor_paint (child);
 }
 
-#if 0
-/* the Stage is cleared in clutter_actor_paint_node() */
-static void
-clutter_stage_paint (ClutterActor *self)
-{
-  ClutterStagePrivate *priv = CLUTTER_STAGE (self)->priv;
-  CoglBufferBit clear_flags;
-  ClutterColor bg_color;
-  CoglColor stage_color;
-  ClutterActorIter iter;
-  ClutterActor *child;
-  guint8 real_alpha;
-
-  CLUTTER_STATIC_TIMER (stage_clear_timer,
-                        "Painting actors", /* parent */
-                        "Stage clear",
-                        "The time spent clearing the stage",
-                        0 /* no application private data */);
-
-  CLUTTER_NOTE (PAINT, "Initializing stage paint");
-
-  /* composite the opacity to the stage color */
-  clutter_actor_get_background_color (self, &bg_color);
-  real_alpha = clutter_actor_get_opacity (self)
-             * bg_color.alpha
-             / 255;
-
-  clear_flags = COGL_BUFFER_BIT_DEPTH;
-  if (!STAGE_NO_CLEAR_ON_PAINT (self))
-    clear_flags |= COGL_BUFFER_BIT_COLOR;
-
-  CLUTTER_TIMER_START (_clutter_uprof_context, stage_clear_timer);
-  /* we use the real alpha to clear the stage if :use-alpha is
-   * set; the effect depends entirely on the Clutter backend
-   */
-  cogl_color_init_from_4ub (&stage_color,
-                            bg_color.red,
-                            bg_color.green,
-                            bg_color.blue,
-                            priv->use_alpha ? real_alpha : 255);
-  cogl_color_premultiply (&stage_color);
-  cogl_clear (&stage_color, clear_flags);
-  CLUTTER_TIMER_STOP (_clutter_uprof_context, stage_clear_timer);
-
-  clutter_actor_iter_init (&iter, self);
-  while (clutter_actor_iter_next (&iter, &child))
-    clutter_actor_paint (child);
-}
-#endif
-
 static void
 clutter_stage_pick (ClutterActor       *self,
 		    const ClutterColor *color)
@@ -1117,11 +1066,6 @@ _clutter_stage_maybe_relayout (ClutterActor *actor)
   ClutterStagePrivate *priv = stage->priv;
   gfloat natural_width, natural_height;
   ClutterActorBox box = { 0, };
-  CLUTTER_STATIC_TIMER (relayout_timer,
-                        "Mainloop", /* no parent */
-                        "Layouting",
-                        "The time spent reallocating the stage",
-                        0 /* no application private data */);
 
   if (!priv->relayout_pending)
     return;
@@ -1131,7 +1075,6 @@ _clutter_stage_maybe_relayout (ClutterActor *actor)
     {
       priv->relayout_pending = FALSE;
 
-      CLUTTER_TIMER_START (_clutter_uprof_context, relayout_timer);
       CLUTTER_NOTE (ACTOR, "Recomputing layout");
 
       CLUTTER_SET_PRIVATE_FLAGS (stage, CLUTTER_IN_RELAYOUT);
@@ -1154,7 +1097,6 @@ _clutter_stage_maybe_relayout (ClutterActor *actor)
                               &box, CLUTTER_ALLOCATION_NONE);
 
       CLUTTER_UNSET_PRIVATE_FLAGS (stage, CLUTTER_IN_RELAYOUT);
-      CLUTTER_TIMER_STOP (_clutter_uprof_context, relayout_timer);
     }
 }
 
@@ -1164,16 +1106,6 @@ clutter_stage_do_redraw (ClutterStage *stage)
   ClutterBackend *backend = clutter_get_default_backend ();
   ClutterActor *actor = CLUTTER_ACTOR (stage);
   ClutterStagePrivate *priv = stage->priv;
-
-  CLUTTER_STATIC_COUNTER (redraw_counter,
-                          "clutter_stage_do_redraw counter",
-                          "Increments for each Stage redraw",
-                          0 /* no application private data */);
-  CLUTTER_STATIC_TIMER (redraw_timer,
-                        "Master Clock", /* parent */
-                        "Redrawing",
-                        "The time spent redrawing everything",
-                        0 /* no application private data */);
 
   if (CLUTTER_ACTOR_IN_DESTRUCTION (stage))
     return;
@@ -1195,12 +1127,7 @@ clutter_stage_do_redraw (ClutterStage *stage)
 
   _clutter_stage_maybe_setup_viewport (stage);
 
-  CLUTTER_COUNTER_INC (_clutter_uprof_context, redraw_counter);
-  CLUTTER_TIMER_START (_clutter_uprof_context, redraw_timer);
-
   _clutter_stage_window_redraw (priv->impl);
-
-  CLUTTER_TIMER_STOP (_clutter_uprof_context, redraw_timer);
 
   if (_clutter_context_get_show_fps ())
     {
@@ -1462,31 +1389,6 @@ _clutter_stage_do_pick (ClutterStage   *stage,
   float stage_width, stage_height;
   int window_scale;
 
-  CLUTTER_STATIC_COUNTER (do_pick_counter,
-                          "_clutter_stage_do_pick counter",
-                          "Increments for each full pick run",
-                          0 /* no application private data */);
-  CLUTTER_STATIC_TIMER (pick_timer,
-                        "Mainloop", /* parent */
-                        "Picking",
-                        "The time spent picking",
-                        0 /* no application private data */);
-  CLUTTER_STATIC_TIMER (pick_clear,
-                        "Picking", /* parent */
-                        "Stage clear (pick)",
-                        "The time spent clearing stage for picking",
-                        0 /* no application private data */);
-  CLUTTER_STATIC_TIMER (pick_paint,
-                        "Picking", /* parent */
-                        "Painting actors (pick mode)",
-                        "The time spent painting actors in pick mode",
-                        0 /* no application private data */);
-  CLUTTER_STATIC_TIMER (pick_read,
-                        "Picking", /* parent */
-                        "Read Pixels",
-                        "The time spent issuing a read pixels",
-                        0 /* no application private data */);
-
   priv = stage->priv;
 
   if (CLUTTER_ACTOR_IN_DESTRUCTION (stage))
@@ -1501,14 +1403,6 @@ _clutter_stage_do_pick (ClutterStage   *stage,
   clutter_actor_get_size (CLUTTER_ACTOR (stage), &stage_width, &stage_height);
   if (x < 0 || x >= stage_width || y < 0 || y >= stage_height)
     return actor;
-
-#ifdef CLUTTER_ENABLE_PROFILE
-  if (clutter_profile_flags & CLUTTER_PROFILE_PICKING_ONLY)
-    _clutter_profile_resume ();
-#endif /* CLUTTER_ENABLE_PROFILE */
-
-  CLUTTER_COUNTER_INC (_clutter_uprof_context, do_pick_counter);
-  CLUTTER_TIMER_START (_clutter_uprof_context, pick_timer);
 
   context = _clutter_context_get_default ();
   clutter_stage_ensure_current (stage);
@@ -1536,10 +1430,8 @@ _clutter_stage_do_pick (ClutterStage   *stage,
 
   CLUTTER_NOTE (PICK, "Performing pick at %i,%i", x, y);
 
-  CLUTTER_TIMER_START (_clutter_uprof_context, pick_clear);
   cogl_color_init_from_4ub (&stage_pick_id, 255, 255, 255, 255);
   cogl_clear (&stage_pick_id, COGL_BUFFER_BIT_COLOR | COGL_BUFFER_BIT_DEPTH);
-  CLUTTER_TIMER_STOP (_clutter_uprof_context, pick_clear);
 
   /* Disable dithering (if any) when doing the painting in pick mode */
   dither_enabled_save = cogl_framebuffer_get_dither_enabled (fb);
@@ -1548,11 +1440,9 @@ _clutter_stage_do_pick (ClutterStage   *stage,
   /* Render the entire scence in pick mode - just single colored silhouette's
    * are drawn offscreen (as we never swap buffers)
   */
-  CLUTTER_TIMER_START (_clutter_uprof_context, pick_paint);
   context->pick_mode = mode;
   _clutter_stage_do_paint (stage, NULL);
   context->pick_mode = CLUTTER_PICK_NONE;
-  CLUTTER_TIMER_STOP (_clutter_uprof_context, pick_paint);
 
   /* Read the color of the screen co-ords pixel. RGBA_8888_PRE is used
      even though we don't care about the alpha component because under
@@ -1561,12 +1451,10 @@ _clutter_stage_do_pick (ClutterStage   *stage,
      used. The format is requested as pre-multiplied because Cogl
      assumes that all pixels in the framebuffer are premultiplied so
      it avoids a conversion. */
-  CLUTTER_TIMER_START (_clutter_uprof_context, pick_read);
   cogl_read_pixels (read_x, read_y, 1, 1,
                     COGL_READ_PIXELS_COLOR_BUFFER,
                     COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                     pixel);
-  CLUTTER_TIMER_STOP (_clutter_uprof_context, pick_read);
 
   if (G_UNLIKELY (clutter_pick_debug_flags & CLUTTER_DEBUG_DUMP_PICK_BUFFERS))
     {
@@ -1596,13 +1484,6 @@ _clutter_stage_do_pick (ClutterStage   *stage,
 
       retval = _clutter_stage_get_actor_by_pick_id (stage, id_);
     }
-
-  CLUTTER_TIMER_STOP (_clutter_uprof_context, pick_timer);
-
-#ifdef CLUTTER_ENABLE_PROFILE
-  if (clutter_profile_flags & CLUTTER_PROFILE_PICKING_ONLY)
-    _clutter_profile_suspend ();
-#endif
 
   return retval;
 }

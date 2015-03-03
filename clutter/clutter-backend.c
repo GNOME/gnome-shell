@@ -49,7 +49,6 @@
 #include "clutter-event-private.h"
 #include "clutter-marshal.h"
 #include "clutter-private.h"
-#include "clutter-profile.h"
 #include "clutter-stage-manager-private.h"
 #include "clutter-stage-private.h"
 #include "clutter-stage-window.h"

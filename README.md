@@ -40,10 +40,6 @@ If you are building the Introspection data you will also need:
 
 * [GObject-Introspection](http://git.gnome.org/browse/gobject-introspection)
 
-If you want support for profiling Clutter you will also need:
-
-* [UProf](git://github.com/rib/UProf.git)
-
 Resources
 ---------
 
