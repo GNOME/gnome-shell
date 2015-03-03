@@ -163,6 +163,7 @@ const WorldClocksSection = new Lang.Class({
                                     x_align: Clutter.ActorAlign.START,
                                     text: title });
         layout.attach(header, 0, 0, 2, 1);
+        this.actor.label_actor = header;
 
         for (let i = 0; i < this._locations.length; i++) {
             let l = this._locations[i].location;
