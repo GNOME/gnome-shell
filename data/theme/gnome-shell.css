@@ -1407,15 +1407,18 @@ StScrollBar {
     color: #ffffff; }
 
 .candidate-page-button-box {
-  height: 2em;
-  width: 80px; }
+  height: 2em; }
   .vertical .candidate-page-button-box {
     padding-top: 0.5em; }
   .horizontal .candidate-page-button-box {
     padding-left: 0.5em; }
 
+.candidate-page-button {
+  padding: 4px; }
+
 .candidate-page-button-previous {
-  border-radius: 4px 0px 0px 4px; }
+  border-radius: 4px 0px 0px 4px;
+  border-right-width: 0; }
 
 .candidate-page-button-next {
   border-radius: 0px 4px 4px 0px; }
