@@ -103,15 +103,6 @@ shell_tp_client_init (ShellTpClient *self)
   /* Approver */
   tp_base_client_add_approver_filter (TP_BASE_CLIENT (self), filter);
 
-  /* Approve room invitations. We don't handle or observe room channels so
-   * just register this filter for the approver. */
-  tp_base_client_take_approver_filter (TP_BASE_CLIENT (self), tp_asv_new (
-      TP_PROP_CHANNEL_CHANNEL_TYPE, G_TYPE_STRING,
-        TP_IFACE_CHANNEL_TYPE_TEXT,
-      TP_PROP_CHANNEL_TARGET_HANDLE_TYPE, G_TYPE_UINT,
-        TP_HANDLE_TYPE_ROOM,
-      NULL));
-
   /* Handler */
   tp_base_client_add_handler_filter (TP_BASE_CLIENT (self), filter);
 

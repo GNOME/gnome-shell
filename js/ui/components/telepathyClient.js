@@ -208,33 +208,6 @@ const TelepathyClient = new Lang.Class({
         }
     },
 
-    _displayRoomInvitation: function(conn, channel, dispatchOp, context) {
-        // We can only approve the rooms if we have been invited to it
-        let selfContact = channel.group_get_self_contact();
-        if (selfContact == null) {
-            context.fail(new Tp.Error({ code: Tp.Error.INVALID_ARGUMENT,
-                                        message: 'Not invited to the room' }));
-            return;
-        }
-
-        let [invited, inviter, reason, msg] = channel.group_get_local_pending_contact_info(selfContact);
-        if (!invited) {
-            context.fail(new Tp.Error({ code: Tp.Error.INVALID_ARGUMENT,
-                                        message: 'Not invited to the room' }));
-            return;
-        }
-
-        // FIXME: We don't have a 'chat room' icon (bgo #653737) use
-        // system-users for now as Empathy does.
-        let source = new ApproverSource(dispatchOp, _("Invitation"),
-                                        Gio.icon_new_for_string('system-users'));
-        Main.messageTray.add(source);
-
-        let notif = new RoomInviteNotification(source, dispatchOp, channel, inviter);
-        source.notify(notif);
-        context.accept();
-    },
-
     _approveChannels: function(approver, account, conn, channels,
                                dispatchOp, context) {
         let channel = channels[0];
@@ -256,21 +229,23 @@ const TelepathyClient = new Lang.Class({
     _approveTextChannel: function(account, conn, channel, dispatchOp, context) {
         let [targetHandle, targetHandleType] = channel.get_handle();
 
-        if (targetHandleType == Tp.HandleType.CONTACT) {
-            // Approve private text channels right away as we are going to handle it
-            dispatchOp.claim_with_async(this._tpClient,
-                                        Lang.bind(this, function(dispatchOp, result) {
-                try {
-                    dispatchOp.claim_with_finish(result);
-                    this._handlingChannels(account, conn, [channel], false);
-                } catch (err) {
-                    throw new Error('Failed to Claim channel: ' + err);
-                }}));
-
-            context.accept();
-        } else {
-            this._displayRoomInvitation(conn, channel, dispatchOp, context);
+        if (targetHandleType != Tp.HandleType.CONTACT) {
+            context.fail(new Tp.Error({ code: Tp.Error.INVALID_ARGUMENT,
+                                        message: 'Unsupported handle type' }));
+            return;
         }
+
+        // Approve private text channels right away as we are going to handle it
+        dispatchOp.claim_with_async(this._tpClient, Lang.bind(this, function(dispatchOp, result) {
+            try {
+                dispatchOp.claim_with_finish(result);
+                this._handlingChannels(account, conn, [channel], false);
+            } catch (err) {
+                log('Failed to Claim channel: ' + err);
+            }
+        }));
+
+        context.accept();
     },
 
     _delegatedChannelsCb: function(client, channels) {
@@ -934,74 +909,6 @@ const ChatNotification = new Lang.Class({
         } else {
             this.source.setChatState(Tp.ChannelChatState.ACTIVE);
         }
-    }
-});
-
-const ApproverSource = new Lang.Class({
-    Name: 'ApproverSource',
-    Extends: MessageTray.Source,
-
-    _init: function(dispatchOp, text, gicon) {
-        this._gicon = gicon;
-
-        this.parent(text);
-
-        this._dispatchOp = dispatchOp;
-
-        // Destroy the source if the channel dispatch operation is invalidated
-        // as we can't approve any more.
-        this._invalidId = dispatchOp.connect('invalidated',
-                                             Lang.bind(this, function(domain, code, msg) {
-            this.destroy();
-        }));
-    },
-
-    _createPolicy: function() {
-        return new MessageTray.NotificationApplicationPolicy('empathy');
-    },
-
-    destroy: function() {
-        if (this._invalidId != 0) {
-            this._dispatchOp.disconnect(this._invalidId);
-            this._invalidId = 0;
-        }
-
-        this.parent();
-    },
-
-    getIcon: function() {
-        return this._gicon;
-    }
-});
-
-const RoomInviteNotification = new Lang.Class({
-    Name: 'RoomInviteNotification',
-    Extends: MessageTray.Notification,
-
-    _init: function(source, dispatchOp, channel, inviter) {
-        this.parent(source,
-                    /* translators: argument is a room name like
-                     * room@jabber.org for example. */
-                    _("Invitation to %s").format(channel.get_identifier()),
-                    /* translators: first argument is the name of a contact and the second
-                     * one the name of a room. "Alice is inviting you to join room@jabber.org
-                     * for example. */
-                    _("%s is inviting you to join %s").format(inviter.get_alias(), channel.get_identifier()));
-        this.setResident(true);
-
-
-        this.addAction(_("Decline"), Lang.bind(this, function() {
-            dispatchOp.leave_channels_async(Tp.ChannelGroupChangeReason.NONE, '', function(src, result) {
-                src.leave_channels_finish(result);
-            });
-            this.destroy();
-        }));
-        this.addAction(_("Accept"), Lang.bind(this, function() {
-            dispatchOp.handle_with_time_async('', global.get_current_time(), function(src, result) {
-                src.handle_with_time_finish(result);
-            });
-            this.destroy();
-        }));
     }
 });
 
