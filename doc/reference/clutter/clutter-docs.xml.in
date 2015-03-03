@@ -182,6 +182,7 @@
       <xi:include href="xml/clutter-stage-manager.xml"/>
       <xi:include href="xml/clutter-text-buffer.xml"/>
       <xi:include href="xml/clutter-units.xml"/>
+      <xi:include href="xml/clutter-cairo.xml"/>
       <xi:include href="xml/clutter-util.xml"/>
       <xi:include href="xml/clutter-version.xml"/>
     </chapter>
@@ -223,6 +224,7 @@
     <xi:include href="xml/clutter-wayland.xml"/>
     <xi:include href="xml/clutter-wayland-compositor.xml"/>
     <xi:include href="xml/clutter-wayland-surface.xml"/>
+    <xi:include href="xml/clutter-mir.xml"/>
   </part>
 
   <part id="migration">
