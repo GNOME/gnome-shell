@@ -212,13 +212,10 @@ const FdoNotificationDaemon = new Lang.Class({
 
         // Filter out chat, presence, calls and invitation notifications from
         // Empathy, since we handle that information from telepathyClient.js
-        if (appName == 'Empathy' && (hints['category'] == 'im.received' ||
-              hints['category'] == 'x-empathy.im.room-invitation' ||
-              hints['category'] == 'x-empathy.call.incoming' ||
-              hints['category'] == 'x-empathy.transfer.incoming' ||
-              hints['category'] == 'x-empathy.im.subscription-request' ||
-              hints['category'] == 'presence.online' ||
-              hints['category'] == 'presence.offline')) {
+        //
+        // Note that empathy uses im.received for one to one chats and
+        // x-empathy.im.mentioned for multi-user, so we're good here
+        if (appName == 'Empathy' && hints['category'] == 'im.received') {
             // Ignore replacesId since we already sent back a
             // NotificationClosed for that id.
             id = this._nextNotificationId++;
