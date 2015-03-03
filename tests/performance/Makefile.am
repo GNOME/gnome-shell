@@ -11,7 +11,7 @@ check_PROGRAMS = \
 
 common_ldadd = $(top_builddir)/clutter/libclutter-@CLUTTER_API_VERSION@.la
 
-LDADD = $(common_ldadd) $(CLUTTER_LIBS) -lm
+LDADD = $(common_ldadd) $(CLUTTER_LIBS) $(LIBM)
 
 AM_CFLAGS = $(CLUTTER_CFLAGS)
 

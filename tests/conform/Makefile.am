@@ -1,7 +1,7 @@
 include $(top_srcdir)/build/autotools/glib-tap.mk
 
 AM_CFLAGS = -g $(CLUTTER_CFLAGS) $(MAINTAINER_CFLAGS)
-LDADD = $(top_builddir)/clutter/libclutter-1.0.la $(CLUTTER_LIBS) -lm
+LDADD = $(top_builddir)/clutter/libclutter-1.0.la $(CLUTTER_LIBS) $(LIBM)
 AM_LDFLAGS = -export-dynamic
 AM_CPPFLAGS = \
 	-DG_LOG_DOMAIN=\"Clutter-Conform\"	\

@@ -22,14 +22,8 @@ all_examples += \
 	image-content
 endif
 
-LDADD = \
-	$(top_builddir)/clutter/libclutter-@CLUTTER_API_VERSION@.la \
-	$(CLUTTER_LIBS) \
-	$(GDK_PIXBUF_LIBS) \
-	-lm
-
+LDADD = $(top_builddir)/clutter/libclutter-@CLUTTER_API_VERSION@.la $(CLUTTER_LIBS) $(GDK_PIXBUF_LIBS) $(LIBM)
 AM_CFLAGS = $(CLUTTER_CFLAGS) $(GDK_PIXBUF_CFLAGS) $(MAINTAINER_CFLAGS)
-
 AM_CPPFLAGS = \
 	-DG_DISABLE_SINGLE_INCLUDES \
 	-DGLIB_DISABLE_DEPRECATION_WARNINGS \

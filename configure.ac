@@ -130,6 +130,7 @@ AM_PROG_CC_C_O
 # require libtool >= 2.2
 LT_PREREQ([2.2.6])
 LT_INIT([disable-static])
+LT_LIB_M
 
 # Checks for header files.
 AC_HEADER_STDC

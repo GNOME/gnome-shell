@@ -22,7 +22,7 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/clutter \
 	-I$(top_builddir)/clutter
 
-LDADD = $(common_ldadd) $(CLUTTER_LIBS) -lm
+LDADD = $(common_ldadd) $(CLUTTER_LIBS) $(LIBM)
 
 test_text_SOURCES = test-text.c
 test_picking_SOURCES = test-picking.c

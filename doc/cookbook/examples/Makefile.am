@@ -56,7 +56,7 @@ all_examples = \
 	events-buttons-lasso			\
 	$(NULL)
 
-LDADD = $(top_builddir)/clutter/libclutter-@CLUTTER_API_VERSION@.la -lm
+LDADD = $(top_builddir)/clutter/libclutter-@CLUTTER_API_VERSION@.la $(LIBM)
 
 AM_CFLAGS = $(CLUTTER_CFLAGS)
 

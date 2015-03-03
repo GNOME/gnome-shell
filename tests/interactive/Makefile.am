@@ -157,7 +157,7 @@ test_interactive_CPPFLAGS = \
 	-I$(top_srcdir)/clutter \
 	-I$(top_builddir)/clutter
 test_interactive_LDFLAGS = -export-dynamic
-test_interactive_LDADD = $(CLUTTER_LIBS) $(GDK_PIXBUF_LIBS) $(common_ldadd) -lm
+test_interactive_LDADD = $(CLUTTER_LIBS) $(GDK_PIXBUF_LIBS) $(common_ldadd) $(LIBM)
 
 EXTRA_DIST = \
 	wrapper.sh.in \
