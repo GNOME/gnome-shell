@@ -174,7 +174,7 @@ clutter_backend_mir_class_init (ClutterBackendMirClass *klass)
 }
 
 /**
- * clutter_mir_set_connection
+ * clutter_mir_set_connection:
  * @connection: pointer to a mir connection
  *
  * Sets the display connection Clutter should use; must be called
