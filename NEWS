@@ -1,3 +1,52 @@
+Clutter 1.21.6                                                       2015-03-03
+===============================================================================
+
+  • List of changes since Clutter 1.21.4
+
+    - Support quad-buffer stereo displays on X11/GLX
+    This allows using Clutter to draw on GLX framebuffers with the stereo
+    bit set.
+
+    - Add a Mir windowing system backend
+    This allows using Clutter applications natively on systems using the
+    Mir display server.
+
+    - Depend on Cogl ≥ 1.19 and Cairo ≥ 1.12
+    Cogl 1.19 is needed for the newly added Mir windowing system backend,
+    as well as the quad-buffer stereo display on X11. Cairo 1.12 is needed
+    for dropping the ad hoc check for the device scale parameter used with
+    ClutterStage implementations as well as the ClutterCanvas content.
+
+    - Improvements in the evdev input backend
+
+    - Use the GdkFrameClock to drive the ClutterMasterClock
+    When using the GDK backend, we want the ClutterMasterClock to be driven
+    by the GdkFrameClock, as the latter is automatically frame limited by
+    the compositor, which gives better results for client applications.
+
+    - Updated translations
+    Spanish, Hebrew, Hungarian, Czech, Basque, Russian, Slovenian, Galician,
+    Chinese (Taiwan), French, Brazilian Portuguese, Lithuanian, Serbian.
+
+  • List of bugs fixed since Clutter 1.21.4
+
+    #743355 - gdk: report an error when initialization fails
+    #743615 - evdev: Ignore non seat wide button or key events
+    #744058 - gdk: Disable cogl wayland event dispatching if requested
+    #743865 - MetaSurfaceActorWayland: unset the surface when it goes away
+    #744604 - stage: Process state update event immediately
+    #744668 - GDK: integrate the MasterClock mechanism with GdkFrameClock
+    #732706 - Allow setting up quad-buffer stereo output
+
+Many thanks to:
+
+  Lionel Landwerlin, Jonas Ådahl, Alexandre Franke, Aurimas Černius,
+  Balázs Úr, Chao-Hsiung Liao, Daniel Mustieles, Fran Dieguez,
+  Giovanni Campagna, Inaki Larranaga Murgoitio, Jasper St. Pierre,
+  Marco Trevisan (Treviño), Marek Černocký, Matej Urbančič, Owen W. Taylor,
+  Rafael Ferreira, Rui Matos, Yosef Or Boczko, Yuri Myasoedov,
+  Мирослав Николић
+
 Clutter 1.21.4                                                       2015-01-22
 ===============================================================================
 
