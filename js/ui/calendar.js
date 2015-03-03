@@ -30,7 +30,7 @@ const DEFAULT_EXPAND_LINES = 6;
 
 // alias to prevent xgettext from picking up strings translated in GTK+
 const gtk30_ = Gettext_gtk30.gettext;
-const NC_ = function(context, str) { return str; };
+const NC_ = function(context, str) { return context + '\u0004' + str; };
 
 // in org.gnome.desktop.interface
 const CLOCK_FORMAT_KEY        = 'clock-format';
@@ -108,21 +108,21 @@ function _getCalendarDayAbbreviation(dayNumber) {
          * NOTE: These grid abbreviations are always shown together
          * and in order, e.g. "S M T W T F S".
          */
-        C_("grid sunday", "S"),
+        NC_("grid sunday", "S"),
         /* Translators: Calendar grid abbreviation for Monday */
-        C_("grid monday", "M"),
+        NC_("grid monday", "M"),
         /* Translators: Calendar grid abbreviation for Tuesday */
-        C_("grid tuesday", "T"),
+        NC_("grid tuesday", "T"),
         /* Translators: Calendar grid abbreviation for Wednesday */
-        C_("grid wednesday", "W"),
+        NC_("grid wednesday", "W"),
         /* Translators: Calendar grid abbreviation for Thursday */
-        C_("grid thursday", "T"),
+        NC_("grid thursday", "T"),
         /* Translators: Calendar grid abbreviation for Friday */
-        C_("grid friday", "F"),
+        NC_("grid friday", "F"),
         /* Translators: Calendar grid abbreviation for Saturday */
-        C_("grid saturday", "S")
+        NC_("grid saturday", "S")
     ];
-    return abbreviations[dayNumber];
+    return Shell.util_translate_time_string(abbreviations[dayNumber]);
 }
 
 function _fixMarkup(text, allowMarkup) {
