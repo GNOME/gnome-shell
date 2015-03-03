@@ -1385,6 +1385,8 @@ clutter_x11_get_current_event_time
 clutter_x11_set_use_argb_visual
 clutter_x11_get_use_argb_visual
 clutter_x11_get_visual_info
+clutter_x11_get_use_stereo_stage
+clutter_x11_set_use_stereo_stage
 
 <SUBSECTION>
 ClutterX11FilterFunc
@@ -3583,4 +3585,12 @@ CLUTTER_TAP_ACTION_GET_CLASS
 <SUBSECTION Private>
 ClutterTapActionPrivate
 clutter_tap_action_get_type
+</SECTION>
+
+<SECTION>
+<FILE>clutter-mir</FILE>
+clutter_mir_disable_event_retrieval
+clutter_mir_set_connection
+clutter_mir_stage_get_mir_surface
+clutter_mir_stage_set_mir_surface
 </SECTION>
