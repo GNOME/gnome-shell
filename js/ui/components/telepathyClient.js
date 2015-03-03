@@ -105,14 +105,7 @@ const TelepathyClient = new Lang.Class({
         this._tpClient.set_handle_channels_func(
             Lang.bind(this, this._handleChannels));
 
-        // Watch subscription requests and connection errors
-        this._subscriptionSource = null;
         this._accountSource = null;
-
-        // Workaround for gjs not supporting GPtrArray in signals.
-        // See BGO bug #653941 for context.
-        this._tpClient.set_contact_list_changed_func(
-            Lang.bind(this, this._contactListChanged));
 
         // Allow other clients (such as Empathy) to pre-empt our channels if
         // needed
@@ -347,52 +340,6 @@ const TelepathyClient = new Lang.Class({
         // See discussion in https://bugzilla.gnome.org/show_bug.cgi?id=654159
         account.connect("notify::connection-status",
                         Lang.bind(this, this._accountConnectionStatusNotifyCb));
-
-        account.connect('notify::connection',
-                        Lang.bind(this, this._connectionChanged));
-        this._connectionChanged(account);
-    },
-
-    _connectionChanged: function(account) {
-        let conn = account.get_connection();
-        if (conn == null)
-            return;
-
-        this._tpClient.grab_contact_list_changed(conn);
-        if (conn.get_contact_list_state() == Tp.ContactListState.SUCCESS) {
-            this._contactListChanged(conn, conn.dup_contact_list(), []);
-        }
-    },
-
-    _contactListChanged: function(conn, added, removed) {
-        for (let i = 0; i < added.length; i++) {
-            let contact = added[i];
-
-            contact.connect('subscription-states-changed',
-                            Lang.bind(this, this._subscriptionStateChanged));
-            this._subscriptionStateChanged(contact);
-        }
-    },
-
-    _subscriptionStateChanged: function(contact) {
-        if (contact.get_publish_state() != Tp.SubscriptionState.ASK)
-            return;
-
-        /* Implicitly accept publish requests if contact is already subscribed */
-        if (contact.get_subscribe_state() == Tp.SubscriptionState.YES ||
-            contact.get_subscribe_state() == Tp.SubscriptionState.ASK) {
-
-            contact.authorize_publication_async(function(src, result) {
-                src.authorize_publication_finish(result)});
-
-            return;
-        }
-
-        /* Display notification to ask user to accept/reject request */
-        let source = this._ensureAppSource();
-
-        let notif = new SubscriptionRequestNotification(source, contact);
-        source.notify(notif);
     },
 
     _accountConnectionStatusNotifyCb: function(account) {
@@ -1223,98 +1170,6 @@ const FileTransferNotification = new Lang.Class({
             });
             this.destroy();
         }));
-    }
-});
-
-// Subscription request
-const SubscriptionRequestNotification = new Lang.Class({
-    Name: 'SubscriptionRequestNotification',
-    Extends: MessageTray.Notification,
-
-    _init: function(source, contact) {
-        this.parent(source,
-                    /* To translators: The parameter is the contact's alias */
-                    _("%s would like permission to see when you are online").format(contact.get_alias()),
-                    null);
-
-        this._contact = contact;
-        this._connection = contact.get_connection();
-
-        this._changedId = contact.connect('subscription-states-changed',
-            Lang.bind(this, this._subscriptionStatesChangedCb));
-        this._invalidatedId = this._connection.connect('invalidated',
-            Lang.bind(this, this.destroy));
-    },
-
-    createBanner: function() {
-        let banner = new MessageTray.NotificationBanner(this);
-
-        let layout = new St.BoxLayout({ vertical: false });
-
-        // Display avatar
-        let iconBox = new St.Bin({ style_class: 'avatar-box' });
-        iconBox._size = 48;
-
-        let textureCache = St.TextureCache.get_default();
-        let file = this._contact.get_avatar_file();
-
-        if (file) {
-            let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
-            iconBox.child = textureCache.load_file_async(file, iconBox._size, iconBox._size, scaleFactor);
-        }
-        else {
-            iconBox.child = new St.Icon({ icon_name: 'avatar-default',
-                                          icon_size: iconBox._size });
-        }
-
-        layout.add(iconBox);
-
-        // subscription request message
-        let label = new St.Label({ style_class: 'subscription-message',
-                                   text: this._contact.get_publish_request() });
-
-        layout.add(label);
-
-        banner.setExpandedBody(layout);
-
-        banner.addAction(_("Decline"), Lang.bind(this, function() {
-            this._contact.remove_async(function(src, result) {
-                src.remove_finish(result);
-            });
-        }));
-        banner.addAction(_("Accept"), Lang.bind(this, function() {
-            // Authorize the contact and request to see his status as well
-            this._contact.authorize_publication_async(function(src, result) {
-                src.authorize_publication_finish(result);
-            });
-
-            this._contact.request_subscription_async('', function(src, result) {
-                src.request_subscription_finish(result);
-            });
-        }));
-
-        return banner;
-    },
-
-    destroy: function() {
-        if (this._changedId != 0) {
-            this._contact.disconnect(this._changedId);
-            this._changedId = 0;
-        }
-
-        if (this._invalidatedId != 0) {
-            this._connection.disconnect(this._invalidatedId);
-            this._invalidatedId = 0;
-        }
-
-        this.parent();
-    },
-
-    _subscriptionStatesChangedCb: function(contact, subscribe, publish, msg) {
-        // Destroy the notification if the subscription request has been
-        // answered
-        if (publish != Tp.SubscriptionState.ASK)
-            this.destroy();
     }
 });
 
