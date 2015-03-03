@@ -105,8 +105,6 @@ const TelepathyClient = new Lang.Class({
         this._tpClient.set_handle_channels_func(
             Lang.bind(this, this._handleChannels));
 
-        this._accountSource = null;
-
         // Allow other clients (such as Empathy) to pre-empt our channels if
         // needed
         this._tpClient.set_delegated_channels_callback(
@@ -120,17 +118,12 @@ const TelepathyClient = new Lang.Class({
             throw new Error('Couldn\'t register Telepathy client. Error: \n' + e);
         }
 
-        this._accountManagerValidityChangedId = this._accountManager.connect('account-validity-changed',
-                                                                             Lang.bind(this, this._accountValidityChanged));
-
         if (!this._accountManager.is_prepared(Tp.AccountManager.get_feature_quark_core()))
-            this._accountManager.prepare_async(null, Lang.bind(this, this._accountManagerPrepared));
+            this._accountManager.prepare_async(null, null);
     },
 
     disable: function() {
         this._tpClient.unregister();
-        this._accountManager.disconnect(this._accountManagerValidityChangedId);
-        this._accountManagerValidityChangedId = 0;
     },
 
     _observeChannels: function(observer, account, conn, channels,
@@ -322,62 +315,6 @@ const TelepathyClient = new Lang.Class({
         // Nothing to do as we don't make a distinction between observed and
         // handled channels.
     },
-
-    _accountManagerPrepared: function(am, result) {
-        am.prepare_finish(result);
-
-        let accounts = am.get_valid_accounts();
-        for (let i = 0; i < accounts.length; i++) {
-            this._accountValidityChanged(am, accounts[i], true);
-        }
-    },
-
-    _accountValidityChanged: function(am, account, valid) {
-        if (!valid)
-            return;
-
-        // It would be better to connect to "status-changed" but we cannot.
-        // See discussion in https://bugzilla.gnome.org/show_bug.cgi?id=654159
-        account.connect("notify::connection-status",
-                        Lang.bind(this, this._accountConnectionStatusNotifyCb));
-    },
-
-    _accountConnectionStatusNotifyCb: function(account) {
-        let connectionError = account.connection_error;
-
-        if (account.connection_status != Tp.ConnectionStatus.DISCONNECTED ||
-            connectionError == Tp.error_get_dbus_name(Tp.Error.CANCELLED)) {
-            return;
-        }
-
-        let notif = this._accountNotifications[account.get_object_path()];
-        if (notif)
-            return;
-
-        /* Display notification that account failed to connect */
-        let source = this._ensureAppSource();
-
-        notif = new AccountNotification(source, account, connectionError);
-        this._accountNotifications[account.get_object_path()] = notif;
-        notif.connect('destroy', Lang.bind(this, function() {
-            delete this._accountNotifications[account.get_object_path()];
-        }));
-        source.notify(notif);
-    },
-
-    _ensureAppSource: function() {
-        if (this._appSource == null) {
-            this._appSource = new MessageTray.Source(_("Chat"), 'empathy');
-            this._appSource.policy = new MessageTray.NotificationApplicationPolicy('empathy');
-
-            Main.messageTray.add(this._appSource);
-            this._appSource.connect('destroy', Lang.bind(this, function () {
-                this._appSource = null;
-            }));
-        }
-
-        return this._appSource;
-    }
 });
 
 const ChatSource = new Lang.Class({
@@ -1173,133 +1110,4 @@ const FileTransferNotification = new Lang.Class({
     }
 });
 
-// Messages from empathy/libempathy/empathy-utils.c
-// create_errors_to_message_hash()
-
-/* Translator note: these should be the same messages that are
- * used in Empathy, so just copy and paste from there. */
-let _connectionErrorMessages = {};
-_connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.NETWORK_ERROR)]
-  = _("Network error");
-_connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.AUTHENTICATION_FAILED)]
-  = _("Authentication failed");
-_connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.ENCRYPTION_ERROR)]
-  = _("Encryption error");
-_connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.CERT_NOT_PROVIDED)]
-  = _("Certificate not provided");
-_connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.CERT_UNTRUSTED)]
-  = _("Certificate untrusted");
-_connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.CERT_EXPIRED)]
-  = _("Certificate expired");
-_connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.CERT_NOT_ACTIVATED)]
-  = _("Certificate not activated");
-_connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.CERT_HOSTNAME_MISMATCH)]
-  = _("Certificate hostname mismatch");
-_connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.CERT_FINGERPRINT_MISMATCH)]
-  = _("Certificate fingerprint mismatch");
-_connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.CERT_SELF_SIGNED)]
-  = _("Certificate self-signed");
-_connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.CANCELLED)]
-  = _("Status is set to offline");
-_connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.ENCRYPTION_NOT_AVAILABLE)]
-  = _("Encryption is not available");
-_connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.CERT_INVALID)]
-  = _("Certificate is invalid");
-_connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.CONNECTION_REFUSED)]
-  = _("Connection has been refused");
-_connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.CONNECTION_FAILED)]
-  = _("Connection can't be established");
-_connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.CONNECTION_LOST)]
-  = _("Connection has been lost");
-_connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.ALREADY_CONNECTED)]
-  = _("This account is already connected to the server");
-_connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.CONNECTION_REPLACED)]
-  = _("Connection has been replaced by a new connection using the same resource");
-_connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.REGISTRATION_EXISTS)]
-  = _("The account already exists on the server");
-_connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.SERVICE_BUSY)]
-  = _("Server is currently too busy to handle the connection");
-_connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.CERT_REVOKED)]
-  = _("Certificate has been revoked");
-_connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.CERT_INSECURE)]
-  = _("Certificate uses an insecure cipher algorithm or is cryptographically weak");
-_connectionErrorMessages[Tp.error_get_dbus_name(Tp.Error.CERT_LIMIT_EXCEEDED)]
-  = _("The length of the server certificate, or the depth of the server certificate chain, exceed the limits imposed by the cryptography library");
-_connectionErrorMessages['org.freedesktop.DBus.Error.NoReply']
-  = _("Internal error");
-
-const AccountNotification = new Lang.Class({
-    Name: 'AccountNotification',
-    Extends: MessageTray.Notification,
-
-    _init: function(source, account, connectionError) {
-        this.parent(source,
-                    /* translators: argument is the account name, like
-                     * name@jabber.org for example. */
-                    _("Unable to connect to %s").format(account.get_display_name()),
-                    this._getMessage(connectionError));
-
-        this._account = account;
-
-        this.addAction(_("View account"), Lang.bind(this, function() {
-            let cmd = 'empathy-accounts --select-account=' +
-                account.get_path_suffix();
-            let app_info = Gio.app_info_create_from_commandline(cmd, null, 0);
-            app_info.launch([], global.create_app_launch_context(0, -1));
-        }));
-
-        this._enabledId = account.connect('notify::enabled',
-                                          Lang.bind(this, function() {
-                                              if (!account.is_enabled())
-                                                  this.destroy();
-                                          }));
-
-        this._invalidatedId = account.connect('invalidated',
-                                              Lang.bind(this, this.destroy));
-
-        this._connectionStatusId = account.connect('notify::connection-status',
-            Lang.bind(this, function() {
-                let status = account.connection_status;
-                if (status == Tp.ConnectionStatus.CONNECTED) {
-                    this.destroy();
-                } else if (status == Tp.ConnectionStatus.DISCONNECTED) {
-                    let connectionError = account.connection_error;
-
-                    if (connectionError == Tp.error_get_dbus_name(Tp.Error.CANCELLED))
-                        this.destroy();
-                    else
-                        this.update(this.title, this._getMessage(connectionError));
-                }
-            }));
-    },
-
-    _getMessage: function(connectionError) {
-        let message;
-        if (connectionError in _connectionErrorMessages) {
-            message = _connectionErrorMessages[connectionError];
-        } else {
-            message = _("Unknown reason");
-        }
-        return message;
-    },
-
-    destroy: function() {
-        if (this._enabledId != 0) {
-            this._account.disconnect(this._enabledId);
-            this._enabledId = 0;
-        }
-
-        if (this._invalidatedId != 0) {
-            this._account.disconnect(this._invalidatedId);
-            this._invalidatedId = 0;
-        }
-
-        if (this._connectionStatusId != 0) {
-            this._account.disconnect(this._connectionStatusId);
-            this._connectionStatusId = 0;
-        }
-
-        this.parent();
-    }
-});
 const Component = TelepathyClient;
