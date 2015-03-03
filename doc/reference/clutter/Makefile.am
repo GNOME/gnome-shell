@@ -47,7 +47,8 @@ HFILE_GLOB = \
 	$(top_srcdir)/clutter/gdk/clutter-gdk.h \
 	$(top_srcdir)/clutter/wayland/clutter-wayland.h \
 	$(top_srcdir)/clutter/wayland/clutter-wayland-compositor.h \
-	$(top_srcdir)/clutter/wayland/clutter-wayland-surface.h
+	$(top_srcdir)/clutter/wayland/clutter-wayland-surface.h \
+	$(top_srcdir)/clutter/mir/clutter-mir.h
 
 CFILE_GLOB = \
 	$(top_srcdir)/clutter/*.c \
@@ -86,6 +87,7 @@ IGNORE_HFILES = \
 	clutter-keysyms-compat.h	\
 	clutter-keysyms-table.h 	\
 	clutter-marshal.h 		\
+	clutter-master-clock-default.h	\
 	clutter-master-clock.h 		\
 	clutter-model-private.h 	\
 	clutter-paint-node-private.h	\
@@ -104,6 +106,7 @@ IGNORE_HFILES = \
 	egl				\
 	evdev				\
 	gdk				\
+	mir				\
 	osx 				\
 	tslib				\
 	x11 				\
@@ -189,3 +192,14 @@ include $(top_srcdir)/gtk-doc.make
 # Other files to distribute
 # e.g. EXTRA_DIST += version.xml.in
 EXTRA_DIST += $(HTML_IMAGES) $(SVG_IMAGES)
+
+if ENABLE_GTK_DOC
+TESTS_ENVIRONMENT = \
+	DOC_MODULE=$(DOC_MODULE) \
+	DOC_MAIN_SGML_FILE=$(DOC_MAIN_SGML_FILE) \
+	SRCDIR=$(abs_srcdir) \
+	BUILDDIR=$(abs_builddir)
+
+# XXX: Cannot enable without breaking on platform-specific symbols
+#TESTS = $(GTKDOC_CHECK)
+endif
