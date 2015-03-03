@@ -912,14 +912,18 @@ const LayoutStrategy = new Lang.Class({
         let slots = [];
 
         // Do this in three parts.
-        let height = 0;
+        let heightWithoutSpacing = 0;
         for (let i = 0; i < rows.length; i++) {
             let row = rows[i];
-            height += row.height + this._rowSpacing;
+            heightWithoutSpacing += row.height;
         }
 
-        height -= this._rowSpacing;
+        let verticalSpacing = (rows.length - 1) * this._rowSpacing;
+        let additionalVerticalScale = Math.min(1, (area.height - verticalSpacing) / heightWithoutSpacing);
 
+        // keep track how much smaller the grid becomes due to scaling
+        // so it can be centered again
+        let compensation = 0
         let y = 0;
 
         for (let i = 0; i < rows.length; i++) {
@@ -927,12 +931,26 @@ const LayoutStrategy = new Lang.Class({
 
             // If this window layout row doesn't fit in the actual
             // geometry, then apply an additional scale to it.
-            row.additionalScale = Math.min(1, area.width / row.width, area.height / height);
+            let horizontalSpacing = (row.windows.length - 1) * this._columnSpacing;
+            let widthWithoutSpacing = row.width - horizontalSpacing;
+            let additionalHorizontalScale = Math.min(1, (area.width - horizontalSpacing) / widthWithoutSpacing);
 
-            row.x = area.x + (Math.max(area.width - row.width, 0) / 2) * row.additionalScale;
-            row.y = area.y + (y + Math.max(area.height - height, 0) / 2) * row.additionalScale;
-            y += row.height + this._rowSpacing;
+            if (additionalHorizontalScale < additionalVerticalScale) {
+                row.additionalScale = additionalHorizontalScale;
+                // Only consider the scaling in addition to the vertical scaling for centering.
+                compensation += (additionalVerticalScale - additionalHorizontalScale) * row.height;
+            } else {
+                row.additionalScale = additionalVerticalScale;
+                // No compensation when scaling vertically since centering based on a too large
+                // height would undo what vertical scaling is trying to achieve.
+            }
+
+            row.x = area.x + (Math.max(area.width - (widthWithoutSpacing * row.additionalScale + horizontalSpacing), 0) / 2)
+            row.y = area.y + (Math.max(area.height - (heightWithoutSpacing + verticalSpacing), 0) / 2) + y;
+            y += row.height * row.additionalScale + this._rowSpacing;
         }
+
+        compensation = compensation / 2;
 
         for (let i = 0; i < rows.length; i++) {
             let row = rows[i];
@@ -948,7 +966,7 @@ const LayoutStrategy = new Lang.Class({
                 let cloneWidth = window.width * s;
 
                 let cloneX = x + (cellWidth - cloneWidth) / 2;
-                let cloneY = row.y + row.height - cellHeight;
+                let cloneY = row.y + row.height * row.additionalScale - cellHeight + compensation;
 
                 slots.push([cloneX, cloneY, s, window]);
                 x += cellWidth + this._columnSpacing;
