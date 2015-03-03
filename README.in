@@ -306,6 +306,14 @@ features).
 Release Notes for Clutter 1.22
 -------------------------------------------------------------------------------
 
+• The default backend for Clutter starting from this release is the GDK
+  backend, if Clutter was compiled with it. This allows better integration
+  with the underlying windowing system platform on X11 and Wayland. On
+  Windows and MacOS the native backends are still the preferred ones. If you
+  require a specific backend you should use clutter_set_windowing_backend()
+  with the CLUTTER_WINDOWING_* backend you require, prior to call
+  clutter_init().
+
 • The ClutterRequestMode enumeration has a new value. Code checking for the
   values of ClutterRequestMode should already be resilient to changes to this
   enumerations, like for all enumerations in Clutter.
