@@ -1269,6 +1269,12 @@ const MessageListSection = new Lang.Class({
         this._list.connect('actor-added', Lang.bind(this, this._sync));
         this._list.connect('actor-removed', Lang.bind(this, this._sync));
 
+        let id = Main.sessionMode.connect('updated',
+                                          Lang.bind(this, this._sync));
+        this.actor.connect('destroy', function() {
+            Main.sessionMode.disconnect(id);
+        });
+
         this._messages = new Map();
         this._date = new Date();
         this.empty = true;
@@ -1282,6 +1288,10 @@ const MessageListSection = new Lang.Class({
 
     _onKeyFocusIn: function(actor) {
         this.emit('key-focus-in', actor);
+    },
+
+    get allowed() {
+        return true;
     },
 
     setDate: function(date) {
@@ -1391,8 +1401,8 @@ const MessageListSection = new Lang.Class({
         return _sameDay(this._date, today);
     },
 
-    _syncVisible: function() {
-        this.actor.visible = !this.empty;
+    _shouldShow: function() {
+        return !this.empty;
     },
 
     _sync: function() {
@@ -1404,7 +1414,7 @@ const MessageListSection = new Lang.Class({
             this.emit('empty-changed');
 
         this._closeButton.visible = this._canClear();
-        this._syncVisible();
+        this.actor.visible = this.allowed && this._shouldShow();
     }
 });
 Signals.addSignalMethods(MessageListSection.prototype);
@@ -1428,6 +1438,10 @@ const EventsSection = new Lang.Class({
     setEventSource: function(eventSource) {
         this._eventSource = eventSource;
         this._eventSource.connect('changed', Lang.bind(this, this._reloadEvents));
+    },
+
+    get allowed() {
+        return Main.sessionMode.showCalendarEvents;
     },
 
     _updateTitle: function() {
@@ -1521,8 +1535,8 @@ const EventsSection = new Lang.Class({
         this._reloadEvents();
     },
 
-    _syncVisible: function() {
-        this.actor.visible = !this.empty || !this._isToday();
+    _shouldShow: function() {
+        return !this.empty || !this._isToday();
     },
 
     _sync: function() {
@@ -1549,9 +1563,11 @@ const NotificationSection = new Lang.Class({
         }));
 
         this.actor.connect('notify::mapped', Lang.bind(this, this._onMapped));
+    },
 
-        Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
-        this._sessionUpdated();
+    get allowed() {
+        return Main.sessionMode.hasNotifications &&
+               !Main.sessionMode.isGreeter;
     },
 
     _sourceAdded: function(tray, source) {
@@ -1627,11 +1643,12 @@ const NotificationSection = new Lang.Class({
         app.activate();
     },
 
-    _syncVisible: function() {
-        this.actor.visible = !this.empty && this._isToday();
+    _shouldShow: function() {
+        return !this.empty && this._isToday();
     },
 
-    _sessionUpdated: function() {
+    _sync: function() {
+        this.parent();
         this._title.reactive = Main.sessionMode.allowSettings;
     }
 });
