@@ -49,12 +49,15 @@ theme_sources = 						\
 
 dist_theme_files =						\
 	$(theme_sources)					\
+	theme/Gemfile						\
 	theme/HACKING						\
+	theme/README						\
 	theme/gnome-shell-sass/COPYING				\
 	theme/gnome-shell-sass/HACKING				\
 	theme/gnome-shell-sass/NEWS				\
 	theme/gnome-shell-sass/README				\
 	theme/gnome-shell-sass/gnome-shell-sass.doap		\
+	theme/parse-sass.sh					\
 	$(NULL)
 
 %.css: %.scss $(theme_sources)
