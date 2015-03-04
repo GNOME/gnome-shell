@@ -1702,7 +1702,10 @@ const AppIcon = new Lang.Class({
                 if (!isPoppedUp)
                     this._onMenuPoppedDown();
             }));
-            Main.overview.connect('hiding', Lang.bind(this, function () { this._menu.close(); }));
+            let id = Main.overview.connect('hiding', Lang.bind(this, function () { this._menu.close(); }));
+            this.actor.connect('destroy', function() {
+                Main.overview.disconnect(id);
+            });
 
             this._menuManager.addMenu(this._menu);
         }
