@@ -59,12 +59,14 @@ const AppFavorites = new Lang.Class({
 
     reload: function() {
         let ids = global.settings.get_strv(this.FAVORITE_APPS_KEY);
+        let appSys = Shell.AppSystem.get_default();
 
         // Map old desktop file names to the current ones
         let updated = false;
         ids = ids.map(function (id) {
             let newId = RENAMED_DESKTOP_IDS[id];
-            if (newId !== undefined) {
+            if (newId !== undefined &&
+                appSys.lookup_app(newId) != null) {
                 updated = true;
                 return newId;
             }
@@ -74,7 +76,6 @@ const AppFavorites = new Lang.Class({
         if (updated)
             global.settings.set_strv(this.FAVORITE_APPS_KEY, ids);
 
-        let appSys = Shell.AppSystem.get_default();
         let apps = ids.map(function (id) {
                 return appSys.lookup_app(id);
             }).filter(function (app) {
