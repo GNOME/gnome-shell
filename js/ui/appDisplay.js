@@ -544,7 +544,8 @@ const AllView = new Lang.Class({
         this._scrollView.reactive = false;
         let completionFunc = Lang.bind(this, function() {
             this._scrollView.reactive = true;
-            onComplete();
+            if (onComplete)
+                onComplete();
         });
 
         if (animationDirection == IconGrid.AnimationDirection.OUT &&
