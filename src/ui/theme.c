@@ -662,6 +662,22 @@ get_button_rect (MetaButtonType           type,
     }
 }
 
+static const char *
+get_class_from_button_type (MetaButtonType type)
+{
+  switch (type)
+    {
+    case META_BUTTON_TYPE_CLOSE:
+      return "close";
+    case META_BUTTON_TYPE_MAXIMIZE:
+      return "maximize";
+    case META_BUTTON_TYPE_MINIMIZE:
+      return "minimize";
+    default:
+      return NULL;
+    }
+}
+
 static void
 meta_frame_layout_draw_with_style (MetaFrameLayout         *layout,
                                    MetaStyleInfo           *style_info,
@@ -740,6 +756,10 @@ meta_frame_layout_draw_with_style (MetaFrameLayout         *layout,
   state = gtk_style_context_get_state (style);
   for (button_type = META_BUTTON_TYPE_CLOSE; button_type < META_BUTTON_TYPE_LAST; button_type++)
     {
+      const char *button_class = get_class_from_button_type (button_type);
+      if (button_class)
+        gtk_style_context_add_class (style, button_class);
+
       get_button_rect (button_type, fgeom, &button_rect);
 
       if (button_states[button_type] == META_BUTTON_STATE_PRELIGHT)
@@ -822,6 +842,8 @@ meta_frame_layout_draw_with_style (MetaFrameLayout         *layout,
             }
         }
       cairo_restore (cr);
+      if (button_class)
+        gtk_style_context_remove_class (style, button_class);
     }
 }
 
