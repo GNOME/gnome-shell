@@ -1074,7 +1074,8 @@ clutter_texture_class_init (ClutterTextureClass *klass)
    * This property is unset when using the clutter_texture_set_from_*_data()
    * family of functions.
    *
-   * Deprecated: 1.12
+   * Deprecated: 1.12: Use #ClutterImage and platform-specific image loading
+   *   API, like GdkPixbuf
    */
   pspec = g_param_spec_string ("filename",
                                P_("Filename"),
@@ -1111,7 +1112,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
    *
    * Since: 1.0
    *
-   * Deprecated: 1.12
+   * Deprecated: 1.12: Use platform-specific image loading API, like GdkPixbuf
    */
   pspec = g_param_spec_boolean ("load-async",
                                 P_("Load asynchronously"),
@@ -1130,7 +1131,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
    *
    * Since: 1.0
    *
-   * Deprecated: 1.12
+   * Deprecated: 1.12: Use platform-specific image loading API, like GdkPixbuf
    */
   pspec = g_param_spec_boolean ("load-data-async",
                                 P_("Load data asynchronously"),
@@ -1157,7 +1158,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
    *
    * Since: 1.4
    *
-   * Deprecated: 1.12
+   * Deprecated: 1.12: No replacement is available
    */
   pspec = g_param_spec_boolean ("pick-with-alpha",
                                 P_("Pick With Alpha"),
@@ -1177,7 +1178,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
    * pixbuf used by @texture changes.  The new size is given as
    * argument to the callback.
    *
-   * Deprecated: 1.12
+   * Deprecated: 1.12: No replacement is available
    */
   texture_signals[SIZE_CHANGE] =
     g_signal_new ("size-change",
@@ -1196,7 +1197,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
    * The ::pixbuf-change signal is emitted each time the pixbuf
    * used by @texture changes.
    *
-   * Deprecated: 1.12
+   * Deprecated: 1.12: No replacement is available
    */
   texture_signals[PIXBUF_CHANGE] =
     g_signal_new ("pixbuf-change",
@@ -1218,7 +1219,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
    *
    * Since: 1.0
    *
-   * Deprecated: 1.12
+   * Deprecated: 1.12: No replacement is available
    */
   texture_signals[LOAD_FINISHED] =
     g_signal_new (I_("load-finished"),
@@ -1336,7 +1337,9 @@ clutter_texture_init (ClutterTexture *self)
  *
  * Since: 1.0
  *
- * Deprecated: 1.12
+ * Deprecated: 1.12: No replacement is available; it's not advisable
+ *   to modify the Cogl pipeline of an actor. Use a #ClutterContent
+ *   implementation and modify the pipeline during the paint sequence
  */
 CoglHandle
 clutter_texture_get_cogl_material (ClutterTexture *texture)
@@ -1362,7 +1365,9 @@ clutter_texture_get_cogl_material (ClutterTexture *texture)
  *
  * Since: 0.8
  *
- * Deprecated: 1.12
+ * Deprecated: 1.12: No replacement is available; it's not advisable
+ *   to modify the Cogl pipeline of an actor. Use a #ClutterContent
+ *   implementation and modify the pipeline during the paint sequence
  */
 void
 clutter_texture_set_cogl_material (ClutterTexture *texture,
@@ -1437,7 +1442,10 @@ get_first_layer_index (CoglPipeline *pipeline, int *layer_index)
  *
  * Since: 0.8
  *
- * Deprecated: 1.12
+ * Deprecated: 1.12: No replacement available; it's not advisable to
+ *   modify the Cogl pipeline of an actor. Use a #ClutterContent
+ *   implementation and set up the pipeline during the paint sequence
+ *   instead.
  */
 CoglHandle
 clutter_texture_get_cogl_texture (ClutterTexture *texture)
@@ -1466,7 +1474,10 @@ clutter_texture_get_cogl_texture (ClutterTexture *texture)
  *
  * Since: 0.8
  *
- * Deprecated: 1.12
+ * Deprecated: 1.12: No replacement available; it's not advisable to
+ *   modify the Cogl pipeline of an actor. Use a #ClutterContent
+ *   implementation and set up the pipeline during the paint sequence
+ *   instead.
  */
 void
 clutter_texture_set_cogl_texture (ClutterTexture  *texture,
@@ -1680,7 +1691,7 @@ get_pixel_format_from_texture_flags (gint                 bpp,
  *
  * Since: 0.4
  *
- * Deprecated: 1.12
+ * Deprecated: 1.12: Use #ClutterImage and clutter_image_set_data() instead
  */
 gboolean
 clutter_texture_set_from_rgb_data (ClutterTexture       *texture,
@@ -1735,9 +1746,9 @@ clutter_texture_set_from_rgb_data (ClutterTexture       *texture,
  *
  * Since: 0.4
  *
- * Deprecated: 1.10: Use clutter_texture_get_cogl_material() and
- *   the Cogl API to install a fragment shader for decoding YUV
- *   formats on the GPU
+ * Deprecated: 1.10: Use a custom #ClutterContent implementation and
+ *   set up the Cogl pipeline using a #ClutterPipelineNode with a
+ *   fragment shader instead.
  */
 gboolean
 clutter_texture_set_from_yuv_data (ClutterTexture     *texture,
@@ -2053,7 +2064,8 @@ clutter_texture_async_load (ClutterTexture *self,
  *
  * Since: 0.8
  *
- * Deprecated: 1.12
+ * Deprecated: 1.12: Use #ClutterImage and platform-specific image
+ *   loading API, like GdkPixbuf, instead
  */
 gboolean
 clutter_texture_set_from_file (ClutterTexture *texture,
@@ -2128,7 +2140,8 @@ clutter_texture_set_from_file (ClutterTexture *texture,
  *
  * Since: 0.8
  *
- * Deprecated: 1.12
+ * Deprecated: 1.12: Use #ClutterImage and clutter_actor_set_content_scaling_filters()
+ *   instead
  */
 void
 clutter_texture_set_filter_quality (ClutterTexture        *texture,
@@ -2171,7 +2184,8 @@ clutter_texture_set_filter_quality (ClutterTexture        *texture,
  *
  * Since: 0.8
  *
- * Deprecated: 1.12
+ * Deprecated: 1.12: Use #ClutterImage and clutter_actor_get_content_scaling_filters()
+ *   instead
  */
 ClutterTextureQuality
 clutter_texture_get_filter_quality (ClutterTexture *texture)
@@ -2216,7 +2230,7 @@ clutter_texture_get_filter_quality (ClutterTexture *texture)
  *
  * Since: 0.8
  *
- * Deprecated: 1.12
+ * Deprecated: 1.12: No replacement is available
  */
 gint
 clutter_texture_get_max_tile_waste (ClutterTexture *texture)
@@ -2250,7 +2264,8 @@ clutter_texture_get_max_tile_waste (ClutterTexture *texture)
  *
  * Since: 0.8
  *
- * Deprecated: 1.12
+ * Deprecated: 1.12: No direct replacement is available. Use #ClutterImage
+ *   and platform-specific image loading API, like GdkPixbuf, instead
  */
 ClutterActor*
 clutter_texture_new_from_file (const gchar *filename,
@@ -2277,7 +2292,7 @@ clutter_texture_new_from_file (const gchar *filename,
  *
  * Return value: A newly created #ClutterTexture object.
  *
- * Deprecated: 1.12
+ * Deprecated: 1.12: Use #ClutterImage instead
  */
 ClutterActor *
 clutter_texture_new (void)
@@ -2293,7 +2308,8 @@ clutter_texture_new (void)
  *
  * Gets the size in pixels of the untransformed underlying image
  *
- * Deprecated: 1.12
+ * Deprecated: 1.12: Use #ClutterImage and clutter_content_get_preferred_size()
+ *   instead
  */
 void
 clutter_texture_get_base_size (ClutterTexture *texture,
@@ -2330,7 +2346,7 @@ clutter_texture_get_base_size (ClutterTexture *texture,
  *
  * Since: 0.6
  *
- * Deprecated: 1.12
+ * Deprecated: 1.12: Use #ClutterImage and clutter_image_set_area() instead
  */
 gboolean
 clutter_texture_set_area_from_rgb_data (ClutterTexture     *texture,
@@ -2729,7 +2745,10 @@ texture_fbo_free_resources (ClutterTexture *texture)
  *
  * Since: 1.0
  *
- * Deprecated: 1.12
+ * Deprecated: 1.12: No replacement is available. A #ClutterActor using
+ *   #ClutterImage with a %CLUTTER_REQUEST_CONTENT_SIZE request mode
+ *   will automatically bind the preferred size of the content to the
+ *   preferred size of the actor
  */
 void
 clutter_texture_set_sync_size (ClutterTexture *texture,
@@ -2762,7 +2781,7 @@ clutter_texture_set_sync_size (ClutterTexture *texture,
  *
  * Since: 1.0
  *
- * Deprecated: 1.12
+ * Deprecated: 1.12: There is no direct replacement
  */
 gboolean
 clutter_texture_get_sync_size (ClutterTexture *texture)
@@ -2783,7 +2802,8 @@ clutter_texture_get_sync_size (ClutterTexture *texture)
  *
  * Since: 1.0
  *
- * Deprecated: 1.12
+ * Deprecated: 1.12: Use #ClutterImage and clutter_actor_set_content_repeat()
+ *   instead
  */
 void
 clutter_texture_set_repeat (ClutterTexture *texture,
@@ -2834,7 +2854,8 @@ clutter_texture_set_repeat (ClutterTexture *texture,
  *
  * Since: 1.0
  *
- * Deprecated: 1.12
+ * Deprecated: 1.12: Use #ClutterImage and clutter_actor_get_content_repeat()
+ *   instead
  */
 void
 clutter_texture_get_repeat (ClutterTexture *texture,
@@ -2868,7 +2889,7 @@ clutter_texture_get_repeat (ClutterTexture *texture,
  *
  * Since: 1.0
  *
- * Deprecated: 1.12
+ * Deprecated: 1.12: There is no direct replacement for this function
  */
 CoglPixelFormat
 clutter_texture_get_pixel_format (ClutterTexture *texture)
@@ -2894,7 +2915,8 @@ clutter_texture_get_pixel_format (ClutterTexture *texture)
  *
  * Since: 1.0
  *
- * Deprecated: 1.12
+ * Deprecated: 1.12: Use #ClutterImage and clutter_actor_set_content_gravity()
+ *   with %CLUTTER_CONTENT_GRAVITY_RESIZE_ASPECT instead
  */
 void
 clutter_texture_set_keep_aspect_ratio (ClutterTexture *texture,
@@ -2927,7 +2949,8 @@ clutter_texture_set_keep_aspect_ratio (ClutterTexture *texture,
  *
  * Since: 1.0
  *
- * Deprecated: 1.12
+ * Deprecated: 1.12: Use #ClutterImage and clutter_actor_get_content_gravity()
+ *   instead
  */
 gboolean
 clutter_texture_get_keep_aspect_ratio (ClutterTexture *texture)
@@ -2952,7 +2975,9 @@ clutter_texture_get_keep_aspect_ratio (ClutterTexture *texture)
  *
  * Since: 1.0
  *
- * Deprecated: 1.12
+ * Deprecated: 1.12: There is no direct replacement for this function.
+ *   Use #ClutterImage and platform-specific API for loading image data
+ *   asynchronously, like GdkPixbuf
  */
 void
 clutter_texture_set_load_async (ClutterTexture *texture,
@@ -2989,7 +3014,7 @@ clutter_texture_set_load_async (ClutterTexture *texture,
  *
  * Since: 1.0
  *
- * Deprecated: 1.12
+ * Deprecated: 1.12: There is no direct replacement for this function
  */
 gboolean
 clutter_texture_get_load_async (ClutterTexture *texture)
@@ -3015,7 +3040,9 @@ clutter_texture_get_load_async (ClutterTexture *texture)
  *
  * Since: 1.0
  *
- * Deprecated: 1.12
+ * Deprecated: 1.12: There is no direct replacement for this function.
+ *   Use #ClutterImage and platform-specific API for loading image data
+ *   asynchronously, like GdkPixbuf
  */
 void
 clutter_texture_set_load_data_async (ClutterTexture *texture,
@@ -3051,7 +3078,7 @@ clutter_texture_set_load_data_async (ClutterTexture *texture,
  *
  * Since: 1.0
  *
- * Deprecated: 1.12
+ * Deprecated: 1.12: There is no direct replacement for this function
  */
 gboolean
 clutter_texture_get_load_data_async (ClutterTexture *texture)
@@ -3082,7 +3109,7 @@ clutter_texture_get_load_data_async (ClutterTexture *texture)
  *
  * Since: 1.4
  *
- * Deprecated: 1.12
+ * Deprecated: 1.12: There is no direct replacement for this function
  */
 void
 clutter_texture_set_pick_with_alpha (ClutterTexture *texture,
@@ -3123,7 +3150,7 @@ clutter_texture_set_pick_with_alpha (ClutterTexture *texture,
  *
  * Since: 1.4
  *
- * Deprecated: 1.12
+ * Deprecated: 1.12: There is no direct replacement for this function
  */
 gboolean
 clutter_texture_get_pick_with_alpha (ClutterTexture *texture)
