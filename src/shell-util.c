@@ -229,7 +229,7 @@ shell_util_translate_time_string (const char *str)
     setlocale (LC_MESSAGES, locale);
 
   sep = strchr (str, '\004');
-  res = g_dpgettext (NULL, str, sep ? str - sep : 0);
+  res = g_dpgettext (NULL, str, sep ? sep - str : 0);
 
   setlocale (LC_MESSAGES, "");
 
