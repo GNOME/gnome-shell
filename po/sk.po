@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-02-28 08:42+0000\n"
-"PO-Revision-Date: 2015-02-28 11:00+0100\n"
+"POT-Creation-Date: 2015-03-04 08:44+0000\n"
+"PO-Revision-Date: 2015-03-04 11:52+0100\n"
 "Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
 "Language-Team: Slovak <gnome-sk-list@gnome.org>\n"
 "Language: sk\n"
@@ -398,7 +398,7 @@ msgstr "Celý deň"
 
 #. Translators: Shown in calendar event list, if 24h format,
 #. \u2236 is a ratio character, similar to : */
-#: ../js/ui/calendar.js:88 ../js/ui/calendar.js:1575
+#: ../js/ui/calendar.js:88 ../js/ui/calendar.js:1596
 msgctxt "event list time"
 msgid "%H∶%M"
 msgstr "%H∶%M"
@@ -468,33 +468,37 @@ msgstr "Predchádzajúci mesiac"
 msgid "Next month"
 msgstr "Nasledujúci mesiac"
 
-#: ../js/ui/calendar.js:1258
+#: ../js/ui/calendar.js:807
+msgid "Week %V"
+msgstr "%V. týždeň"
+
+#: ../js/ui/calendar.js:1263
 msgid "Clear section"
 msgstr "Vymazať úsek"
 
-#: ../js/ui/calendar.js:1436
+#: ../js/ui/calendar.js:1455
 msgid "Events"
 msgstr "Udalosti"
 
-#: ../js/ui/calendar.js:1444
+#: ../js/ui/calendar.js:1463
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %e. %B"
 
-#: ../js/ui/calendar.js:1448
+#: ../js/ui/calendar.js:1467
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %e. %B %Y"
 
-#: ../js/ui/calendar.js:1541
+#: ../js/ui/calendar.js:1560
 msgid "Notifications"
 msgstr "Oznámenia"
 
-#: ../js/ui/calendar.js:1678
+#: ../js/ui/calendar.js:1700
 msgid "No Notifications"
 msgstr "Žiadne oznámenia"
 
-#: ../js/ui/calendar.js:1681
+#: ../js/ui/calendar.js:1703
 msgid "No Events"
 msgstr "Žiadne udalosti"
 
@@ -607,61 +611,45 @@ msgstr "Overiť totožnosť"
 msgid "Sorry, that didn't work. Please try again."
 msgstr "Prepáčte, ale nezabralo to. Skúste to, prosím, znova."
 
-#: ../js/ui/components/telepathyClient.js:243
-msgid "Invitation"
-msgstr "Pozvánka"
-
-#: ../js/ui/components/telepathyClient.js:303
-msgid "Call"
-msgstr "Hovor"
-
-#: ../js/ui/components/telepathyClient.js:319
-msgid "File Transfer"
-msgstr "Prenos súborov"
-
-#: ../js/ui/components/telepathyClient.js:423
-msgid "Chat"
-msgstr "Rozhovor"
-
 #. Translators: Time in 24h format */
-#: ../js/ui/components/telepathyClient.js:936 ../js/ui/dateMenu.js:209
+#: ../js/ui/components/telepathyClient.js:764 ../js/ui/dateMenu.js:210
 msgid "%H∶%M"
 msgstr "%H:%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30" */
-#: ../js/ui/components/telepathyClient.js:943
+#: ../js/ui/components/telepathyClient.js:771
 msgid "Yesterday, %H∶%M"
 msgstr "Včera o %H:%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 24h format. i.e. "Monday, 14:30" */
-#: ../js/ui/components/telepathyClient.js:950
+#: ../js/ui/components/telepathyClient.js:778
 msgid "%A, %H∶%M"
 msgstr "%A, %H:%M"
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 24h format.
 #. i.e. "May 25, 14:30" */
-#: ../js/ui/components/telepathyClient.js:957
+#: ../js/ui/components/telepathyClient.js:785
 msgid "%B %d, %H∶%M"
 msgstr "%d. %B, %H:%M"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
 #. i.e. "May 25 2012, 14:30" */
-#: ../js/ui/components/telepathyClient.js:963
+#: ../js/ui/components/telepathyClient.js:791
 msgid "%B %d %Y, %H∶%M"
 msgstr "%d. %B %Y, %H:%M"
 
 #. Translators: Time in 12h format */
-#: ../js/ui/components/telepathyClient.js:969 ../js/ui/dateMenu.js:212
+#: ../js/ui/components/telepathyClient.js:797 ../js/ui/dateMenu.js:213
 msgid "%l∶%M %p"
 msgstr "%l:%M %p"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 12h format. i.e. "Yesterday, 2:30 pm" */
-#: ../js/ui/components/telepathyClient.js:976
+#: ../js/ui/components/telepathyClient.js:804
 msgid "Yesterday, %l∶%M %p"
 msgstr "Včera, %l:%M %p"
 
@@ -670,197 +658,30 @@ msgstr "Včera, %l:%M %p"
 # v ostatnych retazcoch je pouzite %e, tak to bude asi OK
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm" */
-#: ../js/ui/components/telepathyClient.js:983
+#: ../js/ui/components/telepathyClient.js:811
 msgid "%A, %l∶%M %p"
 msgstr "%A, %l:%M %p"
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 12h format.
 #. i.e. "May 25, 2:30 pm" */
-#: ../js/ui/components/telepathyClient.js:990
+#: ../js/ui/components/telepathyClient.js:818
 msgid "%B %d, %l∶%M %p"
 msgstr "%d. %B, %l:%M %p"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
 #. i.e. "May 25 2012, 2:30 pm"*/
-#: ../js/ui/components/telepathyClient.js:996
+#: ../js/ui/components/telepathyClient.js:824
 msgid "%B %d %Y, %l∶%M %p"
 msgstr "%d. %B %Y, %l:%M %p"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name. */
-#: ../js/ui/components/telepathyClient.js:1028
+#: ../js/ui/components/telepathyClient.js:856
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "Kontakt %s odteraz vystupuje ako %s"
-
-#. translators: argument is a room name like
-#. * room@jabber.org for example. */
-#: ../js/ui/components/telepathyClient.js:1132
-#, javascript-format
-msgid "Invitation to %s"
-msgstr "Pozvánka do %s"
-
-#. translators: first argument is the name of a contact and the second
-#. * one the name of a room. "Alice is inviting you to join room@jabber.org
-#. * for example. */
-#: ../js/ui/components/telepathyClient.js:1136
-#, javascript-format
-msgid "%s is inviting you to join %s"
-msgstr "Kontakt %s vás pozýva aby ste sa pridali do %s"
-
-#: ../js/ui/components/telepathyClient.js:1140 ../js/ui/components/telepathyClient.js:1175 ../js/ui/components/telepathyClient.js:1207 ../js/ui/components/telepathyClient.js:1273
-msgid "Decline"
-msgstr "Odmietnuť"
-
-#: ../js/ui/components/telepathyClient.js:1146 ../js/ui/components/telepathyClient.js:1213 ../js/ui/components/telepathyClient.js:1278
-msgid "Accept"
-msgstr "Prijať"
-
-#. translators: argument is a contact name like Alice for example. */
-#: ../js/ui/components/telepathyClient.js:1165
-#, javascript-format
-msgid "Video call from %s"
-msgstr "Videohovor od kontaktu %s"
-
-#. translators: argument is a contact name like Alice for example. */
-#: ../js/ui/components/telepathyClient.js:1168
-#, javascript-format
-msgid "Call from %s"
-msgstr "Hovor od kontaktu %s"
-
-#. translators: this is a button label (verb), not a noun */
-#: ../js/ui/components/telepathyClient.js:1182
-msgid "Answer"
-msgstr "Prijať hovor"
-
-#. To translators: The first parameter is
-#. * the contact's alias and the second one is the
-#. * file name. The string will be something
-#. * like: "Alice is sending you test.ogg"
-#. */
-#: ../js/ui/components/telepathyClient.js:1203
-#, javascript-format
-msgid "%s is sending you %s"
-msgstr "Kontakt %s vám posiela %s"
-
-#. To translators: The parameter is the contact's alias */
-#: ../js/ui/components/telepathyClient.js:1230
-#, javascript-format
-msgid "%s would like permission to see when you are online"
-msgstr "Kontakt %s by chcel získať oprávnenie vidieť, kedy ste pripojený"
-
-#: ../js/ui/components/telepathyClient.js:1321
-msgid "Network error"
-msgstr "Chyba siete"
-
-#: ../js/ui/components/telepathyClient.js:1323
-msgid "Authentication failed"
-msgstr "Overenie totožnosti zlyhalo"
-
-#: ../js/ui/components/telepathyClient.js:1325
-msgid "Encryption error"
-msgstr "Chyba šifrovania"
-
-#: ../js/ui/components/telepathyClient.js:1327
-msgid "Certificate not provided"
-msgstr "Neposkytnutý certifikát"
-
-#: ../js/ui/components/telepathyClient.js:1329
-msgid "Certificate untrusted"
-msgstr "Nedôveryhodný certifikát"
-
-#: ../js/ui/components/telepathyClient.js:1331
-msgid "Certificate expired"
-msgstr "Certifikát s ukončenou platnosťou"
-
-#: ../js/ui/components/telepathyClient.js:1333
-msgid "Certificate not activated"
-msgstr "Neaktivovaný certifikát"
-
-#: ../js/ui/components/telepathyClient.js:1335
-msgid "Certificate hostname mismatch"
-msgstr "Certifikát s nesúhlasným názvom hostiteľa"
-
-#: ../js/ui/components/telepathyClient.js:1337
-msgid "Certificate fingerprint mismatch"
-msgstr "Certifikát s nesúhlasným odtlačkom"
-
-#: ../js/ui/components/telepathyClient.js:1339
-msgid "Certificate self-signed"
-msgstr "Sebou podpísaný certifikát"
-
-#: ../js/ui/components/telepathyClient.js:1341
-msgid "Status is set to offline"
-msgstr "Stav je nastavený na odhlásený"
-
-#: ../js/ui/components/telepathyClient.js:1343
-msgid "Encryption is not available"
-msgstr "Šifrovanie nie je dostupné"
-
-#: ../js/ui/components/telepathyClient.js:1345
-msgid "Certificate is invalid"
-msgstr "Certifikát je neplatný"
-
-#: ../js/ui/components/telepathyClient.js:1347
-msgid "Connection has been refused"
-msgstr "Pripojenie bolo odmietnuté"
-
-#: ../js/ui/components/telepathyClient.js:1349
-msgid "Connection can't be established"
-msgstr "Nedá sa nadviazať spojenie"
-
-#: ../js/ui/components/telepathyClient.js:1351
-msgid "Connection has been lost"
-msgstr "Spojenie sa stratilo"
-
-#: ../js/ui/components/telepathyClient.js:1353
-msgid "This account is already connected to the server"
-msgstr "Tento účet je už pripojený k serveru"
-
-#: ../js/ui/components/telepathyClient.js:1355
-msgid "Connection has been replaced by a new connection using the same resource"
-msgstr "Pripojenie bolo nahradené novým, ktoré používa rovnaký zdroj"
-
-#: ../js/ui/components/telepathyClient.js:1357
-msgid "The account already exists on the server"
-msgstr "Účet na serveri už existuje"
-
-#: ../js/ui/components/telepathyClient.js:1359
-msgid "Server is currently too busy to handle the connection"
-msgstr "Server je momentálne príliš zaneprázdnený na zvládnutie pripojenia"
-
-#: ../js/ui/components/telepathyClient.js:1361
-msgid "Certificate has been revoked"
-msgstr "Certifikát bol zrušený"
-
-#: ../js/ui/components/telepathyClient.js:1363
-msgid "Certificate uses an insecure cipher algorithm or is cryptographically weak"
-msgstr "Šifrovací algoritmus používaný certifikátom nie je bezpečný alebo je kryptograficky slabý"
-
-#: ../js/ui/components/telepathyClient.js:1365
-msgid "The length of the server certificate, or the depth of the server certificate chain, exceed the limits imposed by the cryptography library"
-msgstr "Dĺžka certifikátu servera, alebo hĺbka reťazca certifikátu servera presahuje limit stanovený kryptografickou knižnicou."
-
-#: ../js/ui/components/telepathyClient.js:1367
-msgid "Internal error"
-msgstr "Vnútorná chyba"
-
-#. translators: argument is the account name, like
-#. * name@jabber.org for example. */
-#: ../js/ui/components/telepathyClient.js:1377
-#, javascript-format
-msgid "Unable to connect to %s"
-msgstr "Nepodarilo sa pripojiť účet %s"
-
-#: ../js/ui/components/telepathyClient.js:1382
-msgid "View account"
-msgstr "Zobraziť účet"
-
-#: ../js/ui/components/telepathyClient.js:1419
-msgid "Unknown reason"
-msgstr "Neznámy dôvod"
 
 #: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:155
 msgid "Windows"
@@ -878,7 +699,7 @@ msgstr "Dok"
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #. */
-#: ../js/ui/dateMenu.js:72
+#: ../js/ui/dateMenu.js:73
 msgid "%B %e %Y"
 msgstr "%-e. %B %Y"
 
@@ -886,15 +707,15 @@ msgstr "%-e. %B %Y"
 #. * below the time in the shell; it should combine the weekday and the
 #. * date, e.g. "Tuesday February 17 2015".
 #. */
-#: ../js/ui/dateMenu.js:79
+#: ../js/ui/dateMenu.js:80
 msgid "%A %B %e %Y"
 msgstr "%A, %-e. %B %Y"
 
-#: ../js/ui/dateMenu.js:159
+#: ../js/ui/dateMenu.js:160
 msgid "Add world clocks…"
 msgstr "Pridať svetové časy…"
 
-#: ../js/ui/dateMenu.js:160
+#: ../js/ui/dateMenu.js:161
 msgid "World Clocks"
 msgstr "Svetové časy"
 
@@ -1139,7 +960,7 @@ msgstr "Zadajte príkaz"
 msgid "Close"
 msgstr "Zavrieť"
 
-#: ../js/ui/runDialog.js:277
+#: ../js/ui/runDialog.js:281
 msgid "Restarting…"
 msgstr "Reštartuje sa…"
 
@@ -1702,6 +1523,126 @@ msgstr "Heslo nemôže byť prázdne"
 #: ../src/shell-polkit-authentication-agent.c:346
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Dialógové okno overenia totožnosti bolo zatvorené používateľom"
+
+#~ msgid "Invitation"
+#~ msgstr "Pozvánka"
+
+#~ msgid "Call"
+#~ msgstr "Hovor"
+
+#~ msgid "File Transfer"
+#~ msgstr "Prenos súborov"
+
+#~ msgid "Chat"
+#~ msgstr "Rozhovor"
+
+#~ msgid "Invitation to %s"
+#~ msgstr "Pozvánka do %s"
+
+#~ msgid "%s is inviting you to join %s"
+#~ msgstr "Kontakt %s vás pozýva aby ste sa pridali do %s"
+
+#~ msgid "Decline"
+#~ msgstr "Odmietnuť"
+
+#~ msgid "Accept"
+#~ msgstr "Prijať"
+
+#~ msgid "Video call from %s"
+#~ msgstr "Videohovor od kontaktu %s"
+
+#~ msgid "Call from %s"
+#~ msgstr "Hovor od kontaktu %s"
+
+#~ msgid "Answer"
+#~ msgstr "Prijať hovor"
+
+#~ msgid "%s is sending you %s"
+#~ msgstr "Kontakt %s vám posiela %s"
+
+#~ msgid "%s would like permission to see when you are online"
+#~ msgstr "Kontakt %s by chcel získať oprávnenie vidieť, kedy ste pripojený"
+
+#~ msgid "Network error"
+#~ msgstr "Chyba siete"
+
+#~ msgid "Authentication failed"
+#~ msgstr "Overenie totožnosti zlyhalo"
+
+#~ msgid "Encryption error"
+#~ msgstr "Chyba šifrovania"
+
+#~ msgid "Certificate not provided"
+#~ msgstr "Neposkytnutý certifikát"
+
+#~ msgid "Certificate untrusted"
+#~ msgstr "Nedôveryhodný certifikát"
+
+#~ msgid "Certificate expired"
+#~ msgstr "Certifikát s ukončenou platnosťou"
+
+#~ msgid "Certificate not activated"
+#~ msgstr "Neaktivovaný certifikát"
+
+#~ msgid "Certificate hostname mismatch"
+#~ msgstr "Certifikát s nesúhlasným názvom hostiteľa"
+
+#~ msgid "Certificate fingerprint mismatch"
+#~ msgstr "Certifikát s nesúhlasným odtlačkom"
+
+#~ msgid "Certificate self-signed"
+#~ msgstr "Sebou podpísaný certifikát"
+
+#~ msgid "Status is set to offline"
+#~ msgstr "Stav je nastavený na odhlásený"
+
+#~ msgid "Encryption is not available"
+#~ msgstr "Šifrovanie nie je dostupné"
+
+#~ msgid "Certificate is invalid"
+#~ msgstr "Certifikát je neplatný"
+
+#~ msgid "Connection has been refused"
+#~ msgstr "Pripojenie bolo odmietnuté"
+
+#~ msgid "Connection can't be established"
+#~ msgstr "Nedá sa nadviazať spojenie"
+
+#~ msgid "Connection has been lost"
+#~ msgstr "Spojenie sa stratilo"
+
+#~ msgid "This account is already connected to the server"
+#~ msgstr "Tento účet je už pripojený k serveru"
+
+#~ msgid "Connection has been replaced by a new connection using the same resource"
+#~ msgstr "Pripojenie bolo nahradené novým, ktoré používa rovnaký zdroj"
+
+#~ msgid "The account already exists on the server"
+#~ msgstr "Účet na serveri už existuje"
+
+#~ msgid "Server is currently too busy to handle the connection"
+#~ msgstr "Server je momentálne príliš zaneprázdnený na zvládnutie pripojenia"
+
+#~ msgid "Certificate has been revoked"
+#~ msgstr "Certifikát bol zrušený"
+
+#~ msgid "Certificate uses an insecure cipher algorithm or is cryptographically weak"
+#~ msgstr "Šifrovací algoritmus používaný certifikátom nie je bezpečný alebo je kryptograficky slabý"
+
+#~ msgid "The length of the server certificate, or the depth of the server certificate chain, exceed the limits imposed by the cryptography library"
+#~ msgstr "Dĺžka certifikátu servera, alebo hĺbka reťazca certifikátu servera presahuje limit stanovený kryptografickou knižnicou."
+
+#~ msgid "Internal error"
+#~ msgstr "Vnútorná chyba"
+
+#~ msgid "Unable to connect to %s"
+#~ msgstr "Nepodarilo sa pripojiť účet %s"
+
+#~ msgid "View account"
+#~ msgstr "Zobraziť účet"
+
+#~ msgid "Unknown reason"
+#~ msgstr "Neznámy dôvod"
 
 # nazov klavesovej skratky
 #~ msgid "Show the message list"
