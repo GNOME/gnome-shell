@@ -117,7 +117,8 @@ const AppMenuButton = new Lang.Class({
         this._iconBox = new St.Bin({ style_class: 'app-menu-icon' });
         this._container.add_actor(this._iconBox);
 
-        this._label = new St.Label();
+        this._label = new St.Label({ y_expand: true,
+                                     y_align: Clutter.ActorAlign.CENTER });
         this._container.add_actor(this._label);
         this._arrow = PopupMenu.arrowIcon(St.Side.BOTTOM);
         this._container.add_actor(this._arrow);
