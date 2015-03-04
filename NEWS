@@ -1,3 +1,38 @@
+3.15.91
+=======
+* Don't disable all shortcuts while non-panel menus are open [Florian; #745039]
+* Do not wake up the screen for disabled notifications [Florian; #744114]
+* Add unminimize animation [Florian; #702662]
+* Change default shortcut for viewing notifications [Florian; #687986]
+* Add shortcut to dismiss notifications from list [Florian; #745279]
+* Use Polari instead of Empathy for IRC conversations [Giovanni; #745431]
+* Add a hideable bottom tray for legacy status icons [Florian; #745162]
+* Improve accessibility of calendar/message list [Florian; #706903, #745393]
+* Fix window thumbnail scaling in overview [Sebastian; #744883]
+* Stop handling non-chat notifications for Empathy [Giovanni; #745503]
+* Fix mouse interaction with ibus candidate window [Rui; #745167, #745245]
+* Misc bug fixes and cleanups [Giovanni, Florian, Miguel, Cosimo, Jakub,
+  Michele, Raul, Matthias, Rui; #677412, #744880, #744900, #744894, #744907,
+  #745061, #741111, #744912, #745175, #745246, #744959, #744575, #745570,
+  #652742, #659187, #745412, #745521, #745521, #741665, #745574, #745627,
+  #745494, #745111, #745132, #745110]
+
+Contributors:
+  Michele, Giovanni Campagna, Cosimo Cecchi, Matthias Clasen,
+  Raul Gutierrez Segales, Sebastian Keller, David Liang, Rui Matos,
+  Florian Müllner, Yosef Or Boczko, Jakub Steiner, Jasper St. Pierre,
+  Rico Tzschichholz, Miguel Vaello Martínez
+
+Translations:
+  Dušan Kazik [sk], Chao-Hsiung Liao [zh_TW], Muhammet Kara [tr],
+  Balázs Úr [hu], Daniel Mustieles [es], Frédéric Péters [fr],
+  Rafael Ferreira [pt_BR], Aurimas Černius [lt], Milo Casagrande [it],
+  Yosef Or Boczko [he], Stas Solovey [ru], Baurzhan Muftakhidinov [kk],
+  Daniel Korostil [uk], Fran Dieguez [gl], Kjartan Maraas [nb],
+  Tom Tryfonidis [el], Cheng-Chia Tseng [zh_TW], Friedel Wolff [af],
+  Alexandre Franke [fr], Efstathios Iosifidis [el], Aron Xu [zh_CN],
+  Marek Černocký [cs], Enrico Nicoletto [pt_BR]
+
 3.15.90
 =======
 * gdm: Fix reactivity of first user in user list [Ray; #743370]
