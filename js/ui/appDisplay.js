@@ -541,6 +541,12 @@ const AllView = new Lang.Class({
 
     // Overriden from BaseAppView
     animate: function (animationDirection, onComplete) {
+        this._scrollView.reactive = false;
+        let completionFunc = Lang.bind(this, function() {
+            this._scrollView.reactive = true;
+            onComplete();
+        });
+
         if (animationDirection == IconGrid.AnimationDirection.OUT &&
             this._displayingPopup && this._currentPopup) {
             this._currentPopup.popdown();
@@ -551,10 +557,10 @@ const AllView = new Lang.Class({
                     // signal handler, call again animate which will
                     // call the parent given that popup is already
                     // closed.
-                    this.animate(animationDirection, onComplete);
+                    this.animate(animationDirection, completionFunc);
                 }));
         } else {
-            this.parent(animationDirection, onComplete);
+            this.parent(animationDirection, completionFunc);
             if (animationDirection == IconGrid.AnimationDirection.OUT)
                 this._pageIndicators.animateIndicators(animationDirection);
         }
@@ -641,7 +647,7 @@ const AllView = new Lang.Class({
     },
 
     _onScroll: function(actor, event) {
-        if (this._displayingPopup)
+        if (this._displayingPopup || !this._scrollView.reactive)
             return Clutter.EVENT_STOP;
 
         let direction = event.get_scroll_direction();
