@@ -14,22 +14,22 @@
 # Fábio Nogueira <fnogueira@gnome.org>, 2014.
 # Rafael Ferreira <rafael.f.f1@gmail.com>, 2013, 2014.
 # Georges Basile Stavracas Neto <georges.stavracas@gmail.com>, 2014.
-# Enrico Nicoletto <liverig@gmail.com>, 2013, 2014.
+# Enrico Nicoletto <liverig@gmail.com>, 2013, 2014, 2015.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-02-27 20:42+0000\n"
-"PO-Revision-Date: 2015-02-27 18:00-0300\n"
-"Last-Translator: Rafael Ferreira <rafael.f.f1@gmail.com>\n"
+"POT-Creation-Date: 2015-03-04 12:55+0000\n"
+"PO-Revision-Date: 2015-03-04 15:31-0300\n"
+"Last-Translator: Enrico Nicoletto <liverig@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 1.7.4\n"
+"X-Generator: Poedit 1.7.3\n"
 "X-Project-Style: gnome\n"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
@@ -335,18 +335,80 @@ msgstr "Erro de autenticação"
 msgid "(or swipe finger)"
 msgstr "(ou deslize o dedo)"
 
-#: ../js/misc/util.js:115
+#: ../js/misc/util.js:119
 msgid "Command not found"
 msgstr "Comando não encontrado"
 
-#: ../js/misc/util.js:148
+#: ../js/misc/util.js:152
 msgid "Could not parse command:"
 msgstr "Não foi possível analisar comando:"
 
-#: ../js/misc/util.js:156
+#: ../js/misc/util.js:160
 #, javascript-format
 msgid "Execution of “%s” failed:"
 msgstr "A execução de \"%s\" falhou:"
+
+#. Translators: Time in 24h format */
+#: ../js/misc/util.js:191
+msgid "%H∶%M"
+msgstr "%H∶%M"
+
+#. Translators: this is the word "Yesterday" followed by a
+#. time string in 24h format. i.e. "Yesterday, 14:30" */
+#: ../js/misc/util.js:197
+msgid "Yesterday, %H∶%M"
+msgstr "Ontem, %H∶%M"
+
+#. Translators: this is the week day name followed by a time
+#. string in 24h format. i.e. "Monday, 14:30" */
+#: ../js/misc/util.js:203
+msgid "%A, %H∶%M"
+msgstr "%A, %H∶%M"
+
+#. Translators: this is the month name and day number
+#. followed by a time string in 24h format.
+#. i.e. "May 25, 14:30" */
+#: ../js/misc/util.js:209
+msgid "%B %d, %H∶%M"
+msgstr "%d de %B, %H∶%M"
+
+#. Translators: this is the month name, day number, year
+#. number followed by a time string in 24h format.
+#. i.e. "May 25 2012, 14:30" */
+#: ../js/misc/util.js:215
+msgid "%B %d %Y, %H∶%M"
+msgstr "%d de %B de %Y, %H∶%M"
+
+#. Translators: Time in 12h format */
+#: ../js/misc/util.js:220
+msgid "%l∶%M %p"
+msgstr "%l∶%M %p"
+
+#. Translators: this is the word "Yesterday" followed by a
+#. time string in 12h format. i.e. "Yesterday, 2:30 pm" */
+#: ../js/misc/util.js:226
+msgid "Yesterday, %l∶%M %p"
+msgstr "Ontem, %l∶%M %p"
+
+#. Translators: this is the week day name followed by a time
+#. string in 12h format. i.e. "Monday, 2:30 pm" */
+#: ../js/misc/util.js:232
+msgid "%A, %l∶%M %p"
+msgstr "%A, %l∶%M %p"
+
+#. Translators: this is the month name and day number
+#. followed by a time string in 12h format.
+#. i.e. "May 25, 2:30 pm" */
+#: ../js/misc/util.js:238
+msgid "%B %d, %l∶%M %p"
+msgstr "%d de %B, %l∶%M %p"
+
+#. Translators: this is the month name, day number, year
+#. number followed by a time string in 12h format.
+#. i.e. "May 25 2012, 2:30 pm"*/
+#: ../js/misc/util.js:244
+msgid "%B %d %Y, %l∶%M %p"
+msgstr "%d de %B de %Y, %l∶%M %p"
 
 #. TRANSLATORS: this is the title of the wifi captive portal login
 #. * window, until we know the title of the actual login page */
@@ -354,31 +416,31 @@ msgstr "A execução de \"%s\" falhou:"
 msgid "Web Authentication Redirect"
 msgstr "Redirecionamento para autenticação web"
 
-#: ../js/ui/appDisplay.js:785
+#: ../js/ui/appDisplay.js:791
 msgid "Frequently used applications will appear here"
 msgstr "Aplicativos usados frequentemente vão aparecer aqui"
 
-#: ../js/ui/appDisplay.js:905
+#: ../js/ui/appDisplay.js:911
 msgid "Frequent"
 msgstr "Frequente"
 
-#: ../js/ui/appDisplay.js:912
+#: ../js/ui/appDisplay.js:918
 msgid "All"
 msgstr "Todos"
 
-#: ../js/ui/appDisplay.js:1840
+#: ../js/ui/appDisplay.js:1849
 msgid "New Window"
 msgstr "Nova janela"
 
-#: ../js/ui/appDisplay.js:1868 ../js/ui/dash.js:289
+#: ../js/ui/appDisplay.js:1877 ../js/ui/dash.js:289
 msgid "Remove from Favorites"
 msgstr "Remover dos favoritos"
 
-#: ../js/ui/appDisplay.js:1874
+#: ../js/ui/appDisplay.js:1883
 msgid "Add to Favorites"
 msgstr "Adicionar aos favoritos"
 
-#: ../js/ui/appDisplay.js:1884
+#: ../js/ui/appDisplay.js:1893
 msgid "Show Details"
 msgstr "Mostrar detalhes"
 
@@ -401,7 +463,7 @@ msgid "Change Background…"
 msgstr "Alterar plano de fundo…"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday). */
-#: ../js/ui/calendar.js:52
+#: ../js/ui/calendar.js:49
 msgctxt "calendar-no-work"
 msgid "06"
 msgstr "06"
@@ -409,94 +471,83 @@ msgstr "06"
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #. */
-#: ../js/ui/calendar.js:81
+#: ../js/ui/calendar.js:78
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Dia todo"
-
-#. Translators: Shown in calendar event list, if 24h format,
-#. \u2236 is a ratio character, similar to : */
-#: ../js/ui/calendar.js:88 ../js/ui/calendar.js:1575
-msgctxt "event list time"
-msgid "%H∶%M"
-msgstr "%H∶%M"
-
-#. Translators: Shown in calendar event list, if 12h format,
-#. \u2236 is a ratio character, similar to : and \u2009 is
-#. a thin space */
-#: ../js/ui/calendar.js:97
-msgctxt "event list time"
-msgid "%l∶%M %p"
-msgstr "%l∶%M %p"
 
 #. Translators: Calendar grid abbreviation for Sunday.
 #. *
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #. */
-#: ../js/ui/calendar.js:111
+#: ../js/ui/calendar.js:93
 msgctxt "grid sunday"
 msgid "S"
 msgstr "D"
 
 #. Translators: Calendar grid abbreviation for Monday */
-#: ../js/ui/calendar.js:113
+#: ../js/ui/calendar.js:95
 msgctxt "grid monday"
 msgid "M"
 msgstr "S"
 
 #. Translators: Calendar grid abbreviation for Tuesday */
-#: ../js/ui/calendar.js:115
+#: ../js/ui/calendar.js:97
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "T"
 
 #. Translators: Calendar grid abbreviation for Wednesday */
-#: ../js/ui/calendar.js:117
+#: ../js/ui/calendar.js:99
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "Q"
 
 #. Translators: Calendar grid abbreviation for Thursday */
-#: ../js/ui/calendar.js:119
+#: ../js/ui/calendar.js:101
 msgctxt "grid thursday"
 msgid "T"
 msgstr "Q"
 
 #. Translators: Calendar grid abbreviation for Friday */
-#: ../js/ui/calendar.js:121
+#: ../js/ui/calendar.js:103
 msgctxt "grid friday"
 msgid "F"
 msgstr "S"
 
 #. Translators: Calendar grid abbreviation for Saturday */
-#: ../js/ui/calendar.js:123
+#: ../js/ui/calendar.js:105
 msgctxt "grid saturday"
 msgid "S"
 msgstr "S"
 
-#: ../js/ui/calendar.js:590
+#: ../js/ui/calendar.js:572
 msgid "Previous month"
 msgstr "Mês anterior"
 
-#: ../js/ui/calendar.js:600
+#: ../js/ui/calendar.js:582
 msgid "Next month"
 msgstr "Próximo mês"
 
-#: ../js/ui/calendar.js:1258
+#: ../js/ui/calendar.js:789
+msgid "Week %V"
+msgstr "Semana %V"
+
+#: ../js/ui/calendar.js:1245
 msgid "Clear section"
 msgstr "Limpar seção"
 
-#: ../js/ui/calendar.js:1436
+#: ../js/ui/calendar.js:1437
 msgid "Events"
 msgstr "Eventos"
 
-#: ../js/ui/calendar.js:1444
+#: ../js/ui/calendar.js:1445
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d de %B"
 
-#: ../js/ui/calendar.js:1448
+#: ../js/ui/calendar.js:1449
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d de %B de %Y"
@@ -505,11 +556,11 @@ msgstr "%A, %d de %B de %Y"
 msgid "Notifications"
 msgstr "Notificações"
 
-#: ../js/ui/calendar.js:1678
+#: ../js/ui/calendar.js:1681
 msgid "No Notifications"
 msgstr "Nenhuma notificação"
 
-#: ../js/ui/calendar.js:1681
+#: ../js/ui/calendar.js:1684
 msgid "No Events"
 msgstr "Nenhum evento"
 
@@ -622,263 +673,12 @@ msgstr "Autenticação"
 msgid "Sorry, that didn't work. Please try again."
 msgstr "Desculpe, isto não funcionou. Por favor, tente novamente."
 
-#: ../js/ui/components/telepathyClient.js:243
-msgid "Invitation"
-msgstr "Convite"
-
-#: ../js/ui/components/telepathyClient.js:303
-msgid "Call"
-msgstr "Chamada"
-
-#: ../js/ui/components/telepathyClient.js:319
-msgid "File Transfer"
-msgstr "Transferência de arquivo"
-
-#: ../js/ui/components/telepathyClient.js:423
-msgid "Chat"
-msgstr "Conversar"
-
-#. Translators: Time in 24h format */
-#: ../js/ui/components/telepathyClient.js:936 ../js/ui/dateMenu.js:209
-msgid "%H∶%M"
-msgstr "%H∶%M"
-
-#. Translators: this is the word "Yesterday" followed by a
-#. time string in 24h format. i.e. "Yesterday, 14:30" */
-#: ../js/ui/components/telepathyClient.js:943
-msgid "Yesterday, %H∶%M"
-msgstr "Ontem, %H∶%M"
-
-#. Translators: this is the week day name followed by a time
-#. string in 24h format. i.e. "Monday, 14:30" */
-#: ../js/ui/components/telepathyClient.js:950
-msgid "%A, %H∶%M"
-msgstr "%A, %H∶%M"
-
-#. Translators: this is the month name and day number
-#. followed by a time string in 24h format.
-#. i.e. "May 25, 14:30" */
-#: ../js/ui/components/telepathyClient.js:957
-msgid "%B %d, %H∶%M"
-msgstr "%d de %B, %H∶%M"
-
-#. Translators: this is the month name, day number, year
-#. number followed by a time string in 24h format.
-#. i.e. "May 25 2012, 14:30" */
-#: ../js/ui/components/telepathyClient.js:963
-msgid "%B %d %Y, %H∶%M"
-msgstr "%d de %B de %Y, %H∶%M"
-
-#. Translators: Time in 12h format */
-#: ../js/ui/components/telepathyClient.js:969 ../js/ui/dateMenu.js:212
-msgid "%l∶%M %p"
-msgstr "%l∶%M %p"
-
-#. Translators: this is the word "Yesterday" followed by a
-#. time string in 12h format. i.e. "Yesterday, 2:30 pm" */
-#: ../js/ui/components/telepathyClient.js:976
-msgid "Yesterday, %l∶%M %p"
-msgstr "Ontem, %l∶%M %p"
-
-#. Translators: this is the week day name followed by a time
-#. string in 12h format. i.e. "Monday, 2:30 pm" */
-#: ../js/ui/components/telepathyClient.js:983
-msgid "%A, %l∶%M %p"
-msgstr "%A, %l∶%M %p"
-
-#. Translators: this is the month name and day number
-#. followed by a time string in 12h format.
-#. i.e. "May 25, 2:30 pm" */
-#: ../js/ui/components/telepathyClient.js:990
-msgid "%B %d, %l∶%M %p"
-msgstr "%d de %B, %l∶%M %p"
-
-#. Translators: this is the month name, day number, year
-#. number followed by a time string in 12h format.
-#. i.e. "May 25 2012, 2:30 pm"*/
-#: ../js/ui/components/telepathyClient.js:996
-msgid "%B %d %Y, %l∶%M %p"
-msgstr "%d de %B de %Y, %l∶%M %p"
-
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name. */
-#: ../js/ui/components/telepathyClient.js:1028
+#: ../js/ui/components/telepathyClient.js:772
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s agora é conhecido como %s"
-
-#. translators: argument is a room name like
-#. * room@jabber.org for example. */
-#: ../js/ui/components/telepathyClient.js:1132
-#, javascript-format
-msgid "Invitation to %s"
-msgstr "Convite para %s"
-
-#. translators: first argument is the name of a contact and the second
-#. * one the name of a room. "Alice is inviting you to join room@jabber.org
-#. * for example. */
-#: ../js/ui/components/telepathyClient.js:1136
-#, javascript-format
-msgid "%s is inviting you to join %s"
-msgstr "%s está convidando você para participar de %s"
-
-#: ../js/ui/components/telepathyClient.js:1140 ../js/ui/components/telepathyClient.js:1175
-#: ../js/ui/components/telepathyClient.js:1207 ../js/ui/components/telepathyClient.js:1273
-msgid "Decline"
-msgstr "Recusar"
-
-#: ../js/ui/components/telepathyClient.js:1146 ../js/ui/components/telepathyClient.js:1213
-#: ../js/ui/components/telepathyClient.js:1278
-msgid "Accept"
-msgstr "Aceitar"
-
-#. translators: argument is a contact name like Alice for example. */
-#: ../js/ui/components/telepathyClient.js:1165
-#, javascript-format
-msgid "Video call from %s"
-msgstr "Chamada de vídeo para %s"
-
-#. translators: argument is a contact name like Alice for example. */
-#: ../js/ui/components/telepathyClient.js:1168
-#, javascript-format
-msgid "Call from %s"
-msgstr "Chamada de %s"
-
-#. translators: this is a button label (verb), not a noun */
-#: ../js/ui/components/telepathyClient.js:1182
-msgid "Answer"
-msgstr "Atender"
-
-#. To translators: The first parameter is
-#. * the contact's alias and the second one is the
-#. * file name. The string will be something
-#. * like: "Alice is sending you test.ogg"
-#. */
-#: ../js/ui/components/telepathyClient.js:1203
-#, javascript-format
-msgid "%s is sending you %s"
-msgstr "%s está enviando %s"
-
-#. To translators: The parameter is the contact's alias */
-#: ../js/ui/components/telepathyClient.js:1230
-#, javascript-format
-msgid "%s would like permission to see when you are online"
-msgstr "%s quer permissão para vê-lo quando conectado"
-
-#: ../js/ui/components/telepathyClient.js:1321
-msgid "Network error"
-msgstr "Erro de rede"
-
-#: ../js/ui/components/telepathyClient.js:1323
-msgid "Authentication failed"
-msgstr "Falha de autenticação"
-
-#: ../js/ui/components/telepathyClient.js:1325
-msgid "Encryption error"
-msgstr "Erro de criptografia"
-
-#: ../js/ui/components/telepathyClient.js:1327
-msgid "Certificate not provided"
-msgstr "Certificado não fornecido"
-
-#: ../js/ui/components/telepathyClient.js:1329
-msgid "Certificate untrusted"
-msgstr "Certificado não confiável"
-
-#: ../js/ui/components/telepathyClient.js:1331
-msgid "Certificate expired"
-msgstr "Certificado expirado"
-
-#: ../js/ui/components/telepathyClient.js:1333
-msgid "Certificate not activated"
-msgstr "Certificado não ativado"
-
-#: ../js/ui/components/telepathyClient.js:1335
-msgid "Certificate hostname mismatch"
-msgstr "Máquina do certificado não confere"
-
-#: ../js/ui/components/telepathyClient.js:1337
-msgid "Certificate fingerprint mismatch"
-msgstr "Impressão digital do certificado não confere"
-
-#: ../js/ui/components/telepathyClient.js:1339
-msgid "Certificate self-signed"
-msgstr "Certificado auto-assinado"
-
-#: ../js/ui/components/telepathyClient.js:1341
-msgid "Status is set to offline"
-msgstr "O status está definido como desconectado."
-
-#: ../js/ui/components/telepathyClient.js:1343
-msgid "Encryption is not available"
-msgstr "Criptografia não disponível"
-
-#: ../js/ui/components/telepathyClient.js:1345
-msgid "Certificate is invalid"
-msgstr "O certificado é inválido"
-
-#: ../js/ui/components/telepathyClient.js:1347
-msgid "Connection has been refused"
-msgstr "A conexão foi recusada"
-
-#: ../js/ui/components/telepathyClient.js:1349
-msgid "Connection can't be established"
-msgstr "A conexão não pode ser estabelecida"
-
-#: ../js/ui/components/telepathyClient.js:1351
-msgid "Connection has been lost"
-msgstr "Conexão perdida"
-
-#: ../js/ui/components/telepathyClient.js:1353
-msgid "This account is already connected to the server"
-msgstr "Esta conta já está conectada ao servidor"
-
-#: ../js/ui/components/telepathyClient.js:1355
-msgid "Connection has been replaced by a new connection using the same resource"
-msgstr "A conexão foi substituída por uma nova conexão usando o mesmo recurso"
-
-#: ../js/ui/components/telepathyClient.js:1357
-msgid "The account already exists on the server"
-msgstr "A conta já existe no servidor"
-
-#: ../js/ui/components/telepathyClient.js:1359
-msgid "Server is currently too busy to handle the connection"
-msgstr "O servidor está atualmente muito ocupado para controlar a conexão"
-
-#: ../js/ui/components/telepathyClient.js:1361
-msgid "Certificate has been revoked"
-msgstr "O certificado foi revogado"
-
-#: ../js/ui/components/telepathyClient.js:1363
-msgid "Certificate uses an insecure cipher algorithm or is cryptographically weak"
-msgstr "O certificado usa um algoritmo de cifragem inseguro ou é criptograficamente fraco"
-
-#: ../js/ui/components/telepathyClient.js:1365
-msgid ""
-"The length of the server certificate, or the depth of the server certificate chain, exceed the limits imposed by the "
-"cryptography library"
-msgstr ""
-"O comprimento do certificado do servidor, ou a profundidade da cadeia do certificado excedeu os limites impostos pela "
-"biblioteca de criptografia"
-
-#: ../js/ui/components/telepathyClient.js:1367
-msgid "Internal error"
-msgstr "Erro interno"
-
-#. translators: argument is the account name, like
-#. * name@jabber.org for example. */
-#: ../js/ui/components/telepathyClient.js:1377
-#, javascript-format
-msgid "Unable to connect to %s"
-msgstr "Não foi possível conectar-se a %s"
-
-#: ../js/ui/components/telepathyClient.js:1382
-msgid "View account"
-msgstr "Visualizar conta"
-
-#: ../js/ui/components/telepathyClient.js:1419
-msgid "Unknown reason"
-msgstr "Razão desconhecida"
 
 #: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:155
 msgid "Windows"
@@ -895,7 +695,7 @@ msgstr "Dash"
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #. */
-#: ../js/ui/dateMenu.js:72
+#: ../js/ui/dateMenu.js:73
 msgid "%B %e %Y"
 msgstr "%e de %B de %Y"
 
@@ -903,15 +703,15 @@ msgstr "%e de %B de %Y"
 #. * below the time in the shell; it should combine the weekday and the
 #. * date, e.g. "Tuesday February 17 2015".
 #. */
-#: ../js/ui/dateMenu.js:79
+#: ../js/ui/dateMenu.js:80
 msgid "%A %B %e %Y"
 msgstr "%A, %e de %B de %Y"
 
-#: ../js/ui/dateMenu.js:159
+#: ../js/ui/dateMenu.js:160
 msgid "Add world clocks…"
 msgstr "Adicionar relógios mundiais…"
 
-#: ../js/ui/dateMenu.js:160
+#: ../js/ui/dateMenu.js:161
 msgid "World Clocks"
 msgstr "Relógios mundiais"
 
@@ -1150,7 +950,7 @@ msgstr "Digite um comando"
 msgid "Close"
 msgstr "Fechar"
 
-#: ../js/ui/runDialog.js:277
+#: ../js/ui/runDialog.js:281
 msgid "Restarting…"
 msgstr "Reiniciando…"
 
@@ -1697,6 +1497,138 @@ msgstr "A senha não pode estar em branco"
 #: ../src/shell-polkit-authentication-agent.c:346
 msgid "Authentication dialog was dismissed by the user"
 msgstr "O diálogo de autenticação foi descartado pelo usuário"
+
+#~ msgctxt "event list time"
+#~ msgid "%H∶%M"
+#~ msgstr "%H∶%M"
+
+#~ msgctxt "event list time"
+#~ msgid "%l∶%M %p"
+#~ msgstr "%l∶%M %p"
+
+#~ msgid "Invitation"
+#~ msgstr "Convite"
+
+#~ msgid "Call"
+#~ msgstr "Chamada"
+
+#~ msgid "File Transfer"
+#~ msgstr "Transferência de arquivo"
+
+#~ msgid "Chat"
+#~ msgstr "Conversar"
+
+#~ msgid "Invitation to %s"
+#~ msgstr "Convite para %s"
+
+#~ msgid "%s is inviting you to join %s"
+#~ msgstr "%s está convidando você para participar de %s"
+
+#~ msgid "Decline"
+#~ msgstr "Recusar"
+
+#~ msgid "Accept"
+#~ msgstr "Aceitar"
+
+#~ msgid "Video call from %s"
+#~ msgstr "Chamada de vídeo para %s"
+
+#~ msgid "Call from %s"
+#~ msgstr "Chamada de %s"
+
+#~ msgid "Answer"
+#~ msgstr "Atender"
+
+#~ msgid "%s is sending you %s"
+#~ msgstr "%s está enviando %s"
+
+#~ msgid "%s would like permission to see when you are online"
+#~ msgstr "%s quer permissão para vê-lo quando conectado"
+
+#~ msgid "Network error"
+#~ msgstr "Erro de rede"
+
+#~ msgid "Authentication failed"
+#~ msgstr "Falha de autenticação"
+
+#~ msgid "Encryption error"
+#~ msgstr "Erro de criptografia"
+
+#~ msgid "Certificate not provided"
+#~ msgstr "Certificado não fornecido"
+
+#~ msgid "Certificate untrusted"
+#~ msgstr "Certificado não confiável"
+
+#~ msgid "Certificate expired"
+#~ msgstr "Certificado expirado"
+
+#~ msgid "Certificate not activated"
+#~ msgstr "Certificado não ativado"
+
+#~ msgid "Certificate hostname mismatch"
+#~ msgstr "Máquina do certificado não confere"
+
+#~ msgid "Certificate fingerprint mismatch"
+#~ msgstr "Impressão digital do certificado não confere"
+
+#~ msgid "Certificate self-signed"
+#~ msgstr "Certificado auto-assinado"
+
+#~ msgid "Status is set to offline"
+#~ msgstr "O status está definido como desconectado."
+
+#~ msgid "Encryption is not available"
+#~ msgstr "Criptografia não disponível"
+
+#~ msgid "Certificate is invalid"
+#~ msgstr "O certificado é inválido"
+
+#~ msgid "Connection has been refused"
+#~ msgstr "A conexão foi recusada"
+
+#~ msgid "Connection can't be established"
+#~ msgstr "A conexão não pode ser estabelecida"
+
+#~ msgid "Connection has been lost"
+#~ msgstr "Conexão perdida"
+
+#~ msgid "This account is already connected to the server"
+#~ msgstr "Esta conta já está conectada ao servidor"
+
+#~ msgid "Connection has been replaced by a new connection using the same resource"
+#~ msgstr "A conexão foi substituída por uma nova conexão usando o mesmo recurso"
+
+#~ msgid "The account already exists on the server"
+#~ msgstr "A conta já existe no servidor"
+
+#~ msgid "Server is currently too busy to handle the connection"
+#~ msgstr "O servidor está atualmente muito ocupado para controlar a conexão"
+
+#~ msgid "Certificate has been revoked"
+#~ msgstr "O certificado foi revogado"
+
+#~ msgid "Certificate uses an insecure cipher algorithm or is cryptographically weak"
+#~ msgstr "O certificado usa um algoritmo de cifragem inseguro ou é criptograficamente fraco"
+
+#~ msgid ""
+#~ "The length of the server certificate, or the depth of the server certificate chain, exceed the limits imposed by the "
+#~ "cryptography library"
+#~ msgstr ""
+#~ "O comprimento do certificado do servidor, ou a profundidade da cadeia do certificado excedeu os limites impostos pela "
+#~ "biblioteca de criptografia"
+
+#~ msgid "Internal error"
+#~ msgstr "Erro interno"
+
+#~ msgid "Unable to connect to %s"
+#~ msgstr "Não foi possível conectar-se a %s"
+
+#~ msgid "View account"
+#~ msgstr "Visualizar conta"
+
+#~ msgid "Unknown reason"
+#~ msgstr "Razão desconhecida"
 
 #~ msgid "Show the message list"
 #~ msgstr "Mostra a lista de mensagem"
