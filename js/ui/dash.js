@@ -242,6 +242,8 @@ const ShowAppsIcon = new Lang.Class({
     _init: function() {
         this.parent();
 
+        this._settings = new Gio.Settings({ schema_id: 'org.gnome.shell' });
+
         this.toggleButton = new St.Button({ style_class: 'show-apps',
                                             track_hover: true,
                                             can_focus: true,
