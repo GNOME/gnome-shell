@@ -12,7 +12,6 @@ const BoxPointer = imports.ui.boxpointer;
 const GrabHelper = imports.ui.grabHelper;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
-const Separator = imports.ui.separator;
 const Tweener = imports.ui.tweener;
 
 const Ornament = {
