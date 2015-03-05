@@ -47,10 +47,7 @@
  * #ClutterBehaviour implementation it is possible to take the
  * #ClutterBehaviourPath as an example:
  *
- * <figure id="behaviour-path-alpha">
- *   <title>Effects of alpha functions on a path</title>
- *   <graphic fileref="path-alpha-func.png" format="PNG"/>
- * </figure>
+ * ![](path-alpha-func.png)
  *
  * The actors position between the path's end points directly correlates
  * to the #ClutterAlpha's current alpha value driving the behaviour. With
@@ -67,10 +64,10 @@
  *
  * #ClutterBehaviour is available since Clutter 0.2.
  *
- * #ClutterBehaviour and its sub-classes have been deprecated since Clutter
- * 1.6. You should see <link linkend="migrating-ClutterBehaviour">the
- * migration guide</link> for more information on migrating code from using
- * the #ClutterBehaviour API to the animation framework API.
+ * #ClutterBehaviour and its sub-classes have been discouraged sing Clutter
+ * 1.0, and formally deprecated since Clutter 1.6. You should use the
+ * [implicit animation][clutter-actor-animation] support inside #ClutterActor
+ * if you still have code using #ClutterBehaviour.
  */
 
 #ifdef HAVE_CONFIG_H

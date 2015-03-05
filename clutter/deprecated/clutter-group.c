@@ -41,7 +41,10 @@
  * explicitly set the size of the #ClutterGroup and then use the
  * #ClutterActor:clip-to-allocation property.
  *
- * Deprecated: 1.10: Use #ClutterActor instead.
+ * #ClutterGroup as a concrete class has been superceded by #ClutterActor
+ * since Clutter 1.10. The type itself is not deprecated as it is used by
+ * #ClutterStage. You should instantiate #ClutterActor and use its API to
+ * manage child actors.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -463,7 +466,7 @@ clutter_group_init (ClutterGroup *self)
    *
    * XXX - these so-called "optimizations" are insane and should have never
    * been used. they introduce some weird behaviour that breaks invariants
-   * and has to be explicitly worked around.
+   * and have to be explicitly worked around.
    *
    * this flag was set by the ClutterFixedLayout, but since that layout
    * manager is now the default for ClutterActor, we set the flag explicitly

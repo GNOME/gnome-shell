@@ -38,7 +38,7 @@
  * #ClutterShader is available since Clutter 0.6.
  *
  * #ClutterShader is deprecated since Clutter 1.8; use #ClutterShaderEffect
- * in newly written code.
+ * in newly written code, instead.
  */
 
 #ifdef HAVE_CONFIG_H

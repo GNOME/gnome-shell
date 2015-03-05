@@ -39,7 +39,9 @@
  *
  * #ClutterAnimator is available since Clutter 1.2
  *
- * #ClutterAnimator has been deprecated in Clutter 1.12
+ * #ClutterAnimator has been deprecated in Clutter 1.12. If you
+ * want to combine multiple transitions using key frames, use
+ * #ClutterKeyframeTransition and #ClutterTransitionGroup instead.
  *
  * ## Key Frames
  *

@@ -381,7 +381,7 @@ clutter_timeout_pool_finalize (GSource *source)
  *
  * Since: 0.4
  *
- * Deprecated: 1.6
+ * Deprecated: 1.6: There is no direct replacement for this API
  */
 ClutterTimeoutPool *
 clutter_timeout_pool_new (gint priority)
@@ -437,7 +437,7 @@ clutter_timeout_pool_new (gint priority)
  *
  * Since: 0.4
  *
- * Deprecated: 1.6
+ * Deprecated: 1.6: There is no direct replacement for this API
  */
 guint
 clutter_timeout_pool_add (ClutterTimeoutPool *pool,
@@ -474,7 +474,7 @@ clutter_timeout_pool_add (ClutterTimeoutPool *pool,
  *
  * Since: 0.4
  *
- * Deprecated: 1.6
+ * Deprecated: 1.6: There is no direct replacement for this API
  */
 void
 clutter_timeout_pool_remove (ClutterTimeoutPool *pool,

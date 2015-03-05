@@ -35,7 +35,8 @@
  *
  * #ClutterMedia is available since Clutter 0.2
  *
- * #ClutterMedia is deprecated since Clutter 1.12
+ * #ClutterMedia is deprecated since Clutter 1.12. Use the Clutter-GStreamer
+ * API directly instead.
  */
 
 #ifdef HAVE_CONFIG_H

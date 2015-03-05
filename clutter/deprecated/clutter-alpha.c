@@ -64,8 +64,8 @@
  *
  * #ClutterAlpha is available since Clutter 0.2.
  *
- * #ClutterAlpha is deprecated since Clutter 1.12; use #ClutterTimeline and the
- * #ClutterTimeline:progress-mode property.
+ * #ClutterAlpha is deprecated since Clutter 1.12. #ClutterTimeline and
+ * the #ClutterTimeline:progress-mode property replace this whole class.
  *
  * ## ClutterAlpha custom properties for #ClutterScript
  *
@@ -357,7 +357,8 @@ clutter_alpha_class_init (ClutterAlphaClass *klass)
    * one unit in each direction, so the valid interval is -1.0 to 2.0.
    *
    * Since: 0.2
-   * Deprecated: 1.12
+   * Deprecated: 1.12: Use #ClutterTimeline::new-frame and
+   *   clutter_timeline_get_progress() instead
    */
   obj_props[PROP_ALPHA] =
     g_param_spec_double ("alpha",
@@ -379,7 +380,7 @@ clutter_alpha_class_init (ClutterAlphaClass *klass)
    * will be used.
    *
    * Since: 1.0
-   * Deprecated: 1.12
+   * Deprecated: 1.12: Use #ClutterTimeline:progress-mode
    */
   obj_props[PROP_MODE] =
     g_param_spec_ulong ("mode",
@@ -412,7 +413,7 @@ clutter_alpha_init (ClutterAlpha *self)
  *
  * Since: 0.2
  *
- * Deprecated: 1.12
+ * Deprecated: 1.12: Use clutter_timeline_get_progress()
  */
 gdouble
 clutter_alpha_get_alpha (ClutterAlpha *alpha)
@@ -503,7 +504,7 @@ clutter_alpha_set_closure_internal (ClutterAlpha *alpha,
  *
  * Since: 0.8
  *
- * Deprecated: 1.12
+ * Deprecated: 1.12: Use clutter_timeline_set_progress_func()
  */
 void
 clutter_alpha_set_closure (ClutterAlpha *alpha,
@@ -537,7 +538,7 @@ clutter_alpha_set_closure (ClutterAlpha *alpha,
  *
  * Since: 0.2
  *
- * Deprecated: 1.12
+ * Deprecated: 1.12: Use clutter_timeline_set_progress_func()
  */
 void
 clutter_alpha_set_func (ClutterAlpha    *alpha,
@@ -580,7 +581,7 @@ clutter_alpha_set_func (ClutterAlpha    *alpha,
  *
  * Since: 0.2
  *
- * Deprecated: 1.12
+ * Deprecated: 1.12: Use #ClutterTimeline directly
  */
 void
 clutter_alpha_set_timeline (ClutterAlpha    *alpha,
@@ -628,7 +629,7 @@ clutter_alpha_set_timeline (ClutterAlpha    *alpha,
  *
  * Since: 0.2
  *
- * Deprecated: 1.12
+ * Deprecated: 1.12: Use #ClutterTimeline directlry
  */
 ClutterTimeline *
 clutter_alpha_get_timeline (ClutterAlpha *alpha)
@@ -653,7 +654,7 @@ clutter_alpha_get_timeline (ClutterAlpha *alpha)
  *
  * Since: 0.2
  *
- * Deprecated: 1.12
+ * Deprecated: 1.12: Use #ClutterTimeline instead
  */
 ClutterAlpha *
 clutter_alpha_new (void)
@@ -675,7 +676,7 @@ clutter_alpha_new (void)
  *
  * Since: 1.0
  *
- * Deprecated: 1.12
+ * Deprecated: 1.12: Use #ClutterTimeline instead
  */
 ClutterAlpha *
 clutter_alpha_new_full (ClutterTimeline *timeline,
@@ -708,7 +709,7 @@ clutter_alpha_new_full (ClutterTimeline *timeline,
  *
  * Since: 1.0
  *
- * Deprecated: 1.12
+ * Deprecated: 1.12: Use #ClutterTimeline instead
  */
 ClutterAlpha *
 clutter_alpha_new_with_func (ClutterTimeline  *timeline,
@@ -738,7 +739,7 @@ clutter_alpha_new_with_func (ClutterTimeline  *timeline,
  *
  * Since: 1.0
  *
- * Deprecated: 1.12
+ * Deprecated: 1.12: Use #ClutterTimeline instead
  */
 gulong
 clutter_alpha_get_mode (ClutterAlpha *alpha)
@@ -787,7 +788,8 @@ clutter_alpha_easing_func (ClutterAlpha *alpha,
  *
  * Since: 1.0
  *
- * Deprecated: 1.12
+ * Deprecated: 1.12: Use #ClutterTimeline and
+ *   clutter_timeline_set_progress_mode() instead
  */
 void
 clutter_alpha_set_mode (ClutterAlpha *alpha,
@@ -896,7 +898,9 @@ register_alpha_internal (AlphaData *alpha_data)
  *
  * Since: 1.0
  *
- * Deprecated: 1.12
+ * Deprecated: 1.12: There is no direct replacement for this
+ *   function. Use clutter_timeline_set_progress_func() on each
+ *   specific #ClutterTimeline instance
  */
 gulong
 clutter_alpha_register_func (ClutterAlphaFunc func,
@@ -929,7 +933,9 @@ clutter_alpha_register_func (ClutterAlphaFunc func,
  *
  * Since: 1.0
  *
- * Deprecated: 1.12
+ * Deprecated: 1.12: There is no direct replacement for this
+ *   function. Use clutter_timeline_set_progress_func() on each
+ *   specific #ClutterTimeline instance
  */
 gulong
 clutter_alpha_register_closure (GClosure *closure)

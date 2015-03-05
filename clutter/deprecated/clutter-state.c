@@ -33,7 +33,10 @@
  *
  * #ClutterState is available since Clutter 1.4.
  *
- * #ClutterState has been deprecated in Clutter 1.12.
+ * #ClutterState has been deprecated in Clutter 1.12. There is no direct
+ * replacement for this API, but it's highly suggested you use a combination
+ * of [implicit transitions][clutter-actor-animation] and explicit transitions
+ * using #ClutterTransition and its subclasses.
  *
  * ## Using ClutterState
  *

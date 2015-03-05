@@ -89,7 +89,7 @@ static GSourceFuncs clutter_frame_source_funcs =
  *
  * Since: 0.8
  *
- * Deprecated: 1.6
+ * Deprecated: 1.6: There is no direct replacement for this API.
  */
 guint
 clutter_frame_source_add_full (gint           priority,
@@ -130,7 +130,7 @@ clutter_frame_source_add_full (gint           priority,
  *
  * Since: 0.8
  *
- * Deprecated: 1.6
+ * Deprecated: 1.6: There is no direct replacement for this API
  */
 guint
 clutter_frame_source_add (guint          fps,
@@ -211,7 +211,7 @@ clutter_frame_source_dispatch (GSource     *source,
  *
  * Since: 0.8
  *
- * Deprecated: 1.6
+ * Deprecated: 1.6: There is no direct replacement for this API
  */
 guint
 clutter_threads_add_frame_source_full (gint           priority,
@@ -247,7 +247,7 @@ clutter_threads_add_frame_source_full (gint           priority,
  *
  * Since: 0.8
  *
- * Deprecated: 1.6
+ * Deprecated: 1.6: There is no direct replacement for this API
  */
 guint
 clutter_threads_add_frame_source (guint       fps,

@@ -62,7 +62,8 @@ typedef struct _ClutterParamSpecFixed   ClutterParamSpecFixed;
  *
  * Since: 0.8
  *
- * Deprecated: Use #GParamSpecInt instead
+ * Deprecated: 1.10: Do not use fixed-point values in public
+ *   API. If you must, use #GParamSpecInt instead.
  */
 struct _ClutterParamSpecFixed
 {
