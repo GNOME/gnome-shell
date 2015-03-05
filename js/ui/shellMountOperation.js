@@ -49,9 +49,9 @@ function _setButtonsForChoices(dialog, choices) {
 function _setLabelsForMessage(dialog, message) {
     let labels = message.split('\n');
 
-    _setLabelText(dialog.subjectLabel, labels[0]);
-    if (labels.length > 1)
-        _setLabelText(dialog.descriptionLabel, labels[1]);
+    _setLabelText(dialog.subjectLabel, labels.shift());
+    if (labels.length > 0)
+        _setLabelText(dialog.descriptionLabel, labels.join('\n'));
 }
 
 function _createIcon(gicon) {
