@@ -70,6 +70,8 @@ void meta_surface_actor_wayland_sync_state (MetaSurfaceActorWayland *self);
 
 void meta_surface_actor_wayland_sync_state_recursive (MetaSurfaceActorWayland *self);
 
+void meta_surface_actor_wayland_sync_subsurface_state (MetaSurfaceActorWayland *self);
+
 gboolean meta_surface_actor_wayland_is_on_monitor (MetaSurfaceActorWayland *self,
                                                    MetaMonitorInfo         *monitor);
 

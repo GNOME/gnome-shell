@@ -136,6 +136,9 @@ struct _MetaWaylandSurface
     MetaWaylandSurface *parent;
     struct wl_listener parent_destroy_listener;
 
+    int x;
+    int y;
+
     /* When the surface is synchronous, its state will be applied
      * when the parent is committed. This is done by moving the
      * "real" pending state below to here when this surface is

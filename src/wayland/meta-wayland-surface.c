@@ -382,18 +382,13 @@ static void
 subsurface_surface_commit (MetaWaylandSurface      *surface,
                            MetaWaylandPendingState *pending)
 {
-  MetaSurfaceActor *surface_actor = surface->surface_actor;
-  float x, y;
+  MetaSurfaceActorWayland *surface_actor =
+    META_SURFACE_ACTOR_WAYLAND (surface->surface_actor);
 
   if (surface->buffer != NULL)
     clutter_actor_show (CLUTTER_ACTOR (surface_actor));
   else
     clutter_actor_hide (CLUTTER_ACTOR (surface_actor));
-
-  clutter_actor_get_position (CLUTTER_ACTOR (surface_actor), &x, &y);
-  x += pending->dx;
-  y += pending->dy;
-  clutter_actor_set_position (CLUTTER_ACTOR (surface_actor), x, y);
 }
 
 /* A non-subsurface is always desynchronized.
@@ -427,9 +422,8 @@ parent_surface_state_applied (gpointer data, gpointer user_data)
 
   if (surface->sub.pending_pos)
     {
-      clutter_actor_set_position (CLUTTER_ACTOR (surface->surface_actor),
-                                  surface->sub.pending_x,
-                                  surface->sub.pending_y);
+      surface->sub.x = surface->sub.pending_x;
+      surface->sub.y = surface->sub.pending_y;
       surface->sub.pending_pos = FALSE;
     }
 
@@ -477,6 +471,9 @@ parent_surface_state_applied (gpointer data, gpointer user_data)
 
   if (is_surface_effectively_synchronized (surface))
     apply_pending_state (surface, &surface->sub.pending);
+
+  meta_surface_actor_wayland_sync_subsurface_state (
+    META_SURFACE_ACTOR_WAYLAND (surface->surface_actor));
 }
 
 static void
@@ -522,9 +519,6 @@ apply_pending_state (MetaWaylandSurface      *surface,
       surface->input_region = cairo_region_reference (pending->input_region);
     }
 
-  meta_surface_actor_wayland_sync_state (
-    META_SURFACE_ACTOR_WAYLAND (surface->surface_actor));
-
   /* wl_surface.frame */
   wl_list_insert_list (&compositor->frame_callbacks, &pending->frame_callback_list);
   wl_list_init (&pending->frame_callback_list);
@@ -548,6 +542,9 @@ apply_pending_state (MetaWaylandSurface      *surface,
       subsurface_surface_commit (surface, pending);
       break;
     }
+
+  meta_surface_actor_wayland_sync_state (
+    META_SURFACE_ACTOR_WAYLAND (surface->surface_actor));
 
   pending_state_reset (pending);
 

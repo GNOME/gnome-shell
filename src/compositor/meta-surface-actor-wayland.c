@@ -102,6 +102,45 @@ meta_surface_actor_wayland_get_scale (MetaSurfaceActorWayland *actor)
    return (double)output_scale / (double)priv->surface->scale;
 }
 
+static void
+logical_to_actor_position (MetaSurfaceActorWayland *self,
+                           int                     *x,
+                           int                     *y)
+{
+  MetaWaylandSurface *surface = meta_surface_actor_wayland_get_surface (self);
+  MetaWindow *toplevel_window;
+  int monitor_scale = 1;
+
+  toplevel_window = meta_wayland_surface_get_toplevel_window (surface);
+  if (toplevel_window)
+    monitor_scale = meta_window_wayland_get_main_monitor_scale (toplevel_window);
+
+  *x = *x * monitor_scale;
+  *y = *y * monitor_scale;
+}
+
+void
+meta_surface_actor_wayland_sync_subsurface_state (MetaSurfaceActorWayland *self)
+{
+  MetaWaylandSurface *surface = meta_surface_actor_wayland_get_surface (self);
+  MetaWindow *window;
+  int x = surface->offset_x + surface->sub.x;
+  int y = surface->offset_y + surface->sub.y;
+
+  window = meta_wayland_surface_get_toplevel_window (surface);
+  if (window && window->client_type == META_WINDOW_CLIENT_TYPE_X11)
+    {
+      /* Bail directly if this is part of a Xwayland window and warn
+       * if there happen to be offsets anyway since that is not supposed
+       * to happen. */
+      g_warn_if_fail (x == 0 && y == 0);
+      return;
+    }
+
+  logical_to_actor_position (self, &x, &y);
+  clutter_actor_set_position (CLUTTER_ACTOR (self), x, y);
+}
+
 void
 meta_surface_actor_wayland_sync_state (MetaSurfaceActorWayland *self)
 {
@@ -148,22 +187,28 @@ meta_surface_actor_wayland_sync_state (MetaSurfaceActorWayland *self)
                                             scaled_opaque_region);
       cairo_region_destroy (scaled_opaque_region);
     }
+
+  meta_surface_actor_wayland_sync_subsurface_state (self);
 }
 
 void
 meta_surface_actor_wayland_sync_state_recursive (MetaSurfaceActorWayland *self)
 {
   MetaWaylandSurface *surface = meta_surface_actor_wayland_get_surface (self);
+  MetaWindow *window = meta_wayland_surface_get_toplevel_window (surface);
   GList *iter;
 
   meta_surface_actor_wayland_sync_state (self);
 
-  for (iter = surface->subsurfaces; iter != NULL; iter = iter->next)
+  if (window && window->client_type != META_WINDOW_CLIENT_TYPE_X11)
     {
-      MetaWaylandSurface *subsurf = iter->data;
+      for (iter = surface->subsurfaces; iter != NULL; iter = iter->next)
+        {
+          MetaWaylandSurface *subsurf = iter->data;
 
-      meta_surface_actor_wayland_sync_state_recursive (
-        META_SURFACE_ACTOR_WAYLAND (subsurf->surface_actor));
+          meta_surface_actor_wayland_sync_state_recursive (
+            META_SURFACE_ACTOR_WAYLAND (subsurf->surface_actor));
+        }
     }
 }
 
