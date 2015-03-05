@@ -1619,6 +1619,17 @@ bind_gtk_shell (struct wl_client *client,
   uint32_t capabilities = 0;
 
   resource = wl_resource_create (client, &gtk_shell_interface, version, id);
+
+  if (version != META_GTK_SHELL_VERSION)
+    {
+      wl_resource_post_error (resource,
+                              WL_DISPLAY_ERROR_INVALID_OBJECT,
+                              "Incompatible gtk-shell version "
+                              "(supported version: %d)",
+                              META_GTK_SHELL_VERSION);
+      return;
+    }
+
   wl_resource_set_implementation (resource, &meta_wayland_gtk_shell_interface, data, NULL);
 
   if (!meta_prefs_get_show_fallback_app_menu ())
