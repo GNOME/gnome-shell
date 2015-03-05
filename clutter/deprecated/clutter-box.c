@@ -32,7 +32,8 @@
  *
  * #ClutterBox is available since Clutter 1.2
  *
- * Deprecated: 1.10: Use #ClutterActor instead.
+ * #ClutterBox is deprecated since Clutter 1.10; all its relevant API is provided
+ * by #ClutterActor, via the #ClutterActor:layout-manager property.
  *
  * ## Using ClutterBox
  *
@@ -247,7 +248,12 @@ clutter_box_class_init (ClutterBoxClass *klass)
    * #ClutterBox. Setting this property will set the
    * #ClutterBox:color-set property as a side effect
    *
+   * This property sets the #ClutterActor:background-color property
+   * internally.
+   *
    * Since: 1.2
+   *
+   * Deprecated: 1.10: Use the #ClutterActor:background-color property
    */
   obj_props[PROP_COLOR] =
     clutter_param_spec_color ("color",
@@ -259,9 +265,14 @@ clutter_box_class_init (ClutterBoxClass *klass)
   /**
    * ClutterBox:color-set:
    *
-   * Whether the #ClutterBox:color property has been set
+   * Whether the #ClutterBox:color property has been set.
+   *
+   * This property reads the #ClutterActor:background-color-set property
+   * internally.
    *
    * Since: 1.2
+   *
+   * Deprecated: 1.10: Use the #ClutterActor:background-color-set property
    */
   obj_props[PROP_COLOR_SET] =
     g_param_spec_boolean ("color-set",
@@ -358,7 +369,8 @@ clutter_box_get_layout_manager (ClutterBox *box)
  *
  * Since: 1.2
  *
- * Deprecated: 1.10: Use clutter_actor_add_child() instead.
+ * Deprecated: 1.10: Use clutter_actor_add_child() instead. To set
+ *   specific layout properties, use clutter_layout_manager_child_set()
  */
 void
 clutter_box_packv (ClutterBox          *box,
@@ -520,7 +532,8 @@ clutter_box_set_property_valist (ClutterBox   *box,
  *
  * Since: 1.2
  *
- * Deprecated: 1.10: Use clutter_actor_add_child() instead.
+ * Deprecated: 1.10: Use clutter_actor_add_child() instead. To set
+ *   specific layout properties, use clutter_layout_manager_child_set()
  */
 void
 clutter_box_pack (ClutterBox   *box,
@@ -564,6 +577,7 @@ clutter_box_pack (ClutterBox   *box,
  * Since: 1.2
  *
  * Deprecated: 1.10: Use clutter_actor_insert_child_above() instead.
+ *   To set specific layout properties, use clutter_layout_manager_child_set()
  */
 void
 clutter_box_pack_after (ClutterBox   *box,
@@ -610,6 +624,7 @@ clutter_box_pack_after (ClutterBox   *box,
  * Since: 1.2
  *
  * Deprecated: 1.10: Use clutter_actor_insert_child_below() instead.
+ *   To set specific layout properties, use clutter_layout_manager_child_set()
  */
 void
 clutter_box_pack_before (ClutterBox   *box,
@@ -654,6 +669,7 @@ clutter_box_pack_before (ClutterBox   *box,
  * Since: 1.2
  *
  * Deprecated: 1.10: Use clutter_actor_insert_child_at_index() instead.
+ *   To set specific layout properties, use clutter_layout_manager_child_set()
  */
 void
 clutter_box_pack_at (ClutterBox   *box,
