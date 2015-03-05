@@ -24,6 +24,17 @@ const DISABLE_LOG_OUT_KEY = 'disable-log-out';
 const DISABLE_RESTART_KEY = 'disable-restart-buttons';
 const ALWAYS_SHOW_LOG_OUT_KEY = 'always-show-log-out';
 
+const SENSOR_BUS_NAME = 'net.hadess.SensorProxy';
+const SENSOR_OBJECT_PATH = '/net/hadess/SensorProxy';
+
+const SensorProxyInterface = '<node> \
+<interface name="net.hadess.SensorProxy"> \
+  <property name="HasAccelerometer" type="b" access="read"/> \
+</interface> \
+</node>';
+
+const SensorProxy = Gio.DBusProxy.makeProxyWrapper(SensorProxyInterface);
+
 const AltSwitcher = new Lang.Class({
     Name: 'AltSwitcher',
 
@@ -144,21 +155,30 @@ const Indicator = new Lang.Class({
 
         this._orientationSettings.connect('changed::orientation-lock',
                                           Lang.bind(this, this._updateOrientationLock));
-        this._orientationExists = false;
-        Gio.DBus.session.watch_name('org.gnome.SettingsDaemon.Orientation',
-                                    Gio.BusNameWatcherFlags.NONE,
-                                    Lang.bind(this, function() {
-                                        this._orientationExists = true;
-                                        this._updateOrientationLock();
-                                    }),
-                                    Lang.bind(this, function() {
-                                        this._orientationExists = false;
-                                        this._updateOrientationLock();
-                                    }));
+        Gio.DBus.system.watch_name(SENSOR_BUS_NAME,
+                                   Gio.BusNameWatcherFlags.NONE,
+                                   Lang.bind(this, this._sensorProxyAppeared),
+                                   Lang.bind(this, function() {
+                                       this._sensorProxy = null;
+                                       this._updateOrientationLock();
+                                   }));
         this._updateOrientationLock();
 
         Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
         this._sessionUpdated();
+    },
+
+    _sensorProxyAppeared: function() {
+        this._sensorProxy = new SensorProxy(Gio.DBus.system, SENSOR_BUS_NAME, SENSOR_OBJECT_PATH,
+            Lang.bind(this, function(proxy, error) {
+                if (error) {
+                    log(error.message);
+                    return;
+                }
+                this._sensorProxy.connect('g-properties-changed',
+                                          Lang.bind(this, this._updateOrientationLock));
+                this._updateOrientationLock();
+            }));
     },
 
     _updateActionsVisibility: function() {
@@ -237,7 +257,10 @@ const Indicator = new Lang.Class({
     },
 
     _updateOrientationLock: function() {
-        this._orientationLockAction.visible = this._orientationExists;
+        if (this._sensorProxy)
+            this._orientationLockAction.visible = this._sensorProxy.HasAccelerometer;
+        else
+            this._orientationLockAction.visible = false;
 
         let locked = this._orientationSettings.get_boolean('orientation-lock');
         let icon = this._orientationLockAction.child;
