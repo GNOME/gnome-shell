@@ -29,7 +29,11 @@
  *
  * #ClutterRectangle is a #ClutterActor which draws a simple filled rectangle.
  *
- * Deprecated: 1.10: Use #ClutterActor instead.
+ * #ClutterRectangle is deprecated since Clutter 1.10. If you want an actor
+ * painting a solid color, you can replace it with #ClutterActor and set the
+ * #ClutterActor:background-color property to the desired #ClutterColor. If
+ * you are drawing more complex shapes, use #ClutterCanvas to draw using the
+ * Cairo 2D API instead.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -338,7 +342,9 @@ clutter_rectangle_init (ClutterRectangle *self)
  *
  * Creates a new #ClutterActor with a rectangular shape.
  *
- * Return value: a new #ClutterActor
+ * Return value: a new #ClutterRectangle
+ *
+ * Deprecated: 1.10: Use clutter_actor_new() instead
  */
 ClutterActor*
 clutter_rectangle_new (void)
@@ -353,7 +359,10 @@ clutter_rectangle_new (void)
  * Creates a new #ClutterActor with a rectangular shape
  * and of the given @color.
  *
- * Return value: a new #ClutterActor
+ * Return value: a new #ClutterRectangle
+ *
+ * Deprecated: 1.10: Use clutter_actor_new() and
+ *   clutter_actor_set_background_color() instead
  */
 ClutterActor *
 clutter_rectangle_new_with_color (const ClutterColor *color)
@@ -369,6 +378,9 @@ clutter_rectangle_new_with_color (const ClutterColor *color)
  * @color: (out caller-allocates): return location for a #ClutterColor
  *
  * Retrieves the color of @rectangle.
+ *
+ * Deprecated: 1.10: Use #ClutterActor and clutter_actor_get_background_color()
+ *   instead
  */
 void
 clutter_rectangle_get_color (ClutterRectangle *rectangle,
@@ -393,6 +405,9 @@ clutter_rectangle_get_color (ClutterRectangle *rectangle,
  * @color: a #ClutterColor
  *
  * Sets the color of @rectangle.
+ *
+ * Deprecated: 1.10: Use #ClutterActor and clutter_actor_set_background_color()
+ *   instead
  */
 void
 clutter_rectangle_set_color (ClutterRectangle   *rectangle,
@@ -436,6 +451,9 @@ clutter_rectangle_set_color (ClutterRectangle   *rectangle,
  * Return value: the border's width
  *
  * Since: 0.2
+ *
+ * Deprecated: 1.10: Use #ClutterActor and a #ClutterCanvas content
+ *   to draw the border using Cairo
  */
 guint
 clutter_rectangle_get_border_width (ClutterRectangle *rectangle)
@@ -454,6 +472,9 @@ clutter_rectangle_get_border_width (ClutterRectangle *rectangle)
  * A @width of 0 will unset the border.
  *
  * Since: 0.2
+ *
+ * Deprecated: 1.10: Use #ClutterActor and a #ClutterCanvas content
+ *   to draw the border using Cairo
  */
 void
 clutter_rectangle_set_border_width (ClutterRectangle *rectangle,
@@ -492,6 +513,9 @@ clutter_rectangle_set_border_width (ClutterRectangle *rectangle,
  * it into @color.
  *
  * Since: 0.2
+ *
+ * Deprecated: 1.10: Use #ClutterActor and a #ClutterCanvas to draw
+ *   the border with Cairo
  */
 void
 clutter_rectangle_get_border_color (ClutterRectangle *rectangle,
@@ -516,6 +540,9 @@ clutter_rectangle_get_border_color (ClutterRectangle *rectangle,
  * @color: the color of the border
  *
  * Sets the color of the border used by @rectangle using @color
+ *
+ * Deprecated: 1.10: Use #ClutterActor and a #ClutterCanvas to draw
+ *   the border with Cairo
  */
 void
 clutter_rectangle_set_border_color (ClutterRectangle   *rectangle,
