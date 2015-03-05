@@ -430,11 +430,15 @@ parent_surface_state_applied (gpointer data, gpointer user_data)
   if (surface->sub.pending_placement_ops)
     {
       GSList *it;
+      MetaWaylandSurface *parent = surface->sub.parent;
+      ClutterActor *parent_actor =
+        clutter_actor_get_parent (CLUTTER_ACTOR (parent->surface_actor));
+      ClutterActor *surface_actor =
+        surface_actor = CLUTTER_ACTOR (surface->surface_actor);
+
       for (it = surface->sub.pending_placement_ops; it; it = it->next)
         {
           MetaWaylandSubsurfacePlacementOp *op = it->data;
-          ClutterActor *surface_actor;
-          ClutterActor *parent_actor;
           ClutterActor *sibling_actor;
 
           if (!op->sibling)
@@ -443,8 +447,6 @@ parent_surface_state_applied (gpointer data, gpointer user_data)
               continue;
             }
 
-          surface_actor = CLUTTER_ACTOR (surface->surface_actor);
-          parent_actor = clutter_actor_get_parent (CLUTTER_ACTOR (surface->sub.parent));
           sibling_actor = CLUTTER_ACTOR (op->sibling->surface_actor);
 
           switch (op->placement)
