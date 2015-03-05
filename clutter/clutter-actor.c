@@ -30,7 +30,7 @@
  * and it encapsulates the position, size, and transformations of a node in
  * the graph.
  *
- * ## Actor transformations
+ * ## Actor transformations ## {#clutter-actor-transformations}
  *
  * Each actor can be transformed using methods like clutter_actor_set_scale()
  * or clutter_actor_set_rotation(). The order in which the transformations are
@@ -46,7 +46,7 @@
  *  8. negative translation by the #ClutterActor:anchor-x and #ClutterActor:anchor-y point.
  *  9. negative translation by the actor's #ClutterActor:pivot-point
  *
- * ## Modifying an actor's geometry
+ * ## Modifying an actor's geometry ## {#clutter-actor-geometry}
  *
  * Each actor has a bounding box, called #ClutterActor:allocation
  * which is either set by its parent or explicitly through the
@@ -63,7 +63,7 @@
  * clutter_actor_set_x() and clutter_actor_set_y(); the coordinates are
  * relative to the origin of the actor’s parent.
  *
- * ## Managing actor children
+ * ## Managing actor children ## {#clutter-actor-children}
  *
  * Each actor can have multiple children, by calling
  * clutter_actor_add_child() to add a new child actor, and
@@ -110,7 +110,7 @@
  *
  * See [basic-actor.c](https://git.gnome.org/browse/clutter/tree/examples/basic-actor.c?h=clutter-1.18).
  *
- * ## Painting an actor
+ * ## Painting an actor ## {#clutter-actor-painting}
  *
  * There are three ways to paint an actor:
  *
@@ -179,7 +179,7 @@
  * signal. These hooks into the paint sequence are considered legacy, and
  * will be removed when the Clutter API changes.
  *
- * ## Handling events on an actor
+ * ## Handling events on an actor ## {#clutter-actor-event-handling}
  *
  * A #ClutterActor can receive and handle input device events, for
  * instance pointer events and key events, as long as its
@@ -199,7 +199,7 @@
  * through the scene graph by returning %CLUTTER_EVENT_STOP; otherwise, they can
  * continue the propagation by returning %CLUTTER_EVENT_PROPAGATE.
  *
- * ## Animation
+ * ## Animation ## {#clutter-actor-animation}
  *
  * Animation is a core concept of modern user interfaces; Clutter provides a
  * complete and powerful animation framework that automatically tweens the
@@ -366,7 +366,7 @@
  * clutter_actor_add_transition (actor, "opacityAnimation", transition);
  * ]|
  *
- * ## Implementing an actor
+ * ## Implementing an actor ## {#clutter-actor-implementing}
  *
  * Careful consideration should be given when deciding to implement
  * a #ClutterActor sub-class. It is generally recommended to implement a
@@ -391,7 +391,7 @@
  * In general, it is strongly encouraged to use delegation and composition
  * instead of direct subclassing.
  *
- * ## ClutterActor custom properties for ClutterScript
+ * ## ClutterActor custom properties for ClutterScript ## {#clutter-actor-custom-script}
  *
  * #ClutterActor defines a custom "rotation" property which allows a short-hand
  * description of the rotations to be applied to an actor.
