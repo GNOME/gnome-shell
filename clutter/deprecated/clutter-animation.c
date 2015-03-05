@@ -71,7 +71,11 @@
  *
  * #ClutterAnimation is available since Clutter 1.0.
  *
- * #ClutterAnimation has been deprecated in Clutter 1.12.
+ * #ClutterAnimation has been deprecated in Clutter 1.12. You should use
+ * the [implicit animation API][clutter-actor-animation] available inside
+ * #ClutterActor instead. If you require to define explicit transitions for
+ * one or more properties in order to reuse them, see #ClutterTransition
+ * instead.
  *
  * ## Defining ClutterAnimationMode inside ClutterScript
  *
@@ -2084,7 +2088,10 @@ animation_create_for_actor (ClutterActor *actor)
  *
  * Since: 1.0
  *
- * Deprecated: 1.10: Use clutter_actor_animate_with_timeline() instead
+ * Deprecated: 1.10: Use the implicit transition for animatable properties
+ *   in #ClutterActor instead. See clutter_actor_save_easing_state(),
+ *   clutter_actor_set_easing_mode(), clutter_actor_set_easing_duration(),
+ *   clutter_actor_set_easing_delay(), and clutter_actor_restore_easing_state().
  */
 ClutterAnimation *
 clutter_actor_animate_with_alpha (ClutterActor *actor,
@@ -2144,7 +2151,9 @@ clutter_actor_animate_with_alpha (ClutterActor *actor,
  *
  * Since: 1.0
  * Deprecated: 1.12: Use the implicit transition for animatable properties
- *   in #ClutterActor instead.
+ *   in #ClutterActor instead. See clutter_actor_save_easing_state(),
+ *   clutter_actor_set_easing_mode(), clutter_actor_set_easing_duration(),
+ *   clutter_actor_set_easing_delay(), and clutter_actor_restore_easing_state().
  */
 ClutterAnimation *
 clutter_actor_animate_with_timeline (ClutterActor    *actor,
@@ -2330,7 +2339,9 @@ clutter_actor_animate_with_timeline (ClutterActor    *actor,
  *
  * Since: 1.0
  * Deprecated: 1.12: Use the implicit transition for animatable properties
- *   in #ClutterActor instead.
+ *   in #ClutterActor instead. See clutter_actor_save_easing_state(),
+ *   clutter_actor_set_easing_mode(), clutter_actor_set_easing_duration(),
+ *   clutter_actor_set_easing_delay(), and clutter_actor_restore_easing_state().
  */
 ClutterAnimation *
 clutter_actor_animate (ClutterActor *actor,
@@ -2387,7 +2398,9 @@ clutter_actor_animate (ClutterActor *actor,
  *
  * Since: 1.0
  * Deprecated: 1.12: Use the implicit transition for animatable properties
- *   in #ClutterActor instead.
+ *   in #ClutterActor instead. See clutter_actor_save_easing_state(),
+ *   clutter_actor_set_easing_mode(), clutter_actor_set_easing_duration(),
+ *   clutter_actor_set_easing_delay(), and clutter_actor_restore_easing_state().
  */
 ClutterAnimation *
 clutter_actor_animatev (ClutterActor        *actor,
@@ -2446,7 +2459,9 @@ clutter_actor_animatev (ClutterActor        *actor,
  *
  * Since: 1.0
  * Deprecated: 1.12: Use the implicit transition for animatable properties
- *   in #ClutterActor instead.
+ *   in #ClutterActor instead. See clutter_actor_save_easing_state(),
+ *   clutter_actor_set_easing_mode(), clutter_actor_set_easing_duration(),
+ *   clutter_actor_set_easing_delay(), and clutter_actor_restore_easing_state().
  */
 ClutterAnimation *
 clutter_actor_animate_with_timelinev (ClutterActor        *actor,
@@ -2502,7 +2517,10 @@ clutter_actor_animate_with_timelinev (ClutterActor        *actor,
  *
  * Since: 1.0
  *
- * Deprecated: 1.10: Use clutter_actor_animate_with_timelinev() instead
+ * Deprecated: 1.10: Use the implicit transition for animatable properties
+ *   in #ClutterActor instead. See clutter_actor_save_easing_state(),
+ *   clutter_actor_set_easing_mode(), clutter_actor_set_easing_duration(),
+ *   clutter_actor_set_easing_delay(), and clutter_actor_restore_easing_state().
  */
 ClutterAnimation *
 clutter_actor_animate_with_alphav (ClutterActor        *actor,
