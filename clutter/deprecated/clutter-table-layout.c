@@ -70,8 +70,6 @@
  * Since Clutter 1.18 it's recommended to use #ClutterGridLayout instead
  * of #ClutterTableLayout; the former supports right-to-left text direction,
  * as well as using the alignment and expansion flags on #ClutterActor.
- *
- * Deprecated: 1.18
  */
 
 #ifdef HAVE_CONFIG_H
@@ -1623,7 +1621,7 @@ clutter_table_layout_class_init (ClutterTableLayoutClass *klass)
    *
    * Since: 1.4
    *
-   * Deprecated: 1.18
+   * Deprecated: 1.18: Use #ClutterGridLayout:column-spacing instead
    */
   pspec = g_param_spec_uint ("column-spacing",
                              P_("Column Spacing"),
@@ -1639,7 +1637,7 @@ clutter_table_layout_class_init (ClutterTableLayoutClass *klass)
    *
    * Since: 1.4
    *
-   * Deprecated: 1.18
+   * Deprecated: 1.18: Use #ClutterGridLayout:row-spacing instead
    */
   pspec = g_param_spec_uint ("row-spacing",
                              P_("Row Spacing"),
@@ -1764,7 +1762,7 @@ clutter_table_layout_new (void)
  *
  * Since: 1.4
  *
- * Deprecated: 1.18: Use #ClutterGridLayout instead
+ * Deprecated: 1.18: Use #ClutterGridLayout:column-spacing instead
  */
 void
 clutter_table_layout_set_column_spacing (ClutterTableLayout *layout,
@@ -1799,7 +1797,7 @@ clutter_table_layout_set_column_spacing (ClutterTableLayout *layout,
  *
  * Since: 1.4
  *
- * Deprecated: 1.18: Use #ClutterGridLayout instead
+ * Deprecated: 1.18: Use #ClutterGridLayout:column-spacing
  */
 guint
 clutter_table_layout_get_column_spacing (ClutterTableLayout *layout)
@@ -1818,7 +1816,7 @@ clutter_table_layout_get_column_spacing (ClutterTableLayout *layout)
  *
  * Since: 1.4
  *
- * Deprecated: 1.18: Use #ClutterGridLayout instead
+ * Deprecated: 1.18: Use #ClutterGridLayout:row-spacing instead
  */
 void
 clutter_table_layout_set_row_spacing (ClutterTableLayout *layout,
@@ -1853,7 +1851,7 @@ clutter_table_layout_set_row_spacing (ClutterTableLayout *layout,
  *
  * Since: 1.4
  *
- * Deprecated: 1.18: Use #ClutterGridLayout instead
+ * Deprecated: 1.18: Use #ClutterGridLayout:row-spacing instead
  */
 guint
 clutter_table_layout_get_row_spacing (ClutterTableLayout *layout)
@@ -1875,7 +1873,7 @@ clutter_table_layout_get_row_spacing (ClutterTableLayout *layout)
  *
  * Since: 1.4
  *
- * Deprecated: 1.18: Use #ClutterGridLayout instead
+ * Deprecated: 1.18: Use clutter_grid_layout_attach_child() instead
  */
 void
 clutter_table_layout_pack (ClutterTableLayout  *layout,
@@ -1931,7 +1929,8 @@ clutter_table_layout_pack (ClutterTableLayout  *layout,
  *
  * Since: 1.4
  *
- * Deprecated: 1.18: Use #ClutterGridLayout instead
+ * Deprecated: 1.18: Use the `width` and `height` layout properties
+ *   of #ClutterGridLayout instead
  */
 void
 clutter_table_layout_set_span (ClutterTableLayout *layout,
@@ -1987,7 +1986,8 @@ clutter_table_layout_set_span (ClutterTableLayout *layout,
  *
  * Since: 1.4
  *
- * Deprecated: 1.18: Use #ClutterGridLayout instead
+ * Deprecated: 1.18: Use the `width` and `height` layout properties
+ *   of #ClutterGridLayout instead
  */
 void
 clutter_table_layout_get_span (ClutterTableLayout *layout,
@@ -2405,7 +2405,8 @@ clutter_table_layout_get_expand (ClutterTableLayout *layout,
  * Since: 1.4
  *
  * Deprecated: 1.12: #ClutterTableLayout will honour the easing state
- *   of the children when allocating them
+ *   of the children when allocating them. See clutter_actor_set_easing_mode()
+ *   and clutter_actor_set_easing_duration().
  */
 void
 clutter_table_layout_set_use_animations (ClutterTableLayout *layout,
@@ -2438,7 +2439,9 @@ clutter_table_layout_set_use_animations (ClutterTableLayout *layout,
  *
  * Since: 1.4
  *
- * Deprecated: 1.12
+ * Deprecated: 1.12: #ClutterTableLayout will honour the easing state
+ *   of the children when allocating them. See clutter_actor_set_easing_mode()
+ *   and clutter_actor_set_easing_duration().
  */
 gboolean
 clutter_table_layout_get_use_animations (ClutterTableLayout *layout)
@@ -2463,7 +2466,8 @@ clutter_table_layout_get_use_animations (ClutterTableLayout *layout)
  * Since: 1.4
  *
  * Deprecated: 1.12: #ClutterTableLayout will honour the easing state
- *   of the children when allocating them
+ *   of the children when allocating them. See clutter_actor_set_easing_mode()
+ *   and clutter_actor_set_easing_duration().
  */
 void
 clutter_table_layout_set_easing_mode (ClutterTableLayout *layout,
@@ -2494,7 +2498,8 @@ clutter_table_layout_set_easing_mode (ClutterTableLayout *layout,
  * Since: 1.4
  *
  * Deprecated: 1.12: #ClutterTableLayout will honour the easing state
- *   of the children when allocating them
+ *   of the children when allocating them. See clutter_actor_set_easing_mode()
+ *   and clutter_actor_set_easing_duration().
  */
 gulong
 clutter_table_layout_get_easing_mode (ClutterTableLayout *layout)
@@ -2519,7 +2524,8 @@ clutter_table_layout_get_easing_mode (ClutterTableLayout *layout)
  * Since: 1.4
  *
  * Deprecated: 1.12: #ClutterTableLayout will honour the easing state
- *   of the children when allocating them
+ *   of the children when allocating them. See clutter_actor_set_easing_mode()
+ *   and clutter_actor_set_easing_duration().
  */
 void
 clutter_table_layout_set_easing_duration (ClutterTableLayout *layout,
@@ -2549,7 +2555,9 @@ clutter_table_layout_set_easing_duration (ClutterTableLayout *layout,
  *
  * Since: 1.4
  *
- * Deprecated: 1.12
+ * Deprecated: 1.12: #ClutterTableLayout will honour the easing state
+ *   of the children when allocating them. See clutter_actor_set_easing_mode()
+ *   and clutter_actor_set_easing_duration().
  */
 guint
 clutter_table_layout_get_easing_duration (ClutterTableLayout *layout)
@@ -2570,7 +2578,7 @@ clutter_table_layout_get_easing_duration (ClutterTableLayout *layout)
  *
  * Since: 1.4
  *
- * Deprecated: 1.18: Use #ClutterGridLayout instead
+ * Deprecated: 1.18: No direct replacement is available
  */
 gint
 clutter_table_layout_get_row_count (ClutterTableLayout *layout)
@@ -2591,7 +2599,7 @@ clutter_table_layout_get_row_count (ClutterTableLayout *layout)
  *
  * Since: 1.4
  *
- * Deprecated: 1.18: Use #ClutterGridLayout instead
+ * Deprecated: 1.18: No direct replacement is available
  */
 gint
 clutter_table_layout_get_column_count (ClutterTableLayout *layout)
