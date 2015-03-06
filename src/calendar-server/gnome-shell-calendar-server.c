@@ -80,6 +80,7 @@ typedef struct
 
 typedef struct
 {
+  char   *id;
   char   *uid;
   char   *rid;
   char   *backend_name;
@@ -348,6 +349,9 @@ calendar_appointment_free (CalendarAppointment *appointment)
   g_slist_free (appointment->occurrences);
   appointment->occurrences = NULL;
 
+  g_free (appointment->id);
+  appointment->id = NULL;
+
   g_free (appointment->uid);
   appointment->uid = NULL;
 
@@ -376,6 +380,8 @@ calendar_appointment_init (CalendarAppointment  *appointment,
                            ECalClient           *cal,
                            icaltimezone         *default_zone)
 {
+  const char *source_uid;
+
   appointment->uid          = get_ical_uid (ical);
   appointment->rid          = get_ical_rid (ical);
   appointment->backend_name = get_source_backend_name (cal);
@@ -387,6 +393,16 @@ calendar_appointment_init (CalendarAppointment  *appointment,
   appointment->is_all_day   = get_ical_is_all_day (ical,
                                                    appointment->start_time,
                                                    default_zone);
+
+  /* While the UID is usually enough to identify an event, only the triple
+   * of (source,UID,RID) is fully unambiguous; neither may contain '\n',
+   * so we can safely use it to create a unique ID from the triple
+   */
+  source_uid = e_source_get_uid (e_client_get_source (E_CLIENT (cal)));
+  appointment->id = g_strdup_printf ("%s\n%s\n%s",
+                                     source_uid,
+                                     appointment->uid,
+                                     appointment->rid ? appointment->rid : "");
 }
 
 static icaltimezone *
@@ -916,7 +932,7 @@ handle_method_call (GDBusConnection       *connection,
                   g_variant_builder_init (&extras_builder, G_VARIANT_TYPE ("a{sv}"));
                   g_variant_builder_add (&builder,
                                          "(sssbxxa{sv})",
-                                         a->uid,
+                                         a->id,
                                          a->summary != NULL ? a->summary : "",
                                          a->description != NULL ? a->description : "",
                                          (gboolean) a->is_all_day,
