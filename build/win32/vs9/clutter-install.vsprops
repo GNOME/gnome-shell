@@ -11,15 +11,15 @@
 mkdir $(CopyDir)&#x0D;&#x0A;
 mkdir $(CopyDir)\bin&#x0D;&#x0A;
 mkdir $(CopyDir)\share\clutter-$(ApiVersion)\data&#x0D;&#x0A;
-copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\*.dll $(CopyDir)\bin&#x0D;&#x0A;
+copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\$(ClutterDllPrefix)clutter$(ClutterDllSuffix).dll $(CopyDir)\bin&#x0D;&#x0A;
+copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\$(ClutterDllPrefix)clutter$(ClutterDllSuffix).pdb $(CopyDir)\bin&#x0D;&#x0A;
 
-copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\*.exe $(CopyDir)\bin&#x0D;&#x0A;
 copy ..\..\..\tests\interactive\*.png $(CopyDir)\share\clutter-$(ApiVersion)\data&#x0D;&#x0A;
 copy ..\..\..\tests\clutter-1.0.suppressions $(CopyDir)\share\clutter-$(ApiVersion)\data&#x0D;&#x0A;
 copy ..\..\..\tests\interactive\*.json $(CopyDir)\share\clutter-$(ApiVersion)\data&#x0D;&#x0A;
 
 mkdir $(CopyDir)\lib&#x0D;&#x0A;
-copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\*-$(ApiVersion).lib $(CopyDir)\lib&#x0D;&#x0A;
+copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\clutter-$(ApiVersion).lib $(CopyDir)\lib&#x0D;&#x0A;
 
 if &quot;$(ConfigurationName)&quot; == &quot;Release&quot; goto DO_INSTALL_COMMON_HEADERS&#x0D;&#x0A;
 if &quot;$(ConfigurationName)&quot; == &quot;Debug&quot; goto DO_INSTALL_COMMON_HEADERS&#x0D;&#x0A;

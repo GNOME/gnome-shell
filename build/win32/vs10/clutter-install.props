@@ -12,15 +12,15 @@ mkdir $(CopyDir)
 mkdir $(CopyDir)\bin
 mkdir $(CopyDir)\share\clutter-$(ApiVersion)\data
 
-copy $(BinDir)\*.dll $(CopyDir)\bin
-copy $(BinDir)\*.exe $(CopyDir)\bin
+copy $(BinDir)\$(ClutterDllPrefix)clutter$(ClutterDllSuffix).dll $(CopyDir)\bin
+copy $(BinDir)\$(ClutterDllPrefix)clutter$(ClutterDllSuffix).pdb $(CopyDir)\bin
 
 copy ..\..\..\tests\interactive\*.png $(CopyDir)\share\clutter-$(ApiVersion)\data
 copy ..\..\..\tests\clutter-1.0.suppressions $(CopyDir)\share\clutter-$(ApiVersion)\data
 copy ..\..\..\tests\interactive\*.json $(CopyDir)\share\clutter-$(ApiVersion)\data
 
 mkdir $(CopyDir)\lib
-copy $(BinDir)\*-$(ApiVersion).lib $(CopyDir)\lib
+copy $(BinDir)\clutter-$(ApiVersion).lib $(CopyDir)\lib
 
 mkdir $(CopyDir)\include\clutter-$(ApiVersion)\clutter\win32
 
