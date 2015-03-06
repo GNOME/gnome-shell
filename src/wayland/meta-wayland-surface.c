@@ -1554,14 +1554,14 @@ gtk_surface_destructor (struct wl_resource *resource)
 }
 
 static void
-set_dbus_properties (struct wl_client   *client,
-                     struct wl_resource *resource,
-                     const char         *application_id,
-                     const char         *app_menu_path,
-                     const char         *menubar_path,
-                     const char         *window_object_path,
-                     const char         *application_object_path,
-                     const char         *unique_bus_name)
+gtk_surface_set_dbus_properties (struct wl_client   *client,
+                                 struct wl_resource *resource,
+                                 const char         *application_id,
+                                 const char         *app_menu_path,
+                                 const char         *menubar_path,
+                                 const char         *window_object_path,
+                                 const char         *application_object_path,
+                                 const char         *unique_bus_name)
 {
   MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
 
@@ -1581,8 +1581,36 @@ set_dbus_properties (struct wl_client   *client,
                                        window_object_path);
 }
 
+static void
+gtk_surface_set_modal (struct wl_client   *client,
+                       struct wl_resource *resource)
+{
+  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
+
+  if (surface->is_modal)
+    return;
+
+  surface->is_modal = TRUE;
+  meta_window_set_type (surface->window, META_WINDOW_MODAL_DIALOG);
+}
+
+static void
+gtk_surface_unset_modal (struct wl_client   *client,
+                         struct wl_resource *resource)
+{
+  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
+
+  if (!surface->is_modal)
+    return;
+
+  surface->is_modal = FALSE;
+  meta_window_set_type (surface->window, META_WINDOW_NORMAL);
+}
+
 static const struct gtk_surface_interface meta_wayland_gtk_surface_interface = {
-  set_dbus_properties
+  gtk_surface_set_dbus_properties,
+  gtk_surface_set_modal,
+  gtk_surface_unset_modal,
 };
 
 static void

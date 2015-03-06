@@ -101,6 +101,7 @@ struct _MetaWaylandSurface
   struct wl_resource *xdg_shell_resource;
   MetaWaylandSerial acked_configure_serial;
   gboolean has_set_geometry;
+  gboolean is_modal;
 
   /* xdg_popup */
   struct {
