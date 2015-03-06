@@ -6,6 +6,7 @@ const Clutter = imports.gi.Clutter;
 const AccountsService = imports.gi.AccountsService;
 const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
+const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 const St = imports.gi.St;
 
@@ -117,6 +118,7 @@ const UserWidgetLabel = new Lang.Class({
             this._currentLabel = this._realNameLabel;
         else
             this._currentLabel = this._userNameLabel;
+        this.label_actor = this._currentLabel;
 
         let childBox = new Clutter.ActorBox();
         childBox.x1 = 0;
@@ -157,6 +159,9 @@ const UserWidget = new Lang.Class({
 
         this._label = new UserWidgetLabel(user);
         this.actor.add_child(this._label);
+
+        this._label.bind_property('label-actor', this.actor, 'label-actor',
+                                  GObject.BindingFlags.SYNC_CREATE);
 
         this._userLoadedId = this._user.connect('notify::is-loaded', Lang.bind(this, this._updateUser));
         this._userChangedId = this._user.connect('changed', Lang.bind(this, this._updateUser));
