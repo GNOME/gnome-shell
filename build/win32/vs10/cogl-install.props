@@ -15,22 +15,37 @@ mkdir $(CopyDir)\lib
 if "$(Configuration)" == "Release_SDL" goto DO_REL_BIN
 if "$(Configuration)" == "Debug_SDL" goto DO_DBG_BIN
 
-copy $(BinDir)\*.dll $(CopyDir)\bin
-copy $(BinDir)\*-$(ApiVersion).lib $(CopyDir)\lib
-copy $(BinDir)\*.exe $(CopyDir)\bin
+copy $(BinDir)\$(CoglDllPrefix)cogl$(CoglDllSuffix).dll $(CopyDir)\bin
+copy $(BinDir)\$(CoglDllPrefix)cogl$(CoglDllSuffix).pdb $(CopyDir)\bin
+copy $(BinDir)\$(CoglDllPrefix)cogl-*$(CoglDllSuffix).dll $(CopyDir)\bin
+copy $(BinDir)\$(CoglDllPrefix)cogl-*$(CoglDllSuffix).pdb $(CopyDir)\bin
+copy $(BinDir)\cogl-$(ApiVersion).lib $(CopyDir)\lib
+copy $(BinDir)\cogl-*-$(ApiVersion).lib $(CopyDir)\lib
+copy $(BinDir)\cogl-*.exe $(CopyDir)\bin
+copy $(BinDir)\cogl-*.pdb $(CopyDir)\bin
 
 goto DONE_BIN
 
 :DO_REL_BIN
-copy Release\$(Platform)\bin\*.dll $(CopyDir)\bin
-copy Release\$(Platform)\bin\*-$(ApiVersion).lib $(CopyDir)\lib
-copy Release\$(Platform)\bin\*.exe $(CopyDir)\bin
+copy Release\$(Platform)\bin\$(CoglDllPrefix)cogl$(CoglDllSuffix).dll $(CopyDir)\bin
+copy Release\$(Platform)\bin\$(CoglDllPrefix)cogl$(CoglDllSuffix).pdb $(CopyDir)\bin
+copy Release\$(Platform)\bin\$(CoglDllPrefix)cogl-*$(CoglDllSuffix).dll $(CopyDir)\bin
+copy Release\$(Platform)\bin\$(CoglDllPrefix)cogl-*$(CoglDllSuffix).pdb $(CopyDir)\bin
+copy Release\$(Platform)\bin\cogl-$(ApiVersion).lib $(CopyDir)\lib
+copy Release\$(Platform)\bin\cogl-*-$(ApiVersion).lib $(CopyDir)\lib
+copy Release\$(Platform)\bin\cogl-*.exe $(CopyDir)\bin
+copy Release\$(Platform)\bin\cogl-*.pdb $(CopyDir)\bin
 goto DONE_BIN
 
 :DO_DBG_BIN
-copy Debug\$(Platform)\bin\*.dll $(CopyDir)\bin
-copy Debug\$(Platform)\bin\*-$(ApiVersion).lib $(CopyDir)\lib
-copy Debug\$(Platform)\bin\*.exe $(CopyDir)\bin
+copy Debug\$(Platform)\bin\$(CoglDllPrefix)cogl$(CoglDllSuffix).dll $(CopyDir)\bin
+copy Debug\$(Platform)\bin\$(CoglDllPrefix)cogl$(CoglDllSuffix).pdb $(CopyDir)\bin
+copy Debug\$(Platform)\bin\$(CoglDllPrefix)cogl-*$(CoglDllSuffix).dll $(CopyDir)\bin
+copy Debug\$(Platform)\bin\$(CoglDllPrefix)cogl-*$(CoglDllSuffix).pdb $(CopyDir)\bin
+copy Debug\$(Platform)\bin\cogl-$(ApiVersion).lib $(CopyDir)\lib
+copy Debug\$(Platform)\bin\cogl-*-$(ApiVersion).lib $(CopyDir)\lib
+copy Debug\$(Platform)\bin\cogl-*.exe $(CopyDir)\bin
+copy Debug\$(Platform)\bin\cogl-*.pdb $(CopyDir)\bin
 goto DONE_BIN
 
 :DONE_BIN
