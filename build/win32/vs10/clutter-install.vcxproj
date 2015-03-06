@@ -20,7 +20,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{35B2A4AC-7235-4FC7-995D-469D59195041}</ProjectGuid>
-    <RootNamespace>install</RootNamespace>
+    <RootNamespace>clutterinstall</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">

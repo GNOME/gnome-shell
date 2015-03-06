@@ -39,7 +39,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cally-clone-example", "call
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test-interactive-clutter", "test-interactive-clutter.vcxproj", "{75F9E5AF-040C-448E-96BE-C282EFFFE2D9}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "install", "install.vcxproj", "{35B2A4AC-7235-4FC7-995D-469D59195041}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "clutter-install", "clutter-install.vcxproj", "{35B2A4AC-7235-4FC7-995D-469D59195041}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

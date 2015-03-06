@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="install"
+	Name="clutter-install"
 	ProjectGUID="{35B2A4AC-7235-4FC7-995D-469D59195041}"
-	RootNamespace="install"
+	RootNamespace="clutterinstall"
 	TargetFrameworkVersion="196613"
 	>
 	<Platforms>

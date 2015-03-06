@@ -11,7 +11,7 @@ EXTRA_DIST = \
 	clutter-gen-srcs.vsprops	\
 	clutter-install.vsprops	\
 	clutter-version-paths.vsprops	\
-	install.vcproj	\
+	clutter-install.vcproj	\
 	test-cogl-perf.vcproj		\
 	test-interactive-clutter.vcproj		\
 	test-interactive-clutter.vcprojin	\
