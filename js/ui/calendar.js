@@ -242,7 +242,8 @@ const URLHighlighter = new Lang.Class({
 const CalendarEvent = new Lang.Class({
     Name: 'CalendarEvent',
 
-    _init: function(date, end, summary, allDay) {
+    _init: function(id, date, end, summary, allDay) {
+        this.id = id;
         this.date = date;
         this.end = end;
         this.summary = summary;
@@ -414,9 +415,10 @@ const DBusEventSource = new Lang.Class({
                 let a = appointments[n];
                 let date = new Date(a[4] * 1000);
                 let end = new Date(a[5] * 1000);
+                let id = a[0];
                 let summary = a[1];
                 let allDay = a[3];
-                let event = new CalendarEvent(date, end, summary, allDay);
+                let event = new CalendarEvent(id, date, end, summary, allDay);
                 newEvents.push(event);
             }
             newEvents.sort(function(event1, event2) {
@@ -1477,11 +1479,26 @@ const EventsSection = new Lang.Class({
         this._desktopSettings.connect('changed', Lang.bind(this, this._reloadEvents));
         this._eventSource = new EmptyEventSource();
 
+        this._ignoredEvents = new Map();
+
+        let savedState = global.get_persistent_state('as', 'ignored_events');
+        if (savedState)
+            savedState.deep_unpack().forEach(Lang.bind(this,
+                function(eventId) {
+                    this._ignoredEvents.set(eventId, true);
+                }));
+
         this.parent('');
 
         Shell.AppSystem.get_default().connect('installed-changed',
                                               Lang.bind(this, this._appInstalledChanged));
         this._appInstalledChanged();
+    },
+
+    _ignoreEvent: function(event) {
+        this._ignoredEvents.set(event.id, true);
+        let savedState = new GLib.Variant('as', [...this._ignoredEvents.keys()]);
+        global.set_persistent_state('ignored_events', savedState);
     },
 
     setEventSource: function(eventSource) {
@@ -1526,7 +1543,15 @@ const EventsSection = new Lang.Class({
 
         for (let i = 0; i < events.length; i++) {
             let event = events[i];
-            this.addMessage(new EventMessage(event, this._date), false);
+
+            if (this._ignoredEvents.has(event.id))
+                continue;
+
+            let message = new EventMessage(event, this._date);
+            message.connect('close', Lang.bind(this, function() {
+                this._ignoreEvent(event);
+            }));
+            this.addMessage(message, false);
         }
 
         this._reloading = false;
