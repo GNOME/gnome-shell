@@ -571,8 +571,10 @@ const Notification = new Lang.Class({
 
         let oldFocus = global.stage.key_focus;
 
-        if (this._icon && (params.gicon || params.clear)) {
-            this._icon.destroy();
+        if (params.gicon || params.clear) {
+            this.gicon = params.gicon;
+            if (this._icon)
+                this._icon.destroy();
             this._icon = null;
         }
 
@@ -604,8 +606,8 @@ const Notification = new Lang.Class({
         if (!this._scrollArea && !this._actionArea)
             this._table.remove_style_class_name('multi-line-notification');
 
-        if (params.gicon) {
-            this._icon = new St.Icon({ gicon: params.gicon,
+        if (this.gicon) {
+            this._icon = new St.Icon({ gicon: this.gicon,
                                        icon_size: this.ICON_SIZE });
         } else {
             this._icon = this.source.createIcon(this.ICON_SIZE);
