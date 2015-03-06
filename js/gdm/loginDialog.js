@@ -22,6 +22,7 @@ const Clutter = imports.gi.Clutter;
 const Gdm = imports.gi.Gdm;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
+const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
@@ -70,6 +71,9 @@ const UserListItem = new Lang.Class({
 
         this._userWidget = new UserWidget.UserWidget(this.user);
         layout.add(this._userWidget.actor);
+
+        this._userWidget.actor.bind_property('label-actor', this.actor, 'label-actor',
+                                             GObject.BindingFlags.SYNC_CREATE);
 
         this._timedLoginIndicator = new St.Bin({ style_class: 'login-dialog-timed-login-indicator',
                                                  scale_x: 0 });
