@@ -17,5 +17,5 @@ EXTRA_DIST = \
 	cogl-crate.vcproj	\
 	cogl-msaa.vcproj	\
 	cogl-info.vcproj	\
-	install.vcproj	\
+	cogl-install.vcproj	\
 	README.txt

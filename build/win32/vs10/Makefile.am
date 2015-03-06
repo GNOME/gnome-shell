@@ -30,5 +30,5 @@ EXTRA_DIST = \
 	test-conformance-cogl.vcxprojin	\
 	test-conformance-cogl.vcxproj.filters	\
 	test-conformance-cogl.vcxproj.filtersin	\
-	install.vcxproj	\
+	cogl-install.vcxproj	\
 	README.txt
