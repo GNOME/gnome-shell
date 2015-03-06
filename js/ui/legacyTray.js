@@ -85,8 +85,8 @@ const LegacyTray = new Lang.Class({
         Main.layoutManager.trackChrome(this._slider, { affectsInputRegion: true });
 
         this._trayManager = new Shell.TrayManager();
-        this._trayManager.connect('tray-icon-added', Lang.bind(this, this._onTrayIconAdded));
-        this._trayManager.connect('tray-icon-removed', Lang.bind(this, this._onTrayIconRemoved));
+        this._trayIconAddedId = this._trayManager.connect('tray-icon-added', Lang.bind(this, this._onTrayIconAdded));
+        this._trayIconRemovedId = this._trayManager.connect('tray-icon-removed', Lang.bind(this, this._onTrayIconRemoved));
         this._trayManager.manage_screen(global.screen, this.actor);
 
         Main.overview.connect('showing', Lang.bind(this,
