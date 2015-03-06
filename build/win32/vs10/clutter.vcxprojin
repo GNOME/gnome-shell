@@ -153,6 +153,7 @@
       <OutputFile>$(OutDir)$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).dll</OutputFile>
       <ImportLibrary>$(TargetDir)$(ProjectName)-$(ApiVersion).lib</ImportLibrary>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>$(OutDir)$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
@@ -178,6 +179,7 @@
       <OutputFile>$(OutDir)$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).dll</OutputFile>
       <ImportLibrary>$(TargetDir)$(ProjectName)-$(ApiVersion).lib</ImportLibrary>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>$(OutDir)$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
@@ -203,6 +205,7 @@
       <OutputFile>$(OutDir)$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).dll</OutputFile>
       <ImportLibrary>$(TargetDir)$(ProjectName)-$(ApiVersion).lib</ImportLibrary>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>$(OutDir)$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
@@ -228,6 +231,7 @@
       <OutputFile>$(OutDir)$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).dll</OutputFile>
       <ImportLibrary>$(TargetDir)$(ProjectName)-$(ApiVersion).lib</ImportLibrary>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>$(OutDir)$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
@@ -253,6 +257,7 @@
       <OutputFile>$(OutDir)$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).dll</OutputFile>
       <ImportLibrary>$(TargetDir)$(ProjectName)-$(ApiVersion).lib</ImportLibrary>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>$(OutDir)$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -280,6 +285,7 @@
       <OutputFile>$(OutDir)$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).dll</OutputFile>
       <ImportLibrary>$(TargetDir)$(ProjectName)-$(ApiVersion).lib</ImportLibrary>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>$(OutDir)$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -304,6 +310,7 @@
       <OutputFile>$(OutDir)$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).dll</OutputFile>
       <ImportLibrary>$(TargetDir)$(ProjectName)-$(ApiVersion).lib</ImportLibrary>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>$(OutDir)$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -328,6 +335,7 @@
       <OutputFile>$(OutDir)$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).dll</OutputFile>
       <ImportLibrary>$(TargetDir)$(ProjectName)-$(ApiVersion).lib</ImportLibrary>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>$(OutDir)$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
