@@ -840,6 +840,7 @@ const WindowManager = new Lang.Class({
                            new Gio.Settings({ schema_id: SHELL_KEYBINDINGS_SCHEMA }),
                            Meta.KeyBindingFlags.NONE,
                            Shell.ActionMode.NORMAL |
+                           Shell.ActionMode.OVERVIEW |
                            Shell.ActionMode.POPUP,
                            Lang.bind(this, this._toggleCalendar));
 
