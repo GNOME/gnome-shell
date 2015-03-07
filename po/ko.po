@@ -6,7 +6,7 @@
 # Changwoo Ryu <cwryu@debian.org>, 2003, 2004, 2005, 2006, 2007, 2008, 2009.
 #
 # Updated in mutter:
-# Changwoo Ryu <cwryu@debian.org>, 2011-2014.
+# Changwoo Ryu <cwryu@debian.org>, 2011-2015.
 #
 #
 # 주의:
@@ -18,8 +18,8 @@ msgstr ""
 "Project-Id-Version: mutter\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-09-04 09:54+0000\n"
-"PO-Revision-Date: 2014-09-05 06:28+0900\n"
+"POT-Creation-Date: 2015-03-07 11:12+0000\n"
+"PO-Revision-Date: 2015-03-08 03:44+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: GNOME Korea <gnome-kr@googlegroups.com>\n"
 "Language: Korean\n"
@@ -433,29 +433,49 @@ msgstr "가상 터미널 6으로 이동"
 msgid "Switch to VT 7"
 msgstr "가상 터미널 7로 이동"
 
-#: ../src/backends/meta-monitor-manager.c:412
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:8
+msgid "Switch to VT 8"
+msgstr "가상 터미널 8로 이동"
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:9
+msgid "Switch to VT 9"
+msgstr "가상 터미널 9로 이동"
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:10
+msgid "Switch to VT 10"
+msgstr "가상 터미널 10으로 이동"
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:11
+msgid "Switch to VT 11"
+msgstr "가상 터미널 11로 이동"
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:12
+msgid "Switch to VT 12"
+msgstr "가상 터미널 12로 이동"
+
+#: ../src/backends/meta-monitor-manager.c:364
 msgid "Built-in display"
 msgstr "내장 디스플레이"
 
-#: ../src/backends/meta-monitor-manager.c:437
+#: ../src/backends/meta-monitor-manager.c:391
 msgid "Unknown"
 msgstr "알 수 없음"
 
-#: ../src/backends/meta-monitor-manager.c:439
+#: ../src/backends/meta-monitor-manager.c:393
 msgid "Unknown Display"
 msgstr "알 수 없는 디스플레이"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: ../src/backends/meta-monitor-manager.c:447
+#: ../src/backends/meta-monitor-manager.c:401
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:443
+#: ../src/compositor/compositor.c:456
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
@@ -491,7 +511,7 @@ msgstr "기다리기(_W)"
 msgid "_Force Quit"
 msgstr "강제로 끝내기(_F)"
 
-#: ../src/core/display.c:547
+#: ../src/core/display.c:562
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "X 윈도 시스템 디스플레이 '%s'을(를) 여는데 실패하였습니다\n"
@@ -528,19 +548,6 @@ msgstr "웨일랜드 컴포지터로 실행합니다"
 msgid "Run as a full display server, rather than nested"
 msgstr "전체 디스플레이 서버로 실행, 내장 프로그램 아님"
 
-#: ../src/core/main.c:459
-#, c-format
-msgid "Failed to scan themes directory: %s\n"
-msgstr "테마 디렉터리를 읽는 데 실패했습니다: %s\n"
-
-#: ../src/core/main.c:475
-#, c-format
-msgid ""
-"Could not find a theme! Be sure %s exists and contains the usual themes.\n"
-msgstr ""
-"테마를 찾을 수 없습니다! %s이(가) 있고 올바른 테마가 들어 있는지 확인하십시"
-"오.\n"
-
 #: ../src/core/mutter.c:39
 #, c-format
 msgid ""
@@ -564,706 +571,26 @@ msgstr "버전을 출력합니다"
 msgid "Mutter plugin to use"
 msgstr "사용할 머터 플러그인"
 
-#: ../src/core/prefs.c:2101
+#: ../src/core/prefs.c:2004
 #, c-format
 msgid "Workspace %d"
 msgstr "작업 공간 %d"
 
-#: ../src/core/screen.c:548
+#: ../src/core/screen.c:525
+#, c-format
+msgid ""
+"Display \"%s\" already has a window manager; try using the --replace option "
+"to replace the current window manager."
+msgstr "디스플레이 \"%s\"에 이미 창 관리자가 있습니다. 현재 창 관리자를 바꾸려면 --replace 옵션을 써보십시오."
+
+#: ../src/core/screen.c:607
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "디스플레이 '%2$s'의 화면 %1$d은(는) 잘못되었습니다\n"
 
-#: ../src/core/screen.c:564
-#, c-format
-msgid ""
-"Screen %d on display \"%s\" already has a window manager; try using the --"
-"replace option to replace the current window manager.\n"
-msgstr ""
-"디스플레이 \"%2$s\"의 화면 %1$d에 이미 창 관리자가 실행되고 있습니다. 현재 "
-"창 관리자를 무시하는 --replace 옵션을 써보십시오.\n"
-
-#: ../src/core/screen.c:657
-#, c-format
-msgid "Screen %d on display \"%s\" already has a window manager\n"
-msgstr ""
-"디스플레이 \"%2$s\"의 화면 %1$d은(는) 이미 창 관리자가 실행되고 있습니다\n"
-
 #: ../src/core/util.c:118
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "머터가 자세한 모드 지원 없이 컴파일 되었습니다\n"
-
-#. Translators: This represents the size of a window.  The first number is
-#. * the width of the window and the second is the height.
-#.
-#: ../src/ui/resizepopup.c:134
-#, c-format
-msgid "%d x %d"
-msgstr "%d x %d"
-
-#: ../src/ui/theme.c:233
-msgid "top"
-msgstr "맨 위"
-
-#: ../src/ui/theme.c:235
-msgid "bottom"
-msgstr "맨 아래"
-
-#: ../src/ui/theme.c:237
-msgid "left"
-msgstr "왼쪽"
-
-#: ../src/ui/theme.c:239
-msgid "right"
-msgstr "오른쪽"
-
-#: ../src/ui/theme.c:267
-#, c-format
-msgid "frame geometry does not specify \"%s\" dimension"
-msgstr "프레임 위치가 \"%s\"차원으로 지정되지 않았습니다"
-
-#: ../src/ui/theme.c:286
-#, c-format
-msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
-msgstr ""
-"프레임 위치가 가장자리 \"%2$s\" 가장자리의 \"%1$s\"차원으로 지정되지 않았습니"
-"다."
-
-#: ../src/ui/theme.c:323
-#, c-format
-msgid "Button aspect ratio %g is not reasonable"
-msgstr "단추의 가로세로 비 %g이(가) 적당하지 않습니다"
-
-#: ../src/ui/theme.c:335
-#, c-format
-msgid "Frame geometry does not specify size of buttons"
-msgstr "프레임 위치가 단추의 크기로 지정되지 않았습니다"
-
-#: ../src/ui/theme.c:1061
-#, c-format
-msgid "Gradients should have at least two colors"
-msgstr "서서히 변하는 색으로 지정하려면 최소 2색이 필요합니다"
-
-#: ../src/ui/theme.c:1211
-#, c-format
-msgid ""
-"GTK custom color specification must have color name and fallback in "
-"parentheses, e.g. gtk:custom(foo,bar); could not parse \"%s\""
-msgstr ""
-"GTK 사용자 지정 색상 지정은 색 이름과 대체할 색을 괄호 안에 써야 합니다. 예"
-"를 들어: gtk:custom(foo,bar). \"%s\"을(를) 분석할 수 없습니다"
-
-#: ../src/ui/theme.c:1227
-#, c-format
-msgid ""
-"Invalid character '%c' in color_name parameter of gtk:custom, only A-Za-z0-9-"
-"_ are valid"
-msgstr ""
-"gtk:custom의 color_name 파라미터 안에 잘못된 문자 '%c'. A-Za-z0-9-_ 문자만 허"
-"용합니다."
-
-#: ../src/ui/theme.c:1241
-#, c-format
-msgid ""
-"Gtk:custom format is \"gtk:custom(color_name,fallback)\", \"%s\" does not "
-"fit the format"
-msgstr ""
-"gtk:custom 형식은 \"gtk:custom(색이름,대체색)\"입니다, \"%s\"(은)는 형식에 맞"
-"지 않습니다"
-
-#: ../src/ui/theme.c:1286
-#, c-format
-msgid ""
-"GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
-"where NORMAL is the state; could not parse \"%s\""
-msgstr ""
-"GTK 색상 지정은 중괄호안에 있어야 합니다. 예를 들어: gtk:fg[NORMAL], 여기서 "
-"NORMAL이 값입니다. \"%s\"을(를) 분석할 수 없습니다."
-
-#: ../src/ui/theme.c:1300
-#, c-format
-msgid ""
-"GTK color specification must have a close bracket after the state, e.g. gtk:"
-"fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
-msgstr ""
-"GTK 색상 지정은 값 뒤에 중괄호로 닫혀 있어야 합니다. 예를 들어: gtk:"
-"fg[NORMAL], 여기서 NORMAL은 값입니다. \"%s\"을(를) 분석할 수 없습니다."
-
-#: ../src/ui/theme.c:1311
-#, c-format
-msgid "Did not understand state \"%s\" in color specification"
-msgstr "색상 지정의 \"%s\" 값을 이해할 수 없습니다"
-
-#: ../src/ui/theme.c:1324
-#, c-format
-msgid "Did not understand color component \"%s\" in color specification"
-msgstr "색상 지정의 색상 구성요소 \"%s\"을(를) 이해할 수 없습니다"
-
-#: ../src/ui/theme.c:1352
-#, c-format
-msgid ""
-"Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
-"format"
-msgstr ""
-"섞기 형식은 \"blend/bg_color/fg_color/alpha\"입니다, \"%s\"은(는) 형식에 맞"
-"지 않습니다"
-
-#: ../src/ui/theme.c:1363
-#, c-format
-msgid "Could not parse alpha value \"%s\" in blended color"
-msgstr "색상 섞기에서 알파 값 \"%s\"을(를) 분석할 수 없습니다"
-
-#: ../src/ui/theme.c:1373
-#, c-format
-msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
-msgstr "색상 섞기에서 알파 값 \"%s\"은(는) 0.0과 1.0 사이의 값이 아닙니다"
-
-#: ../src/ui/theme.c:1419
-#, c-format
-msgid ""
-"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
-msgstr ""
-"그림자 형식은 \"shade/base_color/format\"입니다, \"%s\"(은)는 형식에 맞지 않"
-"습니다"
-
-#: ../src/ui/theme.c:1430
-#, c-format
-msgid "Could not parse shade factor \"%s\" in shaded color"
-msgstr "그림자색에서 그림자 인자 \"%s\"(을)를 해석할 수 없습니다"
-
-#: ../src/ui/theme.c:1440
-#, c-format
-msgid "Shade factor \"%s\" in shaded color is negative"
-msgstr "그림자색에서 그림자 인자 \"%s\"(은)는 음수입니다"
-
-#: ../src/ui/theme.c:1469
-#, c-format
-msgid "Could not parse color \"%s\""
-msgstr "색상 \"%s\"을(를) 해석할 수 없습니다"
-
-#: ../src/ui/theme.c:1778
-#, c-format
-msgid "Coordinate expression contains character '%s' which is not allowed"
-msgstr "좌표식에 허용되지 않는 문자 '%s'(이)가 들어 있습니다"
-
-#: ../src/ui/theme.c:1805
-#, c-format
-msgid ""
-"Coordinate expression contains floating point number '%s' which could not be "
-"parsed"
-msgstr "좌표식에 분석할 수 없는 부동소수점 숫자 '%s'이(가) 포함되어 있습니다"
-
-#: ../src/ui/theme.c:1819
-#, c-format
-msgid "Coordinate expression contains integer '%s' which could not be parsed"
-msgstr "좌표식에 분석할 수 없는 정수 '%s'이(가) 포함되어 있습니다"
-
-#: ../src/ui/theme.c:1940
-#, c-format
-msgid ""
-"Coordinate expression contained unknown operator at the start of this text: "
-"\"%s\""
-msgstr "좌표식에 이 글자 시작부분에 알 수 없는 연산자가 들어 있습니다: \"%s\""
-
-#: ../src/ui/theme.c:1997
-#, c-format
-msgid "Coordinate expression was empty or not understood"
-msgstr "좌표식이 비어있거나 이해할 수 없습니다"
-
-#: ../src/ui/theme.c:2110 ../src/ui/theme.c:2120 ../src/ui/theme.c:2154
-#, c-format
-msgid "Coordinate expression results in division by zero"
-msgstr "좌표식의 결과 값이 0로 나누었습니다"
-
-#: ../src/ui/theme.c:2162
-#, c-format
-msgid ""
-"Coordinate expression tries to use mod operator on a floating-point number"
-msgstr "좌표식에서 부동소수점 수에 나머지 연산을 하려 합니다"
-
-#: ../src/ui/theme.c:2218
-#, c-format
-msgid ""
-"Coordinate expression has an operator \"%s\" where an operand was expected"
-msgstr "좌표식에서 피연산자가 들어갈 곳에 연산자 \"%s\"이(가) 있습니다"
-
-#: ../src/ui/theme.c:2227
-#, c-format
-msgid "Coordinate expression had an operand where an operator was expected"
-msgstr "좌표식에서 연산자가 들어갈 곳에 피연산자가 있습니다"
-
-#: ../src/ui/theme.c:2235
-#, c-format
-msgid "Coordinate expression ended with an operator instead of an operand"
-msgstr "좌표식에서 피연산자 대신에 연산자로 끝나있습니다"
-
-#: ../src/ui/theme.c:2245
-#, c-format
-msgid ""
-"Coordinate expression has operator \"%c\" following operator \"%c\" with no "
-"operand in between"
-msgstr ""
-"좌표식에서 피연산자가 없는 연산자 \"%2$c\"다음에 연산자 \"%1$c\"이(가) 있습니"
-"다"
-
-#: ../src/ui/theme.c:2396 ../src/ui/theme.c:2441
-#, c-format
-msgid "Coordinate expression had unknown variable or constant \"%s\""
-msgstr "좌표식에 알 수 없는 변수나 상수 \"%s\"이(가) 있습니다"
-
-#: ../src/ui/theme.c:2495
-#, c-format
-msgid "Coordinate expression parser overflowed its buffer."
-msgstr "좌표 계산 파서의 버퍼가 크기를 넘어갔습니다."
-
-#: ../src/ui/theme.c:2524
-#, c-format
-msgid "Coordinate expression had a close parenthesis with no open parenthesis"
-msgstr "좌표식에 닫는 괄호는 있지만 여는 괄호가 없습니다"
-
-#: ../src/ui/theme.c:2588
-#, c-format
-msgid "Coordinate expression had an open parenthesis with no close parenthesis"
-msgstr "좌표식에 여는 괄호는 있지만 닫는 괄호가 없습니다"
-
-#: ../src/ui/theme.c:2599
-#, c-format
-msgid "Coordinate expression doesn't seem to have any operators or operands"
-msgstr "좌표식에 어떠한 연산자나 피연산자가 없습니다"
-
-#: ../src/ui/theme.c:2812 ../src/ui/theme.c:2832 ../src/ui/theme.c:2852
-#, c-format
-msgid "Theme contained an expression that resulted in an error: %s\n"
-msgstr "테마가 오류 값을 내는 표현식이 들어 있습니다: %s\n"
-
-#: ../src/ui/theme.c:4455
-#, c-format
-msgid ""
-"<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
-"specified for this frame style"
-msgstr ""
-"이 프레임 스타일에는 <button function=\"%s\" style=\"%s\" draw_ops=\"whatever"
-"\"/>가 지정되어야 합니다"
-
-#: ../src/ui/theme.c:4970 ../src/ui/theme.c:4995
-#, c-format
-msgid ""
-"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr ""
-"<frame state=\"%s\" resize=\"%s\" focus=\"%s\" state=\"whatever\"/> 가 없습니"
-"다"
-
-#: ../src/ui/theme.c:5041
-#, c-format
-msgid "Failed to load theme \"%s\": %s\n"
-msgstr "테마 \"%s\"을(를) 읽을 수 없습니다: %s\n"
-
-#: ../src/ui/theme.c:5177 ../src/ui/theme.c:5184 ../src/ui/theme.c:5191
-#: ../src/ui/theme.c:5198 ../src/ui/theme.c:5205
-#, c-format
-msgid "No <%s> set for theme \"%s\""
-msgstr "테마 \"%2$s\"의 <%1$s>(이)가 설정되지 않았습니다"
-
-#: ../src/ui/theme.c:5213
-#, c-format
-msgid ""
-"No frame style set for window type \"%s\" in theme \"%s\", add a <window "
-"type=\"%s\" style_set=\"whatever\"/> element"
-msgstr ""
-"테마 \"%2$s\"의 창 형식 \"%1$s\"에 대한 프레임 스타일이 없습니다,<window "
-"type=\"%3$s\" style_set=\"whatever\"/> 엘리먼트를 추가하십시오"
-
-#: ../src/ui/theme.c:5620 ../src/ui/theme.c:5682 ../src/ui/theme.c:5745
-#, c-format
-msgid ""
-"User-defined constants must begin with a capital letter; \"%s\" does not"
-msgstr ""
-"사용자 정의 상수는 대문자로 시작되어야 합니다. \"%s\"은(는) 그렇지 않습니다."
-
-#: ../src/ui/theme.c:5628 ../src/ui/theme.c:5690 ../src/ui/theme.c:5753
-#, c-format
-msgid "Constant \"%s\" has already been defined"
-msgstr "상수 \"%s\"은(는) 이미 지정되어 있습니다"
-
-#. Translators: This means that an attribute which should have been found
-#. * on an XML element was not in fact found.
-#.
-#: ../src/ui/theme-parser.c:234
-#, c-format
-msgid "No \"%s\" attribute on element <%s>"
-msgstr "\"%s\" 속성이 <%s> 엘리먼트에 없습니다"
-
-#: ../src/ui/theme-parser.c:263 ../src/ui/theme-parser.c:281
-#, c-format
-msgid "Line %d character %d: %s"
-msgstr "%d 줄 %d 문자: %s"
-
-#: ../src/ui/theme-parser.c:481
-#, c-format
-msgid "Attribute \"%s\" repeated twice on the same <%s> element"
-msgstr "같은 <%2$s> 엘리먼트에 \"%1$s\"속성이 두번 겹쳐져 있습니다"
-
-#: ../src/ui/theme-parser.c:505 ../src/ui/theme-parser.c:554
-#, c-format
-msgid "Attribute \"%s\" is invalid on <%s> element in this context"
-msgstr "이 문맥의 <%2$s> 엘리먼트에 속성 \"%1$s\"은(는) 올바르지 않습니다"
-
-#: ../src/ui/theme-parser.c:596
-#, c-format
-msgid "Could not parse \"%s\" as an integer"
-msgstr "정수값 \"%s\"을(를) 분석할 수 없습니다"
-
-#: ../src/ui/theme-parser.c:605 ../src/ui/theme-parser.c:660
-#, c-format
-msgid "Did not understand trailing characters \"%s\" in string \"%s\""
-msgstr "문자열 \"%2$s\"에서 이어진 문자 \"%1$s\"을(를) 이해할 수 없습니다"
-
-#: ../src/ui/theme-parser.c:615
-#, c-format
-msgid "Integer %ld must be positive"
-msgstr "정수 %ld은(는) 양수여야 합니다"
-
-#: ../src/ui/theme-parser.c:623
-#, c-format
-msgid "Integer %ld is too large, current max is %d"
-msgstr "정수 %ld이(가) 너무 큽니다, 현재 최대값은 %d 입니다"
-
-#: ../src/ui/theme-parser.c:651 ../src/ui/theme-parser.c:767
-#, c-format
-msgid "Could not parse \"%s\" as a floating point number"
-msgstr "부동소수점 수 \"%s\"(으)로 분석할 수 없습니다"
-
-#: ../src/ui/theme-parser.c:682 ../src/ui/theme-parser.c:710
-#, c-format
-msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
-msgstr "Boolean 값은 \"true\"이거나 \"false\"만 됩니다 \"%s\"은(는) 안됩니다"
-
-#: ../src/ui/theme-parser.c:737
-#, c-format
-msgid "Angle must be between 0.0 and 360.0, was %g\n"
-msgstr "각도 값은 0.0과 360.0 사이여야 합니다, %g(으)로 되어 있습니다\n"
-
-#: ../src/ui/theme-parser.c:800
-#, c-format
-msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
-msgstr ""
-"알파 값은 0.0(보이지 않음)과 1.0(완전 불투명)사이여야 합니다, %g(으)로 되어있"
-"습니다\n"
-
-#: ../src/ui/theme-parser.c:865
-#, c-format
-msgid ""
-"Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
-"large,x-large,xx-large)\n"
-msgstr ""
-"잘못된 제목 확대 \"%s\" (xx-small, x-small, small, medium, large, x-large, "
-"xx-large중에 하나여야 합니다)\n"
-
-#: ../src/ui/theme-parser.c:1021 ../src/ui/theme-parser.c:1084
-#: ../src/ui/theme-parser.c:1118 ../src/ui/theme-parser.c:1221
-#, c-format
-msgid "<%s> name \"%s\" used a second time"
-msgstr "<%s> 이름 \"%s\"이(가) 두번 쓰였습니다"
-
-#: ../src/ui/theme-parser.c:1033 ../src/ui/theme-parser.c:1130
-#: ../src/ui/theme-parser.c:1233
-#, c-format
-msgid "<%s> parent \"%s\" has not been defined"
-msgstr "<%s> 부모 \"%s\"이(가) 아직 지정되지 않았습니다"
-
-#: ../src/ui/theme-parser.c:1143
-#, c-format
-msgid "<%s> geometry \"%s\" has not been defined"
-msgstr "<%s> 위치 \"%s\"이(가) 아직 지정되지 않았습니다"
-
-#: ../src/ui/theme-parser.c:1156
-#, c-format
-msgid "<%s> must specify either a geometry or a parent that has a geometry"
-msgstr "<%s> 는 위치나 위치를 가지는 부모를 지정하여야 합니다"
-
-#: ../src/ui/theme-parser.c:1198
-msgid "You must specify a background for an alpha value to be meaningful"
-msgstr "배경의 알파값을 의미있는 값으로 지정해야 합니다"
-
-#: ../src/ui/theme-parser.c:1266
-#, c-format
-msgid "Unknown type \"%s\" on <%s> element"
-msgstr "<%2$s> 엘리먼트에 알 수 없는 형식 \"%1$s\""
-
-# 주의: 접근키 아님
-#: ../src/ui/theme-parser.c:1277
-#, c-format
-msgid "Unknown style_set \"%s\" on <%s> element"
-msgstr "<%2$s> 엘리먼트에 알 수 없는 스타일 셋 \"%1$s\""
-
-#: ../src/ui/theme-parser.c:1285
-#, c-format
-msgid "Window type \"%s\" has already been assigned a style set"
-msgstr "창 형식 \"%s\"은(는) 이미 스타일 셋으로 지정되어 있습니다"
-
-#: ../src/ui/theme-parser.c:1315 ../src/ui/theme-parser.c:1379
-#: ../src/ui/theme-parser.c:1605 ../src/ui/theme-parser.c:2840
-#: ../src/ui/theme-parser.c:2886 ../src/ui/theme-parser.c:3036
-#: ../src/ui/theme-parser.c:3272 ../src/ui/theme-parser.c:3310
-#: ../src/ui/theme-parser.c:3348 ../src/ui/theme-parser.c:3386
-#, c-format
-msgid "Element <%s> is not allowed below <%s>"
-msgstr "<%s> 엘리먼트는 <%s> 아래에 허용되지 않습니다"
-
-#: ../src/ui/theme-parser.c:1429 ../src/ui/theme-parser.c:1443
-#: ../src/ui/theme-parser.c:1488
-msgid ""
-"Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio\" "
-"for buttons"
-msgstr ""
-"단추의 \"button_width\"/\"button_height\"와 \"aspect_ratio\"를 한꺼번에 지정"
-"할 수 없습니다"
-
-#: ../src/ui/theme-parser.c:1452
-#, c-format
-msgid "Distance \"%s\" is unknown"
-msgstr "거리 \"%s\"을(를) 알 수 없습니다"
-
-#: ../src/ui/theme-parser.c:1497
-#, c-format
-msgid "Aspect ratio \"%s\" is unknown"
-msgstr "가로세로비 \"%s\"을(를) 알 수 없습니다"
-
-#: ../src/ui/theme-parser.c:1559
-#, c-format
-msgid "Border \"%s\" is unknown"
-msgstr "가장자리 \"%s\"을(를) 알 수 없습니다"
-
-#: ../src/ui/theme-parser.c:1870
-#, c-format
-msgid "No \"start_angle\" or \"from\" attribute on element <%s>"
-msgstr "<%s> 엘리먼트에 \"start_angle\"이나 \"from\" 속성이 없습니다"
-
-#: ../src/ui/theme-parser.c:1877
-#, c-format
-msgid "No \"extent_angle\" or \"to\" attribute on element <%s>"
-msgstr "<%s> 엘리먼트에 \"extent_angle\"이나 \"to\" 속성이 없습니다"
-
-#: ../src/ui/theme-parser.c:2117
-#, c-format
-msgid "Did not understand value \"%s\" for type of gradient"
-msgstr "서서히 변하는 색 형식 값 \"%s\"을(를) 이해할 수 없습니다"
-
-#: ../src/ui/theme-parser.c:2195 ../src/ui/theme-parser.c:2570
-#, c-format
-msgid "Did not understand fill type \"%s\" for <%s> element"
-msgstr "<%2$s> 엘리먼트의 채우기 형식 \"%1$s\"을(를) 이해할 수 없습니다"
-
-#: ../src/ui/theme-parser.c:2362 ../src/ui/theme-parser.c:2445
-#: ../src/ui/theme-parser.c:2508
-#, c-format
-msgid "Did not understand state \"%s\" for <%s> element"
-msgstr "<%2$s> 엘리먼트의 state \"%1$s\"을(를) 이해할 수 없습니다"
-
-#: ../src/ui/theme-parser.c:2372 ../src/ui/theme-parser.c:2455
-#, c-format
-msgid "Did not understand shadow \"%s\" for <%s> element"
-msgstr "<%2$s> 엘리먼트의 shadow \"%1$s\"을(를) 이해할 수 없습니다"
-
-#: ../src/ui/theme-parser.c:2382
-#, c-format
-msgid "Did not understand arrow \"%s\" for <%s> element"
-msgstr "<%2$s> 엘리먼트의 arrow \"%1$s\"을(를) 이해할 수 없습니다"
-
-#: ../src/ui/theme-parser.c:2696 ../src/ui/theme-parser.c:2792
-#, c-format
-msgid "No <draw_ops> called \"%s\" has been defined"
-msgstr "\"%s\"라 불리는 <draw_ops>는 정의되지 않았습니다"
-
-#: ../src/ui/theme-parser.c:2708 ../src/ui/theme-parser.c:2804
-#, c-format
-msgid "Including draw_ops \"%s\" here would create a circular reference"
-msgstr "여기서 draw_ops \"%s\"을(를) 포함하면 순환 참조가 됩니다."
-
-#: ../src/ui/theme-parser.c:2919
-#, c-format
-msgid "Unknown position \"%s\" for frame piece"
-msgstr "프레임 조각에 대한 알 수 없는 위치 \"%s\""
-
-#: ../src/ui/theme-parser.c:2927
-#, c-format
-msgid "Frame style already has a piece at position %s"
-msgstr "프레임 스타일은 이미 %s 위치에 조각이 있습니다"
-
-#: ../src/ui/theme-parser.c:2944 ../src/ui/theme-parser.c:3021
-#, c-format
-msgid "No <draw_ops> with the name \"%s\" has been defined"
-msgstr "이름 \"%s\"을(를) 가지는 <draw_ops>가 지정되지 않았습니다"
-
-#: ../src/ui/theme-parser.c:2974
-#, c-format
-msgid "Unknown function \"%s\" for button"
-msgstr "단추에 알 수 없는 기능 \"%s\""
-
-#: ../src/ui/theme-parser.c:2984
-#, c-format
-msgid "Button function \"%s\" does not exist in this version (%d, need %d)"
-msgstr "이 버전에는 \"%s\" 단추 함수가 없습니다(버전은 %d, 버전 %d 필요)"
-
-#: ../src/ui/theme-parser.c:2996
-#, c-format
-msgid "Unknown state \"%s\" for button"
-msgstr "단추에 알 수 없는 상태 \"%s\""
-
-#: ../src/ui/theme-parser.c:3004
-#, c-format
-msgid "Frame style already has a button for function %s state %s"
-msgstr "프레임 스타일에 단추의 기능 %s 상태 %s이(가) 이미 있습니다"
-
-#: ../src/ui/theme-parser.c:3075
-#, c-format
-msgid "\"%s\" is not a valid value for focus attribute"
-msgstr "\"%s\"은(는) focus 속성에 대한 올바른 값이 아닙니다"
-
-#: ../src/ui/theme-parser.c:3084
-#, c-format
-msgid "\"%s\" is not a valid value for state attribute"
-msgstr "\"%s\"은(는) state 속성에 대한 올바른 값이 아닙니다"
-
-#: ../src/ui/theme-parser.c:3094
-#, c-format
-msgid "A style called \"%s\" has not been defined"
-msgstr "\"%s\"(이)라는 스타일은 정의되지 않았습니다"
-
-#: ../src/ui/theme-parser.c:3115 ../src/ui/theme-parser.c:3138
-#, c-format
-msgid "\"%s\" is not a valid value for resize attribute"
-msgstr "resize 속성에 \"%s\"은(는) 올바른 값이 아닙니다"
-
-#: ../src/ui/theme-parser.c:3149
-#, c-format
-msgid ""
-"Should not have \"resize\" attribute on <%s> element for maximized/shaded "
-"states"
-msgstr ""
-"최대화/그림자 상태에서 <%s> 엘리먼트는 \"resize\" 속성을 가지지 않습니다"
-
-#: ../src/ui/theme-parser.c:3163
-#, c-format
-msgid ""
-"Should not have \"resize\" attribute on <%s> element for maximized states"
-msgstr "최대화한 상태에서 <%s> 엘리먼트는 \"resize\" 속성을 가지지 않습니다"
-
-#: ../src/ui/theme-parser.c:3177 ../src/ui/theme-parser.c:3221
-#, c-format
-msgid "Style has already been specified for state %s resize %s focus %s"
-msgstr "스타일에 상태 %s 크기 조절 %s 포커스 %s에 대해 이미 지정되어 있습니다"
-
-#: ../src/ui/theme-parser.c:3188 ../src/ui/theme-parser.c:3199
-#: ../src/ui/theme-parser.c:3210 ../src/ui/theme-parser.c:3232
-#: ../src/ui/theme-parser.c:3243 ../src/ui/theme-parser.c:3254
-#, c-format
-msgid "Style has already been specified for state %s focus %s"
-msgstr "스타일에 상태 %s 포커스 %s에 대해 이미 지정되어 있습니다"
-
-#: ../src/ui/theme-parser.c:3293
-msgid ""
-"Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
-"attribute and also a <draw_ops> element, or specified two elements)"
-msgstr ""
-"<piece> 엘리먼트에 두개의 draw_ops를 가질수 없습니다(테마에 draw_ops 속성과 "
-"<draw_ops> 엘리먼트를 지정했거나 두 엘리먼트를 지정했습니다"
-
-#: ../src/ui/theme-parser.c:3331
-msgid ""
-"Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
-"attribute and also a <draw_ops> element, or specified two elements)"
-msgstr ""
-"<button> 엘리먼트에 두개의 draw_ops를 가질수 없습니다(테마에 draw_ops 속성과 "
-"<draw_ops> 엘리먼트를 지정했거나 두 엘리먼트를 지정했습니다"
-
-#: ../src/ui/theme-parser.c:3369
-msgid ""
-"Can't have a two draw_ops for a <menu_icon> element (theme specified a "
-"draw_ops attribute and also a <draw_ops> element, or specified two elements)"
-msgstr ""
-"<menu_icon> 엘리먼트에 두개의 draw_ops를 가질수 없습니다(테마에 draw_ops 속성"
-"과 <draw_ops> 엘리먼트를 지정했거나 두 엘리먼트를 지정했습니다"
-
-#: ../src/ui/theme-parser.c:3433
-#, c-format
-msgid "Bad version specification '%s'"
-msgstr "잘못된 형식의 버전 '%s'"
-
-#: ../src/ui/theme-parser.c:3506
-msgid ""
-"\"version\" attribute cannot be used in metacity-theme-1.xml or metacity-"
-"theme-2.xml"
-msgstr ""
-"metacity-theme-1.xml 혹은 metacity-theme-2.xml 파일에서는 \"version\" 속성을 "
-"사용할 수 없습니다"
-
-#: ../src/ui/theme-parser.c:3529
-#, c-format
-msgid "Theme requires version %s but latest supported theme version is %d.%d"
-msgstr "테마에 %s 버전이 필요하지만 지원하는 테마의 최신 버전은 %d.%d입니다."
-
-#: ../src/ui/theme-parser.c:3561
-#, c-format
-msgid "Outermost element in theme must be <metacity_theme> not <%s>"
-msgstr "테마의 최상위는 <%s> 엘리먼트가 아니라 <metacity_theme>여야 합니다"
-
-#: ../src/ui/theme-parser.c:3581
-#, c-format
-msgid ""
-"Element <%s> is not allowed inside a name/author/date/description element"
-msgstr ""
-"name/author/date/description 엘리먼트 안에서 <%s> 엘리먼트가 허용되지 않습니"
-"다"
-
-#: ../src/ui/theme-parser.c:3586
-#, c-format
-msgid "Element <%s> is not allowed inside a <constant> element"
-msgstr "<constant> 엘리먼트 안에서 <%s> 엘리먼트는 허용되지 않습니다"
-
-#: ../src/ui/theme-parser.c:3598
-#, c-format
-msgid ""
-"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
-msgstr ""
-"distance/border/aspect_ratio 엘리먼트 안에서 <%s> 엘리먼트가 허용되지 않습니"
-"다"
-
-#: ../src/ui/theme-parser.c:3620
-#, c-format
-msgid "Element <%s> is not allowed inside a draw operation element"
-msgstr "draw operation 엘리먼트 안에서 <%s> 엘리먼트가 허용되지 않습니다"
-
-#: ../src/ui/theme-parser.c:3630 ../src/ui/theme-parser.c:3660
-#: ../src/ui/theme-parser.c:3665 ../src/ui/theme-parser.c:3670
-#, c-format
-msgid "Element <%s> is not allowed inside a <%s> element"
-msgstr "<%2$s> 엘리먼트 안에서 <%1$s> 엘리먼트가 허용되지 않습니다"
-
-#: ../src/ui/theme-parser.c:3898
-msgid "No draw_ops provided for frame piece"
-msgstr "프레임 조각에 draw_ops가 제공하지 않습니다"
-
-#: ../src/ui/theme-parser.c:3913
-msgid "No draw_ops provided for button"
-msgstr "단추에 draw_ops가 제공되지 않습니다"
-
-#: ../src/ui/theme-parser.c:3967
-#, c-format
-msgid "No text is allowed inside element <%s>"
-msgstr "<%s> 엘리먼트 안에 텍스트가 허용되지 않습니다"
-
-#: ../src/ui/theme-parser.c:4025 ../src/ui/theme-parser.c:4037
-#: ../src/ui/theme-parser.c:4049 ../src/ui/theme-parser.c:4061
-#: ../src/ui/theme-parser.c:4073
-#, c-format
-msgid "<%s> specified twice for this theme"
-msgstr "이 테마에서 <%s> 태그가 두 번 지정되었습니다"
-
-#: ../src/ui/theme-parser.c:4335
-#, c-format
-msgid "Failed to find a valid file for theme %s\n"
-msgstr "%s 테마의 올바른 파일을 찾는 데 실패했습니다\n"
 
 #: ../src/x11/session.c:1815
 msgid ""
@@ -1274,7 +601,470 @@ msgstr ""
 "할 때 수동으로 다시 시작해야 합니다."
 
 # <창제목> (on <기계>)
-#: ../src/x11/window-props.c:515
+#: ../src/x11/window-props.c:549
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (%s에서)"
+
+#~ msgid "Failed to scan themes directory: %s\n"
+#~ msgstr "테마 디렉터리를 읽는 데 실패했습니다: %s\n"
+
+#~ msgid ""
+#~ "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
+#~ msgstr ""
+#~ "테마를 찾을 수 없습니다! %s이(가) 있고 올바른 테마가 들어 있는지 확인하십"
+#~ "시오.\n"
+
+#~ msgid "Screen %d on display \"%s\" already has a window manager\n"
+#~ msgstr ""
+#~ "디스플레이 \"%2$s\"의 화면 %1$d은(는) 이미 창 관리자가 실행되고 있습니다\n"
+
+#~ msgid "%d x %d"
+#~ msgstr "%d x %d"
+
+#~ msgid "top"
+#~ msgstr "맨 위"
+
+#~ msgid "bottom"
+#~ msgstr "맨 아래"
+
+#~ msgid "left"
+#~ msgstr "왼쪽"
+
+#~ msgid "right"
+#~ msgstr "오른쪽"
+
+#~ msgid "frame geometry does not specify \"%s\" dimension"
+#~ msgstr "프레임 위치가 \"%s\"차원으로 지정되지 않았습니다"
+
+#~ msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
+#~ msgstr ""
+#~ "프레임 위치가 가장자리 \"%2$s\" 가장자리의 \"%1$s\"차원으로 지정되지 않았"
+#~ "습니다."
+
+#~ msgid "Button aspect ratio %g is not reasonable"
+#~ msgstr "단추의 가로세로 비 %g이(가) 적당하지 않습니다"
+
+#~ msgid "Frame geometry does not specify size of buttons"
+#~ msgstr "프레임 위치가 단추의 크기로 지정되지 않았습니다"
+
+#~ msgid "Gradients should have at least two colors"
+#~ msgstr "서서히 변하는 색으로 지정하려면 최소 2색이 필요합니다"
+
+#~ msgid ""
+#~ "GTK custom color specification must have color name and fallback in "
+#~ "parentheses, e.g. gtk:custom(foo,bar); could not parse \"%s\""
+#~ msgstr ""
+#~ "GTK 사용자 지정 색상 지정은 색 이름과 대체할 색을 괄호 안에 써야 합니다. "
+#~ "예를 들어: gtk:custom(foo,bar). \"%s\"을(를) 분석할 수 없습니다"
+
+#~ msgid ""
+#~ "Invalid character '%c' in color_name parameter of gtk:custom, only A-Za-"
+#~ "z0-9-_ are valid"
+#~ msgstr ""
+#~ "gtk:custom의 color_name 파라미터 안에 잘못된 문자 '%c'. A-Za-z0-9-_ 문자"
+#~ "만 허용합니다."
+
+#~ msgid ""
+#~ "Gtk:custom format is \"gtk:custom(color_name,fallback)\", \"%s\" does not "
+#~ "fit the format"
+#~ msgstr ""
+#~ "gtk:custom 형식은 \"gtk:custom(색이름,대체색)\"입니다, \"%s\"(은)는 형식"
+#~ "에 맞지 않습니다"
+
+#~ msgid ""
+#~ "GTK color specification must have the state in brackets, e.g. gtk:"
+#~ "fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
+#~ msgstr ""
+#~ "GTK 색상 지정은 중괄호안에 있어야 합니다. 예를 들어: gtk:fg[NORMAL], 여기"
+#~ "서 NORMAL이 값입니다. \"%s\"을(를) 분석할 수 없습니다."
+
+#~ msgid ""
+#~ "GTK color specification must have a close bracket after the state, e.g. "
+#~ "gtk:fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
+#~ msgstr ""
+#~ "GTK 색상 지정은 값 뒤에 중괄호로 닫혀 있어야 합니다. 예를 들어: gtk:"
+#~ "fg[NORMAL], 여기서 NORMAL은 값입니다. \"%s\"을(를) 분석할 수 없습니다."
+
+#~ msgid "Did not understand state \"%s\" in color specification"
+#~ msgstr "색상 지정의 \"%s\" 값을 이해할 수 없습니다"
+
+#~ msgid "Did not understand color component \"%s\" in color specification"
+#~ msgstr "색상 지정의 색상 구성요소 \"%s\"을(를) 이해할 수 없습니다"
+
+#~ msgid ""
+#~ "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit "
+#~ "the format"
+#~ msgstr ""
+#~ "섞기 형식은 \"blend/bg_color/fg_color/alpha\"입니다, \"%s\"은(는) 형식에 "
+#~ "맞지 않습니다"
+
+#~ msgid "Could not parse alpha value \"%s\" in blended color"
+#~ msgstr "색상 섞기에서 알파 값 \"%s\"을(를) 분석할 수 없습니다"
+
+#~ msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
+#~ msgstr "색상 섞기에서 알파 값 \"%s\"은(는) 0.0과 1.0 사이의 값이 아닙니다"
+
+#~ msgid ""
+#~ "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the "
+#~ "format"
+#~ msgstr ""
+#~ "그림자 형식은 \"shade/base_color/format\"입니다, \"%s\"(은)는 형식에 맞지 "
+#~ "않습니다"
+
+#~ msgid "Could not parse shade factor \"%s\" in shaded color"
+#~ msgstr "그림자색에서 그림자 인자 \"%s\"(을)를 해석할 수 없습니다"
+
+#~ msgid "Shade factor \"%s\" in shaded color is negative"
+#~ msgstr "그림자색에서 그림자 인자 \"%s\"(은)는 음수입니다"
+
+#~ msgid "Could not parse color \"%s\""
+#~ msgstr "색상 \"%s\"을(를) 해석할 수 없습니다"
+
+#~ msgid "Coordinate expression contains character '%s' which is not allowed"
+#~ msgstr "좌표식에 허용되지 않는 문자 '%s'(이)가 들어 있습니다"
+
+#~ msgid ""
+#~ "Coordinate expression contains floating point number '%s' which could not "
+#~ "be parsed"
+#~ msgstr ""
+#~ "좌표식에 분석할 수 없는 부동소수점 숫자 '%s'이(가) 포함되어 있습니다"
+
+#~ msgid ""
+#~ "Coordinate expression contains integer '%s' which could not be parsed"
+#~ msgstr "좌표식에 분석할 수 없는 정수 '%s'이(가) 포함되어 있습니다"
+
+#~ msgid ""
+#~ "Coordinate expression contained unknown operator at the start of this "
+#~ "text: \"%s\""
+#~ msgstr ""
+#~ "좌표식에 이 글자 시작부분에 알 수 없는 연산자가 들어 있습니다: \"%s\""
+
+#~ msgid "Coordinate expression was empty or not understood"
+#~ msgstr "좌표식이 비어있거나 이해할 수 없습니다"
+
+#~ msgid "Coordinate expression results in division by zero"
+#~ msgstr "좌표식의 결과 값이 0로 나누었습니다"
+
+#~ msgid ""
+#~ "Coordinate expression tries to use mod operator on a floating-point number"
+#~ msgstr "좌표식에서 부동소수점 수에 나머지 연산을 하려 합니다"
+
+#~ msgid ""
+#~ "Coordinate expression has an operator \"%s\" where an operand was expected"
+#~ msgstr "좌표식에서 피연산자가 들어갈 곳에 연산자 \"%s\"이(가) 있습니다"
+
+#~ msgid "Coordinate expression had an operand where an operator was expected"
+#~ msgstr "좌표식에서 연산자가 들어갈 곳에 피연산자가 있습니다"
+
+#~ msgid "Coordinate expression ended with an operator instead of an operand"
+#~ msgstr "좌표식에서 피연산자 대신에 연산자로 끝나있습니다"
+
+#~ msgid ""
+#~ "Coordinate expression has operator \"%c\" following operator \"%c\" with "
+#~ "no operand in between"
+#~ msgstr ""
+#~ "좌표식에서 피연산자가 없는 연산자 \"%2$c\"다음에 연산자 \"%1$c\"이(가) 있"
+#~ "습니다"
+
+#~ msgid "Coordinate expression had unknown variable or constant \"%s\""
+#~ msgstr "좌표식에 알 수 없는 변수나 상수 \"%s\"이(가) 있습니다"
+
+#~ msgid "Coordinate expression parser overflowed its buffer."
+#~ msgstr "좌표 계산 파서의 버퍼가 크기를 넘어갔습니다."
+
+#~ msgid ""
+#~ "Coordinate expression had a close parenthesis with no open parenthesis"
+#~ msgstr "좌표식에 닫는 괄호는 있지만 여는 괄호가 없습니다"
+
+#~ msgid ""
+#~ "Coordinate expression had an open parenthesis with no close parenthesis"
+#~ msgstr "좌표식에 여는 괄호는 있지만 닫는 괄호가 없습니다"
+
+#~ msgid "Coordinate expression doesn't seem to have any operators or operands"
+#~ msgstr "좌표식에 어떠한 연산자나 피연산자가 없습니다"
+
+#~ msgid "Theme contained an expression that resulted in an error: %s\n"
+#~ msgstr "테마가 오류 값을 내는 표현식이 들어 있습니다: %s\n"
+
+#~ msgid ""
+#~ "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
+#~ "specified for this frame style"
+#~ msgstr ""
+#~ "이 프레임 스타일에는 <button function=\"%s\" style=\"%s\" draw_ops="
+#~ "\"whatever\"/>가 지정되어야 합니다"
+
+#~ msgid ""
+#~ "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/"
+#~ ">"
+#~ msgstr ""
+#~ "<frame state=\"%s\" resize=\"%s\" focus=\"%s\" state=\"whatever\"/> 가 없"
+#~ "습니다"
+
+#~ msgid "Failed to load theme \"%s\": %s\n"
+#~ msgstr "테마 \"%s\"을(를) 읽을 수 없습니다: %s\n"
+
+#~ msgid "No <%s> set for theme \"%s\""
+#~ msgstr "테마 \"%2$s\"의 <%1$s>(이)가 설정되지 않았습니다"
+
+#~ msgid ""
+#~ "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
+#~ "type=\"%s\" style_set=\"whatever\"/> element"
+#~ msgstr ""
+#~ "테마 \"%2$s\"의 창 형식 \"%1$s\"에 대한 프레임 스타일이 없습니다,<window "
+#~ "type=\"%3$s\" style_set=\"whatever\"/> 엘리먼트를 추가하십시오"
+
+#~ msgid ""
+#~ "User-defined constants must begin with a capital letter; \"%s\" does not"
+#~ msgstr ""
+#~ "사용자 정의 상수는 대문자로 시작되어야 합니다. \"%s\"은(는) 그렇지 않습니"
+#~ "다."
+
+#~ msgid "Constant \"%s\" has already been defined"
+#~ msgstr "상수 \"%s\"은(는) 이미 지정되어 있습니다"
+
+#~ msgid "No \"%s\" attribute on element <%s>"
+#~ msgstr "\"%s\" 속성이 <%s> 엘리먼트에 없습니다"
+
+#~ msgid "Line %d character %d: %s"
+#~ msgstr "%d 줄 %d 문자: %s"
+
+#~ msgid "Attribute \"%s\" repeated twice on the same <%s> element"
+#~ msgstr "같은 <%2$s> 엘리먼트에 \"%1$s\"속성이 두번 겹쳐져 있습니다"
+
+#~ msgid "Attribute \"%s\" is invalid on <%s> element in this context"
+#~ msgstr "이 문맥의 <%2$s> 엘리먼트에 속성 \"%1$s\"은(는) 올바르지 않습니다"
+
+#~ msgid "Could not parse \"%s\" as an integer"
+#~ msgstr "정수값 \"%s\"을(를) 분석할 수 없습니다"
+
+#~ msgid "Did not understand trailing characters \"%s\" in string \"%s\""
+#~ msgstr "문자열 \"%2$s\"에서 이어진 문자 \"%1$s\"을(를) 이해할 수 없습니다"
+
+#~ msgid "Integer %ld must be positive"
+#~ msgstr "정수 %ld은(는) 양수여야 합니다"
+
+#~ msgid "Integer %ld is too large, current max is %d"
+#~ msgstr "정수 %ld이(가) 너무 큽니다, 현재 최대값은 %d 입니다"
+
+#~ msgid "Could not parse \"%s\" as a floating point number"
+#~ msgstr "부동소수점 수 \"%s\"(으)로 분석할 수 없습니다"
+
+#~ msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
+#~ msgstr ""
+#~ "Boolean 값은 \"true\"이거나 \"false\"만 됩니다 \"%s\"은(는) 안됩니다"
+
+#~ msgid "Angle must be between 0.0 and 360.0, was %g\n"
+#~ msgstr "각도 값은 0.0과 360.0 사이여야 합니다, %g(으)로 되어 있습니다\n"
+
+#~ msgid ""
+#~ "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
+#~ msgstr ""
+#~ "알파 값은 0.0(보이지 않음)과 1.0(완전 불투명)사이여야 합니다, %g(으)로 되"
+#~ "어있습니다\n"
+
+#~ msgid ""
+#~ "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
+#~ "large,x-large,xx-large)\n"
+#~ msgstr ""
+#~ "잘못된 제목 확대 \"%s\" (xx-small, x-small, small, medium, large, x-"
+#~ "large, xx-large중에 하나여야 합니다)\n"
+
+#~ msgid "<%s> name \"%s\" used a second time"
+#~ msgstr "<%s> 이름 \"%s\"이(가) 두번 쓰였습니다"
+
+#~ msgid "<%s> parent \"%s\" has not been defined"
+#~ msgstr "<%s> 부모 \"%s\"이(가) 아직 지정되지 않았습니다"
+
+#~ msgid "<%s> geometry \"%s\" has not been defined"
+#~ msgstr "<%s> 위치 \"%s\"이(가) 아직 지정되지 않았습니다"
+
+#~ msgid "<%s> must specify either a geometry or a parent that has a geometry"
+#~ msgstr "<%s> 는 위치나 위치를 가지는 부모를 지정하여야 합니다"
+
+#~ msgid "You must specify a background for an alpha value to be meaningful"
+#~ msgstr "배경의 알파값을 의미있는 값으로 지정해야 합니다"
+
+#~ msgid "Unknown type \"%s\" on <%s> element"
+#~ msgstr "<%2$s> 엘리먼트에 알 수 없는 형식 \"%1$s\""
+
+# 주의: 접근키 아님
+#~ msgid "Unknown style_set \"%s\" on <%s> element"
+#~ msgstr "<%2$s> 엘리먼트에 알 수 없는 스타일 셋 \"%1$s\""
+
+#~ msgid "Window type \"%s\" has already been assigned a style set"
+#~ msgstr "창 형식 \"%s\"은(는) 이미 스타일 셋으로 지정되어 있습니다"
+
+#~ msgid "Element <%s> is not allowed below <%s>"
+#~ msgstr "<%s> 엘리먼트는 <%s> 아래에 허용되지 않습니다"
+
+#~ msgid ""
+#~ "Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio"
+#~ "\" for buttons"
+#~ msgstr ""
+#~ "단추의 \"button_width\"/\"button_height\"와 \"aspect_ratio\"를 한꺼번에 지"
+#~ "정할 수 없습니다"
+
+#~ msgid "Distance \"%s\" is unknown"
+#~ msgstr "거리 \"%s\"을(를) 알 수 없습니다"
+
+#~ msgid "Aspect ratio \"%s\" is unknown"
+#~ msgstr "가로세로비 \"%s\"을(를) 알 수 없습니다"
+
+#~ msgid "Border \"%s\" is unknown"
+#~ msgstr "가장자리 \"%s\"을(를) 알 수 없습니다"
+
+#~ msgid "No \"start_angle\" or \"from\" attribute on element <%s>"
+#~ msgstr "<%s> 엘리먼트에 \"start_angle\"이나 \"from\" 속성이 없습니다"
+
+#~ msgid "No \"extent_angle\" or \"to\" attribute on element <%s>"
+#~ msgstr "<%s> 엘리먼트에 \"extent_angle\"이나 \"to\" 속성이 없습니다"
+
+#~ msgid "Did not understand value \"%s\" for type of gradient"
+#~ msgstr "서서히 변하는 색 형식 값 \"%s\"을(를) 이해할 수 없습니다"
+
+#~ msgid "Did not understand fill type \"%s\" for <%s> element"
+#~ msgstr "<%2$s> 엘리먼트의 채우기 형식 \"%1$s\"을(를) 이해할 수 없습니다"
+
+#~ msgid "Did not understand state \"%s\" for <%s> element"
+#~ msgstr "<%2$s> 엘리먼트의 state \"%1$s\"을(를) 이해할 수 없습니다"
+
+#~ msgid "Did not understand shadow \"%s\" for <%s> element"
+#~ msgstr "<%2$s> 엘리먼트의 shadow \"%1$s\"을(를) 이해할 수 없습니다"
+
+#~ msgid "Did not understand arrow \"%s\" for <%s> element"
+#~ msgstr "<%2$s> 엘리먼트의 arrow \"%1$s\"을(를) 이해할 수 없습니다"
+
+#~ msgid "No <draw_ops> called \"%s\" has been defined"
+#~ msgstr "\"%s\"라 불리는 <draw_ops>는 정의되지 않았습니다"
+
+#~ msgid "Including draw_ops \"%s\" here would create a circular reference"
+#~ msgstr "여기서 draw_ops \"%s\"을(를) 포함하면 순환 참조가 됩니다."
+
+#~ msgid "Unknown position \"%s\" for frame piece"
+#~ msgstr "프레임 조각에 대한 알 수 없는 위치 \"%s\""
+
+#~ msgid "Frame style already has a piece at position %s"
+#~ msgstr "프레임 스타일은 이미 %s 위치에 조각이 있습니다"
+
+#~ msgid "No <draw_ops> with the name \"%s\" has been defined"
+#~ msgstr "이름 \"%s\"을(를) 가지는 <draw_ops>가 지정되지 않았습니다"
+
+#~ msgid "Unknown function \"%s\" for button"
+#~ msgstr "단추에 알 수 없는 기능 \"%s\""
+
+#~ msgid "Button function \"%s\" does not exist in this version (%d, need %d)"
+#~ msgstr "이 버전에는 \"%s\" 단추 함수가 없습니다(버전은 %d, 버전 %d 필요)"
+
+#~ msgid "Unknown state \"%s\" for button"
+#~ msgstr "단추에 알 수 없는 상태 \"%s\""
+
+#~ msgid "Frame style already has a button for function %s state %s"
+#~ msgstr "프레임 스타일에 단추의 기능 %s 상태 %s이(가) 이미 있습니다"
+
+#~ msgid "\"%s\" is not a valid value for focus attribute"
+#~ msgstr "\"%s\"은(는) focus 속성에 대한 올바른 값이 아닙니다"
+
+#~ msgid "\"%s\" is not a valid value for state attribute"
+#~ msgstr "\"%s\"은(는) state 속성에 대한 올바른 값이 아닙니다"
+
+#~ msgid "A style called \"%s\" has not been defined"
+#~ msgstr "\"%s\"(이)라는 스타일은 정의되지 않았습니다"
+
+#~ msgid "\"%s\" is not a valid value for resize attribute"
+#~ msgstr "resize 속성에 \"%s\"은(는) 올바른 값이 아닙니다"
+
+#~ msgid ""
+#~ "Should not have \"resize\" attribute on <%s> element for maximized/shaded "
+#~ "states"
+#~ msgstr ""
+#~ "최대화/그림자 상태에서 <%s> 엘리먼트는 \"resize\" 속성을 가지지 않습니다"
+
+#~ msgid ""
+#~ "Should not have \"resize\" attribute on <%s> element for maximized states"
+#~ msgstr "최대화한 상태에서 <%s> 엘리먼트는 \"resize\" 속성을 가지지 않습니다"
+
+#~ msgid "Style has already been specified for state %s resize %s focus %s"
+#~ msgstr ""
+#~ "스타일에 상태 %s 크기 조절 %s 포커스 %s에 대해 이미 지정되어 있습니다"
+
+#~ msgid "Style has already been specified for state %s focus %s"
+#~ msgstr "스타일에 상태 %s 포커스 %s에 대해 이미 지정되어 있습니다"
+
+#~ msgid ""
+#~ "Can't have a two draw_ops for a <piece> element (theme specified a "
+#~ "draw_ops attribute and also a <draw_ops> element, or specified two "
+#~ "elements)"
+#~ msgstr ""
+#~ "<piece> 엘리먼트에 두개의 draw_ops를 가질수 없습니다(테마에 draw_ops 속성"
+#~ "과 <draw_ops> 엘리먼트를 지정했거나 두 엘리먼트를 지정했습니다"
+
+#~ msgid ""
+#~ "Can't have a two draw_ops for a <button> element (theme specified a "
+#~ "draw_ops attribute and also a <draw_ops> element, or specified two "
+#~ "elements)"
+#~ msgstr ""
+#~ "<button> 엘리먼트에 두개의 draw_ops를 가질수 없습니다(테마에 draw_ops 속성"
+#~ "과 <draw_ops> 엘리먼트를 지정했거나 두 엘리먼트를 지정했습니다"
+
+#~ msgid ""
+#~ "Can't have a two draw_ops for a <menu_icon> element (theme specified a "
+#~ "draw_ops attribute and also a <draw_ops> element, or specified two "
+#~ "elements)"
+#~ msgstr ""
+#~ "<menu_icon> 엘리먼트에 두개의 draw_ops를 가질수 없습니다(테마에 draw_ops "
+#~ "속성과 <draw_ops> 엘리먼트를 지정했거나 두 엘리먼트를 지정했습니다"
+
+#~ msgid "Bad version specification '%s'"
+#~ msgstr "잘못된 형식의 버전 '%s'"
+
+#~ msgid ""
+#~ "\"version\" attribute cannot be used in metacity-theme-1.xml or metacity-"
+#~ "theme-2.xml"
+#~ msgstr ""
+#~ "metacity-theme-1.xml 혹은 metacity-theme-2.xml 파일에서는 \"version\" 속성"
+#~ "을 사용할 수 없습니다"
+
+#~ msgid ""
+#~ "Theme requires version %s but latest supported theme version is %d.%d"
+#~ msgstr ""
+#~ "테마에 %s 버전이 필요하지만 지원하는 테마의 최신 버전은 %d.%d입니다."
+
+#~ msgid "Outermost element in theme must be <metacity_theme> not <%s>"
+#~ msgstr "테마의 최상위는 <%s> 엘리먼트가 아니라 <metacity_theme>여야 합니다"
+
+#~ msgid ""
+#~ "Element <%s> is not allowed inside a name/author/date/description element"
+#~ msgstr ""
+#~ "name/author/date/description 엘리먼트 안에서 <%s> 엘리먼트가 허용되지 않습"
+#~ "니다"
+
+#~ msgid "Element <%s> is not allowed inside a <constant> element"
+#~ msgstr "<constant> 엘리먼트 안에서 <%s> 엘리먼트는 허용되지 않습니다"
+
+#~ msgid ""
+#~ "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+#~ msgstr ""
+#~ "distance/border/aspect_ratio 엘리먼트 안에서 <%s> 엘리먼트가 허용되지 않습"
+#~ "니다"
+
+#~ msgid "Element <%s> is not allowed inside a draw operation element"
+#~ msgstr "draw operation 엘리먼트 안에서 <%s> 엘리먼트가 허용되지 않습니다"
+
+#~ msgid "Element <%s> is not allowed inside a <%s> element"
+#~ msgstr "<%2$s> 엘리먼트 안에서 <%1$s> 엘리먼트가 허용되지 않습니다"
+
+#~ msgid "No draw_ops provided for frame piece"
+#~ msgstr "프레임 조각에 draw_ops가 제공하지 않습니다"
+
+#~ msgid "No draw_ops provided for button"
+#~ msgstr "단추에 draw_ops가 제공되지 않습니다"
+
+#~ msgid "No text is allowed inside element <%s>"
+#~ msgstr "<%s> 엘리먼트 안에 텍스트가 허용되지 않습니다"
+
+#~ msgid "<%s> specified twice for this theme"
+#~ msgstr "이 테마에서 <%s> 태그가 두 번 지정되었습니다"
+
+#~ msgid "Failed to find a valid file for theme %s\n"
+#~ msgstr "%s 테마의 올바른 파일을 찾는 데 실패했습니다\n"
