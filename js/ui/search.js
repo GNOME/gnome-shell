@@ -205,6 +205,13 @@ const SearchResultsBase = new Lang.Class({
                     callback(false);
                     return;
                 }
+                if (metas.some(function(meta) {
+                    return !meta.name || !meta.id;
+                })) {
+                    log('Invalid result meta returned from search provider ' + this.provider.id);
+                    callback(false);
+                    return;
+                }
 
                 metasNeeded.forEach(Lang.bind(this, function(resultId, i) {
                     let meta = metas[i];
