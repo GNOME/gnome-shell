@@ -935,19 +935,23 @@ static gboolean
 meta_frame_left_click_event (MetaUIFrame *frame,
                              ClutterButtonEvent *event)
 {
-  if (control == META_FRAME_CONTROL_MAXIMIZE ||
-      control == META_FRAME_CONTROL_UNMAXIMIZE ||
-      control == META_FRAME_CONTROL_MINIMIZE ||
-      control == META_FRAME_CONTROL_DELETE ||
-      control == META_FRAME_CONTROL_SHADE ||
-      control == META_FRAME_CONTROL_UNSHADE ||
-      control == META_FRAME_CONTROL_ABOVE ||
-      control == META_FRAME_CONTROL_UNABOVE ||
-      control == META_FRAME_CONTROL_STICK ||
-      control == META_FRAME_CONTROL_UNSTICK ||
-      control == META_FRAME_CONTROL_MENU ||
-      control == META_FRAME_CONTROL_APPMENU)
+  Display *display = GDK_DISPLAY_XDISPLAY (gdk_display_get_default ());
+  MetaFrameControl control = get_control (frame, event->x, event->y);
+
+  switch (control)
     {
+    case META_FRAME_CONTROL_MAXIMIZE:
+    case META_FRAME_CONTROL_UNMAXIMIZE:
+    case META_FRAME_CONTROL_MINIMIZE:
+    case META_FRAME_CONTROL_DELETE:
+    case META_FRAME_CONTROL_SHADE:
+    case META_FRAME_CONTROL_UNSHADE:
+    case META_FRAME_CONTROL_ABOVE:
+    case META_FRAME_CONTROL_UNABOVE:
+    case META_FRAME_CONTROL_STICK:
+    case META_FRAME_CONTROL_UNSTICK:
+    case META_FRAME_CONTROL_MENU:
+    case META_FRAME_CONTROL_APPMENU:
       frame->grab_button = event->button;
       frame->button_state = META_BUTTON_STATE_PRESSED;
       frame->prelit_control = control;
@@ -974,7 +978,7 @@ meta_frame_left_click_event (MetaUIFrame *frame,
           root_rect.height = rect->height;
 
           menu = control == META_FRAME_CONTROL_MENU ? META_WINDOW_MENU_WM
-                                                    : META_WINDOW_MENU_APP;
+            : META_WINDOW_MENU_APP;
 
           /* if the compositor takes a grab for showing the menu, we will
            * get a LeaveNotify event we want to ignore, to keep the pressed
@@ -995,73 +999,73 @@ meta_frame_left_click_event (MetaUIFrame *frame,
         }
 
       return TRUE;
-    }
-  else if (control == META_FRAME_CONTROL_RESIZE_SE ||
-           control == META_FRAME_CONTROL_RESIZE_S ||
-           control == META_FRAME_CONTROL_RESIZE_SW ||
-           control == META_FRAME_CONTROL_RESIZE_NE ||
-           control == META_FRAME_CONTROL_RESIZE_N ||
-           control == META_FRAME_CONTROL_RESIZE_NW ||
-           control == META_FRAME_CONTROL_RESIZE_E ||
-           control == META_FRAME_CONTROL_RESIZE_W)
-    {
-      MetaGrabOp op;
+    case META_FRAME_CONTROL_RESIZE_SE:
+    case META_FRAME_CONTROL_RESIZE_S:
+    case META_FRAME_CONTROL_RESIZE_SW:
+    case META_FRAME_CONTROL_RESIZE_NE:
+    case META_FRAME_CONTROL_RESIZE_N:
+    case META_FRAME_CONTROL_RESIZE_NW:
+    case META_FRAME_CONTROL_RESIZE_E:
+    case META_FRAME_CONTROL_RESIZE_W:
+      {
+        MetaGrabOp op;
 
-      op = META_GRAB_OP_NONE;
+        op = META_GRAB_OP_NONE;
 
-      switch (control)
-        {
-        case META_FRAME_CONTROL_RESIZE_SE:
-          op = META_GRAB_OP_RESIZING_SE;
-          break;
-        case META_FRAME_CONTROL_RESIZE_S:
-          op = META_GRAB_OP_RESIZING_S;
-          break;
-        case META_FRAME_CONTROL_RESIZE_SW:
-          op = META_GRAB_OP_RESIZING_SW;
-          break;
-        case META_FRAME_CONTROL_RESIZE_NE:
-          op = META_GRAB_OP_RESIZING_NE;
-          break;
-        case META_FRAME_CONTROL_RESIZE_N:
-          op = META_GRAB_OP_RESIZING_N;
-          break;
-        case META_FRAME_CONTROL_RESIZE_NW:
-          op = META_GRAB_OP_RESIZING_NW;
-          break;
-        case META_FRAME_CONTROL_RESIZE_E:
-          op = META_GRAB_OP_RESIZING_E;
-          break;
-        case META_FRAME_CONTROL_RESIZE_W:
-          op = META_GRAB_OP_RESIZING_W;
-          break;
-        default:
-          g_assert_not_reached ();
-          break;
-        }
+        switch (control)
+          {
+          case META_FRAME_CONTROL_RESIZE_SE:
+            op = META_GRAB_OP_RESIZING_SE;
+            break;
+          case META_FRAME_CONTROL_RESIZE_S:
+            op = META_GRAB_OP_RESIZING_S;
+            break;
+          case META_FRAME_CONTROL_RESIZE_SW:
+            op = META_GRAB_OP_RESIZING_SW;
+            break;
+          case META_FRAME_CONTROL_RESIZE_NE:
+            op = META_GRAB_OP_RESIZING_NE;
+            break;
+          case META_FRAME_CONTROL_RESIZE_N:
+            op = META_GRAB_OP_RESIZING_N;
+            break;
+          case META_FRAME_CONTROL_RESIZE_NW:
+            op = META_GRAB_OP_RESIZING_NW;
+            break;
+          case META_FRAME_CONTROL_RESIZE_E:
+            op = META_GRAB_OP_RESIZING_E;
+            break;
+          case META_FRAME_CONTROL_RESIZE_W:
+            op = META_GRAB_OP_RESIZING_W;
+            break;
+          default:
+            g_assert_not_reached ();
+            break;
+          }
 
-      meta_frames_try_grab_op (frame, op,
-                               event->x, event->y,
-                               event->time);
-
-      return TRUE;
-    }
-  else if (control == META_FRAME_CONTROL_TITLE)
-    {
-      MetaFrameFlags flags = meta_frame_get_flags (frame->meta_window->frame);
-
-      if (flags & META_FRAME_ALLOWS_MOVE)
-        {
-          meta_frames_try_grab_op (frame,
-                                   META_GRAB_OP_MOVING,
-                                   event->x, event->y,
-                                   event->time);
-        }
+        meta_frames_try_grab_op (frame, op,
+                                 event->x, event->y,
+                                 event->time);
+      }
 
       return TRUE;
-    }
+    case META_FRAME_CONTROL_TITLE:
+      {
+        MetaFrameFlags flags = meta_frame_get_flags (frame->meta_window->frame);
 
-  return FALSE;
+        if (flags & META_FRAME_ALLOWS_MOVE)
+          {
+            meta_frames_try_grab_op (frame,
+                                     META_GRAB_OP_MOVING,
+                                     event->x, event->y,
+                                     event->time);
+          }
+      }
+
+      return TRUE;
+    default:
+      g_assert_not_reached ();
+    }
 }
 
 static gboolean
