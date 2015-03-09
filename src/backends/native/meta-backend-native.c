@@ -219,6 +219,9 @@ meta_backend_native_post_init (MetaBackend *backend)
   monitor_manager = meta_backend_get_monitor_manager (backend);
   g_signal_connect_object (monitor_manager, "monitors-changed",
                            G_CALLBACK (on_monitors_changed), backend, G_CONNECT_AFTER);
+
+  /* make sure the pointer is in the visible area after init */
+  on_monitors_changed (monitor_manager, backend);
 }
 
 static MetaIdleMonitor *
