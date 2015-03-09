@@ -932,61 +932,21 @@ meta_frames_retry_grab_op (MetaFrames *frames,
 }
 
 static gboolean
-handle_button_press_event (MetaUIFrame *frame,
-                           ClutterButtonEvent *event)
+meta_frame_left_click_event (MetaUIFrame *frame,
+                             ClutterButtonEvent *event)
 {
-  MetaFrameControl control;
-  Display *display;
-
-  display = GDK_DISPLAY_XDISPLAY (gdk_display_get_default ());
-
-  control = get_control (frame, event->x, event->y);
-
-  /* focus on click, even if click was on client area */
-  if (event->button == 1 &&
-      !(control == META_FRAME_CONTROL_MINIMIZE ||
-        control == META_FRAME_CONTROL_DELETE ||
-        control == META_FRAME_CONTROL_MAXIMIZE))
-    {
-      meta_topic (META_DEBUG_FOCUS,
-                  "Focusing window with frame 0x%lx due to button 1 press\n",
-                  frame->xwindow);
-      meta_window_focus (frame->meta_window, event->time);
-    }
-
-  /* don't do the rest of this if on client area */
-  if (control == META_FRAME_CONTROL_CLIENT_AREA)
-    return FALSE; /* not on the frame, just passed through from client */
-
-  /* We want to shade even if we have a GrabOp, since we'll have a move grab
-   * if we double click the titlebar.
-   */
-  if (control == META_FRAME_CONTROL_TITLE &&
-      event->button == 1 &&
-      event->click_count == 2)
-    {
-      meta_core_end_grab_op (display, event->time);
-      return meta_frame_double_click_event (frame, event);
-    }
-
-  if (meta_core_get_grab_op (display) != META_GRAB_OP_NONE)
-    return FALSE; /* already up to something */
-
-  frame->grab_button = event->button;
-
-  if (event->button == 1 &&
-      (control == META_FRAME_CONTROL_MAXIMIZE ||
-       control == META_FRAME_CONTROL_UNMAXIMIZE ||
-       control == META_FRAME_CONTROL_MINIMIZE ||
-       control == META_FRAME_CONTROL_DELETE ||
-       control == META_FRAME_CONTROL_SHADE ||
-       control == META_FRAME_CONTROL_UNSHADE ||
-       control == META_FRAME_CONTROL_ABOVE ||
-       control == META_FRAME_CONTROL_UNABOVE ||
-       control == META_FRAME_CONTROL_STICK ||
-       control == META_FRAME_CONTROL_UNSTICK ||
-       control == META_FRAME_CONTROL_MENU ||
-       control == META_FRAME_CONTROL_APPMENU))
+  if (control == META_FRAME_CONTROL_MAXIMIZE ||
+      control == META_FRAME_CONTROL_UNMAXIMIZE ||
+      control == META_FRAME_CONTROL_MINIMIZE ||
+      control == META_FRAME_CONTROL_DELETE ||
+      control == META_FRAME_CONTROL_SHADE ||
+      control == META_FRAME_CONTROL_UNSHADE ||
+      control == META_FRAME_CONTROL_ABOVE ||
+      control == META_FRAME_CONTROL_UNABOVE ||
+      control == META_FRAME_CONTROL_STICK ||
+      control == META_FRAME_CONTROL_UNSTICK ||
+      control == META_FRAME_CONTROL_MENU ||
+      control == META_FRAME_CONTROL_APPMENU)
     {
       frame->grab_button = event->button;
       frame->button_state = META_BUTTON_STATE_PRESSED;
@@ -1033,16 +993,17 @@ handle_button_press_event (MetaUIFrame *frame,
                                    event->x, event->y,
                                    event->time);
         }
+
+      return TRUE;
     }
-  else if (event->button == 1 &&
-           (control == META_FRAME_CONTROL_RESIZE_SE ||
-            control == META_FRAME_CONTROL_RESIZE_S ||
-            control == META_FRAME_CONTROL_RESIZE_SW ||
-            control == META_FRAME_CONTROL_RESIZE_NE ||
-            control == META_FRAME_CONTROL_RESIZE_N ||
-            control == META_FRAME_CONTROL_RESIZE_NW ||
-            control == META_FRAME_CONTROL_RESIZE_E ||
-            control == META_FRAME_CONTROL_RESIZE_W))
+  else if (control == META_FRAME_CONTROL_RESIZE_SE ||
+           control == META_FRAME_CONTROL_RESIZE_S ||
+           control == META_FRAME_CONTROL_RESIZE_SW ||
+           control == META_FRAME_CONTROL_RESIZE_NE ||
+           control == META_FRAME_CONTROL_RESIZE_N ||
+           control == META_FRAME_CONTROL_RESIZE_NW ||
+           control == META_FRAME_CONTROL_RESIZE_E ||
+           control == META_FRAME_CONTROL_RESIZE_W)
     {
       MetaGrabOp op;
 
@@ -1082,9 +1043,10 @@ handle_button_press_event (MetaUIFrame *frame,
       meta_frames_try_grab_op (frame, op,
                                event->x, event->y,
                                event->time);
+
+      return TRUE;
     }
-  else if (control == META_FRAME_CONTROL_TITLE &&
-           event->button == 1)
+  else if (control == META_FRAME_CONTROL_TITLE)
     {
       MetaFrameFlags flags = meta_frame_get_flags (frame->meta_window->frame);
 
@@ -1095,17 +1057,67 @@ handle_button_press_event (MetaUIFrame *frame,
                                    event->x, event->y,
                                    event->time);
         }
-    }
-  else if (event->button == 2)
-    {
-      return meta_frame_middle_click_event (frame, event);
-    }
-  else if (event->button == 3)
-    {
-      return meta_frame_right_click_event (frame, event);
+
+      return TRUE;
     }
 
-  return TRUE;
+  return FALSE;
+}
+
+static gboolean
+handle_button_press_event (MetaUIFrame *frame,
+                           ClutterButtonEvent *event)
+{
+  MetaFrameControl control;
+  Display *display;
+
+  display = GDK_DISPLAY_XDISPLAY (gdk_display_get_default ());
+
+  control = get_control (frame, event->x, event->y);
+
+  /* focus on click, even if click was on client area */
+  if (event->button == 1 &&
+      !(control == META_FRAME_CONTROL_MINIMIZE ||
+        control == META_FRAME_CONTROL_DELETE ||
+        control == META_FRAME_CONTROL_MAXIMIZE))
+    {
+      meta_topic (META_DEBUG_FOCUS,
+                  "Focusing window with frame 0x%lx due to button 1 press\n",
+                  frame->xwindow);
+      meta_window_focus (frame->meta_window, event->time);
+    }
+
+  /* don't do the rest of this if on client area */
+  if (control == META_FRAME_CONTROL_CLIENT_AREA)
+    return FALSE; /* not on the frame, just passed through from client */
+
+  /* We want to shade even if we have a GrabOp, since we'll have a move grab
+   * if we double click the titlebar.
+   */
+  if (control == META_FRAME_CONTROL_TITLE &&
+      event->button == 1 &&
+      event->click_count == 2)
+    {
+      meta_core_end_grab_op (display, event->time);
+      return meta_frame_double_click_event (frame, event);
+    }
+
+  if (meta_core_get_grab_op (display) != META_GRAB_OP_NONE)
+    return FALSE; /* already up to something */
+
+  frame->grab_button = event->button;
+
+  switch (event->button)
+    {
+    case 1:
+      return meta_frame_left_click_event (frame, event);
+    case 2:
+      return meta_frame_middle_click_event (frame, event);
+    case 3:
+      return meta_frame_right_click_event (frame, event);
+    default:
+      return FALSE;
+    }
 }
 
 static gboolean
