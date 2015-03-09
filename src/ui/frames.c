@@ -931,6 +931,32 @@ meta_frames_retry_grab_op (MetaFrames *frames,
                                   frames->grab_y);
 }
 
+static MetaGrabOp
+grab_op_from_resize_control (MetaFrameControl control)
+{
+  switch (control)
+    {
+    case META_FRAME_CONTROL_RESIZE_SE:
+      return META_GRAB_OP_RESIZING_SE;
+    case META_FRAME_CONTROL_RESIZE_S:
+      return META_GRAB_OP_RESIZING_S;
+    case META_FRAME_CONTROL_RESIZE_SW:
+      return META_GRAB_OP_RESIZING_SW;
+    case META_FRAME_CONTROL_RESIZE_NE:
+      return META_GRAB_OP_RESIZING_NE;
+    case META_FRAME_CONTROL_RESIZE_N:
+      return META_GRAB_OP_RESIZING_N;
+    case META_FRAME_CONTROL_RESIZE_NW:
+      return META_GRAB_OP_RESIZING_NW;
+    case META_FRAME_CONTROL_RESIZE_E:
+      return META_GRAB_OP_RESIZING_E;
+    case META_FRAME_CONTROL_RESIZE_W:
+      return META_GRAB_OP_RESIZING_W;
+    default:
+      g_assert_not_reached ();
+    }
+}
+
 static gboolean
 meta_frame_left_click_event (MetaUIFrame *frame,
                              ClutterButtonEvent *event)
@@ -1007,46 +1033,10 @@ meta_frame_left_click_event (MetaUIFrame *frame,
     case META_FRAME_CONTROL_RESIZE_NW:
     case META_FRAME_CONTROL_RESIZE_E:
     case META_FRAME_CONTROL_RESIZE_W:
-      {
-        MetaGrabOp op;
-
-        op = META_GRAB_OP_NONE;
-
-        switch (control)
-          {
-          case META_FRAME_CONTROL_RESIZE_SE:
-            op = META_GRAB_OP_RESIZING_SE;
-            break;
-          case META_FRAME_CONTROL_RESIZE_S:
-            op = META_GRAB_OP_RESIZING_S;
-            break;
-          case META_FRAME_CONTROL_RESIZE_SW:
-            op = META_GRAB_OP_RESIZING_SW;
-            break;
-          case META_FRAME_CONTROL_RESIZE_NE:
-            op = META_GRAB_OP_RESIZING_NE;
-            break;
-          case META_FRAME_CONTROL_RESIZE_N:
-            op = META_GRAB_OP_RESIZING_N;
-            break;
-          case META_FRAME_CONTROL_RESIZE_NW:
-            op = META_GRAB_OP_RESIZING_NW;
-            break;
-          case META_FRAME_CONTROL_RESIZE_E:
-            op = META_GRAB_OP_RESIZING_E;
-            break;
-          case META_FRAME_CONTROL_RESIZE_W:
-            op = META_GRAB_OP_RESIZING_W;
-            break;
-          default:
-            g_assert_not_reached ();
-            break;
-          }
-
-        meta_frames_try_grab_op (frame, op,
-                                 event->x, event->y,
-                                 event->time);
-      }
+      meta_frames_try_grab_op (frame,
+                               grab_op_from_resize_control (control),
+                               event->x, event->y,
+                               event->time);
 
       return TRUE;
     case META_FRAME_CONTROL_TITLE:
