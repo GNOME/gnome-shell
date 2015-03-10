@@ -61,7 +61,7 @@ const DisplayChangeDialog = new Lang.Class({
         mainContentBox.add(messageBox,
                            { expand: true, y_align: St.Align.START });
 
-        let subjectLabel = new St.Label({ style_class: 'prompt-dialog-headline',
+        let subjectLabel = new St.Label({ style_class: 'prompt-dialog-headline headline',
                                             text: _("Do you want to keep these display settings?") });
         messageBox.add(subjectLabel,
                        { y_fill:  false,
