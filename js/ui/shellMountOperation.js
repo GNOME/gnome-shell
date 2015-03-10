@@ -347,7 +347,7 @@ const ShellMountPasswordDialog = new Lang.Class({
         mainContentBox.add(this._messageBox,
                            { y_align: St.Align.START, expand: true, x_fill: true, y_fill: true });
 
-        let subject = new St.Label({ style_class: 'prompt-dialog-headline' });
+        let subject = new St.Label({ style_class: 'prompt-dialog-headline headline' });
         this._messageBox.add(subject,
                              { y_fill:  false,
                                y_align: St.Align.START });

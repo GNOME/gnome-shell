@@ -324,7 +324,7 @@ StScrollBar {
 
 .prompt-dialog-headline {
   font-weight: bold;
-  color: #bebeb6; }
+  color: #b2b2a9; }
 
 .prompt-dialog-description:rtl {
   text-align: right; }
@@ -553,9 +553,7 @@ StScrollBar {
   font-weight: bold;
   height: 1.86em; }
   #panel.unlock-screen, #panel.login-screen, #panel.lock-screen {
-    background-color: transparent;
-    background-gradient-start: transparent;
-    background-gradient-end: transparent; }
+    background-color: transparent; }
   #panel #panelLeft, #panel #panelCenter {
     spacing: 4px; }
   #panel .panel-corner {
@@ -565,7 +563,7 @@ StScrollBar {
     -panel-corner-border-color: transparent; }
     #panel .panel-corner:active, #panel .panel-corner:overview, #panel .panel-corner:focus {
       -panel-corner-border-color: #256ab1; }
-    #panel .panel-corner.lock-screen, #panel .panel-corner.login-screen, #panel .panel-corner.unlock-screen {
+    #panel .panel-corner.lock-screen, #panel .panel-corner.login-screen, #panel .panel-cornerunlock-screen {
       -panel-corner-radius: 0;
       -panel-corner-background-color: transparent;
       -panel-corner-border-color: transparent; }
