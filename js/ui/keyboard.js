@@ -6,6 +6,7 @@ const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const Lang = imports.lang;
+const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const St = imports.gi.St;
@@ -60,14 +61,7 @@ const CaribouDaemonIface = '<node> \
 </interface> \
 </node>';
 
-const CursorManagerIface = '<node> \
-<interface name="org.gnome.SettingsDaemon.Cursor"> \
-<property name="ShowOSK" type="b" access="read" /> \
-</interface> \
-</node>';
-
 const CaribouDaemonProxy = Gio.DBusProxy.makeProxyWrapper(CaribouDaemonIface);
-const CursorManagerProxy = Gio.DBusProxy.makeProxyWrapper(CursorManagerIface);
 
 const Key = new Lang.Class({
     Name: 'Key',
@@ -188,17 +182,18 @@ const Keyboard = new Lang.Class({
                                                Lang.bind(this, this._sync),
                                                Lang.bind(this, this._sync));
         this._daemonProxy = null;
-        this._cursorProxy = new CursorManagerProxy(Gio.DBus.session, CURSOR_BUS_NAME,
-                                                   CURSOR_OBJECT_PATH,
-                                                   Lang.bind(this, function(proxy, error) {
-                                                       if (error) {
-                                                           log(error.message);
-                                                           return;
-                                                       }
-                                                       this._cursorProxy.connect('g-properties-changed',
-                                                                                 Lang.bind(this, this._sync));
-                                                       this._sync();
-                                                   }));
+        this._lastDeviceId = null;
+
+        Meta.get_backend().connect('last-device-changed', Lang.bind(this,
+            function (backend, deviceId) {
+                let manager = Clutter.DeviceManager.get_default();
+                let device = manager.get_device(deviceId);
+
+                if (device.get_device_name().indexOf('XTEST') < 0) {
+                    this._lastDeviceId = deviceId;
+                    this._sync();
+                }
+            }));
         this._sync();
 
         this._showIdleId = 0;
@@ -217,9 +212,22 @@ const Keyboard = new Lang.Class({
         this._redraw();
     },
 
+    _lastDeviceIsTouchscreen: function () {
+        if (!this._lastDeviceId)
+            return false;
+
+        let manager = Clutter.DeviceManager.get_default();
+        let device = manager.get_device(this._lastDeviceId);
+
+        if (!device)
+            return false;
+
+        return device.get_device_type() == Clutter.InputDeviceType.TOUCHSCREEN_DEVICE;
+    },
+
     _sync: function () {
         this._enableKeyboard = this._a11yApplicationsSettings.get_boolean(SHOW_KEYBOARD) ||
-                               this._cursorProxy.ShowOSK;
+                               this._lastDeviceIsTouchscreen();
         if (!this._enableKeyboard && !this._keyboard)
             return;
         if (this._enableKeyboard && this._keyboard &&
