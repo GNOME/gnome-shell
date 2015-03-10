@@ -397,7 +397,7 @@ StScrollBar {
       background-color: rgba(238, 238, 236, 0.1);
       color: #eeeeec; }
     .popup-menu .popup-menu-item:active {
-      background-color: #1c5187;
+      background-color: #215d9c;
       color: #ffffff; }
     .popup-menu .popup-menu-item:insensitive {
       color: rgba(238, 238, 236, 0.5); }
@@ -792,12 +792,12 @@ StScrollBar {
   padding: 13px;
   border: 1px solid #282c2c; }
   .system-menu-action:hover, .system-menu-action:focus {
-    color: #ffffff;
-    background-color: #215d9c;
+    background-color: rgba(238, 238, 236, 0.1);
+    color: #eeeeec;
     border: none;
     padding: 14px; }
   .system-menu-action:active {
-    background-color: #1c5187;
+    background-color: #215d9c;
     color: #ffffff; }
   .system-menu-action > StIcon {
     icon-size: 16px; }
