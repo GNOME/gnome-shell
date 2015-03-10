@@ -1044,7 +1044,8 @@ const Message = new Lang.Class({
 
     setBody: function(text) {
         this._bodyText = text;
-        this.bodyLabel.setMarkup(text.replace(/\n/g, ' '), this._useBodyMarkup);
+        this.bodyLabel.setMarkup(text ? text.replace(/\n/g, ' ') : '',
+                                 this._useBodyMarkup);
     },
 
     setUseBodyMarkup: function(enable) {
