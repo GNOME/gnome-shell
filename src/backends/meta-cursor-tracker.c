@@ -85,9 +85,9 @@ sync_cursor (MetaCursorTracker *tracker)
   if (tracker->displayed_cursor == displayed_cursor)
     return;
 
-  g_clear_pointer (&tracker->displayed_cursor, meta_cursor_sprite_unref);
+  g_clear_object (&tracker->displayed_cursor);
   if (displayed_cursor)
-    tracker->displayed_cursor = meta_cursor_sprite_ref (displayed_cursor);
+    tracker->displayed_cursor = g_object_ref (displayed_cursor);
 
   update_displayed_cursor (tracker);
   g_signal_emit (tracker, signals[CURSOR_CHANGED], 0);
@@ -108,9 +108,9 @@ meta_cursor_tracker_finalize (GObject *object)
   MetaCursorTracker *self = META_CURSOR_TRACKER (object);
 
   if (self->displayed_cursor)
-    meta_cursor_sprite_unref (self->displayed_cursor);
+    g_object_unref (self->displayed_cursor);
   if (self->root_cursor)
-    meta_cursor_sprite_unref (self->root_cursor);
+    g_object_unref (self->root_cursor);
 
   G_OBJECT_CLASS (meta_cursor_tracker_parent_class)->finalize (object);
 }
@@ -160,9 +160,9 @@ set_window_cursor (MetaCursorTracker *tracker,
                    gboolean           has_cursor,
                    MetaCursorSprite  *cursor_sprite)
 {
-  g_clear_pointer (&tracker->window_cursor, meta_cursor_sprite_unref);
+  g_clear_object (&tracker->window_cursor);
   if (cursor_sprite)
-    tracker->window_cursor = meta_cursor_sprite_ref (cursor_sprite);
+    tracker->window_cursor = g_object_ref (cursor_sprite);
   tracker->has_window_cursor = has_cursor;
   sync_cursor (tracker);
 }
@@ -184,26 +184,10 @@ meta_cursor_tracker_handle_xevent (MetaCursorTracker *tracker,
   if (notify_event->subtype != XFixesDisplayCursorNotify)
     return FALSE;
 
-  g_clear_pointer (&tracker->xfixes_cursor, meta_cursor_sprite_unref);
+  g_clear_object (&tracker->xfixes_cursor);
   g_signal_emit (tracker, signals[CURSOR_CHANGED], 0);
 
   return TRUE;
-}
-
-static MetaCursorSprite *
-meta_cursor_sprite_take_texture (CoglTexture2D *texture,
-                                 int            hot_x,
-                                 int            hot_y)
-{
-  MetaCursorSprite *self;
-
-  self = g_slice_new0 (MetaCursorSprite);
-  self->ref_count = 1;
-  self->image.texture = texture;
-  self->image.hot_x = hot_x;
-  self->image.hot_y = hot_y;
-
-  return self;
 }
 
 static void
@@ -264,9 +248,10 @@ ensure_xfixes_cursor (MetaCursorTracker *tracker)
   if (sprite != NULL)
     {
       MetaCursorSprite *cursor_sprite =
-        meta_cursor_sprite_take_texture (sprite,
+        meta_cursor_sprite_from_texture (sprite,
                                          cursor_image->xhot,
                                          cursor_image->yhot);
+      cogl_object_unref (sprite);
       tracker->xfixes_cursor = cursor_sprite;
     }
   XFree (cursor_image);
@@ -354,9 +339,9 @@ void
 meta_cursor_tracker_set_root_cursor (MetaCursorTracker *tracker,
                                      MetaCursorSprite  *cursor_sprite)
 {
-  g_clear_pointer (&tracker->root_cursor, meta_cursor_sprite_unref);
+  g_clear_object (&tracker->root_cursor);
   if (cursor_sprite)
-    tracker->root_cursor = meta_cursor_sprite_ref (cursor_sprite);
+    tracker->root_cursor = g_object_ref (cursor_sprite);
 
   sync_cursor (tracker);
 }

@@ -751,7 +751,7 @@ meta_wayland_pointer_update_cursor_surface (MetaWaylandPointer *pointer)
                                              cursor_sprite);
 
       if (cursor_sprite)
-        meta_cursor_sprite_unref (cursor_sprite);
+        g_object_unref (cursor_sprite);
     }
   else
     {

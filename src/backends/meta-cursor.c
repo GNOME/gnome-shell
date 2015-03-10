@@ -43,14 +43,9 @@
 #include <cogl/cogl-wayland-server.h>
 #endif
 
-MetaCursorSprite *
-meta_cursor_sprite_ref (MetaCursorSprite *self)
-{
-  g_assert (self->ref_count > 0);
-  self->ref_count++;
+GType meta_cursor_sprite_get_type (void) G_GNUC_CONST;
 
-  return self;
-}
+G_DEFINE_TYPE (MetaCursorSprite, meta_cursor_sprite, G_TYPE_OBJECT)
 
 static void
 meta_cursor_image_free (MetaCursorImage *image)
@@ -62,24 +57,6 @@ meta_cursor_image_free (MetaCursorImage *image)
   if (image->bo)
     gbm_bo_destroy (image->bo);
 #endif
-}
-
-static void
-meta_cursor_sprite_free (MetaCursorSprite *self)
-{
-  if (self->xcursor_images)
-    XcursorImagesDestroy (self->xcursor_images);
-  meta_cursor_image_free (&self->image);
-  g_slice_free (MetaCursorSprite, self);
-}
-
-void
-meta_cursor_sprite_unref (MetaCursorSprite *self)
-{
-  self->ref_count--;
-
-  if (self->ref_count == 0)
-    meta_cursor_sprite_free (self);
 }
 
 static const char *
@@ -323,9 +300,30 @@ load_cursor_image (MetaCursorSprite *self)
 MetaCursorSprite *
 meta_cursor_sprite_from_theme (MetaCursor cursor)
 {
-  MetaCursorSprite *self = g_slice_new0 (MetaCursorSprite);
-  self->ref_count = 1;
+  MetaCursorSprite *self;
+
+  self = g_object_new (META_TYPE_CURSOR_SPRITE, NULL);
+
   self->cursor = cursor;
+
+  return self;
+}
+
+MetaCursorSprite *
+meta_cursor_sprite_from_texture (CoglTexture2D *texture,
+                                 int            hot_x,
+                                 int            hot_y)
+{
+  MetaCursorSprite *self;
+
+  self = g_object_new (META_TYPE_CURSOR_SPRITE, NULL);
+
+  cogl_object_ref (texture);
+
+  self->image.texture = texture;
+  self->image.hot_x = hot_x;
+  self->image.hot_y = hot_y;
+
   return self;
 }
 
@@ -426,8 +424,8 @@ meta_cursor_sprite_from_buffer (struct wl_resource *buffer,
 {
   MetaCursorSprite *self;
 
-  self = g_slice_new0 (MetaCursorSprite);
-  self->ref_count = 1;
+  self = g_object_new (META_TYPE_CURSOR_SPRITE, NULL);
+
   meta_cursor_image_load_from_buffer (&self->image, buffer, hot_x, hot_y);
 
   return self;
@@ -471,4 +469,29 @@ MetaCursor
 meta_cursor_sprite_get_meta_cursor (MetaCursorSprite *self)
 {
   return self->cursor;
+}
+
+static void
+meta_cursor_sprite_init (MetaCursorSprite *self)
+{
+}
+
+static void
+meta_cursor_sprite_finalize (GObject *object)
+{
+  MetaCursorSprite *self = META_CURSOR_SPRITE (object);
+
+  if (self->xcursor_images)
+    XcursorImagesDestroy (self->xcursor_images);
+  meta_cursor_image_free (&self->image);
+
+  G_OBJECT_CLASS (meta_cursor_sprite_parent_class)->finalize (object);
+}
+
+static void
+meta_cursor_sprite_class_init (MetaCursorSpriteClass *klass)
+{
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
+  object_class->finalize = meta_cursor_sprite_finalize;
 }

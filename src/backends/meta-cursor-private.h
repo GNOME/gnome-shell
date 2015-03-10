@@ -31,7 +31,8 @@
 #include <gbm.h>
 #endif
 
-typedef struct {
+typedef struct
+{
   CoglTexture2D *texture;
   int hot_x, hot_y;
 
@@ -40,8 +41,9 @@ typedef struct {
 #endif
 } MetaCursorImage;
 
-struct _MetaCursorSprite {
-  int ref_count;
+struct _MetaCursorSprite
+{
+  GObject parent;
 
   int current_frame;
   XcursorImages *xcursor_images;

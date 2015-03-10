@@ -1266,7 +1266,7 @@ meta_screen_update_cursor (MetaScreen *screen)
 
   cursor_sprite = meta_cursor_sprite_from_theme (cursor);
   meta_cursor_tracker_set_root_cursor (tracker, cursor_sprite);
-  meta_cursor_sprite_unref (cursor_sprite);
+  g_object_unref (cursor_sprite);
 
   /* Set a cursor for X11 applications that don't specify their own */
   xcursor = meta_display_create_x_cursor (display, cursor);

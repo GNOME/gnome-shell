@@ -22,12 +22,15 @@
 #ifndef META_CURSOR_H
 #define META_CURSOR_H
 
+#include <meta/common.h>
+
 typedef struct _MetaCursorSprite MetaCursorSprite;
 
-MetaCursorSprite * meta_cursor_sprite_ref (MetaCursorSprite *self);
-void meta_cursor_sprite_unref (MetaCursorSprite *self);
-
-#include <meta/common.h>
+#define META_TYPE_CURSOR_SPRITE (meta_cursor_sprite_get_type ())
+G_DECLARE_FINAL_TYPE (MetaCursorSprite,
+                      meta_cursor_sprite,
+                      META, CURSOR_SPRITE,
+                      GObject);
 
 MetaCursorSprite * meta_cursor_sprite_from_theme  (MetaCursor          cursor);
 
@@ -39,6 +42,10 @@ MetaCursorSprite * meta_cursor_sprite_from_buffer (struct wl_resource *buffer,
 #endif
 
 MetaCursor meta_cursor_sprite_get_meta_cursor (MetaCursorSprite *self);
+
+MetaCursorSprite * meta_cursor_sprite_from_texture (CoglTexture2D *texture,
+                                                    int            hot_x,
+                                                    int            hot_y);
 
 Cursor meta_cursor_create_x_cursor (Display    *xdisplay,
                                     MetaCursor  cursor);
