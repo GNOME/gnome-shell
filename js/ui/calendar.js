@@ -1008,8 +1008,7 @@ const Message = new Lang.Class({
         this._closeButton = new St.Button({ child: closeIcon, visible: false });
         titleBox.add_actor(this._closeButton);
 
-        this._bodyStack = new St.Widget({ x_expand: true,
-                                          x_align: Clutter.ActorAlign.START });
+        this._bodyStack = new St.Widget({ x_expand: true });
         this._bodyStack.layout_manager = new LabelExpanderLayout();
         contentBox.add_actor(this._bodyStack);
 
