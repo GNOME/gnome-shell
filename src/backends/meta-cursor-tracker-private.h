@@ -34,7 +34,7 @@ struct _MetaCursorTracker {
 
   gboolean is_showing;
 
-  MetaCursorReference *displayed_cursor;
+  MetaCursorSprite *displayed_cursor;
 
   /* Wayland clients can set a NULL buffer as their cursor
    * explicitly, which means that we shouldn't display anything.
@@ -42,12 +42,12 @@ struct _MetaCursorTracker {
    * determine an unset window cursor; we need an extra boolean.
    */
   gboolean has_window_cursor;
-  MetaCursorReference *window_cursor;
+  MetaCursorSprite *window_cursor;
 
-  MetaCursorReference *root_cursor;
+  MetaCursorSprite *root_cursor;
 
   /* The cursor from the X11 server. */
-  MetaCursorReference *xfixes_cursor;
+  MetaCursorSprite *xfixes_cursor;
 };
 
 struct _MetaCursorTrackerClass {
@@ -57,16 +57,16 @@ struct _MetaCursorTrackerClass {
 gboolean meta_cursor_tracker_handle_xevent (MetaCursorTracker *tracker,
 					    XEvent            *xevent);
 
-void     meta_cursor_tracker_set_window_cursor   (MetaCursorTracker   *tracker,
-                                                  MetaCursorReference *cursor);
-void     meta_cursor_tracker_unset_window_cursor (MetaCursorTracker   *tracker);
-void     meta_cursor_tracker_set_root_cursor     (MetaCursorTracker   *tracker,
-                                                  MetaCursorReference *cursor);
+void     meta_cursor_tracker_set_window_cursor   (MetaCursorTracker *tracker,
+                                                  MetaCursorSprite  *cursor_sprite);
+void     meta_cursor_tracker_unset_window_cursor (MetaCursorTracker *tracker);
+void     meta_cursor_tracker_set_root_cursor     (MetaCursorTracker *tracker,
+                                                  MetaCursorSprite  *cursor_sprite);
 
 void     meta_cursor_tracker_update_position (MetaCursorTracker *tracker,
 					      int                new_x,
 					      int                new_y);
 
-MetaCursorReference * meta_cursor_tracker_get_displayed_cursor (MetaCursorTracker *tracker);
+MetaCursorSprite * meta_cursor_tracker_get_displayed_cursor (MetaCursorTracker *tracker);
 
 #endif

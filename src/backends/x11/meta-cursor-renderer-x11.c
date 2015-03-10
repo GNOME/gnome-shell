@@ -53,12 +53,12 @@ meta_cursor_renderer_x11_update_cursor (MetaCursorRenderer *renderer)
 
   Display *xdisplay = meta_backend_x11_get_xdisplay (backend);
 
-  MetaCursorReference *cursor_ref = meta_cursor_renderer_get_cursor (renderer);
+  MetaCursorSprite *cursor_sprite = meta_cursor_renderer_get_cursor (renderer);
   gboolean has_server_cursor = FALSE;
 
-  if (cursor_ref)
+  if (cursor_sprite)
     {
-      MetaCursor cursor = meta_cursor_reference_get_meta_cursor (cursor_ref);
+      MetaCursor cursor = meta_cursor_sprite_get_meta_cursor (cursor_sprite);
       if (cursor != META_CURSOR_NONE)
         {
           Cursor xcursor = meta_cursor_create_x_cursor (xdisplay, cursor);

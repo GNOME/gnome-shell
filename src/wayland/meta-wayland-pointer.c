@@ -735,22 +735,23 @@ meta_wayland_pointer_update_cursor_surface (MetaWaylandPointer *pointer)
 
   if (pointer->current)
     {
-      MetaCursorReference *cursor;
+      MetaCursorSprite *cursor_sprite;
 
       if (pointer->cursor_surface && pointer->cursor_surface->buffer)
         {
           struct wl_resource *buffer = pointer->cursor_surface->buffer->resource;
-          cursor = meta_cursor_reference_from_buffer (buffer,
-                                                      pointer->hotspot_x,
-                                                      pointer->hotspot_y);
+          cursor_sprite = meta_cursor_sprite_from_buffer (buffer,
+                                                          pointer->hotspot_x,
+                                                          pointer->hotspot_y);
         }
       else
-        cursor = NULL;
+        cursor_sprite = NULL;
 
-      meta_cursor_tracker_set_window_cursor (pointer->cursor_tracker, cursor);
+      meta_cursor_tracker_set_window_cursor (pointer->cursor_tracker,
+                                             cursor_sprite);
 
-      if (cursor)
-        meta_cursor_reference_unref (cursor);
+      if (cursor_sprite)
+        meta_cursor_sprite_unref (cursor_sprite);
     }
   else
     {

@@ -43,8 +43,8 @@
 #include <cogl/cogl-wayland-server.h>
 #endif
 
-MetaCursorReference *
-meta_cursor_reference_ref (MetaCursorReference *self)
+MetaCursorSprite *
+meta_cursor_sprite_ref (MetaCursorSprite *self)
 {
   g_assert (self->ref_count > 0);
   self->ref_count++;
@@ -65,21 +65,21 @@ meta_cursor_image_free (MetaCursorImage *image)
 }
 
 static void
-meta_cursor_reference_free (MetaCursorReference *self)
+meta_cursor_sprite_free (MetaCursorSprite *self)
 {
   if (self->xcursor_images)
     XcursorImagesDestroy (self->xcursor_images);
   meta_cursor_image_free (&self->image);
-  g_slice_free (MetaCursorReference, self);
+  g_slice_free (MetaCursorSprite, self);
 }
 
 void
-meta_cursor_reference_unref (MetaCursorReference *self)
+meta_cursor_sprite_unref (MetaCursorSprite *self)
 {
   self->ref_count--;
 
   if (self->ref_count == 0)
-    meta_cursor_reference_free (self);
+    meta_cursor_sprite_free (self);
 }
 
 static const char *
@@ -259,17 +259,17 @@ meta_cursor_image_load_from_xcursor_image (MetaCursorImage   *image,
 }
 
 static XcursorImage *
-meta_cursor_reference_get_current_frame_image (MetaCursorReference *self)
+meta_cursor_sprite_get_current_frame_image (MetaCursorSprite *self)
 {
   return self->xcursor_images->images[self->current_frame];
 }
 
 void
-meta_cursor_reference_tick_frame (MetaCursorReference *self)
+meta_cursor_sprite_tick_frame (MetaCursorSprite *self)
 {
   XcursorImage *image;
 
-  if (!meta_cursor_reference_is_animated (self))
+  if (!meta_cursor_sprite_is_animated (self))
     return;
 
   self->current_frame++;
@@ -278,52 +278,52 @@ meta_cursor_reference_tick_frame (MetaCursorReference *self)
     self->current_frame = 0;
 
   meta_cursor_image_free (&self->image);
-  image = meta_cursor_reference_get_current_frame_image (self);
+  image = meta_cursor_sprite_get_current_frame_image (self);
   meta_cursor_image_load_from_xcursor_image (&self->image, image);
 }
 
 guint
-meta_cursor_reference_get_current_frame_time (MetaCursorReference *self)
+meta_cursor_sprite_get_current_frame_time (MetaCursorSprite *self)
 {
-  if (!meta_cursor_reference_is_animated (self))
+  if (!meta_cursor_sprite_is_animated (self))
     return 0;
 
   return self->xcursor_images->images[self->current_frame]->delay;
 }
 
 gboolean
-meta_cursor_reference_is_animated (MetaCursorReference *self)
+meta_cursor_sprite_is_animated (MetaCursorSprite *self)
 {
   return (self->xcursor_images &&
           self->xcursor_images->nimage > 1);
 }
 
 static void
-load_cursor_image (MetaCursorReference *cursor)
+load_cursor_image (MetaCursorSprite *self)
 {
   XcursorImage *image;
 
   /* Either cursors are loaded from X cursors or buffers. Since
    * buffers are converted over immediately, we can make sure to
    * load this directly. */
-  g_assert (cursor->cursor != META_CURSOR_NONE);
+  g_assert (self->cursor != META_CURSOR_NONE);
 
-  if (!cursor->xcursor_images)
+  if (!self->xcursor_images)
     {
-      cursor->current_frame = 0;
-      cursor->xcursor_images = load_cursor_on_client (cursor->cursor);
-      if (!cursor->xcursor_images)
+      self->current_frame = 0;
+      self->xcursor_images = load_cursor_on_client (self->cursor);
+      if (!self->xcursor_images)
         meta_fatal ("Could not find cursor. Perhaps set XCURSOR_PATH?");
     }
 
-  image = meta_cursor_reference_get_current_frame_image (cursor);
-  meta_cursor_image_load_from_xcursor_image (&cursor->image, image);
+  image = meta_cursor_sprite_get_current_frame_image (self);
+  meta_cursor_image_load_from_xcursor_image (&self->image, image);
 }
 
-MetaCursorReference *
-meta_cursor_reference_from_theme (MetaCursor cursor)
+MetaCursorSprite *
+meta_cursor_sprite_from_theme (MetaCursor cursor)
 {
-  MetaCursorReference *self = g_slice_new0 (MetaCursorReference);
+  MetaCursorSprite *self = g_slice_new0 (MetaCursorSprite);
   self->ref_count = 1;
   self->cursor = cursor;
   return self;
@@ -419,14 +419,14 @@ meta_cursor_image_load_from_buffer (MetaCursorImage    *image,
 #endif
 }
 
-MetaCursorReference *
-meta_cursor_reference_from_buffer (struct wl_resource *buffer,
-                                   int                 hot_x,
-                                   int                 hot_y)
+MetaCursorSprite *
+meta_cursor_sprite_from_buffer (struct wl_resource *buffer,
+                                int                 hot_x,
+                                int                 hot_y)
 {
-  MetaCursorReference *self;
+  MetaCursorSprite *self;
 
-  self = g_slice_new0 (MetaCursorReference);
+  self = g_slice_new0 (MetaCursorSprite);
   self->ref_count = 1;
   meta_cursor_image_load_from_buffer (&self->image, buffer, hot_x, hot_y);
 
@@ -435,40 +435,40 @@ meta_cursor_reference_from_buffer (struct wl_resource *buffer,
 #endif
 
 CoglTexture *
-meta_cursor_reference_get_cogl_texture (MetaCursorReference *cursor,
-                                        int                 *hot_x,
-                                        int                 *hot_y)
+meta_cursor_sprite_get_cogl_texture (MetaCursorSprite *self,
+                                     int              *hot_x,
+                                     int              *hot_y)
 {
-  if (!cursor->image.texture)
-    load_cursor_image (cursor);
+  if (!self->image.texture)
+    load_cursor_image (self);
 
   if (hot_x)
-    *hot_x = cursor->image.hot_x;
+    *hot_x = self->image.hot_x;
   if (hot_y)
-    *hot_y = cursor->image.hot_y;
+    *hot_y = self->image.hot_y;
 
-  return COGL_TEXTURE (cursor->image.texture);
+  return COGL_TEXTURE (self->image.texture);
 }
 
 #ifdef HAVE_NATIVE_BACKEND
 struct gbm_bo *
-meta_cursor_reference_get_gbm_bo (MetaCursorReference *cursor,
-                                  int                 *hot_x,
-                                  int                 *hot_y)
+meta_cursor_sprite_get_gbm_bo (MetaCursorSprite *self,
+                               int              *hot_x,
+                               int              *hot_y)
 {
-  if (!cursor->image.bo)
-    load_cursor_image (cursor);
+  if (!self->image.bo)
+    load_cursor_image (self);
 
   if (hot_x)
-    *hot_x = cursor->image.hot_x;
+    *hot_x = self->image.hot_x;
   if (hot_y)
-    *hot_y = cursor->image.hot_y;
-  return cursor->image.bo;
+    *hot_y = self->image.hot_y;
+  return self->image.bo;
 }
 #endif
 
 MetaCursor
-meta_cursor_reference_get_meta_cursor (MetaCursorReference *cursor)
+meta_cursor_sprite_get_meta_cursor (MetaCursorSprite *self)
 {
-  return cursor->cursor;
+  return self->cursor;
 }

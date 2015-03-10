@@ -22,23 +22,23 @@
 #ifndef META_CURSOR_H
 #define META_CURSOR_H
 
-typedef struct _MetaCursorReference MetaCursorReference;
+typedef struct _MetaCursorSprite MetaCursorSprite;
 
-MetaCursorReference * meta_cursor_reference_ref (MetaCursorReference *cursor);
-void meta_cursor_reference_unref (MetaCursorReference *cursor);
+MetaCursorSprite * meta_cursor_sprite_ref (MetaCursorSprite *self);
+void meta_cursor_sprite_unref (MetaCursorSprite *self);
 
 #include <meta/common.h>
 
-MetaCursorReference * meta_cursor_reference_from_theme  (MetaCursor          cursor);
+MetaCursorSprite * meta_cursor_sprite_from_theme  (MetaCursor          cursor);
 
 #ifdef HAVE_WAYLAND
 #include <wayland-server.h>
-MetaCursorReference * meta_cursor_reference_from_buffer (struct wl_resource *buffer,
-                                                         int                 hot_x,
-                                                         int                 hot_y);
+MetaCursorSprite * meta_cursor_sprite_from_buffer (struct wl_resource *buffer,
+                                                   int                 hot_x,
+                                                   int                 hot_y);
 #endif
 
-MetaCursor meta_cursor_reference_get_meta_cursor (MetaCursorReference *cursor);
+MetaCursor meta_cursor_sprite_get_meta_cursor (MetaCursorSprite *self);
 
 Cursor meta_cursor_create_x_cursor (Display    *xdisplay,
                                     MetaCursor  cursor);

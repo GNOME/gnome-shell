@@ -174,7 +174,7 @@ struct _MetaCRTC
   /* Used when changing configuration */
   gboolean is_dirty;
 
-  MetaCursorReference *cursor;
+  MetaCursorSprite *cursor;
 
   gpointer driver_private;
   GDestroyNotify driver_notify;

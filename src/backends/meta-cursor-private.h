@@ -40,7 +40,7 @@ typedef struct {
 #endif
 } MetaCursorImage;
 
-struct _MetaCursorReference {
+struct _MetaCursorSprite {
   int ref_count;
 
   int current_frame;
@@ -49,18 +49,18 @@ struct _MetaCursorReference {
   MetaCursorImage image;
 };
 
-CoglTexture *meta_cursor_reference_get_cogl_texture (MetaCursorReference *cursor,
-                                                     int                 *hot_x,
-                                                     int                 *hot_y);
+CoglTexture *meta_cursor_sprite_get_cogl_texture (MetaCursorSprite *self,
+                                                  int              *hot_x,
+                                                  int              *hot_y);
 
 #ifdef HAVE_NATIVE_BACKEND
-struct gbm_bo *meta_cursor_reference_get_gbm_bo (MetaCursorReference *cursor,
-                                                 int                 *hot_x,
-                                                 int                 *hot_y);
+struct gbm_bo *meta_cursor_sprite_get_gbm_bo (MetaCursorSprite *self,
+                                              int              *hot_x,
+                                              int              *hot_y);
 #endif
 
-gboolean meta_cursor_reference_is_animated            (MetaCursorReference *self);
-void     meta_cursor_reference_tick_frame             (MetaCursorReference *self);
-guint    meta_cursor_reference_get_current_frame_time (MetaCursorReference *self);
+gboolean meta_cursor_sprite_is_animated            (MetaCursorSprite *self);
+void     meta_cursor_sprite_tick_frame             (MetaCursorSprite *self);
+guint    meta_cursor_sprite_get_current_frame_time (MetaCursorSprite *self);
 
 #endif /* META_CURSOR_PRIVATE_H */

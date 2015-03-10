@@ -40,7 +40,7 @@ struct _MetaCursorRendererPrivate
   int current_x, current_y;
   MetaRectangle current_rect;
 
-  MetaCursorReference *displayed_cursor;
+  MetaCursorSprite *displayed_cursor;
   gboolean handled_by_backend;
 };
 typedef struct _MetaCursorRendererPrivate MetaCursorRendererPrivate;
@@ -60,7 +60,8 @@ queue_redraw (MetaCursorRenderer *renderer)
     return;
 
   if (priv->displayed_cursor && !priv->handled_by_backend)
-    texture = meta_cursor_reference_get_cogl_texture (priv->displayed_cursor, NULL, NULL);
+    texture = meta_cursor_sprite_get_cogl_texture (priv->displayed_cursor,
+                                                   NULL, NULL);
   else
     texture = NULL;
 
@@ -96,7 +97,8 @@ update_cursor (MetaCursorRenderer *renderer)
       CoglTexture *texture;
       int hot_x, hot_y;
 
-      texture = meta_cursor_reference_get_cogl_texture (priv->displayed_cursor, &hot_x, &hot_y);
+      texture = meta_cursor_sprite_get_cogl_texture (priv->displayed_cursor,
+                                                     &hot_x, &hot_y);
 
       priv->current_rect.x = priv->current_x - hot_x;
       priv->current_rect.y = priv->current_y - hot_y;
@@ -132,15 +134,15 @@ meta_cursor_renderer_new (void)
 }
 
 void
-meta_cursor_renderer_set_cursor (MetaCursorRenderer  *renderer,
-                                 MetaCursorReference *cursor)
+meta_cursor_renderer_set_cursor (MetaCursorRenderer *renderer,
+                                 MetaCursorSprite   *cursor_sprite)
 {
   MetaCursorRendererPrivate *priv = meta_cursor_renderer_get_instance_private (renderer);
 
-  if (priv->displayed_cursor == cursor)
+  if (priv->displayed_cursor == cursor_sprite)
     return;
 
-  priv->displayed_cursor = cursor;
+  priv->displayed_cursor = cursor_sprite;
   update_cursor (renderer);
 }
 
@@ -165,7 +167,7 @@ meta_cursor_renderer_set_position (MetaCursorRenderer *renderer,
   update_cursor (renderer);
 }
 
-MetaCursorReference *
+MetaCursorSprite *
 meta_cursor_renderer_get_cursor (MetaCursorRenderer *renderer)
 {
   MetaCursorRendererPrivate *priv = meta_cursor_renderer_get_instance_private (renderer);

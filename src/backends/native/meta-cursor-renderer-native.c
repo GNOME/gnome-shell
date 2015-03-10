@@ -43,7 +43,7 @@ struct _MetaCursorRendererNativePrivate
 {
   gboolean has_hw_cursor;
 
-  MetaCursorReference *last_cursor;
+  MetaCursorSprite *last_cursor;
   guint animation_timeout_id;
 
   int drm_fd;
@@ -74,23 +74,23 @@ meta_cursor_renderer_native_finalize (GObject *object)
 static void
 set_crtc_cursor (MetaCursorRendererNative *native,
                  MetaCRTC                 *crtc,
-                 MetaCursorReference      *cursor,
+                 MetaCursorSprite         *cursor_sprite,
                  gboolean                  force)
 {
   MetaCursorRendererNativePrivate *priv = meta_cursor_renderer_native_get_instance_private (native);
 
-  if (crtc->cursor == cursor && !force)
+  if (crtc->cursor == cursor_sprite && !force)
     return;
 
-  crtc->cursor = cursor;
+  crtc->cursor = cursor_sprite;
 
-  if (cursor)
+  if (cursor_sprite)
     {
       struct gbm_bo *bo;
       union gbm_bo_handle handle;
       int hot_x, hot_y;
 
-      bo = meta_cursor_reference_get_gbm_bo (cursor, &hot_x, &hot_y);
+      bo = meta_cursor_sprite_get_gbm_bo (cursor_sprite, &hot_x, &hot_y);
 
       handle = gbm_bo_get_handle (bo);
       drmModeSetCursor2 (priv->drm_fd, crtc->crtc_id, handle.u32,
@@ -109,7 +109,7 @@ update_hw_cursor (MetaCursorRendererNative *native,
   MetaCursorRendererNativePrivate *priv = meta_cursor_renderer_native_get_instance_private (native);
   MetaCursorRenderer *renderer = META_CURSOR_RENDERER (native);
   const MetaRectangle *cursor_rect = meta_cursor_renderer_get_rect (renderer);
-  MetaCursorReference *cursor = meta_cursor_renderer_get_cursor (renderer);
+  MetaCursorSprite *cursor_sprite = meta_cursor_renderer_get_cursor (renderer);
   MetaMonitorManager *monitors;
   MetaCRTC *crtcs;
   unsigned int i, n_crtcs;
@@ -120,14 +120,14 @@ update_hw_cursor (MetaCursorRendererNative *native,
   for (i = 0; i < n_crtcs; i++)
     {
       gboolean crtc_should_have_cursor;
-      MetaCursorReference *crtc_cursor;
+      MetaCursorSprite *crtc_cursor;
       MetaRectangle *crtc_rect;
 
       crtc_rect = &crtcs[i].rect;
 
       crtc_should_have_cursor = (priv->has_hw_cursor && meta_rectangle_overlap (cursor_rect, crtc_rect));
       if (crtc_should_have_cursor)
-        crtc_cursor = cursor;
+        crtc_cursor = cursor_sprite;
       else
         crtc_cursor = NULL;
 
@@ -145,10 +145,10 @@ update_hw_cursor (MetaCursorRendererNative *native,
 static gboolean
 should_have_hw_cursor (MetaCursorRenderer *renderer)
 {
-  MetaCursorReference *cursor = meta_cursor_renderer_get_cursor (renderer);
+  MetaCursorSprite *cursor_sprite = meta_cursor_renderer_get_cursor (renderer);
 
-  if (cursor)
-    return (meta_cursor_reference_get_gbm_bo (cursor, NULL, NULL) != NULL);
+  if (cursor_sprite)
+    return (meta_cursor_sprite_get_gbm_bo (cursor_sprite, NULL, NULL) != NULL);
   else
     return FALSE;
 }
@@ -157,11 +157,12 @@ static gboolean
 meta_cursor_renderer_native_update_animation (MetaCursorRendererNative *native)
 {
   MetaCursorRendererNativePrivate *priv = meta_cursor_renderer_native_get_instance_private (native);
-  MetaCursorReference *cursor;
+  MetaCursorSprite *cursor_sprite;
 
   priv->animation_timeout_id = 0;
-  cursor = meta_cursor_renderer_get_cursor (META_CURSOR_RENDERER (native));
-  meta_cursor_reference_tick_frame (cursor);
+  cursor_sprite =
+    meta_cursor_renderer_get_cursor (META_CURSOR_RENDERER (native));
+  meta_cursor_sprite_tick_frame (cursor_sprite);
   meta_cursor_renderer_force_update (META_CURSOR_RENDERER (native));
   meta_cursor_renderer_native_force_update (native);
 
@@ -172,13 +173,14 @@ static void
 meta_cursor_renderer_native_trigger_frame (MetaCursorRendererNative *native)
 {
   MetaCursorRendererNativePrivate *priv = meta_cursor_renderer_native_get_instance_private (native);
-  MetaCursorReference *cursor;
+  MetaCursorSprite *cursor_sprite;
   gboolean cursor_change;
   guint delay;
 
-  cursor = meta_cursor_renderer_get_cursor (META_CURSOR_RENDERER (native));
-  cursor_change = cursor != priv->last_cursor;
-  priv->last_cursor = cursor;
+  cursor_sprite =
+    meta_cursor_renderer_get_cursor (META_CURSOR_RENDERER (native));
+  cursor_change = cursor_sprite != priv->last_cursor;
+  priv->last_cursor = cursor_sprite;
 
   if (!cursor_change && priv->animation_timeout_id)
     return;
@@ -189,9 +191,9 @@ meta_cursor_renderer_native_trigger_frame (MetaCursorRendererNative *native)
       priv->animation_timeout_id = 0;
     }
 
-  if (cursor && meta_cursor_reference_is_animated (cursor))
+  if (cursor_sprite && meta_cursor_sprite_is_animated (cursor_sprite))
     {
-      delay = meta_cursor_reference_get_current_frame_time (cursor);
+      delay = meta_cursor_sprite_get_current_frame_time (cursor_sprite);
 
       if (delay == 0)
         return;

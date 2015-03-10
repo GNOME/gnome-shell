@@ -1261,12 +1261,12 @@ meta_screen_update_cursor (MetaScreen *screen)
   MetaDisplay *display = screen->display;
   MetaCursor cursor = screen->current_cursor;
   Cursor xcursor;
-  MetaCursorReference *cursor_ref;
+  MetaCursorSprite *cursor_sprite;
   MetaCursorTracker *tracker = meta_cursor_tracker_get_for_screen (screen);
 
-  cursor_ref = meta_cursor_reference_from_theme (cursor);
-  meta_cursor_tracker_set_root_cursor (tracker, cursor_ref);
-  meta_cursor_reference_unref (cursor_ref);
+  cursor_sprite = meta_cursor_sprite_from_theme (cursor);
+  meta_cursor_tracker_set_root_cursor (tracker, cursor_sprite);
+  meta_cursor_sprite_unref (cursor_sprite);
 
   /* Set a cursor for X11 applications that don't specify their own */
   xcursor = meta_display_create_x_cursor (display, cursor);
