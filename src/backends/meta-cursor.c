@@ -21,7 +21,7 @@
 
 #include "config.h"
 
-#include "meta-cursor-private.h"
+#include "meta-cursor.h"
 
 #include <meta/errors.h>
 
@@ -30,6 +30,7 @@
 #include "meta-backend-private.h"
 
 #ifdef HAVE_NATIVE_BACKEND
+#include <gbm.h>
 #include "backends/native/meta-cursor-renderer-native.h"
 #endif
 
@@ -42,6 +43,27 @@
 #ifdef HAVE_WAYLAND
 #include <cogl/cogl-wayland-server.h>
 #endif
+
+typedef struct
+{
+  CoglTexture2D *texture;
+  int hot_x, hot_y;
+
+#ifdef HAVE_NATIVE_BACKEND
+  struct gbm_bo *bo;
+#endif
+} MetaCursorImage;
+
+struct _MetaCursorSprite
+{
+  GObject parent;
+
+  MetaCursor cursor;
+  MetaCursorImage image;
+
+  int current_frame;
+  XcursorImages *xcursor_images;
+};
 
 GType meta_cursor_sprite_get_type (void) G_GNUC_CONST;
 

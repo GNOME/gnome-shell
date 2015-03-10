@@ -25,7 +25,6 @@
 #include "config.h"
 
 #include "meta-cursor-renderer.h"
-#include "meta-cursor-private.h"
 
 #include <meta/meta-backend.h>
 #include <meta/util.h>

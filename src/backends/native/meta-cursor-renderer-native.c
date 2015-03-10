@@ -29,7 +29,6 @@
 #include <gbm.h>
 #include <xf86drm.h>
 
-#include "meta-cursor-private.h"
 #include "meta-monitor-manager-private.h"
 
 #ifndef DRM_CAP_CURSOR_WIDTH

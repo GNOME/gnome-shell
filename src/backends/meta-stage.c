@@ -24,7 +24,6 @@
 
 #include "meta-stage.h"
 
-#include "meta-cursor-private.h"
 #include <meta/meta-backend.h>
 #include <meta/util.h>
 

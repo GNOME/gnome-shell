@@ -50,4 +50,18 @@ MetaCursorSprite * meta_cursor_sprite_from_texture (CoglTexture2D *texture,
 Cursor meta_cursor_create_x_cursor (Display    *xdisplay,
                                     MetaCursor  cursor);
 
+CoglTexture *meta_cursor_sprite_get_cogl_texture (MetaCursorSprite *self,
+                                                  int              *hot_x,
+                                                  int              *hot_y);
+
+#ifdef HAVE_NATIVE_BACKEND
+struct gbm_bo *meta_cursor_sprite_get_gbm_bo (MetaCursorSprite *self,
+                                              int              *hot_x,
+                                              int              *hot_y);
+#endif
+
+gboolean meta_cursor_sprite_is_animated            (MetaCursorSprite *self);
+void     meta_cursor_sprite_tick_frame             (MetaCursorSprite *self);
+guint    meta_cursor_sprite_get_current_frame_time (MetaCursorSprite *self);
+
 #endif /* META_CURSOR_H */

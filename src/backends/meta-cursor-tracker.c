@@ -43,7 +43,6 @@
 #include <X11/extensions/Xfixes.h>
 
 #include "meta-backend-private.h"
-#include "meta-cursor-private.h"
 
 G_DEFINE_TYPE (MetaCursorTracker, meta_cursor_tracker, G_TYPE_OBJECT);
 

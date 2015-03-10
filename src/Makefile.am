@@ -68,7 +68,6 @@ libmutter_la_SOURCES =				\
 	backends/meta-barrier-private.h		\
 	backends/meta-cursor.c			\
 	backends/meta-cursor.h			\
-	backends/meta-cursor-private.h		\
 	backends/meta-cursor-tracker.c		\
 	backends/meta-cursor-tracker-private.h	\
 	backends/meta-cursor-renderer.c		\
