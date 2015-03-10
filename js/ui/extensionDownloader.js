@@ -211,7 +211,7 @@ const InstallExtensionDialog = new Lang.Class({
         let icon = new St.Icon({ gicon: gicon });
         box.add(icon);
 
-        let label = new St.Label({ style_class: 'prompt-dialog-headline headline',
+        let label = new St.Label({ style_class: 'prompt-dialog-headline',
                                    text: message });
         box.add(label);
     },
