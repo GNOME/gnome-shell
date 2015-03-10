@@ -63,7 +63,7 @@ msgstr "Preferencias das extensións de GNOME Shell"
 
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:2
 msgid "Configure GNOME Shell Extensions"
-msgstr "Configure as extensións de GNOME Shell"
+msgstr "Configura as extensións de GNOME Shell"
 
 #: ../data/gnome-shell-wayland.desktop.in.in.h:1
 msgid "GNOME Shell (wayland compositor)"
@@ -170,7 +170,7 @@ msgid ""
 msgstr ""
 "O shell non solicitará o contrainsla cando un dispositivo cifrado ou un "
 "sistema de ficheiros remoto se monta. Se o contrasinal se pode gardar para o "
-"futuro aparecerá a opción «Lembrar contrasinal» Esta chave estabelece o "
+"futuro aparecerá a opción «Lembrar contrasinal» Esta chave establece o "
 "estado por omisión da opción. "
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:17
@@ -384,7 +384,7 @@ msgstr "Orde non atopada"
 #. something nicer
 #: ../js/misc/util.js:148
 msgid "Could not parse command:"
-msgstr "Non foi posíbel analizar a orde:"
+msgstr "Non foi posíble analizar a orde:"
 
 #: ../js/misc/util.js:156
 #, javascript-format
@@ -879,7 +879,7 @@ msgstr "O estado está definido a «desconectado»"
 
 #: ../js/ui/components/telepathyClient.js:1343
 msgid "Encryption is not available"
-msgstr "O cifrado non está dispoñíbel"
+msgstr "O cifrado non está dispoñíble"
 
 #: ../js/ui/components/telepathyClient.js:1345
 msgid "Certificate is invalid"
@@ -891,7 +891,7 @@ msgstr "Rexeitouse a conexión"
 
 #: ../js/ui/components/telepathyClient.js:1349
 msgid "Connection can't be established"
-msgstr "Non é posíbel estabelecer a conexión"
+msgstr "Non é posíble establecer a conexión"
 
 #: ../js/ui/components/telepathyClient.js:1351
 msgid "Connection has been lost"
@@ -945,7 +945,7 @@ msgstr "Erro interno"
 #: ../js/ui/components/telepathyClient.js:1377
 #, javascript-format
 msgid "Unable to connect to %s"
-msgstr "Non foi posíbel conectarse a %s"
+msgstr "Non foi posíble conectarse a %s"
 
 #: ../js/ui/components/telepathyClient.js:1382
 msgid "View account"
@@ -1279,7 +1279,7 @@ msgstr "GNOME precisa bloquear a pantalla"
 #. screen, where we're not affected by grabs
 #: ../js/ui/screenShield.js:795 ../js/ui/screenShield.js:1271
 msgid "Unable to lock"
-msgstr "Non foi posíbel bloquear"
+msgstr "Non foi posíble bloquear"
 
 #: ../js/ui/screenShield.js:796 ../js/ui/screenShield.js:1272
 msgid "Lock was blocked by an application"
@@ -1459,7 +1459,7 @@ msgstr "Falta o «firmware»"
 #. is disabled by rfkill, or it has no coverage
 #: ../js/ui/status/network.js:486
 msgid "Unavailable"
-msgstr "Non dispoñíbel"
+msgstr "Non dispoñíble"
 
 #: ../js/ui/status/network.js:488 ../js/ui/status/network.js:1696
 msgid "Connection failed"
@@ -1933,7 +1933,7 @@ msgstr "O usuario rexeitou o diálogo de autenticación"
 #~ msgstr "calendar:MY"
 
 #~ msgid "unavailable"
-#~ msgstr "non dispoñíbel"
+#~ msgstr "non dispoñíble"
 
 #~ msgctxt "event list time"
 #~ msgid "%H\\u2236%M"
@@ -2029,7 +2029,7 @@ msgstr "O usuario rexeitou o diálogo de autenticación"
 #~ "Internally used to store the last IM presence explicitly set by the user. "
 #~ "The value here is from the TpConnectionPresenceType enumeration."
 #~ msgstr ""
-#~ "Usado internamente para gardar o último IM de presenza estabelecido "
+#~ "Usado internamente para gardar o último IM de presenza establecido "
 #~ "explícitamente polo usuario. O valor aquí é da enumeración "
 #~ "TpConnectionPresenceType."
 
@@ -2105,13 +2105,13 @@ msgstr "O usuario rexeitou o diálogo de autenticación"
 #~ "WEBM using the VP8 codec. %T is used as a placeholder for a guess at the "
 #~ "optimal thread count on the system."
 #~ msgstr ""
-#~ "Estabelece a tubería GStreamer usada para codificar gravacións. Segue a "
+#~ "Establece a tubería GStreamer usada para codificar gravacións. Segue a "
 #~ "sintaxe usada para gst-launch. A tubería debería ter un sumideiro "
 #~ "(«sink») desconectado onde grabar o vídeo que se está grabando. "
 #~ "Xeralmente terá un punto de orixe de desconectado; a saída dese punto "
 #~ "escribirase no ficheiro de saída. Porén, a tubería tamén pode tomar parte "
 #~ "na súa propia saída; isto pódese usar para enviar a saída a un servidor "
-#~ "«icecast» a través de shout2send ou similar. Cando non está estabelecido "
+#~ "«icecast» a través de shout2send ou similar. Cando non está establecido "
 #~ "ou está a un valor baleiro, usarase a tubería predeterminada. Actualmente "
 #~ "é «vp8enc min_quantizer=13 max_quantizer=13 cpu-used=5 deadline=1000000 "
 #~ "threads=%T ! queue ! webmmux» e grava en WEBM usando o códec VP8. Úsase "
@@ -2242,13 +2242,13 @@ msgstr "O usuario rexeitou o diálogo de autenticación"
 #~ msgstr "Descoñecido"
 
 #~ msgid "Available"
-#~ msgstr "Dispoñíbel"
+#~ msgstr "Dispoñíble"
 
 #~ msgid "Busy"
 #~ msgstr "Ocupado"
 
 #~ msgid "Invisible"
-#~ msgstr "Invisíbel"
+#~ msgstr "Invisíble"
 
 #~ msgid "Away"
 #~ msgstr "Ausente"
@@ -2257,7 +2257,7 @@ msgstr "O usuario rexeitou o diálogo de autenticación"
 #~ msgstr "Inactivo"
 
 #~ msgid "Your chat status will be set to busy"
-#~ msgstr "O seu estado de conversa estabelecerase a «ocupado»"
+#~ msgstr "O seu estado de conversa establecerase a «ocupado»"
 
 #~ msgid ""
 #~ "Notifications are now disabled, including chat messages. Your online "
@@ -2377,7 +2377,7 @@ msgstr "O usuario rexeitou o diálogo de autenticación"
 #~ msgstr "Produciuse un erro ao explorar o dispositivo"
 
 #~ msgid "The requested device cannot be browsed, error is '%s'"
-#~ msgstr "Non é posíbel explorar o dispositivo solicitado, o erro é «%s»"
+#~ msgstr "Non é posíble explorar o dispositivo solicitado, o erro é «%s»"
 
 #~ msgid "VPN Connections"
 #~ msgstr "Conexións VPN"
@@ -2722,11 +2722,11 @@ msgstr "O usuario rexeitou o diálogo de autenticación"
 #~ "Can't add a new workspace because maximum workspaces limit has been "
 #~ "reached."
 #~ msgstr ""
-#~ "Non é posíbel engadir unha área de traballo nova porque chegouse ao "
+#~ "Non é posíble engadir unha área de traballo nova porque chegouse ao "
 #~ "límite de áreas de traballo."
 
 #~ msgid "Can't remove the first workspace."
-#~ msgstr "Non é posíbel quitar a primeira área de traballo."
+#~ msgstr "Non é posíble quitar a primeira área de traballo."
 
 #~ msgid "Customize the panel clock"
 #~ msgstr "Personalizar o reloxo do panel"
@@ -2751,7 +2751,7 @@ msgstr "O usuario rexeitou o diálogo de autenticación"
 #~ "more information."
 #~ msgstr ""
 #~ "Esta chave especifica o formato usado polo reloxo do panel cando a chave "
-#~ "de formato está estabelecida a \"custom\". Vostede pode usar os "
+#~ "de formato está establecida a \"custom\". Vostede pode usar os "
 #~ "especificadores de conversión que entende strftime() para obter un "
 #~ "formato de hora especificado. Vexa o manual de strftime() para obter máis "
 #~ "información."
@@ -2767,10 +2767,10 @@ msgstr "O usuario rexeitou o diálogo de autenticación"
 #~ msgstr ""
 #~ "Esta chave especifica o formato de hora usado polo reloxo do panel. Os "
 #~ "posíbeis valores son «12-hour», «24-hour», «unix» e «custom». Se está "
-#~ "estabelecido a «unix», o reloxo mostrará a hora en segundos desde Epoch, "
-#~ "p.ex. 01-01-1970. Se está estabelecido a «custom», o reloxo mostrará a "
+#~ "establecido a «unix», o reloxo mostrará a hora en segundos desde Epoch, "
+#~ "p.ex. 01-01-1970. Se está establecido a «custom», o reloxo mostrará a "
 #~ "hora segundo o formato especificado na chave custom_format. Teña en conta "
-#~ "que se está estabelecido a «unix» ou «custom», as chaves show_date e "
+#~ "que se está establecido a «unix» ou «custom», as chaves show_date e "
 #~ "show_seconds ignoraranse."
 
 #~ msgid "Clock Format"
