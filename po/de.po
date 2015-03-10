@@ -14,15 +14,15 @@
 # Christian Kirbach <christian.kirbach@gmail.com>, 2009, 2010, 2011, 2012, 2013.
 # Tobias Endrigkeit <tobiasendrigkeit@outlook.com>, 2012, 2013.
 # Benjamin Steinwender <b@stbe.at>, 2013-2014.
-# Bernd Homuth <dev@hmt.im>, 2014
+# Bernd Homuth <dev@hmt.im>, 2014, 2015.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-01-25 08:35+0000\n"
-"PO-Revision-Date: 2014-12-26 23:53+0100\n"
+"POT-Creation-Date: 2015-03-05 08:43+0000\n"
+"PO-Revision-Date: 2015-03-05 20:31+0100\n"
 "Last-Translator: Bernd Homuth <dev@hmt.im>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "Language: de_DE\n"
@@ -30,15 +30,17 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.7.1\n"
+"X-Generator: Gtranslator 2.91.6\n"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
 msgid "System"
 msgstr "System"
 
 #: ../data/50-gnome-shell-system.xml.in.h:2
-msgid "Show the message tray"
-msgstr "Benachrichtigungssymbol anzeigen"
+#| msgid "%d new notification"
+#| msgid_plural "%d new notifications"
+msgid "Show the notification list"
+msgstr "Benachrichtigungsliste anzeigen"
 
 #: ../data/50-gnome-shell-system.xml.in.h:3
 msgid "Focus the active notification"
@@ -218,15 +220,16 @@ msgid "Keybinding to open the Activities Overview."
 msgstr "Tastenkombination zum Öffnen der »Aktivitäten«-Übersicht"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:25
-msgid "Keybinding to toggle the visibility of the message tray"
+#| msgid "Keybinding to toggle the visibility of the message tray"
+msgid "Keybinding to toggle the visibility of the notification list"
 msgstr ""
-"Tastenkombination zum Umschalten der Sichtbarkeit des Benachrichtigungsfeldes"
+"Tastenkombination zum Umschalten der Sichtbarkeit der Benachrichtigungsliste"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:26
-msgid "Keybinding to toggle the visibility of the message tray."
+#| msgid "Keybinding to toggle the visibility of the message tray."
+msgid "Keybinding to toggle the visibility of the notification list."
 msgstr ""
-"Tastenkombination zum Umschalten der Sichtbarkeit des "
-"Benachrichtigungsfeldes."
+"Tastenkombination zum Umschalten der Sichtbarkeit der Benachrichtigungsliste."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:27
 msgid "Keybinding to focus the active notification"
@@ -358,17 +361,17 @@ msgstr "Sitzung wählen"
 msgid "Not listed?"
 msgstr "Nicht aufgeführt?"
 
-#: ../js/gdm/loginDialog.js:822
+#: ../js/gdm/loginDialog.js:826
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(z.B. Benutzer oder %s)"
 
-#: ../js/gdm/loginDialog.js:827 ../js/ui/components/networkAgent.js:269
+#: ../js/gdm/loginDialog.js:831 ../js/ui/components/networkAgent.js:269
 #: ../js/ui/components/networkAgent.js:287
 msgid "Username: "
 msgstr "Benutzername:"
 
-#: ../js/gdm/loginDialog.js:1159
+#: ../js/gdm/loginDialog.js:1166
 msgid "Login Window"
 msgstr "Anmeldefenster"
 
@@ -380,48 +383,113 @@ msgstr "Anmeldung fehlgeschlagen"
 msgid "(or swipe finger)"
 msgstr "(oder benutzen Sie den Fingerabdruckleser)"
 
-#: ../js/misc/util.js:115
+#: ../js/misc/util.js:119
 msgid "Command not found"
 msgstr "Befehl nicht gefunden"
 
-#: ../js/misc/util.js:148
+#: ../js/misc/util.js:152
 msgid "Could not parse command:"
 msgstr "Befehl konnte nicht verarbeitet werden:"
 
-#: ../js/misc/util.js:156
+#: ../js/misc/util.js:160
 #, javascript-format
 msgid "Execution of “%s” failed:"
 msgstr "Ausführung von »%s« ist gescheitert:"
 
+#. Translators: Time in 24h format */
+#: ../js/misc/util.js:191
+msgid "%H∶%M"
+msgstr "%H∶%M"
+
+#. Translators: this is the word "Yesterday" followed by a
+#. time string in 24h format. i.e. "Yesterday, 14:30" */
+#: ../js/misc/util.js:197
+msgid "Yesterday, %H∶%M"
+msgstr "Gestern, %H:%M"
+
+#. Translators: this is the week day name followed by a time
+#. string in 24h format. i.e. "Monday, 14:30" */
+#: ../js/misc/util.js:203
+msgid "%A, %H∶%M"
+msgstr "%A, %H∶%M"
+
+#. Translators: this is the month name and day number
+#. followed by a time string in 24h format.
+#. i.e. "May 25, 14:30" */
+#: ../js/misc/util.js:209
+msgid "%B %d, %H∶%M"
+msgstr "%e. %B, %H∶%M"
+
+#. Translators: this is the month name, day number, year
+#. number followed by a time string in 24h format.
+#. i.e. "May 25 2012, 14:30" */
+#: ../js/misc/util.js:215
+msgid "%B %d %Y, %H∶%M"
+msgstr "%e. %B %Y, %H:%M"
+
+# 24h Format
+#. Translators: Time in 12h format */
+#: ../js/misc/util.js:220
+msgid "%l∶%M %p"
+msgstr "%H∶%M"
+
+#. Translators: this is the word "Yesterday" followed by a
+#. time string in 12h format. i.e. "Yesterday, 2:30 pm" */
+#: ../js/misc/util.js:226
+msgid "Yesterday, %l∶%M %p"
+msgstr "Gestern, %H:%M"
+
+#. Translators: this is the week day name followed by a time
+#. string in 12h format. i.e. "Monday, 2:30 pm" */
+#: ../js/misc/util.js:232
+msgid "%A, %l∶%M %p"
+msgstr "%A, %H∶%M"
+
+#. Translators: this is the month name and day number
+#. followed by a time string in 12h format.
+#. i.e. "May 25, 2:30 pm" */
+#: ../js/misc/util.js:238
+msgid "%B %d, %l∶%M %p"
+msgstr "%e. %B, %H∶%M"
+
+#. Translators: this is the month name, day number, year
+#. number followed by a time string in 12h format.
+#. i.e. "May 25 2012, 2:30 pm"*/
+#: ../js/misc/util.js:244
+msgid "%B %d %Y, %l∶%M %p"
+msgstr "%e. %B %Y, %H:%M"
+
+#. TRANSLATORS: this is the title of the wifi captive portal login
+#. * window, until we know the title of the actual login page */
 #: ../js/portalHelper/main.js:85
 msgid "Web Authentication Redirect"
 msgstr "Umleitung zu einer Internet-Anmeldung"
 
-#: ../js/ui/appDisplay.js:770
+#: ../js/ui/appDisplay.js:792
 msgid "Frequently used applications will appear here"
 msgstr "Häufig genutzte Anwendungen werden hier erscheinen"
 
-#: ../js/ui/appDisplay.js:881
+#: ../js/ui/appDisplay.js:912
 msgid "Frequent"
 msgstr "Häufig"
 
-#: ../js/ui/appDisplay.js:888
+#: ../js/ui/appDisplay.js:919
 msgid "All"
 msgstr "Alle"
 
-#: ../js/ui/appDisplay.js:1789
+#: ../js/ui/appDisplay.js:1850
 msgid "New Window"
 msgstr "Neues Fenster"
 
-#: ../js/ui/appDisplay.js:1815 ../js/ui/dash.js:285
+#: ../js/ui/appDisplay.js:1878 ../js/ui/dash.js:289
 msgid "Remove from Favorites"
 msgstr "Aus Favoriten entfernen"
 
-#: ../js/ui/appDisplay.js:1821
+#: ../js/ui/appDisplay.js:1884
 msgid "Add to Favorites"
 msgstr "Zu Favoriten hinzufügen"
 
-#: ../js/ui/appDisplay.js:1830
+#: ../js/ui/appDisplay.js:1894
 msgid "Show Details"
 msgstr "Details anzeigen"
 
@@ -435,7 +503,7 @@ msgstr "%s wurde zu Ihren Favoriten hinzugefügt"
 msgid "%s has been removed from your favorites."
 msgstr "%s wurde aus Ihren Favoriten entfernt"
 
-#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:819
+#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:650
 #: ../js/ui/status/system.js:337
 msgid "Settings"
 msgstr "Einstellungen"
@@ -445,7 +513,7 @@ msgid "Change Background…"
 msgstr "Hintergrund ändern …"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday). */
-#: ../js/ui/calendar.js:39
+#: ../js/ui/calendar.js:49
 msgctxt "calendar-no-work"
 msgid "06"
 msgstr "06"
@@ -453,157 +521,99 @@ msgstr "06"
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #. */
-#: ../js/ui/calendar.js:68
+#: ../js/ui/calendar.js:78
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Ganztägig"
-
-#. Translators: Shown in calendar event list, if 24h format,
-#. \u2236 is a ratio character, similar to : */
-#: ../js/ui/calendar.js:75
-msgctxt "event list time"
-msgid "%H∶%M"
-msgstr "%H∶%M"
-
-#. Translators: Shown in calendar event list, if 12h format,
-#. \u2236 is a ratio character, similar to : and \u2009 is
-#. a thin space */
-#: ../js/ui/calendar.js:84
-msgctxt "event list time"
-msgid "%l∶%M %p"
-msgstr "%l∶%M %p"
 
 #. Translators: Calendar grid abbreviation for Sunday.
 #. *
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #. */
-#: ../js/ui/calendar.js:98
+#: ../js/ui/calendar.js:93
 msgctxt "grid sunday"
 msgid "S"
 msgstr "S"
 
 #. Translators: Calendar grid abbreviation for Monday */
-#: ../js/ui/calendar.js:100
+#: ../js/ui/calendar.js:95
 msgctxt "grid monday"
 msgid "M"
 msgstr "M"
 
 #. Translators: Calendar grid abbreviation for Tuesday */
-#: ../js/ui/calendar.js:102
+#: ../js/ui/calendar.js:97
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "D"
 
 #. Translators: Calendar grid abbreviation for Wednesday */
-#: ../js/ui/calendar.js:104
+#: ../js/ui/calendar.js:99
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "M"
 
 #. Translators: Calendar grid abbreviation for Thursday */
-#: ../js/ui/calendar.js:106
+#: ../js/ui/calendar.js:101
 msgctxt "grid thursday"
 msgid "T"
 msgstr "D"
 
 #. Translators: Calendar grid abbreviation for Friday */
-#: ../js/ui/calendar.js:108
+#: ../js/ui/calendar.js:103
 msgctxt "grid friday"
 msgid "F"
 msgstr "F"
 
 #. Translators: Calendar grid abbreviation for Saturday */
-#: ../js/ui/calendar.js:110
+#: ../js/ui/calendar.js:105
 msgctxt "grid saturday"
 msgid "S"
 msgstr "S"
 
-#. Translators: Event list abbreviation for Sunday.
-#. *
-#. * NOTE: These list abbreviations are normally not shown together
-#. * so they need to be unique (e.g. Tuesday and Thursday cannot
-#. * both be 'T').
-#. */
-#: ../js/ui/calendar.js:123
-msgctxt "list sunday"
-msgid "Su"
-msgstr "So"
-
-#. Translators: Event list abbreviation for Monday */
-#: ../js/ui/calendar.js:125
-msgctxt "list monday"
-msgid "M"
-msgstr "Mo"
-
-#. Translators: Event list abbreviation for Tuesday */
-#: ../js/ui/calendar.js:127
-msgctxt "list tuesday"
-msgid "T"
-msgstr "Di"
-
-#. Translators: Event list abbreviation for Wednesday */
-#: ../js/ui/calendar.js:129
-msgctxt "list wednesday"
-msgid "W"
-msgstr "Mi"
-
-#. Translators: Event list abbreviation for Thursday */
-#: ../js/ui/calendar.js:131
-msgctxt "list thursday"
-msgid "Th"
-msgstr "Do"
-
-#. Translators: Event list abbreviation for Friday */
-#: ../js/ui/calendar.js:133
-msgctxt "list friday"
-msgid "F"
-msgstr "Fr"
-
-#. Translators: Event list abbreviation for Saturday */
-#: ../js/ui/calendar.js:135
-msgctxt "list saturday"
-msgid "S"
-msgstr "Sa"
-
-#: ../js/ui/calendar.js:460
+#: ../js/ui/calendar.js:572
 msgid "Previous month"
 msgstr "Vorheriger Monat"
 
-#: ../js/ui/calendar.js:470
+#: ../js/ui/calendar.js:582
 msgid "Next month"
 msgstr "Nächster Monat"
 
-#. Translators: Text to show if there are no events */
-#: ../js/ui/calendar.js:806
-msgid "Nothing Scheduled"
-msgstr "Nichts geplant"
+#: ../js/ui/calendar.js:789
+msgid "Week %V"
+msgstr "Woche %V"
 
-#: ../js/ui/calendar.js:825
+#: ../js/ui/calendar.js:1245
+msgid "Clear section"
+msgstr "Abschnitt löschen"
+
+#: ../js/ui/calendar.js:1459
+msgid "Events"
+msgstr "Termine"
+
+#: ../js/ui/calendar.js:1467
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d. %B"
 
-#: ../js/ui/calendar.js:829
+#: ../js/ui/calendar.js:1471
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%a, %d. %B %Y"
 
-#: ../js/ui/calendar.js:841
-msgid "Today"
-msgstr "Heute"
+#: ../js/ui/calendar.js:1563
+msgid "Notifications"
+msgstr "Benachrichtigungen"
 
-#: ../js/ui/calendar.js:845
-msgid "Tomorrow"
-msgstr "Morgen"
+#: ../js/ui/calendar.js:1714
+#| msgid "Notifications"
+msgid "No Notifications"
+msgstr "Keine Benachrichtigungen"
 
-#: ../js/ui/calendar.js:856
-msgid "This week"
-msgstr "Diese Woche"
-
-#: ../js/ui/calendar.js:864
-msgid "Next week"
-msgstr "Nächste Woche"
+#: ../js/ui/calendar.js:1717
+msgid "No Events"
+msgstr "Keine Termine"
 
 #: ../js/ui/components/automountManager.js:91
 msgid "External drive connected"
@@ -613,18 +623,10 @@ msgstr "Externes Laufwerk verbunden"
 msgid "External drive disconnected"
 msgstr "Externes Laufwerk getrennt"
 
-#: ../js/ui/components/autorunManager.js:296
-msgid "Removable Devices"
-msgstr "Wechseldatenträger"
-
-#: ../js/ui/components/autorunManager.js:596
+#: ../js/ui/components/autorunManager.js:354
 #, javascript-format
 msgid "Open with %s"
 msgstr "Öffnen mit %s"
-
-#: ../js/ui/components/autorunManager.js:622
-msgid "Eject"
-msgstr "Auswerfen"
 
 #: ../js/ui/components/keyring.js:94 ../js/ui/components/polkitAgent.js:285
 msgid "Password:"
@@ -729,315 +731,51 @@ msgstr "Anmelden"
 msgid "Sorry, that didn't work. Please try again."
 msgstr "Entschuldigung, das hat nicht geklappt. Bitte versuchen Sie es erneut."
 
-#: ../js/ui/components/telepathyClient.js:242
-msgid "Invitation"
-msgstr "Einladung"
-
-#: ../js/ui/components/telepathyClient.js:302
-msgid "Call"
-msgstr "Anruf"
-
-#: ../js/ui/components/telepathyClient.js:318
-msgid "File Transfer"
-msgstr "Dateiübertragung"
-
-#: ../js/ui/components/telepathyClient.js:422
-msgid "Chat"
-msgstr "Chat"
-
-#: ../js/ui/components/telepathyClient.js:485
-msgid "Unmute"
-msgstr "Ton an"
-
-#: ../js/ui/components/telepathyClient.js:485
-msgid "Mute"
-msgstr "Stumm"
-
-#. Translators: Time in 24h format */
-#: ../js/ui/components/telepathyClient.js:955
-msgid "%H∶%M"
-msgstr "%H∶%M"
-
-#. Translators: this is the word "Yesterday" followed by a
-#. time string in 24h format. i.e. "Yesterday, 14:30" */
-#: ../js/ui/components/telepathyClient.js:962
-msgid "Yesterday, %H∶%M"
-msgstr "Gestern, %H:%M"
-
-#. Translators: this is the week day name followed by a time
-#. string in 24h format. i.e. "Monday, 14:30" */
-#: ../js/ui/components/telepathyClient.js:969
-msgid "%A, %H∶%M"
-msgstr "%A, %H∶%M"
-
-#. Translators: this is the month name and day number
-#. followed by a time string in 24h format.
-#. i.e. "May 25, 14:30" */
-#: ../js/ui/components/telepathyClient.js:976
-msgid "%B %d, %H∶%M"
-msgstr "%e. %B, %H∶%M"
-
-#. Translators: this is the month name, day number, year
-#. number followed by a time string in 24h format.
-#. i.e. "May 25 2012, 14:30" */
-#: ../js/ui/components/telepathyClient.js:982
-msgid "%B %d %Y, %H∶%M"
-msgstr "%e. %B %Y, %H:%M"
-
-# 24h Format
-#. Translators: Time in 24h format */
-#: ../js/ui/components/telepathyClient.js:988
-msgid "%l∶%M %p"
-msgstr "%H∶%M"
-
-#. Translators: this is the word "Yesterday" followed by a
-#. time string in 12h format. i.e. "Yesterday, 2:30 pm" */
-#: ../js/ui/components/telepathyClient.js:995
-msgid "Yesterday, %l∶%M %p"
-msgstr "Gestern, %H:%M"
-
-#. Translators: this is the week day name followed by a time
-#. string in 12h format. i.e. "Monday, 2:30 pm" */
-#: ../js/ui/components/telepathyClient.js:1002
-msgid "%A, %l∶%M %p"
-msgstr "%A, %H∶%M"
-
-#. Translators: this is the month name and day number
-#. followed by a time string in 12h format.
-#. i.e. "May 25, 2:30 pm" */
-#: ../js/ui/components/telepathyClient.js:1009
-msgid "%B %d, %l∶%M %p"
-msgstr "%e. %B, %H∶%M"
-
-#. Translators: this is the month name, day number, year
-#. number followed by a time string in 12h format.
-#. i.e. "May 25 2012, 2:30 pm"*/
-#: ../js/ui/components/telepathyClient.js:1015
-msgid "%B %d %Y, %l∶%M %p"
-msgstr "%e. %B %Y, %H:%M"
-
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name. */
-#: ../js/ui/components/telepathyClient.js:1047
+#: ../js/ui/components/telepathyClient.js:772
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s heißt jetzt %s"
-
-#. translators: argument is a room name like
-#. * room@jabber.org for example. */
-#: ../js/ui/components/telepathyClient.js:1151
-#, javascript-format
-msgid "Invitation to %s"
-msgstr "Einladung zum Betreten von %s"
-
-#. translators: first argument is the name of a contact and the second
-#. * one the name of a room. "Alice is inviting you to join room@jabber.org
-#. * for example. */
-#: ../js/ui/components/telepathyClient.js:1159
-#, javascript-format
-msgid "%s is inviting you to join %s"
-msgstr "%s lädt Sie ein, %s beizutreten"
-
-#: ../js/ui/components/telepathyClient.js:1161
-#: ../js/ui/components/telepathyClient.js:1196
-#: ../js/ui/components/telepathyClient.js:1230
-#: ../js/ui/components/telepathyClient.js:1287
-msgid "Decline"
-msgstr "Ablehnen"
-
-#: ../js/ui/components/telepathyClient.js:1167
-#: ../js/ui/components/telepathyClient.js:1236
-#: ../js/ui/components/telepathyClient.js:1292
-msgid "Accept"
-msgstr "Annehmen"
-
-#. translators: argument is a contact name like Alice for example. */
-#: ../js/ui/components/telepathyClient.js:1186
-#, javascript-format
-msgid "Video call from %s"
-msgstr "Video-Anruf von %s"
-
-#. translators: argument is a contact name like Alice for example. */
-#: ../js/ui/components/telepathyClient.js:1189
-#, javascript-format
-msgid "Call from %s"
-msgstr "Anruf von %s"
-
-#. translators: this is a button label (verb), not a noun */
-#: ../js/ui/components/telepathyClient.js:1203
-msgid "Answer"
-msgstr "Antworten"
-
-#. To translators: The first parameter is
-#. * the contact's alias and the second one is the
-#. * file name. The string will be something
-#. * like: "Alice is sending you test.ogg"
-#. */
-#: ../js/ui/components/telepathyClient.js:1224
-#, javascript-format
-msgid "%s is sending you %s"
-msgstr "%s sendet Ihnen %s"
-
-#. To translators: The parameter is the contact's alias */
-#: ../js/ui/components/telepathyClient.js:1253
-#, javascript-format
-msgid "%s would like permission to see when you are online"
-msgstr "%s bittet um das Recht, Ihre Online-Verfügbarkeit sehen zu dürfen"
-
-#: ../js/ui/components/telepathyClient.js:1338
-msgid "Network error"
-msgstr "Netzwerkfehler"
-
-#: ../js/ui/components/telepathyClient.js:1340
-msgid "Authentication failed"
-msgstr "Anmeldung fehlgeschlagen"
-
-#: ../js/ui/components/telepathyClient.js:1342
-msgid "Encryption error"
-msgstr "Verschlüsselungsfehler"
-
-#: ../js/ui/components/telepathyClient.js:1344
-msgid "Certificate not provided"
-msgstr "Zertifikat wurde nicht bereitgestellt"
-
-#: ../js/ui/components/telepathyClient.js:1346
-msgid "Certificate untrusted"
-msgstr "Zertifikat nicht vertrauenswürdig"
-
-#: ../js/ui/components/telepathyClient.js:1348
-msgid "Certificate expired"
-msgstr "Zertifikat abgelaufen"
-
-#: ../js/ui/components/telepathyClient.js:1350
-msgid "Certificate not activated"
-msgstr "Zertifikat nicht aktiviert"
-
-#: ../js/ui/components/telepathyClient.js:1352
-msgid "Certificate hostname mismatch"
-msgstr "Rechnername des Zertifikats stimmt nicht überein"
-
-#: ../js/ui/components/telepathyClient.js:1354
-msgid "Certificate fingerprint mismatch"
-msgstr "Fingerabdruck des Zertifikats stimmt nicht überein"
-
-#: ../js/ui/components/telepathyClient.js:1356
-msgid "Certificate self-signed"
-msgstr "Selbstsigniertes Zertifikat"
-
-#: ../js/ui/components/telepathyClient.js:1358
-msgid "Status is set to offline"
-msgstr "Der Status ist auf »Abgemeldet« gesetzt"
-
-#: ../js/ui/components/telepathyClient.js:1360
-msgid "Encryption is not available"
-msgstr "Verschlüsselung ist nicht verfügbar"
-
-#: ../js/ui/components/telepathyClient.js:1362
-msgid "Certificate is invalid"
-msgstr "Zertifikat ist ungültig"
-
-#: ../js/ui/components/telepathyClient.js:1364
-msgid "Connection has been refused"
-msgstr "Verbindungsaufbau wurde verweigert"
-
-#: ../js/ui/components/telepathyClient.js:1366
-msgid "Connection can't be established"
-msgstr "Verbindung kann nicht hergestellt werden"
-
-#: ../js/ui/components/telepathyClient.js:1368
-msgid "Connection has been lost"
-msgstr "Verbindung wurde unterbrochen"
-
-#: ../js/ui/components/telepathyClient.js:1370
-msgid "This account is already connected to the server"
-msgstr "Dieses Konto ist bereits mit dem Server verbunden"
-
-#: ../js/ui/components/telepathyClient.js:1372
-msgid ""
-"Connection has been replaced by a new connection using the same resource"
-msgstr ""
-"Die Verbindung wurde durch eine neue Verbindung mit der gleichen Ressource "
-"ersetzt"
-
-#: ../js/ui/components/telepathyClient.js:1374
-msgid "The account already exists on the server"
-msgstr "Dieses Konto ist bereits auf dem Server vorhanden"
-
-#: ../js/ui/components/telepathyClient.js:1376
-msgid "Server is currently too busy to handle the connection"
-msgstr ""
-"Der Server ist derzeit überlastet und kann die Verbindung nicht annehmen"
-
-#: ../js/ui/components/telepathyClient.js:1378
-msgid "Certificate has been revoked"
-msgstr "Zertifikat wurde zurückgezogen"
-
-#: ../js/ui/components/telepathyClient.js:1380
-msgid ""
-"Certificate uses an insecure cipher algorithm or is cryptographically weak"
-msgstr ""
-"Das Zertifikat verwendet einen unsicheren Chiffrier-Algorithmus oder ist "
-"kryptografisch schwach"
-
-#: ../js/ui/components/telepathyClient.js:1382
-msgid ""
-"The length of the server certificate, or the depth of the server certificate "
-"chain, exceed the limits imposed by the cryptography library"
-msgstr ""
-"Die Länge des Server-Zertifikats oder die Tiefe der Server-Zertifikatskette "
-"überschreiten die durch die kryptografische Bibliothek gegebenen "
-"Beschränkungen"
-
-#: ../js/ui/components/telepathyClient.js:1384
-msgid "Internal error"
-msgstr "Interner Fehler"
-
-#. translators: argument is the account name, like
-#. * name@jabber.org for example. */
-#: ../js/ui/components/telepathyClient.js:1394
-#, javascript-format
-msgid "Unable to connect to %s"
-msgstr "Verbindung zu %s fehlgeschlagen"
-
-#: ../js/ui/components/telepathyClient.js:1399
-msgid "View account"
-msgstr "Konto anzeigen"
-
-#: ../js/ui/components/telepathyClient.js:1436
-msgid "Unknown reason"
-msgstr "Unbekannter Grund"
 
 #: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:155
 msgid "Windows"
 msgstr "Fenster"
 
-#: ../js/ui/dash.js:249 ../js/ui/dash.js:287
+#: ../js/ui/dash.js:250 ../js/ui/dash.js:291
 msgid "Show Applications"
 msgstr "Anwendungen anzeigen"
 
 # Würde ich so übernehmen, oder evtl. »Dock«.
-#: ../js/ui/dash.js:445
+#: ../js/ui/dash.js:451
 msgid "Dash"
 msgstr "Dash"
-
-#: ../js/ui/dateMenu.js:97
-msgid "Open Calendar"
-msgstr "Kalender öffnen"
-
-#: ../js/ui/dateMenu.js:101
-msgid "Open Clocks"
-msgstr "Uhren öffnen"
-
-#: ../js/ui/dateMenu.js:108
-msgid "Date & Time Settings"
-msgstr "Einstellungen für Datum und Uhrzeit"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #. */
-#: ../js/ui/dateMenu.js:132
-msgid "%A %B %e, %Y"
+#: ../js/ui/dateMenu.js:73
+#| msgid "%A %B %e, %Y"
+msgid "%B %e %Y"
+msgstr "%e. %B %Y"
+
+#. Translators: This is the accessible name of the date button shown
+#. * below the time in the shell; it should combine the weekday and the
+#. * date, e.g. "Tuesday February 17 2015".
+#. */
+#: ../js/ui/dateMenu.js:80
+#| msgid "%A %B %e, %Y"
+msgid "%A %B %e %Y"
 msgstr "%A, %e. %B %Y"
+
+#: ../js/ui/dateMenu.js:160
+msgid "Add world clocks…"
+msgstr "Weltuhren hinzufügen …"
+
+#: ../js/ui/dateMenu.js:161
+#| msgid "Open Clocks"
+msgid "World Clocks"
+msgstr "Weltuhren"
 
 #: ../js/ui/endSessionDialog.js:64
 #, javascript-format
@@ -1179,7 +917,7 @@ msgstr "Installieren"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "»%s« von extensions.gnome.org herunterladen und installieren?"
 
-#: ../js/ui/keyboard.js:706 ../js/ui/status/keyboard.js:577
+#: ../js/ui/keyboard.js:706 ../js/ui/status/keyboard.js:576
 msgid "Keyboard"
 msgstr "Tastatur"
 
@@ -1235,54 +973,9 @@ msgstr "Quelle zeigen"
 msgid "Web Page"
 msgstr "Webseite"
 
-#: ../js/ui/messageTray.js:1332
-msgid "Open"
-msgstr "Öffnen"
-
-#: ../js/ui/messageTray.js:1339
-msgid "Remove"
-msgstr "Entfernen"
-
-#: ../js/ui/messageTray.js:1636
-msgid "Notifications"
-msgstr "Benachrichtigungen"
-
-#: ../js/ui/messageTray.js:1643
-msgid "Clear Messages"
-msgstr "Nachrichten leeren"
-
-#: ../js/ui/messageTray.js:1662
-msgid "Notification Settings"
-msgstr "Benachrichtigungseinstellungen"
-
-#: ../js/ui/messageTray.js:1715
-msgid "Tray Menu"
-msgstr "Benachrichtigungsfeldmenü"
-
-#: ../js/ui/messageTray.js:1939
-msgid "No Messages"
-msgstr "Keine Nachrichten"
-
-#: ../js/ui/messageTray.js:1986
-msgid "Message Tray"
-msgstr "Benachrichtigungsfeld"
-
-#: ../js/ui/messageTray.js:2443 ../js/ui/overviewControls.js:483
-#: ../js/ui/screenShield.js:152
-#, javascript-format
-msgid "%d new message"
-msgid_plural "%d new messages"
-msgstr[0] "%d neue Nachricht"
-msgstr[1] "%d neue Nachrichten"
-
-#: ../js/ui/messageTray.js:3013
+#: ../js/ui/messageTray.js:2131
 msgid "System Information"
 msgstr "Systeminformationen"
-
-#: ../js/ui/notificationDaemon.js:513 ../src/shell-app.c:439
-msgctxt "program"
-msgid "Unknown"
-msgstr "Unbekannt"
 
 #: ../js/ui/overview.js:84
 msgid "Undo"
@@ -1300,21 +993,21 @@ msgstr "Übersicht"
 msgid "Type to search…"
 msgstr "Suchbegriff eingeben …"
 
-#: ../js/ui/panel.js:521
+#: ../js/ui/panel.js:352
 msgid "Quit"
 msgstr "Beenden"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview". */
-#: ../js/ui/panel.js:573
+#: ../js/ui/panel.js:404
 msgid "Activities"
 msgstr "Aktivitäten"
 
-#: ../js/ui/panel.js:924
+#: ../js/ui/panel.js:755
 msgid "Top Bar"
 msgstr "Oberes Panel"
 
-#: ../js/ui/popupMenu.js:269
+#: ../js/ui/popupMenu.js:288
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -1326,7 +1019,7 @@ msgstr "Bitte geben Sie einen Befehl ein"
 msgid "Close"
 msgstr "Schließen"
 
-#: ../js/ui/runDialog.js:277
+#: ../js/ui/runDialog.js:281
 msgid "Restarting…"
 msgstr "Neustart …"
 
@@ -1335,30 +1028,37 @@ msgstr "Neustart …"
 # %B - ausgeschriebener Name des Monats, abhängig von der gesetzten Umgebung
 #. Translators: This is a time format for a date in
 #. long format */
-#: ../js/ui/screenShield.js:88
+#: ../js/ui/screenShield.js:85
 msgid "%A, %B %d"
 msgstr "%A, %d. %B"
 
-#: ../js/ui/screenShield.js:154
+#: ../js/ui/screenShield.js:144
+#, javascript-format
+msgid "%d new message"
+msgid_plural "%d new messages"
+msgstr[0] "%d neue Nachricht"
+msgstr[1] "%d neue Nachrichten"
+
+#: ../js/ui/screenShield.js:146
 #, javascript-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d neue Benachrichtigung"
 msgstr[1] "%d neue Benachrichtigungen"
 
-#: ../js/ui/screenShield.js:473 ../js/ui/status/system.js:345
+#: ../js/ui/screenShield.js:432 ../js/ui/status/system.js:345
 msgid "Lock"
 msgstr "Sperren"
 
-#: ../js/ui/screenShield.js:709
+#: ../js/ui/screenShield.js:668
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME muss den Bildschirm sperren"
 
-#: ../js/ui/screenShield.js:836 ../js/ui/screenShield.js:1312
+#: ../js/ui/screenShield.js:795 ../js/ui/screenShield.js:1271
 msgid "Unable to lock"
 msgstr "Sperrung fehlgeschlagen"
 
-#: ../js/ui/screenShield.js:837 ../js/ui/screenShield.js:1313
+#: ../js/ui/screenShield.js:796 ../js/ui/screenShield.js:1272
 msgid "Lock was blocked by an application"
 msgstr "Sperrung wurde von einer Anwendung blockiert"
 
@@ -1468,7 +1168,7 @@ msgstr "Nicht verbunden"
 msgid "Brightness"
 msgstr "Helligkeit"
 
-#: ../js/ui/status/keyboard.js:601
+#: ../js/ui/status/keyboard.js:599
 msgid "Show Keyboard Layout"
 msgstr "Tastaturbelegung anzeigen"
 
@@ -1852,7 +1552,12 @@ msgstr ""
 msgid "List possible modes"
 msgstr "Die möglichen Modi auflisten"
 
-#: ../src/shell-app.c:680
+#: ../src/shell-app.c:247
+msgctxt "program"
+msgid "Unknown"
+msgstr "Unbekannt"
+
+#: ../src/shell-app.c:488
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "»%s« konnte nicht gestartet werden"
@@ -1868,6 +1573,231 @@ msgstr "Es muss ein Passwort angegeben werden"
 #: ../src/shell-polkit-authentication-agent.c:346
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Der Dialog zur Anmeldung wurde vom Benutzer geschlossen"
+
+#~ msgid "Show the message tray"
+#~ msgstr "Benachrichtigungssymbol anzeigen"
+
+#~ msgctxt "event list time"
+#~ msgid "%H∶%M"
+#~ msgstr "%H∶%M"
+
+#~ msgctxt "event list time"
+#~ msgid "%l∶%M %p"
+#~ msgstr "%l∶%M %p"
+
+#~ msgctxt "list sunday"
+#~ msgid "Su"
+#~ msgstr "So"
+
+#~ msgctxt "list monday"
+#~ msgid "M"
+#~ msgstr "Mo"
+
+#~ msgctxt "list tuesday"
+#~ msgid "T"
+#~ msgstr "Di"
+
+#~ msgctxt "list wednesday"
+#~ msgid "W"
+#~ msgstr "Mi"
+
+#~ msgctxt "list thursday"
+#~ msgid "Th"
+#~ msgstr "Do"
+
+#~ msgctxt "list friday"
+#~ msgid "F"
+#~ msgstr "Fr"
+
+#~ msgctxt "list saturday"
+#~ msgid "S"
+#~ msgstr "Sa"
+
+#~ msgid "Nothing Scheduled"
+#~ msgstr "Nichts geplant"
+
+#~ msgid "Today"
+#~ msgstr "Heute"
+
+#~ msgid "Tomorrow"
+#~ msgstr "Morgen"
+
+#~ msgid "This week"
+#~ msgstr "Diese Woche"
+
+#~ msgid "Next week"
+#~ msgstr "Nächste Woche"
+
+#~ msgid "Removable Devices"
+#~ msgstr "Wechseldatenträger"
+
+#~ msgid "Eject"
+#~ msgstr "Auswerfen"
+
+#~ msgid "Invitation"
+#~ msgstr "Einladung"
+
+#~ msgid "Call"
+#~ msgstr "Anruf"
+
+#~ msgid "File Transfer"
+#~ msgstr "Dateiübertragung"
+
+#~ msgid "Chat"
+#~ msgstr "Chat"
+
+#~ msgid "Unmute"
+#~ msgstr "Ton an"
+
+#~ msgid "Mute"
+#~ msgstr "Stumm"
+
+#~ msgid "Invitation to %s"
+#~ msgstr "Einladung zum Betreten von %s"
+
+#~ msgid "%s is inviting you to join %s"
+#~ msgstr "%s lädt Sie ein, %s beizutreten"
+
+#~ msgid "Decline"
+#~ msgstr "Ablehnen"
+
+#~ msgid "Accept"
+#~ msgstr "Annehmen"
+
+#~ msgid "Video call from %s"
+#~ msgstr "Video-Anruf von %s"
+
+#~ msgid "Call from %s"
+#~ msgstr "Anruf von %s"
+
+#~ msgid "Answer"
+#~ msgstr "Antworten"
+
+#~ msgid "%s is sending you %s"
+#~ msgstr "%s sendet Ihnen %s"
+
+#~ msgid "%s would like permission to see when you are online"
+#~ msgstr "%s bittet um das Recht, Ihre Online-Verfügbarkeit sehen zu dürfen"
+
+#~ msgid "Network error"
+#~ msgstr "Netzwerkfehler"
+
+#~ msgid "Authentication failed"
+#~ msgstr "Anmeldung fehlgeschlagen"
+
+#~ msgid "Encryption error"
+#~ msgstr "Verschlüsselungsfehler"
+
+#~ msgid "Certificate not provided"
+#~ msgstr "Zertifikat wurde nicht bereitgestellt"
+
+#~ msgid "Certificate untrusted"
+#~ msgstr "Zertifikat nicht vertrauenswürdig"
+
+#~ msgid "Certificate expired"
+#~ msgstr "Zertifikat abgelaufen"
+
+#~ msgid "Certificate not activated"
+#~ msgstr "Zertifikat nicht aktiviert"
+
+#~ msgid "Certificate hostname mismatch"
+#~ msgstr "Rechnername des Zertifikats stimmt nicht überein"
+
+#~ msgid "Certificate fingerprint mismatch"
+#~ msgstr "Fingerabdruck des Zertifikats stimmt nicht überein"
+
+#~ msgid "Certificate self-signed"
+#~ msgstr "Selbstsigniertes Zertifikat"
+
+#~ msgid "Status is set to offline"
+#~ msgstr "Der Status ist auf »Abgemeldet« gesetzt"
+
+#~ msgid "Encryption is not available"
+#~ msgstr "Verschlüsselung ist nicht verfügbar"
+
+#~ msgid "Certificate is invalid"
+#~ msgstr "Zertifikat ist ungültig"
+
+#~ msgid "Connection has been refused"
+#~ msgstr "Verbindungsaufbau wurde verweigert"
+
+#~ msgid "Connection can't be established"
+#~ msgstr "Verbindung kann nicht hergestellt werden"
+
+#~ msgid "Connection has been lost"
+#~ msgstr "Verbindung wurde unterbrochen"
+
+#~ msgid "This account is already connected to the server"
+#~ msgstr "Dieses Konto ist bereits mit dem Server verbunden"
+
+#~ msgid ""
+#~ "Connection has been replaced by a new connection using the same resource"
+#~ msgstr ""
+#~ "Die Verbindung wurde durch eine neue Verbindung mit der gleichen "
+#~ "Ressource ersetzt"
+
+#~ msgid "The account already exists on the server"
+#~ msgstr "Dieses Konto ist bereits auf dem Server vorhanden"
+
+#~ msgid "Server is currently too busy to handle the connection"
+#~ msgstr ""
+#~ "Der Server ist derzeit überlastet und kann die Verbindung nicht annehmen"
+
+#~ msgid "Certificate has been revoked"
+#~ msgstr "Zertifikat wurde zurückgezogen"
+
+#~ msgid ""
+#~ "Certificate uses an insecure cipher algorithm or is cryptographically weak"
+#~ msgstr ""
+#~ "Das Zertifikat verwendet einen unsicheren Chiffrier-Algorithmus oder ist "
+#~ "kryptografisch schwach"
+
+#~ msgid ""
+#~ "The length of the server certificate, or the depth of the server "
+#~ "certificate chain, exceed the limits imposed by the cryptography library"
+#~ msgstr ""
+#~ "Die Länge des Server-Zertifikats oder die Tiefe der Server-"
+#~ "Zertifikatskette überschreiten die durch die kryptografische Bibliothek "
+#~ "gegebenen Beschränkungen"
+
+#~ msgid "Internal error"
+#~ msgstr "Interner Fehler"
+
+#~ msgid "Unable to connect to %s"
+#~ msgstr "Verbindung zu %s fehlgeschlagen"
+
+#~ msgid "View account"
+#~ msgstr "Konto anzeigen"
+
+#~ msgid "Unknown reason"
+#~ msgstr "Unbekannter Grund"
+
+#~ msgid "Open Calendar"
+#~ msgstr "Kalender öffnen"
+
+#~ msgid "Date & Time Settings"
+#~ msgstr "Einstellungen für Datum und Uhrzeit"
+
+#~ msgid "Open"
+#~ msgstr "Öffnen"
+
+#~ msgid "Remove"
+#~ msgstr "Entfernen"
+
+#~ msgid "Clear Messages"
+#~ msgstr "Nachrichten leeren"
+
+#~ msgid "Notification Settings"
+#~ msgstr "Benachrichtigungseinstellungen"
+
+#~ msgid "Tray Menu"
+#~ msgstr "Benachrichtigungsfeldmenü"
+
+#~ msgid "No Messages"
+#~ msgstr "Keine Nachrichten"
+
+#~ msgid "Message Tray"
+#~ msgstr "Benachrichtigungsfeld"
 
 # http://de.wikipedia.org/wiki/Captive_Portal
 #~ msgid "Captive Portal"
