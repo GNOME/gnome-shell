@@ -1289,7 +1289,7 @@ const MessageListSection = new Lang.Class({
     },
 
     addMessage: function(message, animate) {
-        this.addMessageAtIndex(message, 0, animate);
+        this.addMessageAtIndex(message, -1, animate);
     },
 
     addMessageAtIndex: function(message, index, animate) {
