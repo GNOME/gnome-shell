@@ -95,6 +95,7 @@ const AppMenuButton = new Lang.Class({
         this._startingApps = [];
 
         this._menuManager = panel.menuManager;
+        this._gtkSettings = Gtk.Settings.get_default();
         this._targetApp = null;
         this._appMenuNotifyId = 0;
         this._actionGroupNotifyId = 0;
@@ -123,11 +124,14 @@ const AppMenuButton = new Lang.Class({
         this._arrow = PopupMenu.arrowIcon(St.Side.BOTTOM);
         this._container.add_actor(this._arrow);
 
-        this._visible = !Main.overview.visible;
+        this._visible = this._gtkSettings.gtk_shell_shows_app_menu &&
+                        !Main.overview.visible;
         if (!this._visible)
             this.actor.hide();
         this._overviewHidingId = Main.overview.connect('hiding', Lang.bind(this, this._sync));
         this._overviewShowingId = Main.overview.connect('showing', Lang.bind(this, this._sync));
+        this._showsAppMenuId = this._gtkSettings.connect('notify::gtk-shell-shows-app-menu',
+                                                         Lang.bind(this, this._sync));
 
         this._stop = true;
 
@@ -305,7 +309,9 @@ const AppMenuButton = new Lang.Class({
             }
         }
 
-        let visible = (this._targetApp != null && !Main.overview.visibleTarget);
+        let visible = (this._targetApp != null &&
+                       this._gtkSettings.gtk_shell_shows_app_menu &&
+                       !Main.overview.visibleTarget);
         if (visible)
             this.show();
         else
@@ -377,6 +383,10 @@ const AppMenuButton = new Lang.Class({
         if (this._overviewShowingId > 0) {
             Main.overview.disconnect(this._overviewShowingId);
             this._overviewShowingId = 0;
+        }
+        if (this._showsAppMenuId > 0) {
+            this._gtkSettings.disconnect(this._showsAppMenuId);
+            this._showsAppMenuId = 0;
         }
         if (this._switchWorkspaceNotifyId > 0) {
             global.window_manager.disconnect(this._switchWorkspaceNotifyId);
