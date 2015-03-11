@@ -1360,15 +1360,18 @@ const MessageListSection = new Lang.Class({
 
         this._messages.delete(message);
 
-        if (animate)
+        if (animate) {
             Tweener.addTween(obj.container, { scale_x: 0, scale_y: 0,
                                               time: MESSAGE_ANIMATION_TIME,
                                               transition: 'easeOutQuad',
                                               onComplete: function() {
                                                   obj.container.destroy();
+                                                  global.sync_pointer();
                                               }});
-        else
+        } else {
             obj.container.destroy();
+            global.sync_pointer();
+        }
     },
 
     clear: function() {
