@@ -1045,6 +1045,8 @@ const Message = new Lang.Class({
         this._bodyText = text;
         this.bodyLabel.setMarkup(text ? text.replace(/\n/g, ' ') : '',
                                  this._useBodyMarkup);
+        if (this._expandedLabel)
+            this._expandedLabel.setMarkup(text, this._useBodyMarkup);
     },
 
     setUseBodyMarkup: function(enable) {
@@ -1092,9 +1094,9 @@ const Message = new Lang.Class({
         this._actionBin.visible = (this._actionBin.get_n_children() > 0);
 
         if (this._bodyStack.get_n_children() < 2) {
-            let expandedLabel = new URLHighlighter(this._bodyText,
-                                                   true, this._useBodyMarkup);
-            this.setExpandedBody(expandedLabel.actor);
+            this._expandedLabel = new URLHighlighter(this._bodyText,
+                                                     true, this._useBodyMarkup);
+            this.setExpandedBody(this._expandedLabel.actor);
         }
 
         if (animate) {
