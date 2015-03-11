@@ -3,6 +3,7 @@ const GObject = imports.gi.GObject;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 
+const CtrlAltTab = imports.ui.ctrlAltTab;
 const Lang = imports.lang;
 const Layout = imports.ui.layout;
 const Main = imports.ui.main;
@@ -53,7 +54,10 @@ const LegacyTray = new Lang.Class({
         this._box = new St.BoxLayout();
         this._slider.add_actor(this._box);
 
-        this._concealHandle = new St.Button({ style_class: 'legacy-tray-handle' });
+        this._concealHandle = new St.Button({ style_class: 'legacy-tray-handle',
+                                              /* translators: 'Hide' is a verb */
+                                              accessible_name: _("Hide tray"),
+                                              can_focus: true });
         this._concealHandle.child = new St.Icon({ icon_name: 'go-previous-symbolic' });
         this._box.add_child(this._concealHandle);
 
@@ -83,6 +87,9 @@ const LegacyTray = new Lang.Class({
 
         Main.layoutManager.addChrome(this.actor, { affectsInputRegion: false });
         Main.layoutManager.trackChrome(this._slider, { affectsInputRegion: true });
+        Main.ctrlAltTabManager.addGroup(this.actor,
+                                        _("Status Icons"), 'focus-legacy-systray-symbolic',
+                                        { sortGroup: CtrlAltTab.SortGroup.BOTTOM });
 
         this._trayManager = new Shell.TrayManager();
         this._trayIconAddedId = this._trayManager.connect('tray-icon-added', Lang.bind(this, this._onTrayIconAdded));
@@ -121,14 +128,20 @@ const LegacyTray = new Lang.Class({
             return;
 
         let button = new St.Button({ child: icon,
+                                     style_class: 'legacy-tray-icon',
                                      button_mask: St.ButtonMask.ONE |
                                                   St.ButtonMask.TWO |
                                                   St.ButtonMask.THREE,
+                                     can_focus: true,
                                      x_fill: true, y_fill: true });
         button.connect('clicked',
             function() {
                 icon.click(Clutter.get_current_event());
             });
+        button.connect('key-focus-in', Lang.bind(this,
+            function() {
+                this._concealHandle.show();
+            }));
 
         this._iconBox.add_actor(button);
         this._sync();
