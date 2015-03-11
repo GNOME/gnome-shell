@@ -44,6 +44,10 @@ function _sameDay(dateA, dateB) {
     return _sameMonth(dateA, dateB) && (dateA.getDate() == dateB.getDate());
 }
 
+function _isToday(date) {
+    return _sameDay(new Date(), date);
+}
+
 function _isWorkDay(date) {
     /* Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday). */
     let days = C_('calendar-no-work', "06");
@@ -1412,11 +1416,6 @@ const MessageListSection = new Lang.Class({
         return false;
     },
 
-    _isToday: function() {
-        let today = new Date();
-        return _sameDay(this._date, today);
-    },
-
     _shouldShow: function() {
         return !this.empty;
     },
@@ -1461,13 +1460,13 @@ const EventsSection = new Lang.Class({
     },
 
     _updateTitle: function() {
-        let now = new Date();
-        if (_sameDay(this._date, now)) {
+        if (_isToday(this._date)) {
             this._title.label = _("Events");
             return;
         }
 
         let dayFormat;
+        let now = new Date();
         if (_sameYear(this._date, now))
             /* Translators: Shown on calendar heading when selected day occurs on current year */
             dayFormat = Shell.util_translate_time_string(NC_("calendar heading",
@@ -1551,7 +1550,7 @@ const EventsSection = new Lang.Class({
     },
 
     _shouldShow: function() {
-        return !this.empty || !this._isToday();
+        return !this.empty || !_isToday(this._date);
     },
 
     _sync: function() {
@@ -1670,7 +1669,7 @@ const NotificationSection = new Lang.Class({
     },
 
     _shouldShow: function() {
-        return !this.empty && this._isToday();
+        return !this.empty && _isToday(this._date);
     },
 
     _sync: function() {
@@ -1710,7 +1709,7 @@ const Placeholder = new Lang.Class({
     },
 
     _sync: function() {
-        let isToday = _sameDay(this._date, new Date());
+        let isToday = _isToday(this._date);
         if (isToday && this._icon.gicon == this._todayIcon)
             return;
         if (!isToday && this._icon.gicon == this._otherIcon)
