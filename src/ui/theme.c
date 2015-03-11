@@ -770,10 +770,8 @@ meta_frame_layout_draw_with_style (MetaFrameLayout         *layout,
         gtk_style_context_set_state (style, state);
 
       cairo_save (cr);
-      gdk_cairo_rectangle (cr, &button_rect);
-      cairo_clip (cr);
 
-      if (gdk_cairo_get_clip_rectangle (cr, NULL))
+      if (button_rect.width > 0 && button_rect.height > 0)
         {
           cairo_surface_t *surface = NULL;
           const char *icon_name = NULL;
