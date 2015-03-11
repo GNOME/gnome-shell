@@ -2091,10 +2091,7 @@ const MessageTray = new Lang.Class({
         this._pointerInNotification = false;
         this._notificationRemoved = false;
 
-        if (notification.resident)
-            this._bannerBin.remove_actor(this._banner.actor);
-        else
-            this._banner.actor.destroy();
+        this._banner.actor.destroy();
         this._banner = null;
         this.actor.hide();
     },
