@@ -356,6 +356,9 @@ const ChatSource = new Lang.Class({
     },
 
     open: function() {
+        Main.overview.hide();
+        Main.panel.closeCalendar();
+
         if (this._client.is_handling_channel(this._channel)) {
             // We are handling the channel, try to pass it to Empathy or Polari
             // (depending on the channel type)
