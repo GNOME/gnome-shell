@@ -1382,8 +1382,9 @@ const MessageListSection = new Lang.Class({
 
         // If there are few messages, letting them all zoom out looks OK
         if (messages.length < 2) {
-            messages.forEach(Lang.bind(this, function(message) {
-                this.removeMessage(message, true); }));
+            messages.forEach(function(message) {
+                message.close();
+            });
         } else {
             // Otherwise we slide them out one by one, and then zoom them
             // out "off-screen" in the end to smoothly shrink the parent
@@ -1397,9 +1398,9 @@ const MessageListSection = new Lang.Class({
                                    time: MESSAGE_ANIMATION_TIME,
                                    delay: i * delay,
                                    transition: 'easeOutQuad',
-                                   onComplete: Lang.bind(this, function() {
-                                       this.removeMessage(message, true);
-                                   })});
+                                   onComplete: function() {
+                                       message.close();
+                                   }});
             }
         }
     },
