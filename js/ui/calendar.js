@@ -1198,6 +1198,10 @@ const EventMessage = new Lang.Class({
                 title = title + ELLIPSIS_CHAR;
         }
         return title;
+    },
+
+    canClose: function() {
+        return _isToday(this._date);
     }
 });
 
