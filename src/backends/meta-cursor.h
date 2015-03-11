@@ -54,11 +54,13 @@ CoglTexture *meta_cursor_sprite_get_cogl_texture (MetaCursorSprite *self,
                                                   int              *hot_x,
                                                   int              *hot_y);
 
-#ifdef HAVE_NATIVE_BACKEND
-struct gbm_bo *meta_cursor_sprite_get_gbm_bo (MetaCursorSprite *self,
-                                              int              *hot_x,
-                                              int              *hot_y);
-#endif
+void meta_cursor_sprite_get_hotspot (MetaCursorSprite *self,
+                                     int              *hot_x,
+                                     int              *hot_y);
+
+guint meta_cursor_sprite_get_width (MetaCursorSprite *self);
+
+guint meta_cursor_sprite_get_height (MetaCursorSprite *self);
 
 gboolean meta_cursor_sprite_is_animated            (MetaCursorSprite *self);
 void     meta_cursor_sprite_tick_frame             (MetaCursorSprite *self);

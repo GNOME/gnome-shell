@@ -181,3 +181,28 @@ meta_cursor_renderer_get_rect (MetaCursorRenderer *renderer)
 
   return &priv->current_rect;
 }
+
+#ifdef HAVE_WAYLAND
+void
+meta_cursor_renderer_realize_cursor_from_wl_buffer (MetaCursorRenderer *renderer,
+                                                    MetaCursorSprite   *cursor_sprite,
+                                                    struct wl_resource *buffer)
+{
+
+  MetaCursorRendererClass *renderer_class = META_CURSOR_RENDERER_GET_CLASS (renderer);
+
+  if (renderer_class->realize_cursor_from_wl_buffer)
+    renderer_class->realize_cursor_from_wl_buffer (renderer, cursor_sprite, buffer);
+}
+#endif
+
+void
+meta_cursor_renderer_realize_cursor_from_xcursor (MetaCursorRenderer *renderer,
+                                                  MetaCursorSprite   *cursor_sprite,
+                                                  XcursorImage       *xc_image)
+{
+  MetaCursorRendererClass *renderer_class = META_CURSOR_RENDERER_GET_CLASS (renderer);
+
+  if (renderer_class->realize_cursor_from_xcursor)
+    renderer_class->realize_cursor_from_xcursor (renderer, cursor_sprite, xc_image);
+}
