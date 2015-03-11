@@ -1017,14 +1017,15 @@ const Message = new Lang.Class({
         this._bodyStack.add_actor(this.bodyLabel.actor);
         this.setBody(body);
 
-        this._closeButton.connect('clicked', Lang.bind(this,
-            function() {
-                this.emit('close');
-            }));
+        this._closeButton.connect('clicked', Lang.bind(this, this.close));
         this.actor.connect('notify::hover', Lang.bind(this, this._sync));
         this.actor.connect('clicked', Lang.bind(this, this._onClicked));
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
         this._sync();
+    },
+
+    close: function() {
+        this.emit('close');
     },
 
     setIcon: function(actor) {
@@ -1158,7 +1159,7 @@ const Message = new Lang.Class({
 
         if (keysym == Clutter.KEY_Delete ||
             keysym == Clutter.KEY_KP_Delete) {
-            this.emit('close');
+            this.close();
             return Clutter.EVENT_STOP;
         }
         return Clutter.EVENT_PROPAGATE;
