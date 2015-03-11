@@ -72,6 +72,7 @@ typedef struct _CoglRendererKMS
   int opened_fd;
   struct gbm_device *gbm;
   CoglClosure *swap_notify_idle;
+  CoglBool     page_flips_not_supported;
 } CoglRendererKMS;
 
 typedef struct _CoglOutputKMS
@@ -224,14 +225,8 @@ queue_swap_notify_for_onscreen (CoglOnscreen *onscreen)
 }
 
 static void
-page_flip_handler (int fd,
-                   unsigned int frame,
-                   unsigned int sec,
-                   unsigned int usec,
-                   void *data)
+process_flip (CoglFlipKMS *flip)
 {
-  CoglFlipKMS *flip = data;
-
   /* We're only ready to dispatch a swap notification once all outputs
    * have flipped... */
   flip->pending--;
@@ -258,9 +253,24 @@ page_flip_handler (int fd,
 }
 
 static void
+page_flip_handler (int fd,
+                   unsigned int frame,
+                   unsigned int sec,
+                   unsigned int usec,
+                   void *data)
+{
+  CoglFlipKMS *flip = data;
+
+  process_flip (flip);
+}
+
+static void
 handle_drm_event (CoglRendererKMS *kms_renderer)
 {
   drmEventContext evctx;
+
+  if (kms_renderer->page_flips_not_supported)
+    return;
 
   memset (&evctx, 0, sizeof evctx);
   evctx.version = DRM_EVENT_CONTEXT_VERSION;
@@ -575,6 +585,7 @@ flip_all_crtcs (CoglDisplay *display, CoglFlipKMS *flip, int fb_id)
   CoglRendererEGL *egl_renderer = display->renderer->winsys;
   CoglRendererKMS *kms_renderer = egl_renderer->platform;
   GList *l;
+  gboolean needs_flip = FALSE;
 
   for (l = kms_display->crtcs; l; l = l->next)
     {
@@ -584,18 +595,26 @@ flip_all_crtcs (CoglDisplay *display, CoglFlipKMS *flip, int fb_id)
       if (crtc->count == 0 || crtc->ignore)
         continue;
 
-      ret = drmModePageFlip (kms_renderer->fd,
-                             crtc->id, fb_id,
-                             DRM_MODE_PAGE_FLIP_EVENT, flip);
+      needs_flip = TRUE;
 
-      if (ret)
+      if (!kms_renderer->page_flips_not_supported)
         {
-          g_warning ("Failed to flip: %m");
-          continue;
+          ret = drmModePageFlip (kms_renderer->fd,
+                                 crtc->id, fb_id,
+                                 DRM_MODE_PAGE_FLIP_EVENT, flip);
+          if (ret)
+            {
+              g_warning ("Failed to flip: %m");
+              kms_renderer->page_flips_not_supported = TRUE;
+              break;
+            }
         }
 
       flip->pending++;
     }
+
+  if (kms_renderer->page_flips_not_supported && needs_flip)
+    flip->pending = 1;
 }
 
 static void
@@ -945,6 +964,13 @@ _cogl_winsys_onscreen_swap_buffers_with_damage (CoglOnscreen *onscreen,
     {
       /* Ensure the onscreen remains valid while it has any pending flips... */
       cogl_object_ref (flip->onscreen);
+
+      /* Process flip right away if we can't wait for vblank */
+      if (kms_renderer->page_flips_not_supported)
+        {
+          setup_crtc_modes (context->display, kms_onscreen->next_fb_id);
+          process_flip (flip);
+        }
     }
 }
 
