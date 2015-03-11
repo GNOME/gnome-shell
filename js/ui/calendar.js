@@ -1137,13 +1137,13 @@ const Message = new Lang.Class({
         }
     },
 
-    canClear: function() {
+    canClose: function() {
         return true;
     },
 
     _sync: function() {
         let hovered = this.actor.hover;
-        this._closeButton.visible = hovered;
+        this._closeButton.visible = hovered && this.canClose();
         this._secondaryBin.visible = !hovered;
     },
 
@@ -1206,7 +1206,7 @@ const NotificationMessage = new Lang.Class({
         this.setUseBodyMarkup(n.bannerBodyMarkup);
     },
 
-    canClear: function() {
+    canClose: function() {
         return !this.notification.resident;
     },
 
@@ -1376,7 +1376,7 @@ const MessageListSection = new Lang.Class({
 
     clear: function() {
         let messages = [...this._messages.keys()].filter(function(message) {
-            return message.canClear();
+            return message.canClose();
         });
 
         // If there are few messages, letting them all zoom out looks OK
@@ -1405,7 +1405,7 @@ const MessageListSection = new Lang.Class({
 
     _canClear: function() {
         for (let message of this._messages.keys())
-            if (message.canClear())
+            if (message.canClose())
                 return true;
         return false;
     },
