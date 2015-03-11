@@ -615,10 +615,9 @@ parse_hsla (ClutterColor *color,
  * @color: (out caller-allocates): return location for a #ClutterColor
  * @str: a string specifiying a color
  *
- * Parses a string definition of a color, filling the
- * <structfield>red</structfield>, <structfield>green</structfield>, 
- * <structfield>blue</structfield> and <structfield>alpha</structfield> 
- * channels of @color.
+ * Parses a string definition of a color, filling the #ClutterColor.red,
+ * #ClutterColor.green, #ClutterColor.blue and #ClutterColor.alpha fields 
+ * of @color.
  *
  * The @color is not allocated.
  *

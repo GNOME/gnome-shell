@@ -358,7 +358,7 @@ struct _ClutterPipelineNode
 /**
  * ClutterPipelineNodeClass:
  *
- * The <structname>ClutterPipelineNodeClass</structname> structure is an opaque
+ * The `ClutterPipelineNodeClass` structure is an opaque
  * type whose members cannot be directly accessed.
  *
  * Since: 1.10
@@ -552,7 +552,7 @@ struct _ClutterColorNode
 /**
  * ClutterColorNodeClass:
  *
- * The <structname>ClutterColorNodeClass</structname> structure is an
+ * The `ClutterColorNodeClass` structure is an
  * opaque type whose members cannot be directly accessed.
  *
  * Since: 1.10
@@ -627,7 +627,7 @@ struct _ClutterTextureNode
 /**
  * ClutterTextureNodeClass:
  *
- * The <structname>ClutterTextureNodeClass</structname> structure is an
+ * The `ClutterTextureNodeClass` structure is an
  * opaque type whose members cannot be directly accessed.
  *
  * Since: 1.10
@@ -744,7 +744,7 @@ struct _ClutterTextNode
 /**
  * ClutterTextNodeClass:
  *
- * The <structname>ClutterTextNodeClass</structname> structure is an opaque
+ * The `ClutterTextNodeClass` structure is an opaque
  * type whose contents cannot be directly accessed.
  *
  * Since: 1.10
@@ -948,7 +948,7 @@ struct _ClutterClipNode
 /**
  * ClutterClipNodeClass:
  *
- * The <structname>ClutterClipNodeClass</structname> structure is an opaque
+ * The `ClutterClipNodeClass` structure is an opaque
  * type whose members cannot be directly accessed.
  *
  * Since: 1.10

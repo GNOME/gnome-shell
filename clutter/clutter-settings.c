@@ -43,7 +43,7 @@
 /**
  * ClutterSettings:
  *
- * <structname>ClutterSettings</structname> is an opaque structure whose
+ * `ClutterSettings` is an opaque structure whose
  * members cannot be directly accessed.
  *
  * Since: 1.4

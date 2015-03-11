@@ -1402,12 +1402,10 @@ _clutter_backend_x11_get_visual_info (ClutterBackendX11 *backend_x11)
 /**
  * clutter_x11_get_visual_info: (skip)
  *
- * Retrieves the <structname>XVisualInfo</structname> used by the Clutter X11
- * backend.
+ * Retrieves the `XVisualInfo` used by the Clutter X11 backend.
  *
- * Return value: (transfer full): a <structname>XVisualInfo</structname>, or
- *   <varname>None</varname>. The returned value should be freed using XFree()
- *   when done
+ * Return value: (transfer full): a `XVisualInfo`, or `None`.
+ *   The returned value should be freed using `XFree()` when done
  *
  * Since: 1.2
  */

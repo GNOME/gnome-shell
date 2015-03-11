@@ -130,9 +130,8 @@
  * ]]></programlisting></informalexample>
  *
  * Implicitely defined #ClutterAlpha<!-- -->s and #ClutterTimeline<!-- -->s
- * can omit the <varname>id</varname> member, as well as the
- * <varname>type</varname> member, but will not be available using
- * clutter_script_get_object() (they can, however, be extracted using the
+ * can omit the `id`, as well as the `type` members, but will not be available
+ * using clutter_script_get_object() (they can, however, be extracted using the
  * #ClutterBehaviour and #ClutterAlpha API respectively).
  *
  * Signal handlers can be defined inside a Clutter UI definition file and
