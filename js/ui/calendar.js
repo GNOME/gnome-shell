@@ -72,21 +72,6 @@ function _getEndOfDay(date) {
     return ret;
 }
 
-function _formatEventTime(event, periodBegin, periodEnd) {
-    let ret;
-    let allDay = (event.allDay || (event.date <= periodBegin && event.end >= periodEnd));
-    if (allDay) {
-        /* Translators: Shown in calendar event list for all day events
-         * Keep it short, best if you can use less then 10 characters
-         */
-        ret = C_("event list time", "All Day");
-    } else {
-        let date = event.date >= periodBegin ? event.date : event.end;
-        ret = Util.formatTime(date, { timeOnly: true });
-    }
-    return ret;
-}
-
 function _getCalendarDayAbbreviation(dayNumber) {
     let abbreviations = [
         /* Translators: Calendar grid abbreviation for Sunday.
@@ -1171,6 +1156,51 @@ const Message = new Lang.Class({
 });
 Signals.addSignalMethods(Message.prototype);
 
+const EventMessage = new Lang.Class({
+    Name: 'EventMessage',
+    Extends: Message,
+
+    _init: function(event, date) {
+        this._event = event;
+        this._date = date;
+
+        this.parent(this._formatEventTime(), event.summary);
+    },
+
+    _formatEventTime: function() {
+        let periodBegin = _getBeginningOfDay(this._date);
+        let periodEnd = _getEndOfDay(this._date);
+        let allDay = (this._event.allDay || (this._event.date <= periodBegin &&
+                                             this._event.end >= periodEnd));
+        let title;
+        if (allDay) {
+            /* Translators: Shown in calendar event list for all day events
+             * Keep it short, best if you can use less then 10 characters
+             */
+            title = C_("event list time", "All Day");
+        } else {
+            let date = this._event.date >= periodBegin ? this._event.date
+                                                       : this._event.end;
+            title = Util.formatTime(date, { timeOnly: true });
+        }
+
+        let rtl = Clutter.get_default_text_direction() == Clutter.TextDirection.RTL;
+        if (this._event.date < periodBegin && !this._event.allDay) {
+            if (rtl)
+                title = title + ELLIPSIS_CHAR;
+            else
+                title = ELLIPSIS_CHAR + title;
+        }
+        if (this._event.end > periodEnd && !this._event.allDay) {
+            if (rtl)
+                title = ELLIPSIS_CHAR + title;
+            else
+                title = title + ELLIPSIS_CHAR;
+        }
+        return title;
+    }
+});
+
 const NotificationMessage = new Lang.Class({
     Name: 'NotificationMessage',
     Extends: Message,
@@ -1492,22 +1522,7 @@ const EventsSection = new Lang.Class({
 
         for (let i = 0; i < events.length; i++) {
             let event = events[i];
-            let title = _formatEventTime(event, periodBegin, periodEnd);
-
-            let rtl = this.actor.get_text_direction() == Clutter.TextDirection.RTL;
-            if (event.date < periodBegin && !event.allDay) {
-                if (rtl)
-                    title = title + ELLIPSIS_CHAR;
-                else
-                    title = ELLIPSIS_CHAR + title;
-            }
-            if (event.end > periodEnd && !event.allDay) {
-                if (rtl)
-                    title = ELLIPSIS_CHAR + title;
-                else
-                    title = title + ELLIPSIS_CHAR;
-            }
-            this.addMessage(new Message(title, event.summary), false);
+            this.addMessage(new EventMessage(event, this._date), false);
         }
 
         this._reloading = false;
