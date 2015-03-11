@@ -475,13 +475,20 @@ const InputSourceManager = new Lang.Class({
     },
 
     _getNewInputSource: function(current) {
-        for (let i in this._inputSources) {
-            let is = this._inputSources[i];
-            if (is.type == current.type &&
-                is.id == current.id)
-                return is;
+        let sourceIndexes = Object.keys(this._inputSources);
+        if (sourceIndexes.length == 0)
+            return null;
+
+        if (current) {
+            for (let i in this._inputSources) {
+                let is = this._inputSources[i];
+                if (is.type == current.type &&
+                    is.id == current.id)
+                    return is;
+            }
         }
-        return this._currentSource;
+
+        return this._inputSources[sourceIndexes[0]];
     },
 
     _getCurrentWindow: function() {
@@ -496,16 +503,13 @@ const InputSourceManager = new Lang.Class({
         if (!window)
             return;
 
-        if (!window._inputSources) {
-            window._inputSources = this._inputSources;
-            window._currentSource = this._currentSource;
-        } else if (window._inputSources == this._inputSources) {
-            window._currentSource.activate();
-        } else {
+        if (window._inputSources != this._inputSources) {
             window._inputSources = this._inputSources;
             window._currentSource = this._getNewInputSource(window._currentSource);
-            window._currentSource.activate();
         }
+
+        if (window._currentSource)
+            window._currentSource.activate();
     },
 
     _sourcesPerWindowChanged: function() {
