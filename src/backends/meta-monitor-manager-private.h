@@ -224,7 +224,7 @@ struct _MetaCRTCInfo {
 
 /*
  * MetaOutputInfo:
- * this is the same as MetaOutputInfo, but for CRTCs
+ * this is the same as MetaCRTCInfo, but for outputs
  */
 struct _MetaOutputInfo {
   MetaOutput  *output;
