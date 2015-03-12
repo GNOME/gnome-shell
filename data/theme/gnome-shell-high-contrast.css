@@ -1452,10 +1452,12 @@ StScrollBar {
 /* Auth Dialogs & Screen Shield */
 .framed-user-icon {
   background-size: contain;
-  border: 2px solid black;
+  border: 2px solid #eeeeec;
+  color: #eeeeec;
   border-radius: 3px; }
   .framed-user-icon:hover {
-    border-color: #4d4d4d; }
+    border-color: white;
+    color: white; }
 
 .login-dialog-banner-view {
   padding-top: 24px;
