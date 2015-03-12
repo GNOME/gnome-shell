@@ -59,6 +59,8 @@ doc/reference/clutter/clutter.signals
 doc/reference/clutter/clutter-docs.xml
 doc/reference/clutter/*.stamp
 doc/reference/clutter/*.bak
+doc/reference/clutter/*.log
+doc/reference/clutter/gtkdoc-check.*
 doc/reference/cally/cally-*.txt
 !/doc/reference/cally/cally-sections.txt
 doc/reference/cally/html
