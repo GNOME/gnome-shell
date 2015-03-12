@@ -166,13 +166,7 @@ meta_ui_create_frame (MetaUI *ui,
 
   attrs.title = NULL;
 
-  /* frame.c is going to replace the event mask immediately, but
-   * we still have to set it here to let GDK know what it is.
-   */
-  attrs.event_mask =
-    GDK_EXPOSURE_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK |
-    GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK |
-    GDK_ENTER_NOTIFY_MASK | GDK_LEAVE_NOTIFY_MASK | GDK_FOCUS_CHANGE_MASK;
+  attrs.event_mask = GDK_EXPOSURE_MASK;
   attrs.x = x;
   attrs.y = y;
   attrs.wclass = GDK_INPUT_OUTPUT;
