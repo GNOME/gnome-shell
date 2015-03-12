@@ -59,6 +59,7 @@ CFILE_GLOB = \
 	$(top_srcdir)/clutter/cex100/*.c \
 	$(top_srcdir)/clutter/egl/*.c \
 	$(top_srcdir)/clutter/wayland/*.c \
+	$(top_srcdir)/clutter/mir/*.c \
 	$(top_srcdir)/clutter/deprecated/*.c
 
 # Header files to ignore when scanning.
@@ -122,7 +123,8 @@ EXTRA_HFILES = \
 	$(top_srcdir)/clutter/gdk/clutter-gdk.h \
 	$(top_srcdir)/clutter/wayland/clutter-wayland.h \
 	$(top_srcdir)/clutter/wayland/clutter-wayland-compositor.h \
-	$(top_srcdir)/clutter/wayland/clutter-wayland-surface.h
+	$(top_srcdir)/clutter/wayland/clutter-wayland-surface.h \
+	$(top_srcdir)/clutter/mir/clutter-mir.h
 
 # Images to copy into HTML directory.
 # e.g. HTML_IMAGES=$(top_srcdir)/gtk/stock-icons/stock_about_24.png
