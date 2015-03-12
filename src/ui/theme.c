@@ -656,6 +656,7 @@ get_button_rect (MetaButtonType           type,
       *rect = fgeom->appmenu_rect.visible;
       break;
 
+    default:
     case META_BUTTON_TYPE_LAST:
       g_assert_not_reached ();
       break;
