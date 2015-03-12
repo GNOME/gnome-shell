@@ -201,6 +201,5 @@ TESTS_ENVIRONMENT = \
 	SRCDIR=$(abs_srcdir) \
 	BUILDDIR=$(abs_builddir)
 
-# XXX: Cannot enable without breaking on platform-specific symbols
-#TESTS = $(GTKDOC_CHECK)
+TESTS = $(GTKDOC_CHECK)
 endif
