@@ -690,6 +690,9 @@ meta_monitor_manager_kms_set_power_save_mode (MetaMonitorManager *manager,
                                               MetaPowerSave       mode)
 {
   MetaMonitorManagerKms *manager_kms = META_MONITOR_MANAGER_KMS (manager);
+  ClutterBackend *backend;
+  CoglContext *cogl_context;
+  CoglDisplay *cogl_display;
   uint64_t state;
   unsigned i;
 
@@ -728,6 +731,14 @@ meta_monitor_manager_kms_set_power_save_mode (MetaMonitorManager *manager,
                           meta_output->name, strerror (errno));
         }
     }
+
+  backend = clutter_get_default_backend ();
+  cogl_context = clutter_backend_get_cogl_context (backend);
+  cogl_display = cogl_context_get_display (cogl_context);
+
+  for (i = 0; i < manager->n_crtcs; i++)
+    cogl_kms_display_set_ignore_crtc (cogl_display, manager->crtcs[i].crtc_id,
+                                      mode != META_POWER_SAVE_ON);
 }
 
 static void
