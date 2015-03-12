@@ -155,6 +155,9 @@ meta_window_ensure_frame (MetaWindow *window)
         unsigned char mask_bits[XIMaskLen (XI_LASTEVENT)] = { 0 };
         XIEventMask mask = { XIAllMasterDevices, sizeof (mask_bits), mask_bits };
 
+        XISelectEvents (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()),
+                        frame->xwindow, &mask, 1);
+
         XISetMask (mask.mask, XI_ButtonPress);
         XISetMask (mask.mask, XI_ButtonRelease);
         XISetMask (mask.mask, XI_Motion);
