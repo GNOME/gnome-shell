@@ -152,7 +152,7 @@ const ViewSelector = new Lang.Class({
 
         this._workspacesDisplay = new WorkspacesView.WorkspacesDisplay();
         this._workspacesPage = this._addPage(this._workspacesDisplay.actor,
-                                             _("Windows"), 'emblem-documents-symbolic');
+                                             _("Windows"), 'focus-windows-symbolic');
 
         this.appDisplay = new AppDisplay.AppDisplay();
         this._appsPage = this._addPage(this.appDisplay.actor,
