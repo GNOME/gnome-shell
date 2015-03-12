@@ -415,23 +415,7 @@ should_do_pending_move (MetaWindowWayland *wl_window,
 int
 meta_window_wayland_get_main_monitor_scale (MetaWindow *window)
 {
-  MetaMonitorManager *monitor_manager = meta_monitor_manager_get ();
-  MetaOutput *outputs;
-  guint n_outputs, i;
-  int output_scale = 1;
-
-  outputs = meta_monitor_manager_get_outputs (monitor_manager, &n_outputs);
-
-  for (i = 0; i < n_outputs; i++)
-    {
-      if (outputs[i].winsys_id == window->monitor->winsys_id)
-        {
-          output_scale = outputs[i].scale;
-          break;
-        }
-    }
-
-  return output_scale;
+  return window->monitor->scale;
 }
 
 /**

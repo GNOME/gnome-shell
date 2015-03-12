@@ -220,6 +220,7 @@ make_logical_config (MetaMonitorManager *manager)
           info.tile_group_id = 0;
           info.rect = crtc->rect;
           info.refresh_rate = crtc->current_mode->refresh_rate;
+          info.scale = 1;
           info.is_primary = FALSE;
           /* This starts true because we want
              is_presentation only if all outputs are
@@ -270,7 +271,10 @@ make_logical_config (MetaMonitorManager *manager)
       info->n_outputs = 1;
 
       if (output->is_primary || info->winsys_id == 0)
-        info->winsys_id = output->winsys_id;
+        {
+          info->scale = output->scale;
+          info->winsys_id = output->winsys_id;
+        }
 
       if (info->is_primary)
         manager->primary_monitor_index = info->number;

@@ -217,6 +217,7 @@ struct _MetaMonitorInfo
   gboolean is_primary;
   gboolean is_presentation; /* XXX: not yet used */
   gboolean in_fullscreen;
+  int scale;
 
   /* The primary or first output for this monitor, 0 if we can't figure out.
      It can be matched to a winsys_id of a MetaOutput.
