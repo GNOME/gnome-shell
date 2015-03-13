@@ -1,15 +1,15 @@
 # Kazakh translation for gnome-shell.
-# Copyright (C) 2014 The gnome-shell authors.
+# Copyright (C) 2015 The gnome-shell authors.
 # This file is distributed under the same license as the gnome-shell package.
-# Baurzhan Muftakhidinov <baurthefirst@gmail.com>, 2012-2014.
+# Baurzhan Muftakhidinov <baurthefirst@gmail.com>, 2012-2015.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-03-05 08:43+0000\n"
-"PO-Revision-Date: 2015-03-05 20:50+0500\n"
+"POT-Creation-Date: 2015-03-13 16:16+0000\n"
+"PO-Revision-Date: 2015-03-13 21:34+0500\n"
 "Last-Translator: Baurzhan Muftakhidinov <baurthefirst@gmail.com>\n"
 "Language-Team: Kazakh <kk_KZ@googlegroups.com>\n"
 "Language: kk\n"
@@ -311,7 +311,7 @@ msgstr "%s үшін баптаулар сұхбатын жүктеу кезін�
 msgid "GNOME Shell Extensions"
 msgstr "GNOME Shell кеңейтулері"
 
-#: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:143
+#: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:145
 #: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:452
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
 #: ../js/ui/status/network.js:916
@@ -332,25 +332,25 @@ msgctxt "button"
 msgid "Sign In"
 msgstr "Кіру"
 
-#: ../js/gdm/loginDialog.js:276
+#: ../js/gdm/loginDialog.js:280
 msgid "Choose Session"
 msgstr "Сессияны таңдау"
 
-#: ../js/gdm/loginDialog.js:417
+#: ../js/gdm/loginDialog.js:421
 msgid "Not listed?"
 msgstr "Тізімде жоқсыз ба?"
 
-#: ../js/gdm/loginDialog.js:826
+#: ../js/gdm/loginDialog.js:830
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(мыс., пайдаланушы не %s)"
 
-#: ../js/gdm/loginDialog.js:831 ../js/ui/components/networkAgent.js:269
-#: ../js/ui/components/networkAgent.js:287
+#: ../js/gdm/loginDialog.js:835 ../js/ui/components/networkAgent.js:271
+#: ../js/ui/components/networkAgent.js:289
 msgid "Username: "
 msgstr "Пайдаланушы аты:"
 
-#: ../js/gdm/loginDialog.js:1166
+#: ../js/gdm/loginDialog.js:1170
 msgid "Login Window"
 msgstr "Жүйеге кіру терезесі"
 
@@ -459,7 +459,7 @@ msgstr "Барлығы"
 msgid "New Window"
 msgstr "Жаңа терезе"
 
-#: ../js/ui/appDisplay.js:1878 ../js/ui/dash.js:289
+#: ../js/ui/appDisplay.js:1878 ../js/ui/dash.js:291
 msgid "Remove from Favorites"
 msgstr "Таңдамалылардан өшіру"
 
@@ -491,104 +491,104 @@ msgid "Change Background…"
 msgstr "Фонды өзгерту..."
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday). */
-#: ../js/ui/calendar.js:49
+#: ../js/ui/calendar.js:53
 msgctxt "calendar-no-work"
 msgid "06"
 msgstr "06"
-
-#. Translators: Shown in calendar event list for all day events
-#. * Keep it short, best if you can use less then 10 characters
-#. */
-#: ../js/ui/calendar.js:78
-msgctxt "event list time"
-msgid "All Day"
-msgstr "Толық күн"
 
 #. Translators: Calendar grid abbreviation for Sunday.
 #. *
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #. */
-#: ../js/ui/calendar.js:93
+#: ../js/ui/calendar.js:82
 msgctxt "grid sunday"
 msgid "S"
 msgstr "Жк"
 
 #. Translators: Calendar grid abbreviation for Monday */
-#: ../js/ui/calendar.js:95
+#: ../js/ui/calendar.js:84
 msgctxt "grid monday"
 msgid "M"
 msgstr "Дс"
 
 #. Translators: Calendar grid abbreviation for Tuesday */
-#: ../js/ui/calendar.js:97
+#: ../js/ui/calendar.js:86
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "Сс"
 
 #. Translators: Calendar grid abbreviation for Wednesday */
-#: ../js/ui/calendar.js:99
+#: ../js/ui/calendar.js:88
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "Ср"
 
 #. Translators: Calendar grid abbreviation for Thursday */
-#: ../js/ui/calendar.js:101
+#: ../js/ui/calendar.js:90
 msgctxt "grid thursday"
 msgid "T"
 msgstr "Бс"
 
 #. Translators: Calendar grid abbreviation for Friday */
-#: ../js/ui/calendar.js:103
+#: ../js/ui/calendar.js:92
 msgctxt "grid friday"
 msgid "F"
 msgstr "Жм"
 
 #. Translators: Calendar grid abbreviation for Saturday */
-#: ../js/ui/calendar.js:105
+#: ../js/ui/calendar.js:94
 msgctxt "grid saturday"
 msgid "S"
 msgstr "Сн"
 
-#: ../js/ui/calendar.js:572
+#: ../js/ui/calendar.js:563
 msgid "Previous month"
 msgstr "Өткен ай"
 
-#: ../js/ui/calendar.js:582
+#: ../js/ui/calendar.js:573
 msgid "Next month"
 msgstr "Келесі ай"
 
-#: ../js/ui/calendar.js:789
+#: ../js/ui/calendar.js:780
 msgid "Week %V"
 msgstr "Апта %V"
 
-#: ../js/ui/calendar.js:1245
+#. Translators: Shown in calendar event list for all day events
+#. * Keep it short, best if you can use less then 10 characters
+#. */
+#: ../js/ui/calendar.js:1182
+msgctxt "event list time"
+msgid "All Day"
+msgstr "Толық күн"
+
+#: ../js/ui/calendar.js:1288
 msgid "Clear section"
 msgstr "Санатты тазарту"
 
-#: ../js/ui/calendar.js:1459
+#: ../js/ui/calendar.js:1515
 msgid "Events"
 msgstr "Оқиғалар"
 
-#: ../js/ui/calendar.js:1467
+#: ../js/ui/calendar.js:1524
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %B %d"
 
-#: ../js/ui/calendar.js:1471
+#: ../js/ui/calendar.js:1528
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %B %d, %Y"
 
-#: ../js/ui/calendar.js:1563
+#: ../js/ui/calendar.js:1613
 msgid "Notifications"
 msgstr "Хабарламалар"
 
-#: ../js/ui/calendar.js:1714
+#: ../js/ui/calendar.js:1764
 msgid "No Notifications"
 msgstr "Хабарламалар жоқ"
 
-#: ../js/ui/calendar.js:1717
+#: ../js/ui/calendar.js:1767
 msgid "No Events"
 msgstr "Оқиғалар жоқ"
 
@@ -613,40 +613,42 @@ msgstr "Пароль:"
 msgid "Type again:"
 msgstr "Қайтадан енгізіңіз:"
 
-#: ../js/ui/components/networkAgent.js:138 ../js/ui/status/network.js:277
+#: ../js/ui/components/networkAgent.js:140 ../js/ui/status/network.js:277
 #: ../js/ui/status/network.js:359 ../js/ui/status/network.js:919
 msgid "Connect"
 msgstr "Байланысу"
 
-#: ../js/ui/components/networkAgent.js:231
-#: ../js/ui/components/networkAgent.js:243
-#: ../js/ui/components/networkAgent.js:271
-#: ../js/ui/components/networkAgent.js:291
-#: ../js/ui/components/networkAgent.js:301
+#: ../js/ui/components/networkAgent.js:233
+#: ../js/ui/components/networkAgent.js:245
+#: ../js/ui/components/networkAgent.js:273
+#: ../js/ui/components/networkAgent.js:293
+#: ../js/ui/components/networkAgent.js:303
 msgid "Password: "
 msgstr "Пароль:"
 
-#: ../js/ui/components/networkAgent.js:236
+#: ../js/ui/components/networkAgent.js:238
 msgid "Key: "
 msgstr "Кілт:"
 
-#: ../js/ui/components/networkAgent.js:275
+#: ../js/ui/components/networkAgent.js:277
 msgid "Identity: "
 msgstr "Анықтағыш:"
 
-#: ../js/ui/components/networkAgent.js:277
+#: ../js/ui/components/networkAgent.js:279
 msgid "Private key password: "
 msgstr "Жеке кілт паролі:"
 
-#: ../js/ui/components/networkAgent.js:289
+#: ../js/ui/components/networkAgent.js:291
 msgid "Service: "
 msgstr "Қызмет:"
 
-#: ../js/ui/components/networkAgent.js:318
+#: ../js/ui/components/networkAgent.js:320
+#: ../js/ui/components/networkAgent.js:658
 msgid "Authentication required by wireless network"
 msgstr "Сымсыз желісі аутентификацияны талап етеді"
 
-#: ../js/ui/components/networkAgent.js:319
+#: ../js/ui/components/networkAgent.js:321
+#: ../js/ui/components/networkAgent.js:659
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -654,38 +656,50 @@ msgid ""
 msgstr ""
 "\"%s\" сымсыз желісіне қатынау үшін парольдер не шифрлеу кілттері керек."
 
-#: ../js/ui/components/networkAgent.js:323
+#: ../js/ui/components/networkAgent.js:325
+#: ../js/ui/components/networkAgent.js:662
 msgid "Wired 802.1X authentication"
 msgstr "Сымды 802.1X аутентификациясы"
 
-#: ../js/ui/components/networkAgent.js:325
+#: ../js/ui/components/networkAgent.js:327
 msgid "Network name: "
 msgstr "Желі аты:"
 
-#: ../js/ui/components/networkAgent.js:330
+#: ../js/ui/components/networkAgent.js:332
+#: ../js/ui/components/networkAgent.js:666
 msgid "DSL authentication"
 msgstr "DSL аутентификациясы"
 
-#: ../js/ui/components/networkAgent.js:337
+#: ../js/ui/components/networkAgent.js:339
+#: ../js/ui/components/networkAgent.js:672
 msgid "PIN code required"
 msgstr "PIN коды керек"
 
-#: ../js/ui/components/networkAgent.js:338
+#: ../js/ui/components/networkAgent.js:340
+#: ../js/ui/components/networkAgent.js:673
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "Сымсыз кеңжолақты құрылғы үшін PIN коды керек"
 
-#: ../js/ui/components/networkAgent.js:339
+#: ../js/ui/components/networkAgent.js:341
 msgid "PIN: "
 msgstr "PIN: "
 
-#: ../js/ui/components/networkAgent.js:345
+#: ../js/ui/components/networkAgent.js:348
+#: ../js/ui/components/networkAgent.js:679
 msgid "Mobile broadband network password"
 msgstr "Сымсыз кеңжолақты желісінің паролі"
 
-#: ../js/ui/components/networkAgent.js:346
+#: ../js/ui/components/networkAgent.js:349
+#: ../js/ui/components/networkAgent.js:663
+#: ../js/ui/components/networkAgent.js:667
+#: ../js/ui/components/networkAgent.js:680
 #, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "\"%s\" үшін байланысты орнату үшін пароль керек."
+
+#: ../js/ui/components/networkAgent.js:647 ../js/ui/status/network.js:1657
+msgid "Network Manager"
+msgstr "Желілер басқарушысы"
 
 #: ../js/ui/components/polkitAgent.js:54
 msgid "Authentication Required"
@@ -709,7 +723,7 @@ msgstr "Кешіріңіз, талап сәтсіз. Қайтадан көрің
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name. */
-#: ../js/ui/components/telepathyClient.js:772
+#: ../js/ui/components/telepathyClient.js:775
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s енді %s ретінде белгілі"
@@ -718,11 +732,11 @@ msgstr "%s енді %s ретінде белгілі"
 msgid "Windows"
 msgstr "Терезелер"
 
-#: ../js/ui/dash.js:250 ../js/ui/dash.js:291
+#: ../js/ui/dash.js:252 ../js/ui/dash.js:293
 msgid "Show Applications"
 msgstr "Қолданбаларды көрсету"
 
-#: ../js/ui/dash.js:451
+#: ../js/ui/dash.js:453
 msgid "Dash"
 msgstr "Dash"
 
@@ -883,9 +897,18 @@ msgstr "Орнату"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "extensions.gnome.org адресінен “%s” жүктеп алып, орнату керек пе?"
 
-#: ../js/ui/keyboard.js:706 ../js/ui/status/keyboard.js:576
+#: ../js/ui/keyboard.js:706 ../js/ui/status/keyboard.js:580
 msgid "Keyboard"
 msgstr "Пернетақта"
+
+#. translators: 'Hide' is a verb */
+#: ../js/ui/legacyTray.js:59
+msgid "Hide tray"
+msgstr "Жүйелік трейді жасыру"
+
+#: ../js/ui/legacyTray.js:91
+msgid "Status Icons"
+msgstr "Қалып-күй таңбашалары"
 
 #: ../js/ui/lookingGlass.js:643
 msgid "No extensions installed"
@@ -939,7 +962,7 @@ msgstr "Бастапқы кодын қарау"
 msgid "Web Page"
 msgstr "Веб парағы"
 
-#: ../js/ui/messageTray.js:2131
+#: ../js/ui/messageTray.js:2133
 msgid "System Information"
 msgstr "Жүйелік ақпарат"
 
@@ -973,7 +996,7 @@ msgstr "Көрініс"
 msgid "Top Bar"
 msgstr "Үстідегі панель"
 
-#: ../js/ui/popupMenu.js:288
+#: ../js/ui/popupMenu.js:289
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -1023,11 +1046,11 @@ msgstr "Блоктау мүмкін емес"
 msgid "Lock was blocked by an application"
 msgstr "Блоктауды басқа қолданба болдырмады"
 
-#: ../js/ui/search.js:609
+#: ../js/ui/search.js:616
 msgid "Searching…"
 msgstr "Іздеу..."
 
-#: ../js/ui/search.js:611
+#: ../js/ui/search.js:618
 msgid "No results."
 msgstr "Нәтижелер жоқ."
 
@@ -1128,7 +1151,7 @@ msgstr "Байланыспаған"
 msgid "Brightness"
 msgstr "Жарықтылығы"
 
-#: ../js/ui/status/keyboard.js:599
+#: ../js/ui/status/keyboard.js:603
 msgid "Show Keyboard Layout"
 msgstr "Пернетақта жаймасын көрсету"
 
@@ -1296,10 +1319,6 @@ msgstr "VPN баптаулары"
 #: ../js/ui/status/network.js:1502
 msgid "VPN"
 msgstr "VPN"
-
-#: ../js/ui/status/network.js:1657
-msgid "Network Manager"
-msgstr "Желілер басқарушысы"
 
 #: ../js/ui/status/network.js:1697
 msgid "Activation of network connection failed"
@@ -1494,7 +1513,7 @@ msgstr "Баспа нұсқасы"
 
 #: ../src/main.c:379
 msgid "Mode used by GDM for login screen"
-msgstr "Жүйеге кіру экраны үшін GDM қолданатын режимі"
+msgstr "GDM жүйеге кіру экраны үшін қолданатын режимі"
 
 #: ../src/main.c:385
 msgid "Use a specific mode, e.g. \"gdm\" for login screen"
