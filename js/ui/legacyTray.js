@@ -1,5 +1,6 @@
 const Clutter = imports.gi.Clutter;
 const GObject = imports.gi.GObject;
+const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 
@@ -30,6 +31,9 @@ const STANDARD_TRAY_ICON_IMPLEMENTATIONS = {
 const CONCEALED_VISIBLE_FRACTION = 0.2;
 const REVEAL_ANIMATION_TIME = 0.2;
 
+const BARRIER_THRESHOLD = 70;
+const BARRIER_TIMEOUT = 1000;
+
 const LegacyTray = new Lang.Class({
     Name: 'LegacyTray',
 
@@ -50,6 +54,7 @@ const LegacyTray = new Lang.Class({
                                        y_align: Clutter.ActorAlign.END,
                                        layout_manager: this._slideLayout });
         this.actor.add_actor(this._slider);
+        this._slider.connect('notify::allocation', Lang.bind(this, this._syncBarrier));
 
         this._box = new St.BoxLayout();
         this._slider.add_actor(this._box);
@@ -84,6 +89,14 @@ const LegacyTray = new Lang.Class({
             function() {
                 this._revealHandle.show();
             }));
+
+        this._horizontalBarrier = null;
+        this._pressureBarrier = new Layout.PressureBarrier(BARRIER_THRESHOLD,
+                                                           BARRIER_TIMEOUT,
+                                                           Shell.ActionMode.NORMAL);
+        this._pressureBarrier.connect('trigger', Lang.bind(this, function() {
+            this._concealHandle.show();
+        }));
 
         Main.layoutManager.addChrome(this.actor, { affectsInputRegion: false });
         Main.layoutManager.trackChrome(this._slider, { affectsInputRegion: true });
@@ -153,6 +166,40 @@ const LegacyTray = new Lang.Class({
 
         icon.get_parent().destroy();
         this._sync();
+    },
+
+    _syncBarrier: function() {
+        let rtl = (this._slider.get_text_direction() == Clutter.TextDirection.RTL);
+        let [x, y] = this._slider.get_transformed_position();
+        let [w, h] = this._slider.get_transformed_size();
+
+        let x1 = Math.round(x);
+        if (rtl)
+            x1 += Math.round(w);
+
+        let x2 = x1;
+        let y1 = Math.round(y);
+        let y2 = y1 + Math.round(h);
+
+        if (this._horizontalBarrier &&
+            this._horizontalBarrier.x1 == x1 &&
+            this._horizontalBarrier.y1 == y1 &&
+            this._horizontalBarrier.x2 == x2 &&
+            this._horizontalBarrier.y2 == y2)
+            return;
+
+        if (this._horizontalBarrier) {
+            this._pressureBarrier.removeBarrier(this._horizontalBarrier);
+            this._horizontalBarrier.destroy();
+            this._horizontalBarrier = null;
+        }
+
+        let directions = (rtl ? Meta.BarrierDirection.NEGATIVE_X : Meta.BarrierDirection.POSITIVE_X);
+        this._horizontalBarrier = new Meta.Barrier({ display: global.display,
+                                                     x1: x1, x2: x2,
+                                                     y1: y1, y2: y2,
+                                                     directions: directions });
+        this._pressureBarrier.addBarrier(this._horizontalBarrier);
     },
 
     _sync: function() {
