@@ -20,8 +20,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-03-04 12:55+0000\n"
-"PO-Revision-Date: 2015-03-04 15:31-0300\n"
+"POT-Creation-Date: 2015-03-13 16:16+0000\n"
+"PO-Revision-Date: 2015-03-13 14:04-0300\n"
 "Last-Translator: Enrico Nicoletto <liverig@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
@@ -287,7 +287,7 @@ msgstr "Ocorreu um erro ao carregar o dialogo de preferências para %s:"
 msgid "GNOME Shell Extensions"
 msgstr "Extensões do Shell do GNOME"
 
-#: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:143 ../js/ui/components/polkitAgent.js:166
+#: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:145 ../js/ui/components/polkitAgent.js:166
 #: ../js/ui/endSessionDialog.js:452 ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
 #: ../js/ui/status/network.js:916
 msgid "Cancel"
@@ -306,24 +306,24 @@ msgctxt "button"
 msgid "Sign In"
 msgstr "Entrar"
 
-#: ../js/gdm/loginDialog.js:276
+#: ../js/gdm/loginDialog.js:280
 msgid "Choose Session"
 msgstr "Escolher sessão"
 
-#: ../js/gdm/loginDialog.js:417
+#: ../js/gdm/loginDialog.js:421
 msgid "Not listed?"
 msgstr "Não está listado?"
 
-#: ../js/gdm/loginDialog.js:826
+#: ../js/gdm/loginDialog.js:830
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(ex.: usuário ou %s)"
 
-#: ../js/gdm/loginDialog.js:831 ../js/ui/components/networkAgent.js:269 ../js/ui/components/networkAgent.js:287
+#: ../js/gdm/loginDialog.js:835 ../js/ui/components/networkAgent.js:271 ../js/ui/components/networkAgent.js:289
 msgid "Username: "
 msgstr "Nome de usuário: "
 
-#: ../js/gdm/loginDialog.js:1166
+#: ../js/gdm/loginDialog.js:1170
 msgid "Login Window"
 msgstr "Janela de sessão"
 
@@ -416,31 +416,31 @@ msgstr "%d de %B de %Y, %l∶%M %p"
 msgid "Web Authentication Redirect"
 msgstr "Redirecionamento para autenticação web"
 
-#: ../js/ui/appDisplay.js:791
+#: ../js/ui/appDisplay.js:792
 msgid "Frequently used applications will appear here"
 msgstr "Aplicativos usados frequentemente vão aparecer aqui"
 
-#: ../js/ui/appDisplay.js:911
+#: ../js/ui/appDisplay.js:912
 msgid "Frequent"
 msgstr "Frequente"
 
-#: ../js/ui/appDisplay.js:918
+#: ../js/ui/appDisplay.js:919
 msgid "All"
 msgstr "Todos"
 
-#: ../js/ui/appDisplay.js:1849
+#: ../js/ui/appDisplay.js:1850
 msgid "New Window"
 msgstr "Nova janela"
 
-#: ../js/ui/appDisplay.js:1877 ../js/ui/dash.js:289
+#: ../js/ui/appDisplay.js:1878 ../js/ui/dash.js:291
 msgid "Remove from Favorites"
 msgstr "Remover dos favoritos"
 
-#: ../js/ui/appDisplay.js:1883
+#: ../js/ui/appDisplay.js:1884
 msgid "Add to Favorites"
 msgstr "Adicionar aos favoritos"
 
-#: ../js/ui/appDisplay.js:1893
+#: ../js/ui/appDisplay.js:1894
 msgid "Show Details"
 msgstr "Mostrar detalhes"
 
@@ -454,7 +454,7 @@ msgstr "%s foi adicionado aos seus favoritos."
 msgid "%s has been removed from your favorites."
 msgstr "%s foi removido dos seus favoritos."
 
-#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:649 ../js/ui/status/system.js:337
+#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:650 ../js/ui/status/system.js:337
 msgid "Settings"
 msgstr "Configurações"
 
@@ -463,104 +463,104 @@ msgid "Change Background…"
 msgstr "Alterar plano de fundo…"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday). */
-#: ../js/ui/calendar.js:49
+#: ../js/ui/calendar.js:53
 msgctxt "calendar-no-work"
 msgid "06"
 msgstr "06"
-
-#. Translators: Shown in calendar event list for all day events
-#. * Keep it short, best if you can use less then 10 characters
-#. */
-#: ../js/ui/calendar.js:78
-msgctxt "event list time"
-msgid "All Day"
-msgstr "Dia todo"
 
 #. Translators: Calendar grid abbreviation for Sunday.
 #. *
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #. */
-#: ../js/ui/calendar.js:93
+#: ../js/ui/calendar.js:82
 msgctxt "grid sunday"
 msgid "S"
 msgstr "D"
 
 #. Translators: Calendar grid abbreviation for Monday */
-#: ../js/ui/calendar.js:95
+#: ../js/ui/calendar.js:84
 msgctxt "grid monday"
 msgid "M"
 msgstr "S"
 
 #. Translators: Calendar grid abbreviation for Tuesday */
-#: ../js/ui/calendar.js:97
+#: ../js/ui/calendar.js:86
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "T"
 
 #. Translators: Calendar grid abbreviation for Wednesday */
-#: ../js/ui/calendar.js:99
+#: ../js/ui/calendar.js:88
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "Q"
 
 #. Translators: Calendar grid abbreviation for Thursday */
-#: ../js/ui/calendar.js:101
+#: ../js/ui/calendar.js:90
 msgctxt "grid thursday"
 msgid "T"
 msgstr "Q"
 
 #. Translators: Calendar grid abbreviation for Friday */
-#: ../js/ui/calendar.js:103
+#: ../js/ui/calendar.js:92
 msgctxt "grid friday"
 msgid "F"
 msgstr "S"
 
 #. Translators: Calendar grid abbreviation for Saturday */
-#: ../js/ui/calendar.js:105
+#: ../js/ui/calendar.js:94
 msgctxt "grid saturday"
 msgid "S"
 msgstr "S"
 
-#: ../js/ui/calendar.js:572
+#: ../js/ui/calendar.js:563
 msgid "Previous month"
 msgstr "Mês anterior"
 
-#: ../js/ui/calendar.js:582
+#: ../js/ui/calendar.js:573
 msgid "Next month"
 msgstr "Próximo mês"
 
-#: ../js/ui/calendar.js:789
+#: ../js/ui/calendar.js:780
 msgid "Week %V"
 msgstr "Semana %V"
 
-#: ../js/ui/calendar.js:1245
+#. Translators: Shown in calendar event list for all day events
+#. * Keep it short, best if you can use less then 10 characters
+#. */
+#: ../js/ui/calendar.js:1182
+msgctxt "event list time"
+msgid "All Day"
+msgstr "Dia todo"
+
+#: ../js/ui/calendar.js:1288
 msgid "Clear section"
 msgstr "Limpar seção"
 
-#: ../js/ui/calendar.js:1437
+#: ../js/ui/calendar.js:1515
 msgid "Events"
 msgstr "Eventos"
 
-#: ../js/ui/calendar.js:1445
+#: ../js/ui/calendar.js:1524
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d de %B"
 
-#: ../js/ui/calendar.js:1449
+#: ../js/ui/calendar.js:1528
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d de %B de %Y"
 
-#: ../js/ui/calendar.js:1541
+#: ../js/ui/calendar.js:1613
 msgid "Notifications"
 msgstr "Notificações"
 
-#: ../js/ui/calendar.js:1681
+#: ../js/ui/calendar.js:1764
 msgid "No Notifications"
 msgstr "Nenhuma notificação"
 
-#: ../js/ui/calendar.js:1684
+#: ../js/ui/calendar.js:1767
 msgid "No Events"
 msgstr "Nenhum evento"
 
@@ -585,73 +585,78 @@ msgstr "Senha:"
 msgid "Type again:"
 msgstr "Digite novamente:"
 
-#: ../js/ui/components/networkAgent.js:138 ../js/ui/status/network.js:277 ../js/ui/status/network.js:359
+#: ../js/ui/components/networkAgent.js:140 ../js/ui/status/network.js:277 ../js/ui/status/network.js:359
 #: ../js/ui/status/network.js:919
 msgid "Connect"
 msgstr "Conectar"
 
-#: ../js/ui/components/networkAgent.js:231 ../js/ui/components/networkAgent.js:243 ../js/ui/components/networkAgent.js:271
-#: ../js/ui/components/networkAgent.js:291 ../js/ui/components/networkAgent.js:301
+#: ../js/ui/components/networkAgent.js:233 ../js/ui/components/networkAgent.js:245 ../js/ui/components/networkAgent.js:273
+#: ../js/ui/components/networkAgent.js:293 ../js/ui/components/networkAgent.js:303
 msgid "Password: "
 msgstr "Senha: "
 
-#: ../js/ui/components/networkAgent.js:236
+#: ../js/ui/components/networkAgent.js:238
 msgid "Key: "
 msgstr "Chave: "
 
-#: ../js/ui/components/networkAgent.js:275
+#: ../js/ui/components/networkAgent.js:277
 msgid "Identity: "
 msgstr "Identidade: "
 
-#: ../js/ui/components/networkAgent.js:277
+#: ../js/ui/components/networkAgent.js:279
 msgid "Private key password: "
 msgstr "Senha da chave privada: "
 
-#: ../js/ui/components/networkAgent.js:289
+#: ../js/ui/components/networkAgent.js:291
 msgid "Service: "
 msgstr "Serviço: "
 
-#: ../js/ui/components/networkAgent.js:318
+#: ../js/ui/components/networkAgent.js:320 ../js/ui/components/networkAgent.js:658
 msgid "Authentication required by wireless network"
 msgstr "Autenticação requisitada pela rede sem fio"
 
-#: ../js/ui/components/networkAgent.js:319
+#: ../js/ui/components/networkAgent.js:321 ../js/ui/components/networkAgent.js:659
 #, javascript-format
 msgid "Passwords or encryption keys are required to access the wireless network “%s”."
 msgstr "Senhas ou chaves criptografadas são necessárias para acessar a rede sem fio \"%s\"."
 
-#: ../js/ui/components/networkAgent.js:323
+#: ../js/ui/components/networkAgent.js:325 ../js/ui/components/networkAgent.js:662
 msgid "Wired 802.1X authentication"
 msgstr "Autenticação 802.1X cabeada"
 
-#: ../js/ui/components/networkAgent.js:325
+#: ../js/ui/components/networkAgent.js:327
 msgid "Network name: "
 msgstr "Nome da rede: "
 
-#: ../js/ui/components/networkAgent.js:330
+#: ../js/ui/components/networkAgent.js:332 ../js/ui/components/networkAgent.js:666
 msgid "DSL authentication"
 msgstr "Autenticação DSL"
 
-#: ../js/ui/components/networkAgent.js:337
+#: ../js/ui/components/networkAgent.js:339 ../js/ui/components/networkAgent.js:672
 msgid "PIN code required"
 msgstr "Código PIN requisitado"
 
-#: ../js/ui/components/networkAgent.js:338
+#: ../js/ui/components/networkAgent.js:340 ../js/ui/components/networkAgent.js:673
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "O código PIN é necessário para o dispositivo móvel de banda larga"
 
-#: ../js/ui/components/networkAgent.js:339
+#: ../js/ui/components/networkAgent.js:341
 msgid "PIN: "
 msgstr "PIN: "
 
-#: ../js/ui/components/networkAgent.js:345
+#: ../js/ui/components/networkAgent.js:348 ../js/ui/components/networkAgent.js:679
 msgid "Mobile broadband network password"
 msgstr "Senha da rede de banda larga móvel"
 
-#: ../js/ui/components/networkAgent.js:346
+#: ../js/ui/components/networkAgent.js:349 ../js/ui/components/networkAgent.js:663 ../js/ui/components/networkAgent.js:667
+#: ../js/ui/components/networkAgent.js:680
 #, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "Uma senha é necessária para se conectar a \"%s\""
+
+#: ../js/ui/components/networkAgent.js:647 ../js/ui/status/network.js:1657
+msgid "Network Manager"
+msgstr "Gerenciador de rede"
 
 #: ../js/ui/components/polkitAgent.js:54
 msgid "Authentication Required"
@@ -675,7 +680,7 @@ msgstr "Desculpe, isto não funcionou. Por favor, tente novamente."
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name. */
-#: ../js/ui/components/telepathyClient.js:772
+#: ../js/ui/components/telepathyClient.js:775
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s agora é conhecido como %s"
@@ -684,11 +689,11 @@ msgstr "%s agora é conhecido como %s"
 msgid "Windows"
 msgstr "Janelas"
 
-#: ../js/ui/dash.js:250 ../js/ui/dash.js:291
+#: ../js/ui/dash.js:252 ../js/ui/dash.js:293
 msgid "Show Applications"
 msgstr "Mostrar aplicativos"
 
-#: ../js/ui/dash.js:451
+#: ../js/ui/dash.js:453
 msgid "Dash"
 msgstr "Dash"
 
@@ -849,9 +854,18 @@ msgstr "Instalar"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Baixar e instalar \"%s\" de extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:706 ../js/ui/status/keyboard.js:576
+#: ../js/ui/keyboard.js:706 ../js/ui/status/keyboard.js:580
 msgid "Keyboard"
 msgstr "Teclado"
+
+#. translators: 'Hide' is a verb */
+#: ../js/ui/legacyTray.js:59
+msgid "Hide tray"
+msgstr "Esconder bandeja"
+
+#: ../js/ui/legacyTray.js:91
+msgid "Status Icons"
+msgstr "Ícones de status"
 
 #: ../js/ui/lookingGlass.js:643
 msgid "No extensions installed"
@@ -904,7 +918,7 @@ msgstr "Ver fonte"
 msgid "Web Page"
 msgstr "Página web"
 
-#: ../js/ui/messageTray.js:2131
+#: ../js/ui/messageTray.js:2133
 msgid "System Information"
 msgstr "Informações do sistema"
 
@@ -924,21 +938,21 @@ msgstr "Panorama"
 msgid "Type to search…"
 msgstr "Digite para pesquisar…"
 
-#: ../js/ui/panel.js:351
+#: ../js/ui/panel.js:352
 msgid "Quit"
 msgstr "Sair"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview". */
-#: ../js/ui/panel.js:403
+#: ../js/ui/panel.js:404
 msgid "Activities"
 msgstr "Atividades"
 
-#: ../js/ui/panel.js:754
+#: ../js/ui/panel.js:755
 msgid "Top Bar"
 msgstr "Barra superior"
 
-#: ../js/ui/popupMenu.js:288
+#: ../js/ui/popupMenu.js:289
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -990,11 +1004,11 @@ msgstr "Não foi possível bloquear"
 msgid "Lock was blocked by an application"
 msgstr "O bloqueio foi impedido por um aplicativo"
 
-#: ../js/ui/search.js:609
+#: ../js/ui/search.js:616
 msgid "Searching…"
 msgstr "Pesquisando…"
 
-#: ../js/ui/search.js:611
+#: ../js/ui/search.js:618
 msgid "No results."
 msgstr "Nenhum resultado."
 
@@ -1095,7 +1109,7 @@ msgstr "Não conectado"
 msgid "Brightness"
 msgstr "Brilho"
 
-#: ../js/ui/status/keyboard.js:599
+#: ../js/ui/status/keyboard.js:603
 msgid "Show Keyboard Layout"
 msgstr "Exibir disposição de teclado"
 
@@ -1263,10 +1277,6 @@ msgstr "Configurações de VPN"
 #: ../js/ui/status/network.js:1502
 msgid "VPN"
 msgstr "VPN"
-
-#: ../js/ui/status/network.js:1657
-msgid "Network Manager"
-msgstr "Gerenciador de rede"
 
 #: ../js/ui/status/network.js:1697
 msgid "Activation of network connection failed"
