@@ -216,18 +216,10 @@ shell_app_create_icon_texture (ShellApp   *app,
 
   ret = st_icon_new ();
   st_icon_set_icon_size (ST_ICON (ret), size);
+  st_icon_set_fallback_icon_name (ST_ICON (ret), "application-x-executable");
 
   icon = g_app_info_get_icon (G_APP_INFO (app->info));
-  if (icon != NULL)
-    {
-      st_icon_set_gicon (ST_ICON (ret), icon);
-    }
-  else
-    {
-      icon = g_themed_icon_new ("application-x-executable");
-      st_icon_set_gicon (ST_ICON (ret), icon);
-      g_object_unref (icon);
-    }
+  st_icon_set_gicon (ST_ICON (ret), icon);
 
   return ret;
 }
