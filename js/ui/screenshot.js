@@ -283,8 +283,8 @@ const SelectArea = new Lang.Class({
     _getGeometry: function() {
         return { x: Math.min(this._startX, this._lastX),
                  y: Math.min(this._startY, this._lastY),
-                 width: Math.abs(this._startX - this._lastX),
-                 height: Math.abs(this._startY - this._lastY) };
+                 width: Math.abs(this._startX - this._lastX) + 1,
+                 height: Math.abs(this._startY - this._lastY) + 1 };
     },
 
     _onMotionEvent: function(actor, event) {
