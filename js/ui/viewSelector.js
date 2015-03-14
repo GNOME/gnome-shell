@@ -214,10 +214,13 @@ const ViewSelector = new Lang.Class({
                               Shell.ActionMode.OVERVIEW,
                               Lang.bind(Main.overview, Main.overview.toggle));
 
-        let gesture;
-
-        gesture = new EdgeDragAction.EdgeDragAction(St.Side.LEFT,
-                                                    Shell.ActionMode.NORMAL);
+        let side;
+        if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL)
+            side = St.Side.RIGHT;
+        else
+            side = St.Side.LEFT;
+        let gesture = new EdgeDragAction.EdgeDragAction(side,
+                                                        Shell.ActionMode.NORMAL);
         gesture.connect('activated', Lang.bind(this, function() {
             if (Main.overview.visible)
                 Main.overview.hide();
