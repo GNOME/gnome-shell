@@ -92,10 +92,10 @@ clutter_rectangle_paint (ClutterActor *self)
                                               : "unknown");
   clutter_actor_get_allocation_geometry (self, &geom);
 
-  /* parent paint call will have translated us into position so
-   * paint from 0, 0
-   */
-  if (priv->has_border)
+  /* We paint the border if the rectangle is big enough to show it */
+  if (priv->has_border &&
+      priv->border_width < geom.width &&
+      priv->border_width < geom.height)
     {
       /* compute the composited opacity of the actor taking into
        * account the opacity of the color set by the user
@@ -151,10 +151,24 @@ clutter_rectangle_paint (ClutterActor *self)
                 * priv->color.alpha
                 / 255;
 
-      cogl_set_source_color4ub (priv->color.red,
-                                priv->color.green,
-                                priv->color.blue,
-                                tmp_alpha);
+      if (priv->border_width < geom.width &&
+          priv->border_width < geom.height)
+        {
+          cogl_set_source_color4ub (priv->color.red,
+                                    priv->color.green,
+                                    priv->color.blue,
+                                    tmp_alpha);
+        }
+      else
+        {
+          /* If the rectangle is as big as the border, we
+           * use the border color to draw
+           */
+          cogl_set_source_color4ub (priv->border_color.red,
+                                    priv->border_color.green,
+                                    priv->border_color.blue,
+                                    tmp_alpha);
+        }
 
       cogl_rectangle (0, 0, geom.width, geom.height);
     }
