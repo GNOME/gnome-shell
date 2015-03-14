@@ -94,6 +94,9 @@ void         st_icon_set_icon_size (StIcon *icon, gint size);
 void         st_icon_set_gicon (StIcon *icon, GIcon *gicon);
 GIcon       *st_icon_get_gicon (StIcon *icon);
 
+void         st_icon_set_fallback_icon_name (StIcon *icon, const gchar *icon_name);
+const gchar *st_icon_get_fallback_icon_name (StIcon *icon);
+
 G_END_DECLS
 
 #endif /* _ST_ICON */

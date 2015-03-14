@@ -38,7 +38,8 @@ enum
 
   PROP_GICON,
   PROP_ICON_NAME,
-  PROP_ICON_SIZE
+  PROP_ICON_SIZE,
+  PROP_FALLBACK_ICON_NAME
 };
 
 G_DEFINE_TYPE (StIcon, st_icon, ST_TYPE_WIDGET)
@@ -56,6 +57,7 @@ struct _StIconPrivate
   gint          prop_icon_size;  /* icon size set as property */
   gint          theme_icon_size; /* icon size from theme node */
   gint          icon_size;       /* icon size we are using */
+  GIcon        *fallback_gicon;
 
   CoglPipeline *shadow_pipeline;
   float         shadow_width;
@@ -90,6 +92,10 @@ st_icon_set_property (GObject      *gobject,
       st_icon_set_icon_size (icon, g_value_get_int (value));
       break;
 
+    case PROP_FALLBACK_ICON_NAME:
+      st_icon_set_fallback_icon_name (icon, g_value_get_string (value));
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
@@ -118,6 +124,10 @@ st_icon_get_property (GObject    *gobject,
       g_value_set_int (value, st_icon_get_icon_size (icon));
       break;
 
+    case PROP_FALLBACK_ICON_NAME:
+      g_value_set_string (value, st_icon_get_fallback_icon_name (icon));
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
@@ -143,6 +153,7 @@ st_icon_dispose (GObject *gobject)
     }
 
   g_clear_object (&priv->gicon);
+  g_clear_object (&priv->fallback_gicon);
   g_clear_pointer (&priv->shadow_pipeline, cogl_object_unref);
   g_clear_pointer (&priv->shadow_spec, st_shadow_unref);
 
@@ -238,6 +249,12 @@ st_icon_class_init (StIconClass *klass)
                             -1, G_MAXINT, -1,
                             ST_PARAM_READWRITE);
   g_object_class_install_property (object_class, PROP_ICON_SIZE, pspec);
+
+  pspec = g_param_spec_string ("fallback-icon-name",
+                               "Fallback icon name",
+                               "A fallback icon name",
+                               NULL, ST_PARAM_READWRITE);
+  g_object_class_install_property (object_class, PROP_FALLBACK_ICON_NAME, pspec);
 }
 
 static void
@@ -357,14 +374,20 @@ st_icon_update (StIcon *icon)
   g_object_get (context, "scale-factor", &scale, NULL);
 
   cache = st_texture_cache_get_default ();
-  if (priv->gicon)
-    {
-      priv->pending_texture = st_texture_cache_load_gicon (cache,
-                                                           theme_node,
-                                                           priv->gicon,
-                                                           priv->icon_size,
-                                                           scale);
-    }
+
+  if (priv->gicon != NULL)
+    priv->pending_texture = st_texture_cache_load_gicon (cache,
+                                                         theme_node,
+                                                         priv->gicon,
+                                                         priv->icon_size,
+                                                         scale);
+
+  if (priv->pending_texture == NULL && priv->fallback_gicon != NULL)
+    priv->pending_texture = st_texture_cache_load_gicon (cache,
+                                                         theme_node,
+                                                         priv->fallback_gicon,
+                                                         priv->icon_size,
+                                                         scale);
 
   if (priv->pending_texture)
     {
@@ -568,4 +591,48 @@ st_icon_set_icon_size (StIcon *icon,
         st_icon_update (icon);
       g_object_notify (G_OBJECT (icon), "icon-size");
     }
+}
+
+const gchar *
+st_icon_get_fallback_icon_name (StIcon *icon)
+{
+  StIconPrivate *priv;
+
+  g_return_val_if_fail (ST_IS_ICON (icon), NULL);
+
+  priv = icon->priv;
+
+  if (priv->fallback_gicon && G_IS_THEMED_ICON (priv->fallback_gicon))
+    return g_themed_icon_get_names (G_THEMED_ICON (priv->fallback_gicon)) [0];
+  else
+    return NULL;
+}
+
+void
+st_icon_set_fallback_icon_name (StIcon      *icon,
+                                const gchar *fallback_icon_name)
+{
+  StIconPrivate *priv = icon->priv;
+  GIcon *gicon = NULL;
+
+  g_return_if_fail (ST_IS_ICON (icon));
+
+  if (fallback_icon_name != NULL)
+    gicon = g_themed_icon_new_with_default_fallbacks (fallback_icon_name);
+
+  if (g_icon_equal (priv->fallback_gicon, gicon)) /* do nothing */
+    {
+      if (gicon)
+        g_object_unref (gicon);
+      return;
+    }
+
+  if (priv->fallback_gicon)
+    g_object_unref (priv->fallback_gicon);
+
+  priv->fallback_gicon = gicon;
+
+  g_object_notify (G_OBJECT (icon), "fallback-icon-name");
+
+  st_icon_update (icon);
 }
