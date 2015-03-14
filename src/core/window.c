@@ -71,9 +71,10 @@
 
 static int destroying_windows_disallowed = 0;
 
-// Each window has a "stamp" which is a non-recycled 64-bit ID. They
-// start after the end of the XID space so that, for stacking
-// we can keep a guint64 that represents one or the other
+/* Each window has a "stamp" which is a non-recycled 64-bit ID. They
+ * start after the end of the XID space so that, for stacking
+ * we can keep a guint64 that represents one or the other
+ */
 static guint64 next_window_stamp = G_GUINT64_CONSTANT(0x100000000);
 
 static void     invalidate_work_areas     (MetaWindow     *window);
