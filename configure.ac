@@ -428,8 +428,6 @@ AS_IF([test "x$enable_egl" = "xyes"],
       [
         CLUTTER_BACKENDS="$CLUTTER_BACKENDS egl"
 
-        experimental_backend="yes"
-
         SUPPORT_EGL=1
         SUPPORT_COGL=1
 
