@@ -1,3 +1,30 @@
+Clutter 1.21.8                                                       2015-03-15
+===============================================================================
+
+  • List of changes since Clutter 1.21.6
+
+    - Documentation updates
+    The messages for most of the deprecated API list the intended replacement
+    classes or approaches to be used when porting code.
+
+    - Update the MSVC build files
+
+    - Improve damage tracking on ClutterStage
+    This should improve performance, especially when paired with the
+    buffer_age extension.
+
+    - Updated translations
+    Greek, Polish, Ukrainian, Italian, Slovak, Latvian, Bosnian.
+
+  • List of bugs fixed since Clutter 1.21.6
+
+    #745512 - Improve damage tracking and use swap_buffers_with_damage
+
+Many thanks to:
+
+  Chun-wei Fan, Chris Wilson, Daniel Korostil, Dušan Kazik, Milo Casagrande,
+  Piotr Drąg, Rūdolfs Mazurs, Samir Ribic, Tom Tryfonidis.
+
 Clutter 1.21.6                                                       2015-03-03
 ===============================================================================
 
