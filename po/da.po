@@ -1,10 +1,10 @@
 # Danish translation of gnome-shell
-# Copyright (C) 2010-2011, 2014 gnome-shell
+# Copyright (C) 2010-2011, 2014-2015 gnome-shell
 # This file is distributed under the same license as the gnome-shell package.
 #
 # Kenneth Nielsen <k.nielsen81@gmail.com>, 2012.
 # Kris Thomsen <mail@kristhomsen.dk>, 2009-2014.
-# Ask Hjorth Larsen <asklarsen@gmail.com>, 2014.
+# Ask Hjorth Larsen <asklarsen@gmail.com>, 2014, 2015.
 #
 # Konventioner:
 #
@@ -20,8 +20,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-20 09:40+0200\n"
-"PO-Revision-Date: 2014-09-20 09:37+0200\n"
+"POT-Creation-Date: 2015-03-15 16:59+0100\n"
+"PO-Revision-Date: 2015-03-14 02:24+0100\n"
 "Last-Translator: Kris Thomsen <mail@kristhomsen.dk>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "Language: da\n"
@@ -35,8 +35,8 @@ msgid "System"
 msgstr "System"
 
 #: ../data/50-gnome-shell-system.xml.in.h:2
-msgid "Show the message tray"
-msgstr "Vis besked-statusfeltet"
+msgid "Show the notification list"
+msgstr "Vis påmindelseslisten"
 
 #: ../data/50-gnome-shell-system.xml.in.h:3
 msgid "Focus the active notification"
@@ -214,14 +214,12 @@ msgid "Keybinding to open the Activities Overview."
 msgstr "Genvejstast til at åbne Aktivitetsoverblikket."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:25
-msgid "Keybinding to toggle the visibility of the message tray"
-msgstr ""
-"Genvejstast til at slå synligheden af besked-statusfeltet til eller fra"
+msgid "Keybinding to toggle the visibility of the notification list"
+msgstr "Genvejstast til at slå synligheden af påmindelseslisten til eller fra"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:26
-msgid "Keybinding to toggle the visibility of the message tray."
-msgstr ""
-"Genvejstast til at slå synligheden af besked-statusfeltet til eller fra."
+msgid "Keybinding to toggle the visibility of the notification list."
+msgstr "Genvejstast til at slå synligheden af påmindelseslisten til eller fra."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:27
 msgid "Keybinding to focus the active notification"
@@ -309,8 +307,8 @@ msgstr ""
 "sig"
 
 #: ../data/org.gnome.Shell.PortalHelper.desktop.in.h:1
-msgid "Captive Portal"
-msgstr "Fangeportal"
+msgid "Network Login"
+msgstr "Netværksindlogning"
 
 #: ../js/extensionPrefs/main.js:123
 #, javascript-format
@@ -321,10 +319,10 @@ msgstr "Der opstod in fejl ved indlæsning af indstillingsdialogen for %s:"
 msgid "GNOME Shell Extensions"
 msgstr "Udvidelsesmoduler til GNOME Shell"
 
-#: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:143
+#: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:145
 #: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:452
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/network.js:915
+#: ../js/ui/status/network.js:916
 msgid "Cancel"
 msgstr "Annullér"
 
@@ -342,78 +340,165 @@ msgctxt "button"
 msgid "Sign In"
 msgstr "Log ind"
 
-#: ../js/gdm/loginDialog.js:269
+#: ../js/gdm/loginDialog.js:280
 msgid "Choose Session"
 msgstr "Vælg session"
 
-#: ../js/gdm/loginDialog.js:429
+#. translators: this message is shown below the user list on the
+#. login screen. It can be activated to reveal an entry for
+#. manually entering the username.
+#: ../js/gdm/loginDialog.js:421
 msgid "Not listed?"
 msgstr "Ikke listet?"
 
-#: ../js/gdm/loginDialog.js:614
+#. Translators: this message is shown below the username entry field
+#. to clue the user in on how to login to the local network realm
+#: ../js/gdm/loginDialog.js:830
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(f.eks. bruger eller %s)"
 
-#: ../js/gdm/loginDialog.js:619 ../js/ui/components/networkAgent.js:269
-#: ../js/ui/components/networkAgent.js:287
+#. TTLS and PEAP are actually much more complicated, but this complication
+#. is not visible here since we only care about phase2 authentication
+#. (and don't even care of which one)
+#: ../js/gdm/loginDialog.js:835 ../js/ui/components/networkAgent.js:271
+#: ../js/ui/components/networkAgent.js:289
 msgid "Username: "
 msgstr "Brugernavn: "
 
-#: ../js/gdm/loginDialog.js:922
+#: ../js/gdm/loginDialog.js:1170
 msgid "Login Window"
 msgstr "Indlogningsvindue"
 
-#: ../js/gdm/util.js:323
+#: ../js/gdm/util.js:341
 msgid "Authentication error"
 msgstr "Godkendelsesfejl"
 
-#: ../js/gdm/util.js:453
+#. We don't show fingerprint messages directly since it's
+#. not the main auth service. Instead we use the messages
+#. as a cue to display our own message.
+#. Translators: this message is shown below the password entry field
+#. to indicate the user can swipe their finger instead
+#: ../js/gdm/util.js:473
 msgid "(or swipe finger)"
 msgstr "(eller indlæs fingeraftryk)"
 
-#: ../js/misc/util.js:115
+#: ../js/misc/util.js:119
 msgid "Command not found"
 msgstr "Kommando ikke fundet"
 
-#: ../js/misc/util.js:148
+#. Replace "Error invoking GLib.shell_parse_argv: " with
+#. something nicer
+#: ../js/misc/util.js:152
 msgid "Could not parse command:"
 msgstr "Kunne ikke fortolke kommando:"
 
-#: ../js/misc/util.js:156
+#: ../js/misc/util.js:160
 #, javascript-format
 msgid "Execution of “%s” failed:"
 msgstr "Kørsel af “%s” mislykkedes:"
 
+#. Translators: Time in 24h format
+#: ../js/misc/util.js:191
+msgid "%H∶%M"
+msgstr "%H∶%M"
+
+#. Translators: this is the word "Yesterday" followed by a
+#. time string in 24h format. i.e. "Yesterday, 14:30"
+#: ../js/misc/util.js:197
+#, no-c-format
+msgid "Yesterday, %H∶%M"
+msgstr "I går, %H∶%M"
+
+#. Translators: this is the week day name followed by a time
+#. string in 24h format. i.e. "Monday, 14:30"
+#: ../js/misc/util.js:203
+#, no-c-format
+msgid "%A, %H∶%M"
+msgstr "%A, %H∶%M"
+
+#. Translators: this is the month name and day number
+#. followed by a time string in 24h format.
+#. i.e. "May 25, 14:30"
+#: ../js/misc/util.js:209
+#, no-c-format
+msgid "%B %d, %H∶%M"
+msgstr "%d. %B, %H∶%M"
+
+#. Translators: this is the month name, day number, year
+#. number followed by a time string in 24h format.
+#. i.e. "May 25 2012, 14:30"
+#: ../js/misc/util.js:215
+#, no-c-format
+msgid "%B %d %Y, %H∶%M"
+msgstr "%d. %B %Y, %H∶%M"
+
+#. Translators: Time in 12h format
+#: ../js/misc/util.js:220
+msgid "%l∶%M %p"
+msgstr "%l∶%M %p"
+
+#. Translators: this is the word "Yesterday" followed by a
+#. time string in 12h format. i.e. "Yesterday, 2:30 pm"
+#: ../js/misc/util.js:226
+#, no-c-format
+msgid "Yesterday, %l∶%M %p"
+msgstr "I går, %l∶%M %p"
+
+#. Translators: this is the week day name followed by a time
+#. string in 12h format. i.e. "Monday, 2:30 pm"
+#: ../js/misc/util.js:232
+#, no-c-format
+msgid "%A, %l∶%M %p"
+msgstr "%A, %l∶%M %p"
+
+#. Translators: this is the month name and day number
+#. followed by a time string in 12h format.
+#. i.e. "May 25, 2:30 pm"
+#: ../js/misc/util.js:238
+#, no-c-format
+msgid "%B %d, %l∶%M %p"
+msgstr "%d. %B, %l∶%M %p"
+
+#. Translators: this is the month name, day number, year
+#. number followed by a time string in 12h format.
+#. i.e. "May 25 2012, 2:30 pm"
+#: ../js/misc/util.js:244
+#, no-c-format
+msgid "%B %d %Y, %l∶%M %p"
+msgstr "%d. %B %Y, %l∶%M %p"
+
+#. TRANSLATORS: this is the title of the wifi captive portal login
+#. * window, until we know the title of the actual login page
 #: ../js/portalHelper/main.js:85
 msgid "Web Authentication Redirect"
 msgstr "Omdirigering af webgodkendelse"
 
-#: ../js/ui/appDisplay.js:772
+#: ../js/ui/appDisplay.js:792
 msgid "Frequently used applications will appear here"
 msgstr "Ofte brugte programmer vil blive vist her"
 
-#: ../js/ui/appDisplay.js:883
+#: ../js/ui/appDisplay.js:912
 msgid "Frequent"
 msgstr "Ofte"
 
-#: ../js/ui/appDisplay.js:890
+#: ../js/ui/appDisplay.js:919
 msgid "All"
 msgstr "Alle"
 
-#: ../js/ui/appDisplay.js:1790
+#: ../js/ui/appDisplay.js:1850
 msgid "New Window"
 msgstr "Nyt vindue"
 
-#: ../js/ui/appDisplay.js:1816 ../js/ui/dash.js:285
+#: ../js/ui/appDisplay.js:1878 ../js/ui/dash.js:291
 msgid "Remove from Favorites"
 msgstr "Fjern fra favoritter"
 
-#: ../js/ui/appDisplay.js:1822
+#: ../js/ui/appDisplay.js:1884
 msgid "Add to Favorites"
 msgstr "Føj til favoritter"
 
-#: ../js/ui/appDisplay.js:1831
+#: ../js/ui/appDisplay.js:1894
 msgid "Show Details"
 msgstr "Vis detaljer"
 
@@ -427,7 +512,7 @@ msgstr "%s er blevet føjet til dine favoritter."
 msgid "%s has been removed from your favorites."
 msgstr "%s er blevet fjernet fra dine favoritter."
 
-#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:813
+#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:650
 #: ../js/ui/status/system.js:337
 msgid "Settings"
 msgstr "Indstillinger"
@@ -436,162 +521,107 @@ msgstr "Indstillinger"
 msgid "Change Background…"
 msgstr "Ændr baggrund…"
 
-#. Translators: Shown in calendar event list for all day events
-#. * Keep it short, best if you can use less then 10 characters
-#. */
-#: ../js/ui/calendar.js:67
-msgctxt "event list time"
-msgid "All Day"
-msgstr "Hele dagen"
-
-#. Translators: Shown in calendar event list, if 24h format,
-#. \u2236 is a ratio character, similar to : */
-#: ../js/ui/calendar.js:73
-msgctxt "event list time"
-msgid "%H∶%M"
-msgstr "%H∶%M"
-
-#. Translators: Shown in calendar event list, if 12h format,
-#. \u2236 is a ratio character, similar to : and \u2009 is
-#. a thin space */
-#: ../js/ui/calendar.js:82
-msgctxt "event list time"
-msgid "%l∶%M %p"
-msgstr "%l∶%M %p"
+#. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
+#: ../js/ui/calendar.js:53
+msgctxt "calendar-no-work"
+msgid "06"
+msgstr "06"
 
 #. Translators: Calendar grid abbreviation for Sunday.
 #. *
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
-#. */
-#: ../js/ui/calendar.js:113
+#.
+#: ../js/ui/calendar.js:82
 msgctxt "grid sunday"
 msgid "S"
 msgstr "S"
 
-#. Translators: Calendar grid abbreviation for Monday */
-#: ../js/ui/calendar.js:115
+#. Translators: Calendar grid abbreviation for Monday
+#: ../js/ui/calendar.js:84
 msgctxt "grid monday"
 msgid "M"
 msgstr "M"
 
-#. Translators: Calendar grid abbreviation for Tuesday */
-#: ../js/ui/calendar.js:117
+#. Translators: Calendar grid abbreviation for Tuesday
+#: ../js/ui/calendar.js:86
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "T"
 
-#. Translators: Calendar grid abbreviation for Wednesday */
-#: ../js/ui/calendar.js:119
+#. Translators: Calendar grid abbreviation for Wednesday
+#: ../js/ui/calendar.js:88
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "O"
 
-#. Translators: Calendar grid abbreviation for Thursday */
-#: ../js/ui/calendar.js:121
+#. Translators: Calendar grid abbreviation for Thursday
+#: ../js/ui/calendar.js:90
 msgctxt "grid thursday"
 msgid "T"
 msgstr "T"
 
-#. Translators: Calendar grid abbreviation for Friday */
-#: ../js/ui/calendar.js:123
+#. Translators: Calendar grid abbreviation for Friday
+#: ../js/ui/calendar.js:92
 msgctxt "grid friday"
 msgid "F"
 msgstr "F"
 
-#. Translators: Calendar grid abbreviation for Saturday */
-#: ../js/ui/calendar.js:125
+#. Translators: Calendar grid abbreviation for Saturday
+#: ../js/ui/calendar.js:94
 msgctxt "grid saturday"
 msgid "S"
 msgstr "L"
 
-#. Translators: Event list abbreviation for Sunday.
-#. *
-#. * NOTE: These list abbreviations are normally not shown together
-#. * so they need to be unique (e.g. Tuesday and Thursday cannot
-#. * both be 'T').
-#. */
-#: ../js/ui/calendar.js:138
-msgctxt "list sunday"
-msgid "Su"
-msgstr "S"
-
-#. Translators: Event list abbreviation for Monday */
-#: ../js/ui/calendar.js:140
-msgctxt "list monday"
-msgid "M"
-msgstr "M"
-
-#. Translators: Event list abbreviation for Tuesday */
-#: ../js/ui/calendar.js:142
-msgctxt "list tuesday"
-msgid "T"
-msgstr "Ti"
-
-#. Translators: Event list abbreviation for Wednesday */
-#: ../js/ui/calendar.js:144
-msgctxt "list wednesday"
-msgid "W"
-msgstr "O"
-
-#. Translators: Event list abbreviation for Thursday */
-#: ../js/ui/calendar.js:146
-msgctxt "list thursday"
-msgid "Th"
-msgstr "To"
-
-#. Translators: Event list abbreviation for Friday */
-#: ../js/ui/calendar.js:148
-msgctxt "list friday"
-msgid "F"
-msgstr "F"
-
-#. Translators: Event list abbreviation for Saturday */
-#: ../js/ui/calendar.js:150
-msgctxt "list saturday"
-msgid "S"
-msgstr "L"
-
-#: ../js/ui/calendar.js:453
+#: ../js/ui/calendar.js:563
 msgid "Previous month"
 msgstr "Forrige måned"
 
-#: ../js/ui/calendar.js:463
+#: ../js/ui/calendar.js:573
 msgid "Next month"
 msgstr "Næste måned"
 
-#. Translators: Text to show if there are no events */
-#: ../js/ui/calendar.js:781
-msgid "Nothing Scheduled"
-msgstr "Intet planlagt"
+#: ../js/ui/calendar.js:780
+msgid "Week %V"
+msgstr "Uge %V"
 
-#. Translators: Shown on calendar heading when selected day occurs on current year */
-#: ../js/ui/calendar.js:799
+#. Translators: Shown in calendar event list for all day events
+#. * Keep it short, best if you can use less then 10 characters
+#.
+#: ../js/ui/calendar.js:1182
+msgctxt "event list time"
+msgid "All Day"
+msgstr "Hele dagen"
+
+#: ../js/ui/calendar.js:1288
+msgid "Clear section"
+msgstr "Ryd afsnit"
+
+#: ../js/ui/calendar.js:1515
+msgid "Events"
+msgstr "Begivenheder"
+
+#: ../js/ui/calendar.js:1524
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d. %B"
 
-#. Translators: Shown on calendar heading when selected day occurs on different year */
-#: ../js/ui/calendar.js:802
+#: ../js/ui/calendar.js:1528
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d. %B %Y"
 
-#: ../js/ui/calendar.js:813
-msgid "Today"
-msgstr "I dag"
+#: ../js/ui/calendar.js:1613
+msgid "Notifications"
+msgstr "Beskeder"
 
-#: ../js/ui/calendar.js:817
-msgid "Tomorrow"
-msgstr "I morgen"
+#: ../js/ui/calendar.js:1764
+msgid "No Notifications"
+msgstr "Ingen påmindelser"
 
-#: ../js/ui/calendar.js:828
-msgid "This week"
-msgstr "Denne uge"
-
-#: ../js/ui/calendar.js:836
-msgid "Next week"
-msgstr "Næste uge"
+#: ../js/ui/calendar.js:1767
+msgid "No Events"
+msgstr "Ingen begivenheder"
 
 #: ../js/ui/components/automountManager.js:91
 msgid "External drive connected"
@@ -601,18 +631,10 @@ msgstr "Eksternt drev tilkoblet"
 msgid "External drive disconnected"
 msgstr "Eksternt drev frakoblet"
 
-#: ../js/ui/components/autorunManager.js:296
-msgid "Removable Devices"
-msgstr "Flytbare enheder"
-
-#: ../js/ui/components/autorunManager.js:596
+#: ../js/ui/components/autorunManager.js:354
 #, javascript-format
 msgid "Open with %s"
 msgstr "Åbn med %s"
-
-#: ../js/ui/components/autorunManager.js:622
-msgid "Eject"
-msgstr "Skub ud"
 
 #: ../js/ui/components/keyring.js:94 ../js/ui/components/polkitAgent.js:285
 msgid "Password:"
@@ -622,40 +644,44 @@ msgstr "Adgangskode:"
 msgid "Type again:"
 msgstr "Indtast igen:"
 
-#: ../js/ui/components/networkAgent.js:138 ../js/ui/status/network.js:277
-#: ../js/ui/status/network.js:359 ../js/ui/status/network.js:918
+#: ../js/ui/components/networkAgent.js:140 ../js/ui/status/network.js:277
+#: ../js/ui/status/network.js:359 ../js/ui/status/network.js:919
 msgid "Connect"
 msgstr "Forbind"
 
-#: ../js/ui/components/networkAgent.js:231
-#: ../js/ui/components/networkAgent.js:243
-#: ../js/ui/components/networkAgent.js:271
-#: ../js/ui/components/networkAgent.js:291
-#: ../js/ui/components/networkAgent.js:301
+#. Cisco LEAP
+#: ../js/ui/components/networkAgent.js:233
+#: ../js/ui/components/networkAgent.js:245
+#: ../js/ui/components/networkAgent.js:273
+#: ../js/ui/components/networkAgent.js:293
+#: ../js/ui/components/networkAgent.js:303
 msgid "Password: "
 msgstr "Adgangskode: "
 
-#: ../js/ui/components/networkAgent.js:236
+#. static WEP
+#: ../js/ui/components/networkAgent.js:238
 msgid "Key: "
 msgstr "Nøgle: "
 
-#: ../js/ui/components/networkAgent.js:275
+#: ../js/ui/components/networkAgent.js:277
 msgid "Identity: "
 msgstr "Identitet: "
 
-#: ../js/ui/components/networkAgent.js:277
+#: ../js/ui/components/networkAgent.js:279
 msgid "Private key password: "
 msgstr "Privatnøgle-adgangskode: "
 
-#: ../js/ui/components/networkAgent.js:289
+#: ../js/ui/components/networkAgent.js:291
 msgid "Service: "
 msgstr "Tjeneste: "
 
-#: ../js/ui/components/networkAgent.js:318
+#: ../js/ui/components/networkAgent.js:320
+#: ../js/ui/components/networkAgent.js:658
 msgid "Authentication required by wireless network"
 msgstr "Godkendelse påkrævet af trådløst netværk"
 
-#: ../js/ui/components/networkAgent.js:319
+#: ../js/ui/components/networkAgent.js:321
+#: ../js/ui/components/networkAgent.js:659
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -664,38 +690,50 @@ msgstr ""
 "Adgangskoder eller krypteringsnøgler er påkrævet for at få adgang til det "
 "trådløse netværk “%s”."
 
-#: ../js/ui/components/networkAgent.js:323
+#: ../js/ui/components/networkAgent.js:325
+#: ../js/ui/components/networkAgent.js:662
 msgid "Wired 802.1X authentication"
 msgstr "Trådet 802.1X-godkendelse"
 
-#: ../js/ui/components/networkAgent.js:325
+#: ../js/ui/components/networkAgent.js:327
 msgid "Network name: "
 msgstr "Netværksnavn: "
 
-#: ../js/ui/components/networkAgent.js:330
+#: ../js/ui/components/networkAgent.js:332
+#: ../js/ui/components/networkAgent.js:666
 msgid "DSL authentication"
 msgstr "DSL-godkendelse"
 
-#: ../js/ui/components/networkAgent.js:337
+#: ../js/ui/components/networkAgent.js:339
+#: ../js/ui/components/networkAgent.js:672
 msgid "PIN code required"
 msgstr "PIN-kode påkrævet"
 
-#: ../js/ui/components/networkAgent.js:338
+#: ../js/ui/components/networkAgent.js:340
+#: ../js/ui/components/networkAgent.js:673
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "PIN-kode er nødvendig for den mobile bredbåndsenhed"
 
-#: ../js/ui/components/networkAgent.js:339
+#: ../js/ui/components/networkAgent.js:341
 msgid "PIN: "
 msgstr "PIN: "
 
-#: ../js/ui/components/networkAgent.js:345
+#: ../js/ui/components/networkAgent.js:348
+#: ../js/ui/components/networkAgent.js:679
 msgid "Mobile broadband network password"
 msgstr "Adgangskode til mobilt bredbåndsnetværk"
 
-#: ../js/ui/components/networkAgent.js:346
+#: ../js/ui/components/networkAgent.js:349
+#: ../js/ui/components/networkAgent.js:663
+#: ../js/ui/components/networkAgent.js:667
+#: ../js/ui/components/networkAgent.js:680
 #, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "Der kræves en adgangskode for at forbinde til “%s”."
+
+#: ../js/ui/components/networkAgent.js:647 ../js/ui/status/network.js:1657
+msgid "Network Manager"
+msgstr "Netværkshåndtering"
 
 #: ../js/ui/components/polkitAgent.js:54
 msgid "Authentication Required"
@@ -712,315 +750,54 @@ msgstr "Godkend"
 #. Translators: "that didn't work" refers to the fact that the
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
-#. * for instance. */
+#. * for instance.
 #: ../js/ui/components/polkitAgent.js:271 ../js/ui/shellMountOperation.js:383
 msgid "Sorry, that didn't work. Please try again."
 msgstr "Beklager, godkendelse mislykkedes. Prøv igen."
 
-#: ../js/ui/components/telepathyClient.js:240
-msgid "Invitation"
-msgstr "Invitation"
-
-#: ../js/ui/components/telepathyClient.js:300
-msgid "Call"
-msgstr "Opkald"
-
-#: ../js/ui/components/telepathyClient.js:316
-msgid "File Transfer"
-msgstr "Filoverførsel"
-
-#: ../js/ui/components/telepathyClient.js:420
-msgid "Chat"
-msgstr "Chat"
-
-#: ../js/ui/components/telepathyClient.js:483
-msgid "Unmute"
-msgstr "Slå lyd til"
-
-#: ../js/ui/components/telepathyClient.js:483
-msgid "Mute"
-msgstr "Slå lyd fra"
-
-#. Translators: Time in 24h format */
-#: ../js/ui/components/telepathyClient.js:953
-msgid "%H∶%M"
-msgstr "%H∶%M"
-
-#. Translators: this is the word "Yesterday" followed by a
-#. time string in 24h format. i.e. "Yesterday, 14:30" */
-#: ../js/ui/components/telepathyClient.js:960
-msgid "Yesterday, %H∶%M"
-msgstr "I går, %H∶%M"
-
-#. Translators: this is the week day name followed by a time
-#. string in 24h format. i.e. "Monday, 14:30" */
-#: ../js/ui/components/telepathyClient.js:967
-msgid "%A, %H∶%M"
-msgstr "%A, %H∶%M"
-
-#. Translators: this is the month name and day number
-#. followed by a time string in 24h format.
-#. i.e. "May 25, 14:30" */
-#: ../js/ui/components/telepathyClient.js:974
-msgid "%B %d, %H∶%M"
-msgstr "%d. %B, %H∶%M"
-
-#. Translators: this is the month name, day number, year
-#. number followed by a time string in 24h format.
-#. i.e. "May 25 2012, 14:30" */
-#: ../js/ui/components/telepathyClient.js:980
-msgid "%B %d %Y, %H∶%M"
-msgstr "%d. %B %Y, %H∶%M"
-
-#. Translators: Time in 24h format */
-#: ../js/ui/components/telepathyClient.js:986
-msgid "%l∶%M %p"
-msgstr "%l∶%M %p"
-
-#. Translators: this is the word "Yesterday" followed by a
-#. time string in 12h format. i.e. "Yesterday, 2:30 pm" */
-#: ../js/ui/components/telepathyClient.js:993
-msgid "Yesterday, %l∶%M %p"
-msgstr "I går, %l∶%M %p"
-
-#. Translators: this is the week day name followed by a time
-#. string in 12h format. i.e. "Monday, 2:30 pm" */
-#: ../js/ui/components/telepathyClient.js:1000
-msgid "%A, %l∶%M %p"
-msgstr "%A, %l∶%M %p"
-
-#. Translators: this is the month name and day number
-#. followed by a time string in 12h format.
-#. i.e. "May 25, 2:30 pm" */
-#: ../js/ui/components/telepathyClient.js:1007
-msgid "%B %d, %l∶%M %p"
-msgstr "%d. %B, %l∶%M %p"
-
-#. Translators: this is the month name, day number, year
-#. number followed by a time string in 12h format.
-#. i.e. "May 25 2012, 2:30 pm"*/
-#: ../js/ui/components/telepathyClient.js:1013
-msgid "%B %d %Y, %l∶%M %p"
-msgstr "%d. %B %Y, %l∶%M %p"
-
 #. Translators: this is the other person changing their old IM name to their new
-#. IM name. */
-#: ../js/ui/components/telepathyClient.js:1045
+#. IM name.
+#: ../js/ui/components/telepathyClient.js:775
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s kalder sig nu %s"
 
-#. translators: argument is a room name like
-#. * room@jabber.org for example. */
-#: ../js/ui/components/telepathyClient.js:1149
-#, javascript-format
-msgid "Invitation to %s"
-msgstr "Invitation til %s"
-
-#. translators: first argument is the name of a contact and the second
-#. * one the name of a room. "Alice is inviting you to join room@jabber.org
-#. * for example. */
-#: ../js/ui/components/telepathyClient.js:1157
-#, javascript-format
-msgid "%s is inviting you to join %s"
-msgstr "%s inviterer dig til at deltage i %s"
-
-#: ../js/ui/components/telepathyClient.js:1159
-#: ../js/ui/components/telepathyClient.js:1194
-#: ../js/ui/components/telepathyClient.js:1228
-#: ../js/ui/components/telepathyClient.js:1286
-msgid "Decline"
-msgstr "Afvis"
-
-#: ../js/ui/components/telepathyClient.js:1165
-#: ../js/ui/components/telepathyClient.js:1234
-#: ../js/ui/components/telepathyClient.js:1291
-msgid "Accept"
-msgstr "Acceptér"
-
-#. translators: argument is a contact name like Alice for example. */
-#: ../js/ui/components/telepathyClient.js:1184
-#, javascript-format
-msgid "Video call from %s"
-msgstr "Videoopkald fra %s"
-
-#. translators: argument is a contact name like Alice for example. */
-#: ../js/ui/components/telepathyClient.js:1187
-#, javascript-format
-msgid "Call from %s"
-msgstr "Opkald fra %s"
-
-#. translators: this is a button label (verb), not a noun */
-#: ../js/ui/components/telepathyClient.js:1201
-msgid "Answer"
-msgstr "Svar"
-
-#. To translators: The first parameter is
-#. * the contact's alias and the second one is the
-#. * file name. The string will be something
-#. * like: "Alice is sending you test.ogg"
-#. */
-#: ../js/ui/components/telepathyClient.js:1222
-#, javascript-format
-msgid "%s is sending you %s"
-msgstr "%s sender dig %s"
-
-#. To translators: The parameter is the contact's alias */
-#: ../js/ui/components/telepathyClient.js:1251
-#, javascript-format
-msgid "%s would like permission to see when you are online"
-msgstr "%s vil gerne have tilladelse til at se, når du er online"
-
-#: ../js/ui/components/telepathyClient.js:1337
-msgid "Network error"
-msgstr "Netværksfejl"
-
-#: ../js/ui/components/telepathyClient.js:1339
-msgid "Authentication failed"
-msgstr "Godkendelse mislykkedes"
-
-#: ../js/ui/components/telepathyClient.js:1341
-msgid "Encryption error"
-msgstr "Krypteringsfejl"
-
-#: ../js/ui/components/telepathyClient.js:1343
-msgid "Certificate not provided"
-msgstr "Certifikat ikke angivet"
-
-#: ../js/ui/components/telepathyClient.js:1345
-msgid "Certificate untrusted"
-msgstr "Utroværdigt certifikat"
-
-#: ../js/ui/components/telepathyClient.js:1347
-msgid "Certificate expired"
-msgstr "Certifikat udløbet"
-
-#: ../js/ui/components/telepathyClient.js:1349
-msgid "Certificate not activated"
-msgstr "Certifikat ikke aktiveret"
-
-#: ../js/ui/components/telepathyClient.js:1351
-msgid "Certificate hostname mismatch"
-msgstr "Certifikat-værtsnavn stemmer ikke"
-
-#: ../js/ui/components/telepathyClient.js:1353
-msgid "Certificate fingerprint mismatch"
-msgstr "Certifikat-fingeraftryk stemmer ikke"
-
-#: ../js/ui/components/telepathyClient.js:1355
-msgid "Certificate self-signed"
-msgstr "Certifikat selv-underskrevet"
-
-#: ../js/ui/components/telepathyClient.js:1357
-msgid "Status is set to offline"
-msgstr "Status er angivet til offline"
-
-#: ../js/ui/components/telepathyClient.js:1359
-msgid "Encryption is not available"
-msgstr "Kryptering er ikke tilgængelig"
-
-#: ../js/ui/components/telepathyClient.js:1361
-msgid "Certificate is invalid"
-msgstr "Ugyldigt certifikat"
-
-#: ../js/ui/components/telepathyClient.js:1363
-msgid "Connection has been refused"
-msgstr "Forbindelse er blevet afvist"
-
-#: ../js/ui/components/telepathyClient.js:1365
-msgid "Connection can't be established"
-msgstr "Forbindelse kan ikke oprettes"
-
-#: ../js/ui/components/telepathyClient.js:1367
-msgid "Connection has been lost"
-msgstr "Forbindelse er mistet"
-
-#: ../js/ui/components/telepathyClient.js:1369
-msgid "This account is already connected to the server"
-msgstr "Denne konto er allerede forbundet til serveren"
-
-#: ../js/ui/components/telepathyClient.js:1371
-msgid ""
-"Connection has been replaced by a new connection using the same resource"
-msgstr ""
-"Forbindelsen er blevet erstattet af en ny forbindelse, som bruger samme "
-"ressource"
-
-#: ../js/ui/components/telepathyClient.js:1373
-msgid "The account already exists on the server"
-msgstr "Kontoen findes allerede på serveren"
-
-#: ../js/ui/components/telepathyClient.js:1375
-msgid "Server is currently too busy to handle the connection"
-msgstr "Serveren er i øjeblikket for travl til at behandle forbindelsen"
-
-#: ../js/ui/components/telepathyClient.js:1377
-msgid "Certificate has been revoked"
-msgstr "Certifikat er blevet påberåbt"
-
-#: ../js/ui/components/telepathyClient.js:1379
-msgid ""
-"Certificate uses an insecure cipher algorithm or is cryptographically weak"
-msgstr ""
-"Certifikat bruger en usikker cipher-algoritme eller er kryptografisk svag"
-
-#: ../js/ui/components/telepathyClient.js:1381
-msgid ""
-"The length of the server certificate, or the depth of the server certificate "
-"chain, exceed the limits imposed by the cryptography library"
-msgstr ""
-"Længden på servercertifikatet, eller dybden af servercertifikat-kæden, "
-"overskrider grænsen, som er fastsat af det kryptografiske-programbibliotek"
-
-#: ../js/ui/components/telepathyClient.js:1383
-msgid "Internal error"
-msgstr "Intern fejl"
-
-#. translators: argument is the account name, like
-#. * name@jabber.org for example. */
-#: ../js/ui/components/telepathyClient.js:1393
-#, javascript-format
-msgid "Unable to connect to %s"
-msgstr "Kunne ikke forbinde til %s"
-
-#: ../js/ui/components/telepathyClient.js:1398
-msgid "View account"
-msgstr "Vis konto"
-
-#: ../js/ui/components/telepathyClient.js:1435
-msgid "Unknown reason"
-msgstr "Ukendt årsag"
-
-#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:154
+#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:155
 msgid "Windows"
 msgstr "Vinduer"
 
-#: ../js/ui/dash.js:249 ../js/ui/dash.js:287
+#: ../js/ui/dash.js:252 ../js/ui/dash.js:293
 msgid "Show Applications"
 msgstr "Vis programmer"
 
-#: ../js/ui/dash.js:445
+#. Translators: this is the name of the dock/favorites area on
+#. the left of the overview
+#: ../js/ui/dash.js:453
 msgid "Dash"
 msgstr "Favoritområde"
 
-#: ../js/ui/dateMenu.js:96
-msgid "Open Calendar"
-msgstr "Åbn kalender"
-
-#: ../js/ui/dateMenu.js:100
-msgid "Open Clocks"
-msgstr "Åbn Ure"
-
-#: ../js/ui/dateMenu.js:107
-msgid "Date & Time Settings"
-msgstr "Indstillinger for dato og tid"
-
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
-#. */
-#: ../js/ui/dateMenu.js:204
-msgid "%A %B %e, %Y"
-msgstr "%A, %e. %B %Y"
+#.
+#: ../js/ui/dateMenu.js:73
+msgid "%B %e %Y"
+msgstr "%e. %B %Y"
+
+#. Translators: This is the accessible name of the date button shown
+#. * below the time in the shell; it should combine the weekday and the
+#. * date, e.g. "Tuesday February 17 2015".
+#.
+#: ../js/ui/dateMenu.js:80
+msgid "%A %B %e %Y"
+msgstr "%A %e. %B %Y"
+
+#: ../js/ui/dateMenu.js:160
+msgid "Add world clocks…"
+msgstr "Tilføj verdensure…"
+
+#: ../js/ui/dateMenu.js:161
+msgid "World Clocks"
+msgstr "Verdensure"
 
 #: ../js/ui/endSessionDialog.js:64
 #, javascript-format
@@ -1139,13 +916,13 @@ msgstr ""
 msgid "Other users are logged in."
 msgstr "Andre brugere er logget ind."
 
-#. Translators: Remote here refers to a remote session, like a ssh login */
+#. Translators: Remote here refers to a remote session, like a ssh login
 #: ../js/ui/endSessionDialog.js:640
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (fjern)"
 
-#. Translators: Console here refers to a tty like a VT console */
+#. Translators: Console here refers to a tty like a VT console
 #: ../js/ui/endSessionDialog.js:643
 #, javascript-format
 msgid "%s (console)"
@@ -1160,15 +937,24 @@ msgstr "Installér"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Hent og installér “%s” fra extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:692 ../js/ui/status/keyboard.js:523
+#: ../js/ui/keyboard.js:714 ../js/ui/status/keyboard.js:580
 msgid "Keyboard"
 msgstr "Tastatur"
+
+#. translators: 'Hide' is a verb
+#: ../js/ui/legacyTray.js:64
+msgid "Hide tray"
+msgstr "Skjul statusfelt"
+
+#: ../js/ui/legacyTray.js:104
+msgid "Status Icons"
+msgstr "Statusikoner"
 
 #: ../js/ui/lookingGlass.js:643
 msgid "No extensions installed"
 msgstr "Ingen udvidelser er installeret"
 
-#. Translators: argument is an extension UUID. */
+#. Translators: argument is an extension UUID.
 #: ../js/ui/lookingGlass.js:697
 #, javascript-format
 msgid "%s has not emitted any errors."
@@ -1188,7 +974,7 @@ msgid "Enabled"
 msgstr "Aktiveret"
 
 #. Translators: this is for a network device that cannot be activated
-#. because it's disabled by rfkill (airplane mode) */
+#. because it's disabled by rfkill (airplane mode)
 #. translators:
 #. * The device has been disabled
 #: ../js/ui/lookingGlass.js:719 ../js/ui/status/location.js:179
@@ -1216,53 +1002,9 @@ msgstr "Vis kilde"
 msgid "Web Page"
 msgstr "Webside"
 
-#: ../js/ui/messageTray.js:1327
-msgid "Open"
-msgstr "Åbn"
-
-#: ../js/ui/messageTray.js:1334
-msgid "Remove"
-msgstr "Fjern"
-
-#: ../js/ui/messageTray.js:1631
-msgid "Notifications"
-msgstr "Beskeder"
-
-#: ../js/ui/messageTray.js:1638
-msgid "Clear Messages"
-msgstr "Ryd beskeder"
-
-#: ../js/ui/messageTray.js:1657
-msgid "Notification Settings"
-msgstr "Indstillinger for påmindelser"
-
-#: ../js/ui/messageTray.js:1710
-msgid "Tray Menu"
-msgstr "Menu for statusfelt"
-
-#: ../js/ui/messageTray.js:1934
-msgid "No Messages"
-msgstr "Ingen beskeder"
-
-#: ../js/ui/messageTray.js:1979
-msgid "Message Tray"
-msgstr "Besked-statusfelt"
-
-#: ../js/ui/messageTray.js:2992
+#: ../js/ui/messageTray.js:2133
 msgid "System Information"
 msgstr "Systeminformation"
-
-#: ../js/ui/notificationDaemon.js:513 ../src/shell-app.c:425
-msgctxt "program"
-msgid "Unknown"
-msgstr "Ukendt"
-
-#: ../js/ui/overviewControls.js:482 ../js/ui/screenShield.js:151
-#, javascript-format
-msgid "%d new message"
-msgid_plural "%d new messages"
-msgstr[0] "%d ny besked"
-msgstr[1] "%d nye beskeder"
 
 #: ../js/ui/overview.js:84
 msgid "Undo"
@@ -1275,26 +1017,31 @@ msgstr "Oversigt"
 #. Translators: this is the text displayed
 #. in the search entry when no search is
 #. active; it should not exceed ~30
-#. characters. */
+#. characters.
 #: ../js/ui/overview.js:246
 msgid "Type to search…"
 msgstr "Skriv for at søge…"
 
-#: ../js/ui/panel.js:515
+#: ../js/ui/panel.js:352
 msgid "Quit"
 msgstr "Afslut"
 
 #. Translators: If there is no suitable word for "Activities"
-#. in your language, you can use the word for "Overview". */
-#: ../js/ui/panel.js:567
+#. in your language, you can use the word for "Overview".
+#: ../js/ui/panel.js:404
 msgid "Activities"
 msgstr "Aktiviteter"
 
-#: ../js/ui/panel.js:918
+#: ../js/ui/panel.js:755
 msgid "Top Bar"
 msgstr "Toppanel"
 
-#: ../js/ui/popupMenu.js:269
+#. Translators: this MUST be either "toggle-switch-us"
+#. (for toggle switches containing the English words
+#. "ON" and "OFF") or "toggle-switch-intl" (for toggle
+#. switches containing "◯" and "|"). Other values will
+#. simply result in invisible toggle switches.
+#: ../js/ui/popupMenu.js:289
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -1306,44 +1053,58 @@ msgstr "Indtast en kommando"
 msgid "Close"
 msgstr "Luk"
 
-#: ../js/ui/runDialog.js:277
+#: ../js/ui/runDialog.js:281
 msgid "Restarting…"
 msgstr "Genstarter…"
 
 #. Translators: This is a time format for a date in
-#. long format */
-#: ../js/ui/screenShield.js:88
+#. long format
+#: ../js/ui/screenShield.js:85
 msgid "%A, %B %d"
 msgstr "%A, %d. %B"
 
-#: ../js/ui/screenShield.js:153
+#: ../js/ui/screenShield.js:144
+#, javascript-format
+msgid "%d new message"
+msgid_plural "%d new messages"
+msgstr[0] "%d ny besked"
+msgstr[1] "%d nye beskeder"
+
+#: ../js/ui/screenShield.js:146
 #, javascript-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d ny påmindelse"
 msgstr[1] "%d nye påmindelser"
 
-#: ../js/ui/screenShield.js:472 ../js/ui/status/system.js:345
+#: ../js/ui/screenShield.js:432 ../js/ui/status/system.js:345
 msgid "Lock"
 msgstr "Lås"
 
-#: ../js/ui/screenShield.js:706
+#: ../js/ui/screenShield.js:668
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME er nødt til at låse skærmen"
 
-#: ../js/ui/screenShield.js:833 ../js/ui/screenShield.js:1304
+#. We could not become modal, so we can't activate the
+#. screenshield. The user is probably very upset at this
+#. point, but any application using global grabs is broken
+#. Just tell him to stop using this app
+#.
+#. XXX: another option is to kick the user into the gdm login
+#. screen, where we're not affected by grabs
+#: ../js/ui/screenShield.js:795 ../js/ui/screenShield.js:1271
 msgid "Unable to lock"
 msgstr "Kunne ikke låse"
 
-#: ../js/ui/screenShield.js:834 ../js/ui/screenShield.js:1305
+#: ../js/ui/screenShield.js:796 ../js/ui/screenShield.js:1272
 msgid "Lock was blocked by an application"
 msgstr "Lås blev blokeret af et program"
 
-#: ../js/ui/search.js:594
+#: ../js/ui/search.js:616
 msgid "Searching…"
 msgstr "Søger…"
 
-#: ../js/ui/search.js:596
+#: ../js/ui/search.js:618
 msgid "No results."
 msgstr "Ingen resultater."
 
@@ -1415,14 +1176,16 @@ msgstr "Høj kontrast"
 msgid "Large Text"
 msgstr "Stor tekst"
 
+#. The Bluetooth menu only appears when Bluetooth is in use,
+#. so just statically build it with a "Turn Off" menu item.
 #: ../js/ui/status/bluetooth.js:49
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
 #: ../js/ui/status/bluetooth.js:51 ../js/ui/status/network.js:178
-#: ../js/ui/status/network.js:360 ../js/ui/status/network.js:1281
-#: ../js/ui/status/network.js:1392 ../js/ui/status/rfkill.js:86
-#: ../js/ui/status/rfkill.js:114
+#: ../js/ui/status/network.js:360 ../js/ui/status/network.js:1282
+#: ../js/ui/status/network.js:1393 ../js/ui/status/rfkill.js:91
+#: ../js/ui/status/rfkill.js:118
 msgid "Turn Off"
 msgstr "Sluk"
 
@@ -1437,7 +1200,7 @@ msgid_plural "%d Connected Devices"
 msgstr[0] "%d forbundet enhed"
 msgstr[1] "%d forbundne enheder"
 
-#: ../js/ui/status/bluetooth.js:106 ../js/ui/status/network.js:1309
+#: ../js/ui/status/bluetooth.js:106 ../js/ui/status/network.js:1310
 msgid "Not Connected"
 msgstr "Ikke forbundet"
 
@@ -1445,7 +1208,7 @@ msgstr "Ikke forbundet"
 msgid "Brightness"
 msgstr "Lysstyrke"
 
-#: ../js/ui/status/keyboard.js:547
+#: ../js/ui/status/keyboard.js:603
 msgid "Show Keyboard Layout"
 msgstr "Vis tastaturlayout"
 
@@ -1473,8 +1236,8 @@ msgstr "Slå til"
 msgid "<unknown>"
 msgstr "<ukendt>"
 
-#: ../js/ui/status/network.js:457 ../js/ui/status/network.js:1307
-#: ../js/ui/status/network.js:1511
+#: ../js/ui/status/network.js:457 ../js/ui/status/network.js:1308
+#: ../js/ui/status/network.js:1512
 msgid "Off"
 msgstr "Slukket"
 
@@ -1483,7 +1246,7 @@ msgid "Connected"
 msgstr "Forbundet"
 
 #. Translators: this is for network devices that are physically present but are not
-#. under NetworkManager's control (and thus cannot be used in the menu) */
+#. under NetworkManager's control (and thus cannot be used in the menu)
 #: ../js/ui/status/network.js:463
 msgid "Unmanaged"
 msgstr "Ikke håndteret"
@@ -1492,28 +1255,28 @@ msgstr "Ikke håndteret"
 msgid "Disconnecting"
 msgstr "Frakobler"
 
-#: ../js/ui/status/network.js:471 ../js/ui/status/network.js:1301
+#: ../js/ui/status/network.js:471 ../js/ui/status/network.js:1302
 msgid "Connecting"
 msgstr "Forbinder"
 
-#. Translators: this is for network connections that require some kind of key or password */
+#. Translators: this is for network connections that require some kind of key or password
 #: ../js/ui/status/network.js:474
 msgid "Authentication required"
 msgstr "Godkendelse påkrævet"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
-#. module, which is missing */
+#. module, which is missing
 #: ../js/ui/status/network.js:482
 msgid "Firmware missing"
 msgstr "Firmware mangler"
 
 #. Translators: this is for a network device that cannot be activated (for example it
-#. is disabled by rfkill, or it has no coverage */
+#. is disabled by rfkill, or it has no coverage
 #: ../js/ui/status/network.js:486
 msgid "Unavailable"
 msgstr "Utilgængelig"
 
-#: ../js/ui/status/network.js:488 ../js/ui/status/network.js:1695
+#: ../js/ui/status/network.js:488 ../js/ui/status/network.js:1696
 msgid "Connection failed"
 msgstr "Forbindelse mislykkedes"
 
@@ -1525,7 +1288,7 @@ msgstr "Indstillinger for trådet netværk"
 msgid "Mobile Broadband Settings"
 msgstr "Indstillinger for mobilbredbånd"
 
-#: ../js/ui/status/network.js:588 ../js/ui/status/network.js:1305
+#: ../js/ui/status/network.js:588 ../js/ui/status/network.js:1306
 msgid "Hardware Disabled"
 msgstr "Hardware deaktiveret"
 
@@ -1565,60 +1328,56 @@ msgstr "Trådløse netværk"
 msgid "Select a network"
 msgstr "Vælg et netværk"
 
-#: ../js/ui/status/network.js:882
+#: ../js/ui/status/network.js:883
 msgid "No Networks"
 msgstr "Ingen netværk"
 
-#: ../js/ui/status/network.js:903 ../js/ui/status/rfkill.js:112
+#: ../js/ui/status/network.js:904 ../js/ui/status/rfkill.js:116
 msgid "Use hardware switch to turn off"
 msgstr "Brug hardwareknap til at slukke"
 
-#: ../js/ui/status/network.js:1173
+#: ../js/ui/status/network.js:1174
 msgid "Select Network"
 msgstr "Vælg netværk"
 
-#: ../js/ui/status/network.js:1179
+#: ../js/ui/status/network.js:1180
 msgid "Wi-Fi Settings"
 msgstr "Indstillinger for trådløs"
 
-#: ../js/ui/status/network.js:1281
+#: ../js/ui/status/network.js:1282
 msgid "Turn On"
 msgstr "Tænd"
 
-#: ../js/ui/status/network.js:1298
+#: ../js/ui/status/network.js:1299
 msgid "Hotspot Active"
 msgstr "Hotspot aktivt"
 
-#: ../js/ui/status/network.js:1409
+#: ../js/ui/status/network.js:1410
 msgid "connecting..."
 msgstr "forbinder..."
 
-#. Translators: this is for network connections that require some kind of key or password */
-#: ../js/ui/status/network.js:1412
+#. Translators: this is for network connections that require some kind of key or password
+#: ../js/ui/status/network.js:1413
 msgid "authentication required"
 msgstr "godkendelse påkrævet"
 
-#: ../js/ui/status/network.js:1414
+#: ../js/ui/status/network.js:1415
 msgid "connection failed"
 msgstr "forbindelse mislykkedes"
 
-#: ../js/ui/status/network.js:1480 ../js/ui/status/rfkill.js:89
+#: ../js/ui/status/network.js:1481 ../js/ui/status/rfkill.js:94
 msgid "Network Settings"
 msgstr "Indstillinger for netværk"
 
-#: ../js/ui/status/network.js:1482
+#: ../js/ui/status/network.js:1483
 msgid "VPN Settings"
 msgstr "Indstillinger for VPN"
 
-#: ../js/ui/status/network.js:1501
+#: ../js/ui/status/network.js:1502
 msgid "VPN"
 msgstr "VPN"
 
-#: ../js/ui/status/network.js:1656
-msgid "Network Manager"
-msgstr "Netværkshåndtering"
-
-#: ../js/ui/status/network.js:1696
+#: ../js/ui/status/network.js:1697
 msgid "Activation of network connection failed"
 msgstr "Aktivering af netværksforbindelse mislykkedes"
 
@@ -1630,15 +1389,19 @@ msgstr "Indstillinger for strømstyring"
 msgid "Fully Charged"
 msgstr "Fuldt opladet"
 
+#. 0 is reported when UPower does not have enough data
+#. to estimate battery life
 #: ../js/ui/status/power.js:72 ../js/ui/status/power.js:78
 msgid "Estimating…"
 msgstr "Udregner…"
 
+#. Translators: this is <hours>:<minutes> Remaining (<percentage>)
 #: ../js/ui/status/power.js:86
 #, javascript-format
 msgid "%d∶%02d Remaining (%d%%)"
 msgstr "%d∶%02d tilbage (%d%%)"
 
+#. Translators: this is <hours>:<minutes> Until Full (<percentage>)
 #: ../js/ui/status/power.js:91
 #, javascript-format
 msgid "%d∶%02d Until Full (%d%%)"
@@ -1652,11 +1415,14 @@ msgstr "UPS"
 msgid "Battery"
 msgstr "Batteri"
 
-#: ../js/ui/status/rfkill.js:83
+#. The menu only appears when airplane mode is on, so just
+#. statically build it as if it was on, rather than dynamically
+#. changing the menu contents.
+#: ../js/ui/status/rfkill.js:88
 msgid "Airplane Mode"
 msgstr "Flytilstand"
 
-#: ../js/ui/status/rfkill.js:85
+#: ../js/ui/status/rfkill.js:90
 msgid "On"
 msgstr "Tændt"
 
@@ -1700,11 +1466,11 @@ msgstr "Log ind som en anden bruger"
 msgid "Unlock Window"
 msgstr "Lås vindue op"
 
-#: ../js/ui/viewSelector.js:158
+#: ../js/ui/viewSelector.js:159
 msgid "Applications"
 msgstr "Programmer"
 
-#: ../js/ui/viewSelector.js:162
+#: ../js/ui/viewSelector.js:163
 msgid "Search"
 msgstr "Søg"
 
@@ -1719,7 +1485,7 @@ msgstr "Vil du beholde disse skærmindstillinger?"
 
 #. Translators: this and the following message should be limited in lenght,
 #. to avoid ellipsizing the labels.
-#. */
+#.
 #: ../js/ui/windowManager.js:84
 msgid "Revert Settings"
 msgstr "Forkast indstillinger"
@@ -1734,6 +1500,13 @@ msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
 msgstr[0] "Indstillingsændringer vil forkastes om %d sekund"
 msgstr[1] "Indstillingsændringer vil forkastes om %d sekunder"
+
+#. Translators: This represents the size of a window. The first number is
+#. * the width of the window and the second is the height.
+#: ../js/ui/windowManager.js:599
+#, javascript-format
+msgid "%d x %d"
+msgstr "%d x %d"
 
 #: ../js/ui/windowMenu.js:34
 msgid "Minimize"
@@ -1817,7 +1590,12 @@ msgstr "Brug en specifik tilstand, f.eks. \"gdm\" til logind-skærm"
 msgid "List possible modes"
 msgstr "Vis mulige tilstande"
 
-#: ../src/shell-app.c:666
+#: ../src/shell-app.c:239
+msgctxt "program"
+msgid "Unknown"
+msgstr "Ukendt"
+
+#: ../src/shell-app.c:480
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "Kunne ikke køre “%s”"
@@ -1833,6 +1611,228 @@ msgstr "Adgangskode må ikke være tom"
 #: ../src/shell-polkit-authentication-agent.c:346
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Godkendelsesdialogen blev afvist af brugeren"
+
+#~ msgid "Show the message tray"
+#~ msgstr "Vis besked-statusfeltet"
+
+#~ msgid "Captive Portal"
+#~ msgstr "Fangeportal"
+
+#~ msgctxt "event list time"
+#~ msgid "%H∶%M"
+#~ msgstr "%H∶%M"
+
+#~ msgctxt "event list time"
+#~ msgid "%l∶%M %p"
+#~ msgstr "%l∶%M %p"
+
+#~ msgctxt "list sunday"
+#~ msgid "Su"
+#~ msgstr "S"
+
+#~ msgctxt "list monday"
+#~ msgid "M"
+#~ msgstr "M"
+
+#~ msgctxt "list tuesday"
+#~ msgid "T"
+#~ msgstr "Ti"
+
+#~ msgctxt "list wednesday"
+#~ msgid "W"
+#~ msgstr "O"
+
+#~ msgctxt "list thursday"
+#~ msgid "Th"
+#~ msgstr "To"
+
+#~ msgctxt "list friday"
+#~ msgid "F"
+#~ msgstr "F"
+
+#~ msgctxt "list saturday"
+#~ msgid "S"
+#~ msgstr "L"
+
+#~ msgid "Nothing Scheduled"
+#~ msgstr "Intet planlagt"
+
+#~ msgid "Today"
+#~ msgstr "I dag"
+
+#~ msgid "Tomorrow"
+#~ msgstr "I morgen"
+
+#~ msgid "This week"
+#~ msgstr "Denne uge"
+
+#~ msgid "Next week"
+#~ msgstr "Næste uge"
+
+#~ msgid "Removable Devices"
+#~ msgstr "Flytbare enheder"
+
+#~ msgid "Eject"
+#~ msgstr "Skub ud"
+
+#~ msgid "Invitation"
+#~ msgstr "Invitation"
+
+#~ msgid "Call"
+#~ msgstr "Opkald"
+
+#~ msgid "File Transfer"
+#~ msgstr "Filoverførsel"
+
+#~ msgid "Chat"
+#~ msgstr "Chat"
+
+#~ msgid "Unmute"
+#~ msgstr "Slå lyd til"
+
+#~ msgid "Mute"
+#~ msgstr "Slå lyd fra"
+
+#~ msgid "Invitation to %s"
+#~ msgstr "Invitation til %s"
+
+#~ msgid "%s is inviting you to join %s"
+#~ msgstr "%s inviterer dig til at deltage i %s"
+
+#~ msgid "Decline"
+#~ msgstr "Afvis"
+
+#~ msgid "Accept"
+#~ msgstr "Acceptér"
+
+#~ msgid "Video call from %s"
+#~ msgstr "Videoopkald fra %s"
+
+#~ msgid "Call from %s"
+#~ msgstr "Opkald fra %s"
+
+#~ msgid "Answer"
+#~ msgstr "Svar"
+
+#~ msgid "%s is sending you %s"
+#~ msgstr "%s sender dig %s"
+
+#~ msgid "%s would like permission to see when you are online"
+#~ msgstr "%s vil gerne have tilladelse til at se, når du er online"
+
+#~ msgid "Authentication failed"
+#~ msgstr "Godkendelse mislykkedes"
+
+#~ msgid "Encryption error"
+#~ msgstr "Krypteringsfejl"
+
+#~ msgid "Certificate not provided"
+#~ msgstr "Certifikat ikke angivet"
+
+#~ msgid "Certificate untrusted"
+#~ msgstr "Utroværdigt certifikat"
+
+#~ msgid "Certificate expired"
+#~ msgstr "Certifikat udløbet"
+
+#~ msgid "Certificate not activated"
+#~ msgstr "Certifikat ikke aktiveret"
+
+#~ msgid "Certificate hostname mismatch"
+#~ msgstr "Certifikat-værtsnavn stemmer ikke"
+
+#~ msgid "Certificate fingerprint mismatch"
+#~ msgstr "Certifikat-fingeraftryk stemmer ikke"
+
+#~ msgid "Certificate self-signed"
+#~ msgstr "Certifikat selv-underskrevet"
+
+#~ msgid "Status is set to offline"
+#~ msgstr "Status er angivet til offline"
+
+#~ msgid "Encryption is not available"
+#~ msgstr "Kryptering er ikke tilgængelig"
+
+#~ msgid "Certificate is invalid"
+#~ msgstr "Ugyldigt certifikat"
+
+#~ msgid "Connection has been refused"
+#~ msgstr "Forbindelse er blevet afvist"
+
+#~ msgid "Connection can't be established"
+#~ msgstr "Forbindelse kan ikke oprettes"
+
+#~ msgid "Connection has been lost"
+#~ msgstr "Forbindelse er mistet"
+
+#~ msgid "This account is already connected to the server"
+#~ msgstr "Denne konto er allerede forbundet til serveren"
+
+#~ msgid ""
+#~ "Connection has been replaced by a new connection using the same resource"
+#~ msgstr ""
+#~ "Forbindelsen er blevet erstattet af en ny forbindelse, som bruger samme "
+#~ "ressource"
+
+#~ msgid "The account already exists on the server"
+#~ msgstr "Kontoen findes allerede på serveren"
+
+#~ msgid "Server is currently too busy to handle the connection"
+#~ msgstr "Serveren er i øjeblikket for travl til at behandle forbindelsen"
+
+#~ msgid "Certificate has been revoked"
+#~ msgstr "Certifikat er blevet påberåbt"
+
+#~ msgid ""
+#~ "Certificate uses an insecure cipher algorithm or is cryptographically weak"
+#~ msgstr ""
+#~ "Certifikat bruger en usikker cipher-algoritme eller er kryptografisk svag"
+
+#~ msgid ""
+#~ "The length of the server certificate, or the depth of the server "
+#~ "certificate chain, exceed the limits imposed by the cryptography library"
+#~ msgstr ""
+#~ "Længden på servercertifikatet, eller dybden af servercertifikat-kæden, "
+#~ "overskrider grænsen, som er fastsat af det kryptografiske-programbibliotek"
+
+#~ msgid "Internal error"
+#~ msgstr "Intern fejl"
+
+#~ msgid "Unable to connect to %s"
+#~ msgstr "Kunne ikke forbinde til %s"
+
+#~ msgid "View account"
+#~ msgstr "Vis konto"
+
+#~ msgid "Unknown reason"
+#~ msgstr "Ukendt årsag"
+
+#~ msgid "Open Calendar"
+#~ msgstr "Åbn kalender"
+
+#~ msgid "Date & Time Settings"
+#~ msgstr "Indstillinger for dato og tid"
+
+#~ msgid "Open"
+#~ msgstr "Åbn"
+
+#~ msgid "Remove"
+#~ msgstr "Fjern"
+
+#~ msgid "Clear Messages"
+#~ msgstr "Ryd beskeder"
+
+#~ msgid "Notification Settings"
+#~ msgstr "Indstillinger for påmindelser"
+
+#~ msgid "Tray Menu"
+#~ msgstr "Menu for statusfelt"
+
+#~ msgid "No Messages"
+#~ msgstr "Ingen beskeder"
+
+#~ msgid "Message Tray"
+#~ msgstr "Besked-statusfelt"
 
 #~ msgid "The maximum accuracy level of location."
 #~ msgstr "Det maksimale nøjagtighedsniveau for placering."
@@ -1877,34 +1877,6 @@ msgstr "Godkendelsesdialogen blev afvist af brugeren"
 #~ msgctxt "event list time"
 #~ msgid "%l\\u2236%M\\u2009%p"
 #~ msgstr "%l\\u2236%M\\u2009%p"
-
-#, fuzzy
-#~ msgid "%H\\u2236%M"
-#~ msgstr "%H\\u2236%M"
-
-#, fuzzy
-#~ msgid "%A, %H\\u2236%M"
-#~ msgstr "%H\\u2236%M"
-
-#, fuzzy
-#~ msgid "%B %d, %H\\u2236%M"
-#~ msgstr "%H\\u2236%M"
-
-#, fuzzy
-#~ msgid "%B %d %Y, %H\\u2236%M"
-#~ msgstr "%d. %B %Y, %H∶%M"
-
-#, fuzzy
-#~ msgid "%l\\u2236%M %p"
-#~ msgstr "%H\\u2236%M"
-
-#, fuzzy
-#~ msgid "%A, %l\\u2236%M %p"
-#~ msgstr "%A, %l∶%M %p"
-
-#, fuzzy
-#~ msgid "%B %d, %l\\u2236%M %p"
-#~ msgstr "%d. %B, %l∶%M %p"
 
 #~ msgid "unavailable"
 #~ msgstr "utilgængelig"
