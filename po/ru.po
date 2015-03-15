@@ -19,8 +19,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-03-11 20:43+0000\n"
-"PO-Revision-Date: 2015-03-12 00:32+0300\n"
+"POT-Creation-Date: 2015-03-15 20:37+0000\n"
+"PO-Revision-Date: 2015-03-16 01:38+0300\n"
 "Last-Translator: Stas Solovey <whats_up@tut.by>\n"
 "Language-Team: Русский <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
@@ -319,7 +319,7 @@ msgstr "Возникла ошибка загрузки диалогового о
 msgid "GNOME Shell Extensions"
 msgstr "Расширения GNOME Shell"
 
-#: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:143
+#: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:145
 #: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:452
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
 #: ../js/ui/status/network.js:916
@@ -353,8 +353,8 @@ msgstr "Нет в списке?"
 msgid "(e.g., user or %s)"
 msgstr "(например, пользователь или %s)"
 
-#: ../js/gdm/loginDialog.js:835 ../js/ui/components/networkAgent.js:269
-#: ../js/ui/components/networkAgent.js:287
+#: ../js/gdm/loginDialog.js:835 ../js/ui/components/networkAgent.js:271
+#: ../js/ui/components/networkAgent.js:289
 msgid "Username: "
 msgstr "Имя пользователя: "
 
@@ -504,106 +504,106 @@ msgid "Change Background…"
 msgstr "Изменить фон…"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday). */
-#: ../js/ui/calendar.js:49
+#: ../js/ui/calendar.js:53
 msgctxt "calendar-no-work"
 msgid "06"
 msgstr "06"
-
-#. Translators: Shown in calendar event list for all day events
-#. * Keep it short, best if you can use less then 10 characters
-#. */
-#: ../js/ui/calendar.js:78
-msgctxt "event list time"
-msgid "All Day"
-msgstr "Весь день"
 
 #. Translators: Calendar grid abbreviation for Sunday.
 #. *
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #. */
-#: ../js/ui/calendar.js:93
+#: ../js/ui/calendar.js:82
 msgctxt "grid sunday"
 msgid "S"
 msgstr "Вс"
 
 #. Translators: Calendar grid abbreviation for Monday */
-#: ../js/ui/calendar.js:95
+#: ../js/ui/calendar.js:84
 msgctxt "grid monday"
 msgid "M"
 msgstr "Пн"
 
 #. Translators: Calendar grid abbreviation for Tuesday */
-#: ../js/ui/calendar.js:97
+#: ../js/ui/calendar.js:86
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "Вт"
 
 #. Translators: Calendar grid abbreviation for Wednesday */
-#: ../js/ui/calendar.js:99
+#: ../js/ui/calendar.js:88
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "Ср"
 
 #. Translators: Calendar grid abbreviation for Thursday */
-#: ../js/ui/calendar.js:101
+#: ../js/ui/calendar.js:90
 msgctxt "grid thursday"
 msgid "T"
 msgstr "Чт"
 
 #. Translators: Calendar grid abbreviation for Friday */
-#: ../js/ui/calendar.js:103
+#: ../js/ui/calendar.js:92
 msgctxt "grid friday"
 msgid "F"
 msgstr "Пт"
 
 #. Translators: Calendar grid abbreviation for Saturday */
-#: ../js/ui/calendar.js:105
+#: ../js/ui/calendar.js:94
 msgctxt "grid saturday"
 msgid "S"
 msgstr "Сб"
 
-#: ../js/ui/calendar.js:572
+#: ../js/ui/calendar.js:563
 msgid "Previous month"
 msgstr "Предыдущий месяц"
 
-#: ../js/ui/calendar.js:582
+#: ../js/ui/calendar.js:573
 msgid "Next month"
 msgstr "Следующий месяц"
 
-#: ../js/ui/calendar.js:789
+#: ../js/ui/calendar.js:780
 msgid "Week %V"
 msgstr "%V неделя"
 
-#: ../js/ui/calendar.js:1247
+#. Translators: Shown in calendar event list for all day events
+#. * Keep it short, best if you can use less then 10 characters
+#. */
+#: ../js/ui/calendar.js:1182
+msgctxt "event list time"
+msgid "All Day"
+msgstr "Весь день"
+
+#: ../js/ui/calendar.js:1288
 msgid "Clear section"
 msgstr "Очистить секцию"
 
-#: ../js/ui/calendar.js:1464
+#: ../js/ui/calendar.js:1515
 msgid "Events"
 msgstr "События"
 
 # fix для даты в календаре и на экране блокировки, за разъяснением обращаться к Stas Solovey <whats_up@tut.by>
-#: ../js/ui/calendar.js:1472
+#: ../js/ui/calendar.js:1524
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d %b."
 
 # fix для даты в календаре и на экране блокировки
-#: ../js/ui/calendar.js:1476
+#: ../js/ui/calendar.js:1528
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d %b., %Y"
 
-#: ../js/ui/calendar.js:1568
+#: ../js/ui/calendar.js:1613
 msgid "Notifications"
 msgstr "Уведомления"
 
-#: ../js/ui/calendar.js:1719
+#: ../js/ui/calendar.js:1764
 msgid "No Notifications"
 msgstr "Уведомлений нет"
 
-#: ../js/ui/calendar.js:1722
+#: ../js/ui/calendar.js:1767
 msgid "No Events"
 msgstr "Событий нет"
 
@@ -628,40 +628,42 @@ msgstr "Пароль:"
 msgid "Type again:"
 msgstr "Введите ещё раз:"
 
-#: ../js/ui/components/networkAgent.js:138 ../js/ui/status/network.js:277
+#: ../js/ui/components/networkAgent.js:140 ../js/ui/status/network.js:277
 #: ../js/ui/status/network.js:359 ../js/ui/status/network.js:919
 msgid "Connect"
 msgstr "Соединиться"
 
-#: ../js/ui/components/networkAgent.js:231
-#: ../js/ui/components/networkAgent.js:243
-#: ../js/ui/components/networkAgent.js:271
-#: ../js/ui/components/networkAgent.js:291
-#: ../js/ui/components/networkAgent.js:301
+#: ../js/ui/components/networkAgent.js:233
+#: ../js/ui/components/networkAgent.js:245
+#: ../js/ui/components/networkAgent.js:273
+#: ../js/ui/components/networkAgent.js:293
+#: ../js/ui/components/networkAgent.js:303
 msgid "Password: "
 msgstr "Пароль: "
 
-#: ../js/ui/components/networkAgent.js:236
+#: ../js/ui/components/networkAgent.js:238
 msgid "Key: "
 msgstr "Ключ: "
 
-#: ../js/ui/components/networkAgent.js:275
+#: ../js/ui/components/networkAgent.js:277
 msgid "Identity: "
 msgstr "Учётная запись: "
 
-#: ../js/ui/components/networkAgent.js:277
+#: ../js/ui/components/networkAgent.js:279
 msgid "Private key password: "
 msgstr "Пароль личного ключа: "
 
-#: ../js/ui/components/networkAgent.js:289
+#: ../js/ui/components/networkAgent.js:291
 msgid "Service: "
 msgstr "Служба: "
 
-#: ../js/ui/components/networkAgent.js:318
+#: ../js/ui/components/networkAgent.js:320
+#: ../js/ui/components/networkAgent.js:658
 msgid "Authentication required by wireless network"
 msgstr "Беспроводная сеть требует подтверждения подлинности"
 
-#: ../js/ui/components/networkAgent.js:319
+#: ../js/ui/components/networkAgent.js:321
+#: ../js/ui/components/networkAgent.js:659
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -669,38 +671,50 @@ msgid ""
 msgstr ""
 "Для доступа к беспроводной сети «%s» требуется пароль или ключ шифрования."
 
-#: ../js/ui/components/networkAgent.js:323
+#: ../js/ui/components/networkAgent.js:325
+#: ../js/ui/components/networkAgent.js:662
 msgid "Wired 802.1X authentication"
 msgstr "Аутентификация Wired 802.1X"
 
-#: ../js/ui/components/networkAgent.js:325
+#: ../js/ui/components/networkAgent.js:327
 msgid "Network name: "
 msgstr "Название сети: "
 
-#: ../js/ui/components/networkAgent.js:330
+#: ../js/ui/components/networkAgent.js:332
+#: ../js/ui/components/networkAgent.js:666
 msgid "DSL authentication"
 msgstr "Аутентификация DSL"
 
-#: ../js/ui/components/networkAgent.js:337
+#: ../js/ui/components/networkAgent.js:339
+#: ../js/ui/components/networkAgent.js:672
 msgid "PIN code required"
 msgstr "Требуется PIN-код"
 
-#: ../js/ui/components/networkAgent.js:338
+#: ../js/ui/components/networkAgent.js:340
+#: ../js/ui/components/networkAgent.js:673
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "Для широкополосного мобильного устройства требуется PIN-код"
 
-#: ../js/ui/components/networkAgent.js:339
+#: ../js/ui/components/networkAgent.js:341
 msgid "PIN: "
 msgstr "PIN-код: "
 
-#: ../js/ui/components/networkAgent.js:345
+#: ../js/ui/components/networkAgent.js:348
+#: ../js/ui/components/networkAgent.js:679
 msgid "Mobile broadband network password"
 msgstr "Пароль для мобильной широкополосной сети"
 
-#: ../js/ui/components/networkAgent.js:346
+#: ../js/ui/components/networkAgent.js:349
+#: ../js/ui/components/networkAgent.js:663
+#: ../js/ui/components/networkAgent.js:667
+#: ../js/ui/components/networkAgent.js:680
 #, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "Для подключения к «%s» требуется пароль."
+
+#: ../js/ui/components/networkAgent.js:647 ../js/ui/status/network.js:1657
+msgid "Network Manager"
+msgstr "Диспетчер сети"
 
 #: ../js/ui/components/polkitAgent.js:54
 msgid "Authentication Required"
@@ -913,9 +927,19 @@ msgstr "Установить"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Загрузить и установить расширение «%s» из extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:706 ../js/ui/status/keyboard.js:576
+#: ../js/ui/keyboard.js:714 ../js/ui/status/keyboard.js:580
 msgid "Keyboard"
 msgstr "Клавиатура"
+
+#. translators: 'Hide' is a verb */
+#: ../js/ui/legacyTray.js:64
+#| msgid "Hide Text"
+msgid "Hide tray"
+msgstr "Скрыть лоток"
+
+#: ../js/ui/legacyTray.js:104
+msgid "Status Icons"
+msgstr "Значки состояния"
 
 #: ../js/ui/lookingGlass.js:643
 msgid "No extensions installed"
@@ -1058,11 +1082,11 @@ msgstr "Не удалось заблокировать"
 msgid "Lock was blocked by an application"
 msgstr "Блокировке помешало приложение"
 
-#: ../js/ui/search.js:609
+#: ../js/ui/search.js:616
 msgid "Searching…"
 msgstr "Поиск…"
 
-#: ../js/ui/search.js:611
+#: ../js/ui/search.js:618
 msgid "No results."
 msgstr "Ничего не найдено."
 
@@ -1165,7 +1189,7 @@ msgstr "Не подключено"
 msgid "Brightness"
 msgstr "Яркость"
 
-#: ../js/ui/status/keyboard.js:599
+#: ../js/ui/status/keyboard.js:603
 msgid "Show Keyboard Layout"
 msgstr "Показать раскладку клавиатуры"
 
@@ -1333,10 +1357,6 @@ msgstr "Параметры VPN"
 #: ../js/ui/status/network.js:1502
 msgid "VPN"
 msgstr "VPN"
-
-#: ../js/ui/status/network.js:1657
-msgid "Network Manager"
-msgstr "Диспетчер сети"
 
 #: ../js/ui/status/network.js:1697
 msgid "Activation of network connection failed"
@@ -1549,12 +1569,12 @@ msgstr ""
 msgid "List possible modes"
 msgstr "Список возможных режимов"
 
-#: ../src/shell-app.c:247
+#: ../src/shell-app.c:239
 msgctxt "program"
 msgid "Unknown"
 msgstr "Неизвестное приложение"
 
-#: ../src/shell-app.c:488
+#: ../src/shell-app.c:480
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "Не удалось запустить «%s»"
