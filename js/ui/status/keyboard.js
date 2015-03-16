@@ -2,6 +2,7 @@
 
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
 const Lang = imports.lang;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
@@ -17,10 +18,6 @@ const PopupMenu = imports.ui.popupMenu;
 const PanelMenu = imports.ui.panelMenu;
 const SwitcherPopup = imports.ui.switcherPopup;
 const Util = imports.misc.util;
-
-const DESKTOP_INPUT_SOURCES_SCHEMA = 'org.gnome.desktop.input-sources';
-const KEY_INPUT_SOURCES = 'sources';
-const KEY_KEYBOARD_OPTIONS = 'xkb-options';
 
 const INPUT_SOURCE_TYPE_XKB = 'xkb';
 const INPUT_SOURCE_TYPE_IBUS = 'ibus';
@@ -142,6 +139,149 @@ const InputSourceSwitcher = new Lang.Class({
     }
 });
 
+const InputSourceSettings = new Lang.Class({
+    Name: 'InputSourceSettings',
+    Abstract: true,
+
+    _emitInputSourcesChanged: function() {
+        this.emit('input-sources-changed');
+    },
+
+    _emitKeyboardOptionsChanged: function() {
+        this.emit('keyboard-options-changed');
+    },
+
+    _emitPerWindowChanged: function() {
+        this.emit('per-window-changed');
+    },
+
+    get inputSources() {
+        return [];
+    },
+
+    get keyboardOptions() {
+        return [];
+    },
+
+    get perWindow() {
+        return false;
+    }
+});
+Signals.addSignalMethods(InputSourceSettings.prototype);
+
+const InputSourceSystemSettings = new Lang.Class({
+    Name: 'InputSourceSystemSettings',
+    Extends: InputSourceSettings,
+
+    _BUS_NAME: 'org.freedesktop.locale1',
+    _BUS_PATH: '/org/freedesktop/locale1',
+    _BUS_IFACE: 'org.freedesktop.locale1',
+    _BUS_PROPS_IFACE: 'org.freedesktop.DBus.Properties',
+
+    _init: function() {
+        this._layouts = '';
+        this._variants = '';
+        this._options = '';
+
+        this._reload();
+
+        Gio.DBus.system.signal_subscribe(this._BUS_NAME,
+                                         this._BUS_PROPS_IFACE,
+                                         'PropertiesChanged',
+                                         this._BUS_PATH,
+                                         null,
+                                         Gio.DBusSignalFlags.NONE,
+                                         Lang.bind(this, this._reload));
+    },
+
+    _reload: function() {
+        Gio.DBus.system.call(this._BUS_NAME,
+                             this._BUS_PATH,
+                             this._BUS_PROPS_IFACE,
+                             'GetAll',
+                             new GLib.Variant('(s)', [this._BUS_IFACE]),
+                             null, Gio.DBusCallFlags.NONE, -1, null,
+                             Lang.bind(this, function(conn, result) {
+                                 let props;
+                                 try {
+                                     props = conn.call_finish(result).deep_unpack()[0];
+                                 } catch(e) {
+                                     log('Could not get properties from ' + this._BUS_NAME);
+                                     return;
+                                 }
+                                 let layouts = props['X11Layout'].unpack();
+                                 let variants = props['X11Variant'].unpack();
+                                 let options = props['X11Options'].unpack();
+
+                                 if (layouts != this._layouts ||
+                                     variants != this._variants) {
+                                     this._layouts = layouts;
+                                     this._variants = variants;
+                                     this._emitInputSourcesChanged();
+                                 }
+                                 if (options != this._options) {
+                                     this._options = options;
+                                     this._emitKeyboardOptionsChanged();
+                                 }
+                             }));
+    },
+
+    get inputSources() {
+        let sourcesList = [];
+        let layouts = this._layouts.split(',');
+        let variants = this._variants.split(',');
+
+        for (let i = 0; i < layouts.length && !!layouts[i]; i++) {
+            let id = layouts[i];
+            if (!!variants[i])
+                id += '+' + variants[i];
+            sourcesList.push({ type: INPUT_SOURCE_TYPE_XKB, id: id });
+        }
+        return sourcesList;
+    },
+
+    get keyboardOptions() {
+        return this._options.split(',');
+    }
+});
+
+const InputSourceSessionSettings = new Lang.Class({
+    Name: 'InputSourceSessionSettings',
+    Extends: InputSourceSettings,
+
+    _DESKTOP_INPUT_SOURCES_SCHEMA: 'org.gnome.desktop.input-sources',
+    _KEY_INPUT_SOURCES: 'sources',
+    _KEY_KEYBOARD_OPTIONS: 'xkb-options',
+    _KEY_PER_WINDOW: 'per-window',
+
+    _init: function() {
+        this._settings = new Gio.Settings({ schema_id: this._DESKTOP_INPUT_SOURCES_SCHEMA });
+        this._settings.connect('changed::' + this._KEY_INPUT_SOURCES, Lang.bind(this, this._emitInputSourcesChanged));
+        this._settings.connect('changed::' + this._KEY_KEYBOARD_OPTIONS, Lang.bind(this, this._emitKeyboardOptionsChanged));
+        this._settings.connect('changed::' + this._KEY_PER_WINDOW, Lang.bind(this, this._emitPerWindowChanged));
+    },
+
+    get inputSources() {
+        let sourcesList = [];
+        let sources = this._settings.get_value(this._KEY_INPUT_SOURCES);
+        let nSources = sources.n_children();
+
+        for (let i = 0; i < nSources; i++) {
+            let [type, id] = sources.get_child_value(i).deep_unpack();
+            sourcesList.push({ type: type, id: id });
+        }
+        return sourcesList;
+    },
+
+    get keyboardOptions() {
+        return this._settings.get_strv(this._KEY_KEYBOARD_OPTIONS);
+    },
+
+    get perWindow() {
+        return this._settings.get_boolean(this._KEY_PER_WINDOW);
+    }
+});
+
 const InputSourceManager = new Lang.Class({
     Name: 'InputSourceManager',
 
@@ -172,9 +312,12 @@ const InputSourceManager = new Lang.Class({
                                   Meta.KeyBindingFlags.IS_REVERSED,
                                   Shell.ActionMode.ALL,
                                   Lang.bind(this, this._switchInputSource));
-        this._settings = new Gio.Settings({ schema_id: DESKTOP_INPUT_SOURCES_SCHEMA });
-        this._settings.connect('changed::' + KEY_INPUT_SOURCES, Lang.bind(this, this._inputSourcesChanged));
-        this._settings.connect('changed::' + KEY_KEYBOARD_OPTIONS, Lang.bind(this, this._keyboardOptionsChanged));
+        if (Main.sessionMode.isGreeter)
+            this._settings = new InputSourceSystemSettings();
+        else
+            this._settings = new InputSourceSessionSettings();
+        this._settings.connect('input-sources-changed', Lang.bind(this, this._inputSourcesChanged));
+        this._settings.connect('keyboard-options-changed', Lang.bind(this, this._keyboardOptionsChanged));
 
         this._xkbInfo = KeyboardManager.getXkbInfo();
         this._keyboardManager = KeyboardManager.getKeyboardManager();
@@ -192,13 +335,13 @@ const InputSourceManager = new Lang.Class({
         this._focusWindowNotifyId = 0;
         this._overviewShowingId = 0;
         this._overviewHiddenId = 0;
-        this._settings.connect('changed::per-window', Lang.bind(this, this._sourcesPerWindowChanged));
+        this._settings.connect('per-window-changed', Lang.bind(this, this._sourcesPerWindowChanged));
         this._sourcesPerWindowChanged();
         this._disableIBus = false;
     },
 
     reload: function() {
-        this._keyboardManager.setKeyboardOptions(this._settings.get_strv(KEY_KEYBOARD_OPTIONS));
+        this._keyboardManager.setKeyboardOptions(this._settings.keyboardOptions);
         this._inputSourcesChanged();
     },
 
@@ -253,7 +396,7 @@ const InputSourceManager = new Lang.Class({
     },
 
     _keyboardOptionsChanged: function() {
-        this._keyboardManager.setKeyboardOptions(this._settings.get_strv(KEY_KEYBOARD_OPTIONS));
+        this._keyboardManager.setKeyboardOptions(this._settings.keyboardOptions);
         this._keyboardManager.reapply();
     },
 
@@ -294,8 +437,8 @@ const InputSourceManager = new Lang.Class({
     },
 
     _inputSourcesChanged: function() {
-        let sources = this._settings.get_value(KEY_INPUT_SOURCES);
-        let nSources = sources.n_children();
+        let sources = this._settings.inputSources;
+        let nSources = sources.length;
 
         this._inputSources = {};
         this._ibusSources = {};
@@ -304,7 +447,8 @@ const InputSourceManager = new Lang.Class({
         for (let i = 0; i < nSources; i++) {
             let displayName;
             let shortName;
-            let [type, id] = sources.get_child_value(i).deep_unpack();
+            let type = sources[i].type;
+            let id = sources[i].id;
             let exists = false;
 
             if (type == INPUT_SOURCE_TYPE_XKB) {
@@ -513,7 +657,7 @@ const InputSourceManager = new Lang.Class({
     },
 
     _sourcesPerWindowChanged: function() {
-        this._sourcesPerWindow = this._settings.get_boolean('per-window');
+        this._sourcesPerWindow = this._settings.perWindow;
 
         if (this._sourcesPerWindow && this._focusWindowNotifyId == 0) {
             this._focusWindowNotifyId = global.display.connect('notify::focus-window',
