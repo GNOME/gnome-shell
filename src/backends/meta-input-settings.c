@@ -380,6 +380,32 @@ update_touchpad_scroll_method (MetaInputSettings *input_settings,
 }
 
 static void
+update_touchpad_click_method (MetaInputSettings *input_settings,
+                              ClutterInputDevice *device)
+{
+  MetaInputSettingsClass *input_settings_class;
+  GDesktopTouchpadScrollMethod method;
+  MetaInputSettingsPrivate *priv;
+
+  priv = meta_input_settings_get_instance_private (input_settings);
+  input_settings_class = META_INPUT_SETTINGS_GET_CLASS (input_settings);
+  method = g_settings_get_enum (priv->touchpad_settings, "click-method");
+
+  if (device)
+    {
+      settings_device_set_uint_setting (input_settings, device,
+                                        input_settings_class->set_click_method,
+                                        method);
+    }
+  else
+    {
+      settings_set_uint_setting (input_settings, CLUTTER_TOUCHPAD_DEVICE,
+                                 (ConfigUintFunc) input_settings_class->set_click_method,
+                                 method);
+    }
+}
+
+static void
 update_touchpad_send_events (MetaInputSettings  *input_settings,
                              ClutterInputDevice *device)
 {
@@ -569,6 +595,8 @@ meta_input_settings_changed_cb (GSettings  *settings,
         update_touchpad_send_events (input_settings, NULL);
       else if (strcmp (key, "scroll-method") == 0)
         update_touchpad_scroll_method (input_settings, NULL);
+      else if (strcmp (key, "click-method") == 0)
+        update_touchpad_click_method (input_settings, NULL);
     }
   else if (settings == priv->trackball_settings)
     {
@@ -705,6 +733,7 @@ meta_input_settings_device_added (ClutterDeviceManager *device_manager,
       update_touchpad_left_handed (input_settings, device);
       update_touchpad_tap_enabled (input_settings, device);
       update_touchpad_scroll_method (input_settings, device);
+      update_touchpad_click_method (input_settings, device);
       update_touchpad_send_events (input_settings, device);
 
       update_device_speed (input_settings, priv->touchpad_settings,

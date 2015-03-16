@@ -70,6 +70,10 @@ struct _MetaInputSettingsClass
                               ClutterInputDevice *device,
                               guint               button);
 
+  void (* set_click_method)  (MetaInputSettings            *settings,
+                              ClutterInputDevice           *device,
+                              GDesktopTouchpadClickMethod   mode);
+
   void (* set_keyboard_repeat) (MetaInputSettings *settings,
                                 gboolean           repeat,
                                 guint              delay,
