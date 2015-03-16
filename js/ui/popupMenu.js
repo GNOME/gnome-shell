@@ -169,10 +169,10 @@ const PopupBaseMenuItem = new Lang.Class({
         if (activeChanged) {
             this.active = active;
             if (active) {
-                this.actor.add_style_class_name('active');
+                this.actor.add_style_class_name('selected');
                 this.actor.grab_key_focus();
             } else {
-                this.actor.remove_style_class_name('active');
+                this.actor.remove_style_class_name('selected');
                 // Remove the CSS active state if the user press the button and
                 // while holding moves to another menu item, so we don't paint all items.
                 // The correct behaviour would be to set the new item with the CSS

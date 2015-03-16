@@ -401,7 +401,7 @@ StScrollBar {
       color: #ffffff; }
     .popup-menu .popup-menu-item:insensitive {
       color: rgba(238, 238, 236, 0.5); }
-  .popup-menu .active {
+  .popup-menu .selected {
     background-color: #215d9c; }
   .popup-menu .popup-inactive-menu-item {
     color: #eeeeec; }
