@@ -14,7 +14,7 @@
    height="22"
    id="svg2857"
    version="1.1"
-   inkscape:version="0.48.5 r10040"
+   inkscape:version="0.91 r13725"
    sodipodi:docname="toggle-on-intl.svg">
   <defs
      id="defs2859">
@@ -52,7 +52,7 @@
       <stop
          id="stop77465"
          offset="1"
-         style="stop-color:#204a87;stop-opacity:1" />
+         style="stop-color:#205b9a;stop-opacity:1" />
     </linearGradient>
     <linearGradient
        inkscape:collect="always"
@@ -88,14 +88,14 @@
      borderopacity="1.0"
      inkscape:pageopacity="1"
      inkscape:pageshadow="2"
-     inkscape:zoom="32"
-     inkscape:cx="17.255148"
-     inkscape:cy="8.9252639"
+     inkscape:zoom="1"
+     inkscape:cx="37.410841"
+     inkscape:cy="16.009314"
      inkscape:document-units="px"
      inkscape:current-layer="g37994"
-     showgrid="true"
+     showgrid="false"
      inkscape:window-width="2560"
-     inkscape:window-height="1375"
+     inkscape:window-height="1376"
      inkscape:window-x="0"
      inkscape:window-y="27"
      inkscape:window-maximized="1"
