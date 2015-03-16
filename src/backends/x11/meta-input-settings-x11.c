@@ -185,6 +185,34 @@ meta_input_settings_x11_set_scroll_button (MetaInputSettings  *settings,
 }
 
 static void
+meta_input_settings_x11_set_click_method (MetaInputSettings           *settings,
+                                          ClutterInputDevice          *device,
+                                          GDesktopTouchpadClickMethod  mode)
+{
+  guchar values[2] = { 0 }; /* buttonareas, clickfinger */
+
+  switch (mode)
+    {
+    case G_DESKTOP_TOUCHPAD_CLICK_METHOD_NONE:
+      break;
+    case G_DESKTOP_TOUCHPAD_CLICK_METHOD_AREAS:
+      values[0] = 1;
+      break;
+    case G_DESKTOP_TOUCHPAD_CLICK_METHOD_DEFAULT:
+      /* XXX: We can't be much smarter yet, x11 doesn't expose default settings */
+    case G_DESKTOP_TOUCHPAD_CLICK_METHOD_FINGERS:
+      values[1] = 1;
+      break;
+    default:
+      g_assert_not_reached ();
+      return;
+  }
+
+  change_property (device, "libinput Click Method Enabled",
+                   XA_INTEGER, 8, &values, 2);
+}
+
+static void
 meta_input_settings_x11_set_keyboard_repeat (MetaInputSettings *settings,
                                              gboolean           enabled,
                                              guint              delay,
@@ -217,6 +245,7 @@ meta_input_settings_x11_class_init (MetaInputSettingsX11Class *klass)
   input_settings_class->set_invert_scroll = meta_input_settings_x11_set_invert_scroll;
   input_settings_class->set_scroll_method = meta_input_settings_x11_set_scroll_method;
   input_settings_class->set_scroll_button = meta_input_settings_x11_set_scroll_button;
+  input_settings_class->set_click_method = meta_input_settings_x11_set_click_method;
   input_settings_class->set_keyboard_repeat = meta_input_settings_x11_set_keyboard_repeat;
 }
 
