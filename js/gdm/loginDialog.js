@@ -323,13 +323,15 @@ const SessionMenuButton = new Lang.Class({
         }
     },
 
-    setActiveSession: function(sessionId) {
+    activeSessionChanged: function(sessionId) {
          if (sessionId == this._activeSessionId)
              return;
 
          this._activeSessionId = sessionId;
          this._updateOrnament();
+    },
 
+    setActiveSession: function(sessionId) {
          this.emit('session-activated', this._activeSessionId);
     },
 
@@ -788,7 +790,7 @@ const LoginDialog = new Lang.Class({
     },
 
     _onDefaultSessionChanged: function(client, sessionId) {
-        this._sessionMenuButton.setActiveSession(sessionId);
+        this._sessionMenuButton.activeSessionChanged(sessionId);
     },
 
     _shouldShowSessionMenuButton: function() {
