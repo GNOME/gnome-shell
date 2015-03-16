@@ -352,6 +352,13 @@ choose_xdisplay (MetaXWaylandManager *manager)
   int display = 0;
   char *lockfile = NULL;
 
+  /* Hack to keep the unused Xwayland instance on
+   * the login screen from taking the prime :0 display
+   * number.
+   */
+  if (g_getenv ("RUNNING_UNDER_GDM") != NULL)
+    display = 1024;
+
   do
     {
       lockfile = create_lockfile (display, &display);
