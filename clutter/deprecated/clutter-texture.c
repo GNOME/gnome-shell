@@ -1773,7 +1773,7 @@ clutter_texture_set_from_yuv_data (ClutterTexture     *texture,
     {
       g_set_error (error, CLUTTER_TEXTURE_ERROR,
 		   CLUTTER_TEXTURE_ERROR_BAD_FORMAT,
-		   _("YUV2 textues are not supported"));
+		   _("YUV2 textures are not supported"));
       return FALSE;
     }
 
