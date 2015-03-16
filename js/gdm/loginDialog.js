@@ -1086,18 +1086,11 @@ const LoginDialog = new Lang.Class({
     },
 
     _onUserListActivated: function(activatedItem) {
-        let tasks = [function() {
-                         return GdmUtil.cloneAndFadeOutActor(this._userSelectionBox);
-                     },
-                     function() {
-                         this._setUserListExpanded(false);
-                     }];
-
         this._user = activatedItem.user;
 
         this._updateCancelButton();
 
-        let batch = new Batch.ConcurrentBatch(this, [new Batch.ConsecutiveBatch(this, tasks),
+        let batch = new Batch.ConcurrentBatch(this, [GdmUtil.cloneAndFadeOutActor(this._userSelectionBox),
                                                      this._beginVerificationForItem(activatedItem)]);
         batch.run();
     },
