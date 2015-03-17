@@ -135,6 +135,12 @@ clutter_stage_cogl_realize (ClutterStageWindow *stage_window)
 
   backend = clutter_get_default_backend ();
 
+  if (backend->cogl_context == NULL)
+    {
+      g_warning ("Failed to realize stage: missing Cogl context");
+      return FALSE;
+    }
+
   if (stage_cogl->onscreen == NULL)
     {
       stage_cogl->onscreen = cogl_onscreen_new (backend->cogl_context,
