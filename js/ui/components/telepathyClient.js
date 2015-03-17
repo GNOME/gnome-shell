@@ -352,7 +352,9 @@ const ChatSource = new Lang.Class({
 
     _updateAvatarIcon: function() {
         this.iconUpdated();
-        this._notification.update(this._notification.title, null, { customContent: true });
+        this._notification.update(this._notification.title,
+                                  this._notification.bannerBodyText,
+                                  { gicon: this.getIcon(), customContent: true });
     },
 
     open: function() {
@@ -546,7 +548,9 @@ const ChatSource = new Lang.Class({
     },
 
     _presenceChanged: function (contact, presence, status, message) {
-        this._notification.update(this._notification.title, null, { customContent: true, secondaryGIcon: this.getSecondaryIcon() });
+        this._notification.update(this._notification.title,
+                                  this._notification.bannerBodyText,
+                                  { customContent: true, secondaryGIcon: this.getSecondaryIcon() });
     },
 
     _pendingRemoved: function(channel, message) {
