@@ -393,7 +393,7 @@ StScrollBar {
       background-color: #343a3a;
       box-shadow: inset 0 1px 0px #282c2c;
       font-weight: bold; }
-    .popup-menu .popup-menu-item:hover, .popup-menu .popup-menu-item:focus {
+    .popup-menu .popup-menu-item.selected {
       background-color: rgba(238, 238, 236, 0.1);
       color: #eeeeec; }
     .popup-menu .popup-menu-item:active {
@@ -401,8 +401,6 @@ StScrollBar {
       color: #ffffff; }
     .popup-menu .popup-menu-item:insensitive {
       color: rgba(238, 238, 236, 0.5); }
-  .popup-menu .selected {
-    background-color: #215d9c; }
   .popup-menu .popup-inactive-menu-item {
     color: #eeeeec; }
     .popup-menu .popup-inactive-menu-item:insensitive {
