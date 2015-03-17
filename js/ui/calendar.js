@@ -1227,7 +1227,7 @@ const NotificationMessage = new Lang.Class({
         notification.connect('destroy', Lang.bind(this,
             function() {
                 if (!this._closed)
-                    this.emit('close');
+                    this.close();
             }));
         this._updatedId = notification.connect('updated',
                                                Lang.bind(this, this._onUpdated));
