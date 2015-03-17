@@ -577,6 +577,10 @@ const ChatSource = new Lang.Class({
             this._pendingMessages.splice(idx, 1);
             this.countUpdated();
         }
+
+        if (this._pendingMessages.length == 0 &&
+            this._banner && !this._banner.expanded)
+            this._banner.hide();
     },
 
     _ackMessages: function() {
@@ -828,6 +832,10 @@ const ChatNotificationBanner = new Lang.Class({
             adjustment.value = adjustment.lower;
         else if (side == St.Side.BOTTOM)
             adjustment.value = adjustment.upper;
+    },
+
+    hide: function() {
+        this.emit('done-displaying');
     },
 
     _addMessage: function(message) {
