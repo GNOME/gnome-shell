@@ -1106,6 +1106,8 @@ const Message = new Lang.Class({
             this._bodyStack.layout_manager.expansion = 1;
             this._actionBin.scale_y = 1;
         }
+
+        this.emit('expanded');
     },
 
     unexpand: function(animate) {
@@ -1128,6 +1130,8 @@ const Message = new Lang.Class({
             this._actionBin.scale_y = 0;
             this.expanded = false;
         }
+
+        this.emit('unexpanded');
     },
 
     canClose: function() {
