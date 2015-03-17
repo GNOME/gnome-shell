@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-04 17:01+0200\n"
-"PO-Revision-Date: 2015-03-04 17:03+0200\n"
+"POT-Creation-Date: 2015-03-17 11:10+0200\n"
+"PO-Revision-Date: 2015-03-17 11:11+0200\n"
 "Last-Translator: Yosef Or Boczko <yoseforb@gmail.com>\n"
 "Language-Team: עברית <>\n"
 "Language: he\n"
@@ -305,7 +305,7 @@ msgstr "אירעה שגיאה בעת טעינת דו־שיח ההעדפות עב
 msgid "GNOME Shell Extensions"
 msgstr "הרחבות GNOME Shell"
 
-#: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:143
+#: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:145
 #: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:452
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
 #: ../js/ui/status/network.js:916
@@ -326,20 +326,20 @@ msgctxt "button"
 msgid "Sign In"
 msgstr "כניסה"
 
-#: ../js/gdm/loginDialog.js:276
+#: ../js/gdm/loginDialog.js:280
 msgid "Choose Session"
 msgstr "בחירת הפעלה"
 
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:417
+#: ../js/gdm/loginDialog.js:420
 msgid "Not listed?"
 msgstr "לא רשום?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: ../js/gdm/loginDialog.js:826
+#: ../js/gdm/loginDialog.js:829
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(משתמש או %s לדוגמה)"
@@ -347,12 +347,12 @@ msgstr "(משתמש או %s לדוגמה)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:831 ../js/ui/components/networkAgent.js:269
-#: ../js/ui/components/networkAgent.js:287
+#: ../js/gdm/loginDialog.js:834 ../js/ui/components/networkAgent.js:271
+#: ../js/ui/components/networkAgent.js:289
 msgid "Username: "
 msgstr "שם משתמש:"
 
-#: ../js/gdm/loginDialog.js:1166
+#: ../js/gdm/loginDialog.js:1169
 msgid "Login Window"
 msgstr "חלון כניסה"
 
@@ -460,31 +460,31 @@ msgstr "%d ב%B %Y, %l∶%M %p"
 msgid "Web Authentication Redirect"
 msgstr "אימות ניתוב הרשת"
 
-#: ../js/ui/appDisplay.js:791
+#: ../js/ui/appDisplay.js:792
 msgid "Frequently used applications will appear here"
 msgstr "יישומים בשימוש תדיר יופיעו כאן"
 
-#: ../js/ui/appDisplay.js:911
+#: ../js/ui/appDisplay.js:912
 msgid "Frequent"
 msgstr "תדיר"
 
-#: ../js/ui/appDisplay.js:918
+#: ../js/ui/appDisplay.js:919
 msgid "All"
 msgstr "הכול"
 
-#: ../js/ui/appDisplay.js:1849
+#: ../js/ui/appDisplay.js:1850
 msgid "New Window"
 msgstr "חלון חדש"
 
-#: ../js/ui/appDisplay.js:1877 ../js/ui/dash.js:289
+#: ../js/ui/appDisplay.js:1878 ../js/ui/dash.js:291
 msgid "Remove from Favorites"
 msgstr "הסרה מהמועדפים"
 
-#: ../js/ui/appDisplay.js:1883
+#: ../js/ui/appDisplay.js:1884
 msgid "Add to Favorites"
 msgstr "הוספה למועדפים"
 
-#: ../js/ui/appDisplay.js:1893
+#: ../js/ui/appDisplay.js:1894
 msgid "Show Details"
 msgstr "הצגת פרטים"
 
@@ -498,7 +498,7 @@ msgstr "‏%s נוסף למועדפים שלך."
 msgid "%s has been removed from your favorites."
 msgstr "‏%s הוסר מהמועדפים שלך."
 
-#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:649
+#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:650
 #: ../js/ui/status/system.js:337
 msgid "Settings"
 msgstr "הגדרות"
@@ -508,104 +508,104 @@ msgid "Change Background…"
 msgstr "החלפת הרקע…"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
-#: ../js/ui/calendar.js:49
+#: ../js/ui/calendar.js:53
 msgctxt "calendar-no-work"
 msgid "06"
 msgstr "65"
-
-#. Translators: Shown in calendar event list for all day events
-#. * Keep it short, best if you can use less then 10 characters
-#.
-#: ../js/ui/calendar.js:78
-msgctxt "event list time"
-msgid "All Day"
-msgstr "יום שלם"
 
 #. Translators: Calendar grid abbreviation for Sunday.
 #. *
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: ../js/ui/calendar.js:93
+#: ../js/ui/calendar.js:82
 msgctxt "grid sunday"
 msgid "S"
 msgstr "א"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: ../js/ui/calendar.js:95
+#: ../js/ui/calendar.js:84
 msgctxt "grid monday"
 msgid "M"
 msgstr "ב"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: ../js/ui/calendar.js:97
+#: ../js/ui/calendar.js:86
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "ג"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: ../js/ui/calendar.js:99
+#: ../js/ui/calendar.js:88
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "ד"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: ../js/ui/calendar.js:101
+#: ../js/ui/calendar.js:90
 msgctxt "grid thursday"
 msgid "T"
 msgstr "ה"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: ../js/ui/calendar.js:103
+#: ../js/ui/calendar.js:92
 msgctxt "grid friday"
 msgid "F"
 msgstr "ו"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: ../js/ui/calendar.js:105
+#: ../js/ui/calendar.js:94
 msgctxt "grid saturday"
 msgid "S"
 msgstr "ש"
 
-#: ../js/ui/calendar.js:572
+#: ../js/ui/calendar.js:563
 msgid "Previous month"
 msgstr "חודש קודם"
 
-#: ../js/ui/calendar.js:582
+#: ../js/ui/calendar.js:573
 msgid "Next month"
 msgstr "חודש הבא"
 
-#: ../js/ui/calendar.js:789
+#: ../js/ui/calendar.js:780
 msgid "Week %V"
 msgstr "שבוע %V"
 
-#: ../js/ui/calendar.js:1245
+#. Translators: Shown in calendar event list for all day events
+#. * Keep it short, best if you can use less then 10 characters
+#.
+#: ../js/ui/calendar.js:1182
+msgctxt "event list time"
+msgid "All Day"
+msgstr "יום שלם"
+
+#: ../js/ui/calendar.js:1288
 msgid "Clear section"
 msgstr "ניקוי מקטע"
 
-#: ../js/ui/calendar.js:1459
+#: ../js/ui/calendar.js:1515
 msgid "Events"
 msgstr "אירועים"
 
-#: ../js/ui/calendar.js:1467
+#: ../js/ui/calendar.js:1524
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, ה־%e ב%B"
 
-#: ../js/ui/calendar.js:1471
+#: ../js/ui/calendar.js:1528
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, ה־%e ב%B, %Y"
 
-#: ../js/ui/calendar.js:1563
+#: ../js/ui/calendar.js:1613
 msgid "Notifications"
 msgstr "התרעות"
 
-#: ../js/ui/calendar.js:1714
+#: ../js/ui/calendar.js:1764
 msgid "No Notifications"
 msgstr "אין התרעות"
 
-#: ../js/ui/calendar.js:1717
+#: ../js/ui/calendar.js:1767
 msgid "No Events"
 msgstr "אין אירועים"
 
@@ -630,80 +630,94 @@ msgstr "ססמה:"
 msgid "Type again:"
 msgstr "נא להקליד שוב:"
 
-#: ../js/ui/components/networkAgent.js:138 ../js/ui/status/network.js:277
+#: ../js/ui/components/networkAgent.js:140 ../js/ui/status/network.js:277
 #: ../js/ui/status/network.js:359 ../js/ui/status/network.js:919
 msgid "Connect"
 msgstr "התחברות"
 
 #. Cisco LEAP
-#: ../js/ui/components/networkAgent.js:231
-#: ../js/ui/components/networkAgent.js:243
-#: ../js/ui/components/networkAgent.js:271
-#: ../js/ui/components/networkAgent.js:291
-#: ../js/ui/components/networkAgent.js:301
+#: ../js/ui/components/networkAgent.js:233
+#: ../js/ui/components/networkAgent.js:245
+#: ../js/ui/components/networkAgent.js:273
+#: ../js/ui/components/networkAgent.js:293
+#: ../js/ui/components/networkAgent.js:303
 msgid "Password: "
 msgstr "ססמה:"
 
 #. static WEP
-#: ../js/ui/components/networkAgent.js:236
+#: ../js/ui/components/networkAgent.js:238
 msgid "Key: "
 msgstr "מפתח:"
 
-#: ../js/ui/components/networkAgent.js:275
+#: ../js/ui/components/networkAgent.js:277
 msgid "Identity: "
 msgstr "זהות:"
 
-#: ../js/ui/components/networkAgent.js:277
+#: ../js/ui/components/networkAgent.js:279
 msgid "Private key password: "
 msgstr "ססמת מפתח פרטי:"
 
-#: ../js/ui/components/networkAgent.js:289
+#: ../js/ui/components/networkAgent.js:291
 msgid "Service: "
 msgstr "שירות:"
 
-#: ../js/ui/components/networkAgent.js:318
+#: ../js/ui/components/networkAgent.js:320
+#: ../js/ui/components/networkAgent.js:658
 msgid "Authentication required by wireless network"
 msgstr "הרשת האלחוטית דורשת אימות"
 
-#: ../js/ui/components/networkAgent.js:319
+#: ../js/ui/components/networkAgent.js:321
+#: ../js/ui/components/networkAgent.js:659
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
 "“%s”."
 msgstr "ססמאות או מפתחות הצפנה נדרשים כדי לגשת לרשת האלחוטית „%s”"
 
-#: ../js/ui/components/networkAgent.js:323
+#: ../js/ui/components/networkAgent.js:325
+#: ../js/ui/components/networkAgent.js:662
 msgid "Wired 802.1X authentication"
 msgstr "אימות Wired 802.1X"
 
-#: ../js/ui/components/networkAgent.js:325
+#: ../js/ui/components/networkAgent.js:327
 msgid "Network name: "
 msgstr "שם הרשת:"
 
-#: ../js/ui/components/networkAgent.js:330
+#: ../js/ui/components/networkAgent.js:332
+#: ../js/ui/components/networkAgent.js:666
 msgid "DSL authentication"
 msgstr "אימות DSL"
 
-#: ../js/ui/components/networkAgent.js:337
+#: ../js/ui/components/networkAgent.js:339
+#: ../js/ui/components/networkAgent.js:672
 msgid "PIN code required"
 msgstr "נדרש קוד PIN"
 
-#: ../js/ui/components/networkAgent.js:338
+#: ../js/ui/components/networkAgent.js:340
+#: ../js/ui/components/networkAgent.js:673
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "נדרש קוד PIN עבור התקן החיבור האלחוטי בפס רחב"
 
-#: ../js/ui/components/networkAgent.js:339
+#: ../js/ui/components/networkAgent.js:341
 msgid "PIN: "
 msgstr "PIN: "
 
-#: ../js/ui/components/networkAgent.js:345
+#: ../js/ui/components/networkAgent.js:348
+#: ../js/ui/components/networkAgent.js:679
 msgid "Mobile broadband network password"
 msgstr "ססמת רשת הפס הרחב הניידת"
 
-#: ../js/ui/components/networkAgent.js:346
+#: ../js/ui/components/networkAgent.js:349
+#: ../js/ui/components/networkAgent.js:663
+#: ../js/ui/components/networkAgent.js:667
+#: ../js/ui/components/networkAgent.js:680
 #, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "נדרשת ססמה כדי להתחבר אל „%s”"
+
+#: ../js/ui/components/networkAgent.js:647 ../js/ui/status/network.js:1657
+msgid "Network Manager"
+msgstr "מנהל הרשתות"
 
 #: ../js/ui/components/polkitAgent.js:54
 msgid "Authentication Required"
@@ -727,7 +741,7 @@ msgstr "פעולה זו לא הצליחה, נא לנסות שוב. עמך הסל
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/components/telepathyClient.js:772
+#: ../js/ui/components/telepathyClient.js:768
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "השם של %s הוחלף ל־%s"
@@ -736,13 +750,13 @@ msgstr "השם של %s הוחלף ל־%s"
 msgid "Windows"
 msgstr "חלונות"
 
-#: ../js/ui/dash.js:250 ../js/ui/dash.js:291
+#: ../js/ui/dash.js:252 ../js/ui/dash.js:293
 msgid "Show Applications"
 msgstr "הצגת יישומים"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/dash.js:451
+#: ../js/ui/dash.js:453
 msgid "Dash"
 msgstr "חלונית"
 
@@ -904,9 +918,18 @@ msgstr "התקנה"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "הורדה והתקנה של „%s” מ־extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:706 ../js/ui/status/keyboard.js:576
+#: ../js/ui/keyboard.js:714 ../js/ui/status/keyboard.js:580
 msgid "Keyboard"
 msgstr "מקלדת"
+
+#. translators: 'Hide' is a verb
+#: ../js/ui/legacyTray.js:64
+msgid "Hide tray"
+msgstr "הסתרת המגש"
+
+#: ../js/ui/legacyTray.js:104
+msgid "Status Icons"
+msgstr "סמלי מצב"
 
 #: ../js/ui/lookingGlass.js:643
 msgid "No extensions installed"
@@ -960,7 +983,7 @@ msgstr "צפייה במקור"
 msgid "Web Page"
 msgstr "דף אינטרנט"
 
-#: ../js/ui/messageTray.js:2131
+#: ../js/ui/messageTray.js:2133
 msgid "System Information"
 msgstr "פרטי המערכת"
 
@@ -980,17 +1003,17 @@ msgstr "סקירה"
 msgid "Type to search…"
 msgstr "יש להקליד כדי לחפש…"
 
-#: ../js/ui/panel.js:351
+#: ../js/ui/panel.js:352
 msgid "Quit"
 msgstr "יציאה"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:403
+#: ../js/ui/panel.js:404
 msgid "Activities"
 msgstr "פעילויות"
 
-#: ../js/ui/panel.js:754
+#: ../js/ui/panel.js:755
 msgid "Top Bar"
 msgstr "הסרגל העליון"
 
@@ -999,7 +1022,7 @@ msgstr "הסרגל העליון"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:288
+#: ../js/ui/popupMenu.js:289
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -1060,11 +1083,11 @@ msgstr "לא ניתן לנעול"
 msgid "Lock was blocked by an application"
 msgstr "הנעילה נחסמה ע״י היישום"
 
-#: ../js/ui/search.js:609
+#: ../js/ui/search.js:616
 msgid "Searching…"
 msgstr "בחיפוש…"
 
-#: ../js/ui/search.js:611
+#: ../js/ui/search.js:618
 msgid "No results."
 msgstr "אין תוצאות."
 
@@ -1169,7 +1192,7 @@ msgstr "לא מחובר"
 msgid "Brightness"
 msgstr "בהירות"
 
-#: ../js/ui/status/keyboard.js:599
+#: ../js/ui/status/keyboard.js:603
 msgid "Show Keyboard Layout"
 msgstr "הצגת פריסת המקלדת"
 
@@ -1337,10 +1360,6 @@ msgstr "הגדרות VPN"
 #: ../js/ui/status/network.js:1502
 msgid "VPN"
 msgstr "VPN"
-
-#: ../js/ui/status/network.js:1657
-msgid "Network Manager"
-msgstr "מנהל הרשתות"
 
 #: ../js/ui/status/network.js:1697
 msgid "Activation of network connection failed"
@@ -1556,12 +1575,12 @@ msgstr "שימוש במצב מסוים, לדוגמה: „gdm“ למסך הכנ�
 msgid "List possible modes"
 msgstr "הצגת המצבים האפשריים"
 
-#: ../src/shell-app.c:247
+#: ../src/shell-app.c:239
 msgctxt "program"
 msgid "Unknown"
 msgstr "לא ידוע"
 
-#: ../src/shell-app.c:488
+#: ../src/shell-app.c:480
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "אירע כשל בטעינת „%s”"
