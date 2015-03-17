@@ -1285,9 +1285,6 @@ StScrollBar {
 .chat-notification-scrollview {
   max-height: 22em; }
 
-.subscription-message {
-  font-style: italic; }
-
 .hotplug-transient-box {
   spacing: 6px;
   padding: 2px 72px 2px 12px; }
