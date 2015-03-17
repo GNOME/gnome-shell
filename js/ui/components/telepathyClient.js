@@ -546,14 +546,8 @@ const ChatSource = new Lang.Class({
     },
 
     _presenceChanged: function (contact, presence, status, message) {
-        let msg, title;
-
-        title = GLib.markup_escape_text(this.title, -1);
-
+        let title = GLib.markup_escape_text(this.title, -1);
         this._notification.update(this._notification.title, null, { customContent: true, secondaryGIcon: this.getSecondaryIcon() });
-
-        if (message)
-            msg += ' <i>(' + GLib.markup_escape_text(message, -1) + ')</i>';
     },
 
     _pendingRemoved: function(channel, message) {
