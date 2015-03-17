@@ -122,7 +122,8 @@ const URLHighlighter = new Lang.Class({
     _init: function(text, lineWrap, allowMarkup) {
         if (!text)
             text = '';
-        this.actor = new St.Label({ reactive: true, style_class: 'url-highlighter' });
+        this.actor = new St.Label({ reactive: true, style_class: 'url-highlighter',
+                                    x_expand: true, x_align: Clutter.ActorAlign.START });
         this._linkColor = '#ccccff';
         this.actor.connect('style-changed', Lang.bind(this, function() {
             let [hasColor, color] = this.actor.get_theme_node().lookup_color('link-color', false);
