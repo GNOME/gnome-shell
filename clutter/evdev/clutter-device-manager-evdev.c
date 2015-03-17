@@ -97,6 +97,9 @@ struct _ClutterSeatEvdev
   guint32 repeat_count;
   guint32 repeat_timer;
   ClutterInputDevice *repeat_device;
+
+  gfloat pointer_x;
+  gfloat pointer_y;
 };
 
 struct _ClutterEventFilter
@@ -395,6 +398,9 @@ notify_absolute_motion (ClutterInputDevice *input_device,
 
   _clutter_input_device_set_stage (seat->core_pointer, stage);
 
+  seat->pointer_x = x;
+  seat->pointer_y = y;
+
   queue_event (event);
 }
 
@@ -407,7 +413,6 @@ notify_relative_motion (ClutterInputDevice *input_device,
   gfloat new_x, new_y;
   ClutterInputDeviceEvdev *device_evdev;
   ClutterSeatEvdev *seat;
-  ClutterPoint point;
 
   /* We can drop the event on the floor if no stage has been
    * associated with the device yet. */
@@ -417,9 +422,8 @@ notify_relative_motion (ClutterInputDevice *input_device,
   device_evdev = CLUTTER_INPUT_DEVICE_EVDEV (input_device);
   seat = _clutter_input_device_evdev_get_seat (device_evdev);
 
-  clutter_input_device_get_coords (seat->core_pointer, NULL, &point);
-  new_x = point.x + dx;
-  new_y = point.y + dy;
+  new_x = seat->pointer_x + dx;
+  new_y = seat->pointer_y + dy;
 
   notify_absolute_motion (input_device, time_, new_x, new_y);
 }
@@ -434,7 +438,6 @@ notify_scroll (ClutterInputDevice *input_device,
   ClutterSeatEvdev *seat;
   ClutterStage *stage;
   ClutterEvent *event = NULL;
-  ClutterPoint point;
   gdouble scroll_factor;
 
   /* We can drop the event on the floor if no stage has been
@@ -462,9 +465,8 @@ notify_scroll (ClutterInputDevice *input_device,
                                   scroll_factor * dx,
                                   scroll_factor * dy);
 
-  clutter_input_device_get_coords (seat->core_pointer, NULL, &point);
-  event->scroll.x = point.x;
-  event->scroll.y = point.y;
+  event->scroll.x = seat->pointer_x;
+  event->scroll.y = seat->pointer_y;
   clutter_event_set_device (event, seat->core_pointer);
   clutter_event_set_source_device (event, input_device);
 
@@ -481,7 +483,6 @@ notify_button (ClutterInputDevice *input_device,
   ClutterSeatEvdev *seat;
   ClutterStage *stage;
   ClutterEvent *event = NULL;
-  ClutterPoint point;
   gint button_nr;
   static gint maskmap[8] =
     {
@@ -542,9 +543,8 @@ notify_button (ClutterInputDevice *input_device,
   event->button.device = seat->core_pointer;
   _clutter_xkb_translate_state (event, seat->xkb, seat->button_state);
   event->button.button = button_nr;
-  clutter_input_device_get_coords (seat->core_pointer, NULL, &point);
-  event->button.x = point.x;
-  event->button.y = point.y;
+  event->button.x = seat->pointer_x;
+  event->button.y = seat->pointer_y;
   clutter_event_set_device (event, seat->core_pointer);
   clutter_event_set_source_device (event, input_device);
 
@@ -741,7 +741,11 @@ clutter_seat_evdev_new (ClutterDeviceManagerEvdev *manager_evdev)
   device = _clutter_input_device_evdev_new_virtual (
     manager, seat, CLUTTER_POINTER_DEVICE);
   _clutter_input_device_set_stage (device, priv->stage);
-  _clutter_input_device_set_coords (device, NULL, INITIAL_POINTER_X, INITIAL_POINTER_Y, NULL);
+  seat->pointer_x = INITIAL_POINTER_X;
+  seat->pointer_y = INITIAL_POINTER_Y;
+  _clutter_input_device_set_coords (device, NULL,
+                                    seat->pointer_x, seat->pointer_y,
+                                    NULL);
   _clutter_device_manager_add_device (manager, device);
   seat->core_pointer = device;
 
