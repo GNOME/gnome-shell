@@ -1,3 +1,42 @@
+3.15.92
+=======
+* gdm: Fix user list accessibility [Florian; #729603]
+* Handle multiline questions in mount operations [Ross; #745713]
+* Improve classic theme [Jakub; #745686, #745687]
+* Fix ordering of calendar events [Florian; #745988]
+* Pick first input source for new windows when per-window [Rui; #746037]
+* networkAgent: Show a notification for non-user-initiated password requests
+  [Giovanni; #660293]
+* Fix dismissing calendar events [Florian; #744927]
+* Add legacy tray to ctrl-alt-tab popup [Florian; #746022]
+* Manage on-screen-keyboard visibility in gnome-shell [Carlos; #745977]
+* Add pointer barriers to legacy tray [Cosimo; #746026]
+* Use fallback when app icon cannot be resolved [Cosimo; #746219]
+* Fix handling of removed smartcard at startup [Ray; #740143]
+* gdm: Don't pick a random session for the user [Jasper; #740142]
+* Make menu selection behavior consistent with GTK [Florian; #745246]
+* gdm: Fix empty user list on user switching [Ray; #719418]
+* Misc bug fixes [Florian, Giovanni, Clément, Rui; #745666, #746019, #745861,
+  #746027, #746223, #737502, #746343, #746288]
+
+Contributors:
+  Giovanni Campagna, Cosimo Cecchi, Piotr Drąg, Adel Gadllah, Carlos Garnacho,
+  Clément Guérin, Ross Lagerwall, Rui Matos, Florian Müllner, Jakub Steiner,
+  Jasper St. Pierre, Ray Strode
+
+Translations:
+  Piotr Drąg [pl], Changwoo Ryu [ko], Milo Casagrande [it],
+  Baurzhan Muftakhidinov [kk], Мирослав Николић [sr, sr@latin], Balázs Úr [hu],
+  IWAI, Masaharu [ja], Daniel Korostil [uk], Aurimas Černius [lt],
+  Matej Urbančič [sl], Daniel Mustieles [es], Kjartan Maraas [nb],
+  Victor Ibragimov [tg], Claude Paroz [fr], Jordi Mas [ca], Bernd Homuth [de],
+  Muhammet Kara [tr], Frédéric Péters [fr], Jiri Grönroos [fi],
+  Alexander Shopov [bg], Stas Solovey [ru], Trần Ngọc Quân [vi],
+  Samir Ribic [bs], Dušan Kazik [sk], Enrico Nicoletto [pt_BR],
+  Marek Černocký [cs], A S Alam [pa], Ask Hjorth Larsen [da],
+  Tom Tryfonidis [el], Alexandre Franke [fr], Yosef Or Boczko [he],
+  Chao-Hsiung Liao [zh_TW]
+
 3.15.91
 =======
 * Don't disable all shortcuts while non-panel menus are open [Florian; #745039]
