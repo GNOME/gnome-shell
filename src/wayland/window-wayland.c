@@ -205,15 +205,21 @@ meta_window_wayland_move_resize_internal (MetaWindow                *window,
           constrained_rect.height != window->rect.height ||
           (flags & META_MOVE_RESIZE_STATE_CHANGED))
         {
-          /* If we get a 0x0 size, this means that we're trying to resize
-           * a surface that doesn't have any buffer attached. This can happen
-           * when a client requests an xdg surface before bringing it up.
-           * The constrained_rect will be 1x1 because of how our constraints
-           * code works, and sending that to the window would cause it to
-           * redraw itself, so just don't send anything.
-           */
+          /* If the constrained size is 1x1 and the unconstrained size is 0x0
+           * it means that we are trying to resize a window where the client has
+           * not yet committed a buffer. The 1x1 constrained size is a result of
+           * how the constraints code works. Lets avoid trying to have the
+           * client configure itself to draw on a 1x1 surface.
+           *
+           * We cannot guard against only an empty unconstrained_rect here,
+           * because the client may have created a xdg surface without a buffer
+           * attached and asked it to be maximized. In such case we should let
+           * it know about the expected window geometry of a maximized window,
+           * even though there is currently no buffer attached. */
           if (unconstrained_rect.width == 0 &&
-              unconstrained_rect.height == 0)
+              unconstrained_rect.height == 0 &&
+              constrained_rect.width == 1 &&
+              constrained_rect.height == 1)
             return;
 
           meta_wayland_surface_configure_notify (window->surface,
