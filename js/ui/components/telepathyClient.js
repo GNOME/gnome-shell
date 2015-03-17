@@ -546,7 +546,6 @@ const ChatSource = new Lang.Class({
     },
 
     _presenceChanged: function (contact, presence, status, message) {
-        let title = GLib.markup_escape_text(this.title, -1);
         this._notification.update(this._notification.title, null, { customContent: true, secondaryGIcon: this.getSecondaryIcon() });
     },
 
