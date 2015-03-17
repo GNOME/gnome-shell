@@ -1,3 +1,23 @@
+3.15.92
+=======
+* Ensure pointer visibility on monitor changes [Rui, Marek; #745121, #745752]
+* Fix geometry of shaded windows [Florian; #746145]
+* Take over cursor visibility handling from gsd [Carlos; #712775]
+* Fix touch interaction on window decorations [Carlos; #745335]
+* Add options for libinput_config_click_method [Carlos; #746290]
+* Scale window decorations on HiDPI displays [Florian; #744354]
+* Misc. bug fixes [Carlos, Ray, Rui; #745163, #746295, #746098, #745734]
+
+Contributors:
+  Marek Chalupa, Carlos Garnacho, Rui Matos, Florian Müllner,
+  Jasper St. Pierre, Ray Strode
+
+Translations:
+  Piotr Drąg [pl], Milo Casagrande [it], Changwoo Ryu [ko],
+  Daniel Korostil [uk], Baurzhan Muftakhidinov [kk], Trần Ngọc Quân [vi],
+  Alexander Shopov [bg], Jordi Mas [ca], Samir Ribic [bs], A S Alam [pa],
+  Matej Urbančič [sl]
+
 3.15.91
 =======
 * wayland: Fix nested compositor mode [Jonas; #745401]

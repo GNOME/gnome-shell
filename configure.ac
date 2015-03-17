@@ -2,7 +2,7 @@ AC_PREREQ(2.62)
 
 m4_define([mutter_major_version], [3])
 m4_define([mutter_minor_version], [15])
-m4_define([mutter_micro_version], [91])
+m4_define([mutter_micro_version], [92])
 
 m4_define([mutter_version],
           [mutter_major_version.mutter_minor_version.mutter_micro_version])
@@ -75,7 +75,7 @@ MUTTER_PC_MODULES="
    gio-unix-2.0 >= 2.35.1
    pango >= 1.2.0
    cairo >= 1.10.0
-   gsettings-desktop-schemas >= 3.15.4
+   gsettings-desktop-schemas >= 3.15.92
    $CLUTTER_PACKAGE >= 1.21.3
    cogl-1.0 >= 1.17.1
    upower-glib >= 0.99.0
