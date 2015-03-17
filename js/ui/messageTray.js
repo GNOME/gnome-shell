@@ -1128,7 +1128,6 @@ const NotificationBanner = new Lang.Class({
         this.parent(notification);
 
         this.actor.add_style_class_name('notification-banner');
-        this.actor.connect('destroy', Lang.bind(this, this._onDestroyed));
 
         this._buttonBox = null;
 
@@ -1145,7 +1144,8 @@ const NotificationBanner = new Lang.Class({
             }));
     },
 
-    _onDestroyed: function() {
+    _onDestroy: function() {
+        this.parent();
         this.notification.disconnect(this._activatedId);
     },
 
