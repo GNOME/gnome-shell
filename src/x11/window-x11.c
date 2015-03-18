@@ -863,7 +863,7 @@ meta_window_x11_grab_op_began (MetaWindow *window,
       if (window->sync_request_counter != None)
         meta_window_x11_create_sync_request_alarm (window);
 
-      if (window->size_hints.width_inc > 1 || window->size_hints.height_inc > 1)
+      if (window->size_hints.width_inc > 2 || window->size_hints.height_inc > 2)
         {
           priv->showing_resize_popup = TRUE;
           meta_window_refresh_resize_popup (window);
