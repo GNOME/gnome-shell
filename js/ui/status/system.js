@@ -306,14 +306,17 @@ const Indicator = new Lang.Class({
     },
 
     _updateHaveSuspend: function() {
-        this._loginManager.canSuspend(Lang.bind(this, function(result) {
-            this._haveSuspend = result;
-            this._updateSuspend();
-        }));
+        this._loginManager.canSuspend(Lang.bind(this,
+            function(canSuspend, needsAuth) {
+                this._haveSuspend = canSuspend;
+                this._suspendNeedsAuth = needsAuth;
+                this._updateSuspend();
+            }));
     },
 
     _updateSuspend: function() {
-        let disabled = Main.sessionMode.isLocked ||
+        let disabled = (Main.sessionMode.isLocked &&
+                        this._suspendNeedsAuth) ||
                        (Main.sessionMode.isGreeter &&
                         this._loginScreenSettings.get_boolean(DISABLE_RESTART_KEY));
         this._suspendAction.visible = this._haveSuspend && !disabled;
