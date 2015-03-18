@@ -354,6 +354,9 @@ const SessionMenuButton = new Lang.Class({
             this._menu.addMenuItem(item);
             this._items[id] = item;
 
+            if (!this._activeSessionId)
+                this.setActiveSession(id);
+
             item.connect('activate', Lang.bind(this, function() {
                 this.setActiveSession(id);
             }));
