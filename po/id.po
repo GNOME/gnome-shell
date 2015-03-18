@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-02-10 20:41+0000\n"
-"PO-Revision-Date: 2015-02-11 15:04+0700\n"
+"POT-Creation-Date: 2015-03-18 08:40+0000\n"
+"PO-Revision-Date: 2015-03-18 21:04+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
 "Language: id\n"
@@ -20,15 +20,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Generator: Poedit 1.7.1\n"
+"X-Generator: Poedit 1.7.5\n"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
 msgid "System"
 msgstr "Sistem"
 
 #: ../data/50-gnome-shell-system.xml.in.h:2
-msgid "Show the message tray"
-msgstr "Tampilkan baki pesan"
+msgid "Show the notification list"
+msgstr "Tampilkan daftar pemberitahuan"
 
 #: ../data/50-gnome-shell-system.xml.in.h:3
 msgid "Focus the active notification"
@@ -207,12 +207,12 @@ msgid "Keybinding to open the Activities Overview."
 msgstr "Kombinasi tombol untuk membuka Ringkasan Aktivitas."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:25
-msgid "Keybinding to toggle the visibility of the message tray"
-msgstr "Kombinasi tombol untuk kenampakan baki pesan"
+msgid "Keybinding to toggle the visibility of the notification list"
+msgstr "Kombinasi tombol untuk kenampakan daftar pemberitahuan"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:26
-msgid "Keybinding to toggle the visibility of the message tray."
-msgstr "Kombinasi tombol untuk kenampakan baki pesan."
+msgid "Keybinding to toggle the visibility of the notification list."
+msgstr "Kombinasi tombol untuk kenampakan daftar pemberitahuan."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:27
 msgid "Keybinding to focus the active notification"
@@ -313,7 +313,7 @@ msgstr "Ada galat saat memuat dialog preferensi bagi %s:"
 msgid "GNOME Shell Extensions"
 msgstr "Ekstensi GNOME Shell"
 
-#: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:143
+#: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:145
 #: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:452
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
 #: ../js/ui/status/network.js:916
@@ -334,25 +334,25 @@ msgctxt "button"
 msgid "Sign In"
 msgstr "Masuk"
 
-#: ../js/gdm/loginDialog.js:276
+#: ../js/gdm/loginDialog.js:280
 msgid "Choose Session"
 msgstr "Pilih Sesi"
 
-#: ../js/gdm/loginDialog.js:417
+#: ../js/gdm/loginDialog.js:420
 msgid "Not listed?"
 msgstr "Tak masuk daftar?"
 
-#: ../js/gdm/loginDialog.js:822
+#: ../js/gdm/loginDialog.js:829
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(cth., pengguna dari %s)"
 
-#: ../js/gdm/loginDialog.js:827 ../js/ui/components/networkAgent.js:269
-#: ../js/ui/components/networkAgent.js:287
+#: ../js/gdm/loginDialog.js:834 ../js/ui/components/networkAgent.js:271
+#: ../js/ui/components/networkAgent.js:289
 msgid "Username: "
 msgstr "Nama pengguna: "
 
-#: ../js/gdm/loginDialog.js:1159
+#: ../js/gdm/loginDialog.js:1162
 msgid "Login Window"
 msgstr "Jendela Log Masuk"
 
@@ -364,18 +364,80 @@ msgstr "Galat otentikasi"
 msgid "(or swipe finger)"
 msgstr "(atau gesekkan jari)"
 
-#: ../js/misc/util.js:115
+#: ../js/misc/util.js:119
 msgid "Command not found"
 msgstr "Perintah tidak ditemukan"
 
-#: ../js/misc/util.js:148
+#: ../js/misc/util.js:152
 msgid "Could not parse command:"
 msgstr "Tak dapat mengurai perintah:"
 
-#: ../js/misc/util.js:156
+#: ../js/misc/util.js:160
 #, javascript-format
 msgid "Execution of “%s” failed:"
 msgstr "Eksekusi \"%s\" gagal:"
+
+#. Translators: Time in 24h format */
+#: ../js/misc/util.js:191
+msgid "%H∶%M"
+msgstr "%H∶%M"
+
+#. Translators: this is the word "Yesterday" followed by a
+#. time string in 24h format. i.e. "Yesterday, 14:30" */
+#: ../js/misc/util.js:197
+msgid "Yesterday, %H∶%M"
+msgstr "Kemarin, %H:%M"
+
+#. Translators: this is the week day name followed by a time
+#. string in 24h format. i.e. "Monday, 14:30" */
+#: ../js/misc/util.js:203
+msgid "%A, %H∶%M"
+msgstr "%A, %H∶%M"
+
+#. Translators: this is the month name and day number
+#. followed by a time string in 24h format.
+#. i.e. "May 25, 14:30" */
+#: ../js/misc/util.js:209
+msgid "%B %d, %H∶%M"
+msgstr "%d %B, %H∶%M"
+
+#. Translators: this is the month name, day number, year
+#. number followed by a time string in 24h format.
+#. i.e. "May 25 2012, 14:30" */
+#: ../js/misc/util.js:215
+msgid "%B %d %Y, %H∶%M"
+msgstr "%d %B %Y, %H∶%M"
+
+#. Translators: Time in 12h format */
+#: ../js/misc/util.js:220
+msgid "%l∶%M %p"
+msgstr "%H∶%M"
+
+#. Translators: this is the word "Yesterday" followed by a
+#. time string in 12h format. i.e. "Yesterday, 2:30 pm" */
+#: ../js/misc/util.js:226
+msgid "Yesterday, %l∶%M %p"
+msgstr "Kemarin, %l∶%M %p"
+
+#. Translators: this is the week day name followed by a time
+#. string in 12h format. i.e. "Monday, 2:30 pm" */
+#: ../js/misc/util.js:232
+msgid "%A, %l∶%M %p"
+msgstr "%A, %l∶%M %p"
+
+#. Translators: this is the month name and day number
+#. followed by a time string in 12h format.
+#. i.e. "May 25, 2:30 pm" */
+#: ../js/misc/util.js:238
+msgid "%B %d, %l∶%M %p"
+msgstr "%d %B, %l∶%M %p"
+
+#. Translators: this is the month name, day number, year
+#. number followed by a time string in 12h format.
+#. i.e. "May 25 2012, 2:30 pm"*/
+#: ../js/misc/util.js:244
+msgid "%B %d %Y, %l∶%M %p"
+msgstr "%d %B %Y, %l∶%M %p"
 
 #. TRANSLATORS: this is the title of the wifi captive portal login
 #. * window, until we know the title of the actual login page */
@@ -383,31 +445,31 @@ msgstr "Eksekusi \"%s\" gagal:"
 msgid "Web Authentication Redirect"
 msgstr "Pengalihan Otentikasi Web"
 
-#: ../js/ui/appDisplay.js:785
+#: ../js/ui/appDisplay.js:792
 msgid "Frequently used applications will appear here"
 msgstr "Aplikasi yang sering dipakai akan muncul di sini"
 
-#: ../js/ui/appDisplay.js:905
+#: ../js/ui/appDisplay.js:912
 msgid "Frequent"
 msgstr "Sering"
 
-#: ../js/ui/appDisplay.js:912
+#: ../js/ui/appDisplay.js:919
 msgid "All"
 msgstr "Semua"
 
-#: ../js/ui/appDisplay.js:1824
+#: ../js/ui/appDisplay.js:1850
 msgid "New Window"
 msgstr "Jendela Baru"
 
-#: ../js/ui/appDisplay.js:1854 ../js/ui/dash.js:289
+#: ../js/ui/appDisplay.js:1878 ../js/ui/dash.js:291
 msgid "Remove from Favorites"
 msgstr "Hapus dari Favorit"
 
-#: ../js/ui/appDisplay.js:1860
+#: ../js/ui/appDisplay.js:1884
 msgid "Add to Favorites"
 msgstr "Tambah ke Favorit"
 
-#: ../js/ui/appDisplay.js:1870
+#: ../js/ui/appDisplay.js:1894
 msgid "Show Details"
 msgstr "Tampilkan Rincian"
 
@@ -421,7 +483,7 @@ msgstr "%s telah ditambahkan ke favorit Anda."
 msgid "%s has been removed from your favorites."
 msgstr "%s telah dihapus dari favorit Anda."
 
-#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:819
+#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:650
 #: ../js/ui/status/system.js:337
 msgid "Settings"
 msgstr "Pengaturan"
@@ -431,165 +493,106 @@ msgid "Change Background…"
 msgstr "Ubah Latar…"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday). */
-#: ../js/ui/calendar.js:39
+#: ../js/ui/calendar.js:53
 msgctxt "calendar-no-work"
 msgid "06"
 msgstr "06"
-
-#. Translators: Shown in calendar event list for all day events
-#. * Keep it short, best if you can use less then 10 characters
-#. */
-#: ../js/ui/calendar.js:68
-msgctxt "event list time"
-msgid "All Day"
-msgstr "Sepanjang Hari"
-
-#. Translators: Shown in calendar event list, if 24h format,
-#. \u2236 is a ratio character, similar to : */
-#: ../js/ui/calendar.js:75
-msgctxt "event list time"
-msgid "%H∶%M"
-msgstr "%H∶%M"
-
-#. Translators: Shown in calendar event list, if 12h format,
-#. \u2236 is a ratio character, similar to : and \u2009 is
-#. a thin space */
-#: ../js/ui/calendar.js:84
-msgctxt "event list time"
-msgid "%l∶%M %p"
-msgstr "%l∶%M %p"
 
 #. Translators: Calendar grid abbreviation for Sunday.
 #. *
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #. */
-#: ../js/ui/calendar.js:98
+#: ../js/ui/calendar.js:82
 msgctxt "grid sunday"
 msgid "S"
 msgstr "M"
 
 #. Translators: Calendar grid abbreviation for Monday */
-#: ../js/ui/calendar.js:100
+#: ../js/ui/calendar.js:84
 msgctxt "grid monday"
 msgid "M"
 msgstr "S"
 
 #. Translators: Calendar grid abbreviation for Tuesday */
-#: ../js/ui/calendar.js:102
+#: ../js/ui/calendar.js:86
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "S"
 
 #. Translators: Calendar grid abbreviation for Wednesday */
-#: ../js/ui/calendar.js:104
+#: ../js/ui/calendar.js:88
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "R"
 
 #. Translators: Calendar grid abbreviation for Thursday */
-#: ../js/ui/calendar.js:106
+#: ../js/ui/calendar.js:90
 msgctxt "grid thursday"
 msgid "T"
 msgstr "K"
 
 #. Translators: Calendar grid abbreviation for Friday */
-#: ../js/ui/calendar.js:108
+#: ../js/ui/calendar.js:92
 msgctxt "grid friday"
 msgid "F"
 msgstr "J"
 
 #. Translators: Calendar grid abbreviation for Saturday */
-#: ../js/ui/calendar.js:110
+#: ../js/ui/calendar.js:94
 msgctxt "grid saturday"
 msgid "S"
 msgstr "S"
 
-#. Translators: Event list abbreviation for Sunday.
-#. *
-#. * NOTE: These list abbreviations are normally not shown together
-#. * so they need to be unique (e.g. Tuesday and Thursday cannot
-#. * both be 'T').
-#. */
-#: ../js/ui/calendar.js:123
-msgctxt "list sunday"
-msgid "Su"
-msgstr "Min"
-
-#. Translators: Event list abbreviation for Monday */
-#: ../js/ui/calendar.js:125
-msgctxt "list monday"
-msgid "M"
-msgstr "Sen"
-
-#. Translators: Event list abbreviation for Tuesday */
-#: ../js/ui/calendar.js:127
-msgctxt "list tuesday"
-msgid "T"
-msgstr "Sel"
-
-#. Translators: Event list abbreviation for Wednesday */
-#: ../js/ui/calendar.js:129
-msgctxt "list wednesday"
-msgid "W"
-msgstr "Rab"
-
-#. Translators: Event list abbreviation for Thursday */
-#: ../js/ui/calendar.js:131
-msgctxt "list thursday"
-msgid "Th"
-msgstr "Kam"
-
-#. Translators: Event list abbreviation for Friday */
-#: ../js/ui/calendar.js:133
-msgctxt "list friday"
-msgid "F"
-msgstr "Jum"
-
-#. Translators: Event list abbreviation for Saturday */
-#: ../js/ui/calendar.js:135
-msgctxt "list saturday"
-msgid "S"
-msgstr "Sab"
-
-#: ../js/ui/calendar.js:460
+#: ../js/ui/calendar.js:564
 msgid "Previous month"
 msgstr "Bulan sebelumnya"
 
-#: ../js/ui/calendar.js:470
+#: ../js/ui/calendar.js:574
 msgid "Next month"
 msgstr "Bulan selanjutnya"
 
-#. Translators: Text to show if there are no events */
-#: ../js/ui/calendar.js:806
-msgid "Nothing Scheduled"
-msgstr "Tak Ada Jadwal"
+#: ../js/ui/calendar.js:781
+msgid "Week %V"
+msgstr "Minggu %V"
 
-#: ../js/ui/calendar.js:825
+#. Translators: Shown in calendar event list for all day events
+#. * Keep it short, best if you can use less then 10 characters
+#. */
+#: ../js/ui/calendar.js:1183
+msgctxt "event list time"
+msgid "All Day"
+msgstr "Sepanjang Hari"
+
+#: ../js/ui/calendar.js:1289
+msgid "Clear section"
+msgstr "Bersihkan seksi"
+
+#: ../js/ui/calendar.js:1516
+msgid "Events"
+msgstr "Kejadian"
+
+#: ../js/ui/calendar.js:1525
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d %B"
 
-#: ../js/ui/calendar.js:829
+#: ../js/ui/calendar.js:1529
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d %B %Y"
 
-#: ../js/ui/calendar.js:841
-msgid "Today"
-msgstr "Hari ini"
+#: ../js/ui/calendar.js:1614
+msgid "Notifications"
+msgstr "Pemberitahuan"
 
-#: ../js/ui/calendar.js:845
-msgid "Tomorrow"
-msgstr "Besok"
+#: ../js/ui/calendar.js:1765
+msgid "No Notifications"
+msgstr "Tak Ada Pemberitahuan"
 
-#: ../js/ui/calendar.js:856
-msgid "This week"
-msgstr "Minggu ini"
-
-#: ../js/ui/calendar.js:864
-msgid "Next week"
-msgstr "Minggu depan"
+#: ../js/ui/calendar.js:1768
+msgid "No Events"
+msgstr "Tak Ada Kejadian"
 
 #: ../js/ui/components/automountManager.js:91
 msgid "External drive connected"
@@ -599,18 +602,10 @@ msgstr "Drive eksternal tersambung"
 msgid "External drive disconnected"
 msgstr "Drive eksternal terputus"
 
-#: ../js/ui/components/autorunManager.js:296
-msgid "Removable Devices"
-msgstr "Perangkat Yang Dapat Dicabut"
-
-#: ../js/ui/components/autorunManager.js:596
+#: ../js/ui/components/autorunManager.js:354
 #, javascript-format
 msgid "Open with %s"
 msgstr "Buka dengan %s"
-
-#: ../js/ui/components/autorunManager.js:622
-msgid "Eject"
-msgstr "Keluarkan"
 
 #: ../js/ui/components/keyring.js:94 ../js/ui/components/polkitAgent.js:285
 msgid "Password:"
@@ -620,40 +615,42 @@ msgstr "Sandi:"
 msgid "Type again:"
 msgstr "Ketik lagi:"
 
-#: ../js/ui/components/networkAgent.js:138 ../js/ui/status/network.js:277
+#: ../js/ui/components/networkAgent.js:140 ../js/ui/status/network.js:277
 #: ../js/ui/status/network.js:359 ../js/ui/status/network.js:919
 msgid "Connect"
 msgstr "Sambung"
 
-#: ../js/ui/components/networkAgent.js:231
-#: ../js/ui/components/networkAgent.js:243
-#: ../js/ui/components/networkAgent.js:271
-#: ../js/ui/components/networkAgent.js:291
-#: ../js/ui/components/networkAgent.js:301
+#: ../js/ui/components/networkAgent.js:233
+#: ../js/ui/components/networkAgent.js:245
+#: ../js/ui/components/networkAgent.js:273
+#: ../js/ui/components/networkAgent.js:293
+#: ../js/ui/components/networkAgent.js:303
 msgid "Password: "
 msgstr "Sandi: "
 
-#: ../js/ui/components/networkAgent.js:236
+#: ../js/ui/components/networkAgent.js:238
 msgid "Key: "
 msgstr "Tombol: "
 
-#: ../js/ui/components/networkAgent.js:275
+#: ../js/ui/components/networkAgent.js:277
 msgid "Identity: "
 msgstr "Identitas: "
 
-#: ../js/ui/components/networkAgent.js:277
+#: ../js/ui/components/networkAgent.js:279
 msgid "Private key password: "
 msgstr "Sandi kunci privat: "
 
-#: ../js/ui/components/networkAgent.js:289
+#: ../js/ui/components/networkAgent.js:291
 msgid "Service: "
 msgstr "Layanan: "
 
-#: ../js/ui/components/networkAgent.js:318
+#: ../js/ui/components/networkAgent.js:320
+#: ../js/ui/components/networkAgent.js:658
 msgid "Authentication required by wireless network"
 msgstr "Otentikasi diperlukan oleh jaringan nirkabel"
 
-#: ../js/ui/components/networkAgent.js:319
+#: ../js/ui/components/networkAgent.js:321
+#: ../js/ui/components/networkAgent.js:659
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -662,38 +659,50 @@ msgstr ""
 "Sandi atau kunci enkripsi diperlukan untuk mengakses jaringan nirkabel \"%s"
 "\"."
 
-#: ../js/ui/components/networkAgent.js:323
+#: ../js/ui/components/networkAgent.js:325
+#: ../js/ui/components/networkAgent.js:662
 msgid "Wired 802.1X authentication"
 msgstr "Otentikasi 802.1X kabel"
 
-#: ../js/ui/components/networkAgent.js:325
+#: ../js/ui/components/networkAgent.js:327
 msgid "Network name: "
 msgstr "Nama jaringan: "
 
-#: ../js/ui/components/networkAgent.js:330
+#: ../js/ui/components/networkAgent.js:332
+#: ../js/ui/components/networkAgent.js:666
 msgid "DSL authentication"
 msgstr "Otentikasi DSL"
 
-#: ../js/ui/components/networkAgent.js:337
+#: ../js/ui/components/networkAgent.js:339
+#: ../js/ui/components/networkAgent.js:672
 msgid "PIN code required"
 msgstr "Perlu kode PIN"
 
-#: ../js/ui/components/networkAgent.js:338
+#: ../js/ui/components/networkAgent.js:340
+#: ../js/ui/components/networkAgent.js:673
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "Kode PIN diperlukan untuk perangkat data seluler"
 
-#: ../js/ui/components/networkAgent.js:339
+#: ../js/ui/components/networkAgent.js:341
 msgid "PIN: "
 msgstr "PIN: "
 
-#: ../js/ui/components/networkAgent.js:345
+#: ../js/ui/components/networkAgent.js:348
+#: ../js/ui/components/networkAgent.js:679
 msgid "Mobile broadband network password"
 msgstr "Sandi jaringan data seluler"
 
-#: ../js/ui/components/networkAgent.js:346
+#: ../js/ui/components/networkAgent.js:349
+#: ../js/ui/components/networkAgent.js:663
+#: ../js/ui/components/networkAgent.js:667
+#: ../js/ui/components/networkAgent.js:680
 #, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "Perlu suatu sandi untuk menyambung ke \"%s\"."
+
+#: ../js/ui/components/networkAgent.js:647 ../js/ui/status/network.js:1657
+msgid "Network Manager"
+msgstr "Manajer Jaringan"
 
 #: ../js/ui/components/polkitAgent.js:54
 msgid "Authentication Required"
@@ -715,310 +724,47 @@ msgstr "Otentikasi"
 msgid "Sorry, that didn't work. Please try again."
 msgstr "Maaf, tidak berhasil. Silakan coba lagi."
 
-#: ../js/ui/components/telepathyClient.js:242
-msgid "Invitation"
-msgstr "Undangan"
-
-#: ../js/ui/components/telepathyClient.js:302
-msgid "Call"
-msgstr "Panggil"
-
-#: ../js/ui/components/telepathyClient.js:318
-msgid "File Transfer"
-msgstr "Transfer Berkas"
-
-#: ../js/ui/components/telepathyClient.js:422
-msgid "Chat"
-msgstr "Obrolan"
-
-#: ../js/ui/components/telepathyClient.js:485
-msgid "Unmute"
-msgstr "Bersuara"
-
-#: ../js/ui/components/telepathyClient.js:485
-msgid "Mute"
-msgstr "Bisu"
-
-#. Translators: Time in 24h format */
-#: ../js/ui/components/telepathyClient.js:955
-msgid "%H∶%M"
-msgstr "%H∶%M"
-
-#. Translators: this is the word "Yesterday" followed by a
-#. time string in 24h format. i.e. "Yesterday, 14:30" */
-#: ../js/ui/components/telepathyClient.js:962
-msgid "Yesterday, %H∶%M"
-msgstr "Kemarin, %H:%M"
-
-#. Translators: this is the week day name followed by a time
-#. string in 24h format. i.e. "Monday, 14:30" */
-#: ../js/ui/components/telepathyClient.js:969
-msgid "%A, %H∶%M"
-msgstr "%A, %H∶%M"
-
-#. Translators: this is the month name and day number
-#. followed by a time string in 24h format.
-#. i.e. "May 25, 14:30" */
-#: ../js/ui/components/telepathyClient.js:976
-msgid "%B %d, %H∶%M"
-msgstr "%d %B, %H∶%M"
-
-#. Translators: this is the month name, day number, year
-#. number followed by a time string in 24h format.
-#. i.e. "May 25 2012, 14:30" */
-#: ../js/ui/components/telepathyClient.js:982
-msgid "%B %d %Y, %H∶%M"
-msgstr "%d %B %Y, %H∶%M"
-
-#. Translators: Time in 24h format */
-#: ../js/ui/components/telepathyClient.js:988
-msgid "%l∶%M %p"
-msgstr "%H∶%M"
-
-#. Translators: this is the word "Yesterday" followed by a
-#. time string in 12h format. i.e. "Yesterday, 2:30 pm" */
-#: ../js/ui/components/telepathyClient.js:995
-msgid "Yesterday, %l∶%M %p"
-msgstr "Kemarin, %l∶%M %p"
-
-#. Translators: this is the week day name followed by a time
-#. string in 12h format. i.e. "Monday, 2:30 pm" */
-#: ../js/ui/components/telepathyClient.js:1002
-msgid "%A, %l∶%M %p"
-msgstr "%A, %l∶%M %p"
-
-#. Translators: this is the month name and day number
-#. followed by a time string in 12h format.
-#. i.e. "May 25, 2:30 pm" */
-#: ../js/ui/components/telepathyClient.js:1009
-msgid "%B %d, %l∶%M %p"
-msgstr "%d %B, %l∶%M %p"
-
-#. Translators: this is the month name, day number, year
-#. number followed by a time string in 12h format.
-#. i.e. "May 25 2012, 2:30 pm"*/
-#: ../js/ui/components/telepathyClient.js:1015
-msgid "%B %d %Y, %l∶%M %p"
-msgstr "%d %B %Y, %l∶%M %p"
-
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name. */
-#: ../js/ui/components/telepathyClient.js:1047
+#: ../js/ui/components/telepathyClient.js:728
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s sekarang dikenal sebagai %s"
-
-#. translators: argument is a room name like
-#. * room@jabber.org for example. */
-#: ../js/ui/components/telepathyClient.js:1151
-#, javascript-format
-msgid "Invitation to %s"
-msgstr "Undangan ke %s"
-
-#. translators: first argument is the name of a contact and the second
-#. * one the name of a room. "Alice is inviting you to join room@jabber.org
-#. * for example. */
-#: ../js/ui/components/telepathyClient.js:1159
-#, javascript-format
-msgid "%s is inviting you to join %s"
-msgstr "%s mengundang Anda untuk bergabung dengan %s"
-
-#: ../js/ui/components/telepathyClient.js:1161
-#: ../js/ui/components/telepathyClient.js:1196
-#: ../js/ui/components/telepathyClient.js:1230
-#: ../js/ui/components/telepathyClient.js:1287
-msgid "Decline"
-msgstr "Tolak"
-
-#: ../js/ui/components/telepathyClient.js:1167
-#: ../js/ui/components/telepathyClient.js:1236
-#: ../js/ui/components/telepathyClient.js:1292
-msgid "Accept"
-msgstr "Terima"
-
-#. translators: argument is a contact name like Alice for example. */
-#: ../js/ui/components/telepathyClient.js:1186
-#, javascript-format
-msgid "Video call from %s"
-msgstr "Panggilan video dari %s"
-
-#. translators: argument is a contact name like Alice for example. */
-#: ../js/ui/components/telepathyClient.js:1189
-#, javascript-format
-msgid "Call from %s"
-msgstr "Panggilan dari %s"
-
-#. translators: this is a button label (verb), not a noun */
-#: ../js/ui/components/telepathyClient.js:1203
-msgid "Answer"
-msgstr "Jawab"
-
-#. To translators: The first parameter is
-#. * the contact's alias and the second one is the
-#. * file name. The string will be something
-#. * like: "Alice is sending you test.ogg"
-#. */
-#: ../js/ui/components/telepathyClient.js:1224
-#, javascript-format
-msgid "%s is sending you %s"
-msgstr "%s sedang mengirimi Anda %s"
-
-#. To translators: The parameter is the contact's alias */
-#: ../js/ui/components/telepathyClient.js:1253
-#, javascript-format
-msgid "%s would like permission to see when you are online"
-msgstr "%s ingin minta izin melihat Anda ketika Anda daring"
-
-#: ../js/ui/components/telepathyClient.js:1338
-msgid "Network error"
-msgstr "Galat jaringan"
-
-#: ../js/ui/components/telepathyClient.js:1340
-msgid "Authentication failed"
-msgstr "Otentikasi gagal"
-
-#: ../js/ui/components/telepathyClient.js:1342
-msgid "Encryption error"
-msgstr "Galat enkripsi"
-
-#: ../js/ui/components/telepathyClient.js:1344
-msgid "Certificate not provided"
-msgstr "Sertifikat tidak disediakan"
-
-#: ../js/ui/components/telepathyClient.js:1346
-msgid "Certificate untrusted"
-msgstr "Sertifikat tidak dipercaya"
-
-#: ../js/ui/components/telepathyClient.js:1348
-msgid "Certificate expired"
-msgstr "Sertifikat kadaluarsa"
-
-#: ../js/ui/components/telepathyClient.js:1350
-msgid "Certificate not activated"
-msgstr "Sertifikat tidak diaktifkan"
-
-#: ../js/ui/components/telepathyClient.js:1352
-msgid "Certificate hostname mismatch"
-msgstr "Nama host sertifikat tidak cocok"
-
-#: ../js/ui/components/telepathyClient.js:1354
-msgid "Certificate fingerprint mismatch"
-msgstr "Sidik jari sertifikat tidak cocok"
-
-#: ../js/ui/components/telepathyClient.js:1356
-msgid "Certificate self-signed"
-msgstr "Sertifikat ditandatangani sendiri"
-
-#: ../js/ui/components/telepathyClient.js:1358
-msgid "Status is set to offline"
-msgstr "Status diatur ke luring"
-
-#: ../js/ui/components/telepathyClient.js:1360
-msgid "Encryption is not available"
-msgstr "Enkripsi tidak tersedia"
-
-#: ../js/ui/components/telepathyClient.js:1362
-msgid "Certificate is invalid"
-msgstr "Sertifikat tidak valid"
-
-#: ../js/ui/components/telepathyClient.js:1364
-msgid "Connection has been refused"
-msgstr "Koneksi telah ditolak"
-
-#: ../js/ui/components/telepathyClient.js:1366
-msgid "Connection can't be established"
-msgstr "Koneksi tak dapat dijalin"
-
-#: ../js/ui/components/telepathyClient.js:1368
-msgid "Connection has been lost"
-msgstr "Koneksi telah terputus"
-
-#: ../js/ui/components/telepathyClient.js:1370
-msgid "This account is already connected to the server"
-msgstr "Akun ini telah tersambung pada server"
-
-#: ../js/ui/components/telepathyClient.js:1372
-msgid ""
-"Connection has been replaced by a new connection using the same resource"
-msgstr ""
-"Koneksi telah digantikan oleh koneksi baru memakai sumberdaya yang sama"
-
-#: ../js/ui/components/telepathyClient.js:1374
-msgid "The account already exists on the server"
-msgstr "Akun ini sudah ada di server"
-
-#: ../js/ui/components/telepathyClient.js:1376
-msgid "Server is currently too busy to handle the connection"
-msgstr "Server kini terlalu sibuk untuk menangani koneksi"
-
-#: ../js/ui/components/telepathyClient.js:1378
-msgid "Certificate has been revoked"
-msgstr "Sertifikat telah dicabut"
-
-#: ../js/ui/components/telepathyClient.js:1380
-msgid ""
-"Certificate uses an insecure cipher algorithm or is cryptographically weak"
-msgstr ""
-"Sertifikat memakai algorima cipher yang tak aman atau lemah secara "
-"kriptografi"
-
-#: ../js/ui/components/telepathyClient.js:1382
-msgid ""
-"The length of the server certificate, or the depth of the server certificate "
-"chain, exceed the limits imposed by the cryptography library"
-msgstr ""
-"Panjang sertifikat server, atau kedalaman rantai sertifikat server, "
-"melampaui batas yang diberlakukan oleh pustaka kriptografi"
-
-#: ../js/ui/components/telepathyClient.js:1384
-msgid "Internal error"
-msgstr "Galat internal"
-
-#. translators: argument is the account name, like
-#. * name@jabber.org for example. */
-#: ../js/ui/components/telepathyClient.js:1394
-#, javascript-format
-msgid "Unable to connect to %s"
-msgstr "Tak bisa menyambung ke %s"
-
-#: ../js/ui/components/telepathyClient.js:1399
-msgid "View account"
-msgstr "Tilik akun"
-
-#: ../js/ui/components/telepathyClient.js:1436
-msgid "Unknown reason"
-msgstr "Alasan yang tidak diketahui"
 
 #: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:155
 msgid "Windows"
 msgstr "Jendela"
 
-#: ../js/ui/dash.js:250 ../js/ui/dash.js:291
+#: ../js/ui/dash.js:252 ../js/ui/dash.js:293
 msgid "Show Applications"
 msgstr "Tampilkan Aplikasi"
 
-#: ../js/ui/dash.js:451
+#: ../js/ui/dash.js:453
 msgid "Dash"
 msgstr "Dash"
-
-#: ../js/ui/dateMenu.js:97
-msgid "Open Calendar"
-msgstr "Buka Kalender"
-
-#: ../js/ui/dateMenu.js:101
-msgid "Open Clocks"
-msgstr "Buka Jam"
-
-#: ../js/ui/dateMenu.js:108
-msgid "Date & Time Settings"
-msgstr "Pengaturan Waktu & Tanggal"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #. */
-#: ../js/ui/dateMenu.js:132
-msgid "%A %B %e, %Y"
-msgstr "%A, %e %B %Y"
+#: ../js/ui/dateMenu.js:73
+msgid "%B %e %Y"
+msgstr "%e %B %Y"
+
+#. Translators: This is the accessible name of the date button shown
+#. * below the time in the shell; it should combine the weekday and the
+#. * date, e.g. "Tuesday February 17 2015".
+#. */
+#: ../js/ui/dateMenu.js:80
+msgid "%A %B %e %Y"
+msgstr "%A %e %B %Y"
+
+#: ../js/ui/dateMenu.js:160
+msgid "Add world clocks…"
+msgstr "Tambah jam dunia…"
+
+#: ../js/ui/dateMenu.js:161
+msgid "World Clocks"
+msgstr "Jam Dunia"
 
 #: ../js/ui/endSessionDialog.js:64
 #, javascript-format
@@ -1153,9 +899,18 @@ msgstr "Pasang"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Unduh dan pasang \"%s\" dari extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:706 ../js/ui/status/keyboard.js:577
+#: ../js/ui/keyboard.js:714 ../js/ui/status/keyboard.js:724
 msgid "Keyboard"
 msgstr "Papan Ketik"
+
+#. translators: 'Hide' is a verb */
+#: ../js/ui/legacyTray.js:64
+msgid "Hide tray"
+msgstr "Sembunyikan baki"
+
+#: ../js/ui/legacyTray.js:104
+msgid "Status Icons"
+msgstr "Ikon Status"
 
 #: ../js/ui/lookingGlass.js:643
 msgid "No extensions installed"
@@ -1209,53 +964,9 @@ msgstr "Tilik Sumber"
 msgid "Web Page"
 msgstr "Halaman Web"
 
-#: ../js/ui/messageTray.js:1332
-msgid "Open"
-msgstr "Buka"
-
-#: ../js/ui/messageTray.js:1339
-msgid "Remove"
-msgstr "Hapus"
-
-#: ../js/ui/messageTray.js:1636
-msgid "Notifications"
-msgstr "Pemberitahuan"
-
-#: ../js/ui/messageTray.js:1643
-msgid "Clear Messages"
-msgstr "Bersihkan Pesan"
-
-#: ../js/ui/messageTray.js:1662
-msgid "Notification Settings"
-msgstr "Pengaturan Pemberitahuan"
-
-#: ../js/ui/messageTray.js:1715
-msgid "Tray Menu"
-msgstr "Menu Baki"
-
-#: ../js/ui/messageTray.js:1939
-msgid "No Messages"
-msgstr "Tiada Pesan"
-
-#: ../js/ui/messageTray.js:1986
-msgid "Message Tray"
-msgstr "Baki Pesan"
-
-#: ../js/ui/messageTray.js:2443 ../js/ui/overviewControls.js:483
-#: ../js/ui/screenShield.js:152
-#, javascript-format
-msgid "%d new message"
-msgid_plural "%d new messages"
-msgstr[0] "%d pesan baru"
-
-#: ../js/ui/messageTray.js:3013
+#: ../js/ui/messageTray.js:1507
 msgid "System Information"
 msgstr "Informasi Sistem"
-
-#: ../js/ui/notificationDaemon.js:513 ../src/shell-app.c:439
-msgctxt "program"
-msgid "Unknown"
-msgstr "Tak dikenal"
 
 #: ../js/ui/overview.js:84
 msgid "Undo"
@@ -1273,22 +984,22 @@ msgstr "Gambaran"
 msgid "Type to search…"
 msgstr "Ketik untuk mencari…"
 
-#: ../js/ui/panel.js:521
+#: ../js/ui/panel.js:352
 msgid "Quit"
 msgstr "Keluar"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview". */
-#: ../js/ui/panel.js:573
+#: ../js/ui/panel.js:404
 msgid "Activities"
 msgstr "Aktivitas"
 
-#: ../js/ui/panel.js:924
+#: ../js/ui/panel.js:755
 msgid "Top Bar"
 msgstr "Bar Atas"
 
 # Dirgita: Hayo, enaknya pake I/O atau ON/OFF?^^
-#: ../js/ui/popupMenu.js:269
+#: ../js/ui/popupMenu.js:289
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -1300,43 +1011,49 @@ msgstr "Ketikkan Perintah"
 msgid "Close"
 msgstr "Tutup"
 
-#: ../js/ui/runDialog.js:277
+#: ../js/ui/runDialog.js:281
 msgid "Restarting…"
 msgstr "Memulai ulang..."
 
 #. Translators: This is a time format for a date in
 #. long format */
-#: ../js/ui/screenShield.js:88
+#: ../js/ui/screenShield.js:85
 msgid "%A, %B %d"
 msgstr "%A, %d %B"
 
-#: ../js/ui/screenShield.js:154
+#: ../js/ui/screenShield.js:144
+#, javascript-format
+msgid "%d new message"
+msgid_plural "%d new messages"
+msgstr[0] "%d pesan baru"
+
+#: ../js/ui/screenShield.js:146
 #, javascript-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d pemberitahuan baru"
 
-#: ../js/ui/screenShield.js:473 ../js/ui/status/system.js:345
+#: ../js/ui/screenShield.js:432 ../js/ui/status/system.js:345
 msgid "Lock"
 msgstr "Kunci"
 
-#: ../js/ui/screenShield.js:709
+#: ../js/ui/screenShield.js:668
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME perlu mengunci layar"
 
-#: ../js/ui/screenShield.js:836 ../js/ui/screenShield.js:1312
+#: ../js/ui/screenShield.js:795 ../js/ui/screenShield.js:1271
 msgid "Unable to lock"
 msgstr "Tak bisa mengunci"
 
-#: ../js/ui/screenShield.js:837 ../js/ui/screenShield.js:1313
+#: ../js/ui/screenShield.js:796 ../js/ui/screenShield.js:1272
 msgid "Lock was blocked by an application"
 msgstr "Kunci diblokir oleh suatu aplikasi"
 
-#: ../js/ui/search.js:609
+#: ../js/ui/search.js:616
 msgid "Searching…"
 msgstr "Mencari…"
 
-#: ../js/ui/search.js:611
+#: ../js/ui/search.js:618
 msgid "No results."
 msgstr "Tak ada yang cocok."
 
@@ -1437,7 +1154,7 @@ msgstr "Tak Tersambung"
 msgid "Brightness"
 msgstr "Kecerahan"
 
-#: ../js/ui/status/keyboard.js:601
+#: ../js/ui/status/keyboard.js:747
 msgid "Show Keyboard Layout"
 msgstr "Tampilkan Tata Letak Papan Tik"
 
@@ -1605,10 +1322,6 @@ msgstr "Pengaturan VPN"
 #: ../js/ui/status/network.js:1502
 msgid "VPN"
 msgstr "VPN"
-
-#: ../js/ui/status/network.js:1657
-msgid "Network Manager"
-msgstr "Manajer Jaringan"
 
 #: ../js/ui/status/network.js:1697
 msgid "Activation of network connection failed"
@@ -1813,7 +1526,12 @@ msgstr "Menggunakan mode tertentu, mis. \"gdm\" untuk layar masuk"
 msgid "List possible modes"
 msgstr "Menampilkan mode yang mungkin"
 
-#: ../src/shell-app.c:680
+#: ../src/shell-app.c:239
+msgctxt "program"
+msgid "Unknown"
+msgstr "Tak dikenal"
+
+#: ../src/shell-app.c:480
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "Gagal meluncurkan \"%s\""
@@ -1829,3 +1547,225 @@ msgstr "Sandi tidak boleh kosong"
 #: ../src/shell-polkit-authentication-agent.c:346
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Dialog otentikasi ditolak oleh pengguna"
+
+#~ msgid "Show the message tray"
+#~ msgstr "Tampilkan baki pesan"
+
+#~ msgctxt "event list time"
+#~ msgid "%H∶%M"
+#~ msgstr "%H∶%M"
+
+#~ msgctxt "event list time"
+#~ msgid "%l∶%M %p"
+#~ msgstr "%l∶%M %p"
+
+#~ msgctxt "list sunday"
+#~ msgid "Su"
+#~ msgstr "Min"
+
+#~ msgctxt "list monday"
+#~ msgid "M"
+#~ msgstr "Sen"
+
+#~ msgctxt "list tuesday"
+#~ msgid "T"
+#~ msgstr "Sel"
+
+#~ msgctxt "list wednesday"
+#~ msgid "W"
+#~ msgstr "Rab"
+
+#~ msgctxt "list thursday"
+#~ msgid "Th"
+#~ msgstr "Kam"
+
+#~ msgctxt "list friday"
+#~ msgid "F"
+#~ msgstr "Jum"
+
+#~ msgctxt "list saturday"
+#~ msgid "S"
+#~ msgstr "Sab"
+
+#~ msgid "Nothing Scheduled"
+#~ msgstr "Tak Ada Jadwal"
+
+#~ msgid "Today"
+#~ msgstr "Hari ini"
+
+#~ msgid "Tomorrow"
+#~ msgstr "Besok"
+
+#~ msgid "This week"
+#~ msgstr "Minggu ini"
+
+#~ msgid "Next week"
+#~ msgstr "Minggu depan"
+
+#~ msgid "Removable Devices"
+#~ msgstr "Perangkat Yang Dapat Dicabut"
+
+#~ msgid "Eject"
+#~ msgstr "Keluarkan"
+
+#~ msgid "Invitation"
+#~ msgstr "Undangan"
+
+#~ msgid "Call"
+#~ msgstr "Panggil"
+
+#~ msgid "File Transfer"
+#~ msgstr "Transfer Berkas"
+
+#~ msgid "Chat"
+#~ msgstr "Obrolan"
+
+#~ msgid "Unmute"
+#~ msgstr "Bersuara"
+
+#~ msgid "Mute"
+#~ msgstr "Bisu"
+
+#~ msgid "Invitation to %s"
+#~ msgstr "Undangan ke %s"
+
+#~ msgid "%s is inviting you to join %s"
+#~ msgstr "%s mengundang Anda untuk bergabung dengan %s"
+
+#~ msgid "Decline"
+#~ msgstr "Tolak"
+
+#~ msgid "Accept"
+#~ msgstr "Terima"
+
+#~ msgid "Video call from %s"
+#~ msgstr "Panggilan video dari %s"
+
+#~ msgid "Call from %s"
+#~ msgstr "Panggilan dari %s"
+
+#~ msgid "Answer"
+#~ msgstr "Jawab"
+
+#~ msgid "%s is sending you %s"
+#~ msgstr "%s sedang mengirimi Anda %s"
+
+#~ msgid "%s would like permission to see when you are online"
+#~ msgstr "%s ingin minta izin melihat Anda ketika Anda daring"
+
+#~ msgid "Network error"
+#~ msgstr "Galat jaringan"
+
+#~ msgid "Authentication failed"
+#~ msgstr "Otentikasi gagal"
+
+#~ msgid "Encryption error"
+#~ msgstr "Galat enkripsi"
+
+#~ msgid "Certificate not provided"
+#~ msgstr "Sertifikat tidak disediakan"
+
+#~ msgid "Certificate untrusted"
+#~ msgstr "Sertifikat tidak dipercaya"
+
+#~ msgid "Certificate expired"
+#~ msgstr "Sertifikat kadaluarsa"
+
+#~ msgid "Certificate not activated"
+#~ msgstr "Sertifikat tidak diaktifkan"
+
+#~ msgid "Certificate hostname mismatch"
+#~ msgstr "Nama host sertifikat tidak cocok"
+
+#~ msgid "Certificate fingerprint mismatch"
+#~ msgstr "Sidik jari sertifikat tidak cocok"
+
+#~ msgid "Certificate self-signed"
+#~ msgstr "Sertifikat ditandatangani sendiri"
+
+#~ msgid "Status is set to offline"
+#~ msgstr "Status diatur ke luring"
+
+#~ msgid "Encryption is not available"
+#~ msgstr "Enkripsi tidak tersedia"
+
+#~ msgid "Certificate is invalid"
+#~ msgstr "Sertifikat tidak valid"
+
+#~ msgid "Connection has been refused"
+#~ msgstr "Koneksi telah ditolak"
+
+#~ msgid "Connection can't be established"
+#~ msgstr "Koneksi tak dapat dijalin"
+
+#~ msgid "Connection has been lost"
+#~ msgstr "Koneksi telah terputus"
+
+#~ msgid "This account is already connected to the server"
+#~ msgstr "Akun ini telah tersambung pada server"
+
+#~ msgid ""
+#~ "Connection has been replaced by a new connection using the same resource"
+#~ msgstr ""
+#~ "Koneksi telah digantikan oleh koneksi baru memakai sumberdaya yang sama"
+
+#~ msgid "The account already exists on the server"
+#~ msgstr "Akun ini sudah ada di server"
+
+#~ msgid "Server is currently too busy to handle the connection"
+#~ msgstr "Server kini terlalu sibuk untuk menangani koneksi"
+
+#~ msgid "Certificate has been revoked"
+#~ msgstr "Sertifikat telah dicabut"
+
+#~ msgid ""
+#~ "Certificate uses an insecure cipher algorithm or is cryptographically weak"
+#~ msgstr ""
+#~ "Sertifikat memakai algorima cipher yang tak aman atau lemah secara "
+#~ "kriptografi"
+
+#~ msgid ""
+#~ "The length of the server certificate, or the depth of the server "
+#~ "certificate chain, exceed the limits imposed by the cryptography library"
+#~ msgstr ""
+#~ "Panjang sertifikat server, atau kedalaman rantai sertifikat server, "
+#~ "melampaui batas yang diberlakukan oleh pustaka kriptografi"
+
+#~ msgid "Internal error"
+#~ msgstr "Galat internal"
+
+#~ msgid "Unable to connect to %s"
+#~ msgstr "Tak bisa menyambung ke %s"
+
+#~ msgid "View account"
+#~ msgstr "Tilik akun"
+
+#~ msgid "Unknown reason"
+#~ msgstr "Alasan yang tidak diketahui"
+
+#~ msgid "Open Calendar"
+#~ msgstr "Buka Kalender"
+
+#~ msgid "Date & Time Settings"
+#~ msgstr "Pengaturan Waktu & Tanggal"
+
+#~ msgid "Open"
+#~ msgstr "Buka"
+
+#~ msgid "Remove"
+#~ msgstr "Hapus"
+
+#~ msgid "Clear Messages"
+#~ msgstr "Bersihkan Pesan"
+
+#~ msgid "Notification Settings"
+#~ msgstr "Pengaturan Pemberitahuan"
+
+#~ msgid "Tray Menu"
+#~ msgstr "Menu Baki"
+
+#~ msgid "No Messages"
+#~ msgstr "Tiada Pesan"
+
+#~ msgid "Message Tray"
+#~ msgstr "Baki Pesan"
