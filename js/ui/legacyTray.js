@@ -147,6 +147,17 @@ const LegacyTray = new Lang.Class({
                                                   St.ButtonMask.THREE,
                                      can_focus: true,
                                      x_fill: true, y_fill: true });
+
+        let app = Shell.WindowTracker.get_default().get_app_from_pid(icon.pid);
+        if (!app)
+            app = Shell.AppSystem.get_default().lookup_startup_wmclass(wmClass);
+        if (!app)
+            app = Shell.AppSystem.get_default().lookup_desktop_wmclass(wmClass);
+        if (app)
+            button.accessible_name = app.get_name();
+        else
+            button.accessible_name = icon.title;
+
         button.connect('clicked',
             function() {
                 icon.click(Clutter.get_current_event());
