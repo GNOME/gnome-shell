@@ -162,6 +162,11 @@ const LegacyTray = new Lang.Class({
             function() {
                 icon.click(Clutter.get_current_event());
             });
+        button.connect('key-press-event',
+            function() {
+                icon.click(Clutter.get_current_event());
+                return Clutter.EVENT_PROPAGATE;
+            });
         button.connect('key-focus-in', Lang.bind(this,
             function() {
                 this._concealHandle.show();
