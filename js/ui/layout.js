@@ -11,6 +11,7 @@ const St = imports.gi.St;
 
 const Background = imports.ui.background;
 const BackgroundMenu = imports.ui.backgroundMenu;
+const LoginManager = imports.misc.loginManager;
 
 const DND = imports.ui.dnd;
 const Main = imports.ui.main;
@@ -248,6 +249,18 @@ const LayoutManager = new Lang.Class({
         global.screen.connect('in-fullscreen-changed',
                               Lang.bind(this, this._updateFullscreen));
         this._monitorsChanged();
+
+        // NVIDIA drivers don't preserve FBO contents across
+        // suspend/resume, see
+        // https://bugzilla.gnome.org/show_bug.cgi?id=739178
+        if (Shell.util_need_background_refresh()) {
+            LoginManager.getLoginManager().connect('prepare-for-sleep',
+                                                   function(lm, suspending) {
+                                                       if (suspending)
+                                                           return;
+                                                       Meta.Background.refresh_all();
+                                                   });
+        }
     },
 
     // This is called by Main after everything else is constructed

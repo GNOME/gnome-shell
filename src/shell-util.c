@@ -5,6 +5,9 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
+#include <GL/gl.h>
+#include <cogl/cogl.h>
+
 #include "shell-util.h"
 #include <glib/gi18n-lib.h>
 #include <gtk/gtk.h>
@@ -329,4 +332,34 @@ shell_util_cursor_tracker_to_clutter (MetaCursorTracker *tracker,
     {
       clutter_actor_hide (CLUTTER_ACTOR (texture));
     }
+}
+
+typedef const gchar *(*ShellGLGetString) (GLenum);
+
+static const gchar *
+get_gl_vendor (void)
+{
+  static const gchar *vendor = NULL;
+
+  if (!vendor)
+    {
+      ShellGLGetString gl_get_string;
+      gl_get_string = (ShellGLGetString) cogl_get_proc_address ("glGetString");
+      if (gl_get_string)
+        vendor = gl_get_string (GL_VENDOR);
+    }
+
+  return vendor;
+}
+
+gboolean
+shell_util_need_background_refresh (void)
+{
+  if (!clutter_check_windowing_backend (CLUTTER_WINDOWING_X11))
+    return FALSE;
+
+  if (g_strcmp0 (get_gl_vendor (), "NVIDIA Corporation") == 0)
+    return TRUE;
+
+  return FALSE;
 }
