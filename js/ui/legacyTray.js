@@ -100,6 +100,7 @@ const LegacyTray = new Lang.Class({
 
         Main.layoutManager.addChrome(this.actor, { affectsInputRegion: false });
         Main.layoutManager.trackChrome(this._slider, { affectsInputRegion: true });
+        Main.uiGroup.set_child_below_sibling(this.actor, Main.layoutManager.modalDialogGroup);
         Main.ctrlAltTabManager.addGroup(this.actor,
                                         _("Status Icons"), 'focus-legacy-systray-symbolic',
                                         { sortGroup: CtrlAltTab.SortGroup.BOTTOM });
