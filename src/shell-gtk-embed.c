@@ -117,6 +117,21 @@ shell_gtk_embed_window_created_cb (MetaDisplay   *display,
 }
 
 static void
+shell_gtk_embed_on_window_mapped (GtkWidget     *object,
+                                  ShellGtkEmbed *embed)
+{
+  MetaDisplay *display = shell_global_get_display (shell_global_get ());
+
+  /* Listen for new windows so we can detect when Mutter has
+     created a MutterWindow for this window */
+  embed->priv->window_created_handler =
+    g_signal_connect (display,
+                      "window-created",
+                      G_CALLBACK (shell_gtk_embed_window_created_cb),
+                      embed);
+}
+
+static void
 shell_gtk_embed_set_window (ShellGtkEmbed       *embed,
                             ShellEmbeddedWindow *window)
 {
@@ -140,6 +155,10 @@ shell_gtk_embed_set_window (ShellGtkEmbed       *embed,
       g_signal_handlers_disconnect_by_func (embed->priv->window,
                                             (gpointer)shell_gtk_embed_on_window_destroy,
                                             embed);
+
+      g_signal_handlers_disconnect_by_func (embed->priv->window,
+                                            (gpointer)shell_gtk_embed_on_window_mapped,
+                                            embed);
     }
 
   embed->priv->window = window;
@@ -153,13 +172,8 @@ shell_gtk_embed_set_window (ShellGtkEmbed       *embed,
       g_signal_connect (embed->priv->window, "destroy",
                         G_CALLBACK (shell_gtk_embed_on_window_destroy), embed);
 
-      /* Listen for new windows so we can detect when Mutter has
-         created a MutterWindow for this window */
-      embed->priv->window_created_handler =
-        g_signal_connect (display,
-                          "window-created",
-                          G_CALLBACK (shell_gtk_embed_window_created_cb),
-                          embed);
+      g_signal_connect (embed->priv->window, "map",
+                        G_CALLBACK (shell_gtk_embed_on_window_mapped), embed);
     }
 
   clutter_actor_queue_relayout (CLUTTER_ACTOR (embed));
