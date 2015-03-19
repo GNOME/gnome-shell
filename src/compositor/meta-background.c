@@ -71,6 +71,8 @@ enum
 
 G_DEFINE_TYPE (MetaBackground, meta_background, G_TYPE_OBJECT)
 
+static GSList *all_backgrounds = NULL;
+
 static void
 free_fbos (MetaBackground *self)
 {
@@ -305,6 +307,8 @@ meta_background_dispose (GObject *object)
 static void
 meta_background_finalize (GObject *object)
 {
+  all_backgrounds = g_slist_remove (all_backgrounds, object);
+
   G_OBJECT_CLASS (meta_background_parent_class)->finalize (object);
 }
 
@@ -347,6 +351,7 @@ meta_background_init (MetaBackground *self)
   self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self,
                                             META_TYPE_BACKGROUND,
                                             MetaBackgroundPrivate);
+  all_backgrounds = g_slist_prepend (all_backgrounds, self);
 }
 
 static void
@@ -912,4 +917,13 @@ meta_background_set_blend (MetaBackground          *self,
 
   free_wallpaper_texture (self);
   mark_changed (self);
+}
+
+void
+meta_background_refresh_all (void)
+{
+  GSList *l;
+
+  for (l = all_backgrounds; l; l = l->next)
+    mark_changed (l->data);
 }

@@ -57,6 +57,8 @@ struct _MetaBackground
   MetaBackgroundPrivate *priv;
 };
 
+void meta_background_refresh_all (void);
+
 GType meta_background_get_type (void);
 
 MetaBackground *meta_background_new  (MetaScreen *screen);
