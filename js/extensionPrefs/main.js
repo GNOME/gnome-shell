@@ -54,7 +54,6 @@ const Application = new Lang.Class({
         this._startupUuid = null;
         this._loaded = false;
         this._skipMainWindow = false;
-        this._settings = new Gio.Settings({ schema_id: 'org.gnome.shell' });
     },
 
     _extensionAvailable: function(uuid) {
