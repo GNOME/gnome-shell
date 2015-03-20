@@ -444,55 +444,6 @@ const Magnifier = new Lang.Class({
         this._appSettings = new Gio.Settings({ schema_id: APPLICATIONS_SCHEMA });
         this._settings = new Gio.Settings({ schema_id: MAGNIFIER_SCHEMA });
 
-        if (zoomRegion) {
-            // Mag factor is accurate to two decimal places.
-            let aPref = parseFloat(this._settings.get_double(MAG_FACTOR_KEY).toFixed(2));
-            if (aPref != 0.0)
-                zoomRegion.setMagFactor(aPref, aPref);
-
-            aPref = this._settings.get_enum(SCREEN_POSITION_KEY);
-            if (aPref)
-                zoomRegion.setScreenPosition(aPref);
-
-            zoomRegion.setLensMode(this._settings.get_boolean(LENS_MODE_KEY));
-            zoomRegion.setClampScrollingAtEdges(!this._settings.get_boolean(CLAMP_MODE_KEY));
-
-            aPref = this._settings.get_enum(MOUSE_TRACKING_KEY);
-            if (aPref)
-                zoomRegion.setMouseTrackingMode(aPref);
-
-            aPref = this._settings.get_enum(FOCUS_TRACKING_KEY);
-            if (aPref)
-                zoomRegion.setFocusTrackingMode(aPref);
-
-            aPref = this._settings.get_enum(CARET_TRACKING_KEY);
-            if (aPref)
-                zoomRegion.setCaretTrackingMode(aPref);
-
-            aPref = this._settings.get_boolean(INVERT_LIGHTNESS_KEY);
-            if (aPref)
-                zoomRegion.setInvertLightness(aPref);
-
-            aPref = this._settings.get_double(COLOR_SATURATION_KEY);
-            if (aPref)
-                zoomRegion.setColorSaturation(aPref);
-
-            let bc = {};
-            bc.r = this._settings.get_double(BRIGHT_RED_KEY);
-            bc.g = this._settings.get_double(BRIGHT_GREEN_KEY);
-            bc.b = this._settings.get_double(BRIGHT_BLUE_KEY);
-            zoomRegion.setBrightness(bc);
-
-            bc.r = this._settings.get_double(CONTRAST_RED_KEY);
-            bc.g = this._settings.get_double(CONTRAST_GREEN_KEY);
-            bc.b = this._settings.get_double(CONTRAST_BLUE_KEY);
-            zoomRegion.setContrast(bc);
-        }
-
-        let showCrosshairs = this._settings.get_boolean(SHOW_CROSS_HAIRS_KEY);
-        this.addCrosshairs();
-        this.setCrosshairsVisible(showCrosshairs);
-
         this._appSettings.connect('changed::' + SHOW_KEY,
                                   Lang.bind(this, function() {
             this.setActive(this._appSettings.get_boolean(SHOW_KEY));
@@ -561,6 +512,56 @@ const Magnifier = new Lang.Class({
                                Lang.bind(this, function() {
             this.setCrosshairsClip(this._settings.get_boolean(CROSS_HAIRS_CLIP_KEY));
         }));
+
+        if (zoomRegion) {
+            // Mag factor is accurate to two decimal places.
+            let aPref = parseFloat(this._settings.get_double(MAG_FACTOR_KEY).toFixed(2));
+            if (aPref != 0.0)
+                zoomRegion.setMagFactor(aPref, aPref);
+
+            aPref = this._settings.get_enum(SCREEN_POSITION_KEY);
+            if (aPref)
+                zoomRegion.setScreenPosition(aPref);
+
+            zoomRegion.setLensMode(this._settings.get_boolean(LENS_MODE_KEY));
+            zoomRegion.setClampScrollingAtEdges(!this._settings.get_boolean(CLAMP_MODE_KEY));
+
+            aPref = this._settings.get_enum(MOUSE_TRACKING_KEY);
+            if (aPref)
+                zoomRegion.setMouseTrackingMode(aPref);
+
+            aPref = this._settings.get_enum(FOCUS_TRACKING_KEY);
+            if (aPref)
+                zoomRegion.setFocusTrackingMode(aPref);
+
+            aPref = this._settings.get_enum(CARET_TRACKING_KEY);
+            if (aPref)
+                zoomRegion.setCaretTrackingMode(aPref);
+
+            aPref = this._settings.get_boolean(INVERT_LIGHTNESS_KEY);
+            if (aPref)
+                zoomRegion.setInvertLightness(aPref);
+
+            aPref = this._settings.get_double(COLOR_SATURATION_KEY);
+            if (aPref)
+                zoomRegion.setColorSaturation(aPref);
+
+            let bc = {};
+            bc.r = this._settings.get_double(BRIGHT_RED_KEY);
+            bc.g = this._settings.get_double(BRIGHT_GREEN_KEY);
+            bc.b = this._settings.get_double(BRIGHT_BLUE_KEY);
+            zoomRegion.setBrightness(bc);
+
+            bc.r = this._settings.get_double(CONTRAST_RED_KEY);
+            bc.g = this._settings.get_double(CONTRAST_GREEN_KEY);
+            bc.b = this._settings.get_double(CONTRAST_BLUE_KEY);
+            zoomRegion.setContrast(bc);
+        }
+
+        let showCrosshairs = this._settings.get_boolean(SHOW_CROSS_HAIRS_KEY);
+        this.addCrosshairs();
+        this.setCrosshairsVisible(showCrosshairs);
+
         return this._appSettings.get_boolean(SHOW_KEY);
    },
 
