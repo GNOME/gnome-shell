@@ -125,6 +125,7 @@ const Indicator = new Lang.Class({
                                 Lang.bind(this, this._updateMultiUser));
         this._updateSwitchUser();
         this._updateMultiUser();
+        this._updateLockScreen();
 
         // Whether shutdown is available or not depends on both lockdown
         // settings (disable-log-out) and Polkit policy - the latter doesn't
