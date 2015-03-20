@@ -7,15 +7,15 @@
 # Gnome 2012-03 Finnish translation sprint participants:
 # Pauli Virtanen <pauli.virtanen@hut.fi>, 2003-2005.
 # Tommi Vainikainen <thv@iki.fi>, 2011.
-# Jiri Grönroos <jiri.gronroos+l10n@iki.fi>, 2012, 2013, 2014.
+# Jiri Grönroos <jiri.gronroos+l10n@iki.fi>, 2012, 2013, 2014, 2015.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-09-06 21:56+0000\n"
-"PO-Revision-Date: 2014-09-07 12:25+0300\n"
+"POT-Creation-Date: 2015-03-13 11:15+0000\n"
+"PO-Revision-Date: 2015-03-13 17:52+0200\n"
 "Last-Translator: Jiri Grönroos <jiri.gronroos+l10n@iki.fi>\n"
 "Language-Team: suomi <gnome-fi-laatu@lists.sourceforge.net>\n"
 "Language: fi\n"
@@ -47,7 +47,6 @@ msgid "Move window to workspace 4"
 msgstr "Siirrä ikkuna työtilaan 4"
 
 #: ../data/50-mutter-navigation.xml.in.h:6
-#| msgid "Move window to workspace 1"
 msgid "Move window to last workspace"
 msgstr "Siirrä ikkuna viimeiseen työtilaan"
 
@@ -68,22 +67,18 @@ msgid "Move window one workspace down"
 msgstr "Siirrä ikkunaa yksi työtila alas"
 
 #: ../data/50-mutter-navigation.xml.in.h:11
-#| msgid "Move window one workspace to the left"
 msgid "Move window one monitor to the left"
 msgstr "Siirrä ikkuna yhden näytön verran vasemmalle"
 
 #: ../data/50-mutter-navigation.xml.in.h:12
-#| msgid "Move window one workspace to the right"
 msgid "Move window one monitor to the right"
 msgstr "Siirrä ikkuna yhden näytön verran oikealle"
 
 #: ../data/50-mutter-navigation.xml.in.h:13
-#| msgid "Move window one workspace up"
 msgid "Move window one monitor up"
 msgstr "Siirrä ikkuna yhden näytön verran ylös"
 
 #: ../data/50-mutter-navigation.xml.in.h:14
-#| msgid "Move window one workspace down"
 msgid "Move window one monitor down"
 msgstr "Siirrä ikkuna yhden näytön verran alas"
 
@@ -92,7 +87,6 @@ msgid "Switch applications"
 msgstr "Vaihda sovelluksia"
 
 #: ../data/50-mutter-navigation.xml.in.h:16
-#| msgid "Switch applications"
 msgid "Switch to previous application"
 msgstr "Vaihda edelliseen sovellukseen"
 
@@ -101,7 +95,6 @@ msgid "Switch windows"
 msgstr "Vaihda ikkunoita"
 
 #: ../data/50-mutter-navigation.xml.in.h:18
-#| msgid "Switch windows"
 msgid "Switch to previous window"
 msgstr "Vaihda edelliseen ikkunaan"
 
@@ -110,7 +103,6 @@ msgid "Switch windows of an application"
 msgstr "Vaihda sovelluksen ikkunoiden välillä"
 
 #: ../data/50-mutter-navigation.xml.in.h:20
-#| msgid "Switch windows of an application"
 msgid "Switch to previous window of an application"
 msgstr "Vaihda sovelluksen edelliseen ikkunaan"
 
@@ -173,7 +165,6 @@ msgid "Switch to workspace 4"
 msgstr "Siirry työtilaan 4"
 
 #: ../data/50-mutter-navigation.xml.in.h:34
-#| msgid "Switch to workspace 1"
 msgid "Switch to last workspace"
 msgstr "Siirry viimeiseen työtilaan"
 
@@ -416,65 +407,81 @@ msgid "Cancel tab popup"
 msgstr ""
 
 #: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:1
-#| msgid "Switch to workspace 1"
 msgid "Switch to VT 1"
 msgstr "Siirry virtuaalikonsoliin 1"
 
 #: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:2
-#| msgid "Switch to workspace 2"
 msgid "Switch to VT 2"
 msgstr "Siirry virtuaalikonsoliin 2"
 
 #: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:3
-#| msgid "Switch to workspace 3"
 msgid "Switch to VT 3"
 msgstr "Siirry virtuaalikonsoliin 3"
 
 #: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:4
-#| msgid "Switch to workspace 4"
 msgid "Switch to VT 4"
 msgstr "Siirry virtuaalikonsoliin 4"
 
 #: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:5
-#| msgid "Switch to workspace 1"
 msgid "Switch to VT 5"
 msgstr "Siirry virtuaalikonsoliin 5"
 
 #: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:6
-#| msgid "Switch to workspace 1"
 msgid "Switch to VT 6"
 msgstr "Siirry virtuaalikonsoliin 6"
 
 #: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:7
-#| msgid "Switch to workspace 1"
 msgid "Switch to VT 7"
 msgstr "Siirry virtuaalikonsoliin 7"
 
-#: ../src/backends/meta-monitor-manager.c:412
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:8
+#| msgid "Switch to VT 1"
+msgid "Switch to VT 8"
+msgstr "Siirry virtuaalikonsoliin 8"
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:9
+#| msgid "Switch to VT 1"
+msgid "Switch to VT 9"
+msgstr "Siirry virtuaalikonsoliin 9"
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:10
+#| msgid "Switch to VT 1"
+msgid "Switch to VT 10"
+msgstr "Siirry virtuaalikonsoliin 10"
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:11
+#| msgid "Switch to VT 1"
+msgid "Switch to VT 11"
+msgstr "Siirry virtuaalikonsoliin 11"
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:12
+#| msgid "Switch to VT 1"
+msgid "Switch to VT 12"
+msgstr "Siirry virtuaalikonsoliin 12"
+
+#: ../src/backends/meta-monitor-manager.c:364
 msgid "Built-in display"
 msgstr "Sisäänrakennettu näyttö"
 
-#: ../src/backends/meta-monitor-manager.c:437
-#| msgid "Unknown %s"
+#: ../src/backends/meta-monitor-manager.c:391
 msgid "Unknown"
 msgstr "Tuntematon"
 
-#: ../src/backends/meta-monitor-manager.c:439
-#| msgid "Unknown %s"
+#: ../src/backends/meta-monitor-manager.c:393
 msgid "Unknown Display"
 msgstr "Tuntematon näyttö"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: ../src/backends/meta-monitor-manager.c:447
+#: ../src/backends/meta-monitor-manager.c:401
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:443
+#: ../src/compositor/compositor.c:456
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
@@ -510,7 +517,7 @@ msgstr "_Odota"
 msgid "_Force Quit"
 msgstr "Sulje _väkisin"
 
-#: ../src/core/display.c:547
+#: ../src/core/display.c:562
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "X-ikkunointijärjestelmän näytön ”%s” avaaminen epäonnistui\n"
@@ -547,19 +554,6 @@ msgstr "Suorita wayland-koostajana"
 msgid "Run as a full display server, rather than nested"
 msgstr ""
 
-#: ../src/core/main.c:459
-#, c-format
-msgid "Failed to scan themes directory: %s\n"
-msgstr "Teemakansion lukeminen epäonnistui: %s\n"
-
-#: ../src/core/main.c:475
-#, c-format
-msgid ""
-"Could not find a theme! Be sure %s exists and contains the usual themes.\n"
-msgstr ""
-"Teemaa ei löydy! Varmista, että %s on olemassa, ja sisältää tavalliset "
-"teemat.\n"
-
 #: ../src/core/mutter.c:39
 #, c-format
 msgid ""
@@ -583,710 +577,31 @@ msgstr "Näytä versio"
 msgid "Mutter plugin to use"
 msgstr "Käytettävä Mutter-liitännäinen"
 
-#: ../src/core/prefs.c:2101
+#: ../src/core/prefs.c:2004
 #, c-format
 msgid "Workspace %d"
 msgstr "Työtila %d"
 
-#: ../src/core/screen.c:548
+#: ../src/core/screen.c:525
+#, c-format
+#| msgid ""
+#| "Screen %d on display \"%s\" already has a window manager; try using the --"
+#| "replace option to replace the current window manager.\n"
+msgid ""
+"Display \"%s\" already has a window manager; try using the --replace option "
+"to replace the current window manager."
+msgstr ""
+"Näytöllä ”%s” on jo ikkunointiohjelma: kokeile valitsinta --replace, jos "
+"haluat korvata nykyisen ikkunointiohjelman."
+
+#: ../src/core/screen.c:607
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Näytön ”%2$s” ruutu %1$d ei ole kelvollinen\n"
 
-#: ../src/core/screen.c:564
-#, c-format
-msgid ""
-"Screen %d on display \"%s\" already has a window manager; try using the --"
-"replace option to replace the current window manager.\n"
-msgstr ""
-"Näytön ”%2$s” ruudulla %1$d on jo ikkunointiohjelma: kokeile valitsinta --"
-"replace, jos haluat korvata nykyisen ikkunointiohjelman.\n"
-
-#: ../src/core/screen.c:657
-#, c-format
-msgid "Screen %d on display \"%s\" already has a window manager\n"
-msgstr "Näytön ”%2$s” ruudulla %1$d on jo ikkunointiohjelma\n"
-
 #: ../src/core/util.c:118
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "Mutter on käännetty ilman tukea monisanaisille ilmoituksille\n"
-
-#. Translators: This represents the size of a window.  The first number is
-#. * the width of the window and the second is the height.
-#.
-#: ../src/ui/resizepopup.c:134
-#, c-format
-msgid "%d x %d"
-msgstr "%d × %d"
-
-#: ../src/ui/theme.c:233
-msgid "top"
-msgstr "ylä"
-
-#: ../src/ui/theme.c:235
-msgid "bottom"
-msgstr "ala"
-
-#: ../src/ui/theme.c:237
-msgid "left"
-msgstr "vasen"
-
-#: ../src/ui/theme.c:239
-msgid "right"
-msgstr "oikea"
-
-#: ../src/ui/theme.c:267
-#, c-format
-msgid "frame geometry does not specify \"%s\" dimension"
-msgstr "kehyksen mitat eivät määrittele ”%s”-kokoa"
-
-#: ../src/ui/theme.c:286
-#, c-format
-msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
-msgstr "kehyksen mitat eivät määrittele ”%2$s”-reunan ”%1$s”-kokoa"
-
-#: ../src/ui/theme.c:323
-#, c-format
-msgid "Button aspect ratio %g is not reasonable"
-msgstr "Painikkeen sivusuhde %g ei ole järkevä"
-
-#: ../src/ui/theme.c:335
-#, c-format
-msgid "Frame geometry does not specify size of buttons"
-msgstr "Kehyksen mitat eivät määrittele painikkeiden kokoa"
-
-#: ../src/ui/theme.c:1061
-#, c-format
-msgid "Gradients should have at least two colors"
-msgstr "Väriliu'uissa täytyy olla vähintään kaksi väriä"
-
-#: ../src/ui/theme.c:1211
-#, c-format
-msgid ""
-"GTK custom color specification must have color name and fallback in "
-"parentheses, e.g. gtk:custom(foo,bar); could not parse \"%s\""
-msgstr ""
-"GTK-värimääritteessä täytyy olla värin nimi ja vara-arvo suluissa, esim. gtk:"
-"custom(foo,bar). ”%s” ei jäsenny"
-
-#: ../src/ui/theme.c:1227
-#, c-format
-msgid ""
-"Invalid character '%c' in color_name parameter of gtk:custom, only A-Za-z0-9-"
-"_ are valid"
-msgstr ""
-"Virheellinen merkki ”%c” gtk:custom-osan värinimi-parametrissa: ainoastaan A-"
-"Za-z0-9_ ovat sallittuja"
-
-#: ../src/ui/theme.c:1241
-#, c-format
-msgid ""
-"Gtk:custom format is \"gtk:custom(color_name,fallback)\", \"%s\" does not "
-"fit the format"
-msgstr ""
-"Gtk:custom-muoto on ”gtk:custom(värinimi,vara-arvo)”. ”%s” ei ole tämän "
-"muotoinen"
-
-#: ../src/ui/theme.c:1286
-#, c-format
-msgid ""
-"GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
-"where NORMAL is the state; could not parse \"%s\""
-msgstr ""
-"GTK-värimääritteessä täytyy olla tila hakasuluissa, esim. gtk:fg[NORMAL], "
-"jossa NORMAL on tila. ”%s” ei jäsenny"
-
-#: ../src/ui/theme.c:1300
-#, c-format
-msgid ""
-"GTK color specification must have a close bracket after the state, e.g. gtk:"
-"fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
-msgstr ""
-"GTK-värimääritteessä täytyy olla loppuhakasulku tilan jälkeen. Esimerkiksi "
-"gtk:fg[NORMAL], jossa NORMAL on tila. ”%s” ei jäsenny"
-
-#: ../src/ui/theme.c:1311
-#, c-format
-msgid "Did not understand state \"%s\" in color specification"
-msgstr "Tila ”%s” ei ole värimääritteessä järkevä"
-
-#: ../src/ui/theme.c:1324
-#, c-format
-msgid "Did not understand color component \"%s\" in color specification"
-msgstr "Värikomponentti ”%s” ei ole värimääritteessä järkevä"
-
-#: ../src/ui/theme.c:1352
-#, c-format
-msgid ""
-"Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
-"format"
-msgstr ""
-"Sekoitusmuoto on ”blend/taustaväri/edustaväri/alfa”. ”%s” ei ole tätä muotoa."
-
-#: ../src/ui/theme.c:1363
-#, c-format
-msgid "Could not parse alpha value \"%s\" in blended color"
-msgstr "Alfa-arvo ”%s” sekoitusvärissä ei jäsenny"
-
-#: ../src/ui/theme.c:1373
-#, c-format
-msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
-msgstr "Alfa-arvo ”%s” sekoitusvärissä ei ole välillä 0.0 - 1.0"
-
-#: ../src/ui/theme.c:1419
-#, c-format
-msgid ""
-"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
-msgstr ""
-"Varjostusmuoto on ”shade/perusväri/kerroin”. ”%s” ei ole tämän muotoinen."
-
-#: ../src/ui/theme.c:1430
-#, c-format
-msgid "Could not parse shade factor \"%s\" in shaded color"
-msgstr "Varjostuskerroin ”%s” varjostetussa värissä ei jäsenny"
-
-#: ../src/ui/theme.c:1440
-#, c-format
-msgid "Shade factor \"%s\" in shaded color is negative"
-msgstr "Varjostuskerroin ”%s” varjostetussa värissä on negatiivinen"
-
-#: ../src/ui/theme.c:1469
-#, c-format
-msgid "Could not parse color \"%s\""
-msgstr "Värin ”%s” jäsentäminen ei onnistunut"
-
-#: ../src/ui/theme.c:1778
-#, c-format
-msgid "Coordinate expression contains character '%s' which is not allowed"
-msgstr "Koordinaattilauseke sisältää merkin ”%s”, joka ei ole sallittu"
-
-#: ../src/ui/theme.c:1805
-#, c-format
-msgid ""
-"Coordinate expression contains floating point number '%s' which could not be "
-"parsed"
-msgstr "Koordinaattilauseke sisältää liukuluvun ”%s”, joka ei jäsentynyt"
-
-#: ../src/ui/theme.c:1819
-#, c-format
-msgid "Coordinate expression contains integer '%s' which could not be parsed"
-msgstr "Koordinaattilauseke sisältää kokonaisluvun ”%s”, joka ei jäsentynyt"
-
-#: ../src/ui/theme.c:1940
-#, c-format
-msgid ""
-"Coordinate expression contained unknown operator at the start of this text: "
-"\"%s\""
-msgstr ""
-"Koordinaattilauseke sisälsi tuntemattoman operaattorin seuraavan tekstin "
-"alussa: ”%s”"
-
-#: ../src/ui/theme.c:1997
-#, c-format
-msgid "Coordinate expression was empty or not understood"
-msgstr "Koordinaattilauseke oli tyhjä tai ei järkevä"
-
-#: ../src/ui/theme.c:2110 ../src/ui/theme.c:2120 ../src/ui/theme.c:2154
-#, c-format
-msgid "Coordinate expression results in division by zero"
-msgstr "Koordinaattilauseke johtaa nollalla jakamiseen"
-
-#: ../src/ui/theme.c:2162
-#, c-format
-msgid ""
-"Coordinate expression tries to use mod operator on a floating-point number"
-msgstr "Koordinaattilauseke yrittää soveltaa mod-operaattoria liukulukuun"
-
-#: ../src/ui/theme.c:2218
-#, c-format
-msgid ""
-"Coordinate expression has an operator \"%s\" where an operand was expected"
-msgstr ""
-"Koordinaattilausekkeessa on operaattori ”%s”, jonka paikalla pitäisi olla "
-"operandi"
-
-#: ../src/ui/theme.c:2227
-#, c-format
-msgid "Coordinate expression had an operand where an operator was expected"
-msgstr ""
-"Koordinaattilauseke sisälsi operandin kohdassa, johon kuuluisi operaattori"
-
-#: ../src/ui/theme.c:2235
-#, c-format
-msgid "Coordinate expression ended with an operator instead of an operand"
-msgstr "Koordinaattilauseke päättyi operaattoriin, ei operandiin"
-
-#: ../src/ui/theme.c:2245
-#, c-format
-msgid ""
-"Coordinate expression has operator \"%c\" following operator \"%c\" with no "
-"operand in between"
-msgstr ""
-"Koordinaattilausekkeessa on operaattori ”%c” operaattorin ”%c” perässä ilman "
-"operandia välissä"
-
-#: ../src/ui/theme.c:2396 ../src/ui/theme.c:2441
-#, c-format
-msgid "Coordinate expression had unknown variable or constant \"%s\""
-msgstr "Koordinaattilausekkeessa oli tuntematon muuttuja tai vakio ”%s”"
-
-#: ../src/ui/theme.c:2495
-#, c-format
-msgid "Coordinate expression parser overflowed its buffer."
-msgstr "Koordinaattilausekkeen tulkitsijan puskuri ylitettiin."
-
-#: ../src/ui/theme.c:2524
-#, c-format
-msgid "Coordinate expression had a close parenthesis with no open parenthesis"
-msgstr ""
-"Koordinaattilausekkeessa oli lopetussulje ilman vastaavaa aloitussuljetta"
-
-#: ../src/ui/theme.c:2588
-#, c-format
-msgid "Coordinate expression had an open parenthesis with no close parenthesis"
-msgstr "Koordinaattilauseke oli aloitussulje ilman vastaavaa lopetussuljetta"
-
-#: ../src/ui/theme.c:2599
-#, c-format
-msgid "Coordinate expression doesn't seem to have any operators or operands"
-msgstr ""
-"Koordinaattilausekkeessa ei vaikuta olevan operaattoreita eikä operandeja"
-
-#: ../src/ui/theme.c:2812 ../src/ui/theme.c:2832 ../src/ui/theme.c:2852
-#, c-format
-msgid "Theme contained an expression that resulted in an error: %s\n"
-msgstr "Teema sisälsi lausekkeen, josta seurasi virhe: %s\n"
-
-#: ../src/ui/theme.c:4455
-#, c-format
-msgid ""
-"<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
-"specified for this frame style"
-msgstr ""
-"<button function=\"%s\" state=\"%s\" draw_ops=\"mikä lienee\"/> täytyy olla "
-"määritelty tätä kehystyyliä varten"
-
-#: ../src/ui/theme.c:4970 ../src/ui/theme.c:4995
-#, c-format
-msgid ""
-"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr ""
-"<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"mikä lienee\"/> "
-"puuttuu"
-
-#: ../src/ui/theme.c:5041
-#, c-format
-msgid "Failed to load theme \"%s\": %s\n"
-msgstr "Teeman ”%s” lataaminen epäonnistui: %s\n"
-
-#: ../src/ui/theme.c:5177 ../src/ui/theme.c:5184 ../src/ui/theme.c:5191
-#: ../src/ui/theme.c:5198 ../src/ui/theme.c:5205
-#, c-format
-msgid "No <%s> set for theme \"%s\""
-msgstr "<%s> ei ole asetettu teemaa ”%s” varten"
-
-#: ../src/ui/theme.c:5213
-#, c-format
-msgid ""
-"No frame style set for window type \"%s\" in theme \"%s\", add a <window "
-"type=\"%s\" style_set=\"whatever\"/> element"
-msgstr ""
-"Ikkunatyypille \"%s\" ei ole asetettu kehystyyliä teemassa \"%s\". Lisää "
-"<window type=\"%s\" style_set=\"mikä lienee\"/>-elementti."
-
-#: ../src/ui/theme.c:5620 ../src/ui/theme.c:5682 ../src/ui/theme.c:5745
-#, c-format
-msgid ""
-"User-defined constants must begin with a capital letter; \"%s\" does not"
-msgstr ""
-"Käyttäjän määrittelemien vakioiden täytyy alkaa isolla kirjaimella; ”%s” ei "
-"ala"
-
-#: ../src/ui/theme.c:5628 ../src/ui/theme.c:5690 ../src/ui/theme.c:5753
-#, c-format
-msgid "Constant \"%s\" has already been defined"
-msgstr "Vakio ”%s” on jo määritelty"
-
-#. Translators: This means that an attribute which should have been found
-#. * on an XML element was not in fact found.
-#.
-#: ../src/ui/theme-parser.c:234
-#, c-format
-msgid "No \"%s\" attribute on element <%s>"
-msgstr "Attribuuttia ”%s” ei löydy elementistä <%s>"
-
-#: ../src/ui/theme-parser.c:263 ../src/ui/theme-parser.c:281
-#, c-format
-msgid "Line %d character %d: %s"
-msgstr "Rivi %d, merkki %d: %s"
-
-#: ../src/ui/theme-parser.c:481
-#, c-format
-msgid "Attribute \"%s\" repeated twice on the same <%s> element"
-msgstr "Määre ”%s” on toistettu kahdesti samassa <%s>-elementissä"
-
-#: ../src/ui/theme-parser.c:505 ../src/ui/theme-parser.c:554
-#, c-format
-msgid "Attribute \"%s\" is invalid on <%s> element in this context"
-msgstr "Määre ”%s” ei ole kelvollinen <%s>-elementissä tässä yhteydessä"
-
-#: ../src/ui/theme-parser.c:596
-#, c-format
-msgid "Could not parse \"%s\" as an integer"
-msgstr "”%s” ei jäsentynyt kokonaisluvuksi"
-
-#: ../src/ui/theme-parser.c:605 ../src/ui/theme-parser.c:660
-#, c-format
-msgid "Did not understand trailing characters \"%s\" in string \"%s\""
-msgstr "Perässä olevat merkit ”%s” merkkijonossa ”%s” eivät ole järkeviä"
-
-#: ../src/ui/theme-parser.c:615
-#, c-format
-msgid "Integer %ld must be positive"
-msgstr "Kokonaisluvun %ld täytyy olla positiivinen"
-
-#: ../src/ui/theme-parser.c:623
-#, c-format
-msgid "Integer %ld is too large, current max is %d"
-msgstr "Kokonaisluku %ld on liian suuri, nykyinen maksimi on %d"
-
-#: ../src/ui/theme-parser.c:651 ../src/ui/theme-parser.c:767
-#, c-format
-msgid "Could not parse \"%s\" as a floating point number"
-msgstr "”%s” ei jäsentynyt liukuluvuksi"
-
-#: ../src/ui/theme-parser.c:682 ../src/ui/theme-parser.c:710
-#, c-format
-msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
-msgstr "Totuusarvojen täytyy olla ”true” tai ”false”, ei ”%s”"
-
-#: ../src/ui/theme-parser.c:737
-#, c-format
-msgid "Angle must be between 0.0 and 360.0, was %g\n"
-msgstr "Kulman pitäisi olla välillä 0.0 - 360.0, mutta se oli %g\n"
-
-#: ../src/ui/theme-parser.c:800
-#, c-format
-msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
-msgstr ""
-"Alfan täytyy olla välillä 0.0 (näkymätön) - 1.0 (täysin peittävä). Se oli "
-"%g\n"
-
-#: ../src/ui/theme-parser.c:865
-#, c-format
-msgid ""
-"Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
-"large,x-large,xx-large)\n"
-msgstr ""
-"Epäkelpo otsikon skaala ”%s” (täytyy olla joko xx-small,x-small,small,medium,"
-"large,x-large tai xx-large)\n"
-
-#: ../src/ui/theme-parser.c:1021 ../src/ui/theme-parser.c:1084
-#: ../src/ui/theme-parser.c:1118 ../src/ui/theme-parser.c:1221
-#, c-format
-msgid "<%s> name \"%s\" used a second time"
-msgstr "<%s>-elementin nimeä ”%s” käytetty toisenkin kerran"
-
-#: ../src/ui/theme-parser.c:1033 ../src/ui/theme-parser.c:1130
-#: ../src/ui/theme-parser.c:1233
-#, c-format
-msgid "<%s> parent \"%s\" has not been defined"
-msgstr "<%s>-elementin emo ”%s” ei ole määritelty"
-
-#: ../src/ui/theme-parser.c:1143
-#, c-format
-msgid "<%s> geometry \"%s\" has not been defined"
-msgstr "<%s>-elementin mitat ”%s” eivät ole määriteltyjä"
-
-#: ../src/ui/theme-parser.c:1156
-#, c-format
-msgid "<%s> must specify either a geometry or a parent that has a geometry"
-msgstr "<%s>:n täytyy joko määritellä mitat, tai emo, jolla on jo mitat"
-
-#: ../src/ui/theme-parser.c:1198
-msgid "You must specify a background for an alpha value to be meaningful"
-msgstr "Tausta täytyy määritellä, jotta alfa-arvo olisi mielekäs"
-
-#: ../src/ui/theme-parser.c:1266
-#, c-format
-msgid "Unknown type \"%s\" on <%s> element"
-msgstr "Tuntematon tyyppi ”%s” elementissä <%s>"
-
-#: ../src/ui/theme-parser.c:1277
-#, c-format
-msgid "Unknown style_set \"%s\" on <%s> element"
-msgstr "Tuntematon style_set ”%s” elementissä <%s>"
-
-#: ../src/ui/theme-parser.c:1285
-#, c-format
-msgid "Window type \"%s\" has already been assigned a style set"
-msgstr "Ikkunatyyppiin ”%s” on jo liitetty tyylijoukko"
-
-#: ../src/ui/theme-parser.c:1315 ../src/ui/theme-parser.c:1379
-#: ../src/ui/theme-parser.c:1605 ../src/ui/theme-parser.c:2840
-#: ../src/ui/theme-parser.c:2886 ../src/ui/theme-parser.c:3036
-#: ../src/ui/theme-parser.c:3272 ../src/ui/theme-parser.c:3310
-#: ../src/ui/theme-parser.c:3348 ../src/ui/theme-parser.c:3386
-#, c-format
-msgid "Element <%s> is not allowed below <%s>"
-msgstr "Elementti <%s> ei ole mahdollinen elementin <%s> alla"
-
-#: ../src/ui/theme-parser.c:1429 ../src/ui/theme-parser.c:1443
-#: ../src/ui/theme-parser.c:1488
-msgid ""
-"Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio\" "
-"for buttons"
-msgstr ""
-"Arvoja ”button_width”/”button_height” ja ”aspect_ratio” ei voi määritellä "
-"samalle painikkeille"
-
-#: ../src/ui/theme-parser.c:1452
-#, c-format
-msgid "Distance \"%s\" is unknown"
-msgstr "Etäisyys ”%s” on tuntematon"
-
-#: ../src/ui/theme-parser.c:1497
-#, c-format
-msgid "Aspect ratio \"%s\" is unknown"
-msgstr "Sivusuhde ”%s” on tuntematon"
-
-#: ../src/ui/theme-parser.c:1559
-#, c-format
-msgid "Border \"%s\" is unknown"
-msgstr "Reuna ”%s” on tuntematon"
-
-#: ../src/ui/theme-parser.c:1870
-#, c-format
-msgid "No \"start_angle\" or \"from\" attribute on element <%s>"
-msgstr "Elementissä <%s> ei ole ”start_angle”- tai ”from” -määrettä"
-
-#: ../src/ui/theme-parser.c:1877
-#, c-format
-msgid "No \"extent_angle\" or \"to\" attribute on element <%s>"
-msgstr "Elementissä <%s> ei ole ”extent_angle”- tai ”to” -määrettä"
-
-#: ../src/ui/theme-parser.c:2117
-#, c-format
-msgid "Did not understand value \"%s\" for type of gradient"
-msgstr "Väriliu'un arvo ”%s” ei ole järkevä"
-
-#: ../src/ui/theme-parser.c:2195 ../src/ui/theme-parser.c:2570
-#, c-format
-msgid "Did not understand fill type \"%s\" for <%s> element"
-msgstr "Täyttötyyppi ”%s” ei ole järkevä elementissä <%s>"
-
-#: ../src/ui/theme-parser.c:2362 ../src/ui/theme-parser.c:2445
-#: ../src/ui/theme-parser.c:2508
-#, c-format
-msgid "Did not understand state \"%s\" for <%s> element"
-msgstr "Tila ”%s” ei ole järkevä elementissä <%s>"
-
-#: ../src/ui/theme-parser.c:2372 ../src/ui/theme-parser.c:2455
-#, c-format
-msgid "Did not understand shadow \"%s\" for <%s> element"
-msgstr "Varjo ”%s” ei ole järkevä elementissä <%s>"
-
-#: ../src/ui/theme-parser.c:2382
-#, c-format
-msgid "Did not understand arrow \"%s\" for <%s> element"
-msgstr "Nuoli ”%s” ei ole järkevä elementissä <%s>"
-
-#: ../src/ui/theme-parser.c:2696 ../src/ui/theme-parser.c:2792
-#, c-format
-msgid "No <draw_ops> called \"%s\" has been defined"
-msgstr "<draw_ops> ”%s” ei ole määritelty"
-
-#: ../src/ui/theme-parser.c:2708 ../src/ui/theme-parser.c:2804
-#, c-format
-msgid "Including draw_ops \"%s\" here would create a circular reference"
-msgstr "Draw_opsin ”%s” sisällyttäminen tähän aiheuttaisi kehäviitteen"
-
-#: ../src/ui/theme-parser.c:2919
-#, c-format
-msgid "Unknown position \"%s\" for frame piece"
-msgstr "Tuntematon kehyksen palan sijainti ”%s”"
-
-#: ../src/ui/theme-parser.c:2927
-#, c-format
-msgid "Frame style already has a piece at position %s"
-msgstr "Kehystyylissä on jo pala sijainnissa %s"
-
-#: ../src/ui/theme-parser.c:2944 ../src/ui/theme-parser.c:3021
-#, c-format
-msgid "No <draw_ops> with the name \"%s\" has been defined"
-msgstr "”%s”-nimistä <draw_ops>:ia ei ole määritelty"
-
-#: ../src/ui/theme-parser.c:2974
-#, c-format
-msgid "Unknown function \"%s\" for button"
-msgstr "Tuntematon painikkeen toiminto ”%s”"
-
-#: ../src/ui/theme-parser.c:2984
-#, c-format
-msgid "Button function \"%s\" does not exist in this version (%d, need %d)"
-msgstr "Nappifunktiota ”%s” ei ole tässä versiossa (%d, tarvitaan %d)"
-
-#: ../src/ui/theme-parser.c:2996
-#, c-format
-msgid "Unknown state \"%s\" for button"
-msgstr "Tuntematon painikkeen tila ”%s”"
-
-#: ../src/ui/theme-parser.c:3004
-#, c-format
-msgid "Frame style already has a button for function %s state %s"
-msgstr "Kehystyylillä on jo painike funktiota %s, tilaa %s varten"
-
-#: ../src/ui/theme-parser.c:3075
-#, c-format
-msgid "\"%s\" is not a valid value for focus attribute"
-msgstr "”%s” ei ole kelvollinen kohdistusmääreen arvo"
-
-#: ../src/ui/theme-parser.c:3084
-#, c-format
-msgid "\"%s\" is not a valid value for state attribute"
-msgstr "”%s” ei ole kelvollinen tilamääreen arvo"
-
-#: ../src/ui/theme-parser.c:3094
-#, c-format
-msgid "A style called \"%s\" has not been defined"
-msgstr "”%s”-nimistä tyyliä ei ole määritelty"
-
-#: ../src/ui/theme-parser.c:3115 ../src/ui/theme-parser.c:3138
-#, c-format
-msgid "\"%s\" is not a valid value for resize attribute"
-msgstr "”%s” ei ole kelvollinen koonmuutosmääreen arvo"
-
-#: ../src/ui/theme-parser.c:3149
-#, c-format
-msgid ""
-"Should not have \"resize\" attribute on <%s> element for maximized/shaded "
-"states"
-msgstr ""
-"Elementissä <%s> pitäisi olla ”resize”-määre suurennettua ja rullattua tilaa "
-"varten"
-
-#: ../src/ui/theme-parser.c:3163
-#, c-format
-msgid ""
-"Should not have \"resize\" attribute on <%s> element for maximized states"
-msgstr ""
-"Elementissä <%s> ei pitäisi olla ”resize”-määrettä suurennetuilla tiloilla"
-
-#: ../src/ui/theme-parser.c:3177 ../src/ui/theme-parser.c:3221
-#, c-format
-msgid "Style has already been specified for state %s resize %s focus %s"
-msgstr ""
-"Tyyli on jo määritelty tilaa %s, koonmuutosta %s, kohdistusta %s varten"
-
-#: ../src/ui/theme-parser.c:3188 ../src/ui/theme-parser.c:3199
-#: ../src/ui/theme-parser.c:3210 ../src/ui/theme-parser.c:3232
-#: ../src/ui/theme-parser.c:3243 ../src/ui/theme-parser.c:3254
-#, c-format
-msgid "Style has already been specified for state %s focus %s"
-msgstr "Tyyli on jo määritelty tilaa %s, kohdistusta %s varten"
-
-#: ../src/ui/theme-parser.c:3293
-msgid ""
-"Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
-"attribute and also a <draw_ops> element, or specified two elements)"
-msgstr ""
-"<piece>-elementissä ei voi olla kahta draw_opsia (teema määritteli joko "
-"draw_ops-määreen sekä <draw_ops>-elementin tai kaksi elementtiä)"
-
-#: ../src/ui/theme-parser.c:3331
-msgid ""
-"Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
-"attribute and also a <draw_ops> element, or specified two elements)"
-msgstr ""
-"<button>-elementissä ei voi olla kahta draw_opsia (teema määritteli joko "
-"draw_ops-määreen sekä <draw_ops>-elementin tai kaksi elementtiä)"
-
-#: ../src/ui/theme-parser.c:3369
-msgid ""
-"Can't have a two draw_ops for a <menu_icon> element (theme specified a "
-"draw_ops attribute and also a <draw_ops> element, or specified two elements)"
-msgstr ""
-"<menu_icon>-elementissä ei voi olla kahta draw_opsia (teema määritteli joko "
-"draw_ops-määreen sekä <draw_ops>-elementin tai kaksi elementtiä)"
-
-#: ../src/ui/theme-parser.c:3433
-#, c-format
-msgid "Bad version specification '%s'"
-msgstr "Väärä versiomäärittely ”%s”"
-
-#: ../src/ui/theme-parser.c:3506
-msgid ""
-"\"version\" attribute cannot be used in metacity-theme-1.xml or metacity-"
-"theme-2.xml"
-msgstr ""
-"”version”-määrettä ei voi käyttäää tiedostoissa metacity-theme-1.xml tai "
-"metacity-theme-2.xml"
-
-#: ../src/ui/theme-parser.c:3529
-#, c-format
-msgid "Theme requires version %s but latest supported theme version is %d.%d"
-msgstr "Teema vaatii version %s mutta viimeisin tuettu teeman version on %d.%d"
-
-#: ../src/ui/theme-parser.c:3561
-#, c-format
-msgid "Outermost element in theme must be <metacity_theme> not <%s>"
-msgstr "Uloin elementti täytyy olla <metacity_theme>, ei <%s>"
-
-#: ../src/ui/theme-parser.c:3581
-#, c-format
-msgid ""
-"Element <%s> is not allowed inside a name/author/date/description element"
-msgstr ""
-"Elementti <%s> ei voi olla nimi-, tekijä-, päiväys- tai kuvauselementin "
-"sisällä"
-
-#: ../src/ui/theme-parser.c:3586
-#, c-format
-msgid "Element <%s> is not allowed inside a <constant> element"
-msgstr "Elementti <%s> ei voi olla <constant>-elementin sisällä"
-
-#: ../src/ui/theme-parser.c:3598
-#, c-format
-msgid ""
-"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
-msgstr ""
-"Elementti <%s> ei voi olla etäisyys-, reuna- tai sivusuhde-elementin sisällä"
-
-#: ../src/ui/theme-parser.c:3620
-#, c-format
-msgid "Element <%s> is not allowed inside a draw operation element"
-msgstr "Elementti <%s> ei voi olla piirto-operaatioelementin sisällä"
-
-#: ../src/ui/theme-parser.c:3630 ../src/ui/theme-parser.c:3660
-#: ../src/ui/theme-parser.c:3665 ../src/ui/theme-parser.c:3670
-#, c-format
-msgid "Element <%s> is not allowed inside a <%s> element"
-msgstr "Elementti <%s> ei voi olla elementin <%s> sisällä"
-
-#: ../src/ui/theme-parser.c:3898
-msgid "No draw_ops provided for frame piece"
-msgstr "Kehyksen palaa varten ei ole draw_opsia"
-
-#: ../src/ui/theme-parser.c:3913
-msgid "No draw_ops provided for button"
-msgstr "Painiketta varten ei ole draw_opsia"
-
-#: ../src/ui/theme-parser.c:3967
-#, c-format
-msgid "No text is allowed inside element <%s>"
-msgstr "Elementin <%s> sisällä ei voi olla tekstiä"
-
-#: ../src/ui/theme-parser.c:4025 ../src/ui/theme-parser.c:4037
-#: ../src/ui/theme-parser.c:4049 ../src/ui/theme-parser.c:4061
-#: ../src/ui/theme-parser.c:4073
-#, c-format
-msgid "<%s> specified twice for this theme"
-msgstr "<%s> määritelty kahdesti tälle teemalle"
-
-#: ../src/ui/theme-parser.c:4335
-#, c-format
-msgid "Failed to find a valid file for theme %s\n"
-msgstr "Teemalle %s ei löytynyt kelvollista tiedostoa\n"
 
 #: ../src/x11/session.c:1815
 msgid ""
@@ -1296,7 +611,472 @@ msgstr ""
 "Nämä ikkunat eivät ymmärrä ”tallenna nykyinen tila”-komentoa, ja ne täytyy "
 "käynnistää käsin uudelleen kun kirjaudut seuraavan kerran sisään."
 
-#: ../src/x11/window-props.c:515
+#: ../src/x11/window-props.c:549
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s @ %s"
+
+#~ msgid "Failed to scan themes directory: %s\n"
+#~ msgstr "Teemakansion lukeminen epäonnistui: %s\n"
+
+#~ msgid ""
+#~ "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
+#~ msgstr ""
+#~ "Teemaa ei löydy! Varmista, että %s on olemassa, ja sisältää tavalliset "
+#~ "teemat.\n"
+
+#~ msgid "Screen %d on display \"%s\" already has a window manager\n"
+#~ msgstr "Näytön ”%2$s” ruudulla %1$d on jo ikkunointiohjelma\n"
+
+#~ msgid "%d x %d"
+#~ msgstr "%d × %d"
+
+#~ msgid "top"
+#~ msgstr "ylä"
+
+#~ msgid "bottom"
+#~ msgstr "ala"
+
+#~ msgid "left"
+#~ msgstr "vasen"
+
+#~ msgid "right"
+#~ msgstr "oikea"
+
+#~ msgid "frame geometry does not specify \"%s\" dimension"
+#~ msgstr "kehyksen mitat eivät määrittele ”%s”-kokoa"
+
+#~ msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
+#~ msgstr "kehyksen mitat eivät määrittele ”%2$s”-reunan ”%1$s”-kokoa"
+
+#~ msgid "Button aspect ratio %g is not reasonable"
+#~ msgstr "Painikkeen sivusuhde %g ei ole järkevä"
+
+#~ msgid "Frame geometry does not specify size of buttons"
+#~ msgstr "Kehyksen mitat eivät määrittele painikkeiden kokoa"
+
+#~ msgid "Gradients should have at least two colors"
+#~ msgstr "Väriliu'uissa täytyy olla vähintään kaksi väriä"
+
+#~ msgid ""
+#~ "GTK custom color specification must have color name and fallback in "
+#~ "parentheses, e.g. gtk:custom(foo,bar); could not parse \"%s\""
+#~ msgstr ""
+#~ "GTK-värimääritteessä täytyy olla värin nimi ja vara-arvo suluissa, esim. "
+#~ "gtk:custom(foo,bar). ”%s” ei jäsenny"
+
+#~ msgid ""
+#~ "Invalid character '%c' in color_name parameter of gtk:custom, only A-Za-"
+#~ "z0-9-_ are valid"
+#~ msgstr ""
+#~ "Virheellinen merkki ”%c” gtk:custom-osan värinimi-parametrissa: "
+#~ "ainoastaan A-Za-z0-9_ ovat sallittuja"
+
+#~ msgid ""
+#~ "Gtk:custom format is \"gtk:custom(color_name,fallback)\", \"%s\" does not "
+#~ "fit the format"
+#~ msgstr ""
+#~ "Gtk:custom-muoto on ”gtk:custom(värinimi,vara-arvo)”. ”%s” ei ole tämän "
+#~ "muotoinen"
+
+#~ msgid ""
+#~ "GTK color specification must have the state in brackets, e.g. gtk:"
+#~ "fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
+#~ msgstr ""
+#~ "GTK-värimääritteessä täytyy olla tila hakasuluissa, esim. gtk:fg[NORMAL], "
+#~ "jossa NORMAL on tila. ”%s” ei jäsenny"
+
+#~ msgid ""
+#~ "GTK color specification must have a close bracket after the state, e.g. "
+#~ "gtk:fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
+#~ msgstr ""
+#~ "GTK-värimääritteessä täytyy olla loppuhakasulku tilan jälkeen. "
+#~ "Esimerkiksi gtk:fg[NORMAL], jossa NORMAL on tila. ”%s” ei jäsenny"
+
+#~ msgid "Did not understand state \"%s\" in color specification"
+#~ msgstr "Tila ”%s” ei ole värimääritteessä järkevä"
+
+#~ msgid "Did not understand color component \"%s\" in color specification"
+#~ msgstr "Värikomponentti ”%s” ei ole värimääritteessä järkevä"
+
+#~ msgid ""
+#~ "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit "
+#~ "the format"
+#~ msgstr ""
+#~ "Sekoitusmuoto on ”blend/taustaväri/edustaväri/alfa”. ”%s” ei ole tätä "
+#~ "muotoa."
+
+#~ msgid "Could not parse alpha value \"%s\" in blended color"
+#~ msgstr "Alfa-arvo ”%s” sekoitusvärissä ei jäsenny"
+
+#~ msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
+#~ msgstr "Alfa-arvo ”%s” sekoitusvärissä ei ole välillä 0.0 - 1.0"
+
+#~ msgid ""
+#~ "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the "
+#~ "format"
+#~ msgstr ""
+#~ "Varjostusmuoto on ”shade/perusväri/kerroin”. ”%s” ei ole tämän muotoinen."
+
+#~ msgid "Could not parse shade factor \"%s\" in shaded color"
+#~ msgstr "Varjostuskerroin ”%s” varjostetussa värissä ei jäsenny"
+
+#~ msgid "Shade factor \"%s\" in shaded color is negative"
+#~ msgstr "Varjostuskerroin ”%s” varjostetussa värissä on negatiivinen"
+
+#~ msgid "Could not parse color \"%s\""
+#~ msgstr "Värin ”%s” jäsentäminen ei onnistunut"
+
+#~ msgid "Coordinate expression contains character '%s' which is not allowed"
+#~ msgstr "Koordinaattilauseke sisältää merkin ”%s”, joka ei ole sallittu"
+
+#~ msgid ""
+#~ "Coordinate expression contains floating point number '%s' which could not "
+#~ "be parsed"
+#~ msgstr "Koordinaattilauseke sisältää liukuluvun ”%s”, joka ei jäsentynyt"
+
+#~ msgid ""
+#~ "Coordinate expression contains integer '%s' which could not be parsed"
+#~ msgstr "Koordinaattilauseke sisältää kokonaisluvun ”%s”, joka ei jäsentynyt"
+
+#~ msgid ""
+#~ "Coordinate expression contained unknown operator at the start of this "
+#~ "text: \"%s\""
+#~ msgstr ""
+#~ "Koordinaattilauseke sisälsi tuntemattoman operaattorin seuraavan tekstin "
+#~ "alussa: ”%s”"
+
+#~ msgid "Coordinate expression was empty or not understood"
+#~ msgstr "Koordinaattilauseke oli tyhjä tai ei järkevä"
+
+#~ msgid "Coordinate expression results in division by zero"
+#~ msgstr "Koordinaattilauseke johtaa nollalla jakamiseen"
+
+#~ msgid ""
+#~ "Coordinate expression tries to use mod operator on a floating-point number"
+#~ msgstr "Koordinaattilauseke yrittää soveltaa mod-operaattoria liukulukuun"
+
+#~ msgid ""
+#~ "Coordinate expression has an operator \"%s\" where an operand was expected"
+#~ msgstr ""
+#~ "Koordinaattilausekkeessa on operaattori ”%s”, jonka paikalla pitäisi olla "
+#~ "operandi"
+
+#~ msgid "Coordinate expression had an operand where an operator was expected"
+#~ msgstr ""
+#~ "Koordinaattilauseke sisälsi operandin kohdassa, johon kuuluisi operaattori"
+
+#~ msgid "Coordinate expression ended with an operator instead of an operand"
+#~ msgstr "Koordinaattilauseke päättyi operaattoriin, ei operandiin"
+
+#~ msgid ""
+#~ "Coordinate expression has operator \"%c\" following operator \"%c\" with "
+#~ "no operand in between"
+#~ msgstr ""
+#~ "Koordinaattilausekkeessa on operaattori ”%c” operaattorin ”%c” perässä "
+#~ "ilman operandia välissä"
+
+#~ msgid "Coordinate expression had unknown variable or constant \"%s\""
+#~ msgstr "Koordinaattilausekkeessa oli tuntematon muuttuja tai vakio ”%s”"
+
+#~ msgid "Coordinate expression parser overflowed its buffer."
+#~ msgstr "Koordinaattilausekkeen tulkitsijan puskuri ylitettiin."
+
+#~ msgid ""
+#~ "Coordinate expression had a close parenthesis with no open parenthesis"
+#~ msgstr ""
+#~ "Koordinaattilausekkeessa oli lopetussulje ilman vastaavaa aloitussuljetta"
+
+#~ msgid ""
+#~ "Coordinate expression had an open parenthesis with no close parenthesis"
+#~ msgstr ""
+#~ "Koordinaattilauseke oli aloitussulje ilman vastaavaa lopetussuljetta"
+
+#~ msgid "Coordinate expression doesn't seem to have any operators or operands"
+#~ msgstr ""
+#~ "Koordinaattilausekkeessa ei vaikuta olevan operaattoreita eikä operandeja"
+
+#~ msgid "Theme contained an expression that resulted in an error: %s\n"
+#~ msgstr "Teema sisälsi lausekkeen, josta seurasi virhe: %s\n"
+
+#~ msgid ""
+#~ "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
+#~ "specified for this frame style"
+#~ msgstr ""
+#~ "<button function=\"%s\" state=\"%s\" draw_ops=\"mikä lienee\"/> täytyy "
+#~ "olla määritelty tätä kehystyyliä varten"
+
+#~ msgid ""
+#~ "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/"
+#~ ">"
+#~ msgstr ""
+#~ "<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"mikä lienee\"/> "
+#~ "puuttuu"
+
+#~ msgid "Failed to load theme \"%s\": %s\n"
+#~ msgstr "Teeman ”%s” lataaminen epäonnistui: %s\n"
+
+#~ msgid "No <%s> set for theme \"%s\""
+#~ msgstr "<%s> ei ole asetettu teemaa ”%s” varten"
+
+#~ msgid ""
+#~ "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
+#~ "type=\"%s\" style_set=\"whatever\"/> element"
+#~ msgstr ""
+#~ "Ikkunatyypille \"%s\" ei ole asetettu kehystyyliä teemassa \"%s\". Lisää "
+#~ "<window type=\"%s\" style_set=\"mikä lienee\"/>-elementti."
+
+#~ msgid ""
+#~ "User-defined constants must begin with a capital letter; \"%s\" does not"
+#~ msgstr ""
+#~ "Käyttäjän määrittelemien vakioiden täytyy alkaa isolla kirjaimella; ”%s” "
+#~ "ei ala"
+
+#~ msgid "Constant \"%s\" has already been defined"
+#~ msgstr "Vakio ”%s” on jo määritelty"
+
+#~ msgid "No \"%s\" attribute on element <%s>"
+#~ msgstr "Attribuuttia ”%s” ei löydy elementistä <%s>"
+
+#~ msgid "Line %d character %d: %s"
+#~ msgstr "Rivi %d, merkki %d: %s"
+
+#~ msgid "Attribute \"%s\" repeated twice on the same <%s> element"
+#~ msgstr "Määre ”%s” on toistettu kahdesti samassa <%s>-elementissä"
+
+#~ msgid "Attribute \"%s\" is invalid on <%s> element in this context"
+#~ msgstr "Määre ”%s” ei ole kelvollinen <%s>-elementissä tässä yhteydessä"
+
+#~ msgid "Could not parse \"%s\" as an integer"
+#~ msgstr "”%s” ei jäsentynyt kokonaisluvuksi"
+
+#~ msgid "Did not understand trailing characters \"%s\" in string \"%s\""
+#~ msgstr "Perässä olevat merkit ”%s” merkkijonossa ”%s” eivät ole järkeviä"
+
+#~ msgid "Integer %ld must be positive"
+#~ msgstr "Kokonaisluvun %ld täytyy olla positiivinen"
+
+#~ msgid "Integer %ld is too large, current max is %d"
+#~ msgstr "Kokonaisluku %ld on liian suuri, nykyinen maksimi on %d"
+
+#~ msgid "Could not parse \"%s\" as a floating point number"
+#~ msgstr "”%s” ei jäsentynyt liukuluvuksi"
+
+#~ msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
+#~ msgstr "Totuusarvojen täytyy olla ”true” tai ”false”, ei ”%s”"
+
+#~ msgid "Angle must be between 0.0 and 360.0, was %g\n"
+#~ msgstr "Kulman pitäisi olla välillä 0.0 - 360.0, mutta se oli %g\n"
+
+#~ msgid ""
+#~ "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
+#~ msgstr ""
+#~ "Alfan täytyy olla välillä 0.0 (näkymätön) - 1.0 (täysin peittävä). Se oli "
+#~ "%g\n"
+
+#~ msgid ""
+#~ "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
+#~ "large,x-large,xx-large)\n"
+#~ msgstr ""
+#~ "Epäkelpo otsikon skaala ”%s” (täytyy olla joko xx-small,x-small,small,"
+#~ "medium,large,x-large tai xx-large)\n"
+
+#~ msgid "<%s> name \"%s\" used a second time"
+#~ msgstr "<%s>-elementin nimeä ”%s” käytetty toisenkin kerran"
+
+#~ msgid "<%s> parent \"%s\" has not been defined"
+#~ msgstr "<%s>-elementin emo ”%s” ei ole määritelty"
+
+#~ msgid "<%s> geometry \"%s\" has not been defined"
+#~ msgstr "<%s>-elementin mitat ”%s” eivät ole määriteltyjä"
+
+#~ msgid "<%s> must specify either a geometry or a parent that has a geometry"
+#~ msgstr "<%s>:n täytyy joko määritellä mitat, tai emo, jolla on jo mitat"
+
+#~ msgid "You must specify a background for an alpha value to be meaningful"
+#~ msgstr "Tausta täytyy määritellä, jotta alfa-arvo olisi mielekäs"
+
+#~ msgid "Unknown type \"%s\" on <%s> element"
+#~ msgstr "Tuntematon tyyppi ”%s” elementissä <%s>"
+
+#~ msgid "Unknown style_set \"%s\" on <%s> element"
+#~ msgstr "Tuntematon style_set ”%s” elementissä <%s>"
+
+#~ msgid "Window type \"%s\" has already been assigned a style set"
+#~ msgstr "Ikkunatyyppiin ”%s” on jo liitetty tyylijoukko"
+
+#~ msgid "Element <%s> is not allowed below <%s>"
+#~ msgstr "Elementti <%s> ei ole mahdollinen elementin <%s> alla"
+
+#~ msgid ""
+#~ "Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio"
+#~ "\" for buttons"
+#~ msgstr ""
+#~ "Arvoja ”button_width”/”button_height” ja ”aspect_ratio” ei voi määritellä "
+#~ "samalle painikkeille"
+
+#~ msgid "Distance \"%s\" is unknown"
+#~ msgstr "Etäisyys ”%s” on tuntematon"
+
+#~ msgid "Aspect ratio \"%s\" is unknown"
+#~ msgstr "Sivusuhde ”%s” on tuntematon"
+
+#~ msgid "Border \"%s\" is unknown"
+#~ msgstr "Reuna ”%s” on tuntematon"
+
+#~ msgid "No \"start_angle\" or \"from\" attribute on element <%s>"
+#~ msgstr "Elementissä <%s> ei ole ”start_angle”- tai ”from” -määrettä"
+
+#~ msgid "No \"extent_angle\" or \"to\" attribute on element <%s>"
+#~ msgstr "Elementissä <%s> ei ole ”extent_angle”- tai ”to” -määrettä"
+
+#~ msgid "Did not understand value \"%s\" for type of gradient"
+#~ msgstr "Väriliu'un arvo ”%s” ei ole järkevä"
+
+#~ msgid "Did not understand fill type \"%s\" for <%s> element"
+#~ msgstr "Täyttötyyppi ”%s” ei ole järkevä elementissä <%s>"
+
+#~ msgid "Did not understand state \"%s\" for <%s> element"
+#~ msgstr "Tila ”%s” ei ole järkevä elementissä <%s>"
+
+#~ msgid "Did not understand shadow \"%s\" for <%s> element"
+#~ msgstr "Varjo ”%s” ei ole järkevä elementissä <%s>"
+
+#~ msgid "Did not understand arrow \"%s\" for <%s> element"
+#~ msgstr "Nuoli ”%s” ei ole järkevä elementissä <%s>"
+
+#~ msgid "No <draw_ops> called \"%s\" has been defined"
+#~ msgstr "<draw_ops> ”%s” ei ole määritelty"
+
+#~ msgid "Including draw_ops \"%s\" here would create a circular reference"
+#~ msgstr "Draw_opsin ”%s” sisällyttäminen tähän aiheuttaisi kehäviitteen"
+
+#~ msgid "Unknown position \"%s\" for frame piece"
+#~ msgstr "Tuntematon kehyksen palan sijainti ”%s”"
+
+#~ msgid "Frame style already has a piece at position %s"
+#~ msgstr "Kehystyylissä on jo pala sijainnissa %s"
+
+#~ msgid "No <draw_ops> with the name \"%s\" has been defined"
+#~ msgstr "”%s”-nimistä <draw_ops>:ia ei ole määritelty"
+
+#~ msgid "Unknown function \"%s\" for button"
+#~ msgstr "Tuntematon painikkeen toiminto ”%s”"
+
+#~ msgid "Button function \"%s\" does not exist in this version (%d, need %d)"
+#~ msgstr "Nappifunktiota ”%s” ei ole tässä versiossa (%d, tarvitaan %d)"
+
+#~ msgid "Unknown state \"%s\" for button"
+#~ msgstr "Tuntematon painikkeen tila ”%s”"
+
+#~ msgid "Frame style already has a button for function %s state %s"
+#~ msgstr "Kehystyylillä on jo painike funktiota %s, tilaa %s varten"
+
+#~ msgid "\"%s\" is not a valid value for focus attribute"
+#~ msgstr "”%s” ei ole kelvollinen kohdistusmääreen arvo"
+
+#~ msgid "\"%s\" is not a valid value for state attribute"
+#~ msgstr "”%s” ei ole kelvollinen tilamääreen arvo"
+
+#~ msgid "A style called \"%s\" has not been defined"
+#~ msgstr "”%s”-nimistä tyyliä ei ole määritelty"
+
+#~ msgid "\"%s\" is not a valid value for resize attribute"
+#~ msgstr "”%s” ei ole kelvollinen koonmuutosmääreen arvo"
+
+#~ msgid ""
+#~ "Should not have \"resize\" attribute on <%s> element for maximized/shaded "
+#~ "states"
+#~ msgstr ""
+#~ "Elementissä <%s> pitäisi olla ”resize”-määre suurennettua ja rullattua "
+#~ "tilaa varten"
+
+#~ msgid ""
+#~ "Should not have \"resize\" attribute on <%s> element for maximized states"
+#~ msgstr ""
+#~ "Elementissä <%s> ei pitäisi olla ”resize”-määrettä suurennetuilla tiloilla"
+
+#~ msgid "Style has already been specified for state %s resize %s focus %s"
+#~ msgstr ""
+#~ "Tyyli on jo määritelty tilaa %s, koonmuutosta %s, kohdistusta %s varten"
+
+#~ msgid "Style has already been specified for state %s focus %s"
+#~ msgstr "Tyyli on jo määritelty tilaa %s, kohdistusta %s varten"
+
+#~ msgid ""
+#~ "Can't have a two draw_ops for a <piece> element (theme specified a "
+#~ "draw_ops attribute and also a <draw_ops> element, or specified two "
+#~ "elements)"
+#~ msgstr ""
+#~ "<piece>-elementissä ei voi olla kahta draw_opsia (teema määritteli joko "
+#~ "draw_ops-määreen sekä <draw_ops>-elementin tai kaksi elementtiä)"
+
+#~ msgid ""
+#~ "Can't have a two draw_ops for a <button> element (theme specified a "
+#~ "draw_ops attribute and also a <draw_ops> element, or specified two "
+#~ "elements)"
+#~ msgstr ""
+#~ "<button>-elementissä ei voi olla kahta draw_opsia (teema määritteli joko "
+#~ "draw_ops-määreen sekä <draw_ops>-elementin tai kaksi elementtiä)"
+
+#~ msgid ""
+#~ "Can't have a two draw_ops for a <menu_icon> element (theme specified a "
+#~ "draw_ops attribute and also a <draw_ops> element, or specified two "
+#~ "elements)"
+#~ msgstr ""
+#~ "<menu_icon>-elementissä ei voi olla kahta draw_opsia (teema määritteli "
+#~ "joko draw_ops-määreen sekä <draw_ops>-elementin tai kaksi elementtiä)"
+
+#~ msgid "Bad version specification '%s'"
+#~ msgstr "Väärä versiomäärittely ”%s”"
+
+#~ msgid ""
+#~ "\"version\" attribute cannot be used in metacity-theme-1.xml or metacity-"
+#~ "theme-2.xml"
+#~ msgstr ""
+#~ "”version”-määrettä ei voi käyttäää tiedostoissa metacity-theme-1.xml tai "
+#~ "metacity-theme-2.xml"
+
+#~ msgid ""
+#~ "Theme requires version %s but latest supported theme version is %d.%d"
+#~ msgstr ""
+#~ "Teema vaatii version %s mutta viimeisin tuettu teeman version on %d.%d"
+
+#~ msgid "Outermost element in theme must be <metacity_theme> not <%s>"
+#~ msgstr "Uloin elementti täytyy olla <metacity_theme>, ei <%s>"
+
+#~ msgid ""
+#~ "Element <%s> is not allowed inside a name/author/date/description element"
+#~ msgstr ""
+#~ "Elementti <%s> ei voi olla nimi-, tekijä-, päiväys- tai kuvauselementin "
+#~ "sisällä"
+
+#~ msgid "Element <%s> is not allowed inside a <constant> element"
+#~ msgstr "Elementti <%s> ei voi olla <constant>-elementin sisällä"
+
+#~ msgid ""
+#~ "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+#~ msgstr ""
+#~ "Elementti <%s> ei voi olla etäisyys-, reuna- tai sivusuhde-elementin "
+#~ "sisällä"
+
+#~ msgid "Element <%s> is not allowed inside a draw operation element"
+#~ msgstr "Elementti <%s> ei voi olla piirto-operaatioelementin sisällä"
+
+#~ msgid "Element <%s> is not allowed inside a <%s> element"
+#~ msgstr "Elementti <%s> ei voi olla elementin <%s> sisällä"
+
+#~ msgid "No draw_ops provided for frame piece"
+#~ msgstr "Kehyksen palaa varten ei ole draw_opsia"
+
+#~ msgid "No draw_ops provided for button"
+#~ msgstr "Painiketta varten ei ole draw_opsia"
+
+#~ msgid "No text is allowed inside element <%s>"
+#~ msgstr "Elementin <%s> sisällä ei voi olla tekstiä"
+
+#~ msgid "<%s> specified twice for this theme"
+#~ msgstr "<%s> määritelty kahdesti tälle teemalle"
+
+#~ msgid "Failed to find a valid file for theme %s\n"
+#~ msgstr "Teemalle %s ei löytynyt kelvollista tiedostoa\n"
