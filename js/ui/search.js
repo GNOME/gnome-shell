@@ -435,7 +435,7 @@ const SearchResults = new Lang.Class({
             this._unregisterProvider(provider);
         }));
 
-        RemoteSearch.loadRemoteSearchProviders(Lang.bind(this, function(providers) {
+        RemoteSearch.loadRemoteSearchProviders(this._searchSettings, Lang.bind(this, function(providers) {
             providers.forEach(Lang.bind(this, this._registerProvider));
         }));
     },

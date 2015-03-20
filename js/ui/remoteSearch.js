@@ -63,7 +63,7 @@ const SearchProvider2Iface = '<node> \
 var SearchProviderProxyInfo = Gio.DBusInterfaceInfo.new_for_xml(SearchProviderIface);
 var SearchProvider2ProxyInfo = Gio.DBusInterfaceInfo.new_for_xml(SearchProvider2Iface);
 
-function loadRemoteSearchProviders(callback) {
+function loadRemoteSearchProviders(searchSettings, callback) {
     let objectPaths = {};
     let loadedProviders = [];
 
@@ -124,7 +124,6 @@ function loadRemoteSearchProviders(callback) {
         }
     }
 
-    let searchSettings = new Gio.Settings({ schema_id: Search.SEARCH_PROVIDERS_SCHEMA });
     if (searchSettings.get_boolean('disable-external')) {
         callback([]);
         return;
