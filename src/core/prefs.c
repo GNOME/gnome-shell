@@ -2113,12 +2113,6 @@ meta_prefs_add_keybinding (const char           *name,
   pref->combos = NULL;
   pref->builtin = (flags & META_KEY_BINDING_BUILTIN) != 0;
 
-  strokes = g_settings_get_strv (settings, name);
-  update_binding (pref, strokes);
-  g_strfreev (strokes);
-
-  g_hash_table_insert (key_bindings, g_strdup (name), pref);
-
   if (pref->builtin)
     {
       if (g_object_get_data (G_OBJECT (settings), "changed-signal") == NULL)
@@ -2139,6 +2133,12 @@ meta_prefs_add_keybinding (const char           *name,
 
       queue_changed (META_PREF_KEYBINDINGS);
     }
+
+  strokes = g_settings_get_strv (settings, name);
+  update_binding (pref, strokes);
+  g_strfreev (strokes);
+
+  g_hash_table_insert (key_bindings, g_strdup (name), pref);
 
   return TRUE;
 }
