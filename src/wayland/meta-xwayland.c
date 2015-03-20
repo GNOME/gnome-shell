@@ -228,14 +228,16 @@ create_lockfile (int display, int *display_out)
 
   char pid[11];
   int size;
+  int number_of_tries = 0;
 
   while (!try_display (display, &filename, &fd))
     {
       display++;
+      number_of_tries++;
 
-      /* If display is above 50, then something's wrong. Just
+      /* If we can't get a display after 50 times, then something's wrong. Just
        * abort in this case. */
-      if (display > 50)
+      if (number_of_tries >= 50)
         return NULL;
     }
 
