@@ -17,9 +17,7 @@ const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 
 const LOCKDOWN_SCHEMA = 'org.gnome.desktop.lockdown';
-const SCREENSAVER_SCHEMA = 'org.gnome.desktop.screensaver';
 const LOGIN_SCREEN_SCHEMA = 'org.gnome.login-screen';
-const PRIVACY_SCHEMA = 'org.gnome.desktop.privacy'
 const DISABLE_USER_SWITCH_KEY = 'disable-user-switching';
 const DISABLE_LOCK_SCREEN_KEY = 'disable-lock-screen';
 const DISABLE_LOG_OUT_KEY = 'disable-log-out';
@@ -95,10 +93,8 @@ const Indicator = new Lang.Class({
     _init: function() {
         this.parent();
 
-        this._screenSaverSettings = new Gio.Settings({ schema_id: SCREENSAVER_SCHEMA });
         this._loginScreenSettings = new Gio.Settings({ schema_id: LOGIN_SCREEN_SCHEMA });
         this._lockdownSettings = new Gio.Settings({ schema_id: LOCKDOWN_SCHEMA });
-        this._privacySettings = new Gio.Settings({ schema_id: PRIVACY_SCHEMA });
         this._orientationSettings = new Gio.Settings({ schema_id: 'org.gnome.settings-daemon.peripherals.touchscreen' });
 
         this._session = new GnomeSession.SessionManager();
