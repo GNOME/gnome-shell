@@ -527,6 +527,10 @@ const BackgroundSource = new Lang.Class({
         let file = null;
         let style;
 
+        // We don't watch changes to settings here,
+        // instead we rely on Background to watch those
+        // and emit 'changed' at the right time
+
         if (this._overrideImage != null) {
             file = Gio.File.new_for_path(this._overrideImage);
             style = GDesktopEnums.BackgroundStyle.ZOOM; // Hardcode
