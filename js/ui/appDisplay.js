@@ -366,8 +366,6 @@ const AllView = new Lang.Class({
     Extends: BaseAppView,
 
     _init: function() {
-        this._settings = new Gio.Settings({ schema_id: 'org.gnome.shell' });
-
         this.parent({ usePagination: true }, null);
         this._scrollView = new St.ScrollView({ style_class: 'all-apps',
                                                x_expand: true,
@@ -525,7 +523,7 @@ const AllView = new Lang.Class({
         // at least on single-monitor setups.
         // This also disables drag-to-launch on multi-monitor setups,
         // but we hope that is not used much.
-        let favoritesWritable = this._settings.is_writable('favorite-apps');
+        let favoritesWritable = global.settings.is_writable('favorite-apps');
 
         apps.forEach(Lang.bind(this, function(appId) {
             let app = appSys.lookup_app(appId);
@@ -783,8 +781,6 @@ const FrequentView = new Lang.Class({
     _init: function() {
         this.parent(null, { fillParent: true });
 
-        this._settings = new Gio.Settings({ schema_id: 'org.gnome.shell' });
-
         this.actor = new St.Widget({ style_class: 'frequent-apps',
                                      layout_manager: new Clutter.BinLayout(),
                                      x_expand: true, y_expand: true });
@@ -827,7 +823,7 @@ const FrequentView = new Lang.Class({
         // at least on single-monitor setups.
         // This also disables drag-to-launch on multi-monitor setups,
         // but we hope that is not used much.
-        let favoritesWritable = this._settings.is_writable('favorite-apps');
+        let favoritesWritable = global.settings.is_writable('favorite-apps');
 
         for (let i = 0; i < mostUsed.length; i++) {
             if (!mostUsed[i].get_app_info().should_show())
@@ -1804,8 +1800,6 @@ const AppIconMenu = new Lang.Class({
 
         this.actor.add_style_class_name('app-well-menu');
 
-        this._settings = new Gio.Settings({ schema_id: 'org.gnome.shell' });
-
         // Chain our visibility and lifecycle to that of the source
         source.actor.connect('notify::mapped', Lang.bind(this, function () {
             if (!source.actor.mapped)
@@ -1867,7 +1861,7 @@ const AppIconMenu = new Lang.Class({
                 }));
             }
 
-            let canFavorite = this._settings.is_writable('favorite-apps');
+            let canFavorite = global.settings.is_writable('favorite-apps');
 
             if (canFavorite) {
                 this._appendSeparator();
