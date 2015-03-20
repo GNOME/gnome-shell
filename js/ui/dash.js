@@ -242,8 +242,6 @@ const ShowAppsIcon = new Lang.Class({
     _init: function() {
         this.parent();
 
-        this._settings = new Gio.Settings({ schema_id: 'org.gnome.shell' });
-
         this.toggleButton = new St.Button({ style_class: 'show-apps',
                                             track_hover: true,
                                             can_focus: true,
@@ -272,7 +270,7 @@ const ShowAppsIcon = new Lang.Class({
         if (app == null)
             return false;
 
-        if (!this._settings.is_writable('favorite-apps'))
+        if (!global.settings.is_writable('favorite-apps'))
             return false;
 
         let id = app.get_id();
@@ -429,8 +427,6 @@ const Dash = new Lang.Class({
             }));
 
         this._workId = Main.initializeDeferredWork(this._box, Lang.bind(this, this._redisplay));
-
-        this._settings = new Gio.Settings({ schema_id: 'org.gnome.shell' });
 
         this._appSystem = Shell.AppSystem.get_default();
 
@@ -864,7 +860,7 @@ const Dash = new Lang.Class({
         if (app == null || app.is_window_backed())
             return DND.DragMotionResult.NO_DROP;
 
-        if (!this._settings.is_writable('favorite-apps'))
+        if (!global.settings.is_writable('favorite-apps'))
             return DND.DragMotionResult.NO_DROP;
 
         let favorites = AppFavorites.getAppFavorites().getFavorites();
@@ -943,7 +939,7 @@ const Dash = new Lang.Class({
             return false;
         }
 
-        if (!this._settings.is_writable('favorite-apps'))
+        if (!global.settings.is_writable('favorite-apps'))
             return false;
 
         let id = app.get_id();
