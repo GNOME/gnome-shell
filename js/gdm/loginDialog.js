@@ -49,6 +49,7 @@ const _FADE_ANIMATION_TIME = 0.25;
 const _SCROLL_ANIMATION_TIME = 0.5;
 const _TIMED_LOGIN_IDLE_THRESHOLD = 5.0;
 const _LOGO_ICON_HEIGHT = 48;
+const _MAX_BOTTOM_MENU_ITEMS = 5;
 
 const UserListItem = new Lang.Class({
     Name: 'UserListItem',
@@ -283,7 +284,16 @@ const SessionMenuButton = new Lang.Class({
 
         this.actor = new St.Bin({ child: this._button });
 
-        this._menu = new PopupMenu.PopupMenu(this._button, 0, St.Side.TOP);
+        let side = St.Side.TOP;
+        let align = 0;
+        if (Gdm.get_session_ids().length > _MAX_BOTTOM_MENU_ITEMS) {
+            if (this.actor.text_direction == Clutter.TextDirection.RTL)
+                side = St.Side.RIGHT;
+            else
+                side = St.Side.LEFT;
+            align = 0.5;
+        }
+        this._menu = new PopupMenu.PopupMenu(this._button, align, side);
         Main.uiGroup.add_actor(this._menu.actor);
         this._menu.actor.hide();
 
