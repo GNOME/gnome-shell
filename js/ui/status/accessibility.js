@@ -119,23 +119,46 @@ const ATIndicator = new Lang.Class({
 
     _buildItem: function(string, schema, key) {
         let settings = new Gio.Settings({ schema_id: schema });
+        settings.connect('changed::'+key, Lang.bind(this, function() {
+            widget.setToggleState(settings.get_boolean(key));
+
+            this._queueSyncMenuVisibility();
+        }));
+
         let widget = this._buildItemExtended(string,
             settings.get_boolean(key),
             settings.is_writable(key),
             function(enabled) {
                 return settings.set_boolean(key, enabled);
             });
-        settings.connect('changed::'+key, Lang.bind(this, function() {
-            widget.setToggleState(settings.get_boolean(key));
-
-            this._queueSyncMenuVisibility();
-        }));
         return widget;
     },
 
     _buildHCItem: function() {
         let interfaceSettings = new Gio.Settings({ schema_id: DESKTOP_INTERFACE_SCHEMA });
         let wmSettings = new Gio.Settings({ schema_id: WM_SCHEMA });
+        interfaceSettings.connect('changed::' + KEY_GTK_THEME, Lang.bind(this, function() {
+            let value = interfaceSettings.get_string(KEY_GTK_THEME);
+            if (value == HIGH_CONTRAST_THEME) {
+                highContrast.setToggleState(true);
+            } else {
+                highContrast.setToggleState(false);
+                gtkTheme = value;
+            }
+
+            this._queueSyncMenuVisibility();
+        }));
+        interfaceSettings.connect('changed::' + KEY_ICON_THEME, function() {
+            let value = interfaceSettings.get_string(KEY_ICON_THEME);
+            if (value != HIGH_CONTRAST_THEME)
+                iconTheme = value;
+        });
+        wmSettings.connect('changed::' + KEY_WM_THEME, function() {
+            let value = wmSettings.get_string(KEY_WM_THEME);
+            if (value != HIGH_CONTRAST_THEME)
+                wmTheme = value;
+        });
+
         let gtkTheme = interfaceSettings.get_string(KEY_GTK_THEME);
         let iconTheme = interfaceSettings.get_string(KEY_ICON_THEME);
         let wmTheme = wmSettings.get_string(KEY_WM_THEME);
@@ -161,32 +184,18 @@ const ATIndicator = new Lang.Class({
                     wmSettings.reset(KEY_WM_THEME);
                 }
             });
-        interfaceSettings.connect('changed::' + KEY_GTK_THEME, Lang.bind(this, function() {
-            let value = interfaceSettings.get_string(KEY_GTK_THEME);
-            if (value == HIGH_CONTRAST_THEME) {
-                highContrast.setToggleState(true);
-            } else {
-                highContrast.setToggleState(false);
-                gtkTheme = value;
-            }
-
-            this._queueSyncMenuVisibility();
-        }));
-        interfaceSettings.connect('changed::' + KEY_ICON_THEME, function() {
-            let value = interfaceSettings.get_string(KEY_ICON_THEME);
-            if (value != HIGH_CONTRAST_THEME)
-                iconTheme = value;
-        });
-        wmSettings.connect('changed::' + KEY_WM_THEME, function() {
-            let value = wmSettings.get_string(KEY_WM_THEME);
-            if (value != HIGH_CONTRAST_THEME)
-                wmTheme = value;
-        });
         return highContrast;
     },
 
     _buildFontItem: function() {
         let settings = new Gio.Settings({ schema_id: DESKTOP_INTERFACE_SCHEMA });
+        settings.connect('changed::' + KEY_TEXT_SCALING_FACTOR, Lang.bind(this, function() {
+            let factor = settings.get_double(KEY_TEXT_SCALING_FACTOR);
+            let active = (factor > 1.0);
+            widget.setToggleState(active);
+
+            this._queueSyncMenuVisibility();
+        }));
 
         let factor = settings.get_double(KEY_TEXT_SCALING_FACTOR);
         let initial_setting = (factor > 1.0);
@@ -200,13 +209,6 @@ const ATIndicator = new Lang.Class({
                 else
                     settings.reset(KEY_TEXT_SCALING_FACTOR);
             });
-        settings.connect('changed::' + KEY_TEXT_SCALING_FACTOR, Lang.bind(this, function() {
-            let factor = settings.get_double(KEY_TEXT_SCALING_FACTOR);
-            let active = (factor > 1.0);
-            widget.setToggleState(active);
-
-            this._queueSyncMenuVisibility();
-        }));
         return widget;
     }
 });
