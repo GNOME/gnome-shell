@@ -94,7 +94,7 @@ shell_gtk_embed_window_created_cb (MetaDisplay   *display,
       clutter_actor_set_opacity (window_actor, 0);
 
       /* Set an empty input shape on the window so that it can't get
-         any input. This probably isn't the ideal way to acheive this.
+         any input. This probably isn't the ideal way to achieve this.
          It would probably be better to force the window to go behind
          Mutter's guard window, but this is quite difficult to do as
          Mutter doesn't manage the stacking for override redirect
