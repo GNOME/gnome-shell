@@ -2,713 +2,713 @@
 # Copyright (C) 2011 clutter's COPYRIGHT HOLDER
 # This file is distributed under the same license as the clutter package.
 #
-# Muhammet Kara <muhammet.k@gmail.com>, 2011.
 # Kaan Özdinçer <kaanozdincer@gmail.com>, 2015.
+# Muhammet Kara <muhammetk@gmail.com>, 2011, 2015.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: clutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-02-23 16:08+0000\n"
-"PO-Revision-Date: 2015-01-11 01:40+0000\n"
-"Last-Translator: Kaan Özdinçer <kaanozdincer@gmail.com>\n"
+"POT-Creation-Date: 2015-03-21 23:36+0000\n"
+"PO-Revision-Date: 2015-03-22 01:39+0200\n"
+"Last-Translator: Muhammet Kara <muhammetk@gmail.com>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Pootle 2.5.1.1\n"
+"X-Generator: Gtranslator 2.91.6\n"
 "X-POOTLE-MTIME: 1420940443.000000\n"
 
-#: ../clutter/clutter-actor.c:6236
+#: ../clutter/clutter-actor.c:6215
 msgid "X coordinate"
 msgstr "X koordinatı"
 
-#: ../clutter/clutter-actor.c:6237
+#: ../clutter/clutter-actor.c:6216
 msgid "X coordinate of the actor"
 msgstr "Aktörün X koordinatı"
 
-#: ../clutter/clutter-actor.c:6255
+#: ../clutter/clutter-actor.c:6234
 msgid "Y coordinate"
 msgstr "Y koordinatı"
 
-#: ../clutter/clutter-actor.c:6256
+#: ../clutter/clutter-actor.c:6235
 msgid "Y coordinate of the actor"
 msgstr "Aktörün Y koordinatı"
 
-#: ../clutter/clutter-actor.c:6278
+#: ../clutter/clutter-actor.c:6257
 msgid "Position"
 msgstr "Konum"
 
-#: ../clutter/clutter-actor.c:6279
+#: ../clutter/clutter-actor.c:6258
 msgid "The position of the origin of the actor"
 msgstr "Aktörün başlangıç konumu"
 
-#: ../clutter/clutter-actor.c:6296 ../clutter/clutter-canvas.c:247
+#: ../clutter/clutter-actor.c:6275 ../clutter/clutter-canvas.c:247
 #: ../clutter/clutter-grid-layout.c:1239
 #: ../clutter/deprecated/clutter-behaviour-ellipse.c:474
 msgid "Width"
 msgstr "Genişlik"
 
-#: ../clutter/clutter-actor.c:6297
+#: ../clutter/clutter-actor.c:6276
 msgid "Width of the actor"
 msgstr "Aktörün genişliği"
 
-#: ../clutter/clutter-actor.c:6315 ../clutter/clutter-canvas.c:263
+#: ../clutter/clutter-actor.c:6294 ../clutter/clutter-canvas.c:263
 #: ../clutter/clutter-grid-layout.c:1246
 #: ../clutter/deprecated/clutter-behaviour-ellipse.c:490
 msgid "Height"
 msgstr "Yükseklik"
 
-#: ../clutter/clutter-actor.c:6316
+#: ../clutter/clutter-actor.c:6295
 msgid "Height of the actor"
 msgstr "Aktörün yüksekliği"
 
-#: ../clutter/clutter-actor.c:6337
+#: ../clutter/clutter-actor.c:6316
 msgid "Size"
 msgstr "Boyut"
 
-#: ../clutter/clutter-actor.c:6338
+#: ../clutter/clutter-actor.c:6317
 msgid "The size of the actor"
 msgstr "Aktörün boyutu"
 
-#: ../clutter/clutter-actor.c:6356
+#: ../clutter/clutter-actor.c:6335
 msgid "Fixed X"
 msgstr "Sabit X"
 
-#: ../clutter/clutter-actor.c:6357
+#: ../clutter/clutter-actor.c:6336
 msgid "Forced X position of the actor"
 msgstr "Aktörün zorunlu X konumu"
 
-#: ../clutter/clutter-actor.c:6374
+#: ../clutter/clutter-actor.c:6353
 msgid "Fixed Y"
 msgstr "Sabit Y"
 
-#: ../clutter/clutter-actor.c:6375
+#: ../clutter/clutter-actor.c:6354
 msgid "Forced Y position of the actor"
 msgstr "Aktörün zorunlu Y konumu"
 
-#: ../clutter/clutter-actor.c:6390
+#: ../clutter/clutter-actor.c:6369
 msgid "Fixed position set"
 msgstr "Ayarlanan sabit konum"
 
-#: ../clutter/clutter-actor.c:6391
+#: ../clutter/clutter-actor.c:6370
 msgid "Whether to use fixed positioning for the actor"
 msgstr "Aktör için sabit konumlandırma kullanılıp kullanılmayacağı"
 
-#: ../clutter/clutter-actor.c:6409
+#: ../clutter/clutter-actor.c:6388
 msgid "Min Width"
 msgstr "En Küçük Genişlik"
 
-#: ../clutter/clutter-actor.c:6410
+#: ../clutter/clutter-actor.c:6389
 msgid "Forced minimum width request for the actor"
 msgstr "Aktörün zorunlu en küçük genişlik isteği"
 
-#: ../clutter/clutter-actor.c:6428
+#: ../clutter/clutter-actor.c:6407
 msgid "Min Height"
 msgstr "En Küçük Yükseklik"
 
-#: ../clutter/clutter-actor.c:6429
+#: ../clutter/clutter-actor.c:6408
 msgid "Forced minimum height request for the actor"
 msgstr "Aktörün zorunlu en küçük yükseklik isteği"
 
-#: ../clutter/clutter-actor.c:6447
+#: ../clutter/clutter-actor.c:6426
 msgid "Natural Width"
 msgstr "Doğal Genişlik"
 
-#: ../clutter/clutter-actor.c:6448
+#: ../clutter/clutter-actor.c:6427
 msgid "Forced natural width request for the actor"
 msgstr "Aktörün zorunlu doğal genişlik isteği"
 
-#: ../clutter/clutter-actor.c:6466
+#: ../clutter/clutter-actor.c:6445
 msgid "Natural Height"
 msgstr "Doğal Yükseklik"
 
-#: ../clutter/clutter-actor.c:6467
+#: ../clutter/clutter-actor.c:6446
 msgid "Forced natural height request for the actor"
 msgstr "Aktörün zorunlu doğal yükseklik isteği"
 
-#: ../clutter/clutter-actor.c:6482
+#: ../clutter/clutter-actor.c:6461
 msgid "Minimum width set"
 msgstr "Ayarlanan en küçük genişlik"
 
-#: ../clutter/clutter-actor.c:6483
+#: ../clutter/clutter-actor.c:6462
 msgid "Whether to use the min-width property"
 msgstr "En küçük genişlik özelliğinin kullanımı"
 
-#: ../clutter/clutter-actor.c:6497
+#: ../clutter/clutter-actor.c:6476
 msgid "Minimum height set"
 msgstr "Ayarlanan en küçük yükseklik"
 
-#: ../clutter/clutter-actor.c:6498
+#: ../clutter/clutter-actor.c:6477
 msgid "Whether to use the min-height property"
 msgstr "En küçük yükseklik özelliğinin kullanımı"
 
-#: ../clutter/clutter-actor.c:6512
+#: ../clutter/clutter-actor.c:6491
 msgid "Natural width set"
 msgstr "Ayarlanan doğal genişlik"
 
-#: ../clutter/clutter-actor.c:6513
+#: ../clutter/clutter-actor.c:6492
 msgid "Whether to use the natural-width property"
 msgstr "Doğal genişlik özelliğinin kullanımı"
 
-#: ../clutter/clutter-actor.c:6527
+#: ../clutter/clutter-actor.c:6506
 msgid "Natural height set"
 msgstr "Ayarlanan doğal yükseklik"
 
-#: ../clutter/clutter-actor.c:6528
+#: ../clutter/clutter-actor.c:6507
 msgid "Whether to use the natural-height property"
 msgstr "Doğal yükseklik özelliğinin kullanımı"
 
-#: ../clutter/clutter-actor.c:6544
+#: ../clutter/clutter-actor.c:6523
 msgid "Allocation"
 msgstr "Yer Ayırma"
 
-#: ../clutter/clutter-actor.c:6545
+#: ../clutter/clutter-actor.c:6524
 msgid "The actor's allocation"
 msgstr "Aktör için yer tahsisi"
 
-#: ../clutter/clutter-actor.c:6602
+#: ../clutter/clutter-actor.c:6591
 msgid "Request Mode"
 msgstr "İstek Kipi"
 
-#: ../clutter/clutter-actor.c:6603
+#: ../clutter/clutter-actor.c:6592
 msgid "The actor's request mode"
 msgstr "Aktörün istek kipi"
 
-#: ../clutter/clutter-actor.c:6627
+#: ../clutter/clutter-actor.c:6616
 msgid "Depth"
 msgstr "Derinlik"
 
-#: ../clutter/clutter-actor.c:6628
+#: ../clutter/clutter-actor.c:6617
 msgid "Position on the Z axis"
 msgstr "Z eksenindeki konum"
 
-#: ../clutter/clutter-actor.c:6655
+#: ../clutter/clutter-actor.c:6644
 msgid "Z Position"
 msgstr "Z Konumu"
 
-#: ../clutter/clutter-actor.c:6656
+#: ../clutter/clutter-actor.c:6645
 msgid "The actor's position on the Z axis"
 msgstr "Aktörün Z eksenindeki konumu"
 
-#: ../clutter/clutter-actor.c:6673
+#: ../clutter/clutter-actor.c:6662
 msgid "Opacity"
 msgstr "Matlık"
 
-#: ../clutter/clutter-actor.c:6674
+#: ../clutter/clutter-actor.c:6663
 msgid "Opacity of an actor"
 msgstr "Bir aktörün matlığı"
 
-#: ../clutter/clutter-actor.c:6694
+#: ../clutter/clutter-actor.c:6683
 msgid "Offscreen redirect"
 msgstr "Ekran dışı yönlendirme"
 
-#: ../clutter/clutter-actor.c:6695
+#: ../clutter/clutter-actor.c:6684
 msgid "Flags controlling when to flatten the actor into a single image"
 msgstr ""
 "Aktörün ne zaman tekil bir görüntüye dönüştürüleceğini (düzleştirileceğini) "
 "denetleyen imler"
 
-#: ../clutter/clutter-actor.c:6709
+#: ../clutter/clutter-actor.c:6698
 msgid "Visible"
 msgstr "Görünür"
 
-#: ../clutter/clutter-actor.c:6710
+#: ../clutter/clutter-actor.c:6699
 msgid "Whether the actor is visible or not"
 msgstr "Aktörün görünürlüğü"
 
-#: ../clutter/clutter-actor.c:6724
+#: ../clutter/clutter-actor.c:6713
 msgid "Mapped"
 msgstr "Eşleştirilmiş"
 
-#: ../clutter/clutter-actor.c:6725
+#: ../clutter/clutter-actor.c:6714
 msgid "Whether the actor will be painted"
 msgstr "Aktörün boyanması"
 
-#: ../clutter/clutter-actor.c:6738
+#: ../clutter/clutter-actor.c:6727
 msgid "Realized"
 msgstr "Gerçeklendi"
 
-#: ../clutter/clutter-actor.c:6739
+#: ../clutter/clutter-actor.c:6728
 msgid "Whether the actor has been realized"
 msgstr "Aktörün gerçeklenme durumu"
 
-#: ../clutter/clutter-actor.c:6754
+#: ../clutter/clutter-actor.c:6743
 msgid "Reactive"
 msgstr "Duyarlı"
 
-#: ../clutter/clutter-actor.c:6755
+#: ../clutter/clutter-actor.c:6744
 msgid "Whether the actor is reactive to events"
 msgstr "Aktörün olaylara duyarlılığı"
 
-#: ../clutter/clutter-actor.c:6766
+#: ../clutter/clutter-actor.c:6755
 msgid "Has Clip"
 msgstr "Klibi Var"
 
-#: ../clutter/clutter-actor.c:6767
+#: ../clutter/clutter-actor.c:6756
 msgid "Whether the actor has a clip set"
 msgstr ""
 
-#: ../clutter/clutter-actor.c:6780
+#: ../clutter/clutter-actor.c:6769
 msgid "Clip"
 msgstr ""
 
-#: ../clutter/clutter-actor.c:6781
+#: ../clutter/clutter-actor.c:6770
 msgid "The clip region for the actor"
 msgstr ""
 
-#: ../clutter/clutter-actor.c:6800
+#: ../clutter/clutter-actor.c:6789
 msgid "Clip Rectangle"
 msgstr ""
 
-#: ../clutter/clutter-actor.c:6801
+#: ../clutter/clutter-actor.c:6790
 msgid "The visible region of the actor"
 msgstr "Aktörün görünür bölgesi"
 
-#: ../clutter/clutter-actor.c:6815 ../clutter/clutter-actor-meta.c:205
-#: ../clutter/clutter-binding-pool.c:318 ../clutter/clutter-input-device.c:247
+#: ../clutter/clutter-actor.c:6804 ../clutter/clutter-actor-meta.c:205
+#: ../clutter/clutter-binding-pool.c:318 ../clutter/clutter-input-device.c:268
 msgid "Name"
 msgstr "Ad"
 
-#: ../clutter/clutter-actor.c:6816
+#: ../clutter/clutter-actor.c:6805
 msgid "Name of the actor"
 msgstr "Aktörün adı"
 
-#: ../clutter/clutter-actor.c:6837
+#: ../clutter/clutter-actor.c:6826
 msgid "Pivot Point"
 msgstr ""
 
-#: ../clutter/clutter-actor.c:6838
+#: ../clutter/clutter-actor.c:6827
 msgid "The point around which the scaling and rotation occur"
 msgstr ""
 
-#: ../clutter/clutter-actor.c:6856
+#: ../clutter/clutter-actor.c:6845
 msgid "Pivot Point Z"
 msgstr ""
 
-#: ../clutter/clutter-actor.c:6857
+#: ../clutter/clutter-actor.c:6846
 msgid "Z component of the pivot point"
 msgstr ""
 
-#: ../clutter/clutter-actor.c:6875
+#: ../clutter/clutter-actor.c:6864
 msgid "Scale X"
 msgstr "X Ölçeği"
 
-#: ../clutter/clutter-actor.c:6876
+#: ../clutter/clutter-actor.c:6865
 msgid "Scale factor on the X axis"
 msgstr "X eksenindeki ölçekleme çarpanı"
 
-#: ../clutter/clutter-actor.c:6894
+#: ../clutter/clutter-actor.c:6883
 msgid "Scale Y"
 msgstr "Y Ölçeği"
 
-#: ../clutter/clutter-actor.c:6895
+#: ../clutter/clutter-actor.c:6884
 msgid "Scale factor on the Y axis"
 msgstr "Y eksenindeki ölçekleme çarpanı"
 
-#: ../clutter/clutter-actor.c:6913
-#, fuzzy
+#: ../clutter/clutter-actor.c:6902
 #| msgid "Scale X"
 msgid "Scale Z"
-msgstr "X Ölçeği"
+msgstr "Z Ölçeği"
 
-#: ../clutter/clutter-actor.c:6914
+#: ../clutter/clutter-actor.c:6903
 msgid "Scale factor on the Z axis"
 msgstr "X eksenindeki ölçekleme çarpanı"
 
-#: ../clutter/clutter-actor.c:6932
+#: ../clutter/clutter-actor.c:6921
 msgid "Scale Center X"
 msgstr "X Ölçeği Merkezi"
 
-#: ../clutter/clutter-actor.c:6933
+#: ../clutter/clutter-actor.c:6922
 msgid "Horizontal scale center"
 msgstr "Yatay ölçek merkezi"
 
-#: ../clutter/clutter-actor.c:6951
+#: ../clutter/clutter-actor.c:6940
 msgid "Scale Center Y"
 msgstr "Y Ölçeği Merkezi"
 
-#: ../clutter/clutter-actor.c:6952
+#: ../clutter/clutter-actor.c:6941
 msgid "Vertical scale center"
 msgstr "Dikey ölçek merkezi"
 
-#: ../clutter/clutter-actor.c:6970
+#: ../clutter/clutter-actor.c:6959
 msgid "Scale Gravity"
 msgstr "Ölçek Ağırlık Merkezi"
 
-#: ../clutter/clutter-actor.c:6971
+#: ../clutter/clutter-actor.c:6960
 msgid "The center of scaling"
 msgstr "Ölçekleme merkezi"
 
-#: ../clutter/clutter-actor.c:6989
+#: ../clutter/clutter-actor.c:6978
 msgid "Rotation Angle X"
 msgstr "X Dönme Açısı"
 
-#: ../clutter/clutter-actor.c:6990
+#: ../clutter/clutter-actor.c:6979
 msgid "The rotation angle on the X axis"
 msgstr "X ekseni üzerindeki dönme açısı"
 
-#: ../clutter/clutter-actor.c:7008
+#: ../clutter/clutter-actor.c:6997
 msgid "Rotation Angle Y"
 msgstr "Y Dönme Açısı"
 
-#: ../clutter/clutter-actor.c:7009
+#: ../clutter/clutter-actor.c:6998
 msgid "The rotation angle on the Y axis"
 msgstr "Y ekseni üzerindeki dönme açısı"
 
-#: ../clutter/clutter-actor.c:7027
+#: ../clutter/clutter-actor.c:7016
 msgid "Rotation Angle Z"
 msgstr "Z Dönme Açısı"
 
-#: ../clutter/clutter-actor.c:7028
+#: ../clutter/clutter-actor.c:7017
 msgid "The rotation angle on the Z axis"
 msgstr "Z ekseni üzerindeki dönme açısı"
 
-#: ../clutter/clutter-actor.c:7046
+#: ../clutter/clutter-actor.c:7035
 msgid "Rotation Center X"
 msgstr "X Dönme Merkezi"
 
-#: ../clutter/clutter-actor.c:7047
+#: ../clutter/clutter-actor.c:7036
 msgid "The rotation center on the X axis"
 msgstr "X ekseni üzerindeki dönme merkezi"
 
-#: ../clutter/clutter-actor.c:7064
+#: ../clutter/clutter-actor.c:7053
 msgid "Rotation Center Y"
 msgstr "Y Dönme Merkezi"
 
-#: ../clutter/clutter-actor.c:7065
+#: ../clutter/clutter-actor.c:7054
 msgid "The rotation center on the Y axis"
 msgstr "Y ekseni üzerindeki dönme merkezi"
 
-#: ../clutter/clutter-actor.c:7082
+#: ../clutter/clutter-actor.c:7071
 msgid "Rotation Center Z"
 msgstr "Z Dönme Merkezi"
 
-#: ../clutter/clutter-actor.c:7083
+#: ../clutter/clutter-actor.c:7072
 msgid "The rotation center on the Z axis"
 msgstr "Z ekseni üzerindeki dönme merkezi"
 
-#: ../clutter/clutter-actor.c:7100
+#: ../clutter/clutter-actor.c:7089
 msgid "Rotation Center Z Gravity"
 msgstr "Z Dönme Merkezi Yerçekimi"
 
-#: ../clutter/clutter-actor.c:7101
+#: ../clutter/clutter-actor.c:7090
 msgid "Center point for rotation around the Z axis"
 msgstr "Z ekseni etrafında döndürme için merkez nokta"
 
-#: ../clutter/clutter-actor.c:7129
+#: ../clutter/clutter-actor.c:7118
 msgid "Anchor X"
 msgstr "Bağlayıcı X"
 
-#: ../clutter/clutter-actor.c:7130
+#: ../clutter/clutter-actor.c:7119
 msgid "X coordinate of the anchor point"
 msgstr "Başlangıç noktasının X koordinatı"
 
-#: ../clutter/clutter-actor.c:7158
+#: ../clutter/clutter-actor.c:7147
 msgid "Anchor Y"
 msgstr "Bağlayıcı Y"
 
-#: ../clutter/clutter-actor.c:7159
+#: ../clutter/clutter-actor.c:7148
 msgid "Y coordinate of the anchor point"
 msgstr "Başlangıç noktasının Y koordinatı"
 
-#: ../clutter/clutter-actor.c:7186
+#: ../clutter/clutter-actor.c:7175
 msgid "Anchor Gravity"
 msgstr ""
 
-#: ../clutter/clutter-actor.c:7187
+#: ../clutter/clutter-actor.c:7176
 msgid "The anchor point as a ClutterGravity"
 msgstr "Bir ClutterGravity olarak başlangıç noktası"
 
-#: ../clutter/clutter-actor.c:7206
+#: ../clutter/clutter-actor.c:7195
 msgid "Translation X"
 msgstr ""
 
-#: ../clutter/clutter-actor.c:7207
+#: ../clutter/clutter-actor.c:7196
 #, fuzzy
 #| msgid "The rotation angle on the X axis"
 msgid "Translation along the X axis"
 msgstr "X ekseni üzerindeki dönme açısı"
 
-#: ../clutter/clutter-actor.c:7226
+#: ../clutter/clutter-actor.c:7215
 msgid "Translation Y"
 msgstr ""
 
-#: ../clutter/clutter-actor.c:7227
+#: ../clutter/clutter-actor.c:7216
 #, fuzzy
 #| msgid "The rotation angle on the Y axis"
 msgid "Translation along the Y axis"
 msgstr "Y ekseni üzerindeki dönme açısı"
 
-#: ../clutter/clutter-actor.c:7246
+#: ../clutter/clutter-actor.c:7235
 msgid "Translation Z"
 msgstr ""
 
-#: ../clutter/clutter-actor.c:7247
+#: ../clutter/clutter-actor.c:7236
 #, fuzzy
 #| msgid "The rotation angle on the Z axis"
 msgid "Translation along the Z axis"
 msgstr "Z ekseni üzerindeki dönme açısı"
 
-#: ../clutter/clutter-actor.c:7277
+#: ../clutter/clutter-actor.c:7266
 msgid "Transform"
 msgstr "Dönüştür"
 
-#: ../clutter/clutter-actor.c:7278
+#: ../clutter/clutter-actor.c:7267
 msgid "Transformation matrix"
-msgstr ""
+msgstr "Dönüşüm matrisi"
 
-#: ../clutter/clutter-actor.c:7293
+#: ../clutter/clutter-actor.c:7282
 msgid "Transform Set"
 msgstr ""
 
-#: ../clutter/clutter-actor.c:7294
+#: ../clutter/clutter-actor.c:7283
 #, fuzzy
 #| msgid "Whether the :filename property is set"
 msgid "Whether the transform property is set"
 msgstr ":filename özelliğinin ayarlanmış olup olmaması"
 
-#: ../clutter/clutter-actor.c:7315
+#: ../clutter/clutter-actor.c:7304
 msgid "Child Transform"
 msgstr "Alt öge Dönüştür"
 
-#: ../clutter/clutter-actor.c:7316
+#: ../clutter/clutter-actor.c:7305
 msgid "Children transformation matrix"
 msgstr ""
 
-#: ../clutter/clutter-actor.c:7331
+#: ../clutter/clutter-actor.c:7320
 msgid "Child Transform Set"
 msgstr ""
 
-#: ../clutter/clutter-actor.c:7332
+#: ../clutter/clutter-actor.c:7321
 #, fuzzy
 #| msgid "Whether the :filename property is set"
 msgid "Whether the child-transform property is set"
 msgstr ":filename özelliğinin ayarlanmış olup olmaması"
 
-#: ../clutter/clutter-actor.c:7349
+#: ../clutter/clutter-actor.c:7338
 msgid "Show on set parent"
 msgstr ""
 
-#: ../clutter/clutter-actor.c:7350
+#: ../clutter/clutter-actor.c:7339
 msgid "Whether the actor is shown when parented"
 msgstr ""
 
-#: ../clutter/clutter-actor.c:7367
+#: ../clutter/clutter-actor.c:7356
 msgid "Clip to Allocation"
 msgstr ""
 
-#: ../clutter/clutter-actor.c:7368
+#: ../clutter/clutter-actor.c:7357
 msgid "Sets the clip region to track the actor's allocation"
 msgstr ""
 
-#: ../clutter/clutter-actor.c:7381
+#: ../clutter/clutter-actor.c:7370
 msgid "Text Direction"
 msgstr "Metin Yönü"
 
-#: ../clutter/clutter-actor.c:7382
+#: ../clutter/clutter-actor.c:7371
 msgid "Direction of the text"
 msgstr "Metnin yönü"
 
-#: ../clutter/clutter-actor.c:7397
+#: ../clutter/clutter-actor.c:7386
 msgid "Has Pointer"
 msgstr "İşaretçisi Var"
 
-#: ../clutter/clutter-actor.c:7398
+#: ../clutter/clutter-actor.c:7387
 msgid "Whether the actor contains the pointer of an input device"
 msgstr "Aktörün, bir giriş aygıtının işaretçisini içerip içermemesi"
 
-#: ../clutter/clutter-actor.c:7411
+#: ../clutter/clutter-actor.c:7400
 msgid "Actions"
 msgstr "Eylemler"
 
-#: ../clutter/clutter-actor.c:7412
+#: ../clutter/clutter-actor.c:7401
 msgid "Adds an action to the actor"
 msgstr "Aktöre bir eylem ekler"
 
-#: ../clutter/clutter-actor.c:7425
+#: ../clutter/clutter-actor.c:7414
 msgid "Constraints"
 msgstr "Kısıtlar"
 
-#: ../clutter/clutter-actor.c:7426
+#: ../clutter/clutter-actor.c:7415
 msgid "Adds a constraint to the actor"
 msgstr "Aktöre bir kısıt ekler"
 
-#: ../clutter/clutter-actor.c:7439
+#: ../clutter/clutter-actor.c:7428
 msgid "Effect"
 msgstr "Efekt"
 
-#: ../clutter/clutter-actor.c:7440
+#: ../clutter/clutter-actor.c:7429
 msgid "Add an effect to be applied on the actor"
 msgstr "Aktörde uygulanacak bir efekt ekle"
 
-#: ../clutter/clutter-actor.c:7454
+#: ../clutter/clutter-actor.c:7443
 msgid "Layout Manager"
 msgstr "Yerleşim Yöneticisi"
 
-#: ../clutter/clutter-actor.c:7455
+#: ../clutter/clutter-actor.c:7444
 msgid "The object controlling the layout of an actor's children"
 msgstr ""
 
-#: ../clutter/clutter-actor.c:7469
+#: ../clutter/clutter-actor.c:7458
 #, fuzzy
 #| msgid "Expand"
 msgid "X Expand"
 msgstr "Genişlet"
 
-#: ../clutter/clutter-actor.c:7470
+#: ../clutter/clutter-actor.c:7459
 #, fuzzy
 #| msgid "Whether the surface should match the allocation"
 msgid "Whether extra horizontal space should be assigned to the actor"
 msgstr "Yüzeyin yer ayrımına uyumu"
 
-#: ../clutter/clutter-actor.c:7485
+#: ../clutter/clutter-actor.c:7474
 #, fuzzy
 #| msgid "Expand"
 msgid "Y Expand"
 msgstr "Genişlet"
 
-#: ../clutter/clutter-actor.c:7486
+#: ../clutter/clutter-actor.c:7475
 #, fuzzy
 #| msgid "Whether the surface should match the allocation"
 msgid "Whether extra vertical space should be assigned to the actor"
 msgstr "Yüzeyin yer ayrımına uyumu"
 
-#: ../clutter/clutter-actor.c:7502
+#: ../clutter/clutter-actor.c:7491
 msgid "X Alignment"
 msgstr "X Hizalaması"
 
-#: ../clutter/clutter-actor.c:7503
+#: ../clutter/clutter-actor.c:7492
 #, fuzzy
 #| msgid "Vertical alignment of the actor within the cell"
 msgid "The alignment of the actor on the X axis within its allocation"
 msgstr "Aktörün hücre içindeki dikey hizalaması"
 
-#: ../clutter/clutter-actor.c:7518
+#: ../clutter/clutter-actor.c:7507
 #, fuzzy
 #| msgid "Line Alignment"
 msgid "Y Alignment"
 msgstr "Satır Hizalama"
 
-#: ../clutter/clutter-actor.c:7519
+#: ../clutter/clutter-actor.c:7508
 #, fuzzy
 #| msgid "Vertical alignment of the actor within the cell"
 msgid "The alignment of the actor on the Y axis within its allocation"
 msgstr "Aktörün hücre içindeki dikey hizalaması"
 
-#: ../clutter/clutter-actor.c:7538
+#: ../clutter/clutter-actor.c:7527
 msgid "Margin Top"
 msgstr "Üst Kenar Boşluğu"
 
-#: ../clutter/clutter-actor.c:7539
+#: ../clutter/clutter-actor.c:7528
 msgid "Extra space at the top"
 msgstr "Üstte fazladan alan"
 
-#: ../clutter/clutter-actor.c:7560
+#: ../clutter/clutter-actor.c:7549
 msgid "Margin Bottom"
 msgstr "Alt Kenar Boşluğu"
 
-#: ../clutter/clutter-actor.c:7561
+#: ../clutter/clutter-actor.c:7550
 msgid "Extra space at the bottom"
 msgstr "Altta fazladan alan"
 
-#: ../clutter/clutter-actor.c:7582
+#: ../clutter/clutter-actor.c:7571
 msgid "Margin Left"
 msgstr "Sol Kenar Boşluğu"
 
-#: ../clutter/clutter-actor.c:7583
+#: ../clutter/clutter-actor.c:7572
 msgid "Extra space at the left"
 msgstr "Solda fazladan alan"
 
-#: ../clutter/clutter-actor.c:7604
+#: ../clutter/clutter-actor.c:7593
 msgid "Margin Right"
 msgstr "Sağ Kenar Boşluğu"
 
-#: ../clutter/clutter-actor.c:7605
+#: ../clutter/clutter-actor.c:7594
 msgid "Extra space at the right"
 msgstr "Sağda fazladan alan"
 
-#: ../clutter/clutter-actor.c:7621
+#: ../clutter/clutter-actor.c:7610
 msgid "Background Color Set"
 msgstr "Arkaplan Renk Kümesi"
 
-#: ../clutter/clutter-actor.c:7622 ../clutter/deprecated/clutter-box.c:269
+#: ../clutter/clutter-actor.c:7611 ../clutter/deprecated/clutter-box.c:280
 msgid "Whether the background color is set"
 msgstr "Arkaplan renginin atanmış olması"
 
-#: ../clutter/clutter-actor.c:7638
+#: ../clutter/clutter-actor.c:7627
 msgid "Background color"
 msgstr "Arkaplan rengi"
 
-#: ../clutter/clutter-actor.c:7639
+#: ../clutter/clutter-actor.c:7628
 msgid "The actor's background color"
 msgstr "Aktörün arkaplan rengi"
 
-#: ../clutter/clutter-actor.c:7654
+#: ../clutter/clutter-actor.c:7643
 msgid "First Child"
 msgstr "İlk Alt Öge"
 
-#: ../clutter/clutter-actor.c:7655
+#: ../clutter/clutter-actor.c:7644
 msgid "The actor's first child"
 msgstr "Aktörün ilk alt ögesi"
 
-#: ../clutter/clutter-actor.c:7668
+#: ../clutter/clutter-actor.c:7657
 msgid "Last Child"
 msgstr "Son Alt Öge"
 
-#: ../clutter/clutter-actor.c:7669
+#: ../clutter/clutter-actor.c:7658
 msgid "The actor's last child"
 msgstr "Aktörün son alt ögesi"
 
-#: ../clutter/clutter-actor.c:7683
+#: ../clutter/clutter-actor.c:7672
 msgid "Content"
 msgstr "İçerik"
 
-#: ../clutter/clutter-actor.c:7684
+#: ../clutter/clutter-actor.c:7673
 msgid "Delegate object for painting the actor's content"
 msgstr "Aktörün içeriğini boyamak için nesneye yetki ver"
 
-#: ../clutter/clutter-actor.c:7709
+#: ../clutter/clutter-actor.c:7698
 #, fuzzy
 #| msgid "Rotation Center Z Gravity"
 msgid "Content Gravity"
 msgstr "Z Dönme Merkezi Yerçekimi"
 
-#: ../clutter/clutter-actor.c:7710
+#: ../clutter/clutter-actor.c:7699
 msgid "Alignment of the actor's content"
 msgstr "Aktörün içeriğinin yerleşimi"
 
-#: ../clutter/clutter-actor.c:7730
+#: ../clutter/clutter-actor.c:7719
 msgid "Content Box"
 msgstr "İçerik Kutusu"
 
-#: ../clutter/clutter-actor.c:7731
+#: ../clutter/clutter-actor.c:7720
 msgid "The bounding box of the actor's content"
 msgstr "Aktörün içeriğinin sınırlayıcı kutusu"
 
-#: ../clutter/clutter-actor.c:7739
+#: ../clutter/clutter-actor.c:7728
 msgid "Minification Filter"
 msgstr ""
 
-#: ../clutter/clutter-actor.c:7740
+#: ../clutter/clutter-actor.c:7729
 msgid "The filter used when reducing the size of the content"
 msgstr ""
 
-#: ../clutter/clutter-actor.c:7747
+#: ../clutter/clutter-actor.c:7736
 msgid "Magnification Filter"
 msgstr ""
 
-#: ../clutter/clutter-actor.c:7748
+#: ../clutter/clutter-actor.c:7737
 msgid "The filter used when increasing the size of the content"
 msgstr ""
 
-#: ../clutter/clutter-actor.c:7762
+#: ../clutter/clutter-actor.c:7751
 msgid "Content Repeat"
 msgstr ""
 
-#: ../clutter/clutter-actor.c:7763
+#: ../clutter/clutter-actor.c:7752
 msgid "The repeat policy for the actor's content"
 msgstr ""
 
@@ -724,7 +724,7 @@ msgstr "Meta'ya ekli aktör"
 msgid "The name of the meta"
 msgstr "Meta'nın adı"
 
-#: ../clutter/clutter-actor-meta.c:219 ../clutter/clutter-input-device.c:326
+#: ../clutter/clutter-actor-meta.c:219 ../clutter/clutter-input-device.c:347
 #: ../clutter/deprecated/clutter-shader.c:309
 msgid "Enabled"
 msgstr "Etkinleştirildi"
@@ -734,7 +734,7 @@ msgid "Whether the meta is enabled"
 msgstr "Meta'nın etkin olup olmaması"
 
 #: ../clutter/clutter-align-constraint.c:279
-#: ../clutter/clutter-bind-constraint.c:343 ../clutter/clutter-clone.c:341
+#: ../clutter/clutter-bind-constraint.c:343 ../clutter/clutter-clone.c:342
 #: ../clutter/clutter-snap-constraint.c:321
 msgid "Source"
 msgstr "Kaynak"
@@ -760,11 +760,11 @@ msgstr "Çarpan"
 msgid "The alignment factor, between 0.0 and 1.0"
 msgstr "Hizalama çarpanı, 0.0 ile 1.0 arasında"
 
-#: ../clutter/clutter-backend.c:380
+#: ../clutter/clutter-backend.c:385
 msgid "Unable to initialize the Clutter backend"
 msgstr "Clutter art alan uygulaması başlatılamadı"
 
-#: ../clutter/clutter-backend.c:454
+#: ../clutter/clutter-backend.c:459
 #, c-format
 msgid "The backend of type '%s' does not support creating multiple stages"
 msgstr ""
@@ -798,7 +798,7 @@ msgstr "Bağlama havuzunun özgün adı."
 
 #: ../clutter/clutter-bin-layout.c:220 ../clutter/clutter-bin-layout.c:633
 #: ../clutter/clutter-box-layout.c:374
-#: ../clutter/deprecated/clutter-table-layout.c:602
+#: ../clutter/deprecated/clutter-table-layout.c:600
 msgid "Horizontal Alignment"
 msgstr "Yatay Hizalama"
 
@@ -808,7 +808,7 @@ msgstr "Yerleşim yöneticisi içindeki aktörün yatay hizalaması"
 
 #: ../clutter/clutter-bin-layout.c:229 ../clutter/clutter-bin-layout.c:653
 #: ../clutter/clutter-box-layout.c:383
-#: ../clutter/deprecated/clutter-table-layout.c:617
+#: ../clutter/deprecated/clutter-table-layout.c:615
 msgid "Vertical Alignment"
 msgstr "Dikey Hizalama"
 
@@ -833,12 +833,12 @@ msgid "Allocate extra space for the child"
 msgstr "Çocuk için fazladan yer ayır"
 
 #: ../clutter/clutter-box-layout.c:356
-#: ../clutter/deprecated/clutter-table-layout.c:581
+#: ../clutter/deprecated/clutter-table-layout.c:579
 msgid "Horizontal Fill"
 msgstr "Yatay Doldur"
 
 #: ../clutter/clutter-box-layout.c:357
-#: ../clutter/deprecated/clutter-table-layout.c:582
+#: ../clutter/deprecated/clutter-table-layout.c:580
 msgid ""
 "Whether the child should receive priority when the container is allocating "
 "spare space on the horizontal axis"
@@ -847,12 +847,12 @@ msgstr ""
 "almasının gerekip gerekmemesi"
 
 #: ../clutter/clutter-box-layout.c:365
-#: ../clutter/deprecated/clutter-table-layout.c:588
+#: ../clutter/deprecated/clutter-table-layout.c:586
 msgid "Vertical Fill"
 msgstr "Dikey Doldur"
 
 #: ../clutter/clutter-box-layout.c:366
-#: ../clutter/deprecated/clutter-table-layout.c:589
+#: ../clutter/deprecated/clutter-table-layout.c:587
 msgid ""
 "Whether the child should receive priority when the container is allocating "
 "spare space on the vertical axis"
@@ -861,12 +861,12 @@ msgstr ""
 "almasının gerekip gerekmemesi"
 
 #: ../clutter/clutter-box-layout.c:375
-#: ../clutter/deprecated/clutter-table-layout.c:603
+#: ../clutter/deprecated/clutter-table-layout.c:601
 msgid "Horizontal alignment of the actor within the cell"
 msgstr "Aktörün hücre içindeki yatay hizalaması"
 
 #: ../clutter/clutter-box-layout.c:384
-#: ../clutter/deprecated/clutter-table-layout.c:618
+#: ../clutter/deprecated/clutter-table-layout.c:616
 msgid "Vertical alignment of the actor within the cell"
 msgstr "Aktörün hücre içindeki dikey hizalaması"
 
@@ -915,32 +915,32 @@ msgid "Spacing between children"
 msgstr "Çocuklar arasındaki boşluk"
 
 #: ../clutter/clutter-box-layout.c:1428
-#: ../clutter/deprecated/clutter-table-layout.c:1669
+#: ../clutter/deprecated/clutter-table-layout.c:1667
 msgid "Use Animations"
 msgstr "Canlandırmaları Kullan"
 
 #: ../clutter/clutter-box-layout.c:1429
-#: ../clutter/deprecated/clutter-table-layout.c:1670
+#: ../clutter/deprecated/clutter-table-layout.c:1668
 msgid "Whether layout changes should be animated"
 msgstr "Yerleşim değişikliklerinin canlandırılması"
 
 #: ../clutter/clutter-box-layout.c:1453
-#: ../clutter/deprecated/clutter-table-layout.c:1694
+#: ../clutter/deprecated/clutter-table-layout.c:1692
 msgid "Easing Mode"
 msgstr "Hafifletme Kipi"
 
 #: ../clutter/clutter-box-layout.c:1454
-#: ../clutter/deprecated/clutter-table-layout.c:1695
+#: ../clutter/deprecated/clutter-table-layout.c:1693
 msgid "The easing mode of the animations"
 msgstr "Canlandırmaları hafifletme kipi"
 
 #: ../clutter/clutter-box-layout.c:1474
-#: ../clutter/deprecated/clutter-table-layout.c:1715
+#: ../clutter/deprecated/clutter-table-layout.c:1713
 msgid "Easing Duration"
 msgstr "Hafifletme Süresi"
 
 #: ../clutter/clutter-box-layout.c:1475
-#: ../clutter/deprecated/clutter-table-layout.c:1716
+#: ../clutter/deprecated/clutter-table-layout.c:1714
 msgid "The duration of the animations"
 msgstr "Canlandırmaların süresi"
 
@@ -1040,7 +1040,7 @@ msgstr "Uzun Basma Eşiği"
 msgid "The maximum threshold before a long press is cancelled"
 msgstr "Uzun basma iptal edilmeden önceki en büyük eşik"
 
-#: ../clutter/clutter-clone.c:342
+#: ../clutter/clutter-clone.c:343
 msgid "Specifies the actor to be cloned"
 msgstr "Birebir kopyalanacak aktörü belirtir"
 
@@ -1081,7 +1081,7 @@ msgid "The desaturation factor"
 msgstr "Desatürasyon çarpanı"
 
 #: ../clutter/clutter-device-manager.c:127
-#: ../clutter/clutter-input-device.c:355
+#: ../clutter/clutter-input-device.c:376
 #: ../clutter/x11/clutter-keymap-x11.c:457
 msgid "Backend"
 msgstr "Arka Uç"
@@ -1147,7 +1147,7 @@ msgid "Whether each item should receive the same allocation"
 msgstr "Her ögeye aynı miktarda yer ayrılması"
 
 #: ../clutter/clutter-flow-layout.c:959
-#: ../clutter/deprecated/clutter-table-layout.c:1629
+#: ../clutter/deprecated/clutter-table-layout.c:1627
 msgid "Column Spacing"
 msgstr "Sütun Aralığı"
 
@@ -1156,7 +1156,7 @@ msgid "The spacing between columns"
 msgstr "Sütunlar arasındaki boşluk"
 
 #: ../clutter/clutter-flow-layout.c:976
-#: ../clutter/deprecated/clutter-table-layout.c:1645
+#: ../clutter/deprecated/clutter-table-layout.c:1643
 msgid "Row Spacing"
 msgstr "Satır Aralığı"
 
@@ -1292,70 +1292,78 @@ msgstr "Sütun Eşdağılımı"
 msgid "If TRUE, the columns are all the same width"
 msgstr "Eğer DOĞRU ise, sütunların tümü aynı genişliktedir"
 
-#: ../clutter/clutter-image.c:268 ../clutter/clutter-image.c:331
-#: ../clutter/clutter-image.c:419
+#: ../clutter/clutter-image.c:273 ../clutter/clutter-image.c:341
+#: ../clutter/clutter-image.c:434
 msgid "Unable to load image data"
 msgstr "Görüntü verisi yüklenemedi"
 
-#: ../clutter/clutter-input-device.c:231
+#: ../clutter/clutter-input-device.c:252
 msgid "Id"
 msgstr "Id"
 
-#: ../clutter/clutter-input-device.c:232
+#: ../clutter/clutter-input-device.c:253
 msgid "Unique identifier of the device"
 msgstr "Aygıtın özgün tanımlayıcısı"
 
-#: ../clutter/clutter-input-device.c:248
+#: ../clutter/clutter-input-device.c:269
 msgid "The name of the device"
 msgstr "Aygıtın adı"
 
-#: ../clutter/clutter-input-device.c:262
+#: ../clutter/clutter-input-device.c:283
 msgid "Device Type"
 msgstr "Aygıt Türü"
 
-#: ../clutter/clutter-input-device.c:263
+#: ../clutter/clutter-input-device.c:284
 msgid "The type of the device"
 msgstr "Aygıtın türü"
 
-#: ../clutter/clutter-input-device.c:278
+#: ../clutter/clutter-input-device.c:299
 msgid "Device Manager"
 msgstr "Aygıt Yöneticisi"
 
-#: ../clutter/clutter-input-device.c:279
+#: ../clutter/clutter-input-device.c:300
 msgid "The device manager instance"
 msgstr "Aygıt yöneticisi örneği"
 
-#: ../clutter/clutter-input-device.c:292
+#: ../clutter/clutter-input-device.c:313
 msgid "Device Mode"
 msgstr "Aygıt Kipi"
 
-#: ../clutter/clutter-input-device.c:293
+#: ../clutter/clutter-input-device.c:314
 msgid "The mode of the device"
 msgstr "Aygıtın kipi"
 
-#: ../clutter/clutter-input-device.c:307
+#: ../clutter/clutter-input-device.c:328
 msgid "Has Cursor"
 msgstr "İmleci Var"
 
-#: ../clutter/clutter-input-device.c:308
+#: ../clutter/clutter-input-device.c:329
 msgid "Whether the device has a cursor"
 msgstr "Aygıtın bir imlecinin olup olmaması"
 
-#: ../clutter/clutter-input-device.c:327
+#: ../clutter/clutter-input-device.c:348
 msgid "Whether the device is enabled"
 msgstr "Aygıtın etkin olup olmaması"
 
-#: ../clutter/clutter-input-device.c:340
+#: ../clutter/clutter-input-device.c:361
 msgid "Number of Axes"
 msgstr ""
 
-#: ../clutter/clutter-input-device.c:341
+#: ../clutter/clutter-input-device.c:362
 msgid "The number of axes on the device"
 msgstr ""
 
-#: ../clutter/clutter-input-device.c:356
+#: ../clutter/clutter-input-device.c:377
 msgid "The backend instance"
 msgstr "Arka uç örneği"
+
+#: ../clutter/clutter-input-device.c:390 ../clutter/clutter-input-device.c:391
+msgid "Vendor ID"
+msgstr ""
+
+#: ../clutter/clutter-input-device.c:404 ../clutter/clutter-input-device.c:405
+msgid "Product ID"
+msgstr ""
 
 #: ../clutter/clutter-interval.c:557
 msgid "Value Type"
@@ -1396,59 +1404,51 @@ msgstr "Bu veriyi oluşturan yönetici"
 #. * Do NOT translate it to non-English e.g. "predefinito:LTR"! If
 #. * it isn't default:LTR or default:RTL it will not work.
 #.
-#: ../clutter/clutter-main.c:751
+#: ../clutter/clutter-main.c:729
 msgid "default:LTR"
 msgstr "default:LTR"
 
-#: ../clutter/clutter-main.c:1497
+#: ../clutter/clutter-main.c:1398
 msgid "Show frames per second"
 msgstr "Saniye başına düşen çerçeveleri göster"
 
-#: ../clutter/clutter-main.c:1499
+#: ../clutter/clutter-main.c:1400
 msgid "Default frame rate"
 msgstr "Öntanımlı çerçeve hızı"
 
-#: ../clutter/clutter-main.c:1501
+#: ../clutter/clutter-main.c:1402
 msgid "Make all warnings fatal"
 msgstr "Tüm uyarıları ölümcül yap"
 
-#: ../clutter/clutter-main.c:1504
+#: ../clutter/clutter-main.c:1405
 msgid "Direction for the text"
 msgstr "Metin yönü"
 
-#: ../clutter/clutter-main.c:1507
+#: ../clutter/clutter-main.c:1408
 msgid "Disable mipmapping on text"
 msgstr "Metinde haritalamayı devre dışı bırak"
 
-#: ../clutter/clutter-main.c:1510
+#: ../clutter/clutter-main.c:1411
 msgid "Use 'fuzzy' picking"
 msgstr ""
 
-#: ../clutter/clutter-main.c:1513
+#: ../clutter/clutter-main.c:1414
 msgid "Clutter debugging flags to set"
 msgstr "Ayarlanacak Clutter hata ayıklama bayrakları"
 
-#: ../clutter/clutter-main.c:1515
+#: ../clutter/clutter-main.c:1416
 msgid "Clutter debugging flags to unset"
 msgstr "Kaldırılacak Clutter hata ayıklama bayrakları"
 
-#: ../clutter/clutter-main.c:1519
-msgid "Clutter profiling flags to set"
-msgstr "Ayarlanacak Clutter profilleme bayrakları"
-
-#: ../clutter/clutter-main.c:1521
-msgid "Clutter profiling flags to unset"
-msgstr "Kaldırılacak Clutter profilleme bayrakları"
-
-#: ../clutter/clutter-main.c:1524
+#: ../clutter/clutter-main.c:1419
 msgid "Enable accessibility"
 msgstr "Erişilebilirliği etkinleştir"
 
-#: ../clutter/clutter-main.c:1716
+#: ../clutter/clutter-main.c:1597
 msgid "Clutter Options"
 msgstr "Clutter Seçenekleri"
 
-#: ../clutter/clutter-main.c:1717
+#: ../clutter/clutter-main.c:1598
 msgid "Show Clutter Options"
 msgstr "Clutter Seçeneklerini Göster"
 
@@ -1509,28 +1509,28 @@ msgstr "Özellik Adı"
 msgid "The name of the property to animate"
 msgstr "Oynatılacak özelliğin adı"
 
-#: ../clutter/clutter-script.c:464
+#: ../clutter/clutter-script.c:463
 msgid "Filename Set"
 msgstr "Dosya Adı Ayarlandı"
 
-#: ../clutter/clutter-script.c:465
+#: ../clutter/clutter-script.c:464
 msgid "Whether the :filename property is set"
 msgstr ":filename özelliğinin ayarlanmış olup olmaması"
 
-#: ../clutter/clutter-script.c:479
-#: ../clutter/deprecated/clutter-texture.c:1080
+#: ../clutter/clutter-script.c:478
+#: ../clutter/deprecated/clutter-texture.c:1081
 msgid "Filename"
 msgstr "Dosya adı"
 
-#: ../clutter/clutter-script.c:480
+#: ../clutter/clutter-script.c:479
 msgid "The path of the currently parsed file"
 msgstr "Şu anda ayrıştırılan dosyanın yolu"
 
-#: ../clutter/clutter-script.c:497
+#: ../clutter/clutter-script.c:496
 msgid "Translation Domain"
 msgstr ""
 
-#: ../clutter/clutter-script.c:498
+#: ../clutter/clutter-script.c:497
 msgid "The translation domain used to localize string"
 msgstr ""
 
@@ -1568,7 +1568,7 @@ msgstr "Sürükleme Eşiği"
 msgid "The distance the cursor should travel before starting to drag"
 msgstr "Sürüklemeye başlamadan önce imlecin katetmesi gereken mesafe"
 
-#: ../clutter/clutter-settings.c:555 ../clutter/clutter-text.c:3437
+#: ../clutter/clutter-settings.c:555 ../clutter/clutter-text.c:3409
 msgid "Font Name"
 msgstr "Yazıtipi Adı"
 
@@ -1685,112 +1685,112 @@ msgstr ""
 msgid "The offset in pixels to apply to the constraint"
 msgstr ""
 
-#: ../clutter/clutter-stage.c:1917
+#: ../clutter/clutter-stage.c:1798
 msgid "Fullscreen Set"
 msgstr "Tam Ekran Ayarlandı"
 
-#: ../clutter/clutter-stage.c:1918
+#: ../clutter/clutter-stage.c:1799
 msgid "Whether the main stage is fullscreen"
 msgstr "Ana sahnenin tam ekran olup olmayışı"
 
-#: ../clutter/clutter-stage.c:1932
+#: ../clutter/clutter-stage.c:1813
 msgid "Offscreen"
 msgstr "Ekran Dışı"
 
-#: ../clutter/clutter-stage.c:1933
+#: ../clutter/clutter-stage.c:1814
 msgid "Whether the main stage should be rendered offscreen"
 msgstr ""
 
-#: ../clutter/clutter-stage.c:1945 ../clutter/clutter-text.c:3551
+#: ../clutter/clutter-stage.c:1826 ../clutter/clutter-text.c:3523
 msgid "Cursor Visible"
 msgstr "Görünür İmleç"
 
-#: ../clutter/clutter-stage.c:1946
+#: ../clutter/clutter-stage.c:1827
 msgid "Whether the mouse pointer is visible on the main stage"
 msgstr "Ana sahnede fare imlecinin görünürlüğü"
 
-#: ../clutter/clutter-stage.c:1960
+#: ../clutter/clutter-stage.c:1841
 msgid "User Resizable"
 msgstr "Kullanıcı Yeniden Boyutlandırabilir"
 
-#: ../clutter/clutter-stage.c:1961
+#: ../clutter/clutter-stage.c:1842
 msgid "Whether the stage is able to be resized via user interaction"
 msgstr "Sahnenin kullanıcı etkileşimi ile yeniden boyutlandırılabilirliği"
 
-#: ../clutter/clutter-stage.c:1976 ../clutter/deprecated/clutter-box.c:254
-#: ../clutter/deprecated/clutter-rectangle.c:270
+#: ../clutter/clutter-stage.c:1857 ../clutter/deprecated/clutter-box.c:260
+#: ../clutter/deprecated/clutter-rectangle.c:295
 msgid "Color"
 msgstr "Renk"
 
-#: ../clutter/clutter-stage.c:1977
+#: ../clutter/clutter-stage.c:1858
 msgid "The color of the stage"
 msgstr "Sahne rengi"
 
-#: ../clutter/clutter-stage.c:1992
+#: ../clutter/clutter-stage.c:1873
 msgid "Perspective"
 msgstr "Bakış Açısı"
 
-#: ../clutter/clutter-stage.c:1993
+#: ../clutter/clutter-stage.c:1874
 msgid "Perspective projection parameters"
 msgstr ""
 
-#: ../clutter/clutter-stage.c:2008
+#: ../clutter/clutter-stage.c:1889
 msgid "Title"
 msgstr "Başlık"
 
-#: ../clutter/clutter-stage.c:2009
+#: ../clutter/clutter-stage.c:1890
 msgid "Stage Title"
 msgstr "Sahne Başlığı"
 
-#: ../clutter/clutter-stage.c:2026
+#: ../clutter/clutter-stage.c:1907
 msgid "Use Fog"
 msgstr "Sis Kullan"
 
-#: ../clutter/clutter-stage.c:2027
+#: ../clutter/clutter-stage.c:1908
 msgid "Whether to enable depth cueing"
 msgstr ""
 
-#: ../clutter/clutter-stage.c:2043
+#: ../clutter/clutter-stage.c:1924
 msgid "Fog"
 msgstr "Sis"
 
-#: ../clutter/clutter-stage.c:2044
+#: ../clutter/clutter-stage.c:1925
 msgid "Settings for the depth cueing"
 msgstr ""
 
-#: ../clutter/clutter-stage.c:2060
+#: ../clutter/clutter-stage.c:1941
 msgid "Use Alpha"
 msgstr "Alfa Kullan"
 
-#: ../clutter/clutter-stage.c:2061
+#: ../clutter/clutter-stage.c:1942
 msgid "Whether to honour the alpha component of the stage color"
 msgstr ""
 
-#: ../clutter/clutter-stage.c:2077
+#: ../clutter/clutter-stage.c:1958
 msgid "Key Focus"
 msgstr "Anahtar Odak"
 
-#: ../clutter/clutter-stage.c:2078
+#: ../clutter/clutter-stage.c:1959
 msgid "The currently key focused actor"
 msgstr ""
 
-#: ../clutter/clutter-stage.c:2094
+#: ../clutter/clutter-stage.c:1975
 msgid "No Clear Hint"
 msgstr ""
 
-#: ../clutter/clutter-stage.c:2095
+#: ../clutter/clutter-stage.c:1976
 msgid "Whether the stage should clear its contents"
 msgstr ""
 
-#: ../clutter/clutter-stage.c:2108
+#: ../clutter/clutter-stage.c:1989
 msgid "Accept Focus"
 msgstr ""
 
-#: ../clutter/clutter-stage.c:2109
+#: ../clutter/clutter-stage.c:1990
 msgid "Whether the stage should accept focus on show"
 msgstr ""
 
-#: ../clutter/clutter-text-buffer.c:347 ../clutter/clutter-text.c:3472
+#: ../clutter/clutter-text-buffer.c:347 ../clutter/clutter-text.c:3444
 msgid "Text"
 msgstr "Metin"
 
@@ -1814,211 +1814,211 @@ msgstr "Azami uzunluk"
 msgid "Maximum number of characters for this entry. Zero if no maximum"
 msgstr ""
 
-#: ../clutter/clutter-text.c:3419
+#: ../clutter/clutter-text.c:3391
 msgid "Buffer"
 msgstr "Tampon Bellek"
 
-#: ../clutter/clutter-text.c:3420
+#: ../clutter/clutter-text.c:3392
 msgid "The buffer for the text"
 msgstr "Metin için tampon bellek"
 
-#: ../clutter/clutter-text.c:3438
+#: ../clutter/clutter-text.c:3410
 msgid "The font to be used by the text"
 msgstr "Metinde kullanılacak yazıtipi"
 
-#: ../clutter/clutter-text.c:3455
+#: ../clutter/clutter-text.c:3427
 msgid "Font Description"
 msgstr "Yazıtipi Tanımı"
 
-#: ../clutter/clutter-text.c:3456
+#: ../clutter/clutter-text.c:3428
 msgid "The font description to be used"
 msgstr "Kullanılacak yazıtipi tanımı"
 
-#: ../clutter/clutter-text.c:3473
+#: ../clutter/clutter-text.c:3445
 msgid "The text to render"
 msgstr "İşlenecek metin"
 
-#: ../clutter/clutter-text.c:3487
+#: ../clutter/clutter-text.c:3459
 msgid "Font Color"
 msgstr "Yazıtipi Rengi"
 
-#: ../clutter/clutter-text.c:3488
+#: ../clutter/clutter-text.c:3460
 msgid "Color of the font used by the text"
 msgstr "Metinde kullanılan yazıtipinin rengi"
 
-#: ../clutter/clutter-text.c:3503
+#: ../clutter/clutter-text.c:3475
 msgid "Editable"
 msgstr "Düzenlenebilir"
 
-#: ../clutter/clutter-text.c:3504
+#: ../clutter/clutter-text.c:3476
 msgid "Whether the text is editable"
 msgstr "Metnin düzenlenebilirliği"
 
-#: ../clutter/clutter-text.c:3519
+#: ../clutter/clutter-text.c:3491
 msgid "Selectable"
 msgstr "Seçilebilir"
 
-#: ../clutter/clutter-text.c:3520
+#: ../clutter/clutter-text.c:3492
 msgid "Whether the text is selectable"
 msgstr "Metnin seçilebilirliği"
 
-#: ../clutter/clutter-text.c:3534
+#: ../clutter/clutter-text.c:3506
 msgid "Activatable"
 msgstr "Aktifleştirilebilir"
 
-#: ../clutter/clutter-text.c:3535
+#: ../clutter/clutter-text.c:3507
 msgid "Whether pressing return causes the activate signal to be emitted"
 msgstr ""
 "Enter tuşuna basılmasının aktifleştirme sinyalinin gönderilmesine sebep olup "
 "olmayacağı"
 
-#: ../clutter/clutter-text.c:3552
+#: ../clutter/clutter-text.c:3524
 msgid "Whether the input cursor is visible"
 msgstr "Giriş imlecinin görünürlüğü"
 
-#: ../clutter/clutter-text.c:3566 ../clutter/clutter-text.c:3567
+#: ../clutter/clutter-text.c:3538 ../clutter/clutter-text.c:3539
 msgid "Cursor Color"
 msgstr "İmleç Rengi"
 
-#: ../clutter/clutter-text.c:3582
+#: ../clutter/clutter-text.c:3554
 msgid "Cursor Color Set"
 msgstr "İmleç Rengi Ayarlandı"
 
-#: ../clutter/clutter-text.c:3583
+#: ../clutter/clutter-text.c:3555
 msgid "Whether the cursor color has been set"
 msgstr "İmleç renginin ayarlanmış olup olmadığı"
 
-#: ../clutter/clutter-text.c:3598
+#: ../clutter/clutter-text.c:3570
 msgid "Cursor Size"
 msgstr "İmleç Boyutu"
 
-#: ../clutter/clutter-text.c:3599
+#: ../clutter/clutter-text.c:3571
 msgid "The width of the cursor, in pixels"
 msgstr "İmlecin piksel cinsinden genişliği"
 
-#: ../clutter/clutter-text.c:3615 ../clutter/clutter-text.c:3633
+#: ../clutter/clutter-text.c:3587 ../clutter/clutter-text.c:3605
 msgid "Cursor Position"
 msgstr "İmleç Konumu"
 
-#: ../clutter/clutter-text.c:3616 ../clutter/clutter-text.c:3634
+#: ../clutter/clutter-text.c:3588 ../clutter/clutter-text.c:3606
 msgid "The cursor position"
 msgstr "İmlecin konumu"
 
-#: ../clutter/clutter-text.c:3649
+#: ../clutter/clutter-text.c:3621
 msgid "Selection-bound"
 msgstr "Seçim-sınırı"
 
-#: ../clutter/clutter-text.c:3650
+#: ../clutter/clutter-text.c:3622
 msgid "The cursor position of the other end of the selection"
 msgstr "Seçimin diğer ucunun imleç konumu"
 
-#: ../clutter/clutter-text.c:3665 ../clutter/clutter-text.c:3666
+#: ../clutter/clutter-text.c:3637 ../clutter/clutter-text.c:3638
 msgid "Selection Color"
 msgstr "Seçim Rengi"
 
-#: ../clutter/clutter-text.c:3681
+#: ../clutter/clutter-text.c:3653
 msgid "Selection Color Set"
 msgstr "Seçim Rengi Ayarlandı"
 
-#: ../clutter/clutter-text.c:3682
+#: ../clutter/clutter-text.c:3654
 msgid "Whether the selection color has been set"
 msgstr "Seçim renginin ayarlanmış olup olmadığı"
 
-#: ../clutter/clutter-text.c:3697
+#: ../clutter/clutter-text.c:3669
 msgid "Attributes"
 msgstr "Öznitelikler"
 
-#: ../clutter/clutter-text.c:3698
+#: ../clutter/clutter-text.c:3670
 msgid "A list of style attributes to apply to the contents of the actor"
 msgstr "Aktörün içeriklerine uygulanacak öznitelik biçemlerinin listesi"
 
-#: ../clutter/clutter-text.c:3720
+#: ../clutter/clutter-text.c:3692
 msgid "Use markup"
 msgstr ""
 
-#: ../clutter/clutter-text.c:3721
+#: ../clutter/clutter-text.c:3693
 msgid "Whether or not the text includes Pango markup"
 msgstr ""
 
-#: ../clutter/clutter-text.c:3737
+#: ../clutter/clutter-text.c:3709
 msgid "Line wrap"
 msgstr "Satır kaydırma"
 
-#: ../clutter/clutter-text.c:3738
+#: ../clutter/clutter-text.c:3710
 msgid "If set, wrap the lines if the text becomes too wide"
 msgstr "Eğer atanmışsa, satırlar çok geniş olduğunda bölünür"
 
-#: ../clutter/clutter-text.c:3753
+#: ../clutter/clutter-text.c:3725
 msgid "Line wrap mode"
 msgstr "Satır kaydırma kipi"
 
-#: ../clutter/clutter-text.c:3754
+#: ../clutter/clutter-text.c:3726
 msgid "Control how line-wrapping is done"
 msgstr "Satır kaydırmanın nasıl yapıldığını denetle"
 
-#: ../clutter/clutter-text.c:3769
+#: ../clutter/clutter-text.c:3741
 msgid "Ellipsize"
 msgstr ""
 
-#: ../clutter/clutter-text.c:3770
+#: ../clutter/clutter-text.c:3742
 msgid "The preferred place to ellipsize the string"
 msgstr "Karakter dizisini kısaltmak için tercih edilen yer"
 
-#: ../clutter/clutter-text.c:3786
+#: ../clutter/clutter-text.c:3758
 msgid "Line Alignment"
 msgstr "Satır Hizalama"
 
-#: ../clutter/clutter-text.c:3787
+#: ../clutter/clutter-text.c:3759
 msgid "The preferred alignment for the string, for multi-line text"
 msgstr "Çok satırlı metinde dizge için tercih edilen hizalama"
 
-#: ../clutter/clutter-text.c:3803
+#: ../clutter/clutter-text.c:3775
 msgid "Justify"
 msgstr "İki yana yasla"
 
-#: ../clutter/clutter-text.c:3804
+#: ../clutter/clutter-text.c:3776
 msgid "Whether the text should be justified"
 msgstr "Metnin iki yana yaslanıp yaslanmayacağı"
 
-#: ../clutter/clutter-text.c:3819
+#: ../clutter/clutter-text.c:3791
 msgid "Password Character"
 msgstr "Parola Karakteri"
 
-#: ../clutter/clutter-text.c:3820
+#: ../clutter/clutter-text.c:3792
 msgid "If non-zero, use this character to display the actor's contents"
 msgstr ""
 "Eğer sıfır değilse, aktörün içeriklerini göstermek için bu karakteri kullan"
 
-#: ../clutter/clutter-text.c:3834
+#: ../clutter/clutter-text.c:3806
 msgid "Max Length"
 msgstr "En Büyük Uzunluk"
 
-#: ../clutter/clutter-text.c:3835
+#: ../clutter/clutter-text.c:3807
 msgid "Maximum length of the text inside the actor"
 msgstr "Aktör içindeki metnin en büyük uzunluğu"
 
-#: ../clutter/clutter-text.c:3858
+#: ../clutter/clutter-text.c:3830
 msgid "Single Line Mode"
 msgstr "Tek Satır Kipi"
 
-#: ../clutter/clutter-text.c:3859
+#: ../clutter/clutter-text.c:3831
 msgid "Whether the text should be a single line"
 msgstr "Metnin tek bir satır olması gerekliliği"
 
-#: ../clutter/clutter-text.c:3873 ../clutter/clutter-text.c:3874
+#: ../clutter/clutter-text.c:3845 ../clutter/clutter-text.c:3846
 msgid "Selected Text Color"
 msgstr "Seçili Metin Rengi"
 
-#: ../clutter/clutter-text.c:3889
+#: ../clutter/clutter-text.c:3861
 msgid "Selected Text Color Set"
 msgstr "Seçili Metin Rengi Ayarlandı"
 
-#: ../clutter/clutter-text.c:3890
+#: ../clutter/clutter-text.c:3862
 msgid "Whether the selected text color has been set"
 msgstr "Seçili metin renginin ayarlanıp ayarlanmadığı"
 
 #: ../clutter/clutter-timeline.c:591
-#: ../clutter/deprecated/clutter-animation.c:512
+#: ../clutter/deprecated/clutter-animation.c:516
 msgid "Loop"
 msgstr "Döngü"
 
@@ -2035,10 +2035,10 @@ msgid "Delay before start"
 msgstr "Başlamadan önceki gecikme"
 
 #: ../clutter/clutter-timeline.c:622
-#: ../clutter/deprecated/clutter-animation.c:496
-#: ../clutter/deprecated/clutter-animator.c:1792
-#: ../clutter/deprecated/clutter-media.c:224
-#: ../clutter/deprecated/clutter-state.c:1515
+#: ../clutter/deprecated/clutter-animation.c:500
+#: ../clutter/deprecated/clutter-animator.c:1794
+#: ../clutter/deprecated/clutter-media.c:225
+#: ../clutter/deprecated/clutter-state.c:1518
 msgid "Duration"
 msgstr "Süre"
 
@@ -2120,8 +2120,8 @@ msgid "Constraints the zoom to an axis"
 msgstr "Sürüklemeyi bir eksenle kısıtlar"
 
 #: ../clutter/deprecated/clutter-alpha.c:347
-#: ../clutter/deprecated/clutter-animation.c:527
-#: ../clutter/deprecated/clutter-animator.c:1809
+#: ../clutter/deprecated/clutter-animation.c:531
+#: ../clutter/deprecated/clutter-animator.c:1811
 msgid "Timeline"
 msgstr "Zaman Çizgisi"
 
@@ -2129,65 +2129,65 @@ msgstr "Zaman Çizgisi"
 msgid "Timeline used by the alpha"
 msgstr "Alfa tarafından kullanılan zaman çizgisi"
 
-#: ../clutter/deprecated/clutter-alpha.c:364
+#: ../clutter/deprecated/clutter-alpha.c:365
 msgid "Alpha value"
 msgstr "Alfa değeri"
 
-#: ../clutter/deprecated/clutter-alpha.c:365
+#: ../clutter/deprecated/clutter-alpha.c:366
 msgid "Alpha value as computed by the alpha"
 msgstr "Alfa tarafından hesaplandığı haliyle alfa değeri"
 
-#: ../clutter/deprecated/clutter-alpha.c:386
-#: ../clutter/deprecated/clutter-animation.c:480
+#: ../clutter/deprecated/clutter-alpha.c:387
+#: ../clutter/deprecated/clutter-animation.c:484
 msgid "Mode"
 msgstr "Kip"
 
-#: ../clutter/deprecated/clutter-alpha.c:387
+#: ../clutter/deprecated/clutter-alpha.c:388
 msgid "Progress mode"
 msgstr "İlerleme kipi"
 
-#: ../clutter/deprecated/clutter-animation.c:463
+#: ../clutter/deprecated/clutter-animation.c:467
 msgid "Object"
 msgstr "Nesne"
 
-#: ../clutter/deprecated/clutter-animation.c:464
+#: ../clutter/deprecated/clutter-animation.c:468
 msgid "Object to which the animation applies"
 msgstr "Canlandırmanın uygulanacağı nesne"
 
-#: ../clutter/deprecated/clutter-animation.c:481
+#: ../clutter/deprecated/clutter-animation.c:485
 msgid "The mode of the animation"
 msgstr "Canlandırma kipi"
 
-#: ../clutter/deprecated/clutter-animation.c:497
+#: ../clutter/deprecated/clutter-animation.c:501
 msgid "Duration of the animation, in milliseconds"
 msgstr "Milisaniye cinsinden canlandırma süresi"
 
-#: ../clutter/deprecated/clutter-animation.c:513
+#: ../clutter/deprecated/clutter-animation.c:517
 msgid "Whether the animation should loop"
 msgstr "Canlandırmanın tekrarlanıp tekrarlanmayacağı"
 
-#: ../clutter/deprecated/clutter-animation.c:528
+#: ../clutter/deprecated/clutter-animation.c:532
 msgid "The timeline used by the animation"
 msgstr "Canlandırma tarafından kullanılan zaman çizgisi"
 
-#: ../clutter/deprecated/clutter-animation.c:544
-#: ../clutter/deprecated/clutter-behaviour.c:237
+#: ../clutter/deprecated/clutter-animation.c:548
+#: ../clutter/deprecated/clutter-behaviour.c:234
 msgid "Alpha"
 msgstr "Alfa"
 
-#: ../clutter/deprecated/clutter-animation.c:545
+#: ../clutter/deprecated/clutter-animation.c:549
 msgid "The alpha used by the animation"
 msgstr "Canlandırma tarafından kullanılan alfa"
 
-#: ../clutter/deprecated/clutter-animator.c:1793
+#: ../clutter/deprecated/clutter-animator.c:1795
 msgid "The duration of the animation"
 msgstr "Canlandırma süresi"
 
-#: ../clutter/deprecated/clutter-animator.c:1810
+#: ../clutter/deprecated/clutter-animator.c:1812
 msgid "The timeline of the animation"
 msgstr "Canlandırma zaman çizgisi"
 
-#: ../clutter/deprecated/clutter-behaviour.c:238
+#: ../clutter/deprecated/clutter-behaviour.c:235
 msgid "Alpha Object to drive the behaviour"
 msgstr "Davranışı kontrol eden Alfa Nesnesi"
 
@@ -2362,11 +2362,11 @@ msgstr "Y Bitiş Ölçeği"
 msgid "Final scale on the Y axis"
 msgstr "Y eksenindeki son ölçek"
 
-#: ../clutter/deprecated/clutter-box.c:255
+#: ../clutter/deprecated/clutter-box.c:261
 msgid "The background color of the box"
 msgstr "Kutunun arkaplan rengi"
 
-#: ../clutter/deprecated/clutter-box.c:268
+#: ../clutter/deprecated/clutter-box.c:279
 msgid "Color Set"
 msgstr "Renk Ayarı"
 
@@ -2394,99 +2394,99 @@ msgstr "Otomatik Yeniden Boyutlandır"
 msgid "Whether the surface should match the allocation"
 msgstr "Yüzeyin yer ayrımına uyumu"
 
-#: ../clutter/deprecated/clutter-media.c:83
+#: ../clutter/deprecated/clutter-media.c:84
 msgid "URI"
 msgstr "URI"
 
-#: ../clutter/deprecated/clutter-media.c:84
+#: ../clutter/deprecated/clutter-media.c:85
 msgid "URI of a media file"
 msgstr "Bir ortam dosyasının URI'si"
 
-#: ../clutter/deprecated/clutter-media.c:100
+#: ../clutter/deprecated/clutter-media.c:101
 msgid "Playing"
 msgstr "Oynuyor"
 
-#: ../clutter/deprecated/clutter-media.c:101
+#: ../clutter/deprecated/clutter-media.c:102
 msgid "Whether the actor is playing"
 msgstr "Aktörün oynamakta olup olmadığı"
 
-#: ../clutter/deprecated/clutter-media.c:118
+#: ../clutter/deprecated/clutter-media.c:119
 msgid "Progress"
 msgstr "İlerleme"
 
-#: ../clutter/deprecated/clutter-media.c:119
+#: ../clutter/deprecated/clutter-media.c:120
 msgid "Current progress of the playback"
 msgstr "Oynatmanın şu anki ilerleme durumu"
 
-#: ../clutter/deprecated/clutter-media.c:135
+#: ../clutter/deprecated/clutter-media.c:136
 msgid "Subtitle URI"
 msgstr "Altyazı URI"
 
-#: ../clutter/deprecated/clutter-media.c:136
+#: ../clutter/deprecated/clutter-media.c:137
 msgid "URI of a subtitle file"
 msgstr "Bir altyazı dosyasının URI adresi"
 
-#: ../clutter/deprecated/clutter-media.c:154
+#: ../clutter/deprecated/clutter-media.c:155
 msgid "Subtitle Font Name"
 msgstr "Altyazı Yazıtipi Adı"
 
-#: ../clutter/deprecated/clutter-media.c:155
+#: ../clutter/deprecated/clutter-media.c:156
 msgid "The font used to display subtitles"
 msgstr "Altyazıları göstermek için kullanılan yazıtipi"
 
-#: ../clutter/deprecated/clutter-media.c:172
+#: ../clutter/deprecated/clutter-media.c:173
 msgid "Audio Volume"
 msgstr "Ses Düzeyi"
 
-#: ../clutter/deprecated/clutter-media.c:173
+#: ../clutter/deprecated/clutter-media.c:174
 msgid "The volume of the audio"
 msgstr "Ses düzeyi"
 
-#: ../clutter/deprecated/clutter-media.c:189
+#: ../clutter/deprecated/clutter-media.c:190
 msgid "Can Seek"
 msgstr ""
 
-#: ../clutter/deprecated/clutter-media.c:190
+#: ../clutter/deprecated/clutter-media.c:191
 msgid "Whether the current stream is seekable"
 msgstr ""
 
-#: ../clutter/deprecated/clutter-media.c:207
+#: ../clutter/deprecated/clutter-media.c:208
 msgid "Buffer Fill"
 msgstr "Tampon Doldurma"
 
-#: ../clutter/deprecated/clutter-media.c:208
+#: ../clutter/deprecated/clutter-media.c:209
 msgid "The fill level of the buffer"
 msgstr "Tamponun doldurma düzeyi"
 
-#: ../clutter/deprecated/clutter-media.c:225
+#: ../clutter/deprecated/clutter-media.c:226
 msgid "The duration of the stream, in seconds"
 msgstr "Akışın saniye cinsinden süresi"
 
-#: ../clutter/deprecated/clutter-rectangle.c:271
+#: ../clutter/deprecated/clutter-rectangle.c:296
 msgid "The color of the rectangle"
 msgstr "Dikdörtgenin rengi"
 
-#: ../clutter/deprecated/clutter-rectangle.c:284
+#: ../clutter/deprecated/clutter-rectangle.c:309
 msgid "Border Color"
 msgstr "Kenarlık Rengi"
 
-#: ../clutter/deprecated/clutter-rectangle.c:285
+#: ../clutter/deprecated/clutter-rectangle.c:310
 msgid "The color of the border of the rectangle"
 msgstr "Dikdörtgen kenarlığının rengi"
 
-#: ../clutter/deprecated/clutter-rectangle.c:300
+#: ../clutter/deprecated/clutter-rectangle.c:325
 msgid "Border Width"
 msgstr "Kenarlık Genişliği"
 
-#: ../clutter/deprecated/clutter-rectangle.c:301
+#: ../clutter/deprecated/clutter-rectangle.c:326
 msgid "The width of the border of the rectangle"
 msgstr "Dikdörtgen kenarlığının genişliği"
 
-#: ../clutter/deprecated/clutter-rectangle.c:315
+#: ../clutter/deprecated/clutter-rectangle.c:340
 msgid "Has Border"
 msgstr "Kenarlığı Var"
 
-#: ../clutter/deprecated/clutter-rectangle.c:316
+#: ../clutter/deprecated/clutter-rectangle.c:341
 msgid "Whether the rectangle should have a border"
 msgstr "Dikdörtgenin kenarlığının olup olmayacağı"
 
@@ -2531,71 +2531,71 @@ msgstr "Tepe gölgelendiricisi"
 msgid "Fragment shader"
 msgstr "Parça gölgelendiricisi"
 
-#: ../clutter/deprecated/clutter-state.c:1497
+#: ../clutter/deprecated/clutter-state.c:1500
 msgid "State"
 msgstr "Durum"
 
-#: ../clutter/deprecated/clutter-state.c:1498
+#: ../clutter/deprecated/clutter-state.c:1501
 msgid "Currently set state, (transition to this state might not be complete)"
 msgstr ""
 
-#: ../clutter/deprecated/clutter-state.c:1516
+#: ../clutter/deprecated/clutter-state.c:1519
 msgid "Default transition duration"
 msgstr "Öntanımlı geçiş süresi"
 
-#: ../clutter/deprecated/clutter-table-layout.c:535
+#: ../clutter/deprecated/clutter-table-layout.c:533
 msgid "Column Number"
 msgstr "Sütun Numarası"
 
-#: ../clutter/deprecated/clutter-table-layout.c:536
+#: ../clutter/deprecated/clutter-table-layout.c:534
 msgid "The column the widget resides in"
 msgstr ""
 
-#: ../clutter/deprecated/clutter-table-layout.c:543
+#: ../clutter/deprecated/clutter-table-layout.c:541
 msgid "Row Number"
 msgstr "Satır Numarası"
 
-#: ../clutter/deprecated/clutter-table-layout.c:544
+#: ../clutter/deprecated/clutter-table-layout.c:542
 msgid "The row the widget resides in"
 msgstr ""
 
-#: ../clutter/deprecated/clutter-table-layout.c:551
+#: ../clutter/deprecated/clutter-table-layout.c:549
 msgid "Column Span"
 msgstr ""
 
-#: ../clutter/deprecated/clutter-table-layout.c:552
+#: ../clutter/deprecated/clutter-table-layout.c:550
 msgid "The number of columns the widget should span"
 msgstr ""
 
-#: ../clutter/deprecated/clutter-table-layout.c:559
+#: ../clutter/deprecated/clutter-table-layout.c:557
 msgid "Row Span"
 msgstr ""
 
-#: ../clutter/deprecated/clutter-table-layout.c:560
+#: ../clutter/deprecated/clutter-table-layout.c:558
 msgid "The number of rows the widget should span"
 msgstr ""
 
-#: ../clutter/deprecated/clutter-table-layout.c:567
+#: ../clutter/deprecated/clutter-table-layout.c:565
 msgid "Horizontal Expand"
 msgstr "Yatay Genişletme"
 
-#: ../clutter/deprecated/clutter-table-layout.c:568
+#: ../clutter/deprecated/clutter-table-layout.c:566
 msgid "Allocate extra space for the child in horizontal axis"
 msgstr "Yatay eksende alt öge için fazladan alan tahsis et"
 
-#: ../clutter/deprecated/clutter-table-layout.c:574
+#: ../clutter/deprecated/clutter-table-layout.c:572
 msgid "Vertical Expand"
 msgstr "Dikey Genişletme"
 
-#: ../clutter/deprecated/clutter-table-layout.c:575
+#: ../clutter/deprecated/clutter-table-layout.c:573
 msgid "Allocate extra space for the child in vertical axis"
 msgstr "Dikey eksende alt öge için fazladan alan tahsis et"
 
-#: ../clutter/deprecated/clutter-table-layout.c:1630
+#: ../clutter/deprecated/clutter-table-layout.c:1628
 msgid "Spacing between columns"
 msgstr "Sütunlar arasındaki boşluk"
 
-#: ../clutter/deprecated/clutter-table-layout.c:1646
+#: ../clutter/deprecated/clutter-table-layout.c:1644
 msgid "Spacing between rows"
 msgstr "Satırlar arasındaki boşluk"
 
@@ -2675,36 +2675,36 @@ msgstr "Cogl Malzemesi"
 msgid "The underlying Cogl material handle used to draw this actor"
 msgstr ""
 
-#: ../clutter/deprecated/clutter-texture.c:1081
+#: ../clutter/deprecated/clutter-texture.c:1082
 msgid "The path of the file containing the image data"
 msgstr "Görüntü verisi içeren dosyanın yolu"
 
-#: ../clutter/deprecated/clutter-texture.c:1088
+#: ../clutter/deprecated/clutter-texture.c:1089
 msgid "Keep Aspect Ratio"
 msgstr "En-Boy Oranını Koru"
 
-#: ../clutter/deprecated/clutter-texture.c:1089
+#: ../clutter/deprecated/clutter-texture.c:1090
 msgid ""
 "Keep the aspect ratio of the texture when requesting the preferred width or "
 "height"
 msgstr "Genişlik ve yükseklik tercih edildiğinde metnin en-boy oranını sakla"
 
-#: ../clutter/deprecated/clutter-texture.c:1117
+#: ../clutter/deprecated/clutter-texture.c:1118
 msgid "Load asynchronously"
 msgstr "Eşzamansız yükle"
 
-#: ../clutter/deprecated/clutter-texture.c:1118
+#: ../clutter/deprecated/clutter-texture.c:1119
 msgid ""
 "Load files inside a thread to avoid blocking when loading images from disk"
 msgstr ""
 "Diskten görüntü yüklerken engellemeyi önlemek için bir iş parçacığı "
 "içerisinde dosyaları yükle"
 
-#: ../clutter/deprecated/clutter-texture.c:1136
+#: ../clutter/deprecated/clutter-texture.c:1137
 msgid "Load data asynchronously"
 msgstr "Veriyi eşzamansız yükle"
 
-#: ../clutter/deprecated/clutter-texture.c:1137
+#: ../clutter/deprecated/clutter-texture.c:1138
 msgid ""
 "Decode image data files inside a thread to reduce blocking when loading "
 "images from disk"
@@ -2712,42 +2712,46 @@ msgstr ""
 "Diskten görüntüleri yüklerken bloklamayı azaltmak için bir iş parçacığı "
 "içerisinde görüntü veri dosyalarının kodunu çözün"
 
-#: ../clutter/deprecated/clutter-texture.c:1163
+#: ../clutter/deprecated/clutter-texture.c:1164
 msgid "Pick With Alpha"
 msgstr ""
 
-#: ../clutter/deprecated/clutter-texture.c:1164
+#: ../clutter/deprecated/clutter-texture.c:1165
 msgid "Shape actor with alpha channel when picking"
 msgstr ""
 
-#: ../clutter/deprecated/clutter-texture.c:1597
-#: ../clutter/deprecated/clutter-texture.c:1992
-#: ../clutter/deprecated/clutter-texture.c:2088
-#: ../clutter/deprecated/clutter-texture.c:2386
+#: ../clutter/deprecated/clutter-texture.c:1608
+#: ../clutter/deprecated/clutter-texture.c:2003
+#: ../clutter/deprecated/clutter-texture.c:2100
+#: ../clutter/deprecated/clutter-texture.c:2402
 #, c-format
 msgid "Failed to load the image data"
 msgstr "Resim verisinin yüklenmesi başarısız oldu"
 
-#: ../clutter/deprecated/clutter-texture.c:1756
+#: ../clutter/deprecated/clutter-texture.c:1767
 #, c-format
 msgid "YUV textures are not supported"
 msgstr "YUV kaplamaları desteklenmiyor"
 
-#: ../clutter/deprecated/clutter-texture.c:1765
+#: ../clutter/deprecated/clutter-texture.c:1776
 #, c-format
 msgid "YUV2 textues are not supported"
 msgstr "YUV2 kaplamaları desteklenmiyor"
 
-#: ../clutter/gdk/clutter-backend-gdk.c:290
+#: ../clutter/gdk/clutter-backend-gdk.c:171
+#, c-format
+msgid "Could not initialize Gdk"
+msgstr "Gdk ilklendirilemedi"
+
+#: ../clutter/gdk/clutter-backend-gdk.c:314
 #, c-format
 msgid "Could not find a suitable CoglWinsys for a GdkDisplay of type %s"
 msgstr "%s türü bir GdkDisplay için uygun bir CoglWinsys bulunamadı"
 
 #: ../clutter/wayland/clutter-wayland-surface.c:419
-#, fuzzy
 #| msgid "Surface Width"
 msgid "Surface"
-msgstr "Yüzey Genişliği"
+msgstr "Yüzey"
 
 #: ../clutter/wayland/clutter-wayland-surface.c:420
 msgid "The underlying wayland surface"
@@ -2773,19 +2777,19 @@ msgstr "Yüzey yüksekliği"
 msgid "The height of the underlying wayland surface"
 msgstr "Cairo yüzey yüksekliği"
 
-#: ../clutter/x11/clutter-backend-x11.c:489
+#: ../clutter/x11/clutter-backend-x11.c:490
 msgid "X display to use"
 msgstr "Kullanılacak X göstericisi"
 
-#: ../clutter/x11/clutter-backend-x11.c:495
+#: ../clutter/x11/clutter-backend-x11.c:496
 msgid "X screen to use"
 msgstr "Kullanılacak X ekranı"
 
-#: ../clutter/x11/clutter-backend-x11.c:500
+#: ../clutter/x11/clutter-backend-x11.c:501
 msgid "Make X calls synchronous"
 msgstr "X çağrılarını eşazamanlı yap"
 
-#: ../clutter/x11/clutter-backend-x11.c:507
+#: ../clutter/x11/clutter-backend-x11.c:508
 msgid "Disable XInput support"
 msgstr "XInput desteğini devre dışı bırak"
 
@@ -2888,6 +2892,12 @@ msgstr ""
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:636
 msgid "If this is an override-redirect window"
 msgstr ""
+
+#~ msgid "Clutter profiling flags to set"
+#~ msgstr "Ayarlanacak Clutter profilleme bayrakları"
+
+#~ msgid "Clutter profiling flags to unset"
+#~ msgstr "Kaldırılacak Clutter profilleme bayrakları"
 
 #~ msgid "The layout manager used by the box"
 #~ msgstr "Kutu tarafından kullanılan yerleşim yöneticisi"
