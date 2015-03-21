@@ -205,11 +205,7 @@ const LegacyTray = new Lang.Class({
             this._horizontalBarrier.y2 == y2)
             return;
 
-        if (this._horizontalBarrier) {
-            this._pressureBarrier.removeBarrier(this._horizontalBarrier);
-            this._horizontalBarrier.destroy();
-            this._horizontalBarrier = null;
-        }
+        this._unsetBarrier();
 
         let directions = (rtl ? Meta.BarrierDirection.NEGATIVE_X : Meta.BarrierDirection.POSITIVE_X);
         this._horizontalBarrier = new Meta.Barrier({ display: global.display,
@@ -217,6 +213,15 @@ const LegacyTray = new Lang.Class({
                                                      y1: y1, y2: y2,
                                                      directions: directions });
         this._pressureBarrier.addBarrier(this._horizontalBarrier);
+    },
+
+    _unsetBarrier: function() {
+        if (this._horizontalBarrier == null)
+            return;
+
+        this._pressureBarrier.removeBarrier(this._horizontalBarrier);
+        this._horizontalBarrier.destroy();
+        this._horizontalBarrier = null;
     },
 
     _sync: function() {
@@ -244,12 +249,14 @@ const LegacyTray = new Lang.Class({
                 targetSlide *= CONCEALED_VISIBLE_FRACTION;
         }
 
-        if (this.actor.visible)
+        if (this.actor.visible) {
             Tweener.addTween(this._slideLayout,
                              { slideX: targetSlide,
                                time: REVEAL_ANIMATION_TIME,
                                transition: 'easeOutQuad' });
-        else
+        } else {
             this._slideLayout.slideX = targetSlide;
+            this._unsetBarrier();
+        }
     }
 });
