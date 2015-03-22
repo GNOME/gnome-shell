@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the gnome-shell package.
 # Nishio Futoshi <fut_nis@d3.dion.ne.jp>, 2010.
 # Kiyotaka NISHIBORI <ml.nishibori.kiyotaka@gmail.com>, 2011.
-# Jiro Matsuzawa <jmatsuzawa@gnome.org>, 2011, 2012, 2013, 2014.
+# Jiro Matsuzawa <jmatsuzawa@gnome.org>, 2011, 2012, 2013, 2014, 2015.
 # Takayuki KUSANO <AE5T-KSN@asahi-net.or.jp>, 2011, 2012.
 # Hideki Yamane <henrich@debian.org>, 2011.
 # Takanori MATSUURA <t.matsuu@gmail.com>, 2012.
@@ -15,9 +15,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-03-06 18:02+0000\n"
-"PO-Revision-Date: 2015-01-19 00:27+0900\n"
-"Last-Translator: IWAI, Masaharu <iwaim.sub@gmail.com>\n"
+"POT-Creation-Date: 2015-03-20 20:39+0000\n"
+"PO-Revision-Date: 2015-03-21 10:06+0900\n"
+"Last-Translator: Jiro Matsuzawa <jmatsuzawa@gnome.org>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
@@ -30,11 +30,8 @@ msgid "System"
 msgstr "システム"
 
 #: ../data/50-gnome-shell-system.xml.in.h:2
-#, fuzzy
-#| msgid "%d new notification"
-#| msgid_plural "%d new notifications"
 msgid "Show the notification list"
-msgstr "%d 件の新しい通知"
+msgstr "通知リストを表示する"
 
 #: ../data/50-gnome-shell-system.xml.in.h:3
 msgid "Focus the active notification"
@@ -170,16 +167,12 @@ msgid "Keybinding to open the Activities Overview."
 msgstr "アクティビティ画面を開くキーバインドです。"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:25
-#, fuzzy
-#| msgid "Keybinding to toggle the visibility of the message tray"
 msgid "Keybinding to toggle the visibility of the notification list"
-msgstr "メッセージトレイの表示・非表示を切り替えるキーバインド"
+msgstr "通知リストの表示・非表示を切り替えるキーバインド"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:26
-#, fuzzy
-#| msgid "Keybinding to toggle the visibility of the message tray."
 msgid "Keybinding to toggle the visibility of the notification list."
-msgstr "メッセージトレイの表示・非表示を切り替えるキーバインドです。"
+msgstr "通知リストの表示・非表示を切り替えるキーバインドです。"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:27
 msgid "Keybinding to focus the active notification"
@@ -258,7 +251,7 @@ msgstr "%s の設定ダイアログのロード中にエラーが発生しまし
 msgid "GNOME Shell Extensions"
 msgstr "GNOME Shell 拡張機能"
 
-#: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:143
+#: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:145
 #: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:452
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
 #: ../js/ui/status/network.js:916
@@ -292,12 +285,12 @@ msgstr "アカウントが見つかりませんか?"
 msgid "(e.g., user or %s)"
 msgstr "(たとえば、user あるいは %s)"
 
-#: ../js/gdm/loginDialog.js:835 ../js/ui/components/networkAgent.js:269
-#: ../js/ui/components/networkAgent.js:287
+#: ../js/gdm/loginDialog.js:835 ../js/ui/components/networkAgent.js:271
+#: ../js/ui/components/networkAgent.js:289
 msgid "Username: "
 msgstr "ユーザー名: "
 
-#: ../js/gdm/loginDialog.js:1170
+#: ../js/gdm/loginDialog.js:1163
 msgid "Login Window"
 msgstr "ログインウィンドウ"
 
@@ -438,108 +431,106 @@ msgid "Change Background…"
 msgstr "背景の変更…"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday). */
-#: ../js/ui/calendar.js:49
+#: ../js/ui/calendar.js:53
 msgctxt "calendar-no-work"
 msgid "06"
 msgstr "06"
-
-#. Translators: Shown in calendar event list for all day events
-#. * Keep it short, best if you can use less then 10 characters
-#. */
-#: ../js/ui/calendar.js:78
-msgctxt "event list time"
-msgid "All Day"
-msgstr "終日"
 
 #. Translators: Calendar grid abbreviation for Sunday.
 #. *
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #. */
-#: ../js/ui/calendar.js:93
+#: ../js/ui/calendar.js:82
 msgctxt "grid sunday"
 msgid "S"
 msgstr "日"
 
 #. Translators: Calendar grid abbreviation for Monday */
-#: ../js/ui/calendar.js:95
+#: ../js/ui/calendar.js:84
 msgctxt "grid monday"
 msgid "M"
 msgstr "月"
 
 #. Translators: Calendar grid abbreviation for Tuesday */
-#: ../js/ui/calendar.js:97
+#: ../js/ui/calendar.js:86
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "火"
 
 #. Translators: Calendar grid abbreviation for Wednesday */
-#: ../js/ui/calendar.js:99
+#: ../js/ui/calendar.js:88
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "水"
 
 #. Translators: Calendar grid abbreviation for Thursday */
-#: ../js/ui/calendar.js:101
+#: ../js/ui/calendar.js:90
 msgctxt "grid thursday"
 msgid "T"
 msgstr "木"
 
 #. Translators: Calendar grid abbreviation for Friday */
-#: ../js/ui/calendar.js:103
+#: ../js/ui/calendar.js:92
 msgctxt "grid friday"
 msgid "F"
 msgstr "金"
 
 #. Translators: Calendar grid abbreviation for Saturday */
-#: ../js/ui/calendar.js:105
+#: ../js/ui/calendar.js:94
 msgctxt "grid saturday"
 msgid "S"
 msgstr "土"
 
-#: ../js/ui/calendar.js:572
+#: ../js/ui/calendar.js:564
 msgid "Previous month"
 msgstr "先月"
 
-#: ../js/ui/calendar.js:582
+#: ../js/ui/calendar.js:574
 msgid "Next month"
 msgstr "来月"
 
-#: ../js/ui/calendar.js:789
+#: ../js/ui/calendar.js:781
 msgid "Week %V"
-msgstr ""
+msgstr "第%V週"
 
-#: ../js/ui/calendar.js:1245
+#. Translators: Shown in calendar event list for all day events
+#. * Keep it short, best if you can use less then 10 characters
+#. */
+#: ../js/ui/calendar.js:1183
+msgctxt "event list time"
+msgid "All Day"
+msgstr "終日"
+
+#: ../js/ui/calendar.js:1289
 msgid "Clear section"
-msgstr ""
+msgstr "セクションをクリアする"
 
-#: ../js/ui/calendar.js:1459
+#: ../js/ui/calendar.js:1516
 msgid "Events"
-msgstr ""
+msgstr "イベント"
 
-#: ../js/ui/calendar.js:1467
+#: ../js/ui/calendar.js:1525
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%B%-e日 (%a)"
 
-#: ../js/ui/calendar.js:1471
+#: ../js/ui/calendar.js:1529
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%Y年%B%-e日 (%a)"
 
-#: ../js/ui/calendar.js:1563
+#: ../js/ui/calendar.js:1614
 msgid "Notifications"
 msgstr "通知"
 
-#: ../js/ui/calendar.js:1714
-#, fuzzy
-#| msgid "Notifications"
+#: ../js/ui/calendar.js:1765
 msgid "No Notifications"
-msgstr "通知"
+msgstr "通知なし"
 
-#: ../js/ui/calendar.js:1717
+#: ../js/ui/calendar.js:1768
 msgid "No Events"
-msgstr ""
+msgstr "イベントなし"
 
 #: ../js/ui/components/automountManager.js:91
 msgid "External drive connected"
@@ -562,76 +553,90 @@ msgstr "パスワード:"
 msgid "Type again:"
 msgstr "再入力:"
 
-#: ../js/ui/components/networkAgent.js:138 ../js/ui/status/network.js:277
+#: ../js/ui/components/networkAgent.js:140 ../js/ui/status/network.js:277
 #: ../js/ui/status/network.js:359 ../js/ui/status/network.js:919
 msgid "Connect"
 msgstr "接続"
 
-#: ../js/ui/components/networkAgent.js:231
-#: ../js/ui/components/networkAgent.js:243
-#: ../js/ui/components/networkAgent.js:271
-#: ../js/ui/components/networkAgent.js:291
-#: ../js/ui/components/networkAgent.js:301
+#: ../js/ui/components/networkAgent.js:233
+#: ../js/ui/components/networkAgent.js:245
+#: ../js/ui/components/networkAgent.js:273
+#: ../js/ui/components/networkAgent.js:293
+#: ../js/ui/components/networkAgent.js:303
 msgid "Password: "
 msgstr "パスワード: "
 
-#: ../js/ui/components/networkAgent.js:236
+#: ../js/ui/components/networkAgent.js:238
 msgid "Key: "
 msgstr "キー: "
 
-#: ../js/ui/components/networkAgent.js:275
+#: ../js/ui/components/networkAgent.js:277
 msgid "Identity: "
 msgstr "識別子: "
 
-#: ../js/ui/components/networkAgent.js:277
+#: ../js/ui/components/networkAgent.js:279
 msgid "Private key password: "
 msgstr "プライベートキーパスワード: "
 
-#: ../js/ui/components/networkAgent.js:289
+#: ../js/ui/components/networkAgent.js:291
 msgid "Service: "
 msgstr "サービス: "
 
-#: ../js/ui/components/networkAgent.js:318
+#: ../js/ui/components/networkAgent.js:320
+#: ../js/ui/components/networkAgent.js:658
 msgid "Authentication required by wireless network"
 msgstr "無線ネットワークでは認証が要求されます"
 
-#: ../js/ui/components/networkAgent.js:319
+#: ../js/ui/components/networkAgent.js:321
+#: ../js/ui/components/networkAgent.js:659
 #, javascript-format
 msgid "Passwords or encryption keys are required to access the wireless network “%s”."
 msgstr "無線ネットワーク ”%s” にアクセスするにはパスワードか、または暗号化キーが必要です。"
 
-#: ../js/ui/components/networkAgent.js:323
+#: ../js/ui/components/networkAgent.js:325
+#: ../js/ui/components/networkAgent.js:662
 msgid "Wired 802.1X authentication"
 msgstr "有線 802.1X の認証"
 
-#: ../js/ui/components/networkAgent.js:325
+#: ../js/ui/components/networkAgent.js:327
 msgid "Network name: "
 msgstr "ネットワーク名: "
 
-#: ../js/ui/components/networkAgent.js:330
+#: ../js/ui/components/networkAgent.js:332
+#: ../js/ui/components/networkAgent.js:666
 msgid "DSL authentication"
 msgstr "DSL 認証"
 
-#: ../js/ui/components/networkAgent.js:337
+#: ../js/ui/components/networkAgent.js:339
+#: ../js/ui/components/networkAgent.js:672
 msgid "PIN code required"
 msgstr "PIN コードが必要です"
 
-#: ../js/ui/components/networkAgent.js:338
+#: ../js/ui/components/networkAgent.js:340
+#: ../js/ui/components/networkAgent.js:673
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "モバイルブロードバンドデバイスには PIN コードが必要です"
 
-#: ../js/ui/components/networkAgent.js:339
+#: ../js/ui/components/networkAgent.js:341
 msgid "PIN: "
 msgstr "PIN 番号: "
 
-#: ../js/ui/components/networkAgent.js:345
+#: ../js/ui/components/networkAgent.js:348
+#: ../js/ui/components/networkAgent.js:679
 msgid "Mobile broadband network password"
 msgstr "モバイルブロードバンドネットワークのパスワード"
 
-#: ../js/ui/components/networkAgent.js:346
+#: ../js/ui/components/networkAgent.js:349
+#: ../js/ui/components/networkAgent.js:663
+#: ../js/ui/components/networkAgent.js:667
+#: ../js/ui/components/networkAgent.js:680
 #, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "”%s” への接続にはパスワードが必要です。"
+
+#: ../js/ui/components/networkAgent.js:647 ../js/ui/status/network.js:1657
+msgid "Network Manager"
+msgstr "ネットワークマネージャー"
 
 #: ../js/ui/components/polkitAgent.js:54
 msgid "Authentication Required"
@@ -655,7 +660,7 @@ msgstr "申し訳ありません、認証できませんでした。再試行し
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name. */
-#: ../js/ui/components/telepathyClient.js:772
+#: ../js/ui/components/telepathyClient.js:728
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s は %s になりました"
@@ -676,30 +681,24 @@ msgstr "ダッシュボード"
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #. */
 #: ../js/ui/dateMenu.js:73
-#, fuzzy
-#| msgid "%A %B %e, %Y"
 msgid "%B %e %Y"
-msgstr "%Y年%B%-e日 (%a)"
+msgstr "%Y年%-m月%-e日"
 
 #. Translators: This is the accessible name of the date button shown
 #. * below the time in the shell; it should combine the weekday and the
 #. * date, e.g. "Tuesday February 17 2015".
 #. */
 #: ../js/ui/dateMenu.js:80
-#, fuzzy
-#| msgid "%A %B %e, %Y"
 msgid "%A %B %e %Y"
-msgstr "%Y年%B%-e日 (%a)"
+msgstr "%Y年%-m月%-e日 (%a)"
 
 #: ../js/ui/dateMenu.js:160
 msgid "Add world clocks…"
-msgstr ""
+msgstr "世界時計を追加する…"
 
 #: ../js/ui/dateMenu.js:161
-#, fuzzy
-#| msgid "Open Clocks"
 msgid "World Clocks"
-msgstr "時計を開く"
+msgstr "世界時計"
 
 #: ../js/ui/endSessionDialog.js:64
 #, javascript-format
@@ -830,9 +829,18 @@ msgstr "インストール"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "extensions.gnome.org から ”%s” をダウンロードしてインストールしますか?"
 
-#: ../js/ui/keyboard.js:706 ../js/ui/status/keyboard.js:576
+#: ../js/ui/keyboard.js:714 ../js/ui/status/keyboard.js:724
 msgid "Keyboard"
 msgstr "キーボード"
+
+#. translators: 'Hide' is a verb */
+#: ../js/ui/legacyTray.js:64
+msgid "Hide tray"
+msgstr "トレイを非表示"
+
+#: ../js/ui/legacyTray.js:104
+msgid "Status Icons"
+msgstr "ステータスアイコン"
 
 #: ../js/ui/lookingGlass.js:643
 msgid "No extensions installed"
@@ -886,7 +894,7 @@ msgstr "ソースの表示"
 msgid "Web Page"
 msgstr "ウェブページ"
 
-#: ../js/ui/messageTray.js:2133
+#: ../js/ui/messageTray.js:1507
 msgid "System Information"
 msgstr "システム情報"
 
@@ -970,11 +978,11 @@ msgstr "ロックできません"
 msgid "Lock was blocked by an application"
 msgstr "アプリケーションによってロックがブロックされました"
 
-#: ../js/ui/search.js:609
+#: ../js/ui/search.js:616
 msgid "Searching…"
 msgstr "検索しています…"
 
-#: ../js/ui/search.js:611
+#: ../js/ui/search.js:618
 msgid "No results."
 msgstr "一致するものがありません。"
 
@@ -1075,7 +1083,7 @@ msgstr "未接続"
 msgid "Brightness"
 msgstr "明るさ"
 
-#: ../js/ui/status/keyboard.js:599
+#: ../js/ui/status/keyboard.js:747
 msgid "Show Keyboard Layout"
 msgstr "キーボードレイアウトの表示"
 
@@ -1243,10 +1251,6 @@ msgstr "VPN 設定"
 #: ../js/ui/status/network.js:1502
 msgid "VPN"
 msgstr "VPN"
-
-#: ../js/ui/status/network.js:1657
-msgid "Network Manager"
-msgstr "ネットワークマネージャー"
 
 #: ../js/ui/status/network.js:1697
 msgid "Activation of network connection failed"
@@ -1451,12 +1455,12 @@ msgstr "指定したモードを使用する (例: ログイン画面用の \"gd
 msgid "List possible modes"
 msgstr "使用可能なモードを一覧表示する"
 
-#: ../src/shell-app.c:247
+#: ../src/shell-app.c:239
 msgctxt "program"
 msgid "Unknown"
 msgstr "不明なプログラム"
 
-#: ../src/shell-app.c:488
+#: ../src/shell-app.c:480
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "”%s”の起動に失敗しました"
@@ -1472,534 +1476,3 @@ msgstr "パスワードを空白にすることはできません。"
 #: ../src/shell-polkit-authentication-agent.c:346
 msgid "Authentication dialog was dismissed by the user"
 msgstr "認証ダイアログはユーザーに拒否されました"
-
-#~ msgid "Show the message tray"
-#~ msgstr "メッセージトレイを表示する"
-
-#~ msgctxt "event list time"
-#~ msgid "%H∶%M"
-#~ msgstr "%H∶%M"
-
-#~ msgctxt "event list time"
-#~ msgid "%l∶%M %p"
-#~ msgstr "%l∶%M %p"
-
-#~ msgctxt "list sunday"
-#~ msgid "Su"
-#~ msgstr "日"
-
-#~ msgctxt "list monday"
-#~ msgid "M"
-#~ msgstr "月"
-
-#~ msgctxt "list tuesday"
-#~ msgid "T"
-#~ msgstr "火"
-
-#~ msgctxt "list wednesday"
-#~ msgid "W"
-#~ msgstr "水"
-
-#~ msgctxt "list thursday"
-#~ msgid "Th"
-#~ msgstr "木"
-
-#~ msgctxt "list friday"
-#~ msgid "F"
-#~ msgstr "金"
-
-#~ msgctxt "list saturday"
-#~ msgid "S"
-#~ msgstr "土"
-
-#~ msgid "Nothing Scheduled"
-#~ msgstr "予定がありません"
-
-#~ msgid "Today"
-#~ msgstr "今日"
-
-#~ msgid "Tomorrow"
-#~ msgstr "明日"
-
-#~ msgid "This week"
-#~ msgstr "今週"
-
-#~ msgid "Next week"
-#~ msgstr "来週"
-
-#~ msgid "Removable Devices"
-#~ msgstr "リムーバブルデバイス"
-
-#~ msgid "Eject"
-#~ msgstr "取り出し"
-
-#~ msgid "Invitation"
-#~ msgstr "招待"
-
-#~ msgid "Call"
-#~ msgstr "会話"
-
-#~ msgid "File Transfer"
-#~ msgstr "ファイル転送"
-
-#~ msgid "Chat"
-#~ msgstr "チャット"
-
-#~ msgid "Unmute"
-#~ msgstr "ミュート解除"
-
-#~ msgid "Mute"
-#~ msgstr "ミュート"
-
-#~ msgid "Invitation to %s"
-#~ msgstr "%s への招待"
-
-#~ msgid "%s is inviting you to join %s"
-#~ msgstr "%s さんがあなたを %s に招待しています"
-
-#~ msgid "Decline"
-#~ msgstr "拒否する"
-
-#~ msgid "Accept"
-#~ msgstr "受け入れる"
-
-#~ msgid "Video call from %s"
-#~ msgstr "%s さんからビデオでの呼び出し"
-
-#~ msgid "Call from %s"
-#~ msgstr "%s さんからの呼び出し"
-
-#~ msgid "Answer"
-#~ msgstr "応答"
-
-#~ msgid "%s is sending you %s"
-#~ msgstr "%s さんがあなたに %s を送信しようとしています"
-
-#~ msgid "%s would like permission to see when you are online"
-#~ msgstr "%s さんが、あなたがオンライン状態になったことを知る許可を欲しいと思っています"
-
-#~ msgid "Network error"
-#~ msgstr "ネットワークエラー"
-
-#~ msgid "Authentication failed"
-#~ msgstr "認証失敗"
-
-#~ msgid "Encryption error"
-#~ msgstr "暗号化のエラーです"
-
-#~ msgid "Certificate not provided"
-#~ msgstr "証明書がありません"
-
-#~ msgid "Certificate untrusted"
-#~ msgstr "信用のない証明書です"
-
-#~ msgid "Certificate expired"
-#~ msgstr "証明書の有効期限が切れています"
-
-#~ msgid "Certificate not activated"
-#~ msgstr "証明書は利用できません"
-
-#~ msgid "Certificate hostname mismatch"
-#~ msgstr "証明書のホスト名が一致しません"
-
-#~ msgid "Certificate fingerprint mismatch"
-#~ msgstr "証明書の指紋が一致しません"
-
-#~ msgid "Certificate self-signed"
-#~ msgstr "証明書自身の署名です"
-
-#~ msgid "Status is set to offline"
-#~ msgstr "状態はオフラインに設定されています"
-
-#~ msgid "Encryption is not available"
-#~ msgstr "暗号が利用できません"
-
-#~ msgid "Certificate is invalid"
-#~ msgstr "証明書が正しくありません"
-
-#~ msgid "Connection has been refused"
-#~ msgstr "接続が拒否されました"
-
-#~ msgid "Connection can't be established"
-#~ msgstr "接続を確立できませんでした"
-
-#~ msgid "Connection has been lost"
-#~ msgstr "接続が失われました"
-
-#~ msgid "This account is already connected to the server"
-#~ msgstr "このアカウントはすでにサーバーに接続済みです"
-
-#~ msgid "Connection has been replaced by a new connection using the same resource"
-#~ msgstr "接続は同じリソースを使って新しい接続で置き換わりました"
-
-#~ msgid "The account already exists on the server"
-#~ msgstr "アカウントがサーバーにすでに存在します"
-
-#~ msgid "Server is currently too busy to handle the connection"
-#~ msgstr "サーバーがビジー状態にあるため、この接続を処理できません"
-
-#~ msgid "Certificate has been revoked"
-#~ msgstr "証明書が無効化されました"
-
-#~ msgid "Certificate uses an insecure cipher algorithm or is cryptographically weak"
-#~ msgstr "証明書が安全でない暗号のアルゴリズムを使っているか、暗号的に弱いです"
-
-#~ msgid "The length of the server certificate, or the depth of the server certificate chain, exceed the limits imposed by the cryptography library"
-#~ msgstr "サーバー証明書の長さや、サーバー証明書のチェーンの深さが暗号ライブラリで規定されている長さを越えています"
-
-#~ msgid "Internal error"
-#~ msgstr "内部エラー"
-
-#~ msgid "Unable to connect to %s"
-#~ msgstr "%s に接続できません"
-
-#~ msgid "View account"
-#~ msgstr "アカウントを表示"
-
-#~ msgid "Unknown reason"
-#~ msgstr "原因不明"
-
-#~ msgid "Open Calendar"
-#~ msgstr "カレンダーを開く"
-
-#~ msgid "Date & Time Settings"
-#~ msgstr "日時の設定"
-
-#~ msgid "Open"
-#~ msgstr "開く"
-
-#~ msgid "Remove"
-#~ msgstr "削除"
-
-#~ msgid "Clear Messages"
-#~ msgstr "メッセージをクリア"
-
-#~ msgid "Notification Settings"
-#~ msgstr "通知設定"
-
-#~ msgid "Tray Menu"
-#~ msgstr "トレイメニュー"
-
-#~ msgid "No Messages"
-#~ msgstr "メッセージなし"
-
-#~ msgid "Message Tray"
-#~ msgstr "メッセージトレイ"
-
-#~ msgid "Captive Portal"
-#~ msgstr "キャプティブポータル"
-
-#~ msgid "The maximum accuracy level of location."
-#~ msgstr "場所の最大精度レベルです。"
-
-#~ msgid "Arrangement of buttons on the titlebar"
-#~ msgstr "タイトルバーのボタン配置方法"
-
-#~ msgid "This key overrides the key in org.gnome.desktop.wm.preferences when running GNOME Shell."
-#~ msgstr "GNOME Shell 使用時は、 このキーが、org.gnome.desktop.wm.preferences の同じキーよりも優先します。"
-
-#~ msgid "Extension"
-#~ msgstr "拡張機能"
-
-#~ msgid "Select an extension to configure using the combobox above."
-#~ msgstr "設定する拡張機能を上部のコンボボックスから選択してください。"
-
-#~ msgid "calendar:MY"
-#~ msgstr "calendar:YM"
-
-#~ msgid "List of categories that should be displayed as folders"
-#~ msgstr "フォルダー形式で表示するカテゴリ名のリスト"
-
-#~ msgid "Each category name in this list will be represented as folder in the application view, rather than being displayed inline in the main view."
-#~ msgstr "このリストに指定したカテゴリは、アプリケーションビューにおいてフォルダー形式で表示されます。メインビューのカテゴリ列には表示されません。"
-
-#~ msgid "<b>%A</b>, <b>%H:%M</b>"
-#~ msgstr "<b>%A</b> <b>%H:%M</b>"
-
-#~ msgid "<b>%B</b> <b>%d</b>, <b>%H:%M</b>"
-#~ msgstr "<b>%b</b><b>%-e日</b> <b>%H:%M</b>"
-
-#~ msgid "<b>%B</b> <b>%d</b> <b>%Y</b>, <b>%H:%M</b> "
-#~ msgstr "<b>%Y年</b><b>%b</b><b>%-e日</b><b>%H:%M</b>"
-
-#~ msgid "Authorization request from %s"
-#~ msgstr "%s からアクセス許可の要求"
-
-#~ msgid "Device %s wants to pair with this computer"
-#~ msgstr "デバイス %s がこのコンピューターとのペアリングを要求しています"
-
-#~ msgid "Allow"
-#~ msgstr "許可"
-
-#~ msgid "Deny"
-#~ msgstr "拒否"
-
-#~ msgid "Device %s wants access to the service '%s'"
-#~ msgstr "デバイス '%s' が サービス '%s' へのアクセスを要求しています"
-
-#~ msgid "Always grant access"
-#~ msgstr "許可"
-
-#~ msgid "Grant this time only"
-#~ msgstr "今回のみ許可"
-
-#~ msgid "Reject"
-#~ msgstr "拒否"
-
-#~ msgid "Pairing confirmation for %s"
-#~ msgstr "%s からペアリングの確認"
-
-#~ msgid "Please confirm whether the Passkey '%06d' matches the one on the device."
-#~ msgstr "'%06d' がデバイスのパスキーと一致しているか確認してください。"
-
-#~ msgid "Matches"
-#~ msgstr "一致"
-
-#~ msgid "Does not match"
-#~ msgstr "不一致"
-
-#~ msgid "Pairing request for %s"
-#~ msgstr "%s からペアリングの要求"
-
-#~ msgid "Please enter the PIN mentioned on the device."
-#~ msgstr "デバイスの PIN コードを入力してください。"
-
-#~ msgid "OK"
-#~ msgstr "OK"
-
-#~ msgid ""
-#~ "Sorry, no wisdom for you today:\n"
-#~ "%s"
-#~ msgstr ""
-#~ "すまない、今日は賢言がないのだ:\n"
-#~ "%s"
-
-#~ msgid "%s the Oracle says"
-#~ msgstr "預言者 %s 曰く"
-
-#~ msgctxt "event list time"
-#~ msgid "%H\\u2236%M"
-#~ msgstr "%H\\u2236%M"
-
-#~ msgctxt "event list time"
-#~ msgid "%l\\u2236%M\\u2009%p"
-#~ msgstr "%p%l\\u2236%M"
-
-#~ msgid "Settings Menu"
-#~ msgstr "設定メニュー"
-
-#~ msgid "Internally used to store the last IM presence explicitly set by the user. The value here is from the TpConnectionPresenceType enumeration."
-#~ msgstr "ユーザーにより明示的に設定された最新の IM プレゼンスを保存するのに内部的に使用されます。ここは TpConnectionPresenceType 列挙型の値になります。"
-
-#~ msgid "Internally used to store the last session presence status for the user. The value here is from the GsmPresenceStatus enumeration."
-#~ msgstr "ユーザーの最新のセッションプレゼンスの状態を保存するのに内部的に使用されます。ここは GsmPresenceStatus 列挙型の値になります。"
-
-#~ msgid "Session"
-#~ msgstr "セッション"
-
-#~ msgid "Click Log Out to quit these applications and log out of the system."
-#~ msgstr "ログアウトをクリックすると、起動中のアプリケーションを終了しシステムからログアウトします。"
-
-#~ msgid "Logging out of the system."
-#~ msgstr "システムからログアウトします。"
-
-#~ msgid "Click Power Off to quit these applications and power off the system."
-#~ msgstr "電源オフをクリックすると、起動中のアプリケーションを終了しシステムの電源を切ります。"
-
-#~ msgid "Powering off the system."
-#~ msgstr "システムの電源を切ります。"
-
-#~ msgid "Click Restart to quit these applications and restart the system."
-#~ msgstr "再起動をクリックすると、起動中のアプリケーションを終了しシステムを再起動します。"
-
-#~ msgid "Restarting the system."
-#~ msgstr "システムを再起動します。"
-
-#~ msgid "Shutting down might cause them to lose unsaved work."
-#~ msgstr "シャットダウンすると、他のユーザーによる未保存の作業が失われる可能性があります。"
-
-#~ msgid "Screenshots"
-#~ msgstr "スクリーンショット"
-
-#~ msgid "Record a screencast"
-#~ msgstr "スクリーンキャストを撮る"
-
-#~ msgid "Keybinding to toggle the screen recorder"
-#~ msgstr "スクリーンレコーダー切り替えのキーバインド"
-
-#~ msgid "Keybinding to start/stop the builtin screen recorder."
-#~ msgstr "内蔵のスクリーンレコーダーを起動したり止めたりするキーバインドです。"
-
-#~ msgid "Framerate used for recording screencasts."
-#~ msgstr "スクリーンキャスト録画のフレームレート"
-
-#~ msgid "The framerate of the resulting screencast recordered by GNOME Shell's screencast recorder in frames-per-second."
-#~ msgstr "GNOME Shell のスクリーンキャストレコーダーで録画するスクリーンキャストの 1秒あたりのフレーム数です。"
-
-#~ msgid "The gstreamer pipeline used to encode the screencast"
-#~ msgstr "スクリーンキャストのエンコードに使用する Gstreamer パイプライン"
-
-#~ msgid "Sets the GStreamer pipeline used to encode recordings. It follows the syntax used for gst-launch. The pipeline should have an unconnected sink pad where the recorded video is recorded. It will normally have a unconnected source pad; output from that pad will be written into the output file. However the pipeline can also take care of its own output - this might be used to send the output to an icecast server via shout2send or similar. When unset or set to an empty value, the default pipeline will be used. This is currently 'vp8enc min_quantizer=13 max_quantizer=13 cpu-used=5 deadline=1000000 threads=%T ! queue ! webmmux' and records to WEBM using the VP8 codec. %T is used as a placeholder for a guess at the optimal thread count on the system."
-#~ msgstr "録画したものをエンコードするための Gstreamer パイプラインを設定します。構文は gst-launch のものに準拠します。パイプラインは未接続の録画用 sink pad を持つようにしてください。パイプラインは通常未接続の source pad を持ち、ファイルへ出力データを書き込みますが、出力方法については独自に定義することもできます。shout2send プラグインやその類似プラグインを経由して icecast サーバーへ出力データを送信するときは、この方法をとります。値が設定されていないか、空の場合は、既定のパイプライン 'vp8enc min_quantizer=13 max_quantizer=13 cpu-used=5 deadline=1000000 threads=%T ! queue ! webmmux' が使用され、VP8 コーデックを使用した WebM 形式で録画します。 '%T' はシステムの最適スレッド数の推量値を示すプレースホルダーです。"
-
-#~ msgid "File extension used for storing the screencast"
-#~ msgstr "ファイルに保存するスクリーンキャストのファイル拡張子"
-
-#~ msgid "The filename for recorded screencasts will be a unique filename based on the current date, and use this extension. It should be changed when recording to a different container format."
-#~ msgstr "録画したスクリーンキャストをファイルに保存する際は、日付を基にした固有の名前とこの拡張子をファイル名として使用します。異なる形式で録画するときは拡張子を変更する必要があります。"
-
-#~ msgid "Power"
-#~ msgstr "電源"
-
-#~ msgid "Restart"
-#~ msgstr "再起動"
-
-#~ msgid "Screencast from %d %t"
-#~ msgstr "Screencast from %d %t"
-
-#~ msgid "Universal Access Settings"
-#~ msgstr "ユニバーサルアクセスの設定"
-
-#~ msgid "Visibility"
-#~ msgstr "検出可能にする"
-
-#~ msgid "Send Files to Device…"
-#~ msgstr "デバイスにファイルを送る…"
-
-#~ msgid "Set Up a New Device…"
-#~ msgstr "新しいデバイスを設定…"
-
-#~ msgid "Send Files…"
-#~ msgstr "ファイルを送信…"
-
-#~ msgid "Keyboard Settings"
-#~ msgstr "キーボードの設定"
-
-#~ msgid "Mouse Settings"
-#~ msgstr "マウスの設定"
-
-#~ msgid "Sound Settings"
-#~ msgstr "サウンドの設定"
-
-#~ msgid "Region & Language Settings"
-#~ msgstr "地域と言語の設定"
-
-#~ msgid "Volume, network, battery"
-#~ msgstr "音量, ネットワーク, バッテリー"
-
-#~ msgid "Wi-Fi"
-#~ msgstr "Wi-Fi"
-
-#~ msgid "disabled"
-#~ msgstr "利用不可"
-
-#~ msgid "More…"
-#~ msgstr "その他…"
-
-#~ msgid "Wired"
-#~ msgstr "有線接続"
-
-#~ msgid "Networking is disabled"
-#~ msgstr "ネットワークを利用できません"
-
-#~ msgid "%d hour remaining"
-#~ msgid_plural "%d hours remaining"
-#~ msgstr[0] "残り %d時間"
-
-#~ msgid "%d %s %d %s remaining"
-#~ msgstr "残り %d%s %d%s"
-
-#~ msgid "hour"
-#~ msgid_plural "hours"
-#~ msgstr[0] "時間"
-
-#~ msgid "minute"
-#~ msgid_plural "minutes"
-#~ msgstr[0] "分"
-
-#~ msgid "%d minute remaining"
-#~ msgid_plural "%d minutes remaining"
-#~ msgstr[0] "残り %d分"
-
-#~ msgctxt "percent of battery remaining"
-#~ msgid "%d%%"
-#~ msgstr "%d%%"
-
-#~ msgid "AC Adapter"
-#~ msgstr "AC アダプター"
-
-#~ msgid "Laptop Battery"
-#~ msgstr "バッテリー"
-
-#~ msgid "Monitor"
-#~ msgstr "モニター"
-
-#~ msgid "Mouse"
-#~ msgstr "マウス"
-
-#~ msgid "PDA"
-#~ msgstr "PDA"
-
-#~ msgid "Cell Phone"
-#~ msgstr "携帯電話"
-
-#~ msgid "Media Player"
-#~ msgstr "メディアプレイヤー"
-
-#~ msgid "Tablet"
-#~ msgstr "タブレット端末"
-
-#~ msgid "Computer"
-#~ msgstr "コンピューター"
-
-#~ msgctxt "device"
-#~ msgid "Unknown"
-#~ msgstr "不明なデバイス"
-
-#~ msgid "Available"
-#~ msgstr "在席中"
-
-#~ msgid "Busy"
-#~ msgstr "取り込み中"
-
-#~ msgid "Invisible"
-#~ msgstr "非表示"
-
-#~ msgid "Away"
-#~ msgstr "離席中"
-
-#~ msgid "Idle"
-#~ msgstr "待機中"
-
-#~ msgid "Your chat status will be set to busy"
-#~ msgstr "取り込み中に設定されます"
-
-#~ msgid "Notifications are now disabled, including chat messages. Your online status has been adjusted to let others know that you might not see their messages."
-#~ msgstr "チャットなどの通知メッセージが表示されなくなります。オンライン状態が変更され、あなたがメッセージに目を通せない状態にあることを、他の人が知ることができます。"
-
-#~ msgid "Whether to collect stats about applications usage"
-#~ msgstr "アプリケーション使用状況の 有効/無効"
-
-#~ msgid "The shell normally monitors active applications in order to present the most used ones (e.g. in launchers). While this data will be kept private, you may want to disable this for privacy reasons. Please note that doing so won't remove already saved data."
-#~ msgstr "通常、「お気に入り」を把握するためにアプリケーションの使用状況が監視されています。この情報が外部へ送信されることはありませんが、不安を感じるならば監視を無効にすることができます。なおすでに収集された情報は消去できません。"
-
-#~ msgid "cable unplugged"
-#~ msgstr "ケーブル抜け"
-
-#~ msgid "Auto Ethernet"
-#~ msgstr "自動イーサネット接続"
-
-#~ msgid "Auto broadband"
-#~ msgstr "自動ブロードバンド接続"
-
-#~ msgid "Auto dial-up"
-#~ msgstr "自動ダイヤルアップ"
-
-#~ msgid "Auto %s"
-#~ msgstr "自動 %s"
-
-#~ msgid "Auto bluetooth"
-#~ msgstr "自動 Bluetooth 接続"
-
-#~ msgid "Auto wireless"
-#~ msgstr "自動無線接続"
