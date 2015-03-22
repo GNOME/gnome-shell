@@ -322,8 +322,6 @@ AS_IF([test "x$enable_x11" = "xyes"],
                            BACKEND_PC_FILES_PRIVATE="$BACKEND_PC_FILES_PRIVATE pangoft2"
                          ],
                          [])
-
-        AC_DEFINE([HAVE_CLUTTER_GLX], [1], [Have the GLX backend])
       ])
 
 AS_IF([test "x$enable_gdk" = "xyes"],
