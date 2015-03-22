@@ -1490,6 +1490,16 @@ meta_screen_get_monitor_neighbor (MetaScreen         *screen,
   return NULL;
 }
 
+int
+meta_screen_get_monitor_neighbor_index (MetaScreen         *screen,
+                                        int                 which_monitor,
+                                        MetaScreenDirection direction)
+{
+  const MetaMonitorInfo *monitor;
+  monitor = meta_screen_get_monitor_neighbor (screen, which_monitor, direction);
+  return monitor ? monitor->number : -1;
+}
+
 void
 meta_screen_get_natural_monitor_list (MetaScreen *screen,
                                       int**       monitors_list,

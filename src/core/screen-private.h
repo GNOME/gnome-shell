@@ -41,14 +41,6 @@
 typedef void (* MetaScreenWindowFunc) (MetaWindow *window,
                                        gpointer    user_data);
 
-typedef enum
-{
-  META_SCREEN_UP,
-  META_SCREEN_DOWN,
-  META_SCREEN_LEFT,
-  META_SCREEN_RIGHT
-} MetaScreenDirection;
-
 #define META_WIREFRAME_XOR_LINE_WIDTH 2
 
 struct _MetaScreen
