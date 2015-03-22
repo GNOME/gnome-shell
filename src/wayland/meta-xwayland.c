@@ -445,14 +445,14 @@ meta_xwayland_start (MetaXWaylandManager *manager,
     {
       g_warning ("xwayland_client_fd socketpair failed\n");
       unlink (manager->lockfile);
-      return 1;
+      return FALSE;
     }
 
   if (socketpair (AF_UNIX, SOCK_STREAM | SOCK_CLOEXEC, 0, displayfd) < 0)
     {
       g_warning ("displayfd socketpair failed\n");
       unlink (manager->lockfile);
-      return 1;
+      return FALSE;
     }
 
   manager->pid = fork ();
