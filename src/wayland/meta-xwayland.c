@@ -322,11 +322,13 @@ bind_to_unix_socket (int display)
 }
 
 static void
-xserver_died (GPid     pid,
-              gint     status,
-              gpointer user_data)
+xserver_died (GObject      *source,
+              GAsyncResult *result,
+              gpointer      user_data)
 {
-  if (!WIFEXITED (status))
+  GSubprocess *proc = G_SUBPROCESS (source);
+
+  if (!g_subprocess_get_successful (proc))
     g_error ("X Wayland crashed; aborting");
   else
     {
@@ -434,7 +436,10 @@ meta_xwayland_start (MetaXWaylandManager *manager,
 {
   int xwayland_client_fd[2];
   int displayfd[2];
-  int fd;
+  GSubprocessLauncher *launcher;
+  GSubprocessFlags flags;
+  GSubprocess *proc;
+  GError *error = NULL;
 
   if (!choose_xdisplay (manager))
     return FALSE;
@@ -455,54 +460,37 @@ meta_xwayland_start (MetaXWaylandManager *manager,
       return FALSE;
     }
 
-  manager->pid = fork ();
-  if (manager->pid == 0)
+  /* xwayland, please. */
+  flags = G_SUBPROCESS_FLAGS_NONE;
+
+  if (getenv ("XWAYLAND_STFU"))
     {
-      char socket_fd[8], unix_fd[8], abstract_fd[8], displayfd_fd[8];
-
-      /* We passed SOCK_CLOEXEC, so dup the FD so it isn't
-       * closed on exec.. */
-      fd = dup (xwayland_client_fd[1]);
-      snprintf (socket_fd, sizeof (socket_fd), "%d", fd);
-      setenv ("WAYLAND_SOCKET", socket_fd, TRUE);
-
-      fd = dup (manager->abstract_fd);
-      snprintf (abstract_fd, sizeof (abstract_fd), "%d", fd);
-
-      fd = dup (manager->unix_fd);
-      snprintf (unix_fd, sizeof (unix_fd), "%d", fd);
-
-      fd = dup (displayfd[1]);
-      snprintf (displayfd_fd, sizeof (displayfd_fd), "%d", fd);
-
-      /* xwayland, please. */
-      if (getenv ("XWAYLAND_STFU"))
-        {
-          int dev_null;
-          dev_null = open ("/dev/null", O_WRONLY);
-
-          dup2 (dev_null, STDOUT_FILENO);
-          dup2 (dev_null, STDERR_FILENO);
-        }
-
-      if (execl (XWAYLAND_PATH, XWAYLAND_PATH,
-                 manager->display_name,
-                 "-rootless",
-                 "-noreset",
-                 "-listen", abstract_fd,
-                 "-listen", unix_fd,
-                 "-displayfd", displayfd_fd,
-                 NULL) < 0)
-        {
-          g_error ("Failed to spawn XWayland: %m");
-        }
-    }
-  else if (manager->pid == -1)
-    {
-      g_error ("Failed to fork: %m");
+      flags |= G_SUBPROCESS_FLAGS_STDOUT_SILENCE;
+      flags |= G_SUBPROCESS_FLAGS_STDERR_SILENCE;
     }
 
-  g_child_watch_add (manager->pid, xserver_died, NULL);
+  launcher = g_subprocess_launcher_new (flags);
+
+  g_subprocess_launcher_take_fd (launcher, xwayland_client_fd[1], 3);
+  g_subprocess_launcher_take_fd (launcher, manager->abstract_fd, 4);
+  g_subprocess_launcher_take_fd (launcher, manager->unix_fd, 5);
+  g_subprocess_launcher_take_fd (launcher, displayfd[1], 6);
+
+  g_subprocess_launcher_setenv (launcher, "WAYLAND_SOCKET", "3", TRUE);
+  proc = g_subprocess_launcher_spawn (launcher, &error,
+                                      XWAYLAND_PATH, manager->display_name,
+                                      "-rootless", "-noreset",
+                                      "-listen", "4",
+                                      "-listen", "5",
+                                      "-displayfd", "6",
+                                      NULL);
+  if (!proc)
+    {
+      g_error ("Failed to spawn Xwayland: %s", error->message);
+      return FALSE;
+    }
+
+  g_subprocess_wait_async  (proc, NULL, xserver_died, NULL);
   g_unix_fd_add (displayfd[0], G_IO_IN, on_displayfd_ready, manager);
   manager->client = wl_client_create (wl_display, xwayland_client_fd[0]);
 
