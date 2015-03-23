@@ -304,13 +304,19 @@ clutter_master_clock_gdk_remove_stage_clock (ClutterMasterClockGdk *master_clock
   stages = g_hash_table_lookup (master_clock->clock_to_stage, frame_clock);
   if (stages != NULL)
     {
-      stages = g_list_remove (stages, stage);
-      if (stages == NULL)
+      if (stages->next == NULL)
         {
           g_signal_handlers_disconnect_by_func (frame_clock,
                                                 clutter_master_clock_gdk_update,
                                                 master_clock);
           g_hash_table_remove (master_clock->clock_to_stage, frame_clock);
+        }
+      else
+        {
+          stages = g_list_remove (stages, stage);
+          g_hash_table_replace (master_clock->clock_to_stage,
+                                g_object_ref (frame_clock),
+                                stages);
         }
     }
 }
