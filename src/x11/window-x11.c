@@ -1472,6 +1472,13 @@ meta_window_x11_update_icon (MetaWindow       *window,
 }
 
 static void
+meta_window_x11_update_main_monitor (MetaWindow *window)
+{
+  window->monitor = meta_screen_calculate_monitor_for_window (window->screen,
+                                                              window);
+}
+
+static void
 meta_window_x11_main_monitor_changed (MetaWindow *window,
                                       const MetaMonitorInfo *old)
 {
@@ -1495,6 +1502,7 @@ meta_window_x11_class_init (MetaWindowX11Class *klass)
   window_class->update_struts = meta_window_x11_update_struts;
   window_class->get_default_skip_hints = meta_window_x11_get_default_skip_hints;
   window_class->update_icon = meta_window_x11_update_icon;
+  window_class->update_main_monitor = meta_window_x11_update_main_monitor;
   window_class->main_monitor_changed = meta_window_x11_main_monitor_changed;
 }
 

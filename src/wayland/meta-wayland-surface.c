@@ -2137,12 +2137,6 @@ meta_wayland_surface_configure_notify (MetaWaylandSurface *surface,
       wl_array_init (&states);
       fill_states (&states, surface->window);
 
-      /* new_width and new_height comes from window->rect, which is based on
-       * the buffer size, not the surface size. The configure event requires
-       * surface size. */
-      new_width /= surface->scale;
-      new_height /= surface->scale;
-
       xdg_surface_send_configure (surface->xdg_surface, new_width, new_height, &states, serial);
 
       wl_array_release (&states);

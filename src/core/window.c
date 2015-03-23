@@ -3547,8 +3547,7 @@ meta_window_update_monitor (MetaWindow *window,
   const MetaMonitorInfo *old;
 
   old = window->monitor;
-  window->monitor = meta_screen_calculate_monitor_for_window (window->screen,
-                                                              window);
+  META_WINDOW_GET_CLASS (window)->update_main_monitor (window);
   if (old != window->monitor)
     {
       meta_window_on_all_workspaces_changed (window);
@@ -7854,4 +7853,10 @@ meta_window_grab_op_ended (MetaWindow *window,
                            MetaGrabOp  op)
 {
   META_WINDOW_GET_CLASS (window)->grab_op_ended (window, op);
+}
+
+void
+meta_window_emit_size_changed (MetaWindow *window)
+{
+  g_signal_emit (window, window_signals[SIZE_CHANGED], 0);
 }

@@ -482,6 +482,7 @@ struct _MetaWindowClass
   gboolean (*update_icon)        (MetaWindow       *window,
                                   cairo_surface_t **icon,
                                   cairo_surface_t **mini_icon);
+  void (*update_main_monitor)    (MetaWindow *window);
   void (*main_monitor_changed)   (MetaWindow *window,
                                   const MetaMonitorInfo *old);
 };
@@ -694,5 +695,7 @@ void meta_window_grab_op_ended (MetaWindow *window, MetaGrabOp op);
 void meta_window_set_alive (MetaWindow *window, gboolean is_alive);
 
 gboolean meta_window_has_pointer (MetaWindow *window);
+
+void meta_window_emit_size_changed (MetaWindow *window);
 
 #endif
