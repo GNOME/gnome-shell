@@ -1,3 +1,14 @@
+3.16.0
+======
+* wayland: Don't skip notifying about initial maximized state [Jonas; #745303]
+
+Contributors:
+  Jonas Ådahl
+
+Translations:
+  Kjartan Maraas [nb], Jiri Grönroos [fi], Andika Triwidada [id],
+  Inaki Larranaga Murgoitio [eu], Ask H. Larsen [da], Muhammet Kara [tr]
+
 3.15.92
 =======
 * Ensure pointer visibility on monitor changes [Rui, Marek; #745121, #745752]
