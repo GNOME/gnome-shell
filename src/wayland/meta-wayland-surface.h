@@ -190,4 +190,6 @@ void                meta_wayland_surface_drag_dest_drop      (MetaWaylandSurface
 
 void                meta_wayland_surface_update_outputs (MetaWaylandSurface *surface);
 
+MetaWindow *        meta_wayland_surface_get_toplevel_window (MetaWaylandSurface *surface);
+
 #endif

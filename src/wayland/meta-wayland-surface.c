@@ -2229,3 +2229,17 @@ meta_wayland_surface_drag_dest_drop (MetaWaylandSurface *surface)
 
   surface->dnd.funcs->drop (data_device, surface);
 }
+
+MetaWindow *
+meta_wayland_surface_get_toplevel_window (MetaWaylandSurface *surface)
+{
+  while (surface)
+    {
+      if (surface->window)
+        return surface->window;
+
+      surface = surface->sub.parent;
+    }
+
+  return NULL;
+}

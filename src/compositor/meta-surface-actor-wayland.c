@@ -31,6 +31,7 @@
 #include "meta-shaped-texture-private.h"
 
 #include "wayland/meta-wayland-private.h"
+#include "wayland/meta-window-wayland.h"
 
 #include "compositor/region-utils.h"
 
@@ -81,52 +82,22 @@ meta_surface_actor_wayland_is_unredirected (MetaSurfaceActor *actor)
   return FALSE;
 }
 
-static int
-get_output_scale (int winsys_id)
-{
-  MetaMonitorManager *monitor_manager = meta_monitor_manager_get ();
-  MetaOutput *outputs;
-  guint n_outputs, i;
-  int output_scale = 1;
-
-  outputs = meta_monitor_manager_get_outputs (monitor_manager, &n_outputs);
-
-  for (i = 0; i < n_outputs; i++)
-    {
-      if (outputs[i].winsys_id == winsys_id)
-        {
-          output_scale = outputs[i].scale;
-          break;
-        }
-    }
-
-  return output_scale;
-}
-
 double
 meta_surface_actor_wayland_get_scale (MetaSurfaceActorWayland *actor)
 {
    MetaSurfaceActorWaylandPrivate *priv = meta_surface_actor_wayland_get_instance_private (actor);
    MetaWaylandSurface *surface = priv->surface;
-   MetaWindow *window = NULL;
+   MetaWindow *window;
    int output_scale = 1;
 
    if (!surface)
      return 1;
 
-   while (surface)
-    {
-      if (surface->window)
-        {
-          window = surface->window;
-          break;
-        }
-      surface = surface->sub.parent;
-    }
+   window = meta_wayland_surface_get_toplevel_window (surface);
 
    /* XXX: We do not handle x11 clients yet */
    if (window && window->client_type != META_WINDOW_CLIENT_TYPE_X11)
-     output_scale = get_output_scale (window->monitor->winsys_id);
+     output_scale = meta_window_wayland_get_main_monitor_scale (window);
 
    return (double)output_scale / (double)priv->surface->scale;
 }
