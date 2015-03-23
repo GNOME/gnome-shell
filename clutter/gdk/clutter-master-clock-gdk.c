@@ -66,9 +66,13 @@ struct _ClutterMasterClockGdk
   /* the list of timelines handled by the clock */
   GSList *timelines;
 
-  /* mapping between ClutterStages and GdkFrameClocks */
-  GHashTable *clock_to_stage;
+  /* mapping between ClutterStages and GdkFrameClocks.
+   *
+   * @stage_to_clock: a direct mapping because each stage has at most one clock
+   * @clock_to_stage: each clock can have more than one stage
+   */
   GHashTable *stage_to_clock;
+  GHashTable *clock_to_stage;
 
   /* the current state of the clock, in usecs */
   gint64 cur_tick;
@@ -234,39 +238,48 @@ static void
 clutter_master_clock_gdk_update (GdkFrameClock         *frame_clock,
                                  ClutterMasterClockGdk *master_clock)
 {
-  ClutterStage *stage;
-
-  CLUTTER_NOTE (SCHEDULER, "Master clock [tick]");
+  GList *stages, *l;
 
   _clutter_threads_acquire_lock ();
-
-  stage = g_hash_table_lookup (master_clock->clock_to_stage, frame_clock);
 
   /* Get the time to use for this frame */
   master_clock->cur_tick = g_get_monotonic_time ();
 
 #ifdef CLUTTER_ENABLE_DEBUG
+  /* Update the remaining budget */
   master_clock->remaining_budget = master_clock->frame_budget;
 #endif
 
-  /* Each frame is split into three separate phases: */
-
-  /* 1. process all the events; goes through the stage's event queue
-   *    and processes each event according to its type, then emits the
-   *    various signals that are associated with the event
-   */
-  master_clock_process_stage_events (master_clock, stage);
-
-  /* 2. advance the timelines */
-  master_clock_advance_timelines (master_clock);
-
-  /* 3. relayout and redraw the stage; the stage might have been
-   *    destroyed in 1. when processing events, check whether it's
-   *    still alive. */
-  if (g_hash_table_lookup (master_clock->clock_to_stage, frame_clock) != NULL)
+  stages = g_hash_table_lookup (master_clock->clock_to_stage, frame_clock);
+  CLUTTER_NOTE (SCHEDULER, "Updating %d stages tied to frame clock %p",
+                g_list_length (stages), frame_clock);
+  for (l = stages; l != NULL; l = l->next)
     {
-      master_clock_update_stage (master_clock, stage);
-      master_clock_schedule_stage_update (master_clock, stage, frame_clock);
+      ClutterStage *stage = l->data;
+
+      CLUTTER_NOTE (SCHEDULER, "Master clock (stage:%p, clock:%p) [tick]", stage, frame_clock);
+
+      /* Each frame is split into three separate phases: */
+
+      /* 1. process all the events; goes through the stage's event queue
+       *    and processes each event according to its type, then emits the
+       *    various signals that are associated with the event
+       */
+      master_clock_process_stage_events (master_clock, stage);
+
+      /* 2. advance the timelines */
+      master_clock_advance_timelines (master_clock);
+
+      /* 3. relayout and redraw the stage; the stage might have been
+       *    destroyed in 1. when processing events, check whether it's
+       *    still alive.
+       */
+
+      if (g_hash_table_lookup (master_clock->stage_to_clock, stage) != NULL)
+        {
+          master_clock_update_stage (master_clock, stage);
+          master_clock_schedule_stage_update (master_clock, stage, frame_clock);
+        }
     }
 
   master_clock->prev_tick = master_clock->cur_tick;
@@ -279,15 +292,27 @@ clutter_master_clock_gdk_remove_stage_clock (ClutterMasterClockGdk *master_clock
                                              ClutterStage          *stage)
 {
   gpointer frame_clock = g_hash_table_lookup (master_clock->stage_to_clock, stage);
-  if (frame_clock == NULL)
-      return;
+  GList *stages;
 
-  g_signal_handlers_disconnect_by_func (frame_clock,
-                                        clutter_master_clock_gdk_update,
-                                        master_clock);
+  if (frame_clock == NULL)
+    return;
+
+  CLUTTER_NOTE (SCHEDULER, "Removing stage %p with clock %p", stage, frame_clock);
 
   g_hash_table_remove (master_clock->stage_to_clock, stage);
-  g_hash_table_remove (master_clock->clock_to_stage, frame_clock);
+
+  stages = g_hash_table_lookup (master_clock->clock_to_stage, frame_clock);
+  if (stages != NULL)
+    {
+      stages = g_list_remove (stages, stage);
+      if (stages == NULL)
+        {
+          g_signal_handlers_disconnect_by_func (frame_clock,
+                                                clutter_master_clock_gdk_update,
+                                                master_clock);
+          g_hash_table_remove (master_clock->clock_to_stage, frame_clock);
+        }
+    }
 }
 
 static void
@@ -295,14 +320,26 @@ clutter_master_clock_gdk_add_stage_clock (ClutterMasterClockGdk *master_clock,
                                           ClutterStage          *stage,
                                           GdkFrameClock         *frame_clock)
 {
+  GList *stages;
+
   clutter_master_clock_gdk_remove_stage_clock (master_clock, stage);
 
-  g_hash_table_insert (master_clock->stage_to_clock, stage, g_object_ref (frame_clock));
-  g_hash_table_insert (master_clock->clock_to_stage, g_object_ref (frame_clock), stage);
+  CLUTTER_NOTE (SCHEDULER, "Adding stage %p with clock %p", stage, frame_clock);
 
-  g_signal_connect (frame_clock, "update",
-                    G_CALLBACK (clutter_master_clock_gdk_update),
-                    master_clock);
+  g_hash_table_insert (master_clock->stage_to_clock, stage, g_object_ref (frame_clock));
+
+  stages = g_hash_table_lookup (master_clock->clock_to_stage, frame_clock);
+  if (stages == NULL)
+    {
+      g_hash_table_insert (master_clock->clock_to_stage, g_object_ref (frame_clock),
+                           g_list_append (NULL, stage));
+
+      g_signal_connect (frame_clock, "update",
+                        G_CALLBACK (clutter_master_clock_gdk_update),
+                        master_clock);
+    }
+  else
+    stages = g_list_append (stages, stage);
 
   if (master_clock->timelines != NULL)
     _clutter_master_clock_start_running ((ClutterMasterClock *) clock);
@@ -418,7 +455,7 @@ clutter_master_clock_gdk_init (ClutterMasterClockGdk *self)
   const GSList *stages, *l;
 
   self->clock_to_stage = g_hash_table_new_full (g_direct_hash, g_direct_equal,
-                                                g_object_unref, NULL);
+                                                g_object_unref, (GDestroyNotify) g_list_free);
   self->stage_to_clock = g_hash_table_new_full (g_direct_hash, g_direct_equal,
                                                 NULL, g_object_unref);
 
@@ -433,8 +470,7 @@ clutter_master_clock_gdk_init (ClutterMasterClockGdk *self)
     clutter_master_clock_gdk_stage_added (manager, l->data, self);
 
 
-  if (G_UNLIKELY (clutter_paint_debug_flags &
-                  CLUTTER_DEBUG_CONTINUOUS_REDRAW))
+  if (G_UNLIKELY (clutter_paint_debug_flags & CLUTTER_DEBUG_CONTINUOUS_REDRAW))
     g_warning ("Continuous redraw is not supported with the GDK backend.");
 }
 
