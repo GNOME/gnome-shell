@@ -9682,10 +9682,11 @@ clutter_actor_update_constraints (ClutterActor    *self,
     {
       ClutterConstraint *constraint = l->data;
       ClutterActorMeta *meta = l->data;
+      gboolean changed = FALSE;
 
       if (clutter_actor_meta_get_enabled (meta))
         {
-          gboolean changed =
+          changed |=
             clutter_constraint_update_allocation (constraint,
                                                   self,
                                                   allocation);
