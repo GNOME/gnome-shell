@@ -1,3 +1,20 @@
+3.14.4
+======
+* Fix erroneous week numbers in calendar [Florian; #736722]
+* Make slider scrolling smoother [Adel; #742648]
+* Fix current day highlight on day change [Sebastian; #742492]
+* Do not wake up the screen for disabled notifications [Florian; #744114]
+* gdm: Fix user list accessibility [Florian; #729603]
+* Work around background corruption with NVIDIA driver [Rui; #739178]
+* Misc. bug fixes [Florian, Rui, Michele; #744575, #743993, #745245, #745570,
+  #737502]
+
+Contributors:
+  Michele, Adel Gadllah, Sebastian Keller, Rui Matos, Florian Müllner
+
+Translations:
+  Matej Urbančič [sl], Samir Ribic [bs]
+
 3.14.3
 ======
 * Properly remove network connections from list [Ryan; #740227]
