@@ -1,3 +1,30 @@
+Clutter 1.22.0                                                       2015-03-23
+===============================================================================
+
+  • List of changes since Clutter 1.21.8
+
+    - Improve pointer tracking in the evdev input backend
+    Do not use the events after the queue processing, to avoid dropping events
+    due to compression.
+
+    - Fix handling of multiple stages with the GDK backend
+    A regression introduced when the GDK backend implemented its own master
+    clock using GdkFrameClock prevented applications with multiple stages to
+    be updated properly.
+
+    - Updated translations
+    Kazakh, Aragonese, Indonesian, Danish, Turkish.
+
+  • List of bugs fixed since Clutter 1.21.8
+
+    #746575 - cally-actor: Don't assume X11 backend is used when supported
+    #746328 - evdev: Keep track of the pointer coordinate ourself
+
+Many thanks to:
+
+  Muhammet Kara, Andika Triwidada, Ask H. Larsen, Baurzhan Muftakhidinov,
+  Daniel Martinez, Florian Müllner, Jonas Ådahl
+
 Clutter 1.21.8                                                       2015-03-15
 ===============================================================================
 
