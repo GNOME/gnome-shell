@@ -1,3 +1,18 @@
+3.16.0
+======
+* Revert erroneous login dialog changes [Ray; #740142]
+* Improve accessibility of legacy tray [Florian; #746487]
+* Fix legacy status icons leaking into other monitors [Florian; #745824]
+
+Contributors:
+  Florian Müllner, Ray Strode
+
+Translations:
+  Daniel Martinez [an], Sebastian Rasmussen [sv], Fran Dieguez [gl],
+  Andika Triwidada [id], Jordi Mas [ca], Kjartan Maraas [nb],
+  Inaki Larranaga Murgoitio [eu], Muhammet Kara [tr], Khaled Hosny [ar],
+  Bernd Homuth [de], Jiro Matsuzawa [ja]
+
 3.15.92
 =======
 * gdm: Fix user list accessibility [Florian; #729603]
