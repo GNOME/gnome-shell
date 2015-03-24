@@ -52,6 +52,7 @@
 #include <meta/meta-backend.h>
 #include "backends/native/meta-backend-native.h"
 #include "backends/x11/meta-backend-x11.h"
+#include "backends/meta-stage.h"
 #include <clutter/x11/clutter-x11.h>
 
 #ifdef HAVE_RANDR
@@ -1411,6 +1412,8 @@ meta_display_sync_wayland_input_focus (MetaDisplay *display)
 #ifdef HAVE_WAYLAND
   MetaWaylandCompositor *compositor = meta_wayland_compositor_get_default ();
   MetaWindow *focus_window = NULL;
+  MetaBackend *backend = meta_get_backend ();
+  MetaStage *stage = META_STAGE (meta_backend_get_stage (backend));
 
   if (!meta_display_windows_are_interactable (display))
     focus_window = NULL;
@@ -1421,6 +1424,7 @@ meta_display_sync_wayland_input_focus (MetaDisplay *display)
   else
     meta_topic (META_DEBUG_FOCUS, "Focus change has no effect, because there is no matching wayland surface");
 
+  meta_stage_set_active (stage, focus_window == NULL);
   meta_wayland_compositor_set_input_focus (compositor, focus_window);
 
   meta_wayland_seat_repick (compositor->seat);

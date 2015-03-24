@@ -54,6 +54,9 @@ ClutterActor     *meta_stage_new                     (void);
 void meta_stage_set_cursor (MetaStage     *stage,
                             CoglTexture   *texture,
                             MetaRectangle *rect);
+
+void meta_stage_set_active (MetaStage *stage,
+                            gboolean   is_active);
 G_END_DECLS
 
 #endif /* META_STAGE_H */
