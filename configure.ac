@@ -90,6 +90,7 @@ MUTTER_PC_MODULES="
    xkeyboard-config
    xkbcommon >= 0.4.3
    xkbcommon-x11
+   xrender
    x11-xcb
    xcb-randr
 "
