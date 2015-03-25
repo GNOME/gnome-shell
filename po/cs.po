@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: mutter\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-01-06 22:57+0000\n"
+"POT-Creation-Date: 2015-03-24 23:25+0000\n"
 "PO-Revision-Date: 2014-09-22 15:01+0200\n"
 "Last-Translator: Petr Kovar <pknbe@volny.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
@@ -437,22 +437,42 @@ msgstr "Přepnout na VT 6"
 msgid "Switch to VT 7"
 msgstr "Přepnout na VT 7"
 
-#: ../src/backends/meta-monitor-manager.c:351
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:8
+msgid "Switch to VT 8"
+msgstr "Přepnout na VT 8"
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:9
+msgid "Switch to VT 9"
+msgstr "Přepnout na VT 9"
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:10
+msgid "Switch to VT 10"
+msgstr "Přepnout na VT 10"
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:11
+msgid "Switch to VT 11"
+msgstr "Přepnout na VT 11"
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:12
+msgid "Switch to VT 12"
+msgstr "Přepnout na VT 12"
+
+#: ../src/backends/meta-monitor-manager.c:364
 msgid "Built-in display"
 msgstr "Vestavěný displej"
 
-#: ../src/backends/meta-monitor-manager.c:378
+#: ../src/backends/meta-monitor-manager.c:391
 msgid "Unknown"
 msgstr "Neznámý"
 
-#: ../src/backends/meta-monitor-manager.c:380
+#: ../src/backends/meta-monitor-manager.c:393
 msgid "Unknown Display"
 msgstr "Neznámý displej"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: ../src/backends/meta-monitor-manager.c:388
+#: ../src/backends/meta-monitor-manager.c:401
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
@@ -495,7 +515,7 @@ msgstr "_Počkat"
 msgid "_Force Quit"
 msgstr "_Vynutit ukončení"
 
-#: ../src/core/display.c:561
+#: ../src/core/display.c:562
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Nelze otevřít displej X Window System „%s“\n"
@@ -556,7 +576,7 @@ msgstr "Vypíše verzi"
 msgid "Mutter plugin to use"
 msgstr "Zásuvný modul Mutter, který se má použít"
 
-#: ../src/core/prefs.c:2015
+#: ../src/core/prefs.c:2004
 #, c-format
 msgid "Workspace %d"
 msgstr "Plocha %d"
@@ -587,7 +607,7 @@ msgstr ""
 "Tato okna nepodporují &quot;ukládání aktuálního nastavení&quot; a po vašem "
 "příštím přihlášení je budete muset spustit ručně."
 
-#: ../src/x11/window-props.c:558
+#: ../src/x11/window-props.c:549
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (na %s)"
