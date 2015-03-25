@@ -1401,11 +1401,8 @@ xdg_shell_get_xdg_popup (struct wl_client *client,
                                     &surface->popup.parent_destroy_listener);
 
   window = meta_window_wayland_new (display, surface);
-  meta_window_move_frame (window, FALSE,
-                          parent_surf->window->buffer_rect.x + x,
-                          parent_surf->window->buffer_rect.y + y);
+  meta_window_wayland_place_relative_to (window, parent_surf->window, x, y);
   window->showing_for_first_time = FALSE;
-  window->placed = TRUE;
 
   meta_wayland_surface_set_window (surface, window);
 
@@ -1569,10 +1566,9 @@ wl_shell_surface_set_transient (struct wl_client *client,
   wl_shell_surface_set_state (surface, SURFACE_STATE_TOPLEVEL);
 
   meta_window_set_transient_for (surface->window, parent_surf->window);
-  meta_window_move_frame (surface->window, FALSE,
-                          parent_surf->window->rect.x + x,
-                          parent_surf->window->rect.y + y);
-  surface->window->placed = TRUE;
+  meta_window_wayland_place_relative_to (surface->window,
+                                         parent_surf->window,
+                                         x, y);
 }
 
 static void
@@ -1621,10 +1617,9 @@ wl_shell_surface_set_popup (struct wl_client *client,
     }
 
   meta_window_set_transient_for (surface->window, parent_surf->window);
-  meta_window_move_frame (surface->window, FALSE,
-                          parent_surf->window->rect.x + x,
-                          parent_surf->window->rect.y + y);
-  surface->window->placed = TRUE;
+  meta_window_wayland_place_relative_to (surface->window,
+                                         parent_surf->window,
+                                         x, y);
 
   if (!surface->popup.parent)
     {

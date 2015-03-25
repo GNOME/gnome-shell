@@ -595,3 +595,24 @@ meta_window_wayland_move_resize (MetaWindow        *window,
   gravity = meta_resize_gravity_from_grab_op (window->display->grab_op);
   meta_window_move_resize_internal (window, flags, gravity, rect);
 }
+
+void
+meta_window_wayland_place_relative_to (MetaWindow *window,
+                                       MetaWindow *other,
+                                       int         x,
+                                       int         y)
+{
+  int monitor_scale;
+
+  /* If there is no monitor, we can't position the window reliably. */
+  if (!other->monitor)
+    return;
+
+  /* Scale the relative coordinate (x, y) from logical pixels to physical
+   * pixels. */
+  monitor_scale = other->monitor->scale;
+  meta_window_move_frame (window, FALSE,
+                          other->buffer_rect.x + (x * monitor_scale),
+                          other->buffer_rect.y + (y * monitor_scale));
+  window->placed = TRUE;
+}

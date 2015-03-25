@@ -52,4 +52,9 @@ void meta_window_wayland_move_resize (MetaWindow        *window,
                                       int                dy);
 int meta_window_wayland_get_main_monitor_scale (MetaWindow *window);
 
+void meta_window_wayland_place_relative_to (MetaWindow *window,
+                                            MetaWindow *other,
+                                            int         x,
+                                            int         y);
+
 #endif
