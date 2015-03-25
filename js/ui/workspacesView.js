@@ -418,7 +418,7 @@ const WorkspacesDisplay = new Lang.Class({
         this.actor.connect('notify::allocation', Lang.bind(this, this._updateWorkspacesActualGeometry));
         this.actor.connect('parent-set', Lang.bind(this, this._parentSet));
 
-        let clickAction = new Clutter.ClickAction()
+        let clickAction = new Clutter.ClickAction();
         clickAction.connect('clicked', Lang.bind(this, function(action) {
             // Only switch to the workspace when there's no application
             // windows open. The problem is that it's too easy to miss
