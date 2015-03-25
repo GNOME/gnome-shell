@@ -1626,6 +1626,16 @@ const WindowManager = new Lang.Class({
         let newWs;
         let direction;
 
+        if (action == 'move') {
+            // "Moving" a window to another workspace doesn't make sense when
+            // it cannot be unstuck, and is potentially confusing if a new
+            // workspaces is added at the start/end
+            if (window.is_always_on_all_workspaces() ||
+                (Meta.prefs_get_workspaces_only_on_primary() &&
+                 window.get_monitor() != Main.layoutManager.primaryIndex))
+              return;
+        }
+
         if (target == 'last') {
             direction = Meta.MotionDirection.DOWN;
             newWs = screen.get_workspace_by_index(screen.n_workspaces - 1);
