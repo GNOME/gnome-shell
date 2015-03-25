@@ -188,32 +188,35 @@ calculate_surface_window_geometry (MetaWaylandSurface *surface,
                                    float               parent_x,
                                    float               parent_y)
 {
-  ClutterActor *surface_actor = CLUTTER_ACTOR (surface->surface_actor);
+  MetaSurfaceActorWayland *surface_actor =
+    META_SURFACE_ACTOR_WAYLAND (surface->surface_actor);
+  MetaRectangle subsurface_rect;
   MetaRectangle geom;
-  float x, y;
   GList *l;
 
   /* Unmapped surfaces don't count. */
-  if (!CLUTTER_ACTOR_IS_VISIBLE (surface_actor))
+  if (!CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR (surface_actor)))
     return;
 
   if (!surface->buffer)
     return;
 
-  /* XXX: Is there a better way to do this using Clutter APIs? */
-  clutter_actor_get_position (surface_actor, &x, &y);
+  meta_surface_actor_wayland_get_subsurface_rect (surface_actor,
+                                                  &subsurface_rect);
 
-  geom.x = parent_x + x;
-  geom.y = parent_x + y;
-  geom.width = cogl_texture_get_width (surface->buffer->texture);
-  geom.height = cogl_texture_get_height (surface->buffer->texture);
+  geom.x = parent_x + subsurface_rect.x;
+  geom.y = parent_x + subsurface_rect.y;
+  geom.width = subsurface_rect.width;
+  geom.height = subsurface_rect.height;
 
   meta_rectangle_union (total_geometry, &geom, total_geometry);
 
   for (l = surface->subsurfaces; l != NULL; l = l->next)
     {
       MetaWaylandSurface *subsurface = l->data;
-      calculate_surface_window_geometry (subsurface, total_geometry, x, y);
+      calculate_surface_window_geometry (subsurface, total_geometry,
+                                         subsurface_rect.x,
+                                         subsurface_rect.y);
     }
 }
 

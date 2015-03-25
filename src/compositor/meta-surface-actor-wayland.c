@@ -30,6 +30,7 @@
 #include <cogl/cogl-wayland-server.h>
 #include "meta-shaped-texture-private.h"
 
+#include "wayland/meta-wayland-buffer.h"
 #include "wayland/meta-wayland-private.h"
 #include "wayland/meta-window-wayland.h"
 
@@ -117,6 +118,30 @@ logical_to_actor_position (MetaSurfaceActorWayland *self,
 
   *x = *x * monitor_scale;
   *y = *y * monitor_scale;
+}
+
+/* Convert the current actor state to the corresponding subsurface rectangle
+ * in logical pixel coordinate space. */
+void
+meta_surface_actor_wayland_get_subsurface_rect (MetaSurfaceActorWayland *self,
+                                                MetaRectangle           *rect)
+{
+  MetaWaylandSurface *surface = meta_surface_actor_wayland_get_surface (self);
+  CoglTexture *texture = surface->buffer->texture;
+  MetaWindow *toplevel_window;
+  int monitor_scale;
+  float x, y;
+
+  toplevel_window = meta_wayland_surface_get_toplevel_window (surface);
+  monitor_scale = meta_window_wayland_get_main_monitor_scale (toplevel_window);
+
+  clutter_actor_get_position (CLUTTER_ACTOR (self), &x, &y);
+  *rect = (MetaRectangle) {
+    .x = x / monitor_scale,
+    .y = y / monitor_scale,
+    .width = cogl_texture_get_width (texture) / surface->scale,
+    .height = cogl_texture_get_height (texture) / surface->scale,
+  };
 }
 
 void
