@@ -464,6 +464,7 @@ const WorkspacesDisplay = new Lang.Class({
 
         this._notifyOpacityId = 0;
         this._scrollEventId = 0;
+        this._keyPressEventId = 0;
 
         this._fullGeometry = null;
     },
@@ -495,6 +496,9 @@ const WorkspacesDisplay = new Lang.Class({
                                   Lang.bind(this, this._onRestacked));
         if (this._scrollEventId == 0)
             this._scrollEventId = Main.overview.connect('scroll-event', Lang.bind(this, this._onScrollEvent));
+
+        if (this._keyPressEventId == 0)
+            this._keyPressEventId = global.stage.connect('key-press-event', Lang.bind(this, this._onKeyPressEvent));
     },
 
     animateFromOverview: function(fadeOnPrimary) {
@@ -517,7 +521,10 @@ const WorkspacesDisplay = new Lang.Class({
             Main.overview.disconnect(this._scrollEventId);
             this._scrollEventId = 0;
         }
-
+        if (this._keyPressEventId > 0) {
+            global.stage.disconnect(this._keyPressEventId);
+            this._keyPressEventId = 0;
+        }
         for (let i = 0; i < this._workspacesViews.length; i++)
             this._workspacesViews[i].destroy();
         this._workspacesViews = [];
@@ -663,6 +670,25 @@ const WorkspacesDisplay = new Lang.Class({
             ws = activeWs.get_neighbor(Meta.MotionDirection.UP);
             break;
         case Clutter.ScrollDirection.DOWN:
+            ws = activeWs.get_neighbor(Meta.MotionDirection.DOWN);
+            break;
+        default:
+            return Clutter.EVENT_PROPAGATE;
+        }
+        Main.wm.actionMoveWorkspace(ws);
+        return Clutter.EVENT_STOP;
+    },
+
+    _onKeyPressEvent: function(actor, event) {
+        if (!this.actor.mapped)
+            return Clutter.EVENT_PROPAGATE;
+        let activeWs = global.screen.get_active_workspace();
+        let ws;
+        switch (event.get_key_symbol()) {
+        case Clutter.KEY_Page_Up:
+            ws = activeWs.get_neighbor(Meta.MotionDirection.UP);
+            break;
+        case Clutter.KEY_Page_Down:
             ws = activeWs.get_neighbor(Meta.MotionDirection.DOWN);
             break;
         default:
