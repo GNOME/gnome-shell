@@ -1672,25 +1672,13 @@ do_margin_property_term (StThemeNode *node,
     return;
 
   if (left)
-    {
-      node->margin[ST_SIDE_LEFT] = value;
-      node->margin_set |= 1 << ST_SIDE_LEFT;
-    }
+    node->margin[ST_SIDE_LEFT] = value;
   if (right)
-    {
-      node->margin[ST_SIDE_RIGHT] = value;
-      node->margin_set |= 1 << ST_SIDE_RIGHT;
-    }
+    node->margin[ST_SIDE_RIGHT] = value;
   if (top)
-    {
-      node->margin[ST_SIDE_TOP] = value;
-      node->margin_set |= 1 << ST_SIDE_TOP;
-    }
+    node->margin[ST_SIDE_TOP] = value;
   if (bottom)
-    {
-      node->margin[ST_SIDE_BOTTOM] = value;
-      node->margin_set |= 1 << ST_SIDE_BOTTOM;
-    }
+    node->margin[ST_SIDE_BOTTOM] = value;
 }
 
 static void
@@ -3188,18 +3176,10 @@ _st_theme_node_apply_margins (StThemeNode *node,
 
   _st_theme_node_ensure_geometry (node);
 
-  // In the case that a CSS margin is not specified, we don't to set a value
-  // of 0 to the clutter actor margin. In this manner it allows to use Clutter
-  // margin values set in the code. However, the margins that are set both in
-  // the code and in the CSS on the same side, the result is unpredictable.
-  if (node->margin_set & 1 << ST_SIDE_LEFT)
-     clutter_actor_set_margin_left (actor, st_theme_node_get_margin(node, ST_SIDE_LEFT));
-  if (node->margin_set & 1 << ST_SIDE_RIGHT)
-     clutter_actor_set_margin_right (actor, st_theme_node_get_margin(node, ST_SIDE_RIGHT));
-  if (node->margin_set & 1 << ST_SIDE_TOP)
-     clutter_actor_set_margin_top (actor, st_theme_node_get_margin(node, ST_SIDE_TOP));
-  if (node->margin_set & 1 << ST_SIDE_BOTTOM)
-     clutter_actor_set_margin_bottom (actor, st_theme_node_get_margin(node, ST_SIDE_BOTTOM));
+  clutter_actor_set_margin_left (actor, st_theme_node_get_margin(node, ST_SIDE_LEFT));
+  clutter_actor_set_margin_right (actor, st_theme_node_get_margin(node, ST_SIDE_RIGHT));
+  clutter_actor_set_margin_top (actor, st_theme_node_get_margin(node, ST_SIDE_TOP));
+  clutter_actor_set_margin_bottom (actor, st_theme_node_get_margin(node, ST_SIDE_BOTTOM));
 }
 
 static GetFromTermResult

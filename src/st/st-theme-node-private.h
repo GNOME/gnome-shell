@@ -92,8 +92,6 @@ struct _StThemeNode {
   guint background_position_set : 1;
   guint background_repeat : 1;
 
-  gboolean margin_set : 4;
-
   guint properties_computed : 1;
   guint geometry_computed : 1;
   guint background_computed : 1;
