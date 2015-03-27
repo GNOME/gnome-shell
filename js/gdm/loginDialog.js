@@ -506,7 +506,7 @@ const LoginDialog = new Lang.Class({
         let [minWidth, minHeight, natWidth, natHeight] = this._bannerView.get_preferred_size();
         let centerX = dialogBox.x1 + (dialogBox.x2 - dialogBox.x1) / 2;
 
-        actorBox.x1 = centerX - natWidth / 2;
+        actorBox.x1 = Math.floor(centerX - natWidth / 2);
         actorBox.y1 = dialogBox.y1 + Main.layoutManager.panelBox.height;
         actorBox.x2 = actorBox.x1 + natWidth;
         actorBox.y2 = actorBox.y1 + natHeight;
@@ -520,7 +520,7 @@ const LoginDialog = new Lang.Class({
         let [minWidth, minHeight, natWidth, natHeight] = this._logoBin.get_preferred_size();
         let centerX = dialogBox.x1 + (dialogBox.x2 - dialogBox.x1) / 2;
 
-        actorBox.x1 = centerX - natWidth / 2;
+        actorBox.x1 = Math.floor(centerX - natWidth / 2);
         actorBox.y1 = dialogBox.y2 - natHeight;
         actorBox.x2 = actorBox.x1 + natWidth;
         actorBox.y2 = actorBox.y1 + natHeight;
@@ -535,8 +535,8 @@ const LoginDialog = new Lang.Class({
         let centerX = dialogBox.x1 + (dialogBox.x2 - dialogBox.x1) / 2;
         let centerY = dialogBox.y1 + (dialogBox.y2 - dialogBox.y1) / 2;
 
-        actorBox.x1 = centerX - natWidth / 2;
-        actorBox.y1 = centerY - natHeight / 2;
+        actorBox.x1 = Math.floor(centerX - natWidth / 2);
+        actorBox.y1 = Math.floor(centerY - natHeight / 2);
         actorBox.x2 = actorBox.x1 + natWidth;
         actorBox.y2 = actorBox.y1 + natHeight;
 
@@ -591,7 +591,7 @@ const LoginDialog = new Lang.Class({
                  let leftOverTopSpace = leftOverYSpace / 2;
 
                  // Then, shift the banner into the middle of that extra space
-                 let yShift = leftOverTopSpace / 2;
+                 let yShift = Math.floor(leftOverTopSpace / 2);
 
                  bannerAllocation.y1 += yShift;
                  bannerAllocation.y2 += yShift;
@@ -617,8 +617,8 @@ const LoginDialog = new Lang.Class({
                      let centerGap = wideSpacing / 8;
 
                      // place the banner along the left edge of the center margin
-                     bannerAllocation.x2 = centerX - centerGap / 2;
-                     bannerAllocation.x1 = bannerAllocation.x2 - wideBannerWidth;
+                     bannerAllocation.x2 = Math.floor(centerX - centerGap / 2);
+                     bannerAllocation.x1 = Math.floor(bannerAllocation.x2 - wideBannerWidth);
 
                      // figure out how tall it would like to be and try to accomodate
                      // but don't let it get too close to the logo
@@ -626,11 +626,11 @@ const LoginDialog = new Lang.Class({
 
                      let maxWideHeight = dialogHeight - 3 * logoHeight;
                      wideBannerHeight = Math.min(maxWideHeight, wideBannerHeight);
-                     bannerAllocation.y1 = centerY - wideBannerHeight / 2;
+                     bannerAllocation.y1 = Math.floor(centerY - wideBannerHeight / 2);
                      bannerAllocation.y2 = bannerAllocation.y1 + wideBannerHeight;
 
                      // place the auth prompt along the right edge of the center margin
-                     authPromptAllocation.x1 = centerX + centerGap / 2;
+                     authPromptAllocation.x1 = Math.floor(centerX + centerGap / 2);
                      authPromptAllocation.x2 = authPromptAllocation.x1 + authPromptWidth;
                  } else {
                      // If we aren't going to do a wide view, then we need to limit
@@ -640,7 +640,7 @@ const LoginDialog = new Lang.Class({
                      leftOverYSpace += bannerHeight;
 
                      // Then figure out how much of that space is up top
-                     let availableTopSpace = leftOverYSpace / 2;
+                     let availableTopSpace = Math.floor(leftOverYSpace / 2);
 
                      // Then give all of that space to the banner
                      bannerAllocation.y2 = bannerAllocation.y1 + availableTopSpace;
@@ -651,7 +651,7 @@ const LoginDialog = new Lang.Class({
             let leftOverYSpace = dialogHeight - userSelectionHeight - logoHeight;
 
             if (leftOverYSpace > 0) {
-                let topExpansion = leftOverYSpace / 2;
+                let topExpansion = Math.floor(leftOverYSpace / 2);
                 let bottomExpansion = topExpansion;
 
                 userSelectionAllocation.y1 -= topExpansion;
