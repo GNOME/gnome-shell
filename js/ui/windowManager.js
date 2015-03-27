@@ -197,8 +197,6 @@ const WorkspaceTracker = new Lang.Class({
         this._workspaces = [];
         this._checkWorkspacesId = 0;
 
-        this._pauseWorkspaceCheck = false;
-
         let tracker = Shell.WindowTracker.get_default();
         tracker.connect('startup-sequence-changed', Lang.bind(this, this._queueCheckWorkspaces));
 
@@ -222,14 +220,6 @@ const WorkspaceTracker = new Lang.Class({
         return new Gio.Settings({ schema_id: 'org.gnome.mutter' });
     },
 
-    blockUpdates: function() {
-        this._pauseWorkspaceCheck = true;
-    },
-
-    unblockUpdates: function() {
-        this._pauseWorkspaceCheck = false;
-    },
-
     _checkWorkspaces: function() {
         let i;
         let emptyWorkspaces = [];
@@ -238,10 +228,6 @@ const WorkspaceTracker = new Lang.Class({
             this._checkWorkspacesId = 0;
             return false;
         }
-
-        // Update workspaces only if Dynamic Workspace Management has not been paused by some other function
-        if (this._pauseWorkspaceCheck)
-            return true;
 
         for (i = 0; i < this._workspaces.length; i++) {
             let lastRemoved = this._workspaces[i]._lastRemovedWindow;
@@ -641,8 +627,6 @@ const WindowManager = new Lang.Class({
 
         this._allowedKeybindings = {};
 
-        this._isWorkspacePrepended = false;
-
         this._switchData = null;
         this._shellwm.connect('kill-switch-workspace', Lang.bind(this, this._switchWorkspaceDone));
         this._shellwm.connect('kill-window-effects', Lang.bind(this, function (shellwm, actor) {
@@ -930,8 +914,6 @@ const WindowManager = new Lang.Class({
     insertWorkspace: function(pos) {
         if (!Meta.prefs_get_dynamic_workspaces())
             return;
-
-        global.screen.append_new_workspace(false, global.get_current_time());
 
         let windows = global.get_window_actors().map(function(winActor) {
             return winActor.meta_window;
@@ -1660,10 +1642,8 @@ const WindowManager = new Lang.Class({
         } else if (isNaN(target)) {
             // Prepend a new workspace dynamically
             if (screen.get_active_workspace_index() == 0 &&
-                action == 'move' && target == 'up' && this._isWorkspacePrepended == false) {
+                action == 'move' && target == 'up')
                 this.insertWorkspace(0);
-                this._isWorkspacePrepended = true;
-            }
 
             direction = Meta.MotionDirection[target.toUpperCase()];
             newWs = screen.get_active_workspace().get_neighbor(direction);
@@ -1688,12 +1668,9 @@ const WindowManager = new Lang.Class({
 
         if (!Main.overview.visible) {
             if (this._workspaceSwitcherPopup == null) {
-                this._workspaceTracker.blockUpdates();
                 this._workspaceSwitcherPopup = new WorkspaceSwitcherPopup.WorkspaceSwitcherPopup();
                 this._workspaceSwitcherPopup.connect('destroy', Lang.bind(this, function() {
-                    this._workspaceTracker.unblockUpdates();
                     this._workspaceSwitcherPopup = null;
-                    this._isWorkspacePrepended = false;
                 }));
             }
             this._workspaceSwitcherPopup.display(direction, newWs.index());
