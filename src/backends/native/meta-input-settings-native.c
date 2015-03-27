@@ -169,10 +169,10 @@ meta_input_settings_native_set_scroll_method (MetaInputSettings            *sett
       scroll_method = LIBINPUT_CONFIG_SCROLL_NO_SCROLL;
       break;
     case G_DESKTOP_TOUCHPAD_SCROLL_METHOD_EDGE_SCROLLING:
-      scroll_method = LIBINPUT_CONFIG_SCROLL_2FG;
+      scroll_method = LIBINPUT_CONFIG_SCROLL_EDGE;
       break;
     case G_DESKTOP_TOUCHPAD_SCROLL_METHOD_TWO_FINGER_SCROLLING:
-      scroll_method = LIBINPUT_CONFIG_SCROLL_EDGE;
+      scroll_method = LIBINPUT_CONFIG_SCROLL_2FG;
       break;
     default:
       g_assert_not_reached ();
