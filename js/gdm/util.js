@@ -35,8 +35,8 @@ const ALLOWED_FAILURES_KEY = 'allowed-failures';
 const LOGO_KEY = 'logo';
 const DISABLE_USER_LIST_KEY = 'disable-user-list';
 
-// Give user 48ms to read each character of a PAM message
-const USER_READ_TIME = 48
+// Give user 16ms to read each character of a PAM message
+const USER_READ_TIME = 16
 
 const MessageType = {
     NONE: 0,
