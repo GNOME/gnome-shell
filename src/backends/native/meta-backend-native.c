@@ -84,31 +84,6 @@ constrain_to_barriers (ClutterInputDevice *device,
  *
  */
 
-static gboolean
-check_all_screen_monitors(MetaMonitorInfo *monitors,
-			  unsigned         n_monitors,
-			  float            x,
-			  float            y)
-{
-  unsigned int i;
-
-  for (i = 0; i < n_monitors; i++)
-    {
-      MetaMonitorInfo *monitor = &monitors[i];
-      int left, right, top, bottom;
-
-      left = monitor->rect.x;
-      right = left + monitor->rect.width;
-      top = monitor->rect.y;
-      bottom = top + monitor->rect.height;
-
-      if ((x >= left) && (x < right) && (y >= top) && (y < bottom))
-	return TRUE;
-    }
-
-  return FALSE;
-}
-
 static void
 constrain_all_screen_monitors (ClutterInputDevice *device,
 			       MetaMonitorInfo    *monitors,
@@ -162,7 +137,6 @@ pointer_constrain_callback (ClutterInputDevice *device,
   MetaMonitorManager *monitor_manager;
   MetaMonitorInfo *monitors;
   unsigned int n_monitors;
-  gboolean ret;
 
   /* Constrain to barriers */
   constrain_to_barriers (device, time, new_x, new_y);
@@ -171,8 +145,7 @@ pointer_constrain_callback (ClutterInputDevice *device,
   monitors = meta_monitor_manager_get_monitor_infos (monitor_manager, &n_monitors);
 
   /* if we're moving inside a monitor, we're fine */
-  ret = check_all_screen_monitors(monitors, n_monitors, *new_x, *new_y);
-  if (ret == TRUE)
+  if (meta_monitor_manager_get_monitor_at_point (monitor_manager, *new_x, *new_y) >= 0)
     return;
 
   /* if we're trying to escape, clamp to the CRTC we're coming from */
@@ -195,7 +168,7 @@ on_monitors_changed (MetaMonitorManager *monitor_manager,
   monitors = meta_monitor_manager_get_monitor_infos (monitor_manager, &n_monitors);
 
   /* if we're inside a monitor, we're fine */
-  if (check_all_screen_monitors (monitors, n_monitors, point.x, point.y))
+  if (meta_monitor_manager_get_monitor_at_point (monitor_manager, point.x, point.y) >= 0)
     return;
 
   /* warp the pointer to the primary monitor so it isn't lost */

@@ -1368,3 +1368,27 @@ meta_monitor_manager_get_monitor_for_output (MetaMonitorManager *manager,
 
   return -1;
 }
+
+gint
+meta_monitor_manager_get_monitor_at_point (MetaMonitorManager *manager,
+                                           gfloat              x,
+                                           gfloat              y)
+{
+  unsigned int i;
+
+  for (i = 0; i < manager->n_monitor_infos; i++)
+    {
+      MetaMonitorInfo *monitor = &manager->monitor_infos[i];
+      int left, right, top, bottom;
+
+      left = monitor->rect.x;
+      right = left + monitor->rect.width;
+      top = monitor->rect.y;
+      bottom = top + monitor->rect.height;
+
+      if ((x >= left) && (x < right) && (y >= top) && (y < bottom))
+	return i;
+    }
+
+  return -1;
+}

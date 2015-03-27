@@ -370,6 +370,10 @@ gboolean           meta_monitor_manager_get_monitor_matrix (MetaMonitorManager *
                                                             MetaOutput         *output,
                                                             gfloat              matrix[6]);
 
+gint               meta_monitor_manager_get_monitor_at_point (MetaMonitorManager *manager,
+                                                              gfloat              x,
+                                                              gfloat              y);
+
 /* Returns true if transform causes width and height to be inverted
    This is true for the odd transforms in the enum */
 static inline gboolean
