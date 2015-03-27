@@ -93,11 +93,36 @@ meta_backend_sync_screen_size (MetaBackend *backend)
 }
 
 static void
+center_pointer (MetaBackend *backend)
+{
+  MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
+  MetaMonitorInfo *monitors, *primary;
+  guint n_monitors;
+
+  monitors = meta_monitor_manager_get_monitor_infos (priv->monitor_manager, &n_monitors);
+  primary = &monitors[meta_monitor_manager_get_primary_index (priv->monitor_manager)];
+  meta_backend_warp_pointer (backend,
+                             primary->rect.x + primary->rect.width / 2,
+                             primary->rect.y + primary->rect.height / 2);
+}
+
+static void
 on_monitors_changed (MetaMonitorManager *monitors,
                      gpointer user_data)
 {
   MetaBackend *backend = META_BACKEND (user_data);
+  ClutterDeviceManager *manager = clutter_device_manager_get_default ();
+  ClutterInputDevice *device = clutter_device_manager_get_core_device (manager, CLUTTER_POINTER_DEVICE);
+  ClutterPoint point;
+
   meta_backend_sync_screen_size (backend);
+
+  if (clutter_input_device_get_coords (device, NULL, &point))
+    {
+      /* If we're outside all monitors, warp the pointer back inside */
+      if (meta_monitor_manager_get_monitor_at_point (monitors, point.x, point.y) < 0)
+        center_pointer (backend);
+    }
 }
 
 static MetaIdleMonitor *
@@ -283,6 +308,8 @@ meta_backend_real_post_init (MetaBackend *backend)
   }
 
   priv->input_settings = meta_input_settings_create ();
+
+  center_pointer (backend);
 }
 
 static MetaCursorRenderer *
