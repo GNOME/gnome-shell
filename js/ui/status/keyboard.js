@@ -295,11 +295,11 @@ const InputSourceManager = new Lang.Class({
         this._ibusSources = {};
 
         this._currentSource = null;
-        this._backupSource = null;
 
         // All valid input sources currently in the gsettings
         // KEY_INPUT_SOURCES list ordered by most recently used
         this._mruSources = [];
+        this._mruSourcesBackup = null;
         this._keybindingAction =
             Main.wm.addKeybinding('switch-input-source',
                                   new Gio.Settings({ schema_id: "org.gnome.desktop.wm.keybindings" }),
@@ -516,6 +516,11 @@ const InputSourceManager = new Lang.Class({
 
         this._keyboardManager.setUserLayouts(sourcesList.map(function(x) { return x.xkbId; }));
 
+        if (!this._disableIBus && this._mruSourcesBackup) {
+            this._mruSources = this._mruSourcesBackup;
+            this._mruSourcesBackup = null;
+        }
+
         let mruSources = [];
         for (let i = 0; i < this._mruSources.length; i++) {
             for (let j = 0; j < sourcesList.length; j++)
@@ -527,20 +532,8 @@ const InputSourceManager = new Lang.Class({
         }
         this._mruSources = mruSources.concat(sourcesList);
 
-        if (this._mruSources.length > 0) {
-            if (!this._disableIBus && this._backupSource) {
-                for (let i = 0; i < this._mruSources.length; i++) {
-                    if (this._mruSources[i].type == this._backupSource.type &&
-                        this._mruSources[i].id == this._backupSource.id) {
-                        let currentSource = this._mruSources.splice(i, 1);
-                        this._mruSources = currentSource.concat(this._mruSources);
-                        break;
-                    }
-                }
-                this._backupSource = null;
-            }
+        if (this._mruSources.length > 0)
             this._mruSources[0].activate();
-        }
 
         // All ibus engines are preloaded here to reduce the launching time
         // when users switch the input sources.
@@ -605,16 +598,12 @@ const InputSourceManager = new Lang.Class({
             if (this._disableIBus)
                 return;
             this._disableIBus = true;
-            this._backupSource = this._currentSource;
+            this._mruSourcesBackup = this._mruSources.slice();
         } else {
             if (!this._disableIBus)
                 return;
             this._disableIBus = false;
         }
-        // If this._mruSources is not cleared before this.reload() is called,
-        // the order is different from the original one as IM sources will
-        // be appended to XKB sources.
-        this._mruSources = [];
         this.reload();
     },
 
