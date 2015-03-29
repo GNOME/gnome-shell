@@ -19,7 +19,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-03-16 17:46+0000\n"
+"POT-Creation-Date: 2015-03-28 20:55+0000\n"
 "PO-Revision-Date: 2015-03-16 22:16+0300\n"
 "Last-Translator: Stas Solovey <whats_up@tut.by>\n"
 "Language-Team: Русский <gnome-cyr@gnome.org>\n"
@@ -310,12 +310,12 @@ msgstr "Задержка изменения фокуса в режиме мыш�
 msgid "Network Login"
 msgstr "Сетевая авторизация"
 
-#: ../js/extensionPrefs/main.js:123
+#: ../js/extensionPrefs/main.js:122
 #, javascript-format
 msgid "There was an error loading the preferences dialog for %s:"
 msgstr "Возникла ошибка загрузки диалогового окна параметров для %s:"
 
-#: ../js/extensionPrefs/main.js:155
+#: ../js/extensionPrefs/main.js:154
 msgid "GNOME Shell Extensions"
 msgstr "Расширения GNOME Shell"
 
@@ -340,25 +340,25 @@ msgctxt "button"
 msgid "Sign In"
 msgstr "Войти"
 
-#: ../js/gdm/loginDialog.js:280
+#: ../js/gdm/loginDialog.js:281
 msgid "Choose Session"
 msgstr "Выбрать сеанс"
 
-#: ../js/gdm/loginDialog.js:421
+#: ../js/gdm/loginDialog.js:431
 msgid "Not listed?"
 msgstr "Нет в списке?"
 
-#: ../js/gdm/loginDialog.js:830
+#: ../js/gdm/loginDialog.js:840
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(например, пользователь или %s)"
 
-#: ../js/gdm/loginDialog.js:835 ../js/ui/components/networkAgent.js:271
+#: ../js/gdm/loginDialog.js:845 ../js/ui/components/networkAgent.js:271
 #: ../js/ui/components/networkAgent.js:289
 msgid "Username: "
 msgstr "Имя пользователя: "
 
-#: ../js/gdm/loginDialog.js:1170
+#: ../js/gdm/loginDialog.js:1173
 msgid "Login Window"
 msgstr "Окно входа в систему"
 
@@ -456,31 +456,31 @@ msgstr "%d %b. %Y, %l∶%M %p"
 msgid "Web Authentication Redirect"
 msgstr "Перенаправление для проверки подлинности"
 
-#: ../js/ui/appDisplay.js:792
+#: ../js/ui/appDisplay.js:788
 msgid "Frequently used applications will appear here"
 msgstr "Здесь появляются часто используемые приложения"
 
-#: ../js/ui/appDisplay.js:912
+#: ../js/ui/appDisplay.js:908
 msgid "Frequent"
 msgstr "Популярные"
 
-#: ../js/ui/appDisplay.js:919
+#: ../js/ui/appDisplay.js:915
 msgid "All"
 msgstr "Все"
 
-#: ../js/ui/appDisplay.js:1850
+#: ../js/ui/appDisplay.js:1844
 msgid "New Window"
 msgstr "Новое окно"
 
-#: ../js/ui/appDisplay.js:1878 ../js/ui/dash.js:291
+#: ../js/ui/appDisplay.js:1872 ../js/ui/dash.js:289
 msgid "Remove from Favorites"
 msgstr "Удалить из избранного"
 
-#: ../js/ui/appDisplay.js:1884
+#: ../js/ui/appDisplay.js:1878
 msgid "Add to Favorites"
 msgstr "Добавить в избранное"
 
-#: ../js/ui/appDisplay.js:1894
+#: ../js/ui/appDisplay.js:1888
 msgid "Show Details"
 msgstr "Показать подробности"
 
@@ -495,7 +495,7 @@ msgid "%s has been removed from your favorites."
 msgstr "Приложение %s удалено из избранного."
 
 #: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:650
-#: ../js/ui/status/system.js:337
+#: ../js/ui/status/system.js:334
 msgid "Settings"
 msgstr "Параметры"
 
@@ -555,55 +555,55 @@ msgctxt "grid saturday"
 msgid "S"
 msgstr "Сб"
 
-#: ../js/ui/calendar.js:563
+#: ../js/ui/calendar.js:564
 msgid "Previous month"
 msgstr "Предыдущий месяц"
 
-#: ../js/ui/calendar.js:573
+#: ../js/ui/calendar.js:574
 msgid "Next month"
 msgstr "Следующий месяц"
 
-#: ../js/ui/calendar.js:780
+#: ../js/ui/calendar.js:781
 msgid "Week %V"
 msgstr "%V неделя"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #. */
-#: ../js/ui/calendar.js:1182
+#: ../js/ui/calendar.js:1187
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Весь день"
 
-#: ../js/ui/calendar.js:1288
+#: ../js/ui/calendar.js:1293
 msgid "Clear section"
 msgstr "Очистить секцию"
 
-#: ../js/ui/calendar.js:1515
+#: ../js/ui/calendar.js:1520
 msgid "Events"
 msgstr "События"
 
 # fix для даты в календаре и на экране блокировки, за разъяснением обращаться к Stas Solovey <whats_up@tut.by>
-#: ../js/ui/calendar.js:1524
+#: ../js/ui/calendar.js:1529
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d %b."
 
 # fix для даты в календаре и на экране блокировки
-#: ../js/ui/calendar.js:1528
+#: ../js/ui/calendar.js:1533
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d %b. %Y"
 
-#: ../js/ui/calendar.js:1613
+#: ../js/ui/calendar.js:1618
 msgid "Notifications"
 msgstr "Уведомления"
 
-#: ../js/ui/calendar.js:1764
+#: ../js/ui/calendar.js:1769
 msgid "No Notifications"
 msgstr "Уведомлений нет"
 
-#: ../js/ui/calendar.js:1767
+#: ../js/ui/calendar.js:1772
 msgid "No Events"
 msgstr "Событий нет"
 
@@ -738,7 +738,7 @@ msgstr "Не удалось подтвердить подлинность. По�
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name. */
-#: ../js/ui/components/telepathyClient.js:775
+#: ../js/ui/components/telepathyClient.js:732
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "Контакт %s теперь известен как %s"
@@ -747,11 +747,11 @@ msgstr "Контакт %s теперь известен как %s"
 msgid "Windows"
 msgstr "Окна"
 
-#: ../js/ui/dash.js:252 ../js/ui/dash.js:293
+#: ../js/ui/dash.js:250 ../js/ui/dash.js:291
 msgid "Show Applications"
 msgstr "Показать приложения"
 
-#: ../js/ui/dash.js:453
+#: ../js/ui/dash.js:449
 msgid "Dash"
 msgstr "Панель приложений"
 
@@ -927,7 +927,7 @@ msgstr "Установить"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Загрузить и установить расширение «%s» из extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:714 ../js/ui/status/keyboard.js:580
+#: ../js/ui/keyboard.js:714 ../js/ui/status/keyboard.js:724
 msgid "Keyboard"
 msgstr "Клавиатура"
 
@@ -936,7 +936,7 @@ msgstr "Клавиатура"
 msgid "Hide tray"
 msgstr "Скрыть лоток"
 
-#: ../js/ui/legacyTray.js:104
+#: ../js/ui/legacyTray.js:105
 msgid "Status Icons"
 msgstr "Значки состояния"
 
@@ -992,7 +992,7 @@ msgstr "Показать код"
 msgid "Web Page"
 msgstr "Веб-страница"
 
-#: ../js/ui/messageTray.js:2133
+#: ../js/ui/messageTray.js:1507
 msgid "System Information"
 msgstr "Системная информация"
 
@@ -1065,7 +1065,7 @@ msgstr[0] "%d новое уведомление"
 msgstr[1] "%d новых уведомления"
 msgstr[2] "%d новых уведомлений"
 
-#: ../js/ui/screenShield.js:432 ../js/ui/status/system.js:345
+#: ../js/ui/screenShield.js:432 ../js/ui/status/system.js:342
 msgid "Lock"
 msgstr "Заблокировать"
 
@@ -1081,11 +1081,11 @@ msgstr "Не удалось заблокировать"
 msgid "Lock was blocked by an application"
 msgstr "Блокировке помешало приложение"
 
-#: ../js/ui/search.js:616
+#: ../js/ui/search.js:617
 msgid "Searching…"
 msgstr "Поиск…"
 
-#: ../js/ui/search.js:618
+#: ../js/ui/search.js:619
 msgid "No results."
 msgstr "Ничего не найдено."
 
@@ -1149,11 +1149,11 @@ msgstr "Отскакивающие клавиши"
 msgid "Mouse Keys"
 msgstr "Клавиши мыши"
 
-#: ../js/ui/status/accessibility.js:144
+#: ../js/ui/status/accessibility.js:167
 msgid "High Contrast"
 msgstr "Высокая контрастность"
 
-#: ../js/ui/status/accessibility.js:193
+#: ../js/ui/status/accessibility.js:202
 msgid "Large Text"
 msgstr "Крупный текст"
 
@@ -1188,7 +1188,7 @@ msgstr "Не подключено"
 msgid "Brightness"
 msgstr "Яркость"
 
-#: ../js/ui/status/keyboard.js:603
+#: ../js/ui/status/keyboard.js:747
 msgid "Show Keyboard Layout"
 msgstr "Показать раскладку клавиатуры"
 
@@ -1376,16 +1376,12 @@ msgstr "Выполняется подсчёт…"
 #: ../js/ui/status/power.js:86
 #, javascript-format
 msgid "%d∶%02d Remaining (%d%%)"
-msgstr ""
-"Разряжается (%d%%)\n"
-"Осталось — %d∶%02d"
+msgstr "Осталось %d∶%02d (%d%%)"
 
 #: ../js/ui/status/power.js:91
 #, javascript-format
 msgid "%d∶%02d Until Full (%d%%)"
-msgstr ""
-"Заряжается (%d%%)\n"
-"До полной — %d∶%02d"
+msgstr "Зарядится через %d∶%02d (%d%%)"
 
 # Источник Бесперебойного Питания
 #: ../js/ui/status/power.js:119
@@ -1404,23 +1400,23 @@ msgstr "Режим авиаперелёта"
 msgid "On"
 msgstr "Включено"
 
-#: ../js/ui/status/system.js:317
+#: ../js/ui/status/system.js:314
 msgid "Switch User"
 msgstr "Сменить пользователя"
 
-#: ../js/ui/status/system.js:322
+#: ../js/ui/status/system.js:319
 msgid "Log Out"
 msgstr "Завершить сеанс"
 
-#: ../js/ui/status/system.js:341
+#: ../js/ui/status/system.js:338
 msgid "Orientation Lock"
 msgstr "Заблокировать положение"
 
-#: ../js/ui/status/system.js:349
+#: ../js/ui/status/system.js:346
 msgid "Suspend"
 msgstr "Ждущий режим"
 
-#: ../js/ui/status/system.js:352
+#: ../js/ui/status/system.js:349
 msgid "Power Off"
 msgstr "Выключить"
 
@@ -1482,7 +1478,7 @@ msgstr[2] "Изменения параметров будут отменены �
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height. */
-#: ../js/ui/windowManager.js:599
+#: ../js/ui/windowManager.js:613
 #, javascript-format
 msgid "%d x %d"
 msgstr "%d x %d"
@@ -1593,143 +1589,3 @@ msgstr "Пароль не может быть пустым"
 #: ../src/shell-polkit-authentication-agent.c:346
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Аутентификация отклонена пользователем"
-
-#~ msgctxt "event list time"
-#~ msgid "%H∶%M"
-#~ msgstr "%H∶%M"
-
-#~ msgctxt "event list time"
-#~ msgid "%l∶%M %p"
-#~ msgstr "%l∶%M %p"
-
-#~ msgid "Invitation"
-#~ msgstr "Приглашение"
-
-#~ msgid "Call"
-#~ msgstr "Вызов"
-
-#~ msgid "File Transfer"
-#~ msgstr "Передача файлов"
-
-#~ msgid "Chat"
-#~ msgstr "Чат"
-
-#~ msgid "Invitation to %s"
-#~ msgstr "Приглашение в %s"
-
-#~ msgid "%s is inviting you to join %s"
-#~ msgstr "%s приглашает вас присоединиться к %s"
-
-#~ msgid "Decline"
-#~ msgstr "Отказаться"
-
-#~ msgid "Accept"
-#~ msgstr "Принять"
-
-#~ msgid "Video call from %s"
-#~ msgstr "Видеозвонок от %s"
-
-#~ msgid "Call from %s"
-#~ msgstr "Вас вызывает %s"
-
-#~ msgid "Answer"
-#~ msgstr "Ответить"
-
-#~ msgid "%s is sending you %s"
-#~ msgstr "%s отправляет вам %s"
-
-#~ msgid "%s would like permission to see when you are online"
-#~ msgstr "%s хочет видеть, когда вы доступны в сети"
-
-#~ msgid "Network error"
-#~ msgstr "Ошибка сети"
-
-#~ msgid "Authentication failed"
-#~ msgstr "Ошибка аутентификации"
-
-#~ msgid "Encryption error"
-#~ msgstr "Ошибка шифрования"
-
-#~ msgid "Certificate not provided"
-#~ msgstr "Сертификат не предоставляется"
-
-#~ msgid "Certificate untrusted"
-#~ msgstr "Недоверенный сертификат"
-
-#~ msgid "Certificate expired"
-#~ msgstr "Срок действия сертификата истёк"
-
-#~ msgid "Certificate not activated"
-#~ msgstr "Сертификат не активирован"
-
-#~ msgid "Certificate hostname mismatch"
-#~ msgstr "Имя узла сертификата не совпадает"
-
-#~ msgid "Certificate fingerprint mismatch"
-#~ msgstr "Отпечаток сертификата не совпадает"
-
-#~ msgid "Certificate self-signed"
-#~ msgstr "Самоподписанный сертификат"
-
-#~ msgid "Status is set to offline"
-#~ msgstr "Установлен статус «не в сети»"
-
-#~ msgid "Encryption is not available"
-#~ msgstr "Шифрование недоступно"
-
-#~ msgid "Certificate is invalid"
-#~ msgstr "Недействительный сертификат"
-
-#~ msgid "Connection has been refused"
-#~ msgstr "В соединении отказано"
-
-#~ msgid "Connection can't be established"
-#~ msgstr "Соединение не может быть установлено"
-
-#~ msgid "Connection has been lost"
-#~ msgstr "Соединение потеряно"
-
-#~ msgid "This account is already connected to the server"
-#~ msgstr "Эта учётная запись уже подключена к серверу"
-
-#~ msgid ""
-#~ "Connection has been replaced by a new connection using the same resource"
-#~ msgstr "Соединение было заменено новым, используя тот же источник"
-
-#~ msgid "The account already exists on the server"
-#~ msgstr "Учётная запись уже существует на сервере"
-
-#~ msgid "Server is currently too busy to handle the connection"
-#~ msgstr ""
-#~ "Сервер в настоящее время сильно перегружен, чтобы обработать соединение"
-
-#~ msgid "Certificate has been revoked"
-#~ msgstr "Сертификат аннулирован"
-
-#~ msgid ""
-#~ "Certificate uses an insecure cipher algorithm or is cryptographically weak"
-#~ msgstr ""
-#~ "Сертификат использует небезопасный алгоритм шифрования или он "
-#~ "криптографически нестоек"
-
-#~ msgid ""
-#~ "The length of the server certificate, or the depth of the server "
-#~ "certificate chain, exceed the limits imposed by the cryptography library"
-#~ msgstr ""
-#~ "Длина сертификата сервера, или глубина цепочки сертификатов сервера, "
-#~ "превышает пределы, установленные библиотекой криптографии"
-
-#~ msgid "Internal error"
-#~ msgstr "Внутренняя ошибка"
-
-#~ msgid "Unable to connect to %s"
-#~ msgstr "Не удалось подключиться к %s"
-
-#~ msgid "View account"
-#~ msgstr "Показать учётную запись"
-
-#~ msgid "Unknown reason"
-#~ msgstr "Неизвестная причина"
-
-#~ msgid "Show the message list"
-#~ msgstr "Показать список уведомлений"
