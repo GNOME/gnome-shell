@@ -19,7 +19,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-03-29 07:58+0000\n"
+"POT-Creation-Date: 2015-03-29 18:01+0000\n"
 "PO-Revision-Date: 2015-03-29 20:32+0300\n"
 "Last-Translator: Stas Solovey <whats_up@tut.by>\n"
 "Language-Team: Русский <gnome-cyr@gnome.org>\n"
@@ -1378,7 +1378,7 @@ msgstr "Выполняется подсчёт…"
 #, javascript-format
 msgid "%d∶%02d Remaining (%d%%)"
 msgstr ""
-"Осталось — %02d∶%d\n"
+"Осталось %02d ч. %d мин.\n"
 "Разряжается (%d%%)"
 
 # нужно в две строки, иначе не влезает в выпадающую панель
@@ -1386,7 +1386,7 @@ msgstr ""
 #, javascript-format
 msgid "%d∶%02d Until Full (%d%%)"
 msgstr ""
-"До полной — %02d∶%d\n"
+"До полной %02d ч. %d мин.\n"
 "Заряжается (%d%%)"
 
 # Источник Бесперебойного Питания
