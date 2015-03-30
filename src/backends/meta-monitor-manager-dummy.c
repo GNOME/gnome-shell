@@ -27,6 +27,10 @@
 
 #include "meta-monitor-manager-dummy.h"
 
+#include <stdlib.h>
+
+#include <meta/util.h>
+
 #define ALL_TRANSFORMS ((1 << (META_MONITOR_TRANSFORM_FLIPPED_270 + 1)) - 1)
 
 struct _MetaMonitorManagerDummy
@@ -44,9 +48,69 @@ G_DEFINE_TYPE (MetaMonitorManagerDummy, meta_monitor_manager_dummy, META_TYPE_MO
 static void
 meta_monitor_manager_dummy_read_current (MetaMonitorManager *manager)
 {
+  unsigned int num_monitors = 1;
+  int *monitor_scales = NULL;
+  const char *num_monitors_str;
+  const char *monitor_scales_str;
+  unsigned int i;
+  int current_x = 0;
+
+  /* To control what monitor configuration is generated, there are two available
+   * environmental variables that can be used:
+   *
+   * MUTTER_DEBUG_NUM_DUMMY_MONITORS
+   *
+   * Specifies the number of dummy monitors to include in the stage. Every
+   * monitor is 1024x786 pixels and they are placed on a horizontal row.
+   *
+   * MUTTER_DEBUG_DUMMY_MONITOR_SCALES
+   *
+   * A comma separated list that specifies the scales of the dummy monitors.
+   *
+   * For example the following configuration results in two monitors, where the
+   * first one has the monitor scale 1, and the other the monitor scale 2.
+   *
+   * MUTTER_DEBUG_NUM_DUMMY_MONITORS=2
+   * MUTTER_DEBUG_DUMMY_MONITOR_SCALES=1,2
+   */
+  num_monitors_str = getenv ("MUTTER_DEBUG_NUM_DUMMY_MONITORS");
+  if (num_monitors_str)
+    {
+      num_monitors = g_ascii_strtoll (num_monitors_str, NULL, 10);
+      if (num_monitors <= 0)
+        {
+          meta_warning ("Invalid number of dummy monitors");
+          num_monitors = 1;
+        }
+    }
+
+  monitor_scales = g_newa (int, num_monitors);
+  for (i = 0; i < num_monitors; i++)
+    monitor_scales[i] = 1;
+
+  monitor_scales_str = getenv ("MUTTER_DEBUG_DUMMY_MONITOR_SCALES");
+  if (monitor_scales_str)
+    {
+      gchar **scales_str_list;
+
+      scales_str_list = g_strsplit (monitor_scales_str, ",", -1);
+      if (g_strv_length (scales_str_list) != num_monitors)
+        meta_warning ("Number of specified monitor scales differ from number "
+                      "of monitors (defaults to 1).\n");
+      for (i = 0; i < num_monitors && scales_str_list[i]; i++)
+        {
+          int scale = g_ascii_strtoll (scales_str_list[i], NULL, 10);
+          if (scale == 1 || scale == 2)
+            monitor_scales[i] = scale;
+          else
+            meta_warning ("Invalid dummy monitor scale");
+        }
+      g_strfreev (scales_str_list);
+    }
+
   manager->max_screen_width = 65535;
   manager->max_screen_height = 65535;
-  manager->screen_width = 1024;
+  manager->screen_width = 1024 * num_monitors;
   manager->screen_height = 768;
 
   manager->modes = g_new0 (MetaMonitorMode, 1);
@@ -57,46 +121,52 @@ meta_monitor_manager_dummy_read_current (MetaMonitorManager *manager)
   manager->modes[0].height = 768;
   manager->modes[0].refresh_rate = 60.0;
 
-  manager->crtcs = g_new0 (MetaCRTC, 1);
-  manager->n_crtcs = 1;
+  manager->crtcs = g_new0 (MetaCRTC, num_monitors);
+  manager->n_crtcs = num_monitors;
+  manager->outputs = g_new0 (MetaOutput, num_monitors);
+  manager->n_outputs = num_monitors;
 
-  manager->crtcs[0].crtc_id = 1;
-  manager->crtcs[0].rect.x = 0;
-  manager->crtcs[0].rect.y = 0;
-  manager->crtcs[0].rect.width = manager->modes[0].width;
-  manager->crtcs[0].rect.height = manager->modes[0].height;
-  manager->crtcs[0].current_mode = &manager->modes[0];
-  manager->crtcs[0].transform = META_MONITOR_TRANSFORM_NORMAL;
-  manager->crtcs[0].all_transforms = ALL_TRANSFORMS;
-  manager->crtcs[0].is_dirty = FALSE;
-  manager->crtcs[0].logical_monitor = NULL;
+  for (i = 0; i < num_monitors; i++)
+    {
+      manager->crtcs[i].crtc_id = i + 1;
+      manager->crtcs[i].rect.x = current_x;
+      manager->crtcs[i].rect.y = 0;
+      manager->crtcs[i].rect.width = manager->modes[0].width;
+      manager->crtcs[i].rect.height = manager->modes[0].height;
+      manager->crtcs[i].current_mode = &manager->modes[0];
+      manager->crtcs[i].transform = META_MONITOR_TRANSFORM_NORMAL;
+      manager->crtcs[i].all_transforms = ALL_TRANSFORMS;
+      manager->crtcs[i].is_dirty = FALSE;
+      manager->crtcs[i].logical_monitor = NULL;
 
-  manager->outputs = g_new0 (MetaOutput, 1);
-  manager->n_outputs = 1;
+      current_x += manager->crtcs[i].rect.width;
 
-  manager->outputs[0].crtc = &manager->crtcs[0];
-  manager->outputs[0].winsys_id = 1;
-  manager->outputs[0].name = g_strdup ("LVDS");
-  manager->outputs[0].vendor = g_strdup ("MetaProducts Inc.");
-  manager->outputs[0].product = g_strdup ("unknown");
-  manager->outputs[0].serial = g_strdup ("0xC0FFEE");
-  manager->outputs[0].width_mm = 222;
-  manager->outputs[0].height_mm = 125;
-  manager->outputs[0].subpixel_order = COGL_SUBPIXEL_ORDER_UNKNOWN;
-  manager->outputs[0].preferred_mode = &manager->modes[0];
-  manager->outputs[0].n_modes = 1;
-  manager->outputs[0].modes = g_new0 (MetaMonitorMode *, 1);
-  manager->outputs[0].modes[0] = &manager->modes[0];
-  manager->outputs[0].n_possible_crtcs = 1;
-  manager->outputs[0].possible_crtcs = g_new0 (MetaCRTC *, 1);
-  manager->outputs[0].possible_crtcs[0] = &manager->crtcs[0];
-  manager->outputs[0].n_possible_clones = 0;
-  manager->outputs[0].possible_clones = g_new0 (MetaOutput *, 0);
-  manager->outputs[0].backlight = -1;
-  manager->outputs[0].backlight_min = 0;
-  manager->outputs[0].backlight_max = 0;
-  manager->outputs[0].connector_type = META_CONNECTOR_TYPE_LVDS;
-  manager->outputs[0].scale = 1;
+      manager->outputs[i].crtc = &manager->crtcs[i];
+      manager->outputs[i].winsys_id = i + 1;
+      manager->outputs[i].name = g_strdup_printf ("LVDS%d", i + 1);
+      manager->outputs[i].vendor = g_strdup ("MetaProducts Inc.");
+      manager->outputs[i].product = g_strdup ("unknown");
+      manager->outputs[i].serial = g_strdup ("0xC0FFEE");
+      manager->outputs[i].suggested_x = -1;
+      manager->outputs[i].suggested_y = -1;
+      manager->outputs[i].width_mm = 222;
+      manager->outputs[i].height_mm = 125;
+      manager->outputs[i].subpixel_order = COGL_SUBPIXEL_ORDER_UNKNOWN;
+      manager->outputs[i].preferred_mode = &manager->modes[0];
+      manager->outputs[i].n_modes = 1;
+      manager->outputs[i].modes = g_new0 (MetaMonitorMode *, 1);
+      manager->outputs[i].modes[0] = &manager->modes[0];
+      manager->outputs[i].n_possible_crtcs = 1;
+      manager->outputs[i].possible_crtcs = g_new0 (MetaCRTC *, 1);
+      manager->outputs[i].possible_crtcs[0] = &manager->crtcs[i];
+      manager->outputs[i].n_possible_clones = 0;
+      manager->outputs[i].possible_clones = g_new0 (MetaOutput *, 0);
+      manager->outputs[i].backlight = -1;
+      manager->outputs[i].backlight_min = 0;
+      manager->outputs[i].backlight_max = 0;
+      manager->outputs[i].connector_type = META_CONNECTOR_TYPE_LVDS;
+      manager->outputs[i].scale = monitor_scales[i];
+    }
 }
 
 static void
