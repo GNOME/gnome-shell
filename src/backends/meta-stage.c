@@ -240,6 +240,7 @@ meta_stage_set_active (MetaStage *stage,
   if (priv->is_active == is_active)
     return;
 
+  event.type = CLUTTER_STAGE_STATE;
   clutter_event_set_stage (&event, CLUTTER_STAGE (stage));
   event.stage_state.changed_mask = CLUTTER_STAGE_STATE_ACTIVATED;
 
