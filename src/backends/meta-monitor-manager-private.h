@@ -56,6 +56,7 @@ typedef struct _MetaMonitorMode MetaMonitorMode;
 typedef struct _MetaMonitorInfo MetaMonitorInfo;
 typedef struct _MetaCRTCInfo MetaCRTCInfo;
 typedef struct _MetaOutputInfo MetaOutputInfo;
+typedef struct _MetaTileInfo MetaTileInfo;
 
 typedef enum {
   META_MONITOR_TRANSFORM_NORMAL,
@@ -88,6 +89,17 @@ typedef enum {
   META_CONNECTOR_TYPE_VIRTUAL = 15,
   META_CONNECTOR_TYPE_DSI = 16,
 } MetaConnectorType;
+
+struct _MetaTileInfo {
+  guint32 group_id;
+  guint32 flags;
+  guint32 max_h_tiles;
+  guint32 max_v_tiles;
+  guint32 loc_h_tile;
+  guint32 loc_v_tile;
+  guint32 tile_w;
+  guint32 tile_h;
+};
 
 struct _MetaOutput
 {
@@ -141,6 +153,8 @@ struct _MetaOutput
   gboolean hotplug_mode_update;
   gint suggested_x;
   gint suggested_y;
+
+  MetaTileInfo tile_info;
 };
 
 struct _MetaCRTC

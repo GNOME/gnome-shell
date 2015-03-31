@@ -391,6 +391,42 @@ read_output_edid (MetaMonitorManagerXrandr *manager_xrandr,
   return NULL;
 }
 
+static void
+output_get_tile_info (MetaMonitorManagerXrandr *manager_xrandr,
+                      MetaOutput *output)
+{
+  Atom tile_atom;
+  unsigned char *prop;
+  unsigned long nitems, bytes_after;
+  int actual_format;
+  Atom actual_type;
+
+  if (manager_xrandr->has_randr15 == FALSE)
+    return;
+
+  tile_atom = XInternAtom (manager_xrandr->xdisplay, "TILE", FALSE);
+  XRRGetOutputProperty (manager_xrandr->xdisplay,
+                        output->winsys_id,
+                        tile_atom, 0, 100, False,
+                        False, AnyPropertyType,
+                        &actual_type, &actual_format,
+                        &nitems, &bytes_after, &prop);
+
+  if (actual_type == XA_INTEGER && actual_format == 32 && nitems == 8)
+    {
+      long *values = (long *)prop;
+      output->tile_info.group_id = values[0];
+      output->tile_info.flags = values[1];
+      output->tile_info.max_h_tiles = values[2];
+      output->tile_info.max_v_tiles = values[3];
+      output->tile_info.loc_h_tile = values[4];
+      output->tile_info.loc_v_tile = values[5];
+      output->tile_info.tile_w = values[6];
+      output->tile_info.tile_h = values[7];
+    }
+  XFree (prop);
+}
+
 static gboolean
 output_get_hotplug_mode_update (MetaMonitorManagerXrandr *manager_xrandr,
                                 MetaOutput               *output)
@@ -714,6 +750,7 @@ meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
 	  meta_output->suggested_y = output_get_suggested_y (manager_xrandr, meta_output);
           meta_output->connector_type = output_get_connector_type (manager_xrandr, meta_output);
 
+	  output_get_tile_info (manager_xrandr, meta_output);
 	  meta_output->n_modes = output->nmode;
 	  meta_output->modes = g_new0 (MetaMonitorMode *, meta_output->n_modes);
 	  for (j = 0; j < meta_output->n_modes; j++)

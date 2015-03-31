@@ -55,6 +55,7 @@ typedef struct {
 
   uint32_t dpms_prop_id;
   uint32_t edid_blob_id;
+  uint32_t tile_blob_id;
 } MetaOutputKms;
 
 typedef struct {
@@ -208,6 +209,9 @@ find_connector_properties (MetaMonitorManagerKms *manager_kms,
         output_kms->dpms_prop_id = prop->prop_id;
       else if ((prop->flags & DRM_MODE_PROP_BLOB) && strcmp (prop->name, "EDID") == 0)
         output_kms->edid_blob_id = output_kms->connector->prop_values[i];
+     else if ((prop->flags & DRM_MODE_PROP_BLOB) &&
+               strcmp (prop->name, "TILE") == 0)
+        output_kms->tile_blob_id = output_kms->connector->prop_values[i];
 
       drmModeFreeProperty (prop);
     }
@@ -270,6 +274,47 @@ read_output_edid (MetaMonitorManagerKms *manager_kms,
     {
       drmModeFreePropertyBlob (edid_blob);
       return NULL;
+    }
+}
+
+static gboolean
+output_get_tile_info (MetaMonitorManagerKms *manager_kms,
+                      MetaOutput            *output)
+{
+  MetaOutputKms *output_kms = output->driver_private;
+  drmModePropertyBlobPtr tile_blob = NULL;
+  int ret;
+
+  if (output_kms->tile_blob_id == 0)
+    return FALSE;
+
+  tile_blob = drmModeGetPropertyBlob (manager_kms->fd, output_kms->tile_blob_id);
+  if (!tile_blob)
+    {
+      meta_warning ("Failed to read TILE of output %s: %s\n", output->name, strerror(errno));
+      return FALSE;
+    }
+
+  if (tile_blob->length > 0)
+    {
+      ret = sscanf ((char *)tile_blob->data, "%d:%d:%d:%d:%d:%d:%d:%d",
+                    &output->tile_info.group_id,
+                    &output->tile_info.flags,
+                    &output->tile_info.max_h_tiles,
+                    &output->tile_info.max_v_tiles,
+                    &output->tile_info.loc_h_tile,
+                    &output->tile_info.loc_v_tile,
+                    &output->tile_info.tile_w,
+                    &output->tile_info.tile_h);
+
+      if (ret != 8)
+        return FALSE;
+      return TRUE;
+    }
+  else
+    {
+      drmModeFreePropertyBlob (tile_blob);
+      return FALSE;
     }
 }
 
@@ -621,6 +666,8 @@ meta_monitor_manager_kms_read_current (MetaMonitorManager *manager)
           meta_output->connector_type = (MetaConnectorType) connector->connector_type;
 
           meta_output->scale = get_output_scale (manager, meta_output);
+
+          output_get_tile_info (manager_kms, meta_output);
 
           /* FIXME: backlight is a very driver specific thing unfortunately,
              every DDX does its own thing, and the dumb KMS API does not include it.
