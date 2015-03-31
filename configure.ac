@@ -284,6 +284,8 @@ AC_CHECK_LIB(Xrandr, XRRUpdateConfiguration,
 
 if test "x$found_randr" = "xyes"; then
    AC_DEFINE(HAVE_RANDR, , [Have the Xrandr extension library])
+   PKG_CHECK_EXISTS([xrandr >= 1.5.0],
+                 AC_DEFINE([HAVE_XRANDR15],[1],[Define if you have support for XRandR 1.5 or greater]))
 fi
 
 MUTTER_LIBS="$MUTTER_LIBS $RANDR_LIBS $X_LIBS $X_PRE_LIBS -lX11 $X_EXTRA_LIBS -lm"

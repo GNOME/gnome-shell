@@ -58,6 +58,7 @@ struct _MetaMonitorManagerXrandr
   XRRScreenResources *resources;
   int rr_event_base;
   int rr_error_base;
+  gboolean has_randr15;
 };
 
 struct _MetaMonitorManagerXrandrClass
@@ -1228,6 +1229,7 @@ meta_monitor_manager_xrandr_init (MetaMonitorManagerXrandr *manager_xrandr)
     }
   else
     {
+      int major_version, minor_version;
       /* We only use ScreenChangeNotify, but GDK uses the others,
 	 and we don't want to step on its toes */
       XRRSelectInput (manager_xrandr->xdisplay,
@@ -1235,6 +1237,16 @@ meta_monitor_manager_xrandr_init (MetaMonitorManagerXrandr *manager_xrandr)
 		      RRScreenChangeNotifyMask
 		      | RRCrtcChangeNotifyMask
 		      | RROutputPropertyNotifyMask);
+
+      manager_xrandr->has_randr15 = FALSE;
+      XRRQueryVersion (manager_xrandr->xdisplay, &major_version,
+                       &minor_version);
+#ifdef HAVE_XRANDR15
+      if (major_version > 1 ||
+          (major_version == 1 &&
+           minor_version >= 5))
+        manager_xrandr->has_randr15 = TRUE;
+#endif
     }
 }
 
