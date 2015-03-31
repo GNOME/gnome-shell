@@ -1177,6 +1177,81 @@ make_suggested_config (MetaMonitorConfig *self,
 }
 
 static void
+config_one_untiled_output (MetaOutput *outputs,
+                           MetaConfiguration *config,
+                           int idx, gboolean is_primary,
+                           int *x, unsigned long *output_configured_bitmap)
+{
+  MetaOutput *output = &outputs[idx];
+
+  if (*output_configured_bitmap & (1 << idx))
+    return;
+
+  init_config_from_preferred_mode (&config->outputs[idx], output);
+  config->outputs[idx].is_primary = is_primary;
+  config->outputs[idx].rect.x = *x;
+  *x += config->outputs[idx].rect.width;
+  *output_configured_bitmap |= (1 << idx);
+}
+
+static void
+config_one_tiled_group (MetaOutput *outputs,
+                        MetaConfiguration *config,
+                        int base_idx, gboolean is_primary,
+                        int n_outputs,
+                        int *x, unsigned long *output_configured_bitmap)
+{
+  guint32 num_h_tile, num_v_tile, ht, vt;
+  int j;
+  int cur_x, cur_y, addx = 0;
+
+  if (*output_configured_bitmap & (1 << base_idx))
+      return;
+
+  if (outputs[base_idx].tile_info.group_id == 0)
+    return;
+
+  cur_x = cur_y = 0;
+  num_h_tile = outputs[base_idx].tile_info.max_h_tiles;
+  num_v_tile = outputs[base_idx].tile_info.max_v_tiles;
+
+  /* iterate over horizontal tiles */
+  cur_x = *x;
+  for (ht = 0; ht < num_h_tile; ht++)
+    {
+      cur_y = 0;
+      addx = 0;
+      for (vt = 0; vt < num_v_tile; vt++)
+        {
+          for (j = 0; j < n_outputs; j++)
+            {
+              if (outputs[j].tile_info.group_id != outputs[base_idx].tile_info.group_id)
+                continue;
+
+              if (outputs[j].tile_info.loc_h_tile != ht ||
+                  outputs[j].tile_info.loc_v_tile != vt)
+                continue;
+
+              if (ht == 0 && vt == 0 && is_primary)
+                config->outputs[j].is_primary = TRUE;
+
+              init_config_from_preferred_mode (&config->outputs[j], &outputs[j]);
+              config->outputs[j].rect.x = cur_x;
+              config->outputs[j].rect.y = cur_y;
+
+              *output_configured_bitmap |= (1 << j);
+              cur_y += outputs[j].tile_info.tile_h;
+              if (vt == 0)
+                addx += outputs[j].tile_info.tile_w;
+            }
+        }
+      cur_x += addx;
+    }
+  *x = cur_x;
+
+}
+
+static void
 make_linear_config (MetaMonitorConfig *self,
                     MetaOutput        *outputs,
                     unsigned           n_outputs,
@@ -1184,31 +1259,41 @@ make_linear_config (MetaMonitorConfig *self,
                     int                max_height,
                     MetaConfiguration *config)
 {
-  int primary;
+  unsigned long output_configured_bitmap = 0;
   unsigned i;
   int x;
+  int primary;
 
   g_return_if_fail (config != NULL);
 
   primary = find_primary_output (outputs, n_outputs);
 
-  x = outputs[primary].preferred_mode->width;
+  x = 0;
+  /* set the primary up first at 0 */
+  if (outputs[primary].tile_info.group_id)
+    {
+      config_one_tiled_group (outputs, config, primary, TRUE, n_outputs,
+                              &x, &output_configured_bitmap);
+    }
+  else
+    {
+      config_one_untiled_output (outputs, config, primary, TRUE,
+                                 &x, &output_configured_bitmap);
+    }
+
+  /* then add other tiled monitors */
   for (i = 0; i < n_outputs; i++)
     {
-      gboolean is_primary = ((int)i == primary);
+      config_one_tiled_group (outputs, config, i, FALSE, n_outputs,
+                              &x, &output_configured_bitmap);
+    }
 
-      init_config_from_preferred_mode (&config->outputs[i], &outputs[i]);
-      config->outputs[i].is_primary = is_primary;
+  /* then add remaining monitors */
+  for (i = 0; i < n_outputs; i++)
+    {
+      config_one_untiled_output (outputs, config, i, FALSE,
+                                 &x, &output_configured_bitmap);
 
-      if (is_primary)
-        {
-          config->outputs[i].rect.x = 0;
-        }
-      else
-        {
-          config->outputs[i].rect.x = x;
-          x += config->outputs[i].rect.width;
-        }
     }
 }
 
