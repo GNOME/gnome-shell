@@ -436,7 +436,7 @@ meta_xwayland_start (MetaXWaylandManager *manager,
 {
   int xwayland_client_fd[2];
   int displayfd[2];
-  GSubprocessLauncher *launcher;
+  g_autoptr(GSubprocessLauncher) launcher = NULL;
   GSubprocessFlags flags;
   GSubprocess *proc;
   GError *error = NULL;
