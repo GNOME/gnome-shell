@@ -32,7 +32,7 @@
 #include <string.h>
 
 typedef struct {
-  MetaOutput               *output;
+  MetaMonitorInfo          *monitor_info;
   struct wl_global         *global;
   int                       x, y;
   enum wl_output_transform  transform;
@@ -56,9 +56,10 @@ bind_output (struct wl_client *client,
              guint32 id)
 {
   MetaWaylandOutput *wayland_output = data;
-  MetaOutput *output = wayland_output->output;
+  MetaMonitorInfo *monitor_info = wayland_output->monitor_info;
   struct wl_resource *resource;
   guint mode_flags;
+  MetaOutput *output = monitor_info->outputs[0];
 
   resource = wl_resource_create (client, &wl_output_interface, version, id);
   wayland_output->resources = g_list_prepend (wayland_output->resources, resource);
@@ -66,17 +67,17 @@ bind_output (struct wl_client *client,
   wl_resource_set_user_data (resource, wayland_output);
   wl_resource_set_destructor (resource, output_resource_destroy);
 
-  meta_verbose ("Binding output %p/%s (%u, %u, %u, %u) x %f\n",
-                output, output->name,
-                output->crtc->rect.x, output->crtc->rect.y,
-                output->crtc->rect.width, output->crtc->rect.height,
-                output->crtc->current_mode->refresh_rate);
+  meta_verbose ("Binding monitor %p/%s (%u, %u, %u, %u) x %f\n",
+                monitor_info, output->name,
+                monitor_info->rect.x, monitor_info->rect.y,
+                monitor_info->rect.width, monitor_info->rect.height,
+                monitor_info->refresh_rate);
 
   wl_output_send_geometry (resource,
-                           (int)output->crtc->rect.x,
-                           (int)output->crtc->rect.y,
-                           output->width_mm,
-                           output->height_mm,
+                           (int)monitor_info->rect.x,
+                           (int)monitor_info->rect.y,
+                           monitor_info->width_mm,
+                           monitor_info->height_mm,
                            /* Cogl values reflect XRandR values,
                               and so does wayland */
                            output->subpixel_order,
@@ -92,9 +93,9 @@ bind_output (struct wl_client *client,
 
   wl_output_send_mode (resource,
                        mode_flags,
-                       (int)output->crtc->current_mode->width,
-                       (int)output->crtc->current_mode->height,
-                       (int)output->crtc->current_mode->refresh_rate);
+                       (int)monitor_info->rect.width,
+                       (int)monitor_info->rect.height,
+                       (int)monitor_info->refresh_rate);
 
   if (version >= WL_OUTPUT_SCALE_SINCE_VERSION)
     wl_output_send_scale (resource, output->scale);
@@ -128,13 +129,12 @@ wl_output_transform_from_meta_monitor_transform (MetaMonitorTransform transform)
 
 static void
 wayland_output_update_for_output (MetaWaylandOutput *wayland_output,
-                                  MetaOutput        *output)
+                                  MetaMonitorInfo *monitor_info)
 {
   GList *iter;
   guint mode_flags;
+  MetaOutput *output = monitor_info->outputs[0];
   enum wl_output_transform wl_transform = wl_output_transform_from_meta_monitor_transform (output->crtc->transform);
-
-  g_assert (output->crtc->current_mode != NULL);
 
   mode_flags = WL_OUTPUT_MODE_CURRENT;
   if (output->crtc->current_mode == output->preferred_mode)
@@ -144,15 +144,15 @@ wayland_output_update_for_output (MetaWaylandOutput *wayland_output,
     {
       struct wl_resource *resource = iter->data;
 
-      if (wayland_output->x != output->crtc->rect.x ||
-          wayland_output->y != output->crtc->rect.y ||
+      if (wayland_output->x != monitor_info->rect.x ||
+          wayland_output->y != monitor_info->rect.y ||
           wayland_output->transform != wl_transform)
         {
           wl_output_send_geometry (resource,
-                                   (int)output->crtc->rect.x,
-                                   (int)output->crtc->rect.y,
-                                   output->width_mm,
-                                   output->height_mm,
+                                   (int)monitor_info->rect.x,
+                                   (int)monitor_info->rect.y,
+                                   monitor_info->width_mm,
+                                   monitor_info->height_mm,
                                    output->subpixel_order,
                                    output->vendor,
                                    output->product,
@@ -161,16 +161,16 @@ wayland_output_update_for_output (MetaWaylandOutput *wayland_output,
 
       wl_output_send_mode (resource,
                            mode_flags,
-                           (int)output->crtc->current_mode->width,
-                           (int)output->crtc->current_mode->height,
-                           (int)output->crtc->current_mode->refresh_rate);
+                           (int)monitor_info->rect.width,
+                           (int)monitor_info->rect.height,
+                           (int)monitor_info->refresh_rate);
     }
 
   /* It's very important that we change the output pointer here, as
      the old structure is about to be freed by MetaMonitorManager */
-  wayland_output->output = output;
-  wayland_output->x = output->crtc->rect.x;
-  wayland_output->y = output->crtc->rect.y;
+  wayland_output->monitor_info = monitor_info;
+  wayland_output->x = monitor_info->rect.x;
+  wayland_output->y = monitor_info->rect.y;
   wayland_output->transform = wl_transform;
 }
 
@@ -178,30 +178,26 @@ static GHashTable *
 meta_wayland_compositor_update_outputs (MetaWaylandCompositor *compositor,
                                         MetaMonitorManager    *monitors)
 {
-  MetaOutput *outputs;
-  unsigned int i, n_outputs;
+  unsigned int i;
   GHashTable *new_table;
+  MetaMonitorInfo *monitor_infos;
+  unsigned int n_monitor_infos;
 
-  outputs = meta_monitor_manager_get_outputs (monitors, &n_outputs);
+  monitor_infos = meta_monitor_manager_get_monitor_infos (monitors, &n_monitor_infos);
   new_table = g_hash_table_new_full (NULL, NULL, NULL, wayland_output_destroy_notify);
 
-  for (i = 0; i < n_outputs; i++)
+  for (i = 0; i < n_monitor_infos; i++)
     {
-      MetaOutput *output = &outputs[i];
+      MetaMonitorInfo *info = &monitor_infos[i];
       MetaWaylandOutput *wayland_output;
 
-      /* wayland does not expose disabled outputs */
-      if (output->crtc == NULL)
-        {
-          g_hash_table_remove (compositor->outputs, GSIZE_TO_POINTER (output->winsys_id));
-          continue;
-        }
-
-      wayland_output = g_hash_table_lookup (compositor->outputs, GSIZE_TO_POINTER (output->winsys_id));
+      if (info->winsys_id == 0)
+        continue;
+      wayland_output = g_hash_table_lookup (compositor->outputs, GSIZE_TO_POINTER (info->winsys_id));
 
       if (wayland_output)
         {
-          g_hash_table_steal (compositor->outputs, GSIZE_TO_POINTER (output->winsys_id));
+          g_hash_table_steal (compositor->outputs, GSIZE_TO_POINTER (info->winsys_id));
         }
       else
         {
@@ -212,8 +208,8 @@ meta_wayland_compositor_update_outputs (MetaWaylandCompositor *compositor,
                                                      wayland_output, bind_output);
         }
 
-      wayland_output_update_for_output (wayland_output, output);
-      g_hash_table_insert (new_table, GSIZE_TO_POINTER (output->winsys_id), wayland_output);
+      wayland_output_update_for_output (wayland_output, info);
+      g_hash_table_insert (new_table, GSIZE_TO_POINTER (info->winsys_id), wayland_output);
     }
 
   g_hash_table_destroy (compositor->outputs);
