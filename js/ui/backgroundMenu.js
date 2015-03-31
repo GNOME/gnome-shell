@@ -16,9 +16,10 @@ const BackgroundMenu = new Lang.Class({
     _init: function(layoutManager) {
         this.parent(layoutManager.dummyCursor, 0, St.Side.TOP);
 
-        this.addSettingsAction(_("Settings"), 'gnome-control-center.desktop');
-        this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
         this.addSettingsAction(_("Change Background…"), 'gnome-background-panel.desktop');
+        this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+        this.addSettingsAction(_("Display Settings"), 'gnome-display-panel.desktop');
+        this.addSettingsAction(_("Settings"), 'gnome-control-center.desktop');
 
         this.actor.add_style_class_name('background-menu');
 
