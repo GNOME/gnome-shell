@@ -72,6 +72,98 @@ meta_monitor_manager_init (MetaMonitorManager *manager)
 }
 
 /*
+ * rules for constructing a tiled monitor
+ * 1. find a tile_group_id
+ * 2. iterate over all outputs for that tile group id
+ * 3. see if output has a crtc and if it is configured for the tile size
+ * 4. calculate the total tile size
+ * 5. set tile finished size
+ * 6. check for more tile_group_id
+*/
+static void
+construct_tile_monitor (MetaMonitorManager *manager,
+                        GArray *monitor_infos,
+                        guint32 tile_group_id)
+{
+  MetaMonitorInfo info;
+  unsigned i;
+
+  for (i = 0; i < monitor_infos->len; i++)
+    {
+      MetaMonitorInfo *pinfo = &g_array_index (monitor_infos, MetaMonitorInfo, i);
+
+      if (pinfo->tile_group_id == tile_group_id)
+        return;
+    }
+
+  /* didn't find it */
+  info.number = monitor_infos->len;
+  info.tile_group_id = tile_group_id;
+  info.is_presentation = FALSE;
+  info.refresh_rate = 0.0;
+  info.width_mm = 0;
+  info.height_mm = 0;
+  info.is_primary = FALSE;
+  info.rect.x = INT_MAX;
+  info.rect.y = INT_MAX;
+  info.rect.width = 0;
+  info.rect.height = 0;
+  info.winsys_id = 0;
+  info.n_outputs = 0;
+  info.monitor_winsys_xid = 0;
+
+  for (i = 0; i < manager->n_outputs; i++)
+    {
+      MetaOutput *output = &manager->outputs[i];
+
+      if (!output->tile_info.group_id)
+        continue;
+
+      if (output->tile_info.group_id != tile_group_id)
+        continue;
+
+      if (!output->crtc)
+        continue;
+
+      if (output->crtc->rect.width != (int)output->tile_info.tile_w ||
+          output->crtc->rect.height != (int)output->tile_info.tile_h)
+        continue;
+
+      if (output->tile_info.loc_h_tile == 0 && output->tile_info.loc_v_tile == 0)
+        {
+          info.refresh_rate = output->crtc->current_mode->refresh_rate;
+          info.width_mm = output->width_mm;
+          info.height_mm = output->height_mm;
+          info.winsys_id = output->winsys_id;
+        }
+
+      /* hack */
+      if (output->crtc->rect.x < info.rect.x)
+        info.rect.x = output->crtc->rect.x;
+      if (output->crtc->rect.y < info.rect.y)
+        info.rect.y = output->crtc->rect.y;
+
+      if (output->tile_info.loc_h_tile == 0)
+        info.rect.height += output->tile_info.tile_h;
+
+      if (output->tile_info.loc_v_tile == 0)
+        info.rect.width += output->tile_info.tile_w;
+
+      if (info.n_outputs > META_MAX_OUTPUTS_PER_MONITOR)
+        continue;
+
+      info.outputs[info.n_outputs++] = output;
+    }
+
+  /* if we don't have a winsys id, i.e. we haven't found tile 0,0
+     don't try and add this to the monitor infos */
+  if (!info.winsys_id)
+    return;
+
+  g_array_append_val (monitor_infos, info);
+}
+
+/*
  * make_logical_config:
  *
  * Turn outputs and CRTCs into logical MetaMonitorInfo,
@@ -91,6 +183,15 @@ make_logical_config (MetaMonitorManager *manager)
      for each of them, unless they reference a rectangle that
      is already there.
   */
+  /* for tiling we need to work out how many tiled outputs there are */
+  for (i = 0; i < manager->n_outputs; i++)
+    {
+      MetaOutput *output = &manager->outputs[i];
+
+      if (output->tile_info.group_id)
+        construct_tile_monitor (manager, monitor_infos, output->tile_info.group_id);
+    }
+
   for (i = 0; i < manager->n_crtcs; i++)
     {
       MetaCRTC *crtc = &manager->crtcs[i];
@@ -102,8 +203,8 @@ make_logical_config (MetaMonitorManager *manager)
       for (j = 0; j < monitor_infos->len; j++)
         {
           MetaMonitorInfo *info = &g_array_index (monitor_infos, MetaMonitorInfo, j);
-          if (meta_rectangle_equal (&crtc->rect,
-                                    &info->rect))
+          if (meta_rectangle_contains_rect (&info->rect,
+                                            &crtc->rect))
             {
               crtc->logical_monitor = info;
               break;
@@ -115,7 +216,9 @@ make_logical_config (MetaMonitorManager *manager)
           MetaMonitorInfo info;
 
           info.number = monitor_infos->len;
+          info.tile_group_id = 0;
           info.rect = crtc->rect;
+          info.refresh_rate = crtc->current_mode->refresh_rate;
           info.is_primary = FALSE;
           /* This starts true because we want
              is_presentation only if all outputs are
@@ -125,7 +228,8 @@ make_logical_config (MetaMonitorManager *manager)
           info.is_presentation = TRUE;
           info.in_fullscreen = -1;
           info.winsys_id = 0;
-
+          info.n_outputs = 0;
+          info.monitor_winsys_xid = 0;
           g_array_append_val (monitor_infos, info);
 
           crtc->logical_monitor = &g_array_index (monitor_infos, MetaMonitorInfo,
@@ -147,6 +251,9 @@ make_logical_config (MetaMonitorManager *manager)
       if (output->crtc == NULL)
         continue;
 
+      if (output->tile_info.group_id)
+        continue;
+
       /* We must have a logical monitor on every CRTC at this point */
       g_assert (output->crtc->logical_monitor != NULL);
 
@@ -154,6 +261,12 @@ make_logical_config (MetaMonitorManager *manager)
 
       info->is_primary = info->is_primary || output->is_primary;
       info->is_presentation = info->is_presentation && output->is_presentation;
+
+      info->width_mm = output->width_mm;
+      info->height_mm = output->height_mm;
+
+      info->outputs[0] = output;
+      info->n_outputs = 1;
 
       if (output->is_primary || info->winsys_id == 0)
         info->winsys_id = output->winsys_id;

@@ -193,6 +193,7 @@ struct _MetaMonitorMode
   GDestroyNotify driver_notify;
 };
 
+#define META_MAX_OUTPUTS_PER_MONITOR 4
 /**
  * MetaMonitorInfo:
  *
@@ -208,6 +209,10 @@ struct _MetaMonitorInfo
   int number;
   int xinerama_index;
   MetaRectangle rect;
+  /* for tiled monitors these are calculated, from untiled just copied */
+  float refresh_rate;
+  int width_mm;
+  int height_mm;
   gboolean is_primary;
   gboolean is_presentation; /* XXX: not yet used */
   gboolean in_fullscreen;
@@ -221,6 +226,12 @@ struct _MetaMonitorInfo
      the primary one).
   */
   glong winsys_id;
+
+  guint32 tile_group_id;
+
+  int monitor_winsys_xid;
+  int n_outputs;
+  MetaOutput *outputs[META_MAX_OUTPUTS_PER_MONITOR];
 };
 
 /*
