@@ -349,6 +349,13 @@ struct _MetaMonitorManagerClass
                           unsigned short     *,
                           unsigned short     *,
                           unsigned short     *);
+
+  void (*add_monitor) (MetaMonitorManager *,
+                       MetaMonitorInfo *);
+
+  void (*delete_monitor) (MetaMonitorManager *,
+                          int monitor_winsys_xid);
+
 };
 
 void                meta_monitor_manager_rebuild_derived   (MetaMonitorManager *manager);

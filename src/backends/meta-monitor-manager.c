@@ -173,6 +173,7 @@ construct_tile_monitor (MetaMonitorManager *manager,
 static void
 make_logical_config (MetaMonitorManager *manager)
 {
+  MetaMonitorManagerClass *manager_class = META_MONITOR_MANAGER_GET_CLASS (manager);
   GArray *monitor_infos;
   unsigned int i, j;
 
@@ -277,6 +278,10 @@ make_logical_config (MetaMonitorManager *manager)
 
   manager->n_monitor_infos = monitor_infos->len;
   manager->monitor_infos = (void*)g_array_free (monitor_infos, FALSE);
+
+  if (manager_class->add_monitor)
+    for (i = 0; i < manager->n_monitor_infos; i++)
+      manager_class->add_monitor (manager, &manager->monitor_infos[i]);
 }
 
 static void
@@ -1356,15 +1361,35 @@ meta_monitor_manager_read_current_config (MetaMonitorManager *manager)
 void
 meta_monitor_manager_rebuild_derived (MetaMonitorManager *manager)
 {
+  MetaMonitorManagerClass *manager_class = META_MONITOR_MANAGER_GET_CLASS (manager);
   MetaMonitorInfo *old_monitor_infos;
-
+  unsigned old_n_monitor_infos;
+  unsigned i, j;
   old_monitor_infos = manager->monitor_infos;
+  old_n_monitor_infos = manager->n_monitor_infos;
 
   if (manager->in_init)
     return;
 
   make_logical_config (manager);
 
+  if (manager_class->delete_monitor)
+    {
+      for (i = 0; i < old_n_monitor_infos; i++)
+        {
+          gboolean delete_mon = TRUE;
+          for (j = 0; j < manager->n_monitor_infos; j++)
+            {
+              if (manager->monitor_infos[j].monitor_winsys_xid == old_monitor_infos[i].monitor_winsys_xid)
+                {
+                  delete_mon = FALSE;
+                  break;
+                }
+            }
+          if (delete_mon)
+            manager_class->delete_monitor (manager, old_monitor_infos[i].monitor_winsys_xid);
+        }
+    }
   g_signal_emit_by_name (manager, "monitors-changed");
 
   g_free (old_monitor_infos);

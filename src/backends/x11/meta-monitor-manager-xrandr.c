@@ -1251,6 +1251,88 @@ meta_monitor_manager_xrandr_set_crtc_gamma (MetaMonitorManager *manager,
   XRRFreeGamma (gamma);
 }
 
+#ifdef HAVE_XRANDR15
+static void
+meta_monitor_manager_xrandr_add_monitor(MetaMonitorManager *manager,
+                                        MetaMonitorInfo *monitor)
+{
+  MetaMonitorManagerXrandr *manager_xrandr = META_MONITOR_MANAGER_XRANDR (manager);
+  XRRMonitorInfo *m;
+  int o;
+  Atom name;
+  char name_buf[40];
+
+  if (manager_xrandr->has_randr15 == FALSE)
+    return;
+
+  if (monitor->n_outputs <= 1)
+    return;
+
+  if (monitor->outputs[0]->product)
+    snprintf (name_buf, 40, "%s-%d", monitor->outputs[0]->product, monitor->outputs[0]->tile_info.group_id);
+  else
+    snprintf (name_buf, 40, "Tiled-%d", monitor->outputs[0]->tile_info.group_id);
+
+  name = XInternAtom (manager_xrandr->xdisplay, name_buf, False);
+  monitor->monitor_winsys_xid = name;
+  m = XRRAllocateMonitor (manager_xrandr->xdisplay, monitor->n_outputs);
+  if (!m)
+    return;
+  m->name = name;
+  m->primary = monitor->is_primary;
+  m->automatic = True;
+
+  for (o = 0; o < monitor->n_outputs; o++) {
+    MetaOutput *output = monitor->outputs[o];
+    m->outputs[o] = output->winsys_id;
+  }
+  XRRSetMonitor (manager_xrandr->xdisplay,
+                 DefaultRootWindow (manager_xrandr->xdisplay),
+                 m);
+  XRRFreeMonitors (m);
+}
+
+static void
+meta_monitor_manager_xrandr_delete_monitor(MetaMonitorManager *manager,
+                                           int monitor_winsys_xid)
+{
+  MetaMonitorManagerXrandr *manager_xrandr = META_MONITOR_MANAGER_XRANDR (manager);
+
+  if (manager_xrandr->has_randr15 == FALSE)
+    return;
+  XRRDeleteMonitor (manager_xrandr->xdisplay,
+                    DefaultRootWindow (manager_xrandr->xdisplay),
+                    monitor_winsys_xid);
+}
+
+static void
+meta_monitor_manager_xrandr_init_monitors(MetaMonitorManagerXrandr *manager_xrandr)
+{
+  XRRMonitorInfo *m;
+  int n, i;
+
+  if (manager_xrandr->has_randr15 == FALSE)
+    return;
+
+  /* delete any tiled monitors setup, as mutter will want to recreate
+     things in its image */
+  m = XRRGetMonitors (manager_xrandr->xdisplay,
+                      DefaultRootWindow (manager_xrandr->xdisplay),
+                      FALSE, &n);
+  if (n == -1)
+    return;
+
+  for (i = 0; i < n; i++)
+    {
+      if (m[i].noutput > 1)
+        XRRDeleteMonitor (manager_xrandr->xdisplay,
+                          DefaultRootWindow (manager_xrandr->xdisplay),
+                          m[i].name);
+    }
+  XRRFreeMonitors (m);
+}
+#endif
+
 static void
 meta_monitor_manager_xrandr_init (MetaMonitorManagerXrandr *manager_xrandr)
 {
@@ -1283,6 +1365,7 @@ meta_monitor_manager_xrandr_init (MetaMonitorManagerXrandr *manager_xrandr)
           (major_version == 1 &&
            minor_version >= 5))
         manager_xrandr->has_randr15 = TRUE;
+      meta_monitor_manager_xrandr_init_monitors (manager_xrandr);
 #endif
     }
 }
@@ -1314,6 +1397,10 @@ meta_monitor_manager_xrandr_class_init (MetaMonitorManagerXrandrClass *klass)
   manager_class->change_backlight = meta_monitor_manager_xrandr_change_backlight;
   manager_class->get_crtc_gamma = meta_monitor_manager_xrandr_get_crtc_gamma;
   manager_class->set_crtc_gamma = meta_monitor_manager_xrandr_set_crtc_gamma;
+#ifdef HAVE_XRANDR15
+  manager_class->add_monitor = meta_monitor_manager_xrandr_add_monitor;
+  manager_class->delete_monitor = meta_monitor_manager_xrandr_delete_monitor;
+#endif
 }
 
 gboolean
