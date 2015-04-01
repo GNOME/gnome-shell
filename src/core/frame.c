@@ -37,7 +37,6 @@ meta_window_ensure_frame (MetaWindow *window)
 {
   MetaFrame *frame;
   XSetWindowAttributes attrs;
-  Visual *visual;
   gulong create_serial;
 
   if (window->frame)
@@ -58,37 +57,14 @@ meta_window_ensure_frame (MetaWindow *window)
   frame->is_flashing = FALSE;
   frame->borders_cached = FALSE;
 
-  meta_verbose ("Framing window %s: visual %s default, depth %d default depth %d\n",
-                window->desc,
-                XVisualIDFromVisual (window->xvisual) ==
-                XVisualIDFromVisual (window->screen->default_xvisual) ?
-                "is" : "is not",
-                window->depth, window->screen->default_depth);
   meta_verbose ("Frame geometry %d,%d  %dx%d\n",
                 frame->rect.x, frame->rect.y,
                 frame->rect.width, frame->rect.height);
 
-  /* Default depth/visual handles clients with weird visuals; they can
-   * always be children of the root depth/visual obviously, but
-   * e.g. DRI games can't be children of a parent that has the same
-   * visual as the client. NULL means default visual.
-   *
-   * We look for an ARGB visual if we can find one, otherwise use
-   * the default of NULL.
-   */
-
-  /* Special case for depth 32 windows (assumed to be ARGB),
-   * we use the window's visual. Otherwise we just use the system visual.
-   */
-  if (window->depth == 32)
-    visual = window->xvisual;
-  else
-    visual = NULL;
-
   frame->ui_frame = meta_ui_create_frame (window->screen->ui,
                                           window->display->xdisplay,
                                           frame->window,
-                                          visual,
+                                          window->xvisual,
                                           frame->rect.x,
                                           frame->rect.y,
                                           frame->rect.width,
