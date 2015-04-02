@@ -411,6 +411,11 @@ meta_wayland_xkb_info_destroy (MetaWaylandXkbInfo *xkb_info)
 void
 meta_wayland_keyboard_release (MetaWaylandKeyboard *keyboard)
 {
+  MetaBackend *backend = meta_get_backend ();
+
+  g_signal_handlers_disconnect_by_func (backend, on_keymap_changed, keyboard);
+  g_signal_handlers_disconnect_by_func (backend, on_keymap_layout_group_changed, keyboard);
+
   meta_wayland_keyboard_set_focus (keyboard, NULL);
   meta_wayland_xkb_info_destroy (&keyboard->xkb_info);
 
