@@ -47,6 +47,9 @@ void    shell_util_cursor_tracker_to_clutter (MetaCursorTracker *tracker,
 
 gboolean shell_util_need_background_refresh (void);
 
+void shell_util_text_insert_keyval (ClutterActor *actor,
+                                    guint         keyval);
+
 G_END_DECLS
 
 #endif /* __SHELL_UTIL_H__ */

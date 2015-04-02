@@ -391,3 +391,15 @@ shell_util_need_background_refresh (void)
 
   return FALSE;
 }
+
+void
+shell_util_text_insert_keyval (ClutterActor *actor,
+                               guint         keyval)
+{
+  ClutterEvent event = { 0 };
+
+  event.type = CLUTTER_KEY_PRESS;
+  event.key.keyval = keyval;
+
+  clutter_actor_event (actor, &event, FALSE);
+}

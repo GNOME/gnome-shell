@@ -184,6 +184,10 @@ const Keyboard = new Lang.Class({
         this._daemonProxy = null;
         this._lastDeviceId = null;
 
+        if (Meta.is_wayland_compositor() &&
+            Caribou.DisplayAdapter.set_default)
+            Caribou.DisplayAdapter.set_default(new ShellWaylandAdapter());
+
         Meta.get_backend().connect('last-device-changed', Lang.bind(this,
             function (backend, deviceId) {
                 let manager = Clutter.DeviceManager.get_default();
@@ -724,4 +728,25 @@ const KeyboardSource = new Lang.Class({
         // Show the OSK below the message tray
         this._keyboard.show(Main.layoutManager.bottomIndex);
     }
+});
+
+const ShellWaylandAdapter = new Lang.Class({
+    Name: 'ShellWaylandAdapter',
+    Extends: Caribou.XAdapter,
+
+    vfunc_keyval_press: function(keyval) {
+        let focus = global.stage.get_key_focus();
+        if (focus instanceof Clutter.Text)
+            Shell.util_text_insert_keyval(focus, keyval);
+        else
+            this.parent(keyval);
+    },
+
+    vfunc_keyval_release: function(keyval) {
+        let focus = global.stage.get_key_focus();
+        if (focus instanceof Clutter.Text)
+            return;             // do nothing
+        else
+            this.parent(keyval);
+    },
 });
