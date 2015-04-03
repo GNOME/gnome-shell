@@ -1746,7 +1746,7 @@ var AppIcon = new Lang.Class({
             let id = Main.overview.connect('hiding', () => {
                 this._menu.close();
             });
-            this.actor.connect('destroy', () => {
+            this._menu.actor.connect('destroy', function() {
                 Main.overview.disconnect(id);
             });
 
@@ -1773,6 +1773,8 @@ var AppIcon = new Lang.Class({
 
     _onMenuPoppedDown() {
         this.actor.sync_hover();
+        this._menu.destroy();
+        this._menu = null;
         this.emit('menu-state-changed', false);
     },
 
