@@ -5,14 +5,14 @@
 # Rudolfs <rudolfs.mazurs@gmail.com>, 2011.
 # Rūdofls Mazurs <rudolfs.mazurs@gmail.com>, 2011, 2012, 2013, 2014.
 # Pēteris Krišjānis <pecisk@gmail.com>, 2011.
-# Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>, 2014.
+# Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>, 2014, 2015.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-09-28 07:42+0000\n"
-"PO-Revision-Date: 2014-09-28 16:37+0300\n"
+"POT-Creation-Date: 2015-04-03 07:57+0000\n"
+"PO-Revision-Date: 2015-04-03 20:33+0300\n"
 "Last-Translator: Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>\n"
 "Language-Team: Latvian <lata-l10n@googlegroups.com>\n"
 "Language: lv\n"
@@ -28,8 +28,10 @@ msgid "System"
 msgstr "Sistēma"
 
 #: ../data/50-gnome-shell-system.xml.in.h:2
-msgid "Show the message tray"
-msgstr "Rādīt ziņojumu paplāte"
+#| msgid "%d new notification"
+#| msgid_plural "%d new notifications"
+msgid "Show the notification list"
+msgstr "Rādīt paziņojumu sarakstu"
 
 #: ../data/50-gnome-shell-system.xml.in.h:3
 msgid "Focus the active notification"
@@ -204,12 +206,14 @@ msgid "Keybinding to open the Activities Overview."
 msgstr "Taustiņu sasaiste, kas atver aktivitāšu pārskatu."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:25
-msgid "Keybinding to toggle the visibility of the message tray"
-msgstr "Taustiņu sasaiste, kas pārslēdz ziņojumu paplātes redzamību"
+#| msgid "Keybinding to toggle the visibility of the message tray"
+msgid "Keybinding to toggle the visibility of the notification list"
+msgstr "Taustiņu sasaiste, kas pārslēdz paziņojumu saraksta redzamību"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:26
-msgid "Keybinding to toggle the visibility of the message tray."
-msgstr "Taustiņu sasaiste, kas pārslēdz ziņojumu paplātes redzamību."
+#| msgid "Keybinding to toggle the visibility of the message tray."
+msgid "Keybinding to toggle the visibility of the notification list."
+msgstr "Taustiņu sasaiste, kas pārslēdz paziņojumu saraksta redzamību."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:27
 msgid "Keybinding to focus the active notification"
@@ -294,23 +298,23 @@ msgid "Delay focus changes in mouse mode until the pointer stops moving"
 msgstr "Peles režīmā aizkavēt fokusa izmaiņas, līdz rādītājs pārstāj kustēties"
 
 #: ../data/org.gnome.Shell.PortalHelper.desktop.in.h:1
-msgid "Captive Portal"
-msgstr "Sagūstītais portāls"
+#| msgid "Network error"
+msgid "Network Login"
+msgstr "Tīkla ierakstīšanās"
 
-#: ../js/extensionPrefs/main.js:123
+#: ../js/extensionPrefs/main.js:122
 #, javascript-format
 msgid "There was an error loading the preferences dialog for %s:"
 msgstr "Ielādējot %s iestatījumu dialogu, gadījās kļūda:"
 
-#: ../js/extensionPrefs/main.js:155
-#| msgid "Configure GNOME Shell Extensions"
+#: ../js/extensionPrefs/main.js:154
 msgid "GNOME Shell Extensions"
 msgstr "GNOME čaulas paplašinājumi"
 
-#: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:143
+#: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:145
 #: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:452
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/network.js:915
+#: ../js/ui/status/network.js:916
 msgid "Cancel"
 msgstr "Atcelt"
 
@@ -328,80 +332,142 @@ msgctxt "button"
 msgid "Sign In"
 msgstr "Ierakstīties"
 
-#: ../js/gdm/loginDialog.js:269
+#: ../js/gdm/loginDialog.js:281
 msgid "Choose Session"
 msgstr "Izvēlieties sesiju"
 
-#: ../js/gdm/loginDialog.js:429
+#: ../js/gdm/loginDialog.js:431
 msgid "Not listed?"
 msgstr "Nav sarakstā?"
 
-#: ../js/gdm/loginDialog.js:614
+#: ../js/gdm/loginDialog.js:840
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(piemēram, lietotājs vai %s)"
 
-#: ../js/gdm/loginDialog.js:619 ../js/ui/components/networkAgent.js:269
-#: ../js/ui/components/networkAgent.js:287
+#: ../js/gdm/loginDialog.js:845 ../js/ui/components/networkAgent.js:271
+#: ../js/ui/components/networkAgent.js:289
 msgid "Username: "
 msgstr "Lietotājvārds: "
 
-#: ../js/gdm/loginDialog.js:922
+#: ../js/gdm/loginDialog.js:1173
 msgid "Login Window"
 msgstr "Ierakstīšanās logs"
 
-#: ../js/gdm/util.js:323
+#: ../js/gdm/util.js:341
 msgid "Authentication error"
 msgstr "Autentifikācijas kļūda"
 
-#: ../js/gdm/util.js:453
+#: ../js/gdm/util.js:473
 msgid "(or swipe finger)"
 msgstr "(vai velciet pirkstu)"
 
-#: ../js/misc/util.js:115
+#: ../js/misc/util.js:119
 msgid "Command not found"
 msgstr "Komanda nav atrasta"
 
-#: ../js/misc/util.js:148
+#: ../js/misc/util.js:152
 msgid "Could not parse command:"
 msgstr "Neizdevās apstrādāt komandu:"
 
-#: ../js/misc/util.js:156
+#: ../js/misc/util.js:160
 #, javascript-format
 msgid "Execution of “%s” failed:"
 msgstr "“%s” izpilde neizdevās:"
 
+#. Translators: Time in 24h format */
+#: ../js/misc/util.js:191
+msgid "%H∶%M"
+msgstr "%H.%M"
+
+#. Translators: this is the word "Yesterday" followed by a
+#. time string in 24h format. i.e. "Yesterday, 14:30" */
+#: ../js/misc/util.js:197
+msgid "Yesterday, %H∶%M"
+msgstr "Vakar, %H.%M"
+
+#. Translators: this is the week day name followed by a time
+#. string in 24h format. i.e. "Monday, 14:30" */
+#: ../js/misc/util.js:203
+msgid "%A, %H∶%M"
+msgstr "%A, %H.%M"
+
+#. Translators: this is the month name and day number
+#. followed by a time string in 24h format.
+#. i.e. "May 25, 14:30" */
+#: ../js/misc/util.js:209
+msgid "%B %d, %H∶%M"
+msgstr "%d. %B, %H.%M"
+
+#. Translators: this is the month name, day number, year
+#. number followed by a time string in 24h format.
+#. i.e. "May 25 2012, 14:30" */
+#: ../js/misc/util.js:215
+msgid "%B %d %Y, %H∶%M"
+msgstr "%d. %B, %Y., %H.%M"
+
+#. Translators: Time in 12h format */
+#: ../js/misc/util.js:220
+msgid "%l∶%M %p"
+msgstr "%l.%M %p"
+
+#. Translators: this is the word "Yesterday" followed by a
+#. time string in 12h format. i.e. "Yesterday, 2:30 pm" */
+#: ../js/misc/util.js:226
+msgid "Yesterday, %l∶%M %p"
+msgstr "Vakar, %l:%M %p"
+
+#. Translators: this is the week day name followed by a time
+#. string in 12h format. i.e. "Monday, 2:30 pm" */
+#: ../js/misc/util.js:232
+msgid "%A, %l∶%M %p"
+msgstr "%A, %l.%M %p"
+
+#. Translators: this is the month name and day number
+#. followed by a time string in 12h format.
+#. i.e. "May 25, 2:30 pm" */
+#: ../js/misc/util.js:238
+msgid "%B %d, %l∶%M %p"
+msgstr "%d. %B, %l.%M %p"
+
+#. Translators: this is the month name, day number, year
+#. number followed by a time string in 12h format.
+#. i.e. "May 25 2012, 2:30 pm"*/
+#: ../js/misc/util.js:244
+msgid "%B %d %Y, %l∶%M %p"
+msgstr "%d. %B, %Y., %l.%M %p"
+
+#. TRANSLATORS: this is the title of the wifi captive portal login
+#. * window, until we know the title of the actual login page */
 #: ../js/portalHelper/main.js:85
-#| msgid "Authentication Required"
 msgid "Web Authentication Redirect"
 msgstr "Tīmekļa autentifikācijas pārsūtīšana"
 
-#: ../js/ui/appDisplay.js:772
+#: ../js/ui/appDisplay.js:788
 msgid "Frequently used applications will appear here"
 msgstr "Šeit parādīsies biežāk izmantotās lietotnes"
 
-#: ../js/ui/appDisplay.js:883
+#: ../js/ui/appDisplay.js:908
 msgid "Frequent"
 msgstr "Biežāk izmantotās"
 
-#: ../js/ui/appDisplay.js:890
+#: ../js/ui/appDisplay.js:915
 msgid "All"
 msgstr "Visas"
 
-#: ../js/ui/appDisplay.js:1790
+#: ../js/ui/appDisplay.js:1844
 msgid "New Window"
 msgstr "Jauns logs"
 
-#: ../js/ui/appDisplay.js:1816 ../js/ui/dash.js:285
+#: ../js/ui/appDisplay.js:1872 ../js/ui/dash.js:289
 msgid "Remove from Favorites"
 msgstr "Izņemt no izlases"
 
-#: ../js/ui/appDisplay.js:1822
+#: ../js/ui/appDisplay.js:1878
 msgid "Add to Favorites"
 msgstr "Pievienot izlasei"
 
-#: ../js/ui/appDisplay.js:1831
-#| msgid "Show Text"
+#: ../js/ui/appDisplay.js:1888
 msgid "Show Details"
 msgstr "Rādīt sīkāku informāciju"
 
@@ -415,8 +481,8 @@ msgstr "%s ir pievienots izlasei."
 msgid "%s has been removed from your favorites."
 msgstr "%s ir izņemts no izlases."
 
-#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:813
-#: ../js/ui/status/system.js:337
+#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:650
+#: ../js/ui/status/system.js:334
 msgid "Settings"
 msgstr "Iestatījumi"
 
@@ -424,162 +490,108 @@ msgstr "Iestatījumi"
 msgid "Change Background…"
 msgstr "Mainīt fonu…"
 
-#. Translators: Shown in calendar event list for all day events
-#. * Keep it short, best if you can use less then 10 characters
-#. */
-#: ../js/ui/calendar.js:67
-msgctxt "event list time"
-msgid "All Day"
-msgstr "Visu dienu"
-
-#. Translators: Shown in calendar event list, if 24h format,
-#. \u2236 is a ratio character, similar to : */
-#: ../js/ui/calendar.js:73
-msgctxt "event list time"
-msgid "%H∶%M"
-msgstr "%H.%M"
-
-#. Translators: Shown in calendar event list, if 12h format,
-#. \u2236 is a ratio character, similar to : and \u2009 is
-#. a thin space */
-#: ../js/ui/calendar.js:82
-msgctxt "event list time"
-msgid "%l∶%M %p"
-msgstr "%l.%M %p"
+#. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday). */
+#: ../js/ui/calendar.js:53
+msgctxt "calendar-no-work"
+msgid "06"
+msgstr "06"
 
 #. Translators: Calendar grid abbreviation for Sunday.
 #. *
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #. */
-#: ../js/ui/calendar.js:113
+#: ../js/ui/calendar.js:82
 msgctxt "grid sunday"
 msgid "S"
 msgstr "Sv"
 
 #. Translators: Calendar grid abbreviation for Monday */
-#: ../js/ui/calendar.js:115
+#: ../js/ui/calendar.js:84
 msgctxt "grid monday"
 msgid "M"
 msgstr "Pr"
 
 #. Translators: Calendar grid abbreviation for Tuesday */
-#: ../js/ui/calendar.js:117
+#: ../js/ui/calendar.js:86
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "Ot"
 
 #. Translators: Calendar grid abbreviation for Wednesday */
-#: ../js/ui/calendar.js:119
+#: ../js/ui/calendar.js:88
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "Tr"
 
 #. Translators: Calendar grid abbreviation for Thursday */
-#: ../js/ui/calendar.js:121
+#: ../js/ui/calendar.js:90
 msgctxt "grid thursday"
 msgid "T"
 msgstr "Ce"
 
 #. Translators: Calendar grid abbreviation for Friday */
-#: ../js/ui/calendar.js:123
+#: ../js/ui/calendar.js:92
 msgctxt "grid friday"
 msgid "F"
 msgstr "Pk"
 
 #. Translators: Calendar grid abbreviation for Saturday */
-#: ../js/ui/calendar.js:125
+#: ../js/ui/calendar.js:94
 msgctxt "grid saturday"
 msgid "S"
 msgstr "Se"
 
-#. Translators: Event list abbreviation for Sunday.
-#. *
-#. * NOTE: These list abbreviations are normally not shown together
-#. * so they need to be unique (e.g. Tuesday and Thursday cannot
-#. * both be 'T').
-#. */
-#: ../js/ui/calendar.js:138
-msgctxt "list sunday"
-msgid "Su"
-msgstr "Sv"
-
-#. Translators: Event list abbreviation for Monday */
-#: ../js/ui/calendar.js:140
-msgctxt "list monday"
-msgid "M"
-msgstr "Pr"
-
-#. Translators: Event list abbreviation for Tuesday */
-#: ../js/ui/calendar.js:142
-msgctxt "list tuesday"
-msgid "T"
-msgstr "Ot"
-
-#. Translators: Event list abbreviation for Wednesday */
-#: ../js/ui/calendar.js:144
-msgctxt "list wednesday"
-msgid "W"
-msgstr "Tr"
-
-#. Translators: Event list abbreviation for Thursday */
-#: ../js/ui/calendar.js:146
-msgctxt "list thursday"
-msgid "Th"
-msgstr "Ce"
-
-#. Translators: Event list abbreviation for Friday */
-#: ../js/ui/calendar.js:148
-msgctxt "list friday"
-msgid "F"
-msgstr "Pk"
-
-#. Translators: Event list abbreviation for Saturday */
-#: ../js/ui/calendar.js:150
-msgctxt "list saturday"
-msgid "S"
-msgstr "Se"
-
-#: ../js/ui/calendar.js:453
+#: ../js/ui/calendar.js:564
 msgid "Previous month"
 msgstr "Iepriekšējais mēnesis"
 
-#: ../js/ui/calendar.js:463
+#: ../js/ui/calendar.js:574
 msgid "Next month"
 msgstr "Nākamais mēnesis"
 
-#. Translators: Text to show if there are no events */
 #: ../js/ui/calendar.js:781
-msgid "Nothing Scheduled"
-msgstr "Nekas nav ieplānots"
+msgid "Week %V"
+msgstr "Nedēļa %V"
 
-#. Translators: Shown on calendar heading when selected day occurs on current year */
-#: ../js/ui/calendar.js:799
+#. Translators: Shown in calendar event list for all day events
+#. * Keep it short, best if you can use less then 10 characters
+#. */
+#: ../js/ui/calendar.js:1187
+msgctxt "event list time"
+msgid "All Day"
+msgstr "Visu dienu"
+
+#: ../js/ui/calendar.js:1293
+msgid "Clear section"
+msgstr "Attīrīt sadaļu"
+
+#: ../js/ui/calendar.js:1520
+msgid "Events"
+msgstr "Notikumi"
+
+#: ../js/ui/calendar.js:1529
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d. %B"
 
-#. Translators: Shown on calendar heading when selected day occurs on different year */
-#: ../js/ui/calendar.js:802
+#: ../js/ui/calendar.js:1533
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d. %B, %Y."
 
-#: ../js/ui/calendar.js:813
-msgid "Today"
-msgstr "Šodien"
+#: ../js/ui/calendar.js:1618
+msgid "Notifications"
+msgstr "Paziņojumi"
 
-#: ../js/ui/calendar.js:817
-msgid "Tomorrow"
-msgstr "Rīt"
+#: ../js/ui/calendar.js:1769
+#| msgid "Notifications"
+msgid "No Notifications"
+msgstr "Nav paziņojumu"
 
-#: ../js/ui/calendar.js:828
-msgid "This week"
-msgstr "Šonedēļ"
-
-#: ../js/ui/calendar.js:836
-msgid "Next week"
-msgstr "Nākamnedēļ"
+#: ../js/ui/calendar.js:1772
+msgid "No Events"
+msgstr "Nav notikumu"
 
 #: ../js/ui/components/automountManager.js:91
 msgid "External drive connected"
@@ -589,18 +601,10 @@ msgstr "Pievienots ārējs dzinis"
 msgid "External drive disconnected"
 msgstr "Atvienots ārējs dzinis"
 
-#: ../js/ui/components/autorunManager.js:296
-msgid "Removable Devices"
-msgstr "Izņemamās ierīces"
-
-#: ../js/ui/components/autorunManager.js:596
+#: ../js/ui/components/autorunManager.js:354
 #, javascript-format
 msgid "Open with %s"
 msgstr "Atvērt ar %s"
-
-#: ../js/ui/components/autorunManager.js:622
-msgid "Eject"
-msgstr "Izgrūst"
 
 #: ../js/ui/components/keyring.js:94 ../js/ui/components/polkitAgent.js:285
 msgid "Password:"
@@ -610,40 +614,42 @@ msgstr "Parole:"
 msgid "Type again:"
 msgstr "Ierakstiet vēlreiz:"
 
-#: ../js/ui/components/networkAgent.js:138 ../js/ui/status/network.js:277
-#: ../js/ui/status/network.js:359 ../js/ui/status/network.js:918
+#: ../js/ui/components/networkAgent.js:140 ../js/ui/status/network.js:277
+#: ../js/ui/status/network.js:359 ../js/ui/status/network.js:919
 msgid "Connect"
 msgstr "Savienot"
 
-#: ../js/ui/components/networkAgent.js:231
-#: ../js/ui/components/networkAgent.js:243
-#: ../js/ui/components/networkAgent.js:271
-#: ../js/ui/components/networkAgent.js:291
-#: ../js/ui/components/networkAgent.js:301
+#: ../js/ui/components/networkAgent.js:233
+#: ../js/ui/components/networkAgent.js:245
+#: ../js/ui/components/networkAgent.js:273
+#: ../js/ui/components/networkAgent.js:293
+#: ../js/ui/components/networkAgent.js:303
 msgid "Password: "
 msgstr "Parole: "
 
-#: ../js/ui/components/networkAgent.js:236
+#: ../js/ui/components/networkAgent.js:238
 msgid "Key: "
 msgstr "Atslēga: "
 
-#: ../js/ui/components/networkAgent.js:275
+#: ../js/ui/components/networkAgent.js:277
 msgid "Identity: "
 msgstr "Identitāte: "
 
-#: ../js/ui/components/networkAgent.js:277
+#: ../js/ui/components/networkAgent.js:279
 msgid "Private key password: "
 msgstr "Privātās atslēgas parole: "
 
-#: ../js/ui/components/networkAgent.js:289
+#: ../js/ui/components/networkAgent.js:291
 msgid "Service: "
 msgstr "Serviss: "
 
-#: ../js/ui/components/networkAgent.js:318
+#: ../js/ui/components/networkAgent.js:320
+#: ../js/ui/components/networkAgent.js:658
 msgid "Authentication required by wireless network"
 msgstr "Bezvadu tīkls pieprasa autentifikāciju"
 
-#: ../js/ui/components/networkAgent.js:319
+#: ../js/ui/components/networkAgent.js:321
+#: ../js/ui/components/networkAgent.js:659
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -652,38 +658,50 @@ msgstr ""
 "Lai piekļūtu bezvadu tīklam “%s”, ir nepieciešamas paroles vai šifrēšanas "
 "atslēgas."
 
-#: ../js/ui/components/networkAgent.js:323
+#: ../js/ui/components/networkAgent.js:325
+#: ../js/ui/components/networkAgent.js:662
 msgid "Wired 802.1X authentication"
 msgstr "Vadu 802.1X autentifikācija"
 
-#: ../js/ui/components/networkAgent.js:325
+#: ../js/ui/components/networkAgent.js:327
 msgid "Network name: "
 msgstr "Tīkla nosaukums: "
 
-#: ../js/ui/components/networkAgent.js:330
+#: ../js/ui/components/networkAgent.js:332
+#: ../js/ui/components/networkAgent.js:666
 msgid "DSL authentication"
 msgstr "DSL autentifikācija"
 
-#: ../js/ui/components/networkAgent.js:337
+#: ../js/ui/components/networkAgent.js:339
+#: ../js/ui/components/networkAgent.js:672
 msgid "PIN code required"
 msgstr "Nepieciešams PIN kods"
 
-#: ../js/ui/components/networkAgent.js:338
+#: ../js/ui/components/networkAgent.js:340
+#: ../js/ui/components/networkAgent.js:673
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "Mobilā platjoslas tīkla ierīcei ir vajadzīgs PIN kods"
 
-#: ../js/ui/components/networkAgent.js:339
+#: ../js/ui/components/networkAgent.js:341
 msgid "PIN: "
 msgstr "PIN: "
 
-#: ../js/ui/components/networkAgent.js:345
+#: ../js/ui/components/networkAgent.js:348
+#: ../js/ui/components/networkAgent.js:679
 msgid "Mobile broadband network password"
 msgstr "Mobilās platjoslas tīkla parole"
 
-#: ../js/ui/components/networkAgent.js:346
+#: ../js/ui/components/networkAgent.js:349
+#: ../js/ui/components/networkAgent.js:663
+#: ../js/ui/components/networkAgent.js:667
+#: ../js/ui/components/networkAgent.js:680
 #, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "Lai savienotos ar “%s”, ir nepieciešama parole."
+
+#: ../js/ui/components/networkAgent.js:647 ../js/ui/status/network.js:1657
+msgid "Network Manager"
+msgstr "Tīkla pārvaldnieks"
 
 #: ../js/ui/components/polkitAgent.js:54
 msgid "Authentication Required"
@@ -705,311 +723,50 @@ msgstr "Autentificēt"
 msgid "Sorry, that didn't work. Please try again."
 msgstr "Diemžēl tas nenostrādāja. Lūdzu, mēģiniet vēlreiz."
 
-#: ../js/ui/components/telepathyClient.js:240
-msgid "Invitation"
-msgstr "Ielūgums"
-
-#: ../js/ui/components/telepathyClient.js:300
-msgid "Call"
-msgstr "Izsaukums"
-
-#: ../js/ui/components/telepathyClient.js:316
-msgid "File Transfer"
-msgstr "Datņu pārraide"
-
-#: ../js/ui/components/telepathyClient.js:420
-msgid "Chat"
-msgstr "Tērzēšana"
-
-#: ../js/ui/components/telepathyClient.js:483
-msgid "Unmute"
-msgstr "Ieslēgt skaņu"
-
-#: ../js/ui/components/telepathyClient.js:483
-msgid "Mute"
-msgstr "Apklusināt"
-
-#. Translators: Time in 24h format */
-#: ../js/ui/components/telepathyClient.js:953
-msgid "%H∶%M"
-msgstr "%H.%M"
-
-#. Translators: this is the word "Yesterday" followed by a
-#. time string in 24h format. i.e. "Yesterday, 14:30" */
-#: ../js/ui/components/telepathyClient.js:960
-msgid "Yesterday, %H∶%M"
-msgstr "Vakar, %H.%M"
-
-#. Translators: this is the week day name followed by a time
-#. string in 24h format. i.e. "Monday, 14:30" */
-#: ../js/ui/components/telepathyClient.js:967
-msgid "%A, %H∶%M"
-msgstr "%A, %H.%M"
-
-#. Translators: this is the month name and day number
-#. followed by a time string in 24h format.
-#. i.e. "May 25, 14:30" */
-#: ../js/ui/components/telepathyClient.js:974
-msgid "%B %d, %H∶%M"
-msgstr "%d. %B, %H.%M"
-
-#. Translators: this is the month name, day number, year
-#. number followed by a time string in 24h format.
-#. i.e. "May 25 2012, 14:30" */
-#: ../js/ui/components/telepathyClient.js:980
-msgid "%B %d %Y, %H∶%M"
-msgstr "%d. %B, %Y., %H.%M"
-
-#. Translators: Time in 24h format */
-#: ../js/ui/components/telepathyClient.js:986
-msgid "%l∶%M %p"
-msgstr "%l.%M %p"
-
-#. Translators: this is the word "Yesterday" followed by a
-#. time string in 12h format. i.e. "Yesterday, 2:30 pm" */
-#: ../js/ui/components/telepathyClient.js:993
-msgid "Yesterday, %l∶%M %p"
-msgstr "Vakar, %l:%M %p"
-
-#. Translators: this is the week day name followed by a time
-#. string in 12h format. i.e. "Monday, 2:30 pm" */
-#: ../js/ui/components/telepathyClient.js:1000
-msgid "%A, %l∶%M %p"
-msgstr "%A, %l.%M %p"
-
-#. Translators: this is the month name and day number
-#. followed by a time string in 12h format.
-#. i.e. "May 25, 2:30 pm" */
-#: ../js/ui/components/telepathyClient.js:1007
-msgid "%B %d, %l∶%M %p"
-msgstr "%d. %B, %l.%M %p"
-
-#. Translators: this is the month name, day number, year
-#. number followed by a time string in 12h format.
-#. i.e. "May 25 2012, 2:30 pm"*/
-#: ../js/ui/components/telepathyClient.js:1013
-msgid "%B %d %Y, %l∶%M %p"
-msgstr "%d. %B, %Y., %l.%M %p"
-
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name. */
-#: ../js/ui/components/telepathyClient.js:1045
+#: ../js/ui/components/telepathyClient.js:732
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s tagad saucas %s"
 
-#. translators: argument is a room name like
-#. * room@jabber.org for example. */
-#: ../js/ui/components/telepathyClient.js:1149
-#, javascript-format
-msgid "Invitation to %s"
-msgstr "Ielūgums uz %s"
-
-#. translators: first argument is the name of a contact and the second
-#. * one the name of a room. "Alice is inviting you to join room@jabber.org
-#. * for example. */
-#: ../js/ui/components/telepathyClient.js:1157
-#, javascript-format
-msgid "%s is inviting you to join %s"
-msgstr "%s jūs ielūdz pievienoties %s"
-
-#: ../js/ui/components/telepathyClient.js:1159
-#: ../js/ui/components/telepathyClient.js:1194
-#: ../js/ui/components/telepathyClient.js:1228
-#: ../js/ui/components/telepathyClient.js:1286
-msgid "Decline"
-msgstr "Noraidīt"
-
-#: ../js/ui/components/telepathyClient.js:1165
-#: ../js/ui/components/telepathyClient.js:1234
-#: ../js/ui/components/telepathyClient.js:1291
-msgid "Accept"
-msgstr "Pieņemt"
-
-#. translators: argument is a contact name like Alice for example. */
-#: ../js/ui/components/telepathyClient.js:1184
-#, javascript-format
-msgid "Video call from %s"
-msgstr "Video zvans no %s"
-
-#. translators: argument is a contact name like Alice for example. */
-#: ../js/ui/components/telepathyClient.js:1187
-#, javascript-format
-msgid "Call from %s"
-msgstr "Zvans no %s"
-
-#. translators: this is a button label (verb), not a noun */
-#: ../js/ui/components/telepathyClient.js:1201
-msgid "Answer"
-msgstr "Atbildēt"
-
-#. To translators: The first parameter is
-#. * the contact's alias and the second one is the
-#. * file name. The string will be something
-#. * like: "Alice is sending you test.ogg"
-#. */
-#: ../js/ui/components/telepathyClient.js:1222
-#, javascript-format
-msgid "%s is sending you %s"
-msgstr "%s sūta jums %s"
-
-#. To translators: The parameter is the contact's alias */
-#: ../js/ui/components/telepathyClient.js:1251
-#, javascript-format
-msgid "%s would like permission to see when you are online"
-msgstr "%s vēlas saņemt atļauju redzēt jūsu tiešsaistes statusu"
-
-#: ../js/ui/components/telepathyClient.js:1337
-msgid "Network error"
-msgstr "Tīkla kļūda"
-
-#: ../js/ui/components/telepathyClient.js:1339
-msgid "Authentication failed"
-msgstr "Autentifikācija neizdevās"
-
-#: ../js/ui/components/telepathyClient.js:1341
-msgid "Encryption error"
-msgstr "Šifrēšanas kļūda"
-
-#: ../js/ui/components/telepathyClient.js:1343
-msgid "Certificate not provided"
-msgstr "Nav sertifikāta"
-
-#: ../js/ui/components/telepathyClient.js:1345
-msgid "Certificate untrusted"
-msgstr "Neuzticams sertifikāts"
-
-#: ../js/ui/components/telepathyClient.js:1347
-msgid "Certificate expired"
-msgstr "Sertifikāts izbeidzies"
-
-#: ../js/ui/components/telepathyClient.js:1349
-msgid "Certificate not activated"
-msgstr "Sertifikāts nav aktivizēts"
-
-#: ../js/ui/components/telepathyClient.js:1351
-msgid "Certificate hostname mismatch"
-msgstr "Sertifikātu servera nosaukumu nesakritība"
-
-#: ../js/ui/components/telepathyClient.js:1353
-msgid "Certificate fingerprint mismatch"
-msgstr "Sertifikāta ciparnospiedumu nesakritība"
-
-#: ../js/ui/components/telepathyClient.js:1355
-msgid "Certificate self-signed"
-msgstr "Sertifikāts ir pašparakstīts"
-
-#: ../js/ui/components/telepathyClient.js:1357
-msgid "Status is set to offline"
-msgstr "Statuss ir “nesaistē”"
-
-#: ../js/ui/components/telepathyClient.js:1359
-msgid "Encryption is not available"
-msgstr "Šifrēšana nav pieejama"
-
-#: ../js/ui/components/telepathyClient.js:1361
-msgid "Certificate is invalid"
-msgstr "Sertifikāts nav derīgs"
-
-#: ../js/ui/components/telepathyClient.js:1363
-msgid "Connection has been refused"
-msgstr "Savienojums atteikts"
-
-#: ../js/ui/components/telepathyClient.js:1365
-msgid "Connection can't be established"
-msgstr "Nevar izveidot savienojumu"
-
-#: ../js/ui/components/telepathyClient.js:1367
-msgid "Connection has been lost"
-msgstr "Savienojums pārtrūka"
-
-#: ../js/ui/components/telepathyClient.js:1369
-msgid "This account is already connected to the server"
-msgstr "Šis konts jau ir savienots ar serveri"
-
-#: ../js/ui/components/telepathyClient.js:1371
-msgid ""
-"Connection has been replaced by a new connection using the same resource"
-msgstr ""
-"Savienojums tika aizvietots ar jaunu savienojumu, kurš izmanto to pašu "
-"resursu"
-
-#: ../js/ui/components/telepathyClient.js:1373
-msgid "The account already exists on the server"
-msgstr "Uz servera šāds konts jau ir"
-
-#: ../js/ui/components/telepathyClient.js:1375
-msgid "Server is currently too busy to handle the connection"
-msgstr "Serveris ir pārāk aizņemts, lai apstrādātu savienojumu"
-
-#: ../js/ui/components/telepathyClient.js:1377
-msgid "Certificate has been revoked"
-msgstr "Sertifikāts tika atsaukts"
-
-#: ../js/ui/components/telepathyClient.js:1379
-msgid ""
-"Certificate uses an insecure cipher algorithm or is cryptographically weak"
-msgstr ""
-"Sertifikāts izmanto nedrošu šifrēšanas algoritmu vai arī ir kriptogrāfiski "
-"vājš"
-
-#: ../js/ui/components/telepathyClient.js:1381
-msgid ""
-"The length of the server certificate, or the depth of the server certificate "
-"chain, exceed the limits imposed by the cryptography library"
-msgstr ""
-"Servera sertifikāta garums vai sertifikāta ķēdes dziļums pārsniedz "
-"ierobežojumus, ko nosaka kriptogrāfijas bibliotēka"
-
-#: ../js/ui/components/telepathyClient.js:1383
-msgid "Internal error"
-msgstr "Iekšēja kļūda"
-
-#. translators: argument is the account name, like
-#. * name@jabber.org for example. */
-#: ../js/ui/components/telepathyClient.js:1393
-#, javascript-format
-msgid "Unable to connect to %s"
-msgstr "Nevar savienoties ar %s"
-
-#: ../js/ui/components/telepathyClient.js:1398
-msgid "View account"
-msgstr "Skatīt kontu"
-
-#: ../js/ui/components/telepathyClient.js:1435
-msgid "Unknown reason"
-msgstr "Nezināms iemesls"
-
-#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:154
+#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:155
 msgid "Windows"
 msgstr "Logi"
 
-#: ../js/ui/dash.js:249 ../js/ui/dash.js:287
+#: ../js/ui/dash.js:250 ../js/ui/dash.js:291
 msgid "Show Applications"
 msgstr "Rādīt lietotnes"
 
-#: ../js/ui/dash.js:445
+#: ../js/ui/dash.js:449
 msgid "Dash"
 msgstr "Panelis"
-
-#: ../js/ui/dateMenu.js:96
-msgid "Open Calendar"
-msgstr "Atvērt kalendāru"
-
-#: ../js/ui/dateMenu.js:100
-msgid "Open Clocks"
-msgstr "Atvērt pulksteņus"
-
-#: ../js/ui/dateMenu.js:107
-msgid "Date & Time Settings"
-msgstr "Datuma un laika iestatījumi"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #. */
-#: ../js/ui/dateMenu.js:204
-msgid "%A %B %e, %Y"
+#: ../js/ui/dateMenu.js:73
+#| msgid "%A %B %e, %Y"
+msgid "%B %e %Y"
+msgstr "%e. %B, %Y."
+
+#. Translators: This is the accessible name of the date button shown
+#. * below the time in the shell; it should combine the weekday and the
+#. * date, e.g. "Tuesday February 17 2015".
+#. */
+#: ../js/ui/dateMenu.js:80
+#| msgid "%A %B %e, %Y"
+msgid "%A %B %e %Y"
 msgstr "%A, %e. %B, %Y."
+
+#: ../js/ui/dateMenu.js:160
+msgid "Add world clocks…"
+msgstr "Pievienot pasaules pulksteņus…"
+
+#: ../js/ui/dateMenu.js:161
+#| msgid "Open Clocks"
+msgid "World Clocks"
+msgstr "Pasaules pulksteņi"
 
 #: ../js/ui/endSessionDialog.js:64
 #, javascript-format
@@ -1159,9 +916,19 @@ msgstr "Instalēt"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Lejupielādēt un instalēt “%s” no extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:700 ../js/ui/status/keyboard.js:523
+#: ../js/ui/keyboard.js:714 ../js/ui/status/keyboard.js:713
 msgid "Keyboard"
 msgstr "Tastatūra"
+
+#. translators: 'Hide' is a verb */
+#: ../js/ui/legacyTray.js:64
+#| msgid "Hide Text"
+msgid "Hide tray"
+msgstr "Slēpt paplāti"
+
+#: ../js/ui/legacyTray.js:105
+msgid "Status Icons"
+msgstr "Statusa ikonas"
 
 #: ../js/ui/lookingGlass.js:643
 msgid "No extensions installed"
@@ -1215,54 +982,9 @@ msgstr "Skatīt avotu"
 msgid "Web Page"
 msgstr "Tīmekļa lapa"
 
-#: ../js/ui/messageTray.js:1327
-msgid "Open"
-msgstr "Atvērt"
-
-#: ../js/ui/messageTray.js:1334
-msgid "Remove"
-msgstr "Izņemt"
-
-#: ../js/ui/messageTray.js:1631
-msgid "Notifications"
-msgstr "Paziņojumi"
-
-#: ../js/ui/messageTray.js:1638
-msgid "Clear Messages"
-msgstr "Attīrīt ziņojumus"
-
-#: ../js/ui/messageTray.js:1657
-msgid "Notification Settings"
-msgstr "Paziņojumu iestatījumi"
-
-#: ../js/ui/messageTray.js:1710
-msgid "Tray Menu"
-msgstr "Paplātes izvēlne"
-
-#: ../js/ui/messageTray.js:1934
-msgid "No Messages"
-msgstr "Nav ziņojumu"
-
-#: ../js/ui/messageTray.js:1979
-msgid "Message Tray"
-msgstr "Ziņojumu paplāte"
-
-#: ../js/ui/messageTray.js:2992
+#: ../js/ui/messageTray.js:1507
 msgid "System Information"
 msgstr "Sistēmas informācija"
-
-#: ../js/ui/notificationDaemon.js:513 ../src/shell-app.c:425
-msgctxt "program"
-msgid "Unknown"
-msgstr "Nezināma"
-
-#: ../js/ui/overviewControls.js:482 ../js/ui/screenShield.js:151
-#, javascript-format
-msgid "%d new message"
-msgid_plural "%d new messages"
-msgstr[0] "%d jauns ziņojums"
-msgstr[1] "%d jauni ziņojumi"
-msgstr[2] "%d jaunu ziņojumu"
 
 #: ../js/ui/overview.js:84
 msgid "Undo"
@@ -1280,21 +1002,21 @@ msgstr "Pārskats"
 msgid "Type to search…"
 msgstr "Rakstiet, lai meklētu…"
 
-#: ../js/ui/panel.js:515
+#: ../js/ui/panel.js:352
 msgid "Quit"
 msgstr "Iziet"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview". */
-#: ../js/ui/panel.js:567
+#: ../js/ui/panel.js:404
 msgid "Activities"
 msgstr "Aktivitātes"
 
-#: ../js/ui/panel.js:918
+#: ../js/ui/panel.js:755
 msgid "Top Bar"
 msgstr "Augšējā josla"
 
-#: ../js/ui/popupMenu.js:269
+#: ../js/ui/popupMenu.js:289
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -1306,18 +1028,25 @@ msgstr "Ievadiet komandu"
 msgid "Close"
 msgstr "Aizvērt"
 
-#: ../js/ui/runDialog.js:277
-#| msgid "Estimating…"
+#: ../js/ui/runDialog.js:281
 msgid "Restarting…"
 msgstr "Pārstartē…"
 
 #. Translators: This is a time format for a date in
 #. long format */
-#: ../js/ui/screenShield.js:88
+#: ../js/ui/screenShield.js:85
 msgid "%A, %B %d"
 msgstr "%A, %d. %B"
 
-#: ../js/ui/screenShield.js:153
+#: ../js/ui/screenShield.js:144
+#, javascript-format
+msgid "%d new message"
+msgid_plural "%d new messages"
+msgstr[0] "%d jauns ziņojums"
+msgstr[1] "%d jauni ziņojumi"
+msgstr[2] "%d jaunu ziņojumu"
+
+#: ../js/ui/screenShield.js:146
 #, javascript-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
@@ -1325,27 +1054,27 @@ msgstr[0] "%d jauns paziņojums"
 msgstr[1] "%d jauni paziņojumi"
 msgstr[2] "%d jaunu paziņojumu"
 
-#: ../js/ui/screenShield.js:472 ../js/ui/status/system.js:345
+#: ../js/ui/screenShield.js:432 ../js/ui/status/system.js:342
 msgid "Lock"
 msgstr "Bloķēt"
 
-#: ../js/ui/screenShield.js:706
+#: ../js/ui/screenShield.js:668
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME vajag bloķēt ekrānu"
 
-#: ../js/ui/screenShield.js:833 ../js/ui/screenShield.js:1304
+#: ../js/ui/screenShield.js:795 ../js/ui/screenShield.js:1271
 msgid "Unable to lock"
 msgstr "Nevar bloķēt"
 
-#: ../js/ui/screenShield.js:834 ../js/ui/screenShield.js:1305
+#: ../js/ui/screenShield.js:796 ../js/ui/screenShield.js:1272
 msgid "Lock was blocked by an application"
 msgstr "Lietotne neļāva bloķēt"
 
-#: ../js/ui/search.js:594
+#: ../js/ui/search.js:617
 msgid "Searching…"
 msgstr "Meklē…"
 
-#: ../js/ui/search.js:596
+#: ../js/ui/search.js:619
 msgid "No results."
 msgstr "Nav rezultātu."
 
@@ -1409,11 +1138,11 @@ msgstr "Atlecošie taustiņi"
 msgid "Mouse Keys"
 msgstr "Peles taustiņi"
 
-#: ../js/ui/status/accessibility.js:144
+#: ../js/ui/status/accessibility.js:167
 msgid "High Contrast"
 msgstr "Augsts kontrasts"
 
-#: ../js/ui/status/accessibility.js:193
+#: ../js/ui/status/accessibility.js:202
 msgid "Large Text"
 msgstr "Liels teksts"
 
@@ -1422,9 +1151,9 @@ msgid "Bluetooth"
 msgstr "Bluetooth"
 
 #: ../js/ui/status/bluetooth.js:51 ../js/ui/status/network.js:178
-#: ../js/ui/status/network.js:360 ../js/ui/status/network.js:1281
-#: ../js/ui/status/network.js:1392 ../js/ui/status/rfkill.js:86
-#: ../js/ui/status/rfkill.js:114
+#: ../js/ui/status/network.js:360 ../js/ui/status/network.js:1282
+#: ../js/ui/status/network.js:1393 ../js/ui/status/rfkill.js:91
+#: ../js/ui/status/rfkill.js:118
 msgid "Turn Off"
 msgstr "Izslēgt"
 
@@ -1440,7 +1169,7 @@ msgstr[0] "%d savienota ierīce"
 msgstr[1] "%d savienotas ierīces"
 msgstr[2] "%d savienotu ierīču"
 
-#: ../js/ui/status/bluetooth.js:106 ../js/ui/status/network.js:1309
+#: ../js/ui/status/bluetooth.js:106 ../js/ui/status/network.js:1310
 msgid "Not Connected"
 msgstr "Nav savienots"
 
@@ -1448,7 +1177,7 @@ msgstr "Nav savienots"
 msgid "Brightness"
 msgstr "Gaišums"
 
-#: ../js/ui/status/keyboard.js:547
+#: ../js/ui/status/keyboard.js:736
 msgid "Show Keyboard Layout"
 msgstr "Rādīt tastatūras izkārtojumu"
 
@@ -1461,7 +1190,6 @@ msgid "Disable"
 msgstr "Izslēgt"
 
 #: ../js/ui/status/location.js:73
-#| msgid "Power Settings"
 msgid "Privacy Settings"
 msgstr "Privātuma iestatījumi"
 
@@ -1477,8 +1205,8 @@ msgstr "Ieslēgt"
 msgid "<unknown>"
 msgstr "<nezināms>"
 
-#: ../js/ui/status/network.js:457 ../js/ui/status/network.js:1307
-#: ../js/ui/status/network.js:1511
+#: ../js/ui/status/network.js:457 ../js/ui/status/network.js:1308
+#: ../js/ui/status/network.js:1512
 msgid "Off"
 msgstr "Izslēgts"
 
@@ -1489,29 +1217,25 @@ msgstr "Savienots"
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu) */
 #: ../js/ui/status/network.js:463
-#| msgid "unmanaged"
 msgid "Unmanaged"
 msgstr "Nepārvaldīts"
 
 #: ../js/ui/status/network.js:465
-#| msgid "disconnecting..."
 msgid "Disconnecting"
 msgstr "Atvienojas"
 
-#: ../js/ui/status/network.js:471 ../js/ui/status/network.js:1301
+#: ../js/ui/status/network.js:471 ../js/ui/status/network.js:1302
 msgid "Connecting"
 msgstr "Savienojas"
 
 #. Translators: this is for network connections that require some kind of key or password */
 #: ../js/ui/status/network.js:474
-#| msgid "authentication required"
 msgid "Authentication required"
 msgstr "Nepieciešama autentifikācija"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing */
 #: ../js/ui/status/network.js:482
-#| msgid "firmware missing"
 msgid "Firmware missing"
 msgstr "Trūkst aparātprogrammatūras"
 
@@ -1521,7 +1245,7 @@ msgstr "Trūkst aparātprogrammatūras"
 msgid "Unavailable"
 msgstr "Nav pieejams"
 
-#: ../js/ui/status/network.js:488 ../js/ui/status/network.js:1695
+#: ../js/ui/status/network.js:488 ../js/ui/status/network.js:1696
 msgid "Connection failed"
 msgstr "Neizdevās savienoties"
 
@@ -1533,7 +1257,7 @@ msgstr "Vadu tīkla iestatījumi"
 msgid "Mobile Broadband Settings"
 msgstr "Mobilās platjoslas iestatījumi"
 
-#: ../js/ui/status/network.js:588 ../js/ui/status/network.js:1305
+#: ../js/ui/status/network.js:588 ../js/ui/status/network.js:1306
 msgid "Hardware Disabled"
 msgstr "Izslēgts aparatūrā"
 
@@ -1573,60 +1297,56 @@ msgstr "Bezvadu tīkli"
 msgid "Select a network"
 msgstr "Izvēlieties tīklu"
 
-#: ../js/ui/status/network.js:882
+#: ../js/ui/status/network.js:883
 msgid "No Networks"
 msgstr "Nav tīklu"
 
-#: ../js/ui/status/network.js:903 ../js/ui/status/rfkill.js:112
+#: ../js/ui/status/network.js:904 ../js/ui/status/rfkill.js:116
 msgid "Use hardware switch to turn off"
 msgstr "Lai izslēgtu, izmantot aparatūras slēdzi"
 
-#: ../js/ui/status/network.js:1173
+#: ../js/ui/status/network.js:1174
 msgid "Select Network"
 msgstr "Izvēlieties tīklu"
 
-#: ../js/ui/status/network.js:1179
+#: ../js/ui/status/network.js:1180
 msgid "Wi-Fi Settings"
 msgstr "Wi-Fi iestatījumi"
 
-#: ../js/ui/status/network.js:1281
+#: ../js/ui/status/network.js:1282
 msgid "Turn On"
 msgstr "Ieslēgt"
 
-#: ../js/ui/status/network.js:1298
+#: ../js/ui/status/network.js:1299
 msgid "Hotspot Active"
 msgstr "Tīklājs ir aktīvs"
 
-#: ../js/ui/status/network.js:1409
+#: ../js/ui/status/network.js:1410
 msgid "connecting..."
 msgstr "savienojas..."
 
 #. Translators: this is for network connections that require some kind of key or password */
-#: ../js/ui/status/network.js:1412
+#: ../js/ui/status/network.js:1413
 msgid "authentication required"
 msgstr "nepieciešama autentifikācija"
 
-#: ../js/ui/status/network.js:1414
+#: ../js/ui/status/network.js:1415
 msgid "connection failed"
 msgstr "savienojums neizdevās"
 
-#: ../js/ui/status/network.js:1480 ../js/ui/status/rfkill.js:89
+#: ../js/ui/status/network.js:1481 ../js/ui/status/rfkill.js:94
 msgid "Network Settings"
 msgstr "Tīkla iestatījumi"
 
-#: ../js/ui/status/network.js:1482
+#: ../js/ui/status/network.js:1483
 msgid "VPN Settings"
 msgstr "VPN iestatījumi"
 
-#: ../js/ui/status/network.js:1501
+#: ../js/ui/status/network.js:1502
 msgid "VPN"
 msgstr "VPN"
 
-#: ../js/ui/status/network.js:1656
-msgid "Network Manager"
-msgstr "Tīkla pārvaldnieks"
-
-#: ../js/ui/status/network.js:1696
+#: ../js/ui/status/network.js:1697
 msgid "Activation of network connection failed"
 msgstr "Neizdevās tīkla savienojuma aktivēšana"
 
@@ -1660,31 +1380,31 @@ msgstr "UPS"
 msgid "Battery"
 msgstr "Baterija"
 
-#: ../js/ui/status/rfkill.js:83
+#: ../js/ui/status/rfkill.js:88
 msgid "Airplane Mode"
 msgstr "Lidmašīnas režīms"
 
-#: ../js/ui/status/rfkill.js:85
+#: ../js/ui/status/rfkill.js:90
 msgid "On"
 msgstr "Ieslēgt"
 
-#: ../js/ui/status/system.js:317
+#: ../js/ui/status/system.js:314
 msgid "Switch User"
 msgstr "Mainīt lietotāju"
 
-#: ../js/ui/status/system.js:322
+#: ../js/ui/status/system.js:319
 msgid "Log Out"
 msgstr "Izrakstīties"
 
-#: ../js/ui/status/system.js:341
+#: ../js/ui/status/system.js:338
 msgid "Orientation Lock"
 msgstr "Orientācijas slēdzis"
 
-#: ../js/ui/status/system.js:349
+#: ../js/ui/status/system.js:346
 msgid "Suspend"
 msgstr "Iesnaudināt"
 
-#: ../js/ui/status/system.js:352
+#: ../js/ui/status/system.js:349
 msgid "Power Off"
 msgstr "Izslēgt"
 
@@ -1708,11 +1428,11 @@ msgstr "Ierakstīties kā citam lietotājam"
 msgid "Unlock Window"
 msgstr "Atbloķēšanas logs"
 
-#: ../js/ui/viewSelector.js:158
+#: ../js/ui/viewSelector.js:159
 msgid "Applications"
 msgstr "Lietotnes"
 
-#: ../js/ui/viewSelector.js:162
+#: ../js/ui/viewSelector.js:163
 msgid "Search"
 msgstr "Meklēt"
 
@@ -1743,6 +1463,13 @@ msgid_plural "Settings changes will revert in %d seconds"
 msgstr[0] "Izmaiņas tiks atgrieztas pēc %d sekundes"
 msgstr[1] "Izmaiņas tiks atgrieztas pēc %d sekundēm"
 msgstr[2] "Izmaiņas tiks atgrieztas pēc %d sekundēm"
+
+#. Translators: This represents the size of a window. The first number is
+#. * the width of the window and the second is the height. */
+#: ../js/ui/windowManager.js:613
+#, javascript-format
+msgid "%d x %d"
+msgstr "%d x %d"
 
 #: ../js/ui/windowMenu.js:34
 msgid "Minimize"
@@ -1828,7 +1555,12 @@ msgstr "Izmantot specifisku metodi, piemēram, “gdm” ierakstīšanās ekrān
 msgid "List possible modes"
 msgstr "Uzskaitīt iespējamās metodes"
 
-#: ../src/shell-app.c:666
+#: ../src/shell-app.c:239
+msgctxt "program"
+msgid "Unknown"
+msgstr "Nezināma"
+
+#: ../src/shell-app.c:480
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "Neizdevās palaist “%s”"
@@ -1845,670 +1577,3 @@ msgstr "Parole nevar būt tukša"
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Lietotājs noraidīja autentifikācijas dialoglodziņu"
 
-#~ msgid "The maximum accuracy level of location."
-#~ msgstr "Maksimālais vietas precizitātes līmenis."
-
-#~ msgid ""
-#~ "Configures the maximum level of location accuracy applications are "
-#~ "allowed to see. Valid options are 'off' (disable location tracking), "
-#~ "'country', 'city', 'neighborhood', 'street', and 'exact' (typically "
-#~ "requires GPS receiver). Please keep in mind that this only controls what "
-#~ "GeoClue will allow applications to see and they can find user's location "
-#~ "on their own using network resources (albeit with street-level accuracy "
-#~ "at best)."
-#~ msgstr ""
-#~ "Konfigurē maksimālo atrašanās vietas precizitātes līmeni, kādu drīkst "
-#~ "redzēt lietotnes. Derīgās opcijas ir “off” (neļaut izsekot atrašanās "
-#~ "vietu), “country”, “city”, “neighborhood”, “street” un “exact” (parasti "
-#~ "vajag GPS uztvērēju). Paturiet prātā, ka tas nosaka tikai to, kādu "
-#~ "informāciju GeoClue ļaus redzēt lietotnēm, jo tās var pašas noteikt "
-#~ "lietotāja atrašanās vietu, izmantojot tīkla resursus (tiesa, labākajā "
-#~ "gadījumā tas dos precizitāti līdz ielai)."
-
-#~ msgid "Arrangement of buttons on the titlebar"
-#~ msgstr "Pogu izkārtojums virsraksta joslā"
-
-#~ msgid ""
-#~ "This key overrides the key in org.gnome.desktop.wm.preferences when "
-#~ "running GNOME Shell."
-#~ msgstr ""
-#~ "Šī atslēga pārraksta org.gnome.desktop.wm.preferences atslēgu, darbinot "
-#~ "GNOME čaulu."
-
-#~ msgid "Extension"
-#~ msgstr "Paplašinājums"
-
-#~ msgid "Select an extension to configure using the combobox above."
-#~ msgstr "Izvēlieties konfigurējamo paplašinājumu no saraksta."
-
-#~ msgid "calendar:MY"
-#~ msgstr "calendar:YM"
-
-#~ msgid "unavailable"
-#~ msgstr "nav pieejams"
-
-#~ msgid "List of categories that should be displayed as folders"
-#~ msgstr "Saraksts ar kategorijām, kas jāattēlo kā mapes"
-
-#~ msgid ""
-#~ "Each category name in this list will be represented as folder in the "
-#~ "application view, rather than being displayed inline in the main view."
-#~ msgstr ""
-#~ "Katras šajā sarakstā esošais kategorijas nosaukums lietotnes skatā tiks "
-#~ "attēlots kā mape, nevis attēlots iekļauti galvenajā saktā."
-
-#~ msgid "<b>%A</b>, <b>%H:%M</b>"
-#~ msgstr "<b>%A</b>, <b>%H.%M</b>"
-
-#~ msgid "<b>%B</b> <b>%d</b>, <b>%H:%M</b>"
-#~ msgstr "<b>%d</b>. <b>%B</b>, <b>%H.%M</b>"
-
-#~ msgid "<b>%B</b> <b>%d</b> <b>%Y</b>, <b>%H:%M</b> "
-#~ msgstr "<b>%d</b>. <b>%B</b>, <b>%Y</b>., <b>%H.%M</b> "
-
-#~ msgid "Authorization request from %s"
-#~ msgstr "Autorizācijas pieprasījums no %s"
-
-#~ msgid "Device %s wants to pair with this computer"
-#~ msgstr "Ierīce %s prasa sapārošanu ar šo datoru"
-
-#~ msgid "Allow"
-#~ msgstr "Atļaut"
-
-#~ msgid "Deny"
-#~ msgstr "Liegt"
-
-#~ msgid "Device %s wants access to the service '%s'"
-#~ msgstr "Ierīce %s prasa pieeju “%s” servisam"
-
-#~ msgid "Always grant access"
-#~ msgstr "Vienmēr piešķirt pieeju"
-
-#~ msgid "Grant this time only"
-#~ msgstr "Piešķirt tikai šoreiz"
-
-#~ msgid "Reject"
-#~ msgstr "Noraidīt"
-
-#~ msgid "Pairing confirmation for %s"
-#~ msgstr "%s pārošanas apstiprinājums"
-
-#~ msgid ""
-#~ "Please confirm whether the Passkey '%06d' matches the one on the device."
-#~ msgstr "Lūdzu, pārliecinieties, vai parole “%06d” sakrīt ar ierīces doto."
-
-#~ msgid "Matches"
-#~ msgstr "Sakrīt"
-
-#~ msgid "Does not match"
-#~ msgstr "Nesakrīt"
-
-#~ msgid "Pairing request for %s"
-#~ msgstr "%s pārošanas pieprasījums"
-
-#~ msgid "Please enter the PIN mentioned on the device."
-#~ msgstr "Lūdzu, ievadiet PIN, kas redzams uz ierīces."
-
-#~ msgid "OK"
-#~ msgstr "Labi"
-
-#~ msgid ""
-#~ "Sorry, no wisdom for you today:\n"
-#~ "%s"
-#~ msgstr ""
-#~ "Piedod, bet šodien nebūs nekādu gudrību:\n"
-#~ "%s"
-
-#~ msgid "%s the Oracle says"
-#~ msgstr "%s saka Orākuls"
-
-#~ msgctxt "event list time"
-#~ msgid "%H\\u2236%M"
-#~ msgstr "%H.%M"
-
-#~ msgctxt "event list time"
-#~ msgid "%l\\u2236%M\\u2009%p"
-#~ msgstr "%l.%M\\u2009%p"
-
-#~| msgid "Settings"
-#~ msgid "Settings Menu"
-#~ msgstr "Iestatījumu izvēlne"
-
-#~ msgid "Screenshots"
-#~ msgstr "Ekrānattēli"
-
-#~ msgid "Record a screencast"
-#~ msgstr "Ierakstīt ekrānierakstu"
-
-#~ msgid "Whether to collect stats about applications usage"
-#~ msgstr "Vai ievākt statistiku par lietotņu izmantošanu"
-
-#~ msgid ""
-#~ "The shell normally monitors active applications in order to present the "
-#~ "most used ones (e.g. in launchers). While this data will be kept private, "
-#~ "you may want to disable this for privacy reasons. Please note that doing "
-#~ "so won't remove already saved data."
-#~ msgstr ""
-#~ "Čaula parasti uzrauga aktīvās lietotnes, lai jums rādītu visbiežāk "
-#~ "izmantotās (piemēram, palaidējos). Lai gan dati paliek privāti, jūs "
-#~ "varētu vēlēties to deaktivēt privātuma iemeslu dēļ. Ņemiet vērā, ka to "
-#~ "izdarot netiks izņemti jau saglabātie dati."
-
-#~ msgid ""
-#~ "Internally used to store the last IM presence explicitly set by the user. "
-#~ "The value here is from the TpConnectionPresenceType enumeration."
-#~ msgstr ""
-#~ "Uzglabā pēdējo lietotāja norādīto TZ klātienes informāciju. Vērtība šeit "
-#~ "ir no TpConnectionPresenceType uzskaitījuma."
-
-#~ msgid ""
-#~ "Internally used to store the last session presence status for the user. "
-#~ "The value here is from the GsmPresenceStatus enumeration."
-#~ msgstr ""
-#~ "Uzglabā lietotāja pēdējo sesijas klātienes statusu. Vērtība šeit ir no "
-#~ "GsmPresenceStatus uzskaitījuma."
-
-#~ msgid "Keybinding to toggle the screen recorder"
-#~ msgstr "Taustiņu sasaiste, kas pārslēdz ekrāna ierakstītāju"
-
-#~ msgid "Keybinding to start/stop the builtin screen recorder."
-#~ msgstr "Taustiņu sasaiste, kas palaiž/aptur iebūvēto ekrāna ierakstītāju."
-
-#~ msgid "Framerate used for recording screencasts."
-#~ msgstr "Kadrātrums, ko izmantot, ierakstot ekrānierakstus."
-
-#~ msgid ""
-#~ "The framerate of the resulting screencast recordered by GNOME Shell's "
-#~ "screencast recorder in frames-per-second."
-#~ msgstr ""
-#~ "Iegūtā ekrānieraksta kadrātrums, ko ieraksta GNOME Shell ekrānierakstu "
-#~ "ierakstītājs. Norāda kadros sekundē."
-
-#~ msgid "The gstreamer pipeline used to encode the screencast"
-#~ msgstr "Gstreamer konveijers, ko izmanto ekrānierakstu iekodēšanai"
-
-#~ msgid ""
-#~ "Sets the GStreamer pipeline used to encode recordings. It follows the "
-#~ "syntax used for gst-launch. The pipeline should have an unconnected sink "
-#~ "pad where the recorded video is recorded. It will normally have a "
-#~ "unconnected source pad; output from that pad will be written into the "
-#~ "output file. However the pipeline can also take care of its own output - "
-#~ "this might be used to send the output to an icecast server via shout2send "
-#~ "or similar. When unset or set to an empty value, the default pipeline "
-#~ "will be used. This is currently 'vp8enc min_quantizer=13 max_quantizer=13 "
-#~ "cpu-used=5 deadline=1000000 threads=%T ! queue ! webmmux' and records to "
-#~ "WEBM using the VP8 codec. %T is used as a placeholder for a guess at the "
-#~ "optimal thread count on the system."
-#~ msgstr ""
-#~ "Iestata GStreamer konveijeru, ko izmanto ierakstu iekodēšanai. Izmanto "
-#~ "gst-launch sintaksi. Konveijeram vajadzētu būt nepievienotam datu "
-#~ "savācējam, kur tiek ierakstītais ierakstāmais video. Tam parasti ir "
-#~ "nepievienots avota savācējs-sadalītājs; izvade no šī savācēja-sadalītāja "
-#~ "tiks ierakstīta izvades datnē. Bet konveijers arī pats var tikt galā ar "
-#~ "savu izvadi — to var izmantot, lai sūtītu izvadi uz icecast serveri caur "
-#~ "shout2send vai ko līdzīgu. Kad atiestatīts vai iestatīta tukša vērtība, "
-#~ "tiks izmantots noklusējuma konveijers. Pašlaik tas ir 'videorate ! vp8enc "
-#~ "min_quantizer=13 max_quantizer=13 cpu-used=5 deadline=1000000 threads="
-#~ "%T ! queue ! webmmux' un ieraksta WEBM ar VP8 kodeku. %T tiek izmantots "
-#~ "kā vietturis, lai uzminētu optimālo pavedienu skaitu sistēmā."
-
-#~ msgid "File extension used for storing the screencast"
-#~ msgstr "Datņu paplašinājumi, ko izmanto ekrānierakstu saglabāšanai"
-
-#~ msgid ""
-#~ "The filename for recorded screencasts will be a unique filename based on "
-#~ "the current date, and use this extension. It should be changed when "
-#~ "recording to a different container format."
-#~ msgstr ""
-#~ "Datnes nosaukums ierakstītajam ekrānierakstam būs unikāls, balstīts uz "
-#~ "pašreizējo datumu un izmantos šo paplašinājumu. To vajadzētu mainīt, kad "
-#~ "ieraksta citā konteinera formātā."
-
-#~| msgid "Session..."
-#~ msgid "Session…"
-#~ msgstr "Sesija…"
-
-#~ msgid "Power"
-#~ msgstr "Barošana"
-
-#~ msgid "Restart"
-#~ msgstr "Pārstartēt"
-
-#~ msgid "Screencast from %d %t"
-#~ msgstr "Ekrānieraksts %d %t"
-
-#~ msgid "Click Log Out to quit these applications and log out of the system."
-#~ msgstr ""
-#~ "Spiediet “Izrakstīties”, lai izietu no šīm lietotnēm un izrakstītos no "
-#~ "sistēmas."
-
-#~ msgid "Logging out of the system."
-#~ msgstr "Izrakstās no sistēmas."
-
-#~ msgid "Click Power Off to quit these applications and power off the system."
-#~ msgstr ""
-#~ "Spiediet “Izslēgt”, lai izietu no šīm lietotnēm un izslēgtu sistēmu."
-
-#~ msgid "Powering off the system."
-#~ msgstr "Izslēdz sistēmu."
-
-#~ msgid "Click Restart to quit these applications and restart the system."
-#~ msgstr ""
-#~ "Spiediet “Pārstartēt”, lai izietu no šīm lietotnēm un pārstartētu sistēmu."
-
-#~ msgid "Restarting the system."
-#~ msgstr "Pārstartē sistēmu."
-
-#~ msgid "Universal Access Settings"
-#~ msgstr "Universālās piekļuves iestatījumi"
-
-#~ msgid "Visibility"
-#~ msgstr "Redzamība"
-
-#~| msgid "Send Files to Device..."
-#~ msgid "Send Files to Device…"
-#~ msgstr "Sūtīt datnes uz ierīci…"
-
-#~| msgid "Set up a New Device..."
-#~ msgid "Set Up a New Device…"
-#~ msgstr "Iestatīt jaunu ierīci…"
-
-#~| msgid "Send Files..."
-#~ msgid "Send Files…"
-#~ msgstr "Sūtīt datnes…"
-
-#~ msgid "Keyboard Settings"
-#~ msgstr "Tastatūras iestatījumi"
-
-#~ msgid "Mouse Settings"
-#~ msgstr "Peles iestatījumi"
-
-#~ msgid "Sound Settings"
-#~ msgstr "Skaņas iestatījumi"
-
-#~| msgid "Region and Language Settings"
-#~ msgid "Region & Language Settings"
-#~ msgstr "Vietas un valodas iestatījumi"
-
-#~ msgid "Volume, network, battery"
-#~ msgstr "Skaļums, tīkls, baterija"
-
-#~ msgid "disabled"
-#~ msgstr "izslēgts"
-
-#~ msgid "cable unplugged"
-#~ msgstr "atvienots vads"
-
-#~ msgid "More…"
-#~ msgstr "Vairāk…"
-
-#~ msgid "Wired"
-#~ msgstr "Vadu"
-
-#~ msgid "Auto Ethernet"
-#~ msgstr "Automātisks Ethernet"
-
-#~ msgid "Auto broadband"
-#~ msgstr "Automātiska platjosla"
-
-#~ msgid "Auto dial-up"
-#~ msgstr "Automātiska iezvanlīnija"
-
-#~ msgid "Auto %s"
-#~ msgstr "Automātisks %s"
-
-#~ msgid "Auto bluetooth"
-#~ msgstr "Automātisks bluetooth"
-
-#~ msgid "Auto wireless"
-#~ msgstr "Automātisks bezvadu"
-
-#~ msgid "Wi-Fi"
-#~ msgstr "Wi-Fi"
-
-#~ msgid "Networking is disabled"
-#~ msgstr "Tīklošana ir deaktivēta"
-
-#~ msgid "%d hour remaining"
-#~ msgid_plural "%d hours remaining"
-#~ msgstr[0] "atlikusi %d stunda"
-#~ msgstr[1] "atlikušas %d stundas"
-#~ msgstr[2] "atlikušas %d stundas"
-
-#~ msgid "%d %s %d %s remaining"
-#~ msgstr "atlikušas %d %s %d %s"
-
-#~ msgid "hour"
-#~ msgid_plural "hours"
-#~ msgstr[0] "stunda"
-#~ msgstr[1] "stundas"
-#~ msgstr[2] "stundu"
-
-#~ msgid "minute"
-#~ msgid_plural "minutes"
-#~ msgstr[0] "minūte"
-#~ msgstr[1] "minūtes"
-#~ msgstr[2] "minūšu"
-
-#~ msgid "%d minute remaining"
-#~ msgid_plural "%d minutes remaining"
-#~ msgstr[0] "atlikusi %d minūte"
-#~ msgstr[1] "atlikušas %d minūtes"
-#~ msgstr[2] "atlikušas %d minūtes"
-
-#~ msgctxt "percent of battery remaining"
-#~ msgid "%d%%"
-#~ msgstr "%d%%"
-
-#~| msgid "AC adapter"
-#~ msgid "AC Adapter"
-#~ msgstr "Strāvas adapters"
-
-#~| msgid "Laptop battery"
-#~ msgid "Laptop Battery"
-#~ msgstr "Klēpjdatora baterija"
-
-#~ msgid "Monitor"
-#~ msgstr "Monitors"
-
-#~ msgid "Mouse"
-#~ msgstr "Pele"
-
-#~ msgid "PDA"
-#~ msgstr "PDA"
-
-#~| msgid "Cell phone"
-#~ msgid "Cell Phone"
-#~ msgstr "Mobilais tālrunis"
-
-#~| msgid "Media player"
-#~ msgid "Media Player"
-#~ msgstr "Mediju atskaņotājs"
-
-#~ msgid "Tablet"
-#~ msgstr "Planšete"
-
-#~ msgid "Computer"
-#~ msgstr "Dators"
-
-#~ msgctxt "device"
-#~ msgid "Unknown"
-#~ msgstr "Nezināma"
-
-#~ msgid "Available"
-#~ msgstr "Pieejams"
-
-#~ msgid "Busy"
-#~ msgstr "Aizņemts"
-
-#~ msgid "Invisible"
-#~ msgstr "Neredzams"
-
-#~ msgid "Away"
-#~ msgstr "Projām"
-
-#~ msgid "Idle"
-#~ msgstr "Dīkstāvē"
-
-#~ msgid "Your chat status will be set to busy"
-#~ msgstr "Tērzēšanas status tiks iestatīts uz “aizņemts”"
-
-#~ msgid ""
-#~ "Notifications are now disabled, including chat messages. Your online "
-#~ "status has been adjusted to let others know that you might not see their "
-#~ "messages."
-#~ msgstr ""
-#~ "Paziņojumi tagad ir deaktivēti, tai skaitā tērzēšanas ziņojumi. "
-#~ "Tiešsaistes status ir pielāgots, lai ļautu citiem zināt, ka jūs varētu "
-#~ "neredzēt viņu sūtījumus."
-
-#~ msgid "Shutting down might cause them to lose unsaved work."
-#~ msgstr "Izslēgšanas dēļ tie var zaudēt nesaglabātu darbu."
-
-#~ msgctxt "title"
-#~ msgid "Sign In"
-#~ msgstr "Ierakstīties"
-
-#~ msgid "APPLICATIONS"
-#~ msgstr "LIETOTNES"
-
-#~ msgid "SETTINGS"
-#~ msgstr "IESTATĪJUMI"
-
-#~ msgctxt "event list time"
-#~ msgid "%H:%M"
-#~ msgstr "%H:%M"
-
-#~ msgctxt "event list time"
-#~ msgid "%l:%M %p"
-#~ msgstr "%l:%M %p"
-
-#~ msgid "Subscription request"
-#~ msgstr "Pierakstīšanās lūgums"
-
-#~ msgid "Connection error"
-#~ msgstr "Savienojuma kļūda"
-
-#~ msgid "Sent at <b>%X</b> on <b>%A</b>"
-#~ msgstr "Sūtīts <b>%X</b> <b>%A</b>"
-
-#~ msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
-#~ msgstr "Sūtīts <b>%A</b>, <b>%d. %B</b>, %Y."
-
-#~ msgid "Connection to %s failed"
-#~ msgstr "Savienojums ar %s neizdevās"
-
-#~ msgid "Reconnect"
-#~ msgstr "Savienoties atkal"
-
-#~ msgid "tray"
-#~ msgstr "paplāte"
-
-#~ msgid "Browse Files..."
-#~ msgstr "Pārlūkot datnes..."
-
-#~ msgid "Error browsing device"
-#~ msgstr "Kļūda, pārlūkojot ierīci"
-
-#~ msgid "The requested device cannot be browsed, error is '%s'"
-#~ msgstr "Nevar pārlūkot pieprasīto ierīci, kļūda ir “%s”"
-
-#~ msgid "More..."
-#~ msgstr "Vairāk..."
-
-#~ msgid "Wireless"
-#~ msgstr "Bezvadu"
-
-#~ msgid "VPN Connections"
-#~ msgstr "VPN savienojumi"
-
-#~ msgid "System Settings"
-#~ msgstr "Sistēmas iestatījumi"
-
-#~ msgid "Your favorite Easter Egg"
-#~ msgstr "Jūsu mīļākā Lieldienu ola"
-
-#~ msgid "United Kingdom"
-#~ msgstr "Lielbritānija"
-
-#~ msgid "Default"
-#~ msgstr "Noklusētais"
-
-#~ msgid "disabled OpenSearch providers"
-#~ msgstr "deaktivētie OpenSearch piegādātāji"
-
-#~ msgid "Show time with seconds"
-#~ msgstr "Rādīt laiku ar sekundēm"
-
-#~ msgid "If true, display seconds in time."
-#~ msgstr "Ja patiess, rādīt pulkstenī arī sekundes."
-
-#~ msgid "Show date in clock"
-#~ msgstr "Pie pulksteņa rādīt arī datumu"
-
-#~ msgid "If true, display date in the clock, in addition to time."
-#~ msgstr "Ja patiess, rādīt pulkstenī arī datumu, ne tikai laiku."
-
-#~ msgid "CONTACTS"
-#~ msgstr "Kontakti"
-
-#~ msgid "%a %b %e, %R:%S"
-#~ msgstr "%a %e. %b, %R:%S"
-
-#~ msgid "%a %b %e, %R"
-#~ msgstr "%a %e. %b, %R"
-
-#~ msgid "%a %R:%S"
-#~ msgstr "%a %R:%S"
-
-#~ msgid "%a %R"
-#~ msgstr "%a %R"
-
-#~ msgid "%a %b %e, %l:%M:%S %p"
-#~ msgstr "%a %e. %b, %l:%M:%S %p"
-
-#~ msgid "%a %l:%M:%S %p"
-#~ msgstr "%a %l:%M:%S %p"
-
-#~ msgid "Failed to unmount '%s'"
-#~ msgstr "Neizdevās atmontēt '%s'"
-
-#~ msgid "Retry"
-#~ msgstr "Mēģināt vēlreiz"
-
-#~ msgid "Connect to..."
-#~ msgstr "Savienoties ar..."
-
-#~ msgid "PLACES & DEVICES"
-#~ msgstr "VIETAS un IERĪCES"
-
-#~ msgid "Wrong password, please try again"
-#~ msgstr "Nepareiza parole, mēģiniet vēlreiz"
-
-#~ msgid "%s is online."
-#~ msgstr "%s ir tiešsaistē."
-
-#~ msgid "%s is offline."
-#~ msgstr "%s ir nesaistē."
-
-#~ msgid "%s is away."
-#~ msgstr "%s\" ir projām."
-
-#~ msgid "%s is busy."
-#~ msgstr "%s\" ir aizņemts."
-
-#~ msgid "Hidden"
-#~ msgstr "Slēpts"
-
-#~ msgid "Power Off..."
-#~ msgstr "Izslēgt..."
-
-#~ msgid "Online Accounts"
-#~ msgstr "Tiešsaistes konti"
-
-#~ msgid "Lock Screen"
-#~ msgstr "Bloķēt ekrānu"
-
-#~ msgid "Log Out..."
-#~ msgstr "Izrakstīties..."
-
-#~ msgid "Home"
-#~ msgstr "Mājas"
-
-#~ msgid "%1$s: %2$s"
-#~ msgstr "%1$s: %2$s"
-
-#~ msgid ""
-#~ "GNOME Shell extensions have a uuid property; this key lists extensions "
-#~ "which should be loaded. disabled-extensions overrides this setting for "
-#~ "extensions that appear in both lists."
-#~ msgstr ""
-#~ "GNOME Shell paplašinājumiem ir uuid īpašības; šī atslēga uzskaita "
-#~ "paplašinājumus, kurus vajadzētu ielādēt. disabled-extensions pārraksta šo "
-#~ "iestatījumu paplašinājumiem, kas parādās abos sarakstos."
-
-#~ msgid "RECENT ITEMS"
-#~ msgstr "NESENIE VIENUMI"
-
-#~ msgid "Show password"
-#~ msgstr "Rādīt paroli"
-
-#~ msgid "Home Folder"
-#~ msgstr "Mājas mape"
-
-#~ msgid "%s has finished starting"
-#~ msgstr "%s ir beidzis startēties"
-
-#~ msgid "If true, display onscreen keyboard."
-#~ msgstr "Ja patiess, rādīt ekrāna tastatūru."
-
-#~ msgid "Show the onscreen keyboard"
-#~ msgstr "Rādīt ekrāna tastatūru"
-
-#~ msgid "Connectivity lost"
-#~ msgstr "Pazuda savienojums"
-
-#~| msgid "You're no longer connected to the network"
-#~ msgid "You are no longer connected to the network"
-#~ msgstr "Jūs vairs neesat savienojies ar tīklu"
-
-#~ msgid "calendar:week_start:0"
-#~ msgstr "calendar:week_start:1"
-
-#~ msgid "Uuids of extensions to disable"
-#~ msgstr "Uuid paplašinājumiem, kurus deaktivēt"
-
-#~ msgid "Localization Settings"
-#~ msgstr "Lokalizācijas iestatījumi"
-
-#~ msgid "You're now connected to mobile broadband connection '%s'"
-#~ msgstr "Jūs esat savienojies ar mobilo platjoslas savienojumu '%s'"
-
-#~ msgid "You're now connected to wireless network '%s'"
-#~ msgstr "Jūs esat savienojies ar bezvadu tīklu '%s'"
-
-#~ msgid "You're now connected to VPN network '%s'"
-#~ msgstr "Jūs esat savienojies ar VPN tīklu '%s'"
-
-#~ msgid "Less than a minute ago"
-#~ msgstr "Mazāk kā pirms minūtes"
-
-#~ msgid "%d minute ago"
-#~ msgid_plural "%d minutes ago"
-#~ msgstr[0] "Pirms %d minūtes"
-#~ msgstr[1] "Pirms %d minūtēm"
-#~ msgstr[2] "Pirms %d minūtēm"
-
-#~ msgid "%d hour ago"
-#~ msgid_plural "%d hours ago"
-#~ msgstr[0] "Pirms %d stundas"
-#~ msgstr[1] "Pirms %d stundām"
-#~ msgstr[2] "Pirms %d stundām"
-
-#~ msgid "%d day ago"
-#~ msgid_plural "%d days ago"
-#~ msgstr[0] "Pirms %d dienas"
-#~ msgstr[1] "Pirms %d dienām"
-#~ msgstr[2] "Pirms %d dienām"
-
-#~ msgid "%d week ago"
-#~ msgid_plural "%d weeks ago"
-#~ msgstr[0] "Pirms %d nedēļas"
-#~ msgstr[1] "Pirms %d nedēļām"
-#~ msgstr[2] "Pirms %d nedēļām"
-
-#~ msgid "Shut Down"
-#~ msgstr "Izslēgt"
-
-#~ msgid "Click Shut Down to quit these applications and shut down the system."
-#~ msgstr ""
-#~ "Spiediet 'Izslēgt', lai izietu no šīm lietotnēm un izslēgtu sistēmu."
-
-#~ msgid "The system will shut down automatically in %d seconds."
-#~ msgstr "Sistēma tiks izslēgta automātiski pēc %d sekundēm."
-
-#~ msgid "Shutting down the system."
-#~ msgstr "Izslēdz sistēmu."
-
-#~ msgid "Confirm"
-#~ msgstr "Apstiprināt"
