@@ -27,6 +27,7 @@
 #include <meta/common.h>
 #include <meta/types.h>
 #include "theme-private.h"
+#include "ui.h"
 
 typedef enum
 {
@@ -68,8 +69,6 @@ typedef enum
 
 typedef struct _MetaFrames        MetaFrames;
 typedef struct _MetaFramesClass   MetaFramesClass;
-
-typedef struct _MetaUIFrame         MetaUIFrame;
 
 struct _MetaUIFrame
 {
