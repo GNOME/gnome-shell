@@ -194,17 +194,15 @@ const AuthPrompt = new Lang.Class({
     },
 
     _onAskQuestion: function(verifier, serviceName, question, passwordChar) {
-        if (this._preemptiveAnswer) {
-            if (this._queryingService)
-                this._userVerifier.answerQuery(this._queryingService, this._preemptiveAnswer);
-            this._preemptiveAnswer = null;
-            return;
-        }
-
         if (this._queryingService)
             this.clear();
 
         this._queryingService = serviceName;
+        if (this._preemptiveAnswer) {
+            this._userVerifier.answerQuery(this._queryingService, this._preemptiveAnswer);
+            this._preemptiveAnswer = null;
+            return;
+        }
         this.setPasswordChar(passwordChar);
         this.setQuestion(question);
 
