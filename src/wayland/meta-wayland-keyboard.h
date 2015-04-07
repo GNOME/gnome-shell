@@ -49,6 +49,20 @@
 #include <wayland-server.h>
 #include <xkbcommon/xkbcommon.h>
 
+struct _MetaWaylandKeyboardGrabInterface
+{
+  gboolean (*key)       (MetaWaylandKeyboardGrab *grab,
+                         const ClutterEvent      *event);
+  void     (*modifiers) (MetaWaylandKeyboardGrab *grab,
+                         ClutterModifierType      modifiers);
+};
+
+struct _MetaWaylandKeyboardGrab
+{
+  const MetaWaylandKeyboardGrabInterface *interface;
+  MetaWaylandKeyboard *keyboard;
+};
+
 typedef struct
 {
   struct xkb_keymap *keymap;
@@ -72,6 +86,9 @@ struct _MetaWaylandKeyboard
 
   MetaWaylandXkbInfo xkb_info;
   enum xkb_state_component mods_changed;
+
+  MetaWaylandKeyboardGrab *grab;
+  MetaWaylandKeyboardGrab default_grab;
 
   GSettings *settings;
 };
@@ -103,5 +120,9 @@ void meta_wayland_keyboard_create_new_resource (MetaWaylandKeyboard *keyboard,
 
 gboolean meta_wayland_keyboard_can_popup (MetaWaylandKeyboard *keyboard,
                                           uint32_t             serial);
+
+void meta_wayland_keyboard_start_grab (MetaWaylandKeyboard     *keyboard,
+                                       MetaWaylandKeyboardGrab *grab);
+void meta_wayland_keyboard_end_grab   (MetaWaylandKeyboard     *keyboard);
 
 #endif /* META_WAYLAND_KEYBOARD_H */

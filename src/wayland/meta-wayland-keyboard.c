@@ -68,6 +68,7 @@
 
 static void meta_wayland_keyboard_update_xkb_state (MetaWaylandKeyboard *keyboard);
 static void notify_modifiers (MetaWaylandKeyboard *keyboard);
+static guint evdev_code (const ClutterKeyEvent *event);
 
 static void
 unbind_resource (struct wl_resource *resource)
@@ -245,8 +246,10 @@ keyboard_handle_focus_surface_destroy (struct wl_listener *listener, void *data)
 }
 
 static gboolean
-notify_key (MetaWaylandKeyboard *keyboard,
-            uint32_t time, uint32_t key, uint32_t state)
+meta_wayland_keyboard_broadcast_key (MetaWaylandKeyboard *keyboard,
+                                     uint32_t             time,
+                                     uint32_t             key,
+                                     uint32_t             state)
 {
   struct wl_resource *resource;
   struct wl_list *l;
@@ -269,8 +272,15 @@ notify_key (MetaWaylandKeyboard *keyboard,
   return (keyboard->focus_surface != NULL);
 }
 
+static gboolean
+notify_key (MetaWaylandKeyboard *keyboard,
+            const ClutterEvent  *event)
+{
+  return keyboard->grab->interface->key (keyboard->grab, event);
+}
+
 static void
-notify_modifiers (MetaWaylandKeyboard *keyboard)
+meta_wayland_keyboard_broadcast_modifiers (MetaWaylandKeyboard *keyboard)
 {
   struct xkb_state *state;
   struct wl_resource *resource;
@@ -293,6 +303,16 @@ notify_modifiers (MetaWaylandKeyboard *keyboard)
                                       xkb_state_serialize_layout (state, XKB_STATE_LAYOUT_EFFECTIVE));
         }
     }
+}
+
+static void
+notify_modifiers (MetaWaylandKeyboard *keyboard)
+{
+  struct xkb_state *state;
+
+  state = keyboard->xkb_info.state;
+  keyboard->grab->interface->modifiers (keyboard->grab,
+                                        xkb_state_serialize_mods (state, XKB_STATE_MODS_EFFECTIVE));
 }
 
 static void
@@ -374,6 +394,45 @@ settings_changed (GSettings           *settings,
   notify_key_repeat (keyboard);
 }
 
+static gboolean
+default_grab_key (MetaWaylandKeyboardGrab *grab,
+                  const ClutterEvent      *event)
+{
+  MetaWaylandKeyboard *keyboard = grab->keyboard;
+  gboolean is_press = event->type == CLUTTER_KEY_PRESS;
+  guint32 code;
+#ifdef HAVE_NATIVE_BACKEND
+  MetaBackend *backend = meta_get_backend ();
+#endif
+
+  /* Synthetic key events are for autorepeat. Ignore those, as
+   * autorepeat in Wayland is done on the client side. */
+  if (event->key.flags & CLUTTER_EVENT_FLAG_SYNTHETIC)
+    return FALSE;
+
+#ifdef HAVE_NATIVE_BACKEND
+  if (META_IS_BACKEND_NATIVE (backend))
+    code = clutter_evdev_event_get_event_code (event);
+  else
+#endif
+    code = evdev_code (&event->key);
+
+  return meta_wayland_keyboard_broadcast_key (keyboard, event->key.time,
+                                              code, is_press);
+}
+
+static void
+default_grab_modifiers (MetaWaylandKeyboardGrab *grab,
+                        ClutterModifierType      modifiers)
+{
+  meta_wayland_keyboard_broadcast_modifiers (grab->keyboard);
+}
+
+static const MetaWaylandKeyboardGrabInterface default_keyboard_grab_interface = {
+  default_grab_key,
+  default_grab_modifiers
+};
+
 void
 meta_wayland_keyboard_init (MetaWaylandKeyboard *keyboard,
                             struct wl_display   *display)
@@ -390,6 +449,10 @@ meta_wayland_keyboard_init (MetaWaylandKeyboard *keyboard,
   keyboard->focus_surface_listener.notify = keyboard_handle_focus_surface_destroy;
 
   keyboard->xkb_info.keymap_fd = -1;
+
+  keyboard->default_grab.interface = &default_keyboard_grab_interface;
+  keyboard->default_grab.keyboard = keyboard;
+  keyboard->grab = &keyboard->default_grab;
 
   keyboard->settings = g_settings_new ("org.gnome.desktop.peripherals.keyboard");
   g_signal_connect (keyboard->settings, "changed",
@@ -457,10 +520,6 @@ meta_wayland_keyboard_handle_event (MetaWaylandKeyboard *keyboard,
 {
   gboolean is_press = event->type == CLUTTER_KEY_PRESS;
   gboolean handled;
-  guint32 code;
-#ifdef HAVE_NATIVE_BACKEND
-  MetaBackend *backend = meta_get_backend ();
-#endif
 
   /* Synthetic key events are for autorepeat. Ignore those, as
    * autorepeat in Wayland is done on the client side. */
@@ -471,14 +530,7 @@ meta_wayland_keyboard_handle_event (MetaWaylandKeyboard *keyboard,
 		is_press ? "press" : "release",
 		event->hardware_keycode);
 
-#ifdef HAVE_NATIVE_BACKEND
-  if (META_IS_BACKEND_NATIVE (backend))
-    code = clutter_evdev_event_get_event_code ((const ClutterEvent *) event);
-  else
-#endif
-    code = evdev_code (event);
-
-  handled = notify_key (keyboard, event->time, code, is_press);
+  handled = notify_key (keyboard, (const ClutterEvent *) event);
 
   if (handled)
     meta_verbose ("Sent event to wayland client\n");
@@ -695,4 +747,19 @@ meta_wayland_keyboard_can_popup (MetaWaylandKeyboard *keyboard,
                                  uint32_t             serial)
 {
   return keyboard->key_serial == serial;
+}
+
+void
+meta_wayland_keyboard_start_grab (MetaWaylandKeyboard     *keyboard,
+                                  MetaWaylandKeyboardGrab *grab)
+{
+  meta_wayland_keyboard_set_focus (keyboard, NULL);
+  keyboard->grab = grab;
+  grab->keyboard = keyboard;
+}
+
+void
+meta_wayland_keyboard_end_grab (MetaWaylandKeyboard *keyboard)
+{
+  keyboard->grab = &keyboard->default_grab;
 }
