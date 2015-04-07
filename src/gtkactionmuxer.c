@@ -398,23 +398,6 @@ gtk_action_muxer_query_action (GActionGroup        *action_group,
   return FALSE;
 }
 
-static void
-gtk_action_muxer_activate_action (GActionGroup *action_group,
-                                  const gchar  *action_name,
-                                  GVariant     *parameter)
-{
-  GtkActionMuxer *muxer = GTK_ACTION_MUXER (action_group);
-  Group *group;
-  const gchar *unprefixed_name;
-
-  group = gtk_action_muxer_find_group (muxer, action_name, &unprefixed_name);
-
-  if (group)
-    g_action_group_activate_action (group->group, unprefixed_name, parameter);
-  else if (muxer->parent)
-    g_action_group_activate_action (G_ACTION_GROUP (muxer->parent), action_name, parameter);
-}
-
 static GVariant *
 get_platform_data (void)
 {
@@ -433,6 +416,30 @@ get_platform_data (void)
   g_variant_builder_unref (builder);
 
   return result;
+}
+
+static void
+gtk_action_muxer_activate_action (GActionGroup *action_group,
+                                  const gchar  *action_name,
+                                  GVariant     *parameter)
+{
+  GtkActionMuxer *muxer = GTK_ACTION_MUXER (action_group);
+  Group *group;
+  const gchar *unprefixed_name;
+
+  group = gtk_action_muxer_find_group (muxer, action_name, &unprefixed_name);
+
+  if (group)
+    {
+      if (G_IS_REMOTE_ACTION_GROUP (group->group))
+	g_remote_action_group_activate_action_full (G_REMOTE_ACTION_GROUP (group->group),
+						    unprefixed_name, parameter,
+						    get_platform_data ());
+      else
+	g_action_group_activate_action (group->group, unprefixed_name, parameter);
+    }
+  else if (muxer->parent)
+    g_action_group_activate_action (G_ACTION_GROUP (muxer->parent), action_name, parameter);
 }
 
 static void
