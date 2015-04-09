@@ -223,6 +223,32 @@ is_touch_device (XIAnyClassInfo         **classes,
 }
 
 static gboolean
+is_touchpad_device (ClutterBackendX11 *backend_x11,
+                    XIDeviceInfo      *info)
+{
+  gulong nitems, bytes_after;
+  guint32 *data = NULL;
+  int rc, format;
+  Atom type;
+
+  clutter_x11_trap_x_errors ();
+  rc = XIGetProperty (backend_x11->xdpy,
+                      info->deviceid,
+                      XInternAtom (backend_x11->xdpy, "libinput Tapping Enabled", False),
+                      0, 1, False, XA_INTEGER, &type, &format, &nitems, &bytes_after,
+                      (guchar **) &data);
+  clutter_x11_untrap_x_errors ();
+
+  /* We don't care about the data */
+  XFree (data);
+
+  if (rc != Success || type != XA_INTEGER || format != 32 || nitems != 1)
+    return FALSE;
+
+  return TRUE;
+}
+
+static gboolean
 get_device_ids (ClutterBackendX11  *backend_x11,
                 XIDeviceInfo       *info,
                 gchar             **vendor_id,
@@ -267,7 +293,13 @@ create_device (ClutterDeviceManagerXI2 *manager_xi2,
   gchar *vendor_id = NULL, *product_id = NULL;
 
   if (info->use == XIMasterKeyboard || info->use == XISlaveKeyboard)
-    source = CLUTTER_KEYBOARD_DEVICE;
+    {
+      source = CLUTTER_KEYBOARD_DEVICE;
+    }
+  else if (is_touchpad_device (backend_x11, info))
+    {
+      source = CLUTTER_TOUCHPAD_DEVICE;
+    }
   else if (info->use == XISlavePointer &&
            is_touch_device (info->classes, info->num_classes,
                             &touch_source,
