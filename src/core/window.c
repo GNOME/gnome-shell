@@ -981,7 +981,8 @@ _meta_window_shared_new (MetaDisplay         *display,
 
   window->compositor_private = NULL;
 
-  window->monitor = meta_screen_get_monitor_for_window (window->screen, window);
+  window->monitor = meta_screen_calculate_monitor_for_window (window->screen,
+                                                              window);
   window->preferred_output_winsys_id = window->monitor->winsys_id;
 
   window->tile_match = NULL;
@@ -3546,7 +3547,8 @@ meta_window_update_monitor (MetaWindow *window,
   const MetaMonitorInfo *old;
 
   old = window->monitor;
-  window->monitor = meta_screen_get_monitor_for_window (window->screen, window);
+  window->monitor = meta_screen_calculate_monitor_for_window (window->screen,
+                                                              window);
   if (old != window->monitor)
     {
       meta_window_on_all_workspaces_changed (window);
@@ -5638,7 +5640,7 @@ update_move (MetaWindow  *window,
       int monitor;
 
       window->tile_mode = META_TILE_NONE;
-      wmonitor = meta_screen_get_monitor_for_window (window->screen, window);
+      wmonitor = window->monitor;
 
       for (monitor = 0; monitor < window->screen->n_monitor_infos; monitor++)
         {
@@ -6047,12 +6049,8 @@ void
 meta_window_get_work_area_current_monitor (MetaWindow    *window,
                                            MetaRectangle *area)
 {
-  const MetaMonitorInfo *monitor = NULL;
-  monitor = meta_screen_get_monitor_for_window (window->screen,
-                                                window);
-
   meta_window_get_work_area_for_monitor (window,
-                                         monitor->number,
+                                         window->monitor->number,
                                          area);
 }
 

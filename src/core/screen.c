@@ -1439,8 +1439,8 @@ meta_screen_get_monitor_for_rect (MetaScreen    *screen,
 }
 
 const MetaMonitorInfo*
-meta_screen_get_monitor_for_window (MetaScreen *screen,
-                                    MetaWindow *window)
+meta_screen_calculate_monitor_for_window (MetaScreen *screen,
+                                          MetaWindow *window)
 {
   MetaRectangle window_rect;
 

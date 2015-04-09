@@ -3186,7 +3186,7 @@ handle_move_to_monitor (MetaDisplay    *display,
   gint which = binding->handler->data;
   const MetaMonitorInfo *current, *new;
 
-  current = meta_screen_get_monitor_for_window (screen, window);
+  current = window->monitor;
   new = meta_screen_get_monitor_neighbor (screen, current->number, which);
 
   if (new == NULL)

@@ -288,8 +288,7 @@ windows_on_different_monitor (MetaWindow *a,
   if (a->screen != b->screen)
     return TRUE;
 
-  return meta_screen_get_monitor_for_window (a->screen, a) !=
-    meta_screen_get_monitor_for_window (b->screen, b);
+  return a->monitor != b->monitor;
 }
 
 /* Get layer ignoring any transient or group relationships */
