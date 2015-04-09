@@ -255,7 +255,7 @@ get_device_ids (ClutterBackendX11  *backend_x11,
                 gchar             **product_id)
 {
   gulong nitems, bytes_after;
-  guint32 *data;
+  guint32 *data = NULL;
   int rc, format;
   Atom type;
 
@@ -268,7 +268,10 @@ get_device_ids (ClutterBackendX11  *backend_x11,
   clutter_x11_untrap_x_errors ();
 
   if (rc != Success || type != XA_INTEGER || format != 32 || nitems != 2)
-    return FALSE;
+    {
+      XFree (data);
+      return FALSE;
+    }
 
   if (vendor_id)
     *vendor_id = g_strdup_printf ("%.4x", data[0]);
