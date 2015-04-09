@@ -357,6 +357,11 @@ on_monitors_changed (MetaScreen *screen,
       meta_background_actor_set_background (META_BACKGROUND_ACTOR (background_actor), background);
       g_object_unref (background);
 
+      meta_background_actor_set_vignette (META_BACKGROUND_ACTOR (background_actor),
+                                          TRUE,
+                                          0.5,
+                                          0.5);
+
       clutter_actor_add_child (self->priv->background_group, background_actor);
     }
 
