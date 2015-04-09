@@ -753,10 +753,6 @@ const Source = new Lang.Class({
         return this.count > 1;
     },
 
-    get isClearable() {
-        return !this.isChat && !this.resident;
-    },
-
     countUpdated: function() {
         this.emit('count-updated');
     },
@@ -929,8 +925,6 @@ const MessageTray = new Lang.Class({
         this._notificationTimeoutId = 0;
         this._notificationRemoved = false;
 
-        this.clearableCount = 0;
-
         Main.layoutManager.addChrome(this.actor, { affectsInputRegion: false });
         Main.layoutManager.trackChrome(this._bannerBin, { affectsInputRegion: true });
 
@@ -1031,9 +1025,6 @@ const MessageTray = new Lang.Class({
             destroyId: 0,
         };
 
-        if (source.isClearable)
-            this.clearableCount++;
-
         this._sources.set(source, obj);
 
         obj.notifyId = source.connect('notify', Lang.bind(this, this._onNotify));
@@ -1045,9 +1036,6 @@ const MessageTray = new Lang.Class({
     _removeSource: function(source) {
         let obj = this._sources.get(source);
         this._sources.delete(source);
-
-        if (source.isClearable)
-            this.clearableCount--;
 
         source.disconnect(obj.notifyId);
         source.disconnect(obj.destroyId);
