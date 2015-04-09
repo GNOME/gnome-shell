@@ -474,9 +474,6 @@ const ChatSource = new Lang.Class({
         this._contact.disconnect(this._notifyAvatarId);
         this._contact.disconnect(this._presenceChangedId);
 
-        if (this._timestampTimeoutId)
-            Mainloop.source_remove(this._timestampTimeoutId);
-
         this.parent(reason);
     },
 
@@ -604,6 +601,13 @@ const ChatNotification = new Lang.Class({
         this._timestampTimeoutId = 0;
     },
 
+    destroy: function(reason) {
+        if (this._timestampTimeoutId)
+            Mainloop.source_remove(this._timestampTimeoutId);
+        this._timestampTimeoutId = 0;
+        this.parent(reason);
+    },
+
     /**
      * appendMessage:
      * @message: An object with the properties:
@@ -686,6 +690,7 @@ const ChatNotification = new Lang.Class({
         // Reset the old message timeout
         if (this._timestampTimeoutId)
             Mainloop.source_remove(this._timestampTimeoutId);
+        this._timestampTimeoutId = 0;
 
         let message = { realMessage: props.group != 'meta',
                         showTimestamp: false };
