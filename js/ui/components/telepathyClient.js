@@ -158,14 +158,6 @@ const TelepathyClient = new Lang.Class({
         this._chatSources[channel.get_object_path()] = source;
         source.connect('destroy', Lang.bind(this,
                        function() {
-                           if (this._tpClient.is_handling_channel(channel)) {
-                               // The chat box has been destroyed so it can't
-                               // handle the channel any more.
-                               channel.close_async(function(src, result) {
-                                   channel.close_finish(result);
-                               });
-                           }
-
                            delete this._chatSources[channel.get_object_path()];
                        }));
     },
@@ -474,6 +466,18 @@ const ChatSource = new Lang.Class({
     },
 
     destroy: function(reason) {
+        if (this._client.is_handling_channel(this._channel)) {
+            // The chat box has been destroyed so it can't
+            // handle the channel any more.
+            this._channel.close_async(function(channel, result) {
+                channel.close_finish(result);
+            });
+        }
+
+        // Keep source alive while the channel is open
+        if (reason != MessageTray.NotificationDestroyedReason.SOURCE_CLOSED)
+            return;
+
         if (this._destroyed)
             return;
 
