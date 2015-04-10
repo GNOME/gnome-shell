@@ -1252,10 +1252,6 @@ const NotificationMessage = new Lang.Class({
         this.setUseBodyMarkup(n.bannerBodyMarkup);
     },
 
-    canClose: function() {
-        return !this.notification.resident;
-    },
-
     _onClicked: function() {
         this.notification.activate();
     },
