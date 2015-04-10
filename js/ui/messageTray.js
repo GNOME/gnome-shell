@@ -508,6 +508,7 @@ const NotificationBanner = new Lang.Class({
     _init: function(notification) {
         this.parent(notification);
 
+        this.actor.can_focus = false;
         this.actor.add_style_class_name('notification-banner');
 
         this._buttonBox = null;
