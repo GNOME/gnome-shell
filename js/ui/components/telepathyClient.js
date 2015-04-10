@@ -274,13 +274,6 @@ const ChatSource = new Lang.Class({
         this._channel = channel;
         this._closedId = this._channel.connect('invalidated', Lang.bind(this, this._channelClosed));
 
-        this._notification = new ChatNotification(this);
-        this._notification.connect('activated', Lang.bind(this, this.open));
-        this._notification.connect('updated', Lang.bind(this,
-            function() {
-                if (this._banner && this._banner.expanded)
-                    this._ackMessages();
-            }));
         this._notifyTimeoutId = 0;
 
         this._presence = contact.get_presence_type();
@@ -295,9 +288,26 @@ const ChatSource = new Lang.Class({
 
         // Add ourselves as a source.
         Main.messageTray.add(this);
-        this.pushNotification(this._notification);
 
         this._getLogMessages();
+    },
+
+    _ensureNotification: function() {
+        if (this._notification)
+            return;
+
+        this._notification = new ChatNotification(this);
+        this._notification.connect('activated', Lang.bind(this, this.open));
+        this._notification.connect('updated', Lang.bind(this,
+            function() {
+                if (this._banner && this._banner.expanded)
+                    this._ackMessages();
+            }));
+        this._notification.connect('destroy', Lang.bind(this,
+            function() {
+                this._notification = null;
+            }));
+        this.pushNotification(this._notification);
     },
 
     _createPolicy: function() {
@@ -326,7 +336,8 @@ const ChatSource = new Lang.Class({
             return;
 
         this.setTitle(newAlias);
-        this._notification.appendAliasChange(oldAlias, newAlias);
+        if (this._notification)
+            this._notification.appendAliasChange(oldAlias, newAlias);
     },
 
     getIcon: function() {
@@ -369,9 +380,10 @@ const ChatSource = new Lang.Class({
 
     _updateAvatarIcon: function() {
         this.iconUpdated();
-        this._notification.update(this._notification.title,
-                                  this._notification.bannerBodyText,
-                                  { gicon: this.getIcon() });
+        if (this._notifiction)
+            this._notification.update(this._notification.title,
+                                      this._notification.bannerBodyText,
+                                      { gicon: this.getIcon() });
     },
 
     open: function() {
@@ -412,6 +424,7 @@ const ChatSource = new Lang.Class({
         let [success, events] = logManager.get_filtered_events_finish(result);
 
         let logMessages = events.map(makeMessageFromTplEvent);
+        this._ensureNotification();
 
         let pendingTpMessages = this._channel.get_pending_messages();
         let pendingMessages = [];
@@ -498,6 +511,7 @@ const ChatSource = new Lang.Class({
         if (message.get_message_type() == Tp.ChannelTextMessageType.DELIVERY_REPORT)
             return;
 
+        this._ensureNotification();
         this._pendingMessages.push(message);
         this.countUpdated();
 
@@ -525,6 +539,7 @@ const ChatSource = new Lang.Class({
     // This is called for both messages we send from
     // our client and other clients as well.
     _messageSent: function(channel, message, flags, token) {
+        this._ensureNotification();
         message = makeMessageFromTpMessage(message, NotificationDirection.SENT);
         this._notification.appendMessage(message);
     },
@@ -562,9 +577,10 @@ const ChatSource = new Lang.Class({
     },
 
     _presenceChanged: function (contact, presence, status, message) {
-        this._notification.update(this._notification.title,
-                                  this._notification.bannerBodyText,
-                                  { secondaryGIcon: this.getSecondaryIcon() });
+        if (this._notification)
+            this._notification.update(this._notification.title,
+                                      this._notification.bannerBodyText,
+                                      { secondaryGIcon: this.getSecondaryIcon() });
     },
 
     _pendingRemoved: function(channel, message) {
