@@ -185,6 +185,7 @@ meta_cursor_tracker_handle_xevent (MetaCursorTracker *tracker,
     return FALSE;
 
   g_clear_pointer (&tracker->xfixes_cursor, meta_cursor_reference_unref);
+  g_signal_emit (tracker, signals[CURSOR_CHANGED], 0);
 
   return TRUE;
 }
