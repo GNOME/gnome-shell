@@ -29,7 +29,7 @@ const STANDARD_TRAY_ICON_IMPLEMENTATIONS = {
 };
 
 // Offset of the original position from the bottom-right corner
-const CONCEALED_VISIBLE_FRACTION = 0.2;
+const CONCEALED_WIDTH = 3;
 const REVEAL_ANIMATION_TIME = 0.2;
 const TEMP_REVEAL_TIME = 2;
 
@@ -254,9 +254,10 @@ const LegacyTray = new Lang.Class({
             let [, boxWidth] = this._box.get_preferred_width(-1);
             let [, handleWidth] = this._revealHandle.get_preferred_width(-1);
 
-            targetSlide = handleWidth / boxWidth;
-            if (!this._revealHandle.hover)
-                targetSlide *= CONCEALED_VISIBLE_FRACTION;
+            if (this._revealHandle.hover)
+                targetSlide = handleWidth / boxWidth;
+            else
+                targetSlide = CONCEALED_WIDTH / boxWidth;
         }
 
         if (this.actor.visible) {
