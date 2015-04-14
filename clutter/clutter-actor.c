@@ -544,6 +544,9 @@
  * unnecessary (and potentially expensive) state changes.
  *
  * Since: 0.2
+ *
+ * Deprecated: 1.24: Use clutter_actor_is_mapped() or the #ClutterActor:mapped
+ *   property instead of this macro.
  */
 
 /**
@@ -566,6 +569,9 @@
  * must be realized.
  *
  * Since: 0.2
+ *
+ * Deprecated: 1.24: Use clutter_actor_is_realized() or the #ClutterActor:realized
+ *   property instead of this macro.
  */
 
 /**
@@ -580,6 +586,9 @@
  * parents is a toplevel stage; see also %CLUTTER_ACTOR_IS_MAPPED.
  *
  * Since: 0.2
+ *
+ * Deprecated: 1.24: Use clutter_actor_is_visible() or the #ClutterActor:visible
+ *   property instead of this macro.
  */
 
 /**
@@ -591,6 +600,9 @@
  * Only reactive actors will receive event-related signals.
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.24: Use clutter_actor_get_reactive() or the
+ *   #ClutterActor:reactive property instead of this macro.
  */
 
 #include "config.h"

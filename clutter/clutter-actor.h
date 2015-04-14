@@ -54,6 +54,10 @@ G_BEGIN_DECLS
  * @f: the #ClutterActorFlags to set
  *
  * Sets the given flags on a #ClutterActor
+ *
+ * Deprecated: 1.24: Changing flags directly is heavily discouraged in
+ *   newly written code. #ClutterActor will take care of setting the
+ *   internal state.
  */
 #define CLUTTER_ACTOR_SET_FLAGS(a,f)    (((ClutterActor*)(a))->flags |= (f))
 
@@ -63,6 +67,10 @@ G_BEGIN_DECLS
  * @f: the #ClutterActorFlags to unset
  *
  * Unsets the given flags on a #ClutterActor
+ *
+ * Deprecated: 1.24: Changing flags directly is heavily discouraged in
+ *   newly written code. #ClutterActor will take care of unsetting the
+ *   internal state.
  */
 #define CLUTTER_ACTOR_UNSET_FLAGS(a,f)  (((ClutterActor*)(a))->flags &= ~(f))
 
