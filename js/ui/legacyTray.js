@@ -1,4 +1,5 @@
 const Clutter = imports.gi.Clutter;
+const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
@@ -30,6 +31,7 @@ const STANDARD_TRAY_ICON_IMPLEMENTATIONS = {
 // Offset of the original position from the bottom-right corner
 const CONCEALED_VISIBLE_FRACTION = 0.2;
 const REVEAL_ANIMATION_TIME = 0.2;
+const TEMP_REVEAL_TIME = 2;
 
 const BARRIER_THRESHOLD = 70;
 const BARRIER_TIMEOUT = 1000;
@@ -174,7 +176,15 @@ const LegacyTray = new Lang.Class({
             }));
 
         this._iconBox.add_actor(button);
-        this._sync();
+
+        if (!this._concealHandle.visible) {
+            this._concealHandle.show();
+            GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, TEMP_REVEAL_TIME,
+                Lang.bind(this, function() {
+                    this._concealHandle.hide();
+                    return GLib.SOURCE_REMOVE;
+                }));
+        }
     },
 
     _onTrayIconRemoved: function(tm, icon) {
