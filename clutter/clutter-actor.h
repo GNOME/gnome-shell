@@ -345,6 +345,13 @@ const gchar *                   clutter_actor_get_name                          
 CLUTTER_AVAILABLE_IN_ALL
 AtkObject *                     clutter_actor_get_accessible                    (ClutterActor                *self);
 
+CLUTTER_AVAILABLE_IN_1_24
+gboolean                        clutter_actor_is_visible                        (ClutterActor                *self);
+CLUTTER_AVAILABLE_IN_1_24
+gboolean                        clutter_actor_is_mapped                         (ClutterActor                *self);
+CLUTTER_AVAILABLE_IN_1_24
+gboolean                        clutter_actor_is_realized                       (ClutterActor                *self);
+
 /* Size negotiation */
 CLUTTER_AVAILABLE_IN_ALL
 void                            clutter_actor_set_request_mode                  (ClutterActor                *self,

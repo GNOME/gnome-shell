@@ -1542,6 +1542,26 @@ clutter_actor_map (ClutterActor *self)
   clutter_actor_update_map_state (self, MAP_STATE_MAKE_MAPPED);
 }
 
+/**
+ * clutter_actor_is_mapped:
+ * @self: a #ClutterActor
+ *
+ * Checks whether a #ClutterActor has been set as mapped.
+ *
+ * See also %CLUTTER_ACTOR_IS_MAPPED and #ClutterActor:mapped
+ *
+ * Returns: %TRUE if the actor is mapped
+ *
+ * Since: 1.24
+ */
+gboolean
+clutter_actor_is_mapped (ClutterActor *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
+
+  return CLUTTER_ACTOR_IS_MAPPED (self);
+}
+
 static void
 clutter_actor_real_unmap (ClutterActor *self)
 {
@@ -1741,6 +1761,26 @@ clutter_actor_show (ClutterActor *self)
 }
 
 /**
+ * clutter_actor_is_visible:
+ * @self: a #ClutterActor
+ *
+ * Checks whether an actor is marked as visible.
+ *
+ * See also %CLUTTER_ACTOR_IS_VISIBLE and #ClutterActor:visible.
+ *
+ * Returns: %TRUE if the actor visible
+ *
+ * Since: 1.24
+ */
+gboolean
+clutter_actor_is_visible (ClutterActor *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
+
+  return CLUTTER_ACTOR_IS_VISIBLE (self);
+}
+
+/**
  * clutter_actor_show_all:
  * @self: a #ClutterActor
  *
@@ -1898,6 +1938,26 @@ clutter_actor_realize (ClutterActor *self)
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
   clutter_actor_realize_internal (self);
+}
+
+/**
+ * clutter_actor_is_realized:
+ * @self: a #ClutterActor
+ *
+ * Checks whether a #ClutterActor is realized.
+ *
+ * See also %CLUTTER_ACTOR_IS_REALIZED and #ClutterActor:realized.
+ *
+ * Returns: %TRUE if the actor is realized
+ *
+ * Since: 1.24
+ */
+gboolean
+clutter_actor_is_realized (ClutterActor *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
+
+  return CLUTTER_ACTOR_IS_REALIZED (self);
 }
 
 static void
