@@ -488,7 +488,9 @@ update_trackball_scroll_button (MetaInputSettings  *input_settings,
 
   priv = meta_input_settings_get_instance_private (input_settings);
   input_settings_class = META_INPUT_SETTINGS_GET_CLASS (input_settings);
-  button = g_settings_get_uint (priv->trackball_settings, "scroll-wheel-emulation-button");
+  /* This key is 'i' in the schema but it also specifies a minimum
+   * range of 0 so the cast here is safe. */
+  button = (guint) g_settings_get_int (priv->trackball_settings, "scroll-wheel-emulation-button");
 
   if (device && device_is_trackball (device))
     {
