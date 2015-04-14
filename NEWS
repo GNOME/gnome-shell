@@ -1,3 +1,31 @@
+3.16.1
+======
+* gdm: Move long session chooser menus to the side [Florian; #734352]
+* Work around background corruption with NVIDIA driver [Rui; #739178]
+* Don't allow move-to-workspace for always-sticky windows [Florian; #746782]
+* Allow switching workspaces with PgUp/PgDown in overview [Devyani; #742581]
+* Bump time PAM messages are displayed [Sarvjeet; #720885]
+* Fix "stutter" when moving window past the last workspace [Shivam; #712778]
+* Fix blurred text on login screen [Clément; #746912]
+* keyboard: Restore whole MRU list after password mode [Rui; #746605]
+* Pass event timestamps when activating remote actions [Owen; #747323]
+* Fix hung login screen when password is typed too quickly [Shivam; #737586]
+* Make on-screen keyboard work for shell chrome on wayland [Rui; #747274]
+* Implement reexec_self() for FreeBSD [Ting-Wei; #747788]
+* Allow to dismiss resident notifications [Florian; #746860]
+* Temporarily reveal legacy tray when icons are added [Florian; #746025]
+* Make concealed tray smaller to minimize overlap with apps [Florian; #746787]
+* Misc. bug fixes [Florian, Rui, Giovanni; #746323, #746579, #746902, #746364,
+  #746509, #747636]
+
+Contributors:
+  Sarvjeet, Giovanni Campagna, Adel Gadllah, Clément Guérin, Devyani Kota,
+  Ting-Wei Lan, Rui Matos, Shivam Mishra, Florian Müllner, Owen W. Taylor
+
+Translations:
+  Khaled Hosny [ar], Dušan Kazik [sk], Yuri Myasoedov [ru], Stas Solovey [ru],
+  Hannie Dumoleyn [nl], Rūdolfs Mazurs [lv]
+
 3.16.0
 ======
 * Revert erroneous login dialog changes [Ray; #740142]
