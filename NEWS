@@ -1,3 +1,21 @@
+3.16.1
+======
+* Add function to refresh all background instances [Rui; #739178]
+* Fix swapped scroll methods on wayland [Ondrej; #746870]
+* Manually activate stage to fix accessibility on wayland [Ray, Rui; #746670]
+* Center pointer on primary monitor on startup [Carlos; #746896]
+* wayland: Reword synchronized state application semantics [Jonas; #743617]
+* Ensure input settings are applied on startup [Rui; #747434]
+* Misc. bug fixes [Jonas, Giovanni, Calvin, Ray, Rui; #744932, #746509, #746692,
+  #746510, #746545, #747263]
+
+Contributors:
+  Jonas Ådahl, Giovanni Campagna, Carlos Garnacho, Ondrej Holy, Rui Matos,
+  Jasper St. Pierre, Ray Strode, Calvin Walton
+
+Translations:
+  Khaled Hosny [ar], Marek Černocký [cs]
+
 3.16.0
 ======
 * wayland: Don't skip notifying about initial maximized state [Jonas; #745303]
