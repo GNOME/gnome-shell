@@ -279,51 +279,82 @@ update_mouse_left_handed (MetaInputSettings  *input_settings,
     }
 }
 
+static GSettings *
+get_settings_for_device_type (MetaInputSettings      *input_settings,
+                              ClutterInputDeviceType  type)
+{
+  MetaInputSettingsPrivate *priv;
+  priv = meta_input_settings_get_instance_private (input_settings);
+  switch (type)
+    {
+    case CLUTTER_POINTER_DEVICE:
+      return priv->mouse_settings;
+    case CLUTTER_TOUCHPAD_DEVICE:
+      return priv->touchpad_settings;
+    default:
+      return NULL;
+    }
+}
+
 static void
 update_device_speed (MetaInputSettings      *input_settings,
-                     GSettings              *settings,
-                     ClutterInputDevice     *device,
-                     ClutterInputDeviceType  type)
+                     ClutterInputDevice     *device)
 {
-  MetaInputSettingsClass *input_settings_class;
-  gdouble speed;
+  GSettings *settings;
+  ConfigDoubleFunc func;
+  const gchar *key = "speed";
 
-  input_settings_class = META_INPUT_SETTINGS_GET_CLASS (input_settings);
-  speed = g_settings_get_double (settings, "speed");
+  func = META_INPUT_SETTINGS_GET_CLASS (input_settings)->set_speed;
 
   if (device)
-    settings_device_set_double_setting (input_settings, device,
-                                        input_settings_class->set_speed,
-                                        speed);
+    {
+      settings = get_settings_for_device_type (input_settings,
+                                               clutter_input_device_get_device_type (device));
+      if (!settings)
+        return;
+
+      settings_device_set_double_setting (input_settings, device, func,
+                                          g_settings_get_double (settings, key));
+    }
   else
-    settings_set_double_setting (input_settings, type,
-                                 input_settings_class->set_speed,
-                                 speed);
+    {
+      settings = get_settings_for_device_type (input_settings, CLUTTER_POINTER_DEVICE);
+      settings_set_double_setting (input_settings, CLUTTER_POINTER_DEVICE, func,
+                                   g_settings_get_double (settings, key));
+      settings = get_settings_for_device_type (input_settings, CLUTTER_TOUCHPAD_DEVICE);
+      settings_set_double_setting (input_settings, CLUTTER_TOUCHPAD_DEVICE, func,
+                                   g_settings_get_double (settings, key));
+    }
 }
 
 static void
 update_device_natural_scroll (MetaInputSettings      *input_settings,
-                              GSettings              *settings,
-                              ClutterInputDevice     *device,
-                              ClutterInputDeviceType  type)
+                              ClutterInputDevice     *device)
 {
-  MetaInputSettingsClass *input_settings_class;
-  gboolean enabled;
+  GSettings *settings;
+  ConfigBoolFunc func;
+  const gchar *key = "natural-scroll";
 
-  input_settings_class = META_INPUT_SETTINGS_GET_CLASS (input_settings);
-  enabled = g_settings_get_boolean (settings, "natural-scroll");
+  func = META_INPUT_SETTINGS_GET_CLASS (input_settings)->set_invert_scroll;
 
   if (device)
     {
-      settings_device_set_bool_setting (input_settings, device,
-                                        input_settings_class->set_invert_scroll,
-                                        enabled);
+      settings = get_settings_for_device_type (input_settings,
+                                               clutter_input_device_get_device_type (device));
+      if (!settings)
+        return;
+
+      settings_device_set_bool_setting (input_settings, device, func,
+                                        g_settings_get_boolean (settings, key));
     }
   else
     {
-      settings_set_bool_setting (input_settings, type,
-                                 input_settings_class->set_invert_scroll,
-                                 enabled);
+      settings = get_settings_for_device_type (input_settings, CLUTTER_POINTER_DEVICE);
+      settings_set_bool_setting (input_settings, CLUTTER_POINTER_DEVICE, func,
+                                 g_settings_get_boolean (settings, key));
+      settings = get_settings_for_device_type (input_settings, CLUTTER_TOUCHPAD_DEVICE);
+      settings_set_bool_setting (input_settings, CLUTTER_TOUCHPAD_DEVICE, func,
+                                 g_settings_get_boolean (settings, key));
     }
 }
 
@@ -573,22 +604,18 @@ meta_input_settings_changed_cb (GSettings  *settings,
       if (strcmp (key, "left-handed") == 0)
         update_mouse_left_handed (input_settings, NULL);
       else if (strcmp (key, "speed") == 0)
-        update_device_speed (input_settings, settings, NULL,
-                             CLUTTER_POINTER_DEVICE);
+        update_device_speed (input_settings, NULL);
       else if (strcmp (key, "natural-scroll") == 0)
-        update_device_natural_scroll (input_settings, settings,
-                                      NULL, CLUTTER_POINTER_DEVICE);
+        update_device_natural_scroll (input_settings, NULL);
     }
   else if (settings == priv->touchpad_settings)
     {
       if (strcmp (key, "left-handed") == 0)
         update_touchpad_left_handed (input_settings, NULL);
       else if (strcmp (key, "speed") == 0)
-        update_device_speed (input_settings, settings, NULL,
-                             CLUTTER_TOUCHPAD_DEVICE);
+        update_device_speed (input_settings, NULL);
       else if (strcmp (key, "natural-scroll") == 0)
-        update_device_natural_scroll (input_settings, settings,
-                                      NULL, CLUTTER_TOUCHPAD_DEVICE);
+        update_device_natural_scroll (input_settings, NULL);
       else if (strcmp (key, "tap-to-click") == 0)
         update_touchpad_tap_enabled (input_settings, NULL);
       else if (strcmp (key, "send-events") == 0)
@@ -707,44 +734,34 @@ check_add_mappable_device (MetaInputSettings  *input_settings,
 }
 
 static void
+apply_device_settings (MetaInputSettings  *input_settings,
+                       ClutterInputDevice *device)
+{
+  update_mouse_left_handed (input_settings, device);
+  update_device_speed (input_settings, device);
+  update_device_natural_scroll (input_settings, device);
+
+  update_touchpad_left_handed (input_settings, device);
+  update_device_speed (input_settings, device);
+  update_device_natural_scroll (input_settings, device);
+  update_touchpad_tap_enabled (input_settings, device);
+  update_touchpad_send_events (input_settings, device);
+  update_touchpad_scroll_method (input_settings, device);
+  update_touchpad_click_method (input_settings, device);
+
+  update_trackball_scroll_button (input_settings, device);
+}
+
+static void
 meta_input_settings_device_added (ClutterDeviceManager *device_manager,
                                   ClutterInputDevice   *device,
                                   MetaInputSettings    *input_settings)
 {
-  ClutterInputDeviceType type;
-  MetaInputSettingsPrivate *priv;
-
   if (clutter_input_device_get_device_mode (device) == CLUTTER_INPUT_MODE_MASTER)
     return;
 
-  priv = meta_input_settings_get_instance_private (input_settings);
-  type = clutter_input_device_get_device_type (device);
-
-  if (type == CLUTTER_POINTER_DEVICE)
-    {
-      update_mouse_left_handed (input_settings, device);
-      update_device_speed (input_settings, priv->mouse_settings, device, type);
-
-      if (device_is_trackball (device))
-        update_trackball_scroll_button (input_settings, device);
-    }
-  else if (type == CLUTTER_TOUCHPAD_DEVICE)
-    {
-      update_touchpad_left_handed (input_settings, device);
-      update_touchpad_tap_enabled (input_settings, device);
-      update_touchpad_scroll_method (input_settings, device);
-      update_touchpad_click_method (input_settings, device);
-      update_touchpad_send_events (input_settings, device);
-
-      update_device_speed (input_settings, priv->touchpad_settings,
-                           device, type);
-      update_device_natural_scroll (input_settings, priv->touchpad_settings,
-                                    device, type);
-    }
-  else
-    {
-      check_add_mappable_device (input_settings, device);
-    }
+  apply_device_settings (input_settings, device);
+  check_add_mappable_device (input_settings, device);
 }
 
 static void
@@ -782,25 +799,9 @@ static void
 meta_input_settings_constructed (GObject *object)
 {
   MetaInputSettings *input_settings = META_INPUT_SETTINGS (object);
-  MetaInputSettingsPrivate *priv;
 
-  priv = meta_input_settings_get_instance_private (input_settings);
-
-  update_mouse_left_handed (input_settings, NULL);
-
-  update_touchpad_left_handed (input_settings, NULL);
-  update_touchpad_tap_enabled (input_settings, NULL);
-  update_touchpad_send_events (input_settings, NULL);
-
-  update_device_natural_scroll (input_settings, priv->touchpad_settings,
-                                NULL, CLUTTER_TOUCHPAD_DEVICE);
-  update_device_speed (input_settings, priv->touchpad_settings, NULL,
-                       CLUTTER_TOUCHPAD_DEVICE);
-  update_device_speed (input_settings, priv->mouse_settings, NULL,
-                       CLUTTER_POINTER_DEVICE);
-
+  apply_device_settings (input_settings, NULL);
   update_keyboard_repeat (input_settings);
-
   check_mappable_devices (input_settings);
 }
 
