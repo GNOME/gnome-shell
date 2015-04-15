@@ -710,8 +710,9 @@ StScrollBar {
   border: 1px solid rgba(0, 0, 0, 0.5); }
 
 .calendar-day-with-events {
-  color: #f2f2f2;
-  font-weight: bold; }
+  color: white;
+  font-weight: bold;
+  background-image: url("resource:///org/gnome/shell/theme/calendar-today.svg"); }
 
 .calendar-other-month-day {
   color: rgba(255, 255, 255, 0.15);
