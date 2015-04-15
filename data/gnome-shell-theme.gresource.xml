@@ -32,8 +32,10 @@
     <file>summary-counter.svg</file>
     <file>toggle-off-us.svg</file>
     <file>toggle-off-intl.svg</file>
+    <file>toggle-off-hc.svg</file>
     <file>toggle-on-us.svg</file>
     <file>toggle-on-intl.svg</file>
+    <file>toggle-on-hc.svg</file>
     <file>ws-switch-arrow-up.png</file>
     <file>ws-switch-arrow-down.png</file>
   </gresource>
