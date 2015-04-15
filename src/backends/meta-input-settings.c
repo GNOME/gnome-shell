@@ -209,6 +209,10 @@ update_touchpad_left_handed (MetaInputSettings  *input_settings,
   MetaInputSettingsPrivate *priv;
   gboolean enabled = FALSE;
 
+  if (device &&
+      clutter_input_device_get_device_type (device) != CLUTTER_TOUCHPAD_DEVICE)
+    return;
+
   priv = meta_input_settings_get_instance_private (input_settings);
   input_settings_class = META_INPUT_SETTINGS_GET_CLASS (input_settings);
   handedness = g_settings_get_enum (priv->touchpad_settings, "left-handed");
@@ -230,7 +234,6 @@ update_touchpad_left_handed (MetaInputSettings  *input_settings,
 
   if (device)
     {
-      g_assert (clutter_input_device_get_device_type (device) == CLUTTER_TOUCHPAD_DEVICE);
       settings_device_set_bool_setting (input_settings, device,
                                         input_settings_class->set_left_handed,
                                         enabled);
@@ -251,13 +254,16 @@ update_mouse_left_handed (MetaInputSettings  *input_settings,
   MetaInputSettingsPrivate *priv;
   gboolean enabled;
 
+  if (device &&
+      clutter_input_device_get_device_type (device) != CLUTTER_POINTER_DEVICE)
+    return;
+
   priv = meta_input_settings_get_instance_private (input_settings);
   input_settings_class = META_INPUT_SETTINGS_GET_CLASS (input_settings);
   enabled = g_settings_get_boolean (priv->mouse_settings, "left-handed");
 
   if (device)
     {
-      g_assert (clutter_input_device_get_device_type (device) == CLUTTER_POINTER_DEVICE);
       settings_device_set_bool_setting (input_settings, device,
                                         input_settings_class->set_left_handed,
                                         enabled);
@@ -366,6 +372,10 @@ update_touchpad_tap_enabled (MetaInputSettings  *input_settings,
   MetaInputSettingsPrivate *priv;
   gboolean enabled;
 
+  if (device &&
+      clutter_input_device_get_device_type (device) != CLUTTER_TOUCHPAD_DEVICE)
+    return;
+
   priv = meta_input_settings_get_instance_private (input_settings);
   input_settings_class = META_INPUT_SETTINGS_GET_CLASS (input_settings);
   enabled = g_settings_get_boolean (priv->touchpad_settings, "tap-to-click");
@@ -391,6 +401,10 @@ update_touchpad_scroll_method (MetaInputSettings *input_settings,
   MetaInputSettingsClass *input_settings_class;
   GDesktopTouchpadScrollMethod method;
   MetaInputSettingsPrivate *priv;
+
+  if (device &&
+      clutter_input_device_get_device_type (device) != CLUTTER_TOUCHPAD_DEVICE)
+    return;
 
   priv = meta_input_settings_get_instance_private (input_settings);
   input_settings_class = META_INPUT_SETTINGS_GET_CLASS (input_settings);
@@ -418,6 +432,10 @@ update_touchpad_click_method (MetaInputSettings *input_settings,
   GDesktopTouchpadScrollMethod method;
   MetaInputSettingsPrivate *priv;
 
+  if (device &&
+      clutter_input_device_get_device_type (device) != CLUTTER_TOUCHPAD_DEVICE)
+    return;
+
   priv = meta_input_settings_get_instance_private (input_settings);
   input_settings_class = META_INPUT_SETTINGS_GET_CLASS (input_settings);
   method = g_settings_get_enum (priv->touchpad_settings, "click-method");
@@ -443,6 +461,10 @@ update_touchpad_send_events (MetaInputSettings  *input_settings,
   MetaInputSettingsClass *input_settings_class;
   MetaInputSettingsPrivate *priv;
   GDesktopDeviceSendEvents mode;
+
+  if (device &&
+      clutter_input_device_get_device_type (device) != CLUTTER_TOUCHPAD_DEVICE)
+    return;
 
   priv = meta_input_settings_get_instance_private (input_settings);
   input_settings_class = META_INPUT_SETTINGS_GET_CLASS (input_settings);
@@ -486,13 +508,16 @@ update_trackball_scroll_button (MetaInputSettings  *input_settings,
   MetaInputSettingsPrivate *priv;
   guint button;
 
+  if (device && !device_is_trackball (device))
+    return;
+
   priv = meta_input_settings_get_instance_private (input_settings);
   input_settings_class = META_INPUT_SETTINGS_GET_CLASS (input_settings);
   /* This key is 'i' in the schema but it also specifies a minimum
    * range of 0 so the cast here is safe. */
   button = (guint) g_settings_get_int (priv->trackball_settings, "scroll-wheel-emulation-button");
 
-  if (device && device_is_trackball (device))
+  if (device)
     {
       input_settings_class->set_scroll_button (input_settings, device, button);
     }
