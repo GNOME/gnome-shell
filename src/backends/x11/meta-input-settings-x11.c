@@ -180,7 +180,7 @@ meta_input_settings_x11_set_scroll_button (MetaInputSettings  *settings,
                                            ClutterInputDevice *device,
                                            guint               button)
 {
-  change_property (device, "libinput Scroll Method Enabled",
+  change_property (device, "libinput Button Scrolling Button",
                    XA_INTEGER, 32, &button, 1);
 }
 
