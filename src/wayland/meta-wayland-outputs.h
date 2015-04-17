@@ -28,15 +28,34 @@
 #include "backends/meta-monitor-manager-private.h"
 #include "meta-wayland-private.h"
 
-typedef struct
+#define META_TYPE_WAYLAND_OUTPUT            (meta_wayland_output_get_type ())
+#define META_WAYLAND_OUTPUT(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_WAYLAND_OUTPUT, MetaWaylandOutput))
+#define META_WAYLAND_OUTPUT_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  META_TYPE_WAYLAND_OUTPUT, MetaWaylandOutputClass))
+#define META_IS_WAYLAND_OUTPUT(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), META_TYPE_WAYLAND_OUTPUT))
+#define META_IS_WAYLAND_OUTPUT_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  META_TYPE_WAYLAND_OUTPUT))
+#define META_WAYLAND_OUTPUT_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  META_TYPE_WAYLAND_OUTPUT, MetaWaylandOutputClass))
+
+typedef struct _MetaWaylandOutput       MetaWaylandOutput;
+typedef struct _MetaWaylandOutputClass  MetaWaylandOutputClass;
+
+struct _MetaWaylandOutput
 {
+  GObject                   parent;
+
   MetaMonitorInfo          *monitor_info;
   struct wl_global         *global;
   int                       x, y;
   enum wl_output_transform  transform;
 
   GList                    *resources;
-} MetaWaylandOutput;
+};
+
+struct _MetaWaylandOutputClass
+{
+  GObjectClass parent_class;
+};
+
+GType meta_wayland_output_get_type (void) G_GNUC_CONST;
 
 void meta_wayland_outputs_init (MetaWaylandCompositor *compositor);
 
