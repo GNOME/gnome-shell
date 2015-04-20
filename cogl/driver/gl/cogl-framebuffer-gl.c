@@ -107,6 +107,12 @@
 #ifndef GL_PACK_INVERT_MESA
 #define GL_PACK_INVERT_MESA 0x8758
 #endif
+#ifndef GL_BACK_LEFT
+#define GL_BACK_LEFT				0x0402
+#endif
+#ifndef GL_BACK_RIGHT
+#define GL_BACK_RIGHT				0x0403
+#endif
 
 #ifndef GL_COLOR
 #define GL_COLOR 0x1800
@@ -243,6 +249,9 @@ _cogl_framebuffer_gl_flush_stereo_mode_state (CoglFramebuffer *framebuffer)
   GLenum draw_buffer = GL_BACK;
 
   if (framebuffer->type == COGL_FRAMEBUFFER_TYPE_OFFSCREEN)
+    return;
+
+  if (!ctx->glDrawBuffer)
     return;
 
   /* The one-shot default draw buffer setting in _cogl_framebuffer_gl_bind
