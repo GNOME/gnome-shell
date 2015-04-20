@@ -62,6 +62,7 @@ depcomp
 /examples/cogl-point-sprites
 /examples/cogl-sdl-hello
 /examples/cogl-sdl2-hello
+/examples/cogl-stereo
 /examples/cogl-x11-foreign
 /examples/cogl-x11-tfp
 /examples/cogland
