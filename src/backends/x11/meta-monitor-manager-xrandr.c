@@ -788,6 +788,7 @@ meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
       mode->height = xmode->height;
       mode->refresh_rate = (xmode->dotClock /
 			    ((float)xmode->hTotal * xmode->vTotal));
+      mode->flags = xmode->modeFlags;
       mode->name = get_xmode_name (xmode);
     }
 

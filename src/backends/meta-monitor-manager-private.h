@@ -190,6 +190,7 @@ struct _MetaMonitorMode
   int width;
   int height;
   float refresh_rate;
+  guint32 flags;
 
   gpointer driver_private;
   GDestroyNotify driver_notify;

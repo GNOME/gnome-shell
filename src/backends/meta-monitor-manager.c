@@ -590,7 +590,7 @@ meta_monitor_manager_handle_get_resources (MetaDBusDisplayConfig *skeleton,
 
   g_variant_builder_init (&crtc_builder, G_VARIANT_TYPE ("a(uxiiiiiuaua{sv})"));
   g_variant_builder_init (&output_builder, G_VARIANT_TYPE ("a(uxiausauaua{sv})"));
-  g_variant_builder_init (&mode_builder, G_VARIANT_TYPE ("a(uxuud)"));
+  g_variant_builder_init (&mode_builder, G_VARIANT_TYPE ("a(uxuudu)"));
 
   for (i = 0; i < manager->n_crtcs; i++)
     {
@@ -714,12 +714,13 @@ meta_monitor_manager_handle_get_resources (MetaDBusDisplayConfig *skeleton,
     {
       MetaMonitorMode *mode = &manager->modes[i];
 
-      g_variant_builder_add (&mode_builder, "(uxuud)",
+      g_variant_builder_add (&mode_builder, "(uxuudu)",
                              i, /* ID */
                              (gint64)mode->mode_id,
                              (guint32)mode->width,
                              (guint32)mode->height,
-                             (double)mode->refresh_rate);
+                             (double)mode->refresh_rate,
+                             (guint32)mode->flags);
     }
 
   meta_dbus_display_config_complete_get_resources (skeleton,

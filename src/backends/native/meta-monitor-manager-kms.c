@@ -632,6 +632,7 @@ meta_monitor_manager_kms_read_current (MetaMonitorManager *manager)
       meta_mode->name = g_strndup (mode->name, DRM_DISPLAY_MODE_LEN);
       meta_mode->width = mode->hdisplay;
       meta_mode->height = mode->vdisplay;
+      meta_mode->flags = mode->flags;
 
       /* Calculate refresh rate in milliHz first for extra precision. */
       meta_mode->refresh_rate = (mode->clock * 1000000LL) / mode->htotal;

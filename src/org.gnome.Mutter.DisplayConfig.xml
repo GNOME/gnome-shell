@@ -115,6 +115,7 @@
 	* x winsys_id: the low-level ID of this mode
 	* u width, height: the resolution
 	* d frequency: refresh rate
+        * u flags: mode flags as defined in xf86drmMode.h and randr.h
 
         Output and modes are read-only objects (except for output properties),
 	they can change only in accordance to HW changes (such as hotplugging
@@ -133,7 +134,7 @@
       <arg name="serial" direction="out" type="u" />
       <arg name="crtcs" direction="out" type="a(uxiiiiiuaua{sv})" />
       <arg name="outputs" direction="out" type="a(uxiausauaua{sv})" />
-      <arg name="modes" direction="out" type="a(uxuud)" />
+      <arg name="modes" direction="out" type="a(uxuudu)" />
       <arg name="max_screen_width" direction="out" type="i" />
       <arg name="max_screen_height" direction="out" type="i" />
     </method>
