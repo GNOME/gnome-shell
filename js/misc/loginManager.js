@@ -134,7 +134,7 @@ const LoginManagerSystemd = new Lang.Class({
             if (error)
                 asyncCallback(false);
             else
-                asyncCallback(result[0] != 'no');
+                asyncCallback(result[0] != 'no' && result[0] != 'na');
         });
     },
 
