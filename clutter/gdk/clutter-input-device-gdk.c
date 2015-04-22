@@ -26,6 +26,10 @@
 
 #include "clutter-input-device-gdk.h"
 
+#ifdef GDK_WINDOWING_X11
+#include <gdk/gdkx.h>
+#endif
+
 #include "clutter-debug.h"
 #include "clutter-device-manager-private.h"
 #include "clutter-private.h"
@@ -101,6 +105,9 @@ _clutter_input_device_gdk_new (ClutterDeviceManager    *manager,
   gboolean has_cursor = FALSE;
   const gchar *name;
   gboolean is_enabled = FALSE;
+  gint device_id;
+  const char *vendor_id = NULL;
+  const char *product_id = NULL;
 
   g_object_get (manager, "backend", &backend, NULL);
 
@@ -151,6 +158,20 @@ _clutter_input_device_gdk_new (ClutterDeviceManager    *manager,
 
   name = gdk_device_get_name (device);
 
+#if defined(GDK_WINDOWING_X11)
+  /* If we're on X11, keep the device id in sync */
+  if (GDK_IS_X11_DISPLAY (gdk_device_get_display (device)))
+    device_id = gdk_x11_device_get_id (device);
+  else
+#endif
+    device_id = device_int_counter++;
+
+  if (gdk_device_get_device_type (device) != GDK_DEVICE_TYPE_MASTER)
+    {
+      product_id = gdk_device_get_product_id (device);
+      vendor_id = gdk_device_get_vendor_id (device);
+    }
+
   clutter_device = g_object_new (CLUTTER_TYPE_INPUT_DEVICE_GDK,
 				 "backend", backend,
 				 "device-manager", manager,
@@ -158,9 +179,11 @@ _clutter_input_device_gdk_new (ClutterDeviceManager    *manager,
 				 "device-type", device_type,
 				 "has-cursor", has_cursor,
 				 "gdk-device", device,
-				 "id", device_int_counter++,
+				 "id", device_id,
 				 "name", name,
 				 "enabled", is_enabled,
+                                 "product-id", product_id,
+                                 "vendor-id", vendor_id,
 				 NULL);
   return clutter_device;
 }
