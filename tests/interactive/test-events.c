@@ -390,10 +390,6 @@ test_events_main (int argc, char *argv[])
 {
   ClutterActor *stage, *actor, *focus_box, *group;
 
-#ifdef CLUTTER_WINDOWING_X11
-  clutter_x11_enable_xinput ();
-#endif
-
   if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
     return 1;
 

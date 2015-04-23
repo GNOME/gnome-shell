@@ -59,10 +59,6 @@ test_rotate_zoom_main (int argc, char *argv[])
   ClutterActor *stage, *actor;
   gfloat width, height;
 
-#ifdef CLUTTER_WINDOWING_X11
-  clutter_x11_enable_xinput ();
-#endif
-
   /* initialize Clutter */
   if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
     return EXIT_FAILURE;

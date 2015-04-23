@@ -213,11 +213,6 @@ test_devices_main (int argc, char **argv)
   ClutterDeviceManager *manager;
   const GSList *stage_devices, *l;
 
-#ifdef CLUTTER_WINDOWING_X11
-  /* force enabling X11 support */
-  clutter_x11_enable_xinput ();
-#endif
-
   if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
     return 1;
 
