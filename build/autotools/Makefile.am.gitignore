@@ -6,13 +6,14 @@
 GIT_IGNORE_FILES = $(noinst_PROGRAMS) $(check_PROGRAMS) $(check_SCRIPTS) $(GIT_IGNORE_EXTRA)
 
 .gitignore: Makefile.am
-	$(QUIET_GEN)( \
-	  echo "*.o" ; \
-	  echo ".gitignore" ; \
-	) > .gitignore ; \
-	for p in $(GIT_IGNORE_FILES); do \
-		echo "/$$p" >> .gitignore ; \
-	done
+	$(QUIET_GEN)if test -d "$(top_srcdir)/.git"; then \
+		( echo "*.o" ; \
+		  echo ".gitignore" ; \
+		) > .gitignore ; \
+		for p in $(GIT_IGNORE_FILES); do \
+			echo "/$$p" >> .gitignore ; \
+		done \
+	fi
 
 gitignore: .gitignore
 
