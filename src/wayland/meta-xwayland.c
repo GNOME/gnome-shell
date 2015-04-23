@@ -182,7 +182,7 @@ try_display (int    display,
 
       if (kill (other, 0) < 0 && errno == ESRCH)
         {
-          /* Process is dead. Try unlinking the lockfile and trying again. */
+          /* Process is dead. Try unlinking the lock file and trying again. */
           if (unlink (filename) < 0)
             {
               g_warning ("failed to unlink stale lock file %s: %m", filename);
@@ -221,7 +221,7 @@ try_display (int    display,
 }
 
 static char *
-create_lockfile (int display, int *display_out)
+create_lock_file (int display, int *display_out)
 {
   char *filename;
   int fd;
@@ -354,7 +354,7 @@ static gboolean
 choose_xdisplay (MetaXWaylandManager *manager)
 {
   int display = 0;
-  char *lockfile = NULL;
+  char *lock_file = NULL;
 
   /* Hack to keep the unused Xwayland instance on
    * the login screen from taking the prime :0 display
@@ -365,8 +365,8 @@ choose_xdisplay (MetaXWaylandManager *manager)
 
   do
     {
-      lockfile = create_lockfile (display, &display);
-      if (!lockfile)
+      lock_file = create_lock_file (display, &display);
+      if (!lock_file)
         {
           g_warning ("Failed to create an X lock file");
           return FALSE;
@@ -375,7 +375,7 @@ choose_xdisplay (MetaXWaylandManager *manager)
       manager->abstract_fd = bind_to_abstract_socket (display);
       if (manager->abstract_fd < 0)
         {
-          unlink (lockfile);
+          unlink (lock_file);
 
           if (errno == EADDRINUSE)
             {
@@ -389,7 +389,7 @@ choose_xdisplay (MetaXWaylandManager *manager)
       manager->unix_fd = bind_to_unix_socket (display);
       if (manager->abstract_fd < 0)
         {
-          unlink (lockfile);
+          unlink (lock_file);
           close (manager->abstract_fd);
           return FALSE;
         }
@@ -400,7 +400,7 @@ choose_xdisplay (MetaXWaylandManager *manager)
 
   manager->display_index = display;
   manager->display_name = g_strdup_printf (":%d", manager->display_index);
-  manager->lockfile = lockfile;
+  manager->lock_file = lock_file;
 
   return TRUE;
 }
@@ -506,8 +506,8 @@ meta_xwayland_start (MetaXWaylandManager *manager,
 out:
   if (!started)
     {
-      unlink (manager->lockfile);
-      g_clear_pointer (&manager->lockfile, g_free);
+      unlink (manager->lock_file);
+      g_clear_pointer (&manager->lock_file, g_free);
     }
   return started;
 }
@@ -532,5 +532,5 @@ meta_xwayland_stop (MetaXWaylandManager *manager)
   snprintf (path, sizeof path, "/tmp/.X11-unix/X%d", manager->display_index);
   unlink (path);
 
-  unlink (manager->lockfile);
+  unlink (manager->lock_file);
 }

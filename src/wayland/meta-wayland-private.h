@@ -43,7 +43,7 @@ typedef struct
 typedef struct
 {
   int display_index;
-  char *lockfile;
+  char *lock_file;
   int abstract_fd;
   int unix_fd;
   pid_t pid;
