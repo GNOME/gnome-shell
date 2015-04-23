@@ -532,5 +532,10 @@ meta_xwayland_stop (MetaXWaylandManager *manager)
   snprintf (path, sizeof path, "/tmp/.X11-unix/X%d", manager->display_index);
   unlink (path);
 
-  unlink (manager->lock_file);
+  g_clear_pointer (&manager->display_name, g_free);
+  if (manager->lock_file)
+    {
+      unlink (manager->lock_file);
+      g_clear_pointer (&manager->lock_file, g_free);
+    }
 }
