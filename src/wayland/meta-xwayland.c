@@ -438,28 +438,27 @@ meta_xwayland_start (MetaXWaylandManager *manager,
 {
   int xwayland_client_fd[2];
   int displayfd[2];
+  gboolean started = FALSE;
   g_autoptr(GSubprocessLauncher) launcher = NULL;
   GSubprocessFlags flags;
   GSubprocess *proc;
   GError *error = NULL;
 
   if (!choose_xdisplay (manager))
-    return FALSE;
+    goto out;
 
   /* We want xwayland to be a wayland client so we make a socketpair to setup a
    * wayland protocol connection. */
   if (socketpair (AF_UNIX, SOCK_STREAM | SOCK_CLOEXEC, 0, xwayland_client_fd) < 0)
     {
       g_warning ("xwayland_client_fd socketpair failed\n");
-      unlink (manager->lockfile);
-      return FALSE;
+      goto out;
     }
 
   if (socketpair (AF_UNIX, SOCK_STREAM | SOCK_CLOEXEC, 0, displayfd) < 0)
     {
       g_warning ("displayfd socketpair failed\n");
-      unlink (manager->lockfile);
-      return FALSE;
+      goto out;
     }
 
   /* xwayland, please. */
@@ -489,7 +488,7 @@ meta_xwayland_start (MetaXWaylandManager *manager,
   if (!proc)
     {
       g_error ("Failed to spawn Xwayland: %s", error->message);
-      return FALSE;
+      goto out;
     }
 
   g_subprocess_wait_async  (proc, NULL, xserver_died, NULL);
@@ -502,7 +501,12 @@ meta_xwayland_start (MetaXWaylandManager *manager,
   manager->init_loop = g_main_loop_new (NULL, FALSE);
   g_main_loop_run (manager->init_loop);
 
-  return TRUE;
+  started = TRUE;
+
+out:
+  if (!started)
+    unlink (manager->lockfile);
+  return started;
 }
 
 /* To be called right after connecting */
