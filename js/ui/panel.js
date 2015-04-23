@@ -1003,6 +1003,25 @@ const Panel = new Lang.Class({
         if (parent)
             parent.remove_actor(container);
 
+        if (indicator._openChangedId > 0)
+            indicator.menu.disconnect(indicator._openChangedId);
+        indicator._openChangedId = 0;
+
+        if (indicator.menu)
+            indicator._openChangedId = indicator.menu.connect('open-state-changed',
+                Lang.bind(this, function(menu, isOpen) {
+                    let boxAlignment;
+                    if (box == this._leftBox)
+                        boxAlignment = Clutter.ActorAlign.START;
+                    else if (box == this._centerBox)
+                        boxAlignment = Clutter.ActorAlign.CENTER;
+                    else if (box == this._rightBox)
+                        boxAlignment = Clutter.ActorAlign.END;
+
+                    if (boxAlignment == Main.messageTray.bannerAlignment)
+                        Main.messageTray.bannerBlocked = isOpen;
+                }));
+
         box.insert_child_at_index(container, position);
         if (indicator.menu)
             this.menuManager.addMenu(indicator.menu);

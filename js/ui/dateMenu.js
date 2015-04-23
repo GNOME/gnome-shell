@@ -357,8 +357,6 @@ const DateMenuButton = new Lang.Class({
                 this._date.setDate(now);
                 this._messageList.setDate(now);
             }
-            // Block notification banners while the menu is open
-            Main.messageTray.bannerBlocked = isOpen;
         }));
 
         // Fill up the first column
