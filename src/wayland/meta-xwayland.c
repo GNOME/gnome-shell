@@ -529,8 +529,6 @@ meta_xwayland_stop (MetaXWaylandManager *manager)
 {
   char path[256];
 
-  snprintf (path, sizeof path, "/tmp/.X%d-lock", manager->display_index);
-  unlink (path);
   snprintf (path, sizeof path, "/tmp/.X11-unix/X%d", manager->display_index);
   unlink (path);
 
