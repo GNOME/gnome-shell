@@ -976,6 +976,14 @@ const MessageTray = new Lang.Class({
         Shell.util_set_hidden_from_pick(this.actor, false);
     },
 
+    get bannerAlignment() {
+        return this._bannerBin.get_x_align();
+    },
+
+    set bannerAlignment(align) {
+        this._bannerBin.set_x_align(align);
+    },
+
     _onNotificationKeyRelease: function(actor, event) {
         if (event.get_key_symbol() == Clutter.KEY_Escape && event.get_state() == 0) {
             this._expireNotification();
