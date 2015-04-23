@@ -724,7 +724,7 @@ calculate_col_widths (ClutterTableLayout *self,
       DimensionData *col;
       gfloat c_min, c_pref;
 
-      if (!CLUTTER_ACTOR_IS_VISIBLE (child))
+      if (!clutter_actor_is_visible (child))
         continue;
 
       meta =
@@ -766,7 +766,7 @@ calculate_col_widths (ClutterTableLayout *self,
       gint start_col, end_col;
       gint n_expand;
 
-      if (!CLUTTER_ACTOR_IS_VISIBLE (child))
+      if (!clutter_actor_is_visible (child))
         continue;
 
       meta =
@@ -1001,7 +1001,7 @@ calculate_row_heights (ClutterTableLayout *self,
       DimensionData *row;
       gfloat c_min, c_pref;
 
-      if (!CLUTTER_ACTOR_IS_VISIBLE (child))
+      if (!clutter_actor_is_visible (child))
         continue;
 
       meta =
@@ -1044,7 +1044,7 @@ calculate_row_heights (ClutterTableLayout *self,
       gint start_row, end_row;
       gint n_expand;
 
-      if (!CLUTTER_ACTOR_IS_VISIBLE (child))
+      if (!clutter_actor_is_visible (child))
         continue;
 
       meta =
@@ -1405,7 +1405,7 @@ clutter_table_layout_allocate (ClutterLayoutManager   *layout,
       gdouble x_align, y_align;
       gboolean x_fill, y_fill;
 
-      if (!CLUTTER_ACTOR_IS_VISIBLE (child))
+      if (!clutter_actor_is_visible (child))
         continue;
 
       meta =

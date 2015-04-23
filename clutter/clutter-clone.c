@@ -178,7 +178,7 @@ clutter_clone_paint (ClutterActor *actor)
                                        clutter_actor_get_paint_opacity (actor));
   _clutter_actor_set_enable_model_view_transform (priv->clone_source, FALSE);
 
-  if (!CLUTTER_ACTOR_IS_MAPPED (priv->clone_source))
+  if (!clutter_actor_is_mapped (priv->clone_source))
     {
       _clutter_actor_set_enable_paint_unmapped (priv->clone_source, TRUE);
       was_unmapped = TRUE;

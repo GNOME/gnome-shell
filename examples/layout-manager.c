@@ -64,7 +64,7 @@ multi_layout_get_preferred_width (ClutterLayoutManager *manager,
     {
       float child_minimum, child_natural;
 
-      if (!CLUTTER_ACTOR_IS_VISIBLE (child))
+      if (!clutter_actor_is_visible (child))
         continue;
 
       clutter_actor_get_preferred_width (child, -1.f,
@@ -120,7 +120,7 @@ multi_layout_get_preferred_height (ClutterLayoutManager *manager,
     {
       float child_minimum, child_natural;
 
-      if (!CLUTTER_ACTOR_IS_VISIBLE (child))
+      if (!clutter_actor_is_visible (child))
         continue;
 
       clutter_actor_get_preferred_height (child, -1.f,
@@ -172,7 +172,7 @@ get_visible_children (ClutterActor *actor)
   clutter_actor_iter_init (&iter, actor);
   while (clutter_actor_iter_next (&iter, &child))
     {
-      if (CLUTTER_ACTOR_IS_VISIBLE (child))
+      if (clutter_actor_is_visible (child))
         n_visible_children += 1;
     }
 
@@ -227,7 +227,7 @@ multi_layout_allocate (ClutterLayoutManager   *manager,
     {
       ClutterActorBox child_allocation = CLUTTER_ACTOR_BOX_INIT_ZERO;
 
-      if (!CLUTTER_ACTOR_IS_VISIBLE (child))
+      if (!clutter_actor_is_visible (child))
         continue;
 
       if (self->state == MULTI_LAYOUT_GRID)

@@ -541,7 +541,7 @@ clutter_grid_request_non_spanning (ClutterGridRequest *request,
   clutter_actor_iter_init (&iter, CLUTTER_ACTOR (priv->container));
   while (clutter_actor_iter_next (&iter, &child))
     {
-      if (!CLUTTER_ACTOR_IS_VISIBLE (child))
+      if (!clutter_actor_is_visible (child))
         continue;
 
       grid_child = GET_GRID_CHILD (request->grid, child);
@@ -626,7 +626,7 @@ clutter_grid_request_spanning (ClutterGridRequest *request,
   clutter_actor_iter_init (&iter, CLUTTER_ACTOR (priv->container));
   while (clutter_actor_iter_next (&iter, &child))
     {
-      if (!CLUTTER_ACTOR_IS_VISIBLE (child))
+      if (!clutter_actor_is_visible (child))
         continue;
 
       grid_child = GET_GRID_CHILD (request->grid, child);
@@ -763,7 +763,7 @@ clutter_grid_request_compute_expand (ClutterGridRequest *request,
   clutter_actor_iter_init (&iter, CLUTTER_ACTOR (priv->container));
   while (clutter_actor_iter_next (&iter, &child))
     {
-      if (!CLUTTER_ACTOR_IS_VISIBLE (child))
+      if (!clutter_actor_is_visible (child))
         continue;
 
       grid_child = GET_GRID_CHILD (request->grid, child);
@@ -782,7 +782,7 @@ clutter_grid_request_compute_expand (ClutterGridRequest *request,
   clutter_actor_iter_init (&iter, CLUTTER_ACTOR (priv->container));
   while (clutter_actor_iter_next (&iter, &child))
     {
-      if (!CLUTTER_ACTOR_IS_VISIBLE (child))
+      if (!clutter_actor_is_visible (child))
         continue;
 
       grid_child = GET_GRID_CHILD (request->grid, child);
@@ -1416,7 +1416,7 @@ clutter_grid_layout_allocate (ClutterLayoutManager   *layout,
       gfloat x, y, width, height;
       ClutterGridChild *grid_child;
 
-      if (!CLUTTER_ACTOR_IS_VISIBLE (child))
+      if (!clutter_actor_is_visible (child))
         continue;
 
       grid_child = GET_GRID_CHILD (self, child);

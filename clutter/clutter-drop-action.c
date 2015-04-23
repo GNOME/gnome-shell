@@ -307,7 +307,7 @@ on_actor_mapped (ClutterActor      *actor,
                  GParamSpec        *pspec,
                  ClutterDropAction *self)
 {
-  if (CLUTTER_ACTOR_IS_MAPPED (actor))
+  if (clutter_actor_is_mapped (actor))
     {
       if (self->priv->stage == NULL)
         self->priv->stage = clutter_actor_get_stage (actor);

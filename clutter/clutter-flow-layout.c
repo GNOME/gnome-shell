@@ -239,7 +239,7 @@ clutter_flow_layout_get_preferred_width (ClutterLayoutManager *manager,
       gfloat child_min, child_natural;
       gfloat new_y, item_height;
 
-      if (!CLUTTER_ACTOR_IS_VISIBLE (child))
+      if (!clutter_actor_is_visible (child))
         continue;
 
       if (priv->orientation == CLUTTER_FLOW_VERTICAL && for_height > 0)
@@ -430,7 +430,7 @@ clutter_flow_layout_get_preferred_height (ClutterLayoutManager *manager,
       gfloat child_min, child_natural;
       gfloat new_x, item_width;
 
-      if (!CLUTTER_ACTOR_IS_VISIBLE (child))
+      if (!clutter_actor_is_visible (child))
         continue;
 
       if (priv->orientation == CLUTTER_FLOW_HORIZONTAL && for_width > 0)
@@ -620,7 +620,7 @@ clutter_flow_layout_allocate (ClutterLayoutManager   *manager,
       gfloat new_x, new_y;
       gfloat child_min, child_natural;
 
-      if (!CLUTTER_ACTOR_IS_VISIBLE (child))
+      if (!clutter_actor_is_visible (child))
         continue;
 
       new_x = new_y = 0;

@@ -306,7 +306,7 @@ clutter_bin_layout_get_preferred_width (ClutterLayoutManager *manager,
     {
       gfloat minimum, natural;
 
-      if (!CLUTTER_ACTOR_IS_VISIBLE (child))
+      if (!clutter_actor_is_visible (child))
         continue;
 
       clutter_actor_get_preferred_width (child, for_height,
@@ -343,7 +343,7 @@ clutter_bin_layout_get_preferred_height (ClutterLayoutManager *manager,
     {
       gfloat minimum, natural;
 
-      if (!CLUTTER_ACTOR_IS_VISIBLE (child))
+      if (!clutter_actor_is_visible (child))
         continue;
 
       clutter_actor_get_preferred_height (child, for_width,
@@ -431,7 +431,7 @@ clutter_bin_layout_allocate (ClutterLayoutManager   *manager,
       gboolean x_fill, y_fill, is_fixed_position_set;
       float fixed_x, fixed_y;
 
-      if (!CLUTTER_ACTOR_IS_VISIBLE (child))
+      if (!clutter_actor_is_visible (child))
         continue;
 
       meta = clutter_layout_manager_get_child_meta (manager,

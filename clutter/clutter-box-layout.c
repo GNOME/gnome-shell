@@ -485,7 +485,7 @@ get_preferred_size_for_orientation (ClutterBoxLayout   *self,
     {
       gfloat child_min = 0, child_nat = 0;
 
-      if (!CLUTTER_ACTOR_IS_VISIBLE (child))
+      if (!clutter_actor_is_visible (child))
 	continue;
 
       n_children++;
@@ -533,7 +533,7 @@ get_base_size_for_opposite_orientation (ClutterBoxLayout   *self,
     {
       gfloat child_min = 0, child_nat = 0;
 
-      if (!CLUTTER_ACTOR_IS_VISIBLE (child))
+      if (!clutter_actor_is_visible (child))
 	continue;
 
       n_children++;
@@ -606,7 +606,7 @@ get_preferred_size_for_opposite_orientation (ClutterBoxLayout   *self,
   clutter_actor_iter_init (&iter, container);
   while (clutter_actor_iter_next (&iter, &child))
     {
-      if (!CLUTTER_ACTOR_IS_VISIBLE (child))
+      if (!clutter_actor_is_visible (child))
 	continue;
 
       get_child_size (child, priv->orientation, -1,
@@ -647,7 +647,7 @@ get_preferred_size_for_opposite_orientation (ClutterBoxLayout   *self,
       ClutterBoxChild   *box_child;
 
       /* If widget is not visible, skip it. */
-      if (!CLUTTER_ACTOR_IS_VISIBLE (child))
+      if (!clutter_actor_is_visible (child))
         continue;
 
       meta      = clutter_layout_manager_get_child_meta (layout, real_container, child);
@@ -686,7 +686,7 @@ get_preferred_size_for_opposite_orientation (ClutterBoxLayout   *self,
     {
       gfloat child_min = 0, child_nat = 0;
 
-      if (!CLUTTER_ACTOR_IS_VISIBLE (child))
+      if (!clutter_actor_is_visible (child))
         continue;
 
       get_child_size (child, opposite_orientation,
@@ -819,7 +819,7 @@ count_expand_children (ClutterLayoutManager *layout,
   clutter_actor_iter_init (&iter, actor);
   while (clutter_actor_iter_next (&iter, &child))
     {
-      if (CLUTTER_ACTOR_IS_VISIBLE (child))
+      if (clutter_actor_is_visible (child))
         {
           ClutterLayoutMeta *meta;
 
@@ -990,7 +990,7 @@ clutter_box_layout_allocate (ClutterLayoutManager   *layout,
   clutter_actor_iter_init (&iter, actor);
   while (clutter_actor_iter_next (&iter, &child))
     {
-      if (!CLUTTER_ACTOR_IS_VISIBLE (child))
+      if (!clutter_actor_is_visible (child))
         continue;
 
       if (priv->orientation == CLUTTER_ORIENTATION_VERTICAL)
@@ -1110,7 +1110,7 @@ clutter_box_layout_allocate (ClutterLayoutManager   *layout,
       ClutterBoxChild *box_child;
 
       /* If widget is not visible, skip it. */
-      if (!CLUTTER_ACTOR_IS_VISIBLE (child))
+      if (!clutter_actor_is_visible (child))
         continue;
 
       meta = clutter_layout_manager_get_child_meta (layout,
