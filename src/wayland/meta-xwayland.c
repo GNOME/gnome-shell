@@ -505,7 +505,10 @@ meta_xwayland_start (MetaXWaylandManager *manager,
 
 out:
   if (!started)
-    unlink (manager->lockfile);
+    {
+      unlink (manager->lockfile);
+      g_clear_pointer (&manager->lockfile, g_free);
+    }
   return started;
 }
 
