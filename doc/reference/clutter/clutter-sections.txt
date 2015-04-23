@@ -292,8 +292,10 @@ clutter_actor_show
 clutter_actor_show_all
 clutter_actor_hide
 clutter_actor_hide_all
+clutter_actor_is_visible
 clutter_actor_realize
 clutter_actor_unrealize
+clutter_actor_is_realized
 clutter_actor_paint
 clutter_actor_continue_paint
 clutter_actor_queue_redraw
@@ -304,6 +306,7 @@ clutter_actor_event
 clutter_actor_should_pick_paint
 clutter_actor_map
 clutter_actor_unmap
+clutter_actor_is_mapped
 clutter_actor_has_overlaps
 clutter_actor_has_mapped_clones
 
