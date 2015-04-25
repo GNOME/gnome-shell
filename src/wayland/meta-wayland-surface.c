@@ -216,18 +216,51 @@ calculate_surface_window_geometry (MetaWaylandSurface *surface,
 }
 
 static void
+destroy_window (MetaWaylandSurface *surface)
+{
+  if (surface->window)
+    {
+      MetaDisplay *display = meta_get_display ();
+      guint32 timestamp = meta_display_get_current_time_roundtrip (display);
+
+      meta_window_unmanage (surface->window, timestamp);
+    }
+
+  g_assert (surface->window == NULL);
+}
+
+static void
 toplevel_surface_commit (MetaWaylandSurface      *surface,
                          MetaWaylandPendingState *pending)
 {
   MetaWindow *window = surface->window;
 
-  /* Sanity check. */
-  if (surface->buffer == NULL)
+  if (surface->role == META_WAYLAND_SURFACE_ROLE_WL_SHELL_SURFACE)
     {
-      wl_resource_post_error (surface->resource,
-                              WL_DISPLAY_ERROR_INVALID_OBJECT,
-                              "Cannot commit a NULL buffer to an xdg_surface");
-      return;
+      /* For wl_shell, it's equivalent to an unmap. Semantics
+       * are poorly defined, so we can choose some that are
+       * convenient for us. */
+      if (surface->buffer && !window)
+        {
+          window = meta_window_wayland_new (meta_get_display (), surface);
+          meta_wayland_surface_set_window (surface, window);
+        }
+      else if (surface->buffer == NULL && window)
+        {
+          destroy_window (surface);
+          return;
+        }
+    }
+  else
+    {
+      if (surface->buffer == NULL)
+        {
+          /* XDG surfaces can't commit NULL buffers */
+          wl_resource_post_error (surface->resource,
+                                  WL_DISPLAY_ERROR_INVALID_OBJECT,
+                                  "Cannot commit a NULL buffer to an xdg_surface");
+          return;
+        }
     }
 
   /* We resize X based surfaces according to X events */
@@ -721,20 +754,6 @@ meta_wayland_surface_set_window (MetaWaylandSurface *surface,
 {
   surface->window = window;
   sync_reactive (surface);
-}
-
-static void
-destroy_window (MetaWaylandSurface *surface)
-{
-  if (surface->window)
-    {
-      MetaDisplay *display = meta_get_display ();
-      guint32 timestamp = meta_display_get_current_time_roundtrip (display);
-
-      meta_window_unmanage (surface->window, timestamp);
-    }
-
-  g_assert (surface->window == NULL);
 }
 
 static void
@@ -1506,7 +1525,6 @@ wl_shell_get_shell_surface (struct wl_client *client,
                             struct wl_resource *surface_resource)
 {
   MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
-  MetaWindow *window;
 
   if (surface->wl_shell_surface != NULL)
     {
@@ -1524,9 +1542,6 @@ wl_shell_get_shell_surface (struct wl_client *client,
 
   surface->wl_shell_surface = wl_resource_create (client, &wl_shell_surface_interface, wl_resource_get_version (resource), id);
   wl_resource_set_implementation (surface->wl_shell_surface, &meta_wayland_wl_shell_surface_interface, surface, wl_shell_surface_destructor);
-
-  window = meta_window_wayland_new (meta_get_display (), surface);
-  meta_wayland_surface_set_window (surface, window);
 }
 
 static const struct wl_shell_interface meta_wayland_wl_shell_interface = {
