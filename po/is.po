@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-01-15 08:34+0000\n"
-"PO-Revision-Date: 2015-01-29 15:19+0000\n"
+"POT-Creation-Date: 2015-03-25 08:50+0000\n"
+"PO-Revision-Date: 2015-04-27 15:22+0000\n"
 "Last-Translator: Sveinn í Felli <sv1@fellsnet.is>\n"
 "Language-Team: Icelandic <translation-team-is@lists.sourceforge.net>\n"
 "Language: is\n"
@@ -23,12 +23,14 @@ msgid "System"
 msgstr "Kerfið"
 
 #: ../data/50-gnome-shell-system.xml.in.h:2
-msgid "Show the message tray"
-msgstr "Birta skilaboðabakka"
+#| msgid "%d new notification"
+#| msgid_plural "%d new notifications"
+msgid "Show the notification list"
+msgstr "Birta tilkynningalistann"
 
 #: ../data/50-gnome-shell-system.xml.in.h:3
 msgid "Focus the active notification"
-msgstr ""
+msgstr "Áhersla á virka tilkynningu"
 
 #: ../data/50-gnome-shell-system.xml.in.h:4
 msgid "Show the overview"
@@ -180,11 +182,11 @@ msgid "Keybinding to open the Activities Overview."
 msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:25
-msgid "Keybinding to toggle the visibility of the message tray"
+msgid "Keybinding to toggle the visibility of the notification list"
 msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:26
-msgid "Keybinding to toggle the visibility of the message tray."
+msgid "Keybinding to toggle the visibility of the notification list."
 msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:27
@@ -267,13 +269,13 @@ msgstr "Innskráning á neti"
 #: ../js/extensionPrefs/main.js:123
 #, javascript-format
 msgid "There was an error loading the preferences dialog for %s:"
-msgstr ""
+msgstr "Villa kom upp við ræsingu kjörstillingaglugga fyrir %s:"
 
 #: ../js/extensionPrefs/main.js:155
 msgid "GNOME Shell Extensions"
 msgstr "GNOME Shell Extension skeljarviðbætur"
 
-#: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:143
+#: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:145
 #: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:452
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
 #: ../js/ui/status/network.js:916
@@ -294,25 +296,25 @@ msgctxt "button"
 msgid "Sign In"
 msgstr "Skrá inn"
 
-#: ../js/gdm/loginDialog.js:276
+#: ../js/gdm/loginDialog.js:281
 msgid "Choose Session"
 msgstr "Veldu setu"
 
-#: ../js/gdm/loginDialog.js:428
+#: ../js/gdm/loginDialog.js:431
 msgid "Not listed?"
 msgstr "Ekki á listanum?"
 
-#: ../js/gdm/loginDialog.js:814
+#: ../js/gdm/loginDialog.js:840
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(t.d., notandi eða %s)"
 
-#: ../js/gdm/loginDialog.js:819 ../js/ui/components/networkAgent.js:269
-#: ../js/ui/components/networkAgent.js:287
+#: ../js/gdm/loginDialog.js:845 ../js/ui/components/networkAgent.js:271
+#: ../js/ui/components/networkAgent.js:289
 msgid "Username: "
 msgstr "Notandanafn:"
 
-#: ../js/gdm/loginDialog.js:1151
+#: ../js/gdm/loginDialog.js:1173
 msgid "Login Window"
 msgstr "Innskráningargluggi"
 
@@ -324,48 +326,112 @@ msgstr "Auðkenningarvilla"
 msgid "(or swipe finger)"
 msgstr "(eða strjúka fingri)"
 
-#: ../js/misc/util.js:115
+#: ../js/misc/util.js:119
 msgid "Command not found"
 msgstr "Skipun fannst ekki"
 
-#: ../js/misc/util.js:148
+#: ../js/misc/util.js:152
 msgid "Could not parse command:"
 msgstr "Gat ekki þáttað skipun:"
 
-#: ../js/misc/util.js:156
+#: ../js/misc/util.js:160
 #, javascript-format
 msgid "Execution of “%s” failed:"
 msgstr "Keyrsla '“%s' mistókst:"
 
+#. Translators: Time in 24h format */
+#: ../js/misc/util.js:191
+msgid "%H∶%M"
+msgstr "%H∶%M"
+
+#. Translators: this is the word "Yesterday" followed by a
+#. time string in 24h format. i.e. "Yesterday, 14:30" */
+#: ../js/misc/util.js:197
+msgid "Yesterday, %H∶%M"
+msgstr "Í gær klukkan H:∶%M"
+
+#. Translators: this is the week day name followed by a time
+#. string in 24h format. i.e. "Monday, 14:30" */
+#: ../js/misc/util.js:203
+msgid "%A, %H∶%M"
+msgstr "%A, klukkan %H∶%M"
+
+#. Translators: this is the month name and day number
+#. followed by a time string in 24h format.
+#. i.e. "May 25, 14:30" */
+#: ../js/misc/util.js:209
+msgid "%B %d, %H∶%M"
+msgstr "%d. %B, kl. %H∶%M"
+
+#. Translators: this is the month name, day number, year
+#. number followed by a time string in 24h format.
+#. i.e. "May 25 2012, 14:30" */
+#: ../js/misc/util.js:215
+msgid "%B %d %Y, %H∶%M"
+msgstr "%d. %B %Y, kl. %H∶%M"
+
+#. Translators: Time in 12h format */
+#: ../js/misc/util.js:220
+msgid "%l∶%M %p"
+msgstr "%l:%M"
+
+#. Translators: this is the word "Yesterday" followed by a
+#. time string in 12h format. i.e. "Yesterday, 2:30 pm" */
+#: ../js/misc/util.js:226
+msgid "Yesterday, %l∶%M %p"
+msgstr "í gær, kl. %I:%M %p"
+
+#. Translators: this is the week day name followed by a time
+#. string in 12h format. i.e. "Monday, 2:30 pm" */
+#: ../js/misc/util.js:232
+msgid "%A, %l∶%M %p"
+msgstr "%A, %l∶%M %p"
+
+#. Translators: this is the month name and day number
+#. followed by a time string in 12h format.
+#. i.e. "May 25, 2:30 pm" */
+#: ../js/misc/util.js:238
+msgid "%B %d, %l∶%M %p"
+msgstr "%d. %B, kl. %H∶%M %p"
+
+#. Translators: this is the month name, day number, year
+#. number followed by a time string in 12h format.
+#. i.e. "May 25 2012, 2:30 pm"*/
+#: ../js/misc/util.js:244
+msgid "%B %d %Y, %l∶%M %p"
+msgstr "%d. %B %Y, kl. %H∶%M %p"
+
+#. TRANSLATORS: this is the title of the wifi captive portal login
+#. * window, until we know the title of the actual login page */
 #: ../js/portalHelper/main.js:85
 msgid "Web Authentication Redirect"
 msgstr "Endurbeining á vefauðkenningu"
 
-#: ../js/ui/appDisplay.js:770
+#: ../js/ui/appDisplay.js:792
 msgid "Frequently used applications will appear here"
 msgstr "Oftast notuð forrit munu birtast hér"
 
-#: ../js/ui/appDisplay.js:881
+#: ../js/ui/appDisplay.js:912
 msgid "Frequent"
 msgstr "Algengt"
 
-#: ../js/ui/appDisplay.js:888
+#: ../js/ui/appDisplay.js:919
 msgid "All"
 msgstr "Allt"
 
-#: ../js/ui/appDisplay.js:1789
+#: ../js/ui/appDisplay.js:1850
 msgid "New Window"
 msgstr "Nýr gluggi"
 
-#: ../js/ui/appDisplay.js:1815 ../js/ui/dash.js:285
+#: ../js/ui/appDisplay.js:1878 ../js/ui/dash.js:291
 msgid "Remove from Favorites"
 msgstr "Fjarlægja úr Eftirlæti"
 
-#: ../js/ui/appDisplay.js:1821
+#: ../js/ui/appDisplay.js:1884
 msgid "Add to Favorites"
 msgstr "Bæta í Eftirlæti"
 
-#: ../js/ui/appDisplay.js:1830
+#: ../js/ui/appDisplay.js:1894
 msgid "Show Details"
 msgstr "Sýna ítarlegri upplýsingar"
 
@@ -379,7 +445,7 @@ msgstr "%s var bætt við sem eftirlætisforrit."
 msgid "%s has been removed from your favorites."
 msgstr "%s var fjarlægt úr eftirlætisforritum."
 
-#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:819
+#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:650
 #: ../js/ui/status/system.js:337
 msgid "Settings"
 msgstr "Stillingar"
@@ -389,165 +455,107 @@ msgid "Change Background…"
 msgstr "Breyta _bakgrunni skjáborðs…"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday). */
-#: ../js/ui/calendar.js:39
+#: ../js/ui/calendar.js:53
 msgctxt "calendar-no-work"
 msgid "06"
 msgstr "06"
-
-#. Translators: Shown in calendar event list for all day events
-#. * Keep it short, best if you can use less then 10 characters
-#. */
-#: ../js/ui/calendar.js:68
-msgctxt "event list time"
-msgid "All Day"
-msgstr "Allan daginn"
-
-#. Translators: Shown in calendar event list, if 24h format,
-#. \u2236 is a ratio character, similar to : */
-#: ../js/ui/calendar.js:75
-msgctxt "event list time"
-msgid "%H∶%M"
-msgstr "%H∶%M"
-
-#. Translators: Shown in calendar event list, if 12h format,
-#. \u2236 is a ratio character, similar to : and \u2009 is
-#. a thin space */
-#: ../js/ui/calendar.js:84
-msgctxt "event list time"
-msgid "%l∶%M %p"
-msgstr "%l∶%M %p"
 
 #. Translators: Calendar grid abbreviation for Sunday.
 #. *
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #. */
-#: ../js/ui/calendar.js:98
+#: ../js/ui/calendar.js:82
 msgctxt "grid sunday"
 msgid "S"
 msgstr "Su"
 
 #. Translators: Calendar grid abbreviation for Monday */
-#: ../js/ui/calendar.js:100
+#: ../js/ui/calendar.js:84
 msgctxt "grid monday"
 msgid "M"
 msgstr "Má"
 
 #. Translators: Calendar grid abbreviation for Tuesday */
-#: ../js/ui/calendar.js:102
+#: ../js/ui/calendar.js:86
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "Þr"
 
 #. Translators: Calendar grid abbreviation for Wednesday */
-#: ../js/ui/calendar.js:104
+#: ../js/ui/calendar.js:88
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "Mi"
 
 #. Translators: Calendar grid abbreviation for Thursday */
-#: ../js/ui/calendar.js:106
+#: ../js/ui/calendar.js:90
 msgctxt "grid thursday"
 msgid "T"
 msgstr "Fi"
 
 #. Translators: Calendar grid abbreviation for Friday */
-#: ../js/ui/calendar.js:108
+#: ../js/ui/calendar.js:92
 msgctxt "grid friday"
 msgid "F"
 msgstr "Fö"
 
 #. Translators: Calendar grid abbreviation for Saturday */
-#: ../js/ui/calendar.js:110
+#: ../js/ui/calendar.js:94
 msgctxt "grid saturday"
 msgid "S"
 msgstr "La"
 
-#. Translators: Event list abbreviation for Sunday.
-#. *
-#. * NOTE: These list abbreviations are normally not shown together
-#. * so they need to be unique (e.g. Tuesday and Thursday cannot
-#. * both be 'T').
-#. */
-#: ../js/ui/calendar.js:123
-msgctxt "list sunday"
-msgid "Su"
-msgstr "Su"
-
-#. Translators: Event list abbreviation for Monday */
-#: ../js/ui/calendar.js:125
-msgctxt "list monday"
-msgid "M"
-msgstr "Má"
-
-#. Translators: Event list abbreviation for Tuesday */
-#: ../js/ui/calendar.js:127
-msgctxt "list tuesday"
-msgid "T"
-msgstr "Þr"
-
-#. Translators: Event list abbreviation for Wednesday */
-#: ../js/ui/calendar.js:129
-msgctxt "list wednesday"
-msgid "W"
-msgstr "Mi"
-
-#. Translators: Event list abbreviation for Thursday */
-#: ../js/ui/calendar.js:131
-msgctxt "list thursday"
-msgid "Th"
-msgstr "Fi"
-
-#. Translators: Event list abbreviation for Friday */
-#: ../js/ui/calendar.js:133
-msgctxt "list friday"
-msgid "F"
-msgstr "Fö"
-
-#. Translators: Event list abbreviation for Saturday */
-#: ../js/ui/calendar.js:135
-msgctxt "list saturday"
-msgid "S"
-msgstr "La"
-
-#: ../js/ui/calendar.js:460
+#: ../js/ui/calendar.js:564
 msgid "Previous month"
 msgstr "Fyrri mánuður"
 
-#: ../js/ui/calendar.js:470
+#: ../js/ui/calendar.js:574
 msgid "Next month"
 msgstr "Næsti mánuður"
 
-#. Translators: Text to show if there are no events */
-#: ../js/ui/calendar.js:806
-msgid "Nothing Scheduled"
-msgstr "Ekkert á dagskrá"
+#: ../js/ui/calendar.js:781
+msgid "Week %V"
+msgstr "Vika %V"
 
-#: ../js/ui/calendar.js:825
+#. Translators: Shown in calendar event list for all day events
+#. * Keep it short, best if you can use less then 10 characters
+#. */
+#: ../js/ui/calendar.js:1183
+msgctxt "event list time"
+msgid "All Day"
+msgstr "Allan daginn"
+
+#: ../js/ui/calendar.js:1289
+msgid "Clear section"
+msgstr "Hreinsa kafla"
+
+#: ../js/ui/calendar.js:1516
+msgid "Events"
+msgstr "Atburðir"
+
+#: ../js/ui/calendar.js:1525
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %B %d"
 
-#: ../js/ui/calendar.js:829
+#: ../js/ui/calendar.js:1529
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %B %d, %Y"
 
-#: ../js/ui/calendar.js:841
-msgid "Today"
-msgstr "Í dag"
+#: ../js/ui/calendar.js:1614
+msgid "Notifications"
+msgstr "Tilkynningar"
 
-#: ../js/ui/calendar.js:845
-msgid "Tomorrow"
-msgstr "Á morgun"
+#: ../js/ui/calendar.js:1765
+#| msgid "Notifications"
+msgid "No Notifications"
+msgstr "Engar tilkynningar"
 
-#: ../js/ui/calendar.js:856
-msgid "This week"
-msgstr "Í þessari viku"
-
-#: ../js/ui/calendar.js:864
-msgid "Next week"
-msgstr "Í næstu viku"
+#: ../js/ui/calendar.js:1768
+msgid "No Events"
+msgstr "Engir atburðir"
 
 #: ../js/ui/components/automountManager.js:91
 msgid "External drive connected"
@@ -557,18 +565,10 @@ msgstr "Utanáliggjandi drif tengt"
 msgid "External drive disconnected"
 msgstr "Utanáliggjandi drif aftengt"
 
-#: ../js/ui/components/autorunManager.js:296
-msgid "Removable Devices"
-msgstr "Útskiptanleg tæki"
-
-#: ../js/ui/components/autorunManager.js:596
+#: ../js/ui/components/autorunManager.js:354
 #, javascript-format
 msgid "Open with %s"
 msgstr "Opna með %s"
-
-#: ../js/ui/components/autorunManager.js:622
-msgid "Eject"
-msgstr "Spýta út"
 
 #: ../js/ui/components/keyring.js:94 ../js/ui/components/polkitAgent.js:285
 msgid "Password:"
@@ -578,40 +578,42 @@ msgstr "Lykilorð:"
 msgid "Type again:"
 msgstr "Skrifaðu aftur:"
 
-#: ../js/ui/components/networkAgent.js:138 ../js/ui/status/network.js:277
+#: ../js/ui/components/networkAgent.js:140 ../js/ui/status/network.js:277
 #: ../js/ui/status/network.js:359 ../js/ui/status/network.js:919
 msgid "Connect"
 msgstr "Tengjast"
 
-#: ../js/ui/components/networkAgent.js:231
-#: ../js/ui/components/networkAgent.js:243
-#: ../js/ui/components/networkAgent.js:271
-#: ../js/ui/components/networkAgent.js:291
-#: ../js/ui/components/networkAgent.js:301
+#: ../js/ui/components/networkAgent.js:233
+#: ../js/ui/components/networkAgent.js:245
+#: ../js/ui/components/networkAgent.js:273
+#: ../js/ui/components/networkAgent.js:293
+#: ../js/ui/components/networkAgent.js:303
 msgid "Password: "
 msgstr "Lykilorð:"
 
-#: ../js/ui/components/networkAgent.js:236
+#: ../js/ui/components/networkAgent.js:238
 msgid "Key: "
 msgstr "Lykill:"
 
-#: ../js/ui/components/networkAgent.js:275
+#: ../js/ui/components/networkAgent.js:277
 msgid "Identity: "
 msgstr "Auðkenni:"
 
-#: ../js/ui/components/networkAgent.js:277
+#: ../js/ui/components/networkAgent.js:279
 msgid "Private key password: "
 msgstr "Lykilorð einkalykils:"
 
-#: ../js/ui/components/networkAgent.js:289
+#: ../js/ui/components/networkAgent.js:291
 msgid "Service: "
 msgstr "Þjónusta: "
 
-#: ../js/ui/components/networkAgent.js:318
+#: ../js/ui/components/networkAgent.js:320
+#: ../js/ui/components/networkAgent.js:658
 msgid "Authentication required by wireless network"
 msgstr "Auðkenningar er krafist af þráðlausu neti"
 
-#: ../js/ui/components/networkAgent.js:319
+#: ../js/ui/components/networkAgent.js:321
+#: ../js/ui/components/networkAgent.js:659
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -620,39 +622,51 @@ msgstr ""
 "Lykilorða eða dulritunarlykla er krafist til að fá aðgang að þráðlausa "
 "netinu “%s”."
 
-#: ../js/ui/components/networkAgent.js:323
+#: ../js/ui/components/networkAgent.js:325
+#: ../js/ui/components/networkAgent.js:662
 msgid "Wired 802.1X authentication"
 msgstr "Kapaltengd 802.1X auðkenning"
 
-#: ../js/ui/components/networkAgent.js:325
+#: ../js/ui/components/networkAgent.js:327
 msgid "Network name: "
 msgstr "Heiti netkerfis:"
 
-#: ../js/ui/components/networkAgent.js:330
+#: ../js/ui/components/networkAgent.js:332
+#: ../js/ui/components/networkAgent.js:666
 msgid "DSL authentication"
 msgstr "DSL auðkenning"
 
-#: ../js/ui/components/networkAgent.js:337
+#: ../js/ui/components/networkAgent.js:339
+#: ../js/ui/components/networkAgent.js:672
 msgid "PIN code required"
 msgstr "Krafist er PIN-númers"
 
-#: ../js/ui/components/networkAgent.js:338
+#: ../js/ui/components/networkAgent.js:340
+#: ../js/ui/components/networkAgent.js:673
 msgid "PIN code is needed for the mobile broadband device"
 msgstr ""
 "Þú þarft að slá inn PIN númer til að þess að tengjast við símaþjónustuna"
 
-#: ../js/ui/components/networkAgent.js:339
+#: ../js/ui/components/networkAgent.js:341
 msgid "PIN: "
 msgstr "PIN: "
 
-#: ../js/ui/components/networkAgent.js:345
+#: ../js/ui/components/networkAgent.js:348
+#: ../js/ui/components/networkAgent.js:679
 msgid "Mobile broadband network password"
 msgstr "Lykilorð fyrir þráðlaust breiðbandsnet"
 
-#: ../js/ui/components/networkAgent.js:346
+#: ../js/ui/components/networkAgent.js:349
+#: ../js/ui/components/networkAgent.js:663
+#: ../js/ui/components/networkAgent.js:667
+#: ../js/ui/components/networkAgent.js:680
 #, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "Það er nauðsynlegt að gefa upp lykilorð til að tengjast við “%s”."
+
+#: ../js/ui/components/networkAgent.js:647 ../js/ui/status/network.js:1657
+msgid "Network Manager"
+msgstr "Netstjórnun"
 
 #: ../js/ui/components/polkitAgent.js:54
 msgid "Authentication Required"
@@ -674,305 +688,50 @@ msgstr "Auðkenna"
 msgid "Sorry, that didn't work. Please try again."
 msgstr "Æ, þetta virkaði ekki. Endilega reyndu aftur."
 
-#: ../js/ui/components/telepathyClient.js:242
-msgid "Invitation"
-msgstr "Boð"
-
-#: ../js/ui/components/telepathyClient.js:302
-msgid "Call"
-msgstr "Símtal"
-
-#: ../js/ui/components/telepathyClient.js:318
-msgid "File Transfer"
-msgstr "Skráaflutningur"
-
-#: ../js/ui/components/telepathyClient.js:422
-msgid "Chat"
-msgstr "Spjall"
-
-#: ../js/ui/components/telepathyClient.js:485
-msgid "Unmute"
-msgstr "Kveikja á hljóði"
-
-#: ../js/ui/components/telepathyClient.js:485
-msgid "Mute"
-msgstr "Þagga niður"
-
-#. Translators: Time in 24h format */
-#: ../js/ui/components/telepathyClient.js:955
-msgid "%H∶%M"
-msgstr "%H∶%M"
-
-#. Translators: this is the word "Yesterday" followed by a
-#. time string in 24h format. i.e. "Yesterday, 14:30" */
-#: ../js/ui/components/telepathyClient.js:962
-msgid "Yesterday, %H∶%M"
-msgstr "Í gær klukkan H:∶%M"
-
-#. Translators: this is the week day name followed by a time
-#. string in 24h format. i.e. "Monday, 14:30" */
-#: ../js/ui/components/telepathyClient.js:969
-msgid "%A, %H∶%M"
-msgstr "%A, klukkan %H∶%M"
-
-#. Translators: this is the month name and day number
-#. followed by a time string in 24h format.
-#. i.e. "May 25, 14:30" */
-#: ../js/ui/components/telepathyClient.js:976
-msgid "%B %d, %H∶%M"
-msgstr "%d. %B, kl. %H∶%M"
-
-#. Translators: this is the month name, day number, year
-#. number followed by a time string in 24h format.
-#. i.e. "May 25 2012, 14:30" */
-#: ../js/ui/components/telepathyClient.js:982
-msgid "%B %d %Y, %H∶%M"
-msgstr "%d. %B %Y, kl. %H∶%M"
-
-#. Translators: Time in 24h format */
-#: ../js/ui/components/telepathyClient.js:988
-msgid "%l∶%M %p"
-msgstr "%l:%M"
-
-#. Translators: this is the word "Yesterday" followed by a
-#. time string in 12h format. i.e. "Yesterday, 2:30 pm" */
-#: ../js/ui/components/telepathyClient.js:995
-msgid "Yesterday, %l∶%M %p"
-msgstr "í gær, kl. %I:%M %p"
-
-#. Translators: this is the week day name followed by a time
-#. string in 12h format. i.e. "Monday, 2:30 pm" */
-#: ../js/ui/components/telepathyClient.js:1002
-msgid "%A, %l∶%M %p"
-msgstr "%A, %l∶%M %p"
-
-#. Translators: this is the month name and day number
-#. followed by a time string in 12h format.
-#. i.e. "May 25, 2:30 pm" */
-#: ../js/ui/components/telepathyClient.js:1009
-msgid "%B %d, %l∶%M %p"
-msgstr "%d. %B, kl. %H∶%M %p"
-
-#. Translators: this is the month name, day number, year
-#. number followed by a time string in 12h format.
-#. i.e. "May 25 2012, 2:30 pm"*/
-#: ../js/ui/components/telepathyClient.js:1015
-msgid "%B %d %Y, %l∶%M %p"
-msgstr "%d. %B %Y, kl. %H∶%M %p"
-
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name. */
-#: ../js/ui/components/telepathyClient.js:1047
+#: ../js/ui/components/telepathyClient.js:728
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s er nú þekkt(ur) sem %s"
-
-#. translators: argument is a room name like
-#. * room@jabber.org for example. */
-#: ../js/ui/components/telepathyClient.js:1151
-#, javascript-format
-msgid "Invitation to %s"
-msgstr "Boð til %s"
-
-#. translators: first argument is the name of a contact and the second
-#. * one the name of a room. "Alice is inviting you to join room@jabber.org
-#. * for example. */
-#: ../js/ui/components/telepathyClient.js:1159
-#, javascript-format
-msgid "%s is inviting you to join %s"
-msgstr "%s er að bjóða þér að taka þátt í %s"
-
-#: ../js/ui/components/telepathyClient.js:1161
-#: ../js/ui/components/telepathyClient.js:1196
-#: ../js/ui/components/telepathyClient.js:1230
-#: ../js/ui/components/telepathyClient.js:1287
-msgid "Decline"
-msgstr "Hafna"
-
-#: ../js/ui/components/telepathyClient.js:1167
-#: ../js/ui/components/telepathyClient.js:1236
-#: ../js/ui/components/telepathyClient.js:1292
-msgid "Accept"
-msgstr "Samþykkja"
-
-#. translators: argument is a contact name like Alice for example. */
-#: ../js/ui/components/telepathyClient.js:1186
-#, javascript-format
-msgid "Video call from %s"
-msgstr "Myndsímtal frá %s"
-
-#. translators: argument is a contact name like Alice for example. */
-#: ../js/ui/components/telepathyClient.js:1189
-#, javascript-format
-msgid "Call from %s"
-msgstr "Símtal frá %s"
-
-#. translators: this is a button label (verb), not a noun */
-#: ../js/ui/components/telepathyClient.js:1203
-msgid "Answer"
-msgstr "Svara"
-
-#. To translators: The first parameter is
-#. * the contact's alias and the second one is the
-#. * file name. The string will be something
-#. * like: "Alice is sending you test.ogg"
-#. */
-#: ../js/ui/components/telepathyClient.js:1224
-#, javascript-format
-msgid "%s is sending you %s"
-msgstr "%s er að senda þér %s"
-
-#. To translators: The parameter is the contact's alias */
-#: ../js/ui/components/telepathyClient.js:1253
-#, javascript-format
-msgid "%s would like permission to see when you are online"
-msgstr "%s vill fá heimild til að sjá hvenær þú ert tengd/ur"
-
-#: ../js/ui/components/telepathyClient.js:1338
-msgid "Network error"
-msgstr "Villa við nettengingu"
-
-#: ../js/ui/components/telepathyClient.js:1340
-msgid "Authentication failed"
-msgstr "Auðkenning mistókst"
-
-#: ../js/ui/components/telepathyClient.js:1342
-msgid "Encryption error"
-msgstr "Dulritunarvilla"
-
-#: ../js/ui/components/telepathyClient.js:1344
-msgid "Certificate not provided"
-msgstr "Skilríki fylgir ekki"
-
-#: ../js/ui/components/telepathyClient.js:1346
-msgid "Certificate untrusted"
-msgstr "Skilríki ekki treyst"
-
-#: ../js/ui/components/telepathyClient.js:1348
-msgid "Certificate expired"
-msgstr "Skilríki er útrunnið"
-
-#: ../js/ui/components/telepathyClient.js:1350
-msgid "Certificate not activated"
-msgstr "Skilríki ekki virkjað"
-
-#: ../js/ui/components/telepathyClient.js:1352
-msgid "Certificate hostname mismatch"
-msgstr "Vélarheiti skilríkis samsvara ekki"
-
-#: ../js/ui/components/telepathyClient.js:1354
-msgid "Certificate fingerprint mismatch"
-msgstr "Fingraför skilríkis samsvara ekki"
-
-#: ../js/ui/components/telepathyClient.js:1356
-msgid "Certificate self-signed"
-msgstr "Skilríki aðeins undirritað af handhafa"
-
-#: ../js/ui/components/telepathyClient.js:1358
-msgid "Status is set to offline"
-msgstr "Staða er sett á ótengda"
-
-#: ../js/ui/components/telepathyClient.js:1360
-msgid "Encryption is not available"
-msgstr "Dulritun er ekki tiltæk"
-
-#: ../js/ui/components/telepathyClient.js:1362
-msgid "Certificate is invalid"
-msgstr "Skilríkið er ekki gilt"
-
-#: ../js/ui/components/telepathyClient.js:1364
-msgid "Connection has been refused"
-msgstr "Tengingu hefur verið hafnað"
-
-#: ../js/ui/components/telepathyClient.js:1366
-msgid "Connection can't be established"
-msgstr "Ekki er hægt að koma á tengingu"
-
-#: ../js/ui/components/telepathyClient.js:1368
-msgid "Connection has been lost"
-msgstr "Tenging hefur slitnað"
-
-#: ../js/ui/components/telepathyClient.js:1370
-msgid "This account is already connected to the server"
-msgstr "Þessi aðgangur er þegar tengdur miðlaranum"
-
-#: ../js/ui/components/telepathyClient.js:1372
-msgid ""
-"Connection has been replaced by a new connection using the same resource"
-msgstr ""
-
-#: ../js/ui/components/telepathyClient.js:1374
-msgid "The account already exists on the server"
-msgstr "Aðgangurinn er þegar til á miðlaranum"
-
-#: ../js/ui/components/telepathyClient.js:1376
-msgid "Server is currently too busy to handle the connection"
-msgstr "Miðlarinn er of upptekinn í augnablikinu til að meðhöndla tenginguna"
-
-#: ../js/ui/components/telepathyClient.js:1378
-msgid "Certificate has been revoked"
-msgstr "Skilríkið hefur veriið afturkallað"
-
-#: ../js/ui/components/telepathyClient.js:1380
-msgid ""
-"Certificate uses an insecure cipher algorithm or is cryptographically weak"
-msgstr ""
-
-#: ../js/ui/components/telepathyClient.js:1382
-msgid ""
-"The length of the server certificate, or the depth of the server certificate "
-"chain, exceed the limits imposed by the cryptography library"
-msgstr ""
-
-#: ../js/ui/components/telepathyClient.js:1384
-msgid "Internal error"
-msgstr "Innvær villa"
-
-#. translators: argument is the account name, like
-#. * name@jabber.org for example. */
-#: ../js/ui/components/telepathyClient.js:1394
-#, javascript-format
-msgid "Unable to connect to %s"
-msgstr "Ekki tókst að tengjast %s"
-
-#: ../js/ui/components/telepathyClient.js:1399
-msgid "View account"
-msgstr "Skoða aðgang"
-
-#: ../js/ui/components/telepathyClient.js:1436
-msgid "Unknown reason"
-msgstr "Óþekkt ástæða"
 
 #: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:155
 msgid "Windows"
 msgstr "Gluggar"
 
-#: ../js/ui/dash.js:249 ../js/ui/dash.js:287
+#: ../js/ui/dash.js:252 ../js/ui/dash.js:293
 msgid "Show Applications"
 msgstr "Sýna forrit"
 
-#: ../js/ui/dash.js:445
+#: ../js/ui/dash.js:453
 msgid "Dash"
 msgstr "Dash"
-
-#: ../js/ui/dateMenu.js:97
-msgid "Open Calendar"
-msgstr "Opna dagatal"
-
-#: ../js/ui/dateMenu.js:101
-msgid "Open Clocks"
-msgstr "Opna klukkur"
-
-#: ../js/ui/dateMenu.js:108
-msgid "Date & Time Settings"
-msgstr "Dagsetninga- og tímastillingar"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #. */
-#: ../js/ui/dateMenu.js:132
-msgid "%A %B %e, %Y"
+#: ../js/ui/dateMenu.js:73
+#| msgid "%A %B %e, %Y"
+msgid "%B %e %Y"
+msgstr "%e. %B %Y"
+
+#. Translators: This is the accessible name of the date button shown
+#. * below the time in the shell; it should combine the weekday and the
+#. * date, e.g. "Tuesday February 17 2015".
+#. */
+#: ../js/ui/dateMenu.js:80
+#| msgid "%A %B %e, %Y"
+msgid "%A %B %e %Y"
 msgstr "%A %e. %B, %Y"
+
+#: ../js/ui/dateMenu.js:160
+msgid "Add world clocks…"
+msgstr "Bæta við heimsklukkum…"
+
+#: ../js/ui/dateMenu.js:161
+#| msgid "Open Clocks"
+msgid "World Clocks"
+msgstr "Heimsklukkur"
 
 #: ../js/ui/endSessionDialog.js:64
 #, javascript-format
@@ -1113,9 +872,19 @@ msgstr "Setja inn"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Sækja og setja upp '%s' frá extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:706 ../js/ui/status/keyboard.js:577
+#: ../js/ui/keyboard.js:714 ../js/ui/status/keyboard.js:724
 msgid "Keyboard"
 msgstr "Lyklaborð"
+
+#. translators: 'Hide' is a verb */
+#: ../js/ui/legacyTray.js:64
+#| msgid "Hide Text"
+msgid "Hide tray"
+msgstr "Fela kerfisbakka"
+
+#: ../js/ui/legacyTray.js:105
+msgid "Status Icons"
+msgstr "Táknmyndir fyrir stöðu"
 
 #: ../js/ui/lookingGlass.js:643
 msgid "No extensions installed"
@@ -1169,54 +938,9 @@ msgstr "Skoða frumtexta"
 msgid "Web Page"
 msgstr "Vefsíða"
 
-#: ../js/ui/messageTray.js:1332
-msgid "Open"
-msgstr "Opna"
-
-#: ../js/ui/messageTray.js:1339
-msgid "Remove"
-msgstr "Fjarlægja"
-
-#: ../js/ui/messageTray.js:1636
-msgid "Notifications"
-msgstr "Tilkynningar"
-
-#: ../js/ui/messageTray.js:1643
-msgid "Clear Messages"
-msgstr "Hreinsa skilaboð"
-
-#: ../js/ui/messageTray.js:1662
-msgid "Notification Settings"
-msgstr "Stillingar á tilkynningum"
-
-#: ../js/ui/messageTray.js:1715
-msgid "Tray Menu"
-msgstr "Valmynd í kerfisbakka"
-
-#: ../js/ui/messageTray.js:1939
-msgid "No Messages"
-msgstr "Engin skilaboð"
-
-#: ../js/ui/messageTray.js:1986
-msgid "Message Tray"
-msgstr "Skilaboðabakki"
-
-#: ../js/ui/messageTray.js:2443 ../js/ui/overviewControls.js:483
-#: ../js/ui/screenShield.js:152
-#, javascript-format
-msgid "%d new message"
-msgid_plural "%d new messages"
-msgstr[0] "%d nýtt skilaboð"
-msgstr[1] "%d ný skilaboð"
-
-#: ../js/ui/messageTray.js:3013
+#: ../js/ui/messageTray.js:1507
 msgid "System Information"
 msgstr "Kerfisupplýsingar"
-
-#: ../js/ui/notificationDaemon.js:513 ../src/shell-app.c:439
-msgctxt "program"
-msgid "Unknown"
-msgstr "Óþekkt"
 
 #: ../js/ui/overview.js:84
 msgid "Undo"
@@ -1234,21 +958,21 @@ msgstr "Yfirlit"
 msgid "Type to search…"
 msgstr "Skrifaðu hér til að leita..."
 
-#: ../js/ui/panel.js:521
+#: ../js/ui/panel.js:352
 msgid "Quit"
 msgstr "Hætta"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview". */
-#: ../js/ui/panel.js:573
+#: ../js/ui/panel.js:404
 msgid "Activities"
 msgstr "Virkni"
 
-#: ../js/ui/panel.js:924
+#: ../js/ui/panel.js:755
 msgid "Top Bar"
 msgstr "Toppstika"
 
-#: ../js/ui/popupMenu.js:269
+#: ../js/ui/popupMenu.js:289
 msgid "toggle-switch-us"
 msgstr ""
 
@@ -1260,44 +984,51 @@ msgstr "Settu inn skipun"
 msgid "Close"
 msgstr "Loka"
 
-#: ../js/ui/runDialog.js:277
+#: ../js/ui/runDialog.js:281
 msgid "Restarting…"
 msgstr "Endurræsi…"
 
 #. Translators: This is a time format for a date in
 #. long format */
-#: ../js/ui/screenShield.js:88
+#: ../js/ui/screenShield.js:85
 msgid "%A, %B %d"
 msgstr "%A, %d. %B"
 
-#: ../js/ui/screenShield.js:154
+#: ../js/ui/screenShield.js:144
+#, javascript-format
+msgid "%d new message"
+msgid_plural "%d new messages"
+msgstr[0] "%d nýtt skilaboð"
+msgstr[1] "%d ný skilaboð"
+
+#: ../js/ui/screenShield.js:146
 #, javascript-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d ný skilaboð"
 msgstr[1] "%d ný skilaboð"
 
-#: ../js/ui/screenShield.js:473 ../js/ui/status/system.js:345
+#: ../js/ui/screenShield.js:432 ../js/ui/status/system.js:345
 msgid "Lock"
 msgstr "Læsa"
 
-#: ../js/ui/screenShield.js:709
+#: ../js/ui/screenShield.js:668
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME þarf að læsa skjánum"
 
-#: ../js/ui/screenShield.js:836 ../js/ui/screenShield.js:1312
+#: ../js/ui/screenShield.js:795 ../js/ui/screenShield.js:1271
 msgid "Unable to lock"
 msgstr "Gat ekki læst skjá"
 
-#: ../js/ui/screenShield.js:837 ../js/ui/screenShield.js:1313
+#: ../js/ui/screenShield.js:796 ../js/ui/screenShield.js:1272
 msgid "Lock was blocked by an application"
 msgstr "Læsing var hindruð af öðru forriti"
 
-#: ../js/ui/search.js:609
+#: ../js/ui/search.js:616
 msgid "Searching…"
 msgstr "Leita..."
 
-#: ../js/ui/search.js:611
+#: ../js/ui/search.js:618
 msgid "No results."
 msgstr "Engar niðurstöður."
 
@@ -1399,7 +1130,7 @@ msgstr "Ótengt"
 msgid "Brightness"
 msgstr "Birtustig"
 
-#: ../js/ui/status/keyboard.js:601
+#: ../js/ui/status/keyboard.js:747
 msgid "Show Keyboard Layout"
 msgstr "Birta lyklaborðsuppsetningu"
 
@@ -1567,10 +1298,6 @@ msgstr "VPN stillingar"
 #: ../js/ui/status/network.js:1502
 msgid "VPN"
 msgstr "VPN"
-
-#: ../js/ui/status/network.js:1657
-msgid "Network Manager"
-msgstr "Netstjórnun"
 
 #: ../js/ui/status/network.js:1697
 msgid "Activation of network connection failed"
@@ -1778,7 +1505,12 @@ msgstr "Nota sérstakan ham, t.d. \"gdm\" fyrir innskráningarskjá"
 msgid "List possible modes"
 msgstr "Sýna alla mögulega hami"
 
-#: ../src/shell-app.c:680
+#: ../src/shell-app.c:239
+msgctxt "program"
+msgid "Unknown"
+msgstr "Óþekkt"
+
+#: ../src/shell-app.c:480
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "Mistókst að ræsa \"“%s”"
@@ -1795,4 +1527,207 @@ msgstr "Lykilorðið getur ekki verið autt"
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Notandi hafnaði auðkenningarglugga"
 
+#~ msgid "Show the message tray"
+#~ msgstr "Birta skilaboðabakka"
 
+#~ msgctxt "event list time"
+#~ msgid "%H∶%M"
+#~ msgstr "%H∶%M"
+
+#~ msgctxt "event list time"
+#~ msgid "%l∶%M %p"
+#~ msgstr "%l∶%M %p"
+
+#~ msgctxt "list sunday"
+#~ msgid "Su"
+#~ msgstr "Su"
+
+#~ msgctxt "list monday"
+#~ msgid "M"
+#~ msgstr "Má"
+
+#~ msgctxt "list tuesday"
+#~ msgid "T"
+#~ msgstr "Þr"
+
+#~ msgctxt "list wednesday"
+#~ msgid "W"
+#~ msgstr "Mi"
+
+#~ msgctxt "list thursday"
+#~ msgid "Th"
+#~ msgstr "Fi"
+
+#~ msgctxt "list friday"
+#~ msgid "F"
+#~ msgstr "Fö"
+
+#~ msgctxt "list saturday"
+#~ msgid "S"
+#~ msgstr "La"
+
+#~ msgid "Nothing Scheduled"
+#~ msgstr "Ekkert á dagskrá"
+
+#~ msgid "Today"
+#~ msgstr "Í dag"
+
+#~ msgid "Tomorrow"
+#~ msgstr "Á morgun"
+
+#~ msgid "This week"
+#~ msgstr "Í þessari viku"
+
+#~ msgid "Next week"
+#~ msgstr "Í næstu viku"
+
+#~ msgid "Removable Devices"
+#~ msgstr "Útskiptanleg tæki"
+
+#~ msgid "Eject"
+#~ msgstr "Spýta út"
+
+#~ msgid "Invitation"
+#~ msgstr "Boð"
+
+#~ msgid "Call"
+#~ msgstr "Símtal"
+
+#~ msgid "File Transfer"
+#~ msgstr "Skráaflutningur"
+
+#~ msgid "Chat"
+#~ msgstr "Spjall"
+
+#~ msgid "Unmute"
+#~ msgstr "Kveikja á hljóði"
+
+#~ msgid "Mute"
+#~ msgstr "Þagga niður"
+
+#~ msgid "Invitation to %s"
+#~ msgstr "Boð til %s"
+
+#~ msgid "%s is inviting you to join %s"
+#~ msgstr "%s er að bjóða þér að taka þátt í %s"
+
+#~ msgid "Decline"
+#~ msgstr "Hafna"
+
+#~ msgid "Accept"
+#~ msgstr "Samþykkja"
+
+#~ msgid "Video call from %s"
+#~ msgstr "Myndsímtal frá %s"
+
+#~ msgid "Call from %s"
+#~ msgstr "Símtal frá %s"
+
+#~ msgid "Answer"
+#~ msgstr "Svara"
+
+#~ msgid "%s is sending you %s"
+#~ msgstr "%s er að senda þér %s"
+
+#~ msgid "%s would like permission to see when you are online"
+#~ msgstr "%s vill fá heimild til að sjá hvenær þú ert tengd/ur"
+
+#~ msgid "Network error"
+#~ msgstr "Villa við nettengingu"
+
+#~ msgid "Authentication failed"
+#~ msgstr "Auðkenning mistókst"
+
+#~ msgid "Encryption error"
+#~ msgstr "Dulritunarvilla"
+
+#~ msgid "Certificate not provided"
+#~ msgstr "Skilríki fylgir ekki"
+
+#~ msgid "Certificate untrusted"
+#~ msgstr "Skilríki ekki treyst"
+
+#~ msgid "Certificate expired"
+#~ msgstr "Skilríki er útrunnið"
+
+#~ msgid "Certificate not activated"
+#~ msgstr "Skilríki ekki virkjað"
+
+#~ msgid "Certificate hostname mismatch"
+#~ msgstr "Vélarheiti skilríkis samsvara ekki"
+
+#~ msgid "Certificate fingerprint mismatch"
+#~ msgstr "Fingraför skilríkis samsvara ekki"
+
+#~ msgid "Certificate self-signed"
+#~ msgstr "Skilríki aðeins undirritað af handhafa"
+
+#~ msgid "Status is set to offline"
+#~ msgstr "Staða er sett á ótengda"
+
+#~ msgid "Encryption is not available"
+#~ msgstr "Dulritun er ekki tiltæk"
+
+#~ msgid "Certificate is invalid"
+#~ msgstr "Skilríkið er ekki gilt"
+
+#~ msgid "Connection has been refused"
+#~ msgstr "Tengingu hefur verið hafnað"
+
+#~ msgid "Connection can't be established"
+#~ msgstr "Ekki er hægt að koma á tengingu"
+
+#~ msgid "Connection has been lost"
+#~ msgstr "Tenging hefur slitnað"
+
+#~ msgid "This account is already connected to the server"
+#~ msgstr "Þessi aðgangur er þegar tengdur miðlaranum"
+
+#~ msgid "The account already exists on the server"
+#~ msgstr "Aðgangurinn er þegar til á miðlaranum"
+
+#~ msgid "Server is currently too busy to handle the connection"
+#~ msgstr ""
+#~ "Miðlarinn er of upptekinn í augnablikinu til að meðhöndla tenginguna"
+
+#~ msgid "Certificate has been revoked"
+#~ msgstr "Skilríkið hefur veriið afturkallað"
+
+#~ msgid "Internal error"
+#~ msgstr "Innvær villa"
+
+#~ msgid "Unable to connect to %s"
+#~ msgstr "Ekki tókst að tengjast %s"
+
+#~ msgid "View account"
+#~ msgstr "Skoða aðgang"
+
+#~ msgid "Unknown reason"
+#~ msgstr "Óþekkt ástæða"
+
+#~ msgid "Open Calendar"
+#~ msgstr "Opna dagatal"
+
+#~ msgid "Date & Time Settings"
+#~ msgstr "Dagsetninga- og tímastillingar"
+
+#~ msgid "Open"
+#~ msgstr "Opna"
+
+#~ msgid "Remove"
+#~ msgstr "Fjarlægja"
+
+#~ msgid "Clear Messages"
+#~ msgstr "Hreinsa skilaboð"
+
+#~ msgid "Notification Settings"
+#~ msgstr "Stillingar á tilkynningum"
+
+#~ msgid "Tray Menu"
+#~ msgstr "Valmynd í kerfisbakka"
+
+#~ msgid "No Messages"
+#~ msgstr "Engin skilaboð"
+
+#~ msgid "Message Tray"
+#~ msgstr "Skilaboðabakki"
