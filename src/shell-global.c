@@ -1464,7 +1464,7 @@ shell_global_sync_pointer (ShellGlobal *global)
 
   event.type = CLUTTER_MOTION;
   event.time = shell_global_get_current_time (global);
-  event.flags = 0;
+  event.flags = CLUTTER_EVENT_FLAG_SYNTHETIC;
   event.stage = global->stage;
   event.x = x;
   event.y = y;
