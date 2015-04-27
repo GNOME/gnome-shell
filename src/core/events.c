@@ -93,6 +93,15 @@ handle_idletime_for_event (const ClutterEvent *event)
       if (device == NULL)
         return;
 
+      if (event->any.flags & CLUTTER_EVENT_FLAG_SYNTHETIC ||
+          event->type == CLUTTER_ENTER ||
+          event->type == CLUTTER_LEAVE ||
+          event->type == CLUTTER_STAGE_STATE ||
+          event->type == CLUTTER_DESTROY_NOTIFY ||
+          event->type == CLUTTER_CLIENT_MESSAGE ||
+          event->type == CLUTTER_DELETE)
+        return;
+
       device_id = clutter_input_device_get_device_id (device);
 
       core_monitor = meta_idle_monitor_get_core ();
