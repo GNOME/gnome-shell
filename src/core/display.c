@@ -549,7 +549,7 @@ meta_display_open (void)
   /* A list of all atom names, so that we can intern them in one go. */
   char *atom_names[] = {
 #define item(x) #x,
-#include <meta/atomnames.h>
+#include <x11/atomnames.h>
 #undef item
   };
   Atom atoms[G_N_ELEMENTS(atom_names)];
@@ -610,7 +610,7 @@ meta_display_open (void)
   {
     int i = 0;
 #define item(x) display->atom_##x = atoms[i++];
-#include <meta/atomnames.h>
+#include <x11/atomnames.h>
 #undef item
   }
 

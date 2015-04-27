@@ -121,7 +121,7 @@ struct _MetaDisplay
    * class is constructed.
    */
 #define item(x)  Atom atom_##x;
-#include <meta/atomnames.h>
+#include <x11/atomnames.h>
 #undef item
 
   /* The window and serial of the most recent FocusIn event. */

@@ -210,10 +210,9 @@ libmutter_la_SOURCES =				\
 	meta/theme.h				\
 	ui/theme-private.h			\
 	ui/ui.c					\
-	x11/iconcache.c				\
-	x11/iconcache.h				\
 	x11/async-getprop.c			\
 	x11/async-getprop.h			\
+	x11/atomnames.h				\
 	x11/events.c				\
 	x11/events.h				\
 	x11/group-private.h			\
@@ -221,6 +220,8 @@ libmutter_la_SOURCES =				\
 	x11/group-props.h			\
 	x11/group.c				\
 	meta/group.h				\
+	x11/iconcache.c				\
+	x11/iconcache.h				\
 	x11/session.c				\
 	x11/session.h				\
 	x11/window-props.c			\
@@ -338,16 +339,10 @@ libmutterinclude_base_headers =			\
 	$(libmutterinclude_headers)		\
 	$(libmutterinclude_built_headers)
 
-# Excluded from scanning for introspection but installed
-# atomnames.h: macros cause problems for scanning process
-libmutterinclude_extra_headers =		\
-	meta/atomnames.h
-
 libmutterincludedir = $(includedir)/mutter/meta
 
 libmutterinclude_HEADERS =			\
-	$(libmutterinclude_headers)		\
-	$(libmutterinclude_extra_headers)
+	$(libmutterinclude_headers)
 
 nodist_libmutterinclude_HEADERS =		\
 	$(libmutterinclude_built_headers)

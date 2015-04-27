@@ -294,7 +294,7 @@ set_supported_hint (MetaScreen *screen)
   Atom atoms[] = {
 #define EWMH_ATOMS_ONLY
 #define item(x)  screen->display->atom_##x,
-#include <meta/atomnames.h>
+#include <x11/atomnames.h>
 #undef item
 #undef EWMH_ATOMS_ONLY
 
