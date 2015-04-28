@@ -1003,24 +1003,6 @@ const Panel = new Lang.Class({
         if (parent)
             parent.remove_actor(container);
 
-        if (indicator._openChangedId > 0)
-            indicator.menu.disconnect(indicator._openChangedId);
-        indicator._openChangedId = 0;
-
-        if (indicator.menu)
-            indicator._openChangedId = indicator.menu.connect('open-state-changed',
-                Lang.bind(this, function(menu, isOpen) {
-                    let boxAlignment;
-                    if (box == this._leftBox)
-                        boxAlignment = Clutter.ActorAlign.START;
-                    else if (box == this._centerBox)
-                        boxAlignment = Clutter.ActorAlign.CENTER;
-                    else if (box == this._rightBox)
-                        boxAlignment = Clutter.ActorAlign.END;
-
-                    if (boxAlignment == Main.messageTray.bannerAlignment)
-                        Main.messageTray.bannerBlocked = isOpen;
-                }));
 
         box.insert_child_at_index(container, position);
         if (indicator.menu)
@@ -1031,6 +1013,8 @@ const Panel = new Lang.Class({
             emitter.disconnect(destroyId);
             container.destroy();
         }));
+        indicator.connect('menu-set', Lang.bind(this, this._onMenuSet));
+        this._onMenuSet(indicator);
     },
 
     addToStatusArea: function(role, indicator, position, box) {
@@ -1062,5 +1046,24 @@ const Panel = new Lang.Class({
         this.actor.remove_style_class_name(className);
         this._rightCorner.actor.remove_style_class_name(className);
         this._leftCorner.actor.remove_style_class_name(className);
+    },
+
+    _onMenuSet: function(indicator) {
+        if (!indicator.menu || indicator.menu._openChangedId > 0)
+            return;
+
+        indicator.menu._openChangedId = indicator.menu.connect('open-state-changed',
+            Lang.bind(this, function(menu, isOpen) {
+                let boxAlignment;
+                if (this._leftBox.contains(indicator.container))
+                    boxAlignment = Clutter.ActorAlign.START;
+                else if (this._centerBox.contains(indicator.container))
+                    boxAlignment = Clutter.ActorAlign.CENTER;
+                else if (this._rightBox.contains(indicator.container))
+                    boxAlignment = Clutter.ActorAlign.END;
+
+                if (boxAlignment == Main.messageTray.bannerAlignment)
+                    Main.messageTray.bannerBlocked = isOpen;
+            }));
     }
 });

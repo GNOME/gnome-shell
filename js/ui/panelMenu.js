@@ -128,6 +128,7 @@ const Button = new Lang.Class({
             Main.uiGroup.add_actor(this.menu.actor);
             this.menu.actor.hide();
         }
+        this.emit('menu-set');
     },
 
     _onEvent: function(actor, event) {
