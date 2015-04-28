@@ -454,10 +454,6 @@ meta_monitor_manager_kms_read_current (MetaMonitorManager *manager)
 
       meta_crtc = &manager->crtcs[i];
 
-      meta_crtc->driver_private = g_new (MetaCRTCKms, 1);
-      meta_crtc->driver_notify = (GDestroyNotify) meta_crtc_destroy_notify;
-      find_crtc_properties (manager_kms, meta_crtc);
-
       meta_crtc->crtc_id = crtc->crtc_id;
       meta_crtc->rect.x = crtc->x;
       meta_crtc->rect.y = crtc->y;
@@ -482,6 +478,10 @@ meta_monitor_manager_kms_read_current (MetaMonitorManager *manager)
           width = MAX (width, meta_crtc->rect.x + meta_crtc->rect.width);
           height = MAX (height, meta_crtc->rect.y + meta_crtc->rect.height);
         }
+
+      meta_crtc->driver_private = g_new (MetaCRTCKms, 1);
+      meta_crtc->driver_notify = (GDestroyNotify) meta_crtc_destroy_notify;
+      find_crtc_properties (manager_kms, meta_crtc);
 
       drmModeFreeCrtc (crtc);
     }
