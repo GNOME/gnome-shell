@@ -265,14 +265,29 @@ meta_monitor_manager_free_mode_array (MetaMonitorMode *old_modes,
 }
 
 static void
+meta_monitor_manager_free_crtc_array (MetaCRTC *old_crtcs,
+                                      int       n_old_crtcs)
+{
+  int i;
+
+  for (i = 0; i < n_old_crtcs; i++)
+    {
+      if (old_crtcs[i].driver_notify)
+        old_crtcs[i].driver_notify (&old_crtcs[i]);
+    }
+
+  g_free (old_crtcs);
+}
+
+static void
 meta_monitor_manager_finalize (GObject *object)
 {
   MetaMonitorManager *manager = META_MONITOR_MANAGER (object);
 
   meta_monitor_manager_free_output_array (manager->outputs, manager->n_outputs);
   meta_monitor_manager_free_mode_array (manager->modes, manager->n_modes);
+  meta_monitor_manager_free_crtc_array (manager->crtcs, manager->n_crtcs);
   g_free (manager->monitor_infos);
-  g_free (manager->crtcs);
 
   G_OBJECT_CLASS (meta_monitor_manager_parent_class)->finalize (object);
 }
@@ -1199,23 +1214,24 @@ meta_monitor_manager_read_current_config (MetaMonitorManager *manager)
   MetaOutput *old_outputs;
   MetaCRTC *old_crtcs;
   MetaMonitorMode *old_modes;
-  unsigned int n_old_outputs, n_old_modes;
+  unsigned int n_old_outputs, n_old_crtcs, n_old_modes;
 
   /* Some implementations of read_current use the existing information
    * we have available, so don't free the old configuration until after
    * read_current finishes. */
   old_outputs = manager->outputs;
   n_old_outputs = manager->n_outputs;
+  old_crtcs = manager->crtcs;
+  n_old_crtcs = manager->n_crtcs;
   old_modes = manager->modes;
   n_old_modes = manager->n_modes;
-  old_crtcs = manager->crtcs;
 
   manager->serial++;
   META_MONITOR_MANAGER_GET_CLASS (manager)->read_current (manager);
 
   meta_monitor_manager_free_output_array (old_outputs, n_old_outputs);
   meta_monitor_manager_free_mode_array (old_modes, n_old_modes);
-  g_free (old_crtcs);
+  meta_monitor_manager_free_crtc_array (old_crtcs, n_old_crtcs);
 }
 
 void

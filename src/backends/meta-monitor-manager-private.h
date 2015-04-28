@@ -160,6 +160,9 @@ struct _MetaCRTC
   gboolean is_dirty;
 
   MetaCursorReference *cursor;
+
+  gpointer driver_private;
+  GDestroyNotify driver_notify;
 };
 
 struct _MetaMonitorMode
