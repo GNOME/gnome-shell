@@ -46,7 +46,7 @@
 #include "meta-cursor-tracker-private.h"
 #include "display-private.h"
 #include "window-private.h"
-#include "window-wayland.h"
+#include "meta-window-wayland.h"
 
 #include "compositor/region-utils.h"
 

@@ -266,8 +266,8 @@ libmutter_la_SOURCES +=				\
 	wayland/meta-wayland-versions.h		\
 	wayland/meta-wayland-outputs.c		\
 	wayland/meta-wayland-outputs.h		\
-	wayland/window-wayland.c		\
-	wayland/window-wayland.h		\
+	wayland/meta-window-wayland.c		\
+	wayland/meta-window-wayland.h		\
 	$(NULL)
 endif
 

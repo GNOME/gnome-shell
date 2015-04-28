@@ -24,7 +24,7 @@
 
 #include "config.h"
 
-#include "window-wayland.h"
+#include "meta-window-wayland.h"
 
 #include <meta/errors.h>
 #include "window-private.h"

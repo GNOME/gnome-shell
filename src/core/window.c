@@ -57,7 +57,7 @@
 #include "x11/xprops.h"
 
 #ifdef HAVE_WAYLAND
-#include "wayland/window-wayland.h"
+#include "wayland/meta-window-wayland.h"
 #include "wayland/meta-wayland-private.h"
 #endif
 
