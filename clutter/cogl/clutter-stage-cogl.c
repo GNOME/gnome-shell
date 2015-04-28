@@ -607,11 +607,7 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
     }
   else
     {
-      damage[0] = 0;
-      damage[1] = 0;
-      damage[2] = geom.width;
-      damage[3] = geom.height;
-      ndamage = -1;
+      ndamage = 0;
     }
 
   /* push on the screen */
