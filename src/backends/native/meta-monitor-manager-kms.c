@@ -224,6 +224,9 @@ find_crtc_properties (MetaMonitorManagerKms *manager_kms,
   crtc_kms = meta_crtc->driver_private;
 
   props = drmModeObjectGetProperties (manager_kms->fd, meta_crtc->crtc_id, DRM_MODE_OBJECT_CRTC);
+  if (!props)
+    return;
+
   for (i = 0; i < props->count_props; i++)
     {
       drmModePropertyPtr prop = drmModeGetProperty (manager_kms->fd, props->props[i]);
@@ -479,7 +482,7 @@ meta_monitor_manager_kms_read_current (MetaMonitorManager *manager)
           height = MAX (height, meta_crtc->rect.y + meta_crtc->rect.height);
         }
 
-      meta_crtc->driver_private = g_new (MetaCRTCKms, 1);
+      meta_crtc->driver_private = g_new0 (MetaCRTCKms, 1);
       meta_crtc->driver_notify = (GDestroyNotify) meta_crtc_destroy_notify;
       find_crtc_properties (manager_kms, meta_crtc);
 
