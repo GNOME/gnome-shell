@@ -47,9 +47,6 @@ void meta_core_change_workspace (Display *xdisplay,
 
 int meta_core_get_frame_workspace (Display *xdisplay,
                                    Window frame_xwindow);
-const char* meta_core_get_workspace_name_with_index (Display *xdisplay,
-                                                     Window xroot,
-                                                     int    index);
 
 void meta_core_show_window_menu (Display            *xdisplay,
                                  Window              frame_xwindow,

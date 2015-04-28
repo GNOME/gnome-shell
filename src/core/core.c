@@ -217,19 +217,6 @@ meta_core_show_window_menu_for_rect (Display            *xdisplay,
   meta_window_show_menu_for_rect (window, menu, rect);
 }
 
-const char*
-meta_core_get_workspace_name_with_index (Display *xdisplay,
-                                         Window   xroot,
-                                         int      index)
-{
-  MetaDisplay *display;
-  MetaWorkspace *workspace;
-
-  display = meta_display_for_x_display (xdisplay);
-  workspace = meta_screen_get_workspace_by_index (display->screen, index);
-  return workspace ? meta_workspace_get_name (workspace) : NULL;
-}
-
 gboolean
 meta_core_begin_grab_op (Display    *xdisplay,
                          Window      frame_xwindow,
