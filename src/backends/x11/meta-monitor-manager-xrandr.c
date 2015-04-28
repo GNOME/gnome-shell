@@ -919,15 +919,37 @@ output_set_underscanning_xrandr (MetaMonitorManagerXrandr *manager_xrandr,
 
   prop = XInternAtom (manager_xrandr->xdisplay, "underscan", False);
 
-  /* XXX: Also implement underscan border */
   value = underscanning ? "on" : "off";
   valueatom = XInternAtom (manager_xrandr->xdisplay, value, False);
-
   XRRChangeOutputProperty (manager_xrandr->xdisplay,
                            (XID)output->winsys_id,
                            prop,
                            XA_ATOM, 32, PropModeReplace,
                            (unsigned char*) &valueatom, 1);
+
+  /* Configure the border at the same time. Currently, we use a
+   * 5% of the width/height of the mode. In the future, we should
+   * make the border configurable. */
+  if (underscanning)
+    {
+      uint32_t border_value;
+
+      prop = XInternAtom (manager_xrandr->xdisplay, "underscan hborder", False);
+      border_value = output->crtc->current_mode->width * 0.05;
+      XRRChangeOutputProperty (manager_xrandr->xdisplay,
+                               (XID)output->winsys_id,
+                               prop,
+                               XA_INTEGER, 32, PropModeReplace,
+                               (unsigned char *) &border_value, 1);
+
+      prop = XInternAtom (manager_xrandr->xdisplay, "underscan vborder", False);
+      border_value = output->crtc->current_mode->height * 0.05;
+      XRRChangeOutputProperty (manager_xrandr->xdisplay,
+                               (XID)output->winsys_id,
+                               prop,
+                               XA_INTEGER, 32, PropModeReplace,
+                               (unsigned char *) &border_value, 1);
+    }
 }
 
 static void
