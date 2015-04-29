@@ -201,6 +201,7 @@ meta_display_handle_event (MetaDisplay        *display,
     {
       MetaCursorTracker *tracker = meta_cursor_tracker_get_for_screen (NULL);
       meta_cursor_tracker_update_position (tracker, event->motion.x, event->motion.y);
+      display->monitor_cache_invalidated = TRUE;
     }
 
   handle_idletime_for_event (event);
