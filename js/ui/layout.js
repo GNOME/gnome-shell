@@ -1316,8 +1316,11 @@ const PressureBarrier = new Lang.Class({
     },
 
     _onBarrierLeft: function(barrier, event) {
-        this._reset();
-        this._isTriggered = false;
+        barrier._isHit = false;
+        if (this._barriers.every(function(b) { return !b._isHit; })) {
+            this._reset();
+            this._isTriggered = false;
+        }
     },
 
     _trigger: function() {
@@ -1327,6 +1330,8 @@ const PressureBarrier = new Lang.Class({
     },
 
     _onBarrierHit: function(barrier, event) {
+        barrier._isHit = true;
+
         // If we've triggered the barrier, wait until the pointer has the
         // left the barrier hitbox until we trigger it again.
         if (this._isTriggered)
