@@ -52,6 +52,7 @@
 
 #include "meta-surface-actor.h"
 #include "meta-surface-actor-wayland.h"
+#include "meta-xwayland-private.h"
 
 typedef enum
 {
@@ -751,7 +752,11 @@ sync_reactive (MetaWaylandSurface *surface)
 static void
 sync_drag_dest_funcs (MetaWaylandSurface *surface)
 {
-  surface->dnd.funcs = meta_wayland_data_device_get_drag_dest_funcs ();
+  if (surface->window &&
+      surface->window->client_type == META_WINDOW_CLIENT_TYPE_X11)
+    surface->dnd.funcs = meta_xwayland_selection_get_drag_dest_funcs ();
+  else
+    surface->dnd.funcs = meta_wayland_data_device_get_drag_dest_funcs ();
 }
 
 void

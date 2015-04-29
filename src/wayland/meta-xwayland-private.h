@@ -39,4 +39,6 @@ void     meta_xwayland_init_selection         (void);
 void     meta_xwayland_shutdown_selection     (void);
 gboolean meta_xwayland_selection_handle_event (XEvent *xevent);
 
+const MetaWaylandDragDestFuncs * meta_xwayland_selection_get_drag_dest_funcs (void);
+
 #endif /* META_XWAYLAND_PRIVATE_H */
