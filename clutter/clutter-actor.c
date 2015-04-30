@@ -8773,7 +8773,7 @@ _clutter_actor_queue_redraw_full (ClutterActor       *self,
       CLUTTER_NOTE (PAINT,
                     "Skipping queue_redraw('%s'): mapped=%s, "
                     "mapped_clones=%s, "
-                    "in_cloned_branch=%s\n",
+                    "in_cloned_branch=%s",
                     _clutter_actor_get_debug_name (self),
                     CLUTTER_ACTOR_IS_MAPPED (self) ? "yes" : "no",
                     clutter_actor_has_mapped_clones (self) ? "yes" : "no",
