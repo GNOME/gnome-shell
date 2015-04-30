@@ -1,3 +1,20 @@
+3.17.1
+======
+* Add Display Settings entry to background menu [Meet; #697346]
+* Add window menu option to move to different monitor [Isaac; #633994]
+* Improve switch style in default/highContrast themes [Jakub; #746294, #747912]
+* Make event highlight in calendar more prominent [Jakub; #747715]
+* Fix keyboard focus when focusing a notification banner [Florian; #747205]
+* Move notification banners below the dateMenu [Meet, Florian; #745910]
+* Misc. bug fixes [Mario, Rui; #748338, #748541]
+
+Contributors:
+  Isaac Ge, Rui Matos, Florian Müllner, Meet Parikh, Mario Sanchez Prada,
+  Jakub Steiner, Jasper St. Pierre
+
+Translations:
+  Sveinn í Felli [is], Marek Černocký [cs], laurent Soleil [oc]
+
 3.16.1
 ======
 * gdm: Move long session chooser menus to the side [Florian; #734352]
