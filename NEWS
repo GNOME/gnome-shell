@@ -1,3 +1,16 @@
+3.17.1
+======
+* Add public method to get neighboring monitor [Florian; #633994]
+* Apply the right settings to the right input devices [Carlos; #747886]
+* Fix scroll button setting [Ondrej; #747967]
+* Add support for modal hint on wayland [Jonas; #745720]
+* Don't reset idle time for non-hardware events [Rui; #748541]
+* Misc. bug fixes [Ray, Rui; #748380, #748478]
+
+Contributors:
+  Jonas Ådahl, Carlos Garnacho, Ondrej Holy, Rui Matos, Florian Müllner,
+  Jasper St. Pierre, Ray Strode, Tomeu Vizoso
+
 3.16.1
 ======
 * Add function to refresh all background instances [Rui; #739178]
