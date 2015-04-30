@@ -3665,12 +3665,18 @@ clutter_actor_paint_node (ClutterActor     *actor,
 
       if (clutter_stage_get_use_alpha (CLUTTER_STAGE (actor)))
         {
-          bg_color.alpha = clutter_actor_get_paint_opacity_internal (actor)
+          bg_color.alpha = priv->opacity
                          * priv->bg_color.alpha
                          / 255;
         }
       else
         bg_color.alpha = 255;
+
+      CLUTTER_NOTE (PAINT, "Stage clear color: (%d, %d, %d, %d)",
+                    bg_color.red,
+                    bg_color.green,
+                    bg_color.blue,
+                    bg_color.alpha);
 
       clear_flags = COGL_BUFFER_BIT_DEPTH;
       if (!clutter_stage_get_no_clear_hint (CLUTTER_STAGE (actor)))
