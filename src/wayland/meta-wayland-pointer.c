@@ -339,8 +339,6 @@ handle_button_event (MetaWaylandPointer *pointer,
 {
   gboolean implicit_grab;
 
-  notify_motion (pointer, event);
-
   implicit_grab = (event->type == CLUTTER_BUTTON_PRESS) && (pointer->button_count == 1);
   if (implicit_grab)
     {
@@ -362,8 +360,6 @@ handle_scroll_event (MetaWaylandPointer *pointer,
   struct wl_resource *resource;
   struct wl_list *l;
   wl_fixed_t x_value = 0, y_value = 0;
-
-  notify_motion (pointer, event);
 
   if (clutter_event_is_pointer_emulated (event))
     return;
