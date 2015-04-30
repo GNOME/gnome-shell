@@ -38,7 +38,7 @@ draw_content (ClutterCanvas *canvas,
   cairo_arc (cr, x + radius, y + radius, radius, 180 * degrees, 270 * degrees);
   cairo_close_path (cr);
 
-  cairo_set_source_rgb (cr, 0.5, 0.5, 1);
+  cairo_set_source_rgba (cr, 0.5, 0.5, 1, 0.95);
   cairo_fill (cr);
 
   /* we're done drawing */
@@ -59,8 +59,10 @@ main (int argc, char *argv[])
   /* create a stage */
   stage = clutter_stage_new ();
   clutter_stage_set_title (CLUTTER_STAGE (stage), "Rectangle with rounded corners");
+  clutter_stage_set_use_alpha (CLUTTER_STAGE (stage), TRUE);
   clutter_actor_set_background_color (stage, CLUTTER_COLOR_Black);
   clutter_actor_set_size (stage, 500, 500);
+  clutter_actor_set_opacity (stage, 64);
   clutter_actor_show (stage);
 
   /* our 2D canvas, courtesy of Cairo */
