@@ -2046,7 +2046,7 @@ clutter_stage_class_init (ClutterStageClass *klass)
    * ClutterStage::deactivate:
    * @stage: the stage which was deactivated
    *
-   * The ::activate signal is emitted when the stage loses key focus
+   * The ::deactivate signal is emitted when the stage loses key focus
    * from the underlying window system.
    *
    * Since: 0.6
