@@ -371,7 +371,7 @@ static void
 destroy_data_device_icon (struct wl_listener *listener, void *data)
 {
   MetaWaylandDragGrab *drag_grab =
-    wl_container_of (listener, drag_grab, drag_data_source_listener);
+    wl_container_of (listener, drag_grab, drag_icon_listener);
 
   drag_grab->drag_surface = NULL;
 
