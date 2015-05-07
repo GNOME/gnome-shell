@@ -334,7 +334,8 @@ clutter_backend_gdk_get_display (ClutterBackend  *backend,
   gboolean has_rgba_visual;
   gboolean res;
 
-  has_rgba_visual = gdk_screen_get_rgba_visual (backend_gdk->screen) == NULL;
+  /* We default to an RGBA visual if there is one */
+  has_rgba_visual = gdk_screen_get_rgba_visual (backend_gdk->screen) != NULL;
 
   CLUTTER_NOTE (BACKEND, "Alpha on Cogl swap chain: %s",
                 has_rgba_visual ? "enabled" : "disabled");
