@@ -35,6 +35,38 @@
 
 G_DEFINE_TYPE (MetaInputSettingsX11, meta_input_settings_x11, META_TYPE_INPUT_SETTINGS)
 
+static void *
+get_property (ClutterInputDevice *device,
+              const gchar        *property,
+              Atom                type,
+              int                 format,
+              gulong              nitems)
+{
+  MetaBackend *backend = meta_get_backend ();
+  Display *xdisplay = meta_backend_x11_get_xdisplay (META_BACKEND_X11 (backend));
+  gulong nitems_ret, bytes_after_ret;
+  int rc, device_id, format_ret;
+  Atom property_atom, type_ret;
+  guchar *data_ret = NULL;
+
+  property_atom = XInternAtom (xdisplay, property, False);
+  device_id = clutter_input_device_get_device_id (device);
+
+  rc = XIGetProperty (xdisplay, device_id, property_atom,
+                      0, 10, False, type, &type_ret, &format_ret,
+                      &nitems_ret, &bytes_after_ret, &data_ret);
+  if (rc == Success && type_ret == type && format_ret == format && nitems_ret >= nitems)
+    {
+      if (nitems_ret > nitems)
+        g_warning ("Property '%s' for device '%s' returned %lu items, expected %lu",
+                   property, clutter_input_device_get_device_name (device), nitems_ret, nitems);
+      return data_ret;
+    }
+
+  meta_XFree (data_ret);
+  return NULL;
+}
+
 static void
 change_property (ClutterInputDevice *device,
                  const gchar        *property,
@@ -45,23 +77,20 @@ change_property (ClutterInputDevice *device,
 {
   MetaBackend *backend = meta_get_backend ();
   Display *xdisplay = meta_backend_x11_get_xdisplay (META_BACKEND_X11 (backend));
-  gulong nitems_ret, bytes_after_ret;
-  int rc, device_id, format_ret;
-  Atom property_atom, type_ret;
+  int device_id;
+  Atom property_atom;
   guchar *data_ret;
 
   property_atom = XInternAtom (xdisplay, property, False);
   device_id = clutter_input_device_get_device_id (device);
 
-  rc = XIGetProperty (xdisplay, device_id, property_atom,
-                      0, 0, False, type, &type_ret, &format_ret,
-                      &nitems_ret, &bytes_after_ret, &data_ret);
+  data_ret = get_property (device, property, type, format, nitems);
+  if (!data_ret)
+    return;
 
+  XIChangeProperty (xdisplay, device_id, property_atom, type,
+                    format, XIPropModeReplace, data, nitems);
   meta_XFree (data_ret);
-
-  if (rc == Success && type_ret == type && format_ret == format)
-    XIChangeProperty (xdisplay, device_id, property_atom, type,
-                      format, XIPropModeReplace, data, nitems);
 }
 
 static void
