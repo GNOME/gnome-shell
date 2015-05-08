@@ -26,6 +26,7 @@
 #include "meta-backend-x11.h"
 #include "meta-input-settings-x11.h"
 
+#include <string.h>
 #include <gdk/gdkx.h>
 #include <X11/Xatom.h>
 #include <X11/extensions/XInput2.h>
@@ -219,16 +220,23 @@ meta_input_settings_x11_set_click_method (MetaInputSettings           *settings,
                                           GDesktopTouchpadClickMethod  mode)
 {
   guchar values[2] = { 0 }; /* buttonareas, clickfinger */
+  guchar *defaults;
 
   switch (mode)
     {
+    case G_DESKTOP_TOUCHPAD_CLICK_METHOD_DEFAULT:
+      defaults = get_property (device, "libinput Click Method Enabled Default",
+                               XA_INTEGER, 8, 2);
+      if (!defaults)
+        break;
+      memcpy (values, defaults, 2);
+      meta_XFree (defaults);
+      break;
     case G_DESKTOP_TOUCHPAD_CLICK_METHOD_NONE:
       break;
     case G_DESKTOP_TOUCHPAD_CLICK_METHOD_AREAS:
       values[0] = 1;
       break;
-    case G_DESKTOP_TOUCHPAD_CLICK_METHOD_DEFAULT:
-      /* XXX: We can't be much smarter yet, x11 doesn't expose default settings */
     case G_DESKTOP_TOUCHPAD_CLICK_METHOD_FINGERS:
       values[1] = 1;
       break;
