@@ -78,7 +78,7 @@ _cogl_free_framebuffer_stack (GSList *stack)
         cogl_object_unref (entry->draw_buffer);
 
       if (entry->read_buffer)
-        cogl_object_unref (entry->draw_buffer);
+        cogl_object_unref (entry->read_buffer);
 
       g_slice_free (CoglFramebufferStackEntry, entry);
     }
