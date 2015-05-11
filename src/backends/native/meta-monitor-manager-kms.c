@@ -25,6 +25,8 @@
 
 #include "meta-monitor-manager-kms.h"
 #include "meta-monitor-config.h"
+#include "backends/meta-backend-private.h"
+#include "meta-cursor-renderer-native.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -76,6 +78,9 @@ struct _MetaMonitorManagerKms
 
   drmModeConnector **connectors;
   unsigned int       n_connectors;
+
+  /* used to find out when configuration has been applied */
+  CoglFrameClosure *frame_closure;
 
   GUdevClient *udev;
 
@@ -906,6 +911,29 @@ set_underscan (MetaMonitorManagerKms *manager_kms,
 }
 
 static void
+frame_callback (CoglOnscreen  *onscreen,
+                CoglFrameEvent event,
+                CoglFrameInfo *frame_info,
+                void          *user_data)
+{
+  MetaMonitorManagerKms *manager_kms = user_data;
+  MetaBackend *backend = meta_get_backend ();
+  MetaCursorRenderer *renderer = meta_backend_get_cursor_renderer (backend);
+  CoglOnscreen *cogl_onscreen;
+
+  if (event != COGL_FRAME_EVENT_COMPLETE)
+    return;
+
+  meta_cursor_renderer_native_force_update (META_CURSOR_RENDERER_NATIVE (renderer));
+
+  cogl_onscreen = COGL_ONSCREEN (cogl_get_draw_framebuffer ());
+  cogl_onscreen_remove_frame_callback (cogl_onscreen,
+                                       manager_kms->frame_closure);
+
+  manager_kms->frame_closure = NULL;
+}
+
+static void
 meta_monitor_manager_kms_apply_configuration (MetaMonitorManager *manager,
                                               MetaCRTCInfo       **crtcs,
                                               unsigned int         n_crtcs,
@@ -916,6 +944,7 @@ meta_monitor_manager_kms_apply_configuration (MetaMonitorManager *manager,
   ClutterBackend *backend;
   CoglContext *cogl_context;
   CoglDisplay *cogl_display;
+  CoglOnscreen *cogl_onscreen;
   unsigned i;
   GPtrArray *cogl_crtcs;
   int screen_width, screen_height;
@@ -1050,6 +1079,15 @@ meta_monitor_manager_kms_apply_configuration (MetaMonitorManager *manager,
       g_error_free (error);
       return;
     }
+
+  cogl_onscreen = COGL_ONSCREEN (cogl_get_draw_framebuffer ());
+  if (manager_kms->frame_closure)
+    cogl_onscreen_remove_frame_callback (cogl_onscreen,
+                                         manager_kms->frame_closure);
+  manager_kms->frame_closure = cogl_onscreen_add_frame_callback (cogl_onscreen,
+                                                                 frame_callback,
+                                                                 manager,
+                                                                 NULL);
 
   for (i = 0; i < n_outputs; i++)
     {
