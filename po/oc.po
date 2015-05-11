@@ -1,17 +1,18 @@
 # Occitan translations for gnome-shell package.
-# Copyright (C) 2009-2012 Listed translators
+# Copyright (C) 2009-2015 Listed translators
 # This file is distributed under the same license as the gnome-shell package.
-# Cédric Valmary (totenoc.org) <cvalmary@yahoo.fr>, 2013.
-# None <None>, 2013.
+# 
+# 
+# Cédric Valmary (Tot en Òc) <cvalmary@yahoo.fr>, 2015.
 msgid ""
 msgstr ""
-"Project-Id-Version: gnome-shell master oc\n"
+"Project-Id-Version: gnome-shell master fr\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2013-10-10 21:27+0000\n"
-"PO-Revision-Date: 2013-10-13 13:23+0200\n"
-"Last-Translator: None <None>\n"
-"Language-Team: totenoc.org\n"
+"PO-Revision-Date: 2015-05-11 09:42+0200\n"
+"Last-Translator: Cédric Valmary (Tot en Òc) <cvalmary@yahoo.fr>\n"
+"Language-Team: www.totenoc.eu\n"
 "Language: oc\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -199,12 +200,12 @@ msgstr "Combinason de tòcas per dobrir la vista d'ensemble de las aplicacions."
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:23
 msgid "Keybinding to toggle the visibility of the message tray"
 msgstr ""
-"Combinason de tòcas per bascuolar la visibilitat del tirador de messatjariá"
+"Combinason de tòcas per bascular la visibilitat del tirador de messatjariá"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:24
 msgid "Keybinding to toggle the visibility of the message tray."
 msgstr ""
-"Combinason de tòcas per bascuolar la visibilitat del tirador de messatjariá."
+"Combinason de tòcas per bascular la visibilitat del tirador de messatjariá."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:25
 msgid "Keybinding to focus the active notification"
@@ -490,7 +491,7 @@ msgstr "S"
 #: ../js/ui/calendar.js:133
 msgctxt "list sunday"
 msgid "Su"
-msgstr "Di"
+msgstr "D"
 
 #. Translators: Event list abbreviation for Monday */
 #: ../js/ui/calendar.js:135
@@ -508,7 +509,7 @@ msgstr "Ma"
 #: ../js/ui/calendar.js:139
 msgctxt "list wednesday"
 msgid "W"
-msgstr "Me"
+msgstr "Mè"
 
 #. Translators: Event list abbreviation for Thursday */
 #: ../js/ui/calendar.js:141
@@ -530,7 +531,7 @@ msgstr "Sa"
 
 #: ../js/ui/calendar.js:389
 msgid "calendar:MY"
-msgstr ""
+msgstr "calendar:MY"
 
 #: ../js/ui/calendar.js:447
 msgid "Previous month"
@@ -1624,7 +1625,7 @@ msgid ""
 "Sorry, no wisdom for you today:\n"
 "%s"
 msgstr ""
-"O planhèm, cap saviesa per vos uèi :\n"
+"O planhèm, pas cap de saviesa per vos uèi :\n"
 "%s"
 
 #: ../js/ui/wanda.js:81
@@ -2113,3 +2114,374 @@ msgstr "La fenèstra d'autentificacion es estada escartada per l'utilizaire"
 #~ msgid "Default"
 #~ msgstr "Défaut"
 
+#~ msgid "Show the notification list"
+#~ msgstr "Afficher la liste des notifications"
+
+#~ msgid "UUIDs of extensions to enable"
+#~ msgstr "Identifiants UUID des extensions à activer"
+
+#~ msgid ""
+#~ "GNOME Shell extensions have a UUID property; this key lists extensions which "
+#~ "should be loaded. Any extension that wants to be loaded needs to be in this "
+#~ "list. You can also manipulate this list with the EnableExtension and "
+#~ "DisableExtension D-Bus methods on org.gnome.Shell."
+#~ msgstr ""
+#~ "Les extensions GNOME Shell ont une propriété UUID. Cette clé énumère les "
+#~ "extensions qui doivent être chargées. Toute extension qui voudrait être "
+#~ "chargée doit être ajoutée dans cette liste. Vous pouvez aussi manipuler "
+#~ "cette liste avec les méthodes DBus EnableExtension et DisableExtension de "
+#~ "org.gnome.Shell."
+
+#~ msgid "Disables the validation of extension version compatibility"
+#~ msgstr "Désactive la vérification de compatibilité de version"
+
+#~ msgid ""
+#~ "GNOME Shell will only load extensions that claim to support the current "
+#~ "running version. Enabling this option will disable this check and try to "
+#~ "load all extensions regardless of the versions they claim to support."
+#~ msgstr ""
+#~ "GNOME Shell charge uniquement les extensions annonçant leur gestion de la "
+#~ "version en cours. Activer cette option désactive cette vérification et "
+#~ "essaie de charger toutes les extensions, sans considérer les versions "
+#~ "qu'elles annoncent prendre en charge."
+
+#~ msgid "App Picker View"
+#~ msgstr "Vue du sélecteur d'applications"
+
+#~ msgid "Index of the currently selected view in the application picker."
+#~ msgstr ""
+#~ "Index de la vue actuellement sélectionnée dans le sélecteur d'applications."
+
+#~ msgid "Always show the 'Log out' menu item in the user menu."
+#~ msgstr ""
+#~ "Toujours afficher l'élément « Se déconnecter » dans le menu utilisateur."
+
+#~ msgid ""
+#~ "This key overrides the automatic hiding of the 'Log out' menu item in single-"
+#~ "user, single-session situations."
+#~ msgstr ""
+#~ "Cette clé affiche l'élément « Se déconnecter » du menu utilisateur "
+#~ "normalement caché automatiquement dans le cas d'une session ou d'un "
+#~ "utilisateur unique."
+
+#~ msgid "Keybinding to toggle the visibility of the notification list"
+#~ msgstr ""
+#~ "Combinaison de touches pour inverser la visibilité de la liste des "
+#~ "notifications"
+
+#~ msgid "Keybinding to toggle the visibility of the notification list."
+#~ msgstr ""
+#~ "Combinaison de touches pour inverser la visibilité de la liste des "
+#~ "notifications"
+
+#~ msgid ""
+#~ "Keybinding that pauses and resumes all running tweens, for debugging purposes"
+#~ msgstr ""
+#~ "Combinaison de touches pour stopper et fermer toutes les transitions à des "
+#~ "fins de débogage"
+
+#~ msgid "Limit switcher to current workspace."
+#~ msgstr "Limite le sélecteur de fenêtres à l'espace de travail actuel."
+
+#~ msgid ""
+#~ "If true, only applications that have windows on the current workspace are "
+#~ "shown in the switcher. Otherwise, all applications are included."
+#~ msgstr ""
+#~ "Si vrai, seules les applications ayant des fenêtres ouvertes sur l'espace de "
+#~ "travail actuel sont affichées dans le sélecteur. Sinon, toutes les "
+#~ "applications y sont incluses."
+
+#~ msgid ""
+#~ "If true, only windows from the current workspace are shown in the switcher. "
+#~ "Otherwise, all windows are included."
+#~ msgstr ""
+#~ "Si vrai, seules les fenêtres de l'espace de travail actuel sont affichées "
+#~ "dans le sélecteur. Sinon, toutes les fenêtres y sont incluses."
+
+#~ msgid "Network Login"
+#~ msgstr "Identification réseau"
+
+#~ msgid "GNOME Shell Extensions"
+#~ msgstr "Extensions GNOME Shell"
+
+#, javascript-format
+#~ msgid "Execution of “%s” failed:"
+#~ msgstr "Exécution de « %s » impossible :"
+
+#~ msgid "Yesterday, %H∶%M"
+#~ msgstr "Hier, %H∶%M"
+
+#~ msgid "%A, %H∶%M"
+#~ msgstr "%A, %H∶%M"
+
+#~ msgid "%B %d, %H∶%M"
+#~ msgstr "%d %B, %H∶%M"
+
+#~ msgid "%B %d %Y, %H∶%M"
+#~ msgstr "%d %B %Y, %H∶%M"
+
+#~ msgid "%l∶%M %p"
+#~ msgstr "%l∶%M %p"
+
+#~ msgid "Yesterday, %l∶%M %p"
+#~ msgstr "Hier, %l∶%M %p"
+
+#~ msgid "%A, %l∶%M %p"
+#~ msgstr "%A, %l∶%M %p"
+
+#~ msgid "%B %d, %l∶%M %p"
+#~ msgstr "%d %B, %l∶%M %p"
+
+#~ msgid "%B %d %Y, %l∶%M %p"
+#~ msgstr "%d %B %Y, %l∶%M %p"
+
+#~ msgid "Web Authentication Redirect"
+#~ msgstr "Redirection de l'authentification Web"
+
+#~ msgid "Show Details"
+#~ msgstr "Afficher les détails"
+
+#, fuzzy
+#~| msgid "Privacy Settings"
+#~ msgid "Display Settings"
+#~ msgstr "Paramètres de confidentialité"
+
+#~ msgctxt "calendar-no-work"
+#~ msgid "06"
+#~ msgstr "06"
+
+#~ msgid "Week %V"
+#~ msgstr "Semaine %V"
+
+#~ msgid "Clear section"
+#~ msgstr "Effacer la section"
+
+#~ msgid "Events"
+#~ msgstr "Évènements"
+
+#~ msgid "No Notifications"
+#~ msgstr "Aucune notification"
+
+#~ msgid "No Events"
+#~ msgstr "Aucun évènement"
+
+#, javascript-format
+#~ msgid ""
+#~ "Passwords or encryption keys are required to access the wireless network "
+#~ "“%s”."
+#~ msgstr ""
+#~ "Il faut un mot de passe ou une clé de chiffrement pour accéder au réseau "
+#~ "sans fil « %s »"
+
+#, javascript-format
+#~ msgid "A password is required to connect to “%s”."
+#~ msgstr "Un mot de passe est requis pour se connecter à « %s »."
+
+# luc: FIXME: how to have a capitalized weekday (start of sentence)?
+#      %a (abbreviated) %A (full weekday) %^A (full weekday all uppercase)
+#      https://bugzilla.gnome.org/show_bug.cgi?id=658686
+#
+# luc: TODO: to test, this possibly explodes on dimanche 25 septembre 2011
+#                                                L  M  M  J  V  S  D
+#~ msgid "%B %e %Y"
+#~ msgstr "%-e %B %Y"
+
+# luc: FIXME: how to have a capitalized weekday (start of sentence)?
+#      %a (abbreviated) %A (full weekday) %^A (full weekday all uppercase)
+#      https://bugzilla.gnome.org/show_bug.cgi?id=658686
+#
+# luc: TODO: to test, this possibly explodes on dimanche 25 septembre 2011
+#                                                L  M  M  J  V  S  D
+#~ msgid "%A %B %e %Y"
+#~ msgstr "%A %e %B %Y"
+
+#~ msgid "Add world clocks…"
+#~ msgstr "Ajouter des horloges locales…"
+
+#~ msgid "World Clocks"
+#~ msgstr "Horloges locales"
+
+#~ msgctxt "title"
+#~ msgid "Install Updates & Power Off"
+#~ msgstr "Installer les mises à jour et éteindre"
+
+#~ msgctxt "checkbox"
+#~ msgid "Install pending software updates"
+#~ msgstr "Installer les mises à jour logicielles en attente"
+
+#~ msgctxt "button"
+#~ msgid "Restart &amp; Install"
+#~ msgstr "Redémarrer et installer"
+
+#~ msgctxt "button"
+#~ msgid "Install &amp; Power Off"
+#~ msgstr "Installer et éteindre"
+
+#~ msgctxt "checkbox"
+#~ msgid "Power off after updates are installed"
+#~ msgstr "Éteindre après l'installation des mises à jour"
+
+#~ msgid "Running on battery power: please plug in before installing updates."
+#~ msgstr ""
+#~ "Fonctionnement sur batterie : veuillez vous brancher avant d'installer les "
+#~ "mises à jour."
+
+#, javascript-format
+#~ msgid "Download and install “%s” from extensions.gnome.org?"
+#~ msgstr "Télécharger et installer « %s » à partir de extensions.gnome.org ?"
+
+#~ msgid "Hide tray"
+#~ msgstr "Masquer le tiroir"
+
+#~ msgid "Status Icons"
+#~ msgstr "Icônes d'état"
+
+#~ msgid "Restarting…"
+#~ msgstr "Redémarrage en cours…"
+
+#~ msgid "Location"
+#~ msgstr "Localisation"
+
+#~ msgid "Disable"
+#~ msgstr "Désactiver"
+
+#~ msgid "Privacy Settings"
+#~ msgstr "Paramètres de confidentialité"
+
+#~ msgid "In Use"
+#~ msgstr "En cours d'utilisation"
+
+#~ msgid "Enable"
+#~ msgstr "Activer"
+
+#~ msgid "Connected"
+#~ msgstr "Connecté"
+
+#~ msgid "Unmanaged"
+#~ msgstr "Non géré"
+
+#~ msgid "Disconnecting"
+#~ msgstr "Déconnexion en cours"
+
+#~ msgid "Connecting"
+#~ msgstr "Connexion en cours"
+
+#~ msgid "Authentication required"
+#~ msgstr "Authentification nécessaire"
+
+#~ msgid "Firmware missing"
+#~ msgstr "Micrologiciel manquant"
+
+#~ msgid "Wired Settings"
+#~ msgstr "Paramètres filaire"
+
+#~ msgid "Use as Internet connection"
+#~ msgstr "Utiliser pour la connexion Internet"
+
+#~ msgid "Airplane Mode is On"
+#~ msgstr "Le mode avion est activé"
+
+#~ msgid "Wi-Fi is disabled when airplane mode is on."
+#~ msgstr "Le Wi-Fi est désactivé quand le mode avion est activé."
+
+#~ msgid "Turn Off Airplane Mode"
+#~ msgstr "Désactiver le mode avion"
+
+#~ msgid "Wi-Fi is Off"
+#~ msgstr "Le Wi-fi est désactivé"
+
+#~ msgid "Wi-Fi needs to be turned on in order to connect to a network."
+#~ msgstr "Le Wi-Fi a besoin d'être activé pour se connecter à un réseau."
+
+#~ msgid "Turn On Wi-Fi"
+#~ msgstr "Activer le Wi-Fi"
+
+#~ msgid "Use hardware switch to turn off"
+#~ msgstr "Utiliser l'interrupteur matériel pour éteindre"
+
+#~ msgid "Hotspot Active"
+#~ msgstr "Hotspot activé"
+
+#~ msgid "VPN Settings"
+#~ msgstr "Paramètres VPN"
+
+#, javascript-format
+#~ msgid "“%s” is ready"
+#~ msgstr "« %s » est prêt"
+
+#, javascript-format
+#~ msgid "%d x %d"
+#~ msgstr "%d x %d"
+
+#~ msgid "Minimize"
+#~ msgstr "Minimiser"
+
+#~ msgid "Unmaximize"
+#~ msgstr "Réduire"
+
+#~ msgid "Maximize"
+#~ msgstr "Maximiser"
+
+#~ msgid "Move"
+#~ msgstr "Déplacer"
+
+#~ msgid "Resize"
+#~ msgstr "Redimensionner"
+
+#~ msgid "Move Titlebar Onscreen"
+#~ msgstr "Déplacer la barre de titre sur l'écran"
+
+#~ msgid "Always on Top"
+#~ msgstr "Toujours en haut"
+
+#~ msgid "Always on Visible Workspace"
+#~ msgstr "Toujours sur l'espace de travail visible"
+
+#~ msgid "Move to Workspace Up"
+#~ msgstr "Déplacer vers l'espace de travail supérieur"
+
+#~ msgid "Move to Workspace Down"
+#~ msgstr "Déplacer vers l'espace de travail inférieur"
+
+#, fuzzy
+#~| msgid "Move to Workspace Up"
+#~ msgid "Move to Monitor Up"
+#~ msgstr "Déplacer vers l'espace de travail supérieur"
+
+#, fuzzy
+#~| msgid "Move to Workspace Down"
+#~ msgid "Move to Monitor Down"
+#~ msgstr "Déplacer vers l'espace de travail inférieur"
+
+#, c-format
+#~ msgid "Failed to launch “%s”"
+#~ msgstr "Impossible de lancer « %s »"
+
+#~ msgid "Show the message list"
+#~ msgstr "Afficher la liste de messages"
+
+#~ msgid "Captive Portal"
+#~ msgstr "Portail captif"
+
+#~ msgid "The maximum accuracy level of location."
+#~ msgstr "Le niveau de précision de localisation maximal"
+
+#~ msgid ""
+#~ "Configures the maximum level of location accuracy applications are "
+#~ "allowed to see. Valid options are 'off' (disable location tracking), "
+#~ "'country', 'city', 'neighborhood', 'street', and 'exact' (typically "
+#~ "requires GPS receiver). Please keep in mind that this only controls what "
+#~ "GeoClue will allow applications to see and they can find user's location "
+#~ "on their own using network resources (albeit with street-level accuracy "
+#~ "at best)."
+#~ msgstr ""
+#~ "Configure le niveau maximal de précision de localisation que les "
+#~ "applications sont autorisées à voir. Les options valides sont "
+#~ "« off » (désactiver le suivi de l'emplacement), « country » (pays), "
+#~ "« city » (ville), « neighborhood » (quartier), « rue » (rue) et "
+#~ "« exact » (emplacement exact, nécessite généralement un récepteur GPS).  "
+#~ "Veuillez garder en tête que ce paramètre contrôle uniquement ce que "
+#~ "GeoClue autorisera les applications à voir mais qu'elles restent "
+#~ "néanmoins capables de déterminer l'emplacement de l'utilisateur d'elle-"
+#~ "même en utilisant les ressources réseau (avec au mieux un niveau de "
+#~ "précision limité à la rue)."
