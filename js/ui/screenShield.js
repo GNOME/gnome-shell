@@ -667,6 +667,8 @@ const ScreenShield = new Lang.Class({
     _inhibitSuspend: function() {
         this._loginManager.inhibit(_("GNOME needs to lock the screen"),
                                    Lang.bind(this, function(inhibitor) {
+                                       if (this._inhibitor)
+                                           this._inhibitor.close(null);
                                        this._inhibitor = inhibitor;
                                    }));
     },
