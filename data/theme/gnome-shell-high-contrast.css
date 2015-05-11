@@ -488,10 +488,9 @@ StScrollBar {
 
 .switcher-arrow {
   border-color: transparent;
-  color: black; }
-
-.switcher-arrow:highlighted {
-  color: #fff; }
+  color: rgba(255, 255, 255, 0.8); }
+  .switcher-arrow:highlighted {
+    color: #fff; }
 
 .input-source-switcher-symbol {
   font-size: 34pt;
