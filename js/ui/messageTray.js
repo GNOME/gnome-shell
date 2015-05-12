@@ -258,6 +258,8 @@ const NotificationApplicationPolicy = new Lang.Class({
 
     _changed: function(settings, key) {
         this.emit('policy-changed', key);
+        if (key == 'enable')
+            this.emit('enable-changed');
     },
 
     _canonicalizeId: function(id) {
