@@ -14,7 +14,11 @@ TAR_OPTIONS = --owner=0 --group=0
 RELEASE_ANNOUNCE_LIST = clutter-list@gnome.org
 RELEASE_ANNOUNCE_CC   = gnome-announce-list@gnome.org
 
+RELEASE_DOWNLOAD_URL = https://download.gnome.org/sources/clutter
+
 RELEASE_DOC_URL = https://developer.gnome.org
+REFERENCE_DOC_URL = $(RELEASE_DOC_URL)/clutter
+COOKBOOK_DOC_URL = $(RELEASE_DOC_URL)/clutter-cookbook
 
 BUGS_URL = https://bugzilla.gnome.org/enter_bug.cgi?product=clutter
 
@@ -89,7 +93,7 @@ release-message:
 	@echo ""
 	@echo "A new Clutter $(CLUTTER_RELEASE_STATUS) is now available at:"
 	@echo ""
-	@echo "  http://download.gnome.org/sources/clutter/$(CLUTTER_MAJOR_VERSION).$(CLUTTER_MINOR_VERSION)/"
+	@echo "  $(RELEASE_DOWNLOAD_URL)/$(CLUTTER_MAJOR_VERSION).$(CLUTTER_MINOR_VERSION)/"
 	@echo ""
 	@echo "SHA256 Checksum:"
 	@echo ""
@@ -107,7 +111,7 @@ release-message:
 	@echo "and can be checked out with a command such as:"
 	@echo "  git checkout -b build $(CLUTTER_VERSION)"
 	@echo ""
-	@echo "Clutter is a library for creating compelling, dynamic and portable graphical"
+	@echo "Clutter is a library for creating compelling, dynamic, and portable graphical"
 	@echo "user interfaces. Clutter is released under the terms of the GNU Lesser"
 	@echo "General Public License, version 2.1 or (at your option) later."
 	@echo ""
@@ -124,21 +128,21 @@ release-message:
 	@echo ""
 	@echo "Documentation:"
 	@if test "x$(CLUTTER_RELEASE_STATUS)" = "xsnapshot"; then \
-	   echo "   Clutter: http://developer.gnome.org/clutter/unstable/"; \
+	   echo "   Clutter: $(REFERENCE_DOC_URL)/unstable/"; \
 	 else \
-	   echo "   Clutter: http://developer.gnome.org/clutter/stable/"; \
+	   echo "   Clutter: $(REFERENCE_DOC_URL)/stable/"; \
 	 fi
-	@echo "  Cookbook: $(RELEASE_DOC_URL)/clutter-cookbook/$(CLUTTER_VERSION)/"
+	@echo "  Cookbook: $(COOKBOOK_DOC_URL)/$(CLUTTER_MAJOR_VERSION).$(CLUTTER_MINOR_VERSION)/"
 	@echo ""
 	@echo "Release Notes:"
 	@if test "x$(CLUTTER_RELEASE_STATUS)" = "xsnapshot"; then \
 	   echo "  - This is an unstable snapshot of Clutter; there are no compatibility"; \
 	   echo "    guarantees for API added during a development cycle." ; \
 	 fi
-	@echo "  - This version is API and ABI compatible with the current stable"
+	@echo "  - This version is API and ABI compatible with the previous stable"
 	@echo "    release of Clutter."
 	@echo "  - Installing the contents of this release will overwrite the files"
-	@echo "    from the installation of the current release of Clutter."
+	@echo "    from the installation of the previous release of Clutter."
 	@echo "  - Bugs should be reported on the Clutter Bugzilla product, at:"
 	@echo "    ${BUGS_URL}"
 	@echo ""
