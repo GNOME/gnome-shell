@@ -96,4 +96,18 @@ void     meta_wayland_data_source_send           (MetaWaylandDataSource *source,
 const MetaWaylandDragDestFuncs *
          meta_wayland_data_device_get_drag_dest_funcs (void);
 
+void     meta_wayland_data_device_start_drag     (MetaWaylandDataDevice                 *data_device,
+                                                  struct wl_client                      *client,
+                                                  const MetaWaylandPointerGrabInterface *funcs,
+                                                  MetaWaylandSurface                    *surface,
+                                                  MetaWaylandDataSource                 *source,
+                                                  MetaWaylandSurface                    *icon_surface);
+
+void     meta_wayland_data_device_end_drag       (MetaWaylandDataDevice                 *data_device);
+
+void     meta_wayland_drag_grab_set_focus        (MetaWaylandDragGrab             *drag_grab,
+                                                  MetaWaylandSurface              *surface);
+MetaWaylandSurface *
+         meta_wayland_drag_grab_get_focus        (MetaWaylandDragGrab             *drag_grab);
+
 #endif /* META_WAYLAND_DATA_DEVICE_H */
