@@ -94,12 +94,14 @@ clutter_backend_gdk_init_settings (ClutterBackendGdk *backend_gdk)
       GValue val = G_VALUE_INIT;
 
       g_value_init (&val, CLUTTER_SETTING_TYPE(i));
-      gdk_screen_get_setting (backend_gdk->screen,
-			      CLUTTER_SETTING_GDK_NAME(i),
-			      &val);
-      clutter_settings_set_property_internal (settings,
-                                              CLUTTER_SETTING_PROPERTY (i),
-                                              &val);
+      if (gdk_screen_get_setting (backend_gdk->screen,
+                                  CLUTTER_SETTING_GDK_NAME (i),
+                                  &val))
+        {
+          clutter_settings_set_property_internal (settings,
+                                                  CLUTTER_SETTING_PROPERTY (i),
+                                                  &val);
+        }
       g_value_unset (&val);
     }
 }
