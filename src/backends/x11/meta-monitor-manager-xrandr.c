@@ -538,7 +538,7 @@ output_get_connector_type_from_name (MetaMonitorManagerXrandr *manager_xrandr,
   if (g_str_has_prefix (name, "Virtual"))
     return META_CONNECTOR_TYPE_VIRTUAL;
   if (g_str_has_prefix (name, "Composite"))
-    return META_CONNECTOR_TYPE_VGA;
+    return META_CONNECTOR_TYPE_Composite;
   if (g_str_has_prefix (name, "S-video"))
     return META_CONNECTOR_TYPE_SVIDEO;
   if (g_str_has_prefix (name, "TV"))
