@@ -511,11 +511,14 @@ const ScreenShield = new Lang.Class({
         this._loginManager.connect('prepare-for-sleep',
                                    Lang.bind(this, this._prepareForSleep));
 
+        this._loginSession = null;
         this._loginManager.getCurrentSessionProxy(Lang.bind(this,
             function(sessionProxy) {
                 this._loginSession = sessionProxy;
                 this._loginSession.connectSignal('Lock', Lang.bind(this, function() { this.lock(false); }));
                 this._loginSession.connectSignal('Unlock', Lang.bind(this, function() { this.deactivate(false); }));
+                this._loginSession.connect('g-properties-changed', Lang.bind(this, this._syncInhibitor));
+                this._syncInhibitor();
             }));
 
         this._settings = new Gio.Settings({ schema_id: SCREENSAVER_SCHEMA });
@@ -675,7 +678,8 @@ const ScreenShield = new Lang.Class({
     },
 
     _syncInhibitor: function() {
-        let inhibit = (!this._isActive && this._settings.get_boolean(LOCK_ENABLED_KEY));
+        let inhibit = (this._loginSession && this._loginSession.Active &&
+                       !this._isActive && this._settings.get_boolean(LOCK_ENABLED_KEY));
         if (inhibit) {
             this._loginManager.inhibit(_("GNOME needs to lock the screen"),
                                        Lang.bind(this, function(inhibitor) {
