@@ -507,12 +507,9 @@ const ScreenShield = new Lang.Class({
                                                       this._liftShield(true, 0);
                                               }));
 
-        this._inhibitor = null;
-        this._aboutToSuspend = false;
         this._loginManager = LoginManager.getLoginManager();
         this._loginManager.connect('prepare-for-sleep',
                                    Lang.bind(this, this._prepareForSleep));
-        this._inhibitSuspend();
 
         this._loginManager.getCurrentSessionProxy(Lang.bind(this,
             function(sessionProxy) {
@@ -522,6 +519,7 @@ const ScreenShield = new Lang.Class({
             }));
 
         this._settings = new Gio.Settings({ schema_id: SCREENSAVER_SCHEMA });
+        this._settings.connect('changed::' + LOCK_ENABLED_KEY, Lang.bind(this, this._syncInhibitor));
 
         this._isModal = false;
         this._hasLockScreen = false;
@@ -547,6 +545,18 @@ const ScreenShield = new Lang.Class({
 
         this.idleMonitor = Meta.IdleMonitor.get_core();
         this._cursorTracker = Meta.CursorTracker.get_for_screen(global.screen);
+
+        this._syncInhibitor();
+    },
+
+    _setActive: function(active) {
+        let prevIsActive = this._isActive;
+        this._isActive = active;
+
+        if (prevIsActive != this._isActive)
+            this.emit('active-changed');
+
+        this._syncInhibitor();
     },
 
     _createBackground: function(monitorIndex) {
@@ -664,33 +674,27 @@ const ScreenShield = new Lang.Class({
         return Clutter.EVENT_STOP;
     },
 
-    _inhibitSuspend: function() {
-        this._loginManager.inhibit(_("GNOME needs to lock the screen"),
-                                   Lang.bind(this, function(inhibitor) {
-                                       if (this._inhibitor)
-                                           this._inhibitor.close(null);
-                                       this._inhibitor = inhibitor;
-                                   }));
-    },
-
-    _uninhibitSuspend: function() {
-        if (this._inhibitor)
-            this._inhibitor.close(null);
-        this._inhibitor = null;
+    _syncInhibitor: function() {
+        let inhibit = (!this._isActive && this._settings.get_boolean(LOCK_ENABLED_KEY));
+        if (inhibit) {
+            this._loginManager.inhibit(_("GNOME needs to lock the screen"),
+                                       Lang.bind(this, function(inhibitor) {
+                                           if (this._inhibitor)
+                                               this._inhibitor.close(null);
+                                           this._inhibitor = inhibitor;
+                                       }));
+        } else {
+            if (this._inhibitor)
+                this._inhibitor.close(null);
+            this._inhibitor = null;
+        }
     },
 
     _prepareForSleep: function(loginManager, aboutToSuspend) {
-        this._aboutToSuspend = aboutToSuspend;
-
         if (aboutToSuspend) {
-            if (!this._settings.get_boolean(LOCK_ENABLED_KEY)) {
-                this._uninhibitSuspend();
-                return;
-            }
-            this.lock(true);
+            if (this._settings.get_boolean(LOCK_ENABLED_KEY))
+                this.lock(true);
         } else {
-            this._inhibitSuspend();
-
             this._wakeUpScreen();
         }
     },
@@ -1085,15 +1089,7 @@ const ScreenShield = new Lang.Class({
     },
 
     _completeLockScreenShown: function() {
-        let prevIsActive = this._isActive;
-        this._isActive = true;
-
-        if (prevIsActive != this._isActive)
-            this.emit('active-changed');
-
-        if (this._aboutToSuspend)
-            this._uninhibitSuspend();
-
+        this._setActive(true);
         this.emit('lock-screen-shown');
     },
 
@@ -1187,8 +1183,7 @@ const ScreenShield = new Lang.Class({
             // gnome-settings-daemon will stop blanking the screen
 
             this._activationTime = 0;
-            this._isActive = false;
-            this.emit('active-changed');
+            this._setActive(false);
             return;
         }
 
@@ -1231,9 +1226,8 @@ const ScreenShield = new Lang.Class({
         }
 
         this._activationTime = 0;
-        this._isActive = false;
+        this._setActive(false);
         this._isLocked = false;
-        this.emit('active-changed');
         this.emit('locked-changed');
         global.set_runtime_state(LOCKED_STATE_STR, null);
     },
