@@ -1,3 +1,18 @@
+3.16.2
+======
+* Make event highlight in calendar more prominent [Jakub; #747715]
+* Fix keyboard focus when focusing a notification banner [Florian; #747205]
+* Move notification banners below the dateMenu [Meet, Florian; #745910]
+* Increase visibility of expanders in alt-tab popup [Jakub; #745058]
+* Ensure suspend inhibitors are released when VT switched away [Rui; #749228]
+* Misc. bug fixes [Rui, Florian; #748541, #749279]
+
+Contributors:
+  Rui Matos, Florian Müllner, Meet Parikh, Jakub Steiner
+
+Translations:
+  Sveinn í Felli [is], sun [zh_CN], Cédric Valmary [oc]
+
 3.16.1
 ======
 * gdm: Move long session chooser menus to the side [Florian; #734352]
