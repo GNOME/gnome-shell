@@ -9203,10 +9203,25 @@ adjust_for_margin (float  margin_start,
                    float *allocated_start,
                    float *allocated_end)
 {
-  *minimum_size -= (margin_start + margin_end);
-  *natural_size -= (margin_start + margin_end);
-  *allocated_start += margin_start;
-  *allocated_end -= margin_end;
+  float min_size = *minimum_size;
+  float nat_size = *natural_size;
+  float start = *allocated_start;
+  float end = *allocated_end;
+
+  min_size = MAX (min_size - (margin_start + margin_end), 0);
+  nat_size = MAX (nat_size - (margin_start + margin_end), 0);
+
+  *minimum_size = min_size;
+  *natural_size = nat_size;
+
+  start += margin_start;
+  end -= margin_end;
+
+  if (end - start >= 0)
+    {
+      *allocated_start = start;
+      *allocated_end = end;
+    }
 }
 
 static inline void
@@ -9216,6 +9231,9 @@ adjust_for_alignment (ClutterActorAlign  alignment,
                       float             *allocated_end)
 {
   float allocated_size = *allocated_end - *allocated_start;
+
+  if (allocated_size <= 0.f)
+    return;
 
   switch (alignment)
     {
@@ -9804,6 +9822,10 @@ clutter_actor_adjust_allocation (ClutterActor    *self,
   adj_allocation = *allocation;
 
   clutter_actor_box_get_size (allocation, &alloc_width, &alloc_height);
+
+  /* There's no point in trying to adjust a zero-sized actor */
+  if (alloc_width == 0.f && alloc_height == 0.f)
+    return;
 
   /* we want to hit the cache, so we use the public API */
   req_mode = clutter_actor_get_request_mode (self);
