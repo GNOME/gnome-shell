@@ -15564,14 +15564,17 @@ clutter_actor_allocate_align_fill (ClutterActor           *self,
   clutter_actor_box_get_origin (box, &x_offset, &y_offset);
   clutter_actor_box_get_size (box, &available_width, &available_height);
 
-  if (available_width < 0)
-    available_width = 0;
+  if (available_width <= 0)
+    available_width = 0.f;
 
-  if (available_height < 0)
-    available_height = 0;
+  if (available_height <= 0)
+    available_height = 0.f;
 
   allocation.x1 = x_offset;
   allocation.y1 = y_offset;
+
+  if (available_width == 0.f && available_height == 0.f)
+    goto out;
 
   if (x_fill)
     child_width = available_width;
@@ -15656,8 +15659,8 @@ out:
 
   allocation.x1 = floorf (allocation.x1);
   allocation.y1 = floorf (allocation.y1);
-  allocation.x2 = ceilf (allocation.x1 + child_width);
-  allocation.y2 = ceilf (allocation.y1 + child_height);
+  allocation.x2 = ceilf (allocation.x1 + MAX (child_width, 0));
+  allocation.y2 = ceilf (allocation.y1 + MAX (child_height, 0));
 
   clutter_actor_allocate (self, &allocation, flags);
 }
