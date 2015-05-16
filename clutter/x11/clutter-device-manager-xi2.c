@@ -242,7 +242,7 @@ is_touchpad_device (ClutterBackendX11 *backend_x11,
   /* We don't care about the data */
   XFree (data);
 
-  if (rc != Success || type != XA_INTEGER || format != 32 || nitems != 1)
+  if (rc != Success || type != XA_INTEGER || format != 8 || nitems != 1)
     return FALSE;
 
   return TRUE;
