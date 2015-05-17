@@ -9,18 +9,18 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-03-15 08:36+0000\n"
-"PO-Revision-Date: 2015-03-15 09:41+0100\n"
+"POT-Creation-Date: 2015-05-10 08:30+0000\n"
+"PO-Revision-Date: 2015-05-10 20:54+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
-"Language: Slovenian\n"
+"Language: sl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
 "%100==4 ? 3 : 0);\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Poedit 1.7.5\n"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
 msgid "System"
@@ -302,12 +302,12 @@ msgstr ""
 msgid "Network Login"
 msgstr "Omrežna prijava"
 
-#: ../js/extensionPrefs/main.js:123
+#: ../js/extensionPrefs/main.js:122
 #, javascript-format
 msgid "There was an error loading the preferences dialog for %s:"
 msgstr "Prišlo je do napake med nalaganjem pogovornega okna z možnosti za %s:"
 
-#: ../js/extensionPrefs/main.js:155
+#: ../js/extensionPrefs/main.js:154
 msgid "GNOME Shell Extensions"
 msgstr "Razširitve lupine Gnome"
 
@@ -318,39 +318,39 @@ msgstr "Razširitve lupine Gnome"
 msgid "Cancel"
 msgstr "Prekliči"
 
-#: ../js/gdm/authPrompt.js:169 ../js/gdm/authPrompt.js:217
+#: ../js/gdm/authPrompt.js:169 ../js/gdm/authPrompt.js:215
 msgid "Next"
 msgstr "Naslednji"
 
-#: ../js/gdm/authPrompt.js:213 ../js/ui/shellMountOperation.js:403
+#: ../js/gdm/authPrompt.js:211 ../js/ui/shellMountOperation.js:403
 #: ../js/ui/unlockDialog.js:59
 msgid "Unlock"
 msgstr "Odkleni"
 
-#: ../js/gdm/authPrompt.js:215
+#: ../js/gdm/authPrompt.js:213
 msgctxt "button"
 msgid "Sign In"
 msgstr "Prijava"
 
-#: ../js/gdm/loginDialog.js:280
+#: ../js/gdm/loginDialog.js:281
 msgid "Choose Session"
 msgstr "Izbor seje"
 
-#: ../js/gdm/loginDialog.js:421
+#: ../js/gdm/loginDialog.js:431
 msgid "Not listed?"
 msgstr "Ali je ni na seznamu?"
 
-#: ../js/gdm/loginDialog.js:830
+#: ../js/gdm/loginDialog.js:840
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(na primer, uporabnika ali %s)"
 
-#: ../js/gdm/loginDialog.js:835 ../js/ui/components/networkAgent.js:271
+#: ../js/gdm/loginDialog.js:845 ../js/ui/components/networkAgent.js:271
 #: ../js/ui/components/networkAgent.js:289
 msgid "Username: "
 msgstr "Uporabniško ime: "
 
-#: ../js/gdm/loginDialog.js:1170
+#: ../js/gdm/loginDialog.js:1173
 msgid "Login Window"
 msgstr "Prijavno okno"
 
@@ -443,31 +443,31 @@ msgstr "%B %d %Y, %l∶%M %p"
 msgid "Web Authentication Redirect"
 msgstr "Preusmeritev spletnega overjanja"
 
-#: ../js/ui/appDisplay.js:792
+#: ../js/ui/appDisplay.js:788
 msgid "Frequently used applications will appear here"
 msgstr "Pogosto uporabljeni programi bodo prikazani tu"
 
-#: ../js/ui/appDisplay.js:912
+#: ../js/ui/appDisplay.js:908
 msgid "Frequent"
 msgstr "Pogosto"
 
-#: ../js/ui/appDisplay.js:919
+#: ../js/ui/appDisplay.js:915
 msgid "All"
 msgstr "Vse"
 
-#: ../js/ui/appDisplay.js:1850
+#: ../js/ui/appDisplay.js:1844
 msgid "New Window"
 msgstr "Novo okno"
 
-#: ../js/ui/appDisplay.js:1878 ../js/ui/dash.js:291
+#: ../js/ui/appDisplay.js:1872 ../js/ui/dash.js:289
 msgid "Remove from Favorites"
 msgstr "Odstrani iz priljubljenih"
 
-#: ../js/ui/appDisplay.js:1884
+#: ../js/ui/appDisplay.js:1878
 msgid "Add to Favorites"
 msgstr "Dodaj med priljubljene"
 
-#: ../js/ui/appDisplay.js:1894
+#: ../js/ui/appDisplay.js:1888
 msgid "Show Details"
 msgstr "Pokaži besedilo"
 
@@ -481,14 +481,18 @@ msgstr "Program \"%s\" je dodan med priljubljeno."
 msgid "%s has been removed from your favorites."
 msgstr "Program \"%s\" je odstranjen iz priljubljenih."
 
-#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:650
-#: ../js/ui/status/system.js:337
-msgid "Settings"
-msgstr "Nastavitve"
-
-#: ../js/ui/backgroundMenu.js:21
+#: ../js/ui/backgroundMenu.js:19
 msgid "Change Background…"
 msgstr "Spremeni ozadje ..."
+
+#: ../js/ui/backgroundMenu.js:21
+msgid "Display Settings"
+msgstr "Nastavitve zaslona"
+
+#: ../js/ui/backgroundMenu.js:22 ../js/ui/panel.js:650
+#: ../js/ui/status/system.js:334
+msgid "Settings"
+msgstr "Nastavitve"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday). */
 #: ../js/ui/calendar.js:53
@@ -542,53 +546,53 @@ msgctxt "grid saturday"
 msgid "S"
 msgstr "S"
 
-#: ../js/ui/calendar.js:563
+#: ../js/ui/calendar.js:564
 msgid "Previous month"
 msgstr "Predhodni mesec"
 
-#: ../js/ui/calendar.js:573
+#: ../js/ui/calendar.js:574
 msgid "Next month"
 msgstr "Naslednji mesec"
 
-#: ../js/ui/calendar.js:780
+#: ../js/ui/calendar.js:781
 msgid "Week %V"
 msgstr "Teden %V"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #. */
-#: ../js/ui/calendar.js:1182
+#: ../js/ui/calendar.js:1187
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Celodnevno"
 
-#: ../js/ui/calendar.js:1288
+#: ../js/ui/calendar.js:1289
 msgid "Clear section"
 msgstr "Počisti odsek"
 
-#: ../js/ui/calendar.js:1515
+#: ../js/ui/calendar.js:1516
 msgid "Events"
 msgstr "Dogodki"
 
-#: ../js/ui/calendar.js:1524
+#: ../js/ui/calendar.js:1525
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d. %m."
 
-#: ../js/ui/calendar.js:1528
+#: ../js/ui/calendar.js:1529
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d %B %Y"
 
-#: ../js/ui/calendar.js:1613
+#: ../js/ui/calendar.js:1614
 msgid "Notifications"
 msgstr "Obvestila"
 
-#: ../js/ui/calendar.js:1764
+#: ../js/ui/calendar.js:1765
 msgid "No Notifications"
 msgstr "Ni obvestil"
 
-#: ../js/ui/calendar.js:1767
+#: ../js/ui/calendar.js:1768
 msgid "No Events"
 msgstr "Ni dogodkov"
 
@@ -724,7 +728,7 @@ msgstr "Dejanje je spodletelo. Poskusite znova."
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name. */
-#: ../js/ui/components/telepathyClient.js:775
+#: ../js/ui/components/telepathyClient.js:757
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s je sedaj znan kot v %s"
@@ -733,11 +737,11 @@ msgstr "%s je sedaj znan kot v %s"
 msgid "Windows"
 msgstr "Okna"
 
-#: ../js/ui/dash.js:252 ../js/ui/dash.js:293
+#: ../js/ui/dash.js:250 ../js/ui/dash.js:291
 msgid "Show Applications"
 msgstr "Pokaži programe"
 
-#: ../js/ui/dash.js:453
+#: ../js/ui/dash.js:449
 msgid "Dash"
 msgstr "Pregledna plošča"
 
@@ -916,16 +920,16 @@ msgstr "Namesti"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Prejmi in namesti “%s” preko povezave na extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:714 ../js/ui/status/keyboard.js:580
+#: ../js/ui/keyboard.js:718 ../js/ui/status/keyboard.js:713
 msgid "Keyboard"
 msgstr "Tipkovnica"
 
 #. translators: 'Hide' is a verb */
-#: ../js/ui/legacyTray.js:64
+#: ../js/ui/legacyTray.js:66
 msgid "Hide tray"
 msgstr "Skrij sistemsko vrstico"
 
-#: ../js/ui/legacyTray.js:104
+#: ../js/ui/legacyTray.js:107
 msgid "Status Icons"
 msgstr "Ikone stanja"
 
@@ -981,7 +985,7 @@ msgstr "Poglej vir"
 msgid "Web Page"
 msgstr "Spletna stran"
 
-#: ../js/ui/messageTray.js:2133
+#: ../js/ui/messageTray.js:1504
 msgid "System Information"
 msgstr "Podrobnosti sistema"
 
@@ -1023,7 +1027,7 @@ msgstr "toggle-switch-intl"
 msgid "Enter a Command"
 msgstr "Vnos ukaza"
 
-#: ../js/ui/runDialog.js:110 ../js/ui/windowMenu.js:120
+#: ../js/ui/runDialog.js:110 ../js/ui/windowMenu.js:153
 msgid "Close"
 msgstr "Zapri"
 
@@ -1055,7 +1059,7 @@ msgstr[1] "%d novo obvestilo"
 msgstr[2] "%d novi obvestili"
 msgstr[3] "%d nova obvestila"
 
-#: ../js/ui/screenShield.js:432 ../js/ui/status/system.js:345
+#: ../js/ui/screenShield.js:432 ../js/ui/status/system.js:342
 msgid "Lock"
 msgstr "Zakleni"
 
@@ -1071,11 +1075,11 @@ msgstr "Zaklep ni mogoč"
 msgid "Lock was blocked by an application"
 msgstr "Zaklep je preprečil program"
 
-#: ../js/ui/search.js:616
+#: ../js/ui/search.js:617
 msgid "Searching…"
 msgstr "Iskanje ..."
 
-#: ../js/ui/search.js:618
+#: ../js/ui/search.js:619
 msgid "No results."
 msgstr "Ni najdenih zadetkov."
 
@@ -1139,11 +1143,11 @@ msgstr "Odskočne tipke"
 msgid "Mouse Keys"
 msgstr "Miškine tipke"
 
-#: ../js/ui/status/accessibility.js:144
+#: ../js/ui/status/accessibility.js:167
 msgid "High Contrast"
 msgstr "Visok kontrast"
 
-#: ../js/ui/status/accessibility.js:193
+#: ../js/ui/status/accessibility.js:202
 msgid "Large Text"
 msgstr "Veliko besedilo"
 
@@ -1179,7 +1183,7 @@ msgstr "Ni vzpostavljene povezave"
 msgid "Brightness"
 msgstr "Svetlost"
 
-#: ../js/ui/status/keyboard.js:603
+#: ../js/ui/status/keyboard.js:736
 msgid "Show Keyboard Layout"
 msgstr "Pokaži razporeditev tipkovnice"
 
@@ -1390,23 +1394,23 @@ msgstr "Način letala"
 msgid "On"
 msgstr "Povezano"
 
-#: ../js/ui/status/system.js:317
+#: ../js/ui/status/system.js:314
 msgid "Switch User"
 msgstr "Preklopi uporabnika"
 
-#: ../js/ui/status/system.js:322
+#: ../js/ui/status/system.js:319
 msgid "Log Out"
 msgstr "Odjava"
 
-#: ../js/ui/status/system.js:341
+#: ../js/ui/status/system.js:338
 msgid "Orientation Lock"
 msgstr "Zaklep položaja"
 
-#: ../js/ui/status/system.js:349
+#: ../js/ui/status/system.js:346
 msgid "Suspend"
 msgstr "Zaustavi"
 
-#: ../js/ui/status/system.js:352
+#: ../js/ui/status/system.js:349
 msgid "Power Off"
 msgstr "Izklop"
 
@@ -1469,7 +1473,7 @@ msgstr[3] "Spremembe nastavitev bodo povrnjene v %d sekundah."
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height. */
-#: ../js/ui/windowManager.js:599
+#: ../js/ui/windowManager.js:613
 #, javascript-format
 msgid "%d x %d"
 msgstr "%d x %d"
@@ -1513,6 +1517,22 @@ msgstr "Premakni na zgornjo delovno površino"
 #: ../js/ui/windowMenu.js:111
 msgid "Move to Workspace Down"
 msgstr "Premakni na spodnjo delovno površino"
+
+#: ../js/ui/windowMenu.js:127
+msgid "Move to Monitor Up"
+msgstr "\t"
+
+#: ../js/ui/windowMenu.js:133
+msgid "Move to Monitor Down"
+msgstr "Premakni na zaslon spodaj"
+
+#: ../js/ui/windowMenu.js:139
+msgid "Move to Monitor Left"
+msgstr "Premakni na zaslon levo"
+
+#: ../js/ui/windowMenu.js:145
+msgid "Move to Monitor Right"
+msgstr "Premakni na zaslon desno"
 
 #: ../src/calendar-server/evolution-calendar.desktop.in.in.h:1
 msgid "Evolution Calendar"
