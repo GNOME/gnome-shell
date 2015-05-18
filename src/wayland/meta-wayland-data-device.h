@@ -93,4 +93,7 @@ void     meta_wayland_data_source_send           (MetaWaylandDataSource *source,
                                                   const gchar           *mime_type,
                                                   gint                   fd);
 
+const MetaWaylandDragDestFuncs *
+         meta_wayland_data_device_get_drag_dest_funcs (void);
+
 #endif /* META_WAYLAND_DATA_DEVICE_H */

@@ -71,6 +71,20 @@ typedef struct
   gboolean has_new_geometry;
 } MetaWaylandPendingState;
 
+struct _MetaWaylandDragDestFuncs
+{
+  void (* focus_in)  (MetaWaylandDataDevice *data_device,
+                      MetaWaylandSurface    *surface,
+                      MetaWaylandDataOffer  *offer);
+  void (* focus_out) (MetaWaylandDataDevice *data_device,
+                      MetaWaylandSurface    *surface);
+  void (* motion)    (MetaWaylandDataDevice *data_device,
+                      MetaWaylandSurface    *surface,
+                      const ClutterEvent    *event);
+  void (* drop)      (MetaWaylandDataDevice *data_device,
+                      MetaWaylandSurface    *surface);
+};
+
 struct _MetaWaylandSurface
 {
   /* Generic stuff */
@@ -86,6 +100,10 @@ struct _MetaWaylandSurface
   int scale;
   int32_t offset_x, offset_y;
   GList *subsurfaces;
+
+  struct {
+    const MetaWaylandDragDestFuncs *funcs;
+  } dnd;
 
   /* All the pending state that wl_surface.commit will apply. */
   MetaWaylandPendingState pending;
@@ -160,5 +178,13 @@ void                meta_wayland_surface_ping (MetaWaylandSurface *surface,
 void                meta_wayland_surface_delete (MetaWaylandSurface *surface);
 
 void                meta_wayland_surface_popup_done (MetaWaylandSurface *surface);
+
+/* Drag dest functions */
+void                meta_wayland_surface_drag_dest_focus_in  (MetaWaylandSurface   *surface,
+                                                              MetaWaylandDataOffer *offer);
+void                meta_wayland_surface_drag_dest_motion    (MetaWaylandSurface   *surface,
+                                                              const ClutterEvent   *event);
+void                meta_wayland_surface_drag_dest_focus_out (MetaWaylandSurface   *surface);
+void                meta_wayland_surface_drag_dest_drop      (MetaWaylandSurface   *surface);
 
 #endif

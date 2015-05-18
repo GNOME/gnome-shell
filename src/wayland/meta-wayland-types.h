@@ -30,6 +30,8 @@ typedef struct _MetaWaylandPopupGrab MetaWaylandPopupGrab;
 typedef struct _MetaWaylandPopup MetaWaylandPopup;
 typedef struct _MetaWaylandKeyboard MetaWaylandKeyboard;
 typedef struct _MetaWaylandTouch MetaWaylandTouch;
+typedef struct _MetaWaylandDragDestFuncs MetaWaylandDragDestFuncs;
+typedef struct _MetaWaylandDataOffer MetaWaylandDataOffer;
 typedef struct _MetaWaylandDataSource MetaWaylandDataSource;
 typedef struct _MetaWaylandDataDevice MetaWaylandDataDevice;
 

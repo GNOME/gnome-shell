@@ -36,12 +36,12 @@
 #include "meta-wayland-private.h"
 #include "meta-dnd-actor-private.h"
 
-typedef struct
+struct _MetaWaylandDataOffer
 {
   struct wl_resource *resource;
   MetaWaylandDataSource *source;
   struct wl_listener source_destroy_listener;
-} MetaWaylandDataOffer;
+};
 
 static void
 unbind_resource (struct wl_resource *resource)
@@ -198,18 +198,13 @@ drag_grab_focus (MetaWaylandPointerGrab *grab,
   MetaWaylandSeat *seat = drag_grab->seat;
   struct wl_client *client;
   struct wl_resource *data_device_resource, *offer = NULL;
-  struct wl_display *display;
-  guint32 serial;
-  wl_fixed_t sx, sy;
 
   if (drag_grab->drag_focus == surface)
     return;
 
-  if (drag_grab->drag_focus_data_device)
+  if (drag_grab->drag_focus)
     {
-      wl_data_device_send_leave (drag_grab->drag_focus_data_device);
-      wl_list_remove (&drag_grab->drag_focus_listener.link);
-      drag_grab->drag_focus_data_device = NULL;
+      meta_wayland_surface_drag_dest_focus_out (drag_grab->drag_focus);
       drag_grab->drag_focus = NULL;
     }
 
@@ -223,25 +218,16 @@ drag_grab_focus (MetaWaylandPointerGrab *grab,
   client = wl_resource_get_client (surface->resource);
 
   data_device_resource = wl_resource_find_for_client (&seat->data_device.resource_list, client);
-  if (!data_device_resource)
-    return;
 
-  display = wl_client_get_display (client);
-  serial = wl_display_next_serial (display);
-
-  if (drag_grab->drag_data_source)
+  if (drag_grab->drag_data_source && data_device_resource)
     offer = meta_wayland_data_source_send_offer (drag_grab->drag_data_source,
                                                  data_device_resource);
 
-  meta_wayland_pointer_get_relative_coordinates (grab->pointer, surface, &sx, &sy);
-  wl_data_device_send_enter (data_device_resource, serial, surface->resource,
-                             sx, sy, offer);
-
   drag_grab->drag_focus = surface;
-
   drag_grab->drag_focus_data_device = data_device_resource;
-  drag_grab->drag_focus_listener.notify = destroy_drag_focus;
-  wl_resource_add_destroy_listener (data_device_resource, &drag_grab->drag_focus_listener);
+
+  meta_wayland_surface_drag_dest_focus_in (drag_grab->drag_focus,
+                                           offer ? wl_resource_get_user_data (offer) : NULL);
 }
 
 static void
@@ -249,17 +235,9 @@ drag_grab_motion (MetaWaylandPointerGrab *grab,
 		  const ClutterEvent     *event)
 {
   MetaWaylandDragGrab *drag_grab = (MetaWaylandDragGrab*) grab;
-  wl_fixed_t sx, sy;
 
-  if (drag_grab->drag_focus_data_device)
-    {
-      meta_wayland_pointer_get_relative_coordinates (grab->pointer,
-						     drag_grab->drag_focus,
-						     &sx, &sy);
-      wl_data_device_send_motion (drag_grab->drag_focus_data_device,
-				  clutter_event_get_time (event),
-				  sx, sy);
-    }
+  if (drag_grab->drag_focus)
+    meta_wayland_surface_drag_dest_motion (drag_grab->drag_focus, event);
 
   if (drag_grab->drag_surface)
     meta_feedback_actor_update (META_FEEDBACK_ACTOR (drag_grab->feedback_actor),
@@ -269,6 +247,8 @@ drag_grab_motion (MetaWaylandPointerGrab *grab,
 static void
 data_device_end_drag_grab (MetaWaylandDragGrab *drag_grab)
 {
+  drag_grab_focus (&drag_grab->generic, NULL);
+
   if (drag_grab->drag_origin)
     {
       drag_grab->drag_origin = NULL;
@@ -292,8 +272,6 @@ data_device_end_drag_grab (MetaWaylandDragGrab *drag_grab)
 
   drag_grab->seat->data_device.current_grab = NULL;
 
-  drag_grab_focus (&drag_grab->generic, NULL);
-
   meta_wayland_pointer_end_grab (drag_grab->generic.pointer);
   g_slice_free (MetaWaylandDragGrab, drag_grab);
 }
@@ -311,10 +289,9 @@ drag_grab_button (MetaWaylandPointerGrab *grab,
     {
       gboolean success = FALSE;
 
-      if (drag_grab->drag_focus_data_device &&
-          drag_grab->drag_data_source->has_target)
+      if (drag_grab->drag_data_source->has_target)
         {
-          wl_data_device_send_drop (drag_grab->drag_focus_data_device);
+          meta_wayland_surface_drag_dest_drop (drag_grab->drag_focus);
           success = TRUE;
         }
 
@@ -353,6 +330,7 @@ destroy_data_device_source (struct wl_listener *listener, void *data)
     wl_container_of (listener, drag_grab, drag_data_source_listener);
 
   drag_grab->drag_data_source = NULL;
+  drag_grab->seat->data_device.dnd_data_source = NULL;
   data_device_end_drag_grab (drag_grab);
   meta_wayland_data_device_set_dnd_source (&drag_grab->seat->data_device, NULL);
 }
@@ -508,6 +486,80 @@ static const MetaWaylandDataSourceFuncs meta_wayland_source_funcs = {
   meta_wayland_source_target,
   meta_wayland_source_cancel
 };
+
+static void
+meta_wayland_drag_dest_focus_in (MetaWaylandDataDevice *data_device,
+                                 MetaWaylandSurface    *surface,
+                                 MetaWaylandDataOffer  *offer)
+{
+  MetaWaylandDragGrab *grab = data_device->current_grab;
+  struct wl_display *display;
+  struct wl_client *client;
+  wl_fixed_t sx, sy;
+
+  client = wl_resource_get_client (surface->resource);
+  display = wl_client_get_display (client);
+
+  grab->drag_focus_listener.notify = destroy_drag_focus;
+  wl_resource_add_destroy_listener (grab->drag_focus_data_device,
+                                    &grab->drag_focus_listener);
+
+  meta_wayland_pointer_get_relative_coordinates (grab->generic.pointer,
+                                                 surface, &sx, &sy);
+  wl_data_device_send_enter (grab->drag_focus_data_device,
+                             wl_display_next_serial (display),
+                             surface->resource, sx, sy, offer->resource);
+}
+
+static void
+meta_wayland_drag_dest_focus_out (MetaWaylandDataDevice *data_device,
+                                  MetaWaylandSurface    *surface)
+{
+  MetaWaylandDragGrab *grab = data_device->current_grab;
+
+  wl_data_device_send_leave (grab->drag_focus_data_device);
+
+  wl_list_remove (&grab->drag_focus_listener.link);
+  grab->drag_focus_data_device = NULL;
+}
+
+static void
+meta_wayland_drag_dest_motion (MetaWaylandDataDevice *data_device,
+                               MetaWaylandSurface    *surface,
+                               const ClutterEvent    *event)
+{
+  MetaWaylandDragGrab *grab = data_device->current_grab;
+  wl_fixed_t sx, sy;
+
+  meta_wayland_pointer_get_relative_coordinates (grab->generic.pointer,
+                                                 grab->drag_focus,
+                                                 &sx, &sy);
+  wl_data_device_send_motion (grab->drag_focus_data_device,
+                              clutter_event_get_time (event),
+                              sx, sy);
+}
+
+static void
+meta_wayland_drag_dest_drop (MetaWaylandDataDevice *data_device,
+                             MetaWaylandSurface    *surface)
+{
+  MetaWaylandDragGrab *grab = data_device->current_grab;
+
+  wl_data_device_send_drop (grab->drag_focus_data_device);
+}
+
+static const MetaWaylandDragDestFuncs meta_wayland_drag_dest_funcs = {
+  meta_wayland_drag_dest_focus_in,
+  meta_wayland_drag_dest_focus_out,
+  meta_wayland_drag_dest_motion,
+  meta_wayland_drag_dest_drop
+};
+
+const MetaWaylandDragDestFuncs *
+meta_wayland_data_device_get_drag_dest_funcs (void)
+{
+  return &meta_wayland_drag_dest_funcs;
+}
 
 void
 meta_wayland_data_device_set_dnd_source (MetaWaylandDataDevice *data_device,

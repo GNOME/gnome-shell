@@ -748,12 +748,19 @@ sync_reactive (MetaWaylandSurface *surface)
                               surface_should_be_reactive (surface));
 }
 
+static void
+sync_drag_dest_funcs (MetaWaylandSurface *surface)
+{
+  surface->dnd.funcs = meta_wayland_data_device_get_drag_dest_funcs ();
+}
+
 void
 meta_wayland_surface_set_window (MetaWaylandSurface *surface,
                                  MetaWindow         *window)
 {
   surface->window = window;
   sync_reactive (surface);
+  sync_drag_dest_funcs (surface);
 }
 
 static void
@@ -815,6 +822,8 @@ meta_wayland_surface_create (MetaWaylandCompositor *compositor,
 
   surface->buffer_destroy_listener.notify = surface_handle_buffer_destroy;
   surface->surface_actor = g_object_ref_sink (meta_surface_actor_wayland_new (surface));
+
+  sync_drag_dest_funcs (surface);
 
   pending_state_init (&surface->pending);
   return surface;
@@ -2042,4 +2051,42 @@ meta_wayland_surface_popup_done (MetaWaylandSurface *surface)
     xdg_popup_send_popup_done (surface->xdg_popup);
   else if (surface->wl_shell_surface)
     wl_shell_surface_send_popup_done (surface->wl_shell_surface);
+}
+
+void
+meta_wayland_surface_drag_dest_focus_in (MetaWaylandSurface   *surface,
+                                         MetaWaylandDataOffer *offer)
+{
+  MetaWaylandCompositor *compositor = meta_wayland_compositor_get_default ();
+  MetaWaylandDataDevice *data_device = &compositor->seat->data_device;
+
+  surface->dnd.funcs->focus_in (data_device, surface, offer);
+}
+
+void
+meta_wayland_surface_drag_dest_motion (MetaWaylandSurface *surface,
+                                       const ClutterEvent *event)
+{
+  MetaWaylandCompositor *compositor = meta_wayland_compositor_get_default ();
+  MetaWaylandDataDevice *data_device = &compositor->seat->data_device;
+
+  surface->dnd.funcs->motion (data_device, surface, event);
+}
+
+void
+meta_wayland_surface_drag_dest_focus_out (MetaWaylandSurface *surface)
+{
+  MetaWaylandCompositor *compositor = meta_wayland_compositor_get_default ();
+  MetaWaylandDataDevice *data_device = &compositor->seat->data_device;
+
+  surface->dnd.funcs->focus_out (data_device, surface);
+}
+
+void
+meta_wayland_surface_drag_dest_drop (MetaWaylandSurface *surface)
+{
+  MetaWaylandCompositor *compositor = meta_wayland_compositor_get_default ();
+  MetaWaylandDataDevice *data_device = &compositor->seat->data_device;
+
+  surface->dnd.funcs->drop (data_device, surface);
 }
