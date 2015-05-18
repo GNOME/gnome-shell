@@ -55,7 +55,6 @@ typedef struct {
   GOutputStream *stream;
   GCancellable *cancellable;
   gchar *mime_type;
-  guint selection : 3;
   guint incr : 1;
 } X11SelectionData;
 
