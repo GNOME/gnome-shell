@@ -27,7 +27,7 @@ msgstr "Souřadnice X"
 
 #: ../clutter/clutter-actor.c:6231
 msgid "X coordinate of the actor"
-msgstr "Souřadnice X účastníka"
+msgstr "Souřadnice X účinkujícího"
 
 #: ../clutter/clutter-actor.c:6249
 msgid "Y coordinate"
@@ -35,7 +35,7 @@ msgstr "Souřadnice Y"
 
 #: ../clutter/clutter-actor.c:6250
 msgid "Y coordinate of the actor"
-msgstr "Souřadnice Y účastníka"
+msgstr "Souřadnice Y účinkujícího"
 
 #: ../clutter/clutter-actor.c:6272
 msgid "Position"
@@ -43,7 +43,7 @@ msgstr "Poloha"
 
 #: ../clutter/clutter-actor.c:6273
 msgid "The position of the origin of the actor"
-msgstr "Poloha počátku účastníka"
+msgstr "Poloha počátku účinkujícího"
 
 #: ../clutter/clutter-actor.c:6290 ../clutter/clutter-canvas.c:247
 #: ../clutter/clutter-grid-layout.c:1239
@@ -53,7 +53,7 @@ msgstr "Šířka"
 
 #: ../clutter/clutter-actor.c:6291
 msgid "Width of the actor"
-msgstr "Šířka účastníka"
+msgstr "Šířka účinkujícího"
 
 #: ../clutter/clutter-actor.c:6309 ../clutter/clutter-canvas.c:263
 #: ../clutter/clutter-grid-layout.c:1246
@@ -63,7 +63,7 @@ msgstr "Výška"
 
 #: ../clutter/clutter-actor.c:6310
 msgid "Height of the actor"
-msgstr "Výška účastníka"
+msgstr "Výška účinkujícího"
 
 #: ../clutter/clutter-actor.c:6331
 msgid "Size"
@@ -71,7 +71,7 @@ msgstr "Velikost"
 
 #: ../clutter/clutter-actor.c:6332
 msgid "The size of the actor"
-msgstr "Velikost účastníka"
+msgstr "Velikost účinkujícího"
 
 #: ../clutter/clutter-actor.c:6350
 msgid "Fixed X"
@@ -79,7 +79,7 @@ msgstr "Pevná X"
 
 #: ../clutter/clutter-actor.c:6351
 msgid "Forced X position of the actor"
-msgstr "Přikázaná poloha X účastníka"
+msgstr "Přikázaná poloha X účinkujícího"
 
 #: ../clutter/clutter-actor.c:6368
 msgid "Fixed Y"
@@ -87,7 +87,7 @@ msgstr "Pevná Y"
 
 #: ../clutter/clutter-actor.c:6369
 msgid "Forced Y position of the actor"
-msgstr "Přikázaná poloha Y účastníka"
+msgstr "Přikázaná poloha Y účinkujícího"
 
 #: ../clutter/clutter-actor.c:6384
 msgid "Fixed position set"
@@ -95,7 +95,7 @@ msgstr "Nastavena pevná poloha"
 
 #: ../clutter/clutter-actor.c:6385
 msgid "Whether to use fixed positioning for the actor"
-msgstr "Zda je použita pevná poloha pro účastníka"
+msgstr "Zda je použita pevná poloha pro účinkujícího"
 
 #: ../clutter/clutter-actor.c:6403
 msgid "Min Width"
@@ -103,7 +103,7 @@ msgstr "Min. šířka"
 
 #: ../clutter/clutter-actor.c:6404
 msgid "Forced minimum width request for the actor"
-msgstr "Požadavek na nutnou minimální šířku účastníka"
+msgstr "Požadavek na nutnou minimální šířku účinkujícího"
 
 #: ../clutter/clutter-actor.c:6422
 msgid "Min Height"
@@ -111,7 +111,7 @@ msgstr "Min. výška"
 
 #: ../clutter/clutter-actor.c:6423
 msgid "Forced minimum height request for the actor"
-msgstr "Požadavek na nutnou minimální výšku účastníka"
+msgstr "Požadavek na nutnou minimální výšku účinkujícího"
 
 #: ../clutter/clutter-actor.c:6441
 msgid "Natural Width"
@@ -119,7 +119,7 @@ msgstr "Přirozená šířka"
 
 #: ../clutter/clutter-actor.c:6442
 msgid "Forced natural width request for the actor"
-msgstr "Požadavek na nutnou přirozenou šířku účastníka"
+msgstr "Požadavek na nutnou přirozenou šířku účinkujícího"
 
 #: ../clutter/clutter-actor.c:6460
 msgid "Natural Height"
@@ -127,7 +127,7 @@ msgstr "Přirozená výška"
 
 #: ../clutter/clutter-actor.c:6461
 msgid "Forced natural height request for the actor"
-msgstr "Požadavek na nutnou přirozenou výšku účastníka"
+msgstr "Požadavek na nutnou přirozenou výšku účinkujícího"
 
 #: ../clutter/clutter-actor.c:6476
 msgid "Minimum width set"
@@ -167,7 +167,7 @@ msgstr "Místo"
 
 #: ../clutter/clutter-actor.c:6539
 msgid "The actor's allocation"
-msgstr "Místo zabrané účastníkem"
+msgstr "Místo zabrané účinkujícím"
 
 #: ../clutter/clutter-actor.c:6606
 msgid "Request Mode"
@@ -175,7 +175,7 @@ msgstr "Režim požadavku"
 
 #: ../clutter/clutter-actor.c:6607
 msgid "The actor's request mode"
-msgstr "Režim požadavku účastníka"
+msgstr "Režim požadavku účinkujícího"
 
 #: ../clutter/clutter-actor.c:6631
 msgid "Depth"
@@ -191,7 +191,7 @@ msgstr "Poloha Z"
 
 #: ../clutter/clutter-actor.c:6660
 msgid "The actor's position on the Z axis"
-msgstr "Poloha účastníka na ose Z"
+msgstr "Poloha účinkujícího na ose Z"
 
 #: ../clutter/clutter-actor.c:6677
 msgid "Opacity"
@@ -199,7 +199,7 @@ msgstr "Krytí"
 
 #: ../clutter/clutter-actor.c:6678
 msgid "Opacity of an actor"
-msgstr "Úroveň krytí barev účastníka"
+msgstr "Úroveň krytí barev účinkujícího"
 
 #: ../clutter/clutter-actor.c:6698
 msgid "Offscreen redirect"
@@ -207,7 +207,7 @@ msgstr "Přesměrování vykreslení v paměti"
 
 #: ../clutter/clutter-actor.c:6699
 msgid "Flags controlling when to flatten the actor into a single image"
-msgstr "Příznak řídící, zda se má účastník shrnout do jednoho obrázku"
+msgstr "Příznak řídící, zda se má účinkující shrnout do jednoho obrázku"
 
 #: ../clutter/clutter-actor.c:6713
 msgid "Visible"
@@ -215,7 +215,7 @@ msgstr "Viditelnost"
 
 #: ../clutter/clutter-actor.c:6714
 msgid "Whether the actor is visible or not"
-msgstr "Zda je účastník viditelný či ne"
+msgstr "Zda je účinkující viditelný či ne"
 
 #: ../clutter/clutter-actor.c:6728
 msgid "Mapped"
@@ -223,7 +223,7 @@ msgstr "Namapován"
 
 #: ../clutter/clutter-actor.c:6729
 msgid "Whether the actor will be painted"
-msgstr "Zda bude účastník kreslen"
+msgstr "Zda bude účinkující kreslen"
 
 #: ../clutter/clutter-actor.c:6742
 msgid "Realized"
@@ -231,7 +231,7 @@ msgstr "Realizován"
 
 #: ../clutter/clutter-actor.c:6743
 msgid "Whether the actor has been realized"
-msgstr "Zda byl účastník realizován"
+msgstr "Zda byl účinkující realizován"
 
 #: ../clutter/clutter-actor.c:6758
 msgid "Reactive"
@@ -239,7 +239,7 @@ msgstr "Reagující"
 
 #: ../clutter/clutter-actor.c:6759
 msgid "Whether the actor is reactive to events"
-msgstr "Zda účastník reaguje na události"
+msgstr "Zda účinkující reaguje na události"
 
 #: ../clutter/clutter-actor.c:6770
 msgid "Has Clip"
@@ -247,7 +247,7 @@ msgstr "Má ořez"
 
 #: ../clutter/clutter-actor.c:6771
 msgid "Whether the actor has a clip set"
-msgstr "Zda má účastník nastavené ořezání"
+msgstr "Zda má účinkující nastavené ořezání"
 
 #: ../clutter/clutter-actor.c:6784
 msgid "Clip"
@@ -255,7 +255,7 @@ msgstr "Ořez"
 
 #: ../clutter/clutter-actor.c:6785
 msgid "The clip region for the actor"
-msgstr "Oblast ořezání účastníka"
+msgstr "Oblast ořezání účinkujícího"
 
 #: ../clutter/clutter-actor.c:6804
 msgid "Clip Rectangle"
@@ -263,7 +263,7 @@ msgstr "Ořezový obdélník"
 
 #: ../clutter/clutter-actor.c:6805
 msgid "The visible region of the actor"
-msgstr "Viditelná oblast účastníka"
+msgstr "Viditelná oblast účinkujícího"
 
 #: ../clutter/clutter-actor.c:6819 ../clutter/clutter-actor-meta.c:205
 #: ../clutter/clutter-binding-pool.c:318 ../clutter/clutter-input-device.c:268
@@ -272,7 +272,7 @@ msgstr "Název"
 
 #: ../clutter/clutter-actor.c:6820
 msgid "Name of the actor"
-msgstr "Název účastníka"
+msgstr "Název účinkujícího"
 
 #: ../clutter/clutter-actor.c:6841
 msgid "Pivot Point"
@@ -480,7 +480,7 @@ msgstr "Zobrazit podle nastavení rodiče"
 
 #: ../clutter/clutter-actor.c:7354
 msgid "Whether the actor is shown when parented"
-msgstr "Zda je účastník zobrazen, když je zobrazen rodič"
+msgstr "Zda je účinkující zobrazen, když je zobrazen rodič"
 
 #: ../clutter/clutter-actor.c:7371
 msgid "Clip to Allocation"
@@ -488,7 +488,7 @@ msgstr "Ořez podle místa"
 
 #: ../clutter/clutter-actor.c:7372
 msgid "Sets the clip region to track the actor's allocation"
-msgstr "Mění oblast ořezu průběžně podle místa, na kterém je účastník"
+msgstr "Mění oblast ořezu průběžně podle místa, na kterém je účinkující"
 
 #: ../clutter/clutter-actor.c:7385
 msgid "Text Direction"
@@ -504,7 +504,7 @@ msgstr "Má ukazatel"
 
 #: ../clutter/clutter-actor.c:7402
 msgid "Whether the actor contains the pointer of an input device"
-msgstr "Zda účastník obsahuje ukazatel některého ze vstupních zařízení"
+msgstr "Zda účinkující obsahuje ukazatel některého ze vstupních zařízení"
 
 #: ../clutter/clutter-actor.c:7415
 msgid "Actions"
@@ -512,7 +512,7 @@ msgstr "Akce"
 
 #: ../clutter/clutter-actor.c:7416
 msgid "Adds an action to the actor"
-msgstr "Přidává do účastníka akci"
+msgstr "Přidává do účinkujícího akci"
 
 #: ../clutter/clutter-actor.c:7429
 msgid "Constraints"
@@ -520,7 +520,7 @@ msgstr "Omezení"
 
 #: ../clutter/clutter-actor.c:7430
 msgid "Adds a constraint to the actor"
-msgstr "Přidává do účastníka omezení"
+msgstr "Přidává do účinkujícího omezení"
 
 #: ../clutter/clutter-actor.c:7443
 msgid "Effect"
@@ -528,7 +528,7 @@ msgstr "Efekt"
 
 #: ../clutter/clutter-actor.c:7444
 msgid "Add an effect to be applied on the actor"
-msgstr "Přidává efekt aplikovaný na účastníka"
+msgstr "Přidává efekt aplikovaný na účinkujícího"
 
 #: ../clutter/clutter-actor.c:7458
 msgid "Layout Manager"
@@ -536,7 +536,7 @@ msgstr "Správce rozvržení"
 
 #: ../clutter/clutter-actor.c:7459
 msgid "The object controlling the layout of an actor's children"
-msgstr "Objekt ovládající rozvržení potomků účastníka"
+msgstr "Objekt ovládající rozvržení potomků účinkujícího"
 
 #: ../clutter/clutter-actor.c:7473
 msgid "X Expand"
@@ -545,7 +545,7 @@ msgstr "Roztažení v X"
 #: ../clutter/clutter-actor.c:7474
 msgid "Whether extra horizontal space should be assigned to the actor"
 msgstr ""
-"Zda by k účastníkovi mělo být ve vodorovném směru přidáno dodatečné volné "
+"Zda by k účinkujícímu mělo být ve vodorovném směru přidáno dodatečné volné "
 "místo"
 
 #: ../clutter/clutter-actor.c:7489
@@ -555,7 +555,7 @@ msgstr "Roztažení v Y"
 #: ../clutter/clutter-actor.c:7490
 msgid "Whether extra vertical space should be assigned to the actor"
 msgstr ""
-"Zda by k účastníkovi mělo být ve svislém směru přidáno dodatečné volné místo"
+"Zda by k účinkujícímu mělo být ve svislém směru přidáno dodatečné volné místo"
 
 #: ../clutter/clutter-actor.c:7506
 msgid "X Alignment"
@@ -563,7 +563,7 @@ msgstr "Zarovnání v X"
 
 #: ../clutter/clutter-actor.c:7507
 msgid "The alignment of the actor on the X axis within its allocation"
-msgstr "Vodorovné zarovnání účastníka v rámci jeho prostoru"
+msgstr "Vodorovné zarovnání účinkujícího v rámci jeho prostoru"
 
 #: ../clutter/clutter-actor.c:7522
 msgid "Y Alignment"
@@ -571,7 +571,7 @@ msgstr "Zarovnání v Y"
 
 #: ../clutter/clutter-actor.c:7523
 msgid "The alignment of the actor on the Y axis within its allocation"
-msgstr "Svislé zarovnání účastníka v rámci jeho prostoru"
+msgstr "Svislé zarovnání účinkujícího v rámci jeho prostoru"
 
 #: ../clutter/clutter-actor.c:7542
 msgid "Margin Top"
@@ -619,7 +619,7 @@ msgstr "Barva pozadí"
 
 #: ../clutter/clutter-actor.c:7643
 msgid "The actor's background color"
-msgstr "Barva pozadí účastníka"
+msgstr "Barva pozadí účinkujícího"
 
 #: ../clutter/clutter-actor.c:7658
 msgid "First Child"
@@ -627,7 +627,7 @@ msgstr "První potomek"
 
 #: ../clutter/clutter-actor.c:7659
 msgid "The actor's first child"
-msgstr "Účastníkův první potomek"
+msgstr "První potomek účinkujícího"
 
 #: ../clutter/clutter-actor.c:7672
 msgid "Last Child"
@@ -635,7 +635,7 @@ msgstr "Poslední potomek"
 
 #: ../clutter/clutter-actor.c:7673
 msgid "The actor's last child"
-msgstr "Účastníkův poslední potomek"
+msgstr "Poslední potomek účinkujícího"
 
 #: ../clutter/clutter-actor.c:7687
 msgid "Content"
@@ -643,7 +643,7 @@ msgstr "Obsah"
 
 #: ../clutter/clutter-actor.c:7688
 msgid "Delegate object for painting the actor's content"
-msgstr "Delegace objektu pro kreslení obsahu účastníka"
+msgstr "Delegace objektu pro kreslení obsahu účinkujícího"
 
 #: ../clutter/clutter-actor.c:7713
 msgid "Content Gravity"
@@ -651,7 +651,7 @@ msgstr "Středobod obsahu"
 
 #: ../clutter/clutter-actor.c:7714
 msgid "Alignment of the actor's content"
-msgstr "Zarovnání obsahu účastníka"
+msgstr "Zarovnání obsahu účinkujícího"
 
 #: ../clutter/clutter-actor.c:7734
 msgid "Content Box"
@@ -659,7 +659,7 @@ msgstr "Hranice obsahu"
 
 #: ../clutter/clutter-actor.c:7735
 msgid "The bounding box of the actor's content"
-msgstr "Oblast ohraničující obsah účastníka"
+msgstr "Oblast ohraničující obsah účinkujícího"
 
 #: ../clutter/clutter-actor.c:7743
 msgid "Minification Filter"
@@ -683,15 +683,15 @@ msgstr "Opakování obsahu"
 
 #: ../clutter/clutter-actor.c:7767
 msgid "The repeat policy for the actor's content"
-msgstr "Strategie opakování obsahu účastníka"
+msgstr "Strategie opakování obsahu účinkujícího"
 
 #: ../clutter/clutter-actor-meta.c:191 ../clutter/clutter-child-meta.c:142
 msgid "Actor"
-msgstr "Účastník"
+msgstr "Účinkující"
 
 #: ../clutter/clutter-actor-meta.c:192
 msgid "The actor attached to the meta"
-msgstr "Účastník vložený do struktury"
+msgstr "Účinkující vložený do struktury"
 
 #: ../clutter/clutter-actor-meta.c:206
 msgid "The name of the meta"
@@ -776,7 +776,7 @@ msgstr "Vodorovné zarovnání"
 
 #: ../clutter/clutter-bin-layout.c:221
 msgid "Horizontal alignment for the actor inside the layout manager"
-msgstr "Vodorovné zarovnání pro účastníka uvnitř správce rozvržení"
+msgstr "Vodorovné zarovnání pro účinkujícího uvnitř správce rozvržení"
 
 #: ../clutter/clutter-bin-layout.c:229 ../clutter/clutter-bin-layout.c:653
 #: ../clutter/clutter-box-layout.c:383
@@ -786,15 +786,15 @@ msgstr "Svislé zarovnání"
 
 #: ../clutter/clutter-bin-layout.c:230
 msgid "Vertical alignment for the actor inside the layout manager"
-msgstr "Svislé zarovnání pro účastníka uvnitř správce rozvržení"
+msgstr "Svislé zarovnání pro účinkujícího uvnitř správce rozvržení"
 
 #: ../clutter/clutter-bin-layout.c:634
 msgid "Default horizontal alignment for the actors inside the layout manager"
-msgstr "Výchozí vodorovné zarovnání pro účastníka uvnitř správce rozvržení"
+msgstr "Výchozí vodorovné zarovnání pro účinkujícího uvnitř správce rozvržení"
 
 #: ../clutter/clutter-bin-layout.c:654
 msgid "Default vertical alignment for the actors inside the layout manager"
-msgstr "Výchozí svislé zarovnání pro účastníka uvnitř správce rozvržení"
+msgstr "Výchozí svislé zarovnání pro účinkujícího uvnitř správce rozvržení"
 
 #: ../clutter/clutter-box-layout.c:349
 msgid "Expand"
@@ -835,12 +835,12 @@ msgstr ""
 #: ../clutter/clutter-box-layout.c:375
 #: ../clutter/deprecated/clutter-table-layout.c:603
 msgid "Horizontal alignment of the actor within the cell"
-msgstr "Vodorovné zarovnání účastníka v rámci buňky"
+msgstr "Vodorovné zarovnání účinkujícího v rámci buňky"
 
 #: ../clutter/clutter-box-layout.c:384
 #: ../clutter/deprecated/clutter-table-layout.c:618
 msgid "Vertical alignment of the actor within the cell"
-msgstr "Svislé zarovnání účastníka v rámci buňky"
+msgstr "Svislé zarovnání účinkujícího v rámci buňky"
 
 #: ../clutter/clutter-box-layout.c:1345
 msgid "Vertical"
@@ -967,7 +967,7 @@ msgstr "Kontejner, který vytvořil tato data"
 
 #: ../clutter/clutter-child-meta.c:143
 msgid "The actor wrapped by this data"
-msgstr "Účastník zabalený do těchto dat"
+msgstr "Účinkující zabalený do těchto dat"
 
 #: ../clutter/clutter-click-action.c:586
 msgid "Pressed"
@@ -1003,7 +1003,7 @@ msgstr "Maximální práh před tím, než je dlouhé zmáčknutí zrušeno"
 
 #: ../clutter/clutter-clone.c:342
 msgid "Specifies the actor to be cloned"
-msgstr "Určuje účastníka, který má být naklonován"
+msgstr "Určuje účinkujícího, který má být naklonován"
 
 #: ../clutter/clutter-colorize-effect.c:251
 msgid "Tint"
@@ -1035,7 +1035,7 @@ msgstr "Materiál pozadí"
 
 #: ../clutter/clutter-deform-effect.c:626
 msgid "The material to be used when painting the back of the actor"
-msgstr "Materiál, který se má použít při vykreslování pozadí účastníka"
+msgstr "Materiál, který se má použít při vykreslování pozadí účinkujícího"
 
 #: ../clutter/clutter-desaturate-effect.c:271
 msgid "The desaturation factor"
@@ -1075,7 +1075,7 @@ msgstr "Tažen"
 
 #: ../clutter/clutter-drag-action.c:784
 msgid "The actor that is being dragged"
-msgstr "Účastník, který je tažen"
+msgstr "Účinkující, který je tažen"
 
 #: ../clutter/clutter-drag-action.c:797
 msgid "Drag Axis"
@@ -1454,7 +1454,7 @@ msgstr "Cesta"
 
 #: ../clutter/clutter-path-constraint.c:213
 msgid "The path used to constrain an actor"
-msgstr "Cesta použitá k omezení účastníka"
+msgstr "Cesta použitá k omezení účinkujícího"
 
 #: ../clutter/clutter-path-constraint.c:227
 msgid "The offset along the path, between -1.0 and 2.0"
@@ -1637,7 +1637,7 @@ msgstr "Od hrany"
 
 #: ../clutter/clutter-snap-constraint.c:336
 msgid "The edge of the actor that should be snapped"
-msgstr "Hrana účastníka, která by se měla přichytávat"
+msgstr "Hrana účinkujícího, která by se měla přichytávat"
 
 #: ../clutter/clutter-snap-constraint.c:350
 msgid "To Edge"
@@ -1645,7 +1645,7 @@ msgstr "K hraně"
 
 #: ../clutter/clutter-snap-constraint.c:351
 msgid "The edge of the source that should be snapped"
-msgstr "Hrana účastníka, která by se měla přichytávat"
+msgstr "Hrana účinkujícího, která by se měla přichytávat"
 
 #: ../clutter/clutter-snap-constraint.c:367
 msgid "The offset in pixels to apply to the constraint"
@@ -1738,7 +1738,7 @@ msgstr "Hlavní zaměření"
 
 #: ../clutter/clutter-stage.c:2078
 msgid "The currently key focused actor"
-msgstr "Aktuálně hlavní zaměřený účastník"
+msgstr "Aktuálně hlavní zaměřený účinkující"
 
 #: ../clutter/clutter-stage.c:2094
 msgid "No Clear Hint"
@@ -1895,7 +1895,7 @@ msgstr "Atributy"
 
 #: ../clutter/clutter-text.c:3698
 msgid "A list of style attributes to apply to the contents of the actor"
-msgstr "Seznam atributů stylu, které se použijí na obsah účastníka"
+msgstr "Seznam atributů stylu, které se použijí na obsah účinkujícího"
 
 #: ../clutter/clutter-text.c:3720
 msgid "Use markup"
@@ -1951,7 +1951,7 @@ msgstr "Znak hesla"
 
 #: ../clutter/clutter-text.c:3820
 msgid "If non-zero, use this character to display the actor's contents"
-msgstr "Pokud je nenulový, použije se tento znak k zobrazení obsahu účastníka"
+msgstr "Pokud je nenulový, použije se tento znak k zobrazení obsahu účinkujícího"
 
 #: ../clutter/clutter-text.c:3834
 msgid "Max Length"
@@ -1959,7 +1959,7 @@ msgstr "Max. délka"
 
 #: ../clutter/clutter-text.c:3835
 msgid "Maximum length of the text inside the actor"
-msgstr "Maximální délka textu uvnitř účastníka"
+msgstr "Maximální délka textu uvnitř účinkujícího"
 
 #: ../clutter/clutter-text.c:3858
 msgid "Single Line Mode"
@@ -2365,7 +2365,7 @@ msgstr "Přehrávání"
 
 #: ../clutter/deprecated/clutter-media.c:101
 msgid "Whether the actor is playing"
-msgstr "Zda je účastník přehráván"
+msgstr "Zda je účinkující přehráván"
 
 #: ../clutter/deprecated/clutter-media.c:118
 msgid "Progress"
@@ -2558,13 +2558,13 @@ msgstr "Mezery mezi řádky"
 
 #: ../clutter/deprecated/clutter-texture.c:992
 msgid "Sync size of actor"
-msgstr "Synchronizovat velikost účastníka"
+msgstr "Synchronizovat velikost účinkujícího"
 
 #: ../clutter/deprecated/clutter-texture.c:993
 msgid "Auto sync size of actor to underlying pixbuf dimensions"
 msgstr ""
-"Automaticky synchronizovat velikost účastníka k rozměrům podkladové pixelové "
-"paměti"
+"Automaticky synchronizovat velikost účinkujícího k rozměrům podkladové "
+"pixelové paměti"
 
 #: ../clutter/deprecated/clutter-texture.c:1000
 msgid "Disable Slicing"
@@ -2626,7 +2626,7 @@ msgstr "Textura Cogl"
 #: ../clutter/deprecated/clutter-texture.c:1054
 #: ../clutter/wayland/clutter-wayland-surface.c:446
 msgid "The underlying Cogl texture handle used to draw this actor"
-msgstr "Podkladová textura Cogl použitá k vykreslení účastníka"
+msgstr "Podkladová textura Cogl použitá k vykreslení účinkujícího"
 
 #: ../clutter/deprecated/clutter-texture.c:1061
 msgid "Cogl Material"
@@ -2634,7 +2634,7 @@ msgstr "Materiál Cogl"
 
 #: ../clutter/deprecated/clutter-texture.c:1062
 msgid "The underlying Cogl material handle used to draw this actor"
-msgstr "Podkladový materiál Cogl použitý k vykreslení účastníka"
+msgstr "Podkladový materiál Cogl použitý k vykreslení účinkujícího"
 
 #: ../clutter/deprecated/clutter-texture.c:1081
 msgid "The path of the file containing the image data"
@@ -2681,7 +2681,7 @@ msgstr "Výběr s alfou"
 
 #: ../clutter/deprecated/clutter-texture.c:1164
 msgid "Shape actor with alpha channel when picking"
-msgstr "Tvar účastníka s alfakanálem při výběru"
+msgstr "Tvar účinkujícího s alfakanálem při výběru"
 
 #: ../clutter/deprecated/clutter-texture.c:1597
 #: ../clutter/deprecated/clutter-texture.c:1992
@@ -2853,15 +2853,3 @@ msgstr "Potlačit přesměrování u okna"
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:636
 msgid "If this is an override-redirect window"
 msgstr "Zda má okno nastaven příznak override-redirect"
-
-#~ msgid "sysfs Path"
-#~ msgstr "Cesta sysfs"
-
-#~ msgid "Path of the device in sysfs"
-#~ msgstr "Cesta zařízení v sysfs"
-
-#~ msgid "Device Path"
-#~ msgstr "Cesta zařízení"
-
-#~ msgid "Path of the device node"
-#~ msgstr "Cesta uzlu zařízení"
