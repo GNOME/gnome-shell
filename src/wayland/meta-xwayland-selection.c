@@ -847,10 +847,10 @@ meta_selection_bridge_ownership_notify (struct wl_listener *listener,
 
   if (!owner && selection->window == selection->owner)
     {
-        XSetSelectionOwner (xdisplay, selection->selection_atom,
-                            None, selection->timestamp);
+      XSetSelectionOwner (xdisplay, selection->selection_atom,
+                          None, selection->timestamp);
     }
-  else if (selection->source != owner)
+  else if (owner && selection->source != owner)
     {
       XSetSelectionOwner (xdisplay,
                           selection->selection_atom,
