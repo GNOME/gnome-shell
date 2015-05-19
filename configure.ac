@@ -1197,8 +1197,7 @@ AC_CONFIG_FILES([
 
 	doc/Makefile
 	doc/reference/Makefile
-	doc/reference/clutter/Makefile
-	doc/reference/clutter/clutter-docs.xml
+	doc/reference/clutter-docs.xml
 	doc/common/Makefile
 	doc/cookbook/Makefile
 	doc/cookbook/clutter-cookbook.xml
