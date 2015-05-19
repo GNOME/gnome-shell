@@ -227,6 +227,40 @@
     <xi:include href="xml/clutter-mir.xml"/>
   </part>
 
+  <part id="cally">
+    <title>Accessibility</title>
+
+    <partintro>
+      <para>Clutter provides support for accessibility technologies by
+      implementing the ATK interfaces. Since Clutter is a low-level tool
+      kit, and developers are supposed to create more complex actor
+      classes, we expose a low level API under the Cally namespace; this
+      API can be used as the base to build more accessibility features
+      inside custom derived ClutterActor classes.</para>
+    </partintro>
+
+    <chapter>
+      <title>Base Classes</title>
+
+      <xi:include href="xml/cally-actor.xml"/>
+      <xi:include href="xml/cally-group.xml"/>
+      <xi:include href="xml/cally-stage.xml"/>
+      <xi:include href="xml/cally-texture.xml"/>
+      <xi:include href="xml/cally-rectangle.xml"/>
+      <xi:include href="xml/cally-text.xml"/>
+      <xi:include href="xml/cally-clone.xml"/>
+    </chapter>
+
+    <chapter>
+      <title>Utility API</title>
+
+      <xi:include href="xml/cally.xml"/>
+      <xi:include href="xml/cally-util.xml"/>
+      <xi:include href="xml/cally-root.xml"/>
+
+    </chapter>
+  </part>
+
   <part id="migration">
     <title>Migrating from previous version of Clutter</title>
 
