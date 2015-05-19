@@ -1199,8 +1199,6 @@ AC_CONFIG_FILES([
 	doc/reference/Makefile
 	doc/reference/clutter/Makefile
 	doc/reference/clutter/clutter-docs.xml
-	doc/reference/cally/Makefile
-	doc/reference/cally/cally-docs.xml
 	doc/common/Makefile
 	doc/cookbook/Makefile
 	doc/cookbook/clutter-cookbook.xml
