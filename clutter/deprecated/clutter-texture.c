@@ -2567,7 +2567,7 @@ fbo_source_queue_relayout_cb (ClutterActor *source,
  *     data and end redirection.
  *   - cogl_texture_get_data() with the handle returned by
  *     clutter_texture_get_cogl_texture() can be used to read the
- *     offscreen texture pixels into a pixbuf.</para>
+ *     offscreen texture pixels into a pixbuf.
  *
  * Return value: A newly created #ClutterTexture object, or %NULL on failure.
  *
