@@ -39,10 +39,7 @@
 struct _MetaBackendNativePrivate
 {
   MetaLauncher *launcher;
-
   MetaBarrierManagerNative *barrier_manager;
-
-  GSettings *keyboard_settings;
 };
 typedef struct _MetaBackendNativePrivate MetaBackendNativePrivate;
 
