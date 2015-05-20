@@ -29,6 +29,7 @@
 
 #include <meta/main.h>
 #include <clutter/evdev/clutter-evdev.h>
+#include <libupower-glib/upower.h>
 
 #include "meta-barrier-native.h"
 #include "meta-idle-monitor-native.h"
@@ -40,6 +41,7 @@ struct _MetaBackendNativePrivate
 {
   MetaLauncher *launcher;
   MetaBarrierManagerNative *barrier_manager;
+  UpClient *up_client;
 };
 typedef struct _MetaBackendNativePrivate MetaBackendNativePrivate;
 
@@ -53,7 +55,20 @@ meta_backend_native_finalize (GObject *object)
 
   meta_launcher_free (priv->launcher);
 
+  g_object_unref (priv->up_client);
+
   G_OBJECT_CLASS (meta_backend_native_parent_class)->finalize (object);
+}
+
+static void
+lid_is_closed_changed_cb (UpClient   *client,
+                          GParamSpec *pspec,
+                          gpointer    user_data)
+{
+  if (up_client_get_lid_is_closed (client))
+    return;
+
+  meta_idle_monitor_native_reset_idletime (meta_idle_monitor_get_core ());
 }
 
 static void
@@ -267,6 +282,10 @@ meta_backend_native_init (MetaBackendNative *native)
   priv->launcher = meta_launcher_new ();
 
   priv->barrier_manager = meta_barrier_manager_native_new ();
+
+  priv->up_client = up_client_new ();
+  g_signal_connect (priv->up_client, "notify::lid-is-closed",
+                    G_CALLBACK (lid_is_closed_changed_cb), NULL);
 }
 
 gboolean
