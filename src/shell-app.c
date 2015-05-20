@@ -265,7 +265,7 @@ shell_app_get_name (ShellApp *app)
       const char *name = NULL;
 
       if (window)
-        name = meta_window_get_wm_class (window);
+        name = meta_window_get_title (window);
       if (!name)
         name = C_("program", "Unknown");
       return name;
