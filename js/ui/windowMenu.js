@@ -167,6 +167,10 @@ const WindowMenuManager = new Lang.Class({
         menu.connect('activate', function() {
             window.check_alive(global.get_current_time());
         });
+        let destroyId = window.connect('unmanaged',
+            function() {
+                menu.close();
+            });
 
         this._sourceActor.set_size(rect.width, rect.height);
         this._sourceActor.set_position(rect.x, rect.y);
@@ -180,6 +184,7 @@ const WindowMenuManager = new Lang.Class({
 
             this._sourceActor.hide();
             menu.destroy();
+            window.disconnect(destroyId);
         }));
     }
 });
