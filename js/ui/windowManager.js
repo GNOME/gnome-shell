@@ -480,50 +480,42 @@ const TilePreview = new Lang.Class({
 
 const WorkspaceSwitchAction = new Lang.Class({
     Name: 'WorkspaceSwitchAction',
-    Extends: Clutter.GestureAction,
+    Extends: Clutter.SwipeAction,
 
     _init : function() {
+        const MOTION_THRESHOLD = 50;
+
         this.parent();
         this.set_n_touch_points(4);
+        this.set_threshold_trigger_distance(MOTION_THRESHOLD, MOTION_THRESHOLD);
 
         global.display.connect('grab-op-begin', Lang.bind(this, function() {
             this.cancel();
         }));
     },
 
-    vfunc_gesture_prepare : function(action, actor) {
+    vfunc_gesture_prepare : function(actor) {
         let allowedModes = Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW;
-        return this.get_n_current_points() == this.get_n_touch_points() &&
-               (allowedModes & Main.actionMode);
+
+        if (!this.parent(actor))
+            return false;
+
+        return (allowedModes & Main.actionMode);
     },
 
-    vfunc_gesture_end : function(action, actor) {
-        const MOTION_THRESHOLD = 50;
+    vfunc_swept : function(actor, direction) {
+        let dir;
 
-        // Just check one touchpoint here
-        let [startX, startY] = this.get_press_coords(0);
-        let [x, y] = this.get_motion_coords(0);
-        let offsetX = x - startX;
-        let offsetY = y - startY;
-        let direction;
+        if (direction & Clutter.SwipeDirection.UP)
+            dir = Meta.MotionDirection.DOWN;
+        else if (direction & Clutter.SwipeDirection.DOWN)
+            dir = Meta.MotionDirection.UP;
+        else if (direction & Clutter.SwipeDirection.LEFT)
+            dir = Meta.MotionDirection.RIGHT;
+        else if (direction & Clutter.SwipeDirection.RIGHT)
+            dir = Meta.MotionDirection.LEFT;
 
-        if (Math.abs(offsetX) < MOTION_THRESHOLD &&
-            Math.abs(offsetY) < MOTION_THRESHOLD)
-            return;
-
-        if (Math.abs(offsetY) > Math.abs(offsetX)) {
-            if (offsetY > 0)
-                direction = Meta.MotionDirection.UP;
-            else
-                direction = Meta.MotionDirection.DOWN;
-        } else {
-            if (offsetX > 0)
-                direction = Meta.MotionDirection.LEFT;
-            else
-                direction = Meta.MotionDirection.RIGHT;
-        }
-
-        this.emit('activated', direction);
+        this.emit('activated', dir);
     }
 });
 Signals.addSignalMethods(WorkspaceSwitchAction.prototype);
