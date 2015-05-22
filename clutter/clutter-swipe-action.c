@@ -145,14 +145,17 @@ gesture_end (ClutterGestureAction *action,
   gfloat release_x, release_y;
   ClutterSwipeDirection direction = 0;
   gboolean can_emit_swipe;
+  const ClutterEvent *last_event;
 
   clutter_gesture_action_get_press_coords (action,
                                            0,
                                            &press_x, &press_y);
 
-  clutter_gesture_action_get_release_coords (action,
-                                             0,
-                                             &release_x, &release_y);
+  /* Check the last event instead of get_release_coords(), this
+   * might not be the sequence that finished on multi-finger swipes.
+   */
+  last_event = clutter_gesture_action_get_last_event (action, 0);
+  clutter_event_get_coords (last_event, &release_x, &release_y);
 
   if (release_x - press_x > priv->distance_y)
     direction |= CLUTTER_SWIPE_DIRECTION_RIGHT;
