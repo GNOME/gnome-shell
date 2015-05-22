@@ -157,7 +157,7 @@ gesture_end (ClutterGestureAction *action,
   last_event = clutter_gesture_action_get_last_event (action, 0);
   clutter_event_get_coords (last_event, &release_x, &release_y);
 
-  if (release_x - press_x > priv->distance_y)
+  if (release_x - press_x > priv->distance_x)
     direction |= CLUTTER_SWIPE_DIRECTION_RIGHT;
   else if (press_x - release_x > priv->distance_x)
     direction |= CLUTTER_SWIPE_DIRECTION_LEFT;
