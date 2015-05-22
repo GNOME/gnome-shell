@@ -160,12 +160,7 @@ void
 meta_window_set_alive (MetaWindow *window,
                        gboolean    is_alive)
 {
-  if (window->is_alive == is_alive)
-    return;
-
-  window->is_alive = is_alive;
-
-  if (window->is_alive)
+  if (is_alive)
     kill_delete_dialog (window);
   else
     show_delete_dialog (window, CurrentTime);

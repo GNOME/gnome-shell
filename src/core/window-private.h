@@ -434,7 +434,6 @@ struct _MetaWindow
 
   /* Managed by delete.c */
   int dialog_pid;
-  guint is_alive : 1;
 
   /* maintained by group.c */
   MetaGroup *group;
