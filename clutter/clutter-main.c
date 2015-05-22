@@ -2290,6 +2290,8 @@ _clutter_process_event_details (ClutterActor        *stage,
       case CLUTTER_BUTTON_PRESS:
       case CLUTTER_BUTTON_RELEASE:
       case CLUTTER_SCROLL:
+      case CLUTTER_TOUCHPAD_PINCH:
+      case CLUTTER_TOUCHPAD_SWIPE:
         {
           ClutterActor *actor;
           gfloat x, y;

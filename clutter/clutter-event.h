@@ -115,6 +115,8 @@ typedef struct _ClutterScrollEvent      ClutterScrollEvent;
 typedef struct _ClutterStageStateEvent  ClutterStageStateEvent;
 typedef struct _ClutterCrossingEvent    ClutterCrossingEvent;
 typedef struct _ClutterTouchEvent       ClutterTouchEvent;
+typedef struct _ClutterTouchpadPinchEvent ClutterTouchpadPinchEvent;
+typedef struct _ClutterTouchpadSwipeEvent ClutterTouchpadSwipeEvent;
 
 /**
  * ClutterAnyEvent:
@@ -385,6 +387,84 @@ struct _ClutterTouchEvent
 };
 
 /**
+ * ClutterTouchpadPinchEvent:
+ * @type: event type
+ * @time: event time
+ * @flags: event flags
+ * @stage: event source stage
+ * @source: event source actor (unused)
+ * @phase: the current phase of the gesture
+ * @x: the X coordinate of the pointer, relative to the stage
+ * @y: the Y coordinate of the pointer, relative to the stage
+ * @dx: movement delta of the pinch focal point in the X axis
+ * @dy: movement delta of the pinch focal point in the Y axis
+ * @angle_delta: angle delta in degrees, clockwise rotations are
+ *   represented by positive deltas
+ * @scale: the current scale
+ *
+ * Used for touchpad pinch gesture events. The current state of the
+ * gesture will be determined by the @phase field.
+ *
+ * Each event with phase %CLUTTER_TOUCHPAD_GESTURE_PHASE_BEGIN
+ * will report a @scale of 1.0, all later phases in the gesture
+ * report the current scale relative to the initial 1.0 value
+ * (eg. 0.5 being half the size, 2.0 twice as big).
+ *
+ * Since: 1.24
+ */
+struct _ClutterTouchpadPinchEvent
+{
+  ClutterEventType type;
+  guint32 time;
+  ClutterEventFlags flags;
+  ClutterStage *stage;
+  ClutterActor *source;
+
+  ClutterTouchpadGesturePhase phase;
+  gfloat x;
+  gfloat y;
+  gfloat dx;
+  gfloat dy;
+  gfloat angle_delta;
+  gfloat scale;
+};
+
+/**
+ * ClutterTouchpadSwipeEvent
+ * @type: event type
+ * @time: event time
+ * @flags: event flags
+ * @stage: event source stage
+ * @source: event source actor (unused)
+ * @phase: the current phase of the gesture
+ * @n_fingers: the number of fingers triggering the swipe
+ * @x: the X coordinate of the pointer, relative to the stage
+ * @y: the Y coordinate of the pointer, relative to the stage
+ * @dx: movement delta of the pinch focal point in the X axis
+ * @dy: movement delta of the pinch focal point in the Y axis
+ *
+ * Used for touchpad swipe gesture events. The current state of the
+ * gesture will be determined by the @phase field.
+ *
+ * Since: 1.24
+ */
+struct _ClutterTouchpadSwipeEvent
+{
+  ClutterEventType type;
+  guint32 time;
+  ClutterEventFlags flags;
+  ClutterStage *stage;
+  ClutterActor *source;
+
+  ClutterTouchpadGesturePhase phase;
+  guint n_fingers;
+  gfloat x;
+  gfloat y;
+  gfloat dx;
+  gfloat dy;
+};
+
+/**
  * ClutterEvent:
  *
  * Generic event wrapper.
@@ -404,6 +484,8 @@ union _ClutterEvent
   ClutterStageStateEvent stage_state;
   ClutterCrossingEvent crossing;
   ClutterTouchEvent touch;
+  ClutterTouchpadPinchEvent touchpad_pinch;
+  ClutterTouchpadSwipeEvent touchpad_swipe;
 };
 
 /**

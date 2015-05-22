@@ -757,6 +757,10 @@ typedef enum { /*< flags prefix=CLUTTER_EVENT >*/
  *   event added in 1.10
  * @CLUTTER_TOUCH_CANCEL: A touch event sequence has been canceled;
  *   event added in 1.10
+ * @CLUTTER_TOUCHPAD_PINCH: A pinch gesture event, the current state is
+ *   determined by its phase field; event added in 1.24
+ * @CLUTTER_TOUCHPAD_SWIPE: A swipe gesture event, the current state is
+ *   determined by its phase field; event added in 1.24
  * @CLUTTER_EVENT_LAST: Marks the end of the #ClutterEventType enumeration;
  *   added in 1.10
  *
@@ -782,6 +786,8 @@ typedef enum { /*< prefix=CLUTTER >*/
   CLUTTER_TOUCH_UPDATE,
   CLUTTER_TOUCH_END,
   CLUTTER_TOUCH_CANCEL,
+  CLUTTER_TOUCHPAD_PINCH,
+  CLUTTER_TOUCHPAD_SWIPE,
 
   CLUTTER_EVENT_LAST            /* helper */
 } ClutterEventType;
@@ -1401,6 +1407,43 @@ typedef enum {
   CLUTTER_GESTURE_TRIGGER_EDGE_AFTER,
   CLUTTER_GESTURE_TRIGGER_EDGE_BEFORE
 } ClutterGestureTriggerEdge;
+
+/**
+ * ClutterTouchpadGesturePhase:
+ * @CLUTTER_TOUCHPAD_GESTURE_PHASE_BEGIN: The gesture has begun.
+ * @CLUTTER_TOUCHPAD_GESTURE_PHASE_UPDATE: The gesture has been updated.
+ * @CLUTTER_TOUCHPAD_GESTURE_PHASE_END: The gesture was finished, changes
+ *   should be permanently applied.
+ * @CLUTTER_TOUCHPAD_GESTURE_PHASE_CANCEL: The gesture was cancelled, all
+ *   changes should be undone.
+ *
+ * The phase of a touchpad gesture event. All gestures are guaranteed to
+ * begin with an event of type %CLUTTER_TOUCHPAD_GESTURE_PHASE_BEGIN,
+ * followed by a number of %CLUTTER_TOUCHPAD_GESTURE_PHASE_UPDATE (possibly 0).
+ *
+ * A finished gesture may have 2 possible outcomes, an event with phase
+ * %CLUTTER_TOUCHPAD_GESTURE_PHASE_END will be emitted when the gesture is
+ * considered successful, this should be used as the hint to perform any
+ * permanent changes.
+
+ * Cancelled gestures may be so for a variety of reasons, due to hardware,
+ * or due to the gesture recognition layers hinting the gesture did not
+ * finish resolutely (eg. a 3rd finger being added during a pinch gesture).
+ * In these cases, the last event with report the phase
+ * %CLUTTER_TOUCHPAD_GESTURE_PHASE_CANCEL, this should be used as a hint
+ * to undo any visible/permanent changes that were done throughout the
+ * progress of the gesture.
+ *
+ * See also #ClutterTouchpadPinchEvent and #ClutterTouchpadPinchEvent.
+ *
+ * Since: 1.24
+ */
+typedef enum {
+  CLUTTER_TOUCHPAD_GESTURE_PHASE_BEGIN,
+  CLUTTER_TOUCHPAD_GESTURE_PHASE_UPDATE,
+  CLUTTER_TOUCHPAD_GESTURE_PHASE_END,
+  CLUTTER_TOUCHPAD_GESTURE_PHASE_CANCEL
+} ClutterTouchpadGesturePhase;
 
 G_END_DECLS
 
