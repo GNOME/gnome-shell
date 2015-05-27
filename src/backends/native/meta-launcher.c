@@ -43,6 +43,7 @@
 
 #include "backends/meta-backend-private.h"
 #include "meta-cursor-renderer-native.h"
+#include "meta-idle-monitor-native.h"
 
 struct _MetaLauncher
 {
@@ -110,6 +111,7 @@ session_unpause (void)
 
     clutter_actor_queue_redraw (stage);
     meta_cursor_renderer_native_force_update (META_CURSOR_RENDERER_NATIVE (renderer));
+    meta_idle_monitor_native_reset_idletime (meta_idle_monitor_get_core ());
   }
 }
 
