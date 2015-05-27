@@ -1,3 +1,22 @@
+3.17.2
+======
+* Remove StTable widget [Florian; #703833]
+* Increase visibility of expanders in alt-tab popup [Jakub; #745058]
+* Ensure suspend inhibitors are released when VT switched away [Rui; #749228]
+* Use iio-sensor-proxy directly for orientation lock [Bastien; #749671]
+* Misc. bug fixes [Florian, Lan, Carlos; #749279, #749383, #749529, #749490,
+  #749742]
+
+Contributors:
+  Carlos Garnacho, Ting-Wei Lan, Rui Matos, Florian Müllner, Bastien Nocera,
+  Jakub Steiner
+
+Translations:
+  Yosef Or Boczko [he], sun [zh_CN], Felipe Braga [pt_BR],
+  Victor Ibragimov [tg], Gábor Kelemen [hu], Cédric Valmary [oc],
+  Dušan Kazik [sk], Kjartan Maraas [nb], Bruno Ramalhete [pt],
+  Matej Urbančič [sl], Daniel Mustieles [es]
+
 3.17.1
 ======
 * Add Display Settings entry to background menu [Meet; #697346]
