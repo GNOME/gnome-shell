@@ -1,3 +1,12 @@
+3.17.2
+======
+* Honor default value for click method setting [Rui; #746290]
+* Add X11/wayland clipboard interoperation [Carlos; #738312]
+* Misc. bug fixes [Rui; #749076, #749711]
+
+Contributors:
+  Carlos Garnacho, Rui Matos, Jasper St. Pierre
+
 3.17.1
 ======
 * Add public method to get neighboring monitor [Florian; #633994]
