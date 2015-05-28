@@ -676,9 +676,9 @@ meta_wayland_data_device_set_selection (MetaWaylandDataDevice *data_device,
           data_device->selection_data_source_listener.notify = destroy_selection_data_source;
           wl_resource_add_destroy_listener (source->resource, &data_device->selection_data_source_listener);
         }
-
-      wl_signal_emit (&data_device->selection_ownership_signal, source);
     }
+
+  wl_signal_emit (&data_device->selection_ownership_signal, source);
 }
 
 static void
@@ -690,10 +690,10 @@ data_device_set_selection (struct wl_client *client,
   MetaWaylandDataDevice *data_device = wl_resource_get_user_data (resource);
   MetaWaylandDataSource *source;
 
-  if (!source_resource)
-    return;
-
-  source = wl_resource_get_user_data (source_resource);
+  if (source_resource)
+    source = wl_resource_get_user_data (source_resource);
+  else
+    source = NULL;
 
   /* FIXME: Store serial and check against incoming serial here. */
   meta_wayland_data_device_set_selection (data_device, source, serial);
@@ -801,6 +801,8 @@ meta_wayland_data_device_set_keyboard_focus (MetaWaylandDataDevice *data_device)
       offer = meta_wayland_data_source_send_offer (source, data_device_resource);
       wl_data_device_send_selection (data_device_resource, offer);
     }
+  else
+    wl_data_device_send_selection (data_device_resource, NULL);
 }
 
 gboolean
