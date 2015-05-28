@@ -765,42 +765,42 @@ meta_xwayland_selection_handle_xfixes_selection_notify (MetaWaylandCompositor *c
   if (!selection)
     return FALSE;
 
-  if (event->owner == None)
+  if (selection->selection_atom == gdk_x11_get_xatom_by_name ("CLIPBOARD"))
     {
-      if (selection->source && selection->owner != selection->window)
+      if (event->owner == None)
         {
-          /* An X client went away, clear the selection */
-          if (selection->selection_atom == gdk_x11_get_xatom_by_name ("CLIPBOARD"))
+          if (selection->source && selection->owner != selection->window)
             {
+              /* An X client went away, clear the selection */
               meta_wayland_data_device_set_selection (&compositor->seat->data_device, NULL,
                                                       wl_display_next_serial (compositor->wayland_display));
+              selection->source = NULL;
             }
-          selection->source = NULL;
+
+          selection->owner = None;
         }
-
-      selection->owner = None;
-    }
-  else
-    {
-      selection->owner = event->owner;
-
-      if (selection->owner == selection->window)
+      else
         {
-          /* This our own selection window */
-          selection->timestamp = event->timestamp;
-          return TRUE;
+          selection->owner = event->owner;
+
+          if (selection->owner == selection->window)
+            {
+              /* This our own selection window */
+              selection->timestamp = event->timestamp;
+              return TRUE;
+            }
+
+          g_clear_pointer (&selection->x11_selection,
+                           (GDestroyNotify) x11_selection_data_free);
+
+          XConvertSelection (xdisplay,
+                             event->selection,
+                             gdk_x11_get_xatom_by_name ("TARGETS"),
+                             gdk_x11_get_xatom_by_name ("_META_SELECTION"),
+                             selection->window,
+                             selection->timestamp);
+          XFlush (xdisplay);
         }
-
-      g_clear_pointer (&selection->x11_selection,
-                       (GDestroyNotify) x11_selection_data_free);
-
-      XConvertSelection (xdisplay,
-                         event->selection,
-                         gdk_x11_get_xatom_by_name ("TARGETS"),
-                         gdk_x11_get_xatom_by_name ("_META_SELECTION"),
-                         selection->window,
-                         selection->timestamp);
-      XFlush (xdisplay);
     }
 
   return TRUE;
