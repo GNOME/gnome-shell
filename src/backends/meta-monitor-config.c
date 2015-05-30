@@ -886,14 +886,14 @@ apply_configuration (MetaMonitorConfig  *self,
                      MetaConfiguration  *config,
 		     MetaMonitorManager *manager)
 {
-  GPtrArray *crtcs, *outputs;
-  gboolean ret = FALSE;
+  g_autoptr(GPtrArray) crtcs = NULL;
+  g_autoptr(GPtrArray) outputs = NULL;
 
   crtcs = g_ptr_array_new_full (config->n_outputs, (GDestroyNotify)meta_crtc_info_free);
   outputs = g_ptr_array_new_full (config->n_outputs, (GDestroyNotify)meta_output_info_free);
 
   if (!meta_monitor_config_assign_crtcs (config, manager, crtcs, outputs))
-    goto out;
+    return FALSE;
 
   meta_monitor_manager_apply_configuration (manager,
                                             (MetaCRTCInfo**)crtcs->pdata, crtcs->len,
@@ -905,12 +905,7 @@ apply_configuration (MetaMonitorConfig  *self,
    * inside turn_off_laptop_display / apply_configuration_with_lid */
   self->current_is_for_laptop_lid = FALSE;
 
-  ret = TRUE;
-
- out:
-  g_ptr_array_unref (crtcs);
-  g_ptr_array_unref (outputs);
-  return ret;
+  return TRUE;
 }
 
 static gboolean
@@ -1840,7 +1835,6 @@ real_assign_crtcs (CrtcAssignment     *assignment,
   MetaOutputKey *output_key;
   MetaOutputConfig *output_config;
   unsigned int i;
-  gboolean success;
 
   if (output_num == assignment->config->n_outputs)
     return TRUE;
@@ -1856,8 +1850,6 @@ real_assign_crtcs (CrtcAssignment     *assignment,
                                       &modes, &n_modes,
                                       &crtcs, &n_crtcs,
                                       &outputs, &n_outputs);
-
-  success = FALSE;
 
   for (i = 0; i < n_crtcs; i++)
     {
@@ -1905,10 +1897,7 @@ real_assign_crtcs (CrtcAssignment     *assignment,
                                               output))
                     {
                       if (real_assign_crtcs (assignment, output_num + 1))
-                        {
-                          success = TRUE;
-                          goto out;
-                        }
+                        return TRUE;
 
                       crtc_assignment_unassign (assignment, crtc, output);
                     }
@@ -1917,8 +1906,7 @@ real_assign_crtcs (CrtcAssignment     *assignment,
 	}
     }
 
-out:
-  return success;
+  return FALSE;
 }
 
 static gboolean

@@ -194,11 +194,10 @@ static gboolean
 output_get_boolean_property (MetaMonitorManagerXrandr *manager_xrandr,
                              MetaOutput *output, const char *propname)
 {
-  gboolean value = FALSE;
   Atom atom, actual_type;
   int actual_format;
   unsigned long nitems, bytes_after;
-  unsigned char *buffer;
+  g_autofree unsigned char *buffer = NULL;
 
   atom = XInternAtom (manager_xrandr->xdisplay, propname, False);
   XRRGetOutputProperty (manager_xrandr->xdisplay,
@@ -209,13 +208,9 @@ output_get_boolean_property (MetaMonitorManagerXrandr *manager_xrandr,
                         &nitems, &bytes_after, &buffer);
 
   if (actual_type != XA_CARDINAL || actual_format != 32 || nitems < 1)
-    goto out;
+    return FALSE;
 
-  value = ((int*)buffer)[0];
-
- out:
-  XFree (buffer);
-  return value;
+  return ((int*)buffer)[0];
 }
 
 static gboolean
@@ -229,12 +224,11 @@ static gboolean
 output_get_underscanning_xrandr (MetaMonitorManagerXrandr *manager_xrandr,
                                  MetaOutput               *output)
 {
-  gboolean value = FALSE;
   Atom atom, actual_type;
   int actual_format;
   unsigned long nitems, bytes_after;
-  unsigned char *buffer;
-  char *str;
+  g_autofree unsigned char *buffer = NULL;
+  g_autofree char *str = NULL;
 
   atom = XInternAtom (manager_xrandr->xdisplay, "underscan", False);
   XRRGetOutputProperty (manager_xrandr->xdisplay,
@@ -244,17 +238,11 @@ output_get_underscanning_xrandr (MetaMonitorManagerXrandr *manager_xrandr,
                         &actual_type, &actual_format,
                         &nitems, &bytes_after, &buffer);
 
-  if (actual_type != XA_ATOM || actual_format != 32 ||
-      nitems < 1)
-    goto out;
+  if (actual_type != XA_ATOM || actual_format != 32 || nitems < 1)
+    return FALSE;
 
   str = XGetAtomName (manager_xrandr->xdisplay, *(Atom *)buffer);
-  value = !strcmp(str, "on");
-  XFree (str);
-
-out:
-  XFree (buffer);
-  return value;
+  return (strcmp (str, "on") == 0);
 }
 
 static int
@@ -273,7 +261,7 @@ output_get_backlight_xrandr (MetaMonitorManagerXrandr *manager_xrandr,
   Atom atom, actual_type;
   int actual_format;
   unsigned long nitems, bytes_after;
-  unsigned char *buffer;
+  g_autofree unsigned char *buffer = NULL;
 
   atom = XInternAtom (manager_xrandr->xdisplay, "Backlight", False);
   XRRGetOutputProperty (manager_xrandr->xdisplay,
@@ -284,12 +272,9 @@ output_get_backlight_xrandr (MetaMonitorManagerXrandr *manager_xrandr,
                         &nitems, &bytes_after, &buffer);
 
   if (actual_type != XA_INTEGER || actual_format != 32 || nitems < 1)
-    goto out;
+    return FALSE;
 
   value = ((int*)buffer)[0];
-
- out:
-  XFree (buffer);
   if (value > 0)
     return normalize_backlight (output, value);
   else
@@ -302,7 +287,7 @@ output_get_backlight_limits_xrandr (MetaMonitorManagerXrandr *manager_xrandr,
 {
   Atom atom;
   xcb_connection_t *xcb_conn;
-  xcb_randr_query_output_property_reply_t *reply;
+  g_autofree xcb_randr_query_output_property_reply_t *reply;
 
   atom = XInternAtom (manager_xrandr->xdisplay, "Backlight", False);
 
@@ -320,15 +305,12 @@ output_get_backlight_limits_xrandr (MetaMonitorManagerXrandr *manager_xrandr,
   if (!reply->range || reply->length != 2)
     {
       meta_verbose ("backlight %s was not range\n", output->name);
-      goto out;
+      return;
     }
 
   int32_t *values = xcb_randr_query_output_property_valid_values (reply);
   output->backlight_min = values[0];
   output->backlight_max = values[1];
-
-out:
-  free (reply);
 }
 
 static int
@@ -479,11 +461,10 @@ static MetaConnectorType
 output_get_connector_type_from_prop (MetaMonitorManagerXrandr *manager_xrandr,
                                      MetaOutput               *output)
 {
-  MetaConnectorType ret = META_CONNECTOR_TYPE_Unknown;
   Atom atom, actual_type, connector_type_atom;
   int actual_format;
   unsigned long nitems, bytes_after;
-  unsigned char *buffer;
+  g_autofree unsigned char *buffer = NULL;
 
   atom = XInternAtom (manager_xrandr->xdisplay, "ConnectorType", False);
   XRRGetOutputProperty (manager_xrandr->xdisplay,
@@ -494,14 +475,10 @@ output_get_connector_type_from_prop (MetaMonitorManagerXrandr *manager_xrandr,
                         &nitems, &bytes_after, &buffer);
 
   if (actual_type != XA_ATOM || actual_format != 32 || nitems < 1)
-    goto out;
+    return META_CONNECTOR_TYPE_Unknown;
 
   connector_type_atom = ((Atom *) buffer)[0];
-  ret = connector_type_from_atom (manager_xrandr, connector_type_atom);
-
- out:
-  meta_XFree (buffer);
-  return ret;
+  return connector_type_from_atom (manager_xrandr, connector_type_atom);
 }
 
 static MetaConnectorType
@@ -1068,7 +1045,7 @@ meta_monitor_manager_xrandr_apply_configuration (MetaMonitorManager *manager,
       if (crtc_info->mode != NULL)
         {
           MetaMonitorMode *mode;
-          XID *outputs;
+          g_autofree XID *outputs = NULL;
           unsigned int j, n_outputs;
           int width, height;
           Status ok;
@@ -1105,7 +1082,7 @@ meta_monitor_manager_xrandr_apply_configuration (MetaMonitorManager *manager,
                             (unsigned)(crtc->crtc_id), (unsigned)(mode->mode_id),
                             mode->width, mode->height, (float)mode->refresh_rate,
                             crtc_info->x, crtc_info->y, crtc_info->transform);
-              goto next;
+              continue;
             }
 
           if (meta_monitor_transform_is_rotated (crtc_info->transform))
@@ -1125,9 +1102,6 @@ meta_monitor_manager_xrandr_apply_configuration (MetaMonitorManager *manager,
           crtc->rect.height = height;
           crtc->current_mode = mode;
           crtc->transform = crtc_info->transform;
-
-        next:
-          g_free (outputs);
         }
     }
 

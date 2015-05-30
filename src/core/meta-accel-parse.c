@@ -176,7 +176,6 @@ static gboolean
 accelerator_parse (const gchar         *accelerator,
                    MetaKeyCombo        *combo)
 {
-  gboolean error = FALSE;
   guint keyval, keycode;
   MetaVirtualModifier mods;
   gint len;
@@ -186,10 +185,7 @@ accelerator_parse (const gchar         *accelerator,
   combo->modifiers = 0;
 
   if (accelerator == NULL)
-    {
-      error = TRUE;
-      goto out;
-    }
+    return FALSE;
 
   keyval = 0;
   keycode = 0;
@@ -310,10 +306,7 @@ accelerator_parse (const gchar         *accelerator,
                   g_free (with_xf86);
 
                   if (keyval == XKB_KEY_NoSymbol)
-                    {
-                      error = TRUE;
-                      goto out;
-                    }
+                    return FALSE;
                 }
 	    }
 
@@ -322,14 +315,10 @@ accelerator_parse (const gchar         *accelerator,
         }
     }
 
-out:
-  if (error)
-    return FALSE;
-
+ out:
   combo->keysym = keyval;
   combo->keycode = keycode;
   combo->modifiers = mods;
-
   return TRUE;
 }
 

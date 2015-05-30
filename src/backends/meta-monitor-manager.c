@@ -368,16 +368,14 @@ static char *
 make_display_name (MetaMonitorManager *manager,
                    MetaOutput         *output)
 {
-  char *inches = NULL;
-  char *vendor_name = NULL;
-  char *ret;
+  g_autofree char *inches = NULL;
+  g_autofree char *vendor_name = NULL;
 
   switch (output->connector_type)
     {
     case META_CONNECTOR_TYPE_LVDS:
     case META_CONNECTOR_TYPE_eDP:
-      ret = g_strdup (_("Built-in display"));
-      goto out;
+      return g_strdup (_("Built-in display"));
     default:
       break;
     }
@@ -413,18 +411,12 @@ make_display_name (MetaMonitorManager *manager,
       /* TRANSLATORS: this is a monitor vendor name, followed by a
        * size in inches, like 'Dell 15"'
        */
-      ret = g_strdup_printf (_("%s %s"), vendor_name, inches);
+      return g_strdup_printf (_("%s %s"), vendor_name, inches);
     }
   else
     {
-      ret = g_strdup (vendor_name);
+      return g_strdup (vendor_name);
     }
-
- out:
-  g_free (inches);
-  g_free (vendor_name);
-
-  return ret;
 }
 
 static const char *

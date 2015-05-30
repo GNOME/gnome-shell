@@ -130,9 +130,8 @@ take_device (Login1Session *session_proxy,
              GCancellable  *cancellable,
              GError       **error)
 {
-  gboolean ret = FALSE;
-  GVariant *fd_variant = NULL;
-  GUnixFDList *fd_list = NULL;
+  g_autoptr (GVariant) fd_variant = NULL;
+  g_autoptr (GUnixFDList) fd_list = NULL;
   int fd = -1;
 
   if (!login1_session_call_take_device_sync (session_proxy,
@@ -144,21 +143,14 @@ take_device (Login1Session *session_proxy,
                                              &fd_list,
                                              cancellable,
                                              error))
-    goto out;
+    return FALSE;
 
   fd = g_unix_fd_list_get (fd_list, g_variant_get_handle (fd_variant), error);
   if (fd == -1)
-    goto out;
+    return FALSE;
 
   *out_fd = fd;
-  ret = TRUE;
-
- out:
-  if (fd_variant)
-    g_variant_unref (fd_variant);
-  if (fd_list)
-    g_object_unref (fd_list);
-  return ret;
+  return TRUE;
 }
 
 static gboolean
@@ -166,22 +158,16 @@ get_device_info_from_path (const char *path,
                            int        *out_major,
                            int        *out_minor)
 {
-  gboolean ret = FALSE;
   int r;
   struct stat st;
 
   r = stat (path, &st);
-  if (r < 0)
-    goto out;
-  if (!S_ISCHR (st.st_mode))
-    goto out;
+  if (r < 0 || !S_ISCHR (st.st_mode))
+    return FALSE;
 
   *out_major = major (st.st_rdev);
   *out_minor = minor (st.st_rdev);
-  ret = TRUE;
-
- out:
-  return ret;
+  return TRUE;
 }
 
 static gboolean
@@ -189,22 +175,16 @@ get_device_info_from_fd (int  fd,
                          int *out_major,
                          int *out_minor)
 {
-  gboolean ret = FALSE;
   int r;
   struct stat st;
 
   r = fstat (fd, &st);
-  if (r < 0)
-    goto out;
-  if (!S_ISCHR (st.st_mode))
-    goto out;
+  if (r < 0 || !S_ISCHR (st.st_mode))
+    return FALSE;
 
   *out_major = major (st.st_rdev);
   *out_minor = minor (st.st_rdev);
-  ret = TRUE;
-
- out:
-  return ret;
+  return TRUE;
 }
 
 static int
