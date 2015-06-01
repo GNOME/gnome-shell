@@ -1539,6 +1539,7 @@ wl_shell_get_shell_surface (struct wl_client *client,
                             struct wl_resource *surface_resource)
 {
   MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
+  MetaWindow *window;
 
   if (surface->wl_shell_surface != NULL)
     {
@@ -1556,6 +1557,9 @@ wl_shell_get_shell_surface (struct wl_client *client,
 
   surface->wl_shell_surface = wl_resource_create (client, &wl_shell_surface_interface, wl_resource_get_version (resource), id);
   wl_resource_set_implementation (surface->wl_shell_surface, &meta_wayland_wl_shell_surface_interface, surface, wl_shell_surface_destructor);
+
+  window = meta_window_wayland_new (meta_get_display (), surface);
+  meta_wayland_surface_set_window (surface, window);
 }
 
 static const struct wl_shell_interface meta_wayland_wl_shell_interface = {
