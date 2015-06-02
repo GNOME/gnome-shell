@@ -978,7 +978,6 @@ const Message = new Lang.Class({
         this._iconBin = new St.Bin({ style_class: 'message-icon-bin',
                                      y_expand: true,
                                      visible: false });
-        this._iconBin.set_y_align(Clutter.ActorAlign.START);
         hbox.add_actor(this._iconBin);
 
         let contentBox = new St.BoxLayout({ style_class: 'message-content',
