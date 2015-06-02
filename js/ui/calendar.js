@@ -24,7 +24,7 @@ const MSECS_IN_DAY = 24 * 60 * 60 * 1000;
 const SHOW_WEEKDATE_KEY = 'show-weekdate';
 const ELLIPSIS_CHAR = '\u2026';
 
-const MESSAGE_ICON_SIZE = 48;
+const MESSAGE_ICON_SIZE = 32;
 
 const MESSAGE_ANIMATION_TIME = 0.1;
 

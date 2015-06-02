@@ -787,7 +787,12 @@ StScrollBar {
     padding: 8px 8px 8px 0px; }
 
 .message-icon-bin > StIcon {
-  icon-size: 48px; }
+  icon-size: 32px; }
+
+.message-secondary-bin:ltr {
+  padding-left: 8px; }
+.message-secondary-bin:rtl {
+  padding-right: 8px; }
 
 .message-secondary-bin {
   color: #8e8e80; }
@@ -796,10 +801,12 @@ StScrollBar {
   icon-size: 16px; }
 
 .message-title {
-  font-weight: bold; }
+  font-weight: bold;
+  font-size: 1.1em; }
 
 .message-content {
-  padding: 8px; }
+  padding: 8px;
+  font-size: .9em; }
 
 .system-switch-user-submenu-icon {
   icon-size: 24px;
