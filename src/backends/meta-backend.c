@@ -353,6 +353,17 @@ meta_backend_real_select_stage_events (MetaBackend *backend)
   /* Do nothing */
 }
 
+static gboolean
+meta_backend_real_get_relative_motion_deltas (MetaBackend *backend,
+                                             const         ClutterEvent *event,
+                                             double        *dx,
+                                             double        *dy,
+                                             double        *dx_unaccel,
+                                             double        *dy_unaccel)
+{
+  return FALSE;
+}
+
 static void
 meta_backend_class_init (MetaBackendClass *klass)
 {
@@ -366,6 +377,7 @@ meta_backend_class_init (MetaBackendClass *klass)
   klass->ungrab_device = meta_backend_real_ungrab_device;
   klass->update_screen_size = meta_backend_real_update_screen_size;
   klass->select_stage_events = meta_backend_real_select_stage_events;
+  klass->get_relative_motion_deltas = meta_backend_real_get_relative_motion_deltas;
 
   g_signal_new ("keymap-changed",
                 G_TYPE_FROM_CLASS (object_class),
@@ -542,6 +554,21 @@ meta_backend_update_last_device (MetaBackend *backend,
       meta_cursor_tracker_set_pointer_visible (cursor_tracker, TRUE);
       break;
     }
+}
+
+gboolean
+meta_backend_get_relative_motion_deltas (MetaBackend *backend,
+                                         const        ClutterEvent *event,
+                                         double       *dx,
+                                         double       *dy,
+                                         double       *dx_unaccel,
+                                         double       *dy_unaccel)
+{
+  MetaBackendClass *klass = META_BACKEND_GET_CLASS (backend);
+  return klass->get_relative_motion_deltas (backend,
+                                            event,
+                                            dx, dy,
+                                            dx_unaccel, dy_unaccel);
 }
 
 static GType

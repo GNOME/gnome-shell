@@ -306,6 +306,19 @@ meta_backend_native_lock_layout_group (MetaBackend *backend,
   g_signal_emit_by_name (backend, "keymap-layout-group-changed", idx, 0);
 }
 
+static gboolean
+meta_backend_native_get_relative_motion_deltas (MetaBackend *backend,
+                                                const        ClutterEvent *event,
+                                                double       *dx,
+                                                double       *dy,
+                                                double       *dx_unaccel,
+                                                double       *dy_unaccel)
+{
+  return clutter_evdev_event_get_relative_motion (event,
+                                                  dx, dy,
+                                                  dx_unaccel, dy_unaccel);
+}
+
 static void
 meta_backend_native_class_init (MetaBackendNativeClass *klass)
 {
@@ -323,6 +336,7 @@ meta_backend_native_class_init (MetaBackendNativeClass *klass)
   backend_class->set_keymap = meta_backend_native_set_keymap;
   backend_class->get_keymap = meta_backend_native_get_keymap;
   backend_class->lock_layout_group = meta_backend_native_lock_layout_group;
+  backend_class->get_relative_motion_deltas = meta_backend_native_get_relative_motion_deltas;
 }
 
 static void

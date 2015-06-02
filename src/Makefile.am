@@ -51,6 +51,8 @@ mutter_built_sources += \
 	gtk-shell-server-protocol.h		\
 	xdg-shell-unstable-v5-protocol.c				\
 	xdg-shell-unstable-v5-server-protocol.h				\
+	relative-pointer-unstable-v1-protocol.c				\
+	relative-pointer-unstable-v1-server-protocol.h			\
 	$(NULL)
 endif
 

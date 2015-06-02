@@ -63,6 +63,8 @@
 #include "backends/meta-cursor-tracker-private.h"
 #include "backends/meta-cursor-renderer.h"
 
+#include "relative-pointer-unstable-v1-server-protocol.h"
+
 #ifdef HAVE_NATIVE_BACKEND
 #include "backends/native/meta-backend-native.h"
 #endif
@@ -96,6 +98,7 @@ meta_wayland_pointer_client_new (void)
   wl_list_init (&pointer_client->pointer_resources);
   wl_list_init (&pointer_client->swipe_gesture_resources);
   wl_list_init (&pointer_client->pinch_gesture_resources);
+  wl_list_init (&pointer_client->relative_pointer_resources);
 
   return pointer_client;
 }
@@ -124,6 +127,11 @@ meta_wayland_pointer_client_free (MetaWaylandPointerClient *pointer_client)
       wl_list_remove (wl_resource_get_link (resource));
       wl_list_init (wl_resource_get_link (resource));
     }
+  wl_resource_for_each_safe (resource, next, &pointer_client->relative_pointer_resources)
+    {
+      wl_list_remove (wl_resource_get_link (resource));
+      wl_list_init (wl_resource_get_link (resource));
+    }
 
   g_slice_free (MetaWaylandPointerClient, pointer_client);
 }
@@ -133,7 +141,8 @@ meta_wayland_pointer_client_is_empty (MetaWaylandPointerClient *pointer_client)
 {
   return (wl_list_empty (&pointer_client->pointer_resources) &&
           wl_list_empty (&pointer_client->swipe_gesture_resources) &&
-          wl_list_empty (&pointer_client->pinch_gesture_resources));
+          wl_list_empty (&pointer_client->pinch_gesture_resources) &&
+          wl_list_empty (&pointer_client->relative_pointer_resources));
 }
 
 MetaWaylandPointerClient *
@@ -264,6 +273,53 @@ meta_wayland_pointer_broadcast_frame (MetaWaylandPointer *pointer)
     }
 }
 
+static void
+meta_wayland_pointer_send_relative_motion (MetaWaylandPointer *pointer,
+                                           const ClutterEvent *event)
+{
+  struct wl_resource *resource;
+  double dx, dy;
+  double dx_unaccel, dy_unaccel;
+  uint64_t time_us;
+  uint32_t time_us_hi;
+  uint32_t time_us_lo;
+  wl_fixed_t dxf, dyf;
+  wl_fixed_t dx_unaccelf, dy_unaccelf;
+
+  if (!pointer->focus_client)
+    return;
+
+  if (!meta_backend_get_relative_motion_deltas (meta_get_backend (),
+                                                event,
+                                                &dx, &dy,
+                                                &dx_unaccel, &dy_unaccel))
+    return;
+
+#ifdef HAVE_NATIVE_BACKEND
+  time_us = clutter_evdev_event_get_time_usec (event);
+  if (time_us == 0)
+#endif
+    time_us = clutter_event_get_time (event) * 1000ULL;
+  time_us_hi = (uint32_t) (time_us >> 32);
+  time_us_lo = (uint32_t) time_us;
+  dxf = wl_fixed_from_double (dx);
+  dyf = wl_fixed_from_double (dy);
+  dx_unaccelf = wl_fixed_from_double (dx_unaccel);
+  dy_unaccelf = wl_fixed_from_double (dy_unaccel);
+
+  wl_resource_for_each (resource,
+                        &pointer->focus_client->relative_pointer_resources)
+    {
+      zwp_relative_pointer_v1_send_relative_motion (resource,
+                                                    time_us_hi,
+                                                    time_us_lo,
+                                                    dxf,
+                                                    dyf,
+                                                    dx_unaccelf,
+                                                    dy_unaccelf);
+    }
+}
+
 void
 meta_wayland_pointer_send_motion (MetaWaylandPointer *pointer,
                                   const ClutterEvent *event)
@@ -284,6 +340,8 @@ meta_wayland_pointer_send_motion (MetaWaylandPointer *pointer,
     {
       wl_pointer_send_motion (resource, time, sx, sy);
     }
+
+  meta_wayland_pointer_send_relative_motion (pointer, event);
 
   meta_wayland_pointer_broadcast_frame (pointer);
 }
@@ -1095,6 +1153,101 @@ meta_wayland_pointer_get_top_popup (MetaWaylandPointer *pointer)
 
   grab = (MetaWaylandPopupGrab*)pointer->grab;
   return meta_wayland_popup_grab_get_top_popup(grab);
+}
+
+static void
+relative_pointer_destroy (struct wl_client *client,
+                          struct wl_resource *resource)
+{
+  wl_resource_destroy (resource);
+}
+
+static const struct zwp_relative_pointer_v1_interface relative_pointer_interface = {
+  relative_pointer_destroy
+};
+
+static void
+relative_pointer_manager_destroy (struct wl_client *client,
+                                  struct wl_resource *resource)
+{
+  wl_resource_destroy (resource);
+}
+
+static void
+relative_pointer_manager_get_relative_pointer (struct wl_client   *client,
+                                               struct wl_resource *resource,
+                                               uint32_t            id,
+                                               struct wl_resource *pointer_resource)
+{
+  MetaWaylandPointer *pointer = wl_resource_get_user_data (pointer_resource);
+  struct wl_resource *cr;
+  MetaWaylandPointerClient *pointer_client;
+
+  cr = wl_resource_create (client, &zwp_relative_pointer_v1_interface,
+                           wl_resource_get_version (resource), id);
+  if (cr == NULL)
+    {
+      wl_client_post_no_memory (client);
+      return;
+    }
+
+  wl_resource_set_implementation (cr, &relative_pointer_interface,
+                                  pointer,
+                                  meta_wayland_pointer_unbind_pointer_client_resource);
+
+  pointer_client = meta_wayland_pointer_ensure_pointer_client (pointer, client);
+
+  wl_list_insert (&pointer_client->relative_pointer_resources,
+                  wl_resource_get_link (cr));
+}
+
+static const struct zwp_relative_pointer_manager_v1_interface relative_pointer_manager = {
+  relative_pointer_manager_destroy,
+  relative_pointer_manager_get_relative_pointer,
+};
+
+static void
+bind_relative_pointer_manager (struct wl_client *client,
+                               void             *data,
+                               uint32_t          version,
+                               uint32_t          id)
+{
+  MetaWaylandCompositor *compositor = data;
+  struct wl_resource *resource;
+
+  resource = wl_resource_create (client,
+                                 &zwp_relative_pointer_manager_v1_interface,
+                                 1, id);
+
+  if (version != 1)
+    wl_resource_post_error (resource,
+                            WL_DISPLAY_ERROR_INVALID_OBJECT,
+                            "bound invalid version %u of "
+                            "wp_relative_pointer_manager",
+                            version);
+
+  wl_resource_set_implementation (resource, &relative_pointer_manager,
+                                  compositor,
+                                  NULL);
+}
+
+void
+meta_wayland_relative_pointer_init (MetaWaylandCompositor *compositor)
+{
+  /* Relative pointer events are currently only supported by the native backend
+   * so lets just advertise the extension when the native backend is used.
+   */
+#ifdef HAVE_NATIVE_BACKEND
+  if (!META_IS_BACKEND_NATIVE (meta_get_backend ()))
+    return;
+#else
+  return;
+#endif
+
+  if (!wl_global_create (compositor->wayland_display,
+                         &zwp_relative_pointer_manager_v1_interface, 1,
+                         compositor, bind_relative_pointer_manager))
+    g_error ("Could not create relative pointer manager global");
 }
 
 static void

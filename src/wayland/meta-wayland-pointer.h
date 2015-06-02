@@ -58,6 +58,7 @@ struct _MetaWaylandPointerClient
   struct wl_list pointer_resources;
   struct wl_list swipe_gesture_resources;
   struct wl_list pinch_gesture_resources;
+  struct wl_list relative_pointer_resources;
 };
 
 struct _MetaWaylandPointer
@@ -141,5 +142,7 @@ MetaWaylandSurface *meta_wayland_pointer_get_top_popup (MetaWaylandPointer *poin
 MetaWaylandPointerClient * meta_wayland_pointer_get_pointer_client (MetaWaylandPointer *pointer,
                                                                     struct wl_client   *client);
 void meta_wayland_pointer_unbind_pointer_client_resource (struct wl_resource *resource);
+
+void meta_wayland_relative_pointer_init (MetaWaylandCompositor *compositor);
 
 #endif /* META_WAYLAND_POINTER_H */

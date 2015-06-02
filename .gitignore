@@ -68,6 +68,8 @@ src/xdg-shell-unstable-v*-protocol.c
 src/xdg-shell-unstable-v*-server-protocol.h
 src/pointer-gestures-unstable-v*-protocol.c
 src/pointer-gestures-unstable-v*-server-protocol.h
+src/relative-pointer-unstable-v*-protocol.c
+src/relative-pointer-unstable-v*-server-protocol.h
 src/meta/meta-version.h
 doc/reference/*.args
 doc/reference/*.bak
