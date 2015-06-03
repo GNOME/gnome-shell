@@ -1632,6 +1632,8 @@ const NMApplet = new Lang.Class({
         this._readConnections();
         this._readDevices();
         this._syncNMState();
+        this._syncMainConnection();
+        this._syncVPNConnections();
 
         this._client.connect('notify::manager-running', Lang.bind(this, this._syncNMState));
         this._client.connect('notify::networking-enabled', Lang.bind(this, this._syncNMState));
