@@ -601,11 +601,17 @@ meta_monitor_manager_kms_read_current (MetaMonitorManager *manager)
               break;
             }
 
+	  meta_output->preferred_mode = NULL;
 	  meta_output->n_modes = connector->count_modes;
 	  meta_output->modes = g_new0 (MetaMonitorMode *, meta_output->n_modes);
-	  for (j = 0; j < meta_output->n_modes; j++)
+	  for (j = 0; j < meta_output->n_modes; j++) {
             meta_output->modes[j] = find_meta_mode (manager, &connector->modes[j]);
-	  meta_output->preferred_mode = meta_output->modes[0];
+            if (connector->modes[j].type & DRM_MODE_TYPE_PREFERRED)
+              meta_output->preferred_mode = meta_output->modes[j];
+          }
+
+          if (!meta_output->preferred_mode)
+            meta_output->preferred_mode = meta_output->modes[0];
 
           output_kms->connector = connector;
           output_kms->n_encoders = connector->count_encoders;
