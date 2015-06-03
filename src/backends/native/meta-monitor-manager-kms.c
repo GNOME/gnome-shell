@@ -56,6 +56,10 @@ typedef struct {
   uint32_t dpms_prop_id;
   uint32_t edid_blob_id;
   uint32_t tile_blob_id;
+
+  int suggested_x;
+  int suggested_y;
+  uint32_t hotplug_mode_update;
 } MetaOutputKms;
 
 typedef struct {
@@ -199,6 +203,9 @@ find_connector_properties (MetaMonitorManagerKms *manager_kms,
 {
   int i;
 
+  output_kms->hotplug_mode_update = 0;
+  output_kms->suggested_x = -1;
+  output_kms->suggested_y = -1;
   for (i = 0; i < output_kms->connector->count_props; i++)
     {
       drmModePropertyPtr prop = drmModeGetProperty (manager_kms->fd, output_kms->connector->props[i]);
@@ -209,10 +216,19 @@ find_connector_properties (MetaMonitorManagerKms *manager_kms,
         output_kms->dpms_prop_id = prop->prop_id;
       else if ((prop->flags & DRM_MODE_PROP_BLOB) && strcmp (prop->name, "EDID") == 0)
         output_kms->edid_blob_id = output_kms->connector->prop_values[i];
-     else if ((prop->flags & DRM_MODE_PROP_BLOB) &&
+      else if ((prop->flags & DRM_MODE_PROP_BLOB) &&
                strcmp (prop->name, "TILE") == 0)
         output_kms->tile_blob_id = output_kms->connector->prop_values[i];
-
+      else if ((prop->flags & DRM_MODE_PROP_RANGE) &&
+               strcmp (prop->name, "suggested X") == 0)
+        output_kms->suggested_x = output_kms->connector->prop_values[i];
+      else if ((prop->flags & DRM_MODE_PROP_RANGE) &&
+               strcmp (prop->name, "suggested Y") == 0)
+        output_kms->suggested_y = output_kms->connector->prop_values[i];
+      else if ((prop->flags & DRM_MODE_PROP_RANGE) &&
+               strcmp (prop->name, "hotplug_mode_update") == 0)
+        output_kms->hotplug_mode_update = output_kms->connector->prop_values[i];
+      
       drmModeFreeProperty (prop);
     }
 }
@@ -561,8 +577,6 @@ meta_monitor_manager_kms_read_current (MetaMonitorManager *manager)
 	  meta_output->name = make_output_name (connector);
 	  meta_output->width_mm = connector->mmWidth;
 	  meta_output->height_mm = connector->mmHeight;
-	  meta_output->suggested_x = -1;
-	  meta_output->suggested_y = -1;
 
           switch (connector->subpixel)
             {
@@ -657,7 +671,10 @@ meta_monitor_manager_kms_read_current (MetaMonitorManager *manager)
             }
 
           find_connector_properties (manager_kms, output_kms);
-
+          meta_output->suggested_x = output_kms->suggested_x;
+          meta_output->suggested_y = output_kms->suggested_y;
+          meta_output->hotplug_mode_update = output_kms->hotplug_mode_update;
+          
           edid = read_output_edid (manager_kms, meta_output);
           meta_output_parse_edid (meta_output, edid);
           g_bytes_unref (edid);
