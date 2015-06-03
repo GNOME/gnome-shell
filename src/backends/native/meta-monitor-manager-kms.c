@@ -115,7 +115,7 @@ make_output_name (drmModeConnector *connector)
   static const char * const connector_type_names[] = {
     "unknown", "VGA", "DVII", "DVID", "DVID", "Composite",
     "SVIDEO", "LVDS", "Component", "9PinDIN", "DisplayPort",
-    "HDMIA", "HDMIB", "TV", "eDP"
+    "HDMIA", "HDMIB", "TV", "eDP", "Virtual", "DSI"
   };
   const char *connector_type_name;
 
