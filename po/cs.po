@@ -198,7 +198,7 @@ msgstr "Aktivovat nabídku okna"
 
 #: ../data/50-mutter-windows.xml.in.h:3
 msgid "Toggle fullscreen mode"
-msgstr "Přepnout režim na celou obrazovku"
+msgstr "Přepnout režim celé obrazovky"
 
 #: ../data/50-mutter-windows.xml.in.h:4
 msgid "Toggle maximization state"
@@ -210,7 +210,7 @@ msgstr "Maximalizovat okno"
 
 #: ../data/50-mutter-windows.xml.in.h:6
 msgid "Restore window"
-msgstr "Obnovit okno"
+msgstr "Obnovit velikost okna"
 
 #: ../data/50-mutter-windows.xml.in.h:7
 msgid "Toggle shaded state"
@@ -234,20 +234,20 @@ msgstr "Změnit velikost okna"
 
 #: ../data/50-mutter-windows.xml.in.h:12
 msgid "Toggle window on all workspaces or one"
-msgstr "Přepnout výskyt okna na všech plochách nebo jen na jedné"
+msgstr "Přepnout okno na všechny/jednu pracovní plochu"
 
 #: ../data/50-mutter-windows.xml.in.h:13
 msgid "Raise window if covered, otherwise lower it"
 msgstr ""
-"Přenést okno do popředí, pokud je zakryté, jinak jej odsunout do pozadí"
+"Když je okno zakryté vynést jej do popředí, jinak odsunout do pozadí"
 
 #: ../data/50-mutter-windows.xml.in.h:14
 msgid "Raise window above other windows"
-msgstr "Přenést okno do popředí nad ostatní okna"
+msgstr "Vynést okno do popředí nad ostatní okna"
 
 #: ../data/50-mutter-windows.xml.in.h:15
 msgid "Lower window below other windows"
-msgstr "Odsunout okno do pozadí pod ostatní okna"
+msgstr "Odsunout okno do pozadí za ostatní okna"
 
 #: ../data/50-mutter-windows.xml.in.h:16
 msgid "Maximize window vertically"
@@ -259,11 +259,11 @@ msgstr "Maximalizovat okno vodorovně"
 
 #: ../data/50-mutter-windows.xml.in.h:18
 msgid "View split on left"
-msgstr "Zobrazit rozdělení nalevo"
+msgstr "Rozdělit okno přes levou půlku obrazovky"
 
 #: ../data/50-mutter-windows.xml.in.h:19
 msgid "View split on right"
-msgstr "Zobrazit rozdělení napravo"
+msgstr "Rozdělit okno přes pravou půlku obrazovky"
 
 #: ../data/mutter.desktop.in.h:1
 msgid "Mutter"
