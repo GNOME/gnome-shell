@@ -30,91 +30,91 @@ msgstr "Navigace"
 
 #: ../data/50-mutter-navigation.xml.in.h:2
 msgid "Move window to workspace 1"
-msgstr "Přesunout okno na plochu 1"
+msgstr "Přesunout okno na pracovní plochu 1"
 
 #: ../data/50-mutter-navigation.xml.in.h:3
 msgid "Move window to workspace 2"
-msgstr "Přesunout okno na plochu 2"
+msgstr "Přesunout okno na pracovní plochu 2"
 
 #: ../data/50-mutter-navigation.xml.in.h:4
 msgid "Move window to workspace 3"
-msgstr "Přesunout okno na plochu 3"
+msgstr "Přesunout okno na pracovní plochu 3"
 
 #: ../data/50-mutter-navigation.xml.in.h:5
 msgid "Move window to workspace 4"
-msgstr "Přesunout okno na plochu 4"
+msgstr "Přesunout okno na pracovní plochu 4"
 
 #: ../data/50-mutter-navigation.xml.in.h:6
 msgid "Move window to last workspace"
-msgstr "Přesunout okno na poslední plochu"
+msgstr "Přesunout okno na poslední pracovní plochu"
 
 #: ../data/50-mutter-navigation.xml.in.h:7
 msgid "Move window one workspace to the left"
-msgstr "Přesunout okno o plochu doleva"
+msgstr "Přesunout okno o jednu pracovní plochu doleva"
 
 #: ../data/50-mutter-navigation.xml.in.h:8
 msgid "Move window one workspace to the right"
-msgstr "Přesunout okno o plochu doprava"
+msgstr "Přesunout okno o jednu pracovní plochu doprava"
 
 #: ../data/50-mutter-navigation.xml.in.h:9
 msgid "Move window one workspace up"
-msgstr "Přesunout okno o plochu nahoru"
+msgstr "Přesunout okno o jednu pracovní plochu nahoru"
 
 #: ../data/50-mutter-navigation.xml.in.h:10
 msgid "Move window one workspace down"
-msgstr "Přesunout okno o plochu dolů"
+msgstr "Přesunout okno o jednu pracovní plochu dolů"
 
 #: ../data/50-mutter-navigation.xml.in.h:11
 msgid "Move window one monitor to the left"
-msgstr "Přesunout okno o monitor doleva"
+msgstr "Přesunout okno o jeden monitor doleva"
 
 #: ../data/50-mutter-navigation.xml.in.h:12
 msgid "Move window one monitor to the right"
-msgstr "Přesunout okno o monitor doprava"
+msgstr "Přesunout okno o jeden monitor doprava"
 
 #: ../data/50-mutter-navigation.xml.in.h:13
 msgid "Move window one monitor up"
-msgstr "Přesunout okno o monitor nahoru"
+msgstr "Přesunout okno o jeden monitor nahoru"
 
 #: ../data/50-mutter-navigation.xml.in.h:14
 msgid "Move window one monitor down"
-msgstr "Přesunout okno o monitor dolů"
+msgstr "Přesunout okno o jeden monitor dolů"
 
 #: ../data/50-mutter-navigation.xml.in.h:15
 msgid "Switch applications"
-msgstr "Přepnout mezi aplikacemi"
+msgstr "Přepnout do jiné aplikace"
 
 #: ../data/50-mutter-navigation.xml.in.h:16
 msgid "Switch to previous application"
-msgstr "Přepnout na předchozí aplikaci"
+msgstr "Přepnout do předchozí aplikaci"
 
 #: ../data/50-mutter-navigation.xml.in.h:17
 msgid "Switch windows"
-msgstr "Přepnout mezi okny"
+msgstr "Přepnout do jiného okna"
 
 #: ../data/50-mutter-navigation.xml.in.h:18
 msgid "Switch to previous window"
-msgstr "Přepnout na předchozí okno"
+msgstr "Přepnout do minulého okna"
 
 #: ../data/50-mutter-navigation.xml.in.h:19
 msgid "Switch windows of an application"
-msgstr "Přepnout mezi okny aplikace"
+msgstr "Přepnout do jiného okna aplikace"
 
 #: ../data/50-mutter-navigation.xml.in.h:20
 msgid "Switch to previous window of an application"
-msgstr "Přepnout na předchozí okno aplikace"
+msgstr "Přepnout do předchozího okna aplikace"
 
 #: ../data/50-mutter-navigation.xml.in.h:21
 msgid "Switch system controls"
-msgstr "Přepnout mezi systémovými ovládacími prvky"
+msgstr "Přepnout na systémový ovládací prvek"
 
 #: ../data/50-mutter-navigation.xml.in.h:22
 msgid "Switch to previous system control"
-msgstr "Přepnout na předchozí systémové ovládací prvky"
+msgstr "Přepnout na minulý systémový ovládací prvek"
 
 #: ../data/50-mutter-navigation.xml.in.h:23
 msgid "Switch windows directly"
-msgstr "Přepnout přímo mezi okny"
+msgstr "Přepnout do minulého okna"
 
 #: ../data/50-mutter-navigation.xml.in.h:24
 msgid "Switch directly to previous window"
@@ -122,15 +122,15 @@ msgstr "Přepnout přímo na předchozí okno"
 
 #: ../data/50-mutter-navigation.xml.in.h:25
 msgid "Switch windows of an app directly"
-msgstr "Přepnout přímo mezi okny aplikace"
+msgstr "Přepnout do jiného okna aplikace"
 
 #: ../data/50-mutter-navigation.xml.in.h:26
 msgid "Switch directly to previous window of an app"
-msgstr "Přepnout přímo na předchozí okno aplikace"
+msgstr "Přepnout do předchozího okna aplikace"
 
 #: ../data/50-mutter-navigation.xml.in.h:27
 msgid "Switch system controls directly"
-msgstr "Přepnout přímo mezi systémovými ovládacími prvky"
+msgstr "Přepnout na minulý systémový ovládací prvek"
 
 #: ../data/50-mutter-navigation.xml.in.h:28
 msgid "Switch directly to previous system control"
