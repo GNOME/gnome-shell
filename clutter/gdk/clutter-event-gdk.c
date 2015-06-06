@@ -248,7 +248,10 @@ clutter_gdk_handle_event (GdkEvent *gdk_event)
       clutter_event_set_source_device (event, source_device);
       if (gdk_event->type == GDK_ENTER_NOTIFY)
         _clutter_input_device_set_stage (clutter_event_get_device (event), stage);
-      else
+      else if (gdk_event->type == GDK_LEAVE_NOTIFY &&
+               gdk_event->crossing.mode != GDK_CROSSING_TOUCH_BEGIN &&
+               gdk_event->crossing.mode != GDK_CROSSING_TOUCH_END &&
+               gdk_event->crossing.mode != GDK_CROSSING_DEVICE_SWITCH)
         _clutter_input_device_set_stage (clutter_event_get_device (event), NULL);
       CLUTTER_NOTE (EVENT, "Crossing %s [%.2f, %.2f]",
                     event->type == CLUTTER_ENTER ? "enter" : "leave",
