@@ -111,6 +111,34 @@ shell_keyring_prompt_init (ShellKeyringPrompt *self)
 
 }
 
+static gchar *
+remove_mnemonics (const GValue *value)
+{
+  const gchar mnemonic = '_';
+  gchar *stripped_label, *temp;
+  const gchar *label;
+
+  g_return_val_if_fail (value != NULL, NULL);
+  g_return_val_if_fail (G_VALUE_HOLDS_STRING (value), NULL);
+
+  label = g_value_get_string (value);
+  g_return_val_if_fail (label != NULL, NULL);
+
+  /* Stripped label will have the original label lenght at most */
+  stripped_label = temp = g_new (gchar, strlen(label) + 1);
+  g_assert (stripped_label != NULL);
+
+  while (*label != '\0')
+    {
+      if (*label == mnemonic)
+        label++;
+      *(temp++) = *(label++);
+    }
+  *temp = '\0';
+
+  return stripped_label;
+}
+
 static void
 shell_keyring_prompt_set_property (GObject      *obj,
                                    guint         prop_id,
@@ -145,7 +173,7 @@ shell_keyring_prompt_set_property (GObject      *obj,
     break;
   case PROP_CHOICE_LABEL:
     g_free (self->choice_label);
-    self->choice_label = g_value_dup_string (value);
+    self->choice_label = remove_mnemonics (value);
     if (!self->choice_label)
         self->choice_label = g_strdup ("");
     g_object_notify (obj, "choice-label");
@@ -165,12 +193,12 @@ shell_keyring_prompt_set_property (GObject      *obj,
     break;
   case PROP_CONTINUE_LABEL:
     g_free (self->continue_label);
-    self->continue_label = g_value_dup_string (value);
+    self->continue_label = remove_mnemonics (value);
     g_object_notify (obj, "continue-label");
     break;
   case PROP_CANCEL_LABEL:
     g_free (self->cancel_label);
-    self->cancel_label = g_value_dup_string (value);
+    self->cancel_label = remove_mnemonics (value);
     g_object_notify (obj, "cancel-label");
     break;
   case PROP_PASSWORD_ACTOR:
