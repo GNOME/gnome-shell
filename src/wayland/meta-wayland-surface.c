@@ -486,6 +486,9 @@ apply_pending_state (MetaWaylandSurface      *surface,
 
   if (pending->newly_attached)
     {
+      if (!surface->buffer && surface->window)
+        meta_window_queue (surface->window, META_QUEUE_CALC_SHOWING);
+
       surface_set_buffer (surface, pending->buffer);
 
       if (pending->buffer)
