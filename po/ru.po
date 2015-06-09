@@ -19,8 +19,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-03-29 18:01+0000\n"
-"PO-Revision-Date: 2015-03-29 20:32+0300\n"
+"POT-Creation-Date: 2015-06-09 20:04+0000\n"
+"PO-Revision-Date: 2015-06-10 02:09+0300\n"
 "Last-Translator: Stas Solovey <whats_up@tut.by>\n"
 "Language-Team: Русский <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
@@ -326,16 +326,16 @@ msgstr "Расширения GNOME Shell"
 msgid "Cancel"
 msgstr "Отмена"
 
-#: ../js/gdm/authPrompt.js:169 ../js/gdm/authPrompt.js:217
+#: ../js/gdm/authPrompt.js:169 ../js/gdm/authPrompt.js:215
 msgid "Next"
 msgstr "Далее"
 
-#: ../js/gdm/authPrompt.js:213 ../js/ui/shellMountOperation.js:403
+#: ../js/gdm/authPrompt.js:211 ../js/ui/shellMountOperation.js:403
 #: ../js/ui/unlockDialog.js:59
 msgid "Unlock"
 msgstr "Разблокировать"
 
-#: ../js/gdm/authPrompt.js:215
+#: ../js/gdm/authPrompt.js:213
 msgctxt "button"
 msgid "Sign In"
 msgstr "Войти"
@@ -494,14 +494,19 @@ msgstr "Приложение %s добавлено в избранное."
 msgid "%s has been removed from your favorites."
 msgstr "Приложение %s удалено из избранного."
 
-#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:650
-#: ../js/ui/status/system.js:334
-msgid "Settings"
-msgstr "Параметры"
-
-#: ../js/ui/backgroundMenu.js:21
+#: ../js/ui/backgroundMenu.js:19
 msgid "Change Background…"
 msgstr "Изменить фон…"
+
+#: ../js/ui/backgroundMenu.js:21
+#| msgid "Privacy Settings"
+msgid "Display Settings"
+msgstr "Параметры дисплея"
+
+#: ../js/ui/backgroundMenu.js:22 ../js/ui/panel.js:650
+#: ../js/ui/status/system.js:357
+msgid "Settings"
+msgstr "Параметры"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday). */
 #: ../js/ui/calendar.js:53
@@ -575,35 +580,35 @@ msgctxt "event list time"
 msgid "All Day"
 msgstr "Весь день"
 
-#: ../js/ui/calendar.js:1293
+#: ../js/ui/calendar.js:1289
 msgid "Clear section"
 msgstr "Очистить секцию"
 
-#: ../js/ui/calendar.js:1520
+#: ../js/ui/calendar.js:1516
 msgid "Events"
 msgstr "События"
 
 # fix для даты в календаре и на экране блокировки, за разъяснением обращаться к Stas Solovey <whats_up@tut.by>
-#: ../js/ui/calendar.js:1529
+#: ../js/ui/calendar.js:1525
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d %b."
 
 # fix для даты в календаре и на экране блокировки
-#: ../js/ui/calendar.js:1533
+#: ../js/ui/calendar.js:1529
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d %b. %Y"
 
-#: ../js/ui/calendar.js:1618
+#: ../js/ui/calendar.js:1614
 msgid "Notifications"
 msgstr "Уведомления"
 
-#: ../js/ui/calendar.js:1769
+#: ../js/ui/calendar.js:1765
 msgid "No Notifications"
 msgstr "Уведомлений нет"
 
-#: ../js/ui/calendar.js:1772
+#: ../js/ui/calendar.js:1768
 msgid "No Events"
 msgstr "Событий нет"
 
@@ -738,7 +743,7 @@ msgstr "Не удалось подтвердить подлинность. По�
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name. */
-#: ../js/ui/components/telepathyClient.js:732
+#: ../js/ui/components/telepathyClient.js:757
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "Контакт %s теперь известен как %s"
@@ -927,16 +932,16 @@ msgstr "Установить"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Загрузить и установить расширение «%s» из extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:714 ../js/ui/status/keyboard.js:724
+#: ../js/ui/keyboard.js:747 ../js/ui/status/keyboard.js:713
 msgid "Keyboard"
 msgstr "Клавиатура"
 
 #. translators: 'Hide' is a verb */
-#: ../js/ui/legacyTray.js:64
+#: ../js/ui/legacyTray.js:66
 msgid "Hide tray"
 msgstr "Скрыть лоток"
 
-#: ../js/ui/legacyTray.js:105
+#: ../js/ui/legacyTray.js:107
 msgid "Status Icons"
 msgstr "Значки состояния"
 
@@ -992,7 +997,7 @@ msgstr "Показать код"
 msgid "Web Page"
 msgstr "Веб-страница"
 
-#: ../js/ui/messageTray.js:1507
+#: ../js/ui/messageTray.js:1506
 msgid "System Information"
 msgstr "Системная информация"
 
@@ -1034,7 +1039,7 @@ msgstr "toggle-switch-intl"
 msgid "Enter a Command"
 msgstr "Введите команду"
 
-#: ../js/ui/runDialog.js:110 ../js/ui/windowMenu.js:120
+#: ../js/ui/runDialog.js:110 ../js/ui/windowMenu.js:153
 msgid "Close"
 msgstr "Закрыть"
 
@@ -1065,19 +1070,19 @@ msgstr[0] "%d новое уведомление"
 msgstr[1] "%d новых уведомления"
 msgstr[2] "%d новых уведомлений"
 
-#: ../js/ui/screenShield.js:432 ../js/ui/status/system.js:342
+#: ../js/ui/screenShield.js:432 ../js/ui/status/system.js:365
 msgid "Lock"
 msgstr "Заблокировать"
 
-#: ../js/ui/screenShield.js:668
+#: ../js/ui/screenShield.js:684
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME необходимо заблокировать экран"
 
-#: ../js/ui/screenShield.js:795 ../js/ui/screenShield.js:1271
+#: ../js/ui/screenShield.js:805 ../js/ui/screenShield.js:1271
 msgid "Unable to lock"
 msgstr "Не удалось заблокировать"
 
-#: ../js/ui/screenShield.js:796 ../js/ui/screenShield.js:1272
+#: ../js/ui/screenShield.js:806 ../js/ui/screenShield.js:1272
 msgid "Lock was blocked by an application"
 msgstr "Блокировке помешало приложение"
 
@@ -1188,7 +1193,7 @@ msgstr "Не подключено"
 msgid "Brightness"
 msgstr "Яркость"
 
-#: ../js/ui/status/keyboard.js:747
+#: ../js/ui/status/keyboard.js:736
 msgid "Show Keyboard Layout"
 msgstr "Показать раскладку клавиатуры"
 
@@ -1406,23 +1411,23 @@ msgstr "Режим авиаперелёта"
 msgid "On"
 msgstr "Включено"
 
-#: ../js/ui/status/system.js:314
+#: ../js/ui/status/system.js:337
 msgid "Switch User"
 msgstr "Сменить пользователя"
 
-#: ../js/ui/status/system.js:319
+#: ../js/ui/status/system.js:342
 msgid "Log Out"
 msgstr "Завершить сеанс"
 
-#: ../js/ui/status/system.js:338
+#: ../js/ui/status/system.js:361
 msgid "Orientation Lock"
 msgstr "Заблокировать положение"
 
-#: ../js/ui/status/system.js:346
+#: ../js/ui/status/system.js:369
 msgid "Suspend"
 msgstr "Ждущий режим"
 
-#: ../js/ui/status/system.js:349
+#: ../js/ui/status/system.js:372
 msgid "Power Off"
 msgstr "Выключить"
 
@@ -1484,7 +1489,7 @@ msgstr[2] "Изменения параметров будут отменены �
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height. */
-#: ../js/ui/windowManager.js:613
+#: ../js/ui/windowManager.js:605
 #, javascript-format
 msgid "%d x %d"
 msgstr "%d x %d"
@@ -1528,6 +1533,24 @@ msgstr "Переместить на рабочее место вверх"
 #: ../js/ui/windowMenu.js:111
 msgid "Move to Workspace Down"
 msgstr "Переместить на рабочее место вниз"
+
+#: ../js/ui/windowMenu.js:127
+#| msgid "Move to Workspace Up"
+msgid "Move to Monitor Up"
+msgstr "Переместить на экран вверх"
+
+#: ../js/ui/windowMenu.js:133
+#| msgid "Move to Workspace Down"
+msgid "Move to Monitor Down"
+msgstr "Переместить на экран вниз"
+
+#: ../js/ui/windowMenu.js:139
+msgid "Move to Monitor Left"
+msgstr "Переместить на экран влево"
+
+#: ../js/ui/windowMenu.js:145
+msgid "Move to Monitor Right"
+msgstr "Переместить на экран вправо"
 
 #: ../src/calendar-server/evolution-calendar.desktop.in.in.h:1
 msgid "Evolution Calendar"
@@ -1584,11 +1607,11 @@ msgstr "Неизвестное приложение"
 msgid "Failed to launch “%s”"
 msgstr "Не удалось запустить «%s»"
 
-#: ../src/shell-keyring-prompt.c:714
+#: ../src/shell-keyring-prompt.c:742
 msgid "Passwords do not match."
 msgstr "Пароли не совпадают."
 
-#: ../src/shell-keyring-prompt.c:722
+#: ../src/shell-keyring-prompt.c:750
 msgid "Password cannot be blank"
 msgstr "Пароль не может быть пустым"
 
