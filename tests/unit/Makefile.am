@@ -19,7 +19,7 @@ wrappers: stamp-test-unit
 	@true
 stamp-test-unit: Makefile test-unit$(EXEEXT)
 	@mkdir -p wrappers
-	source $(top_builddir)/cogl/libcogl.la ; \
+	. $(top_builddir)/cogl/libcogl.la ; \
 	  $(NM) $(top_builddir)/cogl/.libs/"$$dlname"| \
 	  grep '[DR] _\?unit_test_'|sed 's/.\+ [DR] _\?//' > unit-tests
 	@chmod +x $(top_srcdir)/tests/test-launcher.sh
