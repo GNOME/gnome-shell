@@ -57,9 +57,9 @@
 #define CLUTTER_DISABLE_DEPRECATION_WARNINGS
 #include "deprecated/clutter-backend.h"
 
-#ifdef HAVE_CLUTTER_WAYLAND_COMPOSITOR
+#ifdef CLUTTER_HAS_WAYLAND_COMPOSITOR_SUPPORT
 #include "wayland/clutter-wayland-compositor.h"
-#endif /* HAVE_CLUTTER_WAYLAND_COMPOSITOR */
+#endif
 
 #include <cogl/cogl.h>
 
@@ -95,7 +95,7 @@
 #include "mir/clutter-device-manager-mir.h"
 #endif
 
-#ifdef HAVE_CLUTTER_WAYLAND_COMPOSITOR
+#ifdef CLUTTER_HAS_WAYLAND_COMPOSITOR_SUPPORT
 #include <cogl/cogl-wayland-server.h>
 #include <wayland-server.h>
 #include "wayland/clutter-wayland-compositor.h"
@@ -130,7 +130,7 @@ static guint backend_signals[LAST_SIGNAL] = { 0, };
 
 /* Global for being able to specify a compositor side wayland display
  * pointer before clutter initialization */
-#ifdef HAVE_CLUTTER_WAYLAND_COMPOSITOR
+#ifdef CLUTTER_HAS_WAYLAND_COMPOSITOR_SUPPORT
 static struct wl_display *_wayland_compositor_display;
 #endif
 
@@ -286,7 +286,7 @@ clutter_backend_real_create_context (ClutterBackend  *backend,
   if (backend->cogl_renderer == NULL)
     goto error;
 
-#ifdef HAVE_CLUTTER_WAYLAND_COMPOSITOR
+#ifdef CLUTTER_HAS_WAYLAND_COMPOSITOR_SUPPORT
   /* If the application is trying to act as a Wayland compositor then
      it needs to have an EGL-based renderer backend */
   if (_wayland_compositor_display)
@@ -337,7 +337,7 @@ clutter_backend_real_create_context (ClutterBackend  *backend,
   if (backend->cogl_display == NULL)
     goto error;
 
-#ifdef HAVE_CLUTTER_WAYLAND_COMPOSITOR
+#ifdef CLUTTER_HAS_WAYLAND_COMPOSITOR_SUPPORT
   cogl_wayland_display_set_compositor_display (backend->cogl_display,
                                                _wayland_compositor_display);
 #endif
@@ -1380,7 +1380,7 @@ clutter_backend_get_cogl_context (ClutterBackend *backend)
   return backend->cogl_context;
 }
 
-#ifdef HAVE_CLUTTER_WAYLAND_COMPOSITOR
+#ifdef CLUTTER_HAS_WAYLAND_COMPOSITOR_SUPPORT
 /**
  * clutter_wayland_set_compositor_display:
  * @display: A compositor side struct wl_display pointer
