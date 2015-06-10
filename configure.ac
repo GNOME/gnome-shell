@@ -343,6 +343,30 @@ AS_IF([test "x$enable_wayland" = "xyes"],
         SUPPORT_WAYLAND=1
         SUPPORT_COGL=1
 
+        # We need to manually check for Wayland support in Cogl because
+        # the windowing systems are not exposed in the pkg-config file
+        saved_CFLAGS="${CFLAGS}"
+        CFLAGS="`$PKG_CONFIG --cflags $CLUTTER_BASE_PC_FILES`"
+
+        AC_MSG_CHECKING([for Wayland Cogl backend])
+        AC_TRY_COMPILE([#include <cogl/cogl.h>],
+                       [
+                         #ifndef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
+                         #error "No Wayland support in Cogl"
+                         #endif
+                         int main (void) { return 0; }
+                       ],
+                       [
+                         AC_MSG_RESULT(yes)
+                         have_cogl_wayland=yes
+                       ],
+                       [
+                         AC_MSG_RESULT(no)
+                         have_cogl_wayland=no
+                       ])
+        CFLAGS="${saved_CFLAGS}"
+        AS_IF([test "x$have_cogl_wayland" = xno], [AC_MSG_ERROR("*** Cogl is missing Wayland support.")])
+
         PKG_CHECK_EXISTS([wayland-client wayland-cursor xkbcommon gdk-pixbuf-2.0],
                          [
                             BACKEND_PC_FILES="$BACKEND_PC_FILES wayland-cursor wayland-client xkbcommon"
