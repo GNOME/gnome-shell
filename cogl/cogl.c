@@ -760,7 +760,7 @@ _cogl_init (void)
       bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
 #endif
 
-#ifdef COGL_HAS_GTYPE_SUPPORT
+#if defined(COGL_HAS_GTYPE_SUPPORT) && !GLIB_CHECK_VERSION (2, 36, 0)
       g_type_init ();
 #endif
 
