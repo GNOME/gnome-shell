@@ -371,11 +371,11 @@ AC_ARG_ENABLE(
   enable_maintainer_flags=maintainer_default
 )
 
-MAINTAINER_COMPILER_FLAGS="-Wall -Wcast-align -Wuninitialized
-                           -Wno-strict-aliasing -Wempty-body -Wformat
-                           -Wformat-security -Winit-self -Wundef
-                           -Wdeclaration-after-statement -Wvla
-                           -Wpointer-arith -Wmissing-declarations"
+MAINTAINER_COMPILER_FLAGS="-Wall -Werror=cast-align -Wformat -Wformat-security
+                           -Werror=uninitialized -Werror=no-strict-aliasing
+                           -Werror=empty-body -Werror=init-self -Werror=undef
+                           -Werror=declaration-after-statement -Werror=vla
+                           -Werror=pointer-arith -Werror=missing-declarations"
 
 AS_CASE(
   [$enable_maintainer_flags],
