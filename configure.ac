@@ -349,8 +349,6 @@ AS_IF([test "x$enable_wayland" = "xyes"],
                             BACKEND_PC_FILES_PRIVATE="$BACKEND_PC_FILES_PRIVATE gdk-pixbuf-2.0"
                          ],
                          [])
-
-        AC_DEFINE([HAVE_CLUTTER_WAYLAND], [1], [Have the Wayland client backend])
       ])
 
 dnl Note this is orthogonal to the client side support and you can
@@ -375,7 +373,6 @@ AS_IF([test "x$enable_wayland_compositor" = "xyes"],
 
 	CLUTTER_CONFIG_DEFINES="$CLUTTER_CONFIG_DEFINES
 #define CLUTTER_HAS_WAYLAND_COMPOSITOR_SUPPORT 1"
-        AC_DEFINE([HAVE_CLUTTER_WAYLAND_COMPOSITOR], [1], [Have Wayland compositor support])
       ])
 
 AM_CONDITIONAL(SUPPORT_WAYLAND_COMPOSITOR, [test "x$SUPPORT_WAYLAND_COMPOSITOR" = "x1"])
@@ -419,7 +416,6 @@ AS_IF([test "x$enable_cex100" = "xyes"],
 
         AC_DEFINE([CLUTTER_EGL_BACKEND_CEX100], [1], [Use CEX100 EGL backend])
         AC_DEFINE([CLUTTER_EGL_BACKEND_GENERIC], [1], [Use Generic EGL backend])
-        AC_DEFINE([HAVE_CLUTTER_EGL], [1], [Have the EGL backend])
       ])
 
 AS_IF([test "x$enable_egl" = "xyes"],
@@ -433,16 +429,12 @@ AS_IF([test "x$enable_egl" = "xyes"],
         FLAVOUR_CFLAGS="$FLAVOUR_CFLAGS $TSLIB_CFLAGS $EVDEV_CFLAGS"
 
         AC_DEFINE([CLUTTER_EGL_BACKEND_GENERIC], [1], [Use Generic EGL backend])
-
-        AC_DEFINE([HAVE_CLUTTER_EGL], [1], [Have the EGL backend])
       ])
 
 AS_IF([test "x$enable_osx" = "xyes"],
       [
         CLUTTER_BACKENDS="$CLUTTER_BACKENDS osx"
         CLUTTER_INPUT_BACKENDS="$CLUTTER_INPUT_BACKENDS osx"
-
-        AC_DEFINE([HAVE_CLUTTER_OSX], [1], [Have the OSX backend])
 
         FLAVOUR_LIBS="$FLAVOUR_LIBS -framework Cocoa -framework OpenGL"
 
@@ -453,8 +445,6 @@ AS_IF([test "x$enable_win32" = "xyes"],
       [
         CLUTTER_BACKENDS="$CLUTTER_BACKENDS win32"
         CLUTTER_INPUT_BACKENDS="$CLUTTER_INPUT_BACKENDS win32"
-
-        AC_DEFINE([HAVE_CLUTTER_WIN32], [1], [Have the Win32 backend])
 
         FLAVOUR_LIBS="$FLAVOUR_LIBS -lopengl32 -lgdi32 -lwinmm"
         FLAVOUR_CFLAGS="$FLAVOUR_CFLAGS -D_WIN32_WINNT=0x0500"
@@ -499,8 +489,6 @@ AS_IF([test "x$enable_mir" = "xyes"],
         PKG_CHECK_EXISTS([mirclient],
                          [BACKEND_PC_FILES="$BACKEND_PC_FILES mirclient"],
                          [])
-
-        AC_DEFINE([HAVE_CLUTTER_MIR], [1], [Have the mir client backend])
       ])
 
 AS_IF([test "x$CLUTTER_BACKENDS" = "x"],
