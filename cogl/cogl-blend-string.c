@@ -473,7 +473,7 @@ parse_argument (const char *string, /* original user string */
   const char *error_string = NULL;
   ParserArgState state = PARSER_ARG_STATE_START;
   CoglBool parsing_factor = FALSE;
-  CoglBool implicit_factor_brace;
+  CoglBool implicit_factor_brace = FALSE;
 
   arg->source.is_zero = FALSE;
   arg->source.info = NULL;
