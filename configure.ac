@@ -401,14 +401,6 @@ AS_IF([test "x$enable_wayland_compositor" = "xyes"],
 
 AM_CONDITIONAL(SUPPORT_WAYLAND_COMPOSITOR, [test "x$SUPPORT_WAYLAND_COMPOSITOR" = "x1"])
 
-AS_IF([test "x$enable_wayland_compositor" != "xyes" -a "x$enable_wayland" != "xyes"],
-      [
-        # The wayland headers introduce so much symbol shadowing that build
-        # logs become incomprehensible with -Wshadow so we only use it for
-        # non-wayland builds.
-	MAINTAINER_COMPILER_FLAGS="-Wshadow"
-      ])
-
 AS_IF([test "x$enable_cex100" = "xyes"],
       [
         CLUTTER_BACKENDS="$CLUTTER_BACKENDS cex100"
@@ -953,6 +945,7 @@ MAINTAINER_COMPILER_FLAGS="$MAINTAINER_COMPILER_FLAGS
                            -Wcast-align
                            -Wuninitialized
                            -Wno-strict-aliasing
+                           -Wshadow
                            -Werror=logical-op
                            -Werror=pointer-arith
                            -Werror=missing-declarations
