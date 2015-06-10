@@ -34,6 +34,8 @@
 #include "clutter-stage-private.h"
 #include "clutter-private.h"
 
+#include <stdlib.h>
+
 #define DEFAULT_FONT_NAME       "Sans 12"
 
 #define CLUTTER_SETTINGS_CLASS(klass)           (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_SETTINGS, ClutterSettingsClass))
