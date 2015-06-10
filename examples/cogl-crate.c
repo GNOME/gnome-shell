@@ -121,12 +121,12 @@ paint (Data *data)
 
   /* And finally render our Pango layouts... */
 
-  cogl_pango_render_layout (data->hello_label,
-                            (data->framebuffer_width / 2) -
-                            (data->hello_label_width / 2),
-                            (data->framebuffer_height / 2) -
-                            (data->hello_label_height / 2),
-                            &white, 0);
+  cogl_pango_show_layout (fb, data->hello_label,
+                          (data->framebuffer_width / 2) -
+                          (data->hello_label_width / 2),
+                          (data->framebuffer_height / 2) -
+                          (data->hello_label_height / 2),
+                          &white);
 }
 
 static void
@@ -264,8 +264,6 @@ main (int argc, char **argv)
   pango_layout_get_extents (data.hello_label, NULL, &hello_label_size);
   data.hello_label_width = PANGO_PIXELS (hello_label_size.width);
   data.hello_label_height = PANGO_PIXELS (hello_label_size.height);
-
-  cogl_push_framebuffer (fb);
 
   data.swap_ready = TRUE;
 
