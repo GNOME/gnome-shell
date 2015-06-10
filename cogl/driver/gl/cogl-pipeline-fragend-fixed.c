@@ -208,6 +208,9 @@ _cogl_pipeline_fragend_fixed_add_layer (CoglPipeline *pipeline,
         case COGL_TEXTURE_TYPE_RECTANGLE:
           gl_target = GL_TEXTURE_RECTANGLE_ARB;
           break;
+
+        default:
+          g_assert_not_reached ();
         }
 
       _cogl_set_active_texture_unit (unit_index);

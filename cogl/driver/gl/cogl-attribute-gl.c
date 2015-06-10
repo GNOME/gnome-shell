@@ -82,6 +82,8 @@ toggle_builtin_attribute_enabled_cb (int bit_num, void *user_data)
       case COGL_ATTRIBUTE_NAME_ID_NORMAL_ARRAY:
         cap = GL_NORMAL_ARRAY;
         break;
+      default:
+        g_assert_not_reached ();
       }
     if (enabled)
       GE (context, glEnableClientState (cap));
