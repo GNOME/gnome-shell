@@ -373,7 +373,7 @@ _cogl_atlas_reserve_space (CoglAtlas             *atlas,
   CoglAtlasGetRectanglesData data;
   CoglRectangleMap *new_map;
   CoglTexture2D *new_tex;
-  unsigned int map_width, map_height;
+  unsigned int map_width = 0, map_height = 0;
   CoglBool ret;
   CoglRectangleMapEntry new_position;
 
