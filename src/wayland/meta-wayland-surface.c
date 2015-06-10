@@ -1273,8 +1273,8 @@ xdg_shell_get_xdg_popup (struct wl_client *client,
 
   window = meta_window_wayland_new (display, surface);
   meta_window_move_frame (window, FALSE,
-                          parent_surf->window->rect.x + x,
-                          parent_surf->window->rect.y + y);
+                          parent_surf->window->buffer_rect.x + x,
+                          parent_surf->window->buffer_rect.y + y);
   window->showing_for_first_time = FALSE;
   window->placed = TRUE;
 
