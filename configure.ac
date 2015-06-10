@@ -486,12 +486,11 @@ AS_IF([test "x$enable_mir" = "xyes"],
         SUPPORT_MIR=1
         SUPPORT_COGL=1
 
-        have_cogl_mir=no
-        SAVED_CFLAGS="${CFLAGS}"
+        # We need to manually check for Mir support in Cogl because
+        # the windowing systems are not exposed in the pkg-config file
+        saved_CFLAGS="${CFLAGS}"
         CFLAGS="`$PKG_CONFIG --cflags $CLUTTER_BASE_PC_FILES`"
 
-        # Manually check whether cogl has Mir support, as we can't rely on
-        # versioning yet.
         AC_MSG_CHECKING([for Mir Cogl backend])
         AC_TRY_COMPILE([#include <cogl/cogl.h>],
                        [
@@ -500,15 +499,17 @@ AS_IF([test "x$enable_mir" = "xyes"],
                         #endif
                         int main (void) { return 0; }
                        ],
-                       AC_MSG_RESULT(yes)
-                       have_cogl_mir=yes,
-                       AC_MSG_RESULT(no)
-                       have_cogl_mir=no)
+                       [
+                         AC_MSG_RESULT(yes)
+                         have_cogl_mir=yes
+                       ],
+                       [
+                         AC_MSG_RESULT(no)
+                         have_cogl_mir=no
+                       ])
 
-        CFLAGS="${SAVED_CFLAGS}"
-
-        AS_IF([test "x$have_cogl_mir" = "xno"],
-              [AC_MSG_ERROR([COGL_HAS_EGL_PLATFORM_MIR_SUPPORT not defined but the Mir backend has been explicitly enabled])])
+        CFLAGS="${saved_CFLAGS}"
+        AS_IF([test "x$have_cogl_mir" = xno], [AC_MSG_ERROR("*** Cogl is missing Mir support.")])
 
         PKG_CHECK_EXISTS([mirclient],
                          [BACKEND_PC_FILES="$BACKEND_PC_FILES mirclient"],
