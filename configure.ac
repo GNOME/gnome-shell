@@ -371,7 +371,7 @@ AC_ARG_ENABLE(
   enable_maintainer_flags=maintainer_default
 )
 
-MAINTAINER_COMPILER_FLAGS="-Wall -Werror=cast-align -Wformat -Wformat-security
+MAINTAINER_COMPILER_FLAGS="-Wall -Wcast-align -Wformat -Wformat-security
                            -Werror=uninitialized -Werror=no-strict-aliasing
                            -Werror=empty-body -Werror=init-self -Werror=undef
                            -Werror=declaration-after-statement -Werror=vla
