@@ -498,3 +498,51 @@ clutter_gdk_disable_event_retrieval (void)
 
   disable_event_retrieval = TRUE;
 }
+
+/**
+ * clutter_gdk_get_visual:
+ *
+ * Retrieves the #GdkVisual used by Clutter.
+ *
+ * This function should be used when embedding Clutter inside GDK-based
+ * foreign toolkits, to ensure that the visual applied to the #GdkWindow
+ * used to render the #ClutterStage is the correct one.
+ *
+ * Returns: (transfer none): a #GdkVisual instance
+ *
+ * Since: 1.22
+ */
+GdkVisual *
+clutter_gdk_get_visual (void)
+{
+  ClutterBackend *backend = clutter_get_default_backend ();
+  GdkScreen *screen;
+
+  if (backend == NULL)
+    {
+      g_critical ("The Clutter backend has not been initialised");
+      return NULL;
+    }
+
+  if (!CLUTTER_IS_BACKEND_GDK (backend))
+    {
+      g_critical ("The Clutter backend is not a GDK backend");
+      return NULL;
+    }
+
+  screen = CLUTTER_BACKEND_GDK (backend)->screen;
+  g_assert (screen != NULL);
+
+#if defined(GDK_WINDOWING_X11) && defined(COGL_HAS_XLIB_SUPPORT)
+  {
+    XVisualInfo *xvisinfo = cogl_clutter_winsys_xlib_get_visual_info ();
+    if (xvisinfo != NULL)
+      return gdk_x11_screen_lookup_visual (screen, xvisinfo->visualid);
+  }
+#endif
+
+  if (gdk_screen_get_rgba_visual (screen) != NULL)
+    return gdk_screen_get_rgba_visual (screen);
+
+  return gdk_screen_get_system_visual (screen);
+}

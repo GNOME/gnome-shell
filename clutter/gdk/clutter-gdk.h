@@ -61,6 +61,9 @@ ClutterStage *  clutter_gdk_get_stage_from_window       (GdkWindow    *window);
 CLUTTER_AVAILABLE_IN_1_10
 void            clutter_gdk_disable_event_retrieval     (void);
 
+CLUTTER_AVAILABLE_IN_1_22
+GdkVisual *     clutter_gdk_get_visual                  (void);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_GDK_H__ */

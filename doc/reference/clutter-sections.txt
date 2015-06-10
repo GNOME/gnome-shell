@@ -1519,6 +1519,7 @@ clutter_gdk_handle_event
 clutter_gdk_set_display
 clutter_gdk_get_default_display
 clutter_gdk_set_stage_foreign
+clutter_gdk_get_visual
 </SECTION>
 
 <SECTION>
