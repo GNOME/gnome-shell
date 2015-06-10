@@ -29,6 +29,10 @@
 
 #include <cogl/cogl.h>
 
+#ifdef COGL_HAS_XLIB_SUPPORT
+#include <cogl/cogl-xlib.h>
+#endif
+
 #define GDK_DISABLE_DEPRECATION_WARNINGS
 
 #include <gdk/gdk.h>
@@ -183,7 +187,7 @@ clutter_stage_gdk_realize (ClutterStageWindow *stage_window)
   GdkWindowAttr attributes;
   gboolean cursor_visible;
   gboolean use_alpha;
-  gfloat   width, height;
+  gfloat width, height;
 
   if (backend->cogl_context == NULL)
     {
@@ -191,12 +195,7 @@ clutter_stage_gdk_realize (ClutterStageWindow *stage_window)
       return FALSE;
     }
 
-  if (stage_gdk->foreign_window)
-    {
-      width = gdk_window_get_width (stage_gdk->window);
-      height = gdk_window_get_height (stage_gdk->window);
-    }
-  else
+  if (!stage_gdk->foreign_window)
     {
       if (stage_gdk->window != NULL)
         {
@@ -239,13 +238,34 @@ clutter_stage_gdk_realize (ClutterStageWindow *stage_window)
               attributes.cursor = stage_gdk->blank_cursor;
             }
 
-          attributes.visual = NULL;
+          /* If the ClutterStage:use-alpha is set, but GDK does not have an
+           * RGBA visual, then we unset the property on the Stage
+           */
           if (use_alpha)
             {
-              attributes.visual = gdk_screen_get_rgba_visual (backend_gdk->screen);
+              if (gdk_screen_get_rgba_visual (backend_gdk->screen) == NULL)
+                {
+                  clutter_stage_set_use_alpha (stage_cogl->wrapper, FALSE);
+                  use_alpha = FALSE;
+                }
+            }
 
-              if (attributes.visual == NULL)
-                clutter_stage_set_use_alpha (stage_cogl->wrapper, FALSE);
+#if defined(GDK_WINDOWING_X11) && defined(COGL_HAS_XLIB_SUPPORT)
+          if (GDK_IS_X11_DISPLAY (backend_gdk->display))
+            {
+              XVisualInfo *xvisinfo = cogl_clutter_winsys_xlib_get_visual_info ();
+              if (xvisinfo != NULL)
+                {
+                  attributes.visual = gdk_x11_screen_lookup_visual (backend_gdk->screen,
+                                                                    xvisinfo->visualid);
+                }
+            }
+          else
+#endif
+            {
+              attributes.visual = use_alpha
+                                ? gdk_screen_get_rgba_visual (backend_gdk->screen)
+                                : gdk_screen_get_system_visual (backend_gdk->screen);
             }
 
           if (attributes.visual == NULL)
@@ -263,11 +283,15 @@ clutter_stage_gdk_realize (ClutterStageWindow *stage_window)
 
       clutter_stage_gdk_set_gdk_geometry (stage_gdk);
     }
+  else
+    {
+      width = gdk_window_get_width (stage_gdk->window);
+      height = gdk_window_get_height (stage_gdk->window);
+    }
 
   gdk_window_ensure_native (stage_gdk->window);
 
-  g_object_set_data (G_OBJECT (stage_gdk->window),
-                     "clutter-stage-window", stage_gdk);
+  g_object_set_data (G_OBJECT (stage_gdk->window), "clutter-stage-window", stage_gdk);
 
   stage_cogl->onscreen = cogl_onscreen_new (backend->cogl_context,
 					    width, height);
