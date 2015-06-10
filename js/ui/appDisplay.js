@@ -753,7 +753,8 @@ const AllView = new Lang.Class({
         let fadeOffset = Math.min(this._grid.topPadding,
                                   this._grid.bottomPadding);
         this._scrollView.update_fade_effect(fadeOffset, 0);
-        this._scrollView.get_effect('fade').fade_edges = true;
+        if (fadeOffset > 0)
+            this._scrollView.get_effect('fade').fade_edges = true;
 
         if (this._availWidth != availWidth || this._availHeight != availHeight || oldNPages != this._grid.nPages()) {
             this._adjustment.value = 0;
