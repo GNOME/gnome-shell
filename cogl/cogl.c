@@ -59,6 +59,8 @@
 #include "cogl-attribute-gl-private.h"
 #include "cogl-clutter.h"
 
+#include "deprecated/cogl-framebuffer-deprecated.h"
+
 CoglFuncPtr
 cogl_get_proc_address (const char* name)
 {
