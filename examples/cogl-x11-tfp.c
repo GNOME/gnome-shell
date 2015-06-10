@@ -148,7 +148,7 @@ main (int argc, char **argv)
   Window tfp_xwin = None;
   Pixmap pixmap;
   CoglTexturePixmapX11 *tfp;
-  CoglTexture *right_texture;
+  CoglTexture *right_texture = NULL;
   GC gc = None;
   int i;
 
