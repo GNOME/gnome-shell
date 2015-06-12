@@ -93,6 +93,7 @@ MUTTER_PC_MODULES="
    xrender
    x11-xcb
    xcb-randr
+   xcb-xinput
 "
 
 GLIB_GSETTINGS
