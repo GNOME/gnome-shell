@@ -30,9 +30,7 @@
 #include <gdk/gdkx.h>
 #include <X11/Xatom.h>
 #include <X11/extensions/XInput2.h>
-#include <X11/Xlib-xcb.h>
 #include <X11/XKBlib.h>
-#include <xcb/xinput.h>
 
 #include <meta/errors.h>
 
@@ -80,7 +78,6 @@ change_property (ClutterInputDevice *device,
 {
   MetaBackend *backend = meta_get_backend ();
   Display *xdisplay = meta_backend_x11_get_xdisplay (META_BACKEND_X11 (backend));
-  xcb_connection_t *xcb_conn = XGetXCBConnection (xdisplay);
   int device_id;
   Atom property_atom;
   guchar *data_ret;
@@ -92,9 +89,8 @@ change_property (ClutterInputDevice *device,
   if (!data_ret)
     return;
 
-  xcb_input_xi_change_property (xcb_conn, device_id, XCB_PROP_MODE_REPLACE,
-                                format, property_atom, type,
-                                nitems, data);
+  XIChangeProperty (xdisplay, device_id, property_atom, type,
+                    format, XIPropModeReplace, data, nitems);
   meta_XFree (data_ret);
 }
 
