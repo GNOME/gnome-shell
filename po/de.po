@@ -21,16 +21,16 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-03-22 08:38+0000\n"
-"PO-Revision-Date: 2015-03-22 12:10+0100\n"
-"Last-Translator: Bernd Homuth <dev@hmt.im>\n"
+"POT-Creation-Date: 2015-05-25 08:02+0000\n"
+"PO-Revision-Date: 2015-05-25 13:57+0100\n"
+"Last-Translator: Benjamin Steinwender <b@stbe.at>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Gtranslator 2.91.6\n"
+"X-Generator: Poedit 1.7.1\n"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
 msgid "System"
@@ -101,8 +101,8 @@ msgstr ""
 "Die Erweiterungen der GNOME-Shell besitzen eine UUID-Eigenschaft. Dieser "
 "Schlüssel listet Erweiterungen auf, welche geladen werden sollen. Jede zu "
 "ladende Erweiterung muss in dieser Liste erscheinen. Sie können diese Liste "
-"auch mit den D-Bus-Methoden EnableExtension und DisableExtension in org."
-"gnome.Shell bearbeiten."
+"auch mit den D-Bus-Methoden EnableExtension und DisableExtension in org.gnome."
+"Shell bearbeiten."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:5
 msgid "Disables the validation of extension version compatibility"
@@ -113,8 +113,8 @@ msgstr ""
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:6
 msgid ""
 "GNOME Shell will only load extensions that claim to support the current "
-"running version. Enabling this option will disable this check and try to "
-"load all extensions regardless of the versions they claim to support."
+"running version. Enabling this option will disable this check and try to load "
+"all extensions regardless of the versions they claim to support."
 msgstr ""
 "GNOME-Shell lädt nur Erweiterungen, die die aktuelle Version unterstützen. "
 "Durch Aktivieren dieser Option wird die interne Kompatibilitätsprüfung "
@@ -130,8 +130,8 @@ msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
 msgstr ""
-"Programme, welche auf diese Bezeichner zutreffen, werden im Favoriten-"
-"Bereich angezeigt."
+"Programme, welche auf diese Bezeichner zutreffen, werden im Favoriten-Bereich "
+"angezeigt."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:9
 msgid "App Picker View"
@@ -162,8 +162,7 @@ msgstr ""
 "»Abmelden« in Einzelbenutzer, Einzelsitzungssituationen."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:15
-msgid ""
-"Whether to remember password for mounting encrypted or remote filesystems"
+msgid "Whether to remember password for mounting encrypted or remote filesystems"
 msgstr ""
 "Legt fest, ob Passwörter für eingehängte, verschlüsselte oder entfernte "
 "Dateisysteme gespeichert werden"
@@ -171,13 +170,13 @@ msgstr ""
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:16
 msgid ""
 "The shell will request a password when an encrypted device or a remote "
-"filesystem is mounted. If the password can be saved for future use a "
-"'Remember Password' checkbox will be present. This key sets the default "
-"state of the checkbox."
+"filesystem is mounted. If the password can be saved for future use a 'Remember "
+"Password' checkbox will be present. This key sets the default state of the "
+"checkbox."
 msgstr ""
 "Die Shell wird ein Passwort anfragen, sobald ein verschlüsseltes Gerät oder "
-"ein entferntes Dateisystem eingehängt wird. Falls das Passwort für die "
-"Zukunft gespeichert werden kann, wird ein Ankreuzfeld »An Passwort erinnern« "
+"ein entferntes Dateisystem eingehängt wird. Falls das Passwort für die Zukunft "
+"gespeichert werden kann, wird ein Ankreuzfeld »An Passwort erinnern« "
 "angeboten. Dieser Schlüssel stellt den Standardstatus für dieses Ankreuzfeld "
 "ein."
 
@@ -239,8 +238,8 @@ msgstr "Tastenkombination zur Ausrichtung auf die aktiven Benachrichtigungen."
 msgid ""
 "Keybinding that pauses and resumes all running tweens, for debugging purposes"
 msgstr ""
-"Tastenkombination, die alle laufenden Zwischenbilder anhält und fortsetzt. "
-"Zur Fehlerdiagnose."
+"Tastenkombination, die alle laufenden Zwischenbilder anhält und fortsetzt. Zur "
+"Fehlerdiagnose."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:30
 msgid "Which keyboard to use"
@@ -269,13 +268,13 @@ msgstr "Der Modus der Anwendungssymbole."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:35
 msgid ""
-"Configures how the windows are shown in the switcher. Valid possibilities "
-"are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-"
-"only' (shows only the application icon) or 'both'."
+"Configures how the windows are shown in the switcher. Valid possibilities are "
+"'thumbnail-only' (shows a thumbnail of the window), 'app-icon-only' (shows "
+"only the application icon) or 'both'."
 msgstr ""
 "Legt fest, wie Fenster im Fensterwechsler dargestellt werden. Mögliche Werte "
-"sind »thumbnail-only« (Vorschaubilder der Fenster werden angezeigt), »app-"
-"icon-only« (Nur das Anwendungssymbol wird angezeigt) oder »both« (beides)."
+"sind »thumbnail-only« (Vorschaubilder der Fenster werden angezeigt), »app-icon-"
+"only« (Nur das Anwendungssymbol wird angezeigt) oder »both« (beides)."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:36
 msgid ""
@@ -290,8 +289,7 @@ msgid "Attach modal dialog to the parent window"
 msgstr "Modalen Dialog an übergeordnetes Fenster binden"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:38
-msgid ""
-"This key overrides the key in org.gnome.mutter when running GNOME Shell."
+msgid "This key overrides the key in org.gnome.mutter when running GNOME Shell."
 msgstr ""
 "Dieser Schlüssel überschreibt den Schlüssel in org.gnome.mutter, wenn die "
 "GNOME-Shell läuft."
@@ -299,8 +297,8 @@ msgstr ""
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:39
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr ""
-"Größenanpassung aktivieren, wenn ein Fenster an die Bildschirmkante "
-"verschoben wird"
+"Größenanpassung aktivieren, wenn ein Fenster an die Bildschirmkante verschoben "
+"wird"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:40
 msgid "Workspaces are managed dynamically"
@@ -319,12 +317,12 @@ msgstr ""
 msgid "Network Login"
 msgstr "Netzwerkanmeldung"
 
-#: ../js/extensionPrefs/main.js:123
+#: ../js/extensionPrefs/main.js:122
 #, javascript-format
 msgid "There was an error loading the preferences dialog for %s:"
 msgstr "Beim Laden des Einstellungsdialogs für %s ist ein Fehler aufgetreten:"
 
-#: ../js/extensionPrefs/main.js:155
+#: ../js/extensionPrefs/main.js:154
 msgid "GNOME Shell Extensions"
 msgstr "GNOME-Shell-Erweiterungen"
 
@@ -335,39 +333,39 @@ msgstr "GNOME-Shell-Erweiterungen"
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: ../js/gdm/authPrompt.js:169 ../js/gdm/authPrompt.js:217
+#: ../js/gdm/authPrompt.js:169 ../js/gdm/authPrompt.js:215
 msgid "Next"
 msgstr "Weiter"
 
-#: ../js/gdm/authPrompt.js:213 ../js/ui/shellMountOperation.js:403
+#: ../js/gdm/authPrompt.js:211 ../js/ui/shellMountOperation.js:403
 #: ../js/ui/unlockDialog.js:59
 msgid "Unlock"
 msgstr "Entsperren"
 
-#: ../js/gdm/authPrompt.js:215
+#: ../js/gdm/authPrompt.js:213
 msgctxt "button"
 msgid "Sign In"
 msgstr "Anmelden"
 
-#: ../js/gdm/loginDialog.js:280
+#: ../js/gdm/loginDialog.js:281
 msgid "Choose Session"
 msgstr "Sitzung wählen"
 
-#: ../js/gdm/loginDialog.js:421
+#: ../js/gdm/loginDialog.js:431
 msgid "Not listed?"
 msgstr "Nicht aufgeführt?"
 
-#: ../js/gdm/loginDialog.js:830
+#: ../js/gdm/loginDialog.js:840
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(z.B. Benutzer oder %s)"
 
-#: ../js/gdm/loginDialog.js:835 ../js/ui/components/networkAgent.js:271
+#: ../js/gdm/loginDialog.js:845 ../js/ui/components/networkAgent.js:271
 #: ../js/ui/components/networkAgent.js:289
 msgid "Username: "
 msgstr "Benutzername:"
 
-#: ../js/gdm/loginDialog.js:1163
+#: ../js/gdm/loginDialog.js:1173
 msgid "Login Window"
 msgstr "Anmeldefenster"
 
@@ -461,31 +459,31 @@ msgstr "%e. %B %Y, %H:%M"
 msgid "Web Authentication Redirect"
 msgstr "Umleitung zu einer Internet-Anmeldung"
 
-#: ../js/ui/appDisplay.js:792
+#: ../js/ui/appDisplay.js:788
 msgid "Frequently used applications will appear here"
 msgstr "Häufig genutzte Anwendungen werden hier erscheinen"
 
-#: ../js/ui/appDisplay.js:912
+#: ../js/ui/appDisplay.js:908
 msgid "Frequent"
 msgstr "Häufig"
 
-#: ../js/ui/appDisplay.js:919
+#: ../js/ui/appDisplay.js:915
 msgid "All"
 msgstr "Alle"
 
-#: ../js/ui/appDisplay.js:1850
+#: ../js/ui/appDisplay.js:1844
 msgid "New Window"
 msgstr "Neues Fenster"
 
-#: ../js/ui/appDisplay.js:1878 ../js/ui/dash.js:291
+#: ../js/ui/appDisplay.js:1872 ../js/ui/dash.js:289
 msgid "Remove from Favorites"
 msgstr "Aus Favoriten entfernen"
 
-#: ../js/ui/appDisplay.js:1884
+#: ../js/ui/appDisplay.js:1878
 msgid "Add to Favorites"
 msgstr "Zu Favoriten hinzufügen"
 
-#: ../js/ui/appDisplay.js:1894
+#: ../js/ui/appDisplay.js:1888
 msgid "Show Details"
 msgstr "Details anzeigen"
 
@@ -499,14 +497,18 @@ msgstr "%s wurde zu Ihren Favoriten hinzugefügt"
 msgid "%s has been removed from your favorites."
 msgstr "%s wurde aus Ihren Favoriten entfernt"
 
-#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:650
-#: ../js/ui/status/system.js:337
-msgid "Settings"
-msgstr "Einstellungen"
-
-#: ../js/ui/backgroundMenu.js:21
+#: ../js/ui/backgroundMenu.js:19
 msgid "Change Background…"
 msgstr "Hintergrund ändern …"
+
+#: ../js/ui/backgroundMenu.js:21
+msgid "Display Settings"
+msgstr "Anzeigeeinstellungen"
+
+#: ../js/ui/backgroundMenu.js:22 ../js/ui/panel.js:650
+#: ../js/ui/status/system.js:334
+msgid "Settings"
+msgstr "Einstellungen"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday). */
 #: ../js/ui/calendar.js:53
@@ -575,7 +577,7 @@ msgstr "Woche %V"
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #. */
-#: ../js/ui/calendar.js:1183
+#: ../js/ui/calendar.js:1187
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Ganztägig"
@@ -669,8 +671,7 @@ msgstr "Anmeldung für Funknetzwerk wird benötigt"
 #: ../js/ui/components/networkAgent.js:659
 #, javascript-format
 msgid ""
-"Passwords or encryption keys are required to access the wireless network "
-"“%s”."
+"Passwords or encryption keys are required to access the wireless network “%s”."
 msgstr ""
 "Passwörter oder Schlüssel sind erforderlich, um auf das Funknetzwerk »%s« "
 "zuzugreifen."
@@ -742,7 +743,7 @@ msgstr "Entschuldigung, das hat nicht geklappt. Bitte versuchen Sie es erneut."
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name. */
-#: ../js/ui/components/telepathyClient.js:728
+#: ../js/ui/components/telepathyClient.js:757
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s heißt jetzt %s"
@@ -751,12 +752,12 @@ msgstr "%s heißt jetzt %s"
 msgid "Windows"
 msgstr "Fenster"
 
-#: ../js/ui/dash.js:252 ../js/ui/dash.js:293
+#: ../js/ui/dash.js:250 ../js/ui/dash.js:291
 msgid "Show Applications"
 msgstr "Anwendungen anzeigen"
 
 # Würde ich so übernehmen, oder evtl. »Dock«.
-#: ../js/ui/dash.js:453
+#: ../js/ui/dash.js:449
 msgid "Dash"
 msgstr "Dash"
 
@@ -923,17 +924,16 @@ msgstr "Installieren"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "»%s« von extensions.gnome.org herunterladen und installieren?"
 
-#: ../js/ui/keyboard.js:714 ../js/ui/status/keyboard.js:724
+#: ../js/ui/keyboard.js:718 ../js/ui/status/keyboard.js:713
 msgid "Keyboard"
 msgstr "Tastatur"
 
 #. translators: 'Hide' is a verb */
-#: ../js/ui/legacyTray.js:64
-#| msgid "Hide Text"
+#: ../js/ui/legacyTray.js:66
 msgid "Hide tray"
 msgstr "Ablage verbergen"
 
-#: ../js/ui/legacyTray.js:104
+#: ../js/ui/legacyTray.js:107
 msgid "Status Icons"
 msgstr "Statussymbole"
 
@@ -989,7 +989,7 @@ msgstr "Quelle zeigen"
 msgid "Web Page"
 msgstr "Webseite"
 
-#: ../js/ui/messageTray.js:1507
+#: ../js/ui/messageTray.js:1506
 msgid "System Information"
 msgstr "Systeminformationen"
 
@@ -1031,7 +1031,7 @@ msgstr "toggle-switch-intl"
 msgid "Enter a Command"
 msgstr "Bitte geben Sie einen Befehl ein"
 
-#: ../js/ui/runDialog.js:110 ../js/ui/windowMenu.js:120
+#: ../js/ui/runDialog.js:110 ../js/ui/windowMenu.js:153
 msgid "Close"
 msgstr "Schließen"
 
@@ -1062,27 +1062,27 @@ msgid_plural "%d new notifications"
 msgstr[0] "%d neue Benachrichtigung"
 msgstr[1] "%d neue Benachrichtigungen"
 
-#: ../js/ui/screenShield.js:432 ../js/ui/status/system.js:345
+#: ../js/ui/screenShield.js:432 ../js/ui/status/system.js:342
 msgid "Lock"
 msgstr "Sperren"
 
-#: ../js/ui/screenShield.js:668
+#: ../js/ui/screenShield.js:684
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME muss den Bildschirm sperren"
 
-#: ../js/ui/screenShield.js:795 ../js/ui/screenShield.js:1271
+#: ../js/ui/screenShield.js:805 ../js/ui/screenShield.js:1271
 msgid "Unable to lock"
 msgstr "Sperrung fehlgeschlagen"
 
-#: ../js/ui/screenShield.js:796 ../js/ui/screenShield.js:1272
+#: ../js/ui/screenShield.js:806 ../js/ui/screenShield.js:1272
 msgid "Lock was blocked by an application"
 msgstr "Sperrung wurde von einer Anwendung blockiert"
 
-#: ../js/ui/search.js:616
+#: ../js/ui/search.js:617
 msgid "Searching…"
 msgstr "Suche läuft …"
 
-#: ../js/ui/search.js:618
+#: ../js/ui/search.js:619
 msgid "No results."
 msgstr "Keine Ergebnisse."
 
@@ -1146,11 +1146,11 @@ msgstr "Tastenanschlagfunktion"
 msgid "Mouse Keys"
 msgstr "Tastaturmaus"
 
-#: ../js/ui/status/accessibility.js:144
+#: ../js/ui/status/accessibility.js:167
 msgid "High Contrast"
 msgstr "Hoher Kontrast"
 
-#: ../js/ui/status/accessibility.js:193
+#: ../js/ui/status/accessibility.js:202
 msgid "Large Text"
 msgstr "Große Schrift"
 
@@ -1184,7 +1184,7 @@ msgstr "Nicht verbunden"
 msgid "Brightness"
 msgstr "Helligkeit"
 
-#: ../js/ui/status/keyboard.js:747
+#: ../js/ui/status/keyboard.js:736
 msgid "Show Keyboard Layout"
 msgstr "Tastaturbelegung anzeigen"
 
@@ -1398,23 +1398,23 @@ msgstr "Flugzeugmodus"
 msgid "On"
 msgstr "An"
 
-#: ../js/ui/status/system.js:317
+#: ../js/ui/status/system.js:314
 msgid "Switch User"
 msgstr "Benutzer wechseln"
 
-#: ../js/ui/status/system.js:322
+#: ../js/ui/status/system.js:319
 msgid "Log Out"
 msgstr "Abmelden"
 
-#: ../js/ui/status/system.js:341
+#: ../js/ui/status/system.js:338
 msgid "Orientation Lock"
 msgstr "Hoch-/Querformats-Fixierung"
 
-#: ../js/ui/status/system.js:349
+#: ../js/ui/status/system.js:346
 msgid "Suspend"
 msgstr "In Bereitschaft versetzen"
 
-#: ../js/ui/status/system.js:352
+#: ../js/ui/status/system.js:349
 msgid "Power Off"
 msgstr "Ausschalten"
 
@@ -1471,12 +1471,11 @@ msgstr "Beibehalten"
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
 msgstr[0] "Die Änderungen der Einstellungen werden in %d Sekunde zurückgesetzt"
-msgstr[1] ""
-"Die Änderungen der Einstellungen werden in %d Sekunden zurückgesetzt"
+msgstr[1] "Die Änderungen der Einstellungen werden in %d Sekunden zurückgesetzt"
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height. */
-#: ../js/ui/windowManager.js:599
+#: ../js/ui/windowManager.js:613
 #, javascript-format
 msgid "%d x %d"
 msgstr "%d x %d"
@@ -1520,6 +1519,22 @@ msgstr "Eine Arbeitsfläche nach oben verschieben"
 #: ../js/ui/windowMenu.js:111
 msgid "Move to Workspace Down"
 msgstr "Eine Arbeitsfläche nach unten verschieben"
+
+#: ../js/ui/windowMenu.js:127
+msgid "Move to Monitor Up"
+msgstr "Auf den Bildschirm nach oben verschieben"
+
+#: ../js/ui/windowMenu.js:133
+msgid "Move to Monitor Down"
+msgstr "Auf den Bildschirm nach unten verschieben"
+
+#: ../js/ui/windowMenu.js:139
+msgid "Move to Monitor Left"
+msgstr "Auf den Bildschirm nach links verschieben"
+
+#: ../js/ui/windowMenu.js:145
+msgid "Move to Monitor Right"
+msgstr "Auf den Bildschirm nach rechts verschieben"
 
 #: ../src/calendar-server/evolution-calendar.desktop.in.in.h:1
 msgid "Evolution Calendar"
@@ -1745,8 +1760,8 @@ msgstr "Der Dialog zur Anmeldung wurde vom Benutzer geschlossen"
 #~ msgid ""
 #~ "Connection has been replaced by a new connection using the same resource"
 #~ msgstr ""
-#~ "Die Verbindung wurde durch eine neue Verbindung mit der gleichen "
-#~ "Ressource ersetzt"
+#~ "Die Verbindung wurde durch eine neue Verbindung mit der gleichen Ressource "
+#~ "ersetzt"
 
 #~ msgid "The account already exists on the server"
 #~ msgstr "Dieses Konto ist bereits auf dem Server vorhanden"
@@ -1768,9 +1783,9 @@ msgstr "Der Dialog zur Anmeldung wurde vom Benutzer geschlossen"
 #~ "The length of the server certificate, or the depth of the server "
 #~ "certificate chain, exceed the limits imposed by the cryptography library"
 #~ msgstr ""
-#~ "Die Länge des Server-Zertifikats oder die Tiefe der Server-"
-#~ "Zertifikatskette überschreiten die durch die kryptografische Bibliothek "
-#~ "gegebenen Beschränkungen"
+#~ "Die Länge des Server-Zertifikats oder die Tiefe der Server-Zertifikatskette "
+#~ "überschreiten die durch die kryptografische Bibliothek gegebenen "
+#~ "Beschränkungen"
 
 #~ msgid "Internal error"
 #~ msgstr "Interner Fehler"
@@ -1819,29 +1834,28 @@ msgstr "Der Dialog zur Anmeldung wurde vom Benutzer geschlossen"
 #~ msgstr "Maximale Ortsauflösung"
 
 #~ msgid ""
-#~ "Configures the maximum level of location accuracy applications are "
-#~ "allowed to see. Valid options are 'off' (disable location tracking), "
-#~ "'country', 'city', 'neighborhood', 'street', and 'exact' (typically "
-#~ "requires GPS receiver). Please keep in mind that this only controls what "
-#~ "GeoClue will allow applications to see and they can find user's location "
-#~ "on their own using network resources (albeit with street-level accuracy "
-#~ "at best)."
+#~ "Configures the maximum level of location accuracy applications are allowed "
+#~ "to see. Valid options are 'off' (disable location tracking), 'country', "
+#~ "'city', 'neighborhood', 'street', and 'exact' (typically requires GPS "
+#~ "receiver). Please keep in mind that this only controls what GeoClue will "
+#~ "allow applications to see and they can find user's location on their own "
+#~ "using network resources (albeit with street-level accuracy at best)."
 #~ msgstr ""
 #~ "Legt die maximale Ortsauflösung für Anwendungen fest. Gültige Werte sind "
 #~ "»off« (Ortung deaktiviert), »country« (Land), »city« (Stadt), "
 #~ "»neighborhood« (Nachbarschaft), »street« (Straße) und »exact« (genau, "
-#~ "benötigt üblicherweise einen GPS-Empfänger). Bitte bedenken Sie, dass "
-#~ "diese Einstellung nur festlegt, welche Informationen GeoClue an "
-#~ "Anwendungen weitergibt. Die Anwendungen können jedoch selbst den Ort des "
-#~ "Benutzers durch Analyse von Netzwerkressourcen ausfindig machen (jedoch "
-#~ "im besten Fall mit Straßengenauigkeit)."
+#~ "benötigt üblicherweise einen GPS-Empfänger). Bitte bedenken Sie, dass diese "
+#~ "Einstellung nur festlegt, welche Informationen GeoClue an Anwendungen "
+#~ "weitergibt. Die Anwendungen können jedoch selbst den Ort des Benutzers "
+#~ "durch Analyse von Netzwerkressourcen ausfindig machen (jedoch im besten "
+#~ "Fall mit Straßengenauigkeit)."
 
 #~ msgid "Arrangement of buttons on the titlebar"
 #~ msgstr "Anordnung der Knöpfe auf der Titelleiste"
 
 #~ msgid ""
-#~ "This key overrides the key in org.gnome.desktop.wm.preferences when "
-#~ "running GNOME Shell."
+#~ "This key overrides the key in org.gnome.desktop.wm.preferences when running "
+#~ "GNOME Shell."
 #~ msgstr ""
 #~ "Dieser Schlüssel überschreibt den Schlüssel in org.gnome.desktop.wm."
 #~ "preferences, wenn die GNOME-Shell läuft."
