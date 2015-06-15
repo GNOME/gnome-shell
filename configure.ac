@@ -63,8 +63,8 @@ AC_ARG_ENABLE([systemd],
               [enable_systemd=$enableval],
               [enable_systemd=auto])
 AS_IF([test x$enable_systemd != xno], [
-  AC_MSG_CHECKING([for libsystemd-journal])
-  PKG_CHECK_EXISTS([libsystemd-journal],
+  AC_MSG_CHECKING([for libsystemd])
+  PKG_CHECK_EXISTS([libsystemd],
                    [have_systemd=yes
                     AC_DEFINE([HAVE_SYSTEMD], [1], [Define if we have systemd])],
                    [have_systemd=no])
@@ -106,7 +106,7 @@ SHARED_PCS="gio-unix-2.0 >= $GIO_MIN_VERSION
             polkit-agent-1 >= $POLKIT_MIN_VERSION
             gcr-base-3 >= $GCR_MIN_VERSION"
 if test x$have_systemd = xyes; then
-  SHARED_PCS="${SHARED_PCS} libsystemd-journal"
+  SHARED_PCS="${SHARED_PCS} libsystemd"
 fi
 
 PKG_CHECK_MODULES(GNOME_SHELL, $SHARED_PCS)
