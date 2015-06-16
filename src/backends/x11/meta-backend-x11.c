@@ -440,7 +440,9 @@ meta_backend_x11_post_init (MetaBackend *backend)
       meta_fatal ("X server doesn't have the XInput extension, version 2.2 or newer\n");
   }
 
-  take_touch_grab (backend);
+  /* We only take the passive touch grab if we are a X11 compositor */
+  if (priv->mode == META_BACKEND_X11_MODE_COMPOSITOR)
+    take_touch_grab (backend);
 
   priv->xcb = XGetXCBConnection (priv->xdisplay);
   if (!xkb_x11_setup_xkb_extension (priv->xcb,
@@ -773,9 +775,21 @@ meta_backend_x11_select_stage_events (MetaBackend *backend)
   XISetMask (mask.mask, XI_FocusIn);
   XISetMask (mask.mask, XI_FocusOut);
   XISetMask (mask.mask, XI_Motion);
-  XIClearMask (mask.mask, XI_TouchBegin);
-  XIClearMask (mask.mask, XI_TouchEnd);
-  XIClearMask (mask.mask, XI_TouchUpdate);
+
+  if (priv->mode == META_BACKEND_X11_MODE_NESTED)
+    {
+      /* When we're an X11 compositor, we can't take these events or else
+       * replaying events from our passive root window grab will cause
+       * them to come back to us.
+       *
+       * When we're a nested application, we want to behave like any other
+       * application, so select these events like normal apps do.
+       */
+      XISetMask (mask.mask, XI_TouchBegin);
+      XISetMask (mask.mask, XI_TouchEnd);
+      XISetMask (mask.mask, XI_TouchUpdate);
+    }
+
   XISelectEvents (priv->xdisplay, xwin, &mask, 1);
 }
 
