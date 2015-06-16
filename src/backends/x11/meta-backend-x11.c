@@ -46,12 +46,22 @@
 #include "display-private.h"
 #include "compositor/compositor-private.h"
 
+typedef enum {
+  /* We're a traditional CM running under the host. */
+  META_BACKEND_X11_MODE_COMPOSITOR,
+
+  /* We're a nested X11 client */
+  META_BACKEND_X11_MODE_NESTED,
+} MetaBackendX11Mode;
+
 struct _MetaBackendX11Private
 {
   /* The host X11 display */
   Display *xdisplay;
   xcb_connection_t *xcb;
   GSource *source;
+
+  MetaBackendX11Mode mode;
 
   int xsync_event_base;
   int xsync_error_base;
@@ -102,7 +112,7 @@ translate_device_event (MetaBackendX11 *x11,
       /* This codepath should only ever trigger as an X11 compositor,
        * and never under nested, as under nested all backend events
        * should be reported with respect to the stage window. */
-      g_assert (!meta_is_wayland_compositor ());
+      g_assert (priv->mode == META_BACKEND_X11_MODE_COMPOSITOR);
 
       device_event->event = stage_window;
 
@@ -461,13 +471,18 @@ meta_backend_x11_create_idle_monitor (MetaBackend *backend,
 static MetaMonitorManager *
 meta_backend_x11_create_monitor_manager (MetaBackend *backend)
 {
-  /* If we're a Wayland compositor using the X11 backend,
-   * we're a nested configuration, so return the dummy
-   * monitor setup. */
-  if (meta_is_wayland_compositor ())
-    return g_object_new (META_TYPE_MONITOR_MANAGER_DUMMY, NULL);
+  MetaBackendX11 *x11 = META_BACKEND_X11 (backend);
+  MetaBackendX11Private *priv = meta_backend_x11_get_instance_private (x11);
 
-  return g_object_new (META_TYPE_MONITOR_MANAGER_XRANDR, NULL);
+  switch (priv->mode)
+    {
+    case META_BACKEND_X11_MODE_COMPOSITOR:
+      return g_object_new (META_TYPE_MONITOR_MANAGER_XRANDR, NULL);
+    case META_BACKEND_X11_MODE_NESTED:
+      return g_object_new (META_TYPE_MONITOR_MANAGER_DUMMY, NULL);
+    default:
+      g_assert_not_reached ();
+    }
 }
 
 static MetaCursorRenderer *
@@ -721,7 +736,10 @@ static void
 meta_backend_x11_update_screen_size (MetaBackend *backend,
                                      int width, int height)
 {
-  if (meta_is_wayland_compositor ())
+  MetaBackendX11 *x11 = META_BACKEND_X11 (backend);
+  MetaBackendX11Private *priv = meta_backend_x11_get_instance_private (x11);
+
+  if (priv->mode == META_BACKEND_X11_MODE_NESTED)
     {
       /* For a nested wayland session, we want to go through Clutter to update the
        * toplevel window size, rather than doing it directly.
@@ -783,8 +801,15 @@ meta_backend_x11_class_init (MetaBackendX11Class *klass)
 static void
 meta_backend_x11_init (MetaBackendX11 *x11)
 {
+  MetaBackendX11Private *priv = meta_backend_x11_get_instance_private (x11);
+
   /* We do X11 event retrieval ourselves */
   clutter_x11_disable_event_retrieval ();
+
+  if (meta_is_wayland_compositor ())
+    priv->mode = META_BACKEND_X11_MODE_NESTED;
+  else
+    priv->mode = META_BACKEND_X11_MODE_COMPOSITOR;
 }
 
 Display *
