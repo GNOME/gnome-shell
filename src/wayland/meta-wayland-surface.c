@@ -2417,6 +2417,21 @@ meta_wayland_surface_get_toplevel_window (MetaWaylandSurface *surface)
   return NULL;
 }
 
+void
+meta_wayland_surface_get_relative_coordinates (MetaWaylandSurface *surface,
+                                               float               abs_x,
+                                               float               abs_y,
+                                               float               *sx,
+                                               float               *sy)
+{
+  ClutterActor *actor =
+    CLUTTER_ACTOR (meta_surface_actor_get_texture (surface->surface_actor));
+
+  clutter_actor_transform_stage_point (actor, abs_x, abs_y, sx, sy);
+  *sx /= surface->scale;
+  *sy /= surface->scale;
+}
+
 static void
 meta_wayland_surface_init (MetaWaylandSurface *surface)
 {

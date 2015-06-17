@@ -253,6 +253,12 @@ void                meta_wayland_surface_queue_pending_frame_callbacks (MetaWayl
 void                meta_wayland_surface_queue_pending_state_frame_callbacks (MetaWaylandSurface      *surface,
                                                                               MetaWaylandPendingState *pending);
 
+void                meta_wayland_surface_get_relative_coordinates (MetaWaylandSurface *surface,
+                                                                   float               abs_x,
+                                                                   float               abs_y,
+                                                                   float              *sx,
+                                                                   float              *sy);
+
 MetaWaylandSurface * meta_wayland_surface_role_get_surface (MetaWaylandSurfaceRole *role);
 
 #endif
