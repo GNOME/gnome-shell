@@ -487,8 +487,11 @@ new_absolute_motion_event (ClutterInputDevice *input_device,
 
   _clutter_input_device_set_stage (seat->core_pointer, stage);
 
-  seat->pointer_x = x;
-  seat->pointer_y = y;
+  if (clutter_input_device_get_device_type (input_device) != CLUTTER_TABLET_DEVICE)
+    {
+      seat->pointer_x = x;
+      seat->pointer_y = y;
+    }
 
   return event;
 }
