@@ -329,6 +329,7 @@ meta_wayland_init (void)
   meta_wayland_pointer_gestures_init (compositor);
   meta_wayland_seat_init (compositor);
   meta_wayland_relative_pointer_init (compositor);
+  meta_wayland_pointer_constraints_init (compositor);
 
   if (!meta_xwayland_start (&compositor->xwayland_manager, compositor->wayland_display))
     g_error ("Failed to start X Wayland");

@@ -31,6 +31,7 @@
 #include "meta-wayland-types.h"
 #include "meta-surface-actor.h"
 #include "backends/meta-monitor-manager-private.h"
+#include "meta-wayland-pointer-constraints.h"
 
 typedef struct _MetaWaylandPendingState MetaWaylandPendingState;
 
@@ -217,6 +218,8 @@ struct _MetaWaylandSurface
     gboolean pending_pos;
     GSList *pending_placement_ops;
   } sub;
+
+  GList *pointer_constraints;
 };
 
 void                meta_wayland_shell_init     (MetaWaylandCompositor *compositor);
@@ -261,11 +264,26 @@ void                meta_wayland_surface_queue_pending_frame_callbacks (MetaWayl
 void                meta_wayland_surface_queue_pending_state_frame_callbacks (MetaWaylandSurface      *surface,
                                                                               MetaWaylandPendingState *pending);
 
+void                meta_wayland_surface_add_pointer_constraint (MetaWaylandSurface           *surface,
+                                                                 MetaWaylandPointerConstraint *constraint);
+
+void                meta_wayland_surface_remove_pointer_constraint (MetaWaylandSurface           *surface,
+                                                                    MetaWaylandPointerConstraint *constraint);
+MetaWaylandPointerConstraint *
+                    meta_wayland_surface_get_pointer_constraint_for_seat (MetaWaylandSurface *surface,
+                                                                          MetaWaylandSeat    *seat);
+
 void                meta_wayland_surface_get_relative_coordinates (MetaWaylandSurface *surface,
                                                                    float               abs_x,
                                                                    float               abs_y,
                                                                    float              *sx,
                                                                    float              *sy);
+
+void                meta_wayland_surface_get_absolute_coordinates (MetaWaylandSurface *surface,
+                                                                   float               sx,
+                                                                   float               sy,
+                                                                   float              *x,
+                                                                   float              *y);
 
 MetaWaylandSurface * meta_wayland_surface_role_get_surface (MetaWaylandSurfaceRole *role);
 

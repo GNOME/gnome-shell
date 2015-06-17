@@ -30,6 +30,7 @@
 #include "window-private.h"
 #include "boxes-private.h"
 #include "stack-tracker.h"
+#include "meta-wayland-private.h"
 #include "meta-wayland-surface.h"
 #include "compositor/meta-surface-actor-wayland.h"
 
@@ -402,6 +403,11 @@ appears_focused_changed (GObject    *object,
                          gpointer    user_data)
 {
   MetaWindow *window = META_WINDOW (object);
+  MetaWaylandCompositor *wayland_compositor;
+
+  wayland_compositor = meta_wayland_compositor_get_default ();
+  meta_wayland_pointer_constraint_maybe_remove_for_seat (wayland_compositor->seat,
+                                                         window);
 
   /* When we're unmanaging, we remove focus from the window,
    * causing this to fire. Don't do anything in that case. */
@@ -409,6 +415,8 @@ appears_focused_changed (GObject    *object,
     return;
 
   surface_state_changed (window);
+
+  meta_wayland_pointer_constraint_maybe_enable_for_window (window);
 }
 
 static void

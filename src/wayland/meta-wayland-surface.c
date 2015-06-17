@@ -55,6 +55,14 @@
 #include "meta-surface-actor-wayland.h"
 #include "meta-xwayland-private.h"
 
+enum {
+  PENDING_STATE_SIGNAL_APPLIED,
+
+  PENDING_STATE_SIGNAL_LAST_SIGNAL
+};
+
+static guint pending_state_signals[PENDING_STATE_SIGNAL_LAST_SIGNAL];
+
 typedef struct _MetaWaylandSurfaceRolePrivate
 {
   MetaWaylandSurface *surface;
@@ -516,6 +524,14 @@ meta_wayland_pending_state_class_init (MetaWaylandPendingStateClass *klass)
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
   object_class->finalize = meta_wayland_pending_state_finalize;
+
+  pending_state_signals[PENDING_STATE_SIGNAL_APPLIED] =
+    g_signal_new ("applied",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL, NULL,
+                  G_TYPE_NONE, 0);
 }
 
 static void
@@ -688,6 +704,10 @@ apply_pending_state (MetaWaylandSurface      *surface,
                            &pending->frame_callback_list);
       wl_list_init (&pending->frame_callback_list);
     }
+
+  g_signal_emit (pending,
+                 pending_state_signals[PENDING_STATE_SIGNAL_APPLIED],
+                 0);
 
   meta_surface_actor_wayland_sync_state (
     META_SURFACE_ACTOR_WAYLAND (surface->surface_actor));
@@ -1071,6 +1091,9 @@ wl_surface_destructor (struct wl_resource *resource)
    * order. Simply destroy the window in this case. */
   if (surface->window)
     destroy_window (surface);
+
+  g_list_free_full (surface->pointer_constraints,
+                    (GDestroyNotify) meta_wayland_pointer_constraint_destroy);
 
   surface_set_buffer (surface, NULL);
   g_clear_object (&surface->pending);
@@ -2469,6 +2492,39 @@ meta_wayland_surface_get_toplevel_window (MetaWaylandSurface *surface)
 }
 
 void
+meta_wayland_surface_add_pointer_constraint (MetaWaylandSurface           *surface,
+                                             MetaWaylandPointerConstraint *constraint)
+{
+  surface->pointer_constraints = g_list_append (surface->pointer_constraints,
+                                                constraint);
+}
+
+void
+meta_wayland_surface_remove_pointer_constraint (MetaWaylandSurface           *surface,
+                                                MetaWaylandPointerConstraint *constraint)
+{
+  surface->pointer_constraints = g_list_remove (surface->pointer_constraints,
+                                                constraint);
+}
+
+MetaWaylandPointerConstraint *
+meta_wayland_surface_get_pointer_constraint_for_seat (MetaWaylandSurface *surface,
+                                                      MetaWaylandSeat    *seat)
+{
+  GList *iter;
+
+  for (iter = surface->pointer_constraints; iter; iter = iter->next)
+    {
+      MetaWaylandPointerConstraint *constraint = iter->data;
+
+      if (seat == meta_wayland_pointer_constraint_get_seat (constraint))
+        return constraint;
+    }
+
+  return NULL;
+}
+
+void
 meta_wayland_surface_get_relative_coordinates (MetaWaylandSurface *surface,
                                                float               abs_x,
                                                float               abs_y,
@@ -2481,6 +2537,27 @@ meta_wayland_surface_get_relative_coordinates (MetaWaylandSurface *surface,
   clutter_actor_transform_stage_point (actor, abs_x, abs_y, sx, sy);
   *sx /= surface->scale;
   *sy /= surface->scale;
+}
+
+void
+meta_wayland_surface_get_absolute_coordinates (MetaWaylandSurface *surface,
+                                               float               sx,
+                                               float               sy,
+                                               float               *x,
+                                               float               *y)
+{
+  ClutterActor *actor =
+    CLUTTER_ACTOR (meta_surface_actor_get_texture (surface->surface_actor));
+  ClutterVertex sv = {
+    .x = sx * surface->scale,
+    .y = sy * surface->scale,
+  };
+  ClutterVertex v = { 0 };
+
+  clutter_actor_apply_relative_transform_to_point (actor, NULL, &sv, &v);
+
+  *x = v.x;
+  *y = v.y;
 }
 
 static void

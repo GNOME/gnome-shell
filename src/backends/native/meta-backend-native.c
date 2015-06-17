@@ -36,6 +36,7 @@
 #include "meta-monitor-manager-kms.h"
 #include "meta-cursor-renderer-native.h"
 #include "meta-launcher.h"
+#include "backends/meta-pointer-constraint.h"
 
 #include <stdlib.h>
 
@@ -139,6 +140,24 @@ constrain_to_barriers (ClutterInputDevice *device,
                                        new_x, new_y);
 }
 
+static void
+constrain_to_client_constraint (ClutterInputDevice *device,
+                                guint32             time,
+                                float               prev_x,
+                                float               prev_y,
+                                float              *x,
+                                float              *y)
+{
+  MetaBackend *backend = meta_get_backend ();
+  MetaPointerConstraint *constraint = backend->client_pointer_constraint;
+
+  if (!constraint)
+    return;
+
+  meta_pointer_constraint_constrain (constraint, device,
+                                     time, prev_x, prev_y, x, y);
+}
+
 /*
  * The pointer constrain code is mostly a rip-off of the XRandR code from Xorg.
  * (from xserver/randr/rrcrtc.c, RRConstrainCursorHarder)
@@ -206,6 +225,9 @@ pointer_constrain_callback (ClutterInputDevice *device,
 
   /* Constrain to barriers */
   constrain_to_barriers (device, time, new_x, new_y);
+
+  /* Constrain to pointer lock */
+  constrain_to_client_constraint (device, time, prev_x, prev_y, new_x, new_y);
 
   monitor_manager = meta_monitor_manager_get ();
   monitors = meta_monitor_manager_get_monitor_infos (monitor_manager, &n_monitors);

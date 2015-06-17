@@ -28,6 +28,7 @@
 #include "meta-wayland-pointer-gesture-swipe.h"
 #include "meta-wayland-pointer-gesture-pinch.h"
 #include "meta-wayland-surface.h"
+#include "meta-wayland-pointer-constraints.h"
 
 #include <meta/meta-cursor-tracker.h>
 
@@ -102,6 +103,9 @@ gboolean meta_wayland_pointer_handle_event (MetaWaylandPointer *pointer,
 void meta_wayland_pointer_send_motion (MetaWaylandPointer *pointer,
                                        const ClutterEvent *event);
 
+void meta_wayland_pointer_send_relative_motion (MetaWaylandPointer *pointer,
+                                                const ClutterEvent *event);
+
 void meta_wayland_pointer_send_button (MetaWaylandPointer *pointer,
                                        const ClutterEvent *event);
 
@@ -144,5 +148,7 @@ MetaWaylandPointerClient * meta_wayland_pointer_get_pointer_client (MetaWaylandP
 void meta_wayland_pointer_unbind_pointer_client_resource (struct wl_resource *resource);
 
 void meta_wayland_relative_pointer_init (MetaWaylandCompositor *compositor);
+
+MetaWaylandSeat *meta_wayland_pointer_get_seat (MetaWaylandPointer *pointer);
 
 #endif /* META_WAYLAND_POINTER_H */

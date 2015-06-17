@@ -53,6 +53,8 @@ mutter_built_sources += \
 	xdg-shell-unstable-v5-server-protocol.h				\
 	relative-pointer-unstable-v1-protocol.c				\
 	relative-pointer-unstable-v1-server-protocol.h			\
+	pointer-constraints-unstable-v1-protocol.c			\
+	pointer-constraints-unstable-v1-server-protocol.h		\
 	$(NULL)
 endif
 
@@ -86,6 +88,8 @@ libmutter_la_SOURCES =				\
 	backends/meta-monitor-manager-private.h	\
 	backends/meta-monitor-manager-dummy.c	\
 	backends/meta-monitor-manager-dummy.h	\
+	backends/meta-pointer-constraint.c	\
+	backends/meta-pointer-constraint.h	\
 	backends/meta-stage.h			\
 	backends/meta-stage.c			\
 	backends/edid-parse.c			\
@@ -268,6 +272,12 @@ libmutter_la_SOURCES +=				\
 	wayland/meta-wayland-keyboard.h		\
 	wayland/meta-wayland-pointer.c		\
 	wayland/meta-wayland-pointer.h		\
+	wayland/meta-wayland-pointer-constraints.c	\
+	wayland/meta-wayland-pointer-constraints.h	\
+	wayland/meta-pointer-lock-wayland.c		\
+	wayland/meta-pointer-lock-wayland.h		\
+	wayland/meta-pointer-confinement-wayland.c	\
+	wayland/meta-pointer-confinement-wayland.h	\
 	wayland/meta-wayland-popup.c		\
 	wayland/meta-wayland-popup.h		\
 	wayland/meta-wayland-seat.c		\

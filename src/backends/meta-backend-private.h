@@ -34,6 +34,7 @@
 #include <meta/meta-idle-monitor.h>
 #include "meta-cursor-renderer.h"
 #include "meta-monitor-manager-private.h"
+#include "backends/meta-pointer-constraint.h"
 
 #define DEFAULT_XKB_RULES_FILE "evdev"
 #define DEFAULT_XKB_MODEL "pc105+inet"
@@ -51,6 +52,8 @@ struct _MetaBackend
 
   GHashTable *device_monitors;
   gint current_device_id;
+
+  MetaPointerConstraint *client_pointer_constraint;
 };
 
 struct _MetaBackendClass
@@ -123,5 +126,8 @@ gboolean meta_backend_get_relative_motion_deltas (MetaBackend *backend,
                                                   double       *dy,
                                                   double       *dx_unaccel,
                                                   double       *dy_unaccel);
+
+void meta_backend_set_client_pointer_constraint (MetaBackend *backend,
+                                                 MetaPointerConstraint *constraint);
 
 #endif /* META_BACKEND_PRIVATE_H */

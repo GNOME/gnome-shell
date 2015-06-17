@@ -571,6 +571,17 @@ meta_backend_get_relative_motion_deltas (MetaBackend *backend,
                                             dx_unaccel, dy_unaccel);
 }
 
+void
+meta_backend_set_client_pointer_constraint (MetaBackend           *backend,
+                                            MetaPointerConstraint *constraint)
+{
+  g_assert (!constraint || (constraint && !backend->client_pointer_constraint));
+
+  g_clear_object (&backend->client_pointer_constraint);
+  if (constraint)
+    backend->client_pointer_constraint = g_object_ref (constraint);
+}
+
 static GType
 get_backend_type (void)
 {
