@@ -724,9 +724,11 @@ meta_window_should_attach_to_parent (MetaWindow *window)
 static gboolean
 client_window_should_be_mapped (MetaWindow *window)
 {
+#ifdef HAVE_WAYLAND
   if (window->client_type == META_WINDOW_CLIENT_TYPE_WAYLAND &&
       !window->surface->buffer)
     return FALSE;
+#endif
 
   return !window->shaded;
 }
@@ -1538,9 +1540,11 @@ meta_window_showing_on_its_workspace (MetaWindow *window)
 gboolean
 meta_window_should_be_showing (MetaWindow  *window)
 {
+#ifdef HAVE_WAYLAND
   if (window->client_type == META_WINDOW_CLIENT_TYPE_WAYLAND &&
       !window->surface->buffer)
     return FALSE;
+#endif
 
   /* Windows should be showing if they're located on the
    * active workspace and they're showing on their own workspace. */
