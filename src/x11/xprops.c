@@ -331,7 +331,7 @@ motif_hints_from_results (GetPropertyResults *results,
       meta_verbose ("Motif hints had unexpected type or n_items\n");
       if (results->prop)
         {
-          XFree (results->prop);
+          g_free (results->prop);
           results->prop = NULL;
         }
       return FALSE;
@@ -346,7 +346,7 @@ motif_hints_from_results (GetPropertyResults *results,
     {
       if (results->prop)
         {
-          XFree (results->prop);
+          g_free (results->prop);
           results->prop = NULL;
         }
       return FALSE;
@@ -357,7 +357,7 @@ motif_hints_from_results (GetPropertyResults *results,
 
   if (results->prop)
     {
-      XFree (results->prop);
+      g_free (results->prop);
       results->prop = NULL;
     }
 
@@ -654,7 +654,7 @@ window_from_results (GetPropertyResults *results,
     return FALSE;
 
   *window_p = *(Window*) results->prop;
-  XFree (results->prop);
+  g_free (results->prop);
   results->prop = NULL;
 
   return TRUE;
@@ -670,7 +670,7 @@ counter_from_results (GetPropertyResults *results,
     return FALSE;
 
   *counter_p = *(XSyncCounter*) results->prop;
-  XFree (results->prop);
+  g_free (results->prop);
   results->prop = NULL;
 
   return TRUE;
@@ -733,7 +733,7 @@ cardinal_with_atom_type_from_results (GetPropertyResults *results,
   /* Xlib sign-extends format=32 items, but we want them unsigned */
   *cardinal_p &= 0xffffffff;
 #endif
-  XFree (results->prop);
+  g_free (results->prop);
   results->prop = NULL;
 
   return TRUE;
@@ -836,7 +836,7 @@ wm_hints_from_results (GetPropertyResults *results,
                     (int) results->n_items, NumPropWMHintsElements - 1);
       if (results->prop)
         {
-          XFree (results->prop);
+          g_free (results->prop);
           results->prop = NULL;
         }
       return FALSE;
@@ -861,7 +861,7 @@ wm_hints_from_results (GetPropertyResults *results,
 
   if (results->prop)
     {
-      XFree (results->prop);
+      g_free (results->prop);
       results->prop = NULL;
     }
 
@@ -902,7 +902,7 @@ class_hint_from_results (GetPropertyResults *results,
   len_name = strlen ((char *) results->prop);
   if (! (class_hint->res_name = malloc (len_name+1)))
     {
-      XFree (results->prop);
+      g_free (results->prop);
       results->prop = NULL;
       return FALSE;
     }
@@ -918,14 +918,14 @@ class_hint_from_results (GetPropertyResults *results,
     {
       XFree(class_hint->res_name);
       class_hint->res_name = NULL;
-      XFree (results->prop);
+      g_free (results->prop);
       results->prop = NULL;
       return FALSE;
     }
 
   strcpy (class_hint->res_class, (char *)results->prop + len_name + 1);
 
-  XFree (results->prop);
+  g_free (results->prop);
   results->prop = NULL;
 
   return TRUE;
@@ -997,7 +997,7 @@ size_hints_from_results (GetPropertyResults *results,
 
   hints->flags &= (*flags_p);	/* get rid of unwanted bits */
 
-  XFree (results->prop);
+  g_free (results->prop);
   results->prop = NULL;
 
   *hints_p = hints;
