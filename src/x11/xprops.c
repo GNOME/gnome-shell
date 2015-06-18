@@ -184,7 +184,7 @@ async_get_property (xcb_connection_t *xcb_conn, Window xwindow,
                     Atom xatom, Atom required_type)
 {
   return xcb_get_property (xcb_conn, False, xwindow,
-                           xatom, required_type, 0, G_MAXULONG);
+                           xatom, required_type, 0, G_MAXUINT32);
 }
 
 static gboolean
