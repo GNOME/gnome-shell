@@ -210,8 +210,6 @@ libmutter_la_SOURCES =				\
 	meta/theme.h				\
 	ui/theme-private.h			\
 	ui/ui.c					\
-	x11/async-getprop.c			\
-	x11/async-getprop.h			\
 	x11/atomnames.h				\
 	x11/events.c				\
 	x11/events.h				\
