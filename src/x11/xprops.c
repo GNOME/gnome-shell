@@ -973,7 +973,7 @@ size_hints_from_results (GetPropertyResults *results,
   hints->flags = raw->flags;
   hints->x = raw->x;
   hints->y = raw->y;
-  hints->width = raw->width);
+  hints->width = raw->width;
   hints->height = raw->height;
   hints->min_width  = raw->minWidth;
   hints->min_height = raw->minHeight;
