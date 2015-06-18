@@ -31,6 +31,7 @@
 #include <glib.h>
 
 #include "meta-wayland-data-device.h"
+#include "meta-wayland-data-device-private.h"
 #include "meta-wayland-seat.h"
 #include "meta-wayland-pointer.h"
 #include "meta-wayland-private.h"
@@ -43,10 +44,85 @@ struct _MetaWaylandDataOffer
   struct wl_listener source_destroy_listener;
 };
 
+typedef struct _MetaWaylandDataSourcePrivate
+{
+  struct wl_array mime_types;
+  gboolean has_target;
+} MetaWaylandDataSourcePrivate;
+
+typedef struct _MetaWaylandDataSourceWayland
+{
+  MetaWaylandDataSource parent;
+
+  struct wl_resource *resource;
+} MetaWaylandDataSourceWayland;
+
+GType meta_wayland_data_source_wayland_get_type (void) G_GNUC_CONST;
+
+G_DEFINE_TYPE_WITH_PRIVATE (MetaWaylandDataSource, meta_wayland_data_source,
+                            G_TYPE_OBJECT);
+G_DEFINE_TYPE (MetaWaylandDataSourceWayland, meta_wayland_data_source_wayland,
+               META_TYPE_WAYLAND_DATA_SOURCE);
+
+static MetaWaylandDataSource *
+meta_wayland_data_source_wayland_new (struct wl_resource *resource);
+
+static void
+drag_grab_data_source_destroyed (gpointer data, GObject *where_the_object_was);
+
 static void
 unbind_resource (struct wl_resource *resource)
 {
   wl_list_remove (wl_resource_get_link (resource));
+}
+
+static void
+meta_wayland_data_source_target (MetaWaylandDataSource *source,
+                                 const char *mime_type)
+{
+  META_WAYLAND_DATA_SOURCE_GET_CLASS (source)->target (source, mime_type);
+}
+
+void
+meta_wayland_data_source_send (MetaWaylandDataSource *source,
+                               const char *mime_type,
+                               int fd)
+{
+  META_WAYLAND_DATA_SOURCE_GET_CLASS (source)->send (source, mime_type, fd);
+}
+
+gboolean
+meta_wayland_data_source_has_target (MetaWaylandDataSource *source)
+{
+  MetaWaylandDataSourcePrivate *priv =
+    meta_wayland_data_source_get_instance_private (source);
+
+  return priv->has_target;
+}
+
+void
+meta_wayland_data_source_set_has_target (MetaWaylandDataSource *source,
+                                         gboolean has_target)
+{
+  MetaWaylandDataSourcePrivate *priv =
+    meta_wayland_data_source_get_instance_private (source);
+
+  priv->has_target = has_target;
+}
+
+struct wl_array *
+meta_wayland_data_source_get_mime_types (const MetaWaylandDataSource *source)
+{
+  MetaWaylandDataSourcePrivate *priv =
+    meta_wayland_data_source_get_instance_private (source);
+
+  return &priv->mime_types;
+}
+
+static void
+meta_wayland_data_source_cancel (MetaWaylandDataSource *source)
+{
+  META_WAYLAND_DATA_SOURCE_GET_CLASS (source)->cancel (source);
 }
 
 static void
@@ -63,8 +139,9 @@ data_offer_accept (struct wl_client *client,
 
   if (offer->source)
     {
-      offer->source->funcs.target (offer->source, mime_type);
-      offer->source->has_target = mime_type != NULL;
+      meta_wayland_data_source_target (offer->source, mime_type);
+      meta_wayland_data_source_set_has_target (offer->source,
+                                               mime_type != NULL);
     }
 }
 
@@ -97,41 +174,35 @@ destroy_data_offer (struct wl_resource *resource)
 {
   MetaWaylandDataOffer *offer = wl_resource_get_user_data (resource);
 
-  if (offer->source && offer->source->resource)
-    wl_list_remove (&offer->source_destroy_listener.link);
+  if (offer->source)
+    g_object_remove_weak_pointer (G_OBJECT (offer->source),
+                                  (gpointer *)&offer->source);
 
   g_slice_free (MetaWaylandDataOffer, offer);
-}
-
-static void
-destroy_offer_data_source (struct wl_listener *listener, void *data)
-{
-  MetaWaylandDataOffer *offer;
-
-  offer = wl_container_of (listener, offer, source_destroy_listener);
-  offer->source = NULL;
 }
 
 static struct wl_resource *
 meta_wayland_data_source_send_offer (MetaWaylandDataSource *source,
                                      struct wl_resource *target)
 {
+  MetaWaylandDataSourcePrivate *priv =
+    meta_wayland_data_source_get_instance_private (source);
   MetaWaylandDataOffer *offer = g_slice_new0 (MetaWaylandDataOffer);
   char **p;
 
   offer->source = source;
-  offer->resource = wl_resource_create (wl_resource_get_client (target), &wl_data_offer_interface, wl_resource_get_version (target), 0);
-  wl_resource_set_implementation (offer->resource, &data_offer_interface, offer, destroy_data_offer);
-
-  if (source->resource)
-    {
-      offer->source_destroy_listener.notify = destroy_offer_data_source;
-      wl_resource_add_destroy_listener (source->resource, &offer->source_destroy_listener);
-    }
+  g_object_add_weak_pointer (G_OBJECT (source), (gpointer *)&offer->source);
+  offer->resource = wl_resource_create (wl_resource_get_client (target),
+                                        &wl_data_offer_interface,
+                                        wl_resource_get_version (target), 0);
+  wl_resource_set_implementation (offer->resource,
+                                  &data_offer_interface,
+                                  offer,
+                                  destroy_data_offer);
 
   wl_data_device_send_data_offer (target, offer->resource);
 
-  wl_array_for_each (p, &source->mime_types)
+  wl_array_for_each (p, &priv->mime_types)
     wl_data_offer_send_offer (offer->resource, *p);
 
   return offer->resource;
@@ -172,7 +243,6 @@ struct _MetaWaylandDragGrab {
   struct wl_listener      drag_icon_listener;
 
   MetaWaylandDataSource  *drag_data_source;
-  struct wl_listener      drag_data_source_listener;
 
   ClutterActor           *feedback_actor;
 
@@ -275,9 +345,10 @@ data_device_end_drag_grab (MetaWaylandDragGrab *drag_grab)
       wl_list_remove (&drag_grab->drag_icon_listener.link);
     }
 
-  if (drag_grab->drag_data_source &&
-      drag_grab->drag_data_source->resource)
-    wl_list_remove (&drag_grab->drag_data_source_listener.link);
+  if (drag_grab->drag_data_source)
+    g_object_weak_unref (G_OBJECT (drag_grab->drag_data_source),
+                         drag_grab_data_source_destroyed,
+                         drag_grab);
 
   if (drag_grab->feedback_actor)
     {
@@ -304,7 +375,7 @@ drag_grab_button (MetaWaylandPointerGrab *grab,
     {
       gboolean success = FALSE;
 
-      if (drag_grab->drag_data_source->has_target)
+      if (meta_wayland_data_source_has_target (drag_grab->drag_data_source))
         {
           meta_wayland_surface_drag_dest_drop (drag_grab->drag_focus);
           success = TRUE;
@@ -339,13 +410,11 @@ destroy_data_device_origin (struct wl_listener *listener, void *data)
 }
 
 static void
-destroy_data_device_source (struct wl_listener *listener, void *data)
+drag_grab_data_source_destroyed (gpointer data, GObject *where_the_object_was)
 {
-  MetaWaylandDragGrab *drag_grab =
-    wl_container_of (listener, drag_grab, drag_data_source_listener);
+  MetaWaylandDragGrab *drag_grab = data;
 
   drag_grab->drag_data_source = NULL;
-  drag_grab->seat->data_device.dnd_data_source = NULL;
   data_device_end_drag_grab (drag_grab);
   meta_wayland_data_device_set_dnd_source (&drag_grab->seat->data_device, NULL);
 }
@@ -393,19 +462,13 @@ meta_wayland_data_device_start_drag (MetaWaylandDataDevice                 *data
   drag_grab->drag_start_x = stage_pos.x;
   drag_grab->drag_start_y = stage_pos.y;
 
-  if (source)
-    {
-      if (source->resource)
-        {
-          drag_grab->drag_data_source_listener.notify = destroy_data_device_source;
-          wl_resource_add_destroy_listener (source->resource,
-                                            &drag_grab->drag_data_source_listener);
-        }
+  g_object_weak_ref (G_OBJECT (source),
+                     drag_grab_data_source_destroyed,
+                     drag_grab);
 
-      drag_grab->drag_data_source = source;
-      meta_wayland_data_device_set_dnd_source (data_device,
-                                               drag_grab->drag_data_source);
-    }
+  drag_grab->drag_data_source = source;
+  meta_wayland_data_device_set_dnd_source (data_device,
+                                           drag_grab->drag_data_source);
 
   if (icon_surface)
     {
@@ -487,9 +550,9 @@ data_device_start_drag (struct wl_client *client,
 }
 
 static void
-destroy_selection_data_source (struct wl_listener *listener, void *data)
+selection_data_source_destroyed (gpointer data, GObject *object_was_here)
 {
-  MetaWaylandDataDevice *data_device = wl_container_of (listener, data_device, selection_data_source_listener);
+  MetaWaylandDataDevice *data_device = data;
   MetaWaylandSeat *seat = wl_container_of (data_device, seat, data_device);
   struct wl_resource *data_device_resource;
   struct wl_client *focus_client = NULL;
@@ -510,7 +573,10 @@ meta_wayland_source_send (MetaWaylandDataSource *source,
                           const gchar           *mime_type,
                           gint                   fd)
 {
-  wl_data_source_send_send (source->resource, mime_type, fd);
+  MetaWaylandDataSourceWayland *source_wayland =
+    META_WAYLAND_DATA_SOURCE_WAYLAND (source);
+
+  wl_data_source_send_send (source_wayland->resource, mime_type, fd);
   close (fd);
 }
 
@@ -518,20 +584,77 @@ static void
 meta_wayland_source_target (MetaWaylandDataSource *source,
                             const gchar           *mime_type)
 {
-  wl_data_source_send_target (source->resource, mime_type);
+  MetaWaylandDataSourceWayland *source_wayland =
+    META_WAYLAND_DATA_SOURCE_WAYLAND (source);
+
+  wl_data_source_send_target (source_wayland->resource, mime_type);
 }
 
 static void
 meta_wayland_source_cancel (MetaWaylandDataSource *source)
 {
-  wl_data_source_send_cancelled (source->resource);
+  MetaWaylandDataSourceWayland *source_wayland =
+    META_WAYLAND_DATA_SOURCE_WAYLAND (source);
+
+  wl_data_source_send_cancelled (source_wayland->resource);
 }
 
-static const MetaWaylandDataSourceFuncs meta_wayland_source_funcs = {
-  meta_wayland_source_send,
-  meta_wayland_source_target,
-  meta_wayland_source_cancel
-};
+static void
+meta_wayland_source_finalize (GObject *object)
+{
+  G_OBJECT_CLASS (meta_wayland_data_source_parent_class)->finalize (object);
+}
+
+static void
+meta_wayland_data_source_wayland_init (MetaWaylandDataSourceWayland *source_wayland)
+{
+}
+
+static void
+meta_wayland_data_source_wayland_class_init (MetaWaylandDataSourceWaylandClass *klass)
+{
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  MetaWaylandDataSourceClass *data_source_class =
+    META_WAYLAND_DATA_SOURCE_CLASS (klass);
+
+  object_class->finalize = meta_wayland_source_finalize;
+
+  data_source_class->send = meta_wayland_source_send;
+  data_source_class->target = meta_wayland_source_target;
+  data_source_class->cancel = meta_wayland_source_cancel;
+}
+
+static void
+meta_wayland_data_source_finalize (GObject *object)
+{
+  MetaWaylandDataSource *source = META_WAYLAND_DATA_SOURCE (object);
+  MetaWaylandDataSourcePrivate *priv =
+    meta_wayland_data_source_get_instance_private (source);
+  char **pos;
+
+  wl_array_for_each (pos, &priv->mime_types)
+    g_free (*pos);
+  wl_array_release (&priv->mime_types);
+
+  G_OBJECT_CLASS (meta_wayland_data_source_parent_class)->finalize (object);
+}
+
+static void
+meta_wayland_data_source_init (MetaWaylandDataSource *source)
+{
+  MetaWaylandDataSourcePrivate *priv =
+    meta_wayland_data_source_get_instance_private (source);
+
+  wl_array_init (&priv->mime_types);
+}
+
+static void
+meta_wayland_data_source_class_init (MetaWaylandDataSourceClass *klass)
+{
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
+  object_class->finalize = meta_wayland_data_source_finalize;
+}
 
 static void
 meta_wayland_drag_dest_focus_in (MetaWaylandDataDevice *data_device,
@@ -619,9 +742,13 @@ meta_wayland_data_device_set_dnd_source (MetaWaylandDataDevice *data_device,
     return;
 
   if (data_device->dnd_data_source)
-    meta_wayland_data_source_free (data_device->dnd_data_source);
+    g_object_remove_weak_pointer (G_OBJECT (source),
+                                  (gpointer *)&data_device->dnd_data_source);
 
   data_device->dnd_data_source = source;
+  g_object_add_weak_pointer (G_OBJECT (source),
+                             (gpointer *)&data_device->dnd_data_source);
+
   wl_signal_emit (&data_device->dnd_ownership_signal, source);
 }
 
@@ -640,15 +767,10 @@ meta_wayland_data_device_set_selection (MetaWaylandDataDevice *data_device,
 
   if (data_device->selection_data_source)
     {
-      data_device->selection_data_source->funcs.cancel (data_device->selection_data_source);
-
-      if (data_device->selection_data_source->resource)
-        {
-          wl_list_remove (&data_device->selection_data_source_listener.link);
-          data_device->selection_data_source->resource = NULL;
-        }
-
-      meta_wayland_data_source_free (data_device->selection_data_source);
+      meta_wayland_data_source_cancel (data_device->selection_data_source);
+      g_object_weak_unref (G_OBJECT (data_device->selection_data_source),
+                           selection_data_source_destroyed,
+                           data_device);
       data_device->selection_data_source = NULL;
     }
 
@@ -675,11 +797,9 @@ meta_wayland_data_device_set_selection (MetaWaylandDataDevice *data_device,
 
   if (source)
     {
-      if (source->resource)
-        {
-          data_device->selection_data_source_listener.notify = destroy_selection_data_source;
-          wl_resource_add_destroy_listener (source->resource, &data_device->selection_data_source_listener);
-        }
+      g_object_weak_ref (G_OBJECT (source),
+                         selection_data_source_destroyed,
+                         data_device);
     }
 
   wl_signal_emit (&data_device->selection_ownership_signal, source);
@@ -718,24 +838,21 @@ static const struct wl_data_device_interface data_device_interface = {
 static void
 destroy_data_source (struct wl_resource *resource)
 {
-  MetaWaylandDataSource *source = wl_resource_get_user_data (resource);
+  MetaWaylandDataSourceWayland *source = wl_resource_get_user_data (resource);
 
   source->resource = NULL;
+  g_object_unref (source);
 }
 
 static void
 create_data_source (struct wl_client *client,
                     struct wl_resource *resource, guint32 id)
 {
-  MetaWaylandDataSource *source;
   struct wl_resource *source_resource;
 
   source_resource = wl_resource_create (client, &wl_data_source_interface,
                                         wl_resource_get_version (resource), id);
-  source = meta_wayland_data_source_new (&meta_wayland_source_funcs,
-                                         source_resource, NULL);
-  wl_resource_set_implementation (source_resource, &data_source_interface,
-                                  source, destroy_data_source);
+  meta_wayland_data_source_wayland_new (source_resource);
 }
 
 static void
@@ -835,21 +952,15 @@ meta_wayland_data_device_update_dnd_surface (MetaWaylandDataDevice *data_device)
                                   -drag_grab->drag_surface->offset_y);
 }
 
-void
-meta_wayland_data_source_send (MetaWaylandDataSource *source,
-                               const gchar           *mime_type,
-                               gint                   fd)
-{
-  source->funcs.send (source, mime_type, fd);
-}
-
 gboolean
 meta_wayland_data_source_has_mime_type (const MetaWaylandDataSource *source,
                                         const gchar                 *mime_type)
 {
+  MetaWaylandDataSourcePrivate *priv =
+    meta_wayland_data_source_get_instance_private (source);
   gchar **p;
 
-  wl_array_for_each (p, &source->mime_types)
+  wl_array_for_each (p, &priv->mime_types)
     {
       if (g_strcmp0 (mime_type, *p) == 0)
         return TRUE;
@@ -858,45 +969,28 @@ meta_wayland_data_source_has_mime_type (const MetaWaylandDataSource *source,
   return FALSE;
 }
 
-MetaWaylandDataSource *
-meta_wayland_data_source_new (const MetaWaylandDataSourceFuncs *funcs,
-                              struct wl_resource               *wl_resource,
-                              gpointer                          user_data)
+static MetaWaylandDataSource *
+meta_wayland_data_source_wayland_new (struct wl_resource *resource)
 {
-  MetaWaylandDataSource *source = g_slice_new0 (MetaWaylandDataSource);
+  MetaWaylandDataSourceWayland *source_wayland =
+   g_object_new (META_TYPE_WAYLAND_DATA_SOURCE_WAYLAND, NULL);
 
-  source->funcs = *funcs;
-  source->resource = wl_resource;
-  source->user_data = user_data;
-  wl_array_init (&source->mime_types);
+  source_wayland->resource = resource;
+  wl_resource_set_implementation (resource, &data_source_interface,
+                                  source_wayland, destroy_data_source);
 
-  return source;
-}
-
-void
-meta_wayland_data_source_free (MetaWaylandDataSource *source)
-{
-  char **pos;
-
-  if (source->resource)
-    wl_resource_destroy (source->resource);
-
-  wl_array_for_each (pos, &source->mime_types)
-    {
-      g_free (*pos);
-    }
-
-  wl_array_release (&source->mime_types);
-  g_slice_free (MetaWaylandDataSource, source);
+  return META_WAYLAND_DATA_SOURCE (source_wayland);
 }
 
 gboolean
 meta_wayland_data_source_add_mime_type (MetaWaylandDataSource *source,
                                         const gchar           *mime_type)
 {
+  MetaWaylandDataSourcePrivate *priv =
+    meta_wayland_data_source_get_instance_private (source);
   gchar **pos;
 
-  pos = wl_array_add (&source->mime_types, sizeof (*pos));
+  pos = wl_array_add (&priv->mime_types, sizeof (*pos));
 
   if (pos)
     {

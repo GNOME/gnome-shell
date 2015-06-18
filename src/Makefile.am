@@ -242,6 +242,7 @@ libmutter_la_SOURCES +=				\
 	wayland/meta-xwayland.c			\
 	wayland/meta-xwayland.h			\
 	wayland/meta-xwayland-selection.c	\
+	wayland/meta-xwayland-selection-private.h	\
 	wayland/meta-xwayland-private.h		\
 	wayland/meta-wayland-buffer.c      	\
 	wayland/meta-wayland-buffer.h      	\
@@ -249,6 +250,7 @@ libmutter_la_SOURCES +=				\
 	wayland/meta-wayland-region.h      	\
 	wayland/meta-wayland-data-device.c      \
 	wayland/meta-wayland-data-device.h      \
+	wayland/meta-wayland-data-device-private.h	\
 	wayland/meta-wayland-keyboard.c		\
 	wayland/meta-wayland-keyboard.h		\
 	wayland/meta-wayland-pointer.c		\

@@ -24,11 +24,28 @@
 #define META_WAYLAND_DATA_DEVICE_H
 
 #include <wayland-server.h>
+#include <glib-object.h>
 
 #include "meta-wayland-types.h"
 
 typedef struct _MetaWaylandDragGrab MetaWaylandDragGrab;
 typedef struct _MetaWaylandDataSourceFuncs MetaWaylandDataSourceFuncs;
+
+#define META_TYPE_WAYLAND_DATA_SOURCE (meta_wayland_data_source_get_type ())
+G_DECLARE_DERIVABLE_TYPE (MetaWaylandDataSource, meta_wayland_data_source,
+                          META, WAYLAND_DATA_SOURCE, GObject);
+
+struct _MetaWaylandDataSourceClass
+{
+  GObjectClass parent_class;
+
+  void (* send)    (MetaWaylandDataSource *source,
+                    const gchar           *mime_type,
+                    gint                   fd);
+  void (* target)  (MetaWaylandDataSource *source,
+                    const gchar           *mime_type);
+  void (* cancel)  (MetaWaylandDataSource *source);
+};
 
 struct _MetaWaylandDataDevice
 {
@@ -43,24 +60,7 @@ struct _MetaWaylandDataDevice
   struct wl_signal dnd_ownership_signal;
 };
 
-struct _MetaWaylandDataSourceFuncs
-{
-  void (* send)    (MetaWaylandDataSource *source,
-                    const gchar           *mime_type,
-                    gint                   fd);
-  void (* target)  (MetaWaylandDataSource *source,
-                    const gchar           *mime_type);
-  void (* cancel)  (MetaWaylandDataSource *source);
-};
-
-struct _MetaWaylandDataSource
-{
-  MetaWaylandDataSourceFuncs funcs;
-  struct wl_resource *resource;
-  struct wl_array mime_types;
-  gpointer user_data;
-  gboolean has_target;
-};
+GType meta_wayland_data_source_get_type (void) G_GNUC_CONST;
 
 void meta_wayland_data_device_manager_init (MetaWaylandCompositor *compositor);
 
@@ -77,17 +77,20 @@ void meta_wayland_data_device_set_dnd_source     (MetaWaylandDataDevice *data_de
 void meta_wayland_data_device_set_selection      (MetaWaylandDataDevice *data_device,
                                                   MetaWaylandDataSource *source,
                                                   guint32 serial);
-MetaWaylandDataSource *
-         meta_wayland_data_source_new            (const MetaWaylandDataSourceFuncs *funcs,
-                                                  struct wl_resource               *resource,
-                                                  gpointer                          user_data);
-void     meta_wayland_data_source_free           (MetaWaylandDataSource *source);
 
 gboolean meta_wayland_data_source_add_mime_type  (MetaWaylandDataSource *source,
                                                   const gchar           *mime_type);
 
 gboolean meta_wayland_data_source_has_mime_type  (const MetaWaylandDataSource *source,
                                                   const gchar                 *mime_type);
+
+struct wl_array *
+         meta_wayland_data_source_get_mime_types (const MetaWaylandDataSource *source);
+
+gboolean meta_wayland_data_source_has_target     (MetaWaylandDataSource *source);
+
+void     meta_wayland_data_source_set_has_target (MetaWaylandDataSource *source,
+                                                  gboolean               has_target);
 
 void     meta_wayland_data_source_send           (MetaWaylandDataSource *source,
                                                   const gchar           *mime_type,

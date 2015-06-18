@@ -35,7 +35,10 @@
 #include <X11/Xatom.h>
 #include <meta/errors.h>
 #include "meta-xwayland-private.h"
+#include "meta-xwayland-selection-private.h"
 #include "meta-wayland-data-device.h"
+
+GType meta_wayland_data_source_xwayland_get_type (void) G_GNUC_CONST;
 
 #define INCR_CHUNK_SIZE (128 * 1024)
 #define XDND_VERSION 5
@@ -79,6 +82,13 @@ typedef struct {
   guint32 last_motion_time;
 } MetaDndBridge;
 
+struct _MetaWaylandDataSourceXWayland
+{
+  MetaWaylandDataSource parent;
+
+  MetaSelectionBridge *selection;
+};
+
 struct _MetaXWaylandSelection {
   MetaSelectionBridge clipboard;
   MetaDndBridge dnd;
@@ -121,6 +131,9 @@ const gchar *atom_names[] = {
 
 Atom xdnd_atoms[N_DND_ATOMS];
 
+G_DEFINE_TYPE (MetaWaylandDataSourceXWayland, meta_wayland_data_source_xwayland,
+               META_TYPE_WAYLAND_DATA_SOURCE);
+
 /* XDND helpers */
 static void
 xdnd_send_enter (MetaXWaylandSelection *selection_data,
@@ -132,6 +145,7 @@ xdnd_send_enter (MetaXWaylandSelection *selection_data,
   MetaWaylandDataSource *data_source;
   XEvent xev = { 0 };
   gchar **p;
+  struct wl_array *source_mime_types;
 
   data_source = compositor->seat->data_device.dnd_data_source;
   xev.xclient.type = ClientMessage;
@@ -143,13 +157,14 @@ xdnd_send_enter (MetaXWaylandSelection *selection_data,
   xev.xclient.data.l[1] = XDND_VERSION << 24; /* version */
   xev.xclient.data.l[2] = xev.xclient.data.l[3] = xev.xclient.data.l[4] = 0;
 
-  if (data_source->mime_types.size <= 3)
+  source_mime_types = meta_wayland_data_source_get_mime_types (data_source);
+  if (source_mime_types->size <= 3)
     {
       /* The mimetype atoms fit in this same message */
       gchar **p;
       gint i = 2;
 
-      wl_array_for_each (p, &data_source->mime_types)
+      wl_array_for_each (p, source_mime_types)
         {
           xev.xclient.data.l[i++] = gdk_x11_get_xatom_by_name (*p);
         }
@@ -163,9 +178,9 @@ xdnd_send_enter (MetaXWaylandSelection *selection_data,
       gint i = 0;
 
       xev.xclient.data.l[1] |= 1;
-      atomlist = g_new0 (Atom, data_source->mime_types.size);
+      atomlist = g_new0 (Atom, source_mime_types->size);
 
-      wl_array_for_each (p, &data_source->mime_types)
+      wl_array_for_each (p, source_mime_types)
         {
           atomlist[i++] = gdk_x11_get_xatom_by_name (*p);
         }
@@ -684,9 +699,11 @@ meta_x11_source_send (MetaWaylandDataSource *source,
                       const gchar           *mime_type,
                       gint                   fd)
 {
+  MetaWaylandDataSourceXWayland *source_xwayland =
+    META_WAYLAND_DATA_SOURCE_XWAYLAND (source);
   MetaWaylandCompositor *compositor = meta_wayland_compositor_get_default ();
   Display *xdisplay = GDK_DISPLAY_XDISPLAY (gdk_display_get_default ());
-  MetaSelectionBridge *selection = source->user_data;
+  MetaSelectionBridge *selection = source_xwayland->selection;
   Atom type_atom;
 
   if (strcmp (mime_type, "text/plain;charset=utf-8") == 0)
@@ -715,7 +732,9 @@ meta_x11_source_target (MetaWaylandDataSource *source,
                         const gchar           *mime_type)
 {
   MetaWaylandCompositor *compositor = meta_wayland_compositor_get_default ();
-  MetaSelectionBridge *selection = source->user_data;
+  MetaWaylandDataSourceXWayland *source_xwayland =
+    META_WAYLAND_DATA_SOURCE_XWAYLAND (source);
+  MetaSelectionBridge *selection = source_xwayland->selection;
 
   if (selection->selection_atom == xdnd_atoms[ATOM_DND_SELECTION])
     {
@@ -727,17 +746,40 @@ meta_x11_source_target (MetaWaylandDataSource *source,
 static void
 meta_x11_source_cancel (MetaWaylandDataSource *source)
 {
-  MetaSelectionBridge *selection = source->user_data;
+  MetaWaylandDataSourceXWayland *source_xwayland =
+    META_WAYLAND_DATA_SOURCE_XWAYLAND (source);
+  MetaSelectionBridge *selection = source_xwayland->selection;
 
   g_clear_pointer (&selection->x11_selection,
                    (GDestroyNotify) x11_selection_data_free);
 }
 
-static const MetaWaylandDataSourceFuncs meta_x11_source_funcs = {
-  meta_x11_source_send,
-  meta_x11_source_target,
-  meta_x11_source_cancel
-};
+static void
+meta_wayland_data_source_xwayland_init (MetaWaylandDataSourceXWayland *source_xwayland)
+{
+}
+
+static void
+meta_wayland_data_source_xwayland_class_init (MetaWaylandDataSourceXWaylandClass *klass)
+{
+  MetaWaylandDataSourceClass *data_source_class =
+    META_WAYLAND_DATA_SOURCE_CLASS (klass);
+
+  data_source_class->send = meta_x11_source_send;
+  data_source_class->target = meta_x11_source_target;
+  data_source_class->cancel = meta_x11_source_cancel;
+}
+
+static MetaWaylandDataSource *
+meta_wayland_data_source_xwayland_new (MetaSelectionBridge *selection)
+{
+  MetaWaylandDataSourceXWayland *source_xwayland;
+
+  source_xwayland = g_object_new (META_TYPE_WAYLAND_DATA_SOURCE_XWAYLAND, NULL);
+  source_xwayland->selection = selection;
+
+  return META_WAYLAND_DATA_SOURCE (source_xwayland);
+}
 
 static void
 meta_x11_drag_dest_focus_in (MetaWaylandDataDevice *data_device,
@@ -811,8 +853,10 @@ meta_xwayland_data_source_fetch_mimetype_list (MetaWaylandDataSource *source,
   gulong nitems_ret, bytes_after_ret, i;
   Atom *atoms, type_ret, utf8_string;
   int format_ret;
+  struct wl_array *source_mime_types;
 
-  if (source->mime_types.size != 0)
+  source_mime_types = meta_wayland_data_source_get_mime_types (source);
+  if (source_mime_types->size != 0)
     return TRUE;
 
   utf8_string = gdk_x11_get_xatom_by_name ("UTF8_STRING");
@@ -856,13 +900,13 @@ meta_xwayland_selection_get_x11_targets (MetaWaylandCompositor *compositor,
 {
   MetaWaylandDataSource *data_source;
 
-  data_source = meta_wayland_data_source_new (&meta_x11_source_funcs,
-                                              NULL, selection);
+  data_source = meta_wayland_data_source_xwayland_new (selection);
 
   if (meta_xwayland_data_source_fetch_mimetype_list (data_source,
                                                      selection->window,
                                                      gdk_x11_get_xatom_by_name ("_META_SELECTION")))
     {
+      g_clear_object (&selection->source);
       selection->source = data_source;
 
       if (selection->selection_atom == gdk_x11_get_xatom_by_name ("CLIPBOARD"))
@@ -872,9 +916,7 @@ meta_xwayland_selection_get_x11_targets (MetaWaylandCompositor *compositor,
         }
     }
   else
-    {
-      meta_wayland_data_source_free (data_source);
-    }
+    g_object_unref (data_source);
 }
 
 static void
@@ -951,17 +993,19 @@ meta_xwayland_selection_send_targets (MetaWaylandCompositor       *compositor,
   Atom *targets;
   gchar **p;
   int i = 0;
+  struct wl_array *source_mime_types;
 
   if (!data_source)
     return;
 
-  if (data_source->mime_types.size == 0)
+  source_mime_types = meta_wayland_data_source_get_mime_types (data_source);
+  if (source_mime_types->size == 0)
     return;
 
   /* Make extra room for TIMESTAMP/TARGETS */
-  targets = g_new (Atom, data_source->mime_types.size + 2);
+  targets = g_new (Atom, source_mime_types->size + 2);
 
-  wl_array_for_each (p, &data_source->mime_types)
+  wl_array_for_each (p, source_mime_types)
     {
       targets[i++] = gdk_x11_get_xatom_by_name (*p);
     }
@@ -1211,7 +1255,8 @@ meta_xwayland_selection_handle_client_message (MetaWaylandCompositor *compositor
       if (event->message_type == xdnd_atoms[ATOM_DND_STATUS])
         {
           /* The first bit in data.l[1] is set if the drag was accepted */
-          data_source->has_target = (event->data.l[1] & 1) != 0;
+          meta_wayland_data_source_set_has_target (data_source,
+                                                   (event->data.l[1] & 1) != 0);
 
           return TRUE;
         }
@@ -1246,9 +1291,12 @@ meta_xwayland_selection_handle_client_message (MetaWaylandCompositor *compositor
               /* Mimetypes are contained in this message */
               const gchar *mimetype;
               gint i;
+              struct wl_array *source_mime_types;
 
               /* We only need to fetch once */
-              if (dnd->selection.source->mime_types.size == 0)
+              source_mime_types =
+                meta_wayland_data_source_get_mime_types (dnd->selection.source);
+              if (source_mime_types->size == 0)
                 {
                   for (i = 2; i <= 4; i++)
                     {
@@ -1287,7 +1335,8 @@ meta_xwayland_selection_handle_client_message (MetaWaylandCompositor *compositor
           meta_wayland_surface_drag_dest_motion (drag_focus, motion);
           xdnd_send_status (compositor->xwayland_manager.selection_data,
                             (Window) event->data.l[0],
-                            dnd->selection.source->has_target);
+                            meta_wayland_data_source_has_target (
+                              dnd->selection.source));
 
           clutter_event_free (motion);
           return TRUE;
@@ -1327,9 +1376,7 @@ meta_xwayland_selection_handle_xfixes_selection_notify (MetaWaylandCompositor *c
           if (selection->source && selection->owner != selection->window)
             {
               /* An X client went away, clear the selection */
-              meta_wayland_data_device_set_selection (&compositor->seat->data_device, NULL,
-                                                      wl_display_next_serial (compositor->wayland_display));
-              selection->source = NULL;
+              g_clear_object (&selection->source);
             }
 
           selection->owner = None;
@@ -1369,8 +1416,7 @@ meta_xwayland_selection_handle_xfixes_selection_notify (MetaWaylandCompositor *c
           MetaWaylandSurface *focus;
 
           focus = compositor->seat->pointer.focus_surface;
-          selection->source = meta_wayland_data_source_new (&meta_x11_source_funcs,
-                                                            NULL, selection);
+          selection->source = meta_wayland_data_source_xwayland_new (selection);
           meta_wayland_data_device_set_dnd_source (&compositor->seat->data_device,
                                                    selection->source);
 
@@ -1520,11 +1566,7 @@ meta_xwayland_shutdown_selection (void)
 
   g_assert (selection != NULL);
 
-  if (selection->clipboard.source)
-    {
-      meta_wayland_data_device_set_selection (&compositor->seat->data_device, NULL,
-                                              wl_display_next_serial (compositor->wayland_display));
-    }
+  g_clear_object (&selection->clipboard.source);
 
   meta_xwayland_shutdown_dnd (manager);
   shutdown_selection_bridge (&selection->clipboard);
