@@ -89,7 +89,7 @@ stage_key_release_cb (ClutterActor *actor,
 }
 
 static gboolean
-draw_arc (data)
+draw_arc (gpointer data)
 {
   Pixmap pixmap = GPOINTER_TO_UINT (data);
   Display *dpy = clutter_x11_get_default_display ();
@@ -126,7 +126,7 @@ stage_button_press_cb (ClutterActor    *actor,
 		       ClutterEvent    *event,
 		       gpointer         data)
 {
-  draw_arc (GPOINTER_TO_UINT (data));
+  draw_arc (data);
 
   return CLUTTER_EVENT_STOP;
 }
