@@ -817,31 +817,6 @@ meta_prop_get_text_property (MetaDisplay   *display,
   return text_property_from_results (&results, utf8_str_p);
 }
 
-/* From Xmd.h */
-#ifndef cvtINT32toInt
-#if SIZEOF_VOID_P == 8
-#define cvtINT8toInt(val)   ((((unsigned int)val) & 0x00000080) ? (((unsigned int)val) | 0xffffffffffffff00) : ((unsigned int)val))
-#define cvtINT16toInt(val)  ((((unsigned int)val) & 0x00008000) ? (((unsigned int)val) | 0xffffffffffff0000) : ((unsigned int)val))
-#define cvtINT32toInt(val)  ((((unsigned int)val) & 0x80000000) ? (((unsigned int)val) | 0xffffffff00000000) : ((unsigned int)val))
-#define cvtINT8toShort(val)  cvtINT8toInt(val)
-#define cvtINT16toShort(val) cvtINT16toInt(val)
-#define cvtINT32toShort(val) cvtINT32toInt(val)
-#define cvtINT8toLong(val)  cvtINT8toInt(val)
-#define cvtINT16toLong(val) cvtINT16toInt(val)
-#define cvtINT32toLong(val) cvtINT32toInt(val)
-#else
-#define cvtINT8toInt(val) (val)
-#define cvtINT16toInt(val) (val)
-#define cvtINT32toInt(val) (val)
-#define cvtINT8toShort(val) (val)
-#define cvtINT16toShort(val) (val)
-#define cvtINT32toShort(val) (val)
-#define cvtINT8toLong(val) (val)
-#define cvtINT16toLong(val) (val)
-#define cvtINT32toLong(val) (val)
-#endif /* SIZEOF_VOID_P == 8 */
-#endif /* cvtINT32toInt() */
-
 static gboolean
 wm_hints_from_results (GetPropertyResults *results,
                        XWMHints          **hints_p)
@@ -873,11 +848,11 @@ wm_hints_from_results (GetPropertyResults *results,
 
   hints->flags = raw->flags;
   hints->input = (raw->input ? True : False);
-  hints->initial_state = cvtINT32toInt (raw->initialState);
+  hints->initial_state = raw->initialState;
   hints->icon_pixmap = raw->iconPixmap;
   hints->icon_window = raw->iconWindow;
-  hints->icon_x = cvtINT32toInt (raw->iconX);
-  hints->icon_y = cvtINT32toInt (raw->iconY);
+  hints->icon_x = raw->iconX;
+  hints->icon_y = raw->iconY;
   hints->icon_mask = raw->iconMask;
   if (results->n_items >= NumPropWMHintsElements)
     hints->window_group = raw->windowGroup;
@@ -995,29 +970,28 @@ size_hints_from_results (GetPropertyResults *results,
 
   hints = malloc (sizeof (XSizeHints));
 
-  /* XSizeHints misdeclares these as int instead of long */
   hints->flags = raw->flags;
-  hints->x = cvtINT32toInt (raw->x);
-  hints->y = cvtINT32toInt (raw->y);
-  hints->width = cvtINT32toInt (raw->width);
-  hints->height = cvtINT32toInt (raw->height);
-  hints->min_width  = cvtINT32toInt (raw->minWidth);
-  hints->min_height = cvtINT32toInt (raw->minHeight);
-  hints->max_width  = cvtINT32toInt (raw->maxWidth);
-  hints->max_height = cvtINT32toInt (raw->maxHeight);
-  hints->width_inc  = cvtINT32toInt (raw->widthInc);
-  hints->height_inc = cvtINT32toInt (raw->heightInc);
-  hints->min_aspect.x = cvtINT32toInt (raw->minAspectX);
-  hints->min_aspect.y = cvtINT32toInt (raw->minAspectY);
-  hints->max_aspect.x = cvtINT32toInt (raw->maxAspectX);
-  hints->max_aspect.y = cvtINT32toInt (raw->maxAspectY);
+  hints->x = raw->x;
+  hints->y = raw->y;
+  hints->width = raw->width);
+  hints->height = raw->height;
+  hints->min_width  = raw->minWidth;
+  hints->min_height = raw->minHeight;
+  hints->max_width  = raw->maxWidth;
+  hints->max_height = raw->maxHeight;
+  hints->width_inc  = raw->widthInc;
+  hints->height_inc = raw->heightInc;
+  hints->min_aspect.x = raw->minAspectX;
+  hints->min_aspect.y = raw->minAspectY;
+  hints->max_aspect.x = raw->maxAspectX;
+  hints->max_aspect.y = raw->maxAspectY;
 
   *flags_p = (USPosition | USSize | PAllHints);
   if (results->n_items >= NumPropSizeElements)
     {
-      hints->base_width= cvtINT32toInt (raw->baseWidth);
-      hints->base_height= cvtINT32toInt (raw->baseHeight);
-      hints->win_gravity= cvtINT32toInt (raw->winGravity);
+      hints->base_width = raw->baseWidth;
+      hints->base_height = raw->baseHeight;
+      hints->win_gravity = raw->winGravity;
       *flags_p |= (PBaseSize | PWinGravity);
     }
 
