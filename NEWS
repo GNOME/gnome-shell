@@ -1,3 +1,46 @@
+Clutter 1.23.2                                                       2015-06-18
+===============================================================================
+
+  • List of changes since Clutter 1.22
+
+    - Add accessor functions for ClutterActor state
+    Currently, actor state is accessible only via GObject properties and via
+    pre-processor macros; the former are not very friendly for C developers,
+    while the latter are not usable from language bindings. New functions have
+    been added to fill in the gap; the macros have a "soft" deprecation, since
+    compiler warnings cannot be used to detect their use.
+
+    - Merge the Cally API reference into Clutter's
+    The Cally API is part of the Clutter shared library; it makes sense to
+    have the API references merged.
+
+    - Improve visual handling with the GDK backend running on X11
+    Cogl has its own visual, based on its preferred GLXFBConfig; this means
+    that Clutter should use and expose the correct GdkVisual instance when
+    creating the GdkWindow used for drawing the contents of the stage.
+
+    - Improve input device handling in the GDK backend
+    Properly detect touchpad devices; translate touch events.
+
+  • List of bugs fixed since Clutter 1.22
+
+    #707982 - Add PanAxis mode that automatically pins scroll based on initial
+              movement
+    #750496 - Touch events not correctly propagated through gdk backend
+    #747489 - No access to the Visual used to build the CoglOnscreen
+    #747951 - Tablet calibration targets do not respond to clicks
+    #749739 - prepare ClutterSwipeAction for multi-finger swipes
+    #749482 - x11: Fix touchpad detection
+    #749256 - clutter-backend-gdk: Only set setting on successful
+              gdk_screen_get_setting call
+    #747436 - Clutter should use the same heuristics as gtk+ to determine
+              touchpads
+
+Many thanks to:
+
+  Carlos Garnacho, Dima Ryazanov, Gustavo Noronha Silva, Jasper St. Pierre,
+  Marek Černocký, Matthieu Bouron, Rui Matos
+
 Clutter 1.22.0                                                       2015-03-23
 ===============================================================================
 
