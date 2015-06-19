@@ -217,7 +217,7 @@ const WorkspaceTracker = new Lang.Class({
 
     _getWorkspaceSettings: function() {
         let settings = global.get_overrides_settings();
-        if (settings.list_keys().indexOf('dynamic-workspaces') > -1)
+        if (settings.settings_schema.list_keys().indexOf('dynamic-workspaces') > -1)
             return settings;
         return new Gio.Settings({ schema_id: 'org.gnome.mutter' });
     },
