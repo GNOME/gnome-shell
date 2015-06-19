@@ -181,7 +181,6 @@ shell_prefs_init (void)
 
   g_object_get (G_OBJECT (settings), "schema-id", &schema_id, NULL);
 
-  keys = g_settings_list_keys (settings);
   for (keys = k = g_settings_list_keys (settings); *k; k++)
     meta_prefs_override_preference_schema (*k, schema_id);
 
