@@ -101,13 +101,22 @@ const WindowMenu = new Lang.Class({
 
             if (!isSticky) {
                 let workspace = window.get_workspace();
-                let idx = workspace.index();
-                if (idx > 0) {
+                if (workspace != workspace.get_neighbor(Meta.MotionDirection.LEFT)) {
+                     this.addAction(_("Move to Workspace Left"), Lang.bind(this, function(event) {
+                        window.change_workspace(workspace.get_neighbor(Meta.MotionDirection.LEFT));
+                    }));
+                }
+                if (workspace != workspace.get_neighbor(Meta.MotionDirection.RIGHT)) {
+                     this.addAction(_("Move to Workspace Right"), Lang.bind(this, function(event) {
+                        window.change_workspace(workspace.get_neighbor(Meta.MotionDirection.RIGHT));
+                    }));
+                }
+                if (workspace != workspace.get_neighbor(Meta.MotionDirection.UP)) {
                     this.addAction(_("Move to Workspace Up"), Lang.bind(this, function(event) {
                         window.change_workspace(workspace.get_neighbor(Meta.MotionDirection.UP));
                     }));
                 }
-                if (idx < nWorkspaces) {
+                if (workspace != workspace.get_neighbor(Meta.MotionDirection.DOWN)) {
                      this.addAction(_("Move to Workspace Down"), Lang.bind(this, function(event) {
                         window.change_workspace(workspace.get_neighbor(Meta.MotionDirection.DOWN));
                     }));
