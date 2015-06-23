@@ -11,16 +11,16 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-05-09 08:03+0000\n"
-"PO-Revision-Date: 2015-05-09 14:33+0200\n"
-"Last-Translator: Gabor Kelemen <kelemeng at ubuntu dot com>\n"
+"POT-Creation-Date: 2015-06-23 08:06+0000\n"
+"PO-Revision-Date: 2015-06-23 13:12+0200\n"
+"Last-Translator: Balázs Úr <urbalazs@gmail.com>\n"
 "Language-Team: Hungarian <openscope at googlegroups dot com>\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 1.5\n"
+"X-Generator: Lokalize 1.2\n"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
 msgid "System"
@@ -491,7 +491,7 @@ msgid "Display Settings"
 msgstr "Kijelző beállításai"
 
 #: ../js/ui/backgroundMenu.js:22 ../js/ui/panel.js:650
-#: ../js/ui/status/system.js:334
+#: ../js/ui/status/system.js:357
 msgid "Settings"
 msgstr "Beállítások"
 
@@ -912,7 +912,7 @@ msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr ""
 "Letölti és telepíti a következőt az extensions.gnome.org webhelyről: „%s”?"
 
-#: ../js/ui/keyboard.js:718 ../js/ui/status/keyboard.js:713
+#: ../js/ui/keyboard.js:747 ../js/ui/status/keyboard.js:713
 msgid "Keyboard"
 msgstr "Billentyűzet"
 
@@ -977,7 +977,7 @@ msgstr "Forrás megtekintése"
 msgid "Web Page"
 msgstr "Weblap"
 
-#: ../js/ui/messageTray.js:1504
+#: ../js/ui/messageTray.js:1486
 msgid "System Information"
 msgstr "Rendszerinformációk"
 
@@ -1019,7 +1019,7 @@ msgstr "toggle-switch-intl"
 msgid "Enter a Command"
 msgstr "Adjon meg egy parancsot"
 
-#: ../js/ui/runDialog.js:110 ../js/ui/windowMenu.js:153
+#: ../js/ui/runDialog.js:110 ../js/ui/windowMenu.js:162
 msgid "Close"
 msgstr "Bezárás"
 
@@ -1047,19 +1047,19 @@ msgid_plural "%d new notifications"
 msgstr[0] "%d új értesítés"
 msgstr[1] "%d új értesítés"
 
-#: ../js/ui/screenShield.js:432 ../js/ui/status/system.js:342
+#: ../js/ui/screenShield.js:432 ../js/ui/status/system.js:365
 msgid "Lock"
 msgstr "Zárolás"
 
-#: ../js/ui/screenShield.js:668
+#: ../js/ui/screenShield.js:684
 msgid "GNOME needs to lock the screen"
 msgstr "A GNOME-nak zárolnia kell a képernyőt"
 
-#: ../js/ui/screenShield.js:795 ../js/ui/screenShield.js:1271
+#: ../js/ui/screenShield.js:805 ../js/ui/screenShield.js:1271
 msgid "Unable to lock"
 msgstr "Nem lehet zárolni"
 
-#: ../js/ui/screenShield.js:796 ../js/ui/screenShield.js:1272
+#: ../js/ui/screenShield.js:806 ../js/ui/screenShield.js:1272
 msgid "Lock was blocked by an application"
 msgstr "A zárolást egy alkalmazás blokkolta"
 
@@ -1380,23 +1380,23 @@ msgstr "Repülőgép üzemmód"
 msgid "On"
 msgstr "Be"
 
-#: ../js/ui/status/system.js:314
+#: ../js/ui/status/system.js:337
 msgid "Switch User"
 msgstr "Felhasználóváltás"
 
-#: ../js/ui/status/system.js:319
+#: ../js/ui/status/system.js:342
 msgid "Log Out"
 msgstr "Kijelentkezés"
 
-#: ../js/ui/status/system.js:338
+#: ../js/ui/status/system.js:361
 msgid "Orientation Lock"
 msgstr "Tájolás zárolása"
 
-#: ../js/ui/status/system.js:346
+#: ../js/ui/status/system.js:369
 msgid "Suspend"
 msgstr "Felfüggesztés"
 
-#: ../js/ui/status/system.js:349
+#: ../js/ui/status/system.js:372
 msgid "Power Off"
 msgstr "Kikapcsolás"
 
@@ -1457,7 +1457,7 @@ msgstr[1] "A beállítások módosításai %d másodperc múlva visszavonásra k
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height. */
-#: ../js/ui/windowManager.js:613
+#: ../js/ui/windowManager.js:605
 #, javascript-format
 msgid "%d x %d"
 msgstr "%d x %d"
@@ -1494,29 +1494,39 @@ msgstr "Mindig felül"
 msgid "Always on Visible Workspace"
 msgstr "Mindig a látható munkaterületen"
 
-#: ../js/ui/windowMenu.js:106
+#: ../js/ui/windowMenu.js:105
+#| msgid "Move to Workspace Up"
+msgid "Move to Workspace Left"
+msgstr "Áthelyezés a bal oldali munkaterületre"
+
+#: ../js/ui/windowMenu.js:110
+#| msgid "Move to Workspace Up"
+msgid "Move to Workspace Right"
+msgstr "Áthelyezés a jobb oldali munkaterületre"
+
+#: ../js/ui/windowMenu.js:115
 msgid "Move to Workspace Up"
-msgstr "Mozgatás a felső munkaterületre"
+msgstr "Áthelyezés a felső munkaterületre"
 
-#: ../js/ui/windowMenu.js:111
+#: ../js/ui/windowMenu.js:120
 msgid "Move to Workspace Down"
-msgstr "Mozgatás az alsó munkaterületre"
+msgstr "Áthelyezés az alsó munkaterületre"
 
-#: ../js/ui/windowMenu.js:127
+#: ../js/ui/windowMenu.js:136
 msgid "Move to Monitor Up"
-msgstr "Mozgatás a felső kijelzőre"
+msgstr "Áthelyezés a felső kijelzőre"
 
-#: ../js/ui/windowMenu.js:133
+#: ../js/ui/windowMenu.js:142
 msgid "Move to Monitor Down"
-msgstr "Mozgatás az alsó kijelzőre"
+msgstr "Áthelyezés az alsó kijelzőre"
 
-#: ../js/ui/windowMenu.js:139
+#: ../js/ui/windowMenu.js:148
 msgid "Move to Monitor Left"
-msgstr "Mozgatás a bal oldali kijelzőre"
+msgstr "Áthelyezés a bal oldali kijelzőre"
 
-#: ../js/ui/windowMenu.js:145
+#: ../js/ui/windowMenu.js:154
 msgid "Move to Monitor Right"
-msgstr "Mozgatás a jobb oldali kijelzőre"
+msgstr "Áthelyezés a jobb oldali kijelzőre"
 
 #: ../src/calendar-server/evolution-calendar.desktop.in.in.h:1
 msgid "Evolution Calendar"
@@ -1571,11 +1581,11 @@ msgstr "Ismeretlen"
 msgid "Failed to launch “%s”"
 msgstr "„%s” indítása meghiúsult"
 
-#: ../src/shell-keyring-prompt.c:714
+#: ../src/shell-keyring-prompt.c:742
 msgid "Passwords do not match."
 msgstr "A jelszavak nem egyeznek."
 
-#: ../src/shell-keyring-prompt.c:722
+#: ../src/shell-keyring-prompt.c:750
 msgid "Password cannot be blank"
 msgstr "A jelszó nem lehet üres"
 
