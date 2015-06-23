@@ -71,11 +71,6 @@ typedef struct {
 /* These all return the memory from Xlib, so require an XFree()
  * when they return TRUE. They return TRUE on success.
  */
-gboolean meta_prop_get_atom_list     (MetaDisplay   *display,
-                                      Window         xwindow,
-                                      Atom           xatom,
-                                      Atom         **atoms_p,
-                                      int           *n_atoms_p);
 gboolean meta_prop_get_motif_hints   (MetaDisplay   *display,
                                       Window         xwindow,
                                       Atom           xatom,
@@ -89,16 +84,7 @@ gboolean meta_prop_get_latin1_string (MetaDisplay   *display,
                                       Window         xwindow,
                                       Atom           xatom,
                                       char         **str_p);
-gboolean meta_prop_get_utf8_string   (MetaDisplay   *display,
-                                      Window         xwindow,
-                                      Atom           xatom,
-                                      char         **str_p);
 gboolean meta_prop_get_utf8_list     (MetaDisplay   *display,
-                                      Window         xwindow,
-                                      Atom           xatom,
-                                      char        ***str_p,
-                                      int           *n_str_p);
-gboolean meta_prop_get_latin1_list   (MetaDisplay   *display,
                                       Window         xwindow,
                                       Atom           xatom,
                                       char        ***str_p,
@@ -121,26 +107,6 @@ gboolean meta_prop_get_cardinal_with_atom_type (MetaDisplay   *display,
                                                 Atom           xatom,
                                                 Atom           prop_type,
                                                 uint32_t      *cardinal_p);
-gboolean meta_prop_get_text_property (MetaDisplay   *display,
-                                      Window         xwindow,
-                                      Atom           xatom,
-                                      char         **utf8_str_p);
-
-gboolean meta_prop_get_wm_hints      (MetaDisplay   *display,
-                                      Window         xwindow,
-                                      Atom           xatom,
-                                      XWMHints     **hints_p);
-
-gboolean meta_prop_get_class_hint    (MetaDisplay   *display,
-                                      Window         xwindow,
-                                      Atom           xatom,
-                                      XClassHint    *class_hint);
-
-gboolean meta_prop_get_size_hints    (MetaDisplay   *display,
-                                      Window         xwindow,
-                                      Atom           xatom,
-                                      XSizeHints   **hints_p,
-                                      gulong        *flags_p);
 
 typedef enum
 {
