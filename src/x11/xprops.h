@@ -170,8 +170,8 @@ typedef struct
 
     struct
     {
-      Atom *atoms;
-      int   n_atoms;
+      uint32_t *atoms;
+      int       n_atoms;
     } atom_list;
 
   } v;

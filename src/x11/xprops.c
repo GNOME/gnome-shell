@@ -241,13 +241,13 @@ get_property (MetaDisplay        *display,
 
 static gboolean
 atom_list_from_results (GetPropertyResults *results,
-                        Atom              **atoms_p,
+                        uint32_t          **atoms_p,
                         int                *n_atoms_p)
 {
   if (!validate_or_free_results (results, 32, XA_ATOM, FALSE))
     return FALSE;
 
-  *atoms_p = (Atom*) results->prop;
+  *atoms_p = (uint32_t*) results->prop;
   *n_atoms_p = results->n_items;
   results->prop = NULL;
 
