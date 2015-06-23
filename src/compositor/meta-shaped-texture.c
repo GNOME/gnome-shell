@@ -86,6 +86,7 @@ struct _MetaShapedTexturePrivate
   cairo_region_t *unobscured_region;
 
   guint tex_width, tex_height;
+  guint fallback_width, fallback_height;
 
   guint create_mipmaps : 1;
 };
@@ -136,7 +137,20 @@ set_unobscured_region (MetaShapedTexture *self,
   g_clear_pointer (&priv->unobscured_region, (GDestroyNotify) cairo_region_destroy);
   if (unobscured_region)
     {
-      cairo_rectangle_int_t bounds = { 0, 0, priv->tex_width, priv->tex_height };
+      guint width, height;
+
+      if (priv->texture)
+        {
+          width = priv->tex_width;
+          height = priv->tex_height;
+        }
+      else
+        {
+          width = priv->fallback_width;
+          height = priv->fallback_height;
+        }
+
+      cairo_rectangle_int_t bounds = { 0, 0, width, height };
       priv->unobscured_region = cairo_region_copy (unobscured_region);
       cairo_region_intersect_rectangle (priv->unobscured_region, &bounds);
     }
@@ -499,12 +513,17 @@ meta_shaped_texture_get_preferred_width (ClutterActor *self,
                                          gfloat       *natural_width_p)
 {
   MetaShapedTexturePrivate *priv = META_SHAPED_TEXTURE (self)->priv;
+  guint width;
+
+  if (priv->texture)
+    width = priv->tex_width;
+  else
+    width = priv->fallback_width;
 
   if (min_width_p)
-    *min_width_p = priv->tex_width;
-
+    *min_width_p = width;
   if (natural_width_p)
-    *natural_width_p = priv->tex_width;
+    *natural_width_p = width;
 }
 
 static void
@@ -514,12 +533,17 @@ meta_shaped_texture_get_preferred_height (ClutterActor *self,
                                           gfloat       *natural_height_p)
 {
   MetaShapedTexturePrivate *priv = META_SHAPED_TEXTURE (self)->priv;
+  guint height;
+
+  if (priv->texture)
+    height = priv->tex_height;
+  else
+    height = priv->fallback_height;
 
   if (min_height_p)
-    *min_height_p = priv->tex_height;
-
+    *min_height_p = height;
   if (natural_height_p)
-    *natural_height_p = priv->tex_height;
+    *natural_height_p = height;
 }
 
 static cairo_region_t *
@@ -850,6 +874,17 @@ meta_shaped_texture_get_image (MetaShapedTexture     *stex,
     }
 
   return surface;
+}
+
+void
+meta_shaped_texture_set_fallback_size (MetaShapedTexture *self,
+                                       guint              fallback_width,
+                                       guint              fallback_height)
+{
+  MetaShapedTexturePrivate *priv = self->priv;
+
+  priv->fallback_width = fallback_width;
+  priv->fallback_height = fallback_height;
 }
 
 static void

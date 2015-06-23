@@ -416,6 +416,7 @@ meta_surface_actor_x11_set_size (MetaSurfaceActorX11 *self,
                                  int width, int height)
 {
   MetaSurfaceActorX11Private *priv = meta_surface_actor_x11_get_instance_private (self);
+  MetaShapedTexture *stex = meta_surface_actor_get_texture (META_SURFACE_ACTOR (self));
 
   if (priv->last_width == width &&
       priv->last_height == height)
@@ -424,4 +425,5 @@ meta_surface_actor_x11_set_size (MetaSurfaceActorX11 *self,
   priv->size_changed = TRUE;
   priv->last_width = width;
   priv->last_height = height;
+  meta_shaped_texture_set_fallback_size (stex, width, height);
 }
