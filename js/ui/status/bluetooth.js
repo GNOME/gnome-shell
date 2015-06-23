@@ -101,8 +101,8 @@ const Indicator = new Lang.Class({
         this._item.actor.visible = this._proxy.BluetoothHasAirplaneMode && !this._proxy.BluetoothAirplaneMode;
 
         if (nDevices > 0)
-            this._item.status.text = ngettext("%d Connected Device", "%d Connected Devices", nDevices).format(nDevices);
+            this._item.label.text = ngettext("%d Connected Device", "%d Connected Devices", nDevices).format(nDevices);
         else
-            this._item.status.text = _("Not Connected");
+            this._item.label.text = _("Not Connected");
     },
 });

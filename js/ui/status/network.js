@@ -257,16 +257,8 @@ const NMConnectionSection = new Lang.Class({
         this._radioSection.actor.visible = (nItems > 1);
         this._labelSection.actor.visible = (nItems == 1);
 
-        this.item.status.text = this._getStatus();
+        this.item.label.text = this._getStatus();
         this.item.icon.icon_name = this._getMenuIcon();
-
-        // desc can be undefined at cold-plug, before we called
-        // NMGtk.disambiguate_device_names() at least once
-        let desc = this._getDescription();
-        if (desc)
-            this.item.label.text = desc;
-        else
-            this.item.label.text = '';
     },
 
     _getMenuIcon: function() {
@@ -1282,9 +1274,8 @@ const NMDeviceWireless = new Lang.Class({
         this._toggleItem.label.text = this._client.wireless_enabled ? _("Turn Off") : _("Turn On");
         this._toggleItem.actor.visible = this._client.wireless_hardware_enabled;
 
-        this.item.status.text = this._getStatus();
         this.item.icon.icon_name = this._getMenuIcon();
-        this.item.label.text = this._description;
+        this.item.label.text = this._getStatus();
     },
 
     setDeviceDescription: function(desc) {

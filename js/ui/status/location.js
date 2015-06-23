@@ -68,7 +68,7 @@ const Indicator = new Lang.Class({
         this._agent = Gio.DBusExportedObject.wrapJSObject(AgentIface, this);
         this._agent.export(Gio.DBus.system, '/org/freedesktop/GeoClue2/Agent');
 
-        this._item.status.text = _("Enabled");
+        this._item.label.text = _("Location Services in Use");
         this._onOffAction = this._item.menu.addAction(_("Disable"), Lang.bind(this, this._onOnOffAction));
         this._item.menu.addSettingsAction(_("Privacy Settings"), 'gnome-privacy-panel.desktop');
 
@@ -112,7 +112,6 @@ const Indicator = new Lang.Class({
 
         this._indicator.visible = this._proxy.InUse;
         this._item.actor.visible = this._indicator.visible;
-        this._updateMenuLabels();
     },
 
     _connectToGeoclue: function() {
@@ -171,19 +170,7 @@ const Indicator = new Lang.Class({
         this.menu.setSensitive(sensitive);
     },
 
-    _updateMenuLabels: function() {
-        if (this._settings.get_boolean(ENABLED)) {
-            this._item.status.text = this._indicator.visible ? _("In Use") : _("Enabled");
-            this._onOffAction.label.text = _("Disable");
-        } else {
-            this._item.status.text = _("Disabled");
-            this._onOffAction.label.text = _("Enable");
-        }
-    },
-
     _onMaxAccuracyLevelChanged: function() {
-        this._updateMenuLabels();
-
         // Gotta ensure geoclue is up and we are registered as agent to it
         // before we emit the notify for this property change.
         if (!this._connectToGeoclue())

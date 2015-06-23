@@ -1059,11 +1059,6 @@ const PopupSubMenuMenuItem = new Lang.Class({
         let expander = new St.Bin({ style_class: 'popup-menu-item-expander' });
         this.actor.add(expander, { expand: true });
 
-        this.status = new St.Label({ style_class: 'popup-status-menu-item',
-                                     y_expand: true,
-                                     y_align: Clutter.ActorAlign.CENTER });
-        this.actor.add_child(this.status);
-
         this._triangle = arrowIcon(St.Side.RIGHT);
         this._triangle.pivot_point = new Clutter.Point({ x: 0.5, y: 0.6 });
 
