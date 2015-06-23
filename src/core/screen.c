@@ -750,7 +750,7 @@ void
 meta_screen_init_workspaces (MetaScreen *screen)
 {
   MetaWorkspace *current_workspace;
-  gulong current_workspace_index = 0;
+  uint32_t current_workspace_index = 0;
   guint32 timestamp;
 
   g_return_if_fail (META_IS_SCREEN (screen));

@@ -2774,7 +2774,7 @@ maybe_filter_xwindow (MetaDisplay       *display,
        */
       if (!must_be_viewable || attrs->map_state == IsViewable)
         {
-          gulong old_state;
+          uint32_t old_state;
 
           if (!meta_prop_get_cardinal_with_atom_type (display, xwindow,
                                                       display->atom_WM_STATE,
@@ -2910,7 +2910,7 @@ meta_window_x11_new (MetaDisplay       *display,
   if (must_be_viewable && attrs.map_state != IsViewable)
     {
       /* Only manage if WM_STATE is IconicState or NormalState */
-      gulong state;
+      uint32_t state;
 
       /* WM_STATE isn't a cardinal, it's type WM_STATE, but is an int */
       if (!(meta_prop_get_cardinal_with_atom_type (display, xwindow,

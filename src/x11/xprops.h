@@ -115,12 +115,12 @@ gboolean meta_prop_get_window        (MetaDisplay   *display,
 gboolean meta_prop_get_cardinal      (MetaDisplay   *display,
                                       Window         xwindow,
                                       Atom           xatom,
-                                      gulong        *cardinal_p);
+                                      uint32_t      *cardinal_p);
 gboolean meta_prop_get_cardinal_with_atom_type (MetaDisplay   *display,
                                                 Window         xwindow,
                                                 Atom           xatom,
                                                 Atom           prop_type,
-                                                gulong        *cardinal_p);
+                                                uint32_t      *cardinal_p);
 gboolean meta_prop_get_text_property (MetaDisplay   *display,
                                       Window         xwindow,
                                       Atom           xatom,
@@ -174,7 +174,7 @@ typedef struct
     char *str;
     MotifWmHints *motif_hints;
     Window xwindow;
-    gulong cardinal;
+    uint32_t cardinal;
     XWMHints *wm_hints;
     XClassHint class_hint;
     XSyncCounter xcounter;

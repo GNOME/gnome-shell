@@ -703,7 +703,7 @@ gboolean
 meta_prop_get_cardinal (MetaDisplay   *display,
                         Window         xwindow,
                         Atom           xatom,
-                        gulong        *cardinal_p)
+                        uint32_t      *cardinal_p)
 {
   return meta_prop_get_cardinal_with_atom_type (display, xwindow, xatom,
                                                 XA_CARDINAL, cardinal_p);
@@ -712,7 +712,7 @@ meta_prop_get_cardinal (MetaDisplay   *display,
 static gboolean
 cardinal_with_atom_type_from_results (GetPropertyResults *results,
                                       Atom                prop_type,
-                                      gulong             *cardinal_p)
+                                      uint32_t           *cardinal_p)
 {
   if (!validate_or_free_results (results, 32, prop_type, TRUE))
     return FALSE;
@@ -729,7 +729,7 @@ meta_prop_get_cardinal_with_atom_type (MetaDisplay   *display,
                                        Window         xwindow,
                                        Atom           xatom,
                                        Atom           prop_type,
-                                       gulong        *cardinal_p)
+                                       uint32_t      *cardinal_p)
 {
   GetPropertyResults results;
 
