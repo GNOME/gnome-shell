@@ -275,25 +275,15 @@ meta_prop_get_atom_list (MetaDisplay *display,
 
 static gboolean
 cardinal_list_from_results (GetPropertyResults *results,
-                            gulong            **cardinals_p,
+                            uint32_t          **cardinals_p,
                             int                *n_cardinals_p)
 {
   if (!validate_or_free_results (results, 32, XA_CARDINAL, FALSE))
     return FALSE;
 
-  *cardinals_p = (gulong*) results->prop;
+  *cardinals_p = (uint32_t *) results->prop;
   *n_cardinals_p = results->n_items;
   results->prop = NULL;
-
-#if GLIB_SIZEOF_LONG == 8
-  /* Xlib sign-extends format=32 items, but we want them unsigned */
-  {
-    int i;
-
-    for (i = 0; i < *n_cardinals_p; i++)
-      (*cardinals_p)[i] = (*cardinals_p)[i] & 0xffffffff;
-  }
-#endif
 
   return TRUE;
 }
@@ -302,7 +292,7 @@ gboolean
 meta_prop_get_cardinal_list (MetaDisplay *display,
                              Window       xwindow,
                              Atom         xatom,
-                             gulong     **cardinals_p,
+                             uint32_t   **cardinals_p,
                              int         *n_cardinals_p)
 {
   GetPropertyResults results;
@@ -677,7 +667,7 @@ counter_from_results (GetPropertyResults *results,
 
 static gboolean
 counter_list_from_results (GetPropertyResults *results,
-                           XSyncCounter      **counters_p,
+                           uint32_t          **counters_p,
                            int                *n_counters_p)
 {
   if (!validate_or_free_results (results, 32,
@@ -685,7 +675,7 @@ counter_list_from_results (GetPropertyResults *results,
                                  FALSE))
     return FALSE;
 
-  *counters_p = (XSyncCounter*) results->prop;
+  *counters_p = (uint32_t *) results->prop;
   *n_counters_p = results->n_items;
   results->prop = NULL;
 
@@ -727,11 +717,7 @@ cardinal_with_atom_type_from_results (GetPropertyResults *results,
   if (!validate_or_free_results (results, 32, prop_type, TRUE))
     return FALSE;
 
-  *cardinal_p = *(gulong*) results->prop;
-#if GLIB_SIZEOF_LONG == 8
-  /* Xlib sign-extends format=32 items, but we want them unsigned */
-  *cardinal_p &= 0xffffffff;
-#endif
+  *cardinal_p = *((uint32_t *) results->prop);
   g_free (results->prop);
   results->prop = NULL;
 

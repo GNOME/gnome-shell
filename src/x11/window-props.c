@@ -428,10 +428,10 @@ reload_net_wm_pid (MetaWindow    *window,
 {
   if (value->type != META_PROP_VALUE_INVALID)
     {
-      gulong cardinal = (int) value->v.cardinal;
+      uint32_t cardinal = (int) value->v.cardinal;
 
       if (cardinal <= 0)
-        meta_warning ("Application set a bogus _NET_WM_PID %lu\n",
+        meta_warning ("Application set a bogus _NET_WM_PID %u\n",
                       cardinal);
       else
         {
@@ -449,7 +449,7 @@ reload_net_wm_user_time (MetaWindow    *window,
 {
   if (value->type != META_PROP_VALUE_INVALID)
     {
-      gulong cardinal = value->v.cardinal;
+      uint32_t cardinal = value->v.cardinal;
       meta_window_set_user_time (window, cardinal);
     }
 }
@@ -670,7 +670,7 @@ reload_opaque_region (MetaWindow    *window,
 
   if (value->type != META_PROP_VALUE_INVALID)
     {
-      gulong *region = value->v.cardinal_list.cardinals;
+      uint32_t *region = value->v.cardinal_list.cardinals;
       int nitems = value->v.cardinal_list.n_cardinals;
 
       cairo_rectangle_int_t *rects;

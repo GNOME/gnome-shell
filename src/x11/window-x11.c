@@ -1283,7 +1283,7 @@ meta_window_x11_update_struts (MetaWindow *window)
   GSList *old_struts;
   GSList *new_struts;
   GSList *old_iter, *new_iter;
-  gulong *struts = NULL;
+  uint32_t *struts = NULL;
   int nitems;
   gboolean changed;
 
@@ -1346,7 +1346,7 @@ meta_window_x11_update_struts (MetaWindow *window)
               new_struts = g_slist_prepend (new_struts, temp);
             }
 
-          meta_verbose ("_NET_WM_STRUT_PARTIAL struts %lu %lu %lu %lu for "
+          meta_verbose ("_NET_WM_STRUT_PARTIAL struts %u %u %u %u for "
                         "window %s\n",
                         struts[0], struts[1], struts[2], struts[3],
                         window->desc);
@@ -1405,7 +1405,7 @@ meta_window_x11_update_struts (MetaWindow *window)
               new_struts = g_slist_prepend (new_struts, temp);
             }
 
-          meta_verbose ("_NET_WM_STRUT struts %lu %lu %lu %lu for window %s\n",
+          meta_verbose ("_NET_WM_STRUT struts %u %u %u %u for window %s\n",
                         struts[0], struts[1], struts[2], struts[3],
                         window->desc);
         }

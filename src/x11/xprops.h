@@ -83,7 +83,7 @@ gboolean meta_prop_get_motif_hints   (MetaDisplay   *display,
 gboolean meta_prop_get_cardinal_list (MetaDisplay   *display,
                                       Window         xwindow,
                                       Atom           xatom,
-                                      gulong       **cardinals_p,
+                                      uint32_t     **cardinals_p,
                                       int           *n_cardinals_p);
 gboolean meta_prop_get_latin1_string (MetaDisplay   *display,
                                       Window         xwindow,
@@ -180,8 +180,8 @@ typedef struct
     XSyncCounter xcounter;
     struct
     {
-      gulong *counters;
-      int     n_counters;
+      uint32_t *counters;
+      int       n_counters;
     } xcounter_list;
 
     struct
@@ -192,8 +192,8 @@ typedef struct
 
     struct
     {
-      gulong *cardinals;
-      int     n_cardinals;
+      uint32_t *cardinals;
+      int       n_cardinals;
     } cardinal_list;
 
     struct

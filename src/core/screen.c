@@ -1166,7 +1166,7 @@ update_num_workspaces (MetaScreen *screen,
   if (meta_prefs_get_dynamic_workspaces ())
     {
       int n_items;
-      gulong *list;
+      uint32_t *list;
 
       n_items = 0;
       list = NULL;
@@ -1755,7 +1755,7 @@ meta_screen_get_monitor_geometry (MetaScreen    *screen,
 void
 meta_screen_update_workspace_layout (MetaScreen *screen)
 {
-  gulong *list;
+  uint32_t *list;
   int n_items;
 
   if (screen->workspace_layout_overridden)
