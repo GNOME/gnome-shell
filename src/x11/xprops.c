@@ -438,8 +438,7 @@ utf8_string_from_results (GetPropertyResults *results,
       return FALSE;
     }
 
-  *str_p = (char*) results->prop;
-  results->prop = NULL;
+  *str_p = g_strndup ((char *) results->prop, results->n_items);
 
   return TRUE;
 }
