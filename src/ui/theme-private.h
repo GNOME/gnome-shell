@@ -115,7 +115,7 @@ struct _MetaFrameGeometry
 
   /* used for a memset hack */
 #define ADDRESS_OF_BUTTON_RECTS(fgeom) (((char*)(fgeom)) + G_STRUCT_OFFSET (MetaFrameGeometry, close_rect))
-#define LENGTH_OF_BUTTON_RECTS (G_STRUCT_OFFSET (MetaFrameGeometry, unstick_rect) + sizeof (GdkRectangle) - G_STRUCT_OFFSET (MetaFrameGeometry, close_rect))
+#define LENGTH_OF_BUTTON_RECTS (G_STRUCT_OFFSET (MetaFrameGeometry, unstick_rect) + sizeof (MetaButtonSpace) - G_STRUCT_OFFSET (MetaFrameGeometry, close_rect))
 
   /* The button rects (if changed adjust memset hack) */
   MetaButtonSpace close_rect;
