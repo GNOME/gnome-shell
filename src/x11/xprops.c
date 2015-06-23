@@ -1154,7 +1154,10 @@ meta_prop_get_values (MetaDisplay   *display,
       results.format = 0;
 
       if (!async_get_property_finish (xcb_conn, tasks[i], &results))
-        goto next;
+        {
+          values[i].type = META_PROP_VALUE_INVALID;
+          goto next;
+        }
 
       switch (values[i].type)
         {
