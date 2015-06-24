@@ -230,11 +230,16 @@ is_touchpad_device (ClutterBackendX11 *backend_x11,
   guint32 *data = NULL;
   int rc, format;
   Atom type;
+  Atom prop;
+
+  prop = XInternAtom (backend_x11->xdpy, "libinput Tapping Enabled", True);
+  if (prop == None)
+    return FALSE;
 
   clutter_x11_trap_x_errors ();
   rc = XIGetProperty (backend_x11->xdpy,
                       info->deviceid,
-                      XInternAtom (backend_x11->xdpy, "libinput Tapping Enabled", False),
+                      prop,
                       0, 1, False, XA_INTEGER, &type, &format, &nitems, &bytes_after,
                       (guchar **) &data);
   clutter_x11_untrap_x_errors ();
