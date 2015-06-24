@@ -3241,6 +3241,8 @@ meta_window_unmake_fullscreen (MetaWindow  *window)
       window->fullscreen = FALSE;
       target_rect = window->saved_rect;
 
+      meta_window_frame_size_changed (window);
+
       /* Window's size hints may have changed while maximized, making
        * saved_rect invalid.  #329152
        */
