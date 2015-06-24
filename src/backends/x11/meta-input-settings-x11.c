@@ -50,7 +50,10 @@ get_property (ClutterInputDevice *device,
   Atom property_atom, type_ret;
   guchar *data_ret = NULL;
 
-  property_atom = XInternAtom (xdisplay, property, False);
+  property_atom = XInternAtom (xdisplay, property, True);
+  if (!property_atom)
+    return NULL;
+
   device_id = clutter_input_device_get_device_id (device);
 
   rc = XIGetProperty (xdisplay, device_id, property_atom,
@@ -82,7 +85,10 @@ change_property (ClutterInputDevice *device,
   Atom property_atom;
   guchar *data_ret;
 
-  property_atom = XInternAtom (xdisplay, property, False);
+  property_atom = XInternAtom (xdisplay, property, True);
+  if (!property_atom)
+    return;
+
   device_id = clutter_input_device_get_device_id (device);
 
   data_ret = get_property (device, property, type, format, nitems);
