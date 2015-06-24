@@ -862,7 +862,7 @@ reload_mwm_hints (MetaWindow    *window,
 
   if (hints->flags & MWM_HINTS_DECORATIONS)
     {
-      meta_verbose ("Window %s sets MWM_HINTS_DECORATIONS 0x%lx\n",
+      meta_verbose ("Window %s sets MWM_HINTS_DECORATIONS 0x%x\n",
           window->desc, hints->decorations);
 
       if (hints->decorations == 0)
@@ -878,7 +878,7 @@ reload_mwm_hints (MetaWindow    *window,
     {
       gboolean toggle_value;
 
-      meta_verbose ("Window %s sets MWM_HINTS_FUNCTIONS 0x%lx\n",
+      meta_verbose ("Window %s sets MWM_HINTS_FUNCTIONS 0x%x\n",
                     window->desc, hints->functions);
 
       /* If _ALL is specified, then other flags indicate what to turn off;

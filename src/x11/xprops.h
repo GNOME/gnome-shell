@@ -33,11 +33,11 @@
  * found in some Motif reference guides online.
  */
 typedef struct {
-    unsigned long flags;
-    unsigned long functions;
-    unsigned long decorations;
-    long input_mode;
-    unsigned long status;
+    uint32_t flags;
+    uint32_t functions;
+    uint32_t decorations;
+    uint32_t input_mode;
+    uint32_t status;
 } MotifWmHints, MwmHints;
 
 #define MWM_HINTS_FUNCTIONS     (1L << 0)

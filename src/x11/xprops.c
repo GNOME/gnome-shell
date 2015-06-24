@@ -292,19 +292,11 @@ static gboolean
 motif_hints_from_results (GetPropertyResults *results,
                           MotifWmHints      **hints_p)
 {
-  int real_size, max_size;
-#define MAX_ITEMS sizeof (MotifWmHints)/sizeof (gulong)
-
   *hints_p = NULL;
 
   if (results->type == None || results->n_items <= 0)
     {
       meta_verbose ("Motif hints had unexpected type or n_items\n");
-      if (results->prop)
-        {
-          g_free (results->prop);
-          results->prop = NULL;
-        }
       return FALSE;
     }
 
@@ -312,26 +304,12 @@ motif_hints_from_results (GetPropertyResults *results,
    * MotifWmHints than the one we expect, apparently.  I'm not sure of
    * the history behind it. See bug #89841 for example.
    */
-  *hints_p = malloc (sizeof (MotifWmHints));
+  *hints_p = calloc (1, sizeof (MotifWmHints));
   if (*hints_p == NULL)
-    {
-      if (results->prop)
-        {
-          g_free (results->prop);
-          results->prop = NULL;
-        }
-      return FALSE;
-    }
-  real_size = results->n_items * sizeof (gulong);
-  max_size = MAX_ITEMS * sizeof (gulong);
-  memcpy (*hints_p, results->prop, MIN (real_size, max_size));
+    return FALSE;
 
-  if (results->prop)
-    {
-      g_free (results->prop);
-      results->prop = NULL;
-    }
-
+  memcpy(*hints_p, results->prop, MIN (sizeof (MotifWmHints),
+                                       results->n_items * sizeof (uint32_t)));
   return TRUE;
 }
 
