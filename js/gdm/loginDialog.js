@@ -584,7 +584,14 @@ const LoginDialog = new Lang.Class({
         // try a different layout, or if we have what extra space we
         // can hand out
         if (bannerAllocation) {
-            let leftOverYSpace = dialogHeight - bannerHeight - authPromptHeight - logoHeight;
+            let bannerSpace;
+
+            if (authPromptAllocation)
+                bannerSpace = authPromptAllocation.y1 - bannerAllocation.y1;
+            else
+                bannerSpace = 0;
+
+            let leftOverYSpace = bannerSpace - bannerHeight;
 
             if (leftOverYSpace > 0) {
                  // First figure out how much left over space is up top
