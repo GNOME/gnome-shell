@@ -42,9 +42,6 @@ void meta_core_toggle_maximize_horizontally  (Display *xdisplay,
 void meta_core_toggle_maximize_vertically    (Display *xdisplay,
                                               Window   frame_xwindow);
 
-int meta_core_get_frame_workspace (Display *xdisplay,
-                                   Window frame_xwindow);
-
 void meta_core_show_window_menu (Display            *xdisplay,
                                  Window              frame_xwindow,
                                  MetaWindowMenuType  menu,
