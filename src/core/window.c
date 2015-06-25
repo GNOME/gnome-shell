@@ -4615,12 +4615,7 @@ meta_window_change_workspace_by_index (MetaWindow *window,
     workspace = meta_screen_append_new_workspace (screen, FALSE, CurrentTime);
 
   if (workspace)
-    {
-      if (window->on_all_workspaces_requested)
-        meta_window_unstick (window);
-
-      meta_window_change_workspace (window, workspace);
-    }
+    meta_window_change_workspace (window, workspace);
 }
 
 static void
