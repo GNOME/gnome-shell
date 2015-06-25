@@ -41,9 +41,6 @@ void meta_core_toggle_maximize_horizontally  (Display *xdisplay,
                                               Window   frame_xwindow);
 void meta_core_toggle_maximize_vertically    (Display *xdisplay,
                                               Window   frame_xwindow);
-void meta_core_change_workspace (Display *xdisplay,
-                                 Window   frame_xwindow,
-                                 int      new_workspace);
 
 int meta_core_get_frame_workspace (Display *xdisplay,
                                    Window frame_xwindow);
