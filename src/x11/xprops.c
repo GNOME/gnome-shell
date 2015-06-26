@@ -339,8 +339,7 @@ latin1_string_from_results (GetPropertyResults *results,
   if (!validate_or_free_results (results, 8, XA_STRING, FALSE))
     return FALSE;
 
-  *str_p = (char*) results->prop;
-  results->prop = NULL;
+  *str_p = g_strndup ((char *) results->prop, results->n_items);
 
   return TRUE;
 }
