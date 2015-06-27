@@ -50,6 +50,11 @@ meta_group_new (MetaDisplay *display,
   group->group_leader = group_leader;
   group->refcount = 1; /* owned by caller, hash table has only weak ref */
 
+  XWindowAttributes attrs;
+  XGetWindowAttributes (display->xdisplay, group_leader, &attrs);
+  XSelectInput (display->xdisplay, group_leader,
+                attrs.your_event_mask | PropertyChangeMask);
+
   if (display->groups_by_leader == NULL)
     display->groups_by_leader = g_hash_table_new (meta_unsigned_long_hash,
                                                   meta_unsigned_long_equal);
