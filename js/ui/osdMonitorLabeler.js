@@ -15,8 +15,7 @@ const OsdMonitorLabel = new Lang.Class({
     Name: 'OsdMonitorLabel',
 
     _init: function(monitor, label) {
-        this._actor = new St.Widget({ opacity: 0,
-                                      x_expand: true,
+        this._actor = new St.Widget({ x_expand: true,
                                       y_expand: true });
 
         this._monitor = monitor;
@@ -34,10 +33,6 @@ const OsdMonitorLabel = new Lang.Class({
         this._position();
 
         Meta.disable_unredirect_for_screen(global.screen);
-        Tweener.addTween(this._actor,
-                         { opacity: 255,
-                           time: FADE_TIME,
-                           transition: 'easeOutQuad' });
     },
 
     _position: function() {
@@ -52,15 +47,8 @@ const OsdMonitorLabel = new Lang.Class({
     },
 
     destroy: function() {
-        Tweener.addTween(this._actor,
-                         { opacity: 0,
-                           time: FADE_TIME,
-                           transition: 'easeOutQuad',
-                           onComplete: Lang.bind(this, function() {
-                               this._actor.destroy();
-                               Meta.enable_unredirect_for_screen(global.screen);
-                           })
-                         });
+        this._actor.destroy();
+        Meta.enable_unredirect_for_screen(global.screen);
     }
 });
 
