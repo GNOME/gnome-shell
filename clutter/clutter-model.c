@@ -22,8 +22,6 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  *
- *
- *
  * NB: Inspiration for column storage taken from GtkListStore
  */
 
@@ -150,8 +148,10 @@
  *      { "Name" : "Team 3", "Icon" : "team3-icon-script-id" }
  *    ]
  *  }
+ *
+ * Deprecated: 1.24: You should implement the #GListModel interface on your
+ *   own storage data type instead.
  */
-
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -160,6 +160,8 @@
 #include <string.h>
 #include <glib-object.h>
 #include <gobject/gvaluecollector.h>
+
+#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
 
 #include "clutter-model.h"
 #include "clutter-model-private.h"
@@ -358,6 +360,8 @@ clutter_model_class_init (ClutterModelClass *klass)
    * set using clutter_model_set_filter()
    *
    * Since: 1.0
+   *
+   * Deprecated: 1.24: Use #GListModel instead
    */
   pspec = g_param_spec_boolean ("filter-set",
                                 "Filter Set",
@@ -376,6 +380,8 @@ clutter_model_class_init (ClutterModelClass *klass)
    * has been emitted.
    *
    * Since: 0.6
+   *
+   * Deprecated: 1.24: Use #GListModel instead
    */
   model_signals[ROW_ADDED] =
     g_signal_new ("row-added",
@@ -396,6 +402,8 @@ clutter_model_class_init (ClutterModelClass *klass)
    * when the ::row-removed signal has been emitted.
    *
    * Since: 0.6
+   *
+   * Deprecated: 1.24: Use #GListModel instead
    */
   model_signals[ROW_REMOVED] =
     g_signal_new ("row-removed",
@@ -416,6 +424,8 @@ clutter_model_class_init (ClutterModelClass *klass)
    * signal has been emitted.
    *
    * Since: 0.6
+   *
+   * Deprecated: 1.24: Use #GListModel instead
    */
   model_signals[ROW_CHANGED] =
     g_signal_new ("row-changed",
@@ -433,6 +443,8 @@ clutter_model_class_init (ClutterModelClass *klass)
    * The ::sort-changed signal is emitted after the model has been sorted
    *
    * Since: 0.6
+   *
+   * Deprecated: 1.24: Use #GListModel instead
    */
   model_signals[SORT_CHANGED] =
     g_signal_new ("sort-changed",
@@ -449,6 +461,8 @@ clutter_model_class_init (ClutterModelClass *klass)
    * The ::filter-changed signal is emitted when a new filter has been applied
    *
    * Since: 0.6
+   *
+   * Deprecated: 1.24: Use #GListModel instead
    */
   model_signals[FILTER_CHANGED] =
     g_signal_new ("filter-changed",
@@ -764,6 +778,8 @@ clutter_scriptable_iface_init (ClutterScriptableIface *iface)
  * used by subclasses of #ClutterModel.
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.24: Use #GListModel instead
  */
 void
 clutter_model_resort (ClutterModel *model)
@@ -794,6 +810,8 @@ clutter_model_resort (ClutterModel *model)
  *   %FALSE otherwise
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.24: Use #GListModel instead
  */
 gboolean
 clutter_model_filter_row (ClutterModel *model,
@@ -835,6 +853,8 @@ clutter_model_filter_row (ClutterModel *model,
  *   %FALSE otherwise
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.24: Use #GListModel instead
  */
 gboolean
 clutter_model_filter_iter (ClutterModel     *model,
@@ -865,6 +885,8 @@ clutter_model_filter_iter (ClutterModel     *model,
  * arrays as well.
  *
  * This function can only be called once.
+ *
+ * Deprecated: 1.24: Use #GListModel instead
  */
 void
 _clutter_model_set_n_columns (ClutterModel *model,
@@ -935,6 +957,8 @@ _clutter_model_set_column_name (ClutterModel *model,
  * It will not work after the initial creation of the #ClutterModel.
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.24: Use #GListModel instead
  */
 void
 clutter_model_set_types (ClutterModel *model,
@@ -979,6 +1003,8 @@ clutter_model_set_types (ClutterModel *model,
  * It will not work after the initial creation of the #ClutterModel.
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.24: Use #GListModel instead
  */
 void
 clutter_model_set_names (ClutterModel        *model,
@@ -1011,6 +1037,8 @@ clutter_model_set_names (ClutterModel        *model,
  * Return value: the number of columns
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.24: Use #GListModel instead
  */
 guint
 clutter_model_get_n_columns (ClutterModel *model)
@@ -1031,6 +1059,8 @@ clutter_model_get_n_columns (ClutterModel *model)
  * values for the given @columns upon creation.
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.24: Use #GListModel instead
  */
 void
 clutter_model_appendv (ClutterModel *model,
@@ -1091,6 +1121,8 @@ static void clutter_model_iter_set_internal_valist (ClutterModelIter *iter,
  * </programlisting></informalexample>
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.24: Use #GListModel instead
  */
 void
 clutter_model_append (ClutterModel *model,
@@ -1125,6 +1157,8 @@ clutter_model_append (ClutterModel *model,
  * values for the given @columns upon creation.
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.24: Use #GListModel instead
  */
 void
 clutter_model_prependv (ClutterModel *model,
@@ -1181,6 +1215,8 @@ clutter_model_prependv (ClutterModel *model,
  * </programlisting></informalexample>
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.24: Use #GListModel instead
  */
 void
 clutter_model_prepend (ClutterModel *model,
@@ -1224,6 +1260,8 @@ clutter_model_prepend (ClutterModel *model,
  * </programlisting></informalexample>
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.24: Use #GListModel instead
  */
 void
 clutter_model_insert (ClutterModel *model,
@@ -1262,6 +1300,8 @@ clutter_model_insert (ClutterModel *model,
  * values for the given @columns upon creation.
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.24: Use #GListModel instead
  */
 void
 clutter_model_insertv (ClutterModel *model,
@@ -1313,6 +1353,8 @@ clutter_model_insertv (ClutterModel *model,
  * not exist then it is created.
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.24: Use #GListModel instead
  */
 void
 clutter_model_insert_value (ClutterModel *model,
@@ -1358,6 +1400,8 @@ clutter_model_insert_value (ClutterModel *model,
  * Removes the row at the given position from the model.
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.24: Use #GListModel instead
  */
 void
 clutter_model_remove (ClutterModel *model,
@@ -1383,6 +1427,8 @@ clutter_model_remove (ClutterModel *model,
  *   string, and it should not be modified or freed
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.24: Use #GListModel instead
  */
 const gchar *
 clutter_model_get_column_name (ClutterModel *model,
@@ -1415,6 +1461,8 @@ clutter_model_get_column_name (ClutterModel *model,
  * Return value: the type of the column.
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.24: Use #GListModel instead
  */
 GType
 clutter_model_get_column_type (ClutterModel *model,
@@ -1453,6 +1501,8 @@ clutter_model_get_column_type (ClutterModel *model,
  *   to deallocate its resources
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.24: Use #GListModel instead
  */
 ClutterModelIter * 
 clutter_model_get_iter_at_row (ClutterModel *model,
@@ -1481,6 +1531,8 @@ clutter_model_get_iter_at_row (ClutterModel *model,
  *   Call g_object_unref() when done using it
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.24: Use #GListModel instead
  */
 ClutterModelIter *
 clutter_model_get_first_iter (ClutterModel *model)
@@ -1510,6 +1562,8 @@ clutter_model_get_first_iter (ClutterModel *model)
  *   Call g_object_unref() when done using it
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.24: Use #GListModel instead
  */
 ClutterModelIter *
 clutter_model_get_last_iter (ClutterModel *model)
@@ -1538,6 +1592,8 @@ clutter_model_get_last_iter (ClutterModel *model)
  *   the length of the filtered @model is returned.
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.24: Use #GListModel instead
  */
 guint
 clutter_model_get_n_rows (ClutterModel *model)
@@ -1556,6 +1612,8 @@ clutter_model_get_n_rows (ClutterModel *model)
  * the sorting column will be unset.
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.24: Use #GListModel instead
  */
 void               
 clutter_model_set_sorting_column (ClutterModel *model,
@@ -1591,6 +1649,8 @@ clutter_model_set_sorting_column (ClutterModel *model,
  * Return value: a column number, or -1 if the model is not sorted
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.24: Use #GListModel instead
  */
 gint
 clutter_model_get_sorting_column (ClutterModel *model)
@@ -1609,6 +1669,8 @@ clutter_model_get_sorting_column (ClutterModel *model)
  * Calls @func for each row in the model. 
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.24: Use #GListModel instead
  */
 void
 clutter_model_foreach (ClutterModel            *model,
@@ -1648,6 +1710,8 @@ clutter_model_foreach (ClutterModel            *model,
  * Sorts @model using the given sorting function.
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.24: Use #GListModel instead
  */
 void
 clutter_model_set_sort (ClutterModel         *model,
@@ -1685,6 +1749,8 @@ clutter_model_set_sort (ClutterModel         *model,
  * Filters the @model using the given filtering function.
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.24: Use #GListModel instead
  */
 void
 clutter_model_set_filter (ClutterModel           *model,
@@ -1718,6 +1784,8 @@ clutter_model_set_filter (ClutterModel           *model,
  * Return value: %TRUE if a filter is set
  *
  * Since: 1.0
+ *
+ * Deprecated: 1.24: Use #GListModel instead
  */
 gboolean
 clutter_model_get_filter_set (ClutterModel *model)
@@ -1750,6 +1818,8 @@ clutter_model_get_filter_set (ClutterModel *model)
  * and it is valid as long as the model does not change.
  *
  * #ClutterModelIter is available since Clutter 0.6
+ *
+ * Deprecated: 1.24: Use #GListModel instead
  */
 
 struct _ClutterModelIterPrivate
@@ -1934,6 +2004,8 @@ clutter_model_iter_class_init (ClutterModelIterClass *klass)
    * A reference to the #ClutterModel that this iter belongs to.
    *
    * Since: 0.6
+   *
+   * Deprecated: 1.24: Use #GListModel instead
    */
   pspec = g_param_spec_object ("model",
                                "Model",
@@ -1948,6 +2020,8 @@ clutter_model_iter_class_init (ClutterModelIterClass *klass)
    * The row number to which this iter points to.
    *
    * Since: 0.6
+   *
+   * Deprecated: 1.24: Use #GListModel instead
    */
   pspec = g_param_spec_uint ("row",
                              "Row",
@@ -2048,6 +2122,8 @@ clutter_model_iter_emit_row_changed (ClutterModelIter *iter)
  * bindings.
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.24: Use #GListModel instead
  */
 void 
 clutter_model_iter_set_valist (ClutterModelIter *iter,
@@ -2078,6 +2154,8 @@ clutter_model_iter_set_valist (ClutterModelIter *iter,
  * appropriate, the returned values have to be freed or unreferenced.
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.24: Use #GListModel instead
  */
 void
 clutter_model_iter_get (ClutterModelIter *iter,
@@ -2110,6 +2188,8 @@ clutter_model_iter_get_value_internal (ClutterModelIter *iter,
  * g_value_unset() needs to be called to free any allocated memory.
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.24: Use #GListModel instead
  */
 void
 clutter_model_iter_get_value (ClutterModelIter *iter,
@@ -2137,6 +2217,8 @@ clutter_model_iter_get_value (ClutterModelIter *iter,
  * bindings.
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.24: Use #GListModel instead
  */
 void 
 clutter_model_iter_get_valist (ClutterModelIter *iter,
@@ -2205,6 +2287,8 @@ clutter_model_iter_get_valist (ClutterModelIter *iter,
  * </programlisting></informalexample>
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.24: Use #GListModel instead
  */
 void
 clutter_model_iter_set (ClutterModelIter *iter,
@@ -2230,6 +2314,8 @@ clutter_model_iter_set (ClutterModelIter *iter,
  * @value must be convertable to the type of the column.
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.24: Use #GListModel instead
  */
 void
 clutter_model_iter_set_value (ClutterModelIter *iter,
@@ -2252,6 +2338,8 @@ clutter_model_iter_set_value (ClutterModelIter *iter,
  * Return value: #TRUE if @iter is the first iter in the filtered model
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.24: Use #GListModel instead
  */
 gboolean
 clutter_model_iter_is_first (ClutterModelIter *iter)
@@ -2271,6 +2359,8 @@ clutter_model_iter_is_first (ClutterModelIter *iter)
  * Return value: #TRUE if @iter is the last iter in the filtered model.
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.24: Use #GListModel instead
  */
 gboolean
 clutter_model_iter_is_last (ClutterModelIter *iter)
@@ -2292,6 +2382,8 @@ clutter_model_iter_is_last (ClutterModelIter *iter)
  *   row in the model.
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.24: Use #GListModel instead
  */
 ClutterModelIter *
 clutter_model_iter_next (ClutterModelIter *iter)
@@ -2313,6 +2405,8 @@ clutter_model_iter_next (ClutterModelIter *iter)
  *   row in the model.
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.24: Use #GListModel instead
  */
 ClutterModelIter *
 clutter_model_iter_prev (ClutterModelIter *iter)
@@ -2331,6 +2425,8 @@ clutter_model_iter_prev (ClutterModelIter *iter)
  * Return value: (transfer none): a pointer to a #ClutterModel.
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.24: Use #GListModel instead
  */
 ClutterModel *
 clutter_model_iter_get_model (ClutterModelIter *iter)
@@ -2349,6 +2445,8 @@ clutter_model_iter_get_model (ClutterModelIter *iter)
  * Return value: the position of the @iter in the model
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.24: Use #GListModel instead
  */
 guint
 clutter_model_iter_get_row (ClutterModelIter *iter)
@@ -2367,6 +2465,8 @@ clutter_model_iter_get_row (ClutterModelIter *iter)
  * Return value: (transfer full): a copy of the iterator, or %NULL
  *
  * Since: 0.8
+ *
+ * Deprecated: 1.24: Use #GListModel instead
  */
 ClutterModelIter *
 clutter_model_iter_copy (ClutterModelIter *iter)
