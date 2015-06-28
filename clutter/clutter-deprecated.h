@@ -25,6 +25,7 @@
 #include "deprecated/clutter-group.h"
 #include "deprecated/clutter-input-device.h"
 #include "deprecated/clutter-keysyms.h"
+#include "deprecated/clutter-list-model.h"
 #include "deprecated/clutter-main.h"
 #include "deprecated/clutter-media.h"
 #include "deprecated/clutter-rectangle.h"

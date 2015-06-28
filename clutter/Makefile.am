@@ -94,7 +94,6 @@ source_h =					\
 	clutter-keysyms.h 		\
 	clutter-layout-manager.h	\
 	clutter-layout-meta.h		\
-	clutter-list-model.h		\
 	clutter-macros.h		\
 	clutter-main.h		\
 	clutter-model.h		\
@@ -176,7 +175,6 @@ source_c = \
 	clutter-keysyms-table.c	\
 	clutter-layout-manager.c	\
 	clutter-layout-meta.c		\
-	clutter-list-model.c		\
 	clutter-main.c 		\
 	clutter-master-clock.c	\
 	clutter-master-clock-default.c	\
@@ -277,6 +275,7 @@ deprecated_h = \
 	deprecated/clutter-group.h			\
 	deprecated/clutter-input-device.h		\
 	deprecated/clutter-keysyms.h			\
+	deprecated/clutter-list-model.h			\
 	deprecated/clutter-main.h			\
 	deprecated/clutter-media.h			\
 	deprecated/clutter-rectangle.h		\
@@ -312,6 +311,7 @@ deprecated_c = \
 	deprecated/clutter-group.c 			\
 	deprecated/clutter-input-device-deprecated.c	\
 	deprecated/clutter-layout-manager-deprecated.c \
+	deprecated/clutter-list-model.c			\
 	deprecated/clutter-media.c			\
 	deprecated/clutter-rectangle.c 		\
 	deprecated/clutter-score.c 			\
