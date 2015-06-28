@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
+#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
 #include <clutter/clutter.h>
 
 typedef struct _ModelData
