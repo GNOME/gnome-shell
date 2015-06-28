@@ -917,11 +917,12 @@ output_set_presentation_xrandr (MetaMonitorManagerXrandr *manager_xrandr,
   int value = presentation;
 
   atom = XInternAtom (manager_xrandr->xdisplay, "_MUTTER_PRESENTATION_OUTPUT", False);
-  XRRChangeOutputProperty (manager_xrandr->xdisplay,
-                           (XID)output->winsys_id,
-                           atom,
-                           XA_CARDINAL, 32, PropModeReplace,
-                           (unsigned char*) &value, 1);
+
+  xcb_randr_change_output_property (XGetXCBConnection (manager_xrandr->xdisplay),
+                                    (XID)output->winsys_id,
+                                    atom, XCB_ATOM_CARDINAL, 32,
+                                    XCB_PROP_MODE_REPLACE,
+                                    1, &value);
 }
 
 static void
@@ -936,11 +937,12 @@ output_set_underscanning_xrandr (MetaMonitorManagerXrandr *manager_xrandr,
 
   value = underscanning ? "on" : "off";
   valueatom = XInternAtom (manager_xrandr->xdisplay, value, False);
-  XRRChangeOutputProperty (manager_xrandr->xdisplay,
-                           (XID)output->winsys_id,
-                           prop,
-                           XA_ATOM, 32, PropModeReplace,
-                           (unsigned char*) &valueatom, 1);
+
+  xcb_randr_change_output_property (XGetXCBConnection (manager_xrandr->xdisplay),
+                                    (XID)output->winsys_id,
+                                    prop, XCB_ATOM_ATOM, 32,
+                                    XCB_PROP_MODE_REPLACE,
+                                    1, &valueatom);
 
   /* Configure the border at the same time. Currently, we use a
    * 5% of the width/height of the mode. In the future, we should
@@ -951,19 +953,21 @@ output_set_underscanning_xrandr (MetaMonitorManagerXrandr *manager_xrandr,
 
       prop = XInternAtom (manager_xrandr->xdisplay, "underscan hborder", False);
       border_value = output->crtc->current_mode->width * 0.05;
-      XRRChangeOutputProperty (manager_xrandr->xdisplay,
-                               (XID)output->winsys_id,
-                               prop,
-                               XA_INTEGER, 32, PropModeReplace,
-                               (unsigned char *) &border_value, 1);
+
+      xcb_randr_change_output_property (XGetXCBConnection (manager_xrandr->xdisplay),
+                                        (XID)output->winsys_id,
+                                        prop, XCB_ATOM_INTEGER, 32,
+                                        XCB_PROP_MODE_REPLACE,
+                                        1, &border_value);
 
       prop = XInternAtom (manager_xrandr->xdisplay, "underscan vborder", False);
       border_value = output->crtc->current_mode->height * 0.05;
-      XRRChangeOutputProperty (manager_xrandr->xdisplay,
-                               (XID)output->winsys_id,
-                               prop,
-                               XA_INTEGER, 32, PropModeReplace,
-                               (unsigned char *) &border_value, 1);
+
+      xcb_randr_change_output_property (XGetXCBConnection (manager_xrandr->xdisplay),
+                                        (XID)output->winsys_id,
+                                        prop, XCB_ATOM_INTEGER, 32,
+                                        XCB_PROP_MODE_REPLACE,
+                                        1, &border_value);
     }
 }
 
@@ -1199,11 +1203,12 @@ meta_monitor_manager_xrandr_change_backlight (MetaMonitorManager *manager,
   hw_value = round ((double)value / 100.0 * output->backlight_max + output->backlight_min);
 
   atom = XInternAtom (manager_xrandr->xdisplay, "Backlight", False);
-  XRRChangeOutputProperty (manager_xrandr->xdisplay,
-                           (XID)output->winsys_id,
-                           atom,
-                           XA_INTEGER, 32, PropModeReplace,
-                           (unsigned char *) &hw_value, 1);
+
+  xcb_randr_change_output_property (XGetXCBConnection (manager_xrandr->xdisplay),
+                                    (XID)output->winsys_id,
+                                    atom, XCB_ATOM_INTEGER, 32,
+                                    XCB_PROP_MODE_REPLACE,
+                                    1, &hw_value);
 
   /* We're not selecting for property notifies, so update the value immediately */
   output->backlight = normalize_backlight (output, hw_value);
