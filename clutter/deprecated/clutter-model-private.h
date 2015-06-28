@@ -26,8 +26,8 @@
 #ifndef __CLUTTER_MODEL_PRIVATE_H__
 #define __CLUTTER_MODEL_PRIVATE_H__
 
-#include <clutter/clutter-types.h>
-#include <clutter/clutter-model.h>
+#include "clutter-types.h"
+#include "clutter-model.h"
 
 G_BEGIN_DECLS
 

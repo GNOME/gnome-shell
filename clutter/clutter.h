@@ -78,7 +78,6 @@
 #include "clutter-layout-meta.h"
 #include "clutter-macros.h"
 #include "clutter-main.h"
-#include "clutter-model.h"
 #include "clutter-offscreen-effect.h"
 #include "clutter-page-turn-effect.h"
 #include "clutter-paint-nodes.h"

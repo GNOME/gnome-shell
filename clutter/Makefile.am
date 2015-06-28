@@ -96,7 +96,6 @@ source_h =					\
 	clutter-layout-meta.h		\
 	clutter-macros.h		\
 	clutter-main.h		\
-	clutter-model.h		\
 	clutter-offscreen-effect.h	\
 	clutter-page-turn-effect.h	\
 	clutter-paint-nodes.h		\
@@ -178,7 +177,6 @@ source_c = \
 	clutter-main.c 		\
 	clutter-master-clock.c	\
 	clutter-master-clock-default.c	\
-	clutter-model.c		\
 	clutter-offscreen-effect.c	\
 	clutter-page-turn-effect.c	\
 	clutter-paint-nodes.c		\
@@ -232,7 +230,6 @@ source_h_priv = \
 	clutter-id-pool.h 			\
 	clutter-master-clock.h			\
 	clutter-master-clock-default.h		\
-	clutter-model-private.h			\
 	clutter-offscreen-effect-private.h	\
 	clutter-paint-node-private.h		\
 	clutter-paint-volume-private.h		\
@@ -278,6 +275,7 @@ deprecated_h = \
 	deprecated/clutter-list-model.h			\
 	deprecated/clutter-main.h			\
 	deprecated/clutter-media.h			\
+	deprecated/clutter-model.h			\
 	deprecated/clutter-rectangle.h		\
 	deprecated/clutter-score.h 			\
 	deprecated/clutter-shader.h 			\
@@ -313,6 +311,7 @@ deprecated_c = \
 	deprecated/clutter-layout-manager-deprecated.c \
 	deprecated/clutter-list-model.c			\
 	deprecated/clutter-media.c			\
+	deprecated/clutter-model.c			\
 	deprecated/clutter-rectangle.c 		\
 	deprecated/clutter-score.c 			\
 	deprecated/clutter-shader.c 			\
@@ -324,6 +323,7 @@ deprecated_c = \
 
 # deprecated private headers; these should not be installed
 deprecated_h_priv = \
+	deprecatec/clutter-model-private.h	\
 	deprecated/clutter-timeout-interval.h	\
 	$(NULL)
 

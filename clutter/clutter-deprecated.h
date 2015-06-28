@@ -28,6 +28,7 @@
 #include "deprecated/clutter-list-model.h"
 #include "deprecated/clutter-main.h"
 #include "deprecated/clutter-media.h"
+#include "deprecated/clutter-model.h"
 #include "deprecated/clutter-rectangle.h"
 #include "deprecated/clutter-score.h"
 #include "deprecated/clutter-shader.h"

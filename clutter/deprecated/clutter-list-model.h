@@ -32,7 +32,7 @@
 #ifndef __CLUTTER_LIST_MODEL_H__
 #define __CLUTTER_LIST_MODEL_H__
 
-#include <clutter/clutter-model.h>
+#include <clutter/deprecated/clutter-model.h>
 
 G_BEGIN_DECLS
 
