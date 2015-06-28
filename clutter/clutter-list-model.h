@@ -53,6 +53,8 @@ typedef struct _ClutterListModelClass           ClutterListModelClass;
  * The #ClutterListModel struct contains only private data.
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.24: Use #GListStore instead
  */
 struct _ClutterListModel
 {
@@ -68,6 +70,8 @@ struct _ClutterListModel
  * The #ClutterListModelClass struct contains only private data.
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.24: Use #GListStore instead
  */
 struct _ClutterListModelClass
 {
@@ -75,13 +79,13 @@ struct _ClutterListModelClass
   ClutterModelClass parent_class;
 };
 
-CLUTTER_AVAILABLE_IN_ALL
+CLUTTER_DEPRECATED_IN_1_24_FOR(g_list_store_get_type)
 GType         clutter_list_model_get_type (void) G_GNUC_CONST;
 
-CLUTTER_AVAILABLE_IN_ALL
+CLUTTER_DEPRECATED_IN_1_24_FOR(g_list_store_new)
 ClutterModel *clutter_list_model_new      (guint                n_columns,
                                               ...);
-CLUTTER_AVAILABLE_IN_ALL
+CLUTTER_DEPRECATED_IN_1_24_FOR(g_list_store_new)
 ClutterModel *clutter_list_model_newv     (guint                n_columns,
                                            GType               *types,
                                            const gchar * const  names[]);

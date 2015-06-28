@@ -35,6 +35,9 @@
  * in sorted lists.
  *
  * #ClutterListModel is available since Clutter 0.6
+ *
+ * Deprecated: 1.24: Use a #GListStore instance containing a custom
+ *   object type with properties for each column instead.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -46,9 +49,11 @@
 
 #include <glib-object.h>
 
+#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
+#include "clutter-list-model.h"
+
 #include "clutter-model.h"
 #include "clutter-model-private.h"
-#include "clutter-list-model.h"
 #include "clutter-private.h"
 #include "clutter-debug.h"
 
@@ -746,6 +751,8 @@ clutter_list_model_init (ClutterListModel *model)
  * Return value: a new #ClutterListModel
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.24: Use #GListStore instead
  */
 ClutterModel *
 clutter_list_model_new (guint n_columns,
@@ -796,6 +803,8 @@ clutter_list_model_new (guint n_columns,
  * Return value: (transfer full): a new default #ClutterModel
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.24: Use #GListStore instead
  */
 ClutterModel *
 clutter_list_model_newv (guint                n_columns,
