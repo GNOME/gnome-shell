@@ -465,6 +465,8 @@ clutter_actor_iter_next
 clutter_actor_iter_prev
 clutter_actor_iter_remove
 clutter_actor_iter_destroy
+ClutterActorCreateChildFunc
+clutter_actor_bind_model
 
 <SUBSECTION>
 clutter_actor_save_easing_state

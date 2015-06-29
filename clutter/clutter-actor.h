@@ -31,6 +31,7 @@
 
 /* clutter-actor.h */
 
+#include <gio/gio.h>
 #include <pango/pango.h>
 #include <atk/atk.h>
 
@@ -850,6 +851,32 @@ void                            clutter_actor_set_opacity_override              
 CLUTTER_AVAILABLE_IN_1_22
 gint                            clutter_actor_get_opacity_override              (ClutterActor               *self);
 #endif
+
+/**
+ * ClutterActorCreateChildFunc:
+ * @item: (type GObject): the item in the model
+ * @user_data: Data passed to clutter_actor_bind_model()
+ *
+ * Creates a #ClutterActor using the @item in the model.
+ *
+ * The usual way to implement this function is to create a #ClutterActor
+ * instance and then bind the #GObject properties to the actor properties
+ * of interest, using g_object_bind_property(). This way, when the @item
+ * in the #GListModel changes, the #ClutterActor changes as well.
+ *
+ * Returns: (transfer full): The newly created child #ClutterActor
+ *
+ * Since: 1.24
+ */
+typedef ClutterActor * (* ClutterActorCreateChildFunc) (gpointer item,
+                                                        gpointer user_data);
+
+CLUTTER_AVAILABLE_IN_1_24
+void                            clutter_actor_bind_model                        (ClutterActor               *self,
+                                                                                 GListModel                 *model,
+                                                                                 ClutterActorCreateChildFunc create_child_func,
+                                                                                 gpointer                    user_data,
+                                                                                 GDestroyNotify              notify);
 
 G_END_DECLS
 

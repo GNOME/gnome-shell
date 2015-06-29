@@ -798,6 +798,11 @@ struct _ClutterActorPrivate
    */
   gulong in_cloned_branch;
 
+  GListModel *child_model;
+  ClutterActorCreateChildFunc create_child_func;
+  gpointer create_child_data;
+  GDestroyNotify create_child_notify;
+
   /* bitfields: KEEP AT THE END */
 
   /* fixed position and sizes */
@@ -5927,6 +5932,18 @@ clutter_actor_dispose (GObject *object)
   g_clear_object (&priv->constraints);
   g_clear_object (&priv->effects);
   g_clear_object (&priv->flatten_effect);
+
+  if (priv->child_model != NULL)
+    {
+      if (priv->create_child_notify != NULL)
+        priv->create_child_notify (priv->create_child_data);
+
+      priv->create_child_func = NULL;
+      priv->create_child_data = NULL;
+      priv->create_child_notify = NULL;
+
+      g_clear_object (&priv->child_model);
+    }
 
   if (priv->layout_manager != NULL)
     {
@@ -20775,4 +20792,114 @@ _clutter_actor_get_active_framebuffer (ClutterActor *self)
     }
 
   return _clutter_stage_get_active_framebuffer (stage);
+}
+
+static void
+clutter_actor_bound_model__changed (GListModel *model,
+                                    guint       position,
+                                    guint       removed,
+                                    guint       added,
+                                    gpointer    user_data)
+{
+  ClutterActor *parent = user_data;
+  ClutterActorPrivate *priv = parent->priv;
+  guint i;
+
+  while (removed--)
+    {
+      ClutterActor *child = clutter_actor_get_child_at_index (parent, position);
+      clutter_actor_destroy (child);
+    }
+
+  for (i = 0; i < added; i++)
+    {
+      GObject *item = g_list_model_get_item (model, position + i);
+      ClutterActor *child = priv->create_child_func (item, priv->create_child_data);
+
+      /* The actor returned by the function can have a floating reference,
+       * if the implementation is in pure C, or have a full reference, usually
+       * the case for language bindings. To avoid leaking references, we
+       * try to assume ownership of the instance, and release the reference
+       * at the end unconditionally, leaving the only reference to the actor
+       * itself.
+       */
+      if (g_object_is_floating (child))
+        g_object_ref_sink (child);
+
+      clutter_actor_insert_child_at_index (parent, child, position + i);
+
+      g_object_unref (child);
+      g_object_unref (item);
+    }
+}
+
+/**
+ * clutter_actor_bind_model:
+ * @self: a #ClutterActor
+ * @model: (optional): a #GListModel
+ * @create_child_func: a function that creates #ClutterActor instances
+ *   from the contents of the @model
+ * @user_data: user data passed to @create_child_func
+ * @notify: function called when unsetting the @model
+ *
+ * Binds a #GListModel to a #ClutterActor.
+ *
+ * If the #ClutterActor was already bound to a #GListModel, the previous
+ * binding is destroyed.
+ *
+ * The existing children of #ClutterActor are destroyed when setting a
+ * model, and new children are created and added, representing the contents
+ * of the @model. The #ClutterActor is updated whenever the @model changes.
+ * If @model is %NULL, the #ClutterActor is left empty.
+ *
+ * When a #ClutterActor is bound to a model, adding and removing children
+ * directly is undefined behaviour.
+ *
+ * Since: 1.24
+ */
+void
+clutter_actor_bind_model (ClutterActor                *self,
+                          GListModel                  *model,
+                          ClutterActorCreateChildFunc  create_child_func,
+                          gpointer                     user_data,
+                          GDestroyNotify               notify)
+{
+  ClutterActorPrivate *priv = clutter_actor_get_instance_private (self);
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  g_return_if_fail (model == NULL || G_IS_LIST_MODEL (model));
+  g_return_if_fail (model == NULL || create_child_func != NULL);
+
+  if (priv->child_model != NULL)
+    {
+      if (priv->create_child_notify != NULL)
+        priv->create_child_notify (priv->create_child_data);
+
+      g_signal_handlers_disconnect_by_func (priv->child_model,
+                                            clutter_actor_bound_model__changed,
+                                            self);
+      g_clear_object (&priv->child_model);
+      priv->create_child_func = NULL;
+      priv->create_child_data = NULL;
+      priv->create_child_notify = NULL;
+    }
+
+  clutter_actor_destroy_all_children (self);
+
+  if (model == NULL)
+    return;
+
+  priv->child_model = g_object_ref (model);
+  priv->create_child_func = create_child_func;
+  priv->create_child_data = user_data;
+  priv->create_child_notify = notify;
+
+  g_signal_connect (priv->child_model, "items-changed",
+                    G_CALLBACK (clutter_actor_bound_model__changed),
+                    self);
+
+  clutter_actor_bound_model__changed (priv->child_model,
+                                      0,
+                                      0, g_list_model_get_n_items (priv->child_model),
+                                      self);
 }
