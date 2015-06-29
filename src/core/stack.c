@@ -1273,16 +1273,13 @@ get_default_focus_window (MetaStack     *stack,
       if (window->unmaps_pending > 0)
         continue;
 
-      if (window->minimized)
-        continue;
-
       if (window->unmanaging)
         continue;
 
       if (!(window->input || window->take_focus))
         continue;
 
-      if (workspace != NULL && !meta_window_located_on_workspace (window, workspace))
+      if (!meta_window_should_be_showing (window))
         continue;
 
       if (must_be_at_point && !window_contains_point (window, root_x, root_y))
