@@ -1,6 +1,7 @@
 include $(top_srcdir)/build/autotools/Makefile.am.silent
 
 all_examples = \
+	actor-model \
 	basic-actor \
 	box-layout \
 	canvas \
