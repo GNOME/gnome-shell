@@ -268,7 +268,7 @@ AC_ARG_ENABLE([gdk-backend],
 AC_ARG_ENABLE([wayland-backend],
               [AS_HELP_STRING([--enable-wayland-backend=@<:@yes/no@:>@], [Enable the Wayland client backend (default=no)])],
               [enable_wayland=$enableval],
-              [enable_wayland=no])
+              [enable_wayland=check])
 AC_ARG_ENABLE([egl-backend],
               [AS_HELP_STRING([--enable-egl-backend=@<:@yes/no@:>@], [Enable the EGL framebuffer backend (default=no)])],
               [enable_egl=$enableval],
@@ -335,7 +335,7 @@ AS_IF([test "x$enable_gdk" = "xyes"],
 	BACKEND_PC_FILES="$BACKEND_PC_FILES gdk-3.0"
       ])
 
-AS_IF([test "x$enable_wayland" = "xyes"],
+AS_IF([test "x$enable_wayland" != xno],
       [
         CLUTTER_BACKENDS="$CLUTTER_BACKENDS wayland"
         CLUTTER_INPUT_BACKENDS="$CLUTTER_INPUT_BACKENDS wayland"
@@ -365,14 +365,25 @@ AS_IF([test "x$enable_wayland" = "xyes"],
                          have_cogl_wayland=no
                        ])
         CFLAGS="${saved_CFLAGS}"
-        AS_IF([test "x$have_cogl_wayland" = xno], [AC_MSG_ERROR("*** Cogl is missing Wayland support.")])
+        AS_IF([test "x$have_cogl_wayland" = xyes],
+              [
+                PKG_CHECK_EXISTS([wayland-client wayland-cursor xkbcommon gdk-pixbuf-2.0],
+                                 [
+                                   BACKEND_PC_FILES="$BACKEND_PC_FILES wayland-cursor wayland-client xkbcommon"
+                                   BACKEND_PC_FILES_PRIVATE="$BACKEND_PC_FILES_PRIVATE gdk-pixbuf-2.0"
+                                 ],
+                                 [
+                                   AS_IF([test "x$enable_wayland" = xyes],
+                                         [AC_MSG_ERROR(["*** Missing dependencies for Wayland support ***"])],
+                                         [enable_wayland=no])
+                                 ])
+              ],
+              [
+                AS_IF([test "x$enable_wayland" = xyes],
+                      [AC_MSG_ERROR("*** Cogl is missing Wayland support ***")],
+                      [enable_wayland=no])
+              ])
 
-        PKG_CHECK_EXISTS([wayland-client wayland-cursor xkbcommon gdk-pixbuf-2.0],
-                         [
-                            BACKEND_PC_FILES="$BACKEND_PC_FILES wayland-cursor wayland-client xkbcommon"
-                            BACKEND_PC_FILES_PRIVATE="$BACKEND_PC_FILES_PRIVATE gdk-pixbuf-2.0"
-                         ],
-                         [])
       ])
 
 dnl Note this is orthogonal to the client side support and you can
