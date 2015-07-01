@@ -665,6 +665,23 @@ guint32                 clutter_get_current_event_time          (void);
 CLUTTER_AVAILABLE_IN_1_2
 const ClutterEvent *    clutter_get_current_event               (void);
 
+CLUTTER_AVAILABLE_IN_1_24
+guint                   clutter_event_get_gesture_swipe_finger_count (const ClutterEvent     *event);
+
+CLUTTER_AVAILABLE_IN_1_24
+gdouble                 clutter_event_get_gesture_pinch_angle_delta  (const ClutterEvent     *event);
+
+CLUTTER_AVAILABLE_IN_1_24
+gdouble                 clutter_event_get_gesture_pinch_scale        (const ClutterEvent     *event);
+
+CLUTTER_AVAILABLE_IN_1_24
+ClutterTouchpadGesturePhase clutter_event_get_gesture_phase          (const ClutterEvent     *event);
+
+CLUTTER_AVAILABLE_IN_1_24
+void                    clutter_event_get_gesture_motion_delta       (const ClutterEvent     *event,
+                                                                      gdouble                *dx,
+                                                                      gdouble                *dy);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_EVENT_H__ */
