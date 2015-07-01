@@ -121,7 +121,7 @@ meta_frame_layout_get_borders (const MetaFrameLayout *layout,
 }
 
 int
-meta_theme_get_window_scaling_factor ()
+meta_theme_get_window_scaling_factor (void)
 {
   GdkScreen *screen;
   GValue value = G_VALUE_INIT;
