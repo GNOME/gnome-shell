@@ -1922,7 +1922,6 @@ meta_display_begin_grab_op (MetaDisplay *display,
   display->grab_last_moveresize_time.tv_usec = 0;
   display->grab_last_user_action_was_snap = FALSE;
   display->grab_frame_action = frame_action;
-  display->grab_resize_unmaximize = 0;
 
   meta_display_update_cursor (display);
 
