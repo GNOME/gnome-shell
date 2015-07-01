@@ -11,7 +11,8 @@ const WindowAttentionHandler = new Lang.Class({
 
     _init : function() {
         this._tracker = Shell.WindowTracker.get_default();
-        global.display.connect('window-demands-attention', Lang.bind(this, this._onWindowDemandsAttention));
+        this._windowDemandsAttentionId = global.display.connect('window-demands-attention',
+																 Lang.bind(this, this._onWindowDemandsAttention));
     },
 
     _getTitleAndBanner: function(app, window) {
