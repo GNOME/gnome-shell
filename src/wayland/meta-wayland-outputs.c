@@ -47,6 +47,9 @@ output_resource_destroy (struct wl_resource *res)
   MetaWaylandOutput *wayland_output;
 
   wayland_output = wl_resource_get_user_data (res);
+  if (!wayland_output)
+    return;
+
   wayland_output->resources = g_list_remove (wayland_output->resources, res);
 }
 
@@ -234,14 +237,21 @@ static void
 meta_wayland_output_finalize (GObject *object)
 {
   MetaWaylandOutput *wayland_output = META_WAYLAND_OUTPUT (object);
-  GList *resources;
-
-  /* Make sure the destructors don't mess with the list */
-  resources = wayland_output->resources;
-  wayland_output->resources = NULL;
+  GList *l;
 
   wl_global_destroy (wayland_output->global);
-  g_list_free (resources);
+
+  /* Make sure the wl_output destructor doesn't try to access MetaWaylandOutput
+   * after we have freed it.
+   */
+  for (l = wayland_output->resources; l; l = l->next)
+    {
+      struct wl_resource *output_resource = l->data;
+
+      wl_resource_set_user_data (output_resource, NULL);
+    }
+
+  g_list_free (wayland_output->resources);
 
   G_OBJECT_CLASS (meta_wayland_output_parent_class)->finalize (object);
 }
