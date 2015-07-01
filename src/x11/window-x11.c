@@ -413,10 +413,10 @@ meta_window_apply_session_info (MetaWindow *window,
                           info->saved_rect.height,
                           window->desc);
 
-              window->saved_rect.x = info->saved_rect.x;
-              window->saved_rect.y = info->saved_rect.y;
-              window->saved_rect.width = info->saved_rect.width;
-              window->saved_rect.height = info->saved_rect.height;
+              window->size_states.normal.rect.x = info->saved_rect.x;
+              window->size_states.normal.rect.y = info->saved_rect.y;
+              window->size_states.normal.rect.width = info->saved_rect.width;
+              window->size_states.normal.rect.height = info->saved_rect.height;
             }
 	}
     }

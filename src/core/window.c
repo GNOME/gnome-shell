@@ -89,8 +89,6 @@ static void     meta_window_force_placement (MetaWindow     *window);
 static void     meta_window_show          (MetaWindow     *window);
 static void     meta_window_hide          (MetaWindow     *window);
 
-static void     meta_window_save_rect         (MetaWindow    *window);
-
 static void     ensure_mru_position_after (MetaWindow *window,
                                            MetaWindow *after_this_one);
 
@@ -872,7 +870,7 @@ _meta_window_shared_new (MetaDisplay         *display,
   meta_set_normal_hints (window, NULL);
 
   /* And this is our unmaximized size */
-  window->saved_rect = window->rect;
+  window->size_states.normal.rect = window->rect;
   window->unconstrained_rect = window->rect;
 
   window->depth = attrs->depth;
@@ -2606,23 +2604,23 @@ ensure_size_hints_satisfied (MetaRectangle    *rect,
     rect->height += ((minh - rect->height)/hinc + 1)*hinc;
 }
 
-static void
-meta_window_save_rect (MetaWindow *window)
+static inline MetaWindowSizeState *
+get_current_size_state (MetaWindow *window)
 {
-  if (!(META_WINDOW_MAXIMIZED (window) || window->fullscreen))
-    {
-      /* save size/pos as appropriate args for move_resize */
-      if (!window->maximized_horizontally)
-        {
-          window->saved_rect.x      = window->rect.x;
-          window->saved_rect.width  = window->rect.width;
-        }
-      if (!window->maximized_vertically)
-        {
-          window->saved_rect.y      = window->rect.y;
-          window->saved_rect.height = window->rect.height;
-        }
-    }
+  if (META_WINDOW_MAXIMIZED (window))
+    return &window->size_states.maximized;
+  else
+    return &window->size_states.normal;
+}
+
+static void
+save_size_state (MetaWindow          *window,
+                 MetaWindowSizeState *size_state,
+                 MetaRectangle       *saved_rect)
+{
+  size_state->rect = *saved_rect;
+  size_state->maximized_horizontally = window->maximized_horizontally;
+  size_state->maximized_vertically = window->maximized_vertically;
 }
 
 void
@@ -2643,10 +2641,11 @@ meta_window_maximize_internal (MetaWindow        *window,
                 maximize_horizontally ? " horizontally" :
                   maximize_vertically ? " vertically" : "BUGGGGG");
 
-  if (saved_rect != NULL)
-    window->saved_rect = *saved_rect;
-  else
-    meta_window_save_rect (window);
+  if (!saved_rect)
+    saved_rect = &window->rect;
+
+  MetaWindowSizeState *size_state = get_current_size_state (window);
+  save_size_state (window, size_state, saved_rect);
 
   window->maximized_horizontally =
     window->maximized_horizontally || maximize_horizontally;
@@ -2924,7 +2923,7 @@ unmaximize_window_before_freeing (MetaWindow        *window)
 
   if (window->withdrawn)                /* See bug #137185 */
     {
-      window->rect = window->saved_rect;
+      window->rect = window->size_states.normal.rect;
       set_net_wm_state (window);
     }
   else if (window->screen->closing)     /* See bug #358042 */
@@ -2937,11 +2936,76 @@ unmaximize_window_before_freeing (MetaWindow        *window)
        * before closing it. */
       meta_window_move_resize_frame (window,
                                      FALSE,
-                                     window->saved_rect.x,
-                                     window->saved_rect.y,
-                                     window->saved_rect.width,
-                                     window->saved_rect.height);
+                                     window->size_states.normal.rect.x,
+                                     window->size_states.normal.rect.y,
+                                     window->size_states.normal.rect.width,
+                                     window->size_states.normal.rect.height);
     }
+}
+
+static void
+meta_window_unmaximize_internal (MetaWindow          *window,
+                                 MetaWindowSizeState *size_state)
+{
+  MetaRectangle old_frame_rect, old_buffer_rect, target_rect;
+
+  g_return_if_fail (!window->override_redirect);
+
+  meta_window_get_frame_rect (window, &old_frame_rect);
+  meta_window_get_buffer_rect (window, &old_buffer_rect);
+
+  window->maximized_horizontally = size_state->maximized_horizontally;
+  window->maximized_vertically = size_state->maximized_vertically;
+
+  /* recalc_features() will eventually clear the cached frame
+   * extents, but we need the correct frame extents in the code below,
+   * so invalidate the old frame extents manually up front.
+   */
+  meta_window_frame_size_changed (window);
+
+  target_rect = size_state->rect;
+
+  /* Window's size hints may have changed while maximized, making
+   * saved_rect invalid.  #329152
+   */
+  meta_window_frame_rect_to_client_rect (window, &target_rect, &target_rect);
+  ensure_size_hints_satisfied (&target_rect, &window->size_hints);
+  meta_window_client_rect_to_frame_rect (window, &target_rect, &target_rect);
+
+  meta_window_move_resize_internal (window,
+                                    (META_MOVE_RESIZE_MOVE_ACTION |
+                                     META_MOVE_RESIZE_RESIZE_ACTION |
+                                     META_MOVE_RESIZE_STATE_CHANGED |
+                                     META_MOVE_RESIZE_DONT_SYNC_COMPOSITOR),
+                                    NorthWestGravity,
+                                    target_rect);
+
+  meta_compositor_size_change_window (window->display->compositor, window,
+                                      META_SIZE_CHANGE_UNMAXIMIZE,
+                                      &old_frame_rect, &old_buffer_rect);
+
+  /* When we unmaximize, if we're doing a mouse move also we could
+   * get the window suddenly jumping to the upper left corner of
+   * the workspace, since that's where it was when the grab op
+   * started.  So we need to update the grab state. We have to do
+   * it after the actual operation, as the window may have been moved
+   * by constraints.
+   */
+  if (meta_grab_op_is_moving (window->display->grab_op) &&
+      window->display->grab_window == window)
+    {
+      window->display->grab_anchor_window_pos = window->unconstrained_rect;
+    }
+
+  meta_window_recalc_features (window);
+  set_net_wm_state (window);
+  if (!window->monitor->in_fullscreen)
+    meta_screen_queue_check_fullscreen (window->screen);
+
+  g_object_freeze_notify (G_OBJECT (window));
+  g_object_notify_by_pspec (G_OBJECT (window), obj_props[PROP_MAXIMIZED_HORIZONTALLY]);
+  g_object_notify_by_pspec (G_OBJECT (window), obj_props[PROP_MAXIMIZED_VERTICALLY]);
+  g_object_thaw_notify (G_OBJECT (window));
 }
 
 void
@@ -2949,7 +3013,6 @@ meta_window_unmaximize (MetaWindow        *window,
                         MetaMaximizeFlags  directions)
 {
   gboolean unmaximize_horizontally, unmaximize_vertically;
-  MetaRectangle new_rect;
 
   g_return_if_fail (!window->override_redirect);
 
@@ -2958,66 +3021,35 @@ meta_window_unmaximize (MetaWindow        *window,
   unmaximize_vertically   = directions & META_MAXIMIZE_VERTICAL;
   g_assert (unmaximize_horizontally || unmaximize_vertically);
 
-  /* Only do something if the window isn't already maximized in the
-   * given direction(s).
-   */
-  if ((unmaximize_horizontally && window->maximized_horizontally) ||
-      (unmaximize_vertically   && window->maximized_vertically))
+  MetaWindowSizeState *size_state;
+  size_state = &window->size_states.normal;
+
+  /* Special-case unmaximizing both directions to restoring the
+   * last state. This makes the unmaximize buttons go back to the
+   * tiled state... */
+  if (META_WINDOW_MAXIMIZED (window) && directions == META_MAXIMIZE_BOTH)
     {
+      meta_window_unmaximize_internal (window, size_state);
+    }
+  else if ((unmaximize_horizontally && window->maximized_horizontally) ||
+           (unmaximize_vertically   && window->maximized_vertically))
+    {
+      MetaWindowSizeState new_size_state;
       MetaRectangle *desired_rect;
       MetaRectangle target_rect;
       MetaRectangle work_area;
-      MetaRectangle old_frame_rect, old_buffer_rect;
 
       meta_window_get_work_area_for_monitor (window, window->monitor->number, &work_area);
-      meta_window_get_frame_rect (window, &old_frame_rect);
-      meta_window_get_buffer_rect (window, &old_buffer_rect);
 
-      meta_topic (META_DEBUG_WINDOW_OPS,
-                  "Unmaximizing %s%s\n",
-                  window->desc,
-                  unmaximize_horizontally && unmaximize_vertically ? "" :
-                    unmaximize_horizontally ? " horizontally" :
-                      unmaximize_vertically ? " vertically" : "BUGGGGG");
-
-      window->maximized_horizontally =
-        window->maximized_horizontally && !unmaximize_horizontally;
-      window->maximized_vertically =
-        window->maximized_vertically   && !unmaximize_vertically;
-
-      /* recalc_features() will eventually clear the cached frame
-       * extents, but we need the correct frame extents in the code below,
-       * so invalidate the old frame extents manually up front.
-       */
-      meta_window_frame_size_changed (window);
-
-      desired_rect = &window->saved_rect;
+      new_size_state.maximized_horizontally = window->maximized_horizontally && !unmaximize_horizontally;
+      new_size_state.maximized_vertically = window->maximized_vertically && !unmaximize_vertically;
 
       /* Unmaximize to the saved_rect position in the direction(s)
        * being unmaximized.
        */
-      target_rect = old_frame_rect;
+      target_rect = window->rect;
 
-      /* Avoid unmaximizing to "almost maximized" size when the previous size
-       * is greater then 80% of the work area use MAX_UNMAXIMIZED_WINDOW_AREA of the work area as upper limit
-       * while maintaining the aspect ratio.
-       */
-      if (unmaximize_horizontally && unmaximize_vertically &&
-          desired_rect->width * desired_rect->height > work_area.width * work_area.height * MAX_UNMAXIMIZED_WINDOW_AREA)
-        {
-          if (desired_rect->width > desired_rect->height)
-            {
-              float aspect = (float)desired_rect->height / (float)desired_rect->width;
-              desired_rect->width = MAX (work_area.width * sqrt (MAX_UNMAXIMIZED_WINDOW_AREA), window->size_hints.min_width);
-              desired_rect->height = MAX (desired_rect->width * aspect, window->size_hints.min_height);
-            }
-          else
-            {
-              float aspect = (float)desired_rect->width / (float)desired_rect->height;
-              desired_rect->height = MAX (work_area.height * sqrt (MAX_UNMAXIMIZED_WINDOW_AREA), window->size_hints.min_height);
-              desired_rect->width = MAX (desired_rect->height * aspect, window->size_hints.min_width);
-            }
-        }
+      desired_rect = &size_state->rect;
 
       if (unmaximize_horizontally)
         {
@@ -3030,49 +3062,31 @@ meta_window_unmaximize (MetaWindow        *window,
           target_rect.height = desired_rect->height;
         }
 
-      /* Window's size hints may have changed while maximized, making
-       * saved_rect invalid.  #329152
+      /* Avoid unmaximizing to "almost maximized" size when the previous size
+       * is greater then 80% of the work area use MAX_UNMAXIMIZED_WINDOW_AREA of the work area as upper limit
+       * while maintaining the aspect ratio.
        */
-      meta_window_frame_rect_to_client_rect (window, &target_rect, &target_rect);
-      ensure_size_hints_satisfied (&target_rect, &window->size_hints);
-      meta_window_client_rect_to_frame_rect (window, &target_rect, &target_rect);
-
-      meta_window_move_resize_internal (window,
-                                        (META_MOVE_RESIZE_MOVE_ACTION |
-                                         META_MOVE_RESIZE_RESIZE_ACTION |
-                                         META_MOVE_RESIZE_STATE_CHANGED |
-                                         META_MOVE_RESIZE_DONT_SYNC_COMPOSITOR),
-                                        NorthWestGravity,
-                                        target_rect);
-
-      meta_window_get_frame_rect (window, &new_rect);
-      meta_compositor_size_change_window (window->display->compositor, window,
-                                          META_SIZE_CHANGE_UNMAXIMIZE,
-                                          &old_frame_rect, &old_buffer_rect);
-
-      /* When we unmaximize, if we're doing a mouse move also we could
-       * get the window suddenly jumping to the upper left corner of
-       * the workspace, since that's where it was when the grab op
-       * started.  So we need to update the grab state. We have to do
-       * it after the actual operation, as the window may have been moved
-       * by constraints.
-       */
-      if (meta_grab_op_is_moving (window->display->grab_op) &&
-          window->display->grab_window == window)
+      if (unmaximize_horizontally && unmaximize_vertically &&
+          desired_rect->width * desired_rect->height > work_area.width * work_area.height * MAX_UNMAXIMIZED_WINDOW_AREA)
         {
-          window->display->grab_anchor_window_pos = window->unconstrained_rect;
+          if (desired_rect->width > desired_rect->height)
+            {
+              float aspect = (float)desired_rect->height / (float)desired_rect->width;
+              target_rect.width = MAX (work_area.width * sqrt (MAX_UNMAXIMIZED_WINDOW_AREA), window->size_hints.min_width);
+              target_rect.height = MAX (desired_rect->width * aspect, window->size_hints.min_height);
+            }
+          else
+            {
+              float aspect = (float)desired_rect->width / (float)desired_rect->height;
+              target_rect.height = MAX (work_area.height * sqrt (MAX_UNMAXIMIZED_WINDOW_AREA), window->size_hints.min_height);
+              target_rect.width = MAX (desired_rect->height * aspect, window->size_hints.min_width);
+            }
         }
 
-      meta_window_recalc_features (window);
-      set_net_wm_state (window);
-      if (!window->monitor->in_fullscreen)
-        meta_screen_queue_check_fullscreen (window->screen);
-    }
+      new_size_state.rect = target_rect;
 
-  g_object_freeze_notify (G_OBJECT (window));
-  g_object_notify_by_pspec (G_OBJECT (window), obj_props[PROP_MAXIMIZED_HORIZONTALLY]);
-  g_object_notify_by_pspec (G_OBJECT (window), obj_props[PROP_MAXIMIZED_VERTICALLY]);
-  g_object_thaw_notify (G_OBJECT (window));
+      meta_window_unmaximize_internal (window, &new_size_state);
+    }
 }
 
 void
@@ -3126,7 +3140,8 @@ meta_window_make_fullscreen_internal (MetaWindow  *window)
           meta_window_unshade (window, timestamp);
         }
 
-      meta_window_save_rect (window);
+      MetaWindowSizeState *size_state = get_current_size_state (window);
+      save_size_state (window, size_state, &window->rect);
 
       window->fullscreen = TRUE;
 
@@ -3186,7 +3201,9 @@ meta_window_unmake_fullscreen (MetaWindow  *window)
                   "Unfullscreening %s\n", window->desc);
 
       window->fullscreen = FALSE;
-      target_rect = window->saved_rect;
+
+      MetaWindowSizeState *size_state = get_current_size_state (window);
+      target_rect = size_state->rect;
 
       meta_window_frame_size_changed (window);
       meta_window_get_frame_rect (window, &old_frame_rect);
@@ -3736,8 +3753,8 @@ meta_window_move_between_rects (MetaWindow  *window,
 
   window->unconstrained_rect.x = new_area->x + rel_x * scale_x;
   window->unconstrained_rect.y = new_area->y + rel_y * scale_y;
-  window->saved_rect.x = window->unconstrained_rect.x;
-  window->saved_rect.y = window->unconstrained_rect.y;
+  window->size_states.normal.rect.x = window->unconstrained_rect.x;
+  window->size_states.normal.rect.y = window->unconstrained_rect.y;
 
   meta_window_move_resize_now (window);
 }
@@ -5532,7 +5549,7 @@ update_move (MetaWindow  *window,
         ((double)(x - display->grab_initial_window_pos.x)) /
         ((double)display->grab_initial_window_pos.width);
 
-      display->grab_initial_window_pos.x = x - window->saved_rect.width * prop;
+      display->grab_initial_window_pos.x = x - window->size_states.normal.rect.width * prop;
 
       /* If we started dragging the window from above the top of the window,
        * pretend like we started dragging from the middle of the titlebar
@@ -5544,10 +5561,10 @@ update_move (MetaWindow  *window,
           display->grab_anchor_root_y = display->grab_initial_window_pos.y + titlebar_rect.height / 2;
         }
 
-      window->saved_rect.x = display->grab_initial_window_pos.x;
-      window->saved_rect.y = display->grab_initial_window_pos.y;
+      window->size_states.normal.rect.x = display->grab_initial_window_pos.x;
+      window->size_states.normal.rect.y = display->grab_initial_window_pos.y;
 
-      meta_window_unmaximize (window, META_MAXIMIZE_BOTH);
+      meta_window_unmaximize_internal (window, &window->size_states.normal);
       return;
     }
 
@@ -5577,17 +5594,17 @@ update_move (MetaWindow  *window,
                */
               if (wmonitor->number != monitor)
                 {
-                  window->saved_rect.x = work_area.x;
-                  window->saved_rect.y = work_area.y;
+                  window->size_states.normal.rect.x = work_area.x;
+                  window->size_states.normal.rect.y = work_area.y;
 
                   if (window->frame)
                     {
-                      window->saved_rect.x += window->frame->child_x;
-                      window->saved_rect.y += window->frame->child_y;
+                      window->size_states.normal.rect.x += window->frame->child_x;
+                      window->size_states.normal.rect.y += window->frame->child_y;
                     }
 
-                  window->unconstrained_rect.x = window->saved_rect.x;
-                  window->unconstrained_rect.y = window->saved_rect.y;
+                  window->unconstrained_rect.x = window->size_states.normal.rect.x;
+                  window->unconstrained_rect.y = window->size_states.normal.rect.y;
 
                   meta_window_unmaximize (window, META_MAXIMIZE_BOTH);
 

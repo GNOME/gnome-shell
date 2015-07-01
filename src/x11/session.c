@@ -965,10 +965,10 @@ save_state (void)
             {
               fprintf (outfile,
                        "    <maximized saved_x=\"%d\" saved_y=\"%d\" saved_width=\"%d\" saved_height=\"%d\"/>\n",
-                       window->saved_rect.x,
-                       window->saved_rect.y,
-                       window->saved_rect.width,
-                       window->saved_rect.height);
+                       window->size_states.normal.rect.x,
+                       window->size_states.normal.rect.y,
+                       window->size_states.normal.rect.width,
+                       window->size_states.normal.rect.height);
             }
 
           /* Gravity */
