@@ -866,15 +866,18 @@ const WindowManager = new Lang.Class({
                                                 false, -1, 1);
 
         let gesture = new WorkspaceSwitchAction();
-        gesture.connect('activated', Lang.bind(this, function(action, direction) {
-            let newWs = global.screen.get_active_workspace().get_neighbor(direction);
-            this.actionMoveWorkspace(newWs);
-        }));
+        gesture.connect('activated', Lang.bind(this, this._actionSwitchWorkspace));
         global.stage.add_action(gesture);
 
         gesture = new AppSwitchAction();
         gesture.connect('activated', Lang.bind(this, this._switchApp));
         global.stage.add_action(gesture);
+
+    },
+
+    _actionSwitchWorkspace: function(action, direction) {
+            let newWs = global.screen.get_active_workspace().get_neighbor(direction);
+            this.actionMoveWorkspace(newWs);
     },
 
     _lookupIndex: function (windows, metaWindow) {
