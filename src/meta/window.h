@@ -258,4 +258,7 @@ gboolean meta_window_is_client_decorated (MetaWindow *window);
 gboolean meta_window_titlebar_is_onscreen    (MetaWindow *window);
 void     meta_window_shove_titlebar_onscreen (MetaWindow *window);
 
+void     meta_window_tile (MetaWindow   *window,
+                           MetaTileZone  tile_zone);
+
 #endif

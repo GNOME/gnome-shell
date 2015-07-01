@@ -57,7 +57,13 @@ struct _MetaScreen
   MetaRectangle rect;  /* Size of screen; rect.x & rect.y are always 0 */
   MetaUI *ui;
 
-  guint tile_preview_timeout_id;
+  struct {
+    gboolean exists;
+    guint timeout_id;
+    MetaWindow *window;
+    MetaRectangle area;
+    int monitor;
+  } tile_preview;
 
   MetaWorkspace *active_workspace;
 
@@ -136,9 +142,12 @@ void          meta_screen_foreach_window      (MetaScreen                 *scree
 
 void          meta_screen_update_cursor       (MetaScreen                 *screen);
 
-void          meta_screen_update_tile_preview          (MetaScreen    *screen,
-                                                        gboolean       delay);
-void          meta_screen_hide_tile_preview            (MetaScreen    *screen);
+void          meta_screen_update_tile_preview (MetaScreen    *screen,
+                                               MetaWindow    *window,
+                                               MetaRectangle  area,
+                                               int            monitor,
+                                               gboolean       delay);
+void          meta_screen_hide_tile_preview   (MetaScreen *screen);
 
 MetaWindow*   meta_screen_get_mouse_window     (MetaScreen                 *screen,
                                                 MetaWindow                 *not_this_one);

@@ -723,8 +723,6 @@ meta_screen_new (MetaDisplay *display,
   screen->ui = meta_ui_new (screen->display->xdisplay,
                             screen->xscreen);
 
-  screen->tile_preview_timeout_id = 0;
-
   screen->stack = meta_stack_new (screen);
   screen->stack_tracker = meta_stack_tracker_new (screen);
 
@@ -841,8 +839,8 @@ meta_screen_free (MetaScreen *screen,
 
   g_free (screen->monitor_infos);
 
-  if (screen->tile_preview_timeout_id)
-    g_source_remove (screen->tile_preview_timeout_id);
+  if (screen->tile_preview.timeout_id)
+    g_source_remove (screen->tile_preview.timeout_id);
 
   g_free (screen->screen_name);
 
@@ -1320,43 +1318,69 @@ meta_screen_set_cursor (MetaScreen *screen,
 static gboolean
 meta_screen_update_tile_preview_timeout (gpointer data)
 {
+  MetaScreen *screen = data;
+
+  screen->tile_preview.timeout_id = 0;
+
+  if (screen->tile_preview.exists)
+    {
+      meta_compositor_show_tile_preview (screen->display->compositor,
+                                         screen->tile_preview.window,
+                                         &screen->tile_preview.area,
+                                         screen->tile_preview.monitor);
+    }
+  else
+    {
+      meta_compositor_hide_tile_preview (screen->display->compositor);
+    }
+
   return FALSE;
 }
 
 #define TILE_PREVIEW_TIMEOUT_MS 200
 
 void
-meta_screen_update_tile_preview (MetaScreen *screen,
-                                 gboolean    delay)
+meta_screen_update_tile_preview (MetaScreen    *screen,
+                                 MetaWindow    *window,
+                                 MetaRectangle  area,
+                                 int            monitor,
+                                 gboolean       delay)
 {
+  screen->tile_preview.exists = TRUE;
+  screen->tile_preview.window = window;
+  screen->tile_preview.area = area;
+  screen->tile_preview.monitor = monitor;
+
   if (delay)
     {
-      if (screen->tile_preview_timeout_id > 0)
+      if (screen->tile_preview.timeout_id > 0)
         return;
 
-      screen->tile_preview_timeout_id =
+      screen->tile_preview.timeout_id =
         g_timeout_add (TILE_PREVIEW_TIMEOUT_MS,
                        meta_screen_update_tile_preview_timeout,
                        screen);
-      g_source_set_name_by_id (screen->tile_preview_timeout_id,
+      g_source_set_name_by_id (screen->tile_preview.timeout_id,
                                "[mutter] meta_screen_update_tile_preview_timeout");
     }
   else
     {
-      if (screen->tile_preview_timeout_id > 0)
-        g_source_remove (screen->tile_preview_timeout_id);
+      if (screen->tile_preview.timeout_id > 0)
+        g_source_remove (screen->tile_preview.timeout_id);
 
-      meta_screen_update_tile_preview_timeout ((gpointer)screen);
+      meta_screen_update_tile_preview_timeout ((gpointer) screen);
     }
 }
 
 void
 meta_screen_hide_tile_preview (MetaScreen *screen)
 {
-  if (screen->tile_preview_timeout_id > 0)
-    g_source_remove (screen->tile_preview_timeout_id);
+  screen->tile_preview.exists = FALSE;
 
-  meta_compositor_hide_tile_preview (screen->display->compositor);
+  if (screen->tile_preview.timeout_id > 0)
+    g_source_remove (screen->tile_preview.timeout_id);
+
+  meta_screen_update_tile_preview_timeout ((gpointer) screen);
 }
 
 MetaWindow*

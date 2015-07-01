@@ -2609,6 +2609,8 @@ get_current_size_state (MetaWindow *window)
 {
   if (META_WINDOW_MAXIMIZED (window))
     return &window->size_states.maximized;
+  else if (window->constrained_edges != 0)
+    return &window->size_states.tiled;
   else
     return &window->size_states.normal;
 }
@@ -2880,35 +2882,48 @@ meta_window_requested_dont_bypass_compositor (MetaWindow *window)
   return window->bypass_compositor == _NET_WM_BYPASS_COMPOSITOR_HINT_OFF;
 }
 
-static gboolean
-meta_window_can_tile_maximized (MetaWindow *window)
+static void
+get_tile_zone_area (MetaWindow    *window,
+                    MetaTileZone   tile_zone,
+                    MetaRectangle *rect_p)
 {
-  return window->has_maximize_func;
-}
+  MetaRectangle work_area;
+  meta_window_get_work_area_for_monitor (window, window->monitor->number, &work_area);
 
-gboolean
-meta_window_can_tile_side_by_side (MetaWindow *window)
-{
-  int monitor;
-  MetaRectangle tile_area;
-  MetaRectangle client_rect;
+  MetaRectangle rect = {
+    .x = work_area.x,
+    .y = work_area.y,
+  };
 
-  if (!meta_window_can_tile_maximized (window))
-    return FALSE;
+  switch (tile_zone & META_DIRECTION_HORIZONTAL)
+    {
+    case META_DIRECTION_HORIZONTAL:
+      rect.width = work_area.width;
+      break;
+    case META_DIRECTION_LEFT:
+      rect.width = work_area.width / 2;
+      break;
+    case META_DIRECTION_RIGHT:
+      rect.x += work_area.width / 2;
+      rect.width = work_area.width / 2;
+      break;
+    }
 
-  monitor = meta_screen_get_current_monitor (window->screen);
-  meta_window_get_work_area_for_monitor (window, monitor, &tile_area);
+  switch (tile_zone & META_DIRECTION_VERTICAL)
+    {
+    case META_DIRECTION_VERTICAL:
+      rect.height = work_area.height;
+      break;
+    case META_DIRECTION_TOP:
+      rect.height = work_area.height / 2;
+      break;
+    case META_DIRECTION_BOTTOM:
+      rect.y += work_area.height / 2;
+      rect.height = work_area.height / 2;
+      break;
+    }
 
-  /* Do not allow tiling in portrait orientation */
-  if (tile_area.height > tile_area.width)
-    return FALSE;
-
-  tile_area.width /= 2;
-
-  meta_window_frame_rect_to_client_rect (window, &tile_area, &client_rect);
-
-  return client_rect.width >= window->size_hints.min_width &&
-         client_rect.height >= window->size_hints.min_height;
+  *rect_p = rect;
 }
 
 static void
@@ -3022,7 +3037,10 @@ meta_window_unmaximize (MetaWindow        *window,
   g_assert (unmaximize_horizontally || unmaximize_vertically);
 
   MetaWindowSizeState *size_state;
-  size_state = &window->size_states.normal;
+  if (window->constrained_edges != 0)
+    size_state = &window->size_states.tiled;
+  else
+    size_state = &window->size_states.normal;
 
   /* Special-case unmaximizing both directions to restoring the
    * last state. This makes the unmaximize buttons go back to the
@@ -3084,6 +3102,12 @@ meta_window_unmaximize (MetaWindow        *window,
         }
 
       new_size_state.rect = target_rect;
+
+      /* Clear any constrained edges when unmaximizing */
+      if (unmaximize_horizontally)
+        window->constrained_edges &= ~META_DIRECTION_HORIZONTAL;
+      if (unmaximize_vertically)
+        window->constrained_edges &= ~META_DIRECTION_VERTICAL;
 
       meta_window_unmaximize_internal (window, &new_size_state);
     }
@@ -5485,6 +5509,119 @@ update_move_timeout (gpointer data)
   return FALSE;
 }
 
+typedef enum {
+  META_RECT_EDGE_W = 1 << 0, /* west */
+  META_RECT_EDGE_E = 1 << 1, /* east */
+  META_RECT_EDGE_H = 1 << 2, /* horizontal (middle) */
+  META_RECT_EDGE_N = 1 << 3, /* north */
+  META_RECT_EDGE_S = 1 << 4, /* south */
+  META_RECT_EDGE_V = 1 << 5, /* vertical (middle) */
+} MetaRectEdges;
+
+typedef struct {
+  int x1, y1, x2, y2;
+} Box;
+
+static MetaRectEdges
+get_rect_edges (Box outer, Box inner, int x, int y)
+{
+  MetaDirection edges = 0;
+
+  if (x >= outer.x1 && x < inner.x1)
+    edges |= META_RECT_EDGE_W;
+  else if (x >= inner.x2 && x < outer.x2)
+    edges |= META_RECT_EDGE_E;
+  else if (x >= inner.x1 && x < inner.x2)
+    edges |= META_RECT_EDGE_H;
+
+  if (y >= outer.y1 && y < inner.y1)
+    edges |= META_RECT_EDGE_N;
+  else if (y >= inner.y2 && y < outer.y2)
+    edges |= META_RECT_EDGE_S;
+  else if (y >= inner.y1 && y < inner.y2)
+    edges |= META_RECT_EDGE_V;
+
+  return edges;
+}
+
+static inline Box
+box_from_rect (MetaRectangle rect)
+{
+  Box box = { .x1 = rect.x, .y1 = rect.y, .x2 = rect.x + rect.width, .y2 = rect.y + rect.height };
+  return box;
+}
+
+static inline int
+get_drag_shake_threshold (void)
+{
+  /* Originally for detaching maximized windows, but we use this
+   * for the zones at the sides of the monitor where trigger tiling
+   * because it's about the right size
+   */
+#define DRAG_THRESHOLD_TO_SHAKE_THRESHOLD_FACTOR 6
+  return meta_prefs_get_drag_threshold () * DRAG_THRESHOLD_TO_SHAKE_THRESHOLD_FACTOR;
+}
+
+static MetaTileZone
+get_tile_zone_for_pointer (MetaWindow *window,
+                           int x, int y)
+{
+  if (!window->has_maximize_func)
+    return 0;
+
+  const MetaMonitorInfo *monitor;
+  MetaRectangle work_area;
+  monitor = meta_screen_get_current_monitor_info_for_pos (window->screen, x, y);
+  meta_window_get_work_area_for_monitor (window, monitor->number, &work_area);
+
+  MetaRectangle client_rect;
+  meta_window_frame_rect_to_client_rect (window, &work_area, &client_rect);
+
+  gboolean can_tile_horz = ((client_rect.width / 2) >= window->size_hints.min_width);
+  gboolean can_tile_vert = ((client_rect.height / 2) >= window->size_hints.min_height);
+  gboolean can_max_horz = (client_rect.width >= window->size_hints.min_width);
+  gboolean can_max_vert = (client_rect.height >= window->size_hints.min_height);
+
+  int shake_threshold = get_drag_shake_threshold ();
+  Box outer = box_from_rect (monitor->rect);
+  /* fudge the work area with the shake threshold */
+  Box inner = box_from_rect (work_area);
+  inner.x1 = MAX (inner.x1, shake_threshold);
+  inner.x2 = MIN (outer.x2 - shake_threshold, inner.x2);
+  inner.y1 = MAX (inner.y1, shake_threshold);
+  inner.y2 = MIN (outer.y2 - shake_threshold, inner.y2);
+
+  MetaRectEdges edges = get_rect_edges (outer, inner, x, y);
+
+  /* Simple cases: outside of a monitor, or in the inner rectangle
+   * entirely aren't tile zones. */
+  if (edges == 0 ||
+      edges == (META_RECT_EDGE_H | META_RECT_EDGE_V))
+    return 0;
+
+  /* Special case: the top border is maximization */
+  if (edges == (META_RECT_EDGE_N | META_RECT_EDGE_H))
+    return META_TILE_ZONE_MAXIMIZED;
+
+  MetaTileZone tile_zone = 0;
+
+  if ((edges & META_RECT_EDGE_W) && can_tile_horz)
+    tile_zone |= META_DIRECTION_LEFT;
+  else if ((edges & META_RECT_EDGE_E) && can_tile_horz)
+    tile_zone |= META_DIRECTION_RIGHT;
+  else if ((edges & META_RECT_EDGE_H) && can_max_horz)
+    tile_zone |= META_DIRECTION_HORIZONTAL;
+
+  if ((edges & META_RECT_EDGE_N) && can_tile_vert)
+    tile_zone |= META_DIRECTION_TOP;
+  else if ((edges & META_RECT_EDGE_S) && can_tile_vert)
+    tile_zone |= META_DIRECTION_BOTTOM;
+  else if ((edges & META_RECT_EDGE_V) && can_max_vert)
+    tile_zone |= META_DIRECTION_VERTICAL;
+
+  return tile_zone;
+}
+
 static void
 update_move (MetaWindow  *window,
              gboolean     snap,
@@ -5521,20 +5658,36 @@ update_move (MetaWindow  *window,
   if (dx == 0 && dy == 0)
     return;
 
-  /* Originally for detaching maximized windows, but we use this
-   * for the zones at the sides of the monitor where trigger tiling
-   * because it's about the right size
-   */
-#define DRAG_THRESHOLD_TO_SHAKE_THRESHOLD_FACTOR 6
-  shake_threshold = meta_prefs_get_drag_threshold () *
-    DRAG_THRESHOLD_TO_SHAKE_THRESHOLD_FACTOR;
+  shake_threshold = get_drag_shake_threshold ();
 
   /* shake loose (unmaximize) maximized or tiled window if dragged beyond
    * the threshold in the Y direction. Tiled windows can also be pulled
    * loose via X motion.
    */
+  int shake_x_threshold = G_MAXINT;
 
-  if ((META_WINDOW_MAXIMIZED (window) && ABS (dy) >= shake_threshold))
+  if ((window->constrained_edges & META_DIRECTION_HORIZONTAL) &&
+      (window->constrained_edges & META_DIRECTION_HORIZONTAL) != META_DIRECTION_HORIZONTAL)
+    shake_x_threshold = shake_threshold;
+
+  if (meta_prefs_get_edge_tiling ())
+    {
+      MetaTileZone tile_zone = get_tile_zone_for_pointer (window, x, y);
+      if (tile_zone != 0)
+        {
+          MetaRectangle tile_area;
+          get_tile_zone_area (window, tile_zone, &tile_area);
+          const MetaMonitorInfo *monitor = meta_screen_get_current_monitor_info_for_pos (window->screen, x, y);
+          meta_screen_update_tile_preview (window->screen, window, tile_area, monitor->number, TRUE);
+        }
+      else
+        {
+          meta_screen_hide_tile_preview (window->screen);
+        }
+    }
+
+  if ((META_WINDOW_MAXIMIZED (window) || window->constrained_edges) &&
+      (ABS (dy) >= shake_threshold || ABS (dx) >= shake_x_threshold))
     {
       double prop;
 
@@ -5563,6 +5716,8 @@ update_move (MetaWindow  *window,
 
       window->size_states.normal.rect.x = display->grab_initial_window_pos.x;
       window->size_states.normal.rect.y = display->grab_initial_window_pos.y;
+
+      window->constrained_edges = 0;
 
       meta_window_unmaximize_internal (window, &window->size_states.normal);
       return;
@@ -5818,6 +5973,10 @@ end_grab_op (MetaWindow *window,
           update_move (window,
                        modifiers & CLUTTER_SHIFT_MASK,
                        x, y);
+
+          MetaTileZone tile_zone = get_tile_zone_for_pointer (window, x, y);
+          if (tile_zone != 0)
+            meta_window_tile (window, tile_zone);
         }
       else if (meta_grab_op_is_resizing (window->display->grab_op))
         {
@@ -5827,6 +5986,9 @@ end_grab_op (MetaWindow *window,
                          TRUE);
         }
     }
+
+  meta_screen_hide_tile_preview (window->screen);
+
   meta_display_end_grab_op (window->display, clutter_event_get_time (event));
 }
 
@@ -7642,4 +7804,37 @@ void
 meta_window_emit_size_changed (MetaWindow *window)
 {
   g_signal_emit (window, window_signals[SIZE_CHANGED], 0);
+}
+
+void
+meta_window_tile (MetaWindow   *window,
+                  MetaTileZone  tile_zone)
+{
+  /* Special case: Tile maximizing is the same as maximizing. */
+  if (tile_zone == META_TILE_ZONE_MAXIMIZED)
+    {
+      meta_window_maximize (window, META_MAXIMIZE_BOTH);
+      return;
+    }
+
+  MetaWindowSizeState *size_state = get_current_size_state (window);
+  save_size_state (window, size_state, &window->rect);
+
+  window->constrained_edges = tile_zone;
+
+  if ((window->constrained_edges & META_DIRECTION_VERTICAL) == META_DIRECTION_VERTICAL)
+    window->maximized_vertically = TRUE;
+  if ((window->constrained_edges & META_DIRECTION_HORIZONTAL) == META_DIRECTION_HORIZONTAL)
+    window->maximized_horizontally = TRUE;
+
+  meta_window_recalc_features (window);
+  set_net_wm_state (window);
+
+  MetaRectangle target_rect;
+  get_tile_zone_area (window, tile_zone, &target_rect);
+
+  meta_window_move_resize_internal (window,
+                                    META_MOVE_RESIZE_MOVE_ACTION | META_MOVE_RESIZE_RESIZE_ACTION | META_MOVE_RESIZE_STATE_CHANGED,
+                                    NorthWestGravity,
+                                    target_rect);
 }
