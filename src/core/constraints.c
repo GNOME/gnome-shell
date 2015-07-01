@@ -152,10 +152,6 @@ static gboolean constrain_maximization       (MetaWindow         *window,
                                               ConstraintInfo     *info,
                                               ConstraintPriority  priority,
                                               gboolean            check_only);
-static gboolean constrain_tiling             (MetaWindow         *window,
-                                              ConstraintInfo     *info,
-                                              ConstraintPriority  priority,
-                                              gboolean            check_only);
 static gboolean constrain_fullscreen         (MetaWindow         *window,
                                               ConstraintInfo     *info,
                                               ConstraintPriority  priority,
@@ -213,7 +209,6 @@ typedef struct {
 static const Constraint all_constraints[] = {
   {constrain_modal_dialog,       "constrain_modal_dialog"},
   {constrain_maximization,       "constrain_maximization"},
-  {constrain_tiling,             "constrain_tiling"},
   {constrain_fullscreen,         "constrain_fullscreen"},
   {constrain_size_increments,    "constrain_size_increments"},
   {constrain_size_limits,        "constrain_size_limits"},
@@ -701,16 +696,11 @@ constrain_maximization (MetaWindow         *window,
     return TRUE;
 
   /* Determine whether constraint applies; exit if it doesn't */
-  if ((!window->maximized_horizontally && !window->maximized_vertically) ||
-      META_WINDOW_TILED_SIDE_BY_SIDE (window))
+  if (!window->maximized_horizontally && !window->maximized_vertically)
     return TRUE;
 
   /* Calculate target_size = maximized size of (window + frame) */
-  if (META_WINDOW_TILED_MAXIMIZED (window))
-    {
-      meta_window_get_current_tile_area (window, &target_size);
-    }
-  else if (META_WINDOW_MAXIMIZED (window))
+  if (META_WINDOW_MAXIMIZED (window))
     {
       target_size = info->work_area_monitor;
     }
@@ -774,58 +764,6 @@ constrain_maximization (MetaWindow         *window,
 }
 
 static gboolean
-constrain_tiling (MetaWindow         *window,
-                  ConstraintInfo     *info,
-                  ConstraintPriority  priority,
-                  gboolean            check_only)
-{
-  MetaRectangle target_size;
-  MetaRectangle min_size, max_size;
-  gboolean hminbad, vminbad;
-  gboolean horiz_equal, vert_equal;
-  gboolean constraint_already_satisfied;
-
-  if (priority > PRIORITY_TILING)
-    return TRUE;
-
-  /* Determine whether constraint applies; exit if it doesn't */
-  if (!META_WINDOW_TILED_SIDE_BY_SIDE (window))
-    return TRUE;
-
-  /* Calculate target_size - as the tile previews need this as well, we
-   * use an external function for the actual calculation
-   */
-  meta_window_get_current_tile_area (window, &target_size);
-
-  /* Check min size constraints; max size constraints are ignored as for
-   * maximized windows.
-   */
-  get_size_limits (window, &min_size, &max_size);
-  hminbad = target_size.width < min_size.width;
-  vminbad = target_size.height < min_size.height;
-  if (hminbad || vminbad)
-    return TRUE;
-
-  /* Determine whether constraint is already satisfied; exit if it is */
-  horiz_equal = target_size.x      == info->current.x &&
-                target_size.width  == info->current.width;
-  vert_equal  = target_size.y      == info->current.y &&
-                target_size.height == info->current.height;
-  constraint_already_satisfied = horiz_equal && vert_equal;
-  if (check_only || constraint_already_satisfied)
-    return constraint_already_satisfied;
-
-  /*** Enforce constraint ***/
-  info->current.x      = target_size.x;
-  info->current.width  = target_size.width;
-  info->current.y      = target_size.y;
-  info->current.height = target_size.height;
-
-  return TRUE;
-}
-
-
-static gboolean
 constrain_fullscreen (MetaWindow         *window,
                       ConstraintInfo     *info,
                       ConstraintPriority  priority,
@@ -877,7 +815,6 @@ constrain_size_increments (MetaWindow         *window,
 
   /* Determine whether constraint applies; exit if it doesn't */
   if (META_WINDOW_MAXIMIZED (window) || window->fullscreen ||
-      META_WINDOW_TILED_SIDE_BY_SIDE (window) ||
       info->action_type == ACTION_MOVE)
     return TRUE;
 
@@ -1020,7 +957,6 @@ constrain_aspect_ratio (MetaWindow         *window,
   constraints_are_inconsistent = minr > maxr;
   if (constraints_are_inconsistent ||
       META_WINDOW_MAXIMIZED (window) || window->fullscreen ||
-      META_WINDOW_TILED_SIDE_BY_SIDE (window) ||
       info->action_type == ACTION_MOVE)
     return TRUE;
 

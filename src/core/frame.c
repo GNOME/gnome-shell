@@ -274,12 +274,6 @@ meta_frame_get_flags (MetaFrame *frame)
   if (META_WINDOW_MAXIMIZED (frame->window))
     flags |= META_FRAME_MAXIMIZED;
 
-  if (META_WINDOW_TILED_LEFT (frame->window))
-    flags |= META_FRAME_TILED_LEFT;
-
-  if (META_WINDOW_TILED_RIGHT (frame->window))
-    flags |= META_FRAME_TILED_RIGHT;
-
   if (frame->window->fullscreen)
     flags |= META_FRAME_FULLSCREEN;
 
