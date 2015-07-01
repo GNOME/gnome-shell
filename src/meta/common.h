@@ -83,7 +83,11 @@ typedef enum
   META_FRAME_IS_FLASHING              = 1 << 14,
   META_FRAME_ABOVE                    = 1 << 15,
   META_FRAME_TILED_LEFT               = 1 << 16,
-  META_FRAME_TILED_RIGHT              = 1 << 17
+  META_FRAME_TILED_RIGHT              = 1 << 17,
+  META_FRAME_CONSTRAINED_LEFT_EDGE    = 1 << 18,
+  META_FRAME_CONSTRAINED_RIGHT_EDGE   = 1 << 19,
+  META_FRAME_CONSTRAINED_TOP_EDGE     = 1 << 20,
+  META_FRAME_CONSTRAINED_BOTTOM_EDGE  = 1 << 21,
 } MetaFrameFlags;
 
 /**

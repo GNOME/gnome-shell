@@ -283,6 +283,18 @@ meta_frame_get_flags (MetaFrame *frame)
   if (frame->window->wm_state_above)
     flags |= META_FRAME_ABOVE;
 
+  if (frame->window->constrained_edges & META_DIRECTION_LEFT)
+    flags |= META_FRAME_CONSTRAINED_LEFT_EDGE;
+
+  if (frame->window->constrained_edges & META_DIRECTION_RIGHT)
+    flags |= META_FRAME_CONSTRAINED_RIGHT_EDGE;
+
+  if (frame->window->constrained_edges & META_DIRECTION_TOP)
+    flags |= META_FRAME_CONSTRAINED_TOP_EDGE;
+
+  if (frame->window->constrained_edges & META_DIRECTION_BOTTOM)
+    flags |= META_FRAME_CONSTRAINED_BOTTOM_EDGE;
+
   return flags;
 }
 
