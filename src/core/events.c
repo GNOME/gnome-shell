@@ -40,6 +40,13 @@
 #endif
 #include "meta-surface-actor.h"
 
+#define IS_GESTURE_EVENT(e) ((e)->type == CLUTTER_TOUCHPAD_SWIPE || \
+                             (e)->type == CLUTTER_TOUCHPAD_PINCH || \
+                             (e)->type == CLUTTER_TOUCH_BEGIN || \
+                             (e)->type == CLUTTER_TOUCH_UPDATE || \
+                             (e)->type == CLUTTER_TOUCH_END || \
+                             (e)->type == CLUTTER_TOUCH_CANCEL)
+
 static MetaWindow *
 get_window_for_event (MetaDisplay        *display,
                       const ClutterEvent *event)
@@ -265,15 +272,18 @@ meta_display_handle_event (MetaDisplay        *display,
 
   if (window)
     {
-      if (!clutter_event_get_event_sequence (event))
-        {
-          /* Swallow all non-touch events on windows that come our way.
-           * Touch events that reach here aren't yet in an accepted state,
-           * so Clutter must see them to maybe trigger gestures into
-           * recognition.
-           */
-          bypass_clutter = TRUE;
-        }
+      /* Events that are likely to trigger compositor gestures should
+       * be known to clutter so they can propagate along the hierarchy.
+       * Gesture-wise, there's two groups of events we should be getting
+       * here:
+       * - CLUTTER_TOUCH_* with a touch sequence that's not yet accepted
+       *   by the gesture tracker, these might trigger gesture actions
+       *   into recognition. Already accepted touch sequences are handled
+       *   directly by meta_gesture_tracker_handle_event().
+       * - CLUTTER_TOUCHPAD_* events over windows. These can likewise
+       *   trigger ::captured-event handlers along the way.
+       */
+      bypass_clutter = !IS_GESTURE_EVENT (event);
 
       meta_window_handle_ungrabbed_event (window, event);
 
