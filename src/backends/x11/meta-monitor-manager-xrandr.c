@@ -246,6 +246,51 @@ output_get_underscanning_xrandr (MetaMonitorManagerXrandr *manager_xrandr,
   return (strcmp (str, "on") == 0);
 }
 
+static gboolean
+output_get_supports_underscanning_xrandr (MetaMonitorManagerXrandr *manager_xrandr,
+                                          MetaOutput               *output)
+{
+  Atom atom, actual_type;
+  int actual_format, i;
+  unsigned long nitems, bytes_after;
+  g_autofree unsigned char *buffer = NULL;
+  XRRPropertyInfo *property_info;
+  Atom *values;
+  gboolean supports_underscanning = FALSE;
+
+  atom = XInternAtom (manager_xrandr->xdisplay, "underscan", False);
+  XRRGetOutputProperty (manager_xrandr->xdisplay,
+                        (XID)output->winsys_id,
+                        atom,
+                        0, G_MAXLONG, False, False, XA_ATOM,
+                        &actual_type, &actual_format,
+                        &nitems, &bytes_after, &buffer);
+
+  if (actual_type != XA_ATOM || actual_format != 32 || nitems < 1)
+    return FALSE;
+
+  property_info = XRRQueryOutputProperty (manager_xrandr->xdisplay,
+                                          (XID) output->winsys_id,
+                                          atom);
+  values = (Atom *) property_info->values;
+
+  for (i = 0; i < property_info->num_values; i++)
+    {
+      /* The output supports underscanning if "on" is a valid value
+       * for the underscan property.
+       */
+      char *name = XGetAtomName (manager_xrandr->xdisplay, values[i]);
+      if (strcmp (name, "on") == 0)
+        supports_underscanning = TRUE;
+
+      XFree (name);
+    }
+
+  XFree (property_info);
+
+  return supports_underscanning;
+}
+
 static int
 normalize_backlight (MetaOutput *output,
                      int         hw_value)
@@ -804,6 +849,7 @@ meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
 	  meta_output->is_primary = ((XID)meta_output->winsys_id == primary_output);
 	  meta_output->is_presentation = output_get_presentation_xrandr (manager_xrandr, meta_output);
 	  meta_output->is_underscanning = output_get_underscanning_xrandr (manager_xrandr, meta_output);
+          meta_output->supports_underscanning = output_get_supports_underscanning_xrandr (manager_xrandr, meta_output);
 	  output_get_backlight_limits_xrandr (manager_xrandr, meta_output);
 
 	  if (!(meta_output->backlight_min == 0 && meta_output->backlight_max == 0))

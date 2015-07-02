@@ -145,6 +145,7 @@ struct _MetaOutput
   gboolean is_primary;
   gboolean is_presentation;
   gboolean is_underscanning;
+  gboolean supports_underscanning;
 
   gpointer driver_private;
   GDestroyNotify driver_notify;
