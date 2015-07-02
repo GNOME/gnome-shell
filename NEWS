@@ -1,3 +1,12 @@
+3.16.3
+======
+* Handle touch events in OSK on wayland [Rui; #750287]
+* Misc. bug fixes [Florian, Rui, Ray; #749383, #749529, #750714, #751517,
+  #751541]
+
+Contributors:
+  Rui Matos, Florian Müllner, Ray Strode
+
 3.16.2
 ======
 * Make event highlight in calendar more prominent [Jakub; #747715]
