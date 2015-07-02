@@ -337,12 +337,12 @@ meta_wayland_init (void)
   meta_wayland_pointer_gestures_init (compositor);
   meta_wayland_seat_init (compositor);
 
+  if (!meta_xwayland_start (&compositor->xwayland_manager, compositor->wayland_display))
+    g_error ("Failed to start X Wayland");
+
   compositor->display_name = wl_display_add_socket_auto (compositor->wayland_display);
   if (compositor->display_name == NULL)
     g_error ("Failed to create socket");
-
-  if (!meta_xwayland_start (&compositor->xwayland_manager, compositor->wayland_display))
-    g_error ("Failed to start X Wayland");
 
   set_gnome_env ("DISPLAY", meta_wayland_get_xwayland_display_name (compositor));
   set_gnome_env ("WAYLAND_DISPLAY", meta_wayland_get_wayland_display_name (compositor));
