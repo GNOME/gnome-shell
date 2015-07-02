@@ -1,3 +1,19 @@
+3.17.3
+======
+* Add X11/wayland clipboard interaction [Carlos; #738312]
+* Support VM monitor layout hints on wayland [Thomas; #750363]
+* Misc. bug fixes [Rui, Jonas, Olivier, Carlos, Ting-Wei, Peter, Florian;
+  #749994, #750256, #749716, #748705, #750552, #751036, #750007, #751136,
+  #750552, #751471, #751715, #750680]
+
+Contributors:
+  Jonas Ådahl, Dave Airlie, Cosimo Cecchi, Olivier Fourdan, Carlos Garnacho,
+  Thomas Hellstrom, Peter Hutterer, Ting-Wei Lan, Jasper Lievisse Adriaanse,
+  Rui Matos, Florian Müllner, Jasper St. Pierre
+
+Translations:
+  Marek Černocký [cs], Christian Kirbach [de], Pedro Albuquerque [pt]
+
 3.17.2
 ======
 * Honor default value for click method setting [Rui; #746290]
