@@ -178,7 +178,7 @@ make_logical_config (MetaMonitorManager *manager)
   unsigned int i, j;
 
   monitor_infos = g_array_sized_new (FALSE, TRUE, sizeof (MetaMonitorInfo),
-                                     manager->n_outputs);
+                                     manager->n_crtcs);
 
   /* Walk the list of MetaCRTCs, and build a MetaMonitorInfo
      for each of them, unless they reference a rectangle that
