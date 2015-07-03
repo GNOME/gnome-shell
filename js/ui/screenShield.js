@@ -92,8 +92,10 @@ export class ScreenShield extends Signals.EventEmitter {
         this._smartcardManager = SmartcardManager.getSmartcardManager();
         this._smartcardManager.connect('smartcard-inserted',
             (manager, token) => {
-                if (this._isLocked && token.UsedToLogin)
+                if (this._isLocked && token.UsedToLogin) {
+                    this._wakeUpScreen();
                     this._activateDialog();
+                }
             });
 
         this._credentialManagers = {};
