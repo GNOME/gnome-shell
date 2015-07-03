@@ -110,6 +110,9 @@ meta_surface_actor_wayland_get_scale (MetaSurfaceActorWayland *actor)
    MetaWindow *window = surface->window;
    int output_scale = 1;
 
+   if (!priv->surface)
+     return 1;
+
    while (surface)
     {
       if (surface->window)
@@ -300,4 +303,13 @@ meta_surface_actor_wayland_get_surface (MetaSurfaceActorWayland *self)
 {
   MetaSurfaceActorWaylandPrivate *priv = meta_surface_actor_wayland_get_instance_private (self);
   return priv->surface;
+}
+
+void
+meta_surface_actor_wayland_surface_destroyed (MetaSurfaceActorWayland *self)
+{
+  MetaSurfaceActorWaylandPrivate *priv =
+    meta_surface_actor_wayland_get_instance_private (self);
+
+  priv->surface = NULL;
 }
