@@ -26,6 +26,8 @@
 #ifndef META_BARRIER_PRIVATE_H
 #define META_BARRIER_PRIVATE_H
 
+#include "core/meta-border.h"
+
 G_BEGIN_DECLS
 
 #define META_TYPE_BARRIER_IMPL            (meta_barrier_impl_get_type ())
@@ -67,14 +69,7 @@ G_END_DECLS
 struct _MetaBarrierPrivate
 {
   MetaDisplay *display;
-
-  int x1;
-  int y1;
-  int x2;
-  int y2;
-
-  MetaBarrierDirection directions;
-
+  MetaBorder border;
   MetaBarrierImpl *impl;
 };
 

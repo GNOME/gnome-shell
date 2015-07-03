@@ -61,19 +61,20 @@ meta_barrier_get_property (GObject    *object,
       g_value_set_object (value, priv->display);
       break;
     case PROP_X1:
-      g_value_set_int (value, priv->x1);
+      g_value_set_int (value, priv->border.line.a.x);
       break;
     case PROP_Y1:
-      g_value_set_int (value, priv->y1);
+      g_value_set_int (value, priv->border.line.a.y);
       break;
     case PROP_X2:
-      g_value_set_int (value, priv->x2);
+      g_value_set_int (value, priv->border.line.b.x);
       break;
     case PROP_Y2:
-      g_value_set_int (value, priv->y2);
+      g_value_set_int (value, priv->border.line.b.y);
       break;
     case PROP_DIRECTIONS:
-      g_value_set_flags (value, priv->directions);
+      g_value_set_flags (value,
+                         meta_border_get_allows_directions (&priv->border));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -95,19 +96,20 @@ meta_barrier_set_property (GObject      *object,
       priv->display = g_value_get_object (value);
       break;
     case PROP_X1:
-      priv->x1 = g_value_get_int (value);
+      priv->border.line.a.x = g_value_get_int (value);
       break;
     case PROP_Y1:
-      priv->y1 = g_value_get_int (value);
+      priv->border.line.a.y = g_value_get_int (value);
       break;
     case PROP_X2:
-      priv->x2 = g_value_get_int (value);
+      priv->border.line.b.x = g_value_get_int (value);
       break;
     case PROP_Y2:
-      priv->y2 = g_value_get_int (value);
+      priv->border.line.b.y = g_value_get_int (value);
       break;
     case PROP_DIRECTIONS:
-      priv->directions = g_value_get_flags (value);
+      meta_border_set_allows_directions (&priv->border,
+                                         g_value_get_flags (value));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -166,7 +168,8 @@ meta_barrier_constructed (GObject *object)
   MetaBarrier *barrier = META_BARRIER (object);
   MetaBarrierPrivate *priv = barrier->priv;
 
-  g_return_if_fail (priv->x1 == priv->x2 || priv->y1 == priv->y2);
+  g_return_if_fail (priv->border.line.a.x == priv->border.line.b.x ||
+                    priv->border.line.a.y == priv->border.line.b.y);
 
 #if defined(HAVE_NATIVE_BACKEND)
   if (META_IS_BACKEND_NATIVE (meta_get_backend ()))

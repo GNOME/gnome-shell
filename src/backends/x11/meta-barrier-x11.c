@@ -107,6 +107,7 @@ meta_barrier_impl_x11_new (MetaBarrier *barrier)
   MetaDisplay *display = barrier->priv->display;
   Display *dpy;
   Window root;
+  unsigned int allowed_motion_dirs;
 
   if (display == NULL)
     {
@@ -121,12 +122,14 @@ meta_barrier_impl_x11_new (MetaBarrier *barrier)
   dpy = display->xdisplay;
   root = DefaultRootWindow (dpy);
 
+  allowed_motion_dirs =
+    meta_border_get_allows_directions (&barrier->priv->border);
   priv->xbarrier = XFixesCreatePointerBarrier (dpy, root,
-                                               barrier->priv->x1,
-                                               barrier->priv->y1,
-                                               barrier->priv->x2,
-                                               barrier->priv->y2,
-                                               barrier->priv->directions,
+                                               barrier->priv->border.line.a.x,
+                                               barrier->priv->border.line.a.y,
+                                               barrier->priv->border.line.b.x,
+                                               barrier->priv->border.line.b.y,
+                                               allowed_motion_dirs,
                                                0, NULL);
 
   g_hash_table_insert (display->xids, &priv->xbarrier, barrier);
