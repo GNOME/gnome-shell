@@ -1053,6 +1053,11 @@ meta_frame_left_click_event (MetaUIFrame *frame,
       }
 
       return TRUE;
+    case META_FRAME_CONTROL_NONE:
+      /* We can get this for example when trying to resize window
+       * that cannot be resized (e. g. it is maximized and the theme
+       * currently used has borders for maximized windows), see #751884 */
+      return FALSE;
     default:
       g_assert_not_reached ();
     }
