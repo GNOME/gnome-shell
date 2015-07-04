@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: 3.14\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-06-07 20:05+0000\n"
+"POT-Creation-Date: 2015-07-03 20:04+0000\n"
 "PO-Revision-Date: 2015-06-08 08:32+0100\n"
 "Last-Translator: Bruno Ramalhete <bram.512@gmail.com>\n"
 "Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
@@ -30,8 +30,6 @@ msgid "System"
 msgstr "Sistema"
 
 #: ../data/50-gnome-shell-system.xml.in.h:2
-#| msgid "%d new notification"
-#| msgid_plural "%d new notifications"
 msgid "Show the notification list"
 msgstr "Mostrar lista de notificação"
 
@@ -212,12 +210,10 @@ msgid "Keybinding to open the Activities Overview."
 msgstr "Atalho de teclado para abrir a vista geral de atividades."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:25
-#| msgid "Keybinding to toggle the visibility of the message tray"
 msgid "Keybinding to toggle the visibility of the notification list"
 msgstr "Atalho de teclado para alternar a visibilidade da lista de notificação"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:26
-#| msgid "Keybinding to toggle the visibility of the message tray."
 msgid "Keybinding to toggle the visibility of the notification list."
 msgstr ""
 "Atalho de teclado para alternar a visibilidade da lista de notificação."
@@ -349,17 +345,17 @@ msgstr "Escolher sessão"
 msgid "Not listed?"
 msgstr "Não está listada?"
 
-#: ../js/gdm/loginDialog.js:840
+#: ../js/gdm/loginDialog.js:847
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(por ex., utilizador ou %s)"
 
-#: ../js/gdm/loginDialog.js:845 ../js/ui/components/networkAgent.js:271
+#: ../js/gdm/loginDialog.js:852 ../js/ui/components/networkAgent.js:271
 #: ../js/ui/components/networkAgent.js:289
 msgid "Username: "
 msgstr "Utilizador: "
 
-#: ../js/gdm/loginDialog.js:1173
+#: ../js/gdm/loginDialog.js:1180
 msgid "Login Window"
 msgstr "Janela de início de sessão"
 
@@ -452,31 +448,31 @@ msgstr "%B %d %Y, %l∶%M %p"
 msgid "Web Authentication Redirect"
 msgstr "Autenticação Web redirecionada"
 
-#: ../js/ui/appDisplay.js:788
+#: ../js/ui/appDisplay.js:789
 msgid "Frequently used applications will appear here"
 msgstr "As aplicações frequentemente utilizadas aparecem aqui"
 
-#: ../js/ui/appDisplay.js:908
+#: ../js/ui/appDisplay.js:909
 msgid "Frequent"
 msgstr "Frequentes"
 
-#: ../js/ui/appDisplay.js:915
+#: ../js/ui/appDisplay.js:916
 msgid "All"
 msgstr "Todas"
 
-#: ../js/ui/appDisplay.js:1844
+#: ../js/ui/appDisplay.js:1845
 msgid "New Window"
 msgstr "Nova janela"
 
-#: ../js/ui/appDisplay.js:1872 ../js/ui/dash.js:289
+#: ../js/ui/appDisplay.js:1873 ../js/ui/dash.js:289
 msgid "Remove from Favorites"
 msgstr "Remover dos favoritos"
 
-#: ../js/ui/appDisplay.js:1878
+#: ../js/ui/appDisplay.js:1879
 msgid "Add to Favorites"
 msgstr "Adicionar aos favoritos"
 
-#: ../js/ui/appDisplay.js:1888
+#: ../js/ui/appDisplay.js:1889
 msgid "Show Details"
 msgstr "Mostrar detalhes"
 
@@ -495,7 +491,6 @@ msgid "Change Background…"
 msgstr "Alterar o fundo…"
 
 #: ../js/ui/backgroundMenu.js:21
-#| msgid "Privacy Settings"
 msgid "Display Settings"
 msgstr "Definições de ecrã"
 
@@ -599,7 +594,6 @@ msgid "Notifications"
 msgstr "Notificações"
 
 #: ../js/ui/calendar.js:1765
-#| msgid "Notifications"
 msgid "No Notifications"
 msgstr "Sem notificações"
 
@@ -760,7 +754,6 @@ msgstr "Traço"
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #. */
 #: ../js/ui/dateMenu.js:73
-#| msgid "%A %B %e, %Y"
 msgid "%B %e %Y"
 msgstr "%B %e %Y"
 
@@ -769,7 +762,6 @@ msgstr "%B %e %Y"
 #. * date, e.g. "Tuesday February 17 2015".
 #. */
 #: ../js/ui/dateMenu.js:80
-#| msgid "%A %B %e, %Y"
 msgid "%A %B %e %Y"
 msgstr "%A %B %e %Y"
 
@@ -778,7 +770,6 @@ msgid "Add world clocks…"
 msgstr "Adicionar relógios do mundo"
 
 #: ../js/ui/dateMenu.js:161
-#| msgid "Open Clocks"
 msgid "World Clocks"
 msgstr "Relógios do mundo"
 
@@ -929,7 +920,6 @@ msgstr "Teclado"
 
 #. translators: 'Hide' is a verb */
 #: ../js/ui/legacyTray.js:66
-#| msgid "Hide Text"
 msgid "Hide tray"
 msgstr "Ocultar tabuleiro"
 
@@ -989,7 +979,7 @@ msgstr "Ver fonte"
 msgid "Web Page"
 msgstr "Página Web"
 
-#: ../js/ui/messageTray.js:1506
+#: ../js/ui/messageTray.js:1486
 msgid "System Information"
 msgstr "Informação do sistema"
 
@@ -1031,7 +1021,7 @@ msgstr "toggle-switch-us"
 msgid "Enter a Command"
 msgstr "Insira um comando"
 
-#: ../js/ui/runDialog.js:110 ../js/ui/windowMenu.js:153
+#: ../js/ui/runDialog.js:110 ../js/ui/windowMenu.js:162
 msgid "Close"
 msgstr "Fechar"
 
@@ -1440,7 +1430,7 @@ msgstr "Aplicações"
 msgid "Search"
 msgstr "Procurar"
 
-#: ../js/ui/windowAttentionHandler.js:19
+#: ../js/ui/windowAttentionHandler.js:20
 #, javascript-format
 msgid "“%s” is ready"
 msgstr "“%s” está pronto"
@@ -1506,29 +1496,36 @@ msgstr "Sempre no topo"
 msgid "Always on Visible Workspace"
 msgstr "Sempre na área de trabalho visível"
 
-#: ../js/ui/windowMenu.js:106
+#: ../js/ui/windowMenu.js:105#| msgid "Move to Workspace Up"
+msgid "Move to Workspace Left"
+msgstr "Mover para a área de trabalho esquerda"
+
+#: ../js/ui/windowMenu.js:110
+#| msgid "Move to Workspace Up"
+msgid "Move to Workspace Right"
+msgstr "Mover para a área de trabalho direita"
+
+#: ../js/ui/windowMenu.js:115
 msgid "Move to Workspace Up"
 msgstr "Mover para a área de trabalho acima"
 
-#: ../js/ui/windowMenu.js:111
+#: ../js/ui/windowMenu.js:120
 msgid "Move to Workspace Down"
 msgstr "Mover para a área de trabalho abaixo"
 
-#: ../js/ui/windowMenu.js:127
-#| msgid "Move to Workspace Up"
+#: ../js/ui/windowMenu.js:136
 msgid "Move to Monitor Up"
 msgstr "Mover para o monitor acima"
 
-#: ../js/ui/windowMenu.js:133
-#| msgid "Move to Workspace Down"
+#: ../js/ui/windowMenu.js:142
 msgid "Move to Monitor Down"
 msgstr "Mover para o monitor abaixo"
 
-#: ../js/ui/windowMenu.js:139
+#: ../js/ui/windowMenu.js:148
 msgid "Move to Monitor Left"
 msgstr "Mover para o monitor à esquerda"
 
-#: ../js/ui/windowMenu.js:145
+#: ../js/ui/windowMenu.js:154
 msgid "Move to Monitor Right"
 msgstr "Mover para o monitor à direita"
 
@@ -1585,11 +1582,11 @@ msgstr "Desconhecida"
 msgid "Failed to launch “%s”"
 msgstr "Falha ao iniciar “%s”"
 
-#: ../src/shell-keyring-prompt.c:714
+#: ../src/shell-keyring-prompt.c:742
 msgid "Passwords do not match."
 msgstr "As senhas não coincidem."
 
-#: ../src/shell-keyring-prompt.c:722
+#: ../src/shell-keyring-prompt.c:750
 msgid "Password cannot be blank"
 msgstr "A senha não pode estar vazia"
 
@@ -2040,3 +2037,4 @@ msgstr "O diálogo de autenticação foi fechado pelo utilizador"
 #~ "O nome do ficheiro da transmissão de ecrã gravada será um nome único "
 #~ "baseado na data atual e utilizará esta extensão. Deverá ser alterada "
 #~ "quando se gravar para um formato de conteúdo diferente."
+
