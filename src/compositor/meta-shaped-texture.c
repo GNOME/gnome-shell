@@ -188,9 +188,24 @@ meta_shaped_texture_dispose (GObject *object)
 }
 
 static CoglPipeline *
+get_base_pipeline (CoglContext *ctx)
+{
+  static CoglPipeline *template = NULL;
+  if (G_UNLIKELY (template == NULL))
+    {
+      template = cogl_pipeline_new (ctx);
+      cogl_pipeline_set_layer_wrap_mode_s (template, 0, COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE);
+      cogl_pipeline_set_layer_wrap_mode_t (template, 0, COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE);
+      cogl_pipeline_set_layer_wrap_mode_s (template, 1, COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE);
+      cogl_pipeline_set_layer_wrap_mode_t (template, 1, COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE);
+    }
+  return template;
+}
+
+static CoglPipeline *
 get_unmasked_pipeline (CoglContext *ctx)
 {
-  return cogl_pipeline_new (ctx);
+  return cogl_pipeline_copy (get_base_pipeline (ctx));
 }
 
 static CoglPipeline *
@@ -199,7 +214,7 @@ get_masked_pipeline (CoglContext *ctx)
   static CoglPipeline *template = NULL;
   if (G_UNLIKELY (template == NULL))
     {
-      template = cogl_pipeline_new (ctx);
+      template = cogl_pipeline_copy (get_base_pipeline (ctx));
       cogl_pipeline_set_layer_combine (template, 1,
                                        "RGBA = MODULATE (PREVIOUS, TEXTURE[A])",
                                        NULL);
@@ -215,7 +230,7 @@ get_unblended_pipeline (CoglContext *ctx)
   if (G_UNLIKELY (template == NULL))
     {
       CoglColor color;
-      template = cogl_pipeline_new (ctx);
+      template = cogl_pipeline_copy (get_base_pipeline (ctx));
       cogl_color_init_from_4ub (&color, 255, 255, 255, 255);
       cogl_pipeline_set_blend (template,
                                "RGBA = ADD (SRC_COLOR, 0)",
