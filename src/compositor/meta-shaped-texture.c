@@ -205,7 +205,7 @@ get_base_pipeline (CoglContext *ctx)
 static CoglPipeline *
 get_unmasked_pipeline (CoglContext *ctx)
 {
-  return cogl_pipeline_copy (get_base_pipeline (ctx));
+  return get_base_pipeline (ctx);
 }
 
 static CoglPipeline *
@@ -220,7 +220,7 @@ get_masked_pipeline (CoglContext *ctx)
                                        NULL);
     }
 
-  return cogl_pipeline_copy (template);
+  return template;
 }
 
 static CoglPipeline *
@@ -238,7 +238,7 @@ get_unblended_pipeline (CoglContext *ctx)
       cogl_pipeline_set_color (template, &color);
     }
 
-  return cogl_pipeline_copy (template);
+  return template;
 }
 
 static void
@@ -449,8 +449,6 @@ meta_shaped_texture_paint (ClutterActor *actor)
               cairo_region_get_rectangle (region, i, &rect);
               paint_clipped_rectangle (fb, opaque_pipeline, &rect, &alloc);
             }
-
-          cogl_object_unref (opaque_pipeline);
         }
 
       cairo_region_destroy (region);
@@ -513,8 +511,6 @@ meta_shaped_texture_paint (ClutterActor *actor)
                                            alloc.x2 - alloc.x1,
                                            alloc.y2 - alloc.y1);
         }
-
-      cogl_object_unref (blended_pipeline);
     }
 
   if (blended_region != NULL)
