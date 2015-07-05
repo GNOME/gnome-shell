@@ -1239,23 +1239,9 @@ get_default_focus_window (MetaStack     *stack,
 {
   /* Find the topmost, focusable, mapped, window.
    * not_this_one is being unfocused or going away, so exclude it.
-   * Also, prefer to focus transient parent of not_this_one,
-   * or top window in same group as not_this_one.
    */
 
-  MetaWindow *transient_parent;
-  MetaWindow *topmost_in_group;
-  MetaWindow *topmost_overall;
-  MetaGroup *not_this_one_group;
   GList *l;
-
-  transient_parent = NULL;
-  topmost_in_group = NULL;
-  topmost_overall = NULL;
-  if (not_this_one)
-    not_this_one_group = meta_window_get_group (not_this_one);
-  else
-    not_this_one_group = NULL;
 
   stack_ensure_sorted (stack);
 
@@ -1285,34 +1271,13 @@ get_default_focus_window (MetaStack     *stack,
       if (must_be_at_point && !window_contains_point (window, root_x, root_y))
         continue;
 
-      if (not_this_one != NULL)
-        {
-          if (transient_parent == NULL &&
-              meta_window_get_transient_for (not_this_one) == window)
-            transient_parent = window;
+      if (window->type == META_WINDOW_DOCK)
+        continue;
 
-          if (topmost_in_group == NULL &&
-              not_this_one_group != NULL &&
-              not_this_one_group == meta_window_get_group (window))
-            topmost_in_group = window;
-        }
-
-      if (topmost_overall == NULL && window->type != META_WINDOW_DOCK)
-        topmost_overall = window;
-
-      /* We could try to bail out early here for efficiency in
-       * some cases, but it's just not worth the code.
-       */
+      return window;
     }
 
-  if (transient_parent)
-    return transient_parent;
-  else if (topmost_in_group)
-    return topmost_in_group;
-  else if (topmost_overall)
-    return topmost_overall;
-  else
-    return NULL;
+  return NULL;
 }
 
 MetaWindow*
