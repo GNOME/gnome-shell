@@ -26,8 +26,7 @@
 #include <cairo.h>
 #include <glib-object.h>
 
-G_GNUC_CONST
-GType meta_window_shape_get_type (void);
+GType meta_window_shape_get_type (void) G_GNUC_CONST;
 
 /**
  * MetaWindowShape:

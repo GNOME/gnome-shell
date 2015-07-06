@@ -27,8 +27,7 @@
 #include <clutter/clutter.h>
 #include <meta/meta-window-shape.h>
 
-G_GNUC_CONST
-GType meta_shadow_get_type (void);
+GType meta_shadow_get_type (void) G_GNUC_CONST;
 
 /**
  * MetaShadowParams:
