@@ -46,7 +46,7 @@
 #include <meta/compositor.h>
 #include <meta/compositor-mutter.h>
 #include <X11/Xatom.h>
-#include "mutter-enum-types.h"
+#include <meta/meta-enum-types.h>
 #include "meta-idle-monitor-dbus.h"
 #include "meta-cursor-tracker-private.h"
 #include <meta/meta-backend.h>

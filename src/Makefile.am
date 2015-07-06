@@ -39,8 +39,8 @@ mutter_built_sources = \
 	$(dbus_idle_built_sources)		\
 	$(dbus_display_config_built_sources)	\
 	$(dbus_login1_built_sources)		\
-	mutter-enum-types.h 			\
-	mutter-enum-types.c			\
+	meta/meta-enum-types.h			\
+	meta-enum-types.c			\
 	$(NULL)
 
 if HAVE_WAYLAND
@@ -334,7 +334,9 @@ libmutterinclude_headers =			\
 	$(NULL)
 
 libmutterinclude_built_headers =		\
-	meta/meta-version.h
+	meta/meta-version.h			\
+	meta/meta-enum-types.h			\
+	$(NULL)
 
 libmutterinclude_base_headers =			\
 	$(libmutterinclude_headers)		\
@@ -386,7 +388,6 @@ Meta-$(api_version).gir: libmutter.la
 @META_GIR@_CFLAGS = $(AM_CPPFLAGS)
 @META_GIR@_LIBS = libmutter.la
 @META_GIR@_FILES =				\
-	mutter-enum-types.h			\
 	$(libmutterinclude_base_headers)	\
 	$(filter %.c,$(libmutter_la_SOURCES) $(nodist_libmutter_la_SOURCES))
 @META_GIR@_SCANNERFLAGS = --warn-all --warn-error
@@ -409,8 +410,8 @@ pkgconfig_DATA = libmutter.pc
 EXTRA_DIST +=					\
 	$(wayland_protocols)			\
 	libmutter.pc.in				\
-	mutter-enum-types.h.in			\
-	mutter-enum-types.c.in			\
+	meta-enum-types.h.in			\
+	meta-enum-types.c.in			\
 	org.freedesktop.login1.xml		\
 	org.gnome.Mutter.DisplayConfig.xml	\
 	org.gnome.Mutter.IdleMonitor.xml	\
@@ -420,26 +421,26 @@ BUILT_SOURCES =					\
 	$(mutter_built_sources)			\
 	$(libmutterinclude_built_headers)
 
-MUTTER_STAMP_FILES = stamp-mutter-enum-types.h
+MUTTER_STAMP_FILES = stamp-meta-enum-types.h
 CLEANFILES += $(MUTTER_STAMP_FILES)
 
-mutter-enum-types.h: stamp-mutter-enum-types.h Makefile
+meta/meta-enum-types.h: stamp-meta-enum-types.h Makefile
 	@true
-stamp-mutter-enum-types.h: $(libmutterinclude_base_headers) mutter-enum-types.h.in
+stamp-meta-enum-types.h: $(libmutterinclude_headers) meta-enum-types.h.in
 	$(AM_V_GEN) ( cd $(srcdir) && \
 	  $(GLIB_MKENUMS) \
-	    --template mutter-enum-types.h.in \
+	    --template meta-enum-types.h.in \
 	  $(libmutterinclude_base_headers) ) >> xgen-teth && \
-	(cmp -s xgen-teth mutter-enum-types.h || cp xgen-teth mutter-enum-types.h) && \
+	(cmp -s xgen-teth meta/meta-enum-types.h || cp xgen-teth meta/meta-enum-types.h) && \
 	rm -f xgen-teth && \
 	echo timestamp > $(@F)
 
-mutter-enum-types.c: stamp-mutter-enum-types.h mutter-enum-types.c.in
+meta-enum-types.c: stamp-meta-enum-types.h meta-enum-types.c.in
 	  $(AM_V_GEN) ( cd $(srcdir) && \
 	  $(GLIB_MKENUMS) \
-	    --template mutter-enum-types.c.in \
+	    --template meta-enum-types.c.in \
 	  $(libmutterinclude_base_headers) ) >> xgen-tetc && \
-	cp xgen-tetc mutter-enum-types.c && \
+	cp xgen-tetc meta-enum-types.c && \
 	rm -f xgen-tetc
 
 dbus_display_config_built_sources = meta-dbus-display-config.c meta-dbus-display-config.h

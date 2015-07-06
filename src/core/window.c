@@ -41,7 +41,7 @@
 #include <meta/prefs.h>
 #include <meta/group.h>
 #include "constraints.h"
-#include "mutter-enum-types.h"
+#include <meta/meta-enum-types.h>
 #include "core.h"
 
 #include <X11/Xatom.h>

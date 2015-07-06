@@ -57,10 +57,8 @@ testgradient
 m4/*
 INSTALL
 mkinstalldirs
-src/mutter-enum-types.[ch]
-src/stamp-mutter-enum-types.h
-src/mutter-marshal.[ch]
-src/stamp-mutter-marshal.h
+meta-enum-types.[ch]
+src/stamp-meta-enum-types.h
 src/meta-dbus-display-config.[ch]
 src/meta-dbus-idle-monitor.[ch]
 src/meta-dbus-login1.[ch]

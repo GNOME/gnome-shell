@@ -1,6 +1,6 @@
 /*** BEGIN file-header ***/
-#ifndef __MUTTER_ENUM_TYPES_H__
-#define __MUTTER_ENUM_TYPES_H__
+#ifndef __META_ENUM_TYPES_H__
+#define __META_ENUM_TYPES_H__
 
 #include <glib-object.h>
 

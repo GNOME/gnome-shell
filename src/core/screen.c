@@ -40,7 +40,7 @@
 #include "keybindings-private.h"
 #include "stack.h"
 #include <meta/compositor.h>
-#include "mutter-enum-types.h"
+#include <meta/meta-enum-types.h>
 #include "core.h"
 #include "meta-cursor-tracker-private.h"
 

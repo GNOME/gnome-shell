@@ -1,5 +1,5 @@
 /*** BEGIN file-header ***/
-#include "mutter-enum-types.h"
+#include <meta/meta-enum-types.h>
 /*** END file-header ***/
 
 /*** BEGIN file-production ***/
