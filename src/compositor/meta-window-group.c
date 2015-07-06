@@ -58,9 +58,7 @@ meta_window_group_paint (ClutterActor *actor)
   cairo_region_t *clip_region;
   cairo_region_t *unobscured_region;
   cairo_rectangle_int_t visible_rect, clip_rect;
-  int paint_x_offset, paint_y_offset;
   int paint_x_origin, paint_y_origin;
-  int actor_x_origin, actor_y_origin;
   int screen_width, screen_height;
 
   MetaWindowGroup *window_group = META_WINDOW_GROUP (actor);
@@ -82,7 +80,7 @@ meta_window_group_paint (ClutterActor *actor)
    * on the stage.
    */
   if (!meta_actor_painting_untransformed (screen_width, screen_height, &paint_x_origin, &paint_y_origin) ||
-      !meta_actor_is_untransformed (actor, &actor_x_origin, &actor_y_origin))
+      !meta_actor_is_untransformed (actor, NULL, NULL))
     {
       CLUTTER_ACTOR_CLASS (meta_window_group_parent_class)->paint (actor);
       return;
@@ -105,9 +103,7 @@ meta_window_group_paint (ClutterActor *actor)
 
   clip_region = cairo_region_create_rectangle (&clip_rect);
 
-  paint_x_offset = paint_x_origin - actor_x_origin;
-  paint_y_offset = paint_y_origin - actor_y_origin;
-  cairo_region_translate (clip_region, -paint_x_offset, -paint_y_offset);
+  cairo_region_translate (clip_region, -paint_x_origin, -paint_y_origin);
 
   meta_cullable_cull_out (META_CULLABLE (window_group), unobscured_region, clip_region);
 
