@@ -19,8 +19,6 @@ const Tweener = imports.ui.tweener;
 const WindowMenu = imports.ui.windowMenu;
 
 const SHELL_KEYBINDINGS_SCHEMA = 'org.gnome.shell.keybindings';
-const MAXIMIZE_WINDOW_ANIMATION_TIME = 0.15;
-const UNMAXIMIZE_WINDOW_ANIMATION_TIME = 0.15;
 const MINIMIZE_WINDOW_ANIMATION_TIME = 0.2;
 const SHOW_WINDOW_ANIMATION_TIME = 0.15;
 const DIALOG_SHOW_WINDOW_ANIMATION_TIME = 0.1;
@@ -624,8 +622,6 @@ const WindowManager = new Lang.Class({
 
         this._minimizing = [];
         this._unminimizing = [];
-        this._maximizing = [];
-        this._unmaximizing = [];
         this._mapping = [];
         this._destroying = [];
         this._movingWindow = null;
@@ -640,8 +636,6 @@ const WindowManager = new Lang.Class({
         this._shellwm.connect('kill-switch-workspace', Lang.bind(this, this._switchWorkspaceDone));
         this._shellwm.connect('kill-window-effects', Lang.bind(this, function (shellwm, actor) {
             this._minimizeWindowDone(shellwm, actor);
-            this._maximizeWindowDone(shellwm, actor);
-            this._unmaximizeWindowDone(shellwm, actor);
             this._mapWindowDone(shellwm, actor);
             this._destroyWindowDone(shellwm, actor);
         }));
@@ -652,8 +646,6 @@ const WindowManager = new Lang.Class({
         this._shellwm.connect('show-window-menu', Lang.bind(this, this._showWindowMenu));
         this._shellwm.connect('minimize', Lang.bind(this, this._minimizeWindow));
         this._shellwm.connect('unminimize', Lang.bind(this, this._unminimizeWindow));
-        this._shellwm.connect('maximize', Lang.bind(this, this._maximizeWindow));
-        this._shellwm.connect('unmaximize', Lang.bind(this, this._unmaximizeWindow));
         this._shellwm.connect('map', Lang.bind(this, this._mapWindow));
         this._shellwm.connect('destroy', Lang.bind(this, this._destroyWindow));
         this._shellwm.connect('filter-keybinding', Lang.bind(this, this._filterKeybinding));
@@ -1163,22 +1155,8 @@ const WindowManager = new Lang.Class({
         }
     },
 
-
-    _maximizeWindow : function(shellwm, actor, targetX, targetY, targetWidth, targetHeight) {
-        shellwm.completed_maximize(actor);
-    },
-
-    _maximizeWindowDone : function(shellwm, actor) {
-    },
-
-    _maximizeWindowOverwrite : function(shellwm, actor) {
-    },
-
-    _unmaximizeWindow : function(shellwm, actor, targetX, targetY, targetWidth, targetHeight) {
-        shellwm.completed_unmaximize(actor);
-    },
-
-    _unmaximizeWindowDone : function(shellwm, actor) {
+    _sizeChangeWindow : function(shellwm, actor, whichChange, oldFrameRect, oldBufferRect) {
+        shellwm.completed_size_change(actor);
     },
 
     _hasAttachedDialogs: function(window, ignoreWindow) {

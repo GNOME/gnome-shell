@@ -12,18 +12,11 @@ void _shell_wm_minimize   (ShellWM         *wm,
                            MetaWindowActor *actor);
 void _shell_wm_unminimize (ShellWM         *wm,
                            MetaWindowActor *actor);
-void _shell_wm_maximize   (ShellWM         *wm,
+void _shell_wm_size_change(ShellWM         *wm,
                            MetaWindowActor *actor,
-                           gint             x,
-                           gint             y,
-                           gint             width,
-                           gint             height);
-void _shell_wm_unmaximize (ShellWM         *wm,
-                           MetaWindowActor *actor,
-                           gint             x,
-                           gint             y,
-                           gint             width,
-                           gint             height);
+                           MetaSizeChange   which_change,
+                           MetaRectangle   *old_rect,
+                           MetaRectangle   *new_rect);
 void _shell_wm_map        (ShellWM         *wm,
                            MetaWindowActor *actor);
 void _shell_wm_destroy    (ShellWM         *wm,

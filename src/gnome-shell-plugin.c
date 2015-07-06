@@ -42,18 +42,11 @@ static void gnome_shell_plugin_minimize         (MetaPlugin          *plugin,
                                                  MetaWindowActor     *actor);
 static void gnome_shell_plugin_unminimize       (MetaPlugin          *plugin,
                                                  MetaWindowActor     *actor);
-static void gnome_shell_plugin_maximize         (MetaPlugin          *plugin,
+static void gnome_shell_plugin_size_change      (MetaPlugin          *plugin,
                                                  MetaWindowActor     *actor,
-                                                 gint                 x,
-                                                 gint                 y,
-                                                 gint                 width,
-                                                 gint                 height);
-static void gnome_shell_plugin_unmaximize       (MetaPlugin          *plugin,
-                                                 MetaWindowActor     *actor,
-                                                 gint                 x,
-                                                 gint                 y,
-                                                 gint                 width,
-                                                 gint                 height);
+                                                 MetaSizeChange       which_change,
+                                                 MetaRectangle       *old_rect,
+                                                 MetaRectangle       *new_rect);
 static void gnome_shell_plugin_map              (MetaPlugin          *plugin,
                                                  MetaWindowActor     *actor);
 static void gnome_shell_plugin_destroy          (MetaPlugin          *plugin,
@@ -134,8 +127,7 @@ gnome_shell_plugin_class_init (GnomeShellPluginClass *klass)
   plugin_class->map              = gnome_shell_plugin_map;
   plugin_class->minimize         = gnome_shell_plugin_minimize;
   plugin_class->unminimize       = gnome_shell_plugin_unminimize;
-  plugin_class->maximize         = gnome_shell_plugin_maximize;
-  plugin_class->unmaximize       = gnome_shell_plugin_unmaximize;
+  plugin_class->size_change      = gnome_shell_plugin_size_change;
   plugin_class->destroy          = gnome_shell_plugin_destroy;
 
   plugin_class->switch_workspace = gnome_shell_plugin_switch_workspace;
@@ -281,27 +273,13 @@ gnome_shell_plugin_unminimize (MetaPlugin         *plugin,
 }
 
 static void
-gnome_shell_plugin_maximize (MetaPlugin         *plugin,
-                             MetaWindowActor    *actor,
-                             gint                x,
-                             gint                y,
-                             gint                width,
-                             gint                height)
+gnome_shell_plugin_size_change (MetaPlugin         *plugin,
+                                MetaWindowActor    *actor,
+                                MetaSizeChange      which_change,
+                                MetaRectangle      *old_frame_rect,
+                                MetaRectangle      *old_buffer_rect)
 {
-  _shell_wm_maximize (get_shell_wm (),
-                      actor, x, y, width, height);
-}
-
-static void
-gnome_shell_plugin_unmaximize (MetaPlugin         *plugin,
-                               MetaWindowActor    *actor,
-                               gint                x,
-                               gint                y,
-                               gint                width,
-                               gint                height)
-{
-  _shell_wm_unmaximize (get_shell_wm (),
-                        actor, x, y, width, height);
+  _shell_wm_size_change (get_shell_wm (), actor, which_change, old_frame_rect, old_buffer_rect);
 }
 
 static void
