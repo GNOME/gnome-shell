@@ -24,10 +24,7 @@
 
 #include <meta/types.h>
 #include <meta/screen.h>
-
-#define  META_PLUGIN_FROM_MANAGER_
 #include <meta/meta-plugin.h>
-#undef   META_PLUGIN_FROM_MANAGER_
 
 #define META_PLUGIN_MINIMIZE         (1<<0)
 #define META_PLUGIN_MAXIMIZE         (1<<1)
