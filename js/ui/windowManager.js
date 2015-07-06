@@ -622,6 +622,7 @@ const WindowManager = new Lang.Class({
 
         this._minimizing = [];
         this._unminimizing = [];
+        this._sizeChanging = [];
         this._mapping = [];
         this._destroying = [];
         this._movingWindow = null;
@@ -636,6 +637,7 @@ const WindowManager = new Lang.Class({
         this._shellwm.connect('kill-switch-workspace', Lang.bind(this, this._switchWorkspaceDone));
         this._shellwm.connect('kill-window-effects', Lang.bind(this, function (shellwm, actor) {
             this._minimizeWindowDone(shellwm, actor);
+            this._sizeChangeWindowDone(shellwm, actor);
             this._mapWindowDone(shellwm, actor);
             this._destroyWindowDone(shellwm, actor);
         }));
@@ -1157,6 +1159,60 @@ const WindowManager = new Lang.Class({
     },
 
     _sizeChangeWindow : function(shellwm, actor, whichChange, oldFrameRect, oldBufferRect) {
+        let types = [Meta.WindowType.NORMAL];
+        if (!this._shouldAnimateActor(actor, types)) {
+            shellwm.completed_size_change(actor);
+            return;
+        }
+
+        this._sizeChanging.push(actor);
+
+        let targetRect = actor.meta_window.get_frame_rect();
+
+        // The actor is in its old, "frozen" state. The borders that we have here
+        // are the difference between the frame and buffer rects. Offset the target
+        // with the same difference so it lines up nicely.
+        targetRect.x += oldBufferRect.x - oldFrameRect.x;
+        targetRect.y += oldBufferRect.y - oldFrameRect.y;
+
+        let frameX2 = oldFrameRect.x + oldFrameRect.width;
+        let bufferX2 = oldBufferRect.x + oldBufferRect.width;
+        targetRect.width += bufferX2 - frameX2;
+
+        let frameY2 = oldFrameRect.y + oldFrameRect.width;
+        let bufferY2 = oldBufferRect.y + oldBufferRect.width;
+        targetRect.width += bufferY2 - frameY2;
+
+        let scaleX = targetRect.width / actor.width;
+        let scaleY = targetRect.height / actor.height;
+
+        Tweener.addTween(actor,
+                         { x: targetRect.x,
+                           y: targetRect.y,
+                           scale_x: scaleX,
+                           scale_y: scaleY,
+                           time: WINDOW_ANIMATION_TIME,
+                           transition: 'easeOutQuad',
+                           onComplete: () => { this._sizeChangeWindowDone(shellwm, actor); },
+                           onOverwrite: () => { this._sizeChangeWindowOverwritten(shellwm, actor); },
+                         });
+    },
+
+    _sizeChangeWindowDone: function(shellwm, actor) {
+        if (!this._removeEffect(this._sizeChanging, actor))
+            return;
+
+        Tweener.removeTweens(actor);
+
+        actor.scale_x = 1;
+        actor.scale_y = 1;
+
+        shellwm.completed_size_change(actor);
+    },
+    _sizeChangeWindowOverwritten: function(shellwm, actor) {
+        if (!this._removeEffect(this._sizeChanging, actor))
+            return;
+
         shellwm.completed_size_change(actor);
     },
 
