@@ -8,6 +8,7 @@
 #include <X11/extensions/Xdamage.h>
 #include <meta/compositor-mutter.h>
 #include "meta-surface-actor.h"
+#include "meta-plugin-manager.h"
 
 MetaWindowActor *meta_window_actor_new (MetaWindow *window);
 
@@ -55,8 +56,8 @@ void     meta_window_actor_sync_updates_frozen (MetaWindowActor *self);
 void     meta_window_actor_queue_frame_drawn   (MetaWindowActor *self,
                                                 gboolean         no_delay_frame);
 
-void meta_window_actor_effect_completed (MetaWindowActor *actor,
-                                         gulong           event);
+void meta_window_actor_effect_completed (MetaWindowActor  *actor,
+                                         MetaPluginEffect  event);
 
 MetaSurfaceActor *meta_window_actor_get_surface (MetaWindowActor *self);
 void meta_window_actor_update_surface (MetaWindowActor *self);

@@ -26,15 +26,15 @@
 #include <meta/screen.h>
 #include <meta/meta-plugin.h>
 
-#define META_PLUGIN_MINIMIZE         (1<<0)
-#define META_PLUGIN_MAXIMIZE         (1<<1)
-#define META_PLUGIN_UNMAXIMIZE       (1<<2)
-#define META_PLUGIN_MAP              (1<<3)
-#define META_PLUGIN_DESTROY          (1<<4)
-#define META_PLUGIN_SWITCH_WORKSPACE (1<<5)
-#define META_PLUGIN_UNMINIMIZE       (1<<6)
-
-#define META_PLUGIN_ALL_EFFECTS      (~0)
+typedef enum {
+  META_PLUGIN_MINIMIZE,
+  META_PLUGIN_MAXIMIZE,
+  META_PLUGIN_UNMAXIMIZE,
+  META_PLUGIN_MAP,
+  META_PLUGIN_DESTROY,
+  META_PLUGIN_SWITCH_WORKSPACE,
+  META_PLUGIN_UNMINIMIZE,
+} MetaPluginEffect;
 
 /**
  * MetaPluginManager: (skip)
@@ -48,11 +48,11 @@ void     meta_plugin_manager_load         (const gchar       *plugin_name);
 
 gboolean meta_plugin_manager_event_simple (MetaPluginManager *mgr,
                                            MetaWindowActor   *actor,
-                                           unsigned long      event);
+                                           MetaPluginEffect   event);
 
 gboolean meta_plugin_manager_event_maximize    (MetaPluginManager *mgr,
                                                 MetaWindowActor   *actor,
-                                                unsigned long      event,
+                                                MetaPluginEffect   event,
                                                 gint               target_x,
                                                 gint               target_y,
                                                 gint               target_width,

@@ -149,7 +149,7 @@ meta_plugin_manager_kill_switch_workspace (MetaPluginManager *plugin_mgr)
 gboolean
 meta_plugin_manager_event_simple (MetaPluginManager *plugin_mgr,
                                   MetaWindowActor   *actor,
-                                  unsigned long      event)
+                                  MetaPluginEffect   event)
 {
   MetaPlugin *plugin = plugin_mgr->plugin;
   MetaPluginClass *klass = META_PLUGIN_GET_CLASS (plugin);
@@ -196,7 +196,7 @@ meta_plugin_manager_event_simple (MetaPluginManager *plugin_mgr,
         }
       break;
     default:
-      g_warning ("Incorrect handler called for event %lu", event);
+      g_warning ("Incorrect handler called for event %d", event);
     }
 
   return retval;
@@ -214,7 +214,7 @@ meta_plugin_manager_event_simple (MetaPluginManager *plugin_mgr,
 gboolean
 meta_plugin_manager_event_maximize (MetaPluginManager *plugin_mgr,
                                     MetaWindowActor   *actor,
-                                    unsigned long      event,
+                                    MetaPluginEffect   event,
                                     gint               target_x,
                                     gint               target_y,
                                     gint               target_width,
@@ -253,7 +253,7 @@ meta_plugin_manager_event_maximize (MetaPluginManager *plugin_mgr,
         }
       break;
     default:
-      g_warning ("Incorrect handler called for event %lu", event);
+      g_warning ("Incorrect handler called for event %d", event);
     }
 
   return retval;

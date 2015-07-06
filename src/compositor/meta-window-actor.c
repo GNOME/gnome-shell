@@ -1043,7 +1043,7 @@ meta_window_actor_effect_in_progress (MetaWindowActor *self)
 }
 
 static gboolean
-is_freeze_thaw_effect (gulong event)
+is_freeze_thaw_effect (MetaPluginEffect event)
 {
   switch (event)
   {
@@ -1058,8 +1058,8 @@ is_freeze_thaw_effect (gulong event)
 }
 
 static gboolean
-start_simple_effect (MetaWindowActor *self,
-                     gulong        event)
+start_simple_effect (MetaWindowActor  *self,
+                     MetaPluginEffect  event)
 {
   MetaWindowActorPrivate *priv = self->priv;
   MetaCompositor *compositor = priv->compositor;
@@ -1123,8 +1123,8 @@ meta_window_actor_after_effects (MetaWindowActor *self)
 }
 
 void
-meta_window_actor_effect_completed (MetaWindowActor *self,
-                                    gulong           event)
+meta_window_actor_effect_completed (MetaWindowActor  *self,
+                                    MetaPluginEffect  event)
 {
   MetaWindowActorPrivate *priv   = self->priv;
 
@@ -1300,7 +1300,7 @@ meta_window_actor_show (MetaWindowActor   *self,
 {
   MetaWindowActorPrivate *priv = self->priv;
   MetaCompositor *compositor = priv->compositor;
-  gulong event = 0;
+  MetaPluginEffect event;
 
   g_return_if_fail (!priv->visible);
 
@@ -1335,7 +1335,7 @@ meta_window_actor_hide (MetaWindowActor *self,
 {
   MetaWindowActorPrivate *priv = self->priv;
   MetaCompositor *compositor = priv->compositor;
-  gulong event = 0;
+  MetaPluginEffect event = 0;
 
   g_return_if_fail (priv->visible);
 
