@@ -180,7 +180,7 @@ meta_window_group_class_init (MetaWindowGroupClass *klass)
 {
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
-  if (0) actor_class->paint = meta_window_group_paint;
+  actor_class->paint = meta_window_group_paint;
   actor_class->get_paint_volume = meta_window_group_get_paint_volume;
   actor_class->get_preferred_width = meta_window_group_get_preferred_width;
   actor_class->get_preferred_height = meta_window_group_get_preferred_height;
