@@ -646,6 +646,7 @@ const WindowManager = new Lang.Class({
         this._shellwm.connect('show-window-menu', Lang.bind(this, this._showWindowMenu));
         this._shellwm.connect('minimize', Lang.bind(this, this._minimizeWindow));
         this._shellwm.connect('unminimize', Lang.bind(this, this._unminimizeWindow));
+        this._shellwm.connect('size-change', Lang.bind(this, this._sizeChangeWindow));
         this._shellwm.connect('map', Lang.bind(this, this._mapWindow));
         this._shellwm.connect('destroy', Lang.bind(this, this._destroyWindow));
         this._shellwm.connect('filter-keybinding', Lang.bind(this, this._filterKeybinding));
