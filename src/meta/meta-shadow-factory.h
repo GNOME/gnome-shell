@@ -23,7 +23,12 @@
 #ifndef __META_SHADOW_FACTORY_H__
 #define __META_SHADOW_FACTORY_H__
 
-#include <glib-object.h>
+#include <cairo.h>
+#include <clutter/clutter.h>
+#include <meta/meta-window-shape.h>
+
+G_GNUC_CONST
+GType meta_shadow_get_type (void);
 
 /**
  * MetaShadowParams:
@@ -80,5 +85,39 @@ void meta_shadow_factory_get_params (MetaShadowFactory *factory,
                                      const char        *class_name,
                                      gboolean           focused,
                                      MetaShadowParams  *params);
+
+/**
+ * MetaShadow:
+ * #MetaShadow holds a shadow texture along with information about how to
+ * apply that texture to draw a window texture. (E.g., it knows how big the
+ * unscaled borders are on each side of the shadow texture.)
+ */
+typedef struct _MetaShadow MetaShadow;
+
+MetaShadow *meta_shadow_ref         (MetaShadow            *shadow);
+void        meta_shadow_unref       (MetaShadow            *shadow);
+void        meta_shadow_paint       (MetaShadow            *shadow,
+                                     int                    window_x,
+                                     int                    window_y,
+                                     int                    window_width,
+                                     int                    window_height,
+                                     guint8                 opacity,
+                                     cairo_region_t        *clip,
+                                     gboolean               clip_strictly);
+void        meta_shadow_get_bounds  (MetaShadow            *shadow,
+                                     int                    window_x,
+                                     int                    window_y,
+                                     int                    window_width,
+                                     int                    window_height,
+                                     cairo_rectangle_int_t *bounds);
+
+MetaShadowFactory *meta_shadow_factory_new (void);
+
+MetaShadow *meta_shadow_factory_get_shadow (MetaShadowFactory *factory,
+                                            MetaWindowShape   *shape,
+                                            int                width,
+                                            int                height,
+                                            const char        *class_name,
+                                            gboolean           focused);
 
 #endif /* __META_SHADOW_FACTORY_H__ */

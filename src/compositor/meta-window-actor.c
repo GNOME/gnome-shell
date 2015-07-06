@@ -21,10 +21,10 @@
 #include <meta/window.h>
 #include <meta/meta-shaped-texture.h>
 #include <meta/meta-enum-types.h>
+#include <meta/meta-shadow-factory.h>
 
 #include "compositor-private.h"
 #include "meta-shaped-texture-private.h"
-#include "meta-shadow-factory-private.h"
 #include "meta-window-actor-private.h"
 #include "meta-texture-rectangle.h"
 #include "region-utils.h"

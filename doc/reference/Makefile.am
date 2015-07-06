@@ -84,7 +84,6 @@ IGNORE_HFILES= \
 	meta-dbus-login1.h \
 	meta-module.h \
 	meta-plugin-manager.h \
-	meta-shadow-factory-private.h \
 	meta-texture-rectangle.h \
 	meta-texture-tower.h \
 	meta-window-actor-private.h \

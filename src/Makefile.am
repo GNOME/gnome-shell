@@ -132,7 +132,6 @@ libmutter_la_SOURCES =				\
 	compositor/meta-plugin-manager.c	\
 	compositor/meta-plugin-manager.h	\
 	compositor/meta-shadow-factory.c	\
-	compositor/meta-shadow-factory-private.h	\
 	compositor/meta-shaped-texture.c	\
 	compositor/meta-shaped-texture-private.h 	\
 	compositor/meta-surface-actor.c		\
@@ -148,7 +147,6 @@ libmutter_la_SOURCES =				\
 	compositor/meta-window-group.c		\
 	compositor/meta-window-group.h		\
 	compositor/meta-window-shape.c		\
-	compositor/meta-window-shape.h		\
 	compositor/region-utils.c		\
 	compositor/region-utils.h		\
 	meta/compositor.h			\
@@ -159,6 +157,7 @@ libmutter_la_SOURCES =				\
 	meta/meta-plugin.h			\
 	meta/meta-shadow-factory.h		\
 	meta/meta-window-actor.h		\
+	meta/meta-window-shape.h		\
 	meta/compositor-mutter.h 		\
 	core/constraints.c			\
 	core/constraints.h			\

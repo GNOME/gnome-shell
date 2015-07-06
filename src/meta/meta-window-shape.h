@@ -24,7 +24,10 @@
 #define __META_WINDOW_SHAPE_H__
 
 #include <cairo.h>
-#include <glib.h>
+#include <glib-object.h>
+
+G_GNUC_CONST
+GType meta_window_shape_get_type (void);
 
 /**
  * MetaWindowShape:
