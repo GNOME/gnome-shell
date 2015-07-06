@@ -62,4 +62,10 @@ MetaWindow *       meta_window_actor_get_meta_window      (MetaWindowActor *self
 ClutterActor *     meta_window_actor_get_texture          (MetaWindowActor *self);
 gboolean       meta_window_actor_is_destroyed (MetaWindowActor *self);
 
+typedef enum {
+  META_SHADOW_MODE_AUTO,
+  META_SHADOW_MODE_FORCED_OFF,
+  META_SHADOW_MODE_FORCED_ON,
+} MetaShadowMode;
+
 #endif /* META_WINDOW_ACTOR_H */

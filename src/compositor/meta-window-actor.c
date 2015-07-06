@@ -20,6 +20,7 @@
 #include "frame.h"
 #include <meta/window.h>
 #include <meta/meta-shaped-texture.h>
+#include <meta/meta-enum-types.h>
 
 #include "compositor-private.h"
 #include "meta-shaped-texture-private.h"
@@ -74,6 +75,8 @@ struct _MetaWindowActorPrivate
   MetaWindowShape  *shadow_shape;
   char *            shadow_class;
 
+  MetaShadowMode    shadow_mode;
+
   guint             send_frame_messages_timer;
   gint64            frame_drawn_time;
 
@@ -108,8 +111,6 @@ struct _MetaWindowActorPrivate
   guint             recompute_unfocused_shadow : 1;
 
   guint		    needs_destroy	   : 1;
-
-  guint             no_shadow              : 1;
 
   guint             updates_frozen         : 1;
   guint             first_frame_state      : 2; /* FirstFrameState */
@@ -146,7 +147,7 @@ static guint signals[LAST_SIGNAL] = { 0 };
 enum
 {
   PROP_META_WINDOW = 1,
-  PROP_NO_SHADOW,
+  PROP_SHADOW_MODE,
   PROP_SHADOW_CLASS
 };
 
@@ -244,14 +245,15 @@ meta_window_actor_class_init (MetaWindowActorClass *klass)
                                    PROP_META_WINDOW,
                                    pspec);
 
-  pspec = g_param_spec_boolean ("no-shadow",
-                                "No shadow",
-                                "Do not add shaddow to this window",
-                                FALSE,
-                                G_PARAM_READWRITE);
+  pspec = g_param_spec_enum ("shadow-mode",
+                             "Shadow mode",
+                             "Decides when to paint shadows",
+                             META_TYPE_SHADOW_MODE,
+                             META_SHADOW_MODE_AUTO,
+                             G_PARAM_READWRITE);
 
   g_object_class_install_property (object_class,
-                                   PROP_NO_SHADOW,
+                                   PROP_SHADOW_MODE,
                                    pspec);
 
   pspec = g_param_spec_string ("shadow-class",
@@ -509,14 +511,14 @@ meta_window_actor_set_property (GObject      *object,
       g_signal_connect_object (priv->window, "notify::appears-focused",
                                G_CALLBACK (window_appears_focused_notify), self, 0);
       break;
-    case PROP_NO_SHADOW:
+    case PROP_SHADOW_MODE:
       {
-        gboolean newv = g_value_get_boolean (value);
+        MetaShadowMode newv = g_value_get_enum (value);
 
-        if (newv == priv->no_shadow)
+        if (newv == priv->shadow_mode)
           return;
 
-        priv->no_shadow = newv;
+        priv->shadow_mode = newv;
 
         meta_window_actor_invalidate_shadow (self);
       }
@@ -553,8 +555,8 @@ meta_window_actor_get_property (GObject      *object,
     case PROP_META_WINDOW:
       g_value_set_object (value, priv->window);
       break;
-    case PROP_NO_SHADOW:
-      g_value_set_boolean (value, priv->no_shadow);
+    case PROP_SHADOW_MODE:
+      g_value_set_enum (value, priv->shadow_mode);
       break;
     case PROP_SHADOW_CLASS:
       g_value_set_string (value, priv->shadow_class);
@@ -801,8 +803,10 @@ meta_window_actor_has_shadow (MetaWindowActor *self)
 {
   MetaWindowActorPrivate *priv = self->priv;
 
-  if (priv->no_shadow)
+  if (priv->shadow_mode == META_SHADOW_MODE_FORCED_OFF)
     return FALSE;
+  if (priv->shadow_mode == META_SHADOW_MODE_FORCED_ON)
+    return TRUE;
 
   /* Leaving out shadows for maximized and fullscreen windows is an effeciency
    * win and also prevents the unsightly effect of the shadow of maximized
