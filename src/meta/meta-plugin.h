@@ -55,8 +55,7 @@ struct _MetaPlugin
  * MetaPluginClass:
  * @start: virtual function called when the compositor starts managing a screen
  * @minimize: virtual function called when a window is minimized
- * @maximize: virtual function called when a window is maximized
- * @unmaximize: virtual function called when a window is unmaximized
+ * @size_change: virtual function called when a window changes size to/from constraints
  * @map: virtual function called when a window is mapped
  * @destroy: virtual function called when a window is destroyed
  * @switch_workspace: virtual function called when the user switches to another
@@ -103,39 +102,11 @@ struct _MetaPluginClass
   void (*unminimize)       (MetaPlugin         *plugin,
                             MetaWindowActor    *actor);
 
-  /**
-   * MetaPluginClass::maximize:
-   * @actor: a #MetaWindowActor
-   * @x: target X coordinate
-   * @y: target Y coordinate
-   * @width: target width
-   * @height: target height
-   *
-   * Virtual function called when the window represented by @actor is maximized.
-   */
-  void (*maximize)         (MetaPlugin         *plugin,
+  void (*size_change)      (MetaPlugin         *plugin,
                             MetaWindowActor    *actor,
-                            gint                x,
-                            gint                y,
-                            gint                width,
-                            gint                height);
-
-  /**
-   * MetaPluginClass::unmaximize:
-   * @actor: a #MetaWindowActor
-   * @x: target X coordinate
-   * @y: target Y coordinate
-   * @width: target width
-   * @height: target height
-   *
-   * Virtual function called when the window represented by @actor is unmaximized.
-   */
-  void (*unmaximize)       (MetaPlugin         *plugin,
-                            MetaWindowActor    *actor,
-                            gint                x,
-                            gint                y,
-                            gint                width,
-                            gint                height);
+                            MetaSizeChange      which_change,
+                            MetaRectangle      *old_frame_rect,
+                            MetaRectangle      *old_buffer_rect);
 
   /**
    * MetaPluginClass::map:
@@ -386,12 +357,8 @@ meta_plugin_unminimize_completed (MetaPlugin      *plugin,
                                   MetaWindowActor *actor);
 
 void
-meta_plugin_maximize_completed (MetaPlugin      *plugin,
-                                MetaWindowActor *actor);
-
-void
-meta_plugin_unmaximize_completed (MetaPlugin      *plugin,
-                                  MetaWindowActor *actor);
+meta_plugin_size_change_completed (MetaPlugin      *plugin,
+                                   MetaWindowActor *actor);
 
 void
 meta_plugin_map_completed (MetaPlugin      *plugin,

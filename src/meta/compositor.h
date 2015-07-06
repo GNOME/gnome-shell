@@ -54,6 +54,11 @@ typedef enum
   META_COMP_EFFECT_NONE
 } MetaCompEffect;
 
+typedef enum {
+  META_SIZE_CHANGE_MAXIMIZE,
+  META_SIZE_CHANGE_UNMAXIMIZE,
+} MetaSizeChange;
+
 MetaCompositor *meta_compositor_new     (MetaDisplay    *display);
 void            meta_compositor_destroy (MetaCompositor *compositor);
 
@@ -89,14 +94,11 @@ void meta_compositor_switch_workspace  (MetaCompositor      *compositor,
                                         MetaWorkspace       *to,
                                         MetaMotionDirection  direction);
 
-void meta_compositor_maximize_window   (MetaCompositor      *compositor,
-                                        MetaWindow          *window,
-                                        MetaRectangle       *old_rect,
-                                        MetaRectangle       *new_rect);
-void meta_compositor_unmaximize_window (MetaCompositor      *compositor,
-                                        MetaWindow          *window,
-                                        MetaRectangle       *old_rect,
-                                        MetaRectangle       *new_rect);
+void meta_compositor_size_change_window (MetaCompositor      *compositor,
+                                         MetaWindow          *window,
+                                         MetaSizeChange       which_change,
+                                         MetaRectangle       *old_frame_rect,
+                                         MetaRectangle       *old_buffer_rect);
 
 void meta_compositor_sync_window_geometry (MetaCompositor *compositor,
                                            MetaWindow     *window,

@@ -87,8 +87,7 @@ struct _MetaWindowActorPrivate
    */
   gint              minimize_in_progress;
   gint              unminimize_in_progress;
-  gint              maximize_in_progress;
-  gint              unmaximize_in_progress;
+  gint              size_change_in_progress;
   gint              map_in_progress;
   gint              destroy_in_progress;
 
@@ -1036,8 +1035,7 @@ gboolean
 meta_window_actor_effect_in_progress (MetaWindowActor *self)
 {
   return (self->priv->minimize_in_progress ||
-	  self->priv->maximize_in_progress ||
-	  self->priv->unmaximize_in_progress ||
+	  self->priv->size_change_in_progress ||
 	  self->priv->map_in_progress ||
 	  self->priv->destroy_in_progress);
 }
@@ -1048,8 +1046,7 @@ is_freeze_thaw_effect (MetaPluginEffect event)
   switch (event)
   {
   case META_PLUGIN_DESTROY:
-  case META_PLUGIN_MAXIMIZE:
-  case META_PLUGIN_UNMAXIMIZE:
+  case META_PLUGIN_SIZE_CHANGE:
     return TRUE;
     break;
   default:
@@ -1068,6 +1065,8 @@ start_simple_effect (MetaWindowActor  *self,
 
   switch (event)
   {
+  case META_PLUGIN_NONE:
+    return FALSE;
   case META_PLUGIN_MINIMIZE:
     counter = &priv->minimize_in_progress;
     break;
@@ -1080,8 +1079,7 @@ start_simple_effect (MetaWindowActor  *self,
   case META_PLUGIN_DESTROY:
     counter = &priv->destroy_in_progress;
     break;
-  case META_PLUGIN_UNMAXIMIZE:
-  case META_PLUGIN_MAXIMIZE:
+  case META_PLUGIN_SIZE_CHANGE:
   case META_PLUGIN_SWITCH_WORKSPACE:
     g_assert_not_reached ();
     break;
@@ -1134,6 +1132,8 @@ meta_window_actor_effect_completed (MetaWindowActor  *self,
 
   switch (event)
   {
+  case META_PLUGIN_NONE:
+    break;
   case META_PLUGIN_MINIMIZE:
     {
       priv->minimize_in_progress--;
@@ -1176,20 +1176,12 @@ meta_window_actor_effect_completed (MetaWindowActor  *self,
 	priv->destroy_in_progress = 0;
       }
     break;
-  case META_PLUGIN_UNMAXIMIZE:
-    priv->unmaximize_in_progress--;
-    if (priv->unmaximize_in_progress < 0)
+  case META_PLUGIN_SIZE_CHANGE:
+    priv->size_change_in_progress--;
+    if (priv->size_change_in_progress < 0)
       {
-	g_warning ("Error in unmaximize accounting.");
-	priv->unmaximize_in_progress = 0;
-      }
-    break;
-  case META_PLUGIN_MAXIMIZE:
-    priv->maximize_in_progress--;
-    if (priv->maximize_in_progress < 0)
-      {
-	g_warning ("Error in maximize accounting.");
-	priv->maximize_in_progress = 0;
+	g_warning ("Error in size change accounting.");
+	priv->size_change_in_progress = 0;
       }
     break;
   case META_PLUGIN_SWITCH_WORKSPACE:
@@ -1315,14 +1307,13 @@ meta_window_actor_show (MetaWindowActor   *self,
       event = META_PLUGIN_UNMINIMIZE;
       break;
     case META_COMP_EFFECT_NONE:
+      event = META_PLUGIN_NONE;
       break;
-    case META_COMP_EFFECT_DESTROY:
-    case META_COMP_EFFECT_MINIMIZE:
+    default:
       g_assert_not_reached();
     }
 
   if (compositor->switch_workspace_in_progress ||
-      event == 0 ||
       !start_simple_effect (self, event))
     {
       clutter_actor_show (CLUTTER_ACTOR (self));
@@ -1335,7 +1326,7 @@ meta_window_actor_hide (MetaWindowActor *self,
 {
   MetaWindowActorPrivate *priv = self->priv;
   MetaCompositor *compositor = priv->compositor;
-  MetaPluginEffect event = 0;
+  MetaPluginEffect event;
 
   g_return_if_fail (priv->visible);
 
@@ -1357,70 +1348,32 @@ meta_window_actor_hide (MetaWindowActor *self,
       event = META_PLUGIN_MINIMIZE;
       break;
     case META_COMP_EFFECT_NONE:
+      event = META_PLUGIN_NONE;
       break;
-    case META_COMP_EFFECT_UNMINIMIZE:
-    case META_COMP_EFFECT_CREATE:
+    default:
       g_assert_not_reached();
     }
 
-  if (event == 0 ||
-      !start_simple_effect (self, event))
+  if (!start_simple_effect (self, event))
     clutter_actor_hide (CLUTTER_ACTOR (self));
 }
 
 void
-meta_window_actor_maximize (MetaWindowActor    *self,
-                            MetaRectangle      *old_rect,
-                            MetaRectangle      *new_rect)
+meta_window_actor_size_change (MetaWindowActor    *self,
+                               MetaSizeChange      which_change,
+                               MetaRectangle      *old_frame_rect,
+                               MetaRectangle      *old_buffer_rect)
 {
   MetaWindowActorPrivate *priv = self->priv;
   MetaCompositor *compositor = priv->compositor;
 
-  /* The window has already been resized (in order to compute new_rect),
-   * which by side effect caused the actor to be resized. Restore it to the
-   * old size and position */
-  clutter_actor_set_position (CLUTTER_ACTOR (self), old_rect->x, old_rect->y);
-  clutter_actor_set_size (CLUTTER_ACTOR (self), old_rect->width, old_rect->height);
-
-  self->priv->maximize_in_progress++;
+  self->priv->size_change_in_progress++;
   meta_window_actor_freeze (self);
 
-  if (!meta_plugin_manager_event_maximize (compositor->plugin_mgr,
-                                           self,
-                                           META_PLUGIN_MAXIMIZE,
-                                           new_rect->x, new_rect->y,
-                                           new_rect->width, new_rect->height))
-
+  if (!meta_plugin_manager_event_size_change (compositor->plugin_mgr, self,
+                                              which_change, old_frame_rect, old_buffer_rect))
     {
-      self->priv->maximize_in_progress--;
-      meta_window_actor_thaw (self);
-    }
-}
-
-void
-meta_window_actor_unmaximize (MetaWindowActor   *self,
-                              MetaRectangle     *old_rect,
-                              MetaRectangle     *new_rect)
-{
-  MetaWindowActorPrivate *priv = self->priv;
-  MetaCompositor *compositor = priv->compositor;
-
-  /* The window has already been resized (in order to compute new_rect),
-   * which by side effect caused the actor to be resized. Restore it to the
-   * old size and position */
-  clutter_actor_set_position (CLUTTER_ACTOR (self), old_rect->x, old_rect->y);
-  clutter_actor_set_size (CLUTTER_ACTOR (self), old_rect->width, old_rect->height);
-
-  self->priv->unmaximize_in_progress++;
-  meta_window_actor_freeze (self);
-
-  if (!meta_plugin_manager_event_maximize (compositor->plugin_mgr,
-                                           self,
-                                           META_PLUGIN_UNMAXIMIZE,
-                                           new_rect->x, new_rect->y,
-                                           new_rect->width, new_rect->height))
-    {
-      self->priv->unmaximize_in_progress--;
+      self->priv->size_change_in_progress--;
       meta_window_actor_thaw (self);
     }
 }

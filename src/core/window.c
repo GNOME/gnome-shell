@@ -2664,8 +2664,6 @@ meta_window_maximize (MetaWindow        *window,
 {
   MetaRectangle *saved_rect = NULL;
   gboolean maximize_horizontally, maximize_vertically;
-  MetaRectangle old_rect;
-  MetaRectangle new_rect;
 
   g_return_if_fail (!window->override_redirect);
 
@@ -2715,18 +2713,23 @@ meta_window_maximize (MetaWindow        *window,
                                      directions,
                                      saved_rect);
 
-      meta_window_get_frame_rect (window, &old_rect);
+      MetaRectangle old_frame_rect, old_buffer_rect, new_rect;
+
+      meta_window_get_frame_rect (window, &old_frame_rect);
+      meta_window_get_buffer_rect (window, &old_buffer_rect);
 
       meta_window_move_resize_internal (window,
-                                        META_MOVE_RESIZE_MOVE_ACTION | META_MOVE_RESIZE_RESIZE_ACTION | META_MOVE_RESIZE_STATE_CHANGED,
+                                        (META_MOVE_RESIZE_MOVE_ACTION |
+                                         META_MOVE_RESIZE_RESIZE_ACTION |
+                                         META_MOVE_RESIZE_STATE_CHANGED |
+                                         META_MOVE_RESIZE_DONT_SYNC_COMPOSITOR),
                                         NorthWestGravity,
                                         window->unconstrained_rect);
-
       meta_window_get_frame_rect (window, &new_rect);
-      meta_compositor_maximize_window (window->display->compositor,
-                                       window,
-                                       &old_rect,
-                                       &new_rect);
+
+      meta_compositor_size_change_window (window->display->compositor, window,
+                                          META_SIZE_CHANGE_MAXIMIZE,
+                                          &old_frame_rect, &old_buffer_rect);
     }
 }
 
@@ -2886,8 +2889,6 @@ void
 meta_window_tile (MetaWindow *window)
 {
   MetaMaximizeFlags directions;
-  MetaRectangle old_rect;
-  MetaRectangle new_rect;
 
   /* Don't do anything if no tiling is requested */
   if (window->tile_mode == META_TILE_NONE)
@@ -2901,15 +2902,7 @@ meta_window_tile (MetaWindow *window)
   meta_window_maximize_internal (window, directions, NULL);
   meta_screen_update_tile_preview (window->screen, FALSE);
 
-  meta_window_get_frame_rect (window, &old_rect);
-
   meta_window_move_resize_now (window);
-
-  meta_window_get_frame_rect (window, &new_rect);
-  meta_compositor_maximize_window (window->display->compositor,
-                                   window,
-                                   &old_rect,
-                                   &new_rect);
 
   if (window->frame)
     meta_frame_queue_draw (window->frame);
@@ -3004,10 +2997,11 @@ meta_window_unmaximize (MetaWindow        *window,
       MetaRectangle *desired_rect;
       MetaRectangle target_rect;
       MetaRectangle work_area;
-      MetaRectangle old_rect;
+      MetaRectangle old_frame_rect, old_buffer_rect;
 
       meta_window_get_work_area_for_monitor (window, window->monitor->number, &work_area);
-      meta_window_get_frame_rect (window, &old_rect);
+      meta_window_get_frame_rect (window, &old_frame_rect);
+      meta_window_get_buffer_rect (window, &old_buffer_rect);
 
       meta_topic (META_DEBUG_WINDOW_OPS,
                   "Unmaximizing %s%s\n",
@@ -3032,7 +3026,7 @@ meta_window_unmaximize (MetaWindow        *window,
       /* Unmaximize to the saved_rect position in the direction(s)
        * being unmaximized.
        */
-      target_rect = old_rect;
+      target_rect = old_frame_rect;
 
       /* Avoid unmaximizing to "almost maximized" size when the previous size
        * is greater then 80% of the work area use MAX_UNMAXIMIZED_WINDOW_AREA of the work area as upper limit
@@ -3074,15 +3068,17 @@ meta_window_unmaximize (MetaWindow        *window,
       meta_window_client_rect_to_frame_rect (window, &target_rect, &target_rect);
 
       meta_window_move_resize_internal (window,
-                                        META_MOVE_RESIZE_MOVE_ACTION | META_MOVE_RESIZE_RESIZE_ACTION | META_MOVE_RESIZE_STATE_CHANGED,
+                                        (META_MOVE_RESIZE_MOVE_ACTION |
+                                         META_MOVE_RESIZE_RESIZE_ACTION |
+                                         META_MOVE_RESIZE_STATE_CHANGED |
+                                         META_MOVE_RESIZE_DONT_SYNC_COMPOSITOR),
                                         NorthWestGravity,
                                         target_rect);
 
       meta_window_get_frame_rect (window, &new_rect);
-      meta_compositor_unmaximize_window (window->display->compositor,
-                                         window,
-                                         &old_rect,
-                                         &new_rect);
+      meta_compositor_size_change_window (window->display->compositor, window,
+                                          META_SIZE_CHANGE_UNMAXIMIZE,
+                                          &old_frame_rect, &old_buffer_rect);
 
       /* When we unmaximize, if we're doing a mouse move also we could
        * get the window suddenly jumping to the upper left corner of
@@ -3691,7 +3687,7 @@ meta_window_move_resize_internal (MetaWindow          *window,
     {
       window->unconstrained_rect = unconstrained_rect;
 
-      if (window->known_to_compositor)
+      if (window->known_to_compositor && !(flags & META_MOVE_RESIZE_DONT_SYNC_COMPOSITOR))
         meta_compositor_sync_window_geometry (window->display->compositor,
                                               window,
                                               did_placement);

@@ -202,61 +202,26 @@ meta_plugin_manager_event_simple (MetaPluginManager *plugin_mgr,
   return retval;
 }
 
-/*
- * The public method that the compositor hooks into for maximize and unmaximize
- * events.
- *
- * Returns TRUE if the plugin handled the event type (i.e.,
- * if the return value is FALSE, there will be no subsequent call to the
- * manager completed() callback, and the compositor must ensure that any
- * appropriate post-effect cleanup is carried out.
- */
 gboolean
-meta_plugin_manager_event_maximize (MetaPluginManager *plugin_mgr,
-                                    MetaWindowActor   *actor,
-                                    MetaPluginEffect   event,
-                                    gint               target_x,
-                                    gint               target_y,
-                                    gint               target_width,
-                                    gint               target_height)
+meta_plugin_manager_event_size_change (MetaPluginManager *plugin_mgr,
+                                       MetaWindowActor   *actor,
+                                       MetaSizeChange     which_change,
+                                       MetaRectangle     *old_frame_rect,
+                                       MetaRectangle     *old_buffer_rect)
 {
   MetaPlugin *plugin = plugin_mgr->plugin;
   MetaPluginClass *klass = META_PLUGIN_GET_CLASS (plugin);
   MetaDisplay *display = plugin_mgr->compositor->display;
-  gboolean retval = FALSE;
 
   if (display->display_opening)
     return FALSE;
 
-  switch (event)
-    {
-    case META_PLUGIN_MAXIMIZE:
-      if (klass->maximize)
-        {
-          retval = TRUE;
-          meta_plugin_manager_kill_window_effects (plugin_mgr,
-                                                   actor);
-          klass->maximize (plugin, actor,
-                           target_x, target_y,
-                           target_width, target_height);
-        }
-      break;
-    case META_PLUGIN_UNMAXIMIZE:
-      if (klass->unmaximize)
-        {
-          retval = TRUE;
-          meta_plugin_manager_kill_window_effects (plugin_mgr,
-                                                   actor);
-          klass->unmaximize (plugin, actor,
-                             target_x, target_y,
-                             target_width, target_height);
-        }
-      break;
-    default:
-      g_warning ("Incorrect handler called for event %d", event);
-    }
+  if (!klass->size_change)
+    return FALSE;
 
-  return retval;
+  meta_plugin_manager_kill_window_effects (plugin_mgr, actor);
+  klass->size_change (plugin, actor, which_change, old_frame_rect, old_buffer_rect);
+  return TRUE;
 }
 
 /*

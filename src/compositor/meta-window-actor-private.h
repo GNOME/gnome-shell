@@ -19,12 +19,10 @@ void meta_window_actor_show (MetaWindowActor *self,
 void meta_window_actor_hide (MetaWindowActor *self,
                              MetaCompEffect   effect);
 
-void meta_window_actor_maximize   (MetaWindowActor *self,
-                                   MetaRectangle   *old_rect,
-                                   MetaRectangle   *new_rect);
-void meta_window_actor_unmaximize (MetaWindowActor *self,
-                                   MetaRectangle   *old_rect,
-                                   MetaRectangle   *new_rect);
+void meta_window_actor_size_change   (MetaWindowActor *self,
+                                      MetaSizeChange   which_change,
+                                      MetaRectangle   *old_frame_rect,
+                                      MetaRectangle   *old_buffer_rect);
 
 void meta_window_actor_process_x11_damage (MetaWindowActor    *self,
                                            XDamageNotifyEvent *event);

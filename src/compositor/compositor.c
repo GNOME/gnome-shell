@@ -37,11 +37,6 @@
  * compositor needs to delay hiding the windows until the switch
  * workspace animation completes.
  *
- * meta_compositor_maximize_window() and meta_compositor_unmaximize_window()
- * are transitions within the visible state. The window is resized __before__
- * the call, so it may be necessary to readjust the display based on the
- * old_rect to start the animation.
- *
  * # Containers #
  *
  * There's two containers in the stage that are used to place window actors, here
@@ -769,23 +764,14 @@ meta_compositor_hide_window (MetaCompositor *compositor,
 }
 
 void
-meta_compositor_maximize_window (MetaCompositor    *compositor,
-                                 MetaWindow        *window,
-				 MetaRectangle	   *old_rect,
-				 MetaRectangle	   *new_rect)
+meta_compositor_size_change_window (MetaCompositor    *compositor,
+                                    MetaWindow        *window,
+                                    MetaSizeChange     which_change,
+                                    MetaRectangle     *old_frame_rect,
+                                    MetaRectangle     *old_buffer_rect)
 {
   MetaWindowActor *window_actor = META_WINDOW_ACTOR (meta_window_get_compositor_private (window));
-  meta_window_actor_maximize (window_actor, old_rect, new_rect);
-}
-
-void
-meta_compositor_unmaximize_window (MetaCompositor    *compositor,
-                                   MetaWindow        *window,
-				   MetaRectangle     *old_rect,
-				   MetaRectangle     *new_rect)
-{
-  MetaWindowActor *window_actor = META_WINDOW_ACTOR (meta_window_get_compositor_private (window));
-  meta_window_actor_unmaximize (window_actor, old_rect, new_rect);
+  meta_window_actor_size_change (window_actor, META_SIZE_CHANGE_MAXIMIZE, old_frame_rect, old_buffer_rect);
 }
 
 void

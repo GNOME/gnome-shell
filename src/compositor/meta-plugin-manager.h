@@ -27,13 +27,13 @@
 #include <meta/meta-plugin.h>
 
 typedef enum {
+  META_PLUGIN_NONE,
   META_PLUGIN_MINIMIZE,
-  META_PLUGIN_MAXIMIZE,
-  META_PLUGIN_UNMAXIMIZE,
   META_PLUGIN_MAP,
   META_PLUGIN_DESTROY,
   META_PLUGIN_SWITCH_WORKSPACE,
   META_PLUGIN_UNMINIMIZE,
+  META_PLUGIN_SIZE_CHANGE,
 } MetaPluginEffect;
 
 /**
@@ -50,13 +50,11 @@ gboolean meta_plugin_manager_event_simple (MetaPluginManager *mgr,
                                            MetaWindowActor   *actor,
                                            MetaPluginEffect   event);
 
-gboolean meta_plugin_manager_event_maximize    (MetaPluginManager *mgr,
-                                                MetaWindowActor   *actor,
-                                                MetaPluginEffect   event,
-                                                gint               target_x,
-                                                gint               target_y,
-                                                gint               target_width,
-                                                gint               target_height);
+gboolean meta_plugin_manager_event_size_change    (MetaPluginManager *mgr,
+                                                   MetaWindowActor   *actor,
+                                                   MetaSizeChange     which_change,
+                                                   MetaRectangle     *old_frame_rect,
+                                                   MetaRectangle     *old_buffer_rect);
 
 gboolean meta_plugin_manager_switch_workspace (MetaPluginManager   *mgr,
                                                gint                 from,
