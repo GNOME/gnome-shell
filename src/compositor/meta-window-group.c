@@ -145,13 +145,45 @@ meta_window_group_get_paint_volume (ClutterActor       *self,
   return TRUE;
 }
 
+/* This is a workaround for Clutter's awful allocation tracking.
+ * Without this, any time the window group changed size, which is
+ * any time windows are dragged around, we'll do a full repaint
+ * of the window group, which includes the background actor, meaning
+ * a full-stage repaint.
+ *
+ * Since actors are allowed to paint outside their allocation, and
+ * since child actors are allowed to be outside their parents, this
+ * doesn't affect anything, but it means that we'll get much more
+ * sane and consistent clipped repaints from Clutter. */
+static void
+meta_window_group_get_preferred_width (ClutterActor *actor,
+                                       gfloat        for_height,
+                                       gfloat       *min_width,
+                                       gfloat       *nat_width)
+{
+  *min_width = 0;
+  *nat_width = 0;
+}
+
+static void
+meta_window_group_get_preferred_height (ClutterActor *actor,
+                                        gfloat        for_width,
+                                        gfloat       *min_height,
+                                        gfloat       *nat_height)
+{
+  *min_height = 0;
+  *nat_height = 0;
+}
+
 static void
 meta_window_group_class_init (MetaWindowGroupClass *klass)
 {
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
-  actor_class->paint = meta_window_group_paint;
+  if (0) actor_class->paint = meta_window_group_paint;
   actor_class->get_paint_volume = meta_window_group_get_paint_volume;
+  actor_class->get_preferred_width = meta_window_group_get_preferred_width;
+  actor_class->get_preferred_height = meta_window_group_get_preferred_height;
 }
 
 static void
