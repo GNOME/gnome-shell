@@ -323,6 +323,7 @@ libmutterinclude_headers =			\
 	meta/meta-shaped-texture.h		\
 	meta/meta-shadow-factory.h		\
 	meta/meta-window-actor.h		\
+	meta/meta-window-shape.h		\
 	meta/prefs.h				\
 	meta/screen.h				\
 	meta/theme.h				\

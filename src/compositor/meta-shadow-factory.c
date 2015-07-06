@@ -845,7 +845,7 @@ get_shadow_params (MetaShadowFactory *factory,
 }
 
 /**
- * meta_shadow_factory_get_shadow: (skip)
+ * meta_shadow_factory_get_shadow:
  * @factory: a #MetaShadowFactory
  * @shape: the size-invariant shape of the window's region
  * @width: the actual width of the window's region
