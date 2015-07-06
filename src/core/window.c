@@ -4019,9 +4019,8 @@ meta_window_get_buffer_rect (const MetaWindow *window,
  * @client_rect: client rectangle in root coordinates
  * @frame_rect: (out): location to store the computed corresponding frame bounds.
  *
- * Converts a desired bounds of the client window - what is passed to meta_window_move_resize() -
- * into the corresponding bounds of the window frame (excluding invisible borders
- * and client side shadows.)
+ * Converts a desired bounds of the client window into the corresponding bounds
+ * of the window frame (excluding invisible borders and client side shadows.)
  */
 void
 meta_window_client_rect_to_frame_rect (MetaWindow    *window,
@@ -4068,7 +4067,7 @@ meta_window_client_rect_to_frame_rect (MetaWindow    *window,
  * @client_rect: (out): location to store the computed corresponding client rectangle.
  *
  * Converts a desired frame bounds for a window into the bounds of the client
- * window - what is passed to meta_window_move_resize().
+ * window.
  */
 void
 meta_window_frame_rect_to_client_rect (MetaWindow    *window,
