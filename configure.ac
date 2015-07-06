@@ -319,8 +319,6 @@ if test "x$enable_debug" = "xyes"; then
 	CFLAGS="$CFLAGS -g -O"
 fi
 
-GTK_DOC_CHECK([1.15], [--flavour no-tmpl])
-
 #### Warnings (last since -Werror can disturb other tests)
 
 # Stay command-line compatible with the gnome-common configure option. Here
@@ -392,8 +390,6 @@ Makefile
 data/Makefile
 doc/Makefile
 doc/man/Makefile
-doc/reference/Makefile
-doc/reference/meta-docs.sgml
 src/Makefile
 src/libmutter.pc
 src/compositor/plugins/Makefile
