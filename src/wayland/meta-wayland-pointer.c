@@ -326,19 +326,22 @@ meta_wayland_pointer_send_motion (MetaWaylandPointer *pointer,
 {
   struct wl_resource *resource;
   uint32_t time;
-  wl_fixed_t sx, sy;
+  float sx, sy;
 
   if (!pointer->focus_client)
     return;
 
   time = clutter_event_get_time (event);
-  meta_wayland_pointer_get_relative_coordinates (pointer,
-                                                 pointer->focus_surface,
+  meta_wayland_surface_get_relative_coordinates (pointer->focus_surface,
+                                                 event->motion.x,
+                                                 event->motion.y,
                                                  &sx, &sy);
 
   wl_resource_for_each (resource, &pointer->focus_client->pointer_resources)
     {
-      wl_pointer_send_motion (resource, time, sx, sy);
+      wl_pointer_send_motion (resource, time,
+                              wl_fixed_from_double (sx),
+                              wl_fixed_from_double (sy));
     }
 
   meta_wayland_pointer_send_relative_motion (pointer, event);
