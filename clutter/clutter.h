@@ -110,6 +110,8 @@
 
 #include "clutter-deprecated.h"
 
+#include "clutter-autocleanups.h"
+
 #undef __CLUTTER_H_INSIDE__
 
 #endif /* __CLUTTER_H__ */
