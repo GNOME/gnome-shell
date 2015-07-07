@@ -15112,11 +15112,12 @@ clutter_actor_transform_stage_point (ClutterActor *self,
 				     gfloat       *y_out)
 {
   ClutterVertex v[4];
-  float ST[3][3];
-  float RQ[3][3];
-  int du, dv, xi, yi;
-  float px, py;
-  float xf, yf, wf, det;
+  double ST[3][3];
+  double RQ[3][3];
+  int du, dv;
+  double px, py;
+  double det;
+  float xf, yf, wf;
   ClutterActorPrivate *priv;
 
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
@@ -15137,20 +15138,18 @@ clutter_actor_transform_stage_point (ClutterActor *self,
    * function calls have been unrolled, and most of the math is done in fixed
    * point.
    */
-
   clutter_actor_get_abs_allocation_vertices (self, v);
 
   /* Keeping these as ints simplifies the multiplication (no significant
    * loss of precision here).
    */
-  du = (int) (priv->allocation.x2 - priv->allocation.x1);
-  dv = (int) (priv->allocation.y2 - priv->allocation.y1);
+  du = ceilf (priv->allocation.x2 - priv->allocation.x1);
+  dv = ceilf (priv->allocation.y2 - priv->allocation.y1);
 
-  if (!du || !dv)
+  if (du == 0 || dv == 0)
     return FALSE;
 
-#define UX2FP(x)        (x)
-#define DET2FP(a,b,c,d) (((a) * (d)) - ((b) * (c)))
+#define DET(a,b,c,d)    (((a) * (d)) - ((b) * (c)))
 
   /* First, find mapping from unit uv square to xy quadrilateral; this
    * equivalent to the pmap_square_quad() functions in the sample
@@ -15160,47 +15159,43 @@ clutter_actor_transform_stage_point (ClutterActor *self,
   px = v[0].x - v[1].x + v[3].x - v[2].x;
   py = v[0].y - v[1].y + v[3].y - v[2].y;
 
-  if (!px && !py)
+  if ((int) px == 0 && (int) py == 0)
     {
       /* affine transform */
-      RQ[0][0] = UX2FP (v[1].x - v[0].x);
-      RQ[1][0] = UX2FP (v[3].x - v[1].x);
-      RQ[2][0] = UX2FP (v[0].x);
-      RQ[0][1] = UX2FP (v[1].y - v[0].y);
-      RQ[1][1] = UX2FP (v[3].y - v[1].y);
-      RQ[2][1] = UX2FP (v[0].y);
-      RQ[0][2] = 0;
-      RQ[1][2] = 0;
+      RQ[0][0] = v[1].x - v[0].x;
+      RQ[1][0] = v[3].x - v[1].x;
+      RQ[2][0] = v[0].x;
+      RQ[0][1] = v[1].y - v[0].y;
+      RQ[1][1] = v[3].y - v[1].y;
+      RQ[2][1] = v[0].y;
+      RQ[0][2] = 0.0;
+      RQ[1][2] = 0.0;
       RQ[2][2] = 1.0;
     }
   else
     {
       /* projective transform */
-      double dx1, dx2, dy1, dy2, del;
+      double dx1, dx2, dy1, dy2;
 
-      dx1 = UX2FP (v[1].x - v[3].x);
-      dx2 = UX2FP (v[2].x - v[3].x);
-      dy1 = UX2FP (v[1].y - v[3].y);
-      dy2 = UX2FP (v[2].y - v[3].y);
+      dx1 = v[1].x - v[3].x;
+      dx2 = v[2].x - v[3].x;
+      dy1 = v[1].y - v[3].y;
+      dy2 = v[2].y - v[3].y;
 
-      del = DET2FP (dx1, dx2, dy1, dy2);
-      if (!del)
+      det = DET (dx1, dx2, dy1, dy2);
+      if ((int) det == 0)
 	return FALSE;
 
-      /*
-       * The division here needs to be done in floating point for
-       * precisions reasons.
-       */
-      RQ[0][2] = (DET2FP (UX2FP (px), dx2, UX2FP (py), dy2) / del);
-      RQ[1][2] = (DET2FP (dx1, UX2FP (px), dy1, UX2FP (py)) / del);
-      RQ[1][2] = (DET2FP (dx1, UX2FP (px), dy1, UX2FP (py)) / del);
+      RQ[0][2] = DET (px, dx2, py, dy2) / det;
+      RQ[1][2] = DET (dx1, px, dy1, py) / det;
+      RQ[1][2] = DET (dx1, px, dy1, py) / det;
       RQ[2][2] = 1.0;
-      RQ[0][0] = UX2FP (v[1].x - v[0].x) + (RQ[0][2] * UX2FP (v[1].x));
-      RQ[1][0] = UX2FP (v[2].x - v[0].x) + (RQ[1][2] * UX2FP (v[2].x));
-      RQ[2][0] = UX2FP (v[0].x);
-      RQ[0][1] = UX2FP (v[1].y - v[0].y) + (RQ[0][2] * UX2FP (v[1].y));
-      RQ[1][1] = UX2FP (v[2].y - v[0].y) + (RQ[1][2] * UX2FP (v[2].y));
-      RQ[2][1] = UX2FP (v[0].y);
+      RQ[0][0] = v[1].x - v[0].x + (RQ[0][2] * v[1].x);
+      RQ[1][0] = v[2].x - v[0].x + (RQ[1][2] * v[2].x);
+      RQ[2][0] = v[0].x;
+      RQ[0][1] = v[1].y - v[0].y + (RQ[0][2] * v[1].y);
+      RQ[1][1] = v[2].y - v[0].y + (RQ[1][2] * v[2].y);
+      RQ[2][1] = v[0].y;
     }
 
   /*
@@ -15218,15 +15213,15 @@ clutter_actor_transform_stage_point (ClutterActor *self,
    * Now RQ is transform from uv rectangle to xy quadrilateral; we need an
    * inverse of that.
    */
-  ST[0][0] = DET2FP (RQ[1][1], RQ[1][2], RQ[2][1], RQ[2][2]);
-  ST[1][0] = DET2FP (RQ[1][2], RQ[1][0], RQ[2][2], RQ[2][0]);
-  ST[2][0] = DET2FP (RQ[1][0], RQ[1][1], RQ[2][0], RQ[2][1]);
-  ST[0][1] = DET2FP (RQ[2][1], RQ[2][2], RQ[0][1], RQ[0][2]);
-  ST[1][1] = DET2FP (RQ[2][2], RQ[2][0], RQ[0][2], RQ[0][0]);
-  ST[2][1] = DET2FP (RQ[2][0], RQ[2][1], RQ[0][0], RQ[0][1]);
-  ST[0][2] = DET2FP (RQ[0][1], RQ[0][2], RQ[1][1], RQ[1][2]);
-  ST[1][2] = DET2FP (RQ[0][2], RQ[0][0], RQ[1][2], RQ[1][0]);
-  ST[2][2] = DET2FP (RQ[0][0], RQ[0][1], RQ[1][0], RQ[1][1]);
+  ST[0][0] = DET (RQ[1][1], RQ[1][2], RQ[2][1], RQ[2][2]);
+  ST[1][0] = DET (RQ[1][2], RQ[1][0], RQ[2][2], RQ[2][0]);
+  ST[2][0] = DET (RQ[1][0], RQ[1][1], RQ[2][0], RQ[2][1]);
+  ST[0][1] = DET (RQ[2][1], RQ[2][2], RQ[0][1], RQ[0][2]);
+  ST[1][1] = DET (RQ[2][2], RQ[2][0], RQ[0][2], RQ[0][0]);
+  ST[2][1] = DET (RQ[2][0], RQ[2][1], RQ[0][0], RQ[0][1]);
+  ST[0][2] = DET (RQ[0][1], RQ[0][2], RQ[1][1], RQ[1][2]);
+  ST[1][2] = DET (RQ[0][2], RQ[0][0], RQ[1][2], RQ[1][0]);
+  ST[2][2] = DET (RQ[0][0], RQ[0][1], RQ[1][0], RQ[1][1]);
 
   /*
    * Check the resulting matrix is OK.
@@ -15234,19 +15229,16 @@ clutter_actor_transform_stage_point (ClutterActor *self,
   det = (RQ[0][0] * ST[0][0])
       + (RQ[0][1] * ST[0][1])
       + (RQ[0][2] * ST[0][2]);
-  if (!det)
+  if ((int) det == 0)
     return FALSE;
 
   /*
    * Now transform our point with the ST matrix; the notional w
    * coordinate is 1, hence the last part is simply added.
    */
-  xi = (int) x;
-  yi = (int) y;
-
-  xf = xi * ST[0][0] + yi * ST[1][0] + ST[2][0];
-  yf = xi * ST[0][1] + yi * ST[1][1] + ST[2][1];
-  wf = xi * ST[0][2] + yi * ST[1][2] + ST[2][2];
+  xf = x * ST[0][0] + y * ST[1][0] + ST[2][0];
+  yf = x * ST[0][1] + y * ST[1][1] + ST[2][1];
+  wf = x * ST[0][2] + y * ST[1][2] + ST[2][2];
 
   if (x_out)
     *x_out = xf / wf;
@@ -15254,8 +15246,7 @@ clutter_actor_transform_stage_point (ClutterActor *self,
   if (y_out)
     *y_out = yf / wf;
 
-#undef UX2FP
-#undef DET2FP
+#undef DET
 
   return TRUE;
 }
