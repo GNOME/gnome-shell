@@ -452,7 +452,10 @@ new_absolute_motion_event (ClutterInputDevice *input_device,
   if (manager_evdev->priv->constrain_callback)
     {
       manager_evdev->priv->constrain_callback (seat->core_pointer,
-                                               us2ms (time_us), &x, &y,
+                                               us2ms (time_us),
+                                               seat->pointer_x,
+                                               seat->pointer_y,
+                                               &x, &y,
 					       manager_evdev->priv->constrain_data);
     }
   else

@@ -289,6 +289,13 @@ Relevant information for developers with existing Clutter applications
 wanting to port to newer releases (see NEWS for general information on new
 features).
 
+Release Notes for Clutter 1.26
+-------------------------------------------------------------------------------
+
+• The evdev backend specific ClutterPointerConstrainCallback type was changed
+  to include not only the target position but also the previous position. This
+  is an API change, and will require a version check in any caller code.
+
 Release Notes for Clutter 1.24
 -------------------------------------------------------------------------------
 

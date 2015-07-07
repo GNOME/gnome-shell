@@ -82,6 +82,8 @@ void  clutter_evdev_reclaim_devices (void);
  */
 typedef void (*ClutterPointerConstrainCallback) (ClutterInputDevice *device,
 						 guint32             time,
+						 float               prev_x,
+						 float               prev_y,
 						 float              *x,
 						 float              *y,
 						 gpointer            user_data);
