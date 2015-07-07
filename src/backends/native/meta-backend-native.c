@@ -193,10 +193,12 @@ constrain_all_screen_monitors (ClutterInputDevice *device,
 
 static void
 pointer_constrain_callback (ClutterInputDevice *device,
-			    guint32             time,
-			    float              *new_x,
-			    float              *new_y,
-			    gpointer            user_data)
+                            guint32             time,
+                            float               prev_x,
+                            float               prev_y,
+                            float              *new_x,
+                            float              *new_y,
+                            gpointer            user_data)
 {
   MetaMonitorManager *monitor_manager;
   MetaMonitorInfo *monitors;
