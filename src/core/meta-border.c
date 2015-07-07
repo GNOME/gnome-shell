@@ -92,7 +92,7 @@ meta_line2_intersects_with (const MetaLine2 *line1,
   sxr = meta_vector2_cross_product (s, r);
 
   /* If r × s = 0 then the lines are either parallel or collinear. */
-  if (fabs (rxs) < DBL_MIN)
+  if (fabsf (rxs) < FLT_MIN)
     return FALSE;
 
   t = meta_vector2_cross_product (meta_vector2_subtract (q, p), s) / rxs;
