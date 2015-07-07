@@ -24,12 +24,12 @@
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef __CLUTTER_UNITS_H__
+#define __CLUTTER_UNITS_H__
+
 #if !defined(__CLUTTER_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
 #error "Only <clutter/clutter.h> can be included directly."
 #endif
-
-#ifndef __CLUTTER_UNITS_H__
-#define __CLUTTER_UNITS_H__
 
 #include <glib-object.h>
 

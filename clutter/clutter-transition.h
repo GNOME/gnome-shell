@@ -21,12 +21,12 @@
  * Author: Emmanuele Bassi <ebassi@linux.intel.com>
  */
 
+#ifndef __CLUTTER_TRANSITION_H__
+#define __CLUTTER_TRANSITION_H__
+
 #if !defined(__CLUTTER_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
 #error "Only <clutter/clutter.h> can be included directly."
 #endif
-
-#ifndef __CLUTTER_TRANSITION_H__
-#define __CLUTTER_TRANSITION_H__
 
 #include <clutter/clutter-types.h>
 #include <clutter/clutter-timeline.h>

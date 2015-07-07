@@ -22,12 +22,12 @@
  *   Emmanuele Bassi <ebassi@linux.intel.com>
  */
 
+#ifndef __CLUTTER_PATH_CONSTRAINT_H__
+#define __CLUTTER_PATH_CONSTRAINT_H__
+
 #if !defined(__CLUTTER_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
 #error "Only <clutter/clutter.h> can be included directly."
 #endif
-
-#ifndef __CLUTTER_PATH_CONSTRAINT_H__
-#define __CLUTTER_PATH_CONSTRAINT_H__
 
 #include <clutter/clutter-constraint.h>
 #include <clutter/clutter-path.h>

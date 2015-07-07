@@ -19,12 +19,12 @@
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef __CLUTTER_COLOR_STATIC_H__
+#define __CLUTTER_COLOR_STATIC_H__
+
 #if !defined(__CLUTTER_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
 #error "Only <clutter/clutter.h> can be included directly."
 #endif
-
-#ifndef __CLUTTER_COLOR_STATIC_H__
-#define __CLUTTER_COLOR_STATIC_H__
 
 #define __CLUTTER_COLOR_SYM(x)          (clutter_color_get_static (CLUTTER_COLOR_##x))
 

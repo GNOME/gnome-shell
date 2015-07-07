@@ -25,12 +25,12 @@
  *   Colin Walters <walters@verbum.org>
  */
 
+#ifndef __CLUTTER_CLICK_ACTION_H__
+#define __CLUTTER_CLICK_ACTION_H__
+
 #if !defined(__CLUTTER_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
 #error "Only <clutter/clutter.h> can be included directly."
 #endif
-
-#ifndef __CLUTTER_CLICK_ACTION_H__
-#define __CLUTTER_CLICK_ACTION_H__
 
 #include <clutter/clutter-action.h>
 #include <clutter/clutter-event.h>

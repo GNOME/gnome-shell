@@ -21,12 +21,12 @@
  * Author: Emmanuele Bassi <ebassi@linux.intel.com>
  */
 
+#ifndef __CLUTTER_DEVICE_MANAGER_H__
+#define __CLUTTER_DEVICE_MANAGER_H__
+
 #if !defined(__CLUTTER_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
 #error "Only <clutter/clutter.h> can be included directly."
 #endif
-
-#ifndef __CLUTTER_DEVICE_MANAGER_H__
-#define __CLUTTER_DEVICE_MANAGER_H__
 
 #include <clutter/clutter-input-device.h>
 #include <clutter/clutter-stage.h>

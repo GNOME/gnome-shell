@@ -22,12 +22,12 @@
  *   Emmanuele Bassi <ebassi@linux.intel.com>
  */
 
+#ifndef __CLUTTER_DEFORM_EFFECT_H__
+#define __CLUTTER_DEFORM_EFFECT_H__
+
 #if !defined(__CLUTTER_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
 #error "Only <clutter/clutter.h> can be included directly."
 #endif
-
-#ifndef __CLUTTER_DEFORM_EFFECT_H__
-#define __CLUTTER_DEFORM_EFFECT_H__
 
 #include <cogl/cogl.h>
 #include <clutter/clutter-offscreen-effect.h>
