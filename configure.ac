@@ -337,12 +337,6 @@ AS_IF([test "x$enable_gdk" = "xyes"],
 
 AS_IF([test "x$enable_wayland" != xno],
       [
-        CLUTTER_BACKENDS="$CLUTTER_BACKENDS wayland"
-        CLUTTER_INPUT_BACKENDS="$CLUTTER_INPUT_BACKENDS wayland"
-
-        SUPPORT_WAYLAND=1
-        SUPPORT_COGL=1
-
         # We need to manually check for Wayland support in Cogl because
         # the windowing systems are not exposed in the pkg-config file
         saved_CFLAGS="${CFLAGS}"
@@ -371,6 +365,12 @@ AS_IF([test "x$enable_wayland" != xno],
                                  [
                                    BACKEND_PC_FILES="$BACKEND_PC_FILES wayland-cursor wayland-client xkbcommon"
                                    BACKEND_PC_FILES_PRIVATE="$BACKEND_PC_FILES_PRIVATE gdk-pixbuf-2.0"
+
+                                   CLUTTER_BACKENDS="$CLUTTER_BACKENDS wayland"
+                                   CLUTTER_INPUT_BACKENDS="$CLUTTER_INPUT_BACKENDS wayland"
+
+                                   SUPPORT_WAYLAND=1
+                                   SUPPORT_COGL=1
                                  ],
                                  [
                                    AS_IF([test "x$enable_wayland" = xyes],
@@ -383,7 +383,6 @@ AS_IF([test "x$enable_wayland" != xno],
                       [AC_MSG_ERROR("*** Cogl is missing Wayland support ***")],
                       [enable_wayland=no])
               ])
-
       ])
 
 dnl Note this is orthogonal to the client side support and you can
