@@ -103,18 +103,6 @@
 
 #define DEFAULT_FONT_NAME       "Sans 10"
 
-struct _ClutterBackendPrivate
-{
-  cairo_font_options_t *font_options;
-
-  gchar *font_name;
-
-  gfloat units_per_em;
-  gint32 units_serial;
-
-  GList *event_translators;
-};
-
 enum
 {
   RESOLUTION_CHANGED,
@@ -124,7 +112,7 @@ enum
   LAST_SIGNAL
 };
 
-G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (ClutterBackend, clutter_backend, G_TYPE_OBJECT)
+G_DEFINE_ABSTRACT_TYPE (ClutterBackend, clutter_backend, G_TYPE_OBJECT)
 
 static guint backend_signals[LAST_SIGNAL] = { 0, };
 
@@ -139,17 +127,13 @@ static const char *allowed_backend;
 static void
 clutter_backend_dispose (GObject *gobject)
 {
-  ClutterBackendPrivate *priv = CLUTTER_BACKEND (gobject)->priv;
+  ClutterBackend *backend = CLUTTER_BACKEND (gobject);
 
   /* clear the events still in the queue of the main context */
   _clutter_clear_events_queue ();
 
   /* remove all event translators */
-  if (priv->event_translators != NULL)
-    {
-      g_list_free (priv->event_translators);
-      priv->event_translators = NULL;
-    }
+  g_clear_pointer (&backend->event_translators, g_list_free);
 
   G_OBJECT_CLASS (clutter_backend_parent_class)->dispose (gobject);
 }
@@ -161,7 +145,7 @@ clutter_backend_finalize (GObject *gobject)
 
   g_source_destroy (backend->cogl_source);
 
-  g_free (backend->priv->font_name);
+  g_free (backend->font_name);
   clutter_backend_set_font_options (backend, NULL);
 
   G_OBJECT_CLASS (clutter_backend_parent_class)->finalize (gobject);
@@ -226,7 +210,6 @@ get_units_per_em (ClutterBackend       *backend,
 static void
 clutter_backend_real_resolution_changed (ClutterBackend *backend)
 {
-  ClutterBackendPrivate *priv = backend->priv;
   ClutterMainContext *context;
   ClutterSettings *settings;
   gdouble resolution;
@@ -244,21 +227,19 @@ clutter_backend_real_resolution_changed (ClutterBackend *backend)
   if (context->font_map != NULL)
     cogl_pango_font_map_set_resolution (context->font_map, resolution);
 
-  priv->units_per_em = get_units_per_em (backend, NULL);
-  priv->units_serial += 1;
+  backend->units_per_em = get_units_per_em (backend, NULL);
+  backend->units_serial += 1;
 
-  CLUTTER_NOTE (BACKEND, "Units per em: %.2f", priv->units_per_em);
+  CLUTTER_NOTE (BACKEND, "Units per em: %.2f", backend->units_per_em);
 }
 
 static void
 clutter_backend_real_font_changed (ClutterBackend *backend)
 {
-  ClutterBackendPrivate *priv = backend->priv;
+  backend->units_per_em = get_units_per_em (backend, NULL);
+  backend->units_serial += 1;
 
-  priv->units_per_em = get_units_per_em (backend, NULL);
-  priv->units_serial += 1;
-
-  CLUTTER_NOTE (BACKEND, "Units per em: %.2f", priv->units_per_em);
+  CLUTTER_NOTE (BACKEND, "Units per em: %.2f", backend->units_per_em);
 }
 
 static gboolean
@@ -634,10 +615,9 @@ clutter_backend_real_translate_event (ClutterBackend *backend,
                                       gpointer        native,
                                       ClutterEvent   *event)
 {
-  ClutterBackendPrivate *priv = backend->priv;
   GList *l;
 
-  for (l = priv->event_translators;
+  for (l = backend->event_translators;
        l != NULL;
        l = l->next)
     {
@@ -737,9 +717,8 @@ clutter_backend_class_init (ClutterBackendClass *klass)
 static void
 clutter_backend_init (ClutterBackend *self)
 {
-  self->priv = clutter_backend_get_instance_private (self);
-  self->priv->units_per_em = -1.0;
-  self->priv->units_serial = 1;
+  self->units_per_em = -1.0;
+  self->units_serial = 1;
 }
 
 void
@@ -956,18 +935,14 @@ gfloat
 _clutter_backend_get_units_per_em (ClutterBackend       *backend,
                                    PangoFontDescription *font_desc)
 {
-  ClutterBackendPrivate *priv;
-
-  priv = backend->priv;
-
   /* recompute for the font description, but do not cache the result */
   if (font_desc != NULL)
     return get_units_per_em (backend, font_desc);
 
-  if (priv->units_per_em < 0)
-    priv->units_per_em = get_units_per_em (backend, NULL);
+  if (backend->units_per_em < 0)
+    backend->units_per_em = get_units_per_em (backend, NULL);
 
-  return priv->units_per_em;
+  return backend->units_per_em;
 }
 
 void
@@ -1196,21 +1171,17 @@ void
 clutter_backend_set_font_options (ClutterBackend             *backend,
                                   const cairo_font_options_t *options)
 {
-  ClutterBackendPrivate *priv;
-
   g_return_if_fail (CLUTTER_IS_BACKEND (backend));
 
-  priv = backend->priv;
-
-  if (priv->font_options != options)
+  if (backend->font_options != options)
     {
-      if (priv->font_options)
-        cairo_font_options_destroy (priv->font_options);
+      if (backend->font_options)
+        cairo_font_options_destroy (backend->font_options);
 
       if (options)
-        priv->font_options = cairo_font_options_copy (options);
+        backend->font_options = cairo_font_options_copy (options);
       else
-        priv->font_options = NULL;
+        backend->font_options = NULL;
 
       g_signal_emit (backend, backend_signals[FONT_CHANGED], 0);
     }
@@ -1231,27 +1202,20 @@ clutter_backend_set_font_options (ClutterBackend             *backend,
 const cairo_font_options_t *
 clutter_backend_get_font_options (ClutterBackend *backend)
 {
-  ClutterBackendPrivate *priv;
-
   g_return_val_if_fail (CLUTTER_IS_BACKEND (backend), NULL);
 
-  priv = backend->priv;
+  if (G_LIKELY (backend->font_options))
+    return backend->font_options;
 
-  if (G_LIKELY (priv->font_options))
-    return priv->font_options;
+  backend->font_options = cairo_font_options_create ();
 
-  priv->font_options = cairo_font_options_create ();
-
-  cairo_font_options_set_hint_style (priv->font_options,
-                                     CAIRO_HINT_STYLE_NONE);
-  cairo_font_options_set_subpixel_order (priv->font_options,
-                                         CAIRO_SUBPIXEL_ORDER_DEFAULT);
-  cairo_font_options_set_antialias (priv->font_options,
-                                    CAIRO_ANTIALIAS_DEFAULT);
+  cairo_font_options_set_hint_style (backend->font_options, CAIRO_HINT_STYLE_NONE);
+  cairo_font_options_set_subpixel_order (backend->font_options, CAIRO_SUBPIXEL_ORDER_DEFAULT);
+  cairo_font_options_set_antialias (backend->font_options, CAIRO_ANTIALIAS_DEFAULT);
 
   g_signal_emit (backend, backend_signals[FONT_CHANGED], 0);
 
-  return priv->font_options;
+  return backend->font_options;
 }
 
 /**
@@ -1294,28 +1258,25 @@ clutter_backend_set_font_name (ClutterBackend *backend,
 const gchar *
 clutter_backend_get_font_name (ClutterBackend *backend)
 {
-  ClutterBackendPrivate *priv;
   ClutterSettings *settings;
 
   g_return_val_if_fail (CLUTTER_IS_BACKEND (backend), NULL);
-
-  priv = backend->priv;
 
   settings = clutter_settings_get_default ();
 
   /* XXX yuck. but we return a const pointer, so we need to
    * store it in the backend
    */
-  g_free (priv->font_name);
-  g_object_get (settings, "font-name", &priv->font_name, NULL);
+  g_free (backend->font_name);
+  g_object_get (settings, "font-name", &backend->font_name, NULL);
 
-  return priv->font_name;
+  return backend->font_name;
 }
 
 gint32
 _clutter_backend_get_units_serial (ClutterBackend *backend)
 {
-  return backend->priv->units_serial;
+  return backend->units_serial;
 }
 
 gboolean
@@ -1332,26 +1293,22 @@ void
 _clutter_backend_add_event_translator (ClutterBackend         *backend,
                                        ClutterEventTranslator *translator)
 {
-  ClutterBackendPrivate *priv = backend->priv;
-
-  if (g_list_find (priv->event_translators, translator) != NULL)
+  if (g_list_find (backend->event_translators, translator) != NULL)
     return;
 
-  priv->event_translators =
-    g_list_prepend (priv->event_translators, translator);
+  backend->event_translators =
+    g_list_prepend (backend->event_translators, translator);
 }
 
 void
 _clutter_backend_remove_event_translator (ClutterBackend         *backend,
                                           ClutterEventTranslator *translator)
 {
-  ClutterBackendPrivate *priv = backend->priv;
-
-  if (g_list_find (priv->event_translators, translator) == NULL)
+  if (g_list_find (backend->event_translators, translator) == NULL)
     return;
 
-  priv->event_translators =
-    g_list_remove (priv->event_translators, translator);
+  backend->event_translators =
+    g_list_remove (backend->event_translators, translator);
 }
 
 /**
