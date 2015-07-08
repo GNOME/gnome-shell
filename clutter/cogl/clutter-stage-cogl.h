@@ -35,19 +35,26 @@ struct _ClutterStageCogl
 
   CoglOnscreen *onscreen;
 
-  gint64 last_presentation_time;
   float refresh_rate;
+  int pending_swaps;
 
-  gint64 update_time;
-  gint pending_swaps;
   CoglFrameClosure *frame_closure;
+
+  gint64 last_presentation_time;
+  gint64 update_time;
 
   /* We only enable clipped redraws after 2 frames, since we've seen
    * a lot of drivers can struggle to get going and may output some
    * junk frames to start with. */
-  unsigned long frame_count;
+  unsigned int frame_count;
 
   cairo_rectangle_int_t bounding_redraw_clip;
+
+  /* Stores a list of previous damaged areas */
+#define DAMAGE_HISTORY_MAX 16
+#define DAMAGE_HISTORY(x) ((x) & (DAMAGE_HISTORY_MAX - 1))
+  cairo_rectangle_int_t damage_history[DAMAGE_HISTORY_MAX];
+  unsigned int damage_index;
 
   guint initialized_redraw_clip : 1;
 
@@ -56,12 +63,6 @@ struct _ClutterStageCogl
   guint using_clipped_redraw : 1;
 
   guint dirty_backbuffer     : 1;
-
-  /* Stores a list of previous damaged areas */
-#define DAMAGE_HISTORY_MAX 16
-#define DAMAGE_HISTORY(x) ((x) & (DAMAGE_HISTORY_MAX - 1))
-  cairo_rectangle_int_t damage_history[DAMAGE_HISTORY_MAX];
-  unsigned damage_index;
 };
 
 struct _ClutterStageCoglClass
