@@ -66,7 +66,7 @@ meta_window_wayland_manage (MetaWindow *window)
                                    0);
   }
 
-  if (window->surface->role == META_WAYLAND_SURFACE_ROLE_XDG_POPUP)
+  if (META_IS_WAYLAND_SURFACE_ROLE_XDG_POPUP (window->surface->role))
     {
       MetaWaylandSurface *parent = window->surface->popup.parent;
 

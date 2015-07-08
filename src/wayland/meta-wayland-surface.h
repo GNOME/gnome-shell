@@ -30,6 +30,9 @@
 #include <meta/meta-cursor-tracker.h>
 #include "meta-wayland-types.h"
 #include "meta-surface-actor.h"
+#include "backends/meta-monitor-manager-private.h"
+
+typedef struct _MetaWaylandPendingState MetaWaylandPendingState;
 
 #define META_TYPE_WAYLAND_SURFACE (meta_wayland_surface_get_type ())
 G_DECLARE_FINAL_TYPE (MetaWaylandSurface,
@@ -37,24 +40,63 @@ G_DECLARE_FINAL_TYPE (MetaWaylandSurface,
                       META, WAYLAND_SURFACE,
                       GObject);
 
+#define META_TYPE_WAYLAND_SURFACE_ROLE (meta_wayland_surface_role_get_type ())
+G_DECLARE_DERIVABLE_TYPE (MetaWaylandSurfaceRole, meta_wayland_surface_role,
+                          META, WAYLAND_SURFACE_ROLE, GObject);
+
+struct _MetaWaylandSurfaceRoleClass
+{
+  GObjectClass parent_class;
+
+  void (*assigned) (MetaWaylandSurfaceRole *surface_role);
+  void (*commit) (MetaWaylandSurfaceRole  *surface_role,
+                  MetaWaylandPendingState *pending);
+  gboolean (*is_on_output) (MetaWaylandSurfaceRole *surface_role,
+                            MetaMonitorInfo        *monitor);
+};
+
 struct _MetaWaylandSerial {
   gboolean set;
   uint32_t value;
 };
 
-typedef enum
-{
-  META_WAYLAND_SURFACE_ROLE_NONE,
-  META_WAYLAND_SURFACE_ROLE_SUBSURFACE,
-  META_WAYLAND_SURFACE_ROLE_XDG_SURFACE,
-  META_WAYLAND_SURFACE_ROLE_XDG_POPUP,
-  META_WAYLAND_SURFACE_ROLE_WL_SHELL_SURFACE,
-  META_WAYLAND_SURFACE_ROLE_CURSOR,
-  META_WAYLAND_SURFACE_ROLE_DND,
-  META_WAYLAND_SURFACE_ROLE_XWAYLAND,
-} MetaWaylandSurfaceRole;
+#define META_TYPE_WAYLAND_SURFACE_ROLE_SUBSURFACE (meta_wayland_surface_role_subsurface_get_type ())
+G_DECLARE_FINAL_TYPE (MetaWaylandSurfaceRoleSubsurface,
+                      meta_wayland_surface_role_subsurface,
+                      META, WAYLAND_SURFACE_ROLE_SUBSURFACE,
+                      MetaWaylandSurfaceRole);
 
-typedef struct
+#define META_TYPE_WAYLAND_SURFACE_ROLE_XDG_SURFACE (meta_wayland_surface_role_xdg_surface_get_type ())
+G_DECLARE_FINAL_TYPE (MetaWaylandSurfaceRoleXdgSurface,
+                      meta_wayland_surface_role_xdg_surface,
+                      META, WAYLAND_SURFACE_ROLE_XDG_SURFACE,
+                      MetaWaylandSurfaceRole);
+
+#define META_TYPE_WAYLAND_SURFACE_ROLE_XDG_POPUP (meta_wayland_surface_role_xdg_popup_get_type ())
+G_DECLARE_FINAL_TYPE (MetaWaylandSurfaceRoleXdgPopup,
+                      meta_wayland_surface_role_xdg_popup,
+                      META, WAYLAND_SURFACE_ROLE_XDG_POPUP,
+                      MetaWaylandSurfaceRole);
+
+#define META_TYPE_WAYLAND_SURFACE_ROLE_WL_SHELL_SURFACE (meta_wayland_surface_role_wl_shell_surface_get_type ())
+G_DECLARE_FINAL_TYPE (MetaWaylandSurfaceRoleWlShellSurface,
+                      meta_wayland_surface_role_wl_shell_surface,
+                      META, WAYLAND_SURFACE_ROLE_WL_SHELL_SURFACE,
+                      MetaWaylandSurfaceRole);
+
+#define META_TYPE_WAYLAND_SURFACE_ROLE_CURSOR (meta_wayland_surface_role_cursor_get_type ())
+G_DECLARE_FINAL_TYPE (MetaWaylandSurfaceRoleCursor,
+                      meta_wayland_surface_role_cursor,
+                      META, WAYLAND_SURFACE_ROLE_CURSOR,
+                      MetaWaylandSurfaceRole);
+
+#define META_TYPE_WAYLAND_SURFACE_ROLE_DND (meta_wayland_surface_role_dnd_get_type ())
+G_DECLARE_FINAL_TYPE (MetaWaylandSurfaceRoleDND,
+                      meta_wayland_surface_role_dnd,
+                      META, WAYLAND_SURFACE_ROLE_DND,
+                      MetaWaylandSurfaceRole);
+
+struct _MetaWaylandPendingState
 {
   /* wl_surface.attach */
   gboolean newly_attached;
@@ -78,7 +120,7 @@ typedef struct
 
   MetaRectangle new_geometry;
   gboolean has_new_geometry;
-} MetaWaylandPendingState;
+};
 
 struct _MetaWaylandDragDestFuncs
 {
@@ -102,7 +144,7 @@ struct _MetaWaylandSurface
   struct wl_resource *resource;
   MetaWaylandCompositor *compositor;
   MetaSurfaceActor *surface_actor;
-  MetaWaylandSurfaceRole role;
+  MetaWaylandSurfaceRole *role;
   MetaWindow *window;
   MetaWaylandBuffer *buffer;
   struct wl_listener buffer_destroy_listener;
@@ -180,8 +222,8 @@ MetaWaylandSurface *meta_wayland_surface_create (MetaWaylandCompositor *composit
                                                  struct wl_resource    *compositor_resource,
                                                  guint32                id);
 
-gboolean            meta_wayland_surface_assign_role (MetaWaylandSurface    *surface,
-                                                      MetaWaylandSurfaceRole role);
+gboolean            meta_wayland_surface_assign_role (MetaWaylandSurface *surface,
+                                                      GType               role_type);
 
 void                meta_wayland_surface_set_window (MetaWaylandSurface *surface,
                                                      MetaWindow         *window);
@@ -208,5 +250,10 @@ void                meta_wayland_surface_drag_dest_drop      (MetaWaylandSurface
 void                meta_wayland_surface_update_outputs (MetaWaylandSurface *surface);
 
 MetaWindow *        meta_wayland_surface_get_toplevel_window (MetaWaylandSurface *surface);
+
+void                meta_wayland_surface_queue_pending_state_frame_callbacks (MetaWaylandSurface      *surface,
+                                                                              MetaWaylandPendingState *pending);
+
+MetaWaylandSurface * meta_wayland_surface_role_get_surface (MetaWaylandSurfaceRole *role);
 
 #endif
