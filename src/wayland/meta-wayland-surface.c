@@ -68,6 +68,10 @@ typedef struct
   struct wl_listener sibling_destroy_listener;
 } MetaWaylandSubsurfacePlacementOp;
 
+GType meta_wayland_surface_get_type (void) G_GNUC_CONST;
+
+G_DEFINE_TYPE (MetaWaylandSurface, meta_wayland_surface, G_TYPE_OBJECT);
+
 int
 meta_wayland_surface_set_role (MetaWaylandSurface    *surface,
                                MetaWaylandSurfaceRole role,
@@ -968,7 +972,7 @@ wl_surface_destructor (struct wl_resource *resource)
   if (surface->gtk_surface)
     wl_resource_destroy (surface->gtk_surface);
 
-  g_slice_free (MetaWaylandSurface, surface);
+  g_object_unref (surface);
 
   meta_wayland_compositor_repick (compositor);
 }
@@ -979,7 +983,7 @@ meta_wayland_surface_create (MetaWaylandCompositor *compositor,
                              struct wl_resource    *compositor_resource,
                              guint32                id)
 {
-  MetaWaylandSurface *surface = g_slice_new0 (MetaWaylandSurface);
+  MetaWaylandSurface *surface = g_object_new (META_TYPE_WAYLAND_SURFACE, NULL);
 
   surface->compositor = compositor;
   surface->scale = 1;
@@ -2289,4 +2293,14 @@ meta_wayland_surface_get_toplevel_window (MetaWaylandSurface *surface)
     }
 
   return NULL;
+}
+
+static void
+meta_wayland_surface_init (MetaWaylandSurface *surface)
+{
+}
+
+static void
+meta_wayland_surface_class_init (MetaWaylandSurfaceClass *klass)
+{
 }

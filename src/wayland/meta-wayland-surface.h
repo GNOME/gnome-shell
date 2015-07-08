@@ -31,6 +31,12 @@
 #include "meta-wayland-types.h"
 #include "meta-surface-actor.h"
 
+#define META_TYPE_WAYLAND_SURFACE (meta_wayland_surface_get_type ())
+G_DECLARE_FINAL_TYPE (MetaWaylandSurface,
+                      meta_wayland_surface,
+                      META, WAYLAND_SURFACE,
+                      GObject);
+
 struct _MetaWaylandSerial {
   gboolean set;
   uint32_t value;
@@ -89,6 +95,8 @@ struct _MetaWaylandDragDestFuncs
 
 struct _MetaWaylandSurface
 {
+  GObject parent;
+
   /* Generic stuff */
   struct wl_resource *resource;
   MetaWaylandCompositor *compositor;
