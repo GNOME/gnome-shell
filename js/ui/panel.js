@@ -25,8 +25,8 @@ const RemoteMenu = imports.ui.remoteMenu;
 const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
 
-const PANEL_ICON_SIZE = 24;
-const APP_MENU_ICON_MARGIN = 2;
+const PANEL_ICON_SIZE = 16;
+const APP_MENU_ICON_MARGIN = 0;
 
 const BUTTON_DND_ACTIVATION_TIMEOUT = 250;
 
