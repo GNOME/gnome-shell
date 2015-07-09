@@ -20786,11 +20786,11 @@ _clutter_actor_get_active_framebuffer (ClutterActor *self)
 }
 
 static void
-clutter_actor_bound_model__changed (GListModel *model,
-                                    guint       position,
-                                    guint       removed,
-                                    guint       added,
-                                    gpointer    user_data)
+clutter_actor_child_model__items_changed (GListModel *model,
+                                          guint       position,
+                                          guint       removed,
+                                          guint       added,
+                                          gpointer    user_data)
 {
   ClutterActor *parent = user_data;
   ClutterActorPrivate *priv = parent->priv;
@@ -20867,7 +20867,7 @@ clutter_actor_bind_model (ClutterActor                *self,
         priv->create_child_notify (priv->create_child_data);
 
       g_signal_handlers_disconnect_by_func (priv->child_model,
-                                            clutter_actor_bound_model__changed,
+                                            clutter_actor_child_model__items_changed,
                                             self);
       g_clear_object (&priv->child_model);
       priv->create_child_func = NULL;
@@ -20886,11 +20886,12 @@ clutter_actor_bind_model (ClutterActor                *self,
   priv->create_child_notify = notify;
 
   g_signal_connect (priv->child_model, "items-changed",
-                    G_CALLBACK (clutter_actor_bound_model__changed),
+                    G_CALLBACK (clutter_actor_child_model__items_changed),
                     self);
 
-  clutter_actor_bound_model__changed (priv->child_model,
-                                      0,
-                                      0, g_list_model_get_n_items (priv->child_model),
-                                      self);
+  clutter_actor_child_model__items_changed (priv->child_model,
+                                            0,
+                                            0,
+                                            g_list_model_get_n_items (priv->child_model),
+                                            self);
 }
