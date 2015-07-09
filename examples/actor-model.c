@@ -2,194 +2,14 @@
 #include <gio/gio.h>
 #include <clutter/clutter.h>
 
-/* {{{ MenuItem */
-#define EXAMPLE_TYPE_MENU_ITEM  (example_menu_item_get_type ())
-
-G_DECLARE_FINAL_TYPE (ExampleMenuItem, example_menu_item, EXAMPLE, MENU_ITEM, ClutterText)
-
-struct _ExampleMenuItem
-{
-  ClutterText parent_instance;
-
-  gboolean is_selected;
-};
-
-struct _ExampleMenuItemClass
-{
-  ClutterTextClass parent_class;
-};
-
-G_DEFINE_TYPE (ExampleMenuItem, example_menu_item, CLUTTER_TYPE_TEXT)
-
-enum {
-  MENU_ITEM_PROP_SELECTED = 1,
-  MENU_ITEM_N_PROPS
-};
-
-static GParamSpec *menu_item_props[MENU_ITEM_N_PROPS] = { NULL, };
-
-static void
-example_menu_item_set_selected (ExampleMenuItem *self,
-                                gboolean         selected)
-{
-  selected = !!selected;
-  if (self->is_selected == selected)
-    return;
-
-  self->is_selected = selected;
-
-  if (self->is_selected)
-    clutter_text_set_color (CLUTTER_TEXT (self), CLUTTER_COLOR_LightSkyBlue);
-  else
-    clutter_text_set_color (CLUTTER_TEXT (self), CLUTTER_COLOR_White);
-
-  g_object_notify_by_pspec (G_OBJECT (self), menu_item_props[MENU_ITEM_PROP_SELECTED]);
-}
-
-static void
-example_menu_item_set_property (GObject      *gobject,
-                                guint         prop_id,
-                                const GValue *value,
-                                GParamSpec   *pspec)
-{
-  switch (prop_id)
-    {
-    case MENU_ITEM_PROP_SELECTED:
-      example_menu_item_set_selected (EXAMPLE_MENU_ITEM (gobject),
-                                      g_value_get_boolean (value));
-      break;
-    }
-}
-
-static void
-example_menu_item_get_property (GObject    *gobject,
-                                guint       prop_id,
-                                GValue     *value,
-                                GParamSpec *pspec)
-{
-  switch (prop_id)
-    {
-    case MENU_ITEM_PROP_SELECTED:
-      g_value_set_boolean (value, EXAMPLE_MENU_ITEM (gobject)->is_selected);
-      break;
-    }
-}
-
-static void
-example_menu_item_class_init (ExampleMenuItemClass *klass)
-{
-  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-
-  gobject_class->set_property = example_menu_item_set_property;
-  gobject_class->get_property = example_menu_item_get_property;
-
-  menu_item_props[MENU_ITEM_PROP_SELECTED] =
-    g_param_spec_boolean ("selected", NULL, NULL,
-                          FALSE,
-                          G_PARAM_READWRITE |
-                          G_PARAM_STATIC_STRINGS);
-
-  g_object_class_install_properties (gobject_class, MENU_ITEM_N_PROPS, menu_item_props);
-}
-
-static void
-example_menu_item_init (ExampleMenuItem *self)
-{
-  ClutterText *text = CLUTTER_TEXT (self);
-  ClutterActor *actor = CLUTTER_ACTOR (self);
-
-  clutter_text_set_font_name (text, "Sans Bold 24px");
-  clutter_text_set_color (text, CLUTTER_COLOR_White);
-
-  clutter_actor_set_margin_left (actor, 12);
-  clutter_actor_set_margin_right (actor, 12);
-}
-
-/* }}} */
-
-/* {{{ Menu */
-#define EXAMPLE_TYPE_MENU       (example_menu_get_type ())
-
-G_DECLARE_FINAL_TYPE (ExampleMenu, example_menu, EXAMPLE, MENU, ClutterActor)
-
-struct _ExampleMenu
-{
-  ClutterActor parent_instance;
-
-  int current_idx;
-};
-
-struct _ExampleMenuClass
-{
-  ClutterActorClass parent_class;
-};
-
-G_DEFINE_TYPE (ExampleMenu, example_menu, CLUTTER_TYPE_ACTOR)
-
-static void
-example_menu_class_init (ExampleMenuClass *klass)
-{
-}
-
-static void
-example_menu_init (ExampleMenu *self)
-{
-  ClutterActor *actor = CLUTTER_ACTOR (self);
-  ClutterLayoutManager *layout;
-
-  layout = clutter_box_layout_new ();
-  clutter_box_layout_set_orientation (CLUTTER_BOX_LAYOUT (layout), CLUTTER_ORIENTATION_VERTICAL);
-  clutter_box_layout_set_spacing (CLUTTER_BOX_LAYOUT (layout), 12);
-
-  clutter_actor_set_layout_manager (actor, layout);
-  clutter_actor_set_background_color (actor, CLUTTER_COLOR_Black);
-
-  self->current_idx = -1;
-}
-
-static ClutterActor *
-example_menu_select_item (ExampleMenu *self,
-                          int          idx)
-{
-  ClutterActor *item;
-
-  if (idx == self->current_idx)
-    return clutter_actor_get_child_at_index (CLUTTER_ACTOR (self), self->current_idx);
-
-  item = clutter_actor_get_child_at_index (CLUTTER_ACTOR (self), self->current_idx);
-  if (item != NULL)
-    example_menu_item_set_selected ((ExampleMenuItem *) item, FALSE);
-
-  if (idx < 0)
-    idx = clutter_actor_get_n_children (CLUTTER_ACTOR (self)) - 1;
-  else if (idx >= clutter_actor_get_n_children (CLUTTER_ACTOR (self)))
-    idx = 0;
-
-  self->current_idx = idx;
-
-  item = clutter_actor_get_child_at_index (CLUTTER_ACTOR (self), self->current_idx);
-  if (item != NULL)
-    example_menu_item_set_selected ((ExampleMenuItem *) item, TRUE);
-
-  return item;
-}
-
-static ClutterActor *
-example_menu_select_next (ExampleMenu *self)
-{
-  return example_menu_select_item (self, self->current_idx + 1);
-}
-
-static ClutterActor *
-example_menu_select_prev (ExampleMenu *self)
-{
-  return example_menu_select_item (self, self->current_idx - 1);
-}
-
-/* }}} */
-
 /* {{{ MenuItemModel */
-#define EXAMPLE_TYPE_MENU_ITEM_MODEL    (example_menu_item_model_get_type ())
+
+/* This is our "model" of a Menu item; it has a "label" property, and
+ * a "selected" state property. The user is supposed to operate on the
+ * model instance, and change its state.
+ */
+
+#define EXAMPLE_TYPE_MENU_ITEM_MODEL (example_menu_item_model_get_type ())
 
 G_DECLARE_FINAL_TYPE (ExampleMenuItemModel, example_menu_item_model, EXAMPLE, MENU_ITEM_MODEL, GObject)
 
@@ -294,6 +114,204 @@ example_menu_item_model_init (ExampleMenuItemModel *self)
 }
 /* }}} */
 
+/* {{{ MenuItem */
+
+/* This is our "view" of a Menu item; it changes state depending on whether
+ * the "selected" property is set. The "view" reflects the state of the
+ * "model" instance, though it has no direct connection to it.
+ */
+#define EXAMPLE_TYPE_MENU_ITEM_VIEW (example_menu_item_view_get_type ())
+
+G_DECLARE_FINAL_TYPE (ExampleMenuItemView, example_menu_item_view, EXAMPLE, MENU_ITEM_VIEW, ClutterText)
+
+struct _ExampleMenuItemView
+{
+  ClutterText parent_instance;
+
+  gboolean is_selected;
+};
+
+struct _ExampleMenuItemViewClass
+{
+  ClutterTextClass parent_class;
+};
+
+G_DEFINE_TYPE (ExampleMenuItemView, example_menu_item_view, CLUTTER_TYPE_TEXT)
+
+enum {
+  MENU_ITEM_VIEW_PROP_SELECTED = 1,
+  MENU_ITEM_VIEW_N_PROPS
+};
+
+static GParamSpec *menu_item_view_props[MENU_ITEM_VIEW_N_PROPS] = { NULL, };
+
+static void
+example_menu_item_view_set_selected (ExampleMenuItemView *self,
+                                     gboolean             selected)
+{
+  selected = !!selected;
+  if (self->is_selected == selected)
+    return;
+
+  self->is_selected = selected;
+
+  if (self->is_selected)
+    clutter_text_set_color (CLUTTER_TEXT (self), CLUTTER_COLOR_LightSkyBlue);
+  else
+    clutter_text_set_color (CLUTTER_TEXT (self), CLUTTER_COLOR_White);
+
+  g_object_notify_by_pspec (G_OBJECT (self), menu_item_view_props[MENU_ITEM_VIEW_PROP_SELECTED]);
+}
+
+static void
+example_menu_item_view_set_property (GObject      *gobject,
+                                     guint         prop_id,
+                                     const GValue *value,
+                                     GParamSpec   *pspec)
+{
+  switch (prop_id)
+    {
+    case MENU_ITEM_VIEW_PROP_SELECTED:
+      example_menu_item_view_set_selected (EXAMPLE_MENU_ITEM_VIEW (gobject),
+                                           g_value_get_boolean (value));
+      break;
+    }
+}
+
+static void
+example_menu_item_view_get_property (GObject    *gobject,
+                                     guint       prop_id,
+                                     GValue     *value,
+                                     GParamSpec *pspec)
+{
+  switch (prop_id)
+    {
+    case MENU_ITEM_VIEW_PROP_SELECTED:
+      g_value_set_boolean (value, EXAMPLE_MENU_ITEM_VIEW (gobject)->is_selected);
+      break;
+    }
+}
+
+static void
+example_menu_item_view_class_init (ExampleMenuItemViewClass *klass)
+{
+  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+
+  gobject_class->set_property = example_menu_item_view_set_property;
+  gobject_class->get_property = example_menu_item_view_get_property;
+
+  menu_item_view_props[MENU_ITEM_VIEW_PROP_SELECTED] =
+    g_param_spec_boolean ("selected", NULL, NULL,
+                          FALSE,
+                          G_PARAM_READWRITE |
+                          G_PARAM_STATIC_STRINGS);
+
+  g_object_class_install_properties (gobject_class, MENU_ITEM_VIEW_N_PROPS, menu_item_view_props);
+}
+
+static void
+example_menu_item_view_init (ExampleMenuItemView *self)
+{
+  ClutterText *text = CLUTTER_TEXT (self);
+  ClutterActor *actor = CLUTTER_ACTOR (self);
+
+  clutter_text_set_font_name (text, "Sans Bold 24px");
+  clutter_text_set_color (text, CLUTTER_COLOR_White);
+
+  clutter_actor_set_margin_left (actor, 12);
+  clutter_actor_set_margin_right (actor, 12);
+}
+
+/* }}} */
+
+/* {{{ Menu */
+
+/* This is our container actor, which binds the GListStore with the
+ * ExampleMenuItemModel instances to the ExampleMenuItemView actors
+ */
+
+#define EXAMPLE_TYPE_MENU (example_menu_get_type ())
+
+G_DECLARE_FINAL_TYPE (ExampleMenu, example_menu, EXAMPLE, MENU, ClutterActor)
+
+struct _ExampleMenu
+{
+  ClutterActor parent_instance;
+
+  int current_idx;
+};
+
+struct _ExampleMenuClass
+{
+  ClutterActorClass parent_class;
+};
+
+G_DEFINE_TYPE (ExampleMenu, example_menu, CLUTTER_TYPE_ACTOR)
+
+static void
+example_menu_class_init (ExampleMenuClass *klass)
+{
+}
+
+static void
+example_menu_init (ExampleMenu *self)
+{
+  ClutterActor *actor = CLUTTER_ACTOR (self);
+  ClutterLayoutManager *layout;
+
+  layout = clutter_box_layout_new ();
+  clutter_box_layout_set_orientation (CLUTTER_BOX_LAYOUT (layout), CLUTTER_ORIENTATION_VERTICAL);
+  clutter_box_layout_set_spacing (CLUTTER_BOX_LAYOUT (layout), 12);
+
+  clutter_actor_set_layout_manager (actor, layout);
+  clutter_actor_set_background_color (actor, CLUTTER_COLOR_Black);
+
+  self->current_idx = -1;
+}
+
+static ClutterActor *
+example_menu_select_item (ExampleMenu *self,
+                          int          idx)
+{
+  ClutterActor *item;
+
+  /* Any change in the view is reflected into the model */
+
+  if (idx == self->current_idx)
+    return clutter_actor_get_child_at_index (CLUTTER_ACTOR (self), self->current_idx);
+
+  item = clutter_actor_get_child_at_index (CLUTTER_ACTOR (self), self->current_idx);
+  if (item != NULL)
+    example_menu_item_view_set_selected ((ExampleMenuItemView *) item, FALSE);
+
+  if (idx < 0)
+    idx = clutter_actor_get_n_children (CLUTTER_ACTOR (self)) - 1;
+  else if (idx >= clutter_actor_get_n_children (CLUTTER_ACTOR (self)))
+    idx = 0;
+
+  self->current_idx = idx;
+
+  item = clutter_actor_get_child_at_index (CLUTTER_ACTOR (self), self->current_idx);
+  if (item != NULL)
+    example_menu_item_view_set_selected ((ExampleMenuItemView *) item, TRUE);
+
+  return item;
+}
+
+static ClutterActor *
+example_menu_select_next (ExampleMenu *self)
+{
+  return example_menu_select_item (self, self->current_idx + 1);
+}
+
+static ClutterActor *
+example_menu_select_prev (ExampleMenu *self)
+{
+  return example_menu_select_item (self, self->current_idx - 1);
+}
+
+/* }}} */
+
 /* {{{ main */
 static gboolean
 on_key_press (ClutterActor *stage,
@@ -348,7 +366,7 @@ static ClutterActor *
 create_menu_item (gpointer item,
                   gpointer data G_GNUC_UNUSED)
 {
-  ClutterActor *res = g_object_new (EXAMPLE_TYPE_MENU_ITEM, NULL);
+  ClutterActor *res = g_object_new (EXAMPLE_TYPE_MENU_ITEM_VIEW, NULL);
 
   /* The label goes from the model to the view */
   g_object_bind_property (item, "label",
@@ -368,6 +386,7 @@ create_menu_item (gpointer item,
 static ClutterActor *
 create_menu_actor (void)
 {
+  /* Our store of menu item models */
   GListStore *model = g_list_store_new (EXAMPLE_TYPE_MENU_ITEM_MODEL);
   ClutterActor *menu = g_object_new (EXAMPLE_TYPE_MENU, NULL);
   int i;
@@ -387,18 +406,27 @@ create_menu_actor (void)
       g_free (label);
     }
 
+  /* Bind the list of menu item models to the menu actor; this will
+   * create ClutterActor views of each item in the model, and add them
+   * to the menu actor
+   */
   clutter_actor_bind_model (menu, G_LIST_MODEL (model),
                             create_menu_item,
                             NULL, NULL);
 
-  /* The actor owns the model */
+  /* We don't need a pointer to the model any more, so we transfer ownership
+   * to the menu actor; this means that the model will go away when the menu
+   * actor is destroyed
+   */
   g_object_unref (model);
 
+  /* Select the first item in the menu */
   example_menu_select_item ((ExampleMenu *) menu, 0);
 
   return menu;
 }
 
+/* The scrolling container for the menu */
 static ClutterActor *
 create_scroll_actor (void)
 {
