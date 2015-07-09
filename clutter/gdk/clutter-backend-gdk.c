@@ -534,11 +534,12 @@ clutter_gdk_get_visual (void)
   g_assert (screen != NULL);
 
 #if defined(GDK_WINDOWING_X11) && defined(COGL_HAS_XLIB_SUPPORT)
-  {
-    XVisualInfo *xvisinfo = cogl_clutter_winsys_xlib_get_visual_info ();
-    if (xvisinfo != NULL)
-      return gdk_x11_screen_lookup_visual (screen, xvisinfo->visualid);
-  }
+  if (GDK_IS_X11_SCREEN (screen))
+    {
+      XVisualInfo *xvisinfo = cogl_clutter_winsys_xlib_get_visual_info ();
+      if (xvisinfo != NULL)
+        return gdk_x11_screen_lookup_visual (screen, xvisinfo->visualid);
+    }
 #endif
 
   if (gdk_screen_get_rgba_visual (screen) != NULL)
