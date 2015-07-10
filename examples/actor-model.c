@@ -114,7 +114,7 @@ example_menu_item_model_init (ExampleMenuItemModel *self)
 }
 /* }}} */
 
-/* {{{ MenuItem */
+/* {{{ MenuItemView */
 
 /* This is our "view" of a Menu item; it changes state depending on whether
  * the "selected" property is set. The "view" reflects the state of the
@@ -210,16 +210,65 @@ example_menu_item_view_class_init (ExampleMenuItemViewClass *klass)
 }
 
 static void
+example_menu_item_view__transition_stopped (ClutterActor *actor,
+                                            const char   *transition,
+                                            gboolean      is_finished)
+{
+  clutter_actor_set_scale (actor, 1.0, 1.0);
+  clutter_actor_set_opacity (actor, 255);
+}
+
+static void
 example_menu_item_view_init (ExampleMenuItemView *self)
 {
   ClutterText *text = CLUTTER_TEXT (self);
   ClutterActor *actor = CLUTTER_ACTOR (self);
+  ClutterTransition *scalex_trans, *scaley_trans, *fade_trans;
+  ClutterTransition *group;
 
   clutter_text_set_font_name (text, "Sans Bold 24px");
   clutter_text_set_color (text, CLUTTER_COLOR_White);
 
   clutter_actor_set_margin_left (actor, 12);
   clutter_actor_set_margin_right (actor, 12);
+
+  clutter_actor_set_pivot_point (actor, 0.5, 0.5);
+
+  scalex_trans = clutter_property_transition_new ("scale-x");
+  clutter_transition_set_from (scalex_trans, G_TYPE_FLOAT, 1.0);
+  clutter_transition_set_to (scalex_trans, G_TYPE_FLOAT, 3.0);
+
+  scaley_trans = clutter_property_transition_new ("scale-y");
+  clutter_transition_set_from (scaley_trans, G_TYPE_FLOAT, 1.0);
+  clutter_transition_set_to (scaley_trans, G_TYPE_FLOAT, 3.0);
+
+  fade_trans = clutter_property_transition_new ("opacity");
+  clutter_transition_set_to (fade_trans, G_TYPE_UINT, 0);
+
+  group = clutter_transition_group_new ();
+  clutter_transition_group_add_transition (CLUTTER_TRANSITION_GROUP (group), scalex_trans);
+  clutter_transition_group_add_transition (CLUTTER_TRANSITION_GROUP (group), scaley_trans);
+  clutter_transition_group_add_transition (CLUTTER_TRANSITION_GROUP (group), fade_trans);
+  clutter_timeline_set_duration (CLUTTER_TIMELINE (group), 250);
+  clutter_timeline_set_progress_mode (CLUTTER_TIMELINE (group), CLUTTER_EASE_OUT);
+
+  clutter_actor_add_transition (actor, "activateTransition", group);
+  g_object_unref (group);
+
+  clutter_timeline_stop (CLUTTER_TIMELINE (group));
+
+  g_signal_connect (actor, "transition-stopped",
+                    G_CALLBACK (example_menu_item_view__transition_stopped),
+                    group);
+}
+
+static void
+example_menu_item_view_activate (ExampleMenuItemView *self)
+{
+  ClutterTransition *t;
+
+  t = clutter_actor_get_transition (CLUTTER_ACTOR (self), "activateTransition");
+  clutter_timeline_start (CLUTTER_TIMELINE (t));
 }
 
 /* }}} */
@@ -310,6 +359,19 @@ example_menu_select_prev (ExampleMenu *self)
   return example_menu_select_item (self, self->current_idx - 1);
 }
 
+static void
+example_menu_activate_item (ExampleMenu *self)
+{
+  ClutterActor *child;
+
+  child = clutter_actor_get_child_at_index (CLUTTER_ACTOR (self),
+                                            self->current_idx);
+  if (child == NULL)
+    return;
+
+  example_menu_item_view_activate ((ExampleMenuItemView *) child);
+}
+
 /* }}} */
 
 /* {{{ main */
@@ -337,6 +399,11 @@ on_key_press (ClutterActor *stage,
     case CLUTTER_KEY_Down:
       item = example_menu_select_next ((ExampleMenu *) menu);
       clutter_actor_get_position (item, &p.x, &p.y);
+      break;
+
+    case CLUTTER_KEY_Return:
+    case CLUTTER_KEY_KP_Enter:
+      example_menu_activate_item ((ExampleMenu *) menu);
       break;
     }
 
