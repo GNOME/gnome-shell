@@ -15183,7 +15183,7 @@ clutter_actor_transform_stage_point (ClutterActor *self,
       dy2 = v[2].y - v[3].y;
 
       det = DET (dx1, dx2, dy1, dy2);
-      if ((int) det == 0)
+      if (CLUTTER_NEARBYINT (det) == 0)
 	return FALSE;
 
       RQ[0][2] = DET (px, dx2, py, dy2) / det;
@@ -15229,7 +15229,7 @@ clutter_actor_transform_stage_point (ClutterActor *self,
   det = (RQ[0][0] * ST[0][0])
       + (RQ[0][1] * ST[0][1])
       + (RQ[0][2] * ST[0][2]);
-  if ((int) det == 0)
+  if (CLUTTER_NEARBYINT (det) == 0)
     return FALSE;
 
   /*
