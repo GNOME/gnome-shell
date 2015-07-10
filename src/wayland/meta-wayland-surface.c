@@ -1073,6 +1073,13 @@ wl_surface_destructor (struct wl_resource *resource)
   meta_wayland_compositor_repick (compositor);
 }
 
+static void
+surface_actor_painting (MetaSurfaceActorWayland *surface_actor,
+                        MetaWaylandSurface      *surface)
+{
+  meta_wayland_surface_update_outputs (surface);
+}
+
 MetaWaylandSurface *
 meta_wayland_surface_create (MetaWaylandCompositor *compositor,
                              struct wl_client      *client,
@@ -1091,6 +1098,12 @@ meta_wayland_surface_create (MetaWaylandCompositor *compositor,
   surface->surface_actor = g_object_ref_sink (meta_surface_actor_wayland_new (surface));
 
   wl_list_init (&surface->pending_frame_callback_list);
+
+  g_signal_connect_object (surface->surface_actor,
+                           "painting",
+                           G_CALLBACK (surface_actor_painting),
+                           surface,
+                           0);
 
   sync_drag_dest_funcs (surface);
 
