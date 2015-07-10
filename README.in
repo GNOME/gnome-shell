@@ -69,31 +69,29 @@ The official Clutter website is:
 
 The API references for the latest stable release are available at:
 
-   http://docs.clutter-project.org/docs/clutter/stable/
-   http://docs.clutter-project.org/docs/cogl/stable/
-   http://docs.clutter-project.org/docs/cally/stable/
+   https://developer.gnome.org/clutter/stable/
+   https://developer.gnome.org/cogl/stable/
 
 The Clutter Cookbook is available at:
 
-   http://docs.clutter-project.org/docs/clutter-cookbook/@CLUTTER_API_VERSION@/
+   https://developer.gnome.org/clutter-cookbook/
 
 New releases of Clutter are available at:
 
-   http://source.clutter-project.org/sources/clutter/
-   http://download.gnome.org/sources/clutter/
+   https://download.gnome.org/sources/clutter/
 
 The Clutter blog is available at:
 
-   http://www.clutter-project.org/blog/
+   http://www.clutter-project.org/
 
-To subscribe to the Clutter mailing lists and read the archives, use the
+To subscribe to the Clutter mailing list and read the archives, use the
 Mailman web interface available at:
 
-   http://lists.clutter-project.org/
+   https://mail.gnome.org/mailman/listinfo/clutter-list
 
 New bug page on Bugzilla:
 
-   http://bugzilla.gnome.org/enter_bug.cgi?product=clutter
+   https://bugzilla.gnome.org/enter_bug.cgi?product=clutter
 
 Clutter is licensed under the terms of the GNU Lesser General Public
 License, version 2.1 or (at your option) later.
@@ -115,7 +113,7 @@ value.
 
 See also the wiki page:
 
-  http://wiki.clutter-project.org/wiki/BuildingClutter
+  https://wiki.gnome.org/Projects/Clutter
 
 Clutter has additional command line options for the configure script:
 
