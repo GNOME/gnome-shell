@@ -36,6 +36,7 @@
 #include "meta-monitor-manager-kms.h"
 #include "meta-cursor-renderer-native.h"
 #include "meta-launcher.h"
+#include "backends/meta-cursor-tracker-private.h"
 #include "backends/meta-pointer-constraint.h"
 
 #include <stdlib.h>
@@ -279,11 +280,16 @@ meta_backend_native_warp_pointer (MetaBackend *backend,
 {
   ClutterDeviceManager *manager = clutter_device_manager_get_default ();
   ClutterInputDevice *device = clutter_device_manager_get_core_device (manager, CLUTTER_POINTER_DEVICE);
+  MetaCursorTracker *tracker = meta_cursor_tracker_get_for_screen (NULL);
 
   /* XXX */
   guint32 time_ = 0;
 
+  /* Warp the input device pointer state. */
   clutter_evdev_warp_pointer (device, time_, x, y);
+
+  /* Warp displayed pointer cursor. */
+  meta_cursor_tracker_update_position (tracker, x, y);
 }
 
 static void
