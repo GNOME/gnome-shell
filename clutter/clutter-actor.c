@@ -20895,3 +20895,138 @@ clutter_actor_bind_model (ClutterActor                *self,
                                             g_list_model_get_n_items (priv->child_model),
                                             self);
 }
+
+typedef struct {
+  GType child_type;
+  GArray *props;
+} BindClosure;
+
+typedef struct {
+  const char *model_property;
+  const char *child_property;
+  GBindingFlags flags;
+} BindProperty;
+
+static void
+bind_closure_free (gpointer data_)
+{
+  BindClosure *data = data_;
+
+  if (data == NULL)
+    return;
+
+  g_array_unref (data->props);
+  g_slice_free (BindClosure, data);
+}
+
+static ClutterActor *
+bind_child_with_properties (gpointer item,
+                            gpointer data_)
+{
+  BindClosure *data = data_;
+  ClutterActor *res;
+  guint i;
+
+  res = g_object_new (data->child_type, NULL);
+
+  for (i = 0; i < data->props->len; i++)
+    {
+      const BindProperty *prop = &g_array_index (data->props, BindProperty, i);
+
+      g_object_bind_property (item, prop->model_property,
+                              res, prop->child_property,
+                              prop->flags);
+    }
+
+  return res;
+}
+
+/**
+ * clutter_actor_bind_model_with_properties:
+ * @self: a #ClutterActor
+ * @model: a #GListModel
+ * @child_type: the type of #ClutterActor to use when creating
+ *   children mapping to items inside the @model
+ * @first_model_property: the first property of @model to bind
+ * @...: tuples of property names on the @model, on the child, and the
+ *   #GBindingFlags used to bind them, terminated by %NULL
+ *
+ * Binds a #GListModel to a #ClutterActor.
+ *
+ * Unlike clutter_actor_bind_model(), this function automatically creates
+ * a child #ClutterActor of type @child_type, and binds properties on the
+ * items inside the @model to the corresponding properties on the child,
+ * for instance:
+ *
+ * |[<!-- language="C" -->
+ *   clutter_actor_bind_model_with_properties (actor, model,
+ *                                             MY_TYPE_CHILD_VIEW,
+ *                                             "label", "text", G_BINDING_DEFAULT | G_BINDING_SYNC_CREATE,
+ *                                             "icon", "image", G_BINDING_DEFAULT | G_BINDING_SYNC_CREATE,
+ *                                             "selected", "selected", G_BINDING_BIDIRECTIONAL,
+ *                                             "active", "active", G_BINDING_BIDIRECTIONAL,
+ *                                             NULL);
+ * ]|
+ *
+ * is the equivalent of calling clutter_actor_bind_model() with a
+ * #ClutterActorCreateChildFunc of:
+ *
+ * |[<!-- language="C" -->
+ *   ClutterActor *res = g_object_new (MY_TYPE_CHILD_VIEW, NULL);
+ *
+ *   g_object_bind_property (item, "label", res, "text", G_BINDING_DEFAULT | G_BINDING_SYNC_CREATE);
+ *   g_object_bind_property (item, "icon", res, "image", G_BINDING_DEFAULT | G_BINDING_SYNC_CREATE);
+ *   g_object_bind_property (item, "selected", res, "selected", G_BINDING_BIDIRECTIONAL);
+ *   g_object_bind_property (item, "active", res, "active", G_BINDING_BIDIRECTIONAL);
+ *
+ *   return res;
+ * ]|
+ *
+ * If the #ClutterActor was already bound to a #GListModel, the previous
+ * binding is destroyed.
+ *
+ * When a #ClutterActor is bound to a model, adding and removing children
+ * directly is undefined behaviour.
+ *
+ * See also: clutter_actor_bind_model()
+ *
+ * Since: 1.24
+ */
+void
+clutter_actor_bind_model_with_properties (ClutterActor *self,
+                                          GListModel   *model,
+                                          GType         child_type,
+                                          const char   *first_model_property,
+                                          ...)
+{
+  va_list args;
+  BindClosure *clos;
+  const char *model_property;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  g_return_if_fail (G_IS_LIST_MODEL (model));
+  g_return_if_fail (g_type_is_a (child_type, CLUTTER_TYPE_ACTOR));
+
+  clos = g_slice_new0 (BindClosure);
+  clos->child_type = child_type;
+  clos->props = g_array_new (FALSE, FALSE, sizeof (BindProperty));
+
+  va_start (args, first_model_property);
+  model_property = first_model_property;
+  while (model_property != NULL)
+    {
+      const char *child_property = va_arg (args, char *);
+      GBindingFlags binding_flags = va_arg (args, guint);
+      BindProperty bind;
+
+      bind.model_property = g_intern_string (model_property);
+      bind.child_property = g_intern_string (child_property);
+      bind.flags = binding_flags;
+
+      g_array_append_val (clos->props, bind);
+
+      model_property = va_arg (args, char *);
+    }
+
+  clutter_actor_bind_model (self, model, bind_child_with_properties, clos, bind_closure_free);
+}

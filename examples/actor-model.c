@@ -430,27 +430,6 @@ on_model_item_selection (GObject    *model_item,
 }
 
 static ClutterActor *
-create_menu_item (gpointer item,
-                  gpointer data G_GNUC_UNUSED)
-{
-  ClutterActor *res = g_object_new (EXAMPLE_TYPE_MENU_ITEM_VIEW, NULL);
-
-  /* The label goes from the model to the view */
-  g_object_bind_property (item, "label",
-                          res, "text",
-                          G_BINDING_DEFAULT | G_BINDING_SYNC_CREATE);
-
-  /* The selected state goes in either direction */
-  g_object_bind_property (item, "selected",
-                          res, "selected",
-                          G_BINDING_BIDIRECTIONAL | G_BINDING_SYNC_CREATE);
-
-  g_signal_connect (item, "notify::selected", G_CALLBACK (on_model_item_selection), NULL);
-
-  return res;
-}
-
-static ClutterActor *
 create_menu_actor (void)
 {
   /* Our store of menu item models */
@@ -469,6 +448,10 @@ create_menu_actor (void)
 
       g_list_store_append (model, item);
 
+      g_signal_connect (item, "notify::selected",
+                        G_CALLBACK (on_model_item_selection),
+                        NULL);
+
       g_object_unref (item);
       g_free (label);
     }
@@ -477,9 +460,11 @@ create_menu_actor (void)
    * create ClutterActor views of each item in the model, and add them
    * to the menu actor
    */
-  clutter_actor_bind_model (menu, G_LIST_MODEL (model),
-                            create_menu_item,
-                            NULL, NULL);
+  clutter_actor_bind_model_with_properties (menu, G_LIST_MODEL (model),
+                                            EXAMPLE_TYPE_MENU_ITEM_VIEW,
+                                            "label", "text", G_BINDING_DEFAULT | G_BINDING_SYNC_CREATE,
+                                            "selected", "selected", G_BINDING_BIDIRECTIONAL | G_BINDING_SYNC_CREATE,
+                                            NULL);
 
   /* We don't need a pointer to the model any more, so we transfer ownership
    * to the menu actor; this means that the model will go away when the menu

@@ -467,6 +467,7 @@ clutter_actor_iter_remove
 clutter_actor_iter_destroy
 ClutterActorCreateChildFunc
 clutter_actor_bind_model
+clutter_actor_bind_model_with_properties
 
 <SUBSECTION>
 clutter_actor_save_easing_state

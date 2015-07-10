@@ -877,6 +877,12 @@ void                            clutter_actor_bind_model                        
                                                                                  ClutterActorCreateChildFunc create_child_func,
                                                                                  gpointer                    user_data,
                                                                                  GDestroyNotify              notify);
+CLUTTER_AVAILABLE_IN_1_24
+void                            clutter_actor_bind_model_with_properties        (ClutterActor               *self,
+                                                                                 GListModel                 *model,
+                                                                                 GType                       child_type,
+                                                                                 const char                 *first_model_property,
+                                                                                 ...);
 
 G_END_DECLS
 
