@@ -535,6 +535,9 @@ const LoginDialog = new Lang.Class({
         let centerX = dialogBox.x1 + (dialogBox.x2 - dialogBox.x1) / 2;
         let centerY = dialogBox.y1 + (dialogBox.y2 - dialogBox.y1) / 2;
 
+        natWidth = Math.min(natWidth, dialogBox.x2 - dialogBox.x1);
+        natHeight = Math.min(natHeight, dialogBox.y2 - dialogBox.y1);
+
         actorBox.x1 = Math.floor(centerX - natWidth / 2);
         actorBox.y1 = Math.floor(centerY - natHeight / 2);
         actorBox.x2 = actorBox.x1 + natWidth;
