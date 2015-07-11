@@ -218,7 +218,7 @@ actor_raise_child (void)
   g_assert_cmpstr (clutter_actor_get_name (clutter_actor_get_child_at_index (actor, 2)),
                    ==,
                    "bar");
-  g_assert (!CLUTTER_ACTOR_IS_VISIBLE (iter));
+  g_assert (!clutter_actor_is_visible (iter));
   g_object_get (iter, "show-on-set-parent", &show_on_set_parent, NULL);
   g_assert (!show_on_set_parent);
 
@@ -235,7 +235,7 @@ actor_raise_child (void)
   g_assert_cmpstr (clutter_actor_get_name (clutter_actor_get_child_at_index (actor, 2)),
                    ==,
                    "foo");
-  g_assert (!CLUTTER_ACTOR_IS_VISIBLE (iter));
+  g_assert (!clutter_actor_is_visible (iter));
   g_object_get (iter, "show-on-set-parent", &show_on_set_parent, NULL);
   g_assert (!show_on_set_parent);
 
@@ -284,7 +284,7 @@ actor_lower_child (void)
   g_assert_cmpstr (clutter_actor_get_name (clutter_actor_get_child_at_index (actor, 2)),
                    ==,
                    "baz");
-  g_assert (!CLUTTER_ACTOR_IS_VISIBLE (iter));
+  g_assert (!clutter_actor_is_visible (iter));
   g_object_get (iter, "show-on-set-parent", &show_on_set_parent, NULL);
   g_assert (!show_on_set_parent);
 
@@ -300,7 +300,7 @@ actor_lower_child (void)
   g_assert_cmpstr (clutter_actor_get_name (clutter_actor_get_child_at_index (actor, 2)),
                    ==,
                    "foo");
-  g_assert (!CLUTTER_ACTOR_IS_VISIBLE (iter));
+  g_assert (!clutter_actor_is_visible (iter));
   g_object_get (iter, "show-on-set-parent", &show_on_set_parent, NULL);
   g_assert (!show_on_set_parent);
 
