@@ -441,13 +441,13 @@ cally_actor_ref_state_set (AtkObject *obj)
     }
   else
     {
-      if (CLUTTER_ACTOR_IS_REACTIVE (actor))
+      if (clutter_actor_get_reactive (actor))
         {
           atk_state_set_add_state (state_set, ATK_STATE_SENSITIVE);
           atk_state_set_add_state (state_set, ATK_STATE_ENABLED);
         }
 
-      if (CLUTTER_ACTOR_IS_VISIBLE (actor))
+      if (clutter_actor_is_visible (actor))
         {
           atk_state_set_add_state (state_set, ATK_STATE_VISIBLE);
 
@@ -1013,17 +1013,17 @@ cally_actor_real_notify_clutter (GObject    *obj,
   if (g_strcmp0 (pspec->name, "visible") == 0)
     {
       state = ATK_STATE_VISIBLE;
-      value = CLUTTER_ACTOR_IS_VISIBLE (actor);
+      value = clutter_actor_is_visible (actor);
     }
   else if (g_strcmp0 (pspec->name, "mapped") == 0)
     {
       state = ATK_STATE_SHOWING;
-      value = CLUTTER_ACTOR_IS_MAPPED (actor);
+      value = clutter_actor_is_mapped (actor);
     }
   else if (g_strcmp0 (pspec->name, "reactive") == 0)
     {
       state = ATK_STATE_SENSITIVE;
-      value = CLUTTER_ACTOR_IS_REACTIVE (actor);
+      value = clutter_actor_get_reactive (actor);
     }
   else
     return;

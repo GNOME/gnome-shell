@@ -2270,7 +2270,7 @@ _cally_misc_layout_get_default_attributes (AtkAttributeSet *attrib_set,
                                           value);
 
   value = g_strdup (atk_text_attribute_get_value (ATK_TEXT_ATTR_INVISIBLE,
-                                                  !CLUTTER_ACTOR_IS_VISIBLE (clutter_text)));
+                                                  !clutter_actor_is_visible (CLUTTER_ACTOR (clutter_text))));
   attrib_set = _cally_misc_add_attribute (attrib_set,
                                           ATK_TEXT_ATTR_INVISIBLE, value);
 
