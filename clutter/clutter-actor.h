@@ -60,7 +60,9 @@ G_BEGIN_DECLS
  *   newly written code. #ClutterActor will take care of setting the
  *   internal state.
  */
-#define CLUTTER_ACTOR_SET_FLAGS(a,f)    (((ClutterActor*)(a))->flags |= (f))
+#define CLUTTER_ACTOR_SET_FLAGS(a,f) \
+  CLUTTER_MACRO_DEPRECATED_IN_1_24 \
+  (((ClutterActor*)(a))->flags |= (f))
 
 /**
  * CLUTTER_ACTOR_UNSET_FLAGS:
@@ -73,12 +75,25 @@ G_BEGIN_DECLS
  *   newly written code. #ClutterActor will take care of unsetting the
  *   internal state.
  */
-#define CLUTTER_ACTOR_UNSET_FLAGS(a,f)  (((ClutterActor*)(a))->flags &= ~(f))
+#define CLUTTER_ACTOR_UNSET_FLAGS(a,f) \
+  CLUTTER_MACRO_DEPRECATED_IN_1_24 \
+  (((ClutterActor*)(a))->flags &= ~(f))
 
-#define CLUTTER_ACTOR_IS_MAPPED(a)      ((((ClutterActor*)(a))->flags & CLUTTER_ACTOR_MAPPED) != FALSE)
-#define CLUTTER_ACTOR_IS_REALIZED(a)    ((((ClutterActor*)(a))->flags & CLUTTER_ACTOR_REALIZED) != FALSE)
-#define CLUTTER_ACTOR_IS_VISIBLE(a)     ((((ClutterActor*)(a))->flags & CLUTTER_ACTOR_VISIBLE) != FALSE)
-#define CLUTTER_ACTOR_IS_REACTIVE(a)    ((((ClutterActor*)(a))->flags & CLUTTER_ACTOR_REACTIVE) != FALSE)
+#define CLUTTER_ACTOR_IS_MAPPED(a) \
+  CLUTTER_MACRO_DEPRECATED_IN_1_24_FOR ("Deprecated macro. Use clutter_actor_is_mapped instead") \
+  ((((ClutterActor*)(a))->flags & CLUTTER_ACTOR_MAPPED) != FALSE)
+
+#define CLUTTER_ACTOR_IS_REALIZED(a) \
+  CLUTTER_MACRO_DEPRECATED_IN_1_24_FOR ("Deprecated macro. Use clutter_actor_is_realized instead") \
+  ((((ClutterActor*)(a))->flags & CLUTTER_ACTOR_REALIZED) != FALSE)
+
+#define CLUTTER_ACTOR_IS_VISIBLE(a) \
+  CLUTTER_MACRO_DEPRECATED_IN_1_24_FOR ("Deprecated macro. Use clutter_actor_is_visible instead") \
+  ((((ClutterActor*)(a))->flags & CLUTTER_ACTOR_VISIBLE) != FALSE)
+
+#define CLUTTER_ACTOR_IS_REACTIVE(a) \
+  CLUTTER_MACRO_DEPRECATED_IN_1_24_FOR ("Deprecated macro. Use clutter_actor_get_reactive instead") \
+  ((((ClutterActor*)(a))->flags & CLUTTER_ACTOR_REACTIVE) != FALSE)
 
 typedef struct _ClutterActorClass    ClutterActorClass;
 typedef struct _ClutterActorPrivate  ClutterActorPrivate;
