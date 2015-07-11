@@ -818,11 +818,12 @@ _clutter_backend_ensure_context (ClutterBackend *backend,
   g_assert (CLUTTER_IS_BACKEND (backend));
   g_assert (CLUTTER_IS_STAGE (stage));
 
-  if (current_context_stage != stage || !CLUTTER_ACTOR_IS_REALIZED (stage))
+  if (current_context_stage != stage ||
+      !clutter_actor_is_realized (CLUTTER_ACTOR (stage)))
     {
       ClutterStage *new_stage = NULL;
 
-      if (!CLUTTER_ACTOR_IS_REALIZED (stage))
+      if (!clutter_actor_is_realized (CLUTTER_ACTOR (stage)))
         {
           new_stage = NULL;
 
