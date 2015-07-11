@@ -1980,9 +1980,9 @@ clutter_event_get_gesture_motion_delta (const ClutterEvent *event,
                                         gdouble            *dx,
                                         gdouble            *dy)
 {
-  g_return_val_if_fail (event != NULL, FALSE);
-  g_return_val_if_fail (event->type == CLUTTER_TOUCHPAD_PINCH ||
-                        event->type == CLUTTER_TOUCHPAD_SWIPE, FALSE);
+  g_return_if_fail (event != NULL);
+  g_return_if_fail (event->type == CLUTTER_TOUCHPAD_PINCH ||
+                    event->type == CLUTTER_TOUCHPAD_SWIPE);
 
   if (event->type == CLUTTER_TOUCHPAD_PINCH)
     {
