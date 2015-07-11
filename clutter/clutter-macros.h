@@ -100,6 +100,9 @@
 #define _CLUTTER_GNUC_DO_PRAGMA(x) _Pragma(G_STRINGIFY (x))
 #define _CLUTTER_DEPRECATED_MACRO _CLUTTER_GNUC_DO_PRAGMA(GCC warning "Deprecated macro")
 #define _CLUTTER_DEPRECATED_MACRO_FOR(f) _CLUTTER_GNUC_DO_PRAGMA(GCC warning #f)
+#else
+#define _CLUTTER_DEPRECATED_MACRO
+#define _CLUTTER_DEPRECATED_MACRO_FOR(f)
 #endif
 
 /* these macros are used to mark deprecated functions, and thus have to be
