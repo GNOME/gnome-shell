@@ -388,7 +388,7 @@ clutter_master_clock_gdk_stage_realized (ClutterStage          *stage,
                                          GParamSpec            *spec,
                                          ClutterMasterClockGdk *master_clock)
 {
-  if (CLUTTER_ACTOR_IS_REALIZED (stage))
+  if (clutter_actor_is_realized (CLUTTER_ACTOR (stage)))
     clutter_master_clock_gdk_listen_to_stage (master_clock, stage);
   else
     clutter_master_clock_gdk_remove_stage_clock (master_clock, stage);
