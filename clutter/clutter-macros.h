@@ -96,7 +96,8 @@
 #define _CLUTTER_EXTERN extern
 #endif
 
-#if __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 6)
+#if __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 6) || \
+  __clang_major__ > 3 || (__clang_major__ == 3 && __clang_minor__ >= 4)
 #define _CLUTTER_GNUC_DO_PRAGMA(x) _Pragma(G_STRINGIFY (x))
 #define _CLUTTER_DEPRECATED_MACRO _CLUTTER_GNUC_DO_PRAGMA(GCC warning "Deprecated macro")
 #define _CLUTTER_DEPRECATED_MACRO_FOR(f) _CLUTTER_GNUC_DO_PRAGMA(GCC warning #f)
