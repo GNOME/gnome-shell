@@ -67,6 +67,8 @@ meta_cursor_image_free (MetaCursorImage *image)
 static void
 meta_cursor_reference_free (MetaCursorReference *self)
 {
+  if (self->xcursor_images)
+    XcursorImagesDestroy (self->xcursor_images);
   meta_cursor_image_free (&self->image);
   g_slice_free (MetaCursorReference, self);
 }
@@ -135,12 +137,12 @@ meta_cursor_create_x_cursor (Display    *xdisplay,
   return XcursorLibraryLoadCursor (xdisplay, translate_meta_cursor (cursor));
 }
 
-static XcursorImage *
+static XcursorImages *
 load_cursor_on_client (MetaCursor cursor)
 {
-  return XcursorLibraryLoadImage (translate_meta_cursor (cursor),
-                                  meta_prefs_get_cursor_theme (),
-                                  meta_prefs_get_cursor_size ());
+  return XcursorLibraryLoadImages (translate_meta_cursor (cursor),
+                                   meta_prefs_get_cursor_theme (),
+                                   meta_prefs_get_cursor_size ());
 }
 
 #ifdef HAVE_NATIVE_BACKEND
@@ -256,6 +258,46 @@ meta_cursor_image_load_from_xcursor_image (MetaCursorImage   *image,
 #endif
 }
 
+static XcursorImage *
+meta_cursor_reference_get_current_frame_image (MetaCursorReference *self)
+{
+  return self->xcursor_images->images[self->current_frame];
+}
+
+void
+meta_cursor_reference_tick_frame (MetaCursorReference *self)
+{
+  XcursorImage *image;
+
+  if (!meta_cursor_reference_is_animated (self))
+    return;
+
+  self->current_frame++;
+
+  if (self->current_frame >= self->xcursor_images->nimage)
+    self->current_frame = 0;
+
+  meta_cursor_image_free (&self->image);
+  image = meta_cursor_reference_get_current_frame_image (self);
+  meta_cursor_image_load_from_xcursor_image (&self->image, image);
+}
+
+guint
+meta_cursor_reference_get_current_frame_time (MetaCursorReference *self)
+{
+  if (!meta_cursor_reference_is_animated (self))
+    return 0;
+
+  return self->xcursor_images->images[self->current_frame]->delay;
+}
+
+gboolean
+meta_cursor_reference_is_animated (MetaCursorReference *self)
+{
+  return (self->xcursor_images &&
+          self->xcursor_images->nimage > 1);
+}
+
 static void
 load_cursor_image (MetaCursorReference *cursor)
 {
@@ -266,12 +308,16 @@ load_cursor_image (MetaCursorReference *cursor)
    * load this directly. */
   g_assert (cursor->cursor != META_CURSOR_NONE);
 
-  image = load_cursor_on_client (cursor->cursor);
-  if (!image)
-    return;
+  if (!cursor->xcursor_images)
+    {
+      cursor->current_frame = 0;
+      cursor->xcursor_images = load_cursor_on_client (cursor->cursor);
+      if (!cursor->xcursor_images)
+        return;
+    }
 
+  image = meta_cursor_reference_get_current_frame_image (cursor);
   meta_cursor_image_load_from_xcursor_image (&cursor->image, image);
-  XcursorImageDestroy (image);
 }
 
 MetaCursorReference *

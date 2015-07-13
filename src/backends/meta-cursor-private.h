@@ -24,6 +24,7 @@
 
 #include "meta-cursor.h"
 
+#include <X11/Xcursor/Xcursor.h>
 #include <cogl/cogl.h>
 
 #ifdef HAVE_NATIVE_BACKEND
@@ -42,6 +43,8 @@ typedef struct {
 struct _MetaCursorReference {
   int ref_count;
 
+  int current_frame;
+  XcursorImages *xcursor_images;
   MetaCursor cursor;
   MetaCursorImage image;
 };
@@ -55,5 +58,9 @@ struct gbm_bo *meta_cursor_reference_get_gbm_bo (MetaCursorReference *cursor,
                                                  int                 *hot_x,
                                                  int                 *hot_y);
 #endif
+
+gboolean meta_cursor_reference_is_animated            (MetaCursorReference *self);
+void     meta_cursor_reference_tick_frame             (MetaCursorReference *self);
+guint    meta_cursor_reference_get_current_frame_time (MetaCursorReference *self);
 
 #endif /* META_CURSOR_PRIVATE_H */
