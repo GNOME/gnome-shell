@@ -15056,13 +15056,16 @@ clutter_actor_set_final_state (ClutterAnimatable *animatable,
 
       pspec = g_object_class_find_property (obj_class, property_name);
 
-      if ((pspec->flags & CLUTTER_PARAM_ANIMATABLE) != 0)
+      if (pspec != NULL)
         {
-          /* XXX - I'm going to the special hell for this */
-          clutter_actor_set_animatable_property (actor, pspec->param_id, final, pspec);
+          if ((pspec->flags & CLUTTER_PARAM_ANIMATABLE) != 0)
+            {
+              /* XXX - I'm going to the special hell for this */
+              clutter_actor_set_animatable_property (actor, pspec->param_id, final, pspec);
+            }
+          else
+            g_object_set_property (G_OBJECT (animatable), pspec->name, final);
         }
-      else
-        g_object_set_property (G_OBJECT (animatable), pspec->name, final);
     }
 
   g_free (p_name);
