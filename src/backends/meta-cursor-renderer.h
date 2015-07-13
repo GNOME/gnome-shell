@@ -61,6 +61,7 @@ void meta_cursor_renderer_set_cursor (MetaCursorRenderer  *renderer,
 
 void meta_cursor_renderer_set_position (MetaCursorRenderer *renderer,
                                         int x, int y);
+void meta_cursor_renderer_force_update (MetaCursorRenderer *renderer);
 
 MetaCursorReference * meta_cursor_renderer_get_cursor (MetaCursorRenderer *renderer);
 const MetaRectangle * meta_cursor_renderer_get_rect (MetaCursorRenderer *renderer);

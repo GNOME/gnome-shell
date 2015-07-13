@@ -145,6 +145,13 @@ meta_cursor_renderer_set_cursor (MetaCursorRenderer  *renderer,
 }
 
 void
+meta_cursor_renderer_force_update (MetaCursorRenderer *renderer)
+{
+  update_cursor (renderer);
+  queue_redraw (renderer);
+}
+
+void
 meta_cursor_renderer_set_position (MetaCursorRenderer *renderer,
                                    int x, int y)
 {
