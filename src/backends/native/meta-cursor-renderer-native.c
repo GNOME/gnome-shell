@@ -43,6 +43,9 @@ struct _MetaCursorRendererNativePrivate
 {
   gboolean has_hw_cursor;
 
+  MetaCursorReference *last_cursor;
+  guint animation_timeout_id;
+
   int drm_fd;
   struct gbm_device *gbm;
 
@@ -58,6 +61,9 @@ meta_cursor_renderer_native_finalize (GObject *object)
 {
   MetaCursorRendererNative *renderer = META_CURSOR_RENDERER_NATIVE (object);
   MetaCursorRendererNativePrivate *priv = meta_cursor_renderer_native_get_instance_private (renderer);
+
+  if (priv->animation_timeout_id)
+    g_source_remove (priv->animation_timeout_id);
 
   if (priv->gbm)
     gbm_device_destroy (priv->gbm);
@@ -148,10 +154,64 @@ should_have_hw_cursor (MetaCursorRenderer *renderer)
 }
 
 static gboolean
+meta_cursor_renderer_native_update_animation (MetaCursorRendererNative *native)
+{
+  MetaCursorRendererNativePrivate *priv = meta_cursor_renderer_native_get_instance_private (native);
+  MetaCursorReference *cursor;
+
+  priv->animation_timeout_id = 0;
+  cursor = meta_cursor_renderer_get_cursor (META_CURSOR_RENDERER (native));
+  meta_cursor_reference_tick_frame (cursor);
+  meta_cursor_renderer_force_update (META_CURSOR_RENDERER (native));
+  meta_cursor_renderer_native_force_update (native);
+
+  return G_SOURCE_REMOVE;
+}
+
+static void
+meta_cursor_renderer_native_trigger_frame (MetaCursorRendererNative *native)
+{
+  MetaCursorRendererNativePrivate *priv = meta_cursor_renderer_native_get_instance_private (native);
+  MetaCursorReference *cursor;
+  gboolean cursor_change;
+  guint delay;
+
+  cursor = meta_cursor_renderer_get_cursor (META_CURSOR_RENDERER (native));
+  cursor_change = cursor != priv->last_cursor;
+  priv->last_cursor = cursor;
+
+  if (!cursor_change && priv->animation_timeout_id)
+    return;
+
+  if (priv->animation_timeout_id)
+    {
+      g_source_remove (priv->animation_timeout_id);
+      priv->animation_timeout_id = 0;
+    }
+
+  if (cursor && meta_cursor_reference_is_animated (cursor))
+    {
+      delay = meta_cursor_reference_get_current_frame_time (cursor);
+
+      if (delay == 0)
+        return;
+
+      priv->animation_timeout_id =
+        g_timeout_add (delay,
+                       (GSourceFunc) meta_cursor_renderer_native_update_animation,
+                       native);
+      g_source_set_name_by_id (priv->animation_timeout_id,
+                               "[mutter] meta_cursor_renderer_native_update_animation");
+    }
+}
+
+static gboolean
 meta_cursor_renderer_native_update_cursor (MetaCursorRenderer *renderer)
 {
   MetaCursorRendererNative *native = META_CURSOR_RENDERER_NATIVE (renderer);
   MetaCursorRendererNativePrivate *priv = meta_cursor_renderer_native_get_instance_private (native);
+
+  meta_cursor_renderer_native_trigger_frame (native);
 
   priv->has_hw_cursor = should_have_hw_cursor (renderer);
   update_hw_cursor (native, FALSE);
