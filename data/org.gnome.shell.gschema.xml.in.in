@@ -50,7 +50,7 @@
       <_summary>History for command (Alt-F2) dialog</_summary>
     </key>
     <key name="looking-glass-history" type="as">
-      <default>[]</default>
+      <default><!-- Translators: looking glass is a debugger and inspector tool, see https://live.gnome.org/GnomeShell/LookingGlass -->[]</default>
       <_summary>History for the looking glass dialog</_summary>
     </key>
     <key name="always-show-log-out" type="b">
