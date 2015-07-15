@@ -668,9 +668,10 @@ _cogl_winsys_egl_display_setup (CoglDisplay *display,
                          NULL,
                          0, /* n excluded connectors */
                          error);
-  kms_display->outputs = g_list_append (kms_display->outputs, output0);
   if (!output0)
     return FALSE;
+
+  kms_display->outputs = g_list_append (kms_display->outputs, output0);
 
   if (getenv ("COGL_KMS_MIRROR"))
     mirror = TRUE;
