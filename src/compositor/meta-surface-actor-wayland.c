@@ -108,10 +108,10 @@ meta_surface_actor_wayland_get_scale (MetaSurfaceActorWayland *actor)
 {
    MetaSurfaceActorWaylandPrivate *priv = meta_surface_actor_wayland_get_instance_private (actor);
    MetaWaylandSurface *surface = priv->surface;
-   MetaWindow *window = surface->window;
+   MetaWindow *window = NULL;
    int output_scale = 1;
 
-   if (!priv->surface)
+   if (!surface)
      return 1;
 
    while (surface)
