@@ -112,7 +112,6 @@ const Overview = new Lang.Class({
         // one. Instances of this class share a single CoglTexture behind the
         // scenes which allows us to show the background with different
         // rendering options without duplicating the texture data.
-        let monitor = Main.layoutManager.primaryMonitor;
 
         let layout = new Clutter.BinLayout();
         this._stack = new Clutter.Actor({ layout_manager: layout });
