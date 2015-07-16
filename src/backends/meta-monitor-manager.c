@@ -1416,25 +1416,35 @@ meta_output_parse_edid (MetaOutput *meta_output,
   if (parsed_edid)
     {
       meta_output->vendor = g_strndup (parsed_edid->manufacturer_code, 4);
-      if (parsed_edid->dsc_product_name[0])
-        meta_output->product = g_strndup (parsed_edid->dsc_product_name, 14);
-      else
-        meta_output->product = g_strdup_printf ("0x%04x", (unsigned) parsed_edid->product_code);
-      if (parsed_edid->dsc_serial_number[0])
-        meta_output->serial = g_strndup (parsed_edid->dsc_serial_number, 14);
-      else
-        meta_output->serial = g_strdup_printf ("0x%08x", parsed_edid->serial_number);
+      if (!g_utf8_validate (meta_output->vendor, -1, NULL))
+        g_clear_pointer (&meta_output->vendor, g_free);
+
+      meta_output->product = g_strndup (parsed_edid->dsc_product_name, 14);
+      if (!g_utf8_validate (meta_output->product, -1, NULL) ||
+          meta_output->product[0] == '\0')
+        {
+          g_clear_pointer (&meta_output->product, g_free);
+          meta_output->product = g_strdup_printf ("0x%04x", (unsigned) parsed_edid->product_code);
+        }
+
+      meta_output->serial = g_strndup (parsed_edid->dsc_serial_number, 14);
+      if (!g_utf8_validate (meta_output->serial, -1, NULL) ||
+          meta_output->serial[0] == '\0')
+        {
+          g_clear_pointer (&meta_output->serial, g_free);
+          meta_output->serial = g_strdup_printf ("0x%08x", parsed_edid->serial_number);
+        }
 
       g_free (parsed_edid);
     }
 
  out:
   if (!meta_output->vendor)
-    {
-      meta_output->vendor = g_strdup ("unknown");
-      meta_output->product = g_strdup ("unknown");
-      meta_output->serial = g_strdup ("unknown");
-    }
+    meta_output->vendor = g_strdup ("unknown");
+  if (!meta_output->product)
+    meta_output->product = g_strdup ("unknown");
+  if (!meta_output->serial)
+    meta_output->serial = g_strdup ("unknown");
 }
 
 void
