@@ -107,12 +107,6 @@ const Overview = new Lang.Class({
 
         this._overviewCreated = true;
 
-        // The main Background actors are inside global.window_group which are
-        // hidden when displaying the overview, so we create a new
-        // one. Instances of this class share a single CoglTexture behind the
-        // scenes which allows us to show the background with different
-        // rendering options without duplicating the texture data.
-
         let layout = new Clutter.BinLayout();
         this._stack = new Clutter.Actor({ layout_manager: layout });
         this._stack.add_constraint(new LayoutManager.MonitorConstraint({ primary: true }));
@@ -127,6 +121,11 @@ const Overview = new Lang.Class({
                                             y_expand: true });
         this._overview._delegate = this;
 
+        // The main Background actors are inside global.window_group which are
+        // hidden when displaying the overview, so we create a new
+        // one. Instances of this class share a single CoglTexture behind the
+        // scenes which allows us to show the background with different
+        // rendering options without duplicating the texture data.
         this._backgroundGroup = new Meta.BackgroundGroup();
         Main.layoutManager.overviewGroup.add_child(this._backgroundGroup);
         this._bgManagers = [];
