@@ -65,7 +65,6 @@ struct _MetaWaylandPointer
   guint32 focus_serial;
   guint32 click_serial;
 
-  MetaCursorTracker *cursor_tracker;
   MetaWaylandSurface *cursor_surface;
   struct wl_listener cursor_surface_destroy_listener;
   int hotspot_x, hotspot_y;

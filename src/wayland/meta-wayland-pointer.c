@@ -374,8 +374,6 @@ meta_wayland_pointer_init (MetaWaylandPointer *pointer,
 
   manager = clutter_device_manager_get_default ();
   pointer->device = clutter_device_manager_get_core_device (manager, CLUTTER_POINTER_DEVICE);
-
-  pointer->cursor_tracker = meta_cursor_tracker_get_for_screen (NULL);
 }
 
 void
@@ -730,8 +728,7 @@ meta_wayland_pointer_get_relative_coordinates (MetaWaylandPointer *pointer,
 void
 meta_wayland_pointer_update_cursor_surface (MetaWaylandPointer *pointer)
 {
-  if (pointer->cursor_tracker == NULL)
-    return;
+  MetaCursorTracker *cursor_tracker = meta_cursor_tracker_get_for_screen (NULL);
 
   if (pointer->current)
     {
@@ -747,15 +744,14 @@ meta_wayland_pointer_update_cursor_surface (MetaWaylandPointer *pointer)
       else
         cursor_sprite = NULL;
 
-      meta_cursor_tracker_set_window_cursor (pointer->cursor_tracker,
-                                             cursor_sprite);
+      meta_cursor_tracker_set_window_cursor (cursor_tracker, cursor_sprite);
 
       if (cursor_sprite)
         g_object_unref (cursor_sprite);
     }
   else
     {
-      meta_cursor_tracker_unset_window_cursor (pointer->cursor_tracker);
+      meta_cursor_tracker_unset_window_cursor (cursor_tracker);
     }
 }
 
