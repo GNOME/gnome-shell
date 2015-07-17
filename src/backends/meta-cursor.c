@@ -39,18 +39,14 @@
 #include <cogl/cogl-wayland-server.h>
 #endif
 
-typedef struct
-{
-  CoglTexture2D *texture;
-  int hot_x, hot_y;
-} MetaCursorImage;
-
 struct _MetaCursorSprite
 {
   GObject parent;
 
   MetaCursor cursor;
-  MetaCursorImage image;
+
+  CoglTexture2D *texture;
+  int hot_x, hot_y;
 
   int current_frame;
   XcursorImages *xcursor_images;
@@ -59,13 +55,6 @@ struct _MetaCursorSprite
 GType meta_cursor_sprite_get_type (void) G_GNUC_CONST;
 
 G_DEFINE_TYPE (MetaCursorSprite, meta_cursor_sprite, G_TYPE_OBJECT)
-
-static void
-meta_cursor_image_free (MetaCursorImage *image)
-{
-  if (image->texture)
-    cogl_object_unref (image->texture);
-}
 
 static const char *
 translate_meta_cursor (MetaCursor cursor)
@@ -134,13 +123,14 @@ static void
 meta_cursor_sprite_load_from_xcursor_image (MetaCursorSprite *self,
                                             XcursorImage     *xc_image)
 {
-  MetaCursorImage *image = &self->image;
   MetaBackend *meta_backend = meta_get_backend ();
   MetaCursorRenderer *renderer = meta_backend_get_cursor_renderer (meta_backend);
   uint width, height, rowstride;
   CoglPixelFormat cogl_format;
   ClutterBackend *clutter_backend;
   CoglContext *cogl_context;
+
+  g_assert (self->texture == NULL);
 
   width           = xc_image->width;
   height          = xc_image->height;
@@ -152,17 +142,16 @@ meta_cursor_sprite_load_from_xcursor_image (MetaCursorSprite *self,
   cogl_format = COGL_PIXEL_FORMAT_ARGB_8888;
 #endif
 
-  image->hot_x = xc_image->xhot;
-  image->hot_y = xc_image->yhot;
-
   clutter_backend = clutter_get_default_backend ();
   cogl_context = clutter_backend_get_cogl_context (clutter_backend);
-  image->texture = cogl_texture_2d_new_from_data (cogl_context,
-                                                  width, height,
-                                                  cogl_format,
-                                                  rowstride,
-                                                  (uint8_t *) xc_image->pixels,
-                                                  NULL);
+  self->texture = cogl_texture_2d_new_from_data (cogl_context,
+                                                 width, height,
+                                                 cogl_format,
+                                                 rowstride,
+                                                 (uint8_t *) xc_image->pixels,
+                                                 NULL);
+  self->hot_x = xc_image->xhot;
+  self->hot_y = xc_image->yhot;
 
   meta_cursor_renderer_realize_cursor_from_xcursor (renderer, self, xc_image);
 }
@@ -186,8 +175,9 @@ meta_cursor_sprite_tick_frame (MetaCursorSprite *self)
   if (self->current_frame >= self->xcursor_images->nimage)
     self->current_frame = 0;
 
-  meta_cursor_image_free (&self->image);
   image = meta_cursor_sprite_get_current_frame_image (self);
+
+  g_clear_pointer (&self->texture, cogl_object_unref);
   meta_cursor_sprite_load_from_xcursor_image (self, image);
 }
 
@@ -238,9 +228,9 @@ meta_cursor_sprite_from_texture (CoglTexture2D *texture,
 
   cogl_object_ref (texture);
 
-  self->image.texture = texture;
-  self->image.hot_x = hot_x;
-  self->image.hot_y = hot_y;
+  self->texture = texture;
+  self->hot_x = hot_x;
+  self->hot_y = hot_y;
 
   return self;
 }
@@ -252,20 +242,19 @@ meta_cursor_sprite_load_from_buffer (MetaCursorSprite   *self,
                                      int                 hot_x,
                                      int                 hot_y)
 {
-  MetaCursorImage *image = &self->image;
   MetaBackend *meta_backend = meta_get_backend ();
   MetaCursorRenderer *renderer =
     meta_backend_get_cursor_renderer (meta_backend);
   ClutterBackend *backend;
   CoglContext *cogl_context;
 
-  image->hot_x = hot_x;
-  image->hot_y = hot_y;
+  self->hot_x = hot_x;
+  self->hot_y = hot_y;
 
   backend = clutter_get_default_backend ();
   cogl_context = clutter_backend_get_cogl_context (backend);
 
-  image->texture = cogl_wayland_texture_2d_new_from_buffer (cogl_context, buffer, NULL);
+  self->texture = cogl_wayland_texture_2d_new_from_buffer (cogl_context, buffer, NULL);
 
   meta_cursor_renderer_realize_cursor_from_wl_buffer (renderer, self, buffer);
 }
@@ -291,11 +280,11 @@ meta_cursor_sprite_get_cogl_texture (MetaCursorSprite *self,
                                      int              *hot_y)
 {
   if (hot_x)
-    *hot_x = self->image.hot_x;
+    *hot_x = self->hot_x;
   if (hot_y)
-    *hot_y = self->image.hot_y;
+    *hot_y = self->hot_y;
 
-  return COGL_TEXTURE (self->image.texture);
+  return COGL_TEXTURE (self->texture);
 }
 
 MetaCursor
@@ -309,20 +298,20 @@ meta_cursor_sprite_get_hotspot (MetaCursorSprite *self,
                                 int              *hot_x,
                                 int              *hot_y)
 {
-  *hot_x = self->image.hot_x;
-  *hot_y = self->image.hot_y;
+  *hot_x = self->hot_x;
+  *hot_y = self->hot_y;
 }
 
 guint
 meta_cursor_sprite_get_width (MetaCursorSprite *self)
 {
-  return cogl_texture_get_width (COGL_TEXTURE (self->image.texture));
+  return cogl_texture_get_width (COGL_TEXTURE (self->texture));
 }
 
 guint
 meta_cursor_sprite_get_height (MetaCursorSprite *self)
 {
-  return cogl_texture_get_height (COGL_TEXTURE (self->image.texture));
+  return cogl_texture_get_height (COGL_TEXTURE (self->texture));
 }
 
 static void
@@ -337,7 +326,8 @@ meta_cursor_sprite_finalize (GObject *object)
 
   if (self->xcursor_images)
     XcursorImagesDestroy (self->xcursor_images);
-  meta_cursor_image_free (&self->image);
+
+  g_clear_pointer (&self->texture, cogl_object_unref);
 
   G_OBJECT_CLASS (meta_cursor_sprite_parent_class)->finalize (object);
 }
