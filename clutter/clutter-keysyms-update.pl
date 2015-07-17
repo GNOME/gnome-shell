@@ -140,8 +140,10 @@ while (<IN_KEYSYMDEF>)
 	my $compat_binding = $element;
 	$compat_binding =~ s/^XK_/CLUTTER_/g;
 
+	my $deprecation = "CLUTTER_DEPRECATED_MACRO_FOR(\"Deprecated key symbol. Use $binding instead.\")";
+
 	printf OUT_KEYSYMS "#define %s 0x%03x\n", $binding, hex($keysymelements[2]);
-	printf OUT_KEYSYMS_COMPAT "#define %s 0x%03x\n", $compat_binding, hex($keysymelements[2]);
+	printf OUT_KEYSYMS_COMPAT "#define %s 0x%03x %s\n", $compat_binding, hex($keysymelements[2]), $deprecation;
 }
 
 close IN_KEYSYMDEF;
