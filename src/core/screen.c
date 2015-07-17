@@ -43,6 +43,7 @@
 #include <meta/meta-enum-types.h>
 #include "core.h"
 #include "meta-cursor-tracker-private.h"
+#include "boxes-private.h"
 
 #include <X11/extensions/Xinerama.h>
 #include <X11/extensions/Xcomposite.h>
@@ -1255,6 +1256,31 @@ update_num_workspaces (MetaScreen *screen,
   g_object_notify (G_OBJECT (screen), "n-workspaces");
 }
 
+static void
+root_cursor_prepare_at (MetaCursorSprite *cursor_sprite,
+                        int x,
+                        int y,
+                        MetaScreen *screen)
+{
+  const MetaMonitorInfo *monitor;
+
+  monitor = meta_screen_get_monitor_for_point (screen, x, y);
+
+  /* Reload the cursor texture if the scale has changed. */
+  meta_cursor_sprite_set_theme_scale (cursor_sprite, monitor->scale);
+}
+
+static void
+manage_root_cursor_sprite_scale (MetaScreen *screen,
+                                 MetaCursorSprite *cursor_sprite)
+{
+  g_signal_connect_object (cursor_sprite,
+                           "prepare-at",
+                           G_CALLBACK (root_cursor_prepare_at),
+                           screen,
+                           0);
+}
+
 void
 meta_screen_update_cursor (MetaScreen *screen)
 {
@@ -1265,6 +1291,10 @@ meta_screen_update_cursor (MetaScreen *screen)
   MetaCursorTracker *tracker = meta_cursor_tracker_get_for_screen (screen);
 
   cursor_sprite = meta_cursor_sprite_from_theme (cursor);
+
+  if (meta_is_wayland_compositor ())
+    manage_root_cursor_sprite_scale (screen, cursor_sprite);
+
   meta_cursor_tracker_set_root_cursor (tracker, cursor_sprite);
   g_object_unref (cursor_sprite);
 
@@ -1452,6 +1482,25 @@ meta_screen_get_monitor_index_for_rect (MetaScreen    *screen,
 {
   const MetaMonitorInfo *monitor = meta_screen_get_monitor_for_rect (screen, rect);
   return monitor->number;
+}
+
+const MetaMonitorInfo *
+meta_screen_get_monitor_for_point (MetaScreen *screen,
+                                   int         x,
+                                   int         y)
+{
+  int i;
+
+  if (screen->n_monitor_infos == 1)
+    return &screen->monitor_infos[0];
+
+  for (i = 0; i < screen->n_monitor_infos; i++)
+    {
+      if (POINT_IN_RECT (x, y, screen->monitor_infos[i].rect))
+        return &screen->monitor_infos[i];
+    }
+
+  return NULL;
 }
 
 const MetaMonitorInfo*

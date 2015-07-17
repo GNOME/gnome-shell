@@ -152,6 +152,10 @@ const MetaMonitorInfo* meta_screen_get_monitor_for_rect   (MetaScreen    *screen
 const MetaMonitorInfo* meta_screen_calculate_monitor_for_window (MetaScreen    *screen,
                                                                  MetaWindow    *window);
 
+const MetaMonitorInfo* meta_screen_get_monitor_for_point (MetaScreen    *screen,
+                                                          int            x,
+                                                          int            y);
+
 
 const MetaMonitorInfo* meta_screen_get_monitor_neighbor (MetaScreen *screen,
                                                          int         which_monitor,

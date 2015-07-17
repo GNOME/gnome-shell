@@ -40,25 +40,29 @@ typedef struct _MetaCursorRendererX11Private MetaCursorRendererX11Private;
 G_DEFINE_TYPE_WITH_PRIVATE (MetaCursorRendererX11, meta_cursor_renderer_x11, META_TYPE_CURSOR_RENDERER);
 
 static gboolean
-meta_cursor_renderer_x11_update_cursor (MetaCursorRenderer *renderer)
+meta_cursor_renderer_x11_update_cursor (MetaCursorRenderer *renderer,
+                                        MetaCursorSprite   *cursor_sprite)
 {
   MetaCursorRendererX11 *x11 = META_CURSOR_RENDERER_X11 (renderer);
   MetaCursorRendererX11Private *priv = meta_cursor_renderer_x11_get_instance_private (x11);
 
   MetaBackendX11 *backend = META_BACKEND_X11 (meta_get_backend ());
   Window xwindow = meta_backend_x11_get_xwindow (backend);
-
-  if (xwindow == None)
-    return FALSE;
-
   Display *xdisplay = meta_backend_x11_get_xdisplay (backend);
 
-  MetaCursorSprite *cursor_sprite = meta_cursor_renderer_get_cursor (renderer);
+  if (xwindow == None)
+    {
+      if (cursor_sprite)
+        meta_cursor_sprite_realize_texture (cursor_sprite);
+      return FALSE;
+    }
+
   gboolean has_server_cursor = FALSE;
 
   if (cursor_sprite)
     {
       MetaCursor cursor = meta_cursor_sprite_get_meta_cursor (cursor_sprite);
+
       if (cursor != META_CURSOR_NONE)
         {
           Cursor xcursor = meta_cursor_create_x_cursor (xdisplay, cursor);
@@ -79,6 +83,9 @@ meta_cursor_renderer_x11_update_cursor (MetaCursorRenderer *renderer)
 
       priv->server_cursor_visible = has_server_cursor;
     }
+
+  if (!priv->server_cursor_visible && cursor_sprite)
+    meta_cursor_sprite_realize_texture (cursor_sprite);
 
   return priv->server_cursor_visible;
 }

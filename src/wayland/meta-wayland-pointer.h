@@ -73,8 +73,6 @@ struct _MetaWaylandPointer
   guint32 click_serial;
 
   MetaWaylandSurface *cursor_surface;
-  struct wl_listener cursor_surface_destroy_listener;
-  int hotspot_x, hotspot_y;
 
   MetaWaylandPointerGrab *grab;
   MetaWaylandPointerGrab default_grab;
