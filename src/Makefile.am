@@ -45,6 +45,8 @@ mutter_built_sources = \
 
 if HAVE_WAYLAND
 mutter_built_sources += \
+	pointer-gestures-protocol.c		\
+	pointer-gestures-server-protocol.h	\
 	gtk-shell-protocol.c			\
 	gtk-shell-server-protocol.h		\
 	xdg-shell-protocol.c			\
@@ -53,6 +55,7 @@ mutter_built_sources += \
 endif
 
 wayland_protocols =				\
+	wayland/protocol/pointer-gestures.xml	\
 	wayland/protocol/gtk-shell.xml		\
 	wayland/protocol/xdg-shell.xml		\
 	$(NULL)
