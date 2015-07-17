@@ -40,6 +40,7 @@
 #include "meta-idle-monitor-xsync.h"
 #include "meta-monitor-manager-xrandr.h"
 #include "backends/meta-monitor-manager-dummy.h"
+#include "backends/x11/nested/meta-cursor-renderer-x11-nested.h"
 #include "meta-cursor-renderer-x11.h"
 #ifdef HAVE_WAYLAND
 #include "wayland/meta-wayland.h"
@@ -521,7 +522,20 @@ meta_backend_x11_create_monitor_manager (MetaBackend *backend)
 static MetaCursorRenderer *
 meta_backend_x11_create_cursor_renderer (MetaBackend *backend)
 {
-  return g_object_new (META_TYPE_CURSOR_RENDERER_X11, NULL);
+  MetaBackendX11 *x11 = META_BACKEND_X11 (backend);
+  MetaBackendX11Private *priv = meta_backend_x11_get_instance_private (x11);
+
+  switch (priv->mode)
+    {
+    case META_BACKEND_X11_MODE_COMPOSITOR:
+      return g_object_new (META_TYPE_CURSOR_RENDERER_X11, NULL);
+      break;
+    case META_BACKEND_X11_MODE_NESTED:
+      return g_object_new (META_TYPE_CURSOR_RENDERER_X11_NESTED, NULL);
+      break;
+    default:
+      g_assert_not_reached ();
+    }
 }
 
 static gboolean
