@@ -122,16 +122,6 @@ G_DEFINE_TYPE (MetaWaylandSurfaceRoleWlShellSurface,
                meta_wayland_surface_role_wl_shell_surface,
                META_TYPE_WAYLAND_SURFACE_ROLE);
 
-struct _MetaWaylandSurfaceRoleCursor
-{
-  MetaWaylandSurfaceRole parent;
-};
-
-GType meta_wayland_surface_role_cursor_get_type (void) G_GNUC_CONST;
-G_DEFINE_TYPE (MetaWaylandSurfaceRoleCursor,
-               meta_wayland_surface_role_cursor,
-               META_TYPE_WAYLAND_SURFACE_ROLE);
-
 struct _MetaWaylandSurfaceRoleDND
 {
   MetaWaylandSurfaceRole parent;
@@ -265,19 +255,6 @@ meta_wayland_surface_queue_pending_state_frame_callbacks (MetaWaylandSurface    
   wl_list_insert_list (&surface->compositor->frame_callbacks,
                        &pending->frame_callback_list);
   wl_list_init (&pending->frame_callback_list);
-}
-
-static void
-cursor_surface_commit (MetaWaylandSurfaceRole  *surface_role,
-                       MetaWaylandPendingState *pending)
-{
-  MetaWaylandSurface *surface =
-    meta_wayland_surface_role_get_surface (surface_role);
-
-  meta_wayland_surface_queue_pending_state_frame_callbacks (surface, pending);
-
-  if (pending->newly_attached)
-    meta_wayland_seat_update_cursor_surface (surface->compositor->seat);
 }
 
 static void
@@ -2488,15 +2465,21 @@ meta_wayland_surface_role_get_surface (MetaWaylandSurfaceRole *role)
   return priv->surface;
 }
 
+void
+meta_wayland_surface_queue_pending_frame_callbacks (MetaWaylandSurface *surface)
+{
+  wl_list_insert_list (&surface->compositor->frame_callbacks,
+                       &surface->pending_frame_callback_list);
+  wl_list_init (&surface->pending_frame_callback_list);
+}
+
 static void
 default_role_assigned (MetaWaylandSurfaceRole *surface_role)
 {
   MetaWaylandSurface *surface =
     meta_wayland_surface_role_get_surface (surface_role);
 
-  wl_list_insert_list (&surface->compositor->frame_callbacks,
-                       &surface->pending_frame_callback_list);
-  wl_list_init (&surface->pending_frame_callback_list);
+  meta_wayland_surface_queue_pending_frame_callbacks (surface);
 }
 
 static void
@@ -2510,21 +2493,6 @@ actor_surface_assigned (MetaWaylandSurfaceRole *surface_role)
   meta_surface_actor_wayland_add_frame_callbacks (surface_actor,
                                                   &surface->pending_frame_callback_list);
   wl_list_init (&surface->pending_frame_callback_list);
-}
-
-static void
-meta_wayland_surface_role_cursor_init (MetaWaylandSurfaceRoleCursor *role)
-{
-}
-
-static void
-meta_wayland_surface_role_cursor_class_init (MetaWaylandSurfaceRoleCursorClass *klass)
-{
-  MetaWaylandSurfaceRoleClass *surface_role_class =
-    META_WAYLAND_SURFACE_ROLE_CLASS (klass);
-
-  surface_role_class->assigned = default_role_assigned;
-  surface_role_class->commit = cursor_surface_commit;
 }
 
 static void

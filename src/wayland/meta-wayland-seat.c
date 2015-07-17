@@ -372,15 +372,6 @@ meta_wayland_seat_set_input_focus (MetaWaylandSeat    *seat,
   meta_wayland_data_device_set_keyboard_focus (&seat->data_device);
 }
 
-void
-meta_wayland_seat_update_cursor_surface (MetaWaylandSeat *seat)
-{
-  if ((seat->capabilities & WL_SEAT_CAPABILITY_POINTER) == 0)
-    return;
-
-  meta_wayland_pointer_update_cursor_surface (&seat->pointer);
-}
-
 gboolean
 meta_wayland_seat_get_grab_info (MetaWaylandSeat    *seat,
 				 MetaWaylandSurface *surface,

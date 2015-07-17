@@ -58,7 +58,6 @@ void meta_wayland_seat_set_input_focus (MetaWaylandSeat    *seat,
                                         MetaWaylandSurface *surface);
 
 void meta_wayland_seat_repick (MetaWaylandSeat *seat);
-void meta_wayland_seat_update_cursor_surface (MetaWaylandSeat *seat);
 
 gboolean meta_wayland_seat_get_grab_info (MetaWaylandSeat    *seat,
 					  MetaWaylandSurface *surface,

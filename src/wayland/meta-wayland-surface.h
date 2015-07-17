@@ -84,12 +84,6 @@ G_DECLARE_FINAL_TYPE (MetaWaylandSurfaceRoleWlShellSurface,
                       META, WAYLAND_SURFACE_ROLE_WL_SHELL_SURFACE,
                       MetaWaylandSurfaceRole);
 
-#define META_TYPE_WAYLAND_SURFACE_ROLE_CURSOR (meta_wayland_surface_role_cursor_get_type ())
-G_DECLARE_FINAL_TYPE (MetaWaylandSurfaceRoleCursor,
-                      meta_wayland_surface_role_cursor,
-                      META, WAYLAND_SURFACE_ROLE_CURSOR,
-                      MetaWaylandSurfaceRole);
-
 #define META_TYPE_WAYLAND_SURFACE_ROLE_DND (meta_wayland_surface_role_dnd_get_type ())
 G_DECLARE_FINAL_TYPE (MetaWaylandSurfaceRoleDND,
                       meta_wayland_surface_role_dnd,
@@ -250,6 +244,8 @@ void                meta_wayland_surface_drag_dest_drop      (MetaWaylandSurface
 void                meta_wayland_surface_update_outputs (MetaWaylandSurface *surface);
 
 MetaWindow *        meta_wayland_surface_get_toplevel_window (MetaWaylandSurface *surface);
+
+void                meta_wayland_surface_queue_pending_frame_callbacks (MetaWaylandSurface *surface);
 
 void                meta_wayland_surface_queue_pending_state_frame_callbacks (MetaWaylandSurface      *surface,
                                                                               MetaWaylandPendingState *pending);
