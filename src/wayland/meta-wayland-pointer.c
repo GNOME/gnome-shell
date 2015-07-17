@@ -79,6 +79,9 @@ G_DEFINE_TYPE (MetaWaylandSurfaceRoleCursor,
                meta_wayland_surface_role_cursor,
                META_TYPE_WAYLAND_SURFACE_ROLE);
 
+static void
+meta_wayland_pointer_update_cursor_surface (MetaWaylandPointer *pointer);
+
 static MetaWaylandPointerClient *
 meta_wayland_pointer_client_new (void)
 {
@@ -344,10 +347,19 @@ static const MetaWaylandPointerGrabInterface default_pointer_grab_interface = {
   default_grab_button
 };
 
+static void
+meta_wayland_pointer_on_cursor_changed (MetaCursorTracker *cursor_tracker,
+                                        MetaWaylandPointer *pointer)
+{
+  if (pointer->cursor_surface)
+    meta_wayland_surface_update_outputs (pointer->cursor_surface);
+}
+
 void
 meta_wayland_pointer_init (MetaWaylandPointer *pointer,
                            struct wl_display  *display)
 {
+  MetaCursorTracker *cursor_tracker = meta_cursor_tracker_get_for_screen (NULL);
   ClutterDeviceManager *manager;
 
   memset (pointer, 0, sizeof *pointer);
@@ -368,11 +380,22 @@ meta_wayland_pointer_init (MetaWaylandPointer *pointer,
 
   manager = clutter_device_manager_get_default ();
   pointer->device = clutter_device_manager_get_core_device (manager, CLUTTER_POINTER_DEVICE);
+
+  g_signal_connect (cursor_tracker,
+                    "cursor-changed",
+                    G_CALLBACK (meta_wayland_pointer_on_cursor_changed),
+                    pointer);
 }
 
 void
 meta_wayland_pointer_release (MetaWaylandPointer *pointer)
 {
+  MetaCursorTracker *cursor_tracker = meta_cursor_tracker_get_for_screen (NULL);
+
+  g_signal_handlers_disconnect_by_func (cursor_tracker,
+                                        (gpointer) meta_wayland_pointer_on_cursor_changed,
+                                        pointer);
+
   meta_wayland_pointer_set_focus (pointer, NULL);
 
   g_clear_pointer (&pointer->pointer_clients, g_hash_table_unref);
@@ -719,7 +742,7 @@ meta_wayland_pointer_get_relative_coordinates (MetaWaylandPointer *pointer,
   *sy = wl_fixed_from_double (yf) / surface->scale;
 }
 
-void
+static void
 meta_wayland_pointer_update_cursor_surface (MetaWaylandPointer *pointer)
 {
   MetaCursorTracker *cursor_tracker = meta_cursor_tracker_get_for_screen (NULL);
@@ -749,6 +772,7 @@ update_cursor_sprite_texture (MetaWaylandSurface *surface)
 {
   MetaCursorRenderer *cursor_renderer =
     meta_backend_get_cursor_renderer (meta_get_backend ());
+  MetaCursorTracker *cursor_tracker = meta_cursor_tracker_get_for_screen (NULL);
   MetaWaylandSurfaceRoleCursor *cursor_role =
     META_WAYLAND_SURFACE_ROLE_CURSOR (surface->role);
   MetaCursorSprite *cursor_sprite = cursor_role->cursor_sprite;
@@ -780,7 +804,8 @@ update_cursor_sprite_texture (MetaWaylandSurface *surface)
       meta_cursor_sprite_set_texture (cursor_sprite, NULL, 0, 0);
     }
 
-  meta_cursor_renderer_force_update (cursor_renderer);
+  if (cursor_sprite == meta_cursor_tracker_get_displayed_cursor (cursor_tracker))
+    meta_cursor_renderer_force_update (cursor_renderer);
 }
 
 static void
@@ -798,14 +823,24 @@ cursor_sprite_prepare_at (MetaCursorSprite *cursor_sprite,
   monitor = meta_screen_get_monitor_for_point (screen, x, y);
   meta_cursor_sprite_set_texture_scale (cursor_sprite,
                                         (float)monitor->scale / surface->scale);
+  meta_wayland_surface_update_outputs (surface);
 }
 
 static void
 meta_wayland_pointer_set_cursor_surface (MetaWaylandPointer *pointer,
                                          MetaWaylandSurface *cursor_surface)
 {
+  MetaWaylandSurface *prev_cursor_surface;
+
+  prev_cursor_surface = pointer->cursor_surface;
   pointer->cursor_surface = cursor_surface;
-  meta_wayland_pointer_update_cursor_surface (pointer);
+
+  if (prev_cursor_surface != cursor_surface)
+    {
+      if (prev_cursor_surface)
+        meta_wayland_surface_update_outputs (prev_cursor_surface);
+      meta_wayland_pointer_update_cursor_surface (pointer);
+    }
 }
 
 static void
@@ -945,6 +980,37 @@ cursor_surface_role_commit (MetaWaylandSurfaceRole  *surface_role,
     update_cursor_sprite_texture (surface);
 }
 
+static gboolean
+cursor_surface_role_is_on_output (MetaWaylandSurfaceRole *role,
+                                  MetaMonitorInfo        *monitor)
+{
+  MetaWaylandSurface *surface =
+    meta_wayland_surface_role_get_surface (role);
+  MetaWaylandPointer *pointer = &surface->compositor->seat->pointer;
+  MetaCursorTracker *cursor_tracker = meta_cursor_tracker_get_for_screen (NULL);
+  MetaCursorRenderer *cursor_renderer =
+    meta_backend_get_cursor_renderer (meta_get_backend ());
+  MetaWaylandSurfaceRoleCursor *cursor_role =
+    META_WAYLAND_SURFACE_ROLE_CURSOR (surface->role);
+  MetaCursorSprite *displayed_cursor_sprite;
+  MetaRectangle rect;
+
+  if (surface != pointer->cursor_surface)
+    return FALSE;
+
+  displayed_cursor_sprite =
+    meta_cursor_tracker_get_displayed_cursor (cursor_tracker);
+  if (!displayed_cursor_sprite)
+    return FALSE;
+
+  if (cursor_role->cursor_sprite != displayed_cursor_sprite)
+    return FALSE;
+
+  rect = meta_cursor_renderer_calculate_rect (cursor_renderer,
+                                              cursor_role->cursor_sprite);
+  return meta_rectangle_overlap (&rect, &monitor->rect);
+}
+
 static void
 cursor_surface_role_dispose (GObject *object)
 {
@@ -983,6 +1049,7 @@ meta_wayland_surface_role_cursor_class_init (MetaWaylandSurfaceRoleCursorClass *
 
   surface_role_class->assigned = cursor_surface_role_assigned;
   surface_role_class->commit = cursor_surface_role_commit;
+  surface_role_class->is_on_output = cursor_surface_role_is_on_output;
 
   object_class->dispose = cursor_surface_role_dispose;
 }

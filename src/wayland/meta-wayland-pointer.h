@@ -124,8 +124,6 @@ void meta_wayland_pointer_get_relative_coordinates (MetaWaylandPointer *pointer,
                                                     wl_fixed_t         *x,
                                                     wl_fixed_t         *y);
 
-void meta_wayland_pointer_update_cursor_surface (MetaWaylandPointer *pointer);
-
 void meta_wayland_pointer_create_new_resource (MetaWaylandPointer *pointer,
                                                struct wl_client   *client,
                                                struct wl_resource *seat_resource,
