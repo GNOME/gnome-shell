@@ -1007,8 +1007,6 @@ Cally_@CLUTTER_API_VERSION_AM@_gir_FILES = $(cally_sources_h) $(cally_sources_c)
 Cally_@CLUTTER_API_VERSION_AM@_gir_CFLAGS = $(AM_CPPFLAGS) $(CLUTTER_CFLAGS)
 Cally_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = \
 	--warn-all \
-	--identifier-prefix=Cally \
-	--symbol-prefix=cally \
 	--c-include='cally/cally.h' \
 	--pkg-export=cally-@CLUTTER_API_VERSION@ \
 	--include-uninstalled=$(top_builddir)/clutter/Clutter-@CLUTTER_API_VERSION@.gir
@@ -1018,17 +1016,16 @@ INTROSPECTION_GIRS += Cally-@CLUTTER_API_VERSION@.gir
 if SUPPORT_X11
 ClutterX11-@CLUTTER_API_VERSION@.gir: Makefile Clutter-@CLUTTER_API_VERSION@.gir
 
-ClutterX11_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = \
-	--warn-all \
-	--identifier-prefix=ClutterX11 \
-	--symbol-prefix=clutter_x11 \
-	--c-include='clutter/x11/clutter-x11.h' \
-	--pkg-export=clutter-x11-@CLUTTER_API_VERSION@ \
-	--include-uninstalled=$(top_builddir)/clutter/Clutter-@CLUTTER_API_VERSION@.gir
+ClutterX11_@CLUTTER_API_VERSION_AM@_gir_NAMESPACE = ClutterX11
 ClutterX11_@CLUTTER_API_VERSION_AM@_gir_INCLUDES = xlib-2.0
 ClutterX11_@CLUTTER_API_VERSION_AM@_gir_LIBS = libclutter-@CLUTTER_API_VERSION@.la
 ClutterX11_@CLUTTER_API_VERSION_AM@_gir_FILES = $(x11_introspection)
 ClutterX11_@CLUTTER_API_VERSION_AM@_gir_CFLAGS = $(AM_CPPFLAGS) $(CLUTTER_CFLAGS)
+ClutterX11_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = \
+	--warn-all \
+	--c-include='clutter/x11/clutter-x11.h' \
+	--pkg-export=clutter-x11-@CLUTTER_API_VERSION@ \
+	--include-uninstalled=$(top_builddir)/clutter/Clutter-@CLUTTER_API_VERSION@.gir
 
 INTROSPECTION_GIRS += ClutterX11-@CLUTTER_API_VERSION@.gir
 endif # SUPPORT_X11
@@ -1036,16 +1033,16 @@ endif # SUPPORT_X11
 if SUPPORT_GDK
 ClutterGdk-@CLUTTER_API_VERSION@.gir: Makefile Clutter-@CLUTTER_API_VERSION@.gir
 
-ClutterGdk_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = \
-	--identifier-prefix=ClutterGdk \
-	--symbol-prefix=clutter_gdk \
-	--c-include='clutter/gdk/clutter-gdk.h' \
-	--pkg-export=clutter-gdk-@CLUTTER_API_VERSION@ \
-	--include-uninstalled=$(top_builddir)/clutter/Clutter-@CLUTTER_API_VERSION@.gir
+ClutterGdk_@CLUTTER_API_VERSION_AM@_gir_NAMESPACE = ClutterGdk
 ClutterGdk_@CLUTTER_API_VERSION_AM@_gir_INCLUDES = Gdk-3.0
 ClutterGdk_@CLUTTER_API_VERSION_AM@_gir_LIBS = libclutter-@CLUTTER_API_VERSION@.la
 ClutterGdk_@CLUTTER_API_VERSION_AM@_gir_FILES = $(gdk_introspection)
 ClutterGdk_@CLUTTER_API_VERSION_AM@_gir_CFLAGS = $(AM_CPPFLAGS) $(CLUTTER_CFLAGS)
+ClutterGdk_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = \
+	--warn-all \
+	--c-include='clutter/gdk/clutter-gdk.h' \
+	--pkg-export=clutter-gdk-@CLUTTER_API_VERSION@ \
+	--include-uninstalled=$(top_builddir)/clutter/Clutter-@CLUTTER_API_VERSION@.gir
 
 INTROSPECTION_GIRS += ClutterGdk-@CLUTTER_API_VERSION@.gir
 endif # SUPPORT_GDK
