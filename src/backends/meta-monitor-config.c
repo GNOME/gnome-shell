@@ -489,8 +489,8 @@ handle_end_element (GMarkupParseContext  *context,
               }
             else
               {
-                if (parser->output.rect.width == 0 &&
-                    parser->output.rect.width == 0)
+                if (parser->output.rect.width == 0 ||
+                    parser->output.rect.height == 0)
                   parser->output.enabled = FALSE;
                 else
                   parser->output.enabled = TRUE;
