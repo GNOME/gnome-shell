@@ -68,18 +68,6 @@ CLUTTER_AVAILABLE_IN_ALL
 GType clutter_x11_filter_return_get_type (void) G_GNUC_CONST;
 
 /*
- * This is an internal only enumeration; it should really be private
- */
-typedef enum {
-  CLUTTER_X11_XINPUT_KEY_PRESS_EVENT = 0,
-  CLUTTER_X11_XINPUT_KEY_RELEASE_EVENT,
-  CLUTTER_X11_XINPUT_BUTTON_PRESS_EVENT,
-  CLUTTER_X11_XINPUT_BUTTON_RELEASE_EVENT,
-  CLUTTER_X11_XINPUT_MOTION_NOTIFY_EVENT,
-  CLUTTER_X11_XINPUT_LAST_EVENT
-} ClutterX11XInputEventTypes;
-
-/*
  * This is not used any more
  */
 typedef struct _ClutterX11XInputDevice ClutterX11XInputDevice;
