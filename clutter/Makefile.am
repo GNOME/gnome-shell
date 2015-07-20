@@ -827,7 +827,7 @@ include $(top_srcdir)/build/autotools/Makefile.am.marshal
 # glib-mkenums rules
 glib_enum_h = clutter-enum-types.h
 glib_enum_c = clutter-enum-types.c
-glib_enum_headers = $(source_h) $(deprecated_h) $(backend_source_h)
+glib_enum_headers = $(source_h) $(deprecated_h)
 include $(top_srcdir)/build/autotools/Makefile.am.enums
 
 pkgconfigdir = $(libdir)/pkgconfig

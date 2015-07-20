@@ -64,6 +64,9 @@ typedef enum {
   CLUTTER_X11_FILTER_REMOVE
 } ClutterX11FilterReturn;
 
+CLUTTER_AVAILABLE_IN_ALL
+GType clutter_x11_filter_return_get_type (void) G_GNUC_CONST;
+
 /*
  * This is an internal only enumeration; it should really be private
  */
