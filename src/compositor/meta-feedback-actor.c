@@ -187,7 +187,7 @@ meta_feedback_actor_set_anchor (MetaFeedbackActor *self,
   if (priv->anchor_x == anchor_x && priv->anchor_y == anchor_y)
     return;
 
-  if (priv->anchor_x != anchor_y)
+  if (priv->anchor_x != anchor_x)
     {
       priv->anchor_x = anchor_x;
       g_object_notify (G_OBJECT (self), "anchor-x");
