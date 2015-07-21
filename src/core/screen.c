@@ -2388,11 +2388,11 @@ on_monitors_changed (MetaMonitorManager *manager,
                        &changes);
     }
 
-  /* Queue a resize on all the windows */
-  meta_screen_foreach_window (screen, META_LIST_DEFAULT, meta_screen_resize_func, 0);
-
   /* Fix up monitor for all windows on this screen */
   meta_screen_foreach_window (screen, META_LIST_INCLUDE_OVERRIDE_REDIRECT, (MetaScreenWindowFunc) meta_window_update_for_monitors_changed, 0);
+
+  /* Queue a resize on all the windows */
+  meta_screen_foreach_window (screen, META_LIST_DEFAULT, meta_screen_resize_func, 0);
 
   meta_screen_queue_check_fullscreen (screen);
 
