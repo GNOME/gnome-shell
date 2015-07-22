@@ -689,7 +689,7 @@ show_tile_preview (MetaPlugin    *plugin,
   ScreenTilePreview *preview = get_screen_tile_preview (screen);
   ClutterActor *window_actor;
 
-  if (CLUTTER_ACTOR_IS_VISIBLE (preview->actor)
+  if (clutter_actor_is_visible (preview->actor)
       && preview->tile_rect.x == tile_rect->x
       && preview->tile_rect.y == tile_rect->y
       && preview->tile_rect.width == tile_rect->width
