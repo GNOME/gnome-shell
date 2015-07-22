@@ -641,7 +641,7 @@ _cogl_winsys_egl_context_created (CoglDisplay *display,
         }
     }
 
-  XFree (xvisinfo);
+  xlib_renderer->xvisinfo = xvisinfo;
 
   if (!_cogl_winsys_egl_make_current (display,
                                       egl_display->dummy_surface,

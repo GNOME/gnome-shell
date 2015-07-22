@@ -1159,7 +1159,7 @@ create_context (CoglDisplay *display, CoglError **error)
                                        dummy_drawable,
                                        glx_display->glx_context);
 
-  XFree (xvisinfo);
+  xlib_renderer->xvisinfo = xvisinfo;
 
   if (_cogl_xlib_renderer_untrap_errors (display->renderer, &old_state))
     {
