@@ -323,7 +323,7 @@ deprecated_c = \
 
 # deprecated private headers; these should not be installed
 deprecated_h_priv = \
-	deprecatec/clutter-model-private.h	\
+	deprecated/clutter-model-private.h	\
 	deprecated/clutter-timeout-interval.h	\
 	$(NULL)
 
