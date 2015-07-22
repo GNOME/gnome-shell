@@ -401,7 +401,7 @@ const AuthPrompt = new Lang.Class({
     },
 
     updateSensitivity: function(sensitive) {
-        this._updateNextButtonSensitivity(sensitive);
+        this._updateNextButtonSensitivity(sensitive && this._entry.text.length > 0);
         this._entry.reactive = sensitive;
         this._entry.clutter_text.editable = sensitive;
     },
