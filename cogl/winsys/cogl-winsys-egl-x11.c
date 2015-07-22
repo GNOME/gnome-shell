@@ -687,24 +687,6 @@ _cogl_winsys_egl_cleanup_context (CoglDisplay *display)
     }
 }
 
-/* XXX: This is a particularly hacky _cogl_winsys interface... */
-static XVisualInfo *
-_cogl_winsys_xlib_get_visual_info (void)
-{
-  CoglDisplayEGL *egl_display;
-
-  _COGL_GET_CONTEXT (ctx, NULL);
-
-  _COGL_RETURN_VAL_IF_FAIL (ctx->display->winsys, FALSE);
-
-  egl_display = ctx->display->winsys;
-
-  if (!egl_display->found_egl_config)
-    return NULL;
-
-  return get_visual_info (ctx->display, egl_display->egl_config);
-}
-
 #ifdef EGL_KHR_image_pixmap
 
 static CoglBool
@@ -850,8 +832,6 @@ _cogl_winsys_egl_xlib_get_vtable (void)
 
       vtable.onscreen_x11_get_window_xid =
         _cogl_winsys_onscreen_x11_get_window_xid;
-
-      vtable.xlib_get_visual_info = _cogl_winsys_xlib_get_visual_info;
 
 #ifdef EGL_KHR_image_pixmap
       /* X11 tfp support... */

@@ -2078,29 +2078,6 @@ _cogl_winsys_onscreen_set_resizable (CoglOnscreen *onscreen,
   XFree (size_hints);
 }
 
-/* XXX: This is a particularly hacky _cogl_winsys interface... */
-static XVisualInfo *
-_cogl_winsys_xlib_get_visual_info (void)
-{
-  CoglGLXDisplay *glx_display;
-  CoglXlibRenderer *xlib_renderer;
-  CoglGLXRenderer *glx_renderer;
-
-  _COGL_GET_CONTEXT (ctx, NULL);
-
-  _COGL_RETURN_VAL_IF_FAIL (ctx->display->winsys, FALSE);
-
-  glx_display = ctx->display->winsys;
-  xlib_renderer = _cogl_xlib_renderer_get_data (ctx->display->renderer);
-  glx_renderer = ctx->display->renderer->winsys;
-
-  if (!glx_display->found_fbconfig)
-    return NULL;
-
-  return glx_renderer->glXGetVisualFromFBConfig (xlib_renderer->xdpy,
-                                                 glx_display->fbconfig);
-}
-
 static CoglBool
 get_fbconfig_for_depth (CoglContext *context,
                         unsigned int depth,
@@ -2714,7 +2691,6 @@ static CoglWinsysVtable _cogl_winsys_vtable =
     .context_init = _cogl_winsys_context_init,
     .context_deinit = _cogl_winsys_context_deinit,
     .context_get_clock_time = _cogl_winsys_get_clock_time,
-    .xlib_get_visual_info = _cogl_winsys_xlib_get_visual_info,
     .onscreen_init = _cogl_winsys_onscreen_init,
     .onscreen_deinit = _cogl_winsys_onscreen_deinit,
     .onscreen_bind = _cogl_winsys_onscreen_bind,
