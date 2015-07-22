@@ -58,6 +58,11 @@ static GList *_cogl_xlib_renderers = NULL;
 static void
 destroy_xlib_renderer_data (void *user_data)
 {
+  CoglXlibRenderer *data = user_data;
+
+  if (data->xvisinfo)
+    XFree (data->xvisinfo);
+
   g_slice_free (CoglXlibRenderer, user_data);
 }
 
@@ -657,4 +662,16 @@ _cogl_xlib_renderer_output_for_rectangle (CoglRenderer *renderer,
     }
 
   return max_overlapped;
+}
+
+XVisualInfo *
+cogl_xlib_renderer_get_visual_info (CoglRenderer *renderer)
+{
+  CoglXlibRenderer *xlib_renderer;
+
+  _COGL_RETURN_VAL_IF_FAIL (cogl_is_renderer (renderer), NULL);
+
+  xlib_renderer = _cogl_xlib_renderer_get_data (renderer);
+
+  return xlib_renderer->xvisinfo;
 }

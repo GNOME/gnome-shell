@@ -48,6 +48,8 @@ typedef struct _CoglXlibRenderer
   CoglXlibTrapState *trap_state;
 
   unsigned long outputs_update_serial;
+
+  XVisualInfo *xvisinfo;
 } CoglXlibRenderer;
 
 CoglBool

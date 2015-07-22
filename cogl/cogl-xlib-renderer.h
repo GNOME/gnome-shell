@@ -34,6 +34,7 @@
 #define __COGL_XLIB_RENDERER_H__
 
 #include <X11/Xlib.h>
+#include <X11/Xutil.h>
 
 /* NB: this is a top-level header that can be included directly but we
  * want to be careful not to define __COGL_H_INSIDE__ when this is
@@ -168,6 +169,9 @@ cogl_xlib_renderer_set_event_retrieval_enabled (CoglRenderer *renderer,
 
 Display *
 cogl_xlib_renderer_get_display (CoglRenderer *renderer);
+
+XVisualInfo *
+cogl_xlib_renderer_get_visual_info (CoglRenderer *renderer);
 
 COGL_END_DECLS
 
