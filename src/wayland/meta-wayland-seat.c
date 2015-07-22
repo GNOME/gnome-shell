@@ -332,6 +332,7 @@ meta_wayland_seat_handle_event (MetaWaylandSeat *seat,
     case CLUTTER_BUTTON_PRESS:
     case CLUTTER_BUTTON_RELEASE:
     case CLUTTER_SCROLL:
+    case CLUTTER_TOUCHPAD_SWIPE:
       return meta_wayland_pointer_handle_event (&seat->pointer, event);
 
     case CLUTTER_KEY_PRESS:
