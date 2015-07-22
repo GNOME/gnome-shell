@@ -1,3 +1,35 @@
+Clutter 1.23.4                                                       2015-07-22
+===============================================================================
+
+  • List of changes since Clutter 1.23.2
+
+    - Add functions for binding a GListModel to a ClutterActor
+    The bind_model() and bind_model_with_propertis() methods on ClutterActor
+    allow binding objects inside a GListModel implementation to children or
+    an actor.
+
+    - Add event types for touchpad gestures
+    Currently, the libinput input backend is the only one that will generate
+    the touchpad events for swipe and pinch/zoom/rotate, but support for other
+    backends is planned in the future.
+
+    - Documentation fixes
+
+  • List of bugs fixed since Clutter 1.23.2
+
+    #752272 - _CLUTTER_DEPRECATED_MACRO_FOR is not defined when not compiling
+              with gcc
+    #752056 - Check for NULL pointer for pspec returned by
+              g_object_class_find_property, before dereferencing
+    #752104 - Automatic wayland detect support causes error when wayland is
+              not installed
+    #751472 - Don't create libinput properties
+
+Many thanks to:
+
+  Carlos Garnacho, Ting-Wei Lan, Kalev Lember, Nitin Sharma,
+  Pedro Albuquerque, Peter Hutterer, Stefan Sauer
+
 Clutter 1.23.2                                                       2015-06-18
 ===============================================================================
 

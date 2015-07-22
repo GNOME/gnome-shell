@@ -289,6 +289,28 @@ Relevant information for developers with existing Clutter applications
 wanting to port to newer releases (see NEWS for general information on new
 features).
 
+Release Notes for Clutter 1.24
+-------------------------------------------------------------------------------
+
+• ClutterModel, ClutterModelIter, and ClutterListStore have been deprecated.
+  You're strongly encouraged to use the GListModel interface, and the
+  GListStore class, as a replacement.
+
+• The macros used to access the state flags in ClutterActor have been
+  deprecated, and replaced by equivalent functions.
+
+• Clutter types now can be used with the `g_autoptr()` and `g_auto()`
+  macros provided by GLib and supported by GCC and Clang.
+
+• The old, non-namespaced CLUTTER_* key symbols now have an associated
+  deprecation warning.
+
+• The private, unused ClutterX11XInputEventTypes enumeration, which was
+  erroneously placed in the clutter-x11.h public header, has been removed.
+
+• The Wayland client backend is now autodetected depending on whether the
+  required dependencies are available.
+
 Release Notes for Clutter 1.22
 -------------------------------------------------------------------------------
 
