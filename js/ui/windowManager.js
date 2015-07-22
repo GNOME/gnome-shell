@@ -477,6 +477,62 @@ const TilePreview = new Lang.Class({
     }
 });
 
+const TouchpadWorkspaceSwitchAction = new Lang.Class({
+    Name: 'TouchpadWorkspaceSwitchAction',
+
+    _init: function(actor) {
+        this._dx = 0;
+        this._dy = 0;
+        actor.connect('captured-event', Lang.bind(this, this._handleEvent));
+    },
+
+    _checkActivated: function() {
+        const MOTION_THRESHOLD = 50;
+        let allowedModes = Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW;
+        let dir;
+
+        if ((allowedModes & Main.actionMode) == 0)
+            return;
+
+        if (this._dy < -MOTION_THRESHOLD)
+            dir = Meta.MotionDirection.DOWN;
+        else if (this._dy > MOTION_THRESHOLD)
+            dir = Meta.MotionDirection.UP;
+        else if (this._dx < -MOTION_THRESHOLD)
+            dir = Meta.MotionDirection.RIGHT;
+        else if (this._dx > MOTION_THRESHOLD)
+            dir = Meta.MotionDirection.LEFT;
+        else
+            return;
+
+        this.emit('activated', dir);
+    },
+
+    _handleEvent: function(actor, event) {
+        if (event.type() != Clutter.EventType.TOUCHPAD_SWIPE)
+            return Clutter.EVENT_PROPAGATE;
+
+        if (event.get_gesture_swipe_finger_count() != 4)
+            return Clutter.EVENT_PROPAGATE;
+
+        if (event.get_gesture_phase() == Clutter.TouchpadGesturePhase.UPDATE) {
+            let [dx, dy] = event.get_gesture_motion_delta(event);
+
+            this._dx += dx;
+            this._dy += dy;
+        } else {
+            if (event.get_gesture_phase() == Clutter.TouchpadGesturePhase.END)
+                this._checkActivated();
+
+            this._dx = 0;
+            this._dy = 0;
+        }
+
+        return Clutter.EVENT_STOP;
+    }
+});
+Signals.addSignalMethods(TouchpadWorkspaceSwitchAction.prototype);
+
 const WorkspaceSwitchAction = new Lang.Class({
     Name: 'WorkspaceSwitchAction',
     Extends: Clutter.SwipeAction,
@@ -868,6 +924,10 @@ const WindowManager = new Lang.Class({
         let gesture = new WorkspaceSwitchAction();
         gesture.connect('activated', Lang.bind(this, this._actionSwitchWorkspace));
         global.stage.add_action(gesture);
+
+        // This is not a normal Clutter.GestureAction, doesn't need add_action()
+        gesture = new TouchpadWorkspaceSwitchAction(global.stage);
+        gesture.connect('activated', Lang.bind(this, this._actionSwitchWorkspace));
 
         gesture = new AppSwitchAction();
         gesture.connect('activated', Lang.bind(this, this._switchApp));
