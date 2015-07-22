@@ -44,6 +44,10 @@
 #include "cogl-poll-private.h"
 #include "cogl-gtype-private.h"
 
+#ifdef COGL_HAS_X11_SUPPORT
+#include "cogl-xlib-renderer.h"
+#endif
+
 static void _cogl_onscreen_free (CoglOnscreen *onscreen);
 
 COGL_OBJECT_DEFINE_WITH_CODE_GTYPE (Onscreen, onscreen,
@@ -447,18 +451,17 @@ cogl_x11_onscreen_get_window_xid (CoglOnscreen *onscreen)
 uint32_t
 cogl_x11_onscreen_get_visual_xid (CoglOnscreen *onscreen)
 {
-  CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
-  const CoglWinsysVtable *winsys = _cogl_framebuffer_get_winsys (framebuffer);
+  CoglContext *ctx = COGL_FRAMEBUFFER (onscreen)->context;
   XVisualInfo *visinfo;
   uint32_t id;
 
   /* This should only be called for xlib based onscreens */
-  _COGL_RETURN_VAL_IF_FAIL (winsys->xlib_get_visual_info != NULL, 0);
+  visinfo = cogl_xlib_renderer_get_visual_info (ctx->display->renderer);
+  if (visinfo == NULL)
+    return 0;
 
-  visinfo = winsys->xlib_get_visual_info ();
   id = (uint32_t)visinfo->visualid;
 
-  XFree (visinfo);
   return id;
 }
 #endif /* COGL_HAS_X11_SUPPORT */
