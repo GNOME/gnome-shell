@@ -14081,7 +14081,8 @@ clutter_actor_get_anchor_point_gravity (ClutterActor *self)
  *
  * Since: 0.6
  *
- * Deprecated: 1.12: Use #ClutterActor:pivot-point instead.
+ * Deprecated: 1.12: Use #ClutterActor:pivot-point and 
+ * clutter_actor_set_translation() instead.
  */
 void
 clutter_actor_move_anchor_point (ClutterActor *self,
@@ -14128,7 +14129,8 @@ clutter_actor_move_anchor_point (ClutterActor *self,
  *
  * Since: 0.6
  *
- * Deprecated: 1.12: Use #ClutterActor:pivot-point instead.
+ * Deprecated: 1.12: Use #ClutterActor:pivot-point and 
+ * clutter_actor_set_translation() instead.
  */
 void
 clutter_actor_move_anchor_point_from_gravity (ClutterActor   *self,
@@ -14179,7 +14181,9 @@ clutter_actor_move_anchor_point_from_gravity (ClutterActor   *self,
  *
  * Since: 0.6
  *
- * Deprecated: 1.12: Use #ClutterActor:pivot-point instead.
+ * Deprecated: 1.12: Use #ClutterActor:pivot-point and 
+ * clutter_actor_set_translation() instead. E.g. For %CLUTTER_GRAVITY_CENTER set
+ * pivot_point to (0.5,0.5) and the translation to (width/2,height/2).
  */
 void
 clutter_actor_set_anchor_point_from_gravity (ClutterActor   *self,
