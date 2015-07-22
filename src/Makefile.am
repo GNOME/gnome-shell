@@ -257,6 +257,8 @@ libmutter_la_SOURCES +=				\
 	wayland/meta-wayland-data-device-private.h	\
 	wayland/meta-wayland-pointer-gesture-swipe.c	\
 	wayland/meta-wayland-pointer-gesture-swipe.h	\
+	wayland/meta-wayland-pointer-gesture-pinch.c	\
+	wayland/meta-wayland-pointer-gesture-pinch.h	\
 	wayland/meta-wayland-keyboard.c		\
 	wayland/meta-wayland-keyboard.h		\
 	wayland/meta-wayland-pointer.c		\

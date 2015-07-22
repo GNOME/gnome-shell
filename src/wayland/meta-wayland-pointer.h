@@ -26,6 +26,7 @@
 
 #include "meta-wayland-types.h"
 #include "meta-wayland-pointer-gesture-swipe.h"
+#include "meta-wayland-pointer-gesture-pinch.h"
 
 #include <meta/meta-cursor-tracker.h>
 
@@ -49,6 +50,7 @@ struct _MetaWaylandPointerClient
 {
   struct wl_list pointer_resources;
   struct wl_list swipe_gesture_resources;
+  struct wl_list pinch_gesture_resources;
 };
 
 struct _MetaWaylandPointer

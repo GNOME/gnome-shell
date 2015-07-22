@@ -66,6 +66,7 @@ meta_wayland_pointer_client_new (void)
   pointer_client = g_slice_new0 (MetaWaylandPointerClient);
   wl_list_init (&pointer_client->pointer_resources);
   wl_list_init (&pointer_client->swipe_gesture_resources);
+  wl_list_init (&pointer_client->pinch_gesture_resources);
 
   return pointer_client;
 }
@@ -89,6 +90,11 @@ meta_wayland_pointer_client_free (MetaWaylandPointerClient *pointer_client)
       wl_list_remove (wl_resource_get_link (resource));
       wl_list_init (wl_resource_get_link (resource));
     }
+  wl_resource_for_each (resource, &pointer_client->pinch_gesture_resources)
+    {
+      wl_list_remove (wl_resource_get_link (resource));
+      wl_list_init (wl_resource_get_link (resource));
+    }
 
   g_slice_free (MetaWaylandPointerClient, pointer_client);
 }
@@ -97,7 +103,8 @@ static gboolean
 meta_wayland_pointer_client_is_empty (MetaWaylandPointerClient *pointer_client)
 {
   return (wl_list_empty (&pointer_client->pointer_resources) &&
-          wl_list_empty (&pointer_client->swipe_gesture_resources));
+          wl_list_empty (&pointer_client->swipe_gesture_resources) &&
+          wl_list_empty (&pointer_client->pinch_gesture_resources));
 }
 
 MetaWaylandPointerClient *
@@ -544,6 +551,10 @@ meta_wayland_pointer_handle_event (MetaWaylandPointer *pointer,
 
     case CLUTTER_TOUCHPAD_SWIPE:
       meta_wayland_pointer_gesture_swipe_handle_event (pointer, event);
+      break;
+
+    case CLUTTER_TOUCHPAD_PINCH:
+      meta_wayland_pointer_gesture_pinch_handle_event (pointer, event);
       break;
 
     default:
