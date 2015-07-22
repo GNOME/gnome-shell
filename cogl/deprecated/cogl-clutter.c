@@ -46,6 +46,7 @@
 #include "cogl-onscreen-private.h"
 #ifdef COGL_HAS_XLIB_SUPPORT
 #include "cogl-clutter-xlib.h"
+#include "cogl-xlib-renderer.h"
 #endif
 #include "cogl-clutter.h"
 
@@ -99,15 +100,15 @@ cogl_onscreen_clutter_backend_set_size (int width, int height)
 XVisualInfo *
 cogl_clutter_winsys_xlib_get_visual_info (void)
 {
-  const CoglWinsysVtable *winsys;
+  CoglRenderer *renderer;
 
   _COGL_GET_CONTEXT (ctx, NULL);
 
-  winsys = _cogl_context_get_winsys (ctx);
+  _COGL_RETURN_VAL_IF_FAIL (ctx->display != NULL, NULL);
 
-  /* This should only be called for xlib contexts */
-  _COGL_RETURN_VAL_IF_FAIL (winsys->xlib_get_visual_info != NULL, NULL);
+  renderer = cogl_display_get_renderer (ctx->display);
+  _COGL_RETURN_VAL_IF_FAIL (renderer != NULL, NULL);
 
-  return winsys->xlib_get_visual_info ();
+  return cogl_xlib_renderer_get_visual_info (renderer);
 }
 #endif
