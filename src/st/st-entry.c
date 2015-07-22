@@ -618,7 +618,7 @@ st_entry_key_press_event (ClutterActor    *actor,
 
   /* copy */
   if ((event->modifier_state & CLUTTER_CONTROL_MASK)
-      && event->keyval == CLUTTER_c &&
+      && event->keyval == CLUTTER_KEY_c &&
       clutter_text_get_password_char ((ClutterText*) priv->entry) == 0)
     {
       StClipboard *clipboard;
@@ -639,7 +639,7 @@ st_entry_key_press_event (ClutterActor    *actor,
 
   /* cut */
   if ((event->modifier_state & CLUTTER_CONTROL_MASK)
-      && event->keyval == CLUTTER_x &&
+      && event->keyval == CLUTTER_KEY_x &&
       clutter_text_get_password_char ((ClutterText*) priv->entry) == 0)
     {
       StClipboard *clipboard;
@@ -665,7 +665,7 @@ st_entry_key_press_event (ClutterActor    *actor,
 
   /* delete to beginning of line */
   if ((event->modifier_state & CLUTTER_CONTROL_MASK)
-      && event->keyval == CLUTTER_u)
+      && event->keyval == CLUTTER_KEY_u)
     {
       int pos = clutter_text_get_cursor_position ((ClutterText *)priv->entry);
       clutter_text_delete_text ((ClutterText *)priv->entry, 0, pos);
@@ -676,7 +676,7 @@ st_entry_key_press_event (ClutterActor    *actor,
 
   /* delete to end of line */
   if ((event->modifier_state & CLUTTER_CONTROL_MASK)
-      && event->keyval == CLUTTER_k)
+      && event->keyval == CLUTTER_KEY_k)
     {
       ClutterTextBuffer *buffer = clutter_text_get_buffer ((ClutterText *)priv->entry);
       int pos = clutter_text_get_cursor_position ((ClutterText *)priv->entry);
