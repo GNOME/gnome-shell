@@ -310,6 +310,7 @@ meta_wayland_init (void)
   meta_wayland_outputs_init (compositor);
   meta_wayland_data_device_manager_init (compositor);
   meta_wayland_shell_init (compositor);
+  meta_wayland_pointer_gestures_init (compositor);
   meta_wayland_seat_init (compositor);
 
   compositor->display_name = wl_display_add_socket_auto (compositor->wayland_display);

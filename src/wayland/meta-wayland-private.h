@@ -32,6 +32,7 @@
 #include "meta-wayland-versions.h"
 #include "meta-wayland-surface.h"
 #include "meta-wayland-seat.h"
+#include "meta-wayland-pointer-gestures.h"
 
 typedef struct _MetaXWaylandSelection MetaXWaylandSelection;
 
