@@ -155,7 +155,7 @@ shell_stack_navigate_focus (StWidget         *widget,
       if (from && clutter_actor_contains (CLUTTER_ACTOR (widget), from))
         return FALSE;
 
-      if (CLUTTER_ACTOR_IS_MAPPED (CLUTTER_ACTOR (widget)))
+      if (clutter_actor_is_mapped (CLUTTER_ACTOR (widget)))
         {
           clutter_actor_grab_key_focus (CLUTTER_ACTOR (widget));
           return TRUE;

@@ -315,7 +315,7 @@ st_widget_texture_cache_changed (StTextureCache *cache,
        */
       st_theme_node_paint_state_invalidate (current_paint_state (actor));
 
-      if (CLUTTER_ACTOR_IS_MAPPED (CLUTTER_ACTOR (actor)))
+      if (clutter_actor_is_mapped (CLUTTER_ACTOR (actor)))
         clutter_actor_queue_redraw (CLUTTER_ACTOR (actor));
     }
 }
@@ -537,7 +537,7 @@ st_widget_style_changed (StWidget *widget)
     }
 
   /* update the style only if we are mapped */
-  if (CLUTTER_ACTOR_IS_MAPPED (CLUTTER_ACTOR (widget)))
+  if (clutter_actor_is_mapped (CLUTTER_ACTOR (widget)))
     st_widget_recompute_style (widget, old_theme_node);
 
   if (old_theme_node)
@@ -794,7 +794,7 @@ st_widget_get_paint_volume (ClutterActor *self,
         {
           const ClutterPaintVolume *child_volume;
 
-          if (!CLUTTER_ACTOR_IS_VISIBLE (child))
+          if (!clutter_actor_is_visible (child))
             continue;
 
           child_volume = clutter_actor_get_transformed_paint_volume (child, self);
@@ -1926,7 +1926,7 @@ st_widget_real_navigate_focus (StWidget         *widget,
     {
       if (!focus_child)
         {
-          if (CLUTTER_ACTOR_IS_MAPPED (widget_actor))
+          if (clutter_actor_is_mapped (widget_actor))
             {
               /* Accept focus from outside */
               clutter_actor_grab_key_focus (widget_actor);
@@ -2847,7 +2847,7 @@ check_labels (StWidgetAccessible *widget_accessible,
  *
  * Gets a list of the focusable children of @widget, in "Tab"
  * order. By default, this returns all visible
- * (as in CLUTTER_ACTOR_IS_VISIBLE()) children of @widget.
+ * (as in clutter_actor_is_visible()) children of @widget.
  *
  * Returns: (element-type Clutter.Actor) (transfer container):
  *   @widget's focusable children

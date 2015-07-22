@@ -313,7 +313,7 @@ get_scrollbar_width (StScrollView *scroll,
 {
   StScrollViewPrivate *priv = scroll->priv;
 
-  if (CLUTTER_ACTOR_IS_VISIBLE (priv->vscroll))
+  if (clutter_actor_is_visible (priv->vscroll))
     {
       gfloat min_size;
 
@@ -331,7 +331,7 @@ get_scrollbar_height (StScrollView *scroll,
 {
   StScrollViewPrivate *priv = scroll->priv;
 
-  if (CLUTTER_ACTOR_IS_VISIBLE (priv->hscroll))
+  if (clutter_actor_is_visible (priv->hscroll))
     {
       gfloat min_size;
 

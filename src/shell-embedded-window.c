@@ -59,7 +59,7 @@ shell_embedded_window_show (GtkWidget *widget)
       /* Size is 0x0 if the GtkWindow is not shown */
       clutter_actor_queue_relayout (CLUTTER_ACTOR (window->priv->actor));
 
-      if (CLUTTER_ACTOR_IS_REALIZED (window->priv->actor))
+      if (clutter_actor_is_realized (CLUTTER_ACTOR (window->priv->actor)))
         gtk_widget_map (widget);
     }
 }
@@ -166,7 +166,7 @@ _shell_embedded_window_set_actor (ShellEmbeddedWindow  *window,
   window->priv->actor = actor;
 
   if (actor &&
-      CLUTTER_ACTOR_IS_MAPPED (actor) &&
+      clutter_actor_is_mapped (CLUTTER_ACTOR (actor)) &&
       gtk_widget_get_visible (GTK_WIDGET (window)))
     gtk_widget_map (GTK_WIDGET (window));
 }

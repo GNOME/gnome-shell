@@ -172,7 +172,7 @@ shell_generic_container_get_focus_chain (StWidget *widget)
        child != NULL;
        child = clutter_actor_get_next_sibling (child))
     {
-      if (CLUTTER_ACTOR_IS_VISIBLE (child) &&
+      if (clutter_actor_is_visible (child) &&
           !shell_generic_container_get_skip_paint (self, child))
         focus_chain = g_list_prepend (focus_chain, child);
     }
@@ -273,7 +273,7 @@ shell_generic_container_get_paint_volume (ClutterActor *self,
         {
           const ClutterPaintVolume *child_volume;
 
-          if (!CLUTTER_ACTOR_IS_VISIBLE (child))
+          if (!clutter_actor_is_visible (child))
             continue;
 
           if (shell_generic_container_get_skip_paint (SHELL_GENERIC_CONTAINER  (self), child))
