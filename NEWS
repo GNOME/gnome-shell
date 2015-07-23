@@ -1,3 +1,19 @@
+3.17.4
+======
+* Fix fuzziness of app menu icon [Jakub; #747932]
+* Implement 4 finger swipe gesture for touchpads [Carlos; #752250]
+* Misc. bug fixes [Florian, Alexandre, Piotr, Ray, Mario; #751921, #659969,
+  #752438, #752675]
+
+Contributors:
+  Piotr Drąg, Alexandre Franke, Carlos Garnacho, Florian Müllner,
+  Mario Sanchez Prada, Jakub Steiner, Jasper St. Pierre, Ray Strode
+
+Translations:
+  Benjamin Steinwender [de], Pedro Albuquerque [pt], Fabio Tomat [fur],
+  Matej Urbančič [sl], Daniel Mustieles [es], Yosef Or Boczko [he],
+  Daniel Martinez [an]
+
 3.17.3
 ======
 * Handle touch events in OSK on wayland [Rui; #750287]
