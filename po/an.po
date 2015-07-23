@@ -9,24 +9,23 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-03-17 12:39+0000\n"
-"PO-Revision-Date: 2015-03-17 19:50+0100\n"
-"Last-Translator: Daniel Martinez <entaltoaragon@gmail.com>\n"
+"POT-Creation-Date: 2015-07-23 08:08+0000\n"
+"PO-Revision-Date: 2015-04-28 08:40+0200\n"
+"Last-Translator: Daniel <entaltoaragon@gmail.com>\n"
 "Language-Team: Aragonés <softaragones@googlegroups.com>\n"
 "Language: an\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Gtranslator 2.91.6\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1430206804.000000\n"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
 msgid "System"
 msgstr "Sistema"
 
 #: ../data/50-gnome-shell-system.xml.in.h:2
-#| msgid "%d new notification"
-#| msgid_plural "%d new notifications"
 msgid "Show the notification list"
 msgstr "Amostrar a lista de notificacions"
 
@@ -136,17 +135,18 @@ msgstr "Indiz de l'anvista seleccionada actual en o selector d'aplicacion."
 msgid "History for command (Alt-F2) dialog"
 msgstr "Historico d'o dialogo de comandos (Alt+F2)"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:12
+#. Translators: looking glass is a debugger and inspector tool, see https://live.gnome.org/GnomeShell/LookingGlass
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:13
 msgid "History for the looking glass dialog"
 msgstr "Historico d'o dialogo de \"looking glass\""
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:13
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:14
 msgid "Always show the 'Log out' menu item in the user menu."
 msgstr ""
 "Amostrar siempre l'elemento de menú \"Trancar sesión\" en o menú de "
 "l'usuario."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:14
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:15
 msgid ""
 "This key overrides the automatic hiding of the 'Log out' menu item in single-"
 "user, single-session situations."
@@ -154,14 +154,14 @@ msgstr ""
 "Ista clau sobrescribe a ocultación automatica de l'elemento de menú "
 "\"Trancar sesión\" en situacions d'un solo usuario u d'una sola sesión."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:15
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:16
 msgid ""
 "Whether to remember password for mounting encrypted or remote filesystems"
 msgstr ""
 "Indica si se debe recordar a clau ta amontar sistemas de fichers remotos u "
 "zifraus"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:16
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:17
 msgid ""
 "The shell will request a password when an encrypted device or a remote "
 "filesystem is mounted. If the password can be saved for future use a "
@@ -173,81 +173,79 @@ msgstr ""
 "s'amostrará a caixeta \"Remerar clau\". Ista clau estableix a valor "
 "predeterminada d'a caixeta."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:18
 msgid "Show the week date in the calendar"
 msgstr "Amostrar a calendata d'a semana en o calendario"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:19
 msgid "If true, display the ISO week date in the calendar."
 msgstr "Si ye cierta, amuestra a calendata de semana ISO en o calandario."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:20
 msgid "Keybinding to open the application menu"
 msgstr "Asociación de teclas ta ubrir o menú de l'aplicación"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:21
 msgid "Keybinding to open the application menu."
 msgstr "Asociación de teclas ta ubrir o menú de l'aplicación."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:22
 msgid "Keybinding to open the \"Show Applications\" view"
 msgstr "Asociación de teclas ta la vista \"Amostrar aplicacions\""
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:22
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:23
 msgid ""
 "Keybinding to open the \"Show Applications\" view of the Activities Overview."
 msgstr ""
 "Asociación de teclas ta ubrir la vista \"Amostrar aplicacions\" de la vista "
 "d'actividatz."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:23
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:24
 msgid "Keybinding to open the overview"
 msgstr "Asociación de teclas ta l'anvista cheneral"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:24
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:25
 msgid "Keybinding to open the Activities Overview."
 msgstr "Asociación de teclas ta ubrir l'anvista d'actividatz"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:25
-#| msgid "Keybinding to toggle the visibility of the message tray"
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:26
 msgid "Keybinding to toggle the visibility of the notification list"
 msgstr ""
 "Asociación de teclas ta cambiar a visibilidat d'a lista de notificacions"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:26
-#| msgid "Keybinding to toggle the visibility of the message tray."
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:27
 msgid "Keybinding to toggle the visibility of the notification list."
 msgstr ""
 "Asociación de teclas ta cambiar a visibilidat d'a lista de notificacions."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:27
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:28
 msgid "Keybinding to focus the active notification"
 msgstr "Asociación de teclas ta dar o foco a la notificación activa"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:28
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:29
 msgid "Keybinding to focus the active notification."
 msgstr "Asociación de teclas ta dar o foco a la notificación activa."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:29
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:30
 msgid ""
 "Keybinding that pauses and resumes all running tweens, for debugging purposes"
 msgstr ""
 "Asociación de teclas que pausan y continan todas as execucions de «tweens», "
 "ta propositos de depuraci'on"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:30
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:31
 msgid "Which keyboard to use"
 msgstr "Que teclau usar"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:31
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:32
 msgid "The type of keyboard to use."
 msgstr "O tipo de teclau que usar."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:32
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:33
 msgid "Limit switcher to current workspace."
 msgstr "Selector de limite ta l'aria de treballo actual."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:33
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:34
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
@@ -256,21 +254,21 @@ msgstr ""
 "finestras en l'aria de treballo actual. D'atra man, s'incluirán todas as "
 "aplicacions."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:34
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:35
 msgid "The application icon mode."
 msgstr "O modo d'icono de l'aplicación."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:35
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:36
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
-"are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-"
-"only' (shows only the application icon) or 'both'."
+"are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-only' "
+"(shows only the application icon) or 'both'."
 msgstr ""
 "Configura cómo s'amuestran as finestras en o selector. Os valore posibles "
-"son \"thumbnail-only\" (amuestra una miniatura d'a finestra), \"app-icon-only"
-"\" (solament amuestra l'icono de l'aplicación) u \"both\"."
+"son \"thumbnail-only\" (amuestra una miniatura d'a finestra), \"app-icon-"
+"only\" (solament amuestra l'icono de l'aplicación) u \"both\"."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:36
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:37
 msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
@@ -278,31 +276,31 @@ msgstr ""
 "Si en ye verdadero, nomás s'amostrarán en o selector finestras de l'aria de "
 "treballo actual. D'atra man, s'incluirán todas as finestras."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:37
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:38
 msgid "Attach modal dialog to the parent window"
 msgstr "Acoplar un dialogo modal a la finestra pai"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:38
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:39
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
 msgstr ""
 "Ista clau sobrescribe a clau en org.gnome.mutter en executar GNOME Shell."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:39
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:40
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr ""
 "Activar o mosaico en os bordes en arrocegar finestras a os bordes d'a "
 "finestra"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:40
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:41
 msgid "Workspaces are managed dynamically"
 msgstr "As arias de treballo se chestionan dinámicamente"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:41
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:42
 msgid "Workspaces only on primary monitor"
 msgstr "Arias de treballo solament en a pantalla prencipal"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:42
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:43
 msgid "Delay focus changes in mouse mode until the pointer stops moving"
 msgstr ""
 "Retardo en cambiar o foco d'o churi dica que o puntero deixa de mover-se"
@@ -311,12 +309,12 @@ msgstr ""
 msgid "Network Login"
 msgstr "Encetar sesión en o rete"
 
-#: ../js/extensionPrefs/main.js:123
+#: ../js/extensionPrefs/main.js:122
 #, javascript-format
 msgid "There was an error loading the preferences dialog for %s:"
 msgstr "I habió una error en lanzar o diálogo de preferencias ta %s:"
 
-#: ../js/extensionPrefs/main.js:155
+#: ../js/extensionPrefs/main.js:154
 msgid "GNOME Shell Extensions"
 msgstr "Extensions de GNOME Shell"
 
@@ -327,39 +325,39 @@ msgstr "Extensions de GNOME Shell"
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: ../js/gdm/authPrompt.js:169 ../js/gdm/authPrompt.js:217
+#: ../js/gdm/authPrompt.js:169 ../js/gdm/authPrompt.js:215
 msgid "Next"
 msgstr "Siguient"
 
-#: ../js/gdm/authPrompt.js:213 ../js/ui/shellMountOperation.js:403
+#: ../js/gdm/authPrompt.js:211 ../js/ui/shellMountOperation.js:403
 #: ../js/ui/unlockDialog.js:59
 msgid "Unlock"
 msgstr "Desbloquiar"
 
-#: ../js/gdm/authPrompt.js:215
+#: ../js/gdm/authPrompt.js:213
 msgctxt "button"
 msgid "Sign In"
 msgstr "Encetar sesión"
 
-#: ../js/gdm/loginDialog.js:280
+#: ../js/gdm/loginDialog.js:281
 msgid "Choose Session"
 msgstr "Esleyir a sesión"
 
-#: ../js/gdm/loginDialog.js:420
+#: ../js/gdm/loginDialog.js:431
 msgid "Not listed?"
 msgstr "No ye en a lista?"
 
-#: ../js/gdm/loginDialog.js:829
+#: ../js/gdm/loginDialog.js:847
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(eix., usuario u %s)"
 
-#: ../js/gdm/loginDialog.js:834 ../js/ui/components/networkAgent.js:271
+#: ../js/gdm/loginDialog.js:852 ../js/ui/components/networkAgent.js:271
 #: ../js/ui/components/networkAgent.js:289
 msgid "Username: "
-msgstr "Nombre d'usuario:"
+msgstr "Nombre d'usuario: "
 
-#: ../js/gdm/loginDialog.js:1169
+#: ../js/gdm/loginDialog.js:1180
 msgid "Login Window"
 msgstr "Finestra d'inicio de sesión"
 
@@ -452,31 +450,31 @@ msgstr "%d de %B de %Y, %l∶%M %"
 msgid "Web Authentication Redirect"
 msgstr "Rendrecera ta autentiación web"
 
-#: ../js/ui/appDisplay.js:792
+#: ../js/ui/appDisplay.js:789
 msgid "Frequently used applications will appear here"
 msgstr "As aplicaciones usadas freqüentment amaneixerán aquí"
 
-#: ../js/ui/appDisplay.js:912
+#: ../js/ui/appDisplay.js:909
 msgid "Frequent"
 msgstr "Freqüent"
 
-#: ../js/ui/appDisplay.js:919
+#: ../js/ui/appDisplay.js:916
 msgid "All"
 msgstr "Todas"
 
-#: ../js/ui/appDisplay.js:1850
+#: ../js/ui/appDisplay.js:1845
 msgid "New Window"
 msgstr "Finestra nueva"
 
-#: ../js/ui/appDisplay.js:1878 ../js/ui/dash.js:291
+#: ../js/ui/appDisplay.js:1873 ../js/ui/dash.js:289
 msgid "Remove from Favorites"
 msgstr "Sacar d'os favoritos"
 
-#: ../js/ui/appDisplay.js:1884
+#: ../js/ui/appDisplay.js:1879
 msgid "Add to Favorites"
 msgstr "Anyadir a os favoritos"
 
-#: ../js/ui/appDisplay.js:1894
+#: ../js/ui/appDisplay.js:1889
 msgid "Show Details"
 msgstr "Amostrar detalles"
 
@@ -490,14 +488,18 @@ msgstr "S'ha anyadiu %s a os suyos favoritos."
 msgid "%s has been removed from your favorites."
 msgstr "S'ha sacau %s d'os suyos favoritos"
 
-#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:650
-#: ../js/ui/status/system.js:337
-msgid "Settings"
-msgstr "Configuración"
-
-#: ../js/ui/backgroundMenu.js:21
+#: ../js/ui/backgroundMenu.js:19
 msgid "Change Background…"
 msgstr "Cambiar o fondo…"
+
+#: ../js/ui/backgroundMenu.js:21
+msgid "Display Settings"
+msgstr "Preferencias de pantalla"
+
+#: ../js/ui/backgroundMenu.js:22 ../js/ui/panel.js:650
+#: ../js/ui/status/system.js:357
+msgid "Settings"
+msgstr "Configuración"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday). */
 #: ../js/ui/calendar.js:53
@@ -551,54 +553,53 @@ msgctxt "grid saturday"
 msgid "S"
 msgstr "S"
 
-#: ../js/ui/calendar.js:563
+#: ../js/ui/calendar.js:564
 msgid "Previous month"
 msgstr "Mes anterior"
 
-#: ../js/ui/calendar.js:573
+#: ../js/ui/calendar.js:574
 msgid "Next month"
 msgstr "Mes siguient"
 
-#: ../js/ui/calendar.js:780
+#: ../js/ui/calendar.js:781
 msgid "Week %V"
 msgstr "Semana %V"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #. */
-#: ../js/ui/calendar.js:1182
+#: ../js/ui/calendar.js:1187
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Tot o diya"
 
-#: ../js/ui/calendar.js:1288
+#: ../js/ui/calendar.js:1289
 msgid "Clear section"
 msgstr "Limpiar a sección"
 
-#: ../js/ui/calendar.js:1515
+#: ../js/ui/calendar.js:1516
 msgid "Events"
 msgstr "Eventos"
 
-#: ../js/ui/calendar.js:1524
+#: ../js/ui/calendar.js:1525
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d de %B"
 
-#: ../js/ui/calendar.js:1528
+#: ../js/ui/calendar.js:1529
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d de %B de %Y"
 
-#: ../js/ui/calendar.js:1613
+#: ../js/ui/calendar.js:1614
 msgid "Notifications"
 msgstr "Notificacions"
 
-#: ../js/ui/calendar.js:1764
-#| msgid "Notifications"
+#: ../js/ui/calendar.js:1765
 msgid "No Notifications"
 msgstr "No i hai notificacions"
 
-#: ../js/ui/calendar.js:1767
+#: ../js/ui/calendar.js:1768
 msgid "No Events"
 msgstr "No i hai eventos"
 
@@ -634,23 +635,23 @@ msgstr "Connectar"
 #: ../js/ui/components/networkAgent.js:293
 #: ../js/ui/components/networkAgent.js:303
 msgid "Password: "
-msgstr "Clau de paso:"
+msgstr "Clau de paso: "
 
 #: ../js/ui/components/networkAgent.js:238
 msgid "Key: "
-msgstr "Clau:"
+msgstr "Clau: "
 
 #: ../js/ui/components/networkAgent.js:277
 msgid "Identity: "
-msgstr "Identidat:"
+msgstr "Identidat: "
 
 #: ../js/ui/components/networkAgent.js:279
 msgid "Private key password: "
-msgstr "Clau d'a clau privada:"
+msgstr "Clau d'a clau privada: "
 
 #: ../js/ui/components/networkAgent.js:291
 msgid "Service: "
-msgstr "Servicio:"
+msgstr "Servicio: "
 
 #: ../js/ui/components/networkAgent.js:320
 #: ../js/ui/components/networkAgent.js:658
@@ -661,8 +662,8 @@ msgstr "O ret sin cordón requiere autenticación"
 #: ../js/ui/components/networkAgent.js:659
 #, javascript-format
 msgid ""
-"Passwords or encryption keys are required to access the wireless network "
-"“%s”."
+"Passwords or encryption keys are required to access the wireless network “"
+"%s”."
 msgstr ""
 "S'amenesten claus u claus de zifrau ta accedir a o ret inalambrico\"%s\"."
 
@@ -673,7 +674,7 @@ msgstr "Autenticación 802.1X cableada"
 
 #: ../js/ui/components/networkAgent.js:327
 msgid "Network name: "
-msgstr "Nombre d'o ret:"
+msgstr "Nombre d'o ret: "
 
 #: ../js/ui/components/networkAgent.js:332
 #: ../js/ui/components/networkAgent.js:666
@@ -733,7 +734,7 @@ msgstr "Prebe atra vegada."
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name. */
-#: ../js/ui/components/telepathyClient.js:768
+#: ../js/ui/components/telepathyClient.js:757
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "Agora %s se dice %s"
@@ -742,11 +743,11 @@ msgstr "Agora %s se dice %s"
 msgid "Windows"
 msgstr "Finestras"
 
-#: ../js/ui/dash.js:252 ../js/ui/dash.js:293
+#: ../js/ui/dash.js:250 ../js/ui/dash.js:291
 msgid "Show Applications"
 msgstr "Amostrar aplicacions"
 
-#: ../js/ui/dash.js:453
+#: ../js/ui/dash.js:449
 msgid "Dash"
 msgstr "Tablero"
 
@@ -754,7 +755,6 @@ msgstr "Tablero"
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #. */
 #: ../js/ui/dateMenu.js:73
-#| msgid "%A %B %e, %Y"
 msgid "%B %e %Y"
 msgstr "%B %e %Y"
 
@@ -763,7 +763,6 @@ msgstr "%B %e %Y"
 #. * date, e.g. "Tuesday February 17 2015".
 #. */
 #: ../js/ui/dateMenu.js:80
-#| msgid "%A %B %e, %Y"
 msgid "%A %B %e %Y"
 msgstr "%A %e de %B de %Y"
 
@@ -772,7 +771,6 @@ msgid "Add world clocks…"
 msgstr "Adhibir reloches d'o mundo…"
 
 #: ../js/ui/dateMenu.js:161
-#| msgid "Open Clocks"
 msgid "World Clocks"
 msgstr "Reloches d'o mundo"
 
@@ -916,17 +914,16 @@ msgstr "Instalar"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Descargar y instalar \"%s\" dende extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:714 ../js/ui/status/keyboard.js:580
+#: ../js/ui/keyboard.js:747 ../js/ui/status/keyboard.js:713
 msgid "Keyboard"
 msgstr "Teclau"
 
 #. translators: 'Hide' is a verb */
-#: ../js/ui/legacyTray.js:64
-#| msgid "Hide Text"
+#: ../js/ui/legacyTray.js:66
 msgid "Hide tray"
 msgstr "Amagar servilla"
 
-#: ../js/ui/legacyTray.js:104
+#: ../js/ui/legacyTray.js:107
 msgid "Status Icons"
 msgstr "Iconos d'estau"
 
@@ -982,7 +979,7 @@ msgstr "Veyer fuent"
 msgid "Web Page"
 msgstr "Pachina web"
 
-#: ../js/ui/messageTray.js:2133
+#: ../js/ui/messageTray.js:1486
 msgid "System Information"
 msgstr "Informacion d'o sistema"
 
@@ -1024,7 +1021,7 @@ msgstr "toggle-switch-intl"
 msgid "Enter a Command"
 msgstr "Introducir un comando"
 
-#: ../js/ui/runDialog.js:110 ../js/ui/windowMenu.js:120
+#: ../js/ui/runDialog.js:110 ../js/ui/windowMenu.js:162
 msgid "Close"
 msgstr "Trancar"
 
@@ -1052,27 +1049,27 @@ msgid_plural "%d new notifications"
 msgstr[0] "%d notificación nueva"
 msgstr[1] "%d notificacions nuevas"
 
-#: ../js/ui/screenShield.js:432 ../js/ui/status/system.js:345
+#: ../js/ui/screenShield.js:432 ../js/ui/status/system.js:365
 msgid "Lock"
 msgstr "Blocar"
 
-#: ../js/ui/screenShield.js:668
+#: ../js/ui/screenShield.js:684
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME ameneste blocar a pantalla"
 
-#: ../js/ui/screenShield.js:795 ../js/ui/screenShield.js:1271
+#: ../js/ui/screenShield.js:805 ../js/ui/screenShield.js:1271
 msgid "Unable to lock"
 msgstr "No se podió blocar"
 
-#: ../js/ui/screenShield.js:796 ../js/ui/screenShield.js:1272
+#: ../js/ui/screenShield.js:806 ../js/ui/screenShield.js:1272
 msgid "Lock was blocked by an application"
 msgstr "Una aplicación impidió o bloqueyo"
 
-#: ../js/ui/search.js:616
+#: ../js/ui/search.js:617
 msgid "Searching…"
 msgstr "Mirando…"
 
-#: ../js/ui/search.js:618
+#: ../js/ui/search.js:619
 msgid "No results."
 msgstr "No se troboron resultaus."
 
@@ -1136,11 +1133,11 @@ msgstr "Refuso de teclas"
 msgid "Mouse Keys"
 msgstr "Teclas d'o ratet"
 
-#: ../js/ui/status/accessibility.js:144
+#: ../js/ui/status/accessibility.js:167
 msgid "High Contrast"
 msgstr "Contraste alto"
 
-#: ../js/ui/status/accessibility.js:193
+#: ../js/ui/status/accessibility.js:202
 msgid "Large Text"
 msgstr "Texto gran"
 
@@ -1174,7 +1171,7 @@ msgstr "No connectau"
 msgid "Brightness"
 msgstr "Brilo"
 
-#: ../js/ui/status/keyboard.js:603
+#: ../js/ui/status/keyboard.js:736
 msgid "Show Keyboard Layout"
 msgstr "Amostrar a distribución d'o teclau"
 
@@ -1268,7 +1265,7 @@ msgstr "O modo avión ye enchegau"
 
 #: ../js/ui/status/network.js:814
 msgid "Wi-Fi is disabled when airplane mode is on."
-msgstr "O Wi-Fi ye desactivau quan o modo avión  ye enchegau."
+msgstr "O Wi-Fi ye desactivau quan o modo avión ye enchegau."
 
 #: ../js/ui/status/network.js:815
 msgid "Turn Off Airplane Mode"
@@ -1385,23 +1382,23 @@ msgstr "Modo avión"
 msgid "On"
 msgstr "Enchegau"
 
-#: ../js/ui/status/system.js:317
+#: ../js/ui/status/system.js:337
 msgid "Switch User"
 msgstr "Cambear d'usuario"
 
-#: ../js/ui/status/system.js:322
+#: ../js/ui/status/system.js:342
 msgid "Log Out"
 msgstr "Trancar sesion"
 
-#: ../js/ui/status/system.js:341
+#: ../js/ui/status/system.js:361
 msgid "Orientation Lock"
 msgstr "Bloqueyo d'Orientación"
 
-#: ../js/ui/status/system.js:349
+#: ../js/ui/status/system.js:369
 msgid "Suspend"
 msgstr "Suspender"
 
-#: ../js/ui/status/system.js:352
+#: ../js/ui/status/system.js:372
 msgid "Power Off"
 msgstr "Amortar"
 
@@ -1433,27 +1430,27 @@ msgstr "Aplicacions"
 msgid "Search"
 msgstr "Mirar"
 
-#: ../js/ui/windowAttentionHandler.js:19
+#: ../js/ui/windowAttentionHandler.js:20
 #, javascript-format
 msgid "“%s” is ready"
 msgstr "\"%s\" ye parau"
 
-#: ../js/ui/windowManager.js:65
+#: ../js/ui/windowManager.js:63
 msgid "Do you want to keep these display settings?"
 msgstr "Quiers mantener istas opcions de pantalla?"
 
 #. Translators: this and the following message should be limited in lenght,
 #. to avoid ellipsizing the labels.
 #. */
-#: ../js/ui/windowManager.js:84
+#: ../js/ui/windowManager.js:82
 msgid "Revert Settings"
 msgstr "Revertir as opcions"
 
-#: ../js/ui/windowManager.js:88
+#: ../js/ui/windowManager.js:86
 msgid "Keep Changes"
 msgstr "Mantener os cambeos"
 
-#: ../js/ui/windowManager.js:107
+#: ../js/ui/windowManager.js:105
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
@@ -1462,7 +1459,7 @@ msgstr[1] "Os cambeos d'as opcions serán revertius en %d segundos"
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height. */
-#: ../js/ui/windowManager.js:599
+#: ../js/ui/windowManager.js:660
 #, javascript-format
 msgid "%d x %d"
 msgstr "%d x %d"
@@ -1499,13 +1496,47 @@ msgstr "Siempre veyible"
 msgid "Always on Visible Workspace"
 msgstr "Siempre en l'aria de treballo veyible"
 
-#: ../js/ui/windowMenu.js:106
+#: ../js/ui/windowMenu.js:105
+#, fuzzy
+#| msgid "Move to Workspace Up"
+msgid "Move to Workspace Left"
+msgstr "Mover a l'aria de treballo d'a cucha"
+
+#: ../js/ui/windowMenu.js:110
+#, fuzzy
+#| msgid "Move to Workspace Up"
+msgid "Move to Workspace Right"
+msgstr "Mover a l'aria de treballo d'a dreita"
+
+#: ../js/ui/windowMenu.js:115
 msgid "Move to Workspace Up"
 msgstr "Mover ta l'aria de treballo d'alto"
 
-#: ../js/ui/windowMenu.js:111
+#: ../js/ui/windowMenu.js:120
 msgid "Move to Workspace Down"
 msgstr "Mover ta l'aria de treballo d'abaixo"
+
+#: ../js/ui/windowMenu.js:136
+#, fuzzy
+#| msgid "Move to Workspace Up"
+msgid "Move to Monitor Up"
+msgstr "Mover a la pantalla d'alto"
+
+#: ../js/ui/windowMenu.js:142
+#, fuzzy
+#| msgid "Move to Workspace Down"
+msgid "Move to Monitor Down"
+msgstr "Mover a la pantalla d'abaixo"
+
+#: ../js/ui/windowMenu.js:148
+#, fuzzy
+msgid "Move to Monitor Left"
+msgstr "Mover a la pantalla d'a cucha"
+
+#: ../js/ui/windowMenu.js:154
+#, fuzzy
+msgid "Move to Monitor Right"
+msgstr "Mover a la pantalla d'a dreita"
 
 #: ../src/calendar-server/evolution-calendar.desktop.in.in.h:1
 msgid "Evolution Calendar"
@@ -1561,11 +1592,11 @@ msgstr "Desconoxiu"
 msgid "Failed to launch “%s”"
 msgstr "Ha fallau en aventar \"%s\""
 
-#: ../src/shell-keyring-prompt.c:714
+#: ../src/shell-keyring-prompt.c:742
 msgid "Passwords do not match."
 msgstr "As claus de paso no coinciden."
 
-#: ../src/shell-keyring-prompt.c:722
+#: ../src/shell-keyring-prompt.c:750
 msgid "Password cannot be blank"
 msgstr "A clau de paso no puede estar vueda"
 
@@ -1803,14 +1834,6 @@ msgstr "L'usuario refusó o dialogo d'autenticación"
 #~ msgid "The maximum accuracy level of location."
 #~ msgstr "O maximo libel de precisión d'ubicación."
 
-#~| msgid ""
-#~| "Configures the maximum level of location accuracy applications are "
-#~| "allowed to see. Valid options are 'off' (disable location tracking), "
-#~| "'country', 'city', 'neighborhood', 'street', and 'exact' (typically "
-#~| "requires GPS receiver). Please keep in mind that this only controls what "
-#~| "Geoclue will allow applications to see and they can find user's location "
-#~| "on their own using network resources (albeit with street-level accuracy "
-#~| "at best)."
 #~ msgid ""
 #~ "Configures the maximum level of location accuracy applications are "
 #~ "allowed to see. Valid options are 'off' (disable location tracking), "
@@ -1822,8 +1845,8 @@ msgstr "L'usuario refusó o dialogo d'autenticación"
 #~ msgstr ""
 #~ "Configura o ran maximo de precisión d'ubicación que as aplicacions  "
 #~ "pueden veyer. As opcions validas son 'off' (seguimiento d'ubicación "
-#~ "desenchegau), 'country', 'city', 'neighborhood', 'street', and "
-#~ "'exact' (typicament requier GPS "
+#~ "desenchegau), 'country', 'city', 'neighborhood', 'street', and 'exact' "
+#~ "(typicament requier GPS "
 
 #~ msgid "Arrangement of buttons on the titlebar"
 #~ msgstr "Orden d'os botons en a barra de titol"
@@ -1968,7 +1991,6 @@ msgstr "L'usuario refusó o dialogo d'autenticación"
 #~ msgid "Session…"
 #~ msgstr "Sesión…"
 
-#~| msgid "Power Off"
 #~ msgid "Power"
 #~ msgstr "Enerchía"
 
@@ -2132,11 +2154,9 @@ msgstr "L'usuario refusó o dialogo d'autenticación"
 #~ msgid "%d%%"
 #~ msgstr "%d%%"
 
-#~| msgid "AC adapter"
 #~ msgid "AC Adapter"
 #~ msgstr "Adaptador de corrient"
 
-#~| msgid "Laptop battery"
 #~ msgid "Laptop Battery"
 #~ msgstr "Bateria d'o portatil"
 
@@ -2149,11 +2169,9 @@ msgstr "L'usuario refusó o dialogo d'autenticación"
 #~ msgid "PDA"
 #~ msgstr "PDA"
 
-#~| msgid "Cell phone"
 #~ msgid "Cell Phone"
 #~ msgstr "Telefono movil"
 
-#~| msgid "Media player"
 #~ msgid "Media Player"
 #~ msgstr "Reproductor multimeya"
 
@@ -2163,7 +2181,6 @@ msgstr "L'usuario refusó o dialogo d'autenticación"
 #~ msgid "Computer"
 #~ msgstr "Equipo"
 
-#~| msgid "Unknown"
 #~ msgctxt "device"
 #~ msgid "Unknown"
 #~ msgstr "Desconoxiu"
