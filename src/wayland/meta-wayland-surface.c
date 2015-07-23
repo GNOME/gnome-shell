@@ -541,7 +541,11 @@ apply_pending_state (MetaWaylandSurface      *surface,
     }
 
   /* wl_surface.frame */
-  wl_list_insert_list (&compositor->frame_callbacks, &pending->frame_callback_list);
+  if (surface->surface_actor)
+    meta_surface_actor_wayland_add_frame_callbacks (META_SURFACE_ACTOR_WAYLAND (surface->surface_actor),
+                                                    &pending->frame_callback_list);
+  else
+    wl_list_insert_list (&compositor->frame_callbacks, &pending->frame_callback_list);
   wl_list_init (&pending->frame_callback_list);
 
   switch (surface->role)

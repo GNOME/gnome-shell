@@ -30,6 +30,7 @@
 #include "meta-surface-actor.h"
 
 #include "wayland/meta-wayland.h"
+#include "wayland/meta-wayland-private.h"
 
 #include "backends/meta-monitor-manager-private.h"
 
@@ -77,6 +78,9 @@ void meta_surface_actor_wayland_sync_subsurface_state (MetaSurfaceActorWayland *
 
 gboolean meta_surface_actor_wayland_is_on_monitor (MetaSurfaceActorWayland *self,
                                                    MetaMonitorInfo         *monitor);
+
+void meta_surface_actor_wayland_add_frame_callbacks (MetaSurfaceActorWayland *self,
+                                                     struct wl_list *frame_callbacks);
 
 G_END_DECLS
 

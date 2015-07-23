@@ -39,6 +39,7 @@
 struct _MetaSurfaceActorWaylandPrivate
 {
   MetaWaylandSurface *surface;
+  struct wl_list frame_callback_list;
 };
 typedef struct _MetaSurfaceActorWaylandPrivate MetaSurfaceActorWaylandPrivate;
 
@@ -279,6 +280,15 @@ meta_surface_actor_wayland_is_on_monitor (MetaSurfaceActorWayland *self,
   return is_on_monitor;
 }
 
+void
+meta_surface_actor_wayland_add_frame_callbacks (MetaSurfaceActorWayland *self,
+                                                struct wl_list *frame_callbacks)
+{
+  MetaSurfaceActorWaylandPrivate *priv = meta_surface_actor_wayland_get_instance_private (self);
+
+  wl_list_insert_list (&priv->frame_callback_list, frame_callbacks);
+}
+
 static MetaWindow *
 meta_surface_actor_wayland_get_window (MetaSurfaceActor *actor)
 {
@@ -331,7 +341,13 @@ meta_surface_actor_wayland_paint (ClutterActor *actor)
     meta_surface_actor_wayland_get_instance_private (self);
 
   if (priv->surface)
-    meta_wayland_surface_update_outputs (priv->surface);
+    {
+      MetaWaylandCompositor *compositor = priv->surface->compositor;
+      meta_wayland_surface_update_outputs (priv->surface);
+
+      wl_list_insert_list (&compositor->frame_callbacks, &priv->frame_callback_list);
+      wl_list_init (&priv->frame_callback_list);
+    }
 
   CLUTTER_ACTOR_CLASS (meta_surface_actor_wayland_parent_class)->paint (actor);
 }
@@ -383,6 +399,7 @@ meta_surface_actor_wayland_new (MetaWaylandSurface *surface)
 
   g_assert (meta_is_wayland_compositor ());
 
+  wl_list_init (&priv->frame_callback_list);
   priv->surface = surface;
 
   return META_SURFACE_ACTOR (self);
