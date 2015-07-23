@@ -501,7 +501,7 @@ const AuthPrompt = new Lang.Class({
     },
 
     cancel: function() {
-        if (this.verificationStatus == AuthPromptStatus.NOT_VERIFYING || this.verificationStatus == AuthPromptStatus.VERIFICATION_SUCCEEDED) {
+        if (this.verificationStatus == AuthPromptStatus.VERIFICATION_SUCCEEDED) {
             return;
         }
         this.reset();
