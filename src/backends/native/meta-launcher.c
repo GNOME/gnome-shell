@@ -223,7 +223,7 @@ on_evdev_device_close (int      fd,
   if (!get_device_info_from_fd (fd, &major, &minor))
     {
       g_warning ("Could not get device info for fd %d: %m", fd);
-      return;
+      goto out;
     }
 
   if (!login1_session_call_release_device_sync (self->session_proxy,
@@ -232,6 +232,9 @@ on_evdev_device_close (int      fd,
     {
       g_warning ("Could not release device %d,%d: %s", major, minor, error->message);
     }
+
+out:
+  close (fd);
 }
 
 static void
