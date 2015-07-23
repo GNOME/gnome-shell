@@ -24,9 +24,6 @@ const KEYBOARD_TYPE = 'keyboard-type';
 const A11Y_APPLICATIONS_SCHEMA = 'org.gnome.desktop.a11y.applications';
 const SHOW_KEYBOARD = 'screen-keyboard-enabled';
 
-const CURSOR_BUS_NAME = 'org.gnome.SettingsDaemon.Cursor';
-const CURSOR_OBJECT_PATH = '/org/gnome/SettingsDaemon/Cursor';
-
 const CARIBOU_BUS_NAME = 'org.gnome.Caribou.Daemon';
 const CARIBOU_OBJECT_PATH = '/org/gnome/Caribou/Daemon';
 
@@ -207,9 +204,6 @@ const Keyboard = new Lang.Class({
         this._keyboardSettings.connect('changed', Lang.bind(this, this._sync));
         this._a11yApplicationsSettings = new Gio.Settings({ schema_id: A11Y_APPLICATIONS_SCHEMA });
         this._a11yApplicationsSettings.connect('changed', Lang.bind(this, this._sync));
-        this._watchNameId = Gio.bus_watch_name(Gio.BusType.SESSION, CURSOR_BUS_NAME, 0,
-                                               Lang.bind(this, this._sync),
-                                               Lang.bind(this, this._sync));
         this._daemonProxy = null;
         this._lastDeviceId = null;
 
