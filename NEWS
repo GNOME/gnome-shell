@@ -1,3 +1,16 @@
+3.17.4
+======
+* nested: Allow basic configuration of dummy outputs [Jonas; #747089]
+* Send wl_surface.enter and wl_surface.leave on output changes [Jonas; #744453]
+* Improve HiDPI handling on wayland [Jonas; #745655, #744934]
+* Implement compositor-side animated cursors [Carlos; #752342]
+* Misc. bug fixes [Peter, Marek, Carlos, Matthias, Rui; #750816, #751884,
+  #752248, #752551, #752552, #752673, #752674]
+
+Contributors:
+  Jonas Ådahl, Marek Chalupa, Matthias Clasen, Carlos Garnacho, Peter Hutterer,
+  Rui Matos, Florian Müllner, Jasper St. Pierre
+
 3.17.3
 ======
 * Add X11/wayland clipboard interaction [Carlos; #738312]
