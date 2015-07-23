@@ -63,7 +63,7 @@ MUTTER_PC_MODULES="
    pango >= 1.2.0
    cairo >= 1.10.0
    gsettings-desktop-schemas >= 3.15.92
-   $CLUTTER_PACKAGE >= 1.21.3
+   $CLUTTER_PACKAGE >= 1.23.4
    cogl-1.0 >= 1.17.1
    upower-glib >= 0.99.0
    gnome-desktop-3.0
