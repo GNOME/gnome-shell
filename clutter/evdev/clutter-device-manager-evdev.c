@@ -629,6 +629,8 @@ notify_pinch_gesture_event (ClutterInputDevice          *input_device,
   event->touchpad_pinch.stage = CLUTTER_STAGE (stage);
   event->touchpad_pinch.x = pos.x;
   event->touchpad_pinch.y = pos.y;
+  event->touchpad_pinch.dx = dx;
+  event->touchpad_pinch.dy = dy;
   event->touchpad_pinch.angle_delta = angle_delta;
   event->touchpad_pinch.scale = scale;
 
