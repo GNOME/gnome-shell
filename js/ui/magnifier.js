@@ -4,6 +4,7 @@ const Atspi = imports.gi.Atspi;
 const Clutter = imports.gi.Clutter;
 const GDesktopEnums = imports.gi.GDesktopEnums;
 const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 const Lang = imports.lang;
@@ -21,6 +22,8 @@ const PointerWatcher = imports.ui.pointerWatcher;
 const MOUSE_POLL_FREQUENCY = 50;
 const CROSSHAIRS_CLIP_SIZE = [100, 100];
 const NO_CHANGE = 0.0;
+
+const POINTER_REST_TIME = 1000; // milliseconds
 
 // Settings
 const APPLICATIONS_SCHEMA       = 'org.gnome.desktop.a11y.applications';
@@ -709,6 +712,9 @@ const ZoomRegion = new Lang.Class({
         this._xCaret = 0;
         this._yCaret = 0;
 
+        this._pointerIdleMonitor = Meta.IdleMonitor.get_for_device(Meta.VIRTUAL_CORE_POINTER_ID);
+        this._scrollContentsTimerId = 0;
+
         Main.layoutManager.connect('monitors-changed',
                                    Lang.bind(this, this._monitorsChanged));
         this._focusCaretTracker.connect('caret-moved',
@@ -1068,6 +1074,26 @@ const ZoomRegion = new Lang.Class({
         return this._isMouseOverRegion();
     },
 
+    _clearScrollContentsTimer: function() {
+        if (this._scrollContentsTimerId != 0) {
+            Mainloop.source_remove(this._scrollContentsTimerId);
+            this._scrollContentsTimerId = 0;
+        }
+    },
+
+    _scrollContentsToDelayed: function(x, y) {
+        if (this._pointerIdleMonitor.get_idletime() >= POINTER_REST_TIME) {
+            this.scrollContentsTo(x, y);
+            return;
+        }
+
+        this._clearScrollContentsTimer();
+        this._scrollContentsTimerId = Mainloop.timeout_add(POINTER_REST_TIME, Lang.bind(this, function() {
+            this._scrollContentsToDelayed(x, y);
+            return GLib.SOURCE_REMOVE;
+        }));
+    },
+
     /**
      * scrollContentsTo:
      * Shift the contents of the magnified view such it is centered on the given
@@ -1076,6 +1102,8 @@ const ZoomRegion = new Lang.Class({
      * @y:      The y-coord of the point to center on.
      */
     scrollContentsTo: function(x, y) {
+        this._clearScrollContentsTimer();
+
         this._followingCursor = false;
         this._changeROI({ xCenter: x,
                           yCenter: y });
@@ -1381,7 +1409,7 @@ const ZoomRegion = new Lang.Class({
         else if (this._caretTrackingMode == GDesktopEnums.MagnifierCaretTrackingMode.CENTERED)
             [xCaret, yCaret] = this._centerFromPointCentered(xCaret, yCaret);
 
-        this.scrollContentsTo(xCaret, yCaret);
+        this._scrollContentsToDelayed(xCaret, yCaret);
     },
 
     _centerFromFocusPosition: function() {
@@ -1395,7 +1423,7 @@ const ZoomRegion = new Lang.Class({
         else if (this._focusTrackingMode == GDesktopEnums.MagnifierFocusTrackingMode.CENTERED)
             [xFocus, yFocus] = this._centerFromPointCentered(xFocus, yFocus);
 
-        this.scrollContentsTo(xFocus, yFocus);
+        this._scrollContentsToDelayed(xFocus, yFocus);
     },
 
     _centerFromPointPush: function(xPoint, yPoint) {
