@@ -1075,6 +1075,8 @@ create_context (CoglDisplay *display, CoglError **error)
   COGL_NOTE (WINSYS, "Creating GLX Context (display: %p)",
              xlib_renderer->xdpy);
 
+  _cogl_xlib_renderer_trap_errors (display->renderer, &old_state);
+
   if (display->renderer->driver == COGL_DRIVER_GL3)
     glx_display->glx_context = create_gl3_context (display, config);
   else
@@ -1085,7 +1087,8 @@ create_context (CoglDisplay *display, CoglError **error)
                                          NULL,
                                          True);
 
-  if (glx_display->glx_context == NULL)
+  if (_cogl_xlib_renderer_untrap_errors (display->renderer, &old_state) ||
+      glx_display->glx_context == NULL)
     {
       _cogl_set_error (error, COGL_WINSYS_ERROR,
                    COGL_WINSYS_ERROR_CREATE_CONTEXT,
