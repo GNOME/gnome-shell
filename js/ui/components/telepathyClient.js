@@ -303,6 +303,8 @@ const ChatSource = new Lang.Class({
     },
 
     _createPolicy: function() {
+        if (this._account.protocol_name == 'irc')
+            return new MessageTray.NotificationApplicationPolicy('org.gnome.Polari');
         return new MessageTray.NotificationApplicationPolicy('empathy');
     },
 
