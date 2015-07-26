@@ -243,8 +243,9 @@ clutter_backend_real_font_changed (ClutterBackend *backend)
 }
 
 static gboolean
-clutter_backend_real_create_context (ClutterBackend  *backend,
-                                     GError         **error)
+clutter_backend_do_real_create_context (ClutterBackend  *backend,
+                                        CoglDriver       driver_id,
+                                        GError         **error)
 {
   ClutterBackendClass *klass;
   CoglSwapChain *swap_chain;
@@ -276,6 +277,7 @@ clutter_backend_real_create_context (ClutterBackend  *backend,
 #endif
 
   CLUTTER_NOTE (BACKEND, "Connecting the renderer");
+  cogl_renderer_set_driver (backend->cogl_renderer, driver_id);
   if (!cogl_renderer_connect (backend->cogl_renderer, &internal_error))
     goto error;
 
@@ -332,10 +334,6 @@ clutter_backend_real_create_context (ClutterBackend  *backend,
   if (backend->cogl_context == NULL)
     goto error;
 
-  backend->cogl_source = cogl_glib_source_new (backend->cogl_context,
-                                               G_PRIORITY_DEFAULT);
-  g_source_attach (backend->cogl_source, NULL);
-
   /* the display owns the renderer and the swap chain */
   cogl_object_unref (backend->cogl_renderer);
   cogl_object_unref (swap_chain);
@@ -358,14 +356,59 @@ error:
   if (swap_chain != NULL)
     cogl_object_unref (swap_chain);
 
-  if (internal_error != NULL)
-    g_propagate_error (error, internal_error);
-  else
-    g_set_error_literal (error, CLUTTER_INIT_ERROR,
-                         CLUTTER_INIT_ERROR_BACKEND,
-                         _("Unable to initialize the Clutter backend"));
-
   return FALSE;
+}
+
+static gboolean
+clutter_backend_real_create_context (ClutterBackend  *backend,
+                                     GError         **error)
+{
+  static const struct {
+    const char *driver_name;
+    CoglDriver driver_id;
+  } known_drivers[] = {
+    { "GL3", COGL_DRIVER_GL3 },
+    { "GL (Legacy)", COGL_DRIVER_GL },
+    { "GLES 2.0", COGL_DRIVER_GLES2 },
+    { "ANY", COGL_DRIVER_ANY },
+  };
+
+  GError *internal_error = NULL;
+  int i;
+
+  for (i = 0; i < G_N_ELEMENTS (known_drivers); i++)
+    {
+      CLUTTER_NOTE (BACKEND, "Checking for the %s driver", known_drivers[i].driver_name);
+
+      if (clutter_backend_do_real_create_context (backend, known_drivers[i].driver_id, &internal_error))
+        break;
+
+      if (internal_error)
+        {
+          CLUTTER_NOTE (BACKEND, "Unable to use the %s driver: %s",
+                        known_drivers[i].driver_name,
+                        internal_error->message);
+          g_clear_error (&internal_error);
+        }
+    }
+
+  if (backend->cogl_context == NULL)
+    {
+      if (internal_error != NULL)
+        g_propagate_error (error, internal_error);
+      else
+        g_set_error_literal (error, CLUTTER_INIT_ERROR,
+                             CLUTTER_INIT_ERROR_BACKEND,
+                            _("Unable to initialize the Clutter backend"));
+
+      return FALSE;
+    }
+
+  backend->cogl_source = cogl_glib_source_new (backend->cogl_context,
+                                               G_PRIORITY_DEFAULT);
+  g_source_attach (backend->cogl_source, NULL);
+
+  return TRUE;
 }
 
 static void
