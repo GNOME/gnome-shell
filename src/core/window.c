@@ -880,7 +880,6 @@ _meta_window_shared_new (MetaDisplay         *display,
   window->maximize_vertically_after_placement = FALSE;
   window->minimize_after_placement = FALSE;
   window->fullscreen = FALSE;
-  window->fullscreen_after_placement = FALSE;
   window->fullscreen_monitors[0] = -1;
   window->require_fully_onscreen = TRUE;
   window->require_on_single_monitor = TRUE;
