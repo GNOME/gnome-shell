@@ -917,10 +917,7 @@ const NMWirelessDialog = new Lang.Class({
                                                   key: Clutter.Escape });
         this._connectButton = this.addButton({ action: Lang.bind(this, this._connect),
                                                label: _("Connect"),
-                                               key: Clutter.Return },
-                                             { expand: true,
-                                               x_fill: false,
-                                               x_align: St.Align.END });
+                                               key: Clutter.Return });
     },
 
     _connect: function() {

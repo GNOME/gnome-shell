@@ -81,12 +81,10 @@ const DisplayChangeDialog = new Lang.Class({
         */
         this._cancelButton = this.addButton({ label: _("Revert Settings"),
                                               action: Lang.bind(this, this._onFailure),
-                                              key: Clutter.Escape },
-                                            { expand: true, x_fill: false, x_align: St.Align.START });
+                                              key: Clutter.Escape });
         this._okButton = this.addButton({ label:  _("Keep Changes"),
                                           action: Lang.bind(this, this._onSuccess),
-                                          default: true },
-                                        { expand: false, x_fill: false, x_align: St.Align.END });
+                                          default: true });
 
         this._timeoutId = Mainloop.timeout_add(ONE_SECOND, Lang.bind(this, this._tick));
         GLib.Source.set_name_by_id(this._timeoutId, '[gnome-shell] this._tick');

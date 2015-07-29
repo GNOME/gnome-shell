@@ -13,12 +13,18 @@ const Mainloop = imports.mainloop;
 const Polkit = imports.gi.Polkit;
 const PolkitAgent = imports.gi.PolkitAgent;
 
+const Animation = imports.ui.animation;
 const Components = imports.ui.components;
 const ModalDialog = imports.ui.modalDialog;
 const ShellEntry = imports.ui.shellEntry;
 const UserWidget = imports.ui.userWidget;
+const Tweener = imports.ui.tweener;
 
 const DIALOG_ICON_SIZE = 48;
+
+const WORK_SPINNER_ICON_SIZE = 16;
+const WORK_SPINNER_ANIMATION_DELAY = 1.0;
+const WORK_SPINNER_ANIMATION_TIME = 0.3;
 
 const AuthenticationDialog = new Lang.Class({
     Name: 'AuthenticationDialog',
@@ -136,6 +142,13 @@ const AuthenticationDialog = new Lang.Class({
         this._passwordEntry.clutter_text.connect('activate', Lang.bind(this, this._onEntryActivate));
         this._passwordBox.add(this._passwordEntry,
                               { expand: true });
+
+        let spinnerIcon = Gio.File.new_for_uri('resource:///org/gnome/shell/theme/process-working.svg');
+        this._workSpinner = new Animation.AnimatedIcon(spinnerIcon, WORK_SPINNER_ICON_SIZE);
+        this._workSpinner.actor.opacity = 0;
+
+        this._passwordBox.add(this._workSpinner.actor);
+
         this.setInitialKeyFocus(this._passwordEntry);
         this._passwordBox.hide();
 
@@ -165,22 +178,39 @@ const AuthenticationDialog = new Lang.Class({
 
         this._cancelButton = this.addButton({ label: _("Cancel"),
                                               action: Lang.bind(this, this.cancel),
-                                              key: Clutter.Escape },
-                                            { expand: true, x_fill: false, x_align: St.Align.START });
-        this.placeSpinner({ expand: false,
-                            x_fill: false,
-                            y_fill: false,
-                            x_align: St.Align.END,
-                            y_align: St.Align.MIDDLE });
+                                              key: Clutter.Escape });
         this._okButton = this.addButton({ label:  _("Authenticate"),
                                           action: Lang.bind(this, this._onAuthenticateButtonPressed),
-                                          default: true },
-                                        { expand: false, x_fill: false, x_align: St.Align.END });
+                                          default: true });
 
         this._doneEmitted = false;
 
         this._identityToAuth = Polkit.UnixUser.new_for_name(userName);
         this._cookie = cookie;
+    },
+
+    _setWorking: function(working) {
+        Tweener.removeTweens(this._workSpinner.actor);
+        if (working) {
+            this._workSpinner.play();
+            Tweener.addTween(this._workSpinner.actor,
+                             { opacity: 255,
+                               delay: WORK_SPINNER_ANIMATION_DELAY,
+                               time: WORK_SPINNER_ANIMATION_TIME,
+                               transition: 'linear'
+                             });
+        } else {
+            Tweener.addTween(this._workSpinner.actor,
+                             { opacity: 0,
+                               time: WORK_SPINNER_ANIMATION_TIME,
+                               transition: 'linear',
+                               onCompleteScope: this,
+                               onComplete: function() {
+                                   if (this._workSpinner)
+                                       this._workSpinner.stop();
+                               }
+                             });
+        }
     },
 
     performAuthentication: function() {
@@ -229,7 +259,7 @@ const AuthenticationDialog = new Lang.Class({
 
         this._okButton.can_focus = sensitive;
         this._okButton.reactive = sensitive;
-        this.setWorking(!sensitive);
+        this._setWorking(!sensitive);
     },
 
     _onEntryActivate: function() {

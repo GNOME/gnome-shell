@@ -9,9 +9,15 @@ const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Gcr = imports.gi.Gcr;
 
+const Animation = imports.ui.animation;
 const ModalDialog = imports.ui.modalDialog;
 const ShellEntry = imports.ui.shellEntry;
 const CheckBox = imports.ui.checkBox;
+const Tweener = imports.ui.tweener;
+
+const WORK_SPINNER_ICON_SIZE = 16;
+const WORK_SPINNER_ANIMATION_DELAY = 1.0;
+const WORK_SPINNER_ANIMATION_TIME = 0.3;
 
 const KeyringDialog = new Lang.Class({
     Name: 'KeyringDialog',
@@ -58,25 +64,45 @@ const KeyringDialog = new Lang.Class({
                             { y_fill:  true,
                               y_align: St.Align.START });
 
+        this._workSpinner = null;
         this._controlTable = null;
-
 
         this._cancelButton = this.addButton({ label: '',
                                               action: Lang.bind(this, this._onCancelButton),
-                                              key: Clutter.Escape },
-                                            { expand: true, x_fill: false, x_align: St.Align.START });
-        this.placeSpinner({ expand: false,
-                            x_fill: false,
-                            y_fill: false,
-                            x_align: St.Align.END,
-                            y_align: St.Align.MIDDLE });
+                                              key: Clutter.Escape });
         this._continueButton = this.addButton({ label: '',
                                                 action: Lang.bind(this, this._onContinueButton),
-                                                default: true },
-                                              { expand: false, x_fill: false, x_align: St.Align.END });
+                                                default: true });
 
         this.prompt.bind_property('cancel-label', this._cancelButton, 'label', GObject.BindingFlags.SYNC_CREATE);
         this.prompt.bind_property('continue-label', this._continueButton, 'label', GObject.BindingFlags.SYNC_CREATE);
+    },
+
+    _setWorking: function(working) {
+        if (!this._workSpinner)
+            return;
+
+        Tweener.removeTweens(this._workSpinner.actor);
+        if (working) {
+            this._workSpinner.play();
+            Tweener.addTween(this._workSpinner.actor,
+                             { opacity: 255,
+                               delay: WORK_SPINNER_ANIMATION_DELAY,
+                               time: WORK_SPINNER_ANIMATION_TIME,
+                               transition: 'linear'
+                             });
+        } else {
+            Tweener.addTween(this._workSpinner.actor,
+                             { opacity: 0,
+                               time: WORK_SPINNER_ANIMATION_TIME,
+                               transition: 'linear',
+                               onCompleteScope: this,
+                               onComplete: function() {
+                                   if (this._workSpinner)
+                                       this._workSpinner.stop();
+                               }
+                             });
+        }
     },
 
     _buildControlTable: function() {
@@ -101,15 +127,22 @@ const KeyringDialog = new Lang.Class({
             ShellEntry.addContextMenu(this._passwordEntry, { isPassword: true });
             this._passwordEntry.clutter_text.connect('activate', Lang.bind(this, this._onPasswordActivate));
 
+            let spinnerIcon = Gio.File.new_for_uri('resource:///org/gnome/shell/theme/process-working.svg');
+            this._workSpinner = new Animation.AnimatedIcon(spinnerIcon, WORK_SPINNER_ICON_SIZE);
+            this._workSpinner.actor.opacity = 0;
+
             if (rtl) {
-                layout.attach(this._passwordEntry, 0, row, 1, 1);
-                layout.attach(label, 1, row, 1, 1);
+                layout.attach(this._workSpinner.actor, 0, row, 1, 1);
+                layout.attach(this._passwordEntry, 1, row, 1, 1);
+                layout.attach(label, 2, row, 1, 1);
             } else {
                 layout.attach(label, 0, row, 1, 1);
                 layout.attach(this._passwordEntry, 1, row, 1, 1);
+                layout.attach(this._workSpinner.actor, 2, row, 1, 1);
             }
             row++;
         } else {
+            this._workSpinner = null;
             this._passwordEntry = null;
         }
 
@@ -178,7 +211,7 @@ const KeyringDialog = new Lang.Class({
 
         this._continueButton.can_focus = sensitive;
         this._continueButton.reactive = sensitive;
-        this.setWorking(!sensitive);
+        this._setWorking(!sensitive);
     },
 
     _ensureOpen: function() {
