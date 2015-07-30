@@ -23,7 +23,7 @@ const Tweener = imports.ui.tweener;
 const OPEN_AND_CLOSE_TIME = 0.1;
 const FADE_OUT_DIALOG_TIME = 1.0;
 
-const WORK_SPINNER_ICON_SIZE = 24;
+const WORK_SPINNER_ICON_SIZE = 16;
 const WORK_SPINNER_ANIMATION_DELAY = 1.0;
 const WORK_SPINNER_ANIMATION_TIME = 0.3;
 

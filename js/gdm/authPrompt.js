@@ -14,7 +14,7 @@ const ShellEntry = imports.ui.shellEntry;
 const Tweener = imports.ui.tweener;
 const UserWidget = imports.ui.userWidget;
 
-const DEFAULT_BUTTON_WELL_ICON_SIZE = 24;
+const DEFAULT_BUTTON_WELL_ICON_SIZE = 16;
 const DEFAULT_BUTTON_WELL_ANIMATION_DELAY = 1.0;
 const DEFAULT_BUTTON_WELL_ANIMATION_TIME = 0.3;
 
