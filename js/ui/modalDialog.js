@@ -14,6 +14,7 @@ const Atk = imports.gi.Atk;
 
 const Params = imports.misc.params;
 
+const Animation = imports.ui.animation;
 const Layout = imports.ui.layout;
 const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
@@ -21,6 +22,10 @@ const Tweener = imports.ui.tweener;
 
 const OPEN_AND_CLOSE_TIME = 0.1;
 const FADE_OUT_DIALOG_TIME = 1.0;
+
+const WORK_SPINNER_ICON_SIZE = 16;
+const WORK_SPINNER_ANIMATION_DELAY = 1.0;
+const WORK_SPINNER_ANIMATION_TIME = 0.3;
 
 const State = {
     OPENED: 0,
@@ -74,9 +79,7 @@ const ModalDialog = new Lang.Class({
         this._group.add_actor(this._backgroundBin);
 
         this.dialogLayout = new St.BoxLayout({ style_class: 'modal-dialog',
-                                               x_align:      Clutter.ActorAlign.CENTER,
-                                               y_align:      Clutter.ActorAlign.CENTER,
-                                               vertical:     true });
+                                               vertical:    true });
         // modal dialogs are fixed width and grow vertically; set the request
         // mode accordingly so wrapped labels are handled correctly during
         // size requests.
@@ -97,8 +100,7 @@ const ModalDialog = new Lang.Class({
         this.backgroundStack.add_actor(this.dialogLayout);
 
 
-        this.contentLayout = new St.BoxLayout({ vertical: true,
-                                                style_class: "modal-dialog-content-box" });
+        this.contentLayout = new St.BoxLayout({ vertical: true });
         this.dialogLayout.add(this.contentLayout,
                               { expand:  true,
                                 x_fill:  true,
@@ -106,7 +108,8 @@ const ModalDialog = new Lang.Class({
                                 x_align: St.Align.MIDDLE,
                                 y_align: St.Align.START });
 
-        this.buttonLayout = new St.Widget ({ layout_manager: new Clutter.BoxLayout ({ homogeneous:true }) });
+        this.buttonLayout = new St.BoxLayout({ style_class: 'modal-dialog-button-box',
+                                               vertical: false });
         this.dialogLayout.add(this.buttonLayout,
                               { x_align: St.Align.MIDDLE,
                                 y_align: St.Align.END });
@@ -115,6 +118,8 @@ const ModalDialog = new Lang.Class({
         this._initialKeyFocus = this.dialogLayout;
         this._initialKeyFocusDestroyId = 0;
         this._savedKeyFocus = null;
+
+        this._workSpinner = null;
     },
 
     destroy: function() {
@@ -142,12 +147,16 @@ const ModalDialog = new Lang.Class({
             else
                 x_alignment = St.Align.MIDDLE;
 
-            this.addButton(buttonInfo);
+            this.addButton(buttonInfo, { expand: true,
+                                         x_fill: false,
+                                         y_fill: false,
+                                         x_align: x_alignment,
+                                         y_align: St.Align.MIDDLE });
         }
     },
 
-    addButton: function(buttonInfo) {
-        let label = buttonInfo['label']
+    addButton: function(buttonInfo, layoutInfo) {
+        let label = buttonInfo['label'];
         let action = buttonInfo['action'];
         let key = buttonInfo['key'];
         let isDefault = buttonInfo['default'];
@@ -161,12 +170,10 @@ const ModalDialog = new Lang.Class({
         else
             keys = [];
 
-        let button = new St.Button({ style_class: 'modal-dialog-linked-button',
+        let button = new St.Button({ style_class: 'modal-dialog-button button',
                                      button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
                                      reactive:    true,
                                      can_focus:   true,
-                                     x_expand:    true,
-                                     y_expand:    true,
                                      label:       label });
         button.connect('clicked', action);
 
@@ -181,9 +188,45 @@ const ModalDialog = new Lang.Class({
         for (let i in keys)
             this._buttonKeys[keys[i]] = buttonInfo;
 
-        this.buttonLayout.add_actor(button);
+        this.buttonLayout.add(button, layoutInfo);
 
         return button;
+    },
+
+    placeSpinner: function(layoutInfo) {
+        let spinnerIcon = Gio.File.new_for_uri('resource:///org/gnome/shell/theme/process-working.svg');
+        this._workSpinner = new Animation.AnimatedIcon(spinnerIcon, WORK_SPINNER_ICON_SIZE);
+        this._workSpinner.actor.opacity = 0;
+        this._workSpinner.actor.show();
+
+        this.buttonLayout.add(this._workSpinner.actor, layoutInfo);
+    },
+
+    setWorking: function(working) {
+        if (!this._workSpinner)
+            return;
+
+        Tweener.removeTweens(this._workSpinner.actor);
+        if (working) {
+            this._workSpinner.play();
+            Tweener.addTween(this._workSpinner.actor,
+                             { opacity: 255,
+                               delay: WORK_SPINNER_ANIMATION_DELAY,
+                               time: WORK_SPINNER_ANIMATION_TIME,
+                               transition: 'linear'
+                             });
+        } else {
+            Tweener.addTween(this._workSpinner.actor,
+                             { opacity: 0,
+                               time: WORK_SPINNER_ANIMATION_TIME,
+                               transition: 'linear',
+                               onCompleteScope: this,
+                               onComplete: function() {
+                                   if (this._workSpinner)
+                                       this._workSpinner.stop();
+                               }
+                             });
+        }
     },
 
     _onKeyPressEvent: function(object, event) {
