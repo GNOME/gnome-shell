@@ -74,7 +74,7 @@ const WindowMenu = new Lang.Class({
                 window.make_above();
         }));
         if (window.is_above())
-            item.setOrnament(PopupMenu.Ornament.DOT);
+            item.setOrnament(PopupMenu.Ornament.CHECK);
         if (window.get_maximized() == Meta.MaximizeFlags.BOTH ||
             type == Meta.WindowType.DOCK ||
             type == Meta.WindowType.DESKTOP ||
@@ -93,7 +93,7 @@ const WindowMenu = new Lang.Class({
                     window.stick();
             }));
             if (isSticky)
-                item.setOrnament(PopupMenu.Ornament.DOT);
+                item.setOrnament(PopupMenu.Ornament.CHECK);
             if (window.is_always_on_all_workspaces())
                 item.setSensitive(false);
 
