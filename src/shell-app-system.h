@@ -48,5 +48,6 @@ ShellApp       *shell_app_system_lookup_desktop_wmclass       (ShellAppSystem *s
                                                                const char     *wmclass);
 
 GSList         *shell_app_system_get_running               (ShellAppSystem  *self);
+char         ***shell_app_system_search                    (const char *search_string);
 
 #endif /* __SHELL_APP_SYSTEM_H__ */
