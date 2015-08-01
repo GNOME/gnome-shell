@@ -1,134 +1,546 @@
 # Thai translation for mutter.
-# Copyright (C) 2003-2012 Free Software Foundation, Inc.
+# Copyright (C) 2003-2015 Free Software Foundation, Inc.
 # This file is distributed under the same license as the mutter package.
 #
 # Phakhinee Thangnithirat <sc442535@angsila.compsci.buu.ac.th>, 2003
 # Chanchai Junlouchai <taz@opentle.org>, 2003
 # Paisa Seeluangsawat <paisa@users.sf.net>, 2004.
-# Theppitak Karoonboonyanan <thep@linux.thai.net>, 2004-2012.
+# Theppitak Karoonboonyanan <theppitak@gmail.com>, 2004-2012.
+# Akom Chotiphantawanon <knight2000@gmail.com>, 2015.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-10-11 14:32+0000\n"
-"PO-Revision-Date: 2012-10-15 15:15+0700\n"
-"Last-Translator: Theppitak Karoonboonyanan <thep@linux.thai.net>\n"
+"POT-Creation-Date: 2015-07-18 22:50+0000\n"
+"PO-Revision-Date: 2015-08-01 17:29+0700\n"
+"Last-Translator: Akom Chotiphantawanon <knight2000@gmail.com>\n"
 "Language-Team: Thai <thai-l10n@googlegroups.com>\n"
 "Language: th\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Gtranslator 2.91.6\n"
 
-#: ../src/50-mutter-windows.xml.in.h:1
+#: ../data/50-mutter-navigation.xml.in.h:1
+msgid "Navigation"
+msgstr "ท่องย้าย"
+
+#: ../data/50-mutter-navigation.xml.in.h:2
+msgid "Move window to workspace 1"
+msgstr "ย้ายหน้าต่างไปพื้นที่ทำงาน 1"
+
+#: ../data/50-mutter-navigation.xml.in.h:3
+msgid "Move window to workspace 2"
+msgstr "ย้ายหน้าต่างไปพื้นที่ทำงาน 2"
+
+#: ../data/50-mutter-navigation.xml.in.h:4
+msgid "Move window to workspace 3"
+msgstr "ย้ายหน้าต่างไปพื้นที่ทำงาน 3"
+
+#: ../data/50-mutter-navigation.xml.in.h:5
+msgid "Move window to workspace 4"
+msgstr "ย้ายหน้าต่างไปพื้นที่ทำงาน 4"
+
+#: ../data/50-mutter-navigation.xml.in.h:6
+msgid "Move window to last workspace"
+msgstr "ย้ายหน้าต่างไปพื้นที่ทำงานสุดท้าย"
+
+#: ../data/50-mutter-navigation.xml.in.h:7
+msgid "Move window one workspace to the left"
+msgstr "ย้ายหน้าต่างไปพื้นที่ทำงานด้านซ้าย"
+
+#: ../data/50-mutter-navigation.xml.in.h:8
+msgid "Move window one workspace to the right"
+msgstr "ย้ายหน้าต่างไปพื้นที่ทำงานด้านขวา"
+
+#: ../data/50-mutter-navigation.xml.in.h:9
+msgid "Move window one workspace up"
+msgstr "ย้ายหน้าต่างไปพื้นที่ทำงานด้านบน"
+
+#: ../data/50-mutter-navigation.xml.in.h:10
+msgid "Move window one workspace down"
+msgstr "ย้ายหน้าต่างไปพื้นที่ทำงานด้านล่าง"
+
+#: ../data/50-mutter-navigation.xml.in.h:11
+msgid "Move window one monitor to the left"
+msgstr "ย้ายหน้าต่างไปจอภาพด้านซ้าย"
+
+#: ../data/50-mutter-navigation.xml.in.h:12
+msgid "Move window one monitor to the right"
+msgstr "ย้ายหน้าต่างไปจอภาพด้านขวา"
+
+#: ../data/50-mutter-navigation.xml.in.h:13
+msgid "Move window one monitor up"
+msgstr "ย้ายหน้าต่างไปจอภาพด้านบน"
+
+#: ../data/50-mutter-navigation.xml.in.h:14
+msgid "Move window one monitor down"
+msgstr "ย้ายหน้าต่างไปจอภาพด้านล่าง"
+
+#: ../data/50-mutter-navigation.xml.in.h:15
+msgid "Switch applications"
+msgstr "สลับโปรแกรม"
+
+#: ../data/50-mutter-navigation.xml.in.h:16
+msgid "Switch to previous application"
+msgstr "สลับไปโปรแกรมก่อนหน้า"
+
+#: ../data/50-mutter-navigation.xml.in.h:17
+msgid "Switch windows"
+msgstr "สลับหน้าต่าง"
+
+#: ../data/50-mutter-navigation.xml.in.h:18
+msgid "Switch to previous window"
+msgstr "สลับไปหน้าต่างก่อนหน้า"
+
+#: ../data/50-mutter-navigation.xml.in.h:19
+msgid "Switch windows of an application"
+msgstr "สลับหน้าต่างภายในโปรแกรม"
+
+#: ../data/50-mutter-navigation.xml.in.h:20
+msgid "Switch to previous window of an application"
+msgstr "สลับไปหน้าต่างก่อนหน้าภายในโปรแกรม"
+
+#: ../data/50-mutter-navigation.xml.in.h:21
+msgid "Switch system controls"
+msgstr "สลับส่วนควบคุมระบบ"
+
+#: ../data/50-mutter-navigation.xml.in.h:22
+msgid "Switch to previous system control"
+msgstr "สลับไปส่วนควบคุมระบบก่อนหน้า"
+
+#: ../data/50-mutter-navigation.xml.in.h:23
+msgid "Switch windows directly"
+msgstr "สลับหน้าต่างโดยตรง"
+
+#: ../data/50-mutter-navigation.xml.in.h:24
+msgid "Switch directly to previous window"
+msgstr "สลับโดยตรงไปหน้าต่างก่อนหน้า"
+
+#: ../data/50-mutter-navigation.xml.in.h:25
+msgid "Switch windows of an app directly"
+msgstr "สลับหน้าต่างภายในโปรแกรมโดยตรง"
+
+#: ../data/50-mutter-navigation.xml.in.h:26
+msgid "Switch directly to previous window of an app"
+msgstr "สลับโดยตรงไปหน้าต่างก่อนหน้าภายในโปรแกรม"
+
+#: ../data/50-mutter-navigation.xml.in.h:27
+msgid "Switch system controls directly"
+msgstr "สลับส่วนควบคุมระบบโดยตรง"
+
+#: ../data/50-mutter-navigation.xml.in.h:28
+msgid "Switch directly to previous system control"
+msgstr "สลับโดยตรงไปส่วนควบคุมระบบก่อนหน้า"
+
+#: ../data/50-mutter-navigation.xml.in.h:29
+msgid "Hide all normal windows"
+msgstr "ซ่อนหน้าต่างทั้งหมด"
+
+#: ../data/50-mutter-navigation.xml.in.h:30
+msgid "Switch to workspace 1"
+msgstr "สลับไปพื้นที่ทำงาน 1"
+
+#: ../data/50-mutter-navigation.xml.in.h:31
+msgid "Switch to workspace 2"
+msgstr "สลับไปพื้นที่ทำงาน 2"
+
+#: ../data/50-mutter-navigation.xml.in.h:32
+msgid "Switch to workspace 3"
+msgstr "สลับไปพื้นที่ทำงาน 3"
+
+#: ../data/50-mutter-navigation.xml.in.h:33
+msgid "Switch to workspace 4"
+msgstr "สลับไปพื้นที่ทำงาน 4"
+
+#: ../data/50-mutter-navigation.xml.in.h:34
+msgid "Switch to last workspace"
+msgstr "สลับไปพื้นที่ทำงานสุดท้าย"
+
+#: ../data/50-mutter-navigation.xml.in.h:35
+msgid "Move to workspace left"
+msgstr "ย้ายไปพื้นที่ทำงานซ้าย"
+
+#: ../data/50-mutter-navigation.xml.in.h:36
+msgid "Move to workspace right"
+msgstr "ย้ายไปพื้นที่ทำงานขวา"
+
+#: ../data/50-mutter-navigation.xml.in.h:37
+msgid "Move to workspace above"
+msgstr "ย้ายไปพื้นที่ทำงานซ้าย"
+
+#: ../data/50-mutter-navigation.xml.in.h:38
+msgid "Move to workspace below"
+msgstr "ย้ายไปพื้นที่ทำงานล่าง"
+
+#: ../data/50-mutter-system.xml.in.h:1
+msgid "System"
+msgstr "ระบบ"
+
+#: ../data/50-mutter-system.xml.in.h:2
+msgid "Show the run command prompt"
+msgstr "แสดงกล่องเรียกคำสั่ง"
+
+#: ../data/50-mutter-system.xml.in.h:3
+msgid "Show the activities overview"
+msgstr "แสดงภาพรวมของกิจกรรมต่างๆ"
+
+#: ../data/50-mutter-windows.xml.in.h:1
 msgid "Windows"
 msgstr "หน้าต่าง"
 
-#: ../src/50-mutter-windows.xml.in.h:2
+#: ../data/50-mutter-windows.xml.in.h:2
+msgid "Activate the window menu"
+msgstr "เปิดเมนูหน้าต่าง"
+
+#: ../data/50-mutter-windows.xml.in.h:3
+msgid "Toggle fullscreen mode"
+msgstr "สลับโหมดเต็มหน้าจอ"
+
+#: ../data/50-mutter-windows.xml.in.h:4
+msgid "Toggle maximization state"
+msgstr "สลับสถานะขยายแผ่"
+
+#: ../data/50-mutter-windows.xml.in.h:5
+msgid "Maximize window"
+msgstr "ขยายแผ่หน้าต่างเต็มพื้นโต๊ะ"
+
+#: ../data/50-mutter-windows.xml.in.h:6
+msgid "Restore window"
+msgstr "คืนขนาดหน้าต่าง"
+
+#: ../data/50-mutter-windows.xml.in.h:7
+msgid "Toggle shaded state"
+msgstr "ม้วน/คลี่หน้าต่าง"
+
+#: ../data/50-mutter-windows.xml.in.h:8
+msgid "Close window"
+msgstr "ปิดหน้าต่าง"
+
+#: ../data/50-mutter-windows.xml.in.h:9
+msgid "Hide window"
+msgstr "ซ่อนหน้าต่าง"
+
+#: ../data/50-mutter-windows.xml.in.h:10
+msgid "Move window"
+msgstr "ย้ายหน้าต่าง"
+
+#: ../data/50-mutter-windows.xml.in.h:11
+msgid "Resize window"
+msgstr "ปรับขนาดหน้าต่าง"
+
+#: ../data/50-mutter-windows.xml.in.h:12
+msgid "Toggle window on all workspaces or one"
+msgstr "สลับการแสดงหน้าต่างบนทุกพื้นที่ทำงานกับบนพื้นที่เดียว"
+
+#: ../data/50-mutter-windows.xml.in.h:13
+msgid "Raise window if covered, otherwise lower it"
+msgstr "ยกหน้าต่างขึ้นถ้าถูกบัง มิฉะนั้นก็เอาลงด้านหลัง"
+
+#: ../data/50-mutter-windows.xml.in.h:14
+msgid "Raise window above other windows"
+msgstr "ยกหน้าต่างขึ้นมาไว้หน้าหน้าต่างอื่นๆ"
+
+#: ../data/50-mutter-windows.xml.in.h:15
+msgid "Lower window below other windows"
+msgstr "ถอยหน้าต่างลงไปใว้หลังหน้าต่างอื่น"
+
+#: ../data/50-mutter-windows.xml.in.h:16
+msgid "Maximize window vertically"
+msgstr "ขยายแผ่หน้าต่างเต็มด้านสูง"
+
+#: ../data/50-mutter-windows.xml.in.h:17
+msgid "Maximize window horizontally"
+msgstr "ขยายแผ่หน้าต่างเต็มด้านกว้าง"
+
+#: ../data/50-mutter-windows.xml.in.h:18
 msgid "View split on left"
 msgstr "แบ่งจอแสดงที่ครึ่งซ้าย"
 
-#: ../src/50-mutter-windows.xml.in.h:3
+#: ../data/50-mutter-windows.xml.in.h:19
 msgid "View split on right"
 msgstr "แบ่งจอแสดงที่ครึ่งขวา"
 
+#: ../data/mutter.desktop.in.h:1
+msgid "Mutter"
+msgstr "Mutter"
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:1
+msgid "Modifier to use for extended window management operations"
+msgstr "ปุ่ม modifier เพื่อใช้เข้าสู่การจัดการหน้าต่างแบบพิเศษ"
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:2
+msgid ""
+"This key will initiate the \"overlay\", which is a combination window "
+"overview and application launching system. The default is intended to be the "
+"\"Windows key\" on PC hardware. It's expected that this binding either the "
+"default or set to the empty string."
+msgstr ""
+"ปุ่มนี้จะสร้าง \"ภาพซ้อน (overlay)\" ซึ่งประกอบด้วยภาพรวมของหน้าต่างและระบบเรียกโปรแกรม "
+"ปุ่มปริยายเจตนาให้เป็นปุ่ม \"วินโดวส์\" ในเครื่องพีซีทั่วไป "
+"และคาดหมายว่าค่านี้จะเป็นค่าปริยายดังกล่าว หรือมิฉะนั้นก็เป็นสตริงว่างเปล่า"
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:3
+msgid "Attach modal dialogs"
+msgstr "แนบกล่องโต้ตอบแบบโมดัล"
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:4
+msgid ""
+"When true, instead of having independent titlebars, modal dialogs appear "
+"attached to the titlebar of the parent window and are moved together with "
+"the parent window."
+msgstr ""
+"ถ้ากำหนดเป็นค่าจริง แทนที่กล่องโต้ตอบโมดัลจะมีแถบหัวหน้าต่างเป็นของตัวเอง "
+"ก็จะแนบติดไปกับแถบหัวหน้าต่างของหน้าต่างแม่ และจะเคลื่อนไปพร้อมกับหน้าต่างแม่ด้วย"
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:5
+msgid "Enable edge tiling when dropping windows on screen edges"
+msgstr "เปิดใช้การปูหน้าต่างชิดขอบเมื่อวางหน้าต่างที่ขอบหน้าจอ"
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:6
+msgid ""
+"If enabled, dropping windows on vertical screen edges maximizes them "
+"vertically and resizes them horizontally to cover half of the available "
+"area. Dropping windows on the top screen edge maximizes them completely."
+msgstr ""
+"ถ้าเปิดใช้ จะทำให้การวางหน้าต่างที่ขอบหน้าจอด้านแนวตั้งกลายเป็นการขยายแผ่หน้าต่างเต็มแนวตั้ง "
+"และปรับขนาดให้วางปิดครึ่งหนึ่งของหน้าจอในแนวนอน "
+"และการวางหน้าต่างที่ขอบหน้าจอด้านบนจะขยายแผ่หน้าต่างเต็มที่"
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:7
+msgid "Workspaces are managed dynamically"
+msgstr "จัดการพื้นที่ทำงานตามการใช้งานจริง"
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:8
+msgid ""
+"Determines whether workspaces are managed dynamically or whether there's a "
+"static number of workspaces (determined by the num-workspaces key in org."
+"gnome.desktop.wm.preferences)."
+msgstr ""
+"กำหนดว่าจะจัดการพื้นที่ทำงานแบบปรับเปลี่ยนตามการใช้งานจริง หรือจะให้มีจำนวนพื้นที่ทำงานตายตัว "
+"(กำหนดโดยคีย์ num-workspaces ใน org.gnome.desktop.wm.preferences)"
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:9
+msgid "Workspaces only on primary"
+msgstr "พื้นที่ทำงานอยู่บนจอภาพหลักเท่านั้น"
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:10
+msgid ""
+"Determines whether workspace switching should happen for windows on all "
+"monitors or only for windows on the primary monitor."
+msgstr ""
+"กำหนดว่าการสลับพื้นที่ทำงานควรเกิดเฉพาะกับหน้าต่างบนจอภาพทั้งหมด "
+"หรือเฉพาะหน้าต่างบนจอภาพหลักเท่านั้น"
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:11
+msgid "No tab popup"
+msgstr "ไม่ใช้กล่องผุดขึ้นของปุ่มแท็บ"
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:12
+msgid ""
+"Determines whether the use of popup and highlight frame should be disabled "
+"for window cycling."
+msgstr "กำหนดว่าจะปิดการใช้กล่องผุดขึ้นและการเน้นกรอบหน้าต่างสำหรับการสลับหน้าต่างหรือไม่"
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:13
+msgid "Delay focus changes until the pointer stops moving"
+msgstr "ชะลอการย้ายโฟกัสจนกว่าเคอร์เซอร์เมาส์จะหยุดเคลื่อน"
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:14
+msgid ""
+"If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
+"the focus will not be changed immediately when entering a window, but only "
+"after the pointer stops moving."
+msgstr ""
+"ถ้ามีค่าเป็นจริง และโหมดโฟกัสเป็น \"sloppy\" หรือ \"mouse\" อย่างใดอย่างหนึ่งแล้ว "
+"ก็จะไม่ย้ายโฟกัสหน้าต่างทันทีทันใดเมื่อเข้าสู่หน้าต่าง จนกว่าเคอร์เซอร์เมาส์จะหยุดเคลื่อนที่"
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:15
+msgid "Draggable border width"
+msgstr "ความกว้างของขอบหน้าต่างส่วนที่ลากได้"
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:16
+msgid ""
+"The amount of total draggable borders. If the theme's visible borders are "
+"not enough, invisible borders will be added to meet this value."
+msgstr ""
+"ขนาดของขอบหน้าต่างส่วนที่ลากได้ ถ้าขอบหน้าต่างส่วนที่ปรากฏของชุดตกแต่งกว้างไม่พอ "
+"ก็จะเพิ่มขอบส่วนที่มองไม่เห็นเพื่อให้ได้เท่ากับความกว้างนี้"
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:17
+msgid "Auto maximize nearly monitor sized windows"
+msgstr "ขยายแผ่หน้าต่างที่มีขนาดใกล้เคียงกับจอภาพโดยอัตโนมัติ"
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:18
+msgid ""
+"If enabled, new windows that are initially the size of the monitor "
+"automatically get maximized."
+msgstr "ถ้าเปิดใช้ หน้าต่างใหม่ที่มีขนาดเริ่มแรกเท่ากับจอภาพจะขยายแผ่โดยอัตโนมัติ"
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:19
+msgid "Place new windows in the center"
+msgstr "วางหน้าต่างใหม่กลางหน้าจอ"
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:20
+msgid ""
+"When true, the new windows will always be put in the center of the active "
+"screen of the monitor."
+msgstr "ถ้าเป็นจริง จะวางหน้าต่างใหม่ที่กลางหน้าจอที่จอภาพแสดงอยู่เสมอ"
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:21
+msgid "Select window from tab popup"
+msgstr "เลือกหน้าต่างจากกล่องผุดขึ้นของปุ่มแท็บ"
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:22
+msgid "Cancel tab popup"
+msgstr "ยกเลิกกล่องผุดขึ้นของปุ่มแท็บ"
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:1
+msgid "Switch to VT 1"
+msgstr "สลับไป VT 1"
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:2
+msgid "Switch to VT 2"
+msgstr "สลับไป VT 2"
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:3
+msgid "Switch to VT 3"
+msgstr "สลับไป VT 3"
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:4
+msgid "Switch to VT 4"
+msgstr "สลับไป VT 4"
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:5
+msgid "Switch to VT 5"
+msgstr "สลับไป VT 5"
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:6
+msgid "Switch to VT 6"
+msgstr "สลับไป VT 6"
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:7
+msgid "Switch to VT 7"
+msgstr "สลับไป VT 7"
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:8
+msgid "Switch to VT 8"
+msgstr "สลับไป VT 8"
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:9
+msgid "Switch to VT 9"
+msgstr "สลับไป VT 9"
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:10
+msgid "Switch to VT 10"
+msgstr "สลับไป VT 10"
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:11
+msgid "Switch to VT 11"
+msgstr "สลับไป VT 11"
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:12
+msgid "Switch to VT 12"
+msgstr "สลับไป VT 12"
+
+#: ../src/backends/meta-monitor-manager.c:500
+msgid "Built-in display"
+msgstr "จอแสดงผลในตัว"
+
+#: ../src/backends/meta-monitor-manager.c:526
+msgid "Unknown"
+msgstr "ไม่ทราบยี่ห้อ"
+
+#: ../src/backends/meta-monitor-manager.c:528
+msgid "Unknown Display"
+msgstr "จอแสดงผลไม่ทราบรุ่น"
+
+#. TRANSLATORS: this is a monitor vendor name, followed by a
+#. * size in inches, like 'Dell 15"'
+#.
+#: ../src/backends/meta-monitor-manager.c:536
+#, c-format
+msgid "%s %s"
+msgstr "%s %s"
+
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:492
+#: ../src/compositor/compositor.c:451
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
 "\"."
 msgstr "มีโปรแกรมจัดการ composite ทำงานอยู่แล้วที่สกรีน %i ดิสเพลย์ \"%s\""
 
-#: ../src/core/bell.c:320
+#: ../src/core/bell.c:185
 msgid "Bell event"
 msgstr "เหตุการณ์กระดิ่ง"
 
-#: ../src/core/core.c:157
+#: ../src/core/delete.c:127
 #, c-format
-msgid "Unknown window information request: %d"
-msgstr "คำร้องขอข้อมูลหน้าต่างที่ไม่รู้จัก: %d"
+msgid "“%s” is not responding."
+msgstr "“%s” ไม่ตอบสนอง"
 
-#: ../src/core/delete.c:113
-#, c-format
-msgid "%s is not responding."
-msgstr "%s ไม่ตอบสนอง"
-
-#: ../src/core/delete.c:117
+#: ../src/core/delete.c:129
 msgid "Application is not responding."
 msgstr "โปรแกรมไม่ตอบสนอง"
 
-#: ../src/core/delete.c:122
+#: ../src/core/delete.c:134
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
 msgstr "คุณอาจเลือกที่จะรอสักครู่ เพื่อให้โปรแกรมทำงานต่อ หรือจะบังคับโปรแกรมออกทันทีเลยก็ได้"
 
-#: ../src/core/delete.c:129
+#: ../src/core/delete.c:141
 msgid "_Wait"
 msgstr "_รอ"
 
-#: ../src/core/delete.c:129
+#: ../src/core/delete.c:141
 msgid "_Force Quit"
 msgstr "_บังคับออก"
 
-#: ../src/core/display.c:396
-#, c-format
-msgid "Missing %s extension required for compositing"
-msgstr "ไม่มีส่วนขยาย %s ซึ่งจำเป็นต่อการทำ composite"
-
-#: ../src/core/display.c:492
+#: ../src/core/display.c:563
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "ไม่สามารถเปิดดิสเพลย์ '%s' ของระบบ X Window\n"
 
-#: ../src/core/keybindings.c:853
-#, c-format
-msgid ""
-"Some other program is already using the key %s with modifiers %x as a "
-"binding\n"
-msgstr "โปรแกรมอื่นกำลังใช้ปุ่ม %s ร่วมกับปุ่ม %x เป็นปุ่มลัดอยู่แล้ว\n"
-
-#: ../src/core/main.c:196
+#: ../src/core/main.c:176
 msgid "Disable connection to session manager"
 msgstr "ปิดการเชื่อมต่อไปยังโปรแกรมจัดการวาระ"
 
-#: ../src/core/main.c:202
+#: ../src/core/main.c:182
 msgid "Replace the running window manager"
 msgstr "แทนที่โปรแกรมจัดการหน้าต่างที่กำลังทำงานอยู่"
 
-#: ../src/core/main.c:208
+#: ../src/core/main.c:188
 msgid "Specify session management ID"
 msgstr "ระบุ ID ของการจัดการวาระ"
 
-#: ../src/core/main.c:213
+#: ../src/core/main.c:193
 msgid "X Display to use"
 msgstr "ดิสเพลย์ X ที่จะใช้"
 
-#: ../src/core/main.c:219
+#: ../src/core/main.c:199
 msgid "Initialize session from savefile"
 msgstr "ใช้ค่าเริ่มต้นของวาระจากแฟ้มที่บันทึกไว้"
 
-#: ../src/core/main.c:225
+#: ../src/core/main.c:205
 msgid "Make X calls synchronous"
 msgstr "ให้การเรียกฟังก์ชัน X เป็นแบบซิงโครนัส"
 
-#: ../src/core/main.c:494
-#, c-format
-msgid "Failed to scan themes directory: %s\n"
-msgstr "ไม่สามารถอ่านโฟลเดอร์ชุดตกแต่ง: %s\n"
+#: ../src/core/main.c:212
+msgid "Run as a wayland compositor"
+msgstr "เรียกทำงานในฐานะ compositor ของ wayland"
 
-#: ../src/core/main.c:510
-#, c-format
-msgid ""
-"Could not find a theme! Be sure %s exists and contains the usual themes.\n"
-msgstr "ไม่พบชุดตกแต่ง โปรดตรวจดูว่า %s มีอยู่จริง และบรรจุชุดตกแต่งที่ควรจะมี\n"
+#: ../src/core/main.c:220
+msgid "Run as a full display server, rather than nested"
+msgstr "เรียกทำงานในฐานเซิร์ฟเวอร์แสดงผลเต็มขั้น ไม่ใช่ซ้อนในเซิร์ฟเวอร์อื่น"
 
 # FIXME: Get a lawer to translate the legal clause.
-#: ../src/core/mutter.c:40
+#: ../src/core/mutter.c:39
 #, c-format
 msgid ""
 "mutter %s\n"
@@ -143,124 +555,38 @@ msgstr ""
 "ไม่รับผิดชอบข้อเสียหายใดๆ "
 "ไม่รับประกันความเหมาะสมในเชิงพาณิชย์หรือการใช้งานเฉพาะทางอย่างหนึ่งอย่างใด\n"
 
-#: ../src/core/mutter.c:54
+#: ../src/core/mutter.c:53
 msgid "Print version"
 msgstr "แสดงเลขรุ่น"
 
-#: ../src/core/mutter.c:60
+#: ../src/core/mutter.c:59
 msgid "Mutter plugin to use"
 msgstr "ปลั๊กอินของ mutter ที่จะใช้"
 
-#: ../src/core/prefs.c:1079
-msgid ""
-"Workarounds for broken applications disabled. Some applications may not "
-"behave properly.\n"
-msgstr ""
-"ปิดการแก้ขัดที่เตรียมไว้สำหรับโปรแกรมเสียๆ บางโปรแกรมแล้ว "
-"ซึ่งอาจทำให้โปรแกรมเหล่านี้ทำงานไม่ปกติ\n"
-
-#: ../src/core/prefs.c:1154
-#, c-format
-msgid "Could not parse font description \"%s\" from GSettings key %s\n"
-msgstr "ไม่สามารถแจงคำบรรยายแบบอักษร \"%s\" จากคีย์ %s ของ GSettings\n"
-
-#: ../src/core/prefs.c:1220
-#, c-format
-msgid ""
-"\"%s\" found in configuration database is not a valid value for mouse button "
-"modifier\n"
-msgstr "\"%s\" ที่พบในฐานข้อมูลข้อปรับแต่ง ใช้เป็นปุ่มใช้ร่วมสำหรับเมาส์ไม่ได้\n"
-
-#: ../src/core/prefs.c:1747
-#, c-format
-msgid ""
-"\"%s\" found in configuration database is not a valid value for keybinding "
-"\"%s\"\n"
-msgstr "\"%s\" ที่พบในฐานข้อมูลค่าปรับแต่ง ไม่สามารถใช้เป็นปุ่มลัด \"%s\"\n"
-
-#: ../src/core/prefs.c:1844
+#: ../src/core/prefs.c:2004
 #, c-format
 msgid "Workspace %d"
 msgstr "พื้นที่ทำงาน %d"
 
-#: ../src/core/screen.c:652
+#: ../src/core/screen.c:525
+#, c-format
+msgid ""
+"Display \"%s\" already has a window manager; try using the --replace option "
+"to replace the current window manager."
+msgstr ""
+"ดิสเพลย์ \"%s\" มีโปรแกรมจัดการหน้าต่างอยู่แล้ว ลองใช้ตัวเลือก --replace "
+"ถ้าต้องการแทนที่โปรแกรมจัดการหน้าต่างปัจจุบัน"
+
+#: ../src/core/screen.c:607
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "สกรีน %d ที่ดิสเพลย์ '%s' ใช้ไม่ได้\n"
 
-#: ../src/core/screen.c:668
-#, c-format
-msgid ""
-"Screen %d on display \"%s\" already has a window manager; try using the --"
-"replace option to replace the current window manager.\n"
-msgstr ""
-"สกรีน %d ที่ดิสเพลย์ \"%s\" มีโปรแกรมจัดการหน้าต่างอยู่แล้ว ลองใช้ตัวเลือก --replace "
-"ถ้าต้องการแทนที่โปรแกรมจัดการหน้าต่างปัจจุบัน\n"
+#: ../src/core/util.c:118
+msgid "Mutter was compiled without support for verbose mode\n"
+msgstr "Mutter ถูกคอมไพล์โดยไม่ได้เลือกรองรับโหมดข้อความละเอียด\n"
 
-#: ../src/core/screen.c:695
-#, c-format
-msgid ""
-"Could not acquire window manager selection on screen %d display \"%s\"\n"
-msgstr "ไม่สามารถอ่านค่าโปรแกรมจัดการหน้าต่างจากสกรีน %d ดิสเพลย์ \"%s\" ได้\n"
-
-#: ../src/core/screen.c:750
-#, c-format
-msgid "Screen %d on display \"%s\" already has a window manager\n"
-msgstr "สกรีน %d ที่ดิสเพลย์ \"%s\" มีโปรแกรมจัดการหน้าต่างอยู่แล้ว\n"
-
-#: ../src/core/screen.c:935
-#, c-format
-msgid "Could not release screen %d on display \"%s\"\n"
-msgstr "ไม่สามารถปล่อยการควบคุมสกรีน %d ที่ดิสเพลย์ \"%s\"\n"
-
-#: ../src/core/session.c:843 ../src/core/session.c:850
-#, c-format
-msgid "Could not create directory '%s': %s\n"
-msgstr "ไม่สามารถสร้างโฟลเดอร์ '%s': %s\n"
-
-#: ../src/core/session.c:860
-#, c-format
-msgid "Could not open session file '%s' for writing: %s\n"
-msgstr "ไม่สามารถเปิดแฟ้มวาระ '%s' สำหรับเขียน: %s\n"
-
-#: ../src/core/session.c:1001
-#, c-format
-msgid "Error writing session file '%s': %s\n"
-msgstr "ไม่สามารถเขียนลงแฟ้มวาระ '%s': %s\n"
-
-#: ../src/core/session.c:1006
-#, c-format
-msgid "Error closing session file '%s': %s\n"
-msgstr "ไม่สามารถปิดแฟ้มวาระ '%s': %s\n"
-
-#: ../src/core/session.c:1136
-#, c-format
-msgid "Failed to parse saved session file: %s\n"
-msgstr "ไม่เข้าใจแฟ้มวาระที่บันทึกไว้: %s\n"
-
-#: ../src/core/session.c:1185
-#, c-format
-msgid "<mutter_session> attribute seen but we already have the session ID"
-msgstr "พบแอตทริบิวต์ <mutter_session> แต่ว่ามี ID วาระอยู่แล้ว"
-
-#: ../src/core/session.c:1198 ../src/core/session.c:1273
-#: ../src/core/session.c:1305 ../src/core/session.c:1377
-#: ../src/core/session.c:1437
-#, c-format
-msgid "Unknown attribute %s on <%s> element"
-msgstr "ไม่รู้จักแอตทริบิวต์ %s ในอิลิเมนต์ <%s>"
-
-#: ../src/core/session.c:1215
-#, c-format
-msgid "nested <window> tag"
-msgstr "มีแท็ก <window> ซ้อนด้านใน"
-
-#: ../src/core/session.c:1457
-#, c-format
-msgid "Unknown element %s"
-msgstr "ไม่รู้จักอิลิเมนต์ %s"
-
-#: ../src/core/session.c:1809
+#: ../src/x11/session.c:1815
 msgid ""
 "These windows do not support &quot;save current setup&quot; and will have to "
 "be restarted manually next time you log in."
@@ -268,3272 +594,8 @@ msgstr ""
 "หน้าต่างเหล่านี้ไม่รองรับการ &quot;บันทึกค่าตั้งปัจจุบัน&quot; "
 "และคุณต้องกำหนดใหม่เองเมื่อเข้าสู่ระบบครั้งต่อไป"
 
-#: ../src/core/util.c:80
-#, c-format
-msgid "Failed to open debug log: %s\n"
-msgstr "เปิดแฟ้มปูมการดีบั๊กไม่สำเร็จ: %s\n"
-
-#: ../src/core/util.c:90
-#, c-format
-msgid "Failed to fdopen() log file %s: %s\n"
-msgstr "fdopen() แฟ้มปูม %s ไม่สำเร็จ: %s\n"
-
-#: ../src/core/util.c:96
-#, c-format
-msgid "Opened log file %s\n"
-msgstr "เปิดแฟ้มปูม %s เรียบร้อยแล้ว\n"
-
-#: ../src/core/util.c:115 ../src/tools/mutter-message.c:149
-#, c-format
-msgid "Mutter was compiled without support for verbose mode\n"
-msgstr "Mutter ถูกคอมไพล์โดยไม่ได้เลือกรองรับโหมดข้อความละเอียด\n"
-
-#: ../src/core/util.c:259
-msgid "Window manager: "
-msgstr "โปรแกรมจัดการหน้าต่าง: "
-
-#: ../src/core/util.c:407
-msgid "Bug in window manager: "
-msgstr "บั๊กในโปรแกรมจัดการหน้าต่าง: "
-
-#: ../src/core/util.c:438
-msgid "Window manager warning: "
-msgstr "คำเตือนในโปรแกรมจัดการหน้าต่าง: "
-
-#: ../src/core/util.c:466
-msgid "Window manager error: "
-msgstr "เกิดข้อผิดพลาดในโปรแกรมจัดการหน้าต่าง: "
-
-#. first time through
-#: ../src/core/window.c:7237
-#, c-format
-msgid ""
-"Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
-"window as specified in the ICCCM.\n"
-msgstr ""
-"หน้าต่าง %s ตั้งค่า SM_CLIENT_ID มาที่ตัวเอง แทนที่จะอ้างไปถึงหน้าต่างของ WM_CLIENT_LEADER "
-"ตามที่กำหนดไว้ใน ICCCM\n"
-
-#. We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
-#. * authoritative source for that info. Some apps such as mplayer or
-#. * xine disable resize via MWM but not WM_NORMAL_HINTS, but that
-#. * leads to e.g. us not fullscreening their windows.  Apps that set
-#. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
-#. * about these apps but make them work.
-#.
-#: ../src/core/window.c:7902
-#, c-format
-msgid ""
-"Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
-"%d x %d and max size %d x %d; this doesn't make much sense.\n"
-msgstr ""
-"หน้าต่าง %s ตั้งค่า MWM hint ไว้ว่าเป็นหน้าต่างที่เปลี่ยนขนาดไม่ได้ แต่กลับตั้งค่าขนาดต่ำสุด %d x "
-"%d และขนาดสูงสุด %d x %d ไว้ ซึ่งไม่สมเหตุสมผลเท่าไรนัก\n"
-
-#: ../src/core/window-props.c:274
-#, c-format
-msgid "Application set a bogus _NET_WM_PID %lu\n"
-msgstr "โปรแกรมประยุกต์ตั้งค่า _NET_WM_PID เป็น %lu ซึ่งไม่มีอยู่จริง\n"
-
-#: ../src/core/window-props.c:393
+#: ../src/x11/window-props.c:549
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (ที่เครื่อง %s)"
 
-#: ../src/core/window-props.c:1448
-#, c-format
-msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
-msgstr "หน้าต่าง WM_TRANSIENT_FOR 0x%lx ที่กำหนดให้กับ %s เป็นค่าที่ใช้ไม่ได้\n"
-
-#: ../src/core/window-props.c:1459
-#, c-format
-msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
-msgstr "หน้าต่าง WM_TRANSIENT_FOR 0x%lx สำหรับ %s จะทำให้เกิดวงวน\n"
-
-#: ../src/core/xprops.c:155
-#, c-format
-msgid ""
-"Window 0x%lx has property %s\n"
-"that was expected to have type %s format %d\n"
-"and actually has type %s format %d n_items %d.\n"
-"This is most likely an application bug, not a window manager bug.\n"
-"The window has title=\"%s\" class=\"%s\" name=\"%s\"\n"
-msgstr ""
-"หน้าต่าง 0x%lx มีคุณสมบัติ %s\n"
-"ที่คาดหวังว่าจะมีชนิด %s และรูปแบบ %d\n"
-"แต่กลับมีชนิด %s รูปแบบ %d และ n_items %d\n"
-"โดยมากแล้ว นี่ถือเป็นบั๊กของโปรแกรม ไม่ใช่ของโปรแกรมจัดการหน้าต่าง\n"
-"หน้าต่างที่มีปัญหามีหัวเรื่อง=\"%s\" คลาส=\"%s\" ชื่อ=\"%s\"\n"
-
-#: ../src/core/xprops.c:411
-#, c-format
-msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
-msgstr "คุณสมบัติ %s ของหน้าต่าง 0x%lx มีค่าที่ไม่ใช่ UTF-8 ที่ถูกต้อง\n"
-
-#: ../src/core/xprops.c:494
-#, c-format
-msgid ""
-"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
-msgstr ""
-"คุณสมบัติ %s ของหน้าต่าง 0x%lx มีค่าที่ไม่ใช่ UTF-8 ที่ถูกต้องสำหรับหัวข้อที่ %d ในรายการ\n"
-
-#: ../src/mutter.desktop.in.h:1 ../src/mutter-wm.desktop.in.h:1
-msgid "Mutter"
-msgstr "Mutter"
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:1
-msgid "Modifier to use for extended window management operations"
-msgstr "ปุ่ม modifier เพื่อใช้เข้าสู่การจัดการหน้าต่างแบบพิเศษ"
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:2
-msgid ""
-"This key will initiate the \"overlay\", which is a combination window "
-"overview and application launching system. The default is intended to be the "
-"\"Windows key\" on PC hardware. It's expected that this binding either the "
-"default or set to the empty string."
-msgstr ""
-"ปุ่มนี้จะสร้าง \"ภาพซ้อน (overlay)\" ซึ่งประกอบด้วยภาพรวมของหน้าต่างและระบบเรียกโปรแกรม "
-"ปุ่มปริยายเจตนาให้เป็นปุ่ม \"วินโดวส์\" ในเครื่องพีซีทั่วไป "
-"และคาดหมายว่าค่านี้จะเป็นค่าปริยายดังกล่าว หรือมิฉะนั้นก็เป็นสตริงว่างเปล่า"
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:3
-msgid "Attach modal dialogs"
-msgstr "แนบกล่องโต้ตอบแบบโมดัล"
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:4
-msgid ""
-"When true, instead of having independent titlebars, modal dialogs appear "
-"attached to the titlebar of the parent window and are moved together with "
-"the parent window."
-msgstr ""
-"ถ้ากำหนดเป็นค่าจริง แทนที่กล่องโต้ตอบโมดัลจะมีแถบหัวหน้าต่างเป็นของตัวเอง "
-"ก็จะแนบติดไปกับแถบหัวหน้าต่างของหน้าต่างแม่ และจะเคลื่อนไปพร้อมกับหน้าต่างแม่ด้วย"
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:5
-msgid "Enable edge tiling when dropping windows on screen edges"
-msgstr "เปิดใช้การปูหน้าต่างชิดขอบเมื่อวางหน้าต่างที่ขอบหน้าจอ"
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:6
-msgid ""
-"If enabled, dropping windows on vertical screen edges maximizes them "
-"vertically and resizes them horizontally to cover half of the available "
-"area. Dropping windows on the top screen edge maximizes them completely."
-msgstr ""
-"ถ้าเปิดใช้ จะทำให้การวางหน้าต่างที่ขอบหน้าจอด้านแนวตั้งกลายเป็นการขยายแผ่หน้าต่างเต็มแนวตั้ง "
-"และปรับขนาดให้วางปิดครึ่งหนึ่งของหน้าจอในแนวนอน "
-"และการวางหน้าต่างที่ขอบหน้าจอด้านบนจะขยายแผ่หน้าต่างเต็มที่"
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:7
-msgid "Workspaces are managed dynamically"
-msgstr "จัดการพื้นที่ทำงานตามการใช้งานจริง"
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:8
-msgid ""
-"Determines whether workspaces are managed dynamically or whether there's a "
-"static number of workspaces (determined by the num-workspaces key in org."
-"gnome.desktop.wm.preferences)."
-msgstr ""
-"กำหนดว่าจะจัดการพื้นที่ทำงานแบบปรับเปลี่ยนตามการใช้งานจริง หรือจะให้มีจำนวนพื้นที่ทำงานตายตัว "
-"(กำหนดโดยคีย์ num-workspaces ใน org.gnome.desktop.wm.preferences)"
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:9
-msgid "Workspaces only on primary"
-msgstr "พื้นที่ทำงานอยู่บนจอภาพหลักเท่านั้น"
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:10
-msgid ""
-"Determines whether workspace switching should happen for windows on all "
-"monitors or only for windows on the primary monitor."
-msgstr ""
-"กำหนดว่าการสลับพื้นที่ทำงานควรเกิดเฉพาะกับหน้าต่างบนจอภาพทั้งหมด "
-"หรือเฉพาะหน้าต่างบนจอภาพหลักเท่านั้น"
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:11
-msgid "No tab popup"
-msgstr "ไม่ใช้กล่องผุดขึ้นของปุ่มแท็บ"
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:12
-msgid ""
-"Determines whether the use of popup and highlight frame should be disabled "
-"for window cycling."
-msgstr "กำหนดว่าจะปิดการใช้กล่องผุดขึ้นและการเน้นกรอบหน้าต่างสำหรับการสลับหน้าต่างหรือไม่"
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:13
-msgid "Delay focus changes until the pointer stops moving"
-msgstr "ชะลอการย้ายโฟกัสจนกว่าเคอร์เซอร์เมาส์จะหยุดเคลื่อน"
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:14
-msgid ""
-"If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
-"the focus will not be changed immediately when entering a window, but only "
-"after the pointer stops moving."
-msgstr ""
-"ถ้ามีค่าเป็นจริง และโหมดโฟกัสเป็น \"sloppy\" หรือ \"mouse\" อย่างใดอย่างหนึ่งแล้ว "
-"ก็จะไม่ย้ายโฟกัสหน้าต่างทันทีทันใดเมื่อเข้าสู่หน้าต่าง จนกว่าเคอร์เซอร์เมาส์จะหยุดเคลื่อนที่"
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:15
-msgid "Draggable border width"
-msgstr "ความกว้างของขอบหน้าต่างส่วนที่ลากได้"
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:16
-msgid ""
-"The amount of total draggable borders. If the theme's visible borders are "
-"not enough, invisible borders will be added to meet this value."
-msgstr ""
-"ขนาดของขอบหน้าต่างส่วนที่ลากได้ ถ้าขอบหน้าต่างส่วนที่ปรากฏของชุดตกแต่งกว้างไม่พอ "
-"ก็จะเพิ่มขอบส่วนที่มองไม่เห็นเพื่อให้ได้เท่ากับความกว้างนี้"
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:17
-msgid "Select window from tab popup"
-msgstr "เลือกหน้าต่างจากกล่องผุดขึ้นของปุ่มแท็บ"
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:18
-msgid "Cancel tab popup"
-msgstr "ยกเลิกกล่องผุดขึ้นของปุ่มแท็บ"
-
-#: ../src/tools/mutter-message.c:123
-#, c-format
-msgid "Usage: %s\n"
-msgstr "วิธีใช้: %s\n"
-
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:69
-msgid "Mi_nimize"
-msgstr "ย่_อเก็บ"
-
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:71
-msgid "Ma_ximize"
-msgstr "ขย_ายแผ่"
-
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:73
-msgid "Unma_ximize"
-msgstr "เลิกขย_ายแผ่"
-
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:75
-msgid "Roll _Up"
-msgstr "_ม้วนขึ้น"
-
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:77
-msgid "_Unroll"
-msgstr "_คลี่กลับ"
-
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:79
-msgid "_Move"
-msgstr "_ย้าย"
-
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:81
-msgid "_Resize"
-msgstr "_ปรับขนาด"
-
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:83
-msgid "Move Titlebar On_screen"
-msgstr "ย้ายแถบหัวเรื่องกลับเข้า_จอ"
-
-#. separator
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:86 ../src/ui/menu.c:88
-msgid "Always on _Top"
-msgstr "อยู่_บนสุด"
-
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:90
-msgid "_Always on Visible Workspace"
-msgstr "แสดงบนพื้นที่ทำงานเ_สมอ"
-
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:92
-msgid "_Only on This Workspace"
-msgstr "แสดงบนพื้นที่ทำงาน_นี้เท่านั้น"
-
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:94
-msgid "Move to Workspace _Left"
-msgstr "ย้ายไปพื้นที่ทำงานซ้_าย"
-
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:96
-msgid "Move to Workspace R_ight"
-msgstr "ย้ายไปพื้นที่ทำงานข_วา"
-
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:98
-msgid "Move to Workspace _Up"
-msgstr "ย้ายไปพื้นที่ทำงาน_บน"
-
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:100
-msgid "Move to Workspace _Down"
-msgstr "ย้ายไปพื้นที่ทำงาน_ล่าง"
-
-#. separator
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:104
-msgid "_Close"
-msgstr "ปิ_ด"
-
-#: ../src/ui/menu.c:204
-#, c-format
-msgid "Workspace %d%n"
-msgstr "พื้นที่ทำงาน %d%n"
-
-#: ../src/ui/menu.c:214
-#, c-format
-msgid "Workspace 1_0"
-msgstr "พื้นที่ทำงาน 1_0"
-
-#: ../src/ui/menu.c:216
-#, c-format
-msgid "Workspace %s%d"
-msgstr "พื้นที่ทำงาน %s%d"
-
-#: ../src/ui/menu.c:397
-msgid "Move to Another _Workspace"
-msgstr "ย้ายไป_พื้นที่ทำงานอื่น"
-
-#. This is the text that should appear next to menu accelerators
-#. * that use the shift key. If the text on this key isn't typically
-#. * translated on keyboards used for your language, don't translate
-#. * this.
-#.
-#: ../src/ui/metaaccellabel.c:77
-msgid "Shift"
-msgstr "Shift"
-
-#. This is the text that should appear next to menu accelerators
-#. * that use the control key. If the text on this key isn't typically
-#. * translated on keyboards used for your language, don't translate
-#. * this.
-#.
-#: ../src/ui/metaaccellabel.c:83
-msgid "Ctrl"
-msgstr "Ctrl"
-
-#. This is the text that should appear next to menu accelerators
-#. * that use the alt key. If the text on this key isn't typically
-#. * translated on keyboards used for your language, don't translate
-#. * this.
-#.
-#: ../src/ui/metaaccellabel.c:89
-msgid "Alt"
-msgstr "Alt"
-
-#. This is the text that should appear next to menu accelerators
-#. * that use the meta key. If the text on this key isn't typically
-#. * translated on keyboards used for your language, don't translate
-#. * this.
-#.
-#: ../src/ui/metaaccellabel.c:95
-msgid "Meta"
-msgstr "Meta"
-
-#. This is the text that should appear next to menu accelerators
-#. * that use the super key. If the text on this key isn't typically
-#. * translated on keyboards used for your language, don't translate
-#. * this.
-#.
-#: ../src/ui/metaaccellabel.c:101
-msgid "Super"
-msgstr "Super"
-
-#. This is the text that should appear next to menu accelerators
-#. * that use the hyper key. If the text on this key isn't typically
-#. * translated on keyboards used for your language, don't translate
-#. * this.
-#.
-#: ../src/ui/metaaccellabel.c:107
-msgid "Hyper"
-msgstr "Hyper"
-
-#. This is the text that should appear next to menu accelerators
-#. * that use the mod2 key. If the text on this key isn't typically
-#. * translated on keyboards used for your language, don't translate
-#. * this.
-#.
-#: ../src/ui/metaaccellabel.c:113
-msgid "Mod2"
-msgstr "Mod2"
-
-#. This is the text that should appear next to menu accelerators
-#. * that use the mod3 key. If the text on this key isn't typically
-#. * translated on keyboards used for your language, don't translate
-#. * this.
-#.
-#: ../src/ui/metaaccellabel.c:119
-msgid "Mod3"
-msgstr "Mod3"
-
-#. This is the text that should appear next to menu accelerators
-#. * that use the mod4 key. If the text on this key isn't typically
-#. * translated on keyboards used for your language, don't translate
-#. * this.
-#.
-#: ../src/ui/metaaccellabel.c:125
-msgid "Mod4"
-msgstr "Mod4"
-
-#. This is the text that should appear next to menu accelerators
-#. * that use the mod5 key. If the text on this key isn't typically
-#. * translated on keyboards used for your language, don't translate
-#. * this.
-#.
-#: ../src/ui/metaaccellabel.c:131
-msgid "Mod5"
-msgstr "Mod5"
-
-#. Translators: This represents the size of a window.  The first number is
-#. * the width of the window and the second is the height.
-#.
-#: ../src/ui/resizepopup.c:113
-#, c-format
-msgid "%d x %d"
-msgstr "%d x %d"
-
-#: ../src/ui/theme.c:234
-msgid "top"
-msgstr "บน"
-
-#: ../src/ui/theme.c:236
-msgid "bottom"
-msgstr "ล่าง"
-
-#: ../src/ui/theme.c:238
-msgid "left"
-msgstr "ซ้าย"
-
-#: ../src/ui/theme.c:240
-msgid "right"
-msgstr "ขวา"
-
-#: ../src/ui/theme.c:268
-#, c-format
-msgid "frame geometry does not specify \"%s\" dimension"
-msgstr "ค่าเรขาคณิตของเฟรมไม่ได้ระบุขนาด \"%s\""
-
-#: ../src/ui/theme.c:287
-#, c-format
-msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
-msgstr "ค่าเรขาคณิตของเฟรมไม่ได้ระบุขนาด \"%s\" สำหรับกรอบ \"%s\""
-
-#: ../src/ui/theme.c:324
-#, c-format
-msgid "Button aspect ratio %g is not reasonable"
-msgstr "ค่า aspect ratio %g ของปุ่มไม่สมเหตุสมผล"
-
-#: ../src/ui/theme.c:336
-#, c-format
-msgid "Frame geometry does not specify size of buttons"
-msgstr "ค่าเรขาคณิตของเฟรมไม่ได้ระบุขนาดของปุ่ม"
-
-#: ../src/ui/theme.c:1049
-#, c-format
-msgid "Gradients should have at least two colors"
-msgstr "การไล่สีควรใช้อย่างน้อยสองสี"
-
-#: ../src/ui/theme.c:1201
-#, c-format
-msgid ""
-"GTK custom color specification must have color name and fallback in "
-"parentheses, e.g. gtk:custom(foo,bar); could not parse \"%s\""
-msgstr ""
-"การกำหนดสี GTK แบบปรับเอง ต้องประกอบด้วยชื่อสีและค่าสำรองในวงเล็บ เช่น gtk:custom(foo,"
-"bar); ไม่สามารถแจงค่า \"%s\""
-
-#: ../src/ui/theme.c:1217
-#, c-format
-msgid ""
-"Invalid character '%c' in color_name parameter of gtk:custom, only A-Za-z0-9-"
-"_ are valid"
-msgstr ""
-"อักขระ '%c' ใช้ไม่ได้ในพารามิเตอร์ color_name ของ gtk:custom สามารถใช้ได้แค่ A-Za-"
-"z0-9-_ เท่านั้น"
-
-#: ../src/ui/theme.c:1231
-#, c-format
-msgid ""
-"Gtk:custom format is \"gtk:custom(color_name,fallback)\", \"%s\" does not "
-"fit the format"
-msgstr ""
-"รูปแบบของ Gtk:custom คือ \"gtk:custom(color_name,fallback)\", \"%s\" "
-"ไม่ตรงกับรูปแบบ"
-
-#: ../src/ui/theme.c:1276
-#, c-format
-msgid ""
-"GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
-"where NORMAL is the state; could not parse \"%s\""
-msgstr ""
-"การกำหนดสี GTK ต้องเขียนสถานะในวงเล็บเหลี่ยม เช่น gtk:fg[NORMAL] เมื่อ NORMAL "
-"เป็นสถานะ; ไม่สามารถแจงค่า \"%s\""
-
-#: ../src/ui/theme.c:1290
-#, c-format
-msgid ""
-"GTK color specification must have a close bracket after the state, e.g. gtk:"
-"fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
-msgstr ""
-"การกำหนดสี GTK ต้องมีวงเล็บเหลี่ยมปิดหลังสถานะด้วย เช่น gtk:fg[NORMAL] เมื่อ NORMAL "
-"เป็นสถานะ; ไม่สามารถแจงค่า \"%s\""
-
-#: ../src/ui/theme.c:1301
-#, c-format
-msgid "Did not understand state \"%s\" in color specification"
-msgstr "ไม่เข้าใจสถานะ \"%s\" ในการระบุสี"
-
-#: ../src/ui/theme.c:1314
-#, c-format
-msgid "Did not understand color component \"%s\" in color specification"
-msgstr "ไม่เข้าใจองค์ประกอบ \"%s\" ในการระบุสี"
-
-#: ../src/ui/theme.c:1343
-#, c-format
-msgid ""
-"Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
-"format"
-msgstr ""
-"รูปแบบการเกลี่ยสีคือ \"blend/bg_color/fg_color/alpha\", ค่า \"%s\" ไม่ตรงกับรูปแบบ"
-
-#: ../src/ui/theme.c:1354
-#, c-format
-msgid "Could not parse alpha value \"%s\" in blended color"
-msgstr "ไม่สามารถแจงค่าอัลฟา \"%s\" ในการเกลี่ยสี"
-
-#: ../src/ui/theme.c:1364
-#, c-format
-msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
-msgstr "ค่าอัลฟา \"%s\" ในการเกลี่ยสีไม่อยู่ระหว่าง 0.0 และ 1.0"
-
-#: ../src/ui/theme.c:1411
-#, c-format
-msgid ""
-"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
-msgstr "รูปแบบของเฉดสีคือ \"shade/base_color/factor \", \"%s\" ไม่ตรงกับรูปแบบ"
-
-#: ../src/ui/theme.c:1422
-#, c-format
-msgid "Could not parse shade factor \"%s\" in shaded color"
-msgstr "ไม่สามารถแจงค่าตัวคูณของเฉด \"%s\" ในเฉดสี"
-
-#: ../src/ui/theme.c:1432
-#, c-format
-msgid "Shade factor \"%s\" in shaded color is negative"
-msgstr "ตัวคูณเฉดสี \"%s\" ในเฉดสีเป็นค่าลบ"
-
-#: ../src/ui/theme.c:1461
-#, c-format
-msgid "Could not parse color \"%s\""
-msgstr "ไม่เข้าใจสี \"%s\""
-
-#: ../src/ui/theme.c:1778
-#, c-format
-msgid "Coordinate expression contains character '%s' which is not allowed"
-msgstr "นิพจน์พิกัดมีอักขระ'%s' ซึ่งไม่อนุญาตให้ใช้"
-
-#: ../src/ui/theme.c:1805
-#, c-format
-msgid ""
-"Coordinate expression contains floating point number '%s' which could not be "
-"parsed"
-msgstr "นิพจน์พิกัดมีเลขจุดทศนิยม '%s' ที่แจงค่าไม่ได้"
-
-#: ../src/ui/theme.c:1819
-#, c-format
-msgid "Coordinate expression contains integer '%s' which could not be parsed"
-msgstr "นิพจน์พิกัดมีเลขจำนวนเต็ม '%s' ที่แจงค่าไม่ได้"
-
-#: ../src/ui/theme.c:1940
-#, c-format
-msgid ""
-"Coordinate expression contained unknown operator at the start of this text: "
-"\"%s\""
-msgstr "นิพจน์พิกัดมีเครื่องหมายดำเนินการที่ไม่รู้จัก เริ่มจากตำแหน่ง \"%s\""
-
-#: ../src/ui/theme.c:1997
-#, c-format
-msgid "Coordinate expression was empty or not understood"
-msgstr "นิพจน์พิกัดว่างเปล่าหรือไม่สามารถเข้าใจ"
-
-#: ../src/ui/theme.c:2110 ../src/ui/theme.c:2120 ../src/ui/theme.c:2154
-#, c-format
-msgid "Coordinate expression results in division by zero"
-msgstr "นิพจน์พิกัดมีผลลัพธ์ที่เป็นการหารด้วยศูนย์"
-
-#: ../src/ui/theme.c:2162
-#, c-format
-msgid ""
-"Coordinate expression tries to use mod operator on a floating-point number"
-msgstr "นิพจน์พิกัดพยายามใช้ตัวดำเนินการ mod กับตัวเลขจุดทศนิยม"
-
-#: ../src/ui/theme.c:2218
-#, c-format
-msgid ""
-"Coordinate expression has an operator \"%s\" where an operand was expected"
-msgstr "นิพจน์พิกัดมีตัวดำเนินการ\"%s\" ในที่ที่ควรจะเป็นตัวถูกดำเนินการ"
-
-#: ../src/ui/theme.c:2227
-#, c-format
-msgid "Coordinate expression had an operand where an operator was expected"
-msgstr "นิพจน์พิกัดมีตัวถูกดำเนินการในที่ที่ควรจะเป็นตัวดำเนินการ"
-
-#: ../src/ui/theme.c:2235
-#, c-format
-msgid "Coordinate expression ended with an operator instead of an operand"
-msgstr "นิพจน์พิกัดจบด้วยตัวดำเนินการแทนที่จะเป็นตัวถูกดำเนินการ"
-
-#: ../src/ui/theme.c:2245
-#, c-format
-msgid ""
-"Coordinate expression has operator \"%c\" following operator \"%c\" with no "
-"operand in between"
-msgstr ""
-"นิพจน์พิกัดมีตัวดำเนินการ\"%c\" ตามหลังตัวดำเนินการ \"%c\" โดยไม่มีตัวถูกดำเนินการคั่นกลาง"
-
-#: ../src/ui/theme.c:2396 ../src/ui/theme.c:2441
-#, c-format
-msgid "Coordinate expression had unknown variable or constant \"%s\""
-msgstr "นิพจน์พิกัดมีตัวแปรหรือค่าคงที่ \"%s\" ที่ไม่รู้จัก"
-
-#: ../src/ui/theme.c:2495
-#, c-format
-msgid "Coordinate expression parser overflowed its buffer."
-msgstr "ตัวแจงค่านิพจน์พิกัดทำข้อมูลล้น"
-
-#: ../src/ui/theme.c:2524
-#, c-format
-msgid "Coordinate expression had a close parenthesis with no open parenthesis"
-msgstr "นิพจน์พิกัดมีวงเล็บปิดโดยไม่มีวงเล็บเปิด"
-
-#: ../src/ui/theme.c:2588
-#, c-format
-msgid "Coordinate expression had an open parenthesis with no close parenthesis"
-msgstr "นิพจน์พิกัดมีวงเล็บเปิดโดยไม่มีวงเล็บปิด"
-
-#: ../src/ui/theme.c:2599
-#, c-format
-msgid "Coordinate expression doesn't seem to have any operators or operands"
-msgstr "นิพจน์พิกัดท่าทางจะไม่มีตัวดำเนินการหรือตัวถูกดำเนินการเลย"
-
-#: ../src/ui/theme.c:2812 ../src/ui/theme.c:2832 ../src/ui/theme.c:2852
-#, c-format
-msgid "Theme contained an expression that resulted in an error: %s\n"
-msgstr "ชุดตกแต่งมีนิพจน์ซึ่งทำให้เกิดข้อผิดพลาด: %s\n"
-
-#: ../src/ui/theme.c:4498
-#, c-format
-msgid ""
-"<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
-"specified for this frame style"
-msgstr ""
-"ต้องระบุ <button function =\"%s\" state=\"%s\" draw_ops=\"อะไรก็ตามแต่\"/> "
-"สำหรับรูปแบบเฟรมด้วย"
-
-#: ../src/ui/theme.c:5009 ../src/ui/theme.c:5034
-#, c-format
-msgid ""
-"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr ""
-"ขาด <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"อะไรก็ตามแต่\"/>"
-
-#: ../src/ui/theme.c:5082
-#, c-format
-msgid "Failed to load theme \"%s\": %s\n"
-msgstr "โหลดชุดตกแต่ง \"%s\" ล้มเหลว: %s\n"
-
-#: ../src/ui/theme.c:5218 ../src/ui/theme.c:5225 ../src/ui/theme.c:5232
-#: ../src/ui/theme.c:5239 ../src/ui/theme.c:5246
-#, c-format
-msgid "No <%s> set for theme \"%s\""
-msgstr "ไม่ได้กำหนดค่า <%s> สำหรับชุดตกแต่ง \"%s\""
-
-#: ../src/ui/theme.c:5254
-#, c-format
-msgid ""
-"No frame style set for window type \"%s\" in theme \"%s\", add a <window "
-"type=\"%s\" style_set=\"whatever\"/> element"
-msgstr ""
-"ไม่ได้กำหนดรูปแบบเฟรมสำหรับชนิดหน้าต่าง \"%s\" ในชุดตกแต่ง \"%s\", กรุณาเพิ่มอิลิเมนต์ "
-"<window type=\"%s\" style_set=\"อะไรก็ตามแต่\"/>"
-
-#: ../src/ui/theme.c:5650 ../src/ui/theme.c:5712 ../src/ui/theme.c:5775
-#, c-format
-msgid ""
-"User-defined constants must begin with a capital letter; \"%s\" does not"
-msgstr "ค่าคงที่ที่ผู้ใช้กำหนดเองต้องเริ่มต้นด้วยอักษรตัวใหญ่; แต่ \"%s\" ไม่ได้เป็นตามนั้น"
-
-#: ../src/ui/theme.c:5658 ../src/ui/theme.c:5720 ../src/ui/theme.c:5783
-#, c-format
-msgid "Constant \"%s\" has already been defined"
-msgstr "ค่าคงที่ \"%s\" ถูกกำหนดไว้แล้ว"
-
-#. Translators: This means that an attribute which should have been found
-#. * on an XML element was not in fact found.
-#.
-#: ../src/ui/theme-parser.c:236
-#, c-format
-msgid "No \"%s\" attribute on element <%s>"
-msgstr "ขาดแอตทริบิวต์ \"%s\" ในอิลิเมนต์ <%s>"
-
-#: ../src/ui/theme-parser.c:265 ../src/ui/theme-parser.c:283
-#, c-format
-msgid "Line %d character %d: %s"
-msgstr "บรรทัด %d อักขระ %d: %s"
-
-#: ../src/ui/theme-parser.c:479
-#, c-format
-msgid "Attribute \"%s\" repeated twice on the same <%s> element"
-msgstr "มีแอตทริบิวต์ \"%s\" ซ้ำสองอันในอิลิเมนต์ <%s> เดียวกัน"
-
-#: ../src/ui/theme-parser.c:503 ../src/ui/theme-parser.c:552
-#, c-format
-msgid "Attribute \"%s\" is invalid on <%s> element in this context"
-msgstr "ใช้แอตทริบิวต์ \"%s\" ในอิลิเมนต์ <%s> ไม่ได้ตรงนี้"
-
-#: ../src/ui/theme-parser.c:594
-#, c-format
-msgid "Could not parse \"%s\" as an integer"
-msgstr "ไม่สามารถแปลง \"%s\" เป็นเลขจำนวนเต็ม"
-
-#: ../src/ui/theme-parser.c:603 ../src/ui/theme-parser.c:658
-#, c-format
-msgid "Did not understand trailing characters \"%s\" in string \"%s\""
-msgstr "ไม่เข้าใจตัวอักษร \"%s\" ที่ข้างท้ายข้อความ \"%s\""
-
-#: ../src/ui/theme-parser.c:613
-#, c-format
-msgid "Integer %ld must be positive"
-msgstr "จำนวนเต็ม %ld ต้องเป็นบวก"
-
-#: ../src/ui/theme-parser.c:621
-#, c-format
-msgid "Integer %ld is too large, current max is %d"
-msgstr "จำนวนเต็ม %ld ใหญ่เกินไป ตั้งได้สูงสุดเป็น %d"
-
-#: ../src/ui/theme-parser.c:649 ../src/ui/theme-parser.c:765
-#, c-format
-msgid "Could not parse \"%s\" as a floating point number"
-msgstr "แปลง \"%s\" เป็นเลขจุดทศนิยมไม่สำเร็จ"
-
-#: ../src/ui/theme-parser.c:680 ../src/ui/theme-parser.c:708
-#, c-format
-msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
-msgstr "ค่าตรรกะต้องเป็น \"true\" หรือ \"false\" ไม่ใช่ \"%s\""
-
-#: ../src/ui/theme-parser.c:735
-#, c-format
-msgid "Angle must be between 0.0 and 360.0, was %g\n"
-msgstr "มุมต้องอยู่ระหว่าง 0.0 และ 360.0 ไม่ใช่ %g\n"
-
-#: ../src/ui/theme-parser.c:798
-#, c-format
-msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
-msgstr "ค่าอัลฟาต้องอยู่ระหว่าง 0.0 (โปร่งใส) และ 1.0 (ทึบ) ไม่ใช่ %g\n"
-
-#: ../src/ui/theme-parser.c:863
-#, c-format
-msgid ""
-"Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
-"large,x-large,xx-large)\n"
-msgstr ""
-"ขนาดหัวหน้าต่าง \"%s\" ใช้ไม่ได้ ตั้งได้เป็น xx-small, x-small, small, medium, large, "
-"x-large, หรือ xx-large\n"
-
-#: ../src/ui/theme-parser.c:1019 ../src/ui/theme-parser.c:1082
-#: ../src/ui/theme-parser.c:1116 ../src/ui/theme-parser.c:1219
-#, c-format
-msgid "<%s> name \"%s\" used a second time"
-msgstr "<%s> ชื่อ \"%s\" ถูกใช้เป็นครั้งที่สอง"
-
-#: ../src/ui/theme-parser.c:1031 ../src/ui/theme-parser.c:1128
-#: ../src/ui/theme-parser.c:1231
-#, c-format
-msgid "<%s> parent \"%s\" has not been defined"
-msgstr "<%s>: พาเรนต์ \"%s\" ไม่ได้ระบุ"
-
-#: ../src/ui/theme-parser.c:1141
-#, c-format
-msgid "<%s> geometry \"%s\" has not been defined"
-msgstr "<%s>: ค่าเรขาคณิต \"%s\" ไม่ได้ระบุ"
-
-#: ../src/ui/theme-parser.c:1154
-#, c-format
-msgid "<%s> must specify either a geometry or a parent that has a geometry"
-msgstr "<%s> ต้องกำหนดตำแหน่งและขนาด หรือพาเรนต์ที่มี่ตำแหน่งขนาด"
-
-#: ../src/ui/theme-parser.c:1196
-msgid "You must specify a background for an alpha value to be meaningful"
-msgstr "คุณต้องกำหนดสีพื้นหลังเพื่อให้ค่าอัลฟามีความหมาย"
-
-#: ../src/ui/theme-parser.c:1264
-#, c-format
-msgid "Unknown type \"%s\" on <%s> element"
-msgstr "ไม่รู้จักชนิด \"%s\" สำหรับอิลิเมนต์ <%s>"
-
-#: ../src/ui/theme-parser.c:1275
-#, c-format
-msgid "Unknown style_set \"%s\" on <%s> element"
-msgstr "ไม่รู้จัก style_set \"%s\" สำหรับอิลิเมนต์ <%s>"
-
-#: ../src/ui/theme-parser.c:1283
-#, c-format
-msgid "Window type \"%s\" has already been assigned a style set"
-msgstr "ชนิดหน้าต่าง \"%s\" ถูกตั้ง style set ไว้อยู่แล้ว"
-
-#: ../src/ui/theme-parser.c:1313 ../src/ui/theme-parser.c:1377
-#: ../src/ui/theme-parser.c:1603 ../src/ui/theme-parser.c:2838
-#: ../src/ui/theme-parser.c:2884 ../src/ui/theme-parser.c:3034
-#: ../src/ui/theme-parser.c:3273 ../src/ui/theme-parser.c:3311
-#: ../src/ui/theme-parser.c:3349 ../src/ui/theme-parser.c:3387
-#, c-format
-msgid "Element <%s> is not allowed below <%s>"
-msgstr "ไม่อนุญาตให้มีอิลิเมนต์ <%s> ภายใน <%s>"
-
-#: ../src/ui/theme-parser.c:1427 ../src/ui/theme-parser.c:1441
-#: ../src/ui/theme-parser.c:1486
-msgid ""
-"Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio\" "
-"for buttons"
-msgstr ""
-"ไม่สามารถกำหนดทั้ง \"button_width\"/\"button_height\" กับ \"aspect_ratio\" "
-"ของปุ่มพร้อมกันได้"
-
-#: ../src/ui/theme-parser.c:1450
-#, c-format
-msgid "Distance \"%s\" is unknown"
-msgstr "ไม่รู้จักระยะทาง \"%s\""
-
-#: ../src/ui/theme-parser.c:1495
-#, c-format
-msgid "Aspect ratio \"%s\" is unknown"
-msgstr "ไม่รู้จัก aspect ratio \"%s\""
-
-#: ../src/ui/theme-parser.c:1557
-#, c-format
-msgid "Border \"%s\" is unknown"
-msgstr "ไม่รู้จักเส้นขอบ \"%s\""
-
-#: ../src/ui/theme-parser.c:1868
-#, c-format
-msgid "No \"start_angle\" or \"from\" attribute on element <%s>"
-msgstr "ขาดแอตทริบิวต์ \"start_angle\" หรือ \"from\" ในอิลิเมนต์ <%s>"
-
-#: ../src/ui/theme-parser.c:1875
-#, c-format
-msgid "No \"extent_angle\" or \"to\" attribute on element <%s>"
-msgstr "ขาดแอตทริบิวต์ \"extent_angle\" หรือ \"to\" ในอิลิเมนต์ <%s>"
-
-#: ../src/ui/theme-parser.c:2115
-#, c-format
-msgid "Did not understand value \"%s\" for type of gradient"
-msgstr "ไม่เข้าใจค่า \"%s\" สำหรับชนิดของการไล่ระดับสี"
-
-#: ../src/ui/theme-parser.c:2193 ../src/ui/theme-parser.c:2568
-#, c-format
-msgid "Did not understand fill type \"%s\" for <%s> element"
-msgstr "ไม่เข้าใจชนิดการเติม \"%s\" สำหรับอิลิเมนต์ <%s>"
-
-#: ../src/ui/theme-parser.c:2360 ../src/ui/theme-parser.c:2443
-#: ../src/ui/theme-parser.c:2506
-#, c-format
-msgid "Did not understand state \"%s\" for <%s> element"
-msgstr "ไม่เข้าใจค่า state \"%s\" สำหรับอิลิเมนต์ <%s>"
-
-#: ../src/ui/theme-parser.c:2370 ../src/ui/theme-parser.c:2453
-#, c-format
-msgid "Did not understand shadow \"%s\" for <%s> element"
-msgstr "ไม่เข้าใจค่า shadow \"%s\" สำหรับอิลิเมนต์ <%s>"
-
-#: ../src/ui/theme-parser.c:2380
-#, c-format
-msgid "Did not understand arrow \"%s\" for <%s> element"
-msgstr "ไม่เข้าใจค่า arrow \"%s\" สำหรับอิลิเมนต์ <%s>"
-
-#: ../src/ui/theme-parser.c:2694 ../src/ui/theme-parser.c:2790
-#, c-format
-msgid "No <draw_ops> called \"%s\" has been defined"
-msgstr "ไม่มี <draw_ops> ที่ชื่อ \"%s\" กำหนดไว้"
-
-#: ../src/ui/theme-parser.c:2706 ../src/ui/theme-parser.c:2802
-#, c-format
-msgid "Including draw_ops \"%s\" here would create a circular reference"
-msgstr "การรวม draw_ops \"%s\" ที่นี่จะทำให้เกิดการอ้างอิงแบบวนรอบ"
-
-#: ../src/ui/theme-parser.c:2917
-#, c-format
-msgid "Unknown position \"%s\" for frame piece"
-msgstr "ไม่รู้จักค่า position \"%s\" สำหรับชิ้นส่วนเฟรม"
-
-#: ../src/ui/theme-parser.c:2925
-#, c-format
-msgid "Frame style already has a piece at position %s"
-msgstr "มีรูปแบบเฟรมที่ตำแหน่ง %s อยู่ก่อนแล้ว"
-
-#: ../src/ui/theme-parser.c:2942 ../src/ui/theme-parser.c:3019
-#, c-format
-msgid "No <draw_ops> with the name \"%s\" has been defined"
-msgstr "ยังไม่ได้กำหนด <draw_ops> ชื่อ \"%s\""
-
-#: ../src/ui/theme-parser.c:2972
-#, c-format
-msgid "Unknown function \"%s\" for button"
-msgstr "ไม่รู้จักฟังก์ชัน \"%s\" สำหรับปุ่ม"
-
-#: ../src/ui/theme-parser.c:2982
-#, c-format
-msgid "Button function \"%s\" does not exist in this version (%d, need %d)"
-msgstr "ไม่มีฟังก์ชันปุ่ม \"%s\" ในรุ่นนี้ (%d, ต้องเป็นรุ่น %d ขึ้นไป)"
-
-#: ../src/ui/theme-parser.c:2994
-#, c-format
-msgid "Unknown state \"%s\" for button"
-msgstr "ไม่รู้สถานะ \"%s\" สำหรับปุ่ม"
-
-#: ../src/ui/theme-parser.c:3002
-#, c-format
-msgid "Frame style already has a button for function %s state %s"
-msgstr "รูปแบบเฟรมมีปุ่มสำหรับฟังก์ชัน %s สถานะ %s อยู่ก่อนแล้ว"
-
-#: ../src/ui/theme-parser.c:3073
-#, c-format
-msgid "\"%s\" is not a valid value for focus attribute"
-msgstr "\"%s\" ไม่ใช่ค่าที่ใช้ได้สำหรับแอตทริบิวต์ focus"
-
-#: ../src/ui/theme-parser.c:3082
-#, c-format
-msgid "\"%s\" is not a valid value for state attribute"
-msgstr "\"%s\" ไม่ใช่ค่าที่ใช้ได้สำหรับแอตทริบิวต์ state"
-
-#: ../src/ui/theme-parser.c:3092
-#, c-format
-msgid "A style called \"%s\" has not been defined"
-msgstr "ไม่มีรูปแบบที่ชื่อ \"%s\" กำหนดไว้"
-
-#: ../src/ui/theme-parser.c:3113 ../src/ui/theme-parser.c:3136
-#, c-format
-msgid "\"%s\" is not a valid value for resize attribute"
-msgstr "\"%s\" ไม่ใช่ค่าที่ใช้ได้สำหรับแอตทริบิวต์ resize"
-
-#: ../src/ui/theme-parser.c:3147
-#, c-format
-msgid ""
-"Should not have \"resize\" attribute on <%s> element for maximized/shaded "
-"states"
-msgstr "ไม่ควรมีแอตทริบิวต์ \"resize\" ในอิลิเมนต์ <%s> สำหรับสถานะขยายแผ่/ม้วนเก็บ"
-
-#: ../src/ui/theme-parser.c:3161
-#, c-format
-msgid ""
-"Should not have \"resize\" attribute on <%s> element for maximized states"
-msgstr "ไม่ควรมีแอตทริบิวต์ \"resize\" ในอิลิเมนต์ <%s> สำหรับสถานะขยายแผ่"
-
-#: ../src/ui/theme-parser.c:3175 ../src/ui/theme-parser.c:3222
-#, c-format
-msgid "Style has already been specified for state %s resize %s focus %s"
-msgstr "มีรูปแบบสำหรับ state %s resize %s focus %s กำหนดไว้ก่อนแล้ว"
-
-#: ../src/ui/theme-parser.c:3186 ../src/ui/theme-parser.c:3197
-#: ../src/ui/theme-parser.c:3208 ../src/ui/theme-parser.c:3233
-#: ../src/ui/theme-parser.c:3244 ../src/ui/theme-parser.c:3255
-#, c-format
-msgid "Style has already been specified for state %s focus %s"
-msgstr "มีรูปแบบสำหรับ state %s focus %s กำหนดไว้ก่อนแล้ว"
-
-#: ../src/ui/theme-parser.c:3294
-msgid ""
-"Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
-"attribute and also a <draw_ops> element, or specified two elements)"
-msgstr ""
-"ไม่สามารถมี draw_ops ซ้อนกันสองค่าสำหรับอิลิเมนต์ <piece> "
-"(ชุดตกแต่งอาจมีการกำหนดทั้งแอตทริบิวต์ draw_ops และอิลิเมนต์ <draw_ops> "
-"หรือไม่ก็กำหนดอิลิเมนต์ซ้อนกันสองตัว)"
-
-#: ../src/ui/theme-parser.c:3332
-msgid ""
-"Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
-"attribute and also a <draw_ops> element, or specified two elements)"
-msgstr ""
-"ไม่สามารถมี draw_ops ซ้อนกันสองค่าสำหรับอิลิเมนต์ <button> "
-"(ชุดตกแต่งอาจมีการกำหนดทั้งแอตทริบิวต์ draw_ops และอิลิเมนต์ <draw_ops> "
-"หรือไม่ก็กำหนดอิลิเมนต์ซ้อนกันสองตัว)"
-
-#: ../src/ui/theme-parser.c:3370
-msgid ""
-"Can't have a two draw_ops for a <menu_icon> element (theme specified a "
-"draw_ops attribute and also a <draw_ops> element, or specified two elements)"
-msgstr ""
-"ไม่สามารถมี draw_ops ซ้อนกันสองค่าสำหรับอิลิเมนต์ <menu_icon> "
-"(ชุดตกแต่งอาจมีการกำหนดทั้งแอตทริบิวต์ draw_ops และอิลิเมนต์ <draw_ops> "
-"หรือไม่ก็กำหนดอิลิเมนต์ซ้อนกันสองตัว)"
-
-#: ../src/ui/theme-parser.c:3434
-#, c-format
-msgid "Bad version specification '%s'"
-msgstr "การกำหนดรุ่น '%s' ไม่ถูกต้อง"
-
-#: ../src/ui/theme-parser.c:3507
-msgid ""
-"\"version\" attribute cannot be used in metacity-theme-1.xml or metacity-"
-"theme-2.xml"
-msgstr ""
-"ไม่สามารถใช้แอตทริบิวต์ \"version\" ใน metacity-theme-1.xml หรือ metacity-theme-2."
-"xml"
-
-#: ../src/ui/theme-parser.c:3530
-#, c-format
-msgid "Theme requires version %s but latest supported theme version is %d.%d"
-msgstr "ชุดตกแต่งต้องการรุ่น %s แต่รุ่นสูงสุดที่ระบบนี้รองรับคือ %d.%d"
-
-#: ../src/ui/theme-parser.c:3562
-#, c-format
-msgid "Outermost element in theme must be <metacity_theme> not <%s>"
-msgstr "อิลิเมนต์ชั้นนอกสุดของชุดตกแต่งต้องเป็น <metacity_theme> ไม่ใช่ <%s>"
-
-#: ../src/ui/theme-parser.c:3582
-#, c-format
-msgid ""
-"Element <%s> is not allowed inside a name/author/date/description element"
-msgstr "ไม่อนุญาตให้มีอิลิเมนต์ <%s> ภายในอิลิเมนต์ name/author/date/description"
-
-#: ../src/ui/theme-parser.c:3587
-#, c-format
-msgid "Element <%s> is not allowed inside a <constant> element"
-msgstr "ไม่อนุญาตให้มีอิลิเมนต์ <%s> ภายในอิลิเมนต์ <constant>"
-
-#: ../src/ui/theme-parser.c:3599
-#, c-format
-msgid ""
-"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
-msgstr "ไม่อนุญาตให้มีอิลิเมนต์ <%s> ภายในอิลิเมนต์ distance/border/aspect_ratio"
-
-#: ../src/ui/theme-parser.c:3621
-#, c-format
-msgid "Element <%s> is not allowed inside a draw operation element"
-msgstr "ไม่อนุญาตให้มีอิลิเมนต์ <%s> ภายในอิลิเมนต์เกี่ยวกับคำสั่งวาด"
-
-#: ../src/ui/theme-parser.c:3631 ../src/ui/theme-parser.c:3661
-#: ../src/ui/theme-parser.c:3666 ../src/ui/theme-parser.c:3671
-#, c-format
-msgid "Element <%s> is not allowed inside a <%s> element"
-msgstr "ไม่อนุญาตให้มีอิลิเมนต์ <%s> ภายในอิลิเมนต์ <%s>"
-
-#: ../src/ui/theme-parser.c:3899
-msgid "No draw_ops provided for frame piece"
-msgstr "ขาด draw_ops สำหรับชิ้นส่วนเฟรม"
-
-#: ../src/ui/theme-parser.c:3914
-msgid "No draw_ops provided for button"
-msgstr "ขาด draw_ops สำหรับปุ่ม"
-
-#: ../src/ui/theme-parser.c:3968
-#, c-format
-msgid "No text is allowed inside element <%s>"
-msgstr "ไม่อนุญาตให้มีข้อความภายในอิลิเมนต์ <%s>"
-
-#: ../src/ui/theme-parser.c:4026 ../src/ui/theme-parser.c:4038
-#: ../src/ui/theme-parser.c:4050 ../src/ui/theme-parser.c:4062
-#: ../src/ui/theme-parser.c:4074
-#, c-format
-msgid "<%s> specified twice for this theme"
-msgstr "<%s> ถูกระบุซ้ำในชุดตกแต่งนี้"
-
-#: ../src/ui/theme-parser.c:4334
-#, c-format
-msgid "Failed to find a valid file for theme %s\n"
-msgstr "หาแฟ้มที่ใช้การได้สำหรับชุดตกแต่ง %s ไม่พบ\n"
-
-#: ../src/ui/theme-viewer.c:99
-msgid "_Windows"
-msgstr "_หน้าต่าง"
-
-#: ../src/ui/theme-viewer.c:100
-msgid "_Dialog"
-msgstr "_กล่องโต้ตอบ"
-
-#: ../src/ui/theme-viewer.c:101
-msgid "_Modal dialog"
-msgstr "กล่องโต้ตอบแบบโ_มดัล"
-
-#: ../src/ui/theme-viewer.c:102
-msgid "_Utility"
-msgstr "_อรรถประโยชน์"
-
-#: ../src/ui/theme-viewer.c:103
-msgid "_Splashscreen"
-msgstr "_ภาพเริ่มโปรแกรม"
-
-#: ../src/ui/theme-viewer.c:104
-msgid "_Top dock"
-msgstr "Dock ด้าน_บน"
-
-#: ../src/ui/theme-viewer.c:105
-msgid "_Bottom dock"
-msgstr "Dock ด้าน_ล่าง"
-
-#: ../src/ui/theme-viewer.c:106
-msgid "_Left dock"
-msgstr "Dock ด้านซ้า_ย"
-
-#: ../src/ui/theme-viewer.c:107
-msgid "_Right dock"
-msgstr "Dock ด้าน_ขวา"
-
-#: ../src/ui/theme-viewer.c:108
-msgid "_All docks"
-msgstr "Dock _ทั้งหมด"
-
-#: ../src/ui/theme-viewer.c:109
-msgid "Des_ktop"
-msgstr "_พื้นโต๊ะ"
-
-#: ../src/ui/theme-viewer.c:115
-msgid "Open another one of these windows"
-msgstr "เปิดหน้าต่างอย่างนี้อีกบาน"
-
-#: ../src/ui/theme-viewer.c:117
-msgid "This is a demo button with an 'open' icon"
-msgstr "นี่เป็นปุ่มตัวอย่างพร้อมกับไอคอน 'เปิด'"
-
-#: ../src/ui/theme-viewer.c:119
-msgid "This is a demo button with a 'quit' icon"
-msgstr "นี่เป็นปุ่มตัวอย่างพร้อมกับไอคอน 'ออก'"
-
-#: ../src/ui/theme-viewer.c:248
-msgid "This is a sample message in a sample dialog"
-msgstr "นี่เป็นข้อความตัวอย่างในกล่องโต้ตอบตัวอย่าง"
-
-#: ../src/ui/theme-viewer.c:328
-#, c-format
-msgid "Fake menu item %d\n"
-msgstr "รายการเมนูตัวอย่าง %d\n"
-
-#: ../src/ui/theme-viewer.c:363
-msgid "Border-only window"
-msgstr "หน้าต่างที่มีแต่ขอบ"
-
-#: ../src/ui/theme-viewer.c:365
-msgid "Bar"
-msgstr "แถบ"
-
-#: ../src/ui/theme-viewer.c:382
-msgid "Normal Application Window"
-msgstr "หน้าต่างโปรแกรมปกติ"
-
-#: ../src/ui/theme-viewer.c:386
-msgid "Dialog Box"
-msgstr "กล่องโต้ตอบ"
-
-#: ../src/ui/theme-viewer.c:390
-msgid "Modal Dialog Box"
-msgstr "กล่องโต้ตอบแบบโมดัล"
-
-#: ../src/ui/theme-viewer.c:394
-msgid "Utility Palette"
-msgstr "แผงอุปกรณ์"
-
-#: ../src/ui/theme-viewer.c:398
-msgid "Torn-off Menu"
-msgstr "เมนูที่ฉีกออกมา"
-
-#: ../src/ui/theme-viewer.c:402
-msgid "Border"
-msgstr "ขอบ"
-
-#: ../src/ui/theme-viewer.c:406
-msgid "Attached Modal Dialog"
-msgstr "กล่องโต้ตอบแบบโมดัลแบบแนบ"
-
-#: ../src/ui/theme-viewer.c:739
-#, c-format
-msgid "Button layout test %d"
-msgstr "ทดสอบการเรียงปุ่มครั้งที่ %d"
-
-#: ../src/ui/theme-viewer.c:768
-#, c-format
-msgid "%g milliseconds to draw one window frame"
-msgstr "ใช้เวลา %g มิลลิวินาทีในการวาดหนึ่งเฟรมหน้าต่าง"
-
-#: ../src/ui/theme-viewer.c:813
-#, c-format
-msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
-msgstr "วิธีใช้: metacity-theme-viewer [ชื่อชุดตกแต่ง]\n"
-
-#: ../src/ui/theme-viewer.c:820
-#, c-format
-msgid "Error loading theme: %s\n"
-msgstr "ไม่สามารถโหลดชุดตกแต่ง: %s\n"
-
-#: ../src/ui/theme-viewer.c:826
-#, c-format
-msgid "Loaded theme \"%s\" in %g seconds\n"
-msgstr "อ่านชุดตกแต่ง \"%s\" เสร็จใน %g วินาที\n"
-
-#: ../src/ui/theme-viewer.c:870
-msgid "Normal Title Font"
-msgstr "อักษรหัวหน้าต่างปกติ"
-
-#: ../src/ui/theme-viewer.c:876
-msgid "Small Title Font"
-msgstr "อักษรหัวหน้าต่างเล็ก"
-
-#: ../src/ui/theme-viewer.c:882
-msgid "Large Title Font"
-msgstr "อักษรหัวหน้าต่างใหญ่"
-
-#: ../src/ui/theme-viewer.c:887
-msgid "Button Layouts"
-msgstr "การจัดเรียงปุ่ม"
-
-#: ../src/ui/theme-viewer.c:892
-msgid "Benchmark"
-msgstr "ความเร็ว"
-
-#: ../src/ui/theme-viewer.c:944
-msgid "Window Title Goes Here"
-msgstr "ชื่อหน้าต่างอยู่ตรงนี้"
-
-#: ../src/ui/theme-viewer.c:1047
-#, c-format
-msgid ""
-"Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
-"seconds wall clock time including X server resources (%g milliseconds per "
-"frame)\n"
-msgstr ""
-"วาด %d เฟรม โดยใช้เวลาที่ไคลเอนท์ทั้งหมด %g วินาที (%g มิลลิวินาทีต่อเฟรม) และ %g "
-"วินาทีตามเวลานาฬิกาจริงซึ่งรวมการติดต่อกับ X เซิร์ฟเวอร์ด้วย (%g มิลลิวินาทีต่อเฟรม)\n"
-
-#: ../src/ui/theme-viewer.c:1266
-msgid "position expression test returned TRUE but set error"
-msgstr "การทดสอบนิพจน์ตำแหน่งให้ค่าจริง แต่มีรหัสข้อผิดพลาด"
-
-#: ../src/ui/theme-viewer.c:1268
-msgid "position expression test returned FALSE but didn't set error"
-msgstr "การทดสอบนิพจน์ตำแหน่งให้ค่าเท็จ แต่ไม่มีรหัสข้อผิดพลาด"
-
-#: ../src/ui/theme-viewer.c:1272
-msgid "Error was expected but none given"
-msgstr "คาดหวังว่าจะเจอข้อผิดพลาด แต่ก็ไม่มีข้อมูล"
-
-#: ../src/ui/theme-viewer.c:1274
-#, c-format
-msgid "Error %d was expected but %d given"
-msgstr "คาดหวังว่าจะเจอข้อผิดพลาด %d แต่พบข้อผิดพลาด %d แทน"
-
-#: ../src/ui/theme-viewer.c:1280
-#, c-format
-msgid "Error not expected but one was returned: %s"
-msgstr "ไม่ได้คาดหวังว่าจะเจอข้อผิดพลาด แต่กลับมี: %s"
-
-#: ../src/ui/theme-viewer.c:1284
-#, c-format
-msgid "x value was %d, %d was expected"
-msgstr "ค่าของ x เป็น %d แต่ที่คาดหวังไว้น่าจะเป็น %d"
-
-#: ../src/ui/theme-viewer.c:1287
-#, c-format
-msgid "y value was %d, %d was expected"
-msgstr "ค่าของ y เป็น %d แต่ที่คาดหวังไว้น่าจะเป็น %d"
-
-#: ../src/ui/theme-viewer.c:1352
-#, c-format
-msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
-msgstr "แจงค่านิพจน์พิกัดทั้งหมด %d นิพจน์ ในเวลา %g วินาที (%g วินาทีโดยเฉลี่ย)\n"
-
-#: ../src/50-mutter-navigation.xml.in.h:17
-msgid "Switch to workspace 1"
-msgstr "สลับไปพื้นที่ทำงาน 1"
-
-#: ../src/50-mutter-windows.xml.in.h:2
-msgid "Activate the window menu"
-msgstr "เปิดเมนูหน้าต่าง"
-
-#: ../src/50-mutter-windows.xml.in.h:3
-msgid "Toggle fullscreen mode"
-msgstr "สลับโหมดเต็มหน้าจอ"
-
-#: ../src/50-mutter-windows.xml.in.h:4
-msgid "Toggle maximization state"
-msgstr "สลับสถานะขยายแผ่"
-
-#: ../src/50-mutter-windows.xml.in.h:5
-msgid "Maximize window"
-msgstr "ขยายแผ่หน้าต่างเต็มพื้นโต๊ะ"
-
-#: ../src/50-mutter-windows.xml.in.h:6
-msgid "Restore window"
-msgstr "คืนขนาดหน้าต่าง"
-
-#: ../src/50-mutter-windows.xml.in.h:7
-msgid "Toggle shaded state"
-msgstr "ม้วน/คลี่หน้าต่าง"
-
-#: ../src/50-mutter-windows.xml.in.h:9
-msgid "Minimize window"
-msgstr "ย่อเก็บหน้าต่าง"
-
-#: ../src/50-mutter-windows.xml.in.h:8
-msgid "Close window"
-msgstr "ปิดหน้าต่าง"
-
-#: ../src/50-mutter-windows.xml.in.h:10
-msgid "Move window"
-msgstr "ย้ายหน้าต่าง"
-
-#: ../src/50-mutter-windows.xml.in.h:11
-msgid "Resize window"
-msgstr "ปรับขนาดหน้าต่าง"
-
-#: ../src/50-mutter-navigation.xml.in.h:6
-msgid "Move window one workspace to the left"
-msgstr "ย้ายหน้าต่างไปพื้นที่ทำงานด้านซ้าย"
-
-#: ../src/50-mutter-navigation.xml.in.h:7
-msgid "Move window one workspace to the right"
-msgstr "ย้ายหน้าต่างไปพื้นที่ทำงานด้านขวา"
-
-#: ../src/50-mutter-navigation.xml.in.h:8
-msgid "Move window one workspace up"
-msgstr "ย้ายหน้าต่างไปพื้นที่ทำงานด้านบน"
-
-#: ../src/50-mutter-navigation.xml.in.h:9
-msgid "Move window one workspace down"
-msgstr "ย้ายหน้าต่างไปพื้นที่ทำงานด้านล่าง"
-
-#: ../src/50-mutter-windows.xml.in.h:14
-msgid "Raise window above other windows"
-msgstr "ยกหน้าต่างขึ้นมาไว้หน้าหน้าต่างอื่นๆ"
-
-#: ../src/50-mutter-windows.xml.in.h:15
-msgid "Lower window below other windows"
-msgstr "ถอยหน้าต่างลงไปใว้หลังหน้าต่างอื่น"
-
-#: ../src/50-mutter-windows.xml.in.h:16
-msgid "Maximize window vertically"
-msgstr "ขยายแผ่หน้าต่างเต็มด้านสูง"
-
-#: ../src/50-mutter-windows.xml.in.h:17
-msgid "Maximize window horizontally"
-msgstr "ขยายแผ่หน้าต่างเต็มด้านกว้าง"
-
-#: ../src/50-mutter-navigation.xml.in.h:1
-msgid "Navigation"
-msgstr "ท่องย้าย"
-
-#: ../src/50-mutter-navigation.xml.in.h:2
-msgid "Move window to workspace 1"
-msgstr "ย้ายหน้าต่างไปพื้นที่ทำงาน 1"
-
-#: ../src/50-mutter-navigation.xml.in.h:3
-msgid "Move window to workspace 2"
-msgstr "ย้ายหน้าต่างไปพื้นที่ทำงาน 2"
-
-#: ../src/50-mutter-navigation.xml.in.h:4
-msgid "Move window to workspace 3"
-msgstr "ย้ายหน้าต่างไปพื้นที่ทำงาน 3"
-
-#: ../src/50-mutter-navigation.xml.in.h:5
-msgid "Move window to workspace 4"
-msgstr "ย้ายหน้าต่างไปพื้นที่ทำงาน 4"
-
-#: ../src/50-mutter-navigation.xml.in.h:10
-msgid "Switch applications"
-msgstr "สลับโปรแกรม"
-
-#: ../src/50-mutter-navigation.xml.in.h:11
-msgid "Switch windows of an application"
-msgstr "สลับหน้าต่างภายในโปรแกรม"
-
-#: ../src/50-mutter-navigation.xml.in.h:12
-msgid "Switch system controls"
-msgstr "สลับส่วนควบคุมระบบ"
-
-#: ../src/50-mutter-navigation.xml.in.h:13
-msgid "Switch windows directly"
-msgstr "สลับหน้าต่างโดยตรง"
-
-#: ../src/50-mutter-navigation.xml.in.h:14
-msgid "Switch windows of an app directly"
-msgstr "สลับหน้าต่างภายในโปรแกรมโดยตรง"
-
-#: ../src/50-mutter-navigation.xml.in.h:15
-msgid "Switch system controls directly"
-msgstr "สลับส่วนควบคุมระบบโดยตรง"
-
-#: ../src/50-mutter-navigation.xml.in.h:16
-msgid "Hide all normal windows"
-msgstr "ซ่อนหน้าต่างทั้งหมด"
-
-#: ../src/50-mutter-navigation.xml.in.h:18
-msgid "Switch to workspace 2"
-msgstr "สลับไปพื้นที่ทำงาน 2"
-
-#: ../src/50-mutter-navigation.xml.in.h:19
-msgid "Switch to workspace 3"
-msgstr "สลับไปพื้นที่ทำงาน 3"
-
-#: ../src/50-mutter-navigation.xml.in.h:20
-msgid "Switch to workspace 4"
-msgstr "สลับไปพื้นที่ทำงาน 4"
-
-#: ../src/50-mutter-navigation.xml.in.h:21
-msgid "Move to workspace left"
-msgstr "ย้ายไปพื้นที่ทำงานซ้าย"
-
-#: ../src/50-mutter-navigation.xml.in.h:22
-msgid "Move to workspace right"
-msgstr "ย้ายไปพื้นที่ทำงานขวา"
-
-#: ../src/50-mutter-navigation.xml.in.h:23
-msgid "Move to workspace above"
-msgstr "ย้ายไปพื้นที่ทำงานซ้าย"
-
-#: ../src/50-mutter-navigation.xml.in.h:24
-msgid "Move to workspace below"
-msgstr "ย้ายไปพื้นที่ทำงานล่าง"
-
-#: ../src/50-mutter-system.xml.in.h:1
-msgid "System"
-msgstr "ระบบ"
-
-#: ../src/50-mutter-system.xml.in.h:2
-msgid "Show the run command prompt"
-msgstr "แสดงกล่องเรียกคำสั่ง"
-
-#: ../src/50-mutter-system.xml.in.h:3
-msgid "Show the activities overview"
-msgstr "แสดงภาพรวมของกิจกรรมต่างๆ"
-
-#: ../src/50-mutter-windows.xml.in.h:12
-msgid "Toggle window on all workspaces or one"
-msgstr "สลับการแสดงหน้าต่างบนทุกพื้นที่ทำงานกับบนพื้นที่เดียว"
-
-#: ../src/50-mutter-windows.xml.in.h:13
-msgid "Raise window if covered, otherwise lower it"
-msgstr "ยกหน้าต่างขึ้นถ้าถูกบัง มิฉะนั้นก็เอาลงด้านหลัง"
-
-#~ msgid "Switch to workspace on the left of the current workspace"
-#~ msgstr "สลับไปพื้นที่ทำงานด้านซ้ายของพื้นที่ทำงานปัจจุบัน"
-
-#~ msgid "Switch to workspace on the right of the current workspace"
-#~ msgstr "สลับไปพื้นที่ทำงานด้านขวาของพื้นที่ทำงานปัจจุบัน"
-
-#~ msgid "Switch to workspace above the current workspace"
-#~ msgstr "สลับไปพื้นที่ทำงานด้านบนของพื้นที่ทำงานปัจจุบัน"
-
-#~ msgid "Switch to workspace below the current workspace"
-#~ msgstr "สลับไปพื้นที่ทำงานด้านล่างของพื้นที่ทำงานปัจจุบัน"
-
-#~ msgid "Move between windows of an application, using a popup window"
-#~ msgstr "ย้ายโฟกัสระหว่างหน้าต่างทั้งหลายของโปรแกรมประยุกต์โดยใช้หน้าต่างผุดขึ้น"
-
-#~ msgid ""
-#~ "Move backward between windows of an application, using a popup window"
-#~ msgstr "ย้ายโฟกัสย้อนหลังระหว่างหน้าต่างทั้งหลายของโปรแกรมประยุกต์โดยใช้หน้าต่างผุดขึ้น"
-
-#~ msgid "Move between windows, using a popup window"
-#~ msgstr "ย้ายโฟกัสระหว่างหน้าต่างโดยใช้หน้าต่างผุดขึ้น"
-
-#~ msgid "Move backward between windows, using a popup window"
-#~ msgstr "ย้ายโฟกัสย้อนหลังระหว่างหน้าต่างโดยใช้หน้าต่างผุดขึ้น"
-
-#~ msgid "Move between panels and the desktop, using a popup window"
-#~ msgstr "ย้ายโฟกัสระหว่างพาเนลและพื้นโต๊ะโดยใช้หน้าต่างผุดขึ้น"
-
-#~ msgid "Move backward between panels and the desktop, using a popup window"
-#~ msgstr "ย้ายโฟกัสย้อนหลังระหว่างพาเนลและพื้นโต๊ะโดยใช้หน้าต่างผุดขึ้น"
-
-#~ msgid "Move between windows of an application immediately"
-#~ msgstr "ย้ายโฟกัสระหว่างหน้าต่างทั้งหลายของโปรแกรมประยุกต์โดยทันที"
-
-#~ msgid "Move backward between windows of an application immediately"
-#~ msgstr "ย้ายโฟกัสย้อนหลังระหว่างหน้าต่างทั้งหลายของโปรแกรมประยุกต์โดยทันที"
-
-#~ msgid "Move between windows immediately"
-#~ msgstr "ย้ายโฟกัสระหว่างหน้าต่างโดยทันที"
-
-#~ msgid "Move backward between windows immediately"
-#~ msgstr "ย้ายโฟกัสย้อนหลังระหว่างหน้าต่างโดยทันที"
-
-#~ msgid "Move between panels and the desktop immediately"
-#~ msgstr "ย้ายโฟกัสระหว่างพาเนลและพื้นโต๊ะโดยทันที"
-
-#~ msgid "Move backward between panels and the desktop immediately"
-#~ msgstr "ย้ายโฟกัสย้อนหลังระหว่างพาเนลและพื้นโต๊ะโดยทันที"
-
-#~ msgid "Hide all normal windows and set focus to the desktop"
-#~ msgstr "ซ่อนหน้าต่างทั้งหมดแล้วโฟกัสไปยังพื้นโต๊ะ"
-
-#~ msgid "Show the panel's main menu"
-#~ msgstr "แสดงเมนูหลักของพาเนล"
-
-#~ msgid "Show the panel's \"Run Application\" dialog box"
-#~ msgstr "เปิดกล่องโต้ตอบ \"เรียกโปรแกรม\""
-
-#~ msgid "Start or stop recording the session"
-#~ msgstr "เริ่มหรือหยุดการอัดบันทึกวาระ"
-
-#~ msgid "Take a screenshot"
-#~ msgstr "จับภาพหน้าจอ"
-
-#~ msgid "Take a screenshot of a window"
-#~ msgstr "จับภาพหน้าต่าง"
-
-#~ msgid "Run a terminal"
-#~ msgstr "เปิดเทอร์มินัล"
-
-#~ msgid "Toggle whether a window will always be visible over other windows"
-#~ msgstr "สลับสถานะหน้าต่าง ว่าค้างอยู่บนสุดเหนือหน้าต่างอื่นหรือไม่"
-
-#~ msgid "Toggle whether window is on all workspaces or just one"
-#~ msgstr "สลับสถานะหน้าต่าง ว่าแสดงบนทุกพื้นที่ทำงาน หรือแค่พื้นที่ทำงานเดียว"
-
-#~ msgid "Raise window if it's covered by another window, otherwise lower it"
-#~ msgstr "ยกหน้าต่างขึ้นถ้าถูกบัง มิฉะนั้นก็เอาลงด้านหลัง"
-
-#~ msgid "Move window to north-west (top left) corner"
-#~ msgstr "ย้ายหน้าต่างไปที่มุมบนซ้ายของหน้าจอ"
-
-#~ msgid "Move window to north-east (top right) corner"
-#~ msgstr "ย้ายหน้าต่างไปที่มุมบนขวาของหน้าจอ"
-
-#~ msgid "Move window to south-west (bottom left) corner"
-#~ msgstr "ย้ายหน้าต่างไปที่มุมล่างซ้ายของหน้าจอ"
-
-#~ msgid "Move window to south-east (bottom right) corner"
-#~ msgstr "ย้ายหน้าต่างไปที่มุมล่างขวาของหน้าจอ"
-
-#~ msgid "Move window to north (top) side of screen"
-#~ msgstr "ย้ายหน้าต่างไปที่ขอบด้านบนของหน้าจอ"
-
-#~ msgid "Move window to south (bottom) side of screen"
-#~ msgstr "ย้ายหน้าต่างไปที่ขอบด้านล่างของหน้าจอ"
-
-#~ msgid "Move window to east (right) side of screen"
-#~ msgstr "ย้ายหน้าต่างไปที่ขอบด้านขวาของหน้าจอ"
-
-#~ msgid "Move window to west (left) side of screen"
-#~ msgstr "ย้ายหน้าต่างไปที่ขอบด้านซ้ายของหน้าจอ"
-
-#~ msgid "Move window to center of screen"
-#~ msgstr "ย้ายหน้าต่างไปที่กลางหน้าจอ"
-
-#~ msgid ""
-#~ "There was an error running <tt>%s</tt>:\n"
-#~ "\n"
-#~ "%s"
-#~ msgstr ""
-#~ "เกิดข้อผิดพลาดขณะเรียก <tt>%s</tt>:\n"
-#~ "\n"
-#~ "%s"
-
-#~ msgid "No command %d has been defined.\n"
-#~ msgstr "คำสั่ง %d ยังไม่ได้ถูกกำหนด\n"
-
-#~ msgid "No terminal command has been defined.\n"
-#~ msgstr "คำสั่งเปิดเทอร์มินัลยังไม่ได้ถูกกำหนด\n"
-
-#~ msgid "Comma-separated list of compositor plugins"
-#~ msgstr "รายชื่อของปลั๊กอิน composite คั่นด้วยจุลภาค"
-
-#~ msgid "GConf key '%s' is set to an invalid value\n"
-#~ msgstr "คีย์ GConf '%s' ถูกตั้งค่าเป็นค่าที่ใช้ไม่ได้\n"
-
-#~ msgid "%d stored in GConf key %s is out of range %d to %d\n"
-#~ msgstr "%d ในคีย์ GConf %s ต้องอยู่ระหว่าง %d และ %d\n"
-
-#~ msgid "GConf key \"%s\" is set to an invalid type\n"
-#~ msgstr "คีย์ GConf \"%s\" ถูกตั้งค่าเป็นชนิดที่ใช้ไม่ได้\n"
-
-#~ msgid "GConf key %s is already in use and can't be used to override %s\n"
-#~ msgstr "คีย์ GConf %s ถูกใช้งานอยู่ และไม่สามารถใช้ทับค่า %s ได้\n"
-
-#~ msgid "Can't override GConf key, %s not found\n"
-#~ msgstr "ไม่สามารถทับค่าคีย์ GConf ได้ ไม่พบ %s\n"
-
-#~ msgid "Error setting number of workspaces to %d: %s\n"
-#~ msgstr "ไม่สามารถตั้งจำนวนพื้นที่ทำงานเป็น %d: %s\n"
-
-#~ msgid "Error setting name for workspace %d to \"%s\": %s\n"
-#~ msgstr "ไม่สามารถตั้งชื่อพื้นที่ทำงาน %d เป็น %s: %s\n"
-
-#~ msgid "Error setting live hidden windows status status: %s\n"
-#~ msgstr "เกิดข้อผิดพลาดขณะกำหนดสถานะของหน้าต่างซ่อนที่ยังทำงาน: %s\n"
-
-#~ msgid "Error setting no tab popup status: %s\n"
-#~ msgstr "เกิดข้อผิดพลาดขณะกำหนดสถานะการไม่ผุดหน้าต่างในแท็บ: %s\n"
-
-#~ msgid ""
-#~ "Determines whether hidden windows (i.e., minimized windows and windows on "
-#~ "other workspaces than the current one) should be kept alive."
-#~ msgstr ""
-#~ "กำหนดว่าควรจะเก็บรักษาหน้าต่างที่ถูกซ่อน (กล่าวคือ หน้าต่างที่ถูกย่อเก็บ "
-#~ "และหน้าต่างที่อยู่บนพื้นที่ทำงานอื่นที่ไม่ใช่พื้นที่ทำงานปัจจุบัน) ให้ยังทำงานอยู่หรือไม่"
-
-#~ msgid "Live Hidden Windows"
-#~ msgstr "รักษาหน้าต่างซ่อนให้ทำงานอยู่"
-
-#~ msgid "Close Window"
-#~ msgstr "ปิดหน้าต่าง"
-
-#~ msgid "Window Menu"
-#~ msgstr "เมนูหน้าต่าง"
-
-#~ msgid "Minimize Window"
-#~ msgstr "ย่อเก็บหน้าต่าง"
-
-#~ msgid "Maximize Window"
-#~ msgstr "ขยายแผ่หน้าต่าง"
-
-#~ msgid "Restore Window"
-#~ msgstr "คืนขนาดหน้าต่าง"
-
-#~ msgid "Roll Up Window"
-#~ msgstr "_ม้วนหน้าต่างขึ้น"
-
-#~ msgid "Unroll Window"
-#~ msgstr "คลี่หน้าต่างกลับ"
-
-#~ msgid "Keep Window On Top"
-#~ msgstr "วางหน้าต่างไว้บนสุด"
-
-#~ msgid "Always On Visible Workspace"
-#~ msgstr "แสดงบนพื้นที่ทำงานเสมอ"
-
-#~ msgid "Put Window On Only One Workspace"
-#~ msgstr "วางหน้าต่างบนพื้นที่ทำงานเดียวเท่านั้น"
-
-#~ msgid "Window Management"
-#~ msgstr "การจัดการหน้าต่าง"
-
-#~ msgid "Failed to parse message \"%s\" from dialog process\n"
-#~ msgstr "ไม่เข้าใจข้อความ \"%s\" จากโพรเซสกล่องโต้ตอบ\n"
-
-#~ msgid "Error reading from dialog display process: %s\n"
-#~ msgstr "เกิดข้อผิดพลาดขณะอ่านจากโพรเซสกล่องโต้ตอบ: %s\n"
-
-#~ msgid ""
-#~ "Error launching metacity-dialog to ask about killing an application: %s\n"
-#~ msgstr "เกิดข้อผิดพลาด ขณะเปิดหน้าต่าง ถามการฆ่าโปรแกรม: %s\n"
-
-#~ msgid "Failed to get hostname: %s\n"
-#~ msgstr "ไม่สามารถอ่านชื่อโฮสต์: %s\n"
-
-#~ msgid ""
-#~ "Lost connection to the display '%s';\n"
-#~ "most likely the X server was shut down or you killed/destroyed\n"
-#~ "the window manager.\n"
-#~ msgstr ""
-#~ "ขาดการติดต่อจากดิสเพลย์ '%s';\n"
-#~ "X เซิร์ฟเวอร์อาจจะถูกปิด หรือคุณอาจฆ่าโปรแกรมจัดการหน้าต่างไป\n"
-
-#~ msgid "Fatal IO error %d (%s) on display '%s'.\n"
-#~ msgstr "เกิดข้อผิดพลาดร้ายแรง %d (%s) ในการอ่านเขียนข้อมูลจากดิสเพลย์'%s'\n"
-
-#~ msgid "Failed to restart: %s\n"
-#~ msgstr "ไม่สามารถเริ่มการทำงานใหม่ของ: %s\n"
-
-#~ msgid ""
-#~ "The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
-#~ "\n"
-#~ "The parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "รูปแบบจะคล้ายกับ \"<Control>a\" หรือ \"<Shift><Alt>F1\"\n"
-#~ "\n"
-#~ "ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"<Ctl>\" และ \"<Ctrl>"
-#~ "\" คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
-#~ "\n"
-#~ "The parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action.\n"
-#~ "\n"
-#~ "This keybinding may be reversed by holding down the \"shift\" key; "
-#~ "therefore, \"shift\" cannot be one of the keys it uses."
-#~ msgstr ""
-#~ "รูปแบบจะคล้ายกับ \"<Control>a\" หรือ \"<Shift><Alt>F1\"\n"
-#~ "\n"
-#~ "ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"<Ctl>\" และ \"<Ctrl>"
-#~ "\" คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้\n"
-#~ "\n"
-#~ "ปุ่มลัดนี้สามารถย้อนคืนได้ด้วยการกดปุ่ม \"shift\" ค้างไว้; ดังนั้น จึงไม่สามารถใช้ \"shift\" "
-#~ "ประกอบในปุ่มลัดที่ตั้งนี้ได้"
-
-#~ msgid "Failed to read saved session file %s: %s\n"
-#~ msgstr "ไม่สามารถอ่านแฟ้มวาระที่บันทึกไว้ %s: %s\n"
-
-#~ msgid ""
-#~ "Error launching metacity-dialog to warn about apps that don't support "
-#~ "session management: %s\n"
-#~ msgstr ""
-#~ "ไม่สามารถเปิดกล่องโต้ตอบ เพื่อเตือนเกี่ยวกับโปรแกรมซึ่งไม่รองรับการจัดการวาระ: %s\n"
-
-#~ msgid ""
-#~ "(Not implemented) Navigation works in terms of applications not windows"
-#~ msgstr "(ยังใช้ไม่ได้) เคลื่อนย้ายระหว่างโปรแกรม แทนระหว่างหน้าต่าง"
-
-#~ msgid ""
-#~ "A font description string describing a font for window titlebars. The "
-#~ "size from the description will only be used if the titlebar_font_size "
-#~ "option is set to 0. Also, this option is disabled if the "
-#~ "titlebar_uses_desktop_font option is set to true."
-#~ msgstr ""
-#~ "คำบรรยายแบบอักษรสำหรับแถบหัวเรื่องของหน้าต่าง "
-#~ "ขนาดตัวอักษรในคำบรรยายนี้จะมีผลก็ต่อเมื่อตัวเลือก titlebar_font_size มีค่าเป็น 0 "
-#~ "นอกจากนี้ ค่าตัวเลือกนี้จะไม่มีผลถ้าตัวเลือก titlebar_uses_desktop_font มีค่าเป็นจริง"
-
-#~ msgid "Action on title bar double-click"
-#~ msgstr "การกระทำเมื่อดับเบิลคลิกที่แถบหัวหน้าต่าง"
-
-#~ msgid "Action on title bar middle-click"
-#~ msgstr "การกระทำเมื่อคลิกเมาส์ปุ่มกลางที่แถบหัวหน้าต่าง"
-
-#~ msgid "Action on title bar right-click"
-#~ msgstr "การกระทำเมื่อคลิกเมาส์ปุ่มขวาที่แถบหัวหน้าต่าง"
-
-#~ msgid "Arrangement of buttons on the titlebar"
-#~ msgstr "การจัดเรียงปุ่มบนแถบหัวหน้าต่าง"
-
-#~ msgid ""
-#~ "Arrangement of buttons on the titlebar. The value should be a string, "
-#~ "such as \"menu:minimize,maximize,spacer,close\"; the colon separates the "
-#~ "left corner of the window from the right corner, and the button names are "
-#~ "comma-separated. Duplicate buttons are not allowed. Unknown button names "
-#~ "are silently ignored so that buttons can be added in future metacity "
-#~ "versions without breaking older versions. A special spacer tag can be "
-#~ "used to insert some space between two adjacent buttons."
-#~ msgstr ""
-#~ "การจัดเรียงปุ่มบนแถบหัวหน้าต่าง ค่าของคีย์ควรเป็นข้อความ ตัวอย่างเช่น \"menu:minimize,"
-#~ "maximize,spacer,close\" โดย colon จะแบ่งมุมซ้ายกับมุมขวาของหน้าต่างออกจากกัน "
-#~ "และปุ่มต่างๆ จะคั่นด้วยจุลภาค ห้ามใช้ปุ่มซ้ำกัน ปุ่มที่ไม่รู้จักจะถูกข้ามไป "
-#~ "เพื่อรองรับการเพิ่มปุ่มใหม่ในอนาคตได้โดยไม่ขัดกับ metacity รุ่นเก่า คุณสามารถใช้แท็กพิเศษ "
-#~ "\"spacer\" ในการแทรกช่องว่างระหว่างปุ่มที่อยู่ติดกันได้"
-
-#~ msgid "Automatically raises the focused window"
-#~ msgstr "ยกหน้าต่างที่ถูกโฟกัสขึ้นมาด้านหน้าโดยอัตโนมัติ"
-
-#~ msgid ""
-#~ "Clicking a window while holding down this modifier key will move the "
-#~ "window (left click), resize the window (middle click), or show the window "
-#~ "menu (right click). The left and right operations may be swapped using "
-#~ "the \"mouse_button_resize\" key. Modifier is expressed as \"&lt;Alt&gt;\" "
-#~ "or \"&lt;Super&gt;\" for example."
-#~ msgstr ""
-#~ "การคลิกเมาส์บนหน้าต่างพร้อมกับกดปุ่ม modifier นี้ค้างไว้จะเริ่มย้ายหน้าต่าง (ปุ่มซ้าย) "
-#~ "เปลี่ยนขนาดหน้าต่าง (ปุ่มกลาง) หรือแสดงเมนูหน้าต่าง (ปุ่มขวา) "
-#~ "การใช้ปุ่มกลางหรือขวาอาจสลับได้โดยใช้คีย์ \"resize_with_right_button\" "
-#~ "ตัวอย่างการระบุปุ่ม modifier: \"&lt;Alt&gt;\" or \"&lt;Super&gt;\""
-
-#~ msgid "Commands to run in response to keybindings"
-#~ msgstr "คำสั่งที่จะกระทำเมื่อมีการกดปุ่มตาม keybinding ที่กำหนด"
-
-#~ msgid "Compositing Manager"
-#~ msgstr "จัดการ Composite"
-
-#~ msgid "Control how new windows get focus"
-#~ msgstr "ควบคุมการโฟกัสหน้าต่างใหม่"
-
-#~ msgid "Delay in milliseconds for the auto raise option"
-#~ msgstr "การหน่วงเวลาในหน่วยมิลลิวินาทีสำหรับการยกหน้าต่างมาด้านหน้าโดยอัตโนมัติ"
-
-#~ msgid "Determines whether Metacity is a compositing manager."
-#~ msgstr "กำหนดว่า จะให้ Metacity เป็นผู้จัดการ composite หรือไม่"
-
-#~ msgid ""
-#~ "Determines whether applications or the system can generate audible "
-#~ "'beeps'; may be used in conjunction with 'visual bell' to allow silent "
-#~ "'beeps'."
-#~ msgstr ""
-#~ "ระบุว่าจะให้โปรแกรมหรือระบบส่งเสียง 'บี๊ป' หรือไม่ สามารถใช้ร่วมกับ 'ระฆังภาพ' เพื่อใช้ "
-#~ "'บี๊ป' แบบเงียบได้"
-
-#~ msgid "Disable misfeatures that are required by old or broken applications"
-#~ msgstr "ปิดคุณสมบัติแก้ขัดที่แก้ปัญหาให้กับโปรแกรมประยุกต์ที่เก่าหรือไม่ทำงาน"
-
-#~ msgid "Enable Visual Bell"
-#~ msgstr "ใช้ระฆังภาพ"
-
-#~ msgid ""
-#~ "If true, ignore the titlebar_font option, and use the standard "
-#~ "application font for window titles."
-#~ msgstr ""
-#~ "ถ้าเป็นจริง จะละเว้นตัวเลือก titlebar_font และใช้แบบอักษรมาตรฐาน "
-#~ "สำหรับแถบหัวเรื่องของหน้าต่าง"
-
-#~ msgid ""
-#~ "If true, metacity will give the user less feedback by using wireframes, "
-#~ "avoiding animations, or other means. This is a significant reduction in "
-#~ "usability for many users, but may allow legacy applications to continue "
-#~ "working, and may also be a useful tradeoff for terminal servers. However, "
-#~ "the wireframe feature is disabled when accessibility is on."
-#~ msgstr ""
-#~ "ถ้าเป็นจริง metacity จะตอบสนองผู้ใช้น้อยลง โดยใช้ wireframe ใช้ภาพเคลื่อนไหวน้อยลง "
-#~ "หรืออะไรก็ตาม ซึ่งอาจดูใช้ยากขึ้นสำหรับผู้ใช้หลายๆ คน แต่จะช่วยให้โปรแกรมเก่าๆ ยังทำงานได้ "
-#~ "และอาจช่วยให้การใช้เทอร์มินัลเซิร์ฟเวอร์คล่องตัวขึ้น อย่างไรก็ดี metacity จะไม่ใช้ "
-#~ "wireframe เมื่อเปิดระบบอำนวยการใช้งาน"
-
-#~ msgid ""
-#~ "If true, then Metacity works in terms of applications rather than "
-#~ "windows. The concept is a bit abstract, but in general an application-"
-#~ "based setup is more like the Mac and less like Windows. When you focus a "
-#~ "window in application-based mode, all the windows in the application will "
-#~ "be raised. Also, in application-based mode, focus clicks are not passed "
-#~ "through to windows in other applications. Application-based mode is, "
-#~ "however, largely unimplemented at the moment."
-#~ msgstr ""
-#~ "ถ้าเป็นจริง Metacity จะทำงานในหน่วยของโปรแกรมประยุกต์แทนหน่วยของหน้าต่าง "
-#~ "แนวคิดนี้ค่อนข้างเป็นนามธรรม แต่โดยทั่วไปการตั้งค่าแบบนี้จะคล้าย Mac และต่างจากวินโดวส์ "
-#~ "เมื่อคุณโฟกัสหน้าต่างหนึ่งในโหมดโปรแกรมประยุกต์ "
-#~ "หน้าต่างทั้งหมดในโปรแกรมประยุกต์เดียวกันจะถูกยกขึ้นพร้อมกัน นอกจากนี้ "
-#~ "ในโหมดโปรแกรมประยุกต์นี้ "
-#~ "การคลิกเพื่อโฟกัสจะไม่ถูกส่งผ่านไปยังหน้าต่างของโปรแกรมประยุกต์อื่นด้วย อย่างไรก็ดี "
-#~ "โหมดโปรแกรมประยุกต์ยังใช้การไม่ได้ในขณะนี้"
-
-#~ msgid "If true, trade off usability for less resource usage"
-#~ msgstr "ถ้าตั้ง จะสละความง่ายในการใช้เพื่อประหยัดทรัพยากร"
-
-#~ msgid "Name of workspace"
-#~ msgstr "ชื่อของพื้นที่ทำงาน"
-
-#~ msgid "Number of workspaces"
-#~ msgstr "จำนวนพื้นที่ทำงาน"
-
-#~ msgid ""
-#~ "Number of workspaces. Must be more than zero, and has a fixed maximum to "
-#~ "prevent making the desktop unusable by accidentally asking for too many "
-#~ "workspaces."
-#~ msgstr ""
-#~ "จำนวนพื้นที่ทำงาน ต้องมากกว่าศูนย์ และมีขีดจำกัดตายตัวอยู่ "
-#~ "เพื่อป้องกันการทำให้เดสก์ท็อปใช้การไม่ได้ด้วยการร้องขอพื้นที่ทำงานมากเกินไปโดยไม่เจตนา"
-
-#~ msgid "Run a defined command"
-#~ msgstr "เรียกใช้คำสั่งที่กำหนดไว้"
-
-#~ msgid ""
-#~ "Set this to true to resize with the right button and show a menu with the "
-#~ "middle button while holding down the key given in \"mouse_button_modifier"
-#~ "\"; set it to false to make it work the opposite way around."
-#~ msgstr ""
-#~ "กำหนดค่านี้เป็นจริงหากต้องการให้ใช้เมาส์ปุ่มขวาปรับขนาดหน้าต่าง และใช้ปุ่มกลางเปิดเมนู "
-#~ "ในขณะที่กดปุ่มที่กำหนดใน \"mouse_button_modifier\" ค้างไว้; "
-#~ "กำหนดค่านี้เป็นเท็จถ้าต้องการให้ทำในทางกลับกัน"
-
-#~ msgid ""
-#~ "Setting this option to false can lead to buggy behavior, so users are "
-#~ "strongly discouraged from changing it from the default of true. Many "
-#~ "actions (e.g. clicking in the client area, moving or resizing the window) "
-#~ "normally raise the window as a side-effect. Setting this option to false, "
-#~ "which is strongly discouraged, will decouple raising from other user "
-#~ "actions, and ignore raise requests generated by applications. See http://"
-#~ "bugzilla.gnome.org/show_bug.cgi?id=445447#c6. Even when this option is "
-#~ "false, windows can still be raised by an alt-left-click anywhere on the "
-#~ "window, a normal click on the window decorations, or by special messages "
-#~ "from pagers, such as activation requests from tasklist applets. This "
-#~ "option is currently disabled in click-to-focus mode. Note that the list "
-#~ "of ways to raise windows when raise_on_click is false does not include "
-#~ "programmatic requests from applications to raise windows; such requests "
-#~ "will be ignored regardless of the reason for the request. If you are an "
-#~ "application developer and have a user complaining that your application "
-#~ "does not work with this setting disabled, tell them it is _their_ fault "
-#~ "for breaking their window manager and that they need to change this "
-#~ "option back to true or live with the \"bug\" they requested."
-#~ msgstr ""
-#~ "การกำหนดตัวเลือกนี้เป็นเท็จ อาจทำให้การทำงานผิดพลาด ดังนั้น "
-#~ "จึงไม่ขอแนะนำให้เปลี่ยนค่าจากค่าปกติที่เป็นค่าจริง โดยปกติ ปฏิบัติการหลายอย่าง (เช่น "
-#~ "การคลิกบนพื้นที่ภายในหน้าต่าง การย้ายหรือปรับขนาดหน้าต่าง) จะยกหน้าต่างขึ้นด้วย "
-#~ "ถ้ากำหนดตัวเลือกนี้เป็นเท็จ ซึ่งไม่ขอแนะนำเป็นอย่างยิ่ง จะไม่ยกหน้าต่างเมื่อมีปฏิสัมพันธ์กับผู้ใช้ "
-#~ "และจะไม่สนใจการร้องขอให้ยกหน้าต่างขึ้นจากโปรแกรมต่างๆ ดู http://bugzilla.gnome.org/"
-#~ "show_bug.cgi?id=445447#c6 แต่แม้ตัวเลือกนี้จะเป็นเท็จ ก็ยังสามารถยกหน้าต่างขึ้นได้โดย "
-#~ "alt-คลิกซ้าย ภายในพื้นที่หน้าต่าง หรือคลิกแบบธรรมดาที่กรอบหน้าต่าง "
-#~ "หรือโดยข้อความพิเศษจากโปรแกรมจัดหน้าพื้นโต๊ะ เช่น "
-#~ "การร้องขอกระตุ้นหน้าต่างจากแอพเพล็ตรายการงาน ขณะนี้ "
-#~ "ตัวเลือกนี้จะไม่มีผลถ้าอยู่ในโหมดโฟกัสด้วยการคลิก  สังเกตว่า วิธีการต่างๆ ที่จะยกหน้าต่างขึ้นเมื่อ "
-#~ "raise_on_click เป็นเท็จนี้ ไม่นับรวมการร้องขอจากโปรแกรมเพื่อขอยกหน้าต่างขึ้น "
-#~ "การร้องขอดังกล่าวจะถูกปฏิเสธไม่ว่ากรณีใดๆ ถ้าคุณเป็นนักพัฒนาโปรแกรม "
-#~ "และมีผู้ใช้บ่นว่าโปรแกรมของคุณทำงานผิดพลาดเมื่อปิดค่านี้ ก็บอกเขาได้เลย ว่าเป็นความผิด "
-#~ "_ของเขาเอง_ ที่ทำให้โปรแกรมจัดการหน้าต่างรวน และเขาต้องเปลี่ยนตัวเลือกนี้กลับเป็นค่าจริง "
-#~ "มิฉะนั้น ก็จะต้องอยู่กับ \"บั๊ก\" ที่เขาเรียกร้องต่อไป"
-
-#~ msgid ""
-#~ "Some applications disregard specifications in ways that result in window "
-#~ "manager misfeatures. This option puts Metacity in a rigorously correct "
-#~ "mode, which gives a more consistent user interface, provided one does not "
-#~ "need to run any misbehaving applications."
-#~ msgstr ""
-#~ "โปรแกรมบางตัวไม่สนใจข้อกำหนด โดยทำให้โปรแกรมจัดการหน้าต่างต้องทำงานแก้ขัด "
-#~ "ตัวเลือกนี้จะกำหนดให้ Metacity เข้าสู่โหมดการทำงานที่ถูกหลักเกณฑ์อย่างเข้มงวด "
-#~ "ซึ่งจะทำให้การติดต่อผู้ใช้คงเส้นคงวายิ่งขึ้น โดยถือว่าผู้ใช้ไม่จำเป็นต้องเรียกโปรแกรมใดๆ "
-#~ "ที่ประพฤติผิดหลักเกณฑ์"
-
-#~ msgid "System Bell is Audible"
-#~ msgstr "เปิดเล่นเสียงระฆังระบบ"
-
-#~ msgid ""
-#~ "Tells Metacity how to implement the visual indication that the system "
-#~ "bell or another application 'bell' indicator has been rung. Currently "
-#~ "there are two valid values, \"fullscreen\", which causes a fullscreen "
-#~ "white-black flash, and \"frame_flash\" which causes the titlebar of the "
-#~ "application which sent the bell signal to flash. If the application which "
-#~ "sent the bell is unknown (as is usually the case for the default \"system "
-#~ "beep\"), the currently focused window's titlebar is flashed."
-#~ msgstr ""
-#~ "บอก metacity "
-#~ "ว่าจะแสดงออกทางจอภาพอย่างไรเมื่อมีการสั่นระฆังของระบบหรือโปรแกรมประยุกต์ ค่าที่เป็นไปได้ "
-#~ "ณ ขณะนี้มีสองค่า คือ \"fullscreen\" ซึ่งจะวาบจอภาพทั้งจอ และ \"frame_flash\" "
-#~ "ซึ่งจะวาบแถบหัวหน้าต่างของโปรแกรมที่สั่นระฆัง หรือถ้าไม่ปรากฏโปรแกรมที่สั่นระฆัง "
-#~ "(ซึ่งเป็นปกติสำหรับ \"เสียงบี๊ปของระบบ\") ก็จะวาบแถบหัวหน้าต่างของโปรแกรมที่ได้โฟกัสอยู่"
-
-#~ msgid ""
-#~ "The /apps/metacity/global_keybindings/run_command_N keys define "
-#~ "keybindings that correspond to these commands. Pressing the keybinding "
-#~ "for run_command_N will execute command_N."
-#~ msgstr ""
-#~ "กำหนดคำสั่งที่จะเรียกจากการกดปุ่มลัดที่กำหนดในคีย์ /apps/metacity/global_keybindings/"
-#~ "run_command_N การกดปุ่มลัดใน run_command_N จะเรียกคำสั่ง command_N"
-
-#~ msgid ""
-#~ "The /apps/metacity/global_keybindings/run_command_screenshot key defines "
-#~ "a keybinding which causes the command specified by this setting to be "
-#~ "invoked."
-#~ msgstr ""
-#~ "กำหนดคำสั่งที่จะเรียกจากการกดปุ่มลัดที่กำหนดในคีย์ /apps/metacity/global_keybindings/"
-#~ "run_command_screenshot"
-
-#~ msgid ""
-#~ "The /apps/metacity/global_keybindings/run_command_window_screenshot key "
-#~ "defines a keybinding which causes the command specified by this setting "
-#~ "to be invoked."
-#~ msgstr ""
-#~ "กำหนดคำสั่งที่จะเรียกจากการกดปุ่มลัดที่กำหนดในคีย์ /apps/metacity/global_keybindings/"
-#~ "run_command_window_screenshot"
-
-#~ msgid ""
-#~ "The keybinding that runs the correspondingly-numbered command in /apps/"
-#~ "metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" "
-#~ "or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and "
-#~ "allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-#~ "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-#~ "\"disabled\", then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "ปุ่มลัดสำหรับเรียกคำสั่งใน /apps/metacity/keybinding_commands  รูปแบบคือ \"&lt;"
-#~ "Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  "
-#~ "ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ "
-#~ "\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
-#~ "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid "The name of a workspace."
-#~ msgstr "ชื่อของพื้นที่ทำงาน"
-
-#~ msgid "The screenshot command"
-#~ msgstr "คำสั่งจับภาพหน้าจอ"
-
-#~ msgid ""
-#~ "The theme determines the appearance of window borders, titlebar, and so "
-#~ "forth."
-#~ msgstr "ชุดตกแต่งนี้จะกำหนดลักษณะขอบหน้าต่าง หัวหน้าต่าง ฯลฯ"
-
-#~ msgid ""
-#~ "The time delay before raising a window if auto_raise is set to true. The "
-#~ "delay is given in thousandths of a second."
-#~ msgstr ""
-#~ "ระยะเวลารอก่อนยกหน้าต่างขึ้นมาด้านหน้า ใช้ถ้า auto_raise ถูกตั้ง ระบุเวลาเป็นมิลลิวินาที"
-
-#~ msgid ""
-#~ "The window focus mode indicates how windows are activated. It has three "
-#~ "possible values; \"click\" means windows must be clicked in order to "
-#~ "focus them, \"sloppy\" means windows are focused when the mouse enters "
-#~ "the window, and \"mouse\" means windows are focused when the mouse enters "
-#~ "the window and unfocused when the mouse leaves the window."
-#~ msgstr ""
-#~ "โหมดโฟกัสหน้าต่างกำหนดวิธีการโฟกัสหน้าต่างเพื่อใช้งาน ค่าที่เป็นไปได้มีสามค่า คือ \"click\" "
-#~ "หมายถึงการโฟกัสหน้าต่างด้วยการคลิก, \"sloppy\" "
-#~ "หมายความว่าหน้าต่างจะได้โฟกัสก็ต่อเมื่อเมาส์เคลื่อนเข้าสู่หน้าต่าง, และ\"mouse\" "
-#~ "หมายความว่าหน้าต่างจะได้โฟกัสเมื่อเมาส์เคลื่อนเข้าสู่หน้าต่าง "
-#~ "และเสียโฟกัสเมื่อเมาส์เคลื่อนออกจากหน้าต่าง"
-
-#~ msgid "The window screenshot command"
-#~ msgstr "คำสั่งจับภาพหน้าต่าง"
-
-#~ msgid ""
-#~ "This option determines the effects of double-clicking on the title bar. "
-#~ "Current valid options are 'toggle_shade', which will shade/unshade the "
-#~ "window, 'toggle_maximize' which will maximize/unmaximize the window, "
-#~ "'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which "
-#~ "will maximize/unmaximize the window in that direction only, 'minimize' "
-#~ "which will minimize the window, 'shade' which will roll the window up, "
-#~ "'menu' which will display the window menu, 'lower' which will put the "
-#~ "window behind all the others, and 'none' which will not do anything."
-#~ msgstr ""
-#~ "ตัวเลือกนี้เลือกการปฏิบัติเมื่อดับเบิลคลิกที่แถบหัวหน้าต่าง ค่าตัวเลือกที่เป็นไปได้ในขณะนี้คือ "
-#~ "'toggle_shade' ซึ่งจะม้วนหรือคลี่หน้าต่าง, 'toggle_maximize' "
-#~ "ซึ่งจะขยายแผ่หรือยกเลิกการขยายแผ่หน้าต่างให้เต็มพื้นโต๊ะ, "
-#~ "'toggle_maximize_horizontally' และ 'toggle_maximize_vertically' "
-#~ "ซึ่งจะขยายแผ่หรือยกเลิกการขยายแผ่หน้าต่างในทิศทางที่กำหนดเท่านั้น, 'minimize' "
-#~ "ซึ่งจะย่อเก็บหน้าต่าง, 'shade' ซึ่งจะม้วนเก็บหน้าต่าง, 'menu' ซึ่งจะแสดงเมนูหน้าต่าง, "
-#~ "'lower' ซึ่งจะนำหน้าต่างลงไปอยู่หลังหน้าต่างอื่นทั้งหมด, และ 'none' ซึ่งจะไม่ทำอะไรเลย"
-
-#~ msgid ""
-#~ "This option determines the effects of middle-clicking on the title bar. "
-#~ "Current valid options are 'toggle_shade', which will shade/unshade the "
-#~ "window, 'toggle_maximize' which will maximize/unmaximize the window, "
-#~ "'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which "
-#~ "will maximize/unmaximize the window in that direction only, 'minimize' "
-#~ "which will minimize the window, 'shade' which will roll the window up, "
-#~ "'menu' which will display the window menu, 'lower' which will put the "
-#~ "window behind all the others, and 'none' which will not do anything."
-#~ msgstr ""
-#~ "ตัวเลือกนี้เลือกการปฏิบัติเมื่อคลิกเมาส์ปุ่มกลางที่แถบหัวหน้าต่าง ค่าตัวเลือกที่เป็นไปได้ในขณะนี้คือ "
-#~ "'toggle_shade' ซึ่งจะม้วนหรือคลี่หน้าต่าง, 'toggle_maximize' "
-#~ "ซึ่งจะขยายแผ่หรือยกเลิกการขยายแผ่หน้าต่างให้เต็มพื้นโต๊ะ, "
-#~ "'toggle_maximize_horizontally' และ 'toggle_maximize_vertically' "
-#~ "ซึ่งจะขยายแผ่หรือยกเลิกการขยายแผ่หน้าต่างในทิศทางที่กำหนดเท่านั้น, 'minimize' "
-#~ "ซึ่งจะย่อเก็บหน้าต่าง, 'shade' ซึ่งจะม้วนเก็บหน้าต่าง, 'menu' ซึ่งจะแสดงเมนูหน้าต่าง, "
-#~ "'lower' ซึ่งจะนำหน้าต่างลงไปอยู่หลังหน้าต่างอื่นทั้งหมด, และ 'none' ซึ่งจะไม่ทำอะไรเลย"
-
-#~ msgid ""
-#~ "This option determines the effects of right-clicking on the title bar. "
-#~ "Current valid options are 'toggle_shade', which will shade/unshade the "
-#~ "window, 'toggle_maximize' which will maximize/unmaximize the window, "
-#~ "'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which "
-#~ "will maximize/unmaximize the window in that direction only, 'minimize' "
-#~ "which will minimize the window, 'shade' which will roll the window up, "
-#~ "'menu' which will display the window menu, 'lower' which will put the "
-#~ "window behind all the others, and 'none' which will not do anything."
-#~ msgstr ""
-#~ "ตัวเลือกนี้เลือกการปฏิบัติเมื่อคลิกเมาส์ปุ่มขวาที่แถบหัวหน้าต่าง ค่าตัวเลือกที่เป็นไปได้ในขณะนี้คือ "
-#~ "'toggle_shade' ซึ่งจะม้วนหรือคลี่หน้าต่าง, 'toggle_maximize' "
-#~ "ซึ่งจะขยายแผ่หรือยกเลิกการขยายแผ่หน้าต่างให้เต็มพื้นโต๊ะ, "
-#~ "'toggle_maximize_horizontally' และ 'toggle_maximize_vertically' "
-#~ "ซึ่งจะขยายแผ่หรือยกเลิกการขยายแผ่หน้าต่างในทิศทางที่กำหนดเท่านั้น, 'minimize' "
-#~ "ซึ่งจะย่อเก็บหน้าต่าง, 'shade' ซึ่งจะม้วนเก็บหน้าต่าง, 'menu' ซึ่งจะแสดงเมนูหน้าต่าง, "
-#~ "'lower' ซึ่งจะนำหน้าต่างลงไปอยู่หลังหน้าต่างอื่นทั้งหมด, และ 'none' ซึ่งจะไม่ทำอะไรเลย"
-
-#~ msgid ""
-#~ "This option provides additional control over how newly created windows "
-#~ "get focus. It has two possible values; \"smart\" applies the user's "
-#~ "normal focus mode, and \"strict\" results in windows started from a "
-#~ "terminal not being given focus."
-#~ msgstr ""
-#~ "ตัวเลือกนี้เพิ่มการควบคุมการโฟกัสหน้าต่างที่สร้างใหม่ ค่าที่เป็นไปได้มีสองค่า คือ \"smart\" "
-#~ "ซึ่งจะใช้วิธีโฟกัสตามปกติของผู้ใช้ และ \"strict\" ซึ่งจะไม่โฟกัสหน้าต่างที่เรียกจากเทอร์มินัล"
-
-#~ msgid ""
-#~ "Turns on a visual indication when an application or the system issues a "
-#~ "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
-#~ "environments."
-#~ msgstr ""
-#~ "เปิดใช้การส่งสัญญาณทางภาพเมื่อโปรแกรมหรือระบบสั่นระฆังหรือส่งเสียงบี๊ป "
-#~ "ซึ่งจะมีประโยชน์สำหรับผู้ที่มีปัญหาเรื่องการฟัง หรือใช้ในสภาวะที่จอแจ"
-
-#~ msgid "Use standard system font in window titles"
-#~ msgstr "ใช้แบบตัวอักษรปกติของระบบสำหรับหัวหน้าต่าง"
-
-#~ msgid "Visual Bell Type"
-#~ msgstr "ชนิดของระฆังภาพ"
-
-#~ msgid "Whether raising should be a side-effect of other user interactions"
-#~ msgstr "กำหนดว่าควรยกหน้าต่างขึ้นเมื่อมีปฏิสัมพันธ์กับผู้ใช้หรือไม่"
-
-#~ msgid "Whether to resize with the right button"
-#~ msgstr "กำหนดว่าจะปรับขนาดด้วยปุ่มขวาหรือไม่"
-
-#~ msgid "Window focus mode"
-#~ msgstr "โหมดโฟกัสหน้าต่าง"
-
-#~ msgid "Window title font"
-#~ msgstr "แบบอักษรหัวหน้าต่าง"
-
-#~ msgid "Title"
-#~ msgstr "หัวหน้าต่าง"
-
-#~ msgid "Class"
-#~ msgstr "คลาส"
-
-#~ msgid "<author> specified twice for this theme"
-#~ msgstr "มีการระบุ <author> ซ้ำในชุดตกแต่งนี้"
-
-#~ msgid "<copyright> specified twice for this theme"
-#~ msgstr "<copyright> ถูกระบุซ้ำในชุดตกแต่งนี้"
-
-#~ msgid "<date> specified twice for this theme"
-#~ msgstr "<date> ถูกระบุซ้ำในชุดตกแต่งนี้"
-
-#~ msgid "<description> specified twice for this theme"
-#~ msgstr "<description> ถูกระบุซ้ำในชุดตกแต่งนี้"
-
-#~ msgid "Theme file %s did not contain a root <metacity_theme> element"
-#~ msgstr "แฟ้มชุดตกแต่ง %s ไม่มีอิลิเมนต์ราก <metacity_theme>"
-
-#~ msgid ""
-#~ "Error launching metacity-dialog to print an error about a command: %s\n"
-#~ msgstr "ไม่สามารถเปิดกล่องโต้ตอบ เพื่อแสดงข้อผิดพลาดของคำสั่ง: %s\n"
-
-#~ msgid ""
-#~ "Holding the \"shift\" key while using this binding reverses the direction "
-#~ "of movement."
-#~ msgstr "กดปุ่ม \"shift\" ค้างไว้ขณะกดปุ่มลัดนี้ จะเคลื่อนที่ในทิศย้อนกลับ"
-
-#~ msgid ""
-#~ "Holding the \"shift\" key while using this binding makes the direction go "
-#~ "forward again."
-#~ msgstr "กดปุ่ม \"shift\" ค้างไว้ขณะกดปุ่มลัดนี้ จะเคลื่อนที่ในทิศเดิมอีกครั้ง"
-
-#~ msgid "Unknown attribute %s on <metacity_session> element"
-#~ msgstr "ไม่รู้จักแอตทริบิวต์ %s ในอิลิเมนต์ <metacity_session>"
-
-#~ msgid "Unknown attribute %s on <maximized> element"
-#~ msgstr "ไม่รู้จักแอตทริบิวต์ %s ในอิลิเมนต์ <maximized>"
-
-#~ msgid "Unknown attribute %s on <geometry> element"
-#~ msgstr "ไม่รู้จักแอตทริบิวต์ %s ในอิลิเมนต์ <geometry>"
-
-#~ msgid "The keybinding used to activate the window menu."
-#~ msgstr "ปุ่มลัดสำหรับเปิดเมนูหน้าต่าง"
-
-#~ msgid "The keybinding used to toggle fullscreen mode."
-#~ msgstr "ปุ่มลัดสำหรับสลับโหมดเต็มหน้าจอ"
-
-#~ msgid "The keybinding used to toggle maximization."
-#~ msgstr "ปุ่มลัดสำหรับสลับสถานะขยายเต็ม"
-
-#~ msgid "Toggle always on top state"
-#~ msgstr "สลับการค้างอยู่บนสุด"
-
-#~ msgid ""
-#~ "The keybinding used to toggle always on top.  A window that is always on "
-#~ "top will always be visible over other overlapping windows."
-#~ msgstr ""
-#~ "ปุ่มลัดสำหรับสลับการค้างอยู่บนสุด หน้าต่างที่ค้างอยู่บนสุดจะปรากฏอยู่เหนือหน้าต่างอื่นๆ "
-#~ "ที่ซ้อนทับกันเสมอ"
-
-#~ msgid "The keybinding used to maximize a window."
-#~ msgstr "ปุ่มลัดสำหรับขยายหน้าต่างเต็มจอ"
-
-#~ msgid "Unmaximize window"
-#~ msgstr "เลิกขยายแผ่หน้าต่าง"
-
-#~ msgid "The keybinding used to unmaximize a window."
-#~ msgstr "ปุ่มลัดสำหรับเลิกขยายหน้าต่างเต็ม"
-
-#~ msgid "The keybinding used to toggle shaded/unshaded state."
-#~ msgstr "ปุ่มลัดสำหรับม้วน/คลี่หน้าต่าง"
-
-#~ msgid "The keybinding used to minimize a window."
-#~ msgstr "ปุ่มลัดสำหรับย่อเก็บหน้าต่าง"
-
-#~ msgid "The keybinding used to close a window."
-#~ msgstr "ปุ่มลัดสำหรับปิดหน้าต่าง"
-
-#~ msgid ""
-#~ "The keybinding used to enter \"move mode\" and begin moving a window "
-#~ "using the keyboard."
-#~ msgstr "ปุ่มลัดสำหรับเข้าสู่ \"โหมดเคลื่อนย้าย\" และเริ่มการย้ายหน้าต่างด้วยแป้นพิมพ์"
-
-#~ msgid "Toggle window on all workspaces"
-#~ msgstr "สลับการแสดงหน้าต่างบนทุกพื้นที่ทำงาน"
-
-#~ msgid "The keybinding used to move a window to workspace 1."
-#~ msgstr "ปุ่มลัดสำหรับย้ายหน้าต่างไปพื้นที่ทำงาน 1"
-
-#~ msgid "The keybinding used to move a window one workspace to the left."
-#~ msgstr "ปุ่มลัดสำหรับย้ายหน้าต่างไปพื้นที่ทำงานด้านซ้าย"
-
-#~ msgid "The keybinding used to move a window one workspace to the right."
-#~ msgstr "ปุ่มลัดสำหรับย้ายหน้าต่างไปพื้นที่ทำงานด้านขวา"
-
-#~ msgid "The keybinding used to move a window one workspace up."
-#~ msgstr "ปุ่มลัดสำหรับย้ายหน้าต่างไปพื้นที่ทำงานด้านบน"
-
-#~ msgid "The keybinding used to move a window one workspace down."
-#~ msgstr "ปุ่มลัดสำหรับย้ายหน้าต่างไปพื้นที่ทำงานด้านล่าง"
-
-#~ msgid ""
-#~ "This keybinding changes whether a window is above or below other "
-#~ "windows.  If the window is covered by another one, it raises the window "
-#~ "above all others, and if the window is already fully visible, it lowers "
-#~ "it below all others."
-#~ msgstr ""
-#~ "ปุ่มลัดนี้เปลี่ยนสถานะหน้าต่าง ว่าอยู่หน้าหรือหลังหน้าต่างอื่นๆ ถ้าหน้าต่างถูกหน้าต่างอื่นบังอยู่ "
-#~ "จะยกหน้าต่างขึ้นมาหน้าสุด และถ้าหน้าต่างอยู่หน้าสุดอยู่แล้ว ก็จะถอยหน้าต่างลงไปอยู่หลังสุด"
-
-#~ msgid "This keybinding raises the window above other windows."
-#~ msgstr "ปุ่มลัดนี้ยกหน้าต่างขึ้นมาไว้หน้าหน้าต่างอื่นๆ"
-
-#~ msgid "This keybinding lowers a window below other windows."
-#~ msgstr "ปุ่มลัดนี้ถอยหน้าต่างลงไปใว้หลังหน้าต่างอื่น"
-
-#~ msgid "This keybinding resizes a window to fill available vertical space."
-#~ msgstr "ปุ่มลัดนี้ขยายหน้าต่างเพื่อให้เต็มความสูงของหน้าจอ"
-
-#~ msgid "This keybinding resizes a window to fill available horizontal space."
-#~ msgstr "ปุ่มลัดนี้ขยายหน้าต่างเพื่อให้เต็มความกว้างของหน้าจอ"
-
-#~ msgid ""
-#~ "This keybinding moves a window into the north-west (top left) corner of "
-#~ "the screen."
-#~ msgstr "ปุ่มลัดนี้ย้ายหน้าต่างไปที่มุมตะวันตกเฉียงเหนือ (บนซ้าย) ของหน้าจอ"
-
-#~ msgid ""
-#~ "This keybinding moves a window into the north-east (top right) corner of "
-#~ "the screen."
-#~ msgstr "ปุ่มลัดนี้ย้ายหน้าต่างไปที่มุมตะวันออกเฉียงเหนือ (บนขวา) ของหน้าจอ"
-
-#~ msgid ""
-#~ "This keybinding moves a window into the north-east (bottom left) corner "
-#~ "of the screen."
-#~ msgstr "ปุ่มลัดนี้ย้ายหน้าต่างไปที่มุมตะวันตกเฉียงใต้ (ล่างซ้าย) ของหน้าจอ"
-
-#~ msgid ""
-#~ "This keybinding moves a window into the north-east (bottom right) corner "
-#~ "of the screen."
-#~ msgstr "ปุ่มลัดนี้ย้ายหน้าต่างไปที่มุมตะวันออกเฉียงใต้ (ล่างขวา) ของหน้าจอ"
-
-#~ msgid ""
-#~ "This keybinding moves a window against the north (top) side of the screen."
-#~ msgstr "ปุ่มลัดนี้ย้ายหน้าต่างไปที่ขอบด้านเหนือ (บนสุด) ของหน้าจอ"
-
-#~ msgid ""
-#~ "This keybinding moves a window against the south (bottom) side of the "
-#~ "screen."
-#~ msgstr "ปุ่มลัดนี้ย้ายหน้าต่างไปที่ขอบด้านใต้ (ล่างสุด) ของหน้าจอ"
-
-#~ msgid ""
-#~ "This keybinding moves a window against the east (right) side of the "
-#~ "screen."
-#~ msgstr "ปุ่มลัดนี้ย้ายหน้าต่างไปที่ขอบด้านตะวันออก (ขวาสุด) ของหน้าจอ"
-
-#~ msgid ""
-#~ "This keybinding moves a window against the west (left) side of the screen."
-#~ msgstr "ย้ายหน้าต่างไปที่ขอบด้านตะวันตก (ซ้ายสุด) ของหน้าจอ"
-
-#~ msgid "This keybinding moves a window into the center of the screen."
-#~ msgstr "ปุ่มลัดนี้ย้ายหน้าต่างไปที่กลางหน้าจอ"
-
-#~ msgid ""
-#~ "Many actions (e.g. clicking in the client area, moving or resizing the "
-#~ "window) normally raise the window as a side-effect. Setting this option "
-#~ "to false, which is strongly discouraged, will decouple raising from other "
-#~ "user actions, and ignore raise requests generated by applications. See "
-#~ "http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6."
-#~ msgstr ""
-#~ "โดยปกติ ปฏิบัติการหลายอย่าง (เช่น การคลิกบนพื้นที่ภายในหน้าต่าง "
-#~ "การย้ายหรือปรับขนาดหน้าต่าง) จะยกหน้าต่างขึ้นด้วย ถ้ากำหนดตัวเลือกนี้เป็นเท็จ "
-#~ "(ซึ่งไม่ขอแนะนำ) จะไม่ยกหน้าต่างเมื่อมีการโต้ตอบอย่างอื่นกับผู้ใช้ "
-#~ "และจะไม่ตอบสนองการร้องขอการยกหน้าต่างจากโปรแกรมอื่นๆ ด้วย ดูรายละเอียดได้ที่ http://"
-#~ "bugzilla.gnome.org/show_bug.cgi?id=445447#c6."
-
-#~ msgid ""
-#~ "The keybinding that switches to the workspace above the current "
-#~ "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-#~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-#~ "\". If you set the option to the special string \"disabled\", then there "
-#~ "will be no keybinding for this action."
-#~ msgstr ""
-#~ "ปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงานที่อยู่ด้านบนพื้นที่ทำงานปัจจุบัน  รูปแบบคือ \"&lt;Control&gt;a"
-#~ "\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก "
-#~ "และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  "
-#~ "คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "The keybinding that switches to the workspace below the current "
-#~ "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-#~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-#~ "\". If you set the option to the special string \"disabled\", then there "
-#~ "will be no keybinding for this action."
-#~ msgstr ""
-#~ "ปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงานที่อยู่ด้านล่างพื้นที่ทำงานปัจจุบัน  รูปแบบคือ \"&lt;Control&gt;a"
-#~ "\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก "
-#~ "และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  "
-#~ "คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "The keybinding that switches to the workspace on the left of the current "
-#~ "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-#~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-#~ "\". If you set the option to the special string \"disabled\", then there "
-#~ "will be no keybinding for this action."
-#~ msgstr ""
-#~ "ปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงานที่อยู่ด้านซ้ายของพื้นที่ทำงานปัจจุบัน  รูปแบบคือ \"&lt;"
-#~ "Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  "
-#~ "ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ "
-#~ "\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
-#~ "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "The keybinding that switches to the workspace on the right of the current "
-#~ "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-#~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-#~ "\". If you set the option to the special string \"disabled\", then there "
-#~ "will be no keybinding for this action."
-#~ msgstr ""
-#~ "ปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงานที่อยู่ด้านขวาของพื้นที่ทำงานปัจจุบัน  รูปแบบคือ \"&lt;"
-#~ "Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  "
-#~ "ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ "
-#~ "\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
-#~ "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 1. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "ปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงาน 1  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ "
-#~ "เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled"
-#~ "\" ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 10. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "ปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงาน 10  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ "
-#~ "เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled"
-#~ "\" ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 11. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "ปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงาน 11  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ "
-#~ "เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled"
-#~ "\" ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 12. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "ปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงาน 12  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ "
-#~ "เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled"
-#~ "\" ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 2. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "ปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงาน 2  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ "
-#~ "เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled"
-#~ "\" ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 3. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "ปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงาน 3  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ "
-#~ "เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled"
-#~ "\" ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 4. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "ปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงาน 4  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ "
-#~ "เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled"
-#~ "\" ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 5. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "ปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงาน 5  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ "
-#~ "เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled"
-#~ "\" ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 6. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "ปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงาน 6  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ "
-#~ "เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled"
-#~ "\" ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 7. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "ปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงาน 7  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ "
-#~ "เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled"
-#~ "\" ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 8. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "ปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงาน 8  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ "
-#~ "เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled"
-#~ "\" ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 9. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "ปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงาน 9  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ "
-#~ "เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled"
-#~ "\" ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "The keybinding used to activate the window menu. The format looks like "
-#~ "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
-#~ "fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "ปุ่มลัดสำหรับเรียกเมนูหน้าต่าง  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น "
-#~ "\"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
-#~ "ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "The keybinding used to close a window. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "ปุ่มลัดสำหรับปิดหน้าต่าง  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;"
-#~ "Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
-#~ "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "The keybinding used to enter \"move mode\" and begin moving a window "
-#~ "using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower "
-#~ "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
-#~ "Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-#~ "then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "ปุ่มลัดสำหรับ \"โหมดเคลื่อนย้าย\" ซึ่งยอมให้คุณใช้แป้นพิมพ์เคลื่อนย้ายหน้าต่าง  รูปแบบคือ \"&lt;"
-#~ "Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  "
-#~ "ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ "
-#~ "\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
-#~ "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "The keybinding used to enter \"resize mode\" and begin resizing a window "
-#~ "using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower "
-#~ "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
-#~ "Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-#~ "then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "ปุ่มลัดสำหรับ \"โหมดปรับขนาด\" ซึ่งยอมให้คุณใช้แป้นพิมพ์ปรับขนาดหน้าต่าง  รูปแบบคือ \"&lt;"
-#~ "Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  "
-#~ "ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ "
-#~ "\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
-#~ "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "The keybinding used to hide all normal windows and set the focus to the "
-#~ "desktop background. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower "
-#~ "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
-#~ "Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-#~ "then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "ปุ่มลัดสำหรับซ่อนหน้าต่างทั้งหมดและโฟกัสไปที่พื้นโต๊ะ  รูปแบบคือ \"&lt;Control&gt;a\" หรือ "
-#~ "\"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก "
-#~ "และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  "
-#~ "คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "The keybinding used to maximize a window. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "ปุ่มลัดสำหรับขยายแผ่หน้าต่าง รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;"
-#~ "Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
-#~ "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "The keybinding used to minimize a window. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "ปุ่มลัดสำหรับย่อเก็บหน้าต่าง  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;"
-#~ "Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
-#~ "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "The keybinding used to move a window one workspace down. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "ปุ่มลัดสำหรับย้ายหน้าต่างลงไปยังพื้นที่ทำงานถัดลงไปด้านล่าง  รูปแบบคือ \"&lt;Control&gt;a"
-#~ "\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก "
-#~ "และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  "
-#~ "คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "The keybinding used to move a window one workspace to the left. The "
-#~ "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-#~ "The parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "ปุ่มลัดสำหรับย้ายหน้าต่างไปยังพื้นที่ทำงานถัดไปด้านซ้าย  รูปแบบคือ \"&lt;Control&gt;a\" "
-#~ "หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก "
-#~ "และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  "
-#~ "คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "The keybinding used to move a window one workspace to the right. The "
-#~ "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-#~ "The parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "ปุ่มลัดสำหรับย้ายหน้าต่างไปยังพื้นที่ทำงานถัดไปด้านขวา  รูปแบบคือ \"&lt;Control&gt;a\" "
-#~ "หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก "
-#~ "และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  "
-#~ "คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "The keybinding used to move a window one workspace up. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "ปุ่มลัดสำหรับย้ายหน้าต่างขึ้นไปยังพื้นที่ทำงานถัดขึ้นไปด้านบน  รูปแบบคือ \"&lt;Control&gt;a\" "
-#~ "หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก "
-#~ "และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  "
-#~ "คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 1. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "ปุ่มลัดสำหรับย้ายหน้าต่างไปยังพื้นที่ทำงาน 1  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ "
-#~ "เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled"
-#~ "\" ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "The keybinding used to move focus backwards between panels and the "
-#~ "desktop, using a popup window. The format looks like \"&lt;Control&gt;a\" "
-#~ "or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and "
-#~ "allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-#~ "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-#~ "\"disabled\", then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "ปุ่มลัดสำหรับวนโฟกัสไปยังพาเนลต่างๆ และพื้นโต๊ะ ในทิศย้อนกลับ โดยใช้หน้าต่างป๊อปอัพช่วย  "
-#~ "รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  "
-#~ "ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ "
-#~ "\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
-#~ "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "The keybinding used to move focus backwards between panels and the "
-#~ "desktop, without a popup window. The format looks like \"&lt;Control&gt;a"
-#~ "\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and "
-#~ "allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-#~ "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-#~ "\"disabled\", then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "ปุ่มลัดสำหรับวนโฟกัสไปยังพาเนลต่างๆ และพื้นโต๊ะ ในทิศย้อนกลับ โดยไม่ใช้หน้าต่างป๊อปอัพช่วย  "
-#~ "รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  "
-#~ "ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ "
-#~ "\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
-#~ "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "The keybinding used to move focus backwards between windows of an "
-#~ "application without a popup window. Holding \"shift\" together with this "
-#~ "binding makes the direction go forward again. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "ปุ่มลัดสำหรับวนโฟกัส ระหว่างหน้าต่างทั้งหลายของโปรแกรมประยุกต์ในทิศย้อนกลับ "
-#~ "โดยไม่ใช้หน้าต่างป๊อปอัพช่วย  กด \"shift\" พร้อมกับปุ่มลัดนี้ถ้าต้องการวนให้ไปข้างหน้า  "
-#~ "รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  "
-#~ "ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ "
-#~ "\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
-#~ "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "The keybinding used to move focus backwards between windows of an "
-#~ "application, using a popup window. Holding \"shift\" together with this "
-#~ "binding makes the direction go forward again. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "ปุ่มลัดสำหรับวนโฟกัส ระหว่างหน้าต่างทั้งหลายของโปรแกรมประยุกต์ในทิศย้อนกลับ "
-#~ "โดยใช้หน้าต่างป๊อปอัพช่วย  กด \"shift\" พร้อมกับปุ่มลัดนี้ถ้าต้องการวนให้ไปข้างหน้า  "
-#~ "รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  "
-#~ "ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ "
-#~ "\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
-#~ "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "The keybinding used to move focus backwards between windows without a "
-#~ "popup window. Holding \"shift\" together with this binding makes the "
-#~ "direction go forward again. The format looks like \"&lt;Control&gt;a\" or "
-#~ "\"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows "
-#~ "lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
-#~ "\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled"
-#~ "\", then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "ปุ่มลัดสำหรับวนโฟกัส ระหว่างหน้าต่างต่างๆในทิศย้อนกลับ โดยไม่ใช้หน้าต่างป๊อปอัพช่วย  กด "
-#~ "\"shift\" พร้อมกับปุ่มลัดนี้ถ้าต้องการวนให้ไปข้างหน้า  รูปแบบคือ \"&lt;Control&gt;a\" "
-#~ "หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก "
-#~ "และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  "
-#~ "คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "The keybinding used to move focus backwards between windows, using a "
-#~ "popup window. Holding \"shift\" together with this binding makes the "
-#~ "direction go forward again. The format looks like \"&lt;Control&gt;a\" or "
-#~ "\"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows "
-#~ "lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
-#~ "\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled"
-#~ "\", then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "ปุ่มลัดสำหรับวนโฟกัส ระหว่างหน้าต่างต่างๆในทิศย้อนกลับ โดยใช้หน้าต่างป๊อปอัพช่วย  กด \"shift"
-#~ "\" พร้อมกับปุ่มลัดนี้ถ้าต้องการวนให้ไปข้างหน้า  รูปแบบคือ \"&lt;Control&gt;a\" หรือ "
-#~ "\"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก "
-#~ "และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  "
-#~ "คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "The keybinding used to move focus between panels and the desktop, using a "
-#~ "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower "
-#~ "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
-#~ "Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-#~ "then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "ปุ่มลัดสำหรับวนโฟกัสไปยังพาเนลต่างๆ และพื้นโต๊ะ โดยใช้หน้าต่างป๊อปอัพช่วย  รูปแบบคือ \"&lt;"
-#~ "Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  "
-#~ "ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ "
-#~ "\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
-#~ "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "The keybinding used to move focus between panels and the desktop, without "
-#~ "a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower "
-#~ "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
-#~ "Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-#~ "then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "ปุ่มลัดสำหรับวนโฟกัสไปยังพาเนลต่างๆ และพื้นโต๊ะ โดยไม่ใช้หน้าต่างป๊อปอัพช่วย  รูปแบบคือ "
-#~ "\"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  "
-#~ "ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ "
-#~ "\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
-#~ "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "The keybinding used to move focus between windows of an application "
-#~ "without a popup window. Holding the \"shift\" key while using this "
-#~ "binding reverses the direction of movement. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "ปุ่มลัดสำหรับวนโฟกัส ระหว่างหน้าต่างทั้งหลายของโปรแกรมประยุกต์โดยไม่ใช้หน้าต่างป๊อปอัพช่วย "
-#~ "กด \"shift\" พร้อมกับปุ่มลัดนี้ถ้าต้องการวนให้กลับคนละทาง  รูปแบบคือ \"&lt;Control&gt;a"
-#~ "\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก "
-#~ "และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  "
-#~ "คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "The keybinding used to move focus between windows of an application, "
-#~ "using a popup window. (Traditionally &lt;Alt&gt;F6) Holding the \"shift\" "
-#~ "key while using this binding reverses the direction of movement. The "
-#~ "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-#~ "The parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "ปุ่มลัดสำหรับวนโฟกัส ระหว่างหน้าต่างทั้งหลายของโปรแกรมประยุกต์โดยใช้หน้าต่างป๊อปอัพช่วย "
-#~ "(โดยทั่วไปแล้วใช้ &lt;Alt&gt;F6)  กด \"shift\" "
-#~ "พร้อมกับปุ่มลัดนี้ถ้าต้องการวนให้กลับคนละทาง  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ "
-#~ "เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled"
-#~ "\" ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "The keybinding used to move focus between windows without a popup window. "
-#~ "(Traditionally &lt;Alt&gt;Escape) Holding the \"shift\" key while using "
-#~ "this binding reverses the direction of movement. The format looks like "
-#~ "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
-#~ "fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "ปุ่มลัดสำหรับวนโฟกัส ระหว่างหน้าต่างต่างๆ โดยไม่ใช้หน้าต่างป๊อปอัพช่วย (ทั่วไปแล้วใช้ &lt;"
-#~ "Alt&gt;Escape)  กด \"shift\" พร้อมกับปุ่มลัดนี้ถ้าต้องการวนให้กลับคนละทาง  รูปแบบคือ "
-#~ "\"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  "
-#~ "ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ "
-#~ "\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
-#~ "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "The keybinding used to move focus between windows, using a popup window. "
-#~ "(Traditionally &lt;Alt&gt;Tab) Holding the \"shift\" key while using this "
-#~ "binding reverses the direction of movement. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "ปุ่มลัดสำหรับวนโฟกัส ระหว่างหน้าต่างต่างๆ โดยใช้หน้าต่างป๊อปอัพช่วย (ทั่วไปแล้วใช้ &lt;"
-#~ "Alt&gt;Tab)  กด \"shift\" พร้อมกับปุ่มลัดนี้ถ้าต้องการวนให้กลับคนละทาง  รูปแบบคือ "
-#~ "\"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  "
-#~ "ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ "
-#~ "\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
-#~ "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "The keybinding used to toggle always on top. A window that is always on "
-#~ "top will always be visible over other overlapping windows. The format "
-#~ "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
-#~ "parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "ปุ่มลัดสำหรับสลับการค้างอยู่บนสุด  หน้าต่างที่ค้างอยู่บนสุดจะปรากฏอยู่หน้าหน้าต่างอื่นๆเสมอ  "
-#~ "รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  "
-#~ "ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ "
-#~ "\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
-#~ "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "The keybinding used to toggle fullscreen mode. The format looks like "
-#~ "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
-#~ "fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "ปุ่มลัดสำหรับสลับโหมดเต็มหน้าจอ  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น "
-#~ "\"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
-#~ "ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "The keybinding used to toggle maximization. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "ปุ่มลัดสำหรับสลับสถานะขยายแผ่  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น "
-#~ "\"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
-#~ "ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "The keybinding used to toggle shaded/unshaded state. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "ปุ่มลัดสำหรับสลับสถานะม้วนเก็บ/คลี่ออก  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ "
-#~ "เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled"
-#~ "\" ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "The keybinding used to toggle whether the window is on all workspaces or "
-#~ "just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-#~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-#~ "\". If you set the option to the special string \"disabled\", then there "
-#~ "will be no keybinding for this action."
-#~ msgstr ""
-#~ "ปุ่มลัดสำหรับสลับ ว่าจะแสดงหน้าต่างบนทุกพื้นที่ทำงาน หรือบนพื้นที่ทำงานเดียว  รูปแบบคือ \"&lt;"
-#~ "Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  "
-#~ "ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ "
-#~ "\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
-#~ "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "The keybinding used to unmaximize a window. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "ปุ่มลัดสำหรับยกเลิกการขยายแผ่หน้าต่างเต็มพื้นโต๊ะ  รูปแบบคือ \"&lt;Control&gt;a\" หรือ "
-#~ "\"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก "
-#~ "และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  "
-#~ "คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "The keybinding which display's the panel's \"Run Application\" dialog "
-#~ "box. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
-#~ "and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If "
-#~ "you set the option to the special string \"disabled\", then there will be "
-#~ "no keybinding for this action."
-#~ msgstr ""
-#~ "ปุ่มลัดสำหรับเปิดกล่องโต้ตอบ \"เรียกโปรแกรม\" ของพาเนล  รูปแบบคือ \"&lt;Control&gt;a"
-#~ "\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก "
-#~ "และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  "
-#~ "คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "The keybinding which invokes a terminal. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "ปุ่มลัดสำหรับเปิดเทอร์มินัล  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;"
-#~ "Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
-#~ "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "The keybinding which invokes the panel's screenshot utility to take a "
-#~ "screenshot of a window. The format looks like \"&lt;Control&gt;a\" or "
-#~ "\"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows "
-#~ "lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
-#~ "\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled"
-#~ "\", then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "ปุ่มลัดสำหรับเรียกโปรแกรมจับภาพของพาเนล เพื่อจับภาพหน้าต่างที่ต้องการ  รูปแบบคือ \"&lt;"
-#~ "Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  "
-#~ "ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ "
-#~ "\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
-#~ "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "The keybinding which invokes the panel's screenshot utility. The format "
-#~ "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
-#~ "parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "ปุ่มลัดสำหรับเรียกโปรแกรมจับภาพหน้าจอของพาเนล  รูปแบบคือ \"&lt;Control&gt;a\" หรือ "
-#~ "\"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก "
-#~ "และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  "
-#~ "คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "The keybinding which shows the panel's main menu. The format looks like "
-#~ "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
-#~ "fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "ปุ่มลัดสำหรับเปิดเมนูหลักของพาเนล  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ "
-#~ "เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled"
-#~ "\" ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "This keybinding changes whether a window is above or below other windows. "
-#~ "If the window is covered by another one, it raises the window above all "
-#~ "others, and if the window is already fully visible, it lowers it below "
-#~ "all others. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-#~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-#~ "\". If you set the option to the special string \"disabled\", then there "
-#~ "will be no keybinding for this action."
-#~ msgstr ""
-#~ "ปุ่มลัดนี้ใช้ปรับว่าหน้าต่างจะอยู่ข้างบนหรือล่างหน้าต่างอื่น  ถ้าหน้าต่างนั้นถูกหน้าต่างอื่นบังอยู่ "
-#~ "ก็จะถูกยกขึ้นมาไว้บนสุด  แต่ถ้าหน้าต่างนั้นไม่ถูกบังอยู่ ก็จะถูกเอาไปไว้หลังสุด  รูปแบบคือ \"&lt;"
-#~ "Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  "
-#~ "ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ "
-#~ "\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
-#~ "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "This keybinding lowers a window below other windows. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "ปุ่มลัดนี้เอาหน้าต่างลงไปอยู่หลังหน้าต่างอื่นๆ  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ "
-#~ "เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled"
-#~ "\" ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "This keybinding moves a window against the north (top) side of the "
-#~ "screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
-#~ "and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If "
-#~ "you set the option to the special string \"disabled\", then there will be "
-#~ "no keybinding for this action."
-#~ msgstr ""
-#~ "ปุ่มลัดนี้ย้ายหน้าต่างไปที่ขอบทางเหนือ (ด้านบน) ของหน้าจอ  รูปแบบคือ \"&lt;Control&gt;a"
-#~ "\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก "
-#~ "และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  "
-#~ "คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "This keybinding moves a window into the center of the screen. The format "
-#~ "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
-#~ "parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "ปุ่มลัดนี้ย้ายหน้าต่างไปที่กลางหน้าจอ  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ "
-#~ "เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled"
-#~ "\" ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "This keybinding moves a window into the east (right) side of the screen. "
-#~ "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;"
-#~ "F1\". The parser is fairly liberal and allows lower or upper case, and "
-#~ "also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-#~ "set the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "ปุ่มลัดนี้ย้ายหน้าต่างไปที่ขอบทางตะวันออก (ด้านขวา) ของหน้าจอ  รูปแบบคือ \"&lt;"
-#~ "Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  "
-#~ "ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ "
-#~ "\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
-#~ "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "This keybinding moves a window into the north-east (top right) corner of "
-#~ "the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-#~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-#~ "\". If you set the option to the special string \"disabled\", then there "
-#~ "will be no keybinding for this action."
-#~ msgstr ""
-#~ "ปุ่มลัดนี้ย้ายหน้าต่างไปที่มุมตะวันออกเฉียงเหนือ (ด้านบนขวา) ของหน้าจอ  รูปแบบคือ \"&lt;"
-#~ "Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  "
-#~ "ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ "
-#~ "\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
-#~ "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "This keybinding moves a window into the north-west (top left) corner of "
-#~ "the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-#~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-#~ "\". If you set the option to the special string \"disabled\", then there "
-#~ "will be no keybinding for this action."
-#~ msgstr ""
-#~ "ปุ่มลัดนี้ย้ายหน้าต่างไปที่มุมตะวันตกเฉียงเหนือ (ด้านบนซ้าย) ของหน้าจอ  รูปแบบคือ \"&lt;"
-#~ "Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  "
-#~ "ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ "
-#~ "\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
-#~ "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "This keybinding moves a window into the south (bottom) side of the "
-#~ "screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
-#~ "and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If "
-#~ "you set the option to the special string \"disabled\", then there will be "
-#~ "no keybinding for this action."
-#~ msgstr ""
-#~ "ปุ่มลัดนี้ย้ายหน้าต่างไปที่ขอบทางใต้ (ด้านล่าง) ของหน้าจอ  รูปแบบคือ \"&lt;Control&gt;a\" "
-#~ "หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก "
-#~ "และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  "
-#~ "คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "This keybinding moves a window into the south-east (bottom right) corner "
-#~ "of the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower "
-#~ "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
-#~ "Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-#~ "then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "ปุ่มลัดนี้ย้ายหน้าต่างไปที่มุมตะวันออกเฉียงใต้ (ด้านล่างขวา) ของหน้าจอ  รูปแบบคือ \"&lt;"
-#~ "Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  "
-#~ "ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ "
-#~ "\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
-#~ "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "This keybinding moves a window into the south-west (bottom left) corner "
-#~ "of the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower "
-#~ "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
-#~ "Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-#~ "then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "ปุ่มลัดนี้ย้ายหน้าต่างไปที่มุมตะวันตกเฉียงใต้ (ด้านล่างซ้าย) ของหน้าจอ  รูปแบบคือ \"&lt;"
-#~ "Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  "
-#~ "ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ "
-#~ "\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
-#~ "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "This keybinding moves a window into the west (left) side of the screen. "
-#~ "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;"
-#~ "F1\". The parser is fairly liberal and allows lower or upper case, and "
-#~ "also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-#~ "set the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "ปุ่มลัดนี้ย้ายหน้าต่างไปที่ขอบทางตะวันตก (ด้านซ้าย) ของหน้าจอ  รูปแบบคือ \"&lt;Control&gt;"
-#~ "a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  "
-#~ "ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ "
-#~ "\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
-#~ "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "This keybinding raises the window above other windows. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "ปุ่มลัดนี้ยกหน้าต่างขึ้นมาอยู่หน้าหน้าต่างอื่นๆ  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ "
-#~ "เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled"
-#~ "\" ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "This keybinding resizes a window to fill available horizontal space. The "
-#~ "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-#~ "The parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "ปุ่มลัดนี้ใช้ขยายแผ่หน้าต่างเต็มความกว้างของพื้นโต๊ะ  รูปแบบคือ \"&lt;Control&gt;a\" หรือ "
-#~ "\"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก "
-#~ "และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  "
-#~ "คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid ""
-#~ "This keybinding resizes a window to fill available vertical space. The "
-#~ "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-#~ "The parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "ปุ่มลัดนี้ใช้ขยายแผ่หน้าต่างเต็มความสูงของพื้นโต๊ะ  รูปแบบคือ \"&lt;Control&gt;a\" หรือ "
-#~ "\"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก "
-#~ "และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  "
-#~ "คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
-
-#~ msgid "Unmaximize Window"
-#~ msgstr "เลิกขยายแผ่หน้าต่าง"
-
-#~ msgid "No \"%s\" attribute on <%s> element"
-#~ msgstr "ขาดแอตทริบิวต์ \"%s\" ในอิลิเมนต์ <%s>"
-
-#~ msgid "Theme already has a fallback icon"
-#~ msgstr "ชุดตกแต่งมีไอคอนสำรองอยู่แล้ว"
-
-#~ msgid "Theme already has a fallback mini_icon"
-#~ msgstr "ชุดตกแต่งมีไอคอนเล็กสำรองอยู่แล้ว"
-
-#~ msgid "Type of %s was not integer"
-#~ msgstr "ชนิดของ %s ไม่ใช่จำนวนเต็ม"
-
-#~ msgid ""
-#~ "%d stored in GConf key %s is not a reasonable cursor_size; must be in the "
-#~ "range 1..128\n"
-#~ msgstr ""
-#~ "%d ในคีย์ GConf %s ไม่ใช่ขนาดเคอร์เซอร์ที่สมเหตุสมผล ค่าดังกล่าวควรอยู่ในช่วง 1..128\n"
-
-#~ msgid ""
-#~ "%d stored in GConf key %s is not a reasonable number of workspaces, "
-#~ "current maximum is %d\n"
-#~ msgstr ""
-#~ "%d ในคีย์ GConf %s ไม่ใช่จำนวนพื้นที่ทำงานที่สมเหตุสมผล สามารถตั้งได้มากสุดเป็น %d\n"
-
-#~ msgid "On _Top"
-#~ msgstr "_บนสุด"
-
-#~ msgid ""
-#~ "Forcing this application to quit will cause you to lose any unsaved "
-#~ "changes."
-#~ msgstr "ถ้าบังคับออกจากโปรแกรมนี้ ข้อมูลที่ยังไม่ได้ถูกบันทึกจะสูญหาย"
-
-#~ msgid "Unknown function \"%s\" for menu icon"
-#~ msgstr "ไม่รู้จักฟังก์ชัน \"%s\" สำหรับไอคอนเมนู"
-
-#~ msgid "Unknown state \"%s\" for menu icon"
-#~ msgstr "ไม่รู้จักสถานะ \"%s\" สำหรับไอคอนเมนู"
-
-#~ msgid "Theme already has a menu icon for function %s state %s"
-#~ msgstr "ชุดตกแต่งมีไอคอนเมนูสำหรับฟังก์ชัน %s สถานะ %s อยู่แล้ว"
-
-#~ msgid "No draw_ops provided for menu icon"
-#~ msgstr "ขาด draw_ops สำหรับไอคอนเมนู"
-
-#~ msgid "Failed to read theme from file %s: %s\n"
-#~ msgstr "ไม่สามารถอ่านชุดตกแต่งจากแฟ้ม %s: %s\n"
-
-#~ msgid ""
-#~ "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
-#~ "specified for this theme"
-#~ msgstr ""
-#~ "ต้องระบุ <menu_icon function=\"%s\" state=\"%s\" draw_ops=\"อะไรก็ตามแต่\"/> "
-#~ "สำหรับชุดตกแต่งนี้"
-
-#~ msgid ""
-#~ "If true, and the focus mode is either \"sloppy\" or \"mouse\" then the "
-#~ "focused window will be automatically raised after a delay (the delay is "
-#~ "specified by the auto_raise_delay key). This preference is poorly named, "
-#~ "but kept for backwards compatibility. To try to be more clear (at least "
-#~ "to the technically inclined), its meaning is \"automatically raise the "
-#~ "window following a timeout which is triggered by non-grabbed mouse entry "
-#~ "in sloppy or mouse focus modes\". It is unrelated to clicking behavior (i."
-#~ "e. this is not related to raise-on-click/orthogonal-raise). It is "
-#~ "unrelated to entering a window during drag and drop (because that results "
-#~ "in the application grabbing the mouse)"
-#~ msgstr ""
-#~ "ถ้าเป็นจริง และโหมดโฟกัสหน้าต่างเป็น \"sloppy\" หรือ \"mouse\" "
-#~ "จะยกหน้าต่างที่ได้โฟกัสขึ้นมาโดยอัตโนมัติหลังจากหน่วงเวลาระยะหนึ่ง (กำหนดเวลาที่หน่วงโดยคีย์ "
-#~ "auto_raise_delay) ค่าตั้งนี้ตั้งชื่อค่อนข้างแย่ แต่ก็เก็บชื่อไว้เพื่อความเข้ากันได้กับรุ่นเก่า "
-#~ "ถ้าจะให้ชัดเจนกว่านี้ (อย่างน้อยก็สำหรับผู้มีความรู้ทางเทคนิค) ความหมายของมันก็คือ "
-#~ "\"ยกหน้าต่างขึ้นมาโดยอัตโนมัติหลังการหน่วงเวลา "
-#~ "ซึ่งเริ่มจับเวลาเมื่อมีการเลื่อนเมาส์เข้ามาในหน้าต่างขณะใช้โหมดโฟกัสหน้าต่างแบบ sloppy หรือ "
-#~ "mouse โดยขณะนั้นไม่มีหน้าต่างอื่นยึดเมาส์อยู่\" การยกหน้าต่างดังกล่าว "
-#~ "ไม่เกี่ยวกับพฤติกรรมการคลิก (กล่าวคือ ไม่เกี่ยวกับการยกหน้าต่างขึ้นเมื่อถูกคลิก "
-#~ "หรือการยกหน้าต่างขึ้นตามลำดับ) และไม่เกี่ยวกับการเลื่อนเมาส์เข้าสู่หน้าต่างระหว่างการลากวาง "
-#~ "(เพราะนั่นหมายความว่าโปรแกรมหนึ่งกำลังยึดเมาส์ไว้ใช้อยู่)"
-
-#~ msgid ""
-#~ "Some applications break specifications in ways that result in window "
-#~ "manager misfeatures. For example, ideally Metacity would place all "
-#~ "dialogs in a consistent position with respect to their parent window. "
-#~ "This requires ignoring application-specified positions for dialogs. But "
-#~ "some versions of Java/Swing mark their popup menus as dialogs, so "
-#~ "Metacity has to disable dialog positioning to allow menus to work in "
-#~ "broken Java applications. There are several other examples like this. "
-#~ "This option puts Metacity in full-on Correct mode, which perhaps gives a "
-#~ "moderately nicer UI if you don't need to run any broken apps. Sadly, "
-#~ "workarounds must be enabled by default; the real world is an ugly place. "
-#~ "Some of the workarounds are workarounds for limitations in the "
-#~ "specifications themselves, so sometimes a bug in no-workarounds mode "
-#~ "won't be fixable without amending a spec."
-#~ msgstr ""
-#~ "โปรแกรมบางตัวละเมิดข้อกำหนดโดยทำให้โปรแกรมจัดการหน้าต่างต้องทำงานแก้ขัด ตัวอย่างเช่น "
-#~ "ในอุดมคติแล้ว metacity จะเปิดกล่องโต้ตอบทั้งหลาย ณ ตำแหน่งคงที่เทียบกับหน้าต่างแม่ "
-#~ "ซี่งจำเป็นต้องละเลยตำแหน่งที่โปรแกรมระบุมา แต่ Java/Swing "
-#~ "บางรุ่นใช้กล่องโต้ตอบในการเปิดเมนูป๊อปอัพ ทำให้ metacity "
-#~ "จำต้องงดการวางตำแหน่งกล่องโต้ตอบ เพื่อให้เมนูในโปรแกรมจาวาเสียๆ เหล่านี้ทำงานได้ "
-#~ "และยังมีตัวอย่างทำนองนี้อีกมากมาย ตัวเลือกนี้จะตั้งให้ metacity "
-#~ "เข้าสู่โหมดการทำงานที่ถูกหลักเกณฑ์ทุกประการ ซึ่งอาจจะให้ UI ที่ดีกว่า "
-#~ "ถ้าคุณไม่ต้องการรันโปรแกรมที่เสียๆ แต่น่าเศร้าที่ต้องเปิดการแก้ขัดนี้ไว้ก่อน "
-#~ "โลกแห่งความเป็นจริงช่างโสมม การแก้ขัดบางอย่างก็เป็นเพราะข้อจำกัดในข้อกำหนดมาตรฐานเอง "
-#~ "ทำให้บั๊กในโหมดที่ปราศจากการแก้ขัดไม่สามารถแก้ได้โดยไม่แก้มาตรฐาน"
-
-#~ msgid ""
-#~ "Coordinate expression parser overflowed its buffer, this is really a "
-#~ "Metacity bug, but are you sure you need a huge expression like that?"
-#~ msgstr ""
-#~ "ตัวแจงค่านิพจน์พิกัดทำข้อมูลล้น ความจริงแล้วนี่ถือเป็นบั๊กของ Metacity "
-#~ "แต่คุณแน่ใจหรือว่าคุณต้องการนิพจน์ที่ใหญ่มหึมาเช่นนี้?"
