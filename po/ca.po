@@ -1139,19 +1139,19 @@ msgstr "L'amplada màxima per a cada columna"
 
 #: ../clutter/clutter-flow-layout.c:1022
 msgid "Minimum Row Height"
-msgstr "Alçada mínima de columna"
+msgstr "Alçada mínima de fila"
 
 #: ../clutter/clutter-flow-layout.c:1023
 msgid "Minimum height for each row"
-msgstr "L'alçada mínima per a cada columna"
+msgstr "L'alçada mínima per a cada fila"
 
 #: ../clutter/clutter-flow-layout.c:1038
 msgid "Maximum Row Height"
-msgstr "Alçada màxima de columna"
+msgstr "Alçada màxima de fila"
 
 #: ../clutter/clutter-flow-layout.c:1039
 msgid "Maximum height for each row"
-msgstr "L'alçada màxima per a cada columna"
+msgstr "L'alçada màxima per a cada fila"
 
 #: ../clutter/clutter-flow-layout.c:1054 ../clutter/clutter-flow-layout.c:1055
 msgid "Snap to grid"
@@ -1203,7 +1203,7 @@ msgstr "Adjunció superior"
 
 #: ../clutter/clutter-grid-layout.c:1232
 msgid "The row number to attach the top side of a child widget to"
-msgstr "El número de columna al que adjuntar-hi la part superior del giny fill"
+msgstr "El número de fila al que adjuntar-hi la part superior del giny fill"
 
 #: ../clutter/clutter-grid-layout.c:1240
 msgid "The number of columns that a child spans"
