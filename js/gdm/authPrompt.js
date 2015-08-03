@@ -489,6 +489,7 @@ const AuthPrompt = new Lang.Class({
 
     finish: function(onComplete) {
         if (!this._userVerifier.hasPendingMessages) {
+            this._userVerifier.clear();
             onComplete();
             return;
         }
@@ -496,6 +497,7 @@ const AuthPrompt = new Lang.Class({
         let signalId = this._userVerifier.connect('no-more-messages',
                                                   Lang.bind(this, function() {
                                                       this._userVerifier.disconnect(signalId);
+                                                      this._userVerifier.clear();
                                                       onComplete();
                                                   }));
     },
