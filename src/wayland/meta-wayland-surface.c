@@ -256,6 +256,12 @@ toplevel_surface_commit (MetaWaylandSurface      *surface,
           return;
         }
     }
+  else if (surface->role == META_WAYLAND_SURFACE_ROLE_XDG_POPUP)
+    {
+      /* Ignore commits if we couldn't grab the pointer */
+      if (!window)
+        return;
+    }
   else
     {
       if (surface->buffer == NULL)
@@ -267,6 +273,8 @@ toplevel_surface_commit (MetaWaylandSurface      *surface,
           return;
         }
     }
+
+  g_assert (window != NULL);
 
   /* We resize X based surfaces according to X events */
   if (window->client_type == META_WINDOW_CLIENT_TYPE_WAYLAND)
