@@ -1365,9 +1365,6 @@ xdg_shell_get_xdg_popup (struct wl_client *client,
   MetaDisplay *display = meta_get_display ();
   MetaWaylandPopup *popup;
 
-  if (parent_surf == NULL || parent_surf->window == NULL)
-    return;
-
   if (surface->xdg_popup != NULL)
     {
       wl_resource_post_error (surface_resource,
@@ -1382,7 +1379,9 @@ xdg_shell_get_xdg_popup (struct wl_client *client,
                                      XDG_SHELL_ERROR_ROLE) != 0)
     return;
 
-  if (parent_surf->xdg_popup == NULL && parent_surf->xdg_surface == NULL)
+  if (parent_surf == NULL ||
+      parent_surf->window == NULL ||
+      (parent_surf->xdg_popup == NULL && parent_surf->xdg_surface == NULL))
     {
       wl_resource_post_error (resource,
                               XDG_POPUP_ERROR_INVALID_PARENT,
