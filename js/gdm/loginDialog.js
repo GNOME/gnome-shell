@@ -874,7 +874,7 @@ const LoginDialog = new Lang.Class({
     },
 
     _loginScreenSessionActivated: function() {
-        if (this._authPrompt.verificationStatus != AuthPrompt.AuthPromptStatus.VERIFICATION_SUCCEEDED)
+        if (this.actor.opacity == 255 && this._authPrompt.verificationStatus == AuthPrompt.AuthPromptStatus.NOT_VERIFYING)
             return;
 
         Tweener.addTween(this.actor,
@@ -891,7 +891,8 @@ const LoginDialog = new Lang.Class({
                            },
                            onUpdateScope: this,
                            onComplete: function() {
-                               this._authPrompt.reset();
+                               if (this._authPrompt.verificationStatus != AuthPrompt.AuthPromptStatus.NOT_VERIFYING)
+                                   this._authPrompt.reset();
                            },
                            onCompleteScope: this });
     },
