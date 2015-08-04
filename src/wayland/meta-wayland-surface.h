@@ -62,7 +62,9 @@ typedef struct
   cairo_region_t *damage;
 
   cairo_region_t *input_region;
+  gboolean input_region_set;
   cairo_region_t *opaque_region;
+  gboolean opaque_region_set;
 
   /* wl_surface.frame */
   struct wl_list frame_callback_list;

@@ -197,6 +197,10 @@ meta_surface_actor_wayland_sync_state (MetaSurfaceActorWayland *self)
                                            scaled_input_region);
       cairo_region_destroy (scaled_input_region);
     }
+  else
+    {
+      meta_surface_actor_set_input_region (META_SURFACE_ACTOR (self), NULL);
+    }
 
   /* Opaque region */
   if (surface->opaque_region)
@@ -211,6 +215,10 @@ meta_surface_actor_wayland_sync_state (MetaSurfaceActorWayland *self)
       meta_surface_actor_set_opaque_region (META_SURFACE_ACTOR (self),
                                             scaled_opaque_region);
       cairo_region_destroy (scaled_opaque_region);
+    }
+  else
+    {
+      meta_surface_actor_set_opaque_region (META_SURFACE_ACTOR (self), NULL);
     }
 
   meta_surface_actor_wayland_sync_subsurface_state (self);

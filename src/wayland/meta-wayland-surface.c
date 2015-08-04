@@ -332,7 +332,9 @@ pending_state_init (MetaWaylandPendingState *state)
   state->scale = 0;
 
   state->input_region = NULL;
+  state->input_region_set = FALSE;
   state->opaque_region = NULL;
+  state->opaque_region_set = FALSE;
 
   state->damage = cairo_region_create ();
   state->buffer_destroy_listener.notify = surface_handle_pending_buffer_destroy;
@@ -510,18 +512,24 @@ apply_pending_state (MetaWaylandSurface      *surface,
   surface->offset_x += pending->dx;
   surface->offset_y += pending->dy;
 
-  if (pending->opaque_region)
+  if (pending->opaque_region_set)
     {
       if (surface->opaque_region)
         cairo_region_destroy (surface->opaque_region);
-      surface->opaque_region = cairo_region_reference (pending->opaque_region);
+      if (pending->opaque_region)
+        surface->opaque_region = cairo_region_reference (pending->opaque_region);
+      else
+        surface->opaque_region = NULL;
     }
 
-  if (pending->input_region)
+  if (pending->input_region_set)
     {
       if (surface->input_region)
         cairo_region_destroy (surface->input_region);
-      surface->input_region = cairo_region_reference (pending->input_region);
+      if (pending->input_region)
+        surface->input_region = cairo_region_reference (pending->input_region);
+      else
+        surface->input_region = NULL;
     }
 
   /* wl_surface.frame */
@@ -678,6 +686,7 @@ wl_surface_set_opaque_region (struct wl_client *client,
       cairo_region_t *cr_region = meta_wayland_region_peek_cairo_region (region);
       surface->pending.opaque_region = cairo_region_copy (cr_region);
     }
+  surface->pending.opaque_region_set = TRUE;
 }
 
 static void
@@ -698,6 +707,7 @@ wl_surface_set_input_region (struct wl_client *client,
       cairo_region_t *cr_region = meta_wayland_region_peek_cairo_region (region);
       surface->pending.input_region = cairo_region_copy (cr_region);
     }
+  surface->pending.input_region_set = TRUE;
 }
 
 static void
