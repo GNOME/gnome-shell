@@ -73,7 +73,8 @@ typedef struct
   Display *xdisplay;
 
   XSyncFence xfence;
-  GLsync glsync;
+  GLsync gl_x11_sync;
+  GLsync gpu_fence;
 
   XSyncCounter xcounter;
   XSyncAlarm xalarm;
@@ -118,6 +119,8 @@ static void             (*meta_gl_wait_sync) (GLsync sync,
 static GLsync           (*meta_gl_import_sync) (GLenum external_sync_type,
                                                 GLintptr external_sync,
                                                 GLbitfield flags);
+static GLsync           (*meta_gl_fence_sync) (GLenum condition,
+                                               GLbitfield flags);
 
 static MetaSyncRing *
 meta_sync_ring_get (void)
@@ -224,6 +227,8 @@ load_required_symbols (void)
     goto out;
   if (!load_gl_symbol ("glImportSyncEXT", (void **) &meta_gl_import_sync))
     goto out;
+  if (!load_gl_symbol ("glFenceSync", (void **) &meta_gl_fence_sync))
+    goto out;
 
   success = TRUE;
  out:
@@ -238,7 +243,8 @@ meta_sync_insert (MetaSync *self)
   XSyncTriggerFence (self->xdisplay, self->xfence);
   XFlush (self->xdisplay);
 
-  meta_gl_wait_sync (self->glsync, 0, GL_TIMEOUT_IGNORED);
+  meta_gl_wait_sync (self->gl_x11_sync, 0, GL_TIMEOUT_IGNORED);
+  self->gpu_fence = meta_gl_fence_sync (GL_SYNC_GPU_COMMANDS_COMPLETE, 0);
 
   self->state = META_SYNC_STATE_WAITING;
 }
@@ -255,9 +261,13 @@ meta_sync_check_update_finished (MetaSync *self,
       status = GL_ALREADY_SIGNALED;
       break;
     case META_SYNC_STATE_WAITING:
-      status = meta_gl_client_wait_sync (self->glsync, 0, timeout);
+      status = meta_gl_client_wait_sync (self->gpu_fence, 0, timeout);
       if (status == GL_ALREADY_SIGNALED || status == GL_CONDITION_SATISFIED)
-        self->state = META_SYNC_STATE_DONE;
+        {
+          self->state = META_SYNC_STATE_DONE;
+          meta_gl_delete_sync (self->gpu_fence);
+          self->gpu_fence = 0;
+        }
       break;
     default:
       break;
@@ -312,7 +322,8 @@ meta_sync_new (Display *xdisplay)
   self->xdisplay = xdisplay;
 
   self->xfence = XSyncCreateFence (xdisplay, DefaultRootWindow (xdisplay), FALSE);
-  self->glsync = meta_gl_import_sync (GL_SYNC_X11_FENCE_EXT, self->xfence, 0);
+  self->gl_x11_sync = meta_gl_import_sync (GL_SYNC_X11_FENCE_EXT, self->xfence, 0);
+  self->gpu_fence = 0;
 
   self->xcounter = XSyncCreateCounter (xdisplay, SYNC_VALUE_ZERO);
 
@@ -365,6 +376,8 @@ meta_sync_free (MetaSync *self)
   switch (self->state)
     {
     case META_SYNC_STATE_WAITING:
+      meta_gl_delete_sync (self->gpu_fence);
+      break;
     case META_SYNC_STATE_DONE:
       /* nothing to do */
       break;
@@ -383,7 +396,7 @@ meta_sync_free (MetaSync *self)
       break;
     }
 
-  meta_gl_delete_sync (self->glsync);
+  meta_gl_delete_sync (self->gl_x11_sync);
   XSyncDestroyFence (self->xdisplay, self->xfence);
   XSyncDestroyCounter (self->xdisplay, self->xcounter);
   XSyncDestroyAlarm (self->xdisplay, self->xalarm);
