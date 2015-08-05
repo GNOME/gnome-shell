@@ -31,6 +31,7 @@
 #include "group-props.h"
 #include "window-private.h"
 #include <meta/window.h>
+#include <X11/Xlib-xcb.h>
 
 static MetaGroup*
 meta_group_new (MetaDisplay *display,
@@ -50,10 +51,18 @@ meta_group_new (MetaDisplay *display,
   group->group_leader = group_leader;
   group->refcount = 1; /* owned by caller, hash table has only weak ref */
 
-  XWindowAttributes attrs;
-  XGetWindowAttributes (display->xdisplay, group_leader, &attrs);
-  XSelectInput (display->xdisplay, group_leader,
-                attrs.your_event_mask | PropertyChangeMask);
+  xcb_connection_t *xcb_conn = XGetXCBConnection (display->xdisplay);
+  xcb_generic_error_t *e;
+  g_autofree xcb_get_window_attributes_reply_t *attrs =
+    xcb_get_window_attributes_reply (xcb_conn,
+                                     xcb_get_window_attributes (xcb_conn, group_leader),
+                                     &e);
+  if (e)
+    return NULL;
+
+  const uint32_t events[] = { attrs->your_event_mask | XCB_EVENT_MASK_PROPERTY_CHANGE };
+  xcb_change_window_attributes (xcb_conn, group_leader,
+                                XCB_CW_EVENT_MASK, events);
 
   if (display->groups_by_leader == NULL)
     display->groups_by_leader = g_hash_table_new (meta_unsigned_long_hash,
@@ -173,12 +182,14 @@ meta_window_compute_group (MetaWindow* window)
       window->group = group;
     }
 
+  if (!window->group)
+    return;
+
   window->group->windows = g_slist_prepend (window->group->windows, window);
 
   meta_topic (META_DEBUG_GROUPS,
               "Adding %s to group with leader 0x%lx\n",
               window->desc, group->group_leader);
-
 }
 
 static void
