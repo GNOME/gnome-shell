@@ -1037,29 +1037,35 @@ _cogl_framebuffer_init_bits (CoglFramebuffer *framebuffer)
                                  COGL_FRAMEBUFFER_STATE_BIND);
 
 #ifdef HAVE_COGL_GL
-  if (_cogl_has_private_feature
-      (ctx, COGL_PRIVATE_FEATURE_QUERY_FRAMEBUFFER_BITS) &&
-      framebuffer->type == COGL_FRAMEBUFFER_TYPE_OFFSCREEN)
+  if ((ctx->driver == COGL_DRIVER_GL3 &&
+       framebuffer->type == COGL_FRAMEBUFFER_TYPE_ONSCREEN) ||
+      (_cogl_has_private_feature (ctx, COGL_PRIVATE_FEATURE_QUERY_FRAMEBUFFER_BITS) &&
+       framebuffer->type == COGL_FRAMEBUFFER_TYPE_OFFSCREEN))
     {
-      static const struct
-      {
+      gboolean is_offscreen = framebuffer->type == COGL_FRAMEBUFFER_TYPE_OFFSCREEN;
+      const struct {
         GLenum attachment, pname;
         size_t offset;
-      } params[] =
-          {
-            { GL_COLOR_ATTACHMENT0, GL_FRAMEBUFFER_ATTACHMENT_RED_SIZE,
-              offsetof (CoglFramebufferBits, red) },
-            { GL_COLOR_ATTACHMENT0, GL_FRAMEBUFFER_ATTACHMENT_GREEN_SIZE,
-              offsetof (CoglFramebufferBits, green) },
-            { GL_COLOR_ATTACHMENT0, GL_FRAMEBUFFER_ATTACHMENT_BLUE_SIZE,
-              offsetof (CoglFramebufferBits, blue) },
-            { GL_COLOR_ATTACHMENT0, GL_FRAMEBUFFER_ATTACHMENT_ALPHA_SIZE,
-              offsetof (CoglFramebufferBits, alpha) },
-            { GL_DEPTH_ATTACHMENT, GL_FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE,
-              offsetof (CoglFramebufferBits, depth) },
-            { GL_STENCIL_ATTACHMENT, GL_FRAMEBUFFER_ATTACHMENT_STENCIL_SIZE,
-              offsetof (CoglFramebufferBits, stencil) },
-          };
+      } params[] = {
+        { is_offscreen ? GL_COLOR_ATTACHMENT0 : GL_BACK_LEFT,
+          GL_FRAMEBUFFER_ATTACHMENT_RED_SIZE,
+          offsetof (CoglFramebufferBits, red) },
+        { is_offscreen ? GL_COLOR_ATTACHMENT0 : GL_BACK_LEFT,
+          GL_FRAMEBUFFER_ATTACHMENT_GREEN_SIZE,
+          offsetof (CoglFramebufferBits, green) },
+        { is_offscreen ? GL_COLOR_ATTACHMENT0 : GL_BACK_LEFT,
+          GL_FRAMEBUFFER_ATTACHMENT_BLUE_SIZE,
+          offsetof (CoglFramebufferBits, blue) },
+        { is_offscreen ? GL_COLOR_ATTACHMENT0 : GL_BACK_LEFT,
+          GL_FRAMEBUFFER_ATTACHMENT_ALPHA_SIZE,
+          offsetof (CoglFramebufferBits, alpha) },
+        { is_offscreen ? GL_DEPTH_ATTACHMENT : GL_DEPTH,
+          GL_FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE,
+          offsetof (CoglFramebufferBits, depth) },
+        { is_offscreen ? GL_STENCIL_ATTACHMENT : GL_STENCIL,
+          GL_FRAMEBUFFER_ATTACHMENT_STENCIL_SIZE,
+          offsetof (CoglFramebufferBits, stencil) },
+      };
       int i;
 
       for (i = 0; i < G_N_ELEMENTS (params); i++)
