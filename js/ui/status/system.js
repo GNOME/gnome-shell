@@ -251,8 +251,14 @@ const Indicator = new Lang.Class({
             let file = Gio.File.new_for_path(iconFile);
             let gicon = new Gio.FileIcon({ file: file });
             this._switchUserSubMenu.icon.gicon = gicon;
+
+            this._switchUserSubMenu.icon.add_style_class_name('user-icon');
+            this._switchUserSubMenu.icon.remove_style_class_name('default-icon');
         } else {
             this._switchUserSubMenu.icon.icon_name = 'avatar-default-symbolic';
+
+            this._switchUserSubMenu.icon.add_style_class_name('default-icon');
+            this._switchUserSubMenu.icon.remove_style_class_name('user-icon');
         }
     },
 
@@ -343,6 +349,9 @@ const Indicator = new Lang.Class({
         item.connect('activate', Lang.bind(this, this._onQuitSessionActivate));
         this._switchUserSubMenu.menu.addMenuItem(item);
         this._logoutItem = item;
+
+        this._switchUserSubMenu.menu.addSettingsAction(_("Account Settings"),
+                                                       'gnome-user-accounts-panel.desktop');
 
         this._user.connect('notify::is-loaded', Lang.bind(this, this._updateSwitchUserSubMenu));
         this._user.connect('changed', Lang.bind(this, this._updateSwitchUserSubMenu));

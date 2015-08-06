@@ -257,16 +257,8 @@ const NMConnectionSection = new Lang.Class({
         this._radioSection.actor.visible = (nItems > 1);
         this._labelSection.actor.visible = (nItems == 1);
 
-        this.item.status.text = this._getStatus();
+        this.item.label.text = this._getStatus();
         this.item.icon.icon_name = this._getMenuIcon();
-
-        // desc can be undefined at cold-plug, before we called
-        // NMGtk.disambiguate_device_names() at least once
-        let desc = this._getDescription();
-        if (desc)
-            this.item.label.text = desc;
-        else
-            this.item.label.text = '';
     },
 
     _getMenuIcon: function() {
@@ -355,6 +347,7 @@ const NMConnectionDevice = new Lang.Class({
         this.parent(client);
         this._device = device;
         this._settings = settings;
+        this._description = '';
 
         this._autoConnectItem = this.item.menu.addAction(_("Connect"), Lang.bind(this, this._autoConnect));
         this._deactivateItem = this._radioSection.addAction(_("Turn Off"), Lang.bind(this, this.deactivateConnection));
@@ -454,38 +447,44 @@ const NMConnectionDevice = new Lang.Class({
 
         switch(this._device.state) {
         case NetworkManager.DeviceState.DISCONNECTED:
-            return _("Off");
+            /* Translators: %s is a network identifier */
+            return _("%s Off").format(this._getDescription());
         case NetworkManager.DeviceState.ACTIVATED:
-            return _("Connected");
+            /* Translators: %s is a network identifier */
+            return _("%s Connected").format(this._getDescription());
         case NetworkManager.DeviceState.UNMANAGED:
             /* Translators: this is for network devices that are physically present but are not
-               under NetworkManager's control (and thus cannot be used in the menu) */
-            return _("Unmanaged");
+               under NetworkManager's control (and thus cannot be used in the menu);
+               %s is a network identifier */
+            return _("%s Unmanaged").format(this._getDescription());
         case NetworkManager.DeviceState.DEACTIVATING:
-            return _("Disconnecting");
+            /* Translators: %s is a network identifier */
+            return _("%s Disconnecting").format(this._getDescription());
         case NetworkManager.DeviceState.PREPARE:
         case NetworkManager.DeviceState.CONFIG:
         case NetworkManager.DeviceState.IP_CONFIG:
         case NetworkManager.DeviceState.IP_CHECK:
         case NetworkManager.DeviceState.SECONDARIES:
-            return _("Connecting");
+            /* Translators: %s is a network identifier */
+            return _("%s Connecting").format(this._getDescription());
         case NetworkManager.DeviceState.NEED_AUTH:
-            /* Translators: this is for network connections that require some kind of key or password */
-            return _("Authentication required");
+            /* Translators: this is for network connections that require some kind of key or password; %s is a network identifier */
+            return _("%s requires Authentication").format(this._getDescription());
         case NetworkManager.DeviceState.UNAVAILABLE:
             // This state is actually a compound of various states (generically unavailable,
             // firmware missing), that are exposed by different properties (whose state may
             // or may not updated when we receive state-changed).
             if (this._device.firmware_missing) {
                 /* Translators: this is for devices that require some kind of firmware or kernel
-                   module, which is missing */
-                return _("Firmware missing");
+                   module, which is missing; %s is a network identifier */
+                return _("Firmware missing for %s").format(this._getDescription());
             }
             /* Translators: this is for a network device that cannot be activated (for example it
-               is disabled by rfkill, or it has no coverage */
-            return _("Unavailable");
+               is disabled by rfkill, or it has no coverage; %s is a network identifier */
+            return _("%s Unavailable").format(this._getDescription());
         case NetworkManager.DeviceState.FAILED:
-            return _("Connection failed");
+            /* Translators: %s is a network identifier */
+            return _("%s Connection failed").format(this._getDescription());
         default:
             log('Device state invalid, is %d'.format(this._device.state));
             return 'invalid';
@@ -585,11 +584,12 @@ const NMDeviceModem = new Lang.Class({
 
     _getStatus: function() {
         if (!this._client.wwan_hardware_enabled)
-            return _("Hardware Disabled");
+            /* Translators: %s is a network identifier */
+            return _("%s Hardware Disabled").format(this._getDescription());
         else if (!this._client.wwan_enabled)
             /* Translators: this is for a network device that cannot be activated
-               because it's disabled by rfkill (airplane mode) */
-            return _("Disabled");
+               because it's disabled by rfkill (airplane mode); %s is a network identifier */
+            return _("%s Disabled").format(this._getDescription());
         else if (this._device.state == NetworkManager.DeviceState.ACTIVATED &&
                  this._mobileDevice && this._mobileDevice.operator_name)
             return this._mobileDevice.operator_name;
@@ -1279,9 +1279,8 @@ const NMDeviceWireless = new Lang.Class({
         this._toggleItem.label.text = this._client.wireless_enabled ? _("Turn Off") : _("Turn On");
         this._toggleItem.actor.visible = this._client.wireless_hardware_enabled;
 
-        this.item.status.text = this._getStatus();
         this.item.icon.icon_name = this._getMenuIcon();
-        this.item.label.text = this._description;
+        this.item.label.text = this._getStatus();
     },
 
     setDeviceDescription: function(desc) {
@@ -1293,18 +1292,23 @@ const NMDeviceWireless = new Lang.Class({
         let ap = this._device.active_access_point;
 
         if (this._isHotSpotMaster())
-            return _("Hotspot Active");
+            /* Translators: %s is a network identifier */
+            return _("%s Hotspot Active").format(this._description);
         else if (this._device.state >= NetworkManager.DeviceState.PREPARE &&
                  this._device.state < NetworkManager.DeviceState.ACTIVATED)
-            return _("Connecting");
+            /* Translators: %s is a network identifier */
+            return _("%s Connecting").format(this._description);
         else if (ap)
             return ssidToLabel(ap.get_ssid());
         else if (!this._client.wireless_hardware_enabled)
-            return _("Hardware Disabled");
+            /* Translators: %s is a network identifier */
+            return _("%s Hardware Disabled").format(this._description);
         else if (!this._client.wireless_enabled)
-            return _("Off");
+            /* Translators: %s is a network identifier */
+            return _("%s Off").format(this._description);
         else if (this._device.state == NetworkManager.DeviceState.DISCONNECTED)
-            return _("Not Connected");
+            /* Translators: %s is a network identifier */
+            return _("%s Not Connected").format(this._description);
         else
             return '';
     },
@@ -1506,7 +1510,7 @@ const NMVPNSection = new Lang.Class({
                 return item.getName();
         }
 
-        return _("Off");
+        return _("VPN Off");
     },
 
     _getMenuIcon: function() {

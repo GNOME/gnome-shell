@@ -46,7 +46,7 @@ const Indicator = new Lang.Class({
 
         // The Bluetooth menu only appears when Bluetooth is in use,
         // so just statically build it with a "Turn Off" menu item.
-        this._item = new PopupMenu.PopupSubMenuMenuItem(_("Bluetooth"), true);
+        this._item = new PopupMenu.PopupSubMenuMenuItem('', true);
         this._item.icon.icon_name = 'bluetooth-active-symbolic';
         this._item.menu.addAction(_("Turn Off"), Lang.bind(this, function() {
             this._proxy.BluetoothAirplaneMode = true;
@@ -101,8 +101,9 @@ const Indicator = new Lang.Class({
         this._item.actor.visible = this._proxy.BluetoothHasAirplaneMode && !this._proxy.BluetoothAirplaneMode;
 
         if (nDevices > 0)
-            this._item.status.text = ngettext("%d Connected Device", "%d Connected Devices", nDevices).format(nDevices);
+            /* Translators: this is the number of connected bluetooth devices */
+            this._item.label.text = ngettext("%d Connected", "%d Connected", nDevices).format(nDevices);
         else
-            this._item.status.text = _("Not Connected");
+            this._item.label.text = _("Not In Use");
     },
 });

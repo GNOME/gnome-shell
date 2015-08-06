@@ -697,7 +697,6 @@ const AggregateMenu = new Lang.Class({
         this.menu.addMenuItem(this._location.menu);
         this.menu.addMenuItem(this._rfkill.menu);
         this.menu.addMenuItem(this._power.menu);
-        this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
         this.menu.addMenuItem(this._system.menu);
     },
 });

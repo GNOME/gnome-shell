@@ -62,13 +62,13 @@ const Indicator = new Lang.Class({
         this._indicator = this._addIndicator();
         this._indicator.icon_name = 'find-location-symbolic';
 
-        this._item = new PopupMenu.PopupSubMenuMenuItem(_("Location"), true);
+        this._item = new PopupMenu.PopupSubMenuMenuItem('', true);
         this._item.icon.icon_name = 'find-location-symbolic';
 
         this._agent = Gio.DBusExportedObject.wrapJSObject(AgentIface, this);
         this._agent.export(Gio.DBus.system, '/org/freedesktop/GeoClue2/Agent');
 
-        this._item.status.text = _("Enabled");
+        this._item.label.text = _("Location Enabled");
         this._onOffAction = this._item.menu.addAction(_("Disable"), Lang.bind(this, this._onOnOffAction));
         this._item.menu.addSettingsAction(_("Privacy Settings"), 'gnome-privacy-panel.desktop');
 
@@ -173,10 +173,11 @@ const Indicator = new Lang.Class({
 
     _updateMenuLabels: function() {
         if (this._settings.get_boolean(ENABLED)) {
-            this._item.status.text = this._indicator.visible ? _("In Use") : _("Enabled");
+            this._item.label.text = this._indicator.visible ? _("Location In Use")
+                                                            : _("Location Enabled");
             this._onOffAction.label.text = _("Disable");
         } else {
-            this._item.status.text = _("Disabled");
+            this._item.label.text = _("Location Disabled");
             this._onOffAction.label.text = _("Enable");
         }
     },

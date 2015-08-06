@@ -112,12 +112,6 @@ const Indicator = new Lang.Class({
         this._item.icon.icon_name = icon;
 
         // The status label
-        this._item.status.text = this._getStatus();
-
-        // The sub-menu heading
-        if (this._proxy.Type == UPower.DeviceKind.UPS)
-            this._item.label.text = _("UPS");
-        else
-            this._item.label.text = _("Battery");
+        this._item.label.text = this._getStatus();
     },
 });

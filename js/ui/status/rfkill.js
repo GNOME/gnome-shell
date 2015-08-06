@@ -85,9 +85,8 @@ const Indicator = new Lang.Class({
         // The menu only appears when airplane mode is on, so just
         // statically build it as if it was on, rather than dynamically
         // changing the menu contents.
-        this._item = new PopupMenu.PopupSubMenuMenuItem(_("Airplane Mode"), true);
+        this._item = new PopupMenu.PopupSubMenuMenuItem(_("Airplane Mode On"), true);
         this._item.icon.icon_name = 'airplane-mode-symbolic';
-        this._item.status.text = _("On");
         this._offItem = this._item.menu.addAction(_("Turn Off"), Lang.bind(this, function() {
             this._manager.airplaneMode = false;
         }));
