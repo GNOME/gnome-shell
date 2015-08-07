@@ -465,6 +465,9 @@ const ViewSelector = new Lang.Class({
     },
 
     _shouldTriggerSearch: function(symbol) {
+        if (symbol == Clutter.Multi_key)
+            return true;
+
         if (symbol == Clutter.BackSpace && this._searchActive)
             return true;
 
