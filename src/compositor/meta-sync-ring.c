@@ -499,7 +499,7 @@ meta_sync_ring_after_frame (void)
   if (!ring)
     return FALSE;
 
-  g_return_if_fail (ring->xdisplay != NULL);
+  g_return_val_if_fail (ring->xdisplay != NULL, FALSE);
 
   if (ring->warmup_syncs >= NUM_SYNCS / 2)
     {
@@ -542,7 +542,7 @@ meta_sync_ring_insert_wait (void)
   if (!ring)
     return FALSE;
 
-  g_return_if_fail (ring->xdisplay != NULL);
+  g_return_val_if_fail (ring->xdisplay != NULL, FALSE);
 
   if (ring->current_sync->state != META_SYNC_STATE_READY)
     {
