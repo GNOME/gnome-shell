@@ -423,8 +423,14 @@ meta_surface_actor_wayland_get_surface (MetaSurfaceActorWayland *self)
 void
 meta_surface_actor_wayland_surface_destroyed (MetaSurfaceActorWayland *self)
 {
+  MetaWaylandFrameCallback *callback, *next;
   MetaSurfaceActorWaylandPrivate *priv =
     meta_surface_actor_wayland_get_instance_private (self);
+
+  wl_list_for_each_safe (callback, next, &priv->frame_callback_list, link)
+    {
+      wl_resource_destroy (callback->resource);
+    }
 
   priv->surface = NULL;
 }
