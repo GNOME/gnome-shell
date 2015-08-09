@@ -43,4 +43,6 @@ typedef struct _MetaWaylandOutput MetaWaylandOutput;
 
 typedef struct _MetaWaylandSerial MetaWaylandSerial;
 
+typedef struct _MetaWaylandPointerClient MetaWaylandPointerClient;
+
 #endif

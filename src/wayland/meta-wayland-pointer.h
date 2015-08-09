@@ -44,12 +44,17 @@ struct _MetaWaylandPointerGrab
   MetaWaylandPointer *pointer;
 };
 
+struct _MetaWaylandPointerClient
+{
+  struct wl_list pointer_resources;
+};
+
 struct _MetaWaylandPointer
 {
   struct wl_display *display;
 
-  struct wl_list resource_list;
-  struct wl_list focus_resource_list;
+  MetaWaylandPointerClient *focus_client;
+  GHashTable *pointer_clients;
 
   MetaWaylandSurface *focus_surface;
   struct wl_listener focus_surface_listener;
@@ -126,5 +131,9 @@ gboolean meta_wayland_pointer_can_popup (MetaWaylandPointer *pointer,
                                          uint32_t            serial);
 
 MetaWaylandSurface *meta_wayland_pointer_get_top_popup (MetaWaylandPointer *pointer);
+
+MetaWaylandPointerClient * meta_wayland_pointer_get_pointer_client (MetaWaylandPointer *pointer,
+                                                                    struct wl_client   *client);
+void meta_wayland_pointer_unbind_pointer_client_resource (struct wl_resource *resource);
 
 #endif /* META_WAYLAND_POINTER_H */
