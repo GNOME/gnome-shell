@@ -155,10 +155,9 @@ translate_crossing_event (MetaBackendX11 *x11,
     }
 
   Window stage_window = meta_backend_x11_get_xwindow (x11);
-  if (enter_event->event != stage_window)
+  if (enter_event->event != stage_window &&
+      priv->mode == META_BACKEND_X11_MODE_COMPOSITOR)
     {
-      /* See above for the rationale for this... */
-      g_assert (priv->mode == META_BACKEND_X11_MODE_COMPOSITOR);
       enter_event->event = meta_backend_x11_get_xwindow (x11);
       enter_event->event_x = enter_event->root_x;
       enter_event->event_y = enter_event->root_y;
