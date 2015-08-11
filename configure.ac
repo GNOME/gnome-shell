@@ -166,7 +166,7 @@ AC_SUBST([LIBUDEV_REQ_VERSION],    [libudev_req_version])
 AM_PATH_GLIB_2_0([glib_req_version],
                  [],
                  [AC_MSG_ERROR([glib-2.0 is required])],
-                 [gobject gthread gmodule-no-export])
+                 [gobject gio gthread gmodule-no-export])
 
 # Check for -Bsymbolic-functions to avoid intra-library PLT jumps
 AC_ARG_ENABLE([Bsymbolic],
@@ -236,7 +236,7 @@ experimental_backend=no
 experimental_input_backend=no
 
 # base dependencies for core
-CLUTTER_BASE_PC_FILES="cogl-1.0 >= $COGL_REQ_VERSION cogl-path-1.0 cairo-gobject >= $CAIRO_REQ_VERSION atk >= $ATK_REQ_VERSION pangocairo >= $PANGO_REQ_VERSION cogl-pango-1.0 json-glib-1.0 >= $JSON_GLIB_REQ_VERSION"
+CLUTTER_BASE_PC_FILES="cogl-1.0 >= $COGL_REQ_VERSION cogl-path-1.0 cairo-gobject >= $CAIRO_REQ_VERSION gio-2.0 >= glib_req_version atk >= $ATK_REQ_VERSION pangocairo >= $PANGO_REQ_VERSION cogl-pango-1.0 json-glib-1.0 >= $JSON_GLIB_REQ_VERSION"
 
 # private base dependencies
 CLUTTER_BASE_PC_FILES_PRIVATE=""
