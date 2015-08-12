@@ -45,7 +45,6 @@
 #include <meta/util.h>
 #include "display-private.h"
 #include "compositor/compositor-private.h"
-#include "compositor/meta-sync-ring.h"
 
 typedef enum {
   /* We're a traditional CM running under the host. */
@@ -267,8 +266,6 @@ handle_host_xevent (MetaBackend *backend,
         MetaCompositor *compositor = display->compositor;
         if (meta_plugin_manager_xevent_filter (compositor->plugin_mgr, event))
           bypass_clutter = TRUE;
-        if (compositor->have_x11_sync_object)
-          meta_sync_ring_handle_event (event);
       }
   }
 

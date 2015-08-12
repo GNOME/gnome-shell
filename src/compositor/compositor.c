@@ -529,8 +529,7 @@ meta_compositor_manage (MetaCompositor *compositor)
        */
       XMapWindow (xdisplay, compositor->output);
 
-      compositor->have_x11_sync_object =
-        meta_sync_ring_init (meta_backend_x11_get_xdisplay (META_BACKEND_X11 (backend)));
+      compositor->have_x11_sync_object = meta_sync_ring_init (xdisplay);
     }
 
   redirect_windows (display->screen);
@@ -731,6 +730,9 @@ meta_compositor_process_event (MetaCompositor *compositor,
       if (window)
         process_damage (compositor, (XDamageNotifyEvent *) event, window);
     }
+
+  if (compositor->have_x11_sync_object)
+    meta_sync_ring_handle_event (event);
 
   /* Clutter needs to know about MapNotify events otherwise it will
      think the stage is invisible */

@@ -322,7 +322,7 @@ meta_sync_new (Display *xdisplay)
   self->xdisplay = xdisplay;
 
   self->xfence = XSyncCreateFence (xdisplay, DefaultRootWindow (xdisplay), FALSE);
-  self->gl_x11_sync = meta_gl_import_sync (GL_SYNC_X11_FENCE_EXT, self->xfence, 0);
+  self->gl_x11_sync = 0;
   self->gpu_fence = 0;
 
   self->xcounter = XSyncCreateCounter (xdisplay, SYNC_VALUE_ZERO);
@@ -345,6 +345,13 @@ meta_sync_new (Display *xdisplay)
   self->state = META_SYNC_STATE_READY;
 
   return self;
+}
+
+static void
+meta_sync_import (MetaSync *self)
+{
+  g_return_if_fail (self->gl_x11_sync == 0);
+  self->gl_x11_sync = meta_gl_import_sync (GL_SYNC_X11_FENCE_EXT, self->xfence, 0);
 }
 
 static Bool
@@ -437,6 +444,12 @@ meta_sync_ring_init (Display *xdisplay)
       ring->syncs_array[i] = sync;
       g_hash_table_replace (ring->alarm_to_sync, (gpointer) sync->xalarm, sync);
     }
+  /* Since the connection we create the X fences on isn't the same as
+   * the one used for the GLX context, we need to XSync() here to
+   * ensure glImportSync() succeeds. */
+  XSync (xdisplay, False);
+  for (i = 0; i < NUM_SYNCS; ++i)
+    meta_sync_import (ring->syncs_array[i]);
 
   ring->current_sync_idx = 0;
   ring->current_sync = ring->syncs_array[0];
