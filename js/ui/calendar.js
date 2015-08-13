@@ -428,6 +428,13 @@ var Calendar = new Lang.Class({
         this.emit('selected-date-changed', new Date(this._selectedDate));
     },
 
+    updateTimeZone: function() {
+        // The calendar need to be rebuilt after a time zone update because
+        // the date might have changed.
+        this._rebuildCalendar();
+        this._update();
+    },
+
     _buildHeader: function() {
         let layout = this.actor.layout_manager;
         let offsetCols = this._useWeekdate ? 1 : 0;

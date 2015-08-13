@@ -22,6 +22,7 @@ const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 const Calendar = imports.ui.calendar;
 const Weather = imports.misc.weather;
+const System = imports.system;
 
 function _isToday(date) {
     let now = new Date();
@@ -545,6 +546,7 @@ var DateMenuButton = new Lang.Class({
 
         this._clock = new GnomeDesktop.WallClock();
         this._clock.bind_property('clock', this._clockDisplay, 'text', GObject.BindingFlags.SYNC_CREATE);
+        this._clock.connect('notify::timezone', Lang.bind(this, this._updateTimeZone));
 
         Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
         this._sessionUpdated();
@@ -562,6 +564,15 @@ var DateMenuButton = new Lang.Class({
         this._messageList.setEventSource(eventSource);
 
         this._eventSource = eventSource;
+    },
+
+    _updateTimeZone: function() {
+        // SpiderMonkey caches the time zone so we must explicitly clear it
+        // before we can update the calendar, see
+        // https://bugzilla.gnome.org/show_bug.cgi?id=678507
+        System.clearDateCaches();
+
+        this._calendar.updateTimeZone();
     },
 
     _sessionUpdated: function() {
