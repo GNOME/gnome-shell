@@ -111,6 +111,8 @@ MetaWaylandPointerClient *
 meta_wayland_pointer_get_pointer_client (MetaWaylandPointer *pointer,
                                          struct wl_client   *client)
 {
+  if (!pointer->pointer_clients)
+    return NULL;
   return g_hash_table_lookup (pointer->pointer_clients, client);
 }
 
