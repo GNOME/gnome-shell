@@ -74,23 +74,23 @@ meta_wayland_pointer_client_new (void)
 static void
 meta_wayland_pointer_client_free (MetaWaylandPointerClient *pointer_client)
 {
-  struct wl_resource *resource;
+  struct wl_resource *resource, *next;
 
   /* Since we make every wl_pointer resource defunct when we stop advertising
    * the pointer capability on the wl_seat, we need to make sure all the
    * resources in the pointer client instance gets removed.
    */
-  wl_resource_for_each (resource, &pointer_client->pointer_resources)
+  wl_resource_for_each_safe (resource, next, &pointer_client->pointer_resources)
     {
       wl_list_remove (wl_resource_get_link (resource));
       wl_list_init (wl_resource_get_link (resource));
     }
-  wl_resource_for_each (resource, &pointer_client->swipe_gesture_resources)
+  wl_resource_for_each_safe (resource, next, &pointer_client->swipe_gesture_resources)
     {
       wl_list_remove (wl_resource_get_link (resource));
       wl_list_init (wl_resource_get_link (resource));
     }
-  wl_resource_for_each (resource, &pointer_client->pinch_gesture_resources)
+  wl_resource_for_each_safe (resource, next, &pointer_client->pinch_gesture_resources)
     {
       wl_list_remove (wl_resource_get_link (resource));
       wl_list_init (wl_resource_get_link (resource));
