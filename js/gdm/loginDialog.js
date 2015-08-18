@@ -126,20 +126,34 @@ var UserListItem = new Lang.Class({
         let hold = new Batch.Hold();
 
         this.hideTimedLoginIndicator();
-        Tweener.addTween(this._timedLoginIndicator,
-                         { scale_x: 1.,
-                           time: time,
-                           transition: 'linear',
-                           onComplete: function() {
-                               hold.release();
-                           },
-                           onCompleteScope: this
-                         });
+
+        let startTime = GLib.get_monotonic_time();
+
+        this._timedLoginTimeoutId = GLib.timeout_add (GLib.PRIORITY_DEFAULT,
+                                                      33,
+                                                      Lang.bind(this, function() {
+                                                          let currentTime = GLib.get_monotonic_time();
+                                                          let elapsedTime = (currentTime - startTime) / GLib.USEC_PER_SEC;
+                                                          this._timedLoginIndicator.scale_x = elapsedTime / time;
+                                                          if (elapsedTime >= time) {
+                                                              this._timedLoginTimeoutId = 0;
+                                                              hold.release();
+                                                              return GLib.SOURCE_REMOVE;
+                                                          }
+
+                                                          return GLib.SOURCE_CONTINUE;
+                                                      }));
+
+        GLib.Source.set_name_by_id(this._timedLoginTimeoutId, '[gnome-shell] this._timedLoginTimeoutId');
+
         return hold;
     },
 
     hideTimedLoginIndicator: function() {
-        Tweener.removeTweens(this._timedLoginIndicator);
+        if (this._timedLoginTimeoutId) {
+            GLib.source_remove(this._timedLoginTimeoutId);
+            this._timedLoginTimeoutId = 0;
+        }
         this._timedLoginIndicator.scale_x = 0.;
     }
 });
