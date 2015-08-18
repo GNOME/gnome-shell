@@ -313,7 +313,7 @@ load_cursor_image (MetaCursorReference *cursor)
       cursor->current_frame = 0;
       cursor->xcursor_images = load_cursor_on_client (cursor->cursor);
       if (!cursor->xcursor_images)
-        return;
+        meta_fatal ("Could not find cursor. Perhaps set XCURSOR_PATH?");
     }
 
   image = meta_cursor_reference_get_current_frame_image (cursor);
