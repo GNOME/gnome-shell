@@ -76,10 +76,37 @@ gboolean
 meta_wayland_surface_assign_role (MetaWaylandSurface    *surface,
                                   MetaWaylandSurfaceRole role)
 {
+  MetaSurfaceActorWayland *surface_actor;
+
   if (surface->role == META_WAYLAND_SURFACE_ROLE_NONE ||
       surface->role == role)
     {
       surface->role = role;
+
+      switch (surface->role)
+        {
+        case META_WAYLAND_SURFACE_ROLE_NONE:
+          g_assert_not_reached();
+          break;
+        case META_WAYLAND_SURFACE_ROLE_XWAYLAND:
+          /* See apply_pending_state for explanation why Xwayland is special here. */
+        case META_WAYLAND_SURFACE_ROLE_CURSOR:
+        case META_WAYLAND_SURFACE_ROLE_DND:
+          wl_list_insert_list (&surface->compositor->frame_callbacks,
+                               &surface->pending_frame_callback_list);
+          wl_list_init (&surface->pending_frame_callback_list);
+          break;
+        case META_WAYLAND_SURFACE_ROLE_WL_SHELL_SURFACE:
+        case META_WAYLAND_SURFACE_ROLE_SUBSURFACE:
+        case META_WAYLAND_SURFACE_ROLE_XDG_SURFACE:
+        case META_WAYLAND_SURFACE_ROLE_XDG_POPUP:
+          surface_actor = META_SURFACE_ACTOR_WAYLAND (surface->surface_actor);
+          meta_surface_actor_wayland_add_frame_callbacks (surface_actor,
+                                                          &surface->pending_frame_callback_list);
+          wl_list_init (&surface->pending_frame_callback_list);
+          break;
+        }
+
       return TRUE;
     }
   else
@@ -495,6 +522,7 @@ apply_pending_state (MetaWaylandSurface      *surface,
                      MetaWaylandPendingState *pending)
 {
   MetaWaylandCompositor *compositor = surface->compositor;
+  MetaSurfaceActorWayland *surface_actor;
 
   if (pending->newly_attached)
     {
@@ -543,6 +571,13 @@ apply_pending_state (MetaWaylandSurface      *surface,
   switch (surface->role)
     {
     case META_WAYLAND_SURFACE_ROLE_NONE:
+      /* Since there is no role assigned to the surface yet, keep frame
+       * callbacks queued until a role is assigned and we know how
+       * the surface will be drawn.
+       */
+      wl_list_insert_list (&surface->pending_frame_callback_list,
+                           &pending->frame_callback_list);
+      break;
     case META_WAYLAND_SURFACE_ROLE_XWAYLAND:
       /* For Xwayland windows, throttling frames when the window isn't actually
        * drawn is less useful, because Xwayland still has to do the drawing
@@ -563,7 +598,8 @@ apply_pending_state (MetaWaylandSurface      *surface,
     case META_WAYLAND_SURFACE_ROLE_XDG_POPUP:
     case META_WAYLAND_SURFACE_ROLE_WL_SHELL_SURFACE:
     case META_WAYLAND_SURFACE_ROLE_SUBSURFACE:
-      meta_surface_actor_wayland_add_frame_callbacks (META_SURFACE_ACTOR_WAYLAND (surface->surface_actor),
+      surface_actor = META_SURFACE_ACTOR_WAYLAND (surface->surface_actor);
+      meta_surface_actor_wayland_add_frame_callbacks (surface_actor,
                                                       &pending->frame_callback_list);
     break;
     }
@@ -942,6 +978,7 @@ wl_surface_destructor (struct wl_resource *resource)
 {
   MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
   MetaWaylandCompositor *compositor = surface->compositor;
+  MetaWaylandFrameCallback *cb, *next;
 
   /* If we still have a window at the time of destruction, that means that
    * the client is disconnecting, as the resources are destroyed in a random
@@ -965,6 +1002,9 @@ wl_surface_destructor (struct wl_resource *resource)
   meta_wayland_compositor_destroy_frame_callbacks (compositor, surface);
 
   g_hash_table_unref (surface->outputs);
+
+  wl_list_for_each_safe (cb, next, &surface->pending_frame_callback_list, link)
+    wl_resource_destroy (cb->resource);
 
   if (surface->resource)
     wl_resource_set_user_data (surface->resource, NULL);
@@ -1001,6 +1041,8 @@ meta_wayland_surface_create (MetaWaylandCompositor *compositor,
 
   surface->buffer_destroy_listener.notify = surface_handle_buffer_destroy;
   surface->surface_actor = g_object_ref_sink (meta_surface_actor_wayland_new (surface));
+
+  wl_list_init (&surface->pending_frame_callback_list);
 
   sync_drag_dest_funcs (surface);
 

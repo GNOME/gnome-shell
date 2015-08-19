@@ -113,6 +113,11 @@ struct _MetaWaylandSurface
   GList *subsurfaces;
   GHashTable *outputs;
 
+  /* List of pending frame callbacks that needs to stay queued longer than one
+   * commit sequence, such as when it has not yet been assigned a role.
+   */
+  struct wl_list pending_frame_callback_list;
+
   struct {
     const MetaWaylandDragDestFuncs *funcs;
   } dnd;
