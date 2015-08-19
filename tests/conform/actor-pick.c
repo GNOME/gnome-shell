@@ -15,6 +15,8 @@ struct _State
   int y, x;
   ClutterActor *actors[ACTORS_X * ACTORS_Y];
   guint actor_width, actor_height;
+  guint failed_pass;
+  guint failed_idx;
   gboolean pass;
 };
 
@@ -90,6 +92,14 @@ shift_effect_init (ShiftEffect *self)
 {
 }
 
+static const char *test_passes[] = {
+  "No covering actor",
+  "Invisible covering actor",
+  "Clipped covering actor",
+  "Blur effect",
+  "Shift effect",
+};
+
 static gboolean
 on_timeout (gpointer data)
 {
@@ -107,7 +117,7 @@ on_timeout (gpointer data)
   clutter_stage_get_actor_at_pos (CLUTTER_STAGE (state->stage),
                                   CLUTTER_PICK_REACTIVE, 10, 10);
 
-  for (test_num = 0; test_num < 5; test_num++)
+  for (test_num = 0; test_num < G_N_ELEMENTS (test_passes); test_num++)
     {
       if (test_num == 0)
         {
@@ -230,7 +240,11 @@ on_timeout (gpointer data)
                 }
 
               if (!pass)
-                state->pass = FALSE;
+                {
+                  state->failed_pass = test_num;
+                  state->failed_idx = y * ACTORS_X + x;
+                  state->pass = FALSE;
+                }
             }
         }
     }
@@ -278,6 +292,16 @@ actor_pick (void)
   clutter_threads_add_idle (on_timeout, &state);
 
   clutter_main ();
+
+  if (g_test_verbose ())
+    {
+      if (!state.pass)
+        g_test_message ("Failed pass: %s[%d], actor index: %d [%p]\n",
+                        test_passes[state.failed_pass],
+                        state.failed_pass,
+                        state.failed_idx,
+                        state.actors[state.failed_idx]);
+    }
 
   g_assert (state.pass);
 }
