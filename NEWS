@@ -1,3 +1,25 @@
+Cogl 1.21.2                                                        2015-08-21
+
+  • List of changes since Cogl 1.20.0
+
+  » Add X11-specific API for retrieving the renderer's visual
+  » Improvement to the MSVC build
+  » Support KMS drivers without page flip
+  » Do not use deprecated OpenGL API with the GL3 driver
+
+Many thanks to:
+
+  Chun-wei Fan
+  Cédric Valmary
+  Jasper St. Pierre
+  Adel Gadllah
+  Marek Chalupa
+  Ray Strode
+  Robert Bragg
+  Rui Matos
+  Samir Ribic
+  Ting-Wei Lan
+
 Cogl 1.20.0                                                        2015-03-23
 
   • List of changes since Cogl 1.18.2
