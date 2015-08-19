@@ -305,7 +305,6 @@ meta_cursor_renderer_native_update_animation (MetaCursorRendererNative *native)
   priv->animation_timeout_id = 0;
   meta_cursor_sprite_tick_frame (cursor_sprite);
   meta_cursor_renderer_force_update (renderer);
-  meta_cursor_renderer_native_force_update (native);
 
   return G_SOURCE_REMOVE;
 }
