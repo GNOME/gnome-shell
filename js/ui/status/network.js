@@ -469,7 +469,7 @@ const NMConnectionDevice = new Lang.Class({
             return _("%s Connecting").format(this._getDescription());
         case NetworkManager.DeviceState.NEED_AUTH:
             /* Translators: this is for network connections that require some kind of key or password; %s is a network identifier */
-            return _("%s requires Authentication").format(this._getDescription());
+            return _("%s Requires Authentication").format(this._getDescription());
         case NetworkManager.DeviceState.UNAVAILABLE:
             // This state is actually a compound of various states (generically unavailable,
             // firmware missing), that are exposed by different properties (whose state may
@@ -477,14 +477,14 @@ const NMConnectionDevice = new Lang.Class({
             if (this._device.firmware_missing) {
                 /* Translators: this is for devices that require some kind of firmware or kernel
                    module, which is missing; %s is a network identifier */
-                return _("Firmware missing for %s").format(this._getDescription());
+                return _("Firmware Missing For %s").format(this._getDescription());
             }
             /* Translators: this is for a network device that cannot be activated (for example it
                is disabled by rfkill, or it has no coverage; %s is a network identifier */
             return _("%s Unavailable").format(this._getDescription());
         case NetworkManager.DeviceState.FAILED:
             /* Translators: %s is a network identifier */
-            return _("%s Connection failed").format(this._getDescription());
+            return _("%s Connection Failed").format(this._getDescription());
         default:
             log('Device state invalid, is %d'.format(this._device.state));
             return 'invalid';
