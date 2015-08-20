@@ -1,3 +1,21 @@
+3.17.90
+=======
+* Avoid caret/focus viewport changes during pointer movement [Rui; #752138]
+* Match GTK+'s modal dialogs for system modal dialogs [Carlos; #746108]
+* Refine message list style [Florian; #749958]
+* Fix type-ahead behavior for backspace and compose key [Rui; #753319, #753320]
+* Refine the system status menu [Florian; #751377]
+* Misc. bug fixes and cleanups [Bastien, Ray, Florian, Jakub; #752779, #752739,
+  #741366, #651503, #753064, #753181, #752881]
+
+Contributors:
+  Rui Matos, Florian Müllner, Bastien Nocera, Carlos Soriano, Jakub Steiner,
+  Ray Strode, Rico Tzschichholz
+
+Translations:
+  Marek Černocký [cs], Kjartan Maraas [nb], Jordi Mas [ca], Muhammet Kara [tr],
+  Enrico Nicoletto [pt_BR]
+
 3.17.4
 ======
 * Fix fuzziness of app menu icon [Jakub; #747932]
