@@ -44,6 +44,6 @@
 #define META_XSERVER_VERSION                1
 #define META_GTK_SHELL_VERSION              2
 #define META_WL_SUBCOMPOSITOR_VERSION       1
-#define META_WL_POINTER_GESTURES_VERSION    1
+#define META__WL_POINTER_GESTURES_VERSION   1
 
 #endif

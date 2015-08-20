@@ -67,6 +67,15 @@ bind_pointer_gestures (struct wl_client *client,
   struct wl_resource *resource;
 
   resource = wl_resource_create (client, &_wl_pointer_gestures_interface, version, id);
+
+  if (version != META__WL_POINTER_GESTURES_VERSION)
+    {
+      wl_resource_post_error (resource,
+                              _WL_POINTER_GESTURES_ERROR_VERSION_MISMATCH,
+                              "The client bound a non-supported version");
+      return;
+    }
+
   wl_resource_set_implementation (resource, &pointer_gestures_interface,
                                   NULL, NULL);
 }
@@ -76,6 +85,6 @@ meta_wayland_pointer_gestures_init (MetaWaylandCompositor *compositor)
 {
   wl_global_create (compositor->wayland_display,
                     &_wl_pointer_gestures_interface,
-                    META_WL_POINTER_GESTURES_VERSION,
+                    META__WL_POINTER_GESTURES_VERSION,
                     NULL, bind_pointer_gestures);
 }

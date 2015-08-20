@@ -16,6 +16,10 @@
       name and the version will be reset to 1.
     </description>
 
+    <enum name="error">
+      <entry name="version_mismatch" value="0"/>
+    </enum>
+
     <request name="get_swipe_gesture">
       <description summary="get swipe gesture">
 	Create a swipe gesture object. See the
