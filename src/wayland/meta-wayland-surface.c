@@ -543,6 +543,18 @@ apply_pending_state (MetaWaylandSurface      *surface,
   switch (surface->role)
     {
     case META_WAYLAND_SURFACE_ROLE_NONE:
+    case META_WAYLAND_SURFACE_ROLE_XWAYLAND:
+      /* For Xwayland windows, throttling frames when the window isn't actually
+       * drawn is less useful, because Xwayland still has to do the drawing
+       * sent from the application - the throttling would only be of sending us
+       * damage messages, so we simplify and send frame callbacks after the
+       * next paint of the screen, whether the window was drawn or not.
+       *
+       * Currently it may take a few frames before we draw the window, for not
+       * completely understood reasons, and in that case, not thottling frame
+       * callbacks to drawing has the happy side effect that we avoid showing
+       * the user the initial black frame from when the window is mapped empty.
+       */
     case META_WAYLAND_SURFACE_ROLE_CURSOR:
     case META_WAYLAND_SURFACE_ROLE_DND:
       wl_list_insert_list (&compositor->frame_callbacks, &pending->frame_callback_list);
@@ -560,6 +572,7 @@ apply_pending_state (MetaWaylandSurface      *surface,
   switch (surface->role)
     {
     case META_WAYLAND_SURFACE_ROLE_NONE:
+    case META_WAYLAND_SURFACE_ROLE_XWAYLAND:
       break;
     case META_WAYLAND_SURFACE_ROLE_CURSOR:
       cursor_surface_commit (surface, pending);
