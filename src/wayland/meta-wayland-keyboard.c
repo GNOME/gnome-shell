@@ -477,6 +477,33 @@ meta_wayland_keyboard_handle_event (MetaWaylandKeyboard *keyboard,
   return handled;
 }
 
+void
+meta_wayland_keyboard_update_key_state (MetaWaylandKeyboard *keyboard,
+                                        char                *key_vector,
+                                        int                  key_vector_len,
+                                        int                  offset)
+{
+  gboolean mods_changed = FALSE;
+
+  for (gint i = offset; i < key_vector_len * 8; i++)
+    {
+      gboolean set = (key_vector[i/8] & (1 << (i % 8))) != 0;
+
+      /* The 'offset' parameter allows the caller to have the indices
+       * into key_vector to either be X-style (base 8) or evdev (base 0), or
+       * something else (unlikely). We subtract 'offset' to convert to evdev
+       * style, then add 8 to convert the "evdev" style keycode back to
+       * the X-style that xkbcommon expects.
+       */
+      mods_changed |= xkb_state_update_key (keyboard->xkb_info.state,
+                                            i - offset + 8,
+                                            set ? XKB_KEY_DOWN : XKB_KEY_UP);
+    }
+
+  if (mods_changed)
+    notify_modifiers (keyboard);
+}
+
 static void
 move_resources (struct wl_list *destination, struct wl_list *source)
 {

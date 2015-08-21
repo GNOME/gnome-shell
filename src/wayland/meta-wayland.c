@@ -207,6 +207,28 @@ meta_wayland_compositor_handle_event (MetaWaylandCompositor *compositor,
   return meta_wayland_seat_handle_event (compositor->seat, event);
 }
 
+/* meta_wayland_compositor_update_key_state:
+ * @compositor: the #MetaWaylandCompositor
+ * @key_vector: bit vector of key states
+ * @key_vector_len: length of @key_vector
+ * @offset: the key for the first evdev keycode is found at this offset in @key_vector
+ *
+ * This function is used to resynchronize the key state that Mutter
+ * is tracking with the actual keyboard state. This is useful, for example,
+ * to handle changes in key state when a nested compositor doesn't
+ * have focus. We need to fix up the XKB modifier tracking and deliver
+ * any modifier changes to clients.
+ */
+void
+meta_wayland_compositor_update_key_state (MetaWaylandCompositor *compositor,
+                                          char                  *key_vector,
+                                          int                    key_vector_len,
+                                          int                    offset)
+{
+  meta_wayland_keyboard_update_key_state (&compositor->seat->keyboard,
+                                          key_vector, key_vector_len, offset);
+}
+
 void
 meta_wayland_compositor_destroy_frame_callbacks (MetaWaylandCompositor *compositor,
                                                  MetaWaylandSurface    *surface)

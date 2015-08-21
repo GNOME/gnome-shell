@@ -40,6 +40,7 @@
 #include "meta-idle-monitor-xsync.h"
 #include "meta-monitor-manager-xrandr.h"
 #include "backends/meta-monitor-manager-dummy.h"
+#include "wayland/meta-wayland.h"
 #include "meta-cursor-renderer-x11.h"
 
 #include <meta/util.h>
@@ -268,6 +269,21 @@ handle_host_xevent (MetaBackend *backend,
           bypass_clutter = TRUE;
       }
   }
+
+  if (priv->mode == META_BACKEND_X11_MODE_NESTED && event->type == FocusIn)
+    {
+      Window xwin = meta_backend_x11_get_xwindow(x11);
+      XEvent xev;
+
+      if (event->xfocus.window == xwin)
+        {
+          /* Since we've selected for KeymapStateMask, every FocusIn is followed immediately
+           * by a KeymapNotify event */
+          XMaskEvent(priv->xdisplay, KeymapStateMask, &xev);
+          MetaWaylandCompositor *compositor = meta_wayland_compositor_get_default ();
+          meta_wayland_compositor_update_key_state (compositor, xev.xkeymap.key_vector, 32, 8);
+        }
+    }
 
   if (event->type == (priv->xsync_event_base + XSyncAlarmNotify))
     handle_alarm_notify (backend, event);
@@ -800,6 +816,20 @@ meta_backend_x11_select_stage_events (MetaBackend *backend)
     }
 
   XISelectEvents (priv->xdisplay, xwin, &mask, 1);
+
+  if (priv->mode == META_BACKEND_X11_MODE_NESTED)
+    {
+      /* We have no way of tracking key changes when the stage doesn't have
+       * focus, so we select for KeymapStateMask so that we get a complete
+       * dump of the keyboard state in a KeymapNotify event that immediately
+       * follows each FocusIn (and EnterNotify, but we ignore that.)
+       */
+      XWindowAttributes xwa;
+
+      XGetWindowAttributes(priv->xdisplay, xwin, &xwa);
+      XSelectInput(priv->xdisplay, xwin,
+                   xwa.your_event_mask | FocusChangeMask | KeymapStateMask);
+    }
 }
 
 static void

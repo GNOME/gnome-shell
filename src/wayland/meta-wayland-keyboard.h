@@ -85,6 +85,10 @@ void meta_wayland_keyboard_update (MetaWaylandKeyboard *keyboard,
 
 gboolean meta_wayland_keyboard_handle_event (MetaWaylandKeyboard *keyboard,
                                              const ClutterKeyEvent *event);
+void meta_wayland_keyboard_update_key_state (MetaWaylandKeyboard *compositor,
+                                             char                *key_vector,
+                                             int                  key_vector_len,
+                                             int                  offset);
 
 void meta_wayland_keyboard_set_focus (MetaWaylandKeyboard *keyboard,
                                       MetaWaylandSurface *surface);
