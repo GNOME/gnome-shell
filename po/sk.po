@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-08-20 12:02+0000\n"
-"PO-Revision-Date: 2015-08-20 14:28+0200\n"
+"POT-Creation-Date: 2015-08-21 08:12+0000\n"
+"PO-Revision-Date: 2015-08-21 10:43+0200\n"
 "Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
 "Language-Team: Slovak <gnome-sk-list@gnome.org>\n"
 "Language: sk\n"
@@ -1178,14 +1178,14 @@ msgstr "Pripája sa %s"
 #. Translators: this is for network connections that require some kind of key or password; %s is a network identifier */
 #: ../js/ui/status/network.js:472
 #, javascript-format
-msgid "%s requires Authentication"
+msgid "%s Requires Authentication"
 msgstr "%s vyžaduje overenie totožnosti"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing; %s is a network identifier */
 #: ../js/ui/status/network.js:480
 #, javascript-format
-msgid "Firmware missing for %s"
+msgid "Firmware Missing For %s"
 msgstr "Chýba firmvér pre %s"
 
 #. Translators: this is for a network device that cannot be activated (for example it
@@ -1198,7 +1198,7 @@ msgstr "%s nedostupné"
 #. Translators: %s is a network identifier */
 #: ../js/ui/status/network.js:487
 #, javascript-format
-msgid "%s Connection failed"
+msgid "%s Connection Failed"
 msgstr "Pripojenie %s zlyhalo"
 
 #: ../js/ui/status/network.js:503
