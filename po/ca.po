@@ -110,7 +110,7 @@ msgstr ""
 "El GNOME Shell només carregarà extensions que afirmin ser compatibles amb la "
 "versió en execució. Si s'activa aquesta opció, es desactivarà la comprovació "
 "i es provarà de carregar totes les extensions sense tenir en compte les "
-"versions amb que afirmin ser compatibles."
+"versions amb què afirmin ser compatibles."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:7
 msgid "List of desktop file IDs for favorite applications"
@@ -1346,7 +1346,7 @@ msgstr "La xarxa sense fil està desactivada"
 
 #: ../js/ui/status/network.js:825
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
-msgstr "S'ha activar la xarxa sense fils per poder-se connectar a una xarxa."
+msgstr "S'ha d'activar la xarxa sense fils per poder-se connectar a una xarxa."
 
 #: ../js/ui/status/network.js:826
 msgid "Turn On Wi-Fi"
