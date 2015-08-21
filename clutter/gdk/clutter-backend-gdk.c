@@ -536,7 +536,7 @@ clutter_gdk_get_visual (void)
 #if defined(GDK_WINDOWING_X11) && defined(COGL_HAS_XLIB_SUPPORT)
   if (GDK_IS_X11_SCREEN (screen))
     {
-      XVisualInfo *xvisinfo = cogl_clutter_winsys_xlib_get_visual_info ();
+      XVisualInfo *xvisinfo = cogl_xlib_renderer_get_visual_info (backend->cogl_renderer);
       if (xvisinfo != NULL)
         return gdk_x11_screen_lookup_visual (screen, xvisinfo->visualid);
     }
