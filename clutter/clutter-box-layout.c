@@ -1371,7 +1371,7 @@ clutter_box_layout_class_init (ClutterBoxLayoutClass *klass)
    * ClutterBoxLayout:homogeneous:
    *
    * Whether the #ClutterBoxLayout should arrange its children
-   * homogeneously, i.e. all childs get the same size
+   * homogeneously, i.e. all children get the same size
    *
    * Since: 1.4
    */
@@ -1379,7 +1379,7 @@ clutter_box_layout_class_init (ClutterBoxLayoutClass *klass)
     g_param_spec_boolean ("homogeneous",
                           P_("Homogeneous"),
                           P_("Whether the layout should be homogeneous, "
-                             "i.e. all childs get the same size"),
+                             "i.e. all children get the same size"),
                           FALSE,
                           CLUTTER_PARAM_READWRITE);
 
