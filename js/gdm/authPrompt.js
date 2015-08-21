@@ -281,6 +281,12 @@ const AuthPrompt = new Lang.Class({
         if (oldActor)
             Tweener.removeTweens(oldActor);
 
+        let wasSpinner;
+        if (oldActor == this._spinner.actor)
+            wasSpinner = true;
+        else
+            wasSpinner = false;
+
         let isSpinner;
         if (actor == this._spinner.actor)
             isSpinner = true;
@@ -290,6 +296,11 @@ const AuthPrompt = new Lang.Class({
         if (this._defaultButtonWellActor != actor && oldActor) {
             if (!animate) {
                 oldActor.opacity = 0;
+
+                if (wasSpinner) {
+                    if (this._spinner)
+                        this._spinner.stop();
+                }
             } else {
                 Tweener.addTween(oldActor,
                                  { opacity: 0,
@@ -298,7 +309,7 @@ const AuthPrompt = new Lang.Class({
                                    transition: 'linear',
                                    onCompleteScope: this,
                                    onComplete: function() {
-                                      if (isSpinner) {
+                                      if (wasSpinner) {
                                           if (this._spinner)
                                               this._spinner.stop();
                                       }
