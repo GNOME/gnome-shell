@@ -44,6 +44,7 @@
 
 #include "clutter-image.h"
 
+#include "clutter-actor-private.h"
 #include "clutter-color.h"
 #include "clutter-content-private.h"
 #include "clutter-debug.h"
@@ -101,49 +102,13 @@ clutter_image_paint_content (ClutterContent   *content,
                              ClutterPaintNode *root)
 {
   ClutterImagePrivate *priv = CLUTTER_IMAGE (content)->priv;
-  ClutterScalingFilter min_f, mag_f;
-  ClutterContentRepeat repeat;
   ClutterPaintNode *node;
-  ClutterActorBox box;
-  ClutterColor color;
-  guint8 paint_opacity;
 
   if (priv->texture == NULL)
     return;
 
-  clutter_actor_get_content_box (actor, &box);
-  paint_opacity = clutter_actor_get_paint_opacity (actor);
-  clutter_actor_get_content_scaling_filters (actor, &min_f, &mag_f);
-  repeat = clutter_actor_get_content_repeat (actor);
-
-  /* ClutterTextureNode will premultiply the blend color, so we
-   * want it to be white with the paint opacity
-   */
-  color.red = 255;
-  color.green = 255;
-  color.blue = 255;
-  color.alpha = paint_opacity;
-
-  node = clutter_texture_node_new (priv->texture, &color, min_f, mag_f);
-  clutter_paint_node_set_name (node, "Image");
-
-  if (repeat == CLUTTER_REPEAT_NONE)
-    clutter_paint_node_add_rectangle (node, &box);
-  else
-    {
-      float t_w = 1.f, t_h = 1.f;
-
-      if ((repeat & CLUTTER_REPEAT_X_AXIS) != FALSE)
-        t_w = (box.x2 - box.x1) / cogl_texture_get_width (priv->texture);
-
-      if ((repeat & CLUTTER_REPEAT_Y_AXIS) != FALSE)
-        t_h = (box.y2 - box.y1) / cogl_texture_get_height (priv->texture);
-
-      clutter_paint_node_add_texture_rectangle (node, &box,
-                                                0.f, 0.f,
-                                                t_w, t_h);
-    }
-
+  node = clutter_actor_create_texture_paint_node (actor, priv->texture);
+  clutter_paint_node_set_name (node, "Image Content");
   clutter_paint_node_add_child (root, node);
   clutter_paint_node_unref (node);
 }
