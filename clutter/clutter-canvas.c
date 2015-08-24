@@ -53,6 +53,7 @@
 
 #define CLUTTER_ENABLE_EXPERIMENTAL_API
 
+#include "clutter-actor-private.h"
 #include "clutter-backend.h"
 #include "clutter-cairo.h"
 #include "clutter-color.h"
@@ -364,57 +365,23 @@ clutter_canvas_paint_content (ClutterContent   *content,
   ClutterCanvas *self = CLUTTER_CANVAS (content);
   ClutterCanvasPrivate *priv = self->priv;
   ClutterPaintNode *node;
-  ClutterActorBox box;
-  ClutterColor color;
-  guint8 paint_opacity;
-  ClutterScalingFilter min_f, mag_f;
-  ClutterContentRepeat repeat;
 
   if (priv->buffer == NULL)
     return;
 
-  if (priv->texture && priv->dirty)
+  if (priv->dirty)
     g_clear_pointer (&priv->texture, cogl_object_unref);
 
-  if (!priv->texture)
-    priv->texture = cogl_texture_new_from_bitmap (self->priv->buffer,
+  if (priv->texture == NULL)
+    priv->texture = cogl_texture_new_from_bitmap (priv->buffer,
                                                   COGL_TEXTURE_NO_SLICING,
                                                   CLUTTER_CAIRO_FORMAT_ARGB32);
 
   if (priv->texture == NULL)
     return;
 
-  clutter_actor_get_content_box (actor, &box);
-  paint_opacity = clutter_actor_get_paint_opacity (actor);
-  clutter_actor_get_content_scaling_filters (actor, &min_f, &mag_f);
-  repeat = clutter_actor_get_content_repeat (actor);
-
-  color.red = 255;
-  color.green = 255;
-  color.blue = 255;
-  color.alpha = paint_opacity;
-
-  node = clutter_texture_node_new (priv->texture, &color, min_f, mag_f);
-
-  clutter_paint_node_set_name (node, "Canvas");
-
-  if (repeat == CLUTTER_REPEAT_NONE)
-    clutter_paint_node_add_rectangle (node, &box);
-  else
-    {
-      float t_w = 1.f, t_h = 1.f;
-
-      if ((repeat & CLUTTER_REPEAT_X_AXIS) != FALSE)
-        t_w = (box.x2 - box.x1) / cogl_texture_get_width (priv->texture);
-
-      if ((repeat & CLUTTER_REPEAT_Y_AXIS) != FALSE)
-        t_h = (box.y2 - box.y1) / cogl_texture_get_height (priv->texture);
-
-      clutter_paint_node_add_texture_rectangle (node, &box,
-                                                0.f, 0.f,
-                                                t_w, t_h);
-    }
-
+  node = clutter_actor_create_texture_paint_node (actor, priv->texture);
+  clutter_paint_node_set_name (node, "Canvas Content");
   clutter_paint_node_add_child (root, node);
   clutter_paint_node_unref (node);
 
