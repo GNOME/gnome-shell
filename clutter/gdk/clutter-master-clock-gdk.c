@@ -310,6 +310,7 @@ clutter_master_clock_gdk_remove_stage_clock (ClutterMasterClockGdk *master_clock
                                                 clutter_master_clock_gdk_update,
                                                 master_clock);
           g_hash_table_remove (master_clock->clock_to_stage, frame_clock);
+          g_list_free (stages);
         }
       else
         {
@@ -461,7 +462,7 @@ clutter_master_clock_gdk_init (ClutterMasterClockGdk *self)
   const GSList *stages, *l;
 
   self->clock_to_stage = g_hash_table_new_full (g_direct_hash, g_direct_equal,
-                                                g_object_unref, (GDestroyNotify) g_list_free);
+                                                g_object_unref, NULL);
   self->stage_to_clock = g_hash_table_new_full (g_direct_hash, g_direct_equal,
                                                 NULL, g_object_unref);
 
