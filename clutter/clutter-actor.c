@@ -21037,3 +21037,66 @@ clutter_actor_bind_model_with_properties (ClutterActor *self,
 
   clutter_actor_bind_model (self, model, bind_child_with_properties, clos, bind_closure_free);
 }
+
+/*< private >
+ * clutter_actor_create_texture_paint_node:
+ * @self: a #ClutterActor
+ * @texture: a #CoglTexture
+ *
+ * Creates a #ClutterPaintNode initialized using the state of the
+ * given #ClutterActor, ready to be used inside the implementation
+ * of the #ClutterActorClass.paint_node virtual function.
+ *
+ * The returned paint node has the geometry set to the size of the
+ * #ClutterActor:content-box property; it uses the filters specified
+ * in the #ClutterActor:minification-filter and #ClutterActor:magnification-filter
+ * properties; and respects the #ClutterActor:content-repeat property.
+ *
+ * Returns: (transfer full): The newly created #ClutterPaintNode
+ *
+ * Since: 1.24
+ */
+ClutterPaintNode *
+clutter_actor_create_texture_paint_node (ClutterActor *self,
+                                         CoglTexture  *texture)
+{
+  ClutterActorPrivate *priv = clutter_actor_get_instance_private (self);
+  ClutterPaintNode *node;
+  ClutterActorBox box;
+  ClutterColor color;
+
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), NULL);
+  g_return_val_if_fail (texture != NULL, NULL);
+
+  clutter_actor_get_content_box (self, &box);
+
+  /* ClutterTextureNode will premultiply the blend color, so we
+   * want it to be white with the paint opacity
+   */
+  color.red = 255;
+  color.green = 255;
+  color.blue = 255;
+  color.alpha = clutter_actor_get_paint_opacity_internal (self);
+
+  node = clutter_texture_node_new (texture, &color, priv->min_filter, priv->mag_filter);
+  clutter_paint_node_set_name (node, "Texture");
+
+  if (priv->content_repeat == CLUTTER_REPEAT_NONE)
+    clutter_paint_node_add_rectangle (node, &box);
+  else
+    {
+      float t_w = 1.f, t_h = 1.f;
+
+      if ((priv->content_repeat & CLUTTER_REPEAT_X_AXIS) != FALSE)
+        t_w = (box.x2 - box.x1) / cogl_texture_get_width (texture);
+
+      if ((priv->content_repeat & CLUTTER_REPEAT_Y_AXIS) != FALSE)
+        t_h = (box.y2 - box.y1) / cogl_texture_get_height (texture);
+
+      clutter_paint_node_add_texture_rectangle (node, &box,
+                                                0.f, 0.f,
+                                                t_w, t_h);
+    }
+
+  return node;
+}

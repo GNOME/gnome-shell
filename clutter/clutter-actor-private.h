@@ -319,6 +319,9 @@ void                            _clutter_actor_queue_only_relayout              
 
 CoglFramebuffer *               _clutter_actor_get_active_framebuffer                   (ClutterActor *actor);
 
+ClutterPaintNode *              clutter_actor_create_texture_paint_node                 (ClutterActor *self,
+                                                                                         CoglTexture  *texture);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_ACTOR_PRIVATE_H__ */
