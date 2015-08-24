@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: clutter 1.3.14\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-08-15 03:14+0000\n"
-"PO-Revision-Date: 2015-08-15 13:37+0200\n"
+"POT-Creation-Date: 2015-08-24 15:15+0000\n"
+"PO-Revision-Date: 2015-08-24 18:02+0200\n"
 "Last-Translator: Christophe Fergeau <teuf@gnome.org>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "Language: fr\n"
@@ -44,7 +44,7 @@ msgstr "Position"
 msgid "The position of the origin of the actor"
 msgstr "La position de l'origine de l'acteur"
 
-#: ../clutter/clutter-actor.c:6370 ../clutter/clutter-canvas.c:247
+#: ../clutter/clutter-actor.c:6370 ../clutter/clutter-canvas.c:248
 #: ../clutter/clutter-grid-layout.c:1239
 #: ../clutter/deprecated/clutter-behaviour-ellipse.c:474
 msgid "Width"
@@ -54,7 +54,7 @@ msgstr "Largeur"
 msgid "Width of the actor"
 msgstr "Largeur de l'acteur"
 
-#: ../clutter/clutter-actor.c:6389 ../clutter/clutter-canvas.c:263
+#: ../clutter/clutter-actor.c:6389 ../clutter/clutter-canvas.c:264
 #: ../clutter/clutter-grid-layout.c:1246
 #: ../clutter/deprecated/clutter-behaviour-ellipse.c:490
 msgid "Height"
@@ -880,7 +880,7 @@ msgstr "Homogène"
 
 #: ../clutter/clutter-box-layout.c:1381
 msgid ""
-"Whether the layout should be homogeneous, i.e. all childs get the same size"
+"Whether the layout should be homogeneous, i.e. all children get the same size"
 msgstr ""
 "Indique si l'agencement doit être homogène, c.-à-d. si tous les enfants "
 "doivent avoir la même taille"
@@ -947,28 +947,28 @@ msgstr "Contraste"
 msgid "The contrast change to apply"
 msgstr "La modification de contraste à appliquer"
 
-#: ../clutter/clutter-canvas.c:248
+#: ../clutter/clutter-canvas.c:249
 msgid "The width of the canvas"
 msgstr "La largeur du canevas"
 
-#: ../clutter/clutter-canvas.c:264
+#: ../clutter/clutter-canvas.c:265
 msgid "The height of the canvas"
 msgstr "La hauteur du canevas"
 
-#: ../clutter/clutter-canvas.c:283
+#: ../clutter/clutter-canvas.c:284
 msgid "Scale Factor Set"
 msgstr "Facteur d'homothétie renseigné"
 
-#: ../clutter/clutter-canvas.c:284
+#: ../clutter/clutter-canvas.c:285
 msgid "Whether the scale-factor property is set"
 msgstr ""
 "Indique si la propriété « scale-factor » (facteur d'homothétie) est définie"
 
-#: ../clutter/clutter-canvas.c:305
+#: ../clutter/clutter-canvas.c:306
 msgid "Scale Factor"
 msgstr "Facteur d'homothétie"
 
-#: ../clutter/clutter-canvas.c:306
+#: ../clutter/clutter-canvas.c:307
 msgid "The scaling factor for the surface"
 msgstr "Le facteur d'homothétie de la surface Cairo"
 
@@ -1261,8 +1261,8 @@ msgstr "Homogénéité des colonnes"
 msgid "If TRUE, the columns are all the same width"
 msgstr "Si TRUE, toutes les colonnes ont la même largeur"
 
-#: ../clutter/clutter-image.c:273 ../clutter/clutter-image.c:341
-#: ../clutter/clutter-image.c:434
+#: ../clutter/clutter-image.c:238 ../clutter/clutter-image.c:306
+#: ../clutter/clutter-image.c:399
 msgid "Unable to load image data"
 msgstr "Impossible de charger les données de l'image"
 
