@@ -6,22 +6,21 @@
 # Fran Diéguez <frandieguez@gnome.org>, 2011, 2012.
 # Leandro Regueiro <leandro.regueiro@gmail.com>, 2012.
 # Fran Dieguez <frandieguez@gnome.org>, 2012, 2013, 2014, 2015.
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: clutter\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=clutter\n"
-"POT-Creation-Date: 2015-08-17 01:17+0200\n"
-"PO-Revision-Date: 2015-08-17 01:18+0200\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product="
+"clutter\n"
+"POT-Creation-Date: 2015-08-25 15:50+0200\n"
+"PO-Revision-Date: 2015-08-25 15:51+0200\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
-"Language-Team: Galician <gnome-l10n-gl@gnome.org>\n"
+"Language-Team: gnome-l10n-gl@gnome.org\n"
 "Language: gl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Gtranslator 2.91.7\n"
+"X-Generator: Virtaal 0.7.1\n"
 "X-Launchpad-Export-Date: 2011-05-12 10:24+0000\n"
 "X-Project-Style: gnome\n"
 
@@ -49,7 +48,7 @@ msgstr "Posición"
 msgid "The position of the origin of the actor"
 msgstr "A posición da orixe do actor"
 
-#: ../clutter/clutter-actor.c:6370 ../clutter/clutter-canvas.c:247
+#: ../clutter/clutter-actor.c:6370 ../clutter/clutter-canvas.c:248
 #: ../clutter/clutter-grid-layout.c:1239
 #: ../clutter/deprecated/clutter-behaviour-ellipse.c:474
 msgid "Width"
@@ -59,7 +58,7 @@ msgstr "Largura"
 msgid "Width of the actor"
 msgstr "Largura do actor"
 
-#: ../clutter/clutter-actor.c:6389 ../clutter/clutter-canvas.c:263
+#: ../clutter/clutter-actor.c:6389 ../clutter/clutter-canvas.c:264
 #: ../clutter/clutter-grid-layout.c:1246
 #: ../clutter/deprecated/clutter-behaviour-ellipse.c:490
 msgid "Height"
@@ -868,10 +867,10 @@ msgstr "Homoxéneo"
 
 #: ../clutter/clutter-box-layout.c:1381
 msgid ""
-"Whether the layout should be homogeneous, i.e. all childs get the same size"
+"Whether the layout should be homogeneous, i.e. all children get the same size"
 msgstr ""
-"Cando o deseño debe ser homoxéneo, p.ex. todos os fillos deben obter o mesmo "
-"tamaño"
+"Indica cando a disposición debe ser homoxénea, p.ex. todos os fillos deben "
+"obter o mesmo tamaño"
 
 #: ../clutter/clutter-box-layout.c:1396
 msgid "Pack Start"
@@ -935,27 +934,27 @@ msgstr "Contraste"
 msgid "The contrast change to apply"
 msgstr "O cambio de contraste que aplicar"
 
-#: ../clutter/clutter-canvas.c:248
+#: ../clutter/clutter-canvas.c:249
 msgid "The width of the canvas"
 msgstr "O ancho do lenzo"
 
-#: ../clutter/clutter-canvas.c:264
+#: ../clutter/clutter-canvas.c:265
 msgid "The height of the canvas"
 msgstr "O alto do lenzo"
 
-#: ../clutter/clutter-canvas.c:283
+#: ../clutter/clutter-canvas.c:284
 msgid "Scale Factor Set"
 msgstr "Estabelecer o factor de escala"
 
-#: ../clutter/clutter-canvas.c:284
+#: ../clutter/clutter-canvas.c:285
 msgid "Whether the scale-factor property is set"
 msgstr "Indica se a propiedade de scale-factor está estabelecida"
 
-#: ../clutter/clutter-canvas.c:305
+#: ../clutter/clutter-canvas.c:306
 msgid "Scale Factor"
 msgstr "Factor de escala"
 
-#: ../clutter/clutter-canvas.c:306
+#: ../clutter/clutter-canvas.c:307
 msgid "The scaling factor for the surface"
 msgstr "O factor de escala da superficie"
 
@@ -1247,8 +1246,8 @@ msgstr "Columnas homoxéneas"
 msgid "If TRUE, the columns are all the same width"
 msgstr "Se é TRUE, todas as columnas teñen a mesma largura"
 
-#: ../clutter/clutter-image.c:273 ../clutter/clutter-image.c:341
-#: ../clutter/clutter-image.c:434
+#: ../clutter/clutter-image.c:238 ../clutter/clutter-image.c:306
+#: ../clutter/clutter-image.c:399
 msgid "Unable to load image data"
 msgstr "Non foi posíbel cargar os datos da imaxe"
 
@@ -1468,8 +1467,7 @@ msgstr "Estabelecer o nome de ficheiro"
 msgid "Whether the :filename property is set"
 msgstr "Cando a propiedade :filename foi estabelecida"
 
-#: ../clutter/clutter-script.c:478
-#: ../clutter/deprecated/clutter-texture.c:1081
+#: ../clutter/clutter-script.c:478 ../clutter/deprecated/clutter-texture.c:1081
 msgid "Filename"
 msgstr "Nome do ficheiro"
 
