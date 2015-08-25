@@ -1187,8 +1187,8 @@ msgstr "Preferencias do Bluetooth"
 #, javascript-format
 msgid "%d Connected"
 msgid_plural "%d Connected"
-msgstr[0] "%s conectado"
-msgstr[1] "%s conectados"
+msgstr[0] "%d conectado"
+msgstr[1] "%d conectados"
 
 #: ../js/ui/status/bluetooth.js:107
 msgid "Not In Use"
