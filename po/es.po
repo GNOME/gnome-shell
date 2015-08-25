@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: clutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-08-11 03:13+0000\n"
-"PO-Revision-Date: 2015-08-11 \n"
+"POT-Creation-Date: 2015-08-25 03:14+0000\n"
+"PO-Revision-Date: 2015-08-25 \n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Spanish <gnome-es-list@gnome.org>\n"
 "Language: \n"
@@ -44,7 +44,7 @@ msgstr "Posición"
 msgid "The position of the origin of the actor"
 msgstr "La posición de origen del actor"
 
-#: ../clutter/clutter-actor.c:6370 ../clutter/clutter-canvas.c:247
+#: ../clutter/clutter-actor.c:6370 ../clutter/clutter-canvas.c:248
 #: ../clutter/clutter-grid-layout.c:1239
 #: ../clutter/deprecated/clutter-behaviour-ellipse.c:474
 msgid "Width"
@@ -54,7 +54,7 @@ msgstr "Anchura"
 msgid "Width of the actor"
 msgstr "Anchura del actor"
 
-#: ../clutter/clutter-actor.c:6389 ../clutter/clutter-canvas.c:263
+#: ../clutter/clutter-actor.c:6389 ../clutter/clutter-canvas.c:264
 #: ../clutter/clutter-grid-layout.c:1246
 #: ../clutter/deprecated/clutter-behaviour-ellipse.c:490
 msgid "Height"
@@ -865,8 +865,11 @@ msgid "Homogeneous"
 msgstr "Homogénea"
 
 #: ../clutter/clutter-box-layout.c:1381
+#| msgid ""
+#| "Whether the layout should be homogeneous, i.e. all childs get the same "
+#| "size"
 msgid ""
-"Whether the layout should be homogeneous, i.e. all childs get the same size"
+"Whether the layout should be homogeneous, i.e. all children get the same size"
 msgstr ""
 "Indica si la distribución debe ser homogénea, ej. todos los hijos tienen el "
 "mismo tamaño"
@@ -933,27 +936,27 @@ msgstr "Contraste"
 msgid "The contrast change to apply"
 msgstr "El cambio del contraste que aplicar"
 
-#: ../clutter/clutter-canvas.c:248
+#: ../clutter/clutter-canvas.c:249
 msgid "The width of the canvas"
 msgstr "La anchura del lienzo"
 
-#: ../clutter/clutter-canvas.c:264
+#: ../clutter/clutter-canvas.c:265
 msgid "The height of the canvas"
 msgstr "La altura del lienzo"
 
-#: ../clutter/clutter-canvas.c:283
+#: ../clutter/clutter-canvas.c:284
 msgid "Scale Factor Set"
 msgstr "Conjunto de factor de escalado establecido"
 
-#: ../clutter/clutter-canvas.c:284
+#: ../clutter/clutter-canvas.c:285
 msgid "Whether the scale-factor property is set"
 msgstr "Indica si la propiedad de factor de escalado está establecida"
 
-#: ../clutter/clutter-canvas.c:305
+#: ../clutter/clutter-canvas.c:306
 msgid "Scale Factor"
 msgstr "Factor de escalado"
 
-#: ../clutter/clutter-canvas.c:306
+#: ../clutter/clutter-canvas.c:307
 msgid "The scaling factor for the surface"
 msgstr "El factor de escalado para la superficie"
 
@@ -1246,8 +1249,8 @@ msgstr "Columna homogénea"
 msgid "If TRUE, the columns are all the same width"
 msgstr "Si es cierto, todas las columnas tienen la misma altura"
 
-#: ../clutter/clutter-image.c:273 ../clutter/clutter-image.c:341
-#: ../clutter/clutter-image.c:434
+#: ../clutter/clutter-image.c:238 ../clutter/clutter-image.c:306
+#: ../clutter/clutter-image.c:399
 msgid "Unable to load image data"
 msgstr "No se pudieron cargar los datos de la imagen"
 
@@ -2693,7 +2696,6 @@ msgstr "Las texturas YUV no están soportadas"
 
 #: ../clutter/deprecated/clutter-texture.c:1776
 #, c-format
-#| msgid "YUV textures are not supported"
 msgid "YUV2 textures are not supported"
 msgstr "Las texturas YUV2 no están soportadas"
 
