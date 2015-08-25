@@ -14,8 +14,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-08-09 08:11+0000\n"
-"PO-Revision-Date: 2015-08-09 20:02+0300\n"
+"POT-Creation-Date: 2015-08-25 08:13+0000\n"
+"PO-Revision-Date: 2015-08-25 23:04+0300\n"
 "Last-Translator: Muhammet Kara <muhammetk@gmail.com>\n"
 "Language-Team: Türkçe <gnome-turk@gnome.org>\n"
 "Language: tr\n"
@@ -498,7 +498,7 @@ msgid "Display Settings"
 msgstr "Görüntü Ayarları"
 
 #: ../js/ui/backgroundMenu.js:22 ../js/ui/panel.js:650
-#: ../js/ui/status/system.js:357
+#: ../js/ui/status/system.js:366
 msgid "Settings"
 msgstr "Ayarlar"
 
@@ -625,8 +625,8 @@ msgstr "Parola:"
 msgid "Type again:"
 msgstr "Terkar yazın:"
 
-#: ../js/ui/components/networkAgent.js:140 ../js/ui/status/network.js:277
-#: ../js/ui/status/network.js:359 ../js/ui/status/network.js:919
+#: ../js/ui/components/networkAgent.js:140 ../js/ui/status/network.js:269
+#: ../js/ui/status/network.js:352 ../js/ui/status/network.js:919
 msgid "Connect"
 msgstr "Bağlan"
 
@@ -710,7 +710,7 @@ msgstr "Mobil geniş bant ağ parolası"
 msgid "A password is required to connect to “%s”."
 msgstr "“%s”e bağlanmak için parola gerekli."
 
-#: ../js/ui/components/networkAgent.js:647 ../js/ui/status/network.js:1654
+#: ../js/ui/components/networkAgent.js:647 ../js/ui/status/network.js:1658
 msgid "Network Manager"
 msgstr "Ağ Yöneticisi"
 
@@ -940,17 +940,13 @@ msgstr "Hataları Gizle"
 msgid "Show Errors"
 msgstr "Hataları Göster"
 
-#: ../js/ui/lookingGlass.js:716 ../js/ui/status/location.js:71
-#: ../js/ui/status/location.js:176
+#: ../js/ui/lookingGlass.js:716
 msgid "Enabled"
 msgstr "Etkin"
 
-#. Translators: this is for a network device that cannot be activated
-#. because it's disabled by rfkill (airplane mode) */
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:719 ../js/ui/status/location.js:179
-#: ../js/ui/status/network.js:592 ../src/gvc/gvc-mixer-control.c:1830
+#: ../js/ui/lookingGlass.js:719 ../src/gvc/gvc-mixer-control.c:1830
 msgid "Disabled"
 msgstr "Devre dışı"
 
@@ -1004,7 +1000,7 @@ msgstr "Kapat"
 msgid "Activities"
 msgstr "Etkinlikler"
 
-#: ../js/ui/panel.js:755
+#: ../js/ui/panel.js:754
 msgid "Top Bar"
 msgstr "Tepe Çubuğu"
 
@@ -1042,7 +1038,7 @@ msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d yeni bildirim"
 
-#: ../js/ui/screenShield.js:432 ../js/ui/status/system.js:365
+#: ../js/ui/screenShield.js:432 ../js/ui/status/system.js:374
 msgid "Lock"
 msgstr "Kilitle"
 
@@ -1134,14 +1130,10 @@ msgstr "Yüksek Karşıtlık"
 msgid "Large Text"
 msgstr "Büyük Yazı"
 
-#: ../js/ui/status/bluetooth.js:49
-msgid "Bluetooth"
-msgstr "Bluetooth"
-
 #: ../js/ui/status/bluetooth.js:51 ../js/ui/status/network.js:178
-#: ../js/ui/status/network.js:360 ../js/ui/status/network.js:1279
-#: ../js/ui/status/network.js:1390 ../js/ui/status/rfkill.js:91
-#: ../js/ui/status/rfkill.js:118
+#: ../js/ui/status/network.js:353 ../js/ui/status/network.js:1279
+#: ../js/ui/status/network.js:1394 ../js/ui/status/rfkill.js:90
+#: ../js/ui/status/rfkill.js:117
 msgid "Turn Off"
 msgstr "Kapat"
 
@@ -1149,15 +1141,18 @@ msgstr "Kapat"
 msgid "Bluetooth Settings"
 msgstr "Bluetooth Ayarları"
 
-#: ../js/ui/status/bluetooth.js:104
+#. Translators: this is the number of connected bluetooth devices */
+#: ../js/ui/status/bluetooth.js:105
 #, javascript-format
-msgid "%d Connected Device"
-msgid_plural "%d Connected Devices"
-msgstr[0] "%d Bağlı Cihaz"
+#| msgid "Connected"
+msgid "%d Connected"
+msgid_plural "%d Connected"
+msgstr[0] "%d Cihaz Bağlandı"
 
-#: ../js/ui/status/bluetooth.js:106 ../js/ui/status/network.js:1307
-msgid "Not Connected"
-msgstr "Bağlı Değil"
+#: ../js/ui/status/bluetooth.js:107
+#| msgid "In Use"
+msgid "Not In Use"
+msgstr "Kullanımda Değil"
 
 #: ../js/ui/status/brightness.js:44
 msgid "Brightness"
@@ -1167,11 +1162,12 @@ msgstr "Parlaklık"
 msgid "Show Keyboard Layout"
 msgstr "Klavye Düzenini Göster"
 
-#: ../js/ui/status/location.js:65
-msgid "Location"
-msgstr "Konum"
+#: ../js/ui/status/location.js:71 ../js/ui/status/location.js:177
+#| msgid "Location"
+msgid "Location Enabled"
+msgstr "Konum Etkinleştirildi"
 
-#: ../js/ui/status/location.js:72 ../js/ui/status/location.js:177
+#: ../js/ui/status/location.js:72 ../js/ui/status/location.js:178
 msgid "Disable"
 msgstr "Devre Dışı Bırak"
 
@@ -1180,10 +1176,16 @@ msgid "Privacy Settings"
 msgstr "Gizlilik Ayarları"
 
 #: ../js/ui/status/location.js:176
-msgid "In Use"
-msgstr "Kullanımda"
+#| msgid "Location"
+msgid "Location In Use"
+msgstr "Konum Kullanımda"
 
 #: ../js/ui/status/location.js:180
+#| msgid "Connection failed"
+msgid "Location Disabled"
+msgstr "Konum Devre Dışı"
+
+#: ../js/ui/status/location.js:181
 msgid "Enable"
 msgstr "Etkinleştir"
 
@@ -1191,61 +1193,94 @@ msgstr "Etkinleştir"
 msgid "<unknown>"
 msgstr "<bilinmeyen>"
 
-#: ../js/ui/status/network.js:457 ../js/ui/status/network.js:1305
-#: ../js/ui/status/network.js:1509
-msgid "Off"
-msgstr "Kapalı"
+#. Translators: %s is a network identifier */
+#: ../js/ui/status/network.js:451 ../js/ui/status/network.js:1308
+#, javascript-format
+msgid "%s Off"
+msgstr "%s Kapalı"
 
-#: ../js/ui/status/network.js:459
-msgid "Connected"
-msgstr "Bağlı"
+#. Translators: %s is a network identifier */
+#: ../js/ui/status/network.js:454
+#, javascript-format
+#| msgid "Connected"
+msgid "%s Connected"
+msgstr "%s Bağlandı"
 
 #. Translators: this is for network devices that are physically present but are not
-#. under NetworkManager's control (and thus cannot be used in the menu) */
-#: ../js/ui/status/network.js:463
-msgid "Unmanaged"
-msgstr "Yönetilmeyen"
+#. under NetworkManager's control (and thus cannot be used in the menu);
+#. %s is a network identifier */
+#: ../js/ui/status/network.js:459
+#, javascript-format
+#| msgid "Unmanaged"
+msgid "%s Unmanaged"
+msgstr "%s Yönetilmiyor"
 
-#: ../js/ui/status/network.js:465
-msgid "Disconnecting"
-msgstr "Bağlantı Kesiliyor"
+#. Translators: %s is a network identifier */
+#: ../js/ui/status/network.js:462
+#, javascript-format
+#| msgid "Disconnecting"
+msgid "%s Disconnecting"
+msgstr "%s Bağlantısı Kesiliyor"
 
-#: ../js/ui/status/network.js:471 ../js/ui/status/network.js:1299
-msgid "Connecting"
-msgstr "Bağlantı Kuruluyor"
+#. Translators: %s is a network identifier */
+#: ../js/ui/status/network.js:469 ../js/ui/status/network.js:1300
+#, javascript-format
+#| msgid "Connecting"
+msgid "%s Connecting"
+msgstr "%s Bağlanıyor"
 
-#. Translators: this is for network connections that require some kind of key or password */
-#: ../js/ui/status/network.js:474
-msgid "Authentication required"
-msgstr "Kimlik doğrulama gerekir"
+#. Translators: this is for network connections that require some kind of key or password; %s is a network identifier */
+#: ../js/ui/status/network.js:472
+#, javascript-format
+#| msgid "Wired 802.1X authentication"
+msgid "%s Requires Authentication"
+msgstr "%s Kimlik Doğrulaması Gerektiriyor"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
-#. module, which is missing */
-#: ../js/ui/status/network.js:482
-msgid "Firmware missing"
-msgstr "Ürün Bilgisi eksik"
+#. module, which is missing; %s is a network identifier */
+#: ../js/ui/status/network.js:480
+#, javascript-format
+#| msgid "Firmware missing"
+msgid "Firmware Missing For %s"
+msgstr "%s İçin Ürün Bilgisi Eksik"
 
 #. Translators: this is for a network device that cannot be activated (for example it
-#. is disabled by rfkill, or it has no coverage */
-#: ../js/ui/status/network.js:486
-msgid "Unavailable"
-msgstr "Kullanılamaz"
+#. is disabled by rfkill, or it has no coverage; %s is a network identifier */
+#: ../js/ui/status/network.js:484
+#, javascript-format
+#| msgid "Unavailable"
+msgid "%s Unavailable"
+msgstr "%s Kullanılamaz"
 
-#: ../js/ui/status/network.js:488 ../js/ui/status/network.js:1693
-msgid "Connection failed"
-msgstr "Bağlantı başarısız oldu"
+#. Translators: %s is a network identifier */
+#: ../js/ui/status/network.js:487
+#, javascript-format
+#| msgid "Connection failed"
+msgid "%s Connection Failed"
+msgstr "%s Bağlantısı Başarısız Oldu"
 
-#: ../js/ui/status/network.js:504
+#: ../js/ui/status/network.js:503
 msgid "Wired Settings"
 msgstr "Kablolu Ağ Ayarları"
 
-#: ../js/ui/status/network.js:546 ../js/ui/status/network.js:624
+#: ../js/ui/status/network.js:545 ../js/ui/status/network.js:624
 msgid "Mobile Broadband Settings"
 msgstr "Mobil Geniş Bant Ayarları"
 
-#: ../js/ui/status/network.js:588 ../js/ui/status/network.js:1303
-msgid "Hardware Disabled"
-msgstr "Donanım Devre Dışı"
+#. Translators: %s is a network identifier */
+#: ../js/ui/status/network.js:588 ../js/ui/status/network.js:1305
+#, javascript-format
+#| msgid "Hardware Disabled"
+msgid "%s Hardware Disabled"
+msgstr "%s Donanımı Devre Dışı"
+
+#. Translators: this is for a network device that cannot be activated
+#. because it's disabled by rfkill (airplane mode); %s is a network identifier */
+#: ../js/ui/status/network.js:592
+#, javascript-format
+#| msgid "Disabled"
+msgid "%s Disabled"
+msgstr "%s Devre Dışı"
 
 #: ../js/ui/status/network.js:632
 msgid "Use as Internet connection"
@@ -1287,7 +1322,7 @@ msgstr "Bir ağ seçin"
 msgid "No Networks"
 msgstr "Ağ Yok"
 
-#: ../js/ui/status/network.js:904 ../js/ui/status/rfkill.js:116
+#: ../js/ui/status/network.js:904 ../js/ui/status/rfkill.js:115
 msgid "Use hardware switch to turn off"
 msgstr "Kapatmak için donanım anahtarını kullanın."
 
@@ -1303,36 +1338,55 @@ msgstr "Kablosuz Ağ Ayarları"
 msgid "Turn On"
 msgstr "Aç"
 
+#. Translators: %s is a network identifier */
 #: ../js/ui/status/network.js:1296
-msgid "Hotspot Active"
-msgstr "Hotspot Etkin"
+#, javascript-format
+#| msgid "Hotspot Active"
+msgid "%s Hotspot Active"
+msgstr "%s Etkin Noktası Aktif"
 
-#: ../js/ui/status/network.js:1407
+#. Translators: %s is a network identifier */
+#: ../js/ui/status/network.js:1311
+#, javascript-format
+#| msgid "Not Connected"
+msgid "%s Not Connected"
+msgstr "%s Bağlı Değil"
+
+#: ../js/ui/status/network.js:1411
 msgid "connecting..."
 msgstr "bağlanıyor..."
 
 #. Translators: this is for network connections that require some kind of key or password */
-#: ../js/ui/status/network.js:1410
+#: ../js/ui/status/network.js:1414
 msgid "authentication required"
 msgstr "kimlik doğrulaması gerekli"
 
-#: ../js/ui/status/network.js:1412
+#: ../js/ui/status/network.js:1416
 msgid "connection failed"
 msgstr "bağlantı başarısız"
 
-#: ../js/ui/status/network.js:1478 ../js/ui/status/rfkill.js:94
+#: ../js/ui/status/network.js:1482 ../js/ui/status/rfkill.js:93
 msgid "Network Settings"
 msgstr "Ağ Ayarları"
 
-#: ../js/ui/status/network.js:1480
+#: ../js/ui/status/network.js:1484
 msgid "VPN Settings"
 msgstr "VPN Ayarları"
 
-#: ../js/ui/status/network.js:1499
+#: ../js/ui/status/network.js:1503
 msgid "VPN"
 msgstr "VPN"
 
-#: ../js/ui/status/network.js:1694
+#: ../js/ui/status/network.js:1513
+#| msgid "Power Off"
+msgid "VPN Off"
+msgstr "VPN Kapalı"
+
+#: ../js/ui/status/network.js:1697
+msgid "Connection failed"
+msgstr "Bağlantı başarısız oldu"
+
+#: ../js/ui/status/network.js:1698
 msgid "Activation of network connection failed"
 msgstr "Ağ bağlantısının etkinleştirilmesi başarısız oldu"
 
@@ -1358,39 +1412,33 @@ msgstr "%d∶%02d Kaldı (%%%d)"
 msgid "%d∶%02d Until Full (%d%%)"
 msgstr "Tamamen Dolmasına %d∶%02d Kaldı (%%%d)"
 
-#: ../js/ui/status/power.js:119
-msgid "UPS"
-msgstr "UPS"
-
-#: ../js/ui/status/power.js:121
-msgid "Battery"
-msgstr "Pil"
-
 #: ../js/ui/status/rfkill.js:88
-msgid "Airplane Mode"
-msgstr "Uçak Kipi"
+#| msgid "Airplane Mode is On"
+msgid "Airplane Mode On"
+msgstr "Uçak Kipi Açık"
 
-#: ../js/ui/status/rfkill.js:90
-msgid "On"
-msgstr "Açık"
-
-#: ../js/ui/status/system.js:337
+#: ../js/ui/status/system.js:343
 msgid "Switch User"
 msgstr "Kullanıcı Değiştir"
 
-#: ../js/ui/status/system.js:342
+#: ../js/ui/status/system.js:348
 msgid "Log Out"
 msgstr "Oturumu Kapat"
 
-#: ../js/ui/status/system.js:361
+#: ../js/ui/status/system.js:353
+#| msgid "Power Settings"
+msgid "Account Settings"
+msgstr "Hesap Ayarları"
+
+#: ../js/ui/status/system.js:370
 msgid "Orientation Lock"
 msgstr "Yönelim Kilidi"
 
-#: ../js/ui/status/system.js:369
+#: ../js/ui/status/system.js:378
 msgid "Suspend"
 msgstr "Beklet"
 
-#: ../js/ui/status/system.js:372
+#: ../js/ui/status/system.js:381
 msgid "Power Off"
 msgstr "Kapat"
 
@@ -1488,12 +1536,10 @@ msgid "Always on Visible Workspace"
 msgstr "Her Zaman Görünür Çalışma Alanında"
 
 #: ../js/ui/windowMenu.js:105
-#| msgid "Move to Workspace Up"
 msgid "Move to Workspace Left"
 msgstr "Soldaki Çalışma Alanına Taşı"
 
 #: ../js/ui/windowMenu.js:110
-#| msgid "Move to Workspace Up"
 msgid "Move to Workspace Right"
 msgstr "Sağdaki Çalışma Alanına Taşı"
 
@@ -1582,6 +1628,31 @@ msgstr "Parola boş bırakılamaz"
 #: ../src/shell-polkit-authentication-agent.c:346
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Kimlik doğrulama penceresi kullanıcı tarafından kapatıldı"
+
+#~ msgid "Bluetooth"
+#~ msgstr "Bluetooth"
+
+#~ msgid "%d Connected Device"
+#~ msgid_plural "%d Connected Devices"
+#~ msgstr[0] "%d Bağlı Cihaz"
+
+#~ msgid "Off"
+#~ msgstr "Kapalı"
+
+#~ msgid "Authentication required"
+#~ msgstr "Kimlik doğrulama gerekir"
+
+#~ msgid "UPS"
+#~ msgstr "UPS"
+
+#~ msgid "Battery"
+#~ msgstr "Pil"
+
+#~ msgid "Airplane Mode"
+#~ msgstr "Uçak Kipi"
+
+#~ msgid "On"
+#~ msgstr "Açık"
 
 #~| msgid "Show the message tray"
 #~ msgid "Show the message list"
