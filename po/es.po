@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-08-25 08:13+0000\n"
+"POT-Creation-Date: 2015-08-25 09:05+0000\n"
 "PO-Revision-Date: 2015-08-25 \n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Spanish <gnome-es-list@gnome.org>\n"
@@ -1134,14 +1134,12 @@ msgstr "Configuración de Bluetooth"
 
 #. Translators: this is the number of connected bluetooth devices */
 #: ../js/ui/status/bluetooth.js:105
-#| msgid "Connected"
 msgid "%d Connected"
 msgid_plural "%d Connected"
 msgstr[0] "%d conectado"
 msgstr[1] "%d conectados"
 
 #: ../js/ui/status/bluetooth.js:107
-#| msgid "In Use"
 msgid "Not In Use"
 msgstr "No está en uso"
 
@@ -1154,7 +1152,6 @@ msgid "Show Keyboard Layout"
 msgstr "Mostrar la distribución del teclado"
 
 #: ../js/ui/status/location.js:71 ../js/ui/status/location.js:177
-#| msgid "Location"
 msgid "Location Enabled"
 msgstr "Ubicación activada"
 
@@ -1167,12 +1164,10 @@ msgid "Privacy Settings"
 msgstr "Configuración de privacidad"
 
 #: ../js/ui/status/location.js:176
-#| msgid "Location"
 msgid "Location In Use"
 msgstr "Ubicación en uso"
 
 #: ../js/ui/status/location.js:180
-#| msgid "Connection failed"
 msgid "Location Disabled"
 msgstr "Ubicación desactivada"
 
@@ -1191,7 +1186,6 @@ msgstr "%s apagada"
 
 #. Translators: %s is a network identifier */
 #: ../js/ui/status/network.js:454
-#| msgid "Connected"
 msgid "%s Connected"
 msgstr "%s conectada"
 
@@ -1199,45 +1193,38 @@ msgstr "%s conectada"
 #. under NetworkManager's control (and thus cannot be used in the menu);
 #. %s is a network identifier */
 #: ../js/ui/status/network.js:459
-#| msgid "Unmanaged"
 msgid "%s Unmanaged"
 msgstr "%s sin gestionar"
 
 #. Translators: %s is a network identifier */
 #: ../js/ui/status/network.js:462
-#| msgid "Disconnecting"
 msgid "%s Disconnecting"
 msgstr "Desconectando %s"
 
 #. Translators: %s is a network identifier */
 #: ../js/ui/status/network.js:469 ../js/ui/status/network.js:1300
-#| msgid "Connecting"
 msgid "%s Connecting"
 msgstr "Conectando %s"
 
 #. Translators: this is for network connections that require some kind of key or password; %s is a network identifier */
 #: ../js/ui/status/network.js:472
-#| msgid "Wired 802.1X authentication"
 msgid "%s Requires Authentication"
 msgstr "%s requiere autenticación"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing; %s is a network identifier */
 #: ../js/ui/status/network.js:480
-#| msgid "Firmware missing"
 msgid "Firmware Missing For %s"
 msgstr "Falta el «firmware» para %s"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage; %s is a network identifier */
 #: ../js/ui/status/network.js:484
-#| msgid "Unavailable"
 msgid "%s Unavailable"
 msgstr "%s no disponible"
 
 #. Translators: %s is a network identifier */
 #: ../js/ui/status/network.js:487
-#| msgid "Connection failed"
 msgid "%s Connection Failed"
 msgstr "Falló la conexión %s"
 
@@ -1251,14 +1238,12 @@ msgstr "Configuración de banda ancha móvil"
 
 #. Translators: %s is a network identifier */
 #: ../js/ui/status/network.js:588 ../js/ui/status/network.js:1305
-#| msgid "Hardware Disabled"
 msgid "%s Hardware Disabled"
 msgstr "Hardware %s desactivado"
 
 #. Translators: this is for a network device that cannot be activated
 #. because it's disabled by rfkill (airplane mode); %s is a network identifier */
 #: ../js/ui/status/network.js:592
-#| msgid "Disabled"
 msgid "%s Disabled"
 msgstr "%s desactivado"
 
@@ -1320,13 +1305,12 @@ msgstr "Encender"
 
 #. Translators: %s is a network identifier */
 #: ../js/ui/status/network.js:1296
-#| msgid "Hotspot Active"
+#| msgid "%s Hotspot Active"
 msgid "%s Hotspot Active"
-msgstr "Punto de acceso activo"
+msgstr "Punto de acceso %s activo"
 
 #. Translators: %s is a network identifier */
 #: ../js/ui/status/network.js:1311
-#| msgid "Not Connected"
 msgid "%s Not Connected"
 msgstr "%s no conectado"
 
@@ -1356,7 +1340,6 @@ msgid "VPN"
 msgstr "VPN"
 
 #: ../js/ui/status/network.js:1513
-#| msgid "Power Off"
 msgid "VPN Off"
 msgstr "VPN apagada"
 
@@ -1389,7 +1372,6 @@ msgid "%d∶%02d Until Full (%d%%)"
 msgstr "%d∶%02d para la carga completa (%d%%)"
 
 #: ../js/ui/status/rfkill.js:88
-#| msgid "Airplane Mode is On"
 msgid "Airplane Mode On"
 msgstr "Modo avión activado"
 
@@ -1402,7 +1384,6 @@ msgid "Log Out"
 msgstr "Cerrar la sesión"
 
 #: ../js/ui/status/system.js:353
-#| msgid "Sound Settings"
 msgid "Account Settings"
 msgstr "Configuración de la cuenta"
 
