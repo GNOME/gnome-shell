@@ -349,7 +349,7 @@ clutter_master_clock_gdk_add_stage_clock (ClutterMasterClockGdk *master_clock,
     stages = g_list_append (stages, stage);
 
   if (master_clock->timelines != NULL)
-    _clutter_master_clock_start_running ((ClutterMasterClock *) clock);
+    _clutter_master_clock_start_running ((ClutterMasterClock *) master_clock);
 }
 
 static void
