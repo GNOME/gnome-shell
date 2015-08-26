@@ -40,6 +40,7 @@
 
 #include <EGL/egl.h>
 #include <EGL/eglext.h>
+#include <errno.h>
 #include <stddef.h>
 #include <drm.h>
 #include <xf86drm.h>
@@ -601,7 +602,7 @@ flip_all_crtcs (CoglDisplay *display, CoglFlipKMS *flip, int fb_id)
           ret = drmModePageFlip (kms_renderer->fd,
                                  crtc->id, fb_id,
                                  DRM_MODE_PAGE_FLIP_EVENT, flip);
-          if (ret)
+          if (ret != 0 && ret != -EACCES)
             {
               g_warning ("Failed to flip: %m");
               kms_renderer->page_flips_not_supported = TRUE;
