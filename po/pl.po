@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-05 00:23+0100\n"
-"PO-Revision-Date: 2015-03-05 00:24+0100\n"
+"POT-Creation-Date: 2015-08-26 18:49+0200\n"
+"PO-Revision-Date: 2015-08-26 18:50+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -285,9 +285,9 @@ msgid ""
 "\"Windows key\" on PC hardware. It's expected that this binding either the "
 "default or set to the empty string."
 msgstr ""
-"Ten klawisz inicjuje tryb \"overlay\", który jest połączeniem podglądu okien "
-"i systemu uruchamiania programów. Domyślnie jest przeznaczony do powiązania "
-"z klawiszem \"Windows\" na komputerach typu PC. Ustawienie tego powiązania "
+"Ten klawisz inicjuje tryb „overlay”, który jest połączeniem podglądu okien i "
+"systemu uruchamiania programów. Domyślnie jest przeznaczony do powiązania z "
+"klawiszem „Windows” na komputerach typu PC. Ustawienie tego powiązania "
 "powinno być domyślne lub puste."
 
 #: ../data/org.gnome.mutter.gschema.xml.in.h:3
@@ -300,9 +300,9 @@ msgid ""
 "attached to the titlebar of the parent window and are moved together with "
 "the parent window."
 msgstr ""
-"Jeśli wynosi \"true\", to modalne okna dialogowe pojawiają się dołączone do "
-"paska tytułowego okna nadrzędnego zamiast posiadać oddzielne paski tytułowe "
-"i są przenoszone razem z nim."
+"Jeśli wynosi wartość „true”, to modalne okna dialogowe pojawiają się "
+"dołączone do paska tytułowego okna nadrzędnego zamiast posiadać oddzielne "
+"paski tytułowe i są przenoszone razem z nim."
 
 #: ../data/org.gnome.mutter.gschema.xml.in.h:5
 msgid "Enable edge tiling when dropping windows on screen edges"
@@ -332,7 +332,7 @@ msgid ""
 "gnome.desktop.wm.preferences)."
 msgstr ""
 "Określa, czy obszary robocze są zarządzane dynamicznie, czy istnieje "
-"statyczna liczba obszarów (określona przez klucz \"num-workspaces\" w org."
+"statyczna liczba obszarów (określona przez klucz „num-workspaces” w org."
 "gnome.desktop.wm.preferences)."
 
 #: ../data/org.gnome.mutter.gschema.xml.in.h:9
@@ -369,9 +369,9 @@ msgid ""
 "the focus will not be changed immediately when entering a window, but only "
 "after the pointer stops moving."
 msgstr ""
-"Jeśli jest ustawione na wartość \"true\", a tryb aktywności to \"sloppy\" "
-"lub \"mouse\", to aktywność nie będzie zmieniana od razu po przejściu do "
-"okna, ale dopiero po zatrzymaniu ruchu kursora."
+"Jeśli jest ustawione na wartość „true”, a tryb aktywności to „sloppy” lub "
+"„mouse”, to aktywność nie będzie zmieniana od razu po przejściu do okna, ale "
+"dopiero po zatrzymaniu ruchu kursora."
 
 #: ../data/org.gnome.mutter.gschema.xml.in.h:15
 msgid "Draggable border width"
@@ -409,7 +409,7 @@ msgid ""
 "When true, the new windows will always be put in the center of the active "
 "screen of the monitor."
 msgstr ""
-"Jeśli wynosi \"true\", to nowe okna będą zawsze umieszczane na środku "
+"Jeśli wynosi wartość „true”, to nowe okna będą zawsze umieszczane na środku "
 "aktywnego ekranu monitora."
 
 #: ../data/org.gnome.mutter.gschema.xml.in.h:21
@@ -468,22 +468,22 @@ msgstr "Przełączenie na 11. konsolę wirtualną"
 msgid "Switch to VT 12"
 msgstr "Przełączenie na 12. konsolę wirtualną"
 
-#: ../src/backends/meta-monitor-manager.c:364
+#: ../src/backends/meta-monitor-manager.c:500
 msgid "Built-in display"
 msgstr "Wbudowany ekran"
 
-#: ../src/backends/meta-monitor-manager.c:391
+#: ../src/backends/meta-monitor-manager.c:526
 msgid "Unknown"
 msgstr "Nieznany"
 
-#: ../src/backends/meta-monitor-manager.c:393
+#: ../src/backends/meta-monitor-manager.c:528
 msgid "Unknown Display"
 msgstr "Nieznany ekran"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: ../src/backends/meta-monitor-manager.c:401
+#: ../src/backends/meta-monitor-manager.c:536
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
@@ -496,7 +496,7 @@ msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
 "\"."
 msgstr ""
-"Inny menedżer składania jest już uruchomiony na podekranie %i ekranu \"%s\"."
+"Inny menedżer składania jest już uruchomiony na podekranie %i ekranu „%s”."
 
 #: ../src/core/bell.c:185
 msgid "Bell event"
@@ -505,7 +505,7 @@ msgstr "Zdarzenie sygnału dźwiękowego"
 #: ../src/core/delete.c:127
 #, c-format
 msgid "“%s” is not responding."
-msgstr "Okno \"%s\" nie odpowiada."
+msgstr "Okno „%s” nie odpowiada."
 
 #: ../src/core/delete.c:129
 msgid "Application is not responding."
@@ -525,11 +525,10 @@ msgstr "_Czekaj"
 msgid "_Force Quit"
 msgstr "_Zakończ"
 
-#: ../src/core/display.c:562
+#: ../src/core/display.c:563
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
-msgstr ""
-"Otwarcie połączenia z ekranem \"%s\" systemu X Window się nie powiodło\n"
+msgstr "Otwarcie połączenia z ekranem „%s” systemu X Window się nie powiodło\n"
 
 #: ../src/core/main.c:176
 msgid "Disable connection to session manager"
@@ -573,7 +572,7 @@ msgid ""
 "PARTICULAR PURPOSE.\n"
 msgstr ""
 "mutter %s\n"
-"Copyright (C) 2001-%d Havoc Pennington, Red Hat, Inc., oraz inni\n"
+"Copyright (C) 2001—%d Havoc Pennington, Red Hat, Inc., oraz inni\n"
 "Niniejszy program jest wolnym oprogramowaniem, aby poznać warunki, pod\n"
 "jakimi dopuszczalne jest kopiowanie programu, zajrzyj do jego źródeł.\n"
 "Na program nie udziela się ŻADNYCH GWARANCJI, nawet domyślnej gwarancji\n"
@@ -598,13 +597,13 @@ msgid ""
 "Display \"%s\" already has a window manager; try using the --replace option "
 "to replace the current window manager."
 msgstr ""
-"Na ekranie \"%s\" działa już menedżer okien. Aby zastąpić działającego "
+"Na ekranie „%s” działa już menedżer okien. Aby zastąpić działającego "
 "menedżera okien, proszę spróbować użyć opcji --replace."
 
 #: ../src/core/screen.c:607
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
-msgstr "Podekran %d ekranu \"%s\" jest nieprawidłowy\n"
+msgstr "Podekran %d ekranu „%s” jest nieprawidłowy\n"
 
 #: ../src/core/util.c:118
 msgid "Mutter was compiled without support for verbose mode\n"
@@ -616,7 +615,7 @@ msgid ""
 "These windows do not support &quot;save current setup&quot; and will have to "
 "be restarted manually next time you log in."
 msgstr ""
-"Te okna nie obsługują opcji zapisu obecnego stanu (\"save current setup\"), "
+"Te okna nie obsługują opcji zapisu obecnego stanu („save current setup”), "
 "więc przy następnym zalogowaniu będą musiały zostać uruchomione ręcznie."
 
 #: ../src/x11/window-props.c:549
