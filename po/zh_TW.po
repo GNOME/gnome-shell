@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: metacity 3.3.4\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-02-20 23:22+0000\n"
+"POT-Creation-Date: 2015-07-21 10:52+0000\n"
 "PO-Revision-Date: 2015-02-21 16:33+0800\n"
 "Last-Translator: Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>\n"
 "Language-Team: Chinese (Taiwan) <zh-l10n@lists.linux.org.tw>\n"
@@ -439,22 +439,22 @@ msgstr "切換至 VT 11"
 msgid "Switch to VT 12"
 msgstr "切換至 VT 12"
 
-#: ../src/backends/meta-monitor-manager.c:364
+#: ../src/backends/meta-monitor-manager.c:500
 msgid "Built-in display"
 msgstr "內建顯示"
 
-#: ../src/backends/meta-monitor-manager.c:391
+#: ../src/backends/meta-monitor-manager.c:526
 msgid "Unknown"
 msgstr "不明"
 
-#: ../src/backends/meta-monitor-manager.c:393
+#: ../src/backends/meta-monitor-manager.c:528
 msgid "Unknown Display"
 msgstr "不明的顯示器"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: ../src/backends/meta-monitor-manager.c:401
+#: ../src/backends/meta-monitor-manager.c:536
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
@@ -462,7 +462,7 @@ msgstr "%s %s"
 # FIXME: I'm still unclear about the meaning of XGetSelectionOwner -- Abel
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:456
+#: ../src/compositor/compositor.c:451
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
@@ -496,14 +496,14 @@ msgstr "等待(_W)"
 msgid "_Force Quit"
 msgstr "強制結束(_F)"
 
-#: ../src/core/display.c:562
+#: ../src/core/display.c:563
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "無法開啟 X Window 畫面‘%s’\n"
 
 #: ../src/core/main.c:176
 msgid "Disable connection to session manager"
-msgstr "停用到作業階段管理程式的連線"
+msgstr "停用到作業階段管理員的連線"
 
 #: ../src/core/main.c:182
 msgid "Replace the running window manager"
@@ -1053,9 +1053,9 @@ msgstr "%s（在 %s）"
 #~ msgid ""
 #~ "\"%s\" found in configuration database is not a valid value for mouse "
 #~ "button modifier\n"
-#~ msgstr "組態資料庫中的“%s”設定值不是有效的滑鼠按鈕修改功能鍵\n"
+#~ msgstr "設定資料庫中的“%s”設定值不是有效的滑鼠按鈕修改功能鍵\n"
 
 #~ msgid ""
 #~ "\"%s\" found in configuration database is not a valid value for "
 #~ "keybinding \"%s\"\n"
-#~ msgstr "組態資料庫中的“%s”不是按鍵組合“%s”的有效設定值\n"
+#~ msgstr "設定資料庫中的“%s”不是按鍵組合“%s”的有效設定值\n"
