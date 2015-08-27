@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-16 13:28+0300\n"
-"PO-Revision-Date: 2015-07-16 13:28+0300\n"
+"POT-Creation-Date: 2015-08-27 23:42+0300\n"
+"PO-Revision-Date: 2015-08-27 23:49+0300\n"
 "Last-Translator: Yosef Or Boczko <yoseforb@gmail.com>\n"
 "Language-Team: עברית <>\n"
 "Language: he\n"
@@ -307,13 +307,14 @@ msgid "GNOME Shell Extensions"
 msgstr "הרחבות GNOME Shell"
 
 #: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:145
-#: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:452
+#: ../js/ui/components/polkitAgent.js:179 ../js/ui/endSessionDialog.js:452
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
 #: ../js/ui/status/network.js:916
 msgid "Cancel"
 msgstr "ביטול"
 
 #: ../js/gdm/authPrompt.js:169 ../js/gdm/authPrompt.js:215
+#: ../js/gdm/authPrompt.js:435
 msgid "Next"
 msgstr "הבא"
 
@@ -353,7 +354,7 @@ msgstr "(משתמש או %s לדוגמה)"
 msgid "Username: "
 msgstr "שם משתמש:"
 
-#: ../js/gdm/loginDialog.js:1180
+#: ../js/gdm/loginDialog.js:1181
 msgid "Login Window"
 msgstr "חלון כניסה"
 
@@ -461,31 +462,31 @@ msgstr "%d ב%B %Y, %l∶%M %p"
 msgid "Web Authentication Redirect"
 msgstr "אימות ניתוב הרשת"
 
-#: ../js/ui/appDisplay.js:789
+#: ../js/ui/appDisplay.js:794
 msgid "Frequently used applications will appear here"
 msgstr "יישומים בשימוש תדיר יופיעו כאן"
 
-#: ../js/ui/appDisplay.js:909
+#: ../js/ui/appDisplay.js:914
 msgid "Frequent"
 msgstr "תדיר"
 
-#: ../js/ui/appDisplay.js:916
+#: ../js/ui/appDisplay.js:921
 msgid "All"
 msgstr "הכול"
 
-#: ../js/ui/appDisplay.js:1845
+#: ../js/ui/appDisplay.js:1853
 msgid "New Window"
 msgstr "חלון חדש"
 
-#: ../js/ui/appDisplay.js:1873 ../js/ui/dash.js:289
+#: ../js/ui/appDisplay.js:1881 ../js/ui/dash.js:289
 msgid "Remove from Favorites"
 msgstr "הסרה מהמועדפים"
 
-#: ../js/ui/appDisplay.js:1879
+#: ../js/ui/appDisplay.js:1887
 msgid "Add to Favorites"
 msgstr "הוספה למועדפים"
 
-#: ../js/ui/appDisplay.js:1889
+#: ../js/ui/appDisplay.js:1897
 msgid "Show Details"
 msgstr "הצגת פרטים"
 
@@ -508,12 +509,12 @@ msgid "Display Settings"
 msgstr "הצגת הגדרות"
 
 #: ../js/ui/backgroundMenu.js:22 ../js/ui/panel.js:650
-#: ../js/ui/status/system.js:357
+#: ../js/ui/status/system.js:366
 msgid "Settings"
 msgstr "הגדרות"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
-#: ../js/ui/calendar.js:53
+#: ../js/ui/calendar.js:55
 msgctxt "calendar-no-work"
 msgid "06"
 msgstr "65"
@@ -523,94 +524,94 @@ msgstr "65"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: ../js/ui/calendar.js:82
+#: ../js/ui/calendar.js:84
 msgctxt "grid sunday"
 msgid "S"
 msgstr "א"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: ../js/ui/calendar.js:84
+#: ../js/ui/calendar.js:86
 msgctxt "grid monday"
 msgid "M"
 msgstr "ב"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: ../js/ui/calendar.js:86
+#: ../js/ui/calendar.js:88
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "ג"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: ../js/ui/calendar.js:88
+#: ../js/ui/calendar.js:90
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "ד"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: ../js/ui/calendar.js:90
+#: ../js/ui/calendar.js:92
 msgctxt "grid thursday"
 msgid "T"
 msgstr "ה"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: ../js/ui/calendar.js:92
+#: ../js/ui/calendar.js:94
 msgctxt "grid friday"
 msgid "F"
 msgstr "ו"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: ../js/ui/calendar.js:94
+#: ../js/ui/calendar.js:96
 msgctxt "grid saturday"
 msgid "S"
 msgstr "ש"
 
-#: ../js/ui/calendar.js:564
+#: ../js/ui/calendar.js:566
 msgid "Previous month"
 msgstr "חודש קודם"
 
-#: ../js/ui/calendar.js:574
+#: ../js/ui/calendar.js:576
 msgid "Next month"
 msgstr "חודש הבא"
 
-#: ../js/ui/calendar.js:781
+#: ../js/ui/calendar.js:783
 msgid "Week %V"
 msgstr "שבוע %V"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: ../js/ui/calendar.js:1187
+#: ../js/ui/calendar.js:1188
 msgctxt "event list time"
 msgid "All Day"
 msgstr "יום שלם"
 
-#: ../js/ui/calendar.js:1289
+#: ../js/ui/calendar.js:1291
 msgid "Clear section"
 msgstr "ניקוי מקטע"
 
-#: ../js/ui/calendar.js:1516
+#: ../js/ui/calendar.js:1518
 msgid "Events"
 msgstr "אירועים"
 
-#: ../js/ui/calendar.js:1525
+#: ../js/ui/calendar.js:1527
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, ה־%e ב%B"
 
-#: ../js/ui/calendar.js:1529
+#: ../js/ui/calendar.js:1531
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, ה־%e ב%B, %Y"
 
-#: ../js/ui/calendar.js:1614
+#: ../js/ui/calendar.js:1616
 msgid "Notifications"
 msgstr "התרעות"
 
-#: ../js/ui/calendar.js:1765
+#: ../js/ui/calendar.js:1767
 msgid "No Notifications"
 msgstr "אין התרעות"
 
-#: ../js/ui/calendar.js:1768
+#: ../js/ui/calendar.js:1770
 msgid "No Events"
 msgstr "אין אירועים"
 
@@ -627,16 +628,16 @@ msgstr "נותק כונן חיצוני"
 msgid "Open with %s"
 msgstr "פתיחה באמצעות %s"
 
-#: ../js/ui/components/keyring.js:94 ../js/ui/components/polkitAgent.js:285
+#: ../js/ui/components/keyring.js:120 ../js/ui/components/polkitAgent.js:315
 msgid "Password:"
 msgstr "ססמה:"
 
-#: ../js/ui/components/keyring.js:120
+#: ../js/ui/components/keyring.js:153
 msgid "Type again:"
 msgstr "נא להקליד שוב:"
 
-#: ../js/ui/components/networkAgent.js:140 ../js/ui/status/network.js:277
-#: ../js/ui/status/network.js:359 ../js/ui/status/network.js:919
+#: ../js/ui/components/networkAgent.js:140 ../js/ui/status/network.js:269
+#: ../js/ui/status/network.js:352 ../js/ui/status/network.js:919
 msgid "Connect"
 msgstr "התחברות"
 
@@ -720,19 +721,19 @@ msgstr "ססמת רשת הפס הרחב הניידת"
 msgid "A password is required to connect to “%s”."
 msgstr "נדרשת ססמה כדי להתחבר אל „%s”"
 
-#: ../js/ui/components/networkAgent.js:647 ../js/ui/status/network.js:1657
+#: ../js/ui/components/networkAgent.js:647 ../js/ui/status/network.js:1658
 msgid "Network Manager"
 msgstr "מנהל הרשתות"
 
-#: ../js/ui/components/polkitAgent.js:54
+#: ../js/ui/components/polkitAgent.js:60
 msgid "Authentication Required"
 msgstr "נדרש אימות"
 
-#: ../js/ui/components/polkitAgent.js:96
+#: ../js/ui/components/polkitAgent.js:102
 msgid "Administrator"
 msgstr "מנהל"
 
-#: ../js/ui/components/polkitAgent.js:175
+#: ../js/ui/components/polkitAgent.js:182
 msgid "Authenticate"
 msgstr "אימות"
 
@@ -740,13 +741,13 @@ msgstr "אימות"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: ../js/ui/components/polkitAgent.js:271 ../js/ui/shellMountOperation.js:383
+#: ../js/ui/components/polkitAgent.js:301 ../js/ui/shellMountOperation.js:383
 msgid "Sorry, that didn't work. Please try again."
 msgstr "פעולה זו לא הצליחה, נא לנסות שוב. עמך הסליחה."
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/components/telepathyClient.js:757
+#: ../js/ui/components/telepathyClient.js:759
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "השם של %s הוחלף ל־%s"
@@ -923,7 +924,7 @@ msgstr "התקנה"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "הורדה והתקנה של „%s” מ־extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:747 ../js/ui/status/keyboard.js:713
+#: ../js/ui/keyboard.js:741 ../js/ui/status/keyboard.js:713
 msgid "Keyboard"
 msgstr "מקלדת"
 
@@ -954,17 +955,13 @@ msgstr "הסתרת השגיאות"
 msgid "Show Errors"
 msgstr "הצגת השגיאות"
 
-#: ../js/ui/lookingGlass.js:716 ../js/ui/status/location.js:71
-#: ../js/ui/status/location.js:176
+#: ../js/ui/lookingGlass.js:716
 msgid "Enabled"
 msgstr "פעיל"
 
-#. Translators: this is for a network device that cannot be activated
-#. because it's disabled by rfkill (airplane mode)
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:719 ../js/ui/status/location.js:179
-#: ../js/ui/status/network.js:592 ../src/gvc/gvc-mixer-control.c:1830
+#: ../js/ui/lookingGlass.js:719 ../src/gvc/gvc-mixer-control.c:1830
 msgid "Disabled"
 msgstr "מנוטרל"
 
@@ -996,7 +993,7 @@ msgstr "פרטי המערכת"
 msgid "Undo"
 msgstr "ביטול"
 
-#: ../js/ui/overview.js:124
+#: ../js/ui/overview.js:117
 msgid "Overview"
 msgstr "סקירה"
 
@@ -1004,7 +1001,7 @@ msgstr "סקירה"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: ../js/ui/overview.js:246
+#: ../js/ui/overview.js:244
 msgid "Type to search…"
 msgstr "יש להקליד כדי לחפש…"
 
@@ -1018,7 +1015,7 @@ msgstr "יציאה"
 msgid "Activities"
 msgstr "פעילויות"
 
-#: ../js/ui/panel.js:755
+#: ../js/ui/panel.js:754
 msgid "Top Bar"
 msgstr "הסרגל העליון"
 
@@ -1065,7 +1062,7 @@ msgid_plural "%d new notifications"
 msgstr[0] "התרעה חדשה אחת"
 msgstr[1] "%d התרעות חדשות"
 
-#: ../js/ui/screenShield.js:432 ../js/ui/status/system.js:365
+#: ../js/ui/screenShield.js:432 ../js/ui/status/system.js:374
 msgid "Lock"
 msgstr "נעילה"
 
@@ -1164,16 +1161,10 @@ msgstr "ניגודיות גבוהה"
 msgid "Large Text"
 msgstr "טקסט גדול"
 
-#. The Bluetooth menu only appears when Bluetooth is in use,
-#. so just statically build it with a "Turn Off" menu item.
-#: ../js/ui/status/bluetooth.js:49
-msgid "Bluetooth"
-msgstr "Bluetooth"
-
 #: ../js/ui/status/bluetooth.js:51 ../js/ui/status/network.js:178
-#: ../js/ui/status/network.js:360 ../js/ui/status/network.js:1282
-#: ../js/ui/status/network.js:1393 ../js/ui/status/rfkill.js:91
-#: ../js/ui/status/rfkill.js:118
+#: ../js/ui/status/network.js:353 ../js/ui/status/network.js:1279
+#: ../js/ui/status/network.js:1394 ../js/ui/status/rfkill.js:90
+#: ../js/ui/status/rfkill.js:117
 msgid "Turn Off"
 msgstr "כיבוי"
 
@@ -1181,17 +1172,17 @@ msgstr "כיבוי"
 msgid "Bluetooth Settings"
 msgstr "הגדרות Bluetooth"
 
-# javascript-format
-#: ../js/ui/status/bluetooth.js:104
+#. Translators: this is the number of connected bluetooth devices
+#: ../js/ui/status/bluetooth.js:105
 #, c-format
-msgid "%d Connected Device"
-msgid_plural "%d Connected Devices"
-msgstr[0] "התקן אחד מחובר"
-msgstr[1] "%d התקנים מחוברים"
+msgid "%d Connected"
+msgid_plural "%d Connected"
+msgstr[0] "אחד מחובר"
+msgstr[1] "%d מחוברים"
 
-#: ../js/ui/status/bluetooth.js:106 ../js/ui/status/network.js:1310
-msgid "Not Connected"
-msgstr "לא מחובר"
+#: ../js/ui/status/bluetooth.js:107
+msgid "Not In Use"
+msgstr "לא בשימוש"
 
 #: ../js/ui/status/brightness.js:44
 msgid "Brightness"
@@ -1201,11 +1192,11 @@ msgstr "בהירות"
 msgid "Show Keyboard Layout"
 msgstr "הצגת פריסת המקלדת"
 
-#: ../js/ui/status/location.js:65
-msgid "Location"
-msgstr "מיקום"
+#: ../js/ui/status/location.js:71 ../js/ui/status/location.js:177
+msgid "Location Enabled"
+msgstr "איכון מאופשר"
 
-#: ../js/ui/status/location.js:72 ../js/ui/status/location.js:177
+#: ../js/ui/status/location.js:72 ../js/ui/status/location.js:178
 msgid "Disable"
 msgstr "השבתה"
 
@@ -1214,10 +1205,14 @@ msgid "Privacy Settings"
 msgstr "הגדרות פרטיות"
 
 #: ../js/ui/status/location.js:176
-msgid "In Use"
-msgstr "בשימוש"
+msgid "Location In Use"
+msgstr "איכון בשימוש"
 
 #: ../js/ui/status/location.js:180
+msgid "Location Disabled"
+msgstr "איכון מושבת"
+
+#: ../js/ui/status/location.js:181
 msgid "Enable"
 msgstr "אפשור"
 
@@ -1225,61 +1220,84 @@ msgstr "אפשור"
 msgid "<unknown>"
 msgstr "<לא ידוע>"
 
-#: ../js/ui/status/network.js:457 ../js/ui/status/network.js:1308
-#: ../js/ui/status/network.js:1512
-msgid "Off"
-msgstr "כבוי"
+#. Translators: %s is a network identifier
+#: ../js/ui/status/network.js:451 ../js/ui/status/network.js:1308
+#, javascript-format
+msgid "%s Off"
+msgstr "%s כבוי"
 
-#: ../js/ui/status/network.js:459
-msgid "Connected"
-msgstr "מחובר"
+#. Translators: %s is a network identifier
+#: ../js/ui/status/network.js:454
+#, javascript-format
+msgid "%s Connected"
+msgstr "%s מחובר"
 
 #. Translators: this is for network devices that are physically present but are not
-#. under NetworkManager's control (and thus cannot be used in the menu)
-#: ../js/ui/status/network.js:463
-msgid "Unmanaged"
-msgstr "לא מנוהל"
+#. under NetworkManager's control (and thus cannot be used in the menu);
+#. %s is a network identifier
+#: ../js/ui/status/network.js:459
+#, javascript-format
+msgid "%s Unmanaged"
+msgstr "%s לא מנוהל"
 
-#: ../js/ui/status/network.js:465
-msgid "Disconnecting"
-msgstr "בהליכי ניתוק"
+#. Translators: %s is a network identifier
+#: ../js/ui/status/network.js:462
+#, javascript-format
+msgid "%s Disconnecting"
+msgstr "%s בהליכי ניתוק"
 
-#: ../js/ui/status/network.js:471 ../js/ui/status/network.js:1302
-msgid "Connecting"
-msgstr "בהתחברות"
+#. Translators: %s is a network identifier
+#: ../js/ui/status/network.js:469 ../js/ui/status/network.js:1300
+#, javascript-format
+msgid "%s Connecting"
+msgstr "%s בהתחברות"
 
-#. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:474
-msgid "Authentication required"
-msgstr "נדרש אימות"
+#. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
+#: ../js/ui/status/network.js:472
+#, javascript-format
+msgid "%s Requires Authentication"
+msgstr "%s דורש אימות"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
-#. module, which is missing
-#: ../js/ui/status/network.js:482
-msgid "Firmware missing"
-msgstr "הקושחה חסרה"
+#. module, which is missing; %s is a network identifier
+#: ../js/ui/status/network.js:480
+#, javascript-format
+msgid "Firmware Missing For %s"
+msgstr "חסרה קושחה עבור %s"
 
 #. Translators: this is for a network device that cannot be activated (for example it
-#. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:486
-msgid "Unavailable"
-msgstr "לא זמין"
+#. is disabled by rfkill, or it has no coverage; %s is a network identifier
+#: ../js/ui/status/network.js:484
+#, javascript-format
+msgid "%s Unavailable"
+msgstr "%s לא זמין"
 
-#: ../js/ui/status/network.js:488 ../js/ui/status/network.js:1696
-msgid "Connection failed"
-msgstr "ההתחברות נכשלה"
+#. Translators: %s is a network identifier
+#: ../js/ui/status/network.js:487
+#, javascript-format
+msgid "%s Connection Failed"
+msgstr "נכשלה ההתחברות אל %s"
 
-#: ../js/ui/status/network.js:504
+#: ../js/ui/status/network.js:503
 msgid "Wired Settings"
 msgstr "הגדרות רשת קווית"
 
-#: ../js/ui/status/network.js:546 ../js/ui/status/network.js:624
+#: ../js/ui/status/network.js:545 ../js/ui/status/network.js:624
 msgid "Mobile Broadband Settings"
 msgstr "הגדרות פס־רחב נייד"
 
-#: ../js/ui/status/network.js:588 ../js/ui/status/network.js:1306
-msgid "Hardware Disabled"
-msgstr "מנוטרל חומרתית"
+#. Translators: %s is a network identifier
+#: ../js/ui/status/network.js:588 ../js/ui/status/network.js:1305
+#, javascript-format
+msgid "%s Hardware Disabled"
+msgstr "%s נמנוטרל חומרתית"
+
+#. Translators: this is for a network device that cannot be activated
+#. because it's disabled by rfkill (airplane mode); %s is a network identifier
+#: ../js/ui/status/network.js:592
+#, javascript-format
+msgid "%s Disabled"
+msgstr "%s מושבת"
 
 #: ../js/ui/status/network.js:632
 msgid "Use as Internet connection"
@@ -1321,52 +1339,68 @@ msgstr "בחירת רשת"
 msgid "No Networks"
 msgstr "אין רשתות"
 
-#: ../js/ui/status/network.js:904 ../js/ui/status/rfkill.js:116
+#: ../js/ui/status/network.js:904 ../js/ui/status/rfkill.js:115
 msgid "Use hardware switch to turn off"
 msgstr "שימוש במתג של החומרה לכיבוי"
 
-#: ../js/ui/status/network.js:1174
+#: ../js/ui/status/network.js:1171
 msgid "Select Network"
 msgstr "בחירת רשת"
 
-#: ../js/ui/status/network.js:1180
+#: ../js/ui/status/network.js:1177
 msgid "Wi-Fi Settings"
 msgstr "הגדרות רשת אלחוטית"
 
-#: ../js/ui/status/network.js:1282
+#: ../js/ui/status/network.js:1279
 msgid "Turn On"
 msgstr "הפעלה"
 
-#: ../js/ui/status/network.js:1299
-msgid "Hotspot Active"
-msgstr "נקודה חמה פעילה"
+#. Translators: %s is a network identifier
+#: ../js/ui/status/network.js:1296
+#, javascript-format
+msgid "%s Hotspot Active"
+msgstr "נקודה חמה %s פעילה"
 
-#: ../js/ui/status/network.js:1410
+#. Translators: %s is a network identifier
+#: ../js/ui/status/network.js:1311
+#, javascript-format
+msgid "%s Not Connected"
+msgstr "%s לא מחובר"
+
+#: ../js/ui/status/network.js:1411
 msgid "connecting..."
-msgstr "בהתחברות..."
+msgstr "בהתחברות…"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:1413
+#: ../js/ui/status/network.js:1414
 msgid "authentication required"
 msgstr "נדרש אימות"
 
-#: ../js/ui/status/network.js:1415
+#: ../js/ui/status/network.js:1416
 msgid "connection failed"
 msgstr "ההתחברות נכשלה"
 
-#: ../js/ui/status/network.js:1481 ../js/ui/status/rfkill.js:94
+#: ../js/ui/status/network.js:1482 ../js/ui/status/rfkill.js:93
 msgid "Network Settings"
 msgstr "הגדרות הרשת"
 
-#: ../js/ui/status/network.js:1483
+#: ../js/ui/status/network.js:1484
 msgid "VPN Settings"
 msgstr "הגדרות VPN"
 
-#: ../js/ui/status/network.js:1502
+#: ../js/ui/status/network.js:1503
 msgid "VPN"
 msgstr "VPN"
 
+#: ../js/ui/status/network.js:1513
+msgid "VPN Off"
+msgstr "VPN כבוי"
+
 #: ../js/ui/status/network.js:1697
+msgid "Connection failed"
+msgstr "ההתחברות נכשלה"
+
+#: ../js/ui/status/network.js:1698
 msgid "Activation of network connection failed"
 msgstr "הפעלת חיבור הרשת נכשלה"
 
@@ -1396,42 +1430,34 @@ msgstr "‏‎‎%d∶%02d נותרו (%d%%)"
 msgid "%d∶%02d Until Full (%d%%)"
 msgstr "%d:%02d עד לטעינה מלאה (%d%%)"
 
-#: ../js/ui/status/power.js:119
-msgid "UPS"
-msgstr "אל־פסק"
-
-#: ../js/ui/status/power.js:121
-msgid "Battery"
-msgstr "סוללה"
-
 #. The menu only appears when airplane mode is on, so just
 #. statically build it as if it was on, rather than dynamically
 #. changing the menu contents.
 #: ../js/ui/status/rfkill.js:88
-msgid "Airplane Mode"
-msgstr "מצב טיסה"
+msgid "Airplane Mode On"
+msgstr "מצב טיסה מופעל"
 
-#: ../js/ui/status/rfkill.js:90
-msgid "On"
-msgstr "פועל"
-
-#: ../js/ui/status/system.js:337
+#: ../js/ui/status/system.js:343
 msgid "Switch User"
 msgstr "החלפת משתמש"
 
-#: ../js/ui/status/system.js:342
+#: ../js/ui/status/system.js:348
 msgid "Log Out"
 msgstr "יציאה"
 
-#: ../js/ui/status/system.js:361
+#: ../js/ui/status/system.js:353
+msgid "Account Settings"
+msgstr "הגדרות חשבון"
+
+#: ../js/ui/status/system.js:370
 msgid "Orientation Lock"
 msgstr "נעילת כיוון"
 
-#: ../js/ui/status/system.js:369
+#: ../js/ui/status/system.js:378
 msgid "Suspend"
 msgstr "השהיה"
 
-#: ../js/ui/status/system.js:372
+#: ../js/ui/status/system.js:381
 msgid "Power Off"
 msgstr "כיבוי"
 
@@ -1479,12 +1505,12 @@ msgstr "האם ברצונך לשמור הגדרות תצוגה אלה?"
 msgid "Revert Settings"
 msgstr "שחזור הגדרות"
 
-#: ../js/ui/windowManager.js:86
+#: ../js/ui/windowManager.js:85
 msgid "Keep Changes"
 msgstr "שמירת שינויים"
 
 # javascript-format
-#: ../js/ui/windowManager.js:105
+#: ../js/ui/windowManager.js:103
 #, c-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
@@ -1493,7 +1519,7 @@ msgstr[1] "שינויי הגדרות ישוחזרו בעוד %d שניות"
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: ../js/ui/windowManager.js:604
+#: ../js/ui/windowManager.js:658
 #, javascript-format
 msgid "%d x %d"
 msgstr "%d x %d"
@@ -1625,6 +1651,33 @@ msgstr "הססמה לא יכולה להישאר ריקה"
 #: ../src/shell-polkit-authentication-agent.c:346
 msgid "Authentication dialog was dismissed by the user"
 msgstr "המשתמש בחר להתעלם מתיבת דו־שיח האימות"
+
+#~ msgid "Bluetooth"
+#~ msgstr "Bluetooth"
+
+# javascript-format
+#~ msgid "%d Connected Device"
+#~ msgid_plural "%d Connected Devices"
+#~ msgstr[0] "התקן אחד מחובר"
+#~ msgstr[1] "%d התקנים מחוברים"
+
+#~ msgid "Off"
+#~ msgstr "כבוי"
+
+#~ msgid "Authentication required"
+#~ msgstr "נדרש אימות"
+
+#~ msgid "UPS"
+#~ msgstr "אל־פסק"
+
+#~ msgid "Battery"
+#~ msgstr "סוללה"
+
+#~ msgid "Airplane Mode"
+#~ msgstr "מצב טיסה"
+
+#~ msgid "On"
+#~ msgstr "פועל"
 
 #~ msgctxt "event list time"
 #~ msgid "%H∶%M"
@@ -2137,9 +2190,6 @@ msgstr "המשתמש בחר להתעלם מתיבת דו־שיח האימות"
 
 #~ msgid "Mouse Settings"
 #~ msgstr "הגדרות עכבר"
-
-#~ msgid "Sound Settings"
-#~ msgstr "הגדרות שמע"
 
 #~ msgid "Region & Language Settings"
 #~ msgstr "הגדרות אזור ושפה"
