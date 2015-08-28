@@ -174,10 +174,8 @@ MetaWaylandSurface *meta_wayland_surface_create (MetaWaylandCompositor *composit
                                                  struct wl_resource    *compositor_resource,
                                                  guint32                id);
 
-int                meta_wayland_surface_set_role (MetaWaylandSurface    *surface,
-                                                  MetaWaylandSurfaceRole role,
-                                                  struct wl_resource    *error_resource,
-                                                  uint32_t               error_code);
+gboolean            meta_wayland_surface_assign_role (MetaWaylandSurface    *surface,
+                                                      MetaWaylandSurfaceRole role);
 
 void                meta_wayland_surface_set_window (MetaWaylandSurface *surface,
                                                      MetaWindow         *window);

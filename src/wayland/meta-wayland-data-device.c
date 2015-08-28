@@ -537,11 +537,14 @@ data_device_start_drag (struct wl_client *client,
     drag_source = wl_resource_get_user_data (source_resource);
 
   if (icon_resource &&
-      meta_wayland_surface_set_role (icon_surface,
-                                     META_WAYLAND_SURFACE_ROLE_DND,
-                                     resource,
-                                     WL_DATA_DEVICE_ERROR_ROLE) != 0)
-    return;
+      !meta_wayland_surface_assign_role (icon_surface,
+                                         META_WAYLAND_SURFACE_ROLE_DND))
+    {
+      wl_resource_post_error (resource, WL_DATA_DEVICE_ERROR_ROLE,
+                              "wl_surface@%d already has a different role",
+                              wl_resource_get_id (icon_resource));
+      return;
+    }
 
   meta_wayland_pointer_set_focus (&seat->pointer, NULL);
   meta_wayland_data_device_start_drag (data_device, client,

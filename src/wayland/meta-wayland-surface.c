@@ -72,24 +72,19 @@ GType meta_wayland_surface_get_type (void) G_GNUC_CONST;
 
 G_DEFINE_TYPE (MetaWaylandSurface, meta_wayland_surface, G_TYPE_OBJECT);
 
-int
-meta_wayland_surface_set_role (MetaWaylandSurface    *surface,
-                               MetaWaylandSurfaceRole role,
-                               struct wl_resource    *error_resource,
-                               uint32_t               error_code)
+gboolean
+meta_wayland_surface_assign_role (MetaWaylandSurface    *surface,
+                                  MetaWaylandSurfaceRole role)
 {
   if (surface->role == META_WAYLAND_SURFACE_ROLE_NONE ||
       surface->role == role)
     {
       surface->role = role;
-      return 0;
+      return TRUE;
     }
   else
     {
-      wl_resource_post_error (error_resource, error_code,
-                              "wl_surface@%d already has a different role",
-                              wl_resource_get_id (surface->resource));
-      return -1;
+      return FALSE;
     }
 }
 
@@ -1283,11 +1278,14 @@ xdg_shell_get_xdg_surface (struct wl_client *client,
       return;
     }
 
-  if (meta_wayland_surface_set_role (surface,
-                                     META_WAYLAND_SURFACE_ROLE_XDG_SURFACE,
-                                     surface_resource,
-                                     XDG_SHELL_ERROR_ROLE) != 0)
-    return;
+  if (!meta_wayland_surface_assign_role (surface,
+                                         META_WAYLAND_SURFACE_ROLE_XDG_SURFACE))
+    {
+      wl_resource_post_error (resource, XDG_SHELL_ERROR_ROLE,
+                              "wl_surface@%d already has a different role",
+                              wl_resource_get_id (surface->resource));
+      return;
+    }
 
   surface->xdg_surface = wl_resource_create (client, &xdg_surface_interface, wl_resource_get_version (resource), id);
   wl_resource_set_implementation (surface->xdg_surface, &meta_wayland_xdg_surface_interface, surface, xdg_surface_destructor);
@@ -1391,11 +1389,14 @@ xdg_shell_get_xdg_popup (struct wl_client *client,
       return;
     }
 
-  if (meta_wayland_surface_set_role (surface,
-                                     META_WAYLAND_SURFACE_ROLE_XDG_POPUP,
-                                     surface_resource,
-                                     XDG_SHELL_ERROR_ROLE) != 0)
-    return;
+  if (!meta_wayland_surface_assign_role (surface,
+                                         META_WAYLAND_SURFACE_ROLE_XDG_POPUP))
+    {
+      wl_resource_post_error (resource, XDG_SHELL_ERROR_ROLE,
+                              "wl_surface@%d already has a different role",
+                              wl_resource_get_id (surface->resource));
+      return;
+    }
 
   if (parent_surf == NULL ||
       parent_surf->window == NULL ||
@@ -1731,11 +1732,14 @@ wl_shell_get_shell_surface (struct wl_client *client,
       return;
     }
 
-  if (meta_wayland_surface_set_role (surface,
-                                     META_WAYLAND_SURFACE_ROLE_WL_SHELL_SURFACE,
-                                     surface_resource,
-                                     WL_SHELL_ERROR_ROLE) != 0)
-    return;
+  if (!meta_wayland_surface_assign_role (surface,
+                                         META_WAYLAND_SURFACE_ROLE_WL_SHELL_SURFACE))
+    {
+      wl_resource_post_error (resource, WL_SHELL_ERROR_ROLE,
+                              "wl_surface@%d already has a different role",
+                              wl_resource_get_id (surface->resource));
+      return;
+    }
 
   surface->wl_shell_surface = wl_resource_create (client, &wl_shell_surface_interface, wl_resource_get_version (resource), id);
   wl_resource_set_implementation (surface->wl_shell_surface, &meta_wayland_wl_shell_surface_interface, surface, wl_shell_surface_destructor);
@@ -2080,11 +2084,17 @@ wl_subcompositor_get_subsurface (struct wl_client *client,
       return;
     }
 
-  if (meta_wayland_surface_set_role (surface,
-                                     META_WAYLAND_SURFACE_ROLE_SUBSURFACE,
-                                     surface_resource,
-                                     WL_SHELL_ERROR_ROLE) != 0)
-    return;
+  if (!meta_wayland_surface_assign_role (surface,
+                                         META_WAYLAND_SURFACE_ROLE_SUBSURFACE))
+    {
+      /* FIXME: There is no subcompositor "role" error yet, so lets just use something
+       * similar until there is.
+       */
+      wl_resource_post_error (resource, WL_SHELL_ERROR_ROLE,
+                              "wl_surface@%d already has a different role",
+                              wl_resource_get_id (surface->resource));
+      return;
+    }
 
   surface->wl_subsurface = wl_resource_create (client, &wl_subsurface_interface, wl_resource_get_version (resource), id);
   wl_resource_set_implementation (surface->wl_subsurface, &meta_wayland_wl_subsurface_interface, surface, wl_subsurface_destructor);

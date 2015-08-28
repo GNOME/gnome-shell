@@ -776,11 +776,14 @@ pointer_set_cursor (struct wl_client *client,
 
   if (surface)
     {
-      if (meta_wayland_surface_set_role (surface,
-                                         META_WAYLAND_SURFACE_ROLE_CURSOR,
-                                         resource,
-                                         WL_POINTER_ERROR_ROLE) != 0)
-        return;
+      if (!meta_wayland_surface_assign_role (surface,
+                                             META_WAYLAND_SURFACE_ROLE_CURSOR))
+        {
+          wl_resource_post_error (resource, WL_POINTER_ERROR_ROLE,
+                                  "wl_surface@%d already has a different role",
+                                  wl_resource_get_id (surface_resource));
+          return;
+        }
     }
 
   pointer->hotspot_x = x;
