@@ -1289,59 +1289,72 @@ clutter_grid_layout_set_container (ClutterLayoutManager *self,
 }
 
 static void
-clutter_grid_layout_get_preferred_width (ClutterLayoutManager *self,
+clutter_grid_layout_get_size_for_size (ClutterGridLayout  *self,
+                                       ClutterOrientation  orientation,
+                                       float               size,
+                                       float              *minimum,
+                                       float              *natural)
+{
+  ClutterGridRequest request;
+  ClutterGridLines *lines;
+  float min_size, nat_size;
+
+  request.grid = self;
+  clutter_grid_request_update_attach (&request);
+  clutter_grid_request_count_lines (&request);
+
+  lines = &request.lines[0];
+  lines->lines = g_newa (ClutterGridLine, lines->max - lines->min);
+  memset (lines->lines, 0, (lines->max - lines->min) * sizeof (ClutterGridLine));
+
+  lines = &request.lines[1];
+  lines->lines = g_newa (ClutterGridLine, lines->max - lines->min);
+  memset (lines->lines, 0, (lines->max - lines->min) * sizeof (ClutterGridLine));
+
+  clutter_grid_request_run (&request, 1 - orientation, FALSE);
+  clutter_grid_request_sum (&request, 1 - orientation, &min_size, &nat_size);
+  clutter_grid_request_allocate (&request, 1 - orientation, MAX (size, nat_size));
+
+  clutter_grid_request_run (&request, orientation, TRUE);
+  clutter_grid_request_sum (&request, orientation, minimum, natural);
+}
+
+static void
+clutter_grid_layout_get_preferred_width (ClutterLayoutManager *manager,
                                          ClutterContainer     *container,
                                          gfloat                for_height,
                                          gfloat               *min_width_p,
                                          gfloat               *nat_width_p)
 {
-  ClutterGridLayoutPrivate *priv = CLUTTER_GRID_LAYOUT (self)->priv;
-  ClutterGridRequest request;
-  ClutterGridLines *lines;
+  ClutterGridLayout *self = CLUTTER_GRID_LAYOUT (manager);
 
   if (min_width_p)
     *min_width_p = 0.0f;
   if (nat_width_p)
     *nat_width_p = 0.0f;
 
-  request.grid = CLUTTER_GRID_LAYOUT (self);
-  clutter_grid_request_update_attach (&request);
-  clutter_grid_request_count_lines (&request);
-  lines = &request.lines[priv->orientation];
-  lines->lines = g_newa (ClutterGridLine, lines->max - lines->min);
-  memset (lines->lines, 0, (lines->max - lines->min) * sizeof (ClutterGridLine));
-
-  clutter_grid_request_run (&request, priv->orientation, FALSE);
-  clutter_grid_request_sum (&request, priv->orientation,
-                            min_width_p, nat_width_p);
+  clutter_grid_layout_get_size_for_size (self, CLUTTER_ORIENTATION_HORIZONTAL,
+                                         for_height,
+                                         min_width_p, nat_width_p);
 }
 
 static void
-clutter_grid_layout_get_preferred_height (ClutterLayoutManager *self,
+clutter_grid_layout_get_preferred_height (ClutterLayoutManager *manager,
                                           ClutterContainer     *container,
                                           gfloat                for_width,
                                           gfloat               *min_height_p,
                                           gfloat               *nat_height_p)
 {
-  ClutterGridLayoutPrivate *priv = CLUTTER_GRID_LAYOUT (self)->priv;
-  ClutterGridRequest request;
-  ClutterGridLines *lines;
+  ClutterGridLayout *self = CLUTTER_GRID_LAYOUT (manager);
 
   if (min_height_p)
     *min_height_p = 0.0f;
   if (nat_height_p)
     *nat_height_p = 0.0f;
 
-  request.grid = CLUTTER_GRID_LAYOUT (self);
-  clutter_grid_request_update_attach (&request);
-  clutter_grid_request_count_lines (&request);
-  lines = &request.lines[priv->orientation];
-  lines->lines = g_newa (ClutterGridLine, lines->max - lines->min);
-  memset (lines->lines, 0, (lines->max - lines->min) * sizeof (ClutterGridLine));
-
-  clutter_grid_request_run (&request, priv->orientation, FALSE);
-  clutter_grid_request_sum (&request, priv->orientation,
-                            min_height_p, nat_height_p);
+  clutter_grid_layout_get_size_for_size (self, CLUTTER_ORIENTATION_VERTICAL,
+                                         for_width,
+                                         min_height_p, nat_height_p);
 }
 
 static void
