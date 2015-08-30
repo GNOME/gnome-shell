@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-27 23:42+0300\n"
-"PO-Revision-Date: 2015-08-27 23:49+0300\n"
+"POT-Creation-Date: 2015-08-30 21:15+0300\n"
+"PO-Revision-Date: 2015-08-30 21:16+0300\n"
 "Last-Translator: Yosef Or Boczko <yoseforb@gmail.com>\n"
 "Language-Team: עברית <>\n"
 "Language: he\n"
@@ -506,7 +506,7 @@ msgstr "החלפת הרקע…"
 
 #: ../js/ui/backgroundMenu.js:21
 msgid "Display Settings"
-msgstr "הצגת הגדרות"
+msgstr "הגדרות תצוגה"
 
 #: ../js/ui/backgroundMenu.js:22 ../js/ui/panel.js:650
 #: ../js/ui/status/system.js:366
@@ -1646,7 +1646,7 @@ msgstr "הססמאות אינן תואמות."
 
 #: ../src/shell-keyring-prompt.c:750
 msgid "Password cannot be blank"
-msgstr "הססמה לא יכולה להישאר ריקה"
+msgstr "הססמה אינה יכולה להישאר ריקה"
 
 #: ../src/shell-polkit-authentication-agent.c:346
 msgid "Authentication dialog was dismissed by the user"
