@@ -122,16 +122,21 @@ clutter_stage_gdk_get_geometry (ClutterStageWindow    *stage_window,
 {
   ClutterStageGdk *stage_gdk = CLUTTER_STAGE_GDK (stage_window);
 
-  if (stage_gdk->window != NULL)
+  if (!stage_gdk->foreign_window)
     {
-      geometry->width = gdk_window_get_width (stage_gdk->window);
-      geometry->height = gdk_window_get_height (stage_gdk->window);
+      if (stage_gdk->window != NULL)
+        {
+          geometry->width = gdk_window_get_width (stage_gdk->window);
+          geometry->height = gdk_window_get_height (stage_gdk->window);
+        }
+      else
+        {
+          geometry->width = 640;
+          geometry->height = 480;
+        }
     }
   else
-    {
-      geometry->width = 640;
-      geometry->height = 480;
-    }
+    clutter_stage_window_parent_iface->get_geometry (stage_window, geometry);
 }
 
 static void
