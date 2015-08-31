@@ -288,14 +288,13 @@ clutter_stage_gdk_realize (ClutterStageWindow *stage_window)
         }
 
       clutter_stage_gdk_set_gdk_geometry (stage_gdk);
+      gdk_window_ensure_native (stage_gdk->window);
     }
   else
     {
       width = gdk_window_get_width (stage_gdk->window);
       height = gdk_window_get_height (stage_gdk->window);
     }
-
-  gdk_window_ensure_native (stage_gdk->window);
 
   g_object_set_data (G_OBJECT (stage_gdk->window), "clutter-stage-window", stage_gdk);
 
