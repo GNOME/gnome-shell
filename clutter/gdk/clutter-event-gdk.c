@@ -30,6 +30,7 @@
 #include "clutter-gdk.h"
 #include "clutter-backend-gdk.h"
 #include "clutter-device-manager-gdk.h"
+#include "clutter-stage-gdk.h"
 
 #include "clutter-actor-private.h"
 #include "clutter-backend-private.h"
@@ -271,6 +272,14 @@ clutter_gdk_handle_event (GdkEvent *gdk_event)
         gfloat w, h;
 
         clutter_actor_get_size (CLUTTER_ACTOR (stage), &w, &h);
+
+        /* Notify gdk stage backend of the new position. This is used
+           by foreign stages to reposition themselves on wayland. */
+        _clutter_stage_gdk_notify_configure (CLUTTER_STAGE_GDK (_clutter_stage_get_window (stage)),
+                                             gdk_event->configure.x,
+                                             gdk_event->configure.y,
+                                             gdk_event->configure.width,
+                                             gdk_event->configure.height);
 
         if ((int) w != gdk_event->configure.width ||
             (int) h != gdk_event->configure.height)

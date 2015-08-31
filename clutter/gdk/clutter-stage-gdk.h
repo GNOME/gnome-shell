@@ -50,6 +50,12 @@ struct _ClutterStageGdk
   GdkCursor *blank_cursor;
 
   gboolean foreign_window;
+
+#if defined(GDK_WINDOWING_WAYLAND)
+  struct wl_subcompositor *subcompositor;
+  struct wl_surface *clutter_surface;
+  struct wl_subsurface *subsurface;
+#endif
 };
 
 struct _ClutterStageGdkClass
@@ -73,6 +79,12 @@ struct _ClutterStageGdkClass
    GDK_SCROLL_MASK)
 
 GType _clutter_stage_gdk_get_type (void) G_GNUC_CONST;
+
+void _clutter_stage_gdk_notify_configure (ClutterStageGdk *stage_gdk,
+                                          gint x,
+                                          gint y,
+                                          gint width,
+                                          gint height);
 
 void _clutter_stage_gdk_update_foreign_event_mask (CoglOnscreen *onscreen,
 						   guint32 event_mask,

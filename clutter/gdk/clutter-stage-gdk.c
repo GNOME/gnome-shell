@@ -146,12 +146,6 @@ clutter_stage_gdk_resize (ClutterStageWindow *stage_window,
 {
   ClutterStageGdk *stage_gdk = CLUTTER_STAGE_GDK (stage_window);
 
-  /* No need to resize foreign windows, it should be handled by the
-   * embedding framework.
-   */
-  if (stage_gdk->foreign_window)
-    return;
-
   if (width == 0 || height == 0)
     {
       /* Should not happen, if this turns up we need to debug it and
@@ -164,7 +158,17 @@ clutter_stage_gdk_resize (ClutterStageWindow *stage_window,
 
   CLUTTER_NOTE (BACKEND, "New size received: (%d, %d)", width, height);
 
-  gdk_window_resize (stage_gdk->window, width, height);
+  /* No need to resize foreign windows, it should be handled by the
+   * embedding framework, but on wayland we might need to resize our
+   * own subsurface.
+   */
+  if (!stage_gdk->foreign_window)
+    gdk_window_resize (stage_gdk->window, width, height);
+#if defined(GDK_WINDOWING_WAYLAND)
+  else if (GDK_IS_WAYLAND_WINDOW (stage_gdk->window))
+    cogl_wayland_onscreen_resize (CLUTTER_STAGE_COGL (stage_gdk)->onscreen,
+                                  width, height, 0, 0);
+#endif
 }
 
 static void
@@ -185,7 +189,79 @@ clutter_stage_gdk_unrealize (ClutterStageWindow *stage_window)
       stage_gdk->window = NULL;
     }
 
-  return clutter_stage_window_parent_iface->unrealize (stage_window);
+  clutter_stage_window_parent_iface->unrealize (stage_window);
+
+#if defined(GDK_WINDOWING_WAYLAND)
+  g_clear_pointer (&stage_gdk->subsurface, wl_subsurface_destroy);
+  g_clear_pointer (&stage_gdk->clutter_surface, wl_surface_destroy);
+#endif
+}
+
+#if defined(GDK_WINDOWING_WAYLAND)
+static struct wl_surface *
+clutter_stage_gdk_wayland_surface (ClutterStageGdk *stage_gdk)
+{
+  GdkDisplay *display;
+  struct wl_compositor *compositor;
+  struct wl_surface *parent_surface;
+  struct wl_region *input_region;
+  gint x, y;
+
+  if (!stage_gdk->foreign_window ||
+      gdk_window_get_window_type (stage_gdk->window) != GDK_WINDOW_CHILD)
+    return gdk_wayland_window_get_wl_surface (stage_gdk->window);
+
+  if (stage_gdk->clutter_surface)
+    return stage_gdk->clutter_surface;
+
+  /* On Wayland if we render to a foreign window, we setup our own
+   * surface to not render in the same buffers as the embedding
+   * framework.
+   */
+  display = gdk_display_get_default ();
+  compositor = gdk_wayland_display_get_wl_compositor (display);
+  stage_gdk->clutter_surface = wl_compositor_create_surface (compositor);
+
+  /* Since we run inside GDK, we can let the embedding framework
+   * dispatch the events to Clutter. For that to happen we need to
+   * disable input on our surface. */
+  input_region = wl_compositor_create_region (compositor);
+  wl_region_add (input_region, 0, 0, 0, 0);
+  wl_surface_set_input_region (stage_gdk->clutter_surface, input_region);
+  wl_region_destroy (input_region);
+
+  parent_surface = gdk_wayland_window_get_wl_surface (gdk_window_get_toplevel (stage_gdk->window));
+  stage_gdk->subsurface = wl_subcompositor_get_subsurface (stage_gdk->subcompositor,
+                                                           stage_gdk->clutter_surface,
+                                                           parent_surface);
+
+  gdk_window_get_origin (stage_gdk->window, &x, &y);
+  wl_subsurface_set_position (stage_gdk->subsurface, x, y);
+  wl_subsurface_set_desync (stage_gdk->subsurface);
+
+  return stage_gdk->clutter_surface;
+}
+#endif
+
+void
+_clutter_stage_gdk_notify_configure (ClutterStageGdk *stage_gdk,
+                                     gint x,
+                                     gint y,
+                                     gint width,
+                                     gint height)
+{
+#if defined(GDK_WINDOWING_WAYLAND)
+  if (x < 0 || y < 0 || width < 1 || height < 1)
+    return;
+  if (stage_gdk->foreign_window &&
+      gdk_window_get_window_type (stage_gdk->window) == GDK_WINDOW_CHILD &&
+      stage_gdk->subsurface)
+    {
+      gint rx, ry;
+      gdk_window_get_origin (stage_gdk->window, &rx, &ry);
+      wl_subsurface_set_position (stage_gdk->subsurface, rx, ry);
+    }
+#endif
 }
 
 static gboolean
@@ -320,7 +396,7 @@ clutter_stage_gdk_realize (ClutterStageWindow *stage_window)
   if (GDK_IS_WAYLAND_WINDOW (stage_gdk->window))
     {
       cogl_wayland_onscreen_set_foreign_surface (stage_cogl->onscreen,
-                                                 gdk_wayland_window_get_wl_surface (stage_gdk->window));
+                                                 clutter_stage_gdk_wayland_surface (stage_gdk));
     }
   else
 #endif
@@ -580,10 +656,57 @@ clutter_stage_gdk_class_init (ClutterStageGdkClass *klass)
   gobject_class->dispose = clutter_stage_gdk_dispose;
 }
 
+#if defined(GDK_WINDOWING_WAYLAND)
+static void
+registry_handle_global (void *data,
+                        struct wl_registry *registry,
+                        uint32_t name,
+                        const char *interface,
+                        uint32_t version)
+{
+  ClutterStageGdk *stage_gdk = data;
+
+  if (strcmp (interface, "wl_subcompositor") == 0)
+    {
+      stage_gdk->subcompositor = wl_registry_bind (registry,
+                                                   name,
+                                                   &wl_subcompositor_interface,
+                                                   1);
+    }
+}
+
+static void
+registry_handle_global_remove (void *data,
+                               struct wl_registry *registry,
+                               uint32_t name)
+{
+}
+
+static const struct wl_registry_listener registry_listener = {
+  registry_handle_global,
+  registry_handle_global_remove
+};
+#endif
+
 static void
 clutter_stage_gdk_init (ClutterStageGdk *stage)
 {
-  /* nothing to do here */
+#if defined(GDK_WINDOWING_WAYLAND)
+  {
+    GdkDisplay *gdk_display = gdk_display_get_default ();
+    if (GDK_IS_WAYLAND_DISPLAY (gdk_display))
+      {
+        struct wl_display *display;
+        struct wl_registry *registry;
+
+        display = gdk_wayland_display_get_wl_display (gdk_display);
+        registry = wl_display_get_registry (display);
+        wl_registry_add_listener (registry, &registry_listener, stage);
+
+        wl_display_roundtrip (display);
+      }
+  }
+#endif
 }
 
 static void
