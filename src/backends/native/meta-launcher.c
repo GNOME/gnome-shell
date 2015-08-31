@@ -37,6 +37,7 @@
 #include <unistd.h>
 
 #include <systemd/sd-login.h>
+#include <gudev/gudev.h>
 
 #include "dbus-utils.h"
 #include "meta-dbus-login1.h"
@@ -276,17 +277,95 @@ on_active_changed (Login1Session *session,
   sync_active (self);
 }
 
+static gchar *
+get_primary_gpu_path (const gchar *seat_name)
+{
+  const gchar *subsystems[] = {"drm", NULL};
+  gchar *path = NULL;
+  GList *devices, *tmp;
+
+  GUdevClient *gudev_client = g_udev_client_new (subsystems);
+  GUdevEnumerator *enumerator = g_udev_enumerator_new (gudev_client);
+
+  g_udev_enumerator_add_match_name (enumerator, "card*");
+  g_udev_enumerator_add_match_tag (enumerator, "seat");
+
+  devices = g_udev_enumerator_execute (enumerator);
+  if (!devices)
+    goto out;
+
+  for (tmp = devices; tmp != NULL; tmp = tmp->next)
+    {
+      GUdevDevice *pci_device;
+      GUdevDevice *dev = tmp->data;
+      gint boot_vga;
+      const gchar *device_seat;
+
+      /* filter out devices that are not character device, like card0-VGA-1 */
+      if (g_udev_device_get_device_type (dev) != G_UDEV_DEVICE_TYPE_CHAR)
+        continue;
+
+      device_seat = g_udev_device_get_property (dev, "ID_SEAT");
+      if (!device_seat)
+        {
+          /* when ID_SEAT is not set, it means seat0 */
+          device_seat = "seat0";
+        }
+      else if (g_strcmp0 (device_seat, "seat0") != 0)
+        {
+          /* if the device has been explicitly assigned other seat
+           * than seat0, it is probably the right device to use */
+          path = g_strdup (g_udev_device_get_device_file (dev));
+          break;
+        }
+
+      /* skip devices that do not belong to our seat */
+      if (g_strcmp0 (seat_name, device_seat))
+        continue;
+
+      pci_device = g_udev_device_get_parent_with_subsystem (dev, "pci", NULL);
+      if (!pci_device)
+          continue;
+
+      /* get value of boot_vga attribute or 0 if the device has no boot_vga */
+      boot_vga = g_udev_device_get_sysfs_attr_as_int (pci_device, "boot_vga");
+      g_object_unref (pci_device);
+
+      if (boot_vga == 1)
+        {
+          /* found the boot_vga device */
+          path = g_strdup (g_udev_device_get_device_file (dev));
+          break;
+        }
+    }
+
+  g_list_free_full (devices, g_object_unref);
+
+out:
+  g_object_unref (enumerator);
+  g_object_unref (gudev_client);
+
+  return path;
+}
+
 static void
 get_kms_fd (Login1Session *session_proxy,
+            const gchar *seat_id,
             int *fd_out)
 {
   int major, minor;
   int fd;
+  gchar *path;
   GError *error = NULL;
 
-  /* XXX -- use udev to find the DRM master device */
-  if (!get_device_info_from_path ("/dev/dri/card0", &major, &minor))
-    g_error ("Could not stat /dev/dri/card0: %m");
+  path = get_primary_gpu_path (seat_id);
+  if (!path)
+    g_error ("could not find drm kms device");
+
+  if (!get_device_info_from_path (path, &major, &minor))
+    g_error ("Could not stat %s: %m", path);
+
+  g_free (path);
 
   if (!take_device (session_proxy, major, minor, &fd, NULL, &error))
     report_error_and_die ("Could not open DRM device", error);
@@ -294,11 +373,27 @@ get_kms_fd (Login1Session *session_proxy,
   *fd_out = fd;
 }
 
+static gchar *
+get_seat_id (void)
+{
+  char *session_id, *seat_id = NULL;
+
+  if (sd_pid_get_session (0, &session_id) < 0)
+    return NULL;
+
+  /* on error the seat_id will remain NULL */
+  sd_session_get_seat (session_id, &seat_id);
+  free (session_id);
+
+  return seat_id;
+}
+
 MetaLauncher *
 meta_launcher_new (void)
 {
   MetaLauncher *self = NULL;
   Login1Session *session_proxy;
+  char *seat_id;
   GError *error = NULL;
   int kms_fd;
 
@@ -306,7 +401,12 @@ meta_launcher_new (void)
   if (!login1_session_call_take_control_sync (session_proxy, FALSE, NULL, &error))
     report_error_and_die ("Could not take control", error);
 
-  get_kms_fd (session_proxy, &kms_fd);
+  seat_id = get_seat_id ();
+  if (!seat_id)
+    g_error ("Failed getting seat id");
+
+  get_kms_fd (session_proxy, seat_id, &kms_fd);
+  free (seat_id);
 
   self = g_slice_new0 (MetaLauncher);
   self->session_proxy = session_proxy;
