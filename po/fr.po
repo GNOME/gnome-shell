@@ -20,7 +20,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2015-08-31 19:25+0000\n"
-"PO-Revision-Date: 2015-08-24 18:12+0200\n"
+"PO-Revision-Date: 2015-09-01 11:03+0200\n"
 "Last-Translator: Alexandre Franke <alexandre.franke@gmail.com>\n"
 "Language-Team: français <gnomefr@traduc.org>\n"
 "Language: French\n"
@@ -724,7 +724,7 @@ msgstr "Code PIN requis"
 #: ../js/ui/components/networkAgent.js:340
 #: ../js/ui/components/networkAgent.js:673
 msgid "PIN code is needed for the mobile broadband device"
-msgstr "Un code PIN est nécessaire pour les téléphones mobiles à large bande"
+msgstr "Un code PIN est nécessaire pour les connexions mobiles"
 
 #: ../js/ui/components/networkAgent.js:341
 msgid "PIN: "
@@ -733,7 +733,7 @@ msgstr "PIN : "
 #: ../js/ui/components/networkAgent.js:348
 #: ../js/ui/components/networkAgent.js:679
 msgid "Mobile broadband network password"
-msgstr "Mot de passe du téléphone mobile à large bande"
+msgstr "Mot de passe de la connexion mobile"
 
 #: ../js/ui/components/networkAgent.js:349
 #: ../js/ui/components/networkAgent.js:663
@@ -1305,7 +1305,7 @@ msgstr "Paramètres filaire"
 
 #: ../js/ui/status/network.js:545 ../js/ui/status/network.js:624
 msgid "Mobile Broadband Settings"
-msgstr "Paramètres téléphonie mobile à large bande"
+msgstr "Paramètres connexion mobile"
 
 #. Translators: %s is a network identifier */
 #: ../js/ui/status/network.js:588 ../js/ui/status/network.js:1305
