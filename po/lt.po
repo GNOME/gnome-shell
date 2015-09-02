@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: clutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-08-06 15:14+0000\n"
-"PO-Revision-Date: 2015-08-06 22:54+0300\n"
+"POT-Creation-Date: 2015-09-02 15:15+0000\n"
+"PO-Revision-Date: 2015-09-02 21:12+0300\n"
 "Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lietuvių <gnome-lt@lists.akl.lt>\n"
 "Language: lt\n"
@@ -45,7 +45,7 @@ msgstr "Padėtis"
 msgid "The position of the origin of the actor"
 msgstr "Aktoriaus originali padėtis"
 
-#: ../clutter/clutter-actor.c:6370 ../clutter/clutter-canvas.c:247
+#: ../clutter/clutter-actor.c:6370 ../clutter/clutter-canvas.c:248
 #: ../clutter/clutter-grid-layout.c:1239
 #: ../clutter/deprecated/clutter-behaviour-ellipse.c:474
 msgid "Width"
@@ -55,7 +55,7 @@ msgstr "Plotis"
 msgid "Width of the actor"
 msgstr "Aktoriaus plotis"
 
-#: ../clutter/clutter-actor.c:6389 ../clutter/clutter-canvas.c:263
+#: ../clutter/clutter-actor.c:6389 ../clutter/clutter-canvas.c:264
 #: ../clutter/clutter-grid-layout.c:1246
 #: ../clutter/deprecated/clutter-behaviour-ellipse.c:490
 msgid "Height"
@@ -848,12 +848,12 @@ msgid "Whether the layout should be vertical, rather than horizontal"
 msgstr "Ar išdėstymas turi būti vertikalus, užuot buvęs horizontalus"
 
 #: ../clutter/clutter-box-layout.c:1363 ../clutter/clutter-flow-layout.c:927
-#: ../clutter/clutter-grid-layout.c:1549
+#: ../clutter/clutter-grid-layout.c:1562
 msgid "Orientation"
 msgstr "Orientacija"
 
 #: ../clutter/clutter-box-layout.c:1364 ../clutter/clutter-flow-layout.c:928
-#: ../clutter/clutter-grid-layout.c:1550
+#: ../clutter/clutter-grid-layout.c:1563
 msgid "The orientation of the layout"
 msgstr "Išdėstymo orientacija"
 
@@ -862,8 +862,11 @@ msgid "Homogeneous"
 msgstr "Vienalytis"
 
 #: ../clutter/clutter-box-layout.c:1381
+#| msgid ""
+#| "Whether the layout should be homogeneous, i.e. all childs get the same "
+#| "size"
 msgid ""
-"Whether the layout should be homogeneous, i.e. all childs get the same size"
+"Whether the layout should be homogeneous, i.e. all children get the same size"
 msgstr ""
 "Ar išdėstymas turi būti vienalytis, t. y. visi vaikai yra to paties dydžio"
 
@@ -929,27 +932,27 @@ msgstr "Kontrastas"
 msgid "The contrast change to apply"
 msgstr "Taikomas kontrasto pakeitimas"
 
-#: ../clutter/clutter-canvas.c:248
+#: ../clutter/clutter-canvas.c:249
 msgid "The width of the canvas"
 msgstr "Piešimo paviršiaus plotis"
 
-#: ../clutter/clutter-canvas.c:264
+#: ../clutter/clutter-canvas.c:265
 msgid "The height of the canvas"
 msgstr "Piešimo paviršiaus aukštis"
 
-#: ../clutter/clutter-canvas.c:283
+#: ../clutter/clutter-canvas.c:284
 msgid "Scale Factor Set"
 msgstr "Skalės faktorius nustatytas"
 
-#: ../clutter/clutter-canvas.c:284
+#: ../clutter/clutter-canvas.c:285
 msgid "Whether the scale-factor property is set"
 msgstr "Ar skalės faktoriaus savybė yra nustatyta"
 
-#: ../clutter/clutter-canvas.c:305
+#: ../clutter/clutter-canvas.c:306
 msgid "Scale Factor"
 msgstr "Skalės faktorius"
 
-#: ../clutter/clutter-canvas.c:306
+#: ../clutter/clutter-canvas.c:307
 msgid "The scaling factor for the surface"
 msgstr "Paviršiaus skalės faktorius"
 
@@ -1209,40 +1212,40 @@ msgstr "Vaiko apimamų stulpelių skaičius"
 msgid "The number of rows that a child spans"
 msgstr "Vaiko apimamų eilučių skaičius"
 
-#: ../clutter/clutter-grid-layout.c:1564
+#: ../clutter/clutter-grid-layout.c:1577
 msgid "Row spacing"
 msgstr "Eilučių tarpai"
 
-#: ../clutter/clutter-grid-layout.c:1565
+#: ../clutter/clutter-grid-layout.c:1578
 msgid "The amount of space between two consecutive rows"
 msgstr "Vietos kiekis tarp dviejų gretimų eilučių"
 
-#: ../clutter/clutter-grid-layout.c:1578
+#: ../clutter/clutter-grid-layout.c:1591
 msgid "Column spacing"
 msgstr "Stulpelių tarpai"
 
-#: ../clutter/clutter-grid-layout.c:1579
+#: ../clutter/clutter-grid-layout.c:1592
 msgid "The amount of space between two consecutive columns"
 msgstr "Tarpai tarp gretimų stulpelių"
 
-#: ../clutter/clutter-grid-layout.c:1593
+#: ../clutter/clutter-grid-layout.c:1606
 msgid "Row Homogeneous"
 msgstr "Eilutės vienalyčios"
 
-#: ../clutter/clutter-grid-layout.c:1594
+#: ../clutter/clutter-grid-layout.c:1607
 msgid "If TRUE, the rows are all the same height"
 msgstr "Jei TEIGIAMA, visos eilutės yra to paties aukščio"
 
-#: ../clutter/clutter-grid-layout.c:1607
+#: ../clutter/clutter-grid-layout.c:1620
 msgid "Column Homogeneous"
 msgstr "Stulpeliai vienalyčiai"
 
-#: ../clutter/clutter-grid-layout.c:1608
+#: ../clutter/clutter-grid-layout.c:1621
 msgid "If TRUE, the columns are all the same width"
 msgstr "Jei TEIGIAMA, visi stulpeliai yra to paties pločio"
 
-#: ../clutter/clutter-image.c:273 ../clutter/clutter-image.c:341
-#: ../clutter/clutter-image.c:434
+#: ../clutter/clutter-image.c:238 ../clutter/clutter-image.c:306
+#: ../clutter/clutter-image.c:399
 msgid "Unable to load image data"
 msgstr "Nepavyko įkelti paveikslėlio duomenų"
 
@@ -2669,7 +2672,6 @@ msgstr "YUV tekstūros nepalaikomos"
 
 #: ../clutter/deprecated/clutter-texture.c:1776
 #, c-format
-#| msgid "YUV textures are not supported"
 msgid "YUV2 textures are not supported"
 msgstr "YUV2 tekstūros nepalaikomos"
 
