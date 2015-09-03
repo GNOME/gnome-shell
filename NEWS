@@ -1,3 +1,19 @@
+3.17.91
+=======
+* Fix login screen spinner causing wakeups while VT-switched away
+  [Ray, Rui; #753891]
+* Fix scrolling of user list on login screen [Florian; #754525]
+
+Contributors:
+  Piotr Drąg, Rui Matos, Florian Müllner, Ray Strode
+
+Translations:
+  Dušan Kazik [sk], Jordi Mas [ca], Aurimas Černius [lt], Stas Solovey [ru],
+  Piotr Drąg [pl], Pedro Albuquerque [pt], Daniel Mustieles [es],
+  Chao-Hsiung Liao [zh_TW], Muhammet Kara [tr], Fran Dieguez [gl],
+  Hannie Dumoleyn [nl], Yosef Or Boczko [he], Tom Tryfonidis [el],
+  A S Alam [pa], Balázs Úr [hu], Alexandre Franke [fr], Frédéric Péters [fr]
+
 3.17.90
 =======
 * Avoid caret/focus viewport changes during pointer movement [Rui; #752138]
