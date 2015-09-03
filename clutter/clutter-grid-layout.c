@@ -1397,7 +1397,7 @@ clutter_grid_layout_allocate (ClutterLayoutManager   *layout,
                               ClutterAllocationFlags  flags)
 {
   ClutterGridLayout *self = CLUTTER_GRID_LAYOUT (layout);
-  ClutterGridLayoutPrivate *priv = self->priv;
+  ClutterOrientation orientation;
   ClutterGridRequest request;
   ClutterGridLines *lines;
   ClutterActorIter iter;
@@ -1414,10 +1414,16 @@ clutter_grid_layout_allocate (ClutterLayoutManager   *layout,
   lines->lines = g_newa (ClutterGridLine, lines->max - lines->min);
   memset (lines->lines, 0, (lines->max - lines->min) * sizeof (ClutterGridLine));
 
-  clutter_grid_request_run (&request, 1 - priv->orientation, FALSE);
-  clutter_grid_request_allocate (&request, 1 - priv->orientation, GET_SIZE (allocation, 1 - priv->orientation));
-  clutter_grid_request_run (&request, priv->orientation, TRUE);
-  clutter_grid_request_allocate (&request, priv->orientation, GET_SIZE (allocation, priv->orientation));
+  if (clutter_actor_get_request_mode (CLUTTER_ACTOR (container)) == CLUTTER_REQUEST_WIDTH_FOR_HEIGHT)
+    orientation = CLUTTER_ORIENTATION_HORIZONTAL;
+  else
+    orientation = CLUTTER_ORIENTATION_VERTICAL;
+
+  clutter_grid_request_run (&request, 1 - orientation, FALSE);
+  clutter_grid_request_allocate (&request, 1 - orientation, GET_SIZE (allocation, 1 - orientation));
+  clutter_grid_request_run (&request, orientation, TRUE);
+
+  clutter_grid_request_allocate (&request, orientation, GET_SIZE (allocation, orientation));
 
   clutter_grid_request_position (&request, 0);
   clutter_grid_request_position (&request, 1);
