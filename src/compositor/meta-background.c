@@ -22,6 +22,8 @@
 #include "meta-background-private.h"
 #include "cogl-utils.h"
 
+#include <string.h>
+
 enum
 {
   CHANGED,
@@ -70,6 +72,8 @@ enum
 };
 
 G_DEFINE_TYPE (MetaBackground, meta_background, G_TYPE_OBJECT)
+
+static gboolean texture_has_alpha (CoglTexture *texture);
 
 static GSList *all_backgrounds = NULL;
 
@@ -474,7 +478,7 @@ get_texture_area (MetaBackground          *self,
     }
 }
 
-static void
+static gboolean
 draw_texture (MetaBackground        *self,
               CoglFramebuffer       *framebuffer,
               CoglPipeline          *pipeline,
@@ -483,6 +487,7 @@ draw_texture (MetaBackground        *self,
 {
   MetaBackgroundPrivate *priv = self->priv;
   cairo_rectangle_int_t texture_area;
+  gboolean bare_region_visible;
 
   get_texture_area (self, monitor_area, texture, &texture_area);
 
@@ -503,6 +508,9 @@ draw_texture (MetaBackground        *self,
                                                 - texture_area.y / (float)texture_area.height,
                                                 (monitor_area->width - texture_area.x) / (float)texture_area.width,
                                                 (monitor_area->height - texture_area.y) / (float)texture_area.height);
+
+      bare_region_visible = texture_has_alpha (texture);
+
       /* Draw just the texture */
       break;
     case G_DESKTOP_BACKGROUND_STYLE_CENTERED:
@@ -513,11 +521,16 @@ draw_texture (MetaBackground        *self,
                                                 texture_area.x + texture_area.width,
                                                 texture_area.y + texture_area.height,
                                                 0, 0, 1.0, 1.0);
+      bare_region_visible = texture_has_alpha (texture) || memcmp (&texture_area, monitor_area, sizeof (cairo_rectangle_int_t)) != 0;
+      break;
     case G_DESKTOP_BACKGROUND_STYLE_NONE:
+      bare_region_visible = TRUE;
       break;
     default:
       g_return_if_reached();
     }
+
+  return bare_region_visible;
 }
 
 static void
@@ -748,6 +761,7 @@ meta_background_get_texture (MetaBackground         *self,
   if (monitor->dirty)
     {
       CoglError *catch_error = NULL;
+      gboolean bare_region_visible = FALSE;
 
       if (monitor->texture == NULL)
         {
@@ -783,9 +797,9 @@ meta_background_get_texture (MetaBackground         *self,
           cogl_pipeline_set_layer_texture (pipeline, 0, texture2);
           cogl_pipeline_set_layer_wrap_mode (pipeline, 0, get_wrap_mode (priv->style));
 
-          draw_texture (self,
-                        monitor->fbo, pipeline,
-                        texture2, &monitor_area);
+          bare_region_visible = draw_texture (self,
+                                              monitor->fbo, pipeline,
+                                              texture2, &monitor_area);
 
           cogl_object_unref (pipeline);
         }
@@ -807,15 +821,14 @@ meta_background_get_texture (MetaBackground         *self,
           cogl_pipeline_set_layer_texture (pipeline, 0, texture1);
           cogl_pipeline_set_layer_wrap_mode (pipeline, 0, get_wrap_mode (priv->style));
 
-          draw_texture (self,
-                        monitor->fbo, pipeline,
-                        texture1, &monitor_area);
+          bare_region_visible = bare_region_visible || draw_texture (self,
+                                                                     monitor->fbo, pipeline,
+                                                                     texture1, &monitor_area);
 
           cogl_object_unref (pipeline);
         }
 
-      if (!((texture2 != NULL && priv->blend_factor == 1.0 && !texture_has_alpha (texture2)) ||
-            (texture1 != NULL && !texture_has_alpha (texture1))))
+      if (bare_region_visible)
         {
           CoglPipeline *pipeline = create_pipeline (PIPELINE_OVER_REVERSE);
 
