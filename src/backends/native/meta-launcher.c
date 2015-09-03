@@ -53,26 +53,50 @@ struct _MetaLauncher
   gboolean session_active;
 };
 
+static void
+report_error_and_die (const char *prefix,
+                      GError *error)
+{
+  /* if a function returns due to g_return_val_if_fail,
+   * then the error may not be set */
+  if (error)
+    g_error ("%s: %s", prefix, error->message);
+  else
+    g_error (prefix);
+
+  /* the error is not freed, but it is ok as g_error aborts the process */
+}
+
 static Login1Session *
 get_session_proxy (GCancellable *cancellable)
 {
   Login1Session *session_proxy;
+  GError *error = NULL;
+
   session_proxy = login1_session_proxy_new_for_bus_sync (G_BUS_TYPE_SYSTEM,
                                                          G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START,
                                                          "org.freedesktop.login1",
                                                          "/org/freedesktop/login1/session/self",
-                                                         cancellable, NULL);
+                                                         cancellable, &error);
+  if (!session_proxy)
+    report_error_and_die ("Failed getting session proxy", error);
+
   return session_proxy;
 }
 
 static Login1Seat *
 get_seat_proxy (GCancellable *cancellable)
 {
-  return login1_seat_proxy_new_for_bus_sync (G_BUS_TYPE_SYSTEM,
-                                             G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START,
-                                             "org.freedesktop.login1",
-                                             "/org/freedesktop/login1/seat/self",
-                                             cancellable, NULL);
+  GError *error = NULL;
+  Login1Seat *seat = login1_seat_proxy_new_for_bus_sync (G_BUS_TYPE_SYSTEM,
+                                                         G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START,
+                                                         "org.freedesktop.login1",
+                                                         "/org/freedesktop/login1/seat/self",
+                                                         cancellable, &error);
+  if (!seat)
+    report_error_and_die ("Could not get seat proxy", error);
+
+  return seat;
 }
 
 static void
@@ -252,7 +276,7 @@ on_active_changed (Login1Session *session,
   sync_active (self);
 }
 
-static gboolean
+static void
 get_kms_fd (Login1Session *session_proxy,
             int *fd_out)
 {
@@ -262,21 +286,12 @@ get_kms_fd (Login1Session *session_proxy,
 
   /* XXX -- use udev to find the DRM master device */
   if (!get_device_info_from_path ("/dev/dri/card0", &major, &minor))
-    {
-      g_warning ("Could not stat /dev/dri/card0: %m");
-      return FALSE;
-    }
+    g_error ("Could not stat /dev/dri/card0: %m");
 
   if (!take_device (session_proxy, major, minor, &fd, NULL, &error))
-    {
-      g_warning ("Could not open DRM device: %s\n", error->message);
-      g_error_free (error);
-      return FALSE;
-    }
+    report_error_and_die ("Could not open DRM device", error);
 
   *fd_out = fd;
-
-  return TRUE;
 }
 
 MetaLauncher *
@@ -289,17 +304,12 @@ meta_launcher_new (void)
 
   session_proxy = get_session_proxy (NULL);
   if (!login1_session_call_take_control_sync (session_proxy, FALSE, NULL, &error))
-    {
-      g_warning ("Could not take control: %s", error->message);
-      g_error_free (error);
-      goto out;
-    }
+    report_error_and_die ("Could not take control", error);
 
-  if (!get_kms_fd (session_proxy, &kms_fd))
-    goto out;
+  get_kms_fd (session_proxy, &kms_fd);
 
   self = g_slice_new0 (MetaLauncher);
-  self->session_proxy = g_object_ref (session_proxy);
+  self->session_proxy = session_proxy;
   self->seat_proxy = get_seat_proxy (NULL);
 
   self->session_active = TRUE;
@@ -310,9 +320,6 @@ meta_launcher_new (void)
                                       self);
 
   g_signal_connect (self->session_proxy, "notify::active", G_CALLBACK (on_active_changed), self);
-
-out:
-  g_object_unref (session_proxy);
 
   return self;
 }
