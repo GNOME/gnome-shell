@@ -796,8 +796,7 @@ meta_background_get_texture (MetaBackground         *self,
                                     0.0, 0.0, 0.0, 0.0);
         }
 
-      if (texture1 != NULL &&
-          !(texture2 != NULL && priv->blend_factor == 1.0 && !texture_has_alpha (texture2)))
+      if (texture1 != NULL && priv->blend_factor != 1.0)
         {
           CoglPipeline *pipeline = create_pipeline (PIPELINE_ADD);
           cogl_pipeline_set_color4f (pipeline,
