@@ -1,3 +1,14 @@
+3.17.91
+=======
+* Send error on pointer-gesture protocol version mismatch [Jonas; #753855]
+* Misc. cleanups [Jonas; #744932]
+
+Contributors:
+  Jonas Ådahl
+
+Translations:
+  Chao-Hsiung Liao [zh_TW], Piotr Drąg [pl]
+
 3.17.90
 =======
 * Fix glitch with some fullscreen apps [Rui; #753020]
