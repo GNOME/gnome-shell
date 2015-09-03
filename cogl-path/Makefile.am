@@ -11,31 +11,31 @@ EXTRA_DIST =
 
 # tesselator sources
 cogl_tesselator_sources = \
-	$(srcdir)/tesselator/dict-list.h 	\
-	$(srcdir)/tesselator/dict.c 		\
-	$(srcdir)/tesselator/dict.h 		\
-	$(srcdir)/tesselator/geom.c 		\
-	$(srcdir)/tesselator/geom.h 		\
-	$(srcdir)/tesselator/gluos.h 		\
-	$(srcdir)/tesselator/memalloc.h 	\
-	$(srcdir)/tesselator/mesh.c 		\
-	$(srcdir)/tesselator/mesh.h 		\
-	$(srcdir)/tesselator/normal.c 		\
-	$(srcdir)/tesselator/normal.h 		\
-	$(srcdir)/tesselator/priorityq-heap.h 	\
-	$(srcdir)/tesselator/priorityq-sort.h 	\
-	$(srcdir)/tesselator/priorityq.c 	\
-	$(srcdir)/tesselator/priorityq.h 	\
-	$(srcdir)/tesselator/render.c 		\
-	$(srcdir)/tesselator/render.h 		\
-	$(srcdir)/tesselator/sweep.c 		\
-	$(srcdir)/tesselator/sweep.h 		\
-	$(srcdir)/tesselator/tess.c 		\
-	$(srcdir)/tesselator/tess.h 		\
-	$(srcdir)/tesselator/tesselator.h 	\
-	$(srcdir)/tesselator/tessmono.c 	\
-	$(srcdir)/tesselator/tessmono.h 	\
-	$(srcdir)/tesselator/GL/glu.h 		\
+	tesselator/dict-list.h 	\
+	tesselator/dict.c 		\
+	tesselator/dict.h 		\
+	tesselator/geom.c 		\
+	tesselator/geom.h 		\
+	tesselator/gluos.h 		\
+	tesselator/memalloc.h 	\
+	tesselator/mesh.c 		\
+	tesselator/mesh.h 		\
+	tesselator/normal.c 		\
+	tesselator/normal.h 		\
+	tesselator/priorityq-heap.h 	\
+	tesselator/priorityq-sort.h 	\
+	tesselator/priorityq.c 	\
+	tesselator/priorityq.h 	\
+	tesselator/render.c 		\
+	tesselator/render.h 		\
+	tesselator/sweep.c 		\
+	tesselator/sweep.h 		\
+	tesselator/tess.c 		\
+	tesselator/tess.h 		\
+	tesselator/tesselator.h 	\
+	tesselator/tessmono.c 	\
+	tesselator/tessmono.h 	\
+	tesselator/GL/glu.h 		\
 	$(NULL)
 
 source_c = \
@@ -46,14 +46,14 @@ source_c = \
 	$(NULL)
 
 EXTRA_DIST += \
-	$(srcdir)/tesselator/README 		\
-	$(srcdir)/tesselator/priorityq-heap.c	\
-	$(srcdir)/cogl-path.symbols		\
+	tesselator/README 		\
+	tesselator/priorityq-heap.c	\
+	cogl-path.symbols		\
 	$(NULL)
 
 source_1_x_h = \
-	$(srcdir)/cogl-path-types.h \
-	$(srcdir)/cogl1-path-functions.h \
+	cogl-path-types.h \
+	cogl1-path-functions.h \
 	$(NULL)
 
 source_h = \

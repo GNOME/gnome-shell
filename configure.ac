@@ -117,8 +117,7 @@ AC_SUBST([MIRCLIENT_REQ_VERSION], [mirclient_req_version])
 # want to know if the user specified custom cflags or not.
 cflags_set=${CFLAGS+set}
 
-AM_INIT_AUTOMAKE([1.11 foreign -Wno-portability no-define no-dist-gzip
-                  dist-xz tar-ustar])
+AM_INIT_AUTOMAKE([1.14 foreign -Wno-portability no-define no-dist-gzip dist-xz tar-ustar subdir-objects])
 AM_SILENT_RULES([yes])
 
 AH_BOTTOM([#include "config-custom.h"])

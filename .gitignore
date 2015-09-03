@@ -8,6 +8,7 @@ compile
 *.pc
 .deps
 .libs
+.dirstamp
 *.o
 *.lo
 *.la

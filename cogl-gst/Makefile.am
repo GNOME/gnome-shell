@@ -42,7 +42,7 @@ cogl_gstheadersdir = $(includedir)/cogl/cogl-gst
 cogl_gstheaders_HEADERS = $(source_h)
 
 plugin_source_c = \
-	$(srcdir)/cogl-gst-plugin.c \
+	cogl-gst-plugin.c \
 	$(NULL)
 
 libgstcogl_la_SOURCES =	\
