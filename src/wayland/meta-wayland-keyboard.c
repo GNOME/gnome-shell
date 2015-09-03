@@ -485,7 +485,8 @@ meta_wayland_keyboard_update_key_state (MetaWaylandKeyboard *keyboard,
 {
   gboolean mods_changed = FALSE;
 
-  for (gint i = offset; i < key_vector_len * 8; i++)
+  int i;
+  for (i = offset; i < key_vector_len * 8; i++)
     {
       gboolean set = (key_vector[i/8] & (1 << (i % 8))) != 0;
 
