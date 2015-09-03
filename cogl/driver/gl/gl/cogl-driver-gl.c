@@ -103,9 +103,9 @@ _cogl_driver_pixel_format_to_gl (CoglContext *context,
                                  GLenum *out_gltype)
 {
   CoglPixelFormat required_format;
-  GLenum glintformat;
+  GLenum glintformat = 0;
   GLenum glformat = 0;
-  GLenum gltype;
+  GLenum gltype = 0;
 
   required_format = format;
 
