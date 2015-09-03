@@ -375,7 +375,8 @@ MAINTAINER_COMPILER_FLAGS="-Wall -Wcast-align -Wformat -Wformat-security
                            -Werror=uninitialized -Werror=no-strict-aliasing
                            -Werror=empty-body -Werror=init-self -Werror=undef
                            -Werror=declaration-after-statement -Werror=vla
-                           -Werror=pointer-arith -Werror=missing-declarations"
+                           -Werror=pointer-arith -Werror=missing-declarations
+                           -Werror=maybe-uninitialized"
 
 AS_CASE(
   [$enable_maintainer_flags],
