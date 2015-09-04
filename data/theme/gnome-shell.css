@@ -408,9 +408,9 @@ StScrollBar {
   spacing-rows: 15px;
   spacing-columns: 1em; }
 
-/* Popvers/Menus */
+/* Popovers/Menus */
 .popup-menu {
-  min-width: 200px; }
+  min-width: 15em; }
   .popup-menu .popup-sub-menu {
     background-color: #343a3a;
     box-shadow: inset 0 -1px 0px #282c2c; }
@@ -752,7 +752,7 @@ StScrollBar {
 
 /* Message list */
 .message-list {
-  width: 420px; }
+  width: 31.5em; }
 
 .message-list-sections {
   spacing: 1.5em; }
@@ -823,7 +823,7 @@ StScrollBar {
     color: transparent; }
 
 .aggregate-menu {
-  min-width: 280px; }
+  min-width: 21em; }
   .aggregate-menu .popup-menu-icon {
     padding: 0 4px; }
 
