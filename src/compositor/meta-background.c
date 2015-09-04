@@ -527,7 +527,7 @@ draw_texture (MetaBackground        *self,
       bare_region_visible = TRUE;
       break;
     default:
-      g_return_if_reached();
+      g_return_val_if_reached(FALSE);
     }
 
   return bare_region_visible;
