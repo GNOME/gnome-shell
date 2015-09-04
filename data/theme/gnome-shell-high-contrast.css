@@ -808,9 +808,12 @@ StScrollBar {
   padding: 8px;
   font-size: .9em; }
 
-.system-switch-user-submenu-icon {
-  icon-size: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.4); }
+.system-switch-user-submenu-icon.user-icon {
+  icon-size: 20px;
+  padding: 0 2px; }
+.system-switch-user-submenu-icon.default-icon {
+  icon-size: 16px;
+  padding: 0 4px; }
 
 #appMenu {
   spinner-image: url("resource:///org/gnome/shell/theme/process-working.svg");
