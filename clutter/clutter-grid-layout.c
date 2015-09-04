@@ -1749,7 +1749,12 @@ clutter_grid_layout_attach_next_to (ClutterGridLayout   *layout,
  * @layout: a #ClutterGridLayout
  * @orientation: the orientation of the #ClutterGridLayout
  *
- * Sets the orientation of the @layout
+ * Sets the orientation of the @layout.
+ *
+ * #ClutterGridLayout uses the orientation as a hint when adding
+ * children to the #ClutterActor using it as a layout manager via
+ * clutter_actor_add_child(); changing this value will not have
+ * any effect on children that are already part of the layout.
  *
  * Since: 1.12
  */
