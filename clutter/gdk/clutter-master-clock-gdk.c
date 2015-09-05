@@ -385,11 +385,12 @@ clutter_master_clock_gdk_listen_to_stage (ClutterMasterClockGdk *master_clock,
 }
 
 static void
-clutter_master_clock_gdk_stage_realized (ClutterStage          *stage,
-                                         GParamSpec            *spec,
-                                         ClutterMasterClockGdk *master_clock)
+clutter_master_clock_gdk_stage_visibility (ClutterStage          *stage,
+                                           GParamSpec            *spec,
+                                           ClutterMasterClockGdk *master_clock)
 {
-  if (clutter_actor_is_realized (CLUTTER_ACTOR (stage)))
+  ClutterActor *actor = CLUTTER_ACTOR (stage);
+  if (clutter_actor_is_mapped (actor))
     clutter_master_clock_gdk_listen_to_stage (master_clock, stage);
   else
     clutter_master_clock_gdk_remove_stage_clock (master_clock, stage);
@@ -400,11 +401,11 @@ clutter_master_clock_gdk_stage_added (ClutterStageManager   *manager,
                                       ClutterStage          *stage,
                                       ClutterMasterClockGdk *master_clock)
 {
-  g_signal_connect (stage, "notify::realized",
-                    G_CALLBACK (clutter_master_clock_gdk_stage_realized),
+  g_signal_connect (stage, "notify::mapped",
+                    G_CALLBACK (clutter_master_clock_gdk_stage_visibility),
                     master_clock);
 
-  clutter_master_clock_gdk_listen_to_stage (master_clock, stage);
+  clutter_master_clock_gdk_stage_visibility (stage, NULL, master_clock);
 }
 
 static void
@@ -415,7 +416,7 @@ clutter_master_clock_gdk_stage_removed (ClutterStageManager   *manager,
   clutter_master_clock_gdk_remove_stage_clock (master_clock, stage);
 
   g_signal_handlers_disconnect_by_func (stage,
-                                        clutter_master_clock_gdk_stage_realized,
+                                        clutter_master_clock_gdk_stage_visibility,
                                         master_clock);
 }
 
