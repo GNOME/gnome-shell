@@ -56,22 +56,12 @@ struct _MetaLauncher
 static Login1Session *
 get_session_proxy (GCancellable *cancellable)
 {
-  char *proxy_path;
-  char *session_id;
   Login1Session *session_proxy;
-
-  if (sd_pid_get_session (getpid (), &session_id) < 0)
-    return NULL;
-
-  proxy_path = get_escaped_dbus_path ("/org/freedesktop/login1/session", session_id);
-
   session_proxy = login1_session_proxy_new_for_bus_sync (G_BUS_TYPE_SYSTEM,
                                                          G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START,
                                                          "org.freedesktop.login1",
-                                                         proxy_path,
+                                                         "/org/freedesktop/login1/session/self",
                                                          cancellable, NULL);
-  free (proxy_path);
-
   return session_proxy;
 }
 
