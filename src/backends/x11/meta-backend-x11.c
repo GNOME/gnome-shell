@@ -40,8 +40,10 @@
 #include "meta-idle-monitor-xsync.h"
 #include "meta-monitor-manager-xrandr.h"
 #include "backends/meta-monitor-manager-dummy.h"
-#include "wayland/meta-wayland.h"
 #include "meta-cursor-renderer-x11.h"
+#ifdef HAVE_WAYLAND
+#include "wayland/meta-wayland.h"
+#endif
 
 #include <meta/util.h>
 #include "display-private.h"
@@ -272,6 +274,7 @@ handle_host_xevent (MetaBackend *backend,
 
   if (priv->mode == META_BACKEND_X11_MODE_NESTED && event->type == FocusIn)
     {
+#ifdef HAVE_WAYLAND
       Window xwin = meta_backend_x11_get_xwindow(x11);
       XEvent xev;
 
@@ -283,6 +286,9 @@ handle_host_xevent (MetaBackend *backend,
           MetaWaylandCompositor *compositor = meta_wayland_compositor_get_default ();
           meta_wayland_compositor_update_key_state (compositor, xev.xkeymap.key_vector, 32, 8);
         }
+#else
+      g_assert_not_reached ();
+#endif
     }
 
   if (event->type == (priv->xsync_event_base + XSyncAlarmNotify))
