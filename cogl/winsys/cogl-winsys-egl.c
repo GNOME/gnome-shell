@@ -676,7 +676,9 @@ _cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
       /* Cogl always needs a valid context bound to something so if we
        * are destroying the onscreen that is currently bound we'll
        * switch back to the dummy drawable. */
-      if (egl_display->dummy_surface != EGL_NO_SURFACE &&
+      if ((egl_display->dummy_surface != EGL_NO_SURFACE ||
+           (egl_renderer->private_features &
+            COGL_EGL_WINSYS_FEATURE_SURFACELESS_CONTEXT) != 0) &&
           (egl_display->current_draw_surface == egl_onscreen->egl_surface ||
            egl_display->current_read_surface == egl_onscreen->egl_surface))
         {
