@@ -328,9 +328,7 @@ meta_backend_native_init (MetaBackendNative *native)
 {
   MetaBackendNativePrivate *priv = meta_backend_native_get_instance_private (native);
 
-  /* We're a display server, so start talking to weston-launch. */
   priv->launcher = meta_launcher_new ();
-
   priv->barrier_manager = meta_barrier_manager_native_new ();
 
   priv->up_client = up_client_new ();
