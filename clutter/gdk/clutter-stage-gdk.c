@@ -141,6 +141,12 @@ clutter_stage_gdk_resize (ClutterStageWindow *stage_window,
 {
   ClutterStageGdk *stage_gdk = CLUTTER_STAGE_GDK (stage_window);
 
+  /* No need to resize foreign windows, it should be handled by the
+   * embedding framework.
+   */
+  if (stage_gdk->foreign_window)
+    return;
+
   if (width == 0 || height == 0)
     {
       /* Should not happen, if this turns up we need to debug it and
@@ -350,7 +356,7 @@ clutter_stage_gdk_set_fullscreen (ClutterStageWindow *stage_window,
   if (stage == NULL || CLUTTER_ACTOR_IN_DESTRUCTION (stage))
     return;
 
-  if (stage_gdk->window == NULL)
+  if (stage_gdk->window == NULL || stage_gdk->foreign_window)
     return;
 
   CLUTTER_NOTE (BACKEND, "%ssetting fullscreen", is_fullscreen ? "" : "un");
@@ -393,7 +399,7 @@ clutter_stage_gdk_set_title (ClutterStageWindow *stage_window,
 {
   ClutterStageGdk *stage_gdk = CLUTTER_STAGE_GDK (stage_window);
 
-  if (stage_gdk->window == NULL)
+  if (stage_gdk->window == NULL || stage_gdk->foreign_window)
     return;
 
   gdk_window_set_title (stage_gdk->window, title);
@@ -406,7 +412,7 @@ clutter_stage_gdk_set_user_resizable (ClutterStageWindow *stage_window,
   ClutterStageGdk *stage_gdk = CLUTTER_STAGE_GDK (stage_window);
   GdkWMFunction function;
 
-  if (stage_gdk->window == NULL)
+  if (stage_gdk->window == NULL || stage_gdk->foreign_window)
     return;
 
   function = GDK_FUNC_MOVE | GDK_FUNC_MINIMIZE | GDK_FUNC_CLOSE;
@@ -424,7 +430,7 @@ clutter_stage_gdk_set_accept_focus (ClutterStageWindow *stage_window,
 {
   ClutterStageGdk *stage_gdk = CLUTTER_STAGE_GDK (stage_window);
 
-  if (stage_gdk->window == NULL)
+  if (stage_gdk->window == NULL || stage_gdk->foreign_window)
     return;
 
   gdk_window_set_accept_focus (stage_gdk->window, accept_focus);
@@ -440,10 +446,14 @@ clutter_stage_gdk_show (ClutterStageWindow *stage_window,
 
   clutter_actor_map (CLUTTER_ACTOR (CLUTTER_STAGE_COGL (stage_gdk)->wrapper));
 
-  if (do_raise)
-    gdk_window_show (stage_gdk->window);
-  else
-    gdk_window_show_unraised (stage_gdk->window);
+  /* Foreign window should be shown by the embedding framework. */
+  if (!stage_gdk->foreign_window)
+    {
+      if (do_raise)
+        gdk_window_show (stage_gdk->window);
+      else
+        gdk_window_show_unraised (stage_gdk->window);
+    }
 }
 
 static void
@@ -454,7 +464,10 @@ clutter_stage_gdk_hide (ClutterStageWindow *stage_window)
   g_return_if_fail (stage_gdk->window != NULL);
 
   clutter_actor_unmap (CLUTTER_ACTOR (CLUTTER_STAGE_COGL (stage_gdk)->wrapper));
-  gdk_window_hide (stage_gdk->window);
+
+  /* Foreign window should be hidden by the embedding framework. */
+  if (!stage_gdk->foreign_window)
+    gdk_window_hide (stage_gdk->window);
 }
 
 static gboolean
