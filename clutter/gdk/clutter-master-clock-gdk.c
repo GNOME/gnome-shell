@@ -476,6 +476,9 @@ clutter_master_clock_gdk_init (ClutterMasterClockGdk *self)
   for (l = stages; l; l = l->next)
     clutter_master_clock_gdk_stage_added (manager, l->data, self);
 
+  /* Deactivate sync to vblank since we have clock to drive us from
+     the compositor. */
+  _clutter_set_sync_to_vblank (FALSE);
 
   if (G_UNLIKELY (clutter_paint_debug_flags & CLUTTER_DEBUG_CONTINUOUS_REDRAW))
     g_warning ("Continuous redraw is not supported with the GDK backend.");
