@@ -403,17 +403,17 @@ const Background = new Lang.Class({
 
     _loadAnimation: function(file) {
         this._cache.getAnimation({ file: file,
-                                         onLoaded: Lang.bind(this, function(animation) {
-                                             this._animation = animation;
+                                   onLoaded: Lang.bind(this, function(animation) {
+                                       this._animation = animation;
 
-                                             if (!this._animation || this._cancellable.is_cancelled()) {
-                                                 this._setLoaded();
-                                                 return;
-                                             }
+                                       if (!this._animation || this._cancellable.is_cancelled()) {
+                                           this._setLoaded();
+                                           return;
+                                       }
 
-                                             this._updateAnimation();
-                                             this._watchFile(file);
-                                         })
+                                       this._updateAnimation();
+                                       this._watchFile(file);
+                                   })
                                  });
     },
 
