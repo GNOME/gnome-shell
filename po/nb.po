@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell 3.17.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-30 11:36+0200\n"
-"PO-Revision-Date: 2015-07-30 11:36+0200\n"
+"POT-Creation-Date: 2015-09-07 19:22+0200\n"
+"PO-Revision-Date: 2015-09-07 19:29+0200\n"
 "Last-Translator: Åka Sikrom <a4NOSPAMPLEASETHANKYOU@hush.com>\n"
 "Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language: Norwegian bokmål\n"
@@ -307,14 +307,14 @@ msgid "GNOME Shell Extensions"
 msgstr "Utvidelser for GNOME Shell"
 
 #: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:145
-#: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:452
+#: ../js/ui/components/polkitAgent.js:179 ../js/ui/endSessionDialog.js:452
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
 #: ../js/ui/status/network.js:916
 msgid "Cancel"
 msgstr "Avbryt"
 
 #: ../js/gdm/authPrompt.js:169 ../js/gdm/authPrompt.js:215
-#: ../js/gdm/authPrompt.js:435
+#: ../js/gdm/authPrompt.js:447
 msgid "Next"
 msgstr "Neste"
 
@@ -341,7 +341,7 @@ msgstr "Ikke listet?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: ../js/gdm/loginDialog.js:847
+#: ../js/gdm/loginDialog.js:850
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(f.eks. bruker eller %s)"
@@ -349,12 +349,12 @@ msgstr "(f.eks. bruker eller %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:852 ../js/ui/components/networkAgent.js:271
+#: ../js/gdm/loginDialog.js:855 ../js/ui/components/networkAgent.js:271
 #: ../js/ui/components/networkAgent.js:289
 msgid "Username: "
 msgstr "Brukernavn: "
 
-#: ../js/gdm/loginDialog.js:1180
+#: ../js/gdm/loginDialog.js:1184
 msgid "Login Window"
 msgstr "Innloggingsvindu"
 
@@ -462,31 +462,31 @@ msgstr "%d %B %Y, %H.%M"
 msgid "Web Authentication Redirect"
 msgstr "Omdirigering av autentisering på nett"
 
-#: ../js/ui/appDisplay.js:789
+#: ../js/ui/appDisplay.js:794
 msgid "Frequently used applications will appear here"
 msgstr "Ofte brukte programmer vises her"
 
-#: ../js/ui/appDisplay.js:909
+#: ../js/ui/appDisplay.js:914
 msgid "Frequent"
 msgstr "Ofte"
 
-#: ../js/ui/appDisplay.js:916
+#: ../js/ui/appDisplay.js:921
 msgid "All"
 msgstr "Alle"
 
-#: ../js/ui/appDisplay.js:1845
+#: ../js/ui/appDisplay.js:1853
 msgid "New Window"
 msgstr "Nytt vindu"
 
-#: ../js/ui/appDisplay.js:1873 ../js/ui/dash.js:289
+#: ../js/ui/appDisplay.js:1881 ../js/ui/dash.js:289
 msgid "Remove from Favorites"
 msgstr "Fjern fra favoritter"
 
-#: ../js/ui/appDisplay.js:1879
+#: ../js/ui/appDisplay.js:1887
 msgid "Add to Favorites"
 msgstr "Legg til i favoritter"
 
-#: ../js/ui/appDisplay.js:1889
+#: ../js/ui/appDisplay.js:1897
 msgid "Show Details"
 msgstr "Vis detaljer"
 
@@ -509,12 +509,12 @@ msgid "Display Settings"
 msgstr "Innstillinger for skjerm"
 
 #: ../js/ui/backgroundMenu.js:22 ../js/ui/panel.js:650
-#: ../js/ui/status/system.js:357
+#: ../js/ui/status/system.js:366
 msgid "Settings"
 msgstr "Innstillinger"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
-#: ../js/ui/calendar.js:53
+#: ../js/ui/calendar.js:55
 msgctxt "calendar-no-work"
 msgid "06"
 msgstr "06"
@@ -524,94 +524,94 @@ msgstr "06"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: ../js/ui/calendar.js:82
+#: ../js/ui/calendar.js:84
 msgctxt "grid sunday"
 msgid "S"
 msgstr "S"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: ../js/ui/calendar.js:84
+#: ../js/ui/calendar.js:86
 msgctxt "grid monday"
 msgid "M"
 msgstr "M"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: ../js/ui/calendar.js:86
+#: ../js/ui/calendar.js:88
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "T"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: ../js/ui/calendar.js:88
+#: ../js/ui/calendar.js:90
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "O"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: ../js/ui/calendar.js:90
+#: ../js/ui/calendar.js:92
 msgctxt "grid thursday"
 msgid "T"
 msgstr "T"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: ../js/ui/calendar.js:92
+#: ../js/ui/calendar.js:94
 msgctxt "grid friday"
 msgid "F"
 msgstr "F"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: ../js/ui/calendar.js:94
+#: ../js/ui/calendar.js:96
 msgctxt "grid saturday"
 msgid "S"
 msgstr "L"
 
-#: ../js/ui/calendar.js:564
+#: ../js/ui/calendar.js:566
 msgid "Previous month"
 msgstr "Forrige måned"
 
-#: ../js/ui/calendar.js:574
+#: ../js/ui/calendar.js:576
 msgid "Next month"
 msgstr "Neste måned"
 
-#: ../js/ui/calendar.js:781
+#: ../js/ui/calendar.js:783
 msgid "Week %V"
 msgstr "Uke %V"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: ../js/ui/calendar.js:1187
+#: ../js/ui/calendar.js:1188
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Hele dagen"
 
-#: ../js/ui/calendar.js:1289
+#: ../js/ui/calendar.js:1291
 msgid "Clear section"
 msgstr "Tøm seksjon"
 
-#: ../js/ui/calendar.js:1516
+#: ../js/ui/calendar.js:1518
 msgid "Events"
 msgstr "Hendelser"
 
-#: ../js/ui/calendar.js:1525
+#: ../js/ui/calendar.js:1527
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A %B %d"
 
-#: ../js/ui/calendar.js:1529
+#: ../js/ui/calendar.js:1531
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A %B %d, %Y"
 
-#: ../js/ui/calendar.js:1614
+#: ../js/ui/calendar.js:1616
 msgid "Notifications"
 msgstr "Varslinger"
 
-#: ../js/ui/calendar.js:1765
+#: ../js/ui/calendar.js:1767
 msgid "No Notifications"
 msgstr "Ingen varslinger"
 
-#: ../js/ui/calendar.js:1768
+#: ../js/ui/calendar.js:1770
 msgid "No Events"
 msgstr "Ingen hendelser"
 
@@ -628,16 +628,16 @@ msgstr "Ekstern stasjon koblet fra"
 msgid "Open with %s"
 msgstr "Åpne med %s"
 
-#: ../js/ui/components/keyring.js:94 ../js/ui/components/polkitAgent.js:285
+#: ../js/ui/components/keyring.js:120 ../js/ui/components/polkitAgent.js:315
 msgid "Password:"
 msgstr "Passord:"
 
-#: ../js/ui/components/keyring.js:120
+#: ../js/ui/components/keyring.js:153
 msgid "Type again:"
 msgstr "Skriv på nytt:"
 
-#: ../js/ui/components/networkAgent.js:140 ../js/ui/status/network.js:277
-#: ../js/ui/status/network.js:359 ../js/ui/status/network.js:919
+#: ../js/ui/components/networkAgent.js:140 ../js/ui/status/network.js:269
+#: ../js/ui/status/network.js:352 ../js/ui/status/network.js:919
 msgid "Connect"
 msgstr "Koble til"
 
@@ -723,19 +723,19 @@ msgstr "Nettverkspassord for mobilt bredbånd"
 msgid "A password is required to connect to “%s”."
 msgstr "Du må oppgi et passord for å koble til «%s»."
 
-#: ../js/ui/components/networkAgent.js:647 ../js/ui/status/network.js:1657
+#: ../js/ui/components/networkAgent.js:647 ../js/ui/status/network.js:1658
 msgid "Network Manager"
 msgstr "Nettverkshåndtering"
 
-#: ../js/ui/components/polkitAgent.js:54
+#: ../js/ui/components/polkitAgent.js:60
 msgid "Authentication Required"
 msgstr "Autentisering kreves"
 
-#: ../js/ui/components/polkitAgent.js:96
+#: ../js/ui/components/polkitAgent.js:102
 msgid "Administrator"
 msgstr "Administrator"
 
-#: ../js/ui/components/polkitAgent.js:175
+#: ../js/ui/components/polkitAgent.js:182
 msgid "Authenticate"
 msgstr "Autentiser"
 
@@ -743,13 +743,13 @@ msgstr "Autentiser"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: ../js/ui/components/polkitAgent.js:271 ../js/ui/shellMountOperation.js:383
+#: ../js/ui/components/polkitAgent.js:301 ../js/ui/shellMountOperation.js:383
 msgid "Sorry, that didn't work. Please try again."
 msgstr "Beklager, det virket ikke. Prøv igjen."
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/components/telepathyClient.js:757
+#: ../js/ui/components/telepathyClient.js:759
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s er nå kjent som %s"
@@ -962,17 +962,13 @@ msgstr "Skjul feil"
 msgid "Show Errors"
 msgstr "Vis feil"
 
-#: ../js/ui/lookingGlass.js:716 ../js/ui/status/location.js:71
-#: ../js/ui/status/location.js:176
+#: ../js/ui/lookingGlass.js:716
 msgid "Enabled"
 msgstr "Slått på"
 
-#. Translators: this is for a network device that cannot be activated
-#. because it's disabled by rfkill (airplane mode)
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:719 ../js/ui/status/location.js:179
-#: ../js/ui/status/network.js:592 ../src/gvc/gvc-mixer-control.c:1830
+#: ../js/ui/lookingGlass.js:719 ../src/gvc/gvc-mixer-control.c:1830
 msgid "Disabled"
 msgstr "Slått av"
 
@@ -1026,7 +1022,7 @@ msgstr "Avslutt"
 msgid "Activities"
 msgstr "Aktiviteter"
 
-#: ../js/ui/panel.js:755
+#: ../js/ui/panel.js:754
 msgid "Top Bar"
 msgstr "Topp-panel"
 
@@ -1071,7 +1067,7 @@ msgid_plural "%d new notifications"
 msgstr[0] "%d ny varsling"
 msgstr[1] "%d nye varslinger"
 
-#: ../js/ui/screenShield.js:432 ../js/ui/status/system.js:365
+#: ../js/ui/screenShield.js:432 ../js/ui/status/system.js:374
 msgid "Lock"
 msgstr "Lås"
 
@@ -1170,16 +1166,10 @@ msgstr "Høy kontrast"
 msgid "Large Text"
 msgstr "Stor tekst"
 
-#. The Bluetooth menu only appears when Bluetooth is in use,
-#. so just statically build it with a "Turn Off" menu item.
-#: ../js/ui/status/bluetooth.js:49
-msgid "Bluetooth"
-msgstr "Bluetooth"
-
 #: ../js/ui/status/bluetooth.js:51 ../js/ui/status/network.js:178
-#: ../js/ui/status/network.js:360 ../js/ui/status/network.js:1282
-#: ../js/ui/status/network.js:1393 ../js/ui/status/rfkill.js:91
-#: ../js/ui/status/rfkill.js:118
+#: ../js/ui/status/network.js:353 ../js/ui/status/network.js:1279
+#: ../js/ui/status/network.js:1394 ../js/ui/status/rfkill.js:90
+#: ../js/ui/status/rfkill.js:117
 msgid "Turn Off"
 msgstr "Slå av"
 
@@ -1187,16 +1177,17 @@ msgstr "Slå av"
 msgid "Bluetooth Settings"
 msgstr "Bluetooth-innstillinger"
 
-#: ../js/ui/status/bluetooth.js:104
+#. Translators: this is the number of connected bluetooth devices
+#: ../js/ui/status/bluetooth.js:105
 #, javascript-format
-msgid "%d Connected Device"
-msgid_plural "%d Connected Devices"
-msgstr[0] "%d tilkoblet enhet"
-msgstr[1] "%d tilkoblede enheter"
+msgid "%d Connected"
+msgid_plural "%d Connected"
+msgstr[0] "%d koblet til"
+msgstr[1] "%d koblet til"
 
-#: ../js/ui/status/bluetooth.js:106 ../js/ui/status/network.js:1310
-msgid "Not Connected"
-msgstr "Ikke koblet til"
+#: ../js/ui/status/bluetooth.js:107
+msgid "Not In Use"
+msgstr "Ikke i bruk"
 
 #: ../js/ui/status/brightness.js:44
 msgid "Brightness"
@@ -1206,11 +1197,11 @@ msgstr "Lysstyrke"
 msgid "Show Keyboard Layout"
 msgstr "Vis tastaturutforming"
 
-#: ../js/ui/status/location.js:65
-msgid "Location"
-msgstr "Plassering"
+#: ../js/ui/status/location.js:71 ../js/ui/status/location.js:177
+msgid "Location Enabled"
+msgstr "Plassering slått på"
 
-#: ../js/ui/status/location.js:72 ../js/ui/status/location.js:177
+#: ../js/ui/status/location.js:72 ../js/ui/status/location.js:178
 msgid "Disable"
 msgstr "Slå av"
 
@@ -1219,10 +1210,14 @@ msgid "Privacy Settings"
 msgstr "Innstillinger for personvern"
 
 #: ../js/ui/status/location.js:176
-msgid "In Use"
-msgstr "I bruk"
+msgid "Location In Use"
+msgstr "Plassering i bruk"
 
 #: ../js/ui/status/location.js:180
+msgid "Location Disabled"
+msgstr "Plassering slått av"
+
+#: ../js/ui/status/location.js:181
 msgid "Enable"
 msgstr "Slå på"
 
@@ -1230,61 +1225,84 @@ msgstr "Slå på"
 msgid "<unknown>"
 msgstr "<ukjent>"
 
-#: ../js/ui/status/network.js:457 ../js/ui/status/network.js:1308
-#: ../js/ui/status/network.js:1512
-msgid "Off"
-msgstr "Av"
+#. Translators: %s is a network identifier
+#: ../js/ui/status/network.js:451 ../js/ui/status/network.js:1308
+#, javascript-format
+msgid "%s Off"
+msgstr "%s av"
 
-#: ../js/ui/status/network.js:459
-msgid "Connected"
-msgstr "Koblet til"
+#. Translators: %s is a network identifier
+#: ../js/ui/status/network.js:454
+#, javascript-format
+msgid "%s Connected"
+msgstr "%s koblet til"
 
 #. Translators: this is for network devices that are physically present but are not
-#. under NetworkManager's control (and thus cannot be used in the menu)
-#: ../js/ui/status/network.js:463
-msgid "Unmanaged"
-msgstr "Håndteres ikke"
+#. under NetworkManager's control (and thus cannot be used in the menu);
+#. %s is a network identifier
+#: ../js/ui/status/network.js:459
+#, javascript-format
+msgid "%s Unmanaged"
+msgstr "%s håndteres ikke"
 
-#: ../js/ui/status/network.js:465
-msgid "Disconnecting"
-msgstr "Kobler fra"
+#. Translators: %s is a network identifier
+#: ../js/ui/status/network.js:462
+#, javascript-format
+msgid "%s Disconnecting"
+msgstr "%s kobler fra"
 
-#: ../js/ui/status/network.js:471 ../js/ui/status/network.js:1302
-msgid "Connecting"
-msgstr "Kobler til"
+#. Translators: %s is a network identifier
+#: ../js/ui/status/network.js:469 ../js/ui/status/network.js:1300
+#, javascript-format
+msgid "%s Connecting"
+msgstr "%s kobler til"
 
-#. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:474
-msgid "Authentication required"
-msgstr "Denne tilkoblingen krever autentisering"
+#. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
+#: ../js/ui/status/network.js:472
+#, javascript-format
+msgid "%s Requires Authentication"
+msgstr "%s krever autentisering"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
-#. module, which is missing
-#: ../js/ui/status/network.js:482
-msgid "Firmware missing"
-msgstr "Fastvare mangler"
+#. module, which is missing; %s is a network identifier
+#: ../js/ui/status/network.js:480
+#, javascript-format
+msgid "Firmware Missing For %s"
+msgstr "Fastvare mangler for %s"
 
 #. Translators: this is for a network device that cannot be activated (for example it
-#. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:486
-msgid "Unavailable"
-msgstr "Ikke tilgjengelig"
+#. is disabled by rfkill, or it has no coverage; %s is a network identifier
+#: ../js/ui/status/network.js:484
+#, javascript-format
+msgid "%s Unavailable"
+msgstr "%s er ikke tilgjengelig"
 
-#: ../js/ui/status/network.js:488 ../js/ui/status/network.js:1696
-msgid "Connection failed"
-msgstr "Tilkobling mislyktes"
+#. Translators: %s is a network identifier
+#: ../js/ui/status/network.js:487
+#, javascript-format
+msgid "%s Connection Failed"
+msgstr "%s tilkobling mislyktes"
 
-#: ../js/ui/status/network.js:504
+#: ../js/ui/status/network.js:503
 msgid "Wired Settings"
 msgstr "Innstillinger for trådbundet nettverk"
 
-#: ../js/ui/status/network.js:546 ../js/ui/status/network.js:624
+#: ../js/ui/status/network.js:545 ../js/ui/status/network.js:624
 msgid "Mobile Broadband Settings"
 msgstr "Innstillinger for mobilt bredbånd"
 
-#: ../js/ui/status/network.js:588 ../js/ui/status/network.js:1306
-msgid "Hardware Disabled"
-msgstr "Maskinvare slått av"
+#. Translators: %s is a network identifier
+#: ../js/ui/status/network.js:588 ../js/ui/status/network.js:1305
+#, javascript-format
+msgid "%s Hardware Disabled"
+msgstr "%s maskinvare slått av"
+
+#. Translators: this is for a network device that cannot be activated
+#. because it's disabled by rfkill (airplane mode); %s is a network identifier
+#: ../js/ui/status/network.js:592
+#, javascript-format
+msgid "%s Disabled"
+msgstr "%s slått av"
 
 #: ../js/ui/status/network.js:632
 msgid "Use as Internet connection"
@@ -1326,52 +1344,68 @@ msgstr "Velg et nettverk"
 msgid "No Networks"
 msgstr "Ingen nettverk"
 
-#: ../js/ui/status/network.js:904 ../js/ui/status/rfkill.js:116
+#: ../js/ui/status/network.js:904 ../js/ui/status/rfkill.js:115
 msgid "Use hardware switch to turn off"
 msgstr "Bruk maskinvarebryter til å slå av"
 
-#: ../js/ui/status/network.js:1174
+#: ../js/ui/status/network.js:1171
 msgid "Select Network"
 msgstr "Velg nettverk"
 
-#: ../js/ui/status/network.js:1180
+#: ../js/ui/status/network.js:1177
 msgid "Wi-Fi Settings"
 msgstr "Innstillinger"
 
-#: ../js/ui/status/network.js:1282
+#: ../js/ui/status/network.js:1279
 msgid "Turn On"
 msgstr "Slå på"
 
-#: ../js/ui/status/network.js:1299
-msgid "Hotspot Active"
-msgstr "Trådløst aksesspunkt aktivt"
+#. Translators: %s is a network identifier
+#: ../js/ui/status/network.js:1296
+#, javascript-format
+msgid "%s Hotspot Active"
+msgstr "%s aksesspunkt aktivt"
 
-#: ../js/ui/status/network.js:1410
+#. Translators: %s is a network identifier
+#: ../js/ui/status/network.js:1311
+#, javascript-format
+msgid "%s Not Connected"
+msgstr "%s ikke koblet til"
+
+#: ../js/ui/status/network.js:1411
 msgid "connecting..."
 msgstr "kobler til …"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:1413
+#: ../js/ui/status/network.js:1414
 msgid "authentication required"
 msgstr "autentisering kreves"
 
-#: ../js/ui/status/network.js:1415
+#: ../js/ui/status/network.js:1416
 msgid "connection failed"
 msgstr "tilkobling mislyktes"
 
-#: ../js/ui/status/network.js:1481 ../js/ui/status/rfkill.js:94
+#: ../js/ui/status/network.js:1482 ../js/ui/status/rfkill.js:93
 msgid "Network Settings"
 msgstr "Innstillinger for nettverk"
 
-#: ../js/ui/status/network.js:1483
+#: ../js/ui/status/network.js:1484
 msgid "VPN Settings"
 msgstr "Innstillinger for VPN"
 
-#: ../js/ui/status/network.js:1502
+#: ../js/ui/status/network.js:1503
 msgid "VPN"
 msgstr "VPN"
 
+#: ../js/ui/status/network.js:1513
+msgid "VPN Off"
+msgstr "VPN av"
+
 #: ../js/ui/status/network.js:1697
+msgid "Connection failed"
+msgstr "Tilkobling mislyktes"
+
+#: ../js/ui/status/network.js:1698
 msgid "Activation of network connection failed"
 msgstr "Aktivering av nettverkstilkobling mislyktes"
 
@@ -1401,42 +1435,34 @@ msgstr "%d:%02d gjenstår (%d%%)"
 msgid "%d∶%02d Until Full (%d%%)"
 msgstr "%d:%02d til batteriet er fullt (%d%%)"
 
-#: ../js/ui/status/power.js:119
-msgid "UPS"
-msgstr "UPS"
-
-#: ../js/ui/status/power.js:121
-msgid "Battery"
-msgstr "Batteri"
-
 #. The menu only appears when airplane mode is on, so just
 #. statically build it as if it was on, rather than dynamically
 #. changing the menu contents.
 #: ../js/ui/status/rfkill.js:88
-msgid "Airplane Mode"
-msgstr "Flymodus"
+msgid "Airplane Mode On"
+msgstr "Flymodus er slått på"
 
-#: ../js/ui/status/rfkill.js:90
-msgid "On"
-msgstr "På"
-
-#: ../js/ui/status/system.js:337
+#: ../js/ui/status/system.js:343
 msgid "Switch User"
 msgstr "Bytt bruker"
 
-#: ../js/ui/status/system.js:342
+#: ../js/ui/status/system.js:348
 msgid "Log Out"
 msgstr "Logg ut"
 
-#: ../js/ui/status/system.js:361
+#: ../js/ui/status/system.js:353
+msgid "Account Settings"
+msgstr "Innstillinger for konto"
+
+#: ../js/ui/status/system.js:370
 msgid "Orientation Lock"
 msgstr "Lås for orientering"
 
-#: ../js/ui/status/system.js:369
+#: ../js/ui/status/system.js:378
 msgid "Suspend"
 msgstr "Hvilemodus"
 
-#: ../js/ui/status/system.js:372
+#: ../js/ui/status/system.js:381
 msgid "Power Off"
 msgstr "Slå av"
 
@@ -1484,11 +1510,11 @@ msgstr "Vil du beholde disse skjerminnstillingene?"
 msgid "Revert Settings"
 msgstr "Forkast innstillinger"
 
-#: ../js/ui/windowManager.js:86
+#: ../js/ui/windowManager.js:85
 msgid "Keep Changes"
 msgstr "Behold endringer"
 
-#: ../js/ui/windowManager.js:105
+#: ../js/ui/windowManager.js:103
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
@@ -1497,7 +1523,7 @@ msgstr[1] "Endringer i innstillingene forkastes om %d sekunder"
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: ../js/ui/windowManager.js:660
+#: ../js/ui/windowManager.js:658
 #, javascript-format
 msgid "%d x %d"
 msgstr "%d x %d"
