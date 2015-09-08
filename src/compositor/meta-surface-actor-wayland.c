@@ -293,8 +293,12 @@ static MetaWindow *
 meta_surface_actor_wayland_get_window (MetaSurfaceActor *actor)
 {
   MetaSurfaceActorWaylandPrivate *priv = meta_surface_actor_wayland_get_instance_private (META_SURFACE_ACTOR_WAYLAND (actor));
+  MetaWaylandSurface *surface = priv->surface;
 
-  return priv->surface->window;
+  if (!surface)
+    return NULL;
+
+  return surface->window;
 }
 
 static void
