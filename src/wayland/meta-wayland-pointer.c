@@ -242,6 +242,21 @@ pointer_handle_focus_surface_destroy (struct wl_listener *listener, void *data)
   meta_wayland_pointer_set_focus (pointer, NULL);
 }
 
+static void
+meta_wayland_pointer_send_frame (MetaWaylandPointer *pointer)
+{
+  struct wl_resource *resource;
+
+  if (!pointer->focus_client)
+    return;
+
+  wl_resource_for_each (resource, &pointer->focus_client->pointer_resources)
+    {
+      if (wl_resource_get_version (resource) >= WL_POINTER_AXIS_SOURCE_SINCE_VERSION)
+        wl_pointer_send_frame (resource);
+    }
+}
+
 void
 meta_wayland_pointer_send_motion (MetaWaylandPointer *pointer,
                                   const ClutterEvent *event)
@@ -262,6 +277,8 @@ meta_wayland_pointer_send_motion (MetaWaylandPointer *pointer,
     {
       wl_pointer_send_motion (resource, time, sx, sy);
     }
+
+  meta_wayland_pointer_send_frame (pointer);
 }
 
 void
@@ -321,6 +338,8 @@ meta_wayland_pointer_send_button (MetaWaylandPointer *pointer,
                                   time, button,
                                   event_type == CLUTTER_BUTTON_PRESS ? 1 : 0);
         }
+
+      meta_wayland_pointer_send_frame (pointer);
     }
 
   if (pointer->button_count == 0 && event_type == CLUTTER_BUTTON_RELEASE)
@@ -510,26 +529,48 @@ handle_scroll_event (MetaWaylandPointer *pointer,
 {
   struct wl_resource *resource;
   wl_fixed_t x_value = 0, y_value = 0;
+  int x_discrete = 0, y_discrete = 0;
+  enum wl_pointer_axis_source source = -1;
 
   if (clutter_event_is_pointer_emulated (event))
     return;
+
+  switch (event->scroll.scroll_source)
+    {
+    case CLUTTER_SCROLL_SOURCE_WHEEL:
+      source = WL_POINTER_AXIS_SOURCE_WHEEL;
+      break;
+    case CLUTTER_SCROLL_SOURCE_FINGER:
+      source = WL_POINTER_AXIS_SOURCE_FINGER;
+      break;
+    case CLUTTER_SCROLL_SOURCE_CONTINUOUS:
+      source = WL_POINTER_AXIS_SOURCE_CONTINUOUS;
+      break;
+    default:
+      source = WL_POINTER_AXIS_SOURCE_WHEEL;
+      break;
+    }
 
   switch (clutter_event_get_scroll_direction (event))
     {
     case CLUTTER_SCROLL_UP:
       y_value = -DEFAULT_AXIS_STEP_DISTANCE;
+      y_discrete = -1;
       break;
 
     case CLUTTER_SCROLL_DOWN:
       y_value = DEFAULT_AXIS_STEP_DISTANCE;
+      y_discrete = 1;
       break;
 
     case CLUTTER_SCROLL_LEFT:
       x_value = -DEFAULT_AXIS_STEP_DISTANCE;
+      x_discrete = -1;
       break;
 
     case CLUTTER_SCROLL_RIGHT:
       x_value = DEFAULT_AXIS_STEP_DISTANCE;
+      x_discrete = 1;
       break;
 
     case CLUTTER_SCROLL_SMOOTH:
@@ -553,13 +594,44 @@ handle_scroll_event (MetaWaylandPointer *pointer,
     {
       wl_resource_for_each (resource, &pointer->focus_client->pointer_resources)
         {
+          if (wl_resource_get_version (resource) >= WL_POINTER_AXIS_SOURCE_SINCE_VERSION)
+            wl_pointer_send_axis_source (resource, source);
+
+          /* X axis */
+          if (x_discrete != 0 &&
+              wl_resource_get_version (resource) >= WL_POINTER_AXIS_DISCRETE_SINCE_VERSION)
+            wl_pointer_send_axis_discrete (resource,
+                                           WL_POINTER_AXIS_HORIZONTAL_SCROLL,
+                                           x_discrete);
+
           if (x_value)
             wl_pointer_send_axis (resource, clutter_event_get_time (event),
                                   WL_POINTER_AXIS_HORIZONTAL_SCROLL, x_value);
+
+          if ((event->scroll.finish_flags & CLUTTER_SCROLL_FINISHED_HORIZONTAL) &&
+              wl_resource_get_version (resource) >= WL_POINTER_AXIS_STOP_SINCE_VERSION)
+            wl_pointer_send_axis_stop (resource,
+                                       clutter_event_get_time (event),
+                                       WL_POINTER_AXIS_HORIZONTAL_SCROLL);
+          /* Y axis */
+          if (y_discrete != 0 &&
+              wl_resource_get_version (resource) >= WL_POINTER_AXIS_DISCRETE_SINCE_VERSION)
+            wl_pointer_send_axis_discrete (resource,
+                                           WL_POINTER_AXIS_VERTICAL_SCROLL,
+                                           y_discrete);
+
           if (y_value)
             wl_pointer_send_axis (resource, clutter_event_get_time (event),
                                   WL_POINTER_AXIS_VERTICAL_SCROLL, y_value);
+
+          if ((event->scroll.finish_flags & CLUTTER_SCROLL_FINISHED_VERTICAL) &&
+              wl_resource_get_version (resource) >= WL_POINTER_AXIS_STOP_SINCE_VERSION)
+            wl_pointer_send_axis_stop (resource,
+                                       clutter_event_get_time (event),
+                                       WL_POINTER_AXIS_VERTICAL_SCROLL);
         }
+
+      meta_wayland_pointer_send_frame (pointer);
     }
 }
 
@@ -632,6 +704,8 @@ meta_wayland_pointer_broadcast_enter (MetaWaylandPointer *pointer,
                         &pointer->focus_client->pointer_resources)
     meta_wayland_pointer_send_enter (pointer, pointer_resource,
                                      serial, surface);
+
+  meta_wayland_pointer_send_frame (pointer);
 }
 
 static void
@@ -645,6 +719,8 @@ meta_wayland_pointer_broadcast_leave (MetaWaylandPointer *pointer,
                         &pointer->focus_client->pointer_resources)
     meta_wayland_pointer_send_leave (pointer, pointer_resource,
                                      serial, surface);
+
+  meta_wayland_pointer_send_frame (pointer);
 }
 
 void
