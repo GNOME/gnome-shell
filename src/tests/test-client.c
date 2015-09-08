@@ -42,6 +42,16 @@ lookup_window (const char *window_id)
 }
 
 static void
+on_after_paint  (GdkFrameClock *clock,
+                 GMainLoop     *loop)
+{
+  g_signal_handlers_disconnect_by_func (clock,
+                                        (gpointer) on_after_paint,
+                                        loop);
+  g_main_loop_quit (loop);
+}
+
+static void
 process_line (const char *line)
 {
   GError *error = NULL;
@@ -135,10 +145,25 @@ process_line (const char *line)
         }
 
       GtkWidget *window = lookup_window (argv[1]);
+      GdkWindow *gdk_window = gtk_widget_get_window (window);
       if (!window)
         goto out;
 
       gtk_widget_show (window);
+
+      /* When a Wayland client, we cannot be really sure that the window has
+       * been mappable until after we have painted. So, in order to have the
+       * test runner rely on the "show" command to have done what the client
+       * needs to do in order for a window to be mappable compositor side, lets
+       * wait with returning until after the first frame.
+       */
+      GdkFrameClock *frame_clock = gdk_window_get_frame_clock (gdk_window);
+      GMainLoop *loop = g_main_loop_new (NULL, FALSE);
+      g_signal_connect (frame_clock, "after-paint",
+                        G_CALLBACK (on_after_paint),
+                        loop);
+      g_main_loop_run (loop);
+      g_main_loop_unref (loop);
     }
   else if (strcmp (argv[0], "hide") == 0)
     {
