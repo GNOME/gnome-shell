@@ -10,15 +10,15 @@ msgstr ""
 "Project-Id-Version: clutter clutter-1.16\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-09-01 03:14+0000\n"
-"PO-Revision-Date: 2015-09-01 10:14+0200\n"
+"POT-Creation-Date: 2015-09-10 15:15+0000\n"
+"PO-Revision-Date: 2015-09-10 19:26+0200\n"
 "Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
 "Language-Team: slovenčina <>\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 1 : (n>=2 && n<=4) ? 2 : 0;\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 1 : (n>=2 && n<=4) ? 2 : 0\n"
 "X-Generator: Gtranslator 2.91.7\n"
 
 # nick
@@ -1021,7 +1021,6 @@ msgstr "Rozšíriť"
 # PM: hmm, prečo aj tu nie je určuje či sa má... - Skús sa opýtať vývojárov
 # blurb
 #: ../clutter/clutter-box-layout.c:350
-#, fuzzy
 msgid "Allocate extra space for the child"
 msgstr "Rezervovať dodatočný priestor pre potomka"
 
@@ -1084,13 +1083,13 @@ msgstr "Určuje, či sa má uprednostniť zvislé rozloženie pred vodorovným"
 
 # nick
 #: ../clutter/clutter-box-layout.c:1363 ../clutter/clutter-flow-layout.c:927
-#: ../clutter/clutter-grid-layout.c:1562
+#: ../clutter/clutter-grid-layout.c:1568
 msgid "Orientation"
 msgstr "Orientácia"
 
 # blurb
 #: ../clutter/clutter-box-layout.c:1364 ../clutter/clutter-flow-layout.c:928
-#: ../clutter/clutter-grid-layout.c:1563
+#: ../clutter/clutter-grid-layout.c:1569
 msgid "The orientation of the layout"
 msgstr "Orientácia rozloženia"
 
@@ -1101,7 +1100,6 @@ msgstr "Homogénne"
 
 # blurb
 #: ../clutter/clutter-box-layout.c:1381
-#, fuzzy
 #| msgid ""
 #| "Whether the layout should be homogeneous, i.e. all childs get the same "
 #| "size"
@@ -1442,13 +1440,12 @@ msgid "Threshold Trigger Edge"
 msgstr "Prah spúšťacej hrany"
 
 #: ../clutter/clutter-gesture-action.c:697
-#| msgid "The timeline used by the animation"
 msgid "The trigger edge used by the action"
 msgstr "Hrana spúšťača použitá touto akciou"
 
 #: ../clutter/clutter-gesture-action.c:716
 msgid "Threshold Trigger Horizontal Distance"
-msgstr ""
+msgstr "Vodorovná vzdialenosť prahu spúšťača"
 
 #: ../clutter/clutter-gesture-action.c:717
 #, fuzzy
@@ -1458,7 +1455,7 @@ msgstr "Časová os použitá animáciou"
 
 #: ../clutter/clutter-gesture-action.c:735
 msgid "Threshold Trigger Vertical Distance"
-msgstr ""
+msgstr "Zvislá vzdialenosť prahu spúšťača"
 
 #: ../clutter/clutter-gesture-action.c:736
 #, fuzzy
@@ -1490,35 +1487,35 @@ msgstr ""
 msgid "The number of rows that a child spans"
 msgstr ""
 
-#: ../clutter/clutter-grid-layout.c:1577
+#: ../clutter/clutter-grid-layout.c:1583
 msgid "Row spacing"
 msgstr "Rozstup riadkov"
 
-#: ../clutter/clutter-grid-layout.c:1578
+#: ../clutter/clutter-grid-layout.c:1584
 msgid "The amount of space between two consecutive rows"
 msgstr "Priestor medzi dvoma nasledujúcimi riadkami"
 
-#: ../clutter/clutter-grid-layout.c:1591
+#: ../clutter/clutter-grid-layout.c:1597
 msgid "Column spacing"
 msgstr "Rozstup stĺpcov"
 
-#: ../clutter/clutter-grid-layout.c:1592
+#: ../clutter/clutter-grid-layout.c:1598
 msgid "The amount of space between two consecutive columns"
 msgstr "Priestor medzi dvoma nasledujúcimi stĺpcami"
 
-#: ../clutter/clutter-grid-layout.c:1606
+#: ../clutter/clutter-grid-layout.c:1612
 msgid "Row Homogeneous"
 msgstr ""
 
-#: ../clutter/clutter-grid-layout.c:1607
+#: ../clutter/clutter-grid-layout.c:1613
 msgid "If TRUE, the rows are all the same height"
 msgstr ""
 
-#: ../clutter/clutter-grid-layout.c:1620
+#: ../clutter/clutter-grid-layout.c:1626
 msgid "Column Homogeneous"
 msgstr ""
 
-#: ../clutter/clutter-grid-layout.c:1621
+#: ../clutter/clutter-grid-layout.c:1627
 msgid "If TRUE, the columns are all the same width"
 msgstr ""
 
@@ -2192,7 +2189,7 @@ msgstr "Zarovnanie riadka"
 
 #: ../clutter/clutter-text.c:3759
 msgid "The preferred alignment for the string, for multi-line text"
-msgstr ""
+msgstr "Uprednostnené zarovnanie reťazca, pre text s viacerými riadkami"
 
 #: ../clutter/clutter-text.c:3775
 msgid "Justify"
@@ -2328,7 +2325,7 @@ msgstr "Odpojí prechod pri dokončení"
 
 #: ../clutter/clutter-zoom-action.c:365
 msgid "Zoom Axis"
-msgstr ""
+msgstr "Priblíženie osí"
 
 #: ../clutter/clutter-zoom-action.c:366
 msgid "Constraints the zoom to an axis"
@@ -2451,7 +2448,7 @@ msgstr "Uhol naklonenia osi X"
 
 #: ../clutter/deprecated/clutter-behaviour-ellipse.c:427
 msgid "Tilt of the ellipse around x axis"
-msgstr ""
+msgstr "Naklonenie elipsy okolo osi X"
 
 #: ../clutter/deprecated/clutter-behaviour-ellipse.c:442
 msgid "Angle y tilt"
@@ -2459,7 +2456,7 @@ msgstr "Uhol naklonenia osi Y"
 
 #: ../clutter/deprecated/clutter-behaviour-ellipse.c:443
 msgid "Tilt of the ellipse around y axis"
-msgstr ""
+msgstr "Naklonenie elipsy okolo osi Y"
 
 #: ../clutter/deprecated/clutter-behaviour-ellipse.c:458
 msgid "Angle z tilt"
@@ -2467,7 +2464,7 @@ msgstr "Uhol naklonenia osi Z"
 
 #: ../clutter/deprecated/clutter-behaviour-ellipse.c:459
 msgid "Tilt of the ellipse around z axis"
-msgstr ""
+msgstr "Naklonenie elipsy okolo osi Z"
 
 #: ../clutter/deprecated/clutter-behaviour-ellipse.c:475
 msgid "Width of the ellipse"
@@ -2814,15 +2811,15 @@ msgstr ""
 
 #: ../clutter/deprecated/clutter-table-layout.c:573
 msgid "Allocate extra space for the child in vertical axis"
-msgstr ""
+msgstr "Vyhradiť dodatočný priestor pre potomka v zvislej osi"
 
 #: ../clutter/deprecated/clutter-table-layout.c:1628
 msgid "Spacing between columns"
-msgstr ""
+msgstr "Rozostup medzi stĺpcami"
 
 #: ../clutter/deprecated/clutter-table-layout.c:1644
 msgid "Spacing between rows"
-msgstr ""
+msgstr "Rozostup medzi riadkami"
 
 #: ../clutter/deprecated/clutter-texture.c:992
 msgid "Sync size of actor"
@@ -2848,7 +2845,7 @@ msgstr ""
 
 #: ../clutter/deprecated/clutter-texture.c:1011
 msgid "Maximum waste area of a sliced texture"
-msgstr ""
+msgstr "Maximálna nevyužitá oblasť rozdelenej textúry"
 
 #: ../clutter/deprecated/clutter-texture.c:1019
 msgid "Horizontal repeat"
@@ -2944,7 +2941,7 @@ msgstr "Výber s alfa kanálom"
 
 #: ../clutter/deprecated/clutter-texture.c:1165
 msgid "Shape actor with alpha channel when picking"
-msgstr ""
+msgstr "Pri výbere tvarovať aktéra s alfa kanálom"
 
 #: ../clutter/deprecated/clutter-texture.c:1608
 #: ../clutter/deprecated/clutter-texture.c:2003
@@ -2972,7 +2969,7 @@ msgstr "Nepodarilo sa inicializovať Gdk"
 #: ../clutter/gdk/clutter-backend-gdk.c:316
 #, c-format
 msgid "Could not find a suitable CoglWinsys for a GdkDisplay of type %s"
-msgstr ""
+msgstr "Nepodarilo sa nájsť vhodný CoglWinsys pre GdkDisplay typu %s"
 
 #: ../clutter/wayland/clutter-wayland-surface.c:419
 msgid "Surface"
@@ -2980,7 +2977,7 @@ msgstr "Plocha"
 
 #: ../clutter/wayland/clutter-wayland-surface.c:420
 msgid "The underlying wayland surface"
-msgstr ""
+msgstr "Podkladový povrch wayland"
 
 #: ../clutter/wayland/clutter-wayland-surface.c:427
 msgid "Surface width"
@@ -2988,7 +2985,7 @@ msgstr "Šírka plochy"
 
 #: ../clutter/wayland/clutter-wayland-surface.c:428
 msgid "The width of the underlying wayland surface"
-msgstr ""
+msgstr "Šírka podkladového povrchu wayland"
 
 #: ../clutter/wayland/clutter-wayland-surface.c:436
 msgid "Surface height"
@@ -2996,7 +2993,7 @@ msgstr "Výška plochy"
 
 #: ../clutter/wayland/clutter-wayland-surface.c:437
 msgid "The height of the underlying wayland surface"
-msgstr ""
+msgstr "Výška podkladového povrchu wayland"
 
 # cmd desc
 #: ../clutter/x11/clutter-backend-x11.c:513
