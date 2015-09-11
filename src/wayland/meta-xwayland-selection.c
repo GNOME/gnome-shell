@@ -410,27 +410,33 @@ x11_data_write_cb (GObject      *object,
   MetaSelectionBridge *selection = user_data;
   X11SelectionData *data = selection->x11_selection;
   GError *error = NULL;
+  gboolean success = TRUE;
 
   g_output_stream_write_finish (G_OUTPUT_STREAM (object), res, &error);
 
-  if (data->incr)
+  if (error)
+    {
+      if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+        {
+          g_error_free (error);
+          return;
+        }
+
+      g_warning ("Error writing from X11 selection: %s\n", error->message);
+      g_error_free (error);
+      success = FALSE;
+    }
+
+  if (success && data->incr)
     {
       Display *xdisplay = GDK_DISPLAY_XDISPLAY (gdk_display_get_default ());
       XDeleteProperty (xdisplay, selection->window,
                        gdk_x11_get_xatom_by_name ("_META_SELECTION"));
     }
-
-  if (error)
+  else
     {
-      if (error->domain != G_IO_ERROR ||
-          error->code != G_IO_ERROR_CANCELLED)
-        g_warning ("Error writing from X11 selection: %s\n", error->message);
-
-      g_error_free (error);
+      x11_selection_data_finish (selection, success);
     }
-
-  if (!data->incr)
-    x11_selection_data_finish (selection, TRUE);
 }
 
 static void
