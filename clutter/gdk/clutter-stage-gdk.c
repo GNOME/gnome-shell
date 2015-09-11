@@ -182,7 +182,26 @@ clutter_stage_gdk_unrealize (ClutterStageWindow *stage_window)
 			 "clutter-stage-window", NULL);
 
       if (stage_gdk->foreign_window)
-	g_object_unref (stage_gdk->window);
+        {
+          ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_window);
+          ClutterBackendGdk *backend_gdk = CLUTTER_BACKEND_GDK (stage_cogl->backend);
+
+          g_object_unref (stage_gdk->window);
+
+          /* Clutter still uses part of the deprecated stateful API of
+           * Cogl (in particulart cogl_set_framebuffer). It means Cogl
+           * can keep an internal reference to the onscreen object we
+           * rendered to. In the case of foreign window, we want to
+           * avoid this, as we don't know what's going to happen to
+           * that window.
+           *
+           * The following call sets the current Cogl framebuffer to a
+           * dummy 1x1 one if we're unrealizing the current one, so
+           * Cogl doesn't keep any reference to the foreign window.
+           */
+          if (cogl_get_draw_framebuffer () == COGL_FRAMEBUFFER (stage_cogl->onscreen))
+            _clutter_backend_gdk_reset_framebuffer (backend_gdk);
+        }
       else
 	gdk_window_destroy (stage_gdk->window);
 

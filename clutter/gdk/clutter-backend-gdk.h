@@ -50,6 +50,8 @@ struct _ClutterBackendGdk
   GdkDisplay *display;
   GdkScreen  *screen;
 
+  CoglOnscreen *dummy_onscreen;
+
   ClutterDeviceManager *device_manager;
 };
 
@@ -66,6 +68,8 @@ void   _clutter_backend_gdk_events_init (ClutterBackend *backend);
 
 void   _clutter_backend_gdk_update_setting (ClutterBackendGdk *backend,
                                             const gchar *name);
+
+void   _clutter_backend_gdk_reset_framebuffer (ClutterBackendGdk *backend);
 
 G_END_DECLS
 
