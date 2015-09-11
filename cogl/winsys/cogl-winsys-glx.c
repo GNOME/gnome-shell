@@ -180,7 +180,7 @@ find_onscreen_for_xid (CoglContext *context, uint32_t xid)
 
       /* Does the GLXEvent have the GLXDrawable or the X Window? */
       xlib_onscreen = COGL_ONSCREEN (framebuffer)->winsys;
-      if (xlib_onscreen->xwin == (Window)xid)
+      if (xlib_onscreen != NULL && xlib_onscreen->xwin == (Window)xid)
         return COGL_ONSCREEN (framebuffer);
     }
 
