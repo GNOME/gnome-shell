@@ -295,9 +295,9 @@ get_primary_gpu_path (const gchar *seat_name)
   if (!devices)
     goto out;
 
-  for (tmp = devices; tmp != NULL; tmp = tmp->next)
+  for (tmp = devices; tmp != NULL && path == NULL; tmp = tmp->next)
     {
-      GUdevDevice *pci_device;
+      GUdevDevice *platform_device = NULL, *pci_device = NULL;
       GUdevDevice *dev = tmp->data;
       gint boot_vga;
       const gchar *device_seat;
@@ -324,20 +324,26 @@ get_primary_gpu_path (const gchar *seat_name)
       if (g_strcmp0 (seat_name, device_seat))
         continue;
 
+      platform_device = g_udev_device_get_parent_with_subsystem (dev, "platform", NULL);
       pci_device = g_udev_device_get_parent_with_subsystem (dev, "pci", NULL);
-      if (!pci_device)
-          continue;
 
-      /* get value of boot_vga attribute or 0 if the device has no boot_vga */
-      boot_vga = g_udev_device_get_sysfs_attr_as_int (pci_device, "boot_vga");
-      g_object_unref (pci_device);
-
-      if (boot_vga == 1)
+      if (platform_device != NULL)
         {
-          /* found the boot_vga device */
           path = g_strdup (g_udev_device_get_device_file (dev));
-          break;
         }
+      else if (pci_device != NULL)
+        {
+          /* get value of boot_vga attribute or 0 if the device has no boot_vga */
+          boot_vga = g_udev_device_get_sysfs_attr_as_int (pci_device, "boot_vga");
+          if (boot_vga == 1)
+            {
+              /* found the boot_vga device */
+              path = g_strdup (g_udev_device_get_device_file (dev));
+            }
+        }
+
+      g_object_unref (platform_device);
+      g_object_unref (pci_device);
     }
 
   g_list_free_full (devices, g_object_unref);
