@@ -601,7 +601,7 @@ clutter_stage_gdk_schedule_update (ClutterStageWindow *stage_window,
       return;
     }
 
-  gdk_frame_clock_request_phase (clock, GDK_FRAME_CLOCK_PHASE_UPDATE);
+  gdk_frame_clock_request_phase (clock, GDK_FRAME_CLOCK_PHASE_PAINT);
 
   clutter_stage_window_parent_iface->schedule_update (stage_window, sync_delay);
 }

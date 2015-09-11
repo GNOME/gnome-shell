@@ -110,7 +110,7 @@ master_clock_schedule_forced_stages_updates (ClutterMasterClockGdk *master_clock
   g_hash_table_iter_init (&iter, master_clock->stage_to_clock);
   while (g_hash_table_iter_next (&iter, &stage, &frame_clock))
     gdk_frame_clock_request_phase (GDK_FRAME_CLOCK (frame_clock),
-                                   GDK_FRAME_CLOCK_PHASE_UPDATE);
+                                   GDK_FRAME_CLOCK_PHASE_PAINT);
 }
 
 static void
@@ -131,7 +131,7 @@ master_clock_schedule_stage_update (ClutterMasterClockGdk *master_clock,
    * we have no choice, we need to advance the timelines for the next
    * frame. */
   if (master_clock->timelines != NULL)
-    gdk_frame_clock_request_phase (frame_clock, GDK_FRAME_CLOCK_PHASE_UPDATE);
+    gdk_frame_clock_request_phase (frame_clock, GDK_FRAME_CLOCK_PHASE_PAINT);
 }
 
 static void
@@ -341,7 +341,7 @@ clutter_master_clock_gdk_add_stage_clock (ClutterMasterClockGdk *master_clock,
       g_hash_table_insert (master_clock->clock_to_stage, g_object_ref (frame_clock),
                            g_list_append (NULL, stage));
 
-      g_signal_connect (frame_clock, "update",
+      g_signal_connect (frame_clock, "paint",
                         G_CALLBACK (clutter_master_clock_gdk_update),
                         master_clock);
     }
