@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-09-04 08:13+0000\n"
-"PO-Revision-Date: 2015-09-04 20:49+0500\n"
+"POT-Creation-Date: 2015-09-12 08:19+0000\n"
+"PO-Revision-Date: 2015-09-12 21:07+0500\n"
 "Last-Translator: Baurzhan Muftakhidinov <baurthefirst@gmail.com>\n"
 "Language-Team: Kazakh <kk_KZ@googlegroups.com>\n"
 "Language: kk\n"
@@ -166,7 +166,7 @@ msgid ""
 msgstr ""
 "Қоршам шифрленген құрылғы немесе қашықтағы файлдық жүйе тіркелген кезде "
 "парольді сұрайды. Егер парольді болашақтағы қолданулар үшін сақтау керек "
-"болса, 'Парольді еске сақтау' жалаушасые орнатыңыз. Бұл кілт жалаушаның "
+"болса, 'Парольді есте сақтау' жалаушасын орнатыңыз. Бұл кілт жалаушаның "
 "бастапқы күйін орнатады."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:18
@@ -1078,7 +1078,7 @@ msgstr "Пароль"
 
 #: ../js/ui/shellMountOperation.js:391
 msgid "Remember Password"
-msgstr "Парольді еске сақтау"
+msgstr "Парольді есте сақтау"
 
 #: ../js/ui/status/accessibility.js:42
 msgid "Accessibility"
@@ -1191,7 +1191,6 @@ msgstr "%s сөндірулі"
 #. Translators: %s is a network identifier */
 #: ../js/ui/status/network.js:454
 #, javascript-format
-#| msgid "Connected"
 msgid "%s Connected"
 msgstr "%s байланысқан"
 
@@ -1212,7 +1211,6 @@ msgstr "%s  байланысты үзуде"
 #. Translators: %s is a network identifier */
 #: ../js/ui/status/network.js:469 ../js/ui/status/network.js:1300
 #, javascript-format
-#| msgid "Connecting"
 msgid "%s Connecting"
 msgstr "%s байланысуда"
 
@@ -1297,7 +1295,7 @@ msgstr "Wi-Fi желілері"
 
 #: ../js/ui/status/network.js:853
 msgid "Select a network"
-msgstr "Желіні таңдаңыз"
+msgstr "Желіні таңдау"
 
 #: ../js/ui/status/network.js:883
 msgid "No Networks"
@@ -1309,7 +1307,7 @@ msgstr "Сөндіру үшін құрылғылық қосқышты қолда
 
 #: ../js/ui/status/network.js:1171
 msgid "Select Network"
-msgstr "Желіні таңдаңыз"
+msgstr "Желіні таңдау"
 
 #: ../js/ui/status/network.js:1177
 msgid "Wi-Fi Settings"
@@ -1357,7 +1355,6 @@ msgid "VPN"
 msgstr "VPN"
 
 #: ../js/ui/status/network.js:1513
-#| msgid "Power Off"
 msgid "VPN Off"
 msgstr "VPN сөндірілген"
 
