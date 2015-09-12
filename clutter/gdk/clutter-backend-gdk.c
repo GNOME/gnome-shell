@@ -441,6 +441,11 @@ static void
 clutter_backend_gdk_init (ClutterBackendGdk *backend_gdk)
 {
   backend_gdk->dummy_onscreen = COGL_INVALID_HANDLE;
+
+  /* Deactivate sync to vblank since we have the GdkFrameClock to
+   * drive us from the compositor.
+   */
+  _clutter_set_sync_to_vblank (FALSE);
 }
 
 /**
