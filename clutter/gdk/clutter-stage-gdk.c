@@ -269,18 +269,44 @@ _clutter_stage_gdk_notify_configure (ClutterStageGdk *stage_gdk,
                                      gint width,
                                      gint height)
 {
-#if defined(GDK_WINDOWING_WAYLAND)
   if (x < 0 || y < 0 || width < 1 || height < 1)
     return;
-  if (stage_gdk->foreign_window &&
-      gdk_window_get_window_type (stage_gdk->window) == GDK_WINDOW_CHILD &&
-      stage_gdk->subsurface)
+  if (stage_gdk->foreign_window)
     {
-      gint rx, ry;
-      gdk_window_get_origin (stage_gdk->window, &rx, &ry);
-      wl_subsurface_set_position (stage_gdk->subsurface, rx, ry);
-    }
+#if defined(GDK_WINDOWING_WAYLAND)
+      if (GDK_IS_WAYLAND_WINDOW (stage_gdk->window) &&
+          gdk_window_get_window_type (stage_gdk->window) == GDK_WINDOW_CHILD &&
+          stage_gdk->subsurface)
+        {
+          gint rx, ry;
+          gdk_window_get_origin (stage_gdk->window, &rx, &ry);
+          /* TODO: we might need to apply the scale factor here. */
+          wl_subsurface_set_position (stage_gdk->subsurface, rx, ry);
+        }
+      else
 #endif
+#if defined(GDK_WINDOWING_X11)
+      if (GDK_IS_X11_WINDOW (stage_gdk->window))
+        {
+          ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_gdk);
+          ClutterBackend *backend = CLUTTER_BACKEND (stage_cogl->backend);
+          int scale_factor = gdk_window_get_scale_factor (stage_gdk->window);
+          XConfigureEvent xevent = { ConfigureNotify };
+          xevent.window = GDK_WINDOW_XID (stage_gdk->window);
+          xevent.width = width * scale_factor;
+          xevent.height = height * scale_factor;
+
+          /* Ensure cogl knows about the new size immediately, as we will
+           * draw before we get the ConfigureNotify response. */
+          cogl_xlib_renderer_handle_event (backend->cogl_renderer, (XEvent *)&xevent);
+        }
+      else
+#endif
+        {
+          /* Currently we only support X11 and Wayland. */
+          g_assert_not_reached();
+        }
+    }
 }
 
 static gboolean
