@@ -912,6 +912,12 @@ meta_wayland_data_device_set_keyboard_focus (MetaWaylandDataDevice *data_device)
   MetaWaylandDataSource *source;
 
   focus_client = meta_wayland_keyboard_get_focus_client (&seat->keyboard);
+
+  if (focus_client == data_device->focus_client)
+    return;
+
+  data_device->focus_client = focus_client;
+
   if (!focus_client)
     return;
 

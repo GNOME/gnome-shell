@@ -55,6 +55,7 @@ struct _MetaWaylandDataDevice
   struct wl_listener selection_data_source_listener;
   struct wl_list resource_list;
   MetaWaylandDragGrab *current_grab;
+  struct wl_client *focus_client;
 
   struct wl_signal selection_ownership_signal;
   struct wl_signal dnd_ownership_signal;
