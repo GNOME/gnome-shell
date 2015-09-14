@@ -77,6 +77,8 @@ clutter_stage_cogl_unrealize (ClutterStageWindow *stage_window)
       cogl_object_unref (stage_cogl->onscreen);
       stage_cogl->onscreen = NULL;
     }
+
+  stage_cogl->pending_swaps = 0;
 }
 
 static void
