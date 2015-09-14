@@ -147,8 +147,9 @@ master_clock_is_running (ClutterMasterClockDefault *master_clock)
 
   for (l = stages; l; l = l->next)
     {
-      if (_clutter_stage_has_queued_events (l->data) ||
-          _clutter_stage_needs_update (l->data))
+      if (clutter_actor_is_mapped (l->data) &&
+          (_clutter_stage_has_queued_events (l->data) ||
+           _clutter_stage_needs_update (l->data)))
         return TRUE;
     }
 
@@ -222,17 +223,22 @@ master_clock_list_ready_stages (ClutterMasterClockDefault *master_clock)
   for (l = stages; l != NULL; l = l->next)
     {
       gint64 update_time = _clutter_stage_get_update_time (l->data);
-
-      /* If a stage has a swap-buffers pending we don't want to draw to it
-       * in case the driver may block the CPU while it waits for the next
-       * backbuffer to become available.
+      /* We carefully avoid to update stages that aren't mapped, because
+       * they have nothing to render and this could cause a deadlock with
+       * some of the SwapBuffers implementations (in particular
+       * GLX_INTEL_swap_event is not emitted if nothing was rendered).
+       *
+       * Also, if a stage has a swap-buffers pending we don't want to draw
+       * to it in case the driver may block the CPU while it waits for the
+       * next backbuffer to become available.
        *
        * TODO: We should be able to identify if we are running triple or N
        * buffered and in these cases we can still draw if there is 1 swap
        * pending so we can hopefully always be ready to swap for the next
        * vblank and really match the vsync frequency.
        */
-      if (update_time != -1 && update_time <= master_clock->cur_tick)
+      if (clutter_actor_is_mapped (l->data) &&
+          update_time != -1 && update_time <= master_clock->cur_tick)
         result = g_slist_prepend (result, g_object_ref (l->data));
     }
 
