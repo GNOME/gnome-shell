@@ -184,7 +184,6 @@ clutter_stage_gdk_unrealize (ClutterStageWindow *stage_window)
       if (stage_gdk->foreign_window)
         {
           ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_window);
-          ClutterBackendGdk *backend_gdk = CLUTTER_BACKEND_GDK (stage_cogl->backend);
 
           g_object_unref (stage_gdk->window);
 
@@ -200,7 +199,7 @@ clutter_stage_gdk_unrealize (ClutterStageWindow *stage_window)
            * Cogl doesn't keep any reference to the foreign window.
            */
           if (cogl_get_draw_framebuffer () == COGL_FRAMEBUFFER (stage_cogl->onscreen))
-            _clutter_backend_gdk_reset_framebuffer (backend_gdk);
+            _clutter_backend_reset_cogl_framebuffer (stage_cogl->backend);
         }
       else
 	gdk_window_destroy (stage_gdk->window);

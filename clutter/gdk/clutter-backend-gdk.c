@@ -85,29 +85,6 @@ static GdkDisplay  *_foreign_dpy = NULL;
 
 static gboolean disable_event_retrieval = FALSE;
 
-void
-_clutter_backend_gdk_reset_framebuffer (ClutterBackendGdk *backend_gdk)
-{
-  if (backend_gdk->dummy_onscreen == COGL_INVALID_HANDLE)
-    {
-      CoglContext *context =
-        clutter_backend_get_cogl_context (CLUTTER_BACKEND (backend_gdk));
-      CoglError *internal_error = NULL;
-
-      backend_gdk->dummy_onscreen = cogl_onscreen_new (context, 1, 1);
-
-      if (!cogl_framebuffer_allocate (COGL_FRAMEBUFFER (backend_gdk->dummy_onscreen),
-                                      &internal_error))
-        {
-          g_error ("Unable to create dummy onscreen: %s", internal_error->message);
-          cogl_error_free (internal_error);
-          return;
-        }
-    }
-
-  cogl_set_framebuffer (COGL_FRAMEBUFFER (backend_gdk->dummy_onscreen));
-}
-
 static void
 clutter_backend_gdk_init_settings (ClutterBackendGdk *backend_gdk)
 {
@@ -250,8 +227,6 @@ static void
 clutter_backend_gdk_finalize (GObject *gobject)
 {
   ClutterBackendGdk *backend_gdk = CLUTTER_BACKEND_GDK (gobject);
-
-  g_clear_pointer (&backend_gdk->dummy_onscreen, cogl_object_unref);
 
   gdk_window_remove_filter (NULL, cogl_gdk_filter, backend_gdk);
   g_object_unref (backend_gdk->display);
@@ -440,8 +415,6 @@ clutter_backend_gdk_class_init (ClutterBackendGdkClass *klass)
 static void
 clutter_backend_gdk_init (ClutterBackendGdk *backend_gdk)
 {
-  backend_gdk->dummy_onscreen = COGL_INVALID_HANDLE;
-
   /* Deactivate sync to vblank since we have the GdkFrameClock to
    * drive us from the compositor.
    */

@@ -46,6 +46,8 @@ struct _ClutterBackend
   CoglContext *cogl_context;
   GSource *cogl_source;
 
+  CoglOnscreen *dummy_onscreen;
+
   ClutterDeviceManager *device_manager;
 
   cairo_font_options_t *font_options;
@@ -148,6 +150,9 @@ gfloat                  _clutter_backend_get_units_per_em               (Clutter
 gint32                  _clutter_backend_get_units_serial               (ClutterBackend         *backend);
 
 PangoDirection          _clutter_backend_get_keymap_direction           (ClutterBackend         *backend);
+
+void                    _clutter_backend_reset_cogl_framebuffer         (ClutterBackend         *backend);
+
 
 G_END_DECLS
 

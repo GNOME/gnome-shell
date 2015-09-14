@@ -135,6 +135,8 @@ clutter_backend_dispose (GObject *gobject)
   /* remove all event translators */
   g_clear_pointer (&backend->event_translators, g_list_free);
 
+  g_clear_pointer (&backend->dummy_onscreen, cogl_object_unref);
+
   G_OBJECT_CLASS (clutter_backend_parent_class)->dispose (gobject);
 }
 
@@ -762,6 +764,8 @@ clutter_backend_init (ClutterBackend *self)
 {
   self->units_per_em = -1.0;
   self->units_serial = 1;
+
+  self->dummy_onscreen = COGL_INVALID_HANDLE;
 }
 
 void
@@ -1434,4 +1438,25 @@ _clutter_backend_get_keymap_direction (ClutterBackend *backend)
     return klass->get_keymap_direction (backend);
 
   return PANGO_DIRECTION_NEUTRAL;
+}
+
+void
+_clutter_backend_reset_cogl_framebuffer (ClutterBackend *backend)
+{
+  if (backend->dummy_onscreen == COGL_INVALID_HANDLE)
+    {
+      CoglError *internal_error = NULL;
+
+      backend->dummy_onscreen = cogl_onscreen_new (backend->cogl_context, 1, 1);
+
+      if (!cogl_framebuffer_allocate (COGL_FRAMEBUFFER (backend->dummy_onscreen),
+                                      &internal_error))
+        {
+          g_critical ("Unable to create dummy onscreen: %s", internal_error->message);
+          cogl_error_free (internal_error);
+          return;
+        }
+    }
+
+  cogl_set_framebuffer (COGL_FRAMEBUFFER (backend->dummy_onscreen));
 }
