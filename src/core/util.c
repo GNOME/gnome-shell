@@ -49,6 +49,9 @@ meta_topic_real_valist (MetaDebugTopic topic,
                         va_list        args) G_GNUC_PRINTF(2, 0);
 #endif
 
+static gboolean
+meta_later_remove_from_list (guint later_id, GSList **laters_list);
+
 static gint verbose_topics = 0;
 static gboolean is_debugging = FALSE;
 static gboolean replace_current = FALSE;
@@ -739,7 +742,14 @@ typedef struct
   gboolean run_once;
 } MetaLater;
 
-static GSList *laters = NULL;
+static GSList *laters[] = {
+  NULL, /* META_LATER_RESIZE */
+  NULL, /* META_LATER_CALC_SHOWING */
+  NULL, /* META_LATER_CHECK_FULLSCREEN */
+  NULL, /* META_LATER_SYNC_STACK */
+  NULL, /* META_LATER_BEFORE_REDRAW */
+  NULL, /* META_LATER_IDLE */
+};
 /* This is a dummy timeline used to get the Clutter master clock running */
 static ClutterTimeline *later_timeline;
 static guint later_repaint_func = 0;
@@ -772,25 +782,14 @@ destroy_later (MetaLater *later)
   unref_later (later);
 }
 
-/* Used to sort the list of laters with the highest priority
- * functions first.
- */
-static int
-compare_laters (gconstpointer a,
-                gconstpointer b)
-{
-  return ((const MetaLater *)a)->when - ((const MetaLater *)b)->when;
-}
-
-static gboolean
-run_repaint_laters (gpointer data)
+static void
+run_repaint_laters (GSList **laters_list)
 {
   GSList *laters_copy;
   GSList *l;
-  gboolean keep_timeline_running = FALSE;
 
   laters_copy = NULL;
-  for (l = laters; l; l = l->next)
+  for (l = *laters_list; l; l = l->next)
     {
       MetaLater *later = l->data;
       if (later->source == 0 ||
@@ -806,22 +805,41 @@ run_repaint_laters (gpointer data)
     {
       MetaLater *later = l->data;
 
-      if (later->func && later->func (later->data))
+      if (!later->func || !later->func (later->data))
+        meta_later_remove_from_list (later->id, laters_list);
+      unref_later (later);
+    }
+
+  g_slist_free (laters_copy);
+}
+
+static gboolean
+run_all_repaint_laters (gpointer data)
+{
+  guint i;
+  GSList *l;
+  gboolean keep_timeline_running = FALSE;
+
+  for (i = 0; i < G_N_ELEMENTS (laters); i++)
+    {
+      run_repaint_laters (&laters[i]);
+    }
+
+  for (i = 0; i < G_N_ELEMENTS (laters); i++)
+    {
+      for (l = laters[i]; l; l = l->next)
         {
+          MetaLater *later = l->data;
+
           if (later->source == 0)
             keep_timeline_running = TRUE;
         }
-      else
-        meta_later_remove (later->id);
-      unref_later (later);
     }
 
   if (!keep_timeline_running)
     clutter_timeline_stop (later_timeline);
 
-  g_slist_free (laters_copy);
-
-  /* Just keep the repaint func around - it's cheap if the list is empty */
+  /* Just keep the repaint func around - it's cheap if the lists are empty */
   return TRUE;
 }
 
@@ -832,7 +850,7 @@ ensure_later_repaint_func (void)
     later_timeline = clutter_timeline_new (G_MAXUINT);
 
   if (later_repaint_func == 0)
-    later_repaint_func = clutter_threads_add_repaint_func (run_repaint_laters,
+    later_repaint_func = clutter_threads_add_repaint_func (run_all_repaint_laters,
                                                            NULL, NULL);
 
   /* Make sure the repaint function gets run */
@@ -888,7 +906,7 @@ meta_later_add (MetaLaterType  when,
   later->data = data;
   later->notify = notify;
 
-  laters = g_slist_insert_sorted (laters, later, compare_laters);
+  laters[when] = g_slist_prepend (laters[when], later);
 
   switch (when)
     {
@@ -920,6 +938,29 @@ meta_later_add (MetaLaterType  when,
   return later->id;
 }
 
+static gboolean
+meta_later_remove_from_list (guint later_id, GSList **laters_list)
+{
+  GSList *l;
+
+  for (l = *laters_list; l; l = l->next)
+    {
+      MetaLater *later = l->data;
+
+      if (later->id == later_id)
+        {
+          *laters_list = g_slist_delete_link (*laters_list, l);
+          /* If this was a "repaint func" later, we just let the
+           * repaint func run and get removed
+           */
+          destroy_later (later);
+          return TRUE;
+        }
+    }
+
+  return FALSE;
+}
+
 /**
  * meta_later_remove:
  * @later_id: the integer ID returned from meta_later_add()
@@ -929,20 +970,12 @@ meta_later_add (MetaLaterType  when,
 void
 meta_later_remove (guint later_id)
 {
-  GSList *l;
+  guint i;
 
-  for (l = laters; l; l = l->next)
+  for (i = 0; i < G_N_ELEMENTS (laters); i++)
     {
-      MetaLater *later = l->data;
-      if (later->id == later_id)
-        {
-          laters = g_slist_delete_link (laters, l);
-          /* If this was a "repaint func" later, we just let the
-           * repaint func run and get removed
-           */
-          destroy_later (later);
-          return;
-        }
+      if (meta_later_remove_from_list (later_id, &laters[i]))
+        return;
     }
 }
 
