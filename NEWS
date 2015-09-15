@@ -1,3 +1,44 @@
+Clutter 1.24.0                                                       2015-09-15
+===============================================================================
+
+  • List of changes since Clutter 1.23.6
+
+    - Fix ClutterGridLayout's preferred size computation
+    The preferred height of the ClutterGridLayout is correctly taking into
+    account the height and span of each cell.
+
+    - Improve embeddability of Clutter in foreign toolkits
+    Embedding Clutter inside other toolkits, like GTK+, on Wayland and X11
+    has been fixed.
+
+    - Updated translations
+    French, Portuguese, Spanish, Galician, Chinese (Taiwan), Polish,
+    Indonesian, Greek, Slovak, Hebrew, Hungarian, Lithuanian, Italian,
+    Slovenian, German, Czech.
+
+  • List of bugs fixed since Clutter 1.23.6
+
+    #755014 - Fix Clutter-Gtk on x11
+    #754993 - notify Cogl immediately of a foreign window resize in GDK/X11
+              backend
+    #754938 - Setup sync_to_vblank before ClutterStage creation
+    #754890 - Fix Mesa warning when unrealizing/rerealizing foreign stage
+              windows
+    #754889 - Fix compositor synchronization in GDK backend
+    #754766 - "actor: Clean up transform_stage_point()" broke HiDPI mutter
+    #754697 - Use a wayland subsurface when dealing with foreign windows
+              on GDK/wayland
+    #754671 - Improve dealing with foreign stages on GDK
+    #754134 - A few gdk backend fixes
+
+Many thanks to:
+
+  Lionel Landwerlin, Dušan Kazik, Alexandre Franke, Andika Triwidada,
+  Aurimas Černius, Balázs Úr, Bernd Homuth, Chao-Hsiung Liao,
+  Daniel Mustieles, Fran Dieguez, Jonas Ådahl, Marek Černocký,
+  Matej Urbančič, Milo Casagrande, Pedro Albuquerque, Piotr Drąg,
+  Tom Tryfonidis, Yosef Or Boczko
+
 Clutter 1.23.6                                                       2015-08-21
 ===============================================================================
 
