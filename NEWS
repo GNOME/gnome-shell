@@ -1,3 +1,16 @@
+Cogl 1.22.0                                                        2015-09-16
+
+  • List of changes since Cogl 1.21.2
+
+  » Improvements in handling errors in the KMS winsys [#754540]
+  » Fix crashers in Wayland and GLX winsys [#754667, #754888]
+
+Many thanks to:
+
+  Ray Strode
+  Lionel Landwerlin
+  Chao-Hsiung Liao
+
 Cogl 1.21.2                                                        2015-08-21
 
   • List of changes since Cogl 1.20.0
