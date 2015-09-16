@@ -1566,6 +1566,64 @@ shell_global_get_current_time (ShellGlobal *global)
   return clutter_get_current_event_time ();
 }
 
+static void
+import_session_environment_to_app_launch_context (ShellGlobal       *global,
+                                                  GAppLaunchContext *context)
+{
+  char *environment_dir, *environment_filename;
+  GMappedFile *environment_file;
+
+  environment_dir = g_build_filename (g_get_user_runtime_dir (), "gnome", NULL);
+  environment_filename = g_build_filename (environment_dir, "environment", NULL);
+  g_free (environment_dir);
+
+  environment_file = g_mapped_file_new (environment_filename, FALSE, NULL);
+  g_free (environment_filename);
+
+  if (environment_file != NULL)
+    {
+      GVariant *environment_variant;
+      const char **environment;
+      int i = 0;
+      gconstpointer environment_data;
+      gsize environment_size;
+
+      environment_data = g_mapped_file_get_contents (environment_file);
+      environment_size = g_mapped_file_get_length (environment_file);
+
+      environment_variant = g_variant_new_from_data (G_VARIANT_TYPE_BYTESTRING_ARRAY,
+                                                     environment_data,
+                                                     environment_size,
+                                                     FALSE,
+                                                     NULL,
+                                                     NULL);
+      environment = g_variant_get_bytestring_array (environment_variant, NULL);
+
+      if (environment != NULL)
+        {
+          for (i = 0; environment[i] != NULL; i++)
+            {
+              char **entry;
+              const char *key;
+              const char *value;
+
+              entry = g_strsplit (environment[i], "=", 2);
+              key = entry[0];
+              value = entry[1];
+
+              if (value != NULL)
+                  g_app_launch_context_setenv (context, key, value);
+
+              g_free (entry);
+            }
+
+          g_free (environment);
+        }
+      g_variant_unref (environment_variant);
+    }
+  g_mapped_file_unref (environment_file);
+}
+
 /**
  * shell_global_create_app_launch_context:
  * @global: A #ShellGlobal
@@ -1585,6 +1643,8 @@ shell_global_create_app_launch_context (ShellGlobal *global,
   GdkAppLaunchContext *context;
 
   context = gdk_display_get_app_launch_context (global->gdk_display);
+
+  import_session_environment_to_app_launch_context (global, G_APP_LAUNCH_CONTEXT (context));
 
   if (timestamp == 0)
     timestamp = shell_global_get_current_time (global);
