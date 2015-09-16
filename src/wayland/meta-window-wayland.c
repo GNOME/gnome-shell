@@ -361,6 +361,7 @@ meta_window_wayland_main_monitor_changed (MetaWindow *window,
 
   /* Window size. */
   scale_rect_size (&window->rect, scale_factor);
+  scale_rect_size (&window->unconstrained_rect, scale_factor);
 
   /* Window geometry offset (XXX: Need a better place, see
    * meta_window_wayland_move_resize). */
