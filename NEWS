@@ -1,3 +1,17 @@
+3.17.92
+=======
+* Don't omit the background color for backgrounds that don't fill the screen
+  [Ray; #754476]
+* Fix up key state on FocusIn when running nested [Owen; #753948]
+* Find the right DRM device instead of hardcoding card0 [Marek; #753434]
+* Scale cursor on HiDPI screens [Jonas; #744932]
+* Misc. fixes and cleanups [Lan, Jonas, Javier, Olivier; #754545, #754215,
+  #754621, #754715]
+
+Contributors:
+  Jonas Ådahl, Marek Chalupa, Olivier Fourdan, Javier Jardón, Ting-Wei Lan,
+  Ray Strode, Owen W. Taylor
+
 3.17.91
 =======
 * Send error on pointer-gesture protocol version mismatch [Jonas; #753855]
