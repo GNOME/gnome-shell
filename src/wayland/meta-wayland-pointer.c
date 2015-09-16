@@ -53,6 +53,7 @@
 #include "meta-wayland-private.h"
 #include "meta-wayland-surface.h"
 #include "meta-wayland-buffer.h"
+#include "meta-xwayland.h"
 #include "meta-cursor.h"
 #include "meta-cursor-tracker-private.h"
 #include "meta-surface-actor-wayland.h"
@@ -819,9 +820,12 @@ cursor_sprite_prepare_at (MetaCursorSprite *cursor_sprite,
   MetaScreen *screen = display->screen;
   const MetaMonitorInfo *monitor;
 
-  monitor = meta_screen_get_monitor_for_point (screen, x, y);
-  meta_cursor_sprite_set_texture_scale (cursor_sprite,
-                                        (float)monitor->scale / surface->scale);
+  if (!meta_xwayland_is_xwayland_surface (surface))
+    {
+      monitor = meta_screen_get_monitor_for_point (screen, x, y);
+      meta_cursor_sprite_set_texture_scale (cursor_sprite,
+                                            (float)monitor->scale / surface->scale);
+    }
   meta_wayland_surface_update_outputs (surface);
 }
 
