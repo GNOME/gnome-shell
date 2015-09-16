@@ -936,7 +936,6 @@ set_surface_is_on_output (MetaWaylandSurface *surface,
 
 static void
 surface_handle_output_destroy (MetaWaylandOutput *wayland_output,
-                               GParamSpec *pspec,
                                MetaWaylandSurface *surface)
 {
   set_surface_is_on_output (surface, wayland_output, FALSE);
