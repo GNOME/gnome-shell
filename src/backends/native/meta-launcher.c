@@ -63,7 +63,7 @@ report_error_and_die (const char *prefix,
   if (error)
     g_error ("%s: %s", prefix, error->message);
   else
-    g_error (prefix);
+    g_error ("%s", prefix);
 
   /* the error is not freed, but it is ok as g_error aborts the process */
 }
