@@ -1,3 +1,15 @@
+3.17.92
+=======
+* Fix race when loading multiple background animations [Josselin; #741453]
+
+Contributors:
+  Michael Biebl, Josselin Mouette, Florian Müllner
+
+Translations:
+  Baurzhan Muftakhidinov [kk], Changwoo Ryu [ko], Christian Kirbach [de],
+  Kjartan Maraas [nb], Jiri Grönroos [fi], Arash Mousavi [fa],
+  Jiro Matsuzawa [ja], Marek Černocký [cs], Milo Casagrande [it]
+
 3.17.91
 =======
 * Fix login screen spinner causing wakeups while VT-switched away
