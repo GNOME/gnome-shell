@@ -265,6 +265,18 @@ meta_wayland_seat_free (MetaWaylandSeat *seat)
 }
 
 static gboolean
+event_is_synthesized_crossing (const ClutterEvent *event)
+{
+  ClutterInputDevice *device;
+
+  if (event->type != CLUTTER_ENTER && event->type != CLUTTER_LEAVE)
+    return FALSE;
+
+  device = clutter_event_get_source_device (event);
+  return clutter_input_device_get_device_mode (device) == CLUTTER_INPUT_MODE_MASTER;
+}
+
+static gboolean
 event_from_supported_hardware_device (MetaWaylandSeat    *seat,
                                       const ClutterEvent *event)
 {
@@ -310,7 +322,8 @@ void
 meta_wayland_seat_update (MetaWaylandSeat    *seat,
                           const ClutterEvent *event)
 {
-  if (!event_from_supported_hardware_device (seat, event))
+  if (!event_from_supported_hardware_device (seat, event) &&
+      !event_is_synthesized_crossing (event))
     return;
 
   switch (event->type)
@@ -319,6 +332,8 @@ meta_wayland_seat_update (MetaWaylandSeat    *seat,
     case CLUTTER_BUTTON_PRESS:
     case CLUTTER_BUTTON_RELEASE:
     case CLUTTER_SCROLL:
+    case CLUTTER_ENTER:
+    case CLUTTER_LEAVE:
       if (meta_wayland_seat_has_pointer (seat))
         meta_wayland_pointer_update (seat->pointer, event);
       break;
