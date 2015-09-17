@@ -990,9 +990,9 @@ set_is_playing (ClutterTimeline *timeline,
   master_clock = _clutter_master_clock_get_default ();
   if (priv->is_playing)
     {
-      _clutter_master_clock_add_timeline (master_clock, timeline);
       priv->waiting_first_tick = TRUE;
       priv->current_repeat = 0;
+      _clutter_master_clock_add_timeline (master_clock, timeline);
     }
   else
     _clutter_master_clock_remove_timeline (master_clock, timeline);
