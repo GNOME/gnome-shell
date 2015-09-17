@@ -243,7 +243,7 @@ clutter_master_clock_gdk_update (GdkFrameClock         *frame_clock,
   _clutter_threads_acquire_lock ();
 
   /* Get the time to use for this frame */
-  master_clock->cur_tick = g_get_monotonic_time ();
+  master_clock->cur_tick = gdk_frame_clock_get_frame_time (frame_clock);
 
 #ifdef CLUTTER_ENABLE_DEBUG
   /* Update the remaining budget */
