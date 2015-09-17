@@ -462,6 +462,10 @@ clutter_master_clock_gdk_init (ClutterMasterClockGdk *self)
   ClutterStageManager *manager;
   const GSList *stages, *l;
 
+#ifdef CLUTTER_ENABLE_DEBUG
+  self->frame_budget = G_USEC_PER_SEC / 60;
+#endif
+
   self->clock_to_stage = g_hash_table_new_full (g_direct_hash, g_direct_equal,
                                                 g_object_unref, NULL);
   self->stage_to_clock = g_hash_table_new_full (g_direct_hash, g_direct_equal,
