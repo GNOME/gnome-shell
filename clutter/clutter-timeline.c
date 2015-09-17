@@ -1007,9 +1007,12 @@ clutter_timeline_do_frame (ClutterTimeline *timeline)
 
   g_object_ref (timeline);
 
-  CLUTTER_NOTE (SCHEDULER, "Timeline [%p] activated (elapsed time: %ld)\n",
+  CLUTTER_NOTE (SCHEDULER, "Timeline [%p] activated (elapsed time: %ld, "
+                "duration: %ld, msecs_delta: %ld)\n",
                 timeline,
-                (long) priv->elapsed_time);
+                (long) priv->elapsed_time,
+                (long) priv->duration,
+                (long) priv->msecs_delta);
 
   /* Advance time */
   if (priv->direction == CLUTTER_TIMELINE_FORWARD)
@@ -1685,6 +1688,14 @@ _clutter_timeline_advance (ClutterTimeline *timeline,
 
   g_object_ref (timeline);
 
+  CLUTTER_NOTE (SCHEDULER,
+                "Timeline [%p] advancing (cur: %ld, tot: %ld, "
+                "tick_time: %lu)",
+                timeline,
+                (long) priv->elapsed_time,
+                (long) priv->msecs_delta,
+                (long) tick_time);
+
   priv->msecs_delta = tick_time;
   priv->is_playing = TRUE;
 
@@ -1712,6 +1723,15 @@ _clutter_timeline_do_tick (ClutterTimeline *timeline,
   ClutterTimelinePrivate *priv;
 
   priv = timeline->priv;
+
+  CLUTTER_NOTE (SCHEDULER,
+                "Timeline [%p] ticked (elapsed_time: %ld, msecs_delta: %ld, "
+                "last_frame_time: %ld, tick_time: %ld)",
+                timeline,
+                (long) priv->elapsed_time,
+                (long) priv->msecs_delta,
+                (long) priv->last_frame_time,
+                (long) tick_time);
 
   /* Check the is_playing variable before performing the timeline tick.
    * This is necessary, as if a timeline is stopped in response to a
