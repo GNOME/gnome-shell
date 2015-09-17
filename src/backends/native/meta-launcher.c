@@ -71,16 +71,25 @@ report_error_and_die (const char *prefix,
 static Login1Session *
 get_session_proxy (GCancellable *cancellable)
 {
+  char *proxy_path;
+  char *session_id;
   Login1Session *session_proxy;
   GError *error = NULL;
+
+  if (sd_pid_get_session (getpid (), &session_id) < 0)
+    return NULL;
+
+  proxy_path = get_escaped_dbus_path ("/org/freedesktop/login1/session", session_id);
 
   session_proxy = login1_session_proxy_new_for_bus_sync (G_BUS_TYPE_SYSTEM,
                                                          G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START,
                                                          "org.freedesktop.login1",
-                                                         "/org/freedesktop/login1/session/self",
+                                                         proxy_path,
                                                          cancellable, &error);
   if (!session_proxy)
     report_error_and_die ("Failed getting session proxy", error);
+
+  free (proxy_path);
 
   return session_proxy;
 }
