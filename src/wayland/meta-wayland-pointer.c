@@ -598,13 +598,53 @@ meta_wayland_pointer_handle_event (MetaWaylandPointer *pointer,
 }
 
 static void
-broadcast_focus (MetaWaylandPointer *pointer,
-                 struct wl_resource *resource)
+meta_wayland_pointer_send_enter (MetaWaylandPointer *pointer,
+                                 struct wl_resource *pointer_resource,
+                                 uint32_t            serial,
+                                 MetaWaylandSurface *surface)
 {
   wl_fixed_t sx, sy;
 
-  meta_wayland_pointer_get_relative_coordinates (pointer, pointer->focus_surface, &sx, &sy);
-  wl_pointer_send_enter (resource, pointer->focus_serial, pointer->focus_surface->resource, sx, sy);
+  meta_wayland_pointer_get_relative_coordinates (pointer, surface, &sx, &sy);
+  wl_pointer_send_enter (pointer_resource,
+                         serial,
+                         surface->resource,
+                         sx, sy);
+}
+
+static void
+meta_wayland_pointer_send_leave (MetaWaylandPointer *pointer,
+                                 struct wl_resource *pointer_resource,
+                                 uint32_t            serial,
+                                 MetaWaylandSurface *surface)
+{
+  wl_pointer_send_leave (pointer_resource, serial, surface->resource);
+}
+
+static void
+meta_wayland_pointer_broadcast_enter (MetaWaylandPointer *pointer,
+                                      uint32_t            serial,
+                                      MetaWaylandSurface *surface)
+{
+  struct wl_resource *pointer_resource;
+
+  wl_resource_for_each (pointer_resource,
+                        &pointer->focus_client->pointer_resources)
+    meta_wayland_pointer_send_enter (pointer, pointer_resource,
+                                     serial, surface);
+}
+
+static void
+meta_wayland_pointer_broadcast_leave (MetaWaylandPointer *pointer,
+                                      uint32_t            serial,
+                                      MetaWaylandSurface *surface)
+{
+  struct wl_resource *pointer_resource;
+
+  wl_resource_for_each (pointer_resource,
+                        &pointer->focus_client->pointer_resources)
+    meta_wayland_pointer_send_leave (pointer, pointer_resource,
+                                     serial, surface);
 }
 
 void
@@ -623,18 +663,14 @@ meta_wayland_pointer_set_focus (MetaWaylandPointer *pointer,
         wl_resource_get_client (pointer->focus_surface->resource);
       struct wl_display *display = wl_client_get_display (client);
       uint32_t serial;
-      struct wl_resource *resource;
 
       serial = wl_display_next_serial (display);
 
       if (pointer->focus_client)
         {
-          wl_resource_for_each (resource,
-                                &pointer->focus_client->pointer_resources)
-            {
-              wl_pointer_send_leave (resource, serial, pointer->focus_surface->resource);
-            }
-
+          meta_wayland_pointer_broadcast_leave (pointer,
+                                                serial,
+                                                pointer->focus_surface);
           pointer->focus_client = NULL;
         }
 
@@ -646,7 +682,6 @@ meta_wayland_pointer_set_focus (MetaWaylandPointer *pointer,
     {
       struct wl_client *client = wl_resource_get_client (surface->resource);
       struct wl_display *display = wl_client_get_display (client);
-      struct wl_resource *resource;
       ClutterPoint pos;
 
       pointer->focus_surface = surface;
@@ -665,12 +700,9 @@ meta_wayland_pointer_set_focus (MetaWaylandPointer *pointer,
       if (pointer->focus_client)
         {
           pointer->focus_serial = wl_display_next_serial (display);
-
-          wl_resource_for_each (resource,
-                                &pointer->focus_client->pointer_resources)
-            {
-              broadcast_focus (pointer, resource);
-            }
+          meta_wayland_pointer_broadcast_enter (pointer,
+                                                pointer->focus_serial,
+                                                pointer->focus_surface);
         }
     }
 
@@ -946,7 +978,9 @@ meta_wayland_pointer_create_new_resource (MetaWaylandPointer *pointer,
                   wl_resource_get_link (cr));
 
   if (pointer->focus_client == pointer_client)
-    broadcast_focus (pointer, cr);
+    meta_wayland_pointer_send_enter (pointer, cr,
+                                     pointer->focus_serial,
+                                     pointer->focus_surface);
 }
 
 gboolean
