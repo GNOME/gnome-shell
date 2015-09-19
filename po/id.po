@@ -10,9 +10,9 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-08-20 12:02+0000\n"
-"PO-Revision-Date: 2015-08-25 23:54+0700\n"
-"Last-Translator: Sendy Aditya Suryana <sendzation@gmail.com>\n"
+"POT-Creation-Date: 2015-09-19 08:21+0000\n"
+"PO-Revision-Date: 2015-09-19 19:34+0700\n"
+"Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
 "Language: id\n"
 "MIME-Version: 1.0\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Generator: Poedit 1.8.4\n"
+"X-Generator: Poedit 1.6.10\n"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
 msgid "System"
@@ -322,7 +322,7 @@ msgid "Cancel"
 msgstr "Batal"
 
 #: ../js/gdm/authPrompt.js:169 ../js/gdm/authPrompt.js:215
-#: ../js/gdm/authPrompt.js:435
+#: ../js/gdm/authPrompt.js:447
 msgid "Next"
 msgstr "Selanjutnya"
 
@@ -344,17 +344,17 @@ msgstr "Pilih Sesi"
 msgid "Not listed?"
 msgstr "Tak masuk daftar?"
 
-#: ../js/gdm/loginDialog.js:847
+#: ../js/gdm/loginDialog.js:850
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(cth., pengguna dari %s)"
 
-#: ../js/gdm/loginDialog.js:852 ../js/ui/components/networkAgent.js:271
+#: ../js/gdm/loginDialog.js:855 ../js/ui/components/networkAgent.js:271
 #: ../js/ui/components/networkAgent.js:289
 msgid "Username: "
 msgstr "Nama pengguna: "
 
-#: ../js/gdm/loginDialog.js:1181
+#: ../js/gdm/loginDialog.js:1184
 msgid "Login Window"
 msgstr "Jendela Log Masuk"
 
@@ -1220,15 +1220,15 @@ msgstr "%s Menyambung"
 #. Translators: this is for network connections that require some kind of key or password; %s is a network identifier */
 #: ../js/ui/status/network.js:472
 #, javascript-format
-msgid "%s requires Authentication"
-msgstr "%s memerlukan Otentikasi"
+msgid "%s Requires Authentication"
+msgstr "%s Memerlukan Otentikasi"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing; %s is a network identifier */
 #: ../js/ui/status/network.js:480
 #, javascript-format
-msgid "Firmware missing for %s"
-msgstr "Firmware hilang untuk %s"
+msgid "Firmware Missing For %s"
+msgstr "Firmware Hilang Untuk %s"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage; %s is a network identifier */
@@ -1240,8 +1240,8 @@ msgstr "%s Tak tersedia"
 #. Translators: %s is a network identifier */
 #: ../js/ui/status/network.js:487
 #, javascript-format
-msgid "%s Connection failed"
-msgstr "%s Koneksi gagal"
+msgid "%s Connection Failed"
+msgstr "Koneksi %s Gagal"
 
 #: ../js/ui/status/network.js:503
 msgid "Wired Settings"
@@ -1605,250 +1605,3 @@ msgstr "Sandi tidak boleh kosong"
 #: ../src/shell-polkit-authentication-agent.c:346
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Dialog otentikasi ditolak oleh pengguna"
-
-#~ msgid "Bluetooth"
-#~ msgstr "Bluetooth"
-
-#~ msgid "%d Connected Device"
-#~ msgid_plural "%d Connected Devices"
-#~ msgstr[0] "%d Perangkat Tersambung"
-
-#~ msgid "Off"
-#~ msgstr "Mati"
-
-#~ msgid "Authentication required"
-#~ msgstr "Diperlukan otentikasi"
-
-#~ msgid "UPS"
-#~ msgstr "UPS"
-
-#~ msgid "Battery"
-#~ msgstr "Baterai"
-
-#~ msgid "Airplane Mode"
-#~ msgstr "Mode Pesawat Terbang"
-
-#~ msgid "On"
-#~ msgstr "Nyala"
-
-#~ msgid "Show the message tray"
-#~ msgstr "Tampilkan baki pesan"
-
-#~ msgctxt "event list time"
-#~ msgid "%H∶%M"
-#~ msgstr "%H∶%M"
-
-#~ msgctxt "event list time"
-#~ msgid "%l∶%M %p"
-#~ msgstr "%l∶%M %p"
-
-#~ msgctxt "list sunday"
-#~ msgid "Su"
-#~ msgstr "Min"
-
-#~ msgctxt "list monday"
-#~ msgid "M"
-#~ msgstr "Sen"
-
-#~ msgctxt "list tuesday"
-#~ msgid "T"
-#~ msgstr "Sel"
-
-#~ msgctxt "list wednesday"
-#~ msgid "W"
-#~ msgstr "Rab"
-
-#~ msgctxt "list thursday"
-#~ msgid "Th"
-#~ msgstr "Kam"
-
-#~ msgctxt "list friday"
-#~ msgid "F"
-#~ msgstr "Jum"
-
-#~ msgctxt "list saturday"
-#~ msgid "S"
-#~ msgstr "Sab"
-
-#~ msgid "Nothing Scheduled"
-#~ msgstr "Tak Ada Jadwal"
-
-#~ msgid "Today"
-#~ msgstr "Hari ini"
-
-#~ msgid "Tomorrow"
-#~ msgstr "Besok"
-
-#~ msgid "This week"
-#~ msgstr "Minggu ini"
-
-#~ msgid "Next week"
-#~ msgstr "Minggu depan"
-
-#~ msgid "Removable Devices"
-#~ msgstr "Perangkat Yang Dapat Dicabut"
-
-#~ msgid "Eject"
-#~ msgstr "Keluarkan"
-
-#~ msgid "Invitation"
-#~ msgstr "Undangan"
-
-#~ msgid "Call"
-#~ msgstr "Panggil"
-
-#~ msgid "File Transfer"
-#~ msgstr "Transfer Berkas"
-
-#~ msgid "Chat"
-#~ msgstr "Obrolan"
-
-#~ msgid "Unmute"
-#~ msgstr "Bersuara"
-
-#~ msgid "Mute"
-#~ msgstr "Bisu"
-
-#~ msgid "Invitation to %s"
-#~ msgstr "Undangan ke %s"
-
-#~ msgid "%s is inviting you to join %s"
-#~ msgstr "%s mengundang Anda untuk bergabung dengan %s"
-
-#~ msgid "Decline"
-#~ msgstr "Tolak"
-
-#~ msgid "Accept"
-#~ msgstr "Terima"
-
-#~ msgid "Video call from %s"
-#~ msgstr "Panggilan video dari %s"
-
-#~ msgid "Call from %s"
-#~ msgstr "Panggilan dari %s"
-
-#~ msgid "Answer"
-#~ msgstr "Jawab"
-
-#~ msgid "%s is sending you %s"
-#~ msgstr "%s sedang mengirimi Anda %s"
-
-#~ msgid "%s would like permission to see when you are online"
-#~ msgstr "%s ingin minta izin melihat Anda ketika Anda daring"
-
-#~ msgid "Network error"
-#~ msgstr "Galat jaringan"
-
-#~ msgid "Authentication failed"
-#~ msgstr "Otentikasi gagal"
-
-#~ msgid "Encryption error"
-#~ msgstr "Galat enkripsi"
-
-#~ msgid "Certificate not provided"
-#~ msgstr "Sertifikat tidak disediakan"
-
-#~ msgid "Certificate untrusted"
-#~ msgstr "Sertifikat tidak dipercaya"
-
-#~ msgid "Certificate expired"
-#~ msgstr "Sertifikat kadaluarsa"
-
-#~ msgid "Certificate not activated"
-#~ msgstr "Sertifikat tidak diaktifkan"
-
-#~ msgid "Certificate hostname mismatch"
-#~ msgstr "Nama host sertifikat tidak cocok"
-
-#~ msgid "Certificate fingerprint mismatch"
-#~ msgstr "Sidik jari sertifikat tidak cocok"
-
-#~ msgid "Certificate self-signed"
-#~ msgstr "Sertifikat ditandatangani sendiri"
-
-#~ msgid "Status is set to offline"
-#~ msgstr "Status diatur ke luring"
-
-#~ msgid "Encryption is not available"
-#~ msgstr "Enkripsi tidak tersedia"
-
-#~ msgid "Certificate is invalid"
-#~ msgstr "Sertifikat tidak valid"
-
-#~ msgid "Connection has been refused"
-#~ msgstr "Koneksi telah ditolak"
-
-#~ msgid "Connection can't be established"
-#~ msgstr "Koneksi tak dapat dijalin"
-
-#~ msgid "Connection has been lost"
-#~ msgstr "Koneksi telah terputus"
-
-#~ msgid "This account is already connected to the server"
-#~ msgstr "Akun ini telah tersambung pada server"
-
-#~ msgid ""
-#~ "Connection has been replaced by a new connection using the same resource"
-#~ msgstr ""
-#~ "Koneksi telah digantikan oleh koneksi baru memakai sumberdaya yang sama"
-
-#~ msgid "The account already exists on the server"
-#~ msgstr "Akun ini sudah ada di server"
-
-#~ msgid "Server is currently too busy to handle the connection"
-#~ msgstr "Server kini terlalu sibuk untuk menangani koneksi"
-
-#~ msgid "Certificate has been revoked"
-#~ msgstr "Sertifikat telah dicabut"
-
-#~ msgid ""
-#~ "Certificate uses an insecure cipher algorithm or is cryptographically weak"
-#~ msgstr ""
-#~ "Sertifikat memakai algorima cipher yang tak aman atau lemah secara "
-#~ "kriptografi"
-
-#~ msgid ""
-#~ "The length of the server certificate, or the depth of the server "
-#~ "certificate chain, exceed the limits imposed by the cryptography library"
-#~ msgstr ""
-#~ "Panjang sertifikat server, atau kedalaman rantai sertifikat server, "
-#~ "melampaui batas yang diberlakukan oleh pustaka kriptografi"
-
-#~ msgid "Internal error"
-#~ msgstr "Galat internal"
-
-#~ msgid "Unable to connect to %s"
-#~ msgstr "Tak bisa menyambung ke %s"
-
-#~ msgid "View account"
-#~ msgstr "Tilik akun"
-
-#~ msgid "Unknown reason"
-#~ msgstr "Alasan yang tidak diketahui"
-
-#~ msgid "Open Calendar"
-#~ msgstr "Buka Kalender"
-
-#~ msgid "Date & Time Settings"
-#~ msgstr "Pengaturan Waktu & Tanggal"
-
-#~ msgid "Open"
-#~ msgstr "Buka"
-
-#~ msgid "Remove"
-#~ msgstr "Hapus"
-
-#~ msgid "Clear Messages"
-#~ msgstr "Bersihkan Pesan"
-
-#~ msgid "Notification Settings"
-#~ msgstr "Pengaturan Pemberitahuan"
-
-#~ msgid "Tray Menu"
-#~ msgstr "Menu Baki"
-
-#~ msgid "No Messages"
-#~ msgstr "Tiada Pesan"
-
-#~ msgid "Message Tray"
-#~ msgstr "Baki Pesan"
