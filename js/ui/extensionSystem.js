@@ -7,6 +7,7 @@ const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
 const St = imports.gi.St;
 
+const Config = imports.misc.config;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Main = imports.ui.main;
 
@@ -306,6 +307,36 @@ function _onVersionValidationChanged() {
     }
 }
 
+function _doUpdateCheck() {
+    let version = Config.PACKAGE_VERSION.split('.');
+    if (parseInt(version[1]) % 2 == 0)
+        version.pop();
+
+    let pkgCacheDir = GLib.get_user_cache_dir() + '/gnome-shell/';
+    let updateStamp = Gio.file_new_for_path(pkgCacheDir +
+                                            'update-check-' + version.join('.'));
+    if (updateStamp.query_exists(null))
+        return;
+
+    GLib.mkdir_with_parents (pkgCacheDir, 0o755);
+    updateStamp.create(0, null).close(null);
+
+   let nOutdated = enabledExtensions.reduce(function(n, uuid) {
+       let extension = ExtensionUtils.extensions[uuid];
+       if (extension && extension.state == ExtensionState.OUT_OF_DATE)
+           n++;
+       return n;
+   }, 0);
+
+   if (nOutdated == 0)
+       return;
+
+   Main.notify(ngettext("%d extension is out of date",
+                        "%d extensions are out of date",
+                        nOutdated).format(nOutdated),
+               _("You can visit http://extensions.gnome.org for updates"));
+}
+
 function _loadExtensions() {
     global.settings.connect('changed::' + ENABLED_EXTENSIONS_KEY, onEnabledExtensionsChanged);
     global.settings.connect('changed::' + DISABLE_USER_EXTENSIONS_KEY, onEnabledExtensionsChanged);
@@ -320,6 +351,7 @@ function _loadExtensions() {
             extension.type = ExtensionUtils.ExtensionType.SESSION_MODE;
     });
     finder.scanExtensions();
+    _doUpdateCheck();
 }
 
 function enableAllExtensions() {
