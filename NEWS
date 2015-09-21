@@ -1,3 +1,13 @@
+3.18.0
+======
+* Misc. fixes [Florian, Jonas; #753434]
+
+Contributors:
+  Jonas Ådahl, Florian Müllner
+
+Translations:
+  Rūdolfs Mazurs [lv]
+
 3.17.92
 =======
 * Don't omit the background color for backgrounds that don't fill the screen
