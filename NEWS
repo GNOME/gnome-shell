@@ -1,3 +1,11 @@
+3.18.0
+======
+
+Translations:
+  Sendy Aditya Suryana [id], Kris Thomsen [da], Seán de Búrca [ga],
+  Andika Triwidada [id], Enrico Nicoletto [pt_BR], Anders Jonsson [sv],
+  Rūdolfs Mazurs [lv]
+
 3.17.92
 =======
 * Fix race when loading multiple background animations [Josselin; #741453]
