@@ -760,6 +760,9 @@ meta_backend_x11_get_keymap (MetaBackend *backend)
                                                      priv->xcb,
                                                      xkb_x11_get_core_keyboard_device_id (priv->xcb),
                                                      XKB_KEYMAP_COMPILE_NO_FLAGS);
+      if (priv->keymap == NULL)
+        priv->keymap = xkb_keymap_new_from_names (context, NULL, XKB_KEYMAP_COMPILE_NO_FLAGS);
+
       xkb_context_unref (context);
     }
 
