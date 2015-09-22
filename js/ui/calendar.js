@@ -1230,7 +1230,7 @@ const NotificationMessage = new Lang.Class({
                 this._closed = true;
                 this.notification.destroy(MessageTray.NotificationDestroyedReason.DISMISSED);
             }));
-        notification.connect('destroy', Lang.bind(this,
+        this._destroyId = notification.connect('destroy', Lang.bind(this,
             function() {
                 if (!this._closed)
                     this.close();
@@ -1262,6 +1262,10 @@ const NotificationMessage = new Lang.Class({
         if (this._updatedId)
             this.notification.disconnect(this._updatedId);
         this._updatedId = 0;
+
+        if (this._destroyId)
+            this.notification.disconnect(this._destroyId);
+        this._destroyId = 0;
     }
 });
 
