@@ -114,6 +114,32 @@ master_clock_schedule_forced_stages_updates (ClutterMasterClockGdk *master_clock
 }
 
 static void
+master_clock_sync_frame_clock_update (ClutterMasterClockGdk *master_clock)
+{
+  gboolean updating = master_clock->timelines != NULL;
+  gpointer frame_clock, stage_list;
+  GHashTableIter iter;
+
+  g_hash_table_iter_init (&iter, master_clock->clock_to_stage);
+  while (g_hash_table_iter_next (&iter, &frame_clock, &stage_list))
+    {
+      gboolean clock_updating =
+        GPOINTER_TO_UINT (g_object_get_data (frame_clock,
+                                             "clutter-master-clock-updating"));
+      if (clock_updating != updating)
+        {
+          if (updating)
+            gdk_frame_clock_begin_updating (GDK_FRAME_CLOCK (frame_clock));
+          else
+            gdk_frame_clock_end_updating (GDK_FRAME_CLOCK (frame_clock));
+          g_object_set_data (frame_clock,
+                             "clutter-master-clock-updating",
+                             GUINT_TO_POINTER (updating));
+        }
+    }
+}
+
+static void
 master_clock_schedule_stage_update (ClutterMasterClockGdk *master_clock,
                                     ClutterStage          *stage,
                                     GdkFrameClock         *frame_clock)
@@ -306,9 +332,19 @@ clutter_master_clock_gdk_remove_stage_clock (ClutterMasterClockGdk *master_clock
     {
       if (stages->next == NULL)
         {
+          /* Deleting the last stage linked to a given clock. We can stop
+             listening to that clock and also tell the clock we're finish
+             updating it. */
+          if (GPOINTER_TO_UINT (g_object_get_data (frame_clock,
+                                                   "clutter-master-clock-updating")))
+            {
+              gdk_frame_clock_end_updating (GDK_FRAME_CLOCK (frame_clock));
+              g_object_set_data (frame_clock, "clutter-master-clock-updating", NULL);
+            }
           g_signal_handlers_disconnect_by_func (frame_clock,
                                                 clutter_master_clock_gdk_update,
                                                 master_clock);
+
           g_hash_table_remove (master_clock->clock_to_stage, frame_clock);
           g_list_free (stages);
         }
@@ -349,7 +385,12 @@ clutter_master_clock_gdk_add_stage_clock (ClutterMasterClockGdk *master_clock,
     stages = g_list_append (stages, stage);
 
   if (master_clock->timelines != NULL)
-    _clutter_master_clock_start_running ((ClutterMasterClock *) master_clock);
+    {
+      _clutter_master_clock_start_running ((ClutterMasterClock *) master_clock);
+      /* We only need to synchronize the frame clock state if we have
+         timelines running. */
+      master_clock_sync_frame_clock_update (master_clock);
+    }
 }
 
 static void
@@ -501,7 +542,11 @@ clutter_master_clock_gdk_add_timeline (ClutterMasterClock *clock,
                                              timeline);
 
   if (is_first)
-    _clutter_master_clock_start_running (clock);
+    {
+      _clutter_master_clock_start_running (clock);
+      /* Sync frame clock update state if needed. */
+      master_clock_sync_frame_clock_update (master_clock);
+    }
 }
 
 static void
@@ -512,6 +557,10 @@ clutter_master_clock_gdk_remove_timeline (ClutterMasterClock *clock,
 
   master_clock->timelines = g_slist_remove (master_clock->timelines,
                                             timeline);
+
+  /* Sync frame clock update state if we have no more timelines running. */
+  if (master_clock->timelines == NULL)
+    master_clock_sync_frame_clock_update (master_clock);
 }
 
 static void
