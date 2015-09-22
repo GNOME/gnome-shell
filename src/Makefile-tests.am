@@ -19,9 +19,9 @@ installedtestsdir = $(datadir)/installed-tests/mutter
 installedtests_DATA = mutter-all.test
 
 installedtestsbindir = $(libexecdir)/installed-tests/mutter
-installedtestsbin_PROGRAMS = mutter-test-client mutter-test-runner
+installedtestsbin_PROGRAMS = mutter-test-client mutter-test-runner mutter-test-unit-tests
 else
-noinst_PROGRAMS += mutter-test-client mutter-test-runner
+noinst_PROGRAMS += mutter-test-client mutter-test-runner mutter-test-unit-tests
 endif
 
 EXTRA_DIST += tests/mutter-all.test.in
@@ -32,10 +32,18 @@ mutter_test_client_LDADD = $(MUTTER_LIBS) libmutter.la
 mutter_test_runner_SOURCES = tests/test-runner.c
 mutter_test_runner_LDADD = $(MUTTER_LIBS) libmutter.la
 
-.PHONY: run-tests
+mutter_test_unit_tests_SOURCES = tests/unit-tests.c
+mutter_test_unit_tests_LDADD = $(MUTTER_LIBS) libmutter.la
 
-run-tests: mutter-test-client mutter-test-runner
+.PHONY: run-tests run-test-runner-tests run-unit-tests
+
+run-test-runner-tests: mutter-test-client mutter-test-runner
 	./mutter-test-runner $(dist_stacking_DATA)
+
+run-unit-tests: mutter-test-unit-tests
+	./mutter-test-unit-tests
+
+run-tests: run-test-runner-tests run-unit-tests
 
 endif
 
