@@ -84,6 +84,95 @@ meta_test_util_later_order (void)
   g_main_loop_unref (loop);
 }
 
+typedef enum _MetaTestLaterScheduleFromLaterState
+{
+  META_TEST_LATER_EXPECT_CALC_SHOWING,
+  META_TEST_LATER_EXPECT_SYNC_STACK,
+  META_TEST_LATER_EXPECT_BEFORE_REDRAW,
+  META_TEST_LATER_FINISHED,
+} MetaTestLaterScheduleFromLaterState;
+
+typedef struct _MetaTestLaterScheduleFromLaterData
+{
+  GMainLoop *loop;
+  MetaTestLaterScheduleFromLaterState state;
+} MetaTestLaterScheduleFromLaterData;
+
+static gboolean
+test_later_schedule_from_later_sync_stack_callback (gpointer user_data);
+
+static gboolean
+test_later_schedule_from_later_calc_showing_callback (gpointer user_data)
+{
+  MetaTestLaterScheduleFromLaterData *data = user_data;
+
+  g_assert_cmpint (data->state, ==, META_TEST_LATER_EXPECT_CALC_SHOWING);
+
+  meta_later_add (META_LATER_SYNC_STACK,
+                  test_later_schedule_from_later_sync_stack_callback,
+                  data,
+                  NULL);
+
+  data->state = META_TEST_LATER_EXPECT_SYNC_STACK;
+
+  return FALSE;
+}
+
+static gboolean
+test_later_schedule_from_later_sync_stack_callback (gpointer user_data)
+{
+  MetaTestLaterScheduleFromLaterData *data = user_data;
+
+  g_assert_cmpint (data->state, ==, META_TEST_LATER_EXPECT_SYNC_STACK);
+
+  data->state = META_TEST_LATER_EXPECT_BEFORE_REDRAW;
+
+  return FALSE;
+}
+
+static gboolean
+test_later_schedule_from_later_before_redraw_callback (gpointer user_data)
+{
+  MetaTestLaterScheduleFromLaterData *data = user_data;
+
+  g_assert_cmpint (data->state, ==, META_TEST_LATER_EXPECT_BEFORE_REDRAW);
+  data->state = META_TEST_LATER_FINISHED;
+  g_main_loop_quit (data->loop);
+
+  return FALSE;
+}
+
+static void
+meta_test_util_later_schedule_from_later (void)
+{
+  MetaTestLaterScheduleFromLaterData data;
+
+  data.loop = g_main_loop_new (NULL, FALSE);
+
+  /* Test that scheduling a MetaLater with 'when' being later than the one being
+   * invoked causes it to be invoked before any callback with a later 'when'
+   * value being invoked.
+   *
+   * The first and last callback is queued here. The one to be invoked in
+   * between is invoked in test_later_schedule_from_later_calc_showing_callback.
+   */
+  meta_later_add (META_LATER_CALC_SHOWING,
+                  test_later_schedule_from_later_calc_showing_callback,
+                  &data,
+                  NULL);
+  meta_later_add (META_LATER_BEFORE_REDRAW,
+                  test_later_schedule_from_later_before_redraw_callback,
+                  &data,
+                  NULL);
+
+  data.state = META_TEST_LATER_EXPECT_CALC_SHOWING;
+
+  g_main_loop_run (data.loop);
+  g_main_loop_unref (data.loop);
+
+  g_assert_cmpint (data.state, ==, META_TEST_LATER_FINISHED);
+}
+
 static gboolean
 run_tests (gpointer data)
 {
@@ -103,6 +192,8 @@ init_tests (int argc, char **argv)
   g_test_bug_base ("http://bugzilla.gnome.org/show_bug.cgi?id=");
 
   g_test_add_func ("/util/meta-later/order", meta_test_util_later_order);
+  g_test_add_func ("/util/meta-later/schedule-from-later",
+                   meta_test_util_later_schedule_from_later);
 }
 
 int
