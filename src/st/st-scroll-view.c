@@ -378,6 +378,9 @@ st_scroll_view_get_preferred_width (ClutterActor *actor,
        * but that's not cleanly defined at the moment */
       min_width = 0;
       break;
+    default:
+      g_warn_if_reached();
+      break;
     }
 
   switch (priv->vscrollbar_policy)
@@ -395,6 +398,9 @@ st_scroll_view_get_preferred_width (ClutterActor *actor,
        * height is assigned in allocate().
        */
       account_for_vscrollbar = !priv->overlay_scrollbars;
+      break;
+    default:
+      g_warn_if_reached();
       break;
     }
 
@@ -452,6 +458,9 @@ st_scroll_view_get_preferred_height (ClutterActor *actor,
       /* We've requested space for the scrollbar, subtract it back out */
       for_width -= sb_width;
       break;
+    default:
+      g_warn_if_reached();
+      break;
     }
 
   switch (priv->hscrollbar_policy)
@@ -469,6 +478,9 @@ st_scroll_view_get_preferred_height (ClutterActor *actor,
        * width is assigned in allocate().
        */
       account_for_hscrollbar = !priv->overlay_scrollbars;
+      break;
+    default:
+      g_warn_if_reached();
       break;
     }
 
@@ -488,6 +500,9 @@ st_scroll_view_get_preferred_height (ClutterActor *actor,
       /* Should theoretically use the min height of the vscrollbar,
        * but that's not cleanly defined at the moment */
       min_height = 0;
+      break;
+    default:
+      g_warn_if_reached();
       break;
     }
 
@@ -758,6 +773,9 @@ st_scroll_view_scroll_event (ClutterActor       *self,
     case CLUTTER_SCROLL_LEFT:
     case CLUTTER_SCROLL_RIGHT:
       adjust_with_direction (priv->hadjustment, event->direction);
+      break;
+    default:
+      g_warn_if_reached();
       break;
     }
 

@@ -152,9 +152,9 @@ side_to_string (StSide side)
       return "bottom";
     case ST_SIDE_LEFT:
       return "left";
+    default:
+      return "<unknown>";
     }
-
-  return "<unknown>";
 }
 
 static void

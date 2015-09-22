@@ -450,6 +450,7 @@ adjust_with_direction (StAdjustment           *adj,
       delta = 1.0;
       break;
     case CLUTTER_SCROLL_SMOOTH:
+    default:
       g_assert_not_reached ();
       break;
     }
@@ -484,6 +485,9 @@ st_scroll_bar_scroll_event (ClutterActor       *actor,
     case CLUTTER_SCROLL_LEFT:
     case CLUTTER_SCROLL_RIGHT:
       adjust_with_direction (priv->adjustment, event->direction);
+      break;
+    default:
+      g_return_val_if_reached (FALSE);
       break;
     }
 

@@ -335,6 +335,9 @@ st_theme_node_get_corner_border_widths (StThemeNode *node,
         if (border_width_2)
             *border_width_2 = node->border_width[ST_SIDE_LEFT];
         break;
+      default:
+        g_assert_not_reached();
+        break;
     }
 }
 
@@ -380,6 +383,9 @@ st_theme_node_lookup_corner (StThemeNode    *node,
       case ST_CORNER_BOTTOMLEFT:
         over (&node->border_color[ST_SIDE_BOTTOM], &corner.color, &corner.border_color_1);
         over (&node->border_color[ST_SIDE_LEFT], &corner.color, &corner.border_color_2);
+        break;
+      default:
+        g_assert_not_reached();
         break;
     }
 
@@ -432,6 +438,9 @@ get_background_scale (StThemeNode *node,
           }
         else if (node->background_size_h > -1)
           *scale_w = node->background_size_h / background_image_height;
+        break;
+      default:
+        g_assert_not_reached();
         break;
     }
   if (*scale_h < 0.0)
@@ -1720,6 +1729,9 @@ st_theme_node_paint_borders (StThemeNodePaintState *state,
                                                     max_width_radius[ST_CORNER_BOTTOMLEFT], height,
                                                     0, 0.5, 0.5, 1);
                 break;
+              default:
+                g_assert_not_reached();
+                break;
             }
         }
     }
@@ -1813,6 +1825,9 @@ st_theme_node_paint_borders (StThemeNodePaintState *state,
                     verts[6] = max_border_radius;
                     verts[7] = height - border_width[ST_SIDE_BOTTOM];
                   }
+                break;
+              default:
+                g_assert_not_reached();
                 break;
             }
           cogl_rectangles (verts, n_rects);

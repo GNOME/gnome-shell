@@ -594,6 +594,9 @@ get_color_from_rgba_term (CRTerm       *term,
         case 3:
           a = value;
           break;
+        default:
+          g_assert_not_reached();
+          break;
         }
 
       arg = arg->next;
@@ -1102,6 +1105,7 @@ get_length_from_term (StThemeNode *node,
     case NUM_FREQ_KHZ:
     case NUM_UNKNOWN_TYPE:
     case NB_NUM_TYPE:
+    default:
       g_warning ("Ignoring invalid type of number of length property");
       return VALUE_NOT_FOUND;
     }
@@ -3250,6 +3254,9 @@ parse_shadow_property (StThemeNode       *node,
                                  "not allowed");
                   *spread = value;
                   break;
+                default:
+                  g_warning ("Ignoring excess values in shadow definition");
+                  break;
                 }
               continue;
             }
@@ -3625,6 +3632,9 @@ st_theme_node_get_icon_colors (StThemeNode *node)
               break;
             case SUCCESS:
               node->icon_colors->success = color;
+              break;
+            default:
+              g_assert_not_reached();
               break;
             }
         }
