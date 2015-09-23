@@ -810,7 +810,7 @@ _cogl_offscreen_gl_allocate (CoglOffscreen *offscreen,
 
   _COGL_RETURN_VAL_IF_FAIL (offscreen->texture_level <
                             _cogl_texture_get_n_levels (offscreen->texture),
-                            NULL);
+                            FALSE);
 
   _cogl_texture_get_level_size (offscreen->texture,
                                 offscreen->texture_level,
