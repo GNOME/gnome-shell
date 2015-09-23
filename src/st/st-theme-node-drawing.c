@@ -1298,15 +1298,15 @@ st_theme_node_load_border_image (StThemeNode *node)
   if (node->border_slices_texture == COGL_INVALID_HANDLE)
     {
       StBorderImage *border_image;
+      GFile *file;
+      int scale_factor;
 
       border_image = st_theme_node_get_border_image (node);
       if (border_image == NULL)
         goto out;
 
-      GFile *file;
       file = st_border_image_get_file (border_image);
 
-      int scale_factor;
       g_object_get (node->context, "scale-factor", &scale_factor, NULL);
 
       node->border_slices_texture = st_texture_cache_load_file_to_cogl_texture (st_texture_cache_get_default (),
@@ -1350,12 +1350,12 @@ st_theme_node_load_background_image (StThemeNode *node)
     {
       GFile *background_image;
       StShadow *background_image_shadow_spec;
+      int scale_factor;
 
       background_image = st_theme_node_get_background_image (node);
       if (background_image == NULL)
         goto out;
 
-      int scale_factor;
       g_object_get (node->context, "scale-factor", &scale_factor, NULL);
 
       background_image_shadow_spec = st_theme_node_get_background_image_shadow (node);
