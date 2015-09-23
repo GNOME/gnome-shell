@@ -33,8 +33,6 @@ struct _MetaCursorRendererX11Nested
   MetaCursorRenderer parent;
 };
 
-GType meta_cursor_renderer_x11_nested_get_type (void) G_GNUC_CONST;
-
 G_DEFINE_TYPE (MetaCursorRendererX11Nested, meta_cursor_renderer_x11_nested,
                META_TYPE_CURSOR_RENDERER);
 

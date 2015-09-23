@@ -57,8 +57,6 @@ typedef struct _MetaWaylandDataSourceWayland
   struct wl_resource *resource;
 } MetaWaylandDataSourceWayland;
 
-GType meta_wayland_data_source_wayland_get_type (void) G_GNUC_CONST;
-
 G_DEFINE_TYPE_WITH_PRIVATE (MetaWaylandDataSource, meta_wayland_data_source,
                             G_TYPE_OBJECT);
 G_DEFINE_TYPE (MetaWaylandDataSourceWayland, meta_wayland_data_source_wayland,

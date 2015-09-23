@@ -60,8 +60,6 @@ struct _MetaWaylandDataDevice
   struct wl_signal dnd_ownership_signal;
 };
 
-GType meta_wayland_data_source_get_type (void) G_GNUC_CONST;
-
 void meta_wayland_data_device_manager_init (MetaWaylandCompositor *compositor);
 
 void meta_wayland_data_device_init (MetaWaylandDataDevice *data_device);

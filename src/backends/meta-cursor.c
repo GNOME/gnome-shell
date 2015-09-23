@@ -60,8 +60,6 @@ struct _MetaCursorSprite
   gboolean theme_dirty;
 };
 
-GType meta_cursor_sprite_get_type (void) G_GNUC_CONST;
-
 G_DEFINE_TYPE (MetaCursorSprite, meta_cursor_sprite, G_TYPE_OBJECT)
 
 static const char *

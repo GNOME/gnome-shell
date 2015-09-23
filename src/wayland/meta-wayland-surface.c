@@ -73,11 +73,8 @@ typedef struct
   struct wl_listener sibling_destroy_listener;
 } MetaWaylandSubsurfacePlacementOp;
 
-GType meta_wayland_surface_get_type (void) G_GNUC_CONST;
-
 G_DEFINE_TYPE (MetaWaylandSurface, meta_wayland_surface, G_TYPE_OBJECT);
 
-GType meta_wayland_surface_role_get_type (void) G_GNUC_CONST;
 G_DEFINE_TYPE_WITH_PRIVATE (MetaWaylandSurfaceRole,
                             meta_wayland_surface_role,
                             G_TYPE_OBJECT);
@@ -87,7 +84,6 @@ struct _MetaWaylandSurfaceRoleSubsurface
   MetaWaylandSurfaceRole parent;
 };
 
-GType meta_wayland_surface_role_subsurface_get_type (void) G_GNUC_CONST;
 G_DEFINE_TYPE (MetaWaylandSurfaceRoleSubsurface,
                meta_wayland_surface_role_subsurface,
                META_TYPE_WAYLAND_SURFACE_ROLE);
@@ -97,7 +93,6 @@ struct _MetaWaylandSurfaceRoleXdgSurface
   MetaWaylandSurfaceRole parent;
 };
 
-GType meta_wayland_surface_role_xdg_surface_get_type (void) G_GNUC_CONST;
 G_DEFINE_TYPE (MetaWaylandSurfaceRoleXdgSurface,
                meta_wayland_surface_role_xdg_surface,
                META_TYPE_WAYLAND_SURFACE_ROLE);
@@ -107,7 +102,6 @@ struct _MetaWaylandSurfaceRoleXdgPopup
   MetaWaylandSurfaceRole parent;
 };
 
-GType meta_wayland_surface_role_xdg_popup_get_type (void) G_GNUC_CONST;
 G_DEFINE_TYPE (MetaWaylandSurfaceRoleXdgPopup,
                meta_wayland_surface_role_xdg_popup,
                META_TYPE_WAYLAND_SURFACE_ROLE);
@@ -117,7 +111,6 @@ struct _MetaWaylandSurfaceRoleWlShellSurface
   MetaWaylandSurfaceRole parent;
 };
 
-GType meta_wayland_surface_role_wl_shell_surface_get_type (void) G_GNUC_CONST;
 G_DEFINE_TYPE (MetaWaylandSurfaceRoleWlShellSurface,
                meta_wayland_surface_role_wl_shell_surface,
                META_TYPE_WAYLAND_SURFACE_ROLE);
@@ -127,7 +120,6 @@ struct _MetaWaylandSurfaceRoleDND
   MetaWaylandSurfaceRole parent;
 };
 
-GType meta_wayland_surface_role_dnd_get_type (void) G_GNUC_CONST;
 G_DEFINE_TYPE (MetaWaylandSurfaceRoleDND,
                meta_wayland_surface_role_dnd,
                META_TYPE_WAYLAND_SURFACE_ROLE);

@@ -74,7 +74,6 @@ struct _MetaWaylandSurfaceRoleCursor
   MetaCursorSprite *cursor_sprite;
 };
 
-GType meta_wayland_surface_role_cursor_get_type (void) G_GNUC_CONST;
 G_DEFINE_TYPE (MetaWaylandSurfaceRoleCursor,
                meta_wayland_surface_role_cursor,
                META_TYPE_WAYLAND_SURFACE_ROLE);

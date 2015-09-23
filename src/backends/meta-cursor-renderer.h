@@ -54,8 +54,6 @@ struct _MetaCursorRendererClass
                                         XcursorImage *xc_image);
 };
 
-GType meta_cursor_renderer_get_type (void) G_GNUC_CONST;
-
 MetaCursorRenderer * meta_cursor_renderer_new (void);
 
 void meta_cursor_renderer_set_cursor (MetaCursorRenderer *renderer,

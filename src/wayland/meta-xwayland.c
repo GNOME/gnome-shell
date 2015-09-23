@@ -45,7 +45,6 @@ struct _MetaWaylandSurfaceRoleXWayland
   MetaWaylandSurfaceRole parent;
 };
 
-GType meta_wayland_surface_role_xwayland_get_type (void) G_GNUC_CONST;
 G_DEFINE_TYPE (MetaWaylandSurfaceRoleXWayland,
                meta_wayland_surface_role_xwayland,
                META_TYPE_WAYLAND_SURFACE_ROLE);

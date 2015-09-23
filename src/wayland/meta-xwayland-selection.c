@@ -39,8 +39,6 @@
 #include "meta-xwayland-selection-private.h"
 #include "meta-wayland-data-device.h"
 
-GType meta_wayland_data_source_xwayland_get_type (void) G_GNUC_CONST;
-
 #define INCR_CHUNK_SIZE (128 * 1024)
 #define XDND_VERSION 5
 
