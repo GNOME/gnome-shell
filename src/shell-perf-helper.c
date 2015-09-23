@@ -125,8 +125,9 @@ on_window_draw (GtkWidget  *window,
                 WindowInfo *info)
 {
   cairo_rectangle_int_t allocation;
-  gtk_widget_get_allocation (window, &allocation);
   double x_offset, y_offset;
+
+  gtk_widget_get_allocation (window, &allocation);
 
   /* We draw an arbitrary pattern of red lines near the border of the
    * window to make it more clear than empty windows if something
