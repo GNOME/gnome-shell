@@ -1182,23 +1182,20 @@ recorder_pipeline_bus_watch (GstBus     *bus,
 {
   RecorderPipeline *pipeline = data;
 
-  switch (message->type)
+  if (message->type == GST_MESSAGE_EOS)
     {
-    case GST_MESSAGE_EOS:
       recorder_pipeline_closed (pipeline);
       return FALSE; /* remove watch */
-    case GST_MESSAGE_ERROR:
-      {
-        GError *error;
+    }
+  else if (message->type == GST_MESSAGE_ERROR)
+    {
+      GError *error;
 
-        gst_message_parse_error (message, &error, NULL);
-        g_warning ("Error in recording pipeline: %s\n", error->message);
-        g_error_free (error);
-        recorder_pipeline_closed (pipeline);
-        return FALSE; /* remove watch */
-      }
-    default:
-      break;
+      gst_message_parse_error (message, &error, NULL);
+      g_warning ("Error in recording pipeline: %s\n", error->message);
+      g_error_free (error);
+      recorder_pipeline_closed (pipeline);
+      return FALSE; /* remove watch */
     }
 
   /* Leave the watch in place */
