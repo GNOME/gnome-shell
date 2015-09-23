@@ -383,9 +383,6 @@ _st_create_shadow_pipeline (StShadow    *shadow_spec,
 
   if (G_UNLIKELY (shadow_pipeline_template == NULL))
     {
-      CoglContext *ctx =
-        clutter_backend_get_cogl_context (clutter_get_default_backend ());
-
       shadow_pipeline_template = cogl_pipeline_new (ctx);
 
       /* We set up the pipeline to blend the shadow texture with the combine
