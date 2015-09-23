@@ -840,26 +840,21 @@ st_theme_node_lookup_time (StThemeNode *node,
       if (strcmp (decl->property->stryng->str, property_name) == 0)
         {
           CRTerm *term = decl->value;
+          int factor = 1;
 
           if (term->type != TERM_NUMBER)
             continue;
 
-          switch (term->content.num->type)
-            {
-            case NUM_TIME_S:
-              *value = 1000 * term->content.num->val;
-              result = TRUE;
-              break;
-            case NUM_TIME_MS:
-              *value = term->content.num->val;
-              result = TRUE;
-              break;
-            default:
-              ;
-            }
+          if (term->content.num->type != NUM_TIME_S ||
+              term->content.num->type != NUM_TIME_MS)
+            continue;
 
-          if (result)
-            break;
+          if (term->content.num->type == NUM_TIME_S)
+            factor = 1000;
+
+          *value = factor * term->content.num->val;
+          result = TRUE;
+          break;
         }
     }
 
