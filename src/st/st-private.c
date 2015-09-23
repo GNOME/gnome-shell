@@ -211,7 +211,7 @@ calculate_gaussian_kernel (gdouble   sigma,
 {
   gdouble *ret, sum;
   gdouble exp_divisor;
-  gint half, i;
+  guint half, i;
 
   g_return_val_if_fail (sigma > 0, NULL);
 

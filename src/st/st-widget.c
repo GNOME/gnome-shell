@@ -349,7 +349,7 @@ static void
 st_widget_finalize (GObject *gobject)
 {
   StWidgetPrivate *priv = ST_WIDGET (gobject)->priv;
-  int i;
+  guint i;
 
   g_free (priv->style_class);
   g_free (priv->pseudo_class);
@@ -1495,7 +1495,7 @@ static void
 st_widget_init (StWidget *actor)
 {
   StWidgetPrivate *priv;
-  int i;
+  guint i;
 
   actor->priv = priv = ST_WIDGET_GET_PRIVATE (actor);
   priv->transition_animation = NULL;

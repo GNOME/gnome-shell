@@ -94,8 +94,8 @@ st_drawing_area_paint (ClutterActor *self)
     }
 
   if (priv->texture != NULL &&
-      (width != cogl_texture_get_width (priv->texture) ||
-       height != cogl_texture_get_height (priv->texture)))
+      (width != (int)cogl_texture_get_width (priv->texture) ||
+       height != (int)cogl_texture_get_height (priv->texture)))
     {
       cogl_object_unref (priv->texture);
       priv->texture = NULL;

@@ -960,7 +960,7 @@ st_theme_node_prerender_background (StThemeNode *node,
   gboolean draw_background_image_shadow = FALSE;
   gboolean has_visible_outline;
   ClutterColor border_color;
-  int border_width[4];
+  guint border_width[4];
   guint rowstride;
   guchar *data;
   ClutterActorBox actor_box;
@@ -1588,10 +1588,10 @@ st_theme_node_paint_borders (StThemeNodePaintState *state,
 {
   StThemeNode *node = state->node;
   float width, height;
-  int border_width[4];
+  guint border_width[4];
   guint border_radius[4];
-  int max_border_radius = 0;
-  int max_width_radius[4];
+  guint max_border_radius = 0;
+  guint max_width_radius[4];
   int corner_id, side_id;
   ClutterColor border_color;
   guint8 alpha;
