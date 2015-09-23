@@ -2214,7 +2214,7 @@ st_set_slow_down_factor (gfloat factor)
  * Returns: the global factor applied to all animation durations
  */
 gfloat
-st_get_slow_down_factor ()
+st_get_slow_down_factor (void)
 {
   return st_slow_down_factor;
 }
