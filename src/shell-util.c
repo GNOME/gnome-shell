@@ -84,7 +84,7 @@ shell_util_get_transformed_allocation (ClutterActor    *actor,
    */
   ClutterVertex v[4];
   gfloat x_min, x_max, y_min, y_max;
-  gint i;
+  guint i;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (actor));
 
