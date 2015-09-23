@@ -865,7 +865,7 @@ shell_startup_sequence_create_icon (ShellStartupSequence *sequence, guint size)
  * Return Value: (transfer none): The global #ShellWindowTracker instance
  */
 ShellWindowTracker *
-shell_window_tracker_get_default ()
+shell_window_tracker_get_default (void)
 {
   static ShellWindowTracker *instance;
 

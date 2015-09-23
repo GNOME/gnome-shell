@@ -996,7 +996,7 @@ on_enable_monitoring_key_changed (GSettings     *settings,
  * Return Value: (transfer none): The global #ShellAppUsage instance
  */
 ShellAppUsage *
-shell_app_usage_get_default ()
+shell_app_usage_get_default (void)
 {
   static ShellAppUsage *instance;
 

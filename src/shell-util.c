@@ -165,7 +165,7 @@ shell_util_format_date (const char *format,
  */
 /* Copied from gtkcalendar.c */
 int
-shell_util_get_week_start ()
+shell_util_get_week_start (void)
 {
   int week_start;
 #ifdef HAVE__NL_TIME_FIRST_WEEKDAY

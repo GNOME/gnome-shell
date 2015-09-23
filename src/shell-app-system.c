@@ -182,7 +182,7 @@ shell_app_system_finalize (GObject *object)
  * Return Value: (transfer none): The global #ShellAppSystem singleton
  */
 ShellAppSystem *
-shell_app_system_get_default ()
+shell_app_system_get_default (void)
 {
   static ShellAppSystem *instance = NULL;
 
