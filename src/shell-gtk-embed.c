@@ -68,7 +68,6 @@ shell_gtk_embed_window_created_cb (MetaDisplay   *display,
     {
       ClutterActor *window_actor =
         CLUTTER_ACTOR (meta_window_get_compositor_private (window));
-      MetaDisplay *display = shell_global_get_display (shell_global_get ());
       GCallback remove_cb = G_CALLBACK (shell_gtk_embed_remove_window_actor);
       cairo_region_t *empty_region;
 
