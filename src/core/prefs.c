@@ -161,8 +161,8 @@ typedef struct
 
 typedef struct
 {
-  char *key;
-  char *schema;
+  const char *key;
+  const char *schema;
   MetaPreference pref;
 } MetaBasePreference;
 

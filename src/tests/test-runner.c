@@ -1120,7 +1120,7 @@ main (int argc, char **argv)
 
   /* Then initalize mutter with a different set of arguments */
 
-  char *fake_args[] = { NULL, "--wayland" };
+  char *fake_args[] = { NULL, (char *)"--wayland" };
   fake_args[0] = argv[0];
   char **fake_argv = fake_args;
   int fake_argc = 2;

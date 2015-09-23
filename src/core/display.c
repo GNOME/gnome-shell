@@ -547,7 +547,7 @@ meta_display_open (void)
   guint32 timestamp;
 
   /* A list of all atom names, so that we can intern them in one go. */
-  char *atom_names[] = {
+  const char *atom_names[] = {
 #define item(x) #x,
 #include <x11/atomnames.h>
 #undef item
@@ -605,7 +605,7 @@ meta_display_open (void)
   meta_prefs_add_listener (prefs_changed_callback, display);
 
   meta_verbose ("Creating %d atoms\n", (int) G_N_ELEMENTS (atom_names));
-  XInternAtoms (display->xdisplay, atom_names, G_N_ELEMENTS (atom_names),
+  XInternAtoms (display->xdisplay, (char **)atom_names, G_N_ELEMENTS (atom_names),
                 False, atoms);
   {
     int i = 0;

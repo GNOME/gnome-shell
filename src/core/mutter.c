@@ -44,7 +44,7 @@ print_version (const gchar    *option_name,
   exit (0);
 }
 
-static gchar *plugin = "default";
+static const char *plugin = "default";
 
 GOptionEntry mutter_options[] = {
   {

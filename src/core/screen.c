@@ -2100,7 +2100,7 @@ meta_screen_queue_workarea_recalc (MetaScreen *screen)
 
 
 #ifdef WITH_VERBOSE_MODE
-static char *
+static const char *
 meta_screen_corner_to_string (MetaScreenCorner corner)
 {
   switch (corner)

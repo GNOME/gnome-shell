@@ -1055,7 +1055,7 @@ meta_workspace_get_onmonitor_region (MetaWorkspace *workspace,
 }
 
 #ifdef WITH_VERBOSE_MODE
-static char *
+static const char *
 meta_motion_direction_to_string (MetaMotionDirection direction)
 {
   switch (direction)

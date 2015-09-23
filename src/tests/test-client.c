@@ -25,7 +25,7 @@
 #include <string.h>
 #include <X11/extensions/sync.h>
 
-char *client_id = "0";
+const char *client_id = "0";
 static gboolean wayland;
 GHashTable *windows;
 

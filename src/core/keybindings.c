@@ -188,7 +188,7 @@ reload_modmap (MetaKeyBindingManager *keys)
 
   /* Modifiers to find. */
   struct {
-    char *name;
+    const char *name;
     xkb_mod_mask_t *mask_p;
   } mods[] = {
     { "ScrollLock", &scroll_lock_mask },
