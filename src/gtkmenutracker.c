@@ -176,15 +176,15 @@ gtk_menu_tracker_section_sync_separators (GtkMenuTrackerSection *section,
 
       if (subsection)
         {
-          gboolean could_have_separator;
+          gboolean section_could_have_separator;
 
-          could_have_separator = (section->with_separators && n_items > 0) || subsection->separator_label;
+          section_could_have_separator = (section->with_separators && n_items > 0) || subsection->separator_label;
 
           /* Only pass the parent_model and parent_index in case they may be used to create the separator. */
           n_items += gtk_menu_tracker_section_sync_separators (subsection, tracker, offset + n_items,
-                                                               could_have_separator,
-                                                               could_have_separator ? section->model : NULL,
-                                                               could_have_separator ? i : 0);
+                                                               section_could_have_separator,
+                                                               section_could_have_separator ? section->model : NULL,
+                                                               section_could_have_separator ? i : 0);
         }
       else
         n_items++;
@@ -197,11 +197,11 @@ gtk_menu_tracker_section_sync_separators (GtkMenuTrackerSection *section,
   if (should_have_separator > section->has_separator)
     {
       /* Add a separator */
-      GtkMenuTrackerItem *item;
+      GtkMenuTrackerItem *menuitem;
 
-      item = _gtk_menu_tracker_item_new (tracker->observable, parent_model, parent_index, NULL, TRUE);
-      (* tracker->insert_func) (item, offset, tracker->user_data);
-      g_object_unref (item);
+      menuitem = _gtk_menu_tracker_item_new (tracker->observable, parent_model, parent_index, NULL, TRUE);
+      (* tracker->insert_func) (menuitem, offset, tracker->user_data);
+      g_object_unref (menuitem);
 
       section->has_separator = TRUE;
     }
