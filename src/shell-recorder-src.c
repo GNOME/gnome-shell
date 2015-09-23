@@ -156,17 +156,17 @@ shell_recorder_src_send_event (GstElement * element, GstEvent * event)
   ShellRecorderSrc *src = SHELL_RECORDER_SRC (element);
   gboolean res;
 
-  switch (GST_EVENT_TYPE (event)) {
-    case GST_EVENT_EOS:
+  if (GST_EVENT_TYPE (event) == GST_EVENT_EOS)
+    {
       shell_recorder_src_close (src);
       gst_event_unref (event);
       res = TRUE;
-      break;
-    default:
+    }
+  else
+    {
       res = GST_CALL_PARENT_WITH_DEFAULT (GST_ELEMENT_CLASS, send_event, (element,
               event), FALSE);
-      break;
-  }
+    }
   return res;
 }
 
