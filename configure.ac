@@ -1,5 +1,6 @@
 AC_PREREQ(2.63)
 AC_INIT([gnome-shell],[3.18.0],[https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell],[gnome-shell])
+AX_IS_RELEASE([git-directory])
 
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_SRCDIR([src/shell-global.c])
@@ -220,7 +221,7 @@ if test "$enable_man" != no; then
 fi
 AM_CONDITIONAL(ENABLE_MAN, test "$enable_man" != no)
 
-GNOME_COMPILE_WARNINGS([error])
+AX_COMPILER_FLAGS()
 case "$WARN_CFLAGS" in
     *-Werror*)
         WARN_CFLAGS="$WARN_CFLAGS -Wno-error=deprecated-declarations"
@@ -269,7 +270,7 @@ Build configuration:
        Prefix:                                 ${prefix}
        Source code location:                   ${srcdir}
        Compiler:                               ${CC}
-       Compiler Warnings:                      $enable_compile_warnings
+       Compiler Warnings:                      $ax_enable_compile_warnings
 
        Support for NetworkManager:             $have_networkmanager
        Support for GStreamer recording:        $build_recorder
