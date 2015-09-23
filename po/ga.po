@@ -1,5 +1,5 @@
 # Irish translations for gnome-shell package.
-# Copyright (C) 2009-2013 Free Software Foundation, Inc.
+# Copyright (C) 2009-2015 Free Software Foundation, Inc.
 # This file is distributed under the same license as the gnome-shell package.
 # Seán de Búrca <leftmostcat@gmail.com>, 2009-2015.
 #
@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-18 10:05-0600\n"
-"PO-Revision-Date: 2015-09-18 10:33-0600\n"
+"POT-Creation-Date: 2015-09-30 22:09-0600\n"
+"PO-Revision-Date: 2015-09-30 22:29-0600\n"
 "Last-Translator: Seán de Búrca <leftmostcat@gmail.com>\n"
 "Language-Team: Irish <gaeilge-gnulinux@lists.sourceforge.net>\n"
 "Language: ga\n"
@@ -262,14 +262,13 @@ msgid "Delay focus changes in mouse mode until the pointer stops moving"
 msgstr ""
 
 #: ../data/org.gnome.Shell.PortalHelper.desktop.in.h:1
-#, fuzzy
 msgid "Network Login"
-msgstr "Earráid líonra"
+msgstr "Logáil Isteach Líonra"
 
 #: ../js/extensionPrefs/main.js:122
 #, javascript-format
 msgid "There was an error loading the preferences dialog for %s:"
-msgstr ""
+msgstr "Tharla earráid agus luchtú na dialóige sainroghanna do %s:"
 
 #: ../js/extensionPrefs/main.js:154
 msgid "GNOME Shell Extensions"
@@ -351,9 +350,9 @@ msgid "Could not parse command:"
 msgstr "Níorbh fhéidir ordú a pharsáil:"
 
 #: ../js/misc/util.js:160
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Execution of “%s” failed:"
-msgstr "Theip rith '%s':"
+msgstr "Theip ar rith “%s”:"
 
 #. Translators: Time in 24h format
 #: ../js/misc/util.js:191
@@ -428,9 +427,8 @@ msgstr "%d %B %Y, %l∶%M %p"
 #. TRANSLATORS: this is the title of the wifi captive portal login
 #. * window, until we know the title of the actual login page
 #: ../js/portalHelper/main.js:85
-#, fuzzy
 msgid "Web Authentication Redirect"
-msgstr "Fíordheimhniú de Dhíth"
+msgstr ""
 
 #: ../js/ui/appDisplay.js:794
 msgid "Frequently used applications will appear here"
@@ -478,8 +476,7 @@ msgstr "Athraigh Cúlra…"
 msgid "Display Settings"
 msgstr "Socruithe Taispeána"
 
-#: ../js/ui/backgroundMenu.js:22 ../js/ui/panel.js:650
-#: ../js/ui/status/system.js:366
+#: ../js/ui/backgroundMenu.js:22 ../js/ui/status/system.js:366
 msgid "Settings"
 msgstr "Socruithe"
 
@@ -537,15 +534,15 @@ msgstr "S"
 
 #: ../js/ui/calendar.js:566
 msgid "Previous month"
-msgstr ""
+msgstr "An mhí roimhe seo"
 
 #: ../js/ui/calendar.js:576
 msgid "Next month"
-msgstr ""
+msgstr "An chéad mhí eile"
 
 #: ../js/ui/calendar.js:783
 msgid "Week %V"
-msgstr ""
+msgstr "Seachtain %V"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
@@ -555,33 +552,33 @@ msgctxt "event list time"
 msgid "All Day"
 msgstr "An Lá ar Fad"
 
-#: ../js/ui/calendar.js:1291
+#: ../js/ui/calendar.js:1295
 msgid "Clear section"
 msgstr ""
 
-#: ../js/ui/calendar.js:1518
+#: ../js/ui/calendar.js:1522
 msgid "Events"
 msgstr "Imeachtaí"
 
-#: ../js/ui/calendar.js:1527
+#: ../js/ui/calendar.js:1531
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d %B"
 
-#: ../js/ui/calendar.js:1531
+#: ../js/ui/calendar.js:1535
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d %B, %Y"
 
-#: ../js/ui/calendar.js:1616
+#: ../js/ui/calendar.js:1620
 msgid "Notifications"
 msgstr "Fógraí"
 
-#: ../js/ui/calendar.js:1767
+#: ../js/ui/calendar.js:1771
 msgid "No Notifications"
 msgstr "Gan Fhógra"
 
-#: ../js/ui/calendar.js:1770
+#: ../js/ui/calendar.js:1774
 msgid "No Events"
 msgstr "Gan Imeacht"
 
@@ -687,9 +684,9 @@ msgstr ""
 #: ../js/ui/components/networkAgent.js:663
 #: ../js/ui/components/networkAgent.js:667
 #: ../js/ui/components/networkAgent.js:680
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "A password is required to connect to “%s”."
-msgstr "Tá focal faire de dhíth chun ceangal le '%s'."
+msgstr "Tá focal faire de dhíth chun ceangal le “%s”."
 
 #: ../js/ui/components/networkAgent.js:647 ../js/ui/status/network.js:1658
 msgid "Network Manager"
@@ -720,7 +717,7 @@ msgstr "Tá brón orm, theip sé sin. Bain triail eile as, le do thoil."
 #: ../js/ui/components/telepathyClient.js:759
 #, javascript-format
 msgid "%s is now known as %s"
-msgstr ""
+msgstr "Tugtar %2$s ar %1$s anois"
 
 #: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:155
 msgid "Windows"
@@ -818,7 +815,7 @@ msgstr[4] "Múchfar an córas go huathoibríoch i gceann %d soicind."
 #: ../js/ui/endSessionDialog.js:91
 msgctxt "checkbox"
 msgid "Install pending software updates"
-msgstr ""
+msgstr "Suiteáil nuashonruithe bogearraí ar feitheamh"
 
 #: ../js/ui/endSessionDialog.js:94 ../js/ui/endSessionDialog.js:111
 msgctxt "button"
@@ -884,7 +881,7 @@ msgstr "Suiteáil &amp; Múch"
 #: ../js/ui/endSessionDialog.js:129
 msgctxt "checkbox"
 msgid "Power off after updates are installed"
-msgstr ""
+msgstr "Múch tar éis suiteáil nuashonruithe"
 
 #: ../js/ui/endSessionDialog.js:338
 msgid "Running on battery power: please plug in before installing updates."
@@ -915,9 +912,9 @@ msgid "Install"
 msgstr "Suiteáil"
 
 #: ../js/ui/extensionDownloader.js:204
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
-msgstr "Íosluchtaigh agus suiteáil '%s' ó extensions.gnome.org?"
+msgstr "Íosluchtaigh agus suiteáil “%s” ó extensions.gnome.org?"
 
 #: ../js/ui/keyboard.js:741 ../js/ui/status/keyboard.js:713
 msgid "Keyboard"
@@ -925,13 +922,12 @@ msgstr "Méarchlár"
 
 #. translators: 'Hide' is a verb
 #: ../js/ui/legacyTray.js:66
-#, fuzzy
 msgid "Hide tray"
-msgstr "Folaigh Téacs"
+msgstr "Folaigh tráidire"
 
 #: ../js/ui/legacyTray.js:107
 msgid "Status Icons"
-msgstr ""
+msgstr "Deilbhíní Stádais"
 
 #: ../js/ui/lookingGlass.js:643
 msgid "No extensions installed"
@@ -957,7 +953,7 @@ msgstr "Cumasaithe"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:719 ../src/gvc/gvc-mixer-control.c:1830
+#: ../js/ui/lookingGlass.js:719 ../src/gvc/gvc-mixer-control.c:1828
 msgid "Disabled"
 msgstr "Díchumasaithe"
 
@@ -1010,6 +1006,11 @@ msgstr "Scoir"
 #: ../js/ui/panel.js:404
 msgid "Activities"
 msgstr "Gníomhartha"
+
+#: ../js/ui/panel.js:650
+msgctxt "System menu in the top bar"
+msgid "System"
+msgstr "Córas"
 
 #: ../js/ui/panel.js:754
 msgid "Top Bar"
@@ -1174,18 +1175,18 @@ msgstr "Socruithe Bluetooth"
 
 #. Translators: this is the number of connected bluetooth devices
 #: ../js/ui/status/bluetooth.js:105
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%d Connected"
 msgid_plural "%d Connected"
-msgstr[0] "%d Ghléas Ceangailte"
-msgstr[1] "%d Ghléas Ceangailte"
-msgstr[2] "%d Ghléas Ceangailte"
-msgstr[3] "%d nGléas Ceangailte"
-msgstr[4] "%d Gléas Ceangailte"
+msgstr[0] "%d Ceangailte"
+msgstr[1] "%d Ceangailte"
+msgstr[2] "%d Ceangailte"
+msgstr[3] "%d Ceangailte"
+msgstr[4] "%d Ceangailte"
 
 #: ../js/ui/status/bluetooth.js:107
 msgid "Not In Use"
-msgstr ""
+msgstr "Níl in Úsáid"
 
 #: ../js/ui/status/brightness.js:44
 msgid "Brightness"
@@ -1196,27 +1197,24 @@ msgid "Show Keyboard Layout"
 msgstr "Taispeáin Leagan Amach an Mhéarchláir"
 
 #: ../js/ui/status/location.js:71 ../js/ui/status/location.js:177
-#, fuzzy
 msgid "Location Enabled"
-msgstr "theip an ceangal"
+msgstr "Suíomh Cumasaithe"
 
 #: ../js/ui/status/location.js:72 ../js/ui/status/location.js:178
 msgid "Disable"
 msgstr "Díchumasaigh"
 
 #: ../js/ui/status/location.js:73
-#, fuzzy
 msgid "Privacy Settings"
-msgstr "Socruithe Cumhachta"
+msgstr "Socruithe Príobháideachais"
 
 #: ../js/ui/status/location.js:176
 msgid "Location In Use"
-msgstr ""
+msgstr "Suíomh in Úsáid"
 
 #: ../js/ui/status/location.js:180
-#, fuzzy
 msgid "Location Disabled"
-msgstr "theip an ceangal"
+msgstr "Suíomh Díchumasaithe"
 
 #: ../js/ui/status/location.js:181
 msgid "Enable"
@@ -1230,46 +1228,46 @@ msgstr "<anaithnid>"
 #: ../js/ui/status/network.js:451 ../js/ui/status/network.js:1308
 #, javascript-format
 msgid "%s Off"
-msgstr ""
+msgstr "%s Múchta"
 
 #. Translators: %s is a network identifier
 #: ../js/ui/status/network.js:454
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s Connected"
-msgstr "Ceangal"
+msgstr "%s Ceangailte"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu);
 #. %s is a network identifier
 #: ../js/ui/status/network.js:459
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s Unmanaged"
-msgstr "gan bhainistiú"
+msgstr "%s Gan Bhainistiú"
 
 #. Translators: %s is a network identifier
 #: ../js/ui/status/network.js:462
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s Disconnecting"
-msgstr "á dhícheangal..."
+msgstr "%s ag Dícheangal"
 
 #. Translators: %s is a network identifier
 #: ../js/ui/status/network.js:469 ../js/ui/status/network.js:1300
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s Connecting"
-msgstr "Ceangal"
+msgstr "%s ag Ceangal"
 
 #. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
 #: ../js/ui/status/network.js:472
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s Requires Authentication"
-msgstr "Fíordheimhniú DSL"
+msgstr "Fíordheimhniú de Dhíth ar %s"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing; %s is a network identifier
 #: ../js/ui/status/network.js:480
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Firmware Missing For %s"
-msgstr "dochtearraí ar iarraidh"
+msgstr "Dochtearraí do %s ar Iarraidh"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage; %s is a network identifier
@@ -1280,14 +1278,13 @@ msgstr "Níl %s ar Fáil"
 
 #. Translators: %s is a network identifier
 #: ../js/ui/status/network.js:487
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s Connection Failed"
-msgstr "Theip an ceangal"
+msgstr "Theip Ceangal %s"
 
 #: ../js/ui/status/network.js:503
-#, fuzzy
 msgid "Wired Settings"
-msgstr "Socruithe"
+msgstr "Socruithe Sreangaithe"
 
 #: ../js/ui/status/network.js:545 ../js/ui/status/network.js:624
 #, fuzzy
@@ -1303,9 +1300,9 @@ msgstr ""
 #. Translators: this is for a network device that cannot be activated
 #. because it's disabled by rfkill (airplane mode); %s is a network identifier
 #: ../js/ui/status/network.js:592
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s Disabled"
-msgstr "Díchumasaithe"
+msgstr "%s Díchumasaithe"
 
 #: ../js/ui/status/network.js:632
 msgid "Use as Internet connection"
@@ -1327,16 +1324,15 @@ msgstr "Mód Eitleáin"
 
 #: ../js/ui/status/network.js:824
 msgid "Wi-Fi is Off"
-msgstr ""
+msgstr "Tá Wi-Fi Múchta"
 
 #: ../js/ui/status/network.js:825
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
 msgstr ""
 
 #: ../js/ui/status/network.js:826
-#, fuzzy
 msgid "Turn On Wi-Fi"
-msgstr "Cumasaigh"
+msgstr "Cuir Wi-Fi ar Siúl"
 
 #: ../js/ui/status/network.js:851
 msgid "Wi-Fi Networks"
@@ -1374,9 +1370,9 @@ msgstr ""
 
 #. Translators: %s is a network identifier
 #: ../js/ui/status/network.js:1311
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s Not Connected"
-msgstr "%d Ghléas Ceangailte"
+msgstr "%s Gan Cheangal"
 
 #: ../js/ui/status/network.js:1411
 msgid "connecting..."
@@ -1404,9 +1400,8 @@ msgid "VPN"
 msgstr "VPN"
 
 #: ../js/ui/status/network.js:1513
-#, fuzzy
 msgid "VPN Off"
-msgstr "Múch"
+msgstr "VPN Múchta"
 
 #: ../js/ui/status/network.js:1697
 msgid "Connection failed"
@@ -1446,9 +1441,8 @@ msgstr "%d∶%02d go dTí Lán (%d%%)"
 #. statically build it as if it was on, rather than dynamically
 #. changing the menu contents.
 #: ../js/ui/status/rfkill.js:88
-#, fuzzy
 msgid "Airplane Mode On"
-msgstr "Mód Eitleáin"
+msgstr "Mód Eitleáin ar Siúl"
 
 #: ../js/ui/status/system.js:343
 msgid "Switch User"
@@ -1565,7 +1559,7 @@ msgstr ""
 
 #: ../js/ui/windowMenu.js:70
 msgid "Always on Top"
-msgstr ""
+msgstr "Ar Barr i gCónaí"
 
 #: ../js/ui/windowMenu.js:89
 msgid "Always on Visible Workspace"
@@ -1609,7 +1603,7 @@ msgstr "Féilire Evolution"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1837
+#: ../src/gvc/gvc-mixer-control.c:1835
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -1621,7 +1615,7 @@ msgstr[4] "%u Aschur"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1847
+#: ../src/gvc/gvc-mixer-control.c:1845
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
@@ -1631,23 +1625,23 @@ msgstr[2] "%u Ionchur"
 msgstr[3] "%u nIonchur"
 msgstr[4] "%u Ionchur"
 
-#: ../src/gvc/gvc-mixer-control.c:2373
+#: ../src/gvc/gvc-mixer-control.c:2371
 msgid "System Sounds"
 msgstr "Fuaimeanna Córais"
 
-#: ../src/main.c:373
+#: ../src/main.c:381
 msgid "Print version"
 msgstr "Taispeáin leagan"
 
-#: ../src/main.c:379
+#: ../src/main.c:387
 msgid "Mode used by GDM for login screen"
 msgstr ""
 
-#: ../src/main.c:385
+#: ../src/main.c:393
 msgid "Use a specific mode, e.g. \"gdm\" for login screen"
 msgstr ""
 
-#: ../src/main.c:391
+#: ../src/main.c:399
 msgid "List possible modes"
 msgstr ""
 
