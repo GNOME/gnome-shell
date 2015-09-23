@@ -396,6 +396,7 @@ const PopupImageMenuItem = new Lang.Class({
         this.actor.add_child(this.label);
         this._icon = new St.Icon({ style_class: 'popup-menu-icon' });
         this.actor.add_child(this._icon, { align: St.Align.END });
+        this.actor.label_actor = this.label;
 
         this.setIcon(iconName);
     },
