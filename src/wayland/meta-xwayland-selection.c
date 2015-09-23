@@ -160,7 +160,6 @@ xdnd_send_enter (MetaXWaylandSelection *selection_data,
   if (source_mime_types->size <= 3)
     {
       /* The mimetype atoms fit in this same message */
-      gchar **p;
       gint i = 2;
 
       wl_array_for_each (p, source_mime_types)

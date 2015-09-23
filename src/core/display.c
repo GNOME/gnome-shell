@@ -607,12 +607,11 @@ meta_display_open (void)
   meta_verbose ("Creating %d atoms\n", (int) G_N_ELEMENTS (atom_names));
   XInternAtoms (display->xdisplay, (char **)atom_names, G_N_ELEMENTS (atom_names),
                 False, atoms);
-  {
-    int i = 0;
+
+  i = 0;
 #define item(x) display->atom_##x = atoms[i++];
 #include <x11/atomnames.h>
 #undef item
-  }
 
   display->prop_hooks = NULL;
   meta_display_init_window_prop_hooks (display);

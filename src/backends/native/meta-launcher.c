@@ -112,12 +112,12 @@ get_seat_proxy (GCancellable *cancellable)
 static void
 session_unpause (void)
 {
-  ClutterBackend *backend;
+  ClutterBackend *clutter_backend;
   CoglContext *cogl_context;
   CoglDisplay *cogl_display;
 
-  backend = clutter_get_default_backend ();
-  cogl_context = clutter_backend_get_cogl_context (backend);
+  clutter_backend = clutter_get_default_backend ();
+  cogl_context = clutter_backend_get_cogl_context (clutter_backend);
   cogl_display = cogl_context_get_display (cogl_context);
   cogl_kms_display_queue_modes_reset (cogl_display);
 

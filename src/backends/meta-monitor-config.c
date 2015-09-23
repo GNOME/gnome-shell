@@ -1846,7 +1846,7 @@ crtc_assignment_assign (CrtcAssignment       *assign,
     }
   else
     {
-      MetaCRTCInfo *info = g_slice_new0 (MetaCRTCInfo);
+      info = g_slice_new0 (MetaCRTCInfo);
 
       info->crtc = crtc;
       info->mode = mode;

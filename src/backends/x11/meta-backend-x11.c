@@ -441,6 +441,7 @@ meta_backend_x11_post_init (MetaBackend *backend)
   MetaBackendX11 *x11 = META_BACKEND_X11 (backend);
   MetaBackendX11Private *priv = meta_backend_x11_get_instance_private (x11);
   int major, minor;
+  gboolean has_xi = FALSE;
 
   priv->xdisplay = clutter_x11_get_default_display ();
 
@@ -450,27 +451,23 @@ meta_backend_x11_post_init (MetaBackend *backend)
       !XSyncInitialize (priv->xdisplay, &major, &minor))
     meta_fatal ("Could not initialize XSync");
 
-  {
-    int major = 2, minor = 3;
-    gboolean has_xi = FALSE;
+  if (XQueryExtension (priv->xdisplay,
+                       "XInputExtension",
+                       &priv->xinput_opcode,
+                       &priv->xinput_error_base,
+                       &priv->xinput_event_base))
+    {
+      major = 2; minor = 3;
+      if (XIQueryVersion (priv->xdisplay, &major, &minor) == Success)
+        {
+          int version = (major * 10) + minor;
+          if (version >= 22)
+            has_xi = TRUE;
+        }
+    }
 
-    if (XQueryExtension (priv->xdisplay,
-                         "XInputExtension",
-                         &priv->xinput_opcode,
-                         &priv->xinput_error_base,
-                         &priv->xinput_event_base))
-      {
-        if (XIQueryVersion (priv->xdisplay, &major, &minor) == Success)
-          {
-            int version = (major * 10) + minor;
-            if (version >= 22)
-              has_xi = TRUE;
-          }
-      }
-
-    if (!has_xi)
-      meta_fatal ("X server doesn't have the XInput extension, version 2.2 or newer\n");
-  }
+  if (!has_xi)
+    meta_fatal ("X server doesn't have the XInput extension, version 2.2 or newer\n");
 
   /* We only take the passive touch grab if we are a X11 compositor */
   if (priv->mode == META_BACKEND_X11_MODE_COMPOSITOR)
@@ -795,8 +792,6 @@ meta_backend_x11_update_screen_size (MetaBackend *backend,
     }
   else
     {
-      MetaBackendX11 *x11 = META_BACKEND_X11 (backend);
-      MetaBackendX11Private *priv = meta_backend_x11_get_instance_private (x11);
       Window xwin = meta_backend_x11_get_xwindow (x11);
       XResizeWindow (priv->xdisplay, xwin, width, height);
     }

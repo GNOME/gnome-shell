@@ -1088,11 +1088,7 @@ stack_sync_to_xserver (MetaStack *stack)
       if (w->hidden)
 	{
           if (w->client_type == META_WINDOW_CLIENT_TYPE_X11)
-            {
-              guint64 stack_id = top_level_window;
-
-              g_array_append_val (x11_hidden_stack_ids, stack_id);
-            }
+            g_array_append_val (x11_hidden_stack_ids, top_level_window);
 	  continue;
 	}
 

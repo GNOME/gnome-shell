@@ -1133,17 +1133,16 @@ meta_monitor_manager_xrandr_apply_configuration (MetaMonitorManager *manager,
       if (crtc_info->mode != NULL)
         {
           MetaMonitorMode *mode;
-          g_autofree XID *outputs = NULL;
-          unsigned int j, n_outputs;
-          int width, height;
+          g_autofree XID *output_ids = NULL;
+          unsigned int j, n_output_ids;
           Status ok;
 
           mode = crtc_info->mode;
 
-          n_outputs = crtc_info->outputs->len;
-          outputs = g_new (XID, n_outputs);
+          n_output_ids = crtc_info->outputs->len;
+          output_ids = g_new (XID, n_output_ids);
 
-          for (j = 0; j < n_outputs; j++)
+          for (j = 0; j < n_output_ids; j++)
             {
               MetaOutput *output;
 
@@ -1152,7 +1151,7 @@ meta_monitor_manager_xrandr_apply_configuration (MetaMonitorManager *manager,
               output->is_dirty = TRUE;
               output->crtc = crtc;
 
-              outputs[j] = output->winsys_id;
+              output_ids[j] = output->winsys_id;
             }
 
           ok = XRRSetCrtcConfig (manager_xrandr->xdisplay,
@@ -1162,7 +1161,7 @@ meta_monitor_manager_xrandr_apply_configuration (MetaMonitorManager *manager,
                                  crtc_info->x, crtc_info->y,
                                  (XID)mode->mode_id,
                                  meta_monitor_transform_to_xrandr (crtc_info->transform),
-                                 outputs, n_outputs);
+                                 output_ids, n_output_ids);
 
           if (ok != Success)
             {

@@ -4312,8 +4312,8 @@ set_workspace_state (MetaWindow    *window,
       GList *l;
       for (l = window->screen->workspaces; l != NULL; l = l->next)
         {
-          MetaWorkspace *workspace = l->data;
-          meta_workspace_remove_window (workspace, window);
+          MetaWorkspace *ws = l->data;
+          meta_workspace_remove_window (ws, window);
         }
     }
 
@@ -4327,8 +4327,8 @@ set_workspace_state (MetaWindow    *window,
       GList *l;
       for (l = window->screen->workspaces; l != NULL; l = l->next)
         {
-          MetaWorkspace *workspace = l->data;
-          meta_workspace_add_window (workspace, window);
+          MetaWorkspace *ws = l->data;
+          meta_workspace_add_window (ws, window);
         }
     }
 

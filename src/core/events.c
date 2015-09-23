@@ -206,8 +206,8 @@ meta_display_handle_event (MetaDisplay        *display,
 
   if (meta_is_wayland_compositor () && event->type == CLUTTER_MOTION)
     {
-      MetaCursorTracker *tracker = meta_cursor_tracker_get_for_screen (NULL);
-      meta_cursor_tracker_update_position (tracker, event->motion.x, event->motion.y);
+      meta_cursor_tracker_update_position (meta_cursor_tracker_get_for_screen (NULL),
+                                           event->motion.x, event->motion.y);
       display->monitor_cache_invalidated = TRUE;
     }
 

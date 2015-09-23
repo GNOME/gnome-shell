@@ -1094,7 +1094,6 @@ main (int argc, char **argv)
   if (all_tests)
     {
       GFile *test_dir = g_file_new_for_path (MUTTER_PKGDATADIR "/tests");
-      GError *error = NULL;
 
       if (!find_metatests_in_directory (test_dir, tests, &error))
         {

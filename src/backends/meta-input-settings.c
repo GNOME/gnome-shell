@@ -523,15 +523,13 @@ update_trackball_scroll_button (MetaInputSettings  *input_settings,
     }
   else if (!device)
     {
-      MetaInputSettingsPrivate *priv;
       const GSList *devices;
 
-      priv = meta_input_settings_get_instance_private (input_settings);
       devices = clutter_device_manager_peek_devices (priv->device_manager);
 
       while (devices)
         {
-          ClutterInputDevice *device = devices->data;
+          device = devices->data;
 
           if (device_is_trackball (device))
             input_settings_class->set_scroll_button (input_settings, device, button);

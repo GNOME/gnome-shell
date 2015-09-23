@@ -197,7 +197,7 @@ meta_monitor_manager_dummy_apply_config (MetaMonitorManager *manager,
         {
           MetaMonitorMode *mode;
           MetaOutput *output;
-          int i, n_outputs;
+          unsigned int j;
           int width, height;
 
           mode = crtc_info->mode;
@@ -223,10 +223,9 @@ meta_monitor_manager_dummy_apply_config (MetaMonitorManager *manager,
           screen_width = MAX (screen_width, crtc_info->x + width);
           screen_height = MAX (screen_height, crtc_info->y + height);
 
-          n_outputs = crtc_info->outputs->len;
-          for (i = 0; i < n_outputs; i++)
+          for (j = 0; j < crtc_info->outputs->len; j++)
             {
-              output = ((MetaOutput**)crtc_info->outputs->pdata)[i];
+              output = ((MetaOutput**)crtc_info->outputs->pdata)[j];
 
               output->is_dirty = TRUE;
               output->crtc = crtc;
