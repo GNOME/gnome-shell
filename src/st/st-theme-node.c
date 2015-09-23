@@ -30,10 +30,8 @@
 #include "st-theme-context.h"
 #include "st-theme-node-private.h"
 
-static void st_theme_node_init               (StThemeNode          *node);
-static void st_theme_node_class_init         (StThemeNodeClass     *klass);
 static void st_theme_node_dispose           (GObject                 *object);
-static void st_theme_node_finalize           (GObject                 *object);
+static void st_theme_node_finalize          (GObject                 *object);
 
 static const ClutterColor BLACK_COLOR = { 0, 0, 0, 0xff };
 static const ClutterColor TRANSPARENT_COLOR = { 0, 0, 0, 0 };
