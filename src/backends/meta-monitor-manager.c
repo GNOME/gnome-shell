@@ -884,8 +884,7 @@ meta_monitor_manager_handle_apply_configuration  (MetaDBusDisplayConfig *skeleto
           crtc_info->y = 0;
         }
 
-      if (transform < META_MONITOR_TRANSFORM_NORMAL ||
-          transform > META_MONITOR_TRANSFORM_FLIPPED_270 ||
+      if (transform > META_MONITOR_TRANSFORM_FLIPPED_270 ||
           ((crtc->all_transforms & (1 << transform)) == 0))
         {
           g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
