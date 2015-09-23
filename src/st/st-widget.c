@@ -1849,6 +1849,8 @@ filter_by_position (GList            *children,
             continue;
           break;
 
+        case GTK_DIR_TAB_BACKWARD:
+        case GTK_DIR_TAB_FORWARD:
         default:
           g_return_val_if_reached (NULL);
         }
@@ -2014,6 +2016,8 @@ st_widget_real_navigate_focus (StWidget         *widget,
             case GTK_DIR_RIGHT:
               sort_box.x2 = sort_box.x1;
               break;
+            case GTK_DIR_TAB_FORWARD:
+            case GTK_DIR_TAB_BACKWARD:
             default:
               g_warn_if_reached ();
             }

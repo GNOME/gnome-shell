@@ -909,6 +909,10 @@ add_matched_properties (StTheme      *a_this,
               }
           }
           break;
+        case AT_RULE_STMT:
+        case AT_PAGE_RULE_STMT:
+        case AT_CHARSET_RULE_STMT:
+        case AT_FONT_FACE_RULE_STMT:
         default:
           break;
         }
