@@ -404,6 +404,17 @@ _cogl_driver_update_features (CoglContext *context,
                       COGL_FEATURE_ID_MAP_BUFFER_FOR_WRITE, TRUE);
     }
 
+  if (context->glMapBufferRange)
+    {
+      /* MapBufferRange in ES3+ does support mapping for read */
+      flags |= (COGL_FEATURE_MAP_BUFFER_FOR_WRITE |
+                COGL_FEATURE_MAP_BUFFER_FOR_READ);
+      COGL_FLAGS_SET(context->features,
+                     COGL_FEATURE_ID_MAP_BUFFER_FOR_WRITE, TRUE);
+      COGL_FLAGS_SET(context->features,
+                     COGL_FEATURE_ID_MAP_BUFFER_FOR_READ, TRUE);
+    }
+
   if (context->glEGLImageTargetTexture2D)
     COGL_FLAGS_SET (private_features,
                     COGL_PRIVATE_FEATURE_TEXTURE_2D_FROM_EGL_IMAGE, TRUE);

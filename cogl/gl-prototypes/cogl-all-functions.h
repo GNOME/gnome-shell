@@ -295,7 +295,7 @@ COGL_EXT_FUNCTION (void, glGenVertexArrays,
 COGL_EXT_END ()
 
 COGL_EXT_BEGIN (map_region, 3, 0,
-                0, /* not in either GLES */
+                COGL_EXT_IN_GLES3,
                 "ARB:\0",
                 "map_buffer_range\0")
 COGL_EXT_FUNCTION (GLvoid *, glMapBufferRange,
