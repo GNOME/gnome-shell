@@ -51,11 +51,11 @@ enum {
 static int _shell_debug;
 
 static void
-shell_dbus_acquire_name (GDBusProxy *bus,
-                         guint32     request_name_flags,
-                         guint32    *request_name_result,
-                         gchar      *name,
-                         gboolean    fatal)
+shell_dbus_acquire_name (GDBusProxy  *bus,
+                         guint32      request_name_flags,
+                         guint32     *request_name_result,
+                         const gchar *name,
+                         gboolean     fatal)
 {
   GError *error = NULL;
   GVariant *request_name_variant;
@@ -77,16 +77,16 @@ shell_dbus_acquire_name (GDBusProxy *bus,
 }
 
 static void
-shell_dbus_acquire_names (GDBusProxy *bus,
-                          guint32     request_name_flags,
-                          gchar      *name,
-                          gboolean    fatal, ...) G_GNUC_NULL_TERMINATED;
+shell_dbus_acquire_names (GDBusProxy  *bus,
+                          guint32      request_name_flags,
+                          const gchar *name,
+                          gboolean     fatal, ...) G_GNUC_NULL_TERMINATED;
 
 static void
-shell_dbus_acquire_names (GDBusProxy *bus,
-                          guint32     request_name_flags,
-                          gchar      *name,
-                          gboolean    fatal, ...)
+shell_dbus_acquire_names (GDBusProxy  *bus,
+                          guint32      request_name_flags,
+                          const gchar *name,
+                          gboolean     fatal, ...)
 {
   va_list al;
   guint32 request_name_result;
@@ -454,7 +454,7 @@ main (int argc, char **argv)
 
   /* Initialize the global object */
   if (session_mode == NULL)
-    session_mode = is_gdm_mode ? "gdm" : "user";
+    session_mode = is_gdm_mode ? (char *)"gdm" : (char *)"user";
 
   _shell_global_init ("session-mode", session_mode, NULL);
 
