@@ -623,9 +623,9 @@ st_widget_get_theme_node (StWidget *widget)
        * requiring separate style sheets.
        */
       if (clutter_actor_get_text_direction (CLUTTER_ACTOR (widget)) == CLUTTER_TEXT_DIRECTION_RTL)
-        direction_pseudo_class = "rtl";
+        direction_pseudo_class = (char *)"rtl";
       else
-        direction_pseudo_class = "ltr";
+        direction_pseudo_class = (char *)"ltr";
 
       if (priv->pseudo_class)
         pseudo_class = g_strconcat(priv->pseudo_class, " ",
