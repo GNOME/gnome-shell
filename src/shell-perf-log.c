@@ -672,6 +672,9 @@ shell_perf_log_collect_statistics (ShellPerfLog *perf_log)
               statistic->recorded = TRUE;
             }
           break;
+        default:
+          g_warning ("Unsupported signature in event");
+          break;
         }
     }
 

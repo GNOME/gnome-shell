@@ -348,6 +348,9 @@ _shell_app_system_notify_app_state_changed (ShellAppSystem *self,
     case SHELL_APP_STATE_STOPPED:
       g_hash_table_remove (self->priv->running_apps, app);
       break;
+    default:
+      g_warn_if_reached();
+      break;
     }
   g_signal_emit (self, signals[APP_STATE_CHANGED], 0, app);
 }

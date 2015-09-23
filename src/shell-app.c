@@ -491,6 +491,9 @@ shell_app_activate_full (ShellApp      *app,
       case SHELL_APP_STATE_RUNNING:
         shell_app_activate_window (app, NULL, timestamp);
         break;
+      default:
+        g_assert_not_reached();
+        break;
     }
 }
 
