@@ -49,7 +49,7 @@ typedef enum
 } MetaExitCode;
 
 /* exit immediately */
-void meta_exit (MetaExitCode code);
+void meta_exit (MetaExitCode code) G_GNUC_NORETURN;
 
 /* g_main_loop_quit() then fall out of main() */
 void meta_quit (MetaExitCode code);

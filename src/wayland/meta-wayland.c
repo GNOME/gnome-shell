@@ -272,6 +272,8 @@ set_gnome_env (const char *name,
     }
 }
 
+static void meta_wayland_log_func (const char *, va_list) G_GNUC_PRINTF (1, 0);
+
 static void
 meta_wayland_log_func (const char *fmt,
                        va_list     arg)

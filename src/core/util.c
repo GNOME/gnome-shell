@@ -46,7 +46,7 @@
 static void
 meta_topic_real_valist (MetaDebugTopic topic,
                         const char    *format,
-                        va_list        args);
+                        va_list        args) G_GNUC_PRINTF(2, 0);
 #endif
 
 static gint verbose_topics = 0;
