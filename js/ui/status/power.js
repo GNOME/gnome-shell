@@ -59,39 +59,11 @@ const Indicator = new Lang.Class({
     },
 
     _getStatus: function() {
-        let seconds = 0;
-
         if (this._proxy.State == UPower.DeviceState.FULLY_CHARGED)
             return _("Fully Charged");
         else if (this._proxy.State == UPower.DeviceState.CHARGING)
-            seconds = this._proxy.TimeToFull;
-        else if (this._proxy.State == UPower.DeviceState.DISCHARGING)
-            seconds = this._proxy.TimeToEmpty;
-        // state is one of PENDING_CHARGING, PENDING_DISCHARGING
-        else
-            return _("Estimating…");
-
-        let time = Math.round(seconds / 60);
-        if (time == 0) {
-            // 0 is reported when UPower does not have enough data
-            // to estimate battery life
-            return _("Estimating…");
-        }
-
-        let minutes = time % 60;
-        let hours = Math.floor(time / 60);
-
-        if (this._proxy.State == UPower.DeviceState.DISCHARGING) {
-            // Translators: this is <hours>:<minutes> Remaining (<percentage>)
-            return _("%d\u2236%02d Remaining (%d\u2009%%)").format(hours, minutes, this._proxy.Percentage);
-        }
-
-        if (this._proxy.State == UPower.DeviceState.CHARGING) {
-            // Translators: this is <hours>:<minutes> Until Full (<percentage>)
-            return _("%d\u2236%02d Until Full (%d\u2009%%)").format(hours, minutes, this._proxy.Percentage);
-        }
-
-        return null;
+            return _("%d\u2009%% Charging").format(hours, minutes, this._proxy.Percentage);
+        return _("%d\u2009%% Charged").format(this._proxy.Percentage);
     },
 
     _sync: function() {
