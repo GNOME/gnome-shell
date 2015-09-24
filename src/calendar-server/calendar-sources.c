@@ -41,8 +41,6 @@
 #define N_(x) x
 #endif
 
-#define CALENDAR_SOURCES_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), CALENDAR_TYPE_SOURCES, CalendarSourcesPrivate))
-
 typedef struct _ClientData ClientData;
 typedef struct _CalendarSourceData CalendarSourceData;
 
@@ -66,6 +64,14 @@ struct _CalendarSourceData
   guint            loaded : 1;
 };
 
+typedef struct _CalendarSourcesPrivate CalendarSourcesPrivate;
+
+struct _CalendarSources
+{
+  GObject                 parent;
+  CalendarSourcesPrivate *priv;
+};
+
 struct _CalendarSourcesPrivate
 {
   ESourceRegistry    *registry;
@@ -77,8 +83,8 @@ struct _CalendarSourcesPrivate
   CalendarSourceData  task_sources;
 };
 
-static void calendar_sources_class_init (CalendarSourcesClass *klass);
-static void calendar_sources_init       (CalendarSources      *sources);
+G_DEFINE_TYPE_WITH_PRIVATE (CalendarSources, calendar_sources, G_TYPE_OBJECT)
+
 static void calendar_sources_finalize   (GObject             *object);
 
 static void backend_died_cb (EClient *client, CalendarSourceData *source_data);
@@ -108,34 +114,6 @@ client_data_free (ClientData *data)
   g_slice_free (ClientData, data);
 }
 
-GType
-calendar_sources_get_type (void)
-{
-  static GType sources_type = 0;
-  
-  if (!sources_type)
-    {
-      static const GTypeInfo sources_info =
-      {
-	sizeof (CalendarSourcesClass),
-	NULL,		/* base_init */
-	NULL,		/* base_finalize */
-	(GClassInitFunc) calendar_sources_class_init,
-	NULL,           /* class_finalize */
-	NULL,		/* class_data */
-	sizeof (CalendarSources),
-	0,		/* n_preallocs */
-	(GInstanceInitFunc) calendar_sources_init,
-      };
-      
-      sources_type = g_type_register_static (G_TYPE_OBJECT,
-					     "CalendarSources",
-					     &sources_info, 0);
-    }
-  
-  return sources_type;
-}
-
 static void
 calendar_sources_class_init (CalendarSourcesClass *klass)
 {
@@ -145,14 +123,11 @@ calendar_sources_class_init (CalendarSourcesClass *klass)
 
   gobject_class->finalize = calendar_sources_finalize;
 
-  g_type_class_add_private (klass, sizeof (CalendarSourcesPrivate));
-
   signals [APPOINTMENT_SOURCES_CHANGED] =
     g_signal_new ("appointment-sources-changed",
 		  G_TYPE_FROM_CLASS (gobject_class),
 		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (CalendarSourcesClass,
-				   appointment_sources_changed),
+		  0,
 		  NULL,
 		  NULL,
                   NULL,
@@ -163,8 +138,7 @@ calendar_sources_class_init (CalendarSourcesClass *klass)
     g_signal_new ("task-sources-changed",
 		  G_TYPE_FROM_CLASS (gobject_class),
 		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (CalendarSourcesClass,
-				   task_sources_changed),
+		  0,
 		  NULL,
 		  NULL,
                   NULL,
@@ -179,7 +153,7 @@ calendar_sources_init (CalendarSources *sources)
   GDBusConnection *session_bus;
   GVariant *result;
 
-  sources->priv = CALENDAR_SOURCES_GET_PRIVATE (sources);
+  sources->priv = calendar_sources_get_instance_private (sources);
 
   /* WORKAROUND: the hardcoded timeout for e_source_registry_new_sync()
      (and other library calls that eventually call g_dbus_proxy_new[_sync]())

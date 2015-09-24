@@ -28,33 +28,10 @@
 
 G_BEGIN_DECLS
 
-#define CALENDAR_TYPE_SOURCES        (calendar_sources_get_type ())
-#define CALENDAR_SOURCES(o)          (G_TYPE_CHECK_INSTANCE_CAST ((o), CALENDAR_TYPE_SOURCES, CalendarSources))
-#define CALENDAR_SOURCES_CLASS(k)    (G_TYPE_CHECK_CLASS_CAST ((k), CALENDAR_TYPE_SOURCES, CalendarSourcesClass))
-#define CALENDAR_IS_SOURCES(o)       (G_TYPE_CHECK_INSTANCE_TYPE ((o), CALENDAR_TYPE_SOURCES))
-#define CALENDAR_IS_SOURCES_CLASS(k) (G_TYPE_CHECK_CLASS_TYPE ((k), CALENDAR_TYPE_SOURCES))
-#define CALENDAR_SOURCES_GET_CLASS(o)(G_TYPE_INSTANCE_GET_CLASS ((o), CALENDAR_TYPE_SOURCES, CalendarSourcesClass))
+#define CALENDAR_TYPE_SOURCES (calendar_sources_get_type ())
+G_DECLARE_FINAL_TYPE (CalendarSources, calendar_sources,
+                      CALENDAR, SOURCES, GObject)
 
-typedef struct _CalendarSources        CalendarSources;
-typedef struct _CalendarSourcesClass   CalendarSourcesClass;
-typedef struct _CalendarSourcesPrivate CalendarSourcesPrivate;
-
-struct _CalendarSources
-{
-  GObject                 parent;
-  CalendarSourcesPrivate *priv;
-};
-
-struct _CalendarSourcesClass
-{
-  GObjectClass    parent_class;
-
-  void         (* appointment_sources_changed) (CalendarSources *sources);
-  void         (* task_sources_changed)        (CalendarSources *sources);
-};
-
-
-GType            calendar_sources_get_type                (void) G_GNUC_CONST;
 CalendarSources *calendar_sources_get                     (void);
 GList           *calendar_sources_get_appointment_clients (CalendarSources *sources);
 GList           *calendar_sources_get_task_clients        (CalendarSources *sources);
