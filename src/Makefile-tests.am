@@ -9,6 +9,7 @@ dist_stacking_DATA =				\
 	tests/stacking/basic-wayland.metatest	\
 	tests/stacking/minimized.metatest   	\
 	tests/stacking/mixed-windows.metatest   \
+	tests/stacking/set-parent.metatest	\
 	tests/stacking/override-redirect.metatest
 
 mutter-all.test: tests/mutter-all.test.in

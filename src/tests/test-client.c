@@ -136,6 +136,31 @@ process_line (const char *line)
         }
 
     }
+  else if (strcmp (argv[0], "set_parent") == 0)
+    {
+      if (argc != 3)
+        {
+          g_print ("usage: menu <window-id> <parent-id>");
+          goto out;
+        }
+
+      GtkWidget *window = lookup_window (argv[1]);
+      if (!window)
+        {
+          g_print ("unknown window %s", argv[1]);
+          goto out;
+        }
+
+      GtkWidget *parent_window = lookup_window (argv[2]);
+      if (!parent_window)
+        {
+          g_print ("unknown parent window %s", argv[2]);
+          goto out;
+        }
+
+      gtk_window_set_transient_for (GTK_WINDOW (window),
+                                    GTK_WINDOW (parent_window));
+    }
   else if (strcmp (argv[0], "show") == 0)
     {
       if (argc != 2)

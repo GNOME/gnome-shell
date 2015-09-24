@@ -1,0 +1,14 @@
+new_client 1 wayland
+create 1/1
+show 1/1
+create 1/2
+show 1/2
+wait
+assert_stacking 1/1 1/2
+
+set_parent 1/1 2
+wait
+assert_stacking 1/2 1/1
+
+local_activate 1/2
+assert_stacking 1/2 1/1
