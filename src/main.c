@@ -132,6 +132,12 @@ shell_dbus_init (gboolean replace)
                                NULL, /* cancellable */
                                &error);
 
+  if (!bus)
+    {
+      g_printerr ("Failed to get a session bus proxy: %s", error->message);
+      exit (1);
+    }
+
   request_name_flags = G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT;
   if (replace)
     request_name_flags |= DBUS_NAME_FLAG_REPLACE_EXISTING;
