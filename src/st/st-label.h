@@ -29,15 +29,9 @@ G_BEGIN_DECLS
 #include <st/st-widget.h>
 
 #define ST_TYPE_LABEL                (st_label_get_type ())
-#define ST_LABEL(obj)                (G_TYPE_CHECK_INSTANCE_CAST ((obj), ST_TYPE_LABEL, StLabel))
-#define ST_IS_LABEL(obj)             (G_TYPE_CHECK_INSTANCE_TYPE ((obj), ST_TYPE_LABEL))
-#define ST_LABEL_CLASS(klass)        (G_TYPE_CHECK_CLASS_CAST ((klass), ST_TYPE_LABEL, StLabelClass))
-#define ST_IS_LABEL_CLASS(klass)     (G_TYPE_CHECK_CLASS_TYPE ((klass), ST_TYPE_LABEL))
-#define ST_LABEL_GET_CLASS(obj)      (G_TYPE_INSTANCE_GET_CLASS ((obj), ST_TYPE_LABEL, StLabelClass))
+G_DECLARE_FINAL_TYPE (StLabel, st_label, ST, LABEL, StWidget)
 
-typedef struct _StLabel              StLabel;
 typedef struct _StLabelPrivate       StLabelPrivate;
-typedef struct _StLabelClass         StLabelClass;
 
 /**
  * StLabel:
@@ -52,13 +46,6 @@ struct _StLabel
 
   StLabelPrivate *priv;
 };
-
-struct _StLabelClass
-{
-  StWidgetClass parent_class;
-};
-
-GType st_label_get_type (void) G_GNUC_CONST;
 
 StWidget *     st_label_new              (const gchar *text);
 const gchar *  st_label_get_text         (StLabel     *label);

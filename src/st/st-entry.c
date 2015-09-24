@@ -87,9 +87,10 @@ enum
   LAST_SIGNAL
 };
 
-#define ST_ENTRY_PRIV(x) ((StEntry *) x)->priv
+#define ST_ENTRY_PRIV(x) st_entry_get_instance_private ((StEntry *) x)
 
 
+typedef struct _StEntryPrivate StEntryPrivate;
 struct _StEntryPrivate
 {
   ClutterActor *entry;
@@ -182,7 +183,8 @@ st_entry_get_property (GObject    *gobject,
 static void
 show_capslock_feedback (StEntry *entry)
 {
-  if (entry->priv->secondary_icon == NULL)
+  StEntryPrivate *priv = ST_ENTRY_PRIV (entry);
+  if (priv->secondary_icon == NULL)
     {
       ClutterActor *icon = g_object_new (ST_TYPE_ICON,
                                          "style-class", "capslock-warning",
@@ -190,17 +192,18 @@ show_capslock_feedback (StEntry *entry)
                                          NULL);
 
       st_entry_set_secondary_icon (entry, icon);
-      entry->priv->capslock_warning_shown = TRUE;
+      priv->capslock_warning_shown = TRUE;
     }
 }
 
 static void
 remove_capslock_feedback (StEntry *entry)
 {
-  if (entry->priv->capslock_warning_shown)
+  StEntryPrivate *priv = ST_ENTRY_PRIV (entry);
+  if (priv->capslock_warning_shown)
     {
       st_entry_set_secondary_icon (entry, NULL);
-      entry->priv->capslock_warning_shown = FALSE;
+      priv->capslock_warning_shown = FALSE;
     }
 }
 
@@ -209,8 +212,9 @@ keymap_state_changed (GdkKeymap *keymap,
                       gpointer   user_data)
 {
   StEntry *entry = ST_ENTRY (user_data);
+  StEntryPrivate *priv = ST_ENTRY_PRIV (entry);
 
-  if (clutter_text_get_password_char (CLUTTER_TEXT (entry->priv->entry)) != 0)
+  if (clutter_text_get_password_char (CLUTTER_TEXT (priv->entry)) != 0)
     {
       if (gdk_keymap_get_caps_lock_state (keymap))
         show_capslock_feedback (entry);
@@ -223,7 +227,7 @@ static void
 st_entry_dispose (GObject *object)
 {
   StEntry *entry = ST_ENTRY (object);
-  StEntryPrivate *priv = entry->priv;
+  StEntryPrivate *priv = ST_ENTRY_PRIV (entry);
   GdkKeymap *keymap;
 
   if (priv->entry)
@@ -479,7 +483,7 @@ clutter_text_focus_in_cb (ClutterText  *text,
                           ClutterActor *actor)
 {
   StEntry *entry = ST_ENTRY (actor);
-  StEntryPrivate *priv = entry->priv;
+  StEntryPrivate *priv = ST_ENTRY_PRIV (entry);
   GdkKeymap *keymap;
 
   /* remove the hint if visible */
@@ -505,7 +509,7 @@ clutter_text_focus_out_cb (ClutterText  *text,
                            ClutterActor *actor)
 {
   StEntry *entry = ST_ENTRY (actor);
-  StEntryPrivate *priv = entry->priv;
+  StEntryPrivate *priv = ST_ENTRY_PRIV (entry);
   GdkKeymap *keymap;
 
   st_widget_remove_style_pseudo_class (ST_WIDGET (actor), "focus");
@@ -531,8 +535,9 @@ clutter_text_password_char_cb (GObject    *object,
                                gpointer    user_data)
 {
   StEntry *entry = ST_ENTRY (user_data);
+  StEntryPrivate *priv = ST_ENTRY_PRIV (entry);
 
-  if (clutter_text_get_password_char (CLUTTER_TEXT (entry->priv->entry)) == 0)
+  if (clutter_text_get_password_char (CLUTTER_TEXT (priv->entry)) == 0)
     remove_capslock_feedback (entry);
 }
 
@@ -541,7 +546,8 @@ st_entry_clipboard_callback (StClipboard *clipboard,
                              const gchar *text,
                              gpointer     data)
 {
-  ClutterText *ctext = (ClutterText*)((StEntry *) data)->priv->entry;
+  StEntryPrivate *priv = ST_ENTRY_PRIV (data);
+  ClutterText *ctext = (ClutterText*)priv->entry;
   gint cursor_pos;
 
   if (!text)
@@ -720,14 +726,15 @@ st_entry_set_cursor (StEntry  *entry,
 {
   cursor_func (entry, use_ibeam, cursor_func_data);
 
-  entry->priv->has_ibeam = use_ibeam;
+  ((StEntryPrivate *)ST_ENTRY_PRIV (entry))->has_ibeam = use_ibeam;
 }
 
 static gboolean
 st_entry_enter_event (ClutterActor         *actor,
                       ClutterCrossingEvent *event)
 {
-  if (event->source == ST_ENTRY (actor)->priv->entry && event->related != NULL)
+  StEntryPrivate *priv = ST_ENTRY_PRIV (actor);
+  if (event->source == priv->entry && event->related != NULL)
     st_entry_set_cursor (ST_ENTRY (actor), TRUE);
 
   return CLUTTER_ACTOR_CLASS (st_entry_parent_class)->enter_event (actor, event);
@@ -737,7 +744,8 @@ static gboolean
 st_entry_leave_event (ClutterActor         *actor,
                       ClutterCrossingEvent *event)
 {
-  if (event->source == ST_ENTRY (actor)->priv->entry && event->related != NULL)
+  StEntryPrivate *priv = ST_ENTRY_PRIV (actor);
+  if (event->source == priv->entry && event->related != NULL)
     st_entry_set_cursor (ST_ENTRY (actor), FALSE);
 
   return CLUTTER_ACTOR_CLASS (st_entry_parent_class)->leave_event (actor, event);
@@ -746,7 +754,8 @@ st_entry_leave_event (ClutterActor         *actor,
 static void
 st_entry_unmap (ClutterActor *actor)
 {
-  if (ST_ENTRY (actor)->priv->has_ibeam)
+  StEntryPrivate *priv = ST_ENTRY_PRIV (actor);
+  if (priv->has_ibeam)
     st_entry_set_cursor (ST_ENTRY (actor), FALSE);
 
   CLUTTER_ACTOR_CLASS (st_entry_parent_class)->unmap (actor);
@@ -855,7 +864,7 @@ st_entry_init (StEntry *entry)
 {
   StEntryPrivate *priv;
 
-  priv = entry->priv = st_entry_get_instance_private (entry);
+  priv = st_entry_get_instance_private (entry);
 
   priv->entry = g_object_new (ST_TYPE_IM_TEXT,
                               "line-alignment", PANGO_ALIGN_LEFT,
@@ -917,12 +926,15 @@ st_entry_new (const gchar *text)
 const gchar *
 st_entry_get_text (StEntry *entry)
 {
+  StEntryPrivate *priv;
+
   g_return_val_if_fail (ST_IS_ENTRY (entry), NULL);
 
-  if (entry->priv->hint_visible)
+  priv = st_entry_get_instance_private (entry);
+  if (priv->hint_visible)
     return "";
   else
-    return clutter_text_get_text (CLUTTER_TEXT (entry->priv->entry));
+    return clutter_text_get_text (CLUTTER_TEXT (priv->entry));
 }
 
 /**
@@ -940,7 +952,7 @@ st_entry_set_text (StEntry     *entry,
 
   g_return_if_fail (ST_IS_ENTRY (entry));
 
-  priv = entry->priv;
+  priv = st_entry_get_instance_private (entry);
 
   /* set a hint if we are blanking the entry */
   if (priv->hint
@@ -977,7 +989,7 @@ st_entry_get_clutter_text (StEntry *entry)
 {
   g_return_val_if_fail (ST_ENTRY (entry), NULL);
 
-  return entry->priv->entry;
+  return ((StEntryPrivate *)ST_ENTRY_PRIV (entry))->entry;
 }
 
 /**
@@ -997,7 +1009,7 @@ st_entry_set_hint_text (StEntry     *entry,
 
   g_return_if_fail (ST_IS_ENTRY (entry));
 
-  priv = entry->priv;
+  priv = st_entry_get_instance_private (entry);
 
   g_free (priv->hint);
 
@@ -1027,7 +1039,7 @@ st_entry_get_hint_text (StEntry *entry)
 {
   g_return_val_if_fail (ST_IS_ENTRY (entry), NULL);
 
-  return entry->priv->hint;
+  return ((StEntryPrivate *)ST_ENTRY_PRIV (entry))->hint;
 }
 
 /**
@@ -1043,11 +1055,13 @@ void
 st_entry_set_input_purpose (StEntry        *entry,
                             GtkInputPurpose purpose)
 {
+  StEntryPrivate *priv;
   StIMText *imtext;
 
   g_return_if_fail (ST_IS_ENTRY (entry));
 
-  imtext = ST_IM_TEXT (entry->priv->entry);
+  priv = st_entry_get_instance_private (entry);
+  imtext = ST_IM_TEXT (priv->entry);
 
   if (st_im_text_get_input_purpose (imtext) != purpose)
     {
@@ -1066,9 +1080,12 @@ st_entry_set_input_purpose (StEntry        *entry,
 GtkInputPurpose
 st_entry_get_input_purpose (StEntry *entry)
 {
+  StEntryPrivate *priv;
+
   g_return_val_if_fail (ST_IS_ENTRY (entry), GTK_INPUT_PURPOSE_FREE_FORM);
 
-  return st_im_text_get_input_purpose (ST_IM_TEXT (entry->priv->entry));
+  priv = st_entry_get_instance_private (entry);
+  return st_im_text_get_input_purpose (ST_IM_TEXT (priv->entry));
 }
 
 /**
@@ -1083,11 +1100,13 @@ void
 st_entry_set_input_hints (StEntry      *entry,
                           GtkInputHints hints)
 {
+  StEntryPrivate *priv;
   StIMText *imtext;
 
   g_return_if_fail (ST_IS_ENTRY (entry));
 
-  imtext = ST_IM_TEXT (entry->priv->entry);
+  priv = st_entry_get_instance_private (entry);
+  imtext = ST_IM_TEXT (priv->entry);
 
   if (st_im_text_get_input_hints (imtext) != hints)
     {
@@ -1106,9 +1125,12 @@ st_entry_set_input_hints (StEntry      *entry,
 GtkInputHints
 st_entry_get_input_hints (StEntry *entry)
 {
+  StEntryPrivate *priv;
+
   g_return_val_if_fail (ST_IS_ENTRY (entry), GTK_INPUT_HINT_NONE);
 
-  return st_im_text_get_input_hints (ST_IM_TEXT (entry->priv->entry));
+  priv = st_entry_get_instance_private (entry);
+  return st_im_text_get_input_hints (ST_IM_TEXT (priv->entry));
 }
 
 static gboolean
@@ -1116,7 +1138,7 @@ _st_entry_icon_press_cb (ClutterActor       *actor,
                          ClutterButtonEvent *event,
                          StEntry            *entry)
 {
-  StEntryPrivate *priv = entry->priv;
+  StEntryPrivate *priv = ST_ENTRY_PRIV (actor);
 
   if (actor == priv->primary_icon)
     g_signal_emit (entry, entry_signals[PRIMARY_ICON_CLICKED], 0);
@@ -1168,7 +1190,7 @@ st_entry_set_primary_icon (StEntry      *entry,
 
   g_return_if_fail (ST_IS_ENTRY (entry));
 
-  priv = entry->priv;
+  priv = st_entry_get_instance_private (entry);
 
   _st_entry_set_icon (entry, &priv->primary_icon, icon);
 }
@@ -1188,7 +1210,7 @@ st_entry_set_secondary_icon (StEntry      *entry,
 
   g_return_if_fail (ST_IS_ENTRY (entry));
 
-  priv = entry->priv;
+  priv = st_entry_get_instance_private (entry);
 
   _st_entry_set_icon (entry, &priv->secondary_icon, icon);
 }
@@ -1239,6 +1261,7 @@ static gint
 st_entry_accessible_get_n_children (AtkObject *obj)
 {
   StEntry *entry = NULL;
+  StEntryPrivate *priv;
 
   g_return_val_if_fail (ST_IS_ENTRY_ACCESSIBLE (obj), 0);
 
@@ -1247,7 +1270,8 @@ st_entry_accessible_get_n_children (AtkObject *obj)
   if (entry == NULL)
     return 0;
 
-  if (entry->priv->entry == NULL)
+  priv = st_entry_get_instance_private (entry);
+  if (priv->entry == NULL)
     return 0;
   else
     return 1;
@@ -1258,6 +1282,7 @@ st_entry_accessible_ref_child (AtkObject *obj,
                                gint       i)
 {
   StEntry *entry = NULL;
+  StEntryPrivate *priv;
   AtkObject *result = NULL;
 
   g_return_val_if_fail (ST_IS_ENTRY_ACCESSIBLE (obj), NULL);
@@ -1268,10 +1293,11 @@ st_entry_accessible_ref_child (AtkObject *obj,
   if (entry == NULL)
     return NULL;
 
-  if (entry->priv->entry == NULL)
+  priv = st_entry_get_instance_private (entry);
+  if (priv->entry == NULL)
     return NULL;
 
-  result = clutter_actor_get_accessible (entry->priv->entry);
+  result = clutter_actor_get_accessible (priv->entry);
   g_object_ref (result);
 
   return result;

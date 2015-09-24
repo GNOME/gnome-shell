@@ -21,6 +21,8 @@
 
 #include "st-scrollable.h"
 
+G_DEFINE_INTERFACE (StScrollable, st_scrollable, G_TYPE_OBJECT)
+
 /**
  * SECTION:st-scrollable
  * @short_description: A #ClutterActor that can be scrolled
@@ -77,7 +79,7 @@
  *  page_increment: page_size - step_increment
  */
 static void
-st_scrollable_base_init (gpointer g_iface)
+st_scrollable_default_init (StScrollableInterface *g_iface)
 {
   static gboolean initialized = FALSE;
 
@@ -101,32 +103,14 @@ st_scrollable_base_init (gpointer g_iface)
     }
 }
 
-GType
-st_scrollable_get_type (void)
-{
-  static GType type = 0;
-  if (type == 0)
-    {
-      static const GTypeInfo info =
-      {
-        sizeof (StScrollableInterface),
-        st_scrollable_base_init,          /* base_init */
-        NULL,
-      };
-      type = g_type_register_static (G_TYPE_INTERFACE,
-                                     "StScrollable", &info, 0);
-    }
-  return type;
-}
-
 void
 st_scrollable_set_adjustments (StScrollable *scrollable,
                                StAdjustment *hadjustment,
                                StAdjustment *vadjustment)
 {
-  ST_SCROLLABLE_GET_INTERFACE (scrollable)->set_adjustments (scrollable,
-                                                             hadjustment,
-                                                             vadjustment);
+  ST_SCROLLABLE_GET_IFACE (scrollable)->set_adjustments (scrollable,
+                                                         hadjustment,
+                                                         vadjustment);
 }
 
 /**
@@ -142,7 +126,7 @@ st_scrollable_get_adjustments (StScrollable  *scrollable,
                                StAdjustment **hadjustment,
                                StAdjustment **vadjustment)
 {
-  ST_SCROLLABLE_GET_INTERFACE (scrollable)->get_adjustments (scrollable,
-                                                             hadjustment,
-                                                             vadjustment);
+  ST_SCROLLABLE_GET_IFACE (scrollable)->get_adjustments (scrollable,
+                                                         hadjustment,
+                                                         vadjustment);
 }

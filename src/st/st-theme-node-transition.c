@@ -27,6 +27,14 @@ enum {
   LAST_SIGNAL
 };
 
+typedef struct _StThemeNodeTransitionPrivate StThemeNodeTransitionPrivate;
+
+struct _StThemeNodeTransition {
+  GObject parent;
+
+  StThemeNodeTransitionPrivate *priv;
+};
+
 struct _StThemeNodeTransitionPrivate {
   StThemeNode *old_theme_node;
   StThemeNode *new_theme_node;
@@ -80,14 +88,12 @@ st_theme_node_transition_new (StThemeNode *from_node,
                               guint        duration)
 {
   StThemeNodeTransition *transition;
-
   g_return_val_if_fail (ST_IS_THEME_NODE (from_node), NULL);
   g_return_val_if_fail (ST_IS_THEME_NODE (to_node), NULL);
 
   duration = st_theme_node_get_transition_duration (to_node);
 
-  transition = g_object_new (ST_TYPE_THEME_NODE_TRANSITION,
-                             NULL);
+  transition = g_object_new (ST_TYPE_THEME_NODE_TRANSITION, NULL);
 
   transition->priv->old_theme_node = g_object_ref (from_node);
   transition->priv->new_theme_node = g_object_ref (to_node);
@@ -121,13 +127,14 @@ void
 st_theme_node_transition_update (StThemeNodeTransition *transition,
                                  StThemeNode           *new_node)
 {
-  StThemeNodeTransitionPrivate *priv = transition->priv;
+  StThemeNodeTransitionPrivate *priv;
   StThemeNode *old_node;
   ClutterTimelineDirection direction;
 
   g_return_if_fail (ST_IS_THEME_NODE_TRANSITION (transition));
   g_return_if_fail (ST_IS_THEME_NODE (new_node));
 
+  priv = transition->priv;
   direction = clutter_timeline_get_direction (priv->timeline);
   old_node = (direction == CLUTTER_TIMELINE_FORWARD) ? priv->old_theme_node
                                                      : priv->new_theme_node;

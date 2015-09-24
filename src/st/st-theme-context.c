@@ -38,10 +38,6 @@ struct _StThemeContext {
   int scale_factor;
 };
 
-struct _StThemeContextClass {
-  GObjectClass parent_class;
-};
-
 #define DEFAULT_FONT "sans-serif 10"
 
 enum

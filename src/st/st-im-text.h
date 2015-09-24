@@ -36,15 +36,10 @@ G_BEGIN_DECLS
 #include <clutter/clutter.h>
 
 #define ST_TYPE_IM_TEXT               (st_im_text_get_type ())
-#define ST_IM_TEXT(obj)               (G_TYPE_CHECK_INSTANCE_CAST ((obj), ST_TYPE_IM_TEXT, StIMText))
-#define ST_IS_IM_TEXT(obj)            (G_TYPE_CHECK_INSTANCE_TYPE ((obj), ST_TYPE_IM_TEXT))
-#define ST_IM_TEXT_CLASS(klass)       (G_TYPE_CHECK_CLASS_CAST ((klass), ST_TYPE_IM_TEXT, StIMTextClass))
-#define ST_IS_IM_TEXT_CLASS(klass)    (G_TYPE_CHECK_CLASS_TYPE ((klass), ST_TYPE_IM_TEXT))
-#define ST_IM_TEXT_GET_CLASS(obj)     (G_TYPE_INSTANCE_GET_CLASS ((obj), ST_TYPE_IM_TEXT, StIMTextClass))
+G_DECLARE_FINAL_TYPE (StIMText, st_im_text, ST, IM_TEXT, ClutterText)
 
 typedef struct _StIMText              StIMText;
 typedef struct _StIMTextPrivate       StIMTextPrivate;
-typedef struct _StIMTextClass         StIMTextClass;
 
 struct _StIMText
 {
@@ -52,13 +47,6 @@ struct _StIMText
 
   StIMTextPrivate *priv;
 };
-
-struct _StIMTextClass
-{
-  ClutterTextClass parent_class;
-};
-
-GType st_im_text_get_type (void) G_GNUC_CONST;
 
 ClutterActor   *st_im_text_new               (const gchar    *text);
 void            st_im_text_set_input_purpose (StIMText       *imtext,

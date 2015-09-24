@@ -37,21 +37,7 @@
 G_BEGIN_DECLS
 
 #define ST_TYPE_ICON st_icon_get_type()
-
-#define ST_ICON(obj) \
-  (G_TYPE_CHECK_INSTANCE_CAST ((obj), ST_TYPE_ICON, StIcon))
-
-#define ST_ICON_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_CAST ((klass), ST_TYPE_ICON, StIconClass))
-
-#define ST_IS_ICON(obj) \
-  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), ST_TYPE_ICON))
-
-#define ST_IS_ICON_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_TYPE ((klass), ST_TYPE_ICON))
-
-#define ST_ICON_GET_CLASS(obj) \
-  (G_TYPE_INSTANCE_GET_CLASS ((obj), ST_TYPE_ICON, StIconClass))
+G_DECLARE_FINAL_TYPE (StIcon, st_icon, ST, ICON, StWidget)
 
 typedef struct _StIconPrivate       StIconPrivate;
 
@@ -61,25 +47,12 @@ typedef struct _StIconPrivate       StIconPrivate;
  * The contents of this structure are private and should only be accessed
  * through the public API.
  */
-typedef struct {
+struct _StIcon {
   /*< private >*/
   StWidget parent;
 
   StIconPrivate *priv;
-} StIcon;
-
-typedef struct {
-  StWidgetClass parent_class;
-
-  /* padding for future expansion */
-  void (*_padding_0) (void);
-  void (*_padding_1) (void);
-  void (*_padding_2) (void);
-  void (*_padding_3) (void);
-  void (*_padding_4) (void);
-} StIconClass;
-
-GType st_icon_get_type (void);
+};
 
 ClutterActor* st_icon_new (void);
 

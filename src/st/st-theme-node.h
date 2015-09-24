@@ -48,15 +48,8 @@ G_BEGIN_DECLS
 typedef struct _StTheme          StTheme;
 typedef struct _StThemeContext   StThemeContext;
 
-typedef struct _StThemeNode      StThemeNode;
-typedef struct _StThemeNodeClass StThemeNodeClass;
-
 #define ST_TYPE_THEME_NODE              (st_theme_node_get_type ())
-#define ST_THEME_NODE(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), ST_TYPE_THEME_NODE, StThemeNode))
-#define ST_THEME_NODE_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass),     ST_TYPE_THEME_NODE, StThemeNodeClass))
-#define ST_IS_THEME_NODE(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), ST_TYPE_THEME_NODE))
-#define ST_IS_THEME_NODE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass),     ST_TYPE_THEME_NODE))
-#define ST_THEME_NODE_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj),     ST_TYPE_THEME_NODE, StThemeNodeClass))
+G_DECLARE_FINAL_TYPE (StThemeNode, st_theme_node, ST, THEME_NODE, GObject)
 
 typedef enum {
     ST_SIDE_TOP,
@@ -116,8 +109,6 @@ struct _StThemeNodePaintState {
   CoglHandle prerendered_material;
   CoglHandle corner_material[4];
 };
-
-GType st_theme_node_get_type (void) G_GNUC_CONST;
 
 StThemeNode *st_theme_node_new (StThemeContext *context,
                                 StThemeNode    *parent_node,   /* can be null */

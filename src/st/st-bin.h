@@ -30,28 +30,7 @@
 G_BEGIN_DECLS
 
 #define ST_TYPE_BIN                   (st_bin_get_type ())
-#define ST_BIN(obj)                   (G_TYPE_CHECK_INSTANCE_CAST ((obj), ST_TYPE_BIN, StBin))
-#define ST_IS_BIN(obj)                (G_TYPE_CHECK_INSTANCE_TYPE ((obj), ST_TYPE_BIN))
-#define ST_BIN_CLASS(klass)           (G_TYPE_CHECK_CLASS_CAST ((klass), ST_TYPE_BIN, StBinClass))
-#define ST_IS_BIN_CLASS(klass)        (G_TYPE_CHECK_CLASS_TYPE ((klass), ST_TYPE_BIN))
-#define ST_BIN_GET_CLASS(obj)         (G_TYPE_INSTANCE_GET_CLASS ((obj), ST_TYPE_BIN, StBinClass))
-
-typedef struct _StBin                 StBin;
-typedef struct _StBinPrivate          StBinPrivate;
-typedef struct _StBinClass            StBinClass;
-
-/**
- * StBin:
- *
- * The #StBin struct contains only private data
- */
-struct _StBin
-{
-  /*< private >*/
-  StWidget parent_instance;
-
-  StBinPrivate *priv;
-};
+G_DECLARE_DERIVABLE_TYPE (StBin, st_bin, ST, BIN, StWidget)
 
 /**
  * StBinClass:
@@ -63,8 +42,6 @@ struct _StBinClass
   /*< private >*/
   StWidgetClass parent_class;
 };
-
-GType st_bin_get_type (void) G_GNUC_CONST;
 
 StWidget   *  st_bin_new           (void);
 void          st_bin_set_child     (StBin        *bin,

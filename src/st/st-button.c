@@ -64,6 +64,8 @@ enum
   LAST_SIGNAL
 };
 
+typedef struct _StButtonPrivate       StButtonPrivate;
+
 struct _StButtonPrivate
 {
   gchar *text;
@@ -105,7 +107,7 @@ static void
 st_button_style_changed (StWidget *widget)
 {
   StButton *button = ST_BUTTON (widget);
-  StButtonPrivate *priv = button->priv;
+  StButtonPrivate *priv = st_button_get_instance_private (button);
   StButtonClass *button_class = ST_BUTTON_GET_CLASS (button);
   StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (button));
   double spacing;
@@ -132,12 +134,14 @@ st_button_press (StButton             *button,
                  StButtonMask          mask,
                  ClutterEventSequence *sequence)
 {
-  if (button->priv->pressed == 0 || sequence)
+  StButtonPrivate *priv = st_button_get_instance_private (button);
+
+  if (priv->pressed == 0 || sequence)
     st_widget_add_style_pseudo_class (ST_WIDGET (button), "active");
 
-  button->priv->pressed |= mask;
-  button->priv->press_sequence = sequence;
-  button->priv->device = device;
+  priv->pressed |= mask;
+  priv->press_sequence = sequence;
+  priv->device = device;
 }
 
 static void
@@ -147,25 +151,27 @@ st_button_release (StButton             *button,
                    int                   clicked_button,
                    ClutterEventSequence *sequence)
 {
-  if ((device && button->priv->device != device) ||
-      (sequence && button->priv->press_sequence != sequence))
+  StButtonPrivate *priv = st_button_get_instance_private (button);
+
+  if ((device && priv->device != device) ||
+      (sequence && priv->press_sequence != sequence))
     return;
   else if (!sequence)
     {
-      button->priv->pressed &= ~mask;
+      priv->pressed &= ~mask;
 
-      if (button->priv->pressed != 0)
+      if (priv->pressed != 0)
         return;
     }
 
-  button->priv->press_sequence = NULL;
-  button->priv->device = NULL;
+  priv->press_sequence = NULL;
+  priv->device = NULL;
   st_widget_remove_style_pseudo_class (ST_WIDGET (button), "active");
 
   if (clicked_button || sequence)
     {
-      if (button->priv->is_toggle)
-        st_button_set_checked (button, !button->priv->is_checked);
+      if (priv->is_toggle)
+        st_button_set_checked (button, !priv->is_checked);
 
       g_signal_emit (button, button_signals[CLICKED], 0, clicked_button);
     }
@@ -176,18 +182,19 @@ st_button_button_press (ClutterActor       *actor,
                         ClutterButtonEvent *event)
 {
   StButton *button = ST_BUTTON (actor);
+  StButtonPrivate *priv = st_button_get_instance_private (button);
   StButtonMask mask = ST_BUTTON_MASK_FROM_BUTTON (event->button);
   ClutterInputDevice *device = clutter_event_get_device ((ClutterEvent*) event);
 
-  if (button->priv->press_sequence)
+  if (priv->press_sequence)
     return CLUTTER_EVENT_PROPAGATE;
 
-  if (button->priv->button_mask & mask)
+  if (priv->button_mask & mask)
     {
-      if (button->priv->grabbed == 0)
+      if (priv->grabbed == 0)
         clutter_grab_pointer (actor);
 
-      button->priv->grabbed |= mask;
+      priv->grabbed |= mask;
       st_button_press (button, device, mask, NULL);
 
       return TRUE;
@@ -201,18 +208,19 @@ st_button_button_release (ClutterActor       *actor,
                           ClutterButtonEvent *event)
 {
   StButton *button = ST_BUTTON (actor);
+  StButtonPrivate *priv = st_button_get_instance_private (button);
   StButtonMask mask = ST_BUTTON_MASK_FROM_BUTTON (event->button);
   ClutterInputDevice *device = clutter_event_get_device ((ClutterEvent*) event);
 
-  if (button->priv->button_mask & mask)
+  if (priv->button_mask & mask)
     {
       gboolean is_click;
 
-      is_click = button->priv->grabbed && clutter_actor_contains (actor, event->source);
+      is_click = priv->grabbed && clutter_actor_contains (actor, event->source);
       st_button_release (button, device, mask, is_click ? event->button : 0, NULL);
 
-      button->priv->grabbed &= ~mask;
-      if (button->priv->grabbed == 0)
+      priv->grabbed &= ~mask;
+      if (priv->grabbed == 0)
         clutter_ungrab_pointer ();
 
       return TRUE;
@@ -226,25 +234,26 @@ st_button_touch_event (ClutterActor      *actor,
                        ClutterTouchEvent *event)
 {
   StButton *button = ST_BUTTON (actor);
+  StButtonPrivate *priv = st_button_get_instance_private (button);
   StButtonMask mask = ST_BUTTON_MASK_FROM_BUTTON (1);
   ClutterEventSequence *sequence;
   ClutterInputDevice *device;
 
-  if (button->priv->pressed != 0)
+  if (priv->pressed != 0)
     return CLUTTER_EVENT_PROPAGATE;
 
   device = clutter_event_get_device ((ClutterEvent*) event);
   sequence = clutter_event_get_event_sequence ((ClutterEvent*) event);
 
-  if (event->type == CLUTTER_TOUCH_BEGIN && !button->priv->press_sequence)
+  if (event->type == CLUTTER_TOUCH_BEGIN && !priv->press_sequence)
     {
       clutter_input_device_sequence_grab (device, sequence, actor);
       st_button_press (button, device, 0, sequence);
       return CLUTTER_EVENT_STOP;
     }
   else if (event->type == CLUTTER_TOUCH_END &&
-           button->priv->device == device &&
-           button->priv->press_sequence == sequence)
+           priv->device == device &&
+           priv->press_sequence == sequence)
     {
       st_button_release (button, device, mask, 0, sequence);
       clutter_input_device_sequence_ungrab (device, sequence);
@@ -259,8 +268,9 @@ st_button_key_press (ClutterActor    *actor,
                      ClutterKeyEvent *event)
 {
   StButton *button = ST_BUTTON (actor);
+  StButtonPrivate *priv = st_button_get_instance_private (button);
 
-  if (button->priv->button_mask & ST_BUTTON_ONE)
+  if (priv->button_mask & ST_BUTTON_ONE)
     {
       if (event->keyval == CLUTTER_KEY_space ||
           event->keyval == CLUTTER_KEY_Return ||
@@ -280,8 +290,9 @@ st_button_key_release (ClutterActor    *actor,
                        ClutterKeyEvent *event)
 {
   StButton *button = ST_BUTTON (actor);
+  StButtonPrivate *priv = st_button_get_instance_private (button);
 
-  if (button->priv->button_mask & ST_BUTTON_ONE)
+  if (priv->button_mask & ST_BUTTON_ONE)
     {
       if (event->keyval == CLUTTER_KEY_space ||
           event->keyval == CLUTTER_KEY_Return ||
@@ -290,7 +301,7 @@ st_button_key_release (ClutterActor    *actor,
         {
           gboolean is_click;
 
-          is_click = (button->priv->pressed & ST_BUTTON_ONE);
+          is_click = (priv->pressed & ST_BUTTON_ONE);
           st_button_release (button, NULL, ST_BUTTON_ONE, is_click ? 1 : 0, NULL);
           return TRUE;
         }
@@ -303,10 +314,11 @@ static void
 st_button_key_focus_out (ClutterActor *actor)
 {
   StButton *button = ST_BUTTON (actor);
+  StButtonPrivate *priv = st_button_get_instance_private (button);
 
   /* If we lose focus between a key press and release, undo the press */
-  if ((button->priv->pressed & ST_BUTTON_ONE) &&
-      !(button->priv->grabbed & ST_BUTTON_ONE))
+  if ((priv->pressed & ST_BUTTON_ONE) &&
+      !(priv->grabbed & ST_BUTTON_ONE))
     st_button_release (button, NULL, ST_BUTTON_ONE, 0, NULL);
 
   CLUTTER_ACTOR_CLASS (st_button_parent_class)->key_focus_out (actor);
@@ -317,18 +329,19 @@ st_button_enter (ClutterActor         *actor,
                  ClutterCrossingEvent *event)
 {
   StButton *button = ST_BUTTON (actor);
+  StButtonPrivate *priv = st_button_get_instance_private (button);
   gboolean ret;
 
   ret = CLUTTER_ACTOR_CLASS (st_button_parent_class)->enter_event (actor, event);
 
-  if (button->priv->grabbed)
+  if (priv->grabbed)
     {
       if (st_widget_get_hover (ST_WIDGET (button)))
-        st_button_press (button,  button->priv->device,
-                         button->priv->grabbed, NULL);
+        st_button_press (button,  priv->device,
+                         priv->grabbed, NULL);
       else
-        st_button_release (button, button->priv->device,
-                           button->priv->grabbed, 0, NULL);
+        st_button_release (button, priv->device,
+                           priv->grabbed, 0, NULL);
     }
 
   return ret;
@@ -339,18 +352,19 @@ st_button_leave (ClutterActor         *actor,
                  ClutterCrossingEvent *event)
 {
   StButton *button = ST_BUTTON (actor);
+  StButtonPrivate *priv = st_button_get_instance_private (button);
   gboolean ret;
 
   ret = CLUTTER_ACTOR_CLASS (st_button_parent_class)->leave_event (actor, event);
 
-  if (button->priv->grabbed)
+  if (priv->grabbed)
     {
       if (st_widget_get_hover (ST_WIDGET (button)))
-        st_button_press (button, button->priv->device,
-                         button->priv->grabbed, NULL);
+        st_button_press (button, priv->device,
+                         priv->grabbed, NULL);
       else
-        st_button_release (button, button->priv->device,
-                           button->priv->grabbed, 0, NULL);
+        st_button_release (button, priv->device,
+                           priv->grabbed, 0, NULL);
     }
 
   return ret;
@@ -392,7 +406,7 @@ st_button_get_property (GObject    *gobject,
                         GValue     *value,
                         GParamSpec *pspec)
 {
-  StButtonPrivate *priv = ST_BUTTON (gobject)->priv;
+  StButtonPrivate *priv = st_button_get_instance_private (ST_BUTTON (gobject));
 
   switch (prop_id)
     {
@@ -422,7 +436,7 @@ st_button_get_property (GObject    *gobject,
 static void
 st_button_finalize (GObject *gobject)
 {
-  StButtonPrivate *priv = ST_BUTTON (gobject)->priv;
+  StButtonPrivate *priv = st_button_get_instance_private (ST_BUTTON (gobject));
 
   g_free (priv->text);
 
@@ -507,9 +521,10 @@ st_button_class_init (StButtonClass *klass)
 static void
 st_button_init (StButton *button)
 {
-  button->priv = st_button_get_instance_private (button);
-  button->priv->spacing = 6;
-  button->priv->button_mask = ST_BUTTON_ONE;
+  StButtonPrivate *priv = st_button_get_instance_private (button);
+
+  priv->spacing = 6;
+  priv->button_mask = ST_BUTTON_ONE;
 
   clutter_actor_set_reactive (CLUTTER_ACTOR (button), TRUE);
   st_widget_set_track_hover (ST_WIDGET (button), TRUE);
@@ -555,7 +570,7 @@ st_button_get_label (StButton *button)
 {
   g_return_val_if_fail (ST_IS_BUTTON (button), NULL);
 
-  return button->priv->text;
+  return ((StButtonPrivate *)st_button_get_instance_private (button))->text;
 }
 
 /**
@@ -574,7 +589,7 @@ st_button_set_label (StButton    *button,
 
   g_return_if_fail (ST_IS_BUTTON (button));
 
-  priv = button->priv;
+  priv = st_button_get_instance_private (button);
 
   g_free (priv->text);
 
@@ -621,7 +636,7 @@ st_button_get_button_mask (StButton *button)
 {
   g_return_val_if_fail (ST_IS_BUTTON (button), 0);
 
-  return button->priv->button_mask;
+  return ((StButtonPrivate *)st_button_get_instance_private (button))->button_mask;
 }
 
 /**
@@ -635,9 +650,12 @@ void
 st_button_set_button_mask (StButton     *button,
                            StButtonMask  mask)
 {
+  StButtonPrivate *priv;
+
   g_return_if_fail (ST_IS_BUTTON (button));
 
-  button->priv->button_mask = mask;
+  priv = st_button_get_instance_private (button);
+  priv->button_mask = mask;
 
   g_object_notify (G_OBJECT (button), "button-mask");
 }
@@ -655,7 +673,7 @@ st_button_get_toggle_mode (StButton *button)
 {
   g_return_val_if_fail (ST_IS_BUTTON (button), FALSE);
 
-  return button->priv->is_toggle;
+  return ((StButtonPrivate *)st_button_get_instance_private (button))->is_toggle;
 }
 
 /**
@@ -670,9 +688,12 @@ void
 st_button_set_toggle_mode (StButton *button,
                            gboolean  toggle)
 {
+  StButtonPrivate *priv;
+
   g_return_if_fail (ST_IS_BUTTON (button));
 
-  button->priv->is_toggle = toggle;
+  priv = st_button_get_instance_private (button);
+  priv->is_toggle = toggle;
 
   g_object_notify (G_OBJECT (button), "toggle-mode");
 }
@@ -690,7 +711,7 @@ st_button_get_checked (StButton *button)
 {
   g_return_val_if_fail (ST_IS_BUTTON (button), FALSE);
 
-  return button->priv->is_checked;
+  return ((StButtonPrivate *)st_button_get_instance_private (button))->is_checked;
 }
 
 /**
@@ -705,11 +726,14 @@ void
 st_button_set_checked (StButton *button,
                        gboolean  checked)
 {
+  StButtonPrivate *priv;
+
   g_return_if_fail (ST_IS_BUTTON (button));
 
-  if (button->priv->is_checked != checked)
+  priv = st_button_get_instance_private (button);
+  if (priv->is_checked != checked)
     {
-      button->priv->is_checked = checked;
+      priv->is_checked = checked;
 
       if (checked)
         st_widget_add_style_pseudo_class (ST_WIDGET (button), "checked");
@@ -736,25 +760,30 @@ st_button_set_checked (StButton *button,
 void
 st_button_fake_release (StButton *button)
 {
-  if (button->priv->pressed)
-    st_button_release (button, button->priv->device,
-                       button->priv->pressed, 0, NULL);
+  StButtonPrivate *priv;
 
-  if (button->priv->grabbed)
+  g_return_if_fail (ST_IS_BUTTON (button));
+
+  priv = st_button_get_instance_private (button);
+  if (priv->pressed)
+    st_button_release (button, priv->device,
+                       priv->pressed, 0, NULL);
+
+  if (priv->grabbed)
     {
-      button->priv->grabbed = 0;
+      priv->grabbed = 0;
       clutter_ungrab_pointer ();
     }
 
-  if (button->priv->device &&
-      button->priv->press_sequence)
+  if (priv->device &&
+      priv->press_sequence)
     {
-      clutter_input_device_sequence_ungrab (button->priv->device,
-                                            button->priv->press_sequence);
-      button->priv->press_sequence = NULL;
+      clutter_input_device_sequence_ungrab (priv->device,
+                                            priv->press_sequence);
+      priv->press_sequence = NULL;
     }
 
-  button->priv->device = NULL;
+  priv->device = NULL;
 }
 
 /******************************************************************************/
@@ -817,7 +846,7 @@ st_button_accessible_get_name (AtkObject *obj)
   if (name != NULL)
     return name;
 
-  return button->priv->text;
+  return st_button_get_label (button);
 }
 
 static void
@@ -847,7 +876,7 @@ static void
 st_button_accessible_compute_role (AtkObject *accessible,
                                    StButton  *button)
 {
-  atk_object_set_role (accessible, button->priv->is_toggle
+  atk_object_set_role (accessible, st_button_get_toggle_mode (button)
                        ? ATK_ROLE_TOGGLE_BUTTON : ATK_ROLE_PUSH_BUTTON);
 }
 

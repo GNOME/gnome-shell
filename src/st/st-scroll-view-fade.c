@@ -19,10 +19,6 @@
  */
 
 
-#define ST_SCROLL_VIEW_FADE_CLASS(klass)        (G_TYPE_CHECK_CLASS_CAST ((klass), ST_TYPE_SCROLL_VIEW_FADE, StScrollViewFadeClass))
-#define ST_IS_SCROLL_VIEW_FADE_CLASS(klass)     (G_TYPE_CHECK_CLASS_TYPE ((klass), ST_TYPE_SCROLL_VIEW_FADE))
-#define ST_SCROLL_VIEW_FADE_GET_CLASS(obj)      (G_TYPE_INSTANCE_GET_CLASS ((obj), ST_TYPE_SCROLL_VIEW_FADE, StScrollViewFadeClass))
-
 #include "st-scroll-view-fade.h"
 #include "st-scroll-view.h"
 #include "st-widget.h"
@@ -32,8 +28,6 @@
 
 #include <clutter/clutter.h>
 #include <cogl/cogl.h>
-
-typedef struct _StScrollViewFadeClass  StScrollViewFadeClass;
 
 #define DEFAULT_FADE_OFFSET 68.0f
 
@@ -53,11 +47,6 @@ struct _StScrollViewFade
 
   float vfade_offset;
   float hfade_offset;
-};
-
-struct _StScrollViewFadeClass
-{
-  ClutterShaderEffectClass parent_class;
 };
 
 G_DEFINE_TYPE (StScrollViewFade,

@@ -32,15 +32,9 @@
 G_BEGIN_DECLS
 
 #define ST_TYPE_SCROLL_VIEW            (st_scroll_view_get_type())
-#define ST_SCROLL_VIEW(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), ST_TYPE_SCROLL_VIEW, StScrollView))
-#define ST_IS_SCROLL_VIEW(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), ST_TYPE_SCROLL_VIEW))
-#define ST_SCROLL_VIEW_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), ST_TYPE_SCROLL_VIEW, StScrollViewClass))
-#define ST_IS_SCROLL_VIEW_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), ST_TYPE_SCROLL_VIEW))
-#define ST_SCROLL_VIEW_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), ST_TYPE_SCROLL_VIEW, StScrollViewClass))
+G_DECLARE_FINAL_TYPE (StScrollView, st_scroll_view, ST, SCROLL_VIEW, StBin)
 
-typedef struct _StScrollView          StScrollView;
 typedef struct _StScrollViewPrivate   StScrollViewPrivate;
-typedef struct _StScrollViewClass     StScrollViewClass;
 
 /**
  * StScrollView:
@@ -55,13 +49,6 @@ struct _StScrollView
 
   StScrollViewPrivate *priv;
 };
-
-struct _StScrollViewClass
-{
-  StBinClass parent_class;
-};
-
-GType st_scroll_view_get_type (void) G_GNUC_CONST;
 
 StWidget *st_scroll_view_new (void);
 

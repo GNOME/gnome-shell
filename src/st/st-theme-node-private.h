@@ -116,11 +116,6 @@ struct _StThemeNode {
   StThemeNodePaintState cached_state;
 };
 
-struct _StThemeNodeClass {
-  GObjectClass parent_class;
-
-};
-
 void _st_theme_node_ensure_background (StThemeNode *node);
 void _st_theme_node_ensure_geometry (StThemeNode *node);
 void _st_theme_node_apply_margins (StThemeNode *node,

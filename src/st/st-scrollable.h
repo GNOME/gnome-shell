@@ -31,11 +31,8 @@
 G_BEGIN_DECLS
 
 #define ST_TYPE_SCROLLABLE                (st_scrollable_get_type ())
-#define ST_SCROLLABLE(obj)                (G_TYPE_CHECK_INSTANCE_CAST ((obj), ST_TYPE_SCROLLABLE, StScrollable))
-#define ST_IS_SCROLLABLE(obj)             (G_TYPE_CHECK_INSTANCE_TYPE ((obj), ST_TYPE_SCROLLABLE))
-#define ST_SCROLLABLE_GET_INTERFACE(inst) (G_TYPE_INSTANCE_GET_INTERFACE ((inst), ST_TYPE_SCROLLABLE, StScrollableInterface))
+G_DECLARE_INTERFACE (StScrollable, st_scrollable, ST, SCROLLABLE, GObject)
 
-typedef struct _StScrollable StScrollable; /* Dummy object */
 typedef struct _StScrollableInterface StScrollableInterface;
 
 struct _StScrollableInterface
@@ -49,8 +46,6 @@ struct _StScrollableInterface
                             StAdjustment **hadjustment,
                             StAdjustment **vadjustment);
 };
-
-GType st_scrollable_get_type (void) G_GNUC_CONST;
 
 void st_scrollable_set_adjustments (StScrollable  *scrollable,
                                     StAdjustment  *hadjustment,

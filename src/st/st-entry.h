@@ -28,30 +28,8 @@ G_BEGIN_DECLS
 
 #include <st/st-widget.h>
 
-#define ST_TYPE_ENTRY                (st_entry_get_type ())
-#define ST_ENTRY(obj)                (G_TYPE_CHECK_INSTANCE_CAST ((obj), ST_TYPE_ENTRY, StEntry))
-#define ST_IS_ENTRY(obj)             (G_TYPE_CHECK_INSTANCE_TYPE ((obj), ST_TYPE_ENTRY))
-#define ST_ENTRY_CLASS(klass)        (G_TYPE_CHECK_CLASS_CAST ((klass), ST_TYPE_ENTRY, StEntryClass))
-#define ST_IS_ENTRY_CLASS(klass)     (G_TYPE_CHECK_CLASS_TYPE ((klass), ST_TYPE_ENTRY))
-#define ST_ENTRY_GET_CLASS(obj)      (G_TYPE_INSTANCE_GET_CLASS ((obj), ST_TYPE_ENTRY, StEntryClass))
-
-typedef struct _StEntry              StEntry;
-typedef struct _StEntryPrivate       StEntryPrivate;
-typedef struct _StEntryClass         StEntryClass;
-
-/**
- * StEntry:
- *
- * The contents of this structure is private and should only be accessed using
- * the provided API.
- */
-struct _StEntry
-{
-  /*< private >*/
-  StWidget parent_instance;
-
-  StEntryPrivate *priv;
-};
+#define ST_TYPE_ENTRY (st_entry_get_type ())
+G_DECLARE_DERIVABLE_TYPE (StEntry, st_entry, ST, ENTRY, StWidget)
 
 struct _StEntryClass
 {
@@ -61,8 +39,6 @@ struct _StEntryClass
   void (*primary_icon_clicked)   (StEntry *entry);
   void (*secondary_icon_clicked) (StEntry *entry);
 };
-
-GType st_entry_get_type (void) G_GNUC_CONST;
 
 StWidget       *st_entry_new                (const gchar    *text);
 const gchar    *st_entry_get_text           (StEntry        *entry);

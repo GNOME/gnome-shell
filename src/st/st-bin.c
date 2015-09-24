@@ -38,6 +38,7 @@
 #include "st-enum-types.h"
 #include "st-private.h"
 
+typedef struct _StBinPrivate          StBinPrivate;
 struct _StBinPrivate
 {
   ClutterActor *child;
@@ -78,10 +79,11 @@ static void
 st_bin_remove (ClutterContainer *container,
                ClutterActor     *actor)
 {
-  StBinPrivate *priv = ST_BIN (container)->priv;
+  StBin *bin = ST_BIN (container);
+  StBinPrivate *priv = st_bin_get_instance_private (bin);
 
   if (priv->child == actor)
-    st_bin_set_child (ST_BIN (container), NULL);
+    st_bin_set_child (bin, NULL);
 }
 
 static void
@@ -96,7 +98,7 @@ st_bin_allocate (ClutterActor          *self,
                  const ClutterActorBox *box,
                  ClutterAllocationFlags flags)
 {
-  StBinPrivate *priv = ST_BIN (self)->priv;
+  StBinPrivate *priv = st_bin_get_instance_private (ST_BIN (self));
 
   clutter_actor_set_allocation (self, box, flags);
 
@@ -122,7 +124,7 @@ st_bin_get_preferred_width (ClutterActor *self,
                             gfloat       *min_width_p,
                             gfloat       *natural_width_p)
 {
-  StBinPrivate *priv = ST_BIN (self)->priv;
+  StBinPrivate *priv = st_bin_get_instance_private (ST_BIN (self));
   StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (self));
 
   st_theme_node_adjust_for_height (theme_node, &for_height);
@@ -151,7 +153,7 @@ st_bin_get_preferred_height (ClutterActor *self,
                              gfloat       *min_height_p,
                              gfloat       *natural_height_p)
 {
-  StBinPrivate *priv = ST_BIN (self)->priv;
+  StBinPrivate *priv = st_bin_get_instance_private (ST_BIN (self));
   StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (self));
 
   st_theme_node_adjust_for_width (theme_node, &for_width);
@@ -177,7 +179,7 @@ st_bin_get_preferred_height (ClutterActor *self,
 static void
 st_bin_dispose (GObject *gobject)
 {
-  StBinPrivate *priv = ST_BIN (gobject)->priv;
+  StBinPrivate *priv = st_bin_get_instance_private (ST_BIN (gobject));
 
   if (priv->child)
     clutter_actor_destroy (priv->child);
@@ -189,7 +191,7 @@ st_bin_dispose (GObject *gobject)
 static void
 st_bin_popup_menu (StWidget *widget)
 {
-  StBinPrivate *priv = ST_BIN (widget)->priv;
+  StBinPrivate *priv = st_bin_get_instance_private (ST_BIN (widget));
 
   if (priv->child && ST_IS_WIDGET (priv->child))
     st_widget_popup_menu (ST_WIDGET (priv->child));
@@ -200,7 +202,7 @@ st_bin_navigate_focus (StWidget         *widget,
                        ClutterActor     *from,
                        GtkDirectionType  direction)
 {
-  StBinPrivate *priv = ST_BIN (widget)->priv;
+  StBinPrivate *priv = st_bin_get_instance_private (ST_BIN (widget));
   ClutterActor *bin_actor = CLUTTER_ACTOR (widget);
 
   if (st_widget_get_can_focus (widget))
@@ -231,6 +233,7 @@ st_bin_set_property (GObject      *gobject,
                      GParamSpec   *pspec)
 {
   StBin *bin = ST_BIN (gobject);
+  StBinPrivate *priv = st_bin_get_instance_private (bin);
 
   switch (prop_id)
     {
@@ -241,24 +244,24 @@ st_bin_set_property (GObject      *gobject,
     case PROP_X_ALIGN:
       st_bin_set_alignment (bin,
                             g_value_get_enum (value),
-                            bin->priv->y_align);
+                            priv->y_align);
       break;
 
     case PROP_Y_ALIGN:
       st_bin_set_alignment (bin,
-                            bin->priv->x_align,
+                            priv->x_align,
                             g_value_get_enum (value));
       break;
 
     case PROP_X_FILL:
       st_bin_set_fill (bin,
                        g_value_get_boolean (value),
-                       bin->priv->y_fill);
+                       priv->y_fill);
       break;
 
     case PROP_Y_FILL:
       st_bin_set_fill (bin,
-                       bin->priv->x_fill,
+                       priv->x_fill,
                        g_value_get_boolean (value));
       break;
 
@@ -273,7 +276,7 @@ st_bin_get_property (GObject    *gobject,
                      GValue     *value,
                      GParamSpec *pspec)
 {
-  StBinPrivate *priv = ST_BIN (gobject)->priv;
+  StBinPrivate *priv = st_bin_get_instance_private (ST_BIN (gobject));
 
   switch (prop_id)
     {
@@ -389,10 +392,10 @@ st_bin_class_init (StBinClass *klass)
 static void
 st_bin_init (StBin *bin)
 {
-  bin->priv = st_bin_get_instance_private (bin);
+  StBinPrivate *priv = st_bin_get_instance_private (bin);
 
-  bin->priv->x_align = ST_ALIGN_MIDDLE;
-  bin->priv->y_align = ST_ALIGN_MIDDLE;
+  priv->x_align = ST_ALIGN_MIDDLE;
+  priv->y_align = ST_ALIGN_MIDDLE;
 }
 
 /**
@@ -426,7 +429,7 @@ st_bin_set_child (StBin        *bin,
   g_return_if_fail (ST_IS_BIN (bin));
   g_return_if_fail (child == NULL || CLUTTER_IS_ACTOR (child));
 
-  priv = bin->priv;
+  priv = st_bin_get_instance_private (bin);
 
   if (priv->child == child)
     return;
@@ -460,7 +463,7 @@ st_bin_get_child (StBin *bin)
 {
   g_return_val_if_fail (ST_IS_BIN (bin), NULL);
 
-  return bin->priv->child;
+  return ((StBinPrivate *)st_bin_get_instance_private (bin))->child;
 }
 
 /**
@@ -482,7 +485,7 @@ st_bin_set_alignment (StBin  *bin,
 
   g_return_if_fail (ST_IS_BIN (bin));
 
-  priv = bin->priv;
+  priv = st_bin_get_instance_private (bin);
 
   g_object_freeze_notify (G_OBJECT (bin));
 
@@ -524,7 +527,7 @@ st_bin_get_alignment (StBin   *bin,
 
   g_return_if_fail (ST_IS_BIN (bin));
 
-  priv = bin->priv;
+  priv = st_bin_get_instance_private (bin);
 
   if (x_align)
     *x_align = priv->x_align;
@@ -552,7 +555,7 @@ st_bin_set_fill (StBin   *bin,
 
   g_return_if_fail (ST_IS_BIN (bin));
 
-  priv = bin->priv;
+  priv = st_bin_get_instance_private (bin);
 
   g_object_freeze_notify (G_OBJECT (bin));
 
@@ -591,11 +594,15 @@ st_bin_get_fill (StBin    *bin,
                  gboolean *x_fill,
                  gboolean *y_fill)
 {
+  StBinPrivate *priv;
+
   g_return_if_fail (ST_IS_BIN (bin));
 
+  priv = st_bin_get_instance_private (bin);
+
   if (x_fill)
-    *x_fill = bin->priv->x_fill;
+    *x_fill = priv->x_fill;
 
   if (y_fill)
-    *y_fill = bin->priv->y_fill;
+    *y_fill = priv->y_fill;
 }

@@ -36,6 +36,7 @@
 
 #include <cairo.h>
 
+typedef struct _StDrawingAreaPrivate StDrawingAreaPrivate;
 struct _StDrawingAreaPrivate {
   CoglTexture *texture;
   CoglPipeline *pipeline;
@@ -59,7 +60,7 @@ static void
 st_drawing_area_dispose (GObject *object)
 {
   StDrawingArea *area = ST_DRAWING_AREA (object);
-  StDrawingAreaPrivate *priv = area->priv;
+  StDrawingAreaPrivate *priv = st_drawing_area_get_instance_private (area);
 
   g_clear_pointer (&priv->pipeline, cogl_object_unref);
   g_clear_pointer (&priv->texture, cogl_object_unref);
@@ -71,7 +72,7 @@ static void
 st_drawing_area_paint (ClutterActor *self)
 {
   StDrawingArea *area = ST_DRAWING_AREA (self);
-  StDrawingAreaPrivate *priv = area->priv;
+  StDrawingAreaPrivate *priv = st_drawing_area_get_instance_private (area);
   StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (self));
   ClutterActorBox allocation_box;
   ClutterActorBox content_box;
@@ -157,7 +158,7 @@ static void
 st_drawing_area_style_changed (StWidget  *self)
 {
   StDrawingArea *area = ST_DRAWING_AREA (self);
-  StDrawingAreaPrivate *priv = area->priv;
+  StDrawingAreaPrivate *priv = st_drawing_area_get_instance_private (area);
 
   (ST_WIDGET_CLASS (st_drawing_area_parent_class))->style_changed (self);
 
@@ -187,8 +188,8 @@ st_drawing_area_class_init (StDrawingAreaClass *klass)
 static void
 st_drawing_area_init (StDrawingArea *area)
 {
-  area->priv = st_drawing_area_get_instance_private (area);
-  area->priv->texture = NULL;
+  StDrawingAreaPrivate *priv = st_drawing_area_get_instance_private (area);
+  priv->texture = NULL;
 }
 
 /**
@@ -208,7 +209,7 @@ st_drawing_area_queue_repaint (StDrawingArea *area)
 
   g_return_if_fail (ST_IS_DRAWING_AREA (area));
 
-  priv = area->priv;
+  priv = st_drawing_area_get_instance_private (area);
 
   priv->needs_repaint = TRUE;
   clutter_actor_queue_redraw (CLUTTER_ACTOR (area));
@@ -226,10 +227,14 @@ st_drawing_area_queue_repaint (StDrawingArea *area)
 cairo_t *
 st_drawing_area_get_context (StDrawingArea *area)
 {
-  g_return_val_if_fail (ST_IS_DRAWING_AREA (area), NULL);
-  g_return_val_if_fail (area->priv->in_repaint, NULL);
+  StDrawingAreaPrivate *priv;
 
-  return area->priv->context;
+  g_return_val_if_fail (ST_IS_DRAWING_AREA (area), NULL);
+
+  priv = st_drawing_area_get_instance_private (area);
+  g_return_val_if_fail (priv->in_repaint, NULL);
+
+  return priv->context;
 }
 
 /**
@@ -250,9 +255,9 @@ st_drawing_area_get_surface_size (StDrawingArea *area,
   StDrawingAreaPrivate *priv;
 
   g_return_if_fail (ST_IS_DRAWING_AREA (area));
-  g_return_if_fail (area->priv->in_repaint);
 
-  priv = area->priv;
+  priv = st_drawing_area_get_instance_private (area);
+  g_return_if_fail (priv->in_repaint);
 
   if (width)
     *width = cogl_texture_get_width (priv->texture);

@@ -53,6 +53,7 @@
 /*
  * Forward declaration for sake of StWidgetChild
  */
+typedef struct _StWidgetPrivate        StWidgetPrivate;
 struct _StWidgetPrivate
 {
   StTheme      *theme;
@@ -129,6 +130,7 @@ static guint signals[LAST_SIGNAL] = { 0, };
 gfloat st_slow_down_factor = 1.0;
 
 G_DEFINE_TYPE_WITH_PRIVATE (StWidget, st_widget, CLUTTER_TYPE_ACTOR);
+#define ST_WIDGET_PRIVATE(w) ((StWidgetPrivate *)st_widget_get_instance_private (w))
 
 static void st_widget_recompute_style (StWidget    *widget,
                                        StThemeNode *old_theme_node);
@@ -201,7 +203,7 @@ st_widget_get_property (GObject    *gobject,
                         GParamSpec *pspec)
 {
   StWidget *actor = ST_WIDGET (gobject);
-  StWidgetPrivate *priv = actor->priv;
+  StWidgetPrivate *priv = st_widget_get_instance_private (ST_WIDGET (gobject));
 
   switch (prop_id)
     {
@@ -254,24 +256,30 @@ st_widget_get_property (GObject    *gobject,
 static void
 st_widget_remove_transition (StWidget *widget)
 {
-  if (widget->priv->transition_animation)
+  StWidgetPrivate *priv = st_widget_get_instance_private (widget);
+
+  if (priv->transition_animation)
     {
-      g_object_run_dispose (G_OBJECT (widget->priv->transition_animation));
-      g_object_unref (widget->priv->transition_animation);
-      widget->priv->transition_animation = NULL;
+      g_object_run_dispose (G_OBJECT (priv->transition_animation));
+      g_object_unref (priv->transition_animation);
+      priv->transition_animation = NULL;
     }
 }
 
 static void
 next_paint_state (StWidget *widget)
 {
-  widget->priv->current_paint_state = (widget->priv->current_paint_state + 1) % G_N_ELEMENTS (widget->priv->paint_states);
+  StWidgetPrivate *priv = st_widget_get_instance_private (widget);
+
+  priv->current_paint_state = (priv->current_paint_state + 1) % G_N_ELEMENTS (priv->paint_states);
 }
 
 static StThemeNodePaintState *
 current_paint_state (StWidget *widget)
 {
-  return &widget->priv->paint_states[widget->priv->current_paint_state];
+  StWidgetPrivate *priv = st_widget_get_instance_private (widget);
+
+  return &priv->paint_states[priv->current_paint_state];
 }
 
 static void
@@ -280,7 +288,8 @@ st_widget_texture_cache_changed (StTextureCache *cache,
                                  gpointer        user_data)
 {
   StWidget *actor = ST_WIDGET (user_data);
-  StThemeNode *node = actor->priv->theme_node;
+  StWidgetPrivate *priv = st_widget_get_instance_private (actor);
+  StThemeNode *node = priv->theme_node;
   gboolean changed = FALSE;
   GFile *theme_file;
 
@@ -322,7 +331,7 @@ static void
 st_widget_dispose (GObject *gobject)
 {
   StWidget *actor = ST_WIDGET (gobject);
-  StWidgetPrivate *priv = ST_WIDGET (actor)->priv;
+  StWidgetPrivate *priv = st_widget_get_instance_private (actor);
 
   g_clear_pointer (&priv->theme, g_object_unref);
   g_clear_pointer (&priv->theme_node, g_object_unref);
@@ -346,7 +355,7 @@ st_widget_dispose (GObject *gobject)
 static void
 st_widget_finalize (GObject *gobject)
 {
-  StWidgetPrivate *priv = ST_WIDGET (gobject)->priv;
+  StWidgetPrivate *priv = st_widget_get_instance_private (ST_WIDGET (gobject));
   guint i;
 
   g_free (priv->style_class);
@@ -429,6 +438,7 @@ st_widget_allocate (ClutterActor          *actor,
 void
 st_widget_paint_background (StWidget *widget)
 {
+  StWidgetPrivate *priv = st_widget_get_instance_private (widget);
   StThemeNode *theme_node;
   ClutterActorBox allocation;
   guint8 opacity;
@@ -439,8 +449,8 @@ st_widget_paint_background (StWidget *widget)
 
   opacity = clutter_actor_get_paint_opacity (CLUTTER_ACTOR (widget));
 
-  if (widget->priv->transition_animation)
-    st_theme_node_transition_paint (widget->priv->transition_animation,
+  if (priv->transition_animation)
+    st_theme_node_transition_paint (priv->transition_animation,
                                     &allocation,
                                     opacity);
   else
@@ -491,7 +501,7 @@ static void
 st_widget_unmap (ClutterActor *actor)
 {
   StWidget *self = ST_WIDGET (actor);
-  StWidgetPrivate *priv = self->priv;
+  StWidgetPrivate *priv = st_widget_get_instance_private (self);
 
   CLUTTER_ACTOR_CLASS (st_widget_parent_class)->unmap (actor);
 
@@ -525,13 +535,14 @@ st_widget_real_style_changed (StWidget *self)
 void
 st_widget_style_changed (StWidget *widget)
 {
+  StWidgetPrivate *priv = st_widget_get_instance_private (widget);
   StThemeNode *old_theme_node = NULL;
 
-  widget->priv->is_style_dirty = TRUE;
-  if (widget->priv->theme_node)
+  priv->is_style_dirty = TRUE;
+  if (priv->theme_node)
     {
-      old_theme_node = widget->priv->theme_node;
-      widget->priv->theme_node = NULL;
+      old_theme_node = priv->theme_node;
+      priv->theme_node = NULL;
     }
 
   /* update the style only if we are mapped */
@@ -584,7 +595,7 @@ get_root_theme_node (ClutterStage *stage)
 StThemeNode *
 st_widget_get_theme_node (StWidget *widget)
 {
-  StWidgetPrivate *priv = widget->priv;
+  StWidgetPrivate *priv = st_widget_get_instance_private (widget);
 
   if (priv->theme_node == NULL)
     {
@@ -668,16 +679,16 @@ st_widget_get_theme_node (StWidget *widget)
 StThemeNode *
 st_widget_peek_theme_node (StWidget *widget)
 {
-  StWidgetPrivate *priv = widget->priv;
+  g_return_val_if_fail (ST_IS_WIDGET (widget), NULL);
 
-  return priv->theme_node;
+  return ST_WIDGET_PRIVATE (widget)->theme_node;
 }
 
 static gboolean
 st_widget_enter (ClutterActor         *actor,
                  ClutterCrossingEvent *event)
 {
-  StWidgetPrivate *priv = ST_WIDGET (actor)->priv;
+  StWidgetPrivate *priv = st_widget_get_instance_private (ST_WIDGET (actor));
 
   if (priv->track_hover)
     {
@@ -703,7 +714,7 @@ static gboolean
 st_widget_leave (ClutterActor         *actor,
                  ClutterCrossingEvent *event)
 {
-  StWidgetPrivate *priv = ST_WIDGET (actor)->priv;
+  StWidgetPrivate *priv = st_widget_get_instance_private (ST_WIDGET (actor));
 
   if (priv->track_hover)
     {
@@ -761,7 +772,7 @@ st_widget_get_paint_volume (ClutterActor *self,
   if (!clutter_actor_has_allocation (self))
     return FALSE;
 
-  priv = ST_WIDGET (self)->priv;
+  priv = st_widget_get_instance_private (ST_WIDGET (self));
 
   theme_node = st_widget_get_theme_node (ST_WIDGET (self));
   clutter_actor_get_allocation_box (self, &alloc_box);
@@ -1036,7 +1047,7 @@ st_widget_set_theme (StWidget  *actor,
 
   g_return_if_fail (ST_IS_WIDGET (actor));
 
-  priv = actor->priv;
+  priv = st_widget_get_instance_private (actor);
 
   if (theme != priv->theme)
     {
@@ -1063,7 +1074,7 @@ st_widget_get_theme (StWidget *actor)
 {
   g_return_val_if_fail (ST_IS_WIDGET (actor), NULL);
 
-  return actor->priv->theme;
+  return ST_WIDGET_PRIVATE (actor)->theme;
 }
 
 static const gchar *
@@ -1173,9 +1184,13 @@ void
 st_widget_set_style_class_name (StWidget    *actor,
                                 const gchar *style_class_list)
 {
+  StWidgetPrivate *priv;
+
   g_return_if_fail (ST_IS_WIDGET (actor));
 
-  if (set_class_list (&actor->priv->style_class, style_class_list))
+  priv = st_widget_get_instance_private (actor);
+
+  if (set_class_list (&priv->style_class, style_class_list))
     {
       st_widget_style_changed (actor);
       g_object_notify (G_OBJECT (actor), "style-class");
@@ -1194,10 +1209,14 @@ void
 st_widget_add_style_class_name (StWidget    *actor,
                                 const gchar *style_class)
 {
+  StWidgetPrivate *priv;
+
   g_return_if_fail (ST_IS_WIDGET (actor));
   g_return_if_fail (style_class != NULL);
 
-  if (add_class_name (&actor->priv->style_class, style_class))
+  priv = st_widget_get_instance_private (actor);
+
+  if (add_class_name (&priv->style_class, style_class))
     {
       st_widget_style_changed (actor);
       g_object_notify (G_OBJECT (actor), "style-class");
@@ -1216,10 +1235,14 @@ void
 st_widget_remove_style_class_name (StWidget    *actor,
                                    const gchar *style_class)
 {
+  StWidgetPrivate *priv;
+
   g_return_if_fail (ST_IS_WIDGET (actor));
   g_return_if_fail (style_class != NULL);
 
-  if (remove_class_name (&actor->priv->style_class, style_class))
+  priv = st_widget_get_instance_private (actor);
+
+  if (remove_class_name (&priv->style_class, style_class))
     {
       st_widget_style_changed (actor);
       g_object_notify (G_OBJECT (actor), "style-class");
@@ -1240,7 +1263,7 @@ st_widget_get_style_class_name (StWidget *actor)
 {
   g_return_val_if_fail (ST_IS_WIDGET (actor), NULL);
 
-  return actor->priv->style_class;
+  return ST_WIDGET_PRIVATE (actor)->style_class;
 }
 
 /**
@@ -1257,9 +1280,13 @@ gboolean
 st_widget_has_style_class_name (StWidget    *actor,
                                 const gchar *style_class)
 {
+  StWidgetPrivate *priv;
+
   g_return_val_if_fail (ST_IS_WIDGET (actor), FALSE);
 
-  return find_class_name (actor->priv->style_class, style_class) != NULL;
+  priv = st_widget_get_instance_private (actor);
+
+  return find_class_name (priv->style_class, style_class) != NULL;
 }
 
 /**
@@ -1280,7 +1307,7 @@ st_widget_get_style_pseudo_class (StWidget *actor)
 {
   g_return_val_if_fail (ST_IS_WIDGET (actor), NULL);
 
-  return actor->priv->pseudo_class;
+  return ST_WIDGET_PRIVATE (actor)->pseudo_class;
 }
 
 /**
@@ -1297,9 +1324,13 @@ gboolean
 st_widget_has_style_pseudo_class (StWidget    *actor,
                                   const gchar *pseudo_class)
 {
+  StWidgetPrivate *priv;
+
   g_return_val_if_fail (ST_IS_WIDGET (actor), FALSE);
 
-  return find_class_name (actor->priv->pseudo_class, pseudo_class) != NULL;
+  priv = st_widget_get_instance_private (actor);
+
+  return find_class_name (priv->pseudo_class, pseudo_class) != NULL;
 }
 
 /**
@@ -1316,9 +1347,13 @@ void
 st_widget_set_style_pseudo_class (StWidget    *actor,
                                   const gchar *pseudo_class_list)
 {
+  StWidgetPrivate *priv;
+
   g_return_if_fail (ST_IS_WIDGET (actor));
 
-  if (set_class_list (&actor->priv->pseudo_class, pseudo_class_list))
+  priv = st_widget_get_instance_private (actor);
+
+  if (set_class_list (&priv->pseudo_class, pseudo_class_list))
     {
       st_widget_style_changed (actor);
       g_object_notify (G_OBJECT (actor), "pseudo-class");
@@ -1337,10 +1372,14 @@ void
 st_widget_add_style_pseudo_class (StWidget    *actor,
                                   const gchar *pseudo_class)
 {
+  StWidgetPrivate *priv;
+
   g_return_if_fail (ST_IS_WIDGET (actor));
   g_return_if_fail (pseudo_class != NULL);
 
-  if (add_class_name (&actor->priv->pseudo_class, pseudo_class))
+  priv = st_widget_get_instance_private (actor);
+
+  if (add_class_name (&priv->pseudo_class, pseudo_class))
     {
       st_widget_style_changed (actor);
       g_object_notify (G_OBJECT (actor), "pseudo-class");
@@ -1358,10 +1397,14 @@ void
 st_widget_remove_style_pseudo_class (StWidget    *actor,
                                      const gchar *pseudo_class)
 {
+  StWidgetPrivate *priv;
+
   g_return_if_fail (ST_IS_WIDGET (actor));
   g_return_if_fail (pseudo_class != NULL);
 
-  if (remove_class_name (&actor->priv->pseudo_class, pseudo_class))
+  priv = st_widget_get_instance_private (actor);
+
+  if (remove_class_name (&priv->pseudo_class, pseudo_class))
     {
       st_widget_style_changed (actor);
       g_object_notify (G_OBJECT (actor), "pseudo-class");
@@ -1385,7 +1428,7 @@ st_widget_set_style (StWidget  *actor,
 
   g_return_if_fail (ST_IS_WIDGET (actor));
 
-  priv = actor->priv;
+  priv = st_widget_get_instance_private (actor);
 
   if (g_strcmp0 (style, priv->inline_style))
     {
@@ -1412,7 +1455,7 @@ st_widget_get_style (StWidget *actor)
 {
   g_return_val_if_fail (ST_IS_WIDGET (actor), NULL);
 
-  return actor->priv->inline_style;
+  return ST_WIDGET_PRIVATE (actor)->inline_style;
 }
 
 static void
@@ -1428,12 +1471,14 @@ st_widget_reactive_notify (StWidget   *widget,
                            GParamSpec *pspec,
                            gpointer    data)
 {
+  StWidgetPrivate *priv = st_widget_get_instance_private (widget);
+
   if (clutter_actor_get_reactive (CLUTTER_ACTOR (widget)))
     st_widget_remove_style_pseudo_class (widget, "insensitive");
   else
     st_widget_add_style_pseudo_class (widget, "insensitive");
 
-  if (widget->priv->track_hover)
+  if (priv->track_hover)
     st_widget_sync_hover(widget);
 }
 
@@ -1442,12 +1487,13 @@ st_widget_first_child_notify (StWidget   *widget,
                               GParamSpec *pspec,
                               gpointer    data)
 {
+  StWidgetPrivate *priv = st_widget_get_instance_private (widget);
   ClutterActor *first_child;
 
-  if (widget->priv->prev_first_child != NULL)
+  if (priv->prev_first_child != NULL)
     {
-      st_widget_remove_style_pseudo_class (widget->priv->prev_first_child, "first-child");
-      g_clear_object (&widget->priv->prev_first_child);
+      st_widget_remove_style_pseudo_class (priv->prev_first_child, "first-child");
+      g_clear_object (&priv->prev_first_child);
     }
 
   first_child = clutter_actor_get_first_child (CLUTTER_ACTOR (widget));
@@ -1458,7 +1504,7 @@ st_widget_first_child_notify (StWidget   *widget,
   if (ST_IS_WIDGET (first_child))
     {
       st_widget_add_style_pseudo_class (ST_WIDGET (first_child), "first-child");
-      widget->priv->prev_first_child = g_object_ref (ST_WIDGET (first_child));
+      priv->prev_first_child = g_object_ref (ST_WIDGET (first_child));
     }
 }
 
@@ -1467,12 +1513,13 @@ st_widget_last_child_notify (StWidget   *widget,
                              GParamSpec *pspec,
                              gpointer    data)
 {
+  StWidgetPrivate *priv = st_widget_get_instance_private (widget);
   ClutterActor *last_child;
 
-  if (widget->priv->prev_last_child != NULL)
+  if (priv->prev_last_child != NULL)
     {
-      st_widget_remove_style_pseudo_class (widget->priv->prev_last_child, "last-child");
-      g_clear_object (&widget->priv->prev_last_child);
+      st_widget_remove_style_pseudo_class (priv->prev_last_child, "last-child");
+      g_clear_object (&priv->prev_last_child);
     }
 
   last_child = clutter_actor_get_last_child (CLUTTER_ACTOR (widget));
@@ -1483,7 +1530,7 @@ st_widget_last_child_notify (StWidget   *widget,
   if (ST_IS_WIDGET (last_child))
     {
       st_widget_add_style_pseudo_class (ST_WIDGET (last_child), "last-child");
-      widget->priv->prev_last_child = g_object_ref (ST_WIDGET (last_child));
+      priv->prev_last_child = g_object_ref (ST_WIDGET (last_child));
     }
 }
 
@@ -1493,7 +1540,7 @@ st_widget_init (StWidget *actor)
   StWidgetPrivate *priv;
   guint i;
 
-  actor->priv = priv = st_widget_get_instance_private (actor);
+  priv = st_widget_get_instance_private (actor);
   priv->transition_animation = NULL;
   priv->local_state_set = atk_state_set_new ();
 
@@ -1526,6 +1573,7 @@ static void
 st_widget_recompute_style (StWidget    *widget,
                            StThemeNode *old_theme_node)
 {
+  StWidgetPrivate *priv = st_widget_get_instance_private (widget);
   StThemeNode *new_theme_node = st_widget_get_theme_node (widget);
   int transition_duration;
   gboolean paint_equal;
@@ -1533,7 +1581,7 @@ st_widget_recompute_style (StWidget    *widget,
 
   if (new_theme_node == old_theme_node)
     {
-      widget->priv->is_style_dirty = FALSE;
+      priv->is_style_dirty = FALSE;
       return;
     }
 
@@ -1553,9 +1601,9 @@ st_widget_recompute_style (StWidget    *widget,
 
   if (animations_enabled && transition_duration > 0)
     {
-      if (widget->priv->transition_animation != NULL)
+      if (priv->transition_animation != NULL)
         {
-          st_theme_node_transition_update (widget->priv->transition_animation,
+          st_theme_node_transition_update (priv->transition_animation,
                                            new_theme_node);
         }
       else if (old_theme_node && !paint_equal)
@@ -1566,21 +1614,21 @@ st_widget_recompute_style (StWidget    *widget,
            * we can't animate that anyways.
            */
 
-          widget->priv->transition_animation =
+          priv->transition_animation =
             st_theme_node_transition_new (old_theme_node,
                                           new_theme_node,
                                           current_paint_state (widget),
                                           transition_duration);
 
-          g_signal_connect (widget->priv->transition_animation, "completed",
+          g_signal_connect (priv->transition_animation, "completed",
                             G_CALLBACK (on_transition_completed), widget);
-          g_signal_connect_swapped (widget->priv->transition_animation,
+          g_signal_connect_swapped (priv->transition_animation,
                                     "new-frame",
                                     G_CALLBACK (clutter_actor_queue_redraw),
                                     widget);
         }
     }
-  else if (widget->priv->transition_animation)
+  else if (priv->transition_animation)
     {
       st_widget_remove_transition (widget);
     }
@@ -1594,7 +1642,7 @@ st_widget_recompute_style (StWidget    *widget,
     }
 
   g_signal_emit (widget, signals[STYLE_CHANGED], 0);
-  widget->priv->is_style_dirty = FALSE;
+  priv->is_style_dirty = FALSE;
 }
 
 /**
@@ -1607,9 +1655,13 @@ st_widget_recompute_style (StWidget    *widget,
 void
 st_widget_ensure_style (StWidget *widget)
 {
+  StWidgetPrivate *priv;
+
   g_return_if_fail (ST_IS_WIDGET (widget));
 
-  if (widget->priv->is_style_dirty)
+  priv = st_widget_get_instance_private (widget);
+
+  if (priv->is_style_dirty)
     st_widget_recompute_style (widget, NULL);
 }
 
@@ -1639,7 +1691,7 @@ st_widget_set_track_hover (StWidget *widget,
 
   g_return_if_fail (ST_IS_WIDGET (widget));
 
-  priv = widget->priv;
+  priv = st_widget_get_instance_private (widget);
 
   if (priv->track_hover != track_hover)
     {
@@ -1667,7 +1719,7 @@ st_widget_get_track_hover (StWidget *widget)
 {
   g_return_val_if_fail (ST_IS_WIDGET (widget), FALSE);
 
-  return widget->priv->track_hover;
+  return ST_WIDGET_PRIVATE (widget)->track_hover;
 }
 
 /**
@@ -1690,7 +1742,7 @@ st_widget_set_hover (StWidget *widget,
 
   g_return_if_fail (ST_IS_WIDGET (widget));
 
-  priv = widget->priv;
+  priv = st_widget_get_instance_private (widget);
 
   if (priv->hover != hover)
     {
@@ -1741,7 +1793,7 @@ st_widget_get_hover (StWidget *widget)
 {
   g_return_val_if_fail (ST_IS_WIDGET (widget), FALSE);
 
-  return widget->priv->hover;
+  return ST_WIDGET_PRIVATE (widget)->hover;
 }
 
 /**
@@ -1761,7 +1813,7 @@ st_widget_set_can_focus (StWidget *widget,
 
   g_return_if_fail (ST_IS_WIDGET (widget));
 
-  priv = widget->priv;
+  priv = st_widget_get_instance_private (widget);
 
   if (priv->can_focus != can_focus)
     {
@@ -1784,7 +1836,7 @@ st_widget_get_can_focus (StWidget *widget)
 {
   g_return_val_if_fail (ST_IS_WIDGET (widget), FALSE);
 
-  return widget->priv->can_focus;
+  return ST_WIDGET_PRIVATE (widget)->can_focus;
 }
 
 /**
@@ -1905,6 +1957,7 @@ st_widget_real_navigate_focus (StWidget         *widget,
                                ClutterActor     *from,
                                GtkDirectionType  direction)
 {
+  StWidgetPrivate *priv = st_widget_get_instance_private (widget);
   ClutterActor *widget_actor, *focus_child;
   GList *children, *l;
 
@@ -1920,7 +1973,7 @@ st_widget_real_navigate_focus (StWidget         *widget,
   while (focus_child && clutter_actor_get_parent (focus_child) != widget_actor)
     focus_child = clutter_actor_get_parent (focus_child);
 
-  if (widget->priv->can_focus)
+  if (priv->can_focus)
     {
       if (!focus_child)
         {
@@ -2229,7 +2282,7 @@ st_widget_get_label_actor (StWidget *widget)
 {
   g_return_val_if_fail (ST_IS_WIDGET (widget), NULL);
 
-  return widget->priv->label_actor;
+  return ST_WIDGET_PRIVATE (widget)->label_actor;
 }
 
 /**
@@ -2246,17 +2299,21 @@ void
 st_widget_set_label_actor (StWidget     *widget,
                            ClutterActor *label)
 {
+  StWidgetPrivate *priv;
+
   g_return_if_fail (ST_IS_WIDGET (widget));
 
-  if (widget->priv->label_actor != label)
+  priv = st_widget_get_instance_private (widget);
+
+  if (priv->label_actor != label)
     {
-      if (widget->priv->label_actor)
-        g_object_unref (widget->priv->label_actor);
+      if (priv->label_actor)
+        g_object_unref (priv->label_actor);
 
       if (label != NULL)
-        widget->priv->label_actor = g_object_ref (label);
+        priv->label_actor = g_object_ref (label);
       else
-        widget->priv->label_actor = NULL;
+        priv->label_actor = NULL;
 
       g_object_notify (G_OBJECT (widget), "label-actor");
     }
@@ -2281,12 +2338,16 @@ void
 st_widget_set_accessible_name (StWidget    *widget,
                                const gchar *name)
 {
+  StWidgetPrivate *priv;
+
   g_return_if_fail (ST_IS_WIDGET (widget));
 
-  if (widget->priv->accessible_name != NULL)
-    g_free (widget->priv->accessible_name);
+  priv = st_widget_get_instance_private (widget);
 
-  widget->priv->accessible_name = g_strdup (name);
+  if (priv->accessible_name != NULL)
+    g_free (priv->accessible_name);
+
+  priv->accessible_name = g_strdup (name);
   g_object_notify (G_OBJECT (widget), "accessible-name");
 }
 
@@ -2305,7 +2366,7 @@ st_widget_get_accessible_name (StWidget    *widget)
 {
   g_return_val_if_fail (ST_IS_WIDGET (widget), NULL);
 
-  return widget->priv->accessible_name;
+  return ST_WIDGET_PRIVATE (widget)->accessible_name;
 }
 
 /**
@@ -2334,9 +2395,12 @@ void
 st_widget_set_accessible_role (StWidget *widget,
                                AtkRole   role)
 {
+  StWidgetPrivate *priv;
+
   g_return_if_fail (ST_IS_WIDGET (widget));
 
-  widget->priv->accessible_role = role;
+  priv = st_widget_get_instance_private (widget);
+  priv->accessible_role = role;
 
   g_object_notify (G_OBJECT (widget), "accessible-role");
 }
@@ -2354,14 +2418,17 @@ st_widget_set_accessible_role (StWidget *widget,
 AtkRole
 st_widget_get_accessible_role (StWidget *widget)
 {
+  StWidgetPrivate *priv;
   AtkObject *accessible = NULL;
   AtkRole role = ATK_ROLE_INVALID;
 
   g_return_val_if_fail (ST_IS_WIDGET (widget), ATK_ROLE_INVALID);
 
-  if (widget->priv->accessible_role != ATK_ROLE_INVALID)
-    role = widget->priv->accessible_role;
-  else if (widget->priv->accessible != NULL)
+  priv = st_widget_get_instance_private (widget);
+
+  if (priv->accessible_role != ATK_ROLE_INVALID)
+    role = priv->accessible_role;
+  else if (priv->accessible != NULL)
     role = atk_object_get_role (accessible);
 
   return role;
@@ -2372,8 +2439,10 @@ notify_accessible_state_change (StWidget     *widget,
                                 AtkStateType  state,
                                 gboolean      value)
 {
-  if (widget->priv->accessible != NULL)
-    atk_object_notify_state_change (widget->priv->accessible, state, value);
+  StWidgetPrivate *priv = st_widget_get_instance_private (widget);
+
+  if (priv->accessible != NULL)
+    atk_object_notify_state_change (priv->accessible, state, value);
 }
 
 /**
@@ -2399,9 +2468,13 @@ void
 st_widget_add_accessible_state (StWidget    *widget,
                                 AtkStateType state)
 {
+  StWidgetPrivate *priv;
+
   g_return_if_fail (ST_IS_WIDGET (widget));
 
-  if (atk_state_set_add_state (widget->priv->local_state_set, state))
+  priv = st_widget_get_instance_private (widget);
+
+  if (atk_state_set_add_state (priv->local_state_set, state))
     notify_accessible_state_change (widget, state, TRUE);
 }
 
@@ -2418,9 +2491,13 @@ void
 st_widget_remove_accessible_state (StWidget    *widget,
                                    AtkStateType state)
 {
+  StWidgetPrivate *priv;
+
   g_return_if_fail (ST_IS_WIDGET (widget));
 
-  if (atk_state_set_remove_state (widget->priv->local_state_set, state))
+  priv = st_widget_get_instance_private (widget);
+
+  if (atk_state_set_remove_state (priv->local_state_set, state))
     notify_accessible_state_change (widget, state, FALSE);
 }
 
@@ -2471,18 +2548,20 @@ static AtkObject *
 st_widget_get_accessible (ClutterActor *actor)
 {
   StWidget *widget = NULL;
+  StWidgetPrivate *priv;
 
   g_return_val_if_fail (ST_IS_WIDGET (actor), NULL);
 
   widget = ST_WIDGET (actor);
+  priv = st_widget_get_instance_private (widget);
 
-  if (widget->priv->accessible == NULL)
+  if (priv->accessible == NULL)
     {
-      widget->priv->accessible =
+      priv->accessible =
         g_object_new (ST_WIDGET_GET_CLASS (widget)->get_accessible_type (),
                       NULL);
 
-      atk_object_initialize (widget->priv->accessible, actor);
+      atk_object_initialize (priv->accessible, actor);
 
       /* AtkGObjectAccessible, which StWidgetAccessible derives from, clears
        * the back reference to the object in a weak notify for the object;
@@ -2493,10 +2572,10 @@ st_widget_get_accessible (ClutterActor *actor)
        * will result in a new accessible object being created.
        */
       g_object_add_weak_pointer (G_OBJECT (actor),
-                                 (gpointer *)&widget->priv->accessible);
+                                 (gpointer *)&priv->accessible);
     }
 
-  return widget->priv->accessible;
+  return priv->accessible;
 }
 
 /**
@@ -2522,28 +2601,32 @@ void
 st_widget_set_accessible (StWidget    *widget,
                           AtkObject   *accessible)
 {
+  StWidgetPrivate *priv;
+
   g_return_if_fail (ST_IS_WIDGET (widget));
   g_return_if_fail (accessible == NULL || ATK_IS_GOBJECT_ACCESSIBLE (accessible));
 
-  if (widget->priv->accessible != accessible)
+  priv = st_widget_get_instance_private (widget);
+
+  if (priv->accessible != accessible)
     {
-      if (widget->priv->accessible)
+      if (priv->accessible)
         {
           g_object_remove_weak_pointer (G_OBJECT (widget),
-                                        (gpointer *)&widget->priv->accessible);
-          g_object_unref (widget->priv->accessible);
-          widget->priv->accessible = NULL;
+                                        (gpointer *)&priv->accessible);
+          g_object_unref (priv->accessible);
+          priv->accessible = NULL;
         }
 
       if (accessible)
         {
-          widget->priv->accessible =  g_object_ref (accessible);
+          priv->accessible =  g_object_ref (accessible);
           /* See note in st_widget_get_accessible() */
           g_object_add_weak_pointer (G_OBJECT (widget),
-                                     (gpointer *)&widget->priv->accessible);
+                                     (gpointer *)&priv->accessible);
         }
       else
-        widget->priv->accessible = NULL;
+        priv->accessible = NULL;
     }
 }
 
@@ -2564,7 +2647,7 @@ st_widget_accessible_get_name (AtkObject *obj)
       if (widget == NULL)
         name = NULL;
       else
-        name = widget->priv->accessible_name;
+        name = st_widget_get_accessible_name (widget);
     }
 
   return name;
@@ -2651,6 +2734,7 @@ st_widget_accessible_ref_state_set (AtkObject *obj)
   AtkStateSet *aux_set = NULL;
   ClutterActor *actor = NULL;
   StWidget *widget = NULL;
+  StWidgetPrivate *widget_priv;
   StWidgetAccessible *self = NULL;
 
   result = ATK_OBJECT_CLASS (st_widget_accessible_parent_class)->ref_state_set (obj);
@@ -2662,6 +2746,7 @@ st_widget_accessible_ref_state_set (AtkObject *obj)
 
   widget = ST_WIDGET (actor);
   self = ST_WIDGET_ACCESSIBLE (obj);
+  widget_priv = st_widget_get_instance_private (widget);
 
   /* priv->selected should be properly updated on the
    * ATK_STATE_SELECTED notification callbacks
@@ -2684,9 +2769,9 @@ st_widget_accessible_ref_state_set (AtkObject *obj)
     atk_state_set_remove_state (result, ATK_STATE_FOCUSABLE);
 
   /* We add the states added externally if required */
-  if (!atk_state_set_is_empty (widget->priv->local_state_set))
+  if (!atk_state_set_is_empty (widget_priv->local_state_set))
     {
-      aux_set = atk_state_set_or_sets (result, widget->priv->local_state_set);
+      aux_set = atk_state_set_or_sets (result, widget_priv->local_state_set);
 
       g_object_unref (result); /* previous result will not be used */
       result = aux_set;
@@ -2699,6 +2784,7 @@ static AtkRole
 st_widget_accessible_get_role (AtkObject *obj)
 {
   StWidget *widget = NULL;
+  AtkRole role;
 
   g_return_val_if_fail (ST_IS_WIDGET_ACCESSIBLE (obj), ATK_ROLE_INVALID);
 
@@ -2707,8 +2793,9 @@ st_widget_accessible_get_role (AtkObject *obj)
   if (widget == NULL)
     return ATK_ROLE_INVALID;
 
-  if (widget->priv->accessible_role != ATK_ROLE_INVALID)
-    return widget->priv->accessible_role;
+  role = st_widget_get_accessible_role (widget);
+  if (role != ATK_ROLE_INVALID)
+    return role;
 
   return ATK_OBJECT_CLASS (st_widget_accessible_parent_class)->get_role (obj);
 }

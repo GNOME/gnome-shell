@@ -27,29 +27,9 @@
 G_BEGIN_DECLS
 
 #define ST_TYPE_BOX_LAYOUT_CHILD st_box_layout_child_get_type()
-
-#define ST_BOX_LAYOUT_CHILD(obj) \
-  (G_TYPE_CHECK_INSTANCE_CAST ((obj), \
-  ST_TYPE_BOX_LAYOUT_CHILD, StBoxLayoutChild))
-
-#define ST_BOX_LAYOUT_CHILD_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_CAST ((klass), \
-  ST_TYPE_BOX_LAYOUT_CHILD, StBoxLayoutChildClass))
-
-#define ST_IS_BOX_LAYOUT_CHILD(obj) \
-  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
-  ST_TYPE_BOX_LAYOUT_CHILD))
-
-#define ST_IS_BOX_LAYOUT_CHILD_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_TYPE ((klass), \
-  ST_TYPE_BOX_LAYOUT_CHILD))
-
-#define ST_BOX_LAYOUT_CHILD_GET_CLASS(obj) \
-  (G_TYPE_INSTANCE_GET_CLASS ((obj), \
-  ST_TYPE_BOX_LAYOUT_CHILD, StBoxLayoutChildClass))
+G_DECLARE_FINAL_TYPE (StBoxLayoutChild, st_box_layout_child, ST, BOX_LAYOUT_CHILD, ClutterChildMeta)
 
 typedef struct _StBoxLayoutChild StBoxLayoutChild;
-typedef struct _StBoxLayoutChildClass StBoxLayoutChildClass;
 typedef struct _StBoxLayoutChildPrivate StBoxLayoutChildPrivate;
 
 /**
@@ -66,13 +46,6 @@ struct _StBoxLayoutChild
   gboolean x_fill_set;
   gboolean y_fill_set;
 };
-
-struct _StBoxLayoutChildClass
-{
-  ClutterChildMetaClass parent_class;
-};
-
-GType st_box_layout_child_get_type (void);
 
 G_END_DECLS
 

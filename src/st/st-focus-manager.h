@@ -31,15 +31,10 @@
 G_BEGIN_DECLS
 
 #define ST_TYPE_FOCUS_MANAGER                   (st_focus_manager_get_type ())
-#define ST_FOCUS_MANAGER(obj)                   (G_TYPE_CHECK_INSTANCE_CAST ((obj), ST_TYPE_FOCUS_MANAGER, StFocusManager))
-#define ST_IS_FOCUS_MANAGER(obj)                (G_TYPE_CHECK_INSTANCE_TYPE ((obj), ST_TYPE_FOCUS_MANAGER))
-#define ST_FOCUS_MANAGER_CLASS(klass)           (G_TYPE_CHECK_CLASS_CAST ((klass), ST_TYPE_FOCUS_MANAGER, StFocusManagerClass))
-#define ST_IS_FOCUS_MANAGER_CLASS(klass)        (G_TYPE_CHECK_CLASS_TYPE ((klass), ST_TYPE_FOCUS_MANAGER))
-#define ST_FOCUS_MANAGER_GET_CLASS(obj)         (G_TYPE_INSTANCE_GET_CLASS ((obj), ST_TYPE_FOCUS_MANAGER, StFocusManagerClass))
+G_DECLARE_FINAL_TYPE (StFocusManager, st_focus_manager, ST, FOCUS_MANAGER, GObject)
 
 typedef struct _StFocusManager                 StFocusManager;
 typedef struct _StFocusManagerPrivate          StFocusManagerPrivate;
-typedef struct _StFocusManagerClass            StFocusManagerClass;
 
 /**
  * StFocusManager:
@@ -53,19 +48,6 @@ struct _StFocusManager
 
   StFocusManagerPrivate *priv;
 };
-
-/**
- * StFocusManagerClass:
- *
- * The #StFocusManagerClass struct contains only private data
- */
-struct _StFocusManagerClass
-{
-  /*< private >*/
-  GObjectClass parent_class;
-};
-
-GType st_focus_manager_get_type (void) G_GNUC_CONST;
 
 StFocusManager *st_focus_manager_get_for_stage (ClutterStage *stage);
 

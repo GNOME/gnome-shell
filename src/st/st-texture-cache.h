@@ -34,14 +34,8 @@
 #include <st/st-theme-node.h>
 
 #define ST_TYPE_TEXTURE_CACHE                 (st_texture_cache_get_type ())
-#define ST_TEXTURE_CACHE(obj)                 (G_TYPE_CHECK_INSTANCE_CAST ((obj), ST_TYPE_TEXTURE_CACHE, StTextureCache))
-#define ST_TEXTURE_CACHE_CLASS(klass)         (G_TYPE_CHECK_CLASS_CAST ((klass), ST_TYPE_TEXTURE_CACHE, StTextureCacheClass))
-#define ST_IS_TEXTURE_CACHE(obj)              (G_TYPE_CHECK_INSTANCE_TYPE ((obj), ST_TYPE_TEXTURE_CACHE))
-#define ST_IS_TEXTURE_CACHE_CLASS(klass)      (G_TYPE_CHECK_CLASS_TYPE ((klass), ST_TYPE_TEXTURE_CACHE))
-#define ST_TEXTURE_CACHE_GET_CLASS(obj)       (G_TYPE_INSTANCE_GET_CLASS ((obj), ST_TYPE_TEXTURE_CACHE, StTextureCacheClass))
-
-typedef struct _StTextureCache StTextureCache;
-typedef struct _StTextureCacheClass StTextureCacheClass;
+G_DECLARE_FINAL_TYPE (StTextureCache, st_texture_cache,
+                      ST, TEXTURE_CACHE, GObject)
 
 typedef struct _StTextureCachePrivate StTextureCachePrivate;
 
@@ -52,18 +46,10 @@ struct _StTextureCache
   StTextureCachePrivate *priv;
 };
 
-struct _StTextureCacheClass
-{
-  GObjectClass parent_class;
-
-};
-
 typedef enum {
   ST_TEXTURE_CACHE_POLICY_NONE,
   ST_TEXTURE_CACHE_POLICY_FOREVER
 } StTextureCachePolicy;
-
-GType st_texture_cache_get_type (void) G_GNUC_CONST;
 
 StTextureCache* st_texture_cache_get_default (void);
 

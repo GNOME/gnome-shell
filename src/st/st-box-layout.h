@@ -30,29 +30,9 @@
 G_BEGIN_DECLS
 
 #define ST_TYPE_BOX_LAYOUT st_box_layout_get_type()
-
-#define ST_BOX_LAYOUT(obj) \
-  (G_TYPE_CHECK_INSTANCE_CAST ((obj), \
-  ST_TYPE_BOX_LAYOUT, StBoxLayout))
-
-#define ST_BOX_LAYOUT_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_CAST ((klass), \
-  ST_TYPE_BOX_LAYOUT, StBoxLayoutClass))
-
-#define ST_IS_BOX_LAYOUT(obj) \
-  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
-  ST_TYPE_BOX_LAYOUT))
-
-#define ST_IS_BOX_LAYOUT_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_TYPE ((klass), \
-  ST_TYPE_BOX_LAYOUT))
-
-#define ST_BOX_LAYOUT_GET_CLASS(obj) \
-  (G_TYPE_INSTANCE_GET_CLASS ((obj), \
-  ST_TYPE_BOX_LAYOUT, StBoxLayoutClass))
+G_DECLARE_FINAL_TYPE (StBoxLayout, st_box_layout, ST, BOX_LAYOUT, StWidget)
 
 typedef struct _StBoxLayout StBoxLayout;
-typedef struct _StBoxLayoutClass StBoxLayoutClass;
 typedef struct _StBoxLayoutPrivate StBoxLayoutPrivate;
 
 /**
@@ -68,13 +48,6 @@ struct _StBoxLayout
 
   StBoxLayoutPrivate *priv;
 };
-
-struct _StBoxLayoutClass
-{
-  StWidgetClass parent_class;
-};
-
-GType st_box_layout_get_type (void);
 
 StWidget *st_box_layout_new (void);
 

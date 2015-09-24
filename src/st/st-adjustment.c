@@ -37,6 +37,8 @@
 #include "st-adjustment.h"
 #include "st-private.h"
 
+typedef struct _StAdjustmentPrivate StAdjustmentPrivate;
+
 struct _StAdjustmentPrivate
 {
   /* Do not sanity-check values while constructing,
@@ -90,6 +92,7 @@ st_adjustment_constructed (GObject *object)
 {
   GObjectClass *g_class;
   StAdjustment *self = ST_ADJUSTMENT (object);
+  StAdjustmentPrivate *priv = st_adjustment_get_instance_private (self);
 
   g_class = G_OBJECT_CLASS (st_adjustment_parent_class);
   /* The docs say we're suppose to chain up, but would crash without
@@ -100,8 +103,8 @@ st_adjustment_constructed (GObject *object)
       g_class->constructed (object);
     }
 
-  ST_ADJUSTMENT (self)->priv->is_constructing = FALSE;
-  st_adjustment_clamp_page (self, self->priv->lower, self->priv->upper);
+  priv->is_constructing = FALSE;
+  st_adjustment_clamp_page (self, priv->lower, priv->upper);
 }
 
 static void
@@ -110,7 +113,7 @@ st_adjustment_get_property (GObject    *gobject,
                             GValue     *value,
                             GParamSpec *pspec)
 {
-  StAdjustmentPrivate *priv = ST_ADJUSTMENT (gobject)->priv;
+  StAdjustmentPrivate *priv = st_adjustment_get_instance_private (ST_ADJUSTMENT (gobject));
 
   switch (prop_id)
     {
@@ -271,9 +274,8 @@ st_adjustment_class_init (StAdjustmentClass *klass)
 static void
 st_adjustment_init (StAdjustment *self)
 {
-  self->priv = st_adjustment_get_instance_private (self);
-
-  self->priv->is_constructing = TRUE;
+  StAdjustmentPrivate *priv = st_adjustment_get_instance_private (self);
+  priv->is_constructing = TRUE;
 }
 
 StAdjustment *
@@ -297,13 +299,9 @@ st_adjustment_new (gdouble value,
 gdouble
 st_adjustment_get_value (StAdjustment *adjustment)
 {
-  StAdjustmentPrivate *priv;
-
   g_return_val_if_fail (ST_IS_ADJUSTMENT (adjustment), 0);
 
-  priv = adjustment->priv;
-
-  return priv->value;
+  return ((StAdjustmentPrivate *)st_adjustment_get_instance_private (adjustment))->value;
 }
 
 void
@@ -314,7 +312,7 @@ st_adjustment_set_value (StAdjustment *adjustment,
 
   g_return_if_fail (ST_IS_ADJUSTMENT (adjustment));
 
-  priv = adjustment->priv;
+  priv = st_adjustment_get_instance_private (adjustment);
 
   /* Defer clamp until after construction. */
   if (!priv->is_constructing)
@@ -342,7 +340,7 @@ st_adjustment_clamp_page (StAdjustment *adjustment,
 
   g_return_if_fail (ST_IS_ADJUSTMENT (adjustment));
 
-  priv = adjustment->priv;
+  priv = st_adjustment_get_instance_private (adjustment);
 
   lower = CLAMP (lower, priv->lower, priv->upper - priv->page_size);
   upper = CLAMP (upper, priv->lower + priv->page_size, priv->upper);
@@ -369,7 +367,7 @@ static gboolean
 st_adjustment_set_lower (StAdjustment *adjustment,
                          gdouble       lower)
 {
-  StAdjustmentPrivate *priv = adjustment->priv;
+  StAdjustmentPrivate *priv = st_adjustment_get_instance_private (adjustment);
 
   if (priv->lower != lower)
     {
@@ -393,7 +391,7 @@ static gboolean
 st_adjustment_set_upper (StAdjustment *adjustment,
                          gdouble       upper)
 {
-  StAdjustmentPrivate *priv = adjustment->priv;
+  StAdjustmentPrivate *priv = st_adjustment_get_instance_private (adjustment);
 
   if (priv->upper != upper)
     {
@@ -417,7 +415,7 @@ static gboolean
 st_adjustment_set_step_increment (StAdjustment *adjustment,
                                   gdouble       step)
 {
-  StAdjustmentPrivate *priv = adjustment->priv;
+  StAdjustmentPrivate *priv = st_adjustment_get_instance_private (adjustment);
 
   if (priv->step_increment != step)
     {
@@ -437,7 +435,7 @@ static gboolean
 st_adjustment_set_page_increment (StAdjustment *adjustment,
                                   gdouble       page)
 {
-  StAdjustmentPrivate *priv = adjustment->priv;
+  StAdjustmentPrivate *priv = st_adjustment_get_instance_private (adjustment);
 
   if (priv->page_increment != page)
     {
@@ -457,7 +455,7 @@ static gboolean
 st_adjustment_set_page_size (StAdjustment *adjustment,
                              gdouble       size)
 {
-  StAdjustmentPrivate *priv = adjustment->priv;
+  StAdjustmentPrivate *priv = st_adjustment_get_instance_private (adjustment);
 
   if (priv->page_size != size)
     {
@@ -494,7 +492,7 @@ st_adjustment_set_values (StAdjustment *adjustment,
   g_return_if_fail (step_increment >= 0 && step_increment <= G_MAXDOUBLE);
   g_return_if_fail (page_increment >= 0 && page_increment <= G_MAXDOUBLE);
 
-  priv = adjustment->priv;
+  priv = st_adjustment_get_instance_private (adjustment);
 
   emit_changed = FALSE;
 
@@ -543,7 +541,7 @@ st_adjustment_get_values (StAdjustment *adjustment,
 
   g_return_if_fail (ST_IS_ADJUSTMENT (adjustment));
 
-  priv = adjustment->priv;
+  priv = st_adjustment_get_instance_private (adjustment);
 
   if (lower)
     *lower = priv->lower;
@@ -585,7 +583,7 @@ st_adjustment_adjust_for_scroll_event (StAdjustment *adjustment,
 
   g_return_if_fail (ST_IS_ADJUSTMENT (adjustment));
 
-  priv = adjustment->priv;
+  priv = st_adjustment_get_instance_private (adjustment);
 
   scroll_unit = pow (priv->page_size, 2.0 / 3.0);
 

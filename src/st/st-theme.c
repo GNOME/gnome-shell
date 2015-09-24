@@ -71,11 +71,6 @@ struct _StTheme
   CRCascade *cascade;
 };
 
-struct _StThemeClass
-{
-  GObjectClass parent_class;
-};
-
 enum
 {
   PROP_0,

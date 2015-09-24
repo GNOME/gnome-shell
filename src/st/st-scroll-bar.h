@@ -30,30 +30,8 @@
 
 G_BEGIN_DECLS
 
-#define ST_TYPE_SCROLL_BAR            (st_scroll_bar_get_type())
-#define ST_SCROLL_BAR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), ST_TYPE_SCROLL_BAR, StScrollBar))
-#define ST_IS_SCROLL_BAR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), ST_TYPE_SCROLL_BAR))
-#define ST_SCROLL_BAR_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), ST_TYPE_SCROLL_BAR, StScrollBarClass))
-#define ST_IS_SCROLL_BAR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), ST_TYPE_SCROLL_BAR))
-#define ST_SCROLL_BAR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), ST_TYPE_SCROLL_BAR, StScrollBarClass))
-
-typedef struct _StScrollBar          StScrollBar;
-typedef struct _StScrollBarPrivate   StScrollBarPrivate;
-typedef struct _StScrollBarClass     StScrollBarClass;
-
-/**
- * StScrollBar:
- *
- * The contents of this structure are private and should only be accessed
- * through the public API.
- */
-struct _StScrollBar
-{
-  /*< private >*/
-  StWidget parent_instance;
-
-  StScrollBarPrivate *priv;
-};
+#define ST_TYPE_SCROLL_BAR (st_scroll_bar_get_type())
+G_DECLARE_DERIVABLE_TYPE (StScrollBar, st_scroll_bar, ST, SCROLL_BAR, StWidget)
 
 struct _StScrollBarClass
 {
@@ -63,8 +41,6 @@ struct _StScrollBarClass
   void (*scroll_start) (StScrollBar *bar);
   void (*scroll_stop)  (StScrollBar *bar);
 };
-
-GType st_scroll_bar_get_type (void) G_GNUC_CONST;
 
 StWidget *st_scroll_bar_new (StAdjustment *adjustment);
 
