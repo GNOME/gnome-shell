@@ -7417,13 +7417,13 @@ meta_window_set_transient_for (MetaWindow *window,
         }
     }
 
-  /* update stacking constraints */
-  if (!window->override_redirect)
-    meta_stack_update_transient (window->screen->stack, window);
-
   /* We know this won't create a reference cycle because we check for loops */
   g_clear_object (&window->transient_for);
   window->transient_for = parent ? g_object_ref (parent) : NULL;
+
+  /* update stacking constraints */
+  if (!window->override_redirect)
+    meta_stack_update_transient (window->screen->stack, window);
 
   /* possibly change its group. We treat being a window's transient as
    * equivalent to making it your group leader, to work around shortcomings
