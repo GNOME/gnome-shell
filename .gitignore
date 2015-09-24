@@ -83,6 +83,8 @@ src/relative-pointer-unstable-v*-protocol.c
 src/relative-pointer-unstable-v*-server-protocol.h
 src/pointer-constraints-unstable-v*-protocol.c
 src/pointer-constraints-unstable-v*-server-protocol.h
+src/xdg-foreign-unstable-v*-protocol.c
+src/xdg-foreign-unstable-v*-server-protocol.h
 src/meta/meta-version.h
 doc/reference/*.args
 doc/reference/*.bak

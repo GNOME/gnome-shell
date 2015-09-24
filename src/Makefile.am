@@ -69,6 +69,8 @@ mutter_built_sources += \
 	pointer-constraints-unstable-v1-server-protocol.h		\
 	tablet-unstable-v2-protocol.c					\
 	tablet-unstable-v2-server-protocol.h				\
+	xdg-foreign-unstable-v1-protocol.c				\
+	xdg-foreign-unstable-v1-server-protocol.h			\
 	$(NULL)
 endif
 
@@ -337,6 +339,8 @@ libmutter_la_SOURCES +=				\
 	wayland/meta-wayland-versions.h		\
 	wayland/meta-wayland-outputs.c		\
 	wayland/meta-wayland-outputs.h		\
+	wayland/meta-wayland-xdg-foreign.c     	\
+	wayland/meta-wayland-xdg-foreign.h     	\
 	wayland/meta-window-wayland.c		\
 	wayland/meta-window-wayland.h		\
 	wayland/meta-wayland-xdg-shell.c	\
