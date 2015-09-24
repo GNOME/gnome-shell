@@ -43,8 +43,6 @@
 #define DIRECTORY_LOAD_ITEMS_PER_CALLBACK 100
 #define HIGH_SCORE_RATIO 0.10
 
-G_DEFINE_TYPE (ShellMimeSniffer, shell_mime_sniffer, G_TYPE_OBJECT);
-
 enum {
   PROP_FILE = 1,
   NUM_PROPERTIES
@@ -72,6 +70,15 @@ typedef struct {
   gint total_items;
 } DeepCountState;
 
+typedef struct _ShellMimeSnifferPrivate   ShellMimeSnifferPrivate;
+
+struct _ShellMimeSniffer
+{
+  GObject parent_instance;
+
+  ShellMimeSnifferPrivate *priv;
+};
+
 struct _ShellMimeSnifferPrivate {
   GFile *file;
 
@@ -81,6 +88,8 @@ struct _ShellMimeSnifferPrivate {
   GSimpleAsyncResult *async_result;
   gchar **sniffed_mime;
 };
+
+G_DEFINE_TYPE_WITH_PRIVATE (ShellMimeSniffer, shell_mime_sniffer, G_TYPE_OBJECT);
 
 static void deep_count_load (DeepCountState *state,
                              GFile *file);
@@ -550,17 +559,13 @@ shell_mime_sniffer_class_init (ShellMimeSnifferClass *klass)
                          G_TYPE_FILE,
                          G_PARAM_READWRITE);
 
-  g_type_class_add_private (klass, sizeof (ShellMimeSnifferPrivate));
   g_object_class_install_properties (oclass, NUM_PROPERTIES, properties);
 }
 
 static void
 shell_mime_sniffer_init (ShellMimeSniffer *self)
 {
-  self->priv =
-    G_TYPE_INSTANCE_GET_PRIVATE (self,
-                                 SHELL_TYPE_MIME_SNIFFER,
-                                 ShellMimeSnifferPrivate);
+  self->priv = shell_mime_sniffer_get_instance_private (self);
   init_mimetypes ();
 }
 

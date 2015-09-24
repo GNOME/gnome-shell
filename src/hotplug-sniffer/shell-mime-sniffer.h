@@ -27,30 +27,9 @@
 
 G_BEGIN_DECLS
 
-#define SHELL_TYPE_MIME_SNIFFER            (shell_mime_sniffer_get_type ())
-#define SHELL_MIME_SNIFFER(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), SHELL_TYPE_MIME_SNIFFER, ShellMimeSniffer))
-#define SHELL_IS_MIME_SNIFFER(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), SHELL_TYPE_MIME_SNIFFER))
-#define SHELL_MIME_SNIFFER_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  SHELL_TYPE_MIME_SNIFFER, ShellMimeSnifferClass))
-#define SHELL_IS_MIME_SNIFFER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  SHELL_TYPE_MIME_SNIFFER))
-#define SHELL_MIME_SNIFFER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  SHELL_TYPE_MIME_SNIFFER, ShellMimeSnifferClass))
-
-typedef struct _ShellMimeSniffer          ShellMimeSniffer;
-typedef struct _ShellMimeSnifferPrivate   ShellMimeSnifferPrivate;
-typedef struct _ShellMimeSnifferClass     ShellMimeSnifferClass;
-
-struct _ShellMimeSniffer
-{
-  GObject parent_instance;
-
-  ShellMimeSnifferPrivate *priv;
-};
-
-struct _ShellMimeSnifferClass
-{
-  GObjectClass parent_class;
-};
-
-GType    shell_mime_sniffer_get_type     (void) G_GNUC_CONST;
+#define SHELL_TYPE_MIME_SNIFFER (shell_mime_sniffer_get_type ())
+G_DECLARE_FINAL_TYPE (ShellMimeSniffer, shell_mime_sniffer,
+                      SHELL, MIME_SNIFFER, GObject)
 
 ShellMimeSniffer *shell_mime_sniffer_new (GFile *file);
 
