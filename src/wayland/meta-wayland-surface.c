@@ -351,12 +351,6 @@ toplevel_surface_commit (MetaWaylandSurfaceRole  *surface_role,
           return;
         }
     }
-  else if (META_IS_WAYLAND_SURFACE_ROLE_XDG_POPUP (surface->role))
-    {
-      /* Ignore commits if we couldn't grab the pointer */
-      if (!window)
-        return;
-    }
   else
     {
       if (surface->buffer == NULL)
@@ -369,10 +363,11 @@ toplevel_surface_commit (MetaWaylandSurfaceRole  *surface_role,
         }
     }
 
-  g_assert (window != NULL);
-
-  /* We resize X based surfaces according to X events */
-  if (window->client_type == META_WINDOW_CLIENT_TYPE_WAYLAND)
+  /* Update the state of the MetaWindow if we still have one. We might not if
+   * the window was unmanaged (for example popup destroyed, NULL buffer attached to
+   * wl_shell_surface wl_surface, xdg_surface object was destroyed, etc).
+   */
+  if (window && window->client_type == META_WINDOW_CLIENT_TYPE_WAYLAND)
     {
       MetaRectangle geom = { 0 };
 
