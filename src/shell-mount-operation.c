@@ -41,6 +41,15 @@ enum {
 
 static guint signals[NUM_SIGNALS] = { 0, };
 
+typedef struct _ShellMountOperationPrivate  ShellMountOperationPrivate;
+
+struct _ShellMountOperation
+{
+  GMountOperation parent_instance;
+
+  ShellMountOperationPrivate *priv;
+};
+
 struct _ShellMountOperationPrivate {
   GArray *pids;
   gchar **choices;

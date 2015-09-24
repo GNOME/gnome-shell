@@ -33,11 +33,6 @@ typedef enum {
 
 typedef struct _RecorderPipeline RecorderPipeline;
 
-struct _ShellRecorderClass
-{
-  GObjectClass parent_class;
-};
-
 struct _ShellRecorder {
   GObject parent;
 

@@ -32,11 +32,9 @@ G_BEGIN_DECLS
 
 typedef struct _ShellKeyringPrompt         ShellKeyringPrompt;
 
-#define SHELL_TYPE_KEYRING_PROMPT                  (shell_keyring_prompt_get_type ())
-#define SHELL_KEYRING_PROMPT(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), SHELL_TYPE_KEYRING_PROMPT, ShellKeyringPrompt))
-#define SHELL_IS_KEYRING_PROMPT(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), SHELL_TYPE_KEYRING_PROMPT))
-
-GType                shell_keyring_prompt_get_type             (void) G_GNUC_CONST;
+#define SHELL_TYPE_KEYRING_PROMPT (shell_keyring_prompt_get_type ())
+G_DECLARE_FINAL_TYPE (ShellKeyringPrompt, shell_keyring_prompt,
+                      SHELL, KEYRING_PROMPT, GObject)
 
 ShellKeyringPrompt * shell_keyring_prompt_new                  (void);
 

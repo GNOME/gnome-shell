@@ -15,6 +15,8 @@ enum {
    PROP_WINDOW
 };
 
+typedef struct _ShellGtkEmbedPrivate ShellGtkEmbedPrivate;
+
 struct _ShellGtkEmbedPrivate
 {
   ShellEmbeddedWindow *window;
@@ -40,7 +42,7 @@ shell_gtk_embed_on_window_destroy (GtkWidget     *object,
 static void
 shell_gtk_embed_remove_window_actor (ShellGtkEmbed *embed)
 {
-  ShellGtkEmbedPrivate *priv = embed->priv;
+  ShellGtkEmbedPrivate *priv = shell_gtk_embed_get_instance_private (embed);
 
   if (priv->window_actor)
     {
@@ -60,7 +62,7 @@ shell_gtk_embed_window_created_cb (MetaDisplay   *display,
                                    MetaWindow    *window,
                                    ShellGtkEmbed *embed)
 {
-  ShellGtkEmbedPrivate *priv = embed->priv;
+  ShellGtkEmbedPrivate *priv = shell_gtk_embed_get_instance_private (embed);
   Window xwindow = meta_window_get_xwindow (window);
   GdkWindow *gdk_window = gtk_widget_get_window (GTK_WIDGET (priv->window));
 
@@ -119,11 +121,12 @@ static void
 shell_gtk_embed_on_window_mapped (GtkWidget     *object,
                                   ShellGtkEmbed *embed)
 {
+  ShellGtkEmbedPrivate *priv = shell_gtk_embed_get_instance_private (embed);
   MetaDisplay *display = shell_global_get_display (shell_global_get ());
 
   /* Listen for new windows so we can detect when Mutter has
      created a MutterWindow for this window */
-  embed->priv->window_created_handler =
+  priv->window_created_handler =
     g_signal_connect (display,
                       "window-created",
                       G_CALLBACK (shell_gtk_embed_window_created_cb),
@@ -134,44 +137,45 @@ static void
 shell_gtk_embed_set_window (ShellGtkEmbed       *embed,
                             ShellEmbeddedWindow *window)
 {
+  ShellGtkEmbedPrivate *priv = shell_gtk_embed_get_instance_private (embed);
   MetaDisplay *display = shell_global_get_display (shell_global_get ());
 
-  if (embed->priv->window)
+  if (priv->window)
     {
-      if (embed->priv->window_created_handler)
+      if (priv->window_created_handler)
         {
           g_signal_handler_disconnect (display,
-                                       embed->priv->window_created_handler);
-          embed->priv->window_created_handler = 0;
+                                       priv->window_created_handler);
+          priv->window_created_handler = 0;
         }
 
       shell_gtk_embed_remove_window_actor (embed);
 
-      _shell_embedded_window_set_actor (embed->priv->window, NULL);
+      _shell_embedded_window_set_actor (priv->window, NULL);
 
-      g_object_unref (embed->priv->window);
+      g_object_unref (priv->window);
 
-      g_signal_handlers_disconnect_by_func (embed->priv->window,
+      g_signal_handlers_disconnect_by_func (priv->window,
                                             (gpointer)shell_gtk_embed_on_window_destroy,
                                             embed);
 
-      g_signal_handlers_disconnect_by_func (embed->priv->window,
+      g_signal_handlers_disconnect_by_func (priv->window,
                                             (gpointer)shell_gtk_embed_on_window_mapped,
                                             embed);
     }
 
-  embed->priv->window = window;
+  priv->window = window;
 
-  if (embed->priv->window)
+  if (priv->window)
     {
-      g_object_ref (embed->priv->window);
+      g_object_ref (priv->window);
 
-      _shell_embedded_window_set_actor (embed->priv->window, embed);
+      _shell_embedded_window_set_actor (priv->window, embed);
 
-      g_signal_connect (embed->priv->window, "destroy",
+      g_signal_connect (priv->window, "destroy",
                         G_CALLBACK (shell_gtk_embed_on_window_destroy), embed);
 
-      g_signal_connect (embed->priv->window, "map",
+      g_signal_connect (priv->window, "map",
                         G_CALLBACK (shell_gtk_embed_on_window_mapped), embed);
     }
 
@@ -205,11 +209,12 @@ shell_gtk_embed_get_property (GObject         *object,
                               GParamSpec      *pspec)
 {
   ShellGtkEmbed *embed = SHELL_GTK_EMBED (object);
+  ShellGtkEmbedPrivate *priv = shell_gtk_embed_get_instance_private (embed);
 
   switch (prop_id)
     {
     case PROP_WINDOW:
-      g_value_set_object (value, embed->priv->window);
+      g_value_set_object (value, priv->window);
       break;
 
     default:
@@ -225,12 +230,13 @@ shell_gtk_embed_get_preferred_width (ClutterActor *actor,
                                      float        *natural_width_p)
 {
   ShellGtkEmbed *embed = SHELL_GTK_EMBED (actor);
+  ShellGtkEmbedPrivate *priv = shell_gtk_embed_get_instance_private (embed);
 
-  if (embed->priv->window
-      && gtk_widget_get_visible (GTK_WIDGET (embed->priv->window)))
+  if (priv->window
+      && gtk_widget_get_visible (GTK_WIDGET (priv->window)))
     {
       GtkRequisition min_req, natural_req;
-      gtk_widget_get_preferred_size (GTK_WIDGET (embed->priv->window), &min_req, &natural_req);
+      gtk_widget_get_preferred_size (GTK_WIDGET (priv->window), &min_req, &natural_req);
 
       *min_width_p = min_req.width;
       *natural_width_p = natural_req.width;
@@ -246,12 +252,13 @@ shell_gtk_embed_get_preferred_height (ClutterActor *actor,
                                       float        *natural_height_p)
 {
   ShellGtkEmbed *embed = SHELL_GTK_EMBED (actor);
+  ShellGtkEmbedPrivate *priv = shell_gtk_embed_get_instance_private (embed);
 
-  if (embed->priv->window
-      && gtk_widget_get_visible (GTK_WIDGET (embed->priv->window)))
+  if (priv->window
+      && gtk_widget_get_visible (GTK_WIDGET (priv->window)))
     {
       GtkRequisition min_req, natural_req;
-      gtk_widget_get_preferred_size (GTK_WIDGET (embed->priv->window), &min_req, &natural_req);
+      gtk_widget_get_preferred_size (GTK_WIDGET (priv->window), &min_req, &natural_req);
 
       *min_height_p = min_req.height;
       *natural_height_p = natural_req.height;
@@ -266,6 +273,7 @@ shell_gtk_embed_allocate (ClutterActor          *actor,
                           ClutterAllocationFlags flags)
 {
   ShellGtkEmbed *embed = SHELL_GTK_EMBED (actor);
+  ShellGtkEmbedPrivate *priv = shell_gtk_embed_get_instance_private (embed);
   float wx = 0.0, wy = 0.0, x, y, ax, ay;
 
   CLUTTER_ACTOR_CLASS (shell_gtk_embed_parent_class)->
@@ -285,7 +293,7 @@ shell_gtk_embed_allocate (ClutterActor          *actor,
       actor = clutter_actor_get_parent (actor);
     }
 
-  _shell_embedded_window_allocate (embed->priv->window,
+  _shell_embedded_window_allocate (priv->window,
                                    (int)(0.5 + wx), (int)(0.5 + wy),
                                    box->x2 - box->x1,
                                    box->y2 - box->y1);
@@ -295,8 +303,9 @@ static void
 shell_gtk_embed_map (ClutterActor *actor)
 {
   ShellGtkEmbed *embed = SHELL_GTK_EMBED (actor);
+  ShellGtkEmbedPrivate *priv = shell_gtk_embed_get_instance_private (embed);
 
-  _shell_embedded_window_map (embed->priv->window);
+  _shell_embedded_window_map (priv->window);
 
   CLUTTER_ACTOR_CLASS (shell_gtk_embed_parent_class)->map (actor);
 }
@@ -305,8 +314,9 @@ static void
 shell_gtk_embed_unmap (ClutterActor *actor)
 {
   ShellGtkEmbed *embed = SHELL_GTK_EMBED (actor);
+  ShellGtkEmbedPrivate *priv = shell_gtk_embed_get_instance_private (embed);
 
-  _shell_embedded_window_unmap (embed->priv->window);
+  _shell_embedded_window_unmap (priv->window);
 
   CLUTTER_ACTOR_CLASS (shell_gtk_embed_parent_class)->unmap (actor);
 }
@@ -349,7 +359,6 @@ shell_gtk_embed_class_init (ShellGtkEmbedClass *klass)
 static void
 shell_gtk_embed_init (ShellGtkEmbed *embed)
 {
-  embed->priv = shell_gtk_embed_get_instance_private (embed);
 }
 
 /*

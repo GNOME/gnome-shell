@@ -28,11 +28,9 @@
 
 G_BEGIN_DECLS
 
-#define SHELL_TYPE_SECURE_TEXT_BUFFER            (shell_secure_text_buffer_get_type ())
-#define SHELL_SECURE_TEXT_BUFFER(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), SHELL_TYPE_SECURE_TEXT_BUFFER, ShellSecureTextBuffer))
-#define SHELL_IS_SECURE_TEXT_BUFFER(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), SHELL_TYPE_SECURE_TEXT_BUFFER))
-
-GType                     shell_secure_text_buffer_get_type               (void) G_GNUC_CONST;
+#define SHELL_TYPE_SECURE_TEXT_BUFFER (shell_secure_text_buffer_get_type ())
+G_DECLARE_FINAL_TYPE (ShellSecureTextBuffer, shell_secure_text_buffer,
+                      SHELL, SECURE_TEXT_BUFFER, ClutterTextBuffer)
 
 ClutterTextBuffer *       shell_secure_text_buffer_new                    (void);
 

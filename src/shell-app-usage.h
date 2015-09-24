@@ -7,23 +7,9 @@
 
 G_BEGIN_DECLS
 
-typedef struct _ShellAppUsage ShellAppUsage;
-typedef struct _ShellAppUsageClass ShellAppUsageClass;
-typedef struct _ShellAppUsagePrivate ShellAppUsagePrivate;
-
 #define SHELL_TYPE_APP_USAGE              (shell_app_usage_get_type ())
-#define SHELL_APP_USAGE(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), SHELL_TYPE_APP_USAGE, ShellAppUsage))
-#define SHELL_APP_USAGE_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), SHELL_TYPE_APP_USAGE, ShellAppUsageClass))
-#define SHELL_IS_APP_USAGE(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), SHELL_TYPE_APP_USAGE))
-#define SHELL_IS_APP_USAGE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), SHELL_TYPE_APP_USAGE))
-#define SHELL_APP_USAGE_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), SHELL_TYPE_APP_USAGE, ShellAppUsageClass))
-
-struct _ShellAppUsageClass
-{
-  GObjectClass parent_class;
-};
-
-GType shell_app_usage_get_type (void) G_GNUC_CONST;
+G_DECLARE_FINAL_TYPE (ShellAppUsage, shell_app_usage,
+                      SHELL, APP_USAGE, GObject)
 
 ShellAppUsage* shell_app_usage_get_default(void);
 

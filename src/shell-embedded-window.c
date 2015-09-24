@@ -27,6 +27,8 @@ enum {
    PROP_0
 };
 
+typedef struct _ShellEmbeddedWindowPrivate ShellEmbeddedWindowPrivate;
+
 struct _ShellEmbeddedWindowPrivate {
   ShellGtkEmbed *actor;
 
@@ -49,19 +51,22 @@ static void
 shell_embedded_window_show (GtkWidget *widget)
 {
   ShellEmbeddedWindow *window = SHELL_EMBEDDED_WINDOW (widget);
+  ShellEmbeddedWindowPrivate *priv;
   GtkWidgetClass *widget_class;
+
+  priv = shell_embedded_window_get_instance_private (window);
 
   /* Skip GtkWindow, but run the default GtkWidget handling which
    * marks the widget visible */
   widget_class = g_type_class_peek (GTK_TYPE_WIDGET);
   widget_class->show (widget);
 
-  if (window->priv->actor)
+  if (priv->actor)
     {
       /* Size is 0x0 if the GtkWindow is not shown */
-      clutter_actor_queue_relayout (CLUTTER_ACTOR (window->priv->actor));
+      clutter_actor_queue_relayout (CLUTTER_ACTOR (priv->actor));
 
-      if (clutter_actor_is_realized (CLUTTER_ACTOR (window->priv->actor)))
+      if (clutter_actor_is_realized (CLUTTER_ACTOR (priv->actor)))
         gtk_widget_map (widget);
     }
 }
@@ -70,9 +75,12 @@ static void
 shell_embedded_window_hide (GtkWidget *widget)
 {
   ShellEmbeddedWindow *window = SHELL_EMBEDDED_WINDOW (widget);
+  ShellEmbeddedWindowPrivate *priv;
 
-  if (window->priv->actor)
-    clutter_actor_queue_relayout (CLUTTER_ACTOR (window->priv->actor));
+  priv = shell_embedded_window_get_instance_private (window);
+
+  if (priv->actor)
+    clutter_actor_queue_relayout (CLUTTER_ACTOR (priv->actor));
 
   GTK_WIDGET_CLASS (shell_embedded_window_parent_class)->hide (widget);
 }
@@ -92,6 +100,9 @@ static void
 shell_embedded_window_check_resize (GtkContainer *container)
 {
   ShellEmbeddedWindow *window = SHELL_EMBEDDED_WINDOW (container);
+  ShellEmbeddedWindowPrivate *priv;
+
+  priv = shell_embedded_window_get_instance_private (window);
 
   /* Check resize is called when a resize is queued on something
    * inside the GtkWindow; we need to make sure that in response
@@ -99,8 +110,8 @@ shell_embedded_window_check_resize (GtkContainer *container)
    * gtk_widget_size_allocate() are called; we defer to the Clutter
    * logic and assume it will do the right thing.
    */
-  if (window->priv->actor)
-    clutter_actor_queue_relayout (CLUTTER_ACTOR (window->priv->actor));
+  if (priv->actor)
+    clutter_actor_queue_relayout (CLUTTER_ACTOR (priv->actor));
 }
 
 static GObject *
@@ -148,7 +159,6 @@ shell_embedded_window_class_init (ShellEmbeddedWindowClass *klass)
 static void
 shell_embedded_window_init (ShellEmbeddedWindow *window)
 {
-  window->priv = shell_embedded_window_get_instance_private (window);
 }
 
 /*
@@ -160,9 +170,12 @@ _shell_embedded_window_set_actor (ShellEmbeddedWindow  *window,
                                   ShellGtkEmbed        *actor)
 
 {
+  ShellEmbeddedWindowPrivate *priv;
+
   g_return_if_fail (SHELL_IS_EMBEDDED_WINDOW (window));
 
-  window->priv->actor = actor;
+  priv = shell_embedded_window_get_instance_private (window);
+  priv->actor = actor;
 
   if (actor &&
       clutter_actor_is_mapped (CLUTTER_ACTOR (actor)) &&
@@ -177,20 +190,23 @@ _shell_embedded_window_allocate (ShellEmbeddedWindow *window,
                                  int                  width,
                                  int                  height)
 {
+  ShellEmbeddedWindowPrivate *priv;
   GtkAllocation allocation;
 
   g_return_if_fail (SHELL_IS_EMBEDDED_WINDOW (window));
 
-  if (window->priv->position.x == x &&
-      window->priv->position.y == y &&
-      window->priv->position.width == width &&
-      window->priv->position.height == height)
+  priv = shell_embedded_window_get_instance_private (window);
+
+  if (priv->position.x == x &&
+      priv->position.y == y &&
+      priv->position.width == width &&
+      priv->position.height == height)
     return;
 
-  window->priv->position.x = x;
-  window->priv->position.y = y;
-  window->priv->position.width = width;
-  window->priv->position.height = height;
+  priv->position.x = x;
+  priv->position.y = y;
+  priv->position.width = width;
+  priv->position.height = height;
 
   if (gtk_widget_get_realized (GTK_WIDGET (window)))
     gdk_window_move_resize (gtk_widget_get_window (GTK_WIDGET (window)),

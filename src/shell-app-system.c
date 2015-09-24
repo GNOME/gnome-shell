@@ -37,6 +37,15 @@ enum {
 
 static guint signals[LAST_SIGNAL] = { 0 };
 
+typedef struct _ShellAppSystemPrivate ShellAppSystemPrivate;
+
+struct _ShellAppSystem
+{
+  GObject parent;
+
+  ShellAppSystemPrivate *priv;
+};
+
 struct _ShellAppSystemPrivate {
   GHashTable *running_apps;
   GHashTable *id_to_app;

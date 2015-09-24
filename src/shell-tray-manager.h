@@ -8,30 +8,9 @@
 
 G_BEGIN_DECLS
 
-#define SHELL_TYPE_TRAY_MANAGER			(shell_tray_manager_get_type ())
-#define SHELL_TRAY_MANAGER(obj)			(G_TYPE_CHECK_INSTANCE_CAST ((obj), SHELL_TYPE_TRAY_MANAGER, ShellTrayManager))
-#define SHELL_TRAY_MANAGER_CLASS(klass)		(G_TYPE_CHECK_CLASS_CAST ((klass), SHELL_TYPE_TRAY_MANAGER, ShellTrayManagerClass))
-#define SHELL_IS_TRAY_MANAGER(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), SHELL_TYPE_TRAY_MANAGER))
-#define SHELL_IS_TRAY_MANAGER_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), SHELL_TYPE_TRAY_MANAGER))
-#define SHELL_TRAY_MANAGER_GET_CLASS(obj)	(G_TYPE_INSTANCE_GET_CLASS ((obj), SHELL_TYPE_TRAY_MANAGER, ShellTrayManagerClass))
-	
-typedef struct _ShellTrayManager        ShellTrayManager;
-typedef struct _ShellTrayManagerPrivate ShellTrayManagerPrivate;
-typedef struct _ShellTrayManagerClass   ShellTrayManagerClass;
-
-struct _ShellTrayManager
-{
-  GObject parent_instance;
-
-  ShellTrayManagerPrivate *priv;
-};
-
-struct _ShellTrayManagerClass
-{
-  GObjectClass parent_class;
-};
-
-GType             shell_tray_manager_get_type     (void);
+#define SHELL_TYPE_TRAY_MANAGER (shell_tray_manager_get_type ())
+G_DECLARE_FINAL_TYPE (ShellTrayManager, shell_tray_manager,
+                      SHELL, TRAY_MANAGER, GObject)
 
 ShellTrayManager *shell_tray_manager_new          (void);
 void              shell_tray_manager_manage_screen (ShellTrayManager *manager,

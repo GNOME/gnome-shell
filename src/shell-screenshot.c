@@ -14,10 +14,7 @@
 #define A11Y_APPS_SCHEMA "org.gnome.desktop.a11y.applications"
 #define MAGNIFIER_ACTIVE_KEY "screen-magnifier-enabled"
 
-struct _ShellScreenshotClass
-{
-  GObjectClass parent_class;
-};
+typedef struct _ShellScreenshotPrivate  ShellScreenshotPrivate;
 
 struct _ShellScreenshot
 {

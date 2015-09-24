@@ -10,19 +10,9 @@
  * areas or windows and write them out as png files.
  *
  */
-
-typedef struct _ShellScreenshot         ShellScreenshot;
-typedef struct _ShellScreenshotPrivate  ShellScreenshotPrivate;
-typedef struct _ShellScreenshotClass    ShellScreenshotClass;
-
-#define SHELL_TYPE_SCREENSHOT              (shell_screenshot_get_type ())
-#define SHELL_SCREENSHOT(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), SHELL_TYPE_SCREENSHOT, ShellScreenshot))
-#define SHELL_SCREENSHOT_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), SHELL_TYPE_SCREENSHOT, ShellScreenshotClass))
-#define SHELL_IS_SCREENSHOT(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), SHELL_TYPE_SCREENSHOT))
-#define SHELL_IS_SCREENSHOT_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), SHELL_TYPE_SCREENSHOT))
-#define SHELL_SCREENSHOT_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), SHELL_TYPE_SCREENSHOT, ShellScreenshotClass))
-
-GType shell_screenshot_get_type (void) G_GNUC_CONST;
+#define SHELL_TYPE_SCREENSHOT (shell_screenshot_get_type ())
+G_DECLARE_FINAL_TYPE (ShellScreenshot, shell_screenshot,
+                      SHELL, SCREENSHOT, GObject)
 
 ShellScreenshot *shell_screenshot_new (void);
 

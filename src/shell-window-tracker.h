@@ -11,23 +11,9 @@
 
 G_BEGIN_DECLS
 
-typedef struct _ShellWindowTracker ShellWindowTracker;
-typedef struct _ShellWindowTrackerClass ShellWindowTrackerClass;
-typedef struct _ShellWindowTrackerPrivate ShellWindowTrackerPrivate;
-
-#define SHELL_TYPE_WINDOW_TRACKER              (shell_window_tracker_get_type ())
-#define SHELL_WINDOW_TRACKER(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), SHELL_TYPE_WINDOW_TRACKER, ShellWindowTracker))
-#define SHELL_WINDOW_TRACKER_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), SHELL_TYPE_WINDOW_TRACKER, ShellWindowTrackerClass))
-#define SHELL_IS_WINDOW_TRACKER(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), SHELL_TYPE_WINDOW_TRACKER))
-#define SHELL_IS_WINDOW_TRACKER_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), SHELL_TYPE_WINDOW_TRACKER))
-#define SHELL_WINDOW_TRACKER_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), SHELL_TYPE_WINDOW_TRACKER, ShellWindowTrackerClass))
-
-struct _ShellWindowTrackerClass
-{
-  GObjectClass parent_class;
-};
-
-GType shell_window_tracker_get_type (void) G_GNUC_CONST;
+#define SHELL_TYPE_WINDOW_TRACKER (shell_window_tracker_get_type ())
+G_DECLARE_FINAL_TYPE (ShellWindowTracker, shell_window_tracker,
+                      SHELL, WINDOW_TRACKER, GObject)
 
 ShellWindowTracker* shell_window_tracker_get_default(void);
 

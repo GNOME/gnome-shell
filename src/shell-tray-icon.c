@@ -17,6 +17,15 @@ enum {
    PROP_WM_CLASS
 };
 
+typedef struct _ShellTrayIconPrivate ShellTrayIconPrivate;
+
+struct _ShellTrayIcon
+{
+    ShellGtkEmbed parent;
+
+    ShellTrayIconPrivate *priv;
+};
+
 struct _ShellTrayIconPrivate
 {
   NaTrayChild *socket;

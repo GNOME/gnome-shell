@@ -26,31 +26,10 @@
 
 G_BEGIN_DECLS
 
-#define SHELL_TYPE_MOUNT_OPERATION         (shell_mount_operation_get_type ())
-#define SHELL_MOUNT_OPERATION(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), SHELL_TYPE_MOUNT_OPERATION, ShellMountOperation))
-#define SHELL_MOUNT_OPERATION_CLASS(k)     (G_TYPE_CHECK_CLASS_CAST((k), SHELL_TYPE_MOUNT_OPERATION, ShellMountOperationClass))
-#define SHELL_IS_MOUNT_OPERATION(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), SHELL_TYPE_MOUNT_OPERATION))
-#define SHELL_IS_MOUNT_OPERATION_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), SHELL_TYPE_MOUNT_OPERATION))
-#define SHELL_MOUNT_OPERATION_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), SHELL_TYPE_MOUNT_OPERATION, ShellMountOperationClass))
+#define SHELL_TYPE_MOUNT_OPERATION (shell_mount_operation_get_type ())
+G_DECLARE_FINAL_TYPE (ShellMountOperation, shell_mount_operation,
+                      SHELL, MOUNT_OPERATION, GMountOperation)
 
-typedef struct _ShellMountOperation         ShellMountOperation;
-typedef struct _ShellMountOperationClass    ShellMountOperationClass;
-typedef struct _ShellMountOperationPrivate  ShellMountOperationPrivate;
-
-struct _ShellMountOperation
-{
-  GMountOperation parent_instance;
-
-  ShellMountOperationPrivate *priv;
-};
-
-struct _ShellMountOperationClass
-{
-  GMountOperationClass parent_class;
-};
-
-
-GType            shell_mount_operation_get_type   (void);
 GMountOperation *shell_mount_operation_new        (void);
 
 GArray * shell_mount_operation_get_show_processes_pids (ShellMountOperation *self);

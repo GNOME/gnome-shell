@@ -26,23 +26,9 @@ typedef enum {
   SHELL_SNIPPET_HOOK_TEXTURE_LOOKUP
 } ShellSnippetHook;
 
-#define SHELL_TYPE_GLSL_QUAD                 (shell_glsl_quad_get_type ())
-#define SHELL_GLSL_QUAD(obj)                 (G_TYPE_CHECK_INSTANCE_CAST ((obj), SHELL_TYPE_GLSL_QUAD, ShellGLSLQuad))
-#define SHELL_GLSL_QUAD_CLASS(klass)         (G_TYPE_CHECK_CLASS_CAST ((klass), SHELL_TYPE_GLSL_QUAD, ShellGLSLQuadClass))
-#define SHELL_IS_GLSL_QUAD(obj)              (G_TYPE_CHECK_INSTANCE_TYPE ((obj), SHELL_TYPE_GLSL_QUAD))
-#define SHELL_IS_GLSL_QUAD_CLASS(klass)      (G_TYPE_CHECK_CLASS_TYPE ((klass), SHELL_TYPE_GLSL_QUAD))
-#define SHELL_GLSL_QUAD_GET_CLASS(obj)       (G_TYPE_INSTANCE_GET_CLASS ((obj), SHELL_TYPE_GLSL_QUAD, ShellGLSLQuadClass))
-
-typedef struct _ShellGLSLQuad        ShellGLSLQuad;
-typedef struct _ShellGLSLQuadClass   ShellGLSLQuadClass;
-typedef struct _ShellGLSLQuadPrivate ShellGLSLQuadPrivate;
-
-struct _ShellGLSLQuad
-{
-  ClutterActor parent;
-
-  ShellGLSLQuadPrivate *priv;
-};
+#define SHELL_TYPE_GLSL_QUAD (shell_glsl_quad_get_type ())
+G_DECLARE_DERIVABLE_TYPE (ShellGLSLQuad, shell_glsl_quad,
+                          SHELL, GLSL_QUAD, ClutterActor)
 
 struct _ShellGLSLQuadClass
 {
@@ -52,8 +38,6 @@ struct _ShellGLSLQuadClass
 
   void (*build_pipeline) (ShellGLSLQuad *effect);
 };
-
-GType shell_glsl_quad_get_type (void) G_GNUC_CONST;
 
 void shell_glsl_quad_add_glsl_snippet (ShellGLSLQuad    *quad,
                                        ShellSnippetHook  hook,

@@ -15,6 +15,15 @@
 #include "shell-embedded-window.h"
 #include "shell-global.h"
 
+typedef struct _ShellTrayManagerPrivate ShellTrayManagerPrivate;
+
+struct _ShellTrayManager
+{
+  GObject parent_instance;
+
+  ShellTrayManagerPrivate *priv;
+};
+
 struct _ShellTrayManagerPrivate {
   NaTrayManager *na_manager;
   ClutterColor bg_color;

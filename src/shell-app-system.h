@@ -8,30 +8,10 @@
 
 #include "shell-app.h"
 
-#define SHELL_TYPE_APP_SYSTEM                 (shell_app_system_get_type ())
-#define SHELL_APP_SYSTEM(obj)                 (G_TYPE_CHECK_INSTANCE_CAST ((obj), SHELL_TYPE_APP_SYSTEM, ShellAppSystem))
-#define SHELL_APP_SYSTEM_CLASS(klass)         (G_TYPE_CHECK_CLASS_CAST ((klass), SHELL_TYPE_APP_SYSTEM, ShellAppSystemClass))
-#define SHELL_IS_APP_SYSTEM(obj)              (G_TYPE_CHECK_INSTANCE_TYPE ((obj), SHELL_TYPE_APP_SYSTEM))
-#define SHELL_IS_APP_SYSTEM_CLASS(klass)      (G_TYPE_CHECK_CLASS_TYPE ((klass), SHELL_TYPE_APP_SYSTEM))
-#define SHELL_APP_SYSTEM_GET_CLASS(obj)       (G_TYPE_INSTANCE_GET_CLASS ((obj), SHELL_TYPE_APP_SYSTEM, ShellAppSystemClass))
+#define SHELL_TYPE_APP_SYSTEM (shell_app_system_get_type ())
+G_DECLARE_FINAL_TYPE (ShellAppSystem, shell_app_system,
+                      SHELL, APP_SYSTEM, GObject)
 
-typedef struct _ShellAppSystem ShellAppSystem;
-typedef struct _ShellAppSystemClass ShellAppSystemClass;
-typedef struct _ShellAppSystemPrivate ShellAppSystemPrivate;
-
-struct _ShellAppSystem
-{
-  GObject parent;
-
-  ShellAppSystemPrivate *priv;
-};
-
-struct _ShellAppSystemClass
-{
-  GObjectClass parent_class;
-};
-
-GType           shell_app_system_get_type    (void) G_GNUC_CONST;
 ShellAppSystem *shell_app_system_get_default (void);
 
 ShellApp       *shell_app_system_lookup_app                   (ShellAppSystem  *system,

@@ -23,6 +23,15 @@
 
 static void shell_generic_container_iface_init (ClutterContainerIface *iface);
 
+typedef struct _ShellGenericContainerPrivate ShellGenericContainerPrivate;
+
+struct _ShellGenericContainer
+{
+    StWidget parent;
+
+    ShellGenericContainerPrivate *priv;
+};
+
 struct _ShellGenericContainerPrivate {
   GHashTable *skip_paint;
 };

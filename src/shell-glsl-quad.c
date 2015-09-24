@@ -16,6 +16,7 @@
 #include <cogl/cogl.h>
 #include "shell-glsl-quad.h"
 
+typedef struct _ShellGLSLQuadPrivate ShellGLSLQuadPrivate;
 struct _ShellGLSLQuadPrivate
 {
   CoglPipeline  *pipeline;
@@ -38,7 +39,7 @@ shell_glsl_quad_paint (ClutterActor *actor)
   guint8 paint_opacity;
   ClutterActorBox box;
 
-  priv = self->priv;
+  priv = shell_glsl_quad_get_instance_private (self);
 
   paint_opacity = clutter_actor_get_paint_opacity (actor);
   clutter_actor_get_allocation_box (actor, &box);
@@ -106,7 +107,7 @@ shell_glsl_quad_dispose (GObject *gobject)
   ShellGLSLQuad *self = SHELL_GLSL_QUAD (gobject);
   ShellGLSLQuadPrivate *priv;
 
-  priv = self->priv;
+  priv = shell_glsl_quad_get_instance_private (self);
 
   g_clear_pointer (&priv->pipeline, cogl_object_unref);
 
@@ -116,7 +117,6 @@ shell_glsl_quad_dispose (GObject *gobject)
 static void
 shell_glsl_quad_init (ShellGLSLQuad *quad)
 {
-  quad->priv = shell_glsl_quad_get_instance_private (quad);
 }
 
 static void
@@ -124,6 +124,7 @@ shell_glsl_quad_constructed (GObject *object)
 {
   ShellGLSLQuad *self;
   ShellGLSLQuadClass *klass;
+  ShellGLSLQuadPrivate *priv;
   CoglContext *ctx =
     clutter_backend_get_cogl_context (clutter_get_default_backend ());
 
@@ -135,6 +136,7 @@ shell_glsl_quad_constructed (GObject *object)
   */
   klass = SHELL_GLSL_QUAD_GET_CLASS (object);
   self = SHELL_GLSL_QUAD (object);
+  priv = shell_glsl_quad_get_instance_private (self);
 
   if (G_UNLIKELY (klass->base_pipeline == NULL))
     {
@@ -145,9 +147,9 @@ shell_glsl_quad_constructed (GObject *object)
         klass->build_pipeline (self);
     }
 
-  self->priv->pipeline = cogl_pipeline_copy (klass->base_pipeline);
+  priv->pipeline = cogl_pipeline_copy (klass->base_pipeline);
 
-  cogl_pipeline_set_layer_null_texture (self->priv->pipeline, 0, COGL_TEXTURE_TYPE_2D);
+  cogl_pipeline_set_layer_null_texture (priv->pipeline, 0, COGL_TEXTURE_TYPE_2D);
 }
 
 static void
@@ -175,7 +177,8 @@ int
 shell_glsl_quad_get_uniform_location (ShellGLSLQuad *quad,
                                       const char    *name)
 {
-  return cogl_pipeline_get_uniform_location (quad->priv->pipeline, name);
+  ShellGLSLQuadPrivate *priv = shell_glsl_quad_get_instance_private (quad);
+  return cogl_pipeline_get_uniform_location (priv->pipeline, name);
 }
 
 /**
@@ -193,7 +196,8 @@ shell_glsl_quad_set_uniform_float (ShellGLSLQuad *quad,
                                    int            total_count,
                                    const float   *value)
 {
-  cogl_pipeline_set_uniform_float (quad->priv->pipeline, uniform,
+  ShellGLSLQuadPrivate *priv = shell_glsl_quad_get_instance_private (quad);
+  cogl_pipeline_set_uniform_float (priv->pipeline, uniform,
                                    n_components, total_count / n_components,
                                    value);
 }

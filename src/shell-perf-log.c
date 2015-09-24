@@ -53,11 +53,6 @@ struct _ShellPerfLog
   guint enabled : 1;
 };
 
-struct _ShellPerfLogClass
-{
-  GObjectClass parent_class;
-};
-
 struct _ShellPerfEvent
 {
   guint16 id;

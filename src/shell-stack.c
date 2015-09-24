@@ -16,9 +16,12 @@
 
 #include "shell-stack.h"
 
-G_DEFINE_TYPE (ShellStack,
-               shell_stack,
-               ST_TYPE_WIDGET);
+struct _ShellStack
+{
+    StWidget parent;
+};
+
+G_DEFINE_TYPE (ShellStack, shell_stack, ST_TYPE_WIDGET);
 
 static void
 shell_stack_allocate (ClutterActor           *self,

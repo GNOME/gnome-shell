@@ -7,17 +7,8 @@
 
 G_BEGIN_DECLS
 
-typedef struct _ShellPerfLog ShellPerfLog;
-typedef struct _ShellPerfLogClass ShellPerfLogClass;
-
-#define SHELL_TYPE_PERF_LOG              (shell_perf_log_get_type ())
-#define SHELL_PERF_LOG(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), SHELL_TYPE_PERF_LOG, ShellPerfLog))
-#define SHELL_PERF_LOG_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), SHELL_TYPE_PERF_LOG, ShellPerfLogClass))
-#define SHELL_IS_PERF_LOG(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), SHELL_TYPE_PERF_LOG))
-#define SHELL_IS_PERF_LOG_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), SHELL_TYPE_PERF_LOG))
-#define SHELL_PERF_LOG_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), SHELL_TYPE_PERF_LOG, ShellPerfLogClass))
-
-GType shell_perf_log_get_type (void) G_GNUC_CONST;
+#define SHELL_TYPE_PERF_LOG (shell_perf_log_get_type ())
+G_DECLARE_FINAL_TYPE (ShellPerfLog, shell_perf_log, SHELL, PERF_LOG, GObject)
 
 ShellPerfLog *shell_perf_log_get_default (void);
 

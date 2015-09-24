@@ -32,7 +32,6 @@
 
 #include <string.h>
 
-typedef struct _ShellPasswordPromptClass    ShellPasswordPromptClass;
 typedef struct _ShellPasswordPromptPrivate  ShellPasswordPromptPrivate;
 
 typedef enum
@@ -64,11 +63,6 @@ struct _ShellKeyringPrompt
   PromptingMode mode;
   gboolean shown;
 };
-
-typedef struct _ShellKeyringPromptClass
-{
-  GObjectClass parent_class;
-} ShellKeyringPromptClass;
 
 enum {
   PROP_0,

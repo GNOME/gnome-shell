@@ -9,31 +9,14 @@
 
 G_BEGIN_DECLS
 
-typedef struct _ShellApp ShellApp;
-typedef struct _ShellAppClass ShellAppClass;
-typedef struct _ShellAppPrivate ShellAppPrivate;
-typedef struct _ShellAppAction ShellAppAction;
-
-#define SHELL_TYPE_APP              (shell_app_get_type ())
-#define SHELL_APP(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), SHELL_TYPE_APP, ShellApp))
-#define SHELL_APP_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), SHELL_TYPE_APP, ShellAppClass))
-#define SHELL_IS_APP(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), SHELL_TYPE_APP))
-#define SHELL_IS_APP_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), SHELL_TYPE_APP))
-#define SHELL_APP_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), SHELL_TYPE_APP, ShellAppClass))
-
-struct _ShellAppClass
-{
-  GObjectClass parent_class;
-
-};
+#define SHELL_TYPE_APP (shell_app_get_type ())
+G_DECLARE_FINAL_TYPE (ShellApp, shell_app, SHELL, APP, GObject)
 
 typedef enum {
   SHELL_APP_STATE_STOPPED,
   SHELL_APP_STATE_STARTING,
   SHELL_APP_STATE_RUNNING
 } ShellAppState;
-
-GType shell_app_get_type (void) G_GNUC_CONST;
 
 const char *shell_app_get_id (ShellApp *app);
 

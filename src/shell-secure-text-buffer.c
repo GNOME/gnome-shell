@@ -30,19 +30,12 @@
 
 #include <string.h>
 
-typedef struct _ShellSecureTextBuffer            ShellSecureTextBuffer;
-typedef struct _ShellSecureTextBufferClass       ShellSecureTextBufferClass;
-
 struct _ShellSecureTextBuffer {
   ClutterTextBuffer parent;
   gchar *text;
   gsize text_size;
   gsize text_bytes;
   guint text_chars;
-};
-
-struct _ShellSecureTextBufferClass {
-  ClutterTextBufferClass parent_class;
 };
 
 /* Initial size of buffer, in bytes */
