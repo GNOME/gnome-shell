@@ -87,7 +87,6 @@ enum
   LAST_SIGNAL
 };
 
-#define ST_ENTRY_GET_PRIVATE(obj)     (G_TYPE_INSTANCE_GET_PRIVATE ((obj), ST_TYPE_ENTRY, StEntryPrivate))
 #define ST_ENTRY_PRIV(x) ((StEntry *) x)->priv
 
 
@@ -108,7 +107,7 @@ struct _StEntryPrivate
 
 static guint entry_signals[LAST_SIGNAL] = { 0, };
 
-G_DEFINE_TYPE (StEntry, st_entry, ST_TYPE_WIDGET);
+G_DEFINE_TYPE_WITH_PRIVATE (StEntry, st_entry, ST_TYPE_WIDGET);
 
 static GType st_entry_accessible_get_type (void) G_GNUC_CONST;
 
@@ -761,8 +760,6 @@ st_entry_class_init (StEntryClass *klass)
   StWidgetClass *widget_class = ST_WIDGET_CLASS (klass);
   GParamSpec *pspec;
 
-  g_type_class_add_private (klass, sizeof (StEntryPrivate));
-
   gobject_class->set_property = st_entry_set_property;
   gobject_class->get_property = st_entry_get_property;
   gobject_class->finalize = st_entry_finalize;
@@ -858,7 +855,7 @@ st_entry_init (StEntry *entry)
 {
   StEntryPrivate *priv;
 
-  priv = entry->priv = ST_ENTRY_GET_PRIVATE (entry);
+  priv = entry->priv = st_entry_get_instance_private (entry);
 
   priv->entry = g_object_new (ST_TYPE_IM_TEXT,
                               "line-alignment", PANGO_ALIGN_LEFT,

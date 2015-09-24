@@ -59,15 +59,6 @@
 static void st_box_container_iface_init (ClutterContainerIface *iface);
 static void st_box_scrollable_interface_init (StScrollableInterface *iface);
 
-G_DEFINE_TYPE_WITH_CODE (StBoxLayout, st_box_layout, ST_TYPE_WIDGET,
-                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_CONTAINER,
-                                                st_box_container_iface_init)
-                         G_IMPLEMENT_INTERFACE (ST_TYPE_SCROLLABLE,
-                                                st_box_scrollable_interface_init));
-
-#define BOX_LAYOUT_PRIVATE(o) \
-  (G_TYPE_INSTANCE_GET_PRIVATE ((o), ST_TYPE_BOX_LAYOUT, StBoxLayoutPrivate))
-
 enum {
   PROP_0,
 
@@ -83,6 +74,13 @@ struct _StBoxLayoutPrivate
   StAdjustment *hadjustment;
   StAdjustment *vadjustment;
 };
+
+G_DEFINE_TYPE_WITH_CODE (StBoxLayout, st_box_layout, ST_TYPE_WIDGET,
+                         G_ADD_PRIVATE (StBoxLayout)
+                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_CONTAINER,
+                                                st_box_container_iface_init)
+                         G_IMPLEMENT_INTERFACE (ST_TYPE_SCROLLABLE,
+                                                st_box_scrollable_interface_init));
 
 /*
  * StScrollable Interface Implementation
@@ -588,8 +586,6 @@ st_box_layout_class_init (StBoxLayoutClass *klass)
   StWidgetClass *widget_class = ST_WIDGET_CLASS (klass);
   GParamSpec *pspec;
 
-  g_type_class_add_private (klass, sizeof (StBoxLayoutPrivate));
-
   object_class->get_property = st_box_layout_get_property;
   object_class->set_property = st_box_layout_set_property;
   object_class->dispose = st_box_layout_dispose;
@@ -632,7 +628,7 @@ st_box_layout_class_init (StBoxLayoutClass *klass)
 static void
 st_box_layout_init (StBoxLayout *self)
 {
-  self->priv = BOX_LAYOUT_PRIVATE (self);
+  self->priv = st_box_layout_get_instance_private (self);
 
   g_signal_connect (self, "notify::layout-manager",
                     G_CALLBACK (on_layout_manager_notify), NULL);

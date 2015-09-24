@@ -58,9 +58,6 @@ enum
   PROP_INPUT_HINTS,
 };
 
-#define ST_IM_TEXT_GET_PRIVATE(obj)    \
-        (G_TYPE_INSTANCE_GET_PRIVATE ((obj), ST_TYPE_IM_TEXT, StIMTextPrivate))
-
 struct _StIMTextPrivate
 {
   GtkIMContext *im_context;
@@ -70,7 +67,7 @@ struct _StIMTextPrivate
   guint has_preedit   : 1;
 };
 
-G_DEFINE_TYPE (StIMText, st_im_text, CLUTTER_TYPE_TEXT)
+G_DEFINE_TYPE_WITH_PRIVATE (StIMText, st_im_text, CLUTTER_TYPE_TEXT)
 
 static void
 st_im_text_dispose (GObject *object)
@@ -461,8 +458,6 @@ st_im_text_class_init (StIMTextClass *klass)
   ClutterTextClass *text_class = CLUTTER_TEXT_CLASS (klass);
   GParamSpec *pspec;
 
-  g_type_class_add_private (klass, sizeof (StIMTextPrivate));
-
   object_class->dispose = st_im_text_dispose;
   object_class->set_property = st_im_text_set_property;
   object_class->get_property = st_im_text_get_property;
@@ -504,7 +499,7 @@ st_im_text_init (StIMText *self)
 {
   StIMTextPrivate *priv;
 
-  self->priv = priv = ST_IM_TEXT_GET_PRIVATE (self);
+  self->priv = priv = st_im_text_get_instance_private (self);
 
   priv->im_context = gtk_im_multicontext_new ();
   g_signal_connect (priv->im_context, "commit",

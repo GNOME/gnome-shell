@@ -36,8 +36,6 @@
 
 #include <cairo.h>
 
-G_DEFINE_TYPE(StDrawingArea, st_drawing_area, ST_TYPE_WIDGET);
-
 struct _StDrawingAreaPrivate {
   CoglTexture *texture;
   CoglPipeline *pipeline;
@@ -45,6 +43,8 @@ struct _StDrawingAreaPrivate {
   guint needs_repaint : 1;
   guint in_repaint : 1;
 };
+
+G_DEFINE_TYPE_WITH_PRIVATE (StDrawingArea, st_drawing_area, ST_TYPE_WIDGET);
 
 /* Signals */
 enum
@@ -182,15 +182,12 @@ st_drawing_area_class_init (StDrawingAreaClass *klass)
                   G_STRUCT_OFFSET (StDrawingAreaClass, repaint),
                   NULL, NULL, NULL,
                   G_TYPE_NONE, 0);
-
-  g_type_class_add_private (gobject_class, sizeof (StDrawingAreaPrivate));
 }
 
 static void
 st_drawing_area_init (StDrawingArea *area)
 {
-  area->priv = G_TYPE_INSTANCE_GET_PRIVATE (area, ST_TYPE_DRAWING_AREA,
-                                            StDrawingAreaPrivate);
+  area->priv = st_drawing_area_get_instance_private (area);
   area->priv->texture = NULL;
 }
 

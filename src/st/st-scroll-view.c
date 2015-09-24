@@ -69,14 +69,6 @@ static void clutter_container_iface_init (ClutterContainerIface *iface);
 
 static ClutterContainerIface *st_scroll_view_parent_iface = NULL;
 
-G_DEFINE_TYPE_WITH_CODE (StScrollView, st_scroll_view, ST_TYPE_BIN,
-                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_CONTAINER,
-                                                clutter_container_iface_init))
-
-#define SCROLL_VIEW_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), \
-                                                             ST_TYPE_SCROLL_VIEW, \
-                                                             StScrollViewPrivate))
-
 struct _StScrollViewPrivate
 {
   /* a pointer to the child; this is actually stored
@@ -105,6 +97,11 @@ struct _StScrollViewPrivate
   guint         hscrollbar_visible : 1;
   guint         vscrollbar_visible : 1;
 };
+
+G_DEFINE_TYPE_WITH_CODE (StScrollView, st_scroll_view, ST_TYPE_BIN,
+                         G_ADD_PRIVATE (StScrollView)
+                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_CONTAINER,
+                                                clutter_container_iface_init))
 
 enum {
   PROP_0,
@@ -790,8 +787,6 @@ st_scroll_view_class_init (StScrollViewClass *klass)
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
   StWidgetClass *widget_class = ST_WIDGET_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (StScrollViewPrivate));
-
   object_class->get_property = st_scroll_view_get_property;
   object_class->set_property = st_scroll_view_set_property;
   object_class->dispose = st_scroll_view_dispose;
@@ -874,7 +869,7 @@ st_scroll_view_class_init (StScrollViewClass *klass)
 static void
 st_scroll_view_init (StScrollView *self)
 {
-  StScrollViewPrivate *priv = self->priv = SCROLL_VIEW_PRIVATE (self);
+  StScrollViewPrivate *priv = self->priv = st_scroll_view_get_instance_private (self);
 
   priv->hscrollbar_policy = GTK_POLICY_AUTOMATIC;
   priv->vscrollbar_policy = GTK_POLICY_AUTOMATIC;
