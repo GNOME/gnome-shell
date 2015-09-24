@@ -68,7 +68,7 @@ shell_dbus_acquire_name (GDBusProxy  *bus,
                                                        NULL, /* cancellable */
                                                        &error)))
     {
-      g_printerr ("failed to acquire %s: %s\n", name, error->message);
+      g_printerr ("failed to acquire %s: %s\n", name, error ? error->message : "");
       if (!fatal)
         return;
       exit (1);
