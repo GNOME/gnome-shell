@@ -43,7 +43,7 @@ enum
   LAST_SIGNAL
 };
 
-G_DEFINE_TYPE (ShellTrayManager, shell_tray_manager, G_TYPE_OBJECT);
+G_DEFINE_TYPE_WITH_PRIVATE (ShellTrayManager, shell_tray_manager, G_TYPE_OBJECT);
 
 static guint shell_tray_manager_signals [LAST_SIGNAL] = { 0 };
 
@@ -114,8 +114,8 @@ shell_tray_manager_get_property(GObject         *object,
 static void
 shell_tray_manager_init (ShellTrayManager *manager)
 {
-  manager->priv = G_TYPE_INSTANCE_GET_PRIVATE (manager, SHELL_TYPE_TRAY_MANAGER,
-                                               ShellTrayManagerPrivate);
+  manager->priv = shell_tray_manager_get_instance_private (manager);
+
   manager->priv->na_manager = na_tray_manager_new ();
 
   manager->priv->icons = g_hash_table_new_full (NULL, NULL,
@@ -143,8 +143,6 @@ static void
 shell_tray_manager_class_init (ShellTrayManagerClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-
-  g_type_class_add_private (klass, sizeof (ShellTrayManagerPrivate));
 
   gobject_class->finalize = shell_tray_manager_finalize;
   gobject_class->set_property = shell_tray_manager_set_property;

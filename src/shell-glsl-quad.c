@@ -16,12 +16,12 @@
 #include <cogl/cogl.h>
 #include "shell-glsl-quad.h"
 
-G_DEFINE_TYPE (ShellGLSLQuad, shell_glsl_quad, CLUTTER_TYPE_ACTOR);
-
 struct _ShellGLSLQuadPrivate
 {
   CoglPipeline  *pipeline;
 };
+
+G_DEFINE_TYPE_WITH_PRIVATE (ShellGLSLQuad, shell_glsl_quad, CLUTTER_TYPE_ACTOR);
 
 static gboolean
 shell_glsl_quad_get_paint_volume (ClutterActor       *actor,
@@ -116,7 +116,7 @@ shell_glsl_quad_dispose (GObject *gobject)
 static void
 shell_glsl_quad_init (ShellGLSLQuad *quad)
 {
-  quad->priv = G_TYPE_INSTANCE_GET_PRIVATE (quad, SHELL_TYPE_GLSL_QUAD, ShellGLSLQuadPrivate);
+  quad->priv = shell_glsl_quad_get_instance_private (quad);
 }
 
 static void
@@ -161,8 +161,6 @@ shell_glsl_quad_class_init (ShellGLSLQuadClass *klass)
 
   actor_class->get_paint_volume = shell_glsl_quad_get_paint_volume;
   actor_class->paint = shell_glsl_quad_paint;
-
-  g_type_class_add_private (klass, sizeof (ShellGLSLQuadPrivate));
 }
 
 /**

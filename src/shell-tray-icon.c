@@ -25,7 +25,7 @@ struct _ShellTrayIconPrivate
   char *title, *wm_class;
 };
 
-G_DEFINE_TYPE (ShellTrayIcon, shell_tray_icon, SHELL_TYPE_GTK_EMBED);
+G_DEFINE_TYPE_WITH_PRIVATE (ShellTrayIcon, shell_tray_icon, SHELL_TYPE_GTK_EMBED);
 
 static void
 shell_tray_icon_finalize (GObject *object)
@@ -117,8 +117,6 @@ shell_tray_icon_class_init (ShellTrayIconClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (ShellTrayIconPrivate));
-
   object_class->get_property = shell_tray_icon_get_property;
   object_class->constructed  = shell_tray_icon_constructed;
   object_class->finalize     = shell_tray_icon_finalize;
@@ -149,8 +147,7 @@ shell_tray_icon_class_init (ShellTrayIconClass *klass)
 static void
 shell_tray_icon_init (ShellTrayIcon *icon)
 {
-  icon->priv = G_TYPE_INSTANCE_GET_PRIVATE (icon, SHELL_TYPE_TRAY_ICON,
-                                            ShellTrayIconPrivate);
+  icon->priv = shell_tray_icon_get_instance_private (icon);
 }
 
 /*

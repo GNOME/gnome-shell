@@ -25,7 +25,7 @@ struct _ShellGtkEmbedPrivate
   guint window_created_handler;
 };
 
-G_DEFINE_TYPE (ShellGtkEmbed, shell_gtk_embed, CLUTTER_TYPE_CLONE);
+G_DEFINE_TYPE_WITH_PRIVATE (ShellGtkEmbed, shell_gtk_embed, CLUTTER_TYPE_CLONE);
 
 static void shell_gtk_embed_set_window (ShellGtkEmbed       *embed,
                                         ShellEmbeddedWindow *window);
@@ -327,8 +327,6 @@ shell_gtk_embed_class_init (ShellGtkEmbedClass *klass)
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (ShellGtkEmbedPrivate));
-
   object_class->get_property = shell_gtk_embed_get_property;
   object_class->set_property = shell_gtk_embed_set_property;
   object_class->dispose      = shell_gtk_embed_dispose;
@@ -351,8 +349,7 @@ shell_gtk_embed_class_init (ShellGtkEmbedClass *klass)
 static void
 shell_gtk_embed_init (ShellGtkEmbed *embed)
 {
-  embed->priv = G_TYPE_INSTANCE_GET_PRIVATE (embed, SHELL_TYPE_GTK_EMBED,
-                                             ShellGtkEmbedPrivate);
+  embed->priv = shell_gtk_embed_get_instance_private (embed);
 }
 
 /*

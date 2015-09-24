@@ -23,8 +23,6 @@
  * - Actor is mapped [actor and all parents visible, actor in stage]
  */
 
-G_DEFINE_TYPE (ShellEmbeddedWindow, shell_embedded_window, GTK_TYPE_WINDOW);
-
 enum {
    PROP_0
 };
@@ -34,6 +32,10 @@ struct _ShellEmbeddedWindowPrivate {
 
   GdkRectangle position;
 };
+
+G_DEFINE_TYPE_WITH_PRIVATE (ShellEmbeddedWindow,
+                            shell_embedded_window,
+                            GTK_TYPE_WINDOW);
 
 /*
  * The normal gtk_window_show() starts all of the complicated asynchronous
@@ -134,8 +136,6 @@ shell_embedded_window_class_init (ShellEmbeddedWindowClass *klass)
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
   GtkContainerClass *container_class = GTK_CONTAINER_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (ShellEmbeddedWindowPrivate));
-
   object_class->constructor     = shell_embedded_window_constructor;
 
   widget_class->show            = shell_embedded_window_show;
@@ -148,8 +148,7 @@ shell_embedded_window_class_init (ShellEmbeddedWindowClass *klass)
 static void
 shell_embedded_window_init (ShellEmbeddedWindow *window)
 {
-  window->priv = G_TYPE_INSTANCE_GET_PRIVATE (window, SHELL_TYPE_EMBEDDED_WINDOW,
-                                              ShellEmbeddedWindowPrivate);
+  window->priv = shell_embedded_window_get_instance_private (window);
 }
 
 /*

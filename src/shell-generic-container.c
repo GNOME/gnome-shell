@@ -23,15 +23,16 @@
 
 static void shell_generic_container_iface_init (ClutterContainerIface *iface);
 
-G_DEFINE_TYPE_WITH_CODE(ShellGenericContainer,
-                        shell_generic_container,
-                        ST_TYPE_WIDGET,
-                        G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_CONTAINER,
-                                               shell_generic_container_iface_init));
-
 struct _ShellGenericContainerPrivate {
   GHashTable *skip_paint;
 };
+
+G_DEFINE_TYPE_WITH_CODE(ShellGenericContainer,
+                        shell_generic_container,
+                        ST_TYPE_WIDGET,
+                        G_ADD_PRIVATE (ShellGenericContainer)
+                        G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_CONTAINER,
+                                               shell_generic_container_iface_init));
 
 /* Signals */
 enum
@@ -385,8 +386,6 @@ shell_generic_container_class_init (ShellGenericContainerClass *klass)
                   0,
                   NULL, NULL, NULL,
                   G_TYPE_NONE, 2, CLUTTER_TYPE_ACTOR_BOX, CLUTTER_TYPE_ALLOCATION_FLAGS);
-
-  g_type_class_add_private (gobject_class, sizeof (ShellGenericContainerPrivate));
 }
 
 static void
@@ -407,8 +406,7 @@ shell_generic_container_iface_init (ClutterContainerIface *iface)
 static void
 shell_generic_container_init (ShellGenericContainer *area)
 {
-  area->priv = G_TYPE_INSTANCE_GET_PRIVATE (area, SHELL_TYPE_GENERIC_CONTAINER,
-                                            ShellGenericContainerPrivate);
+  area->priv = shell_generic_container_get_instance_private (area);
   area->priv->skip_paint = g_hash_table_new (NULL, NULL);
 }
 

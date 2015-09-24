@@ -60,7 +60,7 @@ struct _ShellNetworkAgentPrivate {
   GHashTable *requests;
 };
 
-G_DEFINE_TYPE (ShellNetworkAgent, shell_network_agent, NM_TYPE_SECRET_AGENT)
+G_DEFINE_TYPE_WITH_PRIVATE (ShellNetworkAgent, shell_network_agent, NM_TYPE_SECRET_AGENT)
 
 static const SecretSchema network_agent_schema = {
     "org.freedesktop.NetworkManager.Connection",
@@ -114,8 +114,7 @@ shell_network_agent_init (ShellNetworkAgent *agent)
 {
   ShellNetworkAgentPrivate *priv;
 
-  priv = agent->priv = G_TYPE_INSTANCE_GET_PRIVATE (agent, SHELL_TYPE_NETWORK_AGENT, ShellNetworkAgentPrivate);
-
+  priv = agent->priv = shell_network_agent_get_instance_private (agent);
   priv->requests = g_hash_table_new_full (g_str_hash, g_str_equal,
 					  g_free, shell_agent_request_free);
 }
@@ -853,6 +852,4 @@ shell_network_agent_class_init (ShellNetworkAgentClass *klass)
                                                  G_TYPE_NONE,
                                                  1, /* n_params */
                                                  G_TYPE_STRING);
-
-  g_type_class_add_private (klass, sizeof (ShellNetworkAgentPrivate));
 }

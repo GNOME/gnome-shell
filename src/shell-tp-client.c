@@ -6,8 +6,6 @@
 
 #include <telepathy-glib/telepathy-glib.h>
 
-G_DEFINE_TYPE(ShellTpClient, shell_tp_client, TP_TYPE_BASE_CLIENT)
-
 struct _ShellTpClientPrivate
 {
   ShellTpClientObserveChannelsImpl observe_impl;
@@ -22,6 +20,8 @@ struct _ShellTpClientPrivate
   gpointer user_data_handle_channels;
   GDestroyNotify destroy_handle_channels;
 };
+
+G_DEFINE_TYPE_WITH_PRIVATE (ShellTpClient, shell_tp_client, TP_TYPE_BASE_CLIENT)
 
 /**
  * ShellTpClientObserveChannelsImpl:
@@ -84,8 +84,7 @@ shell_tp_client_init (ShellTpClient *self)
 {
   GHashTable *filter;
 
-  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, SHELL_TYPE_TP_CLIENT,
-      ShellTpClientPrivate);
+  self->priv = shell_tp_client_get_instance_private (self);
 
   /* We only care about single-user text-based chats */
   filter = tp_asv_new (
@@ -197,8 +196,6 @@ shell_tp_client_class_init (ShellTpClientClass *cls)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (cls);
   TpBaseClientClass *base_clt_cls = TP_BASE_CLIENT_CLASS (cls);
-
-  g_type_class_add_private (cls, sizeof (ShellTpClientPrivate));
 
   object_class->dispose = shell_tp_client_dispose;
 
