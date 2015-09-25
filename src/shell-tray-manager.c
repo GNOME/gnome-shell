@@ -279,14 +279,6 @@ na_tray_icon_added (NaTrayManager *na_manager, GtkWidget *socket,
   GtkWidget *win;
   ShellTrayManagerChild *child;
 
-  /* We don't need the NaTrayIcon to be composited on the window we
-   * put it in: the window is the same size as the tray icon
-   * and transparent. We can just use the default X handling of
-   * subwindows as mode of SOURCE (replace the parent with the
-   * child) and then composite the parent onto the stage.
-   */
-  na_tray_child_set_composited (NA_TRAY_CHILD (socket), FALSE);
-
   win = shell_embedded_window_new ();
   gtk_container_add (GTK_CONTAINER (win), socket);
 
