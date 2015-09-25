@@ -97,16 +97,16 @@ na_tray_manager_init (NaTrayManager *manager)
   manager->fg.green = 0;
   manager->fg.blue = 0;
 
-  manager->error.red = 0xffff;
+  manager->error.red = 0xff;
   manager->error.green = 0;
   manager->error.blue = 0;
 
-  manager->warning.red = 0xffff;
-  manager->warning.green = 0xffff;
+  manager->warning.red = 0xff;
+  manager->warning.green = 0xff;
   manager->warning.blue = 0;
 
   manager->success.red = 0;
-  manager->success.green = 0xffff;
+  manager->success.green = 0xff;
   manager->success.blue = 0;
 }
 
@@ -658,18 +658,18 @@ na_tray_manager_set_colors_property (NaTrayManager *manager)
   atom = gdk_x11_get_xatom_by_name_for_display (display,
                                                 "_NET_SYSTEM_TRAY_COLORS");
 
-  data[0] = manager->fg.red;
-  data[1] = manager->fg.green;
-  data[2] = manager->fg.blue;
-  data[3] = manager->error.red;
-  data[4] = manager->error.green;
-  data[5] = manager->error.blue;
-  data[6] = manager->warning.red;
-  data[7] = manager->warning.green;
-  data[8] = manager->warning.blue;
-  data[9] = manager->success.red;
-  data[10] = manager->success.green;
-  data[11] = manager->success.blue;
+  data[0] = manager->fg.red * 0x101;
+  data[1] = manager->fg.green * 0x101;
+  data[2] = manager->fg.blue * 0x101;
+  data[3] = manager->error.red * 0x101;
+  data[4] = manager->error.green * 0x101;
+  data[5] = manager->error.blue * 0x101;
+  data[6] = manager->warning.red * 0x101;
+  data[7] = manager->warning.green * 0x101;
+  data[8] = manager->warning.blue * 0x101;
+  data[9] = manager->success.red * 0x101;
+  data[10] = manager->success.green * 0x101;
+  data[11] = manager->success.blue * 0x101;
 
   XChangeProperty (GDK_DISPLAY_XDISPLAY (display),
                    GDK_WINDOW_XID (window),
@@ -862,17 +862,17 @@ na_tray_manager_set_orientation (NaTrayManager  *manager,
 
 void
 na_tray_manager_set_colors (NaTrayManager *manager,
-                            GdkColor      *fg,
-                            GdkColor      *error,
-                            GdkColor      *warning,
-                            GdkColor      *success)
+                            ClutterColor  *fg,
+                            ClutterColor  *error,
+                            ClutterColor  *warning,
+                            ClutterColor  *success)
 {
   g_return_if_fail (NA_IS_TRAY_MANAGER (manager));
 
-  if (!gdk_color_equal (&manager->fg, fg) ||
-      !gdk_color_equal (&manager->error, error) ||
-      !gdk_color_equal (&manager->warning, warning) ||
-      !gdk_color_equal (&manager->success, success))
+  if (!clutter_color_equal (&manager->fg, fg) ||
+      !clutter_color_equal (&manager->error, error) ||
+      !clutter_color_equal (&manager->warning, warning) ||
+      !clutter_color_equal (&manager->success, success))
     {
       manager->fg = *fg;
       manager->error = *error;
