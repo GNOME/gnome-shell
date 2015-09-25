@@ -201,7 +201,7 @@ struct _AuthRequest {
   gchar          *cookie;
   GList          *identities;
 
-  GSimpleAsyncResult *simple;
+  GTask *simple;
 };
 
 static void
@@ -338,30 +338,28 @@ auth_request_complete (AuthRequest *request,
                        gboolean     dismissed)
 {
   ShellPolkitAuthenticationAgent *agent = request->agent;
+  gboolean is_current = agent->current_request == request;
+
+  print_debug ("COMPLETING %s %s cookie %s", is_current ? "CURRENT" : "SCHEDULED",
+               request->action_id, request->cookie);
+
+  if (!is_current)
+    agent->scheduled_requests = g_list_remove (agent->scheduled_requests, request);
 
   if (dismissed)
-    g_simple_async_result_set_error (request->simple,
-                                     POLKIT_ERROR,
-                                     POLKIT_ERROR_CANCELLED,
-                                     _("Authentication dialog was dismissed by the user"));
-
-  if (agent->current_request == request)
-    {
-      print_debug ("COMPLETING CURRENT %s cookie %s", request->action_id, request->cookie);
-
-      g_simple_async_result_complete_in_idle (request->simple);
-      auth_request_free (request);
-
-      agent->current_request = NULL;
-
-      maybe_process_next_request (agent);
-    }
+    g_task_return_new_error (request->simple,
+                             POLKIT_ERROR,
+                             POLKIT_ERROR_CANCELLED,
+                             _("Authentication dialog was dismissed by the user"));
   else
+    g_task_return_boolean (request->simple, TRUE);
+
+  auth_request_free (request);
+
+  if (is_current)
     {
-      print_debug ("COMPLETING SCHEDULED %s cookie %s", request->action_id, request->cookie);
-      agent->scheduled_requests = g_list_remove (agent->scheduled_requests, request);
-      g_simple_async_result_complete_in_idle (request->simple);
-      auth_request_free (request);
+      agent->current_request = NULL;
+      maybe_process_next_request (agent);
     }
 }
 
@@ -408,10 +406,7 @@ initiate_authentication (PolkitAgentListener  *listener,
   request->cookie = g_strdup (cookie);
   request->identities = g_list_copy (identities);
   g_list_foreach (request->identities, (GFunc) g_object_ref, NULL);
-  request->simple = g_simple_async_result_new (G_OBJECT (listener),
-                                               callback,
-                                               user_data,
-                                               initiate_authentication);
+  request->simple = g_task_new (listener, NULL, callback, user_data);
   request->cancellable = cancellable;
   request->handler_id = g_cancellable_connect (request->cancellable,
                                                G_CALLBACK (on_request_cancelled),
@@ -429,11 +424,7 @@ initiate_authentication_finish (PolkitAgentListener  *listener,
                                 GAsyncResult         *res,
                                 GError              **error)
 {
-  GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
-  if (g_simple_async_result_propagate_error (simple, error))
-    return FALSE;
-  else
-    return TRUE;
+  return g_task_propagate_boolean (G_TASK (res), error);
 }
 
 void
