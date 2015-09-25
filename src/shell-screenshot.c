@@ -55,16 +55,16 @@ shell_screenshot_init (ShellScreenshot *screenshot)
 }
 
 static void
-on_screenshot_written (GObject *source,
+on_screenshot_written (GObject      *source,
                        GAsyncResult *result,
-                       gpointer user_data)
+                       gpointer      user_data)
 {
   ShellScreenshot *screenshot = SHELL_SCREENSHOT (source);
   ShellScreenshotPrivate *priv = screenshot->priv;
 
   if (priv->callback)
     priv->callback (screenshot,
-                    g_simple_async_result_get_op_res_gboolean (G_SIMPLE_ASYNC_RESULT (result)),
+                    g_task_propagate_boolean (G_TASK (result), NULL),
                     &priv->screenshot_area,
                     priv->filename_used);
 
@@ -165,8 +165,9 @@ prepare_write_stream (const gchar *filename,
 }
 
 static void
-write_screenshot_thread (GSimpleAsyncResult *result,
-                         GObject *object,
+write_screenshot_thread (GTask        *result,
+                         gpointer      object,
+                         gpointer      task_data,
                          GCancellable *cancellable)
 {
   cairo_status_t status;
@@ -202,7 +203,7 @@ write_screenshot_thread (GSimpleAsyncResult *result,
     }
 
 
-  g_simple_async_result_set_op_res_gboolean (result, status == CAIRO_STATUS_SUCCESS);
+  g_task_return_boolean (result, status == CAIRO_STATUS_SUCCESS);
 
   g_clear_object (&stream);
 }
@@ -304,7 +305,7 @@ grab_screenshot (ClutterActor *stage,
   MetaScreen *screen;
   MetaCursorTracker *tracker;
   int width, height;
-  GSimpleAsyncResult *result;
+  GTask *result;
   GSettings *settings;
   ShellScreenshotPrivate *priv = screenshot->priv;
 
@@ -367,8 +368,8 @@ grab_screenshot (ClutterActor *stage,
 
   g_signal_handlers_disconnect_by_func (stage, (void *)grab_screenshot, (gpointer)screenshot);
 
-  result = g_simple_async_result_new (G_OBJECT (screenshot), on_screenshot_written, NULL, grab_screenshot);
-  g_simple_async_result_run_in_thread (result, write_screenshot_thread, G_PRIORITY_DEFAULT, NULL);
+  result = g_task_new (screenshot, NULL, on_screenshot_written, NULL);
+  g_task_run_in_thread (result, write_screenshot_thread);
   g_object_unref (result);
 }
 
@@ -376,7 +377,7 @@ static void
 grab_area_screenshot (ClutterActor *stage,
                       ShellScreenshot *screenshot)
 {
-  GSimpleAsyncResult *result;
+  GTask *result;
   ShellScreenshotPrivate *priv = screenshot->priv;
 
   do_grab_screenshot (screenshot,
@@ -386,8 +387,8 @@ grab_area_screenshot (ClutterActor *stage,
                       priv->screenshot_area.height);
 
   g_signal_handlers_disconnect_by_func (stage, (void *)grab_area_screenshot, (gpointer)screenshot);
-  result = g_simple_async_result_new (G_OBJECT (screenshot), on_screenshot_written, NULL, grab_area_screenshot);
-  g_simple_async_result_run_in_thread (result, write_screenshot_thread, G_PRIORITY_DEFAULT, NULL);
+  result = g_task_new (screenshot, NULL, on_screenshot_written, NULL);
+  g_task_run_in_thread (result, write_screenshot_thread);
   g_object_unref (result);
 }
 
@@ -396,7 +397,7 @@ grab_window_screenshot (ClutterActor *stage,
                         ShellScreenshot *screenshot)
 {
   ShellScreenshotPrivate *priv = screenshot->priv;
-  GSimpleAsyncResult *result;
+  GTask *result;
   GSettings *settings;
   MetaScreen *screen = shell_global_get_screen (priv->global);
   MetaCursorTracker *tracker;
@@ -436,8 +437,8 @@ grab_window_screenshot (ClutterActor *stage,
   g_object_unref (settings);
 
   g_signal_handlers_disconnect_by_func (stage, (void *)grab_window_screenshot, (gpointer)screenshot);
-  result = g_simple_async_result_new (G_OBJECT (screenshot), on_screenshot_written, NULL, grab_window_screenshot);
-  g_simple_async_result_run_in_thread (result, write_screenshot_thread, G_PRIORITY_DEFAULT, NULL);
+  result = g_task_new (screenshot, NULL, on_screenshot_written, NULL);
+  g_task_run_in_thread (result, write_screenshot_thread);
   g_object_unref (result);
 }
 
