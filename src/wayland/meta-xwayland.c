@@ -55,13 +55,6 @@ associate_window_with_surface (MetaWindow         *window,
 {
   MetaDisplay *display = window->display;
 
-  /* If the window has an existing surface, like if we're
-   * undecorating or decorating the window, then we need
-   * to detach the window from its old surface.
-   */
-  if (window->surface)
-    window->surface->window = NULL;
-
   if (!meta_wayland_surface_assign_role (surface,
                                          META_TYPE_WAYLAND_SURFACE_ROLE_XWAYLAND))
     {
@@ -87,6 +80,16 @@ associate_window_with_surface_id (MetaXWaylandManager *manager,
                                   guint32              surface_id)
 {
   struct wl_resource *resource;
+
+  /* If the window has an existing surface, like if we're
+   * undecorating or decorating the window, then we need
+   * to detach the window from its old surface.
+   */
+  if (window->surface)
+    {
+      meta_wayland_surface_set_window (window->surface, NULL);
+      window->surface = NULL;
+    }
 
   resource = wl_client_get_object (manager->client, surface_id);
   if (resource)
