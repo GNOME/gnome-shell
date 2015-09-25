@@ -56,8 +56,7 @@ struct _ShellKeyringPrompt
   gchar *continue_label;
   gchar *cancel_label;
 
-  GcrPromptReply last_reply;
-  GSimpleAsyncResult *async_result;
+  GTask *task;
   ClutterText *password_actor;
   ClutterText *confirm_actor;
   PromptingMode mode;
@@ -282,9 +281,9 @@ shell_keyring_prompt_dispose (GObject *obj)
   if (self->shown)
     gcr_prompt_close (GCR_PROMPT (self));
 
-  if (self->async_result)
+  if (self->task)
     shell_keyring_prompt_cancel (self);
-  g_assert (self->async_result == NULL);
+  g_assert (self->task == NULL);
 
   shell_keyring_prompt_set_password_actor (self, NULL);
   shell_keyring_prompt_set_confirm_actor (self, NULL);
@@ -414,14 +413,14 @@ shell_keyring_prompt_password_async (GcrPrompt          *prompt,
   ShellKeyringPrompt *self = SHELL_KEYRING_PROMPT (prompt);
   GObject *obj;
 
-  if (self->async_result != NULL) {
+  if (self->task != NULL) {
       g_warning ("this prompt can only show one prompt at a time");
       return;
   }
 
   self->mode = PROMPTING_FOR_PASSWORD;
-  self->async_result = g_simple_async_result_new (G_OBJECT (self), callback, user_data,
-                                                  shell_keyring_prompt_password_async);
+  self->task = g_task_new (self, NULL, callback, user_data);
+  g_task_set_source_tag (self->task, shell_keyring_prompt_password_async);
 
   obj = G_OBJECT (self);
   g_object_notify (obj, "password-visible");
@@ -438,18 +437,11 @@ shell_keyring_prompt_password_finish (GcrPrompt    *prompt,
                                       GAsyncResult *result,
                                       GError      **error)
 {
-  ShellKeyringPrompt *self = SHELL_KEYRING_PROMPT (prompt);
-
-  g_return_val_if_fail (g_simple_async_result_is_valid (result, G_OBJECT (prompt),
+  g_return_val_if_fail (g_task_get_source_object (G_TASK (result)) == prompt, NULL);
+  g_return_val_if_fail (g_async_result_is_tagged (result,
                         shell_keyring_prompt_password_async), NULL);
 
-  if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (result), error))
-    return NULL;
-
-  if (self->last_reply == GCR_PROMPT_REPLY_CONTINUE)
-    return clutter_text_get_text (self->password_actor);
-
-  return NULL;
+  return g_task_propagate_pointer (G_TASK (result), error);
 }
 
 static void
@@ -461,14 +453,14 @@ shell_keyring_prompt_confirm_async (GcrPrompt          *prompt,
   ShellKeyringPrompt *self = SHELL_KEYRING_PROMPT (prompt);
   GObject *obj;
 
-  if (self->async_result != NULL) {
+  if (self->task != NULL) {
       g_warning ("this prompt is already prompting");
       return;
   }
 
   self->mode = PROMPTING_FOR_CONFIRM;
-  self->async_result = g_simple_async_result_new (G_OBJECT (self), callback, user_data,
-                                                  shell_keyring_prompt_confirm_async);
+  self->task = g_task_new (self, NULL, callback, user_data);
+  g_task_set_source_tag (self->task, shell_keyring_prompt_confirm_async);
 
   obj = G_OBJECT (self);
   g_object_notify (obj, "password-visible");
@@ -485,15 +477,16 @@ shell_keyring_prompt_confirm_finish (GcrPrompt    *prompt,
                                      GAsyncResult *result,
                                      GError      **error)
 {
-  ShellKeyringPrompt *self = SHELL_KEYRING_PROMPT (prompt);
+  GTask *task = G_TASK (result);
+  gssize res;
 
-  g_return_val_if_fail (g_simple_async_result_is_valid (result, G_OBJECT (prompt),
+  g_return_val_if_fail (g_task_get_source_object (task) == prompt,
+                        GCR_PROMPT_REPLY_CANCEL);
+  g_return_val_if_fail (g_async_result_is_tagged (result,
                         shell_keyring_prompt_confirm_async), GCR_PROMPT_REPLY_CANCEL);
 
-  if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (result), error))
-    return GCR_PROMPT_REPLY_CANCEL;
-
-  return self->last_reply;
+  res = g_task_propagate_int (task, error);
+  return res == -1 ? GCR_PROMPT_REPLY_CANCEL : (GcrPromptReply)res;
 }
 
 static void
@@ -712,19 +705,20 @@ shell_keyring_prompt_set_confirm_actor (ShellKeyringPrompt *self,
 gboolean
 shell_keyring_prompt_complete (ShellKeyringPrompt *self)
 {
-  GSimpleAsyncResult *res;
+  GTask *res;
+  PromptingMode mode;
   const gchar *password;
   const gchar *confirm;
   const gchar *env;
 
   g_return_val_if_fail (SHELL_IS_KEYRING_PROMPT (self), FALSE);
   g_return_val_if_fail (self->mode != PROMPTING_NONE, FALSE);
-  g_return_val_if_fail (self->async_result != NULL, FALSE);
+  g_return_val_if_fail (self->task != NULL, FALSE);
+
+  password = clutter_text_get_text (self->password_actor);
 
   if (self->mode == PROMPTING_FOR_PASSWORD)
     {
-      password = clutter_text_get_text (self->password_actor);
-
       /* Is it a new password? */
       if (self->password_new)
         {
@@ -750,13 +744,15 @@ shell_keyring_prompt_complete (ShellKeyringPrompt *self)
       g_object_notify (G_OBJECT (self), "password-strength");
     }
 
-  self->last_reply = GCR_PROMPT_REPLY_CONTINUE;
-
-  res = self->async_result;
-  self->async_result = NULL;
+  res = self->task;
+  mode = self->mode;
+  self->task = NULL;
   self->mode = PROMPTING_NONE;
 
-  g_simple_async_result_complete (res);
+  if (mode == PROMPTING_FOR_CONFIRM)
+    g_task_return_int (res, (gssize)GCR_PROMPT_REPLY_CONTINUE);
+  else
+    g_task_return_pointer (res, (gpointer)password, NULL);
   g_object_unref (res);
 
   return TRUE;
@@ -771,7 +767,8 @@ shell_keyring_prompt_complete (ShellKeyringPrompt *self)
 void
 shell_keyring_prompt_cancel (ShellKeyringPrompt *self)
 {
-  GSimpleAsyncResult *res;
+  GTask *res;
+  PromptingMode mode;
 
   g_return_if_fail (SHELL_IS_KEYRING_PROMPT (self));
 
@@ -786,13 +783,16 @@ shell_keyring_prompt_cancel (ShellKeyringPrompt *self)
       return;
     }
 
-  g_return_if_fail (self->async_result != NULL);
-  self->last_reply = GCR_PROMPT_REPLY_CANCEL;
+  g_return_if_fail (self->task != NULL);
 
-  res = self->async_result;
-  self->async_result = NULL;
+  res = self->task;
+  mode = self->mode;
+  self->task = NULL;
   self->mode = PROMPTING_NONE;
 
-  g_simple_async_result_complete_in_idle (res);
+  if (mode == PROMPTING_FOR_CONFIRM)
+    g_task_return_int (res, (gssize) GCR_PROMPT_REPLY_CANCEL);
+  else
+    g_task_return_pointer (res, NULL, NULL);
   g_object_unref (res);
 }
