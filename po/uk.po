@@ -1366,7 +1366,7 @@ msgstr "Інструмент керування, яким було створе�
 #.
 #: ../clutter/clutter-main.c:729
 msgid "default:LTR"
-msgstr "типово:LTR"
+msgstr "default:LTR"
 
 #: ../clutter/clutter-main.c:1398
 msgid "Show frames per second"
