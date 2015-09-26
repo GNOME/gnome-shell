@@ -38,10 +38,7 @@
 
 typedef struct _StDrawingAreaPrivate StDrawingAreaPrivate;
 struct _StDrawingAreaPrivate {
-  CoglTexture *texture;
-  CoglPipeline *pipeline;
   cairo_t *context;
-  guint needs_repaint : 1;
   guint in_repaint : 1;
 };
 
@@ -56,124 +53,61 @@ enum
 
 static guint st_drawing_area_signals [LAST_SIGNAL] = { 0 };
 
-static void
-st_drawing_area_dispose (GObject *object)
+static gboolean
+draw_content (ClutterCanvas *canvas,
+              cairo_t       *cr,
+              int            width,
+              int            height,
+              gpointer       user_data)
 {
-  StDrawingArea *area = ST_DRAWING_AREA (object);
+  StDrawingArea *area = ST_DRAWING_AREA (user_data);
   StDrawingAreaPrivate *priv = st_drawing_area_get_instance_private (area);
 
-  g_clear_pointer (&priv->pipeline, cogl_object_unref);
-  g_clear_pointer (&priv->texture, cogl_object_unref);
+  priv->context = cr;
+  priv->in_repaint = TRUE;
 
-  G_OBJECT_CLASS (st_drawing_area_parent_class)->dispose (object);
+  clutter_cairo_clear (cr);
+  g_signal_emit (area, st_drawing_area_signals[REPAINT], 0);
+
+  priv->context = NULL;
+  priv->in_repaint = FALSE;
+
+  return TRUE;
 }
 
 static void
-st_drawing_area_paint (ClutterActor *self)
+st_drawing_area_allocate (ClutterActor          *self,
+                          const ClutterActorBox *box,
+                          ClutterAllocationFlags flags)
 {
-  StDrawingArea *area = ST_DRAWING_AREA (self);
-  StDrawingAreaPrivate *priv = st_drawing_area_get_instance_private (area);
   StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (self));
-  ClutterActorBox allocation_box;
+  ClutterContent *content = clutter_actor_get_content (self);
   ClutterActorBox content_box;
   int width, height;
 
-  (CLUTTER_ACTOR_CLASS (st_drawing_area_parent_class))->paint (self);
-
-  clutter_actor_get_allocation_box (self, &allocation_box);
-  st_theme_node_get_content_box (theme_node, &allocation_box, &content_box);
+  clutter_actor_set_allocation (self, box, flags);
+  st_theme_node_get_content_box (theme_node, box, &content_box);
 
   width = (int)(0.5 + content_box.x2 - content_box.x1);
   height = (int)(0.5 + content_box.y2 - content_box.y1);
-
-  if (priv->pipeline == NULL)
-    {
-      CoglContext *ctx =
-        clutter_backend_get_cogl_context (clutter_get_default_backend ());
-
-      priv->pipeline = cogl_pipeline_new (ctx);
-    }
-
-  if (priv->texture != NULL &&
-      (width != (int)cogl_texture_get_width (priv->texture) ||
-       height != (int)cogl_texture_get_height (priv->texture)))
-    {
-      cogl_object_unref (priv->texture);
-      priv->texture = NULL;
-    }
-
-  if (width > 0 && height > 0)
-    {
-      if (priv->texture == NULL)
-        {
-          priv->texture = cogl_texture_new_with_size (width, height,
-                                                      COGL_TEXTURE_NONE,
-                                                      CLUTTER_CAIRO_FORMAT_ARGB32);
-          priv->needs_repaint = TRUE;
-        }
-
-      if (priv->needs_repaint)
-        {
-          cairo_surface_t *surface;
-
-          surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, width, height);
-          priv->context = cairo_create (surface);
-          priv->in_repaint = TRUE;
-          priv->needs_repaint = FALSE;
-
-          g_signal_emit ((GObject*)area, st_drawing_area_signals[REPAINT], 0);
-
-          priv->in_repaint = FALSE;
-          cairo_destroy (priv->context);
-          priv->context = NULL;
-
-          cogl_texture_set_region (priv->texture, 0, 0, 0, 0, width, height, width, height,
-                                   CLUTTER_CAIRO_FORMAT_ARGB32,
-                                   cairo_image_surface_get_stride (surface),
-                                   cairo_image_surface_get_data (surface));
-
-          cairo_surface_destroy (surface);
-        }
-    }
-
-  cogl_pipeline_set_layer_texture (priv->pipeline, 0, priv->texture);
-
-  if (priv->texture)
-    {
-      CoglColor color;
-      guint8 paint_opacity;
-      CoglFramebuffer *fb = cogl_get_draw_framebuffer ();
-
-      paint_opacity = clutter_actor_get_paint_opacity (self);
-      cogl_color_init_from_4ub (&color, paint_opacity, paint_opacity, paint_opacity, paint_opacity);
-      cogl_pipeline_set_color (priv->pipeline, &color);
-
-      cogl_framebuffer_draw_rectangle (fb, priv->pipeline,
-                                       content_box.x1, content_box.y1,
-                                       content_box.x2, content_box.y2);
-    }
+  clutter_canvas_set_size (CLUTTER_CANVAS (content), width, height);
 }
 
 static void
 st_drawing_area_style_changed (StWidget  *self)
 {
-  StDrawingArea *area = ST_DRAWING_AREA (self);
-  StDrawingAreaPrivate *priv = st_drawing_area_get_instance_private (area);
-
   (ST_WIDGET_CLASS (st_drawing_area_parent_class))->style_changed (self);
 
-  priv->needs_repaint = TRUE;
+  st_drawing_area_queue_repaint (ST_DRAWING_AREA (self));
 }
 
 static void
 st_drawing_area_class_init (StDrawingAreaClass *klass)
 {
-  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
   StWidgetClass *widget_class = ST_WIDGET_CLASS (klass);
 
-  gobject_class->dispose = st_drawing_area_dispose;
-  actor_class->paint = st_drawing_area_paint;
+  actor_class->allocate = st_drawing_area_allocate;
   widget_class->style_changed = st_drawing_area_style_changed;
 
   st_drawing_area_signals[REPAINT] =
@@ -188,8 +122,10 @@ st_drawing_area_class_init (StDrawingAreaClass *klass)
 static void
 st_drawing_area_init (StDrawingArea *area)
 {
-  StDrawingAreaPrivate *priv = st_drawing_area_get_instance_private (area);
-  priv->texture = NULL;
+  ClutterContent *content = clutter_canvas_new ();
+  g_signal_connect (content, "draw", G_CALLBACK (draw_content), area);
+  clutter_actor_set_content (CLUTTER_ACTOR (area), content);
+  g_object_unref (content);
 }
 
 /**
@@ -205,14 +141,9 @@ st_drawing_area_init (StDrawingArea *area)
 void
 st_drawing_area_queue_repaint (StDrawingArea *area)
 {
-  StDrawingAreaPrivate *priv;
-
   g_return_if_fail (ST_IS_DRAWING_AREA (area));
 
-  priv = st_drawing_area_get_instance_private (area);
-
-  priv->needs_repaint = TRUE;
-  clutter_actor_queue_redraw (CLUTTER_ACTOR (area));
+  clutter_content_invalidate (clutter_actor_get_content (CLUTTER_ACTOR (area)));
 }
 
 /**
@@ -253,14 +184,19 @@ st_drawing_area_get_surface_size (StDrawingArea *area,
                                   guint         *height)
 {
   StDrawingAreaPrivate *priv;
+  ClutterContent *content;
+  float w, h;
 
   g_return_if_fail (ST_IS_DRAWING_AREA (area));
 
   priv = st_drawing_area_get_instance_private (area);
   g_return_if_fail (priv->in_repaint);
 
+  content = clutter_actor_get_content (CLUTTER_ACTOR (area));
+  clutter_content_get_preferred_size (content, &w, &h);
+
   if (width)
-    *width = cogl_texture_get_width (priv->texture);
+    *width = (guint)w;
   if (height)
-    *height = cogl_texture_get_height (priv->texture);
+    *height = (guint)h;
 }
