@@ -456,6 +456,7 @@ st_widget_paint_background (StWidget *widget)
   else
     st_theme_node_paint (theme_node,
                          current_paint_state (widget),
+                         cogl_get_draw_framebuffer (),
                          &allocation,
                          opacity);
 }

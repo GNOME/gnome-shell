@@ -268,8 +268,12 @@ gboolean st_theme_node_geometry_equal (StThemeNode *node,
 gboolean st_theme_node_paint_equal    (StThemeNode *node,
                                        StThemeNode *other);
 
+/**
+ * st_theme_node_paint: (skip)
+ */
 void st_theme_node_paint (StThemeNode            *node,
                           StThemeNodePaintState  *state,
+                          CoglFramebuffer        *framebuffer,
                           const ClutterActorBox  *box,
                           guint8                  paint_opacity);
 
