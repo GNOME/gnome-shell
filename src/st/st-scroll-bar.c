@@ -64,7 +64,7 @@ struct _StScrollBarPrivate
   guint             paging_source_id;
   guint             paging_event_no;
 
-  ClutterAnimation *paging_animation;
+  ClutterTransition *paging_animation;
 
   guint             vertical : 1;
 };
@@ -669,11 +669,11 @@ handle_button_press_event_cb (ClutterActor       *actor,
 }
 
 static void
-animation_completed_cb (ClutterAnimation   *animation,
+animation_completed_cb (ClutterTransition *animation,
+                        gboolean           is_finished,
                         StScrollBarPrivate *priv)
 {
-  g_object_unref (priv->paging_animation);
-  priv->paging_animation = NULL;
+  g_clear_object (&priv->paging_animation);
 }
 
 static gboolean
@@ -681,14 +681,11 @@ trough_paging_cb (StScrollBar *self)
 {
   StScrollBarPrivate *priv = st_scroll_bar_get_instance_private (self);
   gfloat handle_pos, event_pos, tx, ty;
-  gdouble value;
+  gdouble value, new_value;
   gdouble page_increment;
   gboolean ret;
 
   gulong mode;
-  ClutterAnimation *a;
-  GValue v = { 0, };
-  ClutterTimeline *t;
 
   if (priv->paging_event_no == 0)
     {
@@ -754,7 +751,7 @@ trough_paging_cb (StScrollBar *self)
           /* Scrolled far enough. */
           return FALSE;
         }
-      value += page_increment;
+      new_value = value + page_increment;
     }
   else
     {
@@ -768,27 +765,26 @@ trough_paging_cb (StScrollBar *self)
           /* Scrolled far enough. */
           return FALSE;
         }
-      value -= page_increment;
+      new_value = value - page_increment;
     }
 
   if (priv->paging_animation)
     {
-      clutter_animation_completed (priv->paging_animation);
+      clutter_timeline_stop (CLUTTER_TIMELINE (priv->paging_animation));
     }
 
-  /* FIXME: Creating a new animation for each scroll is probably not the best
-  * idea, but it's a lot less involved than extenind the current animation */
-  a = priv->paging_animation = g_object_new (CLUTTER_TYPE_ANIMATION,
-                                                   "object", priv->adjustment,
-                                                   "duration", (guint)(PAGING_SUBSEQUENT_REPEAT_TIMEOUT * st_slow_down_factor),
-                                                   "mode", mode,
-                                                   NULL);
-  g_value_init (&v, G_TYPE_DOUBLE);
-  g_value_set_double (&v, value);
-  clutter_animation_bind (priv->paging_animation, "value", &v);
-  t = clutter_animation_get_timeline (priv->paging_animation);
-  g_signal_connect (a, "completed", G_CALLBACK (animation_completed_cb), priv);
-  clutter_timeline_start (t);
+  /* FIXME: Creating a new transition for each scroll is probably not the best
+  * idea, but it's a lot less involved than extending the current animation */
+  priv->paging_animation = g_object_new (CLUTTER_TYPE_PROPERTY_TRANSITION,
+                                         "animatable", priv->adjustment,
+                                         "property-name", "value",
+					 "interval", clutter_interval_new (G_TYPE_DOUBLE, value, new_value),
+                                         "duration", (guint)(PAGING_SUBSEQUENT_REPEAT_TIMEOUT * st_slow_down_factor),
+                                         "progress-mode", mode,
+                                         NULL);
+  g_signal_connect (priv->paging_animation, "stopped",
+                    G_CALLBACK (animation_completed_cb), priv);
+  clutter_timeline_start (CLUTTER_TIMELINE (priv->paging_animation));
 
   return ret;
 }
