@@ -53,7 +53,12 @@ struct _StAdjustmentPrivate
   gdouble  page_size;
 };
 
-G_DEFINE_TYPE_WITH_PRIVATE (StAdjustment, st_adjustment, G_TYPE_OBJECT)
+static void animatable_iface_init (ClutterAnimatableInterface *iface);
+
+G_DEFINE_TYPE_WITH_CODE (StAdjustment, st_adjustment, G_TYPE_OBJECT,
+                         G_ADD_PRIVATE (StAdjustment)
+                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_ANIMATABLE,
+                                                animatable_iface_init));
 
 enum
 {
@@ -86,6 +91,11 @@ static gboolean st_adjustment_set_page_increment (StAdjustment *adjustment,
                                                   gdouble       page);
 static gboolean st_adjustment_set_page_size      (StAdjustment *adjustment,
                                                   gdouble       size);
+
+static void
+animatable_iface_init (ClutterAnimatableInterface *iface)
+{
+}
 
 static void
 st_adjustment_constructed (GObject *object)
