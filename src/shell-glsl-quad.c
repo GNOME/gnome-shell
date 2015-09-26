@@ -84,12 +84,12 @@ shell_glsl_quad_add_glsl_snippet (ShellGLSLQuad    *quad,
 
   if (is_replace)
     {
-      snippet = cogl_snippet_new (hook, declarations, NULL);
+      snippet = cogl_snippet_new ((CoglSnippetHook)hook, declarations, NULL);
       cogl_snippet_set_replace (snippet, code);
     }
   else
     {
-      snippet = cogl_snippet_new (hook, declarations, code);
+      snippet = cogl_snippet_new ((CoglSnippetHook)hook, declarations, code);
     }
 
   if (hook == SHELL_SNIPPET_HOOK_VERTEX ||
