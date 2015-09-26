@@ -1316,7 +1316,7 @@ msgstr ""
 #.
 #: ../clutter/clutter-main.c:762
 msgid "default:LTR"
-msgstr "ಪೂರ್ವನಿಯೋಜಿತ:LTR"
+msgstr "default:LTR"
 
 #: ../clutter/clutter-main.c:1633
 msgid "Show frames per second"
