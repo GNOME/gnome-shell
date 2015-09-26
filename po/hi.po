@@ -1319,7 +1319,7 @@ msgstr "प्रबंधक जो इस डेटा को निर्म�
 #.
 #: ../clutter/clutter-main.c:762
 msgid "default:LTR"
-msgstr "डिफ़ॉल्ट :LTR"
+msgstr "default:LTR"
 
 #: ../clutter/clutter-main.c:1633
 msgid "Show frames per second"
