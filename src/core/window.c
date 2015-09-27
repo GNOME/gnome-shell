@@ -6272,7 +6272,7 @@ find_ancestor_func (MetaWindow *window,
  * so by traversing the @transient's ancestors until it either locates @window
  * or reaches an ancestor that is not transient.
  *
- * Return Value: (transfer none): %TRUE if window is an ancestor of transient.
+ * Return Value: %TRUE if window is an ancestor of transient.
  */
 gboolean
 meta_window_is_ancestor_of_transient (MetaWindow *window,
@@ -7010,7 +7010,7 @@ meta_window_get_transient_for (MetaWindow *window)
  * Returns pid of the process that created this window, if known (obtained from
  * the _NET_WM_PID property).
  *
- * Return value: (transfer none): the pid, or -1 if not known.
+ * Return value: the pid, or -1 if not known.
  */
 int
 meta_window_get_pid (MetaWindow *window)
