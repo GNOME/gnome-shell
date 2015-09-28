@@ -743,12 +743,14 @@ meta_wayland_data_device_set_dnd_source (MetaWaylandDataDevice *data_device,
     return;
 
   if (data_device->dnd_data_source)
-    g_object_remove_weak_pointer (G_OBJECT (source),
+    g_object_remove_weak_pointer (G_OBJECT (data_device->dnd_data_source),
                                   (gpointer *)&data_device->dnd_data_source);
 
   data_device->dnd_data_source = source;
-  g_object_add_weak_pointer (G_OBJECT (source),
-                             (gpointer *)&data_device->dnd_data_source);
+
+  if (source)
+    g_object_add_weak_pointer (G_OBJECT (data_device->dnd_data_source),
+                               (gpointer *)&data_device->dnd_data_source);
 
   wl_signal_emit (&data_device->dnd_ownership_signal, source);
 }
