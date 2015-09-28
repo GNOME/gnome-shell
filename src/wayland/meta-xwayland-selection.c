@@ -1284,6 +1284,9 @@ meta_xwayland_selection_handle_client_message (MetaWaylandCompositor *compositor
       MetaWaylandDragGrab *drag_grab = compositor->seat->data_device.current_grab;
       MetaWaylandSurface *drag_focus = meta_wayland_drag_grab_get_focus (drag_grab);
 
+      if (!drag_focus)
+        return FALSE;
+
       if (event->message_type == xdnd_atoms[ATOM_DND_ENTER])
         {
           /* Bit 1 in data.l[1] determines whether there's 3 or less mimetype
