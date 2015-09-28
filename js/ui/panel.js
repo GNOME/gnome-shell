@@ -647,7 +647,7 @@ const AggregateMenu = new Lang.Class({
     Extends: PanelMenu.Button,
 
     _init: function() {
-        this.parent(0.0, _("Settings"), false);
+        this.parent(0.0, C_("System menu in the top bar", "System"), false);
         this.menu.actor.add_style_class_name('aggregate-menu');
 
         this._indicators = new St.BoxLayout({ style_class: 'panel-status-indicators-box' });
