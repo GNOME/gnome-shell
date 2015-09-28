@@ -2387,6 +2387,15 @@ meta_wayland_surface_drag_dest_drop (MetaWaylandSurface *surface)
   surface->dnd.funcs->drop (data_device, surface);
 }
 
+void
+meta_wayland_surface_drag_dest_update (MetaWaylandSurface *surface)
+{
+  MetaWaylandCompositor *compositor = meta_wayland_compositor_get_default ();
+  MetaWaylandDataDevice *data_device = &compositor->seat->data_device;
+
+  surface->dnd.funcs->update (data_device, surface);
+}
+
 MetaWindow *
 meta_wayland_surface_get_toplevel_window (MetaWaylandSurface *surface)
 {
