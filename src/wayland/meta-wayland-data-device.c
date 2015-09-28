@@ -403,8 +403,8 @@ destroy_data_device_origin (struct wl_listener *listener, void *data)
     wl_container_of (listener, drag_grab, drag_origin_listener);
 
   drag_grab->drag_origin = NULL;
-  data_device_end_drag_grab (drag_grab);
   meta_wayland_data_device_set_dnd_source (&drag_grab->seat->data_device, NULL);
+  data_device_end_drag_grab (drag_grab);
 }
 
 static void
@@ -413,8 +413,8 @@ drag_grab_data_source_destroyed (gpointer data, GObject *where_the_object_was)
   MetaWaylandDragGrab *drag_grab = data;
 
   drag_grab->drag_data_source = NULL;
-  data_device_end_drag_grab (drag_grab);
   meta_wayland_data_device_set_dnd_source (&drag_grab->seat->data_device, NULL);
+  data_device_end_drag_grab (drag_grab);
 }
 
 static void
