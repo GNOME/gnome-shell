@@ -86,6 +86,7 @@ struct _MetaWaylandDataSourceXWayland
   MetaWaylandDataSource parent;
 
   MetaSelectionBridge *selection;
+  guint has_utf8_string_atom : 1;
 };
 
 struct _MetaXWaylandSelection {
@@ -704,7 +705,8 @@ meta_x11_source_send (MetaWaylandDataSource *source,
   MetaSelectionBridge *selection = source_xwayland->selection;
   Atom type_atom;
 
-  if (strcmp (mime_type, "text/plain;charset=utf-8") == 0)
+  if (source_xwayland->has_utf8_string_atom &&
+      strcmp (mime_type, "text/plain;charset=utf-8") == 0)
     type_atom = gdk_x11_get_xatom_by_name ("UTF8_STRING");
   else
     type_atom = gdk_x11_get_xatom_by_name (mime_type);
@@ -847,6 +849,8 @@ meta_xwayland_data_source_fetch_mimetype_list (MetaWaylandDataSource *source,
                                                Window                 window,
                                                Atom                   prop)
 {
+  MetaWaylandDataSourceXWayland *source_xwayland =
+    META_WAYLAND_DATA_SOURCE_XWAYLAND (source);
   Display *xdisplay = GDK_DISPLAY_XDISPLAY (gdk_display_get_default ());
   gulong nitems_ret, bytes_after_ret, i;
   Atom *atoms, type_ret, utf8_string;
@@ -880,10 +884,13 @@ meta_xwayland_data_source_fetch_mimetype_list (MetaWaylandDataSource *source,
       const gchar *mime_type;
 
       if (atoms[i] == utf8_string)
-        mime_type = "text/plain;charset=utf-8";
-      else
-        mime_type = gdk_x11_get_xatom_name (atoms[i]);
+        {
+          meta_wayland_data_source_add_mime_type (source,
+                                                  "text/plain;charset=utf-8");
+          source_xwayland->has_utf8_string_atom = TRUE;
+        }
 
+      mime_type = gdk_x11_get_xatom_name (atoms[i]);
       meta_wayland_data_source_add_mime_type (source, mime_type);
     }
 
