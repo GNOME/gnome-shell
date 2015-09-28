@@ -642,7 +642,11 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     }
 
     _getDetectedDefaultService() {
-        if (this._settings.get_boolean(PASSWORD_AUTHENTICATION_KEY))
+        if (this._smartcardManager &&
+            this._smartcardManager.loggedInWithToken() &&
+            this._smartcardManager.lockOnRemoval())
+            return SMARTCARD_SERVICE_NAME;
+        else if (this._settings.get_boolean(PASSWORD_AUTHENTICATION_KEY))
             return PASSWORD_SERVICE_NAME;
         else if (this._smartcardManager)
             return SMARTCARD_SERVICE_NAME;
