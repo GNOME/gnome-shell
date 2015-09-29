@@ -15938,7 +15938,11 @@ _clutter_actor_set_enable_paint_unmapped (ClutterActor *self,
        */
       clutter_actor_realize (self);
 
-      clutter_actor_update_map_state (self, MAP_STATE_MAKE_MAPPED);
+      /* If the actor isn't ultimately connected to a toplevel, it can't be
+       * realized or painted.
+       */
+      if (CLUTTER_ACTOR_IS_REALIZED (self))
+          clutter_actor_update_map_state (self, MAP_STATE_MAKE_MAPPED);
     }
   else
     {
