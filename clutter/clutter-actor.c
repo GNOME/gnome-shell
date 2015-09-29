@@ -1424,10 +1424,6 @@ clutter_actor_update_map_state (ClutterActor  *self,
            */
           if (priv->enable_paint_unmapped)
             {
-              if (priv->parent == NULL)
-                g_warning ("Attempting to map an unparented actor '%s'",
-                           _clutter_actor_get_debug_name (self));
-
               should_be_mapped = TRUE;
               must_be_realized = TRUE;
             }
