@@ -19,8 +19,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-08-20 15:10+0000\n"
-"PO-Revision-Date: 2015-08-20 22:55+0300\n"
+"POT-Creation-Date: 2015-09-29 08:39+0000\n"
+"PO-Revision-Date: 2015-09-29 22:06+0300\n"
 "Last-Translator: Stas Solovey <whats_up@tut.by>\n"
 "Language-Team: Русский <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
@@ -328,7 +328,7 @@ msgid "Cancel"
 msgstr "Отмена"
 
 #: ../js/gdm/authPrompt.js:169 ../js/gdm/authPrompt.js:215
-#: ../js/gdm/authPrompt.js:435
+#: ../js/gdm/authPrompt.js:447
 msgid "Next"
 msgstr "Далее"
 
@@ -346,21 +346,29 @@ msgstr "Войти"
 msgid "Choose Session"
 msgstr "Выбрать сеанс"
 
+#. translators: this message is shown below the user list on the
+#. login screen. It can be activated to reveal an entry for
+#. manually entering the username.
 #: ../js/gdm/loginDialog.js:431
 msgid "Not listed?"
 msgstr "Нет в списке?"
 
-#: ../js/gdm/loginDialog.js:847
+#. Translators: this message is shown below the username entry field
+#. to clue the user in on how to login to the local network realm
+#: ../js/gdm/loginDialog.js:850
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(например, пользователь или %s)"
 
-#: ../js/gdm/loginDialog.js:852 ../js/ui/components/networkAgent.js:271
+#. TTLS and PEAP are actually much more complicated, but this complication
+#. is not visible here since we only care about phase2 authentication
+#. (and don't even care of which one)
+#: ../js/gdm/loginDialog.js:855 ../js/ui/components/networkAgent.js:271
 #: ../js/ui/components/networkAgent.js:289
 msgid "Username: "
 msgstr "Имя пользователя: "
 
-#: ../js/gdm/loginDialog.js:1181
+#: ../js/gdm/loginDialog.js:1184
 msgid "Login Window"
 msgstr "Окно входа в систему"
 
@@ -368,6 +376,11 @@ msgstr "Окно входа в систему"
 msgid "Authentication error"
 msgstr "Ошибка проверки подлинности"
 
+#. We don't show fingerprint messages directly since it's
+#. not the main auth service. Instead we use the messages
+#. as a cue to display our own message.
+#. Translators: this message is shown below the password entry field
+#. to indicate the user can swipe their finger instead
 #: ../js/gdm/util.js:473
 msgid "(or swipe finger)"
 msgstr "(или проведите пальцем по считывающему устройству)"
@@ -376,6 +389,8 @@ msgstr "(или проведите пальцем по считывающему 
 msgid "Command not found"
 msgstr "Команда не найдена"
 
+#. Replace "Error invoking GLib.shell_parse_argv: " with
+#. something nicer
 #: ../js/misc/util.js:152
 msgid "Could not parse command:"
 msgstr "Не удалось разобрать команду:"
@@ -385,75 +400,83 @@ msgstr "Не удалось разобрать команду:"
 msgid "Execution of “%s” failed:"
 msgstr "Не удалось выполнить «%s»:"
 
-#. Translators: Time in 24h format */
+#. Translators: Time in 24h format
 #: ../js/misc/util.js:191
 msgid "%H∶%M"
 msgstr "%H∶%M"
 
 #. Translators: this is the word "Yesterday" followed by a
-#. time string in 24h format. i.e. "Yesterday, 14:30" */
+#. time string in 24h format. i.e. "Yesterday, 14:30"
 #: ../js/misc/util.js:197
+#, no-c-format
 msgid "Yesterday, %H∶%M"
 msgstr "Вчера, %H∶%M"
 
 #. Translators: this is the week day name followed by a time
-#. string in 24h format. i.e. "Monday, 14:30" */
+#. string in 24h format. i.e. "Monday, 14:30"
 #: ../js/misc/util.js:203
+#, no-c-format
 msgid "%A, %H∶%M"
 msgstr "%A, %H∶%M"
 
 # fix даты "11 мар., 20:35"
 #. Translators: this is the month name and day number
 #. followed by a time string in 24h format.
-#. i.e. "May 25, 14:30" */
+#. i.e. "May 25, 14:30"
 #: ../js/misc/util.js:209
+#, no-c-format
 msgid "%B %d, %H∶%M"
 msgstr "%d %b., %H∶%M"
 
 # fix даты
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
-#. i.e. "May 25 2012, 14:30" */
+#. i.e. "May 25 2012, 14:30"
 #: ../js/misc/util.js:215
+#, no-c-format
 msgid "%B %d %Y, %H∶%M"
 msgstr "%d %b. %Y, %H∶%M"
 
 # по всей видимости разрабы коммент перепутали c "Translators: Time in 12h format"
-#. Translators: Time in 12h format */
+#. Translators: Time in 12h format
 #: ../js/misc/util.js:220
 msgid "%l∶%M %p"
 msgstr "%l∶%M %p"
 
 #. Translators: this is the word "Yesterday" followed by a
-#. time string in 12h format. i.e. "Yesterday, 2:30 pm" */
+#. time string in 12h format. i.e. "Yesterday, 2:30 pm"
 #: ../js/misc/util.js:226
+#, no-c-format
 msgid "Yesterday, %l∶%M %p"
 msgstr "Вчера, %l∶%M %p"
 
 #. Translators: this is the week day name followed by a time
-#. string in 12h format. i.e. "Monday, 2:30 pm" */
+#. string in 12h format. i.e. "Monday, 2:30 pm"
 #: ../js/misc/util.js:232
+#, no-c-format
 msgid "%A, %l∶%M %p"
 msgstr "%A, %l∶%M %p"
 
 # fix даты
 #. Translators: this is the month name and day number
 #. followed by a time string in 12h format.
-#. i.e. "May 25, 2:30 pm" */
+#. i.e. "May 25, 2:30 pm"
 #: ../js/misc/util.js:238
+#, no-c-format
 msgid "%B %d, %l∶%M %p"
 msgstr "%d %b., %l∶%M %p"
 
 # fix даты
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
-#. i.e. "May 25 2012, 2:30 pm"*/
+#. i.e. "May 25 2012, 2:30 pm"
 #: ../js/misc/util.js:244
+#, no-c-format
 msgid "%B %d %Y, %l∶%M %p"
 msgstr "%d %b. %Y, %l∶%M %p"
 
 #. TRANSLATORS: this is the title of the wifi captive portal login
-#. * window, until we know the title of the actual login page */
+#. * window, until we know the title of the actual login page
 #: ../js/portalHelper/main.js:85
 msgid "Web Authentication Redirect"
 msgstr "Перенаправление для проверки подлинности"
@@ -504,12 +527,11 @@ msgstr "Изменить фон…"
 msgid "Display Settings"
 msgstr "Параметры дисплея"
 
-#: ../js/ui/backgroundMenu.js:22 ../js/ui/panel.js:650
-#: ../js/ui/status/system.js:366
+#: ../js/ui/backgroundMenu.js:22 ../js/ui/status/system.js:366
 msgid "Settings"
 msgstr "Параметры"
 
-#. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday). */
+#. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
 #: ../js/ui/calendar.js:55
 msgctxt "calendar-no-work"
 msgid "06"
@@ -519,43 +541,43 @@ msgstr "06"
 #. *
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
-#. */
+#.
 #: ../js/ui/calendar.js:84
 msgctxt "grid sunday"
 msgid "S"
 msgstr "Вс"
 
-#. Translators: Calendar grid abbreviation for Monday */
+#. Translators: Calendar grid abbreviation for Monday
 #: ../js/ui/calendar.js:86
 msgctxt "grid monday"
 msgid "M"
 msgstr "Пн"
 
-#. Translators: Calendar grid abbreviation for Tuesday */
+#. Translators: Calendar grid abbreviation for Tuesday
 #: ../js/ui/calendar.js:88
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "Вт"
 
-#. Translators: Calendar grid abbreviation for Wednesday */
+#. Translators: Calendar grid abbreviation for Wednesday
 #: ../js/ui/calendar.js:90
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "Ср"
 
-#. Translators: Calendar grid abbreviation for Thursday */
+#. Translators: Calendar grid abbreviation for Thursday
 #: ../js/ui/calendar.js:92
 msgctxt "grid thursday"
 msgid "T"
 msgstr "Чт"
 
-#. Translators: Calendar grid abbreviation for Friday */
+#. Translators: Calendar grid abbreviation for Friday
 #: ../js/ui/calendar.js:94
 msgctxt "grid friday"
 msgid "F"
 msgstr "Пт"
 
-#. Translators: Calendar grid abbreviation for Saturday */
+#. Translators: Calendar grid abbreviation for Saturday
 #: ../js/ui/calendar.js:96
 msgctxt "grid saturday"
 msgid "S"
@@ -575,41 +597,41 @@ msgstr "%V неделя"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
-#. */
+#.
 #: ../js/ui/calendar.js:1188
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Весь день"
 
-#: ../js/ui/calendar.js:1291
+#: ../js/ui/calendar.js:1295
 msgid "Clear section"
 msgstr "Очистить секцию"
 
-#: ../js/ui/calendar.js:1518
+#: ../js/ui/calendar.js:1522
 msgid "Events"
 msgstr "События"
 
 # fix для даты в календаре и на экране блокировки, за разъяснением обращаться к Stas Solovey <whats_up@tut.by>
-#: ../js/ui/calendar.js:1527
+#: ../js/ui/calendar.js:1531
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d %b."
 
 # fix для даты в календаре и на экране блокировки
-#: ../js/ui/calendar.js:1531
+#: ../js/ui/calendar.js:1535
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d %b. %Y"
 
-#: ../js/ui/calendar.js:1616
+#: ../js/ui/calendar.js:1620
 msgid "Notifications"
 msgstr "Уведомления"
 
-#: ../js/ui/calendar.js:1767
+#: ../js/ui/calendar.js:1771
 msgid "No Notifications"
 msgstr "Уведомлений нет"
 
-#: ../js/ui/calendar.js:1770
+#: ../js/ui/calendar.js:1774
 msgid "No Events"
 msgstr "Событий нет"
 
@@ -639,6 +661,7 @@ msgstr "Введите ещё раз:"
 msgid "Connect"
 msgstr "Соединиться"
 
+#. Cisco LEAP
 #: ../js/ui/components/networkAgent.js:233
 #: ../js/ui/components/networkAgent.js:245
 #: ../js/ui/components/networkAgent.js:273
@@ -647,6 +670,7 @@ msgstr "Соединиться"
 msgid "Password: "
 msgstr "Пароль: "
 
+#. static WEP
 #: ../js/ui/components/networkAgent.js:238
 msgid "Key: "
 msgstr "Ключ: "
@@ -737,13 +761,13 @@ msgstr "Подтвердить"
 #. Translators: "that didn't work" refers to the fact that the
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
-#. * for instance. */
+#. * for instance.
 #: ../js/ui/components/polkitAgent.js:301 ../js/ui/shellMountOperation.js:383
 msgid "Sorry, that didn't work. Please try again."
 msgstr "Не удалось подтвердить подлинность. Попробуйте снова."
 
 #. Translators: this is the other person changing their old IM name to their new
-#. IM name. */
+#. IM name.
 #: ../js/ui/components/telepathyClient.js:759
 #, javascript-format
 msgid "%s is now known as %s"
@@ -757,6 +781,8 @@ msgstr "Окна"
 msgid "Show Applications"
 msgstr "Показать приложения"
 
+#. Translators: this is the name of the dock/favorites area on
+#. the left of the overview
 #: ../js/ui/dash.js:449
 msgid "Dash"
 msgstr "Панель приложений"
@@ -764,7 +790,7 @@ msgstr "Панель приложений"
 # fix для даты в календаре и на экране блокировки
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
-#. */
+#.
 #: ../js/ui/dateMenu.js:73
 msgid "%B %e %Y"
 msgstr "%e %b. %Y"
@@ -773,7 +799,7 @@ msgstr "%e %b. %Y"
 #. Translators: This is the accessible name of the date button shown
 #. * below the time in the shell; it should combine the weekday and the
 #. * date, e.g. "Tuesday February 17 2015".
-#. */
+#.
 #: ../js/ui/dateMenu.js:80
 msgid "%A %B %e %Y"
 msgstr "%A, %e %b. %Y"
@@ -912,13 +938,13 @@ msgstr "Некоторые приложения заняты или резуль
 msgid "Other users are logged in."
 msgstr "В системе имеются открытые сеансы других пользователей."
 
-#. Translators: Remote here refers to a remote session, like a ssh login */
+#. Translators: Remote here refers to a remote session, like a ssh login
 #: ../js/ui/endSessionDialog.js:640
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (удалённый)"
 
-#. Translators: Console here refers to a tty like a VT console */
+#. Translators: Console here refers to a tty like a VT console
 #: ../js/ui/endSessionDialog.js:643
 #, javascript-format
 msgid "%s (console)"
@@ -937,7 +963,7 @@ msgstr "Загрузить и установить расширение «%s» �
 msgid "Keyboard"
 msgstr "Клавиатура"
 
-#. translators: 'Hide' is a verb */
+#. translators: 'Hide' is a verb
 #: ../js/ui/legacyTray.js:66
 msgid "Hide tray"
 msgstr "Скрыть лоток"
@@ -950,7 +976,7 @@ msgstr "Значки состояния"
 msgid "No extensions installed"
 msgstr "Расширения не установлены"
 
-#. Translators: argument is an extension UUID. */
+#. Translators: argument is an extension UUID.
 #: ../js/ui/lookingGlass.js:697
 #, javascript-format
 msgid "%s has not emitted any errors."
@@ -970,7 +996,7 @@ msgstr "Включено"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:719 ../src/gvc/gvc-mixer-control.c:1830
+#: ../js/ui/lookingGlass.js:719 ../src/gvc/gvc-mixer-control.c:1828
 msgid "Disabled"
 msgstr "Выключено"
 
@@ -1009,7 +1035,7 @@ msgstr "Обзор"
 #. Translators: this is the text displayed
 #. in the search entry when no search is
 #. active; it should not exceed ~30
-#. characters. */
+#. characters.
 #: ../js/ui/overview.js:244
 msgid "Type to search…"
 msgstr "Найти…"
@@ -1019,15 +1045,26 @@ msgid "Quit"
 msgstr "Завершить"
 
 #. Translators: If there is no suitable word for "Activities"
-#. in your language, you can use the word for "Overview". */
+#. in your language, you can use the word for "Overview".
 #: ../js/ui/panel.js:404
 msgid "Activities"
 msgstr "Обзор"
+
+#: ../js/ui/panel.js:650
+#| msgid "System"
+msgctxt "System menu in the top bar"
+msgid "System"
+msgstr "Система"
 
 #: ../js/ui/panel.js:754
 msgid "Top Bar"
 msgstr "Верхняя панель"
 
+#. Translators: this MUST be either "toggle-switch-us"
+#. (for toggle switches containing the English words
+#. "ON" and "OFF") or "toggle-switch-intl" (for toggle
+#. switches containing "◯" and "|"). Other values will
+#. simply result in invisible toggle switches.
 #: ../js/ui/popupMenu.js:289
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
@@ -1046,7 +1083,7 @@ msgstr "Перезапуск…"
 
 # fix для даты в календаре и на экране блокировки
 #. Translators: This is a time format for a date in
-#. long format */
+#. long format
 #: ../js/ui/screenShield.js:85
 msgid "%A, %B %d"
 msgstr "%A, %d %b."
@@ -1075,6 +1112,13 @@ msgstr "Заблокировать"
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME необходимо заблокировать экран"
 
+#. We could not become modal, so we can't activate the
+#. screenshield. The user is probably very upset at this
+#. point, but any application using global grabs is broken
+#. Just tell him to stop using this app
+#.
+#. XXX: another option is to kick the user into the gdm login
+#. screen, where we're not affected by grabs
 #: ../js/ui/screenShield.js:805 ../js/ui/screenShield.js:1271
 msgid "Unable to lock"
 msgstr "Не удалось заблокировать"
@@ -1170,10 +1214,9 @@ msgstr "Выключить"
 msgid "Bluetooth Settings"
 msgstr "Настроить Bluetooth"
 
-#. Translators: this is the number of connected bluetooth devices */
+#. Translators: this is the number of connected bluetooth devices
 #: ../js/ui/status/bluetooth.js:105
 #, javascript-format
-#| msgid "Connected"
 msgid "%d Connected"
 msgid_plural "%d Connected"
 msgstr[0] "Подключено %d"
@@ -1181,7 +1224,6 @@ msgstr[1] "Подключено %d"
 msgstr[2] "Подключено %d"
 
 #: ../js/ui/status/bluetooth.js:107
-#| msgid "In Use"
 msgid "Not In Use"
 msgstr "Не используется"
 
@@ -1194,7 +1236,6 @@ msgid "Show Keyboard Layout"
 msgstr "Показать раскладку клавиатуры"
 
 #: ../js/ui/status/location.js:71 ../js/ui/status/location.js:177
-#| msgid "Location"
 msgid "Location Enabled"
 msgstr "Определение местоположения включено"
 
@@ -1207,12 +1248,10 @@ msgid "Privacy Settings"
 msgstr "Параметры конфиденциальности"
 
 #: ../js/ui/status/location.js:176
-#| msgid "Location"
 msgid "Location In Use"
 msgstr "Определение местоположения используется"
 
 #: ../js/ui/status/location.js:180
-#| msgid "Connection failed"
 msgid "Location Disabled"
 msgstr "Определение местоположения выключено"
 
@@ -1224,69 +1263,61 @@ msgstr "Включить"
 msgid "<unknown>"
 msgstr "<неизвестно>"
 
-#. Translators: %s is a network identifier */
+#. Translators: %s is a network identifier
 #: ../js/ui/status/network.js:451 ../js/ui/status/network.js:1308
 #, javascript-format
 msgid "%s Off"
 msgstr "Выключено %s"
 
-#. Translators: %s is a network identifier */
+#. Translators: %s is a network identifier
 #: ../js/ui/status/network.js:454
 #, javascript-format
-#| msgid "Connected"
 msgid "%s Connected"
 msgstr "Подключено %s"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu);
-#. %s is a network identifier */
+#. %s is a network identifier
 #: ../js/ui/status/network.js:459
 #, javascript-format
-#| msgid "Unmanaged"
 msgid "%s Unmanaged"
 msgstr "Не управляется %s"
 
-#. Translators: %s is a network identifier */
+#. Translators: %s is a network identifier
 #: ../js/ui/status/network.js:462
 #, javascript-format
-#| msgid "Disconnecting"
 msgid "%s Disconnecting"
 msgstr "Отключение %s"
 
-#. Translators: %s is a network identifier */
+#. Translators: %s is a network identifier
 #: ../js/ui/status/network.js:469 ../js/ui/status/network.js:1300
 #, javascript-format
-#| msgid "Connecting"
 msgid "%s Connecting"
 msgstr "Подключение %s"
 
-#. Translators: this is for network connections that require some kind of key or password; %s is a network identifier */
+#. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
 #: ../js/ui/status/network.js:472
 #, javascript-format
-#| msgid "Wired 802.1X authentication"
 msgid "%s Requires Authentication"
 msgstr "Требуется аутентификация для %s"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
-#. module, which is missing; %s is a network identifier */
+#. module, which is missing; %s is a network identifier
 #: ../js/ui/status/network.js:480
 #, javascript-format
-#| msgid "Firmware missing"
 msgid "Firmware Missing For %s"
 msgstr "Отсутствует прошивка для %s"
 
 #. Translators: this is for a network device that cannot be activated (for example it
-#. is disabled by rfkill, or it has no coverage; %s is a network identifier */
+#. is disabled by rfkill, or it has no coverage; %s is a network identifier
 #: ../js/ui/status/network.js:484
 #, javascript-format
-#| msgid "Unavailable"
 msgid "%s Unavailable"
 msgstr "Недоступно %s"
 
-#. Translators: %s is a network identifier */
+#. Translators: %s is a network identifier
 #: ../js/ui/status/network.js:487
 #, javascript-format
-#| msgid "Connection failed"
 msgid "%s Connection Failed"
 msgstr "Сбой подключения %s"
 
@@ -1298,18 +1329,16 @@ msgstr "Параметры проводных соединений"
 msgid "Mobile Broadband Settings"
 msgstr "Параметры широкополосной мобильной связи"
 
-#. Translators: %s is a network identifier */
+#. Translators: %s is a network identifier
 #: ../js/ui/status/network.js:588 ../js/ui/status/network.js:1305
 #, javascript-format
-#| msgid "Hardware Disabled"
 msgid "%s Hardware Disabled"
 msgstr "Оборудование выключено %s"
 
 #. Translators: this is for a network device that cannot be activated
-#. because it's disabled by rfkill (airplane mode); %s is a network identifier */
+#. because it's disabled by rfkill (airplane mode); %s is a network identifier
 #: ../js/ui/status/network.js:592
 #, javascript-format
-#| msgid "Disabled"
 msgid "%s Disabled"
 msgstr "Выключено %s"
 
@@ -1369,17 +1398,15 @@ msgstr "Параметры Wi-Fi"
 msgid "Turn On"
 msgstr "Включить"
 
-#. Translators: %s is a network identifier */
+#. Translators: %s is a network identifier
 #: ../js/ui/status/network.js:1296
 #, javascript-format
-#| msgid "Hotspot Active"
 msgid "%s Hotspot Active"
 msgstr "Точка доступа %s включена"
 
-#. Translators: %s is a network identifier */
+#. Translators: %s is a network identifier
 #: ../js/ui/status/network.js:1311
 #, javascript-format
-#| msgid "Not Connected"
 msgid "%s Not Connected"
 msgstr "Не подключено %s"
 
@@ -1387,7 +1414,7 @@ msgstr "Не подключено %s"
 msgid "connecting..."
 msgstr "подключение…"
 
-#. Translators: this is for network connections that require some kind of key or password */
+#. Translators: this is for network connections that require some kind of key or password
 #: ../js/ui/status/network.js:1414
 msgid "authentication required"
 msgstr "требуется подтверждение подлинности"
@@ -1409,7 +1436,6 @@ msgid "VPN"
 msgstr "VPN"
 
 #: ../js/ui/status/network.js:1513
-#| msgid "Power Off"
 msgid "VPN Off"
 msgstr "Соединение VPN выключено"
 
@@ -1429,11 +1455,14 @@ msgstr "Параметры электропитания"
 msgid "Fully Charged"
 msgstr "Полностью заряжена"
 
+#. 0 is reported when UPower does not have enough data
+#. to estimate battery life
 #: ../js/ui/status/power.js:72 ../js/ui/status/power.js:78
 msgid "Estimating…"
 msgstr "Выполняется подсчёт…"
 
 # нужно в две строки, иначе не влезает в выпадающую панель
+#. Translators: this is <hours>:<minutes> Remaining (<percentage>)
 #: ../js/ui/status/power.js:86
 #, javascript-format
 msgid "%d∶%02d Remaining (%d%%)"
@@ -1442,6 +1471,7 @@ msgstr ""
 "Разряжается (%d%%)"
 
 # нужно в две строки, иначе не влезает в выпадающую панель
+#. Translators: this is <hours>:<minutes> Until Full (<percentage>)
 #: ../js/ui/status/power.js:91
 #, javascript-format
 msgid "%d∶%02d Until Full (%d%%)"
@@ -1449,8 +1479,10 @@ msgstr ""
 "До полной %02d ч. %d мин.\n"
 "Заряжается (%d%%)"
 
+#. The menu only appears when airplane mode is on, so just
+#. statically build it as if it was on, rather than dynamically
+#. changing the menu contents.
 #: ../js/ui/status/rfkill.js:88
-#| msgid "Airplane Mode is On"
 msgid "Airplane Mode On"
 msgstr "Включён режим авиаперелёта"
 
@@ -1463,7 +1495,6 @@ msgid "Log Out"
 msgstr "Завершить сеанс"
 
 #: ../js/ui/status/system.js:353
-#| msgid "Power Settings"
 msgid "Account Settings"
 msgstr "Параметры учётных записей"
 
@@ -1518,7 +1549,7 @@ msgstr "Хотите сохранить эти параметры дисплея
 
 #. Translators: this and the following message should be limited in lenght,
 #. to avoid ellipsizing the labels.
-#. */
+#.
 #: ../js/ui/windowManager.js:82
 msgid "Revert Settings"
 msgstr "Вернуть параметры"
@@ -1536,7 +1567,7 @@ msgstr[1] "Изменения параметров будут отменены �
 msgstr[2] "Изменения параметров будут отменены через %d секунд"
 
 #. Translators: This represents the size of a window. The first number is
-#. * the width of the window and the second is the height. */
+#. * the width of the window and the second is the height.
 #: ../js/ui/windowManager.js:658
 #, javascript-format
 msgid "%d x %d"
@@ -1612,7 +1643,7 @@ msgstr "Календарь Evolution"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1837
+#: ../src/gvc/gvc-mixer-control.c:1835
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -1622,7 +1653,7 @@ msgstr[2] "%u выходов"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1847
+#: ../src/gvc/gvc-mixer-control.c:1845
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
@@ -1630,24 +1661,24 @@ msgstr[0] "%u вход"
 msgstr[1] "%u входа"
 msgstr[2] "%u входов"
 
-#: ../src/gvc/gvc-mixer-control.c:2373
+#: ../src/gvc/gvc-mixer-control.c:2371
 msgid "System Sounds"
 msgstr "Системные звуки"
 
-#: ../src/main.c:373
+#: ../src/main.c:381
 msgid "Print version"
 msgstr "Показать номер версии"
 
-#: ../src/main.c:379
+#: ../src/main.c:387
 msgid "Mode used by GDM for login screen"
 msgstr "Режим, используемый GDM для окна входа в систему"
 
-#: ../src/main.c:385
+#: ../src/main.c:393
 msgid "Use a specific mode, e.g. \"gdm\" for login screen"
 msgstr ""
 "Использовать для экрана входа в систему определённый режим, например «gdm»"
 
-#: ../src/main.c:391
+#: ../src/main.c:399
 msgid "List possible modes"
 msgstr "Список возможных режимов"
 
