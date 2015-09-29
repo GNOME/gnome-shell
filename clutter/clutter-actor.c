@@ -15946,7 +15946,7 @@ _clutter_actor_set_enable_paint_unmapped (ClutterActor *self,
     }
   else
     {
-      clutter_actor_update_map_state (self, MAP_STATE_MAKE_UNMAPPED);
+      clutter_actor_update_map_state (self, MAP_STATE_CHECK);
     }
 }
 
