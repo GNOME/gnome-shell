@@ -970,12 +970,6 @@ meta_frame_left_click_event (MetaUIFrame *frame,
     case META_FRAME_CONTROL_UNMAXIMIZE:
     case META_FRAME_CONTROL_MINIMIZE:
     case META_FRAME_CONTROL_DELETE:
-    case META_FRAME_CONTROL_SHADE:
-    case META_FRAME_CONTROL_UNSHADE:
-    case META_FRAME_CONTROL_ABOVE:
-    case META_FRAME_CONTROL_UNABOVE:
-    case META_FRAME_CONTROL_STICK:
-    case META_FRAME_CONTROL_UNSTICK:
     case META_FRAME_CONTROL_MENU:
     case META_FRAME_CONTROL_APPMENU:
       frame->grab_button = event->button;
@@ -1154,24 +1148,6 @@ handle_button_release_event (MetaUIFrame *frame,
         case META_FRAME_CONTROL_DELETE:
           meta_window_delete (frame->meta_window, event->time);
           break;
-        case META_FRAME_CONTROL_SHADE:
-          meta_window_shade (frame->meta_window, event->time);
-          break;
-        case META_FRAME_CONTROL_UNSHADE:
-          meta_window_unshade (frame->meta_window, event->time);
-          break;
-        case META_FRAME_CONTROL_ABOVE:
-          meta_window_make_above (frame->meta_window);
-          break;
-        case META_FRAME_CONTROL_UNABOVE:
-          meta_window_unmake_above (frame->meta_window);
-          break;
-        case META_FRAME_CONTROL_STICK:
-          meta_window_stick (frame->meta_window);
-          break;
-        case META_FRAME_CONTROL_UNSTICK:
-          meta_window_unstick (frame->meta_window);
-          break;
         default:
           break;
         }
@@ -1220,18 +1196,6 @@ meta_ui_frame_update_prelit_control (MetaUIFrame     *frame,
       break;
     case META_FRAME_CONTROL_UNMAXIMIZE:
       break;
-    case META_FRAME_CONTROL_SHADE:
-      break;
-    case META_FRAME_CONTROL_UNSHADE:
-      break;
-    case META_FRAME_CONTROL_ABOVE:
-      break;
-    case META_FRAME_CONTROL_UNABOVE:
-      break;
-    case META_FRAME_CONTROL_STICK:
-      break;
-    case META_FRAME_CONTROL_UNSTICK:
-      break;
     case META_FRAME_CONTROL_RESIZE_SE:
       cursor = META_CURSOR_SE_RESIZE;
       break;
@@ -1270,12 +1234,6 @@ meta_ui_frame_update_prelit_control (MetaUIFrame     *frame,
     case META_FRAME_CONTROL_MINIMIZE:
     case META_FRAME_CONTROL_MAXIMIZE:
     case META_FRAME_CONTROL_DELETE:
-    case META_FRAME_CONTROL_SHADE:
-    case META_FRAME_CONTROL_UNSHADE:
-    case META_FRAME_CONTROL_ABOVE:
-    case META_FRAME_CONTROL_UNABOVE:
-    case META_FRAME_CONTROL_STICK:
-    case META_FRAME_CONTROL_UNSTICK:
     case META_FRAME_CONTROL_UNMAXIMIZE:
       /* leave control set */
       break;
@@ -1487,24 +1445,6 @@ meta_ui_frame_paint (MetaUIFrame  *frame,
     case META_FRAME_CONTROL_UNMAXIMIZE:
       button_type = META_BUTTON_TYPE_MAXIMIZE;
       break;
-    case META_FRAME_CONTROL_SHADE:
-      button_type = META_BUTTON_TYPE_SHADE;
-      break;
-    case META_FRAME_CONTROL_UNSHADE:
-      button_type = META_BUTTON_TYPE_UNSHADE;
-      break;
-    case META_FRAME_CONTROL_ABOVE:
-      button_type = META_BUTTON_TYPE_ABOVE;
-      break;
-    case META_FRAME_CONTROL_UNABOVE:
-      button_type = META_BUTTON_TYPE_UNABOVE;
-      break;
-    case META_FRAME_CONTROL_STICK:
-      button_type = META_BUTTON_TYPE_STICK;
-      break;
-    case META_FRAME_CONTROL_UNSTICK:
-      button_type = META_BUTTON_TYPE_UNSTICK;
-      break;
     case META_FRAME_CONTROL_DELETE:
       button_type = META_BUTTON_TYPE_CLOSE;
       break;
@@ -1624,24 +1564,6 @@ control_rect (MetaFrameControl control,
     case META_FRAME_CONTROL_UNMAXIMIZE:
       rect = &fgeom->max_rect.visible;
       break;
-    case META_FRAME_CONTROL_SHADE:
-      rect = &fgeom->shade_rect.visible;
-      break;
-    case META_FRAME_CONTROL_UNSHADE:
-      rect = &fgeom->unshade_rect.visible;
-      break;
-    case META_FRAME_CONTROL_ABOVE:
-      rect = &fgeom->above_rect.visible;
-      break;
-    case META_FRAME_CONTROL_UNABOVE:
-      rect = &fgeom->unabove_rect.visible;
-      break;
-    case META_FRAME_CONTROL_STICK:
-      rect = &fgeom->stick_rect.visible;
-      break;
-    case META_FRAME_CONTROL_UNSTICK:
-      rect = &fgeom->unstick_rect.visible;
-      break;
     case META_FRAME_CONTROL_RESIZE_SE:
       break;
     case META_FRAME_CONTROL_RESIZE_S:
@@ -1724,36 +1646,6 @@ get_control (MetaUIFrame *frame, int root_x, int root_y)
         return META_FRAME_CONTROL_UNMAXIMIZE;
       else
         return META_FRAME_CONTROL_MAXIMIZE;
-    }
-
-  if (POINT_IN_RECT (x, y, fgeom.shade_rect.clickable))
-    {
-      return META_FRAME_CONTROL_SHADE;
-    }
-
-  if (POINT_IN_RECT (x, y, fgeom.unshade_rect.clickable))
-    {
-      return META_FRAME_CONTROL_UNSHADE;
-    }
-
-  if (POINT_IN_RECT (x, y, fgeom.above_rect.clickable))
-    {
-      return META_FRAME_CONTROL_ABOVE;
-    }
-
-  if (POINT_IN_RECT (x, y, fgeom.unabove_rect.clickable))
-    {
-      return META_FRAME_CONTROL_UNABOVE;
-    }
-
-  if (POINT_IN_RECT (x, y, fgeom.stick_rect.clickable))
-    {
-      return META_FRAME_CONTROL_STICK;
-    }
-
-  if (POINT_IN_RECT (x, y, fgeom.unstick_rect.clickable))
-    {
-      return META_FRAME_CONTROL_UNSTICK;
     }
 
   /* South resize always has priority over north resize,

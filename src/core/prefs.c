@@ -1477,40 +1477,9 @@ button_function_from_string (const char *str)
     return META_BUTTON_FUNCTION_MAXIMIZE;
   else if (strcmp (str, "close") == 0)
     return META_BUTTON_FUNCTION_CLOSE;
-  else if (strcmp (str, "shade") == 0)
-    return META_BUTTON_FUNCTION_SHADE;
-  else if (strcmp (str, "above") == 0)
-    return META_BUTTON_FUNCTION_ABOVE;
-  else if (strcmp (str, "stick") == 0)
-    return META_BUTTON_FUNCTION_STICK;
   else
     /* don't know; give up */
     return META_BUTTON_FUNCTION_LAST;
-}
-
-static MetaButtonFunction
-button_opposite_function (MetaButtonFunction ofwhat)
-{
-  switch (ofwhat)
-    {
-    case META_BUTTON_FUNCTION_SHADE:
-      return META_BUTTON_FUNCTION_UNSHADE;
-    case META_BUTTON_FUNCTION_UNSHADE:
-      return META_BUTTON_FUNCTION_SHADE;
-
-    case META_BUTTON_FUNCTION_ABOVE:
-      return META_BUTTON_FUNCTION_UNABOVE;
-    case META_BUTTON_FUNCTION_UNABOVE:
-      return META_BUTTON_FUNCTION_ABOVE;
-
-    case META_BUTTON_FUNCTION_STICK:
-      return META_BUTTON_FUNCTION_UNSTICK;
-    case META_BUTTON_FUNCTION_UNSTICK:
-      return META_BUTTON_FUNCTION_STICK;
-
-    default:
-      return META_BUTTON_FUNCTION_LAST;
-    }
 }
 
 static gboolean
@@ -1556,12 +1525,6 @@ button_layout_handler (GVariant *value,
           if (i > 0 && strcmp("spacer", buttons[b]) == 0)
             {
               new_layout.left_buttons_has_spacer[i-1] = TRUE;
-              f = button_opposite_function (f);
-
-              if (f != META_BUTTON_FUNCTION_LAST)
-                {
-                  new_layout.left_buttons_has_spacer[i-2] = TRUE;
-                }
             }
           else
             {
@@ -1570,11 +1533,6 @@ button_layout_handler (GVariant *value,
                   new_layout.left_buttons[i] = f;
                   used[f] = TRUE;
                   ++i;
-
-                  f = button_opposite_function (f);
-
-                  if (f != META_BUTTON_FUNCTION_LAST)
-                      new_layout.left_buttons[i++] = f;
                 }
               else
                 {
@@ -1618,11 +1576,6 @@ button_layout_handler (GVariant *value,
           if (i > 0 && strcmp("spacer", buttons[b]) == 0)
             {
               new_layout.right_buttons_has_spacer[i-1] = TRUE;
-              f = button_opposite_function (f);
-              if (f != META_BUTTON_FUNCTION_LAST)
-                {
-                  new_layout.right_buttons_has_spacer[i-2] = TRUE;
-                }
             }
           else
             {
@@ -1631,12 +1584,6 @@ button_layout_handler (GVariant *value,
                   new_layout.right_buttons[i] = f;
                   used[f] = TRUE;
                   ++i;
-
-                  f = button_opposite_function (f);
-
-                  if (f != META_BUTTON_FUNCTION_LAST)
-                      new_layout.right_buttons[i++] = f;
-
                 }
               else
                 {

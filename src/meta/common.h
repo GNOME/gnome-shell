@@ -372,12 +372,6 @@ typedef enum
  * @META_BUTTON_FUNCTION_MINIMIZE: Minimize
  * @META_BUTTON_FUNCTION_MAXIMIZE: Maximize
  * @META_BUTTON_FUNCTION_CLOSE: Close
- * @META_BUTTON_FUNCTION_SHADE: Shade
- * @META_BUTTON_FUNCTION_ABOVE: Above
- * @META_BUTTON_FUNCTION_STICK: Stick
- * @META_BUTTON_FUNCTION_UNSHADE: Unshade
- * @META_BUTTON_FUNCTION_UNABOVE: Unabove
- * @META_BUTTON_FUNCTION_UNSTICK: Unstick
  * @META_BUTTON_FUNCTION_LAST: Marks the end of the #MetaButtonFunction enumeration
  *
  * Function a window button can have.  Note, you can't add stuff here
@@ -390,12 +384,6 @@ typedef enum
   META_BUTTON_FUNCTION_MINIMIZE,
   META_BUTTON_FUNCTION_MAXIMIZE,
   META_BUTTON_FUNCTION_CLOSE,
-  META_BUTTON_FUNCTION_SHADE,
-  META_BUTTON_FUNCTION_ABOVE,
-  META_BUTTON_FUNCTION_STICK,
-  META_BUTTON_FUNCTION_UNSHADE,
-  META_BUTTON_FUNCTION_UNABOVE,
-  META_BUTTON_FUNCTION_UNSTICK,
   META_BUTTON_FUNCTION_APPMENU,
   META_BUTTON_FUNCTION_LAST
 } MetaButtonFunction;
@@ -405,10 +393,10 @@ typedef enum
 /* Keep array size in sync with MAX_BUTTONS_PER_CORNER */
 /**
  * MetaButtonLayout:
- * @left_buttons: (array fixed-size=11):
- * @right_buttons: (array fixed-size=11):
- * @left_buttons_has_spacer: (array fixed-size=11):
- * @right_buttons_has_spacer: (array fixed-size=11):
+ * @left_buttons: (array fixed-size=5):
+ * @right_buttons: (array fixed-size=5):
+ * @left_buttons_has_spacer: (array fixed-size=5):
+ * @right_buttons_has_spacer: (array fixed-size=5):
  */
 typedef struct _MetaButtonLayout MetaButtonLayout;
 struct _MetaButtonLayout
