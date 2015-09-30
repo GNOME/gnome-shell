@@ -66,8 +66,8 @@ var AuthPrompt = new Lang.Class({
 
         this.connect('next', () => {
                 this.updateSensitivity(false);
-                this.startSpinning();
                 if (this._queryingService) {
+                    this.startSpinning();
                     this._userVerifier.answerQuery(this._queryingService, this._entry.text);
                 } else {
                     this._preemptiveAnswer = this._entry.text;
