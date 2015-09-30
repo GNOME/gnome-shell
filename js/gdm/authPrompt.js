@@ -290,13 +290,14 @@ export const AuthPrompt = GObject.registerClass({
         this.verificationStatus = AuthPromptStatus.VERIFICATION_IN_PROGRESS;
         this.updateSensitivity(false);
 
-        if (shouldSpin)
-            this.startSpinning();
+        if (this._queryingService) {
+            if (shouldSpin)
+                this.startSpinning();
 
-        if (this._queryingService)
             this._userVerifier.answerQuery(this._queryingService, this._entry.text);
-        else
+        } else {
             this._preemptiveAnswer = this._entry.text;
+        }
 
         this._clearPreemptiveAnswerWatch();
 
