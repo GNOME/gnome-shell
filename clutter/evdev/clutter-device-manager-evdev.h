@@ -56,6 +56,11 @@ GType clutter_device_manager_evdev_get_type (void) G_GNUC_CONST;
 void  _clutter_events_evdev_init            (ClutterBackend *backend);
 void  _clutter_events_evdev_uninit          (ClutterBackend *backend);
 
+gint  _clutter_device_manager_evdev_acquire_device_id (ClutterDeviceManagerEvdev *manager_evdev);
+
+void  _clutter_device_manager_evdev_release_device_id (ClutterDeviceManagerEvdev *manager_evdev,
+                                                       ClutterInputDevice        *device);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_DEVICE_MANAGER_EVDEV_H__ */

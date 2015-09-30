@@ -65,6 +65,16 @@
 #define INITIAL_POINTER_X 16
 #define INITIAL_POINTER_Y 16
 
+/*
+ * Clutter makes the assumption that two core devices have ID's 2 and 3 (core
+ * pointer and core keyboard).
+ *
+ * Since the two first devices that will ever be created will be the virtual
+ * pointer and virtual keyboard of the first seat, we fulfill the made
+ * assumptions by having the first device having ID 2 and following 3.
+ */
+#define INITIAL_DEVICE_ID 2
+
 typedef struct _ClutterTouchState ClutterTouchState;
 typedef struct _ClutterEventFilter ClutterEventFilter;
 
@@ -142,6 +152,9 @@ struct _ClutterDeviceManagerEvdevPrivate
   guint stage_removed_handler;
 
   GSList *event_filters;
+
+  gint device_id_next;
+  GList *free_device_ids;
 };
 
 static void clutter_device_manager_evdev_event_extender_init (ClutterEventExtenderInterface *iface);
@@ -1944,6 +1957,8 @@ clutter_device_manager_evdev_finalize (GObject *object)
   if (priv->libinput != NULL)
     libinput_unref (priv->libinput);
 
+  g_list_free (priv->free_device_ids);
+
   G_OBJECT_CLASS (clutter_device_manager_evdev_parent_class)->finalize (object);
 }
 
@@ -2043,6 +2058,8 @@ clutter_device_manager_evdev_init (ClutterDeviceManagerEvdev *self)
                       "stage-removed",
                       G_CALLBACK (clutter_device_manager_evdev_stage_removed_cb),
                       self);
+
+  priv->device_id_next = INITIAL_DEVICE_ID;
 }
 
 void
@@ -2059,6 +2076,51 @@ void
 _clutter_events_evdev_uninit (ClutterBackend *backend)
 {
   CLUTTER_NOTE (EVENT, "Uninitializing evdev backend");
+}
+
+gint
+_clutter_device_manager_evdev_acquire_device_id (ClutterDeviceManagerEvdev *manager_evdev)
+{
+  ClutterDeviceManagerEvdevPrivate *priv = manager_evdev->priv;
+  GList *first;
+  gint next_id;
+
+  if (priv->free_device_ids == NULL)
+    {
+      gint i;
+
+      /* We ran out of free ID's, so append 10 new ones. */
+      for (i = 0; i < 10; i++)
+        priv->free_device_ids =
+          g_list_append (priv->free_device_ids,
+                         GINT_TO_POINTER (priv->device_id_next++));
+    }
+
+  first = g_list_first (priv->free_device_ids);
+  next_id = GPOINTER_TO_INT (first->data);
+  priv->free_device_ids = g_list_remove_link (priv->free_device_ids, first);
+
+  return next_id;
+}
+
+static int
+compare_ids (gconstpointer a,
+             gconstpointer b)
+{
+  return GPOINTER_TO_INT (a) - GPOINTER_TO_INT (b);
+}
+
+void
+_clutter_device_manager_evdev_release_device_id (ClutterDeviceManagerEvdev *manager_evdev,
+                                                 ClutterInputDevice        *device)
+{
+  ClutterDeviceManagerEvdevPrivate *priv = manager_evdev->priv;
+  gint device_id;
+
+  device_id = clutter_input_device_get_device_id (device);
+  priv->free_device_ids = g_list_insert_sorted (priv->free_device_ids,
+                                                GINT_TO_POINTER (device_id),
+                                                compare_ids);
 }
 
 /**

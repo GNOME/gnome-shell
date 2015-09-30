@@ -32,6 +32,7 @@
 #include "clutter-evdev.h"
 
 #include "clutter-input-device-evdev.h"
+#include "clutter-device-manager-evdev.h"
 
 typedef struct _ClutterInputDeviceClass        ClutterInputDeviceEvdevClass;
 
@@ -41,25 +42,18 @@ G_DEFINE_TYPE (ClutterInputDeviceEvdev,
                clutter_input_device_evdev,
                CLUTTER_TYPE_INPUT_DEVICE)
 
-/*
- * Clutter makes the assumption that two core devices have ID's 2 and 3 (core
- * pointer and core keyboard).
- *
- * Since the two first devices that will ever be created will be the virtual
- * pointer and virtual keyboard of the first seat, we fulfill the made
- * assumptions by having the first device having ID 2 and following 3.
- */
-#define INITIAL_DEVICE_ID 2
-
-static gint global_device_id_next = INITIAL_DEVICE_ID;
-
 static void
 clutter_input_device_evdev_finalize (GObject *object)
 {
-  ClutterInputDeviceEvdev *device = CLUTTER_INPUT_DEVICE_EVDEV (object);
+  ClutterInputDevice *device = CLUTTER_INPUT_DEVICE (object);
+  ClutterInputDeviceEvdev *device_evdev = CLUTTER_INPUT_DEVICE_EVDEV (object);
+  ClutterDeviceManagerEvdev *manager_evdev =
+    CLUTTER_DEVICE_MANAGER_EVDEV (device->device_manager);
 
-  if (device->libinput_device)
-    libinput_device_unref (device->libinput_device);
+  if (device_evdev->libinput_device)
+    libinput_device_unref (device_evdev->libinput_device);
+
+  _clutter_device_manager_evdev_release_device_id (manager_evdev, device);
 
   G_OBJECT_CLASS (clutter_input_device_evdev_parent_class)->finalize (object);
 }
@@ -107,13 +101,17 @@ _clutter_input_device_evdev_new (ClutterDeviceManager *manager,
 {
   ClutterInputDeviceEvdev *device;
   ClutterInputDeviceType type;
+  ClutterDeviceManagerEvdev *manager_evdev;
   gchar *vendor, *product;
+  gint device_id;
 
   type = _clutter_input_device_evdev_determine_type (libinput_device);
   vendor = g_strdup_printf ("%.4x", libinput_device_get_id_vendor (libinput_device));
   product = g_strdup_printf ("%.4x", libinput_device_get_id_product (libinput_device));
+  manager_evdev = CLUTTER_DEVICE_MANAGER_EVDEV (manager);
+  device_id = _clutter_device_manager_evdev_acquire_device_id (manager_evdev);
   device = g_object_new (CLUTTER_TYPE_INPUT_DEVICE_EVDEV,
-                         "id", global_device_id_next++,
+                         "id", device_id,
                          "name", libinput_device_get_sysname (libinput_device),
                          "device-manager", manager,
                          "device-type", type,
@@ -148,7 +146,9 @@ _clutter_input_device_evdev_new_virtual (ClutterDeviceManager *manager,
                                          ClutterInputDeviceType type)
 {
   ClutterInputDeviceEvdev *device;
+  ClutterDeviceManagerEvdev *manager_evdev;
   const char *name;
+  gint device_id;
 
   switch (type)
     {
@@ -163,8 +163,10 @@ _clutter_input_device_evdev_new_virtual (ClutterDeviceManager *manager,
       break;
     };
 
+  manager_evdev = CLUTTER_DEVICE_MANAGER_EVDEV (manager);
+  device_id = _clutter_device_manager_evdev_acquire_device_id (manager_evdev);
   device = g_object_new (CLUTTER_TYPE_INPUT_DEVICE_EVDEV,
-                         "id", global_device_id_next++,
+                         "id", device_id,
                          "name", name,
                          "device-manager", manager,
                          "device-type", type,
