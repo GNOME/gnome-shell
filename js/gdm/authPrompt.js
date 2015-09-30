@@ -226,7 +226,9 @@ export const AuthPrompt = GObject.registerClass({
 
         [this._textEntry, this._passwordEntry].forEach(entry => {
             entry.clutter_text.connect('text-changed', () => {
-                if (!this._userVerifier.hasPendingMessages)
+                if (!this._userVerifier.hasPendingMessages &&
+                    this._queryingService &&
+                    !this._preemptiveAnswer)
                     this._fadeOutMessage();
             });
 
