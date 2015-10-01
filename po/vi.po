@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-09-23 22:01+0000\n"
-"PO-Revision-Date: 2015-09-24 15:14+0700\n"
+"POT-Creation-Date: 2015-09-28 22:53+0000\n"
+"PO-Revision-Date: 2015-10-01 07:15+0700\n"
 "Last-Translator: Trần Ngọc Quân <vnwildman@gmail.com>\n"
 "Language-Team: Vietnamese <gnome-vi-list@gnome.org>\n"
 "Language: vi\n"
@@ -135,7 +135,7 @@ msgstr "Hộp thoại lịch sử lệnh (Alt-F2)"
 #. Translators: looking glass is a debugger and inspector tool, see https://live.gnome.org/GnomeShell/LookingGlass
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:13
 msgid "History for the looking glass dialog"
-msgstr "Lịch sử hộp thoại looking glass"
+msgstr "Lịch sử hộp thoại kính tìm kiếm"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:14
 msgid "Always show the 'Log out' menu item in the user menu."
@@ -191,7 +191,7 @@ msgstr "Phím hiện “Ứng dụng”"
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:23
 msgid ""
 "Keybinding to open the \"Show Applications\" view of the Activities Overview."
-msgstr "Phím hiện “Ứng dụng” trong tổng quan “Hoạt động”."
+msgstr "Phím hiện “Ứng dụng” trong “Tổng quan hoạt động”."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:24
 msgid "Keybinding to open the overview"
@@ -298,7 +298,7 @@ msgstr "Đăng nhập mạng"
 #: ../js/extensionPrefs/main.js:122
 #, javascript-format
 msgid "There was an error loading the preferences dialog for %s:"
-msgstr "Có lỗi khi đang nạp hộp thoại tùy thích cho %s:"
+msgstr "Có lỗi khi đang tải hộp thoại tùy thích cho %s:"
 
 #: ../js/extensionPrefs/main.js:154
 msgid "GNOME Shell Extensions"
@@ -506,8 +506,7 @@ msgstr "Đổi ảnh nền…"
 msgid "Display Settings"
 msgstr "Cài đặt hiển thị"
 
-#: ../js/ui/backgroundMenu.js:22 ../js/ui/panel.js:650
-#: ../js/ui/status/system.js:366
+#: ../js/ui/backgroundMenu.js:22 ../js/ui/status/system.js:366
 msgid "Settings"
 msgstr "Cài đặt"
 
@@ -585,7 +584,7 @@ msgstr "Cả ngày"
 
 #: ../js/ui/calendar.js:1295
 msgid "Clear section"
-msgstr "Xóa phần"
+msgstr "Xóa một phần"
 
 #: ../js/ui/calendar.js:1522
 msgid "Events"
@@ -834,7 +833,7 @@ msgstr[0] "Hệ thống sẽ tự động tắt sau %d giây."
 #: ../js/ui/endSessionDialog.js:91
 msgctxt "checkbox"
 msgid "Install pending software updates"
-msgstr "Nâng cấp phần mềm còn treo"
+msgstr "Cài đặt các cập nhật phần mềm còn treo"
 
 #: ../js/ui/endSessionDialog.js:94 ../js/ui/endSessionDialog.js:111
 msgctxt "button"
@@ -979,7 +978,7 @@ msgstr "Xem mã nguồn"
 
 #: ../js/ui/lookingGlass.js:758
 msgid "Web Page"
-msgstr "Trang Web"
+msgstr "Trang thông tin điện tử"
 
 #: ../js/ui/messageTray.js:1486
 msgid "System Information"
@@ -1010,6 +1009,11 @@ msgstr "Thoát"
 #: ../js/ui/panel.js:404
 msgid "Activities"
 msgstr "Hoạt động"
+
+#: ../js/ui/panel.js:650
+msgctxt "System menu in the top bar"
+msgid "System"
+msgstr "Hệ thống"
 
 #: ../js/ui/panel.js:754
 msgid "Top Bar"
@@ -1075,7 +1079,7 @@ msgstr "Không thể khóa"
 
 #: ../js/ui/screenShield.js:806 ../js/ui/screenShield.js:1272
 msgid "Lock was blocked by an application"
-msgstr "Một ứng dụng đã ngăn cản khóa"
+msgstr "Việc khóa bị ngăn cản bởi một ứng dụng"
 
 #: ../js/ui/search.js:617
 msgid "Searching…"
@@ -1083,7 +1087,7 @@ msgstr "Đang tìm…"
 
 #: ../js/ui/search.js:619
 msgid "No results."
-msgstr "Không có kết quả."
+msgstr "Không tìm thấy kết quả nào."
 
 #: ../js/ui/shellEntry.js:25
 msgid "Copy"
@@ -1565,19 +1569,19 @@ msgstr "Chuyển sang không gian làm việc Dưới"
 
 #: ../js/ui/windowMenu.js:136
 msgid "Move to Monitor Up"
-msgstr "Chuyển sang Màn hình Trên"
+msgstr "Chuyển sang màn hình Trên"
 
 #: ../js/ui/windowMenu.js:142
 msgid "Move to Monitor Down"
-msgstr "Chuyển sang Màn hình Dưới"
+msgstr "Chuyển sang màn hình Dưới"
 
 #: ../js/ui/windowMenu.js:148
 msgid "Move to Monitor Left"
-msgstr "Chuyển sang Màn hình Trái"
+msgstr "Chuyển sang màn hình Trái"
 
 #: ../js/ui/windowMenu.js:154
 msgid "Move to Monitor Right"
-msgstr "Chuyển sang Màn hình Phải"
+msgstr "Chuyển sang màn hình Phải"
 
 #: ../src/calendar-server/evolution-calendar.desktop.in.in.h:1
 msgid "Evolution Calendar"
@@ -1603,19 +1607,19 @@ msgstr[0] "%u đầu vào"
 msgid "System Sounds"
 msgstr "Âm thanh hệ thống"
 
-#: ../src/main.c:373
+#: ../src/main.c:381
 msgid "Print version"
 msgstr "Hiển thị phiên bản"
 
-#: ../src/main.c:379
+#: ../src/main.c:387
 msgid "Mode used by GDM for login screen"
 msgstr "Chế độ được dùng bởi GDM cho màn hình đăng nhập"
 
-#: ../src/main.c:385
+#: ../src/main.c:393
 msgid "Use a specific mode, e.g. \"gdm\" for login screen"
 msgstr "Dùng chế độ đặc biệt, ví dụ “gdm” cho màn hình đăng nhập"
 
-#: ../src/main.c:391
+#: ../src/main.c:399
 msgid "List possible modes"
 msgstr "Danh sách chế độ có thể"
 
