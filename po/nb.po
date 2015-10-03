@@ -1570,11 +1570,11 @@ msgstr "Gå til arbeidsområdet til høyre"
 
 #: ../js/ui/windowMenu.js:115
 msgid "Move to Workspace Up"
-msgstr "Gå til arbeidsområdet over"
+msgstr "Flytt til arbeidsområdet over"
 
 #: ../js/ui/windowMenu.js:120
 msgid "Move to Workspace Down"
-msgstr "Gå til arbeidsområdet under"
+msgstr "Flytt til arbeidsområdet under"
 
 #: ../js/ui/windowMenu.js:136
 msgid "Move to Monitor Up"
