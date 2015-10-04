@@ -652,6 +652,39 @@ const PanelCorner = new Lang.Class({
     }
 });
 
+const AggregateLayout = new Lang.Class({
+    Name: 'AggregateLayout',
+    Extends: Clutter.BoxLayout,
+
+    _init: function(params) {
+        if (!params)
+            params = {};
+        params['orientation'] = Clutter.Orientation.VERTICAL;
+        this.parent(params);
+
+        this._sizeChildren = [];
+    },
+
+    addSizeChild: function(actor) {
+        this._sizeChildren.push(actor);
+        this.layout_changed();
+    },
+
+    vfunc_get_preferred_width: function(container, forHeight) {
+        let themeNode = container.get_theme_node();
+        let minWidth = themeNode.get_min_width();
+        let natWidth = minWidth;
+
+        for (let i = 0; i < this._sizeChildren.length; i++) {
+            let child = this._sizeChildren[i];
+            let [childMin, childNat] = child.get_preferred_width(forHeight);
+            minWidth = Math.max(minWidth, childMin);
+            natWidth = Math.max(minWidth, childNat);
+        }
+        return [minWidth, natWidth];
+    }
+});
+
 const AggregateMenu = new Lang.Class({
     Name: 'AggregateMenu',
     Extends: PanelMenu.Button,
@@ -659,6 +692,9 @@ const AggregateMenu = new Lang.Class({
     _init: function() {
         this.parent(0.0, C_("System menu in the top bar", "System"), false);
         this.menu.actor.add_style_class_name('aggregate-menu');
+
+        let menuLayout = new AggregateLayout();
+        this.menu.box.set_layout_manager(menuLayout);
 
         this._indicators = new St.BoxLayout({ style_class: 'panel-status-indicators-box' });
         this.actor.add_child(this._indicators);
@@ -708,6 +744,11 @@ const AggregateMenu = new Lang.Class({
         this.menu.addMenuItem(this._rfkill.menu);
         this.menu.addMenuItem(this._power.menu);
         this.menu.addMenuItem(this._system.menu);
+
+        menuLayout.addSizeChild(this._location.menu.actor);
+        menuLayout.addSizeChild(this._rfkill.menu.actor);
+        menuLayout.addSizeChild(this._power.menu.actor);
+        menuLayout.addSizeChild(this._system.menu.actor);
     },
 });
 
