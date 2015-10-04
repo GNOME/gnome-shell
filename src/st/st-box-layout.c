@@ -563,6 +563,24 @@ layout_notify (GObject    *object,
 }
 
 static void
+on_layout_manager_notify (GObject    *object,
+                          GParamSpec *pspec,
+                          gpointer    user_data)
+{
+  ClutterActor *actor = CLUTTER_ACTOR (object);
+  ClutterLayoutManager *layout = clutter_actor_get_layout_manager (actor);
+
+  g_warn_if_fail (CLUTTER_IS_BOX_LAYOUT (layout));
+
+  if (layout == NULL)
+    return;
+
+  g_signal_connect_swapped (layout, "layout-changed",
+                            G_CALLBACK (clutter_actor_queue_relayout), actor);
+  g_signal_connect (layout, "notify", G_CALLBACK (layout_notify), object);
+}
+
+static void
 st_box_layout_class_init (StBoxLayoutClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -614,14 +632,11 @@ st_box_layout_class_init (StBoxLayoutClass *klass)
 static void
 st_box_layout_init (StBoxLayout *self)
 {
-  ClutterLayoutManager *layout;
-
   self->priv = BOX_LAYOUT_PRIVATE (self);
-  layout = clutter_box_layout_new ();
-  g_signal_connect_swapped (layout, "layout-changed",
-                            G_CALLBACK (clutter_actor_queue_relayout), self);
-  g_signal_connect (layout, "notify", G_CALLBACK (layout_notify), self);
-  clutter_actor_set_layout_manager (CLUTTER_ACTOR (self), layout);
+
+  g_signal_connect (self, "notify::layout-manager",
+                    G_CALLBACK (on_layout_manager_notify), NULL);
+  clutter_actor_set_layout_manager (CLUTTER_ACTOR (self), clutter_box_layout_new ());
 }
 
 /**
