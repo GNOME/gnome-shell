@@ -10,6 +10,7 @@ const St = imports.gi.St;
 const Animation = imports.ui.animation;
 const Batch = imports.gdm.batch;
 const GdmUtil = imports.gdm.util;
+const Meta = imports.gi.Meta;
 const Params = imports.misc.params;
 const ShellEntry = imports.ui.shellEntry;
 const Tweener = imports.ui.tweener;
@@ -47,6 +48,8 @@ var AuthPrompt = new Lang.Class({
         this._gdmClient = gdmClient;
         this._mode = mode;
 
+        this._idleMonitor = Meta.IdleMonitor.get_core();
+
         let reauthenticationOnly;
         if (this._mode == AuthPromptMode.UNLOCK_ONLY)
             reauthenticationOnly = true;
@@ -71,6 +74,11 @@ var AuthPrompt = new Lang.Class({
                     this._userVerifier.answerQuery(this._queryingService, this._entry.text);
                 } else {
                     this._preemptiveAnswer = this._entry.text;
+
+                    if (this._preemptiveAnswerWatchId) {
+                        this._idleMonitor.remove_watch(this._preemptiveAnswerWatchId);
+                        this._preemptiveAnswerWatchId = 0;
+                    }
                 }
             });
 
@@ -135,6 +143,11 @@ var AuthPrompt = new Lang.Class({
     },
 
     _onDestroy() {
+        if (this._preemptiveAnswerWatchId) {
+            this._idleMonitor.remove_watch(this._preemptiveAnswerWatchId);
+            this._preemptiveAnswerWatchId = 0;
+        }
+
         this._userVerifier.destroy();
         this._userVerifier = null;
     },
@@ -349,6 +362,11 @@ var AuthPrompt = new Lang.Class({
     },
 
     setQuestion(question) {
+        if (this._preemptiveAnswerWatchId) {
+            this._idleMonitor.remove_watch(this._preemptiveAnswerWatchId);
+            this._preemptiveAnswerWatchId = 0;
+        }
+
         this._label.set_text(question);
 
         this._label.show();
@@ -434,11 +452,30 @@ var AuthPrompt = new Lang.Class({
         }
     },
 
+    _onUserStoppedTypePreemptiveAnswer() {
+        if (!this._preemptiveAnswerWatchId ||
+            this._preemptiveAnswer ||
+            this._queryingService)
+            return;
+
+        this._idleMonitor.remove_watch(this._preemptiveAnswerWatchId);
+        this._preemptiveAnswerWatchId = 0;
+
+        this._entry.text = '';
+        this.updateSensitivity(false);
+    },
+
     reset() {
         let oldStatus = this.verificationStatus;
         this.verificationStatus = AuthPromptStatus.NOT_VERIFYING;
         this.cancelButton.reactive = true;
         this.nextButton.label = _("Next");
+
+        if (this._preemptiveAnswerWatchId) {
+            this._idleMonitor.remove_watch(this._preemptiveAnswerWatchId);
+        }
+        this._preemptiveAnswerWatchId = this._idleMonitor.add_idle_watch (500,
+                                                                          this._onUserStoppedTypePreemptiveAnswer.bind(this));
 
         if (this._userVerifier)
             this._userVerifier.cancel();
