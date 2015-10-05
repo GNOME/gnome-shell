@@ -144,8 +144,6 @@ st_generic_accessible_class_init (StGenericAccessibleClass *klass)
    * Emitted when atk_value_set_current_value() is called on
    * @self. Right now we only care about doubles, so the value is
    * directly returned by the signal.
-   *
-   * Return value: value of the current element.
    */
   st_generic_accessible_signals[SET_CURRENT_VALUE] =
     g_signal_new ("set-current-value",
