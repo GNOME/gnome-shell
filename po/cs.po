@@ -1,18 +1,20 @@
 # Czech translation of gnome-shell.
 # Copyright (C) 2009, 2010, 2011 the author(s) of gnome-shell.
 # This file is distributed under the same license as the gnome-shell package.
+#
 # Andre Klapper <ak-47@gmx.net>, 2009.
 # Petr Kovar <pknbe@volny.cz>, 2009, 2010, 2011, 2012, 2014, 2015.
 # Adam Matoušek <adamatousek@gmail.com>, 2012, 2013.
 # Marek Černocký <marek@manet.cz>, 2012, 2013, 2014, 2015.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-09-14 08:20+0000\n"
-"PO-Revision-Date: 2015-09-28 17:09-0400\n"
-"Last-Translator: Petr Kovar <pknbe@volny.cz>\n"
+"POT-Creation-Date: 2015-10-05 08:41+0000\n"
+"PO-Revision-Date: 2015-10-04 11:42-0400\n"
+"Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
@@ -298,6 +300,7 @@ msgid "Network Login"
 msgstr "Přihlášení do sítě"
 
 #: ../js/extensionPrefs/main.js:122
+#, javascript-format
 msgid "There was an error loading the preferences dialog for %s:"
 msgstr ""
 "Nastala chyba při načítání dialogového okna předvoleb pro rozšíření %s:"
@@ -332,14 +335,23 @@ msgstr "Přihlásit se"
 msgid "Choose Session"
 msgstr "Vybrat sezení"
 
+#. translators: this message is shown below the user list on the
+#. login screen. It can be activated to reveal an entry for
+#. manually entering the username.
 #: ../js/gdm/loginDialog.js:431
 msgid "Not listed?"
 msgstr "Nejste na seznamu?"
 
+#. Translators: this message is shown below the username entry field
+#. to clue the user in on how to login to the local network realm
 #: ../js/gdm/loginDialog.js:850
+#, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(např. uživatel nebo %s)"
 
+#. TTLS and PEAP are actually much more complicated, but this complication
+#. is not visible here since we only care about phase2 authentication
+#. (and don't even care of which one)
 #: ../js/gdm/loginDialog.js:855 ../js/ui/components/networkAgent.js:271
 #: ../js/ui/components/networkAgent.js:289
 msgid "Username: "
@@ -353,6 +365,11 @@ msgstr "Přihlašovací okno"
 msgid "Authentication error"
 msgstr "Chyba ověření"
 
+#. We don't show fingerprint messages directly since it's
+#. not the main auth service. Instead we use the messages
+#. as a cue to display our own message.
+#. Translators: this message is shown below the password entry field
+#. to indicate the user can swipe their finger instead
 #: ../js/gdm/util.js:473
 msgid "(or swipe finger)"
 msgstr "(nebo otiskněte prst)"
@@ -361,78 +378,89 @@ msgstr "(nebo otiskněte prst)"
 msgid "Command not found"
 msgstr "Příkaz nenalezen"
 
+#. Replace "Error invoking GLib.shell_parse_argv: " with
+#. something nicer
 #: ../js/misc/util.js:152
 msgid "Could not parse command:"
 msgstr "Nelze analyzovat příkaz:"
 
 #: ../js/misc/util.js:160
+#, javascript-format
 msgid "Execution of “%s” failed:"
 msgstr "Vykonání „%s“ selhalo:"
 
-#. Translators: Time in 24h format */
+#. Translators: Time in 24h format
 #: ../js/misc/util.js:191
 msgid "%H∶%M"
 msgstr "%k∶%M"
 
 #. Translators: this is the word "Yesterday" followed by a
-#. time string in 24h format. i.e. "Yesterday, 14:30" */
+#. time string in 24h format. i.e. "Yesterday, 14:30"
 #: ../js/misc/util.js:197
+#, no-c-format
 msgid "Yesterday, %H∶%M"
 msgstr "včera, %k∶%M"
 
 #. Translators: this is the week day name followed by a time
-#. string in 24h format. i.e. "Monday, 14:30" */
+#. string in 24h format. i.e. "Monday, 14:30"
 #: ../js/misc/util.js:203
+#, no-c-format
 msgid "%A, %H∶%M"
 msgstr "%A, %k∶%M"
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 24h format.
-#. i.e. "May 25, 14:30" */
+#. i.e. "May 25, 14:30"
 #: ../js/misc/util.js:209
+#, no-c-format
 msgid "%B %d, %H∶%M"
 msgstr "%e. %B %k∶%M"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
-#. i.e. "May 25 2012, 14:30" */
+#. i.e. "May 25 2012, 14:30"
 #: ../js/misc/util.js:215
+#, no-c-format
 msgid "%B %d %Y, %H∶%M"
 msgstr "%e. %B %Y, %k∶%M"
 
-#. Translators: Time in 12h format */
+#. Translators: Time in 12h format
 #: ../js/misc/util.js:220
 msgid "%l∶%M %p"
 msgstr "%l∶%M %p"
 
 #. Translators: this is the word "Yesterday" followed by a
-#. time string in 12h format. i.e. "Yesterday, 2:30 pm" */
+#. time string in 12h format. i.e. "Yesterday, 2:30 pm"
 #: ../js/misc/util.js:226
+#, no-c-format
 msgid "Yesterday, %l∶%M %p"
 msgstr "včera, %l∶%M %p"
 
 #. Translators: this is the week day name followed by a time
-#. string in 12h format. i.e. "Monday, 2:30 pm" */
+#. string in 12h format. i.e. "Monday, 2:30 pm"
 #: ../js/misc/util.js:232
+#, no-c-format
 msgid "%A, %l∶%M %p"
 msgstr "%A, %l∶%M %p"
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 12h format.
-#. i.e. "May 25, 2:30 pm" */
+#. i.e. "May 25, 2:30 pm"
 #: ../js/misc/util.js:238
+#, no-c-format
 msgid "%B %d, %l∶%M %p"
 msgstr "%e. %B, %l∶%M %p"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
-#. i.e. "May 25 2012, 2:30 pm"*/
+#. i.e. "May 25 2012, 2:30 pm"
 #: ../js/misc/util.js:244
+#, no-c-format
 msgid "%B %d %Y, %l∶%M %p"
 msgstr "%e. %B %Y, %l∶%M %p"
 
 #. TRANSLATORS: this is the title of the wifi captive portal login
-#. * window, until we know the title of the actual login page */
+#. * window, until we know the title of the actual login page
 #: ../js/portalHelper/main.js:85
 msgid "Web Authentication Redirect"
 msgstr "Přesměrováno na ověření přes web"
@@ -466,10 +494,12 @@ msgid "Show Details"
 msgstr "Zobrazit podrobnosti"
 
 #: ../js/ui/appFavorites.js:132
+#, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "%s byl přidán mezi oblíbené."
 
 #: ../js/ui/appFavorites.js:166
+#, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "%s byl odstraněn z oblíbených."
 
@@ -481,12 +511,11 @@ msgstr "Změnit pozadí…"
 msgid "Display Settings"
 msgstr "Nastavení displeje"
 
-#: ../js/ui/backgroundMenu.js:22 ../js/ui/panel.js:650
-#: ../js/ui/status/system.js:366
+#: ../js/ui/backgroundMenu.js:22 ../js/ui/status/system.js:366
 msgid "Settings"
 msgstr "Nastavení"
 
-#. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday). */
+#. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
 #: ../js/ui/calendar.js:55
 msgctxt "calendar-no-work"
 msgid "06"
@@ -496,43 +525,43 @@ msgstr "06"
 #. *
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
-#. */
+#.
 #: ../js/ui/calendar.js:84
 msgctxt "grid sunday"
 msgid "S"
 msgstr "Ne"
 
-#. Translators: Calendar grid abbreviation for Monday */
+#. Translators: Calendar grid abbreviation for Monday
 #: ../js/ui/calendar.js:86
 msgctxt "grid monday"
 msgid "M"
 msgstr "Po"
 
-#. Translators: Calendar grid abbreviation for Tuesday */
+#. Translators: Calendar grid abbreviation for Tuesday
 #: ../js/ui/calendar.js:88
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "Út"
 
-#. Translators: Calendar grid abbreviation for Wednesday */
+#. Translators: Calendar grid abbreviation for Wednesday
 #: ../js/ui/calendar.js:90
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "St"
 
-#. Translators: Calendar grid abbreviation for Thursday */
+#. Translators: Calendar grid abbreviation for Thursday
 #: ../js/ui/calendar.js:92
 msgctxt "grid thursday"
 msgid "T"
 msgstr "Čt"
 
-#. Translators: Calendar grid abbreviation for Friday */
+#. Translators: Calendar grid abbreviation for Friday
 #: ../js/ui/calendar.js:94
 msgctxt "grid friday"
 msgid "F"
 msgstr "Pá"
 
-#. Translators: Calendar grid abbreviation for Saturday */
+#. Translators: Calendar grid abbreviation for Saturday
 #: ../js/ui/calendar.js:96
 msgctxt "grid saturday"
 msgid "S"
@@ -552,39 +581,39 @@ msgstr "Týden %V"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
-#. */
+#.
 #: ../js/ui/calendar.js:1188
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Celý den"
 
-#: ../js/ui/calendar.js:1291
+#: ../js/ui/calendar.js:1295
 msgid "Clear section"
 msgstr "Vymazat část"
 
-#: ../js/ui/calendar.js:1518
+#: ../js/ui/calendar.js:1522
 msgid "Events"
 msgstr "Události"
 
-#: ../js/ui/calendar.js:1527
+#: ../js/ui/calendar.js:1531
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %e. %B"
 
-#: ../js/ui/calendar.js:1531
+#: ../js/ui/calendar.js:1535
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %e. %B %Y"
 
-#: ../js/ui/calendar.js:1616
+#: ../js/ui/calendar.js:1620
 msgid "Notifications"
 msgstr "Upozornění"
 
-#: ../js/ui/calendar.js:1767
+#: ../js/ui/calendar.js:1771
 msgid "No Notifications"
 msgstr "Žádná upozornění"
 
-#: ../js/ui/calendar.js:1770
+#: ../js/ui/calendar.js:1774
 msgid "No Events"
 msgstr "Žádné události"
 
@@ -597,6 +626,7 @@ msgid "External drive disconnected"
 msgstr "Externí svazek odpojen"
 
 #: ../js/ui/components/autorunManager.js:354
+#, javascript-format
 msgid "Open with %s"
 msgstr "Otevřít s %s"
 
@@ -613,6 +643,7 @@ msgstr "Napište znovu:"
 msgid "Connect"
 msgstr "Připojit"
 
+#. Cisco LEAP
 #: ../js/ui/components/networkAgent.js:233
 #: ../js/ui/components/networkAgent.js:245
 #: ../js/ui/components/networkAgent.js:273
@@ -621,6 +652,7 @@ msgstr "Připojit"
 msgid "Password: "
 msgstr "Heslo: "
 
+#. static WEP
 #: ../js/ui/components/networkAgent.js:238
 msgid "Key: "
 msgstr "Klíč: "
@@ -644,6 +676,7 @@ msgstr "K bezdrátové síti je vyžadováno ověření"
 
 #: ../js/ui/components/networkAgent.js:321
 #: ../js/ui/components/networkAgent.js:659
+#, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
 "“%s”."
@@ -688,6 +721,7 @@ msgstr "Heslo k mobilní širokopásmové síti"
 #: ../js/ui/components/networkAgent.js:663
 #: ../js/ui/components/networkAgent.js:667
 #: ../js/ui/components/networkAgent.js:680
+#, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "Pro připojení k „%s“ je vyžadováno heslo."
 
@@ -710,14 +744,15 @@ msgstr "Ověřit"
 #. Translators: "that didn't work" refers to the fact that the
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
-#. * for instance. */
+#. * for instance.
 #: ../js/ui/components/polkitAgent.js:301 ../js/ui/shellMountOperation.js:383
 msgid "Sorry, that didn't work. Please try again."
 msgstr "Ověření bohužel nebylo úspěšné. Zkuste to prosím znovu."
 
 #. Translators: this is the other person changing their old IM name to their new
-#. IM name. */
+#. IM name.
 #: ../js/ui/components/telepathyClient.js:759
+#, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s je teď znám jako %s"
 
@@ -729,6 +764,8 @@ msgstr "Okna"
 msgid "Show Applications"
 msgstr "Zobrazit aplikace"
 
+#. Translators: this is the name of the dock/favorites area on
+#. the left of the overview
 #: ../js/ui/dash.js:449
 msgid "Dash"
 msgstr "Oblíbené"
@@ -736,7 +773,7 @@ msgstr "Oblíbené"
 # Not sure whether we've enough space for it, but anyway, looks more aesthetically with "%A".
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
-#. */
+#.
 #: ../js/ui/dateMenu.js:73
 msgid "%B %e %Y"
 msgstr "%e. %B, %Y"
@@ -745,7 +782,7 @@ msgstr "%e. %B, %Y"
 #. Translators: This is the accessible name of the date button shown
 #. * below the time in the shell; it should combine the weekday and the
 #. * date, e.g. "Tuesday February 17 2015".
-#. */
+#.
 #: ../js/ui/dateMenu.js:80
 msgid "%A %B %e %Y"
 msgstr "%A, %e. %B, %Y"
@@ -759,6 +796,7 @@ msgid "World Clocks"
 msgstr "Světové hodiny"
 
 #: ../js/ui/endSessionDialog.js:64
+#, javascript-format
 msgctxt "title"
 msgid "Log Out %s"
 msgstr "Odhlásit uživatele %s"
@@ -769,6 +807,7 @@ msgid "Log Out"
 msgstr "Odhlášení"
 
 #: ../js/ui/endSessionDialog.js:67
+#, javascript-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "Uživatel %s bude automaticky odhlášen za %d sekundu."
@@ -776,6 +815,7 @@ msgstr[1] "Uživatel %s bude automaticky odhlášen za %d sekundy."
 msgstr[2] "Uživatel %s bude automaticky odhlášen za %d sekund."
 
 #: ../js/ui/endSessionDialog.js:72
+#, javascript-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
 msgstr[0] "Budete automaticky odhlášeni za %d sekundu."
@@ -798,6 +838,7 @@ msgid "Install Updates & Power Off"
 msgstr "Nainstalovat aktualizace a vypnout"
 
 #: ../js/ui/endSessionDialog.js:87
+#, javascript-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "Systém bude automaticky vypnut za %d sekundu."
@@ -825,6 +866,7 @@ msgid "Restart"
 msgstr "Restart"
 
 #: ../js/ui/endSessionDialog.js:105
+#, javascript-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "Systém bude automaticky restartován za %d sekundu."
@@ -837,6 +879,7 @@ msgid "Restart & Install Updates"
 msgstr "Restartovat a nainstalovat aktualizace"
 
 #: ../js/ui/endSessionDialog.js:121
+#, javascript-format
 msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
 "The system will automatically restart and install updates in %d seconds."
@@ -878,13 +921,15 @@ msgstr "Některé aplikace jsou zaneprázdněny nebo obsahují neuloženou prác
 msgid "Other users are logged in."
 msgstr "Jsou přihlášeni jiní uživatelé."
 
-#. Translators: Remote here refers to a remote session, like a ssh login */
+#. Translators: Remote here refers to a remote session, like a ssh login
 #: ../js/ui/endSessionDialog.js:640
+#, javascript-format
 msgid "%s (remote)"
 msgstr "%s (vzdálený)"
 
-#. Translators: Console here refers to a tty like a VT console */
+#. Translators: Console here refers to a tty like a VT console
 #: ../js/ui/endSessionDialog.js:643
+#, javascript-format
 msgid "%s (console)"
 msgstr "%s (konzola)"
 
@@ -893,6 +938,7 @@ msgid "Install"
 msgstr "Instalovat"
 
 #: ../js/ui/extensionDownloader.js:204
+#, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Stáhnout a nainstalovat „%s“ z extensions.gnome.org?"
 
@@ -900,7 +946,7 @@ msgstr "Stáhnout a nainstalovat „%s“ z extensions.gnome.org?"
 msgid "Keyboard"
 msgstr "Klávesnice"
 
-#. translators: 'Hide' is a verb */
+#. translators: 'Hide' is a verb
 #: ../js/ui/legacyTray.js:66
 msgid "Hide tray"
 msgstr "Skrýt pořadač"
@@ -913,8 +959,9 @@ msgstr "Stavové ikony"
 msgid "No extensions installed"
 msgstr "Nejsou nainstalována žádná rozšíření"
 
-#. Translators: argument is an extension UUID. */
+#. Translators: argument is an extension UUID.
 #: ../js/ui/lookingGlass.js:697
+#, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "Rozšíření %s nevyvolalo žádné chyby."
 
@@ -932,7 +979,7 @@ msgstr "Povoleno"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:719 ../src/gvc/gvc-mixer-control.c:1830
+#: ../js/ui/lookingGlass.js:719 ../src/gvc/gvc-mixer-control.c:1828
 msgid "Disabled"
 msgstr "Zakázáno"
 
@@ -971,7 +1018,7 @@ msgstr "Přehled"
 #. Translators: this is the text displayed
 #. in the search entry when no search is
 #. active; it should not exceed ~30
-#. characters. */
+#. characters.
 #: ../js/ui/overview.js:244
 msgid "Type to search…"
 msgstr "Vyhledávejte psaním…"
@@ -981,15 +1028,25 @@ msgid "Quit"
 msgstr "Ukončit"
 
 #. Translators: If there is no suitable word for "Activities"
-#. in your language, you can use the word for "Overview". */
+#. in your language, you can use the word for "Overview".
 #: ../js/ui/panel.js:404
 msgid "Activities"
 msgstr "Činnosti"
+
+#: ../js/ui/panel.js:650
+msgctxt "System menu in the top bar"
+msgid "System"
+msgstr "Systém"
 
 #: ../js/ui/panel.js:754
 msgid "Top Bar"
 msgstr "Horní lišta"
 
+#. Translators: this MUST be either "toggle-switch-us"
+#. (for toggle switches containing the English words
+#. "ON" and "OFF") or "toggle-switch-intl" (for toggle
+#. switches containing "◯" and "|"). Other values will
+#. simply result in invisible toggle switches.
 #: ../js/ui/popupMenu.js:289
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
@@ -1007,12 +1064,13 @@ msgid "Restarting…"
 msgstr "Restartuje se…"
 
 #. Translators: This is a time format for a date in
-#. long format */
+#. long format
 #: ../js/ui/screenShield.js:85
 msgid "%A, %B %d"
 msgstr "%A, %e. %B"
 
 #: ../js/ui/screenShield.js:144
+#, javascript-format
 msgid "%d new message"
 msgid_plural "%d new messages"
 msgstr[0] "%d nová zpráva"
@@ -1020,6 +1078,7 @@ msgstr[1] "%d nové zprávy"
 msgstr[2] "%d nových zpráv"
 
 #: ../js/ui/screenShield.js:146
+#, javascript-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d nové upozornění"
@@ -1034,6 +1093,13 @@ msgstr "Uzamknout"
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME potřebuje uzamknout obrazovku"
 
+#. We could not become modal, so we can't activate the
+#. screenshield. The user is probably very upset at this
+#. point, but any application using global grabs is broken
+#. Just tell him to stop using this app
+#.
+#. XXX: another option is to kick the user into the gdm login
+#. screen, where we're not affected by grabs
 #: ../js/ui/screenShield.js:805 ../js/ui/screenShield.js:1271
 msgid "Unable to lock"
 msgstr "Nelze uzamknout obrazovku"
@@ -1129,9 +1195,9 @@ msgstr "Vypnout"
 msgid "Bluetooth Settings"
 msgstr "Nastavení Bluetooth"
 
-#. Translators: this is the number of connected bluetooth devices */
+#. Translators: this is the number of connected bluetooth devices
 #: ../js/ui/status/bluetooth.js:105
-#| msgid "Connected"
+#, javascript-format
 msgid "%d Connected"
 msgid_plural "%d Connected"
 msgstr[0] "%d připojené"
@@ -1151,7 +1217,6 @@ msgid "Show Keyboard Layout"
 msgstr "Zobrazit rozložení klávesnice"
 
 #: ../js/ui/status/location.js:71 ../js/ui/status/location.js:177
-#| msgid "Location"
 msgid "Location Enabled"
 msgstr "Zjišťování polohy je povoleno"
 
@@ -1164,12 +1229,10 @@ msgid "Privacy Settings"
 msgstr "Nastavení ochrany osobních údajů"
 
 #: ../js/ui/status/location.js:176
-#| msgid "Location"
 msgid "Location In Use"
 msgstr "Zjišťování polohy se používá"
 
 #: ../js/ui/status/location.js:180
-#| msgid "Connection failed"
 msgid "Location Disabled"
 msgstr "Zjišťování polohy je zakázáno"
 
@@ -1181,53 +1244,61 @@ msgstr "Povoleno"
 msgid "<unknown>"
 msgstr "<neznámé>"
 
-#. Translators: %s is a network identifier */
+#. Translators: %s is a network identifier
 #: ../js/ui/status/network.js:451 ../js/ui/status/network.js:1308
+#, javascript-format
 msgid "%s Off"
 msgstr "%s je vypnuto"
 
-#. Translators: %s is a network identifier */
+#. Translators: %s is a network identifier
 #: ../js/ui/status/network.js:454
+#, javascript-format
 msgid "%s Connected"
 msgstr "%s je připojeno"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu);
-#. %s is a network identifier */
+#. %s is a network identifier
 #: ../js/ui/status/network.js:459
+#, javascript-format
 msgid "%s Unmanaged"
 msgstr "%s není spravováno"
 
-#. Translators: %s is a network identifier */
+#. Translators: %s is a network identifier
 #: ../js/ui/status/network.js:462
+#, javascript-format
 msgid "%s Disconnecting"
 msgstr "%s se odpojuje"
 
-#. Translators: %s is a network identifier */
+#. Translators: %s is a network identifier
 #: ../js/ui/status/network.js:469 ../js/ui/status/network.js:1300
+#, javascript-format
 msgid "%s Connecting"
 msgstr "%s se připojuje"
 
-#. Translators: this is for network connections that require some kind of key or password; %s is a network identifier */
+#. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
 #: ../js/ui/status/network.js:472
+#, javascript-format
 msgid "%s Requires Authentication"
 msgstr "%s požaduje ověření"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
-#. module, which is missing; %s is a network identifier */
+#. module, which is missing; %s is a network identifier
 #: ../js/ui/status/network.js:480
+#, javascript-format
 msgid "Firmware Missing For %s"
 msgstr "Schází firmware pro %s"
 
 #. Translators: this is for a network device that cannot be activated (for example it
-#. is disabled by rfkill, or it has no coverage; %s is a network identifier */
+#. is disabled by rfkill, or it has no coverage; %s is a network identifier
 #: ../js/ui/status/network.js:484
+#, javascript-format
 msgid "%s Unavailable"
 msgstr "%s je nedostupné"
 
-#. Translators: %s is a network identifier */
+#. Translators: %s is a network identifier
 #: ../js/ui/status/network.js:487
-#| msgid "Connection failed"
+#, javascript-format
 msgid "%s Connection Failed"
 msgstr "%s selhalo připojení"
 
@@ -1239,14 +1310,16 @@ msgstr "Nastavení připojení po drátu"
 msgid "Mobile Broadband Settings"
 msgstr "Nastavení mobilní širokopásmové sítě"
 
-#. Translators: %s is a network identifier */
+#. Translators: %s is a network identifier
 #: ../js/ui/status/network.js:588 ../js/ui/status/network.js:1305
+#, javascript-format
 msgid "%s Hardware Disabled"
 msgstr "%s je hardwarově zakázáno"
 
 #. Translators: this is for a network device that cannot be activated
-#. because it's disabled by rfkill (airplane mode); %s is a network identifier */
+#. because it's disabled by rfkill (airplane mode); %s is a network identifier
 #: ../js/ui/status/network.js:592
+#, javascript-format
 msgid "%s Disabled"
 msgstr "%s je zakázáno"
 
@@ -1306,14 +1379,15 @@ msgstr "Nastavení WiFi"
 msgid "Turn On"
 msgstr "Zapnout"
 
-#. Translators: %s is a network identifier */
+#. Translators: %s is a network identifier
 #: ../js/ui/status/network.js:1296
-#| msgid "Hotspot Active"
+#, javascript-format
 msgid "%s Hotspot Active"
 msgstr "%s je aktivní přístupový bod"
 
-#. Translators: %s is a network identifier */
+#. Translators: %s is a network identifier
 #: ../js/ui/status/network.js:1311
+#, javascript-format
 msgid "%s Not Connected"
 msgstr "%s není připojeno"
 
@@ -1321,7 +1395,7 @@ msgstr "%s není připojeno"
 msgid "connecting..."
 msgstr "připojuje se…"
 
-#. Translators: this is for network connections that require some kind of key or password */
+#. Translators: this is for network connections that require some kind of key or password
 #: ../js/ui/status/network.js:1414
 msgid "authentication required"
 msgstr "je požadováno ověření"
@@ -1362,18 +1436,27 @@ msgstr "Nastavení napájení"
 msgid "Fully Charged"
 msgstr "Plně nabito"
 
+#. 0 is reported when UPower does not have enough data
+#. to estimate battery life
 #: ../js/ui/status/power.js:72 ../js/ui/status/power.js:78
 msgid "Estimating…"
 msgstr "Odhaduje se…"
 
+#. Translators: this is <hours>:<minutes> Remaining (<percentage>)
 #: ../js/ui/status/power.js:86
+#, javascript-format
 msgid "%d∶%02d Remaining (%d%%)"
 msgstr "Zbývá %d∶%02d (%d %%)"
 
+#. Translators: this is <hours>:<minutes> Until Full (<percentage>)
 #: ../js/ui/status/power.js:91
+#, javascript-format
 msgid "%d∶%02d Until Full (%d%%)"
 msgstr "%d∶%02d do nabití (%d %%)"
 
+#. The menu only appears when airplane mode is on, so just
+#. statically build it as if it was on, rather than dynamically
+#. changing the menu contents.
 #: ../js/ui/status/rfkill.js:88
 msgid "Airplane Mode On"
 msgstr "Režim „letadlo“ je zapnutý"
@@ -1431,6 +1514,7 @@ msgid "Search"
 msgstr "Hledat"
 
 #: ../js/ui/windowAttentionHandler.js:20
+#, javascript-format
 msgid "“%s” is ready"
 msgstr "Připraveno „%s“"
 
@@ -1440,7 +1524,7 @@ msgstr "Chcete zachovat nastavení displeje?"
 
 #. Translators: this and the following message should be limited in lenght,
 #. to avoid ellipsizing the labels.
-#. */
+#.
 #: ../js/ui/windowManager.js:82
 msgid "Revert Settings"
 msgstr "Obnovit původní"
@@ -1450,6 +1534,7 @@ msgid "Keep Changes"
 msgstr "Zachovat"
 
 #: ../js/ui/windowManager.js:103
+#, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
 msgstr[0] "Nastavení se obnoví na původní za %d sekundu"
@@ -1457,8 +1542,9 @@ msgstr[1] "Nastavení se obnoví na původní za %d sekundy"
 msgstr[2] "Nastavení se obnoví na původní za %d sekund"
 
 #. Translators: This represents the size of a window. The first number is
-#. * the width of the window and the second is the height. */
+#. * the width of the window and the second is the height.
 #: ../js/ui/windowManager.js:658
+#, javascript-format
 msgid "%d x %d"
 msgstr "%d × %d"
 
@@ -1532,7 +1618,7 @@ msgstr "Kalendář Evolution"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1837
+#: ../src/gvc/gvc-mixer-control.c:1835
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -1542,7 +1628,7 @@ msgstr[2] "%u výstupů"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1847
+#: ../src/gvc/gvc-mixer-control.c:1845
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
@@ -1550,23 +1636,23 @@ msgstr[0] "%u vstup"
 msgstr[1] "%u vstupy"
 msgstr[2] "%u vstupů"
 
-#: ../src/gvc/gvc-mixer-control.c:2373
+#: ../src/gvc/gvc-mixer-control.c:2371
 msgid "System Sounds"
 msgstr "Systémové zvuky"
 
-#: ../src/main.c:373
+#: ../src/main.c:381
 msgid "Print version"
 msgstr "Vypsat verzi"
 
-#: ../src/main.c:379
+#: ../src/main.c:387
 msgid "Mode used by GDM for login screen"
 msgstr "Režim použitý GDM pro přihlašovací obrazovku"
 
-#: ../src/main.c:385
+#: ../src/main.c:393
 msgid "Use a specific mode, e.g. \"gdm\" for login screen"
 msgstr "Použít pro přihlašovací obrazovku zadaný režim, např. „gdm“."
 
-#: ../src/main.c:391
+#: ../src/main.c:399
 msgid "List possible modes"
 msgstr "Vypsat možné režimy"
 
