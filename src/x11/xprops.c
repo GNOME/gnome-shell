@@ -507,7 +507,7 @@ window_from_results (GetPropertyResults *results,
   if (!validate_or_free_results (results, 32, XA_WINDOW, TRUE))
     return FALSE;
 
-  *window_p = *(Window*) results->prop;
+  *window_p = *(uint32_t *) results->prop;
   g_free (results->prop);
   results->prop = NULL;
 
@@ -523,7 +523,7 @@ counter_from_results (GetPropertyResults *results,
                                  TRUE))
     return FALSE;
 
-  *counter_p = *(XSyncCounter*) results->prop;
+  *counter_p = *(uint32_t *) results->prop;
   g_free (results->prop);
   results->prop = NULL;
 
