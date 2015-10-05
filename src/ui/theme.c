@@ -915,11 +915,9 @@ meta_theme_get_default (void)
       switch (frame_type)
         {
         case META_FRAME_TYPE_NORMAL:
-          break;
         case META_FRAME_TYPE_DIALOG:
         case META_FRAME_TYPE_MODAL_DIALOG:
         case META_FRAME_TYPE_ATTACHED:
-          layout->hide_buttons = TRUE;
           break;
         case META_FRAME_TYPE_MENU:
         case META_FRAME_TYPE_UTILITY:
