@@ -10,8 +10,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2015-08-25 03:14+0000\n"
-"PO-Revision-Date: 2015-08-25 07:19+0100\n"
-"Last-Translator: Pedro Albuquerque <palbuquerque73@gmail.com>\n"
+"PO-Revision-Date: 2015-09-02 13:41+0100\n"
+"Last-Translator: Pedro Albuquerque <palbuquerque73o@gmail.com>\n"
 "Language-Team: Português <palbuquerque73@gmail.com>\n"
 "Language: pt\n"
 "MIME-Version: 1.0\n"
@@ -1773,7 +1773,7 @@ msgstr "Comprimento máximo"
 
 #: ../clutter/clutter-text-buffer.c:376
 msgid "Maximum number of characters for this entry. Zero if no maximum"
-msgstr "Número máximo de carácteres para esta entrada. Zero se nenhum limite"
+msgstr "Número máximo de caracteres para esta entrada. Zero se nenhum limite"
 
 #: ../clutter/clutter-text.c:3391
 msgid "Buffer"
@@ -1983,7 +1983,7 @@ msgstr "Ciclo"
 
 #: ../clutter/clutter-timeline.c:592
 msgid "Should the timeline automatically restart"
-msgstr "Se a linha temporal deverá reiniciar automaticamente"
+msgstr "Se a cronologia deverá reiniciar automaticamente"
 
 #: ../clutter/clutter-timeline.c:606
 msgid "Delay"
@@ -2003,7 +2003,7 @@ msgstr "Duração"
 
 #: ../clutter/clutter-timeline.c:623
 msgid "Duration of the timeline in milliseconds"
-msgstr "Duração da linha temporal em milissegundos"
+msgstr "Duração da cronologia em milissegundos"
 
 #: ../clutter/clutter-timeline.c:638
 #: ../clutter/deprecated/clutter-behaviour-ellipse.c:521
@@ -2013,7 +2013,7 @@ msgstr "Direção"
 
 #: ../clutter/clutter-timeline.c:639
 msgid "Direction of the timeline"
-msgstr "Direção da linha temporal"
+msgstr "Direção da cronologia"
 
 #: ../clutter/clutter-timeline.c:654
 msgid "Auto Reverse"
@@ -2029,7 +2029,7 @@ msgstr "Repetir a contagem"
 
 #: ../clutter/clutter-timeline.c:674
 msgid "How many times the timeline should repeat"
-msgstr "Quantas vezes deverá a linha temporal repetir-se"
+msgstr "Quantas vezes deverá a cronologia repetir-se"
 
 #: ../clutter/clutter-timeline.c:688
 msgid "Progress Mode"
@@ -2037,7 +2037,7 @@ msgstr "Modo de progresso"
 
 #: ../clutter/clutter-timeline.c:689
 msgid "How the timeline should compute the progress"
-msgstr "Como deverá a linha temporal calcular o progresso"
+msgstr "Como deverá a cronologia calcular o progresso"
 
 #: ../clutter/clutter-transition.c:244
 msgid "Interval"
@@ -2075,11 +2075,11 @@ msgstr "Restringe a ampliação a um eixo"
 #: ../clutter/deprecated/clutter-animation.c:531
 #: ../clutter/deprecated/clutter-animator.c:1811
 msgid "Timeline"
-msgstr "Linha temporal"
+msgstr "Cronologia"
 
 #: ../clutter/deprecated/clutter-alpha.c:348
 msgid "Timeline used by the alpha"
-msgstr "Linha temporal utilizada pelo alfa"
+msgstr "Cronologia utilizada pelo alfa"
 
 #: ../clutter/deprecated/clutter-alpha.c:365
 msgid "Alpha value"
@@ -2120,7 +2120,7 @@ msgstr "Se a animação deverá ou não reproduzir em ciclo"
 
 #: ../clutter/deprecated/clutter-animation.c:532
 msgid "The timeline used by the animation"
-msgstr "A linha temporal utilizada pela animação"
+msgstr "A cronologia utilizada pela animação"
 
 #: ../clutter/deprecated/clutter-animation.c:548
 #: ../clutter/deprecated/clutter-behaviour.c:234
@@ -2137,7 +2137,7 @@ msgstr "A duração da animação"
 
 #: ../clutter/deprecated/clutter-animator.c:1812
 msgid "The timeline of the animation"
-msgstr "A linha temporal da animação"
+msgstr "A cronologia da animação"
 
 #: ../clutter/deprecated/clutter-behaviour.c:235
 msgid "Alpha Object to drive the behaviour"
