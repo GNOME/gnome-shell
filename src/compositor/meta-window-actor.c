@@ -832,21 +832,23 @@ meta_window_actor_has_shadow (MetaWindowActor *self)
     return TRUE;
 
   /*
-   * Do not add shadows to non-opaque windows; eventually we should generate
-   * a shadow from the input shape for such windows.
+   * Do not add shadows to non-opaque (ARGB32) windows, as we can't easily
+   * generate shadows for them.
    */
   if (is_non_opaque (self))
     return FALSE;
 
   /*
-   * Add shadows to override redirect windows on X11 unless the toolkit
-   * indicates that it is handling shadows itself (e.g., Gtk menus).
+   * If a window specifies that it has custom frame extents, that likely
+   * means that it is drawing a shadow itself. Don't draw our own.
    */
-  if (priv->window->override_redirect &&
-      !priv->window->has_custom_frame_extents)
-    return TRUE;
+  if (priv->window->has_custom_frame_extents)
+    return FALSE;
 
-  return FALSE;
+  /*
+   * Generate shadows for all other windows.
+   */
+  return TRUE;
 }
 
 /**
