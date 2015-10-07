@@ -14,8 +14,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2015-10-03 20:41+0000\n"
-"PO-Revision-Date: 2015-10-04 08:33+0100\n"
-"Last-Translator: Pedro Albuquerque <palbuquerque73@gmail.com>\n"
+"PO-Revision-Date: 2015-10-07 07:06+0100\n"
+"Last-Translator: Pedro Albuquerque <palbuquerque73o@gmail.com>\n"
 "Language-Team: Português <palbuquerque73@gmail.com>\n"
 "Language: pt\n"
 "MIME-Version: 1.0\n"
@@ -940,7 +940,7 @@ msgstr "Instalar"
 #: ../js/ui/extensionDownloader.js:204
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
-msgstr "Transferir e instalar “%s” de extensions.gnome.org?"
+msgstr "Transferir e instalar \"%s\" de extensions.gnome.org?"
 
 #: ../js/ui/keyboard.js:741 ../js/ui/status/keyboard.js:713
 msgid "Keyboard"
@@ -1050,7 +1050,7 @@ msgstr "Barra superior"
 #. simply result in invisible toggle switches.
 #: ../js/ui/popupMenu.js:289
 msgid "toggle-switch-us"
-msgstr "toggle-switch-us"
+msgstr "toggle-switch-intl"
 
 #: ../js/ui/runDialog.js:70
 msgid "Enter a Command"
@@ -1125,7 +1125,7 @@ msgstr "Colar"
 
 #: ../js/ui/shellEntry.js:97
 msgid "Show Text"
-msgstr "Mostrar Texto"
+msgstr "Mostrar texto"
 
 #: ../js/ui/shellEntry.js:99
 msgid "Hide Text"
