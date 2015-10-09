@@ -251,11 +251,12 @@ notify_key (MetaWaylandKeyboard *keyboard,
     {
       struct wl_client *client = wl_resource_get_client (keyboard->focus_surface->resource);
       struct wl_display *display = wl_client_get_display (client);
-      uint32_t serial = wl_display_next_serial (display);
+
+      keyboard->key_serial = wl_display_next_serial (display);
 
       wl_resource_for_each (resource, l)
         {
-          wl_keyboard_send_key (resource, serial, time, key, state);
+          wl_keyboard_send_key (resource, keyboard->key_serial, time, key, state);
         }
     }
 
