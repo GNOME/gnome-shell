@@ -1518,7 +1518,7 @@ xdg_shell_get_xdg_popup (struct wl_client *client,
   surface->xdg_popup = popup_resource;
   surface->xdg_shell_resource = resource;
 
-  if (!meta_wayland_pointer_can_popup (&seat->pointer, serial))
+  if (!meta_wayland_seat_can_popup (seat, serial))
     {
       xdg_popup_send_popup_done (popup_resource);
       return;
@@ -1739,7 +1739,7 @@ wl_shell_surface_set_popup (struct wl_client *client,
 
   wl_shell_surface_set_state (surface, SURFACE_STATE_TOPLEVEL);
 
-  if (!meta_wayland_pointer_can_popup (&seat->pointer, serial))
+  if (!meta_wayland_seat_can_popup (seat, serial))
     {
       wl_shell_surface_send_popup_done (resource);
       return;

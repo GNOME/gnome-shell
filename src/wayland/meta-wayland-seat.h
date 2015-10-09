@@ -64,5 +64,7 @@ gboolean meta_wayland_seat_get_grab_info (MetaWaylandSeat    *seat,
 					  uint32_t            serial,
 					  gfloat             *x,
 					  gfloat             *y);
+gboolean meta_wayland_seat_can_popup     (MetaWaylandSeat *seat,
+                                          uint32_t         serial);
 
 #endif /* META_WAYLAND_SEAT_H */

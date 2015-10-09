@@ -70,4 +70,7 @@ gboolean meta_wayland_touch_get_press_coords (MetaWaylandTouch     *touch,
                                               gfloat               *x,
                                               gfloat               *y);
 
+gboolean meta_wayland_touch_can_popup        (MetaWaylandTouch *touch,
+                                              uint32_t          serial);
+
 #endif /* META_WAYLAND_TOUCH_H */

@@ -673,3 +673,10 @@ meta_wayland_keyboard_create_new_resource (MetaWaylandKeyboard *keyboard,
       wl_list_insert (&keyboard->resource_list, wl_resource_get_link (cr));
     }
 }
+
+gboolean
+meta_wayland_keyboard_can_popup (MetaWaylandKeyboard *keyboard,
+                                 uint32_t             serial)
+{
+  return keyboard->key_serial == serial;
+}

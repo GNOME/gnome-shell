@@ -405,3 +405,12 @@ meta_wayland_seat_get_grab_info (MetaWaylandSeat    *seat,
 
   return sequence || can_grab_surface;
 }
+
+gboolean
+meta_wayland_seat_can_popup (MetaWaylandSeat *seat,
+                             uint32_t         serial)
+{
+  return (meta_wayland_pointer_can_popup (&seat->pointer, serial) ||
+          meta_wayland_keyboard_can_popup (&seat->keyboard, serial) ||
+          meta_wayland_touch_can_popup (&seat->touch, serial));
+}

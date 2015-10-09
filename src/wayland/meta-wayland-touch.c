@@ -575,6 +575,26 @@ meta_wayland_touch_create_new_resource (MetaWaylandTouch   *touch,
   wl_list_insert (&touch->resource_list, wl_resource_get_link (cr));
 }
 
+gboolean
+meta_wayland_touch_can_popup (MetaWaylandTouch *touch,
+                              uint32_t          serial)
+{
+  MetaWaylandTouchInfo *touch_info;
+  GHashTableIter iter;
+
+  if (!touch->touches)
+    return FALSE;
+
+  g_hash_table_iter_init (&iter, touch->touches);
+
+  while (g_hash_table_iter_next (&iter, NULL, (gpointer*) &touch_info))
+    {
+      if (touch_info->slot_serial == serial)
+        return TRUE;
+    }
+  return FALSE;
+}
+
 ClutterEventSequence *
 meta_wayland_touch_find_grab_sequence (MetaWaylandTouch   *touch,
                                        MetaWaylandSurface *surface,
