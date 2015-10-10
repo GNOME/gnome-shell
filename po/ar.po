@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-23 23:52+0200\n"
+"POT-Creation-Date: 2015-10-10 15:24+0400\n"
 "PO-Revision-Date: 2015-09-23 23:52+0200\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
@@ -480,8 +480,7 @@ msgstr "غيّر الخلفية…"
 msgid "Display Settings"
 msgstr "إعدادات العرض"
 
-#: ../js/ui/backgroundMenu.js:22 ../js/ui/panel.js:650
-#: ../js/ui/status/system.js:366
+#: ../js/ui/backgroundMenu.js:22 ../js/ui/status/system.js:366
 msgid "Settings"
 msgstr "الإعدادات"
 
@@ -595,7 +594,7 @@ msgstr "وُصّل قرص خارجي"
 msgid "External drive disconnected"
 msgstr "فُصل القرص الخارجي"
 
-#: ../js/ui/components/autorunManager.js:354
+#: ../js/ui/components/autorunManager.js:351
 #, javascript-format
 msgid "Open with %s"
 msgstr "افتح باستخدام %s"
@@ -773,7 +772,6 @@ msgid "Log Out"
 msgstr "خروج"
 
 #: ../js/ui/endSessionDialog.js:67
-#, javascript-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "سيُخرج %s تلقائيا الآن."
@@ -784,7 +782,6 @@ msgstr[4] "سيُخرج %s تلقائيا بعد %d ثانية."
 msgstr[5] "سيُخرج %s تلقائيا بعد %d ثانية."
 
 #: ../js/ui/endSessionDialog.js:72
-#, javascript-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
 msgstr[0] "ستُخرج تلقائيا الآن."
@@ -810,7 +807,6 @@ msgid "Install Updates & Power Off"
 msgstr "ثبّت التحديثات ثم أطفئ"
 
 #: ../js/ui/endSessionDialog.js:87
-#, javascript-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "سيُطفأ النظام تلقائيا الآن."
@@ -841,7 +837,6 @@ msgid "Restart"
 msgstr "إعادة التشغيل"
 
 #: ../js/ui/endSessionDialog.js:105
-#, javascript-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "سيُعاد تشغيل النظام تلقائيا الآن."
@@ -857,7 +852,6 @@ msgid "Restart & Install Updates"
 msgstr "أعد التشغيل و ثبّت التحديثات"
 
 #: ../js/ui/endSessionDialog.js:121
-#, javascript-format
 msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
 "The system will automatically restart and install updates in %d seconds."
@@ -997,17 +991,22 @@ msgstr "نظرة عامة"
 msgid "Type to search…"
 msgstr "اكتب نصا للبحث عنه…"
 
-#: ../js/ui/panel.js:352
+#: ../js/ui/panel.js:358
 msgid "Quit"
 msgstr "أنْهِ"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:404
+#: ../js/ui/panel.js:414
 msgid "Activities"
 msgstr "الأنشطة"
 
-#: ../js/ui/panel.js:754
+#: ../js/ui/panel.js:660
+msgctxt "System menu in the top bar"
+msgid "System"
+msgstr "النظام"
+
+#: ../js/ui/panel.js:764
 msgid "Top Bar"
 msgstr "الشريط العلوي"
 
@@ -1039,7 +1038,6 @@ msgid "%A, %B %d"
 msgstr "%A، %d %B"
 
 #: ../js/ui/screenShield.js:144
-#, javascript-format
 msgid "%d new message"
 msgid_plural "%d new messages"
 msgstr[0] "لا رسائل جديدة"
@@ -1050,7 +1048,6 @@ msgstr[4] "%d رسالة جديدة"
 msgstr[5] "%d رسالة جديدة"
 
 #: ../js/ui/screenShield.js:146
-#, javascript-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "لا تنبيهات جديدة"
@@ -1395,9 +1392,8 @@ msgid "VPN"
 msgstr "ش‌خ‌ف (VPN)"
 
 #: ../js/ui/status/network.js:1513
-#, fuzzy
 msgid "VPN Off"
-msgstr "أطفئ الحاسوب"
+msgstr "أطفِئ ش‌خ‌ف (VPN) "
 
 #: ../js/ui/status/network.js:1697
 msgid "Connection failed"
@@ -1513,7 +1509,6 @@ msgid "Keep Changes"
 msgstr "أبق على التغييرات"
 
 #: ../js/ui/windowManager.js:103
-#, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
 msgstr[0] "سيُتراجع عن التغييرات الآن"
@@ -1628,19 +1623,19 @@ msgstr[5] "%u مدخل"
 msgid "System Sounds"
 msgstr "أصوات النظام"
 
-#: ../src/main.c:373
+#: ../src/main.c:381
 msgid "Print version"
 msgstr "اطبع الإصدارة"
 
-#: ../src/main.c:379
+#: ../src/main.c:387
 msgid "Mode used by GDM for login screen"
 msgstr "الوضع الذي يستخدمه مدير ولوج جنوم لشاشة الولوج"
 
-#: ../src/main.c:385
+#: ../src/main.c:393
 msgid "Use a specific mode, e.g. \"gdm\" for login screen"
 msgstr "استخدم طورا معينا، مثلا: \"gdm\" لشاشة الولوج"
 
-#: ../src/main.c:391
+#: ../src/main.c:399
 msgid "List possible modes"
 msgstr "اسرد كل الأطوار الممكنة"
 
