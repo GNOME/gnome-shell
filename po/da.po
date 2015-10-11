@@ -19,10 +19,11 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-18 17:05+0200\n"
-"PO-Revision-Date: 2015-09-04 21:21+0100\n"
-"Last-Translator: Kris Thomsen <mail@kristhomsen.dk>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"shell&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2015-09-26 20:55+0000\n"
+"PO-Revision-Date: 2015-10-01 14:18+0200\n"
+"Last-Translator: scootergrisen\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "Language: da\n"
 "MIME-Version: 1.0\n"
@@ -599,33 +600,33 @@ msgctxt "event list time"
 msgid "All Day"
 msgstr "Hele dagen"
 
-#: ../js/ui/calendar.js:1291
+#: ../js/ui/calendar.js:1295
 msgid "Clear section"
 msgstr "Ryd afsnit"
 
-#: ../js/ui/calendar.js:1518
+#: ../js/ui/calendar.js:1522
 msgid "Events"
 msgstr "Begivenheder"
 
-#: ../js/ui/calendar.js:1527
+#: ../js/ui/calendar.js:1531
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d. %B"
 
-#: ../js/ui/calendar.js:1531
+#: ../js/ui/calendar.js:1535
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d. %B %Y"
 
-#: ../js/ui/calendar.js:1616
+#: ../js/ui/calendar.js:1620
 msgid "Notifications"
 msgstr "Beskeder"
 
-#: ../js/ui/calendar.js:1767
+#: ../js/ui/calendar.js:1771
 msgid "No Notifications"
 msgstr "Ingen påmindelser"
 
-#: ../js/ui/calendar.js:1770
+#: ../js/ui/calendar.js:1774
 msgid "No Events"
 msgstr "Ingen begivenheder"
 
@@ -980,7 +981,7 @@ msgstr "Aktiveret"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:719 ../src/gvc/gvc-mixer-control.c:1830
+#: ../js/ui/lookingGlass.js:719 ../src/gvc/gvc-mixer-control.c:1828
 msgid "Disabled"
 msgstr "Deaktiveret"
 
@@ -1033,6 +1034,12 @@ msgstr "Afslut"
 #: ../js/ui/panel.js:404
 msgid "Activities"
 msgstr "Aktiviteter"
+
+#: ../js/ui/panel.js:650
+#| msgid "System"
+msgctxt "System menu in the top bar"
+msgid "System"
+msgstr "System"
 
 #: ../js/ui/panel.js:754
 msgid "Top Bar"
@@ -1610,7 +1617,7 @@ msgstr "Evolution kalender"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1837
+#: ../src/gvc/gvc-mixer-control.c:1835
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -1619,30 +1626,30 @@ msgstr[1] "%u outputs"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1847
+#: ../src/gvc/gvc-mixer-control.c:1845
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u input"
 msgstr[1] "%u inputs"
 
-#: ../src/gvc/gvc-mixer-control.c:2373
+#: ../src/gvc/gvc-mixer-control.c:2371
 msgid "System Sounds"
 msgstr "Systemlyde"
 
-#: ../src/main.c:373
+#: ../src/main.c:381
 msgid "Print version"
 msgstr "Udskriv version"
 
-#: ../src/main.c:379
+#: ../src/main.c:387
 msgid "Mode used by GDM for login screen"
 msgstr "Tilstand brugt af GDM til indlogningskærm"
 
-#: ../src/main.c:385
+#: ../src/main.c:393
 msgid "Use a specific mode, e.g. \"gdm\" for login screen"
 msgstr "Brug en specifik tilstand, f.eks. \"gdm\" til logind-skærm"
 
-#: ../src/main.c:391
+#: ../src/main.c:399
 msgid "List possible modes"
 msgstr "Vis mulige tilstande"
 
