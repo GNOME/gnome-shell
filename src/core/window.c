@@ -763,10 +763,22 @@ meta_window_update_desc (MetaWindow *window)
 {
   g_clear_pointer (&window->desc, g_free);
 
-  if (window->title)
-    window->desc = g_strdup_printf ("0x%lx (%.10s)", window->xwindow, window->title);
+  if (window->client_type == META_WINDOW_CLIENT_TYPE_X11)
+    {
+      if (window->title)
+        window->desc = g_strdup_printf ("0x%lx (%.10s)", window->xwindow, window->title);
+      else
+        window->desc = g_strdup_printf ("0x%lx", window->xwindow);
+    }
   else
-    window->desc = g_strdup_printf ("0x%lx", window->xwindow);
+    {
+      guint64 small_stamp = window->stamp - G_GUINT64_CONSTANT(0x100000000);
+
+      if (window->title)
+        window->desc = g_strdup_printf ("W%" G_GUINT64_FORMAT " (%.10s)", small_stamp, window->title);
+      else
+        window->desc = g_strdup_printf ("W%" G_GUINT64_FORMAT , small_stamp);
+    }
 }
 
 static void
