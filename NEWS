@@ -1,3 +1,29 @@
+Clutter 1.24.2                                                       2015-10-12
+===============================================================================
+
+  • List of changes since Clutter 1.24.0
+
+    - Emulate discrete scrolling on evdev
+
+    - Improve animation smoothness under the GDK backend
+
+    - Updated translations
+    Russian, Latvian, Danish, Swedish, Brazilian Portuguese, Serbian,
+    Serbian Latin, Ukrainian, Hindi, Kannada, Finnish, Portuguese.
+
+  • List of bugs fixed since Clutter 1.24.0
+
+    #755357 - timeline: Minor fixes for debuggability with
+              ClutterMasterClockGdk
+    #745517 - gnome-shell crashed with SIGABRT in g_assertion_message()
+    #756284 - Unable to use two finger scroll on Wayland
+
+Many thanks to:
+
+  Philip Withnall, Owen W. Taylor, Piotr Drąg, Милош Поповић, Anders Jonsson,
+  Ask Hjorth Larsen, Carlos Garnacho, Jiri Grönroos, Lionel Landwerlin,
+  Pedro Albuquerque, Rafael Fontenelle, Rūdolfs Mazurs, Stas Solovey
+
 Clutter 1.24.0                                                       2015-09-15
 ===============================================================================
 
