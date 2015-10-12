@@ -867,7 +867,12 @@ update_scale_factor (GtkSettings *settings,
     {
       g_object_set (context, "scale-factor", g_value_get_int (&value), NULL);
       if (meta_is_wayland_compositor ())
-        g_object_set (clutter_settings_get_default (), "font-dpi", 96 * 1024 * g_value_get_int (&value), NULL);
+        {
+          int xft_dpi;
+          g_object_get (settings, "gtk-xft-dpi", &xft_dpi, NULL);
+
+          g_object_set (clutter_settings_get_default (), "font-dpi", xft_dpi, NULL);
+        }
     }
 
   /* Make sure clutter and gdk scaling stays disabled */
