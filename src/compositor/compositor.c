@@ -779,7 +779,7 @@ meta_compositor_size_change_window (MetaCompositor    *compositor,
                                     MetaRectangle     *old_buffer_rect)
 {
   MetaWindowActor *window_actor = META_WINDOW_ACTOR (meta_window_get_compositor_private (window));
-  meta_window_actor_size_change (window_actor, META_SIZE_CHANGE_MAXIMIZE, old_frame_rect, old_buffer_rect);
+  meta_window_actor_size_change (window_actor, which_change, old_frame_rect, old_buffer_rect);
 }
 
 void
