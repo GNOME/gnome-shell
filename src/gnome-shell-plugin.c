@@ -45,8 +45,8 @@ static void gnome_shell_plugin_unminimize       (MetaPlugin          *plugin,
 static void gnome_shell_plugin_size_change      (MetaPlugin          *plugin,
                                                  MetaWindowActor     *actor,
                                                  MetaSizeChange       which_change,
-                                                 MetaRectangle       *old_rect,
-                                                 MetaRectangle       *new_rect);
+                                                 MetaRectangle       *old_frame_rect,
+                                                 MetaRectangle       *old_buffer_rect);
 static void gnome_shell_plugin_map              (MetaPlugin          *plugin,
                                                  MetaWindowActor     *actor);
 static void gnome_shell_plugin_destroy          (MetaPlugin          *plugin,

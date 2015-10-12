@@ -15,8 +15,8 @@ void _shell_wm_unminimize (ShellWM         *wm,
 void _shell_wm_size_change(ShellWM         *wm,
                            MetaWindowActor *actor,
                            MetaSizeChange   which_change,
-                           MetaRectangle   *old_rect,
-                           MetaRectangle   *new_rect);
+                           MetaRectangle   *old_frame_rect,
+                           MetaRectangle   *old_buffer_rect);
 void _shell_wm_map        (ShellWM         *wm,
                            MetaWindowActor *actor);
 void _shell_wm_destroy    (ShellWM         *wm,
