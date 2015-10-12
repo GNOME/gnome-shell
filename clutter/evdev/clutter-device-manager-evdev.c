@@ -265,7 +265,7 @@ notify_key_device (ClutterInputDevice *input_device,
   /* We can drop the event on the floor if no stage has been
    * associated with the device yet. */
   stage = _clutter_input_device_get_stage (input_device);
-  if (!stage)
+  if (stage == NULL)
     {
       clear_repeat_timer (seat);
       return;
@@ -370,7 +370,7 @@ notify_absolute_motion (ClutterInputDevice *input_device,
   /* We can drop the event on the floor if no stage has been
    * associated with the device yet. */
   stage = _clutter_input_device_get_stage (input_device);
-  if (!stage)
+  if (stage == NULL)
     return;
 
   device_evdev = CLUTTER_INPUT_DEVICE_EVDEV (input_device);
@@ -467,7 +467,7 @@ notify_discrete_scroll (ClutterInputDevice     *input_device,
   /* We can drop the event on the floor if no stage has been
    * associated with the device yet. */
   stage = _clutter_input_device_get_stage (input_device);
-  if (!stage)
+  if (stage == NULL)
     return;
 
   device_evdev = CLUTTER_INPUT_DEVICE_EVDEV (input_device);
@@ -505,7 +505,7 @@ notify_scroll (ClutterInputDevice *input_device,
   /* We can drop the event on the floor if no stage has been
    * associated with the device yet. */
   stage = _clutter_input_device_get_stage (input_device);
-  if (!stage)
+  if (stage == NULL)
     return;
 
   device_evdev = CLUTTER_INPUT_DEVICE_EVDEV (input_device);
@@ -555,7 +555,7 @@ notify_button (ClutterInputDevice *input_device,
   /* We can drop the event on the floor if no stage has been
    * associated with the device yet. */
   stage = _clutter_input_device_get_stage (input_device);
-  if (!stage)
+  if (stage == NULL)
     return;
 
   device_evdev = CLUTTER_INPUT_DEVICE_EVDEV (input_device);
@@ -631,7 +631,7 @@ notify_touch_event (ClutterInputDevice *input_device,
   /* We can drop the event on the floor if no stage has been
    * associated with the device yet. */
   stage = _clutter_input_device_get_stage (input_device);
-  if (!stage)
+  if (stage == NULL)
     return;
 
   device_evdev = CLUTTER_INPUT_DEVICE_EVDEV (input_device);
@@ -676,7 +676,7 @@ notify_pinch_gesture_event (ClutterInputDevice          *input_device,
   /* We can drop the event on the floor if no stage has been
    * associated with the device yet. */
   stage = _clutter_input_device_get_stage (input_device);
-  if (!stage)
+  if (stage == NULL)
     return;
 
   device_evdev = CLUTTER_INPUT_DEVICE_EVDEV (input_device);
@@ -721,7 +721,7 @@ notify_swipe_gesture_event (ClutterInputDevice          *input_device,
   /* We can drop the event on the floor if no stage has been
    * associated with the device yet. */
   stage = _clutter_input_device_get_stage (input_device);
-  if (!stage)
+  if (stage == NULL)
     return;
 
   device_evdev = CLUTTER_INPUT_DEVICE_EVDEV (input_device);
@@ -1354,7 +1354,7 @@ process_device_event (ClutterDeviceManagerEvdev *manager_evdev,
         device = libinput_device_get_user_data (libinput_device);
 
         stage = _clutter_input_device_get_stage (device);
-        if (!stage)
+        if (stage == NULL)
           break;
 
         stage_width = clutter_actor_get_width (CLUTTER_ACTOR (stage));
@@ -1476,7 +1476,7 @@ process_device_event (ClutterDeviceManagerEvdev *manager_evdev,
         device = libinput_device_get_user_data (libinput_device);
 
         stage = _clutter_input_device_get_stage (device);
-        if (!stage)
+        if (stage == NULL)
           break;
 
         stage_width = clutter_actor_get_width (CLUTTER_ACTOR (stage));
@@ -1531,7 +1531,7 @@ process_device_event (ClutterDeviceManagerEvdev *manager_evdev,
         device = libinput_device_get_user_data (libinput_device);
 
         stage = _clutter_input_device_get_stage (device);
-        if (!stage)
+        if (stage == NULL)
           break;
 
         stage_width = clutter_actor_get_width (CLUTTER_ACTOR (stage));
