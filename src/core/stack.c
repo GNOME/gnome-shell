@@ -1055,7 +1055,7 @@ stack_sync_to_xserver (MetaStack *stack)
   all_root_children_stacked = g_array_new (FALSE, FALSE, sizeof (guint64));
   x11_hidden_stack_ids = g_array_new (FALSE, FALSE, sizeof (guint64));
 
-  meta_topic (META_DEBUG_STACK, "Top to bottom: ");
+  meta_topic (META_DEBUG_STACK, "Bottom to top: ");
   meta_push_no_msg_prefix ();
 
   for (tmp = g_list_last(stack->sorted); tmp != NULL; tmp = tmp->prev)
