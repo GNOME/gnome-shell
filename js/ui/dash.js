@@ -647,6 +647,7 @@ const Dash = new Lang.Class({
         let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
 
         // Enforce the current icon size during the size request
+        firstIcon.icon.ensure_style();
         let [currentWidth, currentHeight] = firstIcon.icon.get_size();
         firstIcon.icon.set_size(this.iconSize * scaleFactor, this.iconSize * scaleFactor);
         [minHeight, natHeight] = firstButton.get_preferred_height(-1);
