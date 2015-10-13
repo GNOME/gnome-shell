@@ -16,6 +16,34 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
+/*
+ * In order for transformation animations to look good, they need to be
+ * incremental and have some order to them (e.g., fade out hidden items,
+ * then shrink to close the void left over). Chaining animations in this way can
+ * be error-prone and wordy using just Tweener callbacks.
+ *
+ * The classes in this file help with this:
+ *
+ * - Task.  encapsulates schedulable work to be run in a specific scope.
+ *
+ * - ConsecutiveBatch.  runs a series of tasks in order and completes
+ *                      when the last in the series finishes.
+ *
+ * - ConcurrentBatch.  runs a set of tasks at the same time and completes
+ *                     when the last to finish completes.
+ *
+ * - Hold.  prevents a batch from completing the pending task until
+ *          the hold is released.
+ *
+ * The tasks associated with a batch are specified in a list at batch
+ * construction time as either task objects or plain functions.
+ * Batches are task objects, themselves, so they can be nested.
+ *
+ * These classes aren't specific to GDM, but were found to be unintuitive and so
+ * are not used elsewhere. These APIs may ultimately get dropped entirely and
+ * replaced by something else.
+ */
+
 const Lang = imports.lang;
 const Signals = imports.signals;
 
