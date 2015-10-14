@@ -147,7 +147,7 @@ struct _MetaWaylandSurface
   int scale;
   int32_t offset_x, offset_y;
   GList *subsurfaces;
-  GHashTable *outputs;
+  GHashTable *outputs_to_destroy_notify_id;
 
   /* List of pending frame callbacks that needs to stay queued longer than one
    * commit sequence, such as when it has not yet been assigned a role.
