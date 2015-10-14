@@ -4,681 +4,680 @@
 #
 # Iñaki Larrañaga Murgoitio <dooteo@zundan.com>, 2014, 2015.
 # Edurne Labaka <elabaka@uzei.com>, 2015.
-#
 msgid ""
 msgstr ""
 "Project-Id-Version:  clutter master\n"
-"Report-Msgid-Bugs-To:http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=clutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-02-07 11:25+0100\n"
-"PO-Revision-Date: 2015-02-07 11:25+0100\n"
-"Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@zundan.com>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=clutter\n"
+"POT-Creation-Date: 2015-10-14 10:36+0200\n"
+"PO-Revision-Date: 2015-09-28 22:58+0200\n"
+"Last-Translator: Inaki Larranaga Murgoitio <dooteo@zundan.com>\n"
 "Language-Team: Basque <librezale@librezale.org>\n"
 "Language: eu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 1.4\n"
+"X-Generator: Lokalize 1.5\n"
 
-#: ../clutter/clutter-actor.c:6230
+#: ../clutter/clutter-actor.c:6306
 msgid "X coordinate"
 msgstr "X koordenatua"
 
-#: ../clutter/clutter-actor.c:6231
+#: ../clutter/clutter-actor.c:6307
 msgid "X coordinate of the actor"
 msgstr "Aktorearen X koordenatua"
 
-#: ../clutter/clutter-actor.c:6249
+#: ../clutter/clutter-actor.c:6325
 msgid "Y coordinate"
 msgstr "Y koordenatua"
 
-#: ../clutter/clutter-actor.c:6250
+#: ../clutter/clutter-actor.c:6326
 msgid "Y coordinate of the actor"
 msgstr "Aktorearen Y koordenatua"
 
-#: ../clutter/clutter-actor.c:6272
+#: ../clutter/clutter-actor.c:6348
 msgid "Position"
 msgstr "Posizioa"
 
-#: ../clutter/clutter-actor.c:6273
+#: ../clutter/clutter-actor.c:6349
 msgid "The position of the origin of the actor"
 msgstr "Aktorearen jatorrizko posizioa"
 
-#: ../clutter/clutter-actor.c:6290 ../clutter/clutter-canvas.c:247
+#: ../clutter/clutter-actor.c:6366 ../clutter/clutter-canvas.c:248
 #: ../clutter/clutter-grid-layout.c:1239
 #: ../clutter/deprecated/clutter-behaviour-ellipse.c:474
 msgid "Width"
 msgstr "Zabalera"
 
-#: ../clutter/clutter-actor.c:6291
+#: ../clutter/clutter-actor.c:6367
 msgid "Width of the actor"
 msgstr "Aktorearen zabalera"
 
-#: ../clutter/clutter-actor.c:6309 ../clutter/clutter-canvas.c:263
+#: ../clutter/clutter-actor.c:6385 ../clutter/clutter-canvas.c:264
 #: ../clutter/clutter-grid-layout.c:1246
 #: ../clutter/deprecated/clutter-behaviour-ellipse.c:490
 msgid "Height"
 msgstr "Altuera"
 
-#: ../clutter/clutter-actor.c:6310
+#: ../clutter/clutter-actor.c:6386
 msgid "Height of the actor"
 msgstr "Aktorearen altuera"
 
-#: ../clutter/clutter-actor.c:6331
+#: ../clutter/clutter-actor.c:6407
 msgid "Size"
 msgstr "Tamaina"
 
-#: ../clutter/clutter-actor.c:6332
+#: ../clutter/clutter-actor.c:6408
 msgid "The size of the actor"
 msgstr "Aktorearen tamaina"
 
-#: ../clutter/clutter-actor.c:6350
+#: ../clutter/clutter-actor.c:6426
 msgid "Fixed X"
 msgstr "X finkatua"
 
-#: ../clutter/clutter-actor.c:6351
+#: ../clutter/clutter-actor.c:6427
 msgid "Forced X position of the actor"
 msgstr "Aktorearen derrigortutako X posizioa"
 
-#: ../clutter/clutter-actor.c:6368
+#: ../clutter/clutter-actor.c:6444
 msgid "Fixed Y"
 msgstr "Y finkatua"
 
-#: ../clutter/clutter-actor.c:6369
+#: ../clutter/clutter-actor.c:6445
 msgid "Forced Y position of the actor"
 msgstr "Aktorearen derrigortutako Y posizioa"
 
-#: ../clutter/clutter-actor.c:6384
+#: ../clutter/clutter-actor.c:6460
 msgid "Fixed position set"
 msgstr "Posizio finkatua ezarrita"
 
-#: ../clutter/clutter-actor.c:6385
+#: ../clutter/clutter-actor.c:6461
 msgid "Whether to use fixed positioning for the actor"
 msgstr "Aktorearen posizioa finkoa erabiltzea edo ez"
 
-#: ../clutter/clutter-actor.c:6403
+#: ../clutter/clutter-actor.c:6479
 msgid "Min Width"
 msgstr "Gutxieneko zabalera"
 
-#: ../clutter/clutter-actor.c:6404
+#: ../clutter/clutter-actor.c:6480
 msgid "Forced minimum width request for the actor"
 msgstr "Aktorearen derrigortutako gutxieneko zabalera"
 
-#: ../clutter/clutter-actor.c:6422
+#: ../clutter/clutter-actor.c:6498
 msgid "Min Height"
 msgstr "Gutxieneko altuera"
 
-#: ../clutter/clutter-actor.c:6423
+#: ../clutter/clutter-actor.c:6499
 msgid "Forced minimum height request for the actor"
 msgstr "Aktorearen derrigortutako gutxieneko altuera"
 
-#: ../clutter/clutter-actor.c:6441
+#: ../clutter/clutter-actor.c:6517
 msgid "Natural Width"
 msgstr "Zabalera naturala"
 
-#: ../clutter/clutter-actor.c:6442
+#: ../clutter/clutter-actor.c:6518
 msgid "Forced natural width request for the actor"
 msgstr "Aktorearen derrigortutako zabalera naturala"
 
-#: ../clutter/clutter-actor.c:6460
+#: ../clutter/clutter-actor.c:6536
 msgid "Natural Height"
 msgstr "Altuera naturala"
 
-#: ../clutter/clutter-actor.c:6461
+#: ../clutter/clutter-actor.c:6537
 msgid "Forced natural height request for the actor"
 msgstr "Aktorearen derrigortutako altuera naturala"
 
-#: ../clutter/clutter-actor.c:6476
+#: ../clutter/clutter-actor.c:6552
 msgid "Minimum width set"
 msgstr "Gutxieneko zabalera ezarrita"
 
-#: ../clutter/clutter-actor.c:6477
+#: ../clutter/clutter-actor.c:6553
 msgid "Whether to use the min-width property"
 msgstr "Gutxieneko zabaleraren propietatea erabili edo ez"
 
-#: ../clutter/clutter-actor.c:6491
+#: ../clutter/clutter-actor.c:6567
 msgid "Minimum height set"
 msgstr "Gutxieneko altuera ezarrita"
 
-#: ../clutter/clutter-actor.c:6492
+#: ../clutter/clutter-actor.c:6568
 msgid "Whether to use the min-height property"
 msgstr "Gutxieneko altueraren propietatea erabili edo ez"
 
-#: ../clutter/clutter-actor.c:6506
+#: ../clutter/clutter-actor.c:6582
 msgid "Natural width set"
 msgstr "Zabalera naturala ezarrita"
 
-#: ../clutter/clutter-actor.c:6507
+#: ../clutter/clutter-actor.c:6583
 msgid "Whether to use the natural-width property"
 msgstr "Zabalera naturalaren propietatea erabili edo ez"
 
-#: ../clutter/clutter-actor.c:6521
+#: ../clutter/clutter-actor.c:6597
 msgid "Natural height set"
 msgstr "Altuera naturala ezarrita"
 
-#: ../clutter/clutter-actor.c:6522
+#: ../clutter/clutter-actor.c:6598
 msgid "Whether to use the natural-height property"
 msgstr "Altuera naturalaren propietatea erabili edo ez"
 
-#: ../clutter/clutter-actor.c:6538
+#: ../clutter/clutter-actor.c:6614
 msgid "Allocation"
 msgstr "Esleipena"
 
-#: ../clutter/clutter-actor.c:6539
+#: ../clutter/clutter-actor.c:6615
 msgid "The actor's allocation"
 msgstr "Aktorearen esleipena"
 
-#: ../clutter/clutter-actor.c:6606
+#: ../clutter/clutter-actor.c:6682
 msgid "Request Mode"
 msgstr "Eskaera modua"
 
-#: ../clutter/clutter-actor.c:6607
+#: ../clutter/clutter-actor.c:6683
 msgid "The actor's request mode"
 msgstr "Aktorearen eskaera modua"
 
-#: ../clutter/clutter-actor.c:6631
+#: ../clutter/clutter-actor.c:6707
 msgid "Depth"
 msgstr "Sakonera"
 
-#: ../clutter/clutter-actor.c:6632
+#: ../clutter/clutter-actor.c:6708
 msgid "Position on the Z axis"
 msgstr "Posizioa Z ardatzean"
 
-#: ../clutter/clutter-actor.c:6659
+#: ../clutter/clutter-actor.c:6735
 msgid "Z Position"
 msgstr "Z posizioa"
 
-#: ../clutter/clutter-actor.c:6660
+#: ../clutter/clutter-actor.c:6736
 msgid "The actor's position on the Z axis"
 msgstr "Aktorearen posizioa Z ardatzean"
 
-#: ../clutter/clutter-actor.c:6677
+#: ../clutter/clutter-actor.c:6753
 msgid "Opacity"
 msgstr "Opakutasuna"
 
-#: ../clutter/clutter-actor.c:6678
+#: ../clutter/clutter-actor.c:6754
 msgid "Opacity of an actor"
 msgstr "Aktore baten opakutasuna"
 
-#: ../clutter/clutter-actor.c:6698
+#: ../clutter/clutter-actor.c:6774
 msgid "Offscreen redirect"
 msgstr "Pantailaz kanpoko berbideraketa"
 
-#: ../clutter/clutter-actor.c:6699
+#: ../clutter/clutter-actor.c:6775
 msgid "Flags controlling when to flatten the actor into a single image"
 msgstr "Banderak aktore bat irudi bakar batera noiz berdintzea kontrolatzeko"
 
-#: ../clutter/clutter-actor.c:6713
+#: ../clutter/clutter-actor.c:6789
 msgid "Visible"
 msgstr "Ikusgai"
 
-#: ../clutter/clutter-actor.c:6714
+#: ../clutter/clutter-actor.c:6790
 msgid "Whether the actor is visible or not"
 msgstr "Aktorea ikusgai dagoen edo ez"
 
-#: ../clutter/clutter-actor.c:6728
+#: ../clutter/clutter-actor.c:6804
 msgid "Mapped"
 msgstr "Mapatuta"
 
-#: ../clutter/clutter-actor.c:6729
+#: ../clutter/clutter-actor.c:6805
 msgid "Whether the actor will be painted"
 msgstr "Aktorea margotu behar den edo ez"
 
-#: ../clutter/clutter-actor.c:6742
+#: ../clutter/clutter-actor.c:6818
 msgid "Realized"
 msgstr "Osatuta"
 
-#: ../clutter/clutter-actor.c:6743
+#: ../clutter/clutter-actor.c:6819
 msgid "Whether the actor has been realized"
 msgstr "Aktorea osatu den edo ez"
 
-#: ../clutter/clutter-actor.c:6758
+#: ../clutter/clutter-actor.c:6834
 msgid "Reactive"
 msgstr "Erreaktiboa"
 
-#: ../clutter/clutter-actor.c:6759
+#: ../clutter/clutter-actor.c:6835
 msgid "Whether the actor is reactive to events"
 msgstr "Aktorea gertaeren aurrean erantzuten duen edo ez"
 
-#: ../clutter/clutter-actor.c:6770
+#: ../clutter/clutter-actor.c:6846
 msgid "Has Clip"
 msgstr "Klipa du"
 
-#: ../clutter/clutter-actor.c:6771
+#: ../clutter/clutter-actor.c:6847
 msgid "Whether the actor has a clip set"
 msgstr "Aktoreak klip bat ezarrita duen edo ez"
 
-#: ../clutter/clutter-actor.c:6784
+#: ../clutter/clutter-actor.c:6860
 msgid "Clip"
 msgstr "Mozketa"
 
-#: ../clutter/clutter-actor.c:6785
+#: ../clutter/clutter-actor.c:6861
 msgid "The clip region for the actor"
 msgstr "Aktorearen mozketaren eskualdea"
 
-#: ../clutter/clutter-actor.c:6804
+#: ../clutter/clutter-actor.c:6880
 msgid "Clip Rectangle"
 msgstr "Klip laukizuzena"
 
-#: ../clutter/clutter-actor.c:6805
+#: ../clutter/clutter-actor.c:6881
 msgid "The visible region of the actor"
 msgstr "Aktorearen eskualde ikusgaia"
 
-#: ../clutter/clutter-actor.c:6819 ../clutter/clutter-actor-meta.c:205
+#: ../clutter/clutter-actor.c:6895 ../clutter/clutter-actor-meta.c:205
 #: ../clutter/clutter-binding-pool.c:318 ../clutter/clutter-input-device.c:268
 msgid "Name"
 msgstr "Izena"
 
-#: ../clutter/clutter-actor.c:6820
+#: ../clutter/clutter-actor.c:6896
 msgid "Name of the actor"
 msgstr "Aktorearen izena"
 
-#: ../clutter/clutter-actor.c:6841
+#: ../clutter/clutter-actor.c:6917
 msgid "Pivot Point"
 msgstr "Biraketa-puntua"
 
-#: ../clutter/clutter-actor.c:6842
+#: ../clutter/clutter-actor.c:6918
 msgid "The point around which the scaling and rotation occur"
 msgstr "Puntua, honen inguruan eskalatzeko eta biratzeko"
 
-#: ../clutter/clutter-actor.c:6860
+#: ../clutter/clutter-actor.c:6936
 msgid "Pivot Point Z"
 msgstr "Z biraketa-puntua"
 
-#: ../clutter/clutter-actor.c:6861
+#: ../clutter/clutter-actor.c:6937
 msgid "Z component of the pivot point"
 msgstr "Biraketa-puntuaren Z osagaia"
 
-#: ../clutter/clutter-actor.c:6879
+#: ../clutter/clutter-actor.c:6955
 msgid "Scale X"
 msgstr "X eskala"
 
-#: ../clutter/clutter-actor.c:6880
+#: ../clutter/clutter-actor.c:6956
 msgid "Scale factor on the X axis"
 msgstr "X ardatzeko eskala-faktorea"
 
-#: ../clutter/clutter-actor.c:6898
+#: ../clutter/clutter-actor.c:6974
 msgid "Scale Y"
 msgstr "Y eskala"
 
-#: ../clutter/clutter-actor.c:6899
+#: ../clutter/clutter-actor.c:6975
 msgid "Scale factor on the Y axis"
 msgstr "Y ardatzeko eskala-faktorea"
 
-#: ../clutter/clutter-actor.c:6917
+#: ../clutter/clutter-actor.c:6993
 msgid "Scale Z"
 msgstr "Z eskala"
 
-#: ../clutter/clutter-actor.c:6918
+#: ../clutter/clutter-actor.c:6994
 msgid "Scale factor on the Z axis"
 msgstr "Z ardatzeko eskala-faktorea"
 
-#: ../clutter/clutter-actor.c:6936
+#: ../clutter/clutter-actor.c:7012
 msgid "Scale Center X"
 msgstr "X eskala-zentroa"
 
-#: ../clutter/clutter-actor.c:6937
+#: ../clutter/clutter-actor.c:7013
 msgid "Horizontal scale center"
 msgstr "Eskala horizontalaren zentroa"
 
-#: ../clutter/clutter-actor.c:6955
+#: ../clutter/clutter-actor.c:7031
 msgid "Scale Center Y"
 msgstr "Y eskala-zentroa"
 
-#: ../clutter/clutter-actor.c:6956
+#: ../clutter/clutter-actor.c:7032
 msgid "Vertical scale center"
 msgstr "Eskala bertikalaren zentroa"
 
-#: ../clutter/clutter-actor.c:6974
+#: ../clutter/clutter-actor.c:7050
 msgid "Scale Gravity"
 msgstr "Grabitate-eskala"
 
-#: ../clutter/clutter-actor.c:6975
+#: ../clutter/clutter-actor.c:7051
 msgid "The center of scaling"
 msgstr "Eskalatzearen zentroa"
 
-#: ../clutter/clutter-actor.c:6993
+#: ../clutter/clutter-actor.c:7069
 msgid "Rotation Angle X"
 msgstr "X biraketa-angelua"
 
-#: ../clutter/clutter-actor.c:6994
+#: ../clutter/clutter-actor.c:7070
 msgid "The rotation angle on the X axis"
 msgstr "Biraketaren angelua X ardatzean"
 
-#: ../clutter/clutter-actor.c:7012
+#: ../clutter/clutter-actor.c:7088
 msgid "Rotation Angle Y"
 msgstr "Y biraketa-angelua"
 
-#: ../clutter/clutter-actor.c:7013
+#: ../clutter/clutter-actor.c:7089
 msgid "The rotation angle on the Y axis"
 msgstr "Biraketaren angelua Y ardatzean"
 
-#: ../clutter/clutter-actor.c:7031
+#: ../clutter/clutter-actor.c:7107
 msgid "Rotation Angle Z"
 msgstr "Z biraketa-angelua"
 
-#: ../clutter/clutter-actor.c:7032
+#: ../clutter/clutter-actor.c:7108
 msgid "The rotation angle on the Z axis"
 msgstr "Biraketaren angelua Z ardatzean"
 
-#: ../clutter/clutter-actor.c:7050
+#: ../clutter/clutter-actor.c:7126
 msgid "Rotation Center X"
 msgstr "X biraketa-zentroa"
 
-#: ../clutter/clutter-actor.c:7051
+#: ../clutter/clutter-actor.c:7127
 msgid "The rotation center on the X axis"
 msgstr "Biraketaren zentroa X ardatzean"
 
-#: ../clutter/clutter-actor.c:7068
+#: ../clutter/clutter-actor.c:7144
 msgid "Rotation Center Y"
 msgstr "Y biraketa-zentroa"
 
-#: ../clutter/clutter-actor.c:7069
+#: ../clutter/clutter-actor.c:7145
 msgid "The rotation center on the Y axis"
 msgstr "Biraketaren zentroa Y ardatzean"
 
-#: ../clutter/clutter-actor.c:7086
+#: ../clutter/clutter-actor.c:7162
 msgid "Rotation Center Z"
 msgstr "Z biraketa-zentroa"
 
-#: ../clutter/clutter-actor.c:7087
+#: ../clutter/clutter-actor.c:7163
 msgid "The rotation center on the Z axis"
 msgstr "Biraketaren zentroa Z ardatzean"
 
-#: ../clutter/clutter-actor.c:7104
+#: ../clutter/clutter-actor.c:7180
 msgid "Rotation Center Z Gravity"
 msgstr "Z biraketa-zentroaren grabitatea"
 
-#: ../clutter/clutter-actor.c:7105
+#: ../clutter/clutter-actor.c:7181
 msgid "Center point for rotation around the Z axis"
 msgstr "Biraketaren puntu zentrala Z ardatzean"
 
-#: ../clutter/clutter-actor.c:7133
+#: ../clutter/clutter-actor.c:7209
 msgid "Anchor X"
 msgstr "X aingura"
 
-#: ../clutter/clutter-actor.c:7134
+#: ../clutter/clutter-actor.c:7210
 msgid "X coordinate of the anchor point"
 msgstr "Aingura puntuaren X koordenatua"
 
-#: ../clutter/clutter-actor.c:7162
+#: ../clutter/clutter-actor.c:7238
 msgid "Anchor Y"
 msgstr "Y aingura"
 
-#: ../clutter/clutter-actor.c:7163
+#: ../clutter/clutter-actor.c:7239
 msgid "Y coordinate of the anchor point"
 msgstr "Aingura puntuaren Y koordenatua"
 
-#: ../clutter/clutter-actor.c:7190
+#: ../clutter/clutter-actor.c:7266
 msgid "Anchor Gravity"
 msgstr "Ainguraren grabitatea"
 
-#: ../clutter/clutter-actor.c:7191
+#: ../clutter/clutter-actor.c:7267
 msgid "The anchor point as a ClutterGravity"
 msgstr "Ainguraren puntua 'ClutterGravity' gisa"
 
-#: ../clutter/clutter-actor.c:7210
+#: ../clutter/clutter-actor.c:7286
 msgid "Translation X"
 msgstr "X translazioa"
 
-#: ../clutter/clutter-actor.c:7211
+#: ../clutter/clutter-actor.c:7287
 msgid "Translation along the X axis"
 msgstr "Translazioa X ardatzean"
 
-#: ../clutter/clutter-actor.c:7230
+#: ../clutter/clutter-actor.c:7306
 msgid "Translation Y"
 msgstr "Y translazioa"
 
-#: ../clutter/clutter-actor.c:7231
+#: ../clutter/clutter-actor.c:7307
 msgid "Translation along the Y axis"
 msgstr "Translazioa Y ardatzean"
 
-#: ../clutter/clutter-actor.c:7250
+#: ../clutter/clutter-actor.c:7326
 msgid "Translation Z"
 msgstr "Z translazioa"
 
-#: ../clutter/clutter-actor.c:7251
+#: ../clutter/clutter-actor.c:7327
 msgid "Translation along the Z axis"
 msgstr "Translazioa Y ardatzean"
 
-#: ../clutter/clutter-actor.c:7281
+#: ../clutter/clutter-actor.c:7357
 msgid "Transform"
 msgstr "Eraldaketa"
 
-#: ../clutter/clutter-actor.c:7282
+#: ../clutter/clutter-actor.c:7358
 msgid "Transformation matrix"
 msgstr "Eraldaketa-matrizea"
 
-#: ../clutter/clutter-actor.c:7297
+#: ../clutter/clutter-actor.c:7373
 msgid "Transform Set"
 msgstr "Eraldaketaren ezarpena"
 
-#: ../clutter/clutter-actor.c:7298
+#: ../clutter/clutter-actor.c:7374
 msgid "Whether the transform property is set"
 msgstr "Eraldaketaren propietateak ezarrita dauden edo ez"
 
-#: ../clutter/clutter-actor.c:7319
+#: ../clutter/clutter-actor.c:7395
 msgid "Child Transform"
 msgstr "Eraldaketa umea"
 
-#: ../clutter/clutter-actor.c:7320
+#: ../clutter/clutter-actor.c:7396
 msgid "Children transformation matrix"
 msgstr "Eraldaketa-matrize umeak"
 
-#: ../clutter/clutter-actor.c:7335
+#: ../clutter/clutter-actor.c:7411
 msgid "Child Transform Set"
 msgstr "Eraldaketa umearen ezarpena"
 
-#: ../clutter/clutter-actor.c:7336
+#: ../clutter/clutter-actor.c:7412
 msgid "Whether the child-transform property is set"
 msgstr "Eraldaketa umearen propietateak ezarrita dauden edo ez"
 
-#: ../clutter/clutter-actor.c:7353
+#: ../clutter/clutter-actor.c:7429
 msgid "Show on set parent"
 msgstr "Erakutsi gurasoa ezartzean"
 
-#: ../clutter/clutter-actor.c:7354
+#: ../clutter/clutter-actor.c:7430
 msgid "Whether the actor is shown when parented"
 msgstr "Aktorea erakutsiko den gurasoa ezartzean"
 
-#: ../clutter/clutter-actor.c:7371
+#: ../clutter/clutter-actor.c:7447
 msgid "Clip to Allocation"
 msgstr "Moztu esleipenera"
 
-#: ../clutter/clutter-actor.c:7372
+#: ../clutter/clutter-actor.c:7448
 msgid "Sets the clip region to track the actor's allocation"
 msgstr "Aktorearen esleipena jarraitzeko mozketaren eskualdea ezartzen du"
 
-#: ../clutter/clutter-actor.c:7385
+#: ../clutter/clutter-actor.c:7461
 msgid "Text Direction"
 msgstr "Testuaren norabidea"
 
-#: ../clutter/clutter-actor.c:7386
+#: ../clutter/clutter-actor.c:7462
 msgid "Direction of the text"
 msgstr "Testuaren norabidea"
 
-#: ../clutter/clutter-actor.c:7401
+#: ../clutter/clutter-actor.c:7477
 msgid "Has Pointer"
 msgstr "Erakuslea du"
 
-#: ../clutter/clutter-actor.c:7402
+#: ../clutter/clutter-actor.c:7478
 msgid "Whether the actor contains the pointer of an input device"
 msgstr "Aktoreak sarrerako gailuaren erakuslea duen edo ez"
 
-#: ../clutter/clutter-actor.c:7415
+#: ../clutter/clutter-actor.c:7491
 msgid "Actions"
 msgstr "Ekintzak"
 
-#: ../clutter/clutter-actor.c:7416
+#: ../clutter/clutter-actor.c:7492
 msgid "Adds an action to the actor"
 msgstr "Ekintza bat gehitzen dio aktoreari"
 
-#: ../clutter/clutter-actor.c:7429
+#: ../clutter/clutter-actor.c:7505
 msgid "Constraints"
 msgstr "Murriztapenak"
 
-#: ../clutter/clutter-actor.c:7430
+#: ../clutter/clutter-actor.c:7506
 msgid "Adds a constraint to the actor"
 msgstr "Murriztapen bat gehitzen dio aktoreari"
 
-#: ../clutter/clutter-actor.c:7443
+#: ../clutter/clutter-actor.c:7519
 msgid "Effect"
 msgstr "Efektua"
 
-#: ../clutter/clutter-actor.c:7444
+#: ../clutter/clutter-actor.c:7520
 msgid "Add an effect to be applied on the actor"
 msgstr "Efektu bat aplikatzen dio aktoreari"
 
-#: ../clutter/clutter-actor.c:7458
+#: ../clutter/clutter-actor.c:7534
 msgid "Layout Manager"
 msgstr "Diseinu-kudeatzailea"
 
-#: ../clutter/clutter-actor.c:7459
+#: ../clutter/clutter-actor.c:7535
 msgid "The object controlling the layout of an actor's children"
 msgstr "Aktorearen umeen diseinua kontrolatzen duen objektua"
 
-#: ../clutter/clutter-actor.c:7473
+#: ../clutter/clutter-actor.c:7549
 msgid "X Expand"
 msgstr "X hedapena"
 
-#: ../clutter/clutter-actor.c:7474
+#: ../clutter/clutter-actor.c:7550
 msgid "Whether extra horizontal space should be assigned to the actor"
 msgstr "Aktoreari leku horizontal gehigarria esleituko zaion edo ez"
 
-#: ../clutter/clutter-actor.c:7489
+#: ../clutter/clutter-actor.c:7565
 msgid "Y Expand"
 msgstr "Y hedapena"
 
-#: ../clutter/clutter-actor.c:7490
+#: ../clutter/clutter-actor.c:7566
 msgid "Whether extra vertical space should be assigned to the actor"
 msgstr "Aktoreari leku bertikal gehigarria esleituko zaion edo ez"
 
-#: ../clutter/clutter-actor.c:7506
+#: ../clutter/clutter-actor.c:7582
 msgid "X Alignment"
 msgstr "X lerrokadura"
 
-#: ../clutter/clutter-actor.c:7507
+#: ../clutter/clutter-actor.c:7583
 msgid "The alignment of the actor on the X axis within its allocation"
 msgstr "Aktorearen lerrokadura X ardatzean bere esleipenean"
 
-#: ../clutter/clutter-actor.c:7522
+#: ../clutter/clutter-actor.c:7598
 msgid "Y Alignment"
 msgstr "Y lerrokadura"
 
-#: ../clutter/clutter-actor.c:7523
+#: ../clutter/clutter-actor.c:7599
 msgid "The alignment of the actor on the Y axis within its allocation"
 msgstr "Aktorearen lerrokadura Y ardatzean bere esleipenean"
 
-#: ../clutter/clutter-actor.c:7542
+#: ../clutter/clutter-actor.c:7618
 msgid "Margin Top"
 msgstr "Goiko marjina"
 
-#: ../clutter/clutter-actor.c:7543
+#: ../clutter/clutter-actor.c:7619
 msgid "Extra space at the top"
 msgstr "Leku gehigarria goian"
 
-#: ../clutter/clutter-actor.c:7564
+#: ../clutter/clutter-actor.c:7640
 msgid "Margin Bottom"
 msgstr "Beheko marjina"
 
-#: ../clutter/clutter-actor.c:7565
+#: ../clutter/clutter-actor.c:7641
 msgid "Extra space at the bottom"
 msgstr "Leku gehigarria behean"
 
-#: ../clutter/clutter-actor.c:7586
+#: ../clutter/clutter-actor.c:7662
 msgid "Margin Left"
 msgstr "Ezkerreko marjina"
 
-#: ../clutter/clutter-actor.c:7587
+#: ../clutter/clutter-actor.c:7663
 msgid "Extra space at the left"
 msgstr "Leku gehigarria ezkerrean"
 
-#: ../clutter/clutter-actor.c:7608
+#: ../clutter/clutter-actor.c:7684
 msgid "Margin Right"
 msgstr "Eskuineko marjina"
 
-#: ../clutter/clutter-actor.c:7609
+#: ../clutter/clutter-actor.c:7685
 msgid "Extra space at the right"
 msgstr "Leku gehigarria eskuinean"
 
-#: ../clutter/clutter-actor.c:7625
+#: ../clutter/clutter-actor.c:7701
 msgid "Background Color Set"
 msgstr "Atzeko planoaren kolorea ezarrita"
 
-#: ../clutter/clutter-actor.c:7626 ../clutter/deprecated/clutter-box.c:269
+#: ../clutter/clutter-actor.c:7702 ../clutter/deprecated/clutter-box.c:280
 msgid "Whether the background color is set"
 msgstr "Atzeko planoaren kolorea ezarrita dagoen ala ez"
 
-#: ../clutter/clutter-actor.c:7642
+#: ../clutter/clutter-actor.c:7718
 msgid "Background color"
 msgstr "Atzeko planoaren kolorea"
 
-#: ../clutter/clutter-actor.c:7643
+#: ../clutter/clutter-actor.c:7719
 msgid "The actor's background color"
 msgstr "Aktorearen atzeko planoko kolorea"
 
-#: ../clutter/clutter-actor.c:7658
+#: ../clutter/clutter-actor.c:7734
 msgid "First Child"
 msgstr "Aurreneko umea"
 
-#: ../clutter/clutter-actor.c:7659
+#: ../clutter/clutter-actor.c:7735
 msgid "The actor's first child"
 msgstr "Aktorearen aurreneko umea"
 
-#: ../clutter/clutter-actor.c:7672
+#: ../clutter/clutter-actor.c:7748
 msgid "Last Child"
 msgstr "Azken umea"
 
-#: ../clutter/clutter-actor.c:7673
+#: ../clutter/clutter-actor.c:7749
 msgid "The actor's last child"
 msgstr "Aktorearen azkeneko umea"
 
-#: ../clutter/clutter-actor.c:7687
+#: ../clutter/clutter-actor.c:7763
 msgid "Content"
 msgstr "Edukia"
 
-#: ../clutter/clutter-actor.c:7688
+#: ../clutter/clutter-actor.c:7764
 msgid "Delegate object for painting the actor's content"
 msgstr "Eskuordetu objektua aktorearen edukia margotzeko"
 
-#: ../clutter/clutter-actor.c:7713
+#: ../clutter/clutter-actor.c:7789
 msgid "Content Gravity"
 msgstr "Edukiaren grabitate-zentroa"
 
-#: ../clutter/clutter-actor.c:7714
+#: ../clutter/clutter-actor.c:7790
 msgid "Alignment of the actor's content"
 msgstr "Lerrokatu aktorearen edukia"
 
-#: ../clutter/clutter-actor.c:7734
+#: ../clutter/clutter-actor.c:7810
 msgid "Content Box"
 msgstr "Edukiaren kutxa"
 
-#: ../clutter/clutter-actor.c:7735
+#: ../clutter/clutter-actor.c:7811
 msgid "The bounding box of the actor's content"
 msgstr "Aktorearen edukiaren konbinazio-koadroa"
 
-#: ../clutter/clutter-actor.c:7743
+#: ../clutter/clutter-actor.c:7819
 msgid "Minification Filter"
 msgstr "Txikiagotzeko iragazkia"
 
-#: ../clutter/clutter-actor.c:7744
+#: ../clutter/clutter-actor.c:7820
 msgid "The filter used when reducing the size of the content"
 msgstr "Iragazkia edukiaren tamaina txikiagotzean erabiltzeko"
 
-#: ../clutter/clutter-actor.c:7751
+#: ../clutter/clutter-actor.c:7827
 msgid "Magnification Filter"
 msgstr "Handiagotzeko iragazkia"
 
-#: ../clutter/clutter-actor.c:7752
+#: ../clutter/clutter-actor.c:7828
 msgid "The filter used when increasing the size of the content"
 msgstr "Iragazkia edukiaren tamaina handiagotzean erabiltzeko"
 
-#: ../clutter/clutter-actor.c:7766
+#: ../clutter/clutter-actor.c:7842
 msgid "Content Repeat"
 msgstr "Edukiaren errepikapena"
 
-#: ../clutter/clutter-actor.c:7767
+#: ../clutter/clutter-actor.c:7843
 msgid "The repeat policy for the actor's content"
 msgstr "Aktorearen edukia errepikatzeko araua"
 
@@ -704,7 +703,7 @@ msgid "Whether the meta is enabled"
 msgstr "Meta gaituta dauden edo ez"
 
 #: ../clutter/clutter-align-constraint.c:279
-#: ../clutter/clutter-bind-constraint.c:343 ../clutter/clutter-clone.c:341
+#: ../clutter/clutter-bind-constraint.c:343 ../clutter/clutter-clone.c:348
 #: ../clutter/clutter-snap-constraint.c:321
 msgid "Source"
 msgstr "Iturburua"
@@ -730,11 +729,11 @@ msgstr "Faktorea"
 msgid "The alignment factor, between 0.0 and 1.0"
 msgstr "Lerrokaduraren faktorea, 0.0 eta 1.0 artekoa"
 
-#: ../clutter/clutter-backend.c:380
+#: ../clutter/clutter-backend.c:404
 msgid "Unable to initialize the Clutter backend"
 msgstr "Ezin da Clutter motorra hasieratu"
 
-#: ../clutter/clutter-backend.c:454
+#: ../clutter/clutter-backend.c:485
 #, c-format
 msgid "The backend of type '%s' does not support creating multiple stages"
 msgstr "'%s' motako motorrak ez du eszena anitzik sortzea onartzen"
@@ -767,7 +766,7 @@ msgstr "Lotura taldearen izen berezia"
 
 #: ../clutter/clutter-bin-layout.c:220 ../clutter/clutter-bin-layout.c:633
 #: ../clutter/clutter-box-layout.c:374
-#: ../clutter/deprecated/clutter-table-layout.c:602
+#: ../clutter/deprecated/clutter-table-layout.c:600
 msgid "Horizontal Alignment"
 msgstr "Lerrokatze horizontala"
 
@@ -777,7 +776,7 @@ msgstr "Aktorearen lerrokatze horizontala diseinu-kudeatzailearen barnean"
 
 #: ../clutter/clutter-bin-layout.c:229 ../clutter/clutter-bin-layout.c:653
 #: ../clutter/clutter-box-layout.c:383
-#: ../clutter/deprecated/clutter-table-layout.c:617
+#: ../clutter/deprecated/clutter-table-layout.c:615
 msgid "Vertical Alignment"
 msgstr "Lerrokatze bertikala"
 
@@ -804,12 +803,12 @@ msgid "Allocate extra space for the child"
 msgstr "Esleitu leku gehigarria umearentzako"
 
 #: ../clutter/clutter-box-layout.c:356
-#: ../clutter/deprecated/clutter-table-layout.c:581
+#: ../clutter/deprecated/clutter-table-layout.c:579
 msgid "Horizontal Fill"
 msgstr "Betegarri horizontala"
 
 #: ../clutter/clutter-box-layout.c:357
-#: ../clutter/deprecated/clutter-table-layout.c:582
+#: ../clutter/deprecated/clutter-table-layout.c:580
 msgid ""
 "Whether the child should receive priority when the container is allocating "
 "spare space on the horizontal axis"
@@ -818,12 +817,12 @@ msgstr ""
 "duen edo ez"
 
 #: ../clutter/clutter-box-layout.c:365
-#: ../clutter/deprecated/clutter-table-layout.c:588
+#: ../clutter/deprecated/clutter-table-layout.c:586
 msgid "Vertical Fill"
 msgstr "Betegarri bertikala"
 
 #: ../clutter/clutter-box-layout.c:366
-#: ../clutter/deprecated/clutter-table-layout.c:589
+#: ../clutter/deprecated/clutter-table-layout.c:587
 msgid ""
 "Whether the child should receive priority when the container is allocating "
 "spare space on the vertical axis"
@@ -832,12 +831,12 @@ msgstr ""
 "duen edo ez"
 
 #: ../clutter/clutter-box-layout.c:375
-#: ../clutter/deprecated/clutter-table-layout.c:603
+#: ../clutter/deprecated/clutter-table-layout.c:601
 msgid "Horizontal alignment of the actor within the cell"
 msgstr "Aktorearen lerrokatze horizontala gelaxka barruan"
 
 #: ../clutter/clutter-box-layout.c:384
-#: ../clutter/deprecated/clutter-table-layout.c:618
+#: ../clutter/deprecated/clutter-table-layout.c:616
 msgid "Vertical alignment of the actor within the cell"
 msgstr "Aktorearen lerrokatze bertikala gelaxka barruan"
 
@@ -850,12 +849,12 @@ msgid "Whether the layout should be vertical, rather than horizontal"
 msgstr "Diseinua bertikala izan behar den (horizontalaren ordez) edo ez"
 
 #: ../clutter/clutter-box-layout.c:1363 ../clutter/clutter-flow-layout.c:927
-#: ../clutter/clutter-grid-layout.c:1549
+#: ../clutter/clutter-grid-layout.c:1568
 msgid "Orientation"
 msgstr "Orientazioa"
 
 #: ../clutter/clutter-box-layout.c:1364 ../clutter/clutter-flow-layout.c:928
-#: ../clutter/clutter-grid-layout.c:1550
+#: ../clutter/clutter-grid-layout.c:1569
 msgid "The orientation of the layout"
 msgstr "Diseinuaren orientazioa"
 
@@ -865,7 +864,7 @@ msgstr "Homogeneoa"
 
 #: ../clutter/clutter-box-layout.c:1381
 msgid ""
-"Whether the layout should be homogeneous, i.e. all childs get the same size"
+"Whether the layout should be homogeneous, i.e. all children get the same size"
 msgstr ""
 "Diseinua homogeneoa izan behar duen edo ez, adib. ume guztiek tamaina "
 "berdina edukiko duten edo ez"
@@ -887,32 +886,32 @@ msgid "Spacing between children"
 msgstr "Umeen arteko tartea"
 
 #: ../clutter/clutter-box-layout.c:1428
-#: ../clutter/deprecated/clutter-table-layout.c:1669
+#: ../clutter/deprecated/clutter-table-layout.c:1667
 msgid "Use Animations"
 msgstr "Erabili animazioak"
 
 #: ../clutter/clutter-box-layout.c:1429
-#: ../clutter/deprecated/clutter-table-layout.c:1670
+#: ../clutter/deprecated/clutter-table-layout.c:1668
 msgid "Whether layout changes should be animated"
 msgstr "Diseinuaren aldaketetan animazioa egongo den edo ez"
 
 #: ../clutter/clutter-box-layout.c:1453
-#: ../clutter/deprecated/clutter-table-layout.c:1694
+#: ../clutter/deprecated/clutter-table-layout.c:1692
 msgid "Easing Mode"
 msgstr "Azelerazioaren modua"
 
 #: ../clutter/clutter-box-layout.c:1454
-#: ../clutter/deprecated/clutter-table-layout.c:1695
+#: ../clutter/deprecated/clutter-table-layout.c:1693
 msgid "The easing mode of the animations"
 msgstr "Animazioen azelerazioaren modua"
 
 #: ../clutter/clutter-box-layout.c:1474
-#: ../clutter/deprecated/clutter-table-layout.c:1715
+#: ../clutter/deprecated/clutter-table-layout.c:1713
 msgid "Easing Duration"
 msgstr "Azelerazioaren iraupena"
 
 #: ../clutter/clutter-box-layout.c:1475
-#: ../clutter/deprecated/clutter-table-layout.c:1716
+#: ../clutter/deprecated/clutter-table-layout.c:1714
 msgid "The duration of the animations"
 msgstr "Animazioen iraupena"
 
@@ -932,27 +931,27 @@ msgstr "Kontrastea"
 msgid "The contrast change to apply"
 msgstr "Kontrastearen aldaketa aplikatzeko"
 
-#: ../clutter/clutter-canvas.c:248
+#: ../clutter/clutter-canvas.c:249
 msgid "The width of the canvas"
 msgstr "Oihalaren zabalera"
 
-#: ../clutter/clutter-canvas.c:264
+#: ../clutter/clutter-canvas.c:265
 msgid "The height of the canvas"
 msgstr "Oihalaren altuera"
 
-#: ../clutter/clutter-canvas.c:283
+#: ../clutter/clutter-canvas.c:284
 msgid "Scale Factor Set"
 msgstr "Eskala-faktorea ezarrita"
 
-#: ../clutter/clutter-canvas.c:284
+#: ../clutter/clutter-canvas.c:285
 msgid "Whether the scale-factor property is set"
 msgstr "Eskala-faktorearen propietatea ezarrita dagoen edo ez"
 
-#: ../clutter/clutter-canvas.c:305
+#: ../clutter/clutter-canvas.c:306
 msgid "Scale Factor"
 msgstr "Eskala-faktorea"
 
-#: ../clutter/clutter-canvas.c:306
+#: ../clutter/clutter-canvas.c:307
 msgid "The scaling factor for the surface"
 msgstr "Gainazalaren eskala-faktorea"
 
@@ -984,7 +983,7 @@ msgstr "Atxikituta"
 msgid "Whether the clickable has a grab"
 msgstr "Objektu klikagarriak kaptura bat duen edo ez"
 
-#: ../clutter/clutter-click-action.c:618 ../clutter/clutter-settings.c:672
+#: ../clutter/clutter-click-action.c:618 ../clutter/clutter-settings.c:674
 msgid "Long Press Duration"
 msgstr "Sakatze luzearen iraupena"
 
@@ -1000,7 +999,7 @@ msgstr "Sakatze luzearen atalasea"
 msgid "The maximum threshold before a long press is cancelled"
 msgstr "Gehienezko atalasea sakatze luzea bertan behera utzi aurretik"
 
-#: ../clutter/clutter-clone.c:342
+#: ../clutter/clutter-clone.c:349
 msgid "Specifies the actor to be cloned"
 msgstr "Aktorea zehazten du klonatzeko"
 
@@ -1103,7 +1102,7 @@ msgid "Whether each item should receive the same allocation"
 msgstr "Elementu bakoitzak esleipen berdina jaso beharko lukeen edo ez"
 
 #: ../clutter/clutter-flow-layout.c:959
-#: ../clutter/deprecated/clutter-table-layout.c:1629
+#: ../clutter/deprecated/clutter-table-layout.c:1627
 msgid "Column Spacing"
 msgstr "Zutabeen arteko tartea"
 
@@ -1112,7 +1111,7 @@ msgid "The spacing between columns"
 msgstr "Zutabeen arteko tartea"
 
 #: ../clutter/clutter-flow-layout.c:976
-#: ../clutter/deprecated/clutter-table-layout.c:1645
+#: ../clutter/deprecated/clutter-table-layout.c:1643
 msgid "Row Spacing"
 msgstr "Errenkaden arteko tartea"
 
@@ -1212,40 +1211,40 @@ msgstr "Ume batek hedatzen duen zutabe kopurua"
 msgid "The number of rows that a child spans"
 msgstr "Ume batek hedatzen duen errenkada kopurua"
 
-#: ../clutter/clutter-grid-layout.c:1564
+#: ../clutter/clutter-grid-layout.c:1583
 msgid "Row spacing"
 msgstr "Errenkaden arteko tartea"
 
-#: ../clutter/clutter-grid-layout.c:1565
+#: ../clutter/clutter-grid-layout.c:1584
 msgid "The amount of space between two consecutive rows"
 msgstr "Elkarren segidako bi errenkaden arteko lekua"
 
-#: ../clutter/clutter-grid-layout.c:1578
+#: ../clutter/clutter-grid-layout.c:1597
 msgid "Column spacing"
 msgstr "Zutabeen arteko tartea"
 
-#: ../clutter/clutter-grid-layout.c:1579
+#: ../clutter/clutter-grid-layout.c:1598
 msgid "The amount of space between two consecutive columns"
 msgstr "Elkarren segidako bi zutaberen arteko lekua"
 
-#: ../clutter/clutter-grid-layout.c:1593
+#: ../clutter/clutter-grid-layout.c:1612
 msgid "Row Homogeneous"
 msgstr "Errenkada homogeneoa"
 
-#: ../clutter/clutter-grid-layout.c:1594
+#: ../clutter/clutter-grid-layout.c:1613
 msgid "If TRUE, the rows are all the same height"
 msgstr "TRUE (egia) bada, errenkada guztiek altuera bera edukiko dute"
 
-#: ../clutter/clutter-grid-layout.c:1607
+#: ../clutter/clutter-grid-layout.c:1626
 msgid "Column Homogeneous"
 msgstr "Zutabe homogeneoa"
 
-#: ../clutter/clutter-grid-layout.c:1608
+#: ../clutter/clutter-grid-layout.c:1627
 msgid "If TRUE, the columns are all the same width"
 msgstr "TRUE (egia) bada, errenkada guztiek zabalera bera edukiko dute"
 
-#: ../clutter/clutter-image.c:273 ../clutter/clutter-image.c:341
-#: ../clutter/clutter-image.c:434
+#: ../clutter/clutter-image.c:238 ../clutter/clutter-image.c:306
+#: ../clutter/clutter-image.c:399
 msgid "Unable to load image data"
 msgstr "Ezin da irudiaren daturik eskuratu"
 
@@ -1356,91 +1355,83 @@ msgstr "Datu hauek sortu dituen kudeatzailea"
 #. * Do NOT translate it to non-English e.g. "predefinito:LTR"! If
 #. * it isn't default:LTR or default:RTL it will not work.
 #.
-#: ../clutter/clutter-main.c:737
+#: ../clutter/clutter-main.c:729
 msgid "default:LTR"
 msgstr "default:LTR"
 
-#: ../clutter/clutter-main.c:1491
+#: ../clutter/clutter-main.c:1398
 msgid "Show frames per second"
 msgstr "Erakutsi fotogramak segundoko"
 
-#: ../clutter/clutter-main.c:1493
+#: ../clutter/clutter-main.c:1400
 msgid "Default frame rate"
 msgstr "Fotograma-emari lehenetsia"
 
-#: ../clutter/clutter-main.c:1495
+#: ../clutter/clutter-main.c:1402
 msgid "Make all warnings fatal"
 msgstr "Bihurtu abisu guztiak larri"
 
-#: ../clutter/clutter-main.c:1498
+#: ../clutter/clutter-main.c:1405
 msgid "Direction for the text"
 msgstr "Testuaren norabidea"
 
-#: ../clutter/clutter-main.c:1501
+#: ../clutter/clutter-main.c:1408
 msgid "Disable mipmapping on text"
 msgstr "Desgaitu MIP mapaketa testuan"
 
-#: ../clutter/clutter-main.c:1504
+#: ../clutter/clutter-main.c:1411
 msgid "Use 'fuzzy' picking"
 msgstr "Erabili 'zirriborro' motako hautapena"
 
-#: ../clutter/clutter-main.c:1507
+#: ../clutter/clutter-main.c:1414
 msgid "Clutter debugging flags to set"
 msgstr "Clutter arazteko banderak ezartzeko"
 
-#: ../clutter/clutter-main.c:1509
+#: ../clutter/clutter-main.c:1416
 msgid "Clutter debugging flags to unset"
 msgstr "Clutter arazteko banderak kentzeko"
 
-#: ../clutter/clutter-main.c:1513
-msgid "Clutter profiling flags to set"
-msgstr "Clutter-en profilaren banderak ezartzeko"
-
-#: ../clutter/clutter-main.c:1515
-msgid "Clutter profiling flags to unset"
-msgstr "Clutter-en profilaren banderak kentzeko"
-
-#: ../clutter/clutter-main.c:1518
+#: ../clutter/clutter-main.c:1419
 msgid "Enable accessibility"
 msgstr "Gaitu erabilerraztasuna"
 
-#: ../clutter/clutter-main.c:1708
+#: ../clutter/clutter-main.c:1597
 msgid "Clutter Options"
 msgstr "Clutter-en aukerak"
 
-#: ../clutter/clutter-main.c:1709
+#: ../clutter/clutter-main.c:1598
 msgid "Show Clutter Options"
 msgstr "Erakutsi Clutter-en aukerak"
 
-#: ../clutter/clutter-pan-action.c:455
+#: ../clutter/clutter-pan-action.c:478
 msgid "Pan Axis"
 msgstr "Panoramikaren ardatza"
 
-#: ../clutter/clutter-pan-action.c:456
+#: ../clutter/clutter-pan-action.c:479
 msgid "Constraints the panning to an axis"
 msgstr "Panoramika ardatz batera murrizten du"
 
-#: ../clutter/clutter-pan-action.c:470
+#: ../clutter/clutter-pan-action.c:493
 msgid "Interpolate"
 msgstr "Interpolatu"
 
-#: ../clutter/clutter-pan-action.c:471
+#: ../clutter/clutter-pan-action.c:494
 msgid "Whether interpolated events emission is enabled."
 msgstr "Interpolatutako gertaeren igorpenak gaituta dauden edo ez."
 
-#: ../clutter/clutter-pan-action.c:487
+#: ../clutter/clutter-pan-action.c:510
 msgid "Deceleration"
 msgstr "Dezelerazioa"
 
-#: ../clutter/clutter-pan-action.c:488
+#: ../clutter/clutter-pan-action.c:511
 msgid "Rate at which the interpolated panning will decelerate in"
 msgstr "Emaria Interpolatutako panoramika dezeleratzeko"
 
-#: ../clutter/clutter-pan-action.c:505
+#: ../clutter/clutter-pan-action.c:528
 msgid "Initial acceleration factor"
 msgstr "Hasierako azelerazioaren faktorea"
 
-#: ../clutter/clutter-pan-action.c:506
+#: ../clutter/clutter-pan-action.c:529
 msgid "Factor applied to the momentum when starting the interpolated phase"
 msgstr "Momentuari aplikatutako faktorea interpolatutako fasea hastean"
 
@@ -1466,28 +1457,28 @@ msgstr "Propietatearen izena"
 msgid "The name of the property to animate"
 msgstr "Propietatearen izena animazioa aplikatzeko"
 
-#: ../clutter/clutter-script.c:464
+#: ../clutter/clutter-script.c:463
 msgid "Filename Set"
 msgstr "Fitxategi-izena ezarrita"
 
-#: ../clutter/clutter-script.c:465
+#: ../clutter/clutter-script.c:464
 msgid "Whether the :filename property is set"
 msgstr "':filename' (fitxategi-izena) propietatea ezarrita dagoen edo ez"
 
-#: ../clutter/clutter-script.c:479
-#: ../clutter/deprecated/clutter-texture.c:1080
+#: ../clutter/clutter-script.c:478
+#: ../clutter/deprecated/clutter-texture.c:1081
 msgid "Filename"
 msgstr "Fitxategi-izena"
 
-#: ../clutter/clutter-script.c:480
+#: ../clutter/clutter-script.c:479
 msgid "The path of the currently parsed file"
 msgstr "Unean aztertutako fitxategiaren bide-izena"
 
-#: ../clutter/clutter-script.c:497
+#: ../clutter/clutter-script.c:496
 msgid "Translation Domain"
 msgstr "Itzulpenaren domeinua"
 
-#: ../clutter/clutter-script.c:498
+#: ../clutter/clutter-script.c:497
 msgid "The translation domain used to localize string"
 msgstr "Kateak itzultzeko erabilitako domeinua"
 
@@ -1499,45 +1490,45 @@ msgstr "Korritze modua"
 msgid "The scrolling direction"
 msgstr "Korritzearen norabidea"
 
-#: ../clutter/clutter-settings.c:507
+#: ../clutter/clutter-settings.c:509
 msgid "Double Click Time"
 msgstr "Klik bikoitzaren denbora"
 
-#: ../clutter/clutter-settings.c:508
+#: ../clutter/clutter-settings.c:510
 msgid "The time between clicks necessary to detect a multiple click"
 msgstr "Klik-e arteko denbora klik anitza dela onartzeko"
 
-#: ../clutter/clutter-settings.c:523
+#: ../clutter/clutter-settings.c:525
 msgid "Double Click Distance"
 msgstr "Klik bikoitzaren distantzia"
 
-#: ../clutter/clutter-settings.c:524
+#: ../clutter/clutter-settings.c:526
 msgid "The distance between clicks necessary to detect a multiple click"
 msgstr "Klik-en arteko distantzia klik anitza dela onartzeko"
 
-#: ../clutter/clutter-settings.c:539
+#: ../clutter/clutter-settings.c:541
 msgid "Drag Threshold"
 msgstr "Arrastatzearen atalasea"
 
-#: ../clutter/clutter-settings.c:540
+#: ../clutter/clutter-settings.c:542
 msgid "The distance the cursor should travel before starting to drag"
 msgstr "Kurtsoreak ibili beharko lukeen distantzia arrastatzen hasi aurretik"
 
-#: ../clutter/clutter-settings.c:555 ../clutter/clutter-text.c:3437
+#: ../clutter/clutter-settings.c:557 ../clutter/clutter-text.c:3409
 msgid "Font Name"
 msgstr "Letra-tipoaren izena"
 
-#: ../clutter/clutter-settings.c:556
+#: ../clutter/clutter-settings.c:558
 msgid ""
 "The description of the default font, as one that could be parsed by Pango"
 msgstr ""
 "Letra-tipo lehenetsiaren azalpena, Pango-k analiza dezakeenaren bezalakoa"
 
-#: ../clutter/clutter-settings.c:571
+#: ../clutter/clutter-settings.c:573
 msgid "Font Antialias"
 msgstr "Letra-tipoaren antialias-a"
 
-#: ../clutter/clutter-settings.c:572
+#: ../clutter/clutter-settings.c:574
 msgid ""
 "Whether to use antialiasing (1 to enable, 0 to disable, and -1 to use the "
 "default)"
@@ -1545,73 +1536,73 @@ msgstr ""
 "Antialiasing-a erabili edo ez (1 gaitzeko, 0 desgaitzeko eta -1 lehenetsia "
 "erabiltzeko)"
 
-#: ../clutter/clutter-settings.c:588 ../clutter/clutter-settings.c:596
+#: ../clutter/clutter-settings.c:590 ../clutter/clutter-settings.c:598
 msgid "Font DPI"
 msgstr "Letra-tipoaren DPIa"
 
-#: ../clutter/clutter-settings.c:589 ../clutter/clutter-settings.c:597
+#: ../clutter/clutter-settings.c:591 ../clutter/clutter-settings.c:599
 msgid ""
 "The resolution of the font, in 1024 * dots/inch, or -1 to use the default"
 msgstr ""
 "Letra-tipoaren bereizmena, 1024 * puntu/hazbeteko, edo -1 lehenetsia "
 "erabiltzeko"
 
-#: ../clutter/clutter-settings.c:613
+#: ../clutter/clutter-settings.c:615
 msgid "Font Hinting"
 msgstr "Hizkien arteko tartea"
 
-#: ../clutter/clutter-settings.c:614
+#: ../clutter/clutter-settings.c:616
 msgid ""
 "Whether to use hinting (1 to enable, 0 to disable and -1 to use the default)"
 msgstr ""
 "Hizkien arteko tartea (hinting) erabili edo ez (1 gaitzeko, 0 desgaitzeko, "
 "eta -1 lehenetsia erabiltzeko)"
 
-#: ../clutter/clutter-settings.c:634
+#: ../clutter/clutter-settings.c:636
 msgid "Font Hint Style"
 msgstr "Letren arteko tartearen estiloa"
 
-#: ../clutter/clutter-settings.c:635
+#: ../clutter/clutter-settings.c:637
 msgid "The style of hinting (hintnone, hintslight, hintmedium, hintfull)"
 msgstr ""
 "Letren arteko tartearen estiloa: 'hintnone' (bat ere ez), "
 "'hintslight' (piskat), 'hintmedium' (tartekoa), 'hintful' (erabatekoa)"
 
-#: ../clutter/clutter-settings.c:655
+#: ../clutter/clutter-settings.c:657
 msgid "Font Subpixel Order"
 msgstr "Azpipixelen ordena"
 
-#: ../clutter/clutter-settings.c:656
+#: ../clutter/clutter-settings.c:658
 msgid "The type of subpixel antialiasing (none, rgb, bgr, vrgb, vbgr)"
 msgstr ""
 "Azpipixelen antialiasing mota: 'none'  (bat ere ez), 'rgb' (gorria berdea "
 "urdina), 'bgr', 'vrgb', 'vbgr'"
 
-#: ../clutter/clutter-settings.c:673
+#: ../clutter/clutter-settings.c:675
 msgid "The minimum duration for a long press gesture to be recognized"
 msgstr "Sakatze luzearen ikurraren gutxieneko iraupena ezagutzeko"
 
-#: ../clutter/clutter-settings.c:680
+#: ../clutter/clutter-settings.c:682
 msgid "Window Scaling Factor"
 msgstr "Leihoaren eskala-faktorea"
 
-#: ../clutter/clutter-settings.c:681
+#: ../clutter/clutter-settings.c:683
 msgid "The scaling factor to be applied to windows"
 msgstr "Leihoari aplikatuko zaion eskala-faktorea"
 
-#: ../clutter/clutter-settings.c:688
+#: ../clutter/clutter-settings.c:690
 msgid "Fontconfig configuration timestamp"
 msgstr "Fontconfig konfigurazioaren denbora-zigilua"
 
-#: ../clutter/clutter-settings.c:689
+#: ../clutter/clutter-settings.c:691
 msgid "Timestamp of the current fontconfig configuration"
 msgstr "Uneko Fontconfig konfigurazioaren denbora-zigilua"
 
-#: ../clutter/clutter-settings.c:706
+#: ../clutter/clutter-settings.c:708
 msgid "Password Hint Time"
 msgstr "Password Hint Time"
 
-#: ../clutter/clutter-settings.c:707
+#: ../clutter/clutter-settings.c:709
 msgid "How long to show the last input character in hidden entries"
 msgstr ""
 "Zenbat denboran erakutsiko den idatzitako azken karakterea ezkutuko "
@@ -1649,114 +1640,114 @@ msgstr "Atxikitu beharko litzatekeen iturburuaren ertza"
 msgid "The offset in pixels to apply to the constraint"
 msgstr "Desplazamendua (pixeletan) murriztapenari aplikatzeko"
 
-#: ../clutter/clutter-stage.c:1917
+#: ../clutter/clutter-stage.c:1798
 msgid "Fullscreen Set"
 msgstr "Pantaila osoa ezarrita"
 
-#: ../clutter/clutter-stage.c:1918
+#: ../clutter/clutter-stage.c:1799
 msgid "Whether the main stage is fullscreen"
 msgstr "Eszena nagusia pantaila osoa den edo ez"
 
-#: ../clutter/clutter-stage.c:1932
+#: ../clutter/clutter-stage.c:1813
 msgid "Offscreen"
 msgstr "Pantailaz kanpo"
 
-#: ../clutter/clutter-stage.c:1933
+#: ../clutter/clutter-stage.c:1814
 msgid "Whether the main stage should be rendered offscreen"
 msgstr "Eszena nagusia pantailaz kanpo errendatuko den edo ez"
 
-#: ../clutter/clutter-stage.c:1945 ../clutter/clutter-text.c:3551
+#: ../clutter/clutter-stage.c:1826 ../clutter/clutter-text.c:3523
 msgid "Cursor Visible"
 msgstr "Kurtsorea ikusgai"
 
-#: ../clutter/clutter-stage.c:1946
+#: ../clutter/clutter-stage.c:1827
 msgid "Whether the mouse pointer is visible on the main stage"
 msgstr "Eszena nagusian saguaren erakuslea ikusgai dagoen edo ez"
 
-#: ../clutter/clutter-stage.c:1960
+#: ../clutter/clutter-stage.c:1841
 msgid "User Resizable"
 msgstr "Erabiltzaileak tamaina aldatzea"
 
-#: ../clutter/clutter-stage.c:1961
+#: ../clutter/clutter-stage.c:1842
 msgid "Whether the stage is able to be resized via user interaction"
 msgstr ""
 "Erabiltzailearen elkarreragiketaren bidez eszena tamainaz alda dezakeen edo "
 "ez"
 
-#: ../clutter/clutter-stage.c:1976 ../clutter/deprecated/clutter-box.c:254
-#: ../clutter/deprecated/clutter-rectangle.c:270
+#: ../clutter/clutter-stage.c:1857 ../clutter/deprecated/clutter-box.c:260
+#: ../clutter/deprecated/clutter-rectangle.c:295
 msgid "Color"
 msgstr "Kolorea"
 
-#: ../clutter/clutter-stage.c:1977
+#: ../clutter/clutter-stage.c:1858
 msgid "The color of the stage"
 msgstr "Eszenaren kolorea"
 
-#: ../clutter/clutter-stage.c:1992
+#: ../clutter/clutter-stage.c:1873
 msgid "Perspective"
 msgstr "Perspektiba"
 
-#: ../clutter/clutter-stage.c:1993
+#: ../clutter/clutter-stage.c:1874
 msgid "Perspective projection parameters"
 msgstr "Perspektibaren proiekzioaren parametroak"
 
-#: ../clutter/clutter-stage.c:2008
+#: ../clutter/clutter-stage.c:1889
 msgid "Title"
 msgstr "Titulua"
 
-#: ../clutter/clutter-stage.c:2009
+#: ../clutter/clutter-stage.c:1890
 msgid "Stage Title"
 msgstr "Eszenaren titulua"
 
-#: ../clutter/clutter-stage.c:2026
+#: ../clutter/clutter-stage.c:1907
 msgid "Use Fog"
 msgstr "Erabili behe-lainoa"
 
-#: ../clutter/clutter-stage.c:2027
+#: ../clutter/clutter-stage.c:1908
 msgid "Whether to enable depth cueing"
 msgstr "Sakoneraren adierazlea gaitzea edo ez"
 
-#: ../clutter/clutter-stage.c:2043
+#: ../clutter/clutter-stage.c:1924
 msgid "Fog"
 msgstr "Behe-lainoa"
 
-#: ../clutter/clutter-stage.c:2044
+#: ../clutter/clutter-stage.c:1925
 msgid "Settings for the depth cueing"
 msgstr "Sakoneraren adierazlearen ezarpenak"
 
-#: ../clutter/clutter-stage.c:2060
+#: ../clutter/clutter-stage.c:1941
 msgid "Use Alpha"
 msgstr "Erabili alfa"
 
-#: ../clutter/clutter-stage.c:2061
+#: ../clutter/clutter-stage.c:1942
 msgid "Whether to honour the alpha component of the stage color"
 msgstr "Eszenaren kolorearen alfa osagaia erabiliko den edo ez"
 
-#: ../clutter/clutter-stage.c:2077
+#: ../clutter/clutter-stage.c:1958
 msgid "Key Focus"
 msgstr "Gakoaren fokua"
 
-#: ../clutter/clutter-stage.c:2078
+#: ../clutter/clutter-stage.c:1959
 msgid "The currently key focused actor"
 msgstr "Unean gakoak fokatutako aktorea"
 
-#: ../clutter/clutter-stage.c:2094
+#: ../clutter/clutter-stage.c:1975
 msgid "No Clear Hint"
 msgstr "Ez garbitu argibidea"
 
-#: ../clutter/clutter-stage.c:2095
+#: ../clutter/clutter-stage.c:1976
 msgid "Whether the stage should clear its contents"
 msgstr "Eszenak bere edukia garbitu beharko lukeen edo ez"
 
-#: ../clutter/clutter-stage.c:2108
+#: ../clutter/clutter-stage.c:1989
 msgid "Accept Focus"
 msgstr "Onartu fokua"
 
-#: ../clutter/clutter-stage.c:2109
+#: ../clutter/clutter-stage.c:1990
 msgid "Whether the stage should accept focus on show"
 msgstr "Eszenak fokua onartu behar duen edo ez erakustean"
 
-#: ../clutter/clutter-text-buffer.c:347 ../clutter/clutter-text.c:3472
+#: ../clutter/clutter-text-buffer.c:347 ../clutter/clutter-text.c:3444
 msgid "Text"
 msgstr "Testua"
 
@@ -1781,208 +1772,208 @@ msgid "Maximum number of characters for this entry. Zero if no maximum"
 msgstr ""
 "Sarrera honen gehienezko karaktere-kopurua. Gehienezkorik ez badago, zero"
 
-#: ../clutter/clutter-text.c:3419
+#: ../clutter/clutter-text.c:3391
 msgid "Buffer"
 msgstr "Bufferra"
 
-#: ../clutter/clutter-text.c:3420
+#: ../clutter/clutter-text.c:3392
 msgid "The buffer for the text"
 msgstr "Testuaren bufferra"
 
-#: ../clutter/clutter-text.c:3438
+#: ../clutter/clutter-text.c:3410
 msgid "The font to be used by the text"
 msgstr "Letra-tipoa testuan erabiltzeko"
 
-#: ../clutter/clutter-text.c:3455
+#: ../clutter/clutter-text.c:3427
 msgid "Font Description"
 msgstr "Letra-tipoaren azalpena"
 
-#: ../clutter/clutter-text.c:3456
+#: ../clutter/clutter-text.c:3428
 msgid "The font description to be used"
 msgstr "Erabiliko den letra-tipoaren azalpena"
 
-#: ../clutter/clutter-text.c:3473
+#: ../clutter/clutter-text.c:3445
 msgid "The text to render"
 msgstr "Testua errendatzeko"
 
-#: ../clutter/clutter-text.c:3487
+#: ../clutter/clutter-text.c:3459
 msgid "Font Color"
 msgstr "Letra-tipoaren kolorea"
 
-#: ../clutter/clutter-text.c:3488
+#: ../clutter/clutter-text.c:3460
 msgid "Color of the font used by the text"
 msgstr "Letra-tipoaren kolorea testuan erabiltzeko"
 
-#: ../clutter/clutter-text.c:3503
+#: ../clutter/clutter-text.c:3475
 msgid "Editable"
 msgstr "Editagarria"
 
-#: ../clutter/clutter-text.c:3504
+#: ../clutter/clutter-text.c:3476
 msgid "Whether the text is editable"
 msgstr "Testua edita daitekeen edo ez"
 
-#: ../clutter/clutter-text.c:3519
+#: ../clutter/clutter-text.c:3491
 msgid "Selectable"
 msgstr "Hautagarria"
 
-#: ../clutter/clutter-text.c:3520
+#: ../clutter/clutter-text.c:3492
 msgid "Whether the text is selectable"
 msgstr "Testua hauta daitekeen edo ez"
 
-#: ../clutter/clutter-text.c:3534
+#: ../clutter/clutter-text.c:3506
 msgid "Activatable"
 msgstr "Aktibagarria"
 
-#: ../clutter/clutter-text.c:3535
+#: ../clutter/clutter-text.c:3507
 msgid "Whether pressing return causes the activate signal to be emitted"
 msgstr "Sartu tekla sakatzean 'aktibatu' seinalea igorriko duen edo ez"
 
-#: ../clutter/clutter-text.c:3552
+#: ../clutter/clutter-text.c:3524
 msgid "Whether the input cursor is visible"
 msgstr "Sarreraren erakuslea ikusgai dagoen edo ez"
 
-#: ../clutter/clutter-text.c:3566 ../clutter/clutter-text.c:3567
+#: ../clutter/clutter-text.c:3538 ../clutter/clutter-text.c:3539
 msgid "Cursor Color"
 msgstr "Kurtsorearen kolorea"
 
-#: ../clutter/clutter-text.c:3582
+#: ../clutter/clutter-text.c:3554
 msgid "Cursor Color Set"
 msgstr "Kurtsorearen kolorea ezarrita"
 
-#: ../clutter/clutter-text.c:3583
+#: ../clutter/clutter-text.c:3555
 msgid "Whether the cursor color has been set"
 msgstr "Kurtsorearen kolorea ezarrita dagoen edo ez"
 
-#: ../clutter/clutter-text.c:3598
+#: ../clutter/clutter-text.c:3570
 msgid "Cursor Size"
 msgstr "Kurtsorearen tamaina"
 
-#: ../clutter/clutter-text.c:3599
+#: ../clutter/clutter-text.c:3571
 msgid "The width of the cursor, in pixels"
 msgstr "Kurtsorearen zabalera (pixeletan)"
 
-#: ../clutter/clutter-text.c:3615 ../clutter/clutter-text.c:3633
+#: ../clutter/clutter-text.c:3587 ../clutter/clutter-text.c:3605
 msgid "Cursor Position"
 msgstr "Kurtsorearen posizioa"
 
-#: ../clutter/clutter-text.c:3616 ../clutter/clutter-text.c:3634
+#: ../clutter/clutter-text.c:3588 ../clutter/clutter-text.c:3606
 msgid "The cursor position"
 msgstr "Kurtsorearen posizioa"
 
-#: ../clutter/clutter-text.c:3649
+#: ../clutter/clutter-text.c:3621
 msgid "Selection-bound"
 msgstr "Hautapen-muga"
 
-#: ../clutter/clutter-text.c:3650
+#: ../clutter/clutter-text.c:3622
 msgid "The cursor position of the other end of the selection"
 msgstr "Kurtsorearen posizioa hautapenaren bestaldeko amaieran"
 
-#: ../clutter/clutter-text.c:3665 ../clutter/clutter-text.c:3666
+#: ../clutter/clutter-text.c:3637 ../clutter/clutter-text.c:3638
 msgid "Selection Color"
 msgstr "Hautapen-kolorea"
 
-#: ../clutter/clutter-text.c:3681
+#: ../clutter/clutter-text.c:3653
 msgid "Selection Color Set"
 msgstr "Hautapen-kolorea ezarrita"
 
-#: ../clutter/clutter-text.c:3682
+#: ../clutter/clutter-text.c:3654
 msgid "Whether the selection color has been set"
 msgstr "Hautapenaren kolorea ezarrita dagoen edo ez"
 
-#: ../clutter/clutter-text.c:3697
+#: ../clutter/clutter-text.c:3669
 msgid "Attributes"
 msgstr "Atributuak"
 
-#: ../clutter/clutter-text.c:3698
+#: ../clutter/clutter-text.c:3670
 msgid "A list of style attributes to apply to the contents of the actor"
 msgstr "Estiloen atributuen zerrenda aktorearen edukiari aplikatzeko"
 
-#: ../clutter/clutter-text.c:3720
+#: ../clutter/clutter-text.c:3692
 msgid "Use markup"
 msgstr "Erabili markaketa"
 
-#: ../clutter/clutter-text.c:3721
+#: ../clutter/clutter-text.c:3693
 msgid "Whether or not the text includes Pango markup"
 msgstr "Testuak Pango-ren markaketa edukiko duen edo ez"
 
-#: ../clutter/clutter-text.c:3737
+#: ../clutter/clutter-text.c:3709
 msgid "Line wrap"
 msgstr "Lerro-itzulbira"
 
-#: ../clutter/clutter-text.c:3738
+#: ../clutter/clutter-text.c:3710
 msgid "If set, wrap the lines if the text becomes too wide"
 msgstr "Ezarrita badago, testua zabalegia bada lerroak itzulbiratu egingo dira"
 
-#: ../clutter/clutter-text.c:3753
+#: ../clutter/clutter-text.c:3725
 msgid "Line wrap mode"
 msgstr "Lerro-itzulbira modua"
 
-#: ../clutter/clutter-text.c:3754
+#: ../clutter/clutter-text.c:3726
 msgid "Control how line-wrapping is done"
 msgstr "Kontrolatu lerroen itzulbira nola egingo den"
 
-#: ../clutter/clutter-text.c:3769
+#: ../clutter/clutter-text.c:3741
 msgid "Ellipsize"
 msgstr "Elipsi gisa"
 
-#: ../clutter/clutter-text.c:3770
+#: ../clutter/clutter-text.c:3742
 msgid "The preferred place to ellipsize the string"
 msgstr "Katea elipsi gisa jartzeko leku hobetsia"
 
-#: ../clutter/clutter-text.c:3786
+#: ../clutter/clutter-text.c:3758
 msgid "Line Alignment"
 msgstr "Lerroaren lerrokadura"
 
-#: ../clutter/clutter-text.c:3787
+#: ../clutter/clutter-text.c:3759
 msgid "The preferred alignment for the string, for multi-line text"
 msgstr "Katearen lerrokadura hobetsia, lerro anitzeko testuentzako"
 
-#: ../clutter/clutter-text.c:3803
+#: ../clutter/clutter-text.c:3775
 msgid "Justify"
 msgstr "Justifikatu"
 
-#: ../clutter/clutter-text.c:3804
+#: ../clutter/clutter-text.c:3776
 msgid "Whether the text should be justified"
 msgstr "Testua justifikatuta egongo den edo ez"
 
-#: ../clutter/clutter-text.c:3819
+#: ../clutter/clutter-text.c:3791
 msgid "Password Character"
 msgstr "Pasahitzaren karakterea"
 
-#: ../clutter/clutter-text.c:3820
+#: ../clutter/clutter-text.c:3792
 msgid "If non-zero, use this character to display the actor's contents"
 msgstr "Ez bada zero, erabili karaktere hori aktorearen edukia bistaratzeko"
 
-#: ../clutter/clutter-text.c:3834
+#: ../clutter/clutter-text.c:3806
 msgid "Max Length"
 msgstr "Gehienezko luzera"
 
-#: ../clutter/clutter-text.c:3835
+#: ../clutter/clutter-text.c:3807
 msgid "Maximum length of the text inside the actor"
 msgstr "Testuaren gehienezko luzera aktorearen barruan"
 
-#: ../clutter/clutter-text.c:3858
+#: ../clutter/clutter-text.c:3830
 msgid "Single Line Mode"
 msgstr "Lerro bakarreko modua"
 
-#: ../clutter/clutter-text.c:3859
+#: ../clutter/clutter-text.c:3831
 msgid "Whether the text should be a single line"
 msgstr "Testuak lerro bakarrekoa izango den edo ez"
 
-#: ../clutter/clutter-text.c:3873 ../clutter/clutter-text.c:3874
+#: ../clutter/clutter-text.c:3845 ../clutter/clutter-text.c:3846
 msgid "Selected Text Color"
 msgstr "Hautatutako testu-kolorea"
 
-#: ../clutter/clutter-text.c:3889
+#: ../clutter/clutter-text.c:3861
 msgid "Selected Text Color Set"
 msgstr "Hautatutako testu-kolorea ezarrita"
 
-#: ../clutter/clutter-text.c:3890
+#: ../clutter/clutter-text.c:3862
 msgid "Whether the selected text color has been set"
 msgstr "hautatutako testu-kolorea ezarrita dagoen edo ez"
 
 #: ../clutter/clutter-timeline.c:591
-#: ../clutter/deprecated/clutter-animation.c:512
+#: ../clutter/deprecated/clutter-animation.c:516
 msgid "Loop"
 msgstr "Begizta"
 
@@ -1999,10 +1990,10 @@ msgid "Delay before start"
 msgstr "Atzerapena hasiera aurretik"
 
 #: ../clutter/clutter-timeline.c:622
-#: ../clutter/deprecated/clutter-animation.c:496
-#: ../clutter/deprecated/clutter-animator.c:1792
-#: ../clutter/deprecated/clutter-media.c:224
-#: ../clutter/deprecated/clutter-state.c:1515
+#: ../clutter/deprecated/clutter-animation.c:500
+#: ../clutter/deprecated/clutter-animator.c:1794
+#: ../clutter/deprecated/clutter-media.c:225
+#: ../clutter/deprecated/clutter-state.c:1518
 msgid "Duration"
 msgstr "Iraupena"
 
@@ -2077,8 +2068,8 @@ msgid "Constraints the zoom to an axis"
 msgstr "Zooma ardatz batera murrizten du"
 
 #: ../clutter/deprecated/clutter-alpha.c:347
-#: ../clutter/deprecated/clutter-animation.c:527
-#: ../clutter/deprecated/clutter-animator.c:1809
+#: ../clutter/deprecated/clutter-animation.c:531
+#: ../clutter/deprecated/clutter-animator.c:1811
 msgid "Timeline"
 msgstr "Denbora-lerroa"
 
@@ -2086,65 +2077,65 @@ msgstr "Denbora-lerroa"
 msgid "Timeline used by the alpha"
 msgstr "Alfak erabiltzen duen denbora-lerroa"
 
-#: ../clutter/deprecated/clutter-alpha.c:364
+#: ../clutter/deprecated/clutter-alpha.c:365
 msgid "Alpha value"
 msgstr "Alfaren balioa"
 
-#: ../clutter/deprecated/clutter-alpha.c:365
+#: ../clutter/deprecated/clutter-alpha.c:366
 msgid "Alpha value as computed by the alpha"
 msgstr "Alfaren balioa alfaren arabera kalkulatutakoa"
 
-#: ../clutter/deprecated/clutter-alpha.c:386
-#: ../clutter/deprecated/clutter-animation.c:480
+#: ../clutter/deprecated/clutter-alpha.c:387
+#: ../clutter/deprecated/clutter-animation.c:484
 msgid "Mode"
 msgstr "Modua"
 
-#: ../clutter/deprecated/clutter-alpha.c:387
+#: ../clutter/deprecated/clutter-alpha.c:388
 msgid "Progress mode"
 msgstr "Aurrerapenaren modua"
 
-#: ../clutter/deprecated/clutter-animation.c:463
+#: ../clutter/deprecated/clutter-animation.c:467
 msgid "Object"
 msgstr "Objektua"
 
-#: ../clutter/deprecated/clutter-animation.c:464
+#: ../clutter/deprecated/clutter-animation.c:468
 msgid "Object to which the animation applies"
 msgstr "Animazioa aplikatuko zaion objektua"
 
-#: ../clutter/deprecated/clutter-animation.c:481
+#: ../clutter/deprecated/clutter-animation.c:485
 msgid "The mode of the animation"
 msgstr "Animazioaren modua"
 
-#: ../clutter/deprecated/clutter-animation.c:497
+#: ../clutter/deprecated/clutter-animation.c:501
 msgid "Duration of the animation, in milliseconds"
 msgstr "Animazioaren iraupena (milisegundotan)"
 
-#: ../clutter/deprecated/clutter-animation.c:513
+#: ../clutter/deprecated/clutter-animation.c:517
 msgid "Whether the animation should loop"
 msgstr "Animazioa begiztan egon behar duen edo ez"
 
-#: ../clutter/deprecated/clutter-animation.c:528
+#: ../clutter/deprecated/clutter-animation.c:532
 msgid "The timeline used by the animation"
 msgstr "Animazioak erabilitako denbora-lerroa"
 
-#: ../clutter/deprecated/clutter-animation.c:544
-#: ../clutter/deprecated/clutter-behaviour.c:237
+#: ../clutter/deprecated/clutter-animation.c:548
+#: ../clutter/deprecated/clutter-behaviour.c:234
 msgid "Alpha"
 msgstr "Alfa"
 
-#: ../clutter/deprecated/clutter-animation.c:545
+#: ../clutter/deprecated/clutter-animation.c:549
 msgid "The alpha used by the animation"
 msgstr "Animazioak erabilitako alfa"
 
-#: ../clutter/deprecated/clutter-animator.c:1793
+#: ../clutter/deprecated/clutter-animator.c:1795
 msgid "The duration of the animation"
 msgstr "Animazioaren iraupena"
 
-#: ../clutter/deprecated/clutter-animator.c:1810
+#: ../clutter/deprecated/clutter-animator.c:1812
 msgid "The timeline of the animation"
 msgstr "Animazioaren denbora-lerroa"
 
-#: ../clutter/deprecated/clutter-behaviour.c:238
+#: ../clutter/deprecated/clutter-behaviour.c:235
 msgid "Alpha Object to drive the behaviour"
 msgstr "Alfa objektua portaera kudeatzeko"
 
@@ -2319,11 +2310,11 @@ msgstr "Amaierako eskala Yn"
 msgid "Final scale on the Y axis"
 msgstr "Amaierako eskala Y ardatzean"
 
-#: ../clutter/deprecated/clutter-box.c:255
+#: ../clutter/deprecated/clutter-box.c:261
 msgid "The background color of the box"
 msgstr "Koadroaren atzeko planoko kolorea"
 
-#: ../clutter/deprecated/clutter-box.c:268
+#: ../clutter/deprecated/clutter-box.c:279
 msgid "Color Set"
 msgstr "Kolorea ezarrita"
 
@@ -2351,99 +2342,99 @@ msgstr "Aldatu tamaina automatikoki"
 msgid "Whether the surface should match the allocation"
 msgstr "Gainazalak esleipenarekin bat etorri behar duen edo ez"
 
-#: ../clutter/deprecated/clutter-media.c:83
+#: ../clutter/deprecated/clutter-media.c:84
 msgid "URI"
 msgstr "URIa"
 
-#: ../clutter/deprecated/clutter-media.c:84
+#: ../clutter/deprecated/clutter-media.c:85
 msgid "URI of a media file"
 msgstr "Multimedia fitxategiaren URIa"
 
-#: ../clutter/deprecated/clutter-media.c:100
+#: ../clutter/deprecated/clutter-media.c:101
 msgid "Playing"
 msgstr "Erreproduzitzen"
 
-#: ../clutter/deprecated/clutter-media.c:101
+#: ../clutter/deprecated/clutter-media.c:102
 msgid "Whether the actor is playing"
 msgstr "Aktorea erreproduzitzen ari den edo ez"
 
-#: ../clutter/deprecated/clutter-media.c:118
+#: ../clutter/deprecated/clutter-media.c:119
 msgid "Progress"
 msgstr "Aurrerapena"
 
-#: ../clutter/deprecated/clutter-media.c:119
+#: ../clutter/deprecated/clutter-media.c:120
 msgid "Current progress of the playback"
 msgstr "Erreprodukzioaren uneko aurrerapena"
 
-#: ../clutter/deprecated/clutter-media.c:135
+#: ../clutter/deprecated/clutter-media.c:136
 msgid "Subtitle URI"
 msgstr "Azpitituluaren URIa"
 
-#: ../clutter/deprecated/clutter-media.c:136
+#: ../clutter/deprecated/clutter-media.c:137
 msgid "URI of a subtitle file"
 msgstr "Azpititulua fitxategiaren URIa"
 
-#: ../clutter/deprecated/clutter-media.c:154
+#: ../clutter/deprecated/clutter-media.c:155
 msgid "Subtitle Font Name"
 msgstr "Azpitituluaren letra-tipoa"
 
-#: ../clutter/deprecated/clutter-media.c:155
+#: ../clutter/deprecated/clutter-media.c:156
 msgid "The font used to display subtitles"
 msgstr "Azpitituluak bistaratzean erabiliko den letra-tipoa"
 
-#: ../clutter/deprecated/clutter-media.c:172
+#: ../clutter/deprecated/clutter-media.c:173
 msgid "Audio Volume"
 msgstr "Audioaren bolumena"
 
-#: ../clutter/deprecated/clutter-media.c:173
+#: ../clutter/deprecated/clutter-media.c:174
 msgid "The volume of the audio"
 msgstr "Audioaren bolumena"
 
-#: ../clutter/deprecated/clutter-media.c:189
+#: ../clutter/deprecated/clutter-media.c:190
 msgid "Can Seek"
 msgstr "Koka daiteke"
 
-#: ../clutter/deprecated/clutter-media.c:190
+#: ../clutter/deprecated/clutter-media.c:191
 msgid "Whether the current stream is seekable"
 msgstr "Uneko korrontean koka daitekeen edo ez"
 
-#: ../clutter/deprecated/clutter-media.c:207
+#: ../clutter/deprecated/clutter-media.c:208
 msgid "Buffer Fill"
 msgstr "Bufferraren maila"
 
-#: ../clutter/deprecated/clutter-media.c:208
+#: ../clutter/deprecated/clutter-media.c:209
 msgid "The fill level of the buffer"
 msgstr "Bufferraren betetze-maila"
 
-#: ../clutter/deprecated/clutter-media.c:225
+#: ../clutter/deprecated/clutter-media.c:226
 msgid "The duration of the stream, in seconds"
 msgstr "Korrontearen iraupena (segundotan)"
 
-#: ../clutter/deprecated/clutter-rectangle.c:271
+#: ../clutter/deprecated/clutter-rectangle.c:296
 msgid "The color of the rectangle"
 msgstr "Laukizuzenaren kolorea"
 
-#: ../clutter/deprecated/clutter-rectangle.c:284
+#: ../clutter/deprecated/clutter-rectangle.c:309
 msgid "Border Color"
 msgstr "Ertzaren kolorea"
 
-#: ../clutter/deprecated/clutter-rectangle.c:285
+#: ../clutter/deprecated/clutter-rectangle.c:310
 msgid "The color of the border of the rectangle"
 msgstr "Laukizuzenaren ertzaren kolorea"
 
-#: ../clutter/deprecated/clutter-rectangle.c:300
+#: ../clutter/deprecated/clutter-rectangle.c:325
 msgid "Border Width"
 msgstr "Ertzaren zabalera"
 
-#: ../clutter/deprecated/clutter-rectangle.c:301
+#: ../clutter/deprecated/clutter-rectangle.c:326
 msgid "The width of the border of the rectangle"
 msgstr "Laukizuzenaren ertzaren zabalera"
 
-#: ../clutter/deprecated/clutter-rectangle.c:315
+#: ../clutter/deprecated/clutter-rectangle.c:340
 msgid "Has Border"
 msgstr "Ertza du"
 
-#: ../clutter/deprecated/clutter-rectangle.c:316
+#: ../clutter/deprecated/clutter-rectangle.c:341
 msgid "Whether the rectangle should have a border"
 msgstr "Laukizuzenak ertzik duen edo ez"
 
@@ -2488,73 +2479,73 @@ msgstr "Erpinaren itzaldura"
 msgid "Fragment shader"
 msgstr "Zatiaren itzaldura"
 
-#: ../clutter/deprecated/clutter-state.c:1497
+#: ../clutter/deprecated/clutter-state.c:1500
 msgid "State"
 msgstr "Egoera"
 
-#: ../clutter/deprecated/clutter-state.c:1498
+#: ../clutter/deprecated/clutter-state.c:1501
 msgid "Currently set state, (transition to this state might not be complete)"
 msgstr ""
 "Unean ezarritako egoera, (egoera honetarako trantsizioa osatu gabe egon "
 "daiteke)"
 
-#: ../clutter/deprecated/clutter-state.c:1516
+#: ../clutter/deprecated/clutter-state.c:1519
 msgid "Default transition duration"
 msgstr "Trantsizio lehenetsiaren iraupena"
 
-#: ../clutter/deprecated/clutter-table-layout.c:535
+#: ../clutter/deprecated/clutter-table-layout.c:533
 msgid "Column Number"
 msgstr "Zutabe zenbakia"
 
-#: ../clutter/deprecated/clutter-table-layout.c:536
+#: ../clutter/deprecated/clutter-table-layout.c:534
 msgid "The column the widget resides in"
 msgstr "Trepeta kokatuta dagoen zutabea"
 
-#: ../clutter/deprecated/clutter-table-layout.c:543
+#: ../clutter/deprecated/clutter-table-layout.c:541
 msgid "Row Number"
 msgstr "Errenkada zenbakia"
 
-#: ../clutter/deprecated/clutter-table-layout.c:544
+#: ../clutter/deprecated/clutter-table-layout.c:542
 msgid "The row the widget resides in"
 msgstr "Trepeta kokatuta dagoen errenkada"
 
-#: ../clutter/deprecated/clutter-table-layout.c:551
+#: ../clutter/deprecated/clutter-table-layout.c:549
 msgid "Column Span"
 msgstr "Zutabeen hedadura"
 
-#: ../clutter/deprecated/clutter-table-layout.c:552
+#: ../clutter/deprecated/clutter-table-layout.c:550
 msgid "The number of columns the widget should span"
 msgstr "Trepetak hedatu beharko litzatekeen zutabe kopurua"
 
-#: ../clutter/deprecated/clutter-table-layout.c:559
+#: ../clutter/deprecated/clutter-table-layout.c:557
 msgid "Row Span"
 msgstr "Errenkaden hedadura"
 
-#: ../clutter/deprecated/clutter-table-layout.c:560
+#: ../clutter/deprecated/clutter-table-layout.c:558
 msgid "The number of rows the widget should span"
 msgstr "Trepetak hedatu beharko litzatekeen errenkada kopurua"
 
-#: ../clutter/deprecated/clutter-table-layout.c:567
+#: ../clutter/deprecated/clutter-table-layout.c:565
 msgid "Horizontal Expand"
 msgstr "Betegarri horizontala"
 
-#: ../clutter/deprecated/clutter-table-layout.c:568
+#: ../clutter/deprecated/clutter-table-layout.c:566
 msgid "Allocate extra space for the child in horizontal axis"
 msgstr "Esleitu leku gehigarria umearentzako ardatz horizontalean"
 
-#: ../clutter/deprecated/clutter-table-layout.c:574
+#: ../clutter/deprecated/clutter-table-layout.c:572
 msgid "Vertical Expand"
 msgstr "Betegarri bertikala"
 
-#: ../clutter/deprecated/clutter-table-layout.c:575
+#: ../clutter/deprecated/clutter-table-layout.c:573
 msgid "Allocate extra space for the child in vertical axis"
 msgstr "Esleitu leku gehigarria umearentzako ardatz bertikalean"
 
-#: ../clutter/deprecated/clutter-table-layout.c:1630
+#: ../clutter/deprecated/clutter-table-layout.c:1628
 msgid "Spacing between columns"
 msgstr "Zutabeen arteko tartea"
 
-#: ../clutter/deprecated/clutter-table-layout.c:1646
+#: ../clutter/deprecated/clutter-table-layout.c:1644
 msgid "Spacing between rows"
 msgstr "Errenkaden arteko tartea"
 
@@ -2638,37 +2629,37 @@ msgid "The underlying Cogl material handle used to draw this actor"
 msgstr ""
 "Aktore hau marrazteko erabili den azpiko Cogl materialaren kudeatzailea"
 
-#: ../clutter/deprecated/clutter-texture.c:1081
+#: ../clutter/deprecated/clutter-texture.c:1082
 msgid "The path of the file containing the image data"
 msgstr "Irudiaren datuak dituen fitxategiaren bide-izena"
 
-#: ../clutter/deprecated/clutter-texture.c:1088
+#: ../clutter/deprecated/clutter-texture.c:1089
 msgid "Keep Aspect Ratio"
 msgstr "Mantendu aspektu-erlazioa"
 
-#: ../clutter/deprecated/clutter-texture.c:1089
+#: ../clutter/deprecated/clutter-texture.c:1090
 msgid ""
 "Keep the aspect ratio of the texture when requesting the preferred width or "
 "height"
 msgstr ""
 "Mantendu testuraren aspektu-erlazioa zabalera edo altuera hobetsia eskatzean"
 
-#: ../clutter/deprecated/clutter-texture.c:1117
+#: ../clutter/deprecated/clutter-texture.c:1118
 msgid "Load asynchronously"
 msgstr "Kargatu asinkronoki "
 
-#: ../clutter/deprecated/clutter-texture.c:1118
+#: ../clutter/deprecated/clutter-texture.c:1119
 msgid ""
 "Load files inside a thread to avoid blocking when loading images from disk"
 msgstr ""
 "Kargatu fitxategiak hari batean irudiak diskotik kargatzean blokeatzea "
 "saihesteko"
 
-#: ../clutter/deprecated/clutter-texture.c:1136
+#: ../clutter/deprecated/clutter-texture.c:1137
 msgid "Load data asynchronously"
 msgstr "Kargatu datuak asinkronoki"
 
-#: ../clutter/deprecated/clutter-texture.c:1137
+#: ../clutter/deprecated/clutter-texture.c:1138
 msgid ""
 "Decode image data files inside a thread to reduce blocking when loading "
 "images from disk"
@@ -2676,38 +2667,38 @@ msgstr ""
 "Deskodetu irudien datuen fitxategiak hari batean irudiak diskotik kargatzean "
 "blokeatzea murrizteko"
 
-#: ../clutter/deprecated/clutter-texture.c:1163
+#: ../clutter/deprecated/clutter-texture.c:1164
 msgid "Pick With Alpha"
 msgstr "hautatu alfarekin"
 
-#: ../clutter/deprecated/clutter-texture.c:1164
+#: ../clutter/deprecated/clutter-texture.c:1165
 msgid "Shape actor with alpha channel when picking"
 msgstr "Eman forma aktoreari alfarekin hautatzean"
 
-#: ../clutter/deprecated/clutter-texture.c:1597
-#: ../clutter/deprecated/clutter-texture.c:1992
-#: ../clutter/deprecated/clutter-texture.c:2088
-#: ../clutter/deprecated/clutter-texture.c:2386
+#: ../clutter/deprecated/clutter-texture.c:1608
+#: ../clutter/deprecated/clutter-texture.c:2003
+#: ../clutter/deprecated/clutter-texture.c:2100
+#: ../clutter/deprecated/clutter-texture.c:2402
 #, c-format
 msgid "Failed to load the image data"
 msgstr "Huts egin du irudiaren datuak kargatzean"
 
-#: ../clutter/deprecated/clutter-texture.c:1756
+#: ../clutter/deprecated/clutter-texture.c:1767
 #, c-format
 msgid "YUV textures are not supported"
 msgstr "YUV testurak ez daude onartuta"
 
-#: ../clutter/deprecated/clutter-texture.c:1765
+#: ../clutter/deprecated/clutter-texture.c:1776
 #, c-format
-msgid "YUV2 textues are not supported"
+msgid "YUV2 textures are not supported"
 msgstr "YUV2 testurak ez daude onartuta"
 
-#: ../clutter/gdk/clutter-backend-gdk.c:171
+#: ../clutter/gdk/clutter-backend-gdk.c:175
 #, c-format
 msgid "Could not initialize Gdk"
 msgstr "Ezin izan da Gdk hasieratu"
 
-#: ../clutter/gdk/clutter-backend-gdk.c:314
+#: ../clutter/gdk/clutter-backend-gdk.c:318
 #, c-format
 msgid "Could not find a suitable CoglWinsys for a GdkDisplay of type %s"
 msgstr "Ezin izan da CoglWinsys egokitu '%s' motaren GdkDisplay-rentzako"
@@ -2736,19 +2727,19 @@ msgstr "Gainazalaren altuera"
 msgid "The height of the underlying wayland surface"
 msgstr "Azpiko 'wayland' gainazalaren altuera"
 
-#: ../clutter/x11/clutter-backend-x11.c:489
+#: ../clutter/x11/clutter-backend-x11.c:513
 msgid "X display to use"
 msgstr "Erabili beharreko X bistaratzea"
 
-#: ../clutter/x11/clutter-backend-x11.c:495
+#: ../clutter/x11/clutter-backend-x11.c:519
 msgid "X screen to use"
 msgstr "Erabili beharreko X pantaila"
 
-#: ../clutter/x11/clutter-backend-x11.c:500
+#: ../clutter/x11/clutter-backend-x11.c:524
 msgid "Make X calls synchronous"
 msgstr "Bihurtu X dei sinkroniko"
 
-#: ../clutter/x11/clutter-backend-x11.c:507
+#: ../clutter/x11/clutter-backend-x11.c:531
 msgid "Disable XInput support"
 msgstr "Desgaitu XInput euskarria"
 
@@ -2853,6 +2844,15 @@ msgstr "Leihoak berbideraketa gainidatzita"
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:636
 msgid "If this is an override-redirect window"
 msgstr "Berbideraketa gainidatzia duen leiho bat den edo ez"
+
+#~ msgid "Clutter profiling flags to set"
+#~ msgstr "Clutter-en profilaren banderak ezartzeko"
+
+#~ msgid "Clutter profiling flags to unset"
+#~ msgstr "Clutter-en profilaren banderak kentzeko"
+
+#~ msgid "YUV2 textues are not supported"
+#~ msgstr "YUV2 testurak ez daude onartuta"
 
 #~ msgid "sysfs Path"
 #~ msgstr "bide-izena fitxategi-sisteman"
