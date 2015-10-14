@@ -82,6 +82,7 @@ struct _MetaBackendX11Private
   gchar *keymap_layouts;
   gchar *keymap_variants;
   gchar *keymap_options;
+  int locked_group;
 };
 typedef struct _MetaBackendX11Private MetaBackendX11Private;
 
@@ -297,15 +298,23 @@ handle_host_xevent (MetaBackend *backend,
 
   if (event->type == priv->xkb_event_base)
     {
-      XkbAnyEvent *xkb_ev = (XkbAnyEvent *) event;
+      XkbEvent *xkb_ev = (XkbEvent *) event;
 
-      if (xkb_ev->device == META_VIRTUAL_CORE_KEYBOARD_ID)
+      if (xkb_ev->any.device == META_VIRTUAL_CORE_KEYBOARD_ID)
         {
-          switch (xkb_ev->xkb_type)
+          switch (xkb_ev->any.xkb_type)
             {
             case XkbNewKeyboardNotify:
             case XkbMapNotify:
               keymap_changed (backend);
+              break;
+            case XkbStateNotify:
+              if (xkb_ev->state.changed & XkbGroupLockMask)
+                {
+                  if (priv->locked_group != xkb_ev->state.locked_group)
+                    XkbLockGroup (priv->xdisplay, XkbUseCoreKbd, priv->locked_group);
+                }
+              break;
             default:
               break;
             }
@@ -776,6 +785,7 @@ meta_backend_x11_lock_layout_group (MetaBackend *backend,
   MetaBackendX11 *x11 = META_BACKEND_X11 (backend);
   MetaBackendX11Private *priv = meta_backend_x11_get_instance_private (x11);
 
+  priv->locked_group = idx;
   XkbLockGroup (priv->xdisplay, XkbUseCoreKbd, idx);
 }
 
