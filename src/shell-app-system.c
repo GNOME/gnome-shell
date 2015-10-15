@@ -64,8 +64,8 @@ static void shell_app_system_class_init(ShellAppSystemClass *klass)
     g_signal_new ("installed-changed",
 		  SHELL_TYPE_APP_SYSTEM,
 		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (ShellAppSystemClass, installed_changed),
-          NULL, NULL, NULL,
+                  0,
+                  NULL, NULL, NULL,
 		  G_TYPE_NONE, 0);
 }
 

@@ -152,7 +152,7 @@ shell_tray_manager_class_init (ShellTrayManagerClass *klass)
     g_signal_new ("tray-icon-added",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (ShellTrayManagerClass, tray_icon_added),
+                  0,
                   NULL, NULL, NULL,
                   G_TYPE_NONE, 1,
                   CLUTTER_TYPE_ACTOR);
@@ -160,7 +160,7 @@ shell_tray_manager_class_init (ShellTrayManagerClass *klass)
     g_signal_new ("tray-icon-removed",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (ShellTrayManagerClass, tray_icon_removed),
+                  0,
                   NULL, NULL, NULL,
                   G_TYPE_NONE, 1,
                   CLUTTER_TYPE_ACTOR);

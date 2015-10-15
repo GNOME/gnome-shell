@@ -29,13 +29,6 @@ struct _ShellTrayManager
 struct _ShellTrayManagerClass
 {
   GObjectClass parent_class;
-
-  void (* tray_icon_added)   (ShellTrayManager *manager,
-			      ClutterActor     *icon,
-			      const char       *lowercase_wm_class);
-  void (* tray_icon_removed) (ShellTrayManager *manager,
-			      ClutterActor     *icon);
-
 };
 
 GType             shell_tray_manager_get_type     (void);

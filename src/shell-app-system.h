@@ -29,9 +29,6 @@ struct _ShellAppSystem
 struct _ShellAppSystemClass
 {
   GObjectClass parent_class;
-
-  void (*installed_changed)(ShellAppSystem *appsys, gpointer user_data);
-  void (*favorites_changed)(ShellAppSystem *appsys, gpointer user_data);
 };
 
 GType           shell_app_system_get_type    (void) G_GNUC_CONST;
