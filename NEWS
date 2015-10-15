@@ -1,3 +1,17 @@
+3.18.1
+======
+* Misc. crash fixes [Jonas, Rui, Carlos, Owen, Florian; #755096, #754979,
+  #755490, #754357, #745785, #756642]
+* Improve HiDPI support on wayland [Jonas; #755097]
+* Fix doubly-scaled cursor on XWayland HiDPI [Jonas; #755099]
+* Stop hiding titlebar buttons in dialogs [Florian; #641630]
+* Add support for fullscreen/unfullscreen animations [Cosimo; #707248]
+* Misc. bug fixes [Rui, Colin, Florian; #743339, #752047, #756074, #756649]
+
+Contributors:
+  Jonas Ådahl, Cosimo Cecchi, Carlos Garnacho, Rui Matos, Florian Müllner,
+  Jasper St. Pierre, Colin Walters, Owen W. Taylor
+
 3.18.0
 ======
 * Misc. fixes [Florian, Jonas; #753434]
