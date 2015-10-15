@@ -946,7 +946,15 @@ save_state (void)
 
           /* Sticky */
           if (window->on_all_workspaces_requested)
-            fputs ("    <sticky/>\n", outfile);
+            {
+              fputs ("    <sticky/>\n", outfile);
+            } else {
+              int n;
+              n = meta_workspace_index (window->workspace);
+              fprintf (outfile,
+                       "    <workspace index=\"%d\"/>\n", n);
+            }
+
 
           /* Minimized */
           if (window->minimized)
@@ -962,14 +970,6 @@ save_state (void)
                        window->saved_rect.width,
                        window->saved_rect.height);
             }
-
-          /* Workspaces we're on */
-          {
-            int n;
-            n = meta_workspace_index (window->workspace);
-            fprintf (outfile,
-                     "    <workspace index=\"%d\"/>\n", n);
-          }
 
           /* Gravity */
           {
