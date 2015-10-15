@@ -637,6 +637,32 @@ output_get_connector_type (MetaMonitorManagerXrandr *manager_xrandr,
   return META_CONNECTOR_TYPE_Unknown;
 }
 
+static void
+output_get_modes (MetaMonitorManager *manager,
+                  MetaOutput         *meta_output,
+                  XRROutputInfo      *output)
+{
+  guint j, k;
+  guint n_actual_modes;
+
+  meta_output->modes = g_new0 (MetaMonitorMode *, output->nmode);
+
+  n_actual_modes = 0;
+  for (j = 0; j < (guint)output->nmode; j++)
+    {
+      for (k = 0; k < manager->n_modes; k++)
+        {
+          if (output->modes[j] == (XID)manager->modes[k].mode_id)
+            {
+              meta_output->modes[n_actual_modes] = &manager->modes[k];
+              n_actual_modes += 1;
+              break;
+            }
+        }
+    }
+  meta_output->n_modes = n_actual_modes;
+}
+
 static char *
 get_xmode_name (XRRModeInfo *xmode)
 {
@@ -773,6 +799,8 @@ meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
       MetaOutput *meta_output;
 
       output = XRRGetOutputInfo (manager_xrandr->xdisplay, resources, resources->outputs[i]);
+      if (!output)
+        continue;
 
       meta_output = &manager->outputs[n_actual_outputs];
 
@@ -796,19 +824,7 @@ meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
           meta_output->connector_type = output_get_connector_type (manager_xrandr, meta_output);
 
 	  output_get_tile_info (manager_xrandr, meta_output);
-	  meta_output->n_modes = output->nmode;
-	  meta_output->modes = g_new0 (MetaMonitorMode *, meta_output->n_modes);
-	  for (j = 0; j < meta_output->n_modes; j++)
-	    {
-	      for (k = 0; k < manager->n_modes; k++)
-		{
-		  if (output->modes[j] == (XID)manager->modes[k].mode_id)
-		    {
-		      meta_output->modes[j] = &manager->modes[k];
-		      break;
-		    }
-		}
-	    }
+	  output_get_modes (manager, meta_output, output);
 	  meta_output->preferred_mode = meta_output->modes[0];
 
 	  meta_output->n_possible_crtcs = output->ncrtc;
