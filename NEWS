@@ -1,3 +1,29 @@
+3.18.1
+======
+* Fix screen freezes when a notification is pushed [Carlos; #755425]
+* Fix overzealous ellipsization in system status menu [Adel, Florian; #708472]
+* Hide app menu when disabled by setting [Florian; #745919]
+* Fix lightbox effect when animations are disabled [Rui; #755827]
+* Do not mark hotplug notifications as critical [Florian; #657923]
+* Fix icons getting cut off in dash [Florian; #745649]
+* Animate fullscreen/unfullscreen operations [Cosimo; #707248]
+* Misc. bug fixes [Florian, Owen; #748919, #674799, #754581]
+
+Contributors:
+  Emmanuele Bassi, Michael Catanzaro, Cosimo Cecchi, Matthias Clasen,
+  Adel Gadllah, Carlos Garnacho, Ekaterina Gerasimova, Rui Matos,
+  Florian Müllner, Owen W. Taylor
+
+Translations:
+  Марко Костић [sr], Милош Поповић [sr@latin], Khaled Hosny [ar],
+  Trần Ngọc Quân [vi], Petr Kovar [cs], Alexandre Franke [fr],
+  Fran Dieguez [gl], Anders Jonsson [sv], Piotr Drąg [pl], Dušan Kazik [sk],
+  Milo Casagrande [it], Changwoo Ryu [ko], Stas Solovey [ru],
+  Rafael Fontenelle [pt_BR], Tom Tryfonidis [el], Aurimas Černius [lt],
+  Seán de Búrca [ga], Christian Kirbach [de], Jiri Grönroos [fi],
+  Pedro Albuquerque [pt], Baurzhan Muftakhidinov [kk], Daniel Mustieles [es],
+  Marek Černocký [cs], Ask Hjorth Larsen [da], Inaki Larranaga Murgoitio [eu]
+
 3.18.0
 ======
 
