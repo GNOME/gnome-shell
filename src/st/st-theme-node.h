@@ -104,9 +104,9 @@ struct _StThemeNodePaintState {
   float box_shadow_width;
   float box_shadow_height;
 
-  CoglPipeline *box_shadow_material;
+  CoglPipeline *box_shadow_pipeline;
   CoglPipeline *prerendered_texture;
-  CoglPipeline *prerendered_material;
+  CoglPipeline *prerendered_pipeline;
   CoglHandle corner_material[4];
 };
 

@@ -108,10 +108,10 @@ struct _StThemeNode {
   int box_shadow_min_height;
 
   CoglPipeline *border_slices_texture;
-  CoglPipeline *border_slices_material;
+  CoglPipeline *border_slices_pipeline;
   CoglPipeline *background_texture;
-  CoglPipeline *background_material;
-  CoglPipeline *background_shadow_material;
+  CoglPipeline *background_pipeline;
+  CoglPipeline *background_shadow_pipeline;
 
   StThemeNodePaintState cached_state;
 };

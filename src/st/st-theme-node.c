@@ -48,10 +48,10 @@ st_theme_node_init (StThemeNode *node)
 {
   node->transition_duration = -1;
   node->background_texture = COGL_INVALID_HANDLE;
-  node->background_material = COGL_INVALID_HANDLE;
-  node->background_shadow_material = COGL_INVALID_HANDLE;
+  node->background_pipeline = COGL_INVALID_HANDLE;
+  node->background_shadow_pipeline = COGL_INVALID_HANDLE;
   node->border_slices_texture = COGL_INVALID_HANDLE;
-  node->border_slices_material = COGL_INVALID_HANDLE;
+  node->border_slices_pipeline = COGL_INVALID_HANDLE;
 
   st_theme_node_paint_state_init (&node->cached_state);
 }
@@ -163,14 +163,14 @@ st_theme_node_finalize (GObject *object)
 
   if (node->background_texture != COGL_INVALID_HANDLE)
     cogl_handle_unref (node->background_texture);
-  if (node->background_material != COGL_INVALID_HANDLE)
-    cogl_handle_unref (node->background_material);
-  if (node->background_shadow_material != COGL_INVALID_HANDLE)
-    cogl_handle_unref (node->background_shadow_material);
+  if (node->background_pipeline != COGL_INVALID_HANDLE)
+    cogl_handle_unref (node->background_pipeline);
+  if (node->background_shadow_pipeline != COGL_INVALID_HANDLE)
+    cogl_handle_unref (node->background_shadow_pipeline);
   if (node->border_slices_texture != COGL_INVALID_HANDLE)
     cogl_handle_unref (node->border_slices_texture);
-  if (node->border_slices_material != COGL_INVALID_HANDLE)
-    cogl_handle_unref (node->border_slices_material);
+  if (node->border_slices_pipeline != COGL_INVALID_HANDLE)
+    cogl_handle_unref (node->border_slices_pipeline);
 
   G_OBJECT_CLASS (st_theme_node_parent_class)->finalize (object);
 }
