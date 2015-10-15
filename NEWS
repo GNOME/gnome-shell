@@ -1,3 +1,16 @@
+3.16.4
+======
+* Fix screen freezes when a notification is pushed [Carlos; #755425]
+* Fix icons getting cut off in dash [Florian; #745649]
+* Misc. bug fixes [Bastien, Ray, Florian; #752779, #752438, #752739, #651503,
+  #753181]
+
+Contributors:
+  Emmanuele Bassi, Carlos Garnacho, Florian Müllner, Bastien Nocera, Ray Strode
+
+Translations:
+  Pedro Albuquerque [pt], Jiri Grönroos [fi]
+
 3.16.3
 ======
 * Handle touch events in OSK on wayland [Rui; #750287]
