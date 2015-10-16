@@ -653,6 +653,7 @@ const ThumbnailsBox = new Lang.Class({
 
         this.actor.connect('button-press-event', function() { return Clutter.EVENT_STOP; });
         this.actor.connect('button-release-event', Lang.bind(this, this._onButtonRelease));
+        this.actor.connect('touch-event', Lang.bind(this, this._onTouchEvent));
 
         Main.overview.connect('showing',
                               Lang.bind(this, this._createThumbnails));
@@ -683,17 +684,30 @@ const ThumbnailsBox = new Lang.Class({
                 global.screen.n_workspaces > 1;
     },
 
-    _onButtonRelease: function(actor, event) {
-        let [stageX, stageY] = event.get_coords();
+    _activateThumbnailAtPoint: function (stageX, stageY, time) {
         let [r, x, y] = this.actor.transform_stage_point(stageX, stageY);
 
         for (let i = 0; i < this._thumbnails.length; i++) {
             let thumbnail = this._thumbnails[i]
             let [w, h] = thumbnail.actor.get_transformed_size();
             if (y >= thumbnail.actor.y && y <= thumbnail.actor.y + h) {
-                thumbnail.activate(event.get_time());
+                thumbnail.activate(time);
                 break;
             }
+        }
+    },
+
+    _onButtonRelease: function(actor, event) {
+        let [stageX, stageY] = event.get_coords();
+        this._activateThumbnailAtPoint(stageX, stageY, event.get_time());
+        return Clutter.EVENT_STOP;
+    },
+
+    _onTouchEvent: function (actor, event) {
+        if (event.type() == Clutter.EventType.TOUCH_END &&
+            global.display.is_pointer_emulating_sequence(event.get_event_sequence())) {
+            let [stageX, stageY] = event.get_coords();
+            this._activateThumbnailAtPoint(stageX, stageY, event.get_time());
         }
 
         return Clutter.EVENT_STOP;
