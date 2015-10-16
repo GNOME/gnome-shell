@@ -421,7 +421,7 @@ const WorkspacesDisplay = new Lang.Class({
             // Only switch to the workspace when there's no application
             // windows open. The problem is that it's too easy to miss
             // an app window and get the wrong one focused.
-            if (action.get_button() == 1 &&
+            if ((action.get_button() == 1 || action.get_button() == 0) &&
                 this._getPrimaryView().getActiveWorkspace().isEmpty())
                 Main.overview.hide();
         }));
