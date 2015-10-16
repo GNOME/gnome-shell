@@ -414,6 +414,10 @@ on_captured_event (ClutterActor       *stage,
         gfloat motion_x, motion_y;
         gfloat delta_x, delta_y;
 
+        if (clutter_event_get_device_id (event) != priv->press_device_id ||
+            clutter_event_get_event_sequence (event) != priv->press_sequence)
+          return CLUTTER_EVENT_PROPAGATE;
+
         if (!priv->is_held)
           return CLUTTER_EVENT_PROPAGATE;
 
