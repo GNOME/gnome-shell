@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell 3.17.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-07 19:22+0200\n"
-"PO-Revision-Date: 2015-09-07 19:31+0200\n"
+"POT-Creation-Date: 2015-10-16 18:11+0200\n"
+"PO-Revision-Date: 2015-10-16 18:11+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language: Norwegian bokmål\n"
@@ -508,8 +508,7 @@ msgstr "Bytt bakgrunn …"
 msgid "Display Settings"
 msgstr "Innstillinger for skjerm"
 
-#: ../js/ui/backgroundMenu.js:22 ../js/ui/panel.js:650
-#: ../js/ui/status/system.js:366
+#: ../js/ui/backgroundMenu.js:22 ../js/ui/status/system.js:366
 msgid "Settings"
 msgstr "Innstillinger"
 
@@ -585,33 +584,33 @@ msgctxt "event list time"
 msgid "All Day"
 msgstr "Hele dagen"
 
-#: ../js/ui/calendar.js:1291
+#: ../js/ui/calendar.js:1295
 msgid "Clear section"
 msgstr "Tøm seksjon"
 
-#: ../js/ui/calendar.js:1518
+#: ../js/ui/calendar.js:1522
 msgid "Events"
 msgstr "Hendelser"
 
-#: ../js/ui/calendar.js:1527
+#: ../js/ui/calendar.js:1531
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A %B %d"
 
-#: ../js/ui/calendar.js:1531
+#: ../js/ui/calendar.js:1535
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A %B %d, %Y"
 
-#: ../js/ui/calendar.js:1616
+#: ../js/ui/calendar.js:1620
 msgid "Notifications"
 msgstr "Varslinger"
 
-#: ../js/ui/calendar.js:1767
+#: ../js/ui/calendar.js:1771
 msgid "No Notifications"
 msgstr "Ingen varslinger"
 
-#: ../js/ui/calendar.js:1770
+#: ../js/ui/calendar.js:1774
 msgid "No Events"
 msgstr "Ingen hendelser"
 
@@ -623,7 +622,7 @@ msgstr "Ekstern stasjon koblet til"
 msgid "External drive disconnected"
 msgstr "Ekstern stasjon koblet fra"
 
-#: ../js/ui/components/autorunManager.js:354
+#: ../js/ui/components/autorunManager.js:351
 #, javascript-format
 msgid "Open with %s"
 msgstr "Åpne med %s"
@@ -1012,17 +1011,22 @@ msgstr "Oversikt"
 msgid "Type to search…"
 msgstr "Skriv for å søke …"
 
-#: ../js/ui/panel.js:352
+#: ../js/ui/panel.js:358
 msgid "Quit"
 msgstr "Avslutt"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:404
+#: ../js/ui/panel.js:414
 msgid "Activities"
 msgstr "Aktiviteter"
 
-#: ../js/ui/panel.js:754
+#: ../js/ui/panel.js:693
+msgctxt "System menu in the top bar"
+msgid "System"
+msgstr "System"
+
+#: ../js/ui/panel.js:805
 msgid "Top Bar"
 msgstr "Topp-panel"
 
@@ -1562,19 +1566,19 @@ msgstr "Alltid på synlig arbeidsområde"
 
 #: ../js/ui/windowMenu.js:105
 msgid "Move to Workspace Left"
-msgstr "Gå til arbeidsområdet til venstre"
+msgstr "Flytt til arbeidsområdet til venstre"
 
 #: ../js/ui/windowMenu.js:110
 msgid "Move to Workspace Right"
-msgstr "Gå til arbeidsområdet til høyre"
+msgstr "Flytt til arbeidsområdet til høyre"
 
 #: ../js/ui/windowMenu.js:115
 msgid "Move to Workspace Up"
-msgstr "Gå til arbeidsområdet over"
+msgstr "Flytt til arbeidsområdet over"
 
 #: ../js/ui/windowMenu.js:120
 msgid "Move to Workspace Down"
-msgstr "Gå til arbeidsområdet under"
+msgstr "Flytt til arbeidsområdet under"
 
 #: ../js/ui/windowMenu.js:136
 msgid "Move to Monitor Up"
@@ -1618,28 +1622,28 @@ msgstr[1] "%u innganger"
 msgid "System Sounds"
 msgstr "Systemlyder"
 
-#: ../src/main.c:373
+#: ../src/main.c:381
 msgid "Print version"
 msgstr "Vis versjon"
 
-#: ../src/main.c:379
+#: ../src/main.c:387
 msgid "Mode used by GDM for login screen"
 msgstr "Modus som brukes av GDM for innloggingsskjermen"
 
-#: ../src/main.c:385
+#: ../src/main.c:393
 msgid "Use a specific mode, e.g. \"gdm\" for login screen"
 msgstr "Bruk spesifikt modus, f.eks «gdm» for innloggingsskjerm"
 
-#: ../src/main.c:391
+#: ../src/main.c:399
 msgid "List possible modes"
 msgstr "Vis mulige modi"
 
-#: ../src/shell-app.c:239
+#: ../src/shell-app.c:246
 msgctxt "program"
 msgid "Unknown"
 msgstr "Ukjent"
 
-#: ../src/shell-app.c:480
+#: ../src/shell-app.c:487
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "Klarte ikke å starte «%s»"
