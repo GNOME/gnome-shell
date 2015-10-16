@@ -1515,14 +1515,14 @@ xdg_shell_get_xdg_popup (struct wl_client *client,
                                   surface,
                                   xdg_popup_destructor);
 
+  surface->xdg_popup = popup_resource;
+  surface->xdg_shell_resource = resource;
+
   if (!meta_wayland_pointer_can_popup (&seat->pointer, serial))
     {
       xdg_popup_send_popup_done (popup_resource);
       return;
     }
-
-  surface->xdg_popup = popup_resource;
-  surface->xdg_shell_resource = resource;
 
   surface->popup.parent = parent_surf;
   surface->popup.parent_destroy_listener.notify = handle_popup_parent_destroyed;
