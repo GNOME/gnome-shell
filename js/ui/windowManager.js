@@ -1296,7 +1296,10 @@ const WindowManager = new Lang.Class({
                            transition: 'easeOutQuad',
                            onComplete: this._sizeChangeWindowDone,
                            onCompleteScope: this,
-                           onCompleteParams: [shellwm, actor]
+                           onCompleteParams: [shellwm, actor],
+                           onOverwrite: this._sizeChangeWindowOverwritten,
+                           onOverwriteScope: this,
+                           onOverwriteParams: [shellwm, actor]
                          });
 
         // Now unfreeze actor updates, to get it to the new size.
@@ -1313,6 +1316,16 @@ const WindowManager = new Lang.Class({
             actor.translation_x = 0;
             actor.translation_y = 0;
 
+            let actorClone = actor.__fullscreenClone;
+            if (actorClone) {
+                actorClone.destroy();
+                delete actor.__fullscreenClone;
+            }
+        }
+    },
+
+    _sizeChangeWindowOverwritten: function(shellwm, actor) {
+        if (this._removeEffect(this._resizing, actor)) {
             let actorClone = actor.__fullscreenClone;
             if (actorClone) {
                 actorClone.destroy();
