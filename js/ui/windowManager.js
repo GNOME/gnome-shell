@@ -1235,15 +1235,17 @@ const WindowManager = new Lang.Class({
     },
 
     _fullscreenWindow: function(shellwm, actor, oldFrameRect, oldBufferRect) {
-        actor.translation_x = oldFrameRect.x;
-        actor.translation_y = oldFrameRect.y;
+        let monitor = Main.layoutManager.monitors[actor.meta_window.get_monitor()];
+        actor.translation_x = oldFrameRect.x - monitor.x;
+        actor.translation_y = oldFrameRect.y - monitor.y;
         this._fullscreenAnimation(shellwm, actor, oldFrameRect);
     },
 
     _unfullscreenWindow: function(shellwm, actor, oldFrameRect, oldBufferRect) {
         let targetRect = actor.meta_window.get_frame_rect();
-        actor.translation_x = -targetRect.x;
-        actor.translation_y = -targetRect.y;
+        let monitor = Main.layoutManager.monitors[actor.meta_window.get_monitor()];
+        actor.translation_x = -(targetRect.x - monitor.x);
+        actor.translation_y = -(targetRect.y - monitor.y);
         this._fullscreenAnimation(shellwm, actor, oldFrameRect);
     },
 
