@@ -182,10 +182,25 @@ meta_display_handle_event (MetaDisplay        *display,
   sequence = clutter_event_get_event_sequence (event);
 
   /* Set the pointer emulating sequence on touch begin, if eligible */
-  if (event->type == CLUTTER_TOUCH_BEGIN &&
-      !display->pointer_emulating_sequence &&
-      sequence_is_pointer_emulated (display, event))
-    display->pointer_emulating_sequence = sequence;
+  if (event->type == CLUTTER_TOUCH_BEGIN)
+    {
+      if (sequence_is_pointer_emulated (display, event))
+        {
+          /* This is the new pointer emulating sequence */
+          display->pointer_emulating_sequence = sequence;
+        }
+      else if (display->pointer_emulating_sequence == sequence)
+        {
+          /* This sequence was "pointer emulating" in a prior incarnation,
+           * but now it isn't. We unset the pointer emulating sequence at
+           * this point so the current sequence is not mistaken as pointer
+           * emulating, while we've ensured that it's been deemed
+           * "pointer emulating" throughout all of the event processing
+           * of the previous incarnation.
+           */
+          display->pointer_emulating_sequence = NULL;
+        }
+    }
 
 #ifdef HAVE_WAYLAND
   MetaWaylandCompositor *compositor = NULL;
@@ -334,11 +349,6 @@ meta_display_handle_event (MetaDisplay        *display,
         bypass_clutter = TRUE;
     }
 #endif
-
-  /* Unset the pointer emulating sequence after its end event is processed */
-  if (event->type == CLUTTER_TOUCH_END &&
-      display->pointer_emulating_sequence == sequence)
-    display->pointer_emulating_sequence = NULL;
 
   display->current_time = CurrentTime;
   return bypass_clutter;
