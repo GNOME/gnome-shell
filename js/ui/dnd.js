@@ -79,9 +79,12 @@ const _Draggable = new Lang.Class({
                                         dragActorOpacity: undefined });
 
         this.actor = actor;
-        if (!params.manualMode)
+        if (!params.manualMode) {
             this.actor.connect('button-press-event',
                                Lang.bind(this, this._onButtonPress));
+            this.actor.connect('touch-event',
+                               Lang.bind(this, this._onTouchEvent));
+        }
 
         this.actor.connect('destroy', Lang.bind(this, function() {
             this._actorDestroyed = true;
@@ -121,8 +124,50 @@ const _Draggable = new Lang.Class({
         return Clutter.EVENT_PROPAGATE;
     },
 
+    _onTouchEvent: function (actor, event) {
+        if (event.type() != Clutter.EventType.TOUCH_BEGIN ||
+            !global.display.is_pointer_emulating_sequence(event.get_event_sequence()))
+            return Clutter.EVENT_PROPAGATE;
+
+        if (Tweener.getTweenCount(actor))
+            return Clutter.EVENT_PROPAGATE;
+
+        this._touchSequence = event.get_event_sequence();
+
+        this._buttonDown = true;
+        this._grabActor();
+
+        let [stageX, stageY] = event.get_coords();
+        this._dragStartX = stageX;
+        this._dragStartY = stageY;
+
+        return Clutter.EVENT_PROPAGATE;
+    },
+
+    _grabDevice: function(actor) {
+        let manager = Clutter.DeviceManager.get_default();
+        let pointer = manager.get_core_device(Clutter.InputDeviceType.POINTER_DEVICE);
+
+        if (pointer && this._touchSequence)
+            pointer.sequence_grab(this._touchSequence, actor);
+        else if (pointer)
+            pointer.grab (actor);
+
+        this._grabbedDevice = pointer;
+    },
+
+    _ungrabDevice: function() {
+        if (this._touchSequence)
+            this._grabbedDevice.sequence_ungrab (this._touchSequence);
+        else
+            this._grabbedDevice.ungrab();
+
+        this._touchSequence = null;
+        this._grabbedDevice = null;
+    },
+
     _grabActor: function() {
-        Clutter.grab_pointer(this.actor);
+        this._grabDevice(this.actor);
         this._onEventId = this.actor.connect('event',
                                              Lang.bind(this, this._onEvent));
     },
@@ -131,7 +176,7 @@ const _Draggable = new Lang.Class({
         if (!this._onEventId)
             return;
 
-        Clutter.ungrab_pointer();
+        this._ungrabDevice();
         this.actor.disconnect(this._onEventId);
         this._onEventId = null;
     },
@@ -140,13 +185,13 @@ const _Draggable = new Lang.Class({
         if (!this._eventsGrabbed) {
             this._eventsGrabbed = Main.pushModal(_getEventHandlerActor());
             if (this._eventsGrabbed)
-                Clutter.grab_pointer(_getEventHandlerActor());
+                this._grabDevice(_getEventHandlerActor());
         }
     },
 
     _ungrabEvents: function() {
         if (this._eventsGrabbed) {
-            Clutter.ungrab_pointer();
+            this._ungrabDevice();
             Main.popModal(_getEventHandlerActor());
             this._eventsGrabbed = false;
         }
@@ -157,7 +202,9 @@ const _Draggable = new Lang.Class({
         // didn't start the drag, to drop the draggable in case the drag was in progress, and
         // to complete the drag and ensure that whatever happens to be under the pointer does
         // not get triggered if the drag was cancelled with Esc.
-        if (event.type() == Clutter.EventType.BUTTON_RELEASE) {
+        if (event.type() == Clutter.EventType.BUTTON_RELEASE ||
+            (event.type() == Clutter.EventType.TOUCH_END &&
+             global.display.is_pointer_emulating_sequence(event.get_event_sequence()))) {
             this._buttonDown = false;
             if (this._dragInProgress) {
                 return this._dragActorDropped(event);
@@ -172,7 +219,9 @@ const _Draggable = new Lang.Class({
             }
         // We intercept MOTION event to figure out if the drag has started and to draw
         // this._dragActor under the pointer when dragging is in progress
-        } else if (event.type() == Clutter.EventType.MOTION) {
+        } else if (event.type() == Clutter.EventType.MOTION ||
+                   (event.type() == Clutter.EventType.TOUCH_UPDATE &&
+                    global.display.is_pointer_emulating_sequence(event.get_event_sequence()))) {
             if (this._dragInProgress) {
                 return this._updateDragPosition(event);
             } else if (this._dragActor == null) {
@@ -214,7 +263,7 @@ const _Draggable = new Lang.Class({
      * This function is useful to call if you've specified manualMode
      * for the draggable.
      */
-    startDrag: function (stageX, stageY, time) {
+    startDrag: function (stageX, stageY, time, sequence) {
         currentDraggable = this;
         this._dragInProgress = true;
 
@@ -228,6 +277,8 @@ const _Draggable = new Lang.Class({
         this.emit('drag-begin', time);
         if (this._onEventId)
             this._ungrabActor();
+
+        this._touchSequence = sequence;
         this._grabEvents();
         global.screen.set_cursor(Meta.Cursor.DND_IN_DRAG);
 
@@ -338,8 +389,8 @@ const _Draggable = new Lang.Class({
         let threshold = Gtk.Settings.get_default().gtk_dnd_drag_threshold;
         if ((Math.abs(stageX - this._dragStartX) > threshold ||
              Math.abs(stageY - this._dragStartY) > threshold)) {
-                this.startDrag(stageX, stageY, event.get_time());
-                this._updateDragPosition(event);
+            this.startDrag(stageX, stageY, event.get_time(), this._touchSequence);
+            this._updateDragPosition(event);
         }
 
         return true;
