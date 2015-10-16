@@ -182,6 +182,8 @@ argbdata_to_surface (gulong *argb_data, int w, int h)
         }
     }
 
+  cairo_surface_mark_dirty (surface);
+
   return surface;
 }
 
