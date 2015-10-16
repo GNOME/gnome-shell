@@ -890,6 +890,7 @@ meta_frame_layout_draw_with_style (MetaFrameLayout         *layout,
       cairo_restore (cr);
       if (button_class)
         gtk_style_context_remove_class (style, button_class);
+      gtk_style_context_set_state (style, state);
     }
 }
 
