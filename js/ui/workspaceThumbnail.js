@@ -80,6 +80,8 @@ const WindowClone = new Lang.Class({
 
         this.actor.connect('button-release-event',
                            Lang.bind(this, this._onButtonRelease));
+        this.actor.connect('touch-event',
+                           Lang.bind(this, this._onTouchEvent));
 
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
 
@@ -197,6 +199,15 @@ const WindowClone = new Lang.Class({
     _onButtonRelease : function (actor, event) {
         this.emit('selected', event.get_time());
 
+        return Clutter.EVENT_STOP;
+    },
+
+    _onTouchEvent : function (actor, event) {
+        if (event.type() != Clutter.EventType.TOUCH_END ||
+            !global.display.is_pointer_emulating_sequence(event.get_event_sequence()))
+            return Clutter.EVENT_PROPAGATE;
+
+        this.emit('selected', event.get_time());
         return Clutter.EVENT_STOP;
     },
 
