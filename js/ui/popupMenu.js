@@ -1146,6 +1146,16 @@ const PopupSubMenuMenuItem = new Lang.Class({
         this.actor.remove_style_pseudo_class ('active');
         this._setOpenState(!this._getOpenState());
         return Clutter.EVENT_PROPAGATE;
+    },
+
+    _onTouchEvent: function(actor, event) {
+        if (event.type() == Clutter.EventType.TOUCH_END) {
+            // Since we override the parent, we need to manage what the parent does
+            // with the active style class
+            this.actor.remove_style_pseudo_class ('active');
+            this._setOpenState(!this._getOpenState());
+        }
+        return Clutter.EVENT_PROPAGATE;
     }
 });
 
