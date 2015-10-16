@@ -361,6 +361,9 @@ const WindowClone = new Lang.Class({
         // a long-press canceled when the pointer movement
         // exceeds dnd-drag-threshold to manually start the drag
         if (state == Clutter.LongPressState.CANCEL) {
+            let event = Clutter.get_current_event();
+            this._dragTouchSequence = event.get_event_sequence();
+
             // A click cancels a long-press before any click handler is
             // run - make sure to not start a drag in that case
             Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this,
@@ -369,7 +372,7 @@ const WindowClone = new Lang.Class({
                         return;
                     let [x, y] = action.get_coords();
                     action.release();
-                    this._draggable.startDrag(x, y, global.get_current_time());
+                    this._draggable.startDrag(x, y, global.get_current_time(), this._dragTouchSequence);
                 }));
         }
         return true;
