@@ -1223,13 +1223,13 @@ msgstr "<غير معروفة>"
 #: ../js/ui/status/network.js:451 ../js/ui/status/network.js:1308
 #, javascript-format
 msgid "%s Off"
-msgstr "%s مغلق"
+msgstr "‏%s مغلق"
 
 #. Translators: %s is a network identifier
 #: ../js/ui/status/network.js:454
 #, javascript-format
 msgid "%s Connected"
-msgstr "%s مُتصل"
+msgstr "‏%s مُتصل"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu);
@@ -1237,19 +1237,19 @@ msgstr "%s مُتصل"
 #: ../js/ui/status/network.js:459
 #, javascript-format
 msgid "%s Unmanaged"
-msgstr "%s غير مُدار"
+msgstr "‏%s غير مُدار"
 
 #. Translators: %s is a network identifier
 #: ../js/ui/status/network.js:462
 #, javascript-format
 msgid "%s Disconnecting"
-msgstr "%s يقطع الاتّصال"
+msgstr "‏%s يقطع الاتّصال"
 
 #. Translators: %s is a network identifier
 #: ../js/ui/status/network.js:469 ../js/ui/status/network.js:1300
 #, javascript-format
 msgid "%s Connecting"
-msgstr "%s يتّصل"
+msgstr "‏%s يتّصل"
 
 #. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
 #: ../js/ui/status/network.js:472
@@ -1269,7 +1269,7 @@ msgstr "برمجيات %s المغروسة (Firmware) غير متاحة"
 #: ../js/ui/status/network.js:484
 #, javascript-format
 msgid "%s Unavailable"
-msgstr "%s غير متاح"
+msgstr "‏%s غير متاح"
 
 #. Translators: %s is a network identifier
 #: ../js/ui/status/network.js:487
@@ -1296,7 +1296,7 @@ msgstr "عتاد %s مُعَطَّل"
 #: ../js/ui/status/network.js:592
 #, javascript-format
 msgid "%s Disabled"
-msgstr "%s معطّل"
+msgstr "‏%s معطّل"
 
 #: ../js/ui/status/network.js:632
 msgid "Use as Internet connection"
@@ -1364,7 +1364,7 @@ msgstr "نقطة اتصال %s نشطة"
 #: ../js/ui/status/network.js:1311
 #, javascript-format
 msgid "%s Not Connected"
-msgstr "%s غير متّصل"
+msgstr "‏%s غير متّصل"
 
 #: ../js/ui/status/network.js:1411
 msgid "connecting..."
