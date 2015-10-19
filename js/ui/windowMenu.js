@@ -214,7 +214,7 @@ const WindowMenuManager = new Lang.Class({
                 menu.close();
             });
 
-        this._sourceActor.set_size(rect.width, rect.height);
+        this._sourceActor.set_size(Math.max(1, rect.width), Math.max(1, rect.height));
         this._sourceActor.set_position(rect.x, rect.y);
         this._sourceActor.show();
 
