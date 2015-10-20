@@ -1068,7 +1068,10 @@ handle_button_press_event (MetaUIFrame *frame,
 
   control = get_control (frame, event->x, event->y);
 
-  /* focus on click, even if click was on client area */
+  /* don't do the rest of this if on client area */
+  if (control == META_FRAME_CONTROL_CLIENT_AREA)
+    return FALSE; /* not on the frame, just passed through from client */
+
   if (event->button == 1 &&
       !(control == META_FRAME_CONTROL_MINIMIZE ||
         control == META_FRAME_CONTROL_DELETE ||
@@ -1079,10 +1082,6 @@ handle_button_press_event (MetaUIFrame *frame,
                   frame->xwindow);
       meta_window_focus (frame->meta_window, event->time);
     }
-
-  /* don't do the rest of this if on client area */
-  if (control == META_FRAME_CONTROL_CLIENT_AREA)
-    return FALSE; /* not on the frame, just passed through from client */
 
   /* We want to shade even if we have a GrabOp, since we'll have a move grab
    * if we double click the titlebar.
