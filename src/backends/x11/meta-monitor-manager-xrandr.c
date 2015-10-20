@@ -808,6 +808,15 @@ meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
 	{
           GBytes *edid;
 
+          /* Get this first so that if there are no valid modes we
+             can immediately skip to the next output without having
+             to unwind all the assignments below. */
+          output_get_modes (manager, meta_output, output);
+          if (meta_output->n_modes == 0)
+            continue;
+
+          meta_output->preferred_mode = meta_output->modes[0];
+
 	  meta_output->winsys_id = resources->outputs[i];
 	  meta_output->name = g_strdup (output->name);
 
@@ -824,8 +833,6 @@ meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
           meta_output->connector_type = output_get_connector_type (manager_xrandr, meta_output);
 
 	  output_get_tile_info (manager_xrandr, meta_output);
-	  output_get_modes (manager, meta_output, output);
-	  meta_output->preferred_mode = meta_output->modes[0];
 
 	  meta_output->n_possible_crtcs = output->ncrtc;
 	  meta_output->possible_crtcs = g_new0 (MetaCRTC *, meta_output->n_possible_crtcs);
