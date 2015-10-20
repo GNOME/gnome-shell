@@ -924,11 +924,7 @@ const LoginDialog = new Lang.Class({
                            },
                            onUpdateScope: this,
                            onComplete: function() {
-                               let id = Mainloop.idle_add(Lang.bind(this, function() {
-                                   this._greeter.call_start_session_when_ready_sync(serviceName, true, null);
-                                   return GLib.SOURCE_REMOVE;
-                               }));
-                               GLib.Source.set_name_by_id(id, '[gnome-shell] this._greeter.call_start_session_when_ready_sync');
+                               this._greeter.call_start_session_when_ready_sync(serviceName, true, null);
                            },
                            onCompleteScope: this });
     },
