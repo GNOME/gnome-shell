@@ -33,7 +33,7 @@ const Animation = new Lang.Class({
             if (this._frame == 0)
                 this._showFrame(0);
 
-            this._timeoutId = Mainloop.timeout_add(this._speed, Lang.bind(this, this._update));
+            this._timeoutId = GLib.timeout_add(GLib.PRIORITY_LOW, this._speed, Lang.bind(this, this._update));
             GLib.Source.set_name_by_id(this._timeoutId, '[gnome-shell] this._update');
         }
 
