@@ -7757,9 +7757,6 @@ meta_window_handle_ungrabbed_event (MetaWindow         *window,
          * window mappings after the user clicks on a panel.
          */
         display->allow_terminal_deactivation = TRUE;
-
-      meta_verbose ("Allowing events time %u\n",
-                    (unsigned int)event->any.time);
     }
   else if (is_window_grab && (int) button == meta_prefs_get_mouse_button_resize ())
     {
