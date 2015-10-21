@@ -7707,6 +7707,22 @@ meta_window_handle_ungrabbed_event (MetaWindow         *window,
   if (window->override_redirect)
     return;
 
+  /* Don't focus panels--they must explicitly request focus.
+   * See bug 160470
+   */
+  if (window->type != META_WINDOW_DOCK)
+    {
+      meta_topic (META_DEBUG_FOCUS,
+                  "Focusing %s due to button %u press (display.c)\n",
+                  window->desc, button);
+      meta_window_focus (window, event->any.time);
+    }
+  else
+    /* However, do allow terminals to lose focus due to new
+     * window mappings after the user clicks on a panel.
+     */
+    display->allow_terminal_deactivation = TRUE;
+
   /* We have three passive button grabs:
    * - on any button, without modifiers => focuses and maybe raises the window
    * - on resize button, with modifiers => start an interactive resizing
@@ -7741,22 +7757,6 @@ meta_window_handle_ungrabbed_event (MetaWindow         *window,
       else
         meta_topic (META_DEBUG_FOCUS,
                     "Not raising window on click due to don't-raise-on-click option\n");
-
-      /* Don't focus panels--they must explicitly request focus.
-       * See bug 160470
-       */
-      if (window->type != META_WINDOW_DOCK)
-        {
-          meta_topic (META_DEBUG_FOCUS,
-                      "Focusing %s due to unmodified button %u press (display.c)\n",
-                      window->desc, button);
-          meta_window_focus (window, event->any.time);
-        }
-      else
-        /* However, do allow terminals to lose focus due to new
-         * window mappings after the user clicks on a panel.
-         */
-        display->allow_terminal_deactivation = TRUE;
     }
   else if (is_window_grab && (int) button == meta_prefs_get_mouse_button_resize ())
     {
