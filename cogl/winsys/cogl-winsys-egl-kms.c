@@ -590,7 +590,7 @@ flip_all_crtcs (CoglDisplay *display, CoglFlipKMS *flip, int fb_id)
   for (l = kms_display->crtcs; l; l = l->next)
     {
       CoglKmsCrtc *crtc = l->data;
-      int ret;
+      int ret = 0;
 
       if (crtc->count == 0 || crtc->ignore)
         continue;
@@ -610,7 +610,8 @@ flip_all_crtcs (CoglDisplay *display, CoglFlipKMS *flip, int fb_id)
             }
         }
 
-      flip->pending++;
+      if (ret == 0)
+        flip->pending++;
     }
 
   if (kms_renderer->page_flips_not_supported && needs_flip)
