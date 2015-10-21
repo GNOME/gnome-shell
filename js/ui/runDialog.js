@@ -61,6 +61,7 @@ const RunDialog = new Lang.Class({
 
                                    // rt is short for "reload theme"
                                    'rt': Lang.bind(this, function() {
+                                       Main.reloadThemeResource();
                                        Main.loadTheme();
                                    })
                                  };

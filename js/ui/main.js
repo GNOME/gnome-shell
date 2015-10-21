@@ -78,6 +78,7 @@ let _startDate;
 let _defaultCssStylesheet = null;
 let _cssStylesheet = null;
 let _a11ySettings = null;
+let _themeResource = null;
 
 function _sessionUpdated() {
     if (sessionMode.isPrimary)
@@ -137,9 +138,7 @@ function _initializeUI() {
     Shell.WindowTracker.get_default();
     Shell.AppUsage.get_default();
 
-    let resource = Gio.Resource.load(global.datadir + '/gnome-shell-theme.gresource');
-    resource._register();
-
+    reloadThemeResource();
     _loadDefaultStylesheet();
 
     // Setup the stage hierarchy early
@@ -288,6 +287,14 @@ function getThemeStylesheet() {
  */
 function setThemeStylesheet(cssStylesheet) {
     _cssStylesheet = cssStylesheet ? Gio.File.new_for_path(cssStylesheet) : null;
+}
+
+function reloadThemeResource() {
+    if (_themeResource)
+        _themeResource._unregister();
+
+    _themeResource = Gio.Resource.load(global.datadir + '/gnome-shell-theme.gresource');
+    _themeResource._register();
 }
 
 /**
