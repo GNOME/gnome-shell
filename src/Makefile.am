@@ -296,6 +296,8 @@ libmutter_la_SOURCES +=				\
 	wayland/meta-wayland-touch.h		\
 	wayland/meta-wayland-surface.c		\
 	wayland/meta-wayland-surface.h		\
+	wayland/meta-wayland-surface-role-cursor.c	\
+	wayland/meta-wayland-surface-role-cursor.h	\
 	wayland/meta-wayland-types.h		\
 	wayland/meta-wayland-versions.h		\
 	wayland/meta-wayland-outputs.c		\
