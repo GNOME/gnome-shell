@@ -459,7 +459,8 @@ const ActivitiesButton = new Lang.Class({
 
         if (event.type() == Clutter.EventType.TOUCH_END ||
             event.type() == Clutter.EventType.BUTTON_RELEASE)
-            Main.overview.toggle();
+            if (Main.overview.shouldToggleByCornerOrButton())
+                Main.overview.toggle();
 
         return Clutter.EVENT_PROPAGATE;
     },
@@ -467,7 +468,8 @@ const ActivitiesButton = new Lang.Class({
     _onKeyRelease: function(actor, event) {
         let symbol = event.get_key_symbol();
         if (symbol == Clutter.KEY_Return || symbol == Clutter.KEY_space) {
-            Main.overview.toggle();
+            if (Main.overview.shouldToggleByCornerOrButton())
+                Main.overview.toggle();
         }
         return Clutter.EVENT_PROPAGATE;
     },
