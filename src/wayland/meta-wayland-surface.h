@@ -207,6 +207,7 @@ struct _MetaWaylandSurface
 
   /* gtk_surface stuff */
   gboolean is_modal;
+  gboolean destroying;
 
   /* wl_subsurface stuff. */
   struct {

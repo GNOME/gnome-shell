@@ -118,6 +118,13 @@ G_DEFINE_TYPE (MetaWaylandSurfaceRoleDND,
                meta_wayland_surface_role_dnd,
                META_TYPE_WAYLAND_SURFACE_ROLE);
 
+enum {
+  SURFACE_DESTROY,
+  N_SURFACE_SIGNALS
+};
+
+guint surface_signals[N_SURFACE_SIGNALS] = { 0 };
+
 static void
 meta_wayland_surface_role_assigned (MetaWaylandSurfaceRole *surface_role);
 
@@ -1796,6 +1803,20 @@ meta_wayland_surface_get_absolute_coordinates (MetaWaylandSurface *surface,
 }
 
 static void
+meta_wayland_surface_dispose (GObject *object)
+{
+  MetaWaylandSurface *surface = META_WAYLAND_SURFACE (object);
+
+  if (!surface->destroying)
+    {
+      g_signal_emit (object, surface_signals[SURFACE_DESTROY], 0);
+      surface->destroying = TRUE;
+    }
+
+  G_OBJECT_CLASS (meta_wayland_surface_parent_class)->dispose (object);
+}
+
+static void
 meta_wayland_surface_init (MetaWaylandSurface *surface)
 {
   surface->pending = g_object_new (META_TYPE_WAYLAND_PENDING_STATE, NULL);
@@ -1804,6 +1825,17 @@ meta_wayland_surface_init (MetaWaylandSurface *surface)
 static void
 meta_wayland_surface_class_init (MetaWaylandSurfaceClass *klass)
 {
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
+  object_class->dispose = meta_wayland_surface_dispose;
+
+  surface_signals[SURFACE_DESTROY] =
+    g_signal_new ("destroy",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  0, NULL, NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
 }
 
 static void
