@@ -75,6 +75,9 @@ static gboolean
 meta_cursor_renderer_real_update_cursor (MetaCursorRenderer *renderer,
                                          MetaCursorSprite   *cursor_sprite)
 {
+  if (cursor_sprite)
+    meta_cursor_sprite_realize_texture (cursor_sprite);
+
   return FALSE;
 }
 
