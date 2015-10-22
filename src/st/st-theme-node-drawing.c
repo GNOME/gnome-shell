@@ -741,7 +741,11 @@ paint_shadow_pattern_to_cairo_context (StShadow *shadow_spec,
       /* Then subtract out the bounds of the surface in the surface
        * pattern; we transform the context by the inverse of the
        * pattern matrix to get to surface coordinates */
-      cairo_pattern_get_surface (pattern, &surface);
+
+      if (cairo_pattern_get_surface (pattern, &surface) != CAIRO_STATUS_SUCCESS)
+        /* Something went wrong previously */
+        goto no_surface;
+
       width = cairo_image_surface_get_width  (surface);
       height = cairo_image_surface_get_height (surface);
 
@@ -752,6 +756,7 @@ paint_shadow_pattern_to_cairo_context (StShadow *shadow_spec,
       cairo_rectangle (cr, 0, height, width, - height);
       cairo_fill (cr);
 
+    no_surface:
       cairo_restore (cr);
     }
 
