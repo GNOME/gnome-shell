@@ -454,7 +454,8 @@ discrete_to_direction (gdouble discrete_x,
 static void
 notify_discrete_scroll (ClutterInputDevice     *input_device,
                         guint32                 time_,
-                        ClutterScrollDirection  direction)
+                        ClutterScrollDirection  direction,
+                        gboolean                emulated)
 {
   ClutterInputDeviceEvdev *device_evdev;
   ClutterSeatEvdev *seat;
@@ -487,6 +488,8 @@ notify_discrete_scroll (ClutterInputDevice     *input_device,
   clutter_event_set_device (event, seat->core_pointer);
   clutter_event_set_source_device (event, input_device);
 
+  _clutter_event_set_pointer_emulated (event, emulated);
+
   queue_event (event);
 }
 
@@ -494,7 +497,8 @@ static void
 notify_scroll (ClutterInputDevice *input_device,
                guint32             time_,
                gdouble             dx,
-               gdouble             dy)
+               gdouble             dy,
+               gboolean            emulated)
 {
   ClutterInputDeviceEvdev *device_evdev;
   ClutterSeatEvdev *seat;
@@ -531,6 +535,8 @@ notify_scroll (ClutterInputDevice *input_device,
   event->scroll.y = seat->pointer_y;
   clutter_event_set_device (event, seat->core_pointer);
   clutter_event_set_source_device (event, input_device);
+
+  _clutter_event_set_pointer_emulated (event, emulated);
 
   queue_event (event);
 }
@@ -1277,14 +1283,16 @@ check_notify_discrete_scroll (ClutterDeviceManagerEvdev *manager_evdev,
     {
       notify_discrete_scroll (device, time_,
                               seat->accum_scroll_dx > 0 ?
-                              CLUTTER_SCROLL_RIGHT : CLUTTER_SCROLL_LEFT);
+                              CLUTTER_SCROLL_RIGHT : CLUTTER_SCROLL_LEFT,
+                              TRUE);
     }
 
   for (i = 0; i < n_yscrolls; i++)
     {
       notify_discrete_scroll (device, time_,
                               seat->accum_scroll_dy > 0 ?
-                              CLUTTER_SCROLL_DOWN : CLUTTER_SCROLL_UP);
+                              CLUTTER_SCROLL_DOWN : CLUTTER_SCROLL_UP,
+                              TRUE);
     }
 
   seat->accum_scroll_dx = fmodf (seat->accum_scroll_dx, DISCRETE_SCROLL_STEP);
@@ -1450,12 +1458,13 @@ process_device_event (ClutterDeviceManagerEvdev *manager_evdev,
           {
             notify_scroll (device, time,
                            discrete_x * DISCRETE_SCROLL_STEP,
-                           discrete_y * DISCRETE_SCROLL_STEP);
-            notify_discrete_scroll (device, time, discrete_to_direction (discrete_x, discrete_y));
+                           discrete_y * DISCRETE_SCROLL_STEP,
+                           TRUE);
+            notify_discrete_scroll (device, time, discrete_to_direction (discrete_x, discrete_y), FALSE);
           }
         else
           {
-            notify_scroll (device, time, dx, dy);
+            notify_scroll (device, time, dx, dy, FALSE);
             check_notify_discrete_scroll (manager_evdev, device, time);
           }
 
