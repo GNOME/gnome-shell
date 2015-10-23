@@ -621,7 +621,7 @@ const NMDeviceBluetooth = new Lang.Class({
     _init: function(client, device, settings) {
         this.parent(client, device, settings);
 
-        this.item.menu.addMenuItem(createSettingsAction(_("Mobile Broadband Settings"), device));
+        this.item.menu.addMenuItem(createSettingsAction(_("Bluetooth Settings"), device));
     },
 
     _getDescription: function() {
@@ -629,7 +629,7 @@ const NMDeviceBluetooth = new Lang.Class({
     },
 
     getConnectLabel: function() {
-        return _("Use as Internet connection");
+        return _("Connect to Internet");
     },
 
     getIndicatorIcon: function() {
