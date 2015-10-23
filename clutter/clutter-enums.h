@@ -1445,6 +1445,45 @@ typedef enum {
   CLUTTER_TOUCHPAD_GESTURE_PHASE_CANCEL
 } ClutterTouchpadGesturePhase;
 
+/**
+ * ClutterScrollSource:
+ * @CLUTTER_SCROLL_SOURCE_UNKNOWN: Source of scroll events is unknown.
+ * @CLUTTER_SCROLL_SOURCE_WHEEL: The scroll event is originated by a mouse wheel.
+ * @CLUTTER_SCROLL_SOURCE_FINGER: The scroll event is originated by one or more
+ *   fingers on the device (eg. touchpads).
+ * @CLUTTER_SCROLL_SOURCE_CONTINUOUS: The scroll event is originated by the
+ *   motion of some device (eg. a scroll button is set).
+ *
+ * The scroll source determines the source of the scroll event. Keep in mind
+ * that the source device #ClutterInputDeviceType is not enough to infer
+ * the scroll source.
+ *
+ * Since: 1.26
+ */
+typedef enum {
+  CLUTTER_SCROLL_SOURCE_UNKNOWN,
+  CLUTTER_SCROLL_SOURCE_WHEEL,
+  CLUTTER_SCROLL_SOURCE_FINGER,
+  CLUTTER_SCROLL_SOURCE_CONTINUOUS
+} ClutterScrollSource;
+
+/**
+ * ClutterScrollFinishFlags:
+ * @CLUTTER_SCROLL_FINISHED_NONE: no axis was stopped.
+ * @CLUTTER_SCROLL_FINISHED_HORIZONTAL: The horizontal axis stopped.
+ * @CLUTTER_SCROLL_FINISHED_VERTICAL: The vertical axis stopped.
+ *
+ * Flags used to notify the axes that were stopped in a #ClutterScrollEvent.
+ * These can be used to trigger post-scroll effects like kinetic scrolling.
+ *
+ * Since: 1.26
+ */
+typedef enum {
+  CLUTTER_SCROLL_FINISHED_NONE       = 0,
+  CLUTTER_SCROLL_FINISHED_HORIZONTAL = 1 << 0,
+  CLUTTER_SCROLL_FINISHED_VERTICAL   = 1 << 1
+} ClutterScrollFinishFlags;
+
 G_END_DECLS
 
 #endif /* __CLUTTER_ENUMS_H__ */

@@ -291,6 +291,8 @@ struct _ClutterMotionEvent
  * @axes: reserved for future use
  * @device: the device that originated the event. If you want the physical
  * device the event originated from, use clutter_event_get_source_device()
+ * @scroll_source: the source of scroll events. This field is available since 1.26
+ * @finish_flags: the axes that were stopped in this event. This field is available since 1.26
  *
  * Scroll wheel (or similar device) event
  *
@@ -310,6 +312,8 @@ struct _ClutterScrollEvent
   ClutterModifierType modifier_state;
   gdouble *axes; /* future use */
   ClutterInputDevice *device;
+  ClutterScrollSource scroll_source;
+  ClutterScrollFinishFlags finish_flags;
 };
 
 /**
@@ -681,6 +685,9 @@ CLUTTER_AVAILABLE_IN_1_24
 void                    clutter_event_get_gesture_motion_delta       (const ClutterEvent     *event,
                                                                       gdouble                *dx,
                                                                       gdouble                *dy);
+
+ClutterScrollSource      clutter_event_get_scroll_source             (const ClutterEvent     *event);
+ClutterScrollFinishFlags clutter_event_get_scroll_finish_flags       (const ClutterEvent     *event);
 
 G_END_DECLS
 

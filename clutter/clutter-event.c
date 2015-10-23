@@ -1999,3 +1999,45 @@ clutter_event_get_gesture_motion_delta (const ClutterEvent *event,
         *dy = event->touchpad_swipe.dy;
     }
 }
+
+/**
+ * clutter_event_get_scroll_source:
+ * @event: an scroll event
+ *
+ * Returns the #ClutterScrollSource that applies to an scroll event.
+ *
+ * Returns: The source of scroll events
+ *
+ * Since: 1.26
+ **/
+ClutterScrollSource
+clutter_event_get_scroll_source (const ClutterEvent *event)
+{
+  g_return_val_if_fail (event != NULL, CLUTTER_SCROLL_SOURCE_UNKNOWN);
+  g_return_val_if_fail (event->type == CLUTTER_SCROLL,
+                        CLUTTER_SCROLL_SOURCE_UNKNOWN);
+
+  return event->scroll.scroll_source;
+}
+
+/**
+ * clutter_event_get_scroll_finish_flags:
+ * @event: an scroll event
+ *
+ * Returns the #ClutterScrollFinishFlags of an scroll event. Those
+ * can be used to determine whether post-scroll effects like kinetic
+ * scrolling should be applied.
+ *
+ * Returns: The scroll finish flags
+ *
+ * Since: 1.26
+ **/
+ClutterScrollFinishFlags
+clutter_event_get_scroll_finish_flags (const ClutterEvent *event)
+{
+  g_return_val_if_fail (event != NULL, CLUTTER_SCROLL_SOURCE_UNKNOWN);
+  g_return_val_if_fail (event->type == CLUTTER_SCROLL,
+                        CLUTTER_SCROLL_SOURCE_UNKNOWN);
+
+  return event->scroll.finish_flags;
+}
