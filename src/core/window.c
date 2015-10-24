@@ -3534,10 +3534,7 @@ meta_window_update_for_monitors_changed (MetaWindow *window)
 {
   const MetaMonitorInfo *old, *new;
 
-  if (window->type == META_WINDOW_DESKTOP)
-    return;
-
-  if (window->override_redirect)
+  if (window->override_redirect || window->type == META_WINDOW_DESKTOP)
     {
       meta_window_update_monitor (window, FALSE);
       return;
