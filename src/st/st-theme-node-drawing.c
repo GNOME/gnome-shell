@@ -2162,7 +2162,7 @@ st_theme_node_prerender_shadow (StThemeNodePaintState *state)
   guint border_radius[4];
   int max_borders[4];
   int center_radius, corner_id;
-  CoglHandle buffer, offscreen;
+  CoglHandle buffer, offscreen = COGL_INVALID_HANDLE;
 
   /* Get infos from the node */
   if (state->alloc_width < node->box_shadow_min_width ||
@@ -2203,7 +2203,8 @@ st_theme_node_prerender_shadow (StThemeNodePaintState *state)
                                        state->box_shadow_height,
                                        COGL_TEXTURE_NO_SLICING,
                                        COGL_PIXEL_FORMAT_ANY);
-  offscreen = cogl_offscreen_new_with_texture (buffer);
+  if (buffer != COGL_INVALID_HANDLE)
+    offscreen = cogl_offscreen_new_with_texture (buffer);
 
   if (offscreen != COGL_INVALID_HANDLE)
     {
@@ -2220,7 +2221,9 @@ st_theme_node_prerender_shadow (StThemeNodePaintState *state)
       state->box_shadow_pipeline = _st_create_shadow_pipeline (st_theme_node_get_box_shadow (node),
                                                                buffer);
     }
-  cogl_handle_unref (buffer);
+
+  if (buffer != COGL_INVALID_HANDLE)
+    cogl_handle_unref (buffer);
 }
 
 static void
