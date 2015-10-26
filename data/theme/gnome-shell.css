@@ -41,9 +41,9 @@ stage {
     icon-shadow: 0 1px black;
     box-shadow: inset 0px 0px 0px 1px #215d9c; }
   .button:insensitive {
-    color: #939695;
+    color: #949796;
     border-color: rgba(0, 0, 0, 0.7);
-    background-color: rgba(66, 71, 73, 0.7);
+    background-color: rgba(66, 72, 73, 0.7);
     box-shadow: none;
     text-shadow: none;
     icon-shadow: none; }
@@ -65,9 +65,9 @@ stage {
   icon-shadow: 0 1px black;
   padding: 12px; }
   .modal-dialog-linked-button:insensitive {
-    color: #939695;
+    color: #949796;
     border-color: rgba(0, 0, 0, 0.7);
-    background-color: rgba(66, 71, 73, 0.7);
+    background-color: rgba(66, 72, 73, 0.7);
     box-shadow: none;
     text-shadow: none;
     icon-shadow: none; }
@@ -107,8 +107,8 @@ StEntry {
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
     border-color: rgba(154, 154, 142, 0.5); }
   StEntry:insensitive {
-    color: #939695;
-    border-color: #323636;
+    color: #949796;
+    border-color: #333636;
     box-shadow: none; }
   StEntry StIcon.capslock-warning {
     icon-size: 16px;
@@ -131,10 +131,10 @@ StScrollBar {
     background-color: transparent; }
   StScrollBar StButton#vhandle, StScrollBar StButton#hhandle {
     border-radius: 8px;
-    background-color: #a5a8a6;
+    background-color: #a6a8a7;
     margin: 3px; }
     StScrollBar StButton#vhandle:hover, StScrollBar StButton#hhandle:hover {
-      background-color: #c9cbc9; }
+      background-color: #cacbc9; }
     StScrollBar StButton#vhandle:active, StScrollBar StButton#hhandle:active {
       background-color: #215d9c; }
 
@@ -142,7 +142,7 @@ StScrollBar {
 .slider {
   height: 1em;
   -slider-height: 0.3em;
-  -slider-background-color: #323636;
+  -slider-background-color: #333636;
   -slider-border-color: #1c1f1f;
   -slider-active-background-color: #215d9c;
   -slider-active-border-color: #184472;
@@ -735,7 +735,7 @@ StScrollBar {
   border-left-width: 1px; }
 
 .calendar-nonwork-day {
-  color: #939695; }
+  color: #949796; }
 
 .calendar-today {
   font-weight: bold;
@@ -960,10 +960,14 @@ StScrollBar {
 .search-entry {
   width: 320px;
   padding: 7px 9px;
-  border-radius: 6px; }
+  border-radius: 6px;
+  border-color: red;
+  color: #eeeeec;
+  background-color: #2e3436; }
   .search-entry:focus {
     padding: 6px 8px;
-    border-width: 2px; }
+    border-width: 2px;
+    border-color: #215d9c; }
   .search-entry .search-entry-icon {
     icon-size: 1em;
     padding: 0 4px;
@@ -1491,9 +1495,9 @@ StScrollBar {
         text-shadow: none;
         icon-shadow: none; }
       .login-dialog .modal-dialog-button:default:insensitive {
-        color: #939695;
+        color: #949796;
         border-color: rgba(0, 0, 0, 0.7);
-        background-color: rgba(66, 71, 73, 0.7);
+        background-color: rgba(66, 72, 73, 0.7);
         box-shadow: none;
         text-shadow: none;
         icon-shadow: none; }
