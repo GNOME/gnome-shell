@@ -414,6 +414,10 @@ gint               meta_monitor_manager_get_monitor_at_point (MetaMonitorManager
                                                               gfloat              x,
                                                               gfloat              y);
 
+void meta_monitor_manager_clear_output (MetaOutput *output);
+void meta_monitor_manager_clear_mode (MetaMonitorMode *mode);
+void meta_monitor_manager_clear_crtc (MetaCRTC *crtc);
+
 /* Returns true if transform causes width and height to be inverted
    This is true for the odd transforms in the enum */
 static inline gboolean

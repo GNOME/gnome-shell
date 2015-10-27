@@ -346,6 +346,23 @@ meta_monitor_manager_constructed (GObject *object)
   manager->in_init = FALSE;
 }
 
+void
+meta_monitor_manager_clear_output (MetaOutput *output)
+{
+  g_free (output->name);
+  g_free (output->vendor);
+  g_free (output->product);
+  g_free (output->serial);
+  g_free (output->modes);
+  g_free (output->possible_crtcs);
+  g_free (output->possible_clones);
+
+  if (output->driver_notify)
+    output->driver_notify (output);
+
+  memset (output, 0, sizeof (*output));
+}
+
 static void
 meta_monitor_manager_free_output_array (MetaOutput *old_outputs,
                                         int         n_old_outputs)
@@ -353,20 +370,20 @@ meta_monitor_manager_free_output_array (MetaOutput *old_outputs,
   int i;
 
   for (i = 0; i < n_old_outputs; i++)
-    {
-      g_free (old_outputs[i].name);
-      g_free (old_outputs[i].vendor);
-      g_free (old_outputs[i].product);
-      g_free (old_outputs[i].serial);
-      g_free (old_outputs[i].modes);
-      g_free (old_outputs[i].possible_crtcs);
-      g_free (old_outputs[i].possible_clones);
-
-      if (old_outputs[i].driver_notify)
-        old_outputs[i].driver_notify (&old_outputs[i]);
-    }
+    meta_monitor_manager_clear_output (&old_outputs[i]);
 
   g_free (old_outputs);
+}
+
+void
+meta_monitor_manager_clear_mode (MetaMonitorMode *mode)
+{
+  g_free (mode->name);
+
+  if (mode->driver_notify)
+    mode->driver_notify (mode);
+
+  memset (mode, 0, sizeof (*mode));
 }
 
 static void
@@ -376,14 +393,18 @@ meta_monitor_manager_free_mode_array (MetaMonitorMode *old_modes,
   int i;
 
   for (i = 0; i < n_old_modes; i++)
-    {
-      g_free (old_modes[i].name);
-
-      if (old_modes[i].driver_notify)
-        old_modes[i].driver_notify (&old_modes[i]);
-    }
+    meta_monitor_manager_clear_mode (&old_modes[i]);
 
   g_free (old_modes);
+}
+
+void
+meta_monitor_manager_clear_crtc (MetaCRTC *crtc)
+{
+  if (crtc->driver_notify)
+    crtc->driver_notify (crtc);
+
+  memset (crtc, 0, sizeof (*crtc));
 }
 
 static void
@@ -393,10 +414,7 @@ meta_monitor_manager_free_crtc_array (MetaCRTC *old_crtcs,
   int i;
 
   for (i = 0; i < n_old_crtcs; i++)
-    {
-      if (old_crtcs[i].driver_notify)
-        old_crtcs[i].driver_notify (&old_crtcs[i]);
-    }
+    meta_monitor_manager_clear_crtc (&old_crtcs[i]);
 
   g_free (old_crtcs);
 }
