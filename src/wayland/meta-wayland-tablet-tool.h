@@ -44,6 +44,8 @@ struct _MetaWaylandTabletTool
   guint32 pressed_buttons;
 
   guint32 proximity_serial;
+  guint32 down_serial;
+  guint32 button_serial;
 
   MetaWaylandTablet *current_tablet;
 };

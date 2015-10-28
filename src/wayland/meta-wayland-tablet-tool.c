@@ -26,6 +26,7 @@
 #include "config.h"
 
 #include <glib.h>
+#include <clutter/evdev/clutter-evdev.h>
 
 #include <wayland-server.h>
 #include "tablet-unstable-v1-server-protocol.h"
@@ -34,6 +35,15 @@
 #include "meta-wayland-tablet.h"
 #include "meta-wayland-tablet-seat.h"
 #include "meta-wayland-tablet-tool.h"
+
+#ifdef HAVE_NATIVE_BACKEND
+#include "backends/native/meta-backend-native.h"
+#endif
+
+#define TABLET_AXIS_MAX 65535
+#define DEGREES_PRECISION 100 /* wl_tablet_tool.tilt and .rotation define
+                               * angles in hundreths of a degree
+                               */
 
 static void
 unbind_resource (struct wl_resource *resource)
@@ -64,6 +74,45 @@ move_resources_for_client (struct wl_list   *destination,
           wl_list_insert (destination, wl_resource_get_link (resource));
         }
     }
+}
+
+static uint32_t
+input_device_get_capabilities (ClutterInputDevice *device)
+{
+  ClutterInputAxis axis;
+  guint32 capabilities = 0, i;
+
+  for (i = 0; i < clutter_input_device_get_n_axes (device); i++)
+    {
+      axis = clutter_input_device_get_axis (device, i);
+
+      switch (axis)
+        {
+        case CLUTTER_INPUT_AXIS_PRESSURE:
+          capabilities |= 1 << ZWP_TABLET_TOOL_V1_CAPABILITY_PRESSURE;
+          break;
+        case CLUTTER_INPUT_AXIS_DISTANCE:
+          capabilities |= 1 << ZWP_TABLET_TOOL_V1_CAPABILITY_DISTANCE;
+          break;
+        case CLUTTER_INPUT_AXIS_XTILT:
+        case CLUTTER_INPUT_AXIS_YTILT:
+          capabilities |= 1 << ZWP_TABLET_TOOL_V1_CAPABILITY_TILT;
+          break;
+        case CLUTTER_INPUT_AXIS_ROTATION:
+          capabilities |= 1 << ZWP_TABLET_TOOL_V1_CAPABILITY_ROTATION;
+          break;
+        case CLUTTER_INPUT_AXIS_WHEEL:
+          capabilities |= 1 << ZWP_TABLET_TOOL_V1_CAPABILITY_WHEEL;
+          break;
+        case CLUTTER_INPUT_AXIS_SLIDER:
+          capabilities |= 1 << ZWP_TABLET_TOOL_V1_CAPABILITY_SLIDER;
+          break;
+        default:
+          break;
+        }
+    }
+
+  return capabilities;
 }
 
 static void
@@ -338,6 +387,239 @@ repick_for_event (MetaWaylandTabletTool *tool,
   sync_focus_surface (tool, for_event);
 }
 
+static void
+meta_wayland_tablet_tool_get_relative_coordinates (MetaWaylandTabletTool *tool,
+                                                   ClutterInputDevice    *device,
+                                                   MetaWaylandSurface    *surface,
+                                                   wl_fixed_t            *sx,
+                                                   wl_fixed_t            *sy)
+{
+  float xf = 0.0f, yf = 0.0f;
+  ClutterPoint pos;
+
+  clutter_input_device_get_coords (device, NULL, &pos);
+  clutter_actor_transform_stage_point (CLUTTER_ACTOR (meta_surface_actor_get_texture (surface->surface_actor)),
+                                       pos.x, pos.y, &xf, &yf);
+
+  *sx = wl_fixed_from_double (xf) / surface->scale;
+  *sy = wl_fixed_from_double (yf) / surface->scale;
+}
+
+static void
+broadcast_motion (MetaWaylandTabletTool *tool,
+                  const ClutterEvent    *event)
+{
+  struct wl_resource *resource;
+  ClutterInputDevice *device;
+  wl_fixed_t sx, sy;
+
+  device = clutter_event_get_source_device (event);
+  meta_wayland_tablet_tool_get_relative_coordinates (tool, device,
+                                                     tool->focus_surface,
+                                                     &sx, &sy);
+
+  wl_resource_for_each (resource, &tool->focus_resource_list)
+    {
+      zwp_tablet_tool_v1_send_motion (resource, sx, sy);
+    }
+}
+
+static void
+broadcast_down (MetaWaylandTabletTool *tool,
+                const ClutterEvent    *event)
+{
+  struct wl_resource *resource;
+
+  tool->down_serial = wl_display_next_serial (tool->seat->manager->wl_display);
+
+  wl_resource_for_each (resource, &tool->focus_resource_list)
+    {
+      zwp_tablet_tool_v1_send_down (resource, tool->down_serial);
+    }
+}
+
+static void
+broadcast_up (MetaWaylandTabletTool *tool,
+              const ClutterEvent    *event)
+{
+  struct wl_resource *resource;
+
+  wl_resource_for_each (resource, &tool->focus_resource_list)
+    {
+      zwp_tablet_tool_v1_send_up (resource);
+    }
+}
+
+static void
+broadcast_button (MetaWaylandTabletTool *tool,
+                  const ClutterEvent    *event)
+{
+  struct wl_resource *resource;
+  guint32 button;
+
+  tool->button_serial = wl_display_next_serial (tool->seat->manager->wl_display);
+
+#ifdef HAVE_NATIVE_BACKEND
+  MetaBackend *backend = meta_get_backend ();
+  if (META_IS_BACKEND_NATIVE (backend))
+    button = clutter_evdev_event_get_event_code (event);
+  else
+#endif
+    {
+      /* We can't do much better here, there's several
+       * different BTN_ ranges to cover.
+       */
+      button = event->button.button;
+    }
+
+
+  wl_resource_for_each (resource, &tool->focus_resource_list)
+    {
+      zwp_tablet_tool_v1_send_button (resource, tool->button_serial, button,
+                                      event->type == CLUTTER_BUTTON_PRESS ?
+                                      ZWP_TABLET_TOOL_V1_BUTTON_STATE_PRESSED :
+                                      ZWP_TABLET_TOOL_V1_BUTTON_STATE_RELEASED);
+    }
+}
+
+static void
+broadcast_axis (MetaWaylandTabletTool *tool,
+                const ClutterEvent    *event,
+                ClutterInputAxis       axis)
+{
+  struct wl_resource *resource;
+  ClutterInputDevice *source;
+  uint32_t value;
+  gdouble val;
+
+  source = clutter_event_get_source_device (event);
+
+  if (!clutter_input_device_get_axis_value (source, event->motion.axes, axis, &val))
+    return;
+
+  value = val * TABLET_AXIS_MAX;
+
+  wl_resource_for_each (resource, &tool->focus_resource_list)
+    {
+      switch (axis)
+        {
+        case CLUTTER_INPUT_AXIS_PRESSURE:
+          zwp_tablet_tool_v1_send_pressure (resource, value);
+          break;
+        case CLUTTER_INPUT_AXIS_DISTANCE:
+          zwp_tablet_tool_v1_send_distance (resource, value);
+          break;
+        case CLUTTER_INPUT_AXIS_SLIDER:
+          zwp_tablet_tool_v1_send_slider (resource, value);
+          break;
+        default:
+          break;
+        }
+    }
+}
+
+static void
+broadcast_tilt (MetaWaylandTabletTool *tool,
+                const ClutterEvent    *event)
+{
+  struct wl_resource *resource;
+  ClutterInputDevice *source;
+  gdouble xtilt, ytilt;
+
+  source = clutter_event_get_source_device (event);
+
+  if (!clutter_input_device_get_axis_value (source, event->motion.axes,
+                                            CLUTTER_INPUT_AXIS_XTILT, &xtilt) ||
+      !clutter_input_device_get_axis_value (source, event->motion.axes,
+                                            CLUTTER_INPUT_AXIS_YTILT, &ytilt))
+    return;
+
+  wl_resource_for_each (resource, &tool->focus_resource_list)
+    {
+      zwp_tablet_tool_v1_send_tilt (resource,
+                                    (int32_t) (xtilt * DEGREES_PRECISION),
+                                    (int32_t) (ytilt * DEGREES_PRECISION));
+    }
+}
+
+static void
+broadcast_rotation (MetaWaylandTabletTool *tool,
+                    const ClutterEvent    *event)
+{
+  struct wl_resource *resource;
+  ClutterInputDevice *source;
+  gdouble rotation;
+
+  source = clutter_event_get_source_device (event);
+
+  if (!clutter_input_device_get_axis_value (source, event->motion.axes,
+                                            CLUTTER_INPUT_AXIS_ROTATION,
+                                            &rotation))
+    return;
+
+  wl_resource_for_each (resource, &tool->focus_resource_list)
+    {
+      zwp_tablet_tool_v1_send_rotation (resource,
+                                        (int32_t) rotation * DEGREES_PRECISION);
+    }
+}
+
+static void
+broadcast_axes (MetaWaylandTabletTool *tool,
+                const ClutterEvent    *event)
+{
+  ClutterInputDevice *device;
+  guint32 capabilities;
+
+  if (!event->motion.axes)
+    return;
+
+  device = clutter_event_get_source_device (event);
+  capabilities = input_device_get_capabilities (device);
+
+  if (capabilities & (1 << ZWP_TABLET_TOOL_V1_CAPABILITY_PRESSURE))
+    broadcast_axis (tool, event, CLUTTER_INPUT_AXIS_PRESSURE);
+  if (capabilities & (1 << ZWP_TABLET_TOOL_V1_CAPABILITY_DISTANCE))
+    broadcast_axis (tool, event, CLUTTER_INPUT_AXIS_DISTANCE);
+  if (capabilities & (1 << ZWP_TABLET_TOOL_V1_CAPABILITY_TILT))
+    broadcast_tilt (tool, event);
+  if (capabilities & (1 << ZWP_TABLET_TOOL_V1_CAPABILITY_ROTATION))
+    broadcast_rotation (tool, event);
+  if (capabilities & (1 << ZWP_TABLET_TOOL_V1_CAPABILITY_SLIDER))
+    broadcast_axis (tool, event, CLUTTER_INPUT_AXIS_SLIDER);
+
+  /* FIXME: Missing wp_tablet_tool.wheel */
+}
+
+static void
+handle_motion_event (MetaWaylandTabletTool *tool,
+                     const ClutterEvent    *event)
+{
+  if (!tool->focus_surface)
+    return;
+
+  broadcast_motion (tool, event);
+  broadcast_axes (tool, event);
+  broadcast_frame (tool, event);
+}
+
+static void
+handle_button_event (MetaWaylandTabletTool *tool,
+                     const ClutterEvent    *event)
+{
+  if (!tool->focus_surface)
+    return;
+
+  if (event->type == CLUTTER_BUTTON_PRESS && event->button.button == 1)
+    broadcast_down (tool, event);
+  else if (event->type == CLUTTER_BUTTON_RELEASE && event->button.button == 1)
+    broadcast_up (tool, event);
+  else
+    broadcast_button (tool, event);
+
+  broadcast_frame (tool, event);
+}
+
 void
 meta_wayland_tablet_tool_update (MetaWaylandTabletTool *tool,
                                  const ClutterEvent    *event)
@@ -376,6 +658,13 @@ meta_wayland_tablet_tool_handle_event (MetaWaylandTabletTool *tool,
       break;
     case CLUTTER_PROXIMITY_OUT:
       meta_wayland_tablet_tool_set_focus (tool, NULL, event);
+      break;
+    case CLUTTER_MOTION:
+      handle_motion_event (tool, event);
+      break;
+    case CLUTTER_BUTTON_PRESS:
+    case CLUTTER_BUTTON_RELEASE:
+      handle_button_event (tool, event);
       break;
     default:
       return CLUTTER_EVENT_PROPAGATE;
