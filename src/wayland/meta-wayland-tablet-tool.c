@@ -31,6 +31,7 @@
 #include <wayland-server.h>
 #include "tablet-unstable-v1-server-protocol.h"
 #include "meta-wayland-private.h"
+#include "meta-wayland-surface-role-cursor.h"
 #include "meta-surface-actor-wayland.h"
 #include "meta-wayland-tablet.h"
 #include "meta-wayland-tablet-seat.h"
@@ -74,6 +75,54 @@ move_resources_for_client (struct wl_list   *destination,
           wl_list_insert (destination, wl_resource_get_link (resource));
         }
     }
+}
+
+static void
+meta_wayland_tablet_tool_update_cursor_surface (MetaWaylandTabletTool *tool)
+{
+  MetaCursorSprite *cursor = NULL;
+
+  if (tool->cursor_renderer == NULL)
+    return;
+
+  if (tool->current && tool->current_tablet)
+    {
+      if (tool->cursor_surface &&
+          meta_wayland_surface_get_buffer (tool->cursor_surface))
+        {
+          MetaWaylandSurfaceRoleCursor *cursor_role =
+            META_WAYLAND_SURFACE_ROLE_CURSOR (tool->cursor_surface->role);
+
+          cursor = meta_wayland_surface_role_cursor_get_sprite (cursor_role);
+        }
+      else
+        cursor = NULL;
+    }
+  else if (tool->current_tablet)
+    cursor = meta_cursor_sprite_from_theme (META_CURSOR_CROSSHAIR);
+  else
+    cursor = NULL;
+
+  meta_cursor_renderer_set_cursor (tool->cursor_renderer, cursor);
+}
+
+static void
+meta_wayland_tablet_tool_set_cursor_surface (MetaWaylandTabletTool *tool,
+                                             MetaWaylandSurface    *surface)
+{
+  if (tool->cursor_surface == surface)
+    return;
+
+  if (tool->cursor_surface)
+    wl_list_remove (&tool->cursor_surface_destroy_listener.link);
+
+  tool->cursor_surface = surface;
+
+  if (tool->cursor_surface)
+    wl_resource_add_destroy_listener (tool->cursor_surface->resource,
+                                      &tool->cursor_surface_destroy_listener);
+
+  meta_wayland_tablet_tool_update_cursor_surface (tool);
 }
 
 static uint32_t
@@ -207,6 +256,8 @@ meta_wayland_tablet_tool_set_focus (MetaWaylandTabletTool *tool,
           broadcast_frame (tool, event);
         }
     }
+
+  meta_wayland_tablet_tool_update_cursor_surface (tool);
 }
 
 static void
@@ -217,6 +268,16 @@ tablet_tool_handle_focus_surface_destroy (struct wl_listener *listener,
 
   tool = wl_container_of (listener, tool, focus_surface_destroy_listener);
   meta_wayland_tablet_tool_set_focus (tool, NULL, NULL);
+}
+
+static void
+tablet_tool_handle_cursor_surface_destroy (struct wl_listener *listener,
+                                           void               *data)
+{
+  MetaWaylandTabletTool *tool;
+
+  tool = wl_container_of (listener, tool, cursor_surface_destroy_listener);
+  meta_wayland_tablet_tool_set_cursor_surface (tool, NULL);
 }
 
 MetaWaylandTabletTool *
@@ -234,6 +295,7 @@ meta_wayland_tablet_tool_new (MetaWaylandTabletSeat  *seat,
   wl_list_init (&tool->focus_resource_list);
 
   tool->focus_surface_destroy_listener.notify = tablet_tool_handle_focus_surface_destroy;
+  tool->cursor_surface_destroy_listener.notify = tablet_tool_handle_cursor_surface_destroy;
 
   return tool;
 }
@@ -244,6 +306,8 @@ meta_wayland_tablet_tool_free (MetaWaylandTabletTool *tool)
   struct wl_resource *resource, *next;
 
   meta_wayland_tablet_tool_set_focus (tool, NULL, NULL);
+  meta_wayland_tablet_tool_set_cursor_surface (tool, NULL);
+  g_clear_object (&tool->cursor_renderer);
 
   wl_resource_for_each_safe (resource, next, &tool->resource_list)
     {
@@ -261,6 +325,42 @@ tool_set_cursor (struct wl_client   *client,
                  int32_t             hotspot_x,
                  int32_t             hotspot_y)
 {
+  MetaWaylandTabletTool *tool = wl_resource_get_user_data (resource);
+  MetaWaylandSurface *surface;
+
+  surface = (surface_resource ? wl_resource_get_user_data (surface_resource) : NULL);
+
+  if (tool->focus_surface == NULL)
+    return;
+  if (tool->cursor_renderer == NULL)
+    return;
+  if (wl_resource_get_client (tool->focus_surface->resource) != client)
+    return;
+  if (tool->proximity_serial - serial > G_MAXUINT32 / 2)
+    return;
+
+  if (surface &&
+      !meta_wayland_surface_assign_role (surface,
+                                         META_TYPE_WAYLAND_SURFACE_ROLE_CURSOR))
+    {
+      wl_resource_post_error (resource, WL_POINTER_ERROR_ROLE,
+                              "wl_surface@%d already has a different role",
+                              wl_resource_get_id (surface_resource));
+      return;
+    }
+
+  if (surface)
+    {
+      MetaWaylandSurfaceRoleCursor *cursor_role;
+
+      cursor_role = META_WAYLAND_SURFACE_ROLE_CURSOR (surface->role);
+      meta_wayland_surface_role_cursor_set_renderer (cursor_role,
+                                                     tool->cursor_renderer);
+      meta_wayland_surface_role_cursor_set_hotspot (cursor_role,
+                                                    hotspot_x, hotspot_y);
+    }
+
+  meta_wayland_tablet_tool_set_cursor_surface (tool, surface);
 }
 
 static void
@@ -385,6 +485,7 @@ repick_for_event (MetaWaylandTabletTool *tool,
     tool->current = NULL;
 
   sync_focus_surface (tool, for_event);
+  meta_wayland_tablet_tool_update_cursor_surface (tool);
 }
 
 static void
@@ -635,9 +736,16 @@ meta_wayland_tablet_tool_update (MetaWaylandTabletTool *tool,
         repick_for_event (tool, event);
       break;
     case CLUTTER_PROXIMITY_IN:
+      if (!tool->cursor_renderer)
+        tool->cursor_renderer = meta_cursor_renderer_new ();
       tool->current_tablet =
         meta_wayland_tablet_seat_lookup_tablet (tool->seat,
                                                 clutter_event_get_source_device (event));
+      break;
+    case CLUTTER_PROXIMITY_OUT:
+      tool->current_tablet = NULL;
+      meta_wayland_tablet_tool_update_cursor_surface (tool);
+      g_clear_object (&tool->cursor_renderer);
       break;
     default:
       break;

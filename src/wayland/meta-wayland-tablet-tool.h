@@ -40,6 +40,10 @@ struct _MetaWaylandTabletTool
   MetaWaylandSurface *focus_surface;
   struct wl_listener focus_surface_destroy_listener;
 
+  MetaWaylandSurface *cursor_surface;
+  struct wl_listener cursor_surface_destroy_listener;
+  MetaCursorRenderer *cursor_renderer;
+
   MetaWaylandSurface *current;
   guint32 pressed_buttons;
 
