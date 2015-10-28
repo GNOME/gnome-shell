@@ -35,6 +35,17 @@ struct _MetaWaylandTabletTool
   ClutterInputDevice *device;
   ClutterInputDeviceTool *device_tool;
   struct wl_list resource_list;
+  struct wl_list focus_resource_list;
+
+  MetaWaylandSurface *focus_surface;
+  struct wl_listener focus_surface_destroy_listener;
+
+  MetaWaylandSurface *current;
+  guint32 pressed_buttons;
+
+  guint32 proximity_serial;
+
+  MetaWaylandTablet *current_tablet;
 };
 
 MetaWaylandTabletTool * meta_wayland_tablet_tool_new  (MetaWaylandTabletSeat  *seat,
