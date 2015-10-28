@@ -164,6 +164,104 @@ input_device_get_capabilities (ClutterInputDevice *device)
   return capabilities;
 }
 
+static enum zwp_tablet_tool_v1_type
+input_device_tool_get_type (ClutterInputDeviceTool *device_tool)
+{
+  ClutterInputDeviceToolType tool_type;
+
+  tool_type = clutter_input_device_tool_get_tool_type (device_tool);
+
+  switch (tool_type)
+    {
+    case CLUTTER_INPUT_DEVICE_TOOL_NONE:
+    case CLUTTER_INPUT_DEVICE_TOOL_PEN:
+      return ZWP_TABLET_TOOL_V1_TYPE_PEN;
+    case CLUTTER_INPUT_DEVICE_TOOL_ERASER:
+      return ZWP_TABLET_TOOL_V1_TYPE_ERASER;
+    case CLUTTER_INPUT_DEVICE_TOOL_BRUSH:
+      return ZWP_TABLET_TOOL_V1_TYPE_BRUSH;
+    case CLUTTER_INPUT_DEVICE_TOOL_PENCIL:
+      return ZWP_TABLET_TOOL_V1_TYPE_PENCIL;
+    case CLUTTER_INPUT_DEVICE_TOOL_AIRBRUSH:
+      return ZWP_TABLET_TOOL_V1_TYPE_AIRBRUSH;
+    case CLUTTER_INPUT_DEVICE_TOOL_MOUSE:
+      return ZWP_TABLET_TOOL_V1_TYPE_MOUSE;
+    case CLUTTER_INPUT_DEVICE_TOOL_LENS:
+      return ZWP_TABLET_TOOL_V1_TYPE_LENS;
+    }
+
+  g_assert_not_reached ();
+  return 0;
+}
+
+static void
+meta_wayland_tablet_tool_notify_capabilities (MetaWaylandTabletTool *tool,
+                                              struct wl_resource    *resource)
+{
+  uint32_t capabilities;
+
+  capabilities = input_device_get_capabilities (tool->device);
+
+  if (capabilities & (1 << ZWP_TABLET_TOOL_V1_CAPABILITY_PRESSURE))
+    zwp_tablet_tool_v1_send_capability (resource,
+                                        ZWP_TABLET_TOOL_V1_CAPABILITY_PRESSURE);
+  if (capabilities & (1 << ZWP_TABLET_TOOL_V1_CAPABILITY_DISTANCE))
+    zwp_tablet_tool_v1_send_capability (resource,
+                                        ZWP_TABLET_TOOL_V1_CAPABILITY_DISTANCE);
+  if (capabilities & (1 << ZWP_TABLET_TOOL_V1_CAPABILITY_TILT))
+    zwp_tablet_tool_v1_send_capability (resource,
+                                        ZWP_TABLET_TOOL_V1_CAPABILITY_TILT);
+  if (capabilities & (1 << ZWP_TABLET_TOOL_V1_CAPABILITY_ROTATION))
+    zwp_tablet_tool_v1_send_capability (resource,
+                                        ZWP_TABLET_TOOL_V1_CAPABILITY_ROTATION);
+  if (capabilities & (1 << ZWP_TABLET_TOOL_V1_CAPABILITY_SLIDER))
+    zwp_tablet_tool_v1_send_capability (resource,
+                                        ZWP_TABLET_TOOL_V1_CAPABILITY_SLIDER);
+  if (capabilities & (1 << ZWP_TABLET_TOOL_V1_CAPABILITY_WHEEL))
+    zwp_tablet_tool_v1_send_capability (resource,
+                                        ZWP_TABLET_TOOL_V1_CAPABILITY_WHEEL);
+}
+
+static void
+meta_wayland_tablet_tool_notify_details (MetaWaylandTabletTool *tool,
+                                         struct wl_resource    *resource)
+{
+  guint64 serial;
+
+  zwp_tablet_tool_v1_send_type (resource,
+                                input_device_tool_get_type (tool->device_tool));
+
+  serial = (guint64) clutter_input_device_tool_get_serial (tool->device_tool);
+  zwp_tablet_tool_v1_send_hardware_serial (resource, (uint32_t) (serial >> 32),
+                                           (uint32_t) (serial & G_MAXUINT32));
+
+  meta_wayland_tablet_tool_notify_capabilities (tool, resource);
+
+  /* FIXME: zwp_tablet_tool_v1.hardware_id_wacom missing */
+
+  zwp_tablet_tool_v1_send_done (resource);
+}
+
+static void
+meta_wayland_tablet_tool_ensure_resource (MetaWaylandTabletTool *tool,
+                                          struct wl_client      *client)
+{
+  struct wl_resource *seat_resource, *tool_resource;
+
+  seat_resource = meta_wayland_tablet_seat_lookup_resource (tool->seat, client);
+
+  if (seat_resource &&
+      !meta_wayland_tablet_tool_lookup_resource (tool, client))
+    {
+      tool_resource = meta_wayland_tablet_tool_create_new_resource (tool, client,
+                                                                    seat_resource,
+                                                                    0);
+
+      meta_wayland_tablet_seat_notify_tool (tool->seat, tool, client);
+      meta_wayland_tablet_tool_notify_details (tool, tool_resource);
+    }
+}
+
 static void
 broadcast_proximity_in (MetaWaylandTabletTool *tool)
 {
@@ -230,7 +328,7 @@ meta_wayland_tablet_tool_set_focus (MetaWaylandTabletTool *tool,
       tool->focus_surface = NULL;
     }
 
-  if (surface != NULL)
+  if (surface != NULL && tool->current_tablet)
     {
       struct wl_client *client;
       struct wl_list *l;
@@ -242,6 +340,7 @@ meta_wayland_tablet_tool_set_focus (MetaWaylandTabletTool *tool,
 
       move_resources_for_client (&tool->focus_resource_list,
                                  &tool->resource_list, client);
+      meta_wayland_tablet_tool_ensure_resource (tool, client);
 
       l = &tool->focus_resource_list;
 
