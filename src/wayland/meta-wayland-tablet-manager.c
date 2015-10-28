@@ -33,6 +33,7 @@
 #include "meta-wayland-private.h"
 #include "meta-wayland-tablet-manager.h"
 #include "meta-wayland-tablet-seat.h"
+#include "meta-wayland-tablet-tool.h"
 
 static void
 unbind_resource (struct wl_resource *resource)
@@ -236,4 +237,31 @@ meta_wayland_tablet_manager_ensure_seat (MetaWaylandTabletManager *manager,
     }
 
   return tablet_seat;
+}
+
+void
+meta_wayland_tablet_manager_update_cursor_position (MetaWaylandTabletManager *manager,
+                                                    const ClutterEvent       *event)
+{
+  MetaWaylandTabletSeat *tablet_seat = NULL;
+  MetaWaylandTabletTool *tool = NULL;
+  ClutterInputDeviceTool *device_tool;
+  ClutterInputDevice *device;
+
+  device = clutter_event_get_source_device (event);
+  device_tool = clutter_event_get_device_tool (event);
+
+  if (device)
+    tablet_seat = meta_wayland_tablet_manager_lookup_seat (manager, device);
+
+  if (tablet_seat && device_tool)
+    tool = meta_wayland_tablet_seat_lookup_tool (tablet_seat, device_tool);
+
+  if (tool)
+    {
+      gfloat new_x, new_y;
+
+      clutter_event_get_coords (event, &new_x, &new_y);
+      meta_wayland_tablet_tool_set_cursor_position (tool, new_x, new_y);
+    }
 }

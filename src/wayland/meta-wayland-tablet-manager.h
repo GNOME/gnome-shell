@@ -51,4 +51,7 @@ MetaWaylandTabletSeat *
          meta_wayland_tablet_manager_ensure_seat    (MetaWaylandTabletManager *manager,
                                                      MetaWaylandSeat          *seat);
 
+void     meta_wayland_tablet_manager_update_cursor_position (MetaWaylandTabletManager *manager,
+                                                             const ClutterEvent       *event);
+
 #endif /* META_WAYLAND_TABLET_MANAGER_H */
