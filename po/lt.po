@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-03-14 08:44+0000\n"
+"POT-Creation-Date: 2015-10-11 17:10+0000\n"
 "PO-Revision-Date: 2015-03-14 21:00+0200\n"
 "Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lietuvių <gnome-lt@lists.akl.lt>\n"
@@ -300,12 +300,12 @@ msgstr "Atidėti fokuso pakeitimus pelei iki žymiklis nustos judėti"
 msgid "Network Login"
 msgstr "Tinklo prisijungimas"
 
-#: ../js/extensionPrefs/main.js:123
+#: ../js/extensionPrefs/main.js:122
 #, javascript-format
 msgid "There was an error loading the preferences dialog for %s:"
 msgstr "Kilo klaida įkeliant %s nustatymų dialogą:"
 
-#: ../js/extensionPrefs/main.js:155
+#: ../js/extensionPrefs/main.js:154
 msgid "GNOME Shell Extensions"
 msgstr "GNOME Shell plėtiniai"
 
@@ -316,39 +316,48 @@ msgstr "GNOME Shell plėtiniai"
 msgid "Cancel"
 msgstr "Atsisakyti"
 
-#: ../js/gdm/authPrompt.js:169 ../js/gdm/authPrompt.js:217
+#: ../js/gdm/authPrompt.js:169 ../js/gdm/authPrompt.js:215
+#: ../js/gdm/authPrompt.js:435
 msgid "Next"
 msgstr "Kitas"
 
-#: ../js/gdm/authPrompt.js:213 ../js/ui/shellMountOperation.js:403
+#: ../js/gdm/authPrompt.js:211 ../js/ui/shellMountOperation.js:403
 #: ../js/ui/unlockDialog.js:59
 msgid "Unlock"
 msgstr "Atrakinti"
 
-#: ../js/gdm/authPrompt.js:215
+#: ../js/gdm/authPrompt.js:213
 msgctxt "button"
 msgid "Sign In"
 msgstr "Prisijungti"
 
-#: ../js/gdm/loginDialog.js:280
+#: ../js/gdm/loginDialog.js:281
 msgid "Choose Session"
 msgstr "Pasirinkite seansą"
 
-#: ../js/gdm/loginDialog.js:421
+#. translators: this message is shown below the user list on the
+#. login screen. It can be activated to reveal an entry for
+#. manually entering the username.
+#: ../js/gdm/loginDialog.js:431
 msgid "Not listed?"
 msgstr "Nėra sąraše?"
 
-#: ../js/gdm/loginDialog.js:830
+#. Translators: this message is shown below the username entry field
+#. to clue the user in on how to login to the local network realm
+#: ../js/gdm/loginDialog.js:847
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(pvz., naudotojas arba %s)"
 
-#: ../js/gdm/loginDialog.js:835 ../js/ui/components/networkAgent.js:271
+#. TTLS and PEAP are actually much more complicated, but this complication
+#. is not visible here since we only care about phase2 authentication
+#. (and don't even care of which one)
+#: ../js/gdm/loginDialog.js:852 ../js/ui/components/networkAgent.js:271
 #: ../js/ui/components/networkAgent.js:289
 msgid "Username: "
 msgstr "Naudotojo vardas: "
 
-#: ../js/gdm/loginDialog.js:1170
+#: ../js/gdm/loginDialog.js:1181
 msgid "Login Window"
 msgstr "Prisijungimo langas"
 
@@ -356,6 +365,11 @@ msgstr "Prisijungimo langas"
 msgid "Authentication error"
 msgstr "Tapatybės patvirtinimo klaida"
 
+#. We don't show fingerprint messages directly since it's
+#. not the main auth service. Instead we use the messages
+#. as a cue to display our own message.
+#. Translators: this message is shown below the password entry field
+#. to indicate the user can swipe their finger instead
 #: ../js/gdm/util.js:473
 msgid "(or swipe finger)"
 msgstr "(arba perbraukite pirštu)"
@@ -364,6 +378,8 @@ msgstr "(arba perbraukite pirštu)"
 msgid "Command not found"
 msgstr "Komanda nerasta"
 
+#. Replace "Error invoking GLib.shell_parse_argv: " with
+#. something nicer
 #: ../js/misc/util.js:152
 msgid "Could not parse command:"
 msgstr "Nepavyko perskaityti komandos:"
@@ -373,99 +389,107 @@ msgstr "Nepavyko perskaityti komandos:"
 msgid "Execution of “%s” failed:"
 msgstr "Nepavyko įvykdyti „%s“:"
 
-#. Translators: Time in 24h format */
+#. Translators: Time in 24h format
 #: ../js/misc/util.js:191
 msgid "%H∶%M"
 msgstr "%H∶%M"
 
 #. Translators: this is the word "Yesterday" followed by a
-#. time string in 24h format. i.e. "Yesterday, 14:30" */
+#. time string in 24h format. i.e. "Yesterday, 14:30"
 #: ../js/misc/util.js:197
+#, no-c-format
 msgid "Yesterday, %H∶%M"
 msgstr "Vakar, %H:%M"
 
 #. Translators: this is the week day name followed by a time
-#. string in 24h format. i.e. "Monday, 14:30" */
+#. string in 24h format. i.e. "Monday, 14:30"
 #: ../js/misc/util.js:203
+#, no-c-format
 msgid "%A, %H∶%M"
 msgstr "%A, %H∶%M"
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 24h format.
-#. i.e. "May 25, 14:30" */
+#. i.e. "May 25, 14:30"
 #: ../js/misc/util.js:209
+#, no-c-format
 msgid "%B %d, %H∶%M"
 msgstr "%B %d, %H∶%M"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
-#. i.e. "May 25 2012, 14:30" */
+#. i.e. "May 25 2012, 14:30"
 #: ../js/misc/util.js:215
+#, no-c-format
 msgid "%B %d %Y, %H∶%M"
 msgstr "%Y %m %d, %H∶%M"
 
-#. Translators: Time in 12h format */
+#. Translators: Time in 12h format
 #: ../js/misc/util.js:220
 msgid "%l∶%M %p"
 msgstr "%l∶%M %p"
 
 #. Translators: this is the word "Yesterday" followed by a
-#. time string in 12h format. i.e. "Yesterday, 2:30 pm" */
+#. time string in 12h format. i.e. "Yesterday, 2:30 pm"
 #: ../js/misc/util.js:226
+#, no-c-format
 msgid "Yesterday, %l∶%M %p"
 msgstr "Vakar, %l∶%M %p"
 
 #. Translators: this is the week day name followed by a time
-#. string in 12h format. i.e. "Monday, 2:30 pm" */
+#. string in 12h format. i.e. "Monday, 2:30 pm"
 #: ../js/misc/util.js:232
+#, no-c-format
 msgid "%A, %l∶%M %p"
 msgstr "%A, %l∶%M %p"
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 12h format.
-#. i.e. "May 25, 2:30 pm" */
+#. i.e. "May 25, 2:30 pm"
 #: ../js/misc/util.js:238
+#, no-c-format
 msgid "%B %d, %l∶%M %p"
 msgstr "%B %d, %l∶%M %p"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
-#. i.e. "May 25 2012, 2:30 pm"*/
+#. i.e. "May 25 2012, 2:30 pm"
 #: ../js/misc/util.js:244
+#, no-c-format
 msgid "%B %d %Y, %l∶%M %p"
 msgstr "%Y %B %d, %l∶%M %p"
 
 #. TRANSLATORS: this is the title of the wifi captive portal login
-#. * window, until we know the title of the actual login page */
+#. * window, until we know the title of the actual login page
 #: ../js/portalHelper/main.js:85
 msgid "Web Authentication Redirect"
 msgstr "Reikia patvirtinti tapatybę internete"
 
-#: ../js/ui/appDisplay.js:792
+#: ../js/ui/appDisplay.js:794
 msgid "Frequently used applications will appear here"
 msgstr "Čia bus matomos dažnai naudojamos programos"
 
-#: ../js/ui/appDisplay.js:912
+#: ../js/ui/appDisplay.js:914
 msgid "Frequent"
 msgstr "Dažnai naudojamos"
 
-#: ../js/ui/appDisplay.js:919
+#: ../js/ui/appDisplay.js:921
 msgid "All"
 msgstr "Visos"
 
-#: ../js/ui/appDisplay.js:1850
+#: ../js/ui/appDisplay.js:1853
 msgid "New Window"
 msgstr "Naujas langas"
 
-#: ../js/ui/appDisplay.js:1878 ../js/ui/dash.js:291
+#: ../js/ui/appDisplay.js:1881 ../js/ui/dash.js:289
 msgid "Remove from Favorites"
 msgstr "Pašalinti iš mėgstamų"
 
-#: ../js/ui/appDisplay.js:1884
+#: ../js/ui/appDisplay.js:1887
 msgid "Add to Favorites"
 msgstr "Pridėti prie mėgstamų"
 
-#: ../js/ui/appDisplay.js:1894
+#: ../js/ui/appDisplay.js:1897
 msgid "Show Details"
 msgstr "Rodyti detalią informaciją"
 
@@ -480,7 +504,7 @@ msgid "%s has been removed from your favorites."
 msgstr "%s pašalinta iš jūsų mėgstamų."
 
 #: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:650
-#: ../js/ui/status/system.js:337
+#: ../js/ui/status/system.js:334
 msgid "Settings"
 msgstr "Nustatymai"
 
@@ -488,7 +512,7 @@ msgstr "Nustatymai"
 msgid "Change Background…"
 msgstr "Keisti foną…"
 
-#. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday). */
+#. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
 #: ../js/ui/calendar.js:53
 msgctxt "calendar-no-work"
 msgid "06"
@@ -498,95 +522,95 @@ msgstr "06"
 #. *
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
-#. */
+#.
 #: ../js/ui/calendar.js:82
 msgctxt "grid sunday"
 msgid "S"
 msgstr "S"
 
-#. Translators: Calendar grid abbreviation for Monday */
+#. Translators: Calendar grid abbreviation for Monday
 #: ../js/ui/calendar.js:84
 msgctxt "grid monday"
 msgid "M"
 msgstr "P"
 
-#. Translators: Calendar grid abbreviation for Tuesday */
+#. Translators: Calendar grid abbreviation for Tuesday
 #: ../js/ui/calendar.js:86
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "A"
 
-#. Translators: Calendar grid abbreviation for Wednesday */
+#. Translators: Calendar grid abbreviation for Wednesday
 #: ../js/ui/calendar.js:88
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "T"
 
-#. Translators: Calendar grid abbreviation for Thursday */
+#. Translators: Calendar grid abbreviation for Thursday
 #: ../js/ui/calendar.js:90
 msgctxt "grid thursday"
 msgid "T"
 msgstr "K"
 
-#. Translators: Calendar grid abbreviation for Friday */
+#. Translators: Calendar grid abbreviation for Friday
 #: ../js/ui/calendar.js:92
 msgctxt "grid friday"
 msgid "F"
 msgstr "P"
 
-#. Translators: Calendar grid abbreviation for Saturday */
+#. Translators: Calendar grid abbreviation for Saturday
 #: ../js/ui/calendar.js:94
 msgctxt "grid saturday"
 msgid "S"
 msgstr "Š"
 
-#: ../js/ui/calendar.js:563
+#: ../js/ui/calendar.js:564
 msgid "Previous month"
 msgstr "Ankstesnis mėnuo"
 
-#: ../js/ui/calendar.js:573
+#: ../js/ui/calendar.js:574
 msgid "Next month"
 msgstr "Kitas mėnuo"
 
-#: ../js/ui/calendar.js:780
+#: ../js/ui/calendar.js:781
 msgid "Week %V"
 msgstr "Savaitė %V"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
-#. */
-#: ../js/ui/calendar.js:1182
+#.
+#: ../js/ui/calendar.js:1187
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Visa diena"
 
-#: ../js/ui/calendar.js:1288
+#: ../js/ui/calendar.js:1293
 msgid "Clear section"
 msgstr "Išvalyti skiltį"
 
-#: ../js/ui/calendar.js:1515
+#: ../js/ui/calendar.js:1520
 msgid "Events"
 msgstr "Įvykiai"
 
-#: ../js/ui/calendar.js:1524
+#: ../js/ui/calendar.js:1529
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %B %d d."
 
-#: ../js/ui/calendar.js:1528
+#: ../js/ui/calendar.js:1533
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %Y m. %B %d d."
 
-#: ../js/ui/calendar.js:1613
+#: ../js/ui/calendar.js:1618
 msgid "Notifications"
 msgstr "Pranešimai"
 
-#: ../js/ui/calendar.js:1764
+#: ../js/ui/calendar.js:1769
 msgid "No Notifications"
 msgstr "Nėra pranešimų"
 
-#: ../js/ui/calendar.js:1767
+#: ../js/ui/calendar.js:1772
 msgid "No Events"
 msgstr "Nėra įvykių"
 
@@ -616,6 +640,7 @@ msgstr "Įveskite dar kartą:"
 msgid "Connect"
 msgstr "Prisijungti"
 
+#. Cisco LEAP
 #: ../js/ui/components/networkAgent.js:233
 #: ../js/ui/components/networkAgent.js:245
 #: ../js/ui/components/networkAgent.js:273
@@ -624,6 +649,7 @@ msgstr "Prisijungti"
 msgid "Password: "
 msgstr "Slaptažodis: "
 
+#. static WEP
 #: ../js/ui/components/networkAgent.js:238
 msgid "Key: "
 msgstr "Raktas: "
@@ -715,14 +741,14 @@ msgstr "Patvirtinti tapatybę"
 #. Translators: "that didn't work" refers to the fact that the
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
-#. * for instance. */
+#. * for instance.
 #: ../js/ui/components/polkitAgent.js:271 ../js/ui/shellMountOperation.js:383
 msgid "Sorry, that didn't work. Please try again."
 msgstr "Atsiprašome, tai nesuveikė. Bandykite dar kartą."
 
 #. Translators: this is the other person changing their old IM name to their new
-#. IM name. */
-#: ../js/ui/components/telepathyClient.js:775
+#. IM name.
+#: ../js/ui/components/telepathyClient.js:757
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s nuo šiol vadinasi %s"
@@ -731,25 +757,27 @@ msgstr "%s nuo šiol vadinasi %s"
 msgid "Windows"
 msgstr "Langai"
 
-#: ../js/ui/dash.js:252 ../js/ui/dash.js:293
+#: ../js/ui/dash.js:250 ../js/ui/dash.js:291
 msgid "Show Applications"
 msgstr "Paleisti programas"
 
-#: ../js/ui/dash.js:453
+#. Translators: this is the name of the dock/favorites area on
+#. the left of the overview
+#: ../js/ui/dash.js:449
 msgid "Dash"
 msgstr "Paleidimo sritis"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
-#. */
+#.
 #: ../js/ui/dateMenu.js:73
 msgid "%B %e %Y"
-msgstr "%B %e %Y"
+msgstr "%Y m. %B %d d."
 
 #. Translators: This is the accessible name of the date button shown
 #. * below the time in the shell; it should combine the weekday and the
 #. * date, e.g. "Tuesday February 17 2015".
-#. */
+#.
 #: ../js/ui/dateMenu.js:80
 msgid "%A %B %e %Y"
 msgstr "%A, %Y %B %d"
@@ -886,13 +914,13 @@ msgstr "Kai kurios programos dirba arba turi neįrašyto darbo."
 msgid "Other users are logged in."
 msgstr "Yra prisijungusių kitų naudotojų"
 
-#. Translators: Remote here refers to a remote session, like a ssh login */
+#. Translators: Remote here refers to a remote session, like a ssh login
 #: ../js/ui/endSessionDialog.js:640
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (nutolęs)"
 
-#. Translators: Console here refers to a tty like a VT console */
+#. Translators: Console here refers to a tty like a VT console
 #: ../js/ui/endSessionDialog.js:643
 #, javascript-format
 msgid "%s (console)"
@@ -907,17 +935,16 @@ msgstr "Įdiegti"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Parsiųsti ir įdiegti „%s“ iš extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:714 ../js/ui/status/keyboard.js:580
+#: ../js/ui/keyboard.js:741 ../js/ui/status/keyboard.js:713
 msgid "Keyboard"
 msgstr "Klaviatūra"
 
-#. translators: 'Hide' is a verb */
-#: ../js/ui/legacyTray.js:59
-#| msgid "Hide Text"
+#. translators: 'Hide' is a verb
+#: ../js/ui/legacyTray.js:66
 msgid "Hide tray"
 msgstr "Slėpti dėklą"
 
-#: ../js/ui/legacyTray.js:91
+#: ../js/ui/legacyTray.js:107
 msgid "Status Icons"
 msgstr "Būsenos piktogramos"
 
@@ -925,7 +952,7 @@ msgstr "Būsenos piktogramos"
 msgid "No extensions installed"
 msgstr "Nėra įdiegtų plėtinių"
 
-#. Translators: argument is an extension UUID. */
+#. Translators: argument is an extension UUID.
 #: ../js/ui/lookingGlass.js:697
 #, javascript-format
 msgid "%s has not emitted any errors."
@@ -945,7 +972,7 @@ msgid "Enabled"
 msgstr "Įjungta"
 
 #. Translators: this is for a network device that cannot be activated
-#. because it's disabled by rfkill (airplane mode) */
+#. because it's disabled by rfkill (airplane mode)
 #. translators:
 #. * The device has been disabled
 #: ../js/ui/lookingGlass.js:719 ../js/ui/status/location.js:179
@@ -973,7 +1000,7 @@ msgstr "Žiūrėti šaltinį"
 msgid "Web Page"
 msgstr "Tinklalapis"
 
-#: ../js/ui/messageTray.js:2133
+#: ../js/ui/messageTray.js:1506
 msgid "System Information"
 msgstr "Sistemos informacija"
 
@@ -988,7 +1015,7 @@ msgstr "Apžvalga"
 #. Translators: this is the text displayed
 #. in the search entry when no search is
 #. active; it should not exceed ~30
-#. characters. */
+#. characters.
 #: ../js/ui/overview.js:246
 msgid "Type to search…"
 msgstr "Rašykite, ko ieškote…"
@@ -998,7 +1025,7 @@ msgid "Quit"
 msgstr "Užverti"
 
 #. Translators: If there is no suitable word for "Activities"
-#. in your language, you can use the word for "Overview". */
+#. in your language, you can use the word for "Overview".
 #: ../js/ui/panel.js:404
 msgid "Activities"
 msgstr "Apžvalga"
@@ -1007,6 +1034,11 @@ msgstr "Apžvalga"
 msgid "Top Bar"
 msgstr "Viršutinė juosta"
 
+#. Translators: this MUST be either "toggle-switch-us"
+#. (for toggle switches containing the English words
+#. "ON" and "OFF") or "toggle-switch-intl" (for toggle
+#. switches containing "◯" and "|"). Other values will
+#. simply result in invisible toggle switches.
 #: ../js/ui/popupMenu.js:289
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
@@ -1024,7 +1056,7 @@ msgid "Restarting…"
 msgstr "Perleidžiama…"
 
 #. Translators: This is a time format for a date in
-#. long format */
+#. long format
 #: ../js/ui/screenShield.js:85
 msgid "%A, %B %d"
 msgstr "%A, %B %d d."
@@ -1045,27 +1077,34 @@ msgstr[0] "%d naujas pranešimas"
 msgstr[1] "%d nauji pranešimai"
 msgstr[2] "%d naujų pranešimų"
 
-#: ../js/ui/screenShield.js:432 ../js/ui/status/system.js:345
+#: ../js/ui/screenShield.js:432 ../js/ui/status/system.js:342
 msgid "Lock"
 msgstr "Užrakinti"
 
-#: ../js/ui/screenShield.js:668
+#: ../js/ui/screenShield.js:684
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME aplinkai reikia užrakinti ekraną"
 
-#: ../js/ui/screenShield.js:795 ../js/ui/screenShield.js:1271
+#. We could not become modal, so we can't activate the
+#. screenshield. The user is probably very upset at this
+#. point, but any application using global grabs is broken
+#. Just tell him to stop using this app
+#.
+#. XXX: another option is to kick the user into the gdm login
+#. screen, where we're not affected by grabs
+#: ../js/ui/screenShield.js:805 ../js/ui/screenShield.js:1271
 msgid "Unable to lock"
 msgstr "Nepavyksta užrakinti"
 
-#: ../js/ui/screenShield.js:796 ../js/ui/screenShield.js:1272
+#: ../js/ui/screenShield.js:806 ../js/ui/screenShield.js:1272
 msgid "Lock was blocked by an application"
 msgstr "Programa užblokavo užrakinimą"
 
-#: ../js/ui/search.js:616
+#: ../js/ui/search.js:617
 msgid "Searching…"
 msgstr "Ieškoma…"
 
-#: ../js/ui/search.js:618
+#: ../js/ui/search.js:619
 msgid "No results."
 msgstr "Nerasta atitikmenų."
 
@@ -1129,14 +1168,16 @@ msgstr "Pasikartojantieji klavišai"
 msgid "Mouse Keys"
 msgstr "Pelės mygtukai"
 
-#: ../js/ui/status/accessibility.js:144
+#: ../js/ui/status/accessibility.js:167
 msgid "High Contrast"
 msgstr "Didelis kontrastas"
 
-#: ../js/ui/status/accessibility.js:193
+#: ../js/ui/status/accessibility.js:202
 msgid "Large Text"
 msgstr "Didelis tekstas"
 
+#. The Bluetooth menu only appears when Bluetooth is in use,
+#. so just statically build it with a "Turn Off" menu item.
 #: ../js/ui/status/bluetooth.js:49
 msgid "Bluetooth"
 msgstr "Bluetooth"
@@ -1168,7 +1209,7 @@ msgstr "Atsijungta"
 msgid "Brightness"
 msgstr "Ryškumas"
 
-#: ../js/ui/status/keyboard.js:603
+#: ../js/ui/status/keyboard.js:736
 msgid "Show Keyboard Layout"
 msgstr "Rodyti klaviatūros išdėstymą"
 
@@ -1206,7 +1247,7 @@ msgid "Connected"
 msgstr "Prisijungta"
 
 #. Translators: this is for network devices that are physically present but are not
-#. under NetworkManager's control (and thus cannot be used in the menu) */
+#. under NetworkManager's control (and thus cannot be used in the menu)
 #: ../js/ui/status/network.js:463
 msgid "Unmanaged"
 msgstr "Nevaldomas"
@@ -1219,19 +1260,19 @@ msgstr "Atsijungiama"
 msgid "Connecting"
 msgstr "Jungiamasi"
 
-#. Translators: this is for network connections that require some kind of key or password */
+#. Translators: this is for network connections that require some kind of key or password
 #: ../js/ui/status/network.js:474
 msgid "Authentication required"
 msgstr "Reikia patvirtinti tapatybę"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
-#. module, which is missing */
+#. module, which is missing
 #: ../js/ui/status/network.js:482
 msgid "Firmware missing"
 msgstr "Trūksta integruotos programinės įrangos (firmware)"
 
 #. Translators: this is for a network device that cannot be activated (for example it
-#. is disabled by rfkill, or it has no coverage */
+#. is disabled by rfkill, or it has no coverage
 #: ../js/ui/status/network.js:486
 msgid "Unavailable"
 msgstr "Nepasiekiamas"
@@ -1316,7 +1357,7 @@ msgstr "Prieigos taškas aktyvus"
 msgid "connecting..."
 msgstr "jungiamasi..."
 
-#. Translators: this is for network connections that require some kind of key or password */
+#. Translators: this is for network connections that require some kind of key or password
 #: ../js/ui/status/network.js:1413
 msgid "authentication required"
 msgstr "reikia patvirtinti tapatybę"
@@ -1349,15 +1390,19 @@ msgstr "Energijos valdymo nustatymai"
 msgid "Fully Charged"
 msgstr "Pilnai įkrauta"
 
+#. 0 is reported when UPower does not have enough data
+#. to estimate battery life
 #: ../js/ui/status/power.js:72 ../js/ui/status/power.js:78
 msgid "Estimating…"
 msgstr "Įvertinama…"
 
+#. Translators: this is <hours>:<minutes> Remaining (<percentage>)
 #: ../js/ui/status/power.js:86
 #, javascript-format
 msgid "%d∶%02d Remaining (%d%%)"
 msgstr "Liko %d∶%02d (%d%%)"
 
+#. Translators: this is <hours>:<minutes> Until Full (<percentage>)
 #: ../js/ui/status/power.js:91
 #, javascript-format
 msgid "%d∶%02d Until Full (%d%%)"
@@ -1371,6 +1416,9 @@ msgstr "UPS"
 msgid "Battery"
 msgstr "Baterija"
 
+#. The menu only appears when airplane mode is on, so just
+#. statically build it as if it was on, rather than dynamically
+#. changing the menu contents.
 #: ../js/ui/status/rfkill.js:88
 msgid "Airplane Mode"
 msgstr "Skrydžio veiksena"
@@ -1379,23 +1427,23 @@ msgstr "Skrydžio veiksena"
 msgid "On"
 msgstr "Įjungta"
 
-#: ../js/ui/status/system.js:317
+#: ../js/ui/status/system.js:314
 msgid "Switch User"
 msgstr "Keisti naudotoją"
 
-#: ../js/ui/status/system.js:322
+#: ../js/ui/status/system.js:319
 msgid "Log Out"
 msgstr "Atsijungti"
 
-#: ../js/ui/status/system.js:341
+#: ../js/ui/status/system.js:338
 msgid "Orientation Lock"
 msgstr "Padėties užrakinimas"
 
-#: ../js/ui/status/system.js:349
+#: ../js/ui/status/system.js:346
 msgid "Suspend"
 msgstr "Užmigdyti"
 
-#: ../js/ui/status/system.js:352
+#: ../js/ui/status/system.js:349
 msgid "Power Off"
 msgstr "Išjungti"
 
@@ -1438,7 +1486,7 @@ msgstr "Ar nori įrašyti šiuos vaizduoklio nustatymus?"
 
 #. Translators: this and the following message should be limited in lenght,
 #. to avoid ellipsizing the labels.
-#. */
+#.
 #: ../js/ui/windowManager.js:84
 msgid "Revert Settings"
 msgstr "Grąžinti nustatymus"
@@ -1456,8 +1504,8 @@ msgstr[1] "Pakeitimai bus grąžinti po %d sekundžių"
 msgstr[2] "Pakeitimai bus grąžinti po %d sekundžių"
 
 #. Translators: This represents the size of a window. The first number is
-#. * the width of the window and the second is the height. */
-#: ../js/ui/windowManager.js:599
+#. * the width of the window and the second is the height.
+#: ../js/ui/windowManager.js:613
 #, javascript-format
 msgid "%d x %d"
 msgstr "%d x %d"
@@ -1530,28 +1578,28 @@ msgstr[2] "%u įvesčių"
 msgid "System Sounds"
 msgstr "Sistemos garsai"
 
-#: ../src/main.c:373
+#: ../src/main.c:372
 msgid "Print version"
 msgstr "Išvesti versijos numerį"
 
-#: ../src/main.c:379
+#: ../src/main.c:378
 msgid "Mode used by GDM for login screen"
 msgstr "Veiksena, naudojama GDM prisijungimo ekrane"
 
-#: ../src/main.c:385
+#: ../src/main.c:384
 msgid "Use a specific mode, e.g. \"gdm\" for login screen"
 msgstr "Naudoti konkrečią veikseną, pvz., „gdm“ prisijungimo ekranui"
 
-#: ../src/main.c:391
+#: ../src/main.c:390
 msgid "List possible modes"
 msgstr "Išvardinti galimas veiksenas"
 
-#: ../src/shell-app.c:247
+#: ../src/shell-app.c:239
 msgctxt "program"
 msgid "Unknown"
 msgstr "Nežinoma"
 
-#: ../src/shell-app.c:488
+#: ../src/shell-app.c:480
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "Nepavyko paleisti „%s“"
