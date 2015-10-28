@@ -37,6 +37,8 @@
 #include "meta-cursor-renderer-native.h"
 #include "meta-launcher.h"
 
+#include <stdlib.h>
+
 struct _MetaBackendNativePrivate
 {
   MetaLauncher *launcher;
@@ -327,8 +329,15 @@ static void
 meta_backend_native_init (MetaBackendNative *native)
 {
   MetaBackendNativePrivate *priv = meta_backend_native_get_instance_private (native);
+  GError *error = NULL;
 
-  priv->launcher = meta_launcher_new ();
+  priv->launcher = meta_launcher_new (&error);
+  if (priv->launcher == NULL)
+    {
+      g_warning ("Can't initialize KMS backend: %s\n", error->message);
+      exit (1);
+    }
+
   priv->barrier_manager = meta_barrier_manager_native_new ();
 
   priv->up_client = up_client_new ();

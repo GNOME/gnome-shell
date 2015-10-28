@@ -9,6 +9,8 @@
     <method name="TakeControl">
       <arg name="force" type="b"/>
     </method>
+    <method name="ReleaseControl">
+    </method>
     <method name="TakeDevice">
       <annotation name="org.gtk.GDBus.C.UnixFD" value="true"/>
       <arg name="major" type="u" direction="in"/>

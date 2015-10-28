@@ -24,7 +24,7 @@
 
 typedef struct _MetaLauncher MetaLauncher;
 
-MetaLauncher     *meta_launcher_new                     (void);
+MetaLauncher     *meta_launcher_new                     (GError       **error);
 void              meta_launcher_free                    (MetaLauncher  *self);
 
 gboolean          meta_launcher_activate_session        (MetaLauncher  *self,
