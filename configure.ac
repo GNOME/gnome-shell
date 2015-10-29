@@ -1,7 +1,7 @@
 AC_PREREQ(2.62)
 
 m4_define([mutter_major_version], [3])
-m4_define([mutter_minor_version], [18])
+m4_define([mutter_minor_version], [19])
 m4_define([mutter_micro_version], [1])
 
 m4_define([mutter_version],
@@ -58,7 +58,7 @@ CANBERRA_GTK_VERSION=0.26
 CLUTTER_PACKAGE=clutter-1.0
 
 MUTTER_PC_MODULES="
-   gtk+-3.0 >= 3.9.11
+   gtk+-3.0 >= 3.19.1
    gio-unix-2.0 >= 2.35.1
    pango >= 1.2.0
    cairo >= 1.10.0

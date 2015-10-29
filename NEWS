@@ -1,3 +1,17 @@
+3.19.1
+======
+* wayland: Allow to trigger popups through keyboard/touch [Carlos; #756296]
+* Fix modifiers-only input source switching on Ubuntu [Alberts; #756543]
+* Misc. bug fixes [Jonas, Rui, Giovanni, Florian; #756675, #756660, #746420,
+  #756548, #756796, #757101, #757148]
+
+Contributors:
+  Jonas Ådahl, Giovanni Campagna, Carlos Garnacho, Rui Matos,
+  Alberts Muktupāvels, Florian Müllner
+
+Translations:
+  Daniel Șerbănescu [ro]
+
 3.18.1
 ======
 * Misc. crash fixes [Jonas, Rui, Carlos, Owen, Florian; #755096, #754979,
