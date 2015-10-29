@@ -1,3 +1,19 @@
+3.19.1
+======
+* Respect text-scaling factor under wayland [Owen; #756447]
+* Show the Bluetooth submenu when there were setup devices [Bastien; #723848]
+* Misc. bug fixes [Florian, Cosimo, Rui, Ray, Owen, Jakub, Bastien;
+  #756697, #756714, #756605, #754814, #738942, #756983, #756925,
+  #757011, #673235, #757150]
+
+Contributors:
+  Cosimo Cecchi, Rui Matos, Florian Müllner, Bastien Nocera, Jakub Steiner,
+  Ray Strode, Owen W. Taylor
+
+Translations:
+  Kjartan Maraas [nb], Khaled Hosny [ar], Balázs Meskó [hu],
+  Daniel Șerbănescu [ro], Marek Černocký [cs]
+
 3.18.1
 ======
 * Fix screen freezes when a notification is pushed [Carlos; #755425]
