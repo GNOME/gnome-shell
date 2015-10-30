@@ -33,11 +33,11 @@
 #include <json-glib/json-glib.h>
 
 #define ORIGIN "extensions.gnome.org"
-#define PLUGIN_NAME "Gnome Shell Integration"
-#define PLUGIN_DESCRIPTION "This plugin provides integration with Gnome Shell " \
+#define PLUGIN_NAME "GNOME Shell Integration"
+#define PLUGIN_DESCRIPTION "This plugin provides integration with GNOME Shell " \
       "for live extension enabling and disabling. " \
       "It can be used only by extensions.gnome.org"
-#define PLUGIN_MIME_STRING "application/x-gnome-shell-integration::Gnome Shell Integration Dummy Content-Type";
+#define PLUGIN_MIME_STRING "application/x-gnome-shell-integration::GNOME Shell Integration Dummy Content-Type";
 
 #define PLUGIN_API_VERSION 5
 
