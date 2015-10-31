@@ -575,6 +575,7 @@ load_texture_async (StTextureCache       *cache,
   if (data->file)
     {
       GTask *task = g_task_new (cache, NULL, on_pixbuf_loaded, data);
+      g_task_set_task_data (task, data, NULL);
       g_task_run_in_thread (task, load_pixbuf_thread);
       g_object_unref (task);
     }
