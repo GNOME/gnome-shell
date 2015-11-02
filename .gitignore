@@ -16,6 +16,7 @@ compile
 README
 stamp-enum-types
 stamp-marshal
+tags
 /ChangeLog*
 /clutter/clutter-config.h
 /clutter/clutter-enum-types.[ch]
