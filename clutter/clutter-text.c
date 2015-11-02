@@ -309,6 +309,16 @@ clutter_text_queue_redraw (ClutterActor *self)
   clutter_actor_queue_redraw (self);
 }
 
+static gboolean
+clutter_text_should_draw_cursor (ClutterText *self)
+{
+  ClutterTextPrivate *priv = self->priv;
+
+  return priv->editable ||
+         priv->selectable ||
+         priv->cursor_visible;
+}
+
 #define clutter_actor_queue_redraw \
   Please_use_clutter_text_queue_redraw_instead
 
@@ -1602,85 +1612,81 @@ selection_paint (ClutterText *self)
   ClutterTextPrivate *priv = self->priv;
   ClutterActor *actor = CLUTTER_ACTOR (self);
   guint8 paint_opacity = clutter_actor_get_paint_opacity (actor);
+  const ClutterColor *color;
 
   if (!priv->has_focus)
     return;
 
-  if (priv->editable && priv->cursor_visible)
+  if (!clutter_text_should_draw_cursor (self))
+    return;
+
+  if (priv->position == priv->selection_bound)
     {
-      const ClutterColor *color;
-      gint position;
-
-      position = priv->position;
-
-      if (position == priv->selection_bound)
-        {
-          /* No selection, just draw the cursor */
-          if (priv->cursor_color_set)
-            color = &priv->cursor_color;
-          else
-            color = &priv->text_color;
-
-          cogl_set_source_color4ub (color->red,
-                                    color->green,
-                                    color->blue,
-                                    paint_opacity * color->alpha / 255);
-
-          cogl_rectangle (priv->cursor_rect.origin.x,
-                          priv->cursor_rect.origin.y,
-                          priv->cursor_rect.origin.x + priv->cursor_rect.size.width,
-                          priv->cursor_rect.origin.y + priv->cursor_rect.size.height);
-        }
+      /* No selection, just draw the cursor */
+      if (priv->cursor_color_set)
+        color = &priv->cursor_color;
       else
-        {
-          /* Paint selection background first */
-          PangoLayout *layout = clutter_text_get_layout (self);
-          CoglPath *selection_path = cogl_path_new ();
-          CoglColor cogl_color = { 0, };
-          CoglFramebuffer *fb;
+        color = &priv->text_color;
 
-          fb = _clutter_actor_get_active_framebuffer (actor);
-          if (G_UNLIKELY (fb == NULL))
-            return;
+      cogl_set_source_color4ub (color->red,
+                                color->green,
+                                color->blue,
+                                paint_opacity * color->alpha / 255);
 
-          /* Paint selection background */
-          if (priv->selection_color_set)
-            color = &priv->selection_color;
-          else if (priv->cursor_color_set)
-            color = &priv->cursor_color;
-          else
-            color = &priv->text_color;
+      cogl_rectangle (priv->cursor_rect.origin.x,
+                      priv->cursor_rect.origin.y,
+                      priv->cursor_rect.origin.x + priv->cursor_rect.size.width,
+                      priv->cursor_rect.origin.y + priv->cursor_rect.size.height);
+    }
+  else
+    {
+      /* Paint selection background first */
+      PangoLayout *layout = clutter_text_get_layout (self);
+      CoglPath *selection_path = cogl_path_new ();
+      CoglColor cogl_color = { 0, };
+      CoglFramebuffer *fb;
 
-          cogl_set_source_color4ub (color->red,
-                                    color->green,
-                                    color->blue,
-                                    paint_opacity * color->alpha / 255);
+      fb = _clutter_actor_get_active_framebuffer (actor);
+      if (G_UNLIKELY (fb == NULL))
+        return;
 
-          clutter_text_foreach_selection_rectangle (self,
-                                                    add_selection_rectangle_to_path,
-                                                    selection_path);
+      /* Paint selection background */
+      if (priv->selection_color_set)
+        color = &priv->selection_color;
+      else if (priv->cursor_color_set)
+        color = &priv->cursor_color;
+      else
+        color = &priv->text_color;
 
-          cogl_path_fill (selection_path);
+      cogl_set_source_color4ub (color->red,
+                                color->green,
+                                color->blue,
+                                paint_opacity * color->alpha / 255);
 
-          /* Paint selected text */
-          cogl_framebuffer_push_path_clip (fb, selection_path);
-          cogl_object_unref (selection_path);
+      clutter_text_foreach_selection_rectangle (self,
+                                                add_selection_rectangle_to_path,
+                                                selection_path);
 
-          if (priv->selected_text_color_set)
-            color = &priv->selected_text_color;
-          else
-            color = &priv->text_color;
+      cogl_path_fill (selection_path);
 
-          cogl_color_init_from_4ub (&cogl_color,
-                                    color->red,
-                                    color->green,
-                                    color->blue,
-                                    paint_opacity * color->alpha / 255);
+      /* Paint selected text */
+      cogl_framebuffer_push_path_clip (fb, selection_path);
+      cogl_object_unref (selection_path);
 
-          cogl_pango_render_layout (layout, priv->text_x, 0, &cogl_color, 0);
+      if (priv->selected_text_color_set)
+        color = &priv->selected_text_color;
+      else
+        color = &priv->text_color;
 
-          cogl_framebuffer_pop_clip (fb);
-        }
+      cogl_color_init_from_4ub (&cogl_color,
+                                color->red,
+                                color->green,
+                                color->blue,
+                                paint_opacity * color->alpha / 255);
+
+      cogl_pango_render_layout (layout, priv->text_x, 0, &cogl_color, 0);
+
+      cogl_framebuffer_pop_clip (fb);
     }
 }
 
@@ -1852,7 +1858,7 @@ clutter_text_press (ClutterActor *actor,
   /* if a ClutterText is just used for display purposes, then we
    * should ignore the events we receive
    */
-  if (!priv->editable)
+  if (!(priv->editable || priv->selectable))
     return CLUTTER_EVENT_PROPAGATE;
 
   clutter_actor_grab_key_focus (actor);
@@ -2265,7 +2271,8 @@ clutter_text_paint (ClutterActor *self)
    * editable, in which case we want to paint at least the
    * cursor
    */
-  if (n_chars == 0 && (!priv->editable || !priv->cursor_visible))
+  if (n_chars == 0 &&
+      !clutter_text_should_draw_cursor (text))
     return;
 
   if (priv->editable && priv->single_line_mode)
@@ -2299,7 +2306,7 @@ clutter_text_paint (ClutterActor *self)
         }
     }
 
-  if (priv->editable && priv->cursor_visible)
+  if ((priv->editable || priv->selectable) && priv->cursor_visible)
     clutter_text_ensure_cursor_position (text);
 
   if (priv->editable && priv->single_line_mode)
@@ -2492,7 +2499,9 @@ clutter_text_get_paint_volume (ClutterActor       *self,
 
       /* If the cursor is visible then that will likely be drawn
          outside of the ink rectangle so we should merge that in */
-      if (priv->editable && priv->cursor_visible && priv->has_focus)
+      if ((priv->editable || priv->selectable) &&
+          priv->cursor_visible &&
+          priv->has_focus)
         {
           ClutterPaintVolume cursor_paint_volume;
 
@@ -2653,11 +2662,7 @@ clutter_text_allocate (ClutterActor           *self,
 static gboolean
 clutter_text_has_overlaps (ClutterActor *self)
 {
-  ClutterTextPrivate *priv = CLUTTER_TEXT (self)->priv;
-
-  return priv->editable ||
-         priv->selectable ||
-         priv->cursor_visible;
+  return clutter_text_should_draw_cursor ((ClutterText *) self);
 }
 
 static void
