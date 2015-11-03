@@ -94,8 +94,11 @@ typedef struct
   GHashTable     *key_bindings_index;
   xkb_mod_mask_t ignored_modifier_mask;
   xkb_mod_mask_t hyper_mask;
+  xkb_mod_mask_t virtual_hyper_mask;
   xkb_mod_mask_t super_mask;
+  xkb_mod_mask_t virtual_super_mask;
   xkb_mod_mask_t meta_mask;
+  xkb_mod_mask_t virtual_meta_mask;
   MetaKeyCombo overlay_key_combo;
   MetaResolvedKeyCombo overlay_resolved_key_combo;
   gboolean overlay_key_only_pressed;

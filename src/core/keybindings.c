@@ -185,16 +185,18 @@ reload_modmap (MetaKeyBindingManager *keys)
   struct xkb_keymap *keymap = meta_backend_get_keymap (backend);
   struct xkb_state *scratch_state;
   xkb_mod_mask_t scroll_lock_mask;
+  xkb_mod_mask_t dummy_mask;
 
   /* Modifiers to find. */
   struct {
     const char *name;
     xkb_mod_mask_t *mask_p;
+    xkb_mod_mask_t *virtual_mask_p;
   } mods[] = {
-    { "ScrollLock", &scroll_lock_mask },
-    { "Meta",       &keys->meta_mask },
-    { "Hyper",      &keys->hyper_mask },
-    { "Super",      &keys->super_mask },
+    { "ScrollLock", &scroll_lock_mask, &dummy_mask },
+    { "Meta",       &keys->meta_mask,  &keys->virtual_meta_mask },
+    { "Hyper",      &keys->hyper_mask, &keys->virtual_hyper_mask },
+    { "Super",      &keys->super_mask, &keys->virtual_super_mask },
   };
 
   scratch_state = xkb_state_new (keymap);
@@ -203,6 +205,7 @@ reload_modmap (MetaKeyBindingManager *keys)
   for (i = 0; i < G_N_ELEMENTS (mods); i++)
     {
       xkb_mod_mask_t *mask_p = mods[i].mask_p;
+      xkb_mod_mask_t *virtual_mask_p = mods[i].virtual_mask_p;
       xkb_mod_index_t idx = xkb_keymap_mod_get_index (keymap, mods[i].name);
 
       if (idx != XKB_MOD_INVALID)
@@ -210,9 +213,13 @@ reload_modmap (MetaKeyBindingManager *keys)
           xkb_mod_mask_t vmodmask = (1 << idx);
           xkb_state_update_mask (scratch_state, vmodmask, 0, 0, 0, 0, 0);
           *mask_p = xkb_state_serialize_mods (scratch_state, XKB_STATE_MODS_DEPRESSED) & ~vmodmask;
+          *virtual_mask_p = vmodmask;
         }
       else
-        *mask_p = 0;
+        {
+          *mask_p = 0;
+          *virtual_mask_p = 0;
+        }
     }
 
   xkb_state_unref (scratch_state);
