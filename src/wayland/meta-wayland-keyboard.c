@@ -58,6 +58,7 @@
 #include <sys/mman.h>
 #include <clutter/evdev/clutter-evdev.h>
 
+#include "display-private.h"
 #include "backends/meta-backend-private.h"
 
 #include "meta-wayland-private.h"
@@ -279,14 +280,66 @@ notify_key (MetaWaylandKeyboard *keyboard,
   return keyboard->grab->interface->key (keyboard->grab, event);
 }
 
+static xkb_mod_mask_t
+add_vmod (xkb_mod_mask_t mask,
+          xkb_mod_mask_t mod,
+          xkb_mod_mask_t vmod,
+          xkb_mod_mask_t *added)
+{
+  if ((mask & mod) && !(mod & *added))
+    {
+      mask |= vmod;
+      *added |= mod;
+    }
+  return mask;
+}
+
+static xkb_mod_mask_t
+add_virtual_mods (xkb_mod_mask_t mask)
+{
+  MetaKeyBindingManager *keys = &(meta_get_display ()->key_binding_manager);
+  xkb_mod_mask_t added;
+  guint i;
+  /* Order is important here: if multiple vmods share the same real
+     modifier we only want to add the first. */
+  struct {
+    xkb_mod_mask_t mod;
+    xkb_mod_mask_t vmod;
+  } mods[] = {
+    { keys->super_mask, keys->virtual_super_mask },
+    { keys->hyper_mask, keys->virtual_hyper_mask },
+    { keys->meta_mask,  keys->virtual_meta_mask },
+  };
+
+  added = 0;
+  for (i = 0; i < G_N_ELEMENTS (mods); ++i)
+    mask = add_vmod (mask, mods[i].mod, mods[i].vmod, &added);
+
+  return mask;
+}
+
+static void
+keyboard_send_modifiers (MetaWaylandKeyboard *keyboard,
+                         struct wl_resource  *resource,
+                         uint32_t             serial)
+{
+  struct xkb_state *state = keyboard->xkb_info.state;
+  xkb_mod_mask_t depressed, latched, locked;
+
+  depressed = add_virtual_mods (xkb_state_serialize_mods (state, XKB_STATE_MODS_DEPRESSED));
+  latched = add_virtual_mods (xkb_state_serialize_mods (state, XKB_STATE_MODS_LATCHED));
+  locked = add_virtual_mods (xkb_state_serialize_mods (state, XKB_STATE_MODS_LOCKED));
+
+  wl_keyboard_send_modifiers (resource, serial, depressed, latched, locked,
+                              xkb_state_serialize_layout (state, XKB_STATE_LAYOUT_EFFECTIVE));
+}
+
 static void
 meta_wayland_keyboard_broadcast_modifiers (MetaWaylandKeyboard *keyboard)
 {
-  struct xkb_state *state;
   struct wl_resource *resource;
   struct wl_list *l;
 
-  state = keyboard->xkb_info.state;
 
   l = &keyboard->focus_resource_list;
   if (!wl_list_empty (l))
@@ -294,14 +347,7 @@ meta_wayland_keyboard_broadcast_modifiers (MetaWaylandKeyboard *keyboard)
       uint32_t serial = wl_display_next_serial (keyboard->display);
 
       wl_resource_for_each (resource, l)
-        {
-          wl_keyboard_send_modifiers (resource,
-                                      serial,
-                                      xkb_state_serialize_mods (state, XKB_STATE_MODS_DEPRESSED),
-                                      xkb_state_serialize_mods (state, XKB_STATE_MODS_LATCHED),
-                                      xkb_state_serialize_mods (state, XKB_STATE_MODS_LOCKED),
-                                      xkb_state_serialize_layout (state, XKB_STATE_LAYOUT_EFFECTIVE));
-        }
+        keyboard_send_modifiers (keyboard, resource, serial);
     }
 }
 
@@ -602,7 +648,6 @@ broadcast_focus (MetaWaylandKeyboard *keyboard,
                  struct wl_resource  *resource)
 {
   struct wl_array fake_keys;
-  struct xkb_state *state = keyboard->xkb_info.state;
 
   /* We never want to send pressed keys to wayland clients on
    * enter. The protocol says that we should send them, presumably so
@@ -622,11 +667,7 @@ broadcast_focus (MetaWaylandKeyboard *keyboard,
    */
   wl_array_init (&fake_keys);
 
-  wl_keyboard_send_modifiers (resource, keyboard->focus_serial,
-                              xkb_state_serialize_mods (state, XKB_STATE_MODS_DEPRESSED),
-                              xkb_state_serialize_mods (state, XKB_STATE_MODS_LATCHED),
-                              xkb_state_serialize_mods (state, XKB_STATE_MODS_LOCKED),
-                              xkb_state_serialize_layout (state, XKB_STATE_LAYOUT_EFFECTIVE));
+  keyboard_send_modifiers (keyboard, resource, keyboard->focus_serial);
   wl_keyboard_send_enter (resource, keyboard->focus_serial,
                           keyboard->focus_surface->resource,
                           &fake_keys);
