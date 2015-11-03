@@ -555,6 +555,13 @@ meta_wayland_keyboard_update (MetaWaylandKeyboard *keyboard,
 {
   gboolean is_press = event->type == CLUTTER_KEY_PRESS;
 
+  /* If we get a key event but still have pending modifier state
+   * changes from a previous event that didn't get cleared, we need to
+   * send that state right away so that the new key event can be
+   * interpreted by clients correctly modified. */
+  if (keyboard->mods_changed)
+    notify_modifiers (keyboard);
+
   keyboard->mods_changed = xkb_state_update_key (keyboard->xkb_info.state,
                                                  event->hardware_keycode,
                                                  is_press ? XKB_KEY_DOWN : XKB_KEY_UP);
