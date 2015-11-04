@@ -1814,7 +1814,7 @@ const AppIconMenu = new Lang.Class({
             if (!source.actor.mapped)
                 this.close();
         }));
-        source.actor.connect('destroy', Lang.bind(this, function () { this.actor.destroy(); }));
+        source.actor.connect('destroy', Lang.bind(this, this.destroy));
 
         Main.uiGroup.add_actor(this.actor);
     },
