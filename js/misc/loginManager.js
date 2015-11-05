@@ -119,7 +119,13 @@ var LoginManagerSystemd = new Lang.Class({
             return;
         }
 
-        this._proxy.GetSessionRemote(GLib.getenv('XDG_SESSION_ID'), Lang.bind(this,
+        let sessionId = GLib.getenv('XDG_SESSION_ID');
+        if (!sessionId) {
+            log('Unset XDG_SESSION_ID, getCurrentSessionProxy() called outside a user session.');
+            return;
+        }
+
+        this._proxy.GetSessionRemote(sessionId, Lang.bind(this,
             function(result, error) {
                 if (error) {
                     logError(error, 'Could not get a proxy for the current session');
