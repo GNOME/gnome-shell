@@ -207,7 +207,6 @@ struct _AuthRequest {
 static void
 auth_request_free (AuthRequest *request)
 {
-  g_cancellable_disconnect (request->cancellable, request->handler_id);
   g_free (request->action_id);
   g_free (request->message);
   g_free (request->icon_name);
@@ -345,6 +344,7 @@ auth_request_complete (AuthRequest *request,
 
   if (!is_current)
     agent->scheduled_requests = g_list_remove (agent->scheduled_requests, request);
+  g_cancellable_disconnect (request->cancellable, request->handler_id);
 
   if (dismissed)
     g_task_return_new_error (request->simple,
