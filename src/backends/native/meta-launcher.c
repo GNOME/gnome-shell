@@ -110,30 +110,6 @@ get_seat_proxy (GCancellable *cancellable)
 }
 
 static void
-frame_callback (CoglOnscreen  *onscreen,
-                CoglFrameEvent event,
-                CoglFrameInfo *frame_info,
-                void          *user_data)
-{
-  CoglFrameClosure **frame_closure = user_data;
-
-  MetaBackend *backend = meta_get_backend ();
-  MetaCursorRenderer *renderer = meta_backend_get_cursor_renderer (backend);
-  CoglOnscreen *cogl_onscreen;
-
-  if (event != COGL_FRAME_EVENT_COMPLETE)
-    return;
-
-  meta_cursor_renderer_native_force_update (META_CURSOR_RENDERER_NATIVE (renderer));
-
-  cogl_onscreen = COGL_ONSCREEN (cogl_get_draw_framebuffer ());
-  cogl_onscreen_remove_frame_callback (cogl_onscreen,
-                                       *frame_closure);
-
-  *frame_closure = NULL;
-}
-
-static void
 session_unpause (void)
 {
   ClutterBackend *clutter_backend;
@@ -152,8 +128,6 @@ session_unpause (void)
     MetaBackend *backend = meta_get_backend ();
     MetaCursorRenderer *renderer = meta_backend_get_cursor_renderer (backend);
     ClutterActor *stage = meta_backend_get_stage (backend);
-    CoglOnscreen *cogl_onscreen;
-    static CoglFrameClosure *frame_closure = NULL;
 
     /* When we mode-switch back, we need to immediately queue a redraw
      * in case nothing else queued one for us, and force the cursor to
@@ -161,17 +135,6 @@ session_unpause (void)
 
     clutter_actor_queue_redraw (stage);
     meta_cursor_renderer_native_force_update (META_CURSOR_RENDERER_NATIVE (renderer));
-
-    cogl_onscreen = COGL_ONSCREEN (cogl_get_draw_framebuffer ());
-
-    if (frame_closure)
-        cogl_onscreen_remove_frame_callback (cogl_onscreen, frame_closure);
-
-    frame_closure = cogl_onscreen_add_frame_callback (cogl_onscreen,
-                                                      frame_callback,
-                                                      &frame_closure,
-                                                      NULL);
-
     meta_idle_monitor_native_reset_idletime (meta_idle_monitor_get_core ());
   }
 }
