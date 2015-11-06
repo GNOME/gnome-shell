@@ -359,7 +359,7 @@ output_get_backlight_limits_xrandr (MetaMonitorManagerXrandr *manager_xrandr,
 {
   Atom atom;
   xcb_connection_t *xcb_conn;
-  g_autofree xcb_randr_query_output_property_reply_t *reply;
+  g_autofree xcb_randr_query_output_property_reply_t *reply = NULL;
 
   atom = XInternAtom (manager_xrandr->xdisplay, "Backlight", False);
 
