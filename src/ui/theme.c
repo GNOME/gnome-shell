@@ -1000,32 +1000,30 @@ meta_theme_create_style_info (GdkScreen   *screen,
     create_style_context (GTK_TYPE_HEADER_BAR,
                           style_info->styles[META_STYLE_ELEMENT_FRAME],
                           provider,
-                          NULL,
+                          "headerbar",
                           GTK_STYLE_CLASS_TITLEBAR,
                           GTK_STYLE_CLASS_HORIZONTAL,
                           "default-decoration",
-                          "header-bar",
                           NULL);
   style_info->styles[META_STYLE_ELEMENT_TITLE] =
     create_style_context (GTK_TYPE_LABEL,
                           style_info->styles[META_STYLE_ELEMENT_TITLEBAR],
                           provider,
-                          NULL,
+                          "label",
                           GTK_STYLE_CLASS_TITLE,
                           NULL);
   style_info->styles[META_STYLE_ELEMENT_BUTTON] =
     create_style_context (GTK_TYPE_BUTTON,
                           style_info->styles[META_STYLE_ELEMENT_TITLEBAR],
                           provider,
-                          NULL,
-                          GTK_STYLE_CLASS_BUTTON,
+                          "button",
                           "titlebutton",
                           NULL);
   style_info->styles[META_STYLE_ELEMENT_IMAGE] =
     create_style_context (GTK_TYPE_IMAGE,
                           style_info->styles[META_STYLE_ELEMENT_BUTTON],
                           provider,
-                          NULL,
+                          "image",
                           NULL);
   return style_info;
 }
