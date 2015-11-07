@@ -282,14 +282,6 @@ on_shell_signal (GDBusProxy *proxy,
 {
   PluginObject *obj = user_data;
 
-  /* FIXME: We have half a dozen bug reports in which this function crashes in
-   * WebKit due to a null NPObject. This should never happen, but since it is
-   * happening, let's turn the crash into a critical.
-   *
-   * https://bugzilla.gnome.org/show_bug.cgi?id=737932
-   */
-  g_return_if_fail (obj->instance);
-
   if (strcmp (signal_name, "ExtensionStatusChanged") == 0)
     {
       gchar *uuid;
@@ -319,12 +311,6 @@ on_shell_appeared (GDBusConnection *connection,
                    gpointer         user_data)
 {
   PluginObject *obj = (PluginObject*) user_data;
-
-  /* FIXME: Not sure if this is ever hit or not, but let's play it safe.
-   *
-   * https://bugzilla.gnome.org/show_bug.cgi?id=737932
-   */
-  g_return_if_fail (obj->instance);
 
   if (obj->restart_listener)
     {
