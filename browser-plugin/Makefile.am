@@ -3,7 +3,10 @@ mozillalibdir = $(BROWSER_PLUGIN_DIR)
 
 mozillalib_LTLIBRARIES = libgnome-shell-browser-plugin.la
 
-libgnome_shell_browser_plugin_la_LDFLAGS = -module -avoid-version -no-undefined
+# Browsers can unload and reload the module while browsing, which is not supported by GObject.
+# We pass -Wl,-z,nodelete to the linker to ensure the module is never unloaded.
+# https://bugzilla.gnome.org/show_bug.cgi?id=737932
+libgnome_shell_browser_plugin_la_LDFLAGS = -module -avoid-version -no-undefined -Wl,-z,nodelete
 
 libgnome_shell_browser_plugin_la_LIBADD = 	\
 	$(BROWSER_PLUGIN_LIBS)
