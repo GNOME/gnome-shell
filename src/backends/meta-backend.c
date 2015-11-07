@@ -24,6 +24,8 @@
 
 #include "config.h"
 
+#include <stdlib.h>
+
 #include <meta/meta-backend.h>
 #include "meta-backend-private.h"
 #include "meta-input-settings-private.h"
