@@ -27,6 +27,8 @@
 #include "meta-cursor-renderer.h"
 
 #include <meta/meta-backend.h>
+#include <backends/meta-backend-private.h>
+#include <backends/meta-monitor-manager-private.h>
 #include <meta/util.h>
 
 #include <cogl/cogl.h>
@@ -116,6 +118,14 @@ meta_cursor_renderer_calculate_rect (MetaCursorRenderer *renderer,
   };
 }
 
+static gboolean
+is_cursor_in_monitors_area (int x, int y)
+{
+  MetaMonitorManager *monitor_manager = meta_backend_get_monitor_manager (meta_get_backend ());
+  return meta_monitor_manager_get_monitor_at_point (monitor_manager,
+                                                    (gfloat) x, (gfloat) y) >= 0;
+}
+
 static void
 update_cursor (MetaCursorRenderer *renderer,
                MetaCursorSprite   *cursor_sprite)
@@ -123,6 +133,11 @@ update_cursor (MetaCursorRenderer *renderer,
   MetaCursorRendererPrivate *priv = meta_cursor_renderer_get_instance_private (renderer);
   gboolean handled_by_backend;
   gboolean should_redraw = FALSE;
+
+  /* do not render cursor if it is not on any monitor. Such situation
+   * can occur e. g. after monitor hot-plug */
+  if (!is_cursor_in_monitors_area (priv->current_x, priv->current_y))
+    return;
 
   if (cursor_sprite)
     meta_cursor_sprite_prepare_at (cursor_sprite,
