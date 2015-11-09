@@ -83,12 +83,12 @@ const Indicator = new Lang.Class({
 
         if (this._proxy.State == UPower.DeviceState.DISCHARGING) {
             // Translators: this is <hours>:<minutes> Remaining (<percentage>)
-            return _("%d\u2236%02d Remaining (%d%%)").format(hours, minutes, this._proxy.Percentage);
+            return _("%d\u2236%02d Remaining (%d\u2009%%)").format(hours, minutes, this._proxy.Percentage);
         }
 
         if (this._proxy.State == UPower.DeviceState.CHARGING) {
             // Translators: this is <hours>:<minutes> Until Full (<percentage>)
-            return _("%d\u2236%02d Until Full (%d%%)").format(hours, minutes, this._proxy.Percentage);
+            return _("%d\u2236%02d Until Full (%d\u2009%%)").format(hours, minutes, this._proxy.Percentage);
         }
 
         return null;
