@@ -1,6 +1,8 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Gio = imports.gi.Gio;
+const Clutter = imports.gi.Clutter;
+const St = imports.gi.St;
 const Lang = imports.lang;
 const UPower = imports.gi.UPowerGlib;
 
@@ -25,6 +27,8 @@ const DisplayDeviceInterface = '<node> \
 
 const PowerManagerProxy = Gio.DBusProxy.makeProxyWrapper(DisplayDeviceInterface);
 
+const SHOW_BATTERY_PERCENTAGE       = 'show-battery-percentage';
+
 const Indicator = new Lang.Class({
     Name: 'PowerIndicator',
     Extends: PanelMenu.SystemIndicator,
@@ -32,7 +36,15 @@ const Indicator = new Lang.Class({
     _init: function() {
         this.parent();
 
+        this._desktopSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.interface' });
+        this._desktopSettings.connect('changed::' + SHOW_BATTERY_PERCENTAGE,
+                                      Lang.bind(this, this._sync));
+
         this._indicator = this._addIndicator();
+        this._percentageLabel = new St.Label({ y_expand: true,
+                                               y_align: Clutter.ActorAlign.CENTER });
+        this.indicators.add(this._percentageLabel, { expand: true, y_fill: true });
+        this.indicators.add_style_class_name('power-status');
 
         this._proxy = new PowerManagerProxy(Gio.DBus.system, BUS_NAME, OBJECT_PATH,
                                             Lang.bind(this, function(proxy, error) {
@@ -99,10 +111,12 @@ const Indicator = new Lang.Class({
         let visible = this._proxy.IsPresent;
         if (visible) {
             this._item.actor.show();
+            this._percentageLabel.visible = this._desktopSettings.get_boolean(SHOW_BATTERY_PERCENTAGE);
         } else {
             // If there's no battery, then we use the power icon.
             this._item.actor.hide();
             this._indicator.icon_name = 'system-shutdown-symbolic';
+            this._percentageLabel.hide();
             return;
         }
 
@@ -110,6 +124,14 @@ const Indicator = new Lang.Class({
         let icon = this._proxy.IconName;
         this._indicator.icon_name = icon;
         this._item.icon.icon_name = icon;
+
+        // The icon label
+        let label
+        if (this._proxy.State == UPower.DeviceState.FULLY_CHARGED)
+          label = _("%d\u2009%%").format(100);
+        else
+          label = _("%d\u2009%%").format(this._proxy.Percentage);
+        this._percentageLabel.clutter_text.set_markup('<span size="smaller">' + label + '</span>');
 
         // The status label
         this._item.label.text = this._getStatus();

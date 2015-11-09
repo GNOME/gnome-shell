@@ -625,6 +625,8 @@ StScrollBar {
   #panel .panel-status-indicators-box,
   #panel .panel-status-menu-box {
     spacing: 2px; }
+  #panel .power-status.panel-status-indicators-box {
+    spacing: 0; }
   #panel .screencast-indicator {
     color: #f57900; }
 
