@@ -27,7 +27,7 @@
 
 #include <glib.h>
 #include "meta-wayland-pointer-gestures.h"
-#include "pointer-gestures-server-protocol.h"
+#include "pointer-gestures-unstable-v1-server-protocol.h"
 #include "meta-wayland-versions.h"
 #include "meta-wayland-private.h"
 
@@ -53,7 +53,7 @@ gestures_get_pinch (struct wl_client   *client,
   meta_wayland_pointer_gesture_pinch_create_new_resource (pointer, client, resource, id);
 }
 
-static const struct _wl_pointer_gestures_interface pointer_gestures_interface = {
+static const struct zwp_pointer_gestures_v1_interface pointer_gestures_interface = {
   gestures_get_swipe,
   gestures_get_pinch
 };
@@ -66,16 +66,8 @@ bind_pointer_gestures (struct wl_client *client,
 {
   struct wl_resource *resource;
 
-  resource = wl_resource_create (client, &_wl_pointer_gestures_interface, version, id);
-
-  if (version != META__WL_POINTER_GESTURES_VERSION)
-    {
-      wl_resource_post_error (resource,
-                              _WL_POINTER_GESTURES_ERROR_VERSION_MISMATCH,
-                              "The client bound a non-supported version");
-      return;
-    }
-
+  resource = wl_resource_create (client, &zwp_pointer_gestures_v1_interface,
+                                 version, id);
   wl_resource_set_implementation (resource, &pointer_gestures_interface,
                                   NULL, NULL);
 }
@@ -84,7 +76,7 @@ void
 meta_wayland_pointer_gestures_init (MetaWaylandCompositor *compositor)
 {
   wl_global_create (compositor->wayland_display,
-                    &_wl_pointer_gestures_interface,
-                    META__WL_POINTER_GESTURES_VERSION,
+                    &zwp_pointer_gestures_v1_interface,
+                    META_ZWP_POINTER_GESTURES_V1_VERSION,
                     NULL, bind_pointer_gestures);
 }

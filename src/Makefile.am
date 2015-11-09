@@ -45,8 +45,8 @@ mutter_built_sources = \
 
 if HAVE_WAYLAND
 mutter_built_sources += \
-	pointer-gestures-protocol.c		\
-	pointer-gestures-server-protocol.h	\
+	pointer-gestures-unstable-v1-protocol.c				\
+	pointer-gestures-unstable-v1-server-protocol.h			\
 	gtk-shell-protocol.c			\
 	gtk-shell-server-protocol.h		\
 	xdg-shell-protocol.c			\
@@ -55,7 +55,6 @@ mutter_built_sources += \
 endif
 
 wayland_protocols =				\
-	wayland/protocol/pointer-gestures.xml	\
 	wayland/protocol/gtk-shell.xml		\
 	wayland/protocol/xdg-shell.xml		\
 	$(NULL)
@@ -481,6 +480,20 @@ $(dbus_login1_built_sources) : Makefile.am org.freedesktop.login1.xml
 		--generate-c-code meta-dbus-login1					\
 		$(srcdir)/org.freedesktop.login1.xml
 
+.SECONDEXPANSION:
+
+define protostability
+$(shell echo $1 | sed 's/.*\(\<unstable\>\|\<stable\>\).*/\1/')
+endef
+
+define protoname
+$(shell echo $1 | sed 's/\([a-z\-]\+\)-[a-z]\+-v[0-9]\+/\1/')
+endef
+
+%-protocol.c : $(WAYLAND_PROTOCOLS_DATADIR)/$$(call protostability,$$*)/$$(call protoname,$$*)/$$*.xml
+	$(AM_V_GEN)$(WAYLAND_SCANNER) code < $< > $@
+%-server-protocol.h : $(WAYLAND_PROTOCOLS_DATADIR)/$$(call protostability,$$*)/$$(call protoname,$$*)/$$*.xml
+	$(AM_V_GEN)$(WAYLAND_SCANNER) server-header < $< > $@
 %-protocol.c : $(srcdir)/wayland/protocol/%.xml
 	$(AM_V_GEN)$(WAYLAND_SCANNER) code < $< > $@
 %-server-protocol.h : $(srcdir)/wayland/protocol/%.xml

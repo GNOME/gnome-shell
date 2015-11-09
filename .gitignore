@@ -66,8 +66,8 @@ src/gtk-shell-protocol.c
 src/gtk-shell-server-protocol.h
 src/xdg-shell-protocol.c
 src/xdg-shell-server-protocol.h
-src/pointer-gestures-protocol.c
-src/pointer-gestures-server-protocol.h
+src/pointer-gestures-unstable-v1-protocol.c
+src/pointer-gestures-unstable-v1-server-protocol.h
 src/xserver-protocol.c
 src/xserver-server-protocol.h
 src/meta/meta-version.h

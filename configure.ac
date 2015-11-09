@@ -46,6 +46,7 @@ IT_PROG_INTLTOOL([0.41])
 AC_PROG_CC
 AC_PROG_CC_C_O
 AC_PROG_INSTALL
+AC_PROG_SED
 AC_HEADER_STDC
 PKG_PROG_PKG_CONFIG([0.21])
 
@@ -219,6 +220,10 @@ AS_IF([test "$have_wayland" = "yes"], [
     [AC_MSG_ERROR([Could not find wayland-scanner in your PATH, required for parsing wayland extension protocols])])
   AC_SUBST([WAYLAND_SCANNER])
   AC_DEFINE([HAVE_WAYLAND],[1],[Define if you want to enable Wayland support])
+
+  PKG_CHECK_MODULES(WAYLAND_PROTOCOLS, [wayland-protocols >= 1.0],
+		    [ac_wayland_protocols_pkgdatadir=`$PKG_CONFIG --variable=pkgdatadir wayland-protocols`])
+  AC_SUBST(WAYLAND_PROTOCOLS_DATADIR, $ac_wayland_protocols_pkgdatadir)
 ])
 AM_CONDITIONAL([HAVE_WAYLAND],[test "$have_wayland" = "yes"])
 
