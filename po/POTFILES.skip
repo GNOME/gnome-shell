@@ -1,1 +1,2 @@
-data/mutter-wayland.desktop.in
+# List of source files that should NOT be translated.
+# Please keep this file sorted alphabetically.
