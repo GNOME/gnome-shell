@@ -218,6 +218,9 @@ NPP_New(NPMIMEType    mimetype,
   data = g_slice_new (PluginData);
   instance->pdata = data;
 
+  /* set windowless mode */
+  funcs.setvalue(instance, NPPVpluginWindowBool, NULL);
+
   data->proxy = g_dbus_proxy_new_for_bus_sync (G_BUS_TYPE_SESSION,
                                                G_DBUS_PROXY_FLAGS_NONE,
                                                NULL, /* interface info */
@@ -1046,10 +1049,6 @@ NPP_GetValue(NPP          instance,
     init_methods_and_properties ();
 
     *(NPObject**)value = funcs.createobject (instance, &plugin_class);
-    break;
-
-  case NPPVpluginNeedsXEmbed:
-    *(bool *)value = TRUE;
     break;
 
   default:
