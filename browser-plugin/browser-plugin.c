@@ -162,6 +162,7 @@ NP_Initialize(NPNetscapeFuncs *pfuncs, NPPluginFuncs *plugin)
   plugin->destroy = NPP_Destroy;
   plugin->getvalue = NPP_GetValue;
   plugin->setwindow = NPP_SetWindow;
+  plugin->event = NPP_HandleEvent;
 
   return NPERR_NO_ERROR;
 }
@@ -217,6 +218,9 @@ NPP_New(NPMIMEType    mimetype,
 
   data = g_slice_new (PluginData);
   instance->pdata = data;
+
+  /* set windowless mode */
+  funcs.setvalue(instance, NPPVpluginWindowBool, NULL);
 
   data->proxy = g_dbus_proxy_new_for_bus_sync (G_BUS_TYPE_SESSION,
                                                G_DBUS_PROXY_FLAGS_NONE,
@@ -1034,10 +1038,6 @@ NPP_GetValue(NPP          instance,
     *(NPObject**)value = funcs.createobject (instance, &plugin_class);
     break;
 
-  case NPPVpluginNeedsXEmbed:
-    *(bool *)value = TRUE;
-    break;
-
   default:
     ;
   }
@@ -1052,4 +1052,12 @@ NPP_SetWindow(NPP          instance,
               NPWindow    *window)
 {
   return NPERR_NO_ERROR;
+}
+
+int16_t
+NPP_HandleEvent(NPP   instance,
+                void *event)
+{
+  /* Ignore the event */
+  return FALSE;
 }
