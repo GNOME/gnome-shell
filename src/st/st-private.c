@@ -211,7 +211,7 @@ calculate_gaussian_kernel (gdouble   sigma,
 {
   gdouble *ret, sum;
   gdouble exp_divisor;
-  guint half, i;
+  int half, i;
 
   g_return_val_if_fail (sigma > 0, NULL);
 
@@ -223,14 +223,14 @@ calculate_gaussian_kernel (gdouble   sigma,
   exp_divisor = 2 * sigma * sigma;
 
   /* n_values of 1D Gauss function */
-  for (i = 0; i < n_values; i++)
+  for (i = 0; i < (int)n_values; i++)
     {
       ret[i] = exp (-(i - half) * (i - half) / exp_divisor);
       sum += ret[i];
     }
 
   /* normalize */
-  for (i = 0; i < n_values; i++)
+  for (i = 0; i < (int)n_values; i++)
     ret[i] /= sum;
 
   return ret;
