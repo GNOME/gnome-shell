@@ -461,10 +461,12 @@ evdev_c_priv = \
 	evdev/clutter-device-manager-evdev.c	\
 	evdev/clutter-input-device-evdev.c	\
 	evdev/clutter-event-evdev.c		\
+	evdev/clutter-input-device-tool-evdev.c	\
 	$(NULL)
 evdev_h_priv = \
 	evdev/clutter-device-manager-evdev.h	\
 	evdev/clutter-input-device-evdev.h	\
+	evdev/clutter-input-device-tool-evdev.h	\
 	$(NULL)
 evdev_h = evdev/clutter-evdev.h
 
