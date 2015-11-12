@@ -1,3 +1,22 @@
+3.18.2
+======
+* Fix fullscreen animation glitches [Florian, Cosimo; #756697, #756714]
+* Fix window menu being closed immediately in top orientation [Rui; #756605]
+* Respect text-scaling factor under wayland [Owen; #756447]
+* Fix login screen getting stuck after authentification [Ray; #754814]
+* Fix overview being toggled while still animating [Rui; #756925]
+* Improve robustness of browser plugin [Carlos; #737932, #757940]
+* Misc. bug fixes [Owen, Florian; #756983, #757150, #757779]
+
+Contributors:
+  Cosimo Cecchi, Carlos Garcia Campos, Rui Matos, Florian Müllner, Ray Strode,
+  Owen W. Taylor
+
+Translations:
+  Kjartan Maraas [nb], Khaled Hosny [ar], Sveinn í Felli [is],
+  Balázs Meskó [hu], Daniel Șerbănescu [ro], Aron Xu [zh_CN],
+  Anthony Fok [zh_TW]
+
 3.18.1
 ======
 * Fix screen freezes when a notification is pushed [Carlos; #755425]
