@@ -1581,21 +1581,20 @@ st_theme_node_update_resources (StThemeNodePaintState *state,
 
 static void
 paint_material_with_opacity (CoglHandle       material,
+                             CoglFramebuffer *framebuffer,
                              ClutterActorBox *box,
                              ClutterActorBox *coords,
                              guint8           paint_opacity)
 {
-  CoglFramebuffer *fb = cogl_get_draw_framebuffer ();
-
   cogl_pipeline_set_color4ub (material,
                               paint_opacity, paint_opacity, paint_opacity, paint_opacity);
 
   if (coords)
-    cogl_framebuffer_draw_textured_rectangle (fb, material,
+    cogl_framebuffer_draw_textured_rectangle (framebuffer, material,
                                               box->x1, box->y1, box->x2, box->y2,
                                               coords->x1, coords->y1, coords->x2, coords->y2);
   else
-    cogl_framebuffer_draw_rectangle (fb, material,
+    cogl_framebuffer_draw_rectangle (framebuffer, material,
                                      box->x1, box->y1, box->x2, box->y2);
 }
 
@@ -1911,11 +1910,11 @@ st_theme_node_paint_borders (StThemeNodePaintState *state,
 
 static void
 st_theme_node_paint_sliced_shadow (StThemeNodePaintState *state,
+                                   CoglFramebuffer       *framebuffer,
                                    const ClutterActorBox *box,
                                    guint8                 paint_opacity)
 {
   StThemeNode *node = state->node;
-  CoglFramebuffer *fb = cogl_get_draw_framebuffer ();
   guint border_radius[4];
   CoglColor color;
   StShadow *box_shadow_spec;
@@ -2152,34 +2151,34 @@ st_theme_node_paint_sliced_shadow (StThemeNodePaintState *state,
         }
     }
 
-  cogl_framebuffer_draw_textured_rectangles (fb, state->box_shadow_pipeline,
+  cogl_framebuffer_draw_textured_rectangles (framebuffer, state->box_shadow_pipeline,
                                              rectangles, idx / 8);
 
 #if 0
   /* Visual feedback on shadow's 9-slice and orignal offscreen buffer,
      for debug purposes */
-  cogl_framebuffer_draw_rectangle (fb, state->box_shadow_pipeline,
+  cogl_framebuffer_draw_rectangle (framebuffer, state->box_shadow_pipeline,
                                    xend, yoffset, xend + shadow_width, yoffset + shadow_height);
 
   st_theme_node_ensure_color_pipeline (node);
   cogl_pipeline_set_color4ub (node->color_pipeline, 0xff, 0x0, 0x0, 0xff);
 
-  cogl_framebuffer_draw_rectangle (fb, node->color_pipeline,
+  cogl_framebuffer_draw_rectangle (framebuffer, node->color_pipeline,
                                    xoffset, top, xend, top + 1);
-  cogl_framebuffer_draw_rectangle (fb, node->color_pipeline,
+  cogl_framebuffer_draw_rectangle (framebuffer, node->color_pipeline,
                                    xoffset, bottom, xend, bottom + 1);
-  cogl_framebuffer_draw_rectangle (fb, node->color_pipeline,
+  cogl_framebuffer_draw_rectangle (framebuffer, node->color_pipeline,
                                    left, yoffset, left + 1, yend);
-  cogl_framebuffer_draw_rectangle (fb, node->color_pipeline,
+  cogl_framebuffer_draw_rectangle (framebuffer, node->color_pipeline,
                                    right, yoffset, right + 1, yend);
 
-  cogl_framebuffer_draw_rectangle (fb, node->color_pipeline,
+  cogl_framebuffer_draw_rectangle (framebuffer, node->color_pipeline,
                                    xend, yoffset, xend + shadow_width, yoffset + 1);
-  cogl_framebuffer_draw_rectangle (fb, node->color_pipeline,
+  cogl_framebuffer_draw_rectangle (framebuffer, node->color_pipeline,
                                    xend, yoffset + shadow_height, xend + shadow_width, yoffset + shadow_height + 1);
-  cogl_framebuffer_draw_rectangle (fb, node->color_pipeline,
+  cogl_framebuffer_draw_rectangle (framebuffer, node->color_pipeline,
                                    xend, yoffset, xend + 1, yoffset + shadow_height);
-  cogl_framebuffer_draw_rectangle (fb, node->color_pipeline,
+  cogl_framebuffer_draw_rectangle (framebuffer, node->color_pipeline,
                                    xend + shadow_width, yoffset, xend + shadow_width + 1, yoffset + shadow_height);
 
   s_top *= shadow_height;
@@ -2187,13 +2186,13 @@ st_theme_node_paint_sliced_shadow (StThemeNodePaintState *state,
   s_left *= shadow_width;
   s_right *= shadow_width;
 
-  cogl_framebuffer_draw_rectangle (fb, node->color_pipeline,
+  cogl_framebuffer_draw_rectangle (framebuffer, node->color_pipeline,
                                    xend, yoffset + s_top, xend + shadow_width, yoffset + s_top + 1);
-  cogl_framebuffer_draw_rectangle (fb, node->color_pipeline,
+  cogl_framebuffer_draw_rectangle (framebuffer, node->color_pipeline,
                                    xend, yoffset + s_bottom, xend + shadow_width, yoffset + s_bottom + 1);
-  cogl_framebuffer_draw_rectangle (fb, node->color_pipeline,
+  cogl_framebuffer_draw_rectangle (framebuffer, node->color_pipeline,
                                    xend + s_left, yoffset, xend + s_left + 1, yoffset + shadow_height);
-  cogl_framebuffer_draw_rectangle (fb, node->color_pipeline,
+  cogl_framebuffer_draw_rectangle (framebuffer, node->color_pipeline,
                                    xend + s_right, yoffset, xend + s_right + 1, yoffset + shadow_height);
 
 #endif
@@ -2272,11 +2271,11 @@ st_theme_node_prerender_shadow (StThemeNodePaintState *state)
 
 static void
 st_theme_node_paint_sliced_border_image (StThemeNode           *node,
+                                         CoglFramebuffer       *framebuffer,
                                          float                  width,
                                          float                  height,
                                          guint8                 paint_opacity)
 {
-  CoglFramebuffer *fb = cogl_get_draw_framebuffer ();
   gfloat ex, ey;
   gfloat tx1, ty1, tx2, ty2;
   gint border_left, border_right, border_top, border_bottom;
@@ -2359,12 +2358,13 @@ st_theme_node_paint_sliced_border_image (StThemeNode           *node,
       1.0, 1.0
     };
 
-    cogl_framebuffer_draw_textured_rectangles (fb, pipeline, rectangles, 9);
+    cogl_framebuffer_draw_textured_rectangles (framebuffer, pipeline, rectangles, 9);
   }
 }
 
 static void
 st_theme_node_paint_outline (StThemeNode           *node,
+                             CoglFramebuffer       *framebuffer,
                              const ClutterActorBox *box,
                              guint8                 paint_opacity)
 
@@ -2424,8 +2424,7 @@ st_theme_node_paint_outline (StThemeNode           *node,
   rects[14] = 0;
   rects[15] = height;
 
-  cogl_framebuffer_draw_rectangles (cogl_get_draw_framebuffer (),
-                                    node->color_pipeline, rects, 4);
+  cogl_framebuffer_draw_rectangles (framebuffer, node->color_pipeline, rects, 4);
 }
 
 static gboolean
@@ -2544,6 +2543,7 @@ st_theme_node_paint (StThemeNode           *node,
                                        paint_opacity);
       else
         st_theme_node_paint_sliced_shadow (state,
+                                           framebuffer,
                                            &allocation,
                                            paint_opacity);
     }
@@ -2560,20 +2560,21 @@ st_theme_node_paint (StThemeNode           *node,
                                                   &paint_box);
 
           paint_material_with_opacity (state->prerendered_pipeline,
+                                       framebuffer,
                                        &paint_box,
                                        NULL,
                                        paint_opacity);
         }
 
       if (node->border_slices_pipeline != COGL_INVALID_HANDLE)
-        st_theme_node_paint_sliced_border_image (node, width, height, paint_opacity);
+        st_theme_node_paint_sliced_border_image (node, framebuffer, width, height, paint_opacity);
     }
   else
     {
       st_theme_node_paint_borders (state, framebuffer, box, paint_opacity);
     }
 
-  st_theme_node_paint_outline (node, box, paint_opacity);
+  st_theme_node_paint_outline (node, framebuffer, box, paint_opacity);
 
   if (state->prerendered_pipeline == COGL_INVALID_HANDLE &&
       st_theme_node_load_background_image (node))
@@ -2615,6 +2616,7 @@ st_theme_node_paint (StThemeNode           *node,
                                        paint_opacity);
 
       paint_material_with_opacity (node->background_pipeline,
+                                   framebuffer,
                                    &background_box,
                                    &texture_coords,
                                    paint_opacity);
