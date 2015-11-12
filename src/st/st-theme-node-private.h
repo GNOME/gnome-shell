@@ -112,6 +112,7 @@ struct _StThemeNode {
   CoglPipeline *background_texture;
   CoglPipeline *background_pipeline;
   CoglPipeline *background_shadow_pipeline;
+  CoglPipeline *color_pipeline;
 
   StThemeNodePaintState cached_state;
 };

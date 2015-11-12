@@ -1600,6 +1600,25 @@ paint_material_with_opacity (CoglHandle       material,
 }
 
 static void
+st_theme_node_ensure_color_pipeline (StThemeNode *node)
+{
+  static CoglPipeline *color_pipeline_template = NULL;
+
+  if (node->color_pipeline != COGL_INVALID_HANDLE)
+    return;
+
+  if (G_UNLIKELY (color_pipeline_template == NULL))
+    {
+      CoglContext *ctx =
+        clutter_backend_get_cogl_context (clutter_get_default_backend ());
+
+      color_pipeline_template = cogl_pipeline_new (ctx);
+    }
+
+  node->color_pipeline = cogl_pipeline_copy (color_pipeline_template);
+}
+
+static void
 st_theme_node_paint_borders (StThemeNodePaintState *state,
                              CoglFramebuffer       *framebuffer,
                              const ClutterActorBox *box,
@@ -1654,10 +1673,12 @@ st_theme_node_paint_borders (StThemeNodePaintState *state,
 
       if (alpha > 0)
         {
-          cogl_set_source_color4ub (effective_border.red,
-                                    effective_border.green,
-                                    effective_border.blue,
-                                    alpha);
+          st_theme_node_ensure_color_pipeline (node);
+          cogl_pipeline_set_color4ub (node->color_pipeline,
+                                      effective_border.red * alpha / 255,
+                                      effective_border.green * alpha / 255,
+                                      effective_border.blue * alpha / 255,
+                                      alpha);
 
           /* NORTH */
           skip_corner_1 = border_radius[ST_CORNER_TOPLEFT] > 0;
@@ -1700,7 +1721,9 @@ st_theme_node_paint_borders (StThemeNodePaintState *state,
           rects[15] = skip_corner_2 ? height - max_width_radius[ST_CORNER_BOTTOMLEFT]
                              : height - border_width[ST_SIDE_BOTTOM];
 
-          cogl_rectangles (rects, 4);
+          cogl_framebuffer_draw_rectangles (framebuffer,
+                                            node->color_pipeline,
+					    rects, 4);
         }
     }
 
@@ -1757,10 +1780,12 @@ st_theme_node_paint_borders (StThemeNodePaintState *state,
   alpha = paint_opacity * node->background_color.alpha / 255;
   if (alpha > 0)
     {
-      cogl_set_source_color4ub (node->background_color.red,
-                                node->background_color.green,
-                                node->background_color.blue,
-                                alpha);
+      st_theme_node_ensure_color_pipeline (node);
+      cogl_pipeline_set_color4ub (node->color_pipeline,
+                                  node->background_color.red * alpha / 255,
+                                  node->background_color.green * alpha / 255,
+                                  node->background_color.blue * alpha / 255,
+                                  alpha);
 
       /* We add padding to each corner, so that all corners end up as if they
        * had a border-radius of max_border_radius, which allows us to treat
@@ -1847,7 +1872,9 @@ st_theme_node_paint_borders (StThemeNodePaintState *state,
                 g_assert_not_reached();
                 break;
             }
-          cogl_rectangles (verts, n_rects);
+          cogl_framebuffer_draw_rectangles (framebuffer,
+                                            node->color_pipeline,
+                                            verts, n_rects);
         }
 
       /* Once we've drawn the borders and corners, if the corners are bigger
@@ -1862,20 +1889,23 @@ st_theme_node_paint_borders (StThemeNodePaintState *state,
        * necessary, then the main rectangle
        */
       if (max_border_radius > border_width[ST_SIDE_TOP])
-        cogl_rectangle (MAX(max_border_radius, border_width[ST_SIDE_LEFT]),
-                        border_width[ST_SIDE_TOP],
-                        width - MAX(max_border_radius, border_width[ST_SIDE_RIGHT]),
-                        max_border_radius);
+        cogl_framebuffer_draw_rectangle (framebuffer, node->color_pipeline,
+                                         MAX(max_border_radius, border_width[ST_SIDE_LEFT]),
+                                         border_width[ST_SIDE_TOP],
+                                         width - MAX(max_border_radius, border_width[ST_SIDE_RIGHT]),
+                                         max_border_radius);
       if (max_border_radius > border_width[ST_SIDE_BOTTOM])
-        cogl_rectangle (MAX(max_border_radius, border_width[ST_SIDE_LEFT]),
-                        height - max_border_radius,
-                        width - MAX(max_border_radius, border_width[ST_SIDE_RIGHT]),
-                        height - border_width[ST_SIDE_BOTTOM]);
+        cogl_framebuffer_draw_rectangle (framebuffer, node->color_pipeline,
+                                         MAX(max_border_radius, border_width[ST_SIDE_LEFT]),
+                                         height - max_border_radius,
+                                         width - MAX(max_border_radius, border_width[ST_SIDE_RIGHT]),
+                                         height - border_width[ST_SIDE_BOTTOM]);
 
-      cogl_rectangle (border_width[ST_SIDE_LEFT],
-                      MAX(border_width[ST_SIDE_TOP], max_border_radius),
-                      width - border_width[ST_SIDE_RIGHT],
-                      height - MAX(border_width[ST_SIDE_BOTTOM], max_border_radius));
+      cogl_framebuffer_draw_rectangle (framebuffer, node->color_pipeline,
+                                       border_width[ST_SIDE_LEFT],
+                                       MAX(border_width[ST_SIDE_TOP], max_border_radius),
+                                       width - border_width[ST_SIDE_RIGHT],
+                                       height - MAX(border_width[ST_SIDE_BOTTOM], max_border_radius));
     }
 }
 
@@ -2128,29 +2158,43 @@ st_theme_node_paint_sliced_shadow (StThemeNodePaintState *state,
 #if 0
   /* Visual feedback on shadow's 9-slice and orignal offscreen buffer,
      for debug purposes */
-  cogl_rectangle (xend, yoffset, xend + shadow_width, yoffset + shadow_height);
+  cogl_framebuffer_draw_rectangle (fb, state->box_shadow_pipeline,
+                                   xend, yoffset, xend + shadow_width, yoffset + shadow_height);
 
-  cogl_set_source_color4ub (0xff, 0x0, 0x0, 0xff);
+  st_theme_node_ensure_color_pipeline (node);
+  cogl_pipeline_set_color4ub (node->color_pipeline, 0xff, 0x0, 0x0, 0xff);
 
-  cogl_rectangle (xoffset, top, xend, top + 1);
-  cogl_rectangle (xoffset, bottom, xend, bottom + 1);
-  cogl_rectangle (left, yoffset, left + 1, yend);
-  cogl_rectangle (right, yoffset, right + 1, yend);
+  cogl_framebuffer_draw_rectangle (fb, node->color_pipeline,
+                                   xoffset, top, xend, top + 1);
+  cogl_framebuffer_draw_rectangle (fb, node->color_pipeline,
+                                   xoffset, bottom, xend, bottom + 1);
+  cogl_framebuffer_draw_rectangle (fb, node->color_pipeline,
+                                   left, yoffset, left + 1, yend);
+  cogl_framebuffer_draw_rectangle (fb, node->color_pipeline,
+                                   right, yoffset, right + 1, yend);
 
-  cogl_rectangle (xend, yoffset, xend + shadow_width, yoffset + 1);
-  cogl_rectangle (xend, yoffset + shadow_height, xend + shadow_width, yoffset + shadow_height + 1);
-  cogl_rectangle (xend, yoffset, xend + 1, yoffset + shadow_height);
-  cogl_rectangle (xend + shadow_width, yoffset, xend + shadow_width + 1, yoffset + shadow_height);
+  cogl_framebuffer_draw_rectangle (fb, node->color_pipeline,
+                                   xend, yoffset, xend + shadow_width, yoffset + 1);
+  cogl_framebuffer_draw_rectangle (fb, node->color_pipeline,
+                                   xend, yoffset + shadow_height, xend + shadow_width, yoffset + shadow_height + 1);
+  cogl_framebuffer_draw_rectangle (fb, node->color_pipeline,
+                                   xend, yoffset, xend + 1, yoffset + shadow_height);
+  cogl_framebuffer_draw_rectangle (fb, node->color_pipeline,
+                                   xend + shadow_width, yoffset, xend + shadow_width + 1, yoffset + shadow_height);
 
   s_top *= shadow_height;
   s_bottom *= shadow_height;
   s_left *= shadow_width;
   s_right *= shadow_width;
 
-  cogl_rectangle (xend, yoffset + s_top, xend + shadow_width, yoffset + s_top + 1);
-  cogl_rectangle (xend, yoffset + s_bottom, xend + shadow_width, yoffset + s_bottom + 1);
-  cogl_rectangle (xend + s_left, yoffset, xend + s_left + 1, yoffset + shadow_height);
-  cogl_rectangle (xend + s_right, yoffset, xend + s_right + 1, yoffset + shadow_height);
+  cogl_framebuffer_draw_rectangle (fb, node->color_pipeline,
+                                   xend, yoffset + s_top, xend + shadow_width, yoffset + s_top + 1);
+  cogl_framebuffer_draw_rectangle (fb, node->color_pipeline,
+                                   xend, yoffset + s_bottom, xend + shadow_width, yoffset + s_bottom + 1);
+  cogl_framebuffer_draw_rectangle (fb, node->color_pipeline,
+                                   xend + s_left, yoffset, xend + s_left + 1, yoffset + shadow_height);
+  cogl_framebuffer_draw_rectangle (fb, node->color_pipeline,
+                                   xend + s_right, yoffset, xend + s_right + 1, yoffset + shadow_height);
 
 #endif
 }
@@ -2329,6 +2373,7 @@ st_theme_node_paint_outline (StThemeNode           *node,
   int outline_width;
   float rects[16];
   ClutterColor outline_color, effective_outline;
+  guint8 alpha;
 
   width = box->x2 - box->x1;
   height = box->y2 - box->y1;
@@ -2340,10 +2385,14 @@ st_theme_node_paint_outline (StThemeNode           *node,
   st_theme_node_get_outline_color (node, &outline_color);
   over (&outline_color, &node->background_color, &effective_outline);
 
-  cogl_set_source_color4ub (effective_outline.red,
-                            effective_outline.green,
-                            effective_outline.blue,
-                            paint_opacity * effective_outline.alpha / 255);
+  alpha = paint_opacity * outline_color.alpha / 255;
+
+  st_theme_node_ensure_color_pipeline (node);
+  cogl_pipeline_set_color4ub (node->color_pipeline,
+                              effective_outline.red * alpha / 255,
+                              effective_outline.green * alpha / 255,
+                              effective_outline.blue * alpha / 255,
+                              alpha);
 
   /* The outline is drawn just outside the border, which means just
    * outside the allocation box. This means that in some situations
@@ -2375,7 +2424,8 @@ st_theme_node_paint_outline (StThemeNode           *node,
   rects[14] = 0;
   rects[15] = height;
 
-  cogl_rectangles (rects, 4);
+  cogl_framebuffer_draw_rectangles (cogl_get_draw_framebuffer (),
+                                    node->color_pipeline, rects, 4);
 }
 
 static gboolean

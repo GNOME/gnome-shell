@@ -52,6 +52,7 @@ st_theme_node_init (StThemeNode *node)
   node->background_shadow_pipeline = COGL_INVALID_HANDLE;
   node->border_slices_texture = COGL_INVALID_HANDLE;
   node->border_slices_pipeline = COGL_INVALID_HANDLE;
+  node->color_pipeline = COGL_INVALID_HANDLE;
 
   st_theme_node_paint_state_init (&node->cached_state);
 }
@@ -171,6 +172,8 @@ st_theme_node_finalize (GObject *object)
     cogl_handle_unref (node->border_slices_texture);
   if (node->border_slices_pipeline != COGL_INVALID_HANDLE)
     cogl_handle_unref (node->border_slices_pipeline);
+  if (node->color_pipeline != COGL_INVALID_HANDLE)
+    cogl_handle_unref (node->color_pipeline);
 
   G_OBJECT_CLASS (st_theme_node_parent_class)->finalize (object);
 }
