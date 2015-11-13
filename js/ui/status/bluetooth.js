@@ -1,11 +1,8 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const Clutter = imports.gi.Clutter;
-const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
 const GnomeBluetooth = imports.gi.GnomeBluetooth;
 const Lang = imports.lang;
-const St = imports.gi.St;
 
 const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
