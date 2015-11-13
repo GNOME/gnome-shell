@@ -663,6 +663,14 @@ _cogl_winsys_egl_display_setup (CoglDisplay *display,
       return FALSE;
     }
 
+  /* Force a full modeset / drmModeSetCrtc on
+   * the first swap buffers call.
+   */
+  kms_display->pending_set_crtc = TRUE;
+
+  if (kms_renderer->opened_fd < 0)
+    return TRUE;
+
   output0 = find_output (0,
                          kms_renderer->fd,
                          resources,
@@ -735,10 +743,6 @@ _cogl_winsys_egl_display_setup (CoglDisplay *display,
 
   kms_display->width = output0->mode.hdisplay;
   kms_display->height = output0->mode.vdisplay;
-
-  /* We defer setting the crtc modes until the first swap_buffers request of a
-   * CoglOnscreen framebuffer. */
-  kms_display->pending_set_crtc = TRUE;
 
   return TRUE;
 }
