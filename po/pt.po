@@ -11,19 +11,20 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 3.14\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
-"shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-10-28 10:51+0000\n"
-"PO-Revision-Date: 2015-11-05 05:47+0000\n"
-"Last-Translator:  <>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2015-11-13 22:13+0000\n"
+"PO-Revision-Date: 2015-11-14 07:57+0000\n"
+"Last-Translator: <>\n"
 "Language-Team: Português <palbuquerque73@gmail.com>\n"
 "Language: pt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\\n;\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.5.4\n"
 "X-Project-Style: gnome\n"
+"X-Language: pt_PT\n"
+"X-Source-Language: C\n"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
 msgid "System"
@@ -49,15 +50,6 @@ msgstr "Mostrar todas as aplicações"
 msgid "Open the application menu"
 msgstr "Abrir o menu de aplicações"
 
-#: ../data/gnome-shell.desktop.in.in.h:1
-msgid "GNOME Shell"
-msgstr "Shell GNOME"
-
-#: ../data/gnome-shell.desktop.in.in.h:2
-#: ../data/gnome-shell-wayland.desktop.in.in.h:2
-msgid "Window management and application launching"
-msgstr "Gestão de janelas e iniciação de aplicações"
-
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:1
 msgid "GNOME Shell Extension Preferences"
 msgstr "Preferências das extensões á interface GNOME"
@@ -66,9 +58,13 @@ msgstr "Preferências das extensões á interface GNOME"
 msgid "Configure GNOME Shell Extensions"
 msgstr "Configurar extensões à interface GNOME"
 
-#: ../data/gnome-shell-wayland.desktop.in.in.h:1
-msgid "GNOME Shell (wayland compositor)"
-msgstr "Interface GNOME (compositor wayland)"
+#: ../data/org.gnome.Shell.desktop.in.in.h:1
+msgid "GNOME Shell"
+msgstr "Shell GNOME"
+
+#: ../data/org.gnome.Shell.desktop.in.in.h:2
+msgid "Window management and application launching"
+msgstr "Gestão de janelas e iniciação de aplicações"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:1
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
@@ -150,8 +146,8 @@ msgstr "Mostrar sempre 'Terminar sessão' no menu de utilizador."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:15
 msgid ""
-"This key overrides the automatic hiding of the 'Log out' menu item in single-"
-"user, single-session situations."
+"This key overrides the automatic hiding of the 'Log out' menu item in "
+"single-user, single-session situations."
 msgstr ""
 "Esta chave ignora a ocultação automática do 'Terminar sessão' em situações "
 "de utilizador-único, sessão-única."
@@ -280,12 +276,12 @@ msgstr "O modo do ícone da aplicação."
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:38
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
-"are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-"
-"only' (shows only the application icon) or 'both'."
+"are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-only' "
+"(shows only the application icon) or 'both'."
 msgstr ""
 "Configura como as janelas são mostradas no alternador. Possibilidades "
-"válidas são 'thumbnail-only' (mostra uma miniatura da janela), 'app-icon-"
-"only' (mostra só o ícone da aplicação) ou 'both' (ambas)."
+"válidas são 'thumbnail-only' (mostra uma miniatura da janela), "
+"'app-icon-only' (mostra só o ícone da aplicação) ou 'both' (ambas)."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:39
 msgid ""
@@ -1475,14 +1471,16 @@ msgstr "A estimar…"
 #. Translators: this is <hours>:<minutes> Remaining (<percentage>)
 #: ../js/ui/status/power.js:86
 #, javascript-format
-msgid "%d∶%02d Remaining (%d%%)"
-msgstr "%d∶%02d remanescentes (%d%%)"
+#| msgid "%d∶%02d Remaining (%d%%)"
+msgid "%d∶%02d Remaining (%d %%)"
+msgstr "%d∶%02d restantes (%d%%)"
 
 #. Translators: this is <hours>:<minutes> Until Full (<percentage>)
 #: ../js/ui/status/power.js:91
 #, javascript-format
-msgid "%d∶%02d Until Full (%d%%)"
-msgstr "%d∶%02d Até estar cheio (%d%%)"
+#| msgid "%d∶%02d Until Full (%d%%)"
+msgid "%d∶%02d Until Full (%d %%)"
+msgstr "%d∶%02d até estar cheio (%d%%)"
 
 #. The menu only appears when airplane mode is on, so just
 #. statically build it as if it was on, rather than dynamically
@@ -1705,6 +1703,9 @@ msgstr "A senha não pode estar vazia"
 #: ../src/shell-polkit-authentication-agent.c:353
 msgid "Authentication dialog was dismissed by the user"
 msgstr "O diálogo de autenticação foi fechado pelo utilizador"
+
+#~ msgid "GNOME Shell (wayland compositor)"
+#~ msgstr "Interface GNOME (compositor wayland)"
 
 #~ msgid "%d Connected Device"
 #~ msgid_plural "%d Connected Devices"
@@ -2039,6 +2040,7 @@ msgstr "O diálogo de autenticação foi fechado pelo utilizador"
 #~ msgid "Pairing confirmation for %s"
 #~ msgstr "Confirmação de emparelhamento para %s"
 
+#, qt-format
 #~ msgid ""
 #~ "Please confirm whether the Passkey '%06d' matches the one on the device."
 #~ msgstr "Por favor, confirme se a chave '%06d' corresponde à do dispositivo."
