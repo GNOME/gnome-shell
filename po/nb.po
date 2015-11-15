@@ -7,10 +7,10 @@
 # Torstein Adolf Winterseth <kvikende@fsfe.org>, 2010.
 msgid ""
 msgstr ""
-"Project-Id-Version: gnome-shell 3.18.x\n"
+"Project-Id-Version: gnome-shell 3.19.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-10-16 18:09+0200\n"
-"PO-Revision-Date: 2015-10-16 18:09+0200\n"
+"POT-Creation-Date: 2015-11-15 19:59+0100\n"
+"PO-Revision-Date: 2015-11-15 20:00+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language: Norwegian bokmål\n"
@@ -44,15 +44,6 @@ msgstr "Vis alle programmer"
 msgid "Open the application menu"
 msgstr "Åpne programmenyen"
 
-#: ../data/gnome-shell.desktop.in.in.h:1
-msgid "GNOME Shell"
-msgstr "GNOME Shell"
-
-#: ../data/gnome-shell.desktop.in.in.h:2
-#: ../data/gnome-shell-wayland.desktop.in.in.h:2
-msgid "Window management and application launching"
-msgstr "Vindushåndtering og oppstart av programmer"
-
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:1
 msgid "GNOME Shell Extension Preferences"
 msgstr "Brukervalg for GNOME Shell-utvidelser"
@@ -61,9 +52,13 @@ msgstr "Brukervalg for GNOME Shell-utvidelser"
 msgid "Configure GNOME Shell Extensions"
 msgstr "Sett opp utvidelser for GNOME Shell"
 
-#: ../data/gnome-shell-wayland.desktop.in.in.h:1
-msgid "GNOME Shell (wayland compositor)"
-msgstr "GNOME Shell (Wayland-kompositør)"
+#: ../data/org.gnome.Shell.desktop.in.in.h:1
+msgid "GNOME Shell"
+msgstr "GNOME Shell"
+
+#: ../data/org.gnome.Shell.desktop.in.in.h:2
+msgid "Window management and application launching"
+msgstr "Vindushåndtering og oppstart av programmer"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:1
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
@@ -166,75 +161,88 @@ msgstr ""
 "standardverdien for avkryssingsboksen."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:18
+msgid ""
+"Whether the default Bluetooth adapter had set up devices associated to it"
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:19
+msgid ""
+"The shell will only show a Bluetooth menu item if a Bluetooth adapter is "
+"powered, or if there were devices set up associated with the default "
+"adapter. This will be reset if the default adapter is ever seen not to have "
+"devices associated to it."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:20
 msgid "Show the week date in the calendar"
 msgstr "Vis ukedato/ukenummer i kalender"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:21
 msgid "If true, display the ISO week date in the calendar."
 msgstr "Viser ISO-ukedato i kalenderen hvis «true»."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:22
 msgid "Keybinding to open the application menu"
 msgstr "Tastaturbinding som åpner programmenyen"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:23
 msgid "Keybinding to open the application menu."
 msgstr "Tastaturbinding som åpner programmenyen."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:22
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:24
 msgid "Keybinding to open the \"Show Applications\" view"
 msgstr "Tastaturbinding som åpner visningen «Vis programmer»"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:23
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:25
 msgid ""
 "Keybinding to open the \"Show Applications\" view of the Activities Overview."
 msgstr ""
 "Tastaturbinding som åpner visningen «Vis programmer» i aktivitetsoversikten."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:24
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:26
 msgid "Keybinding to open the overview"
 msgstr "Tastaturbinding som åpner oversikten"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:25
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:27
 msgid "Keybinding to open the Activities Overview."
 msgstr "Tastaturbinding som åpner aktivitetsoversikten."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:26
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:28
 msgid "Keybinding to toggle the visibility of the notification list"
 msgstr "Tastaturbinding som slår av/på visning av varslingsliste"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:27
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:29
 msgid "Keybinding to toggle the visibility of the notification list."
 msgstr "Tastaturbinding som slår av/på visning av varslingsliste."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:28
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:30
 msgid "Keybinding to focus the active notification"
 msgstr "Tastaturbinding som fokuserer aktiv varsling"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:29
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:31
 msgid "Keybinding to focus the active notification."
 msgstr "Tastaturbinding som fokuserer aktiv varsling."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:30
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:32
 msgid ""
 "Keybinding that pauses and resumes all running tweens, for debugging purposes"
 msgstr ""
 "Hurtigtast som stanser og fortsetter pågående bevegelser til "
 "feilsøkingsformål"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:31
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:33
 msgid "Which keyboard to use"
 msgstr "Tastatur som skal brukes"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:32
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:34
 msgid "The type of keyboard to use."
 msgstr "Type tastatur som skal brukes."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:33
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:35
 msgid "Limit switcher to current workspace."
 msgstr "Begrens programveksling til gjeldende arbeidsområde."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:34
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:36
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
@@ -243,11 +251,11 @@ msgstr ""
 "gjeldende arbeidsområder som vises i programveksleren. I motsatt fall kan du "
 "veksle mellom programmer på tvers av arbeidsområder."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:35
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:37
 msgid "The application icon mode."
 msgstr "Ikonmodus for programmet."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:36
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:38
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-"
@@ -257,7 +265,7 @@ msgstr ""
 "valgalternativer er «thumbnail-only» (viser miniatyrbilde av vinduet), «app-"
 "icon-only» (viser bare programikonet) og «both» (viser begge forannevnte)."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:37
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:39
 msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
@@ -266,30 +274,30 @@ msgstr ""
 "arbeidsområder som vises i programveksleren. I motsatt fall vises vinduer "
 "fra alle arbeidsområder."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:38
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:40
 msgid "Attach modal dialog to the parent window"
 msgstr "Fest modal dialog til opphavsvinduet"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:39
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:41
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
 msgstr ""
 "Denne nøkkelen overstyrer nøkkelen i org.gnome.mutter når GNOME Shell kjøres."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:40
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:42
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr ""
 "Del opp skjermkantene i fliser når brukeren drar og slipper vinduer på dem"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:41
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:43
 msgid "Workspaces are managed dynamically"
 msgstr "Arbeidsområder håndteres dynamisk"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:42
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:44
 msgid "Workspaces only on primary monitor"
 msgstr "Arbeidsområder vises kun på hovedskjerm"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:43
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:45
 msgid "Delay focus changes in mouse mode until the pointer stops moving"
 msgstr "Utsett fokusendringer i musmodus til peker slutter å bevege seg"
 
@@ -354,7 +362,7 @@ msgstr "(f.eks. bruker eller %s)"
 msgid "Username: "
 msgstr "Brukernavn: "
 
-#: ../js/gdm/loginDialog.js:1184
+#: ../js/gdm/loginDialog.js:1180
 msgid "Login Window"
 msgstr "Innloggingsvindu"
 
@@ -490,12 +498,12 @@ msgstr "Legg til i favoritter"
 msgid "Show Details"
 msgstr "Vis detaljer"
 
-#: ../js/ui/appFavorites.js:132
+#: ../js/ui/appFavorites.js:133
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "%s ble lagt til i favoritter."
 
-#: ../js/ui/appFavorites.js:166
+#: ../js/ui/appFavorites.js:167
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "%s ble fjernet fra favoritter."
@@ -571,6 +579,12 @@ msgstr "Forrige måned"
 #: ../js/ui/calendar.js:576
 msgid "Next month"
 msgstr "Neste måned"
+
+#: ../js/ui/calendar.js:728
+#, javascript-format
+msgctxt "date day number format"
+msgid "%d"
+msgstr "%d"
 
 #: ../js/ui/calendar.js:783
 msgid "Week %V"
@@ -967,7 +981,7 @@ msgstr "Slått på"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:719 ../src/gvc/gvc-mixer-control.c:1830
+#: ../js/ui/lookingGlass.js:719 ../src/gvc/gvc-mixer-control.c:1828
 msgid "Disabled"
 msgstr "Slått av"
 
@@ -1021,12 +1035,12 @@ msgstr "Avslutt"
 msgid "Activities"
 msgstr "Aktiviteter"
 
-#: ../js/ui/panel.js:693
+#: ../js/ui/panel.js:695
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "System"
 
-#: ../js/ui/panel.js:805
+#: ../js/ui/panel.js:807
 msgid "Top Bar"
 msgstr "Topp-panel"
 
@@ -1039,15 +1053,15 @@ msgstr "Topp-panel"
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
-#: ../js/ui/runDialog.js:70
+#: ../js/ui/runDialog.js:71
 msgid "Enter a Command"
 msgstr "Skriv inn en kommando"
 
-#: ../js/ui/runDialog.js:110 ../js/ui/windowMenu.js:162
+#: ../js/ui/runDialog.js:111 ../js/ui/windowMenu.js:162
 msgid "Close"
 msgstr "Lukk"
 
-#: ../js/ui/runDialog.js:281
+#: ../js/ui/runDialog.js:282
 msgid "Restarting…"
 msgstr "Starter på nytt …"
 
@@ -1170,28 +1184,40 @@ msgstr "Høy kontrast"
 msgid "Large Text"
 msgstr "Stor tekst"
 
-#: ../js/ui/status/bluetooth.js:51 ../js/ui/status/network.js:178
-#: ../js/ui/status/network.js:353 ../js/ui/status/network.js:1279
-#: ../js/ui/status/network.js:1394 ../js/ui/status/rfkill.js:90
-#: ../js/ui/status/rfkill.js:117
-msgid "Turn Off"
-msgstr "Slå av"
+#: ../js/ui/status/bluetooth.js:50
+msgid "Bluetooth"
+msgstr "Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:54
+#: ../js/ui/status/bluetooth.js:59
 msgid "Bluetooth Settings"
 msgstr "Bluetooth-innstillinger"
 
 #. Translators: this is the number of connected bluetooth devices
-#: ../js/ui/status/bluetooth.js:105
+#: ../js/ui/status/bluetooth.js:139
 #, javascript-format
 msgid "%d Connected"
 msgid_plural "%d Connected"
 msgstr[0] "%d koblet til"
 msgstr[1] "%d koblet til"
 
-#: ../js/ui/status/bluetooth.js:107
+#: ../js/ui/status/bluetooth.js:141
+msgid "Off"
+msgstr "Av"
+
+#: ../js/ui/status/bluetooth.js:143
 msgid "Not In Use"
 msgstr "Ikke i bruk"
+
+#: ../js/ui/status/bluetooth.js:145 ../js/ui/status/network.js:1279
+msgid "Turn On"
+msgstr "Slå på"
+
+#: ../js/ui/status/bluetooth.js:145 ../js/ui/status/network.js:178
+#: ../js/ui/status/network.js:353 ../js/ui/status/network.js:1279
+#: ../js/ui/status/network.js:1394 ../js/ui/status/rfkill.js:90
+#: ../js/ui/status/rfkill.js:117
+msgid "Turn Off"
+msgstr "Slå av"
 
 #: ../js/ui/status/brightness.js:44
 msgid "Brightness"
@@ -1360,10 +1386,6 @@ msgstr "Velg nettverk"
 msgid "Wi-Fi Settings"
 msgstr "Innstillinger"
 
-#: ../js/ui/status/network.js:1279
-msgid "Turn On"
-msgstr "Slå på"
-
 #. Translators: %s is a network identifier
 #: ../js/ui/status/network.js:1296
 #, javascript-format
@@ -1430,14 +1452,14 @@ msgstr "Estimerer …"
 #. Translators: this is <hours>:<minutes> Remaining (<percentage>)
 #: ../js/ui/status/power.js:86
 #, javascript-format
-msgid "%d∶%02d Remaining (%d%%)"
-msgstr "%d:%02d gjenstår (%d%%)"
+msgid "%d∶%02d Remaining (%d %%)"
+msgstr "%d:%02d gjenstår (%d %%)"
 
 #. Translators: this is <hours>:<minutes> Until Full (<percentage>)
 #: ../js/ui/status/power.js:91
 #, javascript-format
-msgid "%d∶%02d Until Full (%d%%)"
-msgstr "%d:%02d til batteriet er fullt (%d%%)"
+msgid "%d∶%02d Until Full (%d %%)"
+msgstr "%d:%02d til batteriet er fullt (%d %%)"
 
 #. The menu only appears when airplane mode is on, so just
 #. statically build it as if it was on, rather than dynamically
@@ -1602,7 +1624,7 @@ msgstr "Evolution kalender"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1837
+#: ../src/gvc/gvc-mixer-control.c:1835
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -1611,14 +1633,14 @@ msgstr[1] "%u utganger"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1847
+#: ../src/gvc/gvc-mixer-control.c:1845
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u inngang"
 msgstr[1] "%u innganger"
 
-#: ../src/gvc/gvc-mixer-control.c:2373
+#: ../src/gvc/gvc-mixer-control.c:2371
 msgid "System Sounds"
 msgstr "Systemlyder"
 
