@@ -26,8 +26,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-10-03 20:41+0000\n"
-"PO-Revision-Date: 2015-09-05 13:11+0300\n"
+"POT-Creation-Date: 2015-11-15 10:15+0000\n"
+"PO-Revision-Date: 2015-11-15 18:52+0200\n"
 "Last-Translator: Jiri Grönroos <jiri.gronroos+l10n@iki.fi>\n"
 "Language-Team: suomi <gnome-fi-laatu@lists.sourceforge.net>\n"
 "Language: fi\n"
@@ -35,7 +35,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Gtranslator 2.91.6\n"
+"X-Generator: Gtranslator 2.91.7\n"
 "X-DamnedLies-Scope: partial\n"
 "X-Project-Style: gnome\n"
 "X-POT-Import-Date: 2012-03-05 15:06:10+0000\n"
@@ -64,15 +64,6 @@ msgstr "Näytä kaikki sovellukset"
 msgid "Open the application menu"
 msgstr "Avaa sovellusvalikko"
 
-#: ../data/gnome-shell.desktop.in.in.h:1
-msgid "GNOME Shell"
-msgstr "Gnome Shell"
-
-#: ../data/gnome-shell.desktop.in.in.h:2
-#: ../data/gnome-shell-wayland.desktop.in.in.h:2
-msgid "Window management and application launching"
-msgstr "Ikkunanhallinta ja sovelluksien käynnistäminen"
-
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:1
 msgid "GNOME Shell Extension Preferences"
 msgstr "Gnome Shell -laajennusten asetukset"
@@ -81,9 +72,13 @@ msgstr "Gnome Shell -laajennusten asetukset"
 msgid "Configure GNOME Shell Extensions"
 msgstr "Hallitse Gnome Shell -laajennuksia"
 
-#: ../data/gnome-shell-wayland.desktop.in.in.h:1
-msgid "GNOME Shell (wayland compositor)"
-msgstr "Gnome Shell (Wayland-komposiointi)"
+#: ../data/org.gnome.Shell.desktop.in.in.h:1
+msgid "GNOME Shell"
+msgstr "Gnome Shell"
+
+#: ../data/org.gnome.Shell.desktop.in.in.h:2
+msgid "Window management and application launching"
+msgstr "Ikkunanhallinta ja sovelluksien käynnistäminen"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:1
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
@@ -194,73 +189,86 @@ msgid ""
 msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:18
+msgid ""
+"Whether the default Bluetooth adapter had set up devices associated to it"
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:19
+msgid ""
+"The shell will only show a Bluetooth menu item if a Bluetooth adapter is "
+"powered, or if there were devices set up associated with the default "
+"adapter. This will be reset if the default adapter is ever seen not to have "
+"devices associated to it."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:20
 msgid "Show the week date in the calendar"
 msgstr "Näytä viikonpäivä kalenterissa"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:21
 msgid "If true, display the ISO week date in the calendar."
 msgstr "Jos tosi, näytä ISO-viikonpäivät kalenterissa."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:22
 msgid "Keybinding to open the application menu"
 msgstr "Sovellusvalikon avaukseen käytettävä pikanäppäin"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:23
 msgid "Keybinding to open the application menu."
 msgstr "Sovellusvalikon avaukseen käytettävä pikanäppäin."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:22
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:24
 msgid "Keybinding to open the \"Show Applications\" view"
 msgstr "Näytä sovellukset -näkymän avaukseen käytettävä pikanäppäin"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:23
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:25
 msgid ""
 "Keybinding to open the \"Show Applications\" view of the Activities Overview."
 msgstr ""
 "Yleisnäkymän Näytä sovellukset -näkymän avaukseen käytettävä pikanäppäin."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:24
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:26
 msgid "Keybinding to open the overview"
 msgstr "Yleisnäkymän avaukseen käytettävä pikanäppäin"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:25
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:27
 msgid "Keybinding to open the Activities Overview."
 msgstr "Yleisnäkymän avaukseen käytettävä pikanäppäin."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:26
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:28
 msgid "Keybinding to toggle the visibility of the notification list"
 msgstr "Ilmoitusalueen näyttämiseen/piilottamiseen tarkoitettu pikanäppäin"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:27
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:29
 msgid "Keybinding to toggle the visibility of the notification list."
 msgstr "Ilmoitusluettelon näyttämiseen/piilottamiseen tarkoitettu pikanäppäin."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:28
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:30
 msgid "Keybinding to focus the active notification"
 msgstr "Aktiiviseen ilmoitukseen kohdistava pikanäppäin"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:29
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:31
 msgid "Keybinding to focus the active notification."
 msgstr "Aktiiviseen ilmoitukseen kohdistava pikanäppäin."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:30
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:32
 msgid ""
 "Keybinding that pauses and resumes all running tweens, for debugging purposes"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:31
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:33
 msgid "Which keyboard to use"
 msgstr "Mitä näppäimistöä käytetään"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:32
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:34
 msgid "The type of keyboard to use."
 msgstr "Käytettävän näppäimistön tyyppi."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:33
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:35
 msgid "Limit switcher to current workspace."
 msgstr "Rajoita vaihtaja nykyiseen työtilaan."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:34
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:36
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
@@ -269,11 +277,11 @@ msgstr ""
 "sijaitsevat nykyisessä työtilassa. Muussa tapauksessa kaikki sovellukset "
 "sisällytetään."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:35
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:37
 msgid "The application icon mode."
 msgstr "Sovelluskuvakkeen tila."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:36
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:38
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-"
@@ -283,7 +291,7 @@ msgstr ""
 "'thumbnail-only' (näyttää ikkunan pienoiskuvan), 'app-icon-only' (näyttää "
 "vain sovelluksen kuvakkeen) tai 'both'."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:37
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:39
 msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
@@ -291,29 +299,29 @@ msgstr ""
 "Jos tosi,vain nykyisessä työtilassa olevat ikkunat näytetään vaihtajassa. "
 "Muussa tapauksessa kaikki ikkunat näytetään."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:38
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:40
 msgid "Attach modal dialog to the parent window"
 msgstr "Kiinnitä modaali-ikkuna isäntäikkunaan"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:39
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:41
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
 msgstr ""
 "Tämä avain syrjäyttää avaimen org.gnome.mutter Gnome Shelliä käyttäessä."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:40
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:42
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr "Käytä reunakiinnitystä tiputtaessa ikkunoita näytön reunoille"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:41
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:43
 msgid "Workspaces are managed dynamically"
 msgstr "Työtilojen hallinta on dynaamista"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:42
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:44
 msgid "Workspaces only on primary monitor"
 msgstr "Työtilat ainoastaan ensisijaisella näytöllä"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:43
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:45
 msgid "Delay focus changes in mouse mode until the pointer stops moving"
 msgstr ""
 "Viivästytä kohdistuksen vaihtumista hiiritilassa, kunnes osoitin lopettaa "
@@ -380,7 +388,7 @@ msgstr "(esim. käyttäjä tai %s)"
 msgid "Username: "
 msgstr "Käyttäjänimi: "
 
-#: ../js/gdm/loginDialog.js:1184
+#: ../js/gdm/loginDialog.js:1180
 msgid "Login Window"
 msgstr "Kirjautumisikkuna"
 
@@ -516,12 +524,12 @@ msgstr "Lisää suosikkeihin"
 msgid "Show Details"
 msgstr "Näytä tiedot"
 
-#: ../js/ui/appFavorites.js:132
+#: ../js/ui/appFavorites.js:133
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "%s on lisätty suosikkeihin."
 
-#: ../js/ui/appFavorites.js:166
+#: ../js/ui/appFavorites.js:167
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "%s on poistettu suosikeista."
@@ -598,6 +606,14 @@ msgstr "Edellinen kuukausi"
 msgid "Next month"
 msgstr "Seuraava kuukausi"
 
+#: ../js/ui/calendar.js:728
+#, fuzzy, javascript-format
+#| msgctxt "percent of battery remaining"
+#| msgid "%d%%"
+msgctxt "date day number format"
+msgid "%d"
+msgstr "%d %%"
+
 #: ../js/ui/calendar.js:783
 msgid "Week %V"
 msgstr "Viikko %V"
@@ -648,7 +664,7 @@ msgstr "Erillinen asema yhdistetty"
 msgid "External drive disconnected"
 msgstr "Erillinen asema irrotettu"
 
-#: ../js/ui/components/autorunManager.js:354
+#: ../js/ui/components/autorunManager.js:351
 #, javascript-format
 msgid "Open with %s"
 msgstr "Avaa käyttäen sovellusta %s"
@@ -1038,23 +1054,22 @@ msgstr "Yleisnäkymä"
 msgid "Type to search…"
 msgstr "Kirjoita hakeaksesi…"
 
-#: ../js/ui/panel.js:352
+#: ../js/ui/panel.js:358
 msgid "Quit"
 msgstr "Lopeta"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:404
+#: ../js/ui/panel.js:414
 msgid "Activities"
 msgstr "Toiminnot"
 
-#: ../js/ui/panel.js:650
-#| msgid "System"
+#: ../js/ui/panel.js:695
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Järjestelmä"
 
-#: ../js/ui/panel.js:754
+#: ../js/ui/panel.js:807
 msgid "Top Bar"
 msgstr "Yläpalkki"
 
@@ -1067,15 +1082,15 @@ msgstr "Yläpalkki"
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
-#: ../js/ui/runDialog.js:70
+#: ../js/ui/runDialog.js:71
 msgid "Enter a Command"
 msgstr "Syötä komento"
 
-#: ../js/ui/runDialog.js:110 ../js/ui/windowMenu.js:162
+#: ../js/ui/runDialog.js:111 ../js/ui/windowMenu.js:162
 msgid "Close"
 msgstr "Sulje"
 
-#: ../js/ui/runDialog.js:281
+#: ../js/ui/runDialog.js:282
 msgid "Restarting…"
 msgstr "Käynnistetään uudelleen…"
 
@@ -1198,28 +1213,40 @@ msgstr "Korkea kontrasti"
 msgid "Large Text"
 msgstr "Suuri tekstin koko"
 
-#: ../js/ui/status/bluetooth.js:51 ../js/ui/status/network.js:178
-#: ../js/ui/status/network.js:353 ../js/ui/status/network.js:1279
-#: ../js/ui/status/network.js:1394 ../js/ui/status/rfkill.js:90
-#: ../js/ui/status/rfkill.js:117
-msgid "Turn Off"
-msgstr "Sammuta"
+#: ../js/ui/status/bluetooth.js:50
+msgid "Bluetooth"
+msgstr "Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:54
+#: ../js/ui/status/bluetooth.js:59
 msgid "Bluetooth Settings"
 msgstr "Bluetooth-asetukset"
 
 #. Translators: this is the number of connected bluetooth devices
-#: ../js/ui/status/bluetooth.js:105
+#: ../js/ui/status/bluetooth.js:139
 #, javascript-format
 msgid "%d Connected"
 msgid_plural "%d Connected"
 msgstr[0] "%d yhdistetty"
 msgstr[1] "%d yhdistetty"
 
-#: ../js/ui/status/bluetooth.js:107
+#: ../js/ui/status/bluetooth.js:141
+msgid "Off"
+msgstr "Pois"
+
+#: ../js/ui/status/bluetooth.js:143
 msgid "Not In Use"
 msgstr "Ei käytössä"
+
+#: ../js/ui/status/bluetooth.js:145 ../js/ui/status/network.js:1279
+msgid "Turn On"
+msgstr "Ota käyttöön"
+
+#: ../js/ui/status/bluetooth.js:145 ../js/ui/status/network.js:178
+#: ../js/ui/status/network.js:353 ../js/ui/status/network.js:1279
+#: ../js/ui/status/network.js:1394 ../js/ui/status/rfkill.js:90
+#: ../js/ui/status/rfkill.js:117
+msgid "Turn Off"
+msgstr "Sammuta"
 
 #: ../js/ui/status/brightness.js:44
 msgid "Brightness"
@@ -1388,10 +1415,6 @@ msgstr "Valitse verkko"
 msgid "Wi-Fi Settings"
 msgstr "Wifin asetukset"
 
-#: ../js/ui/status/network.js:1279
-msgid "Turn On"
-msgstr "Ota käyttöön"
-
 #. Translators: %s is a network identifier
 #: ../js/ui/status/network.js:1296
 #, javascript-format
@@ -1458,14 +1481,16 @@ msgstr "Arvioidaan…"
 #. Translators: this is <hours>:<minutes> Remaining (<percentage>)
 #: ../js/ui/status/power.js:86
 #, javascript-format
-msgid "%d∶%02d Remaining (%d%%)"
-msgstr "%d∶%02d jäljellä (%d%%)"
+#| msgid "%d∶%02d Remaining (%d%%)"
+msgid "%d∶%02d Remaining (%d %%)"
+msgstr "%d∶%02d jäljellä (%d %%)"
 
 #. Translators: this is <hours>:<minutes> Until Full (<percentage>)
 #: ../js/ui/status/power.js:91
 #, javascript-format
-msgid "%d∶%02d Until Full (%d%%)"
-msgstr "%d∶%02d kunnes täynnä (%d%%)"
+#| msgid "%d∶%02d Until Full (%d%%)"
+msgid "%d∶%02d Until Full (%d %%)"
+msgstr "%d∶%02d kunnes täynnä (%d %%)"
 
 #. The menu only appears when airplane mode is on, so just
 #. statically build it as if it was on, rather than dynamically
@@ -1666,38 +1691,35 @@ msgstr "Käytä tiettyä tilaa (esim. \"gdm\") kirjautumisnäkymää varten"
 msgid "List possible modes"
 msgstr "Listaa mahdolliset tilat"
 
-#: ../src/shell-app.c:239
+#: ../src/shell-app.c:246
 msgctxt "program"
 msgid "Unknown"
 msgstr "Tuntematon"
 
-#: ../src/shell-app.c:480
+#: ../src/shell-app.c:487
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "Sovelluksen ”%s” käynnistäminen epäonnistui"
 
-#: ../src/shell-keyring-prompt.c:742
+#: ../src/shell-keyring-prompt.c:730
 msgid "Passwords do not match."
 msgstr "Salasanat eivät täsmää."
 
-#: ../src/shell-keyring-prompt.c:750
+#: ../src/shell-keyring-prompt.c:738
 msgid "Password cannot be blank"
 msgstr "Salasana ei voi olla tyhjä"
 
-#: ../src/shell-polkit-authentication-agent.c:346
+#: ../src/shell-polkit-authentication-agent.c:353
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Käyttäjä poistui tunnistautumisvalintaikkunasta"
 
-#~ msgid "Bluetooth"
-#~ msgstr "Bluetooth"
+#~ msgid "GNOME Shell (wayland compositor)"
+#~ msgstr "Gnome Shell (Wayland-komposiointi)"
 
 #~ msgid "%d Connected Device"
 #~ msgid_plural "%d Connected Devices"
 #~ msgstr[0] "%d yhdistetty laite"
 #~ msgstr[1] "%d yhdistettyä laitetta"
-
-#~ msgid "Off"
-#~ msgstr "Pois"
 
 #~ msgid "Authentication required"
 #~ msgstr "tunnistautuminen vaaditaan"
@@ -2238,10 +2260,6 @@ msgstr "Käyttäjä poistui tunnistautumisvalintaikkunasta"
 #~ msgid_plural "%d minutes remaining"
 #~ msgstr[0] "%d minuutti jäljellä"
 #~ msgstr[1] "%d minuuttia jäljellä"
-
-#~ msgctxt "percent of battery remaining"
-#~ msgid "%d%%"
-#~ msgstr "%d %%"
 
 #~| msgid "AC adapter"
 #~ msgid "AC Adapter"
