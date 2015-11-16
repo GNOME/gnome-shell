@@ -5302,6 +5302,11 @@ meta_window_recalc_features (MetaWindow *window)
 
   meta_window_recalc_skip_features (window);
 
+  /* To prevent users from losing windows, let's prevent users from
+   * minimizing skip-taskbar windows through the window decorations. */
+  if (window->skip_taskbar)
+    window->has_minimize_func = FALSE;
+
   meta_topic (META_DEBUG_WINDOW_OPS,
               "Window %s decorated = %d border_only = %d has_close = %d has_minimize = %d has_maximize = %d has_move = %d has_shade = %d skip_taskbar = %d skip_pager = %d\n",
               window->desc,
