@@ -313,6 +313,10 @@ const AutorunSource = new Lang.Class({
 
     getIcon: function() {
         return this.mount.get_icon();
+    },
+
+    _createPolicy: function() {
+        return new MessageTray.NotificationApplicationPolicy('org.gnome.Nautilus');
     }
 });
 
