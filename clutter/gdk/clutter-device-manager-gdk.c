@@ -44,13 +44,48 @@
 
 #define clutter_device_manager_gdk_get_type     _clutter_device_manager_gdk_get_type
 
-G_DEFINE_TYPE (ClutterDeviceManagerGdk, clutter_device_manager_gdk, CLUTTER_TYPE_DEVICE_MANAGER)
+static void clutter_event_extender_iface_init   (ClutterEventExtenderInterface *iface);
+
+G_DEFINE_TYPE_WITH_CODE (ClutterDeviceManagerGdk, clutter_device_manager_gdk,
+                         CLUTTER_TYPE_DEVICE_MANAGER,
+                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_EVENT_EXTENDER,
+                                                clutter_event_extender_iface_init))
 
 enum {
   PROP_0,
   PROP_GDK_DISPLAY,
   PROP_LAST
 };
+
+static void
+clutter_device_manager_gdk_copy_event_data (ClutterEventExtender *event_extender,
+                                            const ClutterEvent   *src,
+                                            ClutterEvent         *dest)
+{
+  GdkEvent *gdk_event;
+
+  gdk_event = _clutter_event_get_platform_data (src);
+  if (gdk_event != NULL)
+    _clutter_event_set_platform_data (dest, gdk_event_copy (gdk_event));
+}
+
+static void
+clutter_device_manager_gdk_free_event_data (ClutterEventExtender *event_extender,
+                                            ClutterEvent         *event)
+{
+  GdkEvent *gdk_event;
+
+  gdk_event = _clutter_event_get_platform_data (event);
+  if (gdk_event != NULL)
+    gdk_event_free (gdk_event);
+}
+
+static void
+clutter_event_extender_iface_init (ClutterEventExtenderInterface *iface)
+{
+  iface->copy_event_data = clutter_device_manager_gdk_copy_event_data;
+  iface->free_event_data = clutter_device_manager_gdk_free_event_data;
+}
 
 ClutterInputDevice *
 _clutter_device_manager_gdk_lookup_device (ClutterDeviceManager *manager,

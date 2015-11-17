@@ -252,29 +252,6 @@ clutter_backend_gdk_get_features (ClutterBackend *backend)
         | CLUTTER_FEATURE_STAGE_CURSOR;
 }
 
-static void
-clutter_backend_gdk_copy_event_data (ClutterBackend     *backend,
-                                     const ClutterEvent *src,
-                                     ClutterEvent       *dest)
-{
-  GdkEvent *gdk_event;
-
-  gdk_event = _clutter_event_get_platform_data (src);
-  if (gdk_event != NULL)
-    _clutter_event_set_platform_data (dest, gdk_event_copy (gdk_event));
-}
-
-static void
-clutter_backend_gdk_free_event_data (ClutterBackend *backend,
-                                     ClutterEvent   *event)
-{
-  GdkEvent *gdk_event;
-
-  gdk_event = _clutter_event_get_platform_data (event);
-  if (gdk_event != NULL)
-    gdk_event_free (gdk_event);
-}
-
 static CoglRenderer *
 clutter_backend_gdk_get_renderer (ClutterBackend  *backend,
                                   GError         **error)
@@ -405,8 +382,6 @@ clutter_backend_gdk_class_init (ClutterBackendGdkClass *klass)
   backend_class->post_parse = _clutter_backend_gdk_post_parse;
 
   backend_class->get_features = clutter_backend_gdk_get_features;
-  backend_class->copy_event_data = clutter_backend_gdk_copy_event_data;
-  backend_class->free_event_data = clutter_backend_gdk_free_event_data;
 
   backend_class->get_renderer = clutter_backend_gdk_get_renderer;
   backend_class->get_display = clutter_backend_gdk_get_display;
