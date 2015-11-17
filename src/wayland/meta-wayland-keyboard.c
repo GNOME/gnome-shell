@@ -56,10 +56,15 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <sys/mman.h>
+#include <clutter/evdev/clutter-evdev.h>
 
 #include "backends/meta-backend-private.h"
 
 #include "meta-wayland-private.h"
+
+#ifdef HAVE_NATIVE_BACKEND
+#include "backends/native/meta-backend-native.h"
+#endif
 
 static void meta_wayland_keyboard_update_xkb_state (MetaWaylandKeyboard *keyboard);
 static void notify_modifiers (MetaWaylandKeyboard *keyboard);
@@ -452,6 +457,10 @@ meta_wayland_keyboard_handle_event (MetaWaylandKeyboard *keyboard,
 {
   gboolean is_press = event->type == CLUTTER_KEY_PRESS;
   gboolean handled;
+  guint32 code;
+#ifdef HAVE_NATIVE_BACKEND
+  MetaBackend *backend = meta_get_backend ();
+#endif
 
   /* Synthetic key events are for autorepeat. Ignore those, as
    * autorepeat in Wayland is done on the client side. */
@@ -462,7 +471,14 @@ meta_wayland_keyboard_handle_event (MetaWaylandKeyboard *keyboard,
 		is_press ? "press" : "release",
 		event->hardware_keycode);
 
-  handled = notify_key (keyboard, event->time, evdev_code (event), is_press);
+#ifdef HAVE_NATIVE_BACKEND
+  if (META_IS_BACKEND_NATIVE (backend))
+    code = clutter_evdev_event_get_event_code ((const ClutterEvent *) event);
+  else
+#endif
+    code = evdev_code (event);
+
+  handled = notify_key (keyboard, event->time, code, is_press);
 
   if (handled)
     meta_verbose ("Sent event to wayland client\n");
