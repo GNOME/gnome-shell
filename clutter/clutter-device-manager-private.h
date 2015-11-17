@@ -145,6 +145,26 @@ struct _ClutterInputDeviceClass
                                  guint              *evdev_keycode);
 };
 
+/* Platform-dependent interface */
+typedef struct _ClutterEventExtender ClutterEventExtender;
+typedef struct _ClutterEventExtenderInterface ClutterEventExtenderInterface;
+
+#define CLUTTER_TYPE_EVENT_EXTENDER         (clutter_event_extender_get_type ())
+#define CLUTTER_EVENT_EXTENDER(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), CLUTTER_TYPE_EVENT_EXTENDER, ClutterEventExtender))
+#define CLUTTER_IS_EVENT_EXTENDER(o)	     (G_TYPE_CHECK_INSTANCE_TYPE ((o), CLUTTER_TYPE_EVENT_EXTENDER))
+#define CLUTTER_EVENT_EXTENDER_GET_IFACE(o) (G_TYPE_INSTANCE_GET_INTERFACE ((o), CLUTTER_TYPE_EVENT_EXTENDER, ClutterEventExtenderInterface))
+
+struct _ClutterEventExtenderInterface
+{
+  void (* copy_event_data) (ClutterEventExtender *event_extender,
+                            const ClutterEvent   *src,
+                            ClutterEvent         *dest);
+  void (* free_event_data) (ClutterEventExtender *event_extender,
+                            ClutterEvent         *event);
+};
+
+GType           clutter_event_extender_get_type        (void) G_GNUC_CONST;
+
 /* device manager */
 void            _clutter_device_manager_add_device              (ClutterDeviceManager *device_manager,
                                                                  ClutterInputDevice   *device);

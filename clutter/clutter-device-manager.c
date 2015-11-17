@@ -79,6 +79,15 @@ G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (ClutterDeviceManager,
                                      clutter_device_manager,
                                      G_TYPE_OBJECT)
 
+G_DEFINE_INTERFACE (ClutterEventExtender,
+                    clutter_event_extender,
+                    CLUTTER_TYPE_DEVICE_MANAGER)
+
+static void
+clutter_event_extender_default_init (ClutterEventExtenderInterface *iface)
+{
+}
+
 static void
 clutter_device_manager_set_property (GObject      *gobject,
                                      guint         prop_id,
