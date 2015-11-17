@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-11-09 10:17+0000\n"
-"PO-Revision-Date: 2015-11-17 16:08+0100\n"
+"POT-Creation-Date: 2015-11-17 16:10+0000\n"
+"PO-Revision-Date: 2015-11-17 17:10+0100\n"
 "Last-Translator: GunChleoc <fios@foramnagaidhlig.net>\n"
 "Language-Team: Fòram na Gàidhlig\n"
 "Language: gd\n"
@@ -45,15 +45,6 @@ msgstr "Seall a h-uile aplacaid"
 msgid "Open the application menu"
 msgstr "Fosgail clàr-taice nan aplacaidean"
 
-#: ../data/gnome-shell.desktop.in.in.h:1
-msgid "GNOME Shell"
-msgstr "Slige GNOME"
-
-#: ../data/gnome-shell.desktop.in.in.h:2
-#: ../data/gnome-shell-wayland.desktop.in.in.h:2
-msgid "Window management and application launching"
-msgstr "Stiùireadh uinneagan is tòiseachadh aplacaidean"
-
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:1
 msgid "GNOME Shell Extension Preferences"
 msgstr "Roghainnean airson leudachain na Slige GNOME"
@@ -62,9 +53,43 @@ msgstr "Roghainnean airson leudachain na Slige GNOME"
 msgid "Configure GNOME Shell Extensions"
 msgstr "Rèitich leudachain na Slige GNOME"
 
-#: ../data/gnome-shell-wayland.desktop.in.in.h:1
-msgid "GNOME Shell (wayland compositor)"
-msgstr "Slige GNOME (co-dhèanadair wayland)"
+#: ../data/org.gnome.Shell.desktop.in.in.h:1
+msgid "GNOME Shell"
+msgstr "Slige GNOME"
+
+#: ../data/org.gnome.Shell.desktop.in.in.h:2
+msgid "Window management and application launching"
+msgstr "Stiùireadh uinneagan is tòiseachadh aplacaidean"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:3
+#| msgid "No extensions installed"
+msgid "UUIDs of extensions to enable"
+msgstr "UUIDs nan leudachan ri an cur an comas"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:22
+#| msgid "Open the application menu"
+msgid "Keybinding to open the application menu"
+msgstr "Nasgadh iuchrach gus clàr-taice na h-aplacaid fhosgladh"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:23
+#| msgid "Open the application menu"
+msgid "Keybinding to open the application menu."
+msgstr "Nasgadh iuchrach gus clàr-taice na h-aplacaid fhosgladh."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:30
+#| msgid "Focus the active notification"
+msgid "Keybinding to focus the active notification"
+msgstr "Nasgadh iuchrach gus am fòcas a chur air a' bhrath ghnìomhach"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:31
+#| msgid "Focus the active notification"
+msgid "Keybinding to focus the active notification."
+msgstr "Nasgadh iuchrach gus am fòcas a chur air a' bhrath ghnìomhach."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:37
+#| msgid "Open the application menu"
+msgid "The application icon mode."
+msgstr "Modh ìomhaigheag na h-aplacaid."
 
 #: ../data/org.gnome.Shell.PortalHelper.desktop.in.h:1
 msgid "Network Login"
@@ -263,12 +288,12 @@ msgstr "Cuir ris na h-annsachdan"
 msgid "Show Details"
 msgstr "Seall am mion-fhiosrachadh"
 
-#: ../js/ui/appFavorites.js:132
+#: ../js/ui/appFavorites.js:133
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "Chaidh %s a chur ris na h-annsachdan agad."
 
-#: ../js/ui/appFavorites.js:166
+#: ../js/ui/appFavorites.js:167
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "Chaidh %s a toirt air falbh o na h-annsachdan agad."
@@ -401,7 +426,7 @@ msgstr "Chaidh draibh a-muigh a cheangal"
 msgid "External drive disconnected"
 msgstr "Chaidh draibh a-muigh a dhì-cheangal"
 
-#: ../js/ui/components/autorunManager.js:351
+#: ../js/ui/components/autorunManager.js:355
 #, javascript-format
 msgid "Open with %s"
 msgstr "Fosgail le %s"
@@ -523,7 +548,8 @@ msgstr "Dearbhaich"
 #. * for instance.
 #: ../js/ui/components/polkitAgent.js:301 ../js/ui/shellMountOperation.js:383
 msgid "Sorry, that didn't work. Please try again."
-msgstr "Tha sinn duilich ach cha do dh'obraich seo. Am feuch thu ris a-rithist?"
+msgstr ""
+"Tha sinn duilich ach cha do dh'obraich seo. Am feuch thu ris a-rithist?"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
@@ -728,8 +754,8 @@ msgstr "Stàlaich"
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr ""
-"A bheil thu airson “%s” a luchdadh a-nuas is a stàladh o "
-"extensions.gnome.org?"
+"A bheil thu airson “%s” a luchdadh a-nuas is a stàladh o extensions.gnome."
+"org?"
 
 #: ../js/ui/keyboard.js:741 ../js/ui/status/keyboard.js:713
 msgid "Keyboard"
@@ -975,16 +1001,16 @@ msgstr "Iomsgaradh àrd"
 msgid "Large Text"
 msgstr "Teacsa mòr"
 
-#: ../js/ui/status/bluetooth.js:50
+#: ../js/ui/status/bluetooth.js:47
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:59
+#: ../js/ui/status/bluetooth.js:56
 msgid "Bluetooth Settings"
 msgstr "Roghainnean Bluetooth"
 
 #. Translators: this is the number of connected bluetooth devices
-#: ../js/ui/status/bluetooth.js:139
+#: ../js/ui/status/bluetooth.js:136
 #, javascript-format
 msgid "%d Connected"
 msgid_plural "%d Connected"
@@ -993,19 +1019,19 @@ msgstr[1] "%d ceangailte"
 msgstr[2] "%d ceangailte"
 msgstr[3] "%d ceangailte"
 
-#: ../js/ui/status/bluetooth.js:141
+#: ../js/ui/status/bluetooth.js:138
 msgid "Off"
 msgstr "Dheth"
 
-#: ../js/ui/status/bluetooth.js:143
+#: ../js/ui/status/bluetooth.js:140
 msgid "Not In Use"
 msgstr "Chan eil e 'ga chleachdadh"
 
-#: ../js/ui/status/bluetooth.js:145 ../js/ui/status/network.js:1279
+#: ../js/ui/status/bluetooth.js:142 ../js/ui/status/network.js:1279
 msgid "Turn On"
 msgstr "Cuir air"
 
-#: ../js/ui/status/bluetooth.js:145 ../js/ui/status/network.js:178
+#: ../js/ui/status/bluetooth.js:142 ../js/ui/status/network.js:178
 #: ../js/ui/status/network.js:353 ../js/ui/status/network.js:1279
 #: ../js/ui/status/network.js:1394 ../js/ui/status/rfkill.js:90
 #: ../js/ui/status/rfkill.js:117
@@ -1245,14 +1271,16 @@ msgstr "'Ga thuairmeas…"
 #. Translators: this is <hours>:<minutes> Remaining (<percentage>)
 #: ../js/ui/status/power.js:86
 #, javascript-format
-msgid "%d∶%02d Remaining (%d%%)"
-msgstr "%d∶%02d air fhàgail (%d%%)"
+#| msgid "%d∶%02d Remaining (%d%%)"
+msgid "%d∶%02d Remaining (%d %%)"
+msgstr "%d∶%02d air fhàgail (%d %%)"
 
 #. Translators: this is <hours>:<minutes> Until Full (<percentage>)
 #: ../js/ui/status/power.js:91
 #, javascript-format
-msgid "%d∶%02d Until Full (%d%%)"
-msgstr "%d∶%02d gus am bi e làn (%d%%)"
+#| msgid "%d∶%02d Until Full (%d%%)"
+msgid "%d∶%02d Until Full (%d %%)"
+msgstr "%d∶%02d gus am bi e làn (%d %%)"
 
 #. The menu only appears when airplane mode is on, so just
 #. statically build it as if it was on, rather than dynamically
@@ -1484,3 +1512,6 @@ msgstr "Chan fhaod am facal-faire a bhith bàn"
 #: ../src/shell-polkit-authentication-agent.c:353
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Leig an cleachdaiche an dearbhaidh seachad"
+
+#~ msgid "GNOME Shell (wayland compositor)"
+#~ msgstr "Slige GNOME (co-dhèanadair wayland)"
