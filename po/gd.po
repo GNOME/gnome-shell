@@ -8,7 +8,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2015-11-09 10:17+0000\n"
-"PO-Revision-Date: 2015-11-16 18:59+0100\n"
+"PO-Revision-Date: 2015-11-17 16:08+0100\n"
 "Last-Translator: GunChleoc <fios@foramnagaidhlig.net>\n"
 "Language-Team: Fòram na Gàidhlig\n"
 "Language: gd\n"
@@ -1133,287 +1133,293 @@ msgstr "Cleachd e mar cheangal ris an eadar-lìon"
 
 #: ../js/ui/status/network.js:813
 msgid "Airplane Mode is On"
-msgstr ""
+msgstr "Tha am modh itealain air"
 
 #: ../js/ui/status/network.js:814
 msgid "Wi-Fi is disabled when airplane mode is on."
-msgstr ""
+msgstr "Tha WiFi à comas fhad 's a tha am modh itealain air."
 
 #: ../js/ui/status/network.js:815
 msgid "Turn Off Airplane Mode"
-msgstr ""
+msgstr "Cuir am modh itealain dheth"
 
 #: ../js/ui/status/network.js:824
 msgid "Wi-Fi is Off"
-msgstr ""
+msgstr "Tha WiFi dheth"
 
 #: ../js/ui/status/network.js:825
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
-msgstr ""
+msgstr "Feumaidh tu WiFi a chur air gus ceangal ri lìonra."
 
 #: ../js/ui/status/network.js:826
 msgid "Turn On Wi-Fi"
-msgstr ""
+msgstr "Cuir WiFi air"
 
 #: ../js/ui/status/network.js:851
 msgid "Wi-Fi Networks"
-msgstr ""
+msgstr "Lìonraidhean WiFi"
 
 #: ../js/ui/status/network.js:853
 msgid "Select a network"
-msgstr ""
+msgstr "Tagh lìonra"
 
 #: ../js/ui/status/network.js:883
 msgid "No Networks"
-msgstr ""
+msgstr "Chan eil lìonra ann"
 
 #: ../js/ui/status/network.js:904 ../js/ui/status/rfkill.js:115
 msgid "Use hardware switch to turn off"
-msgstr ""
+msgstr "Cleachd suidse bathair-chruaidh gus a chur dheth"
 
 #: ../js/ui/status/network.js:1171
 msgid "Select Network"
-msgstr ""
+msgstr "Tagh lìonra"
 
 #: ../js/ui/status/network.js:1177
 msgid "Wi-Fi Settings"
-msgstr ""
+msgstr "Roghainnean WiFi"
 
 #. Translators: %s is a network identifier
 #: ../js/ui/status/network.js:1296
 #, javascript-format
 msgid "%s Hotspot Active"
-msgstr ""
+msgstr "Tha %s hotspot gnìomhach"
 
 #. Translators: %s is a network identifier
 #: ../js/ui/status/network.js:1311
 #, javascript-format
 msgid "%s Not Connected"
-msgstr ""
+msgstr "Chan eil %s ceangailte"
 
 #: ../js/ui/status/network.js:1411
 msgid "connecting..."
-msgstr ""
+msgstr "'ga cheangal..."
 
 #. Translators: this is for network connections that require some kind of key or password
 #: ../js/ui/status/network.js:1414
 msgid "authentication required"
-msgstr ""
+msgstr "tha feum air dearbhadh"
 
 #: ../js/ui/status/network.js:1416
 msgid "connection failed"
-msgstr ""
+msgstr "dh'fhàillig leis a' cheangal"
 
 #: ../js/ui/status/network.js:1482 ../js/ui/status/rfkill.js:93
 msgid "Network Settings"
-msgstr ""
+msgstr "Roghainnean an lìonraidh"
 
 #: ../js/ui/status/network.js:1484
 msgid "VPN Settings"
-msgstr ""
+msgstr "Roghainnean VPN"
 
 #: ../js/ui/status/network.js:1503
 msgid "VPN"
-msgstr ""
+msgstr "VPN"
 
 #: ../js/ui/status/network.js:1513
 msgid "VPN Off"
-msgstr ""
+msgstr "Tha VPN dheth"
 
 #: ../js/ui/status/network.js:1697
 msgid "Connection failed"
-msgstr ""
+msgstr "Dh'fhàillig leis a' cheangal"
 
 #: ../js/ui/status/network.js:1698
 msgid "Activation of network connection failed"
-msgstr ""
+msgstr "Dh'fhàillig gnìomhachadh a' cheangail ris an lìonra"
 
 #: ../js/ui/status/power.js:49
 msgid "Power Settings"
-msgstr ""
+msgstr "Roghainnean na cumhachd"
 
 #: ../js/ui/status/power.js:65
 msgid "Fully Charged"
-msgstr ""
+msgstr "Air a làn-teairrdseadh"
 
 #. 0 is reported when UPower does not have enough data
 #. to estimate battery life
 #: ../js/ui/status/power.js:72 ../js/ui/status/power.js:78
 msgid "Estimating…"
-msgstr ""
+msgstr "'Ga thuairmeas…"
 
 #. Translators: this is <hours>:<minutes> Remaining (<percentage>)
 #: ../js/ui/status/power.js:86
 #, javascript-format
 msgid "%d∶%02d Remaining (%d%%)"
-msgstr ""
+msgstr "%d∶%02d air fhàgail (%d%%)"
 
 #. Translators: this is <hours>:<minutes> Until Full (<percentage>)
 #: ../js/ui/status/power.js:91
 #, javascript-format
 msgid "%d∶%02d Until Full (%d%%)"
-msgstr ""
+msgstr "%d∶%02d gus am bi e làn (%d%%)"
 
 #. The menu only appears when airplane mode is on, so just
 #. statically build it as if it was on, rather than dynamically
 #. changing the menu contents.
 #: ../js/ui/status/rfkill.js:88
 msgid "Airplane Mode On"
-msgstr ""
+msgstr "Modh itealain air"
 
 #: ../js/ui/status/system.js:343
 msgid "Switch User"
-msgstr ""
+msgstr "Leum gu cleachdaiche eile"
 
 #: ../js/ui/status/system.js:348
 msgid "Log Out"
-msgstr ""
+msgstr "Clàraich a-mach"
 
 #: ../js/ui/status/system.js:353
 msgid "Account Settings"
-msgstr ""
+msgstr "Roghainnean a' chunntais"
 
 #: ../js/ui/status/system.js:370
 msgid "Orientation Lock"
-msgstr ""
+msgstr "Glais na comhair"
 
 #: ../js/ui/status/system.js:378
 msgid "Suspend"
-msgstr ""
+msgstr "Cuir 'na dhàil"
 
 #: ../js/ui/status/system.js:381
 msgid "Power Off"
-msgstr ""
+msgstr "Cuir a' chumhachd dheth"
 
 #: ../js/ui/status/volume.js:127
 msgid "Volume changed"
-msgstr ""
+msgstr "Dh'atharraich àirde na fuaime"
 
 #: ../js/ui/status/volume.js:162
 msgid "Volume"
-msgstr ""
+msgstr "Àirde na fuaime"
 
 #: ../js/ui/status/volume.js:213
 msgid "Microphone"
-msgstr ""
+msgstr "Micreofon"
 
 #: ../js/ui/unlockDialog.js:67
 msgid "Log in as another user"
-msgstr ""
+msgstr "Clàraich an-steach mar chleachdaiche eile"
 
 #: ../js/ui/unlockDialog.js:84
 msgid "Unlock Window"
-msgstr ""
+msgstr "Thoir a' ghlas far na h-uinneige"
 
 #: ../js/ui/viewSelector.js:159
 msgid "Applications"
-msgstr ""
+msgstr "Aplacaidean"
 
 #: ../js/ui/viewSelector.js:163
 msgid "Search"
-msgstr ""
+msgstr "Lorg"
 
 #: ../js/ui/windowAttentionHandler.js:20
 #, javascript-format
 msgid "“%s” is ready"
-msgstr ""
+msgstr "Tha “%s” deiseil"
 
 #: ../js/ui/windowManager.js:63
 msgid "Do you want to keep these display settings?"
-msgstr ""
+msgstr "A bheil thu airson na roghainnean seallaidh seo a chumail?"
 
 #. Translators: this and the following message should be limited in lenght,
 #. to avoid ellipsizing the labels.
 #.
 #: ../js/ui/windowManager.js:82
 msgid "Revert Settings"
-msgstr ""
+msgstr "Till na roghainnean"
 
 #: ../js/ui/windowManager.js:85
 msgid "Keep Changes"
-msgstr ""
+msgstr "Cum na h-atharraichean"
 
 #: ../js/ui/windowManager.js:103
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
 msgstr[0] ""
+"Thèid na h-atharraichean air na roghainnean a thilleadh an ceann %d diog"
 msgstr[1] ""
+"Thèid na h-atharraichean air na roghainnean a thilleadh an ceann %d dhiog"
+msgstr[2] ""
+"Thèid na h-atharraichean air na roghainnean a thilleadh an ceann %d diogan"
+msgstr[3] ""
+"Thèid na h-atharraichean air na roghainnean a thilleadh an ceann %d diog"
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
 #: ../js/ui/windowManager.js:658
 #, javascript-format
 msgid "%d x %d"
-msgstr ""
+msgstr "%d x %d"
 
 #: ../js/ui/windowMenu.js:34
 msgid "Minimize"
-msgstr ""
+msgstr "Fìor-lùghdaich"
 
 #: ../js/ui/windowMenu.js:41
 msgid "Unmaximize"
-msgstr ""
+msgstr "Neo-làn-mheudaich"
 
 #: ../js/ui/windowMenu.js:45
 msgid "Maximize"
-msgstr ""
+msgstr "Làn-mheudaich"
 
 #: ../js/ui/windowMenu.js:52
 msgid "Move"
-msgstr ""
+msgstr "Gluais"
 
 #: ../js/ui/windowMenu.js:58
 msgid "Resize"
-msgstr ""
+msgstr "Atharraich am meud"
 
 #: ../js/ui/windowMenu.js:65
 msgid "Move Titlebar Onscreen"
-msgstr ""
+msgstr "Gluais bàr-tiotal air an sgrìn"
 
 #: ../js/ui/windowMenu.js:70
 msgid "Always on Top"
-msgstr ""
+msgstr "Air a' bharr an-còmhnaidh"
 
 #: ../js/ui/windowMenu.js:89
 msgid "Always on Visible Workspace"
-msgstr ""
+msgstr "Air rum-obrach a tha ri fhaicinn an-còmhnaidh"
 
 #: ../js/ui/windowMenu.js:105
 msgid "Move to Workspace Left"
-msgstr ""
+msgstr "Gluais dhan rum-obrach air an taobh chlì"
 
 #: ../js/ui/windowMenu.js:110
 msgid "Move to Workspace Right"
-msgstr ""
+msgstr "Gluais dhan rum-obrach air an taobh deas"
 
 #: ../js/ui/windowMenu.js:115
 msgid "Move to Workspace Up"
-msgstr ""
+msgstr "Gluais dhan rum-obrach aig a' bharr"
 
 #: ../js/ui/windowMenu.js:120
 msgid "Move to Workspace Down"
-msgstr ""
+msgstr "Gluais dhan rum-obrach aig a' bhonn"
 
 #: ../js/ui/windowMenu.js:136
 msgid "Move to Monitor Up"
-msgstr ""
+msgstr "Gluais dhan sgrìn aig a' bharr"
 
 #: ../js/ui/windowMenu.js:142
 msgid "Move to Monitor Down"
-msgstr ""
+msgstr "Gluais dhan sgrìn aig a' bhonn"
 
 #: ../js/ui/windowMenu.js:148
 msgid "Move to Monitor Left"
-msgstr ""
+msgstr "Gluais dhan sgrìn air an taobh chlì"
 
 #: ../js/ui/windowMenu.js:154
 msgid "Move to Monitor Right"
-msgstr ""
+msgstr "Gluais dhan sgrìn air an taobh deas"
 
 #: ../src/calendar-server/evolution-calendar.desktop.in.in.h:1
 msgid "Evolution Calendar"
-msgstr ""
+msgstr "Mìosachan Evolution"
 
 #. translators:
 #. * The number of sound outputs on a particular device
@@ -1421,8 +1427,10 @@ msgstr ""
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%u às-chur"
+msgstr[1] "%u às-chur"
+msgstr[2] "%u às-chuir"
+msgstr[3] "%u às-chur"
 
 #. translators:
 #. * The number of sound inputs on a particular device
@@ -1430,47 +1438,49 @@ msgstr[1] ""
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%u ion-chur"
+msgstr[1] "%u ion-chur"
+msgstr[2] "%u ion-chuir"
+msgstr[3] "%u ion-chur"
 
 #: ../src/gvc/gvc-mixer-control.c:2371
 msgid "System Sounds"
-msgstr ""
+msgstr "Fuaimean an t-siostaim"
 
 #: ../src/main.c:381
 msgid "Print version"
-msgstr ""
+msgstr "Seall an tionndadh"
 
 #: ../src/main.c:387
 msgid "Mode used by GDM for login screen"
-msgstr ""
+msgstr "Am modh a chleachdas GDM airson na sgrìn clàraidh a-steach"
 
 #: ../src/main.c:393
 msgid "Use a specific mode, e.g. \"gdm\" for login screen"
-msgstr ""
+msgstr "Cleachd modh sònraichte airson na sgrìn clàraidh a-steach, can \"gdm\""
 
 #: ../src/main.c:399
 msgid "List possible modes"
-msgstr ""
+msgstr "Seall liosta dhe na modhan a tha ann"
 
 #: ../src/shell-app.c:246
 msgctxt "program"
 msgid "Unknown"
-msgstr ""
+msgstr "Chan eil fhios"
 
 #: ../src/shell-app.c:487
 #, c-format
 msgid "Failed to launch “%s”"
-msgstr ""
+msgstr "Cha b' urrainn dhuinn “%s” a chur gu dol"
 
 #: ../src/shell-keyring-prompt.c:730
 msgid "Passwords do not match."
-msgstr ""
+msgstr "Chan eil an dà fhacal-faire co-ionann."
 
 #: ../src/shell-keyring-prompt.c:738
 msgid "Password cannot be blank"
-msgstr ""
+msgstr "Chan fhaod am facal-faire a bhith bàn"
 
 #: ../src/shell-polkit-authentication-agent.c:353
 msgid "Authentication dialog was dismissed by the user"
-msgstr ""
+msgstr "Leig an cleachdaiche an dearbhaidh seachad"
