@@ -188,12 +188,22 @@ clutter_device_manager_evdev_copy_event_data (ClutterEventExtender *event_extend
                                               const ClutterEvent   *src,
                                               ClutterEvent         *dest)
 {
+  ClutterEventEvdev *event_evdev;
+
+  event_evdev = _clutter_event_get_platform_data (src);
+  if (event_evdev != NULL)
+    _clutter_event_set_platform_data (dest, _clutter_event_evdev_copy (event_evdev));
 }
 
 static void
 clutter_device_manager_evdev_free_event_data (ClutterEventExtender *event_extender,
                                               ClutterEvent         *event)
 {
+  ClutterEventEvdev *event_evdev;
+
+  event_evdev = _clutter_event_get_platform_data (event);
+  if (event_evdev != NULL)
+    _clutter_event_evdev_free (event_evdev);
 }
 
 static void

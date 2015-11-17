@@ -57,6 +57,7 @@ G_BEGIN_DECLS
 
 typedef struct _ClutterInputDeviceEvdev ClutterInputDeviceEvdev;
 typedef struct _ClutterSeatEvdev ClutterSeatEvdev;
+typedef struct _ClutterEventEvdev ClutterEventEvdev;
 
 struct _ClutterInputDeviceEvdev
 {
@@ -82,6 +83,13 @@ void                      _clutter_input_device_evdev_update_leds     (ClutterIn
                                                                        enum libinput_led        leds);
 
 ClutterInputDeviceType    _clutter_input_device_evdev_determine_type  (struct libinput_device  *libinput_device);
+
+
+ClutterEventEvdev *       _clutter_event_evdev_copy                   (ClutterEventEvdev *event_evdev);
+void                      _clutter_event_evdev_free                   (ClutterEventEvdev *event_evdev);
+
+void                      _clutter_evdev_event_set_event_code         (ClutterEvent      *event,
+                                                                       guint32            evcode);
 
 G_END_DECLS
 

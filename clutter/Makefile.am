@@ -598,6 +598,7 @@ endif # SUPPORT_TSLIB
 evdev_c_priv = \
 	evdev/clutter-device-manager-evdev.c	\
 	evdev/clutter-input-device-evdev.c	\
+	evdev/clutter-event-evdev.c		\
 	$(NULL)
 evdev_h_priv = \
 	evdev/clutter-device-manager-evdev.h	\
