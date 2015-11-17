@@ -576,29 +576,6 @@ clutter_backend_x11_get_features (ClutterBackend *backend)
 }
 
 static void
-clutter_backend_x11_copy_event_data (ClutterBackend     *backend,
-                                     const ClutterEvent *src,
-                                     ClutterEvent       *dest)
-{
-  gpointer event_x11;
-
-  event_x11 = _clutter_event_get_platform_data (src);
-  if (event_x11 != NULL)
-    _clutter_event_set_platform_data (dest, _clutter_event_x11_copy (event_x11));
-}
-
-static void
-clutter_backend_x11_free_event_data (ClutterBackend *backend,
-                                     ClutterEvent   *event)
-{
-  gpointer event_x11;
-
-  event_x11 = _clutter_event_get_platform_data (event);
-  if (event_x11 != NULL)
-    _clutter_event_x11_free (event_x11);
-}
-
-static void
 update_last_event_time (ClutterBackendX11 *backend_x11,
                         XEvent            *xevent)
 {
@@ -861,8 +838,6 @@ clutter_backend_x11_class_init (ClutterBackendX11Class *klass)
   backend_class->add_options = clutter_backend_x11_add_options;
   backend_class->get_features = clutter_backend_x11_get_features;
 
-  backend_class->copy_event_data = clutter_backend_x11_copy_event_data;
-  backend_class->free_event_data = clutter_backend_x11_free_event_data;
   backend_class->translate_event = clutter_backend_x11_translate_event;
 
   backend_class->get_renderer = clutter_backend_x11_get_renderer;

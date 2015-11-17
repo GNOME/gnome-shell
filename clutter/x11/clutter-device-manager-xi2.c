@@ -67,6 +67,7 @@ static const char *clutter_input_axis_atom_names[] = {
 static Atom clutter_input_axis_atoms[N_AXIS_ATOMS] = { 0, };
 
 static void clutter_event_translator_iface_init (ClutterEventTranslatorIface *iface);
+static void clutter_event_extender_iface_init   (ClutterEventExtenderInterface *iface);
 
 #define clutter_device_manager_xi2_get_type     _clutter_device_manager_xi2_get_type
 
@@ -74,7 +75,39 @@ G_DEFINE_TYPE_WITH_CODE (ClutterDeviceManagerXI2,
                          clutter_device_manager_xi2,
                          CLUTTER_TYPE_DEVICE_MANAGER,
                          G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_EVENT_TRANSLATOR,
-                                                clutter_event_translator_iface_init));
+                                                clutter_event_translator_iface_init)
+                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_EVENT_EXTENDER,
+                                                clutter_event_extender_iface_init))
+
+static void
+clutter_device_manager_x11_copy_event_data (ClutterEventExtender *event_extender,
+                                            const ClutterEvent   *src,
+                                            ClutterEvent         *dest)
+{
+  gpointer event_x11;
+
+  event_x11 = _clutter_event_get_platform_data (src);
+  if (event_x11 != NULL)
+    _clutter_event_set_platform_data (dest, _clutter_event_x11_copy (event_x11));
+}
+
+static void
+clutter_device_manager_x11_free_event_data (ClutterEventExtender *event_extender,
+                                            ClutterEvent         *event)
+{
+  gpointer event_x11;
+
+  event_x11 = _clutter_event_get_platform_data (event);
+  if (event_x11 != NULL)
+    _clutter_event_x11_free (event_x11);
+}
+
+static void
+clutter_event_extender_iface_init (ClutterEventExtenderInterface *iface)
+{
+  iface->copy_event_data = clutter_device_manager_x11_copy_event_data;
+  iface->free_event_data = clutter_device_manager_x11_free_event_data;
+}
 
 static void
 translate_valuator_class (Display             *xdisplay,
