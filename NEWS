@@ -1,3 +1,10 @@
+3.18.3
+======
+* Fix browser plugin crash in Firefox [Carlos; #737932, #757940]
+
+Contributors:
+  Carlos Garcia Campos
+
 3.18.2
 ======
 * Fix fullscreen animation glitches [Florian, Cosimo; #756697, #756714]
