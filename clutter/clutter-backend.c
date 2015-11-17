@@ -53,6 +53,7 @@
 #include "clutter-stage-private.h"
 #include "clutter-stage-window.h"
 #include "clutter-version.h"
+#include "clutter-device-manager-private.h"
 
 #define CLUTTER_DISABLE_DEPRECATION_WARNINGS
 #include "deprecated/clutter-backend.h"
@@ -998,10 +999,17 @@ _clutter_backend_copy_event_data (ClutterBackend     *backend,
                                   const ClutterEvent *src,
                                   ClutterEvent       *dest)
 {
+  ClutterEventExtenderInterface *iface;
   ClutterBackendClass *klass;
 
   klass = CLUTTER_BACKEND_GET_CLASS (backend);
-  if (klass->copy_event_data != NULL)
+  if (CLUTTER_IS_EVENT_EXTENDER (backend->device_manager))
+    {
+      iface = CLUTTER_EVENT_EXTENDER_GET_IFACE (backend->device_manager);
+      iface->copy_event_data (CLUTTER_EVENT_EXTENDER (backend->device_manager),
+                              src, dest);
+    }
+  else if (klass->copy_event_data != NULL)
     klass->copy_event_data (backend, src, dest);
 }
 
@@ -1009,10 +1017,18 @@ void
 _clutter_backend_free_event_data (ClutterBackend *backend,
                                   ClutterEvent   *event)
 {
+  ClutterEventExtenderInterface *iface;
   ClutterBackendClass *klass;
 
   klass = CLUTTER_BACKEND_GET_CLASS (backend);
-  if (klass->free_event_data != NULL)
+
+  if (CLUTTER_IS_EVENT_EXTENDER (backend->device_manager))
+    {
+      iface = CLUTTER_EVENT_EXTENDER_GET_IFACE (backend->device_manager);
+      iface->free_event_data (CLUTTER_EVENT_EXTENDER (backend->device_manager),
+                              event);
+    }
+  else if (klass->free_event_data != NULL)
     klass->free_event_data (backend, event);
 }
 
