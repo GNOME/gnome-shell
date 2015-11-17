@@ -44,6 +44,7 @@
 #include "config.h"
 
 #include <clutter/clutter.h>
+#include <clutter/evdev/clutter-evdev.h>
 #include <cogl/cogl.h>
 #include <cogl/cogl-wayland-server.h>
 #include <linux/input.h>
@@ -61,6 +62,10 @@
 #include "backends/meta-backend-private.h"
 #include "backends/meta-cursor-tracker-private.h"
 #include "backends/meta-cursor-renderer.h"
+
+#ifdef HAVE_NATIVE_BACKEND
+#include "backends/native/meta-backend-native.h"
+#endif
 
 #include <string.h>
 
@@ -277,26 +282,37 @@ meta_wayland_pointer_send_button (MetaWaylandPointer *pointer,
       uint32_t button;
       uint32_t serial;
 
+#ifdef HAVE_NATIVE_BACKEND
+      MetaBackend *backend = meta_get_backend ();
+      if (META_IS_BACKEND_NATIVE (backend))
+        button = clutter_evdev_event_get_event_code (event);
+      else
+#endif
+        {
+          button = clutter_event_get_button (event);
+          switch (button)
+            {
+            case 1:
+              button = BTN_LEFT;
+              break;
+
+              /* The evdev input right and middle button numbers are swapped
+                 relative to how Clutter numbers them */
+            case 2:
+              button = BTN_MIDDLE;
+              break;
+
+            case 3:
+              button = BTN_RIGHT;
+              break;
+
+            default:
+              button = button + (BTN_LEFT - 1) + 4;
+              break;
+            }
+        }
+
       time = clutter_event_get_time (event);
-
-      button = clutter_event_get_button (event);
-      switch (button)
-	{
-	  /* The evdev input right and middle button numbers are swapped
-	     relative to how Clutter numbers them */
-	case 2:
-	  button = BTN_MIDDLE;
-	  break;
-
-	case 3:
-	  button = BTN_RIGHT;
-	  break;
-
-	default:
-	  button = button + BTN_LEFT - 1;
-	  break;
-	}
-
       serial = wl_display_next_serial (display);
 
       wl_resource_for_each (resource, &pointer->focus_client->pointer_resources)
