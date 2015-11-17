@@ -312,6 +312,7 @@ notify_key_device (ClutterInputDevice *input_device,
 					     seat->xkb,
 					     seat->button_state,
 					     time_, key, state);
+  _clutter_evdev_event_set_event_code (event, key);
 
   /* We must be careful and not pass multiple releases to xkb, otherwise it gets
      confused and locks the modifiers */
@@ -651,6 +652,8 @@ notify_button (ClutterInputDevice *input_device,
   event->button.y = seat->pointer_y;
   clutter_event_set_device (event, seat->core_pointer);
   clutter_event_set_source_device (event, input_device);
+
+  _clutter_evdev_event_set_event_code (event, button);
 
   _clutter_input_device_set_stage (seat->core_pointer, stage);
 
