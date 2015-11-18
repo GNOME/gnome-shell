@@ -31,7 +31,7 @@
 
 #include <wayland-server.h>
 #include "gtk-shell-server-protocol.h"
-#include "xdg-shell-server-protocol.h"
+#include "xdg-shell-unstable-v5-server-protocol.h"
 
 #include "meta-wayland-private.h"
 #include "meta-xwayland-private.h"
@@ -1433,8 +1433,8 @@ handle_popup_parent_destroyed (struct wl_listener *listener, void *data)
   MetaWaylandSurface *surface =
     wl_container_of (listener, surface, popup.parent_destroy_listener);
 
-  wl_resource_post_error (surface->xdg_popup,
-                          XDG_POPUP_ERROR_NOT_THE_TOPMOST_POPUP,
+  wl_resource_post_error (surface->xdg_shell_resource,
+                          XDG_SHELL_ERROR_NOT_THE_TOPMOST_POPUP,
                           "destroyed popup not top most popup");
   surface->popup.parent = NULL;
 
@@ -1452,8 +1452,8 @@ handle_popup_destroyed (struct wl_listener *listener, void *data)
   top_popup = meta_wayland_popup_get_top_popup (popup);
   if (surface != top_popup)
     {
-      wl_resource_post_error (surface->xdg_popup,
-                              XDG_POPUP_ERROR_NOT_THE_TOPMOST_POPUP,
+      wl_resource_post_error (surface->xdg_shell_resource,
+                              XDG_SHELL_ERROR_NOT_THE_TOPMOST_POPUP,
                               "destroyed popup not top most popup");
     }
 
@@ -1504,7 +1504,7 @@ xdg_shell_get_xdg_popup (struct wl_client *client,
       (parent_surf->xdg_popup == NULL && parent_surf->xdg_surface == NULL))
     {
       wl_resource_post_error (resource,
-                              XDG_POPUP_ERROR_INVALID_PARENT,
+                              XDG_SHELL_ERROR_INVALID_POPUP_PARENT,
                               "invalid parent surface");
       return;
     }
@@ -1514,7 +1514,7 @@ xdg_shell_get_xdg_popup (struct wl_client *client,
       (top_popup != NULL && parent_surf != top_popup))
     {
       wl_resource_post_error (resource,
-                              XDG_POPUP_ERROR_NOT_THE_TOPMOST_POPUP,
+                              XDG_SHELL_ERROR_NOT_THE_TOPMOST_POPUP,
                               "parent not top most surface");
       return;
     }

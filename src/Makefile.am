@@ -49,14 +49,13 @@ mutter_built_sources += \
 	pointer-gestures-unstable-v1-server-protocol.h			\
 	gtk-shell-protocol.c			\
 	gtk-shell-server-protocol.h		\
-	xdg-shell-protocol.c			\
-	xdg-shell-server-protocol.h		\
+	xdg-shell-unstable-v5-protocol.c				\
+	xdg-shell-unstable-v5-server-protocol.h				\
 	$(NULL)
 endif
 
 wayland_protocols =				\
 	wayland/protocol/gtk-shell.xml		\
-	wayland/protocol/xdg-shell.xml		\
 	$(NULL)
 
 libmutter_la_SOURCES =				\
