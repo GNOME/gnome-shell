@@ -22,9 +22,9 @@ const LevelBar = new Lang.Class({
         this._level = 0;
 
         this.actor = new St.Bin({ style_class: 'level',
-                                  x_fill: true, y_fill: true });
-        this._bar = new St.DrawingArea();
-        this._bar.connect('repaint', Lang.bind(this, this._repaint));
+                                  x_align: St.Align.START,
+                                  y_fill: true });
+        this._bar = new St.Widget({ style_class: 'level-bar' });
 
         this.actor.set_child(this._bar);
     },
@@ -38,35 +38,10 @@ const LevelBar = new Lang.Class({
         if (newValue == this._level)
             return;
         this._level = newValue;
-        this._bar.queue_repaint();
-    },
 
-    _repaint: function() {
-        let cr = this._bar.get_context();
-
-        let node = this.actor.get_theme_node();
-        let radius = node.get_border_radius(0); // assume same radius for all corners
-        Clutter.cairo_set_source_color(cr, node.get_foreground_color());
-
-        let [w, h] = this._bar.get_surface_size();
-        w *= (this._level / 100.);
-
-        if (w == 0)
-            return;
-
-        cr.moveTo(radius, 0);
-        if (w >= radius)
-            cr.arc(w - radius, radius, radius, 1.5 * Math.PI, 2. * Math.PI);
-        else
-            cr.lineTo(w, 0);
-        if (w >= radius)
-            cr.arc(w - radius, h - radius, radius, 0, 0.5 * Math.PI);
-        else
-            cr.lineTo(w, h);
-        cr.arc(radius, h - radius, radius, 0.5 * Math.PI, Math.PI);
-        cr.arc(radius, radius, radius, Math.PI, 1.5 * Math.PI);
-        cr.fill();
-        cr.$dispose();
+        let width = this.actor.width;
+        width *= (this._level / 100.);
+        this._bar.width = width;
     }
 });
 

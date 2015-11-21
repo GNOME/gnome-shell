@@ -535,6 +535,9 @@ StScrollBar {
     border-radius: 0.3em;
     background-color: rgba(11, 12, 13, 0.5);
     color: #eeeeec; }
+  .osd-window .level-bar {
+    background-color: #eeeeec;
+    border-radius: 0.3em; }
 
 /* App Switcher */
 .switcher-popup {
