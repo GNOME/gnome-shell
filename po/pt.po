@@ -7,21 +7,21 @@
 # Tiago S. <almosthumane@portugalmail.pt>, 2014.
 # Bruno Ramalhete <bram.512@gmail.com>, 2015.
 # Pedro Albuquerque <palbuquerque73@gmail.com>, 2014, 2015.
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: 3.14\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-11-13 22:13+0000\n"
-"PO-Revision-Date: 2015-11-14 07:57+0000\n"
-"Last-Translator: <>\n"
-"Language-Team: Português <palbuquerque73@gmail.com>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"shell&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2015-11-20 22:14+0000\n"
+"PO-Revision-Date: 2015-11-21 09:02+0100\n"
+"Last-Translator: Pedro Albuquerque <palbuquerque73@gmail.com>\n"
+"Language-Team: Pedro Albuquerque\n"
 "Language: pt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Virtaal 0.7.1\n"
 "X-Project-Style: gnome\n"
 "X-Language: pt_PT\n"
 "X-Source-Language: C\n"
@@ -146,8 +146,8 @@ msgstr "Mostrar sempre 'Terminar sessão' no menu de utilizador."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:15
 msgid ""
-"This key overrides the automatic hiding of the 'Log out' menu item in "
-"single-user, single-session situations."
+"This key overrides the automatic hiding of the 'Log out' menu item in single-"
+"user, single-session situations."
 msgstr ""
 "Esta chave ignora a ocultação automática do 'Terminar sessão' em situações "
 "de utilizador-único, sessão-única."
@@ -276,12 +276,12 @@ msgstr "O modo do ícone da aplicação."
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:38
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
-"are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-only' "
-"(shows only the application icon) or 'both'."
+"are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-"
+"only' (shows only the application icon) or 'both'."
 msgstr ""
 "Configura como as janelas são mostradas no alternador. Possibilidades "
-"válidas são 'thumbnail-only' (mostra uma miniatura da janela), "
-"'app-icon-only' (mostra só o ícone da aplicação) ou 'both' (ambas)."
+"válidas são 'thumbnail-only' (mostra uma miniatura da janela), 'app-icon-"
+"only' (mostra só o ícone da aplicação) ou 'both' (ambas)."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:39
 msgid ""
@@ -516,12 +516,12 @@ msgstr "Adicionar aos favoritos"
 msgid "Show Details"
 msgstr "Mostrar detalhes"
 
-#: ../js/ui/appFavorites.js:132
+#: ../js/ui/appFavorites.js:133
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "%s foi adicionada aos seus favoritos."
 
-#: ../js/ui/appFavorites.js:166
+#: ../js/ui/appFavorites.js:167
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "%s foi removida dos seus favoritos."
@@ -654,7 +654,7 @@ msgstr "Dispositivo externo ligado"
 msgid "External drive disconnected"
 msgstr "Dispositivo externo desligado"
 
-#: ../js/ui/components/autorunManager.js:351
+#: ../js/ui/components/autorunManager.js:355
 #, javascript-format
 msgid "Open with %s"
 msgstr "Abrir com %s"
@@ -1203,35 +1203,35 @@ msgstr "Alto contraste"
 msgid "Large Text"
 msgstr "Texto grande"
 
-#: ../js/ui/status/bluetooth.js:50
+#: ../js/ui/status/bluetooth.js:47
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:59
+#: ../js/ui/status/bluetooth.js:56
 msgid "Bluetooth Settings"
 msgstr "Definições Bluetooth"
 
 #. Translators: this is the number of connected bluetooth devices
-#: ../js/ui/status/bluetooth.js:139
+#: ../js/ui/status/bluetooth.js:136
 #, javascript-format
 msgid "%d Connected"
 msgid_plural "%d Connected"
 msgstr[0] "%d ligado"
 msgstr[1] "%d ligados"
 
-#: ../js/ui/status/bluetooth.js:141
+#: ../js/ui/status/bluetooth.js:138
 msgid "Off"
 msgstr "Desligado"
 
-#: ../js/ui/status/bluetooth.js:143
+#: ../js/ui/status/bluetooth.js:140
 msgid "Not In Use"
 msgstr "Não em uso"
 
-#: ../js/ui/status/bluetooth.js:145 ../js/ui/status/network.js:1279
+#: ../js/ui/status/bluetooth.js:142 ../js/ui/status/network.js:1279
 msgid "Turn On"
 msgstr "Ligar"
 
-#: ../js/ui/status/bluetooth.js:145 ../js/ui/status/network.js:178
+#: ../js/ui/status/bluetooth.js:142 ../js/ui/status/network.js:178
 #: ../js/ui/status/network.js:353 ../js/ui/status/network.js:1279
 #: ../js/ui/status/network.js:1394 ../js/ui/status/rfkill.js:90
 #: ../js/ui/status/rfkill.js:117
@@ -1454,33 +1454,36 @@ msgstr "Falha na ligação"
 msgid "Activation of network connection failed"
 msgstr "Falha na ativação da ligação à rede"
 
-#: ../js/ui/status/power.js:49
+#: ../js/ui/status/power.js:61
 msgid "Power Settings"
 msgstr "Definições de energia"
 
-#: ../js/ui/status/power.js:65
+#: ../js/ui/status/power.js:77
 msgid "Fully Charged"
 msgstr "Totalmente carregado"
 
 #. 0 is reported when UPower does not have enough data
 #. to estimate battery life
-#: ../js/ui/status/power.js:72 ../js/ui/status/power.js:78
+#: ../js/ui/status/power.js:84 ../js/ui/status/power.js:90
 msgid "Estimating…"
 msgstr "A estimar…"
 
 #. Translators: this is <hours>:<minutes> Remaining (<percentage>)
-#: ../js/ui/status/power.js:86
+#: ../js/ui/status/power.js:98
 #, javascript-format
-#| msgid "%d∶%02d Remaining (%d%%)"
 msgid "%d∶%02d Remaining (%d %%)"
 msgstr "%d∶%02d restantes (%d%%)"
 
 #. Translators: this is <hours>:<minutes> Until Full (<percentage>)
-#: ../js/ui/status/power.js:91
+#: ../js/ui/status/power.js:103
 #, javascript-format
-#| msgid "%d∶%02d Until Full (%d%%)"
 msgid "%d∶%02d Until Full (%d %%)"
 msgstr "%d∶%02d até estar cheio (%d%%)"
+
+#: ../js/ui/status/power.js:131 ../js/ui/status/power.js:133
+#, javascript-format
+msgid "%d %%"
+msgstr "%d %%"
 
 #. The menu only appears when airplane mode is on, so just
 #. statically build it as if it was on, rather than dynamically
@@ -2040,7 +2043,6 @@ msgstr "O diálogo de autenticação foi fechado pelo utilizador"
 #~ msgid "Pairing confirmation for %s"
 #~ msgstr "Confirmação de emparelhamento para %s"
 
-#, qt-format
 #~ msgid ""
 #~ "Please confirm whether the Passkey '%06d' matches the one on the device."
 #~ msgstr "Por favor, confirme se a chave '%06d' corresponde à do dispositivo."
