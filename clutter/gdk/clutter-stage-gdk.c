@@ -122,21 +122,18 @@ clutter_stage_gdk_get_geometry (ClutterStageWindow    *stage_window,
 {
   ClutterStageGdk *stage_gdk = CLUTTER_STAGE_GDK (stage_window);
 
-  if (!stage_gdk->foreign_window)
+  geometry->x = geometry->y = 0;
+
+  if (stage_gdk->window != NULL)
     {
-      if (stage_gdk->window != NULL)
-        {
-          geometry->width = gdk_window_get_width (stage_gdk->window);
-          geometry->height = gdk_window_get_height (stage_gdk->window);
-        }
-      else
-        {
-          geometry->width = 640;
-          geometry->height = 480;
-        }
+      geometry->width = gdk_window_get_width (stage_gdk->window);
+      geometry->height = gdk_window_get_height (stage_gdk->window);
     }
   else
-    clutter_stage_window_parent_iface->get_geometry (stage_window, geometry);
+    {
+      geometry->width = 800;
+      geometry->height = 600;
+    }
 }
 
 static void
@@ -166,8 +163,11 @@ clutter_stage_gdk_resize (ClutterStageWindow *stage_window,
     gdk_window_resize (stage_gdk->window, width, height);
 #if defined(GDK_WINDOWING_WAYLAND)
   else if (GDK_IS_WAYLAND_WINDOW (stage_gdk->window))
-    cogl_wayland_onscreen_resize (CLUTTER_STAGE_COGL (stage_gdk)->onscreen,
-                                  width, height, 0, 0);
+    {
+      int scale = gdk_window_get_scale_factor (stage_gdk->window);
+      cogl_wayland_onscreen_resize (CLUTTER_STAGE_COGL (stage_gdk)->onscreen,
+                                    width * scale, height * scale, 0, 0);
+    }
 #endif
 }
 
@@ -248,6 +248,9 @@ clutter_stage_gdk_wayland_surface (ClutterStageGdk *stage_gdk)
   wl_surface_set_input_region (stage_gdk->clutter_surface, input_region);
   wl_region_destroy (input_region);
 
+  wl_surface_set_buffer_scale (stage_gdk->clutter_surface,
+                               gdk_window_get_scale_factor (stage_gdk->window));
+
   parent_surface = gdk_wayland_window_get_wl_surface (gdk_window_get_toplevel (stage_gdk->window));
   stage_gdk->subsurface = wl_subcompositor_get_subsurface (stage_gdk->subcompositor,
                                                            stage_gdk->clutter_surface,
@@ -270,8 +273,12 @@ _clutter_stage_gdk_notify_configure (ClutterStageGdk *stage_gdk,
 {
   if (x < 0 || y < 0 || width < 1 || height < 1)
     return;
+
   if (stage_gdk->foreign_window)
     {
+      ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_gdk);
+      int scale = gdk_window_get_scale_factor (stage_gdk->window);
+
 #if defined(GDK_WINDOWING_WAYLAND)
       if (GDK_IS_WAYLAND_WINDOW (stage_gdk->window) &&
           gdk_window_get_window_type (stage_gdk->window) == GDK_WINDOW_CHILD &&
@@ -279,21 +286,22 @@ _clutter_stage_gdk_notify_configure (ClutterStageGdk *stage_gdk,
         {
           gint rx, ry;
           gdk_window_get_origin (stage_gdk->window, &rx, &ry);
-          /* TODO: we might need to apply the scale factor here. */
           wl_subsurface_set_position (stage_gdk->subsurface, rx, ry);
+
+          wl_surface_set_buffer_scale (stage_gdk->clutter_surface, scale);
+          cogl_wayland_onscreen_resize (stage_cogl->onscreen,
+                                        width * scale, height * scale, 0, 0);
         }
       else
 #endif
 #if defined(GDK_WINDOWING_X11)
       if (GDK_IS_X11_WINDOW (stage_gdk->window))
         {
-          ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_gdk);
           ClutterBackend *backend = CLUTTER_BACKEND (stage_cogl->backend);
-          int scale_factor = gdk_window_get_scale_factor (stage_gdk->window);
           XConfigureEvent xevent = { ConfigureNotify };
           xevent.window = GDK_WINDOW_XID (stage_gdk->window);
-          xevent.width = width * scale_factor;
-          xevent.height = height * scale_factor;
+          xevent.width = width * scale;
+          xevent.height = height * scale;
 
           /* Ensure cogl knows about the new size immediately, as we will
            * draw before we get the ConfigureNotify response. */
@@ -319,6 +327,7 @@ clutter_stage_gdk_realize (ClutterStageWindow *stage_window)
   gboolean cursor_visible;
   gboolean use_alpha;
   gfloat width, height;
+  int scale;
 
   if (backend->cogl_context == NULL)
     {
@@ -423,8 +432,9 @@ clutter_stage_gdk_realize (ClutterStageWindow *stage_window)
 
   g_object_set_data (G_OBJECT (stage_gdk->window), "clutter-stage-window", stage_gdk);
 
+  scale = gdk_window_get_scale_factor (stage_gdk->window);
   stage_cogl->onscreen = cogl_onscreen_new (backend->cogl_context,
-					    width, height);
+                                            width * scale, height * scale);
 
 #if defined(GDK_WINDOWING_X11) && defined(COGL_HAS_XLIB_SUPPORT)
   if (GDK_IS_X11_WINDOW (stage_gdk->window))
