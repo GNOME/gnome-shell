@@ -1027,7 +1027,7 @@ msgstr "Přehled"
 #. characters.
 #: ../js/ui/overview.js:244
 msgid "Type to search…"
-msgstr "Vyhledávejte psaním…"
+msgstr "vyhledávejte psaním…"
 
 #: ../js/ui/panel.js:358
 msgid "Quit"
