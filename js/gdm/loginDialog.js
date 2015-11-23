@@ -96,7 +96,7 @@ const UserListItem = new Lang.Class({
     },
 
     _onDestroy: function() {
-        this._user.disconnect(this._userChangedId);
+        this.user.disconnect(this._userChangedId);
     },
 
     _onClicked: function() {
