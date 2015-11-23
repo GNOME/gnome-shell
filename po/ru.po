@@ -19,16 +19,16 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-09-29 08:39+0000\n"
-"PO-Revision-Date: 2015-09-29 22:06+0300\n"
+"POT-Creation-Date: 2015-11-23 10:13+0000\n"
+"PO-Revision-Date: 2015-11-23 22:19+0300\n"
 "Last-Translator: Stas Solovey <whats_up@tut.by>\n"
-"Language-Team: Русский <gnome-cyr@gnome.org>\n"
+"Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Gtranslator 2.91.7\n"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
@@ -55,15 +55,6 @@ msgstr "Показать все приложения"
 msgid "Open the application menu"
 msgstr "Открыть меню приложений"
 
-#: ../data/gnome-shell.desktop.in.in.h:1
-msgid "GNOME Shell"
-msgstr "GNOME Shell"
-
-#: ../data/gnome-shell.desktop.in.in.h:2
-#: ../data/gnome-shell-wayland.desktop.in.in.h:2
-msgid "Window management and application launching"
-msgstr "Управление окнами и запуск приложений"
-
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:1
 msgid "GNOME Shell Extension Preferences"
 msgstr "Параметры расширений GNOME Shell"
@@ -72,9 +63,13 @@ msgstr "Параметры расширений GNOME Shell"
 msgid "Configure GNOME Shell Extensions"
 msgstr "Настроить расширения GNOME Shell"
 
-#: ../data/gnome-shell-wayland.desktop.in.in.h:1
-msgid "GNOME Shell (wayland compositor)"
-msgstr "GNOME Shell (компоновщик wayland)"
+#: ../data/org.gnome.Shell.desktop.in.in.h:1
+msgid "GNOME Shell"
+msgstr "GNOME Shell"
+
+#: ../data/org.gnome.Shell.desktop.in.in.h:2
+msgid "Window management and application launching"
+msgstr "Управление окнами и запуск приложений"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:1
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
@@ -179,76 +174,94 @@ msgstr ""
 "устанавливает состояние по умолчание для этой флаговой кнопки."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:18
+msgid ""
+"Whether the default Bluetooth adapter had set up devices associated to it"
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:19
+#, fuzzy
+msgid ""
+"The shell will only show a Bluetooth menu item if a Bluetooth adapter is "
+"powered, or if there were devices set up associated with the default "
+"adapter. This will be reset if the default adapter is ever seen not to have "
+"devices associated to it."
+msgstr ""
+"Пункт меню Bluetooth будет отображаться только в случае включённого адаптера "
+"Bluetooth или если имеются установленные устройства связанные с адаптером по "
+"умолчанию. Параметр будет сброшен, если адаптер по умолчанию не имеет "
+"связанных с ним устройств."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:20
 msgid "Show the week date in the calendar"
 msgstr "Показывать в календаре нумерацию недель"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:21
 msgid "If true, display the ISO week date in the calendar."
 msgstr ""
 "Если включено, календарь будет показывать нумерацию недель в формате ISO."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:22
 msgid "Keybinding to open the application menu"
 msgstr "Комбинация клавиш для открытия меню приложения"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:23
 msgid "Keybinding to open the application menu."
 msgstr "Комбинация клавиш для открытия меню приложения."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:22
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:24
 msgid "Keybinding to open the \"Show Applications\" view"
 msgstr "Комбинация клавиш для перехода в режим просмотра приложений"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:23
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:25
 msgid ""
 "Keybinding to open the \"Show Applications\" view of the Activities Overview."
 msgstr "Комбинация клавиш для перехода в режим просмотра приложений."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:24
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:26
 msgid "Keybinding to open the overview"
 msgstr "Комбинация клавиш для перехода в режим обзора"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:25
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:27
 msgid "Keybinding to open the Activities Overview."
 msgstr "Комбинация клавиш для перехода в режим обзора."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:26
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:28
 msgid "Keybinding to toggle the visibility of the notification list"
 msgstr "Комбинация клавиш для отображения или скрытия списка уведомлений"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:27
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:29
 msgid "Keybinding to toggle the visibility of the notification list."
 msgstr "Комбинация клавиш для отображения или скрытия списка уведомлений."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:28
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:30
 msgid "Keybinding to focus the active notification"
 msgstr "Комбинация клавиш для перевода фокуса на текущее уведомление"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:29
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:31
 msgid "Keybinding to focus the active notification."
 msgstr "Комбинация клавиш для перевода фокуса на текущее уведомление."
 
 # tweens — что-то типа анимации
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:30
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:32
 msgid ""
 "Keybinding that pauses and resumes all running tweens, for debugging purposes"
 msgstr ""
 "Комбинация клавиш, которая приостанавливает и возобновляет все запущенные "
 "анимации (для отладки)"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:31
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:33
 msgid "Which keyboard to use"
 msgstr "Какую клавиатуру использовать"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:32
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:34
 msgid "The type of keyboard to use."
 msgstr "Тип используемой клавиатуры."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:33
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:35
 msgid "Limit switcher to current workspace."
 msgstr "Ограничить переключатель текущим рабочим местом."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:34
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:36
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
@@ -257,11 +270,11 @@ msgstr ""
 "чьи окна находятся на текущем рабочем месте. Иначе все приложения будут "
 "включены."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:35
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:37
 msgid "The application icon mode."
 msgstr "Режим значка приложения."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:36
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:38
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-"
@@ -271,7 +284,7 @@ msgstr ""
 "«thumbnail-only» (показывать миниатюру окна), «app-icon-only» (показывать "
 "только значок приложения), «both» (показывать миниатюру и значок)."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:37
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:39
 msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
@@ -279,31 +292,31 @@ msgstr ""
 "Если выбрано, то в переключателе будут показываться только окна из текущего "
 "рабочего места. Иначе все окна будут включены."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:38
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:40
 msgid "Attach modal dialog to the parent window"
 msgstr "Прикреплять модальное диалоговое окно к родительскому окну"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:39
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:41
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
 msgstr ""
 "Этот ключ переопределяет ключ в org.gnome.mutter при запуске GNOME Shell."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:40
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:42
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr ""
 "Включить автоматическое изменение размеров окон при перемещении окон к краям "
 "экрана"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:41
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:43
 msgid "Workspaces are managed dynamically"
 msgstr "Рабочие места управляются динамически"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:42
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:44
 msgid "Workspaces only on primary monitor"
 msgstr "Рабочие места только на основном мониторе"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:43
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:45
 msgid "Delay focus changes in mouse mode until the pointer stops moving"
 msgstr "Задержка изменения фокуса в режиме мыши после остановки указателя"
 
@@ -368,7 +381,7 @@ msgstr "(например, пользователь или %s)"
 msgid "Username: "
 msgstr "Имя пользователя: "
 
-#: ../js/gdm/loginDialog.js:1184
+#: ../js/gdm/loginDialog.js:1180
 msgid "Login Window"
 msgstr "Окно входа в систему"
 
@@ -509,12 +522,12 @@ msgstr "Добавить в избранное"
 msgid "Show Details"
 msgstr "Показать подробности"
 
-#: ../js/ui/appFavorites.js:132
+#: ../js/ui/appFavorites.js:133
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "Приложение %s добавлено в избранное."
 
-#: ../js/ui/appFavorites.js:166
+#: ../js/ui/appFavorites.js:167
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "Приложение %s удалено из избранного."
@@ -591,6 +604,12 @@ msgstr "Предыдущий месяц"
 msgid "Next month"
 msgstr "Следующий месяц"
 
+#: ../js/ui/calendar.js:728
+#, javascript-format
+msgctxt "date day number format"
+msgid "%d"
+msgstr "%d"
+
 #: ../js/ui/calendar.js:783
 msgid "Week %V"
 msgstr "%V неделя"
@@ -643,7 +662,7 @@ msgstr "Внешний диск подключён"
 msgid "External drive disconnected"
 msgstr "Внешний диск отключён"
 
-#: ../js/ui/components/autorunManager.js:354
+#: ../js/ui/components/autorunManager.js:355
 #, javascript-format
 msgid "Open with %s"
 msgstr "Открыть с помощью %s"
@@ -1040,23 +1059,22 @@ msgstr "Обзор"
 msgid "Type to search…"
 msgstr "Найти…"
 
-#: ../js/ui/panel.js:352
+#: ../js/ui/panel.js:358
 msgid "Quit"
 msgstr "Завершить"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:404
+#: ../js/ui/panel.js:414
 msgid "Activities"
 msgstr "Обзор"
 
-#: ../js/ui/panel.js:650
-#| msgid "System"
+#: ../js/ui/panel.js:695
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Система"
 
-#: ../js/ui/panel.js:754
+#: ../js/ui/panel.js:807
 msgid "Top Bar"
 msgstr "Верхняя панель"
 
@@ -1069,15 +1087,15 @@ msgstr "Верхняя панель"
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
-#: ../js/ui/runDialog.js:70
+#: ../js/ui/runDialog.js:71
 msgid "Enter a Command"
 msgstr "Введите команду"
 
-#: ../js/ui/runDialog.js:110 ../js/ui/windowMenu.js:162
+#: ../js/ui/runDialog.js:111 ../js/ui/windowMenu.js:162
 msgid "Close"
 msgstr "Закрыть"
 
-#: ../js/ui/runDialog.js:281
+#: ../js/ui/runDialog.js:282
 msgid "Restarting…"
 msgstr "Перезапуск…"
 
@@ -1203,19 +1221,16 @@ msgstr "Высокая контрастность"
 msgid "Large Text"
 msgstr "Крупный текст"
 
-#: ../js/ui/status/bluetooth.js:51 ../js/ui/status/network.js:178
-#: ../js/ui/status/network.js:353 ../js/ui/status/network.js:1279
-#: ../js/ui/status/network.js:1394 ../js/ui/status/rfkill.js:90
-#: ../js/ui/status/rfkill.js:117
-msgid "Turn Off"
-msgstr "Выключить"
+#: ../js/ui/status/bluetooth.js:47
+msgid "Bluetooth"
+msgstr "Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:54
+#: ../js/ui/status/bluetooth.js:56
 msgid "Bluetooth Settings"
 msgstr "Настроить Bluetooth"
 
 #. Translators: this is the number of connected bluetooth devices
-#: ../js/ui/status/bluetooth.js:105
+#: ../js/ui/status/bluetooth.js:136
 #, javascript-format
 msgid "%d Connected"
 msgid_plural "%d Connected"
@@ -1223,9 +1238,24 @@ msgstr[0] "Подключено %d"
 msgstr[1] "Подключено %d"
 msgstr[2] "Подключено %d"
 
-#: ../js/ui/status/bluetooth.js:107
+#: ../js/ui/status/bluetooth.js:138
+msgid "Off"
+msgstr "Выключено"
+
+#: ../js/ui/status/bluetooth.js:140
 msgid "Not In Use"
 msgstr "Не используется"
+
+#: ../js/ui/status/bluetooth.js:142 ../js/ui/status/network.js:1279
+msgid "Turn On"
+msgstr "Включить"
+
+#: ../js/ui/status/bluetooth.js:142 ../js/ui/status/network.js:178
+#: ../js/ui/status/network.js:353 ../js/ui/status/network.js:1279
+#: ../js/ui/status/network.js:1394 ../js/ui/status/rfkill.js:90
+#: ../js/ui/status/rfkill.js:117
+msgid "Turn Off"
+msgstr "Выключить"
 
 #: ../js/ui/status/brightness.js:44
 msgid "Brightness"
@@ -1394,10 +1424,6 @@ msgstr "Выбрать сеть"
 msgid "Wi-Fi Settings"
 msgstr "Параметры Wi-Fi"
 
-#: ../js/ui/status/network.js:1279
-msgid "Turn On"
-msgstr "Включить"
-
 #. Translators: %s is a network identifier
 #: ../js/ui/status/network.js:1296
 #, javascript-format
@@ -1447,44 +1473,52 @@ msgstr "Сбой подключения"
 msgid "Activation of network connection failed"
 msgstr "Не удалось активировать сетевое подключение"
 
-#: ../js/ui/status/power.js:49
+#: ../js/ui/status/power.js:61
 msgid "Power Settings"
 msgstr "Параметры электропитания"
 
-#: ../js/ui/status/power.js:65
+#: ../js/ui/status/power.js:77
 msgid "Fully Charged"
 msgstr "Полностью заряжена"
 
 #. 0 is reported when UPower does not have enough data
 #. to estimate battery life
-#: ../js/ui/status/power.js:72 ../js/ui/status/power.js:78
+#: ../js/ui/status/power.js:84 ../js/ui/status/power.js:90
 msgid "Estimating…"
 msgstr "Выполняется подсчёт…"
 
 # нужно в две строки, иначе не влезает в выпадающую панель
 #. Translators: this is <hours>:<minutes> Remaining (<percentage>)
-#: ../js/ui/status/power.js:86
+#: ../js/ui/status/power.js:98
 #, javascript-format
-msgid "%d∶%02d Remaining (%d%%)"
+#| msgid "%d∶%02d Remaining (%d%%)"
+msgid "%d∶%02d Remaining (%d %%)"
 msgstr ""
 "Осталось %02d ч. %d мин.\n"
-"Разряжается (%d%%)"
+"Разряжается (%d %%)"
 
 # нужно в две строки, иначе не влезает в выпадающую панель
 #. Translators: this is <hours>:<minutes> Until Full (<percentage>)
-#: ../js/ui/status/power.js:91
+#: ../js/ui/status/power.js:103
 #, javascript-format
-msgid "%d∶%02d Until Full (%d%%)"
+#| msgid "%d∶%02d Until Full (%d%%)"
+msgid "%d∶%02d Until Full (%d %%)"
 msgstr ""
 "До полной %02d ч. %d мин.\n"
-"Заряжается (%d%%)"
+"Заряжается (%d %%)"
 
+#: ../js/ui/status/power.js:131 ../js/ui/status/power.js:133
+#, javascript-format
+msgid "%d %%"
+msgstr "%d %%"
+
+# Нужно максимально коротко, иначе не влазит в меню gnome shell
 #. The menu only appears when airplane mode is on, so just
 #. statically build it as if it was on, rather than dynamically
 #. changing the menu contents.
 #: ../js/ui/status/rfkill.js:88
 msgid "Airplane Mode On"
-msgstr "Включён режим авиаперелёта"
+msgstr "Включён авиарежим"
 
 #: ../js/ui/status/system.js:343
 msgid "Switch User"
@@ -1545,7 +1579,7 @@ msgstr "Окно «%s» ожидает"
 
 #: ../js/ui/windowManager.js:63
 msgid "Do you want to keep these display settings?"
-msgstr "Хотите сохранить эти параметры дисплея?"
+msgstr "Сохранить эти параметры дисплея?"
 
 #. Translators: this and the following message should be limited in lenght,
 #. to avoid ellipsizing the labels.
@@ -1682,39 +1716,36 @@ msgstr ""
 msgid "List possible modes"
 msgstr "Список возможных режимов"
 
-#: ../src/shell-app.c:239
+#: ../src/shell-app.c:246
 msgctxt "program"
 msgid "Unknown"
 msgstr "Неизвестное приложение"
 
-#: ../src/shell-app.c:480
+#: ../src/shell-app.c:487
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "Не удалось запустить «%s»"
 
-#: ../src/shell-keyring-prompt.c:742
+#: ../src/shell-keyring-prompt.c:730
 msgid "Passwords do not match."
 msgstr "Пароли не совпадают."
 
-#: ../src/shell-keyring-prompt.c:750
+#: ../src/shell-keyring-prompt.c:738
 msgid "Password cannot be blank"
 msgstr "Пароль не может быть пустым"
 
-#: ../src/shell-polkit-authentication-agent.c:346
+#: ../src/shell-polkit-authentication-agent.c:353
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Аутентификация отклонена пользователем"
 
-#~ msgid "Bluetooth"
-#~ msgstr "Bluetooth"
+#~ msgid "GNOME Shell (wayland compositor)"
+#~ msgstr "GNOME Shell (компоновщик wayland)"
 
 #~ msgid "%d Connected Device"
 #~ msgid_plural "%d Connected Devices"
 #~ msgstr[0] "Подключено %d устройство"
 #~ msgstr[1] "Подключено %d устройства"
 #~ msgstr[2] "Подключено %d устройств"
-
-#~ msgid "Off"
-#~ msgstr "Выключено"
 
 #~ msgid "Authentication required"
 #~ msgstr "Требуется подтверждение подлинности"
