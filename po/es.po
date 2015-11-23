@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-11-15 22:10+0000\n"
-"PO-Revision-Date: 2015-11-17 10:16+0100\n"
+"POT-Creation-Date: 2015-11-22 22:13+0000\n"
+"PO-Revision-Date: 2015-11-23 10:21+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
 "Language: es\n"
@@ -604,8 +604,6 @@ msgstr "Siguiente mes"
 
 #: ../js/ui/calendar.js:728
 #, javascript-format
-#| msgctxt "percent of battery remaining"
-#| msgid "%d%%"
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
@@ -660,7 +658,7 @@ msgstr "Dispositivo externo conectado"
 msgid "External drive disconnected"
 msgstr "Dispositivo externo desconectado"
 
-#: ../js/ui/components/autorunManager.js:351
+#: ../js/ui/components/autorunManager.js:355
 #, javascript-format
 msgid "Open with %s"
 msgstr "Abrir con %s"
@@ -1208,35 +1206,35 @@ msgstr "Contraste alto"
 msgid "Large Text"
 msgstr "Texto grande"
 
-#: ../js/ui/status/bluetooth.js:50
+#: ../js/ui/status/bluetooth.js:47
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:59
+#: ../js/ui/status/bluetooth.js:56
 msgid "Bluetooth Settings"
 msgstr "Configuración de Bluetooth"
 
 #. Translators: this is the number of connected bluetooth devices
-#: ../js/ui/status/bluetooth.js:139
+#: ../js/ui/status/bluetooth.js:136
 #, javascript-format
 msgid "%d Connected"
 msgid_plural "%d Connected"
 msgstr[0] "%d conectado"
 msgstr[1] "%d conectados"
 
-#: ../js/ui/status/bluetooth.js:141
+#: ../js/ui/status/bluetooth.js:138
 msgid "Off"
 msgstr "Desconectado"
 
-#: ../js/ui/status/bluetooth.js:143
+#: ../js/ui/status/bluetooth.js:140
 msgid "Not In Use"
 msgstr "No está en uso"
 
-#: ../js/ui/status/bluetooth.js:145 ../js/ui/status/network.js:1279
+#: ../js/ui/status/bluetooth.js:142 ../js/ui/status/network.js:1279
 msgid "Turn On"
 msgstr "Encender"
 
-#: ../js/ui/status/bluetooth.js:145 ../js/ui/status/network.js:178
+#: ../js/ui/status/bluetooth.js:142 ../js/ui/status/network.js:178
 #: ../js/ui/status/network.js:353 ../js/ui/status/network.js:1279
 #: ../js/ui/status/network.js:1394 ../js/ui/status/rfkill.js:90
 #: ../js/ui/status/rfkill.js:117
@@ -1459,33 +1457,36 @@ msgstr "Falló la conexión"
 msgid "Activation of network connection failed"
 msgstr "Falló la activación de la conexión de red"
 
-#: ../js/ui/status/power.js:49
+#: ../js/ui/status/power.js:61
 msgid "Power Settings"
 msgstr "Configuración de energía"
 
-#: ../js/ui/status/power.js:65
+#: ../js/ui/status/power.js:77
 msgid "Fully Charged"
 msgstr "Cargada completamente"
 
 #. 0 is reported when UPower does not have enough data
 #. to estimate battery life
-#: ../js/ui/status/power.js:72 ../js/ui/status/power.js:78
+#: ../js/ui/status/power.js:84 ../js/ui/status/power.js:90
 msgid "Estimating…"
 msgstr "Estimando…"
 
 #. Translators: this is <hours>:<minutes> Remaining (<percentage>)
-#: ../js/ui/status/power.js:86
+#: ../js/ui/status/power.js:98
 #, javascript-format
-#| msgid "%d∶%02d Remaining (%d%%)"
 msgid "%d∶%02d Remaining (%d %%)"
 msgstr "%d∶%02d queda (%d %%)"
 
 #. Translators: this is <hours>:<minutes> Until Full (<percentage>)
-#: ../js/ui/status/power.js:91
+#: ../js/ui/status/power.js:103
 #, javascript-format
-#| msgid "%d∶%02d Until Full (%d%%)"
 msgid "%d∶%02d Until Full (%d %%)"
 msgstr "%d∶%02d para la carga completa (%d %%)"
+
+#: ../js/ui/status/power.js:131 ../js/ui/status/power.js:133
+#, javascript-format
+msgid "%d %%"
+msgstr "%d %%"
 
 #. The menu only appears when airplane mode is on, so just
 #. statically build it as if it was on, rather than dynamically
