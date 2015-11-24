@@ -7669,12 +7669,28 @@ meta_window_handle_ungrabbed_event (MetaWindow         *window,
   MetaDisplay *display = window->display;
   gboolean unmodified;
   gboolean is_window_grab;
+  ClutterModifierType grab_mods, event_mods;
+  gfloat x, y;
+  guint button;
 
   if (window->frame && meta_ui_frame_handle_event (window->frame->ui_frame, event))
     return;
 
-  if (event->type != CLUTTER_BUTTON_PRESS)
+  if (event->type != CLUTTER_BUTTON_PRESS &&
+      event->type != CLUTTER_TOUCH_BEGIN)
     return;
+
+  if (event->type == CLUTTER_TOUCH_BEGIN)
+    {
+      ClutterEventSequence *sequence;
+
+      button = 1;
+      sequence = clutter_event_get_event_sequence (event);
+      if (!meta_display_is_pointer_emulating_sequence (window->display, sequence))
+        return;
+    }
+  else
+    button = clutter_event_get_button (event);
 
   if (display->grab_op != META_GRAB_OP_NONE)
     return;
@@ -7706,9 +7722,12 @@ meta_window_handle_ungrabbed_event (MetaWindow         *window,
    * care about. Just let the event through.
    */
 
-  ClutterModifierType grab_mods = meta_display_get_window_grab_modifiers (display);
-  unmodified = (event->button.modifier_state & grab_mods) == 0;
-  is_window_grab = (event->button.modifier_state & grab_mods) == grab_mods;
+  grab_mods = meta_display_get_window_grab_modifiers (display);
+  event_mods = clutter_event_get_state (event);
+  unmodified = (event_mods & grab_mods) == 0;
+  is_window_grab = (event_mods & grab_mods) == grab_mods;
+
+  clutter_event_get_coords (event, &x, &y);
 
   if (unmodified)
     {
@@ -7725,7 +7744,7 @@ meta_window_handle_ungrabbed_event (MetaWindow         *window,
         {
           meta_topic (META_DEBUG_FOCUS,
                       "Focusing %s due to unmodified button %u press (display.c)\n",
-                      window->desc, event->button.button);
+                      window->desc, button);
           meta_window_focus (window, event->any.time);
         }
       else
@@ -7735,9 +7754,9 @@ meta_window_handle_ungrabbed_event (MetaWindow         *window,
         display->allow_terminal_deactivation = TRUE;
 
       meta_verbose ("Allowing events time %u\n",
-                    (unsigned int)event->button.time);
+                    (unsigned int)event->any.time);
     }
-  else if (is_window_grab && (int) event->button.button == meta_prefs_get_mouse_button_resize ())
+  else if (is_window_grab && (int) button == meta_prefs_get_mouse_button_resize ())
     {
       if (window->has_resize_func)
         {
@@ -7748,10 +7767,10 @@ meta_window_handle_ungrabbed_event (MetaWindow         *window,
 
           meta_window_get_frame_rect (window, &frame_rect);
 
-          west = event->button.x < (frame_rect.x + 1 * frame_rect.width / 3);
-          east = event->button.x > (frame_rect.x + 2 * frame_rect.width / 3);
-          north = event->button.y < (frame_rect.y + 1 * frame_rect.height / 3);
-          south = event->button.y > (frame_rect.y + 2 * frame_rect.height / 3);
+          west = x < (frame_rect.x + 1 * frame_rect.width / 3);
+          east = x > (frame_rect.x + 2 * frame_rect.width / 3);
+          north = y < (frame_rect.y + 1 * frame_rect.height / 3);
+          south = y > (frame_rect.y + 2 * frame_rect.height / 3);
 
           if (west)
             op |= META_GRAB_OP_WINDOW_DIR_WEST;
@@ -7769,23 +7788,21 @@ meta_window_handle_ungrabbed_event (MetaWindow         *window,
                                         op,
                                         TRUE,
                                         FALSE,
-                                        event->button.button,
+                                        button,
                                         0,
                                         event->any.time,
-                                        event->button.x,
-                                        event->button.y);
+                                        x, y);
         }
     }
-  else if (is_window_grab && (int) event->button.button == meta_prefs_get_mouse_button_menu ())
+  else if (is_window_grab && (int) button == meta_prefs_get_mouse_button_menu ())
     {
       if (meta_prefs_get_raise_on_click ())
         meta_window_raise (window);
       meta_window_show_menu (window,
                              META_WINDOW_MENU_WM,
-                             event->button.x,
-                             event->button.y);
+                             x, y);
     }
-  else if (is_window_grab && (int) event->button.button == 1)
+  else if (is_window_grab && (int) button == 1)
     {
       if (window->has_move_func)
         {
@@ -7795,11 +7812,10 @@ meta_window_handle_ungrabbed_event (MetaWindow         *window,
                                       META_GRAB_OP_MOVING,
                                       TRUE,
                                       FALSE,
-                                      event->button.button,
+                                      button,
                                       0,
                                       event->any.time,
-                                      event->button.x,
-                                      event->button.y);
+                                      x, y);
         }
     }
 }
