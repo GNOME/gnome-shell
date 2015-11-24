@@ -1,3 +1,16 @@
+3.19.2
+======
+* Fix crash on monitor unplug [Rui; #756796]
+* Exit cleanly on initialization errors [Owen; #757311]
+* Allow to determine backend setting from session type [Ray; #741666]
+* Fix DRM device detection for non-PCI devices [Alban; #754911]
+* Don't force placement of windows without buffer on wayland [Marek; #751887]
+* Fix initialization of bypass compositor hint [Rui; #758544]
+
+Contributors:
+  Alban Browaeys, Marek Chalupa, Rui Matos, Florian Müllner, Ray Strode,
+  Owen W. Taylor
+
 3.19.1
 ======
 * wayland: Allow to trigger popups through keyboard/touch [Carlos; #756296]
