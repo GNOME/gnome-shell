@@ -212,6 +212,10 @@ const UserList = new Lang.Class({
         return item;
     },
 
+    containsUser: function(user) {
+        return this._items[user.get_user_name()] != null;
+    },
+
     addUser: function(user) {
         if (!user.is_loaded)
             return;
@@ -1126,6 +1130,10 @@ const LoginDialog = new Lang.Class({
             this._userManager.disconnect(this._userRemovedId);
             this._userRemovedId = 0;
         }
+        if (this._userChangedId) {
+            this._userManager.disconnect(this._userChangedId);
+            this._userChangedId = 0;
+        }
         this._textureCache.disconnect(this._updateLogoTextureId);
         Main.layoutManager.disconnect(this._startupCompleteId);
         if (this._settings) {
@@ -1170,6 +1178,14 @@ const LoginDialog = new Lang.Class({
         this._userRemovedId = this._userManager.connect('user-removed',
                                                         Lang.bind(this, function(userManager, user) {
                                                             this._userList.removeUser(user);
+                                                        }));
+
+        this._userChangedId = this._userManager.connect('user-changed',
+                                                        Lang.bind(this, function(userManager, user) {
+                                                            if (this._userList.containsUser(user) && user.locked)
+                                                                this._userList.removeUser(user);
+                                                            else if (!this._userList.containsUser(user) && !user.locked)
+                                                                this._userList.addUser(user);
                                                         }));
 
         return GLib.SOURCE_REMOVE;
