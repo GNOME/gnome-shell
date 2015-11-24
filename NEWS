@@ -1,3 +1,21 @@
+3.19.2
+======
+* Make gnome-shell DBus activatable [Ray; #741666]
+* Fix browser plugin crash in Firefox [Carlos; #737932, #757940]
+* Optionally show battery percentage in system status area [Bastien; #735771]
+* Misc. bug fixes [Kalev, Florian, Bastien; #757418, #757668, #757779, #757816,
+  #745626, #758220]
+
+Contributors:
+  Michael Biebl, Michael Catanzaro, Piotr Drąg, Carlos Garcia Campos,
+  Kalev Lember, Florian Müllner, Bastien Nocera, Ray Strode
+
+Translations:
+  Pedro Albuquerque [pt], liushuyu [zh_CN], Yosef Or Boczko [he],
+  Jiri Grönroos [fi], Kjartan Maraas [nb], GNOME Translation Robot [gd],
+  Daniel Mustieles [es], Marek Černocký [cs], Kristjan SCHMIDT [eo],
+  Stas Solovey [ru]
+
 3.19.1
 ======
 * Respect text-scaling factor under wayland [Owen; #756447]
