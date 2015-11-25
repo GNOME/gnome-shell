@@ -496,8 +496,18 @@ meta_monitor_manager_kms_read_current (MetaMonitorManager *manager)
       meta_mode->name = g_strndup (mode->name, DRM_DISPLAY_MODE_LEN);
       meta_mode->width = mode->hdisplay;
       meta_mode->height = mode->vdisplay;
-      meta_mode->refresh_rate = (1000 * mode->clock /
-                                 ((float)mode->htotal * mode->vtotal));
+
+      /* Calculate refresh rate in milliHz first for extra precision. */
+      meta_mode->refresh_rate = (mode->clock * 1000000LL) / mode->htotal;
+      meta_mode->refresh_rate += (mode->vtotal / 2);
+      meta_mode->refresh_rate /= mode->vtotal;
+      if (mode->flags & DRM_MODE_FLAG_INTERLACE)
+	meta_mode->refresh_rate *= 2;
+      if (mode->flags & DRM_MODE_FLAG_DBLSCAN)
+        meta_mode->refresh_rate /= 2;
+      if (mode->vscan > 1)
+        meta_mode->refresh_rate /= mode->vscan;
+      meta_mode->refresh_rate /= 1000.0;
 
       meta_mode->driver_private = g_slice_dup (drmModeModeInfo, mode);
       meta_mode->driver_notify = (GDestroyNotify)meta_monitor_mode_destroy_notify;

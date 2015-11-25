@@ -99,7 +99,7 @@ bind_output (struct wl_client *client,
                        mode_flags,
                        (int)monitor_info->rect.width,
                        (int)monitor_info->rect.height,
-                       (int)monitor_info->refresh_rate);
+                       (int)(monitor_info->refresh_rate * 1000));
 
   if (version >= WL_OUTPUT_SCALE_SINCE_VERSION)
     wl_output_send_scale (resource, output->scale);
@@ -160,7 +160,7 @@ wayland_output_update_for_output (MetaWaylandOutput *wayland_output,
                            mode_flags,
                            (int)monitor_info->rect.width,
                            (int)monitor_info->rect.height,
-                           (int)monitor_info->refresh_rate);
+                           (int)(monitor_info->refresh_rate * 1000));
     }
 
   /* It's very important that we change the output pointer here, as
