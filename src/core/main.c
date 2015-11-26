@@ -168,6 +168,7 @@ static gboolean  opt_disable_sm;
 static gboolean  opt_sync;
 #ifdef HAVE_WAYLAND
 static gboolean  opt_wayland;
+static gboolean  opt_nested;
 #endif
 #ifdef HAVE_NATIVE_BACKEND
 static gboolean  opt_display_server;
@@ -214,6 +215,12 @@ static GOptionEntry meta_options[] = {
     "wayland", 0, 0, G_OPTION_ARG_NONE,
     &opt_wayland,
     N_("Run as a wayland compositor"),
+    NULL
+  },
+  {
+    "nested", 0, 0, G_OPTION_ARG_NONE,
+    &opt_nested,
+    N_("Run as a nested compositor"),
     NULL
   },
 #endif
@@ -366,21 +373,30 @@ check_for_wayland_session_type (void)
 static void
 init_backend (void)
 {
-  gboolean session_type_is_wayland = FALSE;
+#ifdef HAVE_WAYLAND
+  gboolean run_as_wayland_compositor = opt_wayland;
 
-#if defined(HAVE_WAYLAND) && defined(HAVE_NATIVE_BACKEND)
-  session_type_is_wayland = check_for_wayland_session_type ();
-#endif
+#ifdef HAVE_NATIVE_BACKEND
+  if (opt_nested && opt_display_server)
+    {
+      meta_warning ("Can't run both as nested and as a display server\n");
+      meta_exit (META_EXIT_ERROR);
+    }
 
-#if defined(CLUTTER_WINDOWING_EGL) && defined(HAVE_NATIVE_BACKEND)
-  if (opt_display_server || session_type_is_wayland)
+  if (!run_as_wayland_compositor)
+    run_as_wayland_compositor = check_for_wayland_session_type ();
+
+#ifdef CLUTTER_WINDOWING_EGL
+  if (opt_display_server || (run_as_wayland_compositor && !opt_nested))
     clutter_set_windowing_backend (CLUTTER_WINDOWING_EGL);
   else
+#endif
+#endif
 #endif
     clutter_set_windowing_backend (CLUTTER_WINDOWING_X11);
 
 #ifdef HAVE_WAYLAND
-  meta_set_is_wayland_compositor (opt_wayland || session_type_is_wayland);
+  meta_set_is_wayland_compositor (run_as_wayland_compositor);
 #endif
 }
 
