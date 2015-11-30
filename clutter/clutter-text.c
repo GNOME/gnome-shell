@@ -3484,6 +3484,9 @@ clutter_text_class_init (ClutterTextClass *klass)
    * Whether it is possible to select text, either using the pointer
    * or the keyboard.
    *
+   * This property depends on the #ClutterActor:reactive property being
+   * set to %TRUE.
+   *
    * Since: 1.0
    */
   pspec = g_param_spec_boolean ("selectable",
@@ -3512,9 +3515,11 @@ clutter_text_class_init (ClutterTextClass *klass)
   /**
    * ClutterText:cursor-visible:
    *
-   * Whether the input cursor is visible or not, it will only be visible
-   * if both #ClutterText:cursor-visible and #ClutterText:editable are
-   * set to %TRUE.
+   * Whether the input cursor is visible or not.
+   *
+   * The cursor will only be visible if this property and either
+   * the #ClutterText:editable or the #ClutterText:selectable properties
+   * are set to %TRUE.
    *
    * Since: 1.0
    */
