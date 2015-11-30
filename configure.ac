@@ -955,18 +955,27 @@ MAINTAINER_COMPILER_FLAGS="$MAINTAINER_COMPILER_FLAGS
                            -Wcast-align
                            -Wuninitialized
                            -Wno-strict-aliasing
-                           -Wshadow
-                           -Werror=logical-op
-                           -Werror=pointer-arith
-                           -Werror=missing-declarations
-                           -Werror=redundant-decls
-                           -Werror=empty-body
-                           -Werror=format
-                           -Werror=format-security
-                           -Werror=format-nonliteral
-                           -Werror=init-self
-                           -Werror=declaration-after-statement
-                           -Werror=vla"
+                           -Wshadow"
+
+AC_ARG_ENABLE([Werror],
+              [AS_HELP_STRING([--disable-Werror], [Removes -Werror from compiler flags])],
+              [],
+              [enable_Werror=yes])
+
+AS_IF([test "x$enable_Werror" = xyes], [
+  MAINTAINER_COMPILER_FLAGS="$MAINTAINER_COMPILER_FLAGS
+                             -Werror=logical-op
+                             -Werror=pointer-arith
+                             -Werror=missing-declarations
+                             -Werror=redundant-decls
+                             -Werror=empty-body
+                             -Werror=format
+                             -Werror=format-security
+                             -Werror=format-nonliteral
+                             -Werror=init-self
+                             -Werror=declaration-after-statement
+                             -Werror=vla"
+])
 
 AS_CASE([$enable_maintainer_flags],
         [yes],
