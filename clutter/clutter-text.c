@@ -314,9 +314,9 @@ clutter_text_should_draw_cursor (ClutterText *self)
 {
   ClutterTextPrivate *priv = self->priv;
 
-  return priv->editable ||
-         priv->selectable ||
-         priv->cursor_visible;
+  return (priv->editable || priv->selectable) &&
+    priv->cursor_visible &&
+    priv->has_focus;
 }
 
 #define clutter_actor_queue_redraw \
@@ -1614,9 +1614,6 @@ selection_paint (ClutterText *self)
   guint8 paint_opacity = clutter_actor_get_paint_opacity (actor);
   const ClutterColor *color;
 
-  if (!priv->has_focus)
-    return;
-
   if (!clutter_text_should_draw_cursor (self))
     return;
 
@@ -2306,7 +2303,7 @@ clutter_text_paint (ClutterActor *self)
         }
     }
 
-  if ((priv->editable || priv->selectable) && priv->cursor_visible)
+  if (clutter_text_should_draw_cursor (text))
     clutter_text_ensure_cursor_position (text);
 
   if (priv->editable && priv->single_line_mode)
@@ -2499,14 +2496,11 @@ clutter_text_get_paint_volume (ClutterActor       *self,
 
       /* If the cursor is visible then that will likely be drawn
          outside of the ink rectangle so we should merge that in */
-      if ((priv->editable || priv->selectable) &&
-          priv->cursor_visible &&
-          priv->has_focus)
+      if (clutter_text_should_draw_cursor (text))
         {
           ClutterPaintVolume cursor_paint_volume;
 
-          _clutter_paint_volume_init_static (&cursor_paint_volume,
-                                             self);
+          _clutter_paint_volume_init_static (&cursor_paint_volume, self);
 
           clutter_text_get_paint_volume_for_cursor (text, &cursor_paint_volume);
 
