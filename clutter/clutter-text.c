@@ -4656,6 +4656,8 @@ clutter_text_set_cursor_visible (ClutterText *self,
 
   priv = self->priv;
 
+  cursor_visible = !!cursor_visible;
+
   if (priv->cursor_visible != cursor_visible)
     {
       priv->cursor_visible = cursor_visible;
