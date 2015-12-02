@@ -135,6 +135,9 @@ CLUTTER_AVAILABLE_IN_1_26
 guint32 clutter_evdev_event_get_event_code (const ClutterEvent *event);
 
 CLUTTER_AVAILABLE_IN_1_26
+guint64 clutter_evdev_event_get_time_usec (const ClutterEvent *event);
+
+CLUTTER_AVAILABLE_IN_1_26
 gboolean clutter_evdev_event_get_relative_motion (const ClutterEvent *event,
                                                   double             *dx,
                                                   double             *dy,

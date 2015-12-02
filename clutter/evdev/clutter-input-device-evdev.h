@@ -91,6 +91,9 @@ void                      _clutter_event_evdev_free                   (ClutterEv
 void                      _clutter_evdev_event_set_event_code         (ClutterEvent      *event,
                                                                        guint32            evcode);
 
+void                      _clutter_evdev_event_set_time_usec       (ClutterEvent *event,
+								    guint64       time_usec);
+
 void  			  _clutter_evdev_event_set_relative_motion (ClutterEvent *event,
 								    double        dx,
 								    double        dy,

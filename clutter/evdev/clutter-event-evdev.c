@@ -33,6 +33,8 @@ struct _ClutterEventEvdev
 {
   guint32 evcode;
 
+  guint64 time_usec;
+
   gboolean has_relative_motion;
   double dx;
   double dy;
@@ -87,6 +89,16 @@ _clutter_evdev_event_set_event_code (ClutterEvent *event,
 }
 
 void
+_clutter_evdev_event_set_time_usec       (ClutterEvent *event,
+                                          guint64       time_usec)
+{
+  ClutterEventEvdev *event_evdev;
+
+  event_evdev = clutter_evdev_event_ensure_platform_data (event);
+  event_evdev->time_usec = time_usec;
+}
+
+void
 _clutter_evdev_event_set_relative_motion (ClutterEvent *event,
                                           double        dx,
                                           double        dy,
@@ -119,6 +131,25 @@ clutter_evdev_event_get_event_code (const ClutterEvent *event)
 
   if (event_evdev)
     return event_evdev->evcode;
+
+  return 0;
+}
+
+/**
+ * clutter_evdev_event_get_time_usec:
+ * @event: a #ClutterEvent
+ *
+ * Returns the time in microsecond granularity, or 0 if unavailable.
+ *
+ * Returns: The time in microsecond granularity, or 0 if unavailable.
+ */
+guint64
+clutter_evdev_event_get_time_usec (const ClutterEvent *event)
+{
+  ClutterEventEvdev *event_evdev = _clutter_event_get_platform_data (event);
+
+  if (event_evdev)
+    return event_evdev->time_usec;
 
   return 0;
 }

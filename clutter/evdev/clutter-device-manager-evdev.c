@@ -461,6 +461,7 @@ new_absolute_motion_event (ClutterInputDevice *input_device,
       y = CLAMP (y, 0.f, stage_height - 1);
     }
 
+  _clutter_evdev_event_set_time_usec (event, time_us);
   event->motion.time = us2ms (time_us);
   event->motion.stage = stage;
   event->motion.device = seat->core_pointer;
@@ -572,6 +573,7 @@ notify_discrete_scroll (ClutterInputDevice     *input_device,
 
   event = clutter_event_new (CLUTTER_SCROLL);
 
+  _clutter_evdev_event_set_time_usec (event, time_us);
   event->scroll.time = us2ms (time_us);
   event->scroll.stage = CLUTTER_STAGE (stage);
   event->scroll.device = seat->core_pointer;
@@ -616,6 +618,7 @@ notify_scroll (ClutterInputDevice       *input_device,
 
   event = clutter_event_new (CLUTTER_SCROLL);
 
+  _clutter_evdev_event_set_time_usec (event, time_us);
   event->scroll.time = us2ms (time_us);
   event->scroll.stage = CLUTTER_STAGE (stage);
   event->scroll.device = seat->core_pointer;
@@ -708,6 +711,7 @@ notify_button (ClutterInputDevice *input_device,
   else
     seat->button_state &= ~maskmap[button - BTN_LEFT];
 
+  _clutter_evdev_event_set_time_usec (event, time_us);
   event->button.time = us2ms (time_us);
   event->button.stage = CLUTTER_STAGE (stage);
   event->button.device = seat->core_pointer;
@@ -749,6 +753,7 @@ notify_touch_event (ClutterInputDevice *input_device,
 
   event = clutter_event_new (evtype);
 
+  _clutter_evdev_event_set_time_usec (event, time_us);
   event->touch.time = us2ms (time_us);
   event->touch.stage = CLUTTER_STAGE (stage);
   event->touch.device = seat->core_pointer;
@@ -796,6 +801,7 @@ notify_pinch_gesture_event (ClutterInputDevice          *input_device,
 
   clutter_input_device_get_coords (seat->core_pointer, NULL, &pos);
 
+  _clutter_evdev_event_set_time_usec (event, time_us);
   event->touchpad_pinch.phase = phase;
   event->touchpad_pinch.time = us2ms (time_us);
   event->touchpad_pinch.stage = CLUTTER_STAGE (stage);
@@ -839,6 +845,7 @@ notify_swipe_gesture_event (ClutterInputDevice          *input_device,
 
   event = clutter_event_new (CLUTTER_TOUCHPAD_SWIPE);
 
+  _clutter_evdev_event_set_time_usec (event, time_us);
   event->touchpad_swipe.phase = phase;
   event->touchpad_swipe.time = us2ms (time_us);
   event->touchpad_swipe.stage = CLUTTER_STAGE (stage);
