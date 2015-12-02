@@ -247,6 +247,13 @@ const Background = new Lang.Class({
         this._cancellable = new Gio.Cancellable();
         this.isLoaded = false;
 
+        this._clock = new GnomeDesktop.WallClock();
+        this._timezoneChangedId = this._clock.connect('notify::timezone',
+            Lang.bind(this, function() {
+                if (this._animation)
+                    this._loadAnimation(this._animation.file);
+            }));
+
         this._settingsChangedSignalId = this._settings.connect('changed', Lang.bind(this, function() {
                                             this.emit('changed');
                                         }));
@@ -264,6 +271,10 @@ const Background = new Lang.Class({
             this._cache.disconnect(this._fileWatches[keys[i]]);
         }
         this._fileWatches = null;
+
+        if (this._timezoneChangedId != 0)
+            this._clock.disconnect(this._timezoneChangedId);
+        this._timezoneChangedId = 0;
 
         if (this._settingsChangedSignalId != 0)
             this._settings.disconnect(this._settingsChangedSignalId);
