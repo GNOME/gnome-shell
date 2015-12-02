@@ -134,6 +134,13 @@ void clutter_evdev_warp_pointer (ClutterInputDevice   *pointer_device,
 CLUTTER_AVAILABLE_IN_1_26
 guint32 clutter_evdev_event_get_event_code (const ClutterEvent *event);
 
+CLUTTER_AVAILABLE_IN_1_26
+gboolean clutter_evdev_event_get_relative_motion (const ClutterEvent *event,
+                                                  double             *dx,
+                                                  double             *dy,
+                                                  double             *dx_unaccel,
+                                                  double             *dy_unaccel);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_EVDEV_H__ */

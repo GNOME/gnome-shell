@@ -32,6 +32,12 @@ typedef struct _ClutterEventEvdev ClutterEventEvdev;
 struct _ClutterEventEvdev
 {
   guint32 evcode;
+
+  gboolean has_relative_motion;
+  double dx;
+  double dy;
+  double dx_unaccel;
+  double dy_unaccel;
 };
 
 static ClutterEventEvdev *
@@ -80,6 +86,23 @@ _clutter_evdev_event_set_event_code (ClutterEvent *event,
   event_evdev->evcode = evcode;
 }
 
+void
+_clutter_evdev_event_set_relative_motion (ClutterEvent *event,
+                                          double        dx,
+                                          double        dy,
+                                          double        dx_unaccel,
+                                          double        dy_unaccel)
+{
+  ClutterEventEvdev *event_evdev;
+
+  event_evdev = clutter_evdev_event_ensure_platform_data (event);
+  event_evdev->dx = dx;
+  event_evdev->dy = dy;
+  event_evdev->dx_unaccel = dx_unaccel;
+  event_evdev->dy_unaccel = dy_unaccel;
+  event_evdev->has_relative_motion = TRUE;
+}
+
 /**
  * clutter_evdev_event_get_event_code:
  * @event: a #ClutterEvent
@@ -98,4 +121,40 @@ clutter_evdev_event_get_event_code (const ClutterEvent *event)
     return event_evdev->evcode;
 
   return 0;
+}
+
+/**
+ * clutter_evdev_event_get_pointer_motion
+ * @event: a #ClutterEvent
+ *
+ * If available, the normal and unaccelerated motion deltas are written
+ * to the dx, dy, dx_unaccel and dy_unaccel and TRUE is returned.
+ *
+ * If unavailable, FALSE is returned.
+ *
+ * Returns: TRUE on success, otherwise FALSE.
+ **/
+gboolean
+clutter_evdev_event_get_relative_motion (const ClutterEvent *event,
+                                         double             *dx,
+                                         double             *dy,
+                                         double             *dx_unaccel,
+                                         double             *dy_unaccel)
+{
+  ClutterEventEvdev *event_evdev = _clutter_event_get_platform_data (event);
+
+  if (event_evdev && event_evdev->has_relative_motion)
+    {
+      if (dx)
+        *dx = event_evdev->dx;
+      if (dy)
+        *dy = event_evdev->dy;
+      if (dx_unaccel)
+        *dx_unaccel = event_evdev->dx_unaccel;
+      if (dy_unaccel)
+        *dy_unaccel = event_evdev->dy_unaccel;
+      return TRUE;
+    }
+  else
+    return FALSE;
 }
