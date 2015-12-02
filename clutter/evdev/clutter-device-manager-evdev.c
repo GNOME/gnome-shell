@@ -403,12 +403,7 @@ notify_absolute_motion (ClutterInputDevice *input_device,
   ClutterStage *stage;
   ClutterEvent *event = NULL;
 
-  /* We can drop the event on the floor if no stage has been
-   * associated with the device yet. */
   stage = _clutter_input_device_get_stage (input_device);
-  if (stage == NULL)
-    return;
-
   device_evdev = CLUTTER_INPUT_DEVICE_EVDEV (input_device);
   manager_evdev = CLUTTER_DEVICE_MANAGER_EVDEV (input_device->device_manager);
   seat = _clutter_input_device_evdev_get_seat (device_evdev);
