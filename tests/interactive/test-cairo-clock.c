@@ -4,10 +4,11 @@
 #include <clutter/clutter.h>
 
 static gboolean
-draw_clock (ClutterCairoTexture *canvas,
-            cairo_t             *cr)
+draw_clock (ClutterCanvas *canvas,
+            cairo_t       *cr,
+            int            width,
+            int            height)
 {
-  guint width, height;
   GDateTime *now;
   float hours, minutes, seconds;
 
@@ -20,10 +21,13 @@ draw_clock (ClutterCairoTexture *canvas,
   /* clear the contents of the canvas, to avoid painting
    * over the previous frame
    */
-  clutter_cairo_texture_clear (canvas);
+  cairo_save (cr);
+  cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 1.0);
+  cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
+  cairo_paint (cr);
+  cairo_restore (cr);
 
   /* scale the modelview to the size of the surface */
-  clutter_cairo_texture_get_surface_size (canvas, &width, &height);
   cairo_scale (cr, width, height);
 
   cairo_set_line_cap (cr, CAIRO_LINE_CAP_ROUND);
@@ -62,7 +66,7 @@ static gboolean
 invalidate_clock (gpointer data_)
 {
   /* invalidate the contents of the canvas */
-  clutter_cairo_texture_invalidate (data_);
+  clutter_content_invalidate (data_);
 
   /* keep the timeout source */
   return TRUE;
@@ -71,7 +75,8 @@ invalidate_clock (gpointer data_)
 G_MODULE_EXPORT int
 test_cairo_clock_main (int argc, char *argv[])
 {
-  ClutterActor *stage, *canvas;
+  ClutterActor *stage;
+  ClutterContent *canvas;
 
   /* initialize Clutter */
   if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
@@ -86,14 +91,9 @@ test_cairo_clock_main (int argc, char *argv[])
   clutter_actor_show (stage);
 
   /* our 2D canvas, courtesy of Cairo */
-  canvas = clutter_cairo_texture_new (300, 300);
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage), canvas);
-
-  /* bind the size of the canvas to that of the stage */
-  clutter_actor_add_constraint (canvas, clutter_bind_constraint_new (stage, CLUTTER_BIND_SIZE, 0));
-
-  /* make sure to match allocation to canvas size */
-  clutter_cairo_texture_set_auto_resize (CLUTTER_CAIRO_TEXTURE (canvas), TRUE);
+  canvas = clutter_canvas_new ();
+  clutter_canvas_set_size (CLUTTER_CANVAS (canvas), 300, 300);
+  clutter_actor_set_content (stage, canvas);
 
   /* quit on destroy */
   g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
@@ -102,7 +102,7 @@ test_cairo_clock_main (int argc, char *argv[])
   g_signal_connect (canvas, "draw", G_CALLBACK (draw_clock), NULL);
 
   /* invalidate the canvas, so that we can draw before the main loop starts */
-  clutter_cairo_texture_invalidate (CLUTTER_CAIRO_TEXTURE (canvas));
+  clutter_content_invalidate (canvas);
 
   /* set up a timer that invalidates the canvas every second */
   clutter_threads_add_timeout (1000, invalidate_clock, canvas);
