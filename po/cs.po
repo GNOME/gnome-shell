@@ -406,7 +406,7 @@ msgstr "včera, %k∶%M"
 #: ../js/misc/util.js:203
 #, no-c-format
 msgid "%A, %H∶%M"
-msgstr "%A, %k∶%M"
+msgstr "%A %k∶%M"
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 24h format.
@@ -434,14 +434,14 @@ msgstr "%l∶%M %p"
 #: ../js/misc/util.js:226
 #, no-c-format
 msgid "Yesterday, %l∶%M %p"
-msgstr "včera, %l∶%M %p"
+msgstr "včera %l∶%M %p"
 
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm"
 #: ../js/misc/util.js:232
 #, no-c-format
 msgid "%A, %l∶%M %p"
-msgstr "%A, %l∶%M %p"
+msgstr "%A %l∶%M %p"
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 12h format.
@@ -449,7 +449,7 @@ msgstr "%A, %l∶%M %p"
 #: ../js/misc/util.js:238
 #, no-c-format
 msgid "%B %d, %l∶%M %p"
-msgstr "%e. %B, %l∶%M %p"
+msgstr "%e. %B %l∶%M %p"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
@@ -583,7 +583,7 @@ msgstr "%e"
 
 #: ../js/ui/calendar.js:783
 msgid "Week %V"
-msgstr "Týden %V"
+msgstr "%V. týden"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
@@ -634,7 +634,7 @@ msgstr "Externí svazek odpojen"
 #: ../js/ui/components/autorunManager.js:351
 #, javascript-format
 msgid "Open with %s"
-msgstr "Otevřít s %s"
+msgstr "Otevřít pomocí %s"
 
 #: ../js/ui/components/keyring.js:120 ../js/ui/components/polkitAgent.js:315
 msgid "Password:"
@@ -782,7 +782,7 @@ msgstr "Oblíbené"
 #.
 #: ../js/ui/dateMenu.js:73
 msgid "%B %e %Y"
-msgstr "%e. %B, %Y"
+msgstr "%e. %B %Y"
 
 # Not sure whether we've enough space for it, but anyway, looks more aesthetically with "%A".
 #. Translators: This is the accessible name of the date button shown
@@ -791,7 +791,7 @@ msgstr "%e. %B, %Y"
 #.
 #: ../js/ui/dateMenu.js:80
 msgid "%A %B %e %Y"
-msgstr "%A, %e. %B, %Y"
+msgstr "%A, %e. %B %Y"
 
 #: ../js/ui/dateMenu.js:160
 msgid "Add world clocks…"
