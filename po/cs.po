@@ -617,11 +617,11 @@ msgstr "Upozornění"
 
 #: ../js/ui/calendar.js:1771
 msgid "No Notifications"
-msgstr "Žádná upozornění"
+msgstr "Nejsou žádná upozornění"
 
 #: ../js/ui/calendar.js:1774
 msgid "No Events"
-msgstr "Žádné události"
+msgstr "Nejsou žádné události"
 
 #: ../js/ui/components/automountManager.js:91
 msgid "External drive connected"
