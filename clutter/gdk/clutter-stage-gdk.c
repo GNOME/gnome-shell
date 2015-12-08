@@ -161,7 +161,7 @@ clutter_stage_gdk_resize (ClutterStageWindow *stage_window,
    */
   if (!stage_gdk->foreign_window)
     gdk_window_resize (stage_gdk->window, width, height);
-#if defined(GDK_WINDOWING_WAYLAND)
+#if defined(GDK_WINDOWING_WAYLAND) && defined(COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT)
   else if (GDK_IS_WAYLAND_WINDOW (stage_gdk->window))
     {
       int scale = gdk_window_get_scale_factor (stage_gdk->window);
@@ -279,7 +279,7 @@ _clutter_stage_gdk_notify_configure (ClutterStageGdk *stage_gdk,
       ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_gdk);
       int scale = gdk_window_get_scale_factor (stage_gdk->window);
 
-#if defined(GDK_WINDOWING_WAYLAND)
+#if defined(GDK_WINDOWING_WAYLAND) && defined(COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT)
       if (GDK_IS_WAYLAND_WINDOW (stage_gdk->window) &&
           gdk_window_get_window_type (stage_gdk->window) == GDK_WINDOW_CHILD &&
           stage_gdk->subsurface)
@@ -294,7 +294,7 @@ _clutter_stage_gdk_notify_configure (ClutterStageGdk *stage_gdk,
         }
       else
 #endif
-#if defined(GDK_WINDOWING_X11)
+#if defined(GDK_WINDOWING_X11) && defined(COGL_HAS_XLIB_SUPPORT)
       if (GDK_IS_X11_WINDOW (stage_gdk->window))
         {
           ClutterBackend *backend = CLUTTER_BACKEND (stage_cogl->backend);
