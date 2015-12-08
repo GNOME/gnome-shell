@@ -113,9 +113,6 @@ AM_CONDITIONAL(OS_WIN32, [test "$platform_win32" = "yes"])
 AC_CHECK_HEADER([OpenGL/gl.h], [platform_quartz=yes], [platform_quartz=no])
 AM_CONDITIONAL(OS_QUARTZ, [test "$platform_quartz" = "yes"])
 
-AC_CHECK_HEADER([GL/glx.h], [platform_glx=yes], [platform_glx=no])
-AC_CHECK_LIB([GL], [glXCreateContext], [platform_glx=yes], [platform_glx=no])
-AM_CONDITIONAL(OS_GLX, [test "$platform_glx" = "yes"])
 AM_CONDITIONAL(OS_LINUX, [test "$platform_linux" = "yes"])
 
 AC_SUBST(CLUTTER_LT_LDFLAGS)
@@ -285,7 +282,7 @@ AC_ARG_ENABLE([cex100-backend],
 dnl Define default values
 AS_IF([test "x$enable_x11" = "xcheck"],
       [
-        AS_IF([test "x$platform_glx" = "xyes"], [enable_x11=yes], [enable_x11=no])
+        PKG_CHECK_EXISTS([x11], [enable_x11=yes], [enable_x11=no])
       ])
 
 AS_IF([test "x$enable_win32" = "xcheck"],
