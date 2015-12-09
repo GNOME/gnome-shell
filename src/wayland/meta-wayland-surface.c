@@ -257,8 +257,6 @@ dnd_surface_commit (MetaWaylandSurfaceRole  *surface_role,
     meta_wayland_surface_role_get_surface (surface_role);
 
   meta_wayland_surface_queue_pending_state_frame_callbacks (surface, pending);
-
-  meta_wayland_data_device_update_dnd_surface (&surface->compositor->seat->data_device);
 }
 
 static void

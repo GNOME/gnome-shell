@@ -74,7 +74,6 @@ void meta_wayland_data_device_set_keyboard_focus (MetaWaylandDataDevice *data_de
 
 gboolean meta_wayland_data_device_is_dnd_surface (MetaWaylandDataDevice *data_device,
                                                   MetaWaylandSurface    *surface);
-void meta_wayland_data_device_update_dnd_surface (MetaWaylandDataDevice *data_device);
 
 void meta_wayland_data_device_set_dnd_source     (MetaWaylandDataDevice *data_device,
                                                   MetaWaylandDataSource *source);

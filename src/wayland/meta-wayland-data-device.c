@@ -915,8 +915,7 @@ meta_wayland_data_device_start_drag (MetaWaylandDataDevice                 *data
                                                       drag_grab->drag_start_x,
                                                       drag_grab->drag_start_y);
       meta_feedback_actor_set_anchor (META_FEEDBACK_ACTOR (drag_grab->feedback_actor),
-                                      -drag_grab->drag_surface->offset_x,
-                                      -drag_grab->drag_surface->offset_y);
+                                      0, 0);
       clutter_actor_add_child (drag_grab->feedback_actor,
                                CLUTTER_ACTOR (drag_grab->drag_surface->surface_actor));
 
@@ -1455,24 +1454,6 @@ meta_wayland_data_device_is_dnd_surface (MetaWaylandDataDevice *data_device,
 {
   return data_device->current_grab &&
     data_device->current_grab->drag_surface == surface;
-}
-
-void
-meta_wayland_data_device_update_dnd_surface (MetaWaylandDataDevice *data_device)
-{
-  MetaWaylandDragGrab *drag_grab;
-
-  if (!data_device->current_grab)
-    return;
-
-  drag_grab = data_device->current_grab;
-
-  if (!drag_grab->feedback_actor || !drag_grab->drag_surface)
-    return;
-
-  meta_feedback_actor_set_anchor (META_FEEDBACK_ACTOR (drag_grab->feedback_actor),
-                                  -drag_grab->drag_surface->offset_x,
-                                  -drag_grab->drag_surface->offset_y);
 }
 
 gboolean
