@@ -65,6 +65,23 @@
           </listitem>
         </varlistentry>
         <varlistentry>
+          <term>CLUTTER_DRIVER</term>
+          <listitem>
+            <para>Changes the GL driver used when initializing Clutter.
+            The allowed values for this environment variable are:</para>
+            <itemizedlist>
+              <listitem><simpara>gl3, for the GL driver using a 3.2+ core profile</simpara></listitem>
+              <listitem><simpara>gl, for the GL driver using a legacy profile</simpara></listitem>
+              <listitem><simpara>gles2, for the GLES 2.0 driver</simpara></listitem>
+              <listitem><simpara>any, for the default chosen by Cogl</simpara></listitem>
+            </itemizedlist>
+            <para>The special '*' value can be used to ask Clutter to use the
+            default list of drivers, e.g. 'CLUTTER_DRIVER=gles2,*' will ask Clutter
+            to try the GLES 2.0 driver first, and then fall back to the default list
+            of Cogl drivers.</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
           <term>CLUTTER_SCALE</term>
           <listitem>
             <para>Forces the window scaling factor to that value
