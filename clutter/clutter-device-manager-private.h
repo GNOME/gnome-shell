@@ -156,6 +156,8 @@ typedef struct _ClutterEventExtenderInterface ClutterEventExtenderInterface;
 
 struct _ClutterEventExtenderInterface
 {
+  GTypeInterface g_iface;
+
   void (* copy_event_data) (ClutterEventExtender *event_extender,
                             const ClutterEvent   *src,
                             ClutterEvent         *dest);
