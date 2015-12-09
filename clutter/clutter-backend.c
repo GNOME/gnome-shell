@@ -386,7 +386,7 @@ clutter_backend_real_create_context (ClutterBackend  *backend,
   int i;
 
   if (allowed_drivers == NULL)
-    allowed_drivers = "*";
+    allowed_drivers = CLUTTER_DRIVERS;
 
   allow_any = strstr (allowed_drivers, "*") != NULL;
 

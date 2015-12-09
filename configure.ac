@@ -585,6 +585,13 @@ dnl other tools such as glib-mkenums and gir-scanner don't end up
 dnl using the define also.
 AC_DEFINE([COGL_ENABLE_EXPERIMENTAL_2_0_API], [1], [Can use Cogl 2.0 API internally])
 
+AC_ARG_WITH([default-drivers],
+            [AS_HELP_STRING([--with-default-drivers=DRIVER], [Comma-separated list of Cogl drivers to use])],
+            [clutter_drivers=$withval],
+            [clutter_drivers="*"])
+
+AC_DEFINE_UNQUOTED([CLUTTER_DRIVERS], ["$clutter_drivers"], [List of Cogl drivers])
+
 dnl strip leading spaces
 CLUTTER_BACKENDS=${CLUTTER_BACKENDS#* }
 AC_SUBST(CLUTTER_BACKENDS)
@@ -1284,6 +1291,8 @@ echo "        Input backends: ${CLUTTER_INPUT_BACKENDS}"
 else
 echo "        Input backends: ${CLUTTER_INPUT_BACKENDS} (WARNING: Experimental backends enabled)"
 fi
+
+echo "        Cogl drivers: $clutter_drivers"
 
 if test "x$SUPPORT_X11" = "x1"; then
 echo ""
