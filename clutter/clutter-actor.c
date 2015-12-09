@@ -20834,7 +20834,7 @@ clutter_actor_child_model__items_changed (GListModel *model,
 /**
  * clutter_actor_bind_model:
  * @self: a #ClutterActor
- * @model: (optional): a #GListModel
+ * @model: (nullable): a #GListModel
  * @create_child_func: a function that creates #ClutterActor instances
  *   from the contents of the @model
  * @user_data: user data passed to @create_child_func
