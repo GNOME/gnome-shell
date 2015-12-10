@@ -373,7 +373,7 @@ static const struct {
   { "any", "Default Cogl driver", COGL_DRIVER_ANY },
 };
 
-static char *allowed_drivers;
+static const char *allowed_drivers;
 
 static gboolean
 clutter_backend_real_create_context (ClutterBackend  *backend,
@@ -1508,4 +1508,10 @@ _clutter_backend_reset_cogl_framebuffer (ClutterBackend *backend)
     }
 
   cogl_set_framebuffer (COGL_FRAMEBUFFER (backend->dummy_onscreen));
+}
+
+void
+clutter_set_allowed_drivers (const char *drivers)
+{
+  allowed_drivers = g_strdup (drivers);
 }

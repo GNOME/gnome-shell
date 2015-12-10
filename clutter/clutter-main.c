@@ -221,6 +221,17 @@ clutter_config_read_from_key_file (GKeyFile *keyfile)
   if (!g_key_file_has_group (keyfile, ENVIRONMENT_GROUP))
     return;
 
+  str_value =
+    g_key_file_get_string (keyfile, ENVIRONMENT_GROUP,
+                           "Drivers",
+                           &key_error);
+  if (key_error != NULL)
+    g_clear_error (&key_error);
+  else
+    clutter_set_allowed_drivers (str_value);
+
+  g_free (str_value);
+
   bool_value =
     g_key_file_get_boolean (keyfile, ENVIRONMENT_GROUP,
                             "ShowFps",

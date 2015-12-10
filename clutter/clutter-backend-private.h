@@ -153,6 +153,7 @@ PangoDirection          _clutter_backend_get_keymap_direction           (Clutter
 
 void                    _clutter_backend_reset_cogl_framebuffer         (ClutterBackend         *backend);
 
+void                    clutter_set_allowed_drivers                     (const char             *drivers);
 
 G_END_DECLS
 
