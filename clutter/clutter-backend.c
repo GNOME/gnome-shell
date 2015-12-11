@@ -1563,5 +1563,11 @@ _clutter_backend_reset_cogl_framebuffer (ClutterBackend *backend)
 void
 clutter_set_allowed_drivers (const char *drivers)
 {
+  if (_clutter_context_is_initialized ())
+    {
+      g_warning ("Clutter has already been initialized.\n");
+      return;
+    }
+
   allowed_drivers = g_strdup (drivers);
 }
