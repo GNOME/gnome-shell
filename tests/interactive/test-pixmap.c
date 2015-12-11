@@ -211,6 +211,10 @@ test_pixmap_main (int argc, char **argv)
   int		       i;
   int                  row_height;
 
+#ifdef CLUTTER_WINDOWING_X11
+  clutter_set_windowing_backend (CLUTTER_WINDOWING_X11);
+#endif
+
   if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
     return 1;
 
