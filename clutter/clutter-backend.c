@@ -1527,6 +1527,13 @@ clutter_set_windowing_backend (const char *backend_type)
   allowed_backends = g_strdup (backend_type);
 }
 
+void
+clutter_try_set_windowing_backend (const char *backend_type)
+{
+  if (allowed_backends == NULL)
+    clutter_set_windowing_backend (backend_type);
+}
+
 PangoDirection
 _clutter_backend_get_keymap_direction (ClutterBackend *backend)
 {

@@ -223,6 +223,17 @@ clutter_config_read_from_key_file (GKeyFile *keyfile)
 
   str_value =
     g_key_file_get_string (keyfile, ENVIRONMENT_GROUP,
+                           "Backends",
+                           &key_error);
+  if (key_error != NULL)
+    g_clear_error (&key_error);
+  else
+    clutter_try_set_windowing_backend (str_value);
+
+  g_free (str_value);
+
+  str_value =
+    g_key_file_get_string (keyfile, ENVIRONMENT_GROUP,
                            "Drivers",
                            &key_error);
   if (key_error != NULL)

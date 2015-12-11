@@ -155,6 +155,8 @@ void                    _clutter_backend_reset_cogl_framebuffer         (Clutter
 
 void                    clutter_set_allowed_drivers                     (const char             *drivers);
 
+void                    clutter_try_set_windowing_backend               (const char             *drivers);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_BACKEND_PRIVATE_H__ */
