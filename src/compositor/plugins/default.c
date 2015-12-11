@@ -255,6 +255,31 @@ get_actor_private (MetaWindowActor *actor)
   return priv;
 }
 
+static ClutterTimeline *
+actor_animate (ClutterActor         *actor,
+               ClutterAnimationMode  mode,
+               guint                 duration,
+               const gchar          *first_property,
+               ...)
+{
+  va_list args;
+  ClutterTransition *transition;
+
+  clutter_actor_save_easing_state (actor);
+  clutter_actor_set_easing_mode (actor, mode);
+  clutter_actor_set_easing_duration (actor, duration);
+
+  va_start (args, first_property);
+  g_object_set_valist (G_OBJECT (actor), first_property, args);
+  va_end (args);
+
+  transition = clutter_actor_get_transition (actor, first_property);
+
+  clutter_actor_restore_easing_state (actor);
+
+  return CLUTTER_TIMELINE (transition);
+}
+
 static void
 on_switch_workspace_effect_complete (ClutterTimeline *timeline, gpointer data)
 {
@@ -271,7 +296,10 @@ on_switch_workspace_effect_complete (ClutterTimeline *timeline, gpointer data)
 
       if (apriv->orig_parent)
         {
-          clutter_actor_reparent (a, apriv->orig_parent);
+          g_object_ref (a);
+          clutter_actor_remove_child (clutter_actor_get_parent (a), a);
+          clutter_actor_add_child (apriv->orig_parent, a);
+          g_object_unref (a);
           apriv->orig_parent = NULL;
         }
 
@@ -360,11 +388,10 @@ switch_workspace (MetaPlugin *plugin,
   MetaScreen *screen;
   MetaDefaultPluginPrivate *priv = META_DEFAULT_PLUGIN (plugin)->priv;
   GList        *l;
-  ClutterActor *workspace0  = clutter_group_new ();
-  ClutterActor *workspace1  = clutter_group_new ();
+  ClutterActor *workspace0  = clutter_actor_new ();
+  ClutterActor *workspace1  = clutter_actor_new ();
   ClutterActor *stage;
   int           screen_width, screen_height;
-  ClutterAnimation *animation;
 
   screen = meta_plugin_get_screen (plugin);
   stage = meta_get_stage_for_screen (screen);
@@ -373,17 +400,15 @@ switch_workspace (MetaPlugin *plugin,
                         &screen_width,
                         &screen_height);
 
-  clutter_actor_set_anchor_point (workspace1,
-                                  screen_width,
-                                  screen_height);
+  clutter_actor_set_pivot_point (workspace1, 1.0, 1.0);
   clutter_actor_set_position (workspace1,
                               screen_width,
                               screen_height);
 
   clutter_actor_set_scale (workspace1, 0.0, 0.0);
 
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage), workspace1);
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage), workspace0);
+  clutter_actor_add_child (stage, workspace1);
+  clutter_actor_add_child (stage, workspace0);
 
   if (from == to)
     {
@@ -406,12 +431,15 @@ switch_workspace (MetaPlugin *plugin,
 
       if (win_workspace == to || win_workspace == from)
         {
+          ClutterActor *parent = win_workspace == to ? workspace1 : workspace0;
           apriv->orig_parent = clutter_actor_get_parent (actor);
 
-          clutter_actor_reparent (actor,
-				  win_workspace == to ? workspace1 : workspace0);
-          clutter_actor_show_all (actor);
-          clutter_actor_raise_top (actor);
+          g_object_ref (actor);
+          clutter_actor_remove_child (clutter_actor_get_parent (actor), actor);
+          clutter_actor_add_child (parent, actor);
+          clutter_actor_show (actor);
+          clutter_actor_set_child_below_sibling (parent, actor, NULL);
+          g_object_unref (actor);
         }
       else if (win_workspace < 0)
         {
@@ -431,23 +459,21 @@ switch_workspace (MetaPlugin *plugin,
   priv->desktop1 = workspace0;
   priv->desktop2 = workspace1;
 
-  animation = clutter_actor_animate (workspace0, CLUTTER_EASE_IN_SINE,
-                                     SWITCH_TIMEOUT,
-                                     "scale-x", 1.0,
-                                     "scale-y", 1.0,
-                                     NULL);
-  priv->tml_switch_workspace1 = clutter_animation_get_timeline (animation);
+  priv->tml_switch_workspace1 = actor_animate (workspace0, CLUTTER_EASE_IN_SINE,
+                                               SWITCH_TIMEOUT,
+                                               "scale-x", 1.0,
+                                               "scale-y", 1.0,
+                                               NULL);
   g_signal_connect (priv->tml_switch_workspace1,
                     "completed",
                     G_CALLBACK (on_switch_workspace_effect_complete),
                     plugin);
 
-  animation = clutter_actor_animate (workspace1, CLUTTER_EASE_IN_SINE,
-                                     SWITCH_TIMEOUT,
-                                     "scale-x", 0.0,
-                                     "scale-y", 0.0,
-                                     NULL);
-  priv->tml_switch_workspace2 = clutter_animation_get_timeline (animation);
+  priv->tml_switch_workspace2 = actor_animate (workspace1, CLUTTER_EASE_IN_SINE,
+                                               SWITCH_TIMEOUT,
+                                               "scale-x", 0.0,
+                                               "scale-y", 0.0,
+                                               NULL);
 }
 
 
@@ -504,19 +530,17 @@ minimize (MetaPlugin *plugin, MetaWindowActor *window_actor)
 
   if (type == META_WINDOW_NORMAL)
     {
-      ClutterAnimation *animation;
       EffectCompleteData *data = g_new0 (EffectCompleteData, 1);
       ActorPrivate *apriv = get_actor_private (window_actor);
 
-      animation = clutter_actor_animate (actor,
-                                         CLUTTER_EASE_IN_SINE,
-                                         MINIMIZE_TIMEOUT,
-                                         "scale-x", 0.0,
-                                         "scale-y", 0.0,
-                                         "x", (double)icon_geometry.x,
-                                         "y", (double)icon_geometry.y,
-                                         NULL);
-      apriv->tml_minimize = clutter_animation_get_timeline (animation);
+      apriv->tml_minimize = actor_animate (actor,
+                                           CLUTTER_EASE_IN_SINE,
+                                           MINIMIZE_TIMEOUT,
+                                           "scale-x", 0.0,
+                                           "scale-y", 0.0,
+                                           "x", (double)icon_geometry.x,
+                                           "y", (double)icon_geometry.y,
+                                           NULL);
       data->plugin = plugin;
       data->actor = actor;
       g_signal_connect (apriv->tml_minimize, "completed",
@@ -561,7 +585,6 @@ map (MetaPlugin *plugin, MetaWindowActor *window_actor)
 
   if (type == META_WINDOW_NORMAL)
     {
-      ClutterAnimation *animation;
       EffectCompleteData *data = g_new0 (EffectCompleteData, 1);
       ActorPrivate *apriv = get_actor_private (window_actor);
 
@@ -570,14 +593,13 @@ map (MetaPlugin *plugin, MetaWindowActor *window_actor)
       clutter_actor_set_scale (actor, 0.5, 0.5);
       clutter_actor_show (actor);
 
-      animation = clutter_actor_animate (actor,
-                                         CLUTTER_EASE_OUT_QUAD,
-                                         MAP_TIMEOUT,
-                                         "opacity", 255,
-                                         "scale-x", 1.0,
-                                         "scale-y", 1.0,
-                                         NULL);
-      apriv->tml_map = clutter_animation_get_timeline (animation);
+      apriv->tml_map = actor_animate (actor,
+                                      CLUTTER_EASE_OUT_QUAD,
+                                      MAP_TIMEOUT,
+                                      "opacity", 255,
+                                      "scale-x", 1.0,
+                                      "scale-y", 1.0,
+                                      NULL);
       data->actor = actor;
       data->plugin = plugin;
       g_signal_connect (apriv->tml_map, "completed",
@@ -618,18 +640,16 @@ destroy (MetaPlugin *plugin, MetaWindowActor *window_actor)
 
   if (type == META_WINDOW_NORMAL)
     {
-      ClutterAnimation *animation;
       EffectCompleteData *data = g_new0 (EffectCompleteData, 1);
       ActorPrivate *apriv = get_actor_private (window_actor);
 
-      animation = clutter_actor_animate (actor,
-                                         CLUTTER_EASE_OUT_QUAD,
-                                         DESTROY_TIMEOUT,
-                                         "opacity", 0,
-                                         "scale-x", 0.8,
-                                         "scale-y", 0.8,
-                                         NULL);
-      apriv->tml_destroy = clutter_animation_get_timeline (animation);
+      apriv->tml_destroy = actor_animate (actor,
+                                          CLUTTER_EASE_OUT_QUAD,
+                                          DESTROY_TIMEOUT,
+                                          "opacity", 0,
+                                          "scale-x", 0.8,
+                                          "scale-y", 0.8,
+                                          NULL);
       data->plugin = plugin;
       data->actor = actor;
       g_signal_connect (apriv->tml_destroy, "completed",
@@ -702,7 +722,9 @@ show_tile_preview (MetaPlugin    *plugin,
   clutter_actor_show (preview->actor);
 
   window_actor = CLUTTER_ACTOR (meta_window_get_compositor_private (window));
-  clutter_actor_lower (preview->actor, window_actor);
+  clutter_actor_set_child_below_sibling (clutter_actor_get_parent (preview->actor),
+                                         preview->actor,
+                                         window_actor);
 
   preview->tile_rect = *tile_rect;
 }
