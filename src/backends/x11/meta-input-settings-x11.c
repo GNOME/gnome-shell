@@ -199,9 +199,9 @@ meta_input_settings_x11_set_invert_scroll (MetaInputSettings  *settings,
 }
 
 static void
-meta_input_settings_x11_set_scroll_method (MetaInputSettings            *settings,
-                                           ClutterInputDevice           *device,
-                                           GDesktopTouchpadScrollMethod  mode)
+meta_input_settings_x11_set_edge_scroll (MetaInputSettings            *settings,
+                                         ClutterInputDevice           *device,
+                                         gboolean                      edge_scroll_enabled)
 {
   guchar values[3] = { 0 }; /* 2fg, edge, button. The last value is unused */
   guchar *available;
@@ -211,26 +211,21 @@ meta_input_settings_x11_set_scroll_method (MetaInputSettings            *setting
   if (!available)
     return;
 
-  switch (mode)
+  if (available[0])
     {
-    case G_DESKTOP_TOUCHPAD_SCROLL_METHOD_DISABLED:
-      break;
-    case G_DESKTOP_TOUCHPAD_SCROLL_METHOD_EDGE_SCROLLING:
-      values[1] = 1;
-      break;
-    case G_DESKTOP_TOUCHPAD_SCROLL_METHOD_TWO_FINGER_SCROLLING:
       values[0] = 1;
-      break;
-    default:
-      g_assert_not_reached ();
+    }
+  else if (available[1] && edge_scroll_enabled)
+    {
+      values[1] = 1;
+    }
+  else
+    {
+      /* Disabled */
     }
 
-  if ((values[0] && !available[0]) || (values[1] && !available[1]))
-    g_warning ("Device '%s' does not support scroll mode %d\n",
-               clutter_input_device_get_device_name (device), mode);
-  else
-    change_property (device, "libinput Scroll Method Enabled",
-                     XA_INTEGER, 8, &values, 3);
+  change_property (device, "libinput Scroll Method Enabled",
+                   XA_INTEGER, 8, &values, 3);
 
   meta_XFree (available);
 }
@@ -321,7 +316,7 @@ meta_input_settings_x11_class_init (MetaInputSettingsX11Class *klass)
   input_settings_class->set_left_handed = meta_input_settings_x11_set_left_handed;
   input_settings_class->set_tap_enabled = meta_input_settings_x11_set_tap_enabled;
   input_settings_class->set_invert_scroll = meta_input_settings_x11_set_invert_scroll;
-  input_settings_class->set_scroll_method = meta_input_settings_x11_set_scroll_method;
+  input_settings_class->set_edge_scroll = meta_input_settings_x11_set_edge_scroll;
   input_settings_class->set_scroll_button = meta_input_settings_x11_set_scroll_button;
   input_settings_class->set_click_method = meta_input_settings_x11_set_click_method;
   input_settings_class->set_keyboard_repeat = meta_input_settings_x11_set_keyboard_repeat;

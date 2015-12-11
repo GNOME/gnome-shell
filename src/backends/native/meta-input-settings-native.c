@@ -154,30 +154,30 @@ device_set_click_method (struct libinput_device            *libinput_device,
 }
 
 static void
-meta_input_settings_native_set_scroll_method (MetaInputSettings            *settings,
-                                              ClutterInputDevice           *device,
-                                              GDesktopTouchpadScrollMethod  mode)
+meta_input_settings_native_set_edge_scroll (MetaInputSettings            *settings,
+                                            ClutterInputDevice           *device,
+                                            gboolean                      edge_scrolling_enabled)
 {
   enum libinput_config_scroll_method scroll_method = 0;
   struct libinput_device *libinput_device;
+  enum libinput_config_scroll_method supported;
 
   libinput_device = clutter_evdev_input_device_get_libinput_device (device);
+  supported = libinput_device_config_scroll_get_methods (libinput_device);
 
-  switch (mode)
+  if (supported & LIBINPUT_CONFIG_SCROLL_2FG)
     {
-    case G_DESKTOP_TOUCHPAD_SCROLL_METHOD_DISABLED:
-      scroll_method = LIBINPUT_CONFIG_SCROLL_NO_SCROLL;
-      break;
-    case G_DESKTOP_TOUCHPAD_SCROLL_METHOD_EDGE_SCROLLING:
-      scroll_method = LIBINPUT_CONFIG_SCROLL_EDGE;
-      break;
-    case G_DESKTOP_TOUCHPAD_SCROLL_METHOD_TWO_FINGER_SCROLLING:
       scroll_method = LIBINPUT_CONFIG_SCROLL_2FG;
-      break;
-    default:
-      g_assert_not_reached ();
-      return;
-  }
+    }
+  else if (supported & LIBINPUT_CONFIG_SCROLL_EDGE &&
+           edge_scrolling_enabled)
+    {
+      scroll_method = LIBINPUT_CONFIG_SCROLL_EDGE;
+    }
+  else
+    {
+      scroll_method = LIBINPUT_CONFIG_SCROLL_NO_SCROLL;
+    }
 
   device_set_scroll_method (libinput_device, scroll_method);
 }
@@ -252,7 +252,7 @@ meta_input_settings_native_class_init (MetaInputSettingsNativeClass *klass)
   input_settings_class->set_left_handed = meta_input_settings_native_set_left_handed;
   input_settings_class->set_tap_enabled = meta_input_settings_native_set_tap_enabled;
   input_settings_class->set_invert_scroll = meta_input_settings_native_set_invert_scroll;
-  input_settings_class->set_scroll_method = meta_input_settings_native_set_scroll_method;
+  input_settings_class->set_edge_scroll = meta_input_settings_native_set_edge_scroll;
   input_settings_class->set_scroll_button = meta_input_settings_native_set_scroll_button;
   input_settings_class->set_click_method = meta_input_settings_native_set_click_method;
   input_settings_class->set_keyboard_repeat = meta_input_settings_native_set_keyboard_repeat;

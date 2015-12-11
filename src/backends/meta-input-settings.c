@@ -395,11 +395,11 @@ update_touchpad_tap_enabled (MetaInputSettings  *input_settings,
 }
 
 static void
-update_touchpad_scroll_method (MetaInputSettings *input_settings,
-                               ClutterInputDevice *device)
+update_touchpad_edge_scroll (MetaInputSettings *input_settings,
+                             ClutterInputDevice *device)
 {
   MetaInputSettingsClass *input_settings_class;
-  GDesktopTouchpadScrollMethod method;
+  gboolean edge_scroll_enabled;
   MetaInputSettingsPrivate *priv;
 
   if (device &&
@@ -408,19 +408,19 @@ update_touchpad_scroll_method (MetaInputSettings *input_settings,
 
   priv = meta_input_settings_get_instance_private (input_settings);
   input_settings_class = META_INPUT_SETTINGS_GET_CLASS (input_settings);
-  method = g_settings_get_enum (priv->touchpad_settings, "scroll-method");
+  edge_scroll_enabled = g_settings_get_boolean (priv->touchpad_settings, "edge-scrolling-enabled");
 
   if (device)
     {
-      settings_device_set_uint_setting (input_settings, device,
-                                        input_settings_class->set_scroll_method,
-                                        method);
+      settings_device_set_bool_setting (input_settings, device,
+                                        input_settings_class->set_edge_scroll,
+                                        edge_scroll_enabled);
     }
   else
     {
-      settings_set_uint_setting (input_settings, CLUTTER_TOUCHPAD_DEVICE,
-                                 (ConfigUintFunc) input_settings_class->set_scroll_method,
-                                 method);
+      settings_set_bool_setting (input_settings, CLUTTER_TOUCHPAD_DEVICE,
+                                 (ConfigBoolFunc) input_settings_class->set_edge_scroll,
+                                 edge_scroll_enabled);
     }
 }
 
@@ -645,8 +645,8 @@ meta_input_settings_changed_cb (GSettings  *settings,
         update_touchpad_tap_enabled (input_settings, NULL);
       else if (strcmp (key, "send-events") == 0)
         update_touchpad_send_events (input_settings, NULL);
-      else if (strcmp (key, "scroll-method") == 0)
-        update_touchpad_scroll_method (input_settings, NULL);
+      else if (strcmp (key, "edge-scrolling-enabled") == 0)
+        update_touchpad_edge_scroll (input_settings, NULL);
       else if (strcmp (key, "click-method") == 0)
         update_touchpad_click_method (input_settings, NULL);
     }
@@ -771,7 +771,7 @@ apply_device_settings (MetaInputSettings  *input_settings,
   update_device_natural_scroll (input_settings, device);
   update_touchpad_tap_enabled (input_settings, device);
   update_touchpad_send_events (input_settings, device);
-  update_touchpad_scroll_method (input_settings, device);
+  update_touchpad_edge_scroll (input_settings, device);
   update_touchpad_click_method (input_settings, device);
 
   update_trackball_scroll_button (input_settings, device);

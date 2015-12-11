@@ -63,9 +63,9 @@ struct _MetaInputSettingsClass
   void (* set_invert_scroll) (MetaInputSettings  *settings,
                               ClutterInputDevice *device,
                               gboolean            inverted);
-  void (* set_scroll_method) (MetaInputSettings            *settings,
-                              ClutterInputDevice           *device,
-                              GDesktopTouchpadScrollMethod  mode);
+  void (* set_edge_scroll)   (MetaInputSettings  *settings,
+                              ClutterInputDevice *device,
+                              gboolean            enabled);
   void (* set_scroll_button) (MetaInputSettings  *settings,
                               ClutterInputDevice *device,
                               guint               button);
