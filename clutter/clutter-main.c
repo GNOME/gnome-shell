@@ -1229,6 +1229,12 @@ clutter_context_get_default_unlocked (void)
     {
       ClutterMainContext *ctx;
 
+      /* Read the configuration file, if any, before we set up the
+       * whole thing, so that we can override things like the backend
+       * and the driver
+       */
+      clutter_config_read ();
+
       ClutterCntx = ctx = g_new0 (ClutterMainContext, 1);
 
       ctx->is_initialized = FALSE;
@@ -1451,12 +1457,6 @@ pre_parse_hook (GOptionContext  *context,
   if (setlocale (LC_ALL, "") == NULL)
     g_warning ("Locale not supported by C library.\n"
                "Using the fallback 'C' locale.");
-
-  /* read the configuration file, if it exists; the configuration file
-   * determines the initial state of the settings, so that command line
-   * arguments can override them.
-   */
-  clutter_config_read ();
 
   clutter_context = _clutter_context_get_default ();
 
