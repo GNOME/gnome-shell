@@ -123,8 +123,6 @@ static guint backend_signals[LAST_SIGNAL] = { 0, };
 static struct wl_display *_wayland_compositor_display;
 #endif
 
-static const char *allowed_backend;
-
 static void
 clutter_backend_dispose (GObject *gobject)
 {
@@ -532,59 +530,81 @@ clutter_backend_real_create_stage (ClutterBackend  *backend,
                        NULL);
 }
 
+static const char *allowed_backends;
+
+static const struct {
+  const char *name;
+  ClutterBackend * (* create_backend) (void);
+} available_backends[] = {
+#ifdef CLUTTER_WINDOWING_OSX
+  { CLUTTER_WINDOWING_OSX, clutter_backend_osx_new },
+#endif
+#ifdef CLUTTER_WINDOWING_WIN32
+  { CLUTTER_WINDOWING_WIN32, clutter_backend_win32_new },
+#endif
+#ifdef CLUTTER_WINDOWING_GDK
+  { CLUTTER_WINDOWING_GDK, clutter_backend_gdk_new },
+#endif
+#ifdef CLUTTER_WINDOWING_X11
+  { CLUTTER_WINDOWING_X11, clutter_backend_x11_new },
+#endif
+#ifdef CLUTTER_WINDOWING_WAYLAND
+  { CLUTTER_WINDOWING_WAYLAND, clutter_backend_wayland_new },
+#endif
+#ifdef CLUTTER_WINDOWING_EGL
+  { CLUTTER_WINDOWING_EGL, clutter_backend_egl_native_new },
+#endif
+#ifdef CLUTTER_WINDOWING_MIR
+  { CLUTTER_WINDOWING_MIR, clutter_backend_mir_new },
+#endif
+  { NULL, NULL },
+};
+
 ClutterBackend *
 _clutter_create_backend (void)
 {
-  const char *backend = allowed_backend;
-  ClutterBackend *retval = NULL;
+  const char *backends_list;
+  ClutterBackend *retval;
+  gboolean allow_any;
+  char **backends;
+  int i;
 
-  if (backend == NULL)
+  if (allowed_backends == NULL)
+    allowed_backends = "*";
+
+  allow_any = strstr (allowed_backends, "*") != NULL;
+
+  backends_list = g_getenv ("CLUTTER_BACKEND");
+  if (backends_list == NULL)
+    backends_list = allowed_backends;
+
+  backends = g_strsplit (backends_list, ",", 0);
+
+  retval = NULL;
+
+  for (i = 0; retval == NULL && backends[i] != NULL; i++)
     {
-      const char *backend_env = g_getenv ("CLUTTER_BACKEND");
+      const char *backend = backends[i];
+      gboolean is_any = g_str_equal (backend, "*");
+      int j;
 
-      if (backend_env != NULL)
-	backend = g_intern_string (backend_env);
+      for (j = 0; available_backends[j].name != NULL; j++)
+        {
+          if ((is_any && allow_any) ||
+              (is_any && strstr (allowed_backends, available_backends[j].name)) ||
+              g_str_equal (backend, available_backends[j].name))
+            {
+              retval = available_backends[j].create_backend ();
+              if (retval != NULL)
+                break;
+            }
+        }
     }
 
-#ifdef CLUTTER_WINDOWING_OSX
-  if (backend == NULL || backend == I_(CLUTTER_WINDOWING_OSX))
-    retval = g_object_new (CLUTTER_TYPE_BACKEND_OSX, NULL);
-  else
-#endif
-#ifdef CLUTTER_WINDOWING_WIN32
-  if (backend == NULL || backend == I_(CLUTTER_WINDOWING_WIN32))
-    retval = g_object_new (CLUTTER_TYPE_BACKEND_WIN32, NULL);
-  else
-#endif
-#ifdef CLUTTER_WINDOWING_GDK
-  if (backend == NULL || backend == I_(CLUTTER_WINDOWING_GDK))
-    retval = g_object_new (CLUTTER_TYPE_BACKEND_GDK, NULL);
-  else
-#endif
-#ifdef CLUTTER_WINDOWING_X11
-  if (backend == NULL || backend == I_(CLUTTER_WINDOWING_X11))
-    retval = g_object_new (CLUTTER_TYPE_BACKEND_X11, NULL);
-  else
-#endif
-#ifdef CLUTTER_WINDOWING_WAYLAND
-  if (backend == NULL || backend == I_(CLUTTER_WINDOWING_WAYLAND))
-    retval = g_object_new (CLUTTER_TYPE_BACKEND_WAYLAND, NULL);
-  else
-#endif
-#ifdef CLUTTER_WINDOWING_EGL
-  if (backend == NULL || backend == I_(CLUTTER_WINDOWING_EGL))
-    retval = g_object_new (CLUTTER_TYPE_BACKEND_EGL_NATIVE, NULL);
-  else
-#endif
-#ifdef CLUTTER_WINDOWING_MIR
-  if (backend == NULL || backend == I_(CLUTTER_WINDOWING_MIR))
-    retval = g_object_new (CLUTTER_TYPE_BACKEND_MIR, NULL);
-  else
-#endif
-  if (backend == NULL)
+  g_strfreev (backends);
+
+  if (retval == NULL)
     g_error ("No default Clutter backend found.");
-  else
-    g_error ("Unsupported Clutter backend: '%s'", backend);
 
   return retval;
 }
@@ -1461,10 +1481,40 @@ clutter_wayland_set_compositor_display (void *display)
 
 /**
  * clutter_set_windowing_backend:
- * @backend_type: the name of a clutter window backend
+ * @backend_type: a comma separated list of windowing backends
  *
- * Restricts clutter to only use the specified backend.
- * This must be called before the first API call to clutter, including
+ * Restricts Clutter to only use the specified backend or list of backends.
+ *
+ * You can use one of the `CLUTTER_WINDOWING_*` symbols, e.g.
+ *
+ * |[<!-- language="C" -->
+ *   clutter_set_windowing_backend (CLUTTER_WINDOWING_X11);
+ * ]|
+ *
+ * Will force Clutter to use the X11 windowing and input backend, and terminate
+ * if the X11 backend could not be initialized successfully.
+ *
+ * Since Clutter 1.26, you can also use a comma-separated list of windowing
+ * system backends to provide a fallback in case backends are not available or
+ * enabled, e.g.:
+ *
+ * |[<!-- language="C" -->
+ *   clutter_set_windowing_backend ("gdk,wayland,x11");
+ * ]|
+ *
+ * Will make Clutter test for the GDK, Wayland, and X11 backends in that order.
+ *
+ * You can use the `*` special value to ask Clutter to use the internally
+ * defined list of backends. For instance:
+ *
+ * |[<!-- language="C" -->
+ *   clutter_set_windowing_backend ("x11,wayland,*");
+ * ]|
+ *
+ * Will make Clutter test the X11 and Wayland backends, and then fall back
+ * to the internal list of available backends.
+ *
+ * This function must be called before the first API call to Clutter, including
  * clutter_get_option_context()
  *
  * Since: 1.16
@@ -1474,7 +1524,7 @@ clutter_set_windowing_backend (const char *backend_type)
 {
   g_return_if_fail (backend_type != NULL);
 
-  allowed_backend = g_intern_string (backend_type);
+  allowed_backends = g_strdup (backend_type);
 }
 
 PangoDirection
