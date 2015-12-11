@@ -263,13 +263,13 @@ AC_ARG_ENABLE([gdk-backend],
               [enable_gdk=$enableval],
               [enable_gdk=check])
 AC_ARG_ENABLE([wayland-backend],
-              [AS_HELP_STRING([--enable-wayland-backend=@<:@yes/no@:>@], [Enable the Wayland client backend (default=no)])],
+              [AS_HELP_STRING([--enable-wayland-backend=@<:@yes/no@:>@], [Enable the Wayland client backend (default=check)])],
               [enable_wayland=$enableval],
               [enable_wayland=check])
 AC_ARG_ENABLE([egl-backend],
               [AS_HELP_STRING([--enable-egl-backend=@<:@yes/no@:>@], [Enable the EGL framebuffer backend (default=no)])],
               [enable_egl=$enableval],
-              [enable_egl=no])
+              [enable_egl=check])
 AC_ARG_ENABLE([mir-backend],
               [AS_HELP_STRING([--enable-mir-backend=@<:@yes/no@:>@], [Enable the Mir client backend (default=no)])],
               [enable_mir=$enableval],
@@ -279,26 +279,37 @@ AC_ARG_ENABLE([cex100-backend],
               [enable_cex100=$enableval],
               [enable_cex100=no])
 
+dnl Additional input backends
+AC_ARG_ENABLE([tslib-input],
+              [AS_HELP_STRING([--enable-tslib-input=@<:@yes/no@:>@], [Enable TSLib for input events (default=no)])],
+              [enable_tslib=$enableval],
+              [enable_tslib=no])
+AC_ARG_ENABLE([evdev-input],
+              [AS_HELP_STRING([--enable-evdev-input=@<:@yes/no@:>@], [Enable evdev for input events (default=check)])],
+              [enable_evdev=$enableval],
+              [enable_evdev=check])
+
 dnl Define default values
-AS_IF([test "x$enable_x11" = "xcheck"],
-      [
-        PKG_CHECK_EXISTS([x11], [enable_x11=yes], [enable_x11=no])
-      ])
+AS_IF([test "x$enable_x11" = xcheck], [
+  PKG_CHECK_EXISTS([x11], [enable_x11=yes], [enable_x11=no])
+])
 
-AS_IF([test "x$enable_win32" = "xcheck"],
-      [
-        AS_IF([test "x$platform_win32" = "xyes"], [enable_win32=yes], [enable_win32=no])
-      ])
+AS_IF([test "x$enable_win32" = xcheck], [
+  AS_IF([test "x$platform_win32" = "xyes"], [enable_win32=yes], [enable_win32=no])
+])
 
-AS_IF([test "x$enable_osx" = "xcheck"],
-      [
-        AS_IF([test "x$platform_quartz" = "xyes"], [enable_osx=yes], [enable_osx=no])
-      ])
+AS_IF([test "x$enable_osx" = xcheck], [
+  AS_IF([test "x$platform_quartz" = "xyes"], [enable_osx=yes], [enable_osx=no])
+])
 
-AS_IF([test "x$enable_gdk" = "xcheck"],
-      [
-        PKG_CHECK_EXISTS([gdk-3.0 >= gdk_req_version], [enable_gdk=yes], [enable_gdk=no])
-      ])
+AS_IF([test "x$enable_gdk" = xcheck], [
+  PKG_CHECK_EXISTS([gdk-3.0 >= gdk_req_version], [enable_gdk=yes], [enable_gdk=no])
+])
+
+AS_IF([test "x$enable_egl" = xcheck], [
+  PKG_CHECK_EXISTS([egl], [enable_egl=yes], [enable_egl=no])
+  PKG_CHECK_EXISTS([libinput], [enable_evdev=yes], [enable_evdev=no])
+])
 
 dnl Per-backend rules
 AS_IF([test "x$enable_x11" = "xyes"],
@@ -525,40 +536,25 @@ AS_IF([test "x$platform_linux" = "xyes"],
         AC_DEFINE([OS_LINUX], [1], [Define to 1 if building for Linux])
       ])
 
-# additional input backends
+AS_IF([test "x$enable_tslib" = xyes], [
+  PKG_CHECK_EXISTS([tslib-1.0], [have_tslib=yes], [have_tslib=no])
+  AS_IF([test "x$have_tslib" = xyes], [
+    CLUTTER_INPUT_BACKENDS="$CLUTTER_INPUT_BACKENDS tslib"
+    experimental_input_backend="yes"
+    AC_DEFINE([HAVE_TSLIB], [1], [Have tslib for touchscreen handling])
+    SUPPORT_TSLIB=1
+  ])
+])
 
-AC_ARG_ENABLE([tslib-input],
-              [AS_HELP_STRING([--enable-tslib-input=@<:@yes/no@:>@], [Enable TSLib for input events (default=no)])],
-              [enable_tslib=$enableval],
-              [enable_tslib=no])
-AC_ARG_ENABLE([evdev-input],
-              [AS_HELP_STRING([--enable-evdev-input=@<:@yes/no@:>@], [Enable evdev for input events (default=no)])],
-              [enable_evdev=$enableval],
-              [enable_evdev=no])
-
-AS_IF([test "x$enable_tslib" = "xyes"],
-      [
-        PKG_CHECK_MODULES(TSLIB, [tslib-1.0], [have_tslib=yes], [have_tslib=no])
-        AS_IF([test "x$have_tslib" = "xyes"],
-              [
-                CLUTTER_INPUT_BACKENDS="$CLUTTER_INPUT_BACKENDS tslib"
-                experimental_input_backend="yes"
-                AC_DEFINE([HAVE_TSLIB], [1], [Have tslib for touchscreen handling])
-                SUPPORT_TSLIB=1
-              ])
-      ])
-
-AS_IF([test "x$enable_evdev" = "xyes"],
-      [
-        PKG_CHECK_MODULES(EVDEV, [gudev-1.0 xkbcommon], [have_evdev=yes], [have_evdev=no])
-        AS_IF([test "x$have_evdev" = "xyes"],
-              [
-                CLUTTER_INPUT_BACKENDS="$CLUTTER_INPUT_BACKENDS evdev"
-                BACKEND_PC_FILES_PRIVATE="$BACKEND_PC_FILES_PRIVATE libudev >= $LIBUDEV_REQ_VERSION libinput >= $LIBINPUT_REQ_VERSION xkbcommon"
-                AC_DEFINE([HAVE_EVDEV], [1], [Have evdev support for input handling])
-                SUPPORT_EVDEV=1
-              ])
-      ])
+AS_IF([test "x$enable_evdev" = xyes], [
+  PKG_CHECK_EXISTS([libinput gudev-1.0 xkbcommon], [have_evdev=yes], [have_evdev=no])
+  AS_IF([test "x$have_evdev" = "xyes"], [
+    CLUTTER_INPUT_BACKENDS="$CLUTTER_INPUT_BACKENDS evdev"
+    BACKEND_PC_FILES_PRIVATE="$BACKEND_PC_FILES_PRIVATE libudev >= $LIBUDEV_REQ_VERSION libinput >= $LIBINPUT_REQ_VERSION xkbcommon"
+    AC_DEFINE([HAVE_EVDEV], [1], [Have evdev support for input handling])
+    SUPPORT_EVDEV=1
+  ])
+])
 
 # conditionals for use in automake files...
 AM_CONDITIONAL(SUPPORT_GLX,     [test "x$SUPPORT_GLX" = "x1"])
