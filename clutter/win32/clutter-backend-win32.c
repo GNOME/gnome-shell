@@ -239,3 +239,9 @@ DllMain (HINSTANCE hinst, DWORD reason, LPVOID reserved)
 
   return TRUE;
 }
+
+ClutterBackend *
+clutter_backend_win32_new (void)
+{
+  return g_object_new (CLUTTER_TYPE_BACKEND_WIN32, NULL);
+}

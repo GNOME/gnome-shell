@@ -56,8 +56,6 @@
 #include <cogl/cogl.h>
 #include <cogl/cogl-wayland-client.h>
 
-#define clutter_backend_wayland_get_type     _clutter_backend_wayland_get_type
-
 G_DEFINE_TYPE (ClutterBackendWayland, clutter_backend_wayland, CLUTTER_TYPE_BACKEND);
 
 static struct wl_display *_foreign_display = NULL;
@@ -320,6 +318,12 @@ _clutter_backend_wayland_ensure_cursor (ClutterBackendWayland *backend_wayland)
 static void
 clutter_backend_wayland_init (ClutterBackendWayland *backend_wayland)
 {
+}
+
+ClutterBackend *
+clutter_backend_wayland_new (void)
+{
+  return g_object_new (CLUTTER_TYPE_BACKEND_WAYLAND, NULL);
 }
 
 /**

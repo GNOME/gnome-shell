@@ -30,7 +30,7 @@
 
 G_BEGIN_DECLS
 
-#define CLUTTER_TYPE_BACKEND_MIR                (_clutter_backend_mir_get_type ())
+#define CLUTTER_TYPE_BACKEND_MIR                (clutter_backend_mir_get_type ())
 #define CLUTTER_BACKEND_MIR(obj)                (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_BACKEND_MIR, ClutterBackendMir))
 #define CLUTTER_IS_BACKEND_MIR(obj)             (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_BACKEND_MIR))
 #define CLUTTER_BACKEND_MIR_CLASS(klass)        (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_BACKEND_MIR, ClutterBackendMirClass))
@@ -45,10 +45,11 @@ struct _ClutterBackendMirClass
   ClutterBackendClass parent_class;
 };
 
-GType _clutter_backend_mir_get_type (void) G_GNUC_CONST;
+GType clutter_backend_mir_get_type (void) G_GNUC_CONST;
 
-void
-_clutter_events_mir_init (ClutterBackend *backend);
+ClutterBackend *clutter_backend_mir_new (void);
+
+void _clutter_events_mir_init (ClutterBackend *backend);
 
 G_END_DECLS
 

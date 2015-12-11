@@ -77,7 +77,6 @@
 #include "clutter-private.h"
 #include "clutter-settings-private.h"
 
-#define clutter_backend_gdk_get_type _clutter_backend_gdk_get_type
 G_DEFINE_TYPE (ClutterBackendGdk, clutter_backend_gdk, CLUTTER_TYPE_BACKEND);
 
 /* global for pre init setup calls */
@@ -394,6 +393,12 @@ clutter_backend_gdk_init (ClutterBackendGdk *backend_gdk)
    * drive us from the compositor.
    */
   _clutter_set_sync_to_vblank (FALSE);
+}
+
+ClutterBackend *
+clutter_backend_gdk_new (void)
+{
+  return g_object_new (CLUTTER_TYPE_BACKEND_GDK, NULL);
 }
 
 /**

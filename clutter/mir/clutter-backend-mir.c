@@ -37,8 +37,6 @@
 #include "mir/clutter-stage-mir.h"
 #include "mir/clutter-mir.h"
 
-#define clutter_backend_mir_get_type _clutter_backend_mir_get_type
-
 G_DEFINE_TYPE (ClutterBackendMir, clutter_backend_mir, CLUTTER_TYPE_BACKEND);
 
 static MirConnection *_foreign_connection = NULL;
@@ -171,6 +169,12 @@ clutter_backend_mir_class_init (ClutterBackendMirClass *klass)
   backend_class->post_parse = clutter_backend_mir_post_parse;
   backend_class->get_renderer = clutter_backend_mir_get_renderer;
   backend_class->get_display = clutter_backend_mir_get_display;
+}
+
+ClutterBackend *
+clutter_backend_mir_new (void)
+{
+  return g_object_new (CLUTTER_TYPE_BACKEND_MIR, NULL);
 }
 
 /**

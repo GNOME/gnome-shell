@@ -37,7 +37,7 @@
 
 G_BEGIN_DECLS
 
-#define CLUTTER_TYPE_BACKEND_EGL_NATIVE                (_clutter_backend_egl_native_get_type ())
+#define CLUTTER_TYPE_BACKEND_EGL_NATIVE                (clutter_backend_egl_native_get_type ())
 #define CLUTTER_BACKEND_EGL_NATIVE(obj)                (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_BACKEND_EGL_NATIVE, ClutterBackendEglNative))
 #define CLUTTER_IS_BACKEND_EGL_NATIVE(obj)             (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_BACKEND_EGL_NATIVE))
 #define CLUTTER_BACKEND_EGL_NATIVE_CLASS(klass)        (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_BACKEND_EGL_NATIVE, ClutterBackendEglNativeClass))
@@ -66,7 +66,9 @@ struct _ClutterBackendEglNativeClass
   ClutterBackendClass parent_class;
 };
 
-GType _clutter_backend_egl_native_get_type (void) G_GNUC_CONST;
+GType clutter_backend_egl_native_get_type (void) G_GNUC_CONST;
+
+ClutterBackend *clutter_backend_egl_new (void);
 
 G_END_DECLS
 

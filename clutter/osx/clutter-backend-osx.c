@@ -245,3 +245,9 @@ clutter_backend_osx_class_init (ClutterBackendOSXClass *klass)
   backend_class->create_context     = clutter_backend_osx_create_context;
   backend_class->ensure_context     = clutter_backend_osx_ensure_context;
 }
+
+ClutterBackend *
+clutter_backend_osx_new (void)
+{
+  return g_object_new (CLUTTER_TYPE_BACKEND_OSX, NULL);
+}

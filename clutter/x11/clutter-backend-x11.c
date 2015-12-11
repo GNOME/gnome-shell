@@ -65,8 +65,6 @@
 #include "clutter-private.h"
 #include "clutter-settings-private.h"
 
-#define clutter_backend_x11_get_type    _clutter_backend_x11_get_type
-
 G_DEFINE_TYPE (ClutterBackendX11, clutter_backend_x11, CLUTTER_TYPE_BACKEND)
 
 GType
@@ -851,6 +849,12 @@ static void
 clutter_backend_x11_init (ClutterBackendX11 *backend_x11)
 {
   backend_x11->last_event_time = CurrentTime;
+}
+
+ClutterBackend *
+clutter_backend_x11_new (void)
+{
+  return g_object_new (CLUTTER_TYPE_BACKEND_X11, NULL);
 }
 
 static int

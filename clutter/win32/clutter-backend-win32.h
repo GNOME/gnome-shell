@@ -72,6 +72,8 @@ clutter_backend_win32_get_features (ClutterBackend *backend);
 
 HCURSOR _clutter_backend_win32_get_invisible_cursor (ClutterBackend *backend);
 
+ClutterBackend *clutter_backend_win32_new (void);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_BACKEND_WIN32_H__ */

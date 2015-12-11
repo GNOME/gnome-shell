@@ -55,8 +55,6 @@
 
 #include "clutter-stage-eglnative.h"
 
-#define clutter_backend_egl_native_get_type     _clutter_backend_egl_native_get_type
-
 G_DEFINE_TYPE (ClutterBackendEglNative, clutter_backend_egl_native, CLUTTER_TYPE_BACKEND);
 
 #ifdef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
@@ -113,6 +111,12 @@ static void
 clutter_backend_egl_native_init (ClutterBackendEglNative *backend_egl_native)
 {
   backend_egl_native->event_timer = g_timer_new ();
+}
+
+ClutterBackend *
+clutter_backend_egl_native_new (void)
+{
+  return g_object_new (CLUTTER_TYPE_BACKEND_EGL_NATIVE, NULL);
 }
 
 /**

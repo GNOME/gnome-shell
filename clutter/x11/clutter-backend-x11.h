@@ -36,7 +36,7 @@
 
 G_BEGIN_DECLS
 
-#define CLUTTER_TYPE_BACKEND_X11                (_clutter_backend_x11_get_type ())
+#define CLUTTER_TYPE_BACKEND_X11                (clutter_backend_x11_get_type ())
 #define CLUTTER_BACKEND_X11(obj)                (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_BACKEND_X11, ClutterBackendX11))
 #define CLUTTER_IS_BACKEND_X11(obj)             (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_BACKEND_X11))
 #define CLUTTER_BACKEND_X11_CLASS(klass)        (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_BACKEND_X11, ClutterBackendX11Class))
@@ -116,7 +116,9 @@ struct _ClutterBackendX11Class
   ClutterBackendClass parent_class;
 };
 
-GType _clutter_backend_x11_get_type (void) G_GNUC_CONST;
+GType clutter_backend_x11_get_type (void) G_GNUC_CONST;
+
+ClutterBackend *clutter_backend_x11_new (void);
 
 void            _clutter_backend_x11_events_init        (ClutterBackend *backend);
 

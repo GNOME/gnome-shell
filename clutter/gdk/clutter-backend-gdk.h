@@ -33,7 +33,7 @@
 
 G_BEGIN_DECLS
 
-#define CLUTTER_TYPE_BACKEND_GDK                (_clutter_backend_gdk_get_type ())
+#define CLUTTER_TYPE_BACKEND_GDK                (clutter_backend_gdk_get_type ())
 #define CLUTTER_BACKEND_GDK(obj)                (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_BACKEND_GDK, ClutterBackendGdk))
 #define CLUTTER_IS_BACKEND_GDK(obj)             (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_BACKEND_GDK))
 #define CLUTTER_BACKEND_GDK_CLASS(klass)        (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_BACKEND_GDK, ClutterBackendGdkClass))
@@ -60,7 +60,9 @@ struct _ClutterBackendGdkClass
   /* nothing here, for now */
 };
 
-GType _clutter_backend_gdk_get_type (void) G_GNUC_CONST;
+GType clutter_backend_gdk_get_type (void) G_GNUC_CONST;
+
+ClutterBackend *clutter_backend_gdk_new (void);
 
 void   _clutter_backend_gdk_events_init (ClutterBackend *backend);
 

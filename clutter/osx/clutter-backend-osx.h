@@ -69,6 +69,8 @@ void _clutter_backend_osx_events_init (ClutterBackend *backend);
 void _clutter_event_osx_put (NSEvent *nsevent,
                              ClutterStage *wrapper);
 
+ClutterBackend *clutter_backend_osx_new (void);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_BACKEND_OSX_H__ */

@@ -36,7 +36,7 @@
 
 G_BEGIN_DECLS
 
-#define CLUTTER_TYPE_BACKEND_WAYLAND                (_clutter_backend_wayland_get_type ())
+#define CLUTTER_TYPE_BACKEND_WAYLAND                (clutter_backend_wayland_get_type ())
 #define CLUTTER_BACKEND_WAYLAND(obj)                (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_BACKEND_WAYLAND, ClutterBackendWayland))
 #define CLUTTER_IS_BACKEND_WAYLAND(obj)             (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_BACKEND_WAYLAND))
 #define CLUTTER_BACKEND_WAYLAND_CLASS(klass)        (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_BACKEND_WAYLAND, ClutterBackendWaylandClass))
@@ -51,7 +51,9 @@ struct _ClutterBackendWaylandClass
   ClutterBackendClass parent_class;
 };
 
-GType _clutter_backend_wayland_get_type (void) G_GNUC_CONST;
+GType clutter_backend_wayland_get_type (void) G_GNUC_CONST;
+
+ClutterBackend *clutter_backend_wayland_new (void);
 
 G_END_DECLS
 
