@@ -68,7 +68,7 @@ struct _ClutterBackendEglNativeClass
 
 GType clutter_backend_egl_native_get_type (void) G_GNUC_CONST;
 
-ClutterBackend *clutter_backend_egl_new (void);
+ClutterBackend *clutter_backend_egl_native_new (void);
 
 G_END_DECLS
 
