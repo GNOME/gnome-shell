@@ -64,12 +64,10 @@ src/meta-dbus-idle-monitor.[ch]
 src/meta-dbus-login1.[ch]
 src/gtk-shell-protocol.c
 src/gtk-shell-server-protocol.h
-src/xdg-shell-protocol.c
-src/xdg-shell-server-protocol.h
-src/pointer-gestures-unstable-v1-protocol.c
-src/pointer-gestures-unstable-v1-server-protocol.h
-src/xserver-protocol.c
-src/xserver-server-protocol.h
+src/xdg-shell-unstable-v*-protocol.c
+src/xdg-shell-unstable-v*-server-protocol.h
+src/pointer-gestures-unstable-v*-protocol.c
+src/pointer-gestures-unstable-v*-server-protocol.h
 src/meta/meta-version.h
 doc/reference/*.args
 doc/reference/*.bak
