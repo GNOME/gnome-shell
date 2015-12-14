@@ -38,6 +38,7 @@ const connect = Lang.bind(_signals, _signals.connect);
 const disconnect = Lang.bind(_signals, _signals.disconnect);
 
 const ENABLED_EXTENSIONS_KEY = 'enabled-extensions';
+const DISABLE_USER_EXTENSIONS_KEY = 'disable-user-extensions';
 const EXTENSION_DISABLE_VERSION_CHECK_KEY = 'disable-extension-version-validation';
 
 var initted = false;
@@ -238,11 +239,16 @@ function initExtension(uuid) {
 }
 
 function getEnabledExtensions() {
-    let extensions = global.settings.get_strv(ENABLED_EXTENSIONS_KEY);
-    if (!Array.isArray(Main.sessionMode.enabledExtensions))
+    let extensions;
+    if (Array.isArray(Main.sessionMode.enabledExtensions))
+        extensions = Main.sessionMode.enabledExtensions;
+    else
+        extensions = [];
+
+    if (global.settings.get_boolean(DISABLE_USER_EXTENSIONS_KEY))
         return extensions;
 
-    return Main.sessionMode.enabledExtensions.concat(extensions);
+    return extensions.concat(global.settings.get_strv(ENABLED_EXTENSIONS_KEY));
 }
 
 function onEnabledExtensionsChanged() {
@@ -288,6 +294,7 @@ function _onVersionValidationChanged() {
 
 function _loadExtensions() {
     global.settings.connect('changed::' + ENABLED_EXTENSIONS_KEY, onEnabledExtensionsChanged);
+    global.settings.connect('changed::' + DISABLE_USER_EXTENSIONS_KEY, onEnabledExtensionsChanged);
     global.settings.connect('changed::' + EXTENSION_DISABLE_VERSION_CHECK_KEY, _onVersionValidationChanged);
 
     enabledExtensions = getEnabledExtensions();

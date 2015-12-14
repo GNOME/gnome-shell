@@ -21,6 +21,14 @@
         EnableExtension and DisableExtension D-Bus methods on org.gnome.Shell.
       </description>
     </key>
+    <key name="disable-user-extensions" type="b">
+      <default>false</default>
+      <summary>Disable user extensions</summary>
+      <description>
+        Disable all extensions the user has enabled without affecting
+        the 'enabled-extension' setting.
+      </description>
+    </key>
     <key name="disable-extension-version-validation" type="b">
       <default>true</default>
       <summary>Disables the validation of extension version compatibility</summary>
