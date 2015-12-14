@@ -149,6 +149,14 @@ const Application = new Lang.Class({
                                              title: _("GNOME Shell Extensions") });
         this._window.set_titlebar(this._titlebar);
 
+        let killSwitch = new Gtk.Switch({ valign: Gtk.Align.CENTER });
+        this._titlebar.pack_end(killSwitch);
+
+        this._settings = new Gio.Settings({ schema_id: 'org.gnome.shell' });
+        this._settings.bind('disable-user-extensions', killSwitch, 'active',
+                            Gio.SettingsBindFlags.BIND_DEFAULT |
+                            Gio.SettingsBindFlags.INVERT_BOOLEAN);
+
         let scroll = new Gtk.ScrolledWindow({ hscrollbar_policy: Gtk.PolicyType.NEVER,
                                               shadow_type: Gtk.ShadowType.IN,
                                               halign: Gtk.Align.CENTER,
@@ -264,6 +272,10 @@ const ExtensionRow = new Lang.Class({
             Lang.bind(this, function() {
                 this._switch.sensitive = this._canEnable();
             }));
+        this._settings.connect('changed::disable-user-extensions',
+            Lang.bind(this, function() {
+                this._switch.sensitive = this._canEnable();
+            }));
 
         this._buildUI();
     },
@@ -319,7 +331,8 @@ const ExtensionRow = new Lang.Class({
         let extension = ExtensionUtils.extensions[this.uuid];
         let checkVersion = !this._settings.get_boolean('disable-extension-version-validation');
 
-        return !(checkVersion && ExtensionUtils.isOutOfDate(extension));
+        return !this._settings.get_boolean('disable-user-extensions') &&
+               !(checkVersion && ExtensionUtils.isOutOfDate(extension));
     },
 
     _isEnabled: function() {
