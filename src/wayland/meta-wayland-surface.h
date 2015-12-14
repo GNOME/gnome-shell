@@ -44,6 +44,12 @@ G_DECLARE_FINAL_TYPE (MetaWaylandSurface,
 G_DECLARE_DERIVABLE_TYPE (MetaWaylandSurfaceRole, meta_wayland_surface_role,
                           META, WAYLAND_SURFACE_ROLE, GObject);
 
+#define META_TYPE_WAYLAND_PENDING_STATE (meta_wayland_pending_state_get_type ())
+G_DECLARE_FINAL_TYPE (MetaWaylandPendingState,
+                      meta_wayland_pending_state,
+                      META, WAYLAND_PENDING_STATE,
+                      GObject);
+
 struct _MetaWaylandSurfaceRoleClass
 {
   GObjectClass parent_class;
@@ -92,6 +98,8 @@ G_DECLARE_FINAL_TYPE (MetaWaylandSurfaceRoleDND,
 
 struct _MetaWaylandPendingState
 {
+  GObject parent;
+
   /* wl_surface.attach */
   gboolean newly_attached;
   MetaWaylandBuffer *buffer;
@@ -161,7 +169,7 @@ struct _MetaWaylandSurface
   } dnd;
 
   /* All the pending state that wl_surface.commit will apply. */
-  MetaWaylandPendingState pending;
+  MetaWaylandPendingState *pending;
 
   /* Extension resources. */
   struct wl_resource *xdg_surface;
@@ -202,7 +210,7 @@ struct _MetaWaylandSurface
      * state here.
      */
     gboolean synchronous;
-    MetaWaylandPendingState pending;
+    MetaWaylandPendingState *pending;
 
     int32_t pending_x;
     int32_t pending_y;
