@@ -208,8 +208,8 @@ touch_get_relative_coordinates (MetaWaylandTouch   *touch,
                                            &event_x, &event_y);
     }
 
-  *x = event_x;
-  *y = event_y;
+  *x = event_x / surface->scale;
+  *y = event_y / surface->scale;
 }
 
 
