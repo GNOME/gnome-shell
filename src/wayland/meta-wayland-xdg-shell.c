@@ -626,6 +626,12 @@ xdg_surface_role_configure (MetaWaylandSurfaceRoleShellSurface *shell_surface_ro
 }
 
 static void
+xdg_surface_role_managed (MetaWaylandSurfaceRoleShellSurface *shell_surface_role,
+                          MetaWindow                         *window)
+{
+}
+
+static void
 xdg_surface_role_ping (MetaWaylandSurfaceRoleShellSurface *shell_surface_role,
                        uint32_t                            serial)
 {
@@ -665,6 +671,7 @@ meta_wayland_surface_role_xdg_surface_class_init (MetaWaylandSurfaceRoleXdgSurfa
     META_WAYLAND_SURFACE_ROLE_SHELL_SURFACE_CLASS (klass);
 
   shell_surface_role_class->configure = xdg_surface_role_configure;
+  shell_surface_role_class->managed = xdg_surface_role_managed;
   shell_surface_role_class->ping = xdg_surface_role_ping;
   shell_surface_role_class->close = xdg_surface_role_close;
 }
@@ -702,6 +709,22 @@ xdg_popup_role_configure (MetaWaylandSurfaceRoleShellSurface *shell_surface_role
 {
   /* This can happen if the popup window loses or receives focus.
    * Just ignore it. */
+}
+
+static void
+xdg_popup_role_managed (MetaWaylandSurfaceRoleShellSurface *shell_surface_role,
+                        MetaWindow                         *window)
+{
+  MetaWaylandSurfaceRole *surface_role =
+    META_WAYLAND_SURFACE_ROLE (shell_surface_role);
+  MetaWaylandSurface *surface =
+    meta_wayland_surface_role_get_surface (surface_role);
+  MetaWaylandSurface *parent = surface->popup.parent;
+
+  g_assert (parent);
+
+  meta_window_set_transient_for (window, parent->window);
+  meta_window_set_type (window, META_WINDOW_DROPDOWN_MENU);
 }
 
 static void
@@ -744,6 +767,7 @@ meta_wayland_surface_role_xdg_popup_class_init (MetaWaylandSurfaceRoleXdgPopupCl
     META_WAYLAND_SURFACE_ROLE_SHELL_SURFACE_CLASS (klass);
 
   shell_surface_role_class->configure = xdg_popup_role_configure;
+  shell_surface_role_class->managed = xdg_popup_role_managed;
   shell_surface_role_class->ping = xdg_popup_role_ping;
   shell_surface_role_class->popup_done = xdg_popup_role_popup_done;
 }

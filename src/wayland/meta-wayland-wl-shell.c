@@ -529,6 +529,12 @@ wl_shell_surface_role_configure (MetaWaylandSurfaceRoleShellSurface *shell_surfa
 }
 
 static void
+wl_shell_surface_role_managed (MetaWaylandSurfaceRoleShellSurface *shell_surface_role,
+                               MetaWindow                         *window)
+{
+}
+
+static void
 wl_shell_surface_role_ping (MetaWaylandSurfaceRoleShellSurface *shell_surface_role,
                             guint32                             serial)
 {
@@ -574,6 +580,7 @@ meta_wayland_surface_role_wl_shell_surface_class_init (MetaWaylandSurfaceRoleWlS
   shell_surface_role_class =
     META_WAYLAND_SURFACE_ROLE_SHELL_SURFACE_CLASS (klass);
   shell_surface_role_class->configure = wl_shell_surface_role_configure;
+  shell_surface_role_class->managed = wl_shell_surface_role_managed;
   shell_surface_role_class->ping = wl_shell_surface_role_ping;
   shell_surface_role_class->close = wl_shell_surface_role_close;
   shell_surface_role_class->popup_done = wl_shell_surface_role_popup_done;
