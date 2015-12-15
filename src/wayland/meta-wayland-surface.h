@@ -156,6 +156,16 @@ struct _MetaWaylandDragDestFuncs
                       MetaWaylandSurface    *surface);
 };
 
+typedef enum
+{
+  META_WL_SHELL_SURFACE_STATE_NONE,
+  META_WL_SHELL_SURFACE_STATE_TOPLEVEL,
+  META_WL_SHELL_SURFACE_STATE_POPUP,
+  META_WL_SHELL_SURFACE_STATE_TRANSIENT,
+  META_WL_SHELL_SURFACE_STATE_FULLSCREEN,
+  META_WL_SHELL_SURFACE_STATE_MAXIMIZED,
+} MetaWlShellSurfaceState;
+
 struct _MetaWaylandSurface
 {
   GObject parent;
@@ -220,6 +230,23 @@ struct _MetaWaylandSurface
     MetaWaylandPopup *popup;
     struct wl_listener destroy_listener;
   } popup;
+
+  /* wl_shell_surface */
+  struct {
+    MetaWlShellSurfaceState state;
+
+    char *title;
+    char *wm_class;
+
+    gboolean pending_popup;
+    MetaWaylandSurface *parent_surface;
+    GList *children;
+
+    MetaWaylandSeat *popup_seat;
+
+    int x;
+    int y;
+  } wl_shell;
 
   /* wl_subsurface stuff. */
   struct {
