@@ -334,7 +334,7 @@ function _sessionUpdated() {
     // from allowExtensions in the future
     if (Main.sessionMode.allowExtensions) {
         if (initted)
-            onEnabledExtensionsChanged();
+            enabledExtensions = getEnabledExtensions();
         enableAllExtensions();
     } else {
         disableAllExtensions();
