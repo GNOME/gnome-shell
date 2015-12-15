@@ -429,7 +429,7 @@ update_touchpad_click_method (MetaInputSettings *input_settings,
                               ClutterInputDevice *device)
 {
   MetaInputSettingsClass *input_settings_class;
-  GDesktopTouchpadScrollMethod method;
+  GDesktopTouchpadClickMethod method;
   MetaInputSettingsPrivate *priv;
 
   if (device &&
