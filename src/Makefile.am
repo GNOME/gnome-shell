@@ -302,6 +302,10 @@ libmutter_la_SOURCES +=				\
 	wayland/meta-wayland-outputs.h		\
 	wayland/meta-window-wayland.c		\
 	wayland/meta-window-wayland.h		\
+	wayland/meta-wayland-xdg-shell.c	\
+	wayland/meta-wayland-xdg-shell.h	\
+	wayland/meta-wayland-wl-shell.c		\
+	wayland/meta-wayland-wl-shell.h		\
 	$(NULL)
 endif
 

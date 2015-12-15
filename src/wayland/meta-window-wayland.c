@@ -32,6 +32,7 @@
 #include "stack-tracker.h"
 #include "meta-wayland-private.h"
 #include "meta-wayland-surface.h"
+#include "meta-wayland-xdg-shell.h"
 #include "compositor/meta-surface-actor-wayland.h"
 
 struct _MetaWindowWayland

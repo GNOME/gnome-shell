@@ -31,7 +31,6 @@
 
 #include <wayland-server.h>
 #include "gtk-shell-server-protocol.h"
-#include "xdg-shell-unstable-v5-server-protocol.h"
 
 #include "meta-wayland-private.h"
 #include "meta-xwayland-private.h"
@@ -40,9 +39,10 @@
 #include "meta-wayland-seat.h"
 #include "meta-wayland-keyboard.h"
 #include "meta-wayland-pointer.h"
-#include "meta-wayland-popup.h"
 #include "meta-wayland-data-device.h"
 #include "meta-wayland-outputs.h"
+#include "meta-wayland-xdg-shell.h"
+#include "meta-wayland-wl-shell.h"
 
 #include "meta-cursor-tracker-private.h"
 #include "display-private.h"
@@ -88,6 +88,14 @@ G_DEFINE_TYPE_WITH_PRIVATE (MetaWaylandSurfaceRole,
                             meta_wayland_surface_role,
                             G_TYPE_OBJECT);
 
+G_DEFINE_TYPE (MetaWaylandSurfaceRoleActorSurface,
+               meta_wayland_surface_role_actor_surface,
+               META_TYPE_WAYLAND_SURFACE_ROLE);
+
+G_DEFINE_TYPE (MetaWaylandSurfaceRoleShellSurface,
+               meta_wayland_surface_role_shell_surface,
+               META_TYPE_WAYLAND_SURFACE_ROLE_ACTOR_SURFACE);
+
 G_DEFINE_TYPE (MetaWaylandPendingState,
                meta_wayland_pending_state,
                G_TYPE_OBJECT);
@@ -99,34 +107,7 @@ struct _MetaWaylandSurfaceRoleSubsurface
 
 G_DEFINE_TYPE (MetaWaylandSurfaceRoleSubsurface,
                meta_wayland_surface_role_subsurface,
-               META_TYPE_WAYLAND_SURFACE_ROLE);
-
-struct _MetaWaylandSurfaceRoleXdgSurface
-{
-  MetaWaylandSurfaceRole parent;
-};
-
-G_DEFINE_TYPE (MetaWaylandSurfaceRoleXdgSurface,
-               meta_wayland_surface_role_xdg_surface,
-               META_TYPE_WAYLAND_SURFACE_ROLE);
-
-struct _MetaWaylandSurfaceRoleXdgPopup
-{
-  MetaWaylandSurfaceRole parent;
-};
-
-G_DEFINE_TYPE (MetaWaylandSurfaceRoleXdgPopup,
-               meta_wayland_surface_role_xdg_popup,
-               META_TYPE_WAYLAND_SURFACE_ROLE);
-
-struct _MetaWaylandSurfaceRoleWlShellSurface
-{
-  MetaWaylandSurfaceRole parent;
-};
-
-G_DEFINE_TYPE (MetaWaylandSurfaceRoleWlShellSurface,
-               meta_wayland_surface_role_wl_shell_surface,
-               META_TYPE_WAYLAND_SURFACE_ROLE);
+               META_TYPE_WAYLAND_SURFACE_ROLE_ACTOR_SURFACE);
 
 struct _MetaWaylandSurfaceRoleDND
 {
@@ -151,6 +132,22 @@ meta_wayland_surface_role_commit (MetaWaylandSurfaceRole  *surface_role,
 static gboolean
 meta_wayland_surface_role_is_on_output (MetaWaylandSurfaceRole *surface_role,
                                         MetaMonitorInfo *info);
+
+static void
+meta_wayland_surface_role_shell_surface_configure (MetaWaylandSurfaceRoleShellSurface *shell_surface_role,
+                                                   int                                 new_width,
+                                                   int                                 new_height,
+                                                   MetaWaylandSerial                  *sent_serial);
+
+static void
+meta_wayland_surface_role_shell_surface_ping (MetaWaylandSurfaceRoleShellSurface *shell_surface_role,
+                                              uint32_t                            serial);
+
+static void
+meta_wayland_surface_role_shell_surface_close (MetaWaylandSurfaceRoleShellSurface *shell_surface_role);
+
+static void
+meta_wayland_surface_role_shell_surface_popup_done (MetaWaylandSurfaceRoleShellSurface *shell_surface_role);
 
 gboolean
 meta_wayland_surface_assign_role (MetaWaylandSurface *surface,
@@ -296,8 +293,8 @@ calculate_surface_window_geometry (MetaWaylandSurface *surface,
     }
 }
 
-static void
-destroy_window (MetaWaylandSurface *surface)
+void
+meta_wayland_surface_destroy_window (MetaWaylandSurface *surface)
 {
   if (surface->window)
     {
@@ -352,50 +349,12 @@ queue_surface_actor_frame_callbacks (MetaWaylandSurface      *surface,
   wl_list_init (&pending->frame_callback_list);
 }
 
-static void
-toplevel_surface_commit (MetaWaylandSurfaceRole  *surface_role,
-                         MetaWaylandPendingState *pending)
+void
+meta_wayland_surface_apply_window_state (MetaWaylandSurface      *surface,
+                                         MetaWaylandPendingState *pending)
 {
-  MetaWaylandSurface *surface =
-    meta_wayland_surface_role_get_surface (surface_role);
-  MetaWaylandBuffer *buffer = surface->buffer_ref.buffer;
   MetaWindow *window = surface->window;
-
-  queue_surface_actor_frame_callbacks (surface, pending);
-
-  /* If there's no new buffer pending, then there's nothing else to
-   * do
-   */
-  if (!pending->newly_attached)
-    return;
-
-  if (META_IS_WAYLAND_SURFACE_ROLE_WL_SHELL_SURFACE (surface->role))
-    {
-      /* For wl_shell, it's equivalent to an unmap. Semantics
-       * are poorly defined, so we can choose some that are
-       * convenient for us. */
-      if (buffer && !window)
-        {
-          window = meta_window_wayland_new (meta_get_display (), surface);
-          meta_wayland_surface_set_window (surface, window);
-        }
-      else if (buffer == NULL && window)
-        {
-          destroy_window (surface);
-          return;
-        }
-    }
-  else
-    {
-      if (buffer == NULL)
-        {
-          /* XDG surfaces can't commit NULL buffers */
-          wl_resource_post_error (surface->resource,
-                                  WL_DISPLAY_ERROR_INVALID_OBJECT,
-                                  "Cannot commit a NULL buffer to an xdg_surface");
-          return;
-        }
-    }
+  MetaWaylandBuffer *buffer = surface->buffer_ref.buffer;
 
   /* Update the state of the MetaWindow if we still have one. We might not if
    * the window was unmanaged (for example popup destroyed, NULL buffer attached to
@@ -1180,7 +1139,7 @@ wl_surface_destructor (struct wl_resource *resource)
    * the client is disconnecting, as the resources are destroyed in a random
    * order. Simply destroy the window in this case. */
   if (surface->window)
-    destroy_window (surface);
+    meta_wayland_surface_destroy_window (surface);
 
   if (surface->unassigned.buffer)
     {
@@ -1269,113 +1228,12 @@ meta_wayland_surface_create (MetaWaylandCompositor *compositor,
   return surface;
 }
 
-static void
-xdg_shell_destroy (struct wl_client *client,
-                   struct wl_resource *resource)
-{
-  wl_resource_destroy (resource);
-}
-
-static void
-xdg_shell_use_unstable_version (struct wl_client *client,
-                                struct wl_resource *resource,
-                                int32_t version)
-{
-  if (version != XDG_SHELL_VERSION_CURRENT)
-    wl_resource_post_error (resource, WL_DISPLAY_ERROR_INVALID_OBJECT,
-                            "bad xdg-shell version: %d\n", version);
-}
-
-static void
-xdg_shell_pong (struct wl_client *client,
-                struct wl_resource *resource,
-                uint32_t serial)
-{
-  MetaDisplay *display = meta_get_display ();
-
-  meta_display_pong_for_serial (display, serial);
-}
-
-static void
-xdg_surface_destructor (struct wl_resource *resource)
-{
-  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
-
-  meta_wayland_compositor_destroy_frame_callbacks (surface->compositor,
-                                                   surface);
-  destroy_window (surface);
-  surface->xdg_surface = NULL;
-}
-
-static void
-xdg_surface_destroy (struct wl_client *client,
-                     struct wl_resource *resource)
-{
-  wl_resource_destroy (resource);
-}
-
-static void
-xdg_surface_set_parent (struct wl_client *client,
-                        struct wl_resource *resource,
-                        struct wl_resource *parent_resource)
-{
-  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
-  MetaWindow *transient_for = NULL;
-
-  if (parent_resource)
-    {
-      MetaWaylandSurface *parent_surface = wl_resource_get_user_data (parent_resource);
-      transient_for = parent_surface->window;
-    }
-
-  meta_window_set_transient_for (surface->window, transient_for);
-}
-
-static void
-xdg_surface_set_title (struct wl_client *client,
-                       struct wl_resource *resource,
-                       const char *title)
-{
-  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
-
-  meta_window_set_title (surface->window, title);
-}
-
-static void
-xdg_surface_set_app_id (struct wl_client *client,
-                        struct wl_resource *resource,
-                        const char *app_id)
-{
-  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
-
-  meta_window_set_wm_class (surface->window, app_id, app_id);
-}
-
-static void
-xdg_surface_show_window_menu (struct wl_client *client,
-                              struct wl_resource *resource,
-                              struct wl_resource *seat_resource,
-                              uint32_t serial,
-                              int32_t x,
-                              int32_t y)
-{
-  MetaWaylandSeat *seat = wl_resource_get_user_data (seat_resource);
-  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
-
-  if (!meta_wayland_seat_get_grab_info (seat, surface, serial, FALSE, NULL, NULL))
-    return;
-
-  meta_window_show_menu (surface->window, META_WINDOW_MENU_WM,
-                         surface->window->buffer_rect.x + x,
-                         surface->window->buffer_rect.y + y);
-}
-
-static gboolean
-begin_grab_op_on_surface (MetaWaylandSurface *surface,
-                          MetaWaylandSeat    *seat,
-                          MetaGrabOp          grab_op,
-                          gfloat              x,
-                          gfloat              y)
+gboolean
+meta_wayland_surface_begin_grab_op (MetaWaylandSurface *surface,
+                                    MetaWaylandSeat    *seat,
+                                    MetaGrabOp          grab_op,
+                                    gfloat              x,
+                                    gfloat              y)
 {
   MetaWindow *window = surface->window;
 
@@ -1395,648 +1253,6 @@ begin_grab_op_on_surface (MetaWaylandSurface *surface,
                                      0, /* modmask */
                                      meta_display_get_current_time_roundtrip (window->display),
                                      x, y);
-}
-
-static void
-xdg_surface_move (struct wl_client *client,
-                  struct wl_resource *resource,
-                  struct wl_resource *seat_resource,
-                  guint32 serial)
-{
-  MetaWaylandSeat *seat = wl_resource_get_user_data (seat_resource);
-  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
-  gfloat x, y;
-
-  if (!meta_wayland_seat_get_grab_info (seat, surface, serial, TRUE, &x, &y))
-    return;
-
-  begin_grab_op_on_surface (surface, seat, META_GRAB_OP_MOVING, x, y);
-}
-
-static MetaGrabOp
-grab_op_for_xdg_surface_resize_edge (int edge)
-{
-  MetaGrabOp op = META_GRAB_OP_WINDOW_BASE;
-
-  if (edge & XDG_SURFACE_RESIZE_EDGE_TOP)
-    op |= META_GRAB_OP_WINDOW_DIR_NORTH;
-  if (edge & XDG_SURFACE_RESIZE_EDGE_BOTTOM)
-    op |= META_GRAB_OP_WINDOW_DIR_SOUTH;
-  if (edge & XDG_SURFACE_RESIZE_EDGE_LEFT)
-    op |= META_GRAB_OP_WINDOW_DIR_WEST;
-  if (edge & XDG_SURFACE_RESIZE_EDGE_RIGHT)
-    op |= META_GRAB_OP_WINDOW_DIR_EAST;
-
-  if (op == META_GRAB_OP_WINDOW_BASE)
-    {
-      g_warning ("invalid edge: %d", edge);
-      return META_GRAB_OP_NONE;
-    }
-
-  return op;
-}
-
-static void
-xdg_surface_resize (struct wl_client *client,
-                    struct wl_resource *resource,
-                    struct wl_resource *seat_resource,
-                    guint32 serial,
-                    guint32 edges)
-{
-  MetaWaylandSeat *seat = wl_resource_get_user_data (seat_resource);
-  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
-  gfloat x, y;
-
-  if (!meta_wayland_seat_get_grab_info (seat, surface, serial, TRUE, &x, &y))
-    return;
-
-  begin_grab_op_on_surface (surface, seat, grab_op_for_xdg_surface_resize_edge (edges), x, y);
-}
-
-static void
-xdg_surface_ack_configure (struct wl_client *client,
-                           struct wl_resource *resource,
-                           uint32_t serial)
-{
-  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
-
-  surface->acked_configure_serial.set = TRUE;
-  surface->acked_configure_serial.value = serial;
-}
-
-static void
-xdg_surface_set_window_geometry (struct wl_client *client,
-                                 struct wl_resource *resource,
-                                 int32_t x, int32_t y, int32_t width, int32_t height)
-{
-  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
-
-  surface->pending->has_new_geometry = TRUE;
-  surface->pending->new_geometry.x = x;
-  surface->pending->new_geometry.y = y;
-  surface->pending->new_geometry.width = width;
-  surface->pending->new_geometry.height = height;
-}
-
-static void
-xdg_surface_set_maximized (struct wl_client *client,
-                           struct wl_resource *resource)
-{
-  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
-  meta_window_maximize (surface->window, META_MAXIMIZE_BOTH);
-}
-
-static void
-xdg_surface_unset_maximized (struct wl_client *client,
-                             struct wl_resource *resource)
-{
-  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
-  meta_window_unmaximize (surface->window, META_MAXIMIZE_BOTH);
-}
-
-static void
-xdg_surface_set_fullscreen (struct wl_client *client,
-                            struct wl_resource *resource,
-                            struct wl_resource *output_resource)
-{
-  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
-  meta_window_make_fullscreen (surface->window);
-}
-
-static void
-xdg_surface_unset_fullscreen (struct wl_client *client,
-                              struct wl_resource *resource)
-{
-  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
-  meta_window_unmake_fullscreen (surface->window);
-}
-
-static void
-xdg_surface_set_minimized (struct wl_client *client,
-                           struct wl_resource *resource)
-{
-  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
-  meta_window_minimize (surface->window);
-}
-
-static const struct xdg_surface_interface meta_wayland_xdg_surface_interface = {
-  xdg_surface_destroy,
-  xdg_surface_set_parent,
-  xdg_surface_set_title,
-  xdg_surface_set_app_id,
-  xdg_surface_show_window_menu,
-  xdg_surface_move,
-  xdg_surface_resize,
-  xdg_surface_ack_configure,
-  xdg_surface_set_window_geometry,
-  xdg_surface_set_maximized,
-  xdg_surface_unset_maximized,
-  xdg_surface_set_fullscreen,
-  xdg_surface_unset_fullscreen,
-  xdg_surface_set_minimized,
-};
-
-static void
-xdg_shell_get_xdg_surface (struct wl_client *client,
-                           struct wl_resource *resource,
-                           guint32 id,
-                           struct wl_resource *surface_resource)
-{
-  MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
-  MetaWindow *window;
-
-  if (surface->xdg_surface != NULL)
-    {
-      wl_resource_post_error (surface_resource,
-                              WL_DISPLAY_ERROR_INVALID_OBJECT,
-                              "xdg_shell::get_xdg_surface already requested");
-      return;
-    }
-
-  if (!meta_wayland_surface_assign_role (surface,
-                                         META_TYPE_WAYLAND_SURFACE_ROLE_XDG_SURFACE))
-    {
-      wl_resource_post_error (resource, XDG_SHELL_ERROR_ROLE,
-                              "wl_surface@%d already has a different role",
-                              wl_resource_get_id (surface->resource));
-      return;
-    }
-
-  surface->xdg_surface = wl_resource_create (client, &xdg_surface_interface, wl_resource_get_version (resource), id);
-  wl_resource_set_implementation (surface->xdg_surface, &meta_wayland_xdg_surface_interface, surface, xdg_surface_destructor);
-
-  surface->xdg_shell_resource = resource;
-
-  window = meta_window_wayland_new (meta_get_display (), surface);
-  meta_wayland_surface_set_window (surface, window);
-}
-
-static void
-xdg_popup_destructor (struct wl_resource *resource)
-{
-  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
-
-  meta_wayland_compositor_destroy_frame_callbacks (surface->compositor,
-                                                   surface);
-  if (surface->popup.parent)
-    {
-      wl_list_remove (&surface->popup.parent_destroy_listener.link);
-      surface->popup.parent = NULL;
-    }
-
-  if (surface->popup.popup)
-    meta_wayland_popup_dismiss (surface->popup.popup);
-
-  surface->xdg_popup = NULL;
-}
-
-static void
-xdg_popup_destroy (struct wl_client *client,
-                   struct wl_resource *resource)
-{
-  wl_resource_destroy (resource);
-}
-
-static const struct xdg_popup_interface meta_wayland_xdg_popup_interface = {
-  xdg_popup_destroy,
-};
-
-static void
-handle_popup_parent_destroyed (struct wl_listener *listener, void *data)
-{
-  MetaWaylandSurface *surface =
-    wl_container_of (listener, surface, popup.parent_destroy_listener);
-
-  wl_resource_post_error (surface->xdg_shell_resource,
-                          XDG_SHELL_ERROR_NOT_THE_TOPMOST_POPUP,
-                          "destroyed popup not top most popup");
-  surface->popup.parent = NULL;
-
-  destroy_window (surface);
-}
-
-static void
-handle_popup_destroyed (struct wl_listener *listener, void *data)
-{
-  MetaWaylandPopup *popup = data;
-  MetaWaylandSurface *top_popup;
-  MetaWaylandSurface *surface =
-    wl_container_of (listener, surface, popup.destroy_listener);
-
-  top_popup = meta_wayland_popup_get_top_popup (popup);
-  if (surface != top_popup)
-    {
-      wl_resource_post_error (surface->xdg_shell_resource,
-                              XDG_SHELL_ERROR_NOT_THE_TOPMOST_POPUP,
-                              "destroyed popup not top most popup");
-    }
-
-  surface->popup.popup = NULL;
-
-  destroy_window (surface);
-}
-
-static void
-xdg_shell_get_xdg_popup (struct wl_client *client,
-                         struct wl_resource *resource,
-                         uint32_t id,
-                         struct wl_resource *surface_resource,
-                         struct wl_resource *parent_resource,
-                         struct wl_resource *seat_resource,
-                         uint32_t serial,
-                         int32_t x,
-                         int32_t y)
-{
-  struct wl_resource *popup_resource;
-  MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
-  MetaWaylandSurface *parent_surf = wl_resource_get_user_data (parent_resource);
-  MetaWaylandSurface *top_popup;
-  MetaWaylandSeat *seat = wl_resource_get_user_data (seat_resource);
-  MetaWindow *window;
-  MetaDisplay *display = meta_get_display ();
-  MetaWaylandPopup *popup;
-
-  if (surface->xdg_popup != NULL)
-    {
-      wl_resource_post_error (surface_resource,
-                              WL_DISPLAY_ERROR_INVALID_OBJECT,
-                              "xdg_shell::get_xdg_popup already requested");
-      return;
-    }
-
-  if (!meta_wayland_surface_assign_role (surface,
-                                         META_TYPE_WAYLAND_SURFACE_ROLE_XDG_POPUP))
-    {
-      wl_resource_post_error (resource, XDG_SHELL_ERROR_ROLE,
-                              "wl_surface@%d already has a different role",
-                              wl_resource_get_id (surface->resource));
-      return;
-    }
-
-  if (parent_surf == NULL ||
-      parent_surf->window == NULL ||
-      (parent_surf->xdg_popup == NULL && parent_surf->xdg_surface == NULL))
-    {
-      wl_resource_post_error (resource,
-                              XDG_SHELL_ERROR_INVALID_POPUP_PARENT,
-                              "invalid parent surface");
-      return;
-    }
-
-  top_popup = meta_wayland_pointer_get_top_popup (&seat->pointer);
-  if ((top_popup == NULL && parent_surf->xdg_surface == NULL) ||
-      (top_popup != NULL && parent_surf != top_popup))
-    {
-      wl_resource_post_error (resource,
-                              XDG_SHELL_ERROR_NOT_THE_TOPMOST_POPUP,
-                              "parent not top most surface");
-      return;
-    }
-
-  popup_resource = wl_resource_create (client, &xdg_popup_interface,
-                                       wl_resource_get_version (resource), id);
-  wl_resource_set_implementation (popup_resource,
-                                  &meta_wayland_xdg_popup_interface,
-                                  surface,
-                                  xdg_popup_destructor);
-
-  surface->xdg_popup = popup_resource;
-  surface->xdg_shell_resource = resource;
-
-  if (!meta_wayland_seat_can_popup (seat, serial))
-    {
-      xdg_popup_send_popup_done (popup_resource);
-      return;
-    }
-
-  surface->popup.parent = parent_surf;
-  surface->popup.parent_destroy_listener.notify = handle_popup_parent_destroyed;
-  wl_resource_add_destroy_listener (parent_surf->resource,
-                                    &surface->popup.parent_destroy_listener);
-
-  window = meta_window_wayland_new (display, surface);
-  meta_window_wayland_place_relative_to (window, parent_surf->window, x, y);
-  window->showing_for_first_time = FALSE;
-
-  meta_wayland_surface_set_window (surface, window);
-
-  meta_window_focus (window, meta_display_get_current_time (display));
-  popup = meta_wayland_pointer_start_popup_grab (&seat->pointer, surface);
-  if (popup == NULL)
-    {
-      destroy_window (surface);
-      return;
-    }
-
-  surface->popup.destroy_listener.notify = handle_popup_destroyed;
-  surface->popup.popup = popup;
-  wl_signal_add (meta_wayland_popup_get_destroy_signal (popup),
-                 &surface->popup.destroy_listener);
-}
-
-static const struct xdg_shell_interface meta_wayland_xdg_shell_interface = {
-  xdg_shell_destroy,
-  xdg_shell_use_unstable_version,
-  xdg_shell_get_xdg_surface,
-  xdg_shell_get_xdg_popup,
-  xdg_shell_pong,
-};
-
-static void
-bind_xdg_shell (struct wl_client *client,
-                void *data,
-                guint32 version,
-                guint32 id)
-{
-  struct wl_resource *resource;
-
-  if (version != META_XDG_SHELL_VERSION)
-    {
-      g_warning ("using xdg-shell without stable version %d\n", META_XDG_SHELL_VERSION);
-      return;
-    }
-
-  resource = wl_resource_create (client, &xdg_shell_interface, version, id);
-  wl_resource_set_implementation (resource, &meta_wayland_xdg_shell_interface, data, NULL);
-}
-
-static void
-wl_shell_surface_destructor (struct wl_resource *resource)
-{
-  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
-
-  meta_wayland_compositor_destroy_frame_callbacks (surface->compositor,
-                                                   surface);
-  surface->wl_shell_surface = NULL;
-}
-
-static void
-wl_shell_surface_pong (struct wl_client *client,
-                       struct wl_resource *resource,
-                       uint32_t serial)
-{
-  MetaDisplay *display = meta_get_display ();
-
-  meta_display_pong_for_serial (display, serial);
-}
-
-static void
-wl_shell_surface_move (struct wl_client *client,
-                       struct wl_resource *resource,
-                       struct wl_resource *seat_resource,
-                       uint32_t serial)
-{
-  MetaWaylandSeat *seat = wl_resource_get_user_data (seat_resource);
-  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
-  gfloat x, y;
-
-  if (!meta_wayland_seat_get_grab_info (seat, surface, serial, TRUE, &x, &y))
-    return;
-
-  begin_grab_op_on_surface (surface, seat, META_GRAB_OP_MOVING, x, y);
-}
-
-static MetaGrabOp
-grab_op_for_wl_shell_surface_resize_edge (int edge)
-{
-  MetaGrabOp op = META_GRAB_OP_WINDOW_BASE;
-
-  if (edge & WL_SHELL_SURFACE_RESIZE_TOP)
-    op |= META_GRAB_OP_WINDOW_DIR_NORTH;
-  if (edge & WL_SHELL_SURFACE_RESIZE_BOTTOM)
-    op |= META_GRAB_OP_WINDOW_DIR_SOUTH;
-  if (edge & WL_SHELL_SURFACE_RESIZE_LEFT)
-    op |= META_GRAB_OP_WINDOW_DIR_WEST;
-  if (edge & WL_SHELL_SURFACE_RESIZE_RIGHT)
-    op |= META_GRAB_OP_WINDOW_DIR_EAST;
-
-  if (op == META_GRAB_OP_WINDOW_BASE)
-    {
-      g_warning ("invalid edge: %d", edge);
-      return META_GRAB_OP_NONE;
-    }
-
-  return op;
-}
-
-static void
-wl_shell_surface_resize (struct wl_client *client,
-                         struct wl_resource *resource,
-                         struct wl_resource *seat_resource,
-                         uint32_t serial,
-                         uint32_t edges)
-{
-  MetaWaylandSeat *seat = wl_resource_get_user_data (seat_resource);
-  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
-  gfloat x, y;
-
-  if (!meta_wayland_seat_get_grab_info (seat, surface, serial, TRUE, &x, &y))
-    return;
-
-  begin_grab_op_on_surface (surface, seat, grab_op_for_wl_shell_surface_resize_edge (edges), x, y);
-}
-
-typedef enum {
-  SURFACE_STATE_TOPLEVEL,
-  SURFACE_STATE_FULLSCREEN,
-  SURFACE_STATE_MAXIMIZED,
-} SurfaceState;
-
-static void
-wl_shell_surface_set_state (MetaWaylandSurface *surface,
-                            SurfaceState        state)
-{
-  if (state == SURFACE_STATE_FULLSCREEN)
-    meta_window_make_fullscreen (surface->window);
-  else
-    meta_window_unmake_fullscreen (surface->window);
-
-  if (state == SURFACE_STATE_MAXIMIZED)
-    meta_window_maximize (surface->window, META_MAXIMIZE_BOTH);
-  else
-    meta_window_unmaximize (surface->window, META_MAXIMIZE_BOTH);
-}
-
-static void
-wl_shell_surface_set_toplevel (struct wl_client *client,
-                               struct wl_resource *resource)
-{
-  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
-
-  wl_shell_surface_set_state (surface, SURFACE_STATE_TOPLEVEL);
-}
-
-static void
-wl_shell_surface_set_transient (struct wl_client *client,
-                                struct wl_resource *resource,
-                                struct wl_resource *parent_resource,
-                                int32_t x,
-                                int32_t y,
-                                uint32_t flags)
-{
-  MetaWaylandSurface *parent_surf = wl_resource_get_user_data (parent_resource);
-  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
-
-  wl_shell_surface_set_state (surface, SURFACE_STATE_TOPLEVEL);
-
-  meta_window_set_transient_for (surface->window, parent_surf->window);
-  meta_window_wayland_place_relative_to (surface->window,
-                                         parent_surf->window,
-                                         x, y);
-}
-
-static void
-wl_shell_surface_set_fullscreen (struct wl_client *client,
-                                 struct wl_resource *resource,
-                                 uint32_t method,
-                                 uint32_t framerate,
-                                 struct wl_resource *output)
-{
-  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
-
-  wl_shell_surface_set_state (surface, SURFACE_STATE_FULLSCREEN);
-}
-
-static void
-handle_wl_shell_popup_parent_destroyed (struct wl_listener *listener,
-                                        void *data)
-{
-  MetaWaylandSurface *surface =
-    wl_container_of (listener, surface, popup.parent_destroy_listener);
-
-  wl_list_remove (&surface->popup.parent_destroy_listener.link);
-  surface->popup.parent = NULL;
-}
-
-static void
-wl_shell_surface_set_popup (struct wl_client *client,
-                            struct wl_resource *resource,
-                            struct wl_resource *seat_resource,
-                            uint32_t serial,
-                            struct wl_resource *parent_resource,
-                            int32_t x,
-                            int32_t y,
-                            uint32_t flags)
-{
-  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
-  MetaWaylandSurface *parent_surf = wl_resource_get_user_data (parent_resource);
-  MetaWaylandSeat *seat = wl_resource_get_user_data (seat_resource);
-
-  wl_shell_surface_set_state (surface, SURFACE_STATE_TOPLEVEL);
-
-  if (!meta_wayland_seat_can_popup (seat, serial))
-    {
-      wl_shell_surface_send_popup_done (resource);
-      return;
-    }
-
-  meta_window_set_transient_for (surface->window, parent_surf->window);
-  meta_window_wayland_place_relative_to (surface->window,
-                                         parent_surf->window,
-                                         x, y);
-
-  if (!surface->popup.parent)
-    {
-      surface->popup.parent = parent_surf;
-      surface->popup.parent_destroy_listener.notify =
-        handle_wl_shell_popup_parent_destroyed;
-      wl_resource_add_destroy_listener (parent_surf->resource,
-                                        &surface->popup.parent_destroy_listener);
-    }
-
-  meta_wayland_pointer_start_popup_grab (&seat->pointer, surface);
-}
-
-static void
-wl_shell_surface_set_maximized (struct wl_client *client,
-                                struct wl_resource *resource,
-                                struct wl_resource *output)
-{
-  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
-
-  wl_shell_surface_set_state (surface, SURFACE_STATE_MAXIMIZED);
-}
-
-static void
-wl_shell_surface_set_title (struct wl_client *client,
-                            struct wl_resource *resource,
-                            const char *title)
-{
-  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
-
-  meta_window_set_title (surface->window, title);
-}
-
-static void
-wl_shell_surface_set_class (struct wl_client *client,
-                            struct wl_resource *resource,
-                            const char *class_)
-{
-  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
-
-  meta_window_set_wm_class (surface->window, class_, class_);
-}
-
-static const struct wl_shell_surface_interface meta_wayland_wl_shell_surface_interface = {
-  wl_shell_surface_pong,
-  wl_shell_surface_move,
-  wl_shell_surface_resize,
-  wl_shell_surface_set_toplevel,
-  wl_shell_surface_set_transient,
-  wl_shell_surface_set_fullscreen,
-  wl_shell_surface_set_popup,
-  wl_shell_surface_set_maximized,
-  wl_shell_surface_set_title,
-  wl_shell_surface_set_class,
-};
-
-static void
-wl_shell_get_shell_surface (struct wl_client *client,
-                            struct wl_resource *resource,
-                            uint32_t id,
-                            struct wl_resource *surface_resource)
-{
-  MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
-  MetaWindow *window;
-
-  if (surface->wl_shell_surface != NULL)
-    {
-      wl_resource_post_error (surface_resource,
-                              WL_DISPLAY_ERROR_INVALID_OBJECT,
-                              "wl_shell::get_shell_surface already requested");
-      return;
-    }
-
-  if (!meta_wayland_surface_assign_role (surface,
-                                         META_TYPE_WAYLAND_SURFACE_ROLE_WL_SHELL_SURFACE))
-    {
-      wl_resource_post_error (resource, WL_SHELL_ERROR_ROLE,
-                              "wl_surface@%d already has a different role",
-                              wl_resource_get_id (surface->resource));
-      return;
-    }
-
-  surface->wl_shell_surface = wl_resource_create (client, &wl_shell_surface_interface, wl_resource_get_version (resource), id);
-  wl_resource_set_implementation (surface->wl_shell_surface, &meta_wayland_wl_shell_surface_interface, surface, wl_shell_surface_destructor);
-
-  window = meta_window_wayland_new (meta_get_display (), surface);
-  meta_wayland_surface_set_window (surface, window);
-}
-
-static const struct wl_shell_interface meta_wayland_wl_shell_interface = {
-  wl_shell_get_shell_surface,
-};
-
-static void
-bind_wl_shell (struct wl_client *client,
-               void             *data,
-               uint32_t          version,
-               uint32_t          id)
-{
-  struct wl_resource *resource;
-
-  resource = wl_resource_create (client, &wl_shell_interface, version, id);
-  wl_resource_set_implementation (resource, &meta_wayland_wl_shell_interface, data, NULL);
 }
 
 static void
@@ -2452,17 +1668,8 @@ bind_subcompositor (struct wl_client *client,
 void
 meta_wayland_shell_init (MetaWaylandCompositor *compositor)
 {
-  if (wl_global_create (compositor->wayland_display,
-                        &xdg_shell_interface,
-                        META_XDG_SHELL_VERSION,
-                        compositor, bind_xdg_shell) == NULL)
-    g_error ("Failed to register a global xdg-shell object");
-
-  if (wl_global_create (compositor->wayland_display,
-                        &wl_shell_interface,
-                        META_WL_SHELL_VERSION,
-                        compositor, bind_wl_shell) == NULL)
-    g_error ("Failed to register a global wl-shell object");
+  meta_wayland_xdg_shell_init (compositor);
+  meta_wayland_wl_shell_init (compositor);
 
   if (wl_global_create (compositor->wayland_display,
                         &gtk_shell1_interface,
@@ -2477,95 +1684,46 @@ meta_wayland_shell_init (MetaWaylandCompositor *compositor)
     g_error ("Failed to register a global wl-subcompositor object");
 }
 
-static void
-fill_states (struct wl_array *states, MetaWindow *window)
-{
-  uint32_t *s;
-
-  if (META_WINDOW_MAXIMIZED (window))
-    {
-      s = wl_array_add (states, sizeof *s);
-      *s = XDG_SURFACE_STATE_MAXIMIZED;
-    }
-  if (meta_window_is_fullscreen (window))
-    {
-      s = wl_array_add (states, sizeof *s);
-      *s = XDG_SURFACE_STATE_FULLSCREEN;
-    }
-  if (meta_grab_op_is_resizing (window->display->grab_op))
-    {
-      s = wl_array_add (states, sizeof *s);
-      *s = XDG_SURFACE_STATE_RESIZING;
-    }
-  if (meta_window_appears_focused (window))
-    {
-      s = wl_array_add (states, sizeof *s);
-      *s = XDG_SURFACE_STATE_ACTIVATED;
-    }
-}
-
 void
 meta_wayland_surface_configure_notify (MetaWaylandSurface *surface,
                                        int                 new_width,
                                        int                 new_height,
                                        MetaWaylandSerial  *sent_serial)
 {
-  if (surface->xdg_surface)
-    {
-      struct wl_client *client = wl_resource_get_client (surface->xdg_surface);
-      struct wl_display *display = wl_client_get_display (client);
-      uint32_t serial = wl_display_next_serial (display);
-      struct wl_array states;
+  MetaWaylandSurfaceRoleShellSurface *shell_surface_role =
+    META_WAYLAND_SURFACE_ROLE_SHELL_SURFACE (surface->role);
 
-      wl_array_init (&states);
-      fill_states (&states, surface->window);
-
-      xdg_surface_send_configure (surface->xdg_surface, new_width, new_height, &states, serial);
-
-      wl_array_release (&states);
-
-      if (sent_serial)
-        {
-          sent_serial->set = TRUE;
-          sent_serial->value = serial;
-        }
-    }
-  else if (surface->xdg_popup)
-    {
-      /* This can happen if the popup window loses or receives focus.
-       * Just ignore it. */
-    }
-  else if (surface->wl_shell_surface)
-    wl_shell_surface_send_configure (surface->wl_shell_surface,
-                                     0, new_width, new_height);
-  else
-    g_assert_not_reached ();
+  meta_wayland_surface_role_shell_surface_configure (shell_surface_role,
+                                                     new_width, new_height,
+                                                     sent_serial);
 }
 
 void
 meta_wayland_surface_ping (MetaWaylandSurface *surface,
                            guint32             serial)
 {
-  if (surface->xdg_shell_resource)
-    xdg_shell_send_ping (surface->xdg_shell_resource, serial);
-  else if (surface->wl_shell_surface)
-    wl_shell_surface_send_ping (surface->wl_shell_surface, serial);
+  MetaWaylandSurfaceRoleShellSurface *shell_surface_role =
+    META_WAYLAND_SURFACE_ROLE_SHELL_SURFACE (surface->role);
+
+  meta_wayland_surface_role_shell_surface_ping (shell_surface_role, serial);
 }
 
 void
 meta_wayland_surface_delete (MetaWaylandSurface *surface)
 {
-  if (surface->xdg_surface)
-    xdg_surface_send_close (surface->xdg_surface);
+  MetaWaylandSurfaceRoleShellSurface *shell_surface_role =
+    META_WAYLAND_SURFACE_ROLE_SHELL_SURFACE (surface->role);
+
+  meta_wayland_surface_role_shell_surface_close (shell_surface_role);
 }
 
 void
 meta_wayland_surface_popup_done (MetaWaylandSurface *surface)
 {
-  if (surface->xdg_popup)
-    xdg_popup_send_popup_done (surface->xdg_popup);
-  else if (surface->wl_shell_surface)
-    wl_shell_surface_send_popup_done (surface->wl_shell_surface);
+  MetaWaylandSurfaceRoleShellSurface *shell_surface_role =
+    META_WAYLAND_SURFACE_ROLE_SHELL_SURFACE (surface->role);
+
+  meta_wayland_surface_role_shell_surface_popup_done (shell_surface_role);
 }
 
 void
@@ -2738,6 +1896,49 @@ meta_wayland_surface_role_get_surface (MetaWaylandSurfaceRole *role)
   return priv->surface;
 }
 
+static void
+meta_wayland_surface_role_shell_surface_configure (MetaWaylandSurfaceRoleShellSurface *shell_surface_role,
+                                                   int                                 new_width,
+                                                   int                                 new_height,
+                                                   MetaWaylandSerial                  *sent_serial)
+{
+  MetaWaylandSurfaceRoleShellSurfaceClass *shell_surface_role_class =
+    META_WAYLAND_SURFACE_ROLE_SHELL_SURFACE_GET_CLASS (shell_surface_role);
+
+  shell_surface_role_class->configure (shell_surface_role,
+                                       new_width,
+                                       new_height,
+                                       sent_serial);
+}
+
+static void
+meta_wayland_surface_role_shell_surface_ping (MetaWaylandSurfaceRoleShellSurface *shell_surface_role,
+                                              uint32_t                            serial)
+{
+  MetaWaylandSurfaceRoleShellSurfaceClass *shell_surface_role_class =
+    META_WAYLAND_SURFACE_ROLE_SHELL_SURFACE_GET_CLASS (shell_surface_role);
+
+  shell_surface_role_class->ping (shell_surface_role, serial);
+}
+
+static void
+meta_wayland_surface_role_shell_surface_close (MetaWaylandSurfaceRoleShellSurface *shell_surface_role)
+{
+  MetaWaylandSurfaceRoleShellSurfaceClass *shell_surface_role_class =
+    META_WAYLAND_SURFACE_ROLE_SHELL_SURFACE_GET_CLASS (shell_surface_role);
+
+  shell_surface_role_class->close (shell_surface_role);
+}
+
+static void
+meta_wayland_surface_role_shell_surface_popup_done (MetaWaylandSurfaceRoleShellSurface *shell_surface_role)
+{
+  MetaWaylandSurfaceRoleShellSurfaceClass *shell_surface_role_class =
+    META_WAYLAND_SURFACE_ROLE_SHELL_SURFACE_GET_CLASS (shell_surface_role);
+
+  shell_surface_role_class->popup_done (shell_surface_role);
+}
+
 void
 meta_wayland_surface_queue_pending_frame_callbacks (MetaWaylandSurface *surface)
 {
@@ -2769,6 +1970,42 @@ actor_surface_assigned (MetaWaylandSurfaceRole *surface_role)
 }
 
 static void
+actor_surface_commit (MetaWaylandSurfaceRole  *surface_role,
+                      MetaWaylandPendingState *pending)
+{
+  MetaWaylandSurface *surface =
+    meta_wayland_surface_role_get_surface (surface_role);
+
+  queue_surface_actor_frame_callbacks (surface, pending);
+}
+
+static void
+meta_wayland_surface_role_actor_surface_init (MetaWaylandSurfaceRoleActorSurface *role)
+{
+}
+
+static void
+meta_wayland_surface_role_actor_surface_class_init (MetaWaylandSurfaceRoleActorSurfaceClass *klass)
+{
+  MetaWaylandSurfaceRoleClass *surface_role_class =
+    META_WAYLAND_SURFACE_ROLE_CLASS (klass);
+
+  surface_role_class->assigned = actor_surface_assigned;
+  surface_role_class->commit = actor_surface_commit;
+  surface_role_class->is_on_output = actor_surface_is_on_output;
+}
+
+static void
+meta_wayland_surface_role_shell_surface_init (MetaWaylandSurfaceRoleShellSurface *role)
+{
+}
+
+static void
+meta_wayland_surface_role_shell_surface_class_init (MetaWaylandSurfaceRoleShellSurfaceClass *klass)
+{
+}
+
+static void
 meta_wayland_surface_role_dnd_init (MetaWaylandSurfaceRoleDND *role)
 {
 }
@@ -2784,54 +2021,6 @@ meta_wayland_surface_role_dnd_class_init (MetaWaylandSurfaceRoleDNDClass *klass)
 }
 
 static void
-meta_wayland_surface_role_xdg_surface_init (MetaWaylandSurfaceRoleXdgSurface *role)
-{
-}
-
-static void
-meta_wayland_surface_role_xdg_surface_class_init (MetaWaylandSurfaceRoleXdgSurfaceClass *klass)
-{
-  MetaWaylandSurfaceRoleClass *surface_role_class =
-    META_WAYLAND_SURFACE_ROLE_CLASS (klass);
-
-  surface_role_class->assigned = actor_surface_assigned;
-  surface_role_class->commit = toplevel_surface_commit;
-  surface_role_class->is_on_output = actor_surface_is_on_output;
-}
-
-static void
-meta_wayland_surface_role_xdg_popup_init (MetaWaylandSurfaceRoleXdgPopup *role)
-{
-}
-
-static void
-meta_wayland_surface_role_xdg_popup_class_init (MetaWaylandSurfaceRoleXdgPopupClass *klass)
-{
-  MetaWaylandSurfaceRoleClass *surface_role_class =
-    META_WAYLAND_SURFACE_ROLE_CLASS (klass);
-
-  surface_role_class->assigned = actor_surface_assigned;
-  surface_role_class->commit = toplevel_surface_commit;
-  surface_role_class->is_on_output = actor_surface_is_on_output;
-}
-
-static void
-meta_wayland_surface_role_wl_shell_surface_init (MetaWaylandSurfaceRoleWlShellSurface *role)
-{
-}
-
-static void
-meta_wayland_surface_role_wl_shell_surface_class_init (MetaWaylandSurfaceRoleWlShellSurfaceClass *klass)
-{
-  MetaWaylandSurfaceRoleClass *surface_role_class =
-    META_WAYLAND_SURFACE_ROLE_CLASS (klass);
-
-  surface_role_class->assigned = actor_surface_assigned;
-  surface_role_class->commit = toplevel_surface_commit;
-  surface_role_class->is_on_output = actor_surface_is_on_output;
-}
-
-static void
 meta_wayland_surface_role_subsurface_init (MetaWaylandSurfaceRoleSubsurface *role)
 {
 }
@@ -2842,9 +2031,7 @@ meta_wayland_surface_role_subsurface_class_init (MetaWaylandSurfaceRoleSubsurfac
   MetaWaylandSurfaceRoleClass *surface_role_class =
     META_WAYLAND_SURFACE_ROLE_CLASS (klass);
 
-  surface_role_class->assigned = actor_surface_assigned;
   surface_role_class->commit = subsurface_surface_commit;
-  surface_role_class->is_on_output = actor_surface_is_on_output;
 }
 
 cairo_region_t *
