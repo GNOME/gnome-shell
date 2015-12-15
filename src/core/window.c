@@ -7388,10 +7388,31 @@ meta_window_set_gtk_dbus_properties (MetaWindow *window,
   g_object_thaw_notify (G_OBJECT (window));
 }
 
+static gboolean
+check_transient_for_loop (MetaWindow *window,
+                          MetaWindow *parent)
+{
+  while (parent)
+    {
+      if (parent->transient_for == window)
+          return TRUE;
+      parent = parent->transient_for;
+    }
+
+  return FALSE;
+}
+
 void
 meta_window_set_transient_for (MetaWindow *window,
                                MetaWindow *parent)
 {
+  if (check_transient_for_loop (window, parent))
+    {
+      meta_warning ("Setting %s transient for %s would create a loop.\n",
+                    window->desc, parent->desc);
+      return;
+    }
+
   if (meta_window_appears_focused (window) && window->transient_for != NULL)
     meta_window_propagate_focus_appearance (window, FALSE);
 
