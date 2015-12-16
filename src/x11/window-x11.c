@@ -542,13 +542,10 @@ meta_window_x11_manage (MetaWindow *window)
    * For normal windows, do a full ConfigureRequest based on the
    * window hints, as that's what the ICCCM says to do.
    */
+  priv->client_rect = window->rect;
+  window->buffer_rect = window->rect;
 
-  if (window->override_redirect)
-    {
-      priv->client_rect = window->rect;
-      window->buffer_rect = window->rect;
-    }
-  else
+  if (!window->override_redirect)
     {
       MetaRectangle rect;
       MetaMoveResizeFlags flags;
