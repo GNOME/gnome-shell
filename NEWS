@@ -1,3 +1,17 @@
+3.19.3
+======
+* Fix thumbnail scaling in window switcher on HiDPI [Florian; #758676]
+* Update animated backgrounds on timezone changes [Florian; #758939]
+* loginDialog: Update user list on user changes [Michael; #758568]
+* Fix touch interaction on wayland [Carlos; #756748]
+
+Contributors:
+  Michael Catanzaro, Carlos Garnacho, Kalev Lember, Florian Müllner
+
+Translations:
+  Daniel Korostil [uk], Muhammet Kara [tr], Dušan Kazik [sk],
+  Baurzhan Muftakhidinov [kk], Marek Černocký [cs]
+
 3.19.2
 ======
 * Make gnome-shell DBus activatable [Ray; #741666]
