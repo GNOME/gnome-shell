@@ -419,6 +419,11 @@
     <xi:include href="xml/api-index-1.24.xml"><xi:fallback /></xi:include>
   </index>
 
+  <index role="1.26">
+    <title>Index of new symbols in 1.26</title>
+    <xi:include href="xml/api-index-1.26.xml"><xi:fallback /></xi:include>
+  </index>
+
   <appendix id="license">
     <title>License</title>
 
