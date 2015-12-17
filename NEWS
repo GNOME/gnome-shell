@@ -1,3 +1,20 @@
+3.19.3
+======
+* Correct refresh rate units on KMS/Wayland [Daniel; #758653]
+* Fix crash when initial cursor position is not on a monitor [Marek; #756698]
+* Fix crash when more CRTs are enabled than outputs connected [Rui; #751638]
+* Fix touch pointer emulation on wayland [Carlos; #756754]
+* Allow minimizing windows that don't advertise supporting it [Jasper; #758186]
+* Force 2-finger scroll by default if available [Bastien; #759304]
+* Fix crash during XWayland initialization [Marek; #751845]
+* Ensure to send a ConfigureNotify to just mapped windows [Rui; #759492]
+* Misc. bug fixes and cleanups [Carlos, Jonas, Lionel; #758239, #758633,
+  #755503, #759374]
+
+Contributors:
+  Jonas Ådahl, Marek Chalupa, Carlos Garnacho, Lionel Landwerlin, Rui Matos,
+  Bastien Nocera, Daniel Stone, Jasper St. Pierre
+
 3.19.2
 ======
 * Fix crash on monitor unplug [Rui; #756796]
