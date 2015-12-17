@@ -1,3 +1,59 @@
+Clutter 1.25.2                                                       2015-12-17
+===============================================================================
+
+  • List of changes since Clutter 1.24
+
+    - Set event code on button and key events in the evdev input backend
+    This allows users of the evdev input backend to retrieve the event
+    code without doing ad hoc calculations based on event-specific fields.
+
+    - Take scaling factor into account on Wayland with GDK
+    This brings the Wayland support inside the GDK backend on par to the X11
+    side.
+
+    - Decouple selectability from editability in ClutterText
+    It's possible to create selectable ClutterText actors without enabling
+    editability; this may cause unexpected cursors to appear in reactive
+    label-like actors using non-editable ClutterText, so feedback from users
+    is appreciated.
+
+    - Allow overriding the Cogl driver used by Clutter
+    On systems with multiple OpenGL and OpenGL ES implementations available,
+    it should be possible to explicitly set the Cogl driver (OpenGL 3.2 core
+    profile context; OpenGL legacy context; OpenGL ES 2.0 context) used by
+    Clutter when creating its drawing context. It's also possible to define
+    a list of drivers to try sequentially until one succeeds.
+
+    - Rework the windowing system backend selection
+    The windowing system backend initialization has been reworked to allow
+    setting the default windowing system backend using the configuration
+    file under $XDG_CONFIG_DIRS/clutter-1.0/settings.ini. The selection of
+    the backend also supports the ability to specify a list of backends to
+    try sequentially until one succeeds, for systems with multiple windowing
+    systems available.
+
+    - Documentation fixes
+
+    - Translation updates
+    Portuguese, Slovenian
+
+  • List of bugs fixed since Clutter 1.24
+
+    #758238 - [evdev] Add evdev-specific API to get event codes from
+              ClutterEvents
+    #755245 - only shows a 4th of the screen under wayland
+    #757470 - Allow selectability without editability
+    #752752 - Patches needed for relative pointer and pointer confinement
+              in mutter
+    #759074 - Port cairo test to ClutterCanvas
+    #759191 - should use pkg-config for GL
+    #742678 - gl: Prefer gl3 over the gl driver
+
+Many thanks to:
+
+  Carlos Garnacho, Lionel Landwerlin, Jonas Ådahl, Pedro Albuquerque,
+  Matej Urbančič
+
 Clutter 1.24.2                                                       2015-10-12
 ===============================================================================
 
