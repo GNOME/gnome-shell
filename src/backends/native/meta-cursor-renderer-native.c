@@ -274,12 +274,41 @@ has_valid_cursor_sprite_gbm_bo (MetaCursorSprite *cursor_sprite)
 }
 
 static gboolean
+cursor_over_transformed_crtc (MetaCursorRenderer *renderer,
+                              MetaCursorSprite   *cursor_sprite)
+{
+  MetaMonitorManager *monitors;
+  MetaCRTC *crtcs;
+  unsigned int i, n_crtcs;
+  MetaRectangle rect;
+
+  monitors = meta_monitor_manager_get ();
+  meta_monitor_manager_get_resources (monitors, NULL, NULL,
+                                      &crtcs, &n_crtcs, NULL, NULL);
+  rect = meta_cursor_renderer_calculate_rect (renderer, cursor_sprite);
+
+  for (i = 0; i < n_crtcs; i++)
+    {
+      if (!meta_rectangle_overlap (&rect, &crtcs[i].rect))
+        continue;
+
+      if (crtcs[i].transform != META_MONITOR_TRANSFORM_NORMAL)
+        return TRUE;
+    }
+
+  return FALSE;
+}
+
+static gboolean
 should_have_hw_cursor (MetaCursorRenderer *renderer,
                        MetaCursorSprite   *cursor_sprite)
 {
   CoglTexture *texture;
 
   if (!cursor_sprite)
+    return FALSE;
+
+  if (cursor_over_transformed_crtc (renderer, cursor_sprite))
     return FALSE;
 
   texture = meta_cursor_sprite_get_cogl_texture (cursor_sprite);

@@ -42,6 +42,8 @@
 
 #include <gudev/gudev.h>
 
+#define ALL_TRANSFORMS (META_MONITOR_TRANSFORM_FLIPPED_270 + 1)
+
 typedef struct {
   drmModeConnector *connector;
 
@@ -66,6 +68,9 @@ typedef struct {
   uint32_t underscan_prop_id;
   uint32_t underscan_hborder_prop_id;
   uint32_t underscan_vborder_prop_id;
+  uint32_t primary_plane_id;
+  uint32_t rotation_prop_id;
+  uint32_t rotation_map[ALL_TRANSFORMS];
 } MetaCRTCKms;
 
 struct _MetaMonitorManagerKms
@@ -429,6 +434,135 @@ get_output_scale (MetaMonitorManager *manager,
     return compute_scale (output);
 }
 
+static int
+find_property_index (MetaMonitorManager         *manager,
+                     drmModeObjectPropertiesPtr  props,
+                     const gchar                *prop_name,
+                     drmModePropertyPtr         *found)
+{
+  MetaMonitorManagerKms *manager_kms = META_MONITOR_MANAGER_KMS (manager);
+  unsigned int i;
+
+  for (i = 0; i < props->count_props; i++)
+    {
+      drmModePropertyPtr prop;
+
+      prop = drmModeGetProperty (manager_kms->fd, props->props[i]);
+      if (!prop)
+        continue;
+
+      if (strcmp (prop->name, prop_name) == 0)
+        {
+          *found = prop;
+          return i;
+        }
+
+      drmModeFreeProperty (prop);
+    }
+
+  return -1;
+}
+
+static void
+parse_transforms (MetaMonitorManager *manager,
+                  drmModePropertyPtr  prop,
+                  MetaCRTC           *crtc)
+{
+  MetaCRTCKms *crtc_kms = crtc->driver_private;
+  int i;
+
+  for (i = 0; i < prop->count_enums; i++)
+    {
+      int cur = -1;
+
+      if (strcmp (prop->enums[i].name, "rotate-0") == 0)
+        cur = META_MONITOR_TRANSFORM_NORMAL;
+      else if (strcmp (prop->enums[i].name, "rotate-90") == 0)
+        cur = META_MONITOR_TRANSFORM_90;
+      else if (strcmp (prop->enums[i].name, "rotate-180") == 0)
+        cur = META_MONITOR_TRANSFORM_180;
+      else if (strcmp (prop->enums[i].name, "rotate-270") == 0)
+        cur = META_MONITOR_TRANSFORM_270;
+
+      if (cur != -1)
+        {
+          crtc->all_transforms |= 1 << cur;
+          crtc_kms->rotation_map[cur] = 1 << prop->enums[i].value;
+        }
+    }
+}
+
+static gboolean
+is_primary_plane (MetaMonitorManager         *manager,
+                  drmModeObjectPropertiesPtr  props)
+{
+  drmModePropertyPtr prop;
+  int idx;
+
+  idx = find_property_index (manager, props, "type", &prop);
+  if (idx < 0)
+    return FALSE;
+
+  drmModeFreeProperty (prop);
+  return props->prop_values[idx] == DRM_PLANE_TYPE_PRIMARY;
+}
+
+static void
+init_crtc_rotations (MetaMonitorManager *manager,
+                     MetaCRTC           *crtc,
+                     unsigned int        idx)
+{
+  MetaMonitorManagerKms *manager_kms = META_MONITOR_MANAGER_KMS (manager);
+  drmModeObjectPropertiesPtr props;
+  drmModePlaneRes *planes;
+  drmModePlane *drm_plane;
+  MetaCRTCKms *crtc_kms;
+  unsigned int i;
+
+  crtc_kms = crtc->driver_private;
+
+  planes = drmModeGetPlaneResources(manager_kms->fd);
+  if (planes == NULL)
+    return;
+
+  for (i = 0; i < planes->count_planes; i++)
+    {
+      drmModePropertyPtr prop;
+
+      drm_plane = drmModeGetPlane (manager_kms->fd, planes->planes[i]);
+
+      if (!drm_plane)
+        continue;
+
+      if ((drm_plane->possible_crtcs & (1 << idx)))
+        {
+          props = drmModeObjectGetProperties (manager_kms->fd,
+                                              drm_plane->plane_id,
+                                              DRM_MODE_OBJECT_PLANE);
+
+          if (props && is_primary_plane (manager, props))
+            {
+              int rotation_idx;
+
+              crtc_kms->primary_plane_id = drm_plane->plane_id;
+              rotation_idx = find_property_index (manager, props, "rotation", &prop);
+
+              if (rotation_idx >= 0)
+                {
+                  crtc_kms->rotation_prop_id = props->props[rotation_idx];
+                  parse_transforms (manager, prop, crtc);
+                  drmModeFreeProperty (prop);
+                }
+            }
+
+          if (props)
+            drmModeFreeObjectProperties (props);
+        }
+
+      drmModeFreePlane (drm_plane);
+    }
+}
+
 static void
 meta_monitor_manager_kms_read_current (MetaMonitorManager *manager)
 {
@@ -556,6 +690,7 @@ meta_monitor_manager_kms_read_current (MetaMonitorManager *manager)
       meta_crtc->driver_private = g_new0 (MetaCRTCKms, 1);
       meta_crtc->driver_notify = (GDestroyNotify) meta_crtc_destroy_notify;
       find_crtc_properties (manager_kms, meta_crtc);
+      init_crtc_rotations (manager, meta_crtc, i);
 
       drmModeFreeCrtc (crtc);
     }
@@ -938,6 +1073,7 @@ meta_monitor_manager_kms_apply_configuration (MetaMonitorManager *manager,
     {
       MetaCRTCInfo *crtc_info = crtcs[i];
       MetaCRTC *crtc = crtc_info->crtc;
+      MetaCRTCKms *crtc_kms = crtc->driver_private;
       CoglKmsCrtc *cogl_crtc;
 
       crtc->is_dirty = TRUE;
@@ -1010,6 +1146,13 @@ meta_monitor_manager_kms_apply_configuration (MetaMonitorManager *manager,
           crtc->current_mode = mode;
           crtc->transform = crtc_info->transform;
         }
+
+      if (crtc->all_transforms & (1 << crtc->transform))
+        drmModeObjectSetProperty (manager_kms->fd,
+                                  crtc_kms->primary_plane_id,
+                                  DRM_MODE_OBJECT_PLANE,
+                                  crtc_kms->rotation_prop_id,
+                                  crtc_kms->rotation_map[crtc->transform]);
     }
 
   /* Disable CRTCs not mentioned in the list (they have is_dirty == FALSE,
@@ -1161,6 +1304,8 @@ meta_monitor_manager_kms_init (MetaMonitorManagerKms *manager_kms)
   cogl_renderer = cogl_display_get_renderer (cogl_display);
 
   manager_kms->fd = cogl_kms_renderer_get_kms_fd (cogl_renderer);
+
+  drmSetClientCap (manager_kms->fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1);
 
   const char *subsystems[2] = { "drm", NULL };
   manager_kms->udev = g_udev_client_new (subsystems);
