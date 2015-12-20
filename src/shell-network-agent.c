@@ -315,8 +315,6 @@ get_secrets_keyring_cb (GObject            *source,
 
               secrets_found = TRUE;
 
-              g_hash_table_unref (attributes);
-              secret_value_unref (secret);
               break;
             }
         }
