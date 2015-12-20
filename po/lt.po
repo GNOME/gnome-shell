@@ -1,19 +1,18 @@
-# translation of gnome-session.HEAD.po to Lithuanian
-# Lithuanian translation of gnome-session
-# Copyright (C) 2000-2006, 2007, 2008 Free Software Foundation, Inc.
-# Gediminas Paulauskas <menesis@delfi.lt>, 2000-2003.
-# Žygimantas Beručka <zygis@gnome.org>, 2003-2007, 2010.
-# Justina Klingaitė <justina.klingaite@gmail.com>, 2005.
-# Gintautas Miliauskas <gintas@akl.lt>, 2006, 2007, 2008.
-# Aurimas Černius <aurisc4@gmail.com>, 2013, 2015.
+# Lithuanian translation for gnome-shell.
+# Copyright © 2010-2012 Free Software Foundation, Inc.
+# This file is distributed under the same license as the gnome-shell package.
+# Žygimantas Beručka <zygis@gnome.org>, 2010, 2011, 2012.
+# Algimantas Margevičius <gymka@mail.ru>, 2011.
+# Mantas Kriaučiūnas <mantas@akl.lt>, 2012, 2013.
+# Aurimas Černius <aurisc4@gmail.com>, 2013, 2014, 2015.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gnome-session.HEAD\n"
+"Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
-"session&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-12-17 10:07+0000\n"
-"PO-Revision-Date: 2015-12-17 23:46+0200\n"
+"shell&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2015-12-17 10:20+0000\n"
+"PO-Revision-Date: 2015-12-18 00:04+0200\n"
 "Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lietuvių <gnome-lt@lists.akl.lt>\n"
 "Language: lt\n"
@@ -23,381 +22,1936 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n"
 "%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Poedit 1.8.6\n"
+"X-Project-Style: gnome\n"
 
-#: ../data/gnome-custom-session.desktop.in.h:1
-msgid "Custom"
-msgstr "Pasirinktinis"
+#: ../data/50-gnome-shell-system.xml.in.h:1
+msgid "System"
+msgstr "Sistema"
 
-#: ../data/gnome-custom-session.desktop.in.h:2
-msgid "This entry lets you select a saved session"
-msgstr "Šis įvesties laukas leidžia pasirinkti įrašytą seansą"
+#: ../data/50-gnome-shell-system.xml.in.h:2
+msgid "Show the notification list"
+msgstr "Rodyti pranešimų sąrašą"
 
-#: ../data/gnome.desktop.in.h:1 ../data/gnome.session.desktop.in.in.h:1
-msgid "GNOME"
-msgstr "GNOME"
+#: ../data/50-gnome-shell-system.xml.in.h:3
+msgid "Focus the active notification"
+msgstr "Fokusuoti aktyvų pranešimą"
 
-#: ../data/gnome.desktop.in.h:2 ../data/gnome-xorg.desktop.in.h:2
-msgid "This session logs you into GNOME"
-msgstr "Šis seansas prijungia jus prie GNOME"
+#: ../data/50-gnome-shell-system.xml.in.h:4
+msgid "Show the overview"
+msgstr "Rodyti apžvalgą"
 
-#: ../data/gnome-xorg.desktop.in.h:1
-msgid "GNOME on Xorg"
-msgstr "GNOME Xorg aplinkoje"
+#: ../data/50-gnome-shell-system.xml.in.h:5
+msgid "Show all applications"
+msgstr "Rodyti visas programas"
 
-#: ../data/gnome-dummy.session.desktop.in.in.h:1
-msgid "GNOME dummy"
-msgstr "GNOME netikra"
+#: ../data/50-gnome-shell-system.xml.in.h:6
+msgid "Open the application menu"
+msgstr "Atverti programų meniu"
 
-#: ../data/session-selector.ui.h:1
-msgid "Custom Session"
-msgstr "Pasirinktinis seansas"
+#: ../data/gnome-shell-extension-prefs.desktop.in.in.h:1
+msgid "GNOME Shell Extension Preferences"
+msgstr "GNOME Shell plėtinių nustatymai"
 
-#: ../data/session-selector.ui.h:2 ../tools/gnome-session-selector.c:102
-msgid "Please select a custom session to run"
-msgstr "Pasirinkite pasirinktinį seansą paleidimui"
+#: ../data/gnome-shell-extension-prefs.desktop.in.in.h:2
+msgid "Configure GNOME Shell Extensions"
+msgstr "Konfigūruoti GNOME Shell plėtinius"
 
-#: ../data/session-selector.ui.h:3
-msgid "_New Session"
-msgstr "_Naujas seansas"
+#: ../data/org.gnome.Shell.desktop.in.in.h:1
+msgid "GNOME Shell"
+msgstr "GNOME Shell aplinka"
 
-#: ../data/session-selector.ui.h:4
-msgid "_Remove Session"
-msgstr "_Pašalinti seansą"
+#: ../data/org.gnome.Shell.desktop.in.in.h:2
+msgid "Window management and application launching"
+msgstr "Langų valdymas ir programų paleidimas"
 
-#: ../data/session-selector.ui.h:5
-msgid "Rena_me Session"
-msgstr "Per_vadinti seansą"
-
-#: ../data/session-selector.ui.h:6
-msgid "_Continue"
-msgstr "_Tęsti"
-
-#: ../data/session-properties.ui.h:1
-msgid "Additional startup _programs:"
-msgstr "Papildomos paleidžiamos _programos:"
-
-#: ../data/session-properties.ui.h:2
-msgid "Startup Programs"
-msgstr "Pradžioje paleidžiamos programos"
-
-#: ../data/session-properties.ui.h:3
-msgid "_Automatically remember running applications when logging out"
-msgstr "_Atsijungiant, automatiškai atsiminti paleistas programas"
-
-#: ../data/session-properties.ui.h:4
-msgid "_Remember Currently Running Applications"
-msgstr "_Atsiminti dabar veikiančias programas"
-
-#: ../data/session-properties.ui.h:5
-msgid "Options"
-msgstr "Parinktys"
-
-#: ../data/session-properties.ui.h:6
-msgid "Browse…"
-msgstr "Naršyti…"
-
-#: ../data/session-properties.ui.h:7
-msgid "Comm_ent:"
-msgstr "Ko_mentaras:"
-
-#: ../data/session-properties.ui.h:8
-msgid "Co_mmand:"
-msgstr "_Komanda:"
-
-#: ../data/session-properties.ui.h:9
-msgid "_Name:"
-msgstr "_Pavadinimas:"
-
-#: ../gnome-session/gsm-fail-whale-dialog.c:313
-msgid "Oh no!  Something has gone wrong."
-msgstr "O ne! Nutiko kažkas negera."
-
-#: ../gnome-session/gsm-fail-whale-dialog.c:320
-msgid ""
-"A problem has occurred and the system can't recover. Please contact a system "
-"administrator"
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:1
+msgid "Enable internal tools useful for developers and testers from Alt-F2"
 msgstr ""
-"Įvyko klaida ir sistema negali atsistatyti. Susisiekite su sistemos "
-"administratoriumi"
+"Įjungti vidinius, Alt-F2 klavišų pagalba pasiekiamus įrankius, naudingus "
+"programuotojams ir bandytojams"
 
-#: ../gnome-session/gsm-fail-whale-dialog.c:322
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:2
 msgid ""
-"A problem has occurred and the system can't recover. All extensions have "
-"been disabled as a precaution."
+"Allows access to internal debugging and monitoring tools using the Alt-F2 "
+"dialog."
 msgstr ""
-"Įvyko klaida ir sistema negali atsistatyti. Kaip atsargos priemonė visi "
-"plėtiniai buvo išjungti."
+"Suteikia prieigą prie vidinio derinimo ir stebėjimo įrankių, naudojant Alt-"
+"F2 dialogą."
 
-#: ../gnome-session/gsm-fail-whale-dialog.c:324
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:3
+msgid "UUIDs of extensions to enable"
+msgstr "Įjungtų plėtinių UUID"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:4
 msgid ""
-"A problem has occurred and the system can't recover.\n"
-"Please log out and try again."
+"GNOME Shell extensions have a UUID property; this key lists extensions which "
+"should be loaded. Any extension that wants to be loaded needs to be in this "
+"list. You can also manipulate this list with the EnableExtension and "
+"DisableExtension D-Bus methods on org.gnome.Shell."
 msgstr ""
-"Įvyko klaida ir sistema negali atsistatyti.\n"
-"Atsijunkite ir prisijunkite iš naujo."
+"GNOME Shell plėtiniai turi UUID savybę; šiame rakte išvardinti plėtiniai, "
+"kurie turėtų būti įkelti. Bet kuris plėtinys, kuris nori būti įkeltas, turi "
+"būti šiame sąraše. Šį sąrašą taip pat galima keisti naudojant org.gnome."
+"Shell D-Bus metodus EnableExtension ir DisableExtension."
 
-#: ../gnome-session/gsm-fail-whale-dialog.c:339
-msgid "_Log Out"
-msgstr "_Atsijungti"
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:5
+msgid "Disables the validation of extension version compatibility"
+msgstr "Išjungia plėtinio versijos suderinamumo tikrinimą"
 
-#: ../gnome-session/gsm-fail-whale-dialog.c:361 ../gnome-session/main.c:280
-msgid "Enable debugging code"
-msgstr "Įjungti derinimo kodą"
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:6
+msgid ""
+"GNOME Shell will only load extensions that claim to support the current "
+"running version. Enabling this option will disable this check and try to "
+"load all extensions regardless of the versions they claim to support."
+msgstr ""
+"GNOME Shell leidžia įkelti tik šiuo metu veikiančios versijos plėtinius. Šio "
+"parametro įjungimas išjungs šį tikrinimą ir bandys įkelti visus plėtinius "
+"nepaisant jų nurodomas palaikomos versijos."
 
-#: ../gnome-session/gsm-fail-whale-dialog.c:362
-msgid "Allow logout"
-msgstr "Leisti atsijungimą"
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:7
+msgid "List of desktop file IDs for favorite applications"
+msgstr "Mėgstamų programų darbastalio failų ID sąrašas"
 
-#: ../gnome-session/gsm-fail-whale-dialog.c:363
-msgid "Show extension warning"
-msgstr "Rodyti plėtinio įspėjimą"
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:8
+msgid ""
+"The applications corresponding to these identifiers will be displayed in the "
+"favorites area."
+msgstr ""
+"Programos, atitinkančios šiuos identifikatorius, bus rodomos mėgstamų "
+"srityje."
 
-#: ../gnome-session/gsm-manager.c:1256 ../gnome-session/gsm-manager.c:1902
-msgid "Not responding"
-msgstr "Neatsako"
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:9
+msgid "App Picker View"
+msgstr "Programos pasirinkimo vaizdas"
 
-#: ../gnome-session/gsm-util.c:381
-msgid "_Log out"
-msgstr "_Atsijungti"
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:10
+msgid "Index of the currently selected view in the application picker."
+msgstr "Šiuo metu pasirinkto vaizdo programų vaizde indeksas."
 
-#. It'd be really surprising to reach this code: if we're here,
-#. * then the XSMP client already has set several XSMP
-#. * properties. But it could still be that SmProgram is not set.
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:11
+msgid "History for command (Alt-F2) dialog"
+msgstr "Komandų (Alt-F2) dialogo retrospektyva"
+
+#. Translators: looking glass is a debugger and inspector tool, see https://live.gnome.org/GnomeShell/LookingGlass
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:13
+msgid "History for the looking glass dialog"
+msgstr "Didinamojo stiklo dialogo retrospektyva"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:14
+msgid "Always show the 'Log out' menu item in the user menu."
+msgstr "Visada rodyti naudotojo meniu punktą „Atsijungti“."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:15
+msgid ""
+"This key overrides the automatic hiding of the 'Log out' menu item in single-"
+"user, single-session situations."
+msgstr ""
+"Šis raktas perrašo automatinį meniu punkto „Atsijungti“ slėpimą vieno "
+"naudotojo, vieno seanso situacijose."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:16
+msgid ""
+"Whether to remember password for mounting encrypted or remote filesystems"
+msgstr ""
+"Ar atsiminti slaptažodį prijungiant šifruotas ar nutolusias failų sistemas"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:17
+msgid ""
+"The shell will request a password when an encrypted device or a remote "
+"filesystem is mounted. If the password can be saved for future use a "
+"'Remember Password' checkbox will be present. This key sets the default "
+"state of the checkbox."
+msgstr ""
+"Apvalkalas prašys slaptažodžio, kai prijungiamas šifruotas įrenginys ar "
+"nutolusi failų sistema. Jei slaptažodis gali būti įrašytas ateičiai, "
+"žymimasis langelis „Įsiminti slaptažodį“ bus rodomas. Šis raktas nustato "
+"numatytąją žymimojo langelio būseną."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:18
+msgid ""
+"Whether the default Bluetooth adapter had set up devices associated to it"
+msgstr ""
+"Ar numatytasis Bluetooth adapteris buvo nusistatęs su juo susietus įrenginius"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:19
+msgid ""
+"The shell will only show a Bluetooth menu item if a Bluetooth adapter is "
+"powered, or if there were devices set up associated with the default "
+"adapter. This will be reset if the default adapter is ever seen not to have "
+"devices associated to it."
+msgstr ""
+"Apvalkalas rodys Bluetooth meniu elementą tik tuo atveju, jei Bluetooth "
+"adapteris yra pajungtas arba jei buvo nustatyti įrenginiai, susieti su "
+"numatytuoju adapteriu. Tai bus atstatyta, jeigu kada nors bus pastebėta, kad "
+"numatytasis adapteris neturi su juo susietų įrenginių."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:20
+msgid "Show the week date in the calendar"
+msgstr "Rodyti savaitės dienas kalendoriuje"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:21
+msgid "If true, display the ISO week date in the calendar."
+msgstr "Jeigu reikšmė teigiama, kalendoriuje rodyti ISO savaičių datą."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:22
+msgid "Keybinding to open the application menu"
+msgstr "Klavišų susiejimas, kuriuo atveriamas programų meniu"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:23
+msgid "Keybinding to open the application menu."
+msgstr "Klavišų susiejimas, kuriuo atveriamas programų meniu."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:24
+msgid "Keybinding to open the \"Show Applications\" view"
+msgstr "Klavišų susiejimas, kuriuo atveriamas programų paleidimo vaizdas"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:25
+msgid ""
+"Keybinding to open the \"Show Applications\" view of the Activities Overview."
+msgstr ""
+"Klavišų susiejimas, kuriuo atveriamas „Programų paleidimas“ veiklų "
+"apžvalgoje."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:26
+msgid "Keybinding to open the overview"
+msgstr "Klavišų susiejimas, kuriuo atveriama apžvalga"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:27
+msgid "Keybinding to open the Activities Overview."
+msgstr "Klavišų susiejimas, kuriuo atveriama veiklų apžvalga."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:28
+msgid "Keybinding to toggle the visibility of the notification list"
+msgstr "Klavišų susiejimas pranešimų juostos matomumui perjungti"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:29
+msgid "Keybinding to toggle the visibility of the notification list."
+msgstr "Klavišų susiejimas pranešimų juostos matomumui perjungti."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:30
+msgid "Keybinding to focus the active notification"
+msgstr "Klavišų susiejimas, kuriuo fokusuojamas aktyvus pranešimas"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:31
+msgid "Keybinding to focus the active notification."
+msgstr "Klavišų susiejimas, kuriuo fokusuojamas aktyvus pranešimas."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:32
+msgid ""
+"Keybinding that pauses and resumes all running tweens, for debugging purposes"
+msgstr ""
+"Klavišų susiejimas, kuris sustabdo ir pratęsia visus veikiančius elementus, "
+"derinimui"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:33
+msgid "Which keyboard to use"
+msgstr "Kurią klaviatūrą naudoti"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:34
+msgid "The type of keyboard to use."
+msgstr "Naudotinas klaviatūros tipas."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:35
+msgid "Limit switcher to current workspace."
+msgstr "Apriboti perjungėją dabartiniu darbalaukiu"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:36
+msgid ""
+"If true, only applications that have windows on the current workspace are "
+"shown in the switcher. Otherwise, all applications are included."
+msgstr ""
+"Jei teigiama, perjungimo lange bus rodomas tik programos, turinčios langų "
+"dabartiniame darbalaukyje. Priešingu atveju įtraukiamos visos programos."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:37
+msgid "The application icon mode."
+msgstr "Programos piktogramos veiksena."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:38
+msgid ""
+"Configures how the windows are shown in the switcher. Valid possibilities "
+"are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-"
+"only' (shows only the application icon) or 'both'."
+msgstr ""
+"Nustato, kaip langai yra rodomi perjungimo lange. Galimi pasirinkimai yra "
+"„thumbnail-only“ (rodo lango miniatiūrą), „app-icon-only“ (rodo tik "
+"programos piktogramą) arba „both“ (abu)."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:39
+msgid ""
+"If true, only windows from the current workspace are shown in the switcher. "
+"Otherwise, all windows are included."
+msgstr ""
+"Jei teigiama, perjungimo lange rodomi tik langai iš dabartinio darbalaukio. "
+"Priešingu atveju įtraukiami visi langai."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:40
+msgid "Attach modal dialog to the parent window"
+msgstr "Prikabinti modalinį dialogą prie tėvinio lango"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:41
+msgid ""
+"This key overrides the key in org.gnome.mutter when running GNOME Shell."
+msgstr "Šis raktas perrašo org.gnome.mutter raktą, kai vykdoma GNOME Shell."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:42
+msgid "Enable edge tiling when dropping windows on screen edges"
+msgstr "Įjungti kraštų išplėtimą, kai langai numetami ekrano kraštuose"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:43
+msgid "Workspaces are managed dynamically"
+msgstr "Darbalaukiai yra valdomi dinamiškai"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:44
+msgid "Workspaces only on primary monitor"
+msgstr "Darbalaukiai tik pagrindiniame monitoriuje"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:45
+msgid "Delay focus changes in mouse mode until the pointer stops moving"
+msgstr "Atidėti fokuso pakeitimus pelei iki žymiklis nustos judėti"
+
+#: ../data/org.gnome.Shell.PortalHelper.desktop.in.h:1
+msgid "Network Login"
+msgstr "Tinklo prisijungimas"
+
+#: ../js/extensionPrefs/main.js:122
+#, javascript-format
+msgid "There was an error loading the preferences dialog for %s:"
+msgstr "Kilo klaida įkeliant %s nustatymų dialogą:"
+
+#: ../js/extensionPrefs/main.js:154
+msgid "GNOME Shell Extensions"
+msgstr "GNOME Shell plėtiniai"
+
+#: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:145
+#: ../js/ui/components/polkitAgent.js:179 ../js/ui/endSessionDialog.js:452
+#: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
+#: ../js/ui/status/network.js:916
+msgid "Cancel"
+msgstr "Atsisakyti"
+
+#: ../js/gdm/authPrompt.js:169 ../js/gdm/authPrompt.js:215
+#: ../js/gdm/authPrompt.js:447
+msgid "Next"
+msgstr "Kitas"
+
+#: ../js/gdm/authPrompt.js:211 ../js/ui/shellMountOperation.js:403
+#: ../js/ui/unlockDialog.js:59
+msgid "Unlock"
+msgstr "Atrakinti"
+
+#: ../js/gdm/authPrompt.js:213
+msgctxt "button"
+msgid "Sign In"
+msgstr "Prisijungti"
+
+#: ../js/gdm/loginDialog.js:285
+msgid "Choose Session"
+msgstr "Pasirinkite seansą"
+
+#. translators: this message is shown below the user list on the
+#. login screen. It can be activated to reveal an entry for
+#. manually entering the username.
+#: ../js/gdm/loginDialog.js:435
+msgid "Not listed?"
+msgstr "Nėra sąraše?"
+
+#. Translators: this message is shown below the username entry field
+#. to clue the user in on how to login to the local network realm
+#: ../js/gdm/loginDialog.js:854
+#, javascript-format
+msgid "(e.g., user or %s)"
+msgstr "(pvz., naudotojas arba %s)"
+
+#. TTLS and PEAP are actually much more complicated, but this complication
+#. is not visible here since we only care about phase2 authentication
+#. (and don't even care of which one)
+#: ../js/gdm/loginDialog.js:859 ../js/ui/components/networkAgent.js:271
+#: ../js/ui/components/networkAgent.js:289
+msgid "Username: "
+msgstr "Naudotojo vardas: "
+
+#: ../js/gdm/loginDialog.js:1196
+msgid "Login Window"
+msgstr "Prisijungimo langas"
+
+#: ../js/gdm/util.js:341
+msgid "Authentication error"
+msgstr "Tapatybės patvirtinimo klaida"
+
+#. We don't show fingerprint messages directly since it's
+#. not the main auth service. Instead we use the messages
+#. as a cue to display our own message.
+#. Translators: this message is shown below the password entry field
+#. to indicate the user can swipe their finger instead
+#: ../js/gdm/util.js:473
+msgid "(or swipe finger)"
+msgstr "(arba perbraukite pirštu)"
+
+#: ../js/misc/util.js:119
+msgid "Command not found"
+msgstr "Komanda nerasta"
+
+#. Replace "Error invoking GLib.shell_parse_argv: " with
+#. something nicer
+#: ../js/misc/util.js:152
+msgid "Could not parse command:"
+msgstr "Nepavyko perskaityti komandos:"
+
+#: ../js/misc/util.js:160
+#, javascript-format
+msgid "Execution of “%s” failed:"
+msgstr "Nepavyko įvykdyti „%s“:"
+
+#. Translators: Time in 24h format
+#: ../js/misc/util.js:191
+msgid "%H∶%M"
+msgstr "%H∶%M"
+
+#. Translators: this is the word "Yesterday" followed by a
+#. time string in 24h format. i.e. "Yesterday, 14:30"
+#: ../js/misc/util.js:197
+#, no-c-format
+msgid "Yesterday, %H∶%M"
+msgstr "Vakar, %H:%M"
+
+#. Translators: this is the week day name followed by a time
+#. string in 24h format. i.e. "Monday, 14:30"
+#: ../js/misc/util.js:203
+#, no-c-format
+msgid "%A, %H∶%M"
+msgstr "%A, %H∶%M"
+
+#. Translators: this is the month name and day number
+#. followed by a time string in 24h format.
+#. i.e. "May 25, 14:30"
+#: ../js/misc/util.js:209
+#, no-c-format
+msgid "%B %d, %H∶%M"
+msgstr "%B %d, %H∶%M"
+
+#. Translators: this is the month name, day number, year
+#. number followed by a time string in 24h format.
+#. i.e. "May 25 2012, 14:30"
+#: ../js/misc/util.js:215
+#, no-c-format
+msgid "%B %d %Y, %H∶%M"
+msgstr "%Y %m %d, %H∶%M"
+
+#. Translators: Time in 12h format
+#: ../js/misc/util.js:220
+msgid "%l∶%M %p"
+msgstr "%l∶%M %p"
+
+#. Translators: this is the word "Yesterday" followed by a
+#. time string in 12h format. i.e. "Yesterday, 2:30 pm"
+#: ../js/misc/util.js:226
+#, no-c-format
+msgid "Yesterday, %l∶%M %p"
+msgstr "Vakar, %l∶%M %p"
+
+#. Translators: this is the week day name followed by a time
+#. string in 12h format. i.e. "Monday, 2:30 pm"
+#: ../js/misc/util.js:232
+#, no-c-format
+msgid "%A, %l∶%M %p"
+msgstr "%A, %l∶%M %p"
+
+#. Translators: this is the month name and day number
+#. followed by a time string in 12h format.
+#. i.e. "May 25, 2:30 pm"
+#: ../js/misc/util.js:238
+#, no-c-format
+msgid "%B %d, %l∶%M %p"
+msgstr "%B %d, %l∶%M %p"
+
+#. Translators: this is the month name, day number, year
+#. number followed by a time string in 12h format.
+#. i.e. "May 25 2012, 2:30 pm"
+#: ../js/misc/util.js:244
+#, no-c-format
+msgid "%B %d %Y, %l∶%M %p"
+msgstr "%Y %B %d, %l∶%M %p"
+
+#. TRANSLATORS: this is the title of the wifi captive portal login
+#. * window, until we know the title of the actual login page
+#: ../js/portalHelper/main.js:85
+msgid "Web Authentication Redirect"
+msgstr "Reikia patvirtinti tapatybę internete"
+
+#: ../js/ui/appDisplay.js:794
+msgid "Frequently used applications will appear here"
+msgstr "Čia bus matomos dažnai naudojamos programos"
+
+#: ../js/ui/appDisplay.js:914
+msgid "Frequent"
+msgstr "Dažnai naudojamos"
+
+#: ../js/ui/appDisplay.js:921
+msgid "All"
+msgstr "Visos"
+
+#: ../js/ui/appDisplay.js:1853
+msgid "New Window"
+msgstr "Naujas langas"
+
+#: ../js/ui/appDisplay.js:1881 ../js/ui/dash.js:289
+msgid "Remove from Favorites"
+msgstr "Pašalinti iš mėgstamų"
+
+#: ../js/ui/appDisplay.js:1887
+msgid "Add to Favorites"
+msgstr "Pridėti prie mėgstamų"
+
+#: ../js/ui/appDisplay.js:1897
+msgid "Show Details"
+msgstr "Rodyti detalią informaciją"
+
+#: ../js/ui/appFavorites.js:133
+#, javascript-format
+msgid "%s has been added to your favorites."
+msgstr "%s pridėta prie jūsų mėgstamų."
+
+#: ../js/ui/appFavorites.js:167
+#, javascript-format
+msgid "%s has been removed from your favorites."
+msgstr "%s pašalinta iš jūsų mėgstamų."
+
+#: ../js/ui/backgroundMenu.js:19
+msgid "Change Background…"
+msgstr "Keisti foną…"
+
+#: ../js/ui/backgroundMenu.js:21
+msgid "Display Settings"
+msgstr "Ekrano nustatymai"
+
+#: ../js/ui/backgroundMenu.js:22 ../js/ui/status/system.js:366
+msgid "Settings"
+msgstr "Nustatymai"
+
+#. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
+#: ../js/ui/calendar.js:55
+msgctxt "calendar-no-work"
+msgid "06"
+msgstr "06"
+
+#. Translators: Calendar grid abbreviation for Sunday.
+#. *
+#. * NOTE: These grid abbreviations are always shown together
+#. * and in order, e.g. "S M T W T F S".
 #.
-#: ../gnome-session/gsm-xsmp-client.c:557
-msgid "Remembered Application"
-msgstr "Atsiminti programą"
+#: ../js/ui/calendar.js:84
+msgctxt "grid sunday"
+msgid "S"
+msgstr "S"
 
-#: ../gnome-session/gsm-xsmp-client.c:1207
-msgid "This program is blocking logout."
-msgstr "Ši programa neleidžia atsijungti."
+#. Translators: Calendar grid abbreviation for Monday
+#: ../js/ui/calendar.js:86
+msgctxt "grid monday"
+msgid "M"
+msgstr "P"
 
-#: ../gnome-session/gsm-xsmp-server.c:340
+#. Translators: Calendar grid abbreviation for Tuesday
+#: ../js/ui/calendar.js:88
+msgctxt "grid tuesday"
+msgid "T"
+msgstr "A"
+
+#. Translators: Calendar grid abbreviation for Wednesday
+#: ../js/ui/calendar.js:90
+msgctxt "grid wednesday"
+msgid "W"
+msgstr "T"
+
+#. Translators: Calendar grid abbreviation for Thursday
+#: ../js/ui/calendar.js:92
+msgctxt "grid thursday"
+msgid "T"
+msgstr "K"
+
+#. Translators: Calendar grid abbreviation for Friday
+#: ../js/ui/calendar.js:94
+msgctxt "grid friday"
+msgid "F"
+msgstr "P"
+
+#. Translators: Calendar grid abbreviation for Saturday
+#: ../js/ui/calendar.js:96
+msgctxt "grid saturday"
+msgid "S"
+msgstr "Š"
+
+#: ../js/ui/calendar.js:566
+msgid "Previous month"
+msgstr "Ankstesnis mėnuo"
+
+#: ../js/ui/calendar.js:576
+msgid "Next month"
+msgstr "Kitas mėnuo"
+
+#: ../js/ui/calendar.js:728
+#, javascript-format
+msgctxt "date day number format"
+msgid "%d"
+msgstr "%d"
+
+#: ../js/ui/calendar.js:783
+msgid "Week %V"
+msgstr "Savaitė %V"
+
+#. Translators: Shown in calendar event list for all day events
+#. * Keep it short, best if you can use less then 10 characters
+#.
+#: ../js/ui/calendar.js:1188
+msgctxt "event list time"
+msgid "All Day"
+msgstr "Visa diena"
+
+#: ../js/ui/calendar.js:1295
+msgid "Clear section"
+msgstr "Išvalyti skiltį"
+
+#: ../js/ui/calendar.js:1522
+msgid "Events"
+msgstr "Įvykiai"
+
+#: ../js/ui/calendar.js:1531
+msgctxt "calendar heading"
+msgid "%A, %B %d"
+msgstr "%A, %B %d d."
+
+#: ../js/ui/calendar.js:1535
+msgctxt "calendar heading"
+msgid "%A, %B %d, %Y"
+msgstr "%A, %Y m. %B %d d."
+
+#: ../js/ui/calendar.js:1620
+msgid "Notifications"
+msgstr "Pranešimai"
+
+#: ../js/ui/calendar.js:1771
+msgid "No Notifications"
+msgstr "Nėra pranešimų"
+
+#: ../js/ui/calendar.js:1774
+msgid "No Events"
+msgstr "Nėra įvykių"
+
+#: ../js/ui/components/automountManager.js:91
+msgid "External drive connected"
+msgstr "Prijungta išorinė laikmena"
+
+#: ../js/ui/components/automountManager.js:102
+msgid "External drive disconnected"
+msgstr "Atjungta išorinė laikmena"
+
+#: ../js/ui/components/autorunManager.js:355
+#, javascript-format
+msgid "Open with %s"
+msgstr "Atverti su %s"
+
+#: ../js/ui/components/keyring.js:120 ../js/ui/components/polkitAgent.js:315
+msgid "Password:"
+msgstr "Slaptažodis:"
+
+#: ../js/ui/components/keyring.js:153
+msgid "Type again:"
+msgstr "Įveskite dar kartą:"
+
+#: ../js/ui/components/networkAgent.js:140 ../js/ui/status/network.js:269
+#: ../js/ui/status/network.js:352 ../js/ui/status/network.js:919
+msgid "Connect"
+msgstr "Prisijungti"
+
+#. Cisco LEAP
+#: ../js/ui/components/networkAgent.js:233
+#: ../js/ui/components/networkAgent.js:245
+#: ../js/ui/components/networkAgent.js:273
+#: ../js/ui/components/networkAgent.js:293
+#: ../js/ui/components/networkAgent.js:303
+msgid "Password: "
+msgstr "Slaptažodis: "
+
+#. static WEP
+#: ../js/ui/components/networkAgent.js:238
+msgid "Key: "
+msgstr "Raktas: "
+
+#: ../js/ui/components/networkAgent.js:277
+msgid "Identity: "
+msgstr "Tapatybė: "
+
+#: ../js/ui/components/networkAgent.js:279
+msgid "Private key password: "
+msgstr "Privataus rakto slaptažodis: "
+
+#: ../js/ui/components/networkAgent.js:291
+msgid "Service: "
+msgstr "Tarnyba: "
+
+#: ../js/ui/components/networkAgent.js:320
+#: ../js/ui/components/networkAgent.js:658
+msgid "Authentication required by wireless network"
+msgstr "Belaidžiam tinklui reikia patvirtinti tapatybę"
+
+#: ../js/ui/components/networkAgent.js:321
+#: ../js/ui/components/networkAgent.js:659
+#, javascript-format
 msgid ""
-"Refusing new client connection because the session is currently being shut "
-"down\n"
-msgstr "Atsisakoma naujo kliento ryšio, kadangi seansas dabar išjungiamas\n"
-
-#: ../gnome-session/gsm-xsmp-server.c:609
-#, c-format
-msgid "Could not create ICE listening socket: %s"
-msgstr "Nepavyko sukurti ICE klausymo lizdo: %s"
-
-#: ../gnome-session/main.c:278
-msgid "Override standard autostart directories"
-msgstr "Nepaisyti standartinių automatinės paleisties aplankų"
-
-#: ../gnome-session/main.c:278
-msgid "AUTOSTART_DIR"
-msgstr "AUTOSTART_DIR"
-
-#: ../gnome-session/main.c:279
-msgid "Session to use"
-msgstr "Naudoti sesiją"
-
-#: ../gnome-session/main.c:279
-msgid "SESSION_NAME"
-msgstr "SESSION_NAME"
-
-#: ../gnome-session/main.c:281
-msgid "Do not load user-specified applications"
-msgstr "Neįkelti naudotojo nurodytų programų"
-
-#: ../gnome-session/main.c:282
-msgid "Version of this application"
-msgstr "Programos versija"
-
-#. Translators: the 'fail whale' is the black dialog we show when something goes seriously wrong
-#: ../gnome-session/main.c:284
-msgid "Show the fail whale dialog for testing"
-msgstr "Rodyti visiškos nesėkmės dialogą bandymui"
-
-#: ../gnome-session/main.c:285
-msgid "Disable hardware acceleration check"
-msgstr "Išjungti aparatinio spartinimo tikrinimą"
-
-#: ../gnome-session/main.c:307
-msgid " - the GNOME session manager"
-msgstr " – GNOME seanso valdyklė"
-
-#: ../tools/gnome-session-inhibit.c:108
-#, c-format
-msgid ""
-"%s [OPTION...] COMMAND\n"
-"\n"
-"Execute COMMAND while inhibiting some session functionality.\n"
-"\n"
-"  -h, --help        Show this help\n"
-"  --version         Show program version\n"
-"  --app-id ID       The application id to use\n"
-"                    when inhibiting (optional)\n"
-"  --reason REASON   The reason for inhibiting (optional)\n"
-"  --inhibit ARG     Things to inhibit, colon-separated list of:\n"
-"                    logout, switch-user, suspend, idle, automount\n"
-"  --inhibit-only    Do not launch COMMAND and wait forever instead\n"
-"\n"
-"If no --inhibit option is specified, idle is assumed.\n"
+"Passwords or encryption keys are required to access the wireless network "
+"“%s”."
 msgstr ""
-"%s [PARINKTIS...] KOMANDA\n"
-"\n"
-"Vykdyti KOMANDĄ, tuo tarpu kliudant daliai seanso funkcionalumo.\n"
-"\n"
-"  -h, --help        Rodyti šią pagalbą\n"
-"  --version         Rodyti programos versiją\n"
-"  --app-id ID       Naudotinas programos id\n"
-"                    kliudant (neprivaloma)\n"
-"  --reason REASON   Kliudimo priežastis (neprivaloma)\n"
-"  --inhibit ARG     Kliudomi dalykai, dvitaškiai skiriamas sąrašas iš šių:\n"
-"                    logout, switch-user, suspend, idle, automount\n"
-"  --inhibit-only    Nepaleisti KOMANDOS ir vietoj to neribotai laukti\n"
-"\n"
-"Jei nėra parametro --inhibit, naudojama idle.\n"
+"Slaptažodžiai arba šifravimo raktai yra būtini priėjimui prie belaidžio "
+"tinklo „%s“."
 
-#: ../tools/gnome-session-inhibit.c:146
-#, c-format
-msgid "Failed to execute %s\n"
-msgstr "Nepavyko paleisti %s\n"
+#: ../js/ui/components/networkAgent.js:325
+#: ../js/ui/components/networkAgent.js:662
+msgid "Wired 802.1X authentication"
+msgstr "Laidinis 802.1X tapatybės patvirtinimas"
 
-#: ../tools/gnome-session-inhibit.c:206 ../tools/gnome-session-inhibit.c:216
-#: ../tools/gnome-session-inhibit.c:226
-#, c-format
-msgid "%s requires an argument\n"
-msgstr "%s reikalauja argumento\n"
+#: ../js/ui/components/networkAgent.js:327
+msgid "Network name: "
+msgstr "Tinklo vardas: "
 
-#: ../tools/gnome-session-selector.c:61
-#, c-format
-msgid "Session %d"
-msgstr "Seansas %d"
+#: ../js/ui/components/networkAgent.js:332
+#: ../js/ui/components/networkAgent.js:666
+msgid "DSL authentication"
+msgstr "DSL tapatybės patvirtinimas"
 
-#: ../tools/gnome-session-selector.c:107
-msgid ""
-"Session names are not allowed to start with ‘.’ or contain ‘/’ characters"
-msgstr "Seansų pavadinimai negali prasidėti „.“ ar turėti simbolių „/“"
+#: ../js/ui/components/networkAgent.js:339
+#: ../js/ui/components/networkAgent.js:672
+msgid "PIN code required"
+msgstr "Reikalingas PIN kodas"
 
-#: ../tools/gnome-session-selector.c:111
-msgid "Session names are not allowed to start with ‘.’"
-msgstr "Seansų pavadinimai negali prasidėti „.“"
+#: ../js/ui/components/networkAgent.js:340
+#: ../js/ui/components/networkAgent.js:673
+msgid "PIN code is needed for the mobile broadband device"
+msgstr "Reikalingas PIN kodas mobiliajam plačiajuosčiam įrenginiui"
 
-#: ../tools/gnome-session-selector.c:115
-msgid "Session names are not allowed to contain ‘/’ characters"
-msgstr "Seansų pavadinimai negali turėti simbolių „/“"
+#: ../js/ui/components/networkAgent.js:341
+msgid "PIN: "
+msgstr "PIN: "
 
-#: ../tools/gnome-session-selector.c:123
-#, c-format
-msgid "A session named ‘%s’ already exists"
-msgstr "Jau yra seansas pavadinimu „%s“"
+#: ../js/ui/components/networkAgent.js:348
+#: ../js/ui/components/networkAgent.js:679
+msgid "Mobile broadband network password"
+msgstr "Mobiliojo plačiajuosčio tinklo slaptažodis"
 
-#: ../tools/gnome-session-quit.c:49
-msgid "Log out"
+#: ../js/ui/components/networkAgent.js:349
+#: ../js/ui/components/networkAgent.js:663
+#: ../js/ui/components/networkAgent.js:667
+#: ../js/ui/components/networkAgent.js:680
+#, javascript-format
+msgid "A password is required to connect to “%s”."
+msgstr "Būtinas slaptažodis norint prisijungti prie „%s“."
+
+#: ../js/ui/components/networkAgent.js:647 ../js/ui/status/network.js:1658
+msgid "Network Manager"
+msgstr "Tinklo valdymas"
+
+#: ../js/ui/components/polkitAgent.js:60
+msgid "Authentication Required"
+msgstr "Reikia patvirtinti tapatybę"
+
+#: ../js/ui/components/polkitAgent.js:102
+msgid "Administrator"
+msgstr "Administratorius"
+
+#: ../js/ui/components/polkitAgent.js:182
+msgid "Authenticate"
+msgstr "Patvirtinti tapatybę"
+
+#. Translators: "that didn't work" refers to the fact that the
+#. * requested authentication was not gained; this can happen
+#. * because of an authentication error (like invalid password),
+#. * for instance.
+#: ../js/ui/components/polkitAgent.js:301 ../js/ui/shellMountOperation.js:383
+msgid "Sorry, that didn't work. Please try again."
+msgstr "Atsiprašome, tai nesuveikė. Bandykite dar kartą."
+
+#. Translators: this is the other person changing their old IM name to their new
+#. IM name.
+#: ../js/ui/components/telepathyClient.js:759
+#, javascript-format
+msgid "%s is now known as %s"
+msgstr "%s nuo šiol vadinasi %s"
+
+#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:155
+msgid "Windows"
+msgstr "Langai"
+
+#: ../js/ui/dash.js:250 ../js/ui/dash.js:291
+msgid "Show Applications"
+msgstr "Paleisti programas"
+
+#. Translators: this is the name of the dock/favorites area on
+#. the left of the overview
+#: ../js/ui/dash.js:449
+msgid "Dash"
+msgstr "Paleidimo sritis"
+
+#. Translators: This is the date format to use when the calendar popup is
+#. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
+#.
+#: ../js/ui/dateMenu.js:73
+msgid "%B %e %Y"
+msgstr "%Y m. %B %d d."
+
+#. Translators: This is the accessible name of the date button shown
+#. * below the time in the shell; it should combine the weekday and the
+#. * date, e.g. "Tuesday February 17 2015".
+#.
+#: ../js/ui/dateMenu.js:80
+msgid "%A %B %e %Y"
+msgstr "%A, %Y m. %B %d d."
+
+#: ../js/ui/dateMenu.js:160
+msgid "Add world clocks…"
+msgstr "Pridėti pasaulio laikrodžius…"
+
+#: ../js/ui/dateMenu.js:161
+msgid "World Clocks"
+msgstr "Pasaulio laikrodžiai"
+
+#: ../js/ui/endSessionDialog.js:64
+#, javascript-format
+msgctxt "title"
+msgid "Log Out %s"
+msgstr "Atjungti naudotoją %s"
+
+#: ../js/ui/endSessionDialog.js:65
+msgctxt "title"
+msgid "Log Out"
 msgstr "Atsijungti"
 
-#: ../tools/gnome-session-quit.c:50
-msgid "Power off"
+#: ../js/ui/endSessionDialog.js:67
+#, javascript-format
+msgid "%s will be logged out automatically in %d second."
+msgid_plural "%s will be logged out automatically in %d seconds."
+msgstr[0] "%s bus automatiškai atjungta (-s) už %d sekundės."
+msgstr[1] "%s bus automatiškai atjungta (-s) už %d sekundžių."
+msgstr[2] "%s bus automatiškai atjungta (-s) už %d sekundžių."
+
+#: ../js/ui/endSessionDialog.js:72
+#, javascript-format
+msgid "You will be logged out automatically in %d second."
+msgid_plural "You will be logged out automatically in %d seconds."
+msgstr[0] "Jūs būsite automatiškai atjungti už %d sekundės."
+msgstr[1] "Jūs būsite automatiškai atjungti už %d sekundžių."
+msgstr[2] "Jūs būsite automatiškai atjungti už %d sekundžių."
+
+#: ../js/ui/endSessionDialog.js:78
+msgctxt "button"
+msgid "Log Out"
+msgstr "Atsijungti"
+
+#: ../js/ui/endSessionDialog.js:84
+msgctxt "title"
+msgid "Power Off"
 msgstr "Išjungti"
 
-#: ../tools/gnome-session-quit.c:51
-msgid "Reboot"
-msgstr "Įkelti iš naujo"
+#: ../js/ui/endSessionDialog.js:85
+msgctxt "title"
+msgid "Install Updates & Power Off"
+msgstr "Įdiegti atnaujinimus ir išjungti"
 
-#: ../tools/gnome-session-quit.c:52
-msgid "Ignoring any existing inhibitors"
-msgstr "Ignoruojami trukdžiai"
+#: ../js/ui/endSessionDialog.js:87
+#, javascript-format
+msgid "The system will power off automatically in %d second."
+msgid_plural "The system will power off automatically in %d seconds."
+msgstr[0] "Sistema automatiškai išsijungs po %d sekundės."
+msgstr[1] "Sistema automatiškai išsijungs po %d sekundžių."
+msgstr[2] "Sistema automatiškai išsijungs po %d sekundžių."
 
-#: ../tools/gnome-session-quit.c:53
-msgid "Don't prompt for user confirmation"
-msgstr "Nereikalauti naudotojo patvirtinimo"
+#: ../js/ui/endSessionDialog.js:91
+msgctxt "checkbox"
+msgid "Install pending software updates"
+msgstr "Įdiegti programinės įrangos atnaujinimus"
 
-#: ../tools/gnome-session-quit.c:87 ../tools/gnome-session-quit.c:101
-msgid "Could not connect to the session manager"
-msgstr "Nepavyko prisijungti prie seansų valdyklės"
+#: ../js/ui/endSessionDialog.js:94 ../js/ui/endSessionDialog.js:111
+msgctxt "button"
+msgid "Restart"
+msgstr "Paleisti iš naujo"
 
-#: ../tools/gnome-session-quit.c:196
-msgid "Program called with conflicting options"
-msgstr "Programa iškviesta naudojant konfliktuojančias parinktis"
+#: ../js/ui/endSessionDialog.js:96
+msgctxt "button"
+msgid "Power Off"
+msgstr "Išjungti"
 
-#~ msgid "This session logs you into GNOME, using Wayland"
-#~ msgstr "Šis seansas prijungia jus prie GNOME naudojant Wayland"
+#: ../js/ui/endSessionDialog.js:103
+msgctxt "title"
+msgid "Restart"
+msgstr "Paleisti iš naujo"
 
-#~ msgid "Select Command"
-#~ msgstr "Pasirinkite komandą"
+#: ../js/ui/endSessionDialog.js:105
+#, javascript-format
+msgid "The system will restart automatically in %d second."
+msgid_plural "The system will restart automatically in %d seconds."
+msgstr[0] "Sistema bus paleista iš naujo po %d sekundės."
+msgstr[1] "Sistema bus paleista iš naujo po %d sekundžių."
+msgstr[2] "Sistema bus paleista iš naujo po %d sekundžių."
 
-#~ msgid "Add Startup Program"
-#~ msgstr "Pridėti paleidimo programą"
+#: ../js/ui/endSessionDialog.js:119
+msgctxt "title"
+msgid "Restart & Install Updates"
+msgstr "Perleisti ir įdiegti atnaujinimus"
 
-#~ msgid "Edit Startup Program"
-#~ msgstr "Redaguoti paleidžiamą programą"
+#: ../js/ui/endSessionDialog.js:121
+#, javascript-format
+msgid "The system will automatically restart and install updates in %d second."
+msgid_plural ""
+"The system will automatically restart and install updates in %d seconds."
+msgstr[0] ""
+"Sistema bus paleista iš naujo ir įdiegs atnaujinimus po %d sekundės."
+msgstr[1] ""
+"Sistema bus paleista iš naujo ir įdiegs atnaujinimus po %d sekundžių."
+msgstr[2] ""
+"Sistema bus paleista iš naujo ir įdiegs atnaujinimus po %d sekundžių."
 
-#~ msgid "The startup command cannot be empty"
-#~ msgstr "Paleidimo komanda negali būti tuščia"
+#: ../js/ui/endSessionDialog.js:127
+msgctxt "button"
+msgid "Restart &amp; Install"
+msgstr "Perleisti ir įdiegti"
 
-#~ msgid "The startup command is not valid"
-#~ msgstr "Paleidimo komanda netinkama"
+#: ../js/ui/endSessionDialog.js:128
+msgctxt "button"
+msgid "Install &amp; Power Off"
+msgstr "Įdiegti ir išjungti"
 
-#~ msgid "Enabled"
+#: ../js/ui/endSessionDialog.js:129
+msgctxt "checkbox"
+msgid "Power off after updates are installed"
+msgstr "Išjungti baigus diegti atnaujinimus"
+
+#: ../js/ui/endSessionDialog.js:338
+msgid "Running on battery power: please plug in before installing updates."
+msgstr ""
+"Veikia naudojant baterijos energiją: įjunkite į elektros tinklą prieš "
+"įdiegdami atnaujinimus."
+
+#: ../js/ui/endSessionDialog.js:355
+msgid "Some applications are busy or have unsaved work."
+msgstr "Kai kurios programos dirba arba turi neįrašyto darbo."
+
+#: ../js/ui/endSessionDialog.js:362
+msgid "Other users are logged in."
+msgstr "Yra prisijungusių kitų naudotojų"
+
+#. Translators: Remote here refers to a remote session, like a ssh login
+#: ../js/ui/endSessionDialog.js:640
+#, javascript-format
+msgid "%s (remote)"
+msgstr "%s (nutolęs)"
+
+#. Translators: Console here refers to a tty like a VT console
+#: ../js/ui/endSessionDialog.js:643
+#, javascript-format
+msgid "%s (console)"
+msgstr "%s (komandų eilutė)"
+
+#: ../js/ui/extensionDownloader.js:199
+msgid "Install"
+msgstr "Įdiegti"
+
+#: ../js/ui/extensionDownloader.js:204
+#, javascript-format
+msgid "Download and install “%s” from extensions.gnome.org?"
+msgstr "Parsiųsti ir įdiegti „%s“ iš extensions.gnome.org?"
+
+#: ../js/ui/keyboard.js:741 ../js/ui/status/keyboard.js:713
+msgid "Keyboard"
+msgstr "Klaviatūra"
+
+#. translators: 'Hide' is a verb
+#: ../js/ui/legacyTray.js:66
+msgid "Hide tray"
+msgstr "Slėpti dėklą"
+
+#: ../js/ui/legacyTray.js:107
+msgid "Status Icons"
+msgstr "Būsenos piktogramos"
+
+#: ../js/ui/lookingGlass.js:643
+msgid "No extensions installed"
+msgstr "Nėra įdiegtų plėtinių"
+
+#. Translators: argument is an extension UUID.
+#: ../js/ui/lookingGlass.js:697
+#, javascript-format
+msgid "%s has not emitted any errors."
+msgstr "%s nepranešė apie jokias klaidas."
+
+#: ../js/ui/lookingGlass.js:703
+msgid "Hide Errors"
+msgstr "Slėpti klaidas"
+
+#: ../js/ui/lookingGlass.js:707 ../js/ui/lookingGlass.js:767
+msgid "Show Errors"
+msgstr "Rodyti klaidas"
+
+#: ../js/ui/lookingGlass.js:716
+msgid "Enabled"
+msgstr "Įjungta"
+
+#. translators:
+#. * The device has been disabled
+#: ../js/ui/lookingGlass.js:719 ../src/gvc/gvc-mixer-control.c:1828
+msgid "Disabled"
+msgstr "Išjungta"
+
+#: ../js/ui/lookingGlass.js:721
+msgid "Error"
+msgstr "Klaida"
+
+#: ../js/ui/lookingGlass.js:723
+msgid "Out of date"
+msgstr "Pasenęs"
+
+#: ../js/ui/lookingGlass.js:725
+msgid "Downloading"
+msgstr "Atsiunčiama"
+
+#: ../js/ui/lookingGlass.js:749
+msgid "View Source"
+msgstr "Žiūrėti šaltinį"
+
+#: ../js/ui/lookingGlass.js:758
+msgid "Web Page"
+msgstr "Tinklalapis"
+
+#: ../js/ui/messageTray.js:1486
+msgid "System Information"
+msgstr "Sistemos informacija"
+
+#: ../js/ui/overview.js:84
+msgid "Undo"
+msgstr "Atšaukti"
+
+#: ../js/ui/overview.js:117
+msgid "Overview"
+msgstr "Apžvalga"
+
+#. Translators: this is the text displayed
+#. in the search entry when no search is
+#. active; it should not exceed ~30
+#. characters.
+#: ../js/ui/overview.js:244
+msgid "Type to search…"
+msgstr "Rašykite, ko ieškote…"
+
+#: ../js/ui/panel.js:358
+msgid "Quit"
+msgstr "Užverti"
+
+#. Translators: If there is no suitable word for "Activities"
+#. in your language, you can use the word for "Overview".
+#: ../js/ui/panel.js:414
+msgid "Activities"
+msgstr "Apžvalga"
+
+#: ../js/ui/panel.js:695
+msgctxt "System menu in the top bar"
+msgid "System"
+msgstr "Sistema"
+
+#: ../js/ui/panel.js:807
+msgid "Top Bar"
+msgstr "Viršutinė juosta"
+
+#. Translators: this MUST be either "toggle-switch-us"
+#. (for toggle switches containing the English words
+#. "ON" and "OFF") or "toggle-switch-intl" (for toggle
+#. switches containing "◯" and "|"). Other values will
+#. simply result in invisible toggle switches.
+#: ../js/ui/popupMenu.js:289
+msgid "toggle-switch-us"
+msgstr "toggle-switch-intl"
+
+#: ../js/ui/runDialog.js:71
+msgid "Enter a Command"
+msgstr "Įveskite komandą"
+
+#: ../js/ui/runDialog.js:111 ../js/ui/windowMenu.js:162
+msgid "Close"
+msgstr "Užverti"
+
+#: ../js/ui/runDialog.js:282
+msgid "Restarting…"
+msgstr "Perleidžiama…"
+
+#. Translators: This is a time format for a date in
+#. long format
+#: ../js/ui/screenShield.js:85
+msgid "%A, %B %d"
+msgstr "%A, %B %d d."
+
+#: ../js/ui/screenShield.js:144
+#, javascript-format
+msgid "%d new message"
+msgid_plural "%d new messages"
+msgstr[0] "%d naujas pranešimas"
+msgstr[1] "%d nauji pranešimai"
+msgstr[2] "%d naujų pranešimų"
+
+#: ../js/ui/screenShield.js:146
+#, javascript-format
+msgid "%d new notification"
+msgid_plural "%d new notifications"
+msgstr[0] "%d naujas pranešimas"
+msgstr[1] "%d nauji pranešimai"
+msgstr[2] "%d naujų pranešimų"
+
+#: ../js/ui/screenShield.js:432 ../js/ui/status/system.js:374
+msgid "Lock"
+msgstr "Užrakinti"
+
+#: ../js/ui/screenShield.js:684
+msgid "GNOME needs to lock the screen"
+msgstr "GNOME aplinkai reikia užrakinti ekraną"
+
+#. We could not become modal, so we can't activate the
+#. screenshield. The user is probably very upset at this
+#. point, but any application using global grabs is broken
+#. Just tell him to stop using this app
+#.
+#. XXX: another option is to kick the user into the gdm login
+#. screen, where we're not affected by grabs
+#: ../js/ui/screenShield.js:805 ../js/ui/screenShield.js:1271
+msgid "Unable to lock"
+msgstr "Nepavyksta užrakinti"
+
+#: ../js/ui/screenShield.js:806 ../js/ui/screenShield.js:1272
+msgid "Lock was blocked by an application"
+msgstr "Programa užblokavo užrakinimą"
+
+#: ../js/ui/search.js:617
+msgid "Searching…"
+msgstr "Ieškoma…"
+
+#: ../js/ui/search.js:619
+msgid "No results."
+msgstr "Nerasta atitikmenų."
+
+#: ../js/ui/shellEntry.js:25
+msgid "Copy"
+msgstr "Kopijuoti"
+
+#: ../js/ui/shellEntry.js:30
+msgid "Paste"
+msgstr "Įdėti"
+
+#: ../js/ui/shellEntry.js:97
+msgid "Show Text"
+msgstr "Rodyti tekstą"
+
+#: ../js/ui/shellEntry.js:99
+msgid "Hide Text"
+msgstr "Slėpti tekstą"
+
+#: ../js/ui/shellMountOperation.js:370
+msgid "Password"
+msgstr "Slaptažodis"
+
+#: ../js/ui/shellMountOperation.js:391
+msgid "Remember Password"
+msgstr "Atsiminti slaptažodį"
+
+#: ../js/ui/status/accessibility.js:42
+msgid "Accessibility"
+msgstr "Universali prieiga"
+
+#: ../js/ui/status/accessibility.js:57
+msgid "Zoom"
+msgstr "Priartinimas"
+
+#: ../js/ui/status/accessibility.js:64
+msgid "Screen Reader"
+msgstr "Ekrano skaityklė"
+
+#: ../js/ui/status/accessibility.js:68
+msgid "Screen Keyboard"
+msgstr "Klaviatūra ekrane"
+
+#: ../js/ui/status/accessibility.js:72
+msgid "Visual Alerts"
+msgstr "Vaizdo įspėjimai"
+
+#: ../js/ui/status/accessibility.js:75
+msgid "Sticky Keys"
+msgstr "Kibieji klavišai"
+
+#: ../js/ui/status/accessibility.js:78
+msgid "Slow Keys"
+msgstr "Lėtieji klavišai"
+
+#: ../js/ui/status/accessibility.js:81
+msgid "Bounce Keys"
+msgstr "Pasikartojantieji klavišai"
+
+#: ../js/ui/status/accessibility.js:84
+msgid "Mouse Keys"
+msgstr "Pelės mygtukai"
+
+#: ../js/ui/status/accessibility.js:167
+msgid "High Contrast"
+msgstr "Didelis kontrastas"
+
+#: ../js/ui/status/accessibility.js:202
+msgid "Large Text"
+msgstr "Didelis tekstas"
+
+#: ../js/ui/status/bluetooth.js:47
+msgid "Bluetooth"
+msgstr "Bluetooth"
+
+#: ../js/ui/status/bluetooth.js:56
+msgid "Bluetooth Settings"
+msgstr "Bluetooth nustatymai"
+
+#. Translators: this is the number of connected bluetooth devices
+#: ../js/ui/status/bluetooth.js:136
+#, javascript-format
+msgid "%d Connected"
+msgid_plural "%d Connected"
+msgstr[0] "%d prijungtas"
+msgstr[1] "%d prijungti"
+msgstr[2] "%d prijungta"
+
+#: ../js/ui/status/bluetooth.js:138
+msgid "Off"
+msgstr "Išjungta"
+
+#: ../js/ui/status/bluetooth.js:140
+msgid "Not In Use"
+msgstr "Naudojamas"
+
+#: ../js/ui/status/bluetooth.js:142 ../js/ui/status/network.js:1279
+msgid "Turn On"
+msgstr "Įjungti"
+
+#: ../js/ui/status/bluetooth.js:142 ../js/ui/status/network.js:178
+#: ../js/ui/status/network.js:353 ../js/ui/status/network.js:1279
+#: ../js/ui/status/network.js:1394 ../js/ui/status/rfkill.js:90
+#: ../js/ui/status/rfkill.js:117
+msgid "Turn Off"
+msgstr "Išjungti"
+
+#: ../js/ui/status/brightness.js:44
+msgid "Brightness"
+msgstr "Ryškumas"
+
+#: ../js/ui/status/keyboard.js:736
+msgid "Show Keyboard Layout"
+msgstr "Rodyti klaviatūros išdėstymą"
+
+#: ../js/ui/status/location.js:71 ../js/ui/status/location.js:177
+msgid "Location Enabled"
+msgstr "Vietos nustatymas įjungtas"
+
+#: ../js/ui/status/location.js:72 ../js/ui/status/location.js:178
+msgid "Disable"
+msgstr "Išjungti"
+
+#: ../js/ui/status/location.js:73
+msgid "Privacy Settings"
+msgstr "Privatumo nustatymai"
+
+#: ../js/ui/status/location.js:176
+msgid "Location In Use"
+msgstr "Vietos nustatymas naudojamas"
+
+#: ../js/ui/status/location.js:180
+msgid "Location Disabled"
+msgstr "Vietos nustatymas išjungtas"
+
+#: ../js/ui/status/location.js:181
+msgid "Enable"
+msgstr "Įjungti"
+
+#: ../js/ui/status/network.js:101
+msgid "<unknown>"
+msgstr "<nežinoma>"
+
+#. Translators: %s is a network identifier
+#: ../js/ui/status/network.js:451 ../js/ui/status/network.js:1308
+#, javascript-format
+msgid "%s Off"
+msgstr "%s išjungtas"
+
+#. Translators: %s is a network identifier
+#: ../js/ui/status/network.js:454
+#, javascript-format
+msgid "%s Connected"
+msgstr "Prisijungta prie %s"
+
+#. Translators: this is for network devices that are physically present but are not
+#. under NetworkManager's control (and thus cannot be used in the menu);
+#. %s is a network identifier
+#: ../js/ui/status/network.js:459
+#, javascript-format
+msgid "%s Unmanaged"
+msgstr "%s nevaldomas"
+
+#. Translators: %s is a network identifier
+#: ../js/ui/status/network.js:462
+#, javascript-format
+msgid "%s Disconnecting"
+msgstr "Atsijungiama nuo %s"
+
+#. Translators: %s is a network identifier
+#: ../js/ui/status/network.js:469 ../js/ui/status/network.js:1300
+#, javascript-format
+msgid "%s Connecting"
+msgstr "Jungiamasi prie %s"
+
+#. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
+#: ../js/ui/status/network.js:472
+#, javascript-format
+msgid "%s Requires Authentication"
+msgstr "%s reikalauja patvirtinti tapatybę"
+
+#. Translators: this is for devices that require some kind of firmware or kernel
+#. module, which is missing; %s is a network identifier
+#: ../js/ui/status/network.js:480
+#, javascript-format
+msgid "Firmware Missing For %s"
+msgstr "%s trūksta integruotos programinės įrangos"
+
+#. Translators: this is for a network device that cannot be activated (for example it
+#. is disabled by rfkill, or it has no coverage; %s is a network identifier
+#: ../js/ui/status/network.js:484
+#, javascript-format
+msgid "%s Unavailable"
+msgstr "%s nepasiekiamas"
+
+#. Translators: %s is a network identifier
+#: ../js/ui/status/network.js:487
+#, javascript-format
+msgid "%s Connection Failed"
+msgstr "Nepavyko prisijungti prie %s"
+
+#: ../js/ui/status/network.js:503
+msgid "Wired Settings"
+msgstr "Laidinio ryšio nustatymai"
+
+#: ../js/ui/status/network.js:545 ../js/ui/status/network.js:624
+msgid "Mobile Broadband Settings"
+msgstr "Mobiliojo plačiajuosčio tinklo nustatymai"
+
+#. Translators: %s is a network identifier
+#: ../js/ui/status/network.js:588 ../js/ui/status/network.js:1305
+#, javascript-format
+msgid "%s Hardware Disabled"
+msgstr "%s aparatinė įranga išjungta"
+
+#. Translators: this is for a network device that cannot be activated
+#. because it's disabled by rfkill (airplane mode); %s is a network identifier
+#: ../js/ui/status/network.js:592
+#, javascript-format
+msgid "%s Disabled"
+msgstr "%s išjungtas"
+
+#: ../js/ui/status/network.js:632
+msgid "Use as Internet connection"
+msgstr "Naudoti kaip interneto ryšį"
+
+#: ../js/ui/status/network.js:813
+msgid "Airplane Mode is On"
+msgstr "Skrydžio veiksena įjungta"
+
+#: ../js/ui/status/network.js:814
+msgid "Wi-Fi is disabled when airplane mode is on."
+msgstr "Belaidis ryšys yra išjungta skrydžio veiksenoje."
+
+#: ../js/ui/status/network.js:815
+msgid "Turn Off Airplane Mode"
+msgstr "Išjungti skrydžio veikseną"
+
+#: ../js/ui/status/network.js:824
+msgid "Wi-Fi is Off"
+msgstr "Belaidžio ryšys išjungtas"
+
+#: ../js/ui/status/network.js:825
+msgid "Wi-Fi needs to be turned on in order to connect to a network."
+msgstr "Norint prisijungti prie tinklo reikia įjungti belaidį ryšį."
+
+#: ../js/ui/status/network.js:826
+msgid "Turn On Wi-Fi"
+msgstr "Įjungti belaidį ryšį"
+
+#: ../js/ui/status/network.js:851
+msgid "Wi-Fi Networks"
+msgstr "Wi-Fi tinklai"
+
+#: ../js/ui/status/network.js:853
+msgid "Select a network"
+msgstr "Pasirinkite tinklą"
+
+#: ../js/ui/status/network.js:883
+msgid "No Networks"
+msgstr "Nėra tinklų"
+
+#: ../js/ui/status/network.js:904 ../js/ui/status/rfkill.js:115
+msgid "Use hardware switch to turn off"
+msgstr "Išjungimui naudoti aparatinį jungiklį"
+
+#: ../js/ui/status/network.js:1171
+msgid "Select Network"
+msgstr "Pasirinkite tinklą"
+
+#: ../js/ui/status/network.js:1177
+msgid "Wi-Fi Settings"
+msgstr "Belaidžio ryšio nustatymai"
+
+#. Translators: %s is a network identifier
+#: ../js/ui/status/network.js:1296
+#, javascript-format
+msgid "%s Hotspot Active"
+msgstr "Prieigos taškas %s aktyvus"
+
+#. Translators: %s is a network identifier
+#: ../js/ui/status/network.js:1311
+#, javascript-format
+msgid "%s Not Connected"
+msgstr "Neprisijungta prie %s"
+
+#: ../js/ui/status/network.js:1411
+msgid "connecting..."
+msgstr "jungiamasi..."
+
+#. Translators: this is for network connections that require some kind of key or password
+#: ../js/ui/status/network.js:1414
+msgid "authentication required"
+msgstr "reikia patvirtinti tapatybę"
+
+#: ../js/ui/status/network.js:1416
+msgid "connection failed"
+msgstr "nepavyko prisijungti"
+
+#: ../js/ui/status/network.js:1482 ../js/ui/status/rfkill.js:93
+msgid "Network Settings"
+msgstr "Tinklo nustatymai"
+
+#: ../js/ui/status/network.js:1484
+msgid "VPN Settings"
+msgstr "VPN nustatymai"
+
+#: ../js/ui/status/network.js:1503
+msgid "VPN"
+msgstr "VPN"
+
+#: ../js/ui/status/network.js:1513
+msgid "VPN Off"
+msgstr "VPN išjungtas"
+
+#: ../js/ui/status/network.js:1697
+msgid "Connection failed"
+msgstr "Nepavyko prisijungti"
+
+#: ../js/ui/status/network.js:1698
+msgid "Activation of network connection failed"
+msgstr "Tinklo ryšio nepavyko aktyvuoti"
+
+#: ../js/ui/status/power.js:61
+msgid "Power Settings"
+msgstr "Energijos valdymo nustatymai"
+
+#: ../js/ui/status/power.js:77
+msgid "Fully Charged"
+msgstr "Pilnai įkrauta"
+
+#. 0 is reported when UPower does not have enough data
+#. to estimate battery life
+#: ../js/ui/status/power.js:84 ../js/ui/status/power.js:90
+msgid "Estimating…"
+msgstr "Įvertinama…"
+
+#. Translators: this is <hours>:<minutes> Remaining (<percentage>)
+#: ../js/ui/status/power.js:98
+#, javascript-format
+msgid "%d∶%02d Remaining (%d %%)"
+msgstr "Liko %d∶%02d (%d %%)"
+
+#. Translators: this is <hours>:<minutes> Until Full (<percentage>)
+#: ../js/ui/status/power.js:103
+#, javascript-format
+msgid "%d∶%02d Until Full (%d %%)"
+msgstr "%d∶%02d iki pilno (%d %%)"
+
+#: ../js/ui/status/power.js:131 ../js/ui/status/power.js:133
+#, javascript-format
+msgid "%d %%"
+msgstr "%d %%"
+
+#. The menu only appears when airplane mode is on, so just
+#. statically build it as if it was on, rather than dynamically
+#. changing the menu contents.
+#: ../js/ui/status/rfkill.js:88
+msgid "Airplane Mode On"
+msgstr "Skrydžio veiksena įjungta"
+
+#: ../js/ui/status/system.js:343
+msgid "Switch User"
+msgstr "Keisti naudotoją"
+
+#: ../js/ui/status/system.js:348
+msgid "Log Out"
+msgstr "Atsijungti"
+
+#: ../js/ui/status/system.js:353
+msgid "Account Settings"
+msgstr "Paskyros nustatymai"
+
+#: ../js/ui/status/system.js:370
+msgid "Orientation Lock"
+msgstr "Padėties užrakinimas"
+
+#: ../js/ui/status/system.js:378
+msgid "Suspend"
+msgstr "Užmigdyti"
+
+#: ../js/ui/status/system.js:381
+msgid "Power Off"
+msgstr "Išjungti"
+
+#: ../js/ui/status/volume.js:127
+msgid "Volume changed"
+msgstr "Garsumas pakeistas"
+
+#: ../js/ui/status/volume.js:162
+msgid "Volume"
+msgstr "Garsumas"
+
+#: ../js/ui/status/volume.js:213
+msgid "Microphone"
+msgstr "Mikrofonas"
+
+#: ../js/ui/unlockDialog.js:67
+msgid "Log in as another user"
+msgstr "Prisijungti kitu naudotoju"
+
+#: ../js/ui/unlockDialog.js:84
+msgid "Unlock Window"
+msgstr "Atrakinimo langas"
+
+#: ../js/ui/viewSelector.js:159
+msgid "Applications"
+msgstr "Programos"
+
+#: ../js/ui/viewSelector.js:163
+msgid "Search"
+msgstr "Ieškoti"
+
+#: ../js/ui/windowAttentionHandler.js:20
+#, javascript-format
+msgid "“%s” is ready"
+msgstr "„%s“ yra pasirengusi"
+
+#: ../js/ui/windowManager.js:63
+msgid "Do you want to keep these display settings?"
+msgstr "Ar nori įrašyti šiuos vaizduoklio nustatymus?"
+
+#. Translators: this and the following message should be limited in lenght,
+#. to avoid ellipsizing the labels.
+#.
+#: ../js/ui/windowManager.js:82
+msgid "Revert Settings"
+msgstr "Grąžinti nustatymus"
+
+#: ../js/ui/windowManager.js:85
+msgid "Keep Changes"
+msgstr "Įrašyti pakeitimus"
+
+#: ../js/ui/windowManager.js:103
+#, javascript-format
+msgid "Settings changes will revert in %d second"
+msgid_plural "Settings changes will revert in %d seconds"
+msgstr[0] "Pakeitimai bus grąžinti po %d sekundės"
+msgstr[1] "Pakeitimai bus grąžinti po %d sekundžių"
+msgstr[2] "Pakeitimai bus grąžinti po %d sekundžių"
+
+#. Translators: This represents the size of a window. The first number is
+#. * the width of the window and the second is the height.
+#: ../js/ui/windowManager.js:658
+#, javascript-format
+msgid "%d x %d"
+msgstr "%d x %d"
+
+#: ../js/ui/windowMenu.js:34
+msgid "Minimize"
+msgstr "Sumažinti"
+
+#: ../js/ui/windowMenu.js:41
+msgid "Unmaximize"
+msgstr "Grąžinti iš išdidinimo"
+
+#: ../js/ui/windowMenu.js:45
+msgid "Maximize"
+msgstr "Išdidinti"
+
+#: ../js/ui/windowMenu.js:52
+msgid "Move"
+msgstr "Perkelti"
+
+#: ../js/ui/windowMenu.js:58
+msgid "Resize"
+msgstr "Keisti dydį"
+
+#: ../js/ui/windowMenu.js:65
+msgid "Move Titlebar Onscreen"
+msgstr "Perkelti pavadinimo juostą į ekraną"
+
+#: ../js/ui/windowMenu.js:70
+msgid "Always on Top"
+msgstr "Visada viršuje"
+
+#: ../js/ui/windowMenu.js:89
+msgid "Always on Visible Workspace"
+msgstr "Visada matomame darbalaukyje"
+
+#: ../js/ui/windowMenu.js:105
+msgid "Move to Workspace Left"
+msgstr "Perkelti į kairiau esantį darbalaukį"
+
+#: ../js/ui/windowMenu.js:110
+msgid "Move to Workspace Right"
+msgstr "Perkelti į dešiniau esantį darbalaukį"
+
+#: ../js/ui/windowMenu.js:115
+msgid "Move to Workspace Up"
+msgstr "Perkelti į aukščiau esantį darbalaukį"
+
+#: ../js/ui/windowMenu.js:120
+msgid "Move to Workspace Down"
+msgstr "Perkelti į žemiau esantį darbalaukį"
+
+#: ../js/ui/windowMenu.js:136
+msgid "Move to Monitor Up"
+msgstr "Perkelti į aukščiau esantį monitorių"
+
+#: ../js/ui/windowMenu.js:142
+msgid "Move to Monitor Down"
+msgstr "Perkelti į žemiau esantį monitorių"
+
+#: ../js/ui/windowMenu.js:148
+msgid "Move to Monitor Left"
+msgstr "Perkelti į kairiau esantį monitorių"
+
+#: ../js/ui/windowMenu.js:154
+msgid "Move to Monitor Right"
+msgstr "Perkelti į dešiniau esantį monitorių"
+
+#: ../src/calendar-server/evolution-calendar.desktop.in.in.h:1
+msgid "Evolution Calendar"
+msgstr "Evolution kalendorius"
+
+#. translators:
+#. * The number of sound outputs on a particular device
+#: ../src/gvc/gvc-mixer-control.c:1835
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] "%u išvestis"
+msgstr[1] "%u išvestys"
+msgstr[2] "%u išvesčių"
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: ../src/gvc/gvc-mixer-control.c:1845
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] "%u įvestis"
+msgstr[1] "%u įvestys"
+msgstr[2] "%u įvesčių"
+
+#: ../src/gvc/gvc-mixer-control.c:2371
+msgid "System Sounds"
+msgstr "Sistemos garsai"
+
+#: ../src/main.c:381
+msgid "Print version"
+msgstr "Išvesti versijos numerį"
+
+#: ../src/main.c:387
+msgid "Mode used by GDM for login screen"
+msgstr "Veiksena, naudojama GDM prisijungimo ekrane"
+
+#: ../src/main.c:393
+msgid "Use a specific mode, e.g. \"gdm\" for login screen"
+msgstr "Naudoti konkrečią veikseną, pvz., „gdm“ prisijungimo ekranui"
+
+#: ../src/main.c:399
+msgid "List possible modes"
+msgstr "Išvardinti galimas veiksenas"
+
+#: ../src/shell-app.c:246
+msgctxt "program"
+msgid "Unknown"
+msgstr "Nežinoma"
+
+#: ../src/shell-app.c:487
+#, c-format
+msgid "Failed to launch “%s”"
+msgstr "Nepavyko paleisti „%s“"
+
+#: ../src/shell-keyring-prompt.c:730
+msgid "Passwords do not match."
+msgstr "Slaptažodžiai nesutampa."
+
+#: ../src/shell-keyring-prompt.c:738
+msgid "Password cannot be blank"
+msgstr "Slaptažodis negali būti tuščias"
+
+#: ../src/shell-polkit-authentication-agent.c:353
+msgid "Authentication dialog was dismissed by the user"
+msgstr "Naudotojas užvėrė tapatybės patvirtinimo dialogą"
+
+#~ msgid "GNOME Shell (wayland compositor)"
+#~ msgstr "GNOME Shell (wayland kompozitorius)"
+
+#~ msgid "%d Connected Device"
+#~ msgid_plural "%d Connected Devices"
+#~ msgstr[0] "%d prijungtas įrenginys"
+#~ msgstr[1] "%d prijungti įrenginiai"
+#~ msgstr[2] "%d prijungtų įrenginių"
+
+#~ msgid "Authentication required"
+#~ msgstr "Reikia patvirtinti tapatybę"
+
+#~ msgid "UPS"
+#~ msgstr "UPS"
+
+#~ msgid "Battery"
+#~ msgstr "Baterija"
+
+#~ msgid "Airplane Mode"
+#~ msgstr "Skrydžio veiksena"
+
+#~ msgid "On"
 #~ msgstr "Įjungta"
 
-#~ msgid "Icon"
-#~ msgstr "Piktograma"
+#~ msgctxt "event list time"
+#~ msgid "%H∶%M"
+#~ msgstr "%H∶%M"
 
-#~ msgid "Program"
-#~ msgstr "Programa"
+#~ msgctxt "event list time"
+#~ msgid "%l∶%M %p"
+#~ msgstr "%l:%M"
 
-#~ msgid "Startup Applications Preferences"
-#~ msgstr "Paleidžiamų programų nustatymai"
+#~ msgid "Invitation"
+#~ msgstr "Kvietimas"
 
-#~ msgid "No name"
-#~ msgstr "Be pavadinimo"
+#~ msgid "Call"
+#~ msgstr "Skambutis"
 
-#~ msgid "No description"
-#~ msgstr "Nėra aprašymo"
+#~ msgid "File Transfer"
+#~ msgstr "Failo persiuntimas"
 
-#~ msgid "Could not display help document"
-#~ msgstr "Nepavyko parodyti žinyno dokumento"
+#~ msgid "Chat"
+#~ msgstr "Pokalbiai"
 
-#~ msgid "Startup Applications"
-#~ msgstr "Paleidžiamos programos"
+#~ msgid "Invitation to %s"
+#~ msgstr "Kvietimas į %s"
 
-#~ msgid "Choose what applications to start when you log in"
-#~ msgstr "Pasirinkite, kokias programas paleisti jums prisijungiant"
+#~ msgid "%s is inviting you to join %s"
+#~ msgstr "%s jus kviečia prisijungti prie %s"
 
-#~ msgid "File is not a valid .desktop file"
-#~ msgstr "Failas nėra taisyklingas .desktop failas"
+#~ msgid "Decline"
+#~ msgstr "Atmesti"
 
-#~ msgid "Unrecognized desktop file Version '%s'"
-#~ msgstr "Neatpažinta darbastalio failo versija „%s“"
+#~ msgid "Accept"
+#~ msgstr "Priimti"
 
-#~ msgid "Starting %s"
-#~ msgstr "Paleidžiama %s"
+#~ msgid "Video call from %s"
+#~ msgstr "Vaizdo skambutis nuo %s"
 
-#~ msgid "Application does not accept documents on command line"
-#~ msgstr "Programa nepriima dokumentų komandinėje eilutėje"
+#~ msgid "Call from %s"
+#~ msgstr "Skambutis nuo %s"
 
-#~ msgid "Unrecognized launch option: %d"
-#~ msgstr "Neatpažintas paleidimo parametras: %d"
+#~ msgid "Answer"
+#~ msgstr "Atsiliepti"
 
-#~ msgid "Can't pass document URIs to a 'Type=Link' desktop entry"
-#~ msgstr "Negalima perduoti dokumentų URI „Type=Link“ darbastalio elementui"
+#~ msgid "%s is sending you %s"
+#~ msgstr "%s jums siunčia %s"
 
-#~ msgid "Not a launchable item"
-#~ msgstr "Nepaleidžiamas elementas"
+#~ msgid "%s would like permission to see when you are online"
+#~ msgstr "%s pageidauja matyti, kai esate prisijungę prie interneto"
 
-#~ msgid "Disable connection to session manager"
-#~ msgstr "Išjungti prisijungimą prie seansų valdyklės"
+#~ msgid "Network error"
+#~ msgstr "Tinklo klaida"
 
-#~ msgid "Specify file containing saved configuration"
-#~ msgstr "Nurodyti failą, kuriame įrašyta konfigūracija"
+#~ msgid "Authentication failed"
+#~ msgstr "Nepavyko patvirtinti tapatybės"
 
-#~ msgid "FILE"
-#~ msgstr "FAILAS"
+#~ msgid "Encryption error"
+#~ msgstr "Šifravimo klaida"
 
-#~ msgid "Specify session management ID"
-#~ msgstr "Nurodyti seanso valdymo ID"
+#~ msgid "Certificate not provided"
+#~ msgstr "Liudijimas nepateiktas"
 
-#~ msgid "ID"
-#~ msgstr "ID"
+#~ msgid "Certificate untrusted"
+#~ msgstr "Liudijimas nepatikimas"
 
-#~ msgid "Session management options:"
-#~ msgstr "Seanso valdymo parinktys:"
+#~ msgid "Certificate expired"
+#~ msgstr "Liudijimo galiojimas pasibaigęs"
 
-#~ msgid "Show session management options"
-#~ msgstr "Rodyti seanso valdymo parinktis"
+#~ msgid "Certificate not activated"
+#~ msgstr "Liudijimas neaktyvuotas"
+
+#~ msgid "Certificate hostname mismatch"
+#~ msgstr "Liudijimo serverio vardo nesutapimas"
+
+#~ msgid "Certificate fingerprint mismatch"
+#~ msgstr "Liudijimo piršto atspaudo nesutapimas"
+
+#~ msgid "Certificate self-signed"
+#~ msgstr "Liudijimas pačių pasirašytas"
+
+#~ msgid "Status is set to offline"
+#~ msgstr "Nustatyta atsijungimo būsena"
+
+#~ msgid "Encryption is not available"
+#~ msgstr "Šifravimas negalimas"
+
+#~ msgid "Certificate is invalid"
+#~ msgstr "Liudijimas netinkamas"
+
+#~ msgid "Connection has been refused"
+#~ msgstr "Ryšys atmestas"
+
+#~ msgid "Connection can't be established"
+#~ msgstr "Nepavyko užmegzti ryšio"
+
+#~ msgid "Connection has been lost"
+#~ msgstr "Ryšys nutrūko"
+
+#~ msgid "This account is already connected to the server"
+#~ msgstr "Ši paskyra jau prijungta prie serverio"
+
+#~ msgid ""
+#~ "Connection has been replaced by a new connection using the same resource"
+#~ msgstr "Ryšys pakeistas nauju ryšiu naudojant tą patį išteklių"
+
+#~ msgid "The account already exists on the server"
+#~ msgstr "Tokia paskyra serveryje jau yra"
+
+#~ msgid "Server is currently too busy to handle the connection"
+#~ msgstr "Šiuo metu serveris per daug užimtas šiai užklausai apdoroti"
+
+#~ msgid "Certificate has been revoked"
+#~ msgstr "Liudijimas atšauktas"
+
+#~ msgid ""
+#~ "Certificate uses an insecure cipher algorithm or is cryptographically weak"
+#~ msgstr ""
+#~ "Liudijimui naudojamas nesaugus šifravimo algoritmas arba jis "
+#~ "kriptografiškai silpnas"
+
+#~ msgid ""
+#~ "The length of the server certificate, or the depth of the server "
+#~ "certificate chain, exceed the limits imposed by the cryptography library"
+#~ msgstr ""
+#~ "Serverio liudijimo ilgis arba liudijimų eilės dydis viršija "
+#~ "kriptografijos bibliotekos apribojimus"
+
+#~ msgid "Internal error"
+#~ msgstr "Vidinė klaida"
+
+#~ msgid "Unable to connect to %s"
+#~ msgstr "Nepavyksta prisijungti prie %s"
+
+#~ msgid "View account"
+#~ msgstr "Rodyti paskyrą"
+
+#~ msgid "Unknown reason"
+#~ msgstr "Nežinoma priežastis"
+
+#~| msgid "Show the message tray"
+#~ msgid "Show the message list"
+#~ msgstr "Rodyti pranešimų sąrašą"
+
+#~ msgid "Captive Portal"
+#~ msgstr "Pagavimo portalas"
+
+#~ msgctxt "list sunday"
+#~ msgid "Su"
+#~ msgstr "Sk"
+
+#~ msgctxt "list monday"
+#~ msgid "M"
+#~ msgstr "Pr"
+
+#~ msgctxt "list tuesday"
+#~ msgid "T"
+#~ msgstr "An"
+
+#~ msgctxt "list wednesday"
+#~ msgid "W"
+#~ msgstr "Tr"
+
+#~ msgctxt "list thursday"
+#~ msgid "Th"
+#~ msgstr "Kt"
+
+#~ msgctxt "list friday"
+#~ msgid "F"
+#~ msgstr "Pn"
+
+#~ msgctxt "list saturday"
+#~ msgid "S"
+#~ msgstr "Št"
+
+#~ msgid "Nothing Scheduled"
+#~ msgstr "Nieko nesuplanuota"
+
+#~ msgid "Today"
+#~ msgstr "Šiandien"
+
+#~ msgid "Tomorrow"
+#~ msgstr "Rytoj"
+
+#~ msgid "This week"
+#~ msgstr "Šią savaitę"
+
+#~ msgid "Next week"
+#~ msgstr "Kitą savaitę"
+
+#~ msgid "Removable Devices"
+#~ msgstr "Išimami įrenginiai"
+
+#~ msgid "Eject"
+#~ msgstr "Išimti"
+
+#~ msgid "Unmute"
+#~ msgstr "Įjungti garsą"
+
+#~ msgid "Mute"
+#~ msgstr "Nutildyti"
+
+#~ msgid "Open Calendar"
+#~ msgstr "Atverti kalendorių"
+
+#~ msgid "Date & Time Settings"
+#~ msgstr "Datos ir laiko nustatymai"
+
+#~ msgid "Open"
+#~ msgstr "Atverti"
+
+#~ msgid "Remove"
+#~ msgstr "Pašalinti"
+
+#~ msgid "Clear Messages"
+#~ msgstr "Išvalyti pranešimus"
+
+#~ msgid "Notification Settings"
+#~ msgstr "Pranešimų nustatymai"
+
+#~ msgid "Tray Menu"
+#~ msgstr "Dėklo meniu"
+
+#~ msgid "No Messages"
+#~ msgstr "Nėra pranešimų"
+
+#~ msgid "Message Tray"
+#~ msgstr "Pranešimų juosta"
