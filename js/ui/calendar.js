@@ -725,6 +725,7 @@ const Calendar = new Lang.Class({
         // nRows here means 6 weeks + one header + one navbar
         let nRows = 8;
         while (row < 8) {
+            // xgettext:no-javascript-format
             let button = new St.Button({ label: iter.toLocaleFormat(C_("date day number format", "%d")),
                                          can_focus: true });
             let rtl = button.get_text_direction() == Clutter.TextDirection.RTL;
