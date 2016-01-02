@@ -7,11 +7,11 @@
 # Wibiharto <wibinem@yahoo.com>, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: gnome-shell master\n"
+"Project-Id-Version: gnome-shell gnome-3-18\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-09-19 08:21+0000\n"
-"PO-Revision-Date: 2015-09-19 19:34+0700\n"
+"POT-Creation-Date: 2016-01-02 10:15+0000\n"
+"PO-Revision-Date: 2016-01-02 19:12+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
 "Language: id\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Generator: Poedit 1.6.10\n"
+"X-Generator: Poedit 1.8.4\n"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
 msgid "System"
@@ -336,25 +336,33 @@ msgctxt "button"
 msgid "Sign In"
 msgstr "Masuk"
 
-#: ../js/gdm/loginDialog.js:281
+#: ../js/gdm/loginDialog.js:285
 msgid "Choose Session"
 msgstr "Pilih Sesi"
 
-#: ../js/gdm/loginDialog.js:431
+#. translators: this message is shown below the user list on the
+#. login screen. It can be activated to reveal an entry for
+#. manually entering the username.
+#: ../js/gdm/loginDialog.js:435
 msgid "Not listed?"
 msgstr "Tak masuk daftar?"
 
-#: ../js/gdm/loginDialog.js:850
+#. Translators: this message is shown below the username entry field
+#. to clue the user in on how to login to the local network realm
+#: ../js/gdm/loginDialog.js:854
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(cth., pengguna dari %s)"
 
-#: ../js/gdm/loginDialog.js:855 ../js/ui/components/networkAgent.js:271
+#. TTLS and PEAP are actually much more complicated, but this complication
+#. is not visible here since we only care about phase2 authentication
+#. (and don't even care of which one)
+#: ../js/gdm/loginDialog.js:859 ../js/ui/components/networkAgent.js:271
 #: ../js/ui/components/networkAgent.js:289
 msgid "Username: "
 msgstr "Nama pengguna: "
 
-#: ../js/gdm/loginDialog.js:1184
+#: ../js/gdm/loginDialog.js:1196
 msgid "Login Window"
 msgstr "Jendela Log Masuk"
 
@@ -362,6 +370,11 @@ msgstr "Jendela Log Masuk"
 msgid "Authentication error"
 msgstr "Galat otentikasi"
 
+#. We don't show fingerprint messages directly since it's
+#. not the main auth service. Instead we use the messages
+#. as a cue to display our own message.
+#. Translators: this message is shown below the password entry field
+#. to indicate the user can swipe their finger instead
 #: ../js/gdm/util.js:473
 msgid "(or swipe finger)"
 msgstr "(atau gesekkan jari)"
@@ -370,6 +383,8 @@ msgstr "(atau gesekkan jari)"
 msgid "Command not found"
 msgstr "Perintah tidak ditemukan"
 
+#. Replace "Error invoking GLib.shell_parse_argv: " with
+#. something nicer
 #: ../js/misc/util.js:152
 msgid "Could not parse command:"
 msgstr "Tak dapat mengurai perintah:"
@@ -379,70 +394,78 @@ msgstr "Tak dapat mengurai perintah:"
 msgid "Execution of “%s” failed:"
 msgstr "Eksekusi \"%s\" gagal:"
 
-#. Translators: Time in 24h format */
+#. Translators: Time in 24h format
 #: ../js/misc/util.js:191
 msgid "%H∶%M"
 msgstr "%H∶%M"
 
 #. Translators: this is the word "Yesterday" followed by a
-#. time string in 24h format. i.e. "Yesterday, 14:30" */
+#. time string in 24h format. i.e. "Yesterday, 14:30"
 #: ../js/misc/util.js:197
+#, no-c-format
 msgid "Yesterday, %H∶%M"
 msgstr "Kemarin, %H:%M"
 
 #. Translators: this is the week day name followed by a time
-#. string in 24h format. i.e. "Monday, 14:30" */
+#. string in 24h format. i.e. "Monday, 14:30"
 #: ../js/misc/util.js:203
+#, no-c-format
 msgid "%A, %H∶%M"
 msgstr "%A, %H∶%M"
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 24h format.
-#. i.e. "May 25, 14:30" */
+#. i.e. "May 25, 14:30"
 #: ../js/misc/util.js:209
+#, no-c-format
 msgid "%B %d, %H∶%M"
 msgstr "%d %B, %H∶%M"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
-#. i.e. "May 25 2012, 14:30" */
+#. i.e. "May 25 2012, 14:30"
 #: ../js/misc/util.js:215
+#, no-c-format
 msgid "%B %d %Y, %H∶%M"
 msgstr "%d %B %Y, %H∶%M"
 
-#. Translators: Time in 12h format */
+#. Translators: Time in 12h format
 #: ../js/misc/util.js:220
 msgid "%l∶%M %p"
 msgstr "%H∶%M"
 
 #. Translators: this is the word "Yesterday" followed by a
-#. time string in 12h format. i.e. "Yesterday, 2:30 pm" */
+#. time string in 12h format. i.e. "Yesterday, 2:30 pm"
 #: ../js/misc/util.js:226
+#, no-c-format
 msgid "Yesterday, %l∶%M %p"
 msgstr "Kemarin, %l∶%M %p"
 
 #. Translators: this is the week day name followed by a time
-#. string in 12h format. i.e. "Monday, 2:30 pm" */
+#. string in 12h format. i.e. "Monday, 2:30 pm"
 #: ../js/misc/util.js:232
+#, no-c-format
 msgid "%A, %l∶%M %p"
 msgstr "%A, %l∶%M %p"
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 12h format.
-#. i.e. "May 25, 2:30 pm" */
+#. i.e. "May 25, 2:30 pm"
 #: ../js/misc/util.js:238
+#, no-c-format
 msgid "%B %d, %l∶%M %p"
 msgstr "%d %B, %l∶%M %p"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
-#. i.e. "May 25 2012, 2:30 pm"*/
+#. i.e. "May 25 2012, 2:30 pm"
 #: ../js/misc/util.js:244
+#, no-c-format
 msgid "%B %d %Y, %l∶%M %p"
 msgstr "%d %B %Y, %l∶%M %p"
 
 #. TRANSLATORS: this is the title of the wifi captive portal login
-#. * window, until we know the title of the actual login page */
+#. * window, until we know the title of the actual login page
 #: ../js/portalHelper/main.js:85
 msgid "Web Authentication Redirect"
 msgstr "Pengalihan Otentikasi Web"
@@ -493,12 +516,11 @@ msgstr "Ubah Latar…"
 msgid "Display Settings"
 msgstr "Pengaturan Tampilan"
 
-#: ../js/ui/backgroundMenu.js:22 ../js/ui/panel.js:650
-#: ../js/ui/status/system.js:366
+#: ../js/ui/backgroundMenu.js:22 ../js/ui/status/system.js:366
 msgid "Settings"
 msgstr "Pengaturan"
 
-#. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday). */
+#. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
 #: ../js/ui/calendar.js:55
 msgctxt "calendar-no-work"
 msgid "06"
@@ -508,43 +530,43 @@ msgstr "06"
 #. *
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
-#. */
+#.
 #: ../js/ui/calendar.js:84
 msgctxt "grid sunday"
 msgid "S"
 msgstr "M"
 
-#. Translators: Calendar grid abbreviation for Monday */
+#. Translators: Calendar grid abbreviation for Monday
 #: ../js/ui/calendar.js:86
 msgctxt "grid monday"
 msgid "M"
 msgstr "S"
 
-#. Translators: Calendar grid abbreviation for Tuesday */
+#. Translators: Calendar grid abbreviation for Tuesday
 #: ../js/ui/calendar.js:88
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "S"
 
-#. Translators: Calendar grid abbreviation for Wednesday */
+#. Translators: Calendar grid abbreviation for Wednesday
 #: ../js/ui/calendar.js:90
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "R"
 
-#. Translators: Calendar grid abbreviation for Thursday */
+#. Translators: Calendar grid abbreviation for Thursday
 #: ../js/ui/calendar.js:92
 msgctxt "grid thursday"
 msgid "T"
 msgstr "K"
 
-#. Translators: Calendar grid abbreviation for Friday */
+#. Translators: Calendar grid abbreviation for Friday
 #: ../js/ui/calendar.js:94
 msgctxt "grid friday"
 msgid "F"
 msgstr "J"
 
-#. Translators: Calendar grid abbreviation for Saturday */
+#. Translators: Calendar grid abbreviation for Saturday
 #: ../js/ui/calendar.js:96
 msgctxt "grid saturday"
 msgid "S"
@@ -564,39 +586,39 @@ msgstr "Minggu %V"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
-#. */
+#.
 #: ../js/ui/calendar.js:1188
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Sepanjang Hari"
 
-#: ../js/ui/calendar.js:1291
+#: ../js/ui/calendar.js:1295
 msgid "Clear section"
 msgstr "Bersihkan seksi"
 
-#: ../js/ui/calendar.js:1518
+#: ../js/ui/calendar.js:1522
 msgid "Events"
 msgstr "Kejadian"
 
-#: ../js/ui/calendar.js:1527
+#: ../js/ui/calendar.js:1531
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d %B"
 
-#: ../js/ui/calendar.js:1531
+#: ../js/ui/calendar.js:1535
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d %B %Y"
 
-#: ../js/ui/calendar.js:1616
+#: ../js/ui/calendar.js:1620
 msgid "Notifications"
 msgstr "Pemberitahuan"
 
-#: ../js/ui/calendar.js:1767
+#: ../js/ui/calendar.js:1771
 msgid "No Notifications"
 msgstr "Tak Ada Pemberitahuan"
 
-#: ../js/ui/calendar.js:1770
+#: ../js/ui/calendar.js:1774
 msgid "No Events"
 msgstr "Tak Ada Kejadian"
 
@@ -608,7 +630,7 @@ msgstr "Drive eksternal tersambung"
 msgid "External drive disconnected"
 msgstr "Drive eksternal terputus"
 
-#: ../js/ui/components/autorunManager.js:354
+#: ../js/ui/components/autorunManager.js:351
 #, javascript-format
 msgid "Open with %s"
 msgstr "Buka dengan %s"
@@ -626,6 +648,7 @@ msgstr "Ketik lagi:"
 msgid "Connect"
 msgstr "Sambung"
 
+#. Cisco LEAP
 #: ../js/ui/components/networkAgent.js:233
 #: ../js/ui/components/networkAgent.js:245
 #: ../js/ui/components/networkAgent.js:273
@@ -634,6 +657,7 @@ msgstr "Sambung"
 msgid "Password: "
 msgstr "Sandi: "
 
+#. static WEP
 #: ../js/ui/components/networkAgent.js:238
 msgid "Key: "
 msgstr "Tombol: "
@@ -725,13 +749,13 @@ msgstr "Otentikasi"
 #. Translators: "that didn't work" refers to the fact that the
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
-#. * for instance. */
+#. * for instance.
 #: ../js/ui/components/polkitAgent.js:301 ../js/ui/shellMountOperation.js:383
 msgid "Sorry, that didn't work. Please try again."
 msgstr "Maaf, tidak berhasil. Silakan coba lagi."
 
 #. Translators: this is the other person changing their old IM name to their new
-#. IM name. */
+#. IM name.
 #: ../js/ui/components/telepathyClient.js:759
 #, javascript-format
 msgid "%s is now known as %s"
@@ -745,13 +769,15 @@ msgstr "Jendela"
 msgid "Show Applications"
 msgstr "Tampilkan Aplikasi"
 
+#. Translators: this is the name of the dock/favorites area on
+#. the left of the overview
 #: ../js/ui/dash.js:449
 msgid "Dash"
 msgstr "Dash"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
-#. */
+#.
 #: ../js/ui/dateMenu.js:73
 msgid "%B %e %Y"
 msgstr "%e %B %Y"
@@ -759,7 +785,7 @@ msgstr "%e %B %Y"
 #. Translators: This is the accessible name of the date button shown
 #. * below the time in the shell; it should combine the weekday and the
 #. * date, e.g. "Tuesday February 17 2015".
-#. */
+#.
 #: ../js/ui/dateMenu.js:80
 msgid "%A %B %e %Y"
 msgstr "%A %e %B %Y"
@@ -884,13 +910,13 @@ msgstr "Beberapa aplikasi sedang sibuk atau belum disimpan perubahannya."
 msgid "Other users are logged in."
 msgstr "Pengguna lain sedang log masuk."
 
-#. Translators: Remote here refers to a remote session, like a ssh login */
+#. Translators: Remote here refers to a remote session, like a ssh login
 #: ../js/ui/endSessionDialog.js:640
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (jarak jauh)"
 
-#. Translators: Console here refers to a tty like a VT console */
+#. Translators: Console here refers to a tty like a VT console
 #: ../js/ui/endSessionDialog.js:643
 #, javascript-format
 msgid "%s (console)"
@@ -909,7 +935,7 @@ msgstr "Unduh dan pasang \"%s\" dari extensions.gnome.org?"
 msgid "Keyboard"
 msgstr "Papan Ketik"
 
-#. translators: 'Hide' is a verb */
+#. translators: 'Hide' is a verb
 #: ../js/ui/legacyTray.js:66
 msgid "Hide tray"
 msgstr "Sembunyikan baki"
@@ -922,7 +948,7 @@ msgstr "Ikon Status"
 msgid "No extensions installed"
 msgstr "Tak ada ekstensi terpasang"
 
-#. Translators: argument is an extension UUID. */
+#. Translators: argument is an extension UUID.
 #: ../js/ui/lookingGlass.js:697
 #, javascript-format
 msgid "%s has not emitted any errors."
@@ -942,7 +968,7 @@ msgstr "Diaktifkan"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:719 ../src/gvc/gvc-mixer-control.c:1830
+#: ../js/ui/lookingGlass.js:719 ../src/gvc/gvc-mixer-control.c:1828
 msgid "Disabled"
 msgstr "Dinonaktifkan"
 
@@ -981,26 +1007,36 @@ msgstr "Gambaran"
 #. Translators: this is the text displayed
 #. in the search entry when no search is
 #. active; it should not exceed ~30
-#. characters. */
+#. characters.
 #: ../js/ui/overview.js:244
 msgid "Type to search…"
 msgstr "Ketik untuk mencari…"
 
-#: ../js/ui/panel.js:352
+#: ../js/ui/panel.js:358
 msgid "Quit"
 msgstr "Keluar"
 
 #. Translators: If there is no suitable word for "Activities"
-#. in your language, you can use the word for "Overview". */
-#: ../js/ui/panel.js:404
+#. in your language, you can use the word for "Overview".
+#: ../js/ui/panel.js:414
 msgid "Activities"
 msgstr "Aktivitas"
 
-#: ../js/ui/panel.js:754
+#: ../js/ui/panel.js:695
+msgctxt "System menu in the top bar"
+msgid "System"
+msgstr "Sistem"
+
+#: ../js/ui/panel.js:807
 msgid "Top Bar"
 msgstr "Bar Atas"
 
 # Dirgita: Hayo, enaknya pake I/O atau ON/OFF?^^
+#. Translators: this MUST be either "toggle-switch-us"
+#. (for toggle switches containing the English words
+#. "ON" and "OFF") or "toggle-switch-intl" (for toggle
+#. switches containing "◯" and "|"). Other values will
+#. simply result in invisible toggle switches.
 #: ../js/ui/popupMenu.js:289
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
@@ -1018,7 +1054,7 @@ msgid "Restarting…"
 msgstr "Memulai ulang..."
 
 #. Translators: This is a time format for a date in
-#. long format */
+#. long format
 #: ../js/ui/screenShield.js:85
 msgid "%A, %B %d"
 msgstr "%A, %d %B"
@@ -1043,6 +1079,13 @@ msgstr "Kunci"
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME perlu mengunci layar"
 
+#. We could not become modal, so we can't activate the
+#. screenshield. The user is probably very upset at this
+#. point, but any application using global grabs is broken
+#. Just tell him to stop using this app
+#.
+#. XXX: another option is to kick the user into the gdm login
+#. screen, where we're not affected by grabs
 #: ../js/ui/screenShield.js:805 ../js/ui/screenShield.js:1271
 msgid "Unable to lock"
 msgstr "Tak bisa mengunci"
@@ -1138,7 +1181,7 @@ msgstr "Matikan"
 msgid "Bluetooth Settings"
 msgstr "Pengaturan Bluetooth"
 
-#. Translators: this is the number of connected bluetooth devices */
+#. Translators: this is the number of connected bluetooth devices
 #: ../js/ui/status/bluetooth.js:105
 #, javascript-format
 msgid "%d Connected"
@@ -1185,13 +1228,13 @@ msgstr "Fungsikan"
 msgid "<unknown>"
 msgstr "<tak dikenal>"
 
-#. Translators: %s is a network identifier */
+#. Translators: %s is a network identifier
 #: ../js/ui/status/network.js:451 ../js/ui/status/network.js:1308
 #, javascript-format
 msgid "%s Off"
 msgstr "%s Mati"
 
-#. Translators: %s is a network identifier */
+#. Translators: %s is a network identifier
 #: ../js/ui/status/network.js:454
 #, javascript-format
 msgid "%s Connected"
@@ -1199,45 +1242,45 @@ msgstr "%s Tersambung"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu);
-#. %s is a network identifier */
+#. %s is a network identifier
 #: ../js/ui/status/network.js:459
 #, javascript-format
 msgid "%s Unmanaged"
 msgstr "%s Tak Dikelola"
 
-#. Translators: %s is a network identifier */
+#. Translators: %s is a network identifier
 #: ../js/ui/status/network.js:462
 #, javascript-format
 msgid "%s Disconnecting"
 msgstr "%s Memutus"
 
-#. Translators: %s is a network identifier */
+#. Translators: %s is a network identifier
 #: ../js/ui/status/network.js:469 ../js/ui/status/network.js:1300
 #, javascript-format
 msgid "%s Connecting"
 msgstr "%s Menyambung"
 
-#. Translators: this is for network connections that require some kind of key or password; %s is a network identifier */
+#. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
 #: ../js/ui/status/network.js:472
 #, javascript-format
 msgid "%s Requires Authentication"
 msgstr "%s Memerlukan Otentikasi"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
-#. module, which is missing; %s is a network identifier */
+#. module, which is missing; %s is a network identifier
 #: ../js/ui/status/network.js:480
 #, javascript-format
 msgid "Firmware Missing For %s"
 msgstr "Firmware Hilang Untuk %s"
 
 #. Translators: this is for a network device that cannot be activated (for example it
-#. is disabled by rfkill, or it has no coverage; %s is a network identifier */
+#. is disabled by rfkill, or it has no coverage; %s is a network identifier
 #: ../js/ui/status/network.js:484
 #, javascript-format
 msgid "%s Unavailable"
 msgstr "%s Tak tersedia"
 
-#. Translators: %s is a network identifier */
+#. Translators: %s is a network identifier
 #: ../js/ui/status/network.js:487
 #, javascript-format
 msgid "%s Connection Failed"
@@ -1251,14 +1294,14 @@ msgstr "Pengaturan Kabel"
 msgid "Mobile Broadband Settings"
 msgstr "Pengaturan Data Seluler"
 
-#. Translators: %s is a network identifier */
+#. Translators: %s is a network identifier
 #: ../js/ui/status/network.js:588 ../js/ui/status/network.js:1305
 #, javascript-format
 msgid "%s Hardware Disabled"
 msgstr "%s Perangkat Keras Dinonaktifkan"
 
 #. Translators: this is for a network device that cannot be activated
-#. because it's disabled by rfkill (airplane mode); %s is a network identifier */
+#. because it's disabled by rfkill (airplane mode); %s is a network identifier
 #: ../js/ui/status/network.js:592
 #, javascript-format
 msgid "%s Disabled"
@@ -1320,13 +1363,13 @@ msgstr "Pengaturan Wi-Fi"
 msgid "Turn On"
 msgstr "Nyalakan"
 
-#. Translators: %s is a network identifier */
+#. Translators: %s is a network identifier
 #: ../js/ui/status/network.js:1296
 #, javascript-format
 msgid "%s Hotspot Active"
 msgstr "%s Hotspot Aktif"
 
-#. Translators: %s is a network identifier */
+#. Translators: %s is a network identifier
 #: ../js/ui/status/network.js:1311
 #, javascript-format
 msgid "%s Not Connected"
@@ -1336,7 +1379,7 @@ msgstr "%s Tak Tersambung"
 msgid "connecting..."
 msgstr "menghubungi..."
 
-#. Translators: this is for network connections that require some kind of key or password */
+#. Translators: this is for network connections that require some kind of key or password
 #: ../js/ui/status/network.js:1414
 msgid "authentication required"
 msgstr "diperlukan otentikasi"
@@ -1377,20 +1420,27 @@ msgstr "Pengaturan Daya"
 msgid "Fully Charged"
 msgstr "Terisi Penuh"
 
+#. 0 is reported when UPower does not have enough data
+#. to estimate battery life
 #: ../js/ui/status/power.js:72 ../js/ui/status/power.js:78
 msgid "Estimating…"
 msgstr "Memperkirakan…"
 
+#. Translators: this is <hours>:<minutes> Remaining (<percentage>)
 #: ../js/ui/status/power.js:86
 #, javascript-format
 msgid "%d∶%02d Remaining (%d%%)"
 msgstr "%d:%02d Tersisa (%d%%)"
 
+#. Translators: this is <hours>:<minutes> Until Full (<percentage>)
 #: ../js/ui/status/power.js:91
 #, javascript-format
 msgid "%d∶%02d Until Full (%d%%)"
 msgstr "%d:%02d Sampai Penuh (%d%%)"
 
+#. The menu only appears when airplane mode is on, so just
+#. statically build it as if it was on, rather than dynamically
+#. changing the menu contents.
 #: ../js/ui/status/rfkill.js:88
 msgid "Airplane Mode On"
 msgstr "Mode Pesawat Terbang Aktif"
@@ -1458,7 +1508,7 @@ msgstr "Apakah Anda ingin mempertahankan pengaturan tampilan ini?"
 
 #. Translators: this and the following message should be limited in lenght,
 #. to avoid ellipsizing the labels.
-#. */
+#.
 #: ../js/ui/windowManager.js:82
 msgid "Revert Settings"
 msgstr "Balikkan Tatanan"
@@ -1474,7 +1524,7 @@ msgid_plural "Settings changes will revert in %d seconds"
 msgstr[0] "Perubahan tatanan akan dikembalikan dalam %d detik"
 
 #. Translators: This represents the size of a window. The first number is
-#. * the width of the window and the second is the height. */
+#. * the width of the window and the second is the height.
 #: ../js/ui/windowManager.js:658
 #, javascript-format
 msgid "%d x %d"
@@ -1550,7 +1600,7 @@ msgstr "Evolution Kalender"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1837
+#: ../src/gvc/gvc-mixer-control.c:1835
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -1558,38 +1608,38 @@ msgstr[0] "%u Keluaran"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1847
+#: ../src/gvc/gvc-mixer-control.c:1845
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u Masukan"
 
-#: ../src/gvc/gvc-mixer-control.c:2373
+#: ../src/gvc/gvc-mixer-control.c:2371
 msgid "System Sounds"
 msgstr "Suara Sistem"
 
-#: ../src/main.c:373
+#: ../src/main.c:381
 msgid "Print version"
 msgstr "Versi Cetak"
 
-#: ../src/main.c:379
+#: ../src/main.c:387
 msgid "Mode used by GDM for login screen"
 msgstr "Mode yang dipakai oleh layar log masuk GDM"
 
-#: ../src/main.c:385
+#: ../src/main.c:393
 msgid "Use a specific mode, e.g. \"gdm\" for login screen"
 msgstr "Menggunakan mode tertentu, mis. \"gdm\" untuk layar masuk"
 
-#: ../src/main.c:391
+#: ../src/main.c:399
 msgid "List possible modes"
 msgstr "Menampilkan mode yang mungkin"
 
-#: ../src/shell-app.c:239
+#: ../src/shell-app.c:246
 msgctxt "program"
 msgid "Unknown"
 msgstr "Tak dikenal"
 
-#: ../src/shell-app.c:480
+#: ../src/shell-app.c:487
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "Gagal meluncurkan \"%s\""
