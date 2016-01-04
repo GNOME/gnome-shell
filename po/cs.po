@@ -5,15 +5,15 @@
 # Andre Klapper <ak-47@gmx.net>, 2009.
 # Petr Kovar <pknbe@volny.cz>, 2009, 2010, 2011, 2012, 2014, 2015.
 # Adam Matoušek <adamatousek@gmail.com>, 2012, 2013.
-# Marek Černocký <marek@manet.cz>, 2012, 2013, 2014, 2015.
+# Marek Černocký <marek@manet.cz>, 2012, 2013, 2014, 2015, 2016.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-10-27 22:11+0000\n"
-"PO-Revision-Date: 2015-10-28 10:56+0100\n"
+"POT-Creation-Date: 2016-01-04 22:19+0000\n"
+"PO-Revision-Date: 2016-01-04 23:54+0100\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -48,15 +48,6 @@ msgstr "Zobrazit všechny aplikace"
 msgid "Open the application menu"
 msgstr "Otevřít nabídku aplikací"
 
-#: ../data/gnome-shell.desktop.in.in.h:1
-msgid "GNOME Shell"
-msgstr "Prostředí GNOME Shell"
-
-#: ../data/gnome-shell.desktop.in.in.h:2
-#: ../data/gnome-shell-wayland.desktop.in.in.h:2
-msgid "Window management and application launching"
-msgstr "Správa oken a spouštění aplikací"
-
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:1
 msgid "GNOME Shell Extension Preferences"
 msgstr "Předvolby rozšíření GNOME Shell"
@@ -65,9 +56,13 @@ msgstr "Předvolby rozšíření GNOME Shell"
 msgid "Configure GNOME Shell Extensions"
 msgstr "Nastavit rozšíření GNOME Shell"
 
-#: ../data/gnome-shell-wayland.desktop.in.in.h:1
-msgid "GNOME Shell (wayland compositor)"
-msgstr "GNOME Shell (kompozitor Waylandu)"
+#: ../data/org.gnome.Shell.desktop.in.in.h:1
+msgid "GNOME Shell"
+msgstr "Prostředí GNOME Shell"
+
+#: ../data/org.gnome.Shell.desktop.in.in.h:2
+msgid "Window management and application launching"
+msgstr "Správa oken a spouštění aplikací"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:1
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
@@ -172,75 +167,92 @@ msgstr ""
 "volby."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:18
+msgid ""
+"Whether the default Bluetooth adapter had set up devices associated to it"
+msgstr "Zda měl adaptér Bluetooth nastavená zařízení pro spolupráci s ním"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:19
+msgid ""
+"The shell will only show a Bluetooth menu item if a Bluetooth adapter is "
+"powered, or if there were devices set up associated with the default "
+"adapter. This will be reset if the default adapter is ever seen not to have "
+"devices associated to it."
+msgstr ""
+"Shell zobrazuje nabídku Bluetooth jen v případě, že je adaptér Bluetooth "
+"zapnutý, nebo když existují nějaká zařízení nastavená pro spolupráci s "
+"výchozím adaptérem. Nabídka zmizí, když se zjistí, že výchozí adaptér nemá "
+"přiřazená žádná zařízení."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:20
 msgid "Show the week date in the calendar"
 msgstr "Zobrazovat v kalendáři čísla týdnů"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:21
 msgid "If true, display the ISO week date in the calendar."
 msgstr "Je-li zapnuto, zobrazovat v kalendáři čísla týdnů dle ISO."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:22
 msgid "Keybinding to open the application menu"
 msgstr "Klávesová zkratka otevírající nabidku aplikací"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:23
 msgid "Keybinding to open the application menu."
 msgstr "Klávesová zkratka sloužící k otevření nabídky aplikací."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:22
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:24
 msgid "Keybinding to open the \"Show Applications\" view"
 msgstr "Klávesová zkratka otevírající zobrazení aplikací"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:23
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:25
 msgid ""
 "Keybinding to open the \"Show Applications\" view of the Activities Overview."
 msgstr ""
 "Klávesová zkratka sloužící k otevření nabídky aplikací v Přehledu činností."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:24
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:26
 msgid "Keybinding to open the overview"
 msgstr "Klávesová zkratka otevírající přehled"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:25
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:27
 msgid "Keybinding to open the Activities Overview."
 msgstr "Klávesová zkratka sloužící k otevření přehledu činností"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:26
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:28
 msgid "Keybinding to toggle the visibility of the notification list"
 msgstr "Klávesová zkratka přepínající viditelnost seznamu upozornění"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:27
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:29
 msgid "Keybinding to toggle the visibility of the notification list."
 msgstr "Klávesová zkratka sloužící k přepnutí viditelnosti seznamu upozornění."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:28
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:30
 msgid "Keybinding to focus the active notification"
 msgstr "Klávesová zkratka zaměřující aktivního upozornění"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:29
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:31
 msgid "Keybinding to focus the active notification."
 msgstr "Klávesová zkratka sloužící k zaměření aktivního upozornění."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:30
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:32
 msgid ""
 "Keybinding that pauses and resumes all running tweens, for debugging purposes"
 msgstr ""
 "Klávesová zkratka k pozastavení a opětovnému spuštění všech běžících animací "
 "tweens; pro účely ladění"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:31
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:33
 msgid "Which keyboard to use"
 msgstr "Která klávesnice se má používat"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:32
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:34
 msgid "The type of keyboard to use."
 msgstr "Typ klávesnice, který se má používat."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:33
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:35
 msgid "Limit switcher to current workspace."
 msgstr "Omezit přepínání jen na aktuální plochu"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:34
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:36
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
@@ -248,11 +260,11 @@ msgstr ""
 "Je-li zapnuto, objeví se v přepínači aplikací jen ty, co jsou na aktuální "
 "pracovní ploše. V opačném případě jsou zahrnuty všechny aplikace."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:35
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:37
 msgid "The application icon mode."
 msgstr "Režim ikon aplikací"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:36
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:38
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-"
@@ -262,7 +274,7 @@ msgstr ""
 "only“ (zobrazí náhled okna), „app-icon-only“ (zobrazí pouze ikonu aplikace) "
 "a „both“ (zobrazí náhled i ikonu)."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:37
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:39
 msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
@@ -270,28 +282,28 @@ msgstr ""
 "Je-li zapnuto, objeví se v přepínači oken jen ty, co jsou na aktuální "
 "pracovní ploše. V opačném případě jsou zahrnuta všechna okna."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:38
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:40
 msgid "Attach modal dialog to the parent window"
 msgstr "Modální dialogová okna připojovat k rodičovskému oknu"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:39
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:41
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
 msgstr "Když běží GNOME Shell, tento klíč přepíše klíč v org.gnome.mutter"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:40
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:42
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr "Okna upuštěná u okraje obrazovky nechat řadit jako dlaždice"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:41
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:43
 msgid "Workspaces are managed dynamically"
 msgstr "Pracovní plochy jsou spravovány dynamicky"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:42
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:44
 msgid "Workspaces only on primary monitor"
 msgstr "Pracovní plochy jen na hlavním monitoru"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:43
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:45
 msgid "Delay focus changes in mouse mode until the pointer stops moving"
 msgstr "Se změnou zaměření v režimu myši čekat na zastavení pohybu ukazatele"
 
@@ -331,20 +343,20 @@ msgctxt "button"
 msgid "Sign In"
 msgstr "Přihlásit se"
 
-#: ../js/gdm/loginDialog.js:281
+#: ../js/gdm/loginDialog.js:285
 msgid "Choose Session"
 msgstr "Vybrat sezení"
 
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:431
+#: ../js/gdm/loginDialog.js:435
 msgid "Not listed?"
 msgstr "Nejste na seznamu?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: ../js/gdm/loginDialog.js:850
+#: ../js/gdm/loginDialog.js:854
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(např. uživatel nebo %s)"
@@ -352,12 +364,12 @@ msgstr "(např. uživatel nebo %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:855 ../js/ui/components/networkAgent.js:271
+#: ../js/gdm/loginDialog.js:859 ../js/ui/components/networkAgent.js:271
 #: ../js/ui/components/networkAgent.js:289
 msgid "Username: "
 msgstr "Uživatelské jméno: "
 
-#: ../js/gdm/loginDialog.js:1180
+#: ../js/gdm/loginDialog.js:1196
 msgid "Login Window"
 msgstr "Přihlašovací okno"
 
@@ -493,12 +505,12 @@ msgstr "Přidat mezi oblíbené"
 msgid "Show Details"
 msgstr "Zobrazit podrobnosti"
 
-#: ../js/ui/appFavorites.js:132
+#: ../js/ui/appFavorites.js:133
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "%s byl přidán mezi oblíbené."
 
-#: ../js/ui/appFavorites.js:166
+#: ../js/ui/appFavorites.js:167
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "%s byl odstraněn z oblíbených."
@@ -575,51 +587,51 @@ msgstr "Předchozí měsíc"
 msgid "Next month"
 msgstr "Následující měsíc"
 
-#: ../js/ui/calendar.js:728
-#, javascript-format
+#: ../js/ui/calendar.js:729
+#, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%e"
 
-#: ../js/ui/calendar.js:783
+#: ../js/ui/calendar.js:784
 msgid "Week %V"
 msgstr "%V. týden"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: ../js/ui/calendar.js:1188
+#: ../js/ui/calendar.js:1189
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Celý den"
 
-#: ../js/ui/calendar.js:1295
+#: ../js/ui/calendar.js:1296
 msgid "Clear section"
 msgstr "Vymazat část"
 
-#: ../js/ui/calendar.js:1522
+#: ../js/ui/calendar.js:1523
 msgid "Events"
 msgstr "Události"
 
-#: ../js/ui/calendar.js:1531
+#: ../js/ui/calendar.js:1532
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %e. %B"
 
-#: ../js/ui/calendar.js:1535
+#: ../js/ui/calendar.js:1536
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %e. %B %Y"
 
-#: ../js/ui/calendar.js:1620
+#: ../js/ui/calendar.js:1621
 msgid "Notifications"
 msgstr "Upozornění"
 
-#: ../js/ui/calendar.js:1771
+#: ../js/ui/calendar.js:1772
 msgid "No Notifications"
 msgstr "Nejsou žádná upozornění"
 
-#: ../js/ui/calendar.js:1774
+#: ../js/ui/calendar.js:1775
 msgid "No Events"
 msgstr "Nejsou žádné události"
 
@@ -631,7 +643,7 @@ msgstr "Externí svazek připojen"
 msgid "External drive disconnected"
 msgstr "Externí svazek odpojen"
 
-#: ../js/ui/components/autorunManager.js:351
+#: ../js/ui/components/autorunManager.js:355
 #, javascript-format
 msgid "Open with %s"
 msgstr "Otevřít pomocí %s"
@@ -1190,19 +1202,16 @@ msgstr "Vysoký kontrast"
 msgid "Large Text"
 msgstr "Styl velkého textu"
 
-#: ../js/ui/status/bluetooth.js:51 ../js/ui/status/network.js:178
-#: ../js/ui/status/network.js:353 ../js/ui/status/network.js:1279
-#: ../js/ui/status/network.js:1394 ../js/ui/status/rfkill.js:90
-#: ../js/ui/status/rfkill.js:117
-msgid "Turn Off"
-msgstr "Vypnout"
+#: ../js/ui/status/bluetooth.js:47
+msgid "Bluetooth"
+msgstr "Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:54
+#: ../js/ui/status/bluetooth.js:56
 msgid "Bluetooth Settings"
 msgstr "Nastavení Bluetooth"
 
 #. Translators: this is the number of connected bluetooth devices
-#: ../js/ui/status/bluetooth.js:105
+#: ../js/ui/status/bluetooth.js:136
 #, javascript-format
 msgid "%d Connected"
 msgid_plural "%d Connected"
@@ -1210,9 +1219,24 @@ msgstr[0] "%d připojené"
 msgstr[1] "%d připojená"
 msgstr[2] "%d připojených"
 
-#: ../js/ui/status/bluetooth.js:107
+#: ../js/ui/status/bluetooth.js:138
+msgid "Off"
+msgstr "Vypnuto"
+
+#: ../js/ui/status/bluetooth.js:140
 msgid "Not In Use"
 msgstr "Nepoužívá se"
+
+#: ../js/ui/status/bluetooth.js:142 ../js/ui/status/network.js:1279
+msgid "Turn On"
+msgstr "Zapnout"
+
+#: ../js/ui/status/bluetooth.js:142 ../js/ui/status/network.js:178
+#: ../js/ui/status/network.js:353 ../js/ui/status/network.js:1279
+#: ../js/ui/status/network.js:1394 ../js/ui/status/rfkill.js:90
+#: ../js/ui/status/rfkill.js:117
+msgid "Turn Off"
+msgstr "Vypnout"
 
 #: ../js/ui/status/brightness.js:44
 msgid "Brightness"
@@ -1381,10 +1405,6 @@ msgstr "Vybrat síť"
 msgid "Wi-Fi Settings"
 msgstr "Nastavení WiFi"
 
-#: ../js/ui/status/network.js:1279
-msgid "Turn On"
-msgstr "Zapnout"
-
 #. Translators: %s is a network identifier
 #: ../js/ui/status/network.js:1296
 #, javascript-format
@@ -1434,31 +1454,36 @@ msgstr "Připojení selhalo"
 msgid "Activation of network connection failed"
 msgstr "Aktivace síťového připojení selhala"
 
-#: ../js/ui/status/power.js:49
+#: ../js/ui/status/power.js:61
 msgid "Power Settings"
 msgstr "Nastavení napájení"
 
-#: ../js/ui/status/power.js:65
+#: ../js/ui/status/power.js:77
 msgid "Fully Charged"
 msgstr "Plně nabito"
 
 #. 0 is reported when UPower does not have enough data
 #. to estimate battery life
-#: ../js/ui/status/power.js:72 ../js/ui/status/power.js:78
+#: ../js/ui/status/power.js:84 ../js/ui/status/power.js:90
 msgid "Estimating…"
 msgstr "Odhaduje se…"
 
 #. Translators: this is <hours>:<minutes> Remaining (<percentage>)
-#: ../js/ui/status/power.js:86
+#: ../js/ui/status/power.js:98
 #, javascript-format
-msgid "%d∶%02d Remaining (%d%%)"
+msgid "%d∶%02d Remaining (%d %%)"
 msgstr "Zbývá %d∶%02d (%d %%)"
 
 #. Translators: this is <hours>:<minutes> Until Full (<percentage>)
-#: ../js/ui/status/power.js:91
+#: ../js/ui/status/power.js:103
 #, javascript-format
-msgid "%d∶%02d Until Full (%d%%)"
+msgid "%d∶%02d Until Full (%d %%)"
 msgstr "%d∶%02d do nabití (%d %%)"
+
+#: ../js/ui/status/power.js:131 ../js/ui/status/power.js:133
+#, javascript-format
+msgid "%d %%"
+msgstr "%d %%"
 
 #. The menu only appears when airplane mode is on, so just
 #. statically build it as if it was on, rather than dynamically
