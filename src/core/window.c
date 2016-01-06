@@ -7435,7 +7435,7 @@ meta_window_set_transient_for (MetaWindow *window,
     meta_window_group_leader_changed (window);
 
   if (!window->constructing && !window->override_redirect)
-    meta_window_queue (window, META_QUEUE_MOVE_RESIZE);
+    meta_window_queue (window, META_QUEUE_MOVE_RESIZE | META_QUEUE_CALC_SHOWING);
 
   if (meta_window_appears_focused (window) && window->transient_for != NULL)
     meta_window_propagate_focus_appearance (window, TRUE);
