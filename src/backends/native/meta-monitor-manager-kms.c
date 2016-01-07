@@ -561,6 +561,8 @@ init_crtc_rotations (MetaMonitorManager *manager,
 
       drmModeFreePlane (drm_plane);
     }
+
+  drmModeFreePlaneResources (planes);
 }
 
 static void
