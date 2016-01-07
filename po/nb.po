@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell 3.19.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-15 19:59+0100\n"
-"PO-Revision-Date: 2015-11-15 20:00+0100\n"
+"POT-Creation-Date: 2016-01-07 22:59+0100\n"
+"PO-Revision-Date: 2016-01-07 22:59+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language: Norwegian bokmål\n"
@@ -336,20 +336,20 @@ msgctxt "button"
 msgid "Sign In"
 msgstr "Logg inn"
 
-#: ../js/gdm/loginDialog.js:281
+#: ../js/gdm/loginDialog.js:285
 msgid "Choose Session"
 msgstr "Velg økt"
 
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:431
+#: ../js/gdm/loginDialog.js:435
 msgid "Not listed?"
 msgstr "Ikke listet?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: ../js/gdm/loginDialog.js:850
+#: ../js/gdm/loginDialog.js:854
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(f.eks. bruker eller %s)"
@@ -357,12 +357,12 @@ msgstr "(f.eks. bruker eller %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:855 ../js/ui/components/networkAgent.js:271
+#: ../js/gdm/loginDialog.js:859 ../js/ui/components/networkAgent.js:271
 #: ../js/ui/components/networkAgent.js:289
 msgid "Username: "
 msgstr "Brukernavn: "
 
-#: ../js/gdm/loginDialog.js:1180
+#: ../js/gdm/loginDialog.js:1196
 msgid "Login Window"
 msgstr "Innloggingsvindu"
 
@@ -580,51 +580,51 @@ msgstr "Forrige måned"
 msgid "Next month"
 msgstr "Neste måned"
 
-#: ../js/ui/calendar.js:728
-#, javascript-format
+#: ../js/ui/calendar.js:729
+#, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: ../js/ui/calendar.js:783
+#: ../js/ui/calendar.js:784
 msgid "Week %V"
 msgstr "Uke %V"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: ../js/ui/calendar.js:1188
+#: ../js/ui/calendar.js:1189
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Hele dagen"
 
-#: ../js/ui/calendar.js:1295
+#: ../js/ui/calendar.js:1296
 msgid "Clear section"
 msgstr "Tøm seksjon"
 
-#: ../js/ui/calendar.js:1522
+#: ../js/ui/calendar.js:1523
 msgid "Events"
 msgstr "Hendelser"
 
-#: ../js/ui/calendar.js:1531
+#: ../js/ui/calendar.js:1532
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A %B %d"
 
-#: ../js/ui/calendar.js:1535
+#: ../js/ui/calendar.js:1536
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A %B %d, %Y"
 
-#: ../js/ui/calendar.js:1620
+#: ../js/ui/calendar.js:1621
 msgid "Notifications"
 msgstr "Varslinger"
 
-#: ../js/ui/calendar.js:1771
+#: ../js/ui/calendar.js:1772
 msgid "No Notifications"
 msgstr "Ingen varslinger"
 
-#: ../js/ui/calendar.js:1774
+#: ../js/ui/calendar.js:1775
 msgid "No Events"
 msgstr "Ingen hendelser"
 
@@ -636,7 +636,7 @@ msgstr "Ekstern stasjon koblet til"
 msgid "External drive disconnected"
 msgstr "Ekstern stasjon koblet fra"
 
-#: ../js/ui/components/autorunManager.js:351
+#: ../js/ui/components/autorunManager.js:355
 #, javascript-format
 msgid "Open with %s"
 msgstr "Åpne med %s"
@@ -1184,35 +1184,35 @@ msgstr "Høy kontrast"
 msgid "Large Text"
 msgstr "Stor tekst"
 
-#: ../js/ui/status/bluetooth.js:50
+#: ../js/ui/status/bluetooth.js:47
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:59
+#: ../js/ui/status/bluetooth.js:56
 msgid "Bluetooth Settings"
 msgstr "Bluetooth-innstillinger"
 
 #. Translators: this is the number of connected bluetooth devices
-#: ../js/ui/status/bluetooth.js:139
+#: ../js/ui/status/bluetooth.js:136
 #, javascript-format
 msgid "%d Connected"
 msgid_plural "%d Connected"
 msgstr[0] "%d koblet til"
 msgstr[1] "%d koblet til"
 
-#: ../js/ui/status/bluetooth.js:141
+#: ../js/ui/status/bluetooth.js:138
 msgid "Off"
 msgstr "Av"
 
-#: ../js/ui/status/bluetooth.js:143
+#: ../js/ui/status/bluetooth.js:140
 msgid "Not In Use"
 msgstr "Ikke i bruk"
 
-#: ../js/ui/status/bluetooth.js:145 ../js/ui/status/network.js:1279
+#: ../js/ui/status/bluetooth.js:142 ../js/ui/status/network.js:1279
 msgid "Turn On"
 msgstr "Slå på"
 
-#: ../js/ui/status/bluetooth.js:145 ../js/ui/status/network.js:178
+#: ../js/ui/status/bluetooth.js:142 ../js/ui/status/network.js:178
 #: ../js/ui/status/network.js:353 ../js/ui/status/network.js:1279
 #: ../js/ui/status/network.js:1394 ../js/ui/status/rfkill.js:90
 #: ../js/ui/status/rfkill.js:117
@@ -1435,31 +1435,36 @@ msgstr "Tilkobling mislyktes"
 msgid "Activation of network connection failed"
 msgstr "Aktivering av nettverkstilkobling mislyktes"
 
-#: ../js/ui/status/power.js:49
+#: ../js/ui/status/power.js:61
 msgid "Power Settings"
 msgstr "Innstillinger for strøm"
 
-#: ../js/ui/status/power.js:65
+#: ../js/ui/status/power.js:77
 msgid "Fully Charged"
 msgstr "Fullt oppladet"
 
 #. 0 is reported when UPower does not have enough data
 #. to estimate battery life
-#: ../js/ui/status/power.js:72 ../js/ui/status/power.js:78
+#: ../js/ui/status/power.js:84 ../js/ui/status/power.js:90
 msgid "Estimating…"
 msgstr "Estimerer …"
 
 #. Translators: this is <hours>:<minutes> Remaining (<percentage>)
-#: ../js/ui/status/power.js:86
+#: ../js/ui/status/power.js:98
 #, javascript-format
 msgid "%d∶%02d Remaining (%d %%)"
 msgstr "%d:%02d gjenstår (%d %%)"
 
 #. Translators: this is <hours>:<minutes> Until Full (<percentage>)
-#: ../js/ui/status/power.js:91
+#: ../js/ui/status/power.js:103
 #, javascript-format
 msgid "%d∶%02d Until Full (%d %%)"
 msgstr "%d:%02d til batteriet er fullt (%d %%)"
+
+#: ../js/ui/status/power.js:131 ../js/ui/status/power.js:133
+#, javascript-format
+msgid "%d %%"
+msgstr "%d %%"
 
 #. The menu only appears when airplane mode is on, so just
 #. statically build it as if it was on, rather than dynamically
