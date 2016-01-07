@@ -189,7 +189,8 @@ const AuthPrompt = new Lang.Class({
                                              this._updateNextButtonSensitivity(this._entry.text.length > 0);
                                          }));
         this._entry.clutter_text.connect('activate', Lang.bind(this, function() {
-            this.emit('next');
+            if (this.nextButton.reactive)
+                this.emit('next');
         }));
     },
 
