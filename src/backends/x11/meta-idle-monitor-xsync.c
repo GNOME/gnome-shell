@@ -107,20 +107,6 @@ set_alarm_enabled (Display    *dpy,
   XSyncChangeAlarm (dpy, alarm, XSyncCAEvents, &attr);
 }
 
-static void
-check_x11_watch (gpointer data,
-                 gpointer user_data)
-{
-  MetaIdleMonitorWatchXSync *watch_xsync = data;
-  MetaIdleMonitorWatch *watch = (MetaIdleMonitorWatch *) watch_xsync;
-  XSyncAlarm alarm = (XSyncAlarm) user_data;
-
-  if (watch_xsync->xalarm != alarm)
-    return;
-
-  _meta_idle_monitor_watch_fire (watch);
-}
-
 static char *
 counter_name_for_device (int device_id)
 {
@@ -327,13 +313,38 @@ meta_idle_monitor_xsync_init (MetaIdleMonitorXSync *monitor_xsync)
   monitor_xsync->alarms = g_hash_table_new (NULL, NULL);
 }
 
+static void
+check_x11_watches (MetaIdleMonitor *monitor,
+                   XSyncAlarm       alarm)
+{
+  GList *node, *watch_ids;
+
+  /* we get the keys and do explicit look ups in case
+   * an early iteration of the loop ends up leading
+   * to watches from later iterations getting invalidated
+   */
+  watch_ids = g_hash_table_get_keys (monitor->watches);
+
+  for (node = watch_ids; node != NULL; node = node->next)
+    {
+      guint watch_id = GPOINTER_TO_UINT (node->data);
+      MetaIdleMonitorWatchXSync *watch;
+
+      watch = g_hash_table_lookup (monitor->watches, GUINT_TO_POINTER (watch_id));
+
+      if (watch && watch->xalarm == alarm)
+        _meta_idle_monitor_watch_fire ((MetaIdleMonitorWatch *) watch);
+    }
+
+  g_list_free (watch_ids);
+}
+
 void
 meta_idle_monitor_xsync_handle_xevent (MetaIdleMonitor       *monitor,
                                        XSyncAlarmNotifyEvent *alarm_event)
 {
   MetaIdleMonitorXSync *monitor_xsync = META_IDLE_MONITOR_XSYNC (monitor);
   XSyncAlarm alarm;
-  GList *watches;
   gboolean has_alarm;
 
   if (alarm_event->state != XSyncAlarmActive)
@@ -358,10 +369,5 @@ meta_idle_monitor_xsync_handle_xevent (MetaIdleMonitor       *monitor,
     }
 
   if (has_alarm)
-    {
-      watches = g_hash_table_get_values (monitor->watches);
-
-      g_list_foreach (watches, check_x11_watch, (gpointer) alarm);
-      g_list_free (watches);
-    }
+    check_x11_watches (monitor, alarm);
 }
