@@ -258,6 +258,9 @@ has_valid_cursor_sprite_gbm_bo (MetaCursorSprite *cursor_sprite)
   MetaCursorNativePrivate *cursor_priv =
     g_object_get_qdata (G_OBJECT (cursor_sprite), quark_cursor_sprite);
 
+  if (!cursor_priv)
+    return FALSE;
+
   switch (cursor_priv->pending_bo_state)
     {
     case META_CURSOR_GBM_BO_STATE_NONE:
