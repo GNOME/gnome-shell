@@ -7,15 +7,15 @@
 # Bayram Güçlü <byrmgcl@yandex.com.tr>, 2014.
 # sabri ünal <yakushabb@gmail.com>, 2014.
 # Gökhan Gurbetoğlu <ggurbet@gmail.com>, 2014.
-# Muhammet Kara <muhammetk@gmail.com>, 2011, 2012, 2013, 2014, 2015.
+# Muhammet Kara <muhammetk@gmail.com>, 2011, 2012, 2013, 2014, 2015, 2016.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-12-05 22:09+0000\n"
-"PO-Revision-Date: 2015-12-06 01:34+0200\n"
+"POT-Creation-Date: 2016-01-09 10:18+0000\n"
+"PO-Revision-Date: 2016-01-09 23:32+0200\n"
 "Last-Translator: Muhammet Kara <muhammetk@gmail.com>\n"
 "Language-Team: Türkçe <gnome-turk@gnome.org>\n"
 "Language: tr\n"
@@ -173,6 +173,8 @@ msgstr ""
 msgid ""
 "Whether the default Bluetooth adapter had set up devices associated to it"
 msgstr ""
+"Öntanımlı Bluetooth bağdaştırıcının ayarlanmış ilişkili cihazlara sahip "
+"olması"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:19
 msgid ""
@@ -181,6 +183,10 @@ msgid ""
 "adapter. This will be reset if the default adapter is ever seen not to have "
 "devices associated to it."
 msgstr ""
+"Kabuk, yalnızca gücü açık bir Bluetooth bağdaştırıcı varsa ya da öntanımlı "
+"bağdaştırıcı ile ilişkili olarak ayarlanmış aygıtlar varsa bir Bluetooth "
+"menü ögesi gösterecektir. Eğer öntanımlı bağdaştırıcıyla ilşkili aygıtların "
+"olmadığı görülecek olursa bu durum sıfırlanacaktır."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:20
 msgid "Show the week date in the calendar"
@@ -333,17 +339,17 @@ msgstr "GNOME Kabuğu Uzantıları"
 msgid "Cancel"
 msgstr "İptal"
 
-#: ../js/gdm/authPrompt.js:169 ../js/gdm/authPrompt.js:215
-#: ../js/gdm/authPrompt.js:447
+#: ../js/gdm/authPrompt.js:169 ../js/gdm/authPrompt.js:216
+#: ../js/gdm/authPrompt.js:448
 msgid "Next"
 msgstr "Sonraki"
 
-#: ../js/gdm/authPrompt.js:211 ../js/ui/shellMountOperation.js:403
+#: ../js/gdm/authPrompt.js:212 ../js/ui/shellMountOperation.js:403
 #: ../js/ui/unlockDialog.js:59
 msgid "Unlock"
 msgstr "Kilit Aç"
 
-#: ../js/gdm/authPrompt.js:213
+#: ../js/gdm/authPrompt.js:214
 msgctxt "button"
 msgid "Sign In"
 msgstr "Giriş"
@@ -592,51 +598,51 @@ msgstr "Önceki ay"
 msgid "Next month"
 msgstr "Gelecek ay"
 
-#: ../js/ui/calendar.js:728
-#, javascript-format
+#: ../js/ui/calendar.js:729
+#, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: ../js/ui/calendar.js:783
+#: ../js/ui/calendar.js:784
 msgid "Week %V"
 msgstr "%V. Hafta"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: ../js/ui/calendar.js:1188
+#: ../js/ui/calendar.js:1189
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Tüm Gün"
 
-#: ../js/ui/calendar.js:1295
+#: ../js/ui/calendar.js:1296
 msgid "Clear section"
 msgstr "Bölümü temizle"
 
-#: ../js/ui/calendar.js:1522
+#: ../js/ui/calendar.js:1523
 msgid "Events"
 msgstr "Olaylar"
 
-#: ../js/ui/calendar.js:1531
+#: ../js/ui/calendar.js:1532
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d %B"
 
-#: ../js/ui/calendar.js:1535
+#: ../js/ui/calendar.js:1536
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d %B, %Y"
 
-#: ../js/ui/calendar.js:1620
+#: ../js/ui/calendar.js:1621
 msgid "Notifications"
 msgstr "Bildirimler"
 
-#: ../js/ui/calendar.js:1771
+#: ../js/ui/calendar.js:1772
 msgid "No Notifications"
 msgstr "Bildirim Yok"
 
-#: ../js/ui/calendar.js:1774
+#: ../js/ui/calendar.js:1775
 msgid "No Events"
 msgstr "Olay Yok"
 
@@ -1041,7 +1047,6 @@ msgid "Activities"
 msgstr "Etkinlikler"
 
 #: ../js/ui/panel.js:695
-#| msgid "System"
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sistem"
@@ -1455,14 +1460,12 @@ msgstr "Tahmin ediliyor…"
 #. Translators: this is <hours>:<minutes> Remaining (<percentage>)
 #: ../js/ui/status/power.js:98
 #, javascript-format
-#| msgid "%d∶%02d Remaining (%d%%)"
 msgid "%d∶%02d Remaining (%d %%)"
 msgstr "%d∶%02d Kaldı (%% %d)"
 
 #. Translators: this is <hours>:<minutes> Until Full (<percentage>)
 #: ../js/ui/status/power.js:103
 #, javascript-format
-#| msgid "%d∶%02d Until Full (%d%%)"
 msgid "%d∶%02d Until Full (%d %%)"
 msgstr "Tamamen Dolmasına %d∶%02d Kaldı (%% %d)"
 
