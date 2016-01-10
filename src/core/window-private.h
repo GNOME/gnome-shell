@@ -157,6 +157,14 @@ struct _MetaWindow
   guint maximize_vertically_after_placement : 1;
   guint minimize_after_placement : 1;
 
+  /* The current or requested tile mode. If maximized_vertically is true,
+   * this is the current mode. If not, it is the mode which will be
+   * requested after the window grab is released */
+  guint tile_mode : 2;
+  /* The last "full" maximized/unmaximized state. We need to keep track of
+   * that to toggle between normal/tiled or maximized/tiled states. */
+  guint saved_maximize : 1;
+  int tile_monitor_number;
   int preferred_output_winsys_id;
 
   /* Whether we're shaded */
@@ -433,6 +441,9 @@ struct _MetaWindow
   /* Focused window that is (directly or indirectly) attached to this one */
   MetaWindow *attached_focus_window;
 
+  /* The currently complementary tiled window, if any */
+  MetaWindow *tile_match;
+
   /* Bypass compositor hints */
   guint bypass_compositor;
 };
@@ -481,8 +492,17 @@ struct _MetaWindowClass
                                         (w)->maximized_vertically)
 #define META_WINDOW_MAXIMIZED_VERTICALLY(w)    ((w)->maximized_vertically)
 #define META_WINDOW_MAXIMIZED_HORIZONTALLY(w)  ((w)->maximized_horizontally)
+#define META_WINDOW_TILED_SIDE_BY_SIDE(w)      ((w)->maximized_vertically && \
+                                                !(w)->maximized_horizontally && \
+                                                 (w)->tile_mode != META_TILE_NONE)
+#define META_WINDOW_TILED_LEFT(w)     (META_WINDOW_TILED_SIDE_BY_SIDE(w) && \
+                                       (w)->tile_mode == META_TILE_LEFT)
+#define META_WINDOW_TILED_RIGHT(w)    (META_WINDOW_TILED_SIDE_BY_SIDE(w) && \
+                                       (w)->tile_mode == META_TILE_RIGHT)
+#define META_WINDOW_TILED_MAXIMIZED(w)(META_WINDOW_MAXIMIZED(w) && \
+                                       (w)->tile_mode == META_TILE_MAXIMIZED)
 #define META_WINDOW_ALLOWS_MOVE(w)     ((w)->has_move_func && !(w)->fullscreen)
-#define META_WINDOW_ALLOWS_RESIZE_EXCEPT_HINTS(w)   ((w)->has_resize_func && !META_WINDOW_MAXIMIZED (w) && !(w)->fullscreen && !(w)->shaded)
+#define META_WINDOW_ALLOWS_RESIZE_EXCEPT_HINTS(w)   ((w)->has_resize_func && !META_WINDOW_MAXIMIZED (w) && !META_WINDOW_TILED_SIDE_BY_SIDE(w) && !(w)->fullscreen && !(w)->shaded)
 #define META_WINDOW_ALLOWS_RESIZE(w)   (META_WINDOW_ALLOWS_RESIZE_EXCEPT_HINTS (w) &&                \
                                         (((w)->size_hints.min_width < (w)->size_hints.max_width) ||  \
                                          ((w)->size_hints.min_height < (w)->size_hints.max_height)))
@@ -502,6 +522,7 @@ void        meta_window_unmanage           (MetaWindow  *window,
                                             guint32      timestamp);
 void        meta_window_queue              (MetaWindow  *window,
                                             guint queuebits);
+void        meta_window_tile               (MetaWindow        *window);
 void        meta_window_maximize_internal  (MetaWindow        *window,
                                             MetaMaximizeFlags  directions,
                                             MetaRectangle     *saved_rect);
@@ -563,6 +584,11 @@ gboolean meta_window_handle_mouse_grab_op_event  (MetaWindow         *window,
 
 GList* meta_window_get_workspaces (MetaWindow *window);
 
+int meta_window_get_current_tile_monitor_number (MetaWindow *window);
+void meta_window_get_current_tile_area         (MetaWindow    *window,
+                                                MetaRectangle *tile_area);
+
+
 gboolean meta_window_same_application (MetaWindow *window,
                                        MetaWindow *other_window);
 
@@ -601,6 +627,8 @@ void meta_window_on_all_workspaces_changed (MetaWindow *window);
 
 gboolean meta_window_should_attach_to_parent (MetaWindow *window);
 gboolean meta_window_can_tile_side_by_side   (MetaWindow *window);
+
+void meta_window_compute_tile_match (MetaWindow *window);
 
 gboolean meta_window_updates_are_frozen (MetaWindow *window);
 

@@ -1320,6 +1320,46 @@ meta_screen_set_cursor (MetaScreen *screen,
 static gboolean
 meta_screen_update_tile_preview_timeout (gpointer data)
 {
+  MetaScreen *screen = data;
+  MetaWindow *window = screen->display->grab_window;
+  gboolean needs_preview = FALSE;
+
+  screen->tile_preview_timeout_id = 0;
+
+  if (window)
+    {
+      switch (window->tile_mode)
+        {
+          case META_TILE_LEFT:
+          case META_TILE_RIGHT:
+              if (!META_WINDOW_TILED_SIDE_BY_SIDE (window))
+                needs_preview = TRUE;
+              break;
+
+          case META_TILE_MAXIMIZED:
+              if (!META_WINDOW_MAXIMIZED (window))
+                needs_preview = TRUE;
+              break;
+
+          default:
+              needs_preview = FALSE;
+              break;
+        }
+    }
+
+  if (needs_preview)
+    {
+      MetaRectangle tile_rect;
+      int monitor;
+
+      monitor = meta_window_get_current_tile_monitor_number (window);
+      meta_window_get_current_tile_area (window, &tile_rect);
+      meta_compositor_show_tile_preview (screen->display->compositor,
+                                         window, &tile_rect, monitor);
+    }
+  else
+    meta_compositor_hide_tile_preview (screen->display->compositor);
+
   return FALSE;
 }
 

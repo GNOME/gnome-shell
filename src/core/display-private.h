@@ -74,6 +74,13 @@ typedef enum {
 #define N_IGNORED_CROSSING_SERIALS  10
 
 typedef enum {
+  META_TILE_NONE,
+  META_TILE_LEFT,
+  META_TILE_RIGHT,
+  META_TILE_MAXIMIZED
+} MetaTileMode;
+
+typedef enum {
   /* Normal interaction where you're interacting with windows.
    * Events go to windows normally. */
   META_EVENT_ROUTE_NORMAL,
@@ -203,6 +210,8 @@ struct _MetaDisplay
   int         grab_anchor_root_x;
   int         grab_anchor_root_y;
   MetaRectangle grab_anchor_window_pos;
+  MetaTileMode  grab_tile_mode;
+  int           grab_tile_monitor_number;
   int         grab_latest_motion_x;
   int         grab_latest_motion_y;
   guint       grab_have_pointer : 1;
