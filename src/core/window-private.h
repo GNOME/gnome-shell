@@ -88,20 +88,6 @@ typedef enum
   META_MOVE_RESIZE_RESULT_FRAME_SHAPE_CHANGED = 1 << 2,
 } MetaMoveResizeResultFlags;
 
-/* This contains all the "state" needed for a certain size configuration.
- * We have three of these size configurations: normal, tiled, and
- * maximized. The idea here is that if the user tiles a normal window,
- * then maximizes it, we should, upon unmaximizing and untiling the window,
- * return to a normal state. We need a way of storing this information
- * while maximized, so we use this structure. */
-struct _MetaWindowSizeState
-{
-  guint maximized_horizontally : 1;
-  guint maximized_vertically : 1;
-  MetaRectangle rect;
-};
-typedef struct _MetaWindowSizeState MetaWindowSizeState;
-
 struct _MetaWindow
 {
   GObject parent_instance;
@@ -407,6 +393,9 @@ struct _MetaWindow
   /* The current window geometry of the window. */
   MetaRectangle rect;
 
+  /* The geometry to restore when we unmaximize. */
+  MetaRectangle saved_rect;
+
   /* This is the geometry the window will have if no constraints have
    * applied. We use this whenever we are moving implicitly (for example,
    * if we move to avoid a panel, we can snap back to this position if
@@ -446,12 +435,6 @@ struct _MetaWindow
 
   /* Bypass compositor hints */
   guint bypass_compositor;
-
-  /* This is where we store data while in another state. The information
-   * above in MetaWindow is always the current state of the window. */
-  struct {
-    MetaWindowSizeState normal, maximized;
-  } size_states;
 };
 
 struct _MetaWindowClass
