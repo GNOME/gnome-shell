@@ -419,12 +419,6 @@ read_output_edid (MetaMonitorManagerXrandr *manager_xrandr,
       result = get_edid_property (manager_xrandr->xdisplay, winsys_id, edid_atom, &len);
     }
 
-  if (!result)
-    {
-      edid_atom = XInternAtom (manager_xrandr->xdisplay, "XFree86_DDC_EDID1_RAWDATA", FALSE);
-      result = get_edid_property (manager_xrandr->xdisplay, winsys_id, edid_atom, &len);
-    }
-
   if (result)
     {
       if (len > 0 && len % 128 == 0)
