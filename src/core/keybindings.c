@@ -2936,7 +2936,6 @@ handle_toggle_tiled_left (MetaDisplay     *display,
                           MetaKeyBinding  *binding,
                           gpointer         dummy)
 {
-  meta_window_tile (window, META_TILE_ZONE_W);
 }
 
 static void
@@ -2947,7 +2946,6 @@ handle_toggle_tiled_right (MetaDisplay     *display,
                            MetaKeyBinding  *binding,
                            gpointer         dummy)
 {
-  meta_window_tile (window, META_TILE_ZONE_E);
 }
 
 static void

@@ -450,10 +450,8 @@ struct _MetaWindow
   /* This is where we store data while in another state. The information
    * above in MetaWindow is always the current state of the window. */
   struct {
-    MetaWindowSizeState normal, tiled, maximized;
+    MetaWindowSizeState normal, maximized;
   } size_states;
-
-  MetaDirection constrained_edges;
 };
 
 struct _MetaWindowClass
@@ -619,6 +617,7 @@ void meta_window_update_for_monitors_changed (MetaWindow *window);
 void meta_window_on_all_workspaces_changed (MetaWindow *window);
 
 gboolean meta_window_should_attach_to_parent (MetaWindow *window);
+gboolean meta_window_can_tile_side_by_side   (MetaWindow *window);
 
 gboolean meta_window_updates_are_frozen (MetaWindow *window);
 

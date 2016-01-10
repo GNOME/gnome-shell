@@ -97,7 +97,7 @@ typedef enum
   PRIORITY_ENTIRELY_VISIBLE_ON_WORKAREA = 1,
   PRIORITY_SIZE_HINTS_INCREMENTS = 1,
   PRIORITY_MAXIMIZATION = 2,
-  PRIORITY_CONSTRAINED_EDGES = 2,
+  PRIORITY_TILING = 2,
   PRIORITY_FULLSCREEN = 2,
   PRIORITY_SIZE_HINTS_LIMITS = 3,
   PRIORITY_TITLEBAR_VISIBLE = 4,
@@ -149,10 +149,6 @@ static gboolean constrain_modal_dialog       (MetaWindow         *window,
                                               ConstraintPriority  priority,
                                               gboolean            check_only);
 static gboolean constrain_maximization       (MetaWindow         *window,
-                                              ConstraintInfo     *info,
-                                              ConstraintPriority  priority,
-                                              gboolean            check_only);
-static gboolean constrain_constrained_edges  (MetaWindow         *window,
                                               ConstraintInfo     *info,
                                               ConstraintPriority  priority,
                                               gboolean            check_only);
@@ -213,7 +209,6 @@ typedef struct {
 static const Constraint all_constraints[] = {
   {constrain_modal_dialog,       "constrain_modal_dialog"},
   {constrain_maximization,       "constrain_maximization"},
-  {constrain_constrained_edges,  "constrain_constrained_edges"},
   {constrain_fullscreen,         "constrain_fullscreen"},
   {constrain_size_increments,    "constrain_size_increments"},
   {constrain_size_limits,        "constrain_size_limits"},
@@ -800,45 +795,6 @@ constrain_fullscreen (MetaWindow         *window,
 
   /*** Enforce constraint ***/
   info->current = monitor;
-  return TRUE;
-}
-
-static gboolean
-constrain_constrained_edges (MetaWindow         *window,
-                             ConstraintInfo     *info,
-                             ConstraintPriority  priority,
-                             gboolean            check_only)
-{
-  MetaRectangle monitor, new_rectangle;
-  gboolean constraint_already_satisfied;
-
-  if (priority > PRIORITY_CONSTRAINED_EDGES)
-    return TRUE;
-
-  /* Determine whether constraint applies; exit if it doesn't */
-  if (!window->constrained_edges)
-    return TRUE;
-
-  new_rectangle = info->current;
-  monitor = info->work_area_monitor;
-
-  if (window->constrained_edges & META_DIRECTION_LEFT)
-    new_rectangle.x = monitor.x;
-  if (window->constrained_edges & META_DIRECTION_RIGHT)
-    new_rectangle.x = monitor.x + monitor.width - new_rectangle.width;
-  if (window->constrained_edges & META_DIRECTION_TOP)
-    new_rectangle.y = monitor.y;
-  if (window->constrained_edges & META_DIRECTION_BOTTOM)
-    new_rectangle.y = monitor.y + monitor.height - new_rectangle.height;
-
-  constraint_already_satisfied =
-    meta_rectangle_equal (&info->current, &new_rectangle);
-
-  if (check_only || constraint_already_satisfied)
-    return constraint_already_satisfied;
-
-  /*** Enforce constraint ***/
-  info->current = new_rectangle;
   return TRUE;
 }
 
