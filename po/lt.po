@@ -4,15 +4,15 @@
 # Žygimantas Beručka <zygis@gnome.org>, 2010, 2011, 2012.
 # Algimantas Margevičius <gymka@mail.ru>, 2011.
 # Mantas Kriaučiūnas <mantas@akl.lt>, 2012, 2013.
-# Aurimas Černius <aurisc4@gmail.com>, 2013, 2014, 2015.
+# Aurimas Černius <aurisc4@gmail.com>, 2013, 2014, 2015, 2016.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-12-17 10:20+0000\n"
-"PO-Revision-Date: 2015-12-18 00:04+0200\n"
+"POT-Creation-Date: 2016-01-07 23:19+0000\n"
+"PO-Revision-Date: 2016-01-10 18:12+0200\n"
 "Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lietuvių <gnome-lt@lists.akl.lt>\n"
 "Language: lt\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n"
 "%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Poedit 1.8.6\n"
+"X-Generator: Gtranslator 2.91.7\n"
 "X-Project-Style: gnome\n"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
@@ -50,7 +50,7 @@ msgstr "Atverti programų meniu"
 
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:1
 msgid "GNOME Shell Extension Preferences"
-msgstr "GNOME Shell plėtinių nustatymai"
+msgstr "GNOME Shell plėtinių nuostatos"
 
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:2
 msgid "Configure GNOME Shell Extensions"
@@ -62,7 +62,7 @@ msgstr "GNOME Shell aplinka"
 
 #: ../data/org.gnome.Shell.desktop.in.in.h:2
 msgid "Window management and application launching"
-msgstr "Langų valdymas ir programų paleidimas"
+msgstr "Langų tvarkymas ir programų paleidimas"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:1
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
@@ -106,11 +106,11 @@ msgid ""
 msgstr ""
 "GNOME Shell leidžia įkelti tik šiuo metu veikiančios versijos plėtinius. Šio "
 "parametro įjungimas išjungs šį tikrinimą ir bandys įkelti visus plėtinius "
-"nepaisant jų nurodomas palaikomos versijos."
+"nepaisant jų nurodomos palaikomos versijos."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:7
 msgid "List of desktop file IDs for favorite applications"
-msgstr "Mėgstamų programų darbastalio failų ID sąrašas"
+msgstr "Mėgstamų programų darbalaukio failų ID sąrašas"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:8
 msgid ""
@@ -253,15 +253,15 @@ msgstr "Naudotinas klaviatūros tipas."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:35
 msgid "Limit switcher to current workspace."
-msgstr "Apriboti perjungėją dabartiniu darbalaukiu"
+msgstr "Apriboti perjungėją dabartine darbo sritimi."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:36
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
 msgstr ""
-"Jei teigiama, perjungimo lange bus rodomas tik programos, turinčios langų "
-"dabartiniame darbalaukyje. Priešingu atveju įtraukiamos visos programos."
+"Jei teigiama, perjungimo lange bus rodomos tik programos, turinčios langų "
+"dabartinėje darbo srityje. Priešingu atveju įtraukiamos visos programos."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:37
 msgid "The application icon mode."
@@ -282,8 +282,8 @@ msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
 msgstr ""
-"Jei teigiama, perjungimo lange rodomi tik langai iš dabartinio darbalaukio. "
-"Priešingu atveju įtraukiami visi langai."
+"Jei teigiama, perjungimo lange rodomi tik langai iš dabartinės darbo "
+"srities. Priešingu atveju įtraukiami visi langai."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:40
 msgid "Attach modal dialog to the parent window"
@@ -300,11 +300,11 @@ msgstr "Įjungti kraštų išplėtimą, kai langai numetami ekrano kraštuose"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:43
 msgid "Workspaces are managed dynamically"
-msgstr "Darbalaukiai yra valdomi dinamiškai"
+msgstr "Darbo sritys yra tvarkomos dinamiškai"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:44
 msgid "Workspaces only on primary monitor"
-msgstr "Darbalaukiai tik pagrindiniame monitoriuje"
+msgstr "Darbo sritys tik pagrindiniame monitoriuje"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:45
 msgid "Delay focus changes in mouse mode until the pointer stops moving"
@@ -317,7 +317,7 @@ msgstr "Tinklo prisijungimas"
 #: ../js/extensionPrefs/main.js:122
 #, javascript-format
 msgid "There was an error loading the preferences dialog for %s:"
-msgstr "Kilo klaida įkeliant %s nustatymų dialogą:"
+msgstr "Kilo klaida įkeliant %s nuostatų dialogą:"
 
 #: ../js/extensionPrefs/main.js:154
 msgid "GNOME Shell Extensions"
@@ -330,17 +330,17 @@ msgstr "GNOME Shell plėtiniai"
 msgid "Cancel"
 msgstr "Atsisakyti"
 
-#: ../js/gdm/authPrompt.js:169 ../js/gdm/authPrompt.js:215
-#: ../js/gdm/authPrompt.js:447
+#: ../js/gdm/authPrompt.js:169 ../js/gdm/authPrompt.js:216
+#: ../js/gdm/authPrompt.js:448
 msgid "Next"
 msgstr "Kitas"
 
-#: ../js/gdm/authPrompt.js:211 ../js/ui/shellMountOperation.js:403
+#: ../js/gdm/authPrompt.js:212 ../js/ui/shellMountOperation.js:403
 #: ../js/ui/unlockDialog.js:59
 msgid "Unlock"
 msgstr "Atrakinti"
 
-#: ../js/gdm/authPrompt.js:213
+#: ../js/gdm/authPrompt.js:214
 msgctxt "button"
 msgid "Sign In"
 msgstr "Prisijungti"
@@ -589,51 +589,51 @@ msgstr "Ankstesnis mėnuo"
 msgid "Next month"
 msgstr "Kitas mėnuo"
 
-#: ../js/ui/calendar.js:728
-#, javascript-format
+#: ../js/ui/calendar.js:729
+#, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: ../js/ui/calendar.js:783
+#: ../js/ui/calendar.js:784
 msgid "Week %V"
 msgstr "Savaitė %V"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: ../js/ui/calendar.js:1188
+#: ../js/ui/calendar.js:1189
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Visa diena"
 
-#: ../js/ui/calendar.js:1295
+#: ../js/ui/calendar.js:1296
 msgid "Clear section"
 msgstr "Išvalyti skiltį"
 
-#: ../js/ui/calendar.js:1522
+#: ../js/ui/calendar.js:1523
 msgid "Events"
 msgstr "Įvykiai"
 
-#: ../js/ui/calendar.js:1531
+#: ../js/ui/calendar.js:1532
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %B %d d."
 
-#: ../js/ui/calendar.js:1535
+#: ../js/ui/calendar.js:1536
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %Y m. %B %d d."
 
-#: ../js/ui/calendar.js:1620
+#: ../js/ui/calendar.js:1621
 msgid "Notifications"
 msgstr "Pranešimai"
 
-#: ../js/ui/calendar.js:1771
+#: ../js/ui/calendar.js:1772
 msgid "No Notifications"
 msgstr "Nėra pranešimų"
 
-#: ../js/ui/calendar.js:1774
+#: ../js/ui/calendar.js:1775
 msgid "No Events"
 msgstr "Nėra įvykių"
 
@@ -747,7 +747,7 @@ msgstr "Būtinas slaptažodis norint prisijungti prie „%s“."
 
 #: ../js/ui/components/networkAgent.js:647 ../js/ui/status/network.js:1658
 msgid "Network Manager"
-msgstr "Tinklo valdymas"
+msgstr "Tinklo tvarkymas"
 
 #: ../js/ui/components/polkitAgent.js:60
 msgid "Authentication Required"
@@ -1290,7 +1290,7 @@ msgstr "Prisijungta prie %s"
 #: ../js/ui/status/network.js:459
 #, javascript-format
 msgid "%s Unmanaged"
-msgstr "%s nevaldomas"
+msgstr "%s netvarkomas"
 
 #. Translators: %s is a network identifier
 #: ../js/ui/status/network.js:462
@@ -1508,7 +1508,7 @@ msgstr "Padėties užrakinimas"
 
 #: ../js/ui/status/system.js:378
 msgid "Suspend"
-msgstr "Užmigdyti"
+msgstr "Pristabdyti"
 
 #: ../js/ui/status/system.js:381
 msgid "Power Off"
@@ -1549,7 +1549,7 @@ msgstr "„%s“ yra pasirengusi"
 
 #: ../js/ui/windowManager.js:63
 msgid "Do you want to keep these display settings?"
-msgstr "Ar nori įrašyti šiuos vaizduoklio nustatymus?"
+msgstr "Ar norite įrašyti šiuos vaizduoklio nustatymus?"
 
 #. Translators: this and the following message should be limited in lenght,
 #. to avoid ellipsizing the labels.
@@ -1607,23 +1607,23 @@ msgstr "Visada viršuje"
 
 #: ../js/ui/windowMenu.js:89
 msgid "Always on Visible Workspace"
-msgstr "Visada matomame darbalaukyje"
+msgstr "Visada matomoje darbo srityje"
 
 #: ../js/ui/windowMenu.js:105
 msgid "Move to Workspace Left"
-msgstr "Perkelti į kairiau esantį darbalaukį"
+msgstr "Perkelti į kairiau esančią darbo sritį"
 
 #: ../js/ui/windowMenu.js:110
 msgid "Move to Workspace Right"
-msgstr "Perkelti į dešiniau esantį darbalaukį"
+msgstr "Perkelti į dešiniau esančią darbo sritį"
 
 #: ../js/ui/windowMenu.js:115
 msgid "Move to Workspace Up"
-msgstr "Perkelti į aukščiau esantį darbalaukį"
+msgstr "Perkelti į aukščiau esančią darbo sritį"
 
 #: ../js/ui/windowMenu.js:120
 msgid "Move to Workspace Down"
-msgstr "Perkelti į žemiau esantį darbalaukį"
+msgstr "Perkelti į žemiau esančią darbo sritį"
 
 #: ../js/ui/windowMenu.js:136
 msgid "Move to Monitor Up"
