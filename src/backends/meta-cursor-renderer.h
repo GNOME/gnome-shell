@@ -78,4 +78,7 @@ void meta_cursor_renderer_realize_cursor_from_xcursor (MetaCursorRenderer *rende
                                                        MetaCursorSprite   *cursor_sprite,
                                                        XcursorImage       *xc_image);
 
+void meta_cursor_renderer_emit_painted (MetaCursorRenderer *renderer,
+                                        MetaCursorSprite   *cursor_sprite);
+
 #endif /* META_CURSOR_RENDERER_H */

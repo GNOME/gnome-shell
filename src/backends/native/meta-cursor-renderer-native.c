@@ -216,6 +216,7 @@ update_hw_cursor (MetaCursorRendererNative *native,
   MetaCRTC *crtcs;
   unsigned int i, n_crtcs;
   MetaRectangle rect;
+  gboolean painted = FALSE;
 
   monitors = meta_monitor_manager_get ();
   meta_monitor_manager_get_resources (monitors, NULL, NULL, &crtcs, &n_crtcs, NULL, NULL);
@@ -247,8 +248,12 @@ update_hw_cursor (MetaCursorRendererNative *native,
           drmModeMoveCursor (priv->drm_fd, crtcs[i].crtc_id,
                              rect.x - crtc_rect->x,
                              rect.y - crtc_rect->y);
+          painted = TRUE;
         }
     }
+
+  if (painted)
+    meta_cursor_renderer_emit_painted (renderer, cursor_sprite);
 }
 
 static gboolean
