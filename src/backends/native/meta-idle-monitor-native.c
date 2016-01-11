@@ -164,56 +164,36 @@ meta_idle_monitor_native_init (MetaIdleMonitorNative *monitor_native)
   monitor->watches = g_hash_table_new_full (NULL, NULL, NULL, free_watch);
 }
 
-typedef struct {
-  MetaIdleMonitorNative *monitor_native;
-  GList *fired_watches;
-} CheckNativeClosure;
-
-static gboolean
-check_native_watch (gpointer key,
-                    gpointer value,
-                    gpointer user_data)
-{
-  MetaIdleMonitorWatchNative *watch_native = value;
-  MetaIdleMonitorWatch *watch = (MetaIdleMonitorWatch *) watch_native;
-  CheckNativeClosure *closure = user_data;
-  gboolean steal;
-
-  if (watch->timeout_msec == 0)
-    {
-      closure->fired_watches = g_list_prepend (closure->fired_watches, watch);
-      steal = TRUE;
-    }
-  else
-    {
-      g_source_set_ready_time (watch_native->timeout_source,
-                               closure->monitor_native->last_event_time +
-                               watch->timeout_msec * 1000);
-      steal = FALSE;
-    }
-
-  return steal;
-}
-
-static void
-fire_native_watch (gpointer watch,
-                   gpointer data)
-{
-  _meta_idle_monitor_watch_fire (watch);
-}
-
 void
 meta_idle_monitor_native_reset_idletime (MetaIdleMonitor *monitor)
 {
   MetaIdleMonitorNative *monitor_native = META_IDLE_MONITOR_NATIVE (monitor);
-  CheckNativeClosure closure;
+  GList *node, *watch_ids;
 
   monitor_native->last_event_time = g_get_monotonic_time ();
 
-  closure.monitor_native = monitor_native;
-  closure.fired_watches = NULL;
-  g_hash_table_foreach_steal (monitor->watches, check_native_watch, &closure);
+  watch_ids = g_hash_table_get_keys (monitor->watches);
 
-  g_list_foreach (closure.fired_watches, fire_native_watch, NULL);
-  g_list_free (closure.fired_watches);
+  for (node = watch_ids; node != NULL; node = node->next)
+    {
+      guint watch_id = GPOINTER_TO_UINT (node->data);
+      MetaIdleMonitorWatchNative *watch;
+
+      watch = g_hash_table_lookup (monitor->watches, GUINT_TO_POINTER (watch_id));
+      if (!watch)
+        continue;
+
+      if (watch->base.timeout_msec == 0)
+        {
+          _meta_idle_monitor_watch_fire ((MetaIdleMonitorWatch *) watch);
+        }
+      else
+        {
+          g_source_set_ready_time (watch->timeout_source,
+                                   monitor_native->last_event_time +
+                                   watch->base.timeout_msec * 1000);
+        }
+    }
+
+  g_list_free (watch_ids);
 }
