@@ -361,12 +361,12 @@ get_pointer_position_gdk (int         *x,
                           int         *y,
                           int         *mods)
 {
-  GdkDeviceManager *gmanager;
+  GdkSeat *gseat;
   GdkDevice *gdevice;
   GdkScreen *gscreen;
 
-  gmanager = gdk_display_get_device_manager (gdk_display_get_default ());
-  gdevice = gdk_x11_device_manager_lookup (gmanager, META_VIRTUAL_CORE_POINTER_ID);
+  gseat = gdk_display_get_default_seat (gdk_display_get_default ());
+  gdevice = gdk_seat_get_pointer (gseat);
 
   gdk_device_get_position (gdevice, &gscreen, x, y);
   if (mods)
