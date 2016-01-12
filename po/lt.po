@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: lt\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-02-28 11:14+0000\n"
-"PO-Revision-Date: 2015-02-28 21:34+0200\n"
+"POT-Creation-Date: 2016-01-05 13:43+0000\n"
+"PO-Revision-Date: 2016-01-05 18:04+0200\n"
 "Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lietuvių <gnome-lt@lists.akl.lt>\n"
 "Language: lt\n"
@@ -23,7 +23,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n"
 "%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Gtranslator 2.91.6\n"
+"X-Generator: Poedit 1.8.6\n"
 
 #: ../data/50-mutter-navigation.xml.in.h:1
 msgid "Navigation"
@@ -31,39 +31,39 @@ msgstr "Navigacija"
 
 #: ../data/50-mutter-navigation.xml.in.h:2
 msgid "Move window to workspace 1"
-msgstr "Perkelti langą į darbalaukį Nr.1"
+msgstr "Perkelti langą į darbo sritį Nr.1"
 
 #: ../data/50-mutter-navigation.xml.in.h:3
 msgid "Move window to workspace 2"
-msgstr "Perkelti langą į darbalaukį Nr.2"
+msgstr "Perkelti langą į darbo sritį Nr.2"
 
 #: ../data/50-mutter-navigation.xml.in.h:4
 msgid "Move window to workspace 3"
-msgstr "Perkelti langą į darbalaukį Nr.3"
+msgstr "Perkelti langą į darbo sritį Nr.3"
 
 #: ../data/50-mutter-navigation.xml.in.h:5
 msgid "Move window to workspace 4"
-msgstr "Perkelti langą į darbalaukį Nr.4"
+msgstr "Perkelti langą į darbo sritį Nr.4"
 
 #: ../data/50-mutter-navigation.xml.in.h:6
 msgid "Move window to last workspace"
-msgstr "Perkelti langą į pastarąjį darbalaukį"
+msgstr "Perkelti langą į pastarąją darbo sritį"
 
 #: ../data/50-mutter-navigation.xml.in.h:7
 msgid "Move window one workspace to the left"
-msgstr "Perkelti langą į kairiau esantį darbalaukį"
+msgstr "Perkelti langą į kairiau esančią darbo sritį"
 
 #: ../data/50-mutter-navigation.xml.in.h:8
 msgid "Move window one workspace to the right"
-msgstr "Perkelti langą į dešiniau esantį darbalaukį"
+msgstr "Perkelti langą į dešiniau esančią darbo sritį"
 
 #: ../data/50-mutter-navigation.xml.in.h:9
 msgid "Move window one workspace up"
-msgstr "Perkelti langą į aukščiau esantį darbalaukį"
+msgstr "Perkelti langą į aukščiau esančią darbo sritį"
 
 #: ../data/50-mutter-navigation.xml.in.h:10
 msgid "Move window one workspace down"
-msgstr "Perkelti langą į žemiau esantį darbalaukį"
+msgstr "Perkelti langą į žemiau esančią darbo sritį"
 
 #: ../data/50-mutter-navigation.xml.in.h:11
 msgid "Move window one monitor to the left"
@@ -143,39 +143,39 @@ msgstr "Paslėpti visus įprastinius langus"
 
 #: ../data/50-mutter-navigation.xml.in.h:30
 msgid "Switch to workspace 1"
-msgstr "Persijungti į darbalaukį Nr.1"
+msgstr "Persijungti į darbo sritį Nr.1"
 
 #: ../data/50-mutter-navigation.xml.in.h:31
 msgid "Switch to workspace 2"
-msgstr "Persijungti į darbalaukį Nr.2"
+msgstr "Persijungti į darbo sritį Nr.2"
 
 #: ../data/50-mutter-navigation.xml.in.h:32
 msgid "Switch to workspace 3"
-msgstr "Persijungti į darbalaukį Nr.3"
+msgstr "Persijungti į darbo sritį Nr.3"
 
 #: ../data/50-mutter-navigation.xml.in.h:33
 msgid "Switch to workspace 4"
-msgstr "Persijungti į darbalaukį Nr.4"
+msgstr "Persijungti į darbo sritį Nr.4"
 
 #: ../data/50-mutter-navigation.xml.in.h:34
 msgid "Switch to last workspace"
-msgstr "Persijungti į pastarąjį darbalaukį"
+msgstr "Persijungti į pastarąją darbo sritį"
 
 #: ../data/50-mutter-navigation.xml.in.h:35
 msgid "Move to workspace left"
-msgstr "Perkelti į darbalaukį kairėje"
+msgstr "Perkelti į darbo sritį kairėje"
 
 #: ../data/50-mutter-navigation.xml.in.h:36
 msgid "Move to workspace right"
-msgstr "Perkelti į darbalaukį dešinėje"
+msgstr "Perkelti į darbo sritį dešinėje"
 
 #: ../data/50-mutter-navigation.xml.in.h:37
 msgid "Move to workspace above"
-msgstr "Perkelti į darbalaukį viršuje"
+msgstr "Perkelti į darbo sritį viršuje"
 
 #: ../data/50-mutter-navigation.xml.in.h:38
 msgid "Move to workspace below"
-msgstr "Perkelti į darbalaukį apačioje"
+msgstr "Perkelti į darbo sritį apačioje"
 
 #: ../data/50-mutter-system.xml.in.h:1
 msgid "System"
@@ -235,7 +235,7 @@ msgstr "Keisti lango dydį"
 
 #: ../data/50-mutter-windows.xml.in.h:12
 msgid "Toggle window on all workspaces or one"
-msgstr "Perjungti lango buvimo visuose darbalaukiuose būseną"
+msgstr "Perjungti lango buvimo visose darbo srityse būseną"
 
 #: ../data/50-mutter-windows.xml.in.h:13
 msgid "Raise window if covered, otherwise lower it"
@@ -272,7 +272,7 @@ msgstr "Mutter"
 
 #: ../data/org.gnome.mutter.gschema.xml.in.h:1
 msgid "Modifier to use for extended window management operations"
-msgstr "Klavišas, naudojamas kartu su specialiais lango valdymo veiksmais"
+msgstr "Klavišas, naudojamas kartu su specialiomis lango tvarkymo operacijomis"
 
 #: ../data/org.gnome.mutter.gschema.xml.in.h:2
 msgid ""
@@ -315,7 +315,7 @@ msgstr ""
 
 #: ../data/org.gnome.mutter.gschema.xml.in.h:7
 msgid "Workspaces are managed dynamically"
-msgstr "Darbalaukiai valdomi dinamiškai"
+msgstr "Darbo sritys tvarkomos dinamiškai"
 
 #: ../data/org.gnome.mutter.gschema.xml.in.h:8
 msgid ""
@@ -323,21 +323,21 @@ msgid ""
 "static number of workspaces (determined by the num-workspaces key in org."
 "gnome.desktop.wm.preferences)."
 msgstr ""
-"Nusako, ar darbastaliai yra valdomi dinamiškai, ar yra pastovus darbalaukių "
-"skaičius (nusakomas raktu num-workspaces schemoje org.gnome.desktop.wm."
-"preferences)."
+"Nusako, ar darbo sritys yra tvarkomos dinamiškai, ar yra pastovus darbo "
+"sričių skaičius (nusakomas raktu num-workspaces schemoje org.gnome.desktop."
+"wm.preferences)."
 
 #: ../data/org.gnome.mutter.gschema.xml.in.h:9
 msgid "Workspaces only on primary"
-msgstr "Darbalaukiai tik pagrindiniame"
+msgstr "Darbo sritys tik pagrindiniame"
 
 #: ../data/org.gnome.mutter.gschema.xml.in.h:10
 msgid ""
 "Determines whether workspace switching should happen for windows on all "
 "monitors or only for windows on the primary monitor."
 msgstr ""
-"Nusako, ar darbalaukių perjungimas turi įvykti langams viusose monitoriuose, "
-"ar tik langams pagrindiniame monitoriuje."
+"Nusako, ar darbo sričių perjungimas turi įvykti langams visuose "
+"monitoriuose, ar tik langams pagrindiniame monitoriuje."
 
 #: ../data/org.gnome.mutter.gschema.xml.in.h:11
 msgid "No tab popup"
@@ -438,46 +438,41 @@ msgid "Switch to VT 7"
 msgstr "Persijungti į VT 7"
 
 #: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:8
-#| msgid "Switch to VT 1"
 msgid "Switch to VT 8"
 msgstr "Persijungti į VT 8"
 
 #: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:9
-#| msgid "Switch to VT 1"
 msgid "Switch to VT 9"
 msgstr "Persijungti į VT 9"
 
 #: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:10
-#| msgid "Switch to VT 1"
 msgid "Switch to VT 10"
 msgstr "Persijungti į VT 10"
 
 #: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:11
-#| msgid "Switch to VT 1"
 msgid "Switch to VT 11"
 msgstr "Persijungti į VT 11"
 
 #: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:12
-#| msgid "Switch to VT 1"
 msgid "Switch to VT 12"
 msgstr "Persijungti į VT 12"
 
-#: ../src/backends/meta-monitor-manager.c:364
+#: ../src/backends/meta-monitor-manager.c:518
 msgid "Built-in display"
 msgstr "Integruotas vaizduoklis"
 
-#: ../src/backends/meta-monitor-manager.c:391
+#: ../src/backends/meta-monitor-manager.c:544
 msgid "Unknown"
 msgstr "Nežinomas"
 
-#: ../src/backends/meta-monitor-manager.c:393
+#: ../src/backends/meta-monitor-manager.c:546
 msgid "Unknown Display"
 msgstr "Nežinomas vaizduoklis"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: ../src/backends/meta-monitor-manager.c:401
+#: ../src/backends/meta-monitor-manager.c:554
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
@@ -489,7 +484,7 @@ msgstr "%s %s"
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
 "\"."
-msgstr "Kita kompozicijos valdyklė jau veikia ekrane %i vaizduoklyje „%s“."
+msgstr "Kita kompozicijos tvarkytuvė jau veikia ekrane %i vaizduoklyje „%s“."
 
 #: ../src/core/bell.c:185
 msgid "Bell event"
@@ -518,40 +513,40 @@ msgstr "_Laukti"
 msgid "_Force Quit"
 msgstr "_Priverstinai išeiti"
 
-#: ../src/core/display.c:562
+#: ../src/core/display.c:563
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Nepavyko atverti X Window sistemos ekrano „%s“\n"
 
-#: ../src/core/main.c:176
+#: ../src/core/main.c:180
 msgid "Disable connection to session manager"
-msgstr "Išjungti susijungimą su sesijos valdykle"
+msgstr "Išjungti susijungimą su sesijos tvarkytuve"
 
-#: ../src/core/main.c:182
+#: ../src/core/main.c:186
 msgid "Replace the running window manager"
-msgstr "Pakeisti veikiančią langų valdyklę"
+msgstr "Pakeisti veikiančią langų tvarkytuvę"
 
-#: ../src/core/main.c:188
+#: ../src/core/main.c:192
 msgid "Specify session management ID"
-msgstr "Nurodyti sesijos valdymo ID"
+msgstr "Nurodyti sesijos tvarkymo ID"
 
-#: ../src/core/main.c:193
+#: ../src/core/main.c:197
 msgid "X Display to use"
 msgstr "Naudotinas X ekranas"
 
-#: ../src/core/main.c:199
+#: ../src/core/main.c:203
 msgid "Initialize session from savefile"
 msgstr "Inicializuoti sesiją iš išsaugojimo failo"
 
-#: ../src/core/main.c:205
+#: ../src/core/main.c:209
 msgid "Make X calls synchronous"
 msgstr "Sinchronizuoti X iškvietimus"
 
-#: ../src/core/main.c:212
+#: ../src/core/main.c:216
 msgid "Run as a wayland compositor"
 msgstr "Vykdyti kaip wayland kompozitorių"
 
-#: ../src/core/main.c:220
+#: ../src/core/main.c:224
 msgid "Run as a full display server, rather than nested"
 msgstr "Vykdyti kaip visą vaizduoklio serverį, o ne vidinį"
 
@@ -580,24 +575,21 @@ msgstr "Parodyti versiją"
 msgid "Mutter plugin to use"
 msgstr "Naudojamas Mutter įskiepis"
 
-#: ../src/core/prefs.c:2004
+#: ../src/core/prefs.c:1997
 #, c-format
 msgid "Workspace %d"
-msgstr "Darbalaukis %d"
+msgstr "Darbo sritis %d"
 
-#: ../src/core/screen.c:525
+#: ../src/core/screen.c:526
 #, c-format
-#| msgid ""
-#| "Screen %d on display \"%s\" already has a window manager; try using the --"
-#| "replace option to replace the current window manager.\n"
 msgid ""
 "Display \"%s\" already has a window manager; try using the --replace option "
 "to replace the current window manager."
 msgstr ""
-"Vaizduoklis „%s“ jau turi langų valdyklę; pabandykite pakeisti esamą langų "
-"valdyklę naudodami parametrą --replace."
+"Vaizduoklis „%s“ jau turi langų tvarkytuvę; pabandykite pakeisti esamą langų "
+"tvarkytuvę, naudodami parametrą --replace."
 
-#: ../src/core/screen.c:607
+#: ../src/core/screen.c:608
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Ekranas %d vaizduoklyje „%s“ netinkamas\n"
