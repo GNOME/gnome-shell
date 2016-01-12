@@ -640,33 +640,6 @@ clutter-wayland-compositor-$(CLUTTER_API_VERSION).pc: clutter-$(CLUTTER_API_VERS
 pc_files += clutter-wayland-compositor-$(CLUTTER_API_VERSION).pc
 endif
 
-# Mir backend rules
-if SUPPORT_MIR
-backend_source_h_priv += \
-       mir/clutter-backend-mir.h             \
-       mir/clutter-backend-mir-priv.h        \
-       mir/clutter-stage-mir.h               \
-       mir/clutter-event-mir.h               \
-       mir/clutter-input-device-mir.h        \
-       mir/clutter-device-manager-mir.h
-
-backend_source_c += \
-       mir/clutter-backend-mir.c             \
-       mir/clutter-stage-mir.c               \
-       mir/clutter-event-mir.c               \
-       mir/clutter-input-device-mir.c        \
-       mir/clutter-device-manager-mir.c
-
-
-cluttermir_includedir = $(clutter_includedir)/mir
-cluttermir_include_HEADERS = $(srcdir)/mir/clutter-mir.h
-
-clutter-mir-$(CLUTTER_API_VERSION).pc: clutter-$(CLUTTER_API_VERSION).pc
-	$(QUIET_GEN)cp -f $< $(@F)
-
-pc_files += clutter-mir-$(CLUTTER_API_VERSION).pc
-endif # SUPPORT_MIR
-
 if SUPPORT_EGL
 backend_source_h += $(egl_source_h)
 backend_source_c += $(egl_source_c)

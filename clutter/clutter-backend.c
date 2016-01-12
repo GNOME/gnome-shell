@@ -86,12 +86,6 @@
 #ifdef CLUTTER_INPUT_WAYLAND
 #include "wayland/clutter-device-manager-wayland.h"
 #endif
-#ifdef CLUTTER_WINDOWING_MIR
-#include "mir/clutter-backend-mir.h"
-#endif
-#ifdef CLUTTER_INPUT_MIR
-#include "mir/clutter-device-manager-mir.h"
-#endif
 
 #ifdef CLUTTER_HAS_WAYLAND_COMPOSITOR_SUPPORT
 #include <cogl/cogl-wayland-server.h>
@@ -548,9 +542,6 @@ static const struct {
 #ifdef CLUTTER_WINDOWING_EGL
   { CLUTTER_WINDOWING_EGL, clutter_backend_egl_native_new },
 #endif
-#ifdef CLUTTER_WINDOWING_MIR
-  { CLUTTER_WINDOWING_MIR, clutter_backend_mir_new },
-#endif
   { NULL, NULL },
 };
 
@@ -663,14 +654,6 @@ clutter_backend_real_init_events (ClutterBackend *backend)
       (input_backend == NULL || input_backend == I_(CLUTTER_INPUT_WAYLAND)))
     {
       _clutter_events_wayland_init (backend);
-    }
-  else
-#endif
-#ifdef CLUTTER_INPUT_MIR
-  if (clutter_check_windowing_backend (CLUTTER_WINDOWING_MIR) &&
-      (input_backend == NULL || input_backend == I_(CLUTTER_INPUT_MIR)))
-    {
-      _clutter_events_mir_init (backend);
     }
   else
 #endif
