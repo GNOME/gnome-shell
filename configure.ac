@@ -465,43 +465,6 @@ AS_IF([test "x$enable_cogl_pango" = "xyes"],
 )
 
 dnl     ============================================================
-dnl     Should cogl-gst be built?
-dnl     ============================================================
-
-AS_IF([test "x$enable_glib" != "xyes"],
-      [
-        AS_IF([test "x$enable_cogl_gst" = "xyes"],
-              AC_MSG_ERROR([--enable-cogl-gst conflicts with --disable-glib]))
-        enable_cogl_gst=no
-      ]
-)
-
-AC_ARG_ENABLE(
-  [cogl-gst],
-  [AC_HELP_STRING([--enable-cogl-gst=@<:@no/yes@:>@], [Enable gstreamer support @<:@default=no@:>@])],
-  [],
-  enable_cogl_gst=no
-)
-AS_IF([test "x$enable_cogl_gst" = "xyes"],
-      [
-  COGL_GST_PKG_REQUIRES="$COGL_GST_PKG_REQUIRES gstreamer-1.0  gstreamer-fft-1.0 \
-                         gstreamer-audio-1.0 gstreamer-base-1.0 \
-                         gstreamer-video-1.0 gstreamer-plugins-base-1.0 \
-                         gstreamer-tag-1.0 gstreamer-controller-1.0"
-
-  GST_MAJORMINOR=1.0
-
-  dnl define location of gstreamer plugin directory
-  plugindir="\$(libdir)/gstreamer-$GST_MAJORMINOR"
-  AC_SUBST(plugindir)
-
-  dnl For the gtk doc generation
-  GSTREAMER_PREFIX="`$PKG_CONFIG --variable=prefix gstreamer-1.0`"
-  AC_SUBST(GSTREAMER_PREFIX)
-      ]
-)
-
-dnl     ============================================================
 dnl     Should cogl-path be built?
 dnl     ============================================================
 
@@ -1021,15 +984,6 @@ AM_CONDITIONAL([BUILD_COGL_PANGO], [test "x$enable_cogl_pango" = "xyes"])
 
 AM_CONDITIONAL([BUILD_COGL_PATH], [test "x$enable_cogl_path" = "xyes"])
 
-AC_SUBST(COGL_GST_PKG_REQUIRES)
-
-AS_IF([test "x$enable_cogl_gst" = "xyes"],
-  [PKG_CHECK_MODULES(COGL_GST_DEP, [$COGL_GST_PKG_REQUIRES])]
-)
-AM_CONDITIONAL([BUILD_COGL_GST], [test "x$enable_cogl_gst" = "xyes"])
-
-
-
 dnl ================================================================
 dnl Misc program dependencies.
 dnl ================================================================
@@ -1182,9 +1136,6 @@ cogl-pango/cogl-pango-2.0-experimental.pc
 cogl-path/Makefile
 cogl-path/cogl-path-1.0.pc
 cogl-path/cogl-path-2.0-experimental.pc
-cogl-gst/Makefile
-cogl-gst/cogl-gst-1.0.pc
-cogl-gst/cogl-gst-2.0-experimental.pc
 cogl-gles2/Makefile
 cogl-gles2/cogl-gles2-1.0.pc
 cogl-gles2/cogl-gles2-2.0-experimental.pc
@@ -1230,7 +1181,6 @@ fi
 echo "        Build libcogl-gles2 GLES 2.0 frontend api: ${enable_cogl_gles2}"
 echo "        Image backend: ${COGL_IMAGE_BACKEND}"
 echo "        Cogl Pango: ${enable_cogl_pango}"
-echo "        Cogl Gstreamer: ${enable_cogl_gst}"
 echo "        Cogl Path: ${enable_cogl_path}"
 
 # Compiler/Debug related flags
