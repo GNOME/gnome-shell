@@ -258,6 +258,23 @@ destroy_drag_focus (struct wl_listener *listener, void *data)
   grab->drag_focus_data_device = NULL;
 }
 
+static void
+meta_wayland_drag_grab_set_source (MetaWaylandDragGrab   *drag_grab,
+                                   MetaWaylandDataSource *source)
+{
+  if (drag_grab->drag_data_source)
+    g_object_weak_unref (G_OBJECT (drag_grab->drag_data_source),
+                         drag_grab_data_source_destroyed,
+                         drag_grab);
+
+  drag_grab->drag_data_source = source;
+
+  if (source)
+    g_object_weak_ref (G_OBJECT (source),
+                       drag_grab_data_source_destroyed,
+                       drag_grab);
+}
+
 void
 meta_wayland_drag_grab_set_focus (MetaWaylandDragGrab *drag_grab,
                                   MetaWaylandSurface  *surface)
@@ -343,10 +360,7 @@ data_device_end_drag_grab (MetaWaylandDragGrab *drag_grab)
       wl_list_remove (&drag_grab->drag_icon_listener.link);
     }
 
-  if (drag_grab->drag_data_source)
-    g_object_weak_unref (G_OBJECT (drag_grab->drag_data_source),
-                         drag_grab_data_source_destroyed,
-                         drag_grab);
+  meta_wayland_drag_grab_set_source (drag_grab, NULL);
 
   if (drag_grab->feedback_actor)
     {
@@ -460,11 +474,7 @@ meta_wayland_data_device_start_drag (MetaWaylandDataDevice                 *data
   drag_grab->drag_start_x = stage_pos.x;
   drag_grab->drag_start_y = stage_pos.y;
 
-  g_object_weak_ref (G_OBJECT (source),
-                     drag_grab_data_source_destroyed,
-                     drag_grab);
-
-  drag_grab->drag_data_source = source;
+  meta_wayland_drag_grab_set_source (drag_grab, source);
   meta_wayland_data_device_set_dnd_source (data_device,
                                            drag_grab->drag_data_source);
 
