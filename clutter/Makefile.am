@@ -466,29 +466,9 @@ clutter-cogl-$(CLUTTER_API_VERSION).pc: clutter-$(CLUTTER_API_VERSION).pc
 pc_files += clutter-cogl-$(CLUTTER_API_VERSION).pc
 endif
 
-# For compatibility with the old GLX backend
-#
-# Note: there wasn't actually anything GLX specific so we can add
-# the compatibility if clutter supports x11
-glx_source_c = x11/clutter-glx-texture-pixmap.c
-glx_source_h = x11/clutter-glx-texture-pixmap.h \
-	       x11/clutter-glx.h
-
 if SUPPORT_X11
 backend_source_h += $(glx_source_h)
 backend_source_c += $(glx_source_c)
-
-clutterglx_includedir = $(clutter_includedir)/glx
-clutterglx_include_HEADERS = $(glx_source_h)
-
-clutter-glx-$(CLUTTER_API_VERSION).pc: clutter-$(CLUTTER_API_VERSION).pc
-	$(QUIET_GEN)cp -f $< $(@F)
-
-pc_files += clutter-glx-$(CLUTTER_API_VERSION).pc
-
-compat_libs += \
-	libclutter-glx-$(CLUTTER_API_VERSION).so \
-	$(NULL)
 endif
 
 evdev_c_priv = \
