@@ -1,7 +1,5 @@
 AUTOMAKE_OPTIONS = subdir-objects
 
-include $(top_srcdir)/build/autotools/Makefile.am.silent
-
 # preamble
 NULL =
 

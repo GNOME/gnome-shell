@@ -1,5 +1,3 @@
-include $(top_srcdir)/build/autotools/Makefile.am.silent
-
 common_ldadd = \
 	$(top_builddir)/clutter/libmutter-clutter-@CLUTTER_API_VERSION@.la
 
@@ -34,5 +32,3 @@ cally_atkeditabletext_example_SOURCES = $(common_sources) cally-atkeditabletext-
 cally_clone_example_SOURCES           = $(common_sources) cally-clone-example.c
 
 DISTCLEANFILES =
-
--include $(top_srcdir)/build/autotools/Makefile.am.gitignore

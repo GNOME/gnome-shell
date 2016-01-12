@@ -1,5 +1,3 @@
-include $(top_srcdir)/build/autotools/Makefile.am.silent
-
 UNIT_TESTS = \
 	test-texture-slicing.c \
 	test-texture-async.c \
@@ -72,8 +70,6 @@ GIT_IGNORE_EXTRA = \
 	stamp-test-unit-names \
 	test-unit-names.h \
 	$(UNIT_TESTS:.c=$(SHEXT))
-
-include $(top_srcdir)/build/autotools/Makefile.am.gitignore
 
 stamp-test-interactive: Makefile
 	@wrapper=$(abs_builddir)/wrapper.sh ; \

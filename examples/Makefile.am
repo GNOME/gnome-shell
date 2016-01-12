@@ -1,5 +1,3 @@
-include $(top_srcdir)/build/autotools/Makefile.am.silent
-
 all_examples = \
 	actor-model \
 	basic-actor \
@@ -36,5 +34,3 @@ AM_CPPFLAGS = \
 noinst_PROGRAMS = $(all_examples)
 
 EXTRA_DIST = redhand.png
-
--include $(top_srcdir)/build/autotools/Makefile.am.gitignore

@@ -1,5 +1,3 @@
-include $(top_srcdir)/build/autotools/Makefile.am.silent
-
 check_PROGRAMS = \
 	test-picking \
 	test-text-perf \
@@ -40,5 +38,3 @@ test_state_interactive_SOURCES = test-state-interactive.c
 test_state_mini_SOURCES = test-state-mini.c
 
 EXTRA_DIST = Makefile-retrospect Makefile-tests create-report.rb test-common.h
-
--include $(top_srcdir)/build/autotools/Makefile.am.gitignore

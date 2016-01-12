@@ -1,5 +1,3 @@
-include $(top_srcdir)/build/autotools/Makefile.am.silent
-
 NULL =
 
 SUBDIRS = build clutter tests doc po
@@ -26,10 +24,6 @@ CLEANFILES = $(pcfiles)
 DISTCLEANFILES =
 
 DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc --enable-maintainer-flags --enable-docs
-
-# .release requires .changelog rules
-include $(top_srcdir)/build/autotools/Makefile.am.changelog
-include $(top_srcdir)/build/autotools/Makefile.am.release
 
 # proxy rules for tests
 test-report full-report:

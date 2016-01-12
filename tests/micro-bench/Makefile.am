@@ -1,5 +1,3 @@
-include $(top_srcdir)/build/autotools/Makefile.am.silent
-
 common_ldadd = $(top_builddir)/clutter/libmutter-clutter-@CLUTTER_API_VERSION@.la
 
 check_PROGRAMS = \
@@ -29,5 +27,3 @@ test_picking_SOURCES = test-picking.c
 test_text_perf_SOURCES = test-text-perf.c
 test_random_text_SOURCES = test-random-text.c
 test_cogl_perf_SOURCES = test-cogl-perf.c
-
--include $(top_srcdir)/build/autotools/Makefile.am.gitignore
