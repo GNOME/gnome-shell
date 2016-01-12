@@ -1009,23 +1009,6 @@ AS_IF([test "x$SUPPORT_SDL2" = "xyes" -a "x$SUPPORT_SDL" = "xyes"],
 EGL_PLATFORM_COUNT=0
 
 AC_ARG_ENABLE(
-  [null-egl-platform],
-  [AC_HELP_STRING([--enable-null-egl-platform=@<:@no/yes@:>@], [Enable support for the NULL egl platform @<:@default=no@:>@])],
-  [],
-  enable_null_egl_platform=no
-)
-AS_IF([test "x$enable_null_egl_platform" = "xyes"],
-      [
-        EGL_PLATFORM_COUNT=$((EGL_PLATFORM_COUNT+1))
-        NEED_EGL=yes
-        EGL_PLATFORMS="$EGL_PLATFORMS null"
-
-        COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT"
-      ])
-AM_CONDITIONAL(SUPPORT_EGL_PLATFORM_POWERVR_NULL,
-               [test "x$enable_null_egl_platform" = "xyes"])
-
-AC_ARG_ENABLE(
   [gdl-egl-platform],
   [AC_HELP_STRING([--enable-gdl-egl-platform=@<:@no/yes@:>@], [Enable support for the GDL egl platform @<:@default=no@:>@])],
   [],

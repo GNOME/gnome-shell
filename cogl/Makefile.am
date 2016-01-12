@@ -482,11 +482,6 @@ cogl_sources_c += \
 	winsys/cogl-winsys-egl-x11.c \
 	winsys/cogl-winsys-egl-x11-private.h
 endif
-if SUPPORT_EGL_PLATFORM_POWERVR_NULL
-cogl_sources_c += \
-	winsys/cogl-winsys-egl-null.c \
-	winsys/cogl-winsys-egl-null-private.h
-endif
 if SUPPORT_EGL_PLATFORM_GDL
 cogl_sources_c += \
 	winsys/cogl-winsys-egl-gdl.c \
