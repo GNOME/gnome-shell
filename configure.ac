@@ -114,7 +114,6 @@ m4_define([atk_req_version],            [2.5.3])
 m4_define([cairo_req_version],          [1.14.0])
 m4_define([pango_req_version],          [1.30])
 m4_define([gi_req_version],             [1.39.0])
-m4_define([gtk_doc_req_version],        [1.20])
 m4_define([xcomposite_req_version],     [0.4])
 m4_define([gdk_req_version],            [3.3.18])
 m4_define([libinput_req_version],       [0.19.0])
@@ -127,7 +126,6 @@ AC_SUBST([ATK_REQ_VERSION],        [atk_req_version])
 AC_SUBST([CAIRO_REQ_VERSION],      [cairo_req_version])
 AC_SUBST([PANGO_REQ_VERSION],      [pango_req_version])
 AC_SUBST([GI_REQ_VERSION],         [gi_req_version])
-AC_SUBST([GTK_DOC_REQ_VERSION],    [gtk_doc_req_version])
 AC_SUBST([XCOMPOSITE_REQ_VERSION], [xcomposite_req_version])
 AC_SUBST([GDK_REQ_VERSION],        [gdk_req_version])
 AC_SUBST([LIBINPUT_REQ_VERSION],   [libinput_req_version])
@@ -738,61 +736,6 @@ dnl === GObject-Introspection check ===========================================
 
 GOBJECT_INTROSPECTION_CHECK([gi_req_version])
 
-dnl === GTK Doc check =========================================================
-
-GTK_DOC_CHECK([gtk_doc_req_version], [--flavour no-tmpl])
-
-# we don't want to build the documentation from a Git clone unless we
-# explicitly tell configure to do so; this allows avoiding to recurse into
-# the documentation directory when building Clutter inside Poky for a
-# target device that doesn't have gtk-doc installed. for reference
-# see: http://bugzilla.openedhand.com/show_bug.cgi?id=1047
-#
-# we use autogen.sh as it exists only inside the Git clones, and it
-# is not packaged into tarballs.
-AM_CONDITIONAL([BUILD_GTK_DOC], [test "x$enable_gtk_doc" = "xyes" || test ! -f "autogen.sh"])
-
-# prefixes for fixing gtk-doc references
-CAIRO_PREFIX="`$PKG_CONFIG --variable=prefix cairo`"
-GLIB_PREFIX="`$PKG_CONFIG --variable=prefix glib-2.0`"
-PANGO_PREFIX="`$PKG_CONFIG --variable=prefix pango`"
-COGL_PREFIX="`$PKG_CONFIG --variable=prefix cogl-1.0`"
-ATK_PREFIX="`$PKG_CONFIG --variable=prefix atk`"
-AC_SUBST(CAIRO_PREFIX)
-AC_SUBST(GLIB_PREFIX)
-AC_SUBST(PANGO_PREFIX)
-AC_SUBST(COGL_PREFIX)
-AC_SUBST(ATK_PREFIX)
-
-dnl === Manual ================================================================
-
-AC_ARG_ENABLE([docs],
-              [AS_HELP_STRING([--enable-docs=@<:@no/yes@:>@],
-                              [Build optional documentation; requires xsltproc and jw.])],
-              [enable_docs=$enableval],
-              [enable_docs=no])
-
-enable_pdfs=no
-AS_IF([test "x$enable_docs" = "xyes"],
-      [
-        AC_PATH_PROG(JW, [jw], [no])
-        AS_IF([test "x$JW" = "xno"],
-              [
-                AC_MSG_WARN([jw not found; pdf generation has been disabled])
-              ],
-              [enable_pdfs=yes])
-
-        AC_PATH_PROG(XSLTPROC, [xsltproc], [no])
-        AS_IF([test "x$XSLTPROC" = "xno"],
-              [
-                AC_MSG_ERROR([xsltproc not found])
-              ])
-      ]
-)
-
-AM_CONDITIONAL(ENABLE_DOCS, [test "x$enable_docs" = "xyes"])
-AM_CONDITIONAL(ENABLE_PDFS, [test "x$enable_pdfs" = "xyes"])
-
 dnl === I18N ==================================================================
 
 AM_GNU_GETTEXT_VERSION([0.17])
@@ -840,14 +783,6 @@ AC_CONFIG_FILES([
 
         examples/Makefile
 
-	doc/Makefile
-	doc/reference/Makefile
-	doc/reference/clutter-docs.xml
-	doc/common/Makefile
-	doc/cookbook/Makefile
-	doc/cookbook/clutter-cookbook.xml
-	doc/cookbook/examples/Makefile
-
 	po/Makefile.in
 ])
 
@@ -872,12 +807,6 @@ echo "        Clutter debug level: ${enable_debug}"
 echo "        Compiler flags: ${CFLAGS} ${MAINTAINER_CFLAGS}"
 echo "        Enable coverage tests: ${use_gcov}"
 echo "        Enable deprecated symbols: ${enable_deprecated}"
-
-# Documentation
-echo ""
-echo " • Documentation:"
-echo "        Build API Reference: ${enable_gtk_doc}"
-echo "        Build Additional Documentation: ${enable_docs} (Generate PDF: ${enable_pdfs})"
 
 # Miscellaneous
 echo ""
