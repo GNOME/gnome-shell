@@ -55,7 +55,6 @@
 #define CLUTTER_DISABLE_DEPRECATION_WARNINGS
 
 #include <glib.h>
-#include <glib/gi18n-lib.h>
 
 /* This file depends on the cogl 1.x api which isn't exposed when
  * COGL_ENABLE_EXPERIMENTAL_2_0_API is defined...

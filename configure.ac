@@ -736,20 +736,6 @@ dnl === GObject-Introspection check ===========================================
 
 GOBJECT_INTROSPECTION_CHECK([gi_req_version])
 
-dnl === I18N ==================================================================
-
-AM_GNU_GETTEXT_VERSION([0.17])
-AM_GNU_GETTEXT([external])
-
-GETTEXT_PACKAGE="clutter-1.0"
-AC_SUBST(GETTEXT_PACKAGE)
-AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE],
-                   ["$GETTEXT_PACKAGE"],
-                   [The prefix for our gettext translation domains.])
-AS_ALL_LINGUAS
-
-dnl = Build optionals =========================================================
-
 dnl === Conformance test suite ================================================
 
 GLIB_TESTS
@@ -782,8 +768,6 @@ AC_CONFIG_FILES([
 	tests/performance/Makefile
 
         examples/Makefile
-
-	po/Makefile.in
 ])
 
 AC_OUTPUT

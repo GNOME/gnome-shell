@@ -26,9 +26,8 @@
 #ifndef __CLUTTER_PRIVATE_H__
 #define __CLUTTER_PRIVATE_H__
 
+#include <string.h>
 #include <glib.h>
-
-#include <glib/gi18n-lib.h>
 
 #include <cogl-pango/cogl-pango.h>
 
@@ -80,12 +79,10 @@ typedef struct _ClutterVertex4          ClutterVertex4;
 /* automagic interning of a static string */
 #define I_(str)  (g_intern_static_string ((str)))
 
-/* mark all properties under the "Property" context */
-#ifdef ENABLE_NLS
-#define P_(String) (_clutter_gettext ((String)))
-#else
+/* keep this for source compatibility with clutter */
 #define P_(String) (String)
-#endif
+#define N_(String) (String)
+#define _(String) (String)
 
 /* This is a replacement for the nearbyint function which always rounds to the
  * nearest integer. nearbyint is apparently a C99 function so it might not
@@ -200,8 +197,6 @@ ClutterActor *          _clutter_context_pop_shader_stack               (Clutter
 ClutterActor *          _clutter_context_peek_shader_stack              (void);
 gboolean                _clutter_context_get_motion_events_enabled      (void);
 gboolean                _clutter_context_get_show_fps                   (void);
-
-const gchar *_clutter_gettext (const gchar *str);
 
 gboolean      _clutter_feature_init (GError **error);
 

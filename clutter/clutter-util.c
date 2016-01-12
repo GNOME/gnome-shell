@@ -36,8 +36,6 @@
 
 #include <math.h>
 
-#include <glib/gi18n-lib.h>
-
 #include "clutter-debug.h"
 #include "clutter-main.h"
 #include "clutter-interval.h"
@@ -64,20 +62,6 @@ clutter_util_next_p2 (gint a)
     rval <<= 1;
 
   return rval;
-}
-
-/*< private >
- * _clutter_gettext:
- * @str: a string to localize
- *
- * Retrieves the localized version of @str, using the Clutter domain
- *
- * Return value: the translated string
- */
-const gchar *
-_clutter_gettext (const gchar *str)
-{
-  return g_dgettext (GETTEXT_PACKAGE, str);
 }
 
 /* Help macros to scale from OpenGL <-1,1> coordinates system to

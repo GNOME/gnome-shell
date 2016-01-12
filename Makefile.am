@@ -1,12 +1,12 @@
 NULL =
 
-SUBDIRS = build clutter tests po
+SUBDIRS = build clutter tests
 
 if BUILD_EXAMPLES
 SUBDIRS += examples
 endif
 
-DIST_SUBDIRS = clutter tests examples po build
+DIST_SUBDIRS = clutter tests examples build
 
 # XXX - this is a massive hack to make autoreconf honour the ACLOCAL_FLAGS
 # that jhbuild sets while still retaining build/autotools as the authoritative

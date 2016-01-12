@@ -23,8 +23,6 @@
 #include "config.h"
 #endif
 
-#include <glib/gi18n-lib.h>
-
 #include <string.h>
 
 #include <unistd.h>

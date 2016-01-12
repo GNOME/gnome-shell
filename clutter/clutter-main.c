@@ -52,8 +52,6 @@
 #endif
 
 #include <stdlib.h>
-#include <glib/gi18n-lib.h>
-#include <locale.h>
 
 #include "clutter-actor-private.h"
 #include "clutter-backend-private.h"
@@ -1444,10 +1442,6 @@ pre_parse_hook (GOptionContext  *context,
   if (clutter_is_initialized)
     return TRUE;
 
-  if (setlocale (LC_ALL, "") == NULL)
-    g_warning ("Locale not supported by C library.\n"
-               "Using the fallback 'C' locale.");
-
   clutter_context = _clutter_context_get_default ();
 
   backend = clutter_context->backend;
@@ -1602,7 +1596,6 @@ clutter_get_option_group (void)
 
   g_option_group_set_parse_hooks (group, pre_parse_hook, post_parse_hook);
   g_option_group_add_entries (group, clutter_args);
-  g_option_group_set_translation_domain (group, GETTEXT_PACKAGE);
 
   /* add backend-specific options */
   _clutter_backend_add_options (context->backend, group);
@@ -2571,9 +2564,6 @@ clutter_base_init (void)
   if (!initialised)
     {
       initialised = TRUE;
-
-      bindtextdomain (GETTEXT_PACKAGE, CLUTTER_LOCALEDIR);
-      bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
 
 #if !GLIB_CHECK_VERSION (2, 35, 1)
       /* initialise GLib type system */
