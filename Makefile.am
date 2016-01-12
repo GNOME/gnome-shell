@@ -18,7 +18,7 @@ if BUILD_COGL_GST
 SUBDIRS += cogl-gst
 endif
 
-SUBDIRS += tests examples doc po
+SUBDIRS += tests examples po
 
 ACLOCAL_AMFLAGS = -I build/autotools ${ACLOCAL_FLAGS}
 
@@ -31,7 +31,6 @@ CLEANFILES=
 DISTCLEANFILES=
 
 DISTCHECK_CONFIGURE_FLAGS = \
-	--enable-gtk-doc \
 	--enable-maintainer-flags \
 	--enable-profile \
 	--enable-gles2 \

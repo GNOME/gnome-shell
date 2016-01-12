@@ -34,12 +34,6 @@ if test -z "$AUTOMAKE"; then
 	exit 1
 fi
 
-(gtkdocize --version) < /dev/null > /dev/null 2>&1 || {
-	echo "You don't have gtk-doc installed to compile $PROJECT, and thus"
-	echo "won't be able to generate the $PROJECT documentation."
-	NOGTKDOC=1
-}
-
 # NOCONFIGURE is used by gnome-common
 if test -z "$NOCONFIGURE"; then
         if test -z "$*"; then
@@ -65,10 +59,6 @@ if test -z "$ACLOCAL_FLAGS"; then
 fi
 
 rm -rf autom4te.cache
-
-if test -z "$NOGTKDOC"; then
-	gtkdocize || exit $?
-fi
 
 autoreconf -vfi || exit $?
 cd $ORIGDIR || exit $?

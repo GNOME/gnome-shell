@@ -90,7 +90,6 @@ m4_define([pangocairo_req_version],     [1.20])
 m4_define([gi_req_version],             [0.9.5])
 m4_define([gdk_pixbuf_req_version],     [2.0])
 m4_define([uprof_req_version],          [0.3])
-m4_define([gtk_doc_req_version],        [1.13])
 m4_define([xfixes_req_version],         [3])
 m4_define([xcomposite_req_version],     [0.4])
 m4_define([xrandr_req_version],         [1.2])
@@ -105,7 +104,6 @@ AC_SUBST([CAIRO_REQ_VERSION], [cairo_req_version])
 AC_SUBST([PANGOCAIRO_REQ_VERSION], [pangocairo_req_version])
 AC_SUBST([XCOMPOSITE_REQ_VERSION], [xcomposite_req_version])
 AC_SUBST([XFIXES_REQ_VERSION], [xfixes_req_version])
-AC_SUBST([GTK_DOC_REQ_VERSION], [gtk_doc_req_version])
 AC_SUBST([GI_REQ_VERSION], [gi_req_version])
 AC_SUBST([UPROF_REQ_VERSION], [uprof_req_version])
 AC_SUBST([WAYLAND_SERVER_REQ_VERSION], [wayland_server_req_version])
@@ -974,13 +972,6 @@ AM_CONDITIONAL(SUPPORT_XLIB, [test "x$SUPPORT_XLIB" = "xyes"])
 dnl ================================================================
 dnl Documentation stuff.
 dnl ================================================================
-# gtkdocize greps for ^GTK_DOC_CHECK and parses it, so you need to have
-# it on it's own line.
-m4_ifdef([GTK_DOC_CHECK], [
-GTK_DOC_CHECK([gtk_doc_req_version], [--flavour no-tmpl])
-])
-AM_CONDITIONAL([BUILD_GTK_DOC], [test "x$enable_gtk_doc" = "xyes"])
-
 GLIB_PREFIX="`$PKG_CONFIG --variable=prefix glib-2.0`"
 GDKPIXBUF_PREFIX="`$PKG_CONFIG --variable=prefix gdk-pixbuf-2.0`"
 AC_SUBST(GLIB_PREFIX)
@@ -1197,14 +1188,6 @@ cogl-gst/cogl-gst-2.0-experimental.pc
 cogl-gles2/Makefile
 cogl-gles2/cogl-gles2-1.0.pc
 cogl-gles2/cogl-gles2-2.0-experimental.pc
-doc/Makefile
-doc/reference/Makefile
-doc/reference/cogl/Makefile
-doc/reference/cogl/cogl-docs.xml
-doc/reference/cogl-2.0-experimental/Makefile
-doc/reference/cogl-2.0-experimental/cogl-2.0-experimental-docs.xml
-doc/reference/cogl-gst/Makefile
-doc/reference/cogl-gst/cogl-gst-docs.xml
 examples/Makefile
 tests/Makefile
 tests/config.env
@@ -1262,7 +1245,6 @@ echo "        Linker flags: ${LDFLAGS} ${COGL_EXTRA_LDFLAGS}"
 # Miscellaneous
 echo ""
 echo " • Extra:"
-echo "        Build API reference: ${enable_gtk_doc}"
 echo "        Build introspection data: ${enable_introspection}"
 echo "        Build unit tests: ${enable_unit_tests}"
 echo "        Enable internationalization: ${USE_NLS}"
