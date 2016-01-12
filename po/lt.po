@@ -2,15 +2,15 @@
 # Copyright (C) 2011 clutter's COPYRIGHT HOLDER
 # This file is distributed under the same license as the clutter package.
 # Algimantas Margevičius <gymka@mail.ru>, 2011.
-# Aurimas Černius <aurisc4@gmail.com>, 2011, 2013, 2014, 2015.
+# Aurimas Černius <aurisc4@gmail.com>, 2011, 2013, 2014, 2015, 2016.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: clutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-12-17 18:11+0000\n"
-"PO-Revision-Date: 2015-12-20 14:58+0200\n"
+"POT-Creation-Date: 2016-01-05 04:19+0000\n"
+"PO-Revision-Date: 2016-01-12 22:22+0200\n"
 "Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lietuvių <gnome-lt@lists.akl.lt>\n"
 "Language: lt\n"
@@ -532,7 +532,7 @@ msgstr "Prideda efektą, kuris bus pritaikytas aktoriui"
 
 #: ../clutter/clutter-actor.c:7534
 msgid "Layout Manager"
-msgstr "Lygiavimų tvarkyklė"
+msgstr "Lygiavimų tvarkytuvė"
 
 #: ../clutter/clutter-actor.c:7535
 msgid "The object controlling the layout of an actor's children"
@@ -774,7 +774,7 @@ msgstr "Horizontalus lygiavimas"
 
 #: ../clutter/clutter-bin-layout.c:221
 msgid "Horizontal alignment for the actor inside the layout manager"
-msgstr "Aktoriaus horizontalus lygiavimas lygiavimo tvarkyklėje"
+msgstr "Aktoriaus horizontalus lygiavimas lygiavimo tvarkytuvėje"
 
 #: ../clutter/clutter-bin-layout.c:229 ../clutter/clutter-bin-layout.c:653
 #: ../clutter/clutter-box-layout.c:383
@@ -784,15 +784,15 @@ msgstr "Vertikalus lygiavimas"
 
 #: ../clutter/clutter-bin-layout.c:230
 msgid "Vertical alignment for the actor inside the layout manager"
-msgstr "Aktoriaus vertikalus lygiavimas lygiavimo tvarkyklėje"
+msgstr "Aktoriaus vertikalus lygiavimas lygiavimo tvarkytuvėje"
 
 #: ../clutter/clutter-bin-layout.c:634
 msgid "Default horizontal alignment for the actors inside the layout manager"
-msgstr "Aktoriaus numatytasis horizontalus lygiavimas lygiavimo tvarkyklėje"
+msgstr "Aktoriaus numatytasis horizontalus lygiavimas lygiavimo tvarkytuvėje"
 
 #: ../clutter/clutter-bin-layout.c:654
 msgid "Default vertical alignment for the actors inside the layout manager"
-msgstr "Aktoriaus numatytasis vertikalus lygiavimas lygiavimo tvarkyklėje"
+msgstr "Aktoriaus numatytasis vertikalus lygiavimas lygiavimo tvarkytuvėje"
 
 #: ../clutter/clutter-box-layout.c:349
 msgid "Expand"
@@ -1046,7 +1046,7 @@ msgstr "Realizacija"
 
 #: ../clutter/clutter-device-manager.c:137
 msgid "The ClutterBackend of the device manager"
-msgstr "Įrenginių tvarkyklės ClutterBackend"
+msgstr "Įrenginių tvarkytuvės ClutterBackend"
 
 #: ../clutter/clutter-drag-action.c:733
 msgid "Horizontal Drag Threshold"
@@ -1269,11 +1269,11 @@ msgstr "Įrenginio tipas"
 
 #: ../clutter/clutter-input-device.c:299
 msgid "Device Manager"
-msgstr "Įrenginių tvarkyklė"
+msgstr "Įrenginių tvarkytuvė"
 
 #: ../clutter/clutter-input-device.c:300
 msgid "The device manager instance"
-msgstr "Įrenginių tvarkyklės egzempliorius"
+msgstr "Įrenginių tvarkytuvės egzempliorius"
 
 #: ../clutter/clutter-input-device.c:313
 msgid "Device Mode"
@@ -1341,11 +1341,11 @@ msgstr "Galutinė intervalo vertė"
 
 #: ../clutter/clutter-layout-meta.c:117
 msgid "Manager"
-msgstr "Tvarkyklė"
+msgstr "Tvarkytuvė"
 
 #: ../clutter/clutter-layout-meta.c:118
 msgid "The manager that created this data"
-msgstr "Tvarkyklė, sukūrusi šiuos duomenis"
+msgstr "Tvarkytuvė, sukūrusi šiuos duomenis"
 
 #. Translators: Leave this UNTRANSLATED if your language is
 #. * left-to-right.  If your language is right-to-left
@@ -1396,11 +1396,11 @@ msgstr "Įjungti pritaikymą neįgaliesiems"
 
 #: ../clutter/clutter-main.c:1619
 msgid "Clutter Options"
-msgstr "Clutter parinktys"
+msgstr "Clutter parametrai"
 
 #: ../clutter/clutter-main.c:1620
 msgid "Show Clutter Options"
-msgstr "Rodyti Clutter parinktis"
+msgstr "Rodyti Clutter parametrus"
 
 #: ../clutter/clutter-pan-action.c:478
 msgid "Pan Axis"
