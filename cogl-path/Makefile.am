@@ -108,15 +108,3 @@ pkgconfig_DATA = $(pc_files)
 
 EXTRA_DIST += cogl-path.pc.in
 DISTCLEANFILES += $(pc_files)
-
-dist-hook:	\
-	$(top_builddir)/build/win32/vs9/cogl-path.vcproj	\
-	$(top_builddir)/build/win32/vs10/cogl-path.vcxproj	\
-	$(top_builddir)/build/win32/vs10/cogl-path.vcxproj.filters
-
-MSVC_PROJECT = cogl-path
-MSVC_PROJECT_SRCDIR = cogl-path
-MSVC_PROJECT_SRCS = $(source_c)
-MSVC_PROJECT_EXCLUDES = dummy
-
-include $(top_srcdir)/build/Makefile-msvcproj.mak

@@ -1044,15 +1044,6 @@ cogl_wayland_texture_2d_new_from_buffer
 
 cogl_winding_get_type
 
-#ifdef COGL_HAS_WIN32_SUPPORT
-cogl_win32_onscreen_get_window
-cogl_win32_onscreen_set_foreign_window
-cogl_win32_renderer_add_filter
-cogl_win32_renderer_handle_event
-cogl_win32_renderer_remove_filter
-cogl_win32_renderer_set_event_retrieval_enabled
-#endif
-
 #ifdef COGL_HAS_XLIB
 cogl_xlib_get_display
 cogl_xlib_handle_event

@@ -76,10 +76,6 @@ struct _CoglRenderer
   CoglBool xlib_enable_event_retrieval;
 #endif
 
-#ifdef COGL_HAS_WIN32_SUPPORT
-  CoglBool win32_enable_event_retrieval;
-#endif
-
   CoglDriver driver;
   unsigned long private_features
     [COGL_FLAGS_N_LONGS_FOR_SIZE (COGL_N_PRIVATE_FEATURES)];

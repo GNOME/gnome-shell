@@ -69,9 +69,6 @@
 #ifdef COGL_HAS_GLX_SUPPORT
 #include "cogl-winsys-glx-private.h"
 #endif
-#ifdef COGL_HAS_WGL_SUPPORT
-#include "cogl-winsys-wgl-private.h"
-#endif
 
 #ifdef COGL_HAS_XLIB_SUPPORT
 #include "cogl-xlib-renderer.h"
@@ -192,9 +189,6 @@ static CoglWinsysVtableGetter _cogl_winsys_vtable_getters[] =
 #ifdef COGL_HAS_EGL_PLATFORM_MIR_SUPPORT
   _cogl_winsys_egl_mir_get_vtable,
 #endif
-#ifdef COGL_HAS_WGL_SUPPORT
-  _cogl_winsys_wgl_get_vtable,
-#endif
   _cogl_winsys_stub_get_vtable,
 };
 
@@ -268,10 +262,6 @@ cogl_renderer_new (void)
 
 #ifdef COGL_HAS_XLIB_SUPPORT
   renderer->xlib_enable_event_retrieval = TRUE;
-#endif
-
-#ifdef COGL_HAS_WIN32_SUPPORT
-  renderer->win32_enable_event_retrieval = TRUE;
 #endif
 
 #ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT

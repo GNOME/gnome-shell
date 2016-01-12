@@ -50,8 +50,7 @@ COGL_BEGIN_DECLS
  *
  * A #CoglRenderer represents a means to render. It encapsulates the
  * selection of an underlying driver, such as OpenGL or OpenGL-ES and
- * a selection of a window system binding API such as GLX, or EGL or
- * WGL.
+ * a selection of a window system binding API such as GLX or EGL.
  *
  * A #CoglRenderer has two states, "unconnected" and "connected". When
  * a renderer is first instantiated using cogl_renderer_new() it is
@@ -117,8 +116,7 @@ cogl_is_renderer (void *object);
  * Instantiates a new (unconnected) #CoglRenderer object. A
  * #CoglRenderer represents a means to render. It encapsulates the
  * selection of an underlying driver, such as OpenGL or OpenGL-ES and
- * a selection of a window system binding API such as GLX, or EGL or
- * WGL.
+ * a selection of a window system binding API such as GLX or EGL.
  *
  * While the renderer is unconnected it can be configured so that
  * applications may specify backend constraints, such as "must use
@@ -167,7 +165,6 @@ cogl_renderer_new (void);
  * @COGL_WINSYS_ID_EGL_KMS: Use EGL with the KMS platform
  * @COGL_WINSYS_ID_EGL_ANDROID: Use EGL with the Android platform
  * @COGL_WINSYS_ID_EGL_MIR: Use EGL with the Mir server
- * @COGL_WINSYS_ID_WGL: Use the Microsoft Windows WGL binding API
  *
  * Identifies specific window system backends that Cogl supports.
  *
@@ -184,7 +181,6 @@ typedef enum
   COGL_WINSYS_ID_EGL_KMS,
   COGL_WINSYS_ID_EGL_ANDROID,
   COGL_WINSYS_ID_EGL_MIR,
-  COGL_WINSYS_ID_WGL,
 } CoglWinsysID;
 
 /**

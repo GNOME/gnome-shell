@@ -79,11 +79,7 @@ endif
 
 test_conformance_SOURCES = $(common_sources) $(test_sources)
 
-if OS_WIN32
-SHEXT =
-else
 SHEXT = $(EXEEXT)
-endif
 
 # For convenience, this provides a way to easily run individual unit tests:
 .PHONY: wrappers clean-wrappers
@@ -161,43 +157,6 @@ TEST_PROGS = test-conformance
 .PHONY: test
 
 DISTCLEANFILES = .gitignore
-
-dist-hook: ../../build/win32/vs9/test-conformance-cogl.vcproj ../../build/win32/vs10/test-conformance-cogl.vcxproj ../../build/win32/vs10/test-conformance-cogl.vcxproj.filters
-
-../../build/win32/vs9/test-conformance-cogl.vcproj: $(top_srcdir)/build/win32/vs9/test-conformance-cogl.vcprojin
-	for F in $(test_conformance_SOURCES); do \
-		case $$F in \
-		*.c)	echo '   <File RelativePath="..\..\..\tests\conform\'$$F'" />' \
-			;; \
-		esac; \
-	done >testconformance.sourcefiles
-	$(CPP) -P - <$(top_srcdir)/build/win32/vs9/test-conformance-cogl.vcprojin >$@
-	rm testconformance.sourcefiles
-
-../../build/win32/vs10/test-conformance-cogl.vcxproj: $(top_srcdir)/build/win32/vs10/test-conformance-cogl.vcxprojin
-	for F in $(test_conformance_SOURCES); do \
-		case $$F in \
-		*.c)	echo '    <ClCompile Include="..\..\..\tests\conform\'$$F'" />' \
-			;; \
-		esac; \
-	done >testconformance.vs10.sourcefiles
-	$(CPP) -P - <$(top_srcdir)/build/win32/vs10/test-conformance-cogl.vcxprojin >$@
-	rm testconformance.vs10.sourcefiles
-
-../../build/win32/vs10/test-conformance-cogl.vcxproj.filters: $(top_srcdir)/build/win32/vs10/test-conformance-cogl.vcxproj.filtersin
-	for F in $(test_conformance_SOURCES); do \
-		case $$F in \
-		*.c)	echo '    <ClCompile Include="..\..\..\tests\conform\'$$F'"><Filter>Sources</Filter></ClCompile>' \
-			;; \
-		esac; \
-	done >testconformance.vs10.sourcefiles.filters
-	$(CPP) -P - <$(top_srcdir)/build/win32/vs10/test-conformance-cogl.vcxproj.filtersin >$@
-	rm testconformance.vs10.sourcefiles.filters
-
-# Let the VS9/VS10 Project files be cleared out before they are re-expanded...
-DISTCLEANFILES += ../../build/win32/vs9/test-conformance-cogl.vcproj	\
-		  ../../build/win32/vs10/test-conformance-cogl.vcxproj	\
-		  ../../build/win32/vs10/test-conformance-cogl.vcxproj.filters
 
 # we override the clean-generic target to clean up the wrappers so
 # we cannot use CLEANFILES

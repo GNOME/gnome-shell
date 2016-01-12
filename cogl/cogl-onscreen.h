@@ -166,40 +166,6 @@ uint32_t
 cogl_x11_onscreen_get_visual_xid (CoglOnscreen *onscreen);
 #endif /* COGL_HAS_X11 */
 
-#ifdef COGL_HAS_WIN32_SUPPORT
-/**
- * cogl_win32_onscreen_set_foreign_window:
- * @onscreen: A #CoglOnscreen framebuffer
- * @hwnd: A win32 window handle
- *
- * Ideally we would recommend that you let Cogl be responsible for
- * creating any window required to back an onscreen framebuffer but
- * if you really need to target a window created manually this
- * function can be called before @onscreen has been allocated to set a
- * foreign XID for your existing X window.
- *
- * Since: 1.10
- * Stability: unstable
- */
-void
-cogl_win32_onscreen_set_foreign_window (CoglOnscreen *onscreen,
-                                        HWND hwnd);
-
-/**
- * cogl_win32_onscreen_get_window:
- * @onscreen: A #CoglOnscreen framebuffer
- *
- * Queries the internally created window HWND backing the given @onscreen
- * framebuffer.  If cogl_win32_onscreen_set_foreign_window() has been used then
- * it will return the same handle set with that API.
- *
- * Since: 1.10
- * Stability: unstable
- */
-HWND
-cogl_win32_onscreen_get_window (CoglOnscreen *onscreen);
-#endif /* COGL_HAS_WIN32_SUPPORT */
-
 #if defined (COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT)
 struct wl_surface *
 cogl_wayland_onscreen_get_surface (CoglOnscreen *onscreen);

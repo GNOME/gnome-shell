@@ -18,15 +18,13 @@ if BUILD_COGL_GST
 SUBDIRS += cogl-gst
 endif
 
-SUBDIRS += tests examples doc po build
+SUBDIRS += tests examples doc po
 
 ACLOCAL_AMFLAGS = -I build/autotools ${ACLOCAL_FLAGS}
 
 EXTRA_DIST = \
 	README.in \
-	config-custom.h \
-	config.h.win32 \
-	config.h.win32.in
+	config-custom.h
 
 # .changelog expects these to be initializes
 CLEANFILES=

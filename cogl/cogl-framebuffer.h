@@ -34,10 +34,6 @@
 #ifndef __COGL_FRAMEBUFFER_H
 #define __COGL_FRAMEBUFFER_H
 
-#ifdef COGL_HAS_WIN32_SUPPORT
-#include <windows.h>
-#endif /* COGL_HAS_WIN32_SUPPORT */
-
 /* We forward declare the CoglFramebuffer type here to avoid some circular
  * dependency issues with the following headers.
  */

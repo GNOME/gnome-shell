@@ -141,11 +141,6 @@ typedef struct {
  * passing a pointer the array of CoglPollFD<!-- -->s with updated
  * revent values.
  *
- * When using the %COGL_WINSYS_ID_WGL winsys (where file descriptors
- * don't make any sense) or %COGL_WINSYS_ID_SDL (where the event
- * handling functions of SDL don't allow blocking on a file
- * descriptor) *n_poll_fds is guaranteed to be zero.
- *
  * @timeout will contain a maximum amount of time to wait in
  * microseconds before the application should wake up or -1 if the
  * application should wait indefinitely. This can also be 0 if

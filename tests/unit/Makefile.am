@@ -6,11 +6,7 @@ noinst_PROGRAMS = test-unit
 
 test_unit_SOURCES = test-unit-main.c
 
-if OS_WIN32
-SHEXT =
-else
 SHEXT = $(EXEEXT)
-endif
 
 # For convenience, this provides a way to easily run individual unit tests:
 .PHONY: wrappers clean-wrappers

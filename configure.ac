@@ -193,18 +193,6 @@ dnl ================================================================
 dnl See what platform we are building for
 dnl ================================================================
 AC_CANONICAL_HOST
-AC_MSG_CHECKING([if building for some Win32 platform])
-AS_CASE([$host],
-        [*-*-mingw*|*-*-cygwin*],
-        [
-          COGL_EXTRA_LDFLAGS="$COGL_EXTRA_LDFLAGS -no-undefined"
-          platform_win32=yes
-        ],
-
-        [platform_win32=no]
-)
-AC_MSG_RESULT([$platform_win32])
-AM_CONDITIONAL(OS_WIN32, [test "$platform_win32" = "yes"])
 
 AC_CHECK_HEADER([OpenGL/gl.h], [platform_quartz=yes], [platform_quartz=no])
 AM_CONDITIONAL(OS_QUARTZ, [test "$platform_quartz" = "yes"])
@@ -603,7 +591,7 @@ EGL_CHECKED=no
 
 dnl This gets set to yes if Cogl directly links to the GL library API
 dnl so it doesn't need to be dlopened. This currently happens on OSX
-dnl and WGL where it's not clear if window system API can be separated
+dnl where it's not clear if window system API can be separated
 dnl from the GL API.
 GL_LIBRARY_DIRECTLY_LINKED=no
 
@@ -618,9 +606,6 @@ AC_ARG_ENABLE(
 )
 AS_IF([test "x$enable_gles1" = "xyes"],
       [
-        AS_IF([test "x$platform_win32" = "xyes"],
-	      [AC_MSG_ERROR([GLES 1 not available for win32])])
-
         enabled_drivers="$enabled_drivers gles1"
 
         cogl_gl_headers="GLES/gl.h GLES/glext.h"
@@ -698,9 +683,6 @@ AC_ARG_ENABLE(
 )
 AS_IF([test "x$enable_gles2" = "xyes"],
       [
-        AS_IF([test "x$platform_win32" = "xyes"],
-	      [AC_MSG_ERROR([GLES 2 not available for win32])])
-
         enabled_drivers="$enabled_drivers gles2"
 
         cogl_gl_headers="GLES2/gl2.h GLES2/gl2ext.h"
@@ -753,17 +735,6 @@ AS_IF([test "x$enable_gl" = "xyes"],
                 GL_LIBRARY_DIRECTLY_LINKED=yes
                 COGL_GL_LIBNAME=""
               ],
-
-              [test "x$platform_win32" = "xyes"],
-	      [
-		COGL_EXTRA_LDFLAGS="$COGL_EXTRA_LDFLAGS -lopengl32 -lgdi32 -lwinmm"
-		COGL_EXTRA_CFLAGS="$COGL_EXTRA_CFLAGS -D_WIN32_WINNT=0x0500"
-                ALLOW_WGL=yes
-                dnl The GL API is being directly linked in so there is
-                dnl no need to dlopen it separately
-                GL_LIBRARY_DIRECTLY_LINKED=yes
-                COGL_GL_LIBNAME=""
-	      ],
 
 	      [
 		PKG_CHECK_EXISTS([gl],
@@ -867,25 +838,6 @@ AS_IF([test "x$enable_glx" = "xyes"],
         COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_GLX_SUPPORT"
       ])
 AM_CONDITIONAL(SUPPORT_GLX, [test "x$SUPPORT_GLX" = "xyes"])
-
-AC_ARG_ENABLE(
-  [wgl],
-  [AC_HELP_STRING([--enable-wgl=@<:@no/yes@:>@], [Enable support for WGL @<:@default=auto@:>@])],
-  [],
-  [AS_IF([test "x$ALLOW_WGL" = "xyes"], [enable_wgl=yes], [enable_wgl=no])]
-)
-AS_IF([test "x$enable_wgl" = "xyes"],
-      [
-        AS_IF([test "x$ALLOW_WGL" != "xyes"],
-              [AC_MSG_ERROR([WGL not supported with this configuration])])
-
-        SUPPORT_WGL=yes
-        GL_WINSYS_APIS="$GL_WINSYS_APIS wgl"
-
-        AC_DEFINE([COGL_HAS_WGL_SUPPORT], [1], [Cogl supports OpenGL using the WGL API])
-        COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_WIN32_SUPPORT"
-      ])
-AM_CONDITIONAL(SUPPORT_WGL, [test "x$SUPPORT_WGL" = "xyes"])
 
 EGL_PLATFORM_COUNT=0
 
@@ -1293,11 +1245,6 @@ AC_SUBST(MAINTAINER_CFLAGS)
 AC_OUTPUT(
 Makefile
 README
-config.h.win32
-build/Makefile
-build/win32/Makefile
-build/win32/vs9/Makefile
-build/win32/vs10/Makefile
 deps/Makefile
 deps/glib/Makefile
 deps/gmodule/Makefile
@@ -1307,14 +1254,11 @@ cogl/Makefile
 cogl/cogl-1.0.pc
 cogl/cogl-2.0-experimental.pc
 cogl/cogl-defines.h
-cogl/cogl-defines.h.win32
 cogl/cogl-gl-header.h
 cogl/cogl-egl-defines.h
-cogl/cogl.rc
 cogl-pango/Makefile
 cogl-pango/cogl-pango-1.0.pc
 cogl-pango/cogl-pango-2.0-experimental.pc
-cogl-pango/cogl-pango.rc
 cogl-path/Makefile
 cogl-path/cogl-path-1.0.pc
 cogl-path/cogl-path-2.0-experimental.pc

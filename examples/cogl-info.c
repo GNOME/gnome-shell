@@ -145,8 +145,6 @@ get_winsys_name_for_id (CoglWinsysID winsys_id)
       return "EGL + Android platform";
     case COGL_WINSYS_ID_EGL_MIR:
       return "EGL + Mir platform";
-    case COGL_WINSYS_ID_WGL:
-      return "EGL + Windows WGL platform";
     }
   g_return_val_if_reached ("Unknown");
 }

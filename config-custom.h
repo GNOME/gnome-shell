@@ -30,13 +30,3 @@
    intended for extra configuration that needs to be included by all
    Cogl source files. */
 
-/* The windows headers #define 'near' and 'far' to be blank. We
-   commonly want to use these variable names for doing perspective
-   transformation so rather than having to workaround this mis-feature
-   in Windows in the code we just #undef them here. We need to do this
-   after including windows.h */
-#ifdef _WIN32
-#include <windows.h>
-#undef near
-#undef far
-#endif /* _WIN32 */

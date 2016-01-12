@@ -449,15 +449,6 @@ cogl_sources_c += \
 	winsys/cogl-winsys-glx-private.h \
 	winsys/cogl-winsys-glx.c
 endif
-if SUPPORT_WGL
-cogl_experimental_h += cogl-win32-renderer.h
-
-cogl_sources_c += \
-	cogl-win32-renderer.c \
-	winsys/cogl-winsys-wgl-private.h \
-	winsys/cogl-winsys-wgl.c \
-	winsys/cogl-winsys-wgl-feature-functions.h
-endif
 if SUPPORT_WAYLAND_EGL_SERVER
 cogl_experimental_h += cogl-wayland-server.h
 endif
@@ -550,91 +541,8 @@ nodist_coglinclude_HEADERS = $(cogl_nodist_experimental_h) cogl-defines.h cogl-e
 cogl_proto_includedir = $(includedir)/cogl/cogl/gl-prototypes
 cogl_proto_include_HEADERS = $(cogl_gl_prototypes_h)
 
-dist-hook: ../build/win32/vs9/cogl.vcproj ../build/win32/vs10/cogl.vcxproj ../build/win32/vs10/cogl.vcxproj.filters ../build/win32/gen-enums.bat
-
-# I know those filters below don't look nice, but this is to ensure the right files are in the Project files only *once*
-../build/win32/vs9/cogl.vcproj: $(top_srcdir)/build/win32/vs9/cogl.vcprojin
-	for F in `echo $(cogl_sources_c) $(BUILT_SOURCES) | tr '/' '\\'`; do \
-		case $$F in \
-		*-egl.c|*-egl-*.c|*-glx.c|*-xlib*.c|*-x11.c|*.wgl.c|*-gl.c|*-gles.c|*-kms.c|*-sdl.c|*.h) ;; \
-		*.c)	echo '   <File RelativePath="..\..\..\cogl\'$$F'" />' \
-			;; \
-		esac; \
-	done >cogl.sourcefiles
-	$(CPP) -P - <$(top_srcdir)/build/win32/vs9/cogl.vcprojin >$@
-	rm cogl.sourcefiles
-
-../build/win32/vs10/cogl.vcxproj: $(top_srcdir)/build/win32/vs10/cogl.vcxprojin
-	for F in `echo $(cogl_sources_c) $(BUILT_SOURCES) | tr '/' '\\'`; do \
-		case $$F in \
-		*-egl.c|*-egl-*.c|*-glx.c|*-xlib*.c|*-x11.c|*.wgl.c|*-gl.c|*-gles.c|*-kms.c|*-sdl.c|*.h) ;; \
-		*.c)	echo '    <ClCompile Include="..\..\..\cogl\'$$F'" />' \
-			;; \
-		esac; \
-	done >cogl.vs10.sourcefiles
-	$(CPP) -P - <$(top_srcdir)/build/win32/vs10/cogl.vcxprojin >$@
-	rm cogl.vs10.sourcefiles
-
-../build/win32/vs10/cogl.vcxproj.filters: $(top_srcdir)/build/win32/vs10/cogl.vcxproj.filtersin
-	for F in `echo $(cogl_sources_c) $(BUILT_SOURCES) | tr '/' '\\'`; do \
-		case $$F in \
-		*-egl.c|*-egl-*.c|*-glx.c|*-xlib*.c|*-x11.c|*.wgl.c|*-gl.c|*-gles.c|*-kms.c|*-sdl.c|*.h) ;; \
-		*.c)	echo '    <ClCompile Include="..\..\..\cogl\'$$F'"><Filter>Sources</Filter></ClCompile>' \
-			;; \
-		esac; \
-	done >cogl.vs10.sourcefiles.filters
-	$(CPP) -P - <$(top_srcdir)/build/win32/vs10/cogl.vcxproj.filtersin >$@
-	rm cogl.vs10.sourcefiles.filters
-
-cogl.vsenums_h:
-	echo 'perl %1\bin\glib-mkenums --template ../../cogl/cogl-enum-types.h.in ' >vsenums_h.temp1
-	for F in `echo $(cogl_1_public_h) $(srcdir)/cogl-win32-renderer.h`; do \
-		case $$F in \
-		*xlib*.h|*wayland*.h) ;; \
-		*.h) echo '../../cogl'$$F' '	\
-			;;	\
-		esac;	\
-	done >>vsenums_h.temp1
-	cat vsenums_h.temp1 | sed 's_/cogl./_/cogl/_' >vsenums_h.temp
-	cat vsenums_h.temp | tr -d '\n' >>$@
-	echo '> ..\..\cogl\cogl-enum-types.h' >>$@
-	rm vsenums_h.temp1
-	rm vsenums_h.temp
-
-cogl.vsenums_c:
-	echo 'perl %1\bin\glib-mkenums --template ../../cogl/cogl-enum-types.c.in ' >vsenums_c.temp1
-	for F in `echo $(cogl_1_public_h) $(srcdir)/cogl-win32-renderer.h`; do \
-		case $$F in \
-		*xlib*.h|*wayland*.h) ;; \
-		*.h) echo '../../cogl'$$F' '	\
-			;;	\
-		esac;	\
-	done >>vsenums_c.temp1
-	cat vsenums_c.temp1 | sed 's_/cogl./_/cogl/_' >vsenums_c.temp
-	cat vsenums_c.temp | tr -d '\n' >>$@
-	echo '> ..\..\cogl\cogl-enum-types.c' >>$@
-	rm vsenums_c.temp1
-	rm vsenums_c.temp
-
-../build/win32/gen-enums.bat: cogl.vsenums_h cogl.vsenums_c
-	echo 'if exist ..\..\cogl\cogl-enum-types.h goto DONE_COGL_ENUMS_H' >$@
-	cat cogl.vsenums_h >>$@
-	echo ':DONE_COGL_ENUMS_H' >>$@
-	echo 'if exist ..\..\cogl\cogl-enum-types.c goto DONE_COGL_ENUMS_C' >>$@
-	cat cogl.vsenums_c >>$@
-	echo ':DONE_COGL_ENUMS_C' >>$@
-	rm cogl.vsenums_h
-	rm cogl.vsenums_c
-
 EXTRA_DIST += \
-	cogl-defines.h.win32.in	\
-	cogl-defines.h.win32	\
-	cogl-gl-header.h.win32	\
-	cogl.symbols	\
-	cogl.rc.in	\
-	cogl.rc
-
-DISTCLEANFILES += ../build/win32/vs9/cogl.vcproj ../build/win32/vs10/cogl.vcxproj ../build/win32/vs10/cogl.vcxproj.filters ../build/win32/gen-enums.bat cogl.rc
+	cogl.symbols
 
 -include $(INTROSPECTION_MAKEFILE)
 

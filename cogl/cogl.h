@@ -141,9 +141,6 @@
 #if defined (COGL_HAS_EGL_PLATFORM_MIR_SUPPORT)
 #include <cogl/cogl-mir-renderer.h>
 #endif
-#ifdef COGL_HAS_WIN32_SUPPORT
-#include <cogl/cogl-win32-renderer.h>
-#endif
 #ifdef COGL_HAS_GLIB_SUPPORT
 #include <cogl/cogl-glib-source.h>
 #endif

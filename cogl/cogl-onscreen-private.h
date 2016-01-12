@@ -38,10 +38,6 @@
 
 #include <glib.h>
 
-#ifdef COGL_HAS_WIN32_SUPPORT
-#include <windows.h>
-#endif
-
 typedef struct _CoglOnscreenEvent
 {
   CoglList link;
@@ -67,10 +63,6 @@ struct _CoglOnscreen
   uint32_t foreign_xid;
   CoglOnscreenX11MaskCallback foreign_update_mask_callback;
   void *foreign_update_mask_data;
-#endif
-
-#ifdef COGL_HAS_WIN32_SUPPORT
-  HWND foreign_hwnd;
 #endif
 
 #ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
