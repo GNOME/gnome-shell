@@ -233,65 +233,6 @@ cogl_wayland_onscreen_resize (CoglOnscreen *onscreen,
                               int           offset_y);
 #endif /* COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT */
 
-#if defined (COGL_HAS_EGL_PLATFORM_MIR_SUPPORT)
-/**
- * cogl_mir_onscreen_get_surface:
- * @onscreen: A #CoglOnscreen framebuffer
- *
- * Allows you to get the internal #MirSurface linked to the given @onscreen.
- * This function might return %NULL if the @onscreen has not been allocated
- * (see cogl_framebuffer_allocate() for more details)
- *
- * Returns: (transfer none): a #MirSurface or %NULL.
- *
- * Since: 1.18
- * Stability: unstable
- */
-struct MirSurface *
-cogl_mir_onscreen_get_surface (CoglOnscreen *onscreen);
-
-/**
- * cogl_mir_onscreen_set_foreign_surface:
- * @onscreen: An unallocated framebuffer.
- * @surface A Mir surface to associate with the @onscreen.
- *
- * Allows you to explicitly notify Cogl of an existing Mir surface to use,
- * which prevents Cogl from allocating a surface for the @onscreen.
- * An allocated surface will not be destroyed when the @onscreen is freed.
- *
- * This function must be called before @onscreen is allocated.
- *
- * Returns: whether @surface has been set as surface or not.
- *
- * Since: 1.18
- * Stability: unstable
- */
-CoglBool
-cogl_mir_onscreen_set_foreign_surface (CoglOnscreen *onscreen,
-                                       struct MirSurface *surface);
-
-/**
- * cogl_mir_onscreen_resize:
- * @onscreen: A #CoglOnscreen framebuffer
- * @width: The desired width of the framebuffer
- * @height: The desired height of the framebuffer
- *
- * Resizes the backbuffer of the given @onscreen framebuffer to the
- * given size.
- *
- * Note that if some drawing commands have been applied to the
- * framebuffer since the last swap buffers then the resize will be
- * queued and will only take effect in the next swap buffers.
- *
- * Since: 1.18
- * Stability: unstable
- */
-void
-cogl_mir_onscreen_resize (CoglOnscreen *onscreen,
-                          int           width,
-                          int           height);
-#endif /* COGL_HAS_EGL_PLATFORM_MIR_SUPPORT */
-
 /**
  * cogl_onscreen_set_swap_throttled:
  * @onscreen: A #CoglOnscreen framebuffer

@@ -63,9 +63,6 @@
 #ifdef COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT
 #include "cogl-winsys-egl-android-private.h"
 #endif
-#ifdef COGL_HAS_EGL_PLATFORM_MIR_SUPPORT
-#include "cogl-winsys-egl-mir-private.h"
-#endif
 #ifdef COGL_HAS_GLX_SUPPORT
 #include "cogl-winsys-glx-private.h"
 #endif
@@ -185,9 +182,6 @@ static CoglWinsysVtableGetter _cogl_winsys_vtable_getters[] =
 #endif
 #ifdef COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT
   _cogl_winsys_egl_android_get_vtable,
-#endif
-#ifdef COGL_HAS_EGL_PLATFORM_MIR_SUPPORT
-  _cogl_winsys_egl_mir_get_vtable,
 #endif
   _cogl_winsys_stub_get_vtable,
 };

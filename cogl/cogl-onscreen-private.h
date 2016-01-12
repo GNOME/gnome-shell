@@ -69,10 +69,6 @@ struct _CoglOnscreen
   struct wl_surface *foreign_surface;
 #endif
 
-#ifdef COGL_HAS_EGL_PLATFORM_MIR_SUPPORT
-  struct MirSurface *foreign_surface;
-#endif
-
   CoglBool swap_throttled;
 
   CoglList frame_closures;

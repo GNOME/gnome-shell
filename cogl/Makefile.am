@@ -478,12 +478,6 @@ cogl_sources_c += \
 	winsys/cogl-winsys-egl-android.c \
 	winsys/cogl-winsys-egl-android-private.h
 endif
-if SUPPORT_EGL_PLATFORM_MIR
-cogl_experimental_h += cogl-mir-renderer.h
-cogl_sources_c += \
-	winsys/cogl-winsys-egl-mir.c \
-	winsys/cogl-winsys-egl-mir-private.h
-endif
 if SUPPORT_EGL
 cogl_experimental_h += cogl-egl.h
 cogl_nodist_experimental_h += cogl-egl-defines.h

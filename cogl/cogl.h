@@ -138,9 +138,6 @@
 #include <cogl/cogl-kms-renderer.h>
 #include <cogl/cogl-kms-display.h>
 #endif
-#if defined (COGL_HAS_EGL_PLATFORM_MIR_SUPPORT)
-#include <cogl/cogl-mir-renderer.h>
-#endif
 #ifdef COGL_HAS_GLIB_SUPPORT
 #include <cogl/cogl-glib-source.h>
 #endif
