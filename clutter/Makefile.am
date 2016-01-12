@@ -630,46 +630,6 @@ clutter-egl-$(CLUTTER_API_VERSION).pc: clutter-$(CLUTTER_API_VERSION).pc
 pc_files += clutter-egl-$(CLUTTER_API_VERSION).pc
 endif # SUPPORT_EGL
 
-# OSX backend rules
-osx_source_c = \
-	osx/clutter-backend-osx.c	\
-	osx/clutter-stage-osx.c	\
-	$(NULL)
-
-osx_source_h = osx/clutter-osx.h
-
-osx_source_h_priv = \
-	osx/clutter-backend-osx.h	\
-	osx/clutter-event-loop-osx.h	\
-	osx/clutter-stage-osx.h	\
-	osx/clutter-device-manager-osx.h \
-	$(NULL)
-
-osx_source_c_priv = \
-	osx/clutter-event-loop-osx.c	\
-	osx/clutter-event-osx.c	\
-	osx/clutter-device-manager-osx.c \
-	$(NULL)
-
-if SUPPORT_OSX
-# we need to tell the compiler that part of our code base is
-# in Objective C
-AM_CFLAGS += -xobjective-c
-
-backend_source_h += $(osx_source_h)
-backend_source_c += $(osx_source_c)
-backend_source_h_priv += $(osx_source_h_priv)
-backend_source_c_priv += $(osx_source_c_priv)
-
-clutterosx_includedir = $(clutter_includedir)/osx
-clutterosx_include_HEADERS = $(osx_source_h)
-
-clutter-osx-$(CLUTTER_API_VERSION).pc: clutter-$(CLUTTER_API_VERSION).pc
-	$(QUIET_GEN)cp -f $< $(@F)
-
-pc_files += clutter-osx-$(CLUTTER_API_VERSION).pc
-endif # SUPPORT_OSX
-
 # cally
 cally_sources_h = \
 	cally/cally-actor.h		\
