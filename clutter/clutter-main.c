@@ -70,9 +70,6 @@
 #include "clutter-stage-private.h"
 #include "clutter-version.h" 	/* For flavour define */
 
-#ifdef CLUTTER_WINDOWING_GDK
-#include "gdk/clutter-backend-gdk.h"
-#endif
 #ifdef CLUTTER_WINDOWING_X11
 #include "x11/clutter-backend-x11.h"
 #endif
@@ -3640,12 +3637,6 @@ clutter_check_windowing_backend (const char *backend_type)
 #ifdef CLUTTER_WINDOWING_EGL
   if (backend_type == I_(CLUTTER_WINDOWING_EGL) &&
       CLUTTER_IS_BACKEND_EGL_NATIVE (context->backend))
-    return TRUE;
-  else
-#endif
-#ifdef CLUTTER_WINDOWING_GDK
-  if (backend_type == I_(CLUTTER_WINDOWING_GDK) &&
-      CLUTTER_IS_BACKEND_GDK (context->backend))
     return TRUE;
   else
 #endif

@@ -67,9 +67,6 @@
 #ifdef CLUTTER_INPUT_X11
 #include "x11/clutter-backend-x11.h"
 #endif
-#ifdef CLUTTER_INPUT_GDK
-#include "gdk/clutter-backend-gdk.h"
-#endif
 #ifdef CLUTTER_INPUT_EVDEV
 #include "evdev/clutter-device-manager-evdev.h"
 #endif
@@ -524,9 +521,6 @@ static const struct {
   const char *name;
   ClutterBackend * (* create_backend) (void);
 } available_backends[] = {
-#ifdef CLUTTER_WINDOWING_GDK
-  { CLUTTER_WINDOWING_GDK, clutter_backend_gdk_new },
-#endif
 #ifdef CLUTTER_WINDOWING_X11
   { CLUTTER_WINDOWING_X11, clutter_backend_x11_new },
 #endif
@@ -602,14 +596,6 @@ clutter_backend_real_init_events (ClutterBackend *backend)
       (input_backend == NULL || input_backend == I_(CLUTTER_INPUT_X11)))
     {
       _clutter_backend_x11_events_init (backend);
-    }
-  else
-#endif
-#ifdef CLUTTER_INPUT_GDK
-  if (clutter_check_windowing_backend (CLUTTER_WINDOWING_GDK) &&
-      (input_backend == NULL || input_backend == I_(CLUTTER_INPUT_GDK)))
-    {
-      _clutter_backend_gdk_events_init (backend);
     }
   else
 #endif

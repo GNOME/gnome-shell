@@ -491,45 +491,6 @@ compat_libs += \
 	$(NULL)
 endif
 
-# GDK backend rules
-gdk_source_c = \
-	gdk/clutter-backend-gdk.c 		\
-	gdk/clutter-device-manager-gdk.c 	\
-	gdk/clutter-event-gdk.c 		\
-	gdk/clutter-input-device-gdk.c 	\
-	gdk/clutter-master-clock-gdk.c 	\
-	gdk/clutter-stage-gdk.c		\
-	$(NULL)
-
-gdk_source_h = \
-	gdk/clutter-gdk.h			\
-	$(NULL)
-
-gdk_source_h_priv = \
-	gdk/clutter-settings-gdk.h		\
-	gdk/clutter-backend-gdk.h 		\
-	gdk/clutter-device-manager-gdk.h 	\
-	gdk/clutter-input-device-gdk.h 	\
-	gdk/clutter-master-clock-gdk.h 	\
-	gdk/clutter-stage-gdk.h		\
-	$(NULL)
-
-if SUPPORT_GDK
-backend_source_h += $(gdk_source_h)
-backend_source_c += $(gdk_source_c)
-backend_source_h_priv += $(gdk_source_h_priv)
-
-cluttergdk_includedir = $(clutter_includedir)/gdk
-cluttergdk_include_HEADERS = $(gdk_source_h)
-
-clutter-gdk-$(CLUTTER_API_VERSION).pc: clutter-$(CLUTTER_API_VERSION).pc
-	$(QUIET_GEN)cp -f $< $(@F)
-
-pc_files += clutter-gdk-$(CLUTTER_API_VERSION).pc
-
-gdk_introspection = $(gdk_source_c) $(gdk_source_h)
-endif # SUPPORT_GDK
-
 egl_tslib_h = tslib/clutter-event-tslib.h
 egl_tslib_c = tslib/clutter-event-tslib.c
 
@@ -800,23 +761,6 @@ ClutterX11_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = \
 
 INTROSPECTION_GIRS += ClutterX11-@CLUTTER_API_VERSION@.gir
 endif # SUPPORT_X11
-
-if SUPPORT_GDK
-ClutterGdk-@CLUTTER_API_VERSION@.gir: Makefile Clutter-@CLUTTER_API_VERSION@.gir
-
-ClutterGdk_@CLUTTER_API_VERSION_AM@_gir_NAMESPACE = ClutterGdk
-ClutterGdk_@CLUTTER_API_VERSION_AM@_gir_INCLUDES = Gdk-3.0
-ClutterGdk_@CLUTTER_API_VERSION_AM@_gir_LIBS = libclutter-@CLUTTER_API_VERSION@.la
-ClutterGdk_@CLUTTER_API_VERSION_AM@_gir_FILES = $(gdk_introspection)
-ClutterGdk_@CLUTTER_API_VERSION_AM@_gir_CFLAGS = $(AM_CPPFLAGS) $(CLUTTER_CFLAGS)
-ClutterGdk_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = \
-	--warn-all \
-	--c-include='clutter/gdk/clutter-gdk.h' \
-	--pkg-export=clutter-gdk-@CLUTTER_API_VERSION@ \
-	--include-uninstalled=$(top_builddir)/clutter/Clutter-@CLUTTER_API_VERSION@.gir
-
-INTROSPECTION_GIRS += ClutterGdk-@CLUTTER_API_VERSION@.gir
-endif # SUPPORT_GDK
 
 # INTROSPECTION_GIRDIR/INTROSPECTION_TYPELIBDIR aren't the right place to
 # install anything - we need to install inside our prefix.
