@@ -77,9 +77,6 @@
 #ifdef CLUTTER_WINDOWING_EGL
 #include "egl/clutter-backend-eglnative.h"
 #endif
-#ifdef CLUTTER_INPUT_WAYLAND
-#include "wayland/clutter-device-manager-wayland.h"
-#endif
 
 #ifdef CLUTTER_HAS_WAYLAND_COMPOSITOR_SUPPORT
 #include <cogl/cogl-wayland-server.h>
@@ -618,14 +615,6 @@ clutter_backend_real_init_events (ClutterBackend *backend)
       strcmp (input_backend, CLUTTER_INPUT_TSLIB) == 0)
     {
       _clutter_events_tslib_init (backend);
-    }
-  else
-#endif
-#ifdef CLUTTER_INPUT_WAYLAND
-  if (clutter_check_windowing_backend (CLUTTER_WINDOWING_WAYLAND) &&
-      (input_backend == NULL || input_backend == I_(CLUTTER_INPUT_WAYLAND)))
-    {
-      _clutter_events_wayland_init (backend);
     }
   else
 #endif

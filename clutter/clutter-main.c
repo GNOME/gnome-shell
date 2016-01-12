@@ -76,9 +76,6 @@
 #ifdef CLUTTER_WINDOWING_EGL
 #include "egl/clutter-backend-eglnative.h"
 #endif
-#ifdef CLUTTER_WINDOWING_WAYLAND
-#include "wayland/clutter-backend-wayland.h"
-#endif
 
 #include <cogl/cogl.h>
 #include <cogl-pango/cogl-pango.h>
@@ -3628,12 +3625,6 @@ clutter_check_windowing_backend (const char *backend_type)
 
   backend_type = g_intern_string (backend_type);
 
-#ifdef CLUTTER_WINDOWING_WAYLAND
-  if (backend_type == I_(CLUTTER_WINDOWING_WAYLAND) &&
-      CLUTTER_IS_BACKEND_WAYLAND (context->backend))
-    return TRUE;
-  else
-#endif
 #ifdef CLUTTER_WINDOWING_EGL
   if (backend_type == I_(CLUTTER_WINDOWING_EGL) &&
       CLUTTER_IS_BACKEND_EGL_NATIVE (context->backend))

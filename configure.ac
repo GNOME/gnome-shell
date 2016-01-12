@@ -214,10 +214,6 @@ AC_ARG_ENABLE([x11-backend],
               [AS_HELP_STRING([--enable-x11-backend=@<:@yes/no@:>@], [Enable the X11 backend (default=check)])],
               [enable_x11=$enableval],
               [enable_x11=check])
-AC_ARG_ENABLE([wayland-backend],
-              [AS_HELP_STRING([--enable-wayland-backend=@<:@yes/no@:>@], [Enable the Wayland client backend (default=check)])],
-              [enable_wayland=$enableval],
-              [enable_wayland=check])
 AC_ARG_ENABLE([egl-backend],
               [AS_HELP_STRING([--enable-egl-backend=@<:@yes/no@:>@], [Enable the EGL framebuffer backend (default=no)])],
               [enable_egl=$enableval],
@@ -262,57 +258,6 @@ AS_IF([test "x$enable_x11" = "xyes"],
                            BACKEND_PC_FILES_PRIVATE="$BACKEND_PC_FILES_PRIVATE pangoft2"
                          ],
                          [])
-      ])
-
-AS_IF([test "x$enable_wayland" != xno],
-      [
-        # We need to manually check for Wayland support in Cogl because
-        # the windowing systems are not exposed in the pkg-config file
-        saved_CFLAGS="${CFLAGS}"
-        CFLAGS="`$PKG_CONFIG --cflags cogl-1.0`"
-
-        AC_MSG_CHECKING([for Wayland Cogl backend])
-
-        AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
-#include <cogl/cogl.h>
-]],
-[[
-#ifndef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
-#error Cogl compiled without Wayland support
-#endif
-]])], [
-          AC_MSG_RESULT(yes)
-          have_cogl_wayland=yes
-        ], [
-          AC_MSG_RESULT(no)
-          have_cogl_wayland=no
-        ])
-
-        CFLAGS="${saved_CFLAGS}"
-        AS_IF([test "x$have_cogl_wayland" = xyes],
-              [
-                PKG_CHECK_EXISTS([wayland-client wayland-cursor xkbcommon gdk-pixbuf-2.0],
-                                 [
-                                   BACKEND_PC_FILES="$BACKEND_PC_FILES wayland-cursor wayland-client xkbcommon"
-                                   BACKEND_PC_FILES_PRIVATE="$BACKEND_PC_FILES_PRIVATE gdk-pixbuf-2.0"
-
-                                   CLUTTER_BACKENDS="$CLUTTER_BACKENDS wayland"
-                                   CLUTTER_INPUT_BACKENDS="$CLUTTER_INPUT_BACKENDS wayland"
-
-                                   SUPPORT_WAYLAND=1
-                                   SUPPORT_COGL=1
-                                 ],
-                                 [
-                                   AS_IF([test "x$enable_wayland" = xyes],
-                                         [AC_MSG_ERROR(["*** Missing dependencies for Wayland support ***"])],
-                                         [enable_wayland=no])
-                                 ])
-              ],
-              [
-                AS_IF([test "x$enable_wayland" = xyes],
-                      [AC_MSG_ERROR("*** Cogl is missing Wayland support ***")],
-                      [enable_wayland=no])
-              ])
       ])
 
 dnl Note this is orthogonal to the client side support and you can
@@ -427,18 +372,12 @@ AS_IF([test "x$SUPPORT_GLX" = "x1"],
 AS_IF([test "x$SUPPORT_EGL" = "x1"],
       [CLUTTER_CONFIG_DEFINES="$CLUTTER_CONFIG_DEFINES
 #define CLUTTER_WINDOWING_EGL \"eglnative\""])
-AS_IF([test "x$SUPPORT_WAYLAND" = "x1"],
-      [CLUTTER_CONFIG_DEFINES="$CLUTTER_CONFIG_DEFINES
-#define CLUTTER_WINDOWING_WAYLAND \"wayland\""])
 AS_IF([test "x$SUPPORT_EVDEV" = "x1"],
       [CLUTTER_CONFIG_DEFINES="$CLUTTER_CONFIG_DEFINES
 #define CLUTTER_INPUT_EVDEV \"evdev\""])
 AS_IF([test "x$SUPPORT_TSLIB" = "x1"],
       [CLUTTER_CONFIG_DEFINES="$CLUTTER_CONFIG_DEFINES
 #define CLUTTER_INPUT_TSLIB \"tslib\""])
-AS_IF([test "x$SUPPORT_WAYLAND" = "x1"],
-      [CLUTTER_CONFIG_DEFINES="$CLUTTER_CONFIG_DEFINES
-#define CLUTTER_INPUT_WAYLAND \"wayland\""])
 
 # the 'null' input backend is special
 CLUTTER_CONFIG_DEFINES="$CLUTTER_CONFIG_DEFINES

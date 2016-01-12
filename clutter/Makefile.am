@@ -533,33 +533,6 @@ egl_source_h = \
 egl_source_h_priv = egl/clutter-backend-eglnative.h egl/clutter-stage-eglnative.h
 egl_source_c = egl/clutter-backend-eglnative.c egl/clutter-stage-eglnative.c
 
-# Wayland backend rules
-if SUPPORT_WAYLAND
-backend_source_h_priv += \
-       wayland/clutter-backend-wayland.h             \
-       wayland/clutter-backend-wayland-priv.h        \
-       wayland/clutter-stage-wayland.h               \
-       wayland/clutter-event-wayland.h               \
-       wayland/clutter-input-device-wayland.h        \
-       wayland/clutter-device-manager-wayland.h
-
-backend_source_c += \
-       wayland/clutter-backend-wayland.c             \
-       wayland/clutter-stage-wayland.c               \
-       wayland/clutter-event-wayland.c               \
-       wayland/clutter-input-device-wayland.c        \
-       wayland/clutter-device-manager-wayland.c
-
-
-clutterwayland_includedir = $(clutter_includedir)/wayland
-clutterwayland_include_HEADERS = wayland/clutter-wayland.h
-
-clutter-wayland-$(CLUTTER_API_VERSION).pc: clutter-$(CLUTTER_API_VERSION).pc
-	$(QUIET_GEN)cp -f $< $(@F)
-
-pc_files += clutter-wayland-$(CLUTTER_API_VERSION).pc
-endif # SUPPORT_WAYLAND
-
 if SUPPORT_WAYLAND_COMPOSITOR
 wayland_compositor_source_h = \
 	wayland/clutter-wayland-compositor.h		\
