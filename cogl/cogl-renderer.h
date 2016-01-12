@@ -168,7 +168,6 @@ cogl_renderer_new (void);
  * @COGL_WINSYS_ID_EGL_ANDROID: Use EGL with the Android platform
  * @COGL_WINSYS_ID_EGL_MIR: Use EGL with the Mir server
  * @COGL_WINSYS_ID_WGL: Use the Microsoft Windows WGL binding API
- * @COGL_WINSYS_ID_SDL: Use the SDL window system
  *
  * Identifies specific window system backends that Cogl supports.
  *
@@ -186,7 +185,6 @@ typedef enum
   COGL_WINSYS_ID_EGL_ANDROID,
   COGL_WINSYS_ID_EGL_MIR,
   COGL_WINSYS_ID_WGL,
-  COGL_WINSYS_ID_SDL
 } CoglWinsysID;
 
 /**

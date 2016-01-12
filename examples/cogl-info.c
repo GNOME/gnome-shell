@@ -147,8 +147,6 @@ get_winsys_name_for_id (CoglWinsysID winsys_id)
       return "EGL + Mir platform";
     case COGL_WINSYS_ID_WGL:
       return "EGL + Windows WGL platform";
-    case COGL_WINSYS_ID_SDL:
-      return "EGL + SDL platform";
     }
   g_return_val_if_reached ("Unknown");
 }

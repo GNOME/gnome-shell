@@ -503,20 +503,6 @@ cogl_sources_c += \
 	winsys/cogl-winsys-egl-feature-functions.h \
 	winsys/cogl-winsys-egl-private.h
 endif
-if SUPPORT_SDL
-cogl_experimental_h += $(srcdir)/cogl-sdl.h
-cogl_sources_c += \
-	winsys/cogl-winsys-sdl-private.h \
-	winsys/cogl-winsys-sdl.c \
-	cogl-sdl.c
-endif
-if SUPPORT_SDL2
-cogl_experimental_h += $(srcdir)/cogl-sdl.h
-cogl_sources_c += \
-	winsys/cogl-winsys-sdl-private.h \
-	winsys/cogl-winsys-sdl2.c \
-	cogl-sdl.c
-endif
 
 EXTRA_DIST += stb_image.c
 
@@ -643,8 +629,6 @@ cogl.vsenums_c:
 EXTRA_DIST += \
 	cogl-defines.h.win32.in	\
 	cogl-defines.h.win32	\
-	cogl-defines.h.win32_SDL.in	\
-	cogl-defines.h.win32_SDL	\
 	cogl-gl-header.h.win32	\
 	cogl.symbols	\
 	cogl.rc.in	\

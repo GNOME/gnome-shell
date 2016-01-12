@@ -72,9 +72,6 @@
 #ifdef COGL_HAS_WGL_SUPPORT
 #include "cogl-winsys-wgl-private.h"
 #endif
-#ifdef COGL_HAS_SDL_SUPPORT
-#include "cogl-winsys-sdl-private.h"
-#endif
 
 #ifdef COGL_HAS_XLIB_SUPPORT
 #include "cogl-xlib-renderer.h"
@@ -164,21 +161,6 @@ static CoglDriverDescription _cogl_drivers[] =
     COGL_GLES1_LIBNAME,
   },
 #endif
-#ifdef USING_EMSCRIPTEN
-  {
-    COGL_DRIVER_WEBGL,
-    "webgl",
-    0,
-    { COGL_PRIVATE_FEATURE_ANY_GL,
-      COGL_PRIVATE_FEATURE_GL_EMBEDDED,
-      COGL_PRIVATE_FEATURE_GL_PROGRAMMABLE,
-      COGL_PRIVATE_FEATURE_GL_WEB,
-      -1 },
-    &_cogl_driver_gles,
-    &_cogl_texture_driver_gles,
-    NULL,
-  },
-#endif
   {
     COGL_DRIVER_NOP,
     "nop",
@@ -212,9 +194,6 @@ static CoglWinsysVtableGetter _cogl_winsys_vtable_getters[] =
 #endif
 #ifdef COGL_HAS_WGL_SUPPORT
   _cogl_winsys_wgl_get_vtable,
-#endif
-#ifdef COGL_HAS_SDL_SUPPORT
-  _cogl_winsys_sdl_get_vtable,
 #endif
   _cogl_winsys_stub_get_vtable,
 };

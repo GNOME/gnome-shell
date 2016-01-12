@@ -100,11 +100,6 @@ struct _CoglRenderer
   int kms_fd;
 #endif
 
-#ifdef COGL_HAS_SDL_SUPPORT
-  CoglBool sdl_event_type_set;
-  uint32_t sdl_event_type;
-#endif
-
   /* List of callback functions that will be given every native event */
   GSList *event_filters;
   void *winsys;

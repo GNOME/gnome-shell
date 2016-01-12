@@ -68,13 +68,8 @@ test_sources = \
 	test-texture-no-allocate.c \
 	test-pipeline-shader-state.c \
 	test-texture-rg.c \
+	test-fence.c \
 	$(NULL)
-
-if !USING_EMSCRIPTEN
-# test-fence depends on the glib mainloop so it won't compile if using
-# emscripten which builds in standalone mode.
-test_sources += test-fence.c
-endif
 
 if BUILD_COGL_PATH
 test_sources += \
