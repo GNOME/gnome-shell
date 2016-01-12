@@ -179,9 +179,6 @@ Clutter has additional command line options for the configure script:
  --enable-wayland-backend=[yes/no]
         Enable the Wayland client backend. (default=no) [EXPERIMENTAL]
 
- --enable-cex100-backend=[yes/no]
-        Enable the CEx100 platform backend. (default=no) [EXPERIMENTAL]
-
  --enable-egl-backend=[yes/no]
         Enable the EGL framebuffer backend. (default=no)
 

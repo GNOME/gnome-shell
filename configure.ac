@@ -236,10 +236,6 @@ AC_ARG_ENABLE([egl-backend],
               [AS_HELP_STRING([--enable-egl-backend=@<:@yes/no@:>@], [Enable the EGL framebuffer backend (default=no)])],
               [enable_egl=$enableval],
               [enable_egl=check])
-AC_ARG_ENABLE([cex100-backend],
-              [AS_HELP_STRING([--enable-cex100-backend=@<:@yes/no@:>@], [Enable the CEx100 backend (default=no)])],
-              [enable_cex100=$enableval],
-              [enable_cex100=no])
 
 dnl Additional input backends
 AC_ARG_ENABLE([tslib-input],
@@ -378,39 +374,6 @@ AS_IF([test "x$enable_wayland_compositor" = "xyes"],
 
 AM_CONDITIONAL(SUPPORT_WAYLAND_COMPOSITOR, [test "x$SUPPORT_WAYLAND_COMPOSITOR" = "x1"])
 
-AS_IF([test "x$enable_cex100" = "xyes"],
-      [
-        CLUTTER_BACKENDS="$CLUTTER_BACKENDS cex100"
-
-        experimental_backend="yes"
-
-        SUPPORT_CEX100=1
-        SUPPORT_COGL=1
-
-        have_gdl=no
-        AC_CHECK_HEADERS([libgdl.h], [have_gdl=yes])
-
-        AS_IF([test "x$have_gdl" = "xno"],
-              [
-                AC_CHECK_HEADERS([CE4100/libgdl.h],
-                                 [
-                                   FLAVOUR_CFLAGS="-I/usr/include/CE4100"
-                                   have_gdl=yes
-                                   CLUTTER_CEX100_LIBGDL_PREFIX=CE4100/
-                                 ])
-              ])
-
-        AS_IF([test "x$have_gdl" = "xno"],
-              [AC_MSG_ERROR([libgdl.h not found but the CEx100 backend has been explicitly enabled])])
-
-        AC_SUBST(CLUTTER_CEX100_LIBGDL_PREFIX)
-
-        FLAVOUR_LIBS="$FLAVOUR_LIBS -lgdl"
-
-        AC_DEFINE([CLUTTER_EGL_BACKEND_CEX100], [1], [Use CEX100 EGL backend])
-        AC_DEFINE([CLUTTER_EGL_BACKEND_GENERIC], [1], [Use Generic EGL backend])
-      ])
-
 AS_IF([test "x$enable_egl" = "xyes"],
       [
         CLUTTER_BACKENDS="$CLUTTER_BACKENDS egl"
@@ -470,13 +433,11 @@ AM_CONDITIONAL(SUPPORT_X11,     [test "x$SUPPORT_X11" = "x1"])
 AM_CONDITIONAL(SUPPORT_GDK,     [test "x$SUPPORT_GDK" = "x1"])
 AM_CONDITIONAL(SUPPORT_EGL,     [test "x$SUPPORT_EGL" = "x1"])
 AM_CONDITIONAL(SUPPORT_OSX,     [test "x$SUPPORT_OSX" = "x1"])
-AM_CONDITIONAL(SUPPORT_CEX100,  [test "x$SUPPORT_CEX100" = "x1"])
 AM_CONDITIONAL(SUPPORT_WAYLAND, [test "x$SUPPORT_WAYLAND" = "x1"])
 
 AM_CONDITIONAL(USE_COGL,  [test "x$SUPPORT_COGL" = "x1"])
 AM_CONDITIONAL(USE_TSLIB, [test "x$have_tslib" = "xyes"])
 AM_CONDITIONAL(USE_EVDEV, [test "x$have_evdev" = "xyes"])
-AM_CONDITIONAL(USE_GLD,   [test "x$have_gdl" = "xyes"])
 
 AM_CONDITIONAL(NEED_XKB_UTILS, [test "x$have_evdev" = "xyes" -o "x$SUPPORT_WAYLAND" = "x1"])
 
@@ -527,9 +488,6 @@ AS_IF([test "x$SUPPORT_OSX" = "x1"],
       [CLUTTER_CONFIG_DEFINES="$CLUTTER_CONFIG_DEFINES
 #define CLUTTER_WINDOWING_OSX \"osx\"
 #define CLUTTER_INPUT_OSX \"osx\""])
-AS_IF([test "x$SUPPORT_CEX100" = "x1"],
-      [CLUTTER_CONFIG_DEFINES="$CLUTTER_CONFIG_DEFINES
-#define CLUTTER_WINDOWING_CEX100 \"cex100\""])
 AS_IF([test "x$SUPPORT_EVDEV" = "x1"],
       [CLUTTER_CONFIG_DEFINES="$CLUTTER_CONFIG_DEFINES
 #define CLUTTER_INPUT_EVDEV \"evdev\""])
@@ -1101,8 +1059,6 @@ AC_CONFIG_FILES([
 
 	clutter/cally/cally-$CLUTTER_API_VERSION.pc:clutter/cally/cally.pc.in
 
-	clutter/cex100/clutter-cex100.h
-
 	tests/Makefile
 	tests/accessibility/Makefile
 	tests/conform/Makefile
@@ -1187,12 +1143,6 @@ if test "x$SUPPORT_X11" = "x1"; then
 echo ""
 echo "     - X11 backend options:"
 echo "        Enabled extensions: ${X11_EXTS}"
-fi
-
-if test "x$SUPPORT_CEX100" = "x1"; then
-echo ""
-echo "     - CEx100 backend options (WARNING: Experimental):"
-echo "        libGDL include prefix: ${CLUTTER_CEX100_LIBGDL_PREFIX}"
 fi
 
 if test "x$SUPPORT_WAYLAND_COMPOSITOR" = "x1"; then

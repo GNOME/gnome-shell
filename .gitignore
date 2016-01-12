@@ -24,7 +24,6 @@ tags
 /clutter/clutter-version.h
 /clutter/gcov-report.txt
 /clutter/clutter-json.h
-/clutter/cex100/clutter-cex100.h
 /clutter/*.log
 /clutter/*.trs
 /clutter-lcov.info

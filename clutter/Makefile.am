@@ -563,30 +563,6 @@ backend_source_c += evdev/clutter-xkb-utils.c
 backend_source_h_priv += evdev/clutter-xkb-utils.h
 endif
 
-cex_source_h_priv = cex100/clutter-backend-cex100.h
-cex_source_c = cex100/clutter-backend-cex100.c
-cex_h = cex100/clutter-cex100.h
-BUILT_SOURCES += $(cex_h)
-EXTRA_DIST += $(srcdir)/$(cex_h).in
-
-if SUPPORT_CEX100
-backend_source_h += $(cex_h)
-backend_source_c += $(cex_source_c)
-backend_source_h_priv += $(cex_source_h_priv)
-
-cluttercex100_includedir = $(clutter_includedir)/cex100
-cluttercex100_include_HEADERS = $(cex_h)
-
-clutter-cex100-$(CLUTTER_API_VERSION).pc: clutter-$(CLUTTER_API_VERSION).pc
-	$(QUIET_GEN)cp -f $< $(@F)
-
-pc_files += clutter-cex100-$(CLUTTER_API_VERSION).pc
-
-compat_libs += \
-	libclutter-cex100-$(CLUTTER_API_VERSION).so \
-	$(NULL)
-endif # SUPPORT_CEX100
-
 # EGL backend rules
 egl_source_h = \
 	egl/clutter-egl-headers.h	\
