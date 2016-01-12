@@ -348,12 +348,6 @@ built_source_h = \
 DISTCLEANFILES += clutter-config.h
 EXTRA_DIST += clutter-config.h.in
 
-# win32 config header
-EXTRA_DIST += \
-	config.h.win32.in	\
-	config.h.win32		\
-	$(NULL)
-
 # version header
 DISTCLEANFILES += clutter-version.h
 EXTRA_DIST += clutter-version.h.in clutter-version.h
@@ -535,57 +529,6 @@ pc_files += clutter-gdk-$(CLUTTER_API_VERSION).pc
 
 gdk_introspection = $(gdk_source_c) $(gdk_source_h)
 endif # SUPPORT_GDK
-
-# Windows backend rules
-win32_source_c = \
-	win32/clutter-backend-win32.c		\
-	win32/clutter-device-manager-win32.c	\
-	win32/clutter-event-win32.c		\
-	win32/clutter-stage-win32.c		\
-	$(NULL)
-
-win32_source_h = \
-	win32/clutter-win32.h			\
-	$(NULL)
-
-win32_source_h_priv = \
-	win32/clutter-backend-win32.h		\
-	win32/clutter-device-manager-win32.h	\
-	win32/clutter-stage-win32.h		\
-	$(NULL)
-
-if SUPPORT_WIN32
-# Ideally this resources stuff would go in win32/ but libtool doesn't
-# seem to pass on the -Wl argument when linking a convenience library
-# so we need to do it here as part of linking the dll. libtool also
-# won't let you link against the .o directly because it wants you to
-# link against libtool objects for dynamic libraries.
-.rc.o :
-	mkdir -p win32
-	$(WINDRES) -I$(srcdir)/win32 $< $@
-
-win32/resources.o : win32/invisible-cursor.cur
-
-win32_resources = win32/resources.o
-win32_resources_ldflag = -Wl,win32/resources.o
-
-backend_source_h += $(win32_source_h)
-backend_source_c += $(win32_source_c)
-backend_source_h_priv += $(win32_source_h_priv)
-
-clutterwin_includedir = $(clutter_includedir)/win32
-clutterwin_include_HEADERS = $(win32_source_h)
-
-clutter-win32-$(CLUTTER_API_VERSION).pc: clutter-$(CLUTTER_API_VERSION).pc
-	$(QUIET_GEN)cp -f $< $(@F)
-
-pc_files += clutter-win32-$(CLUTTER_API_VERSION).pc
-endif # SUPPORT_WIN32
-
-EXTRA_DIST += \
-	win32/invisible-cursor.cur 	\
-	win32/resources.rc		\
-	$(NULL)
 
 egl_tslib_h = tslib/clutter-event-tslib.h
 egl_tslib_c = tslib/clutter-event-tslib.c
@@ -843,7 +786,6 @@ clutter_deprecated_HEADERS = $(deprecated_h)
 lib_LTLIBRARIES += libclutter-@CLUTTER_API_VERSION@.la
 
 libclutter_@CLUTTER_API_VERSION@_la_LIBADD = $(LIBM) $(CLUTTER_LIBS)
-libclutter_@CLUTTER_API_VERSION@_la_DEPENDENCIES = $(win32_resources)
 
 libclutter_@CLUTTER_API_VERSION@_la_SOURCES = \
 	$(backend_source_c) \
@@ -873,88 +815,7 @@ libclutter_@CLUTTER_API_VERSION@_la_LDFLAGS = \
 	$(CLUTTER_LT_LDFLAGS) \
 	-export-dynamic \
 	-rpath $(libdir) \
-	$(win32_resources_ldflag) \
 	$(NULL)
-
-dist-hook: ../build/win32/vs9/clutter.vcproj ../build/win32/vs10/clutter.vcxproj ../build/win32/vs10/clutter.vcxproj.filters ../build/win32/gen-enums.bat
-
-../build/win32/vs9/clutter.vcproj: $(top_srcdir)/build/win32/vs9/clutter.vcprojin
-	for F in `echo $(win32_source_c) $(cally_sources_c) $(source_c) $(source_c_priv) $(deprecated_c) $(deprecated_c_priv) $(built_source_c) | tr '/' '\\'`; do \
-		case $$F in \
-		*.c)	echo '   <File RelativePath="..\..\..\clutter\'$$F'" />' \
-			;; \
-		esac; \
-	done >clutter.sourcefiles
-	$(CPP) -P - <$(top_srcdir)/build/win32/vs9/clutter.vcprojin >$@
-	rm clutter.sourcefiles
-
-../build/win32/vs10/clutter.vcxproj: $(top_srcdir)/build/win32/vs10/clutter.vcxprojin
-	for F in `echo $(win32_source_c) $(cally_sources_c) $(source_c) $(source_c_priv) $(deprecated_c) $(deprecated_c_priv) $(built_source_c) | tr '/' '\\'`; do \
-		case $$F in \
-		*.c)	echo '    <ClCompile Include="..\..\..\clutter\'$$F'" />' \
-			;; \
-		esac; \
-	done >clutter.vs10.sourcefiles
-	$(CPP) -P - <$(top_srcdir)/build/win32/vs10/clutter.vcxprojin >$@
-	rm clutter.vs10.sourcefiles
-
-../build/win32/vs10/clutter.vcxproj.filters: $(top_srcdir)/build/win32/vs10/clutter.vcxproj.filtersin
-	for F in `echo $(win32_source_c) $(cally_sources_c) $(source_c) $(source_c_priv) $(deprecated_c) $(deprecated_c_priv) $(built_source_c) | tr '/' '\\'`; do \
-		case $$F in \
-		*.c)	echo '    <ClCompile Include="..\..\..\clutter\'$$F'"><Filter>Sources</Filter></ClCompile>' \
-			;; \
-		esac; \
-	done >clutter.vs10.sourcefiles.filters
-	$(CPP) -P - <$(top_srcdir)/build/win32/vs10/clutter.vcxproj.filtersin >$@
-	rm clutter.vs10.sourcefiles.filters
-
-clutter.vsenums_h:
-	echo 'perl %1\bin\glib-mkenums --template ../../clutter/clutter-enum-types.h.in ' >vsenums_h.temp1
-	for F in `echo $(source_h) $(backend_source_h) $(srcdir)/win32/clutter-win32.h`; do \
-		case $$F in \
-		*-x11*.h|*-wayland*.h|*-gdk*.h|*-glx*.h|*-cex*.h|*-egl*.h|*-osx*.h|*-mir*.h) ;; \
-		*.h) echo '../../clutter'$$F' '	\
-			;;	\
-		esac;	\
-	done >>vsenums_h.temp1
-	cat vsenums_h.temp1 | sed 's_/clutter./_/clutter/_' >vsenums_h.temp
-	cat vsenums_h.temp | tr -d '\n' >>$@
-	echo '> ..\..\clutter\clutter-enum-types.h' >>$@
-	rm vsenums_h.temp1
-	rm vsenums_h.temp
-
-clutter.vsenums_c:
-	echo 'perl %1\bin\glib-mkenums --template ../../clutter/clutter-enum-types.c.in ' >vsenums_c.temp1
-	for F in `echo $(source_h) $(backend_source_h) $(srcdir)/win32/clutter-win32.h`; do \
-		case $$F in \
-		*-x11*.h|*-wayland*.h|*-gdk*.h|*-glx*.h|*-cex*.h|*-egl*.h|*-osx*.h|*-mir*.h) ;; \
-		*.h) echo '../../clutter'$$F' '	\
-			;;	\
-		esac;	\
-	done >>vsenums_c.temp1
-	cat vsenums_c.temp1 | sed 's_/clutter./_/clutter/_' >vsenums_c.temp
-	cat vsenums_c.temp | tr -d '\n' >>$@
-	echo '> ..\..\clutter\clutter-enum-types.c' >>$@
-	rm vsenums_c.temp1
-	rm vsenums_c.temp
-
-../build/win32/gen-enums.bat: clutter.vsenums_h clutter.vsenums_c
-	echo 'if exist ..\..\clutter\clutter-enum-types.h goto DONE_COGL_ENUMS_H' >$@
-	cat clutter.vsenums_h >>$@
-	echo ':DONE_COGL_ENUMS_H' >>$@
-	echo 'if exist ..\..\clutter\clutter-enum-types.c goto DONE_COGL_ENUMS_C' >>$@
-	cat clutter.vsenums_c >>$@
-	echo ':DONE_COGL_ENUMS_C' >>$@
-	rm clutter.vsenums_h
-	rm clutter.vsenums_c
-
-EXTRA_DIST += \
-	clutter-config.h.win32	\
-	clutter-config.h.win32_GDK	\
-	$(NULL)
-
-# Let the VS9/VS10 Project files be cleared out before they are re-expanded...
-DISTCLEANFILES += ../build/win32/vs9/clutter.vcproj ../build/win32/vs10/clutter.vcxproj ../build/win32/vs10/clutter.vcxproj.filters ../build/win32/gen-enums.bat
 
 install-exec-local:
 	test -z "$(libdir)" || $(MKDIR_P) "$(DESTDIR)$(libdir)"

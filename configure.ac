@@ -87,28 +87,8 @@ dnl = Preliminary platform checks =============================================
 
 AC_CANONICAL_HOST
 
-platform_win32=no
 platform_quartz=no
 platform_linux=no
-
-AC_MSG_CHECKING([if building for some Win32 platform])
-AS_CASE([$host],
-        [*-*-mingw*|*-*-cygwin*],
-        [
-          CLUTTER_LT_LDFLAGS="$CLUTTER_LT_LDFLAGS -no-undefined"
-          platform_win32=yes
-        ],
-
-        [*-*-linux*],
-        [
-          platform_linux=yes
-        ],
-
-        []
-)
-AC_MSG_RESULT([$platform_win32])
-
-AM_CONDITIONAL(OS_WIN32, [test "$platform_win32" = "yes"])
 
 AC_CHECK_HEADER([OpenGL/gl.h], [platform_quartz=yes], [platform_quartz=no])
 AM_CONDITIONAL(OS_QUARTZ, [test "$platform_quartz" = "yes"])
@@ -191,32 +171,22 @@ AC_SUBST(CLUTTER_LINK_FLAGS)
 
 # Check for the visibility flags
 CLUTTER_HIDDEN_VISIBILITY_CFLAGS=""
-case "$host" in
-  *-*-mingw*)
-    dnl on mingw32 we do -fvisibility=hidden and __declspec(dllexport)
-    AC_DEFINE([_CLUTTER_EXTERN], [__attribute__((visibility("default"))) __declspec(dllexport) extern],
-              [defines how to decorate public symbols while building])
-    CFLAGS="${CFLAGS} -fvisibility=hidden"
-    ;;
-  *)
-    dnl on other compilers, check if we can do -fvisibility=hidden
-    SAVED_CFLAGS="${CFLAGS}"
-    CFLAGS="-fvisibility=hidden"
-    AC_MSG_CHECKING([for -fvisibility=hidden compiler flag])
-    AC_TRY_COMPILE([], [int main (void) { return 0; }],
-                   AC_MSG_RESULT(yes)
-                   enable_fvisibility_hidden=yes,
-                   AC_MSG_RESULT(no)
-                   enable_fvisibility_hidden=no)
-    CFLAGS="${SAVED_CFLAGS}"
+dnl on other compilers, check if we can do -fvisibility=hidden
+SAVED_CFLAGS="${CFLAGS}"
+CFLAGS="-fvisibility=hidden"
+AC_MSG_CHECKING([for -fvisibility=hidden compiler flag])
+AC_TRY_COMPILE([], [int main (void) { return 0; }],
+	       AC_MSG_RESULT(yes)
+	       enable_fvisibility_hidden=yes,
+	       AC_MSG_RESULT(no)
+	       enable_fvisibility_hidden=no)
+CFLAGS="${SAVED_CFLAGS}"
 
-    AS_IF([test "${enable_fvisibility_hidden}" = "yes"], [
-      AC_DEFINE([_CLUTTER_EXTERN], [__attribute__((visibility("default"))) extern],
-                [defines how to decorate public symbols while building])
-      CLUTTER_HIDDEN_VISIBILITY_CFLAGS="-fvisibility=hidden"
-    ])
-    ;;
-esac
+AS_IF([test "${enable_fvisibility_hidden}" = "yes"], [
+  AC_DEFINE([_CLUTTER_EXTERN], [__attribute__((visibility("default"))) extern],
+	    [defines how to decorate public symbols while building])
+  CLUTTER_HIDDEN_VISIBILITY_CFLAGS="-fvisibility=hidden"
+])
 AC_SUBST(CLUTTER_HIDDEN_VISIBILITY_CFLAGS)
 
 AC_CACHE_SAVE
@@ -250,10 +220,6 @@ AC_ARG_ENABLE([x11-backend],
               [AS_HELP_STRING([--enable-x11-backend=@<:@yes/no@:>@], [Enable the X11 backend (default=check)])],
               [enable_x11=$enableval],
               [enable_x11=check])
-AC_ARG_ENABLE([win32-backend],
-              [AS_HELP_STRING([--enable-win32-backend=@<:@yes/no@:>@], [Enable the Windows backend (default=check)])],
-              [enable_win32=$enableval],
-              [enable_win32=check])
 AC_ARG_ENABLE([quartz-backend],
               [AS_HELP_STRING([--enable-quartz-backend=@<:@yes/no@:>@], [Enable the OS X backend (default=check)])],
               [enable_osx=$enableval],
@@ -292,10 +258,6 @@ AC_ARG_ENABLE([evdev-input],
 dnl Define default values
 AS_IF([test "x$enable_x11" = xcheck], [
   PKG_CHECK_EXISTS([x11], [enable_x11=yes], [enable_x11=no])
-])
-
-AS_IF([test "x$enable_win32" = xcheck], [
-  AS_IF([test "x$platform_win32" = "xyes"], [enable_win32=yes], [enable_win32=no])
 ])
 
 AS_IF([test "x$enable_osx" = xcheck], [
@@ -476,19 +438,6 @@ AS_IF([test "x$enable_osx" = "xyes"],
         SUPPORT_OSX=1
       ])
 
-AS_IF([test "x$enable_win32" = "xyes"],
-      [
-        CLUTTER_BACKENDS="$CLUTTER_BACKENDS win32"
-        CLUTTER_INPUT_BACKENDS="$CLUTTER_INPUT_BACKENDS win32"
-
-        FLAVOUR_LIBS="$FLAVOUR_LIBS -lopengl32 -lgdi32 -lwinmm"
-        FLAVOUR_CFLAGS="$FLAVOUR_CFLAGS -D_WIN32_WINNT=0x0500"
-
-        AC_CHECK_TOOL(WINDRES, [windres], [AC_MSG_ERROR([*** windres is required])])
-
-        SUPPORT_WIN32=1
-      ])
-
 AS_IF([test "x$enable_mir" = "xyes"],
       [
         CLUTTER_BACKENDS="$CLUTTER_BACKENDS mir"
@@ -562,7 +511,6 @@ AM_CONDITIONAL(SUPPORT_X11,     [test "x$SUPPORT_X11" = "x1"])
 AM_CONDITIONAL(SUPPORT_GDK,     [test "x$SUPPORT_GDK" = "x1"])
 AM_CONDITIONAL(SUPPORT_EGL,     [test "x$SUPPORT_EGL" = "x1"])
 AM_CONDITIONAL(SUPPORT_OSX,     [test "x$SUPPORT_OSX" = "x1"])
-AM_CONDITIONAL(SUPPORT_WIN32,   [test "x$SUPPORT_WIN32" = "x1"])
 AM_CONDITIONAL(SUPPORT_CEX100,  [test "x$SUPPORT_CEX100" = "x1"])
 AM_CONDITIONAL(SUPPORT_WAYLAND, [test "x$SUPPORT_WAYLAND" = "x1"])
 AM_CONDITIONAL(SUPPORT_MIR,     [test "x$SUPPORT_MIR" = "x1"])
@@ -625,10 +573,6 @@ AS_IF([test "x$SUPPORT_OSX" = "x1"],
       [CLUTTER_CONFIG_DEFINES="$CLUTTER_CONFIG_DEFINES
 #define CLUTTER_WINDOWING_OSX \"osx\"
 #define CLUTTER_INPUT_OSX \"osx\""])
-AS_IF([test "x$SUPPORT_WIN32" = "x1"],
-      [CLUTTER_CONFIG_DEFINES="$CLUTTER_CONFIG_DEFINES
-#define CLUTTER_WINDOWING_WIN32 \"win32\"
-#define CLUTTER_INPUT_WIN32 \"win32\""])
 AS_IF([test "x$SUPPORT_CEX100" = "x1"],
       [CLUTTER_CONFIG_DEFINES="$CLUTTER_CONFIG_DEFINES
 #define CLUTTER_WINDOWING_CEX100 \"cex100\""])
@@ -1195,13 +1139,8 @@ AC_CONFIG_FILES([
 
 	build/Makefile
 	build/autotools/Makefile
-	build/mingw/Makefile
-	build/win32/Makefile
-	build/win32/vs9/Makefile
-	build/win32/vs10/Makefile
 
 	clutter/Makefile
-	clutter/config.h.win32
         clutter/clutter-config.h
 	clutter/clutter-version.h
 	clutter/clutter-$CLUTTER_API_VERSION.pc:clutter/clutter.pc.in

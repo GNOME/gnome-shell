@@ -73,9 +73,6 @@
 #ifdef CLUTTER_WINDOWING_OSX
 #include "osx/clutter-backend-osx.h"
 #endif
-#ifdef CLUTTER_WINDOWING_WIN32
-#include "win32/clutter-backend-win32.h"
-#endif
 #ifdef CLUTTER_WINDOWING_GDK
 #include "gdk/clutter-backend-gdk.h"
 #endif
@@ -194,17 +191,11 @@ clutter_threads_init_default (void)
 {
   g_mutex_init (&clutter_threads_mutex);
 
-#ifndef CLUTTER_WINDOWING_WIN32
-  /* we don't need nor want locking functions on Windows.here
-  * as Windows GUI system assumes multithreadedness
-  * see bug: https://bugzilla.gnome.org/show_bug.cgi?id=662071
-  */
   if (clutter_threads_lock == NULL)
     clutter_threads_lock = clutter_threads_impl_lock;
 
   if (clutter_threads_unlock == NULL)
     clutter_threads_unlock = clutter_threads_impl_unlock;
-#endif /* CLUTTER_WINDOWING_WIN32 */
 }
 
 #define ENVIRONMENT_GROUP       "Environment"
@@ -3614,8 +3605,7 @@ _clutter_context_get_motion_events_enabled (void)
  * @backend_type: the name of the backend to check
  *
  * Checks the run-time name of the Clutter windowing system backend, using
- * the symbolic macros like %CLUTTER_WINDOWING_WIN32 or
- * %CLUTTER_WINDOWING_X11.
+ * the symbolic macros like %CLUTTER_WINDOWING_X11.
  *
  * This function should be used in conjuction with the compile-time macros
  * inside applications and libraries that are using the platform-specific
@@ -3627,13 +3617,6 @@ _clutter_context_get_motion_events_enabled (void)
  *   if (clutter_check_windowing_backend (CLUTTER_WINDOWING_X11))
  *     {
  *       // it is safe to use the clutter_x11_* API
- *     }
- *   else
- * #endif
- * #ifdef CLUTTER_WINDOWING_WIN32
- *   if (clutter_check_windowing_backend (CLUTTER_WINDOWING_WIN32))
- *     {
- *       // it is safe to use the clutter_win32_* API
  *     }
  *   else
  * #endif
@@ -3657,12 +3640,6 @@ clutter_check_windowing_backend (const char *backend_type)
 #ifdef CLUTTER_WINDOWING_OSX
   if (backend_type == I_(CLUTTER_WINDOWING_OSX) &&
       CLUTTER_IS_BACKEND_OSX (context->backend))
-    return TRUE;
-  else
-#endif
-#ifdef CLUTTER_WINDOWING_WIN32
-  if (backend_type == I_(CLUTTER_WINDOWING_WIN32) &&
-      CLUTTER_IS_BACKEND_WIN32 (context->backend))
     return TRUE;
   else
 #endif

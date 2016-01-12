@@ -67,9 +67,6 @@
 #ifdef CLUTTER_INPUT_X11
 #include "x11/clutter-backend-x11.h"
 #endif
-#ifdef CLUTTER_INPUT_WIN32
-#include "win32/clutter-backend-win32.h"
-#endif
 #ifdef CLUTTER_INPUT_OSX
 #include "osx/clutter-backend-osx.h"
 #endif
@@ -539,9 +536,6 @@ static const struct {
 #ifdef CLUTTER_WINDOWING_OSX
   { CLUTTER_WINDOWING_OSX, clutter_backend_osx_new },
 #endif
-#ifdef CLUTTER_WINDOWING_WIN32
-  { CLUTTER_WINDOWING_WIN32, clutter_backend_win32_new },
-#endif
 #ifdef CLUTTER_WINDOWING_GDK
   { CLUTTER_WINDOWING_GDK, clutter_backend_gdk_new },
 #endif
@@ -623,14 +617,6 @@ clutter_backend_real_init_events (ClutterBackend *backend)
       (input_backend == NULL || input_backend == I_(CLUTTER_INPUT_OSX)))
     {
       _clutter_backend_osx_events_init (backend);
-    }
-  else
-#endif
-#ifdef CLUTTER_INPUT_WIN32
-  if (clutter_check_windowing_backend (CLUTTER_WINDOWING_WIN32) &&
-      (input_backend == NULL || input_backend == I_(CLUTTER_INPUT_WIN32)))
-    {
-      _clutter_backend_win32_events_init (backend);
     }
   else
 #endif

@@ -42,9 +42,6 @@
 #ifdef GDK_WINDOWING_WAYLAND
 #include <gdk/gdkwayland.h>
 #endif
-#ifdef GDK_WINDOWING_WIN32
-#include <gdk/gdkwin32.h>
-#endif
 
 #include "clutter-backend-gdk.h"
 #include "clutter-stage-gdk.h"
@@ -451,14 +448,6 @@ clutter_stage_gdk_realize (ClutterStageWindow *stage_window)
     {
       cogl_wayland_onscreen_set_foreign_surface (stage_cogl->onscreen,
                                                  clutter_stage_gdk_wayland_surface (stage_gdk));
-    }
-  else
-#endif
-#if defined(GDK_WINDOWING_WIN32) && defined(COGL_HAS_WIN32_SUPPORT)
-  if (GDK_IS_WIN32_WINDOW (stage_gdk->window))
-    {
-      cogl_win32_onscreen_set_foreign_window (stage_cogl->onscreen,
-					      gdk_win32_window_get_handle (stage_gdk->window));
     }
   else
 #endif

@@ -1,1 +1,1 @@
-SUBDIRS = autotools mingw win32
+SUBDIRS = autotools

@@ -39,9 +39,7 @@
 #include <gdk/gdk.h>
 #include <cogl/cogl.h>
 
-#ifndef GDK_WINDOWING_WIN32
 #include <sys/ioctl.h>
-#endif
 
 #if defined(GDK_WINDOWING_X11) && defined(COGL_HAS_XLIB_SUPPORT)
 #include <cogl/cogl-xlib.h>
@@ -57,10 +55,6 @@
 
 #ifdef GDK_WINDOWING_WAYLAND
 #include <gdk/gdkwayland.h>
-#endif
-
-#ifdef GDK_WINDOWING_WIN32
-#include <gdk/gdkwin32.h>
 #endif
 
 #include "clutter-backend-gdk.h"
@@ -276,15 +270,6 @@ clutter_backend_gdk_get_renderer (ClutterBackend  *backend,
       cogl_renderer_set_winsys_id (renderer, COGL_WINSYS_ID_EGL_WAYLAND);
       cogl_wayland_renderer_set_foreign_display (renderer, display);
       cogl_wayland_renderer_set_event_dispatch_enabled (renderer, !disable_event_retrieval);
-    }
-  else
-#endif
-#if defined(GDK_WINDOWING_WIN32)
-  if (GDK_IS_WIN32_DISPLAY (backend_gdk->display))
-    {
-      /* Force a WGL winsys on windows */
-      cogl_renderer_set_winsys_id (renderer, COGL_WINSYS_ID_WGL);
-      cogl_win32_renderer_set_event_retrieval_enabled (renderer, FALSE);
     }
   else
 #endif
