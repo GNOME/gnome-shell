@@ -104,10 +104,6 @@ cogl_display_new (CoglRenderer *renderer,
 
   display->setup = FALSE;
 
-#ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
-  display->gdl_plane = GDL_PLANE_ID_UPP_C;
-#endif
-
   display = _cogl_display_object_new (display);
 
   cogl_display_set_onscreen_template (display, onscreen_template);
@@ -158,17 +154,6 @@ cogl_display_setup (CoglDisplay *display,
 
   return TRUE;
 }
-
-#ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
-void
-cogl_gdl_display_set_plane (CoglDisplay *display,
-                            gdl_plane_id_t plane)
-{
-  _COGL_RETURN_IF_FAIL (display->setup == FALSE);
-
-  display->gdl_plane = plane;
-}
-#endif
 
 #ifdef COGL_HAS_WAYLAND_EGL_SERVER_SUPPORT
 void

@@ -482,11 +482,6 @@ cogl_sources_c += \
 	winsys/cogl-winsys-egl-x11.c \
 	winsys/cogl-winsys-egl-x11-private.h
 endif
-if SUPPORT_EGL_PLATFORM_GDL
-cogl_sources_c += \
-	winsys/cogl-winsys-egl-gdl.c \
-	winsys/cogl-winsys-egl-gdl-private.h
-endif
 if SUPPORT_EGL_PLATFORM_ANDROID
 cogl_sources_c += \
 	winsys/cogl-winsys-egl-android.c \

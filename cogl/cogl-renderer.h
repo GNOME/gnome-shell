@@ -163,7 +163,6 @@ cogl_renderer_new (void);
  * @COGL_WINSYS_ID_STUB: Use the no-op stub backend
  * @COGL_WINSYS_ID_GLX: Use the GLX window system binding API
  * @COGL_WINSYS_ID_EGL_XLIB: Use EGL with the X window system via XLib
- * @COGL_WINSYS_ID_EGL_GDL: Use EGL with the GDL platform
  * @COGL_WINSYS_ID_EGL_WAYLAND: Use EGL with the Wayland window system
  * @COGL_WINSYS_ID_EGL_KMS: Use EGL with the KMS platform
  * @COGL_WINSYS_ID_EGL_ANDROID: Use EGL with the Android platform
@@ -182,7 +181,6 @@ typedef enum
   COGL_WINSYS_ID_STUB,
   COGL_WINSYS_ID_GLX,
   COGL_WINSYS_ID_EGL_XLIB,
-  COGL_WINSYS_ID_EGL_GDL,
   COGL_WINSYS_ID_EGL_WAYLAND,
   COGL_WINSYS_ID_EGL_KMS,
   COGL_WINSYS_ID_EGL_ANDROID,

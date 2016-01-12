@@ -1009,37 +1009,6 @@ AS_IF([test "x$SUPPORT_SDL2" = "xyes" -a "x$SUPPORT_SDL" = "xyes"],
 EGL_PLATFORM_COUNT=0
 
 AC_ARG_ENABLE(
-  [gdl-egl-platform],
-  [AC_HELP_STRING([--enable-gdl-egl-platform=@<:@no/yes@:>@], [Enable support for the GDL egl platform @<:@default=no@:>@])],
-  [],
-  enable_gdl_egl_platform=no
-)
-AS_IF([test "x$enable_gdl_egl_platform" = "xyes"],
-      [
-        EGL_PLATFORM_COUNT=$((EGL_PLATFORM_COUNT+1))
-        NEED_EGL=yes
-        EGL_PLATFORMS="$EGL_PLATFORMS gdl"
-
-        AC_CHECK_HEADERS(
-          [libgdl.h],
-          [],
-          [
-            AC_CHECK_HEADERS(
-              [CE4100/libgdl.h],
-              [
-               COGL_EXTRA_CFLAGS="$COGL_EXTRA_CFLAGS -I/usr/include/CE4100"
-              ],
-              [AC_MSG_ERROR([libgdl.h not found])])
-          ])
-
-        COGL_EXTRA_LDFLAGS="$COGL_EXTRA_LDFLAGS -lgdl"
-
-        COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_EGL_PLATFORM_GDL_SUPPORT"
-      ])
-AM_CONDITIONAL(SUPPORT_EGL_PLATFORM_GDL,
-               [test "x$enable_gdl_egl_platform" = "xyes"])
-
-AC_ARG_ENABLE(
   [wayland-egl-platform],
   [AC_HELP_STRING([--enable-wayland-egl-platform=@<:@no/yes@:>@], [Enable support for the Wayland egl platform @<:@default=no@:>@])],
   [],

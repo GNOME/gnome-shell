@@ -46,10 +46,6 @@
 
 COGL_BEGIN_DECLS
 
-#ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
-#include <libgdl.h>
-#endif
-
 /**
  * SECTION:cogl-display
  * @short_description: Common aspects of a display pipeline
@@ -197,22 +193,6 @@ cogl_display_set_onscreen_template (CoglDisplay *display,
 CoglBool
 cogl_display_setup (CoglDisplay *display,
                     CoglError **error);
-
-#ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
-/**
- * cogl_gdl_display_set_plane:
- * @display: a #CoglDisplay
- * @plane: the GDL plane id
- *
- * Request that Cogl output to a specific GDL overlay @plane.
- *
- * Since: 1.10
- * Stability: unstable
- */
-void
-cogl_gdl_display_set_plane (CoglDisplay *display,
-                            gdl_plane_id_t plane);
-#endif
 
 /**
  * cogl_is_display:
