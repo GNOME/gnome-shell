@@ -452,14 +452,6 @@ endif
 if SUPPORT_WAYLAND_EGL_SERVER
 cogl_experimental_h += cogl-wayland-server.h
 endif
-if SUPPORT_EGL_PLATFORM_WAYLAND
-cogl_experimental_h += \
-	cogl-wayland-renderer.h \
-	cogl-wayland-client.h
-cogl_sources_c += \
-	winsys/cogl-winsys-egl-wayland.c \
-	winsys/cogl-winsys-egl-wayland-private.h
-endif
 if SUPPORT_EGL_PLATFORM_KMS
 cogl_experimental_h += \
 	cogl-kms-renderer.h \

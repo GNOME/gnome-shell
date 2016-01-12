@@ -44,11 +44,6 @@
 #include <X11/Xlib.h>
 #endif
 
-#if defined (COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT)
-#include <wayland-client.h>
-#endif
-
-
 struct _CoglRenderer
 {
   CoglObject _parent;
@@ -78,11 +73,6 @@ struct _CoglRenderer
     [COGL_FLAGS_N_LONGS_FOR_SIZE (COGL_N_PRIVATE_FEATURES)];
 #ifndef HAVE_DIRECTLY_LINKED_GL_LIBRARY
   GModule *libgl_module;
-#endif
-
-#if defined (COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT)
-  struct wl_display *foreign_wayland_display;
-  CoglBool wayland_enable_event_dispatch;
 #endif
 
 #if defined (COGL_HAS_EGL_PLATFORM_KMS_SUPPORT)

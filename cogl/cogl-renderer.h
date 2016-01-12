@@ -161,7 +161,6 @@ cogl_renderer_new (void);
  * @COGL_WINSYS_ID_STUB: Use the no-op stub backend
  * @COGL_WINSYS_ID_GLX: Use the GLX window system binding API
  * @COGL_WINSYS_ID_EGL_XLIB: Use EGL with the X window system via XLib
- * @COGL_WINSYS_ID_EGL_WAYLAND: Use EGL with the Wayland window system
  * @COGL_WINSYS_ID_EGL_KMS: Use EGL with the KMS platform
  *
  * Identifies specific window system backends that Cogl supports.
@@ -175,7 +174,6 @@ typedef enum
   COGL_WINSYS_ID_STUB,
   COGL_WINSYS_ID_GLX,
   COGL_WINSYS_ID_EGL_XLIB,
-  COGL_WINSYS_ID_EGL_WAYLAND,
   COGL_WINSYS_ID_EGL_KMS,
 } CoglWinsysID;
 

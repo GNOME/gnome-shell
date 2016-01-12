@@ -65,10 +65,6 @@ struct _CoglOnscreen
   void *foreign_update_mask_data;
 #endif
 
-#ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
-  struct wl_surface *foreign_surface;
-#endif
-
   CoglBool swap_throttled;
 
   CoglList frame_closures;

@@ -137,8 +137,6 @@ get_winsys_name_for_id (CoglWinsysID winsys_id)
       return "GLX";
     case COGL_WINSYS_ID_EGL_XLIB:
       return "EGL + Xlib platform";
-    case COGL_WINSYS_ID_EGL_WAYLAND:
-      return "EGL + Wayland platform";
     case COGL_WINSYS_ID_EGL_KMS:
       return "EGL + KMS platform";
     }

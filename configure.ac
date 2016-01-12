@@ -95,7 +95,6 @@ m4_define([xfixes_req_version],         [3])
 m4_define([xcomposite_req_version],     [0.4])
 m4_define([xrandr_req_version],         [1.2])
 m4_define([cairo_req_version],          [1.10])
-m4_define([wayland_req_version],        [1.0.0])
 m4_define([wayland_server_req_version], [1.1.90])
 m4_define([mirclient_req_version],      [0.9.0])
 
@@ -109,7 +108,6 @@ AC_SUBST([XFIXES_REQ_VERSION], [xfixes_req_version])
 AC_SUBST([GTK_DOC_REQ_VERSION], [gtk_doc_req_version])
 AC_SUBST([GI_REQ_VERSION], [gi_req_version])
 AC_SUBST([UPROF_REQ_VERSION], [uprof_req_version])
-AC_SUBST([WAYLAND_REQ_VERSION], [wayland_req_version])
 AC_SUBST([WAYLAND_SERVER_REQ_VERSION], [wayland_server_req_version])
 
 # Save this value here, since automake will set cflags later and we
@@ -839,29 +837,6 @@ AS_IF([test "x$enable_glx" = "xyes"],
 AM_CONDITIONAL(SUPPORT_GLX, [test "x$SUPPORT_GLX" = "xyes"])
 
 EGL_PLATFORM_COUNT=0
-
-AC_ARG_ENABLE(
-  [wayland-egl-platform],
-  [AC_HELP_STRING([--enable-wayland-egl-platform=@<:@no/yes@:>@], [Enable support for the Wayland egl platform @<:@default=no@:>@])],
-  [],
-  enable_wayland_egl_platform=no
-)
-AS_IF([test "x$enable_wayland_egl_platform" = "xyes"],
-      [
-        EGL_PLATFORM_COUNT=$((EGL_PLATFORM_COUNT+1))
-        NEED_EGL=yes
-        EGL_PLATFORMS="$EGL_PLATFORMS wayland"
-
-        PKG_CHECK_MODULES(WAYLAND_CLIENT,
-                          [wayland-egl >= wayland_req_version wayland-client >= wayland_req_version])
-        COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES wayland-egl >= wayland_req_version"
-        COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES wayland-client >= wayland_req_version"
-
-        COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT"
-      ])
-AM_CONDITIONAL(SUPPORT_EGL_PLATFORM_WAYLAND,
-               [test "x$enable_wayland_egl_platform" = "xyes"])
-
 
 AC_ARG_ENABLE(
   [kms-egl-platform],
