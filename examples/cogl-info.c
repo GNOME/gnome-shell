@@ -141,8 +141,6 @@ get_winsys_name_for_id (CoglWinsysID winsys_id)
       return "EGL + Wayland platform";
     case COGL_WINSYS_ID_EGL_KMS:
       return "EGL + KMS platform";
-    case COGL_WINSYS_ID_EGL_ANDROID:
-      return "EGL + Android platform";
     }
   g_return_val_if_reached ("Unknown");
 }

@@ -49,9 +49,6 @@ typedef struct _CoglContext CoglContext;
 #ifdef COGL_HAS_GTYPE_SUPPORT
 #include <glib-object.h>
 #endif
-#ifdef COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT
-#include <android/native_window.h>
-#endif
 
 COGL_BEGIN_DECLS
 
@@ -162,23 +159,6 @@ cogl_context_get_display (CoglContext *context);
  */
 CoglRenderer *
 cogl_context_get_renderer (CoglContext *context);
-
-#ifdef COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT
-/**
- * cogl_android_set_native_window:
- * @window: A native Android window
- *
- * Allows Android applications to inform Cogl of the native window
- * that they have been given which Cogl can render too. On Android
- * this API must be used before creating a #CoglRenderer, #CoglDisplay
- * and #CoglContext.
- *
- * Since: 1.8
- * Stability: unstable
- */
-void
-cogl_android_set_native_window (ANativeWindow *window);
-#endif
 
 /**
  * cogl_is_context:

@@ -473,11 +473,6 @@ cogl_sources_c += \
 	winsys/cogl-winsys-egl-x11.c \
 	winsys/cogl-winsys-egl-x11-private.h
 endif
-if SUPPORT_EGL_PLATFORM_ANDROID
-cogl_sources_c += \
-	winsys/cogl-winsys-egl-android.c \
-	winsys/cogl-winsys-egl-android-private.h
-endif
 if SUPPORT_EGL
 cogl_experimental_h += cogl-egl.h
 cogl_nodist_experimental_h += cogl-egl-defines.h

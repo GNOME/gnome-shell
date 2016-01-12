@@ -48,10 +48,6 @@ typedef struct _CoglBitmap CoglBitmap;
 #include <glib-object.h>
 #endif
 
-#ifdef COGL_HAS_ANDROID_SUPPORT
-#include <android/asset_manager.h>
-#endif
-
 COGL_BEGIN_DECLS
 
 #ifdef COGL_HAS_GTYPE_SUPPORT
@@ -90,28 +86,6 @@ GType cogl_bitmap_get_gtype (void);
 CoglBitmap *
 cogl_bitmap_new_from_file (const char *filename,
                            CoglError **error);
-
-#ifdef COGL_HAS_ANDROID_SUPPORT
-/**
- * cogl_android_bitmap_new_from_asset:
- * @context: A #CoglContext
- * @manager: An Android Asset Manager.
- * @filename: The file name for the asset
- * @error: A return location for a CoglError exception.
- *
- * Loads an Android asset into a newly allocated #CoglBitmap.
- *
- * Return value: (transfer full): A newly allocated #CoglBitmap
- *               holding the image data of the specified asset.
- *
- * Since: 2.0
- */
-CoglBitmap *
-cogl_android_bitmap_new_from_asset (CoglContext *context,
-                                    AAssetManager *manager,
-                                    const char *filename,
-                                    CoglError **error);
-#endif
 
 #if defined (COGL_ENABLE_EXPERIMENTAL_API)
 

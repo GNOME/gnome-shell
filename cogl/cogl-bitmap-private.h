@@ -37,10 +37,6 @@
 #include "cogl-buffer.h"
 #include "cogl-bitmap.h"
 
-#ifdef COGL_HAS_ANDROID_SUPPORT
-#include <android/asset_manager.h>
-#endif
-
 struct _CoglBitmap
 {
   CoglObject _parent;
@@ -125,14 +121,6 @@ CoglBitmap *
 _cogl_bitmap_from_file (CoglContext *ctx,
                         const char *filename,
 			CoglError **error);
-
-#ifdef COGL_HAS_ANDROID_SUPPORT
-CoglBitmap *
-_cogl_android_bitmap_new_from_asset (CoglContext *ctx,
-                                     AAssetManager *manager,
-                                     const char *filename,
-                                     CoglError **error);
-#endif
 
 CoglBool
 _cogl_bitmap_unpremult (CoglBitmap *dst_bmp,
