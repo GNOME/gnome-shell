@@ -1,8 +1,6 @@
 NULL =
 
 EXTRA_DIST = \
-	Makefile.am.marshal	\
-	Makefile.am.enums	\
 	introspection.m4	\
 	gtk-doc.m4		\
 	as-compiler-flag.m4	\
