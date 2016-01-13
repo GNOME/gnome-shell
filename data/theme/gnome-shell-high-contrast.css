@@ -752,6 +752,17 @@ StScrollBar {
   color: rgba(255, 255, 255, 0.15);
   opacity: 0.5; }
 
+.calendar-week-number {
+  font-size: 70%;
+  font-weight: bold;
+  width: 2.8em;
+  height: 2em;
+  border-radius: 2px 1em 2px 2px;
+  padding: 0.9em 0 0;
+  margin: 3px;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #000; }
+
 /* Message list */
 .message-list {
   width: 31.5em; }
