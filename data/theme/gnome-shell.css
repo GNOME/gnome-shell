@@ -199,7 +199,7 @@ StScrollBar {
   border-radius: 9px;
   color: #eeeeec;
   background-color: rgba(23, 25, 26, 0.95);
-  border: 3px solid rgba(238, 238, 236, 0.5); }
+  border: 1px solid rgba(238, 238, 236, 0.2); }
   .modal-dialog .modal-dialog-content-box {
     padding: 24px; }
   .modal-dialog .run-dialog-entry {
@@ -224,7 +224,7 @@ StScrollBar {
 /* End Session Dialog */
 .end-session-dialog {
   spacing: 42px;
-  border: 3px solid rgba(238, 238, 236, 0.2); }
+  border: 1px solid rgba(238, 238, 236, 0.2); }
 
 .end-session-dialog-list {
   padding-top: 20px; }
