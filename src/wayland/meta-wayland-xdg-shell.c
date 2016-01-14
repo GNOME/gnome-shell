@@ -35,22 +35,22 @@
 #include "wayland/meta-window-wayland.h"
 #include "xdg-shell-unstable-v5-server-protocol.h"
 
-struct _MetaWaylandSurfaceRoleXdgSurface
+struct _MetaWaylandXdgSurface
 {
   MetaWaylandSurfaceRoleShellSurface parent;
 };
 
-G_DEFINE_TYPE (MetaWaylandSurfaceRoleXdgSurface,
-               meta_wayland_surface_role_xdg_surface,
+G_DEFINE_TYPE (MetaWaylandXdgSurface,
+               meta_wayland_xdg_surface,
                META_TYPE_WAYLAND_SURFACE_ROLE_SHELL_SURFACE);
 
-struct _MetaWaylandSurfaceRoleXdgPopup
+struct _MetaWaylandXdgPopup
 {
   MetaWaylandSurfaceRoleShellSurface parent;
 };
 
-G_DEFINE_TYPE (MetaWaylandSurfaceRoleXdgPopup,
-               meta_wayland_surface_role_xdg_popup,
+G_DEFINE_TYPE (MetaWaylandXdgPopup,
+               meta_wayland_xdg_popup,
                META_TYPE_WAYLAND_SURFACE_ROLE_SHELL_SURFACE);
 
 static void
@@ -321,8 +321,7 @@ xdg_shell_get_xdg_surface (struct wl_client   *client,
       return;
     }
 
-  if (!meta_wayland_surface_assign_role (surface,
-                                         META_TYPE_WAYLAND_SURFACE_ROLE_XDG_SURFACE))
+  if (!meta_wayland_surface_assign_role (surface, META_TYPE_WAYLAND_XDG_SURFACE))
     {
       wl_resource_post_error (resource, XDG_SHELL_ERROR_ROLE,
                               "wl_surface@%d already has a different role",
@@ -440,8 +439,7 @@ xdg_shell_get_xdg_popup (struct wl_client   *client,
       return;
     }
 
-  if (!meta_wayland_surface_assign_role (surface,
-                                         META_TYPE_WAYLAND_SURFACE_ROLE_XDG_POPUP))
+  if (!meta_wayland_surface_assign_role (surface, META_TYPE_WAYLAND_XDG_POPUP))
     {
       wl_resource_post_error (resource, XDG_SHELL_ERROR_ROLE,
                               "wl_surface@%d already has a different role",
@@ -574,7 +572,7 @@ xdg_surface_role_commit (MetaWaylandSurfaceRole  *surface_role,
     meta_wayland_surface_role_get_surface (surface_role);
 
   surface_role_class =
-    META_WAYLAND_SURFACE_ROLE_CLASS (meta_wayland_surface_role_xdg_surface_parent_class);
+    META_WAYLAND_SURFACE_ROLE_CLASS (meta_wayland_xdg_surface_parent_class);
   surface_role_class->commit (surface_role, pending);
 
   if (surface->buffer_ref.buffer == NULL)
@@ -655,12 +653,12 @@ xdg_surface_role_close (MetaWaylandSurfaceRoleShellSurface *shell_surface_role)
 }
 
 static void
-meta_wayland_surface_role_xdg_surface_init (MetaWaylandSurfaceRoleXdgSurface *role)
+meta_wayland_xdg_surface_init (MetaWaylandXdgSurface *role)
 {
 }
 
 static void
-meta_wayland_surface_role_xdg_surface_class_init (MetaWaylandSurfaceRoleXdgSurfaceClass *klass)
+meta_wayland_xdg_surface_class_init (MetaWaylandXdgSurfaceClass *klass)
 {
   MetaWaylandSurfaceRoleClass *surface_role_class =
     META_WAYLAND_SURFACE_ROLE_CLASS (klass);
@@ -685,7 +683,7 @@ xdg_popup_role_commit (MetaWaylandSurfaceRole  *surface_role,
     meta_wayland_surface_role_get_surface (surface_role);
 
   surface_role_class =
-    META_WAYLAND_SURFACE_ROLE_CLASS (meta_wayland_surface_role_xdg_popup_parent_class);
+    META_WAYLAND_SURFACE_ROLE_CLASS (meta_wayland_xdg_popup_parent_class);
   surface_role_class->commit (surface_role, pending);
 
   if (surface->buffer_ref.buffer == NULL)
@@ -751,12 +749,12 @@ xdg_popup_role_popup_done (MetaWaylandSurfaceRoleShellSurface *shell_surface_rol
 }
 
 static void
-meta_wayland_surface_role_xdg_popup_init (MetaWaylandSurfaceRoleXdgPopup *role)
+meta_wayland_xdg_popup_init (MetaWaylandXdgPopup *role)
 {
 }
 
 static void
-meta_wayland_surface_role_xdg_popup_class_init (MetaWaylandSurfaceRoleXdgPopupClass *klass)
+meta_wayland_xdg_popup_class_init (MetaWaylandXdgPopupClass *klass)
 {
   MetaWaylandSurfaceRoleClass *surface_role_class =
     META_WAYLAND_SURFACE_ROLE_CLASS (klass);

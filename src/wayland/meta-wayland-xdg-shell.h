@@ -22,16 +22,16 @@
 
 #include "wayland/meta-wayland-surface.h"
 
-#define META_TYPE_WAYLAND_SURFACE_ROLE_XDG_SURFACE (meta_wayland_surface_role_xdg_surface_get_type ())
-G_DECLARE_FINAL_TYPE (MetaWaylandSurfaceRoleXdgSurface,
-                      meta_wayland_surface_role_xdg_surface,
-                      META, WAYLAND_SURFACE_ROLE_XDG_SURFACE,
+#define META_TYPE_WAYLAND_XDG_SURFACE (meta_wayland_xdg_surface_get_type ())
+G_DECLARE_FINAL_TYPE (MetaWaylandXdgSurface,
+                      meta_wayland_xdg_surface,
+                      META, WAYLAND_XDG_SURFACE,
                       MetaWaylandSurfaceRoleShellSurface);
 
-#define META_TYPE_WAYLAND_SURFACE_ROLE_XDG_POPUP (meta_wayland_surface_role_xdg_popup_get_type ())
-G_DECLARE_FINAL_TYPE (MetaWaylandSurfaceRoleXdgPopup,
-                      meta_wayland_surface_role_xdg_popup,
-                      META, WAYLAND_SURFACE_ROLE_XDG_POPUP,
+#define META_TYPE_WAYLAND_XDG_POPUP (meta_wayland_xdg_popup_get_type ())
+G_DECLARE_FINAL_TYPE (MetaWaylandXdgPopup,
+                      meta_wayland_xdg_popup,
+                      META, WAYLAND_XDG_POPUP,
                       MetaWaylandSurfaceRoleShellSurface);
 
 void meta_wayland_xdg_shell_init (MetaWaylandCompositor *compositor);
