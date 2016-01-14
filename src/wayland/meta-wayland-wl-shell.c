@@ -34,13 +34,13 @@
 #include "wayland/meta-wayland-versions.h"
 #include "wayland/meta-window-wayland.h"
 
-struct _MetaWaylandSurfaceRoleWlShellSurface
+struct _MetaWaylandWlShellSurface
 {
   MetaWaylandSurfaceRoleShellSurface parent;
 };
 
-G_DEFINE_TYPE (MetaWaylandSurfaceRoleWlShellSurface,
-               meta_wayland_surface_role_wl_shell_surface,
+G_DEFINE_TYPE (MetaWaylandWlShellSurface,
+               meta_wayland_wl_shell_surface,
                META_TYPE_WAYLAND_SURFACE_ROLE_SHELL_SURFACE);
 
 static void
@@ -443,7 +443,7 @@ wl_shell_get_shell_surface (struct wl_client   *client,
     }
 
   if (!meta_wayland_surface_assign_role (surface,
-                                         META_TYPE_WAYLAND_SURFACE_ROLE_WL_SHELL_SURFACE))
+                                         META_TYPE_WAYLAND_WL_SHELL_SURFACE))
     {
       wl_resource_post_error (resource, WL_SHELL_ERROR_ROLE,
                               "wl_surface@%d already has a different role",
@@ -489,7 +489,7 @@ wl_shell_surface_role_commit (MetaWaylandSurfaceRole  *surface_role,
   MetaWindow *window = surface->window;
 
   surface_role_class =
-    META_WAYLAND_SURFACE_ROLE_CLASS (meta_wayland_surface_role_wl_shell_surface_parent_class);
+    META_WAYLAND_SURFACE_ROLE_CLASS (meta_wayland_wl_shell_surface_parent_class);
   surface_role_class->commit (surface_role, pending);
 
   /* For wl_shell, it's equivalent to an unmap. Semantics
@@ -571,12 +571,12 @@ wl_shell_surface_role_popup_done (MetaWaylandSurfaceRoleShellSurface *shell_surf
 }
 
 static void
-meta_wayland_surface_role_wl_shell_surface_init (MetaWaylandSurfaceRoleWlShellSurface *wl_shell_surface)
+meta_wayland_wl_shell_surface_init (MetaWaylandWlShellSurface *wl_shell_surface)
 {
 }
 
 static void
-meta_wayland_surface_role_wl_shell_surface_class_init (MetaWaylandSurfaceRoleWlShellSurfaceClass *klass)
+meta_wayland_wl_shell_surface_class_init (MetaWaylandWlShellSurfaceClass *klass)
 {
   MetaWaylandSurfaceRoleClass *surface_role_class;
   MetaWaylandSurfaceRoleShellSurfaceClass *shell_surface_role_class;

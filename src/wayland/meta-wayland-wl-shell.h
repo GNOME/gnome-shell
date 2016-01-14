@@ -22,10 +22,10 @@
 
 #include "wayland/meta-wayland-surface.h"
 
-#define META_TYPE_WAYLAND_SURFACE_ROLE_WL_SHELL_SURFACE (meta_wayland_surface_role_wl_shell_surface_get_type ())
-G_DECLARE_FINAL_TYPE (MetaWaylandSurfaceRoleWlShellSurface,
-                      meta_wayland_surface_role_wl_shell_surface,
-                      META, WAYLAND_SURFACE_ROLE_WL_SHELL_SURFACE,
+#define META_TYPE_WAYLAND_WL_SHELL_SURFACE (meta_wayland_wl_shell_surface_get_type ())
+G_DECLARE_FINAL_TYPE (MetaWaylandWlShellSurface,
+                      meta_wayland_wl_shell_surface,
+                      META, WAYLAND_WL_SHELL_SURFACE,
                       MetaWaylandSurfaceRoleShellSurface);
 
 void meta_wayland_wl_shell_init (MetaWaylandCompositor *compositor);
