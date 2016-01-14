@@ -618,6 +618,12 @@ xwayland_surface_commit (MetaWaylandSurfaceRole  *surface_role,
   meta_wayland_surface_queue_pending_state_frame_callbacks (surface, pending);
 }
 
+static MetaWaylandSurface *
+xwayland_surface_get_toplevel (MetaWaylandSurfaceRole *surface_role)
+{
+  return meta_wayland_surface_role_get_surface (surface_role);
+}
+
 static void
 meta_wayland_surface_role_xwayland_init (MetaWaylandSurfaceRoleXWayland *role)
 {
@@ -631,4 +637,5 @@ meta_wayland_surface_role_xwayland_class_init (MetaWaylandSurfaceRoleXWaylandCla
 
   surface_role_class->assigned = xwayland_surface_assigned;
   surface_role_class->commit = xwayland_surface_commit;
+  surface_role_class->get_toplevel = xwayland_surface_get_toplevel;
 }

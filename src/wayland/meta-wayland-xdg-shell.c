@@ -588,6 +588,12 @@ xdg_surface_role_commit (MetaWaylandSurfaceRole  *surface_role,
     meta_wayland_surface_apply_window_state (surface, pending);
 }
 
+static MetaWaylandSurface *
+xdg_surface_role_get_toplevel (MetaWaylandSurfaceRole *surface_role)
+{
+  return meta_wayland_surface_role_get_surface (surface_role);
+}
+
 static void
 xdg_surface_role_configure (MetaWaylandSurfaceRoleShellSurface *shell_surface_role,
                             int                                 new_width,
@@ -664,6 +670,7 @@ meta_wayland_xdg_surface_class_init (MetaWaylandXdgSurfaceClass *klass)
     META_WAYLAND_SURFACE_ROLE_CLASS (klass);
 
   surface_role_class->commit = xdg_surface_role_commit;
+  surface_role_class->get_toplevel = xdg_surface_role_get_toplevel;
 
   MetaWaylandSurfaceRoleShellSurfaceClass *shell_surface_role_class =
     META_WAYLAND_SURFACE_ROLE_SHELL_SURFACE_CLASS (klass);
@@ -697,6 +704,15 @@ xdg_popup_role_commit (MetaWaylandSurfaceRole  *surface_role,
 
   if (pending->newly_attached)
     meta_wayland_surface_apply_window_state (surface, pending);
+}
+
+static MetaWaylandSurface *
+xdg_popup_role_get_toplevel (MetaWaylandSurfaceRole *surface_role)
+{
+  MetaWaylandSurface *surface =
+     meta_wayland_surface_role_get_surface (surface_role);
+
+  return meta_wayland_surface_get_toplevel (surface->popup.parent);
 }
 
 static void
@@ -760,6 +776,7 @@ meta_wayland_xdg_popup_class_init (MetaWaylandXdgPopupClass *klass)
     META_WAYLAND_SURFACE_ROLE_CLASS (klass);
 
   surface_role_class->commit = xdg_popup_role_commit;
+  surface_role_class->get_toplevel = xdg_popup_role_get_toplevel;
 
   MetaWaylandSurfaceRoleShellSurfaceClass *shell_surface_role_class =
     META_WAYLAND_SURFACE_ROLE_SHELL_SURFACE_CLASS (klass);
