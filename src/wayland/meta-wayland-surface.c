@@ -262,11 +262,11 @@ dnd_surface_commit (MetaWaylandSurfaceRole  *surface_role,
   meta_wayland_surface_queue_pending_state_frame_callbacks (surface, pending);
 }
 
-static void
-calculate_surface_window_geometry (MetaWaylandSurface *surface,
-                                   MetaRectangle      *total_geometry,
-                                   float               parent_x,
-                                   float               parent_y)
+void
+meta_wayland_surface_calculate_window_geometry (MetaWaylandSurface *surface,
+                                                MetaRectangle      *total_geometry,
+                                                float               parent_x,
+                                                float               parent_y)
 {
   MetaSurfaceActorWayland *surface_actor =
     META_SURFACE_ACTOR_WAYLAND (surface->surface_actor);
@@ -294,9 +294,10 @@ calculate_surface_window_geometry (MetaWaylandSurface *surface,
   for (l = surface->subsurfaces; l != NULL; l = l->next)
     {
       MetaWaylandSurface *subsurface = l->data;
-      calculate_surface_window_geometry (subsurface, total_geometry,
-                                         subsurface_rect.x,
-                                         subsurface_rect.y);
+      meta_wayland_surface_calculate_window_geometry (subsurface,
+                                                      total_geometry,
+                                                      subsurface_rect.x,
+                                                      subsurface_rect.y);
     }
 }
 
@@ -362,54 +363,10 @@ meta_wayland_surface_apply_window_state (MetaWaylandSurface      *surface,
 {
   MetaWindow *window = surface->window;
   MetaWaylandBuffer *buffer = surface->buffer_ref.buffer;
+  CoglTexture *texture = buffer->texture;
 
-  /* Update the state of the MetaWindow if we still have one. We might not if
-   * the window was unmanaged (for example popup destroyed, NULL buffer attached to
-   * wl_shell_surface wl_surface, xdg_surface object was destroyed, etc).
-   */
-  if (window && window->client_type == META_WINDOW_CLIENT_TYPE_WAYLAND)
-    {
-      MetaRectangle geom = { 0 };
-
-      CoglTexture *texture = buffer->texture;
-      /* Update the buffer rect immediately. */
-      window->buffer_rect.width = cogl_texture_get_width (texture);
-      window->buffer_rect.height = cogl_texture_get_height (texture);
-
-      if (pending->has_new_geometry)
-        {
-          /* If we have new geometry, use it. */
-          geom = pending->new_geometry;
-          surface->has_set_geometry = TRUE;
-        }
-      else if (!surface->has_set_geometry)
-        {
-          /* If the surface has never set any geometry, calculate
-           * a default one unioning the surface and all subsurfaces together. */
-          calculate_surface_window_geometry (surface, &geom, 0, 0);
-        }
-      else
-        {
-          /* Otherwise, keep the geometry the same. */
-
-          /* XXX: We don't store the geometry in any consistent place
-           * right now, so we can't re-fetch it. We should change
-           * meta_window_wayland_move_resize. */
-
-          /* XXX: This is the common case. Recognize it to prevent
-           * a warning. */
-          if (pending->dx == 0 && pending->dy == 0)
-            return;
-
-          g_warning ("XXX: Attach-initiated move without a new geometry. This is unimplemented right now.");
-          return;
-        }
-
-      meta_window_wayland_move_resize (window,
-                                       &surface->acked_configure_serial,
-                                       geom, pending->dx, pending->dy);
-      surface->acked_configure_serial.set = FALSE;
-    }
+  window->buffer_rect.width = cogl_texture_get_width (texture);
+  window->buffer_rect.height = cogl_texture_get_height (texture);
 }
 
 static void

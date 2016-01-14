@@ -487,6 +487,7 @@ wl_shell_surface_role_commit (MetaWaylandSurfaceRole  *surface_role,
   MetaWaylandSurface *surface =
     meta_wayland_surface_role_get_surface (surface_role);
   MetaWindow *window = surface->window;
+  MetaRectangle geom = { 0 };
 
   surface_role_class =
     META_WAYLAND_SURFACE_ROLE_CLASS (meta_wayland_wl_shell_surface_parent_class);
@@ -505,8 +506,17 @@ wl_shell_surface_role_commit (MetaWaylandSurfaceRole  *surface_role,
       return;
     }
 
-  if (pending->newly_attached)
-    meta_wayland_surface_apply_window_state (surface, pending);
+  if (!window)
+    return;
+
+  if (!pending->newly_attached)
+    return;
+
+  meta_wayland_surface_apply_window_state (surface, pending);
+  meta_wayland_surface_calculate_window_geometry (surface, &geom, 0, 0);
+  meta_window_wayland_move_resize (window,
+                                   NULL,
+                                   geom, pending->dx, pending->dy);
 }
 
 static MetaWaylandSurface *

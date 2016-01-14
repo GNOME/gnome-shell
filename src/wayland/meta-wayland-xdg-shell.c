@@ -38,6 +38,9 @@
 struct _MetaWaylandXdgSurface
 {
   MetaWaylandSurfaceRoleShellSurface parent;
+
+  MetaWaylandSerial acked_configure_serial;
+  gboolean has_set_geometry;
 };
 
 G_DEFINE_TYPE (MetaWaylandXdgSurface,
@@ -219,9 +222,10 @@ xdg_surface_ack_configure (struct wl_client   *client,
                            uint32_t            serial)
 {
   MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
+  MetaWaylandXdgSurface *xdg_surface = META_WAYLAND_XDG_SURFACE (surface->role);
 
-  surface->acked_configure_serial.set = TRUE;
-  surface->acked_configure_serial.value = serial;
+  xdg_surface->acked_configure_serial.set = TRUE;
+  xdg_surface->acked_configure_serial.value = serial;
 }
 
 static void
@@ -567,9 +571,12 @@ static void
 xdg_surface_role_commit (MetaWaylandSurfaceRole  *surface_role,
                          MetaWaylandPendingState *pending)
 {
+  MetaWaylandXdgSurface *xdg_surface = META_WAYLAND_XDG_SURFACE (surface_role);
   MetaWaylandSurfaceRoleClass *surface_role_class;
   MetaWaylandSurface *surface =
     meta_wayland_surface_role_get_surface (surface_role);
+  MetaWindow *window = surface->window;
+  MetaRectangle geom = { 0 };
 
   surface_role_class =
     META_WAYLAND_SURFACE_ROLE_CLASS (meta_wayland_xdg_surface_parent_class);
@@ -584,8 +591,48 @@ xdg_surface_role_commit (MetaWaylandSurfaceRole  *surface_role,
       return;
     }
 
-  if (pending->newly_attached)
-    meta_wayland_surface_apply_window_state (surface, pending);
+  if (!pending->newly_attached)
+    return;
+
+  /* If the window disappeared the surface is not coming back. */
+  if (!window)
+    return;
+
+  meta_wayland_surface_apply_window_state (surface, pending);
+
+  if (pending->has_new_geometry)
+    {
+      /* If we have new geometry, use it. */
+      geom = pending->new_geometry;
+      xdg_surface->has_set_geometry = TRUE;
+    }
+  else if (!xdg_surface->has_set_geometry)
+    {
+      /* If the surface has never set any geometry, calculate
+       * a default one unioning the surface and all subsurfaces together. */
+      meta_wayland_surface_calculate_window_geometry (surface, &geom, 0, 0);
+    }
+  else
+    {
+      /* Otherwise, keep the geometry the same. */
+
+      /* XXX: We don't store the geometry in any consistent place
+       * right now, so we can't re-fetch it. We should change
+       * meta_window_wayland_move_resize. */
+
+      /* XXX: This is the common case. Recognize it to prevent
+       * a warning. */
+      if (pending->dx == 0 && pending->dy == 0)
+        return;
+
+      g_warning ("XXX: Attach-initiated move without a new geometry. This is unimplemented right now.");
+      return;
+    }
+
+  meta_window_wayland_move_resize (window,
+                                   &xdg_surface->acked_configure_serial,
+                                   geom, pending->dx, pending->dy);
+  xdg_surface->acked_configure_serial.set = FALSE;
 }
 
 static MetaWaylandSurface *
@@ -688,6 +735,8 @@ xdg_popup_role_commit (MetaWaylandSurfaceRole  *surface_role,
   MetaWaylandSurfaceRoleClass *surface_role_class;
   MetaWaylandSurface *surface =
     meta_wayland_surface_role_get_surface (surface_role);
+  MetaWindow *window = surface->window;
+  MetaRectangle geom = { 0 };
 
   surface_role_class =
     META_WAYLAND_SURFACE_ROLE_CLASS (meta_wayland_xdg_popup_parent_class);
@@ -702,8 +751,18 @@ xdg_popup_role_commit (MetaWaylandSurfaceRole  *surface_role,
       return;
     }
 
-  if (pending->newly_attached)
-    meta_wayland_surface_apply_window_state (surface, pending);
+  if (!pending->newly_attached)
+    return;
+
+  /* If the window disappeared the surface is not coming back. */
+  if (!window)
+    return;
+
+  meta_wayland_surface_apply_window_state (surface, pending);
+  meta_wayland_surface_calculate_window_geometry (surface, &geom, 0, 0);
+  meta_window_wayland_move_resize (window,
+                                   NULL,
+                                   geom, pending->dx, pending->dy);
 }
 
 static MetaWaylandSurface *

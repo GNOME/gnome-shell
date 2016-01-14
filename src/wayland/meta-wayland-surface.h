@@ -346,6 +346,11 @@ cairo_region_t *    meta_wayland_surface_calculate_input_region (MetaWaylandSurf
 void                meta_wayland_surface_apply_window_state (MetaWaylandSurface      *surface,
                                                              MetaWaylandPendingState *pending);
 
+void                meta_wayland_surface_calculate_window_geometry (MetaWaylandSurface *surface,
+                                                                    MetaRectangle      *total_geometry,
+                                                                    float               parent_x,
+                                                                    float               parent_y);
+
 void                meta_wayland_surface_destroy_window (MetaWaylandSurface *surface);
 
 gboolean            meta_wayland_surface_begin_grab_op (MetaWaylandSurface *surface,
