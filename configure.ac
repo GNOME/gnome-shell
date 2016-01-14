@@ -59,7 +59,7 @@ CANBERRA_GTK_VERSION=0.26
 CLUTTER_PACKAGE=clutter-1.0
 
 MUTTER_PC_MODULES="
-   gtk+-3.0 >= 3.19.1
+   gtk+-3.0 >= 3.19.7
    gio-unix-2.0 >= 2.35.1
    pango >= 1.2.0
    cairo >= 1.10.0
