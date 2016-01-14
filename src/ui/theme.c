@@ -79,9 +79,12 @@ meta_frame_layout_get_borders (const MetaFrameLayout *layout,
 
   if (!layout->has_title)
     text_height = 0;
+  else
+    text_height = layout->title_margin.top + text_height + layout->title_margin.bottom;
 
   buttons_height = MAX ((int)layout->icon_size, layout->button_min_size.height) +
-    layout->button_border.top + layout->button_border.bottom;
+    layout->button_margin.top + layout->button_border.top +
+    layout->button_margin.bottom + layout->button_border.bottom;
   content_height = MAX (buttons_height, text_height);
   content_height = MAX (content_height, layout->titlebar_min_size.height) +
                    layout->titlebar_border.top + layout->titlebar_border.bottom;
@@ -297,16 +300,31 @@ meta_frame_layout_sync_with_style (MetaFrameLayout *layout,
   get_padding_and_border (style, &layout->titlebar_border);
   scale_border (&layout->titlebar_border, layout->title_scale);
 
+  style = style_info->styles[META_STYLE_ELEMENT_TITLE];
+  gtk_style_context_get_margin (style, gtk_style_context_get_state (style),
+                                &layout->title_margin);
+  scale_border (&layout->title_margin, layout->title_scale);
+
   style = style_info->styles[META_STYLE_ELEMENT_BUTTON];
   get_min_size (style, &layout->button_min_size);
   get_padding_and_border (style, &layout->button_border);
   scale_border (&layout->button_border, layout->title_scale);
+  gtk_style_context_get_margin (style, gtk_style_context_get_state (style),
+                                &layout->button_margin);
+  scale_border (&layout->button_margin, layout->title_scale);
 
   style = style_info->styles[META_STYLE_ELEMENT_IMAGE];
   get_min_size (style, &requisition);
   get_padding_and_border (style, &border);
   scale_border (&border, layout->title_scale);
 
+  layout->button_border.left += border.left;
+  layout->button_border.right += border.right;
+  layout->button_border.top += border.top;
+  layout->button_border.bottom += border.bottom;
+
+  gtk_style_context_get_margin (style, gtk_style_context_get_state (style),
+                                &border);
   layout->button_border.left += border.left;
   layout->button_border.right += border.right;
   layout->button_border.top += border.top;
@@ -442,11 +460,15 @@ meta_frame_layout_calc_geometry (MetaFrameLayout        *layout,
 
       space_used_by_buttons = 0;
 
+      space_used_by_buttons += layout->button_margin.left * scale * n_left;
       space_used_by_buttons += button_width * n_left;
+      space_used_by_buttons += layout->button_margin.right * scale * n_left;
       space_used_by_buttons += (button_width * 0.75) * n_left_spacers;
       space_used_by_buttons += layout->titlebar_spacing * scale * MAX (n_left - 1, 0);
 
+      space_used_by_buttons += layout->button_margin.left * scale * n_right;
       space_used_by_buttons += button_width * n_right;
+      space_used_by_buttons += layout->button_margin.right * scale * n_right;
       space_used_by_buttons += (button_width * 0.75) * n_right_spacers;
       space_used_by_buttons += layout->titlebar_spacing * scale * MAX (n_right - 1, 0);
 
@@ -516,6 +538,8 @@ meta_frame_layout_calc_geometry (MetaFrameLayout        *layout,
       if (x < 0) /* if we go negative, leave the buttons we don't get to as 0-width */
         break;
 
+      x -= layout->button_margin.right * scale;
+
       rect = right_func_rects[i];
       rect->visible.x = x - button_width;
       if (right_buttons_has_spacer[i])
@@ -541,7 +565,7 @@ meta_frame_layout_calc_geometry (MetaFrameLayout        *layout,
       else
         g_memmove (&(rect->clickable), &(rect->visible), sizeof(rect->clickable));
 
-      x = rect->visible.x;
+      x = rect->visible.x - layout->button_margin.left * scale;
 
       if (i > 0)
         x -= layout->titlebar_spacing;
@@ -559,6 +583,8 @@ meta_frame_layout_calc_geometry (MetaFrameLayout        *layout,
   for (i = 0; i < n_left; i++)
     {
       MetaButtonSpace *rect;
+
+      x += layout->button_margin.left * scale;
 
       rect = left_func_rects[i];
 
@@ -586,7 +612,7 @@ meta_frame_layout_calc_geometry (MetaFrameLayout        *layout,
       else
         g_memmove (&(rect->clickable), &(rect->visible), sizeof(rect->clickable));
 
-      x = rect->visible.x + rect->visible.width;
+      x = rect->visible.x + rect->visible.width + layout->button_margin.right * scale;
       if (i < n_left - 1)
         x += layout->titlebar_spacing * scale;
       if (left_buttons_has_spacer[i])
