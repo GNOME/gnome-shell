@@ -12,15 +12,15 @@
 # Valery Kirichenko <valera5505@gmail.com>, 2014.
 # Yuri Myasoedov <ymyasoedov@yandex.ru>, 2012, 2013, 2014.
 # Ivan Komaritsyn <vantu5z@mail.ru>, 2015.
-# Stas Solovey <whats_up@tut.by>, 2011, 2013, 2014, 2015.
+# Stas Solovey <whats_up@tut.by>, 2011, 2013, 2014, 2015, 2016.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-11-23 10:13+0000\n"
-"PO-Revision-Date: 2015-11-23 22:19+0300\n"
+"POT-Creation-Date: 2016-01-14 22:17+0000\n"
+"PO-Revision-Date: 2016-01-15 13:15+0300\n"
 "Last-Translator: Stas Solovey <whats_up@tut.by>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
@@ -176,10 +176,9 @@ msgstr ""
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:18
 msgid ""
 "Whether the default Bluetooth adapter had set up devices associated to it"
-msgstr ""
+msgstr "Связан ли адаптер Bluetooth по умолчанию с каким-либо устройством"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:19
-#, fuzzy
 msgid ""
 "The shell will only show a Bluetooth menu item if a Bluetooth adapter is "
 "powered, or if there were devices set up associated with the default "
@@ -187,8 +186,8 @@ msgid ""
 "devices associated to it."
 msgstr ""
 "Пункт меню Bluetooth будет отображаться только в случае включённого адаптера "
-"Bluetooth или если имеются установленные устройства связанные с адаптером по "
-"умолчанию. Параметр будет сброшен, если адаптер по умолчанию не имеет "
+"Bluetooth, или если имеются установленные устройства связанные с адаптером "
+"по умолчанию. Параметр будет сброшен, если адаптер по умолчанию не имеет "
 "связанных с ним устройств."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:20
@@ -340,35 +339,35 @@ msgstr "Расширения GNOME Shell"
 msgid "Cancel"
 msgstr "Отмена"
 
-#: ../js/gdm/authPrompt.js:169 ../js/gdm/authPrompt.js:215
-#: ../js/gdm/authPrompt.js:447
+#: ../js/gdm/authPrompt.js:169 ../js/gdm/authPrompt.js:216
+#: ../js/gdm/authPrompt.js:448
 msgid "Next"
 msgstr "Далее"
 
-#: ../js/gdm/authPrompt.js:211 ../js/ui/shellMountOperation.js:403
+#: ../js/gdm/authPrompt.js:212 ../js/ui/shellMountOperation.js:403
 #: ../js/ui/unlockDialog.js:59
 msgid "Unlock"
 msgstr "Разблокировать"
 
-#: ../js/gdm/authPrompt.js:213
+#: ../js/gdm/authPrompt.js:214
 msgctxt "button"
 msgid "Sign In"
 msgstr "Войти"
 
-#: ../js/gdm/loginDialog.js:281
+#: ../js/gdm/loginDialog.js:285
 msgid "Choose Session"
 msgstr "Выбрать сеанс"
 
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:431
+#: ../js/gdm/loginDialog.js:435
 msgid "Not listed?"
 msgstr "Нет в списке?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: ../js/gdm/loginDialog.js:850
+#: ../js/gdm/loginDialog.js:854
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(например, пользователь или %s)"
@@ -376,12 +375,12 @@ msgstr "(например, пользователь или %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:855 ../js/ui/components/networkAgent.js:271
+#: ../js/gdm/loginDialog.js:859 ../js/ui/components/networkAgent.js:271
 #: ../js/ui/components/networkAgent.js:289
 msgid "Username: "
 msgstr "Имя пользователя: "
 
-#: ../js/gdm/loginDialog.js:1180
+#: ../js/gdm/loginDialog.js:1196
 msgid "Login Window"
 msgstr "Окно входа в систему"
 
@@ -604,53 +603,53 @@ msgstr "Предыдущий месяц"
 msgid "Next month"
 msgstr "Следующий месяц"
 
-#: ../js/ui/calendar.js:728
-#, javascript-format
+#: ../js/ui/calendar.js:729
+#, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: ../js/ui/calendar.js:783
+#: ../js/ui/calendar.js:784
 msgid "Week %V"
 msgstr "%V неделя"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: ../js/ui/calendar.js:1188
+#: ../js/ui/calendar.js:1189
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Весь день"
 
-#: ../js/ui/calendar.js:1295
+#: ../js/ui/calendar.js:1296
 msgid "Clear section"
 msgstr "Очистить секцию"
 
-#: ../js/ui/calendar.js:1522
+#: ../js/ui/calendar.js:1523
 msgid "Events"
 msgstr "События"
 
 # fix для даты в календаре и на экране блокировки, за разъяснением обращаться к Stas Solovey <whats_up@tut.by>
-#: ../js/ui/calendar.js:1531
+#: ../js/ui/calendar.js:1532
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d %b."
 
 # fix для даты в календаре и на экране блокировки
-#: ../js/ui/calendar.js:1535
+#: ../js/ui/calendar.js:1536
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d %b. %Y"
 
-#: ../js/ui/calendar.js:1620
+#: ../js/ui/calendar.js:1621
 msgid "Notifications"
 msgstr "Уведомления"
 
-#: ../js/ui/calendar.js:1771
+#: ../js/ui/calendar.js:1772
 msgid "No Notifications"
 msgstr "Уведомлений нет"
 
-#: ../js/ui/calendar.js:1774
+#: ../js/ui/calendar.js:1775
 msgid "No Events"
 msgstr "Событий нет"
 
@@ -1491,7 +1490,6 @@ msgstr "Выполняется подсчёт…"
 #. Translators: this is <hours>:<minutes> Remaining (<percentage>)
 #: ../js/ui/status/power.js:98
 #, javascript-format
-#| msgid "%d∶%02d Remaining (%d%%)"
 msgid "%d∶%02d Remaining (%d %%)"
 msgstr ""
 "Осталось %02d ч. %d мин.\n"
@@ -1501,7 +1499,6 @@ msgstr ""
 #. Translators: this is <hours>:<minutes> Until Full (<percentage>)
 #: ../js/ui/status/power.js:103
 #, javascript-format
-#| msgid "%d∶%02d Until Full (%d%%)"
 msgid "%d∶%02d Until Full (%d %%)"
 msgstr ""
 "До полной %02d ч. %d мин.\n"
