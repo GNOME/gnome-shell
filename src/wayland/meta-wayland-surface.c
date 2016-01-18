@@ -1134,9 +1134,6 @@ wl_surface_destructor (struct wl_resource *resource)
   if (surface->input_region)
     cairo_region_destroy (surface->input_region);
 
-  meta_surface_actor_wayland_surface_destroyed (
-    META_SURFACE_ACTOR_WAYLAND (surface->surface_actor));
-
   g_object_unref (surface->surface_actor);
 
   meta_wayland_compositor_destroy_frame_callbacks (compositor, surface);

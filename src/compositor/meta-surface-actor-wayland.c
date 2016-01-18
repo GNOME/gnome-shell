@@ -402,8 +402,20 @@ static void
 meta_surface_actor_wayland_dispose (GObject *object)
 {
   MetaSurfaceActorWayland *self = META_SURFACE_ACTOR_WAYLAND (object);
+  MetaSurfaceActorWaylandPrivate *priv =
+    meta_surface_actor_wayland_get_instance_private (self);
+  MetaWaylandFrameCallback *cb, *next;
 
   meta_surface_actor_wayland_set_texture (self, NULL);
+  if (priv->surface)
+    {
+      g_object_remove_weak_pointer (G_OBJECT (priv->surface),
+                                    (gpointer *) &priv->surface);
+      priv->surface = NULL;
+    }
+
+  wl_list_for_each_safe (cb, next, &priv->frame_callback_list, link)
+    wl_resource_destroy (cb->resource);
 
   G_OBJECT_CLASS (meta_surface_actor_wayland_parent_class)->dispose (object);
 }
@@ -454,6 +466,8 @@ meta_surface_actor_wayland_new (MetaWaylandSurface *surface)
 
   wl_list_init (&priv->frame_callback_list);
   priv->surface = surface;
+  g_object_add_weak_pointer (G_OBJECT (priv->surface),
+                             (gpointer *) &priv->surface);
 
   return META_SURFACE_ACTOR (self);
 }
@@ -471,19 +485,4 @@ meta_surface_actor_wayland_get_surface (MetaSurfaceActorWayland *self)
 {
   MetaSurfaceActorWaylandPrivate *priv = meta_surface_actor_wayland_get_instance_private (self);
   return priv->surface;
-}
-
-void
-meta_surface_actor_wayland_surface_destroyed (MetaSurfaceActorWayland *self)
-{
-  MetaWaylandFrameCallback *callback, *next;
-  MetaSurfaceActorWaylandPrivate *priv =
-    meta_surface_actor_wayland_get_instance_private (self);
-
-  wl_list_for_each_safe (callback, next, &priv->frame_callback_list, link)
-    {
-      wl_resource_destroy (callback->resource);
-    }
-
-  priv->surface = NULL;
 }
