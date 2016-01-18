@@ -1362,6 +1362,10 @@ meta_ui_frame_get_mask (MetaUIFrame *frame,
                          borders.invisible.left / scale,
                          borders.invisible.top / scale,
                          frame_rect.width / scale, frame_rect.height / scale);
+  gtk_render_background (frame->style_info->styles[META_STYLE_ELEMENT_TITLEBAR], cr,
+                         borders.invisible.left / scale,
+                         borders.invisible.top / scale,
+                         frame_rect.width / scale, borders.total.top / scale);
 }
 
 /* XXX -- this is disgusting. Find a better approach here.

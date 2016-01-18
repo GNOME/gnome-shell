@@ -1033,14 +1033,19 @@ meta_theme_create_style_info (GdkScreen   *screen,
   style_info = g_new0 (MetaStyleInfo, 1);
   style_info->refcount = 1;
 
-  style_info->styles[META_STYLE_ELEMENT_FRAME] =
+  style_info->styles[META_STYLE_ELEMENT_WINDOW] =
     create_style_context (META_TYPE_FRAMES,
                           NULL,
                           provider,
-                          "decoration",
+                          "window",
                           GTK_STYLE_CLASS_BACKGROUND,
-                          "window-frame",
                           "ssd",
+                          NULL);
+  style_info->styles[META_STYLE_ELEMENT_FRAME] =
+    create_style_context (META_TYPE_FRAMES,
+                          style_info->styles[META_STYLE_ELEMENT_WINDOW],
+                          provider,
+                          "decoration",
                           NULL);
   style_info->styles[META_STYLE_ELEMENT_TITLEBAR] =
     create_style_context (GTK_TYPE_HEADER_BAR,
