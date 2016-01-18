@@ -93,15 +93,13 @@ meta_surface_actor_wayland_is_unredirected (MetaSurfaceActor *actor)
 }
 
 double
-meta_surface_actor_wayland_get_scale (MetaSurfaceActorWayland *actor)
+meta_surface_actor_wayland_get_scale (MetaSurfaceActorWayland *self)
 {
-   MetaSurfaceActorWaylandPrivate *priv = meta_surface_actor_wayland_get_instance_private (actor);
-   MetaWaylandSurface *surface = priv->surface;
+   MetaWaylandSurface *surface = meta_surface_actor_wayland_get_surface (self);
    MetaWindow *window;
    int output_scale = 1;
 
-   if (!surface)
-     return 1;
+   g_assert (surface);
 
    window = meta_wayland_surface_get_toplevel_window (surface);
 
@@ -109,7 +107,7 @@ meta_surface_actor_wayland_get_scale (MetaSurfaceActorWayland *actor)
    if (window && window->client_type != META_WINDOW_CLIENT_TYPE_X11)
      output_scale = meta_window_wayland_get_main_monitor_scale (window);
 
-   return (double)output_scale / (double)priv->surface->scale;
+   return (double) output_scale / (double) surface->scale;
 }
 
 static void
@@ -120,6 +118,8 @@ logical_to_actor_position (MetaSurfaceActorWayland *self,
   MetaWaylandSurface *surface = meta_surface_actor_wayland_get_surface (self);
   MetaWindow *toplevel_window;
   int monitor_scale = 1;
+
+  g_assert (surface);
 
   toplevel_window = meta_wayland_surface_get_toplevel_window (surface);
   if (toplevel_window)
@@ -137,11 +137,14 @@ meta_surface_actor_wayland_get_subsurface_rect (MetaSurfaceActorWayland *self,
 {
   MetaWaylandSurface *surface = meta_surface_actor_wayland_get_surface (self);
   MetaWaylandBuffer *buffer = meta_wayland_surface_get_buffer (surface);
-  CoglTexture *texture = buffer->texture;
+  CoglTexture *texture;
   MetaWindow *toplevel_window;
   int monitor_scale;
   float x, y;
 
+  g_assert (surface);
+
+  texture = buffer->texture;
   toplevel_window = meta_wayland_surface_get_toplevel_window (surface);
   monitor_scale = meta_window_wayland_get_main_monitor_scale (toplevel_window);
 
@@ -161,6 +164,8 @@ meta_surface_actor_wayland_sync_subsurface_state (MetaSurfaceActorWayland *self)
   MetaWindow *window;
   int x = surface->offset_x + surface->sub.x;
   int y = surface->offset_y + surface->sub.y;
+
+  g_assert (surface);
 
   window = meta_wayland_surface_get_toplevel_window (surface);
   if (window && window->client_type == META_WINDOW_CLIENT_TYPE_X11)
@@ -183,6 +188,8 @@ meta_surface_actor_wayland_sync_state (MetaSurfaceActorWayland *self)
   MetaShapedTexture *stex =
     meta_surface_actor_get_texture (META_SURFACE_ACTOR (self));
   double texture_scale;
+
+  g_assert (surface);
 
   /* Given the surface's window type and what output the surface actor has the
    * largest region, scale the actor with the determined scale. */
@@ -238,9 +245,12 @@ void
 meta_surface_actor_wayland_sync_state_recursive (MetaSurfaceActorWayland *self)
 {
   MetaWaylandSurface *surface = meta_surface_actor_wayland_get_surface (self);
-  MetaWindow *window = meta_wayland_surface_get_toplevel_window (surface);
+  MetaWindow *window;
   GList *iter;
 
+  g_assert (surface);
+
+  window = meta_wayland_surface_get_toplevel_window (surface);
   meta_surface_actor_wayland_sync_state (self);
 
   if (window && window->client_type != META_WINDOW_CLIENT_TYPE_X11)
@@ -301,8 +311,8 @@ meta_surface_actor_wayland_add_frame_callbacks (MetaSurfaceActorWayland *self,
 static MetaWindow *
 meta_surface_actor_wayland_get_window (MetaSurfaceActor *actor)
 {
-  MetaSurfaceActorWaylandPrivate *priv = meta_surface_actor_wayland_get_instance_private (META_SURFACE_ACTOR_WAYLAND (actor));
-  MetaWaylandSurface *surface = priv->surface;
+  MetaSurfaceActorWayland *self = META_SURFACE_ACTOR_WAYLAND (actor);
+  MetaWaylandSurface *surface = meta_surface_actor_wayland_get_surface (self);
 
   if (!surface)
     return NULL;
@@ -311,15 +321,26 @@ meta_surface_actor_wayland_get_window (MetaSurfaceActor *actor)
 }
 
 static void
-meta_surface_actor_wayland_get_preferred_width  (ClutterActor *self,
+meta_surface_actor_wayland_get_preferred_width  (ClutterActor *actor,
                                                  gfloat        for_height,
                                                  gfloat       *min_width_p,
                                                  gfloat       *natural_width_p)
 {
-  MetaShapedTexture *stex = meta_surface_actor_get_texture (META_SURFACE_ACTOR (self));
-  double scale = meta_surface_actor_wayland_get_scale (META_SURFACE_ACTOR_WAYLAND (self));
+  MetaSurfaceActorWayland *self = META_SURFACE_ACTOR_WAYLAND (actor);
+  MetaWaylandSurface *surface = meta_surface_actor_wayland_get_surface (self);
+  MetaShapedTexture *stex;
+  double scale;
 
-  clutter_actor_get_preferred_width (CLUTTER_ACTOR (stex), for_height, min_width_p, natural_width_p);
+  if (surface)
+    scale = meta_surface_actor_wayland_get_scale (self);
+  else
+    scale = 1.0;
+
+  stex = meta_surface_actor_get_texture (META_SURFACE_ACTOR (self));
+  clutter_actor_get_preferred_width (CLUTTER_ACTOR (stex),
+                                     for_height,
+                                     min_width_p,
+                                     natural_width_p);
 
   if (min_width_p)
      *min_width_p *= scale;
@@ -329,15 +350,26 @@ meta_surface_actor_wayland_get_preferred_width  (ClutterActor *self,
 }
 
 static void
-meta_surface_actor_wayland_get_preferred_height  (ClutterActor *self,
+meta_surface_actor_wayland_get_preferred_height  (ClutterActor *actor,
                                                   gfloat        for_width,
                                                   gfloat       *min_height_p,
                                                   gfloat       *natural_height_p)
 {
-  MetaShapedTexture *stex = meta_surface_actor_get_texture (META_SURFACE_ACTOR (self));
-  double scale = meta_surface_actor_wayland_get_scale (META_SURFACE_ACTOR_WAYLAND (self));
+  MetaSurfaceActorWayland *self = META_SURFACE_ACTOR_WAYLAND (actor);
+  MetaWaylandSurface *surface = meta_surface_actor_wayland_get_surface (self);
+  MetaShapedTexture *stex;
+  double scale;
 
-  clutter_actor_get_preferred_height (CLUTTER_ACTOR (stex), for_width, min_height_p, natural_height_p);
+  if (surface)
+    scale = meta_surface_actor_wayland_get_scale (self);
+  else
+    scale = 1.0;
+
+  stex = meta_surface_actor_get_texture (META_SURFACE_ACTOR (self));
+  clutter_actor_get_preferred_height (CLUTTER_ACTOR (stex),
+                                      for_width,
+                                      min_height_p,
+                                      natural_height_p);
 
   if (min_height_p)
      *min_height_p *= scale;
