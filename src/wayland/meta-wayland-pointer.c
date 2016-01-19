@@ -1061,9 +1061,12 @@ meta_wayland_pointer_create_new_resource (MetaWaylandPointer *pointer,
                   wl_resource_get_link (cr));
 
   if (pointer->focus_client == pointer_client)
-    meta_wayland_pointer_send_enter (pointer, cr,
-                                     pointer->focus_serial,
-                                     pointer->focus_surface);
+    {
+      meta_wayland_pointer_send_enter (pointer, cr,
+                                       pointer->focus_serial,
+                                       pointer->focus_surface);
+      meta_wayland_pointer_send_frame (pointer, cr);
+    }
 }
 
 gboolean
