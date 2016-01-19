@@ -243,7 +243,15 @@ pointer_handle_focus_surface_destroy (struct wl_listener *listener, void *data)
 }
 
 static void
-meta_wayland_pointer_send_frame (MetaWaylandPointer *pointer)
+meta_wayland_pointer_send_frame (MetaWaylandPointer *pointer,
+				 struct wl_resource *resource)
+{
+  if (wl_resource_get_version (resource) >= WL_POINTER_AXIS_SOURCE_SINCE_VERSION)
+    wl_pointer_send_frame (resource);
+}
+
+static void
+meta_wayland_pointer_broadcast_frame (MetaWaylandPointer *pointer)
 {
   struct wl_resource *resource;
 
@@ -252,8 +260,7 @@ meta_wayland_pointer_send_frame (MetaWaylandPointer *pointer)
 
   wl_resource_for_each (resource, &pointer->focus_client->pointer_resources)
     {
-      if (wl_resource_get_version (resource) >= WL_POINTER_AXIS_SOURCE_SINCE_VERSION)
-        wl_pointer_send_frame (resource);
+      meta_wayland_pointer_send_frame (pointer, resource);
     }
 }
 
@@ -278,7 +285,7 @@ meta_wayland_pointer_send_motion (MetaWaylandPointer *pointer,
       wl_pointer_send_motion (resource, time, sx, sy);
     }
 
-  meta_wayland_pointer_send_frame (pointer);
+  meta_wayland_pointer_broadcast_frame (pointer);
 }
 
 void
@@ -339,7 +346,7 @@ meta_wayland_pointer_send_button (MetaWaylandPointer *pointer,
                                   event_type == CLUTTER_BUTTON_PRESS ? 1 : 0);
         }
 
-      meta_wayland_pointer_send_frame (pointer);
+      meta_wayland_pointer_broadcast_frame (pointer);
     }
 
   if (pointer->button_count == 0 && event_type == CLUTTER_BUTTON_RELEASE)
@@ -631,7 +638,7 @@ handle_scroll_event (MetaWaylandPointer *pointer,
                                        WL_POINTER_AXIS_VERTICAL_SCROLL);
         }
 
-      meta_wayland_pointer_send_frame (pointer);
+      meta_wayland_pointer_broadcast_frame (pointer);
     }
 }
 
@@ -705,7 +712,7 @@ meta_wayland_pointer_broadcast_enter (MetaWaylandPointer *pointer,
     meta_wayland_pointer_send_enter (pointer, pointer_resource,
                                      serial, surface);
 
-  meta_wayland_pointer_send_frame (pointer);
+  meta_wayland_pointer_broadcast_frame (pointer);
 }
 
 static void
@@ -720,7 +727,7 @@ meta_wayland_pointer_broadcast_leave (MetaWaylandPointer *pointer,
     meta_wayland_pointer_send_leave (pointer, pointer_resource,
                                      serial, surface);
 
-  meta_wayland_pointer_send_frame (pointer);
+  meta_wayland_pointer_broadcast_frame (pointer);
 }
 
 void
