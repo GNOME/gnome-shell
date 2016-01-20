@@ -53,6 +53,8 @@ typedef struct _MetaFrameGeometry MetaFrameGeometry;
  **/
 struct _MetaFrameLayout
 {
+  /** Invisible border required by the theme */
+  GtkBorder invisible_border;
   /** Border/padding of the entire frame */
   GtkBorder frame_border;
   /** Border/padding of the titlebar region */

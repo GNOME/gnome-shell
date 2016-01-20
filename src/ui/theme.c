@@ -94,23 +94,28 @@ meta_frame_layout_get_borders (const MetaFrameLayout *layout,
   borders->visible.right  = layout->frame_border.right;
   borders->visible.bottom = layout->frame_border.bottom;
 
+  borders->invisible = layout->invisible_border;
+
   draggable_borders = meta_prefs_get_draggable_border_width ();
 
   if (flags & META_FRAME_ALLOWS_HORIZONTAL_RESIZE)
     {
-      borders->invisible.left   = MAX (0, draggable_borders - borders->visible.left);
-      borders->invisible.right  = MAX (0, draggable_borders - borders->visible.right);
+      borders->invisible.left   = MAX (borders->invisible.left,
+                                       draggable_borders - borders->visible.left);
+      borders->invisible.right  = MAX (borders->invisible.right,
+                                       draggable_borders - borders->visible.right);
     }
 
   if (flags & META_FRAME_ALLOWS_VERTICAL_RESIZE)
     {
-      borders->invisible.bottom = MAX (0, draggable_borders - borders->visible.bottom);
+      borders->invisible.bottom = MAX (borders->invisible.bottom,
+                                       draggable_borders - borders->visible.bottom);
 
       /* borders.visible.top is the height of the *title bar*. We can't do the same
        * algorithm here, titlebars are expectedly much bigger. Just subtract a couple
        * pixels to get a proper feel. */
       if (type != META_FRAME_TYPE_ATTACHED)
-        borders->invisible.top    = MAX (0, draggable_borders - 2);
+        borders->invisible.top    = MAX (borders->invisible.top, draggable_borders - 2);
     }
 
   borders->total.left   = borders->invisible.left   + borders->visible.left;
@@ -266,6 +271,7 @@ meta_frame_layout_sync_with_style (MetaFrameLayout *layout,
   GtkStyleContext *style;
   GtkBorder border;
   GtkRequisition requisition;
+  GdkRectangle clip_rect;
   int border_radius, max_radius;
 
   meta_style_info_set_flags (style_info, flags);
@@ -273,6 +279,12 @@ meta_frame_layout_sync_with_style (MetaFrameLayout *layout,
   style = style_info->styles[META_STYLE_ELEMENT_FRAME];
   get_padding_and_border (style, &layout->frame_border);
   scale_border (&layout->frame_border, layout->title_scale);
+
+  gtk_render_background_get_clip (style, 0, 0, 0, 0, &clip_rect);
+  layout->invisible_border.left = -clip_rect.x;
+  layout->invisible_border.right = clip_rect.width + clip_rect.x;
+  layout->invisible_border.top = -clip_rect.y;
+  layout->invisible_border.bottom = clip_rect.height + clip_rect.y;
 
   if (layout->hide_buttons)
     layout->icon_size = 0;
