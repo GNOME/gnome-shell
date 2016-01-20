@@ -28,14 +28,9 @@
 #include "meta-wayland-pointer.h"
 
 MetaWaylandPopupGrab *meta_wayland_popup_grab_create (MetaWaylandPointer *pointer,
-                                                      struct wl_client   *client);
+                                                      MetaWaylandSurface *surface);
 
 void meta_wayland_popup_grab_destroy (MetaWaylandPopupGrab *grab);
-
-void meta_wayland_popup_grab_begin (MetaWaylandPopupGrab *grab,
-                                    MetaWaylandSurface   *surface);
-
-void meta_wayland_popup_grab_end (MetaWaylandPopupGrab *grab);
 
 MetaWaylandSurface *meta_wayland_popup_grab_get_top_popup (MetaWaylandPopupGrab *grab);
 

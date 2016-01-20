@@ -885,7 +885,6 @@ meta_wayland_pointer_end_popup_grab (MetaWaylandPointer *pointer)
 {
   MetaWaylandPopupGrab *popup_grab = (MetaWaylandPopupGrab*)pointer->grab;
 
-  meta_wayland_popup_grab_end (popup_grab);
   meta_wayland_popup_grab_destroy (popup_grab);
 }
 
@@ -900,12 +899,7 @@ meta_wayland_pointer_start_popup_grab (MetaWaylandPointer *pointer,
     return NULL;
 
   if (pointer->grab == &pointer->default_grab)
-    {
-      struct wl_client *client = wl_resource_get_client (surface->resource);
-
-      grab = meta_wayland_popup_grab_create (pointer, client);
-      meta_wayland_popup_grab_begin (grab, surface);
-    }
+    grab = meta_wayland_popup_grab_create (pointer, surface);
   else
     grab = (MetaWaylandPopupGrab*)pointer->grab;
 
