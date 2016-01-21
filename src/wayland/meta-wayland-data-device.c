@@ -213,7 +213,7 @@ struct wl_array *
 meta_wayland_data_source_get_mime_types (const MetaWaylandDataSource *source)
 {
   MetaWaylandDataSourcePrivate *priv =
-    meta_wayland_data_source_get_instance_private (source);
+    meta_wayland_data_source_get_instance_private ((MetaWaylandDataSource *)source);
 
   return &priv->mime_types;
 }
@@ -1461,7 +1461,7 @@ meta_wayland_data_source_has_mime_type (const MetaWaylandDataSource *source,
                                         const gchar                 *mime_type)
 {
   MetaWaylandDataSourcePrivate *priv =
-    meta_wayland_data_source_get_instance_private (source);
+    meta_wayland_data_source_get_instance_private ((MetaWaylandDataSource *)source);
   gchar **p;
 
   wl_array_for_each (p, &priv->mime_types)
