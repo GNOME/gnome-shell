@@ -62,7 +62,6 @@ struct _MetaWaylandPopupGrab
 struct _MetaWaylandPopup
 {
   MetaWaylandPopupGrab *grab;
-  struct wl_listener surface_destroy_listener;
   MetaWaylandPopupSurface *popup_surface;
   struct wl_list link;
 };
@@ -231,7 +230,6 @@ meta_wayland_popup_destroy (MetaWaylandPopup *popup)
 {
   meta_wayland_popup_surface_dismiss (popup->popup_surface);
 
-  wl_list_remove (&popup->surface_destroy_listener.link);
   wl_list_remove (&popup->link);
   g_slice_free (MetaWaylandPopup, popup);
 }
@@ -253,16 +251,6 @@ meta_wayland_popup_get_top_popup (MetaWaylandPopup *popup)
   return meta_wayland_popup_grab_get_top_popup (popup->grab);
 }
 
-static void
-on_popup_surface_destroy (struct wl_listener *listener,
-			  void               *data)
-{
-  MetaWaylandPopup *popup =
-    wl_container_of (listener, popup, surface_destroy_listener);
-
-  meta_wayland_popup_dismiss (popup);
-}
-
 MetaWaylandPopup *
 meta_wayland_popup_create (MetaWaylandPopupSurface *popup_surface,
                            MetaWaylandPopupGrab    *grab)
@@ -278,17 +266,6 @@ meta_wayland_popup_create (MetaWaylandPopupSurface *popup_surface,
   popup = g_slice_new0 (MetaWaylandPopup);
   popup->grab = grab;
   popup->popup_surface = popup_surface;
-  popup->surface_destroy_listener.notify = on_popup_surface_destroy;
-  if (surface->xdg_popup)
-    {
-      wl_resource_add_destroy_listener (surface->xdg_popup,
-                                        &popup->surface_destroy_listener);
-    }
-  else if (surface->wl_shell_surface)
-    {
-      wl_resource_add_destroy_listener (surface->wl_shell_surface,
-                                        &popup->surface_destroy_listener);
-    }
 
   wl_list_insert (&grab->all_popups, &popup->link);
 

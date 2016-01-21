@@ -61,6 +61,9 @@ wl_shell_surface_destructor (struct wl_resource *resource)
   meta_wayland_compositor_destroy_frame_callbacks (surface->compositor,
                                                    surface);
 
+  if (surface->popup.popup)
+    meta_wayland_popup_dismiss (surface->popup.popup);
+
   for (l = surface->wl_shell.children; l; l = l->next)
     {
       MetaWaylandSurface *child_surface = l->data;
@@ -168,6 +171,13 @@ wl_shell_surface_set_state (MetaWaylandSurface     *surface,
 
   if (surface->window && old_state != state)
     {
+      if (old_state == META_WL_SHELL_SURFACE_STATE_POPUP &&
+          surface->popup.popup)
+        {
+          meta_wayland_popup_dismiss (surface->popup.popup);
+          surface->popup.popup = NULL;
+        }
+
       if (state == META_WL_SHELL_SURFACE_STATE_FULLSCREEN)
         meta_window_make_fullscreen (surface->window);
       else
@@ -498,7 +508,10 @@ wl_shell_surface_role_commit (MetaWaylandSurfaceRole  *surface_role,
     }
   else if (!surface->buffer_ref.buffer && window)
     {
-      meta_wayland_surface_destroy_window (surface);
+      if (surface->popup.popup)
+        meta_wayland_popup_dismiss (surface->popup.popup);
+      else
+        meta_wayland_surface_destroy_window (surface);
       return;
     }
 
