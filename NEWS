@@ -1,3 +1,20 @@
+3.19.4
+======
+* Fix updating stacking order when setting transient_for [Jonas; #755606]
+* Support screen rotation when supported by the driver [Carlos; #745079]
+* Protect against broken WM_CLASS property implementations [Sebastian; #759658]
+* Handle wl_pointer v5 events on wayland [Carlos; #760637]
+* Implement DND actions on wayland [Carlos; #760805]
+* Misc. bug fixes [Jonas, Rui, Ray, Marek; #754711, #756789, #759297, #758613,
+  #760330, #760476, #759222, #760670]
+
+Contributors:
+  Jonas Ådahl, Marek Chalupa, Carlos Garnacho, Sebastian Keller, Rui Matos,
+  Florian Müllner, Jasper St. Pierre, Ray Strode
+
+Translations:
+  Aurimas Černius [lt]
+
 3.19.3
 ======
 * Correct refresh rate units on KMS/Wayland [Daniel; #758653]
