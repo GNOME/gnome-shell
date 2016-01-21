@@ -46,6 +46,12 @@
 #include "meta-cursor-renderer-native.h"
 #include "meta-idle-monitor-native.h"
 
+G_DEFINE_AUTOPTR_CLEANUP_FUNC(GUdevDevice, g_object_unref)
+G_DEFINE_AUTOPTR_CLEANUP_FUNC(GUdevClient, g_object_unref)
+G_DEFINE_AUTOPTR_CLEANUP_FUNC(GUdevEnumerator, g_object_unref)
+G_DEFINE_AUTOPTR_CLEANUP_FUNC(Login1Session, g_object_unref)
+G_DEFINE_AUTOPTR_CLEANUP_FUNC(Login1Seat, g_object_unref)
+
 struct _MetaLauncher
 {
   Login1Session *session_proxy;
@@ -58,8 +64,8 @@ static Login1Session *
 get_session_proxy (GCancellable *cancellable,
                    GError      **error)
 {
-  char *proxy_path;
-  char *session_id;
+  g_autofree char *proxy_path = NULL;
+  g_autofree char *session_id = NULL;
   Login1Session *session_proxy;
 
   if (sd_pid_get_session (getpid (), &session_id) < 0)
@@ -80,8 +86,6 @@ get_session_proxy (GCancellable *cancellable,
                                                          cancellable, error);
   if (!session_proxy)
     g_prefix_error(error, "Could not get session proxy: ");
-
-  free (proxy_path);
 
   return session_proxy;
 }
@@ -285,8 +289,8 @@ get_primary_gpu_path (const gchar *seat_name)
   gchar *path = NULL;
   GList *devices, *tmp;
 
-  GUdevClient *gudev_client = g_udev_client_new (subsystems);
-  GUdevEnumerator *enumerator = g_udev_enumerator_new (gudev_client);
+  g_autoptr (GUdevClient) gudev_client = g_udev_client_new (subsystems);
+  g_autoptr (GUdevEnumerator) enumerator = g_udev_enumerator_new (gudev_client);
 
   g_udev_enumerator_add_match_name (enumerator, "card*");
   g_udev_enumerator_add_match_tag (enumerator, "seat");
@@ -297,7 +301,8 @@ get_primary_gpu_path (const gchar *seat_name)
 
   for (tmp = devices; tmp != NULL; tmp = tmp->next)
     {
-      GUdevDevice *platform_device = NULL, *pci_device = NULL;
+      g_autoptr (GUdevDevice) platform_device = NULL;
+      g_autoptr (GUdevDevice) pci_device = NULL;
       GUdevDevice *dev = tmp->data;
       gint boot_vga;
       const gchar *device_seat;
@@ -328,7 +333,6 @@ get_primary_gpu_path (const gchar *seat_name)
       if (platform_device != NULL)
         {
           path = g_strdup (g_udev_device_get_device_file (dev));
-          g_object_unref (platform_device);
           break;
         }
 
@@ -343,17 +347,12 @@ get_primary_gpu_path (const gchar *seat_name)
               path = g_strdup (g_udev_device_get_device_file (dev));
               break;
             }
-
-          g_object_unref (pci_device);
         }
     }
 
   g_list_free_full (devices, g_object_unref);
 
 out:
-  g_object_unref (enumerator);
-  g_object_unref (gudev_client);
-
   return path;
 }
 
@@ -399,7 +398,8 @@ get_kms_fd (Login1Session *session_proxy,
 static gchar *
 get_seat_id (GError **error)
 {
-  char *session_id, *seat_id;
+  g_autofree char *session_id = NULL;
+  char *seat_id = NULL;
   int r;
 
   r = sd_pid_get_session (0, &session_id);
@@ -413,8 +413,6 @@ get_seat_id (GError **error)
     }
 
   r = sd_session_get_seat (session_id, &seat_id);
-  free (session_id);
-
   if (r < 0)
     {
       g_set_error (error,
@@ -431,9 +429,9 @@ MetaLauncher *
 meta_launcher_new (GError **error)
 {
   MetaLauncher *self = NULL;
-  Login1Session *session_proxy = NULL;
-  Login1Seat *seat_proxy = NULL;
-  char *seat_id = NULL;
+  g_autoptr (Login1Session) session_proxy = NULL;
+  g_autoptr (Login1Seat) seat_proxy = NULL;
+  g_autofree char *seat_id = NULL;
   gboolean have_control = FALSE;
   int kms_fd;
 
@@ -460,11 +458,9 @@ meta_launcher_new (GError **error)
   if (!get_kms_fd (session_proxy, seat_id, &kms_fd, error))
     goto fail;
 
-  free (seat_id);
-
   self = g_slice_new0 (MetaLauncher);
-  self->session_proxy = session_proxy;
-  self->seat_proxy = seat_proxy;
+  self->session_proxy = g_object_ref (session_proxy);
+  self->seat_proxy = g_object_ref (seat_proxy);
 
   self->session_active = TRUE;
 
@@ -479,10 +475,6 @@ meta_launcher_new (GError **error)
  fail:
   if (have_control)
     login1_session_call_release_control_sync (session_proxy, NULL, NULL);
-  g_clear_object (&session_proxy);
-  g_clear_object (&seat_proxy);
-  free (seat_id);
-
   return NULL;
 }
 
