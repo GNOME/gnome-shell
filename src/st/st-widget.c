@@ -2785,7 +2785,7 @@ static AtkRole
 st_widget_accessible_get_role (AtkObject *obj)
 {
   StWidget *widget = NULL;
-  AtkRole role;
+  StWidgetPrivate *priv;
 
   g_return_val_if_fail (ST_IS_WIDGET_ACCESSIBLE (obj), ATK_ROLE_INVALID);
 
@@ -2794,9 +2794,9 @@ st_widget_accessible_get_role (AtkObject *obj)
   if (widget == NULL)
     return ATK_ROLE_INVALID;
 
-  role = st_widget_get_accessible_role (widget);
-  if (role != ATK_ROLE_INVALID)
-    return role;
+  priv = st_widget_get_instance_private (widget);
+  if (priv->accessible_role != ATK_ROLE_INVALID)
+    return priv->accessible_role;
 
   return ATK_OBJECT_CLASS (st_widget_accessible_parent_class)->get_role (obj);
 }
