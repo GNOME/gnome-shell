@@ -117,8 +117,8 @@ void meta_wayland_pointer_start_grab (MetaWaylandPointer *pointer,
 
 void meta_wayland_pointer_end_grab (MetaWaylandPointer *pointer);
 
-MetaWaylandPopup *meta_wayland_pointer_start_popup_grab (MetaWaylandPointer *pointer,
-                                                         MetaWaylandSurface *popup);
+MetaWaylandPopup *meta_wayland_pointer_start_popup_grab (MetaWaylandPointer      *pointer,
+                                                         MetaWaylandPopupSurface *popup_surface);
 
 void meta_wayland_pointer_end_popup_grab (MetaWaylandPointer *pointer);
 

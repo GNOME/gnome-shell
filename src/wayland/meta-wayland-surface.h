@@ -100,7 +100,6 @@ struct _MetaWaylandSurfaceRoleShellSurfaceClass
   void (*ping) (MetaWaylandSurfaceRoleShellSurface *shell_surface_role,
                 uint32_t                            serial);
   void (*close) (MetaWaylandSurfaceRoleShellSurface *shell_surface_role);
-  void (*popup_done) (MetaWaylandSurfaceRoleShellSurface *shell_surface_role);
 };
 
 #define META_TYPE_WAYLAND_SURFACE_ROLE_SUBSURFACE (meta_wayland_surface_role_subsurface_get_type ())
@@ -231,7 +230,6 @@ struct _MetaWaylandSurface
     struct wl_listener parent_destroy_listener;
 
     MetaWaylandPopup *popup;
-    struct wl_listener destroy_listener;
   } popup;
 
   /* wl_shell_surface */
@@ -304,8 +302,6 @@ void                meta_wayland_surface_configure_notify (MetaWaylandSurface *s
 void                meta_wayland_surface_ping (MetaWaylandSurface *surface,
                                                guint32             serial);
 void                meta_wayland_surface_delete (MetaWaylandSurface *surface);
-
-void                meta_wayland_surface_popup_done (MetaWaylandSurface *surface);
 
 /* Drag dest functions */
 void                meta_wayland_surface_drag_dest_focus_in  (MetaWaylandSurface   *surface,

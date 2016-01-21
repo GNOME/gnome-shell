@@ -27,8 +27,22 @@
 #include "meta-wayland-types.h"
 #include "meta-wayland-pointer.h"
 
-MetaWaylandPopupGrab *meta_wayland_popup_grab_create (MetaWaylandPointer *pointer,
-                                                      MetaWaylandSurface *surface);
+#define META_TYPE_WAYLAND_POPUP_SURFACE (meta_wayland_popup_surface_get_type ())
+G_DECLARE_INTERFACE (MetaWaylandPopupSurface, meta_wayland_popup_surface,
+                     META, WAYLAND_POPUP_SURFACE,
+                     GObject);
+
+struct _MetaWaylandPopupSurfaceInterface
+{
+  GTypeInterface parent_iface;
+
+  void (*done) (MetaWaylandPopupSurface *popup_surface);
+  void (*dismiss) (MetaWaylandPopupSurface *popup_surface);
+  MetaWaylandSurface *(*get_surface) (MetaWaylandPopupSurface *popup_surface);
+};
+
+MetaWaylandPopupGrab *meta_wayland_popup_grab_create (MetaWaylandPointer      *pointer,
+                                                      MetaWaylandPopupSurface *popup_surface);
 
 void meta_wayland_popup_grab_destroy (MetaWaylandPopupGrab *grab);
 
@@ -36,15 +50,13 @@ MetaWaylandSurface *meta_wayland_popup_grab_get_top_popup (MetaWaylandPopupGrab 
 
 gboolean meta_wayland_pointer_grab_is_popup_grab (MetaWaylandPointerGrab *grab);
 
-MetaWaylandPopup *meta_wayland_popup_create (MetaWaylandSurface   *surface,
-                                             MetaWaylandPopupGrab *grab);
+MetaWaylandPopup *meta_wayland_popup_create (MetaWaylandPopupSurface *surface,
+                                             MetaWaylandPopupGrab    *grab);
 
 void meta_wayland_popup_destroy (MetaWaylandPopup *popup);
 
 void meta_wayland_popup_dismiss (MetaWaylandPopup *popup);
 
 MetaWaylandSurface *meta_wayland_popup_get_top_popup (MetaWaylandPopup *popup);
-
-struct wl_signal *meta_wayland_popup_get_destroy_signal (MetaWaylandPopup *popup);
 
 #endif /* META_WAYLAND_POPUP_H */

@@ -48,6 +48,9 @@
 #include "meta-wayland-private.h"
 #include "meta-wayland-surface.h"
 
+G_DEFINE_INTERFACE (MetaWaylandPopupSurface, meta_wayland_popup_surface,
+                    G_TYPE_OBJECT);
+
 struct _MetaWaylandPopupGrab
 {
   MetaWaylandPointerGrab  generic;
@@ -59,11 +62,9 @@ struct _MetaWaylandPopupGrab
 struct _MetaWaylandPopup
 {
   MetaWaylandPopupGrab *grab;
-  MetaWaylandSurface   *surface;
-  struct wl_listener    surface_destroy_listener;
-  struct wl_signal      destroy_signal;
-
-  struct wl_list        link;
+  struct wl_listener surface_destroy_listener;
+  MetaWaylandPopupSurface *popup_surface;
+  struct wl_list link;
 };
 
 static void
@@ -72,6 +73,29 @@ meta_wayland_popup_grab_begin (MetaWaylandPopupGrab *grab,
 
 static void
 meta_wayland_popup_grab_end (MetaWaylandPopupGrab *grab);
+
+static void
+meta_wayland_popup_surface_default_init (MetaWaylandPopupSurfaceInterface *iface)
+{
+}
+
+static void
+meta_wayland_popup_surface_done (MetaWaylandPopupSurface *popup_surface)
+{
+  META_WAYLAND_POPUP_SURFACE_GET_IFACE (popup_surface)->done (popup_surface);
+}
+
+static void
+meta_wayland_popup_surface_dismiss (MetaWaylandPopupSurface *popup_surface)
+{
+  META_WAYLAND_POPUP_SURFACE_GET_IFACE (popup_surface)->dismiss (popup_surface);
+}
+
+static MetaWaylandSurface *
+meta_wayland_popup_surface_get_surface (MetaWaylandPopupSurface *popup_surface)
+{
+  return META_WAYLAND_POPUP_SURFACE_GET_IFACE (popup_surface)->get_surface (popup_surface);
+}
 
 static void
 popup_grab_focus (MetaWaylandPointerGrab *grab,
@@ -115,9 +139,11 @@ static MetaWaylandPointerGrabInterface popup_grab_interface = {
 };
 
 MetaWaylandPopupGrab *
-meta_wayland_popup_grab_create (MetaWaylandPointer *pointer,
-                                MetaWaylandSurface *surface)
+meta_wayland_popup_grab_create (MetaWaylandPointer      *pointer,
+                                MetaWaylandPopupSurface *popup_surface)
 {
+  MetaWaylandSurface *surface =
+    meta_wayland_popup_surface_get_surface (popup_surface);
   struct wl_client *client = wl_resource_get_client (surface->resource);
   MetaWaylandPopupGrab *grab;
 
@@ -170,7 +196,7 @@ meta_wayland_popup_grab_end (MetaWaylandPopupGrab *grab)
 
   wl_list_for_each_safe (popup, tmp, &grab->all_popups, link)
     {
-      meta_wayland_surface_popup_done (popup->surface);
+      meta_wayland_popup_surface_done (popup->popup_surface);
       meta_wayland_popup_destroy (popup);
     }
 
@@ -191,7 +217,7 @@ meta_wayland_popup_grab_get_top_popup (MetaWaylandPopupGrab *grab)
   g_assert (!wl_list_empty (&grab->all_popups));
   popup = wl_container_of (grab->all_popups.next, popup, link);
 
-  return popup->surface;
+  return meta_wayland_popup_surface_get_surface (popup->popup_surface);
 }
 
 gboolean
@@ -203,7 +229,7 @@ meta_wayland_pointer_grab_is_popup_grab (MetaWaylandPointerGrab *grab)
 void
 meta_wayland_popup_destroy (MetaWaylandPopup *popup)
 {
-  wl_signal_emit (&popup->destroy_signal, popup);
+  meta_wayland_popup_surface_dismiss (popup->popup_surface);
 
   wl_list_remove (&popup->surface_destroy_listener.link);
   wl_list_remove (&popup->link);
@@ -227,12 +253,6 @@ meta_wayland_popup_get_top_popup (MetaWaylandPopup *popup)
   return meta_wayland_popup_grab_get_top_popup (popup->grab);
 }
 
-struct wl_signal *
-meta_wayland_popup_get_destroy_signal (MetaWaylandPopup *popup)
-{
-  return &popup->destroy_signal;
-}
-
 static void
 on_popup_surface_destroy (struct wl_listener *listener,
 			  void               *data)
@@ -244,9 +264,11 @@ on_popup_surface_destroy (struct wl_listener *listener,
 }
 
 MetaWaylandPopup *
-meta_wayland_popup_create (MetaWaylandSurface   *surface,
-                           MetaWaylandPopupGrab *grab)
+meta_wayland_popup_create (MetaWaylandPopupSurface *popup_surface,
+                           MetaWaylandPopupGrab    *grab)
 {
+  MetaWaylandSurface *surface =
+    meta_wayland_popup_surface_get_surface (popup_surface);
   MetaWaylandPopup *popup;
 
   /* Don't allow creating popups if the grab has a different client. */
@@ -255,10 +277,8 @@ meta_wayland_popup_create (MetaWaylandSurface   *surface,
 
   popup = g_slice_new0 (MetaWaylandPopup);
   popup->grab = grab;
-  popup->surface = surface;
+  popup->popup_surface = popup_surface;
   popup->surface_destroy_listener.notify = on_popup_surface_destroy;
-  wl_signal_init (&popup->destroy_signal);
-
   if (surface->xdg_popup)
     {
       wl_resource_add_destroy_listener (surface->xdg_popup,
