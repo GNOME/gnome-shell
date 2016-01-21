@@ -502,6 +502,7 @@ xdg_shell_get_xdg_popup (struct wl_client   *client,
   popup = meta_wayland_pointer_start_popup_grab (&seat->pointer, surface);
   if (popup == NULL)
     {
+      xdg_popup_send_popup_done (surface->xdg_popup);
       meta_wayland_surface_destroy_window (surface);
       return;
     }
