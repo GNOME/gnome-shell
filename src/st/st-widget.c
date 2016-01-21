@@ -2420,7 +2420,6 @@ AtkRole
 st_widget_get_accessible_role (StWidget *widget)
 {
   StWidgetPrivate *priv;
-  AtkObject *accessible = NULL;
   AtkRole role = ATK_ROLE_INVALID;
 
   g_return_val_if_fail (ST_IS_WIDGET (widget), ATK_ROLE_INVALID);
@@ -2430,7 +2429,7 @@ st_widget_get_accessible_role (StWidget *widget)
   if (priv->accessible_role != ATK_ROLE_INVALID)
     role = priv->accessible_role;
   else if (priv->accessible != NULL)
-    role = atk_object_get_role (accessible);
+    role = atk_object_get_role (priv->accessible);
 
   return role;
 }
