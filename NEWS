@@ -1,3 +1,18 @@
+3.19.4
+======
+* gdm: Do not allow bypassing disabled Sign In button [Michael; #746180]
+* Style week numbers in calendar [Jakub; #683245]
+* Misc. bug fixes [Christophe, Jakub, Rui; #759708, #760577, #760945]
+
+Contributors:
+  Michael Catanzaro, Marek Černocký, Christophe Fergeau, Rui Matos,
+  Jakub Steiner
+
+Translations:
+  Aurimas Černius [lt], Enrico Nicoletto [pt_BR], Andika Triwidada [id],
+  Mario Blättermann [de], Marek Černocký [cs], Kjartan Maraas [nb],
+  Muhammet Kara [tr], Stas Solovey [ru]
+
 3.19.3
 ======
 * Fix thumbnail scaling in window switcher on HiDPI [Florian; #758676]
