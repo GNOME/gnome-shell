@@ -1093,6 +1093,8 @@ CLUTTER_EVENT_PROPAGATE
 CLUTTER_EVENT_STOP
 ClutterModifierType
 ClutterScrollDirection
+ClutterScrollFinishFlags
+ClutterScrollSource
 ClutterStageState
 ClutterEventType
 ClutterEvent
