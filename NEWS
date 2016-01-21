@@ -1,3 +1,26 @@
+Clutter 1.25.4                                                       2016-01-21
+===============================================================================
+
+  • List of changes since Clutter 1.25.2
+
+    - Add more scrolling information inside ClutterScrollEvent
+    This allows to receive the type of device that generate the scroll event,
+    as well as the notification that a scroll motion finished; we can use this
+    information to implement kinetic scrolling. Currently, only libinput
+    provides us with these fields.
+
+    - Translation updates
+    Spanish, Lithuanian, Czech, German, Hebrew, Brazilian Portuguese
+
+  • List of bugs fixed since Clutter 1.25.2
+
+     #757026 - Add scroll source / axis stop information to scroll events
+
+Many thanks to:
+
+  Aurimas Černius, Carlos Garnacho, Daniel Mustieles, Marek Černocký,
+  Mario Blättermann, Rafael Fontenelle, Yosef Or Boczko
+
 Clutter 1.25.2                                                       2015-12-17
 ===============================================================================
 
