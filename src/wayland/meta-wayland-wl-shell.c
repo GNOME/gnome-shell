@@ -69,6 +69,12 @@ wl_shell_surface_destructor (struct wl_resource *resource)
       MetaWaylandSurface *child_surface = l->data;
 
       child_surface->wl_shell.parent_surface = NULL;
+
+      if (child_surface->popup.parent == surface)
+        {
+          meta_wayland_popup_dismiss (child_surface->popup.popup);
+          child_surface->popup.parent = NULL;
+        }
     }
 
   if (surface->wl_shell.parent_surface)
@@ -84,7 +90,6 @@ wl_shell_surface_destructor (struct wl_resource *resource)
 
   if (surface->popup.popup)
     {
-      wl_list_remove (&surface->popup.parent_destroy_listener.link);
       surface->popup.parent = NULL;
 
       meta_wayland_popup_dismiss (surface->popup.popup);
@@ -253,17 +258,6 @@ wl_shell_surface_set_fullscreen (struct wl_client   *client,
 }
 
 static void
-handle_wl_shell_popup_parent_destroyed (struct wl_listener *listener,
-                                        void *data)
-{
-  MetaWaylandSurface *surface =
-    wl_container_of (listener, surface, popup.parent_destroy_listener);
-
-  wl_list_remove (&surface->popup.parent_destroy_listener.link);
-  surface->popup.parent = NULL;
-}
-
-static void
 create_popup (MetaWaylandSurface *surface)
 {
   MetaWaylandWlShellSurface *wl_shell_surface =
@@ -300,7 +294,6 @@ wl_shell_surface_set_popup (struct wl_client   *client,
   if (surface->popup.popup)
     {
       surface->popup.parent = NULL;
-      wl_list_remove (&surface->popup.parent_destroy_listener.link);
 
       meta_wayland_popup_dismiss (surface->popup.popup);
     }
@@ -313,12 +306,6 @@ wl_shell_surface_set_popup (struct wl_client   *client,
       wl_shell_surface_send_popup_done (resource);
       return;
     }
-
-  surface->popup.parent = parent_surf;
-  surface->popup.parent_destroy_listener.notify =
-    handle_wl_shell_popup_parent_destroyed;
-  wl_resource_add_destroy_listener (parent_surf->resource,
-                                    &surface->popup.parent_destroy_listener);
 
   set_wl_shell_surface_parent (surface, parent_surf);
   surface->wl_shell.popup_seat = seat;
