@@ -92,33 +92,6 @@ surface_from_xdg_popup_resource (struct wl_resource *resource)
 }
 
 static void
-xdg_shell_destroy (struct wl_client   *client,
-                   struct wl_resource *resource)
-{
-  wl_resource_destroy (resource);
-}
-
-static void
-xdg_shell_use_unstable_version (struct wl_client   *client,
-                                struct wl_resource *resource,
-                                int32_t             version)
-{
-  if (version != XDG_SHELL_VERSION_CURRENT)
-    wl_resource_post_error (resource, WL_DISPLAY_ERROR_INVALID_OBJECT,
-                            "bad xdg-shell version: %d\n", version);
-}
-
-static void
-xdg_shell_pong (struct wl_client   *client,
-                struct wl_resource *resource,
-                uint32_t            serial)
-{
-  MetaDisplay *display = meta_get_display ();
-
-  meta_display_pong_for_serial (display, serial);
-}
-
-static void
 xdg_surface_destructor (struct wl_resource *resource)
 {
   MetaWaylandXdgSurface *xdg_surface = wl_resource_get_user_data (resource);
@@ -345,49 +318,6 @@ static const struct xdg_surface_interface meta_wayland_xdg_surface_interface = {
 };
 
 static void
-xdg_shell_get_xdg_surface (struct wl_client   *client,
-                           struct wl_resource *resource,
-                           guint32             id,
-                           struct wl_resource *surface_resource)
-{
-  MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
-  MetaWaylandXdgSurface *xdg_surface;
-  MetaWindow *window;
-
-  if (META_IS_WAYLAND_XDG_SURFACE (surface->role) &&
-      META_WAYLAND_XDG_SURFACE (surface->role)->resource)
-    {
-      wl_resource_post_error (surface_resource,
-                              WL_DISPLAY_ERROR_INVALID_OBJECT,
-                              "xdg_shell::get_xdg_surface already requested");
-      return;
-    }
-
-  if (!meta_wayland_surface_assign_role (surface, META_TYPE_WAYLAND_XDG_SURFACE))
-    {
-      wl_resource_post_error (resource, XDG_SHELL_ERROR_ROLE,
-                              "wl_surface@%d already has a different role",
-                              wl_resource_get_id (surface->resource));
-      return;
-    }
-
-  xdg_surface = META_WAYLAND_XDG_SURFACE (surface->role);
-  xdg_surface->resource = wl_resource_create (client,
-                                              &xdg_surface_interface,
-                                              wl_resource_get_version (resource),
-                                              id);
-  wl_resource_set_implementation (xdg_surface->resource,
-                                  &meta_wayland_xdg_surface_interface,
-                                  xdg_surface,
-                                  xdg_surface_destructor);
-
-  xdg_surface->xdg_shell_resource = resource;
-
-  window = meta_window_wayland_new (meta_get_display (), surface);
-  meta_wayland_surface_set_window (surface, window);
-}
-
-static void
 xdg_popup_destructor (struct wl_resource *resource)
 {
   MetaWaylandSurface *surface = surface_from_xdg_popup_resource (resource);
@@ -436,134 +366,6 @@ handle_popup_parent_destroyed (struct wl_listener *listener,
   xdg_popup->parent_surface = NULL;
 
   meta_wayland_surface_destroy_window (surface);
-}
-
-static void
-xdg_shell_get_xdg_popup (struct wl_client   *client,
-                         struct wl_resource *resource,
-                         uint32_t            id,
-                         struct wl_resource *surface_resource,
-                         struct wl_resource *parent_resource,
-                         struct wl_resource *seat_resource,
-                         uint32_t            serial,
-                         int32_t             x,
-                         int32_t             y)
-{
-  MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
-  MetaWaylandPopupSurface *popup_surface;
-  MetaWaylandSurface *parent_surf = wl_resource_get_user_data (parent_resource);
-  MetaWaylandSurface *top_popup;
-  MetaWaylandSeat *seat = wl_resource_get_user_data (seat_resource);
-  MetaWindow *window;
-  MetaDisplay *display = meta_get_display ();
-  MetaWaylandXdgPopup *xdg_popup;
-  MetaWaylandPopup *popup;
-
-  if (META_IS_WAYLAND_XDG_POPUP (surface->role) &&
-      META_WAYLAND_XDG_POPUP (surface->role)->resource)
-    {
-      wl_resource_post_error (surface_resource,
-                              WL_DISPLAY_ERROR_INVALID_OBJECT,
-                              "xdg_shell::get_xdg_popup already requested");
-      return;
-    }
-
-  if (!meta_wayland_surface_assign_role (surface, META_TYPE_WAYLAND_XDG_POPUP))
-    {
-      wl_resource_post_error (resource, XDG_SHELL_ERROR_ROLE,
-                              "wl_surface@%d already has a different role",
-                              wl_resource_get_id (surface->resource));
-      return;
-    }
-
-  if (parent_surf == NULL ||
-      parent_surf->window == NULL ||
-      (!META_IS_WAYLAND_XDG_POPUP (parent_surf->role) &&
-       !META_IS_WAYLAND_XDG_SURFACE (parent_surf->role)))
-    {
-      wl_resource_post_error (resource,
-                              XDG_SHELL_ERROR_INVALID_POPUP_PARENT,
-                              "invalid parent surface");
-      return;
-    }
-
-  top_popup = meta_wayland_pointer_get_top_popup (&seat->pointer);
-  if ((top_popup == NULL && !META_IS_WAYLAND_XDG_SURFACE (parent_surf->role)) ||
-      (top_popup != NULL && parent_surf != top_popup))
-    {
-      wl_resource_post_error (resource,
-                              XDG_SHELL_ERROR_NOT_THE_TOPMOST_POPUP,
-                              "parent not top most surface");
-      return;
-    }
-
-  xdg_popup = META_WAYLAND_XDG_POPUP (surface->role);
-  xdg_popup->resource = wl_resource_create (client, &xdg_popup_interface,
-                                            wl_resource_get_version (resource), id);
-  wl_resource_set_implementation (xdg_popup->resource,
-                                  &meta_wayland_xdg_popup_interface,
-                                  xdg_popup,
-                                  xdg_popup_destructor);
-
-  xdg_popup->xdg_shell_resource = resource;
-
-  if (!meta_wayland_seat_can_popup (seat, serial))
-    {
-      xdg_popup_send_popup_done (xdg_popup->resource);
-      return;
-    }
-
-  xdg_popup->parent_surface = parent_surf;
-  xdg_popup->parent_destroy_listener.notify = handle_popup_parent_destroyed;
-  wl_resource_add_destroy_listener (parent_surf->resource,
-                                    &xdg_popup->parent_destroy_listener);
-
-  window = meta_window_wayland_new (display, surface);
-  meta_window_wayland_place_relative_to (window, parent_surf->window, x, y);
-  window->showing_for_first_time = FALSE;
-
-  meta_wayland_surface_set_window (surface, window);
-
-  meta_window_focus (window, meta_display_get_current_time (display));
-  popup_surface = META_WAYLAND_POPUP_SURFACE (surface->role);
-  popup = meta_wayland_pointer_start_popup_grab (&seat->pointer,
-                                                 popup_surface);
-  if (popup == NULL)
-    {
-      xdg_popup_send_popup_done (xdg_popup->resource);
-      meta_wayland_surface_destroy_window (surface);
-      return;
-    }
-
-  xdg_popup->popup = popup;
-}
-
-static const struct xdg_shell_interface meta_wayland_xdg_shell_interface = {
-  xdg_shell_destroy,
-  xdg_shell_use_unstable_version,
-  xdg_shell_get_xdg_surface,
-  xdg_shell_get_xdg_popup,
-  xdg_shell_pong,
-};
-
-static void
-bind_xdg_shell (struct wl_client *client,
-                void             *data,
-                guint32           version,
-                guint32           id)
-{
-  struct wl_resource *resource;
-
-  if (version != META_XDG_SHELL_VERSION)
-    {
-      g_warning ("using xdg-shell without stable version %d\n",
-                 META_XDG_SHELL_VERSION);
-      return;
-    }
-
-  resource = wl_resource_create (client, &xdg_shell_interface, version, id);
-  wl_resource_set_implementation (resource, &meta_wayland_xdg_shell_interface,
-                                  data, NULL);
 }
 
 static void
@@ -924,6 +726,204 @@ meta_wayland_xdg_popup_class_init (MetaWaylandXdgPopupClass *klass)
   shell_surface_role_class->configure = xdg_popup_role_configure;
   shell_surface_role_class->managed = xdg_popup_role_managed;
   shell_surface_role_class->ping = xdg_popup_role_ping;
+}
+
+static void
+xdg_shell_get_xdg_surface (struct wl_client   *client,
+                           struct wl_resource *resource,
+                           guint32             id,
+                           struct wl_resource *surface_resource)
+{
+  MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
+  MetaWaylandXdgSurface *xdg_surface;
+  MetaWindow *window;
+
+  if (META_IS_WAYLAND_XDG_SURFACE (surface->role) &&
+      META_WAYLAND_XDG_SURFACE (surface->role)->resource)
+    {
+      wl_resource_post_error (surface_resource,
+                              WL_DISPLAY_ERROR_INVALID_OBJECT,
+                              "xdg_shell::get_xdg_surface already requested");
+      return;
+    }
+
+  if (!meta_wayland_surface_assign_role (surface, META_TYPE_WAYLAND_XDG_SURFACE))
+    {
+      wl_resource_post_error (resource, XDG_SHELL_ERROR_ROLE,
+                              "wl_surface@%d already has a different role",
+                              wl_resource_get_id (surface->resource));
+      return;
+    }
+
+  xdg_surface = META_WAYLAND_XDG_SURFACE (surface->role);
+  xdg_surface->resource = wl_resource_create (client,
+                                              &xdg_surface_interface,
+                                              wl_resource_get_version (resource),
+                                              id);
+  wl_resource_set_implementation (xdg_surface->resource,
+                                  &meta_wayland_xdg_surface_interface,
+                                  xdg_surface,
+                                  xdg_surface_destructor);
+
+  xdg_surface->xdg_shell_resource = resource;
+
+  window = meta_window_wayland_new (meta_get_display (), surface);
+  meta_wayland_surface_set_window (surface, window);
+}
+
+static void
+xdg_shell_get_xdg_popup (struct wl_client   *client,
+                         struct wl_resource *resource,
+                         uint32_t            id,
+                         struct wl_resource *surface_resource,
+                         struct wl_resource *parent_resource,
+                         struct wl_resource *seat_resource,
+                         uint32_t            serial,
+                         int32_t             x,
+                         int32_t             y)
+{
+  MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
+  MetaWaylandPopupSurface *popup_surface;
+  MetaWaylandSurface *parent_surf = wl_resource_get_user_data (parent_resource);
+  MetaWaylandSurface *top_popup;
+  MetaWaylandSeat *seat = wl_resource_get_user_data (seat_resource);
+  MetaWindow *window;
+  MetaDisplay *display = meta_get_display ();
+  MetaWaylandXdgPopup *xdg_popup;
+  MetaWaylandPopup *popup;
+
+  if (META_IS_WAYLAND_XDG_POPUP (surface->role) &&
+      META_WAYLAND_XDG_POPUP (surface->role)->resource)
+    {
+      wl_resource_post_error (surface_resource,
+                              WL_DISPLAY_ERROR_INVALID_OBJECT,
+                              "xdg_shell::get_xdg_popup already requested");
+      return;
+    }
+
+  if (!meta_wayland_surface_assign_role (surface, META_TYPE_WAYLAND_XDG_POPUP))
+    {
+      wl_resource_post_error (resource, XDG_SHELL_ERROR_ROLE,
+                              "wl_surface@%d already has a different role",
+                              wl_resource_get_id (surface->resource));
+      return;
+    }
+
+  if (parent_surf == NULL ||
+      parent_surf->window == NULL ||
+      (!META_IS_WAYLAND_XDG_POPUP (parent_surf->role) &&
+       !META_IS_WAYLAND_XDG_SURFACE (parent_surf->role)))
+    {
+      wl_resource_post_error (resource,
+                              XDG_SHELL_ERROR_INVALID_POPUP_PARENT,
+                              "invalid parent surface");
+      return;
+    }
+
+  top_popup = meta_wayland_pointer_get_top_popup (&seat->pointer);
+  if ((top_popup == NULL && !META_IS_WAYLAND_XDG_SURFACE (parent_surf->role)) ||
+      (top_popup != NULL && parent_surf != top_popup))
+    {
+      wl_resource_post_error (resource,
+                              XDG_SHELL_ERROR_NOT_THE_TOPMOST_POPUP,
+                              "parent not top most surface");
+      return;
+    }
+
+  xdg_popup = META_WAYLAND_XDG_POPUP (surface->role);
+  xdg_popup->resource = wl_resource_create (client, &xdg_popup_interface,
+                                            wl_resource_get_version (resource), id);
+  wl_resource_set_implementation (xdg_popup->resource,
+                                  &meta_wayland_xdg_popup_interface,
+                                  xdg_popup,
+                                  xdg_popup_destructor);
+
+  xdg_popup->xdg_shell_resource = resource;
+
+  if (!meta_wayland_seat_can_popup (seat, serial))
+    {
+      xdg_popup_send_popup_done (xdg_popup->resource);
+      return;
+    }
+
+  xdg_popup->parent_surface = parent_surf;
+  xdg_popup->parent_destroy_listener.notify = handle_popup_parent_destroyed;
+  wl_resource_add_destroy_listener (parent_surf->resource,
+                                    &xdg_popup->parent_destroy_listener);
+
+  window = meta_window_wayland_new (display, surface);
+  meta_window_wayland_place_relative_to (window, parent_surf->window, x, y);
+  window->showing_for_first_time = FALSE;
+
+  meta_wayland_surface_set_window (surface, window);
+
+  meta_window_focus (window, meta_display_get_current_time (display));
+  popup_surface = META_WAYLAND_POPUP_SURFACE (surface->role);
+  popup = meta_wayland_pointer_start_popup_grab (&seat->pointer,
+                                                 popup_surface);
+  if (popup == NULL)
+    {
+      xdg_popup_send_popup_done (xdg_popup->resource);
+      meta_wayland_surface_destroy_window (surface);
+      return;
+    }
+
+  xdg_popup->popup = popup;
+}
+
+static void
+xdg_shell_destroy (struct wl_client   *client,
+                   struct wl_resource *resource)
+{
+  wl_resource_destroy (resource);
+}
+
+static void
+xdg_shell_use_unstable_version (struct wl_client   *client,
+                                struct wl_resource *resource,
+                                int32_t             version)
+{
+  if (version != XDG_SHELL_VERSION_CURRENT)
+    wl_resource_post_error (resource, WL_DISPLAY_ERROR_INVALID_OBJECT,
+                            "bad xdg-shell version: %d\n", version);
+}
+
+static void
+xdg_shell_pong (struct wl_client   *client,
+                struct wl_resource *resource,
+                uint32_t            serial)
+{
+  MetaDisplay *display = meta_get_display ();
+
+  meta_display_pong_for_serial (display, serial);
+}
+
+static const struct xdg_shell_interface meta_wayland_xdg_shell_interface = {
+  xdg_shell_destroy,
+  xdg_shell_use_unstable_version,
+  xdg_shell_get_xdg_surface,
+  xdg_shell_get_xdg_popup,
+  xdg_shell_pong,
+};
+
+static void
+bind_xdg_shell (struct wl_client *client,
+                void             *data,
+                guint32           version,
+                guint32           id)
+{
+  struct wl_resource *resource;
+
+  if (version != META_XDG_SHELL_VERSION)
+    {
+      g_warning ("using xdg-shell without stable version %d\n",
+                 META_XDG_SHELL_VERSION);
+      return;
+    }
+
+  resource = wl_resource_create (client, &xdg_shell_interface, version, id);
+  wl_resource_set_implementation (resource, &meta_wayland_xdg_shell_interface,
+                                  data, NULL);
 }
 
 void
