@@ -1144,14 +1144,8 @@ wl_surface_destructor (struct wl_resource *resource)
   if (surface->resource)
     wl_resource_set_user_data (surface->resource, NULL);
 
-  if (surface->xdg_surface)
-    wl_resource_destroy (surface->xdg_surface);
-  if (surface->xdg_popup)
-    wl_resource_destroy (surface->xdg_popup);
   if (surface->wl_subsurface)
     wl_resource_destroy (surface->wl_subsurface);
-  if (surface->wl_shell_surface)
-    wl_resource_destroy (surface->wl_shell_surface);
   if (surface->gtk_surface)
     wl_resource_destroy (surface->gtk_surface);
 

@@ -158,16 +158,6 @@ struct _MetaWaylandDragDestFuncs
                       MetaWaylandSurface    *surface);
 };
 
-typedef enum
-{
-  META_WL_SHELL_SURFACE_STATE_NONE,
-  META_WL_SHELL_SURFACE_STATE_TOPLEVEL,
-  META_WL_SHELL_SURFACE_STATE_POPUP,
-  META_WL_SHELL_SURFACE_STATE_TRANSIENT,
-  META_WL_SHELL_SURFACE_STATE_FULLSCREEN,
-  META_WL_SHELL_SURFACE_STATE_MAXIMIZED,
-} MetaWlShellSurfaceState;
-
 struct _MetaWaylandSurface
 {
   GObject parent;
@@ -212,42 +202,11 @@ struct _MetaWaylandSurface
   MetaWaylandPendingState *pending;
 
   /* Extension resources. */
-  struct wl_resource *xdg_surface;
-  struct wl_resource *xdg_popup;
-  struct wl_resource *wl_shell_surface;
   struct wl_resource *gtk_surface;
   struct wl_resource *wl_subsurface;
 
-  /* xdg_surface stuff */
-  struct wl_resource *xdg_shell_resource;
-  MetaWaylandSerial acked_configure_serial;
-  gboolean has_set_geometry;
+  /* gtk_surface stuff */
   gboolean is_modal;
-
-  /* xdg_popup */
-  struct {
-    MetaWaylandSurface *parent;
-    struct wl_listener parent_destroy_listener;
-
-    MetaWaylandPopup *popup;
-  } popup;
-
-  /* wl_shell_surface */
-  struct {
-    MetaWlShellSurfaceState state;
-
-    char *title;
-    char *wm_class;
-
-    gboolean pending_popup;
-    MetaWaylandSurface *parent_surface;
-    GList *children;
-
-    MetaWaylandSeat *popup_seat;
-
-    int x;
-    int y;
-  } wl_shell;
 
   /* wl_subsurface stuff. */
   struct {
