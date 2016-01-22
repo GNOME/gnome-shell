@@ -119,6 +119,9 @@ var RemoteMenuItemMapper = new Lang.Class({
         this._trackerItem = trackerItem;
 
         this.menuItem = new PopupMenu.PopupBaseMenuItem();
+        this._icon = new St.Icon({ style_class: 'popup-menu-icon' });
+        this.menuItem.actor.add_child(this._icon);
+
         this._label = new St.Label();
         this.menuItem.actor.add_child(this._label);
         this.menuItem.actor.label_actor = this._label;
@@ -129,11 +132,13 @@ var RemoteMenuItemMapper = new Lang.Class({
 
         this._trackerItem.bind_property('visible', this.menuItem.actor, 'visible', GObject.BindingFlags.SYNC_CREATE);
 
+        this._trackerItem.connect('notify::icon', this._updateIcon.bind(this));
         this._trackerItem.connect('notify::label', this._updateLabel.bind(this));
         this._trackerItem.connect('notify::sensitive', this._updateSensitivity.bind(this));
         this._trackerItem.connect('notify::role', this._updateRole.bind(this));
         this._trackerItem.connect('notify::toggled', this._updateDecoration.bind(this));
 
+        this._updateIcon();
         this._updateLabel();
         this._updateSensitivity();
         this._updateRole();
@@ -141,6 +146,11 @@ var RemoteMenuItemMapper = new Lang.Class({
         this.menuItem.connect('destroy', () => {
             trackerItem.run_dispose();
         });
+    },
+
+    _updateIcon() {
+        this._icon.gicon = this._trackerItem.icon;
+        this._icon.visible = (this._icon.gicon != null);
     },
 
     _updateLabel() {
