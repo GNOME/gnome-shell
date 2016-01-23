@@ -1732,9 +1732,9 @@ meta_window_x11_update_input_region (MetaWindow *window)
           region = cairo_region_create ();
         }
       else if (n_rects == 1 &&
-               (rects[0].x == 0 ||
-                rects[0].y == 0 ||
-                rects[0].width == priv->client_rect.width ||
+               (rects[0].x == 0 &&
+                rects[0].y == 0 &&
+                rects[0].width == priv->client_rect.width &&
                 rects[0].height == priv->client_rect.height))
         {
           /* This is the bounding region case. Keep the
