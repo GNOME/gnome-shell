@@ -485,7 +485,9 @@ clutter_stage_gdk_set_fullscreen (ClutterStageWindow *stage_window,
                                   gboolean            is_fullscreen)
 {
   ClutterStageGdk *stage_gdk = CLUTTER_STAGE_GDK (stage_window);
+  ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_window);
   ClutterStage *stage = CLUTTER_STAGE_COGL (stage_window)->wrapper;
+  gboolean swap_throttle;
 
   if (stage == NULL || CLUTTER_ACTOR_IN_DESTRUCTION (stage))
     return;
@@ -499,6 +501,26 @@ clutter_stage_gdk_set_fullscreen (ClutterStageWindow *stage_window,
     gdk_window_fullscreen (stage_gdk->window);
   else
     gdk_window_unfullscreen (stage_gdk->window);
+
+  /* Full-screen stages are usually unredirected to improve performance
+   * by avoiding a copy; when that happens, we need to turn back swap
+   * throttling because we won't be managed by the compositor any more,
+   */
+  swap_throttle = is_fullscreen;
+
+#ifdef GDK_WINDOWING_WAYLAND
+  {
+    /* Except on Wayland, where there's a deadlock due to both Cogl
+     * and GDK attempting to consume the throttling event; see bug
+     * https://bugzilla.gnome.org/show_bug.cgi?id=754671#c1
+     */
+    GdkDisplay *display = clutter_gdk_get_default_display ();
+    if (GDK_IS_WAYLAND_DISPLAY (display))
+      swap_throttle = FALSE;
+  }
+#endif
+
+  cogl_onscreen_set_swap_throttled (stage_cogl->onscreen, swap_throttle);
 }
 
 static void
