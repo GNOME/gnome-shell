@@ -574,10 +574,10 @@ $(shell echo $1 | sed 's/\([a-z\-]\+\)-[a-z]\+-v[0-9]\+/\1/')
 endef
 
 %-protocol.c : $(WAYLAND_PROTOCOLS_DATADIR)/$$(call protostability,$$*)/$$(call protoname,$$*)/$$*.xml
-	$(AM_V_GEN)$(WAYLAND_SCANNER) code < $< > $@
+	$(AM_V_GEN)$(WAYLAND_SCANNER) code $< $@
 %-server-protocol.h : $(WAYLAND_PROTOCOLS_DATADIR)/$$(call protostability,$$*)/$$(call protoname,$$*)/$$*.xml
-	$(AM_V_GEN)$(WAYLAND_SCANNER) server-header < $< > $@
+	$(AM_V_GEN)$(WAYLAND_SCANNER) server-header $< $@
 %-protocol.c : $(srcdir)/wayland/protocol/%.xml
-	$(AM_V_GEN)$(WAYLAND_SCANNER) code < $< > $@
+	$(AM_V_GEN)$(WAYLAND_SCANNER) code $< $@
 %-server-protocol.h : $(srcdir)/wayland/protocol/%.xml
-	$(AM_V_GEN)$(WAYLAND_SCANNER) server-header < $< > $@
+	$(AM_V_GEN)$(WAYLAND_SCANNER) server-header $< $@
