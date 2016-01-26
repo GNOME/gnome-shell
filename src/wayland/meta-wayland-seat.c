@@ -205,7 +205,8 @@ meta_wayland_seat_devices_updated (ClutterDeviceManager *device_manager,
 }
 
 static MetaWaylandSeat *
-meta_wayland_seat_new (struct wl_display *display)
+meta_wayland_seat_new (MetaWaylandCompositor *compositor,
+                       struct wl_display     *display)
 {
   MetaWaylandSeat *seat = g_new0 (MetaWaylandSeat, 1);
   ClutterDeviceManager *device_manager;
@@ -224,13 +225,16 @@ meta_wayland_seat_new (struct wl_display *display)
 
   wl_global_create (display, &wl_seat_interface, META_WL_SEAT_VERSION, seat, bind_seat);
 
+  meta_wayland_tablet_manager_ensure_seat (compositor->tablet_manager, seat);
+
   return seat;
 }
 
 void
 meta_wayland_seat_init (MetaWaylandCompositor *compositor)
 {
-  compositor->seat = meta_wayland_seat_new (compositor->wayland_display);
+  compositor->seat = meta_wayland_seat_new (compositor,
+                                            compositor->wayland_display);
 }
 
 void
