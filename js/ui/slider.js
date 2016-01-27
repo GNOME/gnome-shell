@@ -137,6 +137,10 @@ const Slider = new Lang.Class({
             this._motionId = this.actor.connect('motion-event', Lang.bind(this, this._motionEvent));
         }
 
+        // We need to emit 'drag-begin' before moving the handle to make
+        // sure that no 'value-changed' signal is emitted before this one.
+        this.emit('drag-begin');
+
         let absX, absY;
         [absX, absY] = event.get_coords();
         this._moveHandle(absX, absY);
@@ -224,6 +228,7 @@ const Slider = new Lang.Class({
             let delta = key == Clutter.KEY_Right ? 0.1 : -0.1;
             this._value = Math.max(0, Math.min(this._value + delta, 1));
             this.actor.queue_repaint();
+            this.emit('drag-begin');
             this.emit('value-changed', this._value);
             this.emit('drag-end');
             return Clutter.EVENT_STOP;
