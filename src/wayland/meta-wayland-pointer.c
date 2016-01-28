@@ -1005,7 +1005,8 @@ pointer_set_cursor (struct wl_client *client,
 
   if (surface &&
       !meta_wayland_surface_assign_role (surface,
-                                         META_TYPE_WAYLAND_SURFACE_ROLE_CURSOR))
+                                         META_TYPE_WAYLAND_SURFACE_ROLE_CURSOR,
+                                         NULL))
     {
       wl_resource_post_error (resource, WL_POINTER_ERROR_ROLE,
                               "wl_surface@%d already has a different role",

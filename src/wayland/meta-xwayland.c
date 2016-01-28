@@ -56,7 +56,8 @@ associate_window_with_surface (MetaWindow         *window,
   MetaDisplay *display = window->display;
 
   if (!meta_wayland_surface_assign_role (surface,
-                                         META_TYPE_WAYLAND_SURFACE_ROLE_XWAYLAND))
+                                         META_TYPE_WAYLAND_SURFACE_ROLE_XWAYLAND,
+                                         NULL))
     {
       wl_resource_post_error (surface->resource,
                               WL_DISPLAY_ERROR_INVALID_OBJECT,

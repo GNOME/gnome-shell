@@ -767,7 +767,8 @@ xdg_shell_get_xdg_surface (struct wl_client   *client,
       return;
     }
 
-  if (!meta_wayland_surface_assign_role (surface, META_TYPE_WAYLAND_XDG_SURFACE))
+  if (!meta_wayland_surface_assign_role (surface, META_TYPE_WAYLAND_XDG_SURFACE,
+                                         NULL))
     {
       wl_resource_post_error (resource, XDG_SHELL_ERROR_ROLE,
                               "wl_surface@%d already has a different role",
@@ -821,7 +822,8 @@ xdg_shell_get_xdg_popup (struct wl_client   *client,
       return;
     }
 
-  if (!meta_wayland_surface_assign_role (surface, META_TYPE_WAYLAND_XDG_POPUP))
+  if (!meta_wayland_surface_assign_role (surface, META_TYPE_WAYLAND_XDG_POPUP,
+                                         NULL))
     {
       wl_resource_post_error (resource, XDG_SHELL_ERROR_ROLE,
                               "wl_surface@%d already has a different role",

@@ -29,6 +29,7 @@
 #include <clutter/wayland/clutter-wayland-surface.h>
 #include <cogl/cogl-wayland-server.h>
 
+#include <gobject/gvaluecollector.h>
 #include <wayland-server.h>
 #include "gtk-shell-server-protocol.h"
 
@@ -168,13 +169,92 @@ static void
 meta_wayland_surface_role_shell_surface_managed (MetaWaylandSurfaceRoleShellSurface *shell_surface_role,
                                                  MetaWindow                         *window);
 
+static void
+unset_param_value (GParameter *param)
+{
+  g_value_unset (&param->value);
+}
+
+static GArray *
+role_assignment_valist_to_params (GType       role_type,
+                                  const char *first_property_name,
+                                  va_list     var_args)
+{
+  GObjectClass *object_class;
+  const char *property_name = first_property_name;
+  GArray *params;
+
+  object_class = g_type_class_ref (role_type);
+
+  params = g_array_new (FALSE, FALSE, sizeof (GParameter));
+  g_array_set_clear_func (params, (GDestroyNotify) unset_param_value);
+
+  while (property_name)
+    {
+      GParameter param = {
+        .name = property_name,
+        .value = G_VALUE_INIT
+      };
+      GParamSpec *pspec;
+      GType ptype;
+      gchar *error = NULL;
+
+      pspec = g_object_class_find_property (object_class,
+                                            property_name);
+      g_assert (pspec);
+
+      ptype = G_PARAM_SPEC_VALUE_TYPE (pspec);
+      G_VALUE_COLLECT_INIT (&param.value, ptype, var_args, 0, &error);
+      g_assert (!error);
+
+      g_array_append_val (params, param);
+
+      property_name = va_arg (var_args, const char *);
+    }
+
+  g_type_class_unref (object_class);
+
+  return params;
+}
+
 gboolean
 meta_wayland_surface_assign_role (MetaWaylandSurface *surface,
-                                  GType               role_type)
+                                  GType               role_type,
+                                  const char         *first_property_name,
+                                  ...)
 {
+  va_list var_args;
+
   if (!surface->role)
     {
-      surface->role = g_object_new (role_type, "surface", surface, NULL);
+      if (first_property_name)
+        {
+          GArray *params;
+          GParameter param;
+
+          va_start (var_args, first_property_name);
+          params = role_assignment_valist_to_params (role_type,
+                                                     first_property_name,
+                                                     var_args);
+          va_end (var_args);
+
+          param = (GParameter) {
+            .name = "surface",
+            .value = G_VALUE_INIT
+          };
+          g_value_init (&param.value, META_TYPE_WAYLAND_SURFACE);
+          g_value_set_object (&param.value, surface);
+          g_array_append_val (params, param);
+
+          surface->role = g_object_newv (role_type, params->len,
+                                         (GParameter *) params->data);
+
+          g_array_unref (params);
+        }
+      else
+        {
+          surface->role = g_object_new (role_type, "surface", surface, NULL);
+        }
 
       meta_wayland_surface_role_assigned (surface->role);
 
@@ -193,6 +273,11 @@ meta_wayland_surface_assign_role (MetaWaylandSurface *surface,
     }
   else
     {
+      va_start (var_args, first_property_name);
+      g_object_set_valist (G_OBJECT (surface->role),
+                           first_property_name, var_args);
+      va_end (var_args);
+
       return TRUE;
     }
 }
@@ -1599,7 +1684,8 @@ wl_subcompositor_get_subsurface (struct wl_client *client,
     }
 
   if (!meta_wayland_surface_assign_role (surface,
-                                         META_TYPE_WAYLAND_SURFACE_ROLE_SUBSURFACE))
+                                         META_TYPE_WAYLAND_SURFACE_ROLE_SUBSURFACE,
+                                         NULL))
     {
       /* FIXME: There is no subcompositor "role" error yet, so lets just use something
        * similar until there is.
