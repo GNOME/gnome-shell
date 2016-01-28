@@ -491,14 +491,6 @@ compat_libs += \
 	$(NULL)
 endif
 
-egl_tslib_h = tslib/clutter-event-tslib.h
-egl_tslib_c = tslib/clutter-event-tslib.c
-
-if USE_TSLIB
-backend_source_c_priv += $(egl_tslib_c)
-backend_source_h_priv += $(egl_tslib_h)
-endif # SUPPORT_TSLIB
-
 evdev_c_priv = \
 	evdev/clutter-device-manager-evdev.c	\
 	evdev/clutter-input-device-evdev.c	\

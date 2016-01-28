@@ -70,10 +70,6 @@
 #ifdef CLUTTER_INPUT_EVDEV
 #include "evdev/clutter-device-manager-evdev.h"
 #endif
-#ifdef CLUTTER_INPUT_TSLIB
-/* XXX - should probably warn, here */
-#include "tslib/clutter-event-tslib.h"
-#endif
 #ifdef CLUTTER_WINDOWING_EGL
 #include "egl/clutter-backend-eglnative.h"
 #endif
@@ -606,15 +602,6 @@ clutter_backend_real_init_events (ClutterBackend *backend)
       )
     {
       _clutter_events_evdev_init (backend);
-    }
-  else
-#endif
-#ifdef CLUTTER_INPUT_TSLIB
-  /* Tslib can be used regardless of the windowing system */
-  if (input_backend != NULL &&
-      strcmp (input_backend, CLUTTER_INPUT_TSLIB) == 0)
-    {
-      _clutter_events_tslib_init (backend);
     }
   else
 #endif

@@ -218,12 +218,6 @@ AC_ARG_ENABLE([egl-backend],
               [AS_HELP_STRING([--enable-egl-backend=@<:@yes/no@:>@], [Enable the EGL framebuffer backend (default=no)])],
               [enable_egl=$enableval],
               [enable_egl=check])
-
-dnl Additional input backends
-AC_ARG_ENABLE([tslib-input],
-              [AS_HELP_STRING([--enable-tslib-input=@<:@yes/no@:>@], [Enable TSLib for input events (default=no)])],
-              [enable_tslib=$enableval],
-              [enable_tslib=no])
 AC_ARG_ENABLE([evdev-input],
               [AS_HELP_STRING([--enable-evdev-input=@<:@yes/no@:>@], [Enable evdev for input events (default=check)])],
               [enable_evdev=$enableval],
@@ -293,8 +287,8 @@ AS_IF([test "x$enable_egl" = "xyes"],
         SUPPORT_EGL=1
         SUPPORT_COGL=1
 
-        FLAVOUR_LIBS="$FLAVOUR_LIBS $TSLIB_LIBS $EVDEV_LIBS"
-        FLAVOUR_CFLAGS="$FLAVOUR_CFLAGS $TSLIB_CFLAGS $EVDEV_CFLAGS"
+        FLAVOUR_LIBS="$FLAVOUR_LIBS $EVDEV_LIBS"
+        FLAVOUR_CFLAGS="$FLAVOUR_CFLAGS $EVDEV_CFLAGS"
 
         AC_DEFINE([CLUTTER_EGL_BACKEND_GENERIC], [1], [Use Generic EGL backend])
       ])
@@ -303,16 +297,6 @@ AS_IF([test "x$CLUTTER_BACKENDS" = "x"],
       [
         AC_MSG_ERROR([No backend enabled. You need to enable at least one backend.])
       ])
-
-AS_IF([test "x$enable_tslib" = xyes], [
-  PKG_CHECK_EXISTS([tslib-1.0], [have_tslib=yes], [have_tslib=no])
-  AS_IF([test "x$have_tslib" = xyes], [
-    CLUTTER_INPUT_BACKENDS="$CLUTTER_INPUT_BACKENDS tslib"
-    experimental_input_backend="yes"
-    AC_DEFINE([HAVE_TSLIB], [1], [Have tslib for touchscreen handling])
-    SUPPORT_TSLIB=1
-  ])
-])
 
 AS_IF([test "x$enable_evdev" = xyes], [
   PKG_CHECK_EXISTS([libinput gudev-1.0 xkbcommon], [have_evdev=yes], [have_evdev=no])
@@ -331,7 +315,6 @@ AM_CONDITIONAL(SUPPORT_EGL,     [test "x$SUPPORT_EGL" = "x1"])
 AM_CONDITIONAL(SUPPORT_WAYLAND, [test "x$SUPPORT_WAYLAND" = "x1"])
 
 AM_CONDITIONAL(USE_COGL,  [test "x$SUPPORT_COGL" = "x1"])
-AM_CONDITIONAL(USE_TSLIB, [test "x$have_tslib" = "xyes"])
 AM_CONDITIONAL(USE_EVDEV, [test "x$have_evdev" = "xyes"])
 
 AM_CONDITIONAL(NEED_XKB_UTILS, [test "x$have_evdev" = "xyes" -o "x$SUPPORT_WAYLAND" = "x1"])
@@ -375,9 +358,6 @@ AS_IF([test "x$SUPPORT_EGL" = "x1"],
 AS_IF([test "x$SUPPORT_EVDEV" = "x1"],
       [CLUTTER_CONFIG_DEFINES="$CLUTTER_CONFIG_DEFINES
 #define CLUTTER_INPUT_EVDEV \"evdev\""])
-AS_IF([test "x$SUPPORT_TSLIB" = "x1"],
-      [CLUTTER_CONFIG_DEFINES="$CLUTTER_CONFIG_DEFINES
-#define CLUTTER_INPUT_TSLIB \"tslib\""])
 
 # the 'null' input backend is special
 CLUTTER_CONFIG_DEFINES="$CLUTTER_CONFIG_DEFINES
