@@ -62,6 +62,13 @@ enum {
   PENDING_STATE_SIGNAL_LAST_SIGNAL
 };
 
+enum
+{
+  SURFACE_ROLE_PROP_0,
+
+  SURFACE_ROLE_PROP_SURFACE,
+};
+
 static guint pending_state_signals[PENDING_STATE_SIGNAL_LAST_SIGNAL];
 
 typedef struct _MetaWaylandSurfaceRolePrivate
@@ -167,12 +174,7 @@ meta_wayland_surface_assign_role (MetaWaylandSurface *surface,
 {
   if (!surface->role)
     {
-      MetaWaylandSurfaceRolePrivate *role_priv;
-
-      surface->role = g_object_new (role_type, NULL);
-      role_priv =
-        meta_wayland_surface_role_get_instance_private (surface->role);
-      role_priv->surface = surface;
+      surface->role = g_object_new (role_type, "surface", surface, NULL);
 
       meta_wayland_surface_role_assigned (surface->role);
 
@@ -1872,6 +1874,48 @@ meta_wayland_surface_class_init (MetaWaylandSurfaceClass *klass)
 }
 
 static void
+meta_wayland_surface_role_set_property (GObject      *object,
+                                        guint         prop_id,
+                                        const GValue *value,
+                                        GParamSpec   *pspec)
+{
+  MetaWaylandSurfaceRole *surface_role = META_WAYLAND_SURFACE_ROLE (object);
+  MetaWaylandSurfaceRolePrivate *priv =
+    meta_wayland_surface_role_get_instance_private (surface_role);
+
+  switch (prop_id)
+    {
+    case SURFACE_ROLE_PROP_SURFACE:
+      priv->surface = g_value_get_object (value);
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+    }
+}
+
+static void
+meta_wayland_surface_role_get_property (GObject    *object,
+                                        guint       prop_id,
+                                        GValue     *value,
+                                        GParamSpec *pspec)
+{
+  MetaWaylandSurfaceRole *surface_role = META_WAYLAND_SURFACE_ROLE (object);
+  MetaWaylandSurfaceRolePrivate *priv =
+    meta_wayland_surface_role_get_instance_private (surface_role);
+
+  switch (prop_id)
+    {
+    case SURFACE_ROLE_PROP_SURFACE:
+      g_value_set_object (value, priv->surface);
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+    }
+}
+
+static void
 meta_wayland_surface_role_init (MetaWaylandSurfaceRole *role)
 {
 }
@@ -1879,6 +1923,20 @@ meta_wayland_surface_role_init (MetaWaylandSurfaceRole *role)
 static void
 meta_wayland_surface_role_class_init (MetaWaylandSurfaceRoleClass *klass)
 {
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
+  object_class->set_property = meta_wayland_surface_role_set_property;
+  object_class->get_property = meta_wayland_surface_role_get_property;
+
+  g_object_class_install_property (object_class,
+                                   SURFACE_ROLE_PROP_SURFACE,
+                                   g_param_spec_object ("surface",
+                                                        "MetaWaylandSurface",
+                                                        "The MetaWaylandSurface instance",
+                                                        META_TYPE_WAYLAND_SURFACE,
+                                                        G_PARAM_READWRITE |
+                                                        G_PARAM_CONSTRUCT_ONLY |
+                                                        G_PARAM_STATIC_STRINGS));
 }
 
 static void
