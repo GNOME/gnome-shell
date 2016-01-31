@@ -596,6 +596,7 @@ apply_pending_state (MetaWaylandSurface      *surface,
 
       if (pending->buffer)
         {
+          meta_wayland_buffer_take_control (pending->buffer);
           CoglTexture *texture = meta_wayland_buffer_ensure_texture (pending->buffer);
           meta_surface_actor_wayland_set_texture (META_SURFACE_ACTOR_WAYLAND (surface->surface_actor), texture);
         }
@@ -606,6 +607,9 @@ apply_pending_state (MetaWaylandSurface      *surface,
 
   if (!cairo_region_is_empty (pending->damage))
     surface_process_damage (surface, pending->damage);
+
+  if (pending->buffer)
+    meta_wayland_buffer_release_control (pending->buffer);
 
   surface->offset_x += pending->dx;
   surface->offset_y += pending->dy;

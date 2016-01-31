@@ -54,8 +54,29 @@ meta_wayland_buffer_unref (MetaWaylandBuffer *buffer)
   if (buffer->ref_count == 0)
     {
       g_clear_pointer (&buffer->texture, cogl_object_unref);
-      wl_resource_queue_event (buffer->resource, WL_BUFFER_RELEASE);
+
+      if (buffer->accessible)
+        meta_wayland_buffer_release_control (buffer);
     }
+}
+
+void
+meta_wayland_buffer_take_control (MetaWaylandBuffer *buffer)
+{
+  if (buffer->accessible)
+    meta_fatal ("buffer control taken twice");
+
+  buffer->accessible = TRUE;
+}
+
+void
+meta_wayland_buffer_release_control (MetaWaylandBuffer *buffer)
+{
+  if (!buffer->accessible)
+    meta_fatal ("buffer released when not in control");
+
+  wl_resource_queue_event (buffer->resource, WL_BUFFER_RELEASE);
+  buffer->accessible = FALSE;
 }
 
 MetaWaylandBuffer *
@@ -93,6 +114,9 @@ meta_wayland_buffer_ensure_texture (MetaWaylandBuffer *buffer)
   CoglTexture *texture;
   struct wl_shm_buffer *shm_buffer;
 
+  if (!buffer->accessible)
+    meta_warning ("attempted to process damage on uncommitted buffer");
+
   if (buffer->texture)
     goto out;
 
@@ -125,6 +149,9 @@ meta_wayland_buffer_process_damage (MetaWaylandBuffer *buffer,
                                     cairo_region_t    *region)
 {
   struct wl_shm_buffer *shm_buffer;
+
+  if (!buffer->accessible)
+    meta_warning ("attempted to process damage on uncommitted buffer");
 
   shm_buffer = wl_shm_buffer_get (buffer->resource);
 
