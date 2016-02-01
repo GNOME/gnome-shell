@@ -88,6 +88,47 @@ typedef enum
   META_MOVE_RESIZE_RESULT_FRAME_SHAPE_CHANGED = 1 << 2,
 } MetaMoveResizeResultFlags;
 
+typedef enum
+{
+  META_PLACEMENT_GRAVITY_NONE   = 0,
+  META_PLACEMENT_GRAVITY_TOP    = 1 << 0,
+  META_PLACEMENT_GRAVITY_BOTTOM = 1 << 1,
+  META_PLACEMENT_GRAVITY_LEFT   = 1 << 2,
+  META_PLACEMENT_GRAVITY_RIGHT  = 1 << 3,
+} MetaPlacementGravity;
+
+typedef enum
+{
+  META_PLACEMENT_ANCHOR_NONE   = 0,
+  META_PLACEMENT_ANCHOR_TOP    = 1 << 0,
+  META_PLACEMENT_ANCHOR_BOTTOM = 1 << 1,
+  META_PLACEMENT_ANCHOR_LEFT   = 1 << 2,
+  META_PLACEMENT_ANCHOR_RIGHT  = 1 << 3,
+} MetaPlacementAnchor;
+
+typedef enum
+{
+  META_PLACEMENT_CONSTRAINT_ADJUSTMENT_NONE     = 0,
+  META_PLACEMENT_CONSTRAINT_ADJUSTMENT_SLIDE_X  = 1 << 0,
+  META_PLACEMENT_CONSTRAINT_ADJUSTMENT_SLIDE_Y  = 1 << 1,
+  META_PLACEMENT_CONSTRAINT_ADJUSTMENT_FLIP_X   = 1 << 2,
+  META_PLACEMENT_CONSTRAINT_ADJUSTMENT_FLIP_Y   = 1 << 3,
+  META_PLACEMENT_CONSTRAINT_ADJUSTMENT_RESIZE_X = 1 << 4,
+  META_PLACEMENT_CONSTRAINT_ADJUSTMENT_RESIZE_Y = 1 << 5,
+} MetaPlacementConstraintAdjustment;
+
+typedef struct _MetaPlacementRule
+{
+  MetaRectangle anchor_rect;
+  MetaPlacementGravity gravity;
+  MetaPlacementAnchor anchor;
+  MetaPlacementConstraintAdjustment constraint_adjustment;
+  int offset_x;
+  int offset_y;
+  int width;
+  int height;
+} MetaPlacementRule;
+
 struct _MetaWindow
 {
   GObject parent_instance;
@@ -448,6 +489,8 @@ struct _MetaWindow
 
   /* Bypass compositor hints */
   guint bypass_compositor;
+
+  MetaPlacementRule *placement_rule;
 };
 
 struct _MetaWindowClass
@@ -697,5 +740,9 @@ void meta_window_set_alive (MetaWindow *window, gboolean is_alive);
 gboolean meta_window_has_pointer (MetaWindow *window);
 
 void meta_window_emit_size_changed (MetaWindow *window);
+
+MetaPlacementRule *meta_window_get_placement_rule (MetaWindow *window);
+
+void meta_window_force_placement (MetaWindow *window);
 
 #endif

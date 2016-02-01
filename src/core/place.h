@@ -25,6 +25,11 @@
 #include "window-private.h"
 #include "frame.h"
 
+void meta_window_process_placement (MetaWindow        *window,
+                                    MetaPlacementRule *placement_rule,
+                                    int               *x,
+                                    int               *y);
+
 void meta_window_place (MetaWindow *window,
                         int         x,
                         int         y,

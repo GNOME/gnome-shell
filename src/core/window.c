@@ -84,8 +84,6 @@ static void     set_net_wm_state          (MetaWindow     *window);
 static void     meta_window_set_above     (MetaWindow     *window,
                                            gboolean        new_value);
 
-static void     meta_window_force_placement (MetaWindow     *window);
-
 static void     meta_window_show          (MetaWindow     *window);
 static void     meta_window_hide          (MetaWindow     *window);
 
@@ -296,6 +294,7 @@ meta_window_finalize (GObject *object)
   g_free (window->gtk_window_object_path);
   g_free (window->gtk_app_menu_object_path);
   g_free (window->gtk_menubar_object_path);
+  g_free (window->placement_rule);
 
   G_OBJECT_CLASS (meta_window_parent_class)->finalize (object);
 }
@@ -2168,7 +2167,7 @@ window_would_be_covered (const MetaWindow *newbie)
   return FALSE; /* none found */
 }
 
-static void
+void
 meta_window_force_placement (MetaWindow *window)
 {
   if (window->placed)
@@ -7882,4 +7881,10 @@ void
 meta_window_emit_size_changed (MetaWindow *window)
 {
   g_signal_emit (window, window_signals[SIZE_CHANGED], 0);
+}
+
+MetaPlacementRule *
+meta_window_get_placement_rule (MetaWindow *window)
+{
+  return window->placement_rule;
 }
