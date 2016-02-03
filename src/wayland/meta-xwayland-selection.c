@@ -91,6 +91,7 @@ struct _MetaWaylandDataSourceXWayland
 
 struct _MetaXWaylandSelection {
   MetaSelectionBridge clipboard;
+  MetaSelectionBridge primary;
   MetaDndBridge dnd;
 };
 
@@ -396,6 +397,8 @@ atom_to_selection_bridge (MetaWaylandCompositor *compositor,
 
   if (selection_atom == selection_data->clipboard.selection_atom)
     return &selection_data->clipboard;
+  else if (selection_atom == selection_data->primary.selection_atom)
+    return &selection_data->primary;
   else if (selection_atom == selection_data->dnd.selection.selection_atom)
     return &selection_data->dnd.selection;
   else
@@ -530,6 +533,8 @@ data_device_get_active_source_for_atom (MetaWaylandDataDevice *data_device,
 {
   if (selection_atom == gdk_x11_get_xatom_by_name ("CLIPBOARD"))
     return data_device->selection_data_source;
+  else if (selection_atom == gdk_x11_get_xatom_by_name ("PRIMARY"))
+    return data_device->primary_data_source;
   else if (selection_atom == xdnd_atoms[ATOM_DND_SELECTION])
     return data_device->dnd_data_source;
   else
@@ -1058,6 +1063,11 @@ meta_xwayland_selection_get_x11_targets (MetaWaylandCompositor *compositor,
           meta_wayland_data_device_set_selection (&compositor->seat->data_device, data_source,
                                                   wl_display_next_serial (compositor->wayland_display));
         }
+      else if (selection->selection_atom == gdk_x11_get_xatom_by_name ("PRIMARY"))
+        {
+          meta_wayland_data_device_set_primary (&compositor->seat->data_device, data_source,
+                                                wl_display_next_serial (compositor->wayland_display));
+        }
     }
   else
     g_object_unref (data_source);
@@ -1529,7 +1539,8 @@ meta_xwayland_selection_handle_xfixes_selection_notify (MetaWaylandCompositor *c
   if (!selection)
     return FALSE;
 
-  if (selection->selection_atom == gdk_x11_get_xatom_by_name ("CLIPBOARD"))
+  if (selection->selection_atom == gdk_x11_get_xatom_by_name ("CLIPBOARD") ||
+      selection->selection_atom == gdk_x11_get_xatom_by_name ("PRIMARY"))
     {
       if (event->owner == None)
         {
@@ -1712,6 +1723,9 @@ meta_xwayland_init_selection (void)
   init_selection_bridge (&manager->selection_data->clipboard,
                          gdk_x11_get_xatom_by_name ("CLIPBOARD"),
                          &compositor->seat->data_device.selection_ownership_signal);
+  init_selection_bridge (&manager->selection_data->primary,
+                         gdk_x11_get_xatom_by_name ("PRIMARY"),
+                         &compositor->seat->data_device.primary_ownership_signal);
   init_selection_bridge (&manager->selection_data->dnd.selection,
                          xdnd_atoms[ATOM_DND_SELECTION],
                          &compositor->seat->data_device.dnd_ownership_signal);
@@ -1730,6 +1744,7 @@ meta_xwayland_shutdown_selection (void)
 
   meta_xwayland_shutdown_dnd (manager);
   shutdown_selection_bridge (&selection->clipboard);
+  shutdown_selection_bridge (&selection->primary);
   shutdown_selection_bridge (&selection->dnd.selection);
 
   g_slice_free (MetaXWaylandSelection, selection);
