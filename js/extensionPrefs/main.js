@@ -24,7 +24,6 @@ const GnomeShellIface = '<node> \
 </node>';
 
 const customCss = '.prefs-button { \
-                       padding: 8px; \
                        border-radius: 20px; \
                    }';
 
