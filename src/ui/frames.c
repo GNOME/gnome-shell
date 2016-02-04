@@ -486,7 +486,7 @@ meta_ui_frame_attach_style (MetaUIFrame *frame)
   else
     variant = frame->meta_window->gtk_theme_variant;
 
-  if (variant == NULL || strcmp(variant, "normal") == 0)
+  if (variant == NULL || *variant == '\0')
     frame->style_info = meta_style_info_ref (frames->normal_style);
   else
     frame->style_info = meta_style_info_ref (meta_frames_get_theme_variant (frames,
