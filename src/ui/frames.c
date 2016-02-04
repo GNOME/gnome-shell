@@ -447,7 +447,7 @@ meta_frames_new (int screen_number)
 }
 
 static const char *
-get_theme_variant_override (MetaFrames *frames)
+get_global_theme_variant (MetaFrames *frames)
 {
   GdkScreen *screen = gtk_widget_get_screen (GTK_WIDGET (frames));
   GtkSettings *settings = gtk_settings_get_for_screen (screen);
@@ -474,17 +474,13 @@ meta_ui_frame_attach_style (MetaUIFrame *frame)
 {
   MetaFrames *frames = frame->frames;
   const char *variant;
-  const char *variant_override;
 
   if (frame->style_info != NULL)
     meta_style_info_unref (frame->style_info);
 
-  variant_override = get_theme_variant_override (frame->frames);
-
-  if (variant_override)
-    variant = variant_override;
-  else
-    variant = frame->meta_window->gtk_theme_variant;
+  variant = frame->meta_window->gtk_theme_variant;
+  if (variant == NULL)
+    variant = get_global_theme_variant (frame->frames);;
 
   if (variant == NULL || *variant == '\0')
     frame->style_info = meta_style_info_ref (frames->normal_style);
