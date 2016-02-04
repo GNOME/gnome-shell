@@ -102,9 +102,6 @@ meta_cursor_renderer_native_finalize (GObject *object)
   if (priv->animation_timeout_id)
     g_source_remove (priv->animation_timeout_id);
 
-  if (priv->gbm)
-    gbm_device_destroy (priv->gbm);
-
   G_OBJECT_CLASS (meta_cursor_renderer_native_parent_class)->finalize (object);
 }
 
@@ -672,7 +669,7 @@ meta_cursor_renderer_native_init (MetaCursorRendererNative *native)
     {
       CoglRenderer *cogl_renderer = cogl_display_get_renderer (cogl_context_get_display (ctx));
       priv->drm_fd = cogl_kms_renderer_get_kms_fd (cogl_renderer);
-      priv->gbm = gbm_create_device (priv->drm_fd);
+      priv->gbm = cogl_kms_renderer_get_gbm (cogl_renderer);
 
       uint64_t width, height;
       if (drmGetCap (priv->drm_fd, DRM_CAP_CURSOR_WIDTH, &width) == 0 &&
