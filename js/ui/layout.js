@@ -591,7 +591,10 @@ const LayoutManager = new Lang.Class({
         this.addChrome(this._coverPane);
 
         if (Meta.is_restart()) {
-            // On restart, we don't do an animation
+            // On restart, we don't do an animation. Force an update of the
+            // regions immediately so that maximized windows restore to the
+            // right size taking struts into account.
+            this._updateRegions();
         } else if (Main.sessionMode.isGreeter) {
             this.panelBox.translation_y = -this.panelBox.height;
         } else {
@@ -937,6 +940,11 @@ const LayoutManager = new Lang.Class({
         // No need to update when we have a modal.
         if (Main.modalCount > 0)
             return GLib.SOURCE_REMOVE;
+
+        // Bug workaround - get_transformed_position()/get_transformed_size() don't work after
+        // a change in stage size until the first pick or paint.
+        // https://bugzilla.gnome.org/show_bug.cgi?id=761565
+        global.stage.get_actor_at_pos(Clutter.PickMode.ALL, 0, 0);
 
         let rects = [], struts = [], i;
         let isPopupMenuVisible = global.top_window_group.get_children().some(isPopupMetaWindow);
