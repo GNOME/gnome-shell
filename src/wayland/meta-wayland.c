@@ -48,14 +48,6 @@ meta_wayland_compositor_get_default (void)
   return &_meta_wayland_compositor;
 }
 
-static guint32
-get_time (void)
-{
-  struct timeval tv;
-  gettimeofday (&tv, NULL);
-  return tv.tv_sec * 1000 + tv.tv_usec / 1000;
-}
-
 typedef struct
 {
   GSource source;
@@ -186,7 +178,7 @@ meta_wayland_compositor_paint_finished (MetaWaylandCompositor *compositor)
       MetaWaylandFrameCallback *callback =
         wl_container_of (compositor->frame_callbacks.next, callback, link);
 
-      wl_callback_send_done (callback->resource, get_time ());
+      wl_callback_send_done (callback->resource, g_get_monotonic_time () / 1000);
       wl_resource_destroy (callback->resource);
     }
 }
