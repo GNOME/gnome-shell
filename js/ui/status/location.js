@@ -12,6 +12,7 @@ const Shell = imports.gi.Shell;
 const LOCATION_SCHEMA = 'org.gnome.system.location';
 const MAX_ACCURACY_LEVEL = 'max-accuracy-level';
 const ENABLED = 'enabled';
+const APPS = 'applications';
 
 const GeoclueAccuracyLevel = {
     NONE: 0,
@@ -89,18 +90,27 @@ const Indicator = new Lang.Class({
         return this._getMaxAccuracyLevel();
     },
 
-    // We (and geoclue) have currently no way to reliably identifying apps so
-    // for now, lets just authorize all apps as long as they provide a valid
-    // desktop ID. We also ensure they don't get more accuracy than global max.
     AuthorizeApp: function(desktop_id, reqAccuracyLevel) {
-        var appSystem = Shell.AppSystem.get_default();
-        var app = appSystem.lookup_app(desktop_id + ".desktop");
-        if (app == null) {
-            return [false, 0];
+        let apps = this._settings.get_value(APPS);
+        let nApps = apps.n_children();
+
+        for (let i = 0; i < nApps; i++) {
+            let [app, levelStr] = apps.get_child_value(i).deep_unpack();
+            if (app != desktop_id)
+                continue;
+
+            level = GeoclueAccuracyLevel[levelStr.toUpperCase()] ||
+                    GeoclueAccuracyLevel.NONE;
+            if (level == GeoclueAccuracyLevel.NONE)
+                return [false, 0];
+
+            let allowedAccuracyLevel = clamp(reqAccuracyLevel, 0, level);
+            allowedAccuracyLevel = clamp(allowedAccuracyLevel, 0, this._getMaxAccuracyLevel());
+
+            return [true, allowedAccuracyLevel];
         }
 
-        let allowedAccuracyLevel = clamp(reqAccuracyLevel, 0, this._getMaxAccuracyLevel());
-        return [true, allowedAccuracyLevel];
+        return [false, 0];
     },
 
     _syncIndicator: function() {
