@@ -2065,8 +2065,21 @@ get_gtk_surface (struct wl_client *client,
   wl_resource_set_implementation (surface->gtk_surface, &meta_wayland_gtk_surface_interface, surface, gtk_surface_destructor);
 }
 
+static void
+set_startup_id (struct wl_client   *client,
+                struct wl_resource *resource,
+                const char         *startup_id)
+{
+  MetaDisplay *display;
+
+  display = meta_get_display ();
+  meta_startup_notification_remove_sequence (display->startup_notification,
+                                             startup_id);
+}
+
 static const struct gtk_shell_interface meta_wayland_gtk_shell_interface = {
-  get_gtk_surface
+  get_gtk_surface,
+  set_startup_id
 };
 
 static void
@@ -2080,7 +2093,7 @@ bind_gtk_shell (struct wl_client *client,
 
   resource = wl_resource_create (client, &gtk_shell_interface, version, id);
 
-  if (version != META_GTK_SHELL_VERSION)
+  if (version < 2)
     {
       wl_resource_post_error (resource,
                               WL_DISPLAY_ERROR_INVALID_OBJECT,
