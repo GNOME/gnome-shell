@@ -85,11 +85,7 @@ struct _MetaScreen
   /* Cache the current monitor */
   int last_monitor_index;
 
-#ifdef HAVE_STARTUP_NOTIFICATION
-  SnMonitorContext *sn_context;
   GSList *startup_sequences;
-  guint startup_sequence_timeout;
-#endif
 
   Window wm_cm_selection_window;
   guint work_area_later;

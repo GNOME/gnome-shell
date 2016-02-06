@@ -400,28 +400,6 @@ meta_display_remove_pending_pings_for_window (MetaDisplay *display,
 }
 
 
-#ifdef HAVE_STARTUP_NOTIFICATION
-static void
-sn_error_trap_push (SnDisplay *sn_display,
-                    Display   *xdisplay)
-{
-  MetaDisplay *display;
-  display = meta_display_for_x_display (xdisplay);
-  if (display != NULL)
-    meta_error_trap_push (display);
-}
-
-static void
-sn_error_trap_pop (SnDisplay *sn_display,
-                   Display   *xdisplay)
-{
-  MetaDisplay *display;
-  display = meta_display_for_x_display (xdisplay);
-  if (display != NULL)
-    meta_error_trap_pop (display);
-}
-#endif
-
 static void
 enable_compositor (MetaDisplay *display)
 {
@@ -527,6 +505,20 @@ gesture_tracker_state_changed (MetaGestureTracker   *tracker,
     }
 }
 
+static void
+on_startup_notification_changed (MetaStartupNotification *sn,
+                                 gpointer                 sequence,
+                                 MetaDisplay             *display)
+{
+  if (!display->screen)
+    return;
+
+  g_slist_free (display->screen->startup_sequences);
+  display->screen->startup_sequences =
+    meta_startup_notification_get_sequences (display->startup_notification);
+  g_signal_emit_by_name (display->screen, "startup-sequence-changed", sequence);
+}
+
 /**
  * meta_display_open:
  *
@@ -629,12 +621,6 @@ meta_display_open (void)
   display->groups_by_leader = NULL;
 
   display->screen = NULL;
-
-#ifdef HAVE_STARTUP_NOTIFICATION
-  display->sn_display = sn_display_new (display->xdisplay,
-                                        sn_error_trap_push,
-                                        sn_error_trap_pop);
-#endif
 
   /* Get events */
   meta_display_init_events (display);
@@ -916,6 +902,10 @@ meta_display_open (void)
 
   display->screen = screen;
 
+  display->startup_notification = meta_startup_notification_get (display);
+  g_signal_connect (display->startup_notification, "changed",
+                    G_CALLBACK (on_startup_notification_changed), display);
+
   meta_screen_init_workspaces (screen);
 
   enable_compositor (display);
@@ -1100,6 +1090,7 @@ meta_display_close (MetaDisplay *display,
 
   meta_display_remove_autoraise_callback (display);
 
+  g_clear_object (&display->startup_notification);
   g_clear_object (&display->gesture_tracker);
 
   if (display->focus_timeout_id)
@@ -1111,14 +1102,6 @@ meta_display_close (MetaDisplay *display,
   meta_display_free_events (display);
 
   meta_screen_free (display->screen, timestamp);
-
-#ifdef HAVE_STARTUP_NOTIFICATION
-  if (display->sn_display)
-    {
-      sn_display_unref (display->sn_display);
-      display->sn_display = NULL;
-    }
-#endif
 
   /* Must be after all calls to meta_window_unmanage() since they
    * unregister windows

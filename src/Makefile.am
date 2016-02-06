@@ -198,6 +198,8 @@ libmutter_la_SOURCES =				\
 	core/screen.c				\
 	core/screen-private.h			\
 	meta/screen.h				\
+	core/startup-notification.c		\
+	core/startup-notification-private.h	\
 	meta/types.h				\
 	core/restart.c				\
 	core/stack.c				\

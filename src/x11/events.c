@@ -1671,13 +1671,12 @@ meta_display_handle_xevent (MetaDisplay *display,
   meta_spew_event_print (display, event);
 #endif
 
-#ifdef HAVE_STARTUP_NOTIFICATION
-  if (sn_display_process_event (display->sn_display, event))
+  if (meta_startup_notification_handle_xevent (display->startup_notification,
+                                               event))
     {
       bypass_gtk = bypass_compositor = TRUE;
       goto out;
     }
-#endif
 
 #ifdef HAVE_WAYLAND
   if (meta_is_wayland_compositor () &&
