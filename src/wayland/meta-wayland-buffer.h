@@ -41,7 +41,6 @@ struct _MetaWaylandBuffer
   uint32_t ref_count;
 
   uint32_t accessible : 1;
-  uint32_t copied_data : 1;
 };
 
 MetaWaylandBuffer *     meta_wayland_buffer_from_resource       (struct wl_resource    *resource);

@@ -648,6 +648,8 @@ static void
 apply_pending_state (MetaWaylandSurface      *surface,
                      MetaWaylandPendingState *pending)
 {
+  gboolean release_new_buffer = FALSE;
+
   if (pending->newly_attached)
     {
       if (!surface->buffer && surface->window)
@@ -657,9 +659,16 @@ apply_pending_state (MetaWaylandSurface      *surface,
 
       if (pending->buffer)
         {
+          struct wl_shm_buffer *shm_buffer = wl_shm_buffer_get (pending->buffer->resource);
+
           meta_wayland_buffer_take_control (pending->buffer);
           CoglTexture *texture = meta_wayland_buffer_ensure_texture (pending->buffer);
           meta_surface_actor_wayland_set_texture (META_SURFACE_ACTOR_WAYLAND (surface->surface_actor), texture);
+
+          /* Release the buffer as soon as possible, so the client can reuse it
+          */
+          if (shm_buffer)
+            release_new_buffer = TRUE;
         }
     }
 
@@ -669,7 +678,7 @@ apply_pending_state (MetaWaylandSurface      *surface,
   if (!cairo_region_is_empty (pending->damage))
     surface_process_damage (surface, pending->damage);
 
-  if (pending->buffer && pending->buffer->copied_data)
+  if (release_new_buffer)
     meta_wayland_buffer_release_control (pending->buffer);
 
   surface->offset_x += pending->dx;

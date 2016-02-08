@@ -140,9 +140,6 @@ meta_wayland_buffer_ensure_texture (MetaWaylandBuffer *buffer)
 
   buffer->texture = texture;
 
-  if (shm_buffer)
-    buffer->copied_data = TRUE;
-
  out:
   return buffer->texture;
 }
