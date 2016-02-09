@@ -414,5 +414,5 @@ shell_app_system_search (const char *search_string)
       if (!g_utf8_validate (*ids, -1, NULL))
         **ids = '\0';
 
-    return results;
+  return results;
 }
