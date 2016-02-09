@@ -1258,12 +1258,12 @@ substitute_thread_count (const char *pipeline)
     return g_strdup (pipeline);
 
 #ifdef _SC_NPROCESSORS_ONLN
-    {
-      int n_processors = sysconf (_SC_NPROCESSORS_ONLN); /* includes hyper-threading */
-      n_threads = MIN (MAX (1, n_processors - 1), 64);
-    }
+  {
+    int n_processors = sysconf (_SC_NPROCESSORS_ONLN); /* includes hyper-threading */
+    n_threads = MIN (MAX (1, n_processors - 1), 64);
+  }
 #else
-    n_threads = 3;
+  n_threads = 3;
 #endif
 
   result = g_string_new (NULL);
