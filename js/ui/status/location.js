@@ -7,12 +7,16 @@ const Lang = imports.lang;
 const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
+const ModalDialog = imports.ui.modalDialog;
 const Shell = imports.gi.Shell;
+const St = imports.gi.St;
 
 const LOCATION_SCHEMA = 'org.gnome.system.location';
 const MAX_ACCURACY_LEVEL = 'max-accuracy-level';
 const ENABLED = 'enabled';
-const APPS = 'applications';
+
+const APP_PERMISSIONS_TABLE = 'desktop';
+const APP_PERMISSIONS_ID = 'geolocation';
 
 const GeoclueAccuracyLevel = {
     NONE: 0,
@@ -46,6 +50,26 @@ var AgentIface = '<node> \
     </method> \
   </interface> \
 </node>';
+
+var XdgAppIface = '<node> \
+  <interface name="org.freedesktop.XdgApp.PermissionStore"> \
+    <method name="Lookup"> \
+      <arg name="table" type="s" direction="in"/> \
+      <arg name="id" type="s" direction="in"/> \
+      <arg name="permissions" type="a{sas}" direction="out"/> \
+      <arg name="data" type="v" direction="out"/> \
+    </method> \
+    <method name="Set"> \
+      <arg name="table" type="s" direction="in"/> \
+      <arg name="create" type="b" direction="in"/> \
+      <arg name="id" type="s" direction="in"/> \
+      <arg name="app_permissions" type="a{sas}" direction="in"/> \
+      <arg name="data" type="v" direction="in"/> \
+    </method> \
+  </interface> \
+</node>';
+
+const PermissionStore = Gio.DBusProxy.makeProxyWrapper(XdgAppIface);
 
 const Indicator = new Lang.Class({
     Name: 'LocationIndicator',
@@ -84,73 +108,200 @@ const Indicator = new Lang.Class({
         this._onSessionUpdated();
         this._onMaxAccuracyLevelChanged();
         this._connectToGeoclue();
+        this._connectToPermissionStore();
     },
 
     get MaxAccuracyLevel() {
         return this._getMaxAccuracyLevel();
     },
 
-    AuthorizeApp: function(desktop_id, reqAccuracyLevel) {
-        let apps = this._settings.get_value(APPS);
-        let nApps = apps.n_children();
+    AuthorizeAppAsync: function(params, invocation) {
+        let [desktop_id, reqAccuracyLevel] = params;
+        log("%s is requesting location".format(desktop_id));
 
-        for (let i = 0; i < nApps; i++) {
-            let [app, levelStr] = apps.get_child_value(i).deep_unpack();
-            if (app != desktop_id)
-                continue;
+        let callback = function(level, timesAllowed) {
+            if (level >= GeoclueAccuracyLevel.NONE && timesAllowed > 2) {
+                log("%s is in store".format(desktop_id));
+                let accuracyLevel = clamp(reqAccuracyLevel, 0, level);
+                this._completeAuthorizeApp(desktop_id,
+                                           accuracyLevel,
+                                           timesAllowed,
+                                           invocation);
+            } else {
+                log("%s not in store".format(desktop_id));
+                this._userAuthorizeApp(desktop_id,
+                                       reqAccuracyLevel,
+                                       timesAllowed,
+                                       invocation);
+            }
+        }
+        this._fetchPermissionFromStore(desktop_id, Lang.bind(this, callback);
+    },
 
-            level = GeoclueAccuracyLevel[levelStr.toUpperCase()] ||
-                    GeoclueAccuracyLevel.NONE;
-            if (level == GeoclueAccuracyLevel.NONE)
-                return [false, 0];
-
-            let allowedAccuracyLevel = clamp(reqAccuracyLevel, 0, level);
-            allowedAccuracyLevel = clamp(allowedAccuracyLevel, 0, this._getMaxAccuracyLevel());
-
-            return [true, allowedAccuracyLevel];
+    _userAuthorizeApp: function(desktopId, reqAccuracyLevel, timesAllowed, invocation) {
+        var appSystem = Shell.AppSystem.get_default();
+        var app = appSystem.lookup_app(desktopId + ".desktop");
+        if (app == null) {
+            this._completeAuthorizeApp(desktopId,
+                                       GeoclueAccuracyLevel.NONE,
+                                       timesAllowed,
+                                       invocation);
+            return;
         }
 
-        return [false, 0];
+        var name = app.get_name();
+        var icon = app.get_app_info().get_icon();
+        var reason = app.get_string("X-Geoclue-Reason");
+        var allowCallback = function() {
+            this._completeAuthorizeApp(desktopId,
+                                       reqAccuracyLevel,
+                                       timesAllowed,
+                                       invocation);
+        };
+        var denyCallback = function() {
+            this._completeAuthorizeApp(desktopId,
+                                       GeoclueAccuracyLevel.NONE,
+                                       timesAllowed,
+                                       invocation);
+        };
+
+        this._showAppAuthDialog(name,
+                                reason,
+                                icon,
+                                Lang.bind(this, allowCallback),
+                                Lang.bind(this, denyCallback));
+    },
+
+    _showAppAuthDialog: function(name, reason, icon, allowCallback, denyCallback) {
+        if (this._dialog == null)
+            this._dialog = new GeolocationDialog(name, reason, icon);
+        else
+            this._dialog.update(name, reason, icon);
+
+        let closedId = this._dialog.connect('closed', function() {
+            this._dialog.disconnect(closedId);
+            if (this._dialog.allowed)
+                allowCallback ();
+            else
+                denyCallback ();
+        }.bind(this));
+
+        this._dialog.open(global.get_current_time ());
+    },
+
+    _completeAuthorizeApp: function(desktopId,
+                                    accuracyLevel,
+                                    timesAllowed,
+                                    invocation) {
+        if (accuracyLevel == GeoclueAccuracyLevel.NONE) {
+            invocation.return_value(GLib.Variant.new('(bu)',
+                                                     [false, accuracyLevel]));
+            this._saveToPermissionStore(desktopId, accuracyLevel, 0);
+            return;
+        }
+
+        let allowedAccuracyLevel = clamp(accuracyLevel,
+                                         0,
+                                         this._getMaxAccuracyLevel());
+        invocation.return_value(GLib.Variant.new('(bu)',
+                                                 [true, allowedAccuracyLevel]));
+
+        this._saveToPermissionStore(desktopId, allowedAccuracyLevel, timesAllowed + 1);
+    },
+
+    _fetchPermissionFromStore: function(desktopId, callback) {
+        if (this._permStoreProxy == null) {
+            callback (-1, 0);
+
+            return;
+        }
+
+        this._permStoreProxy.LookupRemote(APP_PERMISSIONS_TABLE,
+                                          APP_PERMISSIONS_ID,
+                                          function(result, error) {
+            if (error != null) {
+                log(error.message);
+                callback(-1, 0);
+
+                return;
+            }
+
+            let [permissions, data] = result;
+            let permission = permissions[desktopId];
+            if (permission == null) {
+                callback(-1, 0);
+
+                return;
+            }
+
+            let levelStr = permission[0];
+            let level = GeoclueAccuracyLevel[levelStr.toUpperCase()] ||
+                        GeoclueAccuracyLevel.NONE;
+            let timesAllowed = data.get_byte();
+
+            callback(level, timesAllowed);
+        });
+    },
+
+    _saveToPermissionStore: function(desktopId,
+                                     allowedAccuracyLevel,
+                                     timesAllowed) {
+        if (timesAllowed > 2 || this._permStoreProxy == null)
+            return;
+
+        let levelStr = Object.keys(GeoclueAccuracyLevel)[allowedAccuracyLevel]; 
+        let permission = { desktopId: [levelStr] };
+        let permissions = GLib.Variant.new('a{sas}', [permission]));
+        let data = GLib.Variant.new('y', timesAllowed);
+
+        this._permStoreProxy.SetRemote(APP_PERMISSIONS_TABLE,
+                                       true,
+                                       APP_PERMISSIONS_ID,
+                                       permissions,
+                                       data,
+                                       function (result, error) {
+            log(error.message);
+        });
     },
 
     _syncIndicator: function() {
-        if (this._proxy == null) {
+        if (this._managerProxy == null) {
             this._indicator.visible = false;
             this._item.actor.visible = false;
             return;
         }
 
-        this._indicator.visible = this._proxy.InUse;
+        this._indicator.visible = this._managerProxy.InUse;
         this._item.actor.visible = this._indicator.visible;
         this._updateMenuLabels();
     },
 
     _connectToGeoclue: function() {
-        if (this._proxy != null || this._connecting)
+        if (this._managerProxy != null || this._connecting)
             return false;
 
         this._connecting = true;
         new GeoclueManager(Gio.DBus.system,
                            'org.freedesktop.GeoClue2',
                            '/org/freedesktop/GeoClue2/Manager',
-                           Lang.bind(this, this._onProxyReady));
+                           Lang.bind(this, this._onManagerProxyReady));
         return true;
     },
 
-    _onProxyReady: function(proxy, error) {
+    _onManagerProxyReady: function(proxy, error) {
         if (error != null) {
             log(error.message);
             this._connecting = false;
             return;
         }
 
-        this._proxy = proxy;
-        this._propertiesChangedId = this._proxy.connect('g-properties-changed',
+        this._managerProxy = proxy;
+        this._propertiesChangedId = this._managerProxy.connect('g-properties-changed',
                                                         Lang.bind(this, this._onGeocluePropsChanged));
 
         this._syncIndicator();
 
-        this._proxy.AddAgentRemote('gnome-shell', Lang.bind(this, this._onAgentRegistered));
+        this._managerProxy.AddAgentRemote('gnome-shell', Lang.bind(this, this._onAgentRegistered));
     },
 
     _onAgentRegistered: function(result, error) {
@@ -163,10 +314,10 @@ const Indicator = new Lang.Class({
 
     _onGeoclueVanished: function() {
         if (this._propertiesChangedId) {
-            this._proxy.disconnect(this._propertiesChangedId);
+            this._managerProxy.disconnect(this._propertiesChangedId);
             this._propertiesChangedId = 0;
         }
-        this._proxy = null;
+        this._managerProxy = null;
 
         this._syncIndicator();
     },
@@ -221,9 +372,85 @@ const Indicator = new Lang.Class({
         let unpacked = properties.deep_unpack();
         if ("InUse" in unpacked)
             this._syncIndicator();
-    }
+    },
+
+    _connectToPermissionStore: function() {
+        this._permStoreProxy = null;
+        new PermissionStore(Gio.DBus.session,
+                           'org.freedesktop.XdgApp',
+                           '/org/freedesktop/XdgApp/PermissionStore',
+                           Lang.bind(this, this._onPermStoreProxyReady));
+    },
+
+    _onPermStoreProxyReady: function(proxy, error) {
+        if (error != null) {
+            log(error.message);
+            return;
+        }
+
+        this._permStoreProxy = proxy;
+    },
 });
 
 function clamp(value, min, max) {
     return Math.max(min, Math.min(max, value));
 }
+
+const GeolocationDialog = new Lang.Class({
+    Name: 'GeolocationDialog',
+    Extends: ModalDialog.ModalDialog,
+
+    // FIXME: Would be nice to show the application icon too
+    _init: function(name, reason, icon) {
+        this.parent({ destroyOnClose: false });
+
+        let text = _("'%s' is requesting access to location data.").format (name);
+        this._label = new St.Label({ style_class: 'prompt-dialog-description',
+                                     text: text });
+
+        this.contentLayout.add(this._label, {});
+
+        if (reason != null) {
+            this._reasonLabel = new St.Label({ style_class: 'prompt-dialog-description',
+                                               text: reason });
+            this.contentLayout.add(this._reasonLabel, {});
+        } else {
+            this._reasonLabel = null;
+        }
+
+        this._allowButton = this.addButton({ label: _("Confirm"),
+                                             action: this._onAllowClicked.bind(this),
+                                             default: false },
+                                           { expand: true, x_fill: false, x_align: St.Align.END });
+        this._denyButton = this.addButton({ label: _("Cancel"),
+                                            action: this._onDisallowClicked.bind(this),
+                                            default: true },
+                                          { expand: true, x_fill: false, x_align: St.Align.START });
+    },
+
+    update: function(name, reason, icon) {
+        let text = _("'%s' is requesting access to location data.").format (name);
+        this._label.text = text;
+
+        if (this._reasonLabel != null) {
+            this.contentLayout.remove(this._reasonLabel, {});
+            this._reasonLabel = null;
+        }
+
+        if (reason != null) {
+            this._reasonLabel = new St.Label({ style_class: 'prompt-dialog-description',
+                                               text: reason });
+            this.contentLayout.add(this._reasonLabel, {});
+        }
+    },
+
+    _onAllowClicked: function() {
+        this.allowed = true;
+        this.close();
+    },
+
+    _onDisallowClicked: function() {
+        this.allowed = false;
+        this.close();
+    }
+});
