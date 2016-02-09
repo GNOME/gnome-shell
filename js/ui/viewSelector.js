@@ -156,7 +156,7 @@ const ViewSelector = new Lang.Class({
 
         this.appDisplay = new AppDisplay.AppDisplay();
         this._appsPage = this._addPage(this.appDisplay.actor,
-                                       _("Applications"), 'view-grid-symbolic');
+                                       _("Applications"), 'view-app-grid-symbolic');
 
         this._searchResults = new Search.SearchResults();
         this._searchPage = this._addPage(this._searchResults.actor,

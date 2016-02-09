@@ -259,7 +259,7 @@ const ShowAppsIcon = new Lang.Class({
     },
 
     _createIcon: function(size) {
-        this._iconActor = new St.Icon({ icon_name: 'view-grid-symbolic',
+        this._iconActor = new St.Icon({ icon_name: 'view-app-grid-symbolic',
                                         icon_size: size,
                                         style_class: 'show-apps-icon',
                                         track_hover: true });
