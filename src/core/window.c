@@ -4816,7 +4816,12 @@ meta_window_set_focused_internal (MetaWindow *window,
        */
       if (meta_prefs_get_focus_mode () == G_DESKTOP_FOCUS_MODE_CLICK ||
           !meta_prefs_get_raise_on_click())
-        meta_display_ungrab_focus_window_button (window->display, window);
+        {
+          meta_display_ungrab_focus_window_button (window->display, window);
+          /* Since we ungrab with XIAnyModifier above, all button
+             grabs go way so we need to re-grab the window buttons. */
+          meta_display_grab_window_buttons (window->display, window->xwindow);
+        }
 
       g_signal_emit (window, window_signals[FOCUS], 0);
 

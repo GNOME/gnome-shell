@@ -902,6 +902,16 @@ calc_grab_modifiers (MetaKeyBindingManager *keys,
   XIGrabModifiers mods;
   GArray *mods_array = g_array_new (FALSE, TRUE, sizeof (XIGrabModifiers));
 
+  /* The X server crashes if XIAnyModifier gets passed in with any
+     other bits. It doesn't make sense to ask for a grab of
+     XIAnyModifier plus other bits anyway so we avoid that. */
+  if (modmask & XIAnyModifier)
+    {
+      mods = (XIGrabModifiers) { XIAnyModifier, 0 };
+      g_array_append_val (mods_array, mods);
+      return mods_array;
+    }
+
   mods = (XIGrabModifiers) { modmask, 0 };
   g_array_append_val (mods_array, mods);
 
@@ -1061,7 +1071,7 @@ meta_display_grab_focus_window_button (MetaDisplay *display,
    * XSync()
    */
 
-  meta_change_buttons_grab (keys, window->xwindow, TRUE, TRUE, 0);
+  meta_change_buttons_grab (keys, window->xwindow, TRUE, TRUE, XIAnyModifier);
   window->have_focus_click_grab = TRUE;
 }
 
@@ -1076,7 +1086,7 @@ meta_display_ungrab_focus_window_button (MetaDisplay *display,
   if (!window->have_focus_click_grab)
     return;
 
-  meta_change_buttons_grab (keys, window->xwindow, FALSE, FALSE, 0);
+  meta_change_buttons_grab (keys, window->xwindow, FALSE, FALSE, XIAnyModifier);
   window->have_focus_click_grab = FALSE;
 }
 
