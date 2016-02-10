@@ -894,6 +894,31 @@ on_keymap_changed (MetaBackend *backend,
   grab_key_bindings (display);
 }
 
+static GArray *
+calc_grab_modifiers (MetaKeyBindingManager *keys,
+                     unsigned int modmask)
+{
+  unsigned int ignored_mask;
+  XIGrabModifiers mods;
+  GArray *mods_array = g_array_new (FALSE, TRUE, sizeof (XIGrabModifiers));
+
+  mods = (XIGrabModifiers) { modmask, 0 };
+  g_array_append_val (mods_array, mods);
+
+  for (ignored_mask = 1;
+       ignored_mask <= keys->ignored_modifier_mask;
+       ++ignored_mask)
+    {
+      if (ignored_mask & keys->ignored_modifier_mask)
+        {
+          mods = (XIGrabModifiers) { modmask | ignored_mask, 0 };
+          g_array_append_val (mods_array, mods);
+        }
+    }
+
+  return mods_array;
+}
+
 static void
 meta_change_button_grab (MetaKeyBindingManager *keys,
                          Window                  xwindow,
@@ -908,46 +933,30 @@ meta_change_button_grab (MetaKeyBindingManager *keys,
   MetaBackendX11 *backend = META_BACKEND_X11 (meta_get_backend ());
   Display *xdisplay = meta_backend_x11_get_xdisplay (backend);
 
-  unsigned int ignored_mask;
   unsigned char mask_bits[XIMaskLen (XI_LASTEVENT)] = { 0 };
   XIEventMask mask = { XIAllMasterDevices, sizeof (mask_bits), mask_bits };
+  GArray *mods;
 
   XISetMask (mask.mask, XI_ButtonPress);
   XISetMask (mask.mask, XI_ButtonRelease);
   XISetMask (mask.mask, XI_Motion);
 
-  ignored_mask = 0;
-  while (ignored_mask <= keys->ignored_modifier_mask)
-    {
-      XIGrabModifiers mods;
+  mods = calc_grab_modifiers (keys, modmask);
 
-      if (ignored_mask & ~(keys->ignored_modifier_mask))
-        {
-          /* Not a combination of ignored modifiers
-           * (it contains some non-ignored modifiers)
-           */
-          ++ignored_mask;
-          continue;
-        }
+  /* GrabModeSync means freeze until XAllowEvents */
+  if (grab)
+    XIGrabButton (xdisplay,
+                  META_VIRTUAL_CORE_POINTER_ID,
+                  button, xwindow, None,
+                  sync ? XIGrabModeSync : XIGrabModeAsync,
+                  XIGrabModeAsync, False,
+                  &mask, mods->len, (XIGrabModifiers *)mods->data);
+  else
+    XIUngrabButton (xdisplay,
+                    META_VIRTUAL_CORE_POINTER_ID,
+                    button, xwindow, mods->len, (XIGrabModifiers *)mods->data);
 
-      mods = (XIGrabModifiers) { modmask | ignored_mask, 0 };
-
-      /* GrabModeSync means freeze until XAllowEvents */
-
-      if (grab)
-        XIGrabButton (xdisplay,
-                      META_VIRTUAL_CORE_POINTER_ID,
-                      button, xwindow, None,
-                      sync ? XIGrabModeSync : XIGrabModeAsync,
-                      XIGrabModeAsync, False,
-                      &mask, 1, &mods);
-      else
-        XIUngrabButton (xdisplay,
-                        META_VIRTUAL_CORE_POINTER_ID,
-                        button, xwindow, 1, &mods);
-
-      ++ignored_mask;
-    }
+  g_array_free (mods, TRUE);
 }
 
 ClutterModifierType
@@ -1149,8 +1158,6 @@ meta_change_keygrab (MetaKeyBindingManager *keys,
                      gboolean               grab,
                      MetaResolvedKeyCombo  *resolved_combo)
 {
-  unsigned int ignored_mask;
-
   unsigned char mask_bits[XIMaskLen (XI_LASTEVENT)] = { 0 };
   XIEventMask mask = { XIAllMasterDevices, sizeof (mask_bits), mask_bits };
 
@@ -1162,6 +1169,7 @@ meta_change_keygrab (MetaKeyBindingManager *keys,
 
   MetaBackendX11 *backend = META_BACKEND_X11 (meta_get_backend ());
   Display *xdisplay = meta_backend_x11_get_xdisplay (backend);
+  GArray *mods;
 
   /* Grab keycode/modmask, together with
    * all combinations of ignored modifiers.
@@ -1173,35 +1181,21 @@ meta_change_keygrab (MetaKeyBindingManager *keys,
               grab ? "Grabbing" : "Ungrabbing",
               resolved_combo->keycode, resolved_combo->mask, xwindow);
 
-  ignored_mask = 0;
-  while (ignored_mask <= keys->ignored_modifier_mask)
-    {
-      XIGrabModifiers mods;
+  mods = calc_grab_modifiers (keys, resolved_combo->mask);
 
-      if (ignored_mask & ~(keys->ignored_modifier_mask))
-        {
-          /* Not a combination of ignored modifiers
-           * (it contains some non-ignored modifiers)
-           */
-          ++ignored_mask;
-          continue;
-        }
+  if (grab)
+    XIGrabKeycode (xdisplay,
+                   META_VIRTUAL_CORE_KEYBOARD_ID,
+                   resolved_combo->keycode, xwindow,
+                   XIGrabModeSync, XIGrabModeAsync,
+                   False, &mask, mods->len, (XIGrabModifiers *)mods->data);
+  else
+    XIUngrabKeycode (xdisplay,
+                     META_VIRTUAL_CORE_KEYBOARD_ID,
+                     resolved_combo->keycode, xwindow,
+                     mods->len, (XIGrabModifiers *)mods->data);
 
-      mods = (XIGrabModifiers) { resolved_combo->mask | ignored_mask, 0 };
-
-      if (grab)
-        XIGrabKeycode (xdisplay,
-                       META_VIRTUAL_CORE_KEYBOARD_ID,
-                       resolved_combo->keycode, xwindow,
-                       XIGrabModeSync, XIGrabModeAsync,
-                       False, &mask, 1, &mods);
-      else
-        XIUngrabKeycode (xdisplay,
-                         META_VIRTUAL_CORE_KEYBOARD_ID,
-                         resolved_combo->keycode, xwindow, 1, &mods);
-
-      ++ignored_mask;
-    }
+  g_array_free (mods, TRUE);
 }
 
 typedef struct
