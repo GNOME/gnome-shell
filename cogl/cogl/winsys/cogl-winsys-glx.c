@@ -65,11 +65,15 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/time.h>
+#include <errno.h>
 #include <fcntl.h>
 #include <time.h>
+#include <unistd.h>
 
 #include <GL/glx.h>
 #include <X11/Xlib.h>
+
+#include <glib.h>
 
 /* This is a relatively new extension */
 #ifndef GLX_GENERATE_RESET_ON_VIDEO_MEMORY_PURGE_NV
@@ -100,6 +104,14 @@ typedef struct _CoglOnscreenGLX
   CoglBool pending_sync_notify;
   CoglBool pending_complete_notify;
   CoglBool pending_resize_notify;
+
+  GThread *swap_wait_thread;
+  GQueue *swap_wait_queue;
+  GCond swap_wait_cond;
+  GMutex swap_wait_mutex;
+  int swap_wait_pipe[2];
+  GLXContext swap_wait_context;
+  CoglBool closing_down;
 } CoglOnscreenGLX;
 
 typedef struct _CoglPixmapTextureEyeGLX
@@ -885,6 +897,28 @@ update_winsys_features (CoglContext *context, CoglError **error)
                       COGL_FEATURE_ID_PRESENTATION_TIME,
                       TRUE);
     }
+  else
+    {
+      CoglGpuInfo *info = &context->gpu;
+      if (glx_display->have_vblank_counter &&
+	  info->vendor == COGL_GPU_INFO_VENDOR_NVIDIA)
+        {
+          COGL_FLAGS_SET (context->winsys_features,
+                          COGL_WINSYS_FEATURE_SYNC_AND_COMPLETE_EVENT, TRUE);
+          COGL_FLAGS_SET (context->winsys_features,
+                          COGL_WINSYS_FEATURE_SWAP_BUFFERS_EVENT, TRUE);
+          /* TODO: remove this deprecated feature */
+          COGL_FLAGS_SET (context->features,
+                          COGL_FEATURE_ID_SWAP_BUFFERS_EVENT,
+                          TRUE);
+          COGL_FLAGS_SET (context->features,
+                          COGL_FEATURE_ID_PRESENTATION_TIME,
+                          TRUE);
+          COGL_FLAGS_SET (context->private_features,
+                          COGL_PRIVATE_FEATURE_THREADED_SWAP_WAIT,
+                          TRUE);
+        }
+    }
 
   /* We'll manually handle queueing dirty events in response to
    * Expose events from X */
@@ -1481,7 +1515,8 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
     }
 
 #ifdef GLX_INTEL_swap_event
-  if (_cogl_winsys_has_feature (COGL_WINSYS_FEATURE_SYNC_AND_COMPLETE_EVENT))
+  if (_cogl_winsys_has_feature (COGL_WINSYS_FEATURE_SYNC_AND_COMPLETE_EVENT) &&
+      !_cogl_has_private_feature (context, COGL_PRIVATE_FEATURE_THREADED_SWAP_WAIT))
     {
       GLXDrawable drawable =
         glx_onscreen->glxwin ? glx_onscreen->glxwin : xlib_onscreen->xwin;
@@ -1522,6 +1557,31 @@ _cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
     {
       cogl_object_unref (xlib_onscreen->output);
       xlib_onscreen->output = NULL;
+    }
+
+  if (glx_onscreen->swap_wait_thread)
+    {
+      g_mutex_lock (&glx_onscreen->swap_wait_mutex);
+      glx_onscreen->closing_down = TRUE;
+      g_cond_signal (&glx_onscreen->swap_wait_cond);
+      g_mutex_unlock (&glx_onscreen->swap_wait_mutex);
+      g_thread_join (glx_onscreen->swap_wait_thread);
+      glx_onscreen->swap_wait_thread = NULL;
+
+      g_cond_clear (&glx_onscreen->swap_wait_cond);
+      g_mutex_clear (&glx_onscreen->swap_wait_mutex);
+
+      g_queue_free (glx_onscreen->swap_wait_queue);
+      glx_onscreen->swap_wait_queue = NULL;
+
+      _cogl_poll_renderer_remove_fd (context->display->renderer,
+                                     glx_onscreen->swap_wait_pipe[0]);
+      
+      close (glx_onscreen->swap_wait_pipe[0]);
+      close (glx_onscreen->swap_wait_pipe[1]);
+
+      glx_renderer->glXDestroyContext (xlib_renderer->xdpy,
+                                       glx_onscreen->swap_wait_context);
     }
 
   _cogl_xlib_renderer_trap_errors (context->display->renderer, &old_state);
@@ -1755,6 +1815,199 @@ set_frame_info_output (CoglOnscreen *onscreen,
       if (refresh_rate != 0.0)
         info->refresh_rate = refresh_rate;
     }
+}
+
+static gpointer
+threaded_swap_wait (gpointer data)
+{
+  CoglOnscreen *onscreen = data;
+
+  CoglOnscreenGLX *glx_onscreen = onscreen->winsys;
+
+  CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
+  CoglContext *context = framebuffer->context;
+  CoglDisplay *display = context->display;
+  CoglXlibRenderer *xlib_renderer = _cogl_xlib_renderer_get_data (display->renderer);
+  CoglGLXDisplay *glx_display = display->winsys;
+  CoglGLXRenderer *glx_renderer = display->renderer->winsys;
+  GLXDrawable dummy_drawable;
+
+  if (glx_display->dummy_glxwin)
+    dummy_drawable = glx_display->dummy_glxwin;
+  else
+    dummy_drawable = glx_display->dummy_xwin;
+
+  glx_renderer->glXMakeContextCurrent (xlib_renderer->xdpy,
+                                       dummy_drawable,
+                                       dummy_drawable,
+                                       glx_onscreen->swap_wait_context);
+
+  g_mutex_lock (&glx_onscreen->swap_wait_mutex);
+
+  while (TRUE)
+    {
+      gpointer queue_element;
+      uint32_t vblank_counter;
+
+      while (!glx_onscreen->closing_down && glx_onscreen->swap_wait_queue->length == 0)
+         g_cond_wait (&glx_onscreen->swap_wait_cond, &glx_onscreen->swap_wait_mutex);
+
+      if (glx_onscreen->closing_down)
+         break;
+
+      queue_element = g_queue_pop_tail (glx_onscreen->swap_wait_queue);
+      vblank_counter = GPOINTER_TO_UINT(queue_element);
+
+      g_mutex_unlock (&glx_onscreen->swap_wait_mutex);
+      glx_renderer->glXWaitVideoSync (2,
+                                      (vblank_counter + 1) % 2,
+                                      &vblank_counter);
+      g_mutex_lock (&glx_onscreen->swap_wait_mutex);
+
+      if (!glx_onscreen->closing_down)
+         {
+           int bytes_written = 0;
+
+           union {
+             char bytes[8];
+             int64_t presentation_time;
+           } u;
+
+           u.presentation_time = get_monotonic_time_ns ();
+
+           while (bytes_written < 8)
+             {
+               int res = write (glx_onscreen->swap_wait_pipe[1], u.bytes + bytes_written, 8 - bytes_written);
+               if (res == -1)
+                 {
+                   if (errno != EINTR)
+                     g_error ("Error writing to swap notification pipe: %s\n",
+                              g_strerror (errno));
+                 }
+               else
+                 {
+                   bytes_written += res;
+                 }
+             }
+         }
+    }
+
+  g_mutex_unlock (&glx_onscreen->swap_wait_mutex);
+
+  glx_renderer->glXMakeContextCurrent (xlib_renderer->xdpy,
+                                       None,
+                                       None,
+                                       NULL);
+
+  return NULL;
+}
+
+static int64_t
+threaded_swap_wait_pipe_prepare (void *user_data)
+{
+  return -1;
+}
+
+static void
+threaded_swap_wait_pipe_dispatch (void *user_data, int revents)
+{
+  CoglOnscreen *onscreen = user_data;
+  CoglOnscreenGLX *glx_onscreen = onscreen->winsys;
+
+  CoglFrameInfo *info;
+
+  if ((revents & COGL_POLL_FD_EVENT_IN))
+    {
+      int bytes_read = 0;
+
+      union {
+         char bytes[8];
+         int64_t presentation_time;
+      } u;
+
+      while (bytes_read < 8)
+         {
+           int res = read (glx_onscreen->swap_wait_pipe[0], u.bytes + bytes_read, 8 - bytes_read);
+           if (res == -1)
+             {
+               if (errno != EINTR)
+                 g_error ("Error reading from swap notification pipe: %s\n",
+                          g_strerror (errno));
+             }
+           else
+             {
+               bytes_read += res;
+             }
+         }
+
+      set_sync_pending (onscreen);
+      set_complete_pending (onscreen);
+
+      info = g_queue_peek_head (&onscreen->pending_frame_infos);
+      info->presentation_time = u.presentation_time;
+    }
+}
+
+static void
+start_threaded_swap_wait (CoglOnscreen *onscreen,
+                           uint32_t      vblank_counter)
+{
+  CoglOnscreenGLX *glx_onscreen = onscreen->winsys;
+  CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
+  CoglContext *context = framebuffer->context;
+
+  if (glx_onscreen->swap_wait_thread == NULL)
+    {
+      CoglDisplay *display = context->display;
+      CoglGLXRenderer *glx_renderer = display->renderer->winsys;
+      CoglGLXDisplay *glx_display = display->winsys;
+      CoglOnscreenXlib *xlib_onscreen = onscreen->winsys;
+      CoglXlibRenderer *xlib_renderer =
+        _cogl_xlib_renderer_get_data (display->renderer);
+
+      GLXDrawable drawable =
+        glx_onscreen->glxwin ? glx_onscreen->glxwin : xlib_onscreen->xwin;
+      int i;
+
+      ensure_ust_type (display->renderer, drawable);
+      
+      if ((pipe (glx_onscreen->swap_wait_pipe) == -1))
+        g_error ("Couldn't create pipe for swap notification: %s\n",
+                 g_strerror (errno));
+
+      for (i = 0; i < 2; i++)
+	{
+	  if (fcntl(glx_onscreen->swap_wait_pipe[i], F_SETFD,
+		    fcntl(glx_onscreen->swap_wait_pipe[i], F_GETFD, 0) | FD_CLOEXEC) == -1)
+	    g_error ("Couldn't set swap notification pipe CLOEXEC: %s\n",
+		     g_strerror (errno));
+	}
+
+      _cogl_poll_renderer_add_fd (display->renderer,
+                                  glx_onscreen->swap_wait_pipe[0],
+                                  COGL_POLL_FD_EVENT_IN,
+                                  threaded_swap_wait_pipe_prepare,
+                                  threaded_swap_wait_pipe_dispatch,
+                                  onscreen);
+
+      glx_onscreen->swap_wait_queue = g_queue_new ();
+      g_mutex_init (&glx_onscreen->swap_wait_mutex);
+      g_cond_init (&glx_onscreen->swap_wait_cond);
+      glx_onscreen->swap_wait_context =
+         glx_renderer->glXCreateNewContext (xlib_renderer->xdpy,
+                                            glx_display->fbconfig,
+                                            GLX_RGBA_TYPE,
+                                            glx_display->glx_context,
+                                            True);
+      glx_onscreen->swap_wait_thread = g_thread_new ("cogl_glx_swap_wait",
+                                                     threaded_swap_wait,
+                                                     onscreen);
+    }
+
+  g_mutex_lock (&glx_onscreen->swap_wait_mutex);
+  g_queue_push_head (glx_onscreen->swap_wait_queue, GUINT_TO_POINTER(vblank_counter));
+  g_cond_signal (&glx_onscreen->swap_wait_cond);
+  g_mutex_unlock (&glx_onscreen->swap_wait_mutex);
 }
 
 static void
@@ -2000,19 +2253,38 @@ _cogl_winsys_onscreen_swap_buffers_with_damage (CoglOnscreen *onscreen,
 
   if (framebuffer->config.swap_throttled)
     {
-      uint32_t end_frame_vsync_counter = 0;
-
       have_counter = glx_display->have_vblank_counter;
 
-      /* If the swap_region API is also being used then we need to track
-       * the vsync counter for each swap request so we can manually
-       * throttle swap_region requests. */
-      if (have_counter)
-        end_frame_vsync_counter = _cogl_winsys_get_vsync_counter (context);
-
-      if (!glx_renderer->glXSwapInterval)
+      if (glx_renderer->glXSwapInterval)
         {
-          CoglBool can_wait = glx_display->can_vblank_wait;
+          if (_cogl_has_private_feature (context, COGL_PRIVATE_FEATURE_THREADED_SWAP_WAIT))
+            {
+	      /* If we didn't wait for the GPU here, then it's easy to get the case
+	       * where there is a VBlank between the point where we get the vsync counter
+	       * and the point where the GPU is ready to actually perform the glXSwapBuffers(),
+	       * and the swap wait terminates at the first VBlank rather than the one
+	       * where the swap buffers happens. Calling glFinish() here makes this a
+	       * rare race since the GPU is already ready to swap when we call glXSwapBuffers().
+	       * The glFinish() also prevents any serious damage if the rare race happens,
+	       * since it will wait for the preceding glXSwapBuffers() and prevent us from
+	       * getting premanently ahead. (For NVIDIA drivers, glFinish() after glXSwapBuffers()
+	       * waits for the buffer swap to happen.)
+	       */
+              _cogl_winsys_wait_for_gpu (onscreen);
+              start_threaded_swap_wait (onscreen, _cogl_winsys_get_vsync_counter (context));
+            }
+        }
+      else
+        {
+          CoglBool can_wait = have_counter || glx_display->can_vblank_wait;
+
+          uint32_t end_frame_vsync_counter = 0;
+
+          /* If the swap_region API is also being used then we need to track
+           * the vsync counter for each swap request so we can manually
+           * throttle swap_region requests. */
+          if (have_counter)
+            end_frame_vsync_counter = _cogl_winsys_get_vsync_counter (context);
 
           /* If we are going to wait for VBLANK manually, we not only
            * need to flush out pending drawing to the GPU before we

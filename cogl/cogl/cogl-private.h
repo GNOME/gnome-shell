@@ -77,6 +77,9 @@ typedef enum
   COGL_PRIVATE_FEATURE_GL_PROGRAMMABLE,
   COGL_PRIVATE_FEATURE_GL_EMBEDDED,
   COGL_PRIVATE_FEATURE_GL_WEB,
+  /* This is currently only implemented for GLX, but isn't actually
+   * that winsys dependent */
+  COGL_PRIVATE_FEATURE_THREADED_SWAP_WAIT,
 
   COGL_N_PRIVATE_FEATURES
 } CoglPrivateFeature;
