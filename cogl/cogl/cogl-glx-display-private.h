@@ -51,6 +51,9 @@ typedef struct _CoglGLXDisplay
 
   CoglBool found_fbconfig;
   CoglBool fbconfig_has_rgba_visual;
+  CoglBool is_direct;
+  CoglBool have_vblank_counter;
+  CoglBool can_vblank_wait;
   GLXFBConfig fbconfig;
 
   /* Single context for all wins */

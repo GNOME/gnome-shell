@@ -715,23 +715,25 @@ update_base_winsys_features (CoglRenderer *renderer)
 
   g_strfreev (split_extensions);
 
-  /* Note: the GLX_SGI_video_sync spec explicitly states this extension
-   * only works for direct contexts. */
-  if (!glx_renderer->is_direct)
-    {
-      glx_renderer->glXGetVideoSync = NULL;
-      glx_renderer->glXWaitVideoSync = NULL;
-      COGL_FLAGS_SET (glx_renderer->base_winsys_features,
-                      COGL_WINSYS_FEATURE_VBLANK_COUNTER,
-                      FALSE);
-    }
+  /* The GLX_SGI_video_sync spec explicitly states this extension
+   * only works for direct contexts; we don't know per-renderer
+   * if the context is direct or not, so we turn off the feature
+   * flag; we still use the extension within this file looking
+   * instead at glx_display->have_vblank_counter.
+   */
+  COGL_FLAGS_SET (glx_renderer->base_winsys_features,
+                  COGL_WINSYS_FEATURE_VBLANK_COUNTER,
+                  FALSE);
+
 
   COGL_FLAGS_SET (glx_renderer->base_winsys_features,
                   COGL_WINSYS_FEATURE_MULTIPLE_ONSCREEN,
                   TRUE);
 
-  if (glx_renderer->glXWaitVideoSync ||
-      glx_renderer->glXWaitForMsc)
+  /* Because of the direct-context dependency, the VBLANK_WAIT feature
+   * doesn't reflect the presence of GLX_SGI_video_sync.
+   */
+  if (glx_renderer->glXWaitForMsc)
     COGL_FLAGS_SET (glx_renderer->base_winsys_features,
                     COGL_WINSYS_FEATURE_VBLANK_WAIT,
                     TRUE);
@@ -864,7 +866,7 @@ update_winsys_features (CoglContext *context, CoglError **error)
    * by the SwapInterval so we have to throttle swap_region requests
    * manually... */
   if (_cogl_winsys_has_feature (COGL_WINSYS_FEATURE_SWAP_REGION) &&
-      _cogl_winsys_has_feature (COGL_WINSYS_FEATURE_VBLANK_WAIT))
+      (glx_display->have_vblank_counter || glx_display->can_vblank_wait))
     COGL_FLAGS_SET (context->winsys_features,
                     COGL_WINSYS_FEATURE_SWAP_REGION_THROTTLE, TRUE);
 
@@ -1142,11 +1144,13 @@ create_context (CoglDisplay *display, CoglError **error)
       return FALSE;
     }
 
-  glx_renderer->is_direct =
+  glx_display->is_direct =
     glx_renderer->glXIsDirect (xlib_renderer->xdpy, glx_display->glx_context);
+  glx_display->have_vblank_counter = glx_display->is_direct && glx_renderer->glXWaitVideoSync;
+  glx_display->can_vblank_wait = glx_renderer->glXWaitForMsc || glx_display->have_vblank_counter;
 
   COGL_NOTE (WINSYS, "Setting %s context",
-             glx_renderer->is_direct ? "direct" : "indirect");
+             glx_display->is_direct ? "direct" : "indirect");
 
   /* XXX: GLX doesn't let us make a context current without a window
    * so we create a dummy window that we can use while no CoglOnscreen
@@ -1658,12 +1662,13 @@ _cogl_winsys_wait_for_vblank (CoglOnscreen *onscreen)
   CoglContext *ctx = framebuffer->context;
   CoglGLXRenderer *glx_renderer;
   CoglXlibRenderer *xlib_renderer;
+  CoglGLXDisplay *glx_display;
 
   glx_renderer = ctx->display->renderer->winsys;
   xlib_renderer = _cogl_xlib_renderer_get_data (ctx->display->renderer);
+  glx_display = ctx->display->winsys;
 
-  if (glx_renderer->glXWaitForMsc ||
-      glx_renderer->glXGetVideoSync)
+  if (glx_display->can_vblank_wait)
     {
       CoglFrameInfo *info = g_queue_peek_tail (&onscreen->pending_frame_infos);
 
@@ -1759,6 +1764,7 @@ _cogl_winsys_onscreen_swap_region (CoglOnscreen *onscreen,
   CoglXlibRenderer *xlib_renderer =
     _cogl_xlib_renderer_get_data (context->display->renderer);
   CoglGLXRenderer *glx_renderer = context->display->renderer->winsys;
+  CoglGLXDisplay *glx_display = context->display->winsys;
   CoglOnscreenXlib *xlib_onscreen = onscreen->winsys;
   CoglOnscreenGLX *glx_onscreen = onscreen->winsys;
   GLXDrawable drawable =
@@ -1815,9 +1821,8 @@ _cogl_winsys_onscreen_swap_region (CoglOnscreen *onscreen,
 
   if (framebuffer->config.swap_throttled)
     {
-      have_counter =
-        _cogl_winsys_has_feature (COGL_WINSYS_FEATURE_VBLANK_COUNTER);
-      can_wait = _cogl_winsys_has_feature (COGL_WINSYS_FEATURE_VBLANK_WAIT);
+      have_counter = glx_display->have_vblank_counter;
+      can_wait = glx_display->can_vblank_wait;
     }
   else
     {
@@ -1974,6 +1979,7 @@ _cogl_winsys_onscreen_swap_buffers_with_damage (CoglOnscreen *onscreen,
   CoglXlibRenderer *xlib_renderer =
     _cogl_xlib_renderer_get_data (context->display->renderer);
   CoglGLXRenderer *glx_renderer = context->display->renderer->winsys;
+  CoglGLXDisplay *glx_display = context->display->winsys;
   CoglOnscreenXlib *xlib_onscreen = onscreen->winsys;
   CoglOnscreenGLX *glx_onscreen = onscreen->winsys;
   CoglBool have_counter;
@@ -1993,8 +1999,7 @@ _cogl_winsys_onscreen_swap_buffers_with_damage (CoglOnscreen *onscreen,
     {
       uint32_t end_frame_vsync_counter = 0;
 
-      have_counter =
-        _cogl_winsys_has_feature (COGL_WINSYS_FEATURE_VBLANK_COUNTER);
+      have_counter = glx_display->have_vblank_counter;
 
       /* If the swap_region API is also being used then we need to track
        * the vsync counter for each swap request so we can manually
@@ -2004,8 +2009,7 @@ _cogl_winsys_onscreen_swap_buffers_with_damage (CoglOnscreen *onscreen,
 
       if (!glx_renderer->glXSwapInterval)
         {
-          CoglBool can_wait =
-            _cogl_winsys_has_feature (COGL_WINSYS_FEATURE_VBLANK_WAIT);
+          CoglBool can_wait = glx_display->can_vblank_wait;
 
           /* If we are going to wait for VBLANK manually, we not only
            * need to flush out pending drawing to the GPU before we
