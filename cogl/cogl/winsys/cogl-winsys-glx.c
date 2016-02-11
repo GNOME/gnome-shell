@@ -192,6 +192,15 @@ find_onscreen_for_xid (CoglContext *context, uint32_t xid)
   return NULL;
 }
 
+static int64_t
+get_monotonic_time_ns (void)
+{
+  struct timespec ts;
+
+  clock_gettime (CLOCK_MONOTONIC, &ts);
+  return ts.tv_sec * G_GINT64_CONSTANT (1000000000) + ts.tv_nsec;
+}
+
 static void
 ensure_ust_type (CoglRenderer *renderer,
                  GLXDrawable drawable)
@@ -202,7 +211,6 @@ ensure_ust_type (CoglRenderer *renderer,
   int64_t msc;
   int64_t sbc;
   struct timeval tv;
-  struct timespec ts;
   int64_t current_system_time;
   int64_t current_monotonic_time;
 
@@ -232,9 +240,7 @@ ensure_ust_type (CoglRenderer *renderer,
 
   /* This is the time source that the newer (fixed) linux drm
    * drivers use (Linux >= 3.8) */
-  clock_gettime (CLOCK_MONOTONIC, &ts);
-  current_monotonic_time = (ts.tv_sec * G_GINT64_CONSTANT (1000000)) +
-    (ts.tv_nsec / G_GINT64_CONSTANT (1000));
+  current_monotonic_time = get_monotonic_time_ns () / 1000;
 
   if (current_monotonic_time > ust - 1000000 &&
       current_monotonic_time < ust + 1000000)
@@ -310,10 +316,7 @@ _cogl_winsys_get_clock_time (CoglContext *context)
       }
     case COGL_GLX_UST_IS_MONOTONIC_TIME:
       {
-        struct timespec ts;
-
-        clock_gettime (CLOCK_MONOTONIC, &ts);
-        return ts.tv_sec * G_GINT64_CONSTANT (1000000000) + ts.tv_nsec;
+        return get_monotonic_time_ns ();
       }
     }
 
@@ -1682,16 +1685,13 @@ _cogl_winsys_wait_for_vblank (CoglOnscreen *onscreen)
       else
         {
           uint32_t current_count;
-          struct timespec ts;
 
           glx_renderer->glXGetVideoSync (&current_count);
           glx_renderer->glXWaitVideoSync (2,
                                           (current_count + 1) % 2,
                                           &current_count);
 
-          clock_gettime (CLOCK_MONOTONIC, &ts);
-          info->presentation_time =
-            ts.tv_sec * G_GINT64_CONSTANT (1000000000) + ts.tv_nsec;
+          info->presentation_time = get_monotonic_time_ns ();
         }
     }
 }
