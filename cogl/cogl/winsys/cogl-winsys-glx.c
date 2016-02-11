@@ -296,6 +296,9 @@ _cogl_winsys_get_clock_time (CoglContext *context)
 {
   CoglGLXRenderer *glx_renderer = context->display->renderer->winsys;
 
+  if (!glx_renderer->glXWaitForMsc)
+    return get_monotonic_time_ns ();
+
   /* We don't call ensure_ust_type() because we don't have a drawable
    * to work with. cogl_get_clock_time() is documented to only work
    * once a valid, non-zero, timestamp has been retrieved from Cogl.
