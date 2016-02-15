@@ -80,6 +80,8 @@ var XdgAppIface = '<node> \
   </interface> \
 </node>';
 
+const PermissionStore = Gio.DBusProxy.makeProxyWrapper(XdgAppIface);
+
 const Indicator = new Lang.Class({
     Name: 'LocationIndicator',
     Extends: PanelMenu.SystemIndicator,
@@ -117,24 +119,26 @@ const Indicator = new Lang.Class({
         this._onSessionUpdated();
         this._onMaxAccuracyLevelChanged();
         this._connectToGeoclue();
+        this._connectToPermissionStore();
     },
 
     get MaxAccuracyLevel() {
         return this._getMaxAccuracyLevel();
     },
 
-    // We (and geoclue) have currently no way to reliably identifying apps so
-    // for now, lets just authorize all apps as long as they provide a valid
-    // desktop ID. We also ensure they don't get more accuracy than global max.
-    AuthorizeApp: function(desktop_id, reqAccuracyLevel) {
-        var appSystem = Shell.AppSystem.get_default();
-        var app = appSystem.lookup_app(desktop_id + ".desktop");
-        if (app == null) {
-            return [false, 0];
-        }
+    AuthorizeAppAsync: function(params, invocation) {
+        let [desktopId, reqAccuracyLevel] = params;
 
-        let allowedAccuracyLevel = clamp(reqAccuracyLevel, 0, this._getMaxAccuracyLevel());
-        return [true, allowedAccuracyLevel];
+        let authorizer = new AppAuthorizer(desktopId,
+                                           reqAccuracyLevel,
+                                           this._permStoreProxy,
+                                           this._getMaxAccuracyLevel());
+
+        authorizer.authorize(Lang.bind(this, function(accuracyLevel) {
+            let ret = (accuracyLevel != GeoclueAccuracyLevel.NONE);
+            invocation.return_value(GLib.Variant.new('(bu)',
+                                                     [ret, accuracyLevel]));
+        }));
     },
 
     _syncIndicator: function() {
@@ -245,7 +249,24 @@ const Indicator = new Lang.Class({
         let unpacked = properties.deep_unpack();
         if ("InUse" in unpacked)
             this._syncIndicator();
-    }
+    },
+
+    _connectToPermissionStore: function() {
+        this._permStoreProxy = null;
+        new PermissionStore(Gio.DBus.session,
+                           'org.freedesktop.XdgApp',
+                           '/org/freedesktop/XdgApp/PermissionStore',
+                           Lang.bind(this, this._onPermStoreProxyReady));
+    },
+
+    _onPermStoreProxyReady: function(proxy, error) {
+        if (error != null) {
+            log(error.message);
+            return;
+        }
+
+        this._permStoreProxy = proxy;
+    },
 });
 
 function clamp(value, min, max) {
