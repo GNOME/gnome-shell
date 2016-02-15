@@ -33,6 +33,7 @@ js/ui/keyboard.js
 js/ui/legacyTray.js
 js/ui/lookingGlass.js
 js/ui/main.js
+js/ui/messageList.js
 js/ui/messageTray.js
 js/ui/notificationDaemon.js
 js/ui/overviewControls.js

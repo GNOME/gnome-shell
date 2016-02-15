@@ -12,9 +12,9 @@ const St = imports.gi.St;
 const Tpl = imports.gi.TelepathyLogger;
 const Tp = imports.gi.TelepathyGLib;
 
-const Calendar = imports.ui.calendar;
 const History = imports.misc.history;
 const Main = imports.ui.main;
+const MessageList = imports.ui.messageList;
 const MessageTray = imports.ui.messageTray;
 const Params = imports.misc.params;
 const PopupMenu = imports.ui.popupMenu;
@@ -866,7 +866,7 @@ const ChatNotificationBanner = new Lang.Class({
     },
 
     _addMessage: function(message) {
-        let highlighter = new Calendar.URLHighlighter(message.body, true, true);
+        let highlighter = new MessageList.URLHighlighter(message.body, true, true);
         let body = highlighter.actor;
 
         let styles = message.styles;
