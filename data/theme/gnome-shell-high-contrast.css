@@ -849,6 +849,20 @@ StScrollBar {
   padding: 8px;
   font-size: .9em; }
 
+.message-media-control {
+  padding: 6px; }
+  .message-media-control:last-child:ltr {
+    padding-right: 18px; }
+  .message-media-control:last-child:rtl {
+    padding-left: 18px; }
+
+.media-message-cover-icon {
+  icon-size: 32px; }
+  .media-message-cover-icon.fallback {
+    icon-size: 16px;
+    padding: 8px;
+    border: 1px solid black; }
+
 .system-switch-user-submenu-icon.user-icon {
   icon-size: 20px;
   padding: 0 2px; }

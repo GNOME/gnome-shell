@@ -324,6 +324,9 @@ const Message = new Lang.Class({
                                             vertical: true, x_expand: true });
         hbox.add_actor(contentBox);
 
+        this._mediaControls = new St.BoxLayout();
+        hbox.add_actor(this._mediaControls);
+
         let titleBox = new St.BoxLayout();
         contentBox.add_actor(titleBox);
 
@@ -405,6 +408,15 @@ const Message = new Lang.Class({
         this._actionBin.visible = this.expanded;
     },
 
+    addMediaControl: function(iconName, callback) {
+        let icon = new St.Icon({ icon_name: iconName, icon_size: 16 });
+        let button = new St.Button({ style_class: 'message-media-control',
+                                     child: icon });
+        button.connect('clicked', callback);
+        this._mediaControls.add_actor(button);
+        return button;
+    },
+
     setExpandedBody: function(actor) {
         if (actor == null) {
             if (this._bodyStack.get_n_children() > 1)
@@ -476,7 +488,7 @@ const Message = new Lang.Class({
     },
 
     canClose: function() {
-        return true;
+        return this._mediaControls.get_n_children() == 0;
     },
 
     _sync: function() {

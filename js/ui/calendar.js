@@ -13,6 +13,7 @@ const Shell = imports.gi.Shell;
 const Main = imports.ui.main;
 const MessageList = imports.ui.messageList;
 const MessageTray = imports.ui.messageTray;
+const Mpris = imports.ui.mpris;
 const Util = imports.misc.util;
 
 const MSECS_IN_DAY = 24 * 60 * 60 * 1000;
@@ -1098,6 +1099,9 @@ const CalendarMessageList = new Lang.Class({
                                                y_align: Clutter.ActorAlign.START });
         this._scrollView.add_actor(this._sectionList);
         this._sections = new Map();
+
+        this._mediaSection = new Mpris.MediaSection();
+        this._addSection(this._mediaSection);
 
         this._notificationSection = new NotificationSection();
         this._addSection(this._notificationSection);

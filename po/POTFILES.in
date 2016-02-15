@@ -35,6 +35,7 @@ js/ui/lookingGlass.js
 js/ui/main.js
 js/ui/messageList.js
 js/ui/messageTray.js
+js/ui/mpris.js
 js/ui/notificationDaemon.js
 js/ui/overviewControls.js
 js/ui/overview.js
