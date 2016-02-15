@@ -427,6 +427,22 @@ StScrollBar {
 .audio-selection-device-icon {
   icon-size: 64px; }
 
+/* Geolocation Dialog */
+.geolocation-dialog {
+  spacing: 30px; }
+
+.geolocation-dialog-main-layout {
+  spacing: 12px; }
+
+.geolocation-dialog-content {
+  spacing: 20px; }
+
+.geolocation-dialog-icon {
+  icon-size: 48px; }
+
+.geolocation-dialog-title {
+  font-weight: bold; }
+
 /* Network Agent Dialog */
 .network-dialog-secret-table {
   spacing-rows: 15px;

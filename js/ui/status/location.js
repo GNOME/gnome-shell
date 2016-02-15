@@ -1,5 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
+const Clutter = imports.gi.Clutter;
 const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
 const Lang = imports.lang;
@@ -7,7 +8,10 @@ const Lang = imports.lang;
 const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
+const ModalDialog = imports.ui.modalDialog;
 const Shell = imports.gi.Shell;
+const Signals = imports.signals;
+const St = imports.gi.St;
 
 const LOCATION_SCHEMA = 'org.gnome.system.location';
 const MAX_ACCURACY_LEVEL = 'max-accuracy-level';
@@ -217,3 +221,60 @@ const Indicator = new Lang.Class({
 function clamp(value, min, max) {
     return Math.max(min, Math.min(max, value));
 }
+
+const GeolocationDialog = new Lang.Class({
+    Name: 'GeolocationDialog',
+    Extends: ModalDialog.ModalDialog,
+
+    _init: function(name, reason, reqAccuracyLevel) {
+        this.parent({ styleClass: 'geolocation-dialog' });
+        this.reqAccuracyLevel = reqAccuracyLevel;
+
+        let mainContentBox = new St.BoxLayout({ style_class: 'geolocation-dialog-main-layout' });
+        this.contentLayout.add_actor(mainContentBox);
+
+        let icon = new St.Icon({ style_class: 'geolocation-dialog-icon',
+                                 icon_name: 'find-location-symbolic',
+                                 y_align: Clutter.ActorAlign.START });
+        mainContentBox.add_actor(icon);
+
+        let messageBox = new St.BoxLayout({ style_class: 'geolocation-dialog-content',
+                                            vertical: true });
+        mainContentBox.add_actor(messageBox);
+
+        this._title = new St.Label({ style_class: 'geolocation-dialog-title headline' });
+        messageBox.add_actor(this._title);
+
+        this._desc = new St.Label();
+        messageBox.add_actor(this._desc);
+
+        this._reason = new St.Label();
+        messageBox.add_actor(this._reason);
+
+        let button = this.addButton({ label: _("Deny Access"),
+                                      action: Lang.bind(this, this._onDenyClicked),
+                                      key: Clutter.KEY_Escape });
+        this.addButton({ label: _("Grant Access"),
+                         action: Lang.bind(this, this._onGrantClicked) });
+
+        this.setInitialKeyFocus(button);
+
+        this._title.text = _("Give %s access to your location?").format(name);
+        this._desc.text = _("%s is requesting access to your location.").format(name);
+
+        if (reason)
+            this._reason.text = reason;
+        this._reason.visible = (reason != null);
+    },
+
+    _onGrantClicked: function() {
+        this.emit('response', this.reqAccuracyLevel);
+        this.close();
+    },
+
+    _onDenyClicked: function() {
+        this.emit('response', GeoclueAccuracyLevel.NONE);
+        this.close();
+    }
+});
+Signals.addSignalMethods(GeolocationDialog.prototype);
