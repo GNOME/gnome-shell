@@ -104,43 +104,43 @@ const Indicator = new Lang.Class({
     },
 
     _syncIndicator: function() {
-        if (this._proxy == null) {
+        if (this._managerProxy == null) {
             this._indicator.visible = false;
             this._item.actor.visible = false;
             return;
         }
 
-        this._indicator.visible = this._proxy.InUse;
+        this._indicator.visible = this._managerProxy.InUse;
         this._item.actor.visible = this._indicator.visible;
         this._updateMenuLabels();
     },
 
     _connectToGeoclue: function() {
-        if (this._proxy != null || this._connecting)
+        if (this._managerProxy != null || this._connecting)
             return false;
 
         this._connecting = true;
         new GeoclueManager(Gio.DBus.system,
                            'org.freedesktop.GeoClue2',
                            '/org/freedesktop/GeoClue2/Manager',
-                           Lang.bind(this, this._onProxyReady));
+                           Lang.bind(this, this._onManagerProxyReady));
         return true;
     },
 
-    _onProxyReady: function(proxy, error) {
+    _onManagerProxyReady: function(proxy, error) {
         if (error != null) {
             log(error.message);
             this._connecting = false;
             return;
         }
 
-        this._proxy = proxy;
-        this._propertiesChangedId = this._proxy.connect('g-properties-changed',
+        this._managerProxy = proxy;
+        this._propertiesChangedId = this._managerProxy.connect('g-properties-changed',
                                                         Lang.bind(this, this._onGeocluePropsChanged));
 
         this._syncIndicator();
 
-        this._proxy.AddAgentRemote('gnome-shell', Lang.bind(this, this._onAgentRegistered));
+        this._managerProxy.AddAgentRemote('gnome-shell', Lang.bind(this, this._onAgentRegistered));
     },
 
     _onAgentRegistered: function(result, error) {
@@ -153,10 +153,10 @@ const Indicator = new Lang.Class({
 
     _onGeoclueVanished: function() {
         if (this._propertiesChangedId) {
-            this._proxy.disconnect(this._propertiesChangedId);
+            this._managerProxy.disconnect(this._propertiesChangedId);
             this._propertiesChangedId = 0;
         }
-        this._proxy = null;
+        this._managerProxy = null;
 
         this._syncIndicator();
     },
