@@ -193,9 +193,6 @@ CLUTTER_BACKENDS=""
 CLUTTER_INPUT_BACKENDS=""
 CLUTTER_CONFIG_DEFINES=
 
-experimental_backend=no
-experimental_input_backend=no
-
 # base dependencies for core
 CLUTTER_BASE_PC_FILES="cogl-1.0 >= $COGL_REQ_VERSION cogl-path-1.0 cairo-gobject >= $CAIRO_REQ_VERSION gio-2.0 >= glib_req_version atk >= $ATK_REQ_VERSION pangocairo >= $PANGO_REQ_VERSION cogl-pango-1.0 json-glib-1.0 >= $JSON_GLIB_REQ_VERSION"
 
@@ -210,114 +207,36 @@ BACKEND_PC_FILES_PRIVATE=""
 
 dnl === Clutter windowing system backend ======================================
 
-AC_ARG_ENABLE([x11-backend],
-              [AS_HELP_STRING([--enable-x11-backend=@<:@yes/no@:>@], [Enable the X11 backend (default=check)])],
-              [enable_x11=$enableval],
-              [enable_x11=check])
-AC_ARG_ENABLE([egl-backend],
-              [AS_HELP_STRING([--enable-egl-backend=@<:@yes/no@:>@], [Enable the EGL framebuffer backend (default=no)])],
-              [enable_egl=$enableval],
-              [enable_egl=check])
-AC_ARG_ENABLE([evdev-input],
-              [AS_HELP_STRING([--enable-evdev-input=@<:@yes/no@:>@], [Enable evdev for input events (default=check)])],
-              [enable_evdev=$enableval],
-              [enable_evdev=check])
+CLUTTER_BACKENDS="$CLUTTER_BACKENDS x11"
+CLUTTER_INPUT_BACKENDS="$CLUTTER_INPUT_BACKENDS x11"
 
-dnl Define default values
-AS_IF([test "x$enable_x11" = xcheck], [
-  PKG_CHECK_EXISTS([x11], [enable_x11=yes], [enable_x11=no])
-])
+SUPPORT_X11=1
+SUPPORT_GLX=1
+SUPPORT_COGL=1
 
-AS_IF([test "x$enable_egl" = xcheck], [
-  PKG_CHECK_EXISTS([egl], [enable_egl=yes], [enable_egl=no])
-  PKG_CHECK_EXISTS([libinput], [enable_evdev=yes], [enable_evdev=no])
-])
+# we use fontconfig API and pango-ft2 when the fontconfig
+# configuration changes; we don't expose any API for this
+# so we add pango-ft2 to the private Requires.
+PKG_CHECK_EXISTS([pangoft2],
+                 [
+                         AC_DEFINE([HAVE_PANGO_FT2], [1], [Supports PangoFt2])
+                         BACKEND_PC_FILES_PRIVATE="$BACKEND_PC_FILES_PRIVATE pangoft2"
+                 ],
+                 [])
 
-dnl Per-backend rules
-AS_IF([test "x$enable_x11" = "xyes"],
-      [
-        CLUTTER_BACKENDS="$CLUTTER_BACKENDS x11"
-        CLUTTER_INPUT_BACKENDS="$CLUTTER_INPUT_BACKENDS x11"
+CLUTTER_BACKENDS="$CLUTTER_BACKENDS egl"
+SUPPORT_EGL=1
+AC_DEFINE([CLUTTER_EGL_BACKEND_GENERIC], [1], [Use Generic EGL backend])
 
-        SUPPORT_X11=1
-        SUPPORT_GLX=1
-        SUPPORT_COGL=1
-
-        # we use fontconfig API and pango-ft2 when the fontconfig
-        # configuration changes; we don't expose any API for this
-        # so we add pango-ft2 to the private Requires.
-        PKG_CHECK_EXISTS([pangoft2],
-                         [
-                           AC_DEFINE([HAVE_PANGO_FT2], [1], [Supports PangoFt2])
-                           BACKEND_PC_FILES_PRIVATE="$BACKEND_PC_FILES_PRIVATE pangoft2"
-                         ],
-                         [])
-      ])
-
-dnl Note this is orthogonal to the client side support and you can
-dnl use the Wayland compositor features with any of the clutter
-dnl backends with corresponding Cogl support.
-AC_ARG_ENABLE([wayland-compositor],
-              [AS_HELP_STRING([--enable-wayland-compositor=@<:@yes/no@:>@],
-                              [Enable Wayland compositor features (default=no)])],
-              [],
-              [AS_IF([test "x$SUPPORT_EGL" = "x1"],
-                     [enable_wayland_compositor=yes],
-                     [enable_wayland_compositor=no])
-              ])
-
-AS_IF([test "x$enable_wayland_compositor" = "xyes"],
-      [
-        PKG_CHECK_EXISTS([wayland-server],
-			 [BACKEND_PC_FILES="$BACKEND_PC_FILES wayland-server"], [])
-
-        SUPPORT_WAYLAND_COMPOSITOR=1
-        SUPPORT_COGL=1
-
-	CLUTTER_CONFIG_DEFINES="$CLUTTER_CONFIG_DEFINES
+BACKEND_PC_FILES="$BACKEND_PC_FILES wayland-server"
+SUPPORT_WAYLAND_COMPOSITOR=1
+CLUTTER_CONFIG_DEFINES="$CLUTTER_CONFIG_DEFINES
 #define CLUTTER_HAS_WAYLAND_COMPOSITOR_SUPPORT 1"
-      ])
 
-AM_CONDITIONAL(SUPPORT_WAYLAND_COMPOSITOR, [test "x$SUPPORT_WAYLAND_COMPOSITOR" = "x1"])
-
-AS_IF([test "x$enable_egl" = "xyes"],
-      [
-        CLUTTER_BACKENDS="$CLUTTER_BACKENDS egl"
-
-        SUPPORT_EGL=1
-        SUPPORT_COGL=1
-
-        FLAVOUR_LIBS="$FLAVOUR_LIBS $EVDEV_LIBS"
-        FLAVOUR_CFLAGS="$FLAVOUR_CFLAGS $EVDEV_CFLAGS"
-
-        AC_DEFINE([CLUTTER_EGL_BACKEND_GENERIC], [1], [Use Generic EGL backend])
-      ])
-
-AS_IF([test "x$CLUTTER_BACKENDS" = "x"],
-      [
-        AC_MSG_ERROR([No backend enabled. You need to enable at least one backend.])
-      ])
-
-AS_IF([test "x$enable_evdev" = xyes], [
-  PKG_CHECK_EXISTS([libinput gudev-1.0 xkbcommon], [have_evdev=yes], [have_evdev=no])
-  AS_IF([test "x$have_evdev" = "xyes"], [
-    CLUTTER_INPUT_BACKENDS="$CLUTTER_INPUT_BACKENDS evdev"
-    BACKEND_PC_FILES_PRIVATE="$BACKEND_PC_FILES_PRIVATE libudev >= $LIBUDEV_REQ_VERSION libinput >= $LIBINPUT_REQ_VERSION xkbcommon"
-    AC_DEFINE([HAVE_EVDEV], [1], [Have evdev support for input handling])
-    SUPPORT_EVDEV=1
-  ])
-])
-
-# conditionals for use in automake files...
-AM_CONDITIONAL(SUPPORT_GLX,     [test "x$SUPPORT_GLX" = "x1"])
-AM_CONDITIONAL(SUPPORT_X11,     [test "x$SUPPORT_X11" = "x1"])
-AM_CONDITIONAL(SUPPORT_EGL,     [test "x$SUPPORT_EGL" = "x1"])
-AM_CONDITIONAL(SUPPORT_WAYLAND, [test "x$SUPPORT_WAYLAND" = "x1"])
-
-AM_CONDITIONAL(USE_COGL,  [test "x$SUPPORT_COGL" = "x1"])
-AM_CONDITIONAL(USE_EVDEV, [test "x$have_evdev" = "xyes"])
-
-AM_CONDITIONAL(NEED_XKB_UTILS, [test "x$have_evdev" = "xyes" -o "x$SUPPORT_WAYLAND" = "x1"])
+CLUTTER_INPUT_BACKENDS="$CLUTTER_INPUT_BACKENDS evdev"
+BACKEND_PC_FILES_PRIVATE="$BACKEND_PC_FILES_PRIVATE libudev >= $LIBUDEV_REQ_VERSION libinput >= $LIBINPUT_REQ_VERSION xkbcommon"
+SUPPORT_EVDEV=1
+AC_DEFINE([HAVE_EVDEV], [1], [Have evdev support for input handling])
 
 dnl Instead of using AM_CFLAGS to ensure
 dnl COGL_ENABLE_EXPERIMENTAL_2_0_API is defined while compiling clutter
@@ -325,13 +244,7 @@ dnl and cogl code we use a define in config.h instead. This helps ensure
 dnl other tools such as glib-mkenums and gir-scanner don't end up
 dnl using the define also.
 AC_DEFINE([COGL_ENABLE_EXPERIMENTAL_2_0_API], [1], [Can use Cogl 2.0 API internally])
-
-AC_ARG_WITH([default-drivers],
-            [AS_HELP_STRING([--with-default-drivers=DRIVER], [Comma-separated list of Cogl drivers to use])],
-            [clutter_drivers=$withval],
-            [clutter_drivers="*"])
-
-AC_DEFINE_UNQUOTED([CLUTTER_DRIVERS], ["$clutter_drivers"], [List of Cogl drivers])
+AC_DEFINE_UNQUOTED([CLUTTER_DRIVERS], ["*"], [List of Cogl drivers])
 
 dnl strip leading spaces
 CLUTTER_BACKENDS=${CLUTTER_BACKENDS#* }
@@ -985,20 +898,8 @@ echo "        Build examples: ${enable_examples}"
 # Clutter backend related flags
 echo ""
 echo " • Clutter Backends:"
-
-if test "x$experimental_backend" = "xno"; then
 echo "        Windowing systems: ${CLUTTER_BACKENDS}"
-else
-echo "        Windowing systems: ${CLUTTER_BACKENDS} (WARNING: Experimental backends enabled)"
-fi
-
-if test "x$experimental_input_backend" = "xno"; then
 echo "        Input backends: ${CLUTTER_INPUT_BACKENDS}"
-else
-echo "        Input backends: ${CLUTTER_INPUT_BACKENDS} (WARNING: Experimental backends enabled)"
-fi
-
-echo "        Cogl drivers: $clutter_drivers"
 
 if test "x$SUPPORT_X11" = "x1"; then
 echo ""
@@ -1008,21 +909,7 @@ fi
 
 if test "x$SUPPORT_WAYLAND_COMPOSITOR" = "x1"; then
 echo ""
-echo "     - Wayland compositor support enabled (WARNING: Experimental)"
+echo "     - Wayland compositor support enabled"
 fi
 
 echo ""
-
-# General warning about experimental features
-if test "x$experimental_backend" = xyes -o "x$experimental_input_backend" = xyes; then
-echo ""
-echo "☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠"
-echo "*WARNING* *WARNING* *WARNING* *WARNING* *WARNING* *WARNING* *WARNING*"
-echo ""
-echo "  The stability of your build might be affected by one or more"
-echo "  experimental backends or experimental and unsupported features"
-echo ""
-echo "*WARNING* *WARNING* *WARNING* *WARNING* *WARNING* *WARNING* *WARNING*"
-echo "☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠"
-echo ""
-fi

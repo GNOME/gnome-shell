@@ -410,7 +410,6 @@ x11_source_c_priv = \
 	x11/xsettings/xsettings-common.h	\
 	$(NULL)
 
-if BUILD_XI2
 x11_source_c += \
 	x11/clutter-device-manager-xi2.c	\
 	x11/clutter-input-device-xi2.c	\
@@ -420,9 +419,7 @@ x11_source_h_priv += \
 	x11/clutter-device-manager-xi2.h	\
 	x11/clutter-input-device-xi2.h	\
 	$(NULL)
-endif # BUILD_XI2
 
-if SUPPORT_X11
 backend_source_h += $(x11_source_h)
 backend_source_c += $(x11_source_c)
 backend_source_h_priv += $(x11_source_h_priv)
@@ -438,7 +435,6 @@ clutter-x11-$(CLUTTER_API_VERSION).pc: clutter-$(CLUTTER_API_VERSION).pc
 	$(QUIET_GEN)cp -f $< $(@F)
 
 pc_files += clutter-x11-$(CLUTTER_API_VERSION).pc
-endif # SUPPORT_X11
 
 # Shared cogl backend files
 cogl_source_h =
@@ -453,7 +449,6 @@ cogl_source_h_priv = \
 
 cogl_source_c_priv =
 
-if USE_COGL
 backend_source_h += $(cogl_source_h)
 backend_source_c += $(cogl_source_c)
 backend_source_h_priv += $(cogl_source_h_priv)
@@ -464,12 +459,9 @@ clutter-cogl-$(CLUTTER_API_VERSION).pc: clutter-$(CLUTTER_API_VERSION).pc
 	$(QUIET_GEN)cp -f $< $(@F)
 
 pc_files += clutter-cogl-$(CLUTTER_API_VERSION).pc
-endif
 
-if SUPPORT_X11
 backend_source_h += $(glx_source_h)
 backend_source_c += $(glx_source_c)
-endif
 
 evdev_c_priv = \
 	evdev/clutter-device-manager-evdev.c	\
@@ -482,19 +474,15 @@ evdev_h_priv = \
 	$(NULL)
 evdev_h = evdev/clutter-evdev.h
 
-if USE_EVDEV
 backend_source_c_priv += $(evdev_c_priv)
 backend_source_h_priv += $(evdev_h_priv)
 backend_source_h += $(evdev_h)
 
 clutterevdev_includedir = $(clutter_includedir)/evdev
 clutterevdev_include_HEADERS = $(evdev_h)
-endif # SUPPORT_EVDEV
 
-if NEED_XKB_UTILS
 backend_source_c += evdev/clutter-xkb-utils.c
 backend_source_h_priv += evdev/clutter-xkb-utils.h
-endif
 
 # EGL backend rules
 egl_source_h = \
@@ -505,7 +493,6 @@ egl_source_h = \
 egl_source_h_priv = egl/clutter-backend-eglnative.h egl/clutter-stage-eglnative.h
 egl_source_c = egl/clutter-backend-eglnative.c egl/clutter-stage-eglnative.c
 
-if SUPPORT_WAYLAND_COMPOSITOR
 wayland_compositor_source_h = \
 	wayland/clutter-wayland-compositor.h		\
 	wayland/clutter-wayland-surface.h
@@ -520,9 +507,7 @@ clutter-wayland-compositor-$(CLUTTER_API_VERSION).pc: clutter-$(CLUTTER_API_VERS
 	$(QUIET_GEN)cp -f $< $(@F)
 
 pc_files += clutter-wayland-compositor-$(CLUTTER_API_VERSION).pc
-endif
 
-if SUPPORT_EGL
 backend_source_h += $(egl_source_h)
 backend_source_c += $(egl_source_c)
 backend_source_h_priv += $(egl_source_h_priv)
@@ -534,7 +519,6 @@ clutter-egl-$(CLUTTER_API_VERSION).pc: clutter-$(CLUTTER_API_VERSION).pc
 	$(QUIET_GEN)cp -f $< $(@F)
 
 pc_files += clutter-egl-$(CLUTTER_API_VERSION).pc
-endif # SUPPORT_EGL
 
 # cally
 cally_sources_h = \
@@ -653,7 +637,6 @@ install-exec-local:
 # gobject-introspection rules
 -include $(INTROSPECTION_MAKEFILE)
 
-if HAVE_INTROSPECTION
 Clutter-@CLUTTER_API_VERSION@.gir: libclutter-@CLUTTER_API_VERSION@.la Makefile
 
 Clutter_@CLUTTER_API_VERSION_AM@_gir_NAMESPACE = Clutter
@@ -690,7 +673,6 @@ Cally_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = \
 
 INTROSPECTION_GIRS += Cally-@CLUTTER_API_VERSION@.gir
 
-if SUPPORT_X11
 ClutterX11-@CLUTTER_API_VERSION@.gir: Makefile Clutter-@CLUTTER_API_VERSION@.gir
 
 ClutterX11_@CLUTTER_API_VERSION_AM@_gir_NAMESPACE = ClutterX11
@@ -705,7 +687,6 @@ ClutterX11_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = \
 	--include-uninstalled=$(top_builddir)/clutter/Clutter-@CLUTTER_API_VERSION@.gir
 
 INTROSPECTION_GIRS += ClutterX11-@CLUTTER_API_VERSION@.gir
-endif # SUPPORT_X11
 
 # INTROSPECTION_GIRDIR/INTROSPECTION_TYPELIBDIR aren't the right place to
 # install anything - we need to install inside our prefix.
@@ -716,4 +697,3 @@ typelibdir = $(libdir)/girepository-1.0
 typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
 
 CLEANFILES += $(gir_DATA) $(typelib_DATA)
-endif # HAVE_INTROSPECTION
