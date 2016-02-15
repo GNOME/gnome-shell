@@ -17,6 +17,9 @@ const LOCATION_SCHEMA = 'org.gnome.system.location';
 const MAX_ACCURACY_LEVEL = 'max-accuracy-level';
 const ENABLED = 'enabled';
 
+const APP_PERMISSIONS_TABLE = 'desktop';
+const APP_PERMISSIONS_ID = 'geolocation';
+
 const GeoclueAccuracyLevel = {
     NONE: 0,
     COUNTRY: 1,
@@ -25,6 +28,15 @@ const GeoclueAccuracyLevel = {
     STREET: 6,
     EXACT: 8
 };
+
+function accuracyLevelToString(accuracyLevel) {
+    for (let key in GeoclueAccuracyLevel) {
+        if (GeoclueAccuracyLevel[key] == accuracyLevel)
+            return key;
+    }
+
+    return 'NONE';
+}
 
 var GeoclueIface = '<node> \
   <interface name="org.freedesktop.GeoClue2.Manager"> \
@@ -46,6 +58,24 @@ var AgentIface = '<node> \
       <arg name="req_accuracy_level" type="u" direction="in"/> \
       <arg name="authorized" type="b" direction="out"/> \
       <arg name="allowed_accuracy_level" type="u" direction="out"/> \
+    </method> \
+  </interface> \
+</node>';
+
+var XdgAppIface = '<node> \
+  <interface name="org.freedesktop.XdgApp.PermissionStore"> \
+    <method name="Lookup"> \
+      <arg name="table" type="s" direction="in"/> \
+      <arg name="id" type="s" direction="in"/> \
+      <arg name="permissions" type="a{sas}" direction="out"/> \
+      <arg name="data" type="v" direction="out"/> \
+    </method> \
+    <method name="Set"> \
+      <arg name="table" type="s" direction="in"/> \
+      <arg name="create" type="b" direction="in"/> \
+      <arg name="id" type="s" direction="in"/> \
+      <arg name="app_permissions" type="a{sas}" direction="in"/> \
+      <arg name="data" type="v" direction="in"/> \
     </method> \
   </interface> \
 </node>';
@@ -221,6 +251,135 @@ const Indicator = new Lang.Class({
 function clamp(value, min, max) {
     return Math.max(min, Math.min(max, value));
 }
+
+const AppAuthorizer = new Lang.Class({
+    Name: 'LocationAppAuthorizer',
+
+    _init: function(desktopId,
+                    reqAccuracyLevel,
+                    permStoreProxy,
+                    maxAccuracyLevel) {
+        this.desktopId = desktopId;
+        this.reqAccuracyLevel = reqAccuracyLevel;
+        this._permStoreProxy = permStoreProxy;
+        this._maxAccuracyLevel = maxAccuracyLevel;
+
+        this._accuracyLevel = GeoclueAccuracyLevel.NONE;
+        this._timesAllowed = 0;
+    },
+
+    authorize: function(onAuthDone) {
+        this._onAuthDone = onAuthDone;
+
+        let appSystem = Shell.AppSystem.get_default();
+        this._app = appSystem.lookup_app(this.desktopId + ".desktop");
+        if (this._app == null || this._permStoreProxy == null) {
+            this._completeAuth();
+
+            return;
+        }
+
+        this._permStoreProxy.LookupRemote(APP_PERMISSIONS_TABLE,
+                                          APP_PERMISSIONS_ID,
+                                          Lang.bind(this,
+                                                    this._onPermLookupDone));
+    },
+
+    _onPermLookupDone: function(result, error) {
+        if (error != null) {
+            if (error.domain == Gio.DBusError) {
+                // Likely no xdg-app installed, just authorize the app
+                this._accuracyLevel = this.reqAccuracyLevel;
+                this._permStoreProxy = null;
+                this._completeAuth();
+            } else {
+                // Currently xdg-app throws an error if we lookup for
+                // unknown ID (which would be the case first time this code
+                // runs) so we continue with user authorization as normal
+                // and ID is added to the store if user says "yes".
+                log(error.message);
+                this._permissions = {};
+                this._userAuthorizeApp();
+            }
+
+            return;
+        }
+
+        [this._permissions] = result;
+        let permission = this._permissions[this.desktopId];
+
+        let [levelStr, timeStr] = permission || ['NONE', '0'];
+        this._accuracyLevel = GeoclueAccuracyLevel[levelStr] ||
+                              GeoclueAccuracyLevel.NONE;
+        this._timesAllowed = Number(timeStr) || 0;
+
+        if (this._timesAllowed < 3)
+            this._userAuthorizeApp();
+        else
+            this._completeAuth();
+    },
+
+    _userAuthorizeApp: function() {
+        let name = this._app.get_name();
+        let appInfo = this._app.get_app_info();
+        let reason = appInfo.get_string("X-Geoclue-Reason");
+
+        this._showAppAuthDialog(name, reason);
+    },
+
+    _showAppAuthDialog: function(name, reason) {
+        this._dialog = new GeolocationDialog(name,
+                                             reason,
+                                             this.reqAccuracyLevel);
+
+        let responseId = this._dialog.connect('response', Lang.bind(this,
+            function(dialog, level) {
+                this._dialog.disconnect(responseId);
+                this._accuracyLevel = level;
+                this._completeAuth();
+            }));
+
+        this._dialog.open();
+    },
+
+    _completeAuth: function() {
+        if (this._accuracyLevel != GeoclueAccuracyLevel.NONE) {
+            this._accuracyLevel = clamp(this._accuracyLevel,
+                                        0,
+                                        this._maxAccuracyLevel);
+            this._timesAllowed++;
+        }
+        this._saveToPermissionStore();
+
+        this._onAuthDone(this._accuracyLevel);
+    },
+
+    _saveToPermissionStore: function() {
+        if (this._permStoreProxy == null)
+            return;
+
+        if (this._accuracyLevel != GeoclueAccuracyLevel.NONE) {
+            let levelStr = accuracyLevelToString(this._accuracyLevel);
+            let dateStr = Math.round(Date.now() / 1000).toString();
+            this._permissions[this.desktopId] = [levelStr,
+                                                 this._timesAllowed.toString(),
+                                                 dateStr];
+        } else {
+            delete this._permissions[this.desktopId];
+        }
+        let data = GLib.Variant.new('av', {});
+
+        this._permStoreProxy.SetRemote(APP_PERMISSIONS_TABLE,
+                                       true,
+                                       APP_PERMISSIONS_ID,
+                                       this._permissions,
+                                       data,
+                                       function (result, error) {
+            if (error != null)
+                log(error.message);
+        });
+    },
+});
 
 const GeolocationDialog = new Lang.Class({
     Name: 'GeolocationDialog',
