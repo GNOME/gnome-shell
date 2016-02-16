@@ -14,6 +14,7 @@ js/misc/util.js
 js/portalHelper/main.js
 js/ui/appDisplay.js
 js/ui/appFavorites.js
+js/ui/audioDeviceSelection.js
 js/ui/backgroundMenu.js
 js/ui/calendar.js
 js/ui/components/automountManager.js
