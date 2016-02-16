@@ -345,6 +345,12 @@ toplevel_surface_commit (MetaWaylandSurfaceRole  *surface_role,
 
   queue_surface_actor_frame_callbacks (surface, pending);
 
+  /* If there's no new buffer pending, then there's nothing else to
+   * do
+   */
+  if (!pending->newly_attached)
+    return;
+
   if (META_IS_WAYLAND_SURFACE_ROLE_WL_SHELL_SURFACE (surface->role))
     {
       /* For wl_shell, it's equivalent to an unmap. Semantics
