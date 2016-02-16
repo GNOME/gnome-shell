@@ -406,13 +406,13 @@ shell_app_system_get_running (ShellAppSystem *self)
 char ***
 shell_app_system_search (const char *search_string)
 {
-    char ***results = g_desktop_app_info_search (search_string);
-    char ***groups, **ids;
+  char ***results = g_desktop_app_info_search (search_string);
+  char ***groups, **ids;
 
-    for (groups = results; *groups; groups++)
-      for (ids = *groups; *ids; ids++)
-        if (!g_utf8_validate (*ids, -1, NULL))
-          **ids = '\0';
+  for (groups = results; *groups; groups++)
+    for (ids = *groups; *ids; ids++)
+      if (!g_utf8_validate (*ids, -1, NULL))
+        **ids = '\0';
 
-      return results;
+    return results;
 }
