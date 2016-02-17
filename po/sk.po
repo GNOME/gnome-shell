@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-02-04 22:19+0000\n"
-"PO-Revision-Date: 2016-02-05 07:36+0100\n"
+"POT-Creation-Date: 2016-02-17 14:16+0000\n"
+"PO-Revision-Date: 2016-02-17 22:01+0100\n"
 "Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
 "Language-Team: Slovak <gnome-sk-list@gnome.org>\n"
 "Language: sk\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-DamnedLies-Scope: partial\n"
-"X-Generator: Poedit 1.8.6\n"
+"X-Generator: Poedit 1.8.7\n"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
 msgid "System"
@@ -332,16 +332,17 @@ msgstr ""
 msgid "Network Login"
 msgstr "Sieťové prihlásenie"
 
-#: ../js/extensionPrefs/main.js:122
+#: ../js/extensionPrefs/main.js:121
 #, javascript-format
 msgid "There was an error loading the preferences dialog for %s:"
 msgstr "Vyskytla sa chyba pri načítavaní dialógového okna nastavení pre %s:"
 
-#: ../js/extensionPrefs/main.js:154
+#: ../js/extensionPrefs/main.js:153
 msgid "GNOME Shell Extensions"
 msgstr "Rozšírenia pre Shell prostredia GNOME"
 
-#: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:145
+#: ../js/gdm/authPrompt.js:147 ../js/ui/audioDeviceSelection.js:71
+#: ../js/ui/components/networkAgent.js:145
 #: ../js/ui/components/polkitAgent.js:179 ../js/ui/endSessionDialog.js:452
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
 #: ../js/ui/status/network.js:916
@@ -533,15 +534,35 @@ msgstr "Pridať do obľúbených"
 msgid "Show Details"
 msgstr "Zobraziť podrobnosti"
 
-#: ../js/ui/appFavorites.js:133
+#: ../js/ui/appFavorites.js:134
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "Program %s bol pridaný medzi obľúbené."
 
-#: ../js/ui/appFavorites.js:167
+#: ../js/ui/appFavorites.js:168
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "Program %s bol odstránený z obľúbených."
+
+#: ../js/ui/audioDeviceSelection.js:59
+msgid "Select Audio Device"
+msgstr "Výber audio zariadenia"
+
+#: ../js/ui/audioDeviceSelection.js:69
+msgid "Sound Settings"
+msgstr "Nastavenia zvuku"
+
+#: ../js/ui/audioDeviceSelection.js:78
+msgid "Headphones"
+msgstr "Slúchadlá"
+
+#: ../js/ui/audioDeviceSelection.js:80
+msgid "Headset"
+msgstr "Náhlavná súprava"
+
+#: ../js/ui/audioDeviceSelection.js:82 ../js/ui/status/volume.js:213
+msgid "Microphone"
+msgstr "Mikrofón"
 
 #: ../js/ui/backgroundMenu.js:19
 msgid "Change Background…"
@@ -556,7 +577,7 @@ msgid "Settings"
 msgstr "Nastavenia"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
-#: ../js/ui/calendar.js:55
+#: ../js/ui/calendar.js:47
 msgctxt "calendar-no-work"
 msgid "06"
 msgstr "06"
@@ -569,100 +590,96 @@ msgstr "06"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: ../js/ui/calendar.js:84
+#: ../js/ui/calendar.js:76
 msgctxt "grid sunday"
 msgid "S"
 msgstr "N"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: ../js/ui/calendar.js:86
+#: ../js/ui/calendar.js:78
 msgctxt "grid monday"
 msgid "M"
 msgstr "P"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: ../js/ui/calendar.js:88
+#: ../js/ui/calendar.js:80
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "U"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: ../js/ui/calendar.js:90
+#: ../js/ui/calendar.js:82
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "S"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: ../js/ui/calendar.js:92
+#: ../js/ui/calendar.js:84
 msgctxt "grid thursday"
 msgid "T"
 msgstr "Š"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: ../js/ui/calendar.js:94
+#: ../js/ui/calendar.js:86
 msgctxt "grid friday"
 msgid "F"
 msgstr "P"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: ../js/ui/calendar.js:96
+#: ../js/ui/calendar.js:88
 msgctxt "grid saturday"
 msgid "S"
 msgstr "S"
 
-#: ../js/ui/calendar.js:566
+#: ../js/ui/calendar.js:416
 msgid "Previous month"
 msgstr "Predchádzajúci mesiac"
 
-#: ../js/ui/calendar.js:576
+#: ../js/ui/calendar.js:426
 msgid "Next month"
 msgstr "Nasledujúci mesiac"
 
-#: ../js/ui/calendar.js:729
+#: ../js/ui/calendar.js:579
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: ../js/ui/calendar.js:784
+#: ../js/ui/calendar.js:634
 msgid "Week %V"
 msgstr "%V. týždeň"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: ../js/ui/calendar.js:1189
+#: ../js/ui/calendar.js:695
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Celý deň"
 
-#: ../js/ui/calendar.js:1296
-msgid "Clear section"
-msgstr "Vymazať úsek"
-
-#: ../js/ui/calendar.js:1523
+#: ../js/ui/calendar.js:821
 msgid "Events"
 msgstr "Udalosti"
 
-#: ../js/ui/calendar.js:1532
+#: ../js/ui/calendar.js:830
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %e. %B"
 
-#: ../js/ui/calendar.js:1536
+#: ../js/ui/calendar.js:834
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %e. %B %Y"
 
-#: ../js/ui/calendar.js:1621
+#: ../js/ui/calendar.js:919
 msgid "Notifications"
 msgstr "Oznámenia"
 
-#: ../js/ui/calendar.js:1772
+#: ../js/ui/calendar.js:1070
 msgid "No Notifications"
 msgstr "Žiadne oznámenia"
 
-#: ../js/ui/calendar.js:1775
+#: ../js/ui/calendar.js:1073
 msgid "No Events"
 msgstr "Žiadne udalosti"
 
@@ -1052,9 +1069,25 @@ msgstr "Zobraziť zdroj"
 msgid "Web Page"
 msgstr "Webová stránka"
 
+#: ../js/ui/messageList.js:542
+msgid "Clear section"
+msgstr "Vymazať úsek"
+
 #: ../js/ui/messageTray.js:1486
 msgid "System Information"
 msgstr "Informácie o systéme"
+
+#: ../js/ui/mpris.js:194
+msgid "Unknown artist"
+msgstr "Neznámy interpret"
+
+#: ../js/ui/mpris.js:195
+msgid "Unknown title"
+msgstr "Neznámy názov"
+
+#: ../js/ui/mpris.js:217
+msgid "Media"
+msgstr "Médiá"
 
 #: ../js/ui/overview.js:84
 msgid "Undo"
@@ -1567,10 +1600,6 @@ msgstr "Hlasitosť bola zmenená"
 msgid "Volume"
 msgstr "Hlasitosť"
 
-#: ../js/ui/status/volume.js:213
-msgid "Microphone"
-msgstr "Mikrofón"
-
 #: ../js/ui/unlockDialog.js:67
 msgid "Log in as another user"
 msgstr "Prihlásiť ako iný používateľ"
@@ -1912,9 +1941,6 @@ msgstr "Dialógové okno overenia totožnosti bolo zatvorené používateľom"
 
 #~ msgid "View account"
 #~ msgstr "Zobraziť účet"
-
-#~ msgid "Unknown reason"
-#~ msgstr "Neznámy dôvod"
 
 # nazov klavesovej skratky
 #~ msgid "Show the message list"
