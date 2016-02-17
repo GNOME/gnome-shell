@@ -160,13 +160,20 @@ const CandidatePopup = new Lang.Class({
                              Lang.bind(this, function(ps, x, y, w, h) {
                                  this._setDummyCursorGeometry(x, y, w, h);
                              }));
-        panelService.connect('set-cursor-location-relative',
-                             Lang.bind(this, function(ps, x, y, w, h) {
-                                 if (!global.display.focus_window)
-                                     return;
-                                 let window = global.display.focus_window.get_compositor_private();
-                                 this._setDummyCursorGeometry(window.x + x, window.y + y, w, h);
-                             }));
+        try {
+            panelService.connect('set-cursor-location-relative',
+                                 Lang.bind(this, function(ps, x, y, w, h) {
+                                     if (!global.display.focus_window)
+                                         return;
+                                     let window = global.display.focus_window.get_compositor_private();
+                                     this._setDummyCursorGeometry(window.x + x, window.y + y, w, h);
+                                 }));
+        } catch(e) {
+            // Only recent IBus versions have support for this signal
+            // which is used for wayland clients. In order to work
+            // with older IBus versions we can silently ignore the
+            // signal's absence.
+        }
         panelService.connect('update-preedit-text',
                              Lang.bind(this, function(ps, text, cursorPosition, visible) {
                                  this._preeditText.visible = visible;
