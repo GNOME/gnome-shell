@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-06 16:14+0100\n"
-"PO-Revision-Date: 2016-02-06 16:15+0100\n"
+"POT-Creation-Date: 2016-02-17 22:30+0100\n"
+"PO-Revision-Date: 2016-02-17 22:32+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -325,17 +325,18 @@ msgstr ""
 msgid "Network Login"
 msgstr "Logowanie do sieci"
 
-#: ../js/extensionPrefs/main.js:122
+#: ../js/extensionPrefs/main.js:121
 #, javascript-format
 msgid "There was an error loading the preferences dialog for %s:"
 msgstr ""
 "Wystąpił błąd podczas wczytywania okna preferencji dla rozszerzenia „%s”:"
 
-#: ../js/extensionPrefs/main.js:154
+#: ../js/extensionPrefs/main.js:153
 msgid "GNOME Shell Extensions"
 msgstr "Rozszerzenia powłoki GNOME"
 
-#: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:145
+#: ../js/gdm/authPrompt.js:147 ../js/ui/audioDeviceSelection.js:71
+#: ../js/ui/components/networkAgent.js:145
 #: ../js/ui/components/polkitAgent.js:179 ../js/ui/endSessionDialog.js:452
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
 #: ../js/ui/status/network.js:916
@@ -519,15 +520,35 @@ msgstr "Dodaj do ulubionych"
 msgid "Show Details"
 msgstr "Wyświetl szczegóły"
 
-#: ../js/ui/appFavorites.js:133
+#: ../js/ui/appFavorites.js:134
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "Program „%s” został dodany do ulubionych."
 
-#: ../js/ui/appFavorites.js:167
+#: ../js/ui/appFavorites.js:168
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "Program „%s” został usunięty z ulubionych."
+
+#: ../js/ui/audioDeviceSelection.js:59
+msgid "Select Audio Device"
+msgstr "Wybór urządzenia dźwiękowego"
+
+#: ../js/ui/audioDeviceSelection.js:69
+msgid "Sound Settings"
+msgstr "Ustawienia dźwięku"
+
+#: ../js/ui/audioDeviceSelection.js:78
+msgid "Headphones"
+msgstr "Słuchawki"
+
+#: ../js/ui/audioDeviceSelection.js:80
+msgid "Headset"
+msgstr "Słuchawki z mikrofonem"
+
+#: ../js/ui/audioDeviceSelection.js:82 ../js/ui/status/volume.js:213
+msgid "Microphone"
+msgstr "Mikrofon"
 
 #: ../js/ui/backgroundMenu.js:19
 msgid "Change Background…"
@@ -542,7 +563,7 @@ msgid "Settings"
 msgstr "Ustawienia"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
-#: ../js/ui/calendar.js:55
+#: ../js/ui/calendar.js:47
 msgctxt "calendar-no-work"
 msgid "06"
 msgstr "06"
@@ -552,100 +573,96 @@ msgstr "06"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: ../js/ui/calendar.js:84
+#: ../js/ui/calendar.js:76
 msgctxt "grid sunday"
 msgid "S"
 msgstr "N"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: ../js/ui/calendar.js:86
+#: ../js/ui/calendar.js:78
 msgctxt "grid monday"
 msgid "M"
 msgstr "P"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: ../js/ui/calendar.js:88
+#: ../js/ui/calendar.js:80
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "W"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: ../js/ui/calendar.js:90
+#: ../js/ui/calendar.js:82
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "Ś"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: ../js/ui/calendar.js:92
+#: ../js/ui/calendar.js:84
 msgctxt "grid thursday"
 msgid "T"
 msgstr "C"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: ../js/ui/calendar.js:94
+#: ../js/ui/calendar.js:86
 msgctxt "grid friday"
 msgid "F"
 msgstr "P"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: ../js/ui/calendar.js:96
+#: ../js/ui/calendar.js:88
 msgctxt "grid saturday"
 msgid "S"
 msgstr "S"
 
-#: ../js/ui/calendar.js:566
+#: ../js/ui/calendar.js:416
 msgid "Previous month"
 msgstr "Poprzedni miesiąc"
 
-#: ../js/ui/calendar.js:576
+#: ../js/ui/calendar.js:426
 msgid "Next month"
 msgstr "Następny miesiąc"
 
-#: ../js/ui/calendar.js:729
+#: ../js/ui/calendar.js:579
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: ../js/ui/calendar.js:784
+#: ../js/ui/calendar.js:634
 msgid "Week %V"
 msgstr "%V. tydzień"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: ../js/ui/calendar.js:1189
+#: ../js/ui/calendar.js:695
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Cały dzień"
 
-#: ../js/ui/calendar.js:1296
-msgid "Clear section"
-msgstr "Wyczyść"
-
-#: ../js/ui/calendar.js:1523
+#: ../js/ui/calendar.js:821
 msgid "Events"
 msgstr "Wydarzenia"
 
-#: ../js/ui/calendar.js:1532
+#: ../js/ui/calendar.js:830
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %e %B"
 
-#: ../js/ui/calendar.js:1536
+#: ../js/ui/calendar.js:834
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %e %B %Y"
 
-#: ../js/ui/calendar.js:1621
+#: ../js/ui/calendar.js:919
 msgid "Notifications"
 msgstr "Powiadomienia"
 
-#: ../js/ui/calendar.js:1772
+#: ../js/ui/calendar.js:1070
 msgid "No Notifications"
 msgstr "Brak powiadomień"
 
-#: ../js/ui/calendar.js:1775
+#: ../js/ui/calendar.js:1073
 msgid "No Events"
 msgstr "Brak wydarzeń"
 
@@ -1032,9 +1049,25 @@ msgstr "Wyświetl źródło"
 msgid "Web Page"
 msgstr "Strona WWW"
 
+#: ../js/ui/messageList.js:542
+msgid "Clear section"
+msgstr "Wyczyść"
+
 #: ../js/ui/messageTray.js:1486
 msgid "System Information"
 msgstr "Informacje systemowe"
+
+#: ../js/ui/mpris.js:194
+msgid "Unknown artist"
+msgstr "Nieznany wykonawca"
+
+#: ../js/ui/mpris.js:195
+msgid "Unknown title"
+msgstr "Nieznany tytuł"
+
+#: ../js/ui/mpris.js:217
+msgid "Media"
+msgstr "Multimedia"
 
 #: ../js/ui/overview.js:84
 msgid "Undo"
@@ -1534,10 +1567,6 @@ msgstr "Zmieniono głośność"
 #: ../js/ui/status/volume.js:162
 msgid "Volume"
 msgstr "Głośność"
-
-#: ../js/ui/status/volume.js:213
-msgid "Microphone"
-msgstr "Mikrofon"
 
 #: ../js/ui/unlockDialog.js:67
 msgid "Log in as another user"
