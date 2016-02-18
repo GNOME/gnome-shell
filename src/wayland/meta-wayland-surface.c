@@ -175,6 +175,25 @@ meta_wayland_surface_assign_role (MetaWaylandSurface *surface,
 }
 
 static void
+surface_use_buffer (MetaWaylandSurface *surface)
+{
+  g_return_if_fail (!surface->using_buffer);
+
+  meta_wayland_buffer_ref_use_count (surface->buffer);
+  surface->using_buffer = TRUE;
+}
+
+static void
+surface_stop_using_buffer (MetaWaylandSurface *surface)
+{
+  if (!surface->using_buffer)
+    return;
+
+  meta_wayland_buffer_unref_use_count (surface->buffer);
+  surface->using_buffer = FALSE;
+}
+
+static void
 surface_set_buffer (MetaWaylandSurface *surface,
                     MetaWaylandBuffer  *buffer)
 {
@@ -184,6 +203,8 @@ surface_set_buffer (MetaWaylandSurface *surface,
   if (surface->buffer)
     {
       wl_list_remove (&surface->buffer_destroy_listener.link);
+
+      surface_stop_using_buffer (surface);
       meta_wayland_buffer_unref (surface->buffer);
     }
 
@@ -657,11 +678,11 @@ apply_pending_state (MetaWaylandSurface      *surface,
 
       surface_set_buffer (surface, pending->buffer);
 
-      if (pending->buffer)
+      if (pending->buffer && !surface->using_buffer)
         {
           struct wl_shm_buffer *shm_buffer = wl_shm_buffer_get (pending->buffer->resource);
 
-          meta_wayland_buffer_take_control (pending->buffer);
+          surface_use_buffer (surface);
           CoglTexture *texture = meta_wayland_buffer_ensure_texture (pending->buffer);
           meta_surface_actor_wayland_set_texture (META_SURFACE_ACTOR_WAYLAND (surface->surface_actor), texture);
 
@@ -679,7 +700,7 @@ apply_pending_state (MetaWaylandSurface      *surface,
     surface_process_damage (surface, pending->damage);
 
   if (release_new_buffer)
-    meta_wayland_buffer_release_control (pending->buffer);
+    surface_stop_using_buffer (surface);
 
   surface->offset_x += pending->dx;
   surface->offset_y += pending->dy;

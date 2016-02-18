@@ -152,6 +152,7 @@ struct _MetaWaylandSurface
   MetaWaylandSurfaceRole *role;
   MetaWindow *window;
   MetaWaylandBuffer *buffer;
+  gboolean using_buffer;
   struct wl_listener buffer_destroy_listener;
   cairo_region_t *input_region;
   cairo_region_t *opaque_region;

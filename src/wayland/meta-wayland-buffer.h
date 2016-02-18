@@ -39,15 +39,14 @@ struct _MetaWaylandBuffer
 
   CoglTexture *texture;
   uint32_t ref_count;
-
-  uint32_t accessible : 1;
+  uint32_t use_count;
 };
 
 MetaWaylandBuffer *     meta_wayland_buffer_from_resource       (struct wl_resource    *resource);
 void                    meta_wayland_buffer_ref                 (MetaWaylandBuffer     *buffer);
 void                    meta_wayland_buffer_unref               (MetaWaylandBuffer     *buffer);
-void                    meta_wayland_buffer_take_control        (MetaWaylandBuffer     *buffer);
-void                    meta_wayland_buffer_release_control     (MetaWaylandBuffer     *buffer);
+void                    meta_wayland_buffer_ref_use_count       (MetaWaylandBuffer     *buffer);
+void                    meta_wayland_buffer_unref_use_count     (MetaWaylandBuffer     *buffer);
 CoglTexture *           meta_wayland_buffer_ensure_texture      (MetaWaylandBuffer     *buffer);
 void                    meta_wayland_buffer_process_damage      (MetaWaylandBuffer     *buffer,
                                                                  cairo_region_t        *region);
