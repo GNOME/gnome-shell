@@ -1,3 +1,31 @@
+Clutter 1.25.6                                                       2016-02-18
+===============================================================================
+
+  • List of changes since Clutter 1.25.4
+
+    - Enable swap throttling for fullscreen windows with GDK
+    Avoids performance penalties with the GDK backend on constrained devices
+    running full screen Clutter and Clutter-GTK applications.
+
+    - Add platform-specific data for the libinput input backend
+    This allows implementing high level functionality when writing Wayland
+    compositors based on Clutter.
+
+    - Translation updates
+    Hungarian, Bulgarian, Polish, Slovak, French, Chinese (Taiwan), Galician,
+    Italian
+
+  • List of bugs fixed since Clutter 1.25.4
+
+    #752752 - Patches needed for relative pointer and pointer confinement
+              in mutter
+    #755849 - evdev: Recycle device ids after devices are removed
+
+Many thanks to:
+
+  Jonas Ådahl, Alexander Shopov, Alexandre Franke, Chao-Hsiung Liao,
+  Dušan Kazik, Fran Dieguez, Gábor Kelemen, Milo Casagrande, Piotr Drąg
+
 Clutter 1.25.4                                                       2016-01-21
 ===============================================================================
 
