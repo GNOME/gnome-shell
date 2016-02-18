@@ -859,9 +859,12 @@ StScrollBar {
 .media-message-cover-icon {
   icon-size: 32px; }
   .media-message-cover-icon.fallback {
+    color: #515a5a;
+    background-color: #393f3f;
+    border: 2px solid #393f3f;
+    border-radius: 2px;
     icon-size: 16px;
-    padding: 8px;
-    border: 1px solid #1c1f1f; }
+    padding: 8px; }
 
 .system-switch-user-submenu-icon.user-icon {
   icon-size: 20px;
