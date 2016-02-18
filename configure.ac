@@ -348,24 +348,25 @@ AS_IF([test "x$enable_wayland" != xno],
         # We need to manually check for Wayland support in Cogl because
         # the windowing systems are not exposed in the pkg-config file
         saved_CFLAGS="${CFLAGS}"
-        CFLAGS="`$PKG_CONFIG --cflags $CLUTTER_BASE_PC_FILES`"
+        CFLAGS="`$PKG_CONFIG --cflags cogl-1.0`"
 
         AC_MSG_CHECKING([for Wayland Cogl backend])
-        AC_TRY_COMPILE([#include <cogl/cogl.h>],
-                       [
-                         #ifndef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
-                         #error "No Wayland support in Cogl"
-                         #endif
-                         int main (void) { return 0; }
-                       ],
-                       [
-                         AC_MSG_RESULT(yes)
-                         have_cogl_wayland=yes
-                       ],
-                       [
-                         AC_MSG_RESULT(no)
-                         have_cogl_wayland=no
-                       ])
+
+        AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+#include <cogl/cogl.h>
+]],
+[[
+#ifndef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
+#error Cogl compiled without Wayland support
+#endif
+]])], [
+          AC_MSG_RESULT(yes)
+          have_cogl_wayland=yes
+        ], [
+          AC_MSG_RESULT(no)
+          have_cogl_wayland=no
+        ])
+
         CFLAGS="${saved_CFLAGS}"
         AS_IF([test "x$have_cogl_wayland" = xyes],
               [
@@ -499,26 +500,25 @@ AS_IF([test "x$enable_mir" = "xyes"],
         # We need to manually check for Mir support in Cogl because
         # the windowing systems are not exposed in the pkg-config file
         saved_CFLAGS="${CFLAGS}"
-        CFLAGS="`$PKG_CONFIG --cflags $CLUTTER_BASE_PC_FILES`"
+        CFLAGS="`$PKG_CONFIG --cflags cogl-1.0`"
 
         AC_MSG_CHECKING([for Mir Cogl backend])
-        AC_TRY_COMPILE([#include <cogl/cogl.h>],
-                       [
-                        #ifndef COGL_HAS_EGL_PLATFORM_MIR_SUPPORT
-                        #error "No Mir support in Cogl"
-                        #endif
-                        int main (void) { return 0; }
-                       ],
-                       [
-                         AC_MSG_RESULT(yes)
-                         have_cogl_mir=yes
-                       ],
-                       [
-                         AC_MSG_RESULT(no)
-                         have_cogl_mir=no
-                       ])
 
-        CFLAGS="${saved_CFLAGS}"
+        AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+#include <cogl/cogl.h>
+]],
+[[
+#ifndef COGL_HAS_EGL_PLATFORM_MIR_SUPPORT
+#error Cogl compiled without Mir support
+#endif
+]])], [
+          AC_MSG_RESULT(yes)
+          have_cogl_mir=yes
+        ], [
+          AC_MSG_RESULT(no)
+          have_cogl_mir=no
+        ])
+
         AS_IF([test "x$have_cogl_mir" = xno], [AC_MSG_ERROR("*** Cogl is missing Mir support.")])
 
         PKG_CHECK_EXISTS([mirclient],
