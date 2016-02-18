@@ -1,685 +1,683 @@
 # Serbian translation for clutter.
 # Copyright (C) 2011 clutter's COPYRIGHT HOLDER
 # This file is distributed under the same license as the clutter package.
-# Мирослав Николић <miroslavnikolic@rocketmail.com>, 2011—2015.
+# Мирослав Николић <miroslavnikolic@rocketmail.com>, 2011—2016.
 # Милош Поповић <gpopac@gmail.com>, 2015.
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: clutter master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=clutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-09-22 03:18+0000\n"
-"PO-Revision-Date: 2015-09-22 14:33+0200\n"
-"Last-Translator: Милош Поповић <gpopac@gmail.com>\n"
-"Language-Team: српски <gnom@prevod.org>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=clutter"
+"&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2016-02-18 16:18+0000\n"
+"PO-Revision-Date: 2016-02-18 20:53+0200\n"
+"Last-Translator: Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
+"Language-Team: Serbian <gnom@prevod.org>\n"
 "Language: sr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=n==1? 3 : n%10==1 && n%100!=11 ? 0 : n"
-"%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"Plural-Forms: nplurals=4; plural=n==1? 3 : n%10==1 && n%100!=11 ? 0 : "
+"n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Project-Style: gnome\n"
-"X-Generator: Gtranslator 2.91.7\n"
 
-#: ../clutter/clutter-actor.c:6310
+#: ../clutter/clutter-actor.c:6306
 msgid "X coordinate"
 msgstr "X координата"
 
-#: ../clutter/clutter-actor.c:6311
+#: ../clutter/clutter-actor.c:6307
 msgid "X coordinate of the actor"
 msgstr "X координата чиниоца"
 
-#: ../clutter/clutter-actor.c:6329
+#: ../clutter/clutter-actor.c:6325
 msgid "Y coordinate"
 msgstr "Y координата"
 
-#: ../clutter/clutter-actor.c:6330
+#: ../clutter/clutter-actor.c:6326
 msgid "Y coordinate of the actor"
 msgstr "Y координата чиниоца"
 
-#: ../clutter/clutter-actor.c:6352
+#: ../clutter/clutter-actor.c:6348
 msgid "Position"
 msgstr "Положај"
 
-#: ../clutter/clutter-actor.c:6353
+#: ../clutter/clutter-actor.c:6349
 msgid "The position of the origin of the actor"
 msgstr "Положај порекла чиниоца"
 
-#: ../clutter/clutter-actor.c:6370 ../clutter/clutter-canvas.c:248
+#: ../clutter/clutter-actor.c:6366 ../clutter/clutter-canvas.c:248
 #: ../clutter/clutter-grid-layout.c:1239
 #: ../clutter/deprecated/clutter-behaviour-ellipse.c:474
 msgid "Width"
 msgstr "Ширина"
 
-#: ../clutter/clutter-actor.c:6371
+#: ../clutter/clutter-actor.c:6367
 msgid "Width of the actor"
 msgstr "Ширина чиниоца"
 
-#: ../clutter/clutter-actor.c:6389 ../clutter/clutter-canvas.c:264
+#: ../clutter/clutter-actor.c:6385 ../clutter/clutter-canvas.c:264
 #: ../clutter/clutter-grid-layout.c:1246
 #: ../clutter/deprecated/clutter-behaviour-ellipse.c:490
 msgid "Height"
 msgstr "Висина"
 
-#: ../clutter/clutter-actor.c:6390
+#: ../clutter/clutter-actor.c:6386
 msgid "Height of the actor"
 msgstr "Висина чиниоца"
 
-#: ../clutter/clutter-actor.c:6411
+#: ../clutter/clutter-actor.c:6407
 msgid "Size"
 msgstr "Величина"
 
-#: ../clutter/clutter-actor.c:6412
+#: ../clutter/clutter-actor.c:6408
 msgid "The size of the actor"
 msgstr "Величина чиниоца"
 
-#: ../clutter/clutter-actor.c:6430
+#: ../clutter/clutter-actor.c:6426
 msgid "Fixed X"
 msgstr "Утврђено Х"
 
-#: ../clutter/clutter-actor.c:6431
+#: ../clutter/clutter-actor.c:6427
 msgid "Forced X position of the actor"
 msgstr "Присиљени X положај чиниоца"
 
-#: ../clutter/clutter-actor.c:6448
+#: ../clutter/clutter-actor.c:6444
 msgid "Fixed Y"
 msgstr "Утврђено Y"
 
-#: ../clutter/clutter-actor.c:6449
+#: ../clutter/clutter-actor.c:6445
 msgid "Forced Y position of the actor"
 msgstr "Присиљени Y положај чиниоца"
 
-#: ../clutter/clutter-actor.c:6464
+#: ../clutter/clutter-actor.c:6460
 msgid "Fixed position set"
 msgstr "Подешавање утврђеног положаја"
 
-#: ../clutter/clutter-actor.c:6465
+#: ../clutter/clutter-actor.c:6461
 msgid "Whether to use fixed positioning for the actor"
 msgstr "Да ли ће бити коришћено утврђено постављање чиниоца"
 
-#: ../clutter/clutter-actor.c:6483
+#: ../clutter/clutter-actor.c:6479
 msgid "Min Width"
 msgstr "Најмања ширина"
 
-#: ../clutter/clutter-actor.c:6484
+#: ../clutter/clutter-actor.c:6480
 msgid "Forced minimum width request for the actor"
 msgstr "Присиљена најмања ширина захтевана за чиниоца"
 
-#: ../clutter/clutter-actor.c:6502
+#: ../clutter/clutter-actor.c:6498
 msgid "Min Height"
 msgstr "Најмања висина"
 
-#: ../clutter/clutter-actor.c:6503
+#: ../clutter/clutter-actor.c:6499
 msgid "Forced minimum height request for the actor"
 msgstr "Присиљена најмања висина захтевана за чиниоца"
 
-#: ../clutter/clutter-actor.c:6521
+#: ../clutter/clutter-actor.c:6517
 msgid "Natural Width"
 msgstr "Уобичајена ширина"
 
-#: ../clutter/clutter-actor.c:6522
+#: ../clutter/clutter-actor.c:6518
 msgid "Forced natural width request for the actor"
 msgstr "Присиљена уобичајена ширина захтевана за чиниоца"
 
-#: ../clutter/clutter-actor.c:6540
+#: ../clutter/clutter-actor.c:6536
 msgid "Natural Height"
 msgstr "Уобичајена висина"
 
-#: ../clutter/clutter-actor.c:6541
+#: ../clutter/clutter-actor.c:6537
 msgid "Forced natural height request for the actor"
 msgstr "Присиљена уобичајена висина захтевана за чиниоца"
 
-#: ../clutter/clutter-actor.c:6556
+#: ../clutter/clutter-actor.c:6552
 msgid "Minimum width set"
 msgstr "Подешавање најмање ширине"
 
-#: ../clutter/clutter-actor.c:6557
+#: ../clutter/clutter-actor.c:6553
 msgid "Whether to use the min-width property"
 msgstr "Да ли ће бити коришћено својство најмање ширине"
 
-#: ../clutter/clutter-actor.c:6571
+#: ../clutter/clutter-actor.c:6567
 msgid "Minimum height set"
 msgstr "Подешавање најмање висине"
 
-#: ../clutter/clutter-actor.c:6572
+#: ../clutter/clutter-actor.c:6568
 msgid "Whether to use the min-height property"
 msgstr "Да ли ће бити коришћено својство најмање висине"
 
-#: ../clutter/clutter-actor.c:6586
+#: ../clutter/clutter-actor.c:6582
 msgid "Natural width set"
 msgstr "Подешавање уобичајене ширине"
 
-#: ../clutter/clutter-actor.c:6587
+#: ../clutter/clutter-actor.c:6583
 msgid "Whether to use the natural-width property"
 msgstr "Да ли ће бити коришћено својство уобичајене ширине"
 
-#: ../clutter/clutter-actor.c:6601
+#: ../clutter/clutter-actor.c:6597
 msgid "Natural height set"
 msgstr "Подешавање уобичајене висине"
 
-#: ../clutter/clutter-actor.c:6602
+#: ../clutter/clutter-actor.c:6598
 msgid "Whether to use the natural-height property"
 msgstr "Да ли ће бити коришћено својство уобичајене висине"
 
-#: ../clutter/clutter-actor.c:6618
+#: ../clutter/clutter-actor.c:6614
 msgid "Allocation"
 msgstr "Распоређивање"
 
-#: ../clutter/clutter-actor.c:6619
+#: ../clutter/clutter-actor.c:6615
 msgid "The actor's allocation"
 msgstr "Распоређивање чиниоца"
 
-#: ../clutter/clutter-actor.c:6686
+#: ../clutter/clutter-actor.c:6682
 msgid "Request Mode"
 msgstr "Режим захтева"
 
-#: ../clutter/clutter-actor.c:6687
+#: ../clutter/clutter-actor.c:6683
 msgid "The actor's request mode"
 msgstr "Режим захтева чиниоца"
 
-#: ../clutter/clutter-actor.c:6711
+#: ../clutter/clutter-actor.c:6707
 msgid "Depth"
 msgstr "Дубина"
 
-#: ../clutter/clutter-actor.c:6712
+#: ../clutter/clutter-actor.c:6708
 msgid "Position on the Z axis"
 msgstr "Положај на Z оси"
 
-#: ../clutter/clutter-actor.c:6739
+#: ../clutter/clutter-actor.c:6735
 msgid "Z Position"
 msgstr "Z положај"
 
-#: ../clutter/clutter-actor.c:6740
+#: ../clutter/clutter-actor.c:6736
 msgid "The actor's position on the Z axis"
 msgstr "Положај чиниоца на Z оси"
 
-#: ../clutter/clutter-actor.c:6757
+#: ../clutter/clutter-actor.c:6753
 msgid "Opacity"
 msgstr "Непровидност"
 
-#: ../clutter/clutter-actor.c:6758
+#: ../clutter/clutter-actor.c:6754
 msgid "Opacity of an actor"
 msgstr "Непровидност чиниоца"
 
-#: ../clutter/clutter-actor.c:6778
+#: ../clutter/clutter-actor.c:6774
 msgid "Offscreen redirect"
 msgstr "Преусмеравање ван екрана"
 
-#: ../clutter/clutter-actor.c:6779
+#: ../clutter/clutter-actor.c:6775
 msgid "Flags controlling when to flatten the actor into a single image"
 msgstr "Опције које контролишу када ће чинилац бити изравнат у једну слику"
 
-#: ../clutter/clutter-actor.c:6793
+#: ../clutter/clutter-actor.c:6789
 msgid "Visible"
 msgstr "Видљив"
 
-#: ../clutter/clutter-actor.c:6794
+#: ../clutter/clutter-actor.c:6790
 msgid "Whether the actor is visible or not"
 msgstr "Да ли ће чинилац бити видљив или не"
 
-#: ../clutter/clutter-actor.c:6808
+#: ../clutter/clutter-actor.c:6804
 msgid "Mapped"
 msgstr "Мапиран"
 
-#: ../clutter/clutter-actor.c:6809
+#: ../clutter/clutter-actor.c:6805
 msgid "Whether the actor will be painted"
 msgstr "Да ли ће чинилац бити обојен"
 
-#: ../clutter/clutter-actor.c:6822
+#: ../clutter/clutter-actor.c:6818
 msgid "Realized"
 msgstr "Остварен"
 
-#: ../clutter/clutter-actor.c:6823
+#: ../clutter/clutter-actor.c:6819
 msgid "Whether the actor has been realized"
 msgstr "Да ли ће чинилац бити остварен"
 
-#: ../clutter/clutter-actor.c:6838
+#: ../clutter/clutter-actor.c:6834
 msgid "Reactive"
 msgstr "Реактиван"
 
-#: ../clutter/clutter-actor.c:6839
+#: ../clutter/clutter-actor.c:6835
 msgid "Whether the actor is reactive to events"
 msgstr "Да ли ће чинилац бити осетљив на догађаје"
 
-#: ../clutter/clutter-actor.c:6850
+#: ../clutter/clutter-actor.c:6846
 msgid "Has Clip"
 msgstr "Поседује исецање"
 
-#: ../clutter/clutter-actor.c:6851
+#: ../clutter/clutter-actor.c:6847
 msgid "Whether the actor has a clip set"
 msgstr "Да ли чинилац има подешено исецање"
 
-#: ../clutter/clutter-actor.c:6864
+#: ../clutter/clutter-actor.c:6860
 msgid "Clip"
 msgstr "Исецање"
 
-#: ../clutter/clutter-actor.c:6865
+#: ../clutter/clutter-actor.c:6861
 msgid "The clip region for the actor"
 msgstr "Област исецања за чиниоца"
 
-#: ../clutter/clutter-actor.c:6884
+#: ../clutter/clutter-actor.c:6880
 msgid "Clip Rectangle"
 msgstr "Правоугаоник исецања"
 
-#: ../clutter/clutter-actor.c:6885
+#: ../clutter/clutter-actor.c:6881
 msgid "The visible region of the actor"
 msgstr "Видљива област чиниоца"
 
-#: ../clutter/clutter-actor.c:6899 ../clutter/clutter-actor-meta.c:205
+#: ../clutter/clutter-actor.c:6895 ../clutter/clutter-actor-meta.c:205
 #: ../clutter/clutter-binding-pool.c:318 ../clutter/clutter-input-device.c:268
 msgid "Name"
 msgstr "Назив"
 
-#: ../clutter/clutter-actor.c:6900
+#: ../clutter/clutter-actor.c:6896
 msgid "Name of the actor"
 msgstr "Назив чиниоца"
 
-#: ../clutter/clutter-actor.c:6921
+#: ../clutter/clutter-actor.c:6917
 msgid "Pivot Point"
 msgstr "Тачка обртања"
 
-#: ../clutter/clutter-actor.c:6922
+#: ../clutter/clutter-actor.c:6918
 msgid "The point around which the scaling and rotation occur"
 msgstr "Тачка око које се одигравају размеравање и обртање"
 
-#: ../clutter/clutter-actor.c:6940
+#: ../clutter/clutter-actor.c:6936
 msgid "Pivot Point Z"
 msgstr "Z тачка обртања"
 
-#: ../clutter/clutter-actor.c:6941
+#: ../clutter/clutter-actor.c:6937
 msgid "Z component of the pivot point"
 msgstr "Z део тачке обртања"
 
-#: ../clutter/clutter-actor.c:6959
+#: ../clutter/clutter-actor.c:6955
 msgid "Scale X"
 msgstr "X размера"
 
-#: ../clutter/clutter-actor.c:6960
+#: ../clutter/clutter-actor.c:6956
 msgid "Scale factor on the X axis"
 msgstr "Фактор размере на X оси"
 
-#: ../clutter/clutter-actor.c:6978
+#: ../clutter/clutter-actor.c:6974
 msgid "Scale Y"
 msgstr "Y размера"
 
-#: ../clutter/clutter-actor.c:6979
+#: ../clutter/clutter-actor.c:6975
 msgid "Scale factor on the Y axis"
 msgstr "Фактор размере на Y оси"
 
-#: ../clutter/clutter-actor.c:6997
+#: ../clutter/clutter-actor.c:6993
 msgid "Scale Z"
 msgstr "Z размера"
 
-#: ../clutter/clutter-actor.c:6998
+#: ../clutter/clutter-actor.c:6994
 msgid "Scale factor on the Z axis"
 msgstr "Фактор размере на Z оси"
 
-#: ../clutter/clutter-actor.c:7016
+#: ../clutter/clutter-actor.c:7012
 msgid "Scale Center X"
 msgstr "Средиште X размере"
 
-#: ../clutter/clutter-actor.c:7017
+#: ../clutter/clutter-actor.c:7013
 msgid "Horizontal scale center"
 msgstr "Средиште водоравне размере"
 
-#: ../clutter/clutter-actor.c:7035
+#: ../clutter/clutter-actor.c:7031
 msgid "Scale Center Y"
 msgstr "Средиште Y размере"
 
-#: ../clutter/clutter-actor.c:7036
+#: ../clutter/clutter-actor.c:7032
 msgid "Vertical scale center"
 msgstr "Средиште усправне размере"
 
-#: ../clutter/clutter-actor.c:7054
+#: ../clutter/clutter-actor.c:7050
 msgid "Scale Gravity"
 msgstr "Тежиште размере"
 
-#: ../clutter/clutter-actor.c:7055
+#: ../clutter/clutter-actor.c:7051
 msgid "The center of scaling"
 msgstr "Средиште размере"
 
-#: ../clutter/clutter-actor.c:7073
+#: ../clutter/clutter-actor.c:7069
 msgid "Rotation Angle X"
 msgstr "Угао X окретања"
 
-#: ../clutter/clutter-actor.c:7074
+#: ../clutter/clutter-actor.c:7070
 msgid "The rotation angle on the X axis"
 msgstr "Угао окретања на Х оси"
 
-#: ../clutter/clutter-actor.c:7092
+#: ../clutter/clutter-actor.c:7088
 msgid "Rotation Angle Y"
 msgstr "Угао Y окретања"
 
-#: ../clutter/clutter-actor.c:7093
+#: ../clutter/clutter-actor.c:7089
 msgid "The rotation angle on the Y axis"
 msgstr "Угао окретања на Y оси"
 
-#: ../clutter/clutter-actor.c:7111
+#: ../clutter/clutter-actor.c:7107
 msgid "Rotation Angle Z"
 msgstr "Угао Z окретања"
 
-#: ../clutter/clutter-actor.c:7112
+#: ../clutter/clutter-actor.c:7108
 msgid "The rotation angle on the Z axis"
 msgstr "Угао окретања на Z оси"
 
-#: ../clutter/clutter-actor.c:7130
+#: ../clutter/clutter-actor.c:7126
 msgid "Rotation Center X"
 msgstr "Средиште X окретања"
 
-#: ../clutter/clutter-actor.c:7131
+#: ../clutter/clutter-actor.c:7127
 msgid "The rotation center on the X axis"
 msgstr "Средиште окретања на Х оси"
 
-#: ../clutter/clutter-actor.c:7148
+#: ../clutter/clutter-actor.c:7144
 msgid "Rotation Center Y"
 msgstr "Средиште Y окретања"
 
-#: ../clutter/clutter-actor.c:7149
+#: ../clutter/clutter-actor.c:7145
 msgid "The rotation center on the Y axis"
 msgstr "Средиште окретања на Y оси"
 
-#: ../clutter/clutter-actor.c:7166
+#: ../clutter/clutter-actor.c:7162
 msgid "Rotation Center Z"
 msgstr "Средиште Z окретања"
 
-#: ../clutter/clutter-actor.c:7167
+#: ../clutter/clutter-actor.c:7163
 msgid "The rotation center on the Z axis"
 msgstr "Средиште окретања на Z оси"
 
-#: ../clutter/clutter-actor.c:7184
+#: ../clutter/clutter-actor.c:7180
 msgid "Rotation Center Z Gravity"
 msgstr "Тежиште средишта Z окретања"
 
-#: ../clutter/clutter-actor.c:7185
+#: ../clutter/clutter-actor.c:7181
 msgid "Center point for rotation around the Z axis"
 msgstr "Средишња тачка за окретање око Z осе"
 
-#: ../clutter/clutter-actor.c:7213
+#: ../clutter/clutter-actor.c:7209
 msgid "Anchor X"
 msgstr "Х учвршћење"
 
-#: ../clutter/clutter-actor.c:7214
+#: ../clutter/clutter-actor.c:7210
 msgid "X coordinate of the anchor point"
 msgstr "X координате тачке учвршћавања"
 
-#: ../clutter/clutter-actor.c:7242
+#: ../clutter/clutter-actor.c:7238
 msgid "Anchor Y"
 msgstr "Y учвршћење"
 
-#: ../clutter/clutter-actor.c:7243
+#: ../clutter/clutter-actor.c:7239
 msgid "Y coordinate of the anchor point"
 msgstr "Y координате тачке учвршћавања"
 
-#: ../clutter/clutter-actor.c:7270
+#: ../clutter/clutter-actor.c:7266
 msgid "Anchor Gravity"
 msgstr "Тежиште учвршћења"
 
-#: ../clutter/clutter-actor.c:7271
+#: ../clutter/clutter-actor.c:7267
 msgid "The anchor point as a ClutterGravity"
 msgstr "Тачка учвршћавања као тежиште Галамџије"
 
-#: ../clutter/clutter-actor.c:7290
+#: ../clutter/clutter-actor.c:7286
 msgid "Translation X"
 msgstr "X превод"
 
-#: ../clutter/clutter-actor.c:7291
+#: ../clutter/clutter-actor.c:7287
 msgid "Translation along the X axis"
 msgstr "Превод дуж X осе"
 
-#: ../clutter/clutter-actor.c:7310
+#: ../clutter/clutter-actor.c:7306
 msgid "Translation Y"
 msgstr "Y превод"
 
-#: ../clutter/clutter-actor.c:7311
+#: ../clutter/clutter-actor.c:7307
 msgid "Translation along the Y axis"
 msgstr "Превод дуж Y осе"
 
-#: ../clutter/clutter-actor.c:7330
+#: ../clutter/clutter-actor.c:7326
 msgid "Translation Z"
 msgstr "Z превод"
 
-#: ../clutter/clutter-actor.c:7331
+#: ../clutter/clutter-actor.c:7327
 msgid "Translation along the Z axis"
 msgstr "Превод дуж Z осе"
 
-#: ../clutter/clutter-actor.c:7361
+#: ../clutter/clutter-actor.c:7357
 msgid "Transform"
 msgstr "Преображај"
 
-#: ../clutter/clutter-actor.c:7362
+#: ../clutter/clutter-actor.c:7358
 msgid "Transformation matrix"
 msgstr "Матрица преображаја"
 
-#: ../clutter/clutter-actor.c:7377
+#: ../clutter/clutter-actor.c:7373
 msgid "Transform Set"
 msgstr "Подешавање преображаја"
 
-#: ../clutter/clutter-actor.c:7378
+#: ../clutter/clutter-actor.c:7374
 msgid "Whether the transform property is set"
 msgstr "Да ли је подешено својство преображаја"
 
-#: ../clutter/clutter-actor.c:7399
+#: ../clutter/clutter-actor.c:7395
 msgid "Child Transform"
 msgstr "Преображај порода"
 
-#: ../clutter/clutter-actor.c:7400
+#: ../clutter/clutter-actor.c:7396
 msgid "Children transformation matrix"
 msgstr "Матрица преображаја порода"
 
-#: ../clutter/clutter-actor.c:7415
+#: ../clutter/clutter-actor.c:7411
 msgid "Child Transform Set"
 msgstr "Подешавање преображаја порода"
 
-#: ../clutter/clutter-actor.c:7416
+#: ../clutter/clutter-actor.c:7412
 msgid "Whether the child-transform property is set"
 msgstr "Да ли је подешено својство преображаја порода"
 
-#: ../clutter/clutter-actor.c:7433
+#: ../clutter/clutter-actor.c:7429
 msgid "Show on set parent"
 msgstr "Приказ на скупу родитеља"
 
-#: ../clutter/clutter-actor.c:7434
+#: ../clutter/clutter-actor.c:7430
 msgid "Whether the actor is shown when parented"
 msgstr "Да ли ће чинилац бити приказан када је присвојен"
 
-#: ../clutter/clutter-actor.c:7451
+#: ../clutter/clutter-actor.c:7447
 msgid "Clip to Allocation"
 msgstr "Исецање до распоређивања"
 
-#: ../clutter/clutter-actor.c:7452
+#: ../clutter/clutter-actor.c:7448
 msgid "Sets the clip region to track the actor's allocation"
 msgstr "Поставља област исецања за праћење распоређивање чиниоца"
 
-#: ../clutter/clutter-actor.c:7465
+#: ../clutter/clutter-actor.c:7461
 msgid "Text Direction"
 msgstr "Смер текста"
 
-#: ../clutter/clutter-actor.c:7466
+#: ../clutter/clutter-actor.c:7462
 msgid "Direction of the text"
 msgstr "Правац усмерења текста"
 
-#: ../clutter/clutter-actor.c:7481
+#: ../clutter/clutter-actor.c:7477
 msgid "Has Pointer"
 msgstr "Поседује показивач"
 
-#: ../clutter/clutter-actor.c:7482
+#: ../clutter/clutter-actor.c:7478
 msgid "Whether the actor contains the pointer of an input device"
 msgstr "Да ли чинилац садржи показивач неког улазног уређаја"
 
-#: ../clutter/clutter-actor.c:7495
+#: ../clutter/clutter-actor.c:7491
 msgid "Actions"
 msgstr "Радње"
 
-#: ../clutter/clutter-actor.c:7496
+#: ../clutter/clutter-actor.c:7492
 msgid "Adds an action to the actor"
 msgstr "Додаје радњу чиниоцу"
 
-#: ../clutter/clutter-actor.c:7509
+#: ../clutter/clutter-actor.c:7505
 msgid "Constraints"
 msgstr "Ограничења"
 
-#: ../clutter/clutter-actor.c:7510
+#: ../clutter/clutter-actor.c:7506
 msgid "Adds a constraint to the actor"
 msgstr "Додаје ограничења чиниоцу"
 
-#: ../clutter/clutter-actor.c:7523
+#: ../clutter/clutter-actor.c:7519
 msgid "Effect"
 msgstr "Дејство"
 
-#: ../clutter/clutter-actor.c:7524
+#: ../clutter/clutter-actor.c:7520
 msgid "Add an effect to be applied on the actor"
 msgstr "Додаје дејство које ће бити примењено на чиниоцу"
 
-#: ../clutter/clutter-actor.c:7538
+#: ../clutter/clutter-actor.c:7534
 msgid "Layout Manager"
 msgstr "Управник распореда"
 
-#: ../clutter/clutter-actor.c:7539
+#: ../clutter/clutter-actor.c:7535
 msgid "The object controlling the layout of an actor's children"
 msgstr "Објекат који управља распоредом неког порода чиниоца"
 
-#: ../clutter/clutter-actor.c:7553
+#: ../clutter/clutter-actor.c:7549
 msgid "X Expand"
 msgstr "X ширење"
 
-#: ../clutter/clutter-actor.c:7554
+#: ../clutter/clutter-actor.c:7550
 msgid "Whether extra horizontal space should be assigned to the actor"
 msgstr "Да ли додатни водоравни простор треба бити додељен чиниоцу"
 
-#: ../clutter/clutter-actor.c:7569
+#: ../clutter/clutter-actor.c:7565
 msgid "Y Expand"
 msgstr "Y ширење"
 
-#: ../clutter/clutter-actor.c:7570
+#: ../clutter/clutter-actor.c:7566
 msgid "Whether extra vertical space should be assigned to the actor"
 msgstr "Да ли додатни усправни простор треба бити додељен чиниоцу"
 
-#: ../clutter/clutter-actor.c:7586
+#: ../clutter/clutter-actor.c:7582
 msgid "X Alignment"
 msgstr "Х поравнање"
 
-#: ../clutter/clutter-actor.c:7587
+#: ../clutter/clutter-actor.c:7583
 msgid "The alignment of the actor on the X axis within its allocation"
 msgstr "Поравнање чиниоца на икс оси унутар његове расподеле"
 
-#: ../clutter/clutter-actor.c:7602
+#: ../clutter/clutter-actor.c:7598
 msgid "Y Alignment"
 msgstr "Y поравнање"
 
-#: ../clutter/clutter-actor.c:7603
+#: ../clutter/clutter-actor.c:7599
 msgid "The alignment of the actor on the Y axis within its allocation"
 msgstr "Поравнање чиниоца на ипсилон оси унутар његове расподеле"
 
-#: ../clutter/clutter-actor.c:7622
+#: ../clutter/clutter-actor.c:7618
 msgid "Margin Top"
 msgstr "Горња маргина"
 
-#: ../clutter/clutter-actor.c:7623
+#: ../clutter/clutter-actor.c:7619
 msgid "Extra space at the top"
 msgstr "Додатни простор на врху"
 
-#: ../clutter/clutter-actor.c:7644
+#: ../clutter/clutter-actor.c:7640
 msgid "Margin Bottom"
 msgstr "Доња маргина"
 
-#: ../clutter/clutter-actor.c:7645
+#: ../clutter/clutter-actor.c:7641
 msgid "Extra space at the bottom"
 msgstr "Додатни простор на дну"
 
-#: ../clutter/clutter-actor.c:7666
+#: ../clutter/clutter-actor.c:7662
 msgid "Margin Left"
 msgstr "Лева маргина"
 
-#: ../clutter/clutter-actor.c:7667
+#: ../clutter/clutter-actor.c:7663
 msgid "Extra space at the left"
 msgstr "Додатни простор на левој страни"
 
-#: ../clutter/clutter-actor.c:7688
+#: ../clutter/clutter-actor.c:7684
 msgid "Margin Right"
 msgstr "Десна маргина"
 
-#: ../clutter/clutter-actor.c:7689
+#: ../clutter/clutter-actor.c:7685
 msgid "Extra space at the right"
 msgstr "Додатни простор на десној страни"
 
-#: ../clutter/clutter-actor.c:7705
+#: ../clutter/clutter-actor.c:7701
 msgid "Background Color Set"
 msgstr "Подешавање боје позадине"
 
-#: ../clutter/clutter-actor.c:7706 ../clutter/deprecated/clutter-box.c:280
+#: ../clutter/clutter-actor.c:7702 ../clutter/deprecated/clutter-box.c:280
 msgid "Whether the background color is set"
 msgstr "Да ли је подешена боја позадине"
 
-#: ../clutter/clutter-actor.c:7722
+#: ../clutter/clutter-actor.c:7718
 msgid "Background color"
 msgstr "Боја позадине"
 
-#: ../clutter/clutter-actor.c:7723
+#: ../clutter/clutter-actor.c:7719
 msgid "The actor's background color"
 msgstr "Боја позадине чиниоца"
 
-#: ../clutter/clutter-actor.c:7738
+#: ../clutter/clutter-actor.c:7734
 msgid "First Child"
 msgstr "Први пород"
 
-#: ../clutter/clutter-actor.c:7739
+#: ../clutter/clutter-actor.c:7735
 msgid "The actor's first child"
 msgstr "Први пород чиниоца"
 
-#: ../clutter/clutter-actor.c:7752
+#: ../clutter/clutter-actor.c:7748
 msgid "Last Child"
 msgstr "Последњи пород"
 
-#: ../clutter/clutter-actor.c:7753
+#: ../clutter/clutter-actor.c:7749
 msgid "The actor's last child"
 msgstr "Последњи пород чиниоца"
 
-#: ../clutter/clutter-actor.c:7767
+#: ../clutter/clutter-actor.c:7763
 msgid "Content"
 msgstr "Садржај"
 
-#: ../clutter/clutter-actor.c:7768
+#: ../clutter/clutter-actor.c:7764
 msgid "Delegate object for painting the actor's content"
 msgstr "Одређује објекат за бојење садржаја чиниоца"
 
-#: ../clutter/clutter-actor.c:7793
+#: ../clutter/clutter-actor.c:7789
 msgid "Content Gravity"
 msgstr "Тежиште садржаја"
 
-#: ../clutter/clutter-actor.c:7794
+#: ../clutter/clutter-actor.c:7790
 msgid "Alignment of the actor's content"
 msgstr "Поравнање садржаја чиниоца"
 
-#: ../clutter/clutter-actor.c:7814
+#: ../clutter/clutter-actor.c:7810
 msgid "Content Box"
 msgstr "Поље садржаја"
 
-#: ../clutter/clutter-actor.c:7815
+#: ../clutter/clutter-actor.c:7811
 msgid "The bounding box of the actor's content"
 msgstr "Гранично поље садржаја чиниоца"
 
-#: ../clutter/clutter-actor.c:7823
+#: ../clutter/clutter-actor.c:7819
 msgid "Minification Filter"
 msgstr "Филтер умањивања"
 
-#: ../clutter/clutter-actor.c:7824
+#: ../clutter/clutter-actor.c:7820
 msgid "The filter used when reducing the size of the content"
 msgstr "Филтер који се користи приликом смањивања величине садржаја"
 
-#: ../clutter/clutter-actor.c:7831
+#: ../clutter/clutter-actor.c:7827
 msgid "Magnification Filter"
 msgstr "Филтер увећавања"
 
-#: ../clutter/clutter-actor.c:7832
+#: ../clutter/clutter-actor.c:7828
 msgid "The filter used when increasing the size of the content"
 msgstr "Филтер који се користи приликом увећавања величине садржаја"
 
-#: ../clutter/clutter-actor.c:7846
+#: ../clutter/clutter-actor.c:7842
 msgid "Content Repeat"
 msgstr "Понављање садржаја"
 
-#: ../clutter/clutter-actor.c:7847
+#: ../clutter/clutter-actor.c:7843
 msgid "The repeat policy for the actor's content"
 msgstr "Политика понављања садржаја чиниоца"
 
@@ -705,7 +703,7 @@ msgid "Whether the meta is enabled"
 msgstr "Да ли је мета укључена"
 
 #: ../clutter/clutter-align-constraint.c:279
-#: ../clutter/clutter-bind-constraint.c:343 ../clutter/clutter-clone.c:342
+#: ../clutter/clutter-bind-constraint.c:343 ../clutter/clutter-clone.c:348
 #: ../clutter/clutter-snap-constraint.c:321
 msgid "Source"
 msgstr "Извор"
@@ -731,11 +729,14 @@ msgstr "Фактор"
 msgid "The alignment factor, between 0.0 and 1.0"
 msgstr "Фактор поравнања, између 0.0 и 1.0"
 
-#: ../clutter/clutter-backend.c:404
-msgid "Unable to initialize the Clutter backend"
-msgstr "Не могу да покренем позадинца Галамџије"
+#: ../clutter/clutter-backend.c:437
+#| msgid "Unable to initialize the Clutter backend"
+msgid "Unable to initialize the Clutter backend: no available drivers found."
+msgstr ""
+"Не могу да покренем позадинца Галамџије: нисам нашао доступне управљачке "
+"програме."
 
-#: ../clutter/clutter-backend.c:485
+#: ../clutter/clutter-backend.c:517
 #, c-format
 msgid "The backend of type '%s' does not support creating multiple stages"
 msgstr "Позадинац врсте „%s“ не подржава стварање више сцена"
@@ -863,9 +864,6 @@ msgid "Homogeneous"
 msgstr "Истородност"
 
 #: ../clutter/clutter-box-layout.c:1381
-#| msgid ""
-#| "Whether the layout should be homogeneous, i.e. all childs get the same "
-#| "size"
 msgid ""
 "Whether the layout should be homogeneous, i.e. all children get the same size"
 msgstr ""
@@ -970,39 +968,39 @@ msgstr "Садржалац који је створио овај податак"
 msgid "The actor wrapped by this data"
 msgstr "Чинилац обавијен овим податком"
 
-#: ../clutter/clutter-click-action.c:586
+#: ../clutter/clutter-click-action.c:590
 msgid "Pressed"
 msgstr "Притиснут"
 
-#: ../clutter/clutter-click-action.c:587
+#: ../clutter/clutter-click-action.c:591
 msgid "Whether the clickable should be in pressed state"
 msgstr "Да ли кликљив треба да буде у притиснутом стању"
 
-#: ../clutter/clutter-click-action.c:600
+#: ../clutter/clutter-click-action.c:604
 msgid "Held"
 msgstr "Задржан"
 
-#: ../clutter/clutter-click-action.c:601
+#: ../clutter/clutter-click-action.c:605
 msgid "Whether the clickable has a grab"
 msgstr "Да ли кликљив има захват"
 
-#: ../clutter/clutter-click-action.c:618 ../clutter/clutter-settings.c:674
+#: ../clutter/clutter-click-action.c:622 ../clutter/clutter-settings.c:674
 msgid "Long Press Duration"
 msgstr "Трајање дугог притиска"
 
-#: ../clutter/clutter-click-action.c:619
+#: ../clutter/clutter-click-action.c:623
 msgid "The minimum duration of a long press to recognize the gesture"
 msgstr "Најмање трајање дугог притиска за препознавање потеза"
 
-#: ../clutter/clutter-click-action.c:637
+#: ../clutter/clutter-click-action.c:641
 msgid "Long Press Threshold"
 msgstr "Праг дугог притиска"
 
-#: ../clutter/clutter-click-action.c:638
+#: ../clutter/clutter-click-action.c:642
 msgid "The maximum threshold before a long press is cancelled"
 msgstr "Највећи праг пре отказивања дугог притиска"
 
-#: ../clutter/clutter-clone.c:343
+#: ../clutter/clutter-clone.c:349
 msgid "Specifies the actor to be cloned"
 msgstr "Одређује чиниоца који ће бити клониран"
 
@@ -1042,13 +1040,13 @@ msgstr "Материјал који ће бити коришћен прилик�
 msgid "The desaturation factor"
 msgstr "Фактор обезбојавања"
 
-#: ../clutter/clutter-device-manager.c:127
+#: ../clutter/clutter-device-manager.c:136
 #: ../clutter/clutter-input-device.c:376
 #: ../clutter/x11/clutter-keymap-x11.c:457
 msgid "Backend"
 msgstr "Позадинац"
 
-#: ../clutter/clutter-device-manager.c:128
+#: ../clutter/clutter-device-manager.c:137
 msgid "The ClutterBackend of the device manager"
 msgstr "Позадинац Галамџије управника уређаја"
 
@@ -1358,51 +1356,51 @@ msgstr "Управник који је створио овај податак"
 #. * Do NOT translate it to non-English e.g. "predefinito:LTR"! If
 #. * it isn't default:LTR or default:RTL it will not work.
 #.
-#: ../clutter/clutter-main.c:729
+#: ../clutter/clutter-main.c:751
 msgid "default:LTR"
 msgstr "default:LTR"
 
-#: ../clutter/clutter-main.c:1398
+#: ../clutter/clutter-main.c:1426
 msgid "Show frames per second"
 msgstr "Приказује кадрове у секунди"
 
-#: ../clutter/clutter-main.c:1400
+#: ../clutter/clutter-main.c:1428
 msgid "Default frame rate"
 msgstr "Основни проток кадра"
 
-#: ../clutter/clutter-main.c:1402
+#: ../clutter/clutter-main.c:1430
 msgid "Make all warnings fatal"
 msgstr "Чини сва упозорења кобним"
 
-#: ../clutter/clutter-main.c:1405
+#: ../clutter/clutter-main.c:1433
 msgid "Direction for the text"
 msgstr "Правац усмерења за текст"
 
-#: ../clutter/clutter-main.c:1408
+#: ../clutter/clutter-main.c:1436
 msgid "Disable mipmapping on text"
 msgstr "Искључује мип мапирање на тексту"
 
-#: ../clutter/clutter-main.c:1411
+#: ../clutter/clutter-main.c:1439
 msgid "Use 'fuzzy' picking"
 msgstr "Користи „нејасно“ пребирање"
 
-#: ../clutter/clutter-main.c:1414
+#: ../clutter/clutter-main.c:1442
 msgid "Clutter debugging flags to set"
 msgstr "Опције Галамџије за уклањање грешака за постављање"
 
-#: ../clutter/clutter-main.c:1416
+#: ../clutter/clutter-main.c:1444
 msgid "Clutter debugging flags to unset"
 msgstr "Опције Галамџије за уклањање грешака за искључивање"
 
-#: ../clutter/clutter-main.c:1419
+#: ../clutter/clutter-main.c:1447
 msgid "Enable accessibility"
 msgstr "Укључује приступачност"
 
-#: ../clutter/clutter-main.c:1597
+#: ../clutter/clutter-main.c:1619
 msgid "Clutter Options"
 msgstr "Опције Галамџије"
 
-#: ../clutter/clutter-main.c:1598
+#: ../clutter/clutter-main.c:1620
 msgid "Show Clutter Options"
 msgstr "Приказује опције Галамџије"
 
@@ -1515,7 +1513,7 @@ msgstr "Праг превлачења"
 msgid "The distance the cursor should travel before starting to drag"
 msgstr "Растојање које курсор треба да пређе пре почетка превлачења"
 
-#: ../clutter/clutter-settings.c:557 ../clutter/clutter-text.c:3409
+#: ../clutter/clutter-settings.c:557 ../clutter/clutter-text.c:3408
 msgid "Font Name"
 msgstr "Назив словног лика"
 
@@ -1651,7 +1649,7 @@ msgstr "Ван екрана"
 msgid "Whether the main stage should be rendered offscreen"
 msgstr "Да ли главна сцена треба да буде исцртана ван екрана"
 
-#: ../clutter/clutter-stage.c:1826 ../clutter/clutter-text.c:3523
+#: ../clutter/clutter-stage.c:1826 ../clutter/clutter-text.c:3527
 msgid "Cursor Visible"
 msgstr "Курсор је видљив"
 
@@ -1740,7 +1738,7 @@ msgstr "Прихватање у први план"
 msgid "Whether the stage should accept focus on show"
 msgstr "Да ли сцена треба да прихвати први план при приказу"
 
-#: ../clutter/clutter-text-buffer.c:347 ../clutter/clutter-text.c:3444
+#: ../clutter/clutter-text-buffer.c:347 ../clutter/clutter-text.c:3443
 msgid "Text"
 msgstr "Текст"
 
@@ -1764,204 +1762,204 @@ msgstr "Највећа дужина"
 msgid "Maximum number of characters for this entry. Zero if no maximum"
 msgstr "Највећи број знакова за ову ставку. Нула ако нема ограничења"
 
-#: ../clutter/clutter-text.c:3391
+#: ../clutter/clutter-text.c:3390
 msgid "Buffer"
 msgstr "Приручна меморија"
 
-#: ../clutter/clutter-text.c:3392
+#: ../clutter/clutter-text.c:3391
 msgid "The buffer for the text"
 msgstr "Приручна меморија за текст"
 
-#: ../clutter/clutter-text.c:3410
+#: ../clutter/clutter-text.c:3409
 msgid "The font to be used by the text"
 msgstr "Словни лик који ће текст да користи"
 
-#: ../clutter/clutter-text.c:3427
+#: ../clutter/clutter-text.c:3426
 msgid "Font Description"
 msgstr "Опис словног лика"
 
-#: ../clutter/clutter-text.c:3428
+#: ../clutter/clutter-text.c:3427
 msgid "The font description to be used"
 msgstr "Опис словног лика који ће бити коришћен"
 
-#: ../clutter/clutter-text.c:3445
+#: ../clutter/clutter-text.c:3444
 msgid "The text to render"
 msgstr "Текст за приказивање"
 
-#: ../clutter/clutter-text.c:3459
+#: ../clutter/clutter-text.c:3458
 msgid "Font Color"
 msgstr "Боја словног лика"
 
-#: ../clutter/clutter-text.c:3460
+#: ../clutter/clutter-text.c:3459
 msgid "Color of the font used by the text"
 msgstr "Боја словног лика ког користи текст"
 
-#: ../clutter/clutter-text.c:3475
+#: ../clutter/clutter-text.c:3474
 msgid "Editable"
 msgstr "Измењив"
 
-#: ../clutter/clutter-text.c:3476
+#: ../clutter/clutter-text.c:3475
 msgid "Whether the text is editable"
 msgstr "Да ли се текст може мењати"
 
-#: ../clutter/clutter-text.c:3491
+#: ../clutter/clutter-text.c:3493
 msgid "Selectable"
 msgstr "Избирљив"
 
-#: ../clutter/clutter-text.c:3492
+#: ../clutter/clutter-text.c:3494
 msgid "Whether the text is selectable"
 msgstr "Да ли се текст може изабрати"
 
-#: ../clutter/clutter-text.c:3506
+#: ../clutter/clutter-text.c:3508
 msgid "Activatable"
 msgstr "Активирљив"
 
-#: ../clutter/clutter-text.c:3507
+#: ../clutter/clutter-text.c:3509
 msgid "Whether pressing return causes the activate signal to be emitted"
 msgstr "Да ли притисак на повратак изазива емитовање сигнала активирања"
 
-#: ../clutter/clutter-text.c:3524
+#: ../clutter/clutter-text.c:3528
 msgid "Whether the input cursor is visible"
 msgstr "Да ли је курсор уноса видљив"
 
-#: ../clutter/clutter-text.c:3538 ../clutter/clutter-text.c:3539
+#: ../clutter/clutter-text.c:3542 ../clutter/clutter-text.c:3543
 msgid "Cursor Color"
 msgstr "Боја курсора"
 
-#: ../clutter/clutter-text.c:3554
+#: ../clutter/clutter-text.c:3558
 msgid "Cursor Color Set"
 msgstr "Избор боје курсора"
 
-#: ../clutter/clutter-text.c:3555
+#: ../clutter/clutter-text.c:3559
 msgid "Whether the cursor color has been set"
 msgstr "Да ли је боја курсора постављена"
 
-#: ../clutter/clutter-text.c:3570
+#: ../clutter/clutter-text.c:3574
 msgid "Cursor Size"
 msgstr "Величина курсора"
 
-#: ../clutter/clutter-text.c:3571
+#: ../clutter/clutter-text.c:3575
 msgid "The width of the cursor, in pixels"
 msgstr "Ширина курсора, у тачкама"
 
-#: ../clutter/clutter-text.c:3587 ../clutter/clutter-text.c:3605
+#: ../clutter/clutter-text.c:3591 ../clutter/clutter-text.c:3609
 msgid "Cursor Position"
 msgstr "Положај курсора"
 
-#: ../clutter/clutter-text.c:3588 ../clutter/clutter-text.c:3606
+#: ../clutter/clutter-text.c:3592 ../clutter/clutter-text.c:3610
 msgid "The cursor position"
 msgstr "Положај курсора"
 
-#: ../clutter/clutter-text.c:3621
+#: ../clutter/clutter-text.c:3625
 msgid "Selection-bound"
 msgstr "Граница избора"
 
-#: ../clutter/clutter-text.c:3622
+#: ../clutter/clutter-text.c:3626
 msgid "The cursor position of the other end of the selection"
 msgstr "Положај курсора на другом крају избора"
 
-#: ../clutter/clutter-text.c:3637 ../clutter/clutter-text.c:3638
+#: ../clutter/clutter-text.c:3641 ../clutter/clutter-text.c:3642
 msgid "Selection Color"
 msgstr "Боја избора"
 
-#: ../clutter/clutter-text.c:3653
+#: ../clutter/clutter-text.c:3657
 msgid "Selection Color Set"
 msgstr "Избор боје избора"
 
-#: ../clutter/clutter-text.c:3654
+#: ../clutter/clutter-text.c:3658
 msgid "Whether the selection color has been set"
 msgstr "Да ли је боја избора постављена"
 
-#: ../clutter/clutter-text.c:3669
+#: ../clutter/clutter-text.c:3673
 msgid "Attributes"
 msgstr "Особине"
 
-#: ../clutter/clutter-text.c:3670
+#: ../clutter/clutter-text.c:3674
 msgid "A list of style attributes to apply to the contents of the actor"
 msgstr "Списак особина стила које ће бити примењене на садржај чиниоца"
 
-#: ../clutter/clutter-text.c:3692
+#: ../clutter/clutter-text.c:3696
 msgid "Use markup"
 msgstr "Користи означавање"
 
-#: ../clutter/clutter-text.c:3693
+#: ../clutter/clutter-text.c:3697
 msgid "Whether or not the text includes Pango markup"
 msgstr "Да ли текст обухвата Панго означавање или не"
 
-#: ../clutter/clutter-text.c:3709
+#: ../clutter/clutter-text.c:3713
 msgid "Line wrap"
 msgstr "Прелом реда"
 
-#: ../clutter/clutter-text.c:3710
+#: ../clutter/clutter-text.c:3714
 msgid "If set, wrap the lines if the text becomes too wide"
 msgstr ""
 "Ако је подешено, вршиће преламање редова ако текст постане сувише широк"
 
-#: ../clutter/clutter-text.c:3725
+#: ../clutter/clutter-text.c:3729
 msgid "Line wrap mode"
 msgstr "Начин прелома реда"
 
-#: ../clutter/clutter-text.c:3726
+#: ../clutter/clutter-text.c:3730
 msgid "Control how line-wrapping is done"
 msgstr "Контролише како је обављено преламање реда"
 
-#: ../clutter/clutter-text.c:3741
+#: ../clutter/clutter-text.c:3745
 msgid "Ellipsize"
 msgstr "Скраћивање"
 
-#: ../clutter/clutter-text.c:3742
+#: ../clutter/clutter-text.c:3746
 msgid "The preferred place to ellipsize the string"
 msgstr "Жељено место за скраћивање ниске"
 
-#: ../clutter/clutter-text.c:3758
+#: ../clutter/clutter-text.c:3762
 msgid "Line Alignment"
 msgstr "Поравнање реда"
 
-#: ../clutter/clutter-text.c:3759
+#: ../clutter/clutter-text.c:3763
 msgid "The preferred alignment for the string, for multi-line text"
 msgstr "Жељено поравнања за ниску, за више-линијски текст"
 
-#: ../clutter/clutter-text.c:3775
+#: ../clutter/clutter-text.c:3779
 msgid "Justify"
 msgstr "Слагање"
 
-#: ../clutter/clutter-text.c:3776
+#: ../clutter/clutter-text.c:3780
 msgid "Whether the text should be justified"
 msgstr "Да ли текст треба да буде сложен"
 
-#: ../clutter/clutter-text.c:3791
+#: ../clutter/clutter-text.c:3795
 msgid "Password Character"
 msgstr "Знак лозинке"
 
-#: ../clutter/clutter-text.c:3792
+#: ../clutter/clutter-text.c:3796
 msgid "If non-zero, use this character to display the actor's contents"
 msgstr "Ако није нула, користиће овај знак за приказивање садржаја чиниоца"
 
-#: ../clutter/clutter-text.c:3806
+#: ../clutter/clutter-text.c:3810
 msgid "Max Length"
 msgstr "Највећа дужина"
 
-#: ../clutter/clutter-text.c:3807
+#: ../clutter/clutter-text.c:3811
 msgid "Maximum length of the text inside the actor"
 msgstr "Највећа дужина текста унутар чиниоца"
 
-#: ../clutter/clutter-text.c:3830
+#: ../clutter/clutter-text.c:3834
 msgid "Single Line Mode"
 msgstr "Режим једног реда"
 
-#: ../clutter/clutter-text.c:3831
+#: ../clutter/clutter-text.c:3835
 msgid "Whether the text should be a single line"
 msgstr "Да ли текст треба да буде један ред"
 
-#: ../clutter/clutter-text.c:3845 ../clutter/clutter-text.c:3846
+#: ../clutter/clutter-text.c:3849 ../clutter/clutter-text.c:3850
 msgid "Selected Text Color"
 msgstr "Боја изабраног текста"
 
-#: ../clutter/clutter-text.c:3861
+#: ../clutter/clutter-text.c:3865
 msgid "Selected Text Color Set"
 msgstr "Поставка боје изабраног текста"
 
-#: ../clutter/clutter-text.c:3862
+#: ../clutter/clutter-text.c:3866
 msgid "Whether the selected text color has been set"
 msgstr "Да ли је боја изабраног текста постављена"
 
@@ -2681,16 +2679,15 @@ msgstr "ЈУВ (YUV) текстуре нису подржане"
 
 #: ../clutter/deprecated/clutter-texture.c:1776
 #, c-format
-#| msgid "YUV textures are not supported"
 msgid "YUV2 textures are not supported"
 msgstr "ЈУВ2 (YUV2) текстуре нису подржане"
 
-#: ../clutter/gdk/clutter-backend-gdk.c:175
+#: ../clutter/gdk/clutter-backend-gdk.c:174
 #, c-format
 msgid "Could not initialize Gdk"
 msgstr "Не могу да покренем Гдк"
 
-#: ../clutter/gdk/clutter-backend-gdk.c:318
+#: ../clutter/gdk/clutter-backend-gdk.c:294
 #, c-format
 msgid "Could not find a suitable CoglWinsys for a GdkDisplay of type %s"
 msgstr ""
@@ -2720,19 +2717,19 @@ msgstr "Висина површине"
 msgid "The height of the underlying wayland surface"
 msgstr "Висина основне површине вејланда"
 
-#: ../clutter/x11/clutter-backend-x11.c:513
+#: ../clutter/x11/clutter-backend-x11.c:511
 msgid "X display to use"
 msgstr "Икс приказ за коришћење"
 
-#: ../clutter/x11/clutter-backend-x11.c:519
+#: ../clutter/x11/clutter-backend-x11.c:517
 msgid "X screen to use"
 msgstr "Икс екран за коришћење"
 
-#: ../clutter/x11/clutter-backend-x11.c:524
+#: ../clutter/x11/clutter-backend-x11.c:522
 msgid "Make X calls synchronous"
 msgstr "Чини Икс позиве усклађеним"
 
-#: ../clutter/x11/clutter-backend-x11.c:531
+#: ../clutter/x11/clutter-backend-x11.c:529
 msgid "Disable XInput support"
 msgstr "Искључује подршку Х-уноса"
 
