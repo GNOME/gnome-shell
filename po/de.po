@@ -5,32 +5,32 @@
 # workspace - Arbeitsfläche
 #
 # Hendrik Brandt <heb@gnome-de.org>, 2009.
-# Hendrik Richter <hendrikr@gnome.org>, 2009, 2010, 2011.
-# Mario Blättermann <mario.blaettermann@gmail.com>, 2009-2013, 2015.
+# Hendrik Richter <hendrikr@gnome.org>, 2009-2011.
+# Mario Blättermann <mario.blaettermann@gmail.com>, 2009-2013, 2015-2016.
 # Mario Klug <mario@klug.me>, 2010.
 # Jakob Kramer <jakob.kramer@gmx.de>, 2010.
-# Paul Seyfert <pseyfert@mathphys.fsk.uni-heidelberg.de>, 2010, 2011.
+# Paul Seyfert <pseyfert@mathphys.fsk.uni-heidelberg.de>, 2010-2011.
 # Wolfgang Stöggl <c72578@yahoo.de>, 2012, 2014.
-# Christian Kirbach <christian.kirbach@gmail.com>, 2009, 2010, 2011, 2012, 2013.
-# Tobias Endrigkeit <tobiasendrigkeit@outlook.com>, 2012, 2013.
+# Christian Kirbach <christian.kirbach@gmail.com>, 2009-2013.
+# Tobias Endrigkeit <tobiasendrigkeit@outlook.com>, 2012-2013.
 # Benjamin Steinwender <b@stbe.at>, 2013-2014.
-# Bernd Homuth <dev@hmt.im>, 2014, 2015.
+# Bernd Homuth <dev@hmt.im>, 2014-2015.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-12-30 10:20+0000\n"
-"PO-Revision-Date: 2016-01-02 13:08+0100\n"
-"Last-Translator: Christian Kirbach <christian.kirbach@gmail.com>\n"
+"POT-Creation-Date: 2016-02-17 22:21+0000\n"
+"PO-Revision-Date: 2016-02-18 09:21+0100\n"
+"Last-Translator: Mario Blättermann <mario.blaettermann@gmail.com>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
-"Language: de_DE\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.8.5\n"
+"X-Generator: Poedit 1.8.7\n"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
 msgid "System"
@@ -96,8 +96,8 @@ msgstr ""
 "Die Erweiterungen der GNOME-Shell besitzen eine UUID-Eigenschaft. Dieser "
 "Schlüssel listet Erweiterungen auf, welche geladen werden sollen. Jede zu "
 "ladende Erweiterung muss in dieser Liste erscheinen. Sie können diese Liste "
-"auch mit den D-Bus-Methoden EnableExtension und DisableExtension in org.gnome."
-"Shell bearbeiten."
+"auch mit den D-Bus-Methoden EnableExtension und DisableExtension in org."
+"gnome.Shell bearbeiten."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:5
 msgid "Disables the validation of extension version compatibility"
@@ -108,8 +108,8 @@ msgstr ""
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:6
 msgid ""
 "GNOME Shell will only load extensions that claim to support the current "
-"running version. Enabling this option will disable this check and try to load "
-"all extensions regardless of the versions they claim to support."
+"running version. Enabling this option will disable this check and try to "
+"load all extensions regardless of the versions they claim to support."
 msgstr ""
 "GNOME-Shell lädt nur Erweiterungen, die die aktuelle Version unterstützen. "
 "Durch Einschalten dieser Option wird die interne Kompatibilitätsprüfung "
@@ -125,8 +125,8 @@ msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
 msgstr ""
-"Programme, welche auf diese Bezeichner zutreffen, werden im Favoriten-Bereich "
-"angezeigt."
+"Programme, welche auf diese Bezeichner zutreffen, werden im Favoriten-"
+"Bereich angezeigt."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:9
 msgid "App Picker View"
@@ -158,7 +158,8 @@ msgstr ""
 "»Abmelden« in Einzelbenutzer, Einzelsitzungssituationen."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:16
-msgid "Whether to remember password for mounting encrypted or remote filesystems"
+msgid ""
+"Whether to remember password for mounting encrypted or remote filesystems"
 msgstr ""
 "Legt fest, ob Passwörter für eingehängte, verschlüsselte oder entfernte "
 "Dateisysteme gespeichert werden"
@@ -166,26 +167,27 @@ msgstr ""
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:17
 msgid ""
 "The shell will request a password when an encrypted device or a remote "
-"filesystem is mounted. If the password can be saved for future use a 'Remember "
-"Password' checkbox will be present. This key sets the default state of the "
-"checkbox."
+"filesystem is mounted. If the password can be saved for future use a "
+"'Remember Password' checkbox will be present. This key sets the default "
+"state of the checkbox."
 msgstr ""
 "Die Shell wird ein Passwort anfragen, sobald ein verschlüsseltes Gerät oder "
-"ein entferntes Dateisystem eingehängt wird. Falls das Passwort für die Zukunft "
-"gespeichert werden kann, wird ein Ankreuzfeld »An Passwort erinnern« "
+"ein entferntes Dateisystem eingehängt wird. Falls das Passwort für die "
+"Zukunft gespeichert werden kann, wird ein Ankreuzfeld »An Passwort erinnern« "
 "angeboten. Dieser Schlüssel stellt den Standardstatus für dieses Ankreuzfeld "
 "ein."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:18
-msgid "Whether the default Bluetooth adapter had set up devices associated to it"
+msgid ""
+"Whether the default Bluetooth adapter had set up devices associated to it"
 msgstr "Legt fest, ob der Standard-Bluetooth-Adapter zugeordnete Geräte hat"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:19
 msgid ""
 "The shell will only show a Bluetooth menu item if a Bluetooth adapter is "
-"powered, or if there were devices set up associated with the default adapter. "
-"This will be reset if the default adapter is ever seen not to have devices "
-"associated to it."
+"powered, or if there were devices set up associated with the default "
+"adapter. This will be reset if the default adapter is ever seen not to have "
+"devices associated to it."
 msgstr ""
 "Die Shell zeigt nur dann ein Bluetooth-Menü an, wenn ein Bluetooth-Adapter "
 "betriebsbereit ist, oder wenn dem Standard-Bluetooth-Adapter in der "
@@ -250,8 +252,8 @@ msgstr "Tastenkombination zur Ausrichtung auf die aktiven Benachrichtigungen."
 msgid ""
 "Keybinding that pauses and resumes all running tweens, for debugging purposes"
 msgstr ""
-"Tastenkombination, die alle laufenden Zwischenbilder anhält und fortsetzt. Zur "
-"Fehlerdiagnose."
+"Tastenkombination, die alle laufenden Zwischenbilder anhält und fortsetzt. "
+"Zur Fehlerdiagnose."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:33
 msgid "Which keyboard to use"
@@ -280,13 +282,13 @@ msgstr "Der Modus der Anwendungssymbole."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:38
 msgid ""
-"Configures how the windows are shown in the switcher. Valid possibilities are "
-"'thumbnail-only' (shows a thumbnail of the window), 'app-icon-only' (shows "
-"only the application icon) or 'both'."
+"Configures how the windows are shown in the switcher. Valid possibilities "
+"are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-"
+"only' (shows only the application icon) or 'both'."
 msgstr ""
 "Legt fest, wie Fenster im Fensterwechsler dargestellt werden. Mögliche Werte "
-"sind »thumbnail-only« (Vorschaubilder der Fenster werden angezeigt), »app-icon-"
-"only« (Nur das Anwendungssymbol wird angezeigt) oder »both« (beides)."
+"sind »thumbnail-only« (Vorschaubilder der Fenster werden angezeigt), »app-"
+"icon-only« (Nur das Anwendungssymbol wird angezeigt) oder »both« (beides)."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:39
 msgid ""
@@ -301,7 +303,8 @@ msgid "Attach modal dialog to the parent window"
 msgstr "Modalen Dialog an übergeordnetes Fenster binden"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:41
-msgid "This key overrides the key in org.gnome.mutter when running GNOME Shell."
+msgid ""
+"This key overrides the key in org.gnome.mutter when running GNOME Shell."
 msgstr ""
 "Dieser Schlüssel überschreibt den Schlüssel in org.gnome.mutter, wenn die "
 "GNOME-Shell läuft."
@@ -329,33 +332,34 @@ msgstr ""
 msgid "Network Login"
 msgstr "Netzwerkanmeldung"
 
-#: ../js/extensionPrefs/main.js:122
+#: ../js/extensionPrefs/main.js:121
 #, javascript-format
 msgid "There was an error loading the preferences dialog for %s:"
 msgstr "Beim Laden des Einstellungsdialogs für %s ist ein Fehler aufgetreten:"
 
-#: ../js/extensionPrefs/main.js:154
+#: ../js/extensionPrefs/main.js:153
 msgid "GNOME Shell Extensions"
 msgstr "GNOME-Shell-Erweiterungen"
 
-#: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:145
+#: ../js/gdm/authPrompt.js:147 ../js/ui/audioDeviceSelection.js:71
+#: ../js/ui/components/networkAgent.js:145
 #: ../js/ui/components/polkitAgent.js:179 ../js/ui/endSessionDialog.js:452
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
 #: ../js/ui/status/network.js:916
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: ../js/gdm/authPrompt.js:169 ../js/gdm/authPrompt.js:215
-#: ../js/gdm/authPrompt.js:447
+#: ../js/gdm/authPrompt.js:169 ../js/gdm/authPrompt.js:216
+#: ../js/gdm/authPrompt.js:448
 msgid "Next"
 msgstr "Weiter"
 
-#: ../js/gdm/authPrompt.js:211 ../js/ui/shellMountOperation.js:403
+#: ../js/gdm/authPrompt.js:212 ../js/ui/shellMountOperation.js:403
 #: ../js/ui/unlockDialog.js:59
 msgid "Unlock"
 msgstr "Entsperren"
 
-#: ../js/gdm/authPrompt.js:213
+#: ../js/gdm/authPrompt.js:214
 msgctxt "button"
 msgid "Sign In"
 msgstr "Anmelden"
@@ -523,15 +527,35 @@ msgstr "Zu Favoriten hinzufügen"
 msgid "Show Details"
 msgstr "Details anzeigen"
 
-#: ../js/ui/appFavorites.js:133
+#: ../js/ui/appFavorites.js:134
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "%s wurde zu Ihren Favoriten hinzugefügt"
 
-#: ../js/ui/appFavorites.js:167
+#: ../js/ui/appFavorites.js:168
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "%s wurde aus Ihren Favoriten entfernt"
+
+#: ../js/ui/audioDeviceSelection.js:59
+msgid "Select Audio Device"
+msgstr "Audio-Gerät wählen"
+
+#: ../js/ui/audioDeviceSelection.js:69
+msgid "Sound Settings"
+msgstr "Klangeinstellungen"
+
+#: ../js/ui/audioDeviceSelection.js:78
+msgid "Headphones"
+msgstr "Kopfhörer"
+
+#: ../js/ui/audioDeviceSelection.js:80
+msgid "Headset"
+msgstr "Headset"
+
+#: ../js/ui/audioDeviceSelection.js:82 ../js/ui/status/volume.js:213
+msgid "Microphone"
+msgstr "Mikrofon"
 
 #: ../js/ui/backgroundMenu.js:19
 msgid "Change Background…"
@@ -546,7 +570,7 @@ msgid "Settings"
 msgstr "Einstellungen"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
-#: ../js/ui/calendar.js:55
+#: ../js/ui/calendar.js:47
 msgctxt "calendar-no-work"
 msgid "06"
 msgstr "06"
@@ -556,100 +580,96 @@ msgstr "06"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: ../js/ui/calendar.js:84
+#: ../js/ui/calendar.js:76
 msgctxt "grid sunday"
 msgid "S"
 msgstr "S"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: ../js/ui/calendar.js:86
+#: ../js/ui/calendar.js:78
 msgctxt "grid monday"
 msgid "M"
 msgstr "M"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: ../js/ui/calendar.js:88
+#: ../js/ui/calendar.js:80
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "D"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: ../js/ui/calendar.js:90
+#: ../js/ui/calendar.js:82
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "M"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: ../js/ui/calendar.js:92
+#: ../js/ui/calendar.js:84
 msgctxt "grid thursday"
 msgid "T"
 msgstr "D"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: ../js/ui/calendar.js:94
+#: ../js/ui/calendar.js:86
 msgctxt "grid friday"
 msgid "F"
 msgstr "F"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: ../js/ui/calendar.js:96
+#: ../js/ui/calendar.js:88
 msgctxt "grid saturday"
 msgid "S"
 msgstr "S"
 
-#: ../js/ui/calendar.js:566
+#: ../js/ui/calendar.js:416
 msgid "Previous month"
 msgstr "Vorheriger Monat"
 
-#: ../js/ui/calendar.js:576
+#: ../js/ui/calendar.js:426
 msgid "Next month"
 msgstr "Nächster Monat"
 
-#: ../js/ui/calendar.js:728
-#, javascript-format
+#: ../js/ui/calendar.js:579
+#, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: ../js/ui/calendar.js:783
+#: ../js/ui/calendar.js:634
 msgid "Week %V"
 msgstr "Woche %V"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: ../js/ui/calendar.js:1188
+#: ../js/ui/calendar.js:695
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Ganztägig"
 
-#: ../js/ui/calendar.js:1295
-msgid "Clear section"
-msgstr "Abschnitt löschen"
-
-#: ../js/ui/calendar.js:1522
+#: ../js/ui/calendar.js:821
 msgid "Events"
 msgstr "Termine"
 
-#: ../js/ui/calendar.js:1531
+#: ../js/ui/calendar.js:830
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d. %B"
 
-#: ../js/ui/calendar.js:1535
+#: ../js/ui/calendar.js:834
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%a, %d. %B %Y"
 
-#: ../js/ui/calendar.js:1620
+#: ../js/ui/calendar.js:919
 msgid "Notifications"
 msgstr "Benachrichtigungen"
 
-#: ../js/ui/calendar.js:1771
+#: ../js/ui/calendar.js:1070
 msgid "No Notifications"
 msgstr "Keine Benachrichtigungen"
 
-#: ../js/ui/calendar.js:1774
+#: ../js/ui/calendar.js:1073
 msgid "No Events"
 msgstr "Keine Termine"
 
@@ -714,7 +734,8 @@ msgstr "Anmeldung für Funknetzwerk wird benötigt"
 #: ../js/ui/components/networkAgent.js:659
 #, javascript-format
 msgid ""
-"Passwords or encryption keys are required to access the wireless network “%s”."
+"Passwords or encryption keys are required to access the wireless network "
+"“%s”."
 msgstr ""
 "Passwörter oder Schlüssel sind erforderlich, um auf das Funknetzwerk »%s« "
 "zuzugreifen."
@@ -1030,9 +1051,25 @@ msgstr "Quelle zeigen"
 msgid "Web Page"
 msgstr "Webseite"
 
+#: ../js/ui/messageList.js:542
+msgid "Clear section"
+msgstr "Abschnitt löschen"
+
 #: ../js/ui/messageTray.js:1486
 msgid "System Information"
 msgstr "Systeminformationen"
+
+#: ../js/ui/mpris.js:194
+msgid "Unknown artist"
+msgstr "Unbekannter Künstler"
+
+#: ../js/ui/mpris.js:195
+msgid "Unknown title"
+msgstr "Unbekannter Titel"
+
+#: ../js/ui/mpris.js:217
+msgid "Media"
+msgstr "Medien"
 
 #: ../js/ui/overview.js:84
 msgid "Undo"
@@ -1384,7 +1421,8 @@ msgstr "WLAN ist ausgeschaltet"
 
 #: ../js/ui/status/network.js:825
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
-msgstr "WLAN muss eingeschaltet werden, um eine Netzwerkverbindung herzustellen."
+msgstr ""
+"WLAN muss eingeschaltet werden, um eine Netzwerkverbindung herzustellen."
 
 # Wi-Fi einschalten
 # oder
@@ -1536,10 +1574,6 @@ msgstr "Lautstärke geändert"
 msgid "Volume"
 msgstr "Lautstärke"
 
-#: ../js/ui/status/volume.js:213
-msgid "Microphone"
-msgstr "Mikrofon"
-
 #: ../js/ui/unlockDialog.js:67
 msgid "Log in as another user"
 msgstr "Als anderer Benutzer anmelden"
@@ -1581,7 +1615,8 @@ msgstr "Beibehalten"
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
 msgstr[0] "Die Änderungen der Einstellungen werden in %d Sekunde zurückgesetzt"
-msgstr[1] "Die Änderungen der Einstellungen werden in %d Sekunden zurückgesetzt"
+msgstr[1] ""
+"Die Änderungen der Einstellungen werden in %d Sekunden zurückgesetzt"
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
@@ -1719,316 +1754,3 @@ msgstr "Es muss ein Passwort angegeben werden"
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Der Dialog zur Anmeldung wurde vom Benutzer geschlossen"
 
-#~ msgid "GNOME Shell (wayland compositor)"
-#~ msgstr "GNOME-Shell (Wayland Compositor)"
-
-#~ msgid "%d Connected Device"
-#~ msgid_plural "%d Connected Devices"
-#~ msgstr[0] "%d Verbundes Gerät"
-#~ msgstr[1] "%d Verbundene Geräte"
-
-#~ msgid "Authentication required"
-#~ msgstr "Anmeldung erforderlich"
-
-#~ msgid "UPS"
-#~ msgstr "USV"
-
-#~ msgid "Battery"
-#~ msgstr "Akku"
-
-#~ msgid "Airplane Mode"
-#~ msgstr "Flugzeugmodus"
-
-#~ msgid "On"
-#~ msgstr "An"
-
-#~ msgid "Show the message tray"
-#~ msgstr "Benachrichtigungssymbol anzeigen"
-
-#~ msgctxt "event list time"
-#~ msgid "%H∶%M"
-#~ msgstr "%H∶%M"
-
-#~ msgctxt "event list time"
-#~ msgid "%l∶%M %p"
-#~ msgstr "%l∶%M %p"
-
-#~ msgctxt "list sunday"
-#~ msgid "Su"
-#~ msgstr "So"
-
-#~ msgctxt "list monday"
-#~ msgid "M"
-#~ msgstr "Mo"
-
-#~ msgctxt "list tuesday"
-#~ msgid "T"
-#~ msgstr "Di"
-
-#~ msgctxt "list wednesday"
-#~ msgid "W"
-#~ msgstr "Mi"
-
-#~ msgctxt "list thursday"
-#~ msgid "Th"
-#~ msgstr "Do"
-
-#~ msgctxt "list friday"
-#~ msgid "F"
-#~ msgstr "Fr"
-
-#~ msgctxt "list saturday"
-#~ msgid "S"
-#~ msgstr "Sa"
-
-#~ msgid "Nothing Scheduled"
-#~ msgstr "Nichts geplant"
-
-#~ msgid "Today"
-#~ msgstr "Heute"
-
-#~ msgid "Tomorrow"
-#~ msgstr "Morgen"
-
-#~ msgid "This week"
-#~ msgstr "Diese Woche"
-
-#~ msgid "Next week"
-#~ msgstr "Nächste Woche"
-
-#~ msgid "Removable Devices"
-#~ msgstr "Wechseldatenträger"
-
-#~ msgid "Eject"
-#~ msgstr "Auswerfen"
-
-#~ msgid "Invitation"
-#~ msgstr "Einladung"
-
-#~ msgid "Call"
-#~ msgstr "Anruf"
-
-#~ msgid "File Transfer"
-#~ msgstr "Dateiübertragung"
-
-#~ msgid "Chat"
-#~ msgstr "Chat"
-
-#~ msgid "Unmute"
-#~ msgstr "Ton an"
-
-#~ msgid "Mute"
-#~ msgstr "Stumm"
-
-#~ msgid "Invitation to %s"
-#~ msgstr "Einladung zum Betreten von %s"
-
-#~ msgid "%s is inviting you to join %s"
-#~ msgstr "%s lädt Sie ein, %s beizutreten"
-
-#~ msgid "Decline"
-#~ msgstr "Ablehnen"
-
-#~ msgid "Accept"
-#~ msgstr "Annehmen"
-
-#~ msgid "Video call from %s"
-#~ msgstr "Video-Anruf von %s"
-
-#~ msgid "Call from %s"
-#~ msgstr "Anruf von %s"
-
-#~ msgid "Answer"
-#~ msgstr "Antworten"
-
-#~ msgid "%s is sending you %s"
-#~ msgstr "%s sendet Ihnen %s"
-
-#~ msgid "%s would like permission to see when you are online"
-#~ msgstr "%s bittet um das Recht, Ihre Online-Verfügbarkeit sehen zu dürfen"
-
-#~ msgid "Network error"
-#~ msgstr "Netzwerkfehler"
-
-#~ msgid "Authentication failed"
-#~ msgstr "Anmeldung fehlgeschlagen"
-
-#~ msgid "Encryption error"
-#~ msgstr "Verschlüsselungsfehler"
-
-#~ msgid "Certificate not provided"
-#~ msgstr "Zertifikat wurde nicht bereitgestellt"
-
-#~ msgid "Certificate untrusted"
-#~ msgstr "Zertifikat nicht vertrauenswürdig"
-
-#~ msgid "Certificate expired"
-#~ msgstr "Zertifikat abgelaufen"
-
-#~ msgid "Certificate not activated"
-#~ msgstr "Zertifikat nicht aktiviert"
-
-#~ msgid "Certificate hostname mismatch"
-#~ msgstr "Rechnername des Zertifikats stimmt nicht überein"
-
-#~ msgid "Certificate fingerprint mismatch"
-#~ msgstr "Fingerabdruck des Zertifikats stimmt nicht überein"
-
-#~ msgid "Certificate self-signed"
-#~ msgstr "Selbstsigniertes Zertifikat"
-
-#~ msgid "Status is set to offline"
-#~ msgstr "Der Status ist auf »Abgemeldet« gesetzt"
-
-#~ msgid "Encryption is not available"
-#~ msgstr "Verschlüsselung ist nicht verfügbar"
-
-#~ msgid "Certificate is invalid"
-#~ msgstr "Zertifikat ist ungültig"
-
-#~ msgid "Connection has been refused"
-#~ msgstr "Verbindungsaufbau wurde verweigert"
-
-#~ msgid "Connection can't be established"
-#~ msgstr "Verbindung kann nicht hergestellt werden"
-
-#~ msgid "Connection has been lost"
-#~ msgstr "Verbindung wurde unterbrochen"
-
-#~ msgid "This account is already connected to the server"
-#~ msgstr "Dieses Konto ist bereits mit dem Server verbunden"
-
-#~ msgid ""
-#~ "Connection has been replaced by a new connection using the same resource"
-#~ msgstr ""
-#~ "Die Verbindung wurde durch eine neue Verbindung mit der gleichen Ressource "
-#~ "ersetzt"
-
-#~ msgid "The account already exists on the server"
-#~ msgstr "Dieses Konto ist bereits auf dem Server vorhanden"
-
-#~ msgid "Server is currently too busy to handle the connection"
-#~ msgstr ""
-#~ "Der Server ist derzeit überlastet und kann die Verbindung nicht annehmen"
-
-#~ msgid "Certificate has been revoked"
-#~ msgstr "Zertifikat wurde zurückgezogen"
-
-#~ msgid ""
-#~ "Certificate uses an insecure cipher algorithm or is cryptographically weak"
-#~ msgstr ""
-#~ "Das Zertifikat verwendet einen unsicheren Chiffrier-Algorithmus oder ist "
-#~ "kryptografisch schwach"
-
-#~ msgid ""
-#~ "The length of the server certificate, or the depth of the server "
-#~ "certificate chain, exceed the limits imposed by the cryptography library"
-#~ msgstr ""
-#~ "Die Länge des Server-Zertifikats oder die Tiefe der Server-Zertifikatskette "
-#~ "überschreiten die durch die kryptografische Bibliothek gegebenen "
-#~ "Beschränkungen"
-
-#~ msgid "Internal error"
-#~ msgstr "Interner Fehler"
-
-#~ msgid "Unable to connect to %s"
-#~ msgstr "Verbindung zu %s fehlgeschlagen"
-
-#~ msgid "View account"
-#~ msgstr "Konto anzeigen"
-
-#~ msgid "Unknown reason"
-#~ msgstr "Unbekannter Grund"
-
-#~ msgid "Open Calendar"
-#~ msgstr "Kalender öffnen"
-
-#~ msgid "Date & Time Settings"
-#~ msgstr "Einstellungen für Datum und Uhrzeit"
-
-#~ msgid "Open"
-#~ msgstr "Öffnen"
-
-#~ msgid "Remove"
-#~ msgstr "Entfernen"
-
-#~ msgid "Clear Messages"
-#~ msgstr "Nachrichten leeren"
-
-#~ msgid "Notification Settings"
-#~ msgstr "Benachrichtigungseinstellungen"
-
-#~ msgid "Tray Menu"
-#~ msgstr "Benachrichtigungsfeldmenü"
-
-#~ msgid "No Messages"
-#~ msgstr "Keine Nachrichten"
-
-#~ msgid "Message Tray"
-#~ msgstr "Benachrichtigungsfeld"
-
-# http://de.wikipedia.org/wiki/Captive_Portal
-#~ msgid "Captive Portal"
-#~ msgstr "Erzwungene Anmeldeseite"
-
-#~ msgid "The maximum accuracy level of location."
-#~ msgstr "Maximale Ortsauflösung"
-
-#~ msgid ""
-#~ "Configures the maximum level of location accuracy applications are allowed "
-#~ "to see. Valid options are 'off' (disable location tracking), 'country', "
-#~ "'city', 'neighborhood', 'street', and 'exact' (typically requires GPS "
-#~ "receiver). Please keep in mind that this only controls what GeoClue will "
-#~ "allow applications to see and they can find user's location on their own "
-#~ "using network resources (albeit with street-level accuracy at best)."
-#~ msgstr ""
-#~ "Legt die maximale Ortsauflösung für Anwendungen fest. Gültige Werte sind "
-#~ "»off« (Ortung deaktiviert), »country« (Land), »city« (Stadt), "
-#~ "»neighborhood« (Nachbarschaft), »street« (Straße) und »exact« (genau, "
-#~ "benötigt üblicherweise einen GPS-Empfänger). Bitte bedenken Sie, dass diese "
-#~ "Einstellung nur festlegt, welche Informationen GeoClue an Anwendungen "
-#~ "weitergibt. Die Anwendungen können jedoch selbst den Ort des Benutzers "
-#~ "durch Analyse von Netzwerkressourcen ausfindig machen (jedoch im besten "
-#~ "Fall mit Straßengenauigkeit)."
-
-#~ msgid "Arrangement of buttons on the titlebar"
-#~ msgstr "Anordnung der Knöpfe auf der Titelleiste"
-
-#~ msgid ""
-#~ "This key overrides the key in org.gnome.desktop.wm.preferences when running "
-#~ "GNOME Shell."
-#~ msgstr ""
-#~ "Dieser Schlüssel überschreibt den Schlüssel in org.gnome.desktop.wm."
-#~ "preferences, wenn die GNOME-Shell läuft."
-
-#~ msgid "Extension"
-#~ msgstr "Erweiterung"
-
-#~ msgid "Select an extension to configure using the combobox above."
-#~ msgstr "Wählen Sie oben eine Erweiterung aus, die Sie konfigurieren wollen."
-
-#~ msgid "calendar:MY"
-#~ msgstr "calendar:MY"
-
-#~ msgid "<b>%A</b>, <b>%H:%M</b>"
-#~ msgstr "<b>%A</b>, <b>%H:%M</b>"
-
-#~ msgid "<b>%B</b> <b>%d</b>, <b>%H:%M</b>"
-#~ msgstr " <b>%d</b>. <b>%B</b>, <b>%H:%M</b>"
-
-#~ msgid "<b>%B</b> <b>%d</b> <b>%Y</b>, <b>%H:%M</b> "
-#~ msgstr "<b>%d</b>. <b>%B</b> <b>%Y</b>, <b>%H:%M</b> "
-
-#~ msgid "List of categories that should be displayed as folders"
-#~ msgstr "Liste der Kategorien, die als Ordner angezeigt werden sollen"
-
-#~ msgid ""
-#~ "Each category name in this list will be represented as folder in the "
-#~ "application view, rather than being displayed inline in the main view."
-#~ msgstr ""
-#~ "Jeder Kategoriename in dieser Liste wird als Ordner in der "
-#~ "Anwendungsansicht dargestellt, anstatt in der Hauptansicht eingebettet."
-
-#~ msgctxt "event list time"
-#~ msgid "%H\\u2236%M"
-#~ msgstr "%H\\u2236%M"
