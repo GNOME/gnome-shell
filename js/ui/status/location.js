@@ -439,7 +439,10 @@ const GeolocationDialog = new Lang.Class({
 
         this.setInitialKeyFocus(button);
 
+        /* Translators: %s is an application name */
         this._title.text = _("Give %s access to your location?").format(name);
+
+        /* Translators: %s is an application name */
         this._desc.text = _("%s is requesting access to your location.").format(name);
 
         if (reason)
