@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-02-17 14:16+0000\n"
-"PO-Revision-Date: 2016-02-17 22:01+0100\n"
+"POT-Creation-Date: 2016-02-18 15:11+0000\n"
+"PO-Revision-Date: 2016-02-18 16:35+0100\n"
 "Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
 "Language-Team: Slovak <gnome-sk-list@gnome.org>\n"
 "Language: sk\n"
@@ -1319,29 +1319,47 @@ msgstr "Jas"
 msgid "Show Keyboard Layout"
 msgstr "Zobraziť rozloženie klávesnice"
 
-#: ../js/ui/status/location.js:71 ../js/ui/status/location.js:177
+#: ../js/ui/status/location.js:107 ../js/ui/status/location.js:215
 msgid "Location Enabled"
 msgstr "Poloha povolená"
 
-#: ../js/ui/status/location.js:72 ../js/ui/status/location.js:178
+#: ../js/ui/status/location.js:108 ../js/ui/status/location.js:216
 msgid "Disable"
 msgstr "Zakázať"
 
-#: ../js/ui/status/location.js:73
+#: ../js/ui/status/location.js:109
 msgid "Privacy Settings"
 msgstr "Nastavenia súkromia"
 
-#: ../js/ui/status/location.js:176
+#: ../js/ui/status/location.js:214
 msgid "Location In Use"
 msgstr "Poloha sa používa"
 
-#: ../js/ui/status/location.js:180
+#: ../js/ui/status/location.js:218
 msgid "Location Disabled"
 msgstr "Poloha zakázaná"
 
-#: ../js/ui/status/location.js:181
+#: ../js/ui/status/location.js:219
 msgid "Enable"
 msgstr "Povoliť"
+
+#: ../js/ui/status/location.js:434
+msgid "Deny Access"
+msgstr "Odmietnuť prístup"
+
+#: ../js/ui/status/location.js:437
+msgid "Grant Access"
+msgstr "Udeliť prístup"
+
+#: ../js/ui/status/location.js:442
+#, javascript-format
+msgid "Give %s access to your location?"
+msgstr "Udeliť aplikácii %s prístup k vášmu umiestneniu?"
+
+#: ../js/ui/status/location.js:443
+#, javascript-format
+msgid "%s is requesting access to your location."
+msgstr "Aplikácia %s požaduje prístup k vášmu umiestneniu."
 
 # zariadenie
 #: ../js/ui/status/network.js:101
