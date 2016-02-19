@@ -1,3 +1,14 @@
+3.19.90
+=======
+* Release buffer after processing commit [Ray; #761312, #761613]
+* Implement pointer motion, locks and confinement on wayland [Jonas; #744104]
+* Add basic startup notification support on wayland [Carlos; #762268]
+* Misc. bug fixes [Rui, Alberts, Florian; #760670, #761543, #752794, #761557]
+
+Contributors:
+  Jonas Ådahl, Olivier Fourdan, Carlos Garnacho, Rui Matos,
+  Alberts Muktupāvels, Florian Müllner, Jasper St. Pierre, Ray Strode
+
 3.19.4
 ======
 * Fix updating stacking order when setting transient_for [Jonas; #755606]
