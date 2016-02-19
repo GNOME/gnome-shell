@@ -1,3 +1,22 @@
+3.19.90
+=======
+* Correctly identify VPN secret requests [Lubomir; #760999]
+* Improve week number presentation [Jakub; #683245]
+* Add audio device selection dialog [Florian; #760284]
+* Add media controls to the time and date drop down [Florian; #756491]
+* Fix IBus candidate popup position under wayland [Rui; #753476]
+* Ask user to grant applications access to location [Zeeshan; #762119]
+* Misc. bug fixes [Mario, Jakub, Florian; #761208, #761772, #762270]
+
+Contributors:
+  Zeeshan Ali (Khattak), Michael Catanzaro, Rui Matos, Florian Müllner,
+  Lubomir Rintel, Mario Sanchez Prada, Jakub Steiner
+
+Translations:
+  Alexander Shopov [bg], Balázs Meskó [hu], Fabio Tomat [fur],
+  Dušan Kazik [sk], Piotr Drąg [pl], Alexandre Franke [fr],
+  Mario Blättermann [de], Milo Casagrande [it], Jordi Mas [ca]
+
 3.19.4
 ======
 * gdm: Do not allow bypassing disabled Sign In button [Michael; #746180]
