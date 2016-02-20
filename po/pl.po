@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-17 22:30+0100\n"
-"PO-Revision-Date: 2016-02-17 22:32+0100\n"
+"POT-Creation-Date: 2016-02-20 16:27+0100\n"
+"PO-Revision-Date: 2016-02-20 16:28+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -166,10 +166,10 @@ msgid ""
 "'Remember Password' checkbox will be present. This key sets the default "
 "state of the checkbox."
 msgstr ""
-"Powłoka zażąda hasła po zamontowaniu zaszyfrowanego urządzenia lub zdalnego "
-"systemu plików. Jeśli hasło może zostać zapisane do późniejszego użycia, to "
-"obecne będzie pole wyboru „Zapamiętanie hasła”. Ten klucz ustawia domyślną "
-"wartość tego pola."
+"Powłoka poprosi o hasło podczas montowania zaszyfrowanego urządzenia lub "
+"zdalnego systemu plików. Jeśli hasło może zostać zapisane do późniejszego "
+"użycia, to obecne będzie pole wyboru „Zapamiętanie hasła”. Ten klucz ustawia "
+"domyślną wartość tego pola."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:18
 msgid ""
@@ -1290,29 +1290,49 @@ msgstr "Jasność"
 msgid "Show Keyboard Layout"
 msgstr "Wyświetl układ klawiatury"
 
-#: ../js/ui/status/location.js:71 ../js/ui/status/location.js:177
+#: ../js/ui/status/location.js:107 ../js/ui/status/location.js:215
 msgid "Location Enabled"
-msgstr "Włączono położenie"
+msgstr "Włączono ustalanie położenia"
 
-#: ../js/ui/status/location.js:72 ../js/ui/status/location.js:178
+#: ../js/ui/status/location.js:108 ../js/ui/status/location.js:216
 msgid "Disable"
 msgstr "Wyłącz"
 
-#: ../js/ui/status/location.js:73
+#: ../js/ui/status/location.js:109
 msgid "Privacy Settings"
 msgstr "Ustawienia prywatności"
 
-#: ../js/ui/status/location.js:176
+#: ../js/ui/status/location.js:214
 msgid "Location In Use"
-msgstr "Położenie jest używane"
+msgstr "Ustalanie położenia jest używane"
 
-#: ../js/ui/status/location.js:180
+#: ../js/ui/status/location.js:218
 msgid "Location Disabled"
-msgstr "Wyłączono położenie"
+msgstr "Wyłączono ustalanie położenia"
 
-#: ../js/ui/status/location.js:181
+#: ../js/ui/status/location.js:219
 msgid "Enable"
 msgstr "Włącz"
+
+#: ../js/ui/status/location.js:434
+msgid "Deny Access"
+msgstr "Odmów dostępu"
+
+#: ../js/ui/status/location.js:437
+msgid "Grant Access"
+msgstr "Udziel dostępu"
+
+#. Translators: %s is an application name
+#: ../js/ui/status/location.js:443
+#, javascript-format
+msgid "Give %s access to your location?"
+msgstr "Udzielić programowi „%s” dostępu do położenia użytkownika?"
+
+#. Translators: %s is an application name
+#: ../js/ui/status/location.js:446
+#, javascript-format
+msgid "%s is requesting access to your location."
+msgstr "Program „%s” prosi o dostęp do położenia użytkownika."
 
 #: ../js/ui/status/network.js:101
 msgid "<unknown>"
