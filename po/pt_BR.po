@@ -16,21 +16,23 @@
 # Georges Basile Stavracas Neto <georges.stavracas@gmail.com>, 2014.
 # Felipe Braga <fbobraga@gmail.com>, 2015.
 # Enrico Nicoletto <liverig@gmail.com>, 2013, 2014, 2015.
+# Artur de Aquino Morais <artur.morais93@outlook.com>, 2016.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-12-31 10:21+0000\n"
-"PO-Revision-Date: 2015-12-31 16:37-0300\n"
-"Last-Translator: Enrico Nicoletto <liverig@gmail.com>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"shell&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2016-02-19 19:26+0000\n"
+"PO-Revision-Date: 2016-02-19 18:10-0300\n"
+"Last-Translator: Artur de Aquino Morais <artur.morais93@outlook.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 1.7.3\n"
+"X-Generator: Poedit 1.8.4\n"
 "X-Project-Style: gnome\n"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
@@ -75,11 +77,17 @@ msgstr "Gerenciamento de janelas e lançador de aplicativos"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:1
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
-msgstr "Habilitar ferramentas internas úteis para desenvolvedores e testadores a partir do Alt-F2"
+msgstr ""
+"Habilitar ferramentas internas úteis para desenvolvedores e testadores a "
+"partir do Alt-F2"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:2
-msgid "Allows access to internal debugging and monitoring tools using the Alt-F2 dialog."
-msgstr "Permite acesso a ferramentas internas de depuração e monitoramento usando o diálogo Alt-F2."
+msgid ""
+"Allows access to internal debugging and monitoring tools using the Alt-F2 "
+"dialog."
+msgstr ""
+"Permite acesso a ferramentas internas de depuração e monitoramento usando o "
+"diálogo Alt-F2."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:3
 msgid "UUIDs of extensions to enable"
@@ -87,13 +95,16 @@ msgstr "UUIDs das extensões para habilitar"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:4
 msgid ""
-"GNOME Shell extensions have a UUID property; this key lists extensions which should be loaded. Any extension that wants "
-"to be loaded needs to be in this list. You can also manipulate this list with the EnableExtension and DisableExtension D-"
-"Bus methods on org.gnome.Shell."
+"GNOME Shell extensions have a UUID property; this key lists extensions which "
+"should be loaded. Any extension that wants to be loaded needs to be in this "
+"list. You can also manipulate this list with the EnableExtension and "
+"DisableExtension D-Bus methods on org.gnome.Shell."
 msgstr ""
-"As extensões do GNOME Shell possuem uma propriedade UUID; esta chave lista as extensões que devem ser carregadas. "
-"Qualquer extensão que quiser ser carregada precisa estar nesta lista. Você também pode manipular esta lista com os "
-"métodos do DBus EnableExtension e DisableExtensions em org.gnome.Shell."
+"As extensões do GNOME Shell possuem uma propriedade UUID; esta chave lista "
+"as extensões que devem ser carregadas. Qualquer extensão que quiser ser "
+"carregada precisa estar nesta lista. Você também pode manipular esta lista "
+"com os métodos do DBus EnableExtension e DisableExtensions em org.gnome."
+"Shell."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:5
 msgid "Disables the validation of extension version compatibility"
@@ -101,20 +112,27 @@ msgstr "Desabilita a validação de compatibilidade da versão da extensão"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:6
 msgid ""
-"GNOME Shell will only load extensions that claim to support the current running version. Enabling this option will "
-"disable this check and try to load all extensions regardless of the versions they claim to support."
+"GNOME Shell will only load extensions that claim to support the current "
+"running version. Enabling this option will disable this check and try to "
+"load all extensions regardless of the versions they claim to support."
 msgstr ""
-"O GNOME Shell somente carregará extensões que declaram possuir suporte a versão atual em execução. Ao habilitar esta "
-"opção, esta verificação será desabilitada e haverá tentativas de carregar todas as extensões independente das versões "
-"que estas declaram suportar."
+"O GNOME Shell somente carregará extensões que declaram possuir suporte a "
+"versão atual em execução. Ao habilitar esta opção, esta verificação será "
+"desabilitada e haverá tentativas de carregar todas as extensões independente "
+"das versões que estas declaram suportar."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:7
 msgid "List of desktop file IDs for favorite applications"
-msgstr "Lista dos IDs de arquivo de área de trabalho para os aplicativos favoritos"
+msgstr ""
+"Lista dos IDs de arquivo de área de trabalho para os aplicativos favoritos"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:8
-msgid "The applications corresponding to these identifiers will be displayed in the favorites area."
-msgstr "Os aplicativos correspondentes a estes identificadores serão exibidos na área de favoritos."
+msgid ""
+"The applications corresponding to these identifiers will be displayed in the "
+"favorites area."
+msgstr ""
+"Os aplicativos correspondentes a estes identificadores serão exibidos na "
+"área de favoritos."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:9
 msgid "App Picker View"
@@ -122,7 +140,8 @@ msgstr "Visualização do seletor de aplicativos"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:10
 msgid "Index of the currently selected view in the application picker."
-msgstr "Índice da visualização atualmente selecionada no seletor de aplicativos."
+msgstr ""
+"Índice da visualização atualmente selecionada no seletor de aplicativos."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:11
 msgid "History for command (Alt-F2) dialog"
@@ -138,37 +157,51 @@ msgid "Always show the 'Log out' menu item in the user menu."
 msgstr "Sempre mostrar o item de menu \"Encerrar sessão\" no menu de usuário."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:15
-msgid "This key overrides the automatic hiding of the 'Log out' menu item in single-user, single-session situations."
+msgid ""
+"This key overrides the automatic hiding of the 'Log out' menu item in single-"
+"user, single-session situations."
 msgstr ""
-"Essa chave sobrescreve a ocultação automática do item de menu \"Encerrar sessão\" quando houver somente um usuário, em "
-"situações de somente uma sessão."
+"Essa chave sobrescreve a ocultação automática do item de menu \"Encerrar "
+"sessão\" quando houver somente um usuário, em situações de somente uma "
+"sessão."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:16
-msgid "Whether to remember password for mounting encrypted or remote filesystems"
-msgstr "Se lembra ou não as senhas para montar sistemas de arquivos criptografados ou remotos"
+msgid ""
+"Whether to remember password for mounting encrypted or remote filesystems"
+msgstr ""
+"Se lembra ou não as senhas para montar sistemas de arquivos criptografados "
+"ou remotos"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:17
 msgid ""
-"The shell will request a password when an encrypted device or a remote filesystem is mounted. If the password can be "
-"saved for future use a 'Remember Password' checkbox will be present. This key sets the default state of the checkbox."
+"The shell will request a password when an encrypted device or a remote "
+"filesystem is mounted. If the password can be saved for future use a "
+"'Remember Password' checkbox will be present. This key sets the default "
+"state of the checkbox."
 msgstr ""
-"O shell irá pedir uma senha quando um dispositivo criptografado ou um sistema de arquivo remoto for montado. Caso a "
-"senha possa ser salva para uso posterior, a caixa de seleção 'Lembrar senha' estará presente. Esta chave ajusta o estado "
-"padrão da caixa de seleção."
+"O shell irá pedir uma senha quando um dispositivo criptografado ou um "
+"sistema de arquivo remoto for montado. Caso a senha possa ser salva para uso "
+"posterior, a caixa de seleção 'Lembrar senha' estará presente. Esta chave "
+"ajusta o estado padrão da caixa de seleção."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:18
-msgid "Whether the default Bluetooth adapter had set up devices associated to it"
-msgstr "Se o adaptador Bluetooth padrão configurou, ou não, dispositivos associados a ele"
+msgid ""
+"Whether the default Bluetooth adapter had set up devices associated to it"
+msgstr ""
+"Se o adaptador Bluetooth padrão configurou, ou não, dispositivos associados "
+"a ele"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:19
 msgid ""
-"The shell will only show a Bluetooth menu item if a Bluetooth adapter is powered, or if there were devices set up "
-"associated with the default adapter. This will be reset if the default adapter is ever seen not to have devices "
-"associated to it."
+"The shell will only show a Bluetooth menu item if a Bluetooth adapter is "
+"powered, or if there were devices set up associated with the default "
+"adapter. This will be reset if the default adapter is ever seen not to have "
+"devices associated to it."
 msgstr ""
-"O shell irá mostrar apenas um item de menu Bluetooth se um adaptador Bluetooth estiver ligado ou se existirem "
-"dispositivos configurados associados ao adaptador padrão. Isto será redefinido caso o adaptador padrão sempre seja visto "
-"sem possuir dispositivos associados a ele."
+"O shell irá mostrar apenas um item de menu Bluetooth se um adaptador "
+"Bluetooth estiver ligado ou se existirem dispositivos configurados "
+"associados ao adaptador padrão. Isto será redefinido caso o adaptador padrão "
+"sempre seja visto sem possuir dispositivos associados a ele."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:20
 msgid "Show the week date in the calendar"
@@ -191,8 +224,11 @@ msgid "Keybinding to open the \"Show Applications\" view"
 msgstr "Atalho de teclado para abrir a visualização \"Mostrar aplicativos\""
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:25
-msgid "Keybinding to open the \"Show Applications\" view of the Activities Overview."
-msgstr "Atalho de teclado para abrir a visualização \"Mostrar aplicativos\" do panorama de atividades."
+msgid ""
+"Keybinding to open the \"Show Applications\" view of the Activities Overview."
+msgstr ""
+"Atalho de teclado para abrir a visualização \"Mostrar aplicativos\" do "
+"panorama de atividades."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:26
 msgid "Keybinding to open the overview"
@@ -208,7 +244,8 @@ msgstr "Atalho de teclado para alternar a visibilidade da lista de notificação
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:29
 msgid "Keybinding to toggle the visibility of the notification list."
-msgstr "Atalho de teclado para alternar a visibilidade da lista de notificação."
+msgstr ""
+"Atalho de teclado para alternar a visibilidade da lista de notificação."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:30
 msgid "Keybinding to focus the active notification"
@@ -220,8 +257,11 @@ msgstr "Atalho de teclado para ativar a notificação ativa."
 
 # Tween pode significar uma contração de Between ou se referir a um termo "in-between" usado em animação gráfica. -- Enrico
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:32
-msgid "Keybinding that pauses and resumes all running tweens, for debugging purposes"
-msgstr "Atalho de teclado que pausa e continua todos os intermediários em execução, a fim de depuração"
+msgid ""
+"Keybinding that pauses and resumes all running tweens, for debugging purposes"
+msgstr ""
+"Atalho de teclado que pausa e continua todos os intermediários em execução, "
+"a fim de depuração"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:33
 msgid "Which keyboard to use"
@@ -237,11 +277,12 @@ msgstr "Limitar o alternador ao espaço de trabalho atual."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:36
 msgid ""
-"If true, only applications that have windows on the current workspace are shown in the switcher. Otherwise, all "
-"applications are included."
+"If true, only applications that have windows on the current workspace are "
+"shown in the switcher. Otherwise, all applications are included."
 msgstr ""
-"Se verdadeiro, o alternador mostrará somente os aplicativos que possuem janelas no espaço de trabalho atual. Caso "
-"contrário, todos os aplicativos serão incluídos."
+"Se verdadeiro, o alternador mostrará somente os aplicativos que possuem "
+"janelas no espaço de trabalho atual. Caso contrário, todos os aplicativos "
+"serão incluídos."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:37
 msgid "The application icon mode."
@@ -249,29 +290,37 @@ msgstr "O modo ícone do aplicativo."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:38
 msgid ""
-"Configures how the windows are shown in the switcher. Valid possibilities are 'thumbnail-only' (shows a thumbnail of the "
-"window), 'app-icon-only' (shows only the application icon) or 'both'."
+"Configures how the windows are shown in the switcher. Valid possibilities "
+"are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-"
+"only' (shows only the application icon) or 'both'."
 msgstr ""
-"Configura como as janelas são mostradas no alternador. As possibilidades válidas são 'thumbnail-only' (mostra uma "
-"miniatura da janela), 'app-icon-only' (mostra apenas o ícone do aplicativo) ou 'both'."
+"Configura como as janelas são mostradas no alternador. As possibilidades "
+"válidas são 'thumbnail-only' (mostra uma miniatura da janela), 'app-icon-"
+"only' (mostra apenas o ícone do aplicativo) ou 'both'."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:39
-msgid "If true, only windows from the current workspace are shown in the switcher. Otherwise, all windows are included."
+msgid ""
+"If true, only windows from the current workspace are shown in the switcher. "
+"Otherwise, all windows are included."
 msgstr ""
-"Se verdadeiro, o alternador mostrará somente as janelas do espaço de trabalho atual. Caso contrário, todos as janelas "
-"serão incluídas."
+"Se verdadeiro, o alternador mostrará somente as janelas do espaço de "
+"trabalho atual. Caso contrário, todos as janelas serão incluídas."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:40
 msgid "Attach modal dialog to the parent window"
 msgstr "Anexar diálogo modal à janela pai"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:41
-msgid "This key overrides the key in org.gnome.mutter when running GNOME Shell."
-msgstr "Esta chave sobrescreve a chave em org.gnome.mutter ao executar o Shell do GNOME."
+msgid ""
+"This key overrides the key in org.gnome.mutter when running GNOME Shell."
+msgstr ""
+"Esta chave sobrescreve a chave em org.gnome.mutter ao executar o Shell do "
+"GNOME."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:42
 msgid "Enable edge tiling when dropping windows on screen edges"
-msgstr "Habilitar contorno ladrilhado ao arrastar janelas sobre as bordas da tela"
+msgstr ""
+"Habilitar contorno ladrilhado ao arrastar janelas sobre as bordas da tela"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:43
 msgid "Workspaces are managed dynamically"
@@ -289,30 +338,34 @@ msgstr "Atrasar foco altera o modo do mouse até o ponteiro parar de mover"
 msgid "Network Login"
 msgstr "Sessão de Rede"
 
-#: ../js/extensionPrefs/main.js:122
+#: ../js/extensionPrefs/main.js:121
 #, javascript-format
 msgid "There was an error loading the preferences dialog for %s:"
 msgstr "Ocorreu um erro ao carregar o dialogo de preferências para %s:"
 
-#: ../js/extensionPrefs/main.js:154
+#: ../js/extensionPrefs/main.js:153
 msgid "GNOME Shell Extensions"
 msgstr "Extensões do Shell do GNOME"
 
-#: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:145 ../js/ui/components/polkitAgent.js:179
-#: ../js/ui/endSessionDialog.js:452 ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
+#: ../js/gdm/authPrompt.js:147 ../js/ui/audioDeviceSelection.js:71
+#: ../js/ui/components/networkAgent.js:145
+#: ../js/ui/components/polkitAgent.js:179 ../js/ui/endSessionDialog.js:452
+#: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
 #: ../js/ui/status/network.js:916
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: ../js/gdm/authPrompt.js:169 ../js/gdm/authPrompt.js:215 ../js/gdm/authPrompt.js:447
+#: ../js/gdm/authPrompt.js:169 ../js/gdm/authPrompt.js:216
+#: ../js/gdm/authPrompt.js:448
 msgid "Next"
 msgstr "Próximo"
 
-#: ../js/gdm/authPrompt.js:211 ../js/ui/shellMountOperation.js:403 ../js/ui/unlockDialog.js:59
+#: ../js/gdm/authPrompt.js:212 ../js/ui/shellMountOperation.js:403
+#: ../js/ui/unlockDialog.js:59
 msgid "Unlock"
 msgstr "Desbloquear"
 
-#: ../js/gdm/authPrompt.js:213
+#: ../js/gdm/authPrompt.js:214
 msgctxt "button"
 msgid "Sign In"
 msgstr "Entrar"
@@ -338,7 +391,8 @@ msgstr "(ex.: usuário ou %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:859 ../js/ui/components/networkAgent.js:271 ../js/ui/components/networkAgent.js:289
+#: ../js/gdm/loginDialog.js:859 ../js/ui/components/networkAgent.js:271
+#: ../js/ui/components/networkAgent.js:289
 msgid "Username: "
 msgstr "Nome de usuário: "
 
@@ -478,15 +532,35 @@ msgstr "Adicionar aos favoritos"
 msgid "Show Details"
 msgstr "Mostrar detalhes"
 
-#: ../js/ui/appFavorites.js:133
+#: ../js/ui/appFavorites.js:134
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "%s foi adicionado aos seus favoritos."
 
-#: ../js/ui/appFavorites.js:167
+#: ../js/ui/appFavorites.js:168
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "%s foi removido dos seus favoritos."
+
+#: ../js/ui/audioDeviceSelection.js:59
+msgid "Select Audio Device"
+msgstr "Selecione o dispositivo de áudio"
+
+#: ../js/ui/audioDeviceSelection.js:69
+msgid "Sound Settings"
+msgstr "Configurações de som"
+
+#: ../js/ui/audioDeviceSelection.js:78
+msgid "Headphones"
+msgstr "Fones de ouvido"
+
+#: ../js/ui/audioDeviceSelection.js:80
+msgid "Headset"
+msgstr "Fone de ouvido com microfone"
+
+#: ../js/ui/audioDeviceSelection.js:82 ../js/ui/status/volume.js:213
+msgid "Microphone"
+msgstr "Microfone"
 
 #: ../js/ui/backgroundMenu.js:19
 msgid "Change Background…"
@@ -501,7 +575,7 @@ msgid "Settings"
 msgstr "Configurações"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
-#: ../js/ui/calendar.js:55
+#: ../js/ui/calendar.js:47
 msgctxt "calendar-no-work"
 msgid "06"
 msgstr "06"
@@ -511,100 +585,96 @@ msgstr "06"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: ../js/ui/calendar.js:84
+#: ../js/ui/calendar.js:76
 msgctxt "grid sunday"
 msgid "S"
 msgstr "D"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: ../js/ui/calendar.js:86
+#: ../js/ui/calendar.js:78
 msgctxt "grid monday"
 msgid "M"
 msgstr "S"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: ../js/ui/calendar.js:88
+#: ../js/ui/calendar.js:80
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "T"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: ../js/ui/calendar.js:90
+#: ../js/ui/calendar.js:82
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "Q"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: ../js/ui/calendar.js:92
+#: ../js/ui/calendar.js:84
 msgctxt "grid thursday"
 msgid "T"
 msgstr "Q"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: ../js/ui/calendar.js:94
+#: ../js/ui/calendar.js:86
 msgctxt "grid friday"
 msgid "F"
 msgstr "S"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: ../js/ui/calendar.js:96
+#: ../js/ui/calendar.js:88
 msgctxt "grid saturday"
 msgid "S"
 msgstr "S"
 
-#: ../js/ui/calendar.js:566
+#: ../js/ui/calendar.js:416
 msgid "Previous month"
 msgstr "Mês anterior"
 
-#: ../js/ui/calendar.js:576
+#: ../js/ui/calendar.js:426
 msgid "Next month"
 msgstr "Próximo mês"
 
-#: ../js/ui/calendar.js:728
-#, javascript-format
+#: ../js/ui/calendar.js:579
+#, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: ../js/ui/calendar.js:783
+#: ../js/ui/calendar.js:634
 msgid "Week %V"
 msgstr "Semana %V"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: ../js/ui/calendar.js:1188
+#: ../js/ui/calendar.js:695
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Dia todo"
 
-#: ../js/ui/calendar.js:1295
-msgid "Clear section"
-msgstr "Limpar seção"
-
-#: ../js/ui/calendar.js:1522
+#: ../js/ui/calendar.js:821
 msgid "Events"
 msgstr "Eventos"
 
-#: ../js/ui/calendar.js:1531
+#: ../js/ui/calendar.js:830
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d de %B"
 
-#: ../js/ui/calendar.js:1535
+#: ../js/ui/calendar.js:834
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d de %B de %Y"
 
-#: ../js/ui/calendar.js:1620
+#: ../js/ui/calendar.js:919
 msgid "Notifications"
 msgstr "Notificações"
 
-#: ../js/ui/calendar.js:1771
+#: ../js/ui/calendar.js:1070
 msgid "No Notifications"
 msgstr "Nenhuma notificação"
 
-#: ../js/ui/calendar.js:1774
+#: ../js/ui/calendar.js:1073
 msgid "No Events"
 msgstr "Nenhum evento"
 
@@ -629,14 +699,17 @@ msgstr "Senha:"
 msgid "Type again:"
 msgstr "Digite novamente:"
 
-#: ../js/ui/components/networkAgent.js:140 ../js/ui/status/network.js:269 ../js/ui/status/network.js:352
-#: ../js/ui/status/network.js:919
+#: ../js/ui/components/networkAgent.js:140 ../js/ui/status/network.js:269
+#: ../js/ui/status/network.js:352 ../js/ui/status/network.js:919
 msgid "Connect"
 msgstr "Conectar"
 
 #. Cisco LEAP
-#: ../js/ui/components/networkAgent.js:233 ../js/ui/components/networkAgent.js:245 ../js/ui/components/networkAgent.js:273
-#: ../js/ui/components/networkAgent.js:293 ../js/ui/components/networkAgent.js:303
+#: ../js/ui/components/networkAgent.js:233
+#: ../js/ui/components/networkAgent.js:245
+#: ../js/ui/components/networkAgent.js:273
+#: ../js/ui/components/networkAgent.js:293
+#: ../js/ui/components/networkAgent.js:303
 msgid "Password: "
 msgstr "Senha: "
 
@@ -657,16 +730,23 @@ msgstr "Senha da chave privada: "
 msgid "Service: "
 msgstr "Serviço: "
 
-#: ../js/ui/components/networkAgent.js:320 ../js/ui/components/networkAgent.js:658
+#: ../js/ui/components/networkAgent.js:320
+#: ../js/ui/components/networkAgent.js:658
 msgid "Authentication required by wireless network"
 msgstr "Autenticação requisitada pela rede sem fio"
 
-#: ../js/ui/components/networkAgent.js:321 ../js/ui/components/networkAgent.js:659
+#: ../js/ui/components/networkAgent.js:321
+#: ../js/ui/components/networkAgent.js:659
 #, javascript-format
-msgid "Passwords or encryption keys are required to access the wireless network “%s”."
-msgstr "Senhas ou chaves criptografadas são necessárias para acessar a rede sem fio \"%s\"."
+msgid ""
+"Passwords or encryption keys are required to access the wireless network "
+"“%s”."
+msgstr ""
+"Senhas ou chaves criptografadas são necessárias para acessar a rede sem fio "
+"\"%s\"."
 
-#: ../js/ui/components/networkAgent.js:325 ../js/ui/components/networkAgent.js:662
+#: ../js/ui/components/networkAgent.js:325
+#: ../js/ui/components/networkAgent.js:662
 msgid "Wired 802.1X authentication"
 msgstr "Autenticação 802.1X cabeada"
 
@@ -674,15 +754,18 @@ msgstr "Autenticação 802.1X cabeada"
 msgid "Network name: "
 msgstr "Nome da rede: "
 
-#: ../js/ui/components/networkAgent.js:332 ../js/ui/components/networkAgent.js:666
+#: ../js/ui/components/networkAgent.js:332
+#: ../js/ui/components/networkAgent.js:666
 msgid "DSL authentication"
 msgstr "Autenticação DSL"
 
-#: ../js/ui/components/networkAgent.js:339 ../js/ui/components/networkAgent.js:672
+#: ../js/ui/components/networkAgent.js:339
+#: ../js/ui/components/networkAgent.js:672
 msgid "PIN code required"
 msgstr "Código PIN requisitado"
 
-#: ../js/ui/components/networkAgent.js:340 ../js/ui/components/networkAgent.js:673
+#: ../js/ui/components/networkAgent.js:340
+#: ../js/ui/components/networkAgent.js:673
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "O código PIN é necessário para o dispositivo móvel de banda larga"
 
@@ -690,11 +773,14 @@ msgstr "O código PIN é necessário para o dispositivo móvel de banda larga"
 msgid "PIN: "
 msgstr "PIN: "
 
-#: ../js/ui/components/networkAgent.js:348 ../js/ui/components/networkAgent.js:679
+#: ../js/ui/components/networkAgent.js:348
+#: ../js/ui/components/networkAgent.js:679
 msgid "Mobile broadband network password"
 msgstr "Senha da rede de banda larga móvel"
 
-#: ../js/ui/components/networkAgent.js:349 ../js/ui/components/networkAgent.js:663 ../js/ui/components/networkAgent.js:667
+#: ../js/ui/components/networkAgent.js:349
+#: ../js/ui/components/networkAgent.js:663
+#: ../js/ui/components/networkAgent.js:667
 #: ../js/ui/components/networkAgent.js:680
 #, javascript-format
 msgid "A password is required to connect to “%s”."
@@ -850,9 +936,14 @@ msgstr "Reiniciar & instalar atualizações"
 #: ../js/ui/endSessionDialog.js:121
 #, javascript-format
 msgid "The system will automatically restart and install updates in %d second."
-msgid_plural "The system will automatically restart and install updates in %d seconds."
-msgstr[0] "O sistema irá reiniciar e instalar atualizações automaticamente em %d segundo."
-msgstr[1] "O sistema irá reiniciar e instalar atualizações automaticamente em %d segundos."
+msgid_plural ""
+"The system will automatically restart and install updates in %d seconds."
+msgstr[0] ""
+"O sistema irá reiniciar e instalar atualizações automaticamente em %d "
+"segundo."
+msgstr[1] ""
+"O sistema irá reiniciar e instalar atualizações automaticamente em %d "
+"segundos."
 
 #: ../js/ui/endSessionDialog.js:127
 msgctxt "button"
@@ -871,7 +962,9 @@ msgstr "Desligar após atualizações serem instaladas"
 
 #: ../js/ui/endSessionDialog.js:338
 msgid "Running on battery power: please plug in before installing updates."
-msgstr "Funcionando na bateria: por favor, conecte na tomada antes de instalar atualizações."
+msgstr ""
+"Funcionando na bateria: por favor, conecte na tomada antes de instalar "
+"atualizações."
 
 #: ../js/ui/endSessionDialog.js:355
 msgid "Some applications are busy or have unsaved work."
@@ -963,9 +1056,25 @@ msgstr "Ver fonte"
 msgid "Web Page"
 msgstr "Página web"
 
+#: ../js/ui/messageList.js:542
+msgid "Clear section"
+msgstr "Limpar seção"
+
 #: ../js/ui/messageTray.js:1486
 msgid "System Information"
 msgstr "Informações do sistema"
+
+#: ../js/ui/mpris.js:194
+msgid "Unknown artist"
+msgstr "Artista desconhecido"
+
+#: ../js/ui/mpris.js:195
+msgid "Unknown title"
+msgstr "Título desconhecido"
+
+#: ../js/ui/mpris.js:217
+msgid "Media"
+msgstr "Mídia"
 
 #: ../js/ui/overview.js:84
 msgid "Undo"
@@ -1171,8 +1280,9 @@ msgstr "Livre"
 msgid "Turn On"
 msgstr "Ligar"
 
-#: ../js/ui/status/bluetooth.js:142 ../js/ui/status/network.js:178 ../js/ui/status/network.js:353
-#: ../js/ui/status/network.js:1279 ../js/ui/status/network.js:1394 ../js/ui/status/rfkill.js:90
+#: ../js/ui/status/bluetooth.js:142 ../js/ui/status/network.js:178
+#: ../js/ui/status/network.js:353 ../js/ui/status/network.js:1279
+#: ../js/ui/status/network.js:1394 ../js/ui/status/rfkill.js:90
 #: ../js/ui/status/rfkill.js:117
 msgid "Turn Off"
 msgstr "Desligar"
@@ -1185,29 +1295,49 @@ msgstr "Brilho"
 msgid "Show Keyboard Layout"
 msgstr "Exibir disposição de teclado"
 
-#: ../js/ui/status/location.js:71 ../js/ui/status/location.js:177
+#: ../js/ui/status/location.js:107 ../js/ui/status/location.js:215
 msgid "Location Enabled"
 msgstr "Localização habilitada"
 
-#: ../js/ui/status/location.js:72 ../js/ui/status/location.js:178
+#: ../js/ui/status/location.js:108 ../js/ui/status/location.js:216
 msgid "Disable"
 msgstr "Desabilitar"
 
-#: ../js/ui/status/location.js:73
+#: ../js/ui/status/location.js:109
 msgid "Privacy Settings"
 msgstr "Configurações de privacidade"
 
-#: ../js/ui/status/location.js:176
+#: ../js/ui/status/location.js:214
 msgid "Location In Use"
 msgstr "Localização em uso"
 
-#: ../js/ui/status/location.js:180
+#: ../js/ui/status/location.js:218
 msgid "Location Disabled"
 msgstr "Localização desabilitada"
 
-#: ../js/ui/status/location.js:181
+#: ../js/ui/status/location.js:219
 msgid "Enable"
 msgstr "Habilitar"
+
+#: ../js/ui/status/location.js:434
+msgid "Deny Access"
+msgstr "Negar acesso"
+
+#: ../js/ui/status/location.js:437
+msgid "Grant Access"
+msgstr "Garantir acesso"
+
+#. Translators: %s is an application name
+#: ../js/ui/status/location.js:443
+#, javascript-format
+msgid "Give %s access to your location?"
+msgstr "Fornecer acesso a %s para sua localização?"
+
+#. Translators: %s is an application name
+#: ../js/ui/status/location.js:446
+#, javascript-format
+msgid "%s is requesting access to your location."
+msgstr "%s está solicitando acesso à sua localização."
 
 #: ../js/ui/status/network.js:101
 msgid "<unknown>"
@@ -1463,10 +1593,6 @@ msgstr "Volume alterado"
 #: ../js/ui/status/volume.js:162
 msgid "Volume"
 msgstr "Volume"
-
-#: ../js/ui/status/volume.js:213
-msgid "Microphone"
-msgstr "Microfone"
 
 #: ../js/ui/unlockDialog.js:67
 msgid "Log in as another user"
@@ -1770,8 +1896,10 @@ msgstr "O diálogo de autenticação foi descartado pelo usuário"
 #~ msgid "This account is already connected to the server"
 #~ msgstr "Esta conta já está conectada ao servidor"
 
-#~ msgid "Connection has been replaced by a new connection using the same resource"
-#~ msgstr "A conexão foi substituída por uma nova conexão usando o mesmo recurso"
+#~ msgid ""
+#~ "Connection has been replaced by a new connection using the same resource"
+#~ msgstr ""
+#~ "A conexão foi substituída por uma nova conexão usando o mesmo recurso"
 
 #~ msgid "The account already exists on the server"
 #~ msgstr "A conta já existe no servidor"
@@ -1782,15 +1910,18 @@ msgstr "O diálogo de autenticação foi descartado pelo usuário"
 #~ msgid "Certificate has been revoked"
 #~ msgstr "O certificado foi revogado"
 
-#~ msgid "Certificate uses an insecure cipher algorithm or is cryptographically weak"
-#~ msgstr "O certificado usa um algoritmo de cifragem inseguro ou é criptograficamente fraco"
+#~ msgid ""
+#~ "Certificate uses an insecure cipher algorithm or is cryptographically weak"
+#~ msgstr ""
+#~ "O certificado usa um algoritmo de cifragem inseguro ou é "
+#~ "criptograficamente fraco"
 
 #~ msgid ""
-#~ "The length of the server certificate, or the depth of the server certificate chain, exceed the limits imposed by the "
-#~ "cryptography library"
+#~ "The length of the server certificate, or the depth of the server "
+#~ "certificate chain, exceed the limits imposed by the cryptography library"
 #~ msgstr ""
-#~ "O comprimento do certificado do servidor, ou a profundidade da cadeia do certificado excedeu os limites impostos pela "
-#~ "biblioteca de criptografia"
+#~ "O comprimento do certificado do servidor, ou a profundidade da cadeia do "
+#~ "certificado excedeu os limites impostos pela biblioteca de criptografia"
 
 #~ msgid "Internal error"
 #~ msgstr "Erro interno"
@@ -1800,9 +1931,6 @@ msgstr "O diálogo de autenticação foi descartado pelo usuário"
 
 #~ msgid "View account"
 #~ msgstr "Visualizar conta"
-
-#~ msgid "Unknown reason"
-#~ msgstr "Razão desconhecida"
 
 #~ msgid "Show the message list"
 #~ msgstr "Mostra a lista de mensagem"
