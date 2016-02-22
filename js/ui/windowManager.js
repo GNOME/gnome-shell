@@ -1403,6 +1403,9 @@ const WindowManager = new Lang.Class({
             actor._windowType = type;
         }));
 
+        if (actor.meta_window.is_attached_dialog())
+            this._checkDimming(actor.get_meta_window().get_transient_for());
+
         let types = [Meta.WindowType.NORMAL,
                      Meta.WindowType.DIALOG,
                      Meta.WindowType.MODAL_DIALOG];
@@ -1410,9 +1413,6 @@ const WindowManager = new Lang.Class({
             shellwm.completed_map(actor);
             return;
         }
-
-        if (actor.meta_window.is_attached_dialog())
-            this._checkDimming(actor.get_meta_window().get_transient_for());
 
         switch (actor._windowType) {
         case Meta.WindowType.NORMAL:
@@ -1496,6 +1496,9 @@ const WindowManager = new Lang.Class({
                                                              });
         }
 
+        if (window.is_attached_dialog())
+            this._checkDimming(window.get_transient_for(), window);
+
         let types = [Meta.WindowType.NORMAL,
                      Meta.WindowType.DIALOG,
                      Meta.WindowType.MODAL_DIALOG];
@@ -1530,7 +1533,6 @@ const WindowManager = new Lang.Class({
 
             if (window.is_attached_dialog()) {
                 let parent = window.get_transient_for();
-                this._checkDimming(parent, window);
                 actor._parentDestroyId = parent.connect('unmanaged', Lang.bind(this, function () {
                     Tweener.removeTweens(actor);
                     this._destroyWindowDone(shellwm, actor);
