@@ -17,7 +17,7 @@ const LOCATION_SCHEMA = 'org.gnome.system.location';
 const MAX_ACCURACY_LEVEL = 'max-accuracy-level';
 const ENABLED = 'enabled';
 
-const APP_PERMISSIONS_TABLE = 'desktop';
+const APP_PERMISSIONS_TABLE = 'gnome';
 const APP_PERMISSIONS_ID = 'geolocation';
 
 const GeoclueAccuracyLevel = {
