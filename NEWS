@@ -1,3 +1,16 @@
+3.18.4
+======
+* Fix thumbnail scaling in window switcher on HiDPI [Florian; #758676]
+* loginDialog: Update user list on user changes [Michael; #758568]
+* gdm: Do not allow bypassing disabled Sign In button  [Michael; #746180]
+* Correctly identify VPN secret requests [Lubomir; #760999]
+
+Contributors:
+  Michael Catanzaro, Florian Müllner, Lubomir Rintel
+
+Translations:
+  Kristjan SCHMIDT [eo], Daniel Korostil [uk], Andika Triwidada [id]
+
 3.18.3
 ======
 * Fix browser plugin crash in Firefox [Carlos; #737932, #757940]
