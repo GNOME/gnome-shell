@@ -1367,11 +1367,14 @@ const WindowManager = new Lang.Class({
         let dimmer = getWindowDimmer(actor);
         if (!dimmer)
             return;
-        Tweener.addTween(dimmer,
-                         { dimFactor: 1.0,
-                           time: DIM_TIME,
-                           transition: 'linear'
-                         });
+        if (this._shouldAnimate())
+            Tweener.addTween(dimmer,
+                             { dimFactor: 1.0,
+                               time: DIM_TIME,
+                               transition: 'linear'
+                             });
+        else
+            dimmer.dimFactor = 1.0;
     },
 
     _undimWindow: function(window) {
@@ -1381,10 +1384,13 @@ const WindowManager = new Lang.Class({
         let dimmer = getWindowDimmer(actor);
         if (!dimmer)
             return;
-        Tweener.addTween(dimmer,
-                         { dimFactor: 0.0,
-                           time: UNDIM_TIME,
-                           transition: 'linear' });
+        if (this._shouldAnimate())
+            Tweener.addTween(dimmer,
+                             { dimFactor: 0.0,
+                               time: UNDIM_TIME,
+                               transition: 'linear' });
+        else
+            dimmer.dimFactor = 0.0;
     },
 
     _mapWindow : function(shellwm, actor) {
