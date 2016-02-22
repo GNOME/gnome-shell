@@ -909,7 +909,8 @@ _cogl_winsys_onscreen_swap_buffers_with_damage (CoglOnscreen *onscreen,
   if (kms_onscreen->pending_surface)
     {
       free_current_bo (onscreen);
-      gbm_surface_destroy (kms_onscreen->surface);
+      if (kms_onscreen->surface)
+        gbm_surface_destroy (kms_onscreen->surface);
       kms_onscreen->surface = kms_onscreen->pending_surface;
       kms_onscreen->pending_surface = NULL;
     }
@@ -1029,6 +1030,15 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
 
   kms_onscreen = g_slice_new0 (CoglOnscreenKMS);
   egl_onscreen->platform = kms_onscreen;
+
+  /* If a kms_fd is set then the display width and height
+   * won't be available until cogl_kms_display_set_layout
+   * is called. In that case, defer creating the surface
+   * until then.
+   */
+  if (kms_display->width == 0 ||
+      kms_display->height == 0)
+    return TRUE;
 
   kms_onscreen->surface =
     gbm_surface_create (kms_renderer->gbm,
@@ -1265,8 +1275,24 @@ cogl_kms_display_set_layout (CoglDisplay *display,
       if (kms_onscreen->pending_surface)
         gbm_surface_destroy (kms_onscreen->pending_surface);
 
-      kms_onscreen->pending_surface = new_surface;
-      kms_onscreen->pending_egl_surface = new_egl_surface;
+      /* If there's already a surface, wait until the next swap to switch
+       * it out, otherwise, if we're just starting up we can use the new
+       * surface right away.
+       */
+      if (kms_onscreen->surface != NULL)
+        {
+          kms_onscreen->pending_surface = new_surface;
+          kms_onscreen->pending_egl_surface = new_egl_surface;
+        }
+      else
+        {
+          CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (kms_display->onscreen);
+
+          kms_onscreen->surface = new_surface;
+          egl_onscreen->egl_surface = new_egl_surface;
+
+          _cogl_framebuffer_winsys_update_size (framebuffer, width, height);
+        }
     }
 
   kms_display->width = width;
