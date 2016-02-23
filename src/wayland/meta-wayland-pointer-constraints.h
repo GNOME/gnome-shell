@@ -38,8 +38,6 @@ G_DECLARE_FINAL_TYPE (MetaWaylandPointerConstraint,
 
 void meta_wayland_pointer_constraints_init (MetaWaylandCompositor *compositor);
 
-void meta_wayland_pointer_constraint_maybe_enable (MetaWaylandPointerConstraint *constraint);
-
 void meta_wayland_pointer_constraint_destroy (MetaWaylandPointerConstraint *constraint);
 
 MetaWaylandSeat * meta_wayland_pointer_constraint_get_seat (MetaWaylandPointerConstraint *constraint);

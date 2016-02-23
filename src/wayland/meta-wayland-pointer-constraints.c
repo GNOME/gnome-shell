@@ -245,7 +245,7 @@ is_within_constraint_region (MetaWaylandPointerConstraint *constraint,
   return is_within;
 }
 
-void
+static void
 meta_wayland_pointer_constraint_maybe_enable (MetaWaylandPointerConstraint *constraint)
 {
   MetaWaylandSeat *seat = constraint->seat;
