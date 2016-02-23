@@ -604,7 +604,7 @@ locked_pointer_set_cursor_position_hint (struct wl_client   *client,
 
   /* Ignore a set cursor hint that was already sent after the constraint
    * was cancelled. */
-  if (!constraint->resource || constraint->resource != resource)
+  if (!constraint || !constraint->resource || constraint->resource != resource)
     return;
 
   constraint->hint_set = TRUE;
@@ -621,6 +621,9 @@ locked_pointer_set_region (struct wl_client   *client,
     wl_resource_get_user_data (resource);
   MetaWaylandRegion *region =
     region_resource ? wl_resource_get_user_data (region_resource) : NULL;
+
+  if (!constraint)
+    return;
 
   meta_wayland_pointer_constraint_set_pending_region (constraint, region);
 }
@@ -734,6 +737,9 @@ confined_pointer_set_region (struct wl_client   *client,
     wl_resource_get_user_data (resource);
   MetaWaylandRegion *region =
     region_resource ? wl_resource_get_user_data (region_resource) : NULL;
+
+  if (!constraint)
+    return;
 
   meta_wayland_pointer_constraint_set_pending_region (constraint, region);
 }
