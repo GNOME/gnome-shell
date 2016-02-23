@@ -286,7 +286,6 @@ const AppAuthorizer = new Lang.Class({
         this._maxAccuracyLevel = maxAccuracyLevel;
 
         this._accuracyLevel = GeoclueAccuracyLevel.NONE;
-        this._timesAllowed = 0;
     },
 
     authorize: function(onAuthDone) {
@@ -329,15 +328,14 @@ const AppAuthorizer = new Lang.Class({
         [this._permissions] = result;
         let permission = this._permissions[this.desktopId];
 
-        let [levelStr, timeStr] = permission || ['NONE', '0'];
-        this._accuracyLevel = GeoclueAccuracyLevel[levelStr] ||
-                              GeoclueAccuracyLevel.NONE;
-        this._timesAllowed = Number(timeStr) || 0;
-
-        if (this._timesAllowed < 3)
+        if (permission == null) {
             this._userAuthorizeApp();
-        else
+        } else {
+            let [levelStr] = permission || ['NONE'];
+            this._accuracyLevel = GeoclueAccuracyLevel[levelStr] ||
+                                  GeoclueAccuracyLevel.NONE;
             this._completeAuth();
+        }
     },
 
     _userAuthorizeApp: function() {
@@ -368,7 +366,6 @@ const AppAuthorizer = new Lang.Class({
             this._accuracyLevel = clamp(this._accuracyLevel,
                                         0,
                                         this._maxAccuracyLevel);
-            this._timesAllowed++;
         }
         this._saveToPermissionStore();
 
@@ -379,15 +376,10 @@ const AppAuthorizer = new Lang.Class({
         if (this._permStoreProxy == null)
             return;
 
-        if (this._accuracyLevel != GeoclueAccuracyLevel.NONE) {
-            let levelStr = accuracyLevelToString(this._accuracyLevel);
-            let dateStr = Math.round(Date.now() / 1000).toString();
-            this._permissions[this.desktopId] = [levelStr,
-                                                 this._timesAllowed.toString(),
-                                                 dateStr];
-        } else {
-            delete this._permissions[this.desktopId];
-        }
+        let levelStr = accuracyLevelToString(this._accuracyLevel);
+        let dateStr = Math.round(Date.now() / 1000).toString();
+        this._permissions[this.desktopId] = [levelStr, dateStr];
+
         let data = GLib.Variant.new('av', {});
 
         this._permStoreProxy.SetRemote(APP_PERMISSIONS_TABLE,
