@@ -62,6 +62,8 @@ src/stamp-meta-enum-types.h
 src/meta-dbus-display-config.[ch]
 src/meta-dbus-idle-monitor.[ch]
 src/meta-dbus-login1.[ch]
+src/gtk-primary-selection-protocol.c
+src/gtk-primary-selection-server-protocol.h
 src/gtk-shell-protocol.c
 src/gtk-shell-server-protocol.h
 src/xdg-shell-unstable-v*-protocol.c

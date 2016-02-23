@@ -49,6 +49,8 @@ mutter_built_sources += \
 	pointer-gestures-unstable-v1-server-protocol.h			\
 	gtk-shell-protocol.c			\
 	gtk-shell-server-protocol.h		\
+	gtk-primary-selection-protocol.c				\
+	gtk-primary-selection-server-protocol.h				\
 	xdg-shell-unstable-v5-protocol.c				\
 	xdg-shell-unstable-v5-server-protocol.h				\
 	relative-pointer-unstable-v1-protocol.c				\
@@ -60,6 +62,7 @@ endif
 
 wayland_protocols =				\
 	wayland/protocol/gtk-shell.xml		\
+	wayland/protocol/gtk-primary-selection.xml	\
 	$(NULL)
 
 libmutter_la_SOURCES =				\
