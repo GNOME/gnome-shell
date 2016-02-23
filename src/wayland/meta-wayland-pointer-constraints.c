@@ -237,7 +237,7 @@ is_within_constraint_region (MetaWaylandPointerConstraint *constraint,
   gboolean is_within;
 
   region = meta_wayland_pointer_constraint_calculate_effective_region (constraint);
-  is_within = cairo_region_contains_point (constraint->region,
+  is_within = cairo_region_contains_point (region,
                                            wl_fixed_to_int (sx),
                                            wl_fixed_to_int (sy));
   cairo_region_destroy (region);
@@ -330,7 +330,7 @@ meta_wayland_pointer_constraint_calculate_effective_region (MetaWaylandPointerCo
 {
   cairo_region_t *region;
 
-  region = cairo_region_copy (constraint->surface->input_region);
+  region = meta_wayland_surface_calculate_input_region (constraint->surface);
   cairo_region_intersect (region, constraint->region);
 
   return region;

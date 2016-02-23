@@ -2754,3 +2754,26 @@ meta_wayland_surface_role_subsurface_class_init (MetaWaylandSurfaceRoleSubsurfac
   surface_role_class->commit = subsurface_surface_commit;
   surface_role_class->is_on_output = actor_surface_is_on_output;
 }
+
+cairo_region_t *
+meta_wayland_surface_calculate_input_region (MetaWaylandSurface *surface)
+{
+  cairo_region_t *region;
+  cairo_rectangle_int_t buffer_rect;
+  CoglTexture *texture;
+
+  if (!surface->buffer)
+    return NULL;
+
+  texture = surface->buffer->texture;
+  buffer_rect = (cairo_rectangle_int_t) {
+    .width = cogl_texture_get_width (texture) / surface->scale,
+    .height = cogl_texture_get_height (texture) / surface->scale,
+  };
+  region = cairo_region_create_rectangle (&buffer_rect);
+
+  if (surface->input_region)
+    cairo_region_intersect (region, surface->input_region);
+
+  return region;
+}

@@ -287,4 +287,6 @@ void                meta_wayland_surface_get_absolute_coordinates (MetaWaylandSu
 
 MetaWaylandSurface * meta_wayland_surface_role_get_surface (MetaWaylandSurfaceRole *role);
 
+cairo_region_t *    meta_wayland_surface_calculate_input_region (MetaWaylandSurface *surface);
+
 #endif
