@@ -48,8 +48,6 @@ MetaWaylandSeat * meta_wayland_pointer_constraint_get_seat (MetaWaylandPointerCo
 
 cairo_region_t * meta_wayland_pointer_constraint_calculate_effective_region (MetaWaylandPointerConstraint *constraint);
 
-cairo_region_t * meta_wayland_pointer_constraint_get_region (MetaWaylandPointerConstraint *constraint);
-
 MetaWaylandSurface * meta_wayland_pointer_constraint_get_surface (MetaWaylandPointerConstraint *constraint);
 
 void meta_wayland_pointer_constraint_maybe_remove_for_seat (MetaWaylandSeat *seat,

@@ -336,12 +336,6 @@ meta_wayland_pointer_constraint_calculate_effective_region (MetaWaylandPointerCo
   return region;
 }
 
-cairo_region_t *
-meta_wayland_pointer_constraint_get_region (MetaWaylandPointerConstraint *constraint)
-{
-  return constraint->region;
-}
-
 MetaWaylandSurface *
 meta_wayland_pointer_constraint_get_surface (MetaWaylandPointerConstraint *constraint)
 {
