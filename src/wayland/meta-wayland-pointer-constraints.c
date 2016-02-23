@@ -84,17 +84,6 @@ static const struct zwp_confined_pointer_v1_interface confined_pointer_interface
 static const MetaWaylandPointerGrabInterface locked_pointer_grab_interface;
 static const MetaWaylandPointerGrabInterface confined_pointer_grab_interface;
 
-static cairo_region_t *
-create_infinite_constraint_region (void)
-{
-  return cairo_region_create_rectangle (&(cairo_rectangle_int_t) {
-                                          .x = INT_MIN / 2,
-                                          .y = INT_MIN / 2,
-                                          .width = INT_MAX,
-                                          .height = INT_MAX,
-                                        });
-}
-
 static MetaWaylandPointerConstraint *
 meta_wayland_pointer_constraint_new (MetaWaylandSurface                      *surface,
                                      MetaWaylandSeat                         *seat,
@@ -122,7 +111,7 @@ meta_wayland_pointer_constraint_new (MetaWaylandSurface                      *su
     }
   else
     {
-      constraint->region = create_infinite_constraint_region ();
+      constraint->region = NULL;
     }
 
   return constraint;
@@ -224,7 +213,7 @@ meta_wayland_pointer_constraint_destroy (MetaWaylandPointerConstraint *constrain
     meta_wayland_pointer_constraint_disable (constraint);
 
   wl_resource_set_user_data (constraint->resource, NULL);
-  cairo_region_destroy (constraint->region);
+  g_clear_pointer (&constraint->region, cairo_region_destroy);
   g_object_unref (constraint);
 }
 
@@ -331,7 +320,8 @@ meta_wayland_pointer_constraint_calculate_effective_region (MetaWaylandPointerCo
   cairo_region_t *region;
 
   region = meta_wayland_surface_calculate_input_region (constraint->surface);
-  cairo_region_intersect (region, constraint->region);
+  if (constraint->region)
+    cairo_region_intersect (region, constraint->region);
 
   return region;
 }
@@ -454,7 +444,7 @@ pending_constraint_state_applied (MetaWaylandPendingState           *pending,
     }
   else
     {
-      constraint->region = create_infinite_constraint_region ();
+      constraint->region = NULL;
     }
 
   g_signal_handler_disconnect (pending,
