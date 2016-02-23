@@ -16376,9 +16376,29 @@ _clutter_actor_set_in_clone_paint (ClutterActor *self,
 gboolean
 clutter_actor_is_in_clone_paint (ClutterActor *self)
 {
+  ClutterActor *parent;
+
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
 
-  return self->priv->in_clone_paint;
+  if (self->priv->in_clone_paint)
+    return TRUE;
+
+  if (self->priv->in_cloned_branch == 0)
+    return FALSE;
+
+  parent = self->priv->parent;
+  while (parent != NULL)
+    {
+      if (parent->priv->in_cloned_branch == 0)
+        break;
+
+      if (parent->priv->in_clone_paint)
+        return TRUE;
+
+      parent = parent->priv->parent;
+    }
+
+  return FALSE;
 }
 
 static gboolean
