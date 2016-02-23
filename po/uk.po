@@ -2,13 +2,13 @@
 # Copyright (C) 2010 Free Software Foundation
 # This file is distributed under the same license as the gnome-shell package.
 # Maxim V. Dziumanenko <dziumanenko@gmail.com>, 2010.
-# Daniel Korostil <ted.korostiled@gmail.com>, 2013, 2014, 2015.
+# Daniel Korostil <ted.korostiled@gmail.com>, 2013, 2014, 2015, 2016.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-12-05 15:46+0200\n"
-"PO-Revision-Date: 2015-12-05 16:56+0300\n"
+"POT-Creation-Date: 2016-02-23 13:06+0200\n"
+"PO-Revision-Date: 2016-02-23 13:08+0300\n"
 "Last-Translator: Daniel Korostil <ted.korostiled@gmail.com>\n"
 "Language-Team: linux.org.ua\n"
 "Language: uk\n"
@@ -307,33 +307,34 @@ msgstr "Затримувати зміни фокусу миші, поки вка
 msgid "Network Login"
 msgstr "Мережевий вхід"
 
-#: ../js/extensionPrefs/main.js:122
+#: ../js/extensionPrefs/main.js:121
 #, javascript-format
 msgid "There was an error loading the preferences dialog for %s:"
 msgstr "Помилка завантаження вікна параметрів для %s:"
 
-#: ../js/extensionPrefs/main.js:154
+#: ../js/extensionPrefs/main.js:153
 msgid "GNOME Shell Extensions"
 msgstr "Розширення GNOME Shell"
 
-#: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:145
+#: ../js/gdm/authPrompt.js:147 ../js/ui/audioDeviceSelection.js:71
+#: ../js/ui/components/networkAgent.js:145
 #: ../js/ui/components/polkitAgent.js:179 ../js/ui/endSessionDialog.js:452
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
 #: ../js/ui/status/network.js:916
 msgid "Cancel"
 msgstr "Скасувати"
 
-#: ../js/gdm/authPrompt.js:169 ../js/gdm/authPrompt.js:215
-#: ../js/gdm/authPrompt.js:447
+#: ../js/gdm/authPrompt.js:169 ../js/gdm/authPrompt.js:216
+#: ../js/gdm/authPrompt.js:448
 msgid "Next"
 msgstr "Далі"
 
-#: ../js/gdm/authPrompt.js:211 ../js/ui/shellMountOperation.js:403
+#: ../js/gdm/authPrompt.js:212 ../js/ui/shellMountOperation.js:403
 #: ../js/ui/unlockDialog.js:59
 msgid "Unlock"
 msgstr "Розблокувати"
 
-#: ../js/gdm/authPrompt.js:213
+#: ../js/gdm/authPrompt.js:214
 msgctxt "button"
 msgid "Sign In"
 msgstr "Увійти"
@@ -500,15 +501,35 @@ msgstr "Додати до улюбленого"
 msgid "Show Details"
 msgstr "Показати подробиці"
 
-#: ../js/ui/appFavorites.js:133
+#: ../js/ui/appFavorites.js:134
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "%s додано до улюбленого."
 
-#: ../js/ui/appFavorites.js:167
+#: ../js/ui/appFavorites.js:168
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "%s вилучено з улюбленого."
+
+#: ../js/ui/audioDeviceSelection.js:59
+msgid "Select Audio Device"
+msgstr "Вибрати звуковий пристрій"
+
+#: ../js/ui/audioDeviceSelection.js:69
+msgid "Sound Settings"
+msgstr "Параметри звуку"
+
+#: ../js/ui/audioDeviceSelection.js:78
+msgid "Headphones"
+msgstr "Навушники"
+
+#: ../js/ui/audioDeviceSelection.js:80
+msgid "Headset"
+msgstr "Гарнітура"
+
+#: ../js/ui/audioDeviceSelection.js:82 ../js/ui/status/volume.js:213
+msgid "Microphone"
+msgstr "Мікрофон"
 
 #: ../js/ui/backgroundMenu.js:19
 msgid "Change Background…"
@@ -523,7 +544,7 @@ msgid "Settings"
 msgstr "Параметри"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
-#: ../js/ui/calendar.js:55
+#: ../js/ui/calendar.js:47
 msgctxt "calendar-no-work"
 msgid "06"
 msgstr "06"
@@ -533,100 +554,96 @@ msgstr "06"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: ../js/ui/calendar.js:84
+#: ../js/ui/calendar.js:76
 msgctxt "grid sunday"
 msgid "S"
 msgstr "Н"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: ../js/ui/calendar.js:86
+#: ../js/ui/calendar.js:78
 msgctxt "grid monday"
 msgid "M"
 msgstr "П"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: ../js/ui/calendar.js:88
+#: ../js/ui/calendar.js:80
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "В"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: ../js/ui/calendar.js:90
+#: ../js/ui/calendar.js:82
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "С"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: ../js/ui/calendar.js:92
+#: ../js/ui/calendar.js:84
 msgctxt "grid thursday"
 msgid "T"
 msgstr "Ч"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: ../js/ui/calendar.js:94
+#: ../js/ui/calendar.js:86
 msgctxt "grid friday"
 msgid "F"
 msgstr "П"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: ../js/ui/calendar.js:96
+#: ../js/ui/calendar.js:88
 msgctxt "grid saturday"
 msgid "S"
 msgstr "С"
 
-#: ../js/ui/calendar.js:566
+#: ../js/ui/calendar.js:416
 msgid "Previous month"
 msgstr "Попередній місяць"
 
-#: ../js/ui/calendar.js:576
+#: ../js/ui/calendar.js:426
 msgid "Next month"
 msgstr "Наступний місяць"
 
-#: ../js/ui/calendar.js:728
-#, javascript-format
+#: ../js/ui/calendar.js:579
+#, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: ../js/ui/calendar.js:783
+#: ../js/ui/calendar.js:634
 msgid "Week %V"
 msgstr "Тиждень %V"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: ../js/ui/calendar.js:1188
+#: ../js/ui/calendar.js:695
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Увесь день"
 
-#: ../js/ui/calendar.js:1295
-msgid "Clear section"
-msgstr "Очистити розділ"
-
-#: ../js/ui/calendar.js:1522
+#: ../js/ui/calendar.js:821
 msgid "Events"
 msgstr "Події"
 
-#: ../js/ui/calendar.js:1531
+#: ../js/ui/calendar.js:830
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %B %d"
 
-#: ../js/ui/calendar.js:1535
+#: ../js/ui/calendar.js:834
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %B %d, %Y"
 
-#: ../js/ui/calendar.js:1620
+#: ../js/ui/calendar.js:919
 msgid "Notifications"
 msgstr "Сповіщення"
 
-#: ../js/ui/calendar.js:1771
+#: ../js/ui/calendar.js:1070
 msgid "No Notifications"
 msgstr "Немає сповіщень"
 
-#: ../js/ui/calendar.js:1774
+#: ../js/ui/calendar.js:1073
 msgid "No Events"
 msgstr "Немає подій"
 
@@ -1008,9 +1025,25 @@ msgstr "Переглянути джерело"
 msgid "Web Page"
 msgstr "Веб-сторінка"
 
+#: ../js/ui/messageList.js:543
+msgid "Clear section"
+msgstr "Очистити розділ"
+
 #: ../js/ui/messageTray.js:1486
 msgid "System Information"
 msgstr "Інформація про систему"
+
+#: ../js/ui/mpris.js:194
+msgid "Unknown artist"
+msgstr "Невідомий виконавець"
+
+#: ../js/ui/mpris.js:195
+msgid "Unknown title"
+msgstr "Невідома назва"
+
+#: ../js/ui/mpris.js:217
+msgid "Media"
+msgstr "Носій"
 
 #: ../js/ui/overview.js:84
 msgid "Undo"
@@ -1233,29 +1266,49 @@ msgstr "Яскравість"
 msgid "Show Keyboard Layout"
 msgstr "Показати розкладку клавіатури"
 
-#: ../js/ui/status/location.js:71 ../js/ui/status/location.js:177
+#: ../js/ui/status/location.js:107 ../js/ui/status/location.js:215
 msgid "Location Enabled"
 msgstr "Місцевість залучено"
 
-#: ../js/ui/status/location.js:72 ../js/ui/status/location.js:178
+#: ../js/ui/status/location.js:108 ../js/ui/status/location.js:216
 msgid "Disable"
 msgstr "Вимкнути"
 
-#: ../js/ui/status/location.js:73
+#: ../js/ui/status/location.js:109
 msgid "Privacy Settings"
 msgstr "Параметри конфіденційності"
 
-#: ../js/ui/status/location.js:176
+#: ../js/ui/status/location.js:214
 msgid "Location In Use"
 msgstr "Місцевість використовується"
 
-#: ../js/ui/status/location.js:180
+#: ../js/ui/status/location.js:218
 msgid "Location Disabled"
 msgstr "Місцевість вимкнено"
 
-#: ../js/ui/status/location.js:181
+#: ../js/ui/status/location.js:219
 msgid "Enable"
 msgstr "Увімкнути"
+
+#: ../js/ui/status/location.js:434
+msgid "Deny Access"
+msgstr "Відкинути доступ"
+
+#: ../js/ui/status/location.js:437
+msgid "Grant Access"
+msgstr "Надати доступ"
+
+#. Translators: %s is an application name
+#: ../js/ui/status/location.js:443
+#, javascript-format
+msgid "Give %s access to your location?"
+msgstr "Надати %s доступ до вашого розміщення?"
+
+#. Translators: %s is an application name
+#: ../js/ui/status/location.js:446
+#, javascript-format
+msgid "%s is requesting access to your location."
+msgstr "%s вимагає доступ до вашого розміщення."
 
 #: ../js/ui/status/network.js:101
 msgid "<unknown>"
@@ -1510,10 +1563,6 @@ msgstr "Гучність змінено"
 #: ../js/ui/status/volume.js:162
 msgid "Volume"
 msgstr "Гучність"
-
-#: ../js/ui/status/volume.js:213
-msgid "Microphone"
-msgstr "Мікрофон"
 
 #: ../js/ui/unlockDialog.js:67
 msgid "Log in as another user"
@@ -1856,9 +1905,6 @@ msgstr "Вікно авторизації відхилено користува�
 #~ msgid "View account"
 #~ msgstr "Переглянути обліковий запис"
 
-#~ msgid "Unknown reason"
-#~ msgstr "Невідома причина"
-
 #~ msgid "Captive Portal"
 #~ msgstr "Прив'язаний портал"
 
@@ -2018,9 +2064,6 @@ msgstr "Вікно авторизації відхилено користува�
 
 #~ msgid "Device %s wants access to the service '%s'"
 #~ msgstr "Пристрій %s потребує доступ до служби «%s»"
-
-#~ msgid "Always grant access"
-#~ msgstr "Завжди надавати доступ"
 
 #~ msgid "Grant this time only"
 #~ msgstr "Надати лише цього разу"
@@ -2201,9 +2244,6 @@ msgstr "Вікно авторизації відхилено користува�
 
 #~ msgid "Visibility"
 #~ msgstr "Видимість"
-
-#~ msgid "Send Files to Device…"
-#~ msgstr "Надіслати файли на пристрій…"
 
 #~ msgid "Set Up a New Device…"
 #~ msgstr "Налаштувати новий пристрій…"
