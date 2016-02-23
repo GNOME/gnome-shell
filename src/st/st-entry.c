@@ -566,6 +566,7 @@ clutter_text_button_press_event (ClutterActor       *actor,
                                  ClutterButtonEvent *event,
                                  gpointer            user_data)
 {
+  StEntryPrivate *priv = ST_ENTRY_PRIV (user_data);
   GtkSettings *settings = gtk_settings_get_default ();
   gboolean primary_paste_enabled;
 
@@ -573,7 +574,8 @@ clutter_text_button_press_event (ClutterActor       *actor,
                 "gtk-enable-primary-paste", &primary_paste_enabled,
                 NULL);
 
-  if (primary_paste_enabled && event->button == 2)
+  if (primary_paste_enabled && event->button == 2
+      && clutter_text_get_editable (CLUTTER_TEXT (priv->entry)))
     {
       StClipboard *clipboard;
 
