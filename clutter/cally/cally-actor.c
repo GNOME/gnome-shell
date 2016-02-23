@@ -1017,6 +1017,13 @@ cally_actor_real_notify_clutter (GObject    *obj,
     }
   else if (g_strcmp0 (pspec->name, "mapped") == 0)
     {
+      /* Clones may temporarily map an actor in order to
+       * paint it; we don't want this to generate an ATK
+       * state change
+       */
+      if (clutter_actor_is_in_clone_paint (actor))
+        return;
+
       state = ATK_STATE_SHOWING;
       value = clutter_actor_is_mapped (actor);
     }
