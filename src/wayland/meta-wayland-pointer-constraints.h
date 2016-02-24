@@ -44,9 +44,4 @@ cairo_region_t * meta_wayland_pointer_constraint_calculate_effective_region (Met
 
 MetaWaylandSurface * meta_wayland_pointer_constraint_get_surface (MetaWaylandPointerConstraint *constraint);
 
-void meta_wayland_pointer_constraint_maybe_remove_for_seat (MetaWaylandSeat *seat,
-                                                            MetaWindow      *focus_window);
-
-void meta_wayland_pointer_constraint_maybe_enable_for_window (MetaWindow *window);
-
 #endif /* META_WAYLAND_POINTER_CONSTRAINTS_H */
