@@ -44,6 +44,7 @@
 #include "pointer-constraints-unstable-v1-server-protocol.h"
 
 static GQuark quark_pending_constraint_state = 0;
+static GQuark quark_surface_pointer_constraints_data = 0;
 
 struct _MetaWaylandPointerConstraint
 {
@@ -64,6 +65,11 @@ struct _MetaWaylandPointerConstraint
   MetaPointerConstraint *constraint;
 };
 
+typedef struct _MetaWaylandSurfacePointerConstraintsData
+{
+  GList *pointer_constraints;
+} MetaWaylandSurfacePointerConstraintsData;
+
 typedef struct
 {
   MetaWaylandPointerConstraint *constraint;
@@ -83,6 +89,71 @@ static const struct zwp_locked_pointer_v1_interface locked_pointer_interface;
 static const struct zwp_confined_pointer_v1_interface confined_pointer_interface;
 static const MetaWaylandPointerGrabInterface locked_pointer_grab_interface;
 static const MetaWaylandPointerGrabInterface confined_pointer_grab_interface;
+
+static void
+meta_wayland_pointer_constraint_destroy (MetaWaylandPointerConstraint *constraint);
+
+static MetaWaylandSurfacePointerConstraintsData *
+get_surface_constraints_data (MetaWaylandSurface *surface)
+{
+  return g_object_get_qdata (G_OBJECT (surface),
+                             quark_surface_pointer_constraints_data);
+}
+
+static void
+surface_constraint_data_free (MetaWaylandSurfacePointerConstraintsData *data)
+{
+  g_list_free_full (data->pointer_constraints,
+                    (GDestroyNotify) meta_wayland_pointer_constraint_destroy);
+  g_free (data);
+}
+
+static MetaWaylandSurfacePointerConstraintsData *
+ensure_surface_constraints_data (MetaWaylandSurface *surface)
+{
+  MetaWaylandSurfacePointerConstraintsData *data;
+
+  data = get_surface_constraints_data (surface);
+  if (!data)
+    {
+      data = g_new0 (MetaWaylandSurfacePointerConstraintsData, 1);
+      g_object_set_qdata_full (G_OBJECT (surface),
+                               quark_surface_pointer_constraints_data,
+                               data,
+                               (GDestroyNotify) surface_constraint_data_free);
+    }
+
+  return data;
+}
+
+static void
+surface_add_pointer_constraint (MetaWaylandSurface           *surface,
+                                MetaWaylandPointerConstraint *constraint)
+{
+  MetaWaylandSurfacePointerConstraintsData *data;
+
+  data = ensure_surface_constraints_data (surface);
+  data->pointer_constraints = g_list_append (data->pointer_constraints,
+                                             constraint);
+}
+
+static void
+surface_remove_pointer_constraints (MetaWaylandSurface           *surface,
+                                    MetaWaylandPointerConstraint *constraint)
+{
+  MetaWaylandSurfacePointerConstraintsData *data;
+
+  data = get_surface_constraints_data (surface);
+  data->pointer_constraints =
+    g_list_remove (data->pointer_constraints, constraint);
+
+  if (!data->pointer_constraints)
+    {
+      g_object_set_qdata (G_OBJECT (surface),
+                          quark_surface_pointer_constraints_data,
+                          NULL);
+    }
+}
 
 static MetaWaylandPointerConstraint *
 meta_wayland_pointer_constraint_new (MetaWaylandSurface                      *surface,
@@ -260,7 +331,7 @@ meta_wayland_pointer_constraint_remove (MetaWaylandPointerConstraint *constraint
 {
   MetaWaylandSurface *surface = constraint->surface;
 
-  meta_wayland_surface_remove_pointer_constraint (surface, constraint);
+  surface_remove_pointer_constraints (surface, constraint);
   meta_wayland_pointer_constraint_destroy (constraint);
 }
 
@@ -298,11 +369,16 @@ void
 meta_wayland_pointer_constraint_maybe_enable_for_window (MetaWindow *window)
 {
   MetaWaylandSurface *surface = window->surface;
-  GList *it;
+  MetaWaylandSurfacePointerConstraintsData *surface_data;
+  GList *l;
 
-  for (it = surface->pointer_constraints; it; it = it->next)
+  surface_data = get_surface_constraints_data (surface);
+  if (!surface_data)
+    return;
+
+  for (l = surface_data->pointer_constraints; l; l = l->next)
     {
-      MetaWaylandPointerConstraint *constraint = it->data;
+      MetaWaylandPointerConstraint *constraint = l->data;
 
       meta_wayland_pointer_constraint_maybe_enable (constraint);
     }
@@ -500,6 +576,28 @@ meta_wayland_pointer_constraint_set_pending_region (MetaWaylandPointerConstraint
     }
 }
 
+static MetaWaylandPointerConstraint *
+get_pointer_constraint_for_seat (MetaWaylandSurface *surface,
+                                 MetaWaylandSeat    *seat)
+{
+  MetaWaylandSurfacePointerConstraintsData *surface_data;
+  GList *l;
+
+  surface_data = get_surface_constraints_data (surface);
+  if (!surface_data)
+    return NULL;
+
+  for (l = surface_data->pointer_constraints; l; l = l->next)
+    {
+      MetaWaylandPointerConstraint *constraint = l->data;
+
+      if (seat == constraint->seat)
+        return constraint;
+    }
+
+  return NULL;
+}
+
 static void
 init_pointer_constraint (struct wl_resource                      *resource,
                          uint32_t                                 id,
@@ -515,7 +613,7 @@ init_pointer_constraint (struct wl_resource                      *resource,
   struct wl_resource *cr;
   MetaWaylandPointerConstraint *constraint;
 
-  if (meta_wayland_surface_get_pointer_constraint_for_seat (surface, seat))
+  if (get_pointer_constraint_for_seat (surface, seat))
     {
       wl_resource_post_error (resource,
                               WL_DISPLAY_ERROR_INVALID_OBJECT,
@@ -543,7 +641,7 @@ init_pointer_constraint (struct wl_resource                      *resource,
       return;
     }
 
-  meta_wayland_surface_add_pointer_constraint (surface, constraint);
+  surface_add_pointer_constraint (surface, constraint);
 
   wl_resource_set_implementation (cr, implementation, constraint,
                                   pointer_constraint_resource_destroyed);
@@ -805,4 +903,6 @@ meta_wayland_pointer_constraint_class_init (MetaWaylandPointerConstraintClass *k
 {
   quark_pending_constraint_state =
     g_quark_from_static_string ("-meta-wayland-pointer-constraint-pending_state");
+  quark_surface_pointer_constraints_data =
+    g_quark_from_static_string ("-meta-wayland-surface-constraints-data");
 }

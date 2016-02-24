@@ -1109,9 +1109,6 @@ wl_surface_destructor (struct wl_resource *resource)
   if (surface->window)
     destroy_window (surface);
 
-  g_list_free_full (surface->pointer_constraints,
-                    (GDestroyNotify) meta_wayland_pointer_constraint_destroy);
-
   surface_set_buffer (surface, NULL);
   g_clear_object (&surface->pending);
 
@@ -2515,39 +2512,6 @@ meta_wayland_surface_get_toplevel_window (MetaWaylandSurface *surface)
         }
       else
         surface = surface->sub.parent;
-    }
-
-  return NULL;
-}
-
-void
-meta_wayland_surface_add_pointer_constraint (MetaWaylandSurface           *surface,
-                                             MetaWaylandPointerConstraint *constraint)
-{
-  surface->pointer_constraints = g_list_append (surface->pointer_constraints,
-                                                constraint);
-}
-
-void
-meta_wayland_surface_remove_pointer_constraint (MetaWaylandSurface           *surface,
-                                                MetaWaylandPointerConstraint *constraint)
-{
-  surface->pointer_constraints = g_list_remove (surface->pointer_constraints,
-                                                constraint);
-}
-
-MetaWaylandPointerConstraint *
-meta_wayland_surface_get_pointer_constraint_for_seat (MetaWaylandSurface *surface,
-                                                      MetaWaylandSeat    *seat)
-{
-  GList *iter;
-
-  for (iter = surface->pointer_constraints; iter; iter = iter->next)
-    {
-      MetaWaylandPointerConstraint *constraint = iter->data;
-
-      if (seat == meta_wayland_pointer_constraint_get_seat (constraint))
-        return constraint;
     }
 
   return NULL;
