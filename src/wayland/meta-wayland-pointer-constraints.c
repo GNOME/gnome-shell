@@ -70,6 +70,7 @@ typedef struct _MetaWaylandSurfacePointerConstraintsData
   GList *pointer_constraints;
   MetaWindow *window;
   gulong appears_changed_handler_id;
+  gulong raised_handler_id;
 } MetaWaylandSurfacePointerConstraintsData;
 
 typedef struct
@@ -126,6 +127,12 @@ appears_focused_changed (MetaWindow *window,
   meta_wayland_pointer_constraint_maybe_enable_for_window (window);
 }
 
+static void
+window_raised (MetaWindow *window)
+{
+  meta_wayland_pointer_constraint_maybe_enable_for_window (window);
+}
+
 static MetaWaylandSurfacePointerConstraintsData *
 surface_constraint_data_new (MetaWaylandSurface *surface)
 {
@@ -141,6 +148,9 @@ surface_constraint_data_new (MetaWaylandSurface *surface)
       data->appears_changed_handler_id =
         g_signal_connect (data->window, "notify::appears-focused",
                           G_CALLBACK (appears_focused_changed), NULL);
+      data->raised_handler_id =
+        g_signal_connect (data->window, "raised",
+                          G_CALLBACK (window_raised), NULL);
     }
   else
     {
@@ -158,6 +168,8 @@ surface_constraint_data_free (MetaWaylandSurfacePointerConstraintsData *data)
     {
       g_signal_handler_disconnect (data->window,
                                    data->appears_changed_handler_id);
+      g_signal_handler_disconnect (data->window,
+                                   data->raised_handler_id);
       g_object_remove_weak_pointer (G_OBJECT (data->window),
                                     (gpointer *) &data->window);
     }
