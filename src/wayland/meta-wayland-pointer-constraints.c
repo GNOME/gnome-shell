@@ -368,13 +368,18 @@ is_within_constraint_region (MetaWaylandPointerConstraint *constraint,
 static void
 meta_wayland_pointer_constraint_maybe_enable (MetaWaylandPointerConstraint *constraint)
 {
-  MetaWaylandSeat *seat = constraint->seat;
   wl_fixed_t sx, sy;
 
   if (constraint->is_enabled)
     return;
 
-  if (seat->keyboard.focus_surface != constraint->surface)
+  if (!constraint->surface->window)
+    {
+      g_warn_if_reached ();
+      return;
+    }
+
+  if (!meta_window_appears_focused (constraint->surface->window))
     return;
 
   meta_wayland_pointer_get_relative_coordinates (&constraint->seat->pointer,
