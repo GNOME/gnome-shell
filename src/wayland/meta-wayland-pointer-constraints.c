@@ -100,7 +100,7 @@ meta_wayland_pointer_constraint_maybe_enable_for_window (MetaWindow *window);
 
 static void
 meta_wayland_pointer_constraint_maybe_remove_for_seat (MetaWaylandSeat *seat,
-                                                       MetaWindow      *focus_window);
+                                                       MetaWindow      *window);
 
 static MetaWaylandSurfacePointerConstraintsData *
 get_surface_constraints_data (MetaWaylandSurface *surface)
@@ -402,31 +402,36 @@ meta_wayland_pointer_constraint_remove (MetaWaylandPointerConstraint *constraint
 
 void
 meta_wayland_pointer_constraint_maybe_remove_for_seat (MetaWaylandSeat *seat,
-                                                       MetaWindow      *focus_window)
+                                                       MetaWindow      *window)
 {
   MetaWaylandPointer *pointer = &seat->pointer;
+  MetaWaylandPointerConstraint *constraint;
 
-  if ((pointer->grab->interface == &confined_pointer_grab_interface ||
-       pointer->grab->interface == &locked_pointer_grab_interface) &&
-      pointer->focus_surface &&
-      pointer->focus_surface->window != focus_window)
+  if ((pointer->grab->interface != &confined_pointer_grab_interface &&
+       pointer->grab->interface != &locked_pointer_grab_interface))
+    return;
+
+  constraint = wl_container_of (pointer->grab, constraint, grab);
+
+  if (constraint->surface != window->surface)
+    return;
+
+  if (meta_window_appears_focused (window) &&
+      pointer->focus_surface == window->surface)
+    return;
+
+  switch (constraint->lifetime)
     {
-      MetaWaylandPointerConstraint *constraint =
-        wl_container_of (pointer->grab, constraint, grab);
+    case ZWP_POINTER_CONSTRAINTS_V1_LIFETIME_ONESHOT:
+      meta_wayland_pointer_constraint_remove (constraint);
+      break;
 
-      switch (constraint->lifetime)
-        {
-        case ZWP_POINTER_CONSTRAINTS_V1_LIFETIME_ONESHOT:
-          meta_wayland_pointer_constraint_remove (constraint);
-          break;
+    case ZWP_POINTER_CONSTRAINTS_V1_LIFETIME_PERSISTENT:
+      meta_wayland_pointer_constraint_disable (constraint);
+      break;
 
-        case ZWP_POINTER_CONSTRAINTS_V1_LIFETIME_PERSISTENT:
-          meta_wayland_pointer_constraint_disable (constraint);
-          break;
-
-        default:
-          g_assert_not_reached ();
-        }
+    default:
+      g_assert_not_reached ();
     }
 }
 
