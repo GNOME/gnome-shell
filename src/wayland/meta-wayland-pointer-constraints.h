@@ -36,8 +36,6 @@ G_DECLARE_FINAL_TYPE (MetaWaylandPointerConstraint,
                       META, WAYLAND_POINTER_CONSTRAINT,
                       GObject);
 
-typedef struct _MetaWaylandPointerConstraint MetaWaylandPointerConstraint;
-
 void meta_wayland_pointer_constraints_init (MetaWaylandCompositor *compositor);
 
 void meta_wayland_pointer_constraint_maybe_enable (MetaWaylandPointerConstraint *constraint);
