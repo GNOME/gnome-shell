@@ -21,9 +21,9 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-02-17 22:21+0000\n"
-"PO-Revision-Date: 2016-02-18 09:21+0100\n"
-"Last-Translator: Mario Blättermann <mario.blaettermann@gmail.com>\n"
+"POT-Creation-Date: 2016-02-25 18:08+0000\n"
+"PO-Revision-Date: 2016-02-25 20:40+0100\n"
+"Last-Translator: Bernd Homuth <dev@hmt.im>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
@@ -405,7 +405,7 @@ msgstr "Anmeldung fehlgeschlagen"
 #. to indicate the user can swipe their finger instead
 #: ../js/gdm/util.js:473
 msgid "(or swipe finger)"
-msgstr "(oder benutzen Sie den Fingerabdruckleser)"
+msgstr "(oder wischen Sie mit einem Finger)"
 
 #: ../js/misc/util.js:119
 msgid "Command not found"
@@ -501,7 +501,7 @@ msgstr "Umleitung zu einer Internet-Anmeldung"
 
 #: ../js/ui/appDisplay.js:794
 msgid "Frequently used applications will appear here"
-msgstr "Häufig genutzte Anwendungen werden hier erscheinen"
+msgstr "Häufig genutzte Anwendungen erscheinen hier"
 
 #: ../js/ui/appDisplay.js:914
 msgid "Frequent"
@@ -728,7 +728,7 @@ msgstr "Dienst:"
 #: ../js/ui/components/networkAgent.js:320
 #: ../js/ui/components/networkAgent.js:658
 msgid "Authentication required by wireless network"
-msgstr "Anmeldung für Funknetzwerk wird benötigt"
+msgstr "Anmeldung für Drahtlosnetzwerk wird benötigt"
 
 #: ../js/ui/components/networkAgent.js:321
 #: ../js/ui/components/networkAgent.js:659
@@ -737,8 +737,8 @@ msgid ""
 "Passwords or encryption keys are required to access the wireless network "
 "“%s”."
 msgstr ""
-"Passwörter oder Schlüssel sind erforderlich, um auf das Funknetzwerk »%s« "
-"zuzugreifen."
+"Passwörter oder Schlüssel sind erforderlich, um auf das Drahtlosnetzwerk "
+"»%s« zuzugreifen."
 
 #: ../js/ui/components/networkAgent.js:325
 #: ../js/ui/components/networkAgent.js:662
@@ -894,8 +894,8 @@ msgstr "Aktualisierungen installieren und ausschalten"
 #, javascript-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
-msgstr[0] "Das System wird automatisch in %d Sekunde ausgeschaltet."
-msgstr[1] "Das System wird automatisch in %d Sekunden ausgeschaltet."
+msgstr[0] "Das System schaltet sich automatisch in %d Sekunde ab."
+msgstr[1] "Das System schaltet sich automatisch in %d Sekunden ab."
 
 #: ../js/ui/endSessionDialog.js:91
 msgctxt "checkbox"
@@ -937,7 +937,7 @@ msgid_plural ""
 msgstr[0] ""
 "Das System wird automatisch in %d Sekunde neu gestartet und aktualisiert."
 msgstr[1] ""
-"Das System wird automatisch in %d Sekunden neu gestartet aktualisiert."
+"Das System wird automatisch in %d Sekunden neu gestartet und aktualisiert."
 
 #: ../js/ui/endSessionDialog.js:127
 msgctxt "button"
@@ -963,7 +963,7 @@ msgstr ""
 #: ../js/ui/endSessionDialog.js:355
 msgid "Some applications are busy or have unsaved work."
 msgstr ""
-"Einige Anwendungen sind beschäftigt oder besitzen nicht gespeicherte Arbeit."
+"Einige Anwendungen sind beschäftigt oder haben ungesicherte Änderungen."
 
 #: ../js/ui/endSessionDialog.js:362
 msgid "Other users are logged in."
@@ -1051,7 +1051,7 @@ msgstr "Quelle zeigen"
 msgid "Web Page"
 msgstr "Webseite"
 
-#: ../js/ui/messageList.js:542
+#: ../js/ui/messageList.js:543
 msgid "Clear section"
 msgstr "Abschnitt löschen"
 
@@ -1292,29 +1292,49 @@ msgstr "Helligkeit"
 msgid "Show Keyboard Layout"
 msgstr "Tastaturbelegung anzeigen"
 
-#: ../js/ui/status/location.js:71 ../js/ui/status/location.js:177
+#: ../js/ui/status/location.js:107 ../js/ui/status/location.js:215
 msgid "Location Enabled"
 msgstr "Ortsdienst eingeschaltet"
 
-#: ../js/ui/status/location.js:72 ../js/ui/status/location.js:178
+#: ../js/ui/status/location.js:108 ../js/ui/status/location.js:216
 msgid "Disable"
 msgstr "Ausschalten"
 
-#: ../js/ui/status/location.js:73
+#: ../js/ui/status/location.js:109
 msgid "Privacy Settings"
 msgstr "Einstellungen zur Privatsphäre"
 
-#: ../js/ui/status/location.js:176
+#: ../js/ui/status/location.js:214
 msgid "Location In Use"
-msgstr "Ortsdienst in Verwendung"
+msgstr "Verwendeter Standort"
 
-#: ../js/ui/status/location.js:180
+#: ../js/ui/status/location.js:218
 msgid "Location Disabled"
-msgstr "Ortsdienst ausgeschaltet"
+msgstr "Standort ausgeschaltet"
 
-#: ../js/ui/status/location.js:181
+#: ../js/ui/status/location.js:219
 msgid "Enable"
 msgstr "Einschalten"
+
+#: ../js/ui/status/location.js:434
+msgid "Deny Access"
+msgstr "Zugriff verhindern"
+
+#: ../js/ui/status/location.js:437
+msgid "Grant Access"
+msgstr "Zugriff gewähren"
+
+#. Translators: %s is an application name
+#: ../js/ui/status/location.js:443
+#, javascript-format
+msgid "Give %s access to your location?"
+msgstr "%s Zugriff auf Ihren Standort geben?"
+
+#. Translators: %s is an application name
+#: ../js/ui/status/location.js:446
+#, javascript-format
+msgid "%s is requesting access to your location."
+msgstr "%s erbittet Zugriff auf Ihren Standort."
 
 #: ../js/ui/status/network.js:101
 msgid "<unknown>"
@@ -1344,13 +1364,13 @@ msgstr "%s nicht verwaltet"
 #: ../js/ui/status/network.js:462
 #, javascript-format
 msgid "%s Disconnecting"
-msgstr "Verbindungsabbau von %s"
+msgstr "%s wird getrennt"
 
 #. Translators: %s is a network identifier
 #: ../js/ui/status/network.js:469 ../js/ui/status/network.js:1300
 #, javascript-format
 msgid "%s Connecting"
-msgstr "Verbindungsaufbau von %s"
+msgstr "%s wird verbunden"
 
 #. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
 #: ../js/ui/status/network.js:472
@@ -1390,7 +1410,7 @@ msgstr "Einstellungen der mobilen Breitbandverbindung"
 #: ../js/ui/status/network.js:588 ../js/ui/status/network.js:1305
 #, javascript-format
 msgid "%s Hardware Disabled"
-msgstr "Hardware von %s ausgeschaltet"
+msgstr "%s-Hardware ausgeschaltet"
 
 #. Translators: this is for a network device that cannot be activated
 #. because it's disabled by rfkill (airplane mode); %s is a network identifier
@@ -1409,7 +1429,9 @@ msgstr "Flugmodus ist eingeschaltet"
 
 #: ../js/ui/status/network.js:814
 msgid "Wi-Fi is disabled when airplane mode is on."
-msgstr "WLAN ist ausgeschaltet, während sich ihr Gerät im Flugmodus befindet."
+msgstr ""
+"Drahtlosnetzwerk ist ausgeschaltet, wenn sich Ihr Gerät im Flugmodus "
+"befindet."
 
 #: ../js/ui/status/network.js:815
 msgid "Turn Off Airplane Mode"
@@ -1417,19 +1439,20 @@ msgstr "Flugmodus ausschalten"
 
 #: ../js/ui/status/network.js:824
 msgid "Wi-Fi is Off"
-msgstr "WLAN ist ausgeschaltet"
+msgstr "Drahtlosnetzwerk ist ausgeschaltet"
 
 #: ../js/ui/status/network.js:825
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
 msgstr ""
-"WLAN muss eingeschaltet werden, um eine Netzwerkverbindung herzustellen."
+"Drahtlosnetzwerk muss eingeschaltet werden, um eine Netzwerkverbindung "
+"herzustellen."
 
 # Wi-Fi einschalten
 # oder
 # Schalten sie Wi-Fi ein
 #: ../js/ui/status/network.js:826
 msgid "Turn On Wi-Fi"
-msgstr "WLAN einschalten"
+msgstr "Drahtlosnetzwerk einschalten"
 
 #: ../js/ui/status/network.js:851
 msgid "Wi-Fi Networks"
@@ -1453,7 +1476,7 @@ msgstr "Wählen Sie ein Netzwerk aus"
 
 #: ../js/ui/status/network.js:1177
 msgid "Wi-Fi Settings"
-msgstr "Drahtlos-Einstellungen"
+msgstr "Drahtlosnetzwerk-Einstellungen"
 
 #. Translators: %s is a network identifier
 #: ../js/ui/status/network.js:1296
@@ -1753,4 +1776,3 @@ msgstr "Es muss ein Passwort angegeben werden"
 #: ../src/shell-polkit-authentication-agent.c:353
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Der Dialog zur Anmeldung wurde vom Benutzer geschlossen"
-
