@@ -201,28 +201,9 @@ surface_set_buffer (MetaWaylandSurface *surface,
     return;
 
   if (surface->buffer)
-    {
-      wl_list_remove (&surface->buffer_destroy_listener.link);
+    surface_stop_using_buffer (surface);
 
-      surface_stop_using_buffer (surface);
-      meta_wayland_buffer_unref (surface->buffer);
-    }
-
-  surface->buffer = buffer;
-
-  if (surface->buffer)
-    {
-      meta_wayland_buffer_ref (surface->buffer);
-      wl_signal_add (&surface->buffer->destroy_signal, &surface->buffer_destroy_listener);
-    }
-}
-
-static void
-surface_handle_buffer_destroy (struct wl_listener *listener, void *data)
-{
-  MetaWaylandSurface *surface = wl_container_of (listener, surface, buffer_destroy_listener);
-
-  surface_set_buffer (surface, NULL);
+  g_set_object (&surface->buffer, buffer);
 }
 
 static void
@@ -1192,7 +1173,6 @@ meta_wayland_surface_create (MetaWaylandCompositor *compositor,
   surface->resource = wl_resource_create (client, &wl_surface_interface, wl_resource_get_version (compositor_resource), id);
   wl_resource_set_implementation (surface->resource, &meta_wayland_wl_surface_interface, surface, wl_surface_destructor);
 
-  surface->buffer_destroy_listener.notify = surface_handle_buffer_destroy;
   surface->surface_actor = g_object_ref_sink (meta_surface_actor_wayland_new (surface));
 
   wl_list_init (&surface->pending_frame_callback_list);
