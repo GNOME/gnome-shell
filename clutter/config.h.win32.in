@@ -1,5 +1,8 @@
 /* config.h.in.  Generated from configure.ac by autoheader.  */
 
+/* List of Cogl drivers */
+#define CLUTTER_DRIVERS "*"
+
 /* Use CEX100 EGL backend */
 /* #undef CLUTTER_EGL_BACKEND_CEX100 */
 
@@ -16,9 +19,6 @@
 /* The prefix for our gettext translation domains. */
 #define GETTEXT_PACKAGE "@GETTEXT_PACKAGE@"
 
-/* Define to 1 if you have the `cairo_surface_set_device_scale' function. */
-/* #undef HAVE_CAIRO_SURFACE_SET_DEVICE_SCALE */
-
 /* Define to 1 if you have the <CE4100/libgdl.h> header file. */
 /* #undef HAVE_CE4100_LIBGDL_H */
 
@@ -29,24 +29,6 @@
 /* Define to 1 if you have the MacOS X function CFPreferencesCopyAppValue in
    the CoreFoundation framework. */
 /* #undef HAVE_CFPREFERENCESCOPYAPPVALUE */
-
-/* Have the EGL backend */
-/* #undef HAVE_CLUTTER_EGL */
-
-/* Have the GLX backend */
-/* #undef HAVE_CLUTTER_GLX */
-
-/* Have the OSX backend */
-/* #undef HAVE_CLUTTER_OSX */
-
-/* Have the Wayland backend */
-/* #undef HAVE_CLUTTER_WAYLAND */
-
-/* Have Wayland compositor support */
-/* #undef HAVE_CLUTTER_WAYLAND_COMPOSITOR */
-
-/* Have the Win32 backend */
-#define HAVE_CLUTTER_WIN32 1
 
 /* Define if the GNU dcgettext() function is already present or preinstalled.
    */
@@ -138,9 +120,6 @@
 /* Define to the sub-directory in which libtool stores uninstalled libraries.
    */
 #define LT_OBJDIR ".libs/"
-
-/* Define to 1 if your C compiler doesn't accept -c and -o together. */
-/* #undef NO_MINUS_C_MINUS_O */
 
 /* Define to 1 if building for Linux */
 /* #undef OS_LINUX */
