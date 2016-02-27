@@ -715,7 +715,7 @@ msgstr "Tá brón orm, theip sé sin. Bain triail eile as, le do thoil."
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
 #: ../js/ui/components/telepathyClient.js:759
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "%s is now known as %s"
 msgstr "Tugtar %2$s ar %1$s anois"
 
