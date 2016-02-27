@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-19 16:19+0100\n"
+"POT-Creation-Date: 2016-02-27 16:34+0100\n"
 "PO-Revision-Date: 2015-05-28 19:32+0100\n"
 "Last-Translator: David Medina <opensusecatala@gmail.com>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
@@ -174,6 +174,8 @@ msgstr ""
 msgid ""
 "Whether the default Bluetooth adapter had set up devices associated to it"
 msgstr ""
+"Si l'adaptador de Bluetooth predeterminat té dispositius configurats "
+"associats"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:19
 msgid ""
@@ -182,6 +184,10 @@ msgid ""
 "adapter. This will be reset if the default adapter is ever seen not to have "
 "devices associated to it."
 msgstr ""
+"El Shell només mostrà una entrada de menú Bluetooth si un adaptador Bluetooh "
+"està engegat, o si hi ha dispositius configurats associats a l'adaptador "
+"predeterminat. Això es reiniciarà si l'adaptador predeterminat "
+"té dispositius associats."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:20
 msgid "Show the week date in the calendar"
@@ -540,7 +546,7 @@ msgstr "Auriculars"
 
 #: ../js/ui/audioDeviceSelection.js:80
 msgid "Headset"
-msgstr ""
+msgstr "Auriculars amb micròfon"
 
 #: ../js/ui/audioDeviceSelection.js:82 ../js/ui/status/volume.js:213
 msgid "Microphone"
@@ -622,7 +628,7 @@ msgstr "Mes següent"
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
-msgstr ""
+msgstr "%d"
 
 #: ../js/ui/calendar.js:634
 msgid "Week %V"
@@ -1042,7 +1048,7 @@ msgstr "Mostra el codi font"
 msgid "Web Page"
 msgstr "Pàgina web"
 
-#: ../js/ui/messageList.js:542
+#: ../js/ui/messageList.js:543
 msgid "Clear section"
 msgstr "Neteja la secció"
 
@@ -1306,23 +1312,23 @@ msgstr "Habilita"
 
 #: ../js/ui/status/location.js:434
 msgid "Deny Access"
-msgstr ""
+msgstr "Denega l'accés"
 
 #: ../js/ui/status/location.js:437
 msgid "Grant Access"
-msgstr ""
+msgstr "Permetre l'accés"
 
 #. Translators: %s is an application name
 #: ../js/ui/status/location.js:443
 #, javascript-format
 msgid "Give %s access to your location?"
-msgstr ""
+msgstr "Voleu donar a %s accés a la vostra ubicació?"
 
 #. Translators: %s is an application name
 #: ../js/ui/status/location.js:446
 #, javascript-format
 msgid "%s is requesting access to your location."
-msgstr ""
+msgstr "%s està demanant accés a la vostra ubicació."
 
 #: ../js/ui/status/network.js:101
 msgid "<unknown>"
