@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: clutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter\n"
-"POT-Creation-Date: 2016-02-22 20:44+0100\n"
+"POT-Creation-Date: 2016-02-28 16:41+0100\n"
 "PO-Revision-Date: 2014-03-21 05:55+0100\n"
 "Last-Translator: Pau Iranzo <paugnu@gmail.com>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
@@ -162,11 +162,11 @@ msgstr "Si s'ha d'utilitzar la propietat «alçada natural»"
 
 #: ../clutter/clutter-actor.c:6614
 msgid "Allocation"
-msgstr "Ubicació"
+msgstr "Assignació"
 
 #: ../clutter/clutter-actor.c:6615
 msgid "The actor's allocation"
-msgstr "La ubicació de l'actor"
+msgstr "L'assignació de l'actor"
 
 #: ../clutter/clutter-actor.c:6682
 msgid "Request Mode"
@@ -484,12 +484,13 @@ msgstr "Si s'ha de mostrar l'actor si se'l fa pare d'un element"
 
 #: ../clutter/clutter-actor.c:7447
 msgid "Clip to Allocation"
-msgstr "Retalla a la ubicació"
+msgstr "Retalla a l'assignació"
 
 #: ../clutter/clutter-actor.c:7448
 msgid "Sets the clip region to track the actor's allocation"
 msgstr ""
-"Estableix la regió de retallat per fer un seguiment de la ubicació de l'actor"
+"Estableix la regió de retallat per fer un seguiment de l'assignació de "
+"l'actor"
 
 #: ../clutter/clutter-actor.c:7461
 msgid "Text Direction"
@@ -561,7 +562,7 @@ msgstr "Alineació X"
 
 #: ../clutter/clutter-actor.c:7583
 msgid "The alignment of the actor on the X axis within its allocation"
-msgstr "L'alineació de l'actor en l'eix de les X dins la seva ubicació"
+msgstr "L'alineació de l'actor en l'eix de les X dins la seva assignació"
 
 #: ../clutter/clutter-actor.c:7598
 msgid "Y Alignment"
@@ -569,7 +570,7 @@ msgstr "Alineació Y"
 
 #: ../clutter/clutter-actor.c:7599
 msgid "The alignment of the actor on the Y axis within its allocation"
-msgstr "L'alineació de l'actor en l'eix de les Y dins la seva ubicació"
+msgstr "L'alineació de l'actor en l'eix de les Y dins la seva assignació"
 
 #: ../clutter/clutter-actor.c:7618
 msgid "Margin Top"
@@ -733,7 +734,9 @@ msgstr "El factor d'alineació, entre 0.0 i 1.0"
 
 #: ../clutter/clutter-backend.c:437
 msgid "Unable to initialize the Clutter backend: no available drivers found."
-msgstr "No s'ha pogut inicialitzar el rerefons de la Clutter: no s'han trobat controladors disponibles."
+msgstr ""
+"No s'ha pogut inicialitzar el rerefons de la Clutter: no s'han trobat "
+"controladors disponibles."
 
 #: ../clutter/clutter-backend.c:517
 #, c-format
@@ -802,7 +805,7 @@ msgstr "Expandeix"
 
 #: ../clutter/clutter-box-layout.c:350
 msgid "Allocate extra space for the child"
-msgstr "Ubica espai extra per al fill"
+msgstr "Assigna espai extra per al fill"
 
 #: ../clutter/clutter-box-layout.c:356
 #: ../clutter/deprecated/clutter-table-layout.c:579
@@ -815,7 +818,7 @@ msgid ""
 "Whether the child should receive priority when the container is allocating "
 "spare space on the horizontal axis"
 msgstr ""
-"Si el fill hauria de tenir prioritat quan el contenidor ubiqui espai extra "
+"Si el fill hauria de tenir prioritat quan el contenidor assigni espai extra "
 "en l'eix horitzontal"
 
 #: ../clutter/clutter-box-layout.c:365
@@ -829,7 +832,7 @@ msgid ""
 "Whether the child should receive priority when the container is allocating "
 "spare space on the vertical axis"
 msgstr ""
-"Si el fill hauria de tenir prioritat quan el contenidor ubiqui espai extra "
+"Si el fill hauria de tenir prioritat quan el contenidor assigni espai extra "
 "en l'eix vertical"
 
 #: ../clutter/clutter-box-layout.c:375
@@ -1102,7 +1105,7 @@ msgstr "Si la propietat d'àrea d'arrossegament té un valor"
 
 #: ../clutter/clutter-flow-layout.c:944
 msgid "Whether each item should receive the same allocation"
-msgstr "Si cada element hauria de rebre la mateixa ubicació"
+msgstr "Si cada element hauria de rebre la mateixa assignació"
 
 #: ../clutter/clutter-flow-layout.c:959
 #: ../clutter/deprecated/clutter-table-layout.c:1627
@@ -2342,7 +2345,7 @@ msgstr "Redimensiona automàticament"
 
 #: ../clutter/deprecated/clutter-cairo-texture.c:625
 msgid "Whether the surface should match the allocation"
-msgstr "Si la superfície hauria de coincidir amb la ubicació"
+msgstr "Si la superfície hauria de coincidir amb l'assignació"
 
 #: ../clutter/deprecated/clutter-media.c:84
 msgid "URI"
@@ -2533,7 +2536,7 @@ msgstr "Expansió horitzontal"
 
 #: ../clutter/deprecated/clutter-table-layout.c:566
 msgid "Allocate extra space for the child in horizontal axis"
-msgstr "Ubica espai extra per al fill en l'eix horitzontal"
+msgstr "Assigna espai extra per al fill en l'eix horitzontal"
 
 #: ../clutter/deprecated/clutter-table-layout.c:572
 msgid "Vertical Expand"
@@ -2541,7 +2544,7 @@ msgstr "Expansió vertical"
 
 #: ../clutter/deprecated/clutter-table-layout.c:573
 msgid "Allocate extra space for the child in vertical axis"
-msgstr "Ubica espai extra per al fill en l'eix vertical"
+msgstr "Assigna espai extra per al fill en l'eix vertical"
 
 #: ../clutter/deprecated/clutter-table-layout.c:1628
 msgid "Spacing between columns"
