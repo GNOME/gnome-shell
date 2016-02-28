@@ -28,6 +28,12 @@
 #include <stdint.h>
 #endif
 
+/* XXX: We're using the GdkDeviceManager deprecated API because
+ * porting to the new GdkSeat API would imply adding an equivalent
+ * API to Clutter.
+ */
+#define GDK_DISABLE_DEPRECATION_WARNINGS
+
 #include "clutter-device-manager-gdk.h"
 
 #include "clutter-backend-gdk.h"
