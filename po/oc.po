@@ -1,3038 +1,624 @@
-# Translation of oc.po to Occitan
-# Occitan translation of metacity.
-# Copyright (C) 2002-2006, 2007 Free Software Foundation, Inc.
+# Occitan translation of mutter.
+# Copyright (C) 2002-2015 Free Software Foundation, Inc.
 # This file is distributed under the same license as the metacity package.
-#
 # Yannig Marchegay (Kokoyaya) <yannig@marchegay.org>, 2006-2008
+# Cédric Valmary (totenoc.eu) <cvalmary@yahoo.fr>, 2016.
 msgid ""
 msgstr ""
-"Project-Id-Version: oc\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-09 15:21+0200\n"
-"PO-Revision-Date: 2008-06-11 13:33+0200\n"
-"Last-Translator: Yannig Marchegay (Kokoyaya) <yannig@marchegay.org>\n"
-"Language-Team: Occitan <ubuntu-l10n-oci@lists.ubuntu.com>\n"
+"Project-Id-Version: mutter master\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=mutter&"
+"keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2016-02-28 13:37+0000\n"
+"PO-Revision-Date: 2016-02-28 17:25+0200\n"
+"Last-Translator: Cédric Valmary (totenoc.eu) <cvalmary@yahoo.fr>\n"
+"Language-Team: Tot En Òc\n"
+"Language: oc\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);"
-
-#: ../src/50-metacity-desktop-key.xml.in.h:1
-msgid "Desktop"
-msgstr "Burèu"
-
-#: ../src/50-metacity-key.xml.in.h:1
-msgid "Window Management"
-msgstr "Gestion de las fenèstras"
-
-#: ../src/core/core.c:206
-#, c-format
-msgid "Unknown window information request: %d"
-msgstr ""
-
-#: ../src/core/delete.c:70 ../src/core/delete.c:97
-#: ../src/ui/metacity-dialog.c:50 ../src/ui/theme-parser.c:481
-#, c-format
-msgid "Could not parse \"%s\" as an integer"
-msgstr "Impossible d'analizar '%s' coma entièr"
-
-#: ../src/core/delete.c:77 ../src/core/delete.c:104
-#: ../src/ui/metacity-dialog.c:57 ../src/ui/theme-parser.c:490
-#: ../src/ui/theme-parser.c:545
-#, c-format
-msgid "Did not understand trailing characters \"%s\" in string \"%s\""
-msgstr ""
-
-#: ../src/core/delete.c:135
-#, c-format
-msgid "Failed to parse message \"%s\" from dialog process\n"
-msgstr ""
-
-#: ../src/core/delete.c:253
-#, c-format
-msgid "Error reading from dialog display process: %s\n"
-msgstr ""
-
-#: ../src/core/delete.c:336
-#, c-format
-msgid ""
-"Error launching metacity-dialog to ask about killing an application: %s\n"
-msgstr ""
-
-#: ../src/core/delete.c:445
-#, c-format
-msgid "Failed to get hostname: %s\n"
-msgstr "Impossible d'obténer lo nom d'òste : %s\n"
-
-#: ../src/core/display.c:256
-#, c-format
-msgid "Missing %s extension required for compositing"
-msgstr ""
-
-#: ../src/core/display.c:334
-#, c-format
-msgid "Failed to open X Window System display '%s'\n"
-msgstr ""
-
-#: ../src/core/errors.c:272
-#, c-format
-msgid ""
-"Lost connection to the display '%s';\n"
-"most likely the X server was shut down or you killed/destroyed\n"
-"the window manager.\n"
-msgstr ""
-
-#: ../src/core/errors.c:279
-#, c-format
-msgid "Fatal IO error %d (%s) on display '%s'.\n"
-msgstr ""
-
-#: ../src/core/keybindings.c:1090
-#, c-format
-msgid ""
-"Some other program is already using the key %s with modifiers %x as a "
-"binding\n"
-msgstr ""
-
-#: ../src/core/keybindings.c:2722
-#, c-format
-msgid "Error launching metacity-dialog to print an error about a command: %s\n"
-msgstr ""
-
-#: ../src/core/keybindings.c:2827
-#, c-format
-msgid "No command %d has been defined.\n"
-msgstr "Pas cap de comanda %d definida.\n"
-
-#: ../src/core/keybindings.c:3855
-#, c-format
-msgid "No terminal command has been defined.\n"
-msgstr "Pas cap de comanda de terminal definida.\n"
-
-#: ../src/core/main.c:115
-#, c-format
-msgid ""
-"metacity %s\n"
-"Copyright (C) 2001-2008 Havoc Pennington, Red Hat, Inc., and others\n"
-"This is free software; see the source for copying conditions.\n"
-"There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
-"PARTICULAR PURPOSE.\n"
-msgstr ""
-
-#: ../src/core/main.c:242
-msgid "Disable connection to session manager"
-msgstr "Desactiva la connexion amb lo gestionari de sessions"
-
-#: ../src/core/main.c:248
-msgid "Replace the running window manager with Metacity"
-msgstr "Remplaçar lo gestionari de fenèstras actiu per Metacity"
-
-#: ../src/core/main.c:254
-msgid "Specify session management ID"
-msgstr "Especifica l'ID de gestion de session"
-
-#: ../src/core/main.c:259
-msgid "X Display to use"
-msgstr ""
-
-#: ../src/core/main.c:265
-msgid "Initialize session from savefile"
-msgstr ""
-
-#: ../src/core/main.c:271
-msgid "Print version"
-msgstr "Visualizar la version"
-
-#: ../src/core/main.c:277
-msgid "Make X calls synchronous"
-msgstr ""
-
-#: ../src/core/main.c:428
-#, c-format
-msgid "Failed to scan themes directory: %s\n"
-msgstr ""
-
-#: ../src/core/main.c:444
-#, c-format
-msgid ""
-"Could not find a theme! Be sure %s exists and contains the usual themes.\n"
-msgstr ""
-
-#: ../src/core/main.c:500
-#, c-format
-msgid "Failed to restart: %s\n"
-msgstr "Impossible de tornar aviar : %s\n"
-
-#.
-#. * We found it, but it was invalid.  Complain.
-#. *
-#. * FIXME: This replicates the original behaviour, but in the future
-#. * we might consider reverting invalid keys to their original values.
-#. * (We know the old value, so we can look up a suitable string in
-#. * the symtab.)
-#.
-#: ../src/core/prefs.c:450 ../src/core/prefs.c:564
-#, c-format
-msgid "GConf key '%s' is set to an invalid value\n"
-msgstr ""
-
-#: ../src/core/prefs.c:537 ../src/core/prefs.c:611 ../src/core/prefs.c:659
-#: ../src/core/prefs.c:978 ../src/core/prefs.c:996 ../src/core/prefs.c:1012
-#: ../src/core/prefs.c:1031 ../src/core/prefs.c:1047 ../src/core/prefs.c:1064
-#: ../src/core/prefs.c:1081 ../src/core/prefs.c:1097 ../src/core/prefs.c:1113
-#, c-format
-msgid "GConf key \"%s\" is set to an invalid type\n"
-msgstr ""
-
-#: ../src/core/prefs.c:873
-#, c-format
-msgid "Type of %s was not integer"
-msgstr ""
-
-#: ../src/core/prefs.c:1182
-msgid ""
-"Workarounds for broken applications disabled. Some applications may not "
-"behave properly.\n"
-msgstr ""
-
-#: ../src/core/prefs.c:1237
-#, c-format
-msgid ""
-"%d stored in GConf key %s is not a reasonable cursor_size; must be in the "
-"range 1..128\n"
-msgstr ""
-
-#: ../src/core/prefs.c:1263
-#, c-format
-msgid "Could not parse font description \"%s\" from GConf key %s\n"
-msgstr ""
-
-#: ../src/core/prefs.c:1323
-#, c-format
-msgid ""
-"\"%s\" found in configuration database is not a valid value for mouse button "
-"modifier\n"
-msgstr ""
-
-#: ../src/core/prefs.c:1602
-#, c-format
-msgid ""
-"%d stored in GConf key %s is not a reasonable number of workspaces, current "
-"maximum is %d\n"
-msgstr ""
-
-#: ../src/core/prefs.c:1646
-#, c-format
-msgid "%d stored in GConf key %s is out of range 0 to %d\n"
-msgstr ""
-
-#: ../src/core/prefs.c:1777
-#, c-format
-msgid "Error setting number of workspaces to %d: %s\n"
-msgstr ""
-
-#: ../src/core/prefs.c:2142 ../src/core/prefs.c:2654
-#, c-format
-msgid "Workspace %d"
-msgstr "Espaci de trabalh %d"
-
-#: ../src/core/prefs.c:2172 ../src/core/prefs.c:2345
-#, c-format
-msgid ""
-"\"%s\" found in configuration database is not a valid value for keybinding "
-"\"%s\"\n"
-msgstr ""
-
-#: ../src/core/prefs.c:2735
-#, c-format
-msgid "Error setting name for workspace %d to \"%s\": %s\n"
-msgstr ""
-
-#: ../src/core/screen.c:350
-#, c-format
-msgid "Screen %d on display '%s' is invalid\n"
-msgstr ""
-
-#: ../src/core/screen.c:366
-#, c-format
-msgid ""
-"Screen %d on display \"%s\" already has a window manager; try using the --"
-"replace option to replace the current window manager.\n"
-msgstr ""
-
-#: ../src/core/screen.c:393
-#, c-format
-msgid ""
-"Could not acquire window manager selection on screen %d display \"%s\"\n"
-msgstr ""
-
-#: ../src/core/screen.c:451
-#, c-format
-msgid "Screen %d on display \"%s\" already has a window manager\n"
-msgstr ""
-
-#: ../src/core/screen.c:661
-#, c-format
-msgid "Could not release screen %d on display \"%s\"\n"
-msgstr ""
-
-#: ../src/core/session.c:837 ../src/core/session.c:844
-#, c-format
-msgid "Could not create directory '%s': %s\n"
-msgstr "Impossible de crear lo repertòri '%s' : %s\n"
-
-#: ../src/core/session.c:854
-#, c-format
-msgid "Could not open session file '%s' for writing: %s\n"
-msgstr ""
-
-#: ../src/core/session.c:995
-#, c-format
-msgid "Error writing session file '%s': %s\n"
-msgstr "Error al moment d'escriure lo fichièr de session '%s' : %s\n"
-
-#: ../src/core/session.c:1000
-#, c-format
-msgid "Error closing session file '%s': %s\n"
-msgstr ""
-
-#. oh, just give up
-#: ../src/core/session.c:1093
-#, c-format
-msgid "Failed to read saved session file %s: %s\n"
-msgstr ""
-
-#: ../src/core/session.c:1132
-#, c-format
-msgid "Failed to parse saved session file: %s\n"
-msgstr ""
-
-#: ../src/core/session.c:1181
-#, c-format
-msgid "<metacity_session> attribute seen but we already have the session ID"
-msgstr ""
-
-#: ../src/core/session.c:1194
-#, c-format
-msgid "Unknown attribute %s on <metacity_session> element"
-msgstr ""
-
-#: ../src/core/session.c:1211
-#, c-format
-msgid "nested <window> tag"
-msgstr ""
-
-#: ../src/core/session.c:1269 ../src/core/session.c:1301
-#, c-format
-msgid "Unknown attribute %s on <window> element"
-msgstr ""
-
-#: ../src/core/session.c:1373
-#, c-format
-msgid "Unknown attribute %s on <maximized> element"
-msgstr ""
-
-#: ../src/core/session.c:1433
-#, c-format
-msgid "Unknown attribute %s on <geometry> element"
-msgstr ""
-
-#: ../src/core/session.c:1453
-#, c-format
-msgid "Unknown element %s"
-msgstr "Element %s desconegut"
-
-#: ../src/core/session.c:1879
-#, c-format
-msgid ""
-"Error launching metacity-dialog to warn about apps that don't support "
-"session management: %s\n"
-msgstr ""
-
-#: ../src/core/util.c:101
-#, c-format
-msgid "Failed to open debug log: %s\n"
-msgstr ""
-
-#: ../src/core/util.c:111
-#, c-format
-msgid "Failed to fdopen() log file %s: %s\n"
-msgstr ""
-
-#: ../src/core/util.c:117
-#, c-format
-msgid "Opened log file %s\n"
-msgstr ""
-
-#: ../src/core/util.c:136 ../src/tools/metacity-message.c:176
-#, c-format
-msgid "Metacity was compiled without support for verbose mode\n"
-msgstr ""
-
-#: ../src/core/util.c:236
-msgid "Window manager: "
-msgstr "Gestionari de fenèstras : "
-
-#: ../src/core/util.c:388
-msgid "Bug in window manager: "
-msgstr "Anomalia dins lo gestionari de fenèstras : "
-
-#: ../src/core/util.c:421
-msgid "Window manager warning: "
-msgstr "Alèrta del gestionari de fenèstras : "
-
-#: ../src/core/util.c:449
-msgid "Window manager error: "
-msgstr "Error de gestionari de fenèstras : "
-
-#: ../src/core/window-props.c:195
-#, c-format
-msgid "Application set a bogus _NET_WM_PID %lu\n"
-msgstr ""
-
-#: ../src/core/window-props.c:327
-#, c-format
-msgid "%s (on %s)"
-msgstr "%s (sus %s)"
-
-#: ../src/core/window-props.c:1409
-#, c-format
-msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
-msgstr ""
-
-#. first time through
-#: ../src/core/window.c:5674
-#, c-format
-msgid ""
-"Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
-"window as specified in the ICCCM.\n"
-msgstr ""
-
-#. We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
-#. * authoritative source for that info. Some apps such as mplayer or
-#. * xine disable resize via MWM but not WM_NORMAL_HINTS, but that
-#. * leads to e.g. us not fullscreening their windows.  Apps that set
-#. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
-#. * about these apps but make them work.
-#.
-#: ../src/core/window.c:6239
-#, c-format
-msgid ""
-"Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
-"d x %d and max size %d x %d; this doesn't make much sense.\n"
-msgstr ""
-
-#: ../src/core/xprops.c:155
-#, c-format
-msgid ""
-"Window 0x%lx has property %s\n"
-"that was expected to have type %s format %d\n"
-"and actually has type %s format %d n_items %d.\n"
-"This is most likely an application bug, not a window manager bug.\n"
-"The window has title=\"%s\" class=\"%s\" name=\"%s\"\n"
-msgstr ""
-
-#: ../src/core/xprops.c:401
-#, c-format
-msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
-msgstr ""
-
-#: ../src/core/xprops.c:484
-#, c-format
-msgid ""
-"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
-msgstr ""
-
-#: ../src/metacity.desktop.in.h:1
-msgid "Metacity"
-msgstr "Metacity"
-
-#: ../src/metacity.schemas.in.h:1
-msgid "(Not implemented) Navigation works in terms of applications not windows"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:2
-msgid ""
-"A font description string describing a font for window titlebars. The size "
-"from the description will only be used if the titlebar_font_size option is "
-"set to 0. Also, this option is disabled if the titlebar_uses_desktop_font "
-"option is set to true."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:3
-msgid "Action on title bar double-click"
-msgstr "Accion quand doble-clicatz sus la barra de títol"
-
-#: ../src/metacity.schemas.in.h:4
-msgid "Action on title bar middle-click"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:5
-msgid "Action on title bar right-click"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:6
-msgid "Activate window menu"
-msgstr "Activar lo menut fenèstra"
-
-#: ../src/metacity.schemas.in.h:7
-msgid "Arrangement of buttons on the titlebar"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:8
-msgid ""
-"Arrangement of buttons on the titlebar. The value should be a string, such "
-"as \"menu:minimize,maximize,spacer,close\"; the colon separates the left "
-"corner of the window from the right corner, and the button names are comma-"
-"separated. Duplicate buttons are not allowed. Unknown button names are "
-"silently ignored so that buttons can be added in future metacity versions "
-"without breaking older versions. A special spacer tag can be used to insert "
-"some space between two adjacent buttons."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:9
-msgid "Automatically raises the focused window"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:10
-msgid ""
-"Clicking a window while holding down this modifier key will move the window "
-"(left click), resize the window (middle click), or show the window menu "
-"(right click). Modifier is expressed as \"&lt;Alt&gt;\" or \"&lt;Super&gt;\" "
-"for example."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:11
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Virtaal 0.7.1\n"
+"X-Project-Style: gnome\n"
+
+#: ../data/50-mutter-navigation.xml.in.h:1
+msgid "Navigation"
+msgstr "Navigacion"
+
+#: ../data/50-mutter-navigation.xml.in.h:2
+msgid "Move window to workspace 1"
+msgstr "Desplaçar la fenèstra cap a l'espaci de trabalh 1"
+
+#: ../data/50-mutter-navigation.xml.in.h:3
+msgid "Move window to workspace 2"
+msgstr "Desplaçar la fenèstra cap a l'espaci de trabalh 2"
+
+#: ../data/50-mutter-navigation.xml.in.h:4
+msgid "Move window to workspace 3"
+msgstr "Desplaçar la fenèstra cap a l'espaci de trabalh 3"
+
+#: ../data/50-mutter-navigation.xml.in.h:5
+msgid "Move window to workspace 4"
+msgstr "Desplaçar la fenèstra cap a l'espaci de trabalh 4"
+
+#: ../data/50-mutter-navigation.xml.in.h:6
+msgid "Move window to last workspace"
+msgstr "Desplaçar la fenèstra cap al darrièr espaci de trabalh"
+
+#: ../data/50-mutter-navigation.xml.in.h:7
+msgid "Move window one workspace to the left"
+msgstr "Desplaçar la fenèstra d'un espaci de trabalh cap a esquèrra"
+
+#: ../data/50-mutter-navigation.xml.in.h:8
+msgid "Move window one workspace to the right"
+msgstr "Desplaçar la fenèstra d'un espaci de trabalh cap a drecha"
+
+#: ../data/50-mutter-navigation.xml.in.h:9
+msgid "Move window one workspace up"
+msgstr "Desplaçar la fenèstra d'un espaci de trabalh cap amont"
+
+#: ../data/50-mutter-navigation.xml.in.h:10
+msgid "Move window one workspace down"
+msgstr "Desplaçar la fenèstra d'un espaci de trabalh cap aval"
+
+#: ../data/50-mutter-navigation.xml.in.h:11
+msgid "Move window one monitor to the left"
+msgstr "Desplaçar la fenèstra d'un ecran cap a esquèrra"
+
+#: ../data/50-mutter-navigation.xml.in.h:12
+msgid "Move window one monitor to the right"
+msgstr "Desplaçar la fenèstra d'un ecran cap a drecha"
+
+#: ../data/50-mutter-navigation.xml.in.h:13
+msgid "Move window one monitor up"
+msgstr "Desplaçar la fenèstra d'un ecran cap amont"
+
+#: ../data/50-mutter-navigation.xml.in.h:14
+msgid "Move window one monitor down"
+msgstr "Desplaçar la fenèstra d'un ecran cap aval"
+
+#: ../data/50-mutter-navigation.xml.in.h:15
+msgid "Switch applications"
+msgstr "Cambiar d'aplicacion"
+
+#: ../data/50-mutter-navigation.xml.in.h:16
+msgid "Switch to previous application"
+msgstr "Passar a l'aplicacion precedenta"
+
+#: ../data/50-mutter-navigation.xml.in.h:17
+msgid "Switch windows"
+msgstr "Cambiar de fenèstra"
+
+#: ../data/50-mutter-navigation.xml.in.h:18
+msgid "Switch to previous window"
+msgstr "Passar a la fenèstra precedenta"
+
+#: ../data/50-mutter-navigation.xml.in.h:19
+msgid "Switch windows of an application"
+msgstr "Cambiar de fenèstra d'una aplicacion"
+
+#: ../data/50-mutter-navigation.xml.in.h:20
+msgid "Switch to previous window of an application"
+msgstr "Passar a la fenèstra precedenta d'una aplicacion"
+
+#: ../data/50-mutter-navigation.xml.in.h:21
+msgid "Switch system controls"
+msgstr "Cambiar los contraròtles sistèma"
+
+#: ../data/50-mutter-navigation.xml.in.h:22
+msgid "Switch to previous system control"
+msgstr "Passar al contraròtle sistèma precedent"
+
+#: ../data/50-mutter-navigation.xml.in.h:23
+msgid "Switch windows directly"
+msgstr "Cambiar de fenèstra dirèctament"
+
+#: ../data/50-mutter-navigation.xml.in.h:24
+msgid "Switch directly to previous window"
+msgstr "Passar dirèctament a la fenèstra precedenta"
+
+#: ../data/50-mutter-navigation.xml.in.h:25
+msgid "Switch windows of an app directly"
+msgstr "Cambiar de fenèstra d'una aplicacion dirèctament"
+
+#: ../data/50-mutter-navigation.xml.in.h:26
+msgid "Switch directly to previous window of an app"
+msgstr "Passar dirèctament a la fenèstra precedenta d'una aplicacion"
+
+#: ../data/50-mutter-navigation.xml.in.h:27
+msgid "Switch system controls directly"
+msgstr "Cambiar los contraròtles sistèma dirèctament"
+
+#: ../data/50-mutter-navigation.xml.in.h:28
+msgid "Switch directly to previous system control"
+msgstr "Passar dirèctament al contraròtle sistèma precedent"
+
+#: ../data/50-mutter-navigation.xml.in.h:29
+msgid "Hide all normal windows"
+msgstr "Amagar totas las fenèstras normalas"
+
+#: ../data/50-mutter-navigation.xml.in.h:30
+msgid "Switch to workspace 1"
+msgstr "Passar a l'espaci de trabalh 1"
+
+#: ../data/50-mutter-navigation.xml.in.h:31
+msgid "Switch to workspace 2"
+msgstr "Passar a l'espaci de trabalh 2"
+
+#: ../data/50-mutter-navigation.xml.in.h:32
+msgid "Switch to workspace 3"
+msgstr "Passar a l'espaci de trabalh 3"
+
+#: ../data/50-mutter-navigation.xml.in.h:33
+msgid "Switch to workspace 4"
+msgstr "Passar a l'espaci de trabalh 4"
+
+#: ../data/50-mutter-navigation.xml.in.h:34
+msgid "Switch to last workspace"
+msgstr "Passar al darrièr espaci de trabalh"
+
+#: ../data/50-mutter-navigation.xml.in.h:35
+msgid "Move to workspace left"
+msgstr "Desplaçar cap a l'espaci de trabalh d'esquèrra"
+
+#: ../data/50-mutter-navigation.xml.in.h:36
+msgid "Move to workspace right"
+msgstr "Desplaçar cap a l'espaci de trabalh de drecha"
+
+#: ../data/50-mutter-navigation.xml.in.h:37
+msgid "Move to workspace above"
+msgstr "Desplaçar cap a l'espaci de trabalh de dessús"
+
+#: ../data/50-mutter-navigation.xml.in.h:38
+msgid "Move to workspace below"
+msgstr "Desplaçar cap a l'espaci de trabalh de dejós"
+
+#: ../data/50-mutter-system.xml.in.h:1
+msgid "System"
+msgstr "Sistèma"
+
+#: ../data/50-mutter-system.xml.in.h:2
+msgid "Show the run command prompt"
+msgstr "Afichar la fenèstra per aviar una comanda"
+
+#: ../data/50-mutter-system.xml.in.h:3
+msgid "Show the activities overview"
+msgstr "Afichar l'apercebut de las activitats"
+
+#: ../data/50-mutter-windows.xml.in.h:1
+msgid "Windows"
+msgstr "Fenèstras"
+
+#: ../data/50-mutter-windows.xml.in.h:2
+msgid "Activate the window menu"
+msgstr "Activar lo menú fenèstra"
+
+#: ../data/50-mutter-windows.xml.in.h:3
+msgid "Toggle fullscreen mode"
+msgstr "Bascular lo mòde ecran complet"
+
+#: ../data/50-mutter-windows.xml.in.h:4
+msgid "Toggle maximization state"
+msgstr "Bascular l'estat d'agrandiment"
+
+#: ../data/50-mutter-windows.xml.in.h:5
+msgid "Maximize window"
+msgstr "Maximizar la fenèstra"
+
+#: ../data/50-mutter-windows.xml.in.h:6
+msgid "Restore window"
+msgstr "Restablir la fenèstra"
+
+#: ../data/50-mutter-windows.xml.in.h:7
+msgid "Toggle shaded state"
+msgstr "Bascular l'estat de replec"
+
+#: ../data/50-mutter-windows.xml.in.h:8
 msgid "Close window"
 msgstr "Tampar la fenèstra"
 
-#: ../src/metacity.schemas.in.h:12
-msgid "Commands to run in response to keybindings"
-msgstr ""
+#: ../data/50-mutter-windows.xml.in.h:9
+msgid "Hide window"
+msgstr "Amagar la fenèstra"
 
-#: ../src/metacity.schemas.in.h:13
-msgid "Compositing Manager"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:14
-msgid "Control how new windows get focus"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:15
-msgid "Current theme"
-msgstr "Tèma actiu"
-
-#: ../src/metacity.schemas.in.h:16
-msgid "Delay in milliseconds for the auto raise option"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:17
-msgid "Determines whether Metacity is a compositing manager."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:18
-msgid ""
-"Determines whether applications or the system can generate audible 'beeps'; "
-"may be used in conjunction with 'visual bell' to allow silent 'beeps'."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:19
-msgid "Disable misfeatures that are required by old or broken applications"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:20
-msgid "Enable Visual Bell"
-msgstr "Activar la lo sonadís visual"
-
-#: ../src/metacity.schemas.in.h:21
-msgid "Hide all windows and focus desktop"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:22
-msgid ""
-"If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
-"the focused window will be automatically raised after a delay specified by "
-"the auto_raise_delay key. This is not related to clicking on a window to "
-"raise it, nor to entering a window during drag-and-drop."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:23
-msgid ""
-"If true, ignore the titlebar_font option, and use the standard application "
-"font for window titles."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:24
-msgid ""
-"If true, metacity will give the user less feedback by using wireframes, "
-"avoiding animations, or other means. This is a significant reduction in "
-"usability for many users, but may allow legacy applications to continue "
-"working, and may also be a useful tradeoff for terminal servers. However, "
-"the wireframe feature is disabled when accessibility is on."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:25
-msgid ""
-"If true, then Metacity works in terms of applications rather than windows. "
-"The concept is a bit abstract, but in general an application-based setup is "
-"more like the Mac and less like Windows. When you focus a window in "
-"application-based mode, all the windows in the application will be raised. "
-"Also, in application-based mode, focus clicks are not passed through to "
-"windows in other applications. Application-based mode is, however, largely "
-"unimplemented at the moment."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:26
-msgid "If true, trade off usability for less resource usage"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:27
-msgid "Lower window below other windows"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:28
-msgid ""
-"Many actions (e.g. clicking in the client area, moving or resizing the "
-"window) normally raise the window as a side-effect. Setting this option to "
-"false, which is strongly discouraged, will decouple raising from other user "
-"actions, and ignore raise requests generated by applications. See http://"
-"bugzilla.gnome.org/show_bug.cgi?id=445447#c6."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:29
-msgid "Maximize window"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:30
-msgid "Maximize window horizontally"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:31
-msgid "Maximize window vertically"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:32
-msgid "Minimize window"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:33
-msgid "Modifier to use for modified window click actions"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:34
-msgid "Move backward between panels and the desktop immediately"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:35
-msgid "Move backwards between panels and the desktop with popup"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:36
-msgid "Move backwards between windows immediately"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:37
-msgid "Move backwards between windows of an application immediately"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:38
-msgid "Move backwards between windows of an application with popup"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:39
-msgid "Move between panels and the desktop immediately"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:40
-msgid "Move between panels and the desktop with popup"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:41
-msgid "Move between windows immediately"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:42
-msgid "Move between windows of an application immediately"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:43
-msgid "Move between windows of an application with popup"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:44
-msgid "Move between windows with popup"
-msgstr "Se desplaçar entre las fenèstras per un menut"
-
-#: ../src/metacity.schemas.in.h:45
-msgid "Move focus backwards between windows using popup display"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:46
+#: ../data/50-mutter-windows.xml.in.h:10
 msgid "Move window"
 msgstr "Desplaçar la fenèstra"
 
-#: ../src/metacity.schemas.in.h:47
-msgid "Move window one workspace down"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:48
-msgid "Move window one workspace to the left"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:49
-msgid "Move window one workspace to the right"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:50
-msgid "Move window one workspace up"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:51
-msgid "Move window to east side of screen"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:52
-msgid "Move window to north side of screen"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:53
-msgid "Move window to north-east corner"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:54
-msgid "Move window to north-west corner"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:55
-msgid "Move window to south side of screen"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:56
-msgid "Move window to south-east corner"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:57
-msgid "Move window to south-west corner"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:58
-msgid "Move window to west side of screen"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:59
-msgid "Move window to workspace 1"
-msgstr "Desplaçar la fenèstra al espaci de trabalh 1"
-
-#: ../src/metacity.schemas.in.h:60
-msgid "Move window to workspace 10"
-msgstr "Desplaçar la fenèstra al espaci de trabalh 10"
-
-#: ../src/metacity.schemas.in.h:61
-msgid "Move window to workspace 11"
-msgstr "Desplaçar la fenèstra al espaci de trabalh 11"
-
-#: ../src/metacity.schemas.in.h:62
-msgid "Move window to workspace 12"
-msgstr "Desplaçar la fenèstra cap al espaci de trabalh 12"
-
-#: ../src/metacity.schemas.in.h:63
-msgid "Move window to workspace 2"
-msgstr "Desplaçar la fenèstra cap al espaci de trabalh 2"
-
-#: ../src/metacity.schemas.in.h:64
-msgid "Move window to workspace 3"
-msgstr "Desplaçar la fenèstra cap al espaci de trabalh 3"
-
-#: ../src/metacity.schemas.in.h:65
-msgid "Move window to workspace 4"
-msgstr "Desplaçar la fenèstra al espaci de trabalh 4"
-
-#: ../src/metacity.schemas.in.h:66
-msgid "Move window to workspace 5"
-msgstr "Desplaçar la fenèstra al espaci de trabalh 5"
-
-#: ../src/metacity.schemas.in.h:67
-msgid "Move window to workspace 6"
-msgstr "Desplaçar la fenèstra al espaci de trabalh 6"
-
-#: ../src/metacity.schemas.in.h:68
-msgid "Move window to workspace 7"
-msgstr "Desplaçar la fenèstra al espaci de trabalh 7"
-
-#: ../src/metacity.schemas.in.h:69
-msgid "Move window to workspace 8"
-msgstr "Desplaçar la fenèstra al espaci de trabalh 8"
-
-#: ../src/metacity.schemas.in.h:70
-msgid "Move window to workspace 9"
-msgstr "Desplaçar la fenèstra al espaci de trabalh 9"
-
-#: ../src/metacity.schemas.in.h:71
-msgid "Name of workspace"
-msgstr "Nom del espaci de trabalh"
-
-#: ../src/metacity.schemas.in.h:72
-msgid "Number of workspaces"
-msgstr "Nombre d'espacis de trabalh"
-
-#: ../src/metacity.schemas.in.h:73
-msgid ""
-"Number of workspaces. Must be more than zero, and has a fixed maximum to "
-"prevent making the desktop unusable by accidentally asking for too many "
-"workspaces."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:74
-msgid "Raise obscured window, otherwise lower"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:75
-msgid "Raise window above other windows"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:76
+#: ../data/50-mutter-windows.xml.in.h:11
 msgid "Resize window"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:77
-msgid "Run a defined command"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:78
-msgid "Run a terminal"
-msgstr "Executar un terminal"
-
-#: ../src/metacity.schemas.in.h:79
-msgid "Show the panel menu"
-msgstr "Visualizar lo menut del panèl"
-
-#: ../src/metacity.schemas.in.h:80
-msgid "Show the panel run application dialog"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:81
-msgid ""
-"Some applications disregard specifications in ways that result in window "
-"manager misfeatures. This option puts Metacity in a rigorously correct mode, "
-"which gives a more consistent user interface, provided one does not need to "
-"run any misbehaving applications."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:82
-msgid "Switch to workspace 1"
-msgstr "Anar al espaci de trabalh 1"
-
-#: ../src/metacity.schemas.in.h:83
-msgid "Switch to workspace 10"
-msgstr "Anar al espaci de trabalh 10"
-
-#: ../src/metacity.schemas.in.h:84
-msgid "Switch to workspace 11"
-msgstr "Anar al espaci de trabalh 11"
-
-#: ../src/metacity.schemas.in.h:85
-msgid "Switch to workspace 12"
-msgstr "Anar al espaci de trabalh 12"
-
-#: ../src/metacity.schemas.in.h:86
-msgid "Switch to workspace 2"
-msgstr "Anar al espaci de trabalh 2"
-
-#: ../src/metacity.schemas.in.h:87
-msgid "Switch to workspace 3"
-msgstr "Anar al espaci de trabalh 3"
-
-#: ../src/metacity.schemas.in.h:88
-msgid "Switch to workspace 4"
-msgstr "Anar al espaci de trabalh 4"
-
-#: ../src/metacity.schemas.in.h:89
-msgid "Switch to workspace 5"
-msgstr "Anar al espaci de trabalh 5"
-
-#: ../src/metacity.schemas.in.h:90
-msgid "Switch to workspace 6"
-msgstr "Anar al espaci de trabalh 6"
-
-#: ../src/metacity.schemas.in.h:91
-msgid "Switch to workspace 7"
-msgstr "Anar al espaci de trabalh 7"
-
-#: ../src/metacity.schemas.in.h:92
-msgid "Switch to workspace 8"
-msgstr "Anar al espaci de trabalh 8"
-
-#: ../src/metacity.schemas.in.h:93
-msgid "Switch to workspace 9"
-msgstr "Anar al espaci de trabalh 9"
-
-#: ../src/metacity.schemas.in.h:94
-msgid "Switch to workspace above this one"
-msgstr "Passar a l'espaci de trabalh ennaut d'aqueste"
-
-#: ../src/metacity.schemas.in.h:95
-msgid "Switch to workspace below this one"
-msgstr "Passar a l'espaci de trabalh enbàs d'aqueste"
-
-#: ../src/metacity.schemas.in.h:96
-msgid "Switch to workspace on the left"
-msgstr "Passar a l'espaci de trabalh a l'esquèrra"
-
-#: ../src/metacity.schemas.in.h:97
-msgid "Switch to workspace on the right"
-msgstr "Passar a l'espaci de trabalh a la drecha"
-
-#: ../src/metacity.schemas.in.h:98
-msgid "System Bell is Audible"
-msgstr "Podètz ausir lo bip sistèma"
-
-#: ../src/metacity.schemas.in.h:99
-msgid "Take a screenshot"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:100
-msgid "Take a screenshot of a window"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:101
-msgid ""
-"Tells Metacity how to implement the visual indication that the system bell "
-"or another application 'bell' indicator has been rung. Currently there are "
-"two valid values, \"fullscreen\", which causes a fullscreen white-black "
-"flash, and \"frame_flash\" which causes the titlebar of the application "
-"which sent the bell signal to flash. If the application which sent the bell "
-"is unknown (as is usually the case for the default \"system beep\"), the "
-"currently focused window's titlebar is flashed."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:102
-msgid ""
-"The /apps/metacity/global_keybindings/run_command_N keys define keybindings "
-"that correspond to these commands. Pressing the keybinding for run_command_N "
-"will execute command_N."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:103
-msgid ""
-"The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
-"keybinding which causes the command specified by this setting to be invoked."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:104
-msgid ""
-"The /apps/metacity/global_keybindings/run_command_window_screenshot key "
-"defines a keybinding which causes the command specified by this setting to "
-"be invoked."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:105
-msgid ""
-"The keybinding that runs the correspondingly-numbered command in /apps/"
-"metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows "
-"lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
-"\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-"then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:106
-msgid ""
-"The keybinding that switches to the workspace above the current workspace. "
-"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:107
-msgid ""
-"The keybinding that switches to the workspace below the current workspace. "
-"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:108
-msgid ""
-"The keybinding that switches to the workspace on the left of the current "
-"workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:109
-msgid ""
-"The keybinding that switches to the workspace on the right of the current "
-"workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:110
-msgid ""
-"The keybinding that switches to workspace 1. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:111
-msgid ""
-"The keybinding that switches to workspace 10. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:112
-msgid ""
-"The keybinding that switches to workspace 11. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:113
-msgid ""
-"The keybinding that switches to workspace 12. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:114
-msgid ""
-"The keybinding that switches to workspace 2. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:115
-msgid ""
-"The keybinding that switches to workspace 3. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:116
-msgid ""
-"The keybinding that switches to workspace 4. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:117
-msgid ""
-"The keybinding that switches to workspace 5. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:118
-msgid ""
-"The keybinding that switches to workspace 6. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:119
-msgid ""
-"The keybinding that switches to workspace 7. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:120
-msgid ""
-"The keybinding that switches to workspace 8. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:121
-msgid ""
-"The keybinding that switches to workspace 9. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:122
-msgid ""
-"The keybinding used to activate the window menu. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:123
-msgid ""
-"The keybinding used to close a window. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:124
-msgid ""
-"The keybinding used to enter \"move mode\" and begin moving a window using "
-"the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-"case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
-"If you set the option to the special string \"disabled\", then there will be "
-"no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:125
-msgid ""
-"The keybinding used to enter \"resize mode\" and begin resizing a window "
-"using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or "
-"upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-"\". If you set the option to the special string \"disabled\", then there "
-"will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:126
-msgid ""
-"The keybinding used to hide all normal windows and set the focus to the "
-"desktop background. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or "
-"upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-"\". If you set the option to the special string \"disabled\", then there "
-"will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:127
-msgid ""
-"The keybinding used to maximize a window. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:128
-msgid ""
-"The keybinding used to minimize a window. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:129
-msgid ""
-"The keybinding used to move a window one workspace down. The format looks "
-"like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
-"fairly liberal and allows lower or upper case, and also abbreviations such "
-"as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-"special string \"disabled\", then there will be no keybinding for this "
-"action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:130
-msgid ""
-"The keybinding used to move a window one workspace to the left. The format "
-"looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
-"parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:131
-msgid ""
-"The keybinding used to move a window one workspace to the right. The format "
-"looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
-"parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:132
-msgid ""
-"The keybinding used to move a window one workspace up. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:133
-msgid ""
-"The keybinding used to move a window to workspace 1. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:134
-msgid ""
-"The keybinding used to move a window to workspace 10. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:135
-msgid ""
-"The keybinding used to move a window to workspace 11. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:136
-msgid ""
-"The keybinding used to move a window to workspace 12. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:137
-msgid ""
-"The keybinding used to move a window to workspace 2. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:138
-msgid ""
-"The keybinding used to move a window to workspace 3. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:139
-msgid ""
-"The keybinding used to move a window to workspace 4. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:140
-msgid ""
-"The keybinding used to move a window to workspace 5. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:141
-msgid ""
-"The keybinding used to move a window to workspace 6. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:142
-msgid ""
-"The keybinding used to move a window to workspace 7. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:143
-msgid ""
-"The keybinding used to move a window to workspace 8. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:144
-msgid ""
-"The keybinding used to move a window to workspace 9. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:145
-msgid ""
-"The keybinding used to move focus backwards between panels and the desktop, "
-"using a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or "
-"upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-"\". If you set the option to the special string \"disabled\", then there "
-"will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:146
-msgid ""
-"The keybinding used to move focus backwards between panels and the desktop, "
-"without a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or "
-"upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-"\". If you set the option to the special string \"disabled\", then there "
-"will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:147
-msgid ""
-"The keybinding used to move focus backwards between windows of an "
-"application without a popup window. Holding \"shift\" together with this "
-"binding makes the direction go forward again. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:148
-msgid ""
-"The keybinding used to move focus backwards between windows of an "
-"application, using a popup window. Holding \"shift\" together with this "
-"binding makes the direction go forward again. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:149
-msgid ""
-"The keybinding used to move focus backwards between windows without a popup "
-"window. Holding \"shift\" together with this binding makes the direction go "
-"forward again. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-"case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
-"If you set the option to the special string \"disabled\", then there will be "
-"no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:150
-msgid ""
-"The keybinding used to move focus backwards between windows, using a popup "
-"window. Holding \"shift\" together with this binding makes the direction go "
-"forward again. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-"case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
-"If you set the option to the special string \"disabled\", then there will be "
-"no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:151
-msgid ""
-"The keybinding used to move focus between panels and the desktop, using a "
-"popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-"case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
-"If you set the option to the special string \"disabled\", then there will be "
-"no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:152
-msgid ""
-"The keybinding used to move focus between panels and the desktop, without a "
-"popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-"case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
-"If you set the option to the special string \"disabled\", then there will be "
-"no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:153
-msgid ""
-"The keybinding used to move focus between windows of an application without "
-"a popup window. Holding the \"shift\" key while using this binding reverses "
-"the direction of movement. The format looks like \"&lt;Control&gt;a\" or "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows "
-"lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
-"\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-"then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:154
-msgid ""
-"The keybinding used to move focus between windows of an application, using a "
-"popup window. (Traditionally &lt;Alt&gt;F6) Holding the \"shift\" key while "
-"using this binding reverses the direction of movement. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:155
-msgid ""
-"The keybinding used to move focus between windows without a popup window. "
-"(Traditionally &lt;Alt&gt;Escape) Holding the \"shift\" key while using this "
-"binding reverses the direction of movement. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:156
-msgid ""
-"The keybinding used to move focus between windows, using a popup window. "
-"(Traditionally &lt;Alt&gt;Tab) Holding the \"shift\" key while using this "
-"binding reverses the direction of movement. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:157
-msgid ""
-"The keybinding used to toggle always on top. A window that is always on top "
-"will always be visible over other overlapping windows. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:158
-msgid ""
-"The keybinding used to toggle fullscreen mode. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:159
-msgid ""
-"The keybinding used to toggle maximization. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:160
-msgid ""
-"The keybinding used to toggle shaded/unshaded state. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:161
-msgid ""
-"The keybinding used to toggle whether the window is on all workspaces or "
-"just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:162
-msgid ""
-"The keybinding used to unmaximize a window. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:163
-msgid ""
-"The keybinding which display's the panel's \"Run Application\" dialog box. "
-"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
+msgstr "Redimensionar la fenèstra"
 
-#: ../src/metacity.schemas.in.h:164
-msgid ""
-"The keybinding which invokes a terminal. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+#: ../data/50-mutter-windows.xml.in.h:12
+msgid "Toggle window on all workspaces or one"
+msgstr "Plaçar la fenèstra sus totes los espacis de trabalh, o sus un sol"
 
-#: ../src/metacity.schemas.in.h:165
-msgid ""
-"The keybinding which invokes the panel's screenshot utility to take a "
-"screenshot of a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or "
-"upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-"\". If you set the option to the special string \"disabled\", then there "
-"will be no keybinding for this action."
-msgstr ""
+#: ../data/50-mutter-windows.xml.in.h:13
+msgid "Raise window if covered, otherwise lower it"
+msgstr "Metre la fenèstra al primièr plan se es amagada, siquenon al rèireplan"
 
-#: ../src/metacity.schemas.in.h:166
-msgid ""
-"The keybinding which invokes the panel's screenshot utility. The format "
-"looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
-"parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
+#: ../data/50-mutter-windows.xml.in.h:14
+msgid "Raise window above other windows"
+msgstr "Metre la fenèstra al primièr plan"
 
-#: ../src/metacity.schemas.in.h:167
-msgid ""
-"The keybinding which shows the panel's main menu. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+#: ../data/50-mutter-windows.xml.in.h:15
+msgid "Lower window below other windows"
+msgstr "Metre la fenèstra jos las autras fenèstras"
 
-#: ../src/metacity.schemas.in.h:168
-msgid "The name of a workspace."
-msgstr "Lo nom d'un espaci de trabalh."
+#: ../data/50-mutter-windows.xml.in.h:16
+msgid "Maximize window vertically"
+msgstr "Maximizar la fenèstra verticalament"
 
-#: ../src/metacity.schemas.in.h:169
-msgid "The screenshot command"
-msgstr ""
+#: ../data/50-mutter-windows.xml.in.h:17
+msgid "Maximize window horizontally"
+msgstr "Maximizar la fenèstra orizontalament"
 
-#: ../src/metacity.schemas.in.h:170
-msgid ""
-"The theme determines the appearance of window borders, titlebar, and so "
-"forth."
-msgstr ""
+#: ../data/50-mutter-windows.xml.in.h:18
+msgid "View split on left"
+msgstr "Vista devesida a esquèrra"
 
-#: ../src/metacity.schemas.in.h:171
-msgid ""
-"The time delay before raising a window if auto_raise is set to true. The "
-"delay is given in thousandths of a second."
-msgstr ""
+#: ../data/50-mutter-windows.xml.in.h:19
+msgid "View split on right"
+msgstr "Vista devesida a drecha"
 
-#: ../src/metacity.schemas.in.h:172
-msgid ""
-"The window focus mode indicates how windows are activated. It has three "
-"possible values; \"click\" means windows must be clicked in order to focus "
-"them, \"sloppy\" means windows are focused when the mouse enters the window, "
-"and \"mouse\" means windows are focused when the mouse enters the window and "
-"unfocused when the mouse leaves the window."
-msgstr ""
+#: ../data/mutter.desktop.in.h:1
+msgid "Mutter"
+msgstr "Mutter"
 
-#: ../src/metacity.schemas.in.h:173
-msgid "The window screenshot command"
+#: ../data/org.gnome.mutter.gschema.xml.in.h:1
+msgid "Modifier to use for extended window management operations"
 msgstr ""
+"Tòca d'utilizar per las operacions espandidas de gestion de las fenèstras"
 
-#: ../src/metacity.schemas.in.h:174
+#: ../data/org.gnome.mutter.gschema.xml.in.h:2
 msgid ""
-"This keybinding changes whether a window is above or below other windows. If "
-"the window is covered by another one, it raises the window above all others, "
-"and if the window is already fully visible, it lowers it below all others. "
-"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
+"This key will initiate the \"overlay\", which is a combination window "
+"overview and application launching system. The default is intended to be the "
+"\"Windows key\" on PC hardware. It's expected that this binding either the "
+"default or set to the empty string."
 msgstr ""
+"Aquesta tòca inicia l'« overlay », una combinason d'apercebut de las "
+"fenèstras e d'un sistèma d'aviada d'aplicacions. La tòca per defaut sul "
+"material PC es la tòca Windows. En principi, aqueste acorchi es configurat "
+"sul reglatge per defaut o sus la cadena voida."
 
-#: ../src/metacity.schemas.in.h:175
-msgid ""
-"This keybinding lowers a window below other windows. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+#: ../data/org.gnome.mutter.gschema.xml.in.h:3
+msgid "Attach modal dialogs"
+msgstr "Estacar las bóstias de dialòg modal"
 
-#: ../src/metacity.schemas.in.h:176
+#: ../data/org.gnome.mutter.gschema.xml.in.h:4
 msgid ""
-"This keybinding moves a window against the north (top) side of the screen. "
-"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
+"When true, instead of having independent titlebars, modal dialogs appear "
+"attached to the titlebar of the parent window and are moved together with "
+"the parent window."
 msgstr ""
+"Se verai, al luòc d'aver de barras de títol independantas, las bóstias de "
+"dialòg apareisson estacadas a la barra de títol de la fenèstra parenta e son "
+"desplaçadas ensembles amb ela."
 
-#: ../src/metacity.schemas.in.h:177
-msgid ""
-"This keybinding moves a window into the east (right) side of the screen. The "
-"format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-"The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
+#: ../data/org.gnome.mutter.gschema.xml.in.h:5
+msgid "Enable edge tiling when dropping windows on screen edges"
+msgstr "Activar l'empilatge de las fenèstras depausadas suls bòrds de l'ecran"
 
-#: ../src/metacity.schemas.in.h:178
+#: ../data/org.gnome.mutter.gschema.xml.in.h:6
 msgid ""
-"This keybinding moves a window into the north-east (top right) corner of the "
-"screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
+"If enabled, dropping windows on vertical screen edges maximizes them "
+"vertically and resizes them horizontally to cover half of the available "
+"area. Dropping windows on the top screen edge maximizes them completely."
 msgstr ""
+"Se activat, lo depaus de las fenèstras suls bòrds verticals de l'ecran las "
+"maximiza verticalament e las redimensiona orizontalament per recobrir la "
+"mitat de la zòna disponibla. Lo depaus de las fenèstras sul bòrd superior de "
+"l'ecran las maximiza completament."
 
-#: ../src/metacity.schemas.in.h:179
-msgid ""
-"This keybinding moves a window into the north-west (top left) corner of the "
-"screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
+#: ../data/org.gnome.mutter.gschema.xml.in.h:7
+msgid "Workspaces are managed dynamically"
+msgstr "Les espacis de trabalh son gerits d'un biais dinamic"
 
-#: ../src/metacity.schemas.in.h:180
+#: ../data/org.gnome.mutter.gschema.xml.in.h:8
 msgid ""
-"This keybinding moves a window into the south (bottom) side of the screen. "
-"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
+"Determines whether workspaces are managed dynamically or whether there's a "
+"static number of workspaces (determined by the num-workspaces key in org."
+"gnome.desktop.wm.preferences)."
 msgstr ""
+"Determina se los espacis de trabalh son gerits d'un biais dinamica o se lo "
+"nombre d'espacis de trabalh es fixe (determinat per la clau num-workspaces "
+"dins org.gnome.desktop.wm.preferences)."
 
-#: ../src/metacity.schemas.in.h:181
-msgid ""
-"This keybinding moves a window into the south-east (bottom right) corner of "
-"the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
+#: ../data/org.gnome.mutter.gschema.xml.in.h:9
+msgid "Workspaces only on primary"
+msgstr "Espacis de trabalh solament sus l'ecran principal"
 
-#: ../src/metacity.schemas.in.h:182
+#: ../data/org.gnome.mutter.gschema.xml.in.h:10
 msgid ""
-"This keybinding moves a window into the south-west (bottom left) corner of "
-"the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
+"Determines whether workspace switching should happen for windows on all "
+"monitors or only for windows on the primary monitor."
 msgstr ""
+"Determina se lo cambiament d'espaci de trabalh se deu produire per las "
+"fenèstras de totes los ecrans o solament per las fenèstras de l'ecran "
+"principal."
 
-#: ../src/metacity.schemas.in.h:183
-msgid ""
-"This keybinding moves a window into the west (left) side of the screen. The "
-"format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-"The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
+#: ../data/org.gnome.mutter.gschema.xml.in.h:11
+msgid "No tab popup"
+msgstr "Pas cap d'aparicion en seguida d'una quichada sus la tòca tab"
 
-#: ../src/metacity.schemas.in.h:184
+#: ../data/org.gnome.mutter.gschema.xml.in.h:12
 msgid ""
-"This keybinding raises the window above other windows. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
+"Determines whether the use of popup and highlight frame should be disabled "
+"for window cycling."
 msgstr ""
+"Determina se l'utilizacion de fenèstras sorgissentas e de mesa en valor deu "
+"èsser desactivada per la consultacion de las fenèstras."
 
-#: ../src/metacity.schemas.in.h:185
-msgid ""
-"This keybinding resizes a window to fill available horizontal space. The "
-"format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-"The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
+#: ../data/org.gnome.mutter.gschema.xml.in.h:13
+msgid "Delay focus changes until the pointer stops moving"
+msgstr "Espèra l'arrèst del puntador abans lo cambiament de focus"
 
-#: ../src/metacity.schemas.in.h:186
+#: ../data/org.gnome.mutter.gschema.xml.in.h:14
 msgid ""
-"This keybinding resizes a window to fill available vertical space. The "
-"format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-"The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
+"If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
+"the focus will not be changed immediately when entering a window, but only "
+"after the pointer stops moving."
 msgstr ""
+"Se definit a true e que lo mòde de focus es siá « sloppy » o « mirga », "
+"alara lo focus serà pas cambiat immediatament en passant sus una fenèstra, "
+"mas solament aprèp que lo puntador s'arrèsta."
 
-#: ../src/metacity.schemas.in.h:187
-msgid ""
-"This option determines the effects of double-clicking on the title bar. "
-"Current valid options are 'toggle_shade', which will shade/unshade the "
-"window, 'toggle_maximize' which will maximize/unmaximize the window, "
-"'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will "
-"maximize/unmaximize the window in that direction only, 'minimize' which will "
-"minimize the window, 'shade' which will roll the window up, 'menu' which "
-"will display the window menu, 'lower' which will put the window behind all "
-"the others, and 'none' which will not do anything."
-msgstr ""
+#: ../data/org.gnome.mutter.gschema.xml.in.h:15
+msgid "Draggable border width"
+msgstr "Largor de bordadura ajustabla"
 
-#: ../src/metacity.schemas.in.h:188
+#: ../data/org.gnome.mutter.gschema.xml.in.h:16
 msgid ""
-"This option determines the effects of middle-clicking on the title bar. "
-"Current valid options are 'toggle_shade', which will shade/unshade the "
-"window, 'toggle_maximize' which will maximize/unmaximize the window, "
-"'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will "
-"maximize/unmaximize the window in that direction only, 'minimize' which will "
-"minimize the window, 'shade' which will roll the window up, 'menu' which "
-"will display the window menu, 'lower' which will put the window behind all "
-"the others, and 'none' which will not do anything."
+"The amount of total draggable borders. If the theme's visible borders are "
+"not enough, invisible borders will be added to meet this value."
 msgstr ""
+"La talha totala de las bordaduras que se pòt desplaçar. Se las bordaduras "
+"visiblas del tèma son pas sufisentas, de bordaduras invisiblas son apondudas "
+"per arribar a aquesta valor."
 
-#: ../src/metacity.schemas.in.h:189
-msgid ""
-"This option determines the effects of right-clicking on the title bar. "
-"Current valid options are 'toggle_shade', which will shade/unshade the "
-"window, 'toggle_maximize' which will maximize/unmaximize the window, "
-"'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will "
-"maximize/unmaximize the window in that direction only, 'minimize' which will "
-"minimize the window, 'shade' which will roll the window up, 'menu' which "
-"will display the window menu, 'lower' which will put the window behind all "
-"the others, and 'none' which will not do anything."
+#: ../data/org.gnome.mutter.gschema.xml.in.h:17
+msgid "Auto maximize nearly monitor sized windows"
 msgstr ""
+"Maximizar automaticament las fenèstras que la talha n'es pròcha de la de "
+"l'ecran"
 
-#: ../src/metacity.schemas.in.h:190
+#: ../data/org.gnome.mutter.gschema.xml.in.h:18
 msgid ""
-"This option provides additional control over how newly created windows get "
-"focus. It has two possible values; \"smart\" applies the user's normal focus "
-"mode, and \"strict\" results in windows started from a terminal not being "
-"given focus."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:191
-msgid "Toggle always on top state"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:192
-msgid "Toggle fullscreen mode"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:193
-msgid "Toggle maximization state"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:194
-msgid "Toggle shaded state"
+"If enabled, new windows that are initially the size of the monitor "
+"automatically get maximized."
 msgstr ""
+"Se activat, las novèlas fenèstras qu'an gaireben la talha de l'ecran a la "
+"dobertura seràn maximizadas automaticament."
 
-#: ../src/metacity.schemas.in.h:195
-msgid "Toggle window on all workspaces"
-msgstr ""
+#: ../data/org.gnome.mutter.gschema.xml.in.h:19
+msgid "Place new windows in the center"
+msgstr "Plaçar las novèlas fenèstras al centre"
 
-#: ../src/metacity.schemas.in.h:196
+#: ../data/org.gnome.mutter.gschema.xml.in.h:20
 msgid ""
-"Turns on a visual indication when an application or the system issues a "
-"'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
-"environments."
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:197
-msgid "Unmaximize window"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:198
-msgid "Use standard system font in window titles"
-msgstr ""
-
-#: ../src/metacity.schemas.in.h:199
-msgid "Visual Bell Type"
-msgstr "Tipe de sonadís visual"
-
-#: ../src/metacity.schemas.in.h:200
-msgid "Whether raising should be a side-effect of other user interactions"
+"When true, the new windows will always be put in the center of the active "
+"screen of the monitor."
 msgstr ""
+"Se true (verai), las novèlas fenèstras seràn totjorn plaçadas al centre de "
+"l'ecran actiu del monitor."
 
-#: ../src/metacity.schemas.in.h:201
-msgid "Window focus mode"
+#: ../data/org.gnome.mutter.gschema.xml.in.h:21
+msgid "Select window from tab popup"
 msgstr ""
-
-#: ../src/metacity.schemas.in.h:202
-msgid "Window title font"
-msgstr "Poliça de títol de las fenèstras"
-
-#: ../src/ui/frames.c:1077
-msgid "Close Window"
-msgstr "Tampar la fenèstra"
-
-#: ../src/ui/frames.c:1080
-msgid "Window Menu"
-msgstr "Menut Fenèstra"
+"Seleccionar la fenèstra dins la vista qu'apareis en seguida d'una quichada "
+"sus la tòca tab"
 
-#: ../src/ui/frames.c:1083
-msgid "Minimize Window"
-msgstr "Redusir la fenèstra"
+#: ../data/org.gnome.mutter.gschema.xml.in.h:22
+msgid "Cancel tab popup"
+msgstr "Tampar la vista qu'apareis en seguida d'una quichada sus la tòca tab"
 
-#: ../src/ui/frames.c:1086
-msgid "Maximize Window"
-msgstr "Maximizar la fenèstra"
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:1
+msgid "Switch to VT 1"
+msgstr "Passar a l'emulator de terminal 1"
 
-#: ../src/ui/frames.c:1089
-msgid "Unmaximize Window"
-msgstr "Desmaximizar la fenèstra"
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:2
+msgid "Switch to VT 2"
+msgstr "Passar a l'emulator de terminal 2"
 
-#: ../src/ui/frames.c:1092
-msgid "Roll Up Window"
-msgstr ""
-
-#: ../src/ui/frames.c:1095
-msgid "Unroll Window"
-msgstr ""
-
-#: ../src/ui/frames.c:1098
-msgid "Keep Window On Top"
-msgstr ""
-
-#: ../src/ui/frames.c:1101
-msgid "Remove Window From Top"
-msgstr ""
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:3
+msgid "Switch to VT 3"
+msgstr "Passar a l'emulator de terminal 3"
 
-#: ../src/ui/frames.c:1104
-msgid "Always On Visible Workspace"
-msgstr "Totjorn sul espaci de trabalh visible"
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:4
+msgid "Switch to VT 4"
+msgstr "Passar a l'emulator de terminal 4"
 
-#: ../src/ui/frames.c:1107
-msgid "Put Window On Only One Workspace"
-msgstr ""
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:5
+msgid "Switch to VT 5"
+msgstr "Passar a l'emulator de terminal 5"
 
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:70
-msgid "Mi_nimize"
-msgstr ""
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:6
+msgid "Switch to VT 6"
+msgstr "Passar a l'emulator de terminal 6"
 
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:72
-msgid "Ma_ximize"
-msgstr ""
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:7
+msgid "Switch to VT 7"
+msgstr "Passar a l'emulator de terminal 7"
 
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:74
-msgid "Unma_ximize"
-msgstr ""
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:8
+msgid "Switch to VT 8"
+msgstr "Passar a l'emulator de terminal 8"
 
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:76
-msgid "Roll _Up"
-msgstr ""
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:9
+msgid "Switch to VT 9"
+msgstr "Passar a l'emulator de terminal 9"
 
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:78
-msgid "_Unroll"
-msgstr ""
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:10
+msgid "Switch to VT 10"
+msgstr "Passar a l'emulator de terminal 10"
 
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:80
-msgid "_Move"
-msgstr "_Desplaçar"
-
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:82
-msgid "_Resize"
-msgstr ""
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:11
+msgid "Switch to VT 11"
+msgstr "Passar a l'emulator de terminal 11"
 
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:84
-msgid "Move Titlebar On_screen"
-msgstr ""
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:12
+msgid "Switch to VT 12"
+msgstr "Passar a l'emulator de terminal 12"
 
-#. separator
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:87 ../src/ui/menu.c:89
-msgid "Always on _Top"
-msgstr ""
+#: ../src/backends/meta-monitor-manager.c:518
+msgid "Built-in display"
+msgstr "Afichatge integrat"
 
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:91
-msgid "_Always on Visible Workspace"
-msgstr "_Totjorn sul espaci de trabalh visible"
-
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:93
-msgid "_Only on This Workspace"
-msgstr "_Sonque sus aqueste espaci de trabalh"
-
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:95
-msgid "Move to Workspace _Left"
-msgstr ""
+#: ../src/backends/meta-monitor-manager.c:544
+msgid "Unknown"
+msgstr "Desconegut"
 
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:97
-msgid "Move to Workspace R_ight"
-msgstr ""
+#: ../src/backends/meta-monitor-manager.c:546
+msgid "Unknown Display"
+msgstr "Afichatge desconegut"
 
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:99
-msgid "Move to Workspace _Up"
-msgstr "Desplaçar dins l'espaci de trabalh _superior"
-
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:101
-msgid "Move to Workspace _Down"
-msgstr "Desplaçar dins l'espaci de trabalh _inferior"
-
-#. separator
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:105
-msgid "_Close"
-msgstr "_Tampar"
-
-#: ../src/ui/menu.c:203
+#. TRANSLATORS: this is a monitor vendor name, followed by a
+#. * size in inches, like 'Dell 15"'
+#.
+#: ../src/backends/meta-monitor-manager.c:554
 #, c-format
-msgid "Workspace %d%n"
-msgstr "Espaci de trabalh %d%n"
+msgid "%s %s"
+msgstr "%s %s"
 
-#: ../src/ui/menu.c:213
+#. This probably means that a non-WM compositor like xcompmgr is running;
+#. * we have no way to get it to exit
+#: ../src/compositor/compositor.c:456
 #, c-format
-msgid "Workspace 1_0"
-msgstr "Espaci de trabalh 1_0"
+msgid ""
+"Another compositing manager is already running on screen %i on display \"%s"
+"\"."
+msgstr ""
+"Un autre gestionari de composicion es ja aviat sus l'ecran %i de l'afichatge "
+"« %s »."
 
-#: ../src/ui/menu.c:215
+#: ../src/core/bell.c:185
+msgid "Bell event"
+msgstr "Eveniment sonòr"
+
+#: ../src/core/delete.c:127
 #, c-format
-msgid "Workspace %s%d"
-msgstr "Espaci de trabalh %s%d"
+msgid "“%s” is not responding."
+msgstr "« %s » respond pas."
 
-#: ../src/ui/menu.c:395
-msgid "Move to Another _Workspace"
-msgstr "Desplaçar cap a un autre _espaci de trabalh"
+#: ../src/core/delete.c:129
+msgid "Application is not responding."
+msgstr "L'aplicacion respond pas."
 
-#. This is the text that should appear next to menu accelerators
-#. * that use the shift key. If the text on this key isn't typically
-#. * translated on keyboards used for your language, don't translate
-#. * this.
-#.
-#: ../src/ui/metaaccellabel.c:105
-msgid "Shift"
-msgstr "Shift"
-
-#. This is the text that should appear next to menu accelerators
-#. * that use the control key. If the text on this key isn't typically
-#. * translated on keyboards used for your language, don't translate
-#. * this.
-#.
-#: ../src/ui/metaaccellabel.c:111
-msgid "Ctrl"
-msgstr "Ctrl"
-
-#. This is the text that should appear next to menu accelerators
-#. * that use the alt key. If the text on this key isn't typically
-#. * translated on keyboards used for your language, don't translate
-#. * this.
-#.
-#: ../src/ui/metaaccellabel.c:117
-msgid "Alt"
-msgstr "Alt"
-
-#. This is the text that should appear next to menu accelerators
-#. * that use the meta key. If the text on this key isn't typically
-#. * translated on keyboards used for your language, don't translate
-#. * this.
-#.
-#: ../src/ui/metaaccellabel.c:123
-msgid "Meta"
-msgstr "Meta"
-
-#. This is the text that should appear next to menu accelerators
-#. * that use the super key. If the text on this key isn't typically
-#. * translated on keyboards used for your language, don't translate
-#. * this.
-#.
-#: ../src/ui/metaaccellabel.c:129
-msgid "Super"
-msgstr "Super"
-
-#. This is the text that should appear next to menu accelerators
-#. * that use the hyper key. If the text on this key isn't typically
-#. * translated on keyboards used for your language, don't translate
-#. * this.
-#.
-#: ../src/ui/metaaccellabel.c:135
-msgid "Hyper"
-msgstr "Iper"
-
-#. This is the text that should appear next to menu accelerators
-#. * that use the mod2 key. If the text on this key isn't typically
-#. * translated on keyboards used for your language, don't translate
-#. * this.
-#.
-#: ../src/ui/metaaccellabel.c:141
-msgid "Mod2"
-msgstr "Mod2"
-
-#. This is the text that should appear next to menu accelerators
-#. * that use the mod3 key. If the text on this key isn't typically
-#. * translated on keyboards used for your language, don't translate
-#. * this.
-#.
-#: ../src/ui/metaaccellabel.c:147
-msgid "Mod3"
-msgstr "Mod3"
-
-#. This is the text that should appear next to menu accelerators
-#. * that use the mod4 key. If the text on this key isn't typically
-#. * translated on keyboards used for your language, don't translate
-#. * this.
-#.
-#: ../src/ui/metaaccellabel.c:153
-msgid "Mod4"
-msgstr "Mod4"
-
-#. This is the text that should appear next to menu accelerators
-#. * that use the mod5 key. If the text on this key isn't typically
-#. * translated on keyboards used for your language, don't translate
-#. * this.
-#.
-#: ../src/ui/metaaccellabel.c:159
-msgid "Mod5"
-msgstr "Mod5"
-
-#: ../src/ui/metacity-dialog.c:90
-#, c-format
-msgid "\"%s\" is not responding."
-msgstr "\"%s\" respon pas."
-
-#: ../src/ui/metacity-dialog.c:97
+#: ../src/core/delete.c:134
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
 msgstr ""
+"Podètz pacientar un moment per contunhar o forçar l'aplicacion a quitar "
+"definitivament."
 
-#: ../src/ui/metacity-dialog.c:107
+#: ../src/core/delete.c:141
 msgid "_Wait"
 msgstr "_Esperar"
 
-#: ../src/ui/metacity-dialog.c:109
+#: ../src/core/delete.c:141
 msgid "_Force Quit"
+msgstr "_Forçar a quitar"
+
+#: ../src/core/display.c:555
+#, c-format
+msgid "Failed to open X Window System display '%s'\n"
+msgstr "Impossible de dobrir l'afichatge « %s » del sistèma X Window\n"
+
+#: ../src/core/main.c:181
+msgid "Disable connection to session manager"
+msgstr "Desactivar la connexion al gestionari de sessions"
+
+#: ../src/core/main.c:187
+msgid "Replace the running window manager"
+msgstr "Remplaçar lo gestionari de fenèstras en cors de foncionament"
+
+#: ../src/core/main.c:193
+msgid "Specify session management ID"
+msgstr "Indicar l'ID de gestion de sessions"
+
+#: ../src/core/main.c:198
+msgid "X Display to use"
+msgstr "Afichatge X d'utilizar"
+
+#: ../src/core/main.c:204
+msgid "Initialize session from savefile"
+msgstr "Inicializar la session dempuèi lo fichier de salvament"
+
+#: ../src/core/main.c:210
+msgid "Make X calls synchronous"
+msgstr "Rendre sincròns los apèls a X"
+
+#: ../src/core/main.c:217
+msgid "Run as a wayland compositor"
+msgstr "Aviar coma un compositor wayland"
+
+#: ../src/core/main.c:223
+#| msgid "Run as a wayland compositor"
+msgid "Run as a nested compositor"
 msgstr ""
 
-#: ../src/ui/metacity-dialog.c:206
-msgid "Title"
-msgstr "Títol"
+#: ../src/core/main.c:231
+msgid "Run as a full display server, rather than nested"
+msgstr "Aviar coma un servidor d'afichatge complet, puslèu qu'imbricat"
 
-#: ../src/ui/metacity-dialog.c:218
-msgid "Class"
-msgstr ""
-
-#: ../src/ui/metacity-dialog.c:244
-msgid ""
-"These windows do not support \"save current setup\" and will have to be "
-"restarted manually next time you log in."
-msgstr ""
-
-#: ../src/ui/metacity-dialog.c:310
+#: ../src/core/mutter.c:39
 #, c-format
 msgid ""
-"There was an error running \"%s\":\n"
-"%s."
+"mutter %s\n"
+"Copyright (C) 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
+"This is free software; see the source for copying conditions.\n"
+"There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
+"PARTICULAR PURPOSE.\n"
 msgstr ""
-"I a aguda una error al moment d'executar \"%s\" :\n"
-"%s."
+"mutter %s\n"
+"Copyright © 2001-%d Havoc Pennington, Red Hat, Inc., e autres.\n"
+"Aquò es un logicial liure ; consultatz lo còde font per las\n"
+"condicions de còpia.\n"
+"I a PAS CAP DE garantida ; quitament pas de VALOR MERCANDA o\n"
+"d'ADEQÜACION A UN USATGE PARTICULAR.\n"
 
-#: ../src/ui/resizepopup.c:113
+#: ../src/core/mutter.c:53
+msgid "Print version"
+msgstr "Imprimir la version"
+
+#: ../src/core/mutter.c:59
+msgid "Mutter plugin to use"
+msgstr "Empeuton de Mutter d'utilizar"
+
+#: ../src/core/prefs.c:1997
 #, c-format
-msgid "%d x %d"
-msgstr "%d x %d"
+msgid "Workspace %d"
+msgstr "Espaci de trabalh %d"
 
-#: ../src/ui/theme-parser.c:227 ../src/ui/theme-parser.c:245
-#, c-format
-msgid "Line %d character %d: %s"
-msgstr "Linha %d caractèr %d : %s"
-
-#: ../src/ui/theme-parser.c:396
-#, c-format
-msgid "Attribute \"%s\" repeated twice on the same <%s> element"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:414 ../src/ui/theme-parser.c:439
-#, c-format
-msgid "Attribute \"%s\" is invalid on <%s> element in this context"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:500
-#, c-format
-msgid "Integer %ld must be positive"
-msgstr "L'entièr %ld deu èsser positiu"
-
-#: ../src/ui/theme-parser.c:508
-#, c-format
-msgid "Integer %ld is too large, current max is %d"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:536 ../src/ui/theme-parser.c:652
-#, c-format
-msgid "Could not parse \"%s\" as a floating point number"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:567 ../src/ui/theme-parser.c:595
-#, c-format
-msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
-msgstr ""
-
-#: ../src/ui/theme-parser.c:622
-#, c-format
-msgid "Angle must be between 0.0 and 360.0, was %g\n"
-msgstr "L'angle deu èsser entre 0,0 e 360,0. Èra de %g\n"
-
-#: ../src/ui/theme-parser.c:685
-#, c-format
-msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:750
+#: ../src/core/screen.c:521
 #, c-format
 msgid ""
-"Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
-"large,x-large,xx-large)\n"
+"Display \"%s\" already has a window manager; try using the --replace option "
+"to replace the current window manager."
 msgstr ""
+"L'afichatge « %s » a ja un gestionari de fenèstras ; ensajatz d'utilizar "
+"l'opcion --replace per remplaçar lo gestionari de fenèstras actual."
 
-#: ../src/ui/theme-parser.c:795 ../src/ui/theme-parser.c:803
-#: ../src/ui/theme-parser.c:885 ../src/ui/theme-parser.c:982
-#: ../src/ui/theme-parser.c:1024 ../src/ui/theme-parser.c:1135
-#: ../src/ui/theme-parser.c:1185 ../src/ui/theme-parser.c:1193
-#: ../src/ui/theme-parser.c:3093 ../src/ui/theme-parser.c:3184
-#: ../src/ui/theme-parser.c:3191 ../src/ui/theme-parser.c:3198
+#: ../src/core/screen.c:603
 #, c-format
-msgid "No \"%s\" attribute on <%s> element"
-msgstr ""
+msgid "Screen %d on display '%s' is invalid\n"
+msgstr "L'ecran %d sus l'afichatge « %s » es pas valid\n"
 
-#: ../src/ui/theme-parser.c:919 ../src/ui/theme-parser.c:990
-#: ../src/ui/theme-parser.c:1032 ../src/ui/theme-parser.c:1143
-#, c-format
-msgid "<%s> name \"%s\" used a second time"
-msgstr ""
+#: ../src/core/util.c:121
+msgid "Mutter was compiled without support for verbose mode\n"
+msgstr "Mutter es estat compilat sens la presa en carga del mòde verbós\n"
 
-#: ../src/ui/theme-parser.c:931 ../src/ui/theme-parser.c:1044
-#: ../src/ui/theme-parser.c:1155
-#, c-format
-msgid "<%s> parent \"%s\" has not been defined"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:1057
-#, c-format
-msgid "<%s> geometry \"%s\" has not been defined"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:1070
-#, c-format
-msgid "<%s> must specify either a geometry or a parent that has a geometry"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:1112
-msgid "You must specify a background for an alpha value to be meaningful"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:1203
-#, c-format
-msgid "Unknown type \"%s\" on <%s> element"
-msgstr "Tipe desconegut \"%s\" sul element <%s>"
-
-#: ../src/ui/theme-parser.c:1214
-#, c-format
-msgid "Unknown style_set \"%s\" on <%s> element"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:1222
-#, c-format
-msgid "Window type \"%s\" has already been assigned a style set"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:1258
-msgid "Theme already has a fallback icon"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:1270
-msgid "Theme already has a fallback mini_icon"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:1283 ../src/ui/theme-parser.c:1347
-#: ../src/ui/theme-parser.c:1636 ../src/ui/theme-parser.c:3285
-#: ../src/ui/theme-parser.c:3339 ../src/ui/theme-parser.c:3511
-#: ../src/ui/theme-parser.c:3727 ../src/ui/theme-parser.c:3765
-#: ../src/ui/theme-parser.c:3803 ../src/ui/theme-parser.c:3841
-#, c-format
-msgid "Element <%s> is not allowed below <%s>"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:1373 ../src/ui/theme-parser.c:1460
-#: ../src/ui/theme-parser.c:1530
-#, c-format
-msgid "No \"name\" attribute on element <%s>"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:1380 ../src/ui/theme-parser.c:1467
-#, c-format
-msgid "No \"value\" attribute on element <%s>"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:1411 ../src/ui/theme-parser.c:1425
-#: ../src/ui/theme-parser.c:1484
+#: ../src/x11/session.c:1815
 msgid ""
-"Cannot specify both button_width/button_height and aspect ratio for buttons"
+"These windows do not support &quot;save current setup&quot; and will have to "
+"be restarted manually next time you log in."
 msgstr ""
+"Aquestas fenèstras prenon pas en carga « l'enregistrament de la "
+"configuracion actuala » e deuràn èsser reaviadas manualament a la connexion "
+"que ven."
 
-#: ../src/ui/theme-parser.c:1434
+#: ../src/x11/window-props.c:549
 #, c-format
-msgid "Distance \"%s\" is unknown"
-msgstr "Distància \"%s\" desconeguda"
-
-#: ../src/ui/theme-parser.c:1493
-#, c-format
-msgid "Aspect ratio \"%s\" is unknown"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:1537
-#, c-format
-msgid "No \"top\" attribute on element <%s>"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:1544
-#, c-format
-msgid "No \"bottom\" attribute on element <%s>"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:1551
-#, c-format
-msgid "No \"left\" attribute on element <%s>"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:1558
-#, c-format
-msgid "No \"right\" attribute on element <%s>"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:1590
-#, c-format
-msgid "Border \"%s\" is unknown"
-msgstr "La bordadura \"%s\" es desconeguda"
-
-#: ../src/ui/theme-parser.c:1736 ../src/ui/theme-parser.c:1850
-#: ../src/ui/theme-parser.c:1961 ../src/ui/theme-parser.c:2192
-#: ../src/ui/theme-parser.c:3023
-#, c-format
-msgid "No \"color\" attribute on element <%s>"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:1743
-#, c-format
-msgid "No \"x1\" attribute on element <%s>"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:1750 ../src/ui/theme-parser.c:2864
-#, c-format
-msgid "No \"y1\" attribute on element <%s>"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:1757
-#, c-format
-msgid "No \"x2\" attribute on element <%s>"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:1764 ../src/ui/theme-parser.c:2871
-#, c-format
-msgid "No \"y2\" attribute on element <%s>"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:1857 ../src/ui/theme-parser.c:1968
-#: ../src/ui/theme-parser.c:2117 ../src/ui/theme-parser.c:2199
-#: ../src/ui/theme-parser.c:2306 ../src/ui/theme-parser.c:2408
-#: ../src/ui/theme-parser.c:2630 ../src/ui/theme-parser.c:2758
-#: ../src/ui/theme-parser.c:2857 ../src/ui/theme-parser.c:2934
-#: ../src/ui/theme-parser.c:3030
-#, c-format
-msgid "No \"x\" attribute on element <%s>"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:1864 ../src/ui/theme-parser.c:1975
-#: ../src/ui/theme-parser.c:2124 ../src/ui/theme-parser.c:2206
-#: ../src/ui/theme-parser.c:2313 ../src/ui/theme-parser.c:2415
-#: ../src/ui/theme-parser.c:2637 ../src/ui/theme-parser.c:2765
-#: ../src/ui/theme-parser.c:2941 ../src/ui/theme-parser.c:3037
-#, c-format
-msgid "No \"y\" attribute on element <%s>"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:1871 ../src/ui/theme-parser.c:1982
-#: ../src/ui/theme-parser.c:2131 ../src/ui/theme-parser.c:2213
-#: ../src/ui/theme-parser.c:2320 ../src/ui/theme-parser.c:2422
-#: ../src/ui/theme-parser.c:2644 ../src/ui/theme-parser.c:2772
-#: ../src/ui/theme-parser.c:2948
-#, c-format
-msgid "No \"width\" attribute on element <%s>"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:1878 ../src/ui/theme-parser.c:1989
-#: ../src/ui/theme-parser.c:2138 ../src/ui/theme-parser.c:2220
-#: ../src/ui/theme-parser.c:2327 ../src/ui/theme-parser.c:2429
-#: ../src/ui/theme-parser.c:2651 ../src/ui/theme-parser.c:2779
-#: ../src/ui/theme-parser.c:2955
-#, c-format
-msgid "No \"height\" attribute on element <%s>"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:1998
-#, c-format
-msgid "No \"start_angle\" or \"from\" attribute on element <%s>"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:2005
-#, c-format
-msgid "No \"extent_angle\" or \"to\" attribute on element <%s>"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:2014
-#, c-format
-msgid "No \"start_angle\" attribute on element <%s>"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:2021
-#, c-format
-msgid "No \"extent_angle\" attribute on element <%s>"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:2227
-#, c-format
-msgid "No \"alpha\" attribute on element <%s>"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:2299
-#, c-format
-msgid "No \"type\" attribute on element <%s>"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:2349
-#, c-format
-msgid "Did not understand value \"%s\" for type of gradient"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:2436
-#, c-format
-msgid "No \"filename\" attribute on element <%s>"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:2461 ../src/ui/theme-parser.c:2980
-#, c-format
-msgid "Did not understand fill type \"%s\" for <%s> element"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:2609 ../src/ui/theme-parser.c:2744
-#: ../src/ui/theme-parser.c:2850
-#, c-format
-msgid "No \"state\" attribute on element <%s>"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:2616 ../src/ui/theme-parser.c:2751
-#, c-format
-msgid "No \"shadow\" attribute on element <%s>"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:2623
-#, c-format
-msgid "No \"arrow\" attribute on element <%s>"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:2676 ../src/ui/theme-parser.c:2800
-#: ../src/ui/theme-parser.c:2891
-#, c-format
-msgid "Did not understand state \"%s\" for <%s> element"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:2686 ../src/ui/theme-parser.c:2810
-#, c-format
-msgid "Did not understand shadow \"%s\" for <%s> element"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:2696
-#, c-format
-msgid "Did not understand arrow \"%s\" for <%s> element"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:3120 ../src/ui/theme-parser.c:3237
-#, c-format
-msgid "No <draw_ops> called \"%s\" has been defined"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:3132 ../src/ui/theme-parser.c:3249
-#, c-format
-msgid "Including draw_ops \"%s\" here would create a circular reference"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:3314
-#, c-format
-msgid "No \"value\" attribute on <%s> element"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:3371
-#, c-format
-msgid "No \"position\" attribute on <%s> element"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:3380
-#, c-format
-msgid "Unknown position \"%s\" for frame piece"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:3388
-#, c-format
-msgid "Frame style already has a piece at position %s"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:3405 ../src/ui/theme-parser.c:3496
-#, c-format
-msgid "No <draw_ops> with the name \"%s\" has been defined"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:3433
-#, c-format
-msgid "No \"function\" attribute on <%s> element"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:3441 ../src/ui/theme-parser.c:3557
-#, c-format
-msgid "No \"state\" attribute on <%s> element"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:3450
-#, c-format
-msgid "Unknown function \"%s\" for button"
-msgstr "Foncion \"%s\" desconeguda pel boton"
-
-#: ../src/ui/theme-parser.c:3459
-#, c-format
-msgid "Button function \"%s\" does not exist in this version (%d, need %d)"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:3471
-#, c-format
-msgid "Unknown state \"%s\" for button"
-msgstr "Estat \"%s\" desconegut pel boton"
-
-#: ../src/ui/theme-parser.c:3479
-#, c-format
-msgid "Frame style already has a button for function %s state %s"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:3549
-#, c-format
-msgid "No \"focus\" attribute on <%s> element"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:3565
-#, c-format
-msgid "No \"style\" attribute on <%s> element"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:3574
-#, c-format
-msgid "\"%s\" is not a valid value for focus attribute"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:3583
-#, c-format
-msgid "\"%s\" is not a valid value for state attribute"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:3593
-#, c-format
-msgid "A style called \"%s\" has not been defined"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:3604
-#, c-format
-msgid "No \"resize\" attribute on <%s> element"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:3614 ../src/ui/theme-parser.c:3637
-#, c-format
-msgid "\"%s\" is not a valid value for resize attribute"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:3648
-#, c-format
-msgid ""
-"Should not have \"resize\" attribute on <%s> element for maximized/shaded "
-"states"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:3662
-#, c-format
-msgid ""
-"Should not have \"resize\" attribute on <%s> element for maximized states"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:3676 ../src/ui/theme-parser.c:3698
-#, c-format
-msgid "Style has already been specified for state %s resize %s focus %s"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:3687 ../src/ui/theme-parser.c:3709
-#, c-format
-msgid "Style has already been specified for state %s focus %s"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:3748
-msgid ""
-"Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
-"attribute and also a <draw_ops> element, or specified two elements)"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:3786
-msgid ""
-"Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
-"attribute and also a <draw_ops> element, or specified two elements)"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:3824
-msgid ""
-"Can't have a two draw_ops for a <menu_icon> element (theme specified a "
-"draw_ops attribute and also a <draw_ops> element, or specified two elements)"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:3872
-#, c-format
-msgid "Outermost element in theme must be <metacity_theme> not <%s>"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:3892
-#, c-format
-msgid ""
-"Element <%s> is not allowed inside a name/author/date/description element"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:3897
-#, c-format
-msgid "Element <%s> is not allowed inside a <constant> element"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:3909
-#, c-format
-msgid ""
-"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:3931
-#, c-format
-msgid "Element <%s> is not allowed inside a draw operation element"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:3941 ../src/ui/theme-parser.c:3971
-#: ../src/ui/theme-parser.c:3976 ../src/ui/theme-parser.c:3981
-#, c-format
-msgid "Element <%s> is not allowed inside a <%s> element"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:4203
-msgid "No draw_ops provided for frame piece"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:4218
-msgid "No draw_ops provided for button"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:4270
-#, c-format
-msgid "No text is allowed inside element <%s>"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:4325
-msgid "<name> specified twice for this theme"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:4336
-msgid "<author> specified twice for this theme"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:4347
-msgid "<copyright> specified twice for this theme"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:4358
-msgid "<date> specified twice for this theme"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:4369
-msgid "<description> specified twice for this theme"
-msgstr ""
-
-#: ../src/ui/theme-parser.c:4636
-#, c-format
-msgid "Failed to find a valid file for theme %s\n"
-msgstr "Impossible de trobar un fichièr valid pel tèma %s\n"
-
-#: ../src/ui/theme-parser.c:4692
-#, c-format
-msgid "Theme file %s did not contain a root <metacity_theme> element"
-msgstr ""
-
-#: ../src/ui/theme-viewer.c:74
-msgid "/_Windows"
-msgstr "/_Fenèstras"
-
-#: ../src/ui/theme-viewer.c:75
-msgid "/Windows/tearoff"
-msgstr "/Fenèstras/tearoff"
-
-#: ../src/ui/theme-viewer.c:76
-msgid "/Windows/_Dialog"
-msgstr ""
-
-#: ../src/ui/theme-viewer.c:77
-msgid "/Windows/_Modal dialog"
-msgstr ""
-
-#: ../src/ui/theme-viewer.c:78
-msgid "/Windows/_Utility"
-msgstr "/_Fenèstras/Utilitari"
-
-#: ../src/ui/theme-viewer.c:79
-msgid "/Windows/_Splashscreen"
-msgstr ""
-
-#: ../src/ui/theme-viewer.c:80
-msgid "/Windows/_Top dock"
-msgstr ""
-
-#: ../src/ui/theme-viewer.c:81
-msgid "/Windows/_Bottom dock"
-msgstr ""
-
-#: ../src/ui/theme-viewer.c:82
-msgid "/Windows/_Left dock"
-msgstr ""
-
-#: ../src/ui/theme-viewer.c:83
-msgid "/Windows/_Right dock"
-msgstr ""
-
-#: ../src/ui/theme-viewer.c:84
-msgid "/Windows/_All docks"
-msgstr ""
-
-#: ../src/ui/theme-viewer.c:85
-msgid "/Windows/Des_ktop"
-msgstr "/_Fenèstras/Burèu"
-
-#: ../src/ui/theme-viewer.c:134
-msgid "Open another one of these windows"
-msgstr ""
-
-#: ../src/ui/theme-viewer.c:141
-msgid "This is a demo button with an 'open' icon"
-msgstr ""
-
-#: ../src/ui/theme-viewer.c:148
-msgid "This is a demo button with a 'quit' icon"
-msgstr ""
-
-#: ../src/ui/theme-viewer.c:241
-msgid "This is a sample message in a sample dialog"
-msgstr ""
-
-#: ../src/ui/theme-viewer.c:324
-#, c-format
-msgid "Fake menu item %d\n"
-msgstr ""
-
-#: ../src/ui/theme-viewer.c:358
-msgid "Border-only window"
-msgstr ""
-
-#: ../src/ui/theme-viewer.c:360
-msgid "Bar"
-msgstr "Barra"
-
-#: ../src/ui/theme-viewer.c:377
-msgid "Normal Application Window"
-msgstr ""
-
-#: ../src/ui/theme-viewer.c:381
-msgid "Dialog Box"
-msgstr ""
-
-#: ../src/ui/theme-viewer.c:385
-msgid "Modal Dialog Box"
-msgstr ""
-
-#: ../src/ui/theme-viewer.c:389
-msgid "Utility Palette"
-msgstr ""
-
-#: ../src/ui/theme-viewer.c:393
-msgid "Torn-off Menu"
-msgstr ""
-
-#: ../src/ui/theme-viewer.c:397
-msgid "Border"
-msgstr "Bordadura"
-
-#: ../src/ui/theme-viewer.c:725
-#, c-format
-msgid "Button layout test %d"
-msgstr ""
-
-#: ../src/ui/theme-viewer.c:754
-#, c-format
-msgid "%g milliseconds to draw one window frame"
-msgstr ""
-
-#: ../src/ui/theme-viewer.c:797
-#, c-format
-msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
-msgstr ""
-
-#: ../src/ui/theme-viewer.c:804
-#, c-format
-msgid "Error loading theme: %s\n"
-msgstr "Error al moment de cargar lo tèma : %s\n"
-
-#: ../src/ui/theme-viewer.c:810
-#, c-format
-msgid "Loaded theme \"%s\" in %g seconds\n"
-msgstr ""
-
-#: ../src/ui/theme-viewer.c:833
-msgid "Normal Title Font"
-msgstr "Poliça de títol normal"
-
-#: ../src/ui/theme-viewer.c:839
-msgid "Small Title Font"
-msgstr "Pichona poliça de títol"
-
-#: ../src/ui/theme-viewer.c:845
-msgid "Large Title Font"
-msgstr ""
-
-#: ../src/ui/theme-viewer.c:850
-msgid "Button Layouts"
-msgstr ""
-
-#: ../src/ui/theme-viewer.c:855
-msgid "Benchmark"
-msgstr ""
-
-#: ../src/ui/theme-viewer.c:902
-msgid "Window Title Goes Here"
-msgstr ""
-
-#: ../src/ui/theme-viewer.c:1006
-#, c-format
-msgid ""
-"Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
-"seconds wall clock time including X server resources (%g milliseconds per "
-"frame)\n"
-msgstr ""
-
-#: ../src/ui/theme-viewer.c:1225
-msgid "position expression test returned TRUE but set error"
-msgstr ""
-
-#: ../src/ui/theme-viewer.c:1227
-msgid "position expression test returned FALSE but didn't set error"
-msgstr ""
-
-#: ../src/ui/theme-viewer.c:1231
-msgid "Error was expected but none given"
-msgstr ""
-
-#: ../src/ui/theme-viewer.c:1233
-#, c-format
-msgid "Error %d was expected but %d given"
-msgstr ""
-
-#: ../src/ui/theme-viewer.c:1239
-#, c-format
-msgid "Error not expected but one was returned: %s"
-msgstr ""
-
-#: ../src/ui/theme-viewer.c:1243
-#, c-format
-msgid "x value was %d, %d was expected"
-msgstr ""
-
-#: ../src/ui/theme-viewer.c:1246
-#, c-format
-msgid "y value was %d, %d was expected"
-msgstr ""
-
-#: ../src/ui/theme-viewer.c:1311
-#, c-format
-msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
-msgstr ""
-
-#: ../src/ui/theme.c:256
-msgid "top"
-msgstr ""
-
-#: ../src/ui/theme.c:258
-msgid "bottom"
-msgstr ""
-
-#: ../src/ui/theme.c:260
-msgid "left"
-msgstr "esquèrra"
-
-#: ../src/ui/theme.c:262
-msgid "right"
-msgstr "drecha"
-
-#: ../src/ui/theme.c:289
-#, c-format
-msgid "frame geometry does not specify \"%s\" dimension"
-msgstr ""
-
-#: ../src/ui/theme.c:308
-#, c-format
-msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
-msgstr ""
-
-#: ../src/ui/theme.c:345
-#, c-format
-msgid "Button aspect ratio %g is not reasonable"
-msgstr ""
-
-#: ../src/ui/theme.c:357
-#, c-format
-msgid "Frame geometry does not specify size of buttons"
-msgstr ""
-
-#: ../src/ui/theme.c:1022
-#, c-format
-msgid "Gradients should have at least two colors"
-msgstr ""
-
-#: ../src/ui/theme.c:1148
-#, c-format
-msgid ""
-"GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
-"where NORMAL is the state; could not parse \"%s\""
-msgstr ""
-
-#: ../src/ui/theme.c:1162
-#, c-format
-msgid ""
-"GTK color specification must have a close bracket after the state, e.g. gtk:"
-"fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
-msgstr ""
-
-#: ../src/ui/theme.c:1173
-#, c-format
-msgid "Did not understand state \"%s\" in color specification"
-msgstr ""
-
-#: ../src/ui/theme.c:1186
-#, c-format
-msgid "Did not understand color component \"%s\" in color specification"
-msgstr ""
-
-#: ../src/ui/theme.c:1216
-#, c-format
-msgid ""
-"Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
-"format"
-msgstr ""
-
-#: ../src/ui/theme.c:1227
-#, c-format
-msgid "Could not parse alpha value \"%s\" in blended color"
-msgstr ""
-
-#: ../src/ui/theme.c:1237
-#, c-format
-msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
-msgstr ""
-
-#: ../src/ui/theme.c:1284
-#, c-format
-msgid ""
-"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
-msgstr ""
-
-#: ../src/ui/theme.c:1295
-#, c-format
-msgid "Could not parse shade factor \"%s\" in shaded color"
-msgstr ""
-
-#: ../src/ui/theme.c:1305
-#, c-format
-msgid "Shade factor \"%s\" in shaded color is negative"
-msgstr ""
-
-#: ../src/ui/theme.c:1334
-#, c-format
-msgid "Could not parse color \"%s\""
-msgstr ""
-
-#: ../src/ui/theme.c:1584
-#, c-format
-msgid "Coordinate expression contains character '%s' which is not allowed"
-msgstr ""
-
-#: ../src/ui/theme.c:1611
-#, c-format
-msgid ""
-"Coordinate expression contains floating point number '%s' which could not be "
-"parsed"
-msgstr ""
-
-#: ../src/ui/theme.c:1625
-#, c-format
-msgid "Coordinate expression contains integer '%s' which could not be parsed"
-msgstr ""
-
-#: ../src/ui/theme.c:1747
-#, c-format
-msgid ""
-"Coordinate expression contained unknown operator at the start of this text: "
-"\"%s\""
-msgstr ""
-
-#: ../src/ui/theme.c:1804
-#, c-format
-msgid "Coordinate expression was empty or not understood"
-msgstr ""
-
-#: ../src/ui/theme.c:1915 ../src/ui/theme.c:1925 ../src/ui/theme.c:1959
-#, c-format
-msgid "Coordinate expression results in division by zero"
-msgstr ""
-
-#: ../src/ui/theme.c:1967
-#, c-format
-msgid ""
-"Coordinate expression tries to use mod operator on a floating-point number"
-msgstr ""
-
-#: ../src/ui/theme.c:2023
-#, c-format
-msgid ""
-"Coordinate expression has an operator \"%s\" where an operand was expected"
-msgstr ""
-
-#: ../src/ui/theme.c:2032
-#, c-format
-msgid "Coordinate expression had an operand where an operator was expected"
-msgstr ""
-
-#: ../src/ui/theme.c:2040
-#, c-format
-msgid "Coordinate expression ended with an operator instead of an operand"
-msgstr ""
-
-#: ../src/ui/theme.c:2050
-#, c-format
-msgid ""
-"Coordinate expression has operator \"%c\" following operator \"%c\" with no "
-"operand in between"
-msgstr ""
-
-#: ../src/ui/theme.c:2197 ../src/ui/theme.c:2238
-#, c-format
-msgid "Coordinate expression had unknown variable or constant \"%s\""
-msgstr ""
-
-#: ../src/ui/theme.c:2292
-#, c-format
-msgid "Coordinate expression parser overflowed its buffer."
-msgstr ""
-
-#: ../src/ui/theme.c:2321
-#, c-format
-msgid "Coordinate expression had a close parenthesis with no open parenthesis"
-msgstr ""
-
-#: ../src/ui/theme.c:2385
-#, c-format
-msgid "Coordinate expression had an open parenthesis with no close parenthesis"
-msgstr ""
-
-#: ../src/ui/theme.c:2396
-#, c-format
-msgid "Coordinate expression doesn't seem to have any operators or operands"
-msgstr ""
-
-#: ../src/ui/theme.c:2598 ../src/ui/theme.c:2618 ../src/ui/theme.c:2638
-#, c-format
-msgid "Theme contained an expression that resulted in an error: %s\n"
-msgstr ""
-
-#: ../src/ui/theme.c:4157
-#, c-format
-msgid ""
-"<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
-"specified for this frame style"
-msgstr ""
-
-#: ../src/ui/theme.c:4633 ../src/ui/theme.c:4658
-#, c-format
-msgid ""
-"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr ""
-
-#: ../src/ui/theme.c:4702
-#, c-format
-msgid "Failed to load theme \"%s\": %s\n"
-msgstr "Impossible de cargar lo tèma \"%s\" : %s\n"
-
-#: ../src/ui/theme.c:4828 ../src/ui/theme.c:4835 ../src/ui/theme.c:4842
-#: ../src/ui/theme.c:4849 ../src/ui/theme.c:4856
-#, c-format
-msgid "No <%s> set for theme \"%s\""
-msgstr ""
-
-#: ../src/ui/theme.c:4864
-#, c-format
-msgid ""
-"No frame style set for window type \"%s\" in theme \"%s\", add a <window "
-"type=\"%s\" style_set=\"whatever\"/> element"
-msgstr ""
-
-#: ../src/ui/theme.c:5231 ../src/ui/theme.c:5293 ../src/ui/theme.c:5356
-#, c-format
-msgid ""
-"User-defined constants must begin with a capital letter; \"%s\" does not"
-msgstr ""
-
-#: ../src/ui/theme.c:5239 ../src/ui/theme.c:5301 ../src/ui/theme.c:5364
-#, c-format
-msgid "Constant \"%s\" has already been defined"
-msgstr ""
-
-#: ../src/tools/metacity-message.c:150
-#, c-format
-msgid "Usage: %s\n"
-msgstr "Sintaxi : %s\n"
-
+msgid "%s (on %s)"
+msgstr "%s (sus %s)"
