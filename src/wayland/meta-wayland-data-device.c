@@ -492,12 +492,16 @@ static void
 destroy_data_offer (struct wl_resource *resource)
 {
   MetaWaylandDataOffer *offer = wl_resource_get_user_data (resource);
+  MetaWaylandSeat *seat;
 
   if (offer->source)
     {
+      seat = meta_wayland_data_source_get_seat (offer->source);
+
       if (offer == meta_wayland_data_source_get_current_offer (offer->source))
         {
-          if (wl_resource_get_version (offer->resource) <
+          if (seat && seat->data_device.dnd_data_source == offer->source &&
+              wl_resource_get_version (offer->resource) <
               WL_DATA_OFFER_ACTION_SINCE_VERSION)
             meta_wayland_data_source_notify_finish (offer->source);
           else
