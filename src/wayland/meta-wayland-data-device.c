@@ -516,6 +516,28 @@ destroy_data_offer (struct wl_resource *resource)
   g_slice_free (MetaWaylandDataOffer, offer);
 }
 
+static void
+destroy_primary_offer (struct wl_resource *resource)
+{
+  MetaWaylandDataOffer *offer = wl_resource_get_user_data (resource);
+
+  if (offer->source)
+    {
+      if (offer == meta_wayland_data_source_get_current_offer (offer->source))
+        {
+          meta_wayland_data_source_cancel (offer->source);
+          meta_wayland_data_source_set_current_offer (offer->source, NULL);
+        }
+
+      g_object_remove_weak_pointer (G_OBJECT (offer->source),
+                                    (gpointer *)&offer->source);
+      offer->source = NULL;
+    }
+
+  meta_display_sync_wayland_input_focus (meta_get_display ());
+  g_slice_free (MetaWaylandDataOffer, offer);
+}
+
 static struct wl_resource *
 meta_wayland_data_source_send_offer (MetaWaylandDataSource *source,
                                      struct wl_resource *target)
@@ -563,7 +585,7 @@ meta_wayland_data_source_send_primary_offer (MetaWaylandDataSource *source,
   wl_resource_set_implementation (offer->resource,
                                   &primary_offer_interface,
                                   offer,
-                                  destroy_data_offer);
+                                  destroy_primary_offer);
 
   gtk_primary_selection_device_send_data_offer (target, offer->resource);
 
