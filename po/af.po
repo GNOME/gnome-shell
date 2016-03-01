@@ -718,7 +718,7 @@ msgstr "Administrateur"
 
 #: ../js/ui/components/polkitAgent.js:182
 msgid "Authenticate"
-msgstr "Verifiëer"
+msgstr "Verifieer"
 
 #. Translators: "that didn't work" refers to the fact that the
 #. * requested authentication was not gained; this can happen
