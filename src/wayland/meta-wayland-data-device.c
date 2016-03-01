@@ -1229,6 +1229,7 @@ meta_wayland_data_source_primary_send (MetaWaylandDataSource *source,
   source_primary = META_WAYLAND_DATA_SOURCE_PRIMARY (source);
   gtk_primary_selection_source_send_send (source_primary->resource,
                                           mime_type, fd);
+  close (fd);
 }
 
 static void
