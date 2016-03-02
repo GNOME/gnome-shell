@@ -967,28 +967,25 @@ update_cursor_sprite_texture (MetaWaylandSurface *surface)
   MetaWaylandSurfaceRoleCursor *cursor_role =
     META_WAYLAND_SURFACE_ROLE_CURSOR (surface->role);
   MetaCursorSprite *cursor_sprite = cursor_role->cursor_sprite;
-  ClutterBackend *clutter_backend = clutter_get_default_backend ();
-  CoglContext *cogl_context =
-    clutter_backend_get_cogl_context (clutter_backend);
-  CoglTexture *texture;
+
+  g_return_if_fail (!surface->buffer || surface->buffer->texture);
 
   if (surface->buffer)
     {
-      struct wl_resource *buffer;
-
-      buffer = surface->buffer->resource;
-      texture = cogl_wayland_texture_2d_new_from_buffer (cogl_context,
-                                                         buffer,
-                                                         NULL);
-
       meta_cursor_sprite_set_texture (cursor_sprite,
-                                      texture,
+                                      surface->buffer->texture,
                                       cursor_role->hot_x * surface->scale,
                                       cursor_role->hot_y * surface->scale);
-      meta_cursor_renderer_realize_cursor_from_wl_buffer (cursor_renderer,
-                                                          cursor_sprite,
-                                                          buffer);
-      cogl_object_unref (texture);
+
+      if (surface->using_buffer)
+        {
+          struct wl_resource *buffer;
+
+          buffer = surface->buffer->resource;
+          meta_cursor_renderer_realize_cursor_from_wl_buffer (cursor_renderer,
+                                                              cursor_sprite,
+                                                              buffer);
+        }
     }
   else
     {
