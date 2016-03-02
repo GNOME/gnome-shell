@@ -9,22 +9,21 @@
 # Mancomún - Centro de Referencia e Servizos de Software Libre <g11n@mancomun.org>, 2009.
 # Fran Diéguez <frandieguez@gnome.org>, 2009, 2010, 2011, 2012.
 # Leandro Regueiro <leandro.regueiro@gmail.com>, 2012.
-# Fran Dieguez <frandieguez@gnome.org>, 2012, 2013, 2014, 2015.
-#
+# Fran Dieguez <frandieguez@gnome.org>, 2012, 2013, 2014, 2015, 2016.
 msgid ""
 msgstr ""
 "Project-Id-Version: gl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-28 22:43+0100\n"
-"PO-Revision-Date: 2015-02-28 22:42+0100\n"
+"POT-Creation-Date: 2016-03-02 09:49+0100\n"
+"PO-Revision-Date: 2016-03-02 09:49+0200\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
-"Language-Team: Galician <>\n"
+"Language-Team: gnome-l10n-gl@gnome.org\n"
 "Language: gl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Gtranslator 2.91.6\n"
+"X-Generator: Virtaal 0.7.1\n"
 
 #: ../data/50-mutter-navigation.xml.in.h:1
 msgid "Navigation"
@@ -461,22 +460,22 @@ msgstr "Cambiar á VT 11"
 msgid "Switch to VT 12"
 msgstr "Cambiar á VT 12"
 
-#: ../src/backends/meta-monitor-manager.c:364
+#: ../src/backends/meta-monitor-manager.c:518
 msgid "Built-in display"
 msgstr "Pantalla embebida"
 
-#: ../src/backends/meta-monitor-manager.c:391
+#: ../src/backends/meta-monitor-manager.c:544
 msgid "Unknown"
 msgstr "Descoñecido"
 
-#: ../src/backends/meta-monitor-manager.c:393
+#: ../src/backends/meta-monitor-manager.c:546
 msgid "Unknown Display"
 msgstr "Pantalla descoñecida"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: ../src/backends/meta-monitor-manager.c:401
+#: ../src/backends/meta-monitor-manager.c:554
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
@@ -521,40 +520,44 @@ msgstr "Espe_rar"
 msgid "_Force Quit"
 msgstr "_Forzar a saída"
 
-#: ../src/core/display.c:562
+#: ../src/core/display.c:555
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Produciuse un erro ao abrir a visualización do X Window System «%s»\n"
 
-#: ../src/core/main.c:176
+#: ../src/core/main.c:181
 msgid "Disable connection to session manager"
 msgstr "Desactivar a conexión ao xestor de sesión"
 
-#: ../src/core/main.c:182
+#: ../src/core/main.c:187
 msgid "Replace the running window manager"
 msgstr "Substituír o xestor de xanelas en execución"
 
-#: ../src/core/main.c:188
+#: ../src/core/main.c:193
 msgid "Specify session management ID"
 msgstr "Especificar o ID de xestión de sesión"
 
-#: ../src/core/main.c:193
+#: ../src/core/main.c:198
 msgid "X Display to use"
 msgstr "Pantalla X que se vai usar"
 
-#: ../src/core/main.c:199
+#: ../src/core/main.c:204
 msgid "Initialize session from savefile"
 msgstr "Inicializar sesión desde o ficheiro de salvagarda"
 
-#: ../src/core/main.c:205
+#: ../src/core/main.c:210
 msgid "Make X calls synchronous"
 msgstr "Facer que as chamadas a X sexan sincrónicas"
 
-#: ../src/core/main.c:212
+#: ../src/core/main.c:217
 msgid "Run as a wayland compositor"
 msgstr "Executar como compositor de wayland"
 
-#: ../src/core/main.c:220
+#: ../src/core/main.c:223
+msgid "Run as a nested compositor"
+msgstr "Executar como compositor anidado"
+
+#: ../src/core/main.c:231
 msgid "Run as a full display server, rather than nested"
 msgstr "Executar como un servidor de pantalla completo, fronte a un aniñado"
 
@@ -581,12 +584,12 @@ msgstr "Imprimir versión"
 msgid "Mutter plugin to use"
 msgstr "Engadido de mutter que usar"
 
-#: ../src/core/prefs.c:2004
+#: ../src/core/prefs.c:1997
 #, c-format
 msgid "Workspace %d"
 msgstr "Espazo de traballo %d"
 
-#: ../src/core/screen.c:525
+#: ../src/core/screen.c:521
 #, c-format
 msgid ""
 "Display \"%s\" already has a window manager; try using the --replace option "
@@ -595,12 +598,12 @@ msgstr ""
 "A pantalla «%s» ten xa un xestor de xanelas, tente usar a opción --replace "
 "para substituír o xestor de xanelas."
 
-#: ../src/core/screen.c:607
+#: ../src/core/screen.c:603
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "A pantalla %d na visualización «%s» non é válida\n"
 
-#: ../src/core/util.c:118
+#: ../src/core/util.c:121
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "Mutter foi compilado sen compatibilidade para o modo detallado\n"
 
