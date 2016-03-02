@@ -672,11 +672,17 @@ wayland_data_read_cb (GObject      *object,
                                            res, &error);
   if (error)
     {
+      if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+        {
+          g_error_free (error);
+          return;
+        }
+
       g_warning ("Error transfering wayland clipboard to X11: %s\n",
                  error->message);
       g_error_free (error);
 
-      if (data)
+      if (data && data->stream == G_INPUT_STREAM (object))
         {
           reply_selection_request (&data->request_event, FALSE);
           g_clear_pointer (&selection->wayland_selection,
