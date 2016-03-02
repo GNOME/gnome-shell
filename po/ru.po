@@ -19,16 +19,16 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-01-14 22:17+0000\n"
-"PO-Revision-Date: 2016-01-15 13:15+0300\n"
+"POT-Creation-Date: 2016-03-02 10:20+0000\n"
+"PO-Revision-Date: 2016-03-03 01:14+0300\n"
 "Last-Translator: Stas Solovey <whats_up@tut.by>\n"
-"Language-Team: Russian <gnome-cyr@gnome.org>\n"
+"Language-Team: Русский <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
 "X-Generator: Gtranslator 2.91.7\n"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
@@ -323,16 +323,17 @@ msgstr "Задержка изменения фокуса в режиме мыш�
 msgid "Network Login"
 msgstr "Сетевая авторизация"
 
-#: ../js/extensionPrefs/main.js:122
+#: ../js/extensionPrefs/main.js:121
 #, javascript-format
 msgid "There was an error loading the preferences dialog for %s:"
 msgstr "Возникла ошибка загрузки диалогового окна параметров для %s:"
 
-#: ../js/extensionPrefs/main.js:154
+#: ../js/extensionPrefs/main.js:153
 msgid "GNOME Shell Extensions"
 msgstr "Расширения GNOME Shell"
 
-#: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:145
+#: ../js/gdm/authPrompt.js:147 ../js/ui/audioDeviceSelection.js:71
+#: ../js/ui/components/networkAgent.js:145
 #: ../js/ui/components/polkitAgent.js:179 ../js/ui/endSessionDialog.js:452
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
 #: ../js/ui/status/network.js:916
@@ -521,15 +522,36 @@ msgstr "Добавить в избранное"
 msgid "Show Details"
 msgstr "Показать подробности"
 
-#: ../js/ui/appFavorites.js:133
+#: ../js/ui/appFavorites.js:134
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "Приложение %s добавлено в избранное."
 
-#: ../js/ui/appFavorites.js:167
+#: ../js/ui/appFavorites.js:168
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "Приложение %s удалено из избранного."
+
+#: ../js/ui/audioDeviceSelection.js:59
+msgid "Select Audio Device"
+msgstr "Выберите аудиоустройство"
+
+#: ../js/ui/audioDeviceSelection.js:69
+#| msgid "Account Settings"
+msgid "Sound Settings"
+msgstr "Параметры звука"
+
+#: ../js/ui/audioDeviceSelection.js:78
+msgid "Headphones"
+msgstr "Наушники"
+
+#: ../js/ui/audioDeviceSelection.js:80
+msgid "Headset"
+msgstr "Гарнитура"
+
+#: ../js/ui/audioDeviceSelection.js:82 ../js/ui/status/volume.js:213
+msgid "Microphone"
+msgstr "Микрофон"
 
 #: ../js/ui/backgroundMenu.js:19
 msgid "Change Background…"
@@ -544,7 +566,7 @@ msgid "Settings"
 msgstr "Параметры"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
-#: ../js/ui/calendar.js:55
+#: ../js/ui/calendar.js:47
 msgctxt "calendar-no-work"
 msgid "06"
 msgstr "06"
@@ -554,102 +576,98 @@ msgstr "06"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: ../js/ui/calendar.js:84
+#: ../js/ui/calendar.js:76
 msgctxt "grid sunday"
 msgid "S"
 msgstr "Вс"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: ../js/ui/calendar.js:86
+#: ../js/ui/calendar.js:78
 msgctxt "grid monday"
 msgid "M"
 msgstr "Пн"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: ../js/ui/calendar.js:88
+#: ../js/ui/calendar.js:80
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "Вт"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: ../js/ui/calendar.js:90
+#: ../js/ui/calendar.js:82
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "Ср"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: ../js/ui/calendar.js:92
+#: ../js/ui/calendar.js:84
 msgctxt "grid thursday"
 msgid "T"
 msgstr "Чт"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: ../js/ui/calendar.js:94
+#: ../js/ui/calendar.js:86
 msgctxt "grid friday"
 msgid "F"
 msgstr "Пт"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: ../js/ui/calendar.js:96
+#: ../js/ui/calendar.js:88
 msgctxt "grid saturday"
 msgid "S"
 msgstr "Сб"
 
-#: ../js/ui/calendar.js:566
+#: ../js/ui/calendar.js:416
 msgid "Previous month"
 msgstr "Предыдущий месяц"
 
-#: ../js/ui/calendar.js:576
+#: ../js/ui/calendar.js:426
 msgid "Next month"
 msgstr "Следующий месяц"
 
-#: ../js/ui/calendar.js:729
+#: ../js/ui/calendar.js:579
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: ../js/ui/calendar.js:784
+#: ../js/ui/calendar.js:634
 msgid "Week %V"
 msgstr "%V неделя"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: ../js/ui/calendar.js:1189
+#: ../js/ui/calendar.js:695
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Весь день"
 
-#: ../js/ui/calendar.js:1296
-msgid "Clear section"
-msgstr "Очистить секцию"
-
-#: ../js/ui/calendar.js:1523
+#: ../js/ui/calendar.js:821
 msgid "Events"
 msgstr "События"
 
 # fix для даты в календаре и на экране блокировки, за разъяснением обращаться к Stas Solovey <whats_up@tut.by>
-#: ../js/ui/calendar.js:1532
+#: ../js/ui/calendar.js:830
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d %b."
 
 # fix для даты в календаре и на экране блокировки
-#: ../js/ui/calendar.js:1536
+#: ../js/ui/calendar.js:834
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d %b. %Y"
 
-#: ../js/ui/calendar.js:1621
+#: ../js/ui/calendar.js:919
 msgid "Notifications"
 msgstr "Уведомления"
 
-#: ../js/ui/calendar.js:1772
+#: ../js/ui/calendar.js:1070
 msgid "No Notifications"
 msgstr "Уведомлений нет"
 
-#: ../js/ui/calendar.js:1775
+#: ../js/ui/calendar.js:1073
 msgid "No Events"
 msgstr "Событий нет"
 
@@ -1038,9 +1056,29 @@ msgstr "Показать код"
 msgid "Web Page"
 msgstr "Веб-страница"
 
+#: ../js/ui/messageList.js:543
+msgid "Clear section"
+msgstr "Очистить секцию"
+
 #: ../js/ui/messageTray.js:1486
 msgid "System Information"
 msgstr "Системная информация"
+
+#: ../js/ui/mpris.js:194
+#| msgctxt "program"
+#| msgid "Unknown"
+msgid "Unknown artist"
+msgstr "Неизвестный исполнитель"
+
+#: ../js/ui/mpris.js:195
+#| msgctxt "program"
+#| msgid "Unknown"
+msgid "Unknown title"
+msgstr "Неизвестное название"
+
+#: ../js/ui/mpris.js:217
+msgid "Media"
+msgstr "Медиа"
 
 #: ../js/ui/overview.js:84
 msgid "Undo"
@@ -1264,29 +1302,49 @@ msgstr "Яркость"
 msgid "Show Keyboard Layout"
 msgstr "Показать раскладку клавиатуры"
 
-#: ../js/ui/status/location.js:71 ../js/ui/status/location.js:177
+#: ../js/ui/status/location.js:107 ../js/ui/status/location.js:215
 msgid "Location Enabled"
 msgstr "Определение местоположения включено"
 
-#: ../js/ui/status/location.js:72 ../js/ui/status/location.js:178
+#: ../js/ui/status/location.js:108 ../js/ui/status/location.js:216
 msgid "Disable"
 msgstr "Выключить"
 
-#: ../js/ui/status/location.js:73
+#: ../js/ui/status/location.js:109
 msgid "Privacy Settings"
 msgstr "Параметры конфиденциальности"
 
-#: ../js/ui/status/location.js:176
+#: ../js/ui/status/location.js:214
 msgid "Location In Use"
 msgstr "Определение местоположения используется"
 
-#: ../js/ui/status/location.js:180
+#: ../js/ui/status/location.js:218
 msgid "Location Disabled"
 msgstr "Определение местоположения выключено"
 
-#: ../js/ui/status/location.js:181
+#: ../js/ui/status/location.js:219
 msgid "Enable"
 msgstr "Включить"
+
+#: ../js/ui/status/location.js:434
+msgid "Deny Access"
+msgstr "Запретить доступ"
+
+#: ../js/ui/status/location.js:437
+msgid "Grant Access"
+msgstr "Предоставить доступ"
+
+#. Translators: %s is an application name
+#: ../js/ui/status/location.js:443
+#, javascript-format
+msgid "Give %s access to your location?"
+msgstr "Предоставить %s доступ к вашему местоположению?"
+
+#. Translators: %s is an application name
+#: ../js/ui/status/location.js:446
+#, javascript-format
+msgid "%s is requesting access to your location."
+msgstr "%s запрашивает доступ к вашему положению."
 
 #: ../js/ui/status/network.js:101
 msgid "<unknown>"
@@ -1548,10 +1606,6 @@ msgstr "Громкость изменена"
 #: ../js/ui/status/volume.js:162
 msgid "Volume"
 msgstr "Громкость"
-
-#: ../js/ui/status/volume.js:213
-msgid "Microphone"
-msgstr "Микрофон"
 
 #: ../js/ui/unlockDialog.js:67
 msgid "Log in as another user"
