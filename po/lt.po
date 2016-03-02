@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: lt\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-01-05 13:43+0000\n"
-"PO-Revision-Date: 2016-01-05 18:04+0200\n"
+"POT-Creation-Date: 2016-02-26 09:54+0000\n"
+"PO-Revision-Date: 2016-02-25 15:18+0200\n"
 "Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lietuvių <gnome-lt@lists.akl.lt>\n"
 "Language: lt\n"
@@ -23,7 +23,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n"
 "%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Poedit 1.8.6\n"
+"X-Generator: Poedit 1.8.7\n"
 
 #: ../data/50-mutter-navigation.xml.in.h:1
 msgid "Navigation"
@@ -513,42 +513,46 @@ msgstr "_Laukti"
 msgid "_Force Quit"
 msgstr "_Priverstinai išeiti"
 
-#: ../src/core/display.c:563
+#: ../src/core/display.c:555
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Nepavyko atverti X Window sistemos ekrano „%s“\n"
 
-#: ../src/core/main.c:180
+#: ../src/core/main.c:181
 msgid "Disable connection to session manager"
 msgstr "Išjungti susijungimą su sesijos tvarkytuve"
 
-#: ../src/core/main.c:186
+#: ../src/core/main.c:187
 msgid "Replace the running window manager"
 msgstr "Pakeisti veikiančią langų tvarkytuvę"
 
-#: ../src/core/main.c:192
+#: ../src/core/main.c:193
 msgid "Specify session management ID"
 msgstr "Nurodyti sesijos tvarkymo ID"
 
-#: ../src/core/main.c:197
+#: ../src/core/main.c:198
 msgid "X Display to use"
 msgstr "Naudotinas X ekranas"
 
-#: ../src/core/main.c:203
+#: ../src/core/main.c:204
 msgid "Initialize session from savefile"
 msgstr "Inicializuoti sesiją iš išsaugojimo failo"
 
-#: ../src/core/main.c:209
+#: ../src/core/main.c:210
 msgid "Make X calls synchronous"
 msgstr "Sinchronizuoti X iškvietimus"
 
-#: ../src/core/main.c:216
+#: ../src/core/main.c:217
 msgid "Run as a wayland compositor"
 msgstr "Vykdyti kaip wayland kompozitorių"
 
-#: ../src/core/main.c:224
+#: ../src/core/main.c:223
+msgid "Run as a nested compositor"
+msgstr "Vykdyti kaip įdėtinį kompozitorių"
+
+#: ../src/core/main.c:231
 msgid "Run as a full display server, rather than nested"
-msgstr "Vykdyti kaip visą vaizduoklio serverį, o ne vidinį"
+msgstr "Vykdyti kaip visą vaizduoklio serverį, o ne įdėtinį"
 
 #: ../src/core/mutter.c:39
 #, c-format
@@ -580,7 +584,7 @@ msgstr "Naudojamas Mutter įskiepis"
 msgid "Workspace %d"
 msgstr "Darbo sritis %d"
 
-#: ../src/core/screen.c:526
+#: ../src/core/screen.c:521
 #, c-format
 msgid ""
 "Display \"%s\" already has a window manager; try using the --replace option "
@@ -589,12 +593,12 @@ msgstr ""
 "Vaizduoklis „%s“ jau turi langų tvarkytuvę; pabandykite pakeisti esamą langų "
 "tvarkytuvę, naudodami parametrą --replace."
 
-#: ../src/core/screen.c:608
+#: ../src/core/screen.c:603
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Ekranas %d vaizduoklyje „%s“ netinkamas\n"
 
-#: ../src/core/util.c:118
+#: ../src/core/util.c:121
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "Mutter buvo sukompiliuota be išsamaus veikimo veiksenos\n"
 
