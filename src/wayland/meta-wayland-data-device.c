@@ -1515,6 +1515,8 @@ primary_source_destroyed (gpointer  data,
       if (data_device_resource)
         gtk_primary_selection_device_send_selection (data_device_resource, NULL);
     }
+
+  wl_signal_emit (&data_device->primary_ownership_signal, NULL);
 }
 
 void
