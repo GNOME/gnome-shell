@@ -1117,6 +1117,8 @@ selection_data_source_destroyed (gpointer data, GObject *object_was_here)
       if (data_device_resource)
         wl_data_device_send_selection (data_device_resource, NULL);
     }
+
+  wl_signal_emit (&data_device->selection_ownership_signal, NULL);
 }
 
 static void
