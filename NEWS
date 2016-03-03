@@ -1,3 +1,22 @@
+3.19.91
+=======
+* location: Ask user only once [Zeeshan; #762559]
+* Fix jiggling when auto-hiding legacy tray [Florian; #747957]
+* Misc. bug fixes [Florian, Michael, Ting-Wei; #762475, #762507, #755659]
+
+Contributors:
+  Zeeshan Ali (Khattak), Michael Catanzaro, Ting-Wei Lan, Florian Müllner
+
+Translations:
+  Мирослав Николић [sr, sr@latin], Piotr Drąg [pl], A S Alam [pa],
+  Artur de Aquino Morais [pt_BR], Daniel Mustieles [es],
+  Chao-Hsiung Liao [zh_TW], Daniel Korostil [uk], Fran Dieguez [gl],
+  Tom Tryfonidis [el], Bernd Homuth [de], Sebastian Rasmussen [sv],
+  Jordi Mas [ca], Piotr Drąg [ga], Cédric Valmary [oc], Gábor Kelemen [hu],
+  Baurzhan Muftakhidinov [kk], Friedel Wolff [af], Marek Černocký [cs],
+  Mingye Wang (Arthur2e5) [zh_CN], Aron Xu [zh_CN], Khaled Hosny [ar],
+  Aurimas Černius [lt], Stas Solovey [ru], Yosef Or Boczko [he]
+
 3.19.90
 =======
 * Correctly identify VPN secret requests [Lubomir; #760999]
