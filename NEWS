@@ -1,3 +1,20 @@
+3.19.91
+=======
+* Add --nested CLI argument to fix nested wayland session [Jonas; #758658]
+* Fix stack - scene graph stacking synchronization issues [Jonas; #755605]
+* Rate-limit last-device changes to fix freezes [Carlos; #753527]
+* Implement primary selection protocol [Carlos; #762560]
+* Misc. bug fixes [Carlos, Jonas; #762878, #762716]
+
+Contributors:
+  Jonas Ådahl, Carlos Garnacho, Tim Lunn
+
+Translations:
+  Piotr Drąg [pl], Artur de Aquino Morais [pt_BR], Marek Černocký [cs],
+  Cédric Valmary [oc], Mario Blättermann [de], Dušan Kazik [sk],
+  Fran Dieguez [gl], Aurimas Černius [lt], Daniel Mustieles [es],
+  Stas Solovey [ru], Yosef Or Boczko [he]
+
 3.19.90
 =======
 * Release buffer after processing commit [Ray; #761312, #761613]
