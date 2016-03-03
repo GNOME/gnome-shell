@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-19 20:37+0200\n"
-"PO-Revision-Date: 2015-11-19 20:37+0200\n"
+"POT-Creation-Date: 2016-03-03 14:44+0200\n"
+"PO-Revision-Date: 2016-03-03 14:52+0200\n"
 "Last-Translator: Yosef Or Boczko <yoseforb@gmail.com>\n"
 "Language-Team: עברית <>\n"
 "Language: he\n"
@@ -310,51 +310,52 @@ msgstr "Delay focus changes in mouse mode until the pointer stops moving"
 msgid "Network Login"
 msgstr "Network Login"
 
-#: ../js/extensionPrefs/main.js:122
+#: ../js/extensionPrefs/main.js:121
 #, javascript-format
 msgid "There was an error loading the preferences dialog for %s:"
 msgstr "אירעה שגיאה בעת טעינת דו־שיח ההעדפות עבור %s:"
 
-#: ../js/extensionPrefs/main.js:154
+#: ../js/extensionPrefs/main.js:153
 msgid "GNOME Shell Extensions"
 msgstr "הרחבות GNOME Shell"
 
-#: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:145
+#: ../js/gdm/authPrompt.js:147 ../js/ui/audioDeviceSelection.js:71
+#: ../js/ui/components/networkAgent.js:145
 #: ../js/ui/components/polkitAgent.js:179 ../js/ui/endSessionDialog.js:452
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
 #: ../js/ui/status/network.js:916
 msgid "Cancel"
 msgstr "ביטול"
 
-#: ../js/gdm/authPrompt.js:169 ../js/gdm/authPrompt.js:215
-#: ../js/gdm/authPrompt.js:447
+#: ../js/gdm/authPrompt.js:169 ../js/gdm/authPrompt.js:216
+#: ../js/gdm/authPrompt.js:448
 msgid "Next"
 msgstr "הבא"
 
-#: ../js/gdm/authPrompt.js:211 ../js/ui/shellMountOperation.js:403
+#: ../js/gdm/authPrompt.js:212 ../js/ui/shellMountOperation.js:403
 #: ../js/ui/unlockDialog.js:59
 msgid "Unlock"
 msgstr "שחרור"
 
-#: ../js/gdm/authPrompt.js:213
+#: ../js/gdm/authPrompt.js:214
 msgctxt "button"
 msgid "Sign In"
 msgstr "כניסה"
 
-#: ../js/gdm/loginDialog.js:281
+#: ../js/gdm/loginDialog.js:285
 msgid "Choose Session"
 msgstr "בחירת הפעלה"
 
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:431
+#: ../js/gdm/loginDialog.js:435
 msgid "Not listed?"
 msgstr "לא רשום?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: ../js/gdm/loginDialog.js:850
+#: ../js/gdm/loginDialog.js:854
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(משתמש או %s לדוגמה)"
@@ -362,12 +363,12 @@ msgstr "(משתמש או %s לדוגמה)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:855 ../js/ui/components/networkAgent.js:271
+#: ../js/gdm/loginDialog.js:859 ../js/ui/components/networkAgent.js:271
 #: ../js/ui/components/networkAgent.js:289
 msgid "Username: "
 msgstr "שם משתמש:"
 
-#: ../js/gdm/loginDialog.js:1180
+#: ../js/gdm/loginDialog.js:1196
 msgid "Login Window"
 msgstr "חלון כניסה"
 
@@ -503,15 +504,35 @@ msgstr "הוספה למועדפים"
 msgid "Show Details"
 msgstr "הצגת פרטים"
 
-#: ../js/ui/appFavorites.js:133
+#: ../js/ui/appFavorites.js:134
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "‏%s נוסף למועדפים שלך."
 
-#: ../js/ui/appFavorites.js:167
+#: ../js/ui/appFavorites.js:168
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "‏%s הוסר מהמועדפים שלך."
+
+#: ../js/ui/audioDeviceSelection.js:59
+msgid "Select Audio Device"
+msgstr "בחירת התקן שמע"
+
+#: ../js/ui/audioDeviceSelection.js:69
+msgid "Sound Settings"
+msgstr "הגדרות שמע"
+
+#: ../js/ui/audioDeviceSelection.js:78
+msgid "Headphones"
+msgstr "אזניות"
+
+#: ../js/ui/audioDeviceSelection.js:80
+msgid "Headset"
+msgstr "אזניות עם מיקרופון"
+
+#: ../js/ui/audioDeviceSelection.js:82 ../js/ui/status/volume.js:213
+msgid "Microphone"
+msgstr "מיקרופון"
 
 #: ../js/ui/backgroundMenu.js:19
 msgid "Change Background…"
@@ -526,7 +547,7 @@ msgid "Settings"
 msgstr "הגדרות"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
-#: ../js/ui/calendar.js:55
+#: ../js/ui/calendar.js:47
 msgctxt "calendar-no-work"
 msgid "06"
 msgstr "65"
@@ -536,100 +557,96 @@ msgstr "65"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: ../js/ui/calendar.js:84
+#: ../js/ui/calendar.js:76
 msgctxt "grid sunday"
 msgid "S"
 msgstr "א"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: ../js/ui/calendar.js:86
+#: ../js/ui/calendar.js:78
 msgctxt "grid monday"
 msgid "M"
 msgstr "ב"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: ../js/ui/calendar.js:88
+#: ../js/ui/calendar.js:80
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "ג"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: ../js/ui/calendar.js:90
+#: ../js/ui/calendar.js:82
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "ד"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: ../js/ui/calendar.js:92
+#: ../js/ui/calendar.js:84
 msgctxt "grid thursday"
 msgid "T"
 msgstr "ה"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: ../js/ui/calendar.js:94
+#: ../js/ui/calendar.js:86
 msgctxt "grid friday"
 msgid "F"
 msgstr "ו"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: ../js/ui/calendar.js:96
+#: ../js/ui/calendar.js:88
 msgctxt "grid saturday"
 msgid "S"
 msgstr "ש"
 
-#: ../js/ui/calendar.js:566
+#: ../js/ui/calendar.js:416
 msgid "Previous month"
 msgstr "חודש קודם"
 
-#: ../js/ui/calendar.js:576
+#: ../js/ui/calendar.js:426
 msgid "Next month"
 msgstr "חודש הבא"
 
-#: ../js/ui/calendar.js:728
-#, javascript-format
+#: ../js/ui/calendar.js:579
+#, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: ../js/ui/calendar.js:783
+#: ../js/ui/calendar.js:634
 msgid "Week %V"
 msgstr "שבוע %V"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: ../js/ui/calendar.js:1188
+#: ../js/ui/calendar.js:695
 msgctxt "event list time"
 msgid "All Day"
 msgstr "יום שלם"
 
-#: ../js/ui/calendar.js:1295
-msgid "Clear section"
-msgstr "ניקוי מקטע"
-
-#: ../js/ui/calendar.js:1522
+#: ../js/ui/calendar.js:821
 msgid "Events"
 msgstr "אירועים"
 
-#: ../js/ui/calendar.js:1531
+#: ../js/ui/calendar.js:830
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, ה־%e ב%B"
 
-#: ../js/ui/calendar.js:1535
+#: ../js/ui/calendar.js:834
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, ה־%e ב%B, %Y"
 
-#: ../js/ui/calendar.js:1620
+#: ../js/ui/calendar.js:919
 msgid "Notifications"
 msgstr "התרעות"
 
-#: ../js/ui/calendar.js:1771
+#: ../js/ui/calendar.js:1070
 msgid "No Notifications"
 msgstr "אין התרעות"
 
-#: ../js/ui/calendar.js:1774
+#: ../js/ui/calendar.js:1073
 msgid "No Events"
 msgstr "אין אירועים"
 
@@ -1003,9 +1020,25 @@ msgstr "צפייה במקור"
 msgid "Web Page"
 msgstr "דף אינטרנט"
 
+#: ../js/ui/messageList.js:543
+msgid "Clear section"
+msgstr "ניקוי מקטע"
+
 #: ../js/ui/messageTray.js:1486
 msgid "System Information"
 msgstr "פרטי המערכת"
+
+#: ../js/ui/mpris.js:194
+msgid "Unknown artist"
+msgstr "אמן לא ידוע"
+
+#: ../js/ui/mpris.js:195
+msgid "Unknown title"
+msgstr "כותרת לא ידועה"
+
+#: ../js/ui/mpris.js:217
+msgid "Media"
+msgstr "מדיה"
 
 #: ../js/ui/overview.js:84
 msgid "Undo"
@@ -1227,29 +1260,49 @@ msgstr "בהירות"
 msgid "Show Keyboard Layout"
 msgstr "הצגת פריסת המקלדת"
 
-#: ../js/ui/status/location.js:71 ../js/ui/status/location.js:177
+#: ../js/ui/status/location.js:107 ../js/ui/status/location.js:215
 msgid "Location Enabled"
 msgstr "איכון מאופשר"
 
-#: ../js/ui/status/location.js:72 ../js/ui/status/location.js:178
+#: ../js/ui/status/location.js:108 ../js/ui/status/location.js:216
 msgid "Disable"
 msgstr "השבתה"
 
-#: ../js/ui/status/location.js:73
+#: ../js/ui/status/location.js:109
 msgid "Privacy Settings"
 msgstr "הגדרות פרטיות"
 
-#: ../js/ui/status/location.js:176
+#: ../js/ui/status/location.js:214
 msgid "Location In Use"
 msgstr "איכון בשימוש"
 
-#: ../js/ui/status/location.js:180
+#: ../js/ui/status/location.js:218
 msgid "Location Disabled"
 msgstr "איכון מושבת"
 
-#: ../js/ui/status/location.js:181
+#: ../js/ui/status/location.js:219
 msgid "Enable"
 msgstr "אפשור"
+
+#: ../js/ui/status/location.js:434
+msgid "Deny Access"
+msgstr "מניעת גישה"
+
+#: ../js/ui/status/location.js:437
+msgid "Grant Access"
+msgstr "אפשור גישה"
+
+#. Translators: %s is an application name
+#: ../js/ui/status/location.js:443
+#, javascript-format
+msgid "Give %s access to your location?"
+msgstr "לתת ליישום %s גישה למיקום שלך?"
+
+#. Translators: %s is an application name
+#: ../js/ui/status/location.js:446
+#, javascript-format
+msgid "%s is requesting access to your location."
+msgstr "‏%s דורש גישה למיקום שלך."
 
 #: ../js/ui/status/network.js:101
 msgid "<unknown>"
@@ -1504,10 +1557,6 @@ msgstr "עצמת השמע השתנתה"
 #: ../js/ui/status/volume.js:162
 msgid "Volume"
 msgstr "עצמה"
-
-#: ../js/ui/status/volume.js:213
-msgid "Microphone"
-msgstr "מיקרופון"
 
 #: ../js/ui/unlockDialog.js:67
 msgid "Log in as another user"
@@ -1843,9 +1892,6 @@ msgstr "המשתמש בחר להתעלם מתיבת דו־שיח האימות"
 #~ msgid "View account"
 #~ msgstr "צפייה בחשבון"
 
-#~ msgid "Unknown reason"
-#~ msgstr "סיבה לא ידועה"
-
 #~ msgid "Show the message list"
 #~ msgstr "הצגת רשימת הודעות"
 
@@ -2039,9 +2085,6 @@ msgstr "המשתמש בחר להתעלם מתיבת דו־שיח האימות"
 #~ msgid "Device %s wants access to the service '%s'"
 #~ msgstr "ההתקן %s מעוניין לגשת אל השירות '%s'"
 
-#~ msgid "Always grant access"
-#~ msgstr "תמיד להעניק גישה"
-
 #~ msgid "Grant this time only"
 #~ msgstr "הענקת גישה הפעם בלבד"
 
@@ -2208,9 +2251,6 @@ msgstr "המשתמש בחר להתעלם מתיבת דו־שיח האימות"
 
 #~ msgid "Visibility"
 #~ msgstr "הצגה"
-
-#~ msgid "Send Files to Device…"
-#~ msgstr "שליחת קובץ להתקן…"
 
 #~ msgid "Set Up a New Device…"
 #~ msgstr "הגדרת התקן חדש…"
