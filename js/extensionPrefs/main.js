@@ -23,10 +23,6 @@ const GnomeShellIface = '<node> \
 </interface> \
 </node>';
 
-const customCss = '.prefs-button { \
-                       border-radius: 20px; \
-                   }';
-
 const GnomeShellProxy = Gio.DBusProxy.makeProxyWrapper(GnomeShellIface);
 
 function stripPrefix(string, prefix) {
@@ -175,21 +171,6 @@ const Application = new Lang.Class({
         this._window.show_all();
     },
 
-    _addCustomStyle: function() {
-        let provider = new Gtk.CssProvider();
-
-        try {
-            provider.load_from_data(customCss, -1);
-        } catch(e) {
-            log('Failed to add application style');
-            return;
-        }
-
-        let screen = this._window.window.get_screen();
-        let priority = Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION;
-        Gtk.StyleContext.add_provider_for_screen(screen, provider, priority);
-    },
-
     _sortList: function(row1, row2) {
         let name1 = ExtensionUtils.extensions[row1.uuid].metadata.name;
         let name2 = ExtensionUtils.extensions[row2.uuid].metadata.name;
@@ -238,7 +219,6 @@ const Application = new Lang.Class({
 
     _onStartup: function(app) {
         this._buildUI(app);
-        this._addCustomStyle();
         this._scanExtensions();
     },
 
@@ -315,7 +295,7 @@ const ExtensionRow = new Lang.Class({
         button.add(new Gtk.Image({ icon_name: 'emblem-system-symbolic',
                                    icon_size: Gtk.IconSize.BUTTON,
                                    visible: true }));
-        button.get_style_context().add_class('prefs-button');
+        button.get_style_context().add_class('circular');
         hbox.add(button);
 
         this.prefsButton = button;
