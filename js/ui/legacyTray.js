@@ -50,15 +50,14 @@ const LegacyTray = new Lang.Class({
         this._slideLayout.translationX = 0;
         this._slideLayout.slideDirection = OverviewControls.SlideDirection.LEFT;
 
-        this._slider = new St.Widget({ style_class: 'legacy-tray',
-                                       x_expand: true, y_expand: true,
+        this._slider = new St.Widget({ x_expand: true, y_expand: true,
                                        x_align: Clutter.ActorAlign.START,
                                        y_align: Clutter.ActorAlign.END,
                                        layout_manager: this._slideLayout });
         this.actor.add_actor(this._slider);
         this._slider.connect('notify::allocation', Lang.bind(this, this._syncBarrier));
 
-        this._box = new St.BoxLayout();
+        this._box = new St.BoxLayout({ style_class: 'legacy-tray' });
         this._slider.add_actor(this._box);
 
         this._concealHandle = new St.Button({ style_class: 'legacy-tray-handle',
