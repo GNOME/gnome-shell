@@ -417,11 +417,11 @@ const GeolocationDialog = new Lang.Class({
         this._title = new St.Label({ style_class: 'geolocation-dialog-title headline' });
         messageBox.add_actor(this._title);
 
-        this._desc = new St.Label();
-        messageBox.add_actor(this._desc);
-
         this._reason = new St.Label();
         messageBox.add_actor(this._reason);
+
+        this._privacyNote = new St.Label();
+        messageBox.add_actor(this._privacyNote);
 
         let button = this.addButton({ label: _("Deny Access"),
                                       action: Lang.bind(this, this._onDenyClicked),
@@ -434,8 +434,7 @@ const GeolocationDialog = new Lang.Class({
         /* Translators: %s is an application name */
         this._title.text = _("Give %s access to your location?").format(name);
 
-        /* Translators: %s is an application name */
-        this._desc.text = _("%s is requesting access to your location.").format(name);
+        this._privacyNote.text = _("Location access can be changed at any time from the privacy settings.");
 
         if (reason)
             this._reason.text = reason;
