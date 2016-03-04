@@ -417,7 +417,7 @@ const GeolocationDialog = new Lang.Class({
         this._title = new St.Label({ style_class: 'geolocation-dialog-title headline' });
         messageBox.add_actor(this._title);
 
-        this._reason = new St.Label();
+        this._reason = new St.Label({ style_class: 'geolocation-dialog-reason' });
         messageBox.add_actor(this._reason);
 
         this._privacyNote = new St.Label();
