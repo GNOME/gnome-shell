@@ -416,8 +416,10 @@ struct _MetaWindow
    *
    * For X11 windows, this matches XGetGeometry of the toplevel.
    *
-   * For Wayland windows, this matches the buffer size and where
-   * the surface actor is positioned. */
+   * For Wayland windows, the position matches the position of the
+   * surface associated with shell surface (wl_shell_surface, xdg_surface
+   * etc). The size matches the size surface size as displayed in the stage.
+   */
   MetaRectangle buffer_rect;
 
   /* Cached net_wm_icon_geometry */

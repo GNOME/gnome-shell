@@ -361,12 +361,16 @@ void
 meta_wayland_surface_apply_window_state (MetaWaylandSurface      *surface,
                                          MetaWaylandPendingState *pending)
 {
+  MetaSurfaceActorWayland *actor =
+    META_SURFACE_ACTOR_WAYLAND (surface->surface_actor);
   MetaWindow *window = surface->window;
   MetaWaylandBuffer *buffer = surface->buffer_ref.buffer;
   CoglTexture *texture = buffer->texture;
+  double scale;
 
-  window->buffer_rect.width = cogl_texture_get_width (texture);
-  window->buffer_rect.height = cogl_texture_get_height (texture);
+  scale = meta_surface_actor_wayland_get_scale (actor);
+  window->buffer_rect.width = cogl_texture_get_width (texture) * scale;
+  window->buffer_rect.height = cogl_texture_get_height (texture) * scale;
 }
 
 static void

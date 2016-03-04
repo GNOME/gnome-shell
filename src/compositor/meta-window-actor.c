@@ -612,20 +612,6 @@ meta_window_actor_get_shape_bounds (MetaWindowActor       *self,
   MetaWindowActorPrivate *priv = self->priv;
 
   cairo_region_get_extents (priv->shape_region, bounds);
-
-#ifdef HAVE_WAYLAND
-  if (META_IS_SURFACE_ACTOR_WAYLAND (priv->surface))
-    {
-      MetaSurfaceActorWayland *surface_actor =
-        META_SURFACE_ACTOR_WAYLAND (priv->surface);
-      double scale = meta_surface_actor_wayland_get_scale (surface_actor);
-
-      bounds->x *= scale;
-      bounds->y *= scale;
-      bounds->width *= scale;
-      bounds->height *= scale;
-    }
-#endif
 }
 
 static void
