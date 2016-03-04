@@ -726,8 +726,6 @@ apply_pending_state (MetaWaylandSurface      *surface,
                  pending_state_signals[PENDING_STATE_SIGNAL_APPLIED],
                  0);
 
-  meta_surface_actor_wayland_sync_state (surface_actor_wayland);
-
   pending_state_reset (pending);
 
   g_list_foreach (surface->subsurfaces, parent_surface_state_applied, NULL);
@@ -1983,6 +1981,9 @@ actor_surface_commit (MetaWaylandSurfaceRole  *surface_role,
 {
   MetaWaylandSurface *surface =
     meta_wayland_surface_role_get_surface (surface_role);
+
+  meta_surface_actor_wayland_sync_state (
+    META_SURFACE_ACTOR_WAYLAND (surface->surface_actor));
 
   queue_surface_actor_frame_callbacks (surface, pending);
 }
