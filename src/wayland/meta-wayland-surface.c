@@ -527,8 +527,8 @@ meta_wayland_pending_state_class_init (MetaWaylandPendingStateClass *klass)
 }
 
 static void
-subsurface_surface_commit (MetaWaylandSurfaceRole  *surface_role,
-                           MetaWaylandPendingState *pending)
+subsurface_role_commit (MetaWaylandSurfaceRole  *surface_role,
+                        MetaWaylandPendingState *pending)
 {
   MetaWaylandSurface *surface =
     meta_wayland_surface_role_get_surface (surface_role);
@@ -2055,7 +2055,7 @@ meta_wayland_surface_role_subsurface_class_init (MetaWaylandSurfaceRoleSubsurfac
   MetaWaylandSurfaceRoleClass *surface_role_class =
     META_WAYLAND_SURFACE_ROLE_CLASS (klass);
 
-  surface_role_class->commit = subsurface_surface_commit;
+  surface_role_class->commit = subsurface_role_commit;
 }
 
 cairo_region_t *
