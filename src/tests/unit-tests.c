@@ -213,10 +213,10 @@ main (int argc, char *argv[])
 
   g_option_context_free (ctx);
 
-  char *fake_args[] = { NULL, "--wayland" };
+  char *fake_args[] = { NULL, "--wayland", "--nested" };
   fake_args[0] = argv[0];
   char **fake_argv = fake_args;
-  int fake_argc = 2;
+  int fake_argc = G_N_ELEMENTS (fake_args);
 
   ctx = meta_get_option_context ();
   if (!g_option_context_parse (ctx, &fake_argc, &fake_argv, &error))

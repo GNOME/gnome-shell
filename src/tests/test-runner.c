@@ -1136,10 +1136,10 @@ main (int argc, char **argv)
 
   /* Then initalize mutter with a different set of arguments */
 
-  char *fake_args[] = { NULL, (char *)"--wayland" };
+  char *fake_args[] = { NULL, (char *)"--wayland", (char *)"--nested" };
   fake_args[0] = argv[0];
   char **fake_argv = fake_args;
-  int fake_argc = 2;
+  int fake_argc = G_N_ELEMENTS (fake_args);
 
   char *basename = g_path_get_basename (argv[0]);
   char *dirname = g_path_get_dirname (argv[0]);
