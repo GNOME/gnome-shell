@@ -93,7 +93,7 @@ G_DECLARE_DERIVABLE_TYPE (MetaStartupNotificationSequence,
 
 typedef struct {
   gchar *id;
-  time_t timestamp;
+  gint64 timestamp;
 } MetaStartupNotificationSequencePrivate;
 
 struct _MetaStartupNotificationSequenceClass {
@@ -385,9 +385,12 @@ meta_startup_notification_sequence_x11_class_init (MetaStartupNotificationSequen
 static MetaStartupNotificationSequence *
 meta_startup_notification_sequence_x11_new (SnStartupSequence *seq)
 {
+  gint64 timestamp;
+
+  timestamp = sn_startup_sequence_get_timestamp (seq) * 1000;
   return g_object_new (META_TYPE_STARTUP_NOTIFICATION_SEQUENCE_X11,
                        "id", sn_startup_sequence_get_id (seq),
-                       "timestamp", sn_startup_sequence_get_timestamp (seq) * 1000,
+                       "timestamp", timestamp,
                        "seq", seq,
                        NULL);
 }
