@@ -2023,10 +2023,10 @@ static const struct gtk_surface1_interface meta_wayland_gtk_surface_interface = 
 };
 
 static void
-get_gtk_surface (struct wl_client *client,
-                 struct wl_resource *resource,
-                 guint32 id,
-                 struct wl_resource *surface_resource)
+gtk_shell_get_gtk_surface (struct wl_client   *client,
+                           struct wl_resource *resource,
+                           guint32             id,
+                           struct wl_resource *surface_resource)
 {
   MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
 
@@ -2046,9 +2046,9 @@ get_gtk_surface (struct wl_client *client,
 }
 
 static void
-set_startup_id (struct wl_client   *client,
-                struct wl_resource *resource,
-                const char         *startup_id)
+gtk_shell_set_startup_id (struct wl_client   *client,
+                          struct wl_resource *resource,
+                          const char         *startup_id)
 {
   MetaDisplay *display;
 
@@ -2058,8 +2058,8 @@ set_startup_id (struct wl_client   *client,
 }
 
 static const struct gtk_shell1_interface meta_wayland_gtk_shell_interface = {
-  get_gtk_surface,
-  set_startup_id
+  gtk_shell_get_gtk_surface,
+  gtk_shell_set_startup_id,
 };
 
 static void
