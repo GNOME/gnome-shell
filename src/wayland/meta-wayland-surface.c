@@ -48,6 +48,7 @@
 #include "display-private.h"
 #include "window-private.h"
 #include "meta-window-wayland.h"
+#include "bell.h"
 
 #include "compositor/region-utils.h"
 
@@ -2057,9 +2058,33 @@ gtk_shell_set_startup_id (struct wl_client   *client,
                                              startup_id);
 }
 
+static void
+gtk_shell_system_bell (struct wl_client   *client,
+                       struct wl_resource *resource,
+                       struct wl_resource *gtk_surface_resource)
+{
+  MetaDisplay *display = meta_get_display ();
+
+  if (gtk_surface_resource)
+    {
+      MetaWaylandSurface *surface =
+        wl_resource_get_user_data (gtk_surface_resource);
+
+      if (!surface->window)
+        return;
+
+      meta_bell_notify (display, surface->window);
+    }
+  else
+    {
+      meta_bell_notify (display, NULL);
+    }
+}
+
 static const struct gtk_shell1_interface meta_wayland_gtk_shell_interface = {
   gtk_shell_get_gtk_surface,
   gtk_shell_set_startup_id,
+  gtk_shell_system_bell,
 };
 
 static void
