@@ -1318,11 +1318,6 @@ cursor_surface_role_dispose (GObject *object)
     meta_wayland_surface_role_get_surface (META_WAYLAND_SURFACE_ROLE (object));
   MetaWaylandCompositor *compositor = meta_wayland_compositor_get_default ();
   MetaWaylandPointer *pointer = &compositor->seat->pointer;
-  MetaCursorTracker *cursor_tracker = meta_cursor_tracker_get_for_screen (NULL);
-
-  g_signal_handlers_disconnect_by_func (cursor_tracker,
-                                        (gpointer) cursor_sprite_prepare_at,
-                                        cursor_role);
 
   if (pointer->cursor_surface == surface)
     pointer->cursor_surface = NULL;
