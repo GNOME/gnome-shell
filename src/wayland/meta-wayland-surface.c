@@ -2016,7 +2016,7 @@ gtk_surface_unset_modal (struct wl_client   *client,
   meta_window_set_type (surface->window, META_WINDOW_NORMAL);
 }
 
-static const struct gtk_surface_interface meta_wayland_gtk_surface_interface = {
+static const struct gtk_surface1_interface meta_wayland_gtk_surface_interface = {
   gtk_surface_set_dbus_properties,
   gtk_surface_set_modal,
   gtk_surface_unset_modal,
@@ -2038,7 +2038,10 @@ get_gtk_surface (struct wl_client *client,
       return;
     }
 
-  surface->gtk_surface = wl_resource_create (client, &gtk_surface_interface, wl_resource_get_version (resource), id);
+  surface->gtk_surface = wl_resource_create (client,
+                                             &gtk_surface1_interface,
+                                             wl_resource_get_version (resource),
+                                             id);
   wl_resource_set_implementation (surface->gtk_surface, &meta_wayland_gtk_surface_interface, surface, gtk_surface_destructor);
 }
 
@@ -2054,7 +2057,7 @@ set_startup_id (struct wl_client   *client,
                                              startup_id);
 }
 
-static const struct gtk_shell_interface meta_wayland_gtk_shell_interface = {
+static const struct gtk_shell1_interface meta_wayland_gtk_shell_interface = {
   get_gtk_surface,
   set_startup_id
 };
@@ -2068,24 +2071,13 @@ bind_gtk_shell (struct wl_client *client,
   struct wl_resource *resource;
   uint32_t capabilities = 0;
 
-  resource = wl_resource_create (client, &gtk_shell_interface, version, id);
-
-  if (version < 2)
-    {
-      wl_resource_post_error (resource,
-                              WL_DISPLAY_ERROR_INVALID_OBJECT,
-                              "Incompatible gtk-shell version "
-                              "(supported version: %d)",
-                              META_GTK_SHELL_VERSION);
-      return;
-    }
-
+  resource = wl_resource_create (client, &gtk_shell1_interface, version, id);
   wl_resource_set_implementation (resource, &meta_wayland_gtk_shell_interface, data, NULL);
 
   if (!meta_prefs_get_show_fallback_app_menu ())
-    capabilities = GTK_SHELL_CAPABILITY_GLOBAL_APP_MENU;
+    capabilities = GTK_SHELL1_CAPABILITY_GLOBAL_APP_MENU;
 
-  gtk_shell_send_capabilities (resource, capabilities);
+  gtk_shell1_send_capabilities (resource, capabilities);
 }
 
 static void
@@ -2348,8 +2340,8 @@ meta_wayland_shell_init (MetaWaylandCompositor *compositor)
     g_error ("Failed to register a global wl-shell object");
 
   if (wl_global_create (compositor->wayland_display,
-                        &gtk_shell_interface,
-                        META_GTK_SHELL_VERSION,
+                        &gtk_shell1_interface,
+                        META_GTK_SHELL1_VERSION,
                         compositor, bind_gtk_shell) == NULL)
     g_error ("Failed to register a global gtk-shell object");
 
