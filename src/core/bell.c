@@ -203,33 +203,18 @@ bell_audible_notify (MetaDisplay *display,
   return FALSE;
 }
 
-void
+gboolean
 meta_bell_notify (MetaDisplay *display,
-		  XkbAnyEvent *xkb_ev)
+                  MetaWindow  *window)
 {
-  MetaWindow *window;
-  XkbBellNotifyEvent *xkb_bell_event = (XkbBellNotifyEvent*) xkb_ev;
-
-  window = meta_display_lookup_x_window (display, xkb_bell_event->window);
-  if (!window && display->focus_window && display->focus_window->frame)
-    window = display->focus_window;
-
   /* flash something */
   if (meta_prefs_get_visual_bell ())
     bell_visual_notify (display, window);
 
   if (meta_prefs_bell_is_audible ())
-    {
-      if (!bell_audible_notify (display, window))
-        {
-          /* Force a classic bell if the libcanberra bell failed. */
-          XkbForceDeviceBell (display->xdisplay,
-                              xkb_bell_event->device,
-                              xkb_bell_event->bell_class,
-                              xkb_bell_event->bell_id,
-                              xkb_bell_event->percent);
-        }
-    }
+    return bell_audible_notify (display, window);
+
+  return TRUE;
 }
 
 void

@@ -25,15 +25,14 @@
 /**
  * meta_bell_notify:
  * @display: The display the bell event came in on
- * @xkb_ev: The bell event we just received
+ * @window: The window the bell event was received on
  *
- * Gives the user some kind of visual bell; in fact, this is our response
- * to any kind of bell request, but we set it up so that we only get
- * notified about visual bells, and X deals with audible ones.
- *
- * If the configure script found we had no XKB, this does not exist.
+ * Gives the user some kind of aural or visual feedback, such as a bell sound
+ * or flash. What type of feedback is invoked depends on the configuration.
+ * If the aural feedback could not be invoked, FALSE is returned.
  */
-void meta_bell_notify (MetaDisplay *display, XkbAnyEvent *xkb_ev);
+gboolean meta_bell_notify (MetaDisplay *display,
+                           MetaWindow  *window);
 
 /**
  * meta_bell_set_audible:
