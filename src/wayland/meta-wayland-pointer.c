@@ -1011,8 +1011,9 @@ cursor_sprite_prepare_at (MetaCursorSprite *cursor_sprite,
   if (!meta_xwayland_is_xwayland_surface (surface))
     {
       monitor = meta_screen_get_monitor_for_point (screen, x, y);
-      meta_cursor_sprite_set_texture_scale (cursor_sprite,
-                                            (float)monitor->scale / surface->scale);
+      if (monitor)
+        meta_cursor_sprite_set_texture_scale (cursor_sprite,
+                                              (float)monitor->scale / surface->scale);
     }
   meta_wayland_surface_update_outputs (surface);
 }
