@@ -1249,6 +1249,48 @@ meta_compositor_flash_screen (MetaCompositor *compositor,
   clutter_actor_restore_easing_state (flash);
 }
 
+static void
+window_flash_out_completed (ClutterTimeline *timeline,
+                            gboolean         is_finished,
+                            gpointer         user_data)
+{
+  ClutterActor *flash = CLUTTER_ACTOR (user_data);
+  clutter_actor_destroy (flash);
+}
+
+void
+meta_compositor_flash_window (MetaCompositor *compositor,
+                              MetaWindow     *window)
+{
+  ClutterActor *window_actor =
+    CLUTTER_ACTOR (meta_window_get_compositor_private (window));
+  ClutterActor *flash;
+  ClutterTransition *transition;
+
+  flash = clutter_actor_new ();
+  clutter_actor_set_background_color (flash, CLUTTER_COLOR_Black);
+  clutter_actor_set_size (flash, window->rect.width, window->rect.height);
+  clutter_actor_set_position (flash,
+                              window->custom_frame_extents.left,
+                              window->custom_frame_extents.top);
+  clutter_actor_set_opacity (flash, 0);
+  clutter_actor_add_child (window_actor, flash);
+
+  clutter_actor_save_easing_state (flash);
+  clutter_actor_set_easing_mode (flash, CLUTTER_EASE_IN_QUAD);
+  clutter_actor_set_easing_duration (flash, FLASH_TIME_MS);
+  clutter_actor_set_opacity (flash, 192);
+
+  transition = clutter_actor_get_transition (flash, "opacity");
+  clutter_timeline_set_auto_reverse (CLUTTER_TIMELINE (transition), TRUE);
+  clutter_timeline_set_repeat_count (CLUTTER_TIMELINE (transition), 2);
+
+  g_signal_connect (transition, "stopped",
+                    G_CALLBACK (window_flash_out_completed), flash);
+
+  clutter_actor_restore_easing_state (flash);
+}
+
 /**
  * meta_compositor_monotonic_time_to_server_time:
  * @display: a #MetaDisplay

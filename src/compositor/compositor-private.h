@@ -60,4 +60,7 @@ void     meta_end_modal_for_plugin   (MetaCompositor   *compositor,
 gint64 meta_compositor_monotonic_time_to_server_time (MetaDisplay *display,
                                                       gint64       monotonic_time);
 
+void meta_compositor_flash_window (MetaCompositor *compositor,
+                                   MetaWindow     *window);
+
 #endif /* META_COMPOSITOR_PRIVATE_H */

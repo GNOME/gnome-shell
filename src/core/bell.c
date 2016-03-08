@@ -52,6 +52,7 @@
 #include "screen-private.h"
 #include "window-private.h"
 #include "util-private.h"
+#include "compositor/compositor-private.h"
 #include <meta/prefs.h>
 #include <meta/compositor.h>
 #ifdef HAVE_LIBCANBERRA
@@ -131,6 +132,12 @@ bell_flash_window_frame (MetaWindow *window)
   g_source_set_name_by_id (id, "[mutter] bell_unflash_frame");
 }
 
+static void
+bell_flash_window (MetaWindow *window)
+{
+  meta_compositor_flash_window (window->display->compositor, window);
+}
+
 /**
  * bell_flash_frame:
  * @display:  The display the bell event came in on
@@ -146,7 +153,7 @@ bell_flash_frame (MetaDisplay *display,
   if (window && window->frame)
     bell_flash_window_frame (window);
   else
-    bell_flash_fullscreen (display);
+    bell_flash_window (window);
 }
 
 /**
