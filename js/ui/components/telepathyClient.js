@@ -469,6 +469,7 @@ const ChatSource = new Lang.Class({
 
     destroy: function(reason) {
         if (this._client.is_handling_channel(this._channel)) {
+            this._ackMessages();
             // The chat box has been destroyed so it can't
             // handle the channel any more.
             this._channel.close_async(function(channel, result) {
