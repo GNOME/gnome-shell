@@ -2017,10 +2017,26 @@ gtk_surface_unset_modal (struct wl_client   *client,
   meta_window_set_type (surface->window, META_WINDOW_NORMAL);
 }
 
+static void
+gtk_surface_present (struct wl_client   *client,
+                     struct wl_resource *resource,
+                     uint32_t            timestamp)
+{
+  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
+  MetaWindow *window = surface->window;
+
+  if (!window)
+    return;
+
+  meta_window_activate_full (window, timestamp,
+                             META_CLIENT_TYPE_APPLICATION, NULL);
+}
+
 static const struct gtk_surface1_interface meta_wayland_gtk_surface_interface = {
   gtk_surface_set_dbus_properties,
   gtk_surface_set_modal,
   gtk_surface_unset_modal,
+  gtk_surface_present,
 };
 
 static void
