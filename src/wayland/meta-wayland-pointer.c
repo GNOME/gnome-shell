@@ -863,8 +863,7 @@ meta_wayland_pointer_start_grab (MetaWaylandPointer *pointer,
   interface = pointer->grab->interface;
   grab->pointer = pointer;
 
-  if (pointer->current)
-    interface->focus (pointer->grab, pointer->current);
+  interface->focus (pointer->grab, pointer->current);
 }
 
 void
