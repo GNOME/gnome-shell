@@ -29,6 +29,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <glib.h>
+#include <glib-unix.h>
 
 #include "meta-wayland-data-device.h"
 #include "meta-wayland-data-device-private.h"
@@ -38,6 +39,8 @@
 #include "meta-dnd-actor-private.h"
 
 #include "gtk-primary-selection-server-protocol.h"
+
+#define ROOTWINDOW_DROP_MIME "application/x-rootwindow-drop"
 
 #define ALL_ACTIONS (WL_DATA_DEVICE_MANAGER_DND_ACTION_COPY | \
                      WL_DATA_DEVICE_MANAGER_DND_ACTION_MOVE | \
@@ -726,6 +729,30 @@ meta_wayland_drag_grab_set_source (MetaWaylandDragGrab   *drag_grab,
                        drag_grab);
 }
 
+static void
+meta_wayland_drag_source_fake_acceptance (MetaWaylandDataSource *source,
+                                          const gchar           *mimetype)
+{
+  uint32_t actions, user_action, action = 0;
+
+  actions = meta_wayland_data_source_get_actions (source);
+  user_action = meta_wayland_data_source_get_user_action (source);
+
+  /* Pick a suitable action */
+  if ((user_action & actions) != 0)
+    action = user_action;
+  else if (actions != 0)
+    action = 1 << (ffs (actions) - 1);
+
+  /* Bail out if there is none, source didn't cooperate */
+  if (action == 0)
+    return;
+
+  meta_wayland_data_source_target (source, mimetype);
+  meta_wayland_data_source_set_current_action (source, action);
+  meta_wayland_data_source_set_has_target (source, TRUE);
+}
+
 void
 meta_wayland_drag_grab_set_focus (MetaWaylandDragGrab *drag_grab,
                                   MetaWaylandSurface  *surface)
@@ -749,6 +776,12 @@ meta_wayland_drag_grab_set_focus (MetaWaylandDragGrab *drag_grab,
 
   if (source)
     meta_wayland_data_source_set_current_offer (source, NULL);
+
+  if (!surface && source &&
+      meta_wayland_data_source_has_mime_type (source, ROOTWINDOW_DROP_MIME))
+    meta_wayland_drag_source_fake_acceptance (source, ROOTWINDOW_DROP_MIME);
+  else if (source)
+    meta_wayland_data_source_target (source, NULL);
 
   if (!surface)
     return;
@@ -855,6 +888,47 @@ data_device_end_drag_grab (MetaWaylandDragGrab *drag_grab)
   g_slice_free (MetaWaylandDragGrab, drag_grab);
 }
 
+static gboolean
+on_fake_read_hup (GIOChannel   *channel,
+                  GIOCondition  condition,
+                  gpointer      data)
+{
+  MetaWaylandDataSource *source = data;
+
+  meta_wayland_data_source_notify_finish (source);
+  g_io_channel_shutdown (channel, FALSE, NULL);
+  g_io_channel_unref (channel);
+
+  return G_SOURCE_REMOVE;
+}
+
+static void
+meta_wayland_data_source_fake_read (MetaWaylandDataSource *source,
+                                    const gchar           *mimetype)
+{
+  GIOChannel *channel;
+  int p[2];
+
+  if (!g_unix_open_pipe (p, FD_CLOEXEC, NULL))
+    {
+      meta_wayland_data_source_notify_finish (source);
+      return;
+    }
+
+  if (!g_unix_set_fd_nonblocking (p[0], TRUE, NULL) ||
+      !g_unix_set_fd_nonblocking (p[1], TRUE, NULL))
+    {
+      meta_wayland_data_source_notify_finish (source);
+      close (p[0]);
+      close (p[1]);
+      return;
+    }
+
+  meta_wayland_data_source_send (source, mimetype, p[1]);
+  channel = g_io_channel_unix_new (p[0]);
+  g_io_add_watch (channel, G_IO_HUP, on_fake_read_hup, source);
+}
+
 static void
 drag_grab_button (MetaWaylandPointerGrab *grab,
 		  const ClutterEvent     *event)
@@ -881,6 +955,15 @@ drag_grab_button (MetaWaylandPointerGrab *grab,
           meta_wayland_data_source_notify_drop_performed (source);
 
           meta_wayland_source_update_in_ask (source);
+          success = TRUE;
+        }
+      else if (!drag_grab->drag_focus && source &&
+               meta_wayland_data_source_has_target (source) &&
+               meta_wayland_data_source_get_current_action (source) &&
+               meta_wayland_data_source_has_mime_type (source, ROOTWINDOW_DROP_MIME))
+        {
+          /* Perform a fake read, that will lead to notify_finish() being called */
+          meta_wayland_data_source_fake_read (source, ROOTWINDOW_DROP_MIME);
           success = TRUE;
         }
       else
