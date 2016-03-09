@@ -979,7 +979,7 @@ meta_wayland_data_device_start_drag (MetaWaylandDataDevice                 *data
 {
   MetaWaylandSeat *seat = wl_container_of (data_device, seat, data_device);
   MetaWaylandDragGrab *drag_grab;
-  ClutterPoint pos, stage_pos;
+  ClutterPoint pos, surface_pos;
   ClutterModifierType modifiers;
 
   data_device->current_grab = drag_grab = g_slice_new0 (MetaWaylandDragGrab);
@@ -998,11 +998,12 @@ meta_wayland_data_device_start_drag (MetaWaylandDataDevice                 *data
   wl_resource_add_destroy_listener (surface->resource,
                                     &drag_grab->drag_origin_listener);
 
-  clutter_input_device_get_coords (seat->pointer.device, NULL, &pos);
   clutter_actor_transform_stage_point (CLUTTER_ACTOR (meta_surface_actor_get_texture (surface->surface_actor)),
-                                       pos.x, pos.y, &stage_pos.x, &stage_pos.y);
-  drag_grab->drag_start_x = stage_pos.x;
-  drag_grab->drag_start_y = stage_pos.y;
+                                       seat->pointer.grab_x,
+                                       seat->pointer.grab_y,
+                                       &surface_pos.x, &surface_pos.y);
+  drag_grab->drag_start_x = surface_pos.x;
+  drag_grab->drag_start_y = surface_pos.y;
 
   modifiers = clutter_input_device_get_modifier_state (seat->pointer.device);
   drag_grab->buttons = modifiers &
@@ -1030,6 +1031,7 @@ meta_wayland_data_device_start_drag (MetaWaylandDataDevice                 *data
       clutter_actor_add_child (drag_grab->feedback_actor,
                                CLUTTER_ACTOR (drag_grab->drag_surface->surface_actor));
 
+      clutter_input_device_get_coords (seat->pointer.device, NULL, &pos);
       meta_feedback_actor_set_position (META_FEEDBACK_ACTOR (drag_grab->feedback_actor),
                                         pos.x, pos.y);
     }
