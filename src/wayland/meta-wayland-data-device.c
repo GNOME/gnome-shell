@@ -729,6 +729,7 @@ meta_wayland_drag_grab_set_focus (MetaWaylandDragGrab *drag_grab,
                                   MetaWaylandSurface  *surface)
 {
   MetaWaylandSeat *seat = drag_grab->seat;
+  MetaWaylandDataSource *source = drag_grab->drag_data_source;
   struct wl_client *client;
   struct wl_resource *data_device_resource, *offer = NULL;
 
@@ -741,13 +742,13 @@ meta_wayland_drag_grab_set_focus (MetaWaylandDragGrab *drag_grab,
       drag_grab->drag_focus = NULL;
     }
 
-  if (drag_grab->drag_data_source)
-    meta_wayland_data_source_set_current_offer (drag_grab->drag_data_source, NULL);
+  if (source)
+    meta_wayland_data_source_set_current_offer (source, NULL);
 
   if (!surface)
     return;
 
-  if (!drag_grab->drag_data_source &&
+  if (!source &&
       wl_resource_get_client (surface->resource) != drag_grab->drag_client)
     return;
 
@@ -755,9 +756,8 @@ meta_wayland_drag_grab_set_focus (MetaWaylandDragGrab *drag_grab,
 
   data_device_resource = wl_resource_find_for_client (&seat->data_device.resource_list, client);
 
-  if (drag_grab->drag_data_source && data_device_resource)
-    offer = meta_wayland_data_source_send_offer (drag_grab->drag_data_source,
-                                                 data_device_resource);
+  if (source && data_device_resource)
+    offer = meta_wayland_data_source_send_offer (source, data_device_resource);
 
   drag_grab->drag_focus = surface;
   drag_grab->drag_focus_data_device = data_device_resource;
