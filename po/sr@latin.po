@@ -1,19 +1,21 @@
 # Serbian translation of mutter.
-# Courtesy of Prevod.org team (http://prevod.org/) -- 2003—2015.
+# Courtesy of Prevod.org team (http://prevod.org/) -- 2003—2016.
 # This file is distributed under the same license as the mutter package.
+#
+# Translators: 
 # Goran Rakić <grakic@devbase.net>
 # Danilo Šegan <danilo@prevod.org>, 2005.
 # Miloš Popović <gpopac@gmail.com>, 2010.
-# Miroslav Nikolić <miroslavnikolic@rocketmail.com>, 2011—2015.
+# Miroslav Nikolić <miroslavnikolic@rocketmail.com>, 2011—2016.
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=mutter&"
 "keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-03-04 11:14+0000\n"
-"PO-Revision-Date: 2015-03-04 19:46+0200\n"
+"POT-Creation-Date: 2016-03-09 01:41+0000\n"
+"PO-Revision-Date: 2016-03-09 09:52+0200\n"
 "Last-Translator: Miroslav Nikolić <miroslavnikolic@rocketmail.com>\n"
-"Language-Team: Serbian <gnom@prevod.org>\n"
+"Language-Team: Serbian <(nothing)>\n"
 "Language: sr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -436,46 +438,41 @@ msgid "Switch to VT 7"
 msgstr "Prelazak na VT 7"
 
 #: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:8
-#| msgid "Switch to VT 1"
 msgid "Switch to VT 8"
 msgstr "Prelazak na VT 8"
 
 #: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:9
-#| msgid "Switch to VT 1"
 msgid "Switch to VT 9"
 msgstr "Prelazak na VT 9"
 
 #: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:10
-#| msgid "Switch to VT 1"
 msgid "Switch to VT 10"
 msgstr "Prelazak na VT 10"
 
 #: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:11
-#| msgid "Switch to VT 1"
 msgid "Switch to VT 11"
 msgstr "Prelazak na VT 11"
 
 #: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:12
-#| msgid "Switch to VT 1"
 msgid "Switch to VT 12"
 msgstr "Prelazak na VT 12"
 
-#: ../src/backends/meta-monitor-manager.c:364
+#: ../src/backends/meta-monitor-manager.c:518
 msgid "Built-in display"
 msgstr "Ugrađeni displej"
 
-#: ../src/backends/meta-monitor-manager.c:391
+#: ../src/backends/meta-monitor-manager.c:544
 msgid "Unknown"
 msgstr "Nepoznato"
 
-#: ../src/backends/meta-monitor-manager.c:393
+#: ../src/backends/meta-monitor-manager.c:546
 msgid "Unknown Display"
 msgstr "Nepoznat displej"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: ../src/backends/meta-monitor-manager.c:401
+#: ../src/backends/meta-monitor-manager.c:554
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
@@ -519,40 +516,45 @@ msgstr "_Sačekaj"
 msgid "_Force Quit"
 msgstr "_Primoraj izlaz"
 
-#: ../src/core/display.c:562
+#: ../src/core/display.c:555
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Nisam uspeo da otvorim ekran „%s“ Iks sistema prozora\n"
 
-#: ../src/core/main.c:176
+#: ../src/core/main.c:181
 msgid "Disable connection to session manager"
 msgstr "Isključuje vezu sa upravnikom sesije"
 
-#: ../src/core/main.c:182
+#: ../src/core/main.c:187
 msgid "Replace the running window manager"
 msgstr "Menja tekućeg upravnika prozorima"
 
-#: ../src/core/main.c:188
+#: ../src/core/main.c:193
 msgid "Specify session management ID"
 msgstr "Navodi IB upravnika sesije"
 
-#: ../src/core/main.c:193
+#: ../src/core/main.c:198
 msgid "X Display to use"
 msgstr "Iks ekran koji će biti korišćen"
 
-#: ../src/core/main.c:199
+#: ../src/core/main.c:204
 msgid "Initialize session from savefile"
 msgstr "Pokreće sesiju iz datoteke čuvanja"
 
-#: ../src/core/main.c:205
+#: ../src/core/main.c:210
 msgid "Make X calls synchronous"
 msgstr "Čini Iks pozive usklađenim"
 
-#: ../src/core/main.c:212
+#: ../src/core/main.c:217
 msgid "Run as a wayland compositor"
 msgstr "Radi kao vajlandov sastavnik"
 
-#: ../src/core/main.c:220
+#: ../src/core/main.c:223
+#| msgid "Run as a wayland compositor"
+msgid "Run as a nested compositor"
+msgstr "Radi kao ugneždeni sastavnik"
+
+#: ../src/core/main.c:231
 msgid "Run as a full display server, rather than nested"
 msgstr "Radi kao puni server prikaza, umesto kao ugneždeni"
 
@@ -566,8 +568,8 @@ msgid ""
 "PARTICULAR PURPOSE.\n"
 msgstr ""
 "mater %s\n"
-"Sva prava zadržana (C) 2001–%d Havoc Pennington, Red Hat, Inc., i ostali\n"
-"Ovo je slobodan program; pogledajte izvorni kod za uslove korišćenja.\n"
+"Sva prava zadržana © 2001–%d Hevok Penington, Red Het, Ink., i ostali\n"
+"Ovo je slobodan program; pogledajte izvorni kôd za uslove korišćenja.\n"
 "NE postoji nikakva garancija; čak ni garancija o TRŽIŠNOJ VREDNOSTI ili "
 "PRILAGOĐENOSTI ODREĐENOJ NAMENI.\n"
 
@@ -579,29 +581,26 @@ msgstr "Ispisuje izdanje"
 msgid "Mutter plugin to use"
 msgstr "Priključci Matera za korišćenje"
 
-#: ../src/core/prefs.c:2004
+#: ../src/core/prefs.c:1997
 #, c-format
 msgid "Workspace %d"
 msgstr "%d. radni prostor"
 
-#: ../src/core/screen.c:525
+#: ../src/core/screen.c:521
 #, c-format
-#| msgid ""
-#| "Screen %d on display \"%s\" already has a window manager; try using the --"
-#| "replace option to replace the current window manager.\n"
 msgid ""
 "Display \"%s\" already has a window manager; try using the --replace option "
 "to replace the current window manager."
 msgstr ""
-"Prikaz „%s“ već ima upravnika prozora; probajte da koristite opciju "
-"„--replace“ da zamenite trenutnog upravnika prozora."
+"Prikaz „%s“ već ima upravnika prozora; probajte da koristite opciju „--"
+"replace“ da zamenite trenutnog upravnika prozora."
 
-#: ../src/core/screen.c:607
+#: ../src/core/screen.c:603
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Prikaz „%d“ na ekranu „%s“ nije ispravan\n"
 
-#: ../src/core/util.c:118
+#: ../src/core/util.c:121
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "Mater je preveden bez podrške za opširan režim\n"
 
