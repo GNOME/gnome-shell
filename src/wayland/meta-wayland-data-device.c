@@ -696,6 +696,8 @@ struct _MetaWaylandDragGrab {
 
   int                     drag_start_x, drag_start_y;
   ClutterModifierType     buttons;
+
+  guint                   need_initial_focus : 1;
 };
 
 static void
@@ -733,8 +735,11 @@ meta_wayland_drag_grab_set_focus (MetaWaylandDragGrab *drag_grab,
   struct wl_client *client;
   struct wl_resource *data_device_resource, *offer = NULL;
 
-  if (drag_grab->drag_focus == surface)
+  if (!drag_grab->need_initial_focus &&
+      drag_grab->drag_focus == surface)
     return;
+
+  drag_grab->need_initial_focus = FALSE;
 
   if (drag_grab->drag_focus)
     {
@@ -1004,6 +1009,8 @@ meta_wayland_data_device_start_drag (MetaWaylandDataDevice                 *data
                                        &surface_pos.x, &surface_pos.y);
   drag_grab->drag_start_x = surface_pos.x;
   drag_grab->drag_start_y = surface_pos.y;
+
+  drag_grab->need_initial_focus = TRUE;
 
   modifiers = clutter_input_device_get_modifier_state (seat->pointer.device);
   drag_grab->buttons = modifiers &
