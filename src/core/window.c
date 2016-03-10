@@ -4300,6 +4300,13 @@ meta_window_focus (MetaWindow  *window,
 
   META_WINDOW_GET_CLASS (window)->focus (window, timestamp);
 
+  if (window->display->event_route == META_EVENT_ROUTE_NORMAL)
+    {
+      MetaBackend *backend = meta_get_backend ();
+      ClutterStage *stage = CLUTTER_STAGE (meta_backend_get_stage (backend));
+      clutter_stage_set_key_focus (stage, NULL);
+    }
+
   if (window->wm_state_demands_attention)
     meta_window_unset_demands_attention(window);
 

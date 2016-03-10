@@ -47,6 +47,18 @@
                              (e)->type == CLUTTER_TOUCH_END || \
                              (e)->type == CLUTTER_TOUCH_CANCEL)
 
+#define IS_KEY_EVENT(e) ((e)->type == CLUTTER_KEY_PRESS || \
+                         (e)->type == CLUTTER_KEY_RELEASE)
+
+static gboolean
+stage_has_key_focus (void)
+{
+  MetaBackend *backend = meta_get_backend ();
+  ClutterActor *stage = meta_backend_get_stage (backend);
+
+  return clutter_stage_get_key_focus (CLUTTER_STAGE (stage)) == stage;
+}
+
 static MetaWindow *
 get_window_for_event (MetaDisplay        *display,
                       const ClutterEvent *event)
@@ -58,14 +70,8 @@ get_window_for_event (MetaDisplay        *display,
         ClutterActor *source;
 
         /* Always use the key focused window for key events. */
-        switch (event->type)
-          {
-          case CLUTTER_KEY_PRESS:
-          case CLUTTER_KEY_RELEASE:
-            return display->focus_window;
-          default:
-            break;
-          }
+        if (IS_KEY_EVENT (event))
+            return stage_has_key_focus () ? display->focus_window : NULL;
 
         source = clutter_event_get_source (event);
         if (META_IS_SURFACE_ACTOR (source))
@@ -297,6 +303,18 @@ meta_display_handle_event (MetaDisplay        *display,
       bypass_clutter = TRUE;
       bypass_wayland = TRUE;
       goto out;
+    }
+
+  /* Do not pass keyboard events to Wayland if key focus is not on the
+   * stage in normal mode (e.g. during keynav in the panel)
+   */
+  if (display->event_route == META_EVENT_ROUTE_NORMAL)
+    {
+      if (IS_KEY_EVENT (event) && !stage_has_key_focus ())
+        {
+          bypass_wayland = TRUE;
+          goto out;
+        }
     }
 
   if (display->current_pad_osd)
