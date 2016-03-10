@@ -1212,7 +1212,7 @@ meta_grab_op_is_moving (MetaGrabOp op)
 }
 
 /**
- * meta_grab_op_windows_are_interactable:
+ * meta_display_windows_are_interactable:
  * @op: A #MetaGrabOp
  *
  * Whether windows can be interacted with.
