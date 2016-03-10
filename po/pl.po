@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-20 16:27+0100\n"
-"PO-Revision-Date: 2016-02-20 16:28+0100\n"
+"POT-Creation-Date: 2016-03-10 17:25+0100\n"
+"PO-Revision-Date: 2016-03-10 17:27+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -993,11 +993,11 @@ msgid "Keyboard"
 msgstr "Klawiatura"
 
 #. translators: 'Hide' is a verb
-#: ../js/ui/legacyTray.js:66
+#: ../js/ui/legacyTray.js:65
 msgid "Hide tray"
 msgstr "Ukryj obszar powiadamiania"
 
-#: ../js/ui/legacyTray.js:107
+#: ../js/ui/legacyTray.js:106
 msgid "Status Icons"
 msgstr "Ikony stanu"
 
@@ -1049,7 +1049,7 @@ msgstr "Wyświetl źródło"
 msgid "Web Page"
 msgstr "Strona WWW"
 
-#: ../js/ui/messageList.js:542
+#: ../js/ui/messageList.js:543
 msgid "Clear section"
 msgstr "Wyczyść"
 
@@ -1314,25 +1314,24 @@ msgstr "Wyłączono ustalanie położenia"
 msgid "Enable"
 msgstr "Włącz"
 
-#: ../js/ui/status/location.js:434
+#: ../js/ui/status/location.js:426
 msgid "Deny Access"
 msgstr "Odmów dostępu"
 
-#: ../js/ui/status/location.js:437
+#: ../js/ui/status/location.js:429
 msgid "Grant Access"
 msgstr "Udziel dostępu"
 
 #. Translators: %s is an application name
-#: ../js/ui/status/location.js:443
+#: ../js/ui/status/location.js:435
 #, javascript-format
 msgid "Give %s access to your location?"
 msgstr "Udzielić programowi „%s” dostępu do położenia użytkownika?"
 
-#. Translators: %s is an application name
-#: ../js/ui/status/location.js:446
-#, javascript-format
-msgid "%s is requesting access to your location."
-msgstr "Program „%s” prosi o dostęp do położenia użytkownika."
+#: ../js/ui/status/location.js:437
+msgid "Location access can be changed at any time from the privacy settings."
+msgstr ""
+"W każdej chwili można zmienić dostęp do położenia w ustawieniach prywatności."
 
 #: ../js/ui/status/network.js:101
 msgid "<unknown>"
