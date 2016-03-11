@@ -2,17 +2,20 @@
 # Courtesy of Prevod.org team (http://prevod.org/) -- 2010—2016.
 # Copyright (C) 2010 gnome-shell's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-shell package.
+#
+# Translators: 
 # Милош Поповић <gpopac@gmail.com>, 2010—2011.
 # Мирослав Николић <miroslavnikolic@rocketmail.com>, 2011—2016.
+# Марко М. Костић <marko.m.kostic@gmail.com>, 2016.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-02-19 12:34+0000\n"
-"PO-Revision-Date: 2016-02-19 20:23+0200\n"
+"POT-Creation-Date: 2016-03-10 22:19+0000\n"
+"PO-Revision-Date: 2016-03-11 02:53+0200\n"
 "Last-Translator: Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
-"Language-Team: Serbian <gnom@prevod.org>\n"
+"Language-Team: Serbian <(gnom@prevod.org)>\n"
 "Language: sr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -166,7 +169,7 @@ msgstr ""
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:18
 msgid ""
 "Whether the default Bluetooth adapter had set up devices associated to it"
-msgstr "Да ли је основни прилагођивач блутута подесио њему придружене уређаје"
+msgstr "Да ли је основни адаптер блутута подесио њему придружене уређаје"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:19
 msgid ""
@@ -175,10 +178,10 @@ msgid ""
 "adapter. This will be reset if the default adapter is ever seen not to have "
 "devices associated to it."
 msgstr ""
-"Шкољка ће приказати ставку изборника блутута само ако је прилагођивач "
-"блутута упаљен, или ако има подешених уређаја придружених основном "
-"прилагођивачу. Ово ће бити поништено ако никада није виђено да основни "
-"прилагођивач има њему придружене уређаје."
+"Шкољка ће приказати ставку изборника блутута само ако је адаптер блутута "
+"упаљен, или ако има подешених уређаја придружених основном адаптеру. Ово ће "
+"се вратити на почетно стање ако се установи да основни адаптер нема њему "
+"придружених уређаја."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:20
 msgid "Show the week date in the calendar"
@@ -309,12 +312,12 @@ msgstr "Застој првог плана се мења у режиму миш�
 msgid "Network Login"
 msgstr "Мрежна пријава"
 
-#: ../js/extensionPrefs/main.js:121
+#: ../js/extensionPrefs/main.js:117
 #, javascript-format
 msgid "There was an error loading the preferences dialog for %s:"
 msgstr "Дошло је до грешке при учитавању прозорчета поставки за „%s“:"
 
-#: ../js/extensionPrefs/main.js:153
+#: ../js/extensionPrefs/main.js:149
 msgid "GNOME Shell Extensions"
 msgstr "Проширења Гномове шкољке"
 
@@ -518,7 +521,6 @@ msgid "Select Audio Device"
 msgstr "Изаберите звучни уређај"
 
 #: ../js/ui/audioDeviceSelection.js:69
-#| msgid "Account Settings"
 msgid "Sound Settings"
 msgstr "Подешавања звука"
 
@@ -980,11 +982,11 @@ msgid "Keyboard"
 msgstr "Тастатура"
 
 #. translators: 'Hide' is a verb
-#: ../js/ui/legacyTray.js:66
+#: ../js/ui/legacyTray.js:65
 msgid "Hide tray"
 msgstr "Сакриј касету"
 
-#: ../js/ui/legacyTray.js:107
+#: ../js/ui/legacyTray.js:106
 msgid "Status Icons"
 msgstr "Иконице стања"
 
@@ -1036,7 +1038,7 @@ msgstr "Прикажи код"
 msgid "Web Page"
 msgstr "Веб страница"
 
-#: ../js/ui/messageList.js:542
+#: ../js/ui/messageList.js:543
 msgid "Clear section"
 msgstr "Очисти одељак"
 
@@ -1045,19 +1047,16 @@ msgid "System Information"
 msgstr "Подаци о систему"
 
 #: ../js/ui/mpris.js:194
-#| msgid "Unknown reason"
 msgid "Unknown artist"
 msgstr "Непознат извођач"
 
 #: ../js/ui/mpris.js:195
-#| msgctxt "program"
-#| msgid "Unknown"
 msgid "Unknown title"
 msgstr "Непознат наслов"
 
 #: ../js/ui/mpris.js:217
 msgid "Media"
-msgstr "Медиј"
+msgstr "Медији"
 
 #: ../js/ui/overview.js:84
 msgid "Undo"
@@ -1307,26 +1306,25 @@ msgstr "Одређивање места искључено"
 msgid "Enable"
 msgstr "Укључи"
 
-#: ../js/ui/status/location.js:434
+#: ../js/ui/status/location.js:426
 msgid "Deny Access"
 msgstr "Забрани приступ"
 
-#: ../js/ui/status/location.js:437
-#| msgid "Always grant access"
+#: ../js/ui/status/location.js:429
 msgid "Grant Access"
 msgstr "Дозволи приступ"
 
 #. Translators: %s is an application name
-#: ../js/ui/status/location.js:443
+#: ../js/ui/status/location.js:435
 #, javascript-format
 msgid "Give %s access to your location?"
 msgstr "Да ли да „%s“ дам приступ вашем месту?"
 
-#. Translators: %s is an application name
-#: ../js/ui/status/location.js:446
-#, javascript-format
-msgid "%s is requesting access to your location."
-msgstr "„%s“ захтева приступ вашем месту."
+#: ../js/ui/status/location.js:437
+msgid "Location access can be changed at any time from the privacy settings."
+msgstr ""
+"Приступ месту можете да измените у било које време у подешавањима "
+"приватности."
 
 #: ../js/ui/status/network.js:101
 msgid "<unknown>"
@@ -1529,14 +1527,12 @@ msgstr "Приближно…"
 #. Translators: this is <hours>:<minutes> Remaining (<percentage>)
 #: ../js/ui/status/power.js:98
 #, javascript-format
-#| msgid "%d∶%02d Remaining (%d%%)"
 msgid "%d∶%02d Remaining (%d %%)"
 msgstr "Преостало време %d:%02d (%d %%)"
 
 #. Translators: this is <hours>:<minutes> Until Full (<percentage>)
 #: ../js/ui/status/power.js:103
 #, javascript-format
-#| msgid "%d∶%02d Until Full (%d%%)"
 msgid "%d∶%02d Until Full (%d %%)"
 msgstr "%d:%02d до краја пуњења (%d %%)"
 
@@ -1586,7 +1582,7 @@ msgstr "Јачина звука"
 
 #: ../js/ui/unlockDialog.js:67
 msgid "Log in as another user"
-msgstr "Пријавите се као други корсник"
+msgstr "Пријавите се као други корисник"
 
 #: ../js/ui/unlockDialog.js:84
 msgid "Unlock Window"
@@ -1767,6 +1763,9 @@ msgstr "Лозинка не може бити празна"
 #: ../src/shell-polkit-authentication-agent.c:353
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Корисник је одбацио прозорче за потврђивање идентитета"
+
+#~ msgid "%s is requesting access to your location."
+#~ msgstr "„%s“ захтева приступ вашем месту."
 
 #~ msgid "GNOME Shell (wayland compositor)"
 #~ msgstr "Гномова шкољка (вајланд састављач)"

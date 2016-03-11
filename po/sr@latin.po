@@ -2,17 +2,20 @@
 # Courtesy of Prevod.org team (http://prevod.org/) -- 2010—2016.
 # Copyright (C) 2010 gnome-shell's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-shell package.
+#
+# Translators: 
 # Miloš Popović <gpopac@gmail.com>, 2010—2011.
 # Miroslav Nikolić <miroslavnikolic@rocketmail.com>, 2011—2016.
+# Marko M. Kostić <marko.m.kostic@gmail.com>, 2016.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-02-19 12:34+0000\n"
-"PO-Revision-Date: 2016-02-19 20:23+0200\n"
+"POT-Creation-Date: 2016-03-10 22:19+0000\n"
+"PO-Revision-Date: 2016-03-11 02:53+0200\n"
 "Last-Translator: Miroslav Nikolić <miroslavnikolic@rocketmail.com>\n"
-"Language-Team: Serbian <gnom@prevod.org>\n"
+"Language-Team: Serbian <(gnom@prevod.org)>\n"
 "Language: sr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -166,7 +169,7 @@ msgstr ""
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:18
 msgid ""
 "Whether the default Bluetooth adapter had set up devices associated to it"
-msgstr "Da li je osnovni prilagođivač blututa podesio njemu pridružene uređaje"
+msgstr "Da li je osnovni adapter blututa podesio njemu pridružene uređaje"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:19
 msgid ""
@@ -175,10 +178,10 @@ msgid ""
 "adapter. This will be reset if the default adapter is ever seen not to have "
 "devices associated to it."
 msgstr ""
-"Školjka će prikazati stavku izbornika blututa samo ako je prilagođivač "
-"blututa upaljen, ili ako ima podešenih uređaja pridruženih osnovnom "
-"prilagođivaču. Ovo će biti poništeno ako nikada nije viđeno da osnovni "
-"prilagođivač ima njemu pridružene uređaje."
+"Školjka će prikazati stavku izbornika blututa samo ako je adapter blututa "
+"upaljen, ili ako ima podešenih uređaja pridruženih osnovnom adapteru. Ovo će "
+"se vratiti na početno stanje ako se ustanovi da osnovni adapter nema njemu "
+"pridruženih uređaja."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:20
 msgid "Show the week date in the calendar"
@@ -309,12 +312,12 @@ msgstr "Zastoj prvog plana se menja u režimu miša dok se pokazivač ne zaustav
 msgid "Network Login"
 msgstr "Mrežna prijava"
 
-#: ../js/extensionPrefs/main.js:121
+#: ../js/extensionPrefs/main.js:117
 #, javascript-format
 msgid "There was an error loading the preferences dialog for %s:"
 msgstr "Došlo je do greške pri učitavanju prozorčeta postavki za „%s“:"
 
-#: ../js/extensionPrefs/main.js:153
+#: ../js/extensionPrefs/main.js:149
 msgid "GNOME Shell Extensions"
 msgstr "Proširenja Gnomove školjke"
 
@@ -518,7 +521,6 @@ msgid "Select Audio Device"
 msgstr "Izaberite zvučni uređaj"
 
 #: ../js/ui/audioDeviceSelection.js:69
-#| msgid "Account Settings"
 msgid "Sound Settings"
 msgstr "Podešavanja zvuka"
 
@@ -980,11 +982,11 @@ msgid "Keyboard"
 msgstr "Tastatura"
 
 #. translators: 'Hide' is a verb
-#: ../js/ui/legacyTray.js:66
+#: ../js/ui/legacyTray.js:65
 msgid "Hide tray"
 msgstr "Sakrij kasetu"
 
-#: ../js/ui/legacyTray.js:107
+#: ../js/ui/legacyTray.js:106
 msgid "Status Icons"
 msgstr "Ikonice stanja"
 
@@ -1036,7 +1038,7 @@ msgstr "Prikaži kod"
 msgid "Web Page"
 msgstr "Veb stranica"
 
-#: ../js/ui/messageList.js:542
+#: ../js/ui/messageList.js:543
 msgid "Clear section"
 msgstr "Očisti odeljak"
 
@@ -1045,19 +1047,16 @@ msgid "System Information"
 msgstr "Podaci o sistemu"
 
 #: ../js/ui/mpris.js:194
-#| msgid "Unknown reason"
 msgid "Unknown artist"
 msgstr "Nepoznat izvođač"
 
 #: ../js/ui/mpris.js:195
-#| msgctxt "program"
-#| msgid "Unknown"
 msgid "Unknown title"
 msgstr "Nepoznat naslov"
 
 #: ../js/ui/mpris.js:217
 msgid "Media"
-msgstr "Medij"
+msgstr "Mediji"
 
 #: ../js/ui/overview.js:84
 msgid "Undo"
@@ -1307,26 +1306,25 @@ msgstr "Određivanje mesta isključeno"
 msgid "Enable"
 msgstr "Uključi"
 
-#: ../js/ui/status/location.js:434
+#: ../js/ui/status/location.js:426
 msgid "Deny Access"
 msgstr "Zabrani pristup"
 
-#: ../js/ui/status/location.js:437
-#| msgid "Always grant access"
+#: ../js/ui/status/location.js:429
 msgid "Grant Access"
 msgstr "Dozvoli pristup"
 
 #. Translators: %s is an application name
-#: ../js/ui/status/location.js:443
+#: ../js/ui/status/location.js:435
 #, javascript-format
 msgid "Give %s access to your location?"
 msgstr "Da li da „%s“ dam pristup vašem mestu?"
 
-#. Translators: %s is an application name
-#: ../js/ui/status/location.js:446
-#, javascript-format
-msgid "%s is requesting access to your location."
-msgstr "„%s“ zahteva pristup vašem mestu."
+#: ../js/ui/status/location.js:437
+msgid "Location access can be changed at any time from the privacy settings."
+msgstr ""
+"Pristup mestu možete da izmenite u bilo koje vreme u podešavanjima "
+"privatnosti."
 
 #: ../js/ui/status/network.js:101
 msgid "<unknown>"
@@ -1529,14 +1527,12 @@ msgstr "Približno…"
 #. Translators: this is <hours>:<minutes> Remaining (<percentage>)
 #: ../js/ui/status/power.js:98
 #, javascript-format
-#| msgid "%d∶%02d Remaining (%d%%)"
 msgid "%d∶%02d Remaining (%d %%)"
 msgstr "Preostalo vreme %d:%02d (%d %%)"
 
 #. Translators: this is <hours>:<minutes> Until Full (<percentage>)
 #: ../js/ui/status/power.js:103
 #, javascript-format
-#| msgid "%d∶%02d Until Full (%d%%)"
 msgid "%d∶%02d Until Full (%d %%)"
 msgstr "%d:%02d do kraja punjenja (%d %%)"
 
@@ -1586,7 +1582,7 @@ msgstr "Jačina zvuka"
 
 #: ../js/ui/unlockDialog.js:67
 msgid "Log in as another user"
-msgstr "Prijavite se kao drugi korsnik"
+msgstr "Prijavite se kao drugi korisnik"
 
 #: ../js/ui/unlockDialog.js:84
 msgid "Unlock Window"
@@ -1767,6 +1763,9 @@ msgstr "Lozinka ne može biti prazna"
 #: ../src/shell-polkit-authentication-agent.c:353
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Korisnik je odbacio prozorče za potvrđivanje identiteta"
+
+#~ msgid "%s is requesting access to your location."
+#~ msgstr "„%s“ zahteva pristup vašem mestu."
 
 #~ msgid "GNOME Shell (wayland compositor)"
 #~ msgstr "Gnomova školjka (vajland sastavljač)"
