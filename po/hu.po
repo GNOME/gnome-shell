@@ -1,26 +1,26 @@
 # Hungarian translation of gnome-shell
-# Copyright 2009. Free Software Foundation, Inc.
+# Copyright 2009-2016 Free Software Foundation, Inc.
 # This file is distributed under the same license as the gnome-shell package.
 #
 # Gabor Kelemen <kelemeng at gnome dot hu>, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016.
 # Lukács Bence <lukacs.bence1 at gmail dot com>, 2012.
-# Balázs Úr <urbalazs at gmail dot com>, 2012, 2014, 2015.
+# Balázs Úr <urbalazs at gmail dot com>, 2012, 2014, 2015, 2016.
 # Balázs Meskó <meskobalazs at gmail dot com>, 2014.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-02-26 22:16+0000\n"
-"PO-Revision-Date: 2016-02-28 15:26+0100\n"
-"Last-Translator: Gabor Kelemen <kelemeng at ubuntu dot com>\n"
+"POT-Creation-Date: 2016-03-10 22:19+0000\n"
+"PO-Revision-Date: 2016-03-11 07:47+0100\n"
+"Last-Translator: Balázs Úr <urbalazs@gmail.com>\n"
 "Language-Team: Hungarian <openscope at googlegroups dot com>\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 1.5\n"
+"X-Generator: Lokalize 1.2\n"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
 msgid "System"
@@ -316,12 +316,12 @@ msgstr ""
 msgid "Network Login"
 msgstr "Hálózati bejelentkezés"
 
-#: ../js/extensionPrefs/main.js:121
+#: ../js/extensionPrefs/main.js:117
 #, javascript-format
 msgid "There was an error loading the preferences dialog for %s:"
 msgstr "Hiba történt a(z) %s beállításablakának betöltésekor:"
 
-#: ../js/extensionPrefs/main.js:153
+#: ../js/extensionPrefs/main.js:149
 msgid "GNOME Shell Extensions"
 msgstr "GNOME Shell kiterjesztések"
 
@@ -521,12 +521,10 @@ msgid "%s has been removed from your favorites."
 msgstr "%s eltávolítva a Kedvencek közül"
 
 #: ../js/ui/audioDeviceSelection.js:59
-#| msgid "Send Files to Device…"
 msgid "Select Audio Device"
 msgstr "Válasszon hangeszközt"
 
 #: ../js/ui/audioDeviceSelection.js:69
-#| msgid "Account Settings"
 msgid "Sound Settings"
 msgstr "Hangbeállítások"
 
@@ -982,11 +980,11 @@ msgid "Keyboard"
 msgstr "Billentyűzet"
 
 #. translators: 'Hide' is a verb
-#: ../js/ui/legacyTray.js:66
+#: ../js/ui/legacyTray.js:65
 msgid "Hide tray"
 msgstr "Tálca elrejtése"
 
-#: ../js/ui/legacyTray.js:107
+#: ../js/ui/legacyTray.js:106
 msgid "Status Icons"
 msgstr "Állapotikonok"
 
@@ -1047,13 +1045,10 @@ msgid "System Information"
 msgstr "Rendszerinformációk"
 
 #: ../js/ui/mpris.js:194
-#| msgid "Unknown reason"
 msgid "Unknown artist"
 msgstr "Ismeretlen előadó"
 
 #: ../js/ui/mpris.js:195
-#| msgctxt "program"
-#| msgid "Unknown"
 msgid "Unknown title"
 msgstr "Ismeretlen cím"
 
@@ -1303,26 +1298,24 @@ msgstr "Hely letiltva"
 msgid "Enable"
 msgstr "Engedélyezés"
 
-#: ../js/ui/status/location.js:434
+#: ../js/ui/status/location.js:426
 msgid "Deny Access"
 msgstr "Hozzáférés tiltása"
 
-#: ../js/ui/status/location.js:437
-#| msgid "Always grant access"
+#: ../js/ui/status/location.js:429
 msgid "Grant Access"
 msgstr "Hozzáférés megadása"
 
 #. Translators: %s is an application name
-#: ../js/ui/status/location.js:443
+#: ../js/ui/status/location.js:435
 #, javascript-format
 msgid "Give %s access to your location?"
 msgstr "Elérheti a(z) %s a földrajzi hely adatait?"
 
-#. Translators: %s is an application name
-#: ../js/ui/status/location.js:446
-#, javascript-format
-msgid "%s is requesting access to your location."
-msgstr "%s hozzáférést kér a földrajzi hely adataihoz."
+#: ../js/ui/status/location.js:437
+msgid "Location access can be changed at any time from the privacy settings."
+msgstr ""
+"A hely hozzáférése bármikor megváltoztatható az adatvédelmi beállításokban."
 
 #: ../js/ui/status/network.js:101
 msgid "<unknown>"
@@ -1756,6 +1749,9 @@ msgstr "A jelszó nem lehet üres"
 #: ../src/shell-polkit-authentication-agent.c:353
 msgid "Authentication dialog was dismissed by the user"
 msgstr "A hitelesítési ablakot a felhasználó bezárta"
+
+#~ msgid "%s is requesting access to your location."
+#~ msgstr "%s hozzáférést kér a földrajzi hely adataihoz."
 
 #~ msgid "GNOME Shell (wayland compositor)"
 #~ msgstr "GNOME Shell (wayland kompozitáló)"
