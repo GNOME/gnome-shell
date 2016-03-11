@@ -443,6 +443,10 @@ StScrollBar {
 .geolocation-dialog-title {
   font-weight: bold; }
 
+.geolocation-dialog-reason {
+  color: #999999;
+  font-weight: bold; }
+
 /* Network Agent Dialog */
 .network-dialog-secret-table {
   spacing-rows: 15px;
