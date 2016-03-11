@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-02-22 10:19+0000\n"
-"PO-Revision-Date: 2016-02-22 17:14+0100\n"
+"POT-Creation-Date: 2016-03-11 10:19+0000\n"
+"PO-Revision-Date: 2016-03-11 16:23+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
 "Language: es\n"
@@ -327,12 +327,12 @@ msgstr ""
 msgid "Network Login"
 msgstr "Inicio de sesión de la red"
 
-#: ../js/extensionPrefs/main.js:121
+#: ../js/extensionPrefs/main.js:117
 #, javascript-format
 msgid "There was an error loading the preferences dialog for %s:"
 msgstr "Hubo un error al lanzar el diálogo de preferencias para %s:"
 
-#: ../js/extensionPrefs/main.js:153
+#: ../js/extensionPrefs/main.js:149
 msgid "GNOME Shell Extensions"
 msgstr "Extensiones de GNOME Shell"
 
@@ -532,12 +532,10 @@ msgid "%s has been removed from your favorites."
 msgstr "Se ha quitado %s de sus favoritos."
 
 #: ../js/ui/audioDeviceSelection.js:59
-#| msgid "Send Files to Device…"
 msgid "Select Audio Device"
 msgstr "Seleccionar dispositivo de sonido"
 
 #: ../js/ui/audioDeviceSelection.js:69
-#| msgid "Account Settings"
 msgid "Sound Settings"
 msgstr "Configuración de sonido"
 
@@ -990,11 +988,11 @@ msgid "Keyboard"
 msgstr "Teclado"
 
 #. translators: 'Hide' is a verb
-#: ../js/ui/legacyTray.js:66
+#: ../js/ui/legacyTray.js:65
 msgid "Hide tray"
 msgstr "Ocultar bandeja"
 
-#: ../js/ui/legacyTray.js:107
+#: ../js/ui/legacyTray.js:106
 msgid "Status Icons"
 msgstr "Iconos de estado"
 
@@ -1046,7 +1044,7 @@ msgstr "Ver fuente"
 msgid "Web Page"
 msgstr "Página web"
 
-#: ../js/ui/messageList.js:542
+#: ../js/ui/messageList.js:543
 msgid "Clear section"
 msgstr "Limpiar la sección"
 
@@ -1055,13 +1053,10 @@ msgid "System Information"
 msgstr "Información del sistema"
 
 #: ../js/ui/mpris.js:194
-#| msgid "Unknown reason"
 msgid "Unknown artist"
 msgstr "Artista desconocido"
 
 #: ../js/ui/mpris.js:195
-#| msgctxt "program"
-#| msgid "Unknown"
 msgid "Unknown title"
 msgstr "Título desconocido"
 
@@ -1311,26 +1306,25 @@ msgstr "Ubicación desactivada"
 msgid "Enable"
 msgstr "Activar"
 
-#: ../js/ui/status/location.js:434
+#: ../js/ui/status/location.js:426
 msgid "Deny Access"
 msgstr "Denegar acceso"
 
-#: ../js/ui/status/location.js:437
-#| msgid "Always grant access"
+#: ../js/ui/status/location.js:429
 msgid "Grant Access"
 msgstr "Conceder acceso"
 
 #. Translators: %s is an application name
-#: ../js/ui/status/location.js:443
+#: ../js/ui/status/location.js:435
 #, javascript-format
 msgid "Give %s access to your location?"
 msgstr "¿Conceder acceso a %s a su ubicación?"
 
-#. Translators: %s is an application name
-#: ../js/ui/status/location.js:446
-#, javascript-format
-msgid "%s is requesting access to your location."
-msgstr "%s solicita acceso a su ubicación."
+#: ../js/ui/status/location.js:437
+msgid "Location access can be changed at any time from the privacy settings."
+msgstr ""
+"Los servicios de ubicación se pueden cambiar en cualquier momento desde la "
+"configuración de privacidad."
 
 #: ../js/ui/status/network.js:101
 msgid "<unknown>"
@@ -1765,6 +1759,9 @@ msgstr "La contraseña no puede estar vacía"
 #: ../src/shell-polkit-authentication-agent.c:353
 msgid "Authentication dialog was dismissed by the user"
 msgstr "El usuario rechazó el diálogo de autenticación"
+
+#~ msgid "%s is requesting access to your location."
+#~ msgstr "%s solicita acceso a su ubicación."
 
 #~ msgid "GNOME Shell (wayland compositor)"
 #~ msgstr "GNOME Shell (composición wayland)"
