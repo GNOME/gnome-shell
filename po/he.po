@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-03 14:44+0200\n"
-"PO-Revision-Date: 2016-03-03 14:52+0200\n"
+"POT-Creation-Date: 2016-03-11 14:49+0200\n"
+"PO-Revision-Date: 2016-03-11 14:51+0200\n"
 "Last-Translator: Yosef Or Boczko <yoseforb@gmail.com>\n"
 "Language-Team: עברית <>\n"
 "Language: he\n"
@@ -310,12 +310,12 @@ msgstr "Delay focus changes in mouse mode until the pointer stops moving"
 msgid "Network Login"
 msgstr "Network Login"
 
-#: ../js/extensionPrefs/main.js:121
+#: ../js/extensionPrefs/main.js:117
 #, javascript-format
 msgid "There was an error loading the preferences dialog for %s:"
 msgstr "אירעה שגיאה בעת טעינת דו־שיח ההעדפות עבור %s:"
 
-#: ../js/extensionPrefs/main.js:153
+#: ../js/extensionPrefs/main.js:149
 msgid "GNOME Shell Extensions"
 msgstr "הרחבות GNOME Shell"
 
@@ -964,11 +964,11 @@ msgid "Keyboard"
 msgstr "מקלדת"
 
 #. translators: 'Hide' is a verb
-#: ../js/ui/legacyTray.js:66
+#: ../js/ui/legacyTray.js:65
 msgid "Hide tray"
 msgstr "הסתרת המגש"
 
-#: ../js/ui/legacyTray.js:107
+#: ../js/ui/legacyTray.js:106
 msgid "Status Icons"
 msgstr "סמלי מצב"
 
@@ -1284,25 +1284,23 @@ msgstr "איכון מושבת"
 msgid "Enable"
 msgstr "אפשור"
 
-#: ../js/ui/status/location.js:434
+#: ../js/ui/status/location.js:426
 msgid "Deny Access"
 msgstr "מניעת גישה"
 
-#: ../js/ui/status/location.js:437
+#: ../js/ui/status/location.js:429
 msgid "Grant Access"
 msgstr "אפשור גישה"
 
 #. Translators: %s is an application name
-#: ../js/ui/status/location.js:443
+#: ../js/ui/status/location.js:435
 #, javascript-format
 msgid "Give %s access to your location?"
 msgstr "לתת ליישום %s גישה למיקום שלך?"
 
-#. Translators: %s is an application name
-#: ../js/ui/status/location.js:446
-#, javascript-format
-msgid "%s is requesting access to your location."
-msgstr "‏%s דורש גישה למיקום שלך."
+#: ../js/ui/status/location.js:437
+msgid "Location access can be changed at any time from the privacy settings."
+msgstr "ניתן לשנות בכל עת את הרשאות הגישה למיקום שלך מהגדרות הפרטיות."
 
 #: ../js/ui/status/network.js:101
 msgid "<unknown>"
@@ -1736,6 +1734,9 @@ msgstr "הססמה אינה יכולה להישאר ריקה"
 #: ../src/shell-polkit-authentication-agent.c:353
 msgid "Authentication dialog was dismissed by the user"
 msgstr "המשתמש בחר להתעלם מתיבת דו־שיח האימות"
+
+#~ msgid "%s is requesting access to your location."
+#~ msgstr "‏%s דורש גישה למיקום שלך."
 
 #~ msgid "GNOME Shell (wayland compositor)"
 #~ msgstr "‏GNOME Shell (מסדר wayland)"
