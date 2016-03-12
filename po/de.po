@@ -14,15 +14,15 @@
 # Christian Kirbach <christian.kirbach@gmail.com>, 2009-2013.
 # Tobias Endrigkeit <tobiasendrigkeit@outlook.com>, 2012-2013.
 # Benjamin Steinwender <b@stbe.at>, 2013-2014.
-# Bernd Homuth <dev@hmt.im>, 2014-2015.
+# Bernd Homuth <dev@hmt.im>, 2014-2015, 2016.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-02-25 18:08+0000\n"
-"PO-Revision-Date: 2016-02-25 20:40+0100\n"
+"POT-Creation-Date: 2016-03-12 10:19+0000\n"
+"PO-Revision-Date: 2016-03-12 12:02+0100\n"
 "Last-Translator: Bernd Homuth <dev@hmt.im>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "Language: de\n"
@@ -30,7 +30,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.8.7\n"
+"X-Generator: Gtranslator 2.91.7\n"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
 msgid "System"
@@ -332,12 +332,12 @@ msgstr ""
 msgid "Network Login"
 msgstr "Netzwerkanmeldung"
 
-#: ../js/extensionPrefs/main.js:121
+#: ../js/extensionPrefs/main.js:117
 #, javascript-format
 msgid "There was an error loading the preferences dialog for %s:"
 msgstr "Beim Laden des Einstellungsdialogs für %s ist ein Fehler aufgetreten:"
 
-#: ../js/extensionPrefs/main.js:153
+#: ../js/extensionPrefs/main.js:149
 msgid "GNOME Shell Extensions"
 msgstr "GNOME-Shell-Erweiterungen"
 
@@ -995,11 +995,11 @@ msgid "Keyboard"
 msgstr "Tastatur"
 
 #. translators: 'Hide' is a verb
-#: ../js/ui/legacyTray.js:66
+#: ../js/ui/legacyTray.js:65
 msgid "Hide tray"
 msgstr "Ablage verbergen"
 
-#: ../js/ui/legacyTray.js:107
+#: ../js/ui/legacyTray.js:106
 msgid "Status Icons"
 msgstr "Statussymbole"
 
@@ -1294,7 +1294,7 @@ msgstr "Tastaturbelegung anzeigen"
 
 #: ../js/ui/status/location.js:107 ../js/ui/status/location.js:215
 msgid "Location Enabled"
-msgstr "Ortsdienst eingeschaltet"
+msgstr "Standort eingeschaltet"
 
 #: ../js/ui/status/location.js:108 ../js/ui/status/location.js:216
 msgid "Disable"
@@ -1316,25 +1316,25 @@ msgstr "Standort ausgeschaltet"
 msgid "Enable"
 msgstr "Einschalten"
 
-#: ../js/ui/status/location.js:434
+#: ../js/ui/status/location.js:426
 msgid "Deny Access"
 msgstr "Zugriff verhindern"
 
-#: ../js/ui/status/location.js:437
+#: ../js/ui/status/location.js:429
 msgid "Grant Access"
 msgstr "Zugriff gewähren"
 
 #. Translators: %s is an application name
-#: ../js/ui/status/location.js:443
+#: ../js/ui/status/location.js:435
 #, javascript-format
 msgid "Give %s access to your location?"
 msgstr "%s Zugriff auf Ihren Standort geben?"
 
-#. Translators: %s is an application name
-#: ../js/ui/status/location.js:446
-#, javascript-format
-msgid "%s is requesting access to your location."
-msgstr "%s erbittet Zugriff auf Ihren Standort."
+#: ../js/ui/status/location.js:437
+msgid "Location access can be changed at any time from the privacy settings."
+msgstr ""
+"Standortzugriff kann in den Einstellungen zur Privatsphäre jederzeit "
+"geändert werden."
 
 #: ../js/ui/status/network.js:101
 msgid "<unknown>"
@@ -1776,3 +1776,6 @@ msgstr "Es muss ein Passwort angegeben werden"
 #: ../src/shell-polkit-authentication-agent.c:353
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Der Dialog zur Anmeldung wurde vom Benutzer geschlossen"
+
+#~ msgid "%s is requesting access to your location."
+#~ msgstr "%s erbittet Zugriff auf Ihren Standort."
