@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell.po.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-02-19 01:28+0200\n"
-"PO-Revision-Date: 2016-02-20 16:38+0200\n"
+"POT-Creation-Date: 2016-03-11 10:19+0000\n"
+"PO-Revision-Date: 2016-03-12 11:18+0200\n"
 "Last-Translator: Tom Tryfonidis <tomtryf@gmail.com>\n"
 "Language-Team: www.gnome.gr\n"
 "Language: el\n"
@@ -326,14 +326,14 @@ msgstr ""
 msgid "Network Login"
 msgstr "Σύνδεση δικτύου"
 
-#: ../js/extensionPrefs/main.js:121
+#: ../js/extensionPrefs/main.js:117
 #, javascript-format
 msgid "There was an error loading the preferences dialog for %s:"
 msgstr ""
 "Προέκυψε ένα σφάλμα κατά τη φόρτωση του παραθύρου διαλόγου των προτιμήσεων "
 "για %s:"
 
-#: ../js/extensionPrefs/main.js:153
+#: ../js/extensionPrefs/main.js:149
 msgid "GNOME Shell Extensions"
 msgstr "Επεκτάσεις GNOME Shell"
 
@@ -991,11 +991,11 @@ msgid "Keyboard"
 msgstr "Πληκτρολόγιο"
 
 #. translators: 'Hide' is a verb
-#: ../js/ui/legacyTray.js:66
+#: ../js/ui/legacyTray.js:65
 msgid "Hide tray"
 msgstr "Απόκρυψη περιοχής ειδοποιήσεων"
 
-#: ../js/ui/legacyTray.js:107
+#: ../js/ui/legacyTray.js:106
 msgid "Status Icons"
 msgstr "Εικονίδια κατάστασης"
 
@@ -1047,7 +1047,7 @@ msgstr "Προβολή πηγής"
 msgid "Web Page"
 msgstr "Ιστοσελίδα"
 
-#: ../js/ui/messageList.js:542
+#: ../js/ui/messageList.js:543
 msgid "Clear section"
 msgstr "Εκκαθάριση περιοχής"
 
@@ -1309,25 +1309,25 @@ msgstr "Απενεργοποιήθηκε η τοποθεσία"
 msgid "Enable"
 msgstr "Ενεργοποίηση"
 
-#: ../js/ui/status/location.js:434
+#: ../js/ui/status/location.js:426
 msgid "Deny Access"
 msgstr "Άρνηση πρόσβασης"
 
-#: ../js/ui/status/location.js:437
+#: ../js/ui/status/location.js:429
 msgid "Grant Access"
 msgstr "Παραχώρηση πρόσβασης"
 
 #. Translators: %s is an application name
-#: ../js/ui/status/location.js:443
+#: ../js/ui/status/location.js:435
 #, javascript-format
 msgid "Give %s access to your location?"
 msgstr "Παραχώρηση της τοποθεσίας σας στο %s;"
 
-#. Translators: %s is an application name
-#: ../js/ui/status/location.js:446
-#, javascript-format
-msgid "%s is requesting access to your location."
-msgstr "Το %s ζητά πρόσβαση στην τοποθεσία σας."
+#: ../js/ui/status/location.js:437
+msgid "Location access can be changed at any time from the privacy settings."
+msgstr ""
+"Η πρόσβαση τοποθεσίες μπορεί να αλλαχθεί οπιαδήποτε στιγμή από τις ρυθμίσεις "
+"ιδιωτικότητας."
 
 #: ../js/ui/status/network.js:101
 msgid "<unknown>"
@@ -1762,6 +1762,9 @@ msgstr "Ο κωδικός πρόσβασης δεν μπορεί να είναι
 #: ../src/shell-polkit-authentication-agent.c:353
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Το παράθυρο πιστοποίησης έκλεισε από τον χρήστη"
+
+#~ msgid "%s is requesting access to your location."
+#~ msgstr "Το %s ζητά πρόσβαση στην τοποθεσία σας."
 
 #~ msgid "GNOME Shell (wayland compositor)"
 #~ msgstr "GNOME Shell (συνθετητής wayland)"
