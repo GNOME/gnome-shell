@@ -6,7 +6,7 @@
 # Changwoo Ryu <cwryu@debian.org>, 2003, 2004, 2005, 2006, 2007, 2008, 2009.
 #
 # Updated in mutter:
-# Changwoo Ryu <cwryu@debian.org>, 2011-2015.
+# Changwoo Ryu <cwryu@debian.org>, 2011-2016.
 #
 #
 # 주의:
@@ -18,8 +18,8 @@ msgstr ""
 "Project-Id-Version: mutter\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-03-07 11:12+0000\n"
-"PO-Revision-Date: 2015-03-08 03:44+0900\n"
+"POT-Creation-Date: 2016-03-12 13:40+0000\n"
+"PO-Revision-Date: 2016-03-13 04:38+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: GNOME Korea <gnome-kr@googlegroups.com>\n"
 "Language: Korean\n"
@@ -453,22 +453,22 @@ msgstr "가상 터미널 11로 이동"
 msgid "Switch to VT 12"
 msgstr "가상 터미널 12로 이동"
 
-#: ../src/backends/meta-monitor-manager.c:364
+#: ../src/backends/meta-monitor-manager.c:518
 msgid "Built-in display"
 msgstr "내장 디스플레이"
 
-#: ../src/backends/meta-monitor-manager.c:391
+#: ../src/backends/meta-monitor-manager.c:544
 msgid "Unknown"
 msgstr "알 수 없음"
 
-#: ../src/backends/meta-monitor-manager.c:393
+#: ../src/backends/meta-monitor-manager.c:546
 msgid "Unknown Display"
 msgstr "알 수 없는 디스플레이"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: ../src/backends/meta-monitor-manager.c:401
+#: ../src/backends/meta-monitor-manager.c:554
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
@@ -484,7 +484,7 @@ msgstr ""
 "다른 창 구성 관리 프로그램이 이미 디스플레이 \"%2$s\" 화면 %1$i번에서 실행 중"
 "입니다."
 
-#: ../src/core/bell.c:185
+#: ../src/core/bell.c:192
 msgid "Bell event"
 msgstr "삑소리 이벤트"
 
@@ -511,40 +511,44 @@ msgstr "기다리기(_W)"
 msgid "_Force Quit"
 msgstr "강제로 끝내기(_F)"
 
-#: ../src/core/display.c:562
+#: ../src/core/display.c:555
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "X 윈도 시스템 디스플레이 '%s'을(를) 여는데 실패하였습니다\n"
 
-#: ../src/core/main.c:176
+#: ../src/core/main.c:181
 msgid "Disable connection to session manager"
 msgstr "세션 관리자와 연결 하지 않습니다"
 
-#: ../src/core/main.c:182
+#: ../src/core/main.c:187
 msgid "Replace the running window manager"
 msgstr "실행 중인 창 관리자를 바꿉니다"
 
-#: ../src/core/main.c:188
+#: ../src/core/main.c:193
 msgid "Specify session management ID"
 msgstr "세션 관리 ID를 지정합니다"
 
-#: ../src/core/main.c:193
+#: ../src/core/main.c:198
 msgid "X Display to use"
 msgstr "사용할 X 디스플레이"
 
-#: ../src/core/main.c:199
+#: ../src/core/main.c:204
 msgid "Initialize session from savefile"
 msgstr "저장 파일에서 세션을 초기화 합니다"
 
-#: ../src/core/main.c:205
+#: ../src/core/main.c:210
 msgid "Make X calls synchronous"
 msgstr "동기 X 호출을 합니다"
 
-#: ../src/core/main.c:212
+#: ../src/core/main.c:217
 msgid "Run as a wayland compositor"
 msgstr "웨일랜드 컴포지터로 실행합니다"
 
-#: ../src/core/main.c:220
+#: ../src/core/main.c:223
+msgid "Run as a nested compositor"
+msgstr "내장 컴포지터로 실행합니다"
+
+#: ../src/core/main.c:231
 msgid "Run as a full display server, rather than nested"
 msgstr "전체 디스플레이 서버로 실행, 내장 프로그램 아님"
 
@@ -571,24 +575,26 @@ msgstr "버전을 출력합니다"
 msgid "Mutter plugin to use"
 msgstr "사용할 머터 플러그인"
 
-#: ../src/core/prefs.c:2004
+#: ../src/core/prefs.c:1997
 #, c-format
 msgid "Workspace %d"
 msgstr "작업 공간 %d"
 
-#: ../src/core/screen.c:525
+#: ../src/core/screen.c:521
 #, c-format
 msgid ""
 "Display \"%s\" already has a window manager; try using the --replace option "
 "to replace the current window manager."
-msgstr "디스플레이 \"%s\"에 이미 창 관리자가 있습니다. 현재 창 관리자를 바꾸려면 --replace 옵션을 써보십시오."
+msgstr ""
+"디스플레이 \"%s\"에 이미 창 관리자가 있습니다. 현재 창 관리자를 바꾸려면 --"
+"replace 옵션을 써보십시오."
 
-#: ../src/core/screen.c:607
+#: ../src/core/screen.c:603
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "디스플레이 '%2$s'의 화면 %1$d은(는) 잘못되었습니다\n"
 
-#: ../src/core/util.c:118
+#: ../src/core/util.c:121
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "머터가 자세한 모드 지원 없이 컴파일 되었습니다\n"
 
