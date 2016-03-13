@@ -19,15 +19,15 @@
 # Timo Jyrinki <timo.jyrinki@iki.fi>, 2009-2011.
 # Marko Myllynen <myllynen@redhat.com>, 2011.
 # Ville-Pekka Vainio <vpvainio@iki.fi>, 2011.
-# Jiri Grönroos <jiri.gronroos+l10n@iki.fi>, 2012, 2013, 2014, 2015.
+# Jiri Grönroos <jiri.gronroos+l10n@iki.fi>, 2012, 2013, 2014, 2015, 2016.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-11-15 10:15+0000\n"
-"PO-Revision-Date: 2015-11-15 18:52+0200\n"
+"POT-Creation-Date: 2016-03-13 10:20+0000\n"
+"PO-Revision-Date: 2016-03-13 12:32+0200\n"
 "Last-Translator: Jiri Grönroos <jiri.gronroos+l10n@iki.fi>\n"
 "Language-Team: suomi <gnome-fi-laatu@lists.sourceforge.net>\n"
 "Language: fi\n"
@@ -331,51 +331,52 @@ msgstr ""
 msgid "Network Login"
 msgstr "Verkkokirjautuminen"
 
-#: ../js/extensionPrefs/main.js:122
+#: ../js/extensionPrefs/main.js:117
 #, javascript-format
 msgid "There was an error loading the preferences dialog for %s:"
 msgstr "Kohteen %s asetusikkunaa ladataessa tapahtui virhe:"
 
-#: ../js/extensionPrefs/main.js:154
+#: ../js/extensionPrefs/main.js:149
 msgid "GNOME Shell Extensions"
 msgstr "GNOME Shell -laajennukset"
 
-#: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:145
+#: ../js/gdm/authPrompt.js:147 ../js/ui/audioDeviceSelection.js:71
+#: ../js/ui/components/networkAgent.js:145
 #: ../js/ui/components/polkitAgent.js:179 ../js/ui/endSessionDialog.js:452
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
 #: ../js/ui/status/network.js:916
 msgid "Cancel"
 msgstr "Peru"
 
-#: ../js/gdm/authPrompt.js:169 ../js/gdm/authPrompt.js:215
-#: ../js/gdm/authPrompt.js:447
+#: ../js/gdm/authPrompt.js:169 ../js/gdm/authPrompt.js:216
+#: ../js/gdm/authPrompt.js:448
 msgid "Next"
 msgstr "Seuraava"
 
-#: ../js/gdm/authPrompt.js:211 ../js/ui/shellMountOperation.js:403
+#: ../js/gdm/authPrompt.js:212 ../js/ui/shellMountOperation.js:403
 #: ../js/ui/unlockDialog.js:59
 msgid "Unlock"
 msgstr "Avaa lukitus"
 
-#: ../js/gdm/authPrompt.js:213
+#: ../js/gdm/authPrompt.js:214
 msgctxt "button"
 msgid "Sign In"
 msgstr "Kirjaudu sisään"
 
-#: ../js/gdm/loginDialog.js:281
+#: ../js/gdm/loginDialog.js:285
 msgid "Choose Session"
 msgstr "Valitse istunto"
 
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:431
+#: ../js/gdm/loginDialog.js:435
 msgid "Not listed?"
 msgstr "Ei luettelossa?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: ../js/gdm/loginDialog.js:850
+#: ../js/gdm/loginDialog.js:854
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(esim. käyttäjä tai %s)"
@@ -383,12 +384,12 @@ msgstr "(esim. käyttäjä tai %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:855 ../js/ui/components/networkAgent.js:271
+#: ../js/gdm/loginDialog.js:859 ../js/ui/components/networkAgent.js:271
 #: ../js/ui/components/networkAgent.js:289
 msgid "Username: "
 msgstr "Käyttäjänimi: "
 
-#: ../js/gdm/loginDialog.js:1180
+#: ../js/gdm/loginDialog.js:1196
 msgid "Login Window"
 msgstr "Kirjautumisikkuna"
 
@@ -524,15 +525,37 @@ msgstr "Lisää suosikkeihin"
 msgid "Show Details"
 msgstr "Näytä tiedot"
 
-#: ../js/ui/appFavorites.js:133
+#: ../js/ui/appFavorites.js:134
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "%s on lisätty suosikkeihin."
 
-#: ../js/ui/appFavorites.js:167
+#: ../js/ui/appFavorites.js:168
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "%s on poistettu suosikeista."
+
+#: ../js/ui/audioDeviceSelection.js:59
+#| msgid "Send Files to Device…"
+msgid "Select Audio Device"
+msgstr "Valitse äänilaite"
+
+#: ../js/ui/audioDeviceSelection.js:69
+#| msgid "Account Settings"
+msgid "Sound Settings"
+msgstr "Ääniasetukset"
+
+#: ../js/ui/audioDeviceSelection.js:78
+msgid "Headphones"
+msgstr "Kuulokkeet"
+
+#: ../js/ui/audioDeviceSelection.js:80
+msgid "Headset"
+msgstr "Headset-kuulokkeet"
+
+#: ../js/ui/audioDeviceSelection.js:82 ../js/ui/status/volume.js:213
+msgid "Microphone"
+msgstr "Mikrofoni"
 
 #: ../js/ui/backgroundMenu.js:19
 msgid "Change Background…"
@@ -547,7 +570,7 @@ msgid "Settings"
 msgstr "Asetukset"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
-#: ../js/ui/calendar.js:55
+#: ../js/ui/calendar.js:47
 msgctxt "calendar-no-work"
 msgid "06"
 msgstr "06"
@@ -557,102 +580,98 @@ msgstr "06"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: ../js/ui/calendar.js:84
+#: ../js/ui/calendar.js:76
 msgctxt "grid sunday"
 msgid "S"
 msgstr "S"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: ../js/ui/calendar.js:86
+#: ../js/ui/calendar.js:78
 msgctxt "grid monday"
 msgid "M"
 msgstr "M"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: ../js/ui/calendar.js:88
+#: ../js/ui/calendar.js:80
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "T"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: ../js/ui/calendar.js:90
+#: ../js/ui/calendar.js:82
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "K"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: ../js/ui/calendar.js:92
+#: ../js/ui/calendar.js:84
 msgctxt "grid thursday"
 msgid "T"
 msgstr "T"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: ../js/ui/calendar.js:94
+#: ../js/ui/calendar.js:86
 msgctxt "grid friday"
 msgid "F"
 msgstr "P"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: ../js/ui/calendar.js:96
+#: ../js/ui/calendar.js:88
 msgctxt "grid saturday"
 msgid "S"
 msgstr "L"
 
-#: ../js/ui/calendar.js:566
+#: ../js/ui/calendar.js:416
 msgid "Previous month"
 msgstr "Edellinen kuukausi"
 
-#: ../js/ui/calendar.js:576
+#: ../js/ui/calendar.js:426
 msgid "Next month"
 msgstr "Seuraava kuukausi"
 
-#: ../js/ui/calendar.js:728
-#, fuzzy, javascript-format
+#: ../js/ui/calendar.js:579
+#, fuzzy, no-javascript-format
 #| msgctxt "percent of battery remaining"
 #| msgid "%d%%"
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d %%"
 
-#: ../js/ui/calendar.js:783
+#: ../js/ui/calendar.js:634
 msgid "Week %V"
 msgstr "Viikko %V"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: ../js/ui/calendar.js:1188
+#: ../js/ui/calendar.js:695
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Koko päivä"
 
-#: ../js/ui/calendar.js:1295
-msgid "Clear section"
-msgstr "Tyhjennä osio"
-
-#: ../js/ui/calendar.js:1522
+#: ../js/ui/calendar.js:821
 msgid "Events"
 msgstr "Tapahtumat"
 
-#: ../js/ui/calendar.js:1531
+#: ../js/ui/calendar.js:830
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %e. %Bta"
 
-#: ../js/ui/calendar.js:1535
+#: ../js/ui/calendar.js:834
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %e. %Bta %Y"
 
-#: ../js/ui/calendar.js:1620
+#: ../js/ui/calendar.js:919
 msgid "Notifications"
 msgstr "Ilmoitukset"
 
-#: ../js/ui/calendar.js:1771
+#: ../js/ui/calendar.js:1070
 msgid "No Notifications"
 msgstr "Ei ilmoituksia"
 
-#: ../js/ui/calendar.js:1774
+#: ../js/ui/calendar.js:1073
 msgid "No Events"
 msgstr "Ei tapahtumia"
 
@@ -664,7 +683,7 @@ msgstr "Erillinen asema yhdistetty"
 msgid "External drive disconnected"
 msgstr "Erillinen asema irrotettu"
 
-#: ../js/ui/components/autorunManager.js:351
+#: ../js/ui/components/autorunManager.js:355
 #, javascript-format
 msgid "Open with %s"
 msgstr "Avaa käyttäen sovellusta %s"
@@ -978,11 +997,11 @@ msgid "Keyboard"
 msgstr "Näppäimistö"
 
 #. translators: 'Hide' is a verb
-#: ../js/ui/legacyTray.js:66
+#: ../js/ui/legacyTray.js:65
 msgid "Hide tray"
 msgstr "Piilota palkki"
 
-#: ../js/ui/legacyTray.js:107
+#: ../js/ui/legacyTray.js:106
 msgid "Status Icons"
 msgstr "Tilakuvakkeet"
 
@@ -1034,9 +1053,28 @@ msgstr "Näytä lähde"
 msgid "Web Page"
 msgstr "Verkkosivusto"
 
+#: ../js/ui/messageList.js:543
+msgid "Clear section"
+msgstr "Tyhjennä osio"
+
 #: ../js/ui/messageTray.js:1486
 msgid "System Information"
 msgstr "Järjestelmän tiedot"
+
+#: ../js/ui/mpris.js:194
+#| msgid "Unknown reason"
+msgid "Unknown artist"
+msgstr "Tuntematon esittäjä"
+
+#: ../js/ui/mpris.js:195
+#| msgctxt "program"
+#| msgid "Unknown"
+msgid "Unknown title"
+msgstr "Tuntematon kappale"
+
+#: ../js/ui/mpris.js:217
+msgid "Media"
+msgstr "Media"
 
 #: ../js/ui/overview.js:84
 msgid "Undo"
@@ -1213,35 +1251,35 @@ msgstr "Korkea kontrasti"
 msgid "Large Text"
 msgstr "Suuri tekstin koko"
 
-#: ../js/ui/status/bluetooth.js:50
+#: ../js/ui/status/bluetooth.js:47
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:59
+#: ../js/ui/status/bluetooth.js:56
 msgid "Bluetooth Settings"
 msgstr "Bluetooth-asetukset"
 
 #. Translators: this is the number of connected bluetooth devices
-#: ../js/ui/status/bluetooth.js:139
+#: ../js/ui/status/bluetooth.js:136
 #, javascript-format
 msgid "%d Connected"
 msgid_plural "%d Connected"
 msgstr[0] "%d yhdistetty"
 msgstr[1] "%d yhdistetty"
 
-#: ../js/ui/status/bluetooth.js:141
+#: ../js/ui/status/bluetooth.js:138
 msgid "Off"
 msgstr "Pois"
 
-#: ../js/ui/status/bluetooth.js:143
+#: ../js/ui/status/bluetooth.js:140
 msgid "Not In Use"
 msgstr "Ei käytössä"
 
-#: ../js/ui/status/bluetooth.js:145 ../js/ui/status/network.js:1279
+#: ../js/ui/status/bluetooth.js:142 ../js/ui/status/network.js:1279
 msgid "Turn On"
 msgstr "Ota käyttöön"
 
-#: ../js/ui/status/bluetooth.js:145 ../js/ui/status/network.js:178
+#: ../js/ui/status/bluetooth.js:142 ../js/ui/status/network.js:178
 #: ../js/ui/status/network.js:353 ../js/ui/status/network.js:1279
 #: ../js/ui/status/network.js:1394 ../js/ui/status/rfkill.js:90
 #: ../js/ui/status/rfkill.js:117
@@ -1256,29 +1294,50 @@ msgstr "Kirkkaus"
 msgid "Show Keyboard Layout"
 msgstr "Näytä näppäimistön asettelu"
 
-#: ../js/ui/status/location.js:71 ../js/ui/status/location.js:177
+#: ../js/ui/status/location.js:107 ../js/ui/status/location.js:215
 msgid "Location Enabled"
 msgstr "Sijainti käytettävissä"
 
-#: ../js/ui/status/location.js:72 ../js/ui/status/location.js:178
+#: ../js/ui/status/location.js:108 ../js/ui/status/location.js:216
 msgid "Disable"
 msgstr "Poista käytöstä"
 
-#: ../js/ui/status/location.js:73
+#: ../js/ui/status/location.js:109
 msgid "Privacy Settings"
 msgstr "Yksityisyysasetukset"
 
-#: ../js/ui/status/location.js:176
+#: ../js/ui/status/location.js:214
 msgid "Location In Use"
 msgstr "Sijainti käytössä"
 
-#: ../js/ui/status/location.js:180
+#: ../js/ui/status/location.js:218
 msgid "Location Disabled"
 msgstr "Sijainti pois käytöstä"
 
-#: ../js/ui/status/location.js:181
+#: ../js/ui/status/location.js:219
 msgid "Enable"
 msgstr "Käytä"
+
+#: ../js/ui/status/location.js:426
+msgid "Deny Access"
+msgstr "Estä pääsy"
+
+#: ../js/ui/status/location.js:429
+#| msgid "Always grant access"
+msgid "Grant Access"
+msgstr "Salli pääsy"
+
+#. Translators: %s is an application name
+#: ../js/ui/status/location.js:435
+#, javascript-format
+msgid "Give %s access to your location?"
+msgstr "Saako %s käyttää sijaintitietoasi?"
+
+#: ../js/ui/status/location.js:437
+msgid "Location access can be changed at any time from the privacy settings."
+msgstr ""
+"Sijaintitiedon käyttöoikeuksia voi muuttaa milloin tahansa "
+"yksityisyysasetuksista."
 
 #: ../js/ui/status/network.js:101
 msgid "<unknown>"
@@ -1464,33 +1523,36 @@ msgstr "Yhteys epäonnistui"
 msgid "Activation of network connection failed"
 msgstr "Verkkoyhteyden aktivointi epäonnistui"
 
-#: ../js/ui/status/power.js:49
+#: ../js/ui/status/power.js:61
 msgid "Power Settings"
 msgstr "Virranhallinta"
 
-#: ../js/ui/status/power.js:65
+#: ../js/ui/status/power.js:77
 msgid "Fully Charged"
 msgstr "Ladattu täyteen"
 
 #. 0 is reported when UPower does not have enough data
 #. to estimate battery life
-#: ../js/ui/status/power.js:72 ../js/ui/status/power.js:78
+#: ../js/ui/status/power.js:84 ../js/ui/status/power.js:90
 msgid "Estimating…"
 msgstr "Arvioidaan…"
 
 #. Translators: this is <hours>:<minutes> Remaining (<percentage>)
-#: ../js/ui/status/power.js:86
+#: ../js/ui/status/power.js:98
 #, javascript-format
-#| msgid "%d∶%02d Remaining (%d%%)"
 msgid "%d∶%02d Remaining (%d %%)"
 msgstr "%d∶%02d jäljellä (%d %%)"
 
 #. Translators: this is <hours>:<minutes> Until Full (<percentage>)
-#: ../js/ui/status/power.js:91
+#: ../js/ui/status/power.js:103
 #, javascript-format
-#| msgid "%d∶%02d Until Full (%d%%)"
 msgid "%d∶%02d Until Full (%d %%)"
 msgstr "%d∶%02d kunnes täynnä (%d %%)"
+
+#: ../js/ui/status/power.js:131 ../js/ui/status/power.js:133
+#, javascript-format
+msgid "%d %%"
+msgstr ""
 
 #. The menu only appears when airplane mode is on, so just
 #. statically build it as if it was on, rather than dynamically
@@ -1530,10 +1592,6 @@ msgstr "Äänenvoimakkuutta muutettu"
 #: ../js/ui/status/volume.js:162
 msgid "Volume"
 msgstr "Äänenvoimakkuus"
-
-#: ../js/ui/status/volume.js:213
-msgid "Microphone"
-msgstr "Mikrofoni"
 
 #: ../js/ui/unlockDialog.js:67
 msgid "Log in as another user"
@@ -1922,9 +1980,6 @@ msgstr "Käyttäjä poistui tunnistautumisvalintaikkunasta"
 #~ msgid "View account"
 #~ msgstr "Näytä tili"
 
-#~ msgid "Unknown reason"
-#~ msgstr "Tuntematon syy"
-
 #~ msgid "Open Calendar"
 #~ msgstr "Avaa kalenteri"
 
@@ -2000,9 +2055,6 @@ msgstr "Käyttäjä poistui tunnistautumisvalintaikkunasta"
 
 #~ msgid "Device %s wants access to the service '%s'"
 #~ msgstr "Laite %s pyytää pääsyä palveluun %s"
-
-#~ msgid "Always grant access"
-#~ msgstr "Salli pääsy aina"
 
 #~ msgid "Grant this time only"
 #~ msgstr "Salli vain tällä kerralla"
@@ -2176,10 +2228,6 @@ msgstr "Käyttäjä poistui tunnistautumisvalintaikkunasta"
 
 #~ msgid "Visibility"
 #~ msgstr "Näkyvyys"
-
-#~| msgid "Send Files to Device..."
-#~ msgid "Send Files to Device…"
-#~ msgstr "Lähetä tiedostoja laitteelle…"
 
 #~| msgid "Set up a New Device..."
 #~ msgid "Set Up a New Device…"
