@@ -19,16 +19,16 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-03-02 10:20+0000\n"
-"PO-Revision-Date: 2016-03-03 01:14+0300\n"
+"POT-Creation-Date: 2016-03-13 10:20+0000\n"
+"PO-Revision-Date: 2016-03-13 23:48+0300\n"
 "Last-Translator: Stas Solovey <whats_up@tut.by>\n"
-"Language-Team: Русский <gnome-cyr@gnome.org>\n"
+"Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Gtranslator 2.91.7\n"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
@@ -323,12 +323,12 @@ msgstr "Задержка изменения фокуса в режиме мыш�
 msgid "Network Login"
 msgstr "Сетевая авторизация"
 
-#: ../js/extensionPrefs/main.js:121
+#: ../js/extensionPrefs/main.js:117
 #, javascript-format
 msgid "There was an error loading the preferences dialog for %s:"
 msgstr "Возникла ошибка загрузки диалогового окна параметров для %s:"
 
-#: ../js/extensionPrefs/main.js:153
+#: ../js/extensionPrefs/main.js:149
 msgid "GNOME Shell Extensions"
 msgstr "Расширения GNOME Shell"
 
@@ -537,7 +537,6 @@ msgid "Select Audio Device"
 msgstr "Выберите аудиоустройство"
 
 #: ../js/ui/audioDeviceSelection.js:69
-#| msgid "Account Settings"
 msgid "Sound Settings"
 msgstr "Параметры звука"
 
@@ -1000,11 +999,11 @@ msgid "Keyboard"
 msgstr "Клавиатура"
 
 #. translators: 'Hide' is a verb
-#: ../js/ui/legacyTray.js:66
+#: ../js/ui/legacyTray.js:65
 msgid "Hide tray"
 msgstr "Скрыть лоток"
 
-#: ../js/ui/legacyTray.js:107
+#: ../js/ui/legacyTray.js:106
 msgid "Status Icons"
 msgstr "Значки состояния"
 
@@ -1065,14 +1064,10 @@ msgid "System Information"
 msgstr "Системная информация"
 
 #: ../js/ui/mpris.js:194
-#| msgctxt "program"
-#| msgid "Unknown"
 msgid "Unknown artist"
 msgstr "Неизвестный исполнитель"
 
 #: ../js/ui/mpris.js:195
-#| msgctxt "program"
-#| msgid "Unknown"
 msgid "Unknown title"
 msgstr "Неизвестное название"
 
@@ -1326,25 +1321,25 @@ msgstr "Определение местоположения выключено"
 msgid "Enable"
 msgstr "Включить"
 
-#: ../js/ui/status/location.js:434
+#: ../js/ui/status/location.js:426
 msgid "Deny Access"
 msgstr "Запретить доступ"
 
-#: ../js/ui/status/location.js:437
+#: ../js/ui/status/location.js:429
 msgid "Grant Access"
 msgstr "Предоставить доступ"
 
 #. Translators: %s is an application name
-#: ../js/ui/status/location.js:443
+#: ../js/ui/status/location.js:435
 #, javascript-format
 msgid "Give %s access to your location?"
 msgstr "Предоставить %s доступ к вашему местоположению?"
 
-#. Translators: %s is an application name
-#: ../js/ui/status/location.js:446
-#, javascript-format
-msgid "%s is requesting access to your location."
-msgstr "%s запрашивает доступ к вашему положению."
+#: ../js/ui/status/location.js:437
+msgid "Location access can be changed at any time from the privacy settings."
+msgstr ""
+"Параметры доступа к данным местоположения можно изменить в любое время в "
+"настройках конфиденциальности."
 
 #: ../js/ui/status/network.js:101
 msgid "<unknown>"
@@ -1788,6 +1783,9 @@ msgstr "Пароль не может быть пустым"
 #: ../src/shell-polkit-authentication-agent.c:353
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Аутентификация отклонена пользователем"
+
+#~ msgid "%s is requesting access to your location."
+#~ msgstr "%s запрашивает доступ к вашему положению."
 
 #~ msgid "GNOME Shell (wayland compositor)"
 #~ msgstr "GNOME Shell (компоновщик wayland)"
