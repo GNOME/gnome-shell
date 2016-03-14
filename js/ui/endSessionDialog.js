@@ -114,7 +114,7 @@ const restartDialogContent = {
     showOtherSessions: true,
 };
 
-const restartInstallDialogContent = {
+const restartUpdateDialogContent = {
 
     subject: C_("title", "Restart & Install Updates"),
     description: function(seconds) {
@@ -143,7 +143,7 @@ const DialogContent = {
     0 /* DialogType.LOGOUT */: logoutDialogContent,
     1 /* DialogType.SHUTDOWN */: shutdownDialogContent,
     2 /* DialogType.RESTART */: restartDialogContent,
-    3 /* DialogType.UPDATE_RESTART */: restartInstallDialogContent
+    3 /* DialogType.UPDATE_RESTART */: restartUpdateDialogContent
 };
 
 const MAX_USERS_IN_SESSION_DIALOG = 5;
