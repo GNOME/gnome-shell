@@ -163,7 +163,7 @@ const LogindSession = Gio.DBusProxy.makeProxyWrapper(LogindSessionIface);
 const PkOfflineIface = '<node> \
 <interface name="org.freedesktop.PackageKit.Offline"> \
     <property name="UpdatePrepared" type="b" access="read"/> \
-    <property name="TriggerAction" type="s" access="read"/> \
+    <property name="UpdateTriggered" type="b" access="read"/> \
     <method name="Trigger"> \
         <arg type="s" name="action" direction="in"/> \
     </method> \
@@ -699,7 +699,7 @@ const EndSessionDialog = new Lang.Class({
         this._type = type;
 
         if (this._type == DialogType.RESTART &&
-            this._pkOfflineProxy.TriggerAction == 'reboot')
+            this._pkOfflineProxy.UpdateTriggered)
             this._type = DialogType.UPDATE_RESTART;
 
         this._applications = [];
@@ -727,19 +727,19 @@ const EndSessionDialog = new Lang.Class({
         if (dialogContent.showOtherSessions)
             this._loadSessions();
 
-        let updateAlreadyTriggered = this._pkOfflineProxy.TriggerAction == 'power-off' || this._pkOfflineProxy.TriggerAction == 'reboot';
+        let updateTriggered = this._pkOfflineProxy.UpdateTriggered;
         let updatePrepared = this._pkOfflineProxy.UpdatePrepared;
         let updatesAllowed = this._updatesPermission && this._updatesPermission.allowed;
 
         _setCheckBoxLabel(this._checkBox, dialogContent.checkBoxText);
         this._checkBox.actor.visible = (dialogContent.checkBoxText && updatePrepared && updatesAllowed);
-        this._checkBox.actor.checked = (updatePrepared && updateAlreadyTriggered);
+        this._checkBox.actor.checked = (updatePrepared && updateTriggered);
 
         // We show the warning either together with the checkbox, or when
         // updates have already been triggered, but the user doesn't have
         // enough permissions to cancel them.
         this._batteryWarning.visible = (dialogContent.showBatteryWarning &&
-                                        (this._checkBox.actor.visible || updatePrepared && updateAlreadyTriggered && !updatesAllowed));
+                                        (this._checkBox.actor.visible || updatePrepared && updateTriggered && !updatesAllowed));
 
         this._updateButtons();
 
