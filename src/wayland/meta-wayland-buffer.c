@@ -30,6 +30,15 @@
 #include <cogl/cogl-wayland-server.h>
 #include <meta/util.h>
 
+enum
+{
+  RESOURCE_DESTROYED,
+
+  LAST_SIGNAL
+};
+
+guint signals[LAST_SIGNAL];
+
 G_DEFINE_TYPE (MetaWaylandBuffer, meta_wayland_buffer, G_TYPE_OBJECT);
 
 static void
@@ -40,7 +49,7 @@ meta_wayland_buffer_destroy_handler (struct wl_listener *listener,
     wl_container_of (listener, buffer, destroy_listener);
 
   buffer->resource = NULL;
-  wl_signal_emit (&buffer->destroy_signal, buffer);
+  g_signal_emit (buffer, signals[RESOURCE_DESTROYED], 0);
   g_object_unref (buffer);
 }
 
@@ -82,7 +91,6 @@ meta_wayland_buffer_from_resource (struct wl_resource *resource)
       buffer = g_object_new (META_TYPE_WAYLAND_BUFFER, NULL);
 
       buffer->resource = resource;
-      wl_signal_init (&buffer->destroy_signal);
       buffer->destroy_listener.notify = meta_wayland_buffer_destroy_handler;
       wl_resource_add_destroy_listener (resource, &buffer->destroy_listener);
     }
@@ -181,4 +189,11 @@ meta_wayland_buffer_class_init (MetaWaylandBufferClass *klass)
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
   object_class->finalize = meta_wayland_buffer_finalize;
+
+  signals[RESOURCE_DESTROYED] = g_signal_new ("resource-destroyed",
+                                              G_TYPE_FROM_CLASS (object_class),
+                                              G_SIGNAL_RUN_LAST,
+                                              0,
+                                              NULL, NULL, NULL,
+                                              G_TYPE_NONE, 0);
 }

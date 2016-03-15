@@ -36,7 +36,6 @@ struct _MetaWaylandBuffer
   GObject parent;
 
   struct wl_resource *resource;
-  struct wl_signal destroy_signal;
   struct wl_listener destroy_listener;
 
   CoglTexture *texture;

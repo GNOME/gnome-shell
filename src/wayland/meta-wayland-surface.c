@@ -432,11 +432,11 @@ toplevel_surface_commit (MetaWaylandSurfaceRole  *surface_role,
 }
 
 static void
-surface_handle_pending_buffer_destroy (struct wl_listener *listener, void *data)
+pending_buffer_resource_destroyed (MetaWaylandBuffer       *buffer,
+                                   MetaWaylandPendingState *pending)
 {
-  MetaWaylandPendingState *state = wl_container_of (listener, state, buffer_destroy_listener);
-
-  state->buffer = NULL;
+  g_signal_handler_disconnect (buffer, pending->buffer_destroy_handler_id);
+  pending->buffer = NULL;
 }
 
 static void
@@ -454,7 +454,6 @@ pending_state_init (MetaWaylandPendingState *state)
   state->opaque_region_set = FALSE;
 
   state->damage = cairo_region_create ();
-  state->buffer_destroy_listener.notify = surface_handle_pending_buffer_destroy;
   wl_list_init (&state->frame_callback_list);
 
   state->has_new_geometry = FALSE;
@@ -470,7 +469,8 @@ pending_state_destroy (MetaWaylandPendingState *state)
   g_clear_pointer (&state->opaque_region, cairo_region_destroy);
 
   if (state->buffer)
-    wl_list_remove (&state->buffer_destroy_listener.link);
+    g_signal_handler_disconnect (state->buffer,
+                                 state->buffer_destroy_handler_id);
   wl_list_for_each_safe (cb, next, &state->frame_callback_list, link)
     wl_resource_destroy (cb->resource);
 }
@@ -487,7 +487,7 @@ move_pending_state (MetaWaylandPendingState *from,
                     MetaWaylandPendingState *to)
 {
   if (from->buffer)
-    wl_list_remove (&from->buffer_destroy_listener.link);
+    g_signal_handler_disconnect (from->buffer, from->buffer_destroy_handler_id);
 
   to->newly_attached = from->newly_attached;
   to->buffer = from->buffer;
@@ -506,7 +506,12 @@ move_pending_state (MetaWaylandPendingState *from,
   wl_list_insert_list (&to->frame_callback_list, &from->frame_callback_list);
 
   if (to->buffer)
-    wl_signal_add (&to->buffer->destroy_signal, &to->buffer_destroy_listener);
+    {
+      to->buffer_destroy_handler_id =
+        g_signal_connect (to->buffer, "resource-destroyed",
+                          G_CALLBACK (pending_buffer_resource_destroyed),
+                          to);
+    }
 
   pending_state_init (from);
 }
@@ -779,7 +784,10 @@ wl_surface_attach (struct wl_client *client,
     buffer = NULL;
 
   if (surface->pending->buffer)
-    wl_list_remove (&surface->pending->buffer_destroy_listener.link);
+    {
+      g_signal_handler_disconnect (surface->pending->buffer,
+                                   surface->pending->buffer_destroy_handler_id);
+    }
 
   surface->pending->newly_attached = TRUE;
   surface->pending->buffer = buffer;
@@ -787,8 +795,12 @@ wl_surface_attach (struct wl_client *client,
   surface->pending->dy = dy;
 
   if (buffer)
-    wl_signal_add (&buffer->destroy_signal,
-                   &surface->pending->buffer_destroy_listener);
+    {
+      surface->pending->buffer_destroy_handler_id =
+        g_signal_connect (buffer, "resource-destroyed",
+                          G_CALLBACK (pending_buffer_resource_destroyed),
+                          surface->pending);
+    }
 }
 
 static void
