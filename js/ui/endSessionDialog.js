@@ -1,6 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /*
- * Copyright 2010 Red Hat, Inc
+ * Copyright 2010-2016 Red Hat, Inc
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -132,18 +132,38 @@ const restartUpdateDialogContent = {
     showOtherSessions: true,
 };
 
+const restartUpgradeDialogContent = {
+
+    subject: C_("title", "Restart & Install Upgrade"),
+    upgradeDescription: function(distroName, distroVersion) {
+        /* Translators: This is the text displayed for system upgrades in the
+           shut down dialog. First %s gets replaced with the distro name and
+           second %s with the distro version to upgrade to */
+        return _("%s %s will be installed after restart. Upgrade installation can take a long time: ensure that you have backed up and that the computer is plugged in.").format(distroName, distroVersion);
+    },
+    disableTimer: true,
+    showBatteryWarning: false,
+    confirmButtons: [{ signal: 'ConfirmedReboot',
+                       label:  C_("button", "Restart &amp; Install") }],
+    iconName: 'view-refresh-symbolic',
+    iconStyleClass: 'end-session-dialog-shutdown-icon',
+    showOtherSessions: true,
+};
+
 const DialogType = {
   LOGOUT: 0 /* GSM_SHELL_END_SESSION_DIALOG_TYPE_LOGOUT */,
   SHUTDOWN: 1 /* GSM_SHELL_END_SESSION_DIALOG_TYPE_SHUTDOWN */,
   RESTART: 2 /* GSM_SHELL_END_SESSION_DIALOG_TYPE_RESTART */,
-  UPDATE_RESTART: 3
+  UPDATE_RESTART: 3,
+  UPGRADE_RESTART: 4
 };
 
 const DialogContent = {
     0 /* DialogType.LOGOUT */: logoutDialogContent,
     1 /* DialogType.SHUTDOWN */: shutdownDialogContent,
     2 /* DialogType.RESTART */: restartDialogContent,
-    3 /* DialogType.UPDATE_RESTART */: restartUpdateDialogContent
+    3 /* DialogType.UPDATE_RESTART */: restartUpdateDialogContent,
+    4 /* DialogType.UPGRADE_RESTART */: restartUpgradeDialogContent
 };
 
 const MAX_USERS_IN_SESSION_DIALOG = 5;
@@ -164,6 +184,9 @@ const PkOfflineIface = '<node> \
 <interface name="org.freedesktop.PackageKit.Offline"> \
     <property name="UpdatePrepared" type="b" access="read"/> \
     <property name="UpdateTriggered" type="b" access="read"/> \
+    <property name="UpgradePrepared" type="b" access="read"/> \
+    <property name="UpgradeTriggered" type="b" access="read"/> \
+    <property name="PreparedUpgrade" type="a{sv}" access="read"/> \
     <method name="Trigger"> \
         <arg type="s" name="action" direction="in"/> \
     </method> \
@@ -415,11 +438,19 @@ const EndSessionDialog = new Lang.Class({
 
                 if (dialogContent.descriptionWithUser)
                     description = dialogContent.descriptionWithUser(realName, displayTime);
-                else
-                    description = dialogContent.description(displayTime);
             }
         }
 
+        // Use a different description when we are installing a system upgrade
+        if (dialogContent.upgradeDescription) {
+            let name = this._pkOfflineProxy.PreparedUpgrade['name'].deep_unpack();
+            let version = this._pkOfflineProxy.PreparedUpgrade['version'].deep_unpack();
+
+            if (name != null && version != null)
+                description = dialogContent.upgradeDescription(name, version);
+        }
+
+        // Fall back to regular description
         if (!description)
             description = dialogContent.description(displayTime);
 
@@ -698,9 +729,12 @@ const EndSessionDialog = new Lang.Class({
         this._totalSecondsToStayOpen = totalSecondsToStayOpen;
         this._type = type;
 
-        if (this._type == DialogType.RESTART &&
-            this._pkOfflineProxy.UpdateTriggered)
-            this._type = DialogType.UPDATE_RESTART;
+        if (this._type == DialogType.RESTART) {
+            if (this._pkOfflineProxy.UpdateTriggered)
+                this._type = DialogType.UPDATE_RESTART;
+            else if (this._pkOfflineProxy.UpgradeTriggered)
+                this._type = DialogType.UPGRADE_RESTART;
+        }
 
         this._applications = [];
         this._applicationList.destroy_all_children();
@@ -749,7 +783,9 @@ const EndSessionDialog = new Lang.Class({
             return;
         }
 
-        this._startTimer();
+        if (!dialogContent.disableTimer)
+            this._startTimer();
+
         this._sync();
 
         let signalId = this.connect('opened',
