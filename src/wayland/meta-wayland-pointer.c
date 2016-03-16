@@ -80,6 +80,8 @@ struct _MetaWaylandSurfaceRoleCursor
   int hot_x;
   int hot_y;
   MetaCursorSprite *cursor_sprite;
+
+  MetaWaylandBuffer *buffer;
 };
 
 G_DEFINE_TYPE (MetaWaylandSurfaceRoleCursor,
@@ -977,14 +979,18 @@ update_cursor_sprite_texture (MetaWaylandSurface *surface)
                                       cursor_role->hot_x * surface->scale,
                                       cursor_role->hot_y * surface->scale);
 
-      if (surface->buffer_ref.use_count > 0)
+      if (cursor_role->buffer)
         {
           struct wl_resource *buffer_resource;
 
+          g_assert (cursor_role->buffer == buffer);
           buffer_resource = buffer->resource;
           meta_cursor_renderer_realize_cursor_from_wl_buffer (cursor_renderer,
                                                               cursor_sprite,
                                                               buffer_resource);
+
+          meta_wayland_surface_unref_buffer_use_count (surface);
+          g_clear_object (&cursor_role->buffer);
         }
     }
   else
@@ -1260,18 +1266,53 @@ meta_wayland_pointer_get_seat (MetaWaylandPointer *pointer)
 static void
 cursor_surface_role_assigned (MetaWaylandSurfaceRole *surface_role)
 {
+  MetaWaylandSurfaceRoleCursor *cursor_role =
+    META_WAYLAND_SURFACE_ROLE_CURSOR (surface_role);
+  MetaWaylandSurface *surface =
+    meta_wayland_surface_role_get_surface (surface_role);
+  MetaWaylandBuffer *buffer = meta_wayland_surface_get_buffer (surface);
+
+  if (buffer)
+    {
+      g_set_object (&cursor_role->buffer, buffer);
+      meta_wayland_surface_ref_buffer_use_count (surface);
+    }
+
+  meta_wayland_surface_queue_pending_frame_callbacks (surface);
+}
+
+static void
+cursor_surface_role_pre_commit (MetaWaylandSurfaceRole  *surface_role,
+                                MetaWaylandPendingState *pending)
+{
+  MetaWaylandSurfaceRoleCursor *cursor_role =
+    META_WAYLAND_SURFACE_ROLE_CURSOR (surface_role);
   MetaWaylandSurface *surface =
     meta_wayland_surface_role_get_surface (surface_role);
 
-  meta_wayland_surface_queue_pending_frame_callbacks (surface);
+  if (pending->newly_attached && cursor_role->buffer)
+    {
+      meta_wayland_surface_unref_buffer_use_count (surface);
+      g_clear_object (&cursor_role->buffer);
+    }
 }
 
 static void
 cursor_surface_role_commit (MetaWaylandSurfaceRole  *surface_role,
                             MetaWaylandPendingState *pending)
 {
+  MetaWaylandSurfaceRoleCursor *cursor_role =
+    META_WAYLAND_SURFACE_ROLE_CURSOR (surface_role);
   MetaWaylandSurface *surface =
     meta_wayland_surface_role_get_surface (surface_role);
+  MetaWaylandBuffer *buffer = meta_wayland_surface_get_buffer (surface);
+
+  if (pending->newly_attached)
+    {
+      g_set_object (&cursor_role->buffer, buffer);
+      if (cursor_role->buffer)
+        meta_wayland_surface_ref_buffer_use_count (surface);
+    }
 
   meta_wayland_surface_queue_pending_state_frame_callbacks (surface, pending);
 
@@ -1326,6 +1367,12 @@ cursor_surface_role_dispose (GObject *object)
 
   g_clear_object (&cursor_role->cursor_sprite);
 
+  if (cursor_role->buffer)
+    {
+      meta_wayland_surface_unref_buffer_use_count (surface);
+      g_clear_object (&cursor_role->buffer);
+    }
+
   G_OBJECT_CLASS (meta_wayland_surface_role_cursor_parent_class)->dispose (object);
 }
 
@@ -1342,6 +1389,7 @@ meta_wayland_surface_role_cursor_class_init (MetaWaylandSurfaceRoleCursorClass *
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
   surface_role_class->assigned = cursor_surface_role_assigned;
+  surface_role_class->pre_commit = cursor_surface_role_pre_commit;
   surface_role_class->commit = cursor_surface_role_commit;
   surface_role_class->is_on_output = cursor_surface_role_is_on_output;
 
