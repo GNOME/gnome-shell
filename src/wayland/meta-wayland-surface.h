@@ -151,14 +151,21 @@ struct _MetaWaylandSurface
   MetaSurfaceActor *surface_actor;
   MetaWaylandSurfaceRole *role;
   MetaWindow *window;
-  MetaWaylandBuffer *buffer;
-  gboolean using_buffer;
   cairo_region_t *input_region;
   cairo_region_t *opaque_region;
   int scale;
   int32_t offset_x, offset_y;
   GList *subsurfaces;
   GHashTable *outputs_to_destroy_notify_id;
+
+  /* Buffer reference state. */
+  struct {
+    MetaWaylandBuffer *buffer;
+    unsigned int use_count;
+  } buffer_ref;
+
+  /* Buffer renderer state. */
+  gboolean buffer_held;
 
   /* List of pending frame callbacks that needs to stay queued longer than one
    * commit sequence, such as when it has not yet been assigned a role.
@@ -229,6 +236,12 @@ MetaWaylandSurface *meta_wayland_surface_create (MetaWaylandCompositor *composit
 
 gboolean            meta_wayland_surface_assign_role (MetaWaylandSurface *surface,
                                                       GType               role_type);
+
+MetaWaylandBuffer  *meta_wayland_surface_get_buffer (MetaWaylandSurface *surface);
+
+void                meta_wayland_surface_ref_buffer_use_count (MetaWaylandSurface *surface);
+
+void                meta_wayland_surface_unref_buffer_use_count (MetaWaylandSurface *surface);
 
 void                meta_wayland_surface_set_window (MetaWaylandSurface *surface,
                                                      MetaWindow         *window);

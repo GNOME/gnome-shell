@@ -136,7 +136,8 @@ meta_surface_actor_wayland_get_subsurface_rect (MetaSurfaceActorWayland *self,
                                                 MetaRectangle           *rect)
 {
   MetaWaylandSurface *surface = meta_surface_actor_wayland_get_surface (self);
-  CoglTexture *texture = surface->buffer->texture;
+  MetaWaylandBuffer *buffer = meta_wayland_surface_get_buffer (surface);
+  CoglTexture *texture = buffer->texture;
   MetaWindow *toplevel_window;
   int monitor_scale;
   float x, y;

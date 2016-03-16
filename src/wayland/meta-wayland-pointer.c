@@ -966,24 +966,25 @@ update_cursor_sprite_texture (MetaWaylandSurface *surface)
   MetaWaylandSurfaceRoleCursor *cursor_role =
     META_WAYLAND_SURFACE_ROLE_CURSOR (surface->role);
   MetaCursorSprite *cursor_sprite = cursor_role->cursor_sprite;
+  MetaWaylandBuffer *buffer = meta_wayland_surface_get_buffer (surface);
 
-  g_return_if_fail (!surface->buffer || surface->buffer->texture);
+  g_return_if_fail (!buffer || buffer->texture);
 
-  if (surface->buffer)
+  if (buffer)
     {
       meta_cursor_sprite_set_texture (cursor_sprite,
-                                      surface->buffer->texture,
+                                      buffer->texture,
                                       cursor_role->hot_x * surface->scale,
                                       cursor_role->hot_y * surface->scale);
 
-      if (surface->using_buffer)
+      if (surface->buffer_ref.use_count > 0)
         {
-          struct wl_resource *buffer;
+          struct wl_resource *buffer_resource;
 
-          buffer = surface->buffer->resource;
+          buffer_resource = buffer->resource;
           meta_cursor_renderer_realize_cursor_from_wl_buffer (cursor_renderer,
                                                               cursor_sprite,
-                                                              buffer);
+                                                              buffer_resource);
         }
     }
   else

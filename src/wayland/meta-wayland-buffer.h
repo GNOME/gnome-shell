@@ -39,7 +39,6 @@ struct _MetaWaylandBuffer
   struct wl_listener destroy_listener;
 
   CoglTexture *texture;
-  uint32_t use_count;
 };
 
 #define META_TYPE_WAYLAND_BUFFER (meta_wayland_buffer_get_type ())
@@ -47,8 +46,6 @@ G_DECLARE_FINAL_TYPE (MetaWaylandBuffer, meta_wayland_buffer,
                       META, WAYLAND_BUFFER, GObject);
 
 MetaWaylandBuffer *     meta_wayland_buffer_from_resource       (struct wl_resource    *resource);
-void                    meta_wayland_buffer_ref_use_count       (MetaWaylandBuffer     *buffer);
-void                    meta_wayland_buffer_unref_use_count     (MetaWaylandBuffer     *buffer);
 CoglTexture *           meta_wayland_buffer_ensure_texture      (MetaWaylandBuffer     *buffer);
 void                    meta_wayland_buffer_process_damage      (MetaWaylandBuffer     *buffer,
                                                                  cairo_region_t        *region);

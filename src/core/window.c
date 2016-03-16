@@ -726,7 +726,7 @@ client_window_should_be_mapped (MetaWindow *window)
 {
 #ifdef HAVE_WAYLAND
   if (window->client_type == META_WINDOW_CLIENT_TYPE_WAYLAND &&
-      !window->surface->buffer)
+      !meta_wayland_surface_get_buffer (window->surface))
     return FALSE;
 #endif
 
@@ -1554,7 +1554,7 @@ meta_window_should_be_showing (MetaWindow  *window)
 {
 #ifdef HAVE_WAYLAND
   if (window->client_type == META_WINDOW_CLIENT_TYPE_WAYLAND &&
-      !window->surface->buffer)
+      !meta_wayland_surface_get_buffer (window->surface))
     return FALSE;
 #endif
 

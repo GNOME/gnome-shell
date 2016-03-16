@@ -53,25 +53,6 @@ meta_wayland_buffer_destroy_handler (struct wl_listener *listener,
   g_object_unref (buffer);
 }
 
-void
-meta_wayland_buffer_ref_use_count (MetaWaylandBuffer *buffer)
-{
-  g_warn_if_fail (buffer->resource);
-
-  buffer->use_count++;
-}
-
-void
-meta_wayland_buffer_unref_use_count (MetaWaylandBuffer *buffer)
-{
-  g_return_if_fail (buffer->use_count != 0);
-
-  buffer->use_count--;
-
-  if (buffer->use_count == 0 && buffer->resource)
-    wl_resource_queue_event (buffer->resource, WL_BUFFER_RELEASE);
-}
-
 MetaWaylandBuffer *
 meta_wayland_buffer_from_resource (struct wl_resource *resource)
 {
@@ -106,7 +87,6 @@ meta_wayland_buffer_ensure_texture (MetaWaylandBuffer *buffer)
   CoglTexture *texture;
   struct wl_shm_buffer *shm_buffer;
 
-  g_return_val_if_fail (buffer->use_count != 0, NULL);
   g_return_val_if_fail (buffer->resource, NULL);
 
   if (buffer->texture)
@@ -141,8 +121,6 @@ meta_wayland_buffer_process_damage (MetaWaylandBuffer *buffer,
                                     cairo_region_t    *region)
 {
   struct wl_shm_buffer *shm_buffer;
-
-  g_return_if_fail (buffer->use_count != 0);
 
   shm_buffer = wl_shm_buffer_get (buffer->resource);
 
