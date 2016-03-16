@@ -1,3 +1,19 @@
+3.19.92
+=======
+* Add system bell support on wayland [Jonas; #763284]
+* Add gtk_surface.present to gtk-shell [Jonas; #763295]
+* Handle DND drops on the root window [Carlos; #762104]
+* Misc. bug fixes [Jonas, Carlos, Rui; #762828, #760745, #763125, #762763,
+  #762661, #762639, #763159]
+
+Contributors:
+  Jonas Ådahl, Carlos Garnacho, Rui Matos, Florian Müllner
+
+Translations:
+  Rūdolfs Mazurs [lv], Balázs Úr [hu], Claude Paroz [fr], Matej Urbančič [sl],
+  Мирослав Николић [sr, sr@latin], Sebastian Rasmussen [sv], Changwoo Ryu [ko],
+  Gil Forcada [ca], Tom Tryfonidis [el]
+
 3.19.91
 =======
 * Add --nested CLI argument to fix nested wayland session [Jonas; #758658]
