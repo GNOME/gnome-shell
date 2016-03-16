@@ -1,3 +1,20 @@
+3.19.92
+=======
+* Update location dialog according to latest mockups [Zeeshan; #762480]
+* Fix deleting chat notifications in calendar [Florian; #747991]
+
+Contributors:
+  Zeeshan Ali (Khattak), Florian Müllner
+
+Translations:
+  Rūdolfs Mazurs [lv], Changwoo Ryu [ko], Matej Urbančič [sl],
+  Justin van Steijn [nl], Fabio Tomat [fur], Kris Thomsen [da],
+  Marek Černocký [cs], Piotr Drąg [pl], Dušan Kazik [sk],
+  Мирослав Николић [sr, sr@latin], Balázs Úr [hu], Yosef Or Boczko [he],
+  Daniel Mustieles [es], Fran Dieguez [gl], Bernd Homuth [de],
+  Tom Tryfonidis [el], Jiri Grönroos [fi], Gil Forcada [ca],
+  Artur Morais [pt_BR], Aurimas Černius [lt], Stas Solovey [ru]
+
 3.19.91
 =======
 * location: Ask user only once [Zeeshan; #762559]
