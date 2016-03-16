@@ -141,6 +141,10 @@ static void
 meta_wayland_surface_role_assigned (MetaWaylandSurfaceRole *surface_role);
 
 static void
+meta_wayland_surface_role_pre_commit (MetaWaylandSurfaceRole  *surface_role,
+                                      MetaWaylandPendingState *pending);
+
+static void
 meta_wayland_surface_role_commit (MetaWaylandSurfaceRole  *surface_role,
                                   MetaWaylandPendingState *pending);
 
@@ -162,6 +166,13 @@ meta_wayland_surface_assign_role (MetaWaylandSurface *surface,
       role_priv->surface = surface;
 
       meta_wayland_surface_role_assigned (surface->role);
+
+      /* Release the use count held on behalf of the just assigned role. */
+      if (surface->unassigned.buffer)
+        {
+          meta_wayland_surface_unref_buffer_use_count (surface);
+          g_clear_object (&surface->unassigned.buffer);
+        }
 
       return TRUE;
     }
@@ -663,6 +674,19 @@ apply_pending_state (MetaWaylandSurface      *surface,
   MetaSurfaceActorWayland *surface_actor_wayland =
     META_SURFACE_ACTOR_WAYLAND (surface->surface_actor);
 
+  if (surface->role)
+    {
+      meta_wayland_surface_role_pre_commit (surface->role, pending);
+    }
+  else
+    {
+      if (pending->newly_attached && surface->unassigned.buffer)
+        {
+          meta_wayland_surface_unref_buffer_use_count (surface);
+          g_clear_object (&surface->unassigned.buffer);
+        }
+    }
+
   if (pending->newly_attached)
     {
       gboolean switched_buffer;
@@ -708,13 +732,6 @@ apply_pending_state (MetaWaylandSurface      *surface,
   if (!cairo_region_is_empty (pending->damage))
     surface_process_damage (surface, pending->damage);
 
-  /* If we have a buffer that we are not using, decrease the use count so it may
-   * be released if no-one else has a use-reference to it.
-   */
-  if (pending->newly_attached &&
-      !surface->buffer_held && surface->buffer_ref.buffer)
-    meta_wayland_surface_unref_buffer_use_count (surface);
-
   surface->offset_x += pending->dx;
   surface->offset_y += pending->dy;
 
@@ -752,7 +769,25 @@ apply_pending_state (MetaWaylandSurface      *surface,
       wl_list_insert_list (&surface->pending_frame_callback_list,
                            &pending->frame_callback_list);
       wl_list_init (&pending->frame_callback_list);
+
+      if (pending->newly_attached)
+        {
+          /* The need to keep the wl_buffer from being released depends on what
+           * role the surface is given. That means we need to also keep a use
+           * count for wl_buffer's that are used by unassigned wl_surface's.
+           */
+          g_set_object (&surface->unassigned.buffer, surface->buffer_ref.buffer);
+          if (surface->unassigned.buffer)
+            meta_wayland_surface_ref_buffer_use_count (surface);
+        }
     }
+
+  /* If we have a buffer that we are not using, decrease the use count so it may
+   * be released if no-one else has a use-reference to it.
+   */
+  if (pending->newly_attached &&
+      !surface->buffer_held && surface->buffer_ref.buffer)
+    meta_wayland_surface_unref_buffer_use_count (surface);
 
   g_signal_emit (pending,
                  pending_state_signals[PENDING_STATE_SIGNAL_APPLIED],
@@ -1146,6 +1181,12 @@ wl_surface_destructor (struct wl_resource *resource)
    * order. Simply destroy the window in this case. */
   if (surface->window)
     destroy_window (surface);
+
+  if (surface->unassigned.buffer)
+    {
+      meta_wayland_surface_unref_buffer_use_count (surface);
+      g_clear_object (&surface->unassigned.buffer);
+    }
 
   if (surface->buffer_held)
     meta_wayland_surface_unref_buffer_use_count (surface);
@@ -2651,6 +2692,17 @@ static void
 meta_wayland_surface_role_assigned (MetaWaylandSurfaceRole *surface_role)
 {
   META_WAYLAND_SURFACE_ROLE_GET_CLASS (surface_role)->assigned (surface_role);
+}
+
+static void
+meta_wayland_surface_role_pre_commit (MetaWaylandSurfaceRole  *surface_role,
+                                      MetaWaylandPendingState *pending)
+{
+  MetaWaylandSurfaceRoleClass *klass;
+
+  klass = META_WAYLAND_SURFACE_ROLE_GET_CLASS (surface_role);
+  if (klass->pre_commit)
+    klass->pre_commit (surface_role, pending);
 }
 
 static void

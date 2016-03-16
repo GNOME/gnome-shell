@@ -56,6 +56,8 @@ struct _MetaWaylandSurfaceRoleClass
   GObjectClass parent_class;
 
   void (*assigned) (MetaWaylandSurfaceRole *surface_role);
+  void (*pre_commit) (MetaWaylandSurfaceRole  *surface_role,
+                      MetaWaylandPendingState *pending);
   void (*commit) (MetaWaylandSurfaceRole  *surface_role,
                   MetaWaylandPendingState *pending);
   gboolean (*is_on_output) (MetaWaylandSurfaceRole *surface_role,
@@ -171,6 +173,11 @@ struct _MetaWaylandSurface
    * commit sequence, such as when it has not yet been assigned a role.
    */
   struct wl_list pending_frame_callback_list;
+
+  /* Intermediate state for when no role has been assigned. */
+  struct {
+    MetaWaylandBuffer *buffer;
+  } unassigned;
 
   struct {
     const MetaWaylandDragDestFuncs *funcs;
