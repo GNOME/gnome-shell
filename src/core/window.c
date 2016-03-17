@@ -1259,6 +1259,7 @@ meta_window_unmanage (MetaWindow  *window,
   GList *tmp;
 
   meta_verbose ("Unmanaging %s\n", window->desc);
+  window->unmanaging = TRUE;
 
 #ifdef HAVE_WAYLAND
   /* This needs to happen for both Wayland and XWayland clients,
@@ -1285,8 +1286,6 @@ meta_window_unmanage (MetaWindow  *window,
               window->desc);
 
   meta_display_unregister_stamp (window->display, window->stamp);
-
-  window->unmanaging = TRUE;
 
   if (meta_prefs_get_attach_modal_dialogs ())
     {

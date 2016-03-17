@@ -124,6 +124,10 @@ surface_state_changed (MetaWindow *window)
 {
   MetaWindowWayland *wl_window = META_WINDOW_WAYLAND (window);
 
+  /* don't send notify when the window is being unmanaged */
+  if (window->unmanaging)
+    return;
+
   meta_wayland_surface_configure_notify (window->surface,
                                          wl_window->last_sent_width,
                                          wl_window->last_sent_height,
@@ -165,6 +169,10 @@ meta_window_wayland_move_resize_internal (MetaWindow                *window,
   int monitor_scale;
 
   g_assert (window->frame == NULL);
+
+  /* don't do anything if we're dropping the window, see #751847 */
+  if (window->unmanaging)
+    return;
 
   /* The scale the window is drawn in might change depending on what monitor it
    * is mainly on. Scale the configured rectangle to be in logical pixel
@@ -396,12 +404,6 @@ appears_focused_changed (GObject    *object,
                          gpointer    user_data)
 {
   MetaWindow *window = META_WINDOW (object);
-
-  /* When we're unmanaging, we remove focus from the window,
-   * causing this to fire. Don't do anything in that case. */
-  if (window->unmanaging)
-    return;
-
   surface_state_changed (window);
 }
 
