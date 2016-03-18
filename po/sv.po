@@ -4,7 +4,7 @@
 # Daniel Nylander <po@danielnylander.se>, 2009, 2010, 2011, 2012.
 # Marcus Lundblad <ml@update.uu.se>, 2014.
 # Åke Engelbrektson <eson57@gmail.com, 2014.
-# Anders Jonsson <anders.jonsson@norsjovallen.se>, 2015.
+# Anders Jonsson <anders.jonsson@norsjovallen.se>, 2015, 2016.
 # Sebastian Rasmussen <sebras@gmail.com>, 2015, 2016.
 #
 msgid ""
@@ -12,16 +12,16 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-02-22 18:37+0000\n"
-"PO-Revision-Date: 2016-02-27 12:38+0100\n"
-"Last-Translator: Sebastian Rasmussen <sebras@gmail.com>\n"
+"POT-Creation-Date: 2016-03-12 10:19+0000\n"
+"PO-Revision-Date: 2016-03-12 19:32+0100\n"
+"Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: svenska <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.8.7\n"
+"X-Generator: Poedit 1.8.7.1\n"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
 msgid "System"
@@ -312,12 +312,12 @@ msgstr "Fördröj fokusändringar i musläge tills pekare slutar röra sig"
 msgid "Network Login"
 msgstr "Nätverksinloggning"
 
-#: ../js/extensionPrefs/main.js:121
+#: ../js/extensionPrefs/main.js:117
 #, javascript-format
 msgid "There was an error loading the preferences dialog for %s:"
 msgstr "Det uppstod ett fel vid inläsning av inställningsdialogen för %s:"
 
-#: ../js/extensionPrefs/main.js:153
+#: ../js/extensionPrefs/main.js:149
 msgid "GNOME Shell Extensions"
 msgstr "Tillägg för GNOME-skal"
 
@@ -974,11 +974,11 @@ msgid "Keyboard"
 msgstr "Tangentbord"
 
 #. translators: 'Hide' is a verb
-#: ../js/ui/legacyTray.js:66
+#: ../js/ui/legacyTray.js:65
 msgid "Hide tray"
 msgstr "Dölj aktivitetsfält"
 
-#: ../js/ui/legacyTray.js:107
+#: ../js/ui/legacyTray.js:106
 msgid "Status Icons"
 msgstr "Statusikoner"
 
@@ -1292,25 +1292,23 @@ msgstr "Plats inaktiverad"
 msgid "Enable"
 msgstr "Aktivera"
 
-#: ../js/ui/status/location.js:434
+#: ../js/ui/status/location.js:426
 msgid "Deny Access"
 msgstr "Neka åtkomst"
 
-#: ../js/ui/status/location.js:437
+#: ../js/ui/status/location.js:429
 msgid "Grant Access"
 msgstr "Bevilja åtkomst"
 
 #. Translators: %s is an application name
-#: ../js/ui/status/location.js:443
+#: ../js/ui/status/location.js:435
 #, javascript-format
 msgid "Give %s access to your location?"
 msgstr "Ge %s åtkomst till din plats?"
 
-#. Translators: %s is an application name
-#: ../js/ui/status/location.js:446
-#, javascript-format
-msgid "%s is requesting access to your location."
-msgstr "%s begär åtkomst till din plats."
+#: ../js/ui/status/location.js:437
+msgid "Location access can be changed at any time from the privacy settings."
+msgstr "Platsåtkomst kan ändras när som helst från sekretessinställningarna."
 
 #: ../js/ui/status/network.js:101
 msgid "<unknown>"
@@ -1744,6 +1742,9 @@ msgstr "Lösenordet får inte vara blankt"
 #: ../src/shell-polkit-authentication-agent.c:353
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Autentiseringsdialogen stängdes av användaren"
+
+#~ msgid "%s is requesting access to your location."
+#~ msgstr "%s begär åtkomst till din plats."
 
 #~ msgid "GNOME Shell (wayland compositor)"
 #~ msgstr "GNOME-skal (wayland-compositor)"
