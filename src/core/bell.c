@@ -152,8 +152,10 @@ bell_flash_frame (MetaDisplay *display,
 {
   if (window && window->frame)
     bell_flash_window_frame (window);
-  else
+  else if (window)
     bell_flash_window (window);
+  else
+    bell_flash_fullscreen (display);
 }
 
 /**
