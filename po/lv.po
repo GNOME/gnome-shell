@@ -9,10 +9,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-sh"
-"ell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-03-03 10:16+0000\n"
-"PO-Revision-Date: 2016-03-03 22:06+0200\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"shell&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2016-03-20 10:24+0000\n"
+"PO-Revision-Date: 2016-03-20 21:26+0200\n"
 "Last-Translator: Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>\n"
 "Language-Team: Latvian <lata-l10n@googlegroups.com>\n"
 "Language: lv\n"
@@ -180,8 +180,8 @@ msgid ""
 msgstr ""
 "Čaula rādīs Bluetooth izvēlnes vienumu tikai tad, ja Bluetooth adapters ir "
 "ieslēgts vai ja ir iestatītas ierīces, kas i saistītas ar noklusējuma "
-"adapteri. Tas tiks atstatīts, ja noklusējuma adapters jebkad tiks redzēts bez "
-"ar to saistītām ierīcēm."
+"adapteri. Tas tiks atstatīts, ja noklusējuma adapters jebkad tiks redzēts "
+"bez ar to saistītām ierīcēm."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:20
 msgid "Show the week date in the calendar"
@@ -311,12 +311,12 @@ msgstr "Peles režīmā aizkavēt fokusa izmaiņas, līdz rādītājs pārstāj 
 msgid "Network Login"
 msgstr "Tīkla ierakstīšanās"
 
-#: ../js/extensionPrefs/main.js:121
+#: ../js/extensionPrefs/main.js:117
 #, javascript-format
 msgid "There was an error loading the preferences dialog for %s:"
 msgstr "Ielādējot %s iestatījumu dialogu, gadījās kļūda:"
 
-#: ../js/extensionPrefs/main.js:153
+#: ../js/extensionPrefs/main.js:149
 msgid "GNOME Shell Extensions"
 msgstr "GNOME čaulas paplašinājumi"
 
@@ -520,7 +520,6 @@ msgid "Select Audio Device"
 msgstr "Izvēlieties audio ierīci"
 
 #: ../js/ui/audioDeviceSelection.js:69
-#| msgid "Account Settings"
 msgid "Sound Settings"
 msgstr "Skaņas Iestatījumi"
 
@@ -786,7 +785,7 @@ msgstr "Diemžēl tas nenostrādāja. Lūdzu, mēģiniet vēlreiz."
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/components/telepathyClient.js:759
+#: ../js/ui/components/telepathyClient.js:760
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s tagad saucas %s"
@@ -981,11 +980,11 @@ msgid "Keyboard"
 msgstr "Tastatūra"
 
 #. translators: 'Hide' is a verb
-#: ../js/ui/legacyTray.js:66
+#: ../js/ui/legacyTray.js:65
 msgid "Hide tray"
 msgstr "Slēpt paplāti"
 
-#: ../js/ui/legacyTray.js:107
+#: ../js/ui/legacyTray.js:106
 msgid "Status Icons"
 msgstr "Statusa ikonas"
 
@@ -1046,14 +1045,10 @@ msgid "System Information"
 msgstr "Sistēmas informācija"
 
 #: ../js/ui/mpris.js:194
-#| msgctxt "program"
-#| msgid "Unknown"
 msgid "Unknown artist"
 msgstr "Nezināms izpildītājs"
 
 #: ../js/ui/mpris.js:195
-#| msgctxt "program"
-#| msgid "Unknown"
 msgid "Unknown title"
 msgstr "Nezināms nosaukums"
 
@@ -1088,7 +1083,6 @@ msgid "Activities"
 msgstr "Aktivitātes"
 
 #: ../js/ui/panel.js:695
-#| msgid "System"
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sistēma"
@@ -1240,7 +1234,6 @@ msgid "Large Text"
 msgstr "Liels teksts"
 
 #: ../js/ui/status/bluetooth.js:47
-#| msgid "Bluetooth Settings"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -1258,7 +1251,6 @@ msgstr[1] "%d savienoti"
 msgstr[2] "%d savienotu"
 
 #: ../js/ui/status/bluetooth.js:138
-#| msgid "%s Off"
 msgid "Off"
 msgstr "Izslēgts"
 
@@ -1309,25 +1301,24 @@ msgstr "Atrašanās vieta ir izslēgta"
 msgid "Enable"
 msgstr "Ieslēgt"
 
-#: ../js/ui/status/location.js:434
+#: ../js/ui/status/location.js:426
 msgid "Deny Access"
 msgstr "Liegt pieeju"
 
-#: ../js/ui/status/location.js:437
+#: ../js/ui/status/location.js:429
 msgid "Grant Access"
 msgstr "Piešķirt pieeju"
 
 #. Translators: %s is an application name
-#: ../js/ui/status/location.js:443
+#: ../js/ui/status/location.js:435
 #, javascript-format
 msgid "Give %s access to your location?"
 msgstr "Dot %s pieeju jūsu atrašanās vietai?"
 
-#. Translators: %s is an application name
-#: ../js/ui/status/location.js:446
-#, javascript-format
-msgid "%s is requesting access to your location."
-msgstr "%s prasa pieeju jūsu atrašanās vietai."
+#: ../js/ui/status/location.js:437
+msgid "Location access can be changed at any time from the privacy settings."
+msgstr ""
+"Pieeju atrašanās vietai var mainīt jebkurā brīdī privātuma iestatījumos."
 
 #: ../js/ui/status/network.js:101
 msgid "<unknown>"
@@ -1530,14 +1521,12 @@ msgstr "Novērtē…"
 #. Translators: this is <hours>:<minutes> Remaining (<percentage>)
 #: ../js/ui/status/power.js:98
 #, javascript-format
-#| msgid "%d∶%02d Remaining (%d%%)"
 msgid "%d∶%02d Remaining (%d %%)"
 msgstr "Atlicis %d.%02d (%d %%)"
 
 #. Translators: this is <hours>:<minutes> Until Full (<percentage>)
 #: ../js/ui/status/power.js:103
 #, javascript-format
-#| msgid "%d∶%02d Until Full (%d%%)"
 msgid "%d∶%02d Until Full (%d %%)"
 msgstr "Līdz pilnai %d.%02d (%d %%)"
 
