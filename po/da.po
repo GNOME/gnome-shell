@@ -1,5 +1,5 @@
 # Danish translation of Mutter.
-# Copyright (C) 2002-2009, 2012-2015.
+# Copyright (C) 2002-2009, 2012-2016.
 # This file is distributed under the same license as the metacity package.
 # Kjartan Maraas <kmaraas@gnome.org>, 2002
 # Keld simonsen <keld@dkuug.dk>, 2002
@@ -8,7 +8,7 @@
 # Lasse Bang Mikkelsen <lbm@fatalerror.dk>, 2006.
 # Kenneth Nielsen <k.nielsen81@gmail.com>, 2008.
 # Joe Hansen <joedalton2@yahoo.dk>, 2011.
-# Ask Hjorth Larsen <asklarsen@gmail.com>, 2007, 09, 10, 12, 13, 14, 15.
+# Ask Hjorth Larsen <asklarsen@gmail.com>, 2007, 09, 10, 12, 13, 14, 15, 16.
 #
 # Konventioner:
 #
@@ -20,8 +20,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-21 16:30+0100\n"
-"PO-Revision-Date: 2015-03-14 17:01+0100\n"
+"POT-Creation-Date: 2016-03-20 23:17+0100\n"
+"PO-Revision-Date: 2016-03-20 21:46+0100\n"
 "Last-Translator: Ask Hjorth Larsen <asklarsen@gmail.com>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "Language: da\n"
@@ -291,7 +291,7 @@ msgstr ""
 
 #: ../data/org.gnome.mutter.gschema.xml.in.h:3
 msgid "Attach modal dialogs"
-msgstr "Fastgør modaldialogvinduer"
+msgstr "Fastgør modaldialoger"
 
 #: ../data/org.gnome.mutter.gschema.xml.in.h:4
 msgid ""
@@ -299,9 +299,8 @@ msgid ""
 "attached to the titlebar of the parent window and are moved together with "
 "the parent window."
 msgstr ""
-"Når sand, vil modaldialogvinduer hænge sammen med titellinjen af "
-"ophavsvinduet og flyttes sammen med dette, frem for at have uafhængige "
-"titellinjer."
+"Når sand, vil modaldialoger hænge sammen med titellinjen af ophavsvinduet og "
+"flyttes sammen med dette, frem for at have uafhængige titellinjer."
 
 #: ../data/org.gnome.mutter.gschema.xml.in.h:5
 msgid "Enable edge tiling when dropping windows on screen edges"
@@ -463,22 +462,22 @@ msgstr "Skift til VT 11"
 msgid "Switch to VT 12"
 msgstr "Skift til VT 12"
 
-#: ../src/backends/meta-monitor-manager.c:364
+#: ../src/backends/meta-monitor-manager.c:518
 msgid "Built-in display"
 msgstr "Indbygget skærm"
 
-#: ../src/backends/meta-monitor-manager.c:391
+#: ../src/backends/meta-monitor-manager.c:544
 msgid "Unknown"
 msgstr "Ukendt"
 
-#: ../src/backends/meta-monitor-manager.c:393
+#: ../src/backends/meta-monitor-manager.c:546
 msgid "Unknown Display"
 msgstr "Ukendt skærm"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: ../src/backends/meta-monitor-manager.c:401
+#: ../src/backends/meta-monitor-manager.c:554
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
@@ -493,7 +492,7 @@ msgid ""
 msgstr ""
 "En anden komposithåndtering kører allerede på skærm %i på terminal \"%s\"."
 
-#: ../src/core/bell.c:185
+#: ../src/core/bell.c:192
 msgid "Bell event"
 msgstr "Bip-hændelse"
 
@@ -522,40 +521,44 @@ msgstr "_Vent"
 msgid "_Force Quit"
 msgstr "_Tving til at afslutte"
 
-#: ../src/core/display.c:562
+#: ../src/core/display.c:555
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Kunne ikke åbne X Window System-terminalen \"%s\"\n"
 
-#: ../src/core/main.c:176
+#: ../src/core/main.c:181
 msgid "Disable connection to session manager"
 msgstr "Deaktivér forbindelse til sessionshåndtering"
 
-#: ../src/core/main.c:182
+#: ../src/core/main.c:187
 msgid "Replace the running window manager"
 msgstr "Erstat den kørende vindueshåndtering"
 
-#: ../src/core/main.c:188
+#: ../src/core/main.c:193
 msgid "Specify session management ID"
 msgstr "Angiv sessionhåndterings-id"
 
-#: ../src/core/main.c:193
+#: ../src/core/main.c:198
 msgid "X Display to use"
 msgstr "X-skærm som bruges"
 
-#: ../src/core/main.c:199
+#: ../src/core/main.c:204
 msgid "Initialize session from savefile"
 msgstr "Initialisér session fra gemt fil"
 
-#: ../src/core/main.c:205
+#: ../src/core/main.c:210
 msgid "Make X calls synchronous"
 msgstr "Gør kald til X synkrone"
 
-#: ../src/core/main.c:212
+#: ../src/core/main.c:217
 msgid "Run as a wayland compositor"
 msgstr "Kør som en wayland-kompositor"
 
-#: ../src/core/main.c:220
+#: ../src/core/main.c:223
+msgid "Run as a nested compositor"
+msgstr "Kør som en indlejret kompositor"
+
+#: ../src/core/main.c:231
 msgid "Run as a full display server, rather than nested"
 msgstr "Kør som fuld displayserver, frem for indlejret"
 
@@ -582,12 +585,12 @@ msgstr "Vis version"
 msgid "Mutter plugin to use"
 msgstr "Mutter-udvidelsesmodul der skal bruges"
 
-#: ../src/core/prefs.c:2004
+#: ../src/core/prefs.c:1997
 #, c-format
 msgid "Workspace %d"
 msgstr "Arbejdsområde %d"
 
-#: ../src/core/screen.c:525
+#: ../src/core/screen.c:521
 #, c-format
 msgid ""
 "Display \"%s\" already has a window manager; try using the --replace option "
@@ -596,12 +599,12 @@ msgstr ""
 "Terminalen \"%s\" har allerede en vindueshåndtering; prøv tilvalget --"
 "replace for at erstatte den aktuelle vindueshåndtering."
 
-#: ../src/core/screen.c:607
+#: ../src/core/screen.c:603
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Skærm %d på terminal \"%s\" er ugyldig\n"
 
-#: ../src/core/util.c:118
+#: ../src/core/util.c:121
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "Mutter blev kompileret uden understøttelse for uddybende tilstand\n"
 
@@ -1336,9 +1339,6 @@ msgstr "%s (på %s)"
 #~ msgid "_Dialog"
 #~ msgstr "_Dialog"
 
-#~ msgid "_Modal dialog"
-#~ msgstr "_Modaldialogvindue"
-
 #~ msgid "_Utility"
 #~ msgstr "_Værktøj"
 
@@ -1401,9 +1401,6 @@ msgstr "%s (på %s)"
 
 #~ msgid "Border"
 #~ msgstr "Ramme"
-
-#~ msgid "Attached Modal Dialog"
-#~ msgstr "Fastgjort modaldialogvindue"
 
 #~ msgid "Button layout test %d"
 #~ msgstr "Knaplayouttest %d"
