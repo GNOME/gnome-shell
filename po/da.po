@@ -1,5 +1,5 @@
 # Danish translation of gnome-shell
-# Copyright (C) 2010-2011, 2014-2015 gnome-shell
+# Copyright (C) 2010-2011, 2014-2016 gnome-shell
 # This file is distributed under the same license as the gnome-shell package.
 #
 # Kenneth Nielsen <k.nielsen81@gmail.com>, 2012.
@@ -20,8 +20,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-06 19:50+0100\n"
-"PO-Revision-Date: 2016-02-23 19:31+0200\n"
+"POT-Creation-Date: 2016-03-20 23:45+0100\n"
+"PO-Revision-Date: 2016-03-20 03:13+0100\n"
 "Last-Translator: Kris Thomsen\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "Language: da\n"
@@ -324,12 +324,12 @@ msgstr ""
 msgid "Network Login"
 msgstr "Netværksindlogning"
 
-#: ../js/extensionPrefs/main.js:121
+#: ../js/extensionPrefs/main.js:117
 #, javascript-format
 msgid "There was an error loading the preferences dialog for %s:"
 msgstr "Der opstod in fejl ved indlæsning af indstillingsdialogen for %s:"
 
-#: ../js/extensionPrefs/main.js:153
+#: ../js/extensionPrefs/main.js:149
 msgid "GNOME Shell Extensions"
 msgstr "Udvidelsesmoduler til GNOME Shell"
 
@@ -798,7 +798,7 @@ msgstr "Beklager, godkendelse mislykkedes. Prøv igen."
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/components/telepathyClient.js:759
+#: ../js/ui/components/telepathyClient.js:760
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s kalder sig nu %s"
@@ -1315,11 +1315,10 @@ msgstr "Giv adgang"
 msgid "Give %s access to your location?"
 msgstr "Giv %s adgang til din placering?"
 
-#. Translators: %s is an application name
-#: ../js/ui/status/location.js:438
-#, javascript-format
-msgid "%s is requesting access to your location."
-msgstr "%s spørger efter adgang til din placering."
+#: ../js/ui/status/location.js:437
+msgid "Location access can be changed at any time from the privacy settings."
+msgstr ""
+"Placeringsadgang kan ændres når som helst via privatlivsindstillingerne."
 
 #: ../js/ui/status/network.js:101
 msgid "<unknown>"
@@ -1752,6 +1751,9 @@ msgstr "Adgangskode må ikke være tom"
 #: ../src/shell-polkit-authentication-agent.c:353
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Godkendelsesdialogen blev afvist af brugeren"
+
+#~ msgid "%s is requesting access to your location."
+#~ msgstr "%s spørger efter adgang til din placering."
 
 #~ msgid "GNOME Shell (wayland compositor)"
 #~ msgstr "GNOME Shell (wayland-sammensætter)"
