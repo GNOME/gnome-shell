@@ -13,21 +13,23 @@
 # Alexandre Franke <alexandre.franke@gmail.com>, 2012, 2015.
 # Mathieu Stumpf <psychoslave@culture-libre.org>, 2013.
 # Alain Lojewski <allomervan@gmail.com>, 2014.
+# Erwan Georget <egeorget@opmbx.org>, 2016.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master fr\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-02-10 22:14+0000\n"
-"PO-Revision-Date: 2016-02-11 09:40+0100\n"
-"Last-Translator: Alexandre Franke <alexandre.franke@gmail.com>\n"
+"POT-Creation-Date: 2016-03-18 10:23+0000\n"
+"PO-Revision-Date: 2016-03-18 19:41+0100\n"
+"Last-Translator: Erwan Georget <egeorget@opmbx.org>\n"
 "Language-Team: français <gnomefr@traduc.org>\n"
-"Language: French\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 1.8.7.1\n"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
 msgid "System"
@@ -183,8 +185,7 @@ msgstr ""
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:18
 msgid ""
 "Whether the default Bluetooth adapter had set up devices associated to it"
-msgstr ""
-"Indique si l'adaptateur Bluetooth a des périphériques associés"
+msgstr "Indique si l'adaptateur Bluetooth a des périphériques associés"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:19
 msgid ""
@@ -194,8 +195,9 @@ msgid ""
 "devices associated to it."
 msgstr ""
 "Le shell n'affichera d'élément de menu Bluetooth que si un adaptateur "
-"Bluetooth est allumé ou s'il y a des périphériques associés avec l'adaptateur "
-"par défaut. Cela sera réinitialisé si l'adaptateur par défaut se retrouve sans aucun périphérique associé."
+"Bluetooth est allumé ou s'il y a des périphériques associés avec "
+"l'adaptateur par défaut. Cela sera réinitialisé si l'adaptateur par défaut "
+"se retrouve sans aucun périphérique associé."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:20
 msgid "Show the week date in the calendar"
@@ -337,18 +339,19 @@ msgstr ""
 msgid "Network Login"
 msgstr "Identification réseau"
 
-#: ../js/extensionPrefs/main.js:122
+#: ../js/extensionPrefs/main.js:117
 #, javascript-format
 msgid "There was an error loading the preferences dialog for %s:"
 msgstr ""
 "Une erreur s'est produite lors du chargement de la boîte de dialogue des "
 "préférences de %s :"
 
-#: ../js/extensionPrefs/main.js:154
+#: ../js/extensionPrefs/main.js:149
 msgid "GNOME Shell Extensions"
 msgstr "Extensions GNOME Shell"
 
-#: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:145
+#: ../js/gdm/authPrompt.js:147 ../js/ui/audioDeviceSelection.js:71
+#: ../js/ui/components/networkAgent.js:145
 #: ../js/ui/components/polkitAgent.js:179 ../js/ui/endSessionDialog.js:452
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
 #: ../js/ui/status/network.js:916
@@ -532,15 +535,35 @@ msgstr "Ajouter aux favoris"
 msgid "Show Details"
 msgstr "Afficher les détails"
 
-#: ../js/ui/appFavorites.js:133
+#: ../js/ui/appFavorites.js:134
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "%s a été ajouté à vos favoris."
 
-#: ../js/ui/appFavorites.js:167
+#: ../js/ui/appFavorites.js:168
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "%s a été supprimé de vos favoris."
+
+#: ../js/ui/audioDeviceSelection.js:59
+msgid "Select Audio Device"
+msgstr "Sélectionnez le périphérique audio"
+
+#: ../js/ui/audioDeviceSelection.js:69
+msgid "Sound Settings"
+msgstr "Paramètres de son"
+
+#: ../js/ui/audioDeviceSelection.js:78
+msgid "Headphones"
+msgstr "Casque audio"
+
+#: ../js/ui/audioDeviceSelection.js:80
+msgid "Headset"
+msgstr "Micro-casque"
+
+#: ../js/ui/audioDeviceSelection.js:82 ../js/ui/status/volume.js:213
+msgid "Microphone"
+msgstr "Microphone"
 
 #: ../js/ui/backgroundMenu.js:19
 msgid "Change Background…"
@@ -555,7 +578,7 @@ msgid "Settings"
 msgstr "Paramètres"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
-#: ../js/ui/calendar.js:55
+#: ../js/ui/calendar.js:47
 msgctxt "calendar-no-work"
 msgid "06"
 msgstr "06"
@@ -565,62 +588,62 @@ msgstr "06"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: ../js/ui/calendar.js:84
+#: ../js/ui/calendar.js:76
 msgctxt "grid sunday"
 msgid "S"
 msgstr "D"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: ../js/ui/calendar.js:86
+#: ../js/ui/calendar.js:78
 msgctxt "grid monday"
 msgid "M"
 msgstr "L"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: ../js/ui/calendar.js:88
+#: ../js/ui/calendar.js:80
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "M"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: ../js/ui/calendar.js:90
+#: ../js/ui/calendar.js:82
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "M"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: ../js/ui/calendar.js:92
+#: ../js/ui/calendar.js:84
 msgctxt "grid thursday"
 msgid "T"
 msgstr "J"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: ../js/ui/calendar.js:94
+#: ../js/ui/calendar.js:86
 msgctxt "grid friday"
 msgid "F"
 msgstr "V"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: ../js/ui/calendar.js:96
+#: ../js/ui/calendar.js:88
 msgctxt "grid saturday"
 msgid "S"
 msgstr "S"
 
-#: ../js/ui/calendar.js:566
+#: ../js/ui/calendar.js:416
 msgid "Previous month"
 msgstr "Mois précédent"
 
-#: ../js/ui/calendar.js:576
+#: ../js/ui/calendar.js:426
 msgid "Next month"
 msgstr "Mois suivant"
 
-#: ../js/ui/calendar.js:729
+#: ../js/ui/calendar.js:579
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: ../js/ui/calendar.js:784
+#: ../js/ui/calendar.js:634
 msgid "Week %V"
 msgstr "Semaine %V"
 
@@ -642,38 +665,34 @@ msgstr "Semaine %V"
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: ../js/ui/calendar.js:1189
+#: ../js/ui/calendar.js:695
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Journée"
 
-#: ../js/ui/calendar.js:1296
-msgid "Clear section"
-msgstr "Effacer la section"
-
-#: ../js/ui/calendar.js:1523
+#: ../js/ui/calendar.js:821
 msgid "Events"
 msgstr "Évènements"
 
-#: ../js/ui/calendar.js:1532
+#: ../js/ui/calendar.js:830
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A %d %B"
 
-#: ../js/ui/calendar.js:1536
+#: ../js/ui/calendar.js:834
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A %d %B, %Y"
 
-#: ../js/ui/calendar.js:1621
+#: ../js/ui/calendar.js:919
 msgid "Notifications"
 msgstr "Notifications"
 
-#: ../js/ui/calendar.js:1772
+#: ../js/ui/calendar.js:1070
 msgid "No Notifications"
 msgstr "Aucune notification"
 
-#: ../js/ui/calendar.js:1775
+#: ../js/ui/calendar.js:1073
 msgid "No Events"
 msgstr "Aucun évènement"
 
@@ -811,7 +830,7 @@ msgstr "Échec de l'authentification. Essayez à nouveau."
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/components/telepathyClient.js:759
+#: ../js/ui/components/telepathyClient.js:760
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s est maintenant connu sous le nom de %s"
@@ -1008,11 +1027,11 @@ msgid "Keyboard"
 msgstr "Clavier"
 
 #. translators: 'Hide' is a verb
-#: ../js/ui/legacyTray.js:66
+#: ../js/ui/legacyTray.js:65
 msgid "Hide tray"
 msgstr "Masquer le tiroir"
 
-#: ../js/ui/legacyTray.js:107
+#: ../js/ui/legacyTray.js:106
 msgid "Status Icons"
 msgstr "Icônes d'état"
 
@@ -1064,9 +1083,25 @@ msgstr "Afficher la source"
 msgid "Web Page"
 msgstr "Page Web"
 
+#: ../js/ui/messageList.js:543
+msgid "Clear section"
+msgstr "Effacer la section"
+
 #: ../js/ui/messageTray.js:1486
 msgid "System Information"
 msgstr "Informations du système"
+
+#: ../js/ui/mpris.js:194
+msgid "Unknown artist"
+msgstr "Artiste inconnu"
+
+#: ../js/ui/mpris.js:195
+msgid "Unknown title"
+msgstr "Titre inconnu"
+
+#: ../js/ui/mpris.js:217
+msgid "Media"
+msgstr "Média"
 
 #: ../js/ui/overview.js:84
 msgid "Undo"
@@ -1286,29 +1321,49 @@ msgstr "Luminosité"
 msgid "Show Keyboard Layout"
 msgstr "Afficher la disposition du clavier"
 
-#: ../js/ui/status/location.js:71 ../js/ui/status/location.js:177
+#: ../js/ui/status/location.js:107 ../js/ui/status/location.js:215
 msgid "Location Enabled"
 msgstr "Localisation activée"
 
-#: ../js/ui/status/location.js:72 ../js/ui/status/location.js:178
+#: ../js/ui/status/location.js:108 ../js/ui/status/location.js:216
 msgid "Disable"
 msgstr "Désactiver"
 
-#: ../js/ui/status/location.js:73
+#: ../js/ui/status/location.js:109
 msgid "Privacy Settings"
 msgstr "Paramètres de confidentialité"
 
-#: ../js/ui/status/location.js:176
+#: ../js/ui/status/location.js:214
 msgid "Location In Use"
 msgstr "Localisation en cours d'utilisation"
 
-#: ../js/ui/status/location.js:180
+#: ../js/ui/status/location.js:218
 msgid "Location Disabled"
 msgstr "Localisation désactivée"
 
-#: ../js/ui/status/location.js:181
+#: ../js/ui/status/location.js:219
 msgid "Enable"
 msgstr "Activer"
+
+#: ../js/ui/status/location.js:426
+msgid "Deny Access"
+msgstr "Refuser l'accès"
+
+#: ../js/ui/status/location.js:429
+msgid "Grant Access"
+msgstr "Accorder l'accès"
+
+#. Translators: %s is an application name
+#: ../js/ui/status/location.js:435
+#, javascript-format
+msgid "Give %s access to your location?"
+msgstr "Donner accès à votre position à %s ?"
+
+#: ../js/ui/status/location.js:437
+msgid "Location access can be changed at any time from the privacy settings."
+msgstr ""
+"Les règles d'accès à la localisation peuvent à tout moment être modifiées dans les "
+"paramètres de confidentialité."
 
 #: ../js/ui/status/network.js:101
 msgid "<unknown>"
@@ -1563,10 +1618,6 @@ msgstr "Volume modifié"
 #: ../js/ui/status/volume.js:162
 msgid "Volume"
 msgstr "Volume"
-
-#: ../js/ui/status/volume.js:213
-msgid "Microphone"
-msgstr "Microphone"
 
 #: ../js/ui/unlockDialog.js:67
 msgid "Log in as another user"
