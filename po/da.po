@@ -15,8 +15,8 @@ msgstr ""
 "Project-Id-Version: clutter-1.0\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter\n"
-"POT-Creation-Date: 2016-03-20 23:45+0100\n"
-"PO-Revision-Date: 2016-03-20 04:49+0100\n"
+"POT-Creation-Date: 2016-03-21 22:28+0100\n"
+"PO-Revision-Date: 2016-03-21 22:27+0100\n"
 "Last-Translator: Ask Hjorth Larsen <asklarsen@gmail.com>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "Language: da\n"
@@ -2460,6 +2460,17 @@ msgstr "Har kant"
 msgid "Whether the rectangle should have a border"
 msgstr "Om rektanglet skal have en kant"
 
+# Det lader til at disse relaterer til en form for kildekode.  Fra koden:
+#   /**
+#    * ClutterShader:vertex-source:
+#    *
+#    * GLSL source code for the vertex shader part of the shader
+#    * program, if any
+#    *
+#    * Since: 0.6
+#    *
+#    * Deprecated: 1.8: Use #ClutterShaderEffect instead.
+#    */
 #: ../clutter/deprecated/clutter-shader.c:257
 msgid "Vertex Source"
 msgstr "Vertex-kilde"
