@@ -239,6 +239,33 @@ meta_surface_actor_x11_is_visible (MetaSurfaceActor *actor)
 }
 
 static gboolean
+meta_surface_actor_x11_is_opaque (MetaSurfaceActor *actor)
+{
+  MetaSurfaceActorX11 *self = META_SURFACE_ACTOR_X11 (actor);
+  MetaSurfaceActorX11Private *priv = meta_surface_actor_x11_get_instance_private (self);
+
+  /* If we're not ARGB32, then we're opaque. */
+  if (!meta_surface_actor_is_argb32 (actor))
+    return TRUE;
+
+  cairo_region_t *opaque_region = meta_surface_actor_get_opaque_region (actor);
+
+  /* If we have no opaque region, then no pixels are opaque. */
+  if (!opaque_region)
+    return FALSE;
+
+  MetaWindow *window = priv->window;
+  cairo_rectangle_int_t client_area;
+  meta_window_get_client_area_rect (window, &client_area);
+
+  /* Otherwise, check if our opaque region covers our entire surface. */
+  if (cairo_region_contains_rectangle (opaque_region, &client_area) == CAIRO_REGION_OVERLAP_IN)
+    return TRUE;
+
+  return FALSE;
+}
+
+static gboolean
 meta_surface_actor_x11_should_unredirect (MetaSurfaceActor *actor)
 {
   MetaSurfaceActorX11 *self = META_SURFACE_ACTOR_X11 (actor);
@@ -255,14 +282,14 @@ meta_surface_actor_x11_should_unredirect (MetaSurfaceActor *actor)
   if (window->shape_region != NULL)
     return FALSE;
 
-  if (meta_surface_actor_is_argb32 (actor) && !meta_window_requested_bypass_compositor (window))
-    return FALSE;
-
   if (!meta_window_is_monitor_sized (window))
     return FALSE;
 
   if (meta_window_requested_bypass_compositor (window))
     return TRUE;
+
+  if (!meta_surface_actor_x11_is_opaque (actor))
+    return FALSE;
 
   if (meta_window_is_override_redirect (window))
     return TRUE;

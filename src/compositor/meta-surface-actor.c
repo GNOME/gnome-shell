@@ -235,6 +235,13 @@ meta_surface_actor_set_opaque_region (MetaSurfaceActor *self,
   meta_shaped_texture_set_opaque_region (priv->texture, region);
 }
 
+cairo_region_t *
+meta_surface_actor_get_opaque_region (MetaSurfaceActor *actor)
+{
+  MetaSurfaceActorPrivate *priv = actor->priv;
+  return meta_shaped_texture_get_opaque_region (priv->texture);
+}
+
 static gboolean
 is_frozen (MetaSurfaceActor *self)
 {

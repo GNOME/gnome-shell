@@ -790,6 +790,13 @@ meta_shaped_texture_set_opaque_region (MetaShapedTexture *stex,
     priv->opaque_region = NULL;
 }
 
+cairo_region_t *
+meta_shaped_texture_get_opaque_region (MetaShapedTexture *stex)
+{
+  MetaShapedTexturePrivate *priv = stex->priv;
+  return priv->opaque_region;
+}
+
 /**
  * meta_shaped_texture_get_image:
  * @stex: A #MetaShapedTexture

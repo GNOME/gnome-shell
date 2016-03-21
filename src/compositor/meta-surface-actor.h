@@ -60,6 +60,7 @@ void meta_surface_actor_set_input_region (MetaSurfaceActor *self,
                                           cairo_region_t   *region);
 void meta_surface_actor_set_opaque_region (MetaSurfaceActor *self,
                                            cairo_region_t   *region);
+cairo_region_t * meta_surface_actor_get_opaque_region (MetaSurfaceActor *self);
 
 void meta_surface_actor_process_damage (MetaSurfaceActor *actor,
                                         int x, int y, int width, int height);
