@@ -1,3 +1,29 @@
+Clutter 1.26.0                                                       2016-03-21
+===============================================================================
+
+  • List of changes since Clutter 1.25.6
+
+    - Avoid spamming accessibility state changes in clones
+    Clones of unmapped actors will cause a temporary mapping of their source,
+    which will result in spurious accessibility events.
+
+    - Ignore GDK deprecation compiler warnings
+
+    - Resync build configuration for Windows
+
+    - Translation updates
+    Serbian, Swedish, Catalan, Occitan, Greek, Latvian, Russian, Danish
+
+  • List of bugs fixed since Clutter 1.25.6
+
+    #756371 - Accessible event spam in Overview
+
+Many thanks to:
+
+  Jordi Mas, Anders Jonsson, Ask Hjorth Larsen, Chun-wei Fan, Cédric Valmary,
+  Efstathios Iosifidis, Rūdolfs Mazurs, Stas Solovey, Марко Костић,
+  Мирослав Николић
+
 Clutter 1.25.6                                                       2016-02-18
 ===============================================================================
 
