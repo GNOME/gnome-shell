@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-23 13:06+0200\n"
-"PO-Revision-Date: 2016-02-23 13:08+0300\n"
+"POT-Creation-Date: 2016-03-22 22:29+0200\n"
+"PO-Revision-Date: 2016-03-22 22:30+0300\n"
 "Last-Translator: Daniel Korostil <ted.korostiled@gmail.com>\n"
 "Language-Team: linux.org.ua\n"
 "Language: uk\n"
@@ -307,12 +307,12 @@ msgstr "Затримувати зміни фокусу миші, поки вка
 msgid "Network Login"
 msgstr "Мережевий вхід"
 
-#: ../js/extensionPrefs/main.js:121
+#: ../js/extensionPrefs/main.js:117
 #, javascript-format
 msgid "There was an error loading the preferences dialog for %s:"
 msgstr "Помилка завантаження вікна параметрів для %s:"
 
-#: ../js/extensionPrefs/main.js:153
+#: ../js/extensionPrefs/main.js:149
 msgid "GNOME Shell Extensions"
 msgstr "Розширення GNOME Shell"
 
@@ -779,7 +779,7 @@ msgstr "Вибачте, це не працює. Спробуйте ще."
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/components/telepathyClient.js:759
+#: ../js/ui/components/telepathyClient.js:760
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s тепер відомий як %s"
@@ -969,11 +969,11 @@ msgid "Keyboard"
 msgstr "Клавіатура"
 
 #. translators: 'Hide' is a verb
-#: ../js/ui/legacyTray.js:66
+#: ../js/ui/legacyTray.js:65
 msgid "Hide tray"
 msgstr "Сховати лоток"
 
-#: ../js/ui/legacyTray.js:107
+#: ../js/ui/legacyTray.js:106
 msgid "Status Icons"
 msgstr "Піктограми стану"
 
@@ -1290,25 +1290,25 @@ msgstr "Місцевість вимкнено"
 msgid "Enable"
 msgstr "Увімкнути"
 
-#: ../js/ui/status/location.js:434
+#: ../js/ui/status/location.js:426
 msgid "Deny Access"
 msgstr "Відкинути доступ"
 
-#: ../js/ui/status/location.js:437
+#: ../js/ui/status/location.js:429
 msgid "Grant Access"
 msgstr "Надати доступ"
 
 #. Translators: %s is an application name
-#: ../js/ui/status/location.js:443
+#: ../js/ui/status/location.js:435
 #, javascript-format
 msgid "Give %s access to your location?"
 msgstr "Надати %s доступ до вашого розміщення?"
 
-#. Translators: %s is an application name
-#: ../js/ui/status/location.js:446
-#, javascript-format
-msgid "%s is requesting access to your location."
-msgstr "%s вимагає доступ до вашого розміщення."
+#: ../js/ui/status/location.js:437
+msgid "Location access can be changed at any time from the privacy settings."
+msgstr ""
+"Доступ до місця перебування можна змінити в будь-яку мить у параметрах "
+"конфіденційності."
 
 #: ../js/ui/status/network.js:101
 msgid "<unknown>"
@@ -1744,6 +1744,9 @@ msgstr "Пароль не може бути порожнім"
 #: ../src/shell-polkit-authentication-agent.c:353
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Вікно авторизації відхилено користувачем"
+
+#~ msgid "%s is requesting access to your location."
+#~ msgstr "%s вимагає доступ до вашого розміщення."
 
 #~ msgid "GNOME Shell (wayland compositor)"
 #~ msgstr "Оболонка GNOME (поверх wayland)"
