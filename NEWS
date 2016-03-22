@@ -1,3 +1,11 @@
+3.20.0
+======
+
+Translations:
+  Changwoo Ryu [ko], Baurzhan Muftakhidinov [kk], Milo Casagrande [it],
+  Anders Jonsson [sv], Muhammet Kara [tr], Alexandre Franke [fr],
+  Rūdolfs Mazurs [lv], Ask Hjorth Larsen [da], Jiro Matsuzawa [ja]
+
 3.19.92
 =======
 * Update location dialog according to latest mockups [Zeeshan; #762480]
