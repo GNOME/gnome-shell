@@ -2,23 +2,23 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
-# Iñaki Larrañaga Murgoitio <dooteo@zundan.com>, 2014, 2015.
+# Iñaki Larrañaga Murgoitio <dooteo@zundan.com>, 2014, 2015, 2016.
 # Edurne Labaka <elabaka@uzei.com>, 2015.
 msgid ""
 msgstr ""
-"Project-Id-Version:  clutter master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=clutter\n"
-"POT-Creation-Date: 2015-10-14 10:36+0200\n"
-"PO-Revision-Date: 2015-09-28 22:58+0200\n"
-"Last-Translator: Inaki Larranaga Murgoitio <dooteo@zundan.com>\n"
+"Project-Id-Version: clutter master\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=clutter"
+"\n"
+"POT-Creation-Date: 2016-03-23 17:04+0100\n"
+"PO-Revision-Date: 2016-03-23 17:04+0100\n"
+"Last-Translator: dooteo <dooteo@zundan.com>\n"
 "Language-Team: Basque <librezale@librezale.org>\n"
 "Language: eu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 1.5\n"
+"X-Generator: Lokalize 2.0\n"
 
 #: ../clutter/clutter-actor.c:6306
 msgid "X coordinate"
@@ -729,11 +729,13 @@ msgstr "Faktorea"
 msgid "The alignment factor, between 0.0 and 1.0"
 msgstr "Lerrokaduraren faktorea, 0.0 eta 1.0 artekoa"
 
-#: ../clutter/clutter-backend.c:404
-msgid "Unable to initialize the Clutter backend"
-msgstr "Ezin da Clutter motorra hasieratu"
+#: ../clutter/clutter-backend.c:437
+msgid "Unable to initialize the Clutter backend: no available drivers found."
+msgstr ""
+"Ezin da Clutter motorra hasieratu: ez da kontrolatzaile erabilgarririk "
+"aurkitu."
 
-#: ../clutter/clutter-backend.c:485
+#: ../clutter/clutter-backend.c:517
 #, c-format
 msgid "The backend of type '%s' does not support creating multiple stages"
 msgstr "'%s' motako motorrak ez du eszena anitzik sortzea onartzen"
@@ -967,35 +969,35 @@ msgstr "Datu hauek sortutako edukiontzia"
 msgid "The actor wrapped by this data"
 msgstr "Datu hauei egokitutako aktorea"
 
-#: ../clutter/clutter-click-action.c:586
+#: ../clutter/clutter-click-action.c:590
 msgid "Pressed"
 msgstr "Sakatuta"
 
-#: ../clutter/clutter-click-action.c:587
+#: ../clutter/clutter-click-action.c:591
 msgid "Whether the clickable should be in pressed state"
 msgstr "Klikagarria sakatzeko egoeran egon behar duen edo ez"
 
-#: ../clutter/clutter-click-action.c:600
+#: ../clutter/clutter-click-action.c:604
 msgid "Held"
 msgstr "Atxikituta"
 
-#: ../clutter/clutter-click-action.c:601
+#: ../clutter/clutter-click-action.c:605
 msgid "Whether the clickable has a grab"
 msgstr "Objektu klikagarriak kaptura bat duen edo ez"
 
-#: ../clutter/clutter-click-action.c:618 ../clutter/clutter-settings.c:674
+#: ../clutter/clutter-click-action.c:622 ../clutter/clutter-settings.c:674
 msgid "Long Press Duration"
 msgstr "Sakatze luzearen iraupena"
 
-#: ../clutter/clutter-click-action.c:619
+#: ../clutter/clutter-click-action.c:623
 msgid "The minimum duration of a long press to recognize the gesture"
 msgstr "Sakatze luzearen gutxieneko iraupena keinu gisa onartzeko"
 
-#: ../clutter/clutter-click-action.c:637
+#: ../clutter/clutter-click-action.c:641
 msgid "Long Press Threshold"
 msgstr "Sakatze luzearen atalasea"
 
-#: ../clutter/clutter-click-action.c:638
+#: ../clutter/clutter-click-action.c:642
 msgid "The maximum threshold before a long press is cancelled"
 msgstr "Gehienezko atalasea sakatze luzea bertan behera utzi aurretik"
 
@@ -1039,13 +1041,13 @@ msgstr "Aktorearen atzeko aldea margotzean erabiliko den materiala"
 msgid "The desaturation factor"
 msgstr "Desaturazio-faktorea"
 
-#: ../clutter/clutter-device-manager.c:127
+#: ../clutter/clutter-device-manager.c:136
 #: ../clutter/clutter-input-device.c:376
 #: ../clutter/x11/clutter-keymap-x11.c:457
 msgid "Backend"
 msgstr "Motorra"
 
-#: ../clutter/clutter-device-manager.c:128
+#: ../clutter/clutter-device-manager.c:137
 msgid "The ClutterBackend of the device manager"
 msgstr "Gailu-kudeatzailearen ClutterBackend"
 
@@ -1355,51 +1357,51 @@ msgstr "Datu hauek sortu dituen kudeatzailea"
 #. * Do NOT translate it to non-English e.g. "predefinito:LTR"! If
 #. * it isn't default:LTR or default:RTL it will not work.
 #.
-#: ../clutter/clutter-main.c:729
+#: ../clutter/clutter-main.c:751
 msgid "default:LTR"
 msgstr "default:LTR"
 
-#: ../clutter/clutter-main.c:1398
+#: ../clutter/clutter-main.c:1426
 msgid "Show frames per second"
 msgstr "Erakutsi fotogramak segundoko"
 
-#: ../clutter/clutter-main.c:1400
+#: ../clutter/clutter-main.c:1428
 msgid "Default frame rate"
 msgstr "Fotograma-emari lehenetsia"
 
-#: ../clutter/clutter-main.c:1402
+#: ../clutter/clutter-main.c:1430
 msgid "Make all warnings fatal"
 msgstr "Bihurtu abisu guztiak larri"
 
-#: ../clutter/clutter-main.c:1405
+#: ../clutter/clutter-main.c:1433
 msgid "Direction for the text"
 msgstr "Testuaren norabidea"
 
-#: ../clutter/clutter-main.c:1408
+#: ../clutter/clutter-main.c:1436
 msgid "Disable mipmapping on text"
 msgstr "Desgaitu MIP mapaketa testuan"
 
-#: ../clutter/clutter-main.c:1411
+#: ../clutter/clutter-main.c:1439
 msgid "Use 'fuzzy' picking"
 msgstr "Erabili 'zirriborro' motako hautapena"
 
-#: ../clutter/clutter-main.c:1414
+#: ../clutter/clutter-main.c:1442
 msgid "Clutter debugging flags to set"
 msgstr "Clutter arazteko banderak ezartzeko"
 
-#: ../clutter/clutter-main.c:1416
+#: ../clutter/clutter-main.c:1444
 msgid "Clutter debugging flags to unset"
 msgstr "Clutter arazteko banderak kentzeko"
 
-#: ../clutter/clutter-main.c:1419
+#: ../clutter/clutter-main.c:1447
 msgid "Enable accessibility"
 msgstr "Gaitu erabilerraztasuna"
 
-#: ../clutter/clutter-main.c:1597
+#: ../clutter/clutter-main.c:1619
 msgid "Clutter Options"
 msgstr "Clutter-en aukerak"
 
-#: ../clutter/clutter-main.c:1598
+#: ../clutter/clutter-main.c:1620
 msgid "Show Clutter Options"
 msgstr "Erakutsi Clutter-en aukerak"
 
@@ -1465,8 +1467,7 @@ msgstr "Fitxategi-izena ezarrita"
 msgid "Whether the :filename property is set"
 msgstr "':filename' (fitxategi-izena) propietatea ezarrita dagoen edo ez"
 
-#: ../clutter/clutter-script.c:478
-#: ../clutter/deprecated/clutter-texture.c:1081
+#: ../clutter/clutter-script.c:478 ../clutter/deprecated/clutter-texture.c:1081
 msgid "Filename"
 msgstr "Fitxategi-izena"
 
@@ -1514,7 +1515,7 @@ msgstr "Arrastatzearen atalasea"
 msgid "The distance the cursor should travel before starting to drag"
 msgstr "Kurtsoreak ibili beharko lukeen distantzia arrastatzen hasi aurretik"
 
-#: ../clutter/clutter-settings.c:557 ../clutter/clutter-text.c:3409
+#: ../clutter/clutter-settings.c:557 ../clutter/clutter-text.c:3408
 msgid "Font Name"
 msgstr "Letra-tipoaren izena"
 
@@ -1656,7 +1657,7 @@ msgstr "Pantailaz kanpo"
 msgid "Whether the main stage should be rendered offscreen"
 msgstr "Eszena nagusia pantailaz kanpo errendatuko den edo ez"
 
-#: ../clutter/clutter-stage.c:1826 ../clutter/clutter-text.c:3523
+#: ../clutter/clutter-stage.c:1826 ../clutter/clutter-text.c:3527
 msgid "Cursor Visible"
 msgstr "Kurtsorea ikusgai"
 
@@ -1747,7 +1748,7 @@ msgstr "Onartu fokua"
 msgid "Whether the stage should accept focus on show"
 msgstr "Eszenak fokua onartu behar duen edo ez erakustean"
 
-#: ../clutter/clutter-text-buffer.c:347 ../clutter/clutter-text.c:3444
+#: ../clutter/clutter-text-buffer.c:347 ../clutter/clutter-text.c:3443
 msgid "Text"
 msgstr "Testua"
 
@@ -1772,203 +1773,203 @@ msgid "Maximum number of characters for this entry. Zero if no maximum"
 msgstr ""
 "Sarrera honen gehienezko karaktere-kopurua. Gehienezkorik ez badago, zero"
 
-#: ../clutter/clutter-text.c:3391
+#: ../clutter/clutter-text.c:3390
 msgid "Buffer"
 msgstr "Bufferra"
 
-#: ../clutter/clutter-text.c:3392
+#: ../clutter/clutter-text.c:3391
 msgid "The buffer for the text"
 msgstr "Testuaren bufferra"
 
-#: ../clutter/clutter-text.c:3410
+#: ../clutter/clutter-text.c:3409
 msgid "The font to be used by the text"
 msgstr "Letra-tipoa testuan erabiltzeko"
 
-#: ../clutter/clutter-text.c:3427
+#: ../clutter/clutter-text.c:3426
 msgid "Font Description"
 msgstr "Letra-tipoaren azalpena"
 
-#: ../clutter/clutter-text.c:3428
+#: ../clutter/clutter-text.c:3427
 msgid "The font description to be used"
 msgstr "Erabiliko den letra-tipoaren azalpena"
 
-#: ../clutter/clutter-text.c:3445
+#: ../clutter/clutter-text.c:3444
 msgid "The text to render"
 msgstr "Testua errendatzeko"
 
-#: ../clutter/clutter-text.c:3459
+#: ../clutter/clutter-text.c:3458
 msgid "Font Color"
 msgstr "Letra-tipoaren kolorea"
 
-#: ../clutter/clutter-text.c:3460
+#: ../clutter/clutter-text.c:3459
 msgid "Color of the font used by the text"
 msgstr "Letra-tipoaren kolorea testuan erabiltzeko"
 
-#: ../clutter/clutter-text.c:3475
+#: ../clutter/clutter-text.c:3474
 msgid "Editable"
 msgstr "Editagarria"
 
-#: ../clutter/clutter-text.c:3476
+#: ../clutter/clutter-text.c:3475
 msgid "Whether the text is editable"
 msgstr "Testua edita daitekeen edo ez"
 
-#: ../clutter/clutter-text.c:3491
+#: ../clutter/clutter-text.c:3493
 msgid "Selectable"
 msgstr "Hautagarria"
 
-#: ../clutter/clutter-text.c:3492
+#: ../clutter/clutter-text.c:3494
 msgid "Whether the text is selectable"
 msgstr "Testua hauta daitekeen edo ez"
 
-#: ../clutter/clutter-text.c:3506
+#: ../clutter/clutter-text.c:3508
 msgid "Activatable"
 msgstr "Aktibagarria"
 
-#: ../clutter/clutter-text.c:3507
+#: ../clutter/clutter-text.c:3509
 msgid "Whether pressing return causes the activate signal to be emitted"
 msgstr "Sartu tekla sakatzean 'aktibatu' seinalea igorriko duen edo ez"
 
-#: ../clutter/clutter-text.c:3524
+#: ../clutter/clutter-text.c:3528
 msgid "Whether the input cursor is visible"
 msgstr "Sarreraren erakuslea ikusgai dagoen edo ez"
 
-#: ../clutter/clutter-text.c:3538 ../clutter/clutter-text.c:3539
+#: ../clutter/clutter-text.c:3542 ../clutter/clutter-text.c:3543
 msgid "Cursor Color"
 msgstr "Kurtsorearen kolorea"
 
-#: ../clutter/clutter-text.c:3554
+#: ../clutter/clutter-text.c:3558
 msgid "Cursor Color Set"
 msgstr "Kurtsorearen kolorea ezarrita"
 
-#: ../clutter/clutter-text.c:3555
+#: ../clutter/clutter-text.c:3559
 msgid "Whether the cursor color has been set"
 msgstr "Kurtsorearen kolorea ezarrita dagoen edo ez"
 
-#: ../clutter/clutter-text.c:3570
+#: ../clutter/clutter-text.c:3574
 msgid "Cursor Size"
 msgstr "Kurtsorearen tamaina"
 
-#: ../clutter/clutter-text.c:3571
+#: ../clutter/clutter-text.c:3575
 msgid "The width of the cursor, in pixels"
 msgstr "Kurtsorearen zabalera (pixeletan)"
 
-#: ../clutter/clutter-text.c:3587 ../clutter/clutter-text.c:3605
+#: ../clutter/clutter-text.c:3591 ../clutter/clutter-text.c:3609
 msgid "Cursor Position"
 msgstr "Kurtsorearen posizioa"
 
-#: ../clutter/clutter-text.c:3588 ../clutter/clutter-text.c:3606
+#: ../clutter/clutter-text.c:3592 ../clutter/clutter-text.c:3610
 msgid "The cursor position"
 msgstr "Kurtsorearen posizioa"
 
-#: ../clutter/clutter-text.c:3621
+#: ../clutter/clutter-text.c:3625
 msgid "Selection-bound"
 msgstr "Hautapen-muga"
 
-#: ../clutter/clutter-text.c:3622
+#: ../clutter/clutter-text.c:3626
 msgid "The cursor position of the other end of the selection"
 msgstr "Kurtsorearen posizioa hautapenaren bestaldeko amaieran"
 
-#: ../clutter/clutter-text.c:3637 ../clutter/clutter-text.c:3638
+#: ../clutter/clutter-text.c:3641 ../clutter/clutter-text.c:3642
 msgid "Selection Color"
 msgstr "Hautapen-kolorea"
 
-#: ../clutter/clutter-text.c:3653
+#: ../clutter/clutter-text.c:3657
 msgid "Selection Color Set"
 msgstr "Hautapen-kolorea ezarrita"
 
-#: ../clutter/clutter-text.c:3654
+#: ../clutter/clutter-text.c:3658
 msgid "Whether the selection color has been set"
 msgstr "Hautapenaren kolorea ezarrita dagoen edo ez"
 
-#: ../clutter/clutter-text.c:3669
+#: ../clutter/clutter-text.c:3673
 msgid "Attributes"
 msgstr "Atributuak"
 
-#: ../clutter/clutter-text.c:3670
+#: ../clutter/clutter-text.c:3674
 msgid "A list of style attributes to apply to the contents of the actor"
 msgstr "Estiloen atributuen zerrenda aktorearen edukiari aplikatzeko"
 
-#: ../clutter/clutter-text.c:3692
+#: ../clutter/clutter-text.c:3696
 msgid "Use markup"
 msgstr "Erabili markaketa"
 
-#: ../clutter/clutter-text.c:3693
+#: ../clutter/clutter-text.c:3697
 msgid "Whether or not the text includes Pango markup"
 msgstr "Testuak Pango-ren markaketa edukiko duen edo ez"
 
-#: ../clutter/clutter-text.c:3709
+#: ../clutter/clutter-text.c:3713
 msgid "Line wrap"
 msgstr "Lerro-itzulbira"
 
-#: ../clutter/clutter-text.c:3710
+#: ../clutter/clutter-text.c:3714
 msgid "If set, wrap the lines if the text becomes too wide"
 msgstr "Ezarrita badago, testua zabalegia bada lerroak itzulbiratu egingo dira"
 
-#: ../clutter/clutter-text.c:3725
+#: ../clutter/clutter-text.c:3729
 msgid "Line wrap mode"
 msgstr "Lerro-itzulbira modua"
 
-#: ../clutter/clutter-text.c:3726
+#: ../clutter/clutter-text.c:3730
 msgid "Control how line-wrapping is done"
 msgstr "Kontrolatu lerroen itzulbira nola egingo den"
 
-#: ../clutter/clutter-text.c:3741
+#: ../clutter/clutter-text.c:3745
 msgid "Ellipsize"
 msgstr "Elipsi gisa"
 
-#: ../clutter/clutter-text.c:3742
+#: ../clutter/clutter-text.c:3746
 msgid "The preferred place to ellipsize the string"
 msgstr "Katea elipsi gisa jartzeko leku hobetsia"
 
-#: ../clutter/clutter-text.c:3758
+#: ../clutter/clutter-text.c:3762
 msgid "Line Alignment"
 msgstr "Lerroaren lerrokadura"
 
-#: ../clutter/clutter-text.c:3759
+#: ../clutter/clutter-text.c:3763
 msgid "The preferred alignment for the string, for multi-line text"
 msgstr "Katearen lerrokadura hobetsia, lerro anitzeko testuentzako"
 
-#: ../clutter/clutter-text.c:3775
+#: ../clutter/clutter-text.c:3779
 msgid "Justify"
 msgstr "Justifikatu"
 
-#: ../clutter/clutter-text.c:3776
+#: ../clutter/clutter-text.c:3780
 msgid "Whether the text should be justified"
 msgstr "Testua justifikatuta egongo den edo ez"
 
-#: ../clutter/clutter-text.c:3791
+#: ../clutter/clutter-text.c:3795
 msgid "Password Character"
 msgstr "Pasahitzaren karakterea"
 
-#: ../clutter/clutter-text.c:3792
+#: ../clutter/clutter-text.c:3796
 msgid "If non-zero, use this character to display the actor's contents"
 msgstr "Ez bada zero, erabili karaktere hori aktorearen edukia bistaratzeko"
 
-#: ../clutter/clutter-text.c:3806
+#: ../clutter/clutter-text.c:3810
 msgid "Max Length"
 msgstr "Gehienezko luzera"
 
-#: ../clutter/clutter-text.c:3807
+#: ../clutter/clutter-text.c:3811
 msgid "Maximum length of the text inside the actor"
 msgstr "Testuaren gehienezko luzera aktorearen barruan"
 
-#: ../clutter/clutter-text.c:3830
+#: ../clutter/clutter-text.c:3834
 msgid "Single Line Mode"
 msgstr "Lerro bakarreko modua"
 
-#: ../clutter/clutter-text.c:3831
+#: ../clutter/clutter-text.c:3835
 msgid "Whether the text should be a single line"
 msgstr "Testuak lerro bakarrekoa izango den edo ez"
 
-#: ../clutter/clutter-text.c:3845 ../clutter/clutter-text.c:3846
+#: ../clutter/clutter-text.c:3849 ../clutter/clutter-text.c:3850
 msgid "Selected Text Color"
 msgstr "Hautatutako testu-kolorea"
 
-#: ../clutter/clutter-text.c:3861
+#: ../clutter/clutter-text.c:3865
 msgid "Selected Text Color Set"
 msgstr "Hautatutako testu-kolorea ezarrita"
 
-#: ../clutter/clutter-text.c:3862
+#: ../clutter/clutter-text.c:3866
 msgid "Whether the selected text color has been set"
 msgstr "hautatutako testu-kolorea ezarrita dagoen edo ez"
 
@@ -2693,12 +2694,12 @@ msgstr "YUV testurak ez daude onartuta"
 msgid "YUV2 textures are not supported"
 msgstr "YUV2 testurak ez daude onartuta"
 
-#: ../clutter/gdk/clutter-backend-gdk.c:175
+#: ../clutter/gdk/clutter-backend-gdk.c:174
 #, c-format
 msgid "Could not initialize Gdk"
 msgstr "Ezin izan da Gdk hasieratu"
 
-#: ../clutter/gdk/clutter-backend-gdk.c:318
+#: ../clutter/gdk/clutter-backend-gdk.c:294
 #, c-format
 msgid "Could not find a suitable CoglWinsys for a GdkDisplay of type %s"
 msgstr "Ezin izan da CoglWinsys egokitu '%s' motaren GdkDisplay-rentzako"
@@ -2727,19 +2728,19 @@ msgstr "Gainazalaren altuera"
 msgid "The height of the underlying wayland surface"
 msgstr "Azpiko 'wayland' gainazalaren altuera"
 
-#: ../clutter/x11/clutter-backend-x11.c:513
+#: ../clutter/x11/clutter-backend-x11.c:511
 msgid "X display to use"
 msgstr "Erabili beharreko X bistaratzea"
 
-#: ../clutter/x11/clutter-backend-x11.c:519
+#: ../clutter/x11/clutter-backend-x11.c:517
 msgid "X screen to use"
 msgstr "Erabili beharreko X pantaila"
 
-#: ../clutter/x11/clutter-backend-x11.c:524
+#: ../clutter/x11/clutter-backend-x11.c:522
 msgid "Make X calls synchronous"
 msgstr "Bihurtu X dei sinkroniko"
 
-#: ../clutter/x11/clutter-backend-x11.c:531
+#: ../clutter/x11/clutter-backend-x11.c:529
 msgid "Disable XInput support"
 msgstr "Desgaitu XInput euskarria"
 
