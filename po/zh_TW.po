@@ -9,16 +9,16 @@ msgstr ""
 "Project-Id-Version: gnome-shell 3.3.90\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-02-20 22:19+0000\n"
-"PO-Revision-Date: 2016-02-23 09:05+0800\n"
-"Last-Translator: Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>\n"
+"POT-Creation-Date: 2016-03-24 10:32+0000\n"
+"PO-Revision-Date: 2016-03-25 01:07+0800\n"
+"Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) <zh-l10n@lists.linux.org.tw>\n"
 "Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 1.8.7\n"
+"X-Generator: Poedit 1.8.7.1\n"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
 msgid "System"
@@ -46,11 +46,11 @@ msgstr "開啟應用程式選單"
 
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:1
 msgid "GNOME Shell Extension Preferences"
-msgstr "GNOME Shell 擴充功能偏好設定"
+msgstr "GNOME Shell 擴充套件偏好設定"
 
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:2
 msgid "Configure GNOME Shell Extensions"
-msgstr "設定 GNOME Shell 擴充功能"
+msgstr "設定 GNOME Shell 擴充套件"
 
 #: ../data/org.gnome.Shell.desktop.in.in.h:1
 msgid "GNOME Shell"
@@ -72,7 +72,7 @@ msgstr "允許使用 Alt-F2 對話盒存取內部除錯和監控工具。"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:3
 msgid "UUIDs of extensions to enable"
-msgstr "要啟用的擴充功能 UUID"
+msgstr "要啟用的擴充套件 UUID"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:4
 msgid ""
@@ -81,13 +81,13 @@ msgid ""
 "list. You can also manipulate this list with the EnableExtension and "
 "DisableExtension D-Bus methods on org.gnome.Shell."
 msgstr ""
-"GNOME Shell 擴充功能有 UUID 屬性；這個設定鍵列出了應載入的擴充功能。任何要載"
-"入的擴充功能都要出現在這個清單中。您也可以用 org.gnome.Shell 中的 "
+"GNOME Shell 擴充套件有 UUID 屬性；這個設定鍵列出了應載入的擴充套件。任何要載"
+"入的擴充套件都要出現在這個清單中。您也可以用 org.gnome.Shell 中的 "
 "EnableExtension 和 DisableExtension D-Bus 方法來操作這個清單。"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:5
 msgid "Disables the validation of extension version compatibility"
-msgstr "停用擴充功能版本相容性的驗證"
+msgstr "停用擴充套件版本相容性的驗證"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:6
 msgid ""
@@ -95,8 +95,8 @@ msgid ""
 "running version. Enabling this option will disable this check and try to "
 "load all extensions regardless of the versions they claim to support."
 msgstr ""
-"GNOME Shell 只會載入宣稱支援目前運行中版本的擴充功能。啟用此選項會停用這項檢"
-"查，並嘗試載入所有的擴充功能，而不去管它們所宣稱支援的版本為何。"
+"GNOME Shell 只會載入宣稱支援目前運行中版本的擴充套件。啟用此選項會停用這項檢"
+"查，並嘗試載入所有的擴充套件，而不去管它們所宣稱支援的版本為何。"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:7
 msgid "List of desktop file IDs for favorite applications"
@@ -290,14 +290,14 @@ msgstr "在滑鼠模式中延遲焦點變更直到指標停止移動"
 msgid "Network Login"
 msgstr "網路登入"
 
-#: ../js/extensionPrefs/main.js:121
+#: ../js/extensionPrefs/main.js:117
 #, javascript-format
 msgid "There was an error loading the preferences dialog for %s:"
 msgstr "載入 %s 的偏好設定對話盒時發生錯誤："
 
-#: ../js/extensionPrefs/main.js:153
+#: ../js/extensionPrefs/main.js:149
 msgid "GNOME Shell Extensions"
-msgstr "GNOME Shell 擴充功能"
+msgstr "GNOME Shell 擴充套件"
 
 #: ../js/gdm/authPrompt.js:147 ../js/ui/audioDeviceSelection.js:71
 #: ../js/ui/components/networkAgent.js:145
@@ -520,7 +520,7 @@ msgstr "改變背景…"
 
 #: ../js/ui/backgroundMenu.js:21
 msgid "Display Settings"
-msgstr "顯示設定值"
+msgstr "顯示器設定值"
 
 #: ../js/ui/backgroundMenu.js:22 ../js/ui/status/system.js:366
 msgid "Settings"
@@ -762,7 +762,7 @@ msgstr "抱歉，那樣沒有作用。請再試一次。"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/components/telepathyClient.js:759
+#: ../js/ui/components/telepathyClient.js:760
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s 現在被稱為 %s"
@@ -939,17 +939,17 @@ msgid "Keyboard"
 msgstr "鍵盤"
 
 #. translators: 'Hide' is a verb
-#: ../js/ui/legacyTray.js:66
+#: ../js/ui/legacyTray.js:65
 msgid "Hide tray"
 msgstr "隱藏系統匣"
 
-#: ../js/ui/legacyTray.js:107
+#: ../js/ui/legacyTray.js:106
 msgid "Status Icons"
 msgstr "狀態圖示"
 
 #: ../js/ui/lookingGlass.js:643
 msgid "No extensions installed"
-msgstr "沒有安裝擴充功能"
+msgstr "沒有安裝擴充套件"
 
 #. Translators: argument is an extension UUID.
 #: ../js/ui/lookingGlass.js:697
@@ -995,7 +995,7 @@ msgstr "檢示來源"
 msgid "Web Page"
 msgstr "網頁"
 
-#: ../js/ui/messageList.js:542
+#: ../js/ui/messageList.js:543
 msgid "Clear section"
 msgstr "清除區段"
 
@@ -1254,25 +1254,23 @@ msgstr "位置已停用"
 msgid "Enable"
 msgstr "啟用"
 
-#: ../js/ui/status/location.js:434
+#: ../js/ui/status/location.js:426
 msgid "Deny Access"
 msgstr "禁止存取"
 
-#: ../js/ui/status/location.js:437
+#: ../js/ui/status/location.js:429
 msgid "Grant Access"
 msgstr "授予存取權限"
 
 #. Translators: %s is an application name
-#: ../js/ui/status/location.js:443
+#: ../js/ui/status/location.js:435
 #, javascript-format
 msgid "Give %s access to your location?"
 msgstr "允許 %s 存取您的位置？"
 
-#. Translators: %s is an application name
-#: ../js/ui/status/location.js:446
-#, javascript-format
-msgid "%s is requesting access to your location."
-msgstr "%s 要求存取您的位置。"
+#: ../js/ui/status/location.js:437
+msgid "Location access can be changed at any time from the privacy settings."
+msgstr "位置存取可以隨時從隱私設定值中更改。"
 
 #: ../js/ui/status/network.js:101
 msgid "<unknown>"
@@ -1702,6 +1700,9 @@ msgstr "密碼不能為空白"
 #: ../src/shell-polkit-authentication-agent.c:353
 msgid "Authentication dialog was dismissed by the user"
 msgstr "核對對話盒被使用者取消了"
+
+#~ msgid "%s is requesting access to your location."
+#~ msgstr "%s 要求存取您的位置。"
 
 #~ msgid "GNOME Shell (wayland compositor)"
 #~ msgstr "GNOME Shell (wayland 組合器)"
