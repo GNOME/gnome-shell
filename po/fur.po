@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2016-03-25 01:58+0000\n"
-"PO-Revision-Date: 2016-03-25 12:55+0100\n"
+"PO-Revision-Date: 2016-03-25 17:54+0100\n"
 "Language-Team: Friulian <fur@li.org>\n"
 "Language: fur\n"
 "MIME-Version: 1.0\n"
@@ -192,11 +192,11 @@ msgstr "Ative il menù dal barcon"
 
 #: ../data/50-mutter-windows.xml.in.h:3
 msgid "Toggle fullscreen mode"
-msgstr ""
+msgstr "Ative/Disative modalitât plen visôr"
 
 #: ../data/50-mutter-windows.xml.in.h:4
 msgid "Toggle maximization state"
-msgstr ""
+msgstr "Ative/Disative il stât slargjât"
 
 #: ../data/50-mutter-windows.xml.in.h:5
 msgid "Maximize window"
@@ -204,11 +204,11 @@ msgstr "Slargje il barcon"
 
 #: ../data/50-mutter-windows.xml.in.h:6
 msgid "Restore window"
-msgstr ""
+msgstr "Ripristine barcon"
 
 #: ../data/50-mutter-windows.xml.in.h:7
 msgid "Toggle shaded state"
-msgstr ""
+msgstr "Ative/Disative stât inrodolât"
 
 #: ../data/50-mutter-windows.xml.in.h:8
 msgid "Close window"
@@ -224,31 +224,31 @@ msgstr "Sposte il barcon"
 
 #: ../data/50-mutter-windows.xml.in.h:11
 msgid "Resize window"
-msgstr ""
+msgstr "Ridimensione barcon"
 
 #: ../data/50-mutter-windows.xml.in.h:12
 msgid "Toggle window on all workspaces or one"
-msgstr ""
+msgstr "Ative/Disative barcon su ducj i spazis di lavôr o nome un"
 
 #: ../data/50-mutter-windows.xml.in.h:13
 msgid "Raise window if covered, otherwise lower it"
-msgstr ""
+msgstr "Tire sù il barcon se al è cuviert, se no sbassilu"
 
 #: ../data/50-mutter-windows.xml.in.h:14
 msgid "Raise window above other windows"
-msgstr ""
+msgstr "Met il barcon parsore di chei altris"
 
 #: ../data/50-mutter-windows.xml.in.h:15
 msgid "Lower window below other windows"
-msgstr ""
+msgstr "Bute il barcon sot di chei altris"
 
 #: ../data/50-mutter-windows.xml.in.h:16
 msgid "Maximize window vertically"
-msgstr ""
+msgstr "Slargje il barcon par verticâl"
 
 #: ../data/50-mutter-windows.xml.in.h:17
 msgid "Maximize window horizontally"
-msgstr ""
+msgstr "Slargje il barcon par orizontâl"
 
 #: ../data/50-mutter-windows.xml.in.h:18
 msgid "View split on left"
@@ -452,6 +452,8 @@ msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
 "\"."
 msgstr ""
+"Un altri compositing manager al è za in esecuzion sul schermi %i sul display "
+"\"%s\"."
 
 #: ../src/core/bell.c:194
 msgid "Bell event"
@@ -483,7 +485,7 @@ msgstr "Sfuarce _Jessude"
 #: ../src/core/display.c:555
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
-msgstr ""
+msgstr "Impussibil vierzi il display '%s' di X Window System\n"
 
 #: ../src/core/main.c:181
 msgid "Disable connection to session manager"
@@ -503,23 +505,23 @@ msgstr "Display X di doprâ"
 
 #: ../src/core/main.c:204
 msgid "Initialize session from savefile"
-msgstr ""
+msgstr "Inizialize session da file salvât"
 
 #: ../src/core/main.c:210
 msgid "Make X calls synchronous"
-msgstr ""
+msgstr "Fâs lis clamadis X sincronis"
 
 #: ../src/core/main.c:217
 msgid "Run as a wayland compositor"
-msgstr ""
+msgstr "Eseguìs come compositor wayland"
 
 #: ../src/core/main.c:223
 msgid "Run as a nested compositor"
-msgstr ""
+msgstr "Eseguìs come compositor nidiât"
 
 #: ../src/core/main.c:231
 msgid "Run as a full display server, rather than nested"
-msgstr ""
+msgstr "Eseguìs come servidôr display complet, invezit che nidiât"
 
 #: ../src/core/mutter.c:39
 #, c-format
