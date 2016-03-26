@@ -14,16 +14,16 @@ msgstr ""
 "Project-Id-Version: clutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-11-08 16:18+0000\n"
-"PO-Revision-Date: 2015-11-14 15:06+0800\n"
-"Last-Translator: YunQiang Su <wzssyqa@gmail.com>\n"
+"POT-Creation-Date: 2015-12-11 16:41+0000\n"
+"PO-Revision-Date: 2015-12-11 12:23-0700\n"
+"Last-Translator: Jeff Bai <jeffbai@aosc.xyz>\n"
 "Language-Team: 汉语 <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Gtranslator 2.91.7\n"
+"X-Generator: Poedit 1.8.6\n"
 
 #: ../clutter/clutter-actor.c:6306
 msgid "X coordinate"
@@ -734,11 +734,11 @@ msgstr "系数"
 msgid "The alignment factor, between 0.0 and 1.0"
 msgstr "对齐系数，0.0 到 1.0 之间"
 
-#: ../clutter/clutter-backend.c:404
-msgid "Unable to initialize the Clutter backend"
-msgstr "无法初始化 Clutter 后端"
+#: ../clutter/clutter-backend.c:437
+msgid "Unable to initialize the Clutter backend: no available drivers found."
+msgstr "无法初始化 Clutter 后端：无可用的驱动。"
 
-#: ../clutter/clutter-backend.c:485
+#: ../clutter/clutter-backend.c:517
 #, c-format
 msgid "The backend of type '%s' does not support creating multiple stages"
 msgstr "“%s”类型的后端不支持创建多个舞台(stage)"
@@ -1036,13 +1036,13 @@ msgstr "绘制角色(actor)背景使用的素材"
 msgid "The desaturation factor"
 msgstr "饱和因子"
 
-#: ../clutter/clutter-device-manager.c:127
+#: ../clutter/clutter-device-manager.c:136
 #: ../clutter/clutter-input-device.c:376
 #: ../clutter/x11/clutter-keymap-x11.c:457
 msgid "Backend"
 msgstr "后端"
 
-#: ../clutter/clutter-device-manager.c:128
+#: ../clutter/clutter-device-manager.c:137
 msgid "The ClutterBackend of the device manager"
 msgstr "设备管理器的 Clutter 后端"
 
@@ -1352,51 +1352,51 @@ msgstr "创建此数据的管理器"
 #. * Do NOT translate it to non-English e.g. "predefinito:LTR"! If
 #. * it isn't default:LTR or default:RTL it will not work.
 #.
-#: ../clutter/clutter-main.c:729
+#: ../clutter/clutter-main.c:751
 msgid "default:LTR"
 msgstr "default:LTR"
 
-#: ../clutter/clutter-main.c:1398
+#: ../clutter/clutter-main.c:1426
 msgid "Show frames per second"
 msgstr "显示帧速率"
 
-#: ../clutter/clutter-main.c:1400
+#: ../clutter/clutter-main.c:1428
 msgid "Default frame rate"
 msgstr "默认帧率"
 
-#: ../clutter/clutter-main.c:1402
+#: ../clutter/clutter-main.c:1430
 msgid "Make all warnings fatal"
 msgstr "视所有警告为致命错误"
 
-#: ../clutter/clutter-main.c:1405
+#: ../clutter/clutter-main.c:1433
 msgid "Direction for the text"
 msgstr "文本方向"
 
-#: ../clutter/clutter-main.c:1408
+#: ../clutter/clutter-main.c:1436
 msgid "Disable mipmapping on text"
 msgstr "在文本上禁用 MIP 映射"
 
-#: ../clutter/clutter-main.c:1411
+#: ../clutter/clutter-main.c:1439
 msgid "Use 'fuzzy' picking"
 msgstr "使用模糊选取"
 
-#: ../clutter/clutter-main.c:1414
+#: ../clutter/clutter-main.c:1442
 msgid "Clutter debugging flags to set"
 msgstr "要设置的 Clutter 调试标志"
 
-#: ../clutter/clutter-main.c:1416
+#: ../clutter/clutter-main.c:1444
 msgid "Clutter debugging flags to unset"
 msgstr "要取消设置的 Clutter 调试标志"
 
-#: ../clutter/clutter-main.c:1419
+#: ../clutter/clutter-main.c:1447
 msgid "Enable accessibility"
 msgstr "启用辅助功能"
 
-#: ../clutter/clutter-main.c:1597
+#: ../clutter/clutter-main.c:1619
 msgid "Clutter Options"
 msgstr "Clutter 选项"
 
-#: ../clutter/clutter-main.c:1598
+#: ../clutter/clutter-main.c:1620
 msgid "Show Clutter Options"
 msgstr "显示 Clutter 选项"
 
@@ -1509,7 +1509,7 @@ msgstr "拖动阈值"
 msgid "The distance the cursor should travel before starting to drag"
 msgstr "光标移动多远距离后才开始拖动"
 
-#: ../clutter/clutter-settings.c:557 ../clutter/clutter-text.c:3409
+#: ../clutter/clutter-settings.c:557 ../clutter/clutter-text.c:3408
 msgid "Font Name"
 msgstr "字体名称"
 
@@ -1638,7 +1638,7 @@ msgstr "幕后"
 msgid "Whether the main stage should be rendered offscreen"
 msgstr "主舞台是否应在幕后渲染(rendered offscreen)"
 
-#: ../clutter/clutter-stage.c:1826 ../clutter/clutter-text.c:3523
+#: ../clutter/clutter-stage.c:1826 ../clutter/clutter-text.c:3527
 msgid "Cursor Visible"
 msgstr "光标可见"
 
@@ -1727,7 +1727,7 @@ msgstr "接受焦点"
 msgid "Whether the stage should accept focus on show"
 msgstr "舞台(stage)显示时是否接受焦点"
 
-#: ../clutter/clutter-text-buffer.c:347 ../clutter/clutter-text.c:3444
+#: ../clutter/clutter-text-buffer.c:347 ../clutter/clutter-text.c:3443
 msgid "Text"
 msgstr "文本"
 
@@ -1751,203 +1751,203 @@ msgstr "最大长度"
 msgid "Maximum number of characters for this entry. Zero if no maximum"
 msgstr "此输入部件的最大字符数量。0 为不限。"
 
-#: ../clutter/clutter-text.c:3391
+#: ../clutter/clutter-text.c:3390
 msgid "Buffer"
 msgstr "缓冲区"
 
-#: ../clutter/clutter-text.c:3392
+#: ../clutter/clutter-text.c:3391
 msgid "The buffer for the text"
 msgstr "文本的缓冲区"
 
-#: ../clutter/clutter-text.c:3410
+#: ../clutter/clutter-text.c:3409
 msgid "The font to be used by the text"
 msgstr "文本使用的字体"
 
-#: ../clutter/clutter-text.c:3427
+#: ../clutter/clutter-text.c:3426
 msgid "Font Description"
 msgstr "字体描述"
 
-#: ../clutter/clutter-text.c:3428
+#: ../clutter/clutter-text.c:3427
 msgid "The font description to be used"
 msgstr "使用的字体描述"
 
-#: ../clutter/clutter-text.c:3445
+#: ../clutter/clutter-text.c:3444
 msgid "The text to render"
 msgstr "要渲染的文本"
 
-#: ../clutter/clutter-text.c:3459
+#: ../clutter/clutter-text.c:3458
 msgid "Font Color"
 msgstr "字体颜色"
 
-#: ../clutter/clutter-text.c:3460
+#: ../clutter/clutter-text.c:3459
 msgid "Color of the font used by the text"
 msgstr "文本字体使用的颜色"
 
-#: ../clutter/clutter-text.c:3475
+#: ../clutter/clutter-text.c:3474
 msgid "Editable"
 msgstr "可编辑"
 
-#: ../clutter/clutter-text.c:3476
+#: ../clutter/clutter-text.c:3475
 msgid "Whether the text is editable"
 msgstr "文本是否可以编辑"
 
-#: ../clutter/clutter-text.c:3491
+#: ../clutter/clutter-text.c:3493
 msgid "Selectable"
 msgstr "可选择"
 
-#: ../clutter/clutter-text.c:3492
+#: ../clutter/clutter-text.c:3494
 msgid "Whether the text is selectable"
 msgstr "文本是否可以选择"
 
-#: ../clutter/clutter-text.c:3506
+#: ../clutter/clutter-text.c:3508
 msgid "Activatable"
 msgstr "可激活"
 
-#: ../clutter/clutter-text.c:3507
+#: ../clutter/clutter-text.c:3509
 msgid "Whether pressing return causes the activate signal to be emitted"
 msgstr "按下回车键时是否发射激活信号"
 
-#: ../clutter/clutter-text.c:3524
+#: ../clutter/clutter-text.c:3528
 msgid "Whether the input cursor is visible"
 msgstr "输入光标是否可见"
 
-#: ../clutter/clutter-text.c:3538 ../clutter/clutter-text.c:3539
+#: ../clutter/clutter-text.c:3542 ../clutter/clutter-text.c:3543
 msgid "Cursor Color"
 msgstr "指针颜色"
 
-#: ../clutter/clutter-text.c:3554
+#: ../clutter/clutter-text.c:3558
 msgid "Cursor Color Set"
 msgstr "光标颜色设置"
 
-#: ../clutter/clutter-text.c:3555
+#: ../clutter/clutter-text.c:3559
 msgid "Whether the cursor color has been set"
 msgstr "是否设置了光标颜色"
 
-#: ../clutter/clutter-text.c:3570
+#: ../clutter/clutter-text.c:3574
 msgid "Cursor Size"
 msgstr "指针大小"
 
-#: ../clutter/clutter-text.c:3571
+#: ../clutter/clutter-text.c:3575
 msgid "The width of the cursor, in pixels"
 msgstr "指针的宽度，以像素计"
 
-#: ../clutter/clutter-text.c:3587 ../clutter/clutter-text.c:3605
+#: ../clutter/clutter-text.c:3591 ../clutter/clutter-text.c:3609
 msgid "Cursor Position"
 msgstr "光标位置"
 
-#: ../clutter/clutter-text.c:3588 ../clutter/clutter-text.c:3606
+#: ../clutter/clutter-text.c:3592 ../clutter/clutter-text.c:3610
 msgid "The cursor position"
 msgstr "光标的位置"
 
-#: ../clutter/clutter-text.c:3621
+#: ../clutter/clutter-text.c:3625
 msgid "Selection-bound"
 msgstr "选区边界"
 
-#: ../clutter/clutter-text.c:3622
+#: ../clutter/clutter-text.c:3626
 msgid "The cursor position of the other end of the selection"
 msgstr "选区另一端光标的位置"
 
-#: ../clutter/clutter-text.c:3637 ../clutter/clutter-text.c:3638
+#: ../clutter/clutter-text.c:3641 ../clutter/clutter-text.c:3642
 msgid "Selection Color"
 msgstr "选区颜色"
 
-#: ../clutter/clutter-text.c:3653
+#: ../clutter/clutter-text.c:3657
 msgid "Selection Color Set"
 msgstr "选区颜色设置"
 
-#: ../clutter/clutter-text.c:3654
+#: ../clutter/clutter-text.c:3658
 msgid "Whether the selection color has been set"
 msgstr "是否设置了选区颜色"
 
-#: ../clutter/clutter-text.c:3669
+#: ../clutter/clutter-text.c:3673
 msgid "Attributes"
 msgstr "属性"
 
-#: ../clutter/clutter-text.c:3670
+#: ../clutter/clutter-text.c:3674
 msgid "A list of style attributes to apply to the contents of the actor"
 msgstr "应用到角色(actor)内容的风格属性列表"
 
-#: ../clutter/clutter-text.c:3692
+#: ../clutter/clutter-text.c:3696
 msgid "Use markup"
 msgstr "使用标记"
 
-#: ../clutter/clutter-text.c:3693
+#: ../clutter/clutter-text.c:3697
 msgid "Whether or not the text includes Pango markup"
 msgstr "文本是否包括 Pango 标记"
 
-#: ../clutter/clutter-text.c:3709
+#: ../clutter/clutter-text.c:3713
 msgid "Line wrap"
 msgstr "换行"
 
-#: ../clutter/clutter-text.c:3710
+#: ../clutter/clutter-text.c:3714
 msgid "If set, wrap the lines if the text becomes too wide"
 msgstr "如果设置，在文本过宽时将换行显示"
 
-#: ../clutter/clutter-text.c:3725
+#: ../clutter/clutter-text.c:3729
 msgid "Line wrap mode"
 msgstr "换行模式"
 
-#: ../clutter/clutter-text.c:3726
+#: ../clutter/clutter-text.c:3730
 msgid "Control how line-wrapping is done"
 msgstr "控制换行行为"
 
-#: ../clutter/clutter-text.c:3741
+#: ../clutter/clutter-text.c:3745
 msgid "Ellipsize"
 msgstr "简略"
 
-#: ../clutter/clutter-text.c:3742
+#: ../clutter/clutter-text.c:3746
 msgid "The preferred place to ellipsize the string"
 msgstr "简略字符串的首选位置"
 
-#: ../clutter/clutter-text.c:3758
+#: ../clutter/clutter-text.c:3762
 msgid "Line Alignment"
 msgstr "行对齐方式"
 
-#: ../clutter/clutter-text.c:3759
+#: ../clutter/clutter-text.c:3763
 msgid "The preferred alignment for the string, for multi-line text"
 msgstr "多行文本首选的字符串对齐方式"
 
-#: ../clutter/clutter-text.c:3775
+#: ../clutter/clutter-text.c:3779
 msgid "Justify"
 msgstr "调整"
 
-#: ../clutter/clutter-text.c:3776
+#: ../clutter/clutter-text.c:3780
 msgid "Whether the text should be justified"
 msgstr "是否对齐文本"
 
-#: ../clutter/clutter-text.c:3791
+#: ../clutter/clutter-text.c:3795
 msgid "Password Character"
 msgstr "密码字符"
 
-#: ../clutter/clutter-text.c:3792
+#: ../clutter/clutter-text.c:3796
 msgid "If non-zero, use this character to display the actor's contents"
 msgstr "若字符非零，用此字符显示角色(actor)的内容"
 
-#: ../clutter/clutter-text.c:3806
+#: ../clutter/clutter-text.c:3810
 msgid "Max Length"
 msgstr "最大长度"
 
-#: ../clutter/clutter-text.c:3807
+#: ../clutter/clutter-text.c:3811
 msgid "Maximum length of the text inside the actor"
 msgstr "角色(actor)内部文本的最大长度"
 
-#: ../clutter/clutter-text.c:3830
+#: ../clutter/clutter-text.c:3834
 msgid "Single Line Mode"
 msgstr "单行模式"
 
-#: ../clutter/clutter-text.c:3831
+#: ../clutter/clutter-text.c:3835
 msgid "Whether the text should be a single line"
 msgstr "文本是否只应使用一行"
 
-#: ../clutter/clutter-text.c:3845 ../clutter/clutter-text.c:3846
+#: ../clutter/clutter-text.c:3849 ../clutter/clutter-text.c:3850
 msgid "Selected Text Color"
 msgstr "选中文本颜色"
 
-#: ../clutter/clutter-text.c:3861
+#: ../clutter/clutter-text.c:3865
 msgid "Selected Text Color Set"
 msgstr "选中文本颜色设置"
 
-#: ../clutter/clutter-text.c:3862
+#: ../clutter/clutter-text.c:3866
 msgid "Whether the selected text color has been set"
 msgstr "是否设置了选中文本颜色"
 
@@ -2662,12 +2662,12 @@ msgstr "不支持 YUV 纹理"
 msgid "YUV2 textures are not supported"
 msgstr "不支持 YUV2 纹理"
 
-#: ../clutter/gdk/clutter-backend-gdk.c:175
+#: ../clutter/gdk/clutter-backend-gdk.c:174
 #, c-format
 msgid "Could not initialize Gdk"
 msgstr "无法初始化 Gdk"
 
-#: ../clutter/gdk/clutter-backend-gdk.c:318
+#: ../clutter/gdk/clutter-backend-gdk.c:294
 #, c-format
 msgid "Could not find a suitable CoglWinsys for a GdkDisplay of type %s"
 msgstr "找不到适合 %s 类型的 GdkDisplay 的 CoglWinsys"
@@ -2696,19 +2696,19 @@ msgstr "表面高度"
 msgid "The height of the underlying wayland surface"
 msgstr "对应 wayland 表面的高度"
 
-#: ../clutter/x11/clutter-backend-x11.c:513
+#: ../clutter/x11/clutter-backend-x11.c:511
 msgid "X display to use"
 msgstr "要使用的 X 显示"
 
-#: ../clutter/x11/clutter-backend-x11.c:519
+#: ../clutter/x11/clutter-backend-x11.c:517
 msgid "X screen to use"
 msgstr "要使用的 X 屏幕"
 
-#: ../clutter/x11/clutter-backend-x11.c:524
+#: ../clutter/x11/clutter-backend-x11.c:522
 msgid "Make X calls synchronous"
 msgstr "使 X 调用同步"
 
-#: ../clutter/x11/clutter-backend-x11.c:531
+#: ../clutter/x11/clutter-backend-x11.c:529
 msgid "Disable XInput support"
 msgstr "禁用 XInput 支持"
 
