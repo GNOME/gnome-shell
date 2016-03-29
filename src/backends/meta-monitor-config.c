@@ -1554,18 +1554,19 @@ meta_monitor_config_restore_previous (MetaMonitorConfig  *self,
       /* The user chose to restore the previous configuration. In this
        * case, restore the previous configuration. */
       MetaConfiguration *prev_config = config_ref (self->previous);
-      apply_configuration (self, prev_config, manager);
+      gboolean ok = apply_configuration (self, prev_config, manager);
       config_unref (prev_config);
 
       /* After this, self->previous contains the rejected configuration.
        * Since it was rejected, nuke it. */
       g_clear_pointer (&self->previous, (GDestroyNotify) config_unref);
+
+      if (ok)
+        return;
     }
-  else
-    {
-      if (!meta_monitor_config_apply_stored (self, manager))
-        meta_monitor_config_make_default (self, manager);
-    }
+
+  if (!meta_monitor_config_apply_stored (self, manager))
+    meta_monitor_config_make_default (self, manager);
 }
 
 static void
@@ -2029,7 +2030,11 @@ meta_monitor_config_assign_crtcs (MetaConfiguration  *config,
 
   all_outputs = meta_monitor_manager_get_outputs (manager,
                                                   &n_outputs);
-  g_assert (n_outputs == config->n_outputs);
+  if (n_outputs != config->n_outputs)
+    {
+      g_hash_table_destroy (assignment.info);
+      return FALSE;
+    }
 
   for (i = 0; i < n_outputs; i++)
     {
