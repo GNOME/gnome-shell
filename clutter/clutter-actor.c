@@ -4198,6 +4198,13 @@ clutter_actor_remove_child_internal (ClutterActor                 *self,
   gboolean stop_transitions;
   GObject *obj;
 
+  if (self == child)
+    {
+      g_warning ("Cannot remove actor '%s' from itself.",
+                 _clutter_actor_get_debug_name (self));
+      return;
+    }
+
   destroy_meta = (flags & REMOVE_CHILD_DESTROY_META) != 0;
   emit_parent_set = (flags & REMOVE_CHILD_EMIT_PARENT_SET) != 0;
   emit_actor_removed = (flags & REMOVE_CHILD_EMIT_ACTOR_REMOVED) != 0;
@@ -12776,6 +12783,13 @@ clutter_actor_add_child_internal (ClutterActor              *self,
   gboolean show_on_set_parent;
   ClutterActor *old_first_child, *old_last_child;
   GObject *obj;
+
+  if (self == child)
+    {
+      g_warning ("Cannot add the actor '%s' to itself.",
+                  _clutter_actor_get_debug_name (self));
+      return;
+    }
 
   if (child->priv->parent != NULL)
     {
