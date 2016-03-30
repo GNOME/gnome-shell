@@ -1222,7 +1222,7 @@ msgstr "Zjišťování polohy je povoleno"
 
 #: ../js/ui/status/location.js:72 ../js/ui/status/location.js:178
 msgid "Disable"
-msgstr "Zakázáno"
+msgstr "Zakázat"
 
 #: ../js/ui/status/location.js:73
 msgid "Privacy Settings"
@@ -1238,7 +1238,7 @@ msgstr "Zjišťování polohy je zakázáno"
 
 #: ../js/ui/status/location.js:181
 msgid "Enable"
-msgstr "Povoleno"
+msgstr "Povolit"
 
 #: ../js/ui/status/network.js:101
 msgid "<unknown>"
