@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2016-03-30 09:37+0000\n"
-"PO-Revision-Date: 2016-03-31 00:08+0200\n"
+"PO-Revision-Date: 2016-03-31 00:17+0200\n"
 "Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
 "Language-Team: Friulian <fur@li.org>\n"
 "Language: fur\n"
@@ -971,87 +971,87 @@ msgstr "Tastiere"
 #. translators: 'Hide' is a verb
 #: ../js/ui/legacyTray.js:65
 msgid "Hide tray"
-msgstr ""
+msgstr "Plate casset"
 
 #: ../js/ui/legacyTray.js:106
 msgid "Status Icons"
-msgstr ""
+msgstr "Iconis di stât"
 
 #: ../js/ui/lookingGlass.js:643
 msgid "No extensions installed"
-msgstr ""
+msgstr "Nissune estension instalade"
 
 #. Translators: argument is an extension UUID.
 #: ../js/ui/lookingGlass.js:697
 #, javascript-format
 msgid "%s has not emitted any errors."
-msgstr ""
+msgstr "%s nol a dât fûr nissun erôr."
 
 #: ../js/ui/lookingGlass.js:703
 msgid "Hide Errors"
-msgstr ""
+msgstr "Tapone Erôrs"
 
 #: ../js/ui/lookingGlass.js:707 ../js/ui/lookingGlass.js:767
 msgid "Show Errors"
-msgstr ""
+msgstr "Mostre Erôrs"
 
 #: ../js/ui/lookingGlass.js:716
 msgid "Enabled"
-msgstr ""
+msgstr "Abilitât"
 
 #. translators:
 #. * The device has been disabled
 #: ../js/ui/lookingGlass.js:719 ../src/gvc/gvc-mixer-control.c:1828
 msgid "Disabled"
-msgstr ""
+msgstr "Disabilitât"
 
 #: ../js/ui/lookingGlass.js:721
 msgid "Error"
-msgstr ""
+msgstr "Erôr"
 
 #: ../js/ui/lookingGlass.js:723
 msgid "Out of date"
-msgstr ""
+msgstr "No inzornât"
 
 #: ../js/ui/lookingGlass.js:725
 msgid "Downloading"
-msgstr ""
+msgstr "Daur a scjamâ"
 
 #: ../js/ui/lookingGlass.js:749
 msgid "View Source"
-msgstr ""
+msgstr "Viôt sorzint"
 
 #: ../js/ui/lookingGlass.js:758
 msgid "Web Page"
-msgstr ""
+msgstr "Pagjine Web"
 
 #: ../js/ui/messageList.js:543
 msgid "Clear section"
-msgstr ""
+msgstr "Nete la sezion"
 
 #: ../js/ui/messageTray.js:1486
 msgid "System Information"
-msgstr ""
+msgstr "Informazion di sisteme"
 
 #: ../js/ui/mpris.js:194
 msgid "Unknown artist"
-msgstr ""
+msgstr "Artist no cognossût"
 
 #: ../js/ui/mpris.js:195
 msgid "Unknown title"
-msgstr ""
+msgstr "Titul no cognossût"
 
 #: ../js/ui/mpris.js:217
 msgid "Media"
-msgstr ""
+msgstr "Supuart"
 
 #: ../js/ui/overview.js:84
 msgid "Undo"
-msgstr ""
+msgstr "Anule"
 
 #: ../js/ui/overview.js:117
 msgid "Overview"
-msgstr ""
+msgstr "Panoramiche"
 
 #. Translators: this is the text displayed
 #. in the search entry when no search is
@@ -1059,26 +1059,26 @@ msgstr ""
 #. characters.
 #: ../js/ui/overview.js:244
 msgid "Type to search…"
-msgstr ""
+msgstr "Scrîf par cirî..."
 
 #: ../js/ui/panel.js:358
 msgid "Quit"
-msgstr ""
+msgstr "Jes"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
 #: ../js/ui/panel.js:414
 msgid "Activities"
-msgstr ""
+msgstr "Ativitâts"
 
 #: ../js/ui/panel.js:695
 msgctxt "System menu in the top bar"
 msgid "System"
-msgstr ""
+msgstr "Sisteme"
 
 #: ../js/ui/panel.js:807
 msgid "Top Bar"
-msgstr ""
+msgstr "Sbare parsore"
 
 #. Translators: this MUST be either "toggle-switch-us"
 #. (for toggle switches containing the English words
@@ -1087,25 +1087,25 @@ msgstr ""
 #. simply result in invisible toggle switches.
 #: ../js/ui/popupMenu.js:289
 msgid "toggle-switch-us"
-msgstr ""
+msgstr "toggle-switch-intl"
 
 #: ../js/ui/runDialog.js:71
 msgid "Enter a Command"
-msgstr ""
+msgstr "Scrîf un comant"
 
 #: ../js/ui/runDialog.js:111 ../js/ui/windowMenu.js:162
 msgid "Close"
-msgstr ""
+msgstr "Siere"
 
 #: ../js/ui/runDialog.js:282
 msgid "Restarting…"
-msgstr ""
+msgstr "Daûr a tornâ a inviâ..."
 
 #. Translators: This is a time format for a date in
 #. long format
 #: ../js/ui/screenShield.js:85
 msgid "%A, %B %d"
-msgstr ""
+msgstr "%A, %d di %B"
 
 #: ../js/ui/screenShield.js:144
 #, javascript-format
@@ -1123,11 +1123,11 @@ msgstr[1] ""
 
 #: ../js/ui/screenShield.js:432 ../js/ui/status/system.js:374
 msgid "Lock"
-msgstr ""
+msgstr "Bloche"
 
 #: ../js/ui/screenShield.js:684
 msgid "GNOME needs to lock the screen"
-msgstr ""
+msgstr "GNOME al scugne blocâ il visôr"
 
 #. We could not become modal, so we can't activate the
 #. screenshield. The user is probably very upset at this
@@ -1138,35 +1138,35 @@ msgstr ""
 #. screen, where we're not affected by grabs
 #: ../js/ui/screenShield.js:805 ../js/ui/screenShield.js:1271
 msgid "Unable to lock"
-msgstr ""
+msgstr "Impussibil blocâ"
 
 #: ../js/ui/screenShield.js:806 ../js/ui/screenShield.js:1272
 msgid "Lock was blocked by an application"
-msgstr ""
+msgstr "Il bloc al è stât dineât di une aplicazion"
 
 #: ../js/ui/search.js:617
 msgid "Searching…"
-msgstr ""
+msgstr "Daûr a cirî..."
 
 #: ../js/ui/search.js:619
 msgid "No results."
-msgstr ""
+msgstr "Nissun risultât."
 
 #: ../js/ui/shellEntry.js:25
 msgid "Copy"
-msgstr ""
+msgstr "Copie"
 
 #: ../js/ui/shellEntry.js:30
 msgid "Paste"
-msgstr ""
+msgstr "Tache"
 
 #: ../js/ui/shellEntry.js:97
 msgid "Show Text"
-msgstr ""
+msgstr "Mostre Test"
 
 #: ../js/ui/shellEntry.js:99
 msgid "Hide Text"
-msgstr ""
+msgstr "Plate Test"
 
 #: ../js/ui/shellMountOperation.js:370
 msgid "Password"
