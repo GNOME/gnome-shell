@@ -571,20 +571,13 @@ const _Draggable = new Lang.Class({
             return;
         }
 
-        this._animationInProgress = true;
-        // No target, so snap back
-        Tweener.addTween(this._dragActor,
-                         { x: snapBackX,
-                           y: snapBackY,
-                           scale_x: snapBackScale,
-                           scale_y: snapBackScale,
-                           opacity: this._dragOrigOpacity,
-                           time: SNAP_BACK_ANIMATION_TIME,
-                           transition: 'easeOutQuad',
-                           onComplete: this._onAnimationComplete,
-                           onCompleteScope: this,
-                           onCompleteParams: [this._dragActor, eventTime]
-                         });
+        this._animateDragEnd(eventTime,
+                             { x: snapBackX,
+                               y: snapBackY,
+                               scale_x: snapBackScale,
+                               scale_y: snapBackScale,
+                               time: SNAP_BACK_ANIMATION_TIME,
+                             });
     },
 
     _restoreDragActor: function(eventTime) {
@@ -596,18 +589,44 @@ const _Draggable = new Lang.Class({
         this._dragActor.set_scale(restoreScale, restoreScale);
         this._dragActor.opacity = 0;
 
+        this._animateDragEnd(eventTime,
+                             { time: REVERT_ANIMATION_TIME });
+    },
+
+    _animateDragEnd: function (eventTime, params) {
         this._animationInProgress = true;
-        Tweener.addTween(this._dragActor,
-                         { opacity: this._dragOrigOpacity,
-                           time: REVERT_ANIMATION_TIME,
-                           transition: 'easeOutQuad',
-                           onComplete: this._onAnimationComplete,
-                           onCompleteScope: this,
-                           onCompleteParams: [this._dragActor, eventTime]
-                         });
+
+        // finish animation if the actor gets destroyed
+        // during it
+        this._dragActorDestroyId =
+            this._dragActor.connect('destroy',
+                                    Lang.bind(this, this._finishAnimation));
+
+        params['opacity']          = this._dragOrigOpacity;
+        params['transition']       = 'easeOutQuad';
+        params['onComplete']       = this._onAnimationComplete;
+        params['onCompleteScope']  = this;
+        params['onCompleteParams'] = [this._dragActor, eventTime];
+
+        // start the animation
+        Tweener.addTween(this._dragActor, params)
+    },
+
+    _finishAnimation : function () {
+        if (!this._animationInProgress)
+            return
+
+        this._animationInProgress = false;
+        if (!this._buttonDown)
+            this._dragComplete();
+
+        global.screen.set_cursor(Meta.Cursor.DEFAULT);
     },
 
     _onAnimationComplete : function (dragActor, eventTime) {
+        dragActor.disconnect(this._dragActorDestroyId);
+        this._dragActorDestroyId = 0;
+
         if (this._dragOrigParent) {
             Main.uiGroup.remove_child(this._dragActor);
             this._dragOrigParent.add_actor(this._dragActor);
@@ -616,12 +635,9 @@ const _Draggable = new Lang.Class({
         } else {
             dragActor.destroy();
         }
-        global.screen.set_cursor(Meta.Cursor.DEFAULT);
-        this.emit('drag-end', eventTime, false);
 
-        this._animationInProgress = false;
-        if (!this._buttonDown)
-            this._dragComplete();
+        this.emit('drag-end', eventTime, false);
+        this._finishAnimation();
     },
 
     _dragComplete: function() {
