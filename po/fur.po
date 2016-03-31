@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2016-03-30 09:37+0000\n"
-"PO-Revision-Date: 2016-03-31 00:17+0200\n"
+"PO-Revision-Date: 2016-03-31 08:39+0200\n"
 "Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
 "Language-Team: Friulian <fur@li.org>\n"
 "Language: fur\n"
@@ -1170,63 +1170,63 @@ msgstr "Plate Test"
 
 #: ../js/ui/shellMountOperation.js:370
 msgid "Password"
-msgstr ""
+msgstr "Password"
 
 #: ../js/ui/shellMountOperation.js:391
 msgid "Remember Password"
-msgstr ""
+msgstr "Visâsi Password"
 
 #: ../js/ui/status/accessibility.js:42
 msgid "Accessibility"
-msgstr ""
+msgstr "Acessibilitât"
 
 #: ../js/ui/status/accessibility.js:57
 msgid "Zoom"
-msgstr ""
+msgstr "Ingrandiment"
 
 #: ../js/ui/status/accessibility.js:64
 msgid "Screen Reader"
-msgstr ""
+msgstr "Letôr schermi"
 
 #: ../js/ui/status/accessibility.js:68
 msgid "Screen Keyboard"
-msgstr ""
+msgstr "Tastiere a Visôr"
 
 #: ../js/ui/status/accessibility.js:72
 msgid "Visual Alerts"
-msgstr ""
+msgstr "Avertencis Visuâi"
 
 #: ../js/ui/status/accessibility.js:75
 msgid "Sticky Keys"
-msgstr ""
+msgstr "Tascj tacadiçs"
 
 #: ../js/ui/status/accessibility.js:78
 msgid "Slow Keys"
-msgstr ""
+msgstr "Tascj Lents"
 
 #: ../js/ui/status/accessibility.js:81
 msgid "Bounce Keys"
-msgstr ""
+msgstr "Tascj che si sbalcin"
 
 #: ../js/ui/status/accessibility.js:84
 msgid "Mouse Keys"
-msgstr ""
+msgstr "Mouse di tastiere"
 
 #: ../js/ui/status/accessibility.js:167
 msgid "High Contrast"
-msgstr ""
+msgstr "Contrast elevât"
 
 #: ../js/ui/status/accessibility.js:202
 msgid "Large Text"
-msgstr ""
+msgstr "Test Larc"
 
 #: ../js/ui/status/bluetooth.js:47
 msgid "Bluetooth"
-msgstr ""
+msgstr "Bluetooth"
 
 #: ../js/ui/status/bluetooth.js:56
 msgid "Bluetooth Settings"
-msgstr ""
+msgstr "Impostazions Bluetooth"
 
 #. Translators: this is the number of connected bluetooth devices
 #: ../js/ui/status/bluetooth.js:136
@@ -1238,88 +1238,90 @@ msgstr[1] ""
 
 #: ../js/ui/status/bluetooth.js:138
 msgid "Off"
-msgstr ""
+msgstr "Distudât"
 
 #: ../js/ui/status/bluetooth.js:140
 msgid "Not In Use"
-msgstr ""
+msgstr "No in ûs"
 
 #: ../js/ui/status/bluetooth.js:142 ../js/ui/status/network.js:1279
 msgid "Turn On"
-msgstr ""
+msgstr "Pie"
 
 #: ../js/ui/status/bluetooth.js:142 ../js/ui/status/network.js:178
 #: ../js/ui/status/network.js:353 ../js/ui/status/network.js:1279
 #: ../js/ui/status/network.js:1394 ../js/ui/status/rfkill.js:90
 #: ../js/ui/status/rfkill.js:117
 msgid "Turn Off"
-msgstr ""
+msgstr "Stude"
 
 #: ../js/ui/status/brightness.js:44
 msgid "Brightness"
-msgstr ""
+msgstr "Luminositât"
 
 #: ../js/ui/status/keyboard.js:736
 msgid "Show Keyboard Layout"
-msgstr ""
+msgstr "Mostre la disposizion de tastiere"
 
 #: ../js/ui/status/location.js:107 ../js/ui/status/location.js:215
 msgid "Location Enabled"
-msgstr ""
+msgstr "Posizion abilitade"
 
 #: ../js/ui/status/location.js:108 ../js/ui/status/location.js:216
 msgid "Disable"
-msgstr ""
+msgstr "Disabilite"
 
 #: ../js/ui/status/location.js:109
 msgid "Privacy Settings"
-msgstr ""
+msgstr "Impostazions privacy"
 
 #: ../js/ui/status/location.js:214
 msgid "Location In Use"
-msgstr ""
+msgstr "Posizion in ûs"
 
 #: ../js/ui/status/location.js:218
 msgid "Location Disabled"
-msgstr ""
+msgstr "Posizion no abilitade"
 
 #: ../js/ui/status/location.js:219
 msgid "Enable"
-msgstr ""
+msgstr "Abilite"
 
 #: ../js/ui/status/location.js:426
 msgid "Deny Access"
-msgstr ""
+msgstr "Dinee acès"
 
 #: ../js/ui/status/location.js:429
 msgid "Grant Access"
-msgstr ""
+msgstr "Garantìs l'acès"
 
 #. Translators: %s is an application name
 #: ../js/ui/status/location.js:435
 #, javascript-format
 msgid "Give %s access to your location?"
-msgstr ""
+msgstr "Permeti a %s di cognossi la tô posizion?"
 
 #: ../js/ui/status/location.js:437
 msgid "Location access can be changed at any time from the privacy settings."
 msgstr ""
+"L'acès ae posizion al pues sedi cambiât cuant che tu vuelis su impostazions "
+"privacy."
 
 #: ../js/ui/status/network.js:101
 msgid "<unknown>"
-msgstr ""
+msgstr "<no cognossût>"
 
 #. Translators: %s is a network identifier
 #: ../js/ui/status/network.js:451 ../js/ui/status/network.js:1308
 #, javascript-format
 msgid "%s Off"
-msgstr ""
+msgstr "%s distudât"
 
 #. Translators: %s is a network identifier
 #: ../js/ui/status/network.js:454
 #, javascript-format
 msgid "%s Connected"
-msgstr ""
+msgstr "%s tacât"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu);
@@ -1327,262 +1329,262 @@ msgstr ""
 #: ../js/ui/status/network.js:459
 #, javascript-format
 msgid "%s Unmanaged"
-msgstr ""
+msgstr "%s no ministrât"
 
 #. Translators: %s is a network identifier
 #: ../js/ui/status/network.js:462
 #, javascript-format
 msgid "%s Disconnecting"
-msgstr ""
+msgstr "%s daûr a disconeti"
 
 #. Translators: %s is a network identifier
 #: ../js/ui/status/network.js:469 ../js/ui/status/network.js:1300
 #, javascript-format
 msgid "%s Connecting"
-msgstr ""
+msgstr "%s in conession"
 
 #. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
 #: ../js/ui/status/network.js:472
 #, javascript-format
 msgid "%s Requires Authentication"
-msgstr ""
+msgstr "%s al à dibisugne di autenticazion"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing; %s is a network identifier
 #: ../js/ui/status/network.js:480
 #, javascript-format
 msgid "Firmware Missing For %s"
-msgstr ""
+msgstr "Al mancje il firmware par %s"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage; %s is a network identifier
 #: ../js/ui/status/network.js:484
 #, javascript-format
 msgid "%s Unavailable"
-msgstr ""
+msgstr "%s no disponibil"
 
 #. Translators: %s is a network identifier
 #: ../js/ui/status/network.js:487
 #, javascript-format
 msgid "%s Connection Failed"
-msgstr ""
+msgstr "Conession falide su %s"
 
 #: ../js/ui/status/network.js:503
 msgid "Wired Settings"
-msgstr ""
+msgstr "Impostazions rêt vie fîl"
 
 #: ../js/ui/status/network.js:545 ../js/ui/status/network.js:624
 msgid "Mobile Broadband Settings"
-msgstr ""
+msgstr "Impostazions bande largje mobil"
 
 #. Translators: %s is a network identifier
 #: ../js/ui/status/network.js:588 ../js/ui/status/network.js:1305
 #, javascript-format
 msgid "%s Hardware Disabled"
-msgstr ""
+msgstr "%s disabilitât vie hardware "
 
 #. Translators: this is for a network device that cannot be activated
 #. because it's disabled by rfkill (airplane mode); %s is a network identifier
 #: ../js/ui/status/network.js:592
 #, javascript-format
 msgid "%s Disabled"
-msgstr ""
+msgstr "%s disabilitât"
 
 #: ../js/ui/status/network.js:632
 msgid "Use as Internet connection"
-msgstr ""
+msgstr "Dopre come conession internet"
 
 #: ../js/ui/status/network.js:813
 msgid "Airplane Mode is On"
-msgstr ""
+msgstr "Modalitât avion piade"
 
 #: ../js/ui/status/network.js:814
 msgid "Wi-Fi is disabled when airplane mode is on."
-msgstr ""
+msgstr "Il Wi-Fi al è disabilitât cuant che la modalitât avion e je piade."
 
 #: ../js/ui/status/network.js:815
 msgid "Turn Off Airplane Mode"
-msgstr ""
+msgstr "Distude modalitât avion"
 
 #: ../js/ui/status/network.js:824
 msgid "Wi-Fi is Off"
-msgstr ""
+msgstr "Il Wi-Fi al è studât"
 
 #: ../js/ui/status/network.js:825
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
-msgstr ""
+msgstr "Il Wi-Fi al à bisugne di sedi piât par podêsi tacâ a une rêt."
 
 #: ../js/ui/status/network.js:826
 msgid "Turn On Wi-Fi"
-msgstr ""
+msgstr "Pie il Wi-Fi"
 
 #: ../js/ui/status/network.js:851
 msgid "Wi-Fi Networks"
-msgstr ""
+msgstr "Rêts Wi-Fi"
 
 #: ../js/ui/status/network.js:853
 msgid "Select a network"
-msgstr ""
+msgstr "Selezione une rêt"
 
 #: ../js/ui/status/network.js:883
 msgid "No Networks"
-msgstr ""
+msgstr "Nissune rêt"
 
 #: ../js/ui/status/network.js:904 ../js/ui/status/rfkill.js:115
 msgid "Use hardware switch to turn off"
-msgstr ""
+msgstr "Dopre interutôr fisic par studâ"
 
 #: ../js/ui/status/network.js:1171
 msgid "Select Network"
-msgstr ""
+msgstr "Selezione rêt"
 
 #: ../js/ui/status/network.js:1177
 msgid "Wi-Fi Settings"
-msgstr ""
+msgstr "Impostazions Wi-Fi"
 
 #. Translators: %s is a network identifier
 #: ../js/ui/status/network.js:1296
 #, javascript-format
 msgid "%s Hotspot Active"
-msgstr ""
+msgstr "Hotspot %s atîf"
 
 #. Translators: %s is a network identifier
 #: ../js/ui/status/network.js:1311
 #, javascript-format
 msgid "%s Not Connected"
-msgstr ""
+msgstr "%s distacât"
 
 #: ../js/ui/status/network.js:1411
 msgid "connecting..."
-msgstr ""
+msgstr "Daûr a coneti..."
 
 #. Translators: this is for network connections that require some kind of key or password
 #: ../js/ui/status/network.js:1414
 msgid "authentication required"
-msgstr ""
+msgstr "autenticazion necessarie"
 
 #: ../js/ui/status/network.js:1416
 msgid "connection failed"
-msgstr ""
+msgstr "conession falide"
 
 #: ../js/ui/status/network.js:1482 ../js/ui/status/rfkill.js:93
 msgid "Network Settings"
-msgstr ""
+msgstr "Impostazions rêt"
 
 #: ../js/ui/status/network.js:1484
 msgid "VPN Settings"
-msgstr ""
+msgstr "Impostazions VPN"
 
 #: ../js/ui/status/network.js:1503
 msgid "VPN"
-msgstr ""
+msgstr "VPN"
 
 #: ../js/ui/status/network.js:1513
 msgid "VPN Off"
-msgstr ""
+msgstr "VPN Studât"
 
 #: ../js/ui/status/network.js:1697
 msgid "Connection failed"
-msgstr ""
+msgstr "Conession falide"
 
 #: ../js/ui/status/network.js:1698
 msgid "Activation of network connection failed"
-msgstr ""
+msgstr "Ativazion de conession di rêt falide"
 
 #: ../js/ui/status/power.js:61
 msgid "Power Settings"
-msgstr ""
+msgstr "Impostazions di alimentazion"
 
 #: ../js/ui/status/power.js:77
 msgid "Fully Charged"
-msgstr ""
+msgstr "Cjarie"
 
 #. 0 is reported when UPower does not have enough data
 #. to estimate battery life
 #: ../js/ui/status/power.js:84 ../js/ui/status/power.js:90
 msgid "Estimating…"
-msgstr ""
+msgstr "In stime..."
 
 #. Translators: this is <hours>:<minutes> Remaining (<percentage>)
 #: ../js/ui/status/power.js:98
 #, javascript-format
 msgid "%d∶%02d Remaining (%d %%)"
-msgstr ""
+msgstr "A restin %d∶%02d (%d%%)"
 
 #. Translators: this is <hours>:<minutes> Until Full (<percentage>)
 #: ../js/ui/status/power.js:103
 #, javascript-format
 msgid "%d∶%02d Until Full (%d %%)"
-msgstr ""
+msgstr "%d∶%02d par sedi plene (%d%%)"
 
 #: ../js/ui/status/power.js:131 ../js/ui/status/power.js:133
 #, javascript-format
 msgid "%d %%"
-msgstr ""
+msgstr "%d %%"
 
 #. The menu only appears when airplane mode is on, so just
 #. statically build it as if it was on, rather than dynamically
 #. changing the menu contents.
 #: ../js/ui/status/rfkill.js:88
 msgid "Airplane Mode On"
-msgstr ""
+msgstr "Modalitât Avion ative"
 
 #: ../js/ui/status/system.js:343
 msgid "Switch User"
-msgstr ""
+msgstr "Cambie Utent"
 
 #: ../js/ui/status/system.js:348
 msgid "Log Out"
-msgstr ""
+msgstr "Jes"
 
 #: ../js/ui/status/system.js:353
 msgid "Account Settings"
-msgstr ""
+msgstr "Impostazions account"
 
 #: ../js/ui/status/system.js:370
 msgid "Orientation Lock"
-msgstr ""
+msgstr "Bloche Orientament"
 
 #: ../js/ui/status/system.js:378
 msgid "Suspend"
-msgstr ""
+msgstr "Sospindi"
 
 #: ../js/ui/status/system.js:381
 msgid "Power Off"
-msgstr ""
+msgstr "Distude"
 
 #: ../js/ui/status/volume.js:127
 msgid "Volume changed"
-msgstr ""
+msgstr "Volum modificât"
 
 #: ../js/ui/status/volume.js:162
 msgid "Volume"
-msgstr ""
+msgstr "Volum"
 
 #: ../js/ui/unlockDialog.js:67
 msgid "Log in as another user"
-msgstr ""
+msgstr "Jentre come altri utent"
 
 #: ../js/ui/unlockDialog.js:84
 msgid "Unlock Window"
-msgstr ""
+msgstr "Sbloche barcon"
 
 #: ../js/ui/viewSelector.js:159
 msgid "Applications"
-msgstr ""
+msgstr "Aplicazions"
 
 #: ../js/ui/viewSelector.js:163
 msgid "Search"
-msgstr ""
+msgstr "Cîr"
 
 #: ../js/ui/windowAttentionHandler.js:20
 #, javascript-format
 msgid "“%s” is ready"
-msgstr ""
+msgstr "'%s' al è pront"
 
 #: ../js/ui/windowManager.js:63
 msgid "Do you want to keep these display settings?"
-msgstr ""
+msgstr "Vûstu tignî chestis impostazions di visôr?"
 
 #. Translators: this and the following message should be limited in lenght,
 #. to avoid ellipsizing the labels.
@@ -1593,7 +1595,7 @@ msgstr ""
 
 #: ../js/ui/windowManager.js:85
 msgid "Keep Changes"
-msgstr ""
+msgstr "Ten lis modifichis"
 
 #: ../js/ui/windowManager.js:103
 #, javascript-format
@@ -1607,27 +1609,27 @@ msgstr[1] ""
 #: ../js/ui/windowManager.js:658
 #, javascript-format
 msgid "%d x %d"
-msgstr ""
+msgstr "%d x %d"
 
 #: ../js/ui/windowMenu.js:34
 msgid "Minimize"
-msgstr ""
+msgstr "Minimize"
 
 #: ../js/ui/windowMenu.js:41
 msgid "Unmaximize"
-msgstr ""
+msgstr "Gjave slargjament"
 
 #: ../js/ui/windowMenu.js:45
 msgid "Maximize"
-msgstr ""
+msgstr "Slargje"
 
 #: ../js/ui/windowMenu.js:52
 msgid "Move"
-msgstr ""
+msgstr "Sposte"
 
 #: ../js/ui/windowMenu.js:58
 msgid "Resize"
-msgstr ""
+msgstr "Ridimensione"
 
 #: ../js/ui/windowMenu.js:65
 msgid "Move Titlebar Onscreen"
@@ -1635,47 +1637,47 @@ msgstr ""
 
 #: ../js/ui/windowMenu.js:70
 msgid "Always on Top"
-msgstr ""
+msgstr "Simpri Denant"
 
 #: ../js/ui/windowMenu.js:89
 msgid "Always on Visible Workspace"
-msgstr ""
+msgstr "Simpri sul spazi di lavôr visibil"
 
 #: ../js/ui/windowMenu.js:105
 msgid "Move to Workspace Left"
-msgstr ""
+msgstr "Sposte tal spazi di lavôr a çampe"
 
 #: ../js/ui/windowMenu.js:110
 msgid "Move to Workspace Right"
-msgstr ""
+msgstr "Sposte tal spazi di lavôr a drete"
 
 #: ../js/ui/windowMenu.js:115
 msgid "Move to Workspace Up"
-msgstr ""
+msgstr "Sposte tal spazi di lavôr Parsore"
 
 #: ../js/ui/windowMenu.js:120
 msgid "Move to Workspace Down"
-msgstr ""
+msgstr "Sposte tal spazi di lavôr Disot"
 
 #: ../js/ui/windowMenu.js:136
 msgid "Move to Monitor Up"
-msgstr ""
+msgstr "Sposte tal visôr parsore"
 
 #: ../js/ui/windowMenu.js:142
 msgid "Move to Monitor Down"
-msgstr ""
+msgstr "Sposte tal visôr disot"
 
 #: ../js/ui/windowMenu.js:148
 msgid "Move to Monitor Left"
-msgstr ""
+msgstr "Sposte tal visôr a çampe"
 
 #: ../js/ui/windowMenu.js:154
 msgid "Move to Monitor Right"
-msgstr ""
+msgstr "Sposte tal visôr a drete"
 
 #: ../src/calendar-server/evolution-calendar.desktop.in.in.h:1
 msgid "Evolution Calendar"
-msgstr ""
+msgstr "Calendari di Evolution"
 
 #. translators:
 #. * The number of sound outputs on a particular device
