@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2016-03-30 09:37+0000\n"
-"PO-Revision-Date: 2016-03-31 10:35+0200\n"
+"PO-Revision-Date: 2016-03-31 10:55+0200\n"
 "Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
 "Language-Team: Friulian <fur@li.org>\n"
 "Language: fur\n"
@@ -476,7 +476,7 @@ msgstr "%d di %B dal %Y, %I∶%M %p"
 #. * window, until we know the title of the actual login page
 #: ../js/portalHelper/main.js:85
 msgid "Web Authentication Redirect"
-msgstr ""
+msgstr "Indreçament pe autenticazion web"
 
 #: ../js/ui/appDisplay.js:794
 msgid "Frequently used applications will appear here"
@@ -842,15 +842,15 @@ msgstr "Termine session"
 #, javascript-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s al jessarà in automatic chi di %d secont."
+msgstr[1] "%s al jessarà in automatic chi di %d seconts."
 
 #: ../js/ui/endSessionDialog.js:72
 #, javascript-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Tu jessarâs in automatic chi di %d secont."
+msgstr[1] "Tu jessarâs in automatic chi di %d seconts."
 
 #: ../js/ui/endSessionDialog.js:78
 msgctxt "button"
@@ -871,8 +871,8 @@ msgstr "Instale inzornaments e distude"
 #, javascript-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Il sisteme si studarà in automatic chi di %d secont."
+msgstr[1] "Il sisteme si studarà in automatic chi di %d seconts."
 
 #: ../js/ui/endSessionDialog.js:91
 msgctxt "checkbox"
@@ -898,8 +898,8 @@ msgstr "Torne invie"
 #, javascript-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Il sisteme si tornarà a inviâ in automatic chi di %d secont."
+msgstr[1] "Il sisteme si tornarà a inviâ in automatic chi di %d secont."
 
 #: ../js/ui/endSessionDialog.js:119
 msgctxt "title"
@@ -912,7 +912,11 @@ msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
 "The system will automatically restart and install updates in %d seconds."
 msgstr[0] ""
+"Il sisteme al tornarà a inviâsi in automatic instalant i inzornaments chi di "
+"%d secont."
 msgstr[1] ""
+"Il sisteme al tornarà a inviâsi in automatic instalant i inzornaments chi di "
+"%d seconts."
 
 #: ../js/ui/endSessionDialog.js:127
 msgctxt "button"
@@ -1111,15 +1115,15 @@ msgstr "%A, %d di %B"
 #, javascript-format
 msgid "%d new message"
 msgid_plural "%d new messages"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d gnûf messaç"
+msgstr[1] "%d gnûfs messaçs"
 
 #: ../js/ui/screenShield.js:146
 #, javascript-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d gnove notifiche"
+msgstr[1] "%d gnovis modifichis"
 
 #: ../js/ui/screenShield.js:432 ../js/ui/status/system.js:374
 msgid "Lock"
@@ -1233,8 +1237,8 @@ msgstr "Impostazions Bluetooth"
 #, javascript-format
 msgid "%d Connected"
 msgid_plural "%d Connected"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d tacât"
+msgstr[1] "%d tacâts"
 
 #: ../js/ui/status/bluetooth.js:138
 msgid "Off"
@@ -1591,7 +1595,7 @@ msgstr "Vûstu tignî chestis impostazions di visôr?"
 #.
 #: ../js/ui/windowManager.js:82
 msgid "Revert Settings"
-msgstr ""
+msgstr "Ripristine impostazions"
 
 #: ../js/ui/windowManager.js:85
 msgid "Keep Changes"
@@ -1602,7 +1606,9 @@ msgstr "Ten lis modifichis"
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
 msgstr[0] ""
+"Lis modifichis as impostazions a vegnaran ripristinadis chi di %d secont"
 msgstr[1] ""
+"Lis modifichis as impostazions a vegnaran ripristinadis chi di %d seconts"
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
@@ -1633,7 +1639,7 @@ msgstr "Ridimensione"
 
 #: ../js/ui/windowMenu.js:65
 msgid "Move Titlebar Onscreen"
-msgstr ""
+msgstr "Môf la sbare dal titul a schermi"
 
 #: ../js/ui/windowMenu.js:70
 msgid "Always on Top"
@@ -1685,8 +1691,8 @@ msgstr "Calendari di Evolution"
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%u jessude"
+msgstr[1] "%u jessudis"
 
 #. translators:
 #. * The number of sound inputs on a particular device
@@ -1694,8 +1700,8 @@ msgstr[1] ""
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%u jentrade"
+msgstr[1] "%u jentradis"
 
 #: ../src/gvc/gvc-mixer-control.c:2371
 msgid "System Sounds"
