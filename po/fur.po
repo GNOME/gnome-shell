@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2016-03-30 09:37+0000\n"
-"PO-Revision-Date: 2016-03-31 08:39+0200\n"
+"PO-Revision-Date: 2016-03-31 10:35+0200\n"
 "Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
 "Language-Team: Friulian <fur@li.org>\n"
 "Language: fur\n"
@@ -1699,45 +1699,45 @@ msgstr[1] ""
 
 #: ../src/gvc/gvc-mixer-control.c:2371
 msgid "System Sounds"
-msgstr ""
+msgstr "Suns di sisteme"
 
 #: ../src/main.c:381
 msgid "Print version"
-msgstr ""
+msgstr "Stampe version"
 
 #: ../src/main.c:387
 msgid "Mode used by GDM for login screen"
-msgstr ""
+msgstr "Modalitât doprade da GDM pe videade di acès"
 
 #: ../src/main.c:393
 msgid "Use a specific mode, e.g. \"gdm\" for login screen"
-msgstr ""
+msgstr "Dopre une modalitât specifiche, par esempli \"gdm\" pe videade di acès"
 
 #: ../src/main.c:399
 msgid "List possible modes"
-msgstr ""
+msgstr "Liste modalitâts pussibilis"
 
 #: ../src/shell-app.c:246
 msgctxt "program"
 msgid "Unknown"
-msgstr ""
+msgstr "No cognossût"
 
 #: ../src/shell-app.c:487
 #, c-format
 msgid "Failed to launch “%s”"
-msgstr ""
+msgstr "No soi rivât a eseguî '%s'"
 
 #: ../src/shell-keyring-prompt.c:730
 msgid "Passwords do not match."
-msgstr ""
+msgstr "Lis password no corispuindin."
 
 #: ../src/shell-keyring-prompt.c:738
 msgid "Password cannot be blank"
-msgstr ""
+msgstr "La password no pues sedi vueide"
 
 #: ../src/shell-polkit-authentication-agent.c:353
 msgid "Authentication dialog was dismissed by the user"
-msgstr ""
+msgstr "Dialic di autenticazion anulât dal utent"
 
 #~ msgid "GNOME Delivers a full desktop experience"
 #~ msgstr "GNOME al da fûr une esperience di scritori complete "
