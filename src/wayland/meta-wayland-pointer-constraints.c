@@ -449,8 +449,33 @@ meta_wayland_pointer_constraint_maybe_enable (MetaWaylandPointerConstraint *cons
       return;
     }
 
-  if (!meta_window_appears_focused (constraint->surface->window))
-    return;
+  if (meta_xwayland_is_xwayland_surface (constraint->surface))
+    {
+      MetaDisplay *display = meta_get_display ();
+
+      /*
+       * We need to handle Xwayland surfaces differently in order to allow
+       * Xwayland to be able to lock the pointer. For example, we cannot require
+       * the locked window to "appear focused" because the surface Xwayland
+       * locks might not be able to appear focused (for example it may be a
+       * override redirect window).
+       *
+       * Since we don't have any way to know what focused window an override
+       * redirect is associated with, nor have a way to know if the override
+       * redirect window even shares the same connection as a focused window,
+       * we simply can only really restrict it to enable the lock if any
+       * Xwayland window appears focused.
+       */
+
+      if (display->focus_window &&
+          display->focus_window->client_type != META_WINDOW_CLIENT_TYPE_X11)
+        return;
+    }
+  else
+    {
+      if (!meta_window_appears_focused (constraint->surface->window))
+        return;
+    }
 
   meta_wayland_pointer_get_relative_coordinates (constraint->seat->pointer,
                                                  constraint->surface,
