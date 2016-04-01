@@ -253,7 +253,7 @@ meta_wayland_popup_dismiss (MetaWaylandPopup *popup)
 
       top_popup_surface = meta_wayland_popup_grab_get_top_popup (popup_grab);
       seat = meta_wayland_pointer_get_seat (popup_grab->generic.pointer);
-      keyboard = &seat->keyboard;
+      keyboard = seat->keyboard;
       meta_wayland_keyboard_set_focus (keyboard, top_popup_surface);
     }
 }
@@ -285,7 +285,7 @@ meta_wayland_popup_create (MetaWaylandPopupSurface *popup_surface,
   wl_list_insert (&grab->all_popups, &popup->link);
 
   seat = meta_wayland_pointer_get_seat (grab->generic.pointer);
-  keyboard = &seat->keyboard;
+  keyboard = seat->keyboard;
   meta_wayland_keyboard_set_focus (keyboard, surface);
 
   return popup;

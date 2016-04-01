@@ -442,7 +442,7 @@ xdg_popup_grab (struct wl_client   *client,
       return;
     }
 
-  top_popup = meta_wayland_pointer_get_top_popup (&seat->pointer);
+  top_popup = meta_wayland_pointer_get_top_popup (seat->pointer);
   if ((top_popup == NULL &&
        !META_IS_WAYLAND_XDG_SURFACE (parent_surface->role)) ||
       (top_popup != NULL && parent_surface != top_popup))
@@ -803,7 +803,7 @@ finish_popup_setup (MetaWaylandXdgPopup *xdg_popup)
 
       meta_window_focus (window, meta_display_get_current_time (display));
       popup_surface = META_WAYLAND_POPUP_SURFACE (surface->role);
-      popup = meta_wayland_pointer_start_popup_grab (&seat->pointer,
+      popup = meta_wayland_pointer_start_popup_grab (seat->pointer,
                                                      popup_surface);
       if (popup == NULL)
         {
@@ -1674,7 +1674,6 @@ meta_wayland_xdg_positioner_set_constraint_adjustment (struct wl_client   *clien
                               ZXDG_POSITIONER_V6_CONSTRAINT_ADJUSTMENT_FLIP_Y |
                               ZXDG_POSITIONER_V6_CONSTRAINT_ADJUSTMENT_RESIZE_X |
                               ZXDG_POSITIONER_V6_CONSTRAINT_ADJUSTMENT_RESIZE_Y);
-
 
   if ((constraint_adjustment & ~all_adjustments) != 0)
     {

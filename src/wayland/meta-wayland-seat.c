@@ -43,7 +43,7 @@ seat_get_pointer (struct wl_client *client,
                   uint32_t id)
 {
   MetaWaylandSeat *seat = wl_resource_get_user_data (resource);
-  MetaWaylandPointer *pointer = &seat->pointer;
+  MetaWaylandPointer *pointer = seat->pointer;
 
   if ((seat->capabilities & WL_SEAT_CAPABILITY_POINTER) != 0)
     meta_wayland_pointer_create_new_resource (pointer, client, resource, id);
@@ -55,7 +55,7 @@ seat_get_keyboard (struct wl_client *client,
                    uint32_t id)
 {
   MetaWaylandSeat *seat = wl_resource_get_user_data (resource);
-  MetaWaylandKeyboard *keyboard = &seat->keyboard;
+  MetaWaylandKeyboard *keyboard = seat->keyboard;
 
   if ((seat->capabilities & WL_SEAT_CAPABILITY_KEYBOARD) != 0)
     meta_wayland_keyboard_create_new_resource (keyboard, client, resource, id);
@@ -67,7 +67,7 @@ seat_get_touch (struct wl_client *client,
                 uint32_t id)
 {
   MetaWaylandSeat *seat = wl_resource_get_user_data (resource);
-  MetaWaylandTouch *touch = &seat->touch;
+  MetaWaylandTouch *touch = seat->touch;
 
   if ((seat->capabilities & WL_SEAT_CAPABILITY_TOUCH) != 0)
     meta_wayland_touch_create_new_resource (touch, client, resource, id);
@@ -157,15 +157,15 @@ meta_wayland_seat_set_capabilities (MetaWaylandSeat *seat,
   seat->capabilities = flags;
 
   if (CAPABILITY_ENABLED (prev_flags, flags, WL_SEAT_CAPABILITY_POINTER))
-    meta_wayland_pointer_init (&seat->pointer, seat->wl_display);
+    meta_wayland_pointer_enable (seat->pointer, seat);
   else if (CAPABILITY_DISABLED (prev_flags, flags, WL_SEAT_CAPABILITY_POINTER))
-    meta_wayland_pointer_release (&seat->pointer);
+    meta_wayland_pointer_disable (seat->pointer);
 
   if (CAPABILITY_ENABLED (prev_flags, flags, WL_SEAT_CAPABILITY_KEYBOARD))
     {
       MetaDisplay *display;
 
-      meta_wayland_keyboard_init (&seat->keyboard, seat->wl_display);
+      meta_wayland_keyboard_enable (seat->keyboard, seat);
       display = meta_get_display ();
 
       /* Post-initialization, ensure the input focus is in sync */
@@ -173,12 +173,12 @@ meta_wayland_seat_set_capabilities (MetaWaylandSeat *seat,
         meta_display_sync_wayland_input_focus (display);
     }
   else if (CAPABILITY_DISABLED (prev_flags, flags, WL_SEAT_CAPABILITY_KEYBOARD))
-    meta_wayland_keyboard_release (&seat->keyboard);
+    meta_wayland_keyboard_disable (seat->keyboard);
 
   if (CAPABILITY_ENABLED (prev_flags, flags, WL_SEAT_CAPABILITY_TOUCH))
-    meta_wayland_touch_init (&seat->touch, seat->wl_display);
+    meta_wayland_touch_enable (seat->touch, seat);
   else if (CAPABILITY_DISABLED (prev_flags, flags, WL_SEAT_CAPABILITY_TOUCH))
-    meta_wayland_touch_release (&seat->touch);
+    meta_wayland_touch_disable (seat->touch);
 
   /* Broadcast capability changes */
   wl_resource_for_each (resource, &seat->base_resource_list)
@@ -215,6 +215,10 @@ meta_wayland_seat_new (MetaWaylandCompositor *compositor,
   wl_list_init (&seat->base_resource_list);
   seat->wl_display = display;
 
+  seat->pointer = g_object_new (META_TYPE_WAYLAND_POINTER, NULL);
+  seat->keyboard = g_object_new (META_TYPE_WAYLAND_KEYBOARD, NULL);
+  seat->touch = g_object_new (META_TYPE_WAYLAND_TOUCH, NULL);
+
   meta_wayland_data_device_init (&seat->data_device);
 
   device_manager = clutter_device_manager_get_default ();
@@ -246,6 +250,10 @@ meta_wayland_seat_free (MetaWaylandSeat *seat)
   device_manager = clutter_device_manager_get_default ();
   g_signal_handlers_disconnect_by_data (device_manager, seat);
   meta_wayland_seat_set_capabilities (seat, 0);
+
+  g_object_unref (seat->pointer);
+  g_object_unref (seat->keyboard);
+  g_object_unref (seat->touch);
 
   g_slice_free (MetaWaylandSeat, seat);
 }
@@ -306,20 +314,20 @@ meta_wayland_seat_update (MetaWaylandSeat    *seat,
     case CLUTTER_BUTTON_RELEASE:
     case CLUTTER_SCROLL:
       if (seat->capabilities & WL_SEAT_CAPABILITY_POINTER)
-        meta_wayland_pointer_update (&seat->pointer, event);
+        meta_wayland_pointer_update (seat->pointer, event);
       break;
 
     case CLUTTER_KEY_PRESS:
     case CLUTTER_KEY_RELEASE:
       if (seat->capabilities & WL_SEAT_CAPABILITY_KEYBOARD)
-        meta_wayland_keyboard_update (&seat->keyboard, (const ClutterKeyEvent *) event);
+        meta_wayland_keyboard_update (seat->keyboard, (const ClutterKeyEvent *) event);
       break;
 
     case CLUTTER_TOUCH_BEGIN:
     case CLUTTER_TOUCH_UPDATE:
     case CLUTTER_TOUCH_END:
       if (seat->capabilities & WL_SEAT_CAPABILITY_TOUCH)
-        meta_wayland_touch_update (&seat->touch, event);
+        meta_wayland_touch_update (seat->touch, event);
       break;
 
     default:
@@ -343,18 +351,18 @@ meta_wayland_seat_handle_event (MetaWaylandSeat *seat,
     case CLUTTER_TOUCHPAD_SWIPE:
     case CLUTTER_TOUCHPAD_PINCH:
       if (seat->capabilities & WL_SEAT_CAPABILITY_POINTER)
-        return meta_wayland_pointer_handle_event (&seat->pointer, event);
+        return meta_wayland_pointer_handle_event (seat->pointer, event);
 
     case CLUTTER_KEY_PRESS:
     case CLUTTER_KEY_RELEASE:
       if (seat->capabilities & WL_SEAT_CAPABILITY_KEYBOARD)
-        return meta_wayland_keyboard_handle_event (&seat->keyboard,
+        return meta_wayland_keyboard_handle_event (seat->keyboard,
                                                    (const ClutterKeyEvent *) event);
     case CLUTTER_TOUCH_BEGIN:
     case CLUTTER_TOUCH_UPDATE:
     case CLUTTER_TOUCH_END:
       if (seat->capabilities & WL_SEAT_CAPABILITY_TOUCH)
-        return meta_wayland_touch_handle_event (&seat->touch, event);
+        return meta_wayland_touch_handle_event (seat->touch, event);
 
     default:
       break;
@@ -369,7 +377,7 @@ meta_wayland_seat_repick (MetaWaylandSeat *seat)
   if ((seat->capabilities & WL_SEAT_CAPABILITY_POINTER) == 0)
     return;
 
-  meta_wayland_pointer_repick (&seat->pointer);
+  meta_wayland_pointer_repick (seat->pointer);
 }
 
 void
@@ -381,7 +389,7 @@ meta_wayland_seat_set_input_focus (MetaWaylandSeat    *seat,
 
   if ((seat->capabilities & WL_SEAT_CAPABILITY_KEYBOARD) != 0)
     {
-      meta_wayland_keyboard_set_focus (&seat->keyboard, surface);
+      meta_wayland_keyboard_set_focus (seat->keyboard, surface);
       meta_wayland_data_device_set_keyboard_focus (&seat->data_device);
     }
 
@@ -401,24 +409,28 @@ meta_wayland_seat_get_grab_info (MetaWaylandSeat    *seat,
   gboolean can_grab_surface = FALSE;
 
   if ((seat->capabilities & WL_SEAT_CAPABILITY_TOUCH) != 0)
-    sequence = meta_wayland_touch_find_grab_sequence (&seat->touch, surface, serial);
+    sequence = meta_wayland_touch_find_grab_sequence (seat->touch,
+                                                      surface,
+                                                      serial);
 
   if (sequence)
     {
-      meta_wayland_touch_get_press_coords (&seat->touch, sequence, x, y);
+      meta_wayland_touch_get_press_coords (seat->touch, sequence, x, y);
     }
   else
     {
       if ((seat->capabilities & WL_SEAT_CAPABILITY_POINTER) != 0 &&
-          (!require_pressed || seat->pointer.button_count > 0))
-        can_grab_surface = meta_wayland_pointer_can_grab_surface (&seat->pointer, surface, serial);
+          (!require_pressed || seat->pointer->button_count > 0))
+        can_grab_surface = meta_wayland_pointer_can_grab_surface (seat->pointer,
+                                                                  surface,
+                                                                  serial);
 
       if (can_grab_surface)
         {
           if (x)
-            *x = seat->pointer.grab_x;
+            *x = seat->pointer->grab_x;
           if (y)
-            *y = seat->pointer.grab_y;
+            *y = seat->pointer->grab_y;
         }
     }
 
@@ -429,7 +441,7 @@ gboolean
 meta_wayland_seat_can_popup (MetaWaylandSeat *seat,
                              uint32_t         serial)
 {
-  return (meta_wayland_pointer_can_popup (&seat->pointer, serial) ||
-          meta_wayland_keyboard_can_popup (&seat->keyboard, serial) ||
-          meta_wayland_touch_can_popup (&seat->touch, serial));
+  return (meta_wayland_pointer_can_popup (seat->pointer, serial) ||
+          meta_wayland_keyboard_can_popup (seat->keyboard, serial) ||
+          meta_wayland_touch_can_popup (seat->touch, serial));
 }

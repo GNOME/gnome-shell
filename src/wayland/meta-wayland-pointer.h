@@ -32,6 +32,10 @@
 
 #include <meta/meta-cursor-tracker.h>
 
+#define META_TYPE_WAYLAND_POINTER (meta_wayland_pointer_get_type ())
+G_DECLARE_FINAL_TYPE (MetaWaylandPointer, meta_wayland_pointer,
+                      META, WAYLAND_POINTER, GObject);
+
 struct _MetaWaylandPointerGrabInterface
 {
   void (*focus) (MetaWaylandPointerGrab *grab,
@@ -58,7 +62,9 @@ struct _MetaWaylandPointerClient
 
 struct _MetaWaylandPointer
 {
-  struct wl_display *display;
+  GObject parent;
+
+  MetaWaylandSeat *seat;
 
   MetaWaylandPointerClient *focus_client;
   GHashTable *pointer_clients;
@@ -84,10 +90,10 @@ struct _MetaWaylandPointer
   guint32 button_count;
 };
 
-void meta_wayland_pointer_init (MetaWaylandPointer *pointer,
-                                struct wl_display  *display);
+void meta_wayland_pointer_enable (MetaWaylandPointer *pointer,
+                                  MetaWaylandSeat    *seat);
 
-void meta_wayland_pointer_release (MetaWaylandPointer *pointer);
+void meta_wayland_pointer_disable (MetaWaylandPointer *pointer);
 
 void meta_wayland_pointer_update (MetaWaylandPointer *pointer,
                                   const ClutterEvent *event);

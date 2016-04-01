@@ -65,6 +65,8 @@
 #include "backends/native/meta-backend-native.h"
 #endif
 
+G_DEFINE_TYPE (MetaWaylandKeyboard, meta_wayland_keyboard, G_TYPE_OBJECT);
+
 static void meta_wayland_keyboard_update_xkb_state (MetaWaylandKeyboard *keyboard);
 static void notify_modifiers (MetaWaylandKeyboard *keyboard);
 static guint evdev_code (const ClutterKeyEvent *event);
@@ -342,7 +344,7 @@ meta_wayland_keyboard_broadcast_modifiers (MetaWaylandKeyboard *keyboard)
   l = &keyboard->focus_resource_list;
   if (!wl_list_empty (l))
     {
-      uint32_t serial = wl_display_next_serial (keyboard->display);
+      uint32_t serial = wl_display_next_serial (keyboard->seat->wl_display);
 
       wl_resource_for_each (resource, l)
         keyboard_send_modifiers (keyboard, resource, serial);
@@ -478,14 +480,12 @@ static const MetaWaylandKeyboardGrabInterface default_keyboard_grab_interface = 
 };
 
 void
-meta_wayland_keyboard_init (MetaWaylandKeyboard *keyboard,
-                            struct wl_display   *display)
+meta_wayland_keyboard_enable (MetaWaylandKeyboard *keyboard,
+                              MetaWaylandSeat     *seat)
 {
   MetaBackend *backend = meta_get_backend ();
 
-  memset (keyboard, 0, sizeof *keyboard);
-
-  keyboard->display = display;
+  keyboard->seat = seat;
 
   wl_list_init (&keyboard->resource_list);
   wl_list_init (&keyboard->focus_resource_list);
@@ -512,17 +512,20 @@ meta_wayland_keyboard_init (MetaWaylandKeyboard *keyboard,
 static void
 meta_wayland_xkb_info_destroy (MetaWaylandXkbInfo *xkb_info)
 {
-  xkb_keymap_unref (xkb_info->keymap);
-  xkb_state_unref (xkb_info->state);
+  g_clear_pointer (&xkb_info->keymap, xkb_keymap_unref);
+  g_clear_pointer (&xkb_info->state, xkb_state_unref);
 
   if (xkb_info->keymap_area)
-    munmap (xkb_info->keymap_area, xkb_info->keymap_size);
+    {
+      munmap (xkb_info->keymap_area, xkb_info->keymap_size);
+      xkb_info->keymap_area = NULL;
+    }
   if (xkb_info->keymap_fd >= 0)
     close (xkb_info->keymap_fd);
 }
 
 void
-meta_wayland_keyboard_release (MetaWaylandKeyboard *keyboard)
+meta_wayland_keyboard_disable (MetaWaylandKeyboard *keyboard)
 {
   MetaBackend *backend = meta_get_backend ();
 
@@ -534,9 +537,9 @@ meta_wayland_keyboard_release (MetaWaylandKeyboard *keyboard)
 
   /* XXX: What about keyboard->resource_list? */
 
-  g_object_unref (keyboard->settings);
+  g_clear_object (&keyboard->settings);
 
-  keyboard->display = NULL;
+  keyboard->seat = NULL;
 }
 
 static guint
@@ -682,7 +685,7 @@ void
 meta_wayland_keyboard_set_focus (MetaWaylandKeyboard *keyboard,
                                  MetaWaylandSurface *surface)
 {
-  if (keyboard->display == NULL)
+  if (keyboard->seat == NULL)
     return;
 
   if (keyboard->focus_surface == surface)
@@ -808,4 +811,14 @@ void
 meta_wayland_keyboard_end_grab (MetaWaylandKeyboard *keyboard)
 {
   keyboard->grab = &keyboard->default_grab;
+}
+
+static void
+meta_wayland_keyboard_init (MetaWaylandKeyboard *keyboard)
+{
+}
+
+static void
+meta_wayland_keyboard_class_init (MetaWaylandKeyboardClass *klass)
+{
 }

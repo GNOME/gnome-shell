@@ -226,7 +226,7 @@ meta_wayland_compositor_update_key_state (MetaWaylandCompositor *compositor,
                                           int                    key_vector_len,
                                           int                    offset)
 {
-  meta_wayland_keyboard_update_key_state (&compositor->seat->keyboard,
+  meta_wayland_keyboard_update_key_state (compositor->seat->keyboard,
                                           key_vector, key_vector_len, offset);
 }
 

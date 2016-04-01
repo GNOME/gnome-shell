@@ -36,9 +36,10 @@ struct _MetaWaylandSeat
   struct wl_list base_resource_list;
   struct wl_display *wl_display;
 
-  MetaWaylandPointer pointer;
-  MetaWaylandKeyboard keyboard;
-  MetaWaylandTouch touch;
+  MetaWaylandPointer *pointer;
+  MetaWaylandKeyboard *keyboard;
+  MetaWaylandTouch *touch;
+
   MetaWaylandDataDevice data_device;
 
   guint capabilities;

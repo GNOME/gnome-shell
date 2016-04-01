@@ -972,7 +972,7 @@ meta_x11_drag_dest_update (MetaWaylandDataDevice *data_device,
   MetaWaylandSeat *seat = compositor->seat;
   ClutterPoint pos;
 
-  clutter_input_device_get_coords (seat->pointer.device, NULL, &pos);
+  clutter_input_device_get_coords (seat->pointer->device, NULL, &pos);
   xdnd_send_position (compositor->xwayland_manager.selection_data,
                       compositor->xwayland_manager.selection_data->dnd.dnd_dest,
                       clutter_get_current_event_time (),
@@ -1378,7 +1378,7 @@ drag_xgrab_motion (MetaWaylandPointerGrab *grab,
                        event);
 
   dnd->last_motion_time = clutter_event_get_time (event);
-  meta_wayland_pointer_send_motion (&seat->pointer, event);
+  meta_wayland_pointer_send_motion (seat->pointer, event);
 }
 
 static void
@@ -1388,7 +1388,7 @@ drag_xgrab_button (MetaWaylandPointerGrab *grab,
   MetaWaylandCompositor *compositor = meta_wayland_compositor_get_default ();
   MetaWaylandSeat *seat = compositor->seat;
 
-  meta_wayland_pointer_send_button (&seat->pointer, event);
+  meta_wayland_pointer_send_button (seat->pointer, event);
 }
 
 static const MetaWaylandPointerGrabInterface drag_xgrab_interface = {
@@ -1499,10 +1499,10 @@ meta_xwayland_selection_handle_client_message (MetaWaylandCompositor *compositor
           uint32_t action = 0;
 
           motion = clutter_event_new (CLUTTER_MOTION);
-          clutter_input_device_get_coords (seat->pointer.device, NULL, &pos);
+          clutter_input_device_get_coords (seat->pointer->device, NULL, &pos);
           clutter_event_set_coords (motion, pos.x, pos.y);
-          clutter_event_set_device (motion, seat->pointer.device);
-          clutter_event_set_source_device (motion, seat->pointer.device);
+          clutter_event_set_device (motion, seat->pointer->device);
+          clutter_event_set_source_device (motion, seat->pointer->device);
           clutter_event_set_time (motion, dnd->last_motion_time);
 
           action = atom_to_action ((Atom) event->data.l[4]);
@@ -1591,7 +1591,7 @@ meta_xwayland_selection_handle_xfixes_selection_notify (MetaWaylandCompositor *c
         {
           MetaWaylandSurface *focus;
 
-          focus = compositor->seat->pointer.focus_surface;
+          focus = compositor->seat->pointer->focus_surface;
           selection->source = meta_wayland_data_source_xwayland_new (selection);
           meta_wayland_data_device_set_dnd_source (&compositor->seat->data_device,
                                                    selection->source);

@@ -27,6 +27,7 @@
 
 #include "meta-wayland-pointer-gesture-pinch.h"
 #include "meta-wayland-pointer.h"
+#include "meta-wayland-seat.h"
 #include "meta-wayland-surface.h"
 #include "pointer-gestures-unstable-v1-server-protocol.h"
 
@@ -39,7 +40,7 @@ handle_pinch_begin (MetaWaylandPointer *pointer,
   uint32_t serial;
 
   pointer_client = pointer->focus_client;
-  serial = wl_display_next_serial (pointer->display);
+  serial = wl_display_next_serial (pointer->seat->wl_display);
 
   wl_resource_for_each (resource, &pointer_client->pinch_gesture_resources)
     {
@@ -84,7 +85,7 @@ handle_pinch_end (MetaWaylandPointer *pointer,
   uint32_t serial;
 
   pointer_client = pointer->focus_client;
-  serial = wl_display_next_serial (pointer->display);
+  serial = wl_display_next_serial (pointer->seat->wl_display);
 
   if (event->touchpad_pinch.phase == CLUTTER_TOUCHPAD_GESTURE_PHASE_CANCEL)
     cancelled = TRUE;

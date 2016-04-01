@@ -620,7 +620,7 @@ meta_pointer_confinement_wayland_maybe_warp (MetaPointerConfinementWayland *self
   seat = meta_wayland_pointer_constraint_get_seat (self->constraint);
   surface = meta_wayland_pointer_constraint_get_surface (self->constraint);
 
-  clutter_input_device_get_coords (seat->pointer.device, NULL, &point);
+  clutter_input_device_get_coords (seat->pointer->device, NULL, &point);
   meta_wayland_surface_get_relative_coordinates (surface,
                                                  point.x, point.y,
                                                  &sx, &sy);

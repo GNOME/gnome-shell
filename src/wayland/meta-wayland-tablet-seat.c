@@ -204,7 +204,7 @@ static void
 meta_wayland_tablet_seat_device_added (MetaWaylandTabletSeat *tablet_seat,
                                        ClutterInputDevice    *device)
 {
-  MetaWaylandSurface *pad_focus = tablet_seat->seat->keyboard.focus_surface;
+  MetaWaylandSurface *pad_focus = tablet_seat->seat->keyboard->focus_surface;
 
   if (is_tablet_device (device))
     {

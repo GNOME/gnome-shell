@@ -52,6 +52,7 @@
 #include "meta-wayland-pointer.h"
 #include "meta-wayland-popup.h"
 #include "meta-wayland-private.h"
+#include "meta-wayland-seat.h"
 #include "meta-wayland-surface.h"
 #include "meta-wayland-buffer.h"
 #include "meta-wayland-surface-role-cursor.h"
@@ -73,6 +74,8 @@
 #include <string.h>
 
 #define DEFAULT_AXIS_STEP_DISTANCE wl_fixed_from_int (10)
+
+G_DEFINE_TYPE (MetaWaylandPointer, meta_wayland_pointer, G_TYPE_OBJECT);
 
 static MetaWaylandPointerClient *
 meta_wayland_pointer_client_new (void)
@@ -444,15 +447,13 @@ meta_wayland_pointer_on_cursor_changed (MetaCursorTracker *cursor_tracker,
 }
 
 void
-meta_wayland_pointer_init (MetaWaylandPointer *pointer,
-                           struct wl_display  *display)
+meta_wayland_pointer_enable (MetaWaylandPointer *pointer,
+                             MetaWaylandSeat    *seat)
 {
   MetaCursorTracker *cursor_tracker = meta_cursor_tracker_get_for_screen (NULL);
   ClutterDeviceManager *manager;
 
-  memset (pointer, 0, sizeof *pointer);
-
-  pointer->display = display;
+  pointer->seat = seat;
 
   pointer->pointer_clients =
     g_hash_table_new_full (NULL, NULL, NULL,
@@ -476,7 +477,7 @@ meta_wayland_pointer_init (MetaWaylandPointer *pointer,
 }
 
 void
-meta_wayland_pointer_release (MetaWaylandPointer *pointer)
+meta_wayland_pointer_disable (MetaWaylandPointer *pointer)
 {
   MetaCursorTracker *cursor_tracker = meta_cursor_tracker_get_for_screen (NULL);
 
@@ -493,7 +494,7 @@ meta_wayland_pointer_release (MetaWaylandPointer *pointer)
   meta_wayland_pointer_set_focus (pointer, NULL);
 
   g_clear_pointer (&pointer->pointer_clients, g_hash_table_unref);
-  pointer->display = NULL;
+  pointer->seat = NULL;
   pointer->cursor_surface = NULL;
 }
 
@@ -579,7 +580,7 @@ handle_button_event (MetaWaylandPointer *pointer,
   pointer->grab->interface->button (pointer->grab, event);
 
   if (implicit_grab)
-    pointer->grab_serial = wl_display_get_serial (pointer->display);
+    pointer->grab_serial = wl_display_get_serial (pointer->seat->wl_display);
 }
 
 static void
@@ -786,7 +787,7 @@ void
 meta_wayland_pointer_set_focus (MetaWaylandPointer *pointer,
                                 MetaWaylandSurface *surface)
 {
-  if (pointer->display == NULL)
+  if (pointer->seat == NULL)
     return;
 
   if (pointer->focus_surface == surface)
@@ -1194,6 +1195,15 @@ meta_wayland_relative_pointer_init (MetaWaylandCompositor *compositor)
 MetaWaylandSeat *
 meta_wayland_pointer_get_seat (MetaWaylandPointer *pointer)
 {
-  MetaWaylandSeat *seat = wl_container_of (pointer, seat, pointer);
-  return seat;
+  return pointer->seat;
+}
+
+static void
+meta_wayland_pointer_init (MetaWaylandPointer *pointer)
+{
+}
+
+static void
+meta_wayland_pointer_class_init (MetaWaylandPointerClass *klass)
+{
 }

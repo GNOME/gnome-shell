@@ -49,6 +49,13 @@
 #include <wayland-server.h>
 #include <xkbcommon/xkbcommon.h>
 
+#include "wayland/meta-wayland-types.h"
+
+#define META_TYPE_WAYLAND_KEYBOARD (meta_wayland_keyboard_get_type ())
+G_DECLARE_FINAL_TYPE (MetaWaylandKeyboard, meta_wayland_keyboard,
+                      META, WAYLAND_KEYBOARD,
+                      GObject);
+
 struct _MetaWaylandKeyboardGrabInterface
 {
   gboolean (*key)       (MetaWaylandKeyboardGrab *grab,
@@ -74,7 +81,9 @@ typedef struct
 
 struct _MetaWaylandKeyboard
 {
-  struct wl_display *display;
+  GObject parent;
+
+  MetaWaylandSeat *seat;
 
   struct wl_list resource_list;
   struct wl_list focus_resource_list;
@@ -93,10 +102,10 @@ struct _MetaWaylandKeyboard
   GSettings *settings;
 };
 
-void meta_wayland_keyboard_init (MetaWaylandKeyboard *keyboard,
-                                 struct wl_display   *display);
+void meta_wayland_keyboard_enable (MetaWaylandKeyboard *keyboard,
+                                   MetaWaylandSeat     *seat);
 
-void meta_wayland_keyboard_release (MetaWaylandKeyboard *keyboard);
+void meta_wayland_keyboard_disable (MetaWaylandKeyboard *keyboard);
 
 void meta_wayland_keyboard_update (MetaWaylandKeyboard *keyboard,
                                    const ClutterKeyEvent *event);

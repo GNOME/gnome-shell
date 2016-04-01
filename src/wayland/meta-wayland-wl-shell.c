@@ -324,7 +324,7 @@ meta_wayland_wl_shell_surface_create_popup (MetaWaylandWlShellSurface *wl_shell_
   MetaWaylandSeat *seat = wl_shell_surface->popup_seat;
   MetaWaylandPopup *popup;
 
-  popup = meta_wayland_pointer_start_popup_grab (&seat->pointer, popup_surface);
+  popup = meta_wayland_pointer_start_popup_grab (seat->pointer, popup_surface);
   if (!popup)
     {
       wl_shell_surface_send_popup_done (wl_shell_surface->resource);

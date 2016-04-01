@@ -34,6 +34,8 @@
 #include "backends/native/meta-backend-native.h"
 #endif
 
+G_DEFINE_TYPE (MetaWaylandTouch, meta_wayland_touch, G_TYPE_OBJECT);
+
 struct _MetaWaylandTouchSurface
 {
   MetaWaylandSurface *surface;
@@ -454,7 +456,7 @@ meta_wayland_touch_cancel (MetaWaylandTouch *touch)
 {
   GList *surfaces, *s;
 
-  if (touch->display == NULL)
+  if (touch->seat == NULL)
     return;
 
   surfaces = s = touch_get_surfaces (touch, FALSE);
@@ -514,14 +516,12 @@ evdev_filter_func (struct libinput_event *event,
 #endif
 
 void
-meta_wayland_touch_init (MetaWaylandTouch  *touch,
-                         struct wl_display *display)
+meta_wayland_touch_enable (MetaWaylandTouch *touch,
+                           MetaWaylandSeat  *seat)
 {
   ClutterDeviceManager *manager;
 
-  memset (touch, 0, sizeof *touch);
-
-  touch->display = display;
+  touch->seat = seat;
   touch->touch_surfaces = g_hash_table_new_full (NULL, NULL, NULL,
                                                  (GDestroyNotify) touch_surface_free);
   touch->touches = g_hash_table_new_full (NULL, NULL, NULL,
@@ -540,7 +540,7 @@ meta_wayland_touch_init (MetaWaylandTouch  *touch,
 }
 
 void
-meta_wayland_touch_release (MetaWaylandTouch *touch)
+meta_wayland_touch_disable (MetaWaylandTouch *touch)
 {
 #ifdef HAVE_NATIVE_BACKEND
   MetaBackend *backend = meta_get_backend ();
@@ -550,7 +550,7 @@ meta_wayland_touch_release (MetaWaylandTouch *touch)
 
   g_clear_pointer (&touch->touch_surfaces, (GDestroyNotify) g_hash_table_unref);
   g_clear_pointer (&touch->touches, (GDestroyNotify) g_hash_table_unref);
-  touch->display = NULL;
+  touch->seat = NULL;
 }
 
 void
@@ -561,7 +561,7 @@ meta_wayland_touch_create_new_resource (MetaWaylandTouch   *touch,
 {
   struct wl_resource *cr;
 
-  if (touch->display == NULL)
+  if (touch->seat == NULL)
     {
       wl_resource_post_error (seat_resource, WL_DISPLAY_ERROR_INVALID_METHOD,
                               "Cannot retrieve touch interface without touch capability");
@@ -640,4 +640,14 @@ meta_wayland_touch_get_press_coords (MetaWaylandTouch     *touch,
     *y = touch_info->start_y;
 
   return TRUE;
+}
+
+static void
+meta_wayland_touch_init (MetaWaylandTouch *touch)
+{
+}
+
+static void
+meta_wayland_touch_class_init (MetaWaylandTouchClass *klass)
+{
 }

@@ -329,7 +329,7 @@ meta_wayland_pointer_constraint_enable (MetaWaylandPointerConstraint *constraint
 
   constraint->is_enabled = TRUE;
   meta_wayland_pointer_constraint_notify_activated (constraint);
-  meta_wayland_pointer_start_grab (&constraint->seat->pointer,
+  meta_wayland_pointer_start_grab (constraint->seat->pointer,
                                    &constraint->grab);
 
   constraint->constraint =
@@ -394,7 +394,7 @@ meta_wayland_pointer_constraint_maybe_enable (MetaWaylandPointerConstraint *cons
   if (!meta_window_appears_focused (constraint->surface->window))
     return;
 
-  meta_wayland_pointer_get_relative_coordinates (&constraint->seat->pointer,
+  meta_wayland_pointer_get_relative_coordinates (constraint->seat->pointer,
                                                  constraint->surface,
                                                  &sx, &sy);
   if (!is_within_constraint_region (constraint, sx, sy))
@@ -416,7 +416,7 @@ void
 meta_wayland_pointer_constraint_maybe_remove_for_seat (MetaWaylandSeat *seat,
                                                        MetaWindow      *window)
 {
-  MetaWaylandPointer *pointer = &seat->pointer;
+  MetaWaylandPointer *pointer = seat->pointer;
   MetaWaylandPointerConstraint *constraint;
 
   if ((pointer->grab->interface != &confined_pointer_grab_interface &&

@@ -505,7 +505,7 @@ meta_display_cancel_touch (MetaDisplay *display)
     return;
 
   compositor = meta_wayland_compositor_get_default ();
-  meta_wayland_touch_cancel (&compositor->seat->touch);
+  meta_wayland_touch_cancel (compositor->seat->touch);
 #endif
 }
 
