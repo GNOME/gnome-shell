@@ -34,6 +34,7 @@
 #include "meta-wayland-pointer.h"
 #include "meta-wayland-surface.h"
 #include "meta-wayland-region.h"
+#include "meta-xwayland.h"
 #include "meta-pointer-lock-wayland.h"
 #include "meta-pointer-confinement-wayland.h"
 #include "window-private.h"
@@ -67,8 +68,13 @@ struct _MetaWaylandPointerConstraint
 
 typedef struct _MetaWaylandSurfacePointerConstraintsData
 {
+  MetaWaylandSurface *surface;
+
   GList *pointer_constraints;
+
   MetaWindow *window;
+  gulong window_associated_handler_id;
+
   gulong appears_changed_handler_id;
   gulong raised_handler_id;
 } MetaWaylandSurfacePointerConstraintsData;
@@ -95,6 +101,9 @@ static const MetaWaylandPointerGrabInterface confined_pointer_grab_interface;
 
 static void
 meta_wayland_pointer_constraint_destroy (MetaWaylandPointerConstraint *constraint);
+
+static void
+meta_wayland_pointer_constraint_maybe_enable (MetaWaylandPointerConstraint *constraint);
 
 static void
 meta_wayland_pointer_constraint_maybe_enable_for_window (MetaWindow *window);
@@ -133,6 +142,34 @@ window_raised (MetaWindow *window)
   meta_wayland_pointer_constraint_maybe_enable_for_window (window);
 }
 
+static void
+connect_window (MetaWaylandSurfacePointerConstraintsData *data,
+                MetaWindow                               *window)
+{
+  data->window = window;
+  g_object_add_weak_pointer (G_OBJECT (data->window),
+                             (gpointer *) &data->window);
+  data->appears_changed_handler_id =
+    g_signal_connect (data->window, "notify::appears-focused",
+                      G_CALLBACK (appears_focused_changed), NULL);
+  data->raised_handler_id =
+    g_signal_connect (data->window, "raised",
+                      G_CALLBACK (window_raised), NULL);
+}
+
+static void
+window_associated (MetaWaylandSurfaceRole                   *surface_role,
+                   MetaWaylandSurfacePointerConstraintsData *data)
+{
+  MetaWaylandSurface *surface = data->surface;
+
+  connect_window (data, surface->window);
+  g_signal_handler_disconnect (surface, data->window_associated_handler_id);
+  data->window_associated_handler_id = 0;
+
+  meta_wayland_pointer_constraint_maybe_enable_for_window (surface->window);
+}
+
 static MetaWaylandSurfacePointerConstraintsData *
 surface_constraint_data_new (MetaWaylandSurface *surface)
 {
@@ -140,17 +177,18 @@ surface_constraint_data_new (MetaWaylandSurface *surface)
 
   data = g_new0 (MetaWaylandSurfacePointerConstraintsData, 1);
 
+  data->surface = surface;
+
   if (surface->window)
     {
-      data->window = surface->window;
-      g_object_add_weak_pointer (G_OBJECT (data->window),
-                                 (gpointer *) &data->window);
-      data->appears_changed_handler_id =
-        g_signal_connect (data->window, "notify::appears-focused",
-                          G_CALLBACK (appears_focused_changed), NULL);
-      data->raised_handler_id =
-        g_signal_connect (data->window, "raised",
-                          G_CALLBACK (window_raised), NULL);
+      connect_window (data, surface->window);
+    }
+  else if (meta_xwayland_is_xwayland_surface (surface))
+    {
+      data->window_associated_handler_id =
+        g_signal_connect (surface->role, "window-associated",
+                          G_CALLBACK (window_associated),
+                          data);
     }
   else
     {
@@ -173,10 +211,22 @@ surface_constraint_data_free (MetaWaylandSurfacePointerConstraintsData *data)
       g_object_remove_weak_pointer (G_OBJECT (data->window),
                                     (gpointer *) &data->window);
     }
+  else
+    {
+      g_signal_handler_disconnect (data->surface->role,
+                                   data->window_associated_handler_id);
+    }
 
   g_list_free_full (data->pointer_constraints,
                     (GDestroyNotify) meta_wayland_pointer_constraint_destroy);
   g_free (data);
+}
+
+static void
+constrained_surface_destroyed (MetaWaylandSurface                       *surface,
+                               MetaWaylandSurfacePointerConstraintsData *data)
+{
+  surface_constraint_data_free (data);
 }
 
 static MetaWaylandSurfacePointerConstraintsData *
@@ -188,10 +238,11 @@ ensure_surface_constraints_data (MetaWaylandSurface *surface)
   if (!data)
     {
       data = surface_constraint_data_new (surface);
-      g_object_set_qdata_full (G_OBJECT (surface),
-                               quark_surface_pointer_constraints_data,
-                               data,
-                               (GDestroyNotify) surface_constraint_data_free);
+      g_object_set_qdata (G_OBJECT (surface),
+                          quark_surface_pointer_constraints_data,
+                          data);
+      g_signal_connect (surface, "destroy",
+                        G_CALLBACK (constrained_surface_destroyed), data);
     }
 
   return data;
@@ -387,7 +438,11 @@ meta_wayland_pointer_constraint_maybe_enable (MetaWaylandPointerConstraint *cons
 
   if (!constraint->surface->window)
     {
-      g_warn_if_reached ();
+      /*
+       * Locks from Xwayland may come before we have had the opportunity to
+       * associate the X11 Window with the wl_surface.
+       */
+      g_warn_if_fail (meta_xwayland_is_xwayland_surface (constraint->surface));
       return;
     }
 
@@ -453,6 +508,12 @@ meta_wayland_pointer_constraint_maybe_enable_for_window (MetaWindow *window)
   MetaWaylandSurface *surface = window->surface;
   MetaWaylandSurfacePointerConstraintsData *surface_data;
   GList *l;
+
+  if (!surface)
+    {
+      g_warn_if_fail (window->client_type == META_WINDOW_CLIENT_TYPE_X11);
+      return;
+    }
 
   surface_data = get_surface_constraints_data (surface);
   if (!surface_data)
