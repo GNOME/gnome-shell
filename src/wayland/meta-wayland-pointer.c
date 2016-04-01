@@ -75,6 +75,14 @@
 
 #define DEFAULT_AXIS_STEP_DISTANCE wl_fixed_from_int (10)
 
+enum {
+  FOCUS_SURFACE_CHANGED,
+
+  LAST_SIGNAL
+};
+
+static guint signals[LAST_SIGNAL];
+
 G_DEFINE_TYPE (MetaWaylandPointer, meta_wayland_pointer, G_TYPE_OBJECT);
 
 static MetaWaylandPointerClient *
@@ -843,6 +851,8 @@ meta_wayland_pointer_set_focus (MetaWaylandPointer *pointer,
     }
 
   meta_wayland_pointer_update_cursor_surface (pointer);
+
+  g_signal_emit (pointer, signals[FOCUS_SURFACE_CHANGED], 0);
 }
 
 void
@@ -1206,4 +1216,10 @@ meta_wayland_pointer_init (MetaWaylandPointer *pointer)
 static void
 meta_wayland_pointer_class_init (MetaWaylandPointerClass *klass)
 {
+  signals[FOCUS_SURFACE_CHANGED] = g_signal_new ("focus-surface-changed",
+                                                 G_TYPE_FROM_CLASS (klass),
+                                                 G_SIGNAL_RUN_LAST,
+                                                 0,
+                                                 NULL, NULL, NULL,
+                                                 G_TYPE_NONE, 0);
 }
