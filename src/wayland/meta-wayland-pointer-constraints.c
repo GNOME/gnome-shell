@@ -436,6 +436,9 @@ meta_wayland_pointer_constraint_maybe_enable (MetaWaylandPointerConstraint *cons
   if (constraint->is_enabled)
     return;
 
+  if (constraint->seat->pointer->focus_surface != constraint->surface)
+    return;
+
   if (!constraint->surface->window)
     {
       /*
