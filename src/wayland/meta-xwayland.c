@@ -34,6 +34,14 @@
 
 #include "compositor/meta-surface-actor-wayland.h"
 
+enum {
+  XWAYLAND_SURFACE_WINDOW_ASSOCIATED,
+
+  XWAYLAND_SURFACE_LAST_SIGNAL
+};
+
+guint xwayland_surface_signals[XWAYLAND_SURFACE_LAST_SIGNAL];
+
 #define META_TYPE_WAYLAND_SURFACE_ROLE_XWAYLAND (meta_wayland_surface_role_xwayland_get_type ())
 G_DECLARE_FINAL_TYPE (MetaWaylandSurfaceRoleXWayland,
                       meta_wayland_surface_role_xwayland,
@@ -66,8 +74,11 @@ associate_window_with_surface (MetaWindow         *window,
       return;
     }
 
-  meta_wayland_surface_set_window (surface, window);
   window->surface = surface;
+  meta_wayland_surface_set_window (surface, window);
+  g_signal_emit (surface->role,
+                 xwayland_surface_signals[XWAYLAND_SURFACE_WINDOW_ASSOCIATED],
+                 0);
 
   meta_compositor_window_surface_changed (display->compositor, window);
 
@@ -652,4 +663,12 @@ meta_wayland_surface_role_xwayland_class_init (MetaWaylandSurfaceRoleXWaylandCla
   surface_role_class->assigned = xwayland_surface_assigned;
   surface_role_class->commit = xwayland_surface_commit;
   surface_role_class->get_toplevel = xwayland_surface_get_toplevel;
+
+  xwayland_surface_signals[XWAYLAND_SURFACE_WINDOW_ASSOCIATED] =
+    g_signal_new ("window-associated",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  0, NULL, NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
 }
