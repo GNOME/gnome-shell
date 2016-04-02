@@ -5,6 +5,7 @@ const Gio = imports.gi.Gio;
 const Lang = imports.lang;
 const Signals = imports.signals;
 const St = imports.gi.St;
+const Pango = imports.gi.Pango;
 
 const Animation = imports.ui.animation;
 const Batch = imports.gdm.batch;
@@ -113,6 +114,7 @@ const AuthPrompt = new Lang.Class({
         this._message = new St.Label({ opacity: 0,
                                        styleClass: 'login-dialog-message' });
         this._message.clutter_text.line_wrap = true;
+        this._message.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this.actor.add(this._message, { x_fill: false, x_align: St.Align.START, y_align: St.Align.START });
 
         this._buttonBox = new St.BoxLayout({ style_class: 'login-dialog-button-box',
