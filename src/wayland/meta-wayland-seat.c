@@ -374,10 +374,11 @@ meta_wayland_seat_set_input_focus (MetaWaylandSeat    *seat,
 
 gboolean
 meta_wayland_seat_get_grab_info (MetaWaylandSeat    *seat,
-				 MetaWaylandSurface *surface,
-				 uint32_t            serial,
-				 gfloat             *x,
-				 gfloat             *y)
+                                 MetaWaylandSurface *surface,
+                                 uint32_t            serial,
+                                 gboolean            require_pressed,
+                                 gfloat             *x,
+                                 gfloat             *y)
 {
   ClutterEventSequence *sequence = NULL;
   gboolean can_grab_surface = FALSE;
@@ -391,7 +392,8 @@ meta_wayland_seat_get_grab_info (MetaWaylandSeat    *seat,
     }
   else
     {
-      if ((seat->capabilities & WL_SEAT_CAPABILITY_POINTER) != 0)
+      if ((seat->capabilities & WL_SEAT_CAPABILITY_POINTER) != 0 &&
+          (!require_pressed || seat->pointer.button_count > 0))
         can_grab_surface = meta_wayland_pointer_can_grab_surface (&seat->pointer, surface, serial);
 
       if (can_grab_surface)

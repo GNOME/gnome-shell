@@ -1362,7 +1362,7 @@ xdg_surface_show_window_menu (struct wl_client *client,
   MetaWaylandSeat *seat = wl_resource_get_user_data (seat_resource);
   MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
 
-  if (!meta_wayland_seat_get_grab_info (seat, surface, serial, NULL, NULL))
+  if (!meta_wayland_seat_get_grab_info (seat, surface, serial, FALSE, NULL, NULL))
     return;
 
   meta_window_show_menu (surface->window, META_WINDOW_MENU_WM,
@@ -1407,7 +1407,7 @@ xdg_surface_move (struct wl_client *client,
   MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
   gfloat x, y;
 
-  if (!meta_wayland_seat_get_grab_info (seat, surface, serial, &x, &y))
+  if (!meta_wayland_seat_get_grab_info (seat, surface, serial, TRUE, &x, &y))
     return;
 
   begin_grab_op_on_surface (surface, seat, META_GRAB_OP_MOVING, x, y);
@@ -1447,7 +1447,7 @@ xdg_surface_resize (struct wl_client *client,
   MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
   gfloat x, y;
 
-  if (!meta_wayland_seat_get_grab_info (seat, surface, serial, &x, &y))
+  if (!meta_wayland_seat_get_grab_info (seat, surface, serial, TRUE, &x, &y))
     return;
 
   begin_grab_op_on_surface (surface, seat, grab_op_for_xdg_surface_resize_edge (edges), x, y);
@@ -1790,7 +1790,7 @@ wl_shell_surface_move (struct wl_client *client,
   MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
   gfloat x, y;
 
-  if (!meta_wayland_seat_get_grab_info (seat, surface, serial, &x, &y))
+  if (!meta_wayland_seat_get_grab_info (seat, surface, serial, TRUE, &x, &y))
     return;
 
   begin_grab_op_on_surface (surface, seat, META_GRAB_OP_MOVING, x, y);
@@ -1830,7 +1830,7 @@ wl_shell_surface_resize (struct wl_client *client,
   MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
   gfloat x, y;
 
-  if (!meta_wayland_seat_get_grab_info (seat, surface, serial, &x, &y))
+  if (!meta_wayland_seat_get_grab_info (seat, surface, serial, TRUE, &x, &y))
     return;
 
   begin_grab_op_on_surface (surface, seat, grab_op_for_wl_shell_surface_resize_edge (edges), x, y);
