@@ -325,10 +325,28 @@ meta_window_wayland_move_resize_internal (MetaWindow                *window,
 }
 
 static void
-scale_rect_size (MetaRectangle *rect, float scale)
+scale_size (int  *width,
+            int  *height,
+            float scale)
 {
-  rect->width = (int)(rect->width * scale);
-  rect->height = (int)(rect->height * scale);
+  if (*width < G_MAXINT)
+    {
+      float new_width = (*width * scale);
+      *width = (int) MIN (new_width, G_MAXINT);
+    }
+
+  if (*height < G_MAXINT)
+    {
+      float new_height = (*height * scale);
+      *height = (int) MIN (new_height, G_MAXINT);
+    }
+}
+
+static void
+scale_rect_size (MetaRectangle *rect,
+                 float          scale)
+{
+  scale_size (&rect->width, &rect->height, scale);
 }
 
 static void
@@ -399,6 +417,9 @@ meta_window_wayland_main_monitor_changed (MetaWindow *window,
   scale_rect_size (&window->rect, scale_factor);
   scale_rect_size (&window->unconstrained_rect, scale_factor);
   scale_rect_size (&window->saved_rect, scale_factor);
+  scale_size (&window->size_hints.min_width, &window->size_hints.min_height, scale_factor);
+  scale_size (&window->size_hints.max_width, &window->size_hints.max_height, scale_factor);
+
 
   /* Window geometry offset (XXX: Need a better place, see
    * meta_window_wayland_move_resize). */
@@ -650,3 +671,139 @@ meta_window_place_with_placement_rule (MetaWindow        *window,
   window->unconstrained_rect.height = placement_rule->height;
   meta_window_force_placement (window);
 }
+
+void
+meta_window_wayland_set_min_size (MetaWindow *window,
+                                  int         width,
+                                  int         height)
+{
+  gint64 new_width, new_height;
+  float scale;
+
+  meta_topic (META_DEBUG_GEOMETRY, "Window %s sets min size %d x %d\n",
+              window->desc, width, height);
+
+  if (width == 0 && height == 0)
+    {
+      window->size_hints.min_width = 0;
+      window->size_hints.min_height = 0;
+      window->size_hints.flags &= ~PMinSize;
+
+      return;
+    }
+
+  scale = (float) meta_window_wayland_get_main_monitor_scale (window);
+  scale_size (&width, &height, scale);
+
+  new_width = width + (window->custom_frame_extents.left +
+                       window->custom_frame_extents.right);
+  new_height = height + (window->custom_frame_extents.top +
+                         window->custom_frame_extents.bottom);
+
+  window->size_hints.min_width = (int) MIN (new_width, G_MAXINT);
+  window->size_hints.min_height = (int) MIN (new_height, G_MAXINT);
+  window->size_hints.flags |= PMinSize;
+}
+
+void
+meta_window_wayland_set_max_size (MetaWindow *window,
+                                  int         width,
+                                  int         height)
+
+{
+  gint64 new_width, new_height;
+  float scale;
+
+  meta_topic (META_DEBUG_GEOMETRY, "Window %s sets max size %d x %d\n",
+              window->desc, width, height);
+
+  if (width == 0 && height == 0)
+    {
+      window->size_hints.max_width = G_MAXINT;
+      window->size_hints.max_height = G_MAXINT;
+      window->size_hints.flags &= ~PMaxSize;
+
+      return;
+    }
+
+  scale = (float) meta_window_wayland_get_main_monitor_scale (window);
+  scale_size (&width, &height, scale);
+
+  new_width = width + (window->custom_frame_extents.left +
+                       window->custom_frame_extents.right);
+  new_height = height + (window->custom_frame_extents.top +
+                         window->custom_frame_extents.bottom);
+
+  window->size_hints.max_width = (int) ((new_width > 0 && new_width < G_MAXINT) ?
+                                        new_width : G_MAXINT);
+  window->size_hints.max_height = (int)  ((new_height > 0 && new_height < G_MAXINT) ?
+                                          new_height : G_MAXINT);
+  window->size_hints.flags |= PMaxSize;
+}
+
+void
+meta_window_wayland_get_min_size (MetaWindow *window,
+                                  int        *width,
+                                  int        *height)
+{
+  gint64 current_width, current_height;
+  float scale;
+
+  if (!(window->size_hints.flags & PMinSize))
+    {
+      /* Zero means unlimited */
+      *width = 0;
+      *height = 0;
+
+      return;
+    }
+
+  current_width = window->size_hints.min_width -
+                  (window->custom_frame_extents.left +
+                   window->custom_frame_extents.right);
+  current_height = window->size_hints.min_height -
+                   (window->custom_frame_extents.top +
+                    window->custom_frame_extents.bottom);
+
+  *width = MAX (current_width, 0);
+  *height = MAX (current_height, 0);
+
+  scale = 1.0 / (float) meta_window_wayland_get_main_monitor_scale (window);
+  scale_size (width, height, scale);
+}
+
+void
+meta_window_wayland_get_max_size (MetaWindow *window,
+                                  int        *width,
+                                  int        *height)
+{
+  gint64 current_width = 0;
+  gint64 current_height = 0;
+  float scale;
+
+  if (!(window->size_hints.flags & PMaxSize))
+    {
+      /* Zero means unlimited */
+      *width = 0;
+      *height = 0;
+
+      return;
+    }
+
+  if (window->size_hints.max_width < G_MAXINT)
+    current_width = window->size_hints.max_width -
+                    (window->custom_frame_extents.left +
+                     window->custom_frame_extents.right);
+
+  if (window->size_hints.max_height < G_MAXINT)
+    current_height = window->size_hints.max_height -
+                     (window->custom_frame_extents.top +
+                      window->custom_frame_extents.bottom);
+
+  *width = CLAMP (current_width, 0, G_MAXINT);
+  *height = CLAMP (current_height, 0, G_MAXINT);
+
+  scale = 1.0 / (float) meta_window_wayland_get_main_monitor_scale (window);
+  scale_size (width, height, scale);
+}
+

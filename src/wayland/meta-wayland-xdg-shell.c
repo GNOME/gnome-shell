@@ -295,7 +295,20 @@ xdg_toplevel_set_max_size (struct wl_client   *client,
                            int32_t             width,
                            int32_t             height)
 {
-  /* TODO */
+  MetaWaylandSurface *surface = surface_from_xdg_toplevel_resource (resource);
+
+  if (width < 0 || height < 0)
+    {
+      wl_resource_post_error (resource,
+                              ZXDG_SHELL_V6_ERROR_INVALID_SURFACE_STATE,
+                              "invalid negative max size requested %i x %i",
+                              width, height);
+      return;
+    }
+
+  surface->pending->has_new_max_size = TRUE;
+  surface->pending->new_max_width = width;
+  surface->pending->new_max_height = height;
 }
 
 static void
@@ -304,7 +317,20 @@ xdg_toplevel_set_min_size (struct wl_client   *client,
                            int32_t             width,
                            int32_t             height)
 {
-  /* TODO */
+  MetaWaylandSurface *surface = surface_from_xdg_toplevel_resource (resource);
+
+  if (width < 0 || height < 0)
+    {
+      wl_resource_post_error (resource,
+                              ZXDG_SHELL_V6_ERROR_INVALID_SURFACE_STATE,
+                              "invalid negative min size requested %i x %i",
+                              width, height);
+      return;
+    }
+
+  surface->pending->has_new_min_size = TRUE;
+  surface->pending->new_min_width = width;
+  surface->pending->new_min_height = height;
 }
 
 static void
@@ -520,6 +546,37 @@ meta_wayland_xdg_toplevel_send_configure (MetaWaylandXdgToplevel *xdg_toplevel,
     }
 }
 
+static gboolean
+is_new_size_hints_valid (MetaWindow              *window,
+                         MetaWaylandPendingState *pending)
+{
+  int new_min_width, new_min_height;
+  int new_max_width, new_max_height;
+
+  if (pending->has_new_min_size)
+    {
+      new_min_width = pending->new_min_width;
+      new_min_height = pending->new_min_height;
+    }
+  else
+    {
+      meta_window_wayland_get_min_size (window, &new_min_width, &new_min_height);
+    }
+
+  if (pending->has_new_max_size)
+    {
+      new_max_width = pending->new_max_width;
+      new_max_height = pending->new_max_height;
+    }
+  else
+    {
+      meta_window_wayland_get_max_size (window, &new_max_width, &new_max_height);
+    }
+  /* Zero means unlimited */
+  return ((new_max_width == 0 || new_min_width <= new_max_width) &&
+          (new_max_height == 0 || new_min_height <= new_max_height));
+}
+
 static void
 xdg_toplevel_role_commit (MetaWaylandSurfaceRole  *surface_role,
                           MetaWaylandPendingState *pending)
@@ -558,6 +615,28 @@ xdg_toplevel_role_commit (MetaWaylandSurfaceRole  *surface_role,
           g_warning ("XXX: Attach-initiated move without a new geometry. This is unimplemented right now.");
         }
       return;
+    }
+
+  /* When we get to this point, we ought to have valid size hints */
+  if (pending->has_new_min_size || pending->has_new_max_size)
+    {
+      if (is_new_size_hints_valid (window, pending))
+        {
+          if (pending->has_new_min_size)
+            meta_window_wayland_set_min_size (window, pending->new_min_width, pending->new_min_height);
+
+          if (pending->has_new_max_size)
+            meta_window_wayland_set_max_size (window, pending->new_max_width, pending->new_max_height);
+
+          meta_window_recalc_features (window);
+        }
+      else
+        {
+          wl_resource_post_error (surface->resource,
+                                  ZXDG_SHELL_V6_ERROR_INVALID_SURFACE_STATE,
+                                  "Invalid min/max size");
+
+        }
     }
 
   window_geometry = meta_wayland_xdg_surface_get_window_geometry (xdg_surface);

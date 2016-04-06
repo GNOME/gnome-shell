@@ -61,4 +61,22 @@ void meta_window_wayland_place_relative_to (MetaWindow *window,
 void meta_window_place_with_placement_rule (MetaWindow        *window,
                                             MetaPlacementRule *placement_rule);
 
+void meta_window_wayland_set_min_size (MetaWindow *window,
+                                       int         width,
+                                       int         height);
+
+void meta_window_wayland_set_max_size (MetaWindow *window,
+                                       int         width,
+                                       int         height);
+
+void meta_window_wayland_get_min_size (MetaWindow *window,
+                                       int        *width,
+                                       int        *height);
+
+
+void meta_window_wayland_get_max_size (MetaWindow *window,
+                                       int        *width,
+                                       int        *height);
+
+
 #endif

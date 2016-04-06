@@ -479,6 +479,8 @@ pending_state_init (MetaWaylandPendingState *state)
   wl_list_init (&state->frame_callback_list);
 
   state->has_new_geometry = FALSE;
+  state->has_new_min_size = FALSE;
+  state->has_new_max_size = FALSE;
 }
 
 static void
@@ -523,6 +525,12 @@ move_pending_state (MetaWaylandPendingState *from,
   to->opaque_region_set = from->opaque_region_set;
   to->new_geometry = from->new_geometry;
   to->has_new_geometry = from->has_new_geometry;
+  to->has_new_min_size = from->has_new_min_size;
+  to->new_min_width = from->new_min_width;
+  to->new_min_height = from->new_min_height;
+  to->has_new_max_size = from->has_new_max_size;
+  to->new_max_width = from->new_max_width;
+  to->new_max_height = from->new_max_height;
 
   wl_list_init (&to->frame_callback_list);
   wl_list_insert_list (&to->frame_callback_list, &from->frame_callback_list);
