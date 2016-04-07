@@ -276,6 +276,112 @@ meta_input_settings_native_set_keyboard_repeat (MetaInputSettings *settings,
 }
 
 static void
+set_device_accel_profile (ClutterInputDevice         *device,
+                          GDesktopPointerAccelProfile profile)
+{
+  struct libinput_device *libinput_device;
+  enum libinput_config_accel_profile libinput_profile;
+  uint32_t profiles;
+
+  libinput_device = clutter_evdev_input_device_get_libinput_device (device);
+
+  switch (profile)
+    {
+    case G_DESKTOP_POINTER_ACCEL_PROFILE_FLAT:
+      libinput_profile = LIBINPUT_CONFIG_ACCEL_PROFILE_FLAT;
+      break;
+    case G_DESKTOP_POINTER_ACCEL_PROFILE_ADAPTIVE:
+      libinput_profile = LIBINPUT_CONFIG_ACCEL_PROFILE_ADAPTIVE;
+      break;
+    default:
+      g_warn_if_reached ();
+    case G_DESKTOP_POINTER_ACCEL_PROFILE_DEFAULT:
+      libinput_profile =
+        libinput_device_config_accel_get_default_profile (libinput_device);
+    }
+
+  profiles = libinput_device_config_accel_get_profiles (libinput_device);
+  if ((profiles & libinput_profile) == 0)
+    {
+      libinput_profile =
+        libinput_device_config_accel_get_default_profile (libinput_device);
+    }
+
+  libinput_device_config_accel_set_profile (libinput_device,
+                                            libinput_profile);
+}
+
+static gboolean
+has_udev_property (ClutterInputDevice *device,
+                   const char         *property)
+{
+  struct libinput_device *libinput_device;
+  struct udev_device *udev_device;
+  struct udev_device *parent_udev_device;
+
+  libinput_device = clutter_evdev_input_device_get_libinput_device (device);
+  if (!libinput_device)
+    return FALSE;
+
+  udev_device = libinput_device_get_udev_device (libinput_device);
+
+  if (!udev_device)
+    return FALSE;
+
+  if (NULL != udev_device_get_property_value (udev_device, property))
+    {
+      udev_device_unref (udev_device);
+      return TRUE;
+    }
+
+  parent_udev_device = udev_device_get_parent (udev_device);
+  udev_device_unref (udev_device);
+
+  if (!parent_udev_device)
+    return FALSE;
+
+  if (NULL != udev_device_get_property_value (parent_udev_device, property))
+    return TRUE;
+
+  return FALSE;
+}
+
+static gboolean
+is_mouse_device (ClutterInputDevice *device)
+{
+  return (has_udev_property (device, "ID_INPUT_MOUSE") &&
+          !has_udev_property (device, "ID_INPUT_POINTINGSTICK"));
+}
+
+static gboolean
+is_trackball_device (ClutterInputDevice *device)
+{
+  return meta_input_device_is_trackball (device);
+}
+
+static void
+meta_input_settings_native_set_mouse_accel_profile (MetaInputSettings          *settings,
+                                                    ClutterInputDevice         *device,
+                                                    GDesktopPointerAccelProfile profile)
+{
+  if (!is_mouse_device (device))
+    return;
+
+  set_device_accel_profile (device, profile);
+}
+
+static void
+meta_input_settings_native_set_trackball_accel_profile (MetaInputSettings          *settings,
+                                                        ClutterInputDevice         *device,
+                                                        GDesktopPointerAccelProfile profile)
+{
+  if (!is_trackball_device (device))
+    return;
+
+  set_device_accel_profile (device, profile);
+}
+
+static void
 meta_input_settings_native_set_tablet_mapping (MetaInputSettings     *settings,
                                                ClutterInputDevice    *device,
                                                GDesktopTabletMapping  mapping)
@@ -332,6 +438,9 @@ meta_input_settings_native_class_init (MetaInputSettingsNativeClass *klass)
   input_settings_class->set_tablet_mapping = meta_input_settings_native_set_tablet_mapping;
   input_settings_class->set_tablet_keep_aspect = meta_input_settings_native_set_tablet_keep_aspect;
   input_settings_class->set_tablet_area = meta_input_settings_native_set_tablet_area;
+
+  input_settings_class->set_mouse_accel_profile = meta_input_settings_native_set_mouse_accel_profile;
+  input_settings_class->set_trackball_accel_profile = meta_input_settings_native_set_trackball_accel_profile;
 }
 
 static void

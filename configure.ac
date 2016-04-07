@@ -116,6 +116,11 @@ AC_ARG_WITH(libwacom,
                  [disable the use of libwacom for advanced tablet management]),,
   with_libwacom=auto)
 
+AC_ARG_WITH(gudev,
+  AC_HELP_STRING([--without-gudev],
+                 [disable the use of gudev for device type detection]),,
+  with_gudev=auto)
+
 AC_ARG_WITH([xwayland-path],
             [AS_HELP_STRING([--with-xwayland-path], [Absolute path for an X Wayland server])],
             [XWAYLAND_PATH="$withval"],
@@ -191,6 +196,24 @@ else
     AC_MSG_RESULT(no)
     if test x$with_libwacom = xyes ; then
       AC_MSG_ERROR([libwacom forced but not found])
+    fi
+  fi
+fi
+
+have_gudev=no
+AC_MSG_CHECKING([gudev])
+if test x$with_gudev = xno ; then
+  AC_MSG_RESULT([disabled])
+else
+  if $PKG_CONFIG --exists gudev-1.0; then
+    have_gudev=yes
+    AC_MSG_RESULT(yes)
+    MUTTER_PC_MODULES="$MUTTER_PC_MODULES gudev-1.0"
+    AC_DEFINE([HAVE_LIBGUDEV], 1, [Building with gudev for device type detection])
+  else
+    AC_MSG_RESULT(no)
+    if test x$with_gudev = xyes ; then
+      AC_MSG_ERROR([gudev forced but not found])
     fi
   fi
 fi
@@ -449,6 +472,7 @@ mutter-$VERSION
 	Startup notification:     ${have_startup_notification}
 	libcanberra:              ${have_libcanberra}
 	libwacom:                 ${have_libwacom}
+	gudev                     ${have_gudev}
 	Introspection:            ${found_introspection}
 	Session management:       ${found_sm}
 	Wayland:                  ${have_wayland}

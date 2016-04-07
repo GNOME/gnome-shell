@@ -100,6 +100,13 @@ struct _MetaInputSettingsClass
                                       gdouble                 padding_right,
                                       gdouble                 padding_top,
                                       gdouble                 padding_bottom);
+
+  void (* set_mouse_accel_profile) (MetaInputSettings          *settings,
+                                    ClutterInputDevice         *device,
+                                    GDesktopPointerAccelProfile profile);
+  void (* set_trackball_accel_profile) (MetaInputSettings          *settings,
+                                        ClutterInputDevice         *device,
+                                        GDesktopPointerAccelProfile profile);
 };
 
 GType meta_input_settings_get_type (void) G_GNUC_CONST;
@@ -139,5 +146,7 @@ gchar *                    meta_input_settings_get_pad_button_action_label (Meta
 WacomDevice * meta_input_settings_get_tablet_wacom_device (MetaInputSettings *settings,
                                                            ClutterInputDevice *device);
 #endif
+
+gboolean meta_input_device_is_trackball (ClutterInputDevice *device);
 
 #endif /* META_INPUT_SETTINGS_PRIVATE_H */

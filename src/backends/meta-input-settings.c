@@ -310,6 +310,63 @@ update_mouse_left_handed (MetaInputSettings  *input_settings,
     }
 }
 
+static void
+do_update_pointer_accel_profile (MetaInputSettings          *input_settings,
+                                 GSettings                  *settings,
+                                 ClutterInputDevice         *device,
+                                 GDesktopPointerAccelProfile profile)
+{
+  MetaInputSettingsPrivate *priv =
+    meta_input_settings_get_instance_private (input_settings);
+  MetaInputSettingsClass *input_settings_class =
+    META_INPUT_SETTINGS_GET_CLASS (input_settings);
+
+  if (settings == priv->mouse_settings)
+    input_settings_class->set_mouse_accel_profile (input_settings,
+                                                   device,
+                                                   profile);
+  else if (settings == priv->trackball_settings)
+    input_settings_class->set_trackball_accel_profile (input_settings,
+                                                       device,
+                                                       profile);
+}
+
+static void
+update_pointer_accel_profile (MetaInputSettings  *input_settings,
+                              GSettings          *settings,
+                              ClutterInputDevice *device)
+{
+  GDesktopPointerAccelProfile profile;
+
+  profile = g_settings_get_enum (settings, "accel-profile");
+
+  if (device)
+    {
+      do_update_pointer_accel_profile (input_settings, settings,
+                                       device, profile);
+    }
+  else
+    {
+      MetaInputSettingsPrivate *priv =
+        meta_input_settings_get_instance_private (input_settings);
+      const GSList *devices;
+      const GSList *l;
+
+      devices = clutter_device_manager_peek_devices (priv->device_manager);
+      for (l = devices; l; l = l->next)
+        {
+          device = l->data;
+
+          if (clutter_input_device_get_device_mode (device) ==
+              CLUTTER_INPUT_MODE_MASTER)
+            continue;
+
+          do_update_pointer_accel_profile (input_settings, settings,
+                                           device, profile);
+        }
+    }
+}
+
 static GSettings *
 get_settings_for_device_type (MetaInputSettings      *input_settings,
                               ClutterInputDeviceType  type)
@@ -539,8 +596,8 @@ update_touchpad_send_events (MetaInputSettings  *input_settings,
     }
 }
 
-static gboolean
-device_is_trackball (ClutterInputDevice *device)
+gboolean
+meta_input_device_is_trackball (ClutterInputDevice *device)
 {
   gboolean is_trackball;
   char *name;
@@ -563,7 +620,7 @@ update_trackball_scroll_button (MetaInputSettings  *input_settings,
   MetaInputSettingsPrivate *priv;
   guint button;
 
-  if (device && !device_is_trackball (device))
+  if (device && !meta_input_device_is_trackball (device))
     return;
 
   priv = meta_input_settings_get_instance_private (input_settings);
@@ -586,7 +643,7 @@ update_trackball_scroll_button (MetaInputSettings  *input_settings,
         {
           device = devices->data;
 
-          if (device_is_trackball (device))
+          if (meta_input_device_is_trackball (device))
             input_settings_class->set_scroll_button (input_settings, device, button);
 
           devices = devices->next;
@@ -852,6 +909,8 @@ meta_input_settings_changed_cb (GSettings  *settings,
         update_device_speed (input_settings, NULL);
       else if (strcmp (key, "natural-scroll") == 0)
         update_device_natural_scroll (input_settings, NULL);
+      else if (strcmp (key, "accel-profile") == 0)
+        update_pointer_accel_profile (input_settings, settings, NULL);
     }
   else if (settings == priv->touchpad_settings)
     {
@@ -876,6 +935,8 @@ meta_input_settings_changed_cb (GSettings  *settings,
     {
       if (strcmp (key, "scroll-wheel-emulation-button") == 0)
         update_trackball_scroll_button (input_settings, NULL);
+      else if (strcmp (key, "accel-profile") == 0)
+        update_pointer_accel_profile (input_settings, settings, NULL);
     }
   else if (settings == priv->keyboard_settings)
     {
