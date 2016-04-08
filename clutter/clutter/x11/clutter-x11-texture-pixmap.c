@@ -56,7 +56,7 @@
 
 #include <cogl/cogl.h>
 
-#include <cogl/cogl-texture-pixmap-x11.h>
+#include <cogl/winsys/cogl-texture-pixmap-x11.h>
 
 #include <X11/extensions/Xdamage.h>
 

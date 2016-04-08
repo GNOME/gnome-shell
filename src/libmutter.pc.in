@@ -7,7 +7,7 @@ typelibdir=@libdir@/mutter
 
 Name: libmutter
 Description: Mutter window manager library
-Requires: gsettings-desktop-schemas gtk+-3.0 @CLUTTER_PACKAGE@ x11
+Requires: gsettings-desktop-schemas gtk+-3.0 mutter-clutter-1.0 x11
 Version: @VERSION@
 Libs: -L${libdir} -lmutter
 Cflags: -I${includedir}/mutter

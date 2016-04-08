@@ -23,6 +23,11 @@ AM_CPPFLAGS = \
 	-I$(srcdir)/core						\
 	-I$(srcdir)/ui							\
 	-I$(srcdir)/compositor						\
+	-I$(top_srcdir)/cogl						\
+	-I$(top_builddir)/cogl						\
+	-I$(top_srcdir)/clutter						\
+	-I$(top_builddir)/clutter					\
+	-I$(top_builddir)/clutter/clutter				\
 	-DMUTTER_LIBEXECDIR=\"$(libexecdir)\"				\
 	-DMUTTER_LOCALEDIR=\"$(localedir)\"				\
 	-DMUTTER_PKGDATADIR=\"$(pkgdatadir)\"				\
@@ -325,7 +330,11 @@ endif
 nodist_libmutter_la_SOURCES = $(mutter_built_sources)
 
 libmutter_la_LDFLAGS = -no-undefined -export-symbols-regex "^(meta|ag)_.*"
-libmutter_la_LIBADD  = $(MUTTER_LIBS) $(MUTTER_NATIVE_BACKEND_LIBS)
+libmutter_la_LIBADD  = \
+	$(MUTTER_LIBS) \
+	$(MUTTER_NATIVE_BACKEND_LIBS)	\
+	$(top_builddir)/clutter/clutter/libmutter-clutter-1.0.la \
+	$(NULL)
 
 # Headers installed for plugins; introspected information will
 # be extracted into Mutter-<version>.gir
@@ -410,6 +419,8 @@ typelibdir = $(pkglibdir)
 typelib_DATA = Meta-$(api_version).typelib
 
 INTROSPECTION_GIRS = Meta-$(api_version).gir
+INTROSPECTION_SCANNER_ARGS = --add-include-path=$(top_builddir)/clutter/clutter --add-include-path=$(top_builddir)/cogl/cogl --add-include-path=$(top_builddir)/cogl/cogl-pango
+INTROSPECTION_COMPILER_ARGS = --includedir=$(top_builddir)/clutter/clutter --includedir=$(top_builddir)/cogl/cogl --includedir=$(top_builddir)/cogl/cogl-pango
 
 Meta-$(api_version).gir: libmutter.la
 @META_GIR@_INCLUDES = GObject-2.0 GDesktopEnums-3.0 Gdk-3.0 Gtk-3.0 Clutter-1.0 xlib-2.0 xfixes-4.0 Cogl-1.0

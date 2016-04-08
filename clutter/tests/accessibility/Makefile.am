@@ -9,6 +9,8 @@ AM_CPPFLAGS = \
 	-DPREFIXDIR=\"$(libdir)\" \
 	-DCLUTTER_DISABLE_DEPRECATION_WARNINGS \
 	-DGLIB_DISABLE_DEPRECATION_WARNINGS \
+	-I$(top_srcdir)/../cogl                 \
+	-I$(top_builddir)/../cogl               \
 	-I$(top_srcdir)	\
 	-I$(top_builddir) \
 	-I$(top_srcdir)/clutter \

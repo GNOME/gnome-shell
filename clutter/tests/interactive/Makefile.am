@@ -126,6 +126,8 @@ test_interactive_CPPFLAGS = \
 	-DGLIB_DISABLE_DEPRECATION_WARNINGS \
 	-DCOGL_DISABLE_DEPRECATION_WARNINGS \
 	-DCLUTTER_DISABLE_DEPRECATION_WARNINGS \
+	-I$(top_srcdir)/../cogl                 \
+	-I$(top_builddir)/../cogl               \
 	-I$(top_srcdir)	\
 	-I$(top_builddir) \
 	-I$(top_srcdir)/clutter \

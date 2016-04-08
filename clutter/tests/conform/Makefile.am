@@ -5,6 +5,8 @@ LDADD = $(top_builddir)/clutter/libmutter-clutter-1.0.la $(CLUTTER_LIBS) $(LIBM)
 AM_LDFLAGS = -export-dynamic
 AM_CPPFLAGS = \
 	-DG_LOG_DOMAIN=\"Clutter-Conform\"	\
+	-I$(top_srcdir)/../cogl                 \
+	-I$(top_builddir)/../cogl               \
 	-I$(top_srcdir) 			\
 	-I$(top_builddir)			\
 	-DCOGL_DISABLE_DEPRECATION_WARNINGS	\

@@ -16,6 +16,7 @@ AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_SRCDIR(src/core/display.c)
 AC_CONFIG_HEADERS(config.h)
+AC_CONFIG_SUBDIRS([cogl clutter])
 
 AM_INIT_AUTOMAKE([1.11 foreign no-dist-gzip dist-xz tar-ustar subdir-objects])
 m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])],)
@@ -56,16 +57,13 @@ AM_PATH_GLIB_2_0()
 CANBERRA_GTK=libcanberra-gtk3
 CANBERRA_GTK_VERSION=0.26
 
-CLUTTER_PACKAGE=clutter-1.0
-
 MUTTER_PC_MODULES="
    gtk+-3.0 >= 3.19.8
    gio-unix-2.0 >= 2.35.1
    pango >= 1.2.0
    cairo >= 1.10.0
    gsettings-desktop-schemas >= 3.19.3
-   $CLUTTER_PACKAGE >= 1.25.6
-   cogl-1.0 >= 1.17.1
+   json-glib-1.0
    upower-glib >= 0.99.0
    gnome-desktop-3.0
    xcomposite >= 0.2
@@ -189,7 +187,7 @@ AC_SUBST(XWAYLAND_PATH)
 
 PKG_CHECK_MODULES(MUTTER, $MUTTER_PC_MODULES)
 
-MUTTER_NATIVE_BACKEND_MODULES="clutter-egl-1.0 libdrm libsystemd libinput gudev-1.0 gbm >= 10.3"
+MUTTER_NATIVE_BACKEND_MODULES="libdrm libsystemd libinput gudev-1.0 gbm >= 10.3"
 
 AC_ARG_ENABLE(native-backend,
   AS_HELP_STRING([--disable-native-backend], [disable mutter native (KMS) backend]),,
@@ -204,7 +202,7 @@ AS_IF([test "$have_native_backend" = "yes"], [
 ])
 AM_CONDITIONAL([HAVE_NATIVE_BACKEND],[test "$have_native_backend" = "yes"])
 
-MUTTER_WAYLAND_MODULES="clutter-wayland-1.0 clutter-wayland-compositor-1.0 wayland-server >= 1.6.90"
+MUTTER_WAYLAND_MODULES="wayland-server >= 1.6.90"
 
 AC_ARG_ENABLE(wayland,
   AS_HELP_STRING([--disable-wayland], [disable mutter on wayland support]),,
@@ -229,10 +227,6 @@ AM_CONDITIONAL([HAVE_WAYLAND],[test "$have_wayland" = "yes"])
 
 PKG_CHECK_EXISTS([xi >= 1.6.99.1],
                  AC_DEFINE([HAVE_XI23],[1],[Define if you have support for XInput 2.3 or greater]))
-
-# This is used for plugins
-AC_SUBST(CLUTTER_PACKAGE)
-PKG_CHECK_MODULES(CLUTTER, $CLUTTER_PACKAGE)
 
 AC_PATH_XTRA
 

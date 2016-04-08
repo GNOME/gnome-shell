@@ -5,6 +5,11 @@ AM_CPPFLAGS = \
 	$(MUTTER_CFLAGS)						\
 	-I$(top_builddir)/src						\
 	-I$(top_srcdir)/src						\
+	-I$(top_srcdir)/cogl						\
+	-I$(top_builddir)/cogl						\
+	-I$(top_srcdir)/clutter						\
+	-I$(top_builddir)/clutter					\
+	-I$(top_builddir)/clutter/clutter				\
 	-DMUTTER_LIBEXECDIR=\"$(libexecdir)\"				\
 	-DMUTTER_LOCALEDIR=\"$(localedir)\"				\
 	-DMUTTER_PKGDATADIR=\"$(pkgdatadir)\"				\

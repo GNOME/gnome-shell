@@ -28,7 +28,7 @@
 #include "meta-surface-actor-x11.h"
 
 #include <X11/extensions/Xcomposite.h>
-#include <cogl/cogl-texture-pixmap-x11.h>
+#include <cogl/winsys/cogl-texture-pixmap-x11.h>
 
 #include <meta/errors.h>
 #include "window-private.h"

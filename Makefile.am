@@ -1,5 +1,5 @@
 
-SUBDIRS = data src po doc
+SUBDIRS = cogl clutter data src po doc
 
 ACLOCAL_AMFLAGS = -I m4 ${ACLOCAL_FLAGS}
 

@@ -24,6 +24,8 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/clutter/cally		\
 	-I$(top_builddir)			\
 	-I$(top_builddir)/clutter		\
+	-I$(top_srcdir)/../cogl			\
+	-I$(top_builddir)/../cogl		\
 	$(CLUTTER_DEPRECATED_CFLAGS)		\
 	$(CLUTTER_DEBUG_CFLAGS)			\
 	$(CLUTTER_HIDDEN_VISIBILITY_CFLAGS)	\
@@ -562,7 +564,13 @@ clutter_deprecated_HEADERS = $(deprecated_h)
 mutterlibdir = $(libdir)/mutter
 mutterlib_LTLIBRARIES = libmutter-clutter-@CLUTTER_API_VERSION@.la
 
-libmutter_clutter_@CLUTTER_API_VERSION@_la_LIBADD = $(LIBM) $(CLUTTER_LIBS)
+libmutter_clutter_@CLUTTER_API_VERSION@_la_LIBADD = \
+	$(LIBM) \
+	$(CLUTTER_LIBS) \
+	$(top_builddir)/../cogl/cogl/libmutter-cogl.la \
+	$(top_builddir)/../cogl/cogl-pango/libmutter-cogl-pango.la \
+	$(top_builddir)/../cogl/cogl-path/libmutter-cogl-path.la \
+	$(NULL)
 
 libmutter_clutter_@CLUTTER_API_VERSION@_la_SOURCES = \
 	$(backend_source_c) \
@@ -614,6 +622,9 @@ install-exec-local:
 
 # gobject-introspection rules
 -include $(INTROSPECTION_MAKEFILE)
+
+INTROSPECTION_SCANNER_ARGS = --add-include-path=$(top_builddir)/../cogl/cogl --add-include-path=$(top_builddir)/../cogl/cogl-pango
+INTROSPECTION_COMPILER_ARGS = --includedir=$(top_builddir)/../cogl/cogl --includedir=$(top_builddir)/../cogl/cogl-pango
 
 Clutter-@CLUTTER_API_VERSION@.gir: libmutter-clutter-@CLUTTER_API_VERSION@.la Makefile
 
