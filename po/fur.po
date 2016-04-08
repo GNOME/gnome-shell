@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: video-subtitles master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-04-05 09:36+0000\n"
-"PO-Revision-Date: 2016-04-05 22:13+0200\n"
+"POT-Creation-Date: 2016-04-07 21:45+0000\n"
+"PO-Revision-Date: 2016-04-08 11:30+0200\n"
 "Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
 "Language-Team: Friulian <fur@li.org>\n"
 "Language: fur\n"
@@ -870,7 +870,7 @@ msgstr "Instale inzornaments e distude"
 #, javascript-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
-msgstr[0] "Il sisteme si studarà in automatic chi di %d secont."
+msgstr[0] "Il sisteme si distudarà in automatic chi di %d secont."
 msgstr[1] "Il sisteme si studarà in automatic chi di %d seconts."
 
 #: ../js/ui/endSessionDialog.js:91
@@ -886,7 +886,7 @@ msgstr "Torne invie"
 #: ../js/ui/endSessionDialog.js:96
 msgctxt "button"
 msgid "Power Off"
-msgstr "Stude"
+msgstr "Distude"
 
 #: ../js/ui/endSessionDialog.js:103
 msgctxt "title"
@@ -925,7 +925,7 @@ msgstr "Torne invie e instale"
 #: ../js/ui/endSessionDialog.js:128
 msgctxt "button"
 msgid "Install &amp; Power Off"
-msgstr "Instale e stude"
+msgstr "Instale e distude"
 
 #: ../js/ui/endSessionDialog.js:129
 msgctxt "checkbox"
@@ -1249,14 +1249,14 @@ msgstr "No in ûs"
 
 #: ../js/ui/status/bluetooth.js:142 ../js/ui/status/network.js:1279
 msgid "Turn On"
-msgstr "Pie"
+msgstr "Impie"
 
 #: ../js/ui/status/bluetooth.js:142 ../js/ui/status/network.js:178
 #: ../js/ui/status/network.js:353 ../js/ui/status/network.js:1279
 #: ../js/ui/status/network.js:1394 ../js/ui/status/rfkill.js:90
 #: ../js/ui/status/rfkill.js:117
 msgid "Turn Off"
-msgstr "Stude"
+msgstr "Distude"
 
 #: ../js/ui/status/brightness.js:44
 msgid "Brightness"
@@ -1403,7 +1403,7 @@ msgstr "Modalitât avion piade"
 
 #: ../js/ui/status/network.js:814
 msgid "Wi-Fi is disabled when airplane mode is on."
-msgstr "Il Wi-Fi al è disabilitât cuant che la modalitât avion e je piade."
+msgstr "Il Wi-Fi al è disabilitât cuant che la modalitât avion e je impiade."
 
 #: ../js/ui/status/network.js:815
 msgid "Turn Off Airplane Mode"
@@ -1411,15 +1411,15 @@ msgstr "Distude modalitât avion"
 
 #: ../js/ui/status/network.js:824
 msgid "Wi-Fi is Off"
-msgstr "Il Wi-Fi al è studât"
+msgstr "Il Wi-Fi al è distudât"
 
 #: ../js/ui/status/network.js:825
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
-msgstr "Il Wi-Fi al à bisugne di sedi piât par podêsi tacâ a une rêt."
+msgstr "Il Wi-Fi al scugne jessi impiât par podêsi tacâ a une rêt."
 
 #: ../js/ui/status/network.js:826
 msgid "Turn On Wi-Fi"
-msgstr "Pie il Wi-Fi"
+msgstr "Impie il Wi-Fi"
 
 #: ../js/ui/status/network.js:851
 msgid "Wi-Fi Networks"
@@ -1435,7 +1435,7 @@ msgstr "Nissune rêt"
 
 #: ../js/ui/status/network.js:904 ../js/ui/status/rfkill.js:115
 msgid "Use hardware switch to turn off"
-msgstr "Dopre interutôr fisic par studâ"
+msgstr "Dopre interutôr fisic par distudâ"
 
 #: ../js/ui/status/network.js:1171
 msgid "Select Network"
@@ -1484,7 +1484,7 @@ msgstr "VPN"
 
 #: ../js/ui/status/network.js:1513
 msgid "VPN Off"
-msgstr "VPN Studât"
+msgstr "VPN distudât"
 
 #: ../js/ui/status/network.js:1697
 msgid "Connection failed"
