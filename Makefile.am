@@ -13,12 +13,6 @@ DIST_SUBDIRS = clutter tests examples doc po build
 # source for m4 macros
 ACLOCAL_AMFLAGS = -I build/autotools ${ACLOCAL_FLAGS}
 
-EXTRA_DIST = \
-	ChangeLog.pre-git-import	\
-	README.in			\
-	README				\
-	$(NULL)
-
 CLEANFILES = $(pcfiles)
 
 DISTCLEANFILES =

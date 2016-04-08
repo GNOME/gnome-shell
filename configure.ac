@@ -821,7 +821,6 @@ dnl ===========================================================================
 
 AC_CONFIG_FILES([
 	Makefile
-        README
 
 	build/Makefile
 	build/autotools/Makefile
