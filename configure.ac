@@ -741,9 +741,9 @@ dnl === Conformance test suite ================================================
 GLIB_TESTS
 
 AC_ARG_ENABLE([examples],
-              [AS_HELP_STRING([--disable-examples], [Whether examples should be built])],
+              [AS_HELP_STRING([--enable-examples], [Whether examples should be built])],
               [],
-              [enable_examples=yes])
+              [enable_examples=no])
 AM_CONDITIONAL(BUILD_EXAMPLES, [test "x$enable_examples" = "xyes"])
 
 dnl ===========================================================================
