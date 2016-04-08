@@ -116,7 +116,7 @@ clean-wrappers:
 
 .PHONY: wrappers clean-wrappers
 
-common_ldadd = $(top_builddir)/clutter/libclutter-@CLUTTER_API_VERSION@.la
+common_ldadd = $(top_builddir)/clutter/libmutter-clutter-@CLUTTER_API_VERSION@.la
 
 check_PROGRAMS = test-interactive
 check_SCRIPTS = wrappers

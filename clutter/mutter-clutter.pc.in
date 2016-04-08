@@ -1,7 +1,7 @@
 prefix=@prefix@
 exec_prefix=@exec_prefix@
-libdir=@libdir@
-includedir=@includedir@
+libdir=@libdir@/mutter
+includedir=@includedir@/mutter
 
 apiversion=@CLUTTER_API_VERSION@
 requires=@CLUTTER_REQUIRES@
@@ -15,10 +15,10 @@ backend=@CLUTTER_WINSYS@
 cogl=deprecated
 cogl_driver=deprecated
 
-Name: Clutter
-Description: Clutter Core Library
+Name: Mutter Clutter
+Description: Mutter's Clutter Private Library
 Version: @VERSION@
-Libs: -L${libdir} -lclutter-${apiversion}
+Libs: -L${libdir} -lmutter-clutter-${apiversion}
 Cflags: -I${includedir}/clutter-${apiversion}
 Requires: ${requires}
 Requires.private: ${requires_private}
