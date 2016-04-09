@@ -1061,7 +1061,7 @@ stack_sync_to_xserver (MetaStack *stack)
   for (tmp = g_list_last(stack->sorted); tmp != NULL; tmp = tmp->prev)
     {
       MetaWindow *w = tmp->data;
-      Window top_level_window;
+      guint64 top_level_window;
       guint64 stack_id;
 
       if (w->unmanaging)
@@ -1100,7 +1100,8 @@ stack_sync_to_xserver (MetaStack *stack)
 
   /* The screen guard window sits above all hidden windows and acts as
    * a barrier to input reaching these windows. */
-  g_array_append_val (x11_hidden_stack_ids, stack->screen->guard_window);
+  guint64 guard_window_id = stack->screen->guard_window;
+  g_array_append_val (x11_hidden_stack_ids, guard_window_id);
 
   /* Sync to server */
 
