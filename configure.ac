@@ -52,7 +52,7 @@ if $PKG_CONFIG --exists gstreamer-1.0 '>=' $GSTREAMER_MIN_VERSION ; then
    AC_MSG_RESULT(yes)
    build_recorder=true
    recorder_modules="gstreamer-1.0 gstreamer-base-1.0 x11 gtk+-3.0"
-   PKG_CHECK_MODULES(TEST_SHELL_RECORDER, $recorder_modules clutter-1.0)
+   PKG_CHECK_MODULES(TEST_SHELL_RECORDER, $recorder_modules mutter-clutter-1.0)
 else
    AC_MSG_RESULT(no)
 fi
@@ -98,8 +98,7 @@ SHARED_PCS="gio-unix-2.0 >= $GIO_MIN_VERSION
             gjs-internals-1.0 >= $GJS_MIN_VERSION
             $recorder_modules
             gdk-x11-3.0 libsoup-2.4
-            clutter-x11-1.0 >= $CLUTTER_MIN_VERSION
-            clutter-glx-1.0 >= $CLUTTER_MIN_VERSION
+            mutter-clutter-1.0 >= $CLUTTER_MIN_VERSION
             libstartup-notification-1.0 >= $STARTUP_NOTIFICATION_MIN_VERSION
             gobject-introspection-1.0 >= $GOBJECT_INTROSPECTION_MIN_VERSION
             libcanberra libcanberra-gtk3
@@ -114,10 +113,10 @@ PKG_CHECK_MODULES(GNOME_SHELL, $SHARED_PCS)
 PKG_CHECK_MODULES(MUTTER, libmutter >= $MUTTER_MIN_VERSION)
 
 PKG_CHECK_MODULES(GNOME_SHELL_JS, gio-2.0 gjs-internals-1.0 >= $GJS_MIN_VERSION)
-PKG_CHECK_MODULES(ST, clutter-1.0 gtk+-3.0 libcroco-0.6 >= 0.6.8 x11)
+PKG_CHECK_MODULES(ST, mutter-clutter-1.0 gtk+-3.0 libcroco-0.6 >= 0.6.8 x11)
 PKG_CHECK_MODULES(SHELL_PERF_HELPER, gtk+-3.0 gio-2.0)
 PKG_CHECK_MODULES(SHELL_HOTPLUG_SNIFFER, gio-2.0 gdk-pixbuf-2.0)
-PKG_CHECK_MODULES(TRAY, clutter-1.0 gtk+-3.0)
+PKG_CHECK_MODULES(TRAY, mutter-clutter-1.0 gtk+-3.0)
 PKG_CHECK_MODULES(GVC, libpulse >= $PULSE_MIN_VERS libpulse-mainloop-glib gobject-2.0)
 PKG_CHECK_MODULES(DESKTOP_SCHEMAS, gsettings-desktop-schemas >= 3.19.2)
 

@@ -18,7 +18,6 @@
 #include <X11/extensions/Xfixes.h>
 #include <canberra.h>
 #include <canberra-gtk.h>
-#include <clutter/glx/clutter-glx.h>
 #include <clutter/x11/clutter-x11.h>
 #include <gdk/gdkx.h>
 #include <gio/gio.h>

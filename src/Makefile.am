@@ -12,7 +12,7 @@ SUBDIRS = gvc
 
 -include $(INTROSPECTION_MAKEFILE)
 INTROSPECTION_GIRS =
-INTROSPECTION_SCANNER_ARGS = --warn-all --warn-error --add-include-path=$(srcdir)
+INTROSPECTION_SCANNER_ARGS = --warn-all --warn-error --add-include-path=$(srcdir) --add-include-path=$(MUTTER_GIR_DIR)
 INTROSPECTION_COMPILER_ARGS = --includedir=$(srcdir) --includedir=$(MUTTER_TYPELIB_DIR)
 
 typelibdir = $(pkglibdir)
