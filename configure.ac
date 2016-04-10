@@ -189,14 +189,6 @@ dnl See what platform we are building for
 dnl ================================================================
 AC_CANONICAL_HOST
 
-AC_CHECK_HEADER([OpenGL/gl.h], [platform_quartz=yes], [platform_quartz=no])
-AM_CONDITIONAL(OS_QUARTZ, [test "$platform_quartz" = "yes"])
-
-dnl ================================================================
-dnl Handle extra configure options
-dnl ================================================================
-
-
 dnl     ============================================================
 dnl     Installed tests
 dnl     ============================================================
@@ -206,7 +198,6 @@ AC_ARG_ENABLE(installed_tests,
                              [Install test programs (default: no)]),,
               [enable_installed_tests=no])
 AM_CONDITIONAL(ENABLE_INSTALLED_TESTS, test x$enable_installed_tests = xyes)
-
 
 dnl     ============================================================
 dnl     Standalone cogl
@@ -493,13 +484,6 @@ AC_ARG_ENABLE(
                            [enable_gdk_pixbuf=no])])]
 )
 
-AC_ARG_ENABLE(
-  [quartz-image],
-  [AC_HELP_STRING([--enable-quartz-image=@<:@no/yes@:>@], [Enable image loading via quartz @<:@default=no@:>@])],
-  [],
-  enable_quartz_image=no
-)
-
 AS_IF(
   [test "x$enable_gdk_pixbuf" = "xyes"],
   [
@@ -508,15 +492,6 @@ AS_IF(
     AC_DEFINE([USE_GDKPIXBUF], 1, [Use GdkPixbuf for loading image data])
     COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES gdk-pixbuf-2.0 >= gdk_pixbuf_req_version"
     COGL_IMAGE_BACKEND="gdk-pixbuf"
-  ],
-  [test "x$enable_quartz_image" = "xyes"],
-  [
-    EXPERIMENTAL_CONFIG=yes
-    EXPERIMENTAL_OPTIONS="$EXPERIMENTAL_OPTIONS Quartz Core Graphics,"
-    AC_DEFINE([USE_QUARTZ], 1,
-	      [Use Core Graphics (Quartz) for loading image data])
-    COGL_EXTRA_LDFLAGS="$COGL_EXTRA_LDFLAGS -framework ApplicationServices"
-    COGL_IMAGE_BACKEND="quartz"
   ],
   [
     EXPERIMENTAL_CONFIG=yes
@@ -684,27 +659,15 @@ AS_IF([test "x$enable_gl" = "xyes"],
 
         cogl_gl_headers="GL/gl.h"
 
-        AS_IF([test "x$platform_quartz" = "xyes"],
-              [
-                cogl_gl_headers="OpenGL/gl.h"
-                COGL_EXTRA_LDFLAGS="$COGL_EXTRA_LDFLAGS -framework OpenGL"
-                dnl The GL API is being directly linked in so there is
-                dnl no need to dlopen it separately
-                GL_LIBRARY_DIRECTLY_LINKED=yes
-                COGL_GL_LIBNAME=""
-              ],
-
-	      [
-		PKG_CHECK_EXISTS([gl],
-                  dnl We don't want to use COGL_PKG_REQUIRES here because we don't want to
-                  dnl directly link against libGL
-                  [COGL_PKG_REQUIRES_GL="$COGL_PKG_REQUIRES_GL gl"],
-		  [AC_CHECK_LIB(GL, [glGetString],
-				,
-				[AC_MSG_ERROR([Unable to locate required GL library])])
-		  ])
-                COGL_GL_LIBNAME="libGL.so.1"
-	      ])
+        PKG_CHECK_EXISTS([gl],
+        dnl We don't want to use COGL_PKG_REQUIRES here because we don't want to
+        dnl directly link against libGL
+        [COGL_PKG_REQUIRES_GL="$COGL_PKG_REQUIRES_GL gl"],
+        [AC_CHECK_LIB(GL, [glGetString],
+        ,
+        [AC_MSG_ERROR([Unable to locate required GL library])])
+        ])
+        COGL_GL_LIBNAME="libGL.so.1"
 
         AC_DEFINE([HAVE_COGL_GL], [1], [Have GL for rendering])
 
