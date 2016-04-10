@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-02 14:44+0400\n"
-"PO-Revision-Date: 2016-03-02 14:44+0400\n"
+"POT-Creation-Date: 2016-04-10 20:24+0200\n"
+"PO-Revision-Date: 2016-04-10 20:26+0200\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
 "Language: ar\n"
@@ -277,12 +277,12 @@ msgstr ""
 msgid "Network Login"
 msgstr "ولوج الشبكة"
 
-#: ../js/extensionPrefs/main.js:121
+#: ../js/extensionPrefs/main.js:117
 #, javascript-format
 msgid "There was an error loading the preferences dialog for %s:"
 msgstr "حدث خطأ أثناء تشغيل حوار تفضيلات %s‏:"
 
-#: ../js/extensionPrefs/main.js:153
+#: ../js/extensionPrefs/main.js:149
 msgid "GNOME Shell Extensions"
 msgstr "امتدادات صدفة جنوم"
 
@@ -749,7 +749,7 @@ msgstr "للأسف لم يُفلح هذا. أعِد المحاولة."
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/components/telepathyClient.js:759
+#: ../js/ui/components/telepathyClient.js:760
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "غيّر %s اسمه إلى %s"
@@ -951,11 +951,11 @@ msgid "Keyboard"
 msgstr "لوحة المفاتيح"
 
 #. translators: 'Hide' is a verb
-#: ../js/ui/legacyTray.js:66
+#: ../js/ui/legacyTray.js:65
 msgid "Hide tray"
 msgstr "أخفِ الصينية"
 
-#: ../js/ui/legacyTray.js:107
+#: ../js/ui/legacyTray.js:106
 msgid "Status Icons"
 msgstr "أيقونات الحالة"
 
@@ -1281,25 +1281,23 @@ msgstr "التموضع غير مفعّل"
 msgid "Enable"
 msgstr "فعّل"
 
-#: ../js/ui/status/location.js:434
+#: ../js/ui/status/location.js:426
 msgid "Deny Access"
 msgstr "ارفض منح الصلاحية"
 
-#: ../js/ui/status/location.js:437
+#: ../js/ui/status/location.js:429
 msgid "Grant Access"
 msgstr "امنح الصلاحية"
 
 #. Translators: %s is an application name
-#: ../js/ui/status/location.js:443
+#: ../js/ui/status/location.js:435
 #, javascript-format
 msgid "Give %s access to your location?"
-msgstr "أتريد إعطاء %s صلاحية معرفة مكانك؟ "
+msgstr "أتريد إعطاء %s صلاحية معرفة مكانك؟"
 
-#. Translators: %s is an application name
-#: ../js/ui/status/location.js:446
-#, javascript-format
-msgid "%s is requesting access to your location."
-msgstr "يطلب %s صلاحية معرفة مكانك."
+#: ../js/ui/status/location.js:437
+msgid "Location access can be changed at any time from the privacy settings."
+msgstr "يمكن تغيير صلاحيات الوصول لمكانك في أي وقت من إعدادات الخصوصية."
 
 #: ../js/ui/status/network.js:101
 msgid "<unknown>"
@@ -1744,6 +1742,9 @@ msgstr "لا يمكن أن تكون كلمة السرّ فارغة"
 #: ../src/shell-polkit-authentication-agent.c:353
 msgid "Authentication dialog was dismissed by the user"
 msgstr "أغلق المستخدم مربع الاستيثاق الحِواري"
+
+#~ msgid "%s is requesting access to your location."
+#~ msgstr "يطلب %s صلاحية معرفة مكانك."
 
 #~ msgid "GNOME Shell (wayland compositor)"
 #~ msgstr "صدفة جنوم (وايلاند)"
