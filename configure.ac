@@ -522,12 +522,6 @@ dnl         Drivers first...
 dnl         ========================================================
 EGL_CHECKED=no
 
-dnl This gets set to yes if Cogl directly links to the GL library API
-dnl so it doesn't need to be dlopened. This currently happens on OSX
-dnl where it's not clear if window system API can be separated
-dnl from the GL API.
-GL_LIBRARY_DIRECTLY_LINKED=no
-
 enabled_drivers=""
 
 HAVE_GLES1=0
@@ -710,11 +704,6 @@ AC_SUBST([HAVE_GLES1])
 AC_SUBST([COGL_GLES2_LIBNAME])
 AC_SUBST([HAVE_GLES2])
 AC_SUBST([COGL_DEFAULT_DRIVER])
-
-if test "x$GL_LIBRARY_DIRECTLY_LINKED" = "xyes"; then
-   AC_DEFINE([HAVE_DIRECTLY_LINKED_GL_LIBRARY], [1],
-             [Defined if the GL library should not be dlopened])
-fi
 
 AC_ARG_ENABLE(
   [cogl-gles2],
@@ -1130,12 +1119,11 @@ echo ""
 # Features
 echo " • Features:"
 echo "        Drivers: ${enabled_drivers}"
-AS_IF([test "x$GL_LIBRARY_DIRECTLY_LINKED" != xyes],
-      [for driver in $enabled_drivers; do
-         driver=`echo $driver | tr "[gles]" "[GLES]"`
-         libname=`eval echo \\$COGL_${driver}_LIBNAME`
-         echo "        Library name for $driver: $libname"
-       done])
+for driver in $enabled_drivers; do
+        driver=`echo $driver | tr "[gles]" "[GLES]"`
+        libname=`eval echo \\$COGL_${driver}_LIBNAME`
+        echo "        Library name for $driver: $libname"
+done
 echo "        GL Window System APIs:${GL_WINSYS_APIS}"
 if test "x$SUPPORT_EGL" = "xyes"; then
 echo "        EGL Platforms:${EGL_PLATFORMS}"

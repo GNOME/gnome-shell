@@ -213,10 +213,8 @@ _cogl_renderer_free (CoglRenderer *renderer)
   if (winsys)
     winsys->renderer_disconnect (renderer);
 
-#ifndef HAVE_DIRECTLY_LINKED_GL_LIBRARY
   if (renderer->libgl_module)
     g_module_close (renderer->libgl_module);
-#endif
 
   g_slist_foreach (renderer->event_filters,
                    (GFunc) native_filter_closure_free,
@@ -535,8 +533,6 @@ _cogl_renderer_choose_driver (CoglRenderer *renderer,
     COGL_FLAGS_SET (renderer->private_features,
                     desc->private_features[i], TRUE);
 
-#ifndef HAVE_DIRECTLY_LINKED_GL_LIBRARY
-
   if (COGL_FLAGS_GET (renderer->private_features,
                       COGL_PRIVATE_FEATURE_ANY_GL))
     {
@@ -552,8 +548,6 @@ _cogl_renderer_choose_driver (CoglRenderer *renderer,
           return FALSE;
         }
     }
-
-#endif /* HAVE_DIRECTLY_LINKED_GL_LIBRARY */
 
   return TRUE;
 }

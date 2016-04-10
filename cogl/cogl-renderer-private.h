@@ -71,9 +71,7 @@ struct _CoglRenderer
   CoglDriver driver;
   unsigned long private_features
     [COGL_FLAGS_N_LONGS_FOR_SIZE (COGL_N_PRIVATE_FEATURES)];
-#ifndef HAVE_DIRECTLY_LINKED_GL_LIBRARY
   GModule *libgl_module;
-#endif
 
 #if defined (COGL_HAS_EGL_PLATFORM_KMS_SUPPORT)
   int kms_fd;
