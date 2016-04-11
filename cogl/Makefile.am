@@ -10,9 +10,6 @@ EXTRA_DIST =
 CLEANFILES =
 DISTCLEANFILES =
 
-noinst_LTLIBRARIES =
-lib_LTLIBRARIES =
-
 AM_CPPFLAGS = \
 	-I$(top_srcdir)				\
 	-I$(top_builddir)			\
@@ -44,22 +41,11 @@ BUILT_SOURCES += cogl-defines.h cogl-egl-defines.h cogl-gl-header.h
 DISTCLEANFILES += cogl-defines.h cogl-egl-defines.h cogl-gl-header.h
 EXTRA_DIST += cogl-defines.h.in cogl-egl-defines.h.in cogl-gl-header.h.in
 
-# Note: The cogl-1.0/cogl-gl-1.0 files are essentially for
-# compatability only.  I'm not really sure who could possibly be using
-# them so we may decide to remove them entirely at some point.
-pc_files = \
-	cogl-1.0.pc \
-	cogl-gl-1.0.pc
-
-pc_files += cogl-$(COGL_API_VERSION)-experimental.pc
-
-cogl-gl-1.0.pc: cogl-1.0.pc
-	$(QUIET_GEN)cp -f $< $(@F)
+pc_files = mutter-cogl-1.0.pc
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = $(pc_files)
 
-EXTRA_DIST += cogl-1.0.pc.in cogl-$(COGL_API_VERSION)-experimental.pc.in
 DISTCLEANFILES += $(pc_files)
 
 cogl_deprecated_h = \
@@ -474,22 +460,24 @@ glib_enum_c = cogl-enum-types.c
 glib_enum_headers = $(cogl_1_public_h)
 include $(top_srcdir)/build/autotools/Makefile.am.enums
 
-lib_LTLIBRARIES += libcogl.la
+mutterlibdir = $(libdir)/mutter
+mutterlib_LTLIBRARIES = libmutter-cogl.la
 
-libcogl_la_LIBADD = $(LIBM) $(COGL_DEP_LIBS) $(COGL_EXTRA_LDFLAGS)
+libmutter_cogl_la_LIBADD = $(LIBM) $(COGL_DEP_LIBS) $(COGL_EXTRA_LDFLAGS)
 if UNIT_TESTS
-libcogl_la_LIBADD += $(top_builddir)/test-fixtures/libtest-fixtures.la
+libmutter_cogl_la_LIBADD += $(top_builddir)/test-fixtures/libtest-fixtures.la
 endif
 # XXX: The aim is to eventually get rid of all private API exports
 # for cogl-pango.
-libcogl_la_LDFLAGS = \
+libmutter_cogl_la_LDFLAGS = \
 	-no-undefined \
 	-version-info @COGL_LT_CURRENT@:@COGL_LT_REVISION@:@COGL_LT_AGE@ \
 	-export-dynamic \
+	-rpath $(mutterlibdir) \
 	-export-symbols-regex "^(cogl|_cogl_debug_flags|_cogl_atlas_new|_cogl_atlas_add_reorganize_callback|_cogl_atlas_reserve_space|_cogl_callback|_cogl_util_get_eye_planes_for_screen_poly|_cogl_atlas_texture_remove_reorganize_callback|_cogl_atlas_texture_add_reorganize_callback|_cogl_texture_get_format|_cogl_texture_foreach_sub_texture_in_region|_cogl_profile_trace_message|_cogl_context_get_default|_cogl_framebuffer_get_stencil_bits|_cogl_clip_stack_push_rectangle|_cogl_framebuffer_get_modelview_stack|_cogl_object_default_unref|_cogl_pipeline_foreach_layer_internal|_cogl_clip_stack_push_primitive|_cogl_buffer_unmap_for_fill_or_fallback|_cogl_framebuffer_draw_primitive|_cogl_debug_instances|_cogl_framebuffer_get_projection_stack|_cogl_pipeline_layer_get_texture|_cogl_buffer_map_for_fill_or_fallback|_cogl_texture_can_hardware_repeat|_cogl_pipeline_prune_to_n_layers|_cogl_primitive_draw|test_|unit_test_).*"
 
-libcogl_la_SOURCES = $(cogl_sources_c)
-nodist_libcogl_la_SOURCES = $(BUILT_SOURCES)
+libmutter_cogl_la_SOURCES = $(cogl_sources_c)
+nodist_libmutter_cogl_la_SOURCES = $(BUILT_SOURCES)
 
 # Cogl installed headers
 cogl_headers = \
@@ -498,14 +486,15 @@ cogl_headers = \
 	cogl-pango.h \
 	$(NULL)
 
-cogldeprecatedincludedir = $(includedir)/cogl/cogl/deprecated
+cogl_base_includedir = $(includedir)/mutter
+cogldeprecatedincludedir = $(cogl_base_includedir)/cogl/cogl/deprecated
 cogldeprecatedinclude_HEADERS = $(cogl_deprecated_h)
 
-coglincludedir = $(includedir)/cogl/cogl
+coglincludedir = $(cogl_base_includedir)/cogl/cogl
 coglinclude_HEADERS = $(cogl_headers) $(cogl_experimental_h)
 nodist_coglinclude_HEADERS = $(cogl_nodist_experimental_h) cogl-defines.h cogl-enum-types.h
 
-cogl_proto_includedir = $(includedir)/cogl/cogl/gl-prototypes
+cogl_proto_includedir = $(cogl_base_includedir)/cogl/cogl/gl-prototypes
 cogl_proto_include_HEADERS = $(cogl_gl_prototypes_h)
 
 EXTRA_DIST += \
@@ -516,21 +505,21 @@ EXTRA_DIST += \
 INTROSPECTION_GIRS =
 
 if HAVE_INTROSPECTION
-Cogl-1.0.gir: libcogl.la Makefile
+Cogl-1.0.gir: libmutter-cogl.la Makefile
 
 Cogl_1_0_gir_NAMESPACE = Cogl
 Cogl_1_0_gir_VERSION = 1.0
-Cogl_1_0_gir_LIBS = libcogl.la
+Cogl_1_0_gir_LIBS = libmutter-cogl.la
 if UNIT_TESTS
 Cogl_1_0_gir_LIBS += $(top_builddir)/test-fixtures/libtest-fixtures.la
 endif
 Cogl_1_0_gir_FILES = $(cogl_1_public_h) cogl-enum-types.h
 
-Cogl-2.0.gir: libcogl.la Makefile
+Cogl-2.0.gir: libmutter-cogl.la Makefile
 
 Cogl_2_0_gir_NAMESPACE = Cogl
 Cogl_2_0_gir_VERSION = 2.0
-Cogl_2_0_gir_LIBS = libcogl.la
+Cogl_2_0_gir_LIBS = libmutter-cogl.la
 if UNIT_TESTS
 Cogl_2_0_gir_LIBS += $(top_builddir)/test-fixtures/libtest-fixtures.la
 endif
@@ -548,10 +537,10 @@ Cogl_2_0_gir_SCANNERFLAGS = --warn-all --c-include='cogl/cogl.h' --symbol-prefix
 
 INTROSPECTION_GIRS += Cogl-1.0.gir Cogl-2.0.gir
 
-girdir = $(datadir)/gir-1.0
+girdir = $(mutterlibdir)
 gir_DATA = $(INTROSPECTION_GIRS)
 
-typelibdir = $(libdir)/girepository-1.0
+typelibdir = $(mutterlibdir)
 typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
 
 CLEANFILES += $(gir_DATA) $(typelib_DATA)

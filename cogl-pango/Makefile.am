@@ -22,14 +22,16 @@ source_h_priv = \
 	cogl-pango-pipeline-cache.h \
 	$(NULL)
 
-lib_LTLIBRARIES = libcogl-pango.la
+mutterlibdir = $(libdir)/mutter
+mutterlib_LTLIBRARIES = libmutter-cogl-pango.la
 
-libcogl_pango_la_SOURCES = $(source_c) $(source_h) $(source_h_priv)
-libcogl_pango_la_CFLAGS = $(COGL_DEP_CFLAGS) $(COGL_PANGO_DEP_CFLAGS) $(COGL_EXTRA_CFLAGS) $(MAINTAINER_CFLAGS)
-libcogl_pango_la_LIBADD = $(top_builddir)/cogl/libcogl.la
-libcogl_pango_la_LIBADD += $(COGL_DEP_LIBS) $(COGL_PANGO_DEP_LIBS) $(COGL_EXTRA_LDFLAGS)
-libcogl_pango_la_LDFLAGS = \
+libmutter_cogl_pango_la_SOURCES = $(source_c) $(source_h) $(source_h_priv)
+libmutter_cogl_pango_la_CFLAGS = $(COGL_DEP_CFLAGS) $(COGL_PANGO_DEP_CFLAGS) $(COGL_EXTRA_CFLAGS) $(MAINTAINER_CFLAGS)
+libmutter_cogl_pango_la_LIBADD = $(top_builddir)/cogl/libmutter-cogl.la
+libmutter_cogl_pango_la_LIBADD += $(COGL_DEP_LIBS) $(COGL_PANGO_DEP_LIBS) $(COGL_EXTRA_LDFLAGS)
+libmutter_cogl_pango_la_LDFLAGS = \
 	-export-dynamic \
+	-rpath $(mutterlibdir) \
 	-export-symbols-regex "^cogl_pango_.*" \
 	-no-undefined \
 	-version-info @COGL_LT_CURRENT@:@COGL_LT_REVISION@:@COGL_LT_AGE@
@@ -43,16 +45,15 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)			\
 	-I$(top_builddir)
 
-cogl_pangoheadersdir = $(includedir)/cogl/cogl-pango
+cogl_base_includedir = $(includedir)/mutter
+cogl_pangoheadersdir = $(cogl_base_includedir)/cogl/cogl-pango
 cogl_pangoheaders_HEADERS = $(source_h)
 
-pc_files = cogl-pango-1.0.pc \
-	   cogl-pango-$(COGL_API_VERSION)-experimental.pc
+pc_files = mutter-cogl-pango-1.0.pc
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = $(pc_files)
 
-EXTRA_DIST += cogl-pango.pc.in
 DISTCLEANFILES += $(pc_files)
 
 EXTRA_DIST += cogl-pango.symbols
@@ -64,11 +65,11 @@ INTROSPECTION_GIRS =
 if HAVE_INTROSPECTION
 INTROSPECTION_COMPILER_ARGS=--includedir=$(top_builddir)/cogl
 
-CoglPango-1.0.gir: libcogl-pango.la Makefile
+CoglPango-1.0.gir: libmutter-cogl-pango.la Makefile
 
 CoglPango_1_0_gir_NAMESPACE = CoglPango
 CoglPango_1_0_gir_VERSION = 1.0
-CoglPango_1_0_gir_LIBS = $(top_builddir)/cogl/libcogl.la libcogl-pango.la
+CoglPango_1_0_gir_LIBS = $(top_builddir)/cogl/libmutter-cogl.la libmutter-cogl-pango.la
 CoglPango_1_0_gir_FILES = $(source_h) $(source_c)
 CoglPango_1_0_gir_CFLAGS = $(AM_CPPFLAGS) $(COGL_DEP_CFLAGS) $(COGL_PANGO_DEP_CFLAGS)
 CoglPango_1_0_gir_INCLUDES = Pango-1.0 PangoCairo-1.0
@@ -80,11 +81,11 @@ CoglPango_1_0_gir_SCANNERFLAGS = \
 	--c-include='cogl-pango/cogl-pango.h' \
 	--include-uninstalled=$(top_builddir)/cogl/Cogl-1.0.gir
 
-CoglPango-2.0.gir: libcogl-pango.la Makefile
+CoglPango-2.0.gir: libmutter-cogl-pango.la Makefile
 
 CoglPango_2_0_gir_NAMESPACE = CoglPango
 CoglPango_2_0_gir_VERSION = 2.0
-CoglPango_2_0_gir_LIBS = $(top_builddir)/cogl/libcogl.la libcogl-pango.la
+CoglPango_2_0_gir_LIBS = $(top_builddir)/cogl/libmutter-cogl.la libmutter-cogl-pango.la
 CoglPango_2_0_gir_FILES = $(source_h) $(source_c)
 CoglPango_2_0_gir_CFLAGS = $(AM_CPPFLAGS) $(COGL_DEP_CFLAGS) $(COGL_PANGO_DEP_CFLAGS)
 CoglPango_2_0_gir_INCLUDES = Pango-1.0 PangoCairo-1.0
@@ -98,10 +99,10 @@ CoglPango_2_0_gir_SCANNERFLAGS = \
 
 INTROSPECTION_GIRS += CoglPango-1.0.gir CoglPango-2.0.gir
 
-girdir = $(datadir)/gir-1.0
+girdir = $(mutterlibdir)
 gir_DATA = $(INTROSPECTION_GIRS)
 
-typelibdir = $(libdir)/girepository-1.0
+typelibdir = $(mutterlibdir)
 typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
 
 CLEANFILES += $(gir_DATA) $(typelib_DATA)

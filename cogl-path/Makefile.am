@@ -66,19 +66,20 @@ glib_enum_c = cogl-path-enum-types.c
 glib_enum_headers = $(source_1_x_h)
 include $(top_srcdir)/build/autotools/Makefile.am.enums
 
-lib_LTLIBRARIES = libcogl-path.la
+mutterlibdir = $(libdir)/mutter
+mutterlib_LTLIBRARIES = libmutter-cogl-path.la
 
-libcogl_path_la_SOURCES = $(source_c) $(source_h)
-nodist_libcogl_path_la_SOURCES = $(BUILT_SOURCES)
-libcogl_path_la_CFLAGS = $(COGL_DEP_CFLAGS) $(COGL_EXTRA_CFLAGS) $(MAINTAINER_CFLAGS)
-libcogl_path_la_LIBADD = $(top_builddir)/cogl/libcogl.la
-libcogl_path_la_LIBADD += $(COGL_DEP_LIBS) $(COGL_EXTRA_LDFLAGS)
-libcogl_path_la_LDFLAGS = \
+libmutter_cogl_path_la_SOURCES = $(source_c) $(source_h)
+nodist_libmutter_cogl_path_la_SOURCES = $(BUILT_SOURCES)
+libmutter_cogl_path_la_CFLAGS = $(COGL_DEP_CFLAGS) $(COGL_EXTRA_CFLAGS) $(MAINTAINER_CFLAGS)
+libmutter_cogl_path_la_LIBADD = $(top_builddir)/cogl/libmutter-cogl.la
+libmutter_cogl_path_la_LIBADD += $(COGL_DEP_LIBS) $(COGL_EXTRA_LDFLAGS)
+libmutter_cogl_path_la_LDFLAGS = \
 	-export-dynamic \
 	-export-symbols-regex "^(cogl|cogl2)_(framebuffer|path|is|clip|[sg]et)_.*" \
 	-no-undefined \
 	-version-info @COGL_LT_CURRENT@:@COGL_LT_REVISION@:@COGL_LT_AGE@ \
-	-rpath $(libdir)
+	-rpath $(mutterlibdir)
 
 AM_CPPFLAGS = \
 	-DCOGL_COMPILATION		\
@@ -90,15 +91,14 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)			\
 	-I$(top_builddir)
 
-cogl_pathheadersdir = $(includedir)/cogl/cogl-path
+cogl_base_includedir = $(includedir)/mutter
+cogl_pathheadersdir = $(cogl_base_includedir)/cogl/cogl-path
 cogl_pathheaders_HEADERS = $(source_h)
 nodist_cogl_pathheaders_HEADERS = cogl-path-enum-types.h
 
-pc_files = cogl-path-1.0.pc \
-	   cogl-path-2.0-experimental.pc
+pc_files = mutter-cogl-path-1.0.pc
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = $(pc_files)
 
-EXTRA_DIST += cogl-path.pc.in
 DISTCLEANFILES += $(pc_files)
