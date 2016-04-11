@@ -10,10 +10,6 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir) \
 	-I$(top_builddir)
 
-if !USE_GLIB
-AM_CPPFLAGS += -I$(top_builddir)/deps/glib
-endif
-
 AM_CFLAGS = $(COGL_DEP_CFLAGS) $(COGL_EXTRA_CFLAGS) $(MAINTAINER_CFLAGS)
 
 libcogl_gles2_la_SOURCES = cogl-gles2-api.c

@@ -13,9 +13,7 @@ test_conformance_CPPFLAGS = \
 
 noinst_PROGRAMS =
 
-if USE_GLIB
 noinst_PROGRAMS += test-journal
-endif
 
 AM_CFLAGS = $(COGL_DEP_CFLAGS) $(COGL_EXTRA_CFLAGS)
 

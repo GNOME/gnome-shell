@@ -200,26 +200,6 @@ AC_ARG_ENABLE(installed_tests,
 AM_CONDITIONAL(ENABLE_INSTALLED_TESTS, test x$enable_installed_tests = xyes)
 
 dnl     ============================================================
-dnl     Standalone cogl
-dnl     ============================================================
-
-AC_ARG_ENABLE(
-  [standalone],
-  [AC_HELP_STRING([--enable-standalone=@<:@no/yes@:>@], [Build Cogl without any external depedency @<:@default=no@:>@])],
-  [],
-  enable_standalone=no
-)
-AS_IF([test "x$enable_standalone" = "xyes"],
-      [
-        enable_cairo=no
-        enable_glib=no
-        enable_cogl_pango=no
-        enable_nls=no
-        enable_gdk_pixbuf=no
-       ]
-)
-
-dnl     ============================================================
 dnl     Enable debugging
 dnl     ============================================================
 m4_define([debug_default], [m4_if(cogl_release_status, [git], [yes], [no])])
@@ -388,60 +368,18 @@ dnl ================================================================
 dnl Check for dependency packages.
 dnl ================================================================
 
-dnl     ============================================================
-dnl     Should glib be used?
-dnl     ============================================================
-AS_IF([test "x$enable_standalone" = "xno"],
-      [
-        AM_PATH_GLIB_2_0([glib_req_version],
-                         [have_glib=yes], [have_glib=no],
-                         [gobject gthread gmodule-no-export])
-        AC_ARG_ENABLE(
-                      [glib],
-                      [AC_HELP_STRING([--enable-glib=@<:@no/yes@:>@], [Enable glib support @<:@default=yes@:>@])],
-                      [],
-                      enable_glib=yes
-                      )
+AM_PATH_GLIB_2_0([glib_req_version],
+                 [],
+                 [AC_MSG_ERROR([glib-2.0 is required])],
+                 [gobject gthread gmodule-no-export])
 
-        AS_IF([test "x$have_glib" = "xno" && test "x$enable_glib" = "xyes"],
-              [AC_MSG_ERROR([gobject-2.0 is required])])
-      ],
-      [enable_glib=no]
-)
-
-AM_CONDITIONAL([USE_GLIB], [test "x$enable_glib" = "xyes"])
-
-AS_IF([test "x$enable_glib" = "xyes"],
-      [
-        COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_GLIB_SUPPORT"
-        COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_GTYPE_SUPPORT"
-        COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES gobject-2.0 gmodule-no-export-2.0"
-      ],
-      [
-        AS_GLIBCONFIG([deps/glib])
-        COGL_EXTRA_CFLAGS="$COGL_EXTRA_CFLAGS -I\$(top_srcdir)/deps"
-        COGL_EXTRA_CFLAGS="$COGL_EXTRA_CFLAGS -I\$(top_builddir)/deps"
-        COGL_EXTRA_CFLAGS="$COGL_EXTRA_CFLAGS -I\$(top_srcdir)/deps/glib"
-        COGL_EXTRA_CFLAGS="$COGL_EXTRA_CFLAGS -I\$(top_builddir)/deps/glib"
-        COGL_EXTRA_CFLAGS="$COGL_EXTRA_CFLAGS -I\$(top_srcdir)/deps/gmodule"
-        COGL_EXTRA_CFLAGS="$COGL_EXTRA_CFLAGS -I\$(top_builddir)/deps/gmodule"
-        EXPERIMENTAL_CONFIG=yes
-        EXPERIMENTAL_OPTIONS="$EXPERIMENTAL_OPTIONS --disable-glib,"
-        enable_nls=no
-      ]
-)
+COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_GLIB_SUPPORT"
+COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_GTYPE_SUPPORT"
+COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES gobject-2.0 gmodule-no-export-2.0"
 
 dnl     ============================================================
 dnl     Should cogl-pango be built?
 dnl     ============================================================
-
-AS_IF([test "x$enable_glib" != "xyes"],
-      [
-        AS_IF([test "x$enable_cogl_pango" = "xyes"],
-              AC_MSG_ERROR([--enable-cogl-pango conflicts with --disable-glib]))
-        enable_cogl_pango=no
-      ]
-)
 
 AC_ARG_ENABLE(
   [cogl-pango],
@@ -474,33 +412,8 @@ AS_IF([test "x$enable_cogl_path" = "xyes"],
 dnl     ============================================================
 dnl     Choose image loading backend
 dnl     ============================================================
-AC_ARG_ENABLE(
-  [gdk-pixbuf],
-  [AC_HELP_STRING([--enable-gdk-pixbuf=@<:@no/yes@:>@], [Enable image loading via gdk-pixbuf @<:@default=yes@:>@])],
-  [],
-  [AS_IF([test "x$enable_glib" = "xyes"],
-         [PKG_CHECK_EXISTS([gdk-pixbuf-2.0 >= gdk_pixbuf_req_version],
-                           [enable_gdk_pixbuf=yes],
-                           [enable_gdk_pixbuf=no])])]
-)
-
-AS_IF(
-  [test "x$enable_gdk_pixbuf" = "xyes"],
-  [
-    AS_IF([test "x$enable_glib" != "xyes"],
-          [AC_MSG_ERROR([--disable-glib conflicts with --enable-gdk-pixbuf])])
-    AC_DEFINE([USE_GDKPIXBUF], 1, [Use GdkPixbuf for loading image data])
-    COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES gdk-pixbuf-2.0 >= gdk_pixbuf_req_version"
-    COGL_IMAGE_BACKEND="gdk-pixbuf"
-  ],
-  [
-    EXPERIMENTAL_CONFIG=yes
-    EXPERIMENTAL_OPTIONS="$EXPERIMENTAL_OPTIONS fallback image decoding (stb_image),"
-    AC_DEFINE([USE_INTERNAL], 1,
-	      [Use internal image decoding for loading image data])
-    COGL_IMAGE_BACKEND="stb_image"
-  ]
-)
+COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES gdk-pixbuf-2.0 >= gdk_pixbuf_req_version"
+COGL_IMAGE_BACKEND="gdk-pixbuf"
 
 dnl     ============================================================
 dnl     Determine which drivers and window systems we can support
@@ -920,15 +833,7 @@ AC_PROG_INSTALL
 dnl ================================================================
 dnl GObject-Introspection check
 dnl ================================================================
-AS_IF([test "x$enable_glib" = "xyes"],
-  [
-    GOBJECT_INTROSPECTION_CHECK([gi_req_version])
-  ],
-  [
-    enable_introspection="no"
-    AM_CONDITIONAL([HAVE_INTROSPECTION], 0)
-  ]
-)
+GOBJECT_INTROSPECTION_CHECK([gi_req_version])
 
 dnl ================================================================
 dnl Checks for header files.
@@ -1047,10 +952,6 @@ AC_SUBST(MAINTAINER_CFLAGS)
 AC_OUTPUT(
 Makefile
 README
-deps/Makefile
-deps/glib/Makefile
-deps/gmodule/Makefile
-deps/gmodule/gmoduleconf.h
 test-fixtures/Makefile
 cogl/Makefile
 cogl/cogl-1.0.pc

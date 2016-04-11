@@ -62,13 +62,11 @@ source_h = \
 	cogl2-path-functions.h \
 	$(NULL)
 
-if USE_GLIB
 # glib-mkenums rules
 glib_enum_h = cogl-path-enum-types.h
 glib_enum_c = cogl-path-enum-types.c
 glib_enum_headers = $(source_1_x_h)
 include $(top_srcdir)/build/autotools/Makefile.am.enums
-endif
 
 lib_LTLIBRARIES = libcogl-path.la
 
@@ -96,9 +94,7 @@ AM_CPPFLAGS = \
 
 cogl_pathheadersdir = $(includedir)/cogl/cogl-path
 cogl_pathheaders_HEADERS = $(source_h)
-if USE_GLIB
 nodist_cogl_pathheaders_HEADERS = cogl-path-enum-types.h
-endif
 
 pc_files = cogl-path-1.0.pc \
 	   cogl-path-2.0-experimental.pc

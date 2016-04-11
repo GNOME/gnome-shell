@@ -25,10 +25,6 @@ AM_CPPFLAGS = \
 	-I$(srcdir)/driver/gl/gles 		\
 	$(NULL)
 
-if !USE_GLIB
-	AM_CPPFLAGS += -I$(top_builddir)/deps/glib
-endif
-
 AM_CPPFLAGS += \
 	-DG_LOG_DOMAIN=\"Cogl\" 	\
 	-DCOGL_COMPILATION		\
@@ -418,10 +414,8 @@ cogl_sources_c = \
 	deprecated/cogl-texture-deprecated.c       	\
 	$(NULL)
 
-if USE_GLIB
 cogl_experimental_h += cogl-glib-source.h
 cogl_sources_c += cogl-glib-source.c
-endif
 
 if SUPPORT_XLIB
 cogl_deprecated_h += deprecated/cogl-clutter-xlib.h
@@ -476,8 +470,6 @@ cogl_sources_c += \
 	winsys/cogl-winsys-egl-private.h
 endif
 
-EXTRA_DIST += stb_image.c
-
 # glib-mkenums rules
 glib_enum_h = cogl-enum-types.h
 glib_enum_c = cogl-enum-types.c
@@ -487,10 +479,6 @@ include $(top_srcdir)/build/autotools/Makefile.am.enums
 lib_LTLIBRARIES += libcogl.la
 
 libcogl_la_LIBADD = $(LIBM) $(COGL_DEP_LIBS) $(COGL_EXTRA_LDFLAGS)
-if !USE_GLIB
-libcogl_la_LIBADD += $(top_builddir)/deps/glib/libglib.la
-libcogl_la_LIBADD += $(top_builddir)/deps/gmodule/libgmodule.la
-endif
 if UNIT_TESTS
 libcogl_la_LIBADD += $(top_builddir)/test-fixtures/libtest-fixtures.la
 endif

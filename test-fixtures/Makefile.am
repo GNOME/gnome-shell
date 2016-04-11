@@ -7,10 +7,6 @@ libtest_fixtures_la_CPPFLAGS = \
 	-Wall \
 	$(NULL)
 
-if !USE_GLIB
-libtest_fixtures_la_CPPFLAGS += -I$(top_builddir)/deps/glib
-endif
-
 libtest_fixtures_la_CPPFLAGS += \
 	-DCOGL_DISABLE_DEPRECATED \
 	-DTESTS_DATADIR=\""$(top_srcdir)/tests/data"\" \

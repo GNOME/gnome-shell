@@ -56,10 +56,6 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/test-fixtures \
 	-I$(top_builddir)/cogl
 
-if !USE_GLIB
-AM_CPPFLAGS += -I$(top_builddir)/deps/glib
-endif
-
 AM_CPPFLAGS += \
 	-DCOGL_DISABLE_DEPRECATED \
 	-DTESTS_DATADIR=\""$(top_srcdir)/tests/data"\" \
@@ -70,9 +66,6 @@ test_unit_LDADD = \
 	$(COGL_DEP_LIBS) \
 	$(top_builddir)/cogl/libcogl.la \
 	$(LIBM)
-if !USE_GLIB
-test_unit_LDADD += $(top_builddir)/deps/glib/libglib.la
-endif
 test_unit_LDFLAGS = -export-dynamic
 
 test: wrappers

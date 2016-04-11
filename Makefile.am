@@ -1,4 +1,4 @@
-SUBDIRS = deps test-fixtures
+SUBDIRS = test-fixtures
 
 SUBDIRS += cogl
 
