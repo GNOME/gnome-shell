@@ -19,7 +19,6 @@ SUBDIRS += tests
 ACLOCAL_AMFLAGS = -I build/autotools ${ACLOCAL_FLAGS}
 
 EXTRA_DIST = \
-	README.in \
 	config-custom.h
 
 # .changelog expects these to be initializes

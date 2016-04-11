@@ -951,7 +951,6 @@ AC_SUBST(MAINTAINER_CFLAGS)
 
 AC_OUTPUT(
 Makefile
-README
 test-fixtures/Makefile
 cogl/Makefile
 cogl/cogl-1.0.pc
