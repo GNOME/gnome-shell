@@ -36,5 +36,3 @@ DISTCHECK_CONFIGURE_FLAGS = \
 	--enable-glx \
 	--enable-wayland-egl-server  \
 	--enable-cogl-gst
-
-include $(top_srcdir)/build/autotools/Makefile.am.release
