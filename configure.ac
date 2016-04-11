@@ -503,17 +503,6 @@ AS_IF(
 )
 
 dnl     ============================================================
-dnl     Should examples be installed?
-dnl     ============================================================
-AC_ARG_ENABLE(
-  [examples-install],
-  [AC_HELP_STRING([--enable-examples-install=@<:@no/yes@:>@], [Enable installation of examples @<:@default=no@:>@])],
-  [],
-  enable_examples_install=no
-)
-AM_CONDITIONAL([INSTALL_EXAMPLES], [test "x$enable_examples_install" = "xyes"])
-
-dnl     ============================================================
 dnl     Determine which drivers and window systems we can support
 dnl     ============================================================
 
@@ -1091,7 +1080,6 @@ cogl-path/cogl-path-2.0-experimental.pc
 cogl-gles2/Makefile
 cogl-gles2/cogl-gles2-1.0.pc
 cogl-gles2/cogl-gles2-2.0-experimental.pc
-examples/Makefile
 tests/Makefile
 tests/config.env
 tests/conform/Makefile

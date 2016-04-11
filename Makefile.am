@@ -14,7 +14,7 @@ if BUILD_COGL_GLES2
 SUBDIRS += cogl-gles2
 endif
 
-SUBDIRS += tests examples po
+SUBDIRS += tests po
 
 ACLOCAL_AMFLAGS = -I build/autotools ${ACLOCAL_FLAGS}
 
