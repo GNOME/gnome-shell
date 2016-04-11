@@ -93,12 +93,10 @@ _cogl_uprof_init (void)
   G_STMT_START { \
     int shift = COGL_DEBUG_ ## MASK_NAME; \
     uprof_context_add_boolean_option (_cogl_uprof_context, \
-                                      g_dgettext (GETTEXT_PACKAGE, GROUP), \
+                                      GROUP, \
                                       NAME, \
-                                      g_dgettext (GETTEXT_PACKAGE, \
-                                                  NAME_FORMATTED), \
-                                      g_dgettext (GETTEXT_PACKAGE, \
-                                                  DESCRIPTION),    \
+                                      NAME_FORMATTED,             \
+                                      DESCRIPTION,               \
                                       debug_option_getter, \
                                       debug_option_setter, \
                                       GUINT_TO_POINTER (shift)); \

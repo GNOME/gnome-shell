@@ -42,7 +42,7 @@
 #endif
 
 /* Double check that config.h has been included */
-#if !defined (GETTEXT_PACKAGE) && !defined (_COGL_IN_TEST_BITMASK)
+#if !defined (PACKAGE_NAME) && !defined (_COGL_IN_TEST_BITMASK)
 #error "config.h must be included before including cogl-util.h"
 #endif
 

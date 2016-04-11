@@ -31,11 +31,9 @@
 #ifndef _COGL_I18N_PRIVATE_H_
 #define _COGL_I18N_PRIVATE_H_
 
-#ifdef ENABLE_NLS
-#include <glib/gi18n-lib.h>
-#else
+#include <string.h>
+
 #define _(X) X
 #define N_(X) X
-#endif
 
 #endif /* _COGL_I18N_PRIVATE_H_ */

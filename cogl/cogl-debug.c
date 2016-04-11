@@ -180,8 +180,7 @@ _cogl_parse_debug_string (const char *value,
     {
       g_printerr ("\n\n%28s\n", _("Supported debug values:"));
 #define OPT(MASK_NAME, GROUP, NAME, NAME_FORMATTED, DESCRIPTION) \
-      g_printerr ("%28s %s\n", NAME ":", g_dgettext (GETTEXT_PACKAGE, \
-                                                     DESCRIPTION));
+      g_printerr ("%28s %s\n", NAME ":", DESCRIPTION);
 #include "cogl-debug-options.h"
       g_printerr ("\n%28s\n", _("Special debug values:"));
       OPT (IGNORED, "ignored", "all", "ignored", \
@@ -298,7 +297,6 @@ cogl_get_option_group (void)
 
   g_option_group_set_parse_hooks (group, pre_parse_hook, NULL);
   g_option_group_add_entries (group, cogl_args);
-  g_option_group_set_translation_domain (group, GETTEXT_PACKAGE);
 
   return group;
 }
