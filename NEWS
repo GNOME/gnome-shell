@@ -1,3 +1,16 @@
+3.20.1
+======
+* Plug a memory leak [Aaron; #735705]
+
+Contributors:
+  Aaron Plattner
+
+Translations:
+  Daniel Korostil [uk], Matej Urbančič [sl], Inaki Larranaga Murgoitio [eu],
+  Cheng-Chia Tseng [zh_TW], Fabio Tomat [fur], Trần Ngọc Quân [vi],
+  YunQiang Su [zh_CN], Marek Černocký [cs], Arash Mousavi [fa],
+  Alexander Shopov [bg], Khaled Hosny [ar]
+
 3.20.0
 ======
 
