@@ -944,6 +944,9 @@ get_absolute_path (char *maybe_relative)
   else
     {
       const char *video_dir = g_get_user_special_dir (G_USER_DIRECTORY_VIDEOS);
+      if (!g_file_test (video_dir, G_FILE_TEST_EXISTS))
+          video_dir = g_get_home_dir ();
+
       path = g_build_filename (video_dir, maybe_relative, NULL);
     }
 
