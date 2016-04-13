@@ -1,3 +1,16 @@
+3.20.1
+======
+* Constrain window move/resizes on wayland as on X11 [Rui; #748819]
+* Don't crash with invalid previous monitor configurations [Rui; #764286]
+* Misc. bug fixes and cleanups [Jonas, Cosimo; #762828, #764807]
+
+Contributors:
+  Jonas Ådahl, Cosimo Cecchi, Rui Matos, Jasper St. Pierre
+
+Translations:
+  Inaki Larranaga Murgoitio [eu], Reinout van Schouwen [nl], Fabio Tomat [fur],
+  Trần Ngọc Quân [vi]
+
 3.20.0
 ======
 * Fix crash when using visual bell [Jonas; #763858]
