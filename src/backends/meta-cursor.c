@@ -159,7 +159,9 @@ meta_cursor_sprite_load_from_xcursor_image (MetaCursorSprite *self,
                                            NULL);
   meta_cursor_sprite_set_texture (self, texture,
                                   xc_image->xhot, xc_image->yhot);
-  cogl_object_unref (texture);
+
+  if (texture)
+    cogl_object_unref (texture);
 
   meta_cursor_renderer_realize_cursor_from_xcursor (renderer, self, xc_image);
 }

@@ -102,8 +102,7 @@ detach_pixmap (MetaSurfaceActorX11 *self)
   priv->pixmap = None;
   meta_error_trap_pop (display);
 
-  cogl_object_unref (priv->texture);
-  priv->texture = NULL;
+  g_clear_pointer (&priv->texture, cogl_object_unref);
 }
 
 static void
