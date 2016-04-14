@@ -27,6 +27,7 @@
 #include <string.h>
 
 #include <meta/meta-shadow-factory.h>
+#include <meta/util.h>
 
 #include "cogl-utils.h"
 #include "region-utils.h"
@@ -707,6 +708,7 @@ make_shadow (MetaShadow     *shadow,
 {
   ClutterBackend *backend = clutter_get_default_backend ();
   CoglContext *ctx = clutter_backend_get_cogl_context (backend);
+  CoglError *error = NULL;
   int d = get_box_filter_size (shadow->key.radius);
   int spread = get_shadow_spread (shadow->key.radius);
   cairo_rectangle_int_t extents;
@@ -804,7 +806,13 @@ make_shadow (MetaShadow     *shadow,
                                                                  (buffer +
                                                                   (y_offset - shadow->outer_border_top) * buffer_width +
                                                                   (x_offset - shadow->outer_border_left)),
-                                                                 NULL));
+                                                                 &error));
+
+  if (error)
+    {
+      meta_warning ("Failed to allocate shadow texture: %s\n", error->message);
+      cogl_error_free (error);
+    }
 
   cairo_region_destroy (row_convolve_region);
   cairo_region_destroy (column_convolve_region);

@@ -17,6 +17,7 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <meta/util.h>
 #include <meta/meta-background.h>
 #include <meta/meta-background-image.h>
 #include "meta-background-private.h"
@@ -542,6 +543,7 @@ ensure_color_texture (MetaBackground *self)
     {
       ClutterBackend *backend = clutter_get_default_backend ();
       CoglContext *ctx = clutter_backend_get_cogl_context (backend);
+      CoglError *error = NULL;
       uint8_t pixels[6];
       int width, height;
 
@@ -582,7 +584,13 @@ ensure_color_texture (MetaBackground *self)
                                                                          COGL_PIXEL_FORMAT_RGB_888,
                                                                          width * 3,
                                                                          pixels,
-                                                                         NULL));
+                                                                         &error));
+
+      if (error != NULL)
+        {
+          meta_warning ("Failed to allocate color texture: %s\n", error->message);
+          cogl_error_free (error);
+        }
     }
 }
 

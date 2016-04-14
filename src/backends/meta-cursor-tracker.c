@@ -198,6 +198,7 @@ ensure_xfixes_cursor (MetaCursorTracker *tracker)
   guint8 *cursor_data;
   gboolean free_cursor_data;
   CoglContext *ctx;
+  CoglError *error = NULL;
 
   if (tracker->xfixes_cursor)
     return;
@@ -239,10 +240,16 @@ ensure_xfixes_cursor (MetaCursorTracker *tracker)
                                           CLUTTER_CAIRO_FORMAT_ARGB32,
                                           cursor_image->width * 4, /* stride */
                                           cursor_data,
-                                          NULL);
+                                          &error);
 
   if (free_cursor_data)
     g_free (cursor_data);
+
+  if (error != NULL)
+    {
+      meta_warning ("Failed to allocate cursor sprite texture: %s\n", error->message);
+      cogl_error_free (error);
+    }
 
   if (sprite != NULL)
     {

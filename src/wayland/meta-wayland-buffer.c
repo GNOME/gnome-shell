@@ -134,12 +134,19 @@ meta_wayland_buffer_process_damage (MetaWaylandBuffer *buffer,
 
       for (i = 0; i < n_rectangles; i++)
         {
+          CoglError *error = NULL;
           cairo_rectangle_int_t rect;
           cairo_region_get_rectangle (region, i, &rect);
           cogl_wayland_texture_set_region_from_shm_buffer (buffer->texture,
                                                            rect.x, rect.y, rect.width, rect.height,
                                                            shm_buffer,
-                                                           rect.x, rect.y, 0, NULL);
+                                                           rect.x, rect.y, 0, &error);
+
+          if (error)
+            {
+              meta_warning ("Failed to set texture region: %s\n", error->message);
+              cogl_error_free (error);
+            }
         }
 
       wl_shm_buffer_end_access (shm_buffer);

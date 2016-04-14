@@ -1752,9 +1752,17 @@ build_and_scan_frame_mask (MetaWindowActor       *self,
     }
   else
     {
+      CoglError *error = NULL;
+
       mask_texture = COGL_TEXTURE (cogl_texture_2d_new_from_data (ctx, tex_width, tex_height,
                                                                   COGL_PIXEL_FORMAT_A_8,
-                                                                  stride, mask_data, NULL));
+                                                                  stride, mask_data, &error));
+
+      if (error)
+        {
+          g_warning ("Failed to allocate mask texture: %s", error->message);
+          cogl_error_free (error);
+        }
     }
 
   meta_shaped_texture_set_mask_texture (stex, mask_texture);
