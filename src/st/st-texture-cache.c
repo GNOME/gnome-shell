@@ -469,14 +469,24 @@ pixbuf_to_cogl_texture (GdkPixbuf *pixbuf)
 {
   ClutterBackend *backend = clutter_get_default_backend ();
   CoglContext *ctx = clutter_backend_get_cogl_context (backend);
+  CoglError *error = NULL;
+  CoglTexture2D *texture;
 
-  return COGL_TEXTURE (cogl_texture_2d_new_from_data (ctx,
-                                                      gdk_pixbuf_get_width (pixbuf),
-                                                      gdk_pixbuf_get_height (pixbuf),
-                                                      gdk_pixbuf_get_has_alpha (pixbuf) ? COGL_PIXEL_FORMAT_RGBA_8888 : COGL_PIXEL_FORMAT_RGB_888,
-                                                      gdk_pixbuf_get_rowstride (pixbuf),
-                                                      gdk_pixbuf_get_pixels (pixbuf),
-                                                      NULL));
+  texture = cogl_texture_2d_new_from_data (ctx,
+                                           gdk_pixbuf_get_width (pixbuf),
+                                           gdk_pixbuf_get_height (pixbuf),
+                                           gdk_pixbuf_get_has_alpha (pixbuf) ? COGL_PIXEL_FORMAT_RGBA_8888 : COGL_PIXEL_FORMAT_RGB_888,
+                                           gdk_pixbuf_get_rowstride (pixbuf),
+                                           gdk_pixbuf_get_pixels (pixbuf),
+                                           &error);
+
+  if (error)
+    {
+      g_warning ("Failed to allocate texture: %s", error->message);
+      cogl_error_free (error);
+    }
+
+  return texture ? COGL_TEXTURE (texture) : NULL;
 }
 
 static cairo_surface_t *
@@ -640,6 +650,8 @@ st_texture_cache_reset_texture (StTextureCachePropertyBind *bind,
       (cairo_image_surface_get_format (surface) == CAIRO_FORMAT_ARGB32 ||
        cairo_image_surface_get_format (surface) == CAIRO_FORMAT_RGB24))
     {
+      CoglError *error = NULL;
+
       texdata = COGL_TEXTURE (cogl_texture_2d_new_from_data (ctx,
                                                              cairo_image_surface_get_width (surface),
                                                              cairo_image_surface_get_height (surface),
@@ -647,12 +659,17 @@ st_texture_cache_reset_texture (StTextureCachePropertyBind *bind,
                                                              COGL_PIXEL_FORMAT_BGRA_8888 : COGL_PIXEL_FORMAT_BGR_888,
                                                              cairo_image_surface_get_stride (surface),
                                                              cairo_image_surface_get_data (surface),
-                                                             NULL));
+                                                             &error));
 
       if (texdata)
         {
           clutter_texture_set_cogl_texture (bind->texture, texdata);
           cogl_object_unref (texdata);
+        }
+      else if (error)
+        {
+          g_warning ("Failed to allocate texture: %s", error->message);
+          cogl_error_free (error);
         }
 
       clutter_actor_set_opacity (CLUTTER_ACTOR (bind->texture), 255);

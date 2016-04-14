@@ -71,6 +71,7 @@ create_corner_material (StCornerSpec *corner)
 {
   ClutterBackend *backend = clutter_get_default_backend ();
   CoglContext *ctx = clutter_backend_get_cogl_context (backend);
+  CoglError *error = NULL;
   CoglHandle texture;
   cairo_t *cr;
   cairo_surface_t *surface;
@@ -172,7 +173,14 @@ create_corner_material (StCornerSpec *corner)
                                                          CLUTTER_CAIRO_FORMAT_ARGB32,
                                                          rowstride,
                                                          data,
-                                                         NULL));
+                                                         &error));
+
+  if (error)
+    {
+      g_warning ("Failed to allocate texture: %s", error->message);
+      cogl_error_free (error);
+    }
+
   g_free (data);
   g_assert (texture != COGL_INVALID_HANDLE);
 
@@ -958,6 +966,7 @@ st_theme_node_prerender_background (StThemeNode *node,
 {
   ClutterBackend *backend = clutter_get_default_backend ();
   CoglContext *ctx = clutter_backend_get_cogl_context (backend);
+  CoglError *error = NULL;
   StBorderImage *border_image;
   CoglHandle texture;
   guint radius[4];
@@ -1277,7 +1286,13 @@ st_theme_node_prerender_background (StThemeNode *node,
                                                          CLUTTER_CAIRO_FORMAT_ARGB32,
                                                          rowstride,
                                                          data,
-                                                         NULL));
+                                                         &error));
+
+  if (error)
+    {
+      g_warning ("Failed to allocate texture: %s", error->message);
+      cogl_error_free (error);
+    }
 
   cairo_destroy (cr);
   cairo_surface_destroy (surface);
