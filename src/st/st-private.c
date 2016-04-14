@@ -347,6 +347,7 @@ _st_create_shadow_pipeline (StShadow    *shadow_spec,
 {
   ClutterBackend *backend = clutter_get_default_backend ();
   CoglContext *ctx = clutter_backend_get_cogl_context (backend);
+  CoglError *error = NULL;
 
   static CoglPipeline *shadow_pipeline_template = NULL;
 
@@ -377,7 +378,13 @@ _st_create_shadow_pipeline (StShadow    *shadow_spec,
                                                          COGL_PIXEL_FORMAT_A_8,
                                                          rowstride_out,
                                                          pixels_out,
-                                                         NULL));
+                                                         &error));
+
+  if (error)
+    {
+      g_warning ("Failed to allocate texture: %s", error->message);
+      cogl_error_free (error);
+    }
 
   g_free (pixels_out);
 
