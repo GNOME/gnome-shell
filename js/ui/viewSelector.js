@@ -23,6 +23,7 @@ const EdgeDragAction = imports.ui.edgeDragAction;
 const IconGrid = imports.ui.iconGrid;
 
 const SHELL_KEYBINDINGS_SCHEMA = 'org.gnome.shell.keybindings';
+const PINCH_GESTURE_THRESHOLD = 0.7;
 
 const ViewPage = {
     WINDOWS: 1,
@@ -50,6 +51,28 @@ function getTermsForSearchString(searchString) {
     let terms = searchString.split(/\s+/);
     return terms;
 }
+
+const TouchpadShowOverviewAction = new Lang.Class({
+    Name: 'TouchpadShowOverviewAction',
+
+    _init: function(actor) {
+        actor.connect('captured-event', Lang.bind(this, this._handleEvent));
+    },
+
+    _handleEvent: function(actor, event) {
+        if (event.type() != Clutter.EventType.TOUCHPAD_PINCH)
+            return Clutter.EVENT_PROPAGATE;
+
+        if (event.get_touchpad_gesture_finger_count() != 3)
+            return Clutter.EVENT_PROPAGATE;
+
+        if (event.get_gesture_phase() == Clutter.TouchpadGesturePhase.END)
+            this.emit('activated', event.get_gesture_pinch_scale ());
+
+        return Clutter.EVENT_STOP;
+    }
+});
+Signals.addSignalMethods(TouchpadShowOverviewAction.prototype);
 
 const ShowOverviewAction = new Lang.Class({
     Name: 'ShowOverviewAction',
@@ -230,11 +253,16 @@ const ViewSelector = new Lang.Class({
         global.stage.add_action(gesture);
 
         gesture = new ShowOverviewAction();
-        gesture.connect('activated', Lang.bind(this, function(action, areaDiff) {
-            if (areaDiff < 0.7)
-                Main.overview.show();
-        }));
+        gesture.connect('activated', Lang.bind(this, this._pinchGestureActivated));
         global.stage.add_action(gesture);
+
+        gesture = new TouchpadShowOverviewAction(global.stage);
+        gesture.connect('activated', Lang.bind(this, this._pinchGestureActivated));
+    },
+
+    _pinchGestureActivated: function(action, scale) {
+        if (scale < PINCH_GESTURE_THRESHOLD)
+            Main.overview.show();
     },
 
     _toggleAppsPage: function() {
