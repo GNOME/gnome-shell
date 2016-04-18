@@ -897,6 +897,9 @@ meta_change_button_grab (MetaKeyBindingManager *keys,
                          int                     button,
                          int                     modmask)
 {
+  if (meta_is_wayland_compositor ())
+    return;
+
   MetaBackendX11 *backend = META_BACKEND_X11 (meta_get_backend ());
   Display *xdisplay = meta_backend_x11_get_xdisplay (backend);
 
@@ -969,9 +972,6 @@ meta_display_grab_window_buttons (MetaDisplay *display,
 {
   MetaKeyBindingManager *keys = &display->key_binding_manager;
 
-  if (meta_is_wayland_compositor ())
-    return;
-
   /* Grab Alt + button1 for moving window.
    * Grab Alt + button2 for resizing window.
    * Grab Alt + button3 for popping up window menu.
@@ -1008,9 +1008,6 @@ meta_display_ungrab_window_buttons (MetaDisplay *display,
 {
   MetaKeyBindingManager *keys = &display->key_binding_manager;
 
-  if (meta_is_wayland_compositor ())
-    return;
-
   if (keys->window_grab_modifiers == 0)
     return;
 
@@ -1036,9 +1033,6 @@ meta_display_grab_focus_window_button (MetaDisplay *display,
                                        MetaWindow  *window)
 {
   MetaKeyBindingManager *keys = &display->key_binding_manager;
-
-  if (meta_is_wayland_compositor ())
-    return;
 
   /* Grab button 1 for activating unfocused windows */
   meta_verbose ("Grabbing unfocused window buttons for %s\n", window->desc);
@@ -1078,9 +1072,6 @@ meta_display_ungrab_focus_window_button (MetaDisplay *display,
                                          MetaWindow  *window)
 {
   MetaKeyBindingManager *keys = &display->key_binding_manager;
-
-  if (meta_is_wayland_compositor ())
-    return;
 
   meta_verbose ("Ungrabbing unfocused window buttons for %s\n", window->desc);
 
@@ -1160,6 +1151,9 @@ meta_change_keygrab (MetaKeyBindingManager *keys,
 
   XISetMask (mask.mask, XI_KeyPress);
   XISetMask (mask.mask, XI_KeyRelease);
+
+  if (meta_is_wayland_compositor ())
+    return;
 
   MetaBackendX11 *backend = META_BACKEND_X11 (meta_get_backend ());
   Display *xdisplay = meta_backend_x11_get_xdisplay (backend);
@@ -1275,11 +1269,6 @@ meta_screen_change_keygrabs (MetaScreen *screen,
 void
 meta_screen_grab_keys (MetaScreen *screen)
 {
-  MetaBackend *backend = meta_get_backend ();
-
-  if (!META_IS_BACKEND_X11 (backend))
-    return;
-
   if (screen->keys_grabbed)
     return;
 
@@ -1312,10 +1301,6 @@ meta_window_grab_keys (MetaWindow  *window)
 {
   MetaDisplay *display = window->display;
   MetaKeyBindingManager *keys = &display->key_binding_manager;
-
-  /* Under Wayland, we don't need to grab at all. */
-  if (meta_is_wayland_compositor ())
-    return;
 
   if (window->all_keys_grabbed)
     return;
@@ -1384,7 +1369,6 @@ guint
 meta_display_grab_accelerator (MetaDisplay *display,
                                const char  *accelerator)
 {
-  MetaBackend *backend = meta_get_backend ();
   MetaKeyBindingManager *keys = &display->key_binding_manager;
   MetaKeyBinding *binding;
   MetaKeyGrab *grab;
@@ -1408,8 +1392,7 @@ meta_display_grab_accelerator (MetaDisplay *display,
   if (get_keybinding (keys, &resolved_combo))
     return META_KEYBINDING_ACTION_NONE;
 
-  if (META_IS_BACKEND_X11 (backend))
-    meta_change_keygrab (keys, display->screen->xroot, TRUE, &resolved_combo);
+  meta_change_keygrab (keys, display->screen->xroot, TRUE, &resolved_combo);
 
   grab = g_new0 (MetaKeyGrab, 1);
   grab->action = next_dynamic_keybinding_action ();
@@ -1434,7 +1417,6 @@ gboolean
 meta_display_ungrab_accelerator (MetaDisplay *display,
                                  guint        action)
 {
-  MetaBackend *backend = meta_get_backend ();
   MetaKeyBindingManager *keys = &display->key_binding_manager;
   MetaKeyBinding *binding;
   MetaKeyGrab *grab;
@@ -1454,8 +1436,7 @@ meta_display_ungrab_accelerator (MetaDisplay *display,
     {
       guint32 index_key;
 
-      if (META_IS_BACKEND_X11 (backend))
-        meta_change_keygrab (keys, display->screen->xroot, FALSE, &binding->resolved_combo);
+      meta_change_keygrab (keys, display->screen->xroot, FALSE, &binding->resolved_combo);
 
       index_key = key_combo_key (&binding->resolved_combo);
       g_hash_table_remove (keys->key_bindings_index, GINT_TO_POINTER (index_key));
@@ -1481,6 +1462,9 @@ grab_keyboard (Window  xwindow,
 
   XISetMask (mask.mask, XI_KeyPress);
   XISetMask (mask.mask, XI_KeyRelease);
+
+  if (meta_is_wayland_compositor ())
+    return TRUE;
 
   /* Grab the keyboard, so we get key releases and all key
    * presses
@@ -1513,6 +1497,9 @@ grab_keyboard (Window  xwindow,
 static void
 ungrab_keyboard (guint32 timestamp)
 {
+  if (meta_is_wayland_compositor ())
+    return;
+
   MetaBackendX11 *backend = META_BACKEND_X11 (meta_get_backend ());
   Display *xdisplay = meta_backend_x11_get_xdisplay (backend);
 
@@ -1525,10 +1512,6 @@ meta_window_grab_all_keys (MetaWindow  *window,
 {
   Window grabwindow;
   gboolean retval;
-  MetaBackend *backend = meta_get_backend ();
-
-  if (!META_IS_BACKEND_X11 (backend))
-    return TRUE;
 
   if (window->all_keys_grabbed)
     return FALSE;
@@ -1590,11 +1573,6 @@ meta_display_freeze_keyboard (MetaDisplay *display, guint32 timestamp)
 void
 meta_display_ungrab_keyboard (MetaDisplay *display, guint32 timestamp)
 {
-  MetaBackend *backend = meta_get_backend ();
-
-  if (!META_IS_BACKEND_X11 (backend))
-    return;
-
   ungrab_keyboard (timestamp);
 }
 
