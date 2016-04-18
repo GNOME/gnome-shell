@@ -419,6 +419,21 @@ meta_window_wayland_main_monitor_changed (MetaWindow *window,
   meta_window_emit_size_changed (window);
 }
 
+static gboolean
+meta_window_wayland_has_pointer (MetaWindow *window)
+{
+  ClutterDeviceManager *dm;
+  ClutterInputDevice *dev;
+  ClutterActor *pointer_actor, *window_actor;
+
+  dm = clutter_device_manager_get_default ();
+  dev = clutter_device_manager_get_core_device (dm, CLUTTER_POINTER_DEVICE);
+  pointer_actor = clutter_input_device_get_pointer_actor (dev);
+  window_actor = CLUTTER_ACTOR (meta_window_get_compositor_private (window));
+
+  return pointer_actor && clutter_actor_contains (window_actor, pointer_actor);
+}
+
 static void
 appears_focused_changed (GObject    *object,
                          GParamSpec *pspec,
@@ -453,6 +468,7 @@ meta_window_wayland_class_init (MetaWindowWaylandClass *klass)
   window_class->move_resize_internal = meta_window_wayland_move_resize_internal;
   window_class->update_main_monitor = meta_window_wayland_update_main_monitor;
   window_class->main_monitor_changed = meta_window_wayland_main_monitor_changed;
+  window_class->has_pointer = meta_window_wayland_has_pointer;
 }
 
 MetaWindow *

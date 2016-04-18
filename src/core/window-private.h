@@ -484,6 +484,7 @@ struct _MetaWindowClass
   void (*update_main_monitor)    (MetaWindow *window);
   void (*main_monitor_changed)   (MetaWindow *window,
                                   const MetaMonitorInfo *old);
+  gboolean (*has_pointer)        (MetaWindow *window);
 };
 
 /* These differ from window->has_foo_func in that they consider

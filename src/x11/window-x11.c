@@ -1481,6 +1481,30 @@ meta_window_x11_main_monitor_changed (MetaWindow *window,
 {
 }
 
+static gboolean
+meta_window_x11_has_pointer (MetaWindow *window)
+{
+  MetaDisplay *display = window->display;
+  MetaScreen *screen = window->screen;
+  Window root, child;
+  double root_x, root_y, x, y;
+  XIButtonState buttons;
+  XIModifierState mods;
+  XIGroupState group;
+
+  meta_error_trap_push (display);
+  XIQueryPointer (display->xdisplay,
+                  META_VIRTUAL_CORE_POINTER_ID,
+                  screen->xroot,
+                  &root, &child,
+                  &root_x, &root_y, &x, &y,
+                  &buttons, &mods, &group);
+  meta_error_trap_pop (display);
+  free (buttons.mask);
+
+  return meta_display_lookup_x_window (display, child) == window;
+}
+
 static void
 meta_window_x11_class_init (MetaWindowX11Class *klass)
 {
@@ -1501,6 +1525,7 @@ meta_window_x11_class_init (MetaWindowX11Class *klass)
   window_class->update_icon = meta_window_x11_update_icon;
   window_class->update_main_monitor = meta_window_x11_update_main_monitor;
   window_class->main_monitor_changed = meta_window_x11_main_monitor_changed;
+  window_class->has_pointer = meta_window_x11_has_pointer;
 }
 
 void

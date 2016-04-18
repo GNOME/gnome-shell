@@ -7535,52 +7535,10 @@ mouse_mode_focus (MetaWindow  *window,
     }
 }
 
-static gboolean
-window_has_pointer_wayland (MetaWindow *window)
-{
-  ClutterDeviceManager *dm;
-  ClutterInputDevice *dev;
-  ClutterActor *pointer_actor, *window_actor;
-
-  dm = clutter_device_manager_get_default ();
-  dev = clutter_device_manager_get_core_device (dm, CLUTTER_POINTER_DEVICE);
-  pointer_actor = clutter_input_device_get_pointer_actor (dev);
-  window_actor = CLUTTER_ACTOR (meta_window_get_compositor_private (window));
-
-  return pointer_actor && clutter_actor_contains (window_actor, pointer_actor);
-}
-
-static gboolean
-window_has_pointer_x11 (MetaWindow *window)
-{
-  MetaDisplay *display = window->display;
-  MetaScreen *screen = window->screen;
-  Window root, child;
-  double root_x, root_y, x, y;
-  XIButtonState buttons;
-  XIModifierState mods;
-  XIGroupState group;
-
-  meta_error_trap_push (display);
-  XIQueryPointer (display->xdisplay,
-                  META_VIRTUAL_CORE_POINTER_ID,
-                  screen->xroot,
-                  &root, &child,
-                  &root_x, &root_y, &x, &y,
-                  &buttons, &mods, &group);
-  meta_error_trap_pop (display);
-  free (buttons.mask);
-
-  return meta_display_lookup_x_window (display, child) == window;
-}
-
 gboolean
 meta_window_has_pointer (MetaWindow *window)
 {
-  if (meta_is_wayland_compositor ())
-    return window_has_pointer_wayland (window);
-  else
-    return window_has_pointer_x11 (window);
+  return META_WINDOW_GET_CLASS (window)->has_pointer (window);
 }
 
 static gboolean
