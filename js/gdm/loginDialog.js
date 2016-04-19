@@ -738,6 +738,9 @@ var LoginDialog = new Lang.Class({
 
             if (this._authPrompt.verificationStatus == AuthPrompt.AuthPromptStatus.NOT_VERIFYING)
                 this._authPrompt.reset();
+
+            if (this._disableUserList && this._timedLoginUserListHold)
+                this._timedLoginUserListHold.release();
         }
     },
 
@@ -992,6 +995,9 @@ var LoginDialog = new Lang.Class({
     },
 
     _showTimedLoginAnimation() {
+        if (this._disableUserList)
+            return this._authPrompt.showTimedLoginIndicator(this._timedLoginAnimationTime);
+
         this._timedLoginItem.actor.grab_key_focus();
         return this._timedLoginItem.showTimedLoginIndicator(this._timedLoginAnimationTime);
     },
@@ -1019,17 +1025,33 @@ var LoginDialog = new Lang.Class({
     },
 
     _startTimedLogin(userName, delay) {
+        this._timedLoginUserName = userName;
         this._timedLoginItem = null;
         this._timedLoginDelay = delay;
         this._timedLoginAnimationTime = delay;
 
-        let tasks = [() => this._waitForItemForUser(userName),
+        let tasks = [() => {
+                         if (this._disableUserList)
+                             return;
+
+                         this._timedLoginUserListHold = this._waitForItemForUser(userName);
+
+                         return this._timedLoginUserListHold;
+                     },
 
                      () => {
+                         this._timedLoginUserListHold = null;
+
+                         if (this._disableUserList)
+                             return;
+
                          this._timedLoginItem = this._userList.getItemFromUserName(userName);
                      },
 
                      () => {
+                         if (this._disableUserList)
+                             return;
+
                          // If we're just starting out, start on the right
                          // item.
                          if (!this._userManager.is_loaded) {
@@ -1040,6 +1062,9 @@ var LoginDialog = new Lang.Class({
                      this._blockTimedLoginUntilIdle,
 
                      () => {
+                         if (this._disableUserList)
+                             return;
+
                          this._userList.scrollToItem(this._timedLoginItem);
                      },
 
@@ -1064,7 +1089,9 @@ var LoginDialog = new Lang.Class({
         if (this._timedLoginItem)
             this._timedLoginItem.hideTimedLoginIndicator();
 
-        let userName = this._timedLoginItem.user.get_user_name();
+        this._authPrompt.hideTimedLoginIndicator();
+
+        let userName = this._timedLoginUserName;
 
         if (userName)
             this._startTimedLogin(userName, this._timedLoginDelay);

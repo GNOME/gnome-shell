@@ -1825,6 +1825,10 @@ StScrollBar {
       padding-bottom: 12px;
       spacing: 8px;
       width: 23em;
+      .login-dialog-timed-login-indicator {
+          height: 2px;
+          background-color: darken($fg_color,40%);
+      }
   }
 
   .login-dialog-prompt-label {
