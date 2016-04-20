@@ -49,4 +49,6 @@ void               meta_monitor_config_make_persistent (MetaMonitorConfig *confi
 void               meta_monitor_config_restore_previous (MetaMonitorConfig  *config,
                                                          MetaMonitorManager *manager);
 
+gboolean           meta_monitor_config_get_is_builtin_display_on (MetaMonitorConfig *config);
+
 #endif /* META_MONITOR_CONFIG_H */

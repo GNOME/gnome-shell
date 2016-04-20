@@ -1042,6 +1042,17 @@ apply_configuration_with_lid (MetaMonitorConfig  *self,
 }
 
 gboolean
+meta_monitor_config_get_is_builtin_display_on (MetaMonitorConfig *self)
+{
+  g_return_val_if_fail (META_IS_MONITOR_CONFIG (self), FALSE);
+
+  if (self->current)
+    return laptop_display_is_on (self->current);
+
+  return FALSE;
+}
+
+gboolean
 meta_monitor_config_apply_stored (MetaMonitorConfig  *self,
 				  MetaMonitorManager *manager)
 {

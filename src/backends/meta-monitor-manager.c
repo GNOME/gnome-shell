@@ -1599,3 +1599,11 @@ meta_monitor_manager_get_monitor_at_point (MetaMonitorManager *manager,
 
   return -1;
 }
+
+gboolean
+meta_monitor_manager_get_is_builtin_display_on (MetaMonitorManager *manager)
+{
+  g_return_val_if_fail (META_IS_MONITOR_MANAGER (manager), FALSE);
+
+  return meta_monitor_config_get_is_builtin_display_on (manager->config);
+}
