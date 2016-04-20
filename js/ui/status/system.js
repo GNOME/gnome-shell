@@ -6,6 +6,7 @@ const Gdm = imports.gi.Gdm;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const Lang = imports.lang;
+const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 
@@ -110,6 +111,7 @@ const Indicator = new Lang.Class({
 
         this._session = new GnomeSession.SessionManager();
         this._loginManager = LoginManager.getLoginManager();
+        this._monitorManager = Meta.MonitorManager.get();
         this._haveShutdown = true;
         this._haveSuspend = true;
 
@@ -155,6 +157,8 @@ const Indicator = new Lang.Class({
 
         this._orientationSettings.connect('changed::orientation-lock',
                                           Lang.bind(this, this._updateOrientationLock));
+        Main.layoutManager.connect('monitors-changed',
+                                   Lang.bind(this, this._updateOrientationLock));
         Gio.DBus.system.watch_name(SENSOR_BUS_NAME,
                                    Gio.BusNameWatcherFlags.NONE,
                                    Lang.bind(this, this._sensorProxyAppeared),
@@ -264,7 +268,8 @@ const Indicator = new Lang.Class({
 
     _updateOrientationLock: function() {
         if (this._sensorProxy)
-            this._orientationLockAction.visible = this._sensorProxy.HasAccelerometer;
+            this._orientationLockAction.visible = this._sensorProxy.HasAccelerometer &&
+                                                  this._monitorManager.get_is_builtin_display_on();
         else
             this._orientationLockAction.visible = false;
 
