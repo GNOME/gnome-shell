@@ -913,6 +913,10 @@ key_is_laptop (MetaOutputKey *key)
 {
   /* FIXME: extend with better heuristics */
   return g_str_has_prefix (key->connector, "LVDS") ||
+    g_str_has_prefix (key->connector, "lvds") ||
+    g_str_has_prefix (key->connector, "Lvds") ||
+    g_str_has_prefix (key->connector, "LCD")  || /* some versions of fglrx, sigh */
+    g_str_has_prefix (key->connector, "DSI") ||
     g_str_has_prefix (key->connector, "eDP");
 }
 

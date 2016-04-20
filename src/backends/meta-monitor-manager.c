@@ -1466,6 +1466,7 @@ meta_output_is_laptop (MetaOutput *output)
     {
     case META_CONNECTOR_TYPE_eDP:
     case META_CONNECTOR_TYPE_LVDS:
+    case META_CONNECTOR_TYPE_DSI:
       return TRUE;
     default:
       return FALSE;
