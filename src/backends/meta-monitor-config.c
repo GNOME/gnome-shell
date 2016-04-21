@@ -917,20 +917,6 @@ key_is_laptop (MetaOutputKey *key)
 }
 
 static gboolean
-output_is_laptop (MetaOutput *output)
-{
-  /* FIXME: extend with better heuristics */
-  switch (output->connector_type)
-    {
-    case META_CONNECTOR_TYPE_eDP:
-    case META_CONNECTOR_TYPE_LVDS:
-      return TRUE;
-    default:
-      return FALSE;
-    }
-}
-
-static gboolean
 laptop_display_is_on (MetaConfiguration *config)
 {
   unsigned int i;
@@ -1092,7 +1078,7 @@ find_primary_output (MetaOutput *outputs,
 
   for (i = 0; i < n_outputs; i++)
     {
-      if (output_is_laptop (&outputs[i]))
+      if (meta_output_is_laptop (&outputs[i]))
         return i;
     }
 

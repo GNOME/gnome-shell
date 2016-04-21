@@ -398,6 +398,7 @@ void                meta_monitor_manager_confirm_configuration (MetaMonitorManag
 
 void               meta_output_parse_edid (MetaOutput *output,
                                            GBytes     *edid);
+gboolean           meta_output_is_laptop  (MetaOutput *output);
 
 void               meta_crtc_info_free   (MetaCRTCInfo   *info);
 void               meta_output_info_free (MetaOutputInfo *info);
