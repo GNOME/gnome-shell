@@ -45,11 +45,11 @@ const PrimaryActorLayout = new Lang.Class({
         this.primaryActor = primaryActor;
     },
 
-    vfunc_get_preferred_width: function(forHeight) {
+    vfunc_get_preferred_width: function(container, forHeight) {
         return this.primaryActor.get_preferred_width(forHeight);
     },
 
-    vfunc_get_preferred_height: function(forWidth) {
+    vfunc_get_preferred_height: function(container, forWidth) {
         return this.primaryActor.get_preferred_height(forWidth);
     },
 });
