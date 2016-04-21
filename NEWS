@@ -1,3 +1,16 @@
+3.18.5
+======
+* Fix deleting chat notifications in calendar [Florian; #747991]
+* Fix recount issue in network agent component [Christophe; #759708]
+* Plug a memory leak [Aaron; #735705]
+* Do not assert on non-fatal runtime errors [Florian; #765061]
+
+Contributors:
+  Christophe Fergeau, Florian Müllner, Aaron Plattner
+
+Translations:
+  Matej Urbančič [sl], Marek Černocký [cs]
+
 3.18.4
 ======
 * Fix thumbnail scaling in window switcher on HiDPI [Florian; #758676]
