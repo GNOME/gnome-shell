@@ -1424,9 +1424,10 @@ meta_wayland_drag_dest_focus_out (MetaWaylandDataDevice *data_device,
 {
   MetaWaylandDragGrab *grab = data_device->current_grab;
 
-  if (grab->drag_focus_data_device)
-    wl_data_device_send_leave (grab->drag_focus_data_device);
+  if (!grab->drag_focus_data_device)
+    return;
 
+  wl_data_device_send_leave (grab->drag_focus_data_device);
   wl_list_remove (&grab->drag_focus_listener.link);
   grab->drag_focus_data_device = NULL;
 }
@@ -1438,6 +1439,9 @@ meta_wayland_drag_dest_motion (MetaWaylandDataDevice *data_device,
 {
   MetaWaylandDragGrab *grab = data_device->current_grab;
   wl_fixed_t sx, sy;
+
+  if (!grab->drag_focus_data_device)
+    return;
 
   meta_wayland_pointer_get_relative_coordinates (grab->generic.pointer,
                                                  grab->drag_focus,
@@ -1452,6 +1456,9 @@ meta_wayland_drag_dest_drop (MetaWaylandDataDevice *data_device,
                              MetaWaylandSurface    *surface)
 {
   MetaWaylandDragGrab *grab = data_device->current_grab;
+
+  if (!grab->drag_focus_data_device)
+    return;
 
   wl_data_device_send_drop (grab->drag_focus_data_device);
 }
