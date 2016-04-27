@@ -12,7 +12,7 @@ libtest_fixtures_la_CPPFLAGS += \
 	-DTESTS_DATADIR=\""$(top_srcdir)/tests/data"\" \
 	-DCOGL_COMPILATION
 
-libtest_fixtures_la_CFLAGS = -g3 -O0 $(COGL_DEP_CFLAGS) $(COGL_EXTRA_CFLAGS)
+libtest_fixtures_la_CFLAGS = -g3 -O0 $(COGL_DEP_CFLAGS) $(COGL_EXTRA_CFLAGS) -Wno-error=maybe-uninitialized -Wno-error=nested-externs -Wno-error=missing-prototypes
 
 libtest_fixtures_la_SOURCES = \
 	test-unit.h \

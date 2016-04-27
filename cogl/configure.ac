@@ -328,6 +328,7 @@ AS_CASE(
 
 # strip leading spaces
 COGL_EXTRA_CFLAGS="$COGL_EXTRA_CFLAGS ${MAINTAINER_CFLAGS#*  }"
+COGL_EXTRA_CFLAGS="$COGL_EXTRA_CFLAGS -Wno-error=sign-compare"
 
 
 dnl     ============================================================
