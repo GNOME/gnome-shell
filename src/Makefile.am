@@ -12,7 +12,7 @@ SUBDIRS = gvc
 
 -include $(INTROSPECTION_MAKEFILE)
 INTROSPECTION_GIRS =
-INTROSPECTION_SCANNER_ARGS = --warn-all --warn-error --add-include-path=$(srcdir) --add-include-path=$(MUTTER_GIR_DIR)
+INTROSPECTION_SCANNER_ARGS = --warn-all --warn-error --add-include-path=$(srcdir) --add-include-path=$(MUTTER_GIR_DIR) -L$(MUTTER_TYPELIB_DIR)
 INTROSPECTION_COMPILER_ARGS = --includedir=$(srcdir) --includedir=$(MUTTER_TYPELIB_DIR)
 
 typelibdir = $(pkglibdir)
@@ -201,6 +201,7 @@ gnome_shell_CPPFLAGS = \
 # Here, and after, we repeat mutter and bluetooth libraries just for the rpath
 # The dependency is already pulled in by libtool
 gnome_shell_LDADD = libgnome-shell.la libgnome-shell-js.la $(GNOME_SHELL_LIBS) $(MUTTER_LIBS)
+gnome_shell_LDFLAGS = -rpath $(MUTTER_TYPELIB_DIR)
 gnome_shell_DEPENDENCIES = libgnome-shell.la
 
 gnome_shell_extension_prefs_SOURCES = \
