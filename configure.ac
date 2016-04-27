@@ -99,6 +99,7 @@ SHARED_PCS="gio-unix-2.0 >= $GIO_MIN_VERSION
             $recorder_modules
             gdk-x11-3.0 libsoup-2.4
             mutter-clutter-1.0 >= $CLUTTER_MIN_VERSION
+            mutter-cogl-pango-1.0
             libstartup-notification-1.0 >= $STARTUP_NOTIFICATION_MIN_VERSION
             gobject-introspection-1.0 >= $GOBJECT_INTROSPECTION_MIN_VERSION
             libcanberra libcanberra-gtk3
