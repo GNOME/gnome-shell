@@ -1,3 +1,16 @@
+3.21.1
+======
+* Save screencasts in HOME if XDG_VIDEO_DIR doesn't exist [Florian; #765015]
+* Don't show orientation lock when g-s-d won't rotate [Florian; #765267]
+* Misc. bug fixes [Heiher, Florian, Marek, Rui; #722752, #765061, #763068,
+  #765607, #757676, #760439]
+
+Contributors:
+  Heiher, Marek Chalupa, Rui Matos, Florian Müllner
+
+Translations:
+  Arash Mousavi [fa], Kristjan SCHMIDT [eo], GNOME Translation Robot [gd]
+
 3.20.1
 ======
 * Plug a memory leak [Aaron; #735705]
