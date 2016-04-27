@@ -1,0 +1,13 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@/mutter
+includedir=@includedir@/mutter
+apiversion=1.0
+requires=@COGL_PKG_REQUIRES@ mutter-cogl-1.0
+
+Name: Cogl
+Description: A 2D path drawing library for Cogl
+Version: @COGL_1_VERSION@
+Libs: -L${libdir} -lmutter-cogl-path
+Cflags: -I${includedir}/cogl
+Requires: ${requires}
