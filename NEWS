@@ -1,3 +1,18 @@
+3.21.1
+======
+* Notify clients of pending modifier state changes [Rui; #748526]
+* Add get_is_builtin_display_on() method [Florian; #765267]
+* Fix 2-finger titlebar taps on wayland [Carlos; #764519]
+* Merge clutter and cogl forks into mutter [Rui; #760439]
+* Misc. bug fixes [Florian, Victor, Jonas; #765058, #765252, #765062]
+
+Contributors:
+  Jonas Ådahl, Emmanuele Bassi, Olivier Fourdan, Carlos Garnacho, Rui Matos,
+  Florian Müllner, Victor Toso, Rico Tzschichholz
+
+Translations:
+  GNOME Translation Robot [ja, gd]
+
 3.20.1
 ======
 * Constrain window move/resizes on wayland as on X11 [Rui; #748819]
