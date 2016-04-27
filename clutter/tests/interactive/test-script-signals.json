@@ -1,0 +1,68 @@
+[
+  {
+    "id" : "button",
+    "type" : "ClutterRectangle",
+
+    "width" : "16 em",
+    "height" : "6 em",
+
+    "color" : "rgb(255, 0, 0)",
+    "opacity" : 128,
+
+    "scale-gravity" : "center",
+
+    "reactive" : true,
+
+    "signals" : [
+      {
+        "name" : "button-press-event",
+        "handler" : "on_button_press"
+      },
+      { "name" : "enter-event", "states" : "button-states", "target-state" : "hover" },
+      { "name" : "leave-event", "states" : "button-states", "target-state" : "base" },
+      { "name" : "button-press-event", "states" : "button-states", "target-state" : "active" },
+      { "name" : "button-release-event", "states" : "button-states", "target-state" : "hover" }
+    ]
+  },
+
+  {
+    "id" : "button-states",
+    "type" : "ClutterState",
+
+    "duration" : 250,
+
+    "transitions" : [
+      {
+        "source" : null,
+        "target" : "base",
+
+        "keys" : [
+          [ "button", "opacity", "linear", 128 ],
+          [ "button", "scale-x", "ease-in-cubic", 1.0 ],
+          [ "button", "scale-y", "ease-in-cubic", 1.0 ],
+          [ "button", "color", "linear", "rgb(255, 0, 0)" ]
+        ]
+      },
+      {
+        "source" : null,
+        "target" : "hover",
+
+        "keys" : [
+          [ "button", "opacity", "linear", 255 ],
+          [ "button", "scale-x", "ease-out-bounce", 1.4 ],
+          [ "button", "scale-y", "ease-out-bounce", 1.4 ],
+          [ "button", "color", "linear", "rgb(0, 255, 0)" ]
+        ]
+      },
+      {
+        "source" : null,
+        "target" : "active",
+
+        "keys" : [
+          [ "button", "opacity", "linear", 255 ],
+          [ "button", "color", "linear", "rgb(0, 0, 255)" ]
+        ]
+      }
+    ]
+  }
+]

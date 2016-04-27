@@ -1,0 +1,29 @@
+[
+  {
+    "type" : "ClutterRectangle",
+    "id" : "foo",
+    "x" : 0,
+    "y" : 0,
+    "width" : 100,
+    "height" : 100
+  },
+  {
+    "type" : "ClutterAnimator",
+    "id" : "animator",
+    "duration" : 1000,
+
+    "properties" : [
+      {
+        "object" : "foo",
+        "name" : "x",
+        "ease-in" : true,
+        "interpolation" : "linear",
+        "keys" : [
+          [ 0.0, "easeInCubic",  100.0 ],
+          [ 0.2, "easeOutCubic", 150.0 ],
+          [ 0.8, "linear",       200.0 ]
+        ]
+      }
+    ]
+  }
+]

@@ -1,0 +1,21 @@
+[
+  { "id" : "manager", "type" : "ClutterBoxLayout" },
+
+  {
+    "id" : "container", "type" : "ClutterBox",
+    "layout-manager" : "manager",
+    "children" : [
+      {
+        "id" : "actor-1", "type" : "ClutterRectangle",
+        "layout::x-fill" : true,
+        "layout::y-align" : "center",
+        "layout::expand" : true
+      }, {
+        "id" : "actor-2", "type" : "ClutterRectangle",
+        "layout::x-fill" : false,
+        "layout::y-align" : "end",
+        "layout::expand" : false
+      }
+    ]
+  }
+]

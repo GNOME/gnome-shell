@@ -1,0 +1,8 @@
+{
+  "id" : "test",
+  "type" : "ClutterBehaviourOpacity",
+  "alpha" : {
+    "mode" : "easeOutCirc",
+    "timeline" : { "duration" : 500 }
+  }
+}

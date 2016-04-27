@@ -1,0 +1,38 @@
+Outline of test categories:
+
+The conform/ tests should be non-interactive unit-tests that verify a single
+feature is behaving as documented. Use the GLib and Clutter test API and macros
+to write the test units. The conformance test suites are meant to be used with
+continuous integration builds.
+
+The performance/ tests are performance tests, both focused tests testing single
+metrics and larger tests. These tests are used to report one or more
+performance markers for the build of Clutter. Each performance marker is picked
+up from the standard output of running the tests from strings having the form
+"\n@ marker-name: 42.23" where 'marker-name' and '42.23' are the key/value pairs
+of a single metric. Each test can provide multiple key/value pairs. Note that
+if framerate is the feedback metric the test should forcibly enable FPS
+debugging itself. The file test-common.h contains utility function helping to
+do fps reporting.
+
+The interactive/ tests are any tests whose status can not be determined without
+a user looking at some visual output, or providing some manual input etc. This
+covers most of the original Clutter tests. Ideally some of these tests will be
+migrated into the conform/ directory.
+
+The accessibility/ tests are tests created to test the accessibility support of
+clutter, testing some of the atk interfaces.
+
+Other notes:
+
+• All tests should ideally include a detailed description in the source
+explaining exactly what the test is for, how the test was designed to work,
+and possibly a rationale for the approach taken for testing. Tests for specific
+bugs should reference the bug report URL or number.
+
+• When running tests under Valgrind, you should follow the instructions
+available here:
+
+        https://wiki.gnome.org/Valgrind
+
+and also use the suppression file available in the Git repository.

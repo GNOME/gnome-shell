@@ -1,0 +1,17 @@
+{
+  "id" : "test-model",
+  "type" : "ClutterListModel",
+  "columns" : [
+    [ "text-column", "gchararray" ],
+    [ "int-column", "gint" ],
+    [ "actor-column", "ClutterRectangle" ]
+  ],
+  "rows" : [
+    [ "text-row-1", 1, null ],
+    [ "text-row-2", 2, { "type" : "ClutterRectangle", "color" : "blue" } ],
+    {
+      "int-column" : 3,
+      "actor-column" : { "type" : "ClutterRectangle", "name" : "actor-row-3" }
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+[
+  {
+    "type" : "ClutterRectangle",
+    "id" : "rect",
+    "width" : 100,
+    "height" : 100
+  },
+  {
+    "type" : "ClutterState",
+    "id" : "state",
+
+    "transitions" : [
+      {
+        "source" : "base",
+        "target" : "clicked",
+        "duration" : 250,
+
+        "keys" : [
+          [ "rect", "opacity", "linear", 128 ]
+        ]
+      },
+      {
+        "source" : "clicked",
+        "target" : "base",
+        "duration" : 150,
+
+        "keys" : [
+          [ "rect", "opacity", "linear", 255 ]
+        ]
+      }
+    ]
+  }
+]

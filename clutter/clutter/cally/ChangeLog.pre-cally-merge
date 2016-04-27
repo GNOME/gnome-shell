@@ -1,0 +1,986 @@
+# DO NOT MODIFY THIS FILE
+#
+# Clutter uses the Git commit log to generate the ChangeLog files when
+# creating the tarball for releases and snapshots. This file is maintained
+# only for historical reasons.
+
+2010-07-05 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Cleaning ClutterText
+
+  * Removing superfluous g_return_if_fail
+  * Removing unused ClutterText::text-changed callback
+
+2010-07-05 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Refactoring "window:create" and "window:destroy" emission code
+
+Previously "window:create" and "window:destroy" were emitted on
+CallyUtil. Although it works, and CallyUtil already have callbacks to
+stage_added/removed signals, I think that it is more tidy/clear to do
+that on CallyRoot:
+
+  * CallyRoot already has code to manage ClutterStage addition/removal
+
+  * In fact, we can see CallyRoot as the object exposing the a11y
+    information from ClutterStageManager, so it fits better here.
+
+  * CallyUtil callbacks these signals are related to key event
+    listeners (key snooper simulation). One of the main CallyUtil
+    responsabilities is managing event (connecting, emitting), so I
+    would prefer to not start to add/mix more functionalities here.
+
+Ideally it would be better to emit all CallyStage methods from
+CallyStage, but it is clear that "create" and "destroy" are more easy
+to emit from a external object.
+
+2010-06-25 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Cleaning clutter-actor
+
+Some cleaning changes:
+  * Using CallyActionFunc instead of ACTION_FUNC
+  * Removing a extra * on cally-actor-private macro documentation, to
+    avoid gtk-doc warnings
+  * Using g_strcmp0 instead of strcmp
+
+Changes to be applied on clutter (see CB#2097 and CB#2098), applied
+also here to maintain the sync. My intention is keep this developing line
+until the real integration, in order to make a final independent cally
+release.
+
+2010-06-14 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Adding -Wshadow option and solving warnings related
+
+
+2010-06-14 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Added dummy padding for future vt expasion
+
+Added dummy padding on the different classes structures, to allow
+future expansion of virtual methods.
+
+I decided to add this on all the classes, although it would be
+really unlikely in some cases (ie, CallyGroup)
+
+2010-06-10 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Adding and emitting "window:xxx" methods on CallyStage
+
+Added some window related signals on CallyStage:
+
+  * window:activate and window:deactivate emitted from CallyStage
+  * window:create and window:destroy emitted from CallyUtil
+
+ClutterStage doesn't fulfill 100% the window concept, but some of
+these signals are important in order to identify the object which
+could emit global/key events.
+
+The current implementation is equivalent to GailWindow one, supposing
+CallyStage as the only window related window. This likely would change
+in any clutter-based toolkit implement a real Window object, so a more
+flexible procedure would be required. But we would solve problems step
+by step.
+
+BTW: as I explain here [1] I really think that the current way to
+implement "window:xxx" signals (not defined in ATK but expected from
+the a11y implementation toolkit) somewhat hacky and undocumented (you
+need to check at-spi2 idls to know that you require to emit this
+events)
+
+Related to bug CB#2147 (Orca doesn't speech out properly non
+printable chars on some environments), as solves this problem
+in a specific case.
+
+[1] https://bugzilla.gnome.org/show_bug.cgi?id=620977#c1
+
+2010-06-04 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Avoiding clutter_stage_get_key_focus warning
+
+For any reason, in some cases, a clutter actor doesn't have a stage
+associated. We use the default one as fallback.
+
+2010-06-02 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Added a defunct check on cally_group_get_n_children
+
+Some warnings appeared when we tried to get the number
+of children of a defunct object.
+
+2010-06-02 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Update TODO file
+
+Use Bugzilla to setting missing features.
+
+2010-06-01 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Removing heuristics to decide CallyRectable/CallyTexture role
+
+Previously CallyRectangle and CallyTexture used some heuristics in
+order to decide the default role: ATK_ROLE_IMAGE or
+ATK_PUSH_BUTTON, as in practice most applications using these
+objects as buttons were not applying the proper role.
+
+As this is a hack, and a application responsibility, finally we
+have decided to remove this, so the default role is ATK_ROLE_IMAGE.
+
+Fixes CB#1732 (CallyTexture and CallyRectangle uses some heuristics to
+decide the role)
+
+2010-05-28 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Post-release version bump, after release 1.2.0
+
+I wrongly added the last commit on the 1.1 branch, when in fact it
+requires clutter 1.3.3, and on the README it is explained that
+cally versioning is tied to clutter versioning. In order to solve
+that a clutter-1.2 release branch is created, and bumped the version.
+
+This versioning tyding will be obsolete when the integration with
+clutter become a reality, but in the same way, this is the way to
+tidy this thinking in this integration.
+
+2010-04-13 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Use clutter_actor_get_accessible
+
+The method clutter_actor_get_accessible was added due work on
+bug 2070, and should be used to get the accessibility object,
+instead of atk_gobject_accessible_for_object
+
+This would allow to implement a11y support directly on
+any clutter based toolkit object (ie StLabel).
+
+2010-05-13 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Added CallyClone example
+
+
+2010-05-13 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Added a11y support for ClutterClone
+
+Resolved in the most simplified way, just as a image and a
+default description to identify cloned objects.
+
+More information:
+http://lists.o-hand.com/clutter/3797.html
+
+2010-04-14 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Remove gail dependency
+
+Removed to avoid gdk/gtk dependency on cally.
+
+Part of bug CB#2072 solution
+
+2010-04-14 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Avoid gdk functions filling AtkKeyEventStruct
+
+Now when AtkKeyEventStruct is filled in order to emit any key event
+signal, it is not used any gdk function on the keyval or the
+string fields.
+
+event_string is filled with the printable character if possible, if
+not (Ctrl, Alt, etc) it is set as NULL.
+
+Now the AT should take care of that, at least until we define atk key
+event struct in a more agnostic way (not tied to gdk/gtk). See orca
+bug bgo#616206 as a example.
+
+Part of bug CB#2072 solution.
+
+2010-04-15 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Added gail_misc_layout_get_run_attributes implementation
+
+Part of bug CB#2072 solution
+
+2010-04-14 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Remove gailutil/gailmisc functions calls
+
+This is because gailutil/gailmisc added a gdk/gtk dependency, and
+this dependency is being removed. New cally-specific implementation
+are required.
+
+Related to bug CB#1733
+
+Part of bug CB#2072 solution
+
+2010-04-13 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Fixing the libdir directory in some examples
+
+
+2010-03-26 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Previous cally.pc.in update was incomplete
+
+The previous commit was not tested properly, and it was missing one
+detail. Sorry for the noise.
+
+2010-03-26 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Update cally.pc.in after module relocation
+
+Previous commit places cally module in a different directory.
+It also corrects where the include directory is placed.
+
+2010-03-15 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Use a proper clutter module directory
+
+Use a proper clutter module directory, instead of keep being
+installed on a gtk directory.
+
+Improve the cally-examples-util, in order to keep using
+hardcoded values.
+
+Fixes CB#1737 (Wrong cally module directory)
+
+2010-03-15 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Proper UTF-8 headers
+
+
+2010-02-25 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Change "--with-dbus" option for "atk-bridge-dir" on examples
+
+The atk-adaptor in the dbus at-spi was renamed to atk-bridge due
+some apps hardcoding the name. So right now the only difference
+is the final directory.
+
+So the option was removed, and atk-bridge-dir added. This also allows
+to use the system atk-bridge or the compiled in any developing environment,
+so it is really more flexible.
+
+See the README (updated with this commit) for more information.
+
+2010-02-19 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Added .gitignore file
+
+
+2010-02-19 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Release 1.1.1
+
+
+2010-02-19 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Using clutter_threads_idle_add instead of the gdk one
+
+The idea is being as less gdk dependent as possible. Right now
+it is inviable to remove the dependency (gailutil and so on) but
+hypothetically, the ideal is remove this dependency in the future,
+and being "clutter pure".
+
+2010-02-15 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Check if the state is defunct on cally_text_get_name
+
+Check if the state is defunct on cally_text_get_name, in order
+to avoid warnings cally clutter_text_get_text when the clutter
+object is NULL
+
+2010-01-26 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Update on configure.ac after autoupdate call
+
+
+2010-02-02 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Try to apply the key modifiers to event->keyval like GDK does
+
+ClutterKeyEvent defines the keyval without taking into account the
+modifiers. GDK defines this keyval taking into account the modifiers.
+
+AtkKeyEventStruct expects the keyval in a GDK fashion, so a
+translation is required.
+
+This patch tries to do that using using
+gdk_keymap_translate_keyboard_state.
+
+This functions only works correctly if gtk has been initialized, so
+the fallback is create the AtkKeyEventStruct with the keyval
+provided by Clutter.
+
+More information:
+http://library.gnome.org/devel/atk/stable/AtkUtil.html#AtkKeyEventStruct
+http://bugzilla.openedhand.com/show_bug.cgi?id=1961
+
+2010-02-02 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Filling AtkKeyEventStruct->string used on the atk key event listeners
+
+Finally we use directly gdk_keyval_name. Not the ideal solution, but works,
+and more important, it avoids to reimplement this issue on clutter or cally.
+
+More information on Bug 1952
+
+Fixes http://bugzilla.openedhand.com/show_bug.cgi?id=1952
+
+2010-01-22 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Added AM_PROG_CC_C_O option to avoid a warning running configure
+
+
+2010-01-22 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Fix clutter version required on the pc files
+
+
+2010-01-22 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Check on configure time if any x11 clutter backend is in use
+
+It uses AC_CHECK_LIB in order to check if x11 backend is in use.
+It also modifies cally-actor in order to use the information
+retrieved.
+
+So now cally has a minimum multi-backend support. It only manages
+a x11 (glx or eglx) backend, but at least, it checks it, so you
+can compile cally without this backend. It probably will not work
+properly, but at least you can compile and execute it.
+
+Solves http://bugzilla.openedhand.com/show_bug.cgi?id=1736
+
+2010-01-21 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Fix the perspective problems computing the on-screen extensions
+
+Use clutter_actor_get_abs_allocation_vertices and
+clutter_actor_get_transformed_size to get the real on-screen
+position and size, instead of compute that using the geometry
+and the anchor point.
+
+It also update cally-atkcomponent-example, adding a actor inside
+a nested ClutterGroup hierarchy.
+
+Fixes: http://bugzilla.openedhand.com/show_bug.cgi?id=1731
+
+2010-01-13 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Added extra button on cally-atkeditabletext-example
+
+Added a button to print the current cursor position, and also
+extend the size of the buttons
+
+2010-01-12 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Remove superfluous g_print on CallyStage
+
+
+2009-12-03 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Use clutter_stage_manager_peek_stages to avoid a leak
+
+
+2009-12-03 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Added ATK_STATE_SELECTABLE_TEXT management
+
+
+2009-11-26 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Manage properly ATK_STATE_ACTIVE on CallyStage
+
+* cally/cally-stage.c
+Added private struct
+(cally_stage_class_init),(cally_stage_init),(cally_stage_real_initalize):
+Initialization stuff
+(cally_stage_activate_cb)
+(cally_stage_deactivate_cb): new ClutterStage signal callbacks, change
+the internal value of active, and notify the atk state change
+(cally_stage_ref_state_set): manage ATK_STATE_ACTIVATE
+* examples/cally-atktext-example2.c
+If possible, creates two stage, in order to test ATK_STATE_ACTIVATE
+
+2009-11-24 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Focused state change and focused object notification
+
+* cally/cally-actor.h
+(focus_clutter): added virtual method for the focus management
+* cally/cally-actor.c
+(cally_actor_component_interface_init)
+(cally_actor_add_focus_handler)
+(cally_actor_remove_focus_handler):
+Implementation of the AtkComponent methods add_focus_handler and
+remove_focus_handler
+(cally_actor_focus_event): CallyActor specific focus handler, notify
+the state focused change
+(cally_actor_focus_clutter)
+(cally_actor_real_focus_clutter):
+Handlers for the ClutterActor "key-focus-in" and "key-focus-out"
+signals. Emit the signal AtkObject "focus_event" and set the focus
+object with atk_focus_tracker_notify.
+(cally_actor_initialize):
+Connect to the signals "key-focus-in" and "key-focus-out", use
+atk_component_add_focus_handler to add cally_actor_focus_event
+
+Note: The focus management is more simplified that the gail one. The
+main reason is that the focus management in GTK is really more complex
+that the Clutter one.
+
+2009-11-24 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Modify cally-atkeditabletext-example.c to manage "activatable" status
+
+
+2009-11-24 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Added "activate" action in ClutterText
+
+* cally/cally-actor.h
+* cally/cally-actor.c
+cally_actor_add_action now returns the action id added. Documentation
+added in order to explain the return values and others.
+
+* cally/cally-text.c
+Added action "activate". This action is only available if the ClutterText is
+activatable, so the "activatable" property is tracked in the notify
+
+2009-11-20 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Signal event emission
+
+Emits the signals "text_selection_changed", "text_caret_moved",
+"text_changed::insert", "text_changed::delete", and notify the
+ATK_STATE_EDITABLE state change.
+
+It also adds the ATK_STATE_EDITABLE in the ref_state_set, includes a
+finalize to clean the new private data used, and move part of the
+initialization from the _init to the _real_initialization.
+
+2009-12-03 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Remove the ATK_STATE_DEFUNCT emission
+
+Remove the ATK_STATE_DEFUNCT emission, as this is already made by
+AtkGObjectAccessible.
+
+It also removes the clutter actor from the private structure, as we
+can use the AtkGObjectAccessible API to obtain it. This makes the code
+more coherent, with respect of the rest of the Cally classes
+implementation.
+
+2009-11-26 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Remove ; from the CALLY_GET_CLUTTER_ACTOR macro
+
+
+2009-11-25 Alejandro Piñeiro <apinheiro@igalia.com>
+
+TODO cleanup and more implementation notes
+
+* TODO: removed the data that we have in the bugzilla or in the implementation
+  notes on the cally source
+* cally/cally-actor.c: complete implementations notes
+* cally/Makefile.am: add a comment related to the public headers, and include
+  Makefile.in in the MAINTAINERCLEANFILES
+
+2009-11-13 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Adding new tips on CODING_STYLE
+
+
+2009-11-09 Alejandro Piñeiro <apinheiro@igalia.com>
+
+AtkEditableText implementation on CallyText
+
+* examples/Makefile.am
+* examples/cally-atkeditabletext-example.c: New example added
+* cally/cally-text.c
+
+Interface AtkEditableText implemented, except some methods:
+  * Missing ClipBoard feature on Clutter:
+      paste_text
+      copy_text
+      cut_text
+  * Missing a equivalent GtkTextTag on Clutter (so the possibility to
+    set run attributes in a range):
+       set_run_attributes
+
+Fixes bug CB#1734
+
+2009-11-03 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Removed DG_DISABLE_CHECKS and DG_DISABLE_CAST_CHECKS from CFLAGS
+
+* configure.ac: Removed DG_DISABLE_CHECKS and DG_DISABLE_CAST_CHECKS
+  from the common CFLAGS options
+* cally/cally-actor.c: fixed cast errors on some return values, not
+  detected previously because of the use of relaxed compilation
+  options
+
+Problem detected by Mario SÃ¡nchez Prada <msanchez@igalia.com>
+
+2009-10-28 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Support for multiple stages
+
+* cally-root.c
+* cally-stage.c
+* cally-util.c
+Implemented the support for multiple stages, by tracking the signals
+stage-added and stage-removed of the ClutterStageManager.
+
+In the same way CallyRoot has implement properly the atk_object_initialize,
+and in general now is more tied to ClutterStageManager (CallyRoot is now
+the a11y object of ClutterStageManager), but factory not required anyway,
+as it is instanced on the CallyUtil atk_get_root
+
+Fixes: CB#1754 (Missing multi-stage support)
+
+2009-10-27 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Implemented atk_[add/remove]_key_event_listener on CallyUtil
+
+* cally/cally-util.c:
+  Implemented atk_[add/remove]_key_event_listener
+* examples/cally-atktext-example2.c:
+  Modified in order to install and remove key event listeners,
+  for testing purposes
+
+Fixes CB#1852 (AtkUtil implementation misses
+atk_[add/remove]_key_event_listener)
+
+2009-10-21 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Implemented atk-[add/remove]-global-event-listener on CallyUtil
+
+ * cally/cally-util.c:
+   Implemented atk-[add/remove]-global-event-listener on CallyUtil
+ * examples/Makefile.am
+ * examples/cally-atktext-example2.c
+   New example in order to test easier the event emission on focus
+   change (not working right now)
+
+2009-10-12 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Add --with-dbus option executing the examples
+
+The replacement for atk-bridge on at-spi-dbus has a different name
+(atk-adaptor), and it has not defined the method gnome_accessibility_init.
+The --with-dbus option allow to load the correct library and use the
+correct hook method if you are using at-spi-dbus.
+
+Anyway, take into account that this is just an example, and in a final
+environment, this should be made in a more general way.
+
+More information: CB#1738, CB#1737
+
+2009-09-25 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Symplifying shave support.
+
+
+2009-09-25 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Cleanup on the compilation and installation process
+
+* cally/Makefile.am:
+  Added libcallydir and libcally_HEADERS in order to publish all cally
+  headers, as the current policy is use the cally headers as public.
+* configure.ac:
+  Change API_VERSION_MAJOR for CALLY_API_VERSION, as was the real
+  meaning, and define CALLY_VERSION.
+  Change CALLY_OBJ_CFLAGS and CALLY_OBJ_LIBS, used to compile the
+  tests, as was not required to compile against the cally module (the
+  example only required to compile against Clutter, as the cally
+  module was just a module loaded by GModule).
+  Support for Shave.
+
+2009-07-31 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Be able to run the examples without installing Cally
+
+Before that, the examples searched the cally module from the final installed
+directory. This means that you should install the library to use the examples.
+On development this is not desirable. Now it is loaded from ../cally/.libs
+
+This is a little hackish, but more useful, and in the end, it is just a example.
+Probably a best option could be configure that on the command line.
+   $ ./example --cally-dir="mydir"
+
+But just a nitpick.
+
+2009-07-29 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Upgrade to cally-1.0, using clutter-1.0
+
+* NEWS
+* TODO: removed several items, waiting to be moved to the bugzilla
+* configure.ac
+* examples/cally-examples-util.c
+
+2009-07-27 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Fixed return value of cally_actor_get_index_in_parent
+
+Bug and solutiond pointed by Gerd Kohlberger
+
+2009-06-30 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Added the implementation of most AtkText methods for CluttetText (CallyText)
+
+It remains some methods:
+  get_default_attributes
+  get_character_extents
+  get_offset_at_point
+
+The current gail implementation delegate on gailmisc, but this is tied to
+GtkWidget so an equivalent functionality would be implemented (something like
+callymisc), and in the case of get_character_extents, not sure about the layout
+position (see gtk_entry_get_layout_offsets).
+
+I think that worth manage this in a different commit.
+
+In the same way is still missing AtkEditableText support.
+
+2009-07-07 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Added CALLY_GET_CLUTTER_ACTOR macro
+
+This macro was created to simplify how do you get the clutter actor object
+related to the cally object. On CallyActor a private attributte maintains it
+(for convenience, as it is heavily used) but outside, atkgobject methods can
+be used. Note that there is a possibility on the future to change it. Two
+options:
+  * Add a public method to get the clutter object
+  * Use this method on CallyActor too
+
+This macro simplifies this:
+
+CLUTTER_ACTOR (atk_gobject_accessible_get_object (ATK_GOBJECT_ACCESSIBLE (cally_object)))
+
+2009-06-24 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Renamed examples/cally-util.[ch] to examples/cally-examples-util.[ch]
+
+Renamed examples/cally-util.[ch] to examples/cally-examples-util.[ch] to avoid
+confusion with cally/cally-util.[ch], implementation of the AtkUtil interface
+
+2009-06-23 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Adding examples directory
+
+* NEWS: Updates
+* configure.ac
+* Makefile.am
+* cally/Makefile.am
+* examples/Makefile.am: New
+* examples/cally-util.[ch]: New
+* examples/example1.c: New
+Added a directory in order to put examples. In this way we don't require any
+external clutter app to make the basic a11y functionality checks. At this
+moment only an example was added, but all the compiling structure is working.
+By default the examples are not compiled, use "--enable-examples" on configure
+time in order to enable their compilation.
+
+This basic example basically shows several objects, with different depth, in
+order to check that AtkComponent returns the correct screen position.
+
+Other minor changes done on the building infrastructure.
+
+2009-06-23 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Fix clutter version required
+
+
+2009-06-23 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Solve a problem calling clutter_actor_get_anchor_point
+
+* cally/cally-actor.c:
+(_get_actor_extents): use gfloat instead of gint, as now this clutter_actor_get_anchor_point
+use floats
+
+2009-06-11 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Minor fixes
+
+  * Update TODO
+  * Fix .pc files, to use clutter-0.9 version
+
+2009-05-20 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Library renamed from cail to cally
+
+
+2009-05-08 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Removed cail-clone-texture.h from cail.h
+
+* cail/cail.h: Removed reference to cail-clone-texture.h
+
+2009-05-08 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Upgrade to cail-0.9, using clutter-0.9, first compilable version
+
+* NEWS: new file with the information of the releases
+* TODO: updated
+* configure.ac: updated clutter version to compile against
+* cail/cail-clone-texture.[ch]: Removed as ClutterCloneTexture was removed on Clutter 0.9.0
+* cail/cail-label.[ch]: Removed as ClutterLabel was removed on Clutter 0.9.0
+* cail/Makefile.am: updated due the source files removed
+* cail/cail-actor.c: removed include to <clutter/clutter-actor.h>
+* cail/cail.c: removed the factories for CailLabel and CailCloneTexture
+
+2009-05-07 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Reflect change on the version number policy
+
+* README: correct some typos and explain that the cail version number
+is tied to the clutter version number and how
+* configure.ac
+Set the version number to 0.8.0
+
+2009-05-07 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Edit the ChangeLog file, to show that now we are using git
+
+* ChangeLog.SVN: new file, with the ChangeLog used while cail was
+using a Subversion repository
+* ChangeLog: now is empty, and only maintains a reference to use git log
+
+2009-04-29 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Coding style review
+
+* CODING_STYLE
+* cail/Makefile.am
+* cail/cail-actor-private.[ch]
+* cail/cail-actor.h
+* cail/cail-clone-texture.[ch]
+* cail/cail-group.[ch]
+* cail/cail-label.[ch]
+* cail/cail-rectangle.[ch]
+* cail/cail-root.[ch]
+* cail/cail-stage.[ch]
+* cail/cail-texture.[ch]
+* cail/cail-util.[ch]
+* cail/cail.c
+
+2009-04-28 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Coding style review: cail-actor.c
+
+
+2009-04-21 Alejandro Piñeiro <apinheiro@igalia.com>
+
+2009-04-21 Alejandro Pinheiro <apinheiro@igalia.com>
+
+	* TODO: updated TODO file
+
+2009-04-21 Alejandro Piñeiro <apinheiro@igalia.com>
+
+2009-03-06 Alejandro Pinheiro <apinheiro@igalia.com>
+
+	* AUTHORS: update authors file to public release
+
+2009-03-06 Alejandro Piñeiro <apinheiro@igalia.com>
+
+2009-03-06 Alejandro Pinheiro <apinheiro@igalia.com>
+
+	* debian/control
+	Added cdbs dependency, renamed debugging package
+	* debian/libcail-common-dbg.dirs: new file
+	* debian/libcail-common.dirs
+	* debian/libcail-common.install
+	Minor changes
+
+2009-03-05 Alejandro Piñeiro <apinheiro@igalia.com>
+
+2009-03-05 Alejandro Pinheiro <apinheiro@igalia.com>
+
+	* TODO
+	Added TODO file, in order to list the remaining tasks.
+
+2009-03-05 Alejandro Piñeiro <apinheiro@igalia.com>
+
+2009-03-05 Alejandro Pinheiro <apinheiro@igalia.com>
+
+	* configure.ac
+	* cail/cail.c
+	* cail/cail-util.c
+	* Makefile.am
+	Removed all the missing gtk related stuff
+
+2009-03-05 Alejandro Piñeiro <apinheiro@igalia.com>
+
+2009-03-05 Alejandro Pinheiro <apinheiro@igalia.com>
+
+	* cail/cail-actor.c
+	(_get_actor_extents): managing too the anchor point to compute the position
+	(_get_top_level_origin): reimplemented using x11 functions, removed
+	gtk/gdk related functions, and taking into account the relative position
+	inside the parent (previous position calculation was wrong if a child
+	was not a direct stage child)
+	* cail/clutter-gtk/cail-clutter-embed.[ch]
+	* cail/clutter-gtk/cail-gtk-factory.h
+	Removed, in order to remove any gtk dependency
+	* cail/debian/control: removed gtk dependency
+
+2009-03-03 Alejandro Piñeiro <apinheiro@igalia.com>
+
+2009-03-03 Alejandro Pinheiro <apinheiro@igalia.com>
+
+	* cail/cail-actor-private.[ch]: new files to private utility functions
+	(_cail_actor_pushable): new function, that checks if a cail actor is
+	pushable by checking if the clutter actor related has a handler for
+	a release event
+	* cail/cail-texture.c
+	* cail/cail-clone-texture.c
+	* cail/cail-rectangle.c
+	Use of new function _cail_actor_pushable
+	* cail-actor.c: Added some documentation related to current implementation
+	* cail-util.c: Code style review
+
+2009-03-02 Alejandro Piñeiro <apinheiro@igalia.com>
+
+2009-03-02 Alejandro Pinheiro <apinheiro@igalia.com>
+
+	* cail/cail-label.[ch]: new
+	* cail/cail.[ch]
+	(cail_accessibility_module_init)
+	* cail/Makefile.am
+	Added CailLabel, a11y object for ClutterLabel
+
+2009-02-27 Alejandro Piñeiro <apinheiro@igalia.com>
+
+2009-02-27 Alejandro Pinheiro <apinheiro@igalia.com>
+
+	* cail/cail-actor.c
+	(cail_actor_real_remove_actor)
+	Fixed a typo that causes a crash while removing the actor from a
+	container
+
+2009-02-26 Alejandro Piñeiro <apinheiro@igalia.com>
+
+2009-02-26 Alejandro Pinheiro <apinheiro@igalia.com>
+
+	* cail/cail-actor.c
+	(cail_actor_remove_actor)
+	(cail_actor_add_actor)
+	Fixed a typo calling klass->add_actor and klass->remove_actor that causes
+	a crash in some (container,actor) combinations
+
+	(cail_actor_real_add_actor)
+	Additional parameter check
+
+2009-02-25 Alejandro Piñeiro <apinheiro@igalia.com>
+
+Missing cail-rectangle.[ch] files, according 2009-02-23 entry at Changelog
+
+
+2009-02-23 Alejandro Piñeiro <apinheiro@igalia.com>
+
+2009-02-23 Alejandro Pinheiro <apinheiro@igalia.com>
+
+	* cail/cail-rectangle.[ch]
+	* cail/cail.[ch]
+	* cail/Makefile.am
+
+	Added CailRectangle, a11y object for ClutterRectangle
+
+	* cail/cail-group.c
+	* cail/cail-texture.c
+	* cail/cail-stage.c
+
+	Avoid to add a empty private structure, to avoid the glib warning. Anyway
+	the pointer to the private structure is still on the .h, to allow future
+	add-on.
+
+2009-02-20 Alejandro Piñeiro <apinheiro@igalia.com>
+
+2009-02-20 Alejandro Pinheiro <apinheiro@igalia.com>
+
+	* cail-actor.[ch]
+	* cail-group.[ch]
+
+	Moved most of the ClutterContainer a11y support from cail-group to
+	cail-actor, in order to generalize this support.
+
+	* cail-stage.[ch]
+	* cail-util.[ch]
+	Normalize the private structure to avoid future problems with missing
+	gaps
+
+2009-02-20 Alejandro Piñeiro <apinheiro@igalia.com>
+
+2009-02-20 Alejandro Pinheiro <apinheiro@igalia.com>
+
+	* cail/cail-actor.c
+	(cail_actor_connect_actor_destroyed): connects to the clutter actor
+	destroy signal
+	(cail_actor_clutter_actor_destroyed): handler to the clutter actor
+	destroy signal, update the priv->actor pointer and notify a state change
+
+	This change allows to be sure about the priv->actor correct value, so we
+	can use directly priv->actor instead of atk_gobject_accessible_get_object
+	in the next functions:
+	(cail_actor_get_parent)
+	(cail_actor_get_index_in_parent)
+	(cail_actor_ref_state_set)
+	(cail_actor_get_extents)
+
+2009-02-19 Alejandro Piñeiro <apinheiro@igalia.com>
+
+2009-02-19 Alejandro Pinheiro <apinheiro@igalia.com>
+
+	* cail/cail-texture.[ch]
+	* cail/cail-clone-texture.[ch]
+	* cail/cail.[ch]
+	* cail/Makefile.am
+
+	Added CailTexture and CailCloneTexture a11y objects for ClutterTexture
+	and ClutterCloneTexture
+
+	* cail/cail-util.c
+
+	Added private structure
+
+2009-02-18 Alejandro Piñeiro <apinheiro@igalia.com>
+
+2009-02-18 Alejandro Pinheiro <apinheiro@igalia.com>
+
+	* cail/cail-actor.c:
+	(cail_actor_get_parent)
+	Return the accessible object of the clutter actor if accessible_parent
+	is not available. Previously it only took into account the these object
+	as a possible parent to return (you can set it with atk_object_set_parent)
+
+2009-02-18 Alejandro Piñeiro <apinheiro@igalia.com>
+
+2009-02-18 Alejandro Pinheiro <apinheiro@igalia.com>
+
+	* cail/cail-group.[ch]: code style review
+	* cail/cail-actor.[ch]: implemented basic support for ClutterContainer
+
+2009-02-18 Alejandro Piñeiro <apinheiro@igalia.com>
+
+2009-02-18 Alejandro Pinheiro <apinheiro@igalia.com>
+
+	* debian/control: updating dependencies
+
+2009-02-18 Alejandro Piñeiro <apinheiro@igalia.com>
+
+2009-02-18 Alejandro Pinheiro <apinheiro@igalia.com>
+
+	* configure.ac: added aditional compile flags
+	* cail/cail-actor.[ch]: Reimplemented support for AtkAction interface
+	* cail/cail-root.[ch]: code style review
+
+2009-02-16 Alejandro Piñeiro <apinheiro@igalia.com>
+
+2009-02-16 Alejandro Pinheiro <apinheiro@igalia.com>
+
+	* First release.

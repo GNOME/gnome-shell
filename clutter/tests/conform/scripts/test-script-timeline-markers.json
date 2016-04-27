@@ -1,0 +1,12 @@
+{
+  "id" : "timeline0",
+  "type" : "ClutterTimeline",
+  "duration" : 1000,
+
+  "markers" : [
+    { "name" : "marker0", "time" : 250 },
+    { "name" : "marker1", "time" : 500 },
+    { "name" : "marker2", "time" : 750 },
+    { "name" : "marker3", "progress" : 0.5 }
+  ]
+}

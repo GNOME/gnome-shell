@@ -1,0 +1,74 @@
+{
+  "My Scene" : {
+    "id" : "main-stage",
+    "type" : "ClutterStage",
+    "title" : { "translatable" : true, "string" : "ClutterScript test" },
+    "color" : "white",
+    "signals" : [
+      { "name" : "key-press-event", "handler" : "clutter_main_quit" },
+      { "name" : "destroy", "handler" : "clutter_main_quit" }
+    ],
+    "children" : [
+      {
+        "id" : "red-button",
+        "type" : "ClutterRectangle",
+        "color" : "#ff0000ff",
+        "x" : 50, "y" : 50, "width" : 100, "height" : 100,
+        "reactive" : true,
+        "rotation" : [
+          { "z-axis" : [ 45.0, [ 75, 75 ] ] }
+        ],
+        "behaviours" : [ "fade-behaviour", "path-behaviour" ]
+      },
+      {
+        "id" : "green-button",
+        "type" : "ClutterRectangle",
+        "color" : "#00ff00ff",
+        "border-width" : 5,
+        "border-color" : "#00cc00ff",
+        "position" : [ 200.0, 50.0 ],
+        "size" : { "width" : 100.0, "height" : 100.0 },
+        "depth" : -200.0,
+        "reactive" : true,
+        "signals" : [
+          { "name" : "button-press-event", "handler" : "clutter_main_quit" }
+        ]
+      }, 
+      {
+        "id" : "red-hand",
+        "type" : "ClutterTexture",
+        "filename" : "redhand.png",
+        "position" : { "x" : 100.0, "y" : 100.0 },
+        "width" : "20 mm",
+        "keep-aspect-ratio" : true,
+        "anchor-x" : "5 em",
+        "anchor-y" : "5 pt",
+        "opacity" : 100,
+        "behaviours" : [ "rotate-behaviour", "fade-behaviour" ]
+      },
+      {
+        "id" : "red-hand-clone",
+        "type" : "ClutterClone",
+        "source" : "red-hand",
+        "position" : [ 250.0, 150.0 ],
+        "opacity" : 100
+      },
+      {
+        "id" : "label",
+        "type" : "ClutterText",
+        "x" : 50,
+        "y" : 200,
+        "text" : { "translatable" : true, "string" : "Clutter Script" },
+        "font-name" : "Sans 24px",
+        "color" : "black",
+        "line-alignment" : "center",
+        "line-wrap" : false,
+        "ellipsize" : "none",
+        "rotation" : [
+          { "y-axis" : [ 60.0, [ 275, 100 ] ] },
+          { "z-axis" : [ 45.0, [  75,  75 ] ] }
+        ]
+      }
+    ]
+  }
+}
