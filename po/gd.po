@@ -1,0 +1,574 @@
+# Scottish Gaelic translation for mutter.
+# Copyright (C) 2016 mutter's COPYRIGHT HOLDER
+# This file is distributed under the same license as the mutter package.
+# GunChleoc <fios@foramnagaidhlig.net>, 2016.
+msgid ""
+msgstr ""
+"Project-Id-Version: mutter master\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=mutter"
+"&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2016-04-28 14:01+0000\n"
+"PO-Revision-Date: 2016-04-28 15:57+0100\n"
+"Last-Translator: GunChleoc <fios@foramnagaidhlig.net>\n"
+"Language-Team: Fòram na Gàidhlig\n"
+"Language: gd\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n==1 || n==11) ? 0 : (n==2 || n==12) ? 1 : "
+"(n > 2 && n < 20) ? 2 : 3;\n"
+"X-Generator: Virtaal 0.7.1\n"
+"X-Project-Style: gnome\n"
+
+#: ../data/50-mutter-navigation.xml.in.h:1
+msgid "Navigation"
+msgstr "Seòladaireachd"
+
+#: ../data/50-mutter-navigation.xml.in.h:2
+msgid "Move window to workspace 1"
+msgstr "Gluais an uinneag gu rum-obrach 1"
+
+#: ../data/50-mutter-navigation.xml.in.h:3
+msgid "Move window to workspace 2"
+msgstr "Gluais an uinneag gu rum-obrach 2"
+
+#: ../data/50-mutter-navigation.xml.in.h:4
+msgid "Move window to workspace 3"
+msgstr "Gluais an uinneag gu rum-obrach 3"
+
+#: ../data/50-mutter-navigation.xml.in.h:5
+msgid "Move window to workspace 4"
+msgstr "Gluais an uinneag gu rum-obrach 4"
+
+#: ../data/50-mutter-navigation.xml.in.h:6
+msgid "Move window to last workspace"
+msgstr "Gluais an uinneag gun rum-obrach mu dheireadh"
+
+#: ../data/50-mutter-navigation.xml.in.h:7
+msgid "Move window one workspace to the left"
+msgstr "Gluais an uinneag gun rum-obrach ris an taobh chlì"
+
+#: ../data/50-mutter-navigation.xml.in.h:8
+msgid "Move window one workspace to the right"
+msgstr "Gluais an uinneag gun rum-obrach ris an taobh deas"
+
+#: ../data/50-mutter-navigation.xml.in.h:9
+msgid "Move window one workspace up"
+msgstr "Gluais an uinneag gun rum-obrach os a chionn"
+
+#: ../data/50-mutter-navigation.xml.in.h:10
+msgid "Move window one workspace down"
+msgstr "Gluais an uinneag gun rum-obrach foidhe"
+
+#: ../data/50-mutter-navigation.xml.in.h:11
+msgid "Move window one monitor to the left"
+msgstr "Gluais an uinneag gun sgrìn aig an taobh chlì"
+
+#: ../data/50-mutter-navigation.xml.in.h:12
+msgid "Move window one monitor to the right"
+msgstr "Gluais an uinneag gun sgrìn aig an taobh deas"
+
+#: ../data/50-mutter-navigation.xml.in.h:13
+msgid "Move window one monitor up"
+msgstr "Gluais an uinneag gun sgrìn os a chionn"
+
+#: ../data/50-mutter-navigation.xml.in.h:14
+msgid "Move window one monitor down"
+msgstr "Gluais an uinneag gun sgrìn foidhe"
+
+#: ../data/50-mutter-navigation.xml.in.h:15
+msgid "Switch applications"
+msgstr "Gearr leum gu aplacaid eile"
+
+#: ../data/50-mutter-navigation.xml.in.h:16
+msgid "Switch to previous application"
+msgstr "Gearr leum gun aplacaid roimhpe"
+
+#: ../data/50-mutter-navigation.xml.in.h:17
+msgid "Switch windows"
+msgstr "Gearr leum gu uinneag eile"
+
+#: ../data/50-mutter-navigation.xml.in.h:18
+msgid "Switch to previous window"
+msgstr "Gearr leum gun uinneag roimhpe"
+
+#: ../data/50-mutter-navigation.xml.in.h:19
+msgid "Switch windows of an application"
+msgstr "Gearr leum gu uinneag eile na h-aplacaid"
+
+#: ../data/50-mutter-navigation.xml.in.h:20
+msgid "Switch to previous window of an application"
+msgstr "Gearr leum gu uinneag roimhpe na h-aplacaid"
+
+#: ../data/50-mutter-navigation.xml.in.h:21
+msgid "Switch system controls"
+msgstr "Gearr leum gu inneal-smachd siostaim eile"
+
+#: ../data/50-mutter-navigation.xml.in.h:22
+msgid "Switch to previous system control"
+msgstr "Gearr leum gun inneal-smachd siostaim roimhe"
+
+#: ../data/50-mutter-navigation.xml.in.h:23
+msgid "Switch windows directly"
+msgstr "Gearr leum gu uinneag eile sa bhad"
+
+#: ../data/50-mutter-navigation.xml.in.h:24
+msgid "Switch directly to previous window"
+msgstr "Gearr leum gun uinneag roimhpe sa bhad"
+
+#: ../data/50-mutter-navigation.xml.in.h:25
+msgid "Switch windows of an app directly"
+msgstr "Gearr leum gu uinneag eile na h-aplacaid sa bhad"
+
+#: ../data/50-mutter-navigation.xml.in.h:26
+msgid "Switch directly to previous window of an app"
+msgstr "Gearr leum gu uinneag roimphe na h-aplacaid sa bhad"
+
+#: ../data/50-mutter-navigation.xml.in.h:27
+msgid "Switch system controls directly"
+msgstr "Gearr leum gu inneal-smachd siostaim eile sa bhad"
+
+#: ../data/50-mutter-navigation.xml.in.h:28
+msgid "Switch directly to previous system control"
+msgstr "Gearr leum gun inneal-smachd siostaim roimhe sa bhad"
+
+#: ../data/50-mutter-navigation.xml.in.h:29
+msgid "Hide all normal windows"
+msgstr "Cuir gach uinneag àbhaisteach am falach"
+
+#: ../data/50-mutter-navigation.xml.in.h:30
+msgid "Switch to workspace 1"
+msgstr "Gearr leum gu rum-obrach 1"
+
+#: ../data/50-mutter-navigation.xml.in.h:31
+msgid "Switch to workspace 2"
+msgstr "Gearr leum gu rum-obrach 2"
+
+#: ../data/50-mutter-navigation.xml.in.h:32
+msgid "Switch to workspace 3"
+msgstr "Gearr leum gu rum-obrach 3"
+
+#: ../data/50-mutter-navigation.xml.in.h:33
+msgid "Switch to workspace 4"
+msgstr "Gearr leum gu rum-obrach 4"
+
+#: ../data/50-mutter-navigation.xml.in.h:34
+msgid "Switch to last workspace"
+msgstr "Gearr leum gun rum-obrach mu dheireadh"
+
+#: ../data/50-mutter-navigation.xml.in.h:35
+msgid "Move to workspace left"
+msgstr "Gluais dhan rum-obrach air an taobh chlì"
+
+#: ../data/50-mutter-navigation.xml.in.h:36
+msgid "Move to workspace right"
+msgstr "Gluais dhan rum-obrach air an taobh deas"
+
+#: ../data/50-mutter-navigation.xml.in.h:37
+msgid "Move to workspace above"
+msgstr "Gluais dhan rum-obrach aig a' bharr"
+
+#: ../data/50-mutter-navigation.xml.in.h:38
+msgid "Move to workspace below"
+msgstr "Gluais dhan rum-obrach aig a' bhonn"
+
+#: ../data/50-mutter-system.xml.in.h:1
+msgid "System"
+msgstr "An siostam"
+
+#: ../data/50-mutter-system.xml.in.h:2
+msgid "Show the run command prompt"
+msgstr ""
+
+#: ../data/50-mutter-system.xml.in.h:3
+msgid "Show the activities overview"
+msgstr "Foir-shealladh air na gnìomhachdan"
+
+#: ../data/50-mutter-windows.xml.in.h:1
+msgid "Windows"
+msgstr "Uinneagan"
+
+#: ../data/50-mutter-windows.xml.in.h:2
+msgid "Activate the window menu"
+msgstr "Gnìomhaich clàr-taice na h-uinneige"
+
+#: ../data/50-mutter-windows.xml.in.h:3
+msgid "Toggle fullscreen mode"
+msgstr "Toglaich am modh làn-sgrìn"
+
+#: ../data/50-mutter-windows.xml.in.h:4
+msgid "Toggle maximization state"
+msgstr "Toglaich staid an làn-mheudachaidh"
+
+#: ../data/50-mutter-windows.xml.in.h:5
+msgid "Maximize window"
+msgstr "Làn-mheudaich an uinneag"
+
+#: ../data/50-mutter-windows.xml.in.h:6
+msgid "Restore window"
+msgstr "Aisig an uinneag"
+
+#: ../data/50-mutter-windows.xml.in.h:7
+msgid "Toggle shaded state"
+msgstr "Toglaich staid an sgàileachaidh"
+
+#: ../data/50-mutter-windows.xml.in.h:8
+msgid "Close window"
+msgstr "Dùin an uinneag"
+
+#: ../data/50-mutter-windows.xml.in.h:9
+msgid "Hide window"
+msgstr "Cuir an uinneag am falach"
+
+#: ../data/50-mutter-windows.xml.in.h:10
+msgid "Move window"
+msgstr "Gluais an uinneag"
+
+#: ../data/50-mutter-windows.xml.in.h:11
+msgid "Resize window"
+msgstr "Atharraich meud na h-uinneige"
+
+#: ../data/50-mutter-windows.xml.in.h:12
+msgid "Toggle window on all workspaces or one"
+msgstr "Toglaich an uinneag air a h-uile rum-obrach no aonan"
+
+#: ../data/50-mutter-windows.xml.in.h:13
+msgid "Raise window if covered, otherwise lower it"
+msgstr "Tog an uinneag nuair a thèid a còmhdachadh air neo ìslich i"
+
+#: ../data/50-mutter-windows.xml.in.h:14
+msgid "Raise window above other windows"
+msgstr "Tog an uinneag os cionn càich"
+
+#: ../data/50-mutter-windows.xml.in.h:15
+msgid "Lower window below other windows"
+msgstr "Ìslich an uinneag fo na h-uinneagan eile"
+
+#: ../data/50-mutter-windows.xml.in.h:16
+msgid "Maximize window vertically"
+msgstr "Làn-mheudaich an uinneag gu h-ingearach"
+
+#: ../data/50-mutter-windows.xml.in.h:17
+msgid "Maximize window horizontally"
+msgstr "Làn-mheudaich an uinneag air a' chòmhnard"
+
+#: ../data/50-mutter-windows.xml.in.h:18
+msgid "View split on left"
+msgstr ""
+
+#: ../data/50-mutter-windows.xml.in.h:19
+msgid "View split on right"
+msgstr ""
+
+#: ../data/mutter.desktop.in.h:1
+msgid "Mutter"
+msgstr ""
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:1
+msgid "Modifier to use for extended window management operations"
+msgstr ""
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:2
+msgid ""
+"This key will initiate the \"overlay\", which is a combination window "
+"overview and application launching system. The default is intended to be the "
+"\"Windows key\" on PC hardware. It's expected that this binding either the "
+"default or set to the empty string."
+msgstr ""
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:3
+msgid "Attach modal dialogs"
+msgstr ""
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:4
+msgid ""
+"When true, instead of having independent titlebars, modal dialogs appear "
+"attached to the titlebar of the parent window and are moved together with "
+"the parent window."
+msgstr ""
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:5
+msgid "Enable edge tiling when dropping windows on screen edges"
+msgstr ""
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:6
+msgid ""
+"If enabled, dropping windows on vertical screen edges maximizes them "
+"vertically and resizes them horizontally to cover half of the available "
+"area. Dropping windows on the top screen edge maximizes them completely."
+msgstr ""
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:7
+msgid "Workspaces are managed dynamically"
+msgstr ""
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:8
+msgid ""
+"Determines whether workspaces are managed dynamically or whether there's a "
+"static number of workspaces (determined by the num-workspaces key in org."
+"gnome.desktop.wm.preferences)."
+msgstr ""
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:9
+msgid "Workspaces only on primary"
+msgstr ""
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:10
+msgid ""
+"Determines whether workspace switching should happen for windows on all "
+"monitors or only for windows on the primary monitor."
+msgstr ""
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:11
+msgid "No tab popup"
+msgstr ""
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:12
+msgid ""
+"Determines whether the use of popup and highlight frame should be disabled "
+"for window cycling."
+msgstr ""
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:13
+msgid "Delay focus changes until the pointer stops moving"
+msgstr ""
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:14
+msgid ""
+"If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
+"the focus will not be changed immediately when entering a window, but only "
+"after the pointer stops moving."
+msgstr ""
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:15
+msgid "Draggable border width"
+msgstr ""
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:16
+msgid ""
+"The amount of total draggable borders. If the theme's visible borders are "
+"not enough, invisible borders will be added to meet this value."
+msgstr ""
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:17
+msgid "Auto maximize nearly monitor sized windows"
+msgstr ""
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:18
+msgid ""
+"If enabled, new windows that are initially the size of the monitor "
+"automatically get maximized."
+msgstr ""
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:19
+msgid "Place new windows in the center"
+msgstr ""
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:20
+msgid ""
+"When true, the new windows will always be put in the center of the active "
+"screen of the monitor."
+msgstr ""
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:21
+msgid "Select window from tab popup"
+msgstr ""
+
+#: ../data/org.gnome.mutter.gschema.xml.in.h:22
+msgid "Cancel tab popup"
+msgstr ""
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:1
+msgid "Switch to VT 1"
+msgstr ""
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:2
+msgid "Switch to VT 2"
+msgstr ""
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:3
+msgid "Switch to VT 3"
+msgstr ""
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:4
+msgid "Switch to VT 4"
+msgstr ""
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:5
+msgid "Switch to VT 5"
+msgstr ""
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:6
+msgid "Switch to VT 6"
+msgstr ""
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:7
+msgid "Switch to VT 7"
+msgstr ""
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:8
+msgid "Switch to VT 8"
+msgstr ""
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:9
+msgid "Switch to VT 9"
+msgstr ""
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:10
+msgid "Switch to VT 10"
+msgstr ""
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:11
+msgid "Switch to VT 11"
+msgstr ""
+
+#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:12
+msgid "Switch to VT 12"
+msgstr ""
+
+#: ../src/backends/meta-monitor-manager.c:515
+msgid "Built-in display"
+msgstr ""
+
+#: ../src/backends/meta-monitor-manager.c:538
+msgid "Unknown"
+msgstr ""
+
+#: ../src/backends/meta-monitor-manager.c:540
+msgid "Unknown Display"
+msgstr ""
+
+#. TRANSLATORS: this is a monitor vendor name, followed by a
+#. * size in inches, like 'Dell 15"'
+#.
+#: ../src/backends/meta-monitor-manager.c:548
+#, c-format
+msgid "%s %s"
+msgstr ""
+
+#. This probably means that a non-WM compositor like xcompmgr is running;
+#. * we have no way to get it to exit
+#: ../src/compositor/compositor.c:456
+#, c-format
+msgid ""
+"Another compositing manager is already running on screen %i on display \"%s"
+"\"."
+msgstr ""
+
+#: ../src/core/bell.c:194
+msgid "Bell event"
+msgstr ""
+
+#: ../src/core/delete.c:127
+#, c-format
+msgid "“%s” is not responding."
+msgstr ""
+
+#: ../src/core/delete.c:129
+msgid "Application is not responding."
+msgstr ""
+
+#: ../src/core/delete.c:134
+msgid ""
+"You may choose to wait a short while for it to continue or force the "
+"application to quit entirely."
+msgstr ""
+
+#: ../src/core/delete.c:141
+msgid "_Wait"
+msgstr ""
+
+#: ../src/core/delete.c:141
+msgid "_Force Quit"
+msgstr ""
+
+#: ../src/core/display.c:555
+#, c-format
+msgid "Failed to open X Window System display '%s'\n"
+msgstr ""
+
+#: ../src/core/main.c:181
+msgid "Disable connection to session manager"
+msgstr ""
+
+#: ../src/core/main.c:187
+msgid "Replace the running window manager"
+msgstr ""
+
+#: ../src/core/main.c:193
+msgid "Specify session management ID"
+msgstr ""
+
+#: ../src/core/main.c:198
+msgid "X Display to use"
+msgstr ""
+
+#: ../src/core/main.c:204
+msgid "Initialize session from savefile"
+msgstr ""
+
+#: ../src/core/main.c:210
+msgid "Make X calls synchronous"
+msgstr ""
+
+#: ../src/core/main.c:217
+msgid "Run as a wayland compositor"
+msgstr ""
+
+#: ../src/core/main.c:223
+msgid "Run as a nested compositor"
+msgstr ""
+
+#: ../src/core/main.c:231
+msgid "Run as a full display server, rather than nested"
+msgstr ""
+
+#: ../src/core/mutter.c:39
+#, c-format
+msgid ""
+"mutter %s\n"
+"Copyright (C) 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
+"This is free software; see the source for copying conditions.\n"
+"There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
+"PARTICULAR PURPOSE.\n"
+msgstr ""
+
+#: ../src/core/mutter.c:53
+msgid "Print version"
+msgstr ""
+
+#: ../src/core/mutter.c:59
+msgid "Mutter plugin to use"
+msgstr ""
+
+#: ../src/core/prefs.c:1997
+#, c-format
+msgid "Workspace %d"
+msgstr ""
+
+#: ../src/core/screen.c:521
+#, c-format
+msgid ""
+"Display \"%s\" already has a window manager; try using the --replace option "
+"to replace the current window manager."
+msgstr ""
+
+#: ../src/core/screen.c:603
+#, c-format
+msgid "Screen %d on display '%s' is invalid\n"
+msgstr ""
+
+#: ../src/core/util.c:121
+msgid "Mutter was compiled without support for verbose mode\n"
+msgstr ""
+
+#: ../src/x11/session.c:1815
+msgid ""
+"These windows do not support &quot;save current setup&quot; and will have to "
+"be restarted manually next time you log in."
+msgstr ""
+
+#: ../src/x11/window-props.c:549
+#, c-format
+msgid "%s (on %s)"
+msgstr ""
