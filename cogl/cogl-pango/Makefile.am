@@ -73,7 +73,7 @@ CoglPango_1_0_gir_LIBS = $(top_builddir)/cogl/libmutter-cogl.la libmutter-cogl-p
 CoglPango_1_0_gir_FILES = $(source_h) $(source_c)
 CoglPango_1_0_gir_CFLAGS = $(AM_CPPFLAGS) $(COGL_DEP_CFLAGS) $(COGL_PANGO_DEP_CFLAGS)
 CoglPango_1_0_gir_INCLUDES = Pango-1.0 PangoCairo-1.0
-CoglPango_1_0_gir_EXPORT_PACKAGES = cogl-pango-1.0
+CoglPango_1_0_gir_EXPORT_PACKAGES = mutter-cogl-pango-1.0
 CoglPango_1_0_gir_SCANNERFLAGS = \
 	--warn-all \
 	--identifier-prefix=CoglPango \
@@ -89,7 +89,7 @@ CoglPango_2_0_gir_LIBS = $(top_builddir)/cogl/libmutter-cogl.la libmutter-cogl-p
 CoglPango_2_0_gir_FILES = $(source_h) $(source_c)
 CoglPango_2_0_gir_CFLAGS = $(AM_CPPFLAGS) $(COGL_DEP_CFLAGS) $(COGL_PANGO_DEP_CFLAGS)
 CoglPango_2_0_gir_INCLUDES = Pango-1.0 PangoCairo-1.0
-CoglPango_2_0_gir_EXPORT_PACKAGES = cogl-pango-2.0-experimental
+CoglPango_2_0_gir_EXPORT_PACKAGES = mutter-cogl-pango-2.0-experimental
 CoglPango_2_0_gir_SCANNERFLAGS = \
 	--warn-all \
 	--identifier-prefix=CoglPango \

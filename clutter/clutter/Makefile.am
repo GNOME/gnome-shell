@@ -643,7 +643,7 @@ Clutter_@CLUTTER_API_VERSION_AM@_gir_INCLUDES = GL-1.0 GObject-2.0 cairo-1.0 Cog
 Clutter_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = \
 	--warn-all \
 	--c-include='clutter/clutter.h' \
-	--pkg-export=clutter-@CLUTTER_API_VERSION@
+	--pkg-export=mutter-clutter-@CLUTTER_API_VERSION@
 
 INTROSPECTION_GIRS += Clutter-@CLUTTER_API_VERSION@.gir
 
@@ -657,7 +657,7 @@ Cally_@CLUTTER_API_VERSION_AM@_gir_CFLAGS = $(AM_CPPFLAGS) $(CLUTTER_CFLAGS)
 Cally_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = \
 	--warn-all \
 	--c-include='cally/cally.h' \
-	--pkg-export=cally-@CLUTTER_API_VERSION@ \
+	--pkg-export=mutter-cally-@CLUTTER_API_VERSION@ \
 	--include-uninstalled=$(top_builddir)/clutter/Clutter-@CLUTTER_API_VERSION@.gir
 
 INTROSPECTION_GIRS += Cally-@CLUTTER_API_VERSION@.gir
@@ -672,7 +672,7 @@ ClutterX11_@CLUTTER_API_VERSION_AM@_gir_CFLAGS = $(AM_CPPFLAGS) $(CLUTTER_CFLAGS
 ClutterX11_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = \
 	--warn-all \
 	--c-include='clutter/x11/clutter-x11.h' \
-	--pkg-export=clutter-x11-@CLUTTER_API_VERSION@ \
+	--pkg-export=mutter-clutter-x11-@CLUTTER_API_VERSION@ \
 	--include-uninstalled=$(top_builddir)/clutter/Clutter-@CLUTTER_API_VERSION@.gir
 
 INTROSPECTION_GIRS += ClutterX11-@CLUTTER_API_VERSION@.gir
