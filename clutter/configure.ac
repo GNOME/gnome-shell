@@ -222,19 +222,33 @@ PKG_CHECK_EXISTS([pangoft2],
                  ],
                  [])
 
-CLUTTER_BACKENDS="$CLUTTER_BACKENDS egl"
-SUPPORT_EGL=1
-AC_DEFINE([CLUTTER_EGL_BACKEND_GENERIC], [1], [Use Generic EGL backend])
+AC_ARG_ENABLE(
+  [wayland-egl-server],
+  [AC_HELP_STRING([--enable-wayland-egl-server=@<:@no/yes@:>@], [Enable server side wayland support @<:@default=no@:>@])],
+  [],
+  enable_wayland_egl_server=yes
+)
 
-BACKEND_PC_FILES="$BACKEND_PC_FILES wayland-egl wayland-server libdrm gbm"
-SUPPORT_WAYLAND_COMPOSITOR=1
-CLUTTER_CONFIG_DEFINES="$CLUTTER_CONFIG_DEFINES
-#define CLUTTER_HAS_WAYLAND_COMPOSITOR_SUPPORT 1"
+AS_IF([test "x$enable_wayland_egl_server" = "xyes"],
+      [
+        CLUTTER_BACKENDS="$CLUTTER_BACKENDS egl"
+        SUPPORT_EGL=1
+        AC_DEFINE([CLUTTER_EGL_BACKEND_GENERIC], [1], [Use Generic EGL backend])
 
-CLUTTER_INPUT_BACKENDS="$CLUTTER_INPUT_BACKENDS evdev"
-BACKEND_PC_FILES_PRIVATE="$BACKEND_PC_FILES_PRIVATE libudev >= $LIBUDEV_REQ_VERSION libinput >= $LIBINPUT_REQ_VERSION xkbcommon"
-SUPPORT_EVDEV=1
-AC_DEFINE([HAVE_EVDEV], [1], [Have evdev support for input handling])
+        BACKEND_PC_FILES="$BACKEND_PC_FILES wayland-egl wayland-server libdrm gbm"
+
+        SUPPORT_WAYLAND_COMPOSITOR=1
+        CLUTTER_CONFIG_DEFINES="$CLUTTER_CONFIG_DEFINES
+        #define CLUTTER_HAS_WAYLAND_COMPOSITOR_SUPPORT 1"
+
+        CLUTTER_INPUT_BACKENDS="$CLUTTER_INPUT_BACKENDS evdev"
+
+        SUPPORT_EVDEV=1
+        BACKEND_PC_FILES_PRIVATE="$BACKEND_PC_FILES_PRIVATE libudev >= $LIBUDEV_REQ_VERSION libinput >= $LIBINPUT_REQ_VERSION xkbcommon"
+        AC_DEFINE([HAVE_EVDEV], [1], [Have evdev support for input handling])
+      ])
+
+AM_CONDITIONAL(SUPPORT_WAYLAND, [test "x$enable_wayland_egl_server" = "xyes"])
 
 dnl Instead of using AM_CFLAGS to ensure
 dnl COGL_ENABLE_EXPERIMENTAL_2_0_API is defined while compiling clutter

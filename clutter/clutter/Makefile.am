@@ -466,6 +466,7 @@ evdev_h_priv = \
 	$(NULL)
 evdev_h = evdev/clutter-evdev.h
 
+if SUPPORT_WAYLAND
 backend_source_c_priv += $(evdev_c_priv)
 backend_source_h_priv += $(evdev_h_priv)
 backend_source_h += $(evdev_h)
@@ -501,6 +502,7 @@ backend_source_h_priv += $(egl_source_h_priv)
 
 clutteregl_includedir = $(clutter_includedir)/egl
 clutteregl_include_HEADERS = $(egl_source_h)
+endif # SUPPORT_WAYLAND
 
 # cally
 cally_sources_h = \
