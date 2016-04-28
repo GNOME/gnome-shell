@@ -15,7 +15,7 @@ libmutter_cogl_gles2_la_SOURCES = cogl-gles2-api.c
 libmutter_cogl_gles2_la_LDFLAGS = \
 	-no-undefined \
 	-rpath $(mutterlibdir) \
-	-version-info @COGL_LT_CURRENT@:@COGL_LT_REVISION@:@COGL_LT_AGE@ \
+	-avoid-version \
 	-export-dynamic \
 	-export-symbols-regex "^gl*"
 

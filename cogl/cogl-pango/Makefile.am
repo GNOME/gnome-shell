@@ -34,7 +34,7 @@ libmutter_cogl_pango_la_LDFLAGS = \
 	-rpath $(mutterlibdir) \
 	-export-symbols-regex "^cogl_pango_.*" \
 	-no-undefined \
-	-version-info @COGL_LT_CURRENT@:@COGL_LT_REVISION@:@COGL_LT_AGE@
+	-avoid-version
 
 AM_CPPFLAGS = \
 	-DCOGL_COMPILATION		\

@@ -78,7 +78,7 @@ libmutter_cogl_path_la_LDFLAGS = \
 	-export-dynamic \
 	-export-symbols-regex "^(cogl|cogl2)_(framebuffer|path|is|clip|[sg]et)_.*" \
 	-no-undefined \
-	-version-info @COGL_LT_CURRENT@:@COGL_LT_REVISION@:@COGL_LT_AGE@ \
+	-avoid-version \
 	-rpath $(mutterlibdir)
 
 AM_CPPFLAGS = \
