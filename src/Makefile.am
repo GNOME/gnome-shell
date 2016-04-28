@@ -393,7 +393,6 @@ noinst_PROGRAMS=
 
 mutter_SOURCES = core/mutter.c
 mutter_LDADD = $(MUTTER_LIBS) libmutter.la
-mutter_LDFLAGS = -rpath $(pkglibdir)
 
 libexec_PROGRAMS = mutter-restart-helper
 mutter_restart_helper_SOURCES = core/restart-helper.c
