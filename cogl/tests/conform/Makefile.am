@@ -158,18 +158,18 @@ clean-generic: clean-wrappers
 
 if ENABLE_INSTALLED_TESTS
 
-insttestdir = $(libexecdir)/installed-tests/$(PACKAGE)/conform
+insttestdir = $(libexecdir)/installed-tests/mutter-cogl/conform
 insttest_PROGRAMS = test-conformance
 insttest_DATA = unit-tests
 
-testmetadir = $(datadir)/installed-tests/$(PACKAGE)
+testmetadir = $(datadir)/installed-tests/mutter-cogl
 testmeta_DATA = conform.test
 
 conform.test:
 	echo "  GEN      $@"; \
 	echo "[Test]" > $@.tmp; \
 	echo "Type=session" >> $@.tmp; \
-	echo "Exec=sh -c \"cd $(libexecdir)/installed-tests/$(PACKAGE)/conform; ../run-tests.sh ../config.env ./test-conformance\"" >> $@.tmp; \
+	echo "Exec=sh -c \"cd $(libexecdir)/installed-tests/mutter-cogl/conform; ../run-tests.sh ../config.env ./test-conformance\"" >> $@.tmp; \
 	mv $@.tmp $@
 
 CLEANFILES = conform.test

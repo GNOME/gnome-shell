@@ -1,3 +1,5 @@
+installed_test_metadir = $(datadir)/installed-tests/mutter-clutter
+installed_testdir = $(libexecdir)/installed-tests/mutter-clutter
 include $(top_srcdir)/build/autotools/glib-tap.mk
 
 AM_CFLAGS = -g $(CLUTTER_CFLAGS) $(MAINTAINER_CFLAGS)

@@ -25,7 +25,7 @@ endif
 check-local: test
 
 if ENABLE_INSTALLED_TESTS
-insttestdir = $(libexecdir)/installed-tests/$(PACKAGE)
+insttestdir = $(libexecdir)/installed-tests/mutter-cogl
 insttest_SCRIPTS = run-tests.sh
 insttest_DATA = config.env
 endif
