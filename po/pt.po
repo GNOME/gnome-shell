@@ -4,24 +4,26 @@
 # Duarte Loreto <happyguy_pt@hotmail.com>, 2010, 2011, 2012, 2013, 2014.
 # Rui Gouveia <rui.gouveia@gmail.com>, 2011.
 # António Lima <amrlima@gmail.com>, 2013.
-# Tiago S. <almosthumane@portugalmail.pt>, 2014.
+# Tiago Santos <tiagofsantos81@sapo.pt>, 2014, 2016.
 # Bruno Ramalhete <bram.512@gmail.com>, 2015.
 # Pedro Albuquerque <palbuquerque73@gmail.com>, 2014, 2015.
+# Sérgio Cardeira <cardeira dot sergio at gmail dot com>, 2016.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: 3.14\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-11-20 22:14+0000\n"
-"PO-Revision-Date: 2015-11-21 09:02+0100\n"
-"Last-Translator: Pedro Albuquerque <palbuquerque73@gmail.com>\n"
-"Language-Team: Pedro Albuquerque\n"
+"POT-Creation-Date: 2016-04-26 13:48+0000\n"
+"PO-Revision-Date: 2016-04-30 16:45+0100\n"
+"Last-Translator: Tiago Santos <tiagofsantos81@sapo.pt>\n"
+"Language-Team: Português <>\n"
 "Language: pt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Virtaal 0.7.1\n"
+"X-Generator: Poedit 1.5.4\n"
 "X-Project-Style: gnome\n"
 "X-Language: pt_PT\n"
 "X-Source-Language: C\n"
@@ -323,51 +325,52 @@ msgstr ""
 msgid "Network Login"
 msgstr "Sessão na rede"
 
-#: ../js/extensionPrefs/main.js:122
+#: ../js/extensionPrefs/main.js:117
 #, javascript-format
 msgid "There was an error loading the preferences dialog for %s:"
 msgstr "Ocorreu um erro ao ler o diálogo de preferências de %s:"
 
-#: ../js/extensionPrefs/main.js:154
+#: ../js/extensionPrefs/main.js:149
 msgid "GNOME Shell Extensions"
 msgstr "Extensões da interface do GNOME"
 
-#: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:145
+#: ../js/gdm/authPrompt.js:147 ../js/ui/audioDeviceSelection.js:71
+#: ../js/ui/components/networkAgent.js:145
 #: ../js/ui/components/polkitAgent.js:179 ../js/ui/endSessionDialog.js:452
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
 #: ../js/ui/status/network.js:916
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: ../js/gdm/authPrompt.js:169 ../js/gdm/authPrompt.js:215
-#: ../js/gdm/authPrompt.js:447
+#: ../js/gdm/authPrompt.js:169 ../js/gdm/authPrompt.js:216
+#: ../js/gdm/authPrompt.js:448
 msgid "Next"
 msgstr "Seguinte"
 
-#: ../js/gdm/authPrompt.js:211 ../js/ui/shellMountOperation.js:403
+#: ../js/gdm/authPrompt.js:212 ../js/ui/shellMountOperation.js:403
 #: ../js/ui/unlockDialog.js:59
 msgid "Unlock"
 msgstr "Desbloquear"
 
-#: ../js/gdm/authPrompt.js:213
+#: ../js/gdm/authPrompt.js:214
 msgctxt "button"
 msgid "Sign In"
 msgstr "Iniciar sessão"
 
-#: ../js/gdm/loginDialog.js:281
+#: ../js/gdm/loginDialog.js:285
 msgid "Choose Session"
 msgstr "Escolher sessão"
 
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:431
+#: ../js/gdm/loginDialog.js:435
 msgid "Not listed?"
 msgstr "Não está listada?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: ../js/gdm/loginDialog.js:850
+#: ../js/gdm/loginDialog.js:854
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(por ex., utilizador ou %s)"
@@ -375,12 +378,12 @@ msgstr "(por ex., utilizador ou %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:855 ../js/ui/components/networkAgent.js:271
+#: ../js/gdm/loginDialog.js:859 ../js/ui/components/networkAgent.js:271
 #: ../js/ui/components/networkAgent.js:289
 msgid "Username: "
 msgstr "Utilizador: "
 
-#: ../js/gdm/loginDialog.js:1180
+#: ../js/gdm/loginDialog.js:1196
 msgid "Login Window"
 msgstr "Janela de início de sessão"
 
@@ -516,15 +519,35 @@ msgstr "Adicionar aos favoritos"
 msgid "Show Details"
 msgstr "Mostrar detalhes"
 
-#: ../js/ui/appFavorites.js:133
+#: ../js/ui/appFavorites.js:134
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "%s foi adicionada aos seus favoritos."
 
-#: ../js/ui/appFavorites.js:167
+#: ../js/ui/appFavorites.js:168
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "%s foi removida dos seus favoritos."
+
+#: ../js/ui/audioDeviceSelection.js:59
+msgid "Select Audio Device"
+msgstr "Selecione o dispositivo de áudio"
+
+#: ../js/ui/audioDeviceSelection.js:69
+msgid "Sound Settings"
+msgstr "Definições de som"
+
+#: ../js/ui/audioDeviceSelection.js:78
+msgid "Headphones"
+msgstr "Auscultadores"
+
+#: ../js/ui/audioDeviceSelection.js:80
+msgid "Headset"
+msgstr "Auscultadores com microfone"
+
+#: ../js/ui/audioDeviceSelection.js:82 ../js/ui/status/volume.js:213
+msgid "Microphone"
+msgstr "Microfone"
 
 #: ../js/ui/backgroundMenu.js:19
 msgid "Change Background…"
@@ -534,12 +557,12 @@ msgstr "Alterar o fundo…"
 msgid "Display Settings"
 msgstr "Definições de ecrã"
 
-#: ../js/ui/backgroundMenu.js:22 ../js/ui/status/system.js:366
+#: ../js/ui/backgroundMenu.js:22 ../js/ui/status/system.js:371
 msgid "Settings"
 msgstr "Definições"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
-#: ../js/ui/calendar.js:55
+#: ../js/ui/calendar.js:47
 msgctxt "calendar-no-work"
 msgid "06"
 msgstr "06"
@@ -549,100 +572,96 @@ msgstr "06"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: ../js/ui/calendar.js:84
+#: ../js/ui/calendar.js:76
 msgctxt "grid sunday"
 msgid "S"
 msgstr "D"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: ../js/ui/calendar.js:86
+#: ../js/ui/calendar.js:78
 msgctxt "grid monday"
 msgid "M"
 msgstr "S"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: ../js/ui/calendar.js:88
+#: ../js/ui/calendar.js:80
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "T"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: ../js/ui/calendar.js:90
+#: ../js/ui/calendar.js:82
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "Q"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: ../js/ui/calendar.js:92
+#: ../js/ui/calendar.js:84
 msgctxt "grid thursday"
 msgid "T"
 msgstr "Q"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: ../js/ui/calendar.js:94
+#: ../js/ui/calendar.js:86
 msgctxt "grid friday"
 msgid "F"
 msgstr "S"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: ../js/ui/calendar.js:96
+#: ../js/ui/calendar.js:88
 msgctxt "grid saturday"
 msgid "S"
 msgstr "S"
 
-#: ../js/ui/calendar.js:566
+#: ../js/ui/calendar.js:416
 msgid "Previous month"
 msgstr "Mês anterior"
 
-#: ../js/ui/calendar.js:576
+#: ../js/ui/calendar.js:426
 msgid "Next month"
 msgstr "Mês seguinte"
 
-#: ../js/ui/calendar.js:728
-#, javascript-format
+#: ../js/ui/calendar.js:579
+#, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: ../js/ui/calendar.js:783
+#: ../js/ui/calendar.js:634
 msgid "Week %V"
 msgstr "Semana %V"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: ../js/ui/calendar.js:1188
+#: ../js/ui/calendar.js:695
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Dia completo"
 
-#: ../js/ui/calendar.js:1295
-msgid "Clear section"
-msgstr "Limpar secção"
-
-#: ../js/ui/calendar.js:1522
+#: ../js/ui/calendar.js:821
 msgid "Events"
 msgstr "Eventos"
 
-#: ../js/ui/calendar.js:1531
+#: ../js/ui/calendar.js:830
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %B %d"
 
-#: ../js/ui/calendar.js:1535
+#: ../js/ui/calendar.js:834
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %B %d, %Y"
 
-#: ../js/ui/calendar.js:1620
+#: ../js/ui/calendar.js:919
 msgid "Notifications"
 msgstr "Notificações"
 
-#: ../js/ui/calendar.js:1771
+#: ../js/ui/calendar.js:1070
 msgid "No Notifications"
 msgstr "Sem notificações"
 
-#: ../js/ui/calendar.js:1774
+#: ../js/ui/calendar.js:1073
 msgid "No Events"
 msgstr "Sem eventos"
 
@@ -780,7 +799,7 @@ msgstr "Desculpe, não resultou. Por favor, tente novamente."
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/components/telepathyClient.js:759
+#: ../js/ui/components/telepathyClient.js:760
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s é agora conhecido como %s"
@@ -968,11 +987,11 @@ msgid "Keyboard"
 msgstr "Teclado"
 
 #. translators: 'Hide' is a verb
-#: ../js/ui/legacyTray.js:66
+#: ../js/ui/legacyTray.js:65
 msgid "Hide tray"
 msgstr "Ocultar tabuleiro"
 
-#: ../js/ui/legacyTray.js:107
+#: ../js/ui/legacyTray.js:106
 msgid "Status Icons"
 msgstr "Ícones de estado"
 
@@ -1000,7 +1019,7 @@ msgstr "Ativo"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:719 ../src/gvc/gvc-mixer-control.c:1828
+#: ../js/ui/lookingGlass.js:719 ../src/gvc/gvc-mixer-control.c:1866
 msgid "Disabled"
 msgstr "Inativo"
 
@@ -1024,9 +1043,25 @@ msgstr "Ver fonte"
 msgid "Web Page"
 msgstr "Página Web"
 
+#: ../js/ui/messageList.js:543
+msgid "Clear section"
+msgstr "Limpar secção"
+
 #: ../js/ui/messageTray.js:1486
 msgid "System Information"
 msgstr "Informação do sistema"
+
+#: ../js/ui/mpris.js:194
+msgid "Unknown artist"
+msgstr "Artista desconhecido"
+
+#: ../js/ui/mpris.js:195
+msgid "Unknown title"
+msgstr "Titulo desconhecido"
+
+#: ../js/ui/mpris.js:217
+msgid "Media"
+msgstr "Média"
 
 #: ../js/ui/overview.js:84
 msgid "Undo"
@@ -1104,7 +1139,7 @@ msgid_plural "%d new notifications"
 msgstr[0] "%d nova notificação"
 msgstr[1] "%d novas notificações"
 
-#: ../js/ui/screenShield.js:432 ../js/ui/status/system.js:374
+#: ../js/ui/screenShield.js:432 ../js/ui/status/system.js:379
 msgid "Lock"
 msgstr "Bloquear"
 
@@ -1246,29 +1281,49 @@ msgstr "Luminosidade"
 msgid "Show Keyboard Layout"
 msgstr "Mostrar a disposição de teclado"
 
-#: ../js/ui/status/location.js:71 ../js/ui/status/location.js:177
+#: ../js/ui/status/location.js:107 ../js/ui/status/location.js:215
 msgid "Location Enabled"
 msgstr "Localização ativada"
 
-#: ../js/ui/status/location.js:72 ../js/ui/status/location.js:178
+#: ../js/ui/status/location.js:108 ../js/ui/status/location.js:216
 msgid "Disable"
 msgstr "Desativar"
 
-#: ../js/ui/status/location.js:73
+#: ../js/ui/status/location.js:109
 msgid "Privacy Settings"
 msgstr "Definições de privacidade"
 
-#: ../js/ui/status/location.js:176
+#: ../js/ui/status/location.js:214
 msgid "Location In Use"
 msgstr "Localização em uso"
 
-#: ../js/ui/status/location.js:180
+#: ../js/ui/status/location.js:218
 msgid "Location Disabled"
 msgstr "Localização desativada"
 
-#: ../js/ui/status/location.js:181
+#: ../js/ui/status/location.js:219
 msgid "Enable"
 msgstr "Ativar"
+
+#: ../js/ui/status/location.js:426
+msgid "Deny Access"
+msgstr "Negar acesso"
+
+#: ../js/ui/status/location.js:429
+msgid "Grant Access"
+msgstr "Conceder acesso"
+
+#. Translators: %s is an application name
+#: ../js/ui/status/location.js:435
+#, javascript-format
+msgid "Give %s access to your location?"
+msgstr "Dar a %s permissão para usar a localização?"
+
+#: ../js/ui/status/location.js:437
+msgid "Location access can be changed at any time from the privacy settings."
+msgstr ""
+"Acesso à localização pode ser alterado a qualquer altura a partir das "
+"definições de privacidade."
 
 #: ../js/ui/status/network.js:101
 msgid "<unknown>"
@@ -1492,27 +1547,27 @@ msgstr "%d %%"
 msgid "Airplane Mode On"
 msgstr "Modo Avião ligado"
 
-#: ../js/ui/status/system.js:343
+#: ../js/ui/status/system.js:348
 msgid "Switch User"
 msgstr "Alternar utilizador"
 
-#: ../js/ui/status/system.js:348
+#: ../js/ui/status/system.js:353
 msgid "Log Out"
 msgstr "Terminar sessão"
 
-#: ../js/ui/status/system.js:353
+#: ../js/ui/status/system.js:358
 msgid "Account Settings"
 msgstr "Definições de conta"
 
-#: ../js/ui/status/system.js:370
+#: ../js/ui/status/system.js:375
 msgid "Orientation Lock"
 msgstr "Orientação de bloqueio"
 
-#: ../js/ui/status/system.js:378
+#: ../js/ui/status/system.js:383
 msgid "Suspend"
 msgstr "Suspender"
 
-#: ../js/ui/status/system.js:381
+#: ../js/ui/status/system.js:386
 msgid "Power Off"
 msgstr "Desligar"
 
@@ -1523,10 +1578,6 @@ msgstr "Volume alterado"
 #: ../js/ui/status/volume.js:162
 msgid "Volume"
 msgstr "Volume"
-
-#: ../js/ui/status/volume.js:213
-msgid "Microphone"
-msgstr "Microfone"
 
 #: ../js/ui/unlockDialog.js:67
 msgid "Log in as another user"
@@ -1648,7 +1699,7 @@ msgstr "Calendário do Evolution"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1835
+#: ../src/gvc/gvc-mixer-control.c:1873
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -1657,14 +1708,14 @@ msgstr[1] "%u saídas"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1845
+#: ../src/gvc/gvc-mixer-control.c:1883
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u entrada"
 msgstr[1] "%u entradas"
 
-#: ../src/gvc/gvc-mixer-control.c:2371
+#: ../src/gvc/gvc-mixer-control.c:2738
 msgid "System Sounds"
 msgstr "Sons de sistema"
 
@@ -1706,6 +1757,9 @@ msgstr "A senha não pode estar vazia"
 #: ../src/shell-polkit-authentication-agent.c:353
 msgid "Authentication dialog was dismissed by the user"
 msgstr "O diálogo de autenticação foi fechado pelo utilizador"
+
+#~ msgid "%s is requesting access to your location."
+#~ msgstr "%s está a pedir acesso à sua localização."
 
 #~ msgid "GNOME Shell (wayland compositor)"
 #~ msgstr "Interface GNOME (compositor wayland)"
@@ -1923,9 +1977,6 @@ msgstr "O diálogo de autenticação foi fechado pelo utilizador"
 #~ msgid "View account"
 #~ msgstr "Visualizar a conta"
 
-#~ msgid "Unknown reason"
-#~ msgstr "Motivo desconhecido"
-
 #~ msgid "Open Calendar"
 #~ msgstr "Abrir o Calendário"
 
@@ -2030,9 +2081,6 @@ msgstr "O diálogo de autenticação foi fechado pelo utilizador"
 
 #~ msgid "Device %s wants access to the service '%s'"
 #~ msgstr "O dispositivo %s deseja aceder ao serviço '%s'"
-
-#~ msgid "Always grant access"
-#~ msgstr "Conceder sempre o acesso"
 
 #~ msgid "Grant this time only"
 #~ msgstr "Conceder apenas desta vez"
