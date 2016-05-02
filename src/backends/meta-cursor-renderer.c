@@ -40,6 +40,7 @@ struct _MetaCursorRendererPrivate
   int current_x, current_y;
 
   MetaCursorSprite *displayed_cursor;
+  MetaOverlay *stage_overlay;
   gboolean handled_by_backend;
 };
 typedef struct _MetaCursorRendererPrivate MetaCursorRendererPrivate;
@@ -63,12 +64,16 @@ queue_redraw (MetaCursorRenderer *renderer,
   if (!stage)
     return;
 
+  if (!priv->stage_overlay)
+    priv->stage_overlay = meta_stage_create_cursor_overlay (META_STAGE (stage));
+
   if (cursor_sprite && !priv->handled_by_backend)
     texture = meta_cursor_sprite_get_cogl_texture (cursor_sprite);
   else
     texture = NULL;
 
-  meta_stage_set_cursor (META_STAGE (stage), texture, &rect);
+  meta_stage_update_cursor_overlay (META_STAGE (stage), priv->stage_overlay,
+                                    texture, &rect);
 }
 
 static gboolean
@@ -82,8 +87,25 @@ meta_cursor_renderer_real_update_cursor (MetaCursorRenderer *renderer,
 }
 
 static void
+meta_cursor_renderer_finalize (GObject *object)
+{
+  MetaCursorRenderer *renderer = META_CURSOR_RENDERER (object);
+  MetaCursorRendererPrivate *priv = meta_cursor_renderer_get_instance_private (renderer);
+  MetaBackend *backend = meta_get_backend ();
+  ClutterActor *stage = meta_backend_get_stage (backend);
+
+  if (priv->stage_overlay)
+    meta_stage_remove_cursor_overlay (META_STAGE (stage), priv->stage_overlay);
+
+  G_OBJECT_CLASS (meta_cursor_renderer_parent_class)->finalize (object);
+}
+
+static void
 meta_cursor_renderer_class_init (MetaCursorRendererClass *klass)
 {
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
+  object_class->finalize = meta_cursor_renderer_finalize;
   klass->update_cursor = meta_cursor_renderer_real_update_cursor;
 }
 

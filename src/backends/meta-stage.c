@@ -27,7 +27,7 @@
 #include <meta/meta-backend.h>
 #include <meta/util.h>
 
-typedef struct {
+struct _MetaOverlay {
   gboolean enabled;
 
   CoglPipeline *pipeline;
@@ -36,22 +36,26 @@ typedef struct {
   MetaRectangle current_rect;
   MetaRectangle previous_rect;
   gboolean previous_is_valid;
-} MetaOverlay;
+};
 
 struct _MetaStagePrivate {
-  MetaOverlay cursor_overlay;
+  GList *overlays;
   gboolean is_active;
 };
 typedef struct _MetaStagePrivate MetaStagePrivate;
 
 G_DEFINE_TYPE_WITH_PRIVATE (MetaStage, meta_stage, CLUTTER_TYPE_STAGE);
 
-static void
-meta_overlay_init (MetaOverlay *overlay)
+static MetaOverlay *
+meta_overlay_new ()
 {
+  MetaOverlay *overlay;
   CoglContext *ctx = clutter_backend_get_cogl_context (clutter_get_default_backend ());
 
+  overlay = g_slice_new0 (MetaOverlay);
   overlay->pipeline = cogl_pipeline_new (ctx);
+
+  return overlay;
 }
 
 static void
@@ -59,6 +63,8 @@ meta_overlay_free (MetaOverlay *overlay)
 {
   if (overlay->pipeline)
     cogl_object_unref (overlay->pipeline);
+
+  g_slice_free (MetaOverlay, overlay);
 }
 
 static void
@@ -111,8 +117,15 @@ meta_stage_finalize (GObject *object)
 {
   MetaStage *stage = META_STAGE (object);
   MetaStagePrivate *priv = meta_stage_get_instance_private (stage);
+  GList *l = priv->overlays;
 
-  meta_overlay_free (&priv->cursor_overlay);
+  while (l)
+    {
+      meta_overlay_free (l->data);
+      l = g_list_delete_link (l, l);
+    }
+
+  G_OBJECT_CLASS (meta_stage_parent_class)->finalize (object);
 }
 
 static void
@@ -120,10 +133,12 @@ meta_stage_paint (ClutterActor *actor)
 {
   MetaStage *stage = META_STAGE (actor);
   MetaStagePrivate *priv = meta_stage_get_instance_private (stage);
+  GList *l;
 
   CLUTTER_ACTOR_CLASS (meta_stage_parent_class)->paint (actor);
 
-  meta_overlay_paint (&priv->cursor_overlay);
+  for (l = priv->overlays; l; l = l->next)
+    meta_overlay_paint (l->data);
 }
 
 static void
@@ -166,10 +181,6 @@ meta_stage_class_init (MetaStageClass *klass)
 static void
 meta_stage_init (MetaStage *stage)
 {
-  MetaStagePrivate *priv = meta_stage_get_instance_private (stage);
-
-  meta_overlay_init (&priv->cursor_overlay);
-
   clutter_stage_set_user_resizable (CLUTTER_STAGE (stage), FALSE);
 }
 
@@ -209,17 +220,43 @@ queue_redraw_for_overlay (MetaStage   *stage,
     }
 }
 
-void
-meta_stage_set_cursor (MetaStage     *stage,
-                       CoglTexture   *texture,
-                       MetaRectangle *rect)
+MetaOverlay *
+meta_stage_create_cursor_overlay (MetaStage *stage)
 {
   MetaStagePrivate *priv = meta_stage_get_instance_private (stage);
+  MetaOverlay *overlay;
 
+  overlay = meta_overlay_new ();
+  priv->overlays = g_list_prepend (priv->overlays, overlay);
+
+  return overlay;
+}
+
+void
+meta_stage_remove_cursor_overlay (MetaStage   *stage,
+                                  MetaOverlay *overlay)
+{
+  MetaStagePrivate *priv = meta_stage_get_instance_private (stage);
+  GList *link;
+
+  link = g_list_find (priv->overlays, overlay);
+  if (!link)
+    return;
+
+  priv->overlays = g_list_delete_link (priv->overlays, link);
+  meta_overlay_free (overlay);
+}
+
+void
+meta_stage_update_cursor_overlay (MetaStage          *stage,
+                                  MetaOverlay        *overlay,
+                                  CoglTexture        *texture,
+                                  MetaRectangle      *rect)
+{
   g_assert (meta_is_wayland_compositor () || texture == NULL);
 
-  meta_overlay_set (&priv->cursor_overlay, texture, rect);
-  queue_redraw_for_overlay (stage, &priv->cursor_overlay);
+  meta_overlay_set (overlay, texture, rect);
+  queue_redraw_for_overlay (stage, overlay);
 }
 
 void

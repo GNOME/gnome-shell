@@ -36,6 +36,7 @@ G_BEGIN_DECLS
 
 typedef struct _MetaStage      MetaStage;
 typedef struct _MetaStageClass MetaStageClass;
+typedef struct _MetaOverlay    MetaOverlay;
 
 struct _MetaStageClass
 {
@@ -51,9 +52,14 @@ GType             meta_stage_get_type                (void) G_GNUC_CONST;
 
 ClutterActor     *meta_stage_new                     (void);
 
-void meta_stage_set_cursor (MetaStage     *stage,
-                            CoglTexture   *texture,
-                            MetaRectangle *rect);
+MetaOverlay      *meta_stage_create_cursor_overlay   (MetaStage   *stage);
+void              meta_stage_remove_cursor_overlay   (MetaStage   *stage,
+						      MetaOverlay *overlay);
+
+void              meta_stage_update_cursor_overlay   (MetaStage     *stage,
+						      MetaOverlay   *overlay,
+						      CoglTexture   *texture,
+						      MetaRectangle *rect);
 
 void meta_stage_set_active (MetaStage *stage,
                             gboolean   is_active);
