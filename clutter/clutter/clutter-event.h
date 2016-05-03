@@ -459,6 +459,7 @@ struct _ClutterTouchpadPinchEvent
   gfloat dy;
   gfloat angle_delta;
   gfloat scale;
+  guint n_fingers;
 };
 
 /**
