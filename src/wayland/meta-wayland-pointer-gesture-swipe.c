@@ -43,7 +43,7 @@ handle_swipe_begin (MetaWaylandPointer *pointer,
   pointer_client = pointer->focus_client;
   seat = meta_wayland_pointer_get_seat (pointer);
   serial = wl_display_next_serial (seat->wl_display);
-  fingers = clutter_event_get_gesture_swipe_finger_count (event);
+  fingers = clutter_event_get_touchpad_gesture_finger_count (event);
 
   wl_resource_for_each (resource, &pointer_client->swipe_gesture_resources)
     {

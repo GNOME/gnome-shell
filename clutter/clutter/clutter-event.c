@@ -1990,22 +1990,28 @@ clutter_event_remove_filter (guint id)
 }
 
 /**
- * clutter_event_get_gesture_swipe_finger_count:
- * @event: a touchpad swipe event
+ * clutter_event_get_touchpad_gesture_finger_count:
+ * @event: a touchpad swipe/pinch event
  *
  * Returns the number of fingers that is triggering the touchpad gesture.
  *
- * Returns: the number of fingers swiping.
+ * Returns: the number of fingers in the gesture.
  *
  * Since: 1.24
  **/
 guint
-clutter_event_get_gesture_swipe_finger_count (const ClutterEvent *event)
+clutter_event_get_touchpad_gesture_finger_count (const ClutterEvent *event)
 {
   g_return_val_if_fail (event != NULL, 0);
-  g_return_val_if_fail (event->type == CLUTTER_TOUCHPAD_SWIPE, 0);
+  g_return_val_if_fail (event->type == CLUTTER_TOUCHPAD_SWIPE ||
+                        event->type == CLUTTER_TOUCHPAD_PINCH, 0);
 
-  return event->touchpad_swipe.n_fingers;
+  if (event->type == CLUTTER_TOUCHPAD_SWIPE)
+    return event->touchpad_swipe.n_fingers;
+  else if (event->type == CLUTTER_TOUCHPAD_PINCH)
+    return event->touchpad_pinch.n_fingers;
+
+  return 0;
 }
 
 /**
