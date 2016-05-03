@@ -511,7 +511,7 @@ const TouchpadWorkspaceSwitchAction = new Lang.Class({
         if (event.type() != Clutter.EventType.TOUCHPAD_SWIPE)
             return Clutter.EVENT_PROPAGATE;
 
-        if (event.get_gesture_swipe_finger_count() != 4)
+        if (event.get_touchpad_gesture_finger_count() != 4)
             return Clutter.EVENT_PROPAGATE;
 
         if (event.get_gesture_phase() == Clutter.TouchpadGesturePhase.UPDATE) {
