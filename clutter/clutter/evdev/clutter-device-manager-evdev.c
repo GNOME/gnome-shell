@@ -530,7 +530,8 @@ notify_pinch_gesture_event (ClutterInputDevice          *input_device,
                             gdouble                      dx,
                             gdouble                      dy,
                             gdouble                      angle_delta,
-                            gdouble                      scale)
+                            gdouble                      scale,
+                            guint                        n_fingers)
 {
   ClutterInputDeviceEvdev *device_evdev;
   ClutterSeatEvdev *seat;
@@ -561,6 +562,7 @@ notify_pinch_gesture_event (ClutterInputDevice          *input_device,
   event->touchpad_pinch.dy = dy;
   event->touchpad_pinch.angle_delta = angle_delta;
   event->touchpad_pinch.scale = scale;
+  event->touchpad_pinch.n_fingers = n_fingers;
 
   _clutter_xkb_translate_state (event, seat->xkb, seat->button_state);
 
@@ -1617,6 +1619,7 @@ process_device_event (ClutterDeviceManagerEvdev *manager_evdev,
         struct libinput_event_gesture *gesture_event =
           libinput_event_get_gesture_event (event);
         ClutterTouchpadGesturePhase phase;
+        guint n_fingers;
         guint64 time_us;
 
         if (libinput_event_get_type (event) == LIBINPUT_EVENT_GESTURE_PINCH_BEGIN)
@@ -1625,9 +1628,10 @@ process_device_event (ClutterDeviceManagerEvdev *manager_evdev,
           phase = libinput_event_gesture_get_cancelled (gesture_event) ?
             CLUTTER_TOUCHPAD_GESTURE_PHASE_CANCEL : CLUTTER_TOUCHPAD_GESTURE_PHASE_END;
 
+        n_fingers = libinput_event_gesture_get_finger_count (gesture_event);
         device = libinput_device_get_user_data (libinput_device);
         time_us = libinput_event_gesture_get_time_usec (gesture_event);
-        notify_pinch_gesture_event (device, phase, time_us, 0, 0, 0, 0);
+        notify_pinch_gesture_event (device, phase, time_us, 0, 0, 0, 0, n_fingers);
         break;
       }
     case LIBINPUT_EVENT_GESTURE_PINCH_UPDATE:
@@ -1635,8 +1639,10 @@ process_device_event (ClutterDeviceManagerEvdev *manager_evdev,
         struct libinput_event_gesture *gesture_event =
           libinput_event_get_gesture_event (event);
         gdouble angle_delta, scale, dx, dy;
+        guint n_fingers;
         guint64 time_us;
 
+        n_fingers = libinput_event_gesture_get_finger_count (gesture_event);
         device = libinput_device_get_user_data (libinput_device);
         time_us = libinput_event_gesture_get_time_usec (gesture_event);
         angle_delta = libinput_event_gesture_get_angle_delta (gesture_event);
@@ -1646,7 +1652,7 @@ process_device_event (ClutterDeviceManagerEvdev *manager_evdev,
 
         notify_pinch_gesture_event (device,
                                     CLUTTER_TOUCHPAD_GESTURE_PHASE_UPDATE,
-                                    time_us, dx, dy, angle_delta, scale);
+                                    time_us, dx, dy, angle_delta, scale, n_fingers);
         break;
       }
     case LIBINPUT_EVENT_GESTURE_SWIPE_BEGIN:
