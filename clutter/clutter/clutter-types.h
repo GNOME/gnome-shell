@@ -95,6 +95,7 @@ typedef struct _ClutterState            	ClutterState;
 
 typedef struct _ClutterInputDeviceTool          ClutterInputDeviceTool;
 typedef struct _ClutterInputDevice              ClutterInputDevice;
+typedef struct _ClutterVirtualInputDevice       ClutterVirtualInputDevice;
 
 typedef CoglMatrix                              ClutterMatrix;
 

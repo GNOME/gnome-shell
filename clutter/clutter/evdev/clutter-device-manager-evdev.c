@@ -46,6 +46,7 @@
 #include "clutter-device-manager-private.h"
 #include "clutter-event-private.h"
 #include "clutter-input-device-evdev.h"
+#include "clutter-virtual-input-device-evdev.h"
 #include "clutter-main.h"
 #include "clutter-private.h"
 #include "clutter-stage-manager.h"
@@ -2413,6 +2414,13 @@ static const struct libinput_interface libinput_interface = {
   close_restricted
 };
 
+static ClutterVirtualInputDevice *
+clutter_device_manager_evdev_create_virtual_device (ClutterDeviceManager  *manager,
+                                                    ClutterInputDeviceType device_type)
+{
+  return g_object_new (CLUTTER_TYPE_VIRTUAL_INPUT_DEVICE_EVDEV, NULL);
+}
+
 /*
  * GObject implementation
  */
@@ -2539,6 +2547,7 @@ clutter_device_manager_evdev_class_init (ClutterDeviceManagerEvdevClass *klass)
   manager_class->get_devices = clutter_device_manager_evdev_get_devices;
   manager_class->get_core_device = clutter_device_manager_evdev_get_core_device;
   manager_class->get_device = clutter_device_manager_evdev_get_device;
+  manager_class->create_virtual_device = clutter_device_manager_evdev_create_virtual_device;
 }
 
 static void

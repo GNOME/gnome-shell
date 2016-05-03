@@ -47,6 +47,7 @@
 #include "clutter-marshal.h"
 #include "clutter-private.h"
 #include "clutter-stage-private.h"
+#include "clutter-virtual-input-device.h"
 
 struct _ClutterDeviceManagerPrivate
 {
@@ -434,4 +435,17 @@ _clutter_device_manager_get_backend (ClutterDeviceManager *manager)
   g_return_val_if_fail (CLUTTER_IS_DEVICE_MANAGER (manager), NULL);
 
   return manager->priv->backend;
+}
+
+ClutterVirtualInputDevice *
+clutter_device_manager_create_virtual_device (ClutterDeviceManager  *device_manager,
+                                              ClutterInputDeviceType device_type)
+{
+  ClutterDeviceManagerClass *manager_class;
+
+  g_return_val_if_fail (CLUTTER_IS_DEVICE_MANAGER (device_manager), NULL);
+
+  manager_class = CLUTTER_DEVICE_MANAGER_GET_CLASS (device_manager);
+  return manager_class->create_virtual_device (device_manager,
+                                               device_type);
 }

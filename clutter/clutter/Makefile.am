@@ -168,6 +168,7 @@ source_c = \
 	clutter-image.c		\
 	clutter-input-device.c	\
 	clutter-input-device-tool.c	\
+	clutter-virtual-input-device.c	\
 	clutter-interval.c            \
 	clutter-keyframe-transition.c	\
 	clutter-keysyms-table.c	\
@@ -239,6 +240,7 @@ source_h_priv = \
 	clutter-stage-manager-private.h		\
 	clutter-stage-private.h			\
 	clutter-stage-window.h			\
+	clutter-virtual-input-device.h		\
 	$(NULL)
 
 # private source code; these should not be introspected
@@ -418,6 +420,14 @@ x11_source_h_priv += \
 	x11/clutter-input-device-xi2.h	\
 	$(NULL)
 
+x11_source_c += \
+	x11/clutter-virtual-input-device-x11.c	\
+	$(NULL)
+
+x11_source_h_priv += \
+	x11/clutter-virtual-input-device-x11.h	\
+	$(NULL)
+
 backend_source_h += $(x11_source_h)
 backend_source_c += $(x11_source_c)
 backend_source_h_priv += $(x11_source_h_priv)
@@ -458,6 +468,7 @@ backend_source_c += $(glx_source_c)
 evdev_c_priv = \
 	evdev/clutter-device-manager-evdev.c	\
 	evdev/clutter-input-device-evdev.c	\
+	evdev/clutter-virtual-input-device-evdev.c	\
 	evdev/clutter-event-evdev.c		\
 	evdev/clutter-input-device-tool-evdev.c	\
 	$(NULL)
@@ -465,6 +476,7 @@ evdev_h_priv = \
 	evdev/clutter-device-manager-evdev.h	\
 	evdev/clutter-input-device-evdev.h	\
 	evdev/clutter-input-device-tool-evdev.h	\
+	evdev/clutter-virtual-input-device-evdev.h	\
 	$(NULL)
 evdev_h = evdev/clutter-evdev.h
 

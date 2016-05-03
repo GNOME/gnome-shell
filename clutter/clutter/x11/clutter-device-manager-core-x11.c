@@ -28,6 +28,7 @@
 #include "clutter-backend-x11.h"
 #include "clutter-input-device-core-x11.h"
 #include "clutter-stage-x11.h"
+#include "clutter-virtual-input-device-x11.h"
 
 #include "clutter-backend.h"
 #include "clutter-debug.h"
@@ -480,6 +481,13 @@ clutter_device_manager_x11_get_device (ClutterDeviceManager *manager,
                               GINT_TO_POINTER (id));
 }
 
+static ClutterVirtualInputDevice *
+clutter_device_manager_x11_create_virtual_device (ClutterDeviceManager  *device_manager,
+                                                  ClutterInputDeviceType device_type)
+{
+  return g_object_new (CLUTTER_TYPE_VIRTUAL_INPUT_DEVICE_X11, NULL);
+}
+
 static void
 clutter_device_manager_x11_set_property (GObject      *gobject,
                                          guint         prop_id,
@@ -526,6 +534,7 @@ clutter_device_manager_x11_class_init (ClutterDeviceManagerX11Class *klass)
   manager_class->get_devices = clutter_device_manager_x11_get_devices;
   manager_class->get_core_device = clutter_device_manager_x11_get_core_device;
   manager_class->get_device = clutter_device_manager_x11_get_device;
+  manager_class->create_virtual_device = clutter_device_manager_x11_create_virtual_device;
 }
 
 static void
