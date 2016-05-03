@@ -50,13 +50,6 @@ G_DEFINE_AUTOPTR_CLEANUP_FUNC(GUdevDevice, g_object_unref)
 G_DEFINE_AUTOPTR_CLEANUP_FUNC(GUdevClient, g_object_unref)
 G_DEFINE_AUTOPTR_CLEANUP_FUNC(GUdevEnumerator, g_object_unref)
 
-#ifndef glib_autoptr_cleanup_Login1Session
-G_DEFINE_AUTOPTR_CLEANUP_FUNC(Login1Session, g_object_unref)
-#endif
-#ifndef glib_autoptr_cleanup_Login1Seat
-G_DEFINE_AUTOPTR_CLEANUP_FUNC(Login1Seat, g_object_unref)
-#endif
-
 struct _MetaLauncher
 {
   Login1Session *session_proxy;
