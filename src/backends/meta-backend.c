@@ -26,6 +26,7 @@
 
 #include <stdlib.h>
 
+#include <clutter/clutter-mutter.h>
 #include <meta/meta-backend.h>
 #include "meta-backend-private.h"
 #include "meta-input-settings-private.h"
@@ -63,6 +64,7 @@ struct _MetaBackendPrivate
   MetaCursorRenderer *cursor_renderer;
   MetaInputSettings *input_settings;
 
+  ClutterBackend *clutter_backend;
   ClutterActor *stage;
 
   guint device_update_idle_id;
@@ -610,30 +612,6 @@ meta_backend_set_client_pointer_constraint (MetaBackend           *backend,
     backend->client_pointer_constraint = g_object_ref (constraint);
 }
 
-static GType
-get_backend_type (void)
-{
-#if defined(CLUTTER_WINDOWING_X11)
-  if (clutter_check_windowing_backend (CLUTTER_WINDOWING_X11))
-    return META_TYPE_BACKEND_X11;
-#endif
-
-#if defined(CLUTTER_WINDOWING_EGL) && defined(HAVE_NATIVE_BACKEND)
-  if (clutter_check_windowing_backend (CLUTTER_WINDOWING_EGL))
-    return META_TYPE_BACKEND_NATIVE;
-#endif
-
-  g_assert_not_reached ();
-}
-
-static void
-meta_create_backend (void)
-{
-  /* meta_backend_init() above install the backend globally so
-   * so meta_get_backend() works even during initialization. */
-  g_object_new (get_backend_type (), NULL);
-}
-
 /* Mutter is responsible for pulling events off the X queue, so Clutter
  * doesn't need (and shouldn't) run its normal event source which polls
  * the X fd, but we do have to deal with dispatching events that accumulate
@@ -682,6 +660,54 @@ static GSourceFuncs event_funcs = {
   event_dispatch
 };
 
+static ClutterBackend *
+meta_backend_get_clutter_backend (MetaBackend *backend)
+{
+  MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
+
+  if (!priv->clutter_backend)
+    {
+      priv->clutter_backend =
+        META_BACKEND_GET_CLASS (backend)->create_clutter_backend (backend);
+    }
+
+  return priv->clutter_backend;
+}
+
+static ClutterBackend *
+meta_get_clutter_backend (void)
+{
+  MetaBackend *backend = meta_get_backend ();
+
+  return meta_backend_get_clutter_backend (backend);
+}
+
+void
+meta_init_backend (MetaBackendType backend_type)
+{
+  GType type;
+
+  switch (backend_type)
+    {
+    case META_BACKEND_TYPE_X11:
+      type = META_TYPE_BACKEND_X11;
+      break;
+
+#ifdef HAVE_NATIVE_BACKEND
+    case META_BACKEND_TYPE_NATIVE:
+      type = META_TYPE_BACKEND_NATIVE;
+      break;
+#endif
+
+    default:
+      g_assert_not_reached ();
+    }
+
+  /* meta_backend_init() above install the backend globally so
+   * so meta_get_backend() works even during initialization. */
+  g_object_new (type, NULL);
+}
+
 /**
  * meta_clutter_init: (skip)
  */
@@ -691,7 +717,7 @@ meta_clutter_init (void)
   ClutterSettings *clutter_settings;
   GSource *source;
 
-  meta_create_backend ();
+  clutter_set_custom_backend_func (meta_get_clutter_backend);
 
   if (clutter_init (NULL, NULL) != CLUTTER_INIT_SUCCESS)
     {

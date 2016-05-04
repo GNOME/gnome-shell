@@ -1,10 +1,7 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* Mutter utilities */
-
 /*
- * Copyright (C) 2001 Havoc Pennington
- * Copyright (C) 2005 Elijah Newren
+ * Copyright (C) 2016 Red Hat
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -20,34 +17,33 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA.
+ *
+ * Written by:
+ *     Jonas Ådahl <jadahl@gmail.com>
  */
 
-#ifndef META_UTIL_PRIVATE_H
-#define META_UTIL_PRIVATE_H
+#include "config.h"
 
-#include <meta/util.h>
-#include <glib/gi18n-lib.h>
+#include <glib-object.h>
 
-typedef enum _MetaCompositorType
+#include "clutter/clutter.h"
+#include "clutter/egl/clutter-backend-eglnative.h"
+#include "backends/native/meta-clutter-backend-native.h"
+
+struct _MetaClutterBackendNative
 {
-#ifdef HAVE_WAYLAND
-  META_COMPOSITOR_TYPE_WAYLAND,
-#endif
-  META_COMPOSITOR_TYPE_X11,
-} MetaCompositorType;
+  ClutterBackendEglNative parent;
+};
 
-typedef enum _MetaBackendType
+G_DEFINE_TYPE (MetaClutterBackendNative, meta_clutter_backend_native,
+               CLUTTER_TYPE_BACKEND_EGL_NATIVE)
+
+static void
+meta_clutter_backend_native_init (MetaClutterBackendNative *clutter_backend_nativen)
 {
-#ifdef HAVE_NATIVE_BACKEND
-  META_BACKEND_TYPE_NATIVE,
-#endif
-  META_BACKEND_TYPE_X11,
-} MetaBackendType;
+}
 
-void     meta_set_verbose (gboolean setting);
-void     meta_set_debugging (gboolean setting);
-void     meta_set_syncing (gboolean setting);
-void     meta_set_replace_current_wm (gboolean setting);
-void     meta_set_is_wayland_compositor (gboolean setting);
-
-#endif
+static void
+meta_clutter_backend_native_class_init (MetaClutterBackendNativeClass *klass)
+{
+}

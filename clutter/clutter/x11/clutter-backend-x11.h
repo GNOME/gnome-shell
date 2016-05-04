@@ -48,6 +48,8 @@ typedef struct _ClutterBackendX11Class  ClutterBackendX11Class;
 typedef struct _ClutterEventX11         ClutterEventX11;
 typedef struct _ClutterX11EventFilter   ClutterX11EventFilter;
 
+G_DEFINE_AUTOPTR_CLEANUP_FUNC (ClutterBackendX11, g_object_unref)
+
 struct _ClutterX11EventFilter
 {
   ClutterX11FilterFunc func;
@@ -116,6 +118,7 @@ struct _ClutterBackendX11Class
   ClutterBackendClass parent_class;
 };
 
+CLUTTER_AVAILABLE_IN_MUTTER
 GType clutter_backend_x11_get_type (void) G_GNUC_CONST;
 
 ClutterBackend *clutter_backend_x11_new (void);

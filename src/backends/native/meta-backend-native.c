@@ -38,6 +38,7 @@
 #include "meta-launcher.h"
 #include "backends/meta-cursor-tracker-private.h"
 #include "backends/meta-pointer-constraint.h"
+#include "backends/native/meta-clutter-backend-native.h"
 
 #include <stdlib.h>
 
@@ -241,6 +242,12 @@ pointer_constrain_callback (ClutterInputDevice *device,
   constrain_all_screen_monitors(device, monitors, n_monitors, new_x, new_y);
 }
 
+static ClutterBackend *
+meta_backend_native_create_clutter_backend (MetaBackend *backend)
+{
+  return g_object_new (META_TYPE_CLUTTER_BACKEND_NATIVE, NULL);
+}
+
 static void
 meta_backend_native_post_init (MetaBackend *backend)
 {
@@ -357,7 +364,10 @@ meta_backend_native_class_init (MetaBackendNativeClass *klass)
 
   object_class->finalize = meta_backend_native_finalize;
 
+  backend_class->create_clutter_backend = meta_backend_native_create_clutter_backend;
+
   backend_class->post_init = meta_backend_native_post_init;
+
   backend_class->create_idle_monitor = meta_backend_native_create_idle_monitor;
   backend_class->create_monitor_manager = meta_backend_native_create_monitor_manager;
   backend_class->create_cursor_renderer = meta_backend_native_create_cursor_renderer;

@@ -1,10 +1,7 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* Mutter utilities */
-
 /*
- * Copyright (C) 2001 Havoc Pennington
- * Copyright (C) 2005 Elijah Newren
+ * Copyright (C) 2016 Red Hat
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -20,34 +17,22 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA.
+ *
+ * Written by:
+ *     Jonas Ådahl <jadahl@gmail.com>
  */
 
-#ifndef META_UTIL_PRIVATE_H
-#define META_UTIL_PRIVATE_H
+#ifndef META_CLUTTER_BACKEND_X11_H
+#define META_CLUTTER_BACKEND_X11_H
 
-#include <meta/util.h>
-#include <glib/gi18n-lib.h>
+#include <glib-object.h>
 
-typedef enum _MetaCompositorType
-{
-#ifdef HAVE_WAYLAND
-  META_COMPOSITOR_TYPE_WAYLAND,
-#endif
-  META_COMPOSITOR_TYPE_X11,
-} MetaCompositorType;
+#include "clutter/clutter.h"
+#include "clutter/x11/clutter-backend-x11.h"
 
-typedef enum _MetaBackendType
-{
-#ifdef HAVE_NATIVE_BACKEND
-  META_BACKEND_TYPE_NATIVE,
-#endif
-  META_BACKEND_TYPE_X11,
-} MetaBackendType;
+#define META_TYPE_CLUTTER_BACKEND_X11 (meta_clutter_backend_x11_get_type ())
+G_DECLARE_FINAL_TYPE (MetaClutterBackendX11, meta_clutter_backend_x11,
+                      META, CLUTTER_BACKEND_X11,
+                      ClutterBackendX11)
 
-void     meta_set_verbose (gboolean setting);
-void     meta_set_debugging (gboolean setting);
-void     meta_set_syncing (gboolean setting);
-void     meta_set_replace_current_wm (gboolean setting);
-void     meta_set_is_wayland_compositor (gboolean setting);
-
-#endif
+#endif /* META_CLUTTER_BACKEND_X11_H */

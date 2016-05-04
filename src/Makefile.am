@@ -108,6 +108,8 @@ libmutter_la_SOURCES =				\
 	backends/x11/meta-backend-x11.h			\
 	backends/x11/meta-barrier-x11.c			\
 	backends/x11/meta-barrier-x11.h			\
+	backends/x11/meta-clutter-backend-x11.c		\
+	backends/x11/meta-clutter-backend-x11.h		\
 	backends/x11/meta-cursor-renderer-x11.c		\
 	backends/x11/meta-cursor-renderer-x11.h		\
 	backends/x11/nested/meta-cursor-renderer-x11-nested.c		\
@@ -328,6 +330,8 @@ libmutter_la_SOURCES +=					\
 	backends/native/meta-backend-native-private.h	\
 	backends/native/meta-barrier-native.c		\
 	backends/native/meta-barrier-native.h		\
+	backends/native/meta-clutter-backend-native.c	\
+	backends/native/meta-clutter-backend-native.h	\
 	backends/native/meta-cursor-renderer-native.c	\
 	backends/native/meta-cursor-renderer-native.h	\
 	backends/native/meta-idle-monitor-native.c	\

@@ -26,6 +26,7 @@
 #define META_BACKEND_NATIVE_H
 
 #include "backends/meta-backend-private.h"
+#include "backends/native/meta-clutter-backend-native.h"
 
 #define META_TYPE_BACKEND_NATIVE             (meta_backend_native_get_type ())
 #define META_BACKEND_NATIVE(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_BACKEND_NATIVE, MetaBackendNative))

@@ -29,6 +29,7 @@
 
 #include "meta-backend-x11.h"
 
+#include <clutter.h>
 #include <clutter/x11/clutter-x11.h>
 
 #include <X11/extensions/sync.h>
@@ -41,6 +42,7 @@
 #include "meta-monitor-manager-xrandr.h"
 #include "backends/meta-monitor-manager-dummy.h"
 #include "backends/x11/nested/meta-cursor-renderer-x11-nested.h"
+#include "backends/x11/meta-clutter-backend-x11.h"
 #include "meta-cursor-renderer-x11.h"
 #ifdef HAVE_WAYLAND
 #include "wayland/meta-wayland.h"
@@ -499,6 +501,12 @@ meta_backend_x11_post_init (MetaBackend *backend)
   META_BACKEND_CLASS (meta_backend_x11_parent_class)->post_init (backend);
 }
 
+static ClutterBackend *
+meta_backend_x11_create_clutter_backend (MetaBackend *backend)
+{
+  return g_object_new (META_TYPE_CLUTTER_BACKEND_X11, NULL);
+}
+
 static MetaIdleMonitor *
 meta_backend_x11_create_idle_monitor (MetaBackend *backend,
                                       int          device_id)
@@ -865,6 +873,7 @@ meta_backend_x11_class_init (MetaBackendX11Class *klass)
 {
   MetaBackendClass *backend_class = META_BACKEND_CLASS (klass);
 
+  backend_class->create_clutter_backend = meta_backend_x11_create_clutter_backend;
   backend_class->post_init = meta_backend_x11_post_init;
   backend_class->create_idle_monitor = meta_backend_x11_create_idle_monitor;
   backend_class->create_monitor_manager = meta_backend_x11_create_monitor_manager;

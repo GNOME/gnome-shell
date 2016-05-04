@@ -29,6 +29,8 @@
 
 #include <X11/Xlib.h>
 
+#include "backends/x11/meta-clutter-backend-x11.h"
+
 #define META_TYPE_BACKEND_X11             (meta_backend_x11_get_type ())
 #define META_BACKEND_X11(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_BACKEND_X11, MetaBackendX11))
 #define META_BACKEND_X11_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass),  META_TYPE_BACKEND_X11, MetaBackendX11Class))

@@ -47,6 +47,8 @@ G_BEGIN_DECLS
 typedef struct _ClutterBackendEglNative       ClutterBackendEglNative;
 typedef struct _ClutterBackendEglNativeClass  ClutterBackendEglNativeClass;
 
+G_DEFINE_AUTOPTR_CLEANUP_FUNC (ClutterBackendEglNative, g_object_unref)
+
 struct _ClutterBackendEglNative
 {
   ClutterBackend parent_instance;
@@ -66,6 +68,7 @@ struct _ClutterBackendEglNativeClass
   ClutterBackendClass parent_class;
 };
 
+CLUTTER_AVAILABLE_IN_MUTTER
 GType clutter_backend_egl_native_get_type (void) G_GNUC_CONST;
 
 ClutterBackend *clutter_backend_egl_native_new (void);

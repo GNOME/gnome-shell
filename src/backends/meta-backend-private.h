@@ -35,6 +35,7 @@
 #include "meta-cursor-renderer.h"
 #include "meta-monitor-manager-private.h"
 #include "backends/meta-pointer-constraint.h"
+#include "core/util-private.h"
 
 #define DEFAULT_XKB_RULES_FILE "evdev"
 #define DEFAULT_XKB_MODEL "pc105+inet"
@@ -59,6 +60,8 @@ struct _MetaBackend
 struct _MetaBackendClass
 {
   GObjectClass parent_class;
+
+  ClutterBackend * (* create_clutter_backend) (MetaBackend *backend);
 
   void (* post_init) (MetaBackend *backend);
 
@@ -98,6 +101,8 @@ struct _MetaBackendClass
                                            double       *dx_unaccel,
                                            double       *dy_unaccel);
 };
+
+void meta_init_backend (MetaBackendType backend_type);
 
 MetaIdleMonitor * meta_backend_get_idle_monitor (MetaBackend *backend,
                                                  int          device_id);

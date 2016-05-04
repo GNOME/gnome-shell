@@ -82,6 +82,8 @@
 #include "wayland/meta-wayland.h"
 # endif
 
+#include "backends/meta-backend-private.h"
+
 #if defined(HAVE_NATIVE_BACKEND) && defined(HAVE_WAYLAND)
 #include <systemd/sd-login.h>
 #endif
@@ -371,7 +373,8 @@ check_for_wayland_session_type (void)
 #endif
 
 static void
-init_backend (void)
+calculate_compositor_configuration (MetaCompositorType *compositor_type,
+                                    MetaBackendType    *backend_type)
 {
 #ifdef HAVE_WAYLAND
   gboolean run_as_wayland_compositor = opt_wayland;
@@ -388,16 +391,19 @@ init_backend (void)
 
 #ifdef CLUTTER_WINDOWING_EGL
   if (opt_display_server || (run_as_wayland_compositor && !opt_nested))
-    clutter_set_windowing_backend (CLUTTER_WINDOWING_EGL);
+    *backend_type = META_BACKEND_TYPE_NATIVE;
   else
 #endif
 #endif
 #endif
-    clutter_set_windowing_backend (CLUTTER_WINDOWING_X11);
+    *backend_type = META_BACKEND_TYPE_X11;
 
 #ifdef HAVE_WAYLAND
-  meta_set_is_wayland_compositor (run_as_wayland_compositor);
+  if (run_as_wayland_compositor)
+    *compositor_type = META_COMPOSITOR_TYPE_WAYLAND;
+  else
 #endif
+    *compositor_type = META_COMPOSITOR_TYPE_X11;
 }
 
 /**
@@ -411,6 +417,8 @@ meta_init (void)
 {
   struct sigaction act;
   sigset_t empty_mask;
+  MetaCompositorType compositor_type;
+  MetaBackendType backend_type;
 
   sigemptyset (&empty_mask);
   act.sa_handler = SIG_IGN;
@@ -432,7 +440,10 @@ meta_init (void)
   if (g_getenv ("MUTTER_DEBUG"))
     meta_set_debugging (TRUE);
 
-  init_backend ();
+  calculate_compositor_configuration (&compositor_type, &backend_type);
+
+  if (compositor_type == META_COMPOSITOR_TYPE_WAYLAND)
+    meta_set_is_wayland_compositor (TRUE);
 
   if (g_get_home_dir ())
     if (chdir (g_get_home_dir ()) < 0)
@@ -454,6 +465,8 @@ meta_init (void)
    * server so the user can't control the X display to connect too. */
   if (!meta_is_wayland_compositor ())
     meta_select_display (opt_display_name);
+
+  meta_init_backend (backend_type);
 
   meta_clutter_init ();
 

@@ -48,6 +48,7 @@
 #include "clutter-debug.h"
 #include "clutter-event-private.h"
 #include "clutter-marshal.h"
+#include "clutter-mutter.h"
 #include "clutter-private.h"
 #include "clutter-stage-manager-private.h"
 #include "clutter-stage-private.h"
@@ -236,10 +237,7 @@ clutter_backend_do_real_create_context (ClutterBackend  *backend,
   internal_error = NULL;
 
   CLUTTER_NOTE (BACKEND, "Creating Cogl renderer");
-  if (klass->get_renderer != NULL)
-    backend->cogl_renderer = klass->get_renderer (backend, &internal_error);
-  else
-    backend->cogl_renderer = cogl_renderer_new ();
+  backend->cogl_renderer = klass->get_renderer (backend, &internal_error);
 
   if (backend->cogl_renderer == NULL)
     goto error;
@@ -510,6 +508,8 @@ clutter_backend_real_create_stage (ClutterBackend  *backend,
 
 static const char *allowed_backends;
 
+static ClutterBackend * (* custom_backend_func) (void);
+
 static const struct {
   const char *name;
   ClutterBackend * (* create_backend) (void);
@@ -523,6 +523,12 @@ static const struct {
   { NULL, NULL },
 };
 
+void
+clutter_set_custom_backend_func (ClutterBackend *(* func) (void))
+{
+  custom_backend_func = func;
+}
+
 ClutterBackend *
 _clutter_create_backend (void)
 {
@@ -531,6 +537,16 @@ _clutter_create_backend (void)
   gboolean allow_any;
   char **backends;
   int i;
+
+  if (custom_backend_func)
+    {
+      retval = custom_backend_func ();
+
+      if (!retval)
+        g_error ("Failed to create custom backend.");
+
+      return retval;
+    }
 
   if (allowed_backends == NULL)
     allowed_backends = "*";
