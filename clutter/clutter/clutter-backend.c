@@ -517,9 +517,6 @@ static const struct {
 #ifdef CLUTTER_WINDOWING_X11
   { CLUTTER_WINDOWING_X11, clutter_backend_x11_new },
 #endif
-#ifdef CLUTTER_WINDOWING_WAYLAND
-  { CLUTTER_WINDOWING_WAYLAND, clutter_backend_wayland_new },
-#endif
 #ifdef CLUTTER_WINDOWING_EGL
   { CLUTTER_WINDOWING_EGL, clutter_backend_egl_native_new },
 #endif
