@@ -506,6 +506,7 @@ $(dbus_display_config_built_sources) : Makefile.am org.gnome.Mutter.DisplayConfi
 		--interface-prefix org.gnome.Mutter					\
 		--c-namespace MetaDBus							\
 		--generate-c-code meta-dbus-display-config				\
+		--c-generate-autocleanup all						\
 		$(srcdir)/org.gnome.Mutter.DisplayConfig.xml
 
 $(dbus_idle_built_sources) : Makefile.am org.gnome.Mutter.IdleMonitor.xml
@@ -514,6 +515,7 @@ $(dbus_idle_built_sources) : Makefile.am org.gnome.Mutter.IdleMonitor.xml
 		--c-namespace MetaDBus							\
 		--generate-c-code meta-dbus-idle-monitor				\
 		--c-generate-object-manager						\
+		--c-generate-autocleanup all						\
 		$(srcdir)/org.gnome.Mutter.IdleMonitor.xml
 
 dbus_login1_built_sources = meta-dbus-login1.c meta-dbus-login1.h
@@ -523,6 +525,7 @@ $(dbus_login1_built_sources) : Makefile.am org.freedesktop.login1.xml
 		--interface-prefix org.freedesktop.login1				\
 		--c-namespace Login1							\
 		--generate-c-code meta-dbus-login1					\
+		--c-generate-autocleanup all						\
 		$(srcdir)/org.freedesktop.login1.xml
 
 .SECONDEXPANSION:
