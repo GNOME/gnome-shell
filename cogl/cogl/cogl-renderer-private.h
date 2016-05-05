@@ -39,6 +39,7 @@
 #include "cogl-texture-driver.h"
 #include "cogl-context.h"
 #include "cogl-closure-list-private.h"
+#include "cogl-mutter.h"
 
 #ifdef COGL_HAS_XLIB_SUPPORT
 #include <X11/Xlib.h>
@@ -52,6 +53,7 @@ struct _CoglRenderer
   const CoglDriverVtable *driver_vtable;
   const CoglTextureDriver *texture_driver;
   const CoglWinsysVtable *winsys_vtable;
+  CoglWinsysVtableGetter custom_winsys_vtable_getter;
   CoglWinsysID winsys_id_override;
   GList *constraints;
 

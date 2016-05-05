@@ -96,6 +96,10 @@
 #include <cogl/deprecated/cogl-framebuffer-deprecated.h>
 #include <cogl/deprecated/cogl-auto-texture.h>
 
+#ifdef COGL_ENABLE_MUTTER_API
+#include <cogl/cogl-mutter.h>
+#endif
+
 /*
  * 2.0 api that's compatible with the 1.x api...
  */

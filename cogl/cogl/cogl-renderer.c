@@ -41,6 +41,7 @@
 #include "cogl-object.h"
 #include "cogl-context-private.h"
 #include "cogl-util-gl-private.h"
+#include "cogl-mutter.h"
 
 #include "cogl-renderer.h"
 #include "cogl-renderer-private.h"
@@ -64,8 +65,6 @@
 #ifdef COGL_HAS_XLIB_SUPPORT
 #include "cogl-xlib-renderer.h"
 #endif
-
-typedef const CoglWinsysVtable *(*CoglWinsysVtableGetter) (void);
 
 #ifdef HAVE_COGL_GL
 extern const CoglTextureDriver _cogl_texture_driver_gl;
@@ -564,6 +563,46 @@ _cogl_renderer_choose_driver (CoglRenderer *renderer,
 
 /* Final connection API */
 
+void
+cogl_renderer_set_custom_winsys (CoglRenderer          *renderer,
+                                 CoglWinsysVtableGetter winsys_vtable_getter)
+{
+  renderer->custom_winsys_vtable_getter = winsys_vtable_getter;
+}
+
+static CoglBool
+connect_custom_winsys (CoglRenderer *renderer,
+                       CoglError   **error)
+{
+  const CoglWinsysVtable *winsys = renderer->custom_winsys_vtable_getter();
+  CoglError *tmp_error = NULL;
+  GString *error_message;
+
+  renderer->winsys_vtable = winsys;
+
+  error_message = g_string_new ("");
+  if (!winsys->renderer_connect (renderer, &tmp_error))
+    {
+      g_string_append_c (error_message, '\n');
+      g_string_append (error_message, tmp_error->message);
+      cogl_error_free (tmp_error);
+    }
+  else
+    {
+      renderer->connected = TRUE;
+      g_string_free (error_message, TRUE);
+      return TRUE;
+    }
+
+  renderer->winsys_vtable = NULL;
+  _cogl_set_error (error, COGL_WINSYS_ERROR,
+                   COGL_WINSYS_ERROR_INIT,
+                   "Failed to connected to any renderer: %s",
+                   error_message->str);
+  g_string_free (error_message, TRUE);
+  return FALSE;
+}
+
 CoglBool
 cogl_renderer_connect (CoglRenderer *renderer, CoglError **error)
 {
@@ -579,6 +618,9 @@ cogl_renderer_connect (CoglRenderer *renderer, CoglError **error)
      to be loaded before its called */
   if (!_cogl_renderer_choose_driver (renderer, error))
     return FALSE;
+
+  if (renderer->custom_winsys_vtable_getter)
+    return connect_custom_winsys (renderer, error);
 
   error_message = g_string_new ("");
   for (i = 0; i < G_N_ELEMENTS (_cogl_winsys_vtable_getters); i++)
