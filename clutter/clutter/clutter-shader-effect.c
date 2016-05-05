@@ -112,7 +112,7 @@
  */
 
 #ifdef HAVE_CONFIG_H
-#include "config.h"
+#include "clutter-build-config.h"
 #endif
 
 /* XXX: This file depends on the cogl_program_ api with has been

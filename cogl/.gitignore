@@ -40,9 +40,8 @@ stamp-marshal
 /cogl/cogl-gl-header.h
 /cogl-path/cogl-path-enum-types.c
 /cogl-path/cogl-path-enum-types.h
-config.h
-config.h.in
-config.h.win32
+cogl-config.h
+cogl-config.h.in
 config.log
 config.lt
 config.status

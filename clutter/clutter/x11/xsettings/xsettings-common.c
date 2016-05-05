@@ -20,7 +20,7 @@
  *
  * Author:  Owen Taylor, Red Hat, Inc.
  */
-#include "config.h"
+#include "clutter-build-config.h"
 #include "string.h"
 #include "stdlib.h"
 

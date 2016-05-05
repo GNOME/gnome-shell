@@ -28,6 +28,7 @@ tags
 /clutter/*.trs
 /clutter-lcov.info
 /clutter-lcov
+clutter-build-config.h
 !/build/autotools/introspection.m4
 !/build/autotools/as-linguas.m4
 !/build/autotools/as-compiler-flag.m4

@@ -31,7 +31,7 @@
  */
 
 #ifdef HAVE_CONFIG_H
-#include "config.h"
+#include "clutter-build-config.h"
 #endif
 
 #define CLUTTER_DISABLE_DEPRECATION_WARNINGS

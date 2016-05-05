@@ -1,4 +1,4 @@
-#include "config.h"
+#include "cogl-config.h"
 
 #include <clutter/clutter.h>
 #include <cogl/cogl.h>

@@ -26,7 +26,7 @@
  *  Neil Roberts
  */
 
-#include "config.h"
+#include "clutter-build-config.h"
 
 #include <sys/types.h>
 #include <sys/stat.h>

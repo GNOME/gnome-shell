@@ -54,7 +54,7 @@ AC_INIT([clutter],
         [http://www.clutter-project.org])
 
 AC_CONFIG_SRCDIR([clutter/clutter.h])
-AC_CONFIG_HEADERS([clutter/config.h])
+AC_CONFIG_HEADERS([clutter/clutter-build-config.h])
 AC_CONFIG_AUX_DIR([build])
 AC_CONFIG_MACRO_DIR([build/autotools])
 

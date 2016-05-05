@@ -28,7 +28,7 @@
  *
  */
 
-#include <config.h>
+#include "cogl-config.h"
 
 #include "cogl-types.h"
 #include "cogl-context-private.h"

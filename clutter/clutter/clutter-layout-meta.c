@@ -35,7 +35,7 @@
  * #ClutterLayoutMeta is available since Clutter 1.2
  */
 #ifdef HAVE_CONFIG_H
-#include "config.h"
+#include "clutter-build-config.h"
 #endif
 
 #include "clutter-layout-meta.h"

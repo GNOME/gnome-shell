@@ -46,7 +46,7 @@
  * #ClutterInterval is available since Clutter 1.0
  */
 
-#include "config.h"
+#include "clutter-build-config.h"
 
 #include <stdlib.h>
 #include <string.h>

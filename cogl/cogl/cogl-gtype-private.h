@@ -31,7 +31,7 @@
 #ifndef __COGL_GTYPE_PRIVATE_H__
 #define __COGL_GTYPE_PRIVATE_H__
 
-#include "config.h"
+#include "cogl-config.h"
 
 #include <glib.h>
 #include <glib-object.h>

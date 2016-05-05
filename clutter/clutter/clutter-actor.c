@@ -605,7 +605,7 @@
  *   #ClutterActor:reactive property instead of this macro.
  */
 
-#include "config.h"
+#include "clutter-build-config.h"
 
 #include <math.h>
 

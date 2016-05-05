@@ -1,4 +1,4 @@
-#include "config.h"
+#include "clutter-build-config.h"
 
 #include "clutter-event-translator.h"
 

@@ -25,10 +25,6 @@
 #ifndef __CLUTTER_STAGE_EGL_NATIVE_H__
 #define __CLUTTER_STAGE_EGL_NATIVE_H__
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif
-
 #include <glib-object.h>
 #include <clutter/clutter-stage.h>
 

@@ -24,7 +24,7 @@
  *      Emmanuele Bassi <ebassi@linux.intel.com>
  */
 
-#include "config.h"
+#include "clutter-build-config.h"
 
 #include "clutter-backend-x11.h"
 #include "clutter-x11.h"

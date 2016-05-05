@@ -21,7 +21,7 @@
  * Author: Emmanuele Bassi <ebassi@linux.intel.com>
  */
 
-#include "config.h"
+#include "clutter-build-config.h"
 
 #include "clutter-input-device-xi2.h"
 

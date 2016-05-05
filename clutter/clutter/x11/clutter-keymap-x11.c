@@ -21,7 +21,7 @@
  * Author: Emmanuele Bassi <ebassi@linux.intel.com>
  */
 
-#include "config.h"
+#include "clutter-build-config.h"
 
 #include "clutter-keymap-x11.h"
 #include "clutter-backend-x11.h"

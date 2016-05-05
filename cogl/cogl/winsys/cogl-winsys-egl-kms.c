@@ -35,7 +35,7 @@
  */
 
 #ifdef HAVE_CONFIG_H
-#include "config.h"
+#include "cogl-config.h"
 #endif
 
 #include <EGL/egl.h>

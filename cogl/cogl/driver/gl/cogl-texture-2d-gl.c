@@ -32,7 +32,7 @@
  *  Robert Bragg   <robert@linux.intel.com>
  */
 
-#include <config.h>
+#include "cogl-config.h"
 
 #include <string.h>
 

@@ -30,7 +30,7 @@
  *
  * In particular it sets a proper role for the texture.
  */
-#include "config.h"
+#include "clutter-build-config.h"
 
 #define CLUTTER_DISABLE_DEPRECATION_WARNINGS
 

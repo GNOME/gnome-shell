@@ -28,7 +28,7 @@
  *
  */
 
-#include <config.h>
+#include "cogl-config.h"
 
 #include <string.h>
 #include <math.h>

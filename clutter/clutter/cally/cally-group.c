@@ -34,7 +34,7 @@
  * group.
  */
 
-#include "config.h"
+#include "clutter-build-config.h"
 
 #include "cally-group.h"
 #include "cally-actor-private.h"

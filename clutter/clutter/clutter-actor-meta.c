@@ -42,7 +42,7 @@
  */
 
 #ifdef HAVE_CONFIG_H
-#include "config.h"
+#include "clutter-build-config.h"
 #endif
 
 #include "clutter-actor-meta-private.h"

@@ -24,7 +24,7 @@
 /* This list implementation is based on the Wayland source code */
 
 #ifdef HAVE_CONFIG_H
-#include "config.h"
+#include "cogl-config.h"
 #endif
 
 #include <stdlib.h>

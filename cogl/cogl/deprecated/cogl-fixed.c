@@ -31,7 +31,7 @@
 #define G_IMPLEMENT_INLINES
 
 #ifdef HAVE_CONFIG_H
-#include "config.h"
+#include "cogl-config.h"
 #endif
 
 #include <glib-object.h>

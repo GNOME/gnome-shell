@@ -38,7 +38,7 @@
 #define CLUTTER_BLUR_EFFECT_GET_CLASS(obj)      (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_BLUR_EFFECT, ClutterBlurEffectClass))
 
 #ifdef HAVE_CONFIG_H
-#include "config.h"
+#include "clutter-build-config.h"
 #endif
 
 #define CLUTTER_ENABLE_EXPERIMENTAL_API

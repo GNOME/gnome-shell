@@ -45,7 +45,7 @@
  * may use the extension if it is possible.
  */
 
-#include "config.h"
+#include "clutter-build-config.h"
 
 #include <string.h>
 

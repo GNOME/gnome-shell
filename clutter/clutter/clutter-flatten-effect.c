@@ -28,7 +28,7 @@
    it only exists because that class is abstract */
 
 #ifdef HAVE_CONFIG_H
-#include "config.h"
+#include "clutter-build-config.h"
 #endif
 
 #include "clutter-flatten-effect.h"

@@ -5,7 +5,7 @@
 #undef COGL_ENABLE_EXPERIMENTAL_API
 
 #include "test-utils.h"
-#include "config.h"
+#include "cogl-config.h"
 
 /* So we can use _COGL_STATIC_ASSERT we include the internal
  * cogl-util.h header. Since internal headers explicitly guard against

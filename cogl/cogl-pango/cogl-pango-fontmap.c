@@ -35,7 +35,7 @@
  */
 
 #ifdef HAVE_CONFIG_H
-#include "config.h"
+#include "cogl-config.h"
 #endif
 
 /* This is needed to get the Pango headers to export stuff needed to

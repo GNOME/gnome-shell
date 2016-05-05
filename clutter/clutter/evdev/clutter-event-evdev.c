@@ -20,7 +20,7 @@
  *      Carlos Garnacho <carlosg@gnome.org>
  */
 
-#include "config.h"
+#include "clutter-build-config.h"
 
 #include "clutter/clutter-device-manager-private.h"
 #include "clutter/clutter-event-private.h"

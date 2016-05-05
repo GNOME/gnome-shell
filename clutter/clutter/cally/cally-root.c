@@ -35,7 +35,7 @@
  * #ClutterStageManager).
  */
 
-#include "config.h"
+#include "clutter-build-config.h"
 
 #include "cally-root.h"
 
