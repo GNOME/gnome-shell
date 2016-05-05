@@ -112,7 +112,7 @@ _cogl_util_one_at_a_time_hash (unsigned int hash,
                                size_t bytes)
 {
   const unsigned char *p = key;
-  int i;
+  size_t i;
 
   for (i = 0; i < bytes; i++)
     {
