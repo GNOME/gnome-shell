@@ -49,7 +49,7 @@
  * __COGL_H_INSIDE__ */
 #ifndef __COGL_H_INSIDE__
 #define __COGL_H_INSIDE__
-#define __COGL_MUST_UNDEF_COGL_H_INSIDE__
+#define __COGL_MUST_UNDEF_COGL_H_INSIDE_COGL_EGL__
 #endif
 
 #endif /* COGL_COMPILATION */
@@ -109,10 +109,10 @@ COGL_END_DECLS
  * a commandline argument for the scanner which means we must be
  * careful not to undefine it in a header...
  */
-#ifdef __COGL_MUST_UNDEF_COGL_H_INSIDE__
+#ifdef __COGL_MUST_UNDEF_COGL_H_INSIDE_COGL_EGL__
 #undef __COGL_H_INSIDE__
 #undef __COGL_EGL_H_INSIDE__
-#undef __COGL_MUST_UNDEF_COGL_H_INSIDE__
+#undef __COGL_MUST_UNDEF_COGL_H_INSIDE_COGL_EGL__
 #endif
 
 #endif /* __COGL_EGL_H__ */
