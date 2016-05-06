@@ -46,19 +46,6 @@
 #error "cogl-config.h must be included before including cogl-util.h"
 #endif
 
-/* When compiling with Visual Studio, symbols that represent data that
-   are exported out of the DLL need to be marked with the dllexport
-   attribute. */
-#ifdef _MSC_VER
-#ifdef COGL_BUILD_EXP
-#define COGL_EXPORT __declspec(dllexport)
-#else
-#define COGL_EXPORT __declspec(dllimport)
-#endif
-#else
-#define COGL_EXPORT
-#endif
-
 int
 _cogl_util_next_p2 (int a);
 
@@ -197,42 +184,8 @@ _cogl_util_popcountl (unsigned long num)
 
 #endif /* COGL_UTIL_HAVE_BUILTIN_POPCOUNTL */
 
-#ifdef COGL_HAS_GLIB_SUPPORT
 #define _COGL_RETURN_IF_FAIL(EXPR) g_return_if_fail(EXPR)
 #define _COGL_RETURN_VAL_IF_FAIL(EXPR, VAL) g_return_val_if_fail(EXPR, VAL)
-#else
-#ifdef COGL_ENABLE_DEBUG
-#define _COGL_RETURN_START do {
-#define _COGL_RETURN_END } while (0)
-#else /* COGL_ENABLE_DEBUG */
-/* If debugging is disabled then we don't actually want to do the
- * check but we still want the code for the expression to be generated
- * so that it won't give loads of warnings about unused variables.
- * Therefore we just surround the block with if(0) */
-#define _COGL_RETURN_START do { if (0) {
-#define _COGL_RETURN_END } } while (0)
-#endif /* COGL_ENABLE_DEBUG */
-#define _COGL_RETURN_IF_FAIL(EXPR) _COGL_RETURN_START {             \
-   if (!(EXPR))						            \
-     {							            \
-       fprintf (stderr, "file %s: line %d: assertion `%s' failed",  \
-                __FILE__,					    \
-                __LINE__,					    \
-                #EXPR);						    \
-       return;						            \
-     };                                                             \
-  } _COGL_RETURN_END
-#define _COGL_RETURN_VAL_IF_FAIL(EXPR, VAL) _COGL_RETURN_START {    \
-   if (!(EXPR))						            \
-     {							            \
-       fprintf (stderr, "file %s: line %d: assertion `%s' failed",  \
-                __FILE__,					    \
-                __LINE__,					    \
-                #EXPR);						    \
-       return (VAL);						    \
-     };                                                             \
-  } _COGL_RETURN_END
-#endif /* COGL_HAS_GLIB_SUPPORT */
 
 /* Match a CoglPixelFormat according to channel masks, color depth,
  * bits per pixel and byte order. These information are provided by
