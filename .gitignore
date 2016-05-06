@@ -36,6 +36,8 @@ mutter-wayland.desktop
 stamp-h1
 *.gmo
 *.make
+*.log
+*.trs
 *~
 stamp-it
 .intltool-merge-cache
