@@ -37,7 +37,7 @@
 /* We forward declare the CoglFramebuffer type here to avoid some circular
  * dependency issues with the following headers.
  */
-#ifdef __COGL_H_INSIDE__
+#if defined(__COGL_H_INSIDE__) && !defined(COGL_ENABLE_MUTTER_API)
 /* For the public C api we typedef interface types as void to avoid needing
  * lots of casting in code and instead we will rely on runtime type checking
  * for these objects. */

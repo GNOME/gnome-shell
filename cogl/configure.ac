@@ -80,6 +80,7 @@ AC_CONFIG_SRCDIR(cogl/cogl.h)
 AC_CONFIG_AUX_DIR([build])
 AC_CONFIG_MACRO_DIR([build/autotools])
 AC_CONFIG_HEADERS(cogl-config.h)
+AC_CONFIG_HEADERS(cogl-mutter-config.h)
 AC_GNU_SOURCE
 
 dnl ================================================================

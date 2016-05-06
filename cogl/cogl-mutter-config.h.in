@@ -1,0 +1,17 @@
+/* Have GL for rendering */
+#undef HAVE_COGL_GL
+
+/* Have GLES 1.1 for rendering */
+#undef HAVE_COGL_GLES
+
+/* Have GLES 2.0 for rendering */
+#undef HAVE_COGL_GLES2
+
+/* Define to 1 if you have the `ffs' function. */
+#undef HAVE_FFS
+
+/* Define to 1 if you have the `memmem' function. */
+#undef HAVE_MEMMEM
+
+/* Whether _Static_assert can be used or not */
+#undef HAVE_STATIC_ASSERT

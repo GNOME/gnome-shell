@@ -44,10 +44,12 @@
  * so these macros are only kept for compatibility...
  */
 
+#ifndef COGL_ENABLE_MUTTER_API
 #define COGL_FRAMEBUFFER(X) (X)
 #define COGL_BUFFER(X) (X)
 #define COGL_TEXTURE(X) (X)
 #define COGL_META_TEXTURE(X) (X)
 #define COGL_PRIMITIVE_TEXTURE(X) (X)
+#endif
 
 #endif /* __COGL_TYPE_CASTS_H__ */

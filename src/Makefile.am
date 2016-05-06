@@ -24,6 +24,8 @@ AM_CPPFLAGS = \
 	-I$(srcdir)/ui							\
 	-I$(srcdir)/compositor						\
 	-I$(top_srcdir)/cogl						\
+	-I$(top_srcdir)/cogl/cogl					\
+	-I$(top_srcdir)/cogl/cogl/winsys				\
 	-I$(top_builddir)/cogl						\
 	-I$(top_srcdir)/clutter						\
 	-I$(top_builddir)/clutter					\

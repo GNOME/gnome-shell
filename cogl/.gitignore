@@ -40,6 +40,7 @@ cogl-path-enum-types.c
 cogl-path-enum-types.h
 cogl-config.h
 cogl-config.h.in
+cogl-mutter-config.h
 config.log
 config.lt
 config.status

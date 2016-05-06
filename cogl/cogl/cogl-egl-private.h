@@ -33,7 +33,7 @@
 
 #include "cogl-egl-defines.h"
 
-#ifndef GL_OES_EGL_image
+#if defined(GL_OES_EGL_image) && !defined(GLeglImageOES)
 #define GLeglImageOES void *
 #endif
 

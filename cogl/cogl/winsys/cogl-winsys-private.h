@@ -190,6 +190,8 @@ typedef struct _CoglWinsysVtable
 
 } CoglWinsysVtable;
 
+typedef const CoglWinsysVtable *(*CoglWinsysVtableGetter) (void);
+
 CoglBool
 _cogl_winsys_has_feature (CoglWinsysFeature feature);
 

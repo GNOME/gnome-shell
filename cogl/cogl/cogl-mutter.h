@@ -31,10 +31,16 @@
 #ifndef __COGL_MUTTER_H___
 #define __COGL_MUTTER_H___
 
-#include <cogl/winsys/cogl-winsys-egl-kms-private.h>
-#include <cogl/winsys/cogl-winsys-private.h>
+#include "cogl-mutter-config.h"
+#include "cogl-defines.h"
 
-typedef const CoglWinsysVtable *(*CoglWinsysVtableGetter) (void);
+#include <cogl/cogl-texture.h>
+#include <cogl/cogl-meta-texture.h>
+#include <cogl/cogl-error-private.h>
+#include <cogl/cogl-renderer-private.h>
+#include <cogl/winsys/cogl-winsys-egl-kms-private.h>
+#include <cogl/winsys/cogl-winsys-egl-private.h>
+#include <cogl/winsys/cogl-winsys-private.h>
 
 void cogl_renderer_set_custom_winsys (CoglRenderer          *renderer,
                                       CoglWinsysVtableGetter winsys_vtable_getter);

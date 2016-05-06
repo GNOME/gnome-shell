@@ -28,7 +28,7 @@
  *
  */
 
-#if !defined(COGL_COMPILATION)
+#if !defined(COGL_COMPILATION) && !defined(COGL_ENABLE_MUTTER_API)
 #error "cogl-gl-header.h should only be included when compiling Cogl"
 #endif
 
