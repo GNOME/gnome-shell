@@ -32,13 +32,63 @@
 #include <glib-object.h>
 
 #include "backends/native/meta-renderer-native.h"
+#include "cogl/cogl.h"
+
+enum
+{
+  PROP_0,
+
+  PROP_KMS_FD,
+
+  PROP_LAST
+};
 
 struct _MetaRendererNative
 {
   MetaRenderer parent;
+
+  int kms_fd;
 };
 
 G_DEFINE_TYPE (MetaRendererNative, meta_renderer_native, META_TYPE_RENDERER)
+
+static void
+meta_renderer_native_get_property (GObject    *object,
+                                   guint       prop_id,
+                                   GValue     *value,
+                                   GParamSpec *pspec)
+{
+  MetaRendererNative *renderer_native = META_RENDERER_NATIVE (object);
+
+  switch (prop_id)
+    {
+    case PROP_KMS_FD:
+      g_value_set_int (value, renderer_native->kms_fd);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+    }
+}
+
+static void
+meta_renderer_native_set_property (GObject      *object,
+                                   guint         prop_id,
+                                   const GValue *value,
+                                   GParamSpec   *pspec)
+{
+  MetaRendererNative *renderer_native = META_RENDERER_NATIVE (object);
+
+  switch (prop_id)
+    {
+    case PROP_KMS_FD:
+      renderer_native->kms_fd = g_value_get_int (value);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+    }
+}
 
 static void
 meta_renderer_native_init (MetaRendererNative *renderer_native)
@@ -48,4 +98,17 @@ meta_renderer_native_init (MetaRendererNative *renderer_native)
 static void
 meta_renderer_native_class_init (MetaRendererNativeClass *klass)
 {
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
+  object_class->get_property = meta_renderer_native_get_property;
+  object_class->set_property = meta_renderer_native_set_property;
+
+  g_object_class_install_property (object_class,
+                                   PROP_KMS_FD,
+                                   g_param_spec_int ("kms-fd",
+                                                     "KMS fd",
+                                                     "The KMS file descriptor",
+                                                     0, G_MAXINT, 0,
+                                                     G_PARAM_READWRITE |
+                                                     G_PARAM_CONSTRUCT_ONLY));
 }

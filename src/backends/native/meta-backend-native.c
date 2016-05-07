@@ -284,7 +284,15 @@ meta_backend_native_create_cursor_renderer (MetaBackend *backend)
 static MetaRenderer *
 meta_backend_native_create_renderer (MetaBackend *backend)
 {
-  return g_object_new (META_TYPE_RENDERER_NATIVE, NULL);
+  MetaBackendNative *native = META_BACKEND_NATIVE (backend);
+  MetaBackendNativePrivate *priv =
+    meta_backend_native_get_instance_private (native);
+  int kms_fd;
+
+  kms_fd = meta_launcher_get_kms_fd (priv->launcher);
+  return g_object_new (META_TYPE_RENDERER_NATIVE,
+                       "kms-fd", kms_fd,
+                       NULL);
 }
 
 static void
