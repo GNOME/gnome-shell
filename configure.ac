@@ -22,6 +22,8 @@ AM_INIT_AUTOMAKE([1.11 foreign no-dist-gzip dist-xz tar-ustar subdir-objects])
 m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])],)
 AM_MAINTAINER_MODE([enable])
 
+AC_GNU_SOURCE
+
 MUTTER_MAJOR_VERSION=mutter_major_version
 MUTTER_MINOR_VERSION=mutter_minor_version
 MUTTER_MICRO_VERSION=mutter_micro_version

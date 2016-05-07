@@ -27,8 +27,6 @@
  * @Short_Description: Key bindings
  */
 
-#define _GNU_SOURCE
-
 #include <config.h>
 #include "keybindings-private.h"
 #include "workspace-private.h"

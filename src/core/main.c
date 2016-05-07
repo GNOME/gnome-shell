@@ -41,7 +41,6 @@
  * to investigate, read main(), meta_display_open(), and event_callback().
  */
 
-#define _GNU_SOURCE
 #define _XOPEN_SOURCE /* for putenv() and some signal-related functions */
 
 #include <config.h>

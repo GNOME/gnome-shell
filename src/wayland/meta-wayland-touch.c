@@ -21,8 +21,6 @@
  * Author: Carlos Garnacho <carlosg@gnome.org>
  */
 
-#define _GNU_SOURCE
-
 #include "config.h"
 
 #include <glib.h>

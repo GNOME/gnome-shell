@@ -45,8 +45,6 @@
 
 /* The file is based on src/input.c from Weston */
 
-#define _GNU_SOURCE
-
 #include "config.h"
 
 #include <glib.h>
