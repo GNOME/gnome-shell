@@ -361,8 +361,10 @@ texture_tower_create_texture (MetaTextureTower *tower,
     {
       ClutterBackend *backend = clutter_get_default_backend ();
       CoglContext *context = clutter_backend_get_cogl_context (backend);
+      CoglTextureRectangle *texture_rectangle;
 
-      tower->textures[level] = cogl_texture_rectangle_new_with_size (context, width, height);
+      texture_rectangle = cogl_texture_rectangle_new_with_size (context, width, height);
+      tower->textures[level] = COGL_TEXTURE (texture_rectangle);
     }
   else
     {

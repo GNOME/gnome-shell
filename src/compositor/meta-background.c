@@ -39,7 +39,7 @@ struct _MetaBackgroundMonitor
 {
   gboolean dirty;
   CoglTexture *texture;
-  CoglOffscreen *fbo;
+  CoglFramebuffer *fbo;
 };
 
 struct _MetaBackgroundPrivate
@@ -662,6 +662,7 @@ ensure_wallpaper_texture (MetaBackground *self,
     {
       int width = cogl_texture_get_width (texture);
       int height = cogl_texture_get_height (texture);
+      CoglOffscreen *offscreen;
       CoglFramebuffer *fbo;
       CoglError *catch_error = NULL;
       CoglPipeline *pipeline;
@@ -669,7 +670,8 @@ ensure_wallpaper_texture (MetaBackground *self,
       priv->wallpaper_texture = meta_create_texture (width, height,
                                                      COGL_TEXTURE_COMPONENTS_RGBA,
                                                      META_TEXTURE_FLAGS_NONE);
-      fbo = cogl_offscreen_new_with_texture (priv->wallpaper_texture);
+      offscreen = cogl_offscreen_new_with_texture (priv->wallpaper_texture);
+      fbo = COGL_FRAMEBUFFER (offscreen);
 
       if (!cogl_framebuffer_allocate (fbo, &catch_error))
         {
@@ -786,10 +788,13 @@ meta_background_get_texture (MetaBackground         *self,
 
       if (monitor->texture == NULL)
         {
+          CoglOffscreen *offscreen;
+
           monitor->texture = meta_create_texture (monitor_area.width, monitor_area.height,
                                                   COGL_TEXTURE_COMPONENTS_RGBA,
                                                   META_TEXTURE_FLAGS_NONE);
-          monitor->fbo = cogl_offscreen_new_with_texture (monitor->texture);
+          offscreen = cogl_offscreen_new_with_texture (monitor->texture);
+          monitor->fbo = COGL_FRAMEBUFFER (offscreen);
         }
 
       if (!cogl_framebuffer_allocate (monitor->fbo, &catch_error))

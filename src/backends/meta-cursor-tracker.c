@@ -255,7 +255,7 @@ ensure_xfixes_cursor (MetaCursorTracker *tracker)
     {
       MetaCursorSprite *cursor_sprite = meta_cursor_sprite_new ();
       meta_cursor_sprite_set_texture (cursor_sprite,
-                                      sprite,
+                                      COGL_TEXTURE (sprite),
                                       cursor_image->xhot,
                                       cursor_image->yhot);
       cogl_object_unref (sprite);

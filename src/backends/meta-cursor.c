@@ -135,7 +135,7 @@ meta_cursor_sprite_load_from_xcursor_image (MetaCursorSprite *self,
   CoglPixelFormat cogl_format;
   ClutterBackend *clutter_backend;
   CoglContext *cogl_context;
-  CoglTexture *texture;
+  CoglTexture2D *texture;
   CoglError *error = NULL;
 
   g_assert (self->texture == NULL);
@@ -165,7 +165,7 @@ meta_cursor_sprite_load_from_xcursor_image (MetaCursorSprite *self,
       cogl_error_free (error);
     }
 
-  meta_cursor_sprite_set_texture (self, texture,
+  meta_cursor_sprite_set_texture (self, COGL_TEXTURE (texture),
                                   xc_image->xhot, xc_image->yhot);
 
   if (texture)
