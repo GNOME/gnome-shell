@@ -63,6 +63,7 @@ struct _MetaBackendPrivate
   MetaMonitorManager *monitor_manager;
   MetaCursorRenderer *cursor_renderer;
   MetaInputSettings *input_settings;
+  MetaRenderer *renderer;
 
   ClutterBackend *clutter_backend;
   ClutterActor *stage;
@@ -372,10 +373,20 @@ meta_backend_real_get_relative_motion_deltas (MetaBackend *backend,
 }
 
 static void
+meta_backend_constructed (GObject *object)
+{
+  MetaBackend *backend = META_BACKEND (object);
+  MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
+
+  priv->renderer = META_BACKEND_GET_CLASS (backend)->create_renderer (backend);
+}
+
+static void
 meta_backend_class_init (MetaBackendClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
+  object_class->constructed = meta_backend_constructed;
   object_class->finalize = meta_backend_finalize;
 
   klass->post_init = meta_backend_real_post_init;
@@ -448,6 +459,16 @@ meta_backend_get_cursor_renderer (MetaBackend *backend)
   MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
 
   return priv->cursor_renderer;
+}
+
+/**
+ * meta_backend_get_renderer: (skip)
+ */
+MetaRenderer * meta_backend_get_renderer (MetaBackend *backend)
+{
+  MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
+
+  return priv->renderer;
 }
 
 /**

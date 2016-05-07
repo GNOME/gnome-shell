@@ -104,6 +104,8 @@ libmutter_la_SOURCES =				\
 	backends/meta-pointer-constraint.h	\
 	backends/meta-stage.h			\
 	backends/meta-stage.c			\
+	backends/meta-renderer.c		\
+	backends/meta-renderer.h		\
 	backends/edid-parse.c			\
 	backends/edid.h				\
 	backends/x11/meta-backend-x11.c			\
@@ -122,6 +124,8 @@ libmutter_la_SOURCES =				\
 	backends/x11/meta-input-settings-x11.h		\
 	backends/x11/meta-monitor-manager-xrandr.c	\
 	backends/x11/meta-monitor-manager-xrandr.h	\
+	backends/x11/meta-renderer-x11.c		\
+	backends/x11/meta-renderer-x11.h		\
 	core/meta-accel-parse.c			\
 	core/meta-accel-parse.h			\
 	meta/barrier.h				\
@@ -344,6 +348,8 @@ libmutter_la_SOURCES +=					\
 	backends/native/meta-monitor-manager-kms.h	\
 	backends/native/meta-launcher.c			\
 	backends/native/meta-launcher.h			\
+	backends/native/meta-renderer-native.c		\
+	backends/native/meta-renderer-native.h		\
 	backends/native/dbus-utils.c			\
 	backends/native/dbus-utils.h			\
 	$(NULL)

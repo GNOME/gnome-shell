@@ -43,6 +43,7 @@
 #include "backends/meta-monitor-manager-dummy.h"
 #include "backends/x11/nested/meta-cursor-renderer-x11-nested.h"
 #include "backends/x11/meta-clutter-backend-x11.h"
+#include "backends/x11/meta-renderer-x11.h"
 #include "meta-cursor-renderer-x11.h"
 #ifdef HAVE_WAYLAND
 #include "wayland/meta-wayland.h"
@@ -552,6 +553,12 @@ meta_backend_x11_create_cursor_renderer (MetaBackend *backend)
     }
 }
 
+static MetaRenderer *
+meta_backend_x11_create_renderer (MetaBackend *backend)
+{
+  return g_object_new (META_TYPE_RENDERER_X11, NULL);
+}
+
 static gboolean
 meta_backend_x11_grab_device (MetaBackend *backend,
                               int          device_id,
@@ -878,6 +885,7 @@ meta_backend_x11_class_init (MetaBackendX11Class *klass)
   backend_class->create_idle_monitor = meta_backend_x11_create_idle_monitor;
   backend_class->create_monitor_manager = meta_backend_x11_create_monitor_manager;
   backend_class->create_cursor_renderer = meta_backend_x11_create_cursor_renderer;
+  backend_class->create_renderer = meta_backend_x11_create_renderer;
   backend_class->grab_device = meta_backend_x11_grab_device;
   backend_class->ungrab_device = meta_backend_x11_ungrab_device;
   backend_class->warp_pointer = meta_backend_x11_warp_pointer;

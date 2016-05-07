@@ -39,6 +39,7 @@
 #include "backends/meta-cursor-tracker-private.h"
 #include "backends/meta-pointer-constraint.h"
 #include "backends/native/meta-clutter-backend-native.h"
+#include "backends/native/meta-renderer-native.h"
 
 #include <stdlib.h>
 
@@ -280,6 +281,12 @@ meta_backend_native_create_cursor_renderer (MetaBackend *backend)
   return g_object_new (META_TYPE_CURSOR_RENDERER_NATIVE, NULL);
 }
 
+static MetaRenderer *
+meta_backend_native_create_renderer (MetaBackend *backend)
+{
+  return g_object_new (META_TYPE_RENDERER_NATIVE, NULL);
+}
+
 static void
 meta_backend_native_warp_pointer (MetaBackend *backend,
                                   int          x,
@@ -371,6 +378,7 @@ meta_backend_native_class_init (MetaBackendNativeClass *klass)
   backend_class->create_idle_monitor = meta_backend_native_create_idle_monitor;
   backend_class->create_monitor_manager = meta_backend_native_create_monitor_manager;
   backend_class->create_cursor_renderer = meta_backend_native_create_cursor_renderer;
+  backend_class->create_renderer = meta_backend_native_create_renderer;
 
   backend_class->warp_pointer = meta_backend_native_warp_pointer;
   backend_class->set_keymap = meta_backend_native_set_keymap;
