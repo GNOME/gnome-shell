@@ -56,6 +56,8 @@ struct _MetaLauncher
   Login1Seat *seat_proxy;
 
   gboolean session_active;
+
+  int kms_fd;
 };
 
 static Login1Session *
@@ -461,6 +463,7 @@ meta_launcher_new (GError **error)
   self->seat_proxy = g_object_ref (seat_proxy);
 
   self->session_active = TRUE;
+  self->kms_fd = kms_fd;
 
   clutter_egl_set_kms_fd (kms_fd);
   clutter_evdev_set_device_callbacks (on_evdev_device_open,
@@ -501,4 +504,10 @@ meta_launcher_activate_vt (MetaLauncher  *launcher,
                            GError       **error)
 {
   return login1_seat_call_switch_to_sync (launcher->seat_proxy, vt, NULL, error);
+}
+
+int
+meta_launcher_get_kms_fd (MetaLauncher *self)
+{
+  return self->kms_fd;
 }

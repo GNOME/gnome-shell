@@ -34,4 +34,6 @@ gboolean          meta_launcher_activate_vt             (MetaLauncher  *self,
 							 signed char    vt,
 							 GError       **error);
 
+int               meta_launcher_get_kms_fd              (MetaLauncher  *self);
+
 #endif /* META_LAUNCHER_H */
