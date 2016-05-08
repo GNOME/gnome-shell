@@ -14,9 +14,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-03-11 22:17+0000\n"
-"PO-Revision-Date: 2016-03-12 14:12+0900\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"shell&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2016-05-02 22:01+0000\n"
+"PO-Revision-Date: 2016-05-08 15:12+0900\n"
 "Last-Translator: Jiro Matsuzawa <jmatsuzawa@gnome.org>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "Language: ja\n"
@@ -70,31 +71,51 @@ msgid "Enable internal tools useful for developers and testers from Alt-F2"
 msgstr "Alt-F2 から開発・テスト用の内部ツールを利用可能にする"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:2
-msgid "Allows access to internal debugging and monitoring tools using the Alt-F2 dialog."
-msgstr "Alt-F2 ダイアログを利用した内部のデバッグツールとモニターツールへのアクセスを許可します。"
+msgid ""
+"Allows access to internal debugging and monitoring tools using the Alt-F2 "
+"dialog."
+msgstr ""
+"Alt-F2 ダイアログを利用した内部のデバッグツールとモニターツールへのアクセスを"
+"許可します。"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:3
 msgid "UUIDs of extensions to enable"
 msgstr "有効にする拡張機能の UUID"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:4
-msgid "GNOME Shell extensions have a UUID property; this key lists extensions which should be loaded. Any extension that wants to be loaded needs to be in this list. You can also manipulate this list with the EnableExtension and DisableExtension D-Bus methods on org.gnome.Shell."
-msgstr "GNOME Shell の拡張機能には UUID プロパティがあり、このキーは、ロードしたい拡張機能の UUID のリストです。ロードしたい拡張機能はこのリストに含めなければなりません。このリストは org.gnome.Shell の EnableExtensions や DisableExtensions といった DBus メソッドでも操作できます。"
+msgid ""
+"GNOME Shell extensions have a UUID property; this key lists extensions which "
+"should be loaded. Any extension that wants to be loaded needs to be in this "
+"list. You can also manipulate this list with the EnableExtension and "
+"DisableExtension D-Bus methods on org.gnome.Shell."
+msgstr ""
+"GNOME Shell の拡張機能には UUID プロパティがあり、このキーは、ロードしたい拡"
+"張機能の UUID のリストです。ロードしたい拡張機能はこのリストに含めなければな"
+"りません。このリストは org.gnome.Shell の EnableExtensions や "
+"DisableExtensions といった DBus メソッドでも操作できます。"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:5
 msgid "Disables the validation of extension version compatibility"
 msgstr "拡張機能のバージョン互換の検証を無効にする"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:6
-msgid "GNOME Shell will only load extensions that claim to support the current running version. Enabling this option will disable this check and try to load all extensions regardless of the versions they claim to support."
-msgstr "通常では、現在起動中の GNOME Shell のバージョンをサポートする拡張機能だけがロードされます。この設定を true にした場合、バージョンチェック機能が無効になり、拡張機能のサポートバージョンに関係なくすべての拡張機能をロードします。"
+msgid ""
+"GNOME Shell will only load extensions that claim to support the current "
+"running version. Enabling this option will disable this check and try to "
+"load all extensions regardless of the versions they claim to support."
+msgstr ""
+"通常では、現在起動中の GNOME Shell のバージョンをサポートする拡張機能だけが"
+"ロードされます。この設定を true にした場合、バージョンチェック機能が無効にな"
+"り、拡張機能のサポートバージョンに関係なくすべての拡張機能をロードします。"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:7
 msgid "List of desktop file IDs for favorite applications"
 msgstr "お気に入りのアプリケーションの .desktop ファイル ID の一覧"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:8
-msgid "The applications corresponding to these identifiers will be displayed in the favorites area."
+msgid ""
+"The applications corresponding to these identifiers will be displayed in the "
+"favorites area."
 msgstr "これらの ID で示されるアプリケーションは「お気に入り」に表示されます。"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:9
@@ -119,24 +140,49 @@ msgid "Always show the 'Log out' menu item in the user menu."
 msgstr "ユーザーメニューに「ログアウト」を常に表示する"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:15
-msgid "This key overrides the automatic hiding of the 'Log out' menu item in single-user, single-session situations."
-msgstr "このキーは、単一ユーザー、単一セッション状況で「ログアウト」メニューアイテムを自動的に非表示にする機能よりも優先します。"
+msgid ""
+"This key overrides the automatic hiding of the 'Log out' menu item in single-"
+"user, single-session situations."
+msgstr ""
+"このキーは、単一ユーザー、単一セッション状況で「ログアウト」メニューアイテム"
+"を自動的に非表示にする機能よりも優先します。"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:16
-msgid "Whether to remember password for mounting encrypted or remote filesystems"
-msgstr "マウント対象の暗号化されたファイルシステムやリモートファイルシステムのパスワードを記憶する"
+msgid ""
+"Whether to remember password for mounting encrypted or remote filesystems"
+msgstr ""
+"マウント対象の暗号化されたファイルシステムやリモートファイルシステムのパス"
+"ワードを記憶する"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:17
-msgid "The shell will request a password when an encrypted device or a remote filesystem is mounted. If the password can be saved for future use a 'Remember Password' checkbox will be present. This key sets the default state of the checkbox."
-msgstr "GNOME Shell は、暗号化されたデバイスやリモートファイルシステムのマウント時にパスワードを要求します。パスワードを保存できる場合は、「パスワードを保存」チェックボックスが表示されます。このキーは、チェックボックスのデフォルト値となります。"
+msgid ""
+"The shell will request a password when an encrypted device or a remote "
+"filesystem is mounted. If the password can be saved for future use a "
+"'Remember Password' checkbox will be present. This key sets the default "
+"state of the checkbox."
+msgstr ""
+"GNOME Shell は、暗号化されたデバイスやリモートファイルシステムのマウント時に"
+"パスワードを要求します。パスワードを保存できる場合は、「パスワードを保存」"
+"チェックボックスが表示されます。このキーは、チェックボックスのデフォルト値と"
+"なります。"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:18
-msgid "Whether the default Bluetooth adapter had set up devices associated to it"
-msgstr "デフォルトの Bluetooth アダプターにデバイスが関連付けられているかどうか"
+msgid ""
+"Whether the default Bluetooth adapter had set up devices associated to it"
+msgstr ""
+"デフォルトの Bluetooth アダプターにデバイスが関連付けられているかどうか"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:19
-msgid "The shell will only show a Bluetooth menu item if a Bluetooth adapter is powered, or if there were devices set up associated with the default adapter. This will be reset if the default adapter is ever seen not to have devices associated to it."
-msgstr "Bluetooth アダプターの電源がオンになっているか、あるいはデフォルトのアダプターに関連付けられたデバイスがある場合にのみ、GNOME Shell は Bluetooth メニューを表示します。デフォルトのアダプターに関連付けられたデバイスがなくなった場合に、この値はリセットされます。"
+msgid ""
+"The shell will only show a Bluetooth menu item if a Bluetooth adapter is "
+"powered, or if there were devices set up associated with the default "
+"adapter. This will be reset if the default adapter is ever seen not to have "
+"devices associated to it."
+msgstr ""
+"Bluetooth アダプターの電源がオンになっているか、あるいはデフォルトのアダプ"
+"ターに関連付けられたデバイスがある場合にのみ、GNOME Shell は Bluetooth メ"
+"ニューを表示します。デフォルトのアダプターに関連付けられたデバイスがなくなっ"
+"た場合に、この値はリセットされます。"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:20
 msgid "Show the week date in the calendar"
@@ -159,7 +205,8 @@ msgid "Keybinding to open the \"Show Applications\" view"
 msgstr "アプリケーション一覧を開くキーバインド"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:25
-msgid "Keybinding to open the \"Show Applications\" view of the Activities Overview."
+msgid ""
+"Keybinding to open the \"Show Applications\" view of the Activities Overview."
 msgstr "アプリケーション一覧を開くキーバインドです。"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:26
@@ -187,8 +234,10 @@ msgid "Keybinding to focus the active notification."
 msgstr "アクティブな通知にフォーカスを当てるキーバインドです。"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:32
-msgid "Keybinding that pauses and resumes all running tweens, for debugging purposes"
-msgstr "Tween の一時停止および再開を行うキーバインドです。デバッグ用途で使用します。"
+msgid ""
+"Keybinding that pauses and resumes all running tweens, for debugging purposes"
+msgstr ""
+"Tween の一時停止および再開を行うキーバインドです。デバッグ用途で使用します。"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:33
 msgid "Which keyboard to use"
@@ -203,28 +252,46 @@ msgid "Limit switcher to current workspace."
 msgstr "スイッチャーを現在のワークスペース内に制限する"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:36
-msgid "If true, only applications that have windows on the current workspace are shown in the switcher. Otherwise, all applications are included."
-msgstr "true に設定した場合、現在のワークスペースにウィンドウのあるアプリケーションだけをスイッチャーに表示します。false に設定した場合はすべてのアプリケーションを表示します。"
+msgid ""
+"If true, only applications that have windows on the current workspace are "
+"shown in the switcher. Otherwise, all applications are included."
+msgstr ""
+"true に設定した場合、現在のワークスペースにウィンドウのあるアプリケーションだ"
+"けをスイッチャーに表示します。false に設定した場合はすべてのアプリケーション"
+"を表示します。"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:37
 msgid "The application icon mode."
 msgstr "アプリケーションアイコンモード"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:38
-msgid "Configures how the windows are shown in the switcher. Valid possibilities are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-only' (shows only the application icon) or 'both'."
-msgstr "ウィンドウスイッチャーでのウィンドウの表示方法を設定します。指定可能な値は、'thumbnail-only' (ウィンドウのサムネイルを表示します)、'app-icon-only' (アプリケーションアイコンを表示します)、あるいは 'both' です。"
+msgid ""
+"Configures how the windows are shown in the switcher. Valid possibilities "
+"are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-"
+"only' (shows only the application icon) or 'both'."
+msgstr ""
+"ウィンドウスイッチャーでのウィンドウの表示方法を設定します。指定可能な値"
+"は、'thumbnail-only' (ウィンドウのサムネイルを表示します)、'app-icon-"
+"only' (アプリケーションアイコンを表示します)、あるいは 'both' です。"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:39
-msgid "If true, only windows from the current workspace are shown in the switcher. Otherwise, all windows are included."
-msgstr "true に設定した場合、現在のワークスペースのウィンドウだけをスイッチャーに表示します。false に設定した場合はすべてのアプリケーションを表示します。"
+msgid ""
+"If true, only windows from the current workspace are shown in the switcher. "
+"Otherwise, all windows are included."
+msgstr ""
+"true に設定した場合、現在のワークスペースのウィンドウだけをスイッチャーに表示"
+"します。false に設定した場合はすべてのアプリケーションを表示します。"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:40
 msgid "Attach modal dialog to the parent window"
 msgstr "モーダルダイアログを親ウィンドウに結び付ける"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:41
-msgid "This key overrides the key in org.gnome.mutter when running GNOME Shell."
-msgstr "GNOME Shell 使用時は、 このキーが、org.gnome.mutter の同じキーよりも優先します。"
+msgid ""
+"This key overrides the key in org.gnome.mutter when running GNOME Shell."
+msgstr ""
+"GNOME Shell 使用時は、 このキーが、org.gnome.mutter の同じキーよりも優先しま"
+"す。"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:42
 msgid "Enable edge tiling when dropping windows on screen edges"
@@ -478,7 +545,7 @@ msgstr "背景の変更…"
 msgid "Display Settings"
 msgstr "ディスプレイ設定"
 
-#: ../js/ui/backgroundMenu.js:22 ../js/ui/status/system.js:366
+#: ../js/ui/backgroundMenu.js:22 ../js/ui/status/system.js:371
 msgid "Settings"
 msgstr "設定"
 
@@ -646,8 +713,12 @@ msgstr "無線ネットワークでは認証が要求されます"
 #: ../js/ui/components/networkAgent.js:321
 #: ../js/ui/components/networkAgent.js:659
 #, javascript-format
-msgid "Passwords or encryption keys are required to access the wireless network “%s”."
-msgstr "無線ネットワーク ”%s” にアクセスするにはパスワードか、または暗号化キーが必要です。"
+msgid ""
+"Passwords or encryption keys are required to access the wireless network "
+"“%s”."
+msgstr ""
+"無線ネットワーク ”%s” にアクセスするにはパスワードか、または暗号化キーが必要"
+"です。"
 
 #: ../js/ui/components/networkAgent.js:325
 #: ../js/ui/components/networkAgent.js:662
@@ -716,7 +787,7 @@ msgstr "申し訳ありません、認証できませんでした。再試行し
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/components/telepathyClient.js:759
+#: ../js/ui/components/telepathyClient.js:760
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s は %s になりました"
@@ -836,7 +907,8 @@ msgstr "再起動して更新をインストールする"
 #: ../js/ui/endSessionDialog.js:121
 #, javascript-format
 msgid "The system will automatically restart and install updates in %d second."
-msgid_plural "The system will automatically restart and install updates in %d seconds."
+msgid_plural ""
+"The system will automatically restart and install updates in %d seconds."
 msgstr[0] "%d 秒後にシステムを再起動して更新をインストールします。"
 
 #: ../js/ui/endSessionDialog.js:127
@@ -856,7 +928,8 @@ msgstr "更新をインストール後電源をオフにする"
 
 #: ../js/ui/endSessionDialog.js:338
 msgid "Running on battery power: please plug in before installing updates."
-msgstr "バッテリーで動作中です: 更新をインストールする前に電源に接続してください。"
+msgstr ""
+"バッテリーで動作中です: 更新をインストールする前に電源に接続してください。"
 
 #: ../js/ui/endSessionDialog.js:355
 msgid "Some applications are busy or have unsaved work."
@@ -924,7 +997,7 @@ msgstr "有効"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:719 ../src/gvc/gvc-mixer-control.c:1828
+#: ../js/ui/lookingGlass.js:719 ../src/gvc/gvc-mixer-control.c:1866
 msgid "Disabled"
 msgstr "無効"
 
@@ -1042,7 +1115,7 @@ msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d 件の新しい通知"
 
-#: ../js/ui/screenShield.js:432 ../js/ui/status/system.js:374
+#: ../js/ui/screenShield.js:432 ../js/ui/status/system.js:379
 msgid "Lock"
 msgstr "ロック"
 
@@ -1223,7 +1296,8 @@ msgstr "%s が現在の位置情報を取得することを許可しますか?"
 
 #: ../js/ui/status/location.js:437
 msgid "Location access can be changed at any time from the privacy settings."
-msgstr "位置情報のアクセス許可設定は、プライバシー設定からいつでも変更できます。"
+msgstr ""
+"位置情報のアクセス許可設定は、プライバシー設定からいつでも変更できます。"
 
 #: ../js/ui/status/network.js:101
 msgid "<unknown>"
@@ -1447,27 +1521,27 @@ msgstr "%d %%"
 msgid "Airplane Mode On"
 msgstr "機内モードオン"
 
-#: ../js/ui/status/system.js:343
+#: ../js/ui/status/system.js:348
 msgid "Switch User"
 msgstr "ユーザーの切り替え"
 
-#: ../js/ui/status/system.js:348
+#: ../js/ui/status/system.js:353
 msgid "Log Out"
 msgstr "ログアウト"
 
-#: ../js/ui/status/system.js:353
+#: ../js/ui/status/system.js:358
 msgid "Account Settings"
 msgstr "アカウント設定"
 
-#: ../js/ui/status/system.js:370
+#: ../js/ui/status/system.js:375
 msgid "Orientation Lock"
 msgstr "画面方向ロック"
 
-#: ../js/ui/status/system.js:378
+#: ../js/ui/status/system.js:383
 msgid "Suspend"
 msgstr "サスペンド"
 
-#: ../js/ui/status/system.js:381
+#: ../js/ui/status/system.js:386
 msgid "Power Off"
 msgstr "電源オフ"
 
@@ -1554,11 +1628,11 @@ msgstr "画面上でタイトルバーを移動する"
 
 #: ../js/ui/windowMenu.js:70
 msgid "Always on Top"
-msgstr "最前面に配置する"
+msgstr "最前面に維持する"
 
 #: ../js/ui/windowMenu.js:89
 msgid "Always on Visible Workspace"
-msgstr "すべてのワークスペースに配置する"
+msgstr "すべてのワークスペースに表示する"
 
 #: ../js/ui/windowMenu.js:105
 msgid "Move to Workspace Left"
@@ -1598,7 +1672,7 @@ msgstr "Evolution カレンダー"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1835
+#: ../src/gvc/gvc-mixer-control.c:1873
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -1606,13 +1680,13 @@ msgstr[0] "出力数: %u"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1845
+#: ../src/gvc/gvc-mixer-control.c:1883
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "入力数: %u"
 
-#: ../src/gvc/gvc-mixer-control.c:2371
+#: ../src/gvc/gvc-mixer-control.c:2738
 msgid "System Sounds"
 msgstr "システムのサウンド"
 
