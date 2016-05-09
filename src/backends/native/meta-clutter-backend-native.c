@@ -26,9 +26,11 @@
 
 #include <glib-object.h>
 
-#include "clutter/clutter.h"
-#include "clutter/egl/clutter-backend-eglnative.h"
+#include "backends/meta-backend-private.h"
+#include "backends/meta-renderer.h"
 #include "backends/native/meta-clutter-backend-native.h"
+#include "clutter/clutter.h"
+#include "meta/meta-backend.h"
 
 struct _MetaClutterBackendNative
 {
@@ -38,6 +40,16 @@ struct _MetaClutterBackendNative
 G_DEFINE_TYPE (MetaClutterBackendNative, meta_clutter_backend_native,
                CLUTTER_TYPE_BACKEND_EGL_NATIVE)
 
+static CoglRenderer *
+meta_clutter_backend_native_get_renderer (ClutterBackend  *clutter_backend,
+                                          GError         **error)
+{
+  MetaBackend *backend = meta_get_backend ();
+  MetaRenderer *renderer = meta_backend_get_renderer (backend);
+
+  return meta_renderer_create_cogl_renderer (renderer);
+}
+
 static void
 meta_clutter_backend_native_init (MetaClutterBackendNative *clutter_backend_nativen)
 {
@@ -46,4 +58,7 @@ meta_clutter_backend_native_init (MetaClutterBackendNative *clutter_backend_nati
 static void
 meta_clutter_backend_native_class_init (MetaClutterBackendNativeClass *klass)
 {
+  ClutterBackendClass *clutter_backend_class = CLUTTER_BACKEND_CLASS (klass);
+
+  clutter_backend_class->get_renderer = meta_clutter_backend_native_get_renderer;
 }

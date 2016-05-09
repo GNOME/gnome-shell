@@ -465,7 +465,6 @@ meta_launcher_new (GError **error)
   self->session_active = TRUE;
   self->kms_fd = kms_fd;
 
-  clutter_egl_set_kms_fd (kms_fd);
   clutter_evdev_set_device_callbacks (on_evdev_device_open,
                                       on_evdev_device_close,
                                       self);

@@ -26,7 +26,14 @@
 
 #include <glib-object.h>
 
+#include "clutter/x11/clutter-x11.h"
+#include "cogl/cogl.h"
+#include "cogl/cogl-xlib.h"
+#include "cogl/winsys/cogl-winsys-glx-private.h"
+#include "cogl/winsys/cogl-winsys-egl-x11-private.h"
+#include "backends/meta-renderer.h"
 #include "backends/x11/meta-renderer-x11.h"
+#include "meta/util.h"
 
 struct _MetaRendererX11
 {
@@ -34,6 +41,28 @@ struct _MetaRendererX11
 };
 
 G_DEFINE_TYPE (MetaRendererX11, meta_renderer_x11, META_TYPE_RENDERER)
+
+static const CoglWinsysVtable *
+get_x11_cogl_winsys_vtable (void)
+{
+  if (meta_is_wayland_compositor ())
+    return _cogl_winsys_egl_xlib_get_vtable ();
+  else
+    return _cogl_winsys_glx_get_vtable ();
+}
+
+static CoglRenderer *
+meta_renderer_x11_create_cogl_renderer (MetaRenderer *renderer)
+{
+  CoglRenderer *cogl_renderer;
+  Display *xdisplay = clutter_x11_get_default_display ();
+
+  cogl_renderer = cogl_renderer_new ();
+  cogl_renderer_set_custom_winsys (cogl_renderer, get_x11_cogl_winsys_vtable);
+  cogl_xlib_renderer_set_foreign_display (cogl_renderer, xdisplay);
+
+  return cogl_renderer;
+}
 
 static void
 meta_renderer_x11_init (MetaRendererX11 *renderer_x11)
@@ -43,4 +72,7 @@ meta_renderer_x11_init (MetaRendererX11 *renderer_x11)
 static void
 meta_renderer_x11_class_init (MetaRendererX11Class *klass)
 {
+  MetaRendererClass *renderer_class = META_RENDERER_CLASS (klass);
+
+  renderer_class->create_cogl_renderer = meta_renderer_x11_create_cogl_renderer;
 }

@@ -26,8 +26,11 @@
 
 #include <glib-object.h>
 
+#include "backends/meta-backend-private.h"
+#include "backends/meta-renderer.h"
 #include "backends/x11/meta-clutter-backend-x11.h"
 #include "clutter/clutter.h"
+#include "meta/meta-backend.h"
 
 struct _MetaClutterBackendX11
 {
@@ -37,6 +40,16 @@ struct _MetaClutterBackendX11
 G_DEFINE_TYPE (MetaClutterBackendX11, meta_clutter_backend_x11,
                CLUTTER_TYPE_BACKEND_X11)
 
+static CoglRenderer *
+meta_clutter_backend_x11_get_renderer (ClutterBackend  *clutter_backend,
+                                       GError         **error)
+{
+  MetaBackend *backend = meta_get_backend ();
+  MetaRenderer *renderer = meta_backend_get_renderer (backend);
+
+  return meta_renderer_create_cogl_renderer (renderer);
+}
+
 static void
 meta_clutter_backend_x11_init (MetaClutterBackendX11 *clutter_backend_x11)
 {
@@ -45,4 +58,7 @@ meta_clutter_backend_x11_init (MetaClutterBackendX11 *clutter_backend_x11)
 static void
 meta_clutter_backend_x11_class_init (MetaClutterBackendX11Class *klass)
 {
+  ClutterBackendClass *clutter_backend_class = CLUTTER_BACKEND_CLASS (klass);
+
+  clutter_backend_class->get_renderer = meta_clutter_backend_x11_get_renderer;
 }

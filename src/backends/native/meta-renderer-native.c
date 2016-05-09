@@ -52,6 +52,20 @@ struct _MetaRendererNative
 
 G_DEFINE_TYPE (MetaRendererNative, meta_renderer_native, META_TYPE_RENDERER)
 
+static CoglRenderer *
+meta_renderer_native_create_cogl_renderer (MetaRenderer *renderer)
+{
+  MetaRendererNative *renderer_native = META_RENDERER_NATIVE (renderer);
+  CoglRenderer *cogl_renderer;
+
+  cogl_renderer = cogl_renderer_new ();
+  cogl_renderer_set_custom_winsys (cogl_renderer,
+                                   _cogl_winsys_egl_kms_get_vtable);
+  cogl_kms_renderer_set_kms_fd (cogl_renderer, renderer_native->kms_fd);
+
+  return cogl_renderer;
+}
+
 static void
 meta_renderer_native_get_property (GObject    *object,
                                    guint       prop_id,
@@ -99,9 +113,12 @@ static void
 meta_renderer_native_class_init (MetaRendererNativeClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  MetaRendererClass *renderer_class = META_RENDERER_CLASS (klass);
 
   object_class->get_property = meta_renderer_native_get_property;
   object_class->set_property = meta_renderer_native_set_property;
+
+  renderer_class->create_cogl_renderer = meta_renderer_native_create_cogl_renderer;
 
   g_object_class_install_property (object_class,
                                    PROP_KMS_FD,

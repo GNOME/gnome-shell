@@ -27,12 +27,18 @@
 
 #include <glib-object.h>
 
+#include "cogl/cogl.h"
+
 #define META_TYPE_RENDERER (meta_renderer_get_type ())
 G_DECLARE_DERIVABLE_TYPE (MetaRenderer, meta_renderer, META, RENDERER, GObject)
 
 struct _MetaRendererClass
 {
   GObjectClass parent_class;
+
+  CoglRenderer * (* create_cogl_renderer) (MetaRenderer *renderer);
 };
+
+CoglRenderer * meta_renderer_create_cogl_renderer (MetaRenderer *renderer);
 
 #endif /* META_RENDERER_H */

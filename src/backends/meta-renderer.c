@@ -30,6 +30,12 @@
 
 G_DEFINE_TYPE (MetaRenderer, meta_renderer, G_TYPE_OBJECT)
 
+CoglRenderer *
+meta_renderer_create_cogl_renderer (MetaRenderer *renderer)
+{
+  return META_RENDERER_GET_CLASS (renderer)->create_cogl_renderer (renderer);
+}
+
 static void
 meta_renderer_init (MetaRenderer *renderer)
 {
