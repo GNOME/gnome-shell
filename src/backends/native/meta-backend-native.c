@@ -288,11 +288,19 @@ meta_backend_native_create_renderer (MetaBackend *backend)
   MetaBackendNativePrivate *priv =
     meta_backend_native_get_instance_private (native);
   int kms_fd;
+  GError *error;
+  MetaRendererNative *renderer_native;
 
   kms_fd = meta_launcher_get_kms_fd (priv->launcher);
-  return g_object_new (META_TYPE_RENDERER_NATIVE,
-                       "kms-fd", kms_fd,
-                       NULL);
+  renderer_native = meta_renderer_native_new (kms_fd, &error);
+  if (!renderer_native)
+    {
+      meta_warning ("Failed to create renderer: %s\n", error->message);
+      g_error_free (error);
+      return NULL;
+    }
+
+  return META_RENDERER (renderer_native);
 }
 
 static void

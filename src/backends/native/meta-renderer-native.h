@@ -46,6 +46,9 @@ G_DECLARE_FINAL_TYPE (MetaRendererNative, meta_renderer_native,
                       META, RENDERER_NATIVE,
                       MetaRenderer)
 
+MetaRendererNative *meta_renderer_native_new (int      kms_fd,
+                                              GError **error);
+
 struct gbm_device * meta_renderer_native_get_gbm (MetaRendererNative *renderer_native);
 
 int meta_renderer_native_get_kms_fd (MetaRendererNative *renderer_native);

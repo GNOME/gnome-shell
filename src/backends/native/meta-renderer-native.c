@@ -38,8 +38,9 @@
 
 #include <errno.h>
 #include <fcntl.h>
-#include <glib-object.h>
 #include <gbm.h>
+#include <gio/gio.h>
+#include <glib-object.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
@@ -63,20 +64,22 @@ struct _MetaRendererNative
   MetaRenderer parent;
 
   int kms_fd;
+  struct gbm_device *gbm;
+  CoglClosure *swap_notify_idle;
+  CoglBool page_flips_not_supported;
 };
 
-G_DEFINE_TYPE (MetaRendererNative, meta_renderer_native, META_TYPE_RENDERER)
+static void
+initable_iface_init (GInitableIface *initable_iface);
+
+G_DEFINE_TYPE_WITH_CODE (MetaRendererNative,
+                         meta_renderer_native,
+                         META_TYPE_RENDERER,
+                         G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
+                                                initable_iface_init))
 
 static const CoglWinsysEGLVtable _cogl_winsys_egl_vtable;
 static const CoglWinsysVtable *parent_vtable;
-
-typedef struct _CoglRendererKMS
-{
-  int fd;
-  struct gbm_device *gbm;
-  CoglClosure *swap_notify_idle;
-  CoglBool     page_flips_not_supported;
-} CoglRendererKMS;
 
 typedef struct _CoglDisplayKMS
 {
@@ -112,15 +115,10 @@ static void
 _cogl_winsys_renderer_disconnect (CoglRenderer *renderer)
 {
   CoglRendererEGL *egl_renderer = renderer->winsys;
-  CoglRendererKMS *kms_renderer = egl_renderer->platform;
 
   if (egl_renderer->edpy != EGL_NO_DISPLAY)
     eglTerminate (egl_renderer->edpy);
 
-  if (kms_renderer->gbm != NULL)
-    gbm_device_destroy (kms_renderer->gbm);
-
-  g_slice_free (CoglRendererKMS, kms_renderer);
   g_slice_free (CoglRendererEGL, egl_renderer);
 }
 
@@ -154,12 +152,12 @@ flush_pending_swap_notify_idle (void *user_data)
 {
   CoglContext *context = user_data;
   CoglRendererEGL *egl_renderer = context->display->renderer->winsys;
-  CoglRendererKMS *kms_renderer = egl_renderer->platform;
+  MetaRendererNative *renderer_native = egl_renderer->platform;
 
   /* This needs to be disconnected before invoking the callbacks in
    * case the callbacks cause it to be queued again */
-  _cogl_closure_disconnect (kms_renderer->swap_notify_idle);
-  kms_renderer->swap_notify_idle = NULL;
+  _cogl_closure_disconnect (renderer_native->swap_notify_idle);
+  renderer_native->swap_notify_idle = NULL;
 
   g_list_foreach (context->framebuffers,
                   flush_pending_swap_notify_cb,
@@ -174,11 +172,11 @@ free_current_bo (CoglOnscreen *onscreen)
   CoglContext *context = COGL_FRAMEBUFFER (onscreen)->context;
   CoglRenderer *renderer = context->display->renderer;
   CoglRendererEGL *egl_renderer = renderer->winsys;
-  CoglRendererKMS *kms_renderer = egl_renderer->platform;
+  MetaRendererNative *renderer_native = egl_renderer->platform;
 
   if (kms_onscreen->current_fb_id)
     {
-      drmModeRmFB (kms_renderer->fd,
+      drmModeRmFB (renderer_native->kms_fd,
                    kms_onscreen->current_fb_id);
       kms_onscreen->current_fb_id = 0;
     }
@@ -198,14 +196,14 @@ queue_swap_notify_for_onscreen (CoglOnscreen *onscreen)
   CoglContext *context = COGL_FRAMEBUFFER (onscreen)->context;
   CoglRenderer *renderer = context->display->renderer;
   CoglRendererEGL *egl_renderer = renderer->winsys;
-  CoglRendererKMS *kms_renderer = egl_renderer->platform;
+  MetaRendererNative *renderer_native = egl_renderer->platform;
 
   /* We only want to notify that the swap is complete when the
    * application calls cogl_context_dispatch so instead of
    * immediately notifying we queue an idle callback */
-  if (!kms_renderer->swap_notify_idle)
+  if (!renderer_native->swap_notify_idle)
     {
-      kms_renderer->swap_notify_idle =
+      renderer_native->swap_notify_idle =
         _cogl_poll_renderer_add_idle (renderer,
                                       flush_pending_swap_notify_idle,
                                       context,
@@ -256,17 +254,17 @@ page_flip_handler (int fd,
 }
 
 static void
-handle_drm_event (CoglRendererKMS *kms_renderer)
+handle_drm_event (MetaRendererNative *renderer_native)
 {
   drmEventContext evctx;
 
-  if (kms_renderer->page_flips_not_supported)
+  if (renderer_native->page_flips_not_supported)
     return;
 
   memset (&evctx, 0, sizeof evctx);
   evctx.version = DRM_EVENT_CONTEXT_VERSION;
   evctx.page_flip_handler = page_flip_handler;
-  drmHandleEvent (kms_renderer->fd, &evctx);
+  drmHandleEvent (renderer_native->kms_fd, &evctx);
 }
 
 static void
@@ -274,12 +272,12 @@ dispatch_kms_events (void *user_data, int revents)
 {
   CoglRenderer *renderer = user_data;
   CoglRendererEGL *egl_renderer = renderer->winsys;
-  CoglRendererKMS *kms_renderer = egl_renderer->platform;
+  MetaRendererNative *renderer_native = egl_renderer->platform;
 
   if (!revents)
     return;
 
-  handle_drm_event (kms_renderer);
+  handle_drm_event (renderer_native);
 }
 
 static CoglBool
@@ -290,21 +288,15 @@ _cogl_winsys_renderer_connect (CoglRenderer *cogl_renderer,
   MetaRenderer *renderer = meta_backend_get_renderer (backend);
   MetaRendererNative *renderer_native = META_RENDERER_NATIVE (renderer);
   CoglRendererEGL *egl_renderer;
-  CoglRendererKMS *kms_renderer;
 
   cogl_renderer->winsys = g_slice_new0 (CoglRendererEGL);
   egl_renderer = cogl_renderer->winsys;
 
   egl_renderer->platform_vtable = &_cogl_winsys_egl_vtable;
-  egl_renderer->platform = g_slice_new0 (CoglRendererKMS);
-  kms_renderer = egl_renderer->platform;
-
-  kms_renderer->fd = meta_renderer_native_get_kms_fd (renderer_native);
-
+  egl_renderer->platform = renderer_native;
   egl_renderer->edpy = EGL_NO_DISPLAY;
 
-  kms_renderer->gbm = gbm_create_device (kms_renderer->fd);
-  if (kms_renderer->gbm == NULL)
+  if (renderer_native->gbm == NULL)
     {
       _cogl_set_error (error, COGL_WINSYS_ERROR,
                        COGL_WINSYS_ERROR_INIT,
@@ -312,7 +304,8 @@ _cogl_winsys_renderer_connect (CoglRenderer *cogl_renderer,
       goto fail;
     }
 
-  egl_renderer->edpy = eglGetDisplay ((EGLNativeDisplayType)kms_renderer->gbm);
+  egl_renderer->edpy =
+    eglGetDisplay ((EGLNativeDisplayType) renderer_native->gbm);
   if (egl_renderer->edpy == EGL_NO_DISPLAY)
     {
       _cogl_set_error (error, COGL_WINSYS_ERROR,
@@ -325,7 +318,7 @@ _cogl_winsys_renderer_connect (CoglRenderer *cogl_renderer,
     goto fail;
 
   _cogl_poll_renderer_add_fd (cogl_renderer,
-                              kms_renderer->fd,
+                              renderer_native->kms_fd,
                               COGL_POLL_FD_EVENT_IN,
                               NULL, /* no prepare callback */
                               dispatch_kms_events,
@@ -345,14 +338,14 @@ setup_crtc_modes (CoglDisplay *display, int fb_id)
   CoglDisplayEGL *egl_display = display->winsys;
   CoglDisplayKMS *kms_display = egl_display->platform;
   CoglRendererEGL *egl_renderer = display->renderer->winsys;
-  CoglRendererKMS *kms_renderer = egl_renderer->platform;
+  MetaRendererNative *renderer_native = egl_renderer->platform;
   GList *l;
 
   for (l = kms_display->crtcs; l; l = l->next)
     {
       CoglKmsCrtc *crtc = l->data;
 
-      int ret = drmModeSetCrtc (kms_renderer->fd,
+      int ret = drmModeSetCrtc (renderer_native->kms_fd,
                                 crtc->id,
                                 fb_id, crtc->x, crtc->y,
                                 crtc->connectors, crtc->count,
@@ -368,7 +361,7 @@ flip_all_crtcs (CoglDisplay *display, CoglFlipKMS *flip, int fb_id)
   CoglDisplayEGL *egl_display = display->winsys;
   CoglDisplayKMS *kms_display = egl_display->platform;
   CoglRendererEGL *egl_renderer = display->renderer->winsys;
-  CoglRendererKMS *kms_renderer = egl_renderer->platform;
+  MetaRendererNative *renderer_native = egl_renderer->platform;
   GList *l;
   gboolean needs_flip = FALSE;
 
@@ -382,15 +375,15 @@ flip_all_crtcs (CoglDisplay *display, CoglFlipKMS *flip, int fb_id)
 
       needs_flip = TRUE;
 
-      if (!kms_renderer->page_flips_not_supported)
+      if (!renderer_native->page_flips_not_supported)
         {
-          ret = drmModePageFlip (kms_renderer->fd,
+          ret = drmModePageFlip (renderer_native->kms_fd,
                                  crtc->id, fb_id,
                                  DRM_MODE_PAGE_FLIP_EVENT, flip);
           if (ret != 0 && ret != -EACCES)
             {
               g_warning ("Failed to flip: %m");
-              kms_renderer->page_flips_not_supported = TRUE;
+              renderer_native->page_flips_not_supported = TRUE;
               break;
             }
         }
@@ -399,7 +392,7 @@ flip_all_crtcs (CoglDisplay *display, CoglFlipKMS *flip, int fb_id)
         flip->pending++;
     }
 
-  if (kms_renderer->page_flips_not_supported && needs_flip)
+  if (renderer_native->page_flips_not_supported && needs_flip)
     flip->pending = 1;
 }
 
@@ -430,7 +423,7 @@ _cogl_winsys_egl_display_setup (CoglDisplay *display,
   CoglDisplayEGL *egl_display = display->winsys;
   CoglDisplayKMS *kms_display;
   CoglRendererEGL *egl_renderer = display->renderer->winsys;
-  CoglRendererKMS *kms_renderer = egl_renderer->platform;
+  MetaRendererNative *renderer_native = egl_renderer->platform;
 
   kms_display = g_slice_new0 (CoglDisplayKMS);
   egl_display->platform = kms_display;
@@ -448,10 +441,6 @@ _cogl_winsys_egl_display_destroy (CoglDisplay *display)
 {
   CoglDisplayEGL *egl_display = display->winsys;
   CoglDisplayKMS *kms_display = egl_display->platform;
-  CoglRenderer *renderer = display->renderer;
-  CoglRendererEGL *egl_renderer = renderer->winsys;
-  CoglRendererKMS *kms_renderer = egl_renderer->platform;
-  GList *l;
 
   g_list_free_full (kms_display->crtcs, (GDestroyNotify) crtc_free);
 
@@ -466,13 +455,13 @@ _cogl_winsys_egl_context_created (CoglDisplay *display,
   CoglDisplayKMS *kms_display = egl_display->platform;
   CoglRenderer *renderer = display->renderer;
   CoglRendererEGL *egl_renderer = renderer->winsys;
-  CoglRendererKMS *kms_renderer = egl_renderer->platform;
+  MetaRendererNative *renderer_native = egl_renderer->platform;
 
   if ((egl_renderer->private_features &
        COGL_EGL_WINSYS_FEATURE_SURFACELESS_CONTEXT) == 0)
     {
       kms_display->dummy_gbm_surface =
-        gbm_surface_create (kms_renderer->gbm,
+        gbm_surface_create (renderer_native->gbm,
                             16, 16,
                             GBM_FORMAT_XRGB8888,
                             GBM_BO_USE_RENDERING);
@@ -544,7 +533,7 @@ _cogl_winsys_onscreen_swap_buffers_with_damage (CoglOnscreen *onscreen,
   CoglDisplayKMS *kms_display = egl_display->platform;
   CoglRenderer *renderer = context->display->renderer;
   CoglRendererEGL *egl_renderer = renderer->winsys;
-  CoglRendererKMS *kms_renderer = egl_renderer->platform;
+  MetaRendererNative *renderer_native = egl_renderer->platform;
   CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
   CoglOnscreenKMS *kms_onscreen = egl_onscreen->platform;
   uint32_t handle, stride;
@@ -552,7 +541,7 @@ _cogl_winsys_onscreen_swap_buffers_with_damage (CoglOnscreen *onscreen,
 
   /* If we already have a pending swap then block until it completes */
   while (kms_onscreen->next_fb_id != 0)
-    handle_drm_event (kms_renderer);
+    handle_drm_event (renderer_native);
 
   if (kms_onscreen->pending_egl_surface)
     {
@@ -582,7 +571,7 @@ _cogl_winsys_onscreen_swap_buffers_with_damage (CoglOnscreen *onscreen,
   stride = gbm_bo_get_stride (kms_onscreen->next_bo);
   handle = gbm_bo_get_handle (kms_onscreen->next_bo).u32;
 
-  if (drmModeAddFB (kms_renderer->fd,
+  if (drmModeAddFB (renderer_native->kms_fd,
                     kms_display->width,
                     kms_display->height,
                     24, /* depth */
@@ -614,7 +603,7 @@ _cogl_winsys_onscreen_swap_buffers_with_damage (CoglOnscreen *onscreen,
 
   if (flip->pending == 0)
     {
-      drmModeRmFB (kms_renderer->fd, kms_onscreen->next_fb_id);
+      drmModeRmFB (renderer_native->kms_fd, kms_onscreen->next_fb_id);
       gbm_surface_release_buffer (kms_onscreen->surface,
                                   kms_onscreen->next_bo);
       kms_onscreen->next_bo = NULL;
@@ -630,7 +619,7 @@ _cogl_winsys_onscreen_swap_buffers_with_damage (CoglOnscreen *onscreen,
       cogl_object_ref (flip->onscreen);
 
       /* Process flip right away if we can't wait for vblank */
-      if (kms_renderer->page_flips_not_supported)
+      if (renderer_native->page_flips_not_supported)
         {
           setup_crtc_modes (context->display, kms_onscreen->next_fb_id);
           process_flip (flip);
@@ -666,7 +655,7 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
   CoglDisplayKMS *kms_display = egl_display->platform;
   CoglRenderer *renderer = display->renderer;
   CoglRendererEGL *egl_renderer = renderer->winsys;
-  CoglRendererKMS *kms_renderer = egl_renderer->platform;
+  MetaRendererNative *renderer_native = egl_renderer->platform;
   CoglOnscreenEGL *egl_onscreen;
   CoglOnscreenKMS *kms_onscreen;
 
@@ -698,7 +687,7 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
     return TRUE;
 
   kms_onscreen->surface =
-    gbm_surface_create (kms_renderer->gbm,
+    gbm_surface_create (renderer_native->gbm,
                         kms_display->width,
                         kms_display->height,
                         GBM_FORMAT_XRGB8888,
@@ -789,21 +778,7 @@ _cogl_winsys_egl_vtable = {
 struct gbm_device *
 meta_renderer_native_get_gbm (MetaRendererNative *renderer_native)
 {
-  ClutterBackend *clutter_backend = clutter_get_default_backend ();
-  CoglContext *cogl_context = clutter_backend_get_cogl_context (clutter_backend);
-  CoglDisplay *cogl_display = cogl_context_get_display (cogl_context);
-  CoglRenderer *renderer = cogl_display->renderer;
-
-  if (renderer->connected)
-    {
-      CoglRendererEGL *egl_renderer = renderer->winsys;
-      CoglRendererKMS *kms_renderer = egl_renderer->platform;
-      return kms_renderer->gbm;
-    }
-  else
-    {
-      return NULL;
-    }
+  return renderer_native->gbm;
 }
 
 int
@@ -842,7 +817,6 @@ meta_renderer_native_set_layout (MetaRendererNative *renderer_native,
   CoglDisplayKMS *kms_display = egl_display->platform;
   CoglRenderer *renderer = cogl_display->renderer;
   CoglRendererEGL *egl_renderer = renderer->winsys;
-  CoglRendererKMS *kms_renderer = egl_renderer->platform;
   GList *crtc_list;
   int i;
 
@@ -857,7 +831,7 @@ meta_renderer_native_set_layout (MetaRendererNative *renderer_native,
 
       /* Need to drop the GBM surface and create a new one */
 
-      new_surface = gbm_surface_create (kms_renderer->gbm,
+      new_surface = gbm_surface_create (renderer_native->gbm,
                                         width, height,
                                         GBM_FORMAT_XRGB8888,
                                         GBM_BO_USE_SCANOUT |
@@ -1036,6 +1010,42 @@ meta_renderer_native_set_property (GObject      *object,
 }
 
 static void
+meta_renderer_native_finalize (GObject *object)
+{
+  MetaRendererNative *renderer_native = META_RENDERER_NATIVE (object);
+
+  g_clear_pointer (&renderer_native->gbm, gbm_device_destroy);
+
+  G_OBJECT_CLASS (meta_renderer_native_parent_class)->finalize (object);
+}
+
+static gboolean
+meta_renderer_native_initable_init (GInitable     *initable,
+                                    GCancellable  *cancellable,
+                                    GError       **error)
+{
+  MetaRendererNative *renderer_native = META_RENDERER_NATIVE (initable);
+
+  renderer_native->gbm = gbm_create_device (renderer_native->kms_fd);
+  if (!renderer_native->gbm)
+    {
+      g_set_error (error,
+                   G_IO_ERROR,
+                   G_IO_ERROR_FAILED,
+                   "Failed to create gbm device");
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
+static void
+initable_iface_init (GInitableIface *initable_iface)
+{
+  initable_iface->init = meta_renderer_native_initable_init;
+}
+
+static void
 meta_renderer_native_init (MetaRendererNative *renderer_native)
 {
 }
@@ -1048,6 +1058,7 @@ meta_renderer_native_class_init (MetaRendererNativeClass *klass)
 
   object_class->get_property = meta_renderer_native_get_property;
   object_class->set_property = meta_renderer_native_set_property;
+  object_class->finalize = meta_renderer_native_finalize;
 
   renderer_class->create_cogl_renderer = meta_renderer_native_create_cogl_renderer;
 
@@ -1059,4 +1070,22 @@ meta_renderer_native_class_init (MetaRendererNativeClass *klass)
                                                      0, G_MAXINT, 0,
                                                      G_PARAM_READWRITE |
                                                      G_PARAM_CONSTRUCT_ONLY));
+}
+
+MetaRendererNative *
+meta_renderer_native_new (int      kms_fd,
+                          GError **error)
+{
+  MetaRendererNative *renderer_native;
+
+  renderer_native = g_object_new (META_TYPE_RENDERER_NATIVE,
+                                  "kms-fd", kms_fd,
+                                  NULL);
+  if (!g_initable_init (G_INITABLE (renderer_native), NULL, error))
+    {
+      g_object_unref (renderer_native);
+      return NULL;
+    }
+
+  return renderer_native;
 }
