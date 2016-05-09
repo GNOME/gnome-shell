@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: mutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=mutter&"
 "keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-02-28 13:37+0000\n"
-"PO-Revision-Date: 2016-02-28 17:25+0200\n"
+"POT-Creation-Date: 2016-04-29 13:18+0000\n"
+"PO-Revision-Date: 2016-05-08 18:48+0200\n"
 "Last-Translator: Cédric Valmary (totenoc.eu) <cvalmary@yahoo.fr>\n"
 "Language-Team: Tot En Òc\n"
 "Language: oc\n"
@@ -50,7 +50,7 @@ msgstr "Desplaçar la fenèstra d'un espaci de trabalh cap a esquèrra"
 
 #: ../data/50-mutter-navigation.xml.in.h:8
 msgid "Move window one workspace to the right"
-msgstr "Desplaçar la fenèstra d'un espaci de trabalh cap a drecha"
+msgstr "Desplaçar la fenèstra d'un espaci de trabalh cap a dreita"
 
 #: ../data/50-mutter-navigation.xml.in.h:9
 msgid "Move window one workspace up"
@@ -66,7 +66,7 @@ msgstr "Desplaçar la fenèstra d'un ecran cap a esquèrra"
 
 #: ../data/50-mutter-navigation.xml.in.h:12
 msgid "Move window one monitor to the right"
-msgstr "Desplaçar la fenèstra d'un ecran cap a drecha"
+msgstr "Desplaçar la fenèstra d'un ecran cap a dreita"
 
 #: ../data/50-mutter-navigation.xml.in.h:13
 msgid "Move window one monitor up"
@@ -162,7 +162,7 @@ msgstr "Desplaçar cap a l'espaci de trabalh d'esquèrra"
 
 #: ../data/50-mutter-navigation.xml.in.h:36
 msgid "Move to workspace right"
-msgstr "Desplaçar cap a l'espaci de trabalh de drecha"
+msgstr "Desplaçar cap a l'espaci de trabalh de dreita"
 
 #: ../data/50-mutter-navigation.xml.in.h:37
 msgid "Move to workspace above"
@@ -258,7 +258,7 @@ msgstr "Vista devesida a esquèrra"
 
 #: ../data/50-mutter-windows.xml.in.h:19
 msgid "View split on right"
-msgstr "Vista devesida a drecha"
+msgstr "Vista devesida a dreita"
 
 #: ../data/mutter.desktop.in.h:1
 msgid "Mutter"
@@ -460,22 +460,22 @@ msgstr "Passar a l'emulator de terminal 11"
 msgid "Switch to VT 12"
 msgstr "Passar a l'emulator de terminal 12"
 
-#: ../src/backends/meta-monitor-manager.c:518
+#: ../src/backends/meta-monitor-manager.c:515
 msgid "Built-in display"
 msgstr "Afichatge integrat"
 
-#: ../src/backends/meta-monitor-manager.c:544
+#: ../src/backends/meta-monitor-manager.c:538
 msgid "Unknown"
 msgstr "Desconegut"
 
-#: ../src/backends/meta-monitor-manager.c:546
+#: ../src/backends/meta-monitor-manager.c:540
 msgid "Unknown Display"
 msgstr "Afichatge desconegut"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: ../src/backends/meta-monitor-manager.c:554
+#: ../src/backends/meta-monitor-manager.c:548
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
@@ -491,7 +491,7 @@ msgstr ""
 "Un autre gestionari de composicion es ja aviat sus l'ecran %i de l'afichatge "
 "« %s »."
 
-#: ../src/core/bell.c:185
+#: ../src/core/bell.c:194
 msgid "Bell event"
 msgstr "Eveniment sonòr"
 
@@ -543,7 +543,7 @@ msgstr "Afichatge X d'utilizar"
 
 #: ../src/core/main.c:204
 msgid "Initialize session from savefile"
-msgstr "Inicializar la session dempuèi lo fichier de salvament"
+msgstr "Inicializar la session dempuèi lo fichièr de salvament"
 
 #: ../src/core/main.c:210
 msgid "Make X calls synchronous"
@@ -554,7 +554,6 @@ msgid "Run as a wayland compositor"
 msgstr "Aviar coma un compositor wayland"
 
 #: ../src/core/main.c:223
-#| msgid "Run as a wayland compositor"
 msgid "Run as a nested compositor"
 msgstr ""
 
@@ -573,7 +572,7 @@ msgid ""
 msgstr ""
 "mutter %s\n"
 "Copyright © 2001-%d Havoc Pennington, Red Hat, Inc., e autres.\n"
-"Aquò es un logicial liure ; consultatz lo còde font per las\n"
+"Aquò es un logicial liure ; consultatz lo còdi font per las\n"
 "condicions de còpia.\n"
 "I a PAS CAP DE garantida ; quitament pas de VALOR MERCANDA o\n"
 "d'ADEQÜACION A UN USATGE PARTICULAR.\n"
