@@ -1225,7 +1225,7 @@ const LoginDialog = new Lang.Class({
     },
 
     addCharacter: function(unichar) {
-        this._authPrompt.addCharacter(unichar);
+        // Don't allow type ahead at the login screen
     },
 
     finish: function(onComplete) {
