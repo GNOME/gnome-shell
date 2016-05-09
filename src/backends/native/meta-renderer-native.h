@@ -26,12 +26,41 @@
 #define META_RENDERER_NATIVE_H
 
 #include <glib-object.h>
+#include <xf86drmMode.h>
 
 #include "backends/meta-renderer.h"
+
+typedef struct {
+  uint32_t id;
+  uint32_t x, y;
+  drmModeModeInfo mode;
+
+  uint32_t *connectors;
+  uint32_t  count;
+
+  CoglBool  ignore;
+} CoglKmsCrtc;
 
 #define META_TYPE_RENDERER_NATIVE (meta_renderer_native_get_type ())
 G_DECLARE_FINAL_TYPE (MetaRendererNative, meta_renderer_native,
                       META, RENDERER_NATIVE,
                       MetaRenderer)
+
+struct gbm_device * meta_renderer_native_get_gbm (MetaRendererNative *renderer_native);
+
+int meta_renderer_native_get_kms_fd (MetaRendererNative *renderer_native);
+
+void meta_renderer_native_queue_modes_reset (MetaRendererNative *renderer_native);
+
+gboolean meta_renderer_native_set_layout (MetaRendererNative *renderer_native,
+                                          int                 width,
+                                          int                 height,
+                                          CoglKmsCrtc       **crtcs,
+                                          int                 n_crtcs,
+                                          GError            **error);
+
+void meta_renderer_native_set_ignore_crtc (MetaRendererNative *renderer_native,
+                                           uint32_t            id,
+                                           gboolean            ignore);
 
 #endif /* META_RENDERER_NATIVE_H */

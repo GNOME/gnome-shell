@@ -45,6 +45,7 @@
 #include "backends/meta-backend-private.h"
 #include "meta-cursor-renderer-native.h"
 #include "meta-idle-monitor-native.h"
+#include "meta-renderer-native.h"
 
 G_DEFINE_AUTOPTR_CLEANUP_FUNC(GUdevDevice, g_object_unref)
 G_DEFINE_AUTOPTR_CLEANUP_FUNC(GUdevClient, g_object_unref)
@@ -108,21 +109,20 @@ get_seat_proxy (GCancellable *cancellable,
 static void
 session_unpause (void)
 {
-  ClutterBackend *clutter_backend;
-  CoglContext *cogl_context;
-  CoglDisplay *cogl_display;
+  MetaBackend *backend;
+  MetaRenderer *renderer;
 
-  clutter_backend = clutter_get_default_backend ();
-  cogl_context = clutter_backend_get_cogl_context (clutter_backend);
-  cogl_display = cogl_context_get_display (cogl_context);
-  cogl_kms_display_queue_modes_reset (cogl_display);
+  backend = meta_get_backend ();
+  renderer = meta_backend_get_renderer (backend);
+  meta_renderer_native_queue_modes_reset (META_RENDERER_NATIVE (renderer));
 
   clutter_evdev_reclaim_devices ();
   clutter_egl_thaw_master_clock ();
 
   {
     MetaBackend *backend = meta_get_backend ();
-    MetaCursorRenderer *renderer = meta_backend_get_cursor_renderer (backend);
+    MetaCursorRendererNative *cursor_renderer_native =
+      META_CURSOR_RENDERER_NATIVE (meta_backend_get_cursor_renderer (backend));
     ClutterActor *stage = meta_backend_get_stage (backend);
 
     /* When we mode-switch back, we need to immediately queue a redraw
@@ -130,7 +130,7 @@ session_unpause (void)
      * update. */
 
     clutter_actor_queue_redraw (stage);
-    meta_cursor_renderer_native_force_update (META_CURSOR_RENDERER_NATIVE (renderer));
+    meta_cursor_renderer_native_force_update (cursor_renderer_native);
     meta_idle_monitor_native_reset_idletime (meta_idle_monitor_get_core ());
   }
 }

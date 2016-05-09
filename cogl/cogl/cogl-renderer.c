@@ -55,9 +55,6 @@
 #ifdef COGL_HAS_EGL_PLATFORM_XLIB_SUPPORT
 #include "cogl-winsys-egl-x11-private.h"
 #endif
-#ifdef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
-#include "cogl-winsys-egl-kms-private.h"
-#endif
 #ifdef COGL_HAS_GLX_SUPPORT
 #include "cogl-winsys-glx-private.h"
 #endif
@@ -167,9 +164,6 @@ static CoglWinsysVtableGetter _cogl_winsys_vtable_getters[] =
 #ifdef COGL_HAS_EGL_PLATFORM_XLIB_SUPPORT
   _cogl_winsys_egl_xlib_get_vtable,
 #endif
-#ifdef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
-  _cogl_winsys_egl_kms_get_vtable,
-#endif
   _cogl_winsys_stub_get_vtable,
 };
 
@@ -241,10 +235,6 @@ cogl_renderer_new (void)
 
 #ifdef COGL_HAS_XLIB_SUPPORT
   renderer->xlib_enable_event_retrieval = TRUE;
-#endif
-
-#ifdef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
-  renderer->kms_fd = -1;
 #endif
 
   return _cogl_renderer_object_new (renderer);

@@ -34,7 +34,9 @@
 #include <meta/util.h>
 #include <meta/meta-backend.h>
 
-#include "meta-monitor-manager-private.h"
+#include "backends/meta-backend-private.h"
+#include "backends/meta-monitor-manager-private.h"
+#include "backends/native/meta-renderer-native.h"
 #include "meta/boxes.h"
 
 #ifndef DRM_CAP_CURSOR_WIDTH
@@ -657,7 +659,6 @@ static void
 meta_cursor_renderer_native_init (MetaCursorRendererNative *native)
 {
   MetaCursorRendererNativePrivate *priv = meta_cursor_renderer_native_get_instance_private (native);
-  CoglContext *ctx = clutter_backend_get_cogl_context (clutter_get_default_backend ());
   MetaMonitorManager *monitors;
 
   monitors = meta_monitor_manager_get ();
@@ -667,9 +668,12 @@ meta_cursor_renderer_native_init (MetaCursorRendererNative *native)
 #if defined(CLUTTER_WINDOWING_EGL)
   if (clutter_check_windowing_backend (CLUTTER_WINDOWING_EGL))
     {
-      CoglRenderer *cogl_renderer = cogl_display_get_renderer (cogl_context_get_display (ctx));
-      priv->drm_fd = cogl_kms_renderer_get_kms_fd (cogl_renderer);
-      priv->gbm = cogl_kms_renderer_get_gbm (cogl_renderer);
+      MetaBackend *backend = meta_get_backend ();
+      MetaRenderer *renderer = meta_backend_get_renderer (backend);
+      MetaRendererNative *renderer_native = META_RENDERER_NATIVE (renderer);
+
+      priv->drm_fd = meta_renderer_native_get_kms_fd (renderer_native);
+      priv->gbm = meta_renderer_native_get_gbm (renderer_native);
 
       uint64_t width, height;
       if (drmGetCap (priv->drm_fd, DRM_CAP_CURSOR_WIDTH, &width) == 0 &&

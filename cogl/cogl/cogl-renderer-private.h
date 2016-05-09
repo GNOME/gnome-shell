@@ -76,10 +76,6 @@ struct _CoglRenderer
     [COGL_FLAGS_N_LONGS_FOR_SIZE (COGL_N_PRIVATE_FEATURES)];
   GModule *libgl_module;
 
-#if defined (COGL_HAS_EGL_PLATFORM_KMS_SUPPORT)
-  int kms_fd;
-#endif
-
   /* List of callback functions that will be given every native event */
   GSList *event_filters;
   void *winsys;

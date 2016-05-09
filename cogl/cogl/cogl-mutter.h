@@ -38,7 +38,6 @@
 #include <cogl/cogl-meta-texture.h>
 #include <cogl/cogl-error-private.h>
 #include <cogl/cogl-renderer-private.h>
-#include <cogl/winsys/cogl-winsys-egl-kms-private.h>
 #include <cogl/winsys/cogl-winsys-egl-private.h>
 #include <cogl/winsys/cogl-winsys-private.h>
 

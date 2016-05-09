@@ -25,6 +25,8 @@
 
 #include "meta-monitor-manager-kms.h"
 #include "meta-monitor-config.h"
+#include "meta-backend-private.h"
+#include "meta-renderer-native.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -952,9 +954,8 @@ meta_monitor_manager_kms_set_power_save_mode (MetaMonitorManager *manager,
                                               MetaPowerSave       mode)
 {
   MetaMonitorManagerKms *manager_kms = META_MONITOR_MANAGER_KMS (manager);
-  ClutterBackend *backend;
-  CoglContext *cogl_context;
-  CoglDisplay *cogl_display;
+  MetaBackend *backend;
+  MetaRenderer *renderer;
   uint64_t state;
   unsigned i;
 
@@ -995,13 +996,13 @@ meta_monitor_manager_kms_set_power_save_mode (MetaMonitorManager *manager,
         }
     }
 
-  backend = clutter_get_default_backend ();
-  cogl_context = clutter_backend_get_cogl_context (backend);
-  cogl_display = cogl_context_get_display (cogl_context);
+  backend = meta_get_backend ();
+  renderer = meta_backend_get_renderer (backend);
 
   for (i = 0; i < manager->n_crtcs; i++)
-    cogl_kms_display_set_ignore_crtc (cogl_display, manager->crtcs[i].crtc_id,
-                                      mode != META_POWER_SAVE_ON);
+    meta_renderer_native_set_ignore_crtc (META_RENDERER_NATIVE (renderer),
+                                          manager->crtcs[i].crtc_id,
+                                          mode != META_POWER_SAVE_ON);
 }
 
 static void
@@ -1061,9 +1062,8 @@ meta_monitor_manager_kms_apply_configuration (MetaMonitorManager *manager,
                                               unsigned int         n_outputs)
 {
   MetaMonitorManagerKms *manager_kms = META_MONITOR_MANAGER_KMS (manager);
-  ClutterBackend *backend;
-  CoglContext *cogl_context;
-  CoglDisplay *cogl_display;
+  MetaBackend *backend;
+  MetaRenderer *renderer;
   unsigned i;
   GPtrArray *cogl_crtcs;
   int screen_width, screen_height;
@@ -1191,13 +1191,15 @@ meta_monitor_manager_kms_apply_configuration (MetaMonitorManager *manager,
       crtc->current_mode = NULL;
     }
 
-  backend = clutter_get_default_backend ();
-  cogl_context = clutter_backend_get_cogl_context (backend);
-  cogl_display = cogl_context_get_display (cogl_context);
+  backend = meta_get_backend ();
+  renderer = meta_backend_get_renderer (backend);
 
   error = NULL;
-  ok = cogl_kms_display_set_layout (cogl_display, screen_width, screen_height,
-                                    (CoglKmsCrtc**)cogl_crtcs->pdata, cogl_crtcs->len, &error);
+  ok = meta_renderer_native_set_layout (META_RENDERER_NATIVE (renderer),
+                                        screen_width, screen_height,
+                                        (CoglKmsCrtc**)cogl_crtcs->pdata,
+                                        cogl_crtcs->len,
+                                        &error);
   g_ptr_array_unref (cogl_crtcs);
 
   if (!ok)
@@ -1296,17 +1298,11 @@ on_uevent (GUdevClient *client,
 static void
 meta_monitor_manager_kms_init (MetaMonitorManagerKms *manager_kms)
 {
-  ClutterBackend *backend;
-  CoglContext *cogl_context;
-  CoglDisplay *cogl_display;
-  CoglRenderer *cogl_renderer;
+  MetaBackend *backend = meta_get_backend ();
+  MetaRenderer *renderer = meta_backend_get_renderer (backend);
+  MetaRendererNative *renderer_native = META_RENDERER_NATIVE (renderer);
 
-  backend = clutter_get_default_backend ();
-  cogl_context = clutter_backend_get_cogl_context (backend);
-  cogl_display = cogl_context_get_display (cogl_context);
-  cogl_renderer = cogl_display_get_renderer (cogl_display);
-
-  manager_kms->fd = cogl_kms_renderer_get_kms_fd (cogl_renderer);
+  manager_kms->fd = meta_renderer_native_get_kms_fd (renderer_native);
 
   drmSetClientCap (manager_kms->fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1);
 
