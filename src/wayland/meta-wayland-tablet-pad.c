@@ -32,6 +32,8 @@
 
 #include "meta-surface-actor-wayland.h"
 #include "meta-wayland-private.h"
+#include "meta-wayland-tablet-seat.h"
+#include "meta-wayland-tablet.h"
 #include "meta-wayland-tablet-pad.h"
 #include "meta-wayland-tablet-pad-group.h"
 #include "meta-wayland-tablet-pad-ring.h"
@@ -295,8 +297,94 @@ meta_wayland_tablet_pad_update_groups_focus (MetaWaylandTabletPad *pad)
     meta_wayland_tablet_pad_group_sync_focus (l->data);
 }
 
+static void
+meta_wayland_tablet_pad_broadcast_enter (MetaWaylandTabletPad *pad,
+                                         uint32_t              serial,
+                                         MetaWaylandTablet    *tablet,
+                                         MetaWaylandSurface   *surface)
+{
+  struct wl_resource *resource, *tablet_resource;
+  struct wl_client *client;
+
+  client = wl_resource_get_client (pad->focus_surface->resource);
+  tablet_resource = meta_wayland_tablet_lookup_resource (tablet, client);
+
+  wl_resource_for_each (resource, &pad->focus_resource_list)
+    {
+      zwp_tablet_pad_v2_send_enter (resource, serial,
+                                    tablet_resource,
+                                    surface->resource);
+    }
+}
+
+static void
+meta_wayland_tablet_pad_broadcast_leave (MetaWaylandTabletPad *pad,
+                                         uint32_t              serial,
+                                         MetaWaylandSurface   *surface)
+{
+  struct wl_resource *resource;
+
+  wl_resource_for_each (resource, &pad->focus_resource_list)
+    {
+      zwp_tablet_pad_v2_send_leave (resource, serial,
+                                    surface->resource);
+    }
+}
+
 void
 meta_wayland_tablet_pad_set_focus (MetaWaylandTabletPad *pad,
                                    MetaWaylandSurface   *surface)
 {
+  MetaWaylandTablet *tablet;
+
+  if (pad->focus_surface == surface)
+    return;
+
+  g_hash_table_remove_all (pad->feedback);
+
+  if (pad->focus_surface != NULL)
+    {
+      struct wl_client *client = wl_resource_get_client (pad->focus_surface->resource);
+      struct wl_list *focus_resources = &pad->focus_resource_list;
+
+      if (!wl_list_empty (focus_resources))
+        {
+          struct wl_display *display = wl_client_get_display (client);
+          uint32_t serial = wl_display_next_serial (display);
+
+          meta_wayland_tablet_pad_broadcast_leave (pad, serial,
+                                                   pad->focus_surface);
+          move_resources (&pad->resource_list, &pad->focus_resource_list);
+        }
+
+      wl_list_remove (&pad->focus_surface_listener.link);
+      pad->focus_surface = NULL;
+    }
+
+  tablet = meta_wayland_tablet_seat_lookup_paired_tablet (pad->tablet_seat,
+                                                          pad);
+
+  if (tablet != NULL && surface != NULL)
+    {
+      struct wl_client *client;
+
+      pad->focus_surface = surface;
+      wl_resource_add_destroy_listener (pad->focus_surface->resource,
+                                        &pad->focus_surface_listener);
+
+      client = wl_resource_get_client (pad->focus_surface->resource);
+      move_resources_for_client (&pad->focus_resource_list,
+                                 &pad->resource_list, client);
+
+      if (!wl_list_empty (&pad->focus_resource_list))
+        {
+          struct wl_display *display = wl_client_get_display (client);
+
+          pad->focus_serial = wl_display_next_serial (display);
+          meta_wayland_tablet_pad_broadcast_enter (pad, pad->focus_serial,
+                                                   tablet, pad->focus_surface);
+        }
+    }
+
+  meta_wayland_tablet_pad_update_groups_focus (pad);
 }

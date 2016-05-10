@@ -36,6 +36,11 @@
 #include "meta-wayland-tablet-tool.h"
 #include "meta-wayland-tablet-pad.h"
 
+#ifdef HAVE_NATIVE_BACKEND
+#include <clutter/evdev/clutter-evdev.h>
+#include "backends/native/meta-backend-native.h"
+#endif
+
 static void
 unbind_resource (struct wl_resource *resource)
 {
@@ -199,13 +204,28 @@ static void
 meta_wayland_tablet_seat_device_added (MetaWaylandTabletSeat *tablet_seat,
                                        ClutterInputDevice    *device)
 {
+  MetaWaylandSurface *pad_focus = tablet_seat->seat->keyboard.focus_surface;
+
   if (is_tablet_device (device))
     {
       MetaWaylandTablet *tablet;
+      GList *pads, *l;
 
       tablet = meta_wayland_tablet_new (device, tablet_seat);
       g_hash_table_insert (tablet_seat->tablets, device, tablet);
       broadcast_tablet_added (tablet_seat, device);
+
+      /* Because the insertion order is undefined, there might be already
+       * pads that are logically paired to this tablet. Look those up and
+       * refocus them.
+       */
+      pads = meta_wayland_tablet_seat_lookup_paired_pads (tablet_seat,
+                                                          tablet);
+
+      for (l = pads; l; l = l->next)
+        meta_wayland_tablet_pad_set_focus (l->data, pad_focus);
+
+      g_list_free (pads);
     }
   else if (is_pad_device (device))
     {
@@ -214,6 +234,8 @@ meta_wayland_tablet_seat_device_added (MetaWaylandTabletSeat *tablet_seat,
       pad = meta_wayland_tablet_pad_new (device, tablet_seat);
       g_hash_table_insert (tablet_seat->pads, device, pad);
       broadcast_pad_added (tablet_seat, device);
+
+      meta_wayland_tablet_pad_set_focus (pad, pad_focus);
     }
 }
 
@@ -523,4 +545,17 @@ meta_wayland_tablet_seat_lookup_paired_pads (MetaWaylandTabletSeat *tablet_seat,
     }
 
   return pads;
+}
+
+void
+meta_wayland_tablet_seat_set_pad_focus (MetaWaylandTabletSeat *tablet_seat,
+                                        MetaWaylandSurface    *surface)
+{
+  MetaWaylandTabletPad *pad;
+  GHashTableIter iter;
+
+  g_hash_table_iter_init (&iter, tablet_seat->pads);
+
+  while (g_hash_table_iter_next (&iter, NULL, (gpointer *) &pad))
+    meta_wayland_tablet_pad_set_focus (pad, surface);
 }

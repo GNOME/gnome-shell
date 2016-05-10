@@ -69,6 +69,9 @@ void                   meta_wayland_tablet_seat_notify_tool         (MetaWayland
                                                                      MetaWaylandTabletTool *tool,
                                                                      struct wl_client      *client);
 
+void                   meta_wayland_tablet_seat_set_pad_focus       (MetaWaylandTabletSeat *tablet_seat,
+                                                                     MetaWaylandSurface    *surface);
+
 MetaWaylandTablet     *meta_wayland_tablet_seat_lookup_paired_tablet (MetaWaylandTabletSeat *tablet_seat,
                                                                       MetaWaylandTabletPad  *pad);
 GList                 *meta_wayland_tablet_seat_lookup_paired_pads   (MetaWaylandTabletSeat *tablet_seat,
