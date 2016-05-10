@@ -722,6 +722,23 @@ shell_app_get_last_user_time (ShellApp *app)
   return (int)last_user_time;
 }
 
+static gboolean
+shell_app_is_minimized (ShellApp *app)
+{
+  GSList *iter;
+
+  if (app->running_state == NULL)
+    return FALSE;
+
+  for (iter = app->running_state->windows; iter; iter = iter->next)
+    {
+      if (meta_window_showing_on_its_workspace (iter->data))
+        return FALSE;
+    }
+
+  return TRUE;
+}
+
 /**
  * shell_app_compare:
  * @app:
@@ -729,16 +746,30 @@ shell_app_get_last_user_time (ShellApp *app)
  *
  * Compare one #ShellApp instance to another, in the following way:
  *   - Running applications sort before not-running applications.
- *   - The application which the user interacted with most recently
+ *   - If one of them has non-minimized windows and the other does not,
+ *     the one with visible windows is first.
+ *   - Finally, the application which the user interacted with most recently
  *     compares earlier.
  */
 int
 shell_app_compare (ShellApp *app,
                    ShellApp *other)
 {
+  gboolean min_app, min_other;
+
   if (app->state != other->state)
     {
       if (app->state == SHELL_APP_STATE_RUNNING)
+        return -1;
+      return 1;
+    }
+
+  min_app = shell_app_is_minimized (app);
+  min_other = shell_app_is_minimized (other);
+
+  if (min_app != min_other)
+    {
+      if (min_other)
         return -1;
       return 1;
     }
