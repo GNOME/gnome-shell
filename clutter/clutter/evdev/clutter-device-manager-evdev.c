@@ -951,6 +951,133 @@ notify_proximity (ClutterInputDevice *input_device,
 }
 
 static void
+notify_pad_button (ClutterInputDevice *input_device,
+                   guint64             time_us,
+                   guint32             button,
+                   guint32             mode_group,
+                   guint32             pressed)
+{
+  ClutterInputDeviceEvdev *device_evdev;
+  ClutterSeatEvdev *seat;
+  ClutterStage *stage;
+  ClutterEvent *event;
+
+  /* We can drop the event on the floor if no stage has been
+   * associated with the device yet. */
+  stage = _clutter_input_device_get_stage (input_device);
+  if (stage == NULL)
+    return;
+
+  if (pressed)
+    event = clutter_event_new (CLUTTER_PAD_BUTTON_PRESS);
+  else
+    event = clutter_event_new (CLUTTER_PAD_BUTTON_RELEASE);
+
+  device_evdev = CLUTTER_INPUT_DEVICE_EVDEV (input_device);
+  seat = _clutter_input_device_evdev_get_seat (device_evdev);
+
+  _clutter_evdev_event_set_time_usec (event, time_us);
+  event->pad_button.stage = stage;
+  event->pad_button.button = button;
+  event->pad_button.group = mode_group;
+  clutter_event_set_device (event, input_device);
+  clutter_event_set_source_device (event, input_device);
+  clutter_event_set_time (event, us2ms (time_us));
+
+  _clutter_input_device_set_stage (seat->core_pointer, stage);
+
+  queue_event (event);
+}
+
+static void
+notify_pad_strip (ClutterInputDevice *input_device,
+                  guint64             time_us,
+                  guint32             strip_number,
+                  guint32             strip_source,
+                  guint32             mode_group,
+                  gdouble             value)
+{
+  ClutterInputDeviceEvdev *device_evdev;
+  ClutterInputDevicePadSource source;
+  ClutterSeatEvdev *seat;
+  ClutterStage *stage;
+  ClutterEvent *event;
+
+  /* We can drop the event on the floor if no stage has been
+   * associated with the device yet. */
+  stage = _clutter_input_device_get_stage (input_device);
+  if (stage == NULL)
+    return;
+
+  if (strip_source == LIBINPUT_TABLET_PAD_STRIP_SOURCE_FINGER)
+    source = CLUTTER_INPUT_DEVICE_PAD_SOURCE_FINGER;
+  else
+    source = CLUTTER_INPUT_DEVICE_PAD_SOURCE_UNKNOWN;
+
+  device_evdev = CLUTTER_INPUT_DEVICE_EVDEV (input_device);
+  seat = _clutter_input_device_evdev_get_seat (device_evdev);
+
+  event = clutter_event_new (CLUTTER_PAD_STRIP);
+  _clutter_evdev_event_set_time_usec (event, time_us);
+  event->pad_strip.strip_source = source;
+  event->pad_strip.stage = stage;
+  event->pad_strip.strip_number = strip_number;
+  event->pad_strip.value = value;
+  event->pad_strip.group = mode_group;
+  clutter_event_set_device (event, input_device);
+  clutter_event_set_source_device (event, input_device);
+  clutter_event_set_time (event, us2ms (time_us));
+
+  _clutter_input_device_set_stage (seat->core_pointer, stage);
+
+  queue_event (event);
+}
+
+static void
+notify_pad_ring (ClutterInputDevice *input_device,
+                 guint64             time_us,
+                 guint32             ring_number,
+                 guint32             ring_source,
+                 guint32             mode_group,
+                 gdouble             angle)
+{
+  ClutterInputDeviceEvdev *device_evdev;
+  ClutterInputDevicePadSource source;
+  ClutterSeatEvdev *seat;
+  ClutterStage *stage;
+  ClutterEvent *event;
+
+  /* We can drop the event on the floor if no stage has been
+   * associated with the device yet. */
+  stage = _clutter_input_device_get_stage (input_device);
+  if (stage == NULL)
+    return;
+
+  if (ring_source == LIBINPUT_TABLET_PAD_RING_SOURCE_FINGER)
+    source = CLUTTER_INPUT_DEVICE_PAD_SOURCE_FINGER;
+  else
+    source = CLUTTER_INPUT_DEVICE_PAD_SOURCE_UNKNOWN;
+
+  device_evdev = CLUTTER_INPUT_DEVICE_EVDEV (input_device);
+  seat = _clutter_input_device_evdev_get_seat (device_evdev);
+
+  event = clutter_event_new (CLUTTER_PAD_RING);
+  _clutter_evdev_event_set_time_usec (event, time_us);
+  event->pad_ring.ring_source = source;
+  event->pad_ring.stage = stage;
+  event->pad_ring.ring_number = ring_number;
+  event->pad_ring.angle = angle;
+  event->pad_ring.group = mode_group;
+  clutter_event_set_device (event, input_device);
+  clutter_event_set_source_device (event, input_device);
+  clutter_event_set_time (event, us2ms (time_us));
+
+  _clutter_input_device_set_stage (seat->core_pointer, stage);
+
+  queue_event (event);
+}
+
+static void
 dispatch_libinput (ClutterDeviceManagerEvdev *manager_evdev)
 {
   ClutterDeviceManagerEvdevPrivate *priv = manager_evdev->priv;
@@ -2083,6 +2210,68 @@ process_device_event (ClutterDeviceManagerEvdev *manager_evdev,
         button_state = libinput_event_tablet_tool_get_tip_state (tablet_event) ==
                        LIBINPUT_TABLET_TOOL_TIP_DOWN;
         notify_button (device, time, BTN_TOUCH, button_state);
+        break;
+      }
+    case LIBINPUT_EVENT_TABLET_PAD_BUTTON:
+      {
+        guint64 time;
+        guint32 button_state, button, group;
+        struct libinput_tablet_pad_mode_group *mode_group;
+        struct libinput_event_tablet_pad *pad_event =
+          libinput_event_get_tablet_pad_event (event);
+
+        device = libinput_device_get_user_data (libinput_device);
+        time = libinput_event_tablet_pad_get_time_usec (pad_event);
+
+        mode_group = libinput_event_tablet_pad_get_mode_group (pad_event);
+        group = libinput_tablet_pad_mode_group_get_index (mode_group);
+
+        button = libinput_event_tablet_pad_get_button_number (pad_event);
+        button_state = libinput_event_tablet_pad_get_button_state (pad_event) ==
+                       LIBINPUT_BUTTON_STATE_PRESSED;
+        notify_pad_button (device, time, button, group, button_state);
+        break;
+      }
+    case LIBINPUT_EVENT_TABLET_PAD_STRIP:
+      {
+        guint64 time;
+        guint32 number, source, group;
+        struct libinput_tablet_pad_mode_group *mode_group;
+        struct libinput_event_tablet_pad *pad_event =
+          libinput_event_get_tablet_pad_event (event);
+        gdouble value;
+
+        device = libinput_device_get_user_data (libinput_device);
+        time = libinput_event_tablet_pad_get_time_usec (pad_event);
+        number = libinput_event_tablet_pad_get_strip_number (pad_event);
+        value = libinput_event_tablet_pad_get_strip_position (pad_event);
+        source = libinput_event_tablet_pad_get_strip_source (pad_event);
+
+        mode_group = libinput_event_tablet_pad_get_mode_group (pad_event);
+        group = libinput_tablet_pad_mode_group_get_index (mode_group);
+
+        notify_pad_strip (device, time, number, source, group, value);
+        break;
+      }
+    case LIBINPUT_EVENT_TABLET_PAD_RING:
+      {
+        guint64 time;
+        guint32 number, source, group;
+        struct libinput_tablet_pad_mode_group *mode_group;
+        struct libinput_event_tablet_pad *pad_event =
+          libinput_event_get_tablet_pad_event (event);
+        gdouble angle;
+
+        device = libinput_device_get_user_data (libinput_device);
+        time = libinput_event_tablet_pad_get_time_usec (pad_event);
+        number = libinput_event_tablet_pad_get_ring_number (pad_event);
+        angle = libinput_event_tablet_pad_get_ring_position (pad_event);
+        source = libinput_event_tablet_pad_get_ring_source (pad_event);
+
+        mode_group = libinput_event_tablet_pad_get_mode_group (pad_event);
+        group = libinput_tablet_pad_mode_group_get_index (mode_group);
+
+        notify_pad_ring (device, time, number, source, group, angle);
         break;
       }
     default:
