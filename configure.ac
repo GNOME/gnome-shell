@@ -59,6 +59,8 @@ AM_PATH_GLIB_2_0([2.49.0])
 CANBERRA_GTK=libcanberra-gtk3
 CANBERRA_GTK_VERSION=0.26
 
+LIBWACOM_VERSION=0.19
+
 MUTTER_PC_MODULES="
    gtk+-3.0 >= 3.19.8
    gio-unix-2.0 >= 2.35.1
@@ -108,6 +110,11 @@ AC_ARG_WITH(libcanberra,
   AC_HELP_STRING([--without-libcanberra],
                  [disable the use of libcanberra for playing sounds]),,
   with_libcanberra=auto)
+
+AC_ARG_WITH(libwacom,
+  AC_HELP_STRING([--without-libwacom],
+                 [disable the use of libwacom for advanced tablet management]),,
+  with_libwacom=auto)
 
 AC_ARG_WITH([xwayland-path],
             [AS_HELP_STRING([--with-xwayland-path], [Absolute path for an X Wayland server])],
@@ -166,6 +173,24 @@ else
     AC_MSG_RESULT(no)
     if test x$with_libcanberra = xyes ; then
       AC_MSG_ERROR([libcanberra forced and libcanberra-gtk was not found])
+    fi
+  fi
+fi
+
+have_libwacom=no
+AC_MSG_CHECKING([libwacom])
+if test x$with_libwacom = xno ; then
+  AC_MSG_RESULT([disabled])
+else
+  if $PKG_CONFIG --exists libwacom '>=' $LIBWACOM_VERSION; then
+    have_libwacom=yes
+    AC_MSG_RESULT(yes)
+    MUTTER_PC_MODULES="$MUTTER_PC_MODULES libwacom"
+    AC_DEFINE([HAVE_LIBWACOM], 1, [Building with libwacom for advanced tablet management])
+  else
+    AC_MSG_RESULT(no)
+    if test x$with_libwacom = xyes ; then
+      AC_MSG_ERROR([libwacom forced but not found])
     fi
   fi
 fi
@@ -423,6 +448,7 @@ mutter-$VERSION
 
 	Startup notification:     ${have_startup_notification}
 	libcanberra:              ${have_libcanberra}
+	libwacom:                 ${have_libwacom}
 	Introspection:            ${found_introspection}
 	Session management:       ${found_sm}
 	Wayland:                  ${have_wayland}
