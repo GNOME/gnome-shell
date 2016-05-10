@@ -70,6 +70,10 @@ enum
   PROP_VENDOR_ID,
   PROP_PRODUCT_ID,
 
+  PROP_N_STRIPS,
+  PROP_N_RINGS,
+  PROP_N_MODE_GROUPS,
+
   PROP_LAST
 };
 
@@ -195,6 +199,18 @@ clutter_input_device_set_property (GObject      *gobject,
       self->product_id = g_value_dup_string (value);
       break;
 
+    case PROP_N_RINGS:
+      self->n_rings = g_value_get_int (value);
+      break;
+
+    case PROP_N_STRIPS:
+      self->n_strips = g_value_get_int (value);
+      break;
+
+    case PROP_N_MODE_GROUPS:
+      self->n_mode_groups = g_value_get_int (value);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
@@ -253,6 +269,18 @@ clutter_input_device_get_property (GObject    *gobject,
 
     case PROP_PRODUCT_ID:
       g_value_set_string (value, self->product_id);
+      break;
+
+    case PROP_N_RINGS:
+      g_value_set_int (value, self->n_rings);
+      break;
+
+    case PROP_N_STRIPS:
+      g_value_set_int (value, self->n_strips);
+      break;
+
+    case PROP_N_MODE_GROUPS:
+      g_value_set_int (value, self->n_mode_groups);
       break;
 
     default:
@@ -431,6 +459,27 @@ clutter_input_device_class_init (ClutterInputDeviceClass *klass)
                          P_("Product ID"),
                          NULL,
                          CLUTTER_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
+
+  obj_props[PROP_N_RINGS] =
+    g_param_spec_int ("n-rings",
+                      P_("Number of rings"),
+                      P_("Number of rings (circular sliders) in this device"),
+                      0, G_MAXINT, 0,
+                      CLUTTER_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
+
+  obj_props[PROP_N_STRIPS] =
+    g_param_spec_int ("n-strips",
+                      P_("Number of strips"),
+                      P_("Number of strips (linear sliders) in this device"),
+                      0, G_MAXINT, 0,
+                      CLUTTER_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
+
+  obj_props[PROP_N_MODE_GROUPS] =
+    g_param_spec_int ("n-mode-groups",
+                      P_("Number of mode groups"),
+                      P_("Number of mode groups"),
+                      0, G_MAXINT, 0,
+                      CLUTTER_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
 
   gobject_class->dispose = clutter_input_device_dispose;
   gobject_class->set_property = clutter_input_device_set_property;
@@ -2065,4 +2114,30 @@ clutter_input_device_update_from_tool (ClutterInputDevice     *device,
 
   if (device_class->update_from_tool)
     device_class->update_from_tool (device, tool);
+}
+
+gint
+clutter_input_device_get_n_rings (ClutterInputDevice *device)
+{
+  g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (device), 0);
+
+  return device->n_rings;
+}
+
+gint
+clutter_input_device_get_n_strips (ClutterInputDevice *device)
+{
+  g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (device), 0);
+
+  return device->n_strips;
+}
+
+gint
+clutter_input_device_get_n_mode_groups (ClutterInputDevice *device)
+{
+  g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (device), 0);
+  g_return_val_if_fail (clutter_input_device_get_device_type (device) ==
+                        CLUTTER_PAD_DEVICE, 0);
+
+  return device->n_mode_groups;
 }

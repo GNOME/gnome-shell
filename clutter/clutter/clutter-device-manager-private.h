@@ -134,6 +134,10 @@ struct _ClutterInputDevice
 
   GPtrArray *tools;
 
+  gint n_rings;
+  gint n_strips;
+  gint n_mode_groups;
+
   guint has_cursor : 1;
   guint is_enabled : 1;
 };

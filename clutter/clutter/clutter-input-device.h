@@ -140,6 +140,13 @@ const gchar *           clutter_input_device_get_vendor_id      (ClutterInputDev
 CLUTTER_AVAILABLE_IN_1_22
 const gchar *           clutter_input_device_get_product_id     (ClutterInputDevice *device);
 
+CLUTTER_AVAILABLE_IN_ALL
+gint                    clutter_input_device_get_n_rings        (ClutterInputDevice *device);
+CLUTTER_AVAILABLE_IN_ALL
+gint                    clutter_input_device_get_n_strips       (ClutterInputDevice *device);
+CLUTTER_AVAILABLE_IN_ALL
+gint                    clutter_input_device_get_n_mode_groups  (ClutterInputDevice *device);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_INPUT_DEVICE_H__ */
