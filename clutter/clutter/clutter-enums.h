@@ -900,6 +900,7 @@ typedef enum { /*< prefix=CLUTTER_FLOW >*/
  * @CLUTTER_PEN_DEVICE: A pen device
  * @CLUTTER_ERASER_DEVICE: An eraser device
  * @CLUTTER_CURSOR_DEVICE: A cursor device
+ * @CLUTTER_PAD_DEVICE: A tablet pad
  * @CLUTTER_N_DEVICE_TYPES: The number of device types
  *
  * The types of input devices available.
@@ -920,6 +921,7 @@ typedef enum {
   CLUTTER_PEN_DEVICE,
   CLUTTER_ERASER_DEVICE,
   CLUTTER_CURSOR_DEVICE,
+  CLUTTER_PAD_DEVICE,
 
   CLUTTER_N_DEVICE_TYPES
 } ClutterInputDeviceType;
