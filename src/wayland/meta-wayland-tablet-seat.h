@@ -36,6 +36,7 @@ struct _MetaWaylandTabletSeat
 
   GHashTable *tablets;
   GHashTable *tools;
+  GHashTable *pads;
 };
 
 MetaWaylandTabletSeat *meta_wayland_tablet_seat_new  (MetaWaylandTabletManager *tablet_manager);
