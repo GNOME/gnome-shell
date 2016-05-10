@@ -317,6 +317,8 @@ libmutter_la_SOURCES +=				\
 	wayland/meta-wayland-tablet-seat.h	\
 	wayland/meta-wayland-tablet-tool.c	\
 	wayland/meta-wayland-tablet-tool.h	\
+	wayland/meta-wayland-tablet-pad-ring.c	\
+	wayland/meta-wayland-tablet-pad-ring.h	\
 	wayland/meta-wayland-touch.c		\
 	wayland/meta-wayland-touch.h		\
 	wayland/meta-wayland-surface.c		\
