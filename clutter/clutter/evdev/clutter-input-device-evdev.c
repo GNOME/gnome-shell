@@ -141,13 +141,22 @@ _clutter_input_device_evdev_new (ClutterDeviceManager *manager,
   ClutterInputDeviceType type;
   ClutterDeviceManagerEvdev *manager_evdev;
   gchar *vendor, *product;
-  gint device_id;
+  gint device_id, n_rings = 0, n_strips = 0, n_groups = 1;
 
   type = _clutter_input_device_evdev_determine_type (libinput_device);
   vendor = g_strdup_printf ("%.4x", libinput_device_get_id_vendor (libinput_device));
   product = g_strdup_printf ("%.4x", libinput_device_get_id_product (libinput_device));
   manager_evdev = CLUTTER_DEVICE_MANAGER_EVDEV (manager);
   device_id = _clutter_device_manager_evdev_acquire_device_id (manager_evdev);
+
+  if (libinput_device_has_capability (libinput_device,
+                                      LIBINPUT_DEVICE_CAP_TABLET_PAD))
+    {
+      n_rings = libinput_device_tablet_pad_get_num_rings (libinput_device);
+      n_strips = libinput_device_tablet_pad_get_num_strips (libinput_device);
+      n_groups = libinput_device_tablet_pad_get_num_mode_groups (libinput_device);
+    }
+
   device = g_object_new (CLUTTER_TYPE_INPUT_DEVICE_EVDEV,
                          "id", device_id,
                          "name", libinput_device_get_name (libinput_device),
@@ -157,6 +166,9 @@ _clutter_input_device_evdev_new (ClutterDeviceManager *manager,
                          "enabled", TRUE,
                          "vendor-id", vendor,
                          "product-id", product,
+                         "n-rings", n_rings,
+                         "n-strips", n_strips,
+                         "n-mode-groups", n_groups,
                          NULL);
 
   device->seat = seat;
@@ -243,6 +255,8 @@ _clutter_input_device_evdev_determine_type (struct libinput_device *ldev)
     return CLUTTER_TOUCHPAD_DEVICE;
   else if (libinput_device_has_capability (ldev, LIBINPUT_DEVICE_CAP_TABLET_TOOL))
     return CLUTTER_TABLET_DEVICE;
+  else if (libinput_device_has_capability (ldev, LIBINPUT_DEVICE_CAP_TABLET_PAD))
+    return CLUTTER_PAD_DEVICE;
   else if (libinput_device_has_capability (ldev, LIBINPUT_DEVICE_CAP_POINTER))
     return CLUTTER_POINTER_DEVICE;
   else if (libinput_device_has_capability (ldev, LIBINPUT_DEVICE_CAP_TOUCH))

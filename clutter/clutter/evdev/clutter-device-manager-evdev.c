@@ -183,6 +183,7 @@ static const char *device_type_str[] = {
   "pen",                /* CLUTTER_PEN_DEVICE */
   "eraser",             /* CLUTTER_ERASER_DEVICE */
   "cursor",             /* CLUTTER_CURSOR_DEVICE */
+  "pad",                /* CLUTTER_PAD_DEVICE */
 };
 #endif /* CLUTTER_ENABLE_DEBUG */
 
