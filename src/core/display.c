@@ -546,6 +546,7 @@ meta_display_open (void)
   MetaScreen *screen;
   int i;
   guint32 timestamp;
+  Window old_active_xwindow = None;
 
   /* A list of all atom names, so that we can intern them in one go. */
   const char *atom_names[] = {
@@ -911,6 +912,11 @@ meta_display_open (void)
 
   display->screen = screen;
 
+  if (!meta_is_wayland_compositor ())
+    meta_prop_get_window (display, display->screen->xroot,
+                          display->atom__NET_ACTIVE_WINDOW,
+                          &old_active_xwindow);
+
   display->startup_notification = meta_startup_notification_get (display);
   g_signal_connect (display->startup_notification, "changed",
                     G_CALLBACK (on_startup_notification_changed), display);
@@ -932,43 +938,16 @@ meta_display_open (void)
   if (!meta_is_wayland_compositor ())
     meta_screen_manage_all_windows (screen);
 
-  {
-    Window focus;
-    int ret_to;
-
-    /* kinda bogus because GetInputFocus has no possible errors */
-    meta_error_trap_push (display);
-
-    /* FIXME: This is totally broken; see comment 9 of bug 88194 about this */
-    focus = None;
-    ret_to = RevertToPointerRoot;
-    XGetInputFocus (display->xdisplay, &focus, &ret_to);
-
-    /* Force a new FocusIn (does this work?) */
-
-    /* Use the same timestamp that was passed to meta_screen_new(),
-     * as it is the most recent timestamp.
-     */
-    if (focus == None || focus == PointerRoot)
-      /* Just focus the no_focus_window on the first screen */
-      meta_display_focus_the_no_focus_window (display,
-                                              display->screen,
-                                              timestamp);
-    else
-      {
-        MetaWindow * window;
-        window  = meta_display_lookup_x_window (display, focus);
-        if (window)
-          meta_display_set_input_focus_window (display, window, FALSE, timestamp);
-        else
-          /* Just focus the no_focus_window on the first screen */
-          meta_display_focus_the_no_focus_window (display,
-                                                  display->screen,
-                                                  timestamp);
-      }
-
-    meta_error_trap_pop (display);
-  }
+  if (old_active_xwindow != None)
+    {
+      MetaWindow *old_active_window = meta_display_lookup_x_window (display, old_active_xwindow);
+      if (old_active_window)
+        meta_window_focus (old_active_window, timestamp);
+      else
+        meta_display_focus_the_no_focus_window (display, display->screen, timestamp);
+    }
+  else
+    meta_display_focus_the_no_focus_window (display, display->screen, timestamp);
 
   meta_idle_monitor_init_dbus ();
 
@@ -2061,6 +2040,9 @@ void
 meta_display_update_active_window_hint (MetaDisplay *display)
 {
   gulong data[1];
+
+  if (display->closing)
+    return; /* Leave old value for a replacement */
 
   if (display->focus_window)
     data[0] = display->focus_window->xwindow;
