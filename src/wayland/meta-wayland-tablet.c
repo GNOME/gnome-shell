@@ -48,7 +48,6 @@ meta_wayland_tablet_new (ClutterInputDevice    *device,
 
   tablet = g_slice_new0 (MetaWaylandTablet);
   wl_list_init (&tablet->resource_list);
-  wl_list_init (&tablet->focus_resource_list);
   tablet->device = device;
   tablet->tablet_seat = tablet_seat;
 
@@ -119,12 +118,5 @@ struct wl_resource *
 meta_wayland_tablet_lookup_resource (MetaWaylandTablet *tablet,
                                      struct wl_client  *client)
 {
-  struct wl_resource *resource;
-
-  resource = wl_resource_find_for_client (&tablet->resource_list, client);
-
-  if (!resource)
-    resource = wl_resource_find_for_client (&tablet->focus_resource_list, client);
-
-  return resource;
+  return wl_resource_find_for_client (&tablet->resource_list, client);
 }

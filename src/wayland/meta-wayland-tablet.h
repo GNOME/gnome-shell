@@ -35,7 +35,6 @@ struct _MetaWaylandTablet
   ClutterInputDevice *device;
 
   struct wl_list resource_list;
-  struct wl_list focus_resource_list;
 
   MetaWaylandSurface *current;
 };
