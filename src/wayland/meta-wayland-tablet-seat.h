@@ -31,6 +31,7 @@
 struct _MetaWaylandTabletSeat
 {
   MetaWaylandTabletManager *manager;
+  MetaWaylandSeat *seat;
   ClutterDeviceManager *device_manager;
   struct wl_list resource_list;
 
@@ -39,7 +40,8 @@ struct _MetaWaylandTabletSeat
   GHashTable *pads;
 };
 
-MetaWaylandTabletSeat *meta_wayland_tablet_seat_new  (MetaWaylandTabletManager *tablet_manager);
+MetaWaylandTabletSeat *meta_wayland_tablet_seat_new  (MetaWaylandTabletManager *tablet_manager,
+                                                      MetaWaylandSeat          *seat);
 void                   meta_wayland_tablet_seat_free (MetaWaylandTabletSeat    *tablet_seat);
 
 struct wl_resource    *meta_wayland_tablet_seat_create_new_resource (MetaWaylandTabletSeat *tablet_seat,

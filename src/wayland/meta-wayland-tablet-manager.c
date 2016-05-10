@@ -242,7 +242,7 @@ meta_wayland_tablet_manager_ensure_seat (MetaWaylandTabletManager *manager,
 
   if (!tablet_seat)
     {
-      tablet_seat = meta_wayland_tablet_seat_new (manager);
+      tablet_seat = meta_wayland_tablet_seat_new (manager, seat);
       g_hash_table_insert (manager->seats, seat, tablet_seat);
     }
 

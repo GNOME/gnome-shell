@@ -237,13 +237,15 @@ static const struct zwp_tablet_seat_v2_interface tablet_seat_interface = {
 };
 
 MetaWaylandTabletSeat *
-meta_wayland_tablet_seat_new (MetaWaylandTabletManager *manager)
+meta_wayland_tablet_seat_new (MetaWaylandTabletManager *manager,
+                              MetaWaylandSeat          *seat)
 {
   MetaWaylandTabletSeat *tablet_seat;
   const GSList *devices, *l;
 
   tablet_seat = g_slice_new0 (MetaWaylandTabletSeat);
   tablet_seat->manager = manager;
+  tablet_seat->seat = seat;
   tablet_seat->device_manager = clutter_device_manager_get_default ();
   tablet_seat->tablets = g_hash_table_new_full (NULL, NULL, NULL,
                                                 (GDestroyNotify) meta_wayland_tablet_free);
