@@ -54,7 +54,8 @@ is_tablet_device (ClutterInputDevice *device)
   return (device_type == CLUTTER_TABLET_DEVICE ||
           device_type == CLUTTER_PEN_DEVICE ||
           device_type == CLUTTER_ERASER_DEVICE ||
-          device_type == CLUTTER_CURSOR_DEVICE);
+          device_type == CLUTTER_CURSOR_DEVICE ||
+          device_type == CLUTTER_PAD_DEVICE);
 }
 
 static void
@@ -155,7 +156,8 @@ meta_wayland_tablet_manager_lookup_seat (MetaWaylandTabletManager *manager,
 
   while (g_hash_table_iter_next (&iter, (gpointer*) &seat, (gpointer*) &tablet_seat))
     {
-      if (meta_wayland_tablet_seat_lookup_tablet (tablet_seat, device))
+      if (meta_wayland_tablet_seat_lookup_tablet (tablet_seat, device) ||
+          meta_wayland_tablet_seat_lookup_pad (tablet_seat, device))
         return tablet_seat;
     }
 
@@ -190,6 +192,10 @@ meta_wayland_tablet_manager_update (MetaWaylandTabletManager *manager,
     case CLUTTER_BUTTON_PRESS:
     case CLUTTER_BUTTON_RELEASE:
     case CLUTTER_MOTION:
+    case CLUTTER_PAD_BUTTON_PRESS:
+    case CLUTTER_PAD_BUTTON_RELEASE:
+    case CLUTTER_PAD_RING:
+    case CLUTTER_PAD_STRIP:
       meta_wayland_tablet_seat_update (tablet_seat, event);
       break;
     default:
@@ -216,6 +222,10 @@ meta_wayland_tablet_manager_handle_event (MetaWaylandTabletManager *manager,
     case CLUTTER_BUTTON_PRESS:
     case CLUTTER_BUTTON_RELEASE:
     case CLUTTER_MOTION:
+    case CLUTTER_PAD_BUTTON_PRESS:
+    case CLUTTER_PAD_BUTTON_RELEASE:
+    case CLUTTER_PAD_RING:
+    case CLUTTER_PAD_STRIP:
       return meta_wayland_tablet_seat_handle_event (tablet_seat, event);
     default:
       return CLUTTER_EVENT_PROPAGATE;

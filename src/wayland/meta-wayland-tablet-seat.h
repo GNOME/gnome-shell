@@ -55,6 +55,9 @@ MetaWaylandTablet     *meta_wayland_tablet_seat_lookup_tablet       (MetaWayland
 MetaWaylandTabletTool *meta_wayland_tablet_seat_lookup_tool         (MetaWaylandTabletSeat  *tablet_seat,
                                                                      ClutterInputDeviceTool *tool);
 
+MetaWaylandTabletPad  *meta_wayland_tablet_seat_lookup_pad          (MetaWaylandTabletSeat *tablet_seat,
+                                                                     ClutterInputDevice    *device);
+
 void                   meta_wayland_tablet_seat_update              (MetaWaylandTabletSeat *tablet_seat,
                                                                      const ClutterEvent    *event);
 gboolean               meta_wayland_tablet_seat_handle_event        (MetaWaylandTabletSeat *tablet_seat,

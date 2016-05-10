@@ -331,6 +331,13 @@ meta_wayland_tablet_seat_lookup_tool (MetaWaylandTabletSeat  *tablet_seat,
   return g_hash_table_lookup (tablet_seat->tools, tool);
 }
 
+MetaWaylandTabletPad *
+meta_wayland_tablet_seat_lookup_pad (MetaWaylandTabletSeat *tablet_seat,
+                                     ClutterInputDevice    *device)
+{
+  return g_hash_table_lookup (tablet_seat->pads, device);
+}
+
 static MetaWaylandTabletTool *
 meta_wayland_tablet_seat_ensure_tool (MetaWaylandTabletSeat  *tablet_seat,
                                       ClutterInputDevice     *device,
@@ -386,14 +393,7 @@ meta_wayland_tablet_seat_handle_event (MetaWaylandTabletSeat *tablet_seat,
 {
   ClutterInputDeviceTool *device_tool;
   MetaWaylandTabletTool *tool = NULL;
-
-  device_tool = clutter_event_get_device_tool (event);
-
-  if (device_tool)
-    tool = g_hash_table_lookup (tablet_seat->tools, device_tool);
-
-  if (!tool)
-    return CLUTTER_EVENT_PROPAGATE;
+  MetaWaylandTabletPad *pad = NULL;
 
   switch (event->type)
     {
@@ -402,8 +402,26 @@ meta_wayland_tablet_seat_handle_event (MetaWaylandTabletSeat *tablet_seat,
     case CLUTTER_BUTTON_PRESS:
     case CLUTTER_BUTTON_RELEASE:
     case CLUTTER_MOTION:
+      device_tool = clutter_event_get_device_tool (event);
+
+      if (device_tool)
+        tool = g_hash_table_lookup (tablet_seat->tools, device_tool);
+
+      if (!tool)
+        return CLUTTER_EVENT_PROPAGATE;
+
       meta_wayland_tablet_tool_handle_event (tool, event);
       return CLUTTER_EVENT_PROPAGATE;
+    case CLUTTER_PAD_BUTTON_PRESS:
+    case CLUTTER_PAD_BUTTON_RELEASE:
+    case CLUTTER_PAD_RING:
+    case CLUTTER_PAD_STRIP:
+      pad = g_hash_table_lookup (tablet_seat->pads,
+                                 clutter_event_get_source_device (event));
+      if (!pad)
+        return CLUTTER_EVENT_PROPAGATE;
+
+      return meta_wayland_tablet_pad_handle_event (pad, event);
     default:
       return CLUTTER_EVENT_STOP;
     }
