@@ -66,12 +66,12 @@ struct _MetaRendererNative
   int kms_fd;
   struct gbm_device *gbm;
   CoglClosure *swap_notify_idle;
-  CoglBool page_flips_not_supported;
+  gboolean page_flips_not_supported;
 
   GList *crtcs;
 
   int width, height;
-  CoglBool pending_set_crtc;
+  gboolean pending_set_crtc;
   struct gbm_surface *dummy_gbm_surface;
 
   CoglOnscreen *onscreen;
