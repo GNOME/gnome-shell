@@ -413,6 +413,10 @@ clutter_event_get_position (const ClutterEvent *event,
     case CLUTTER_EVENT_LAST:
     case CLUTTER_PROXIMITY_IN:
     case CLUTTER_PROXIMITY_OUT:
+    case CLUTTER_PAD_BUTTON_PRESS:
+    case CLUTTER_PAD_BUTTON_RELEASE:
+    case CLUTTER_PAD_STRIP:
+    case CLUTTER_PAD_RING:
       clutter_point_init (position, 0.f, 0.f);
       break;
 
@@ -483,6 +487,10 @@ clutter_event_set_coords (ClutterEvent *event,
     case CLUTTER_EVENT_LAST:
     case CLUTTER_PROXIMITY_IN:
     case CLUTTER_PROXIMITY_OUT:
+    case CLUTTER_PAD_BUTTON_PRESS:
+    case CLUTTER_PAD_BUTTON_RELEASE:
+    case CLUTTER_PAD_STRIP:
+    case CLUTTER_PAD_RING:
       break;
 
     case CLUTTER_ENTER:
@@ -1133,6 +1141,19 @@ clutter_event_set_device (ClutterEvent       *event,
     case CLUTTER_PROXIMITY_OUT:
       event->proximity.device = device;
       break;
+
+    case CLUTTER_PAD_BUTTON_PRESS:
+    case CLUTTER_PAD_BUTTON_RELEASE:
+      event->pad_button.device = device;
+      break;
+
+    case CLUTTER_PAD_STRIP:
+      event->pad_strip.device = device;
+      break;
+
+    case CLUTTER_PAD_RING:
+      event->pad_ring.device = device;
+      break;
     }
 }
 
@@ -1216,6 +1237,19 @@ clutter_event_get_device (const ClutterEvent *event)
     case CLUTTER_PROXIMITY_IN:
     case CLUTTER_PROXIMITY_OUT:
       device = event->proximity.device;
+      break;
+
+    case CLUTTER_PAD_BUTTON_PRESS:
+    case CLUTTER_PAD_BUTTON_RELEASE:
+      device = event->pad_button.device;
+      break;
+
+    case CLUTTER_PAD_STRIP:
+      device = event->pad_strip.device;
+      break;
+
+    case CLUTTER_PAD_RING:
+      device = event->pad_ring.device;
       break;
     }
 
@@ -1708,6 +1742,10 @@ clutter_event_get_axes (const ClutterEvent *event,
 
     case CLUTTER_TOUCHPAD_PINCH:
     case CLUTTER_TOUCHPAD_SWIPE:
+    case CLUTTER_PAD_BUTTON_PRESS:
+    case CLUTTER_PAD_BUTTON_RELEASE:
+    case CLUTTER_PAD_STRIP:
+    case CLUTTER_PAD_RING:
       break;
     }
 
