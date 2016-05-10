@@ -118,6 +118,9 @@ typedef struct _ClutterTouchEvent       ClutterTouchEvent;
 typedef struct _ClutterTouchpadPinchEvent ClutterTouchpadPinchEvent;
 typedef struct _ClutterTouchpadSwipeEvent ClutterTouchpadSwipeEvent;
 typedef struct _ClutterProximityEvent   ClutterProximityEvent;
+typedef struct _ClutterPadButtonEvent   ClutterPadButtonEvent;
+typedef struct _ClutterPadStripEvent    ClutterPadStripEvent;
+typedef struct _ClutterPadRingEvent     ClutterPadRingEvent;
 
 /**
  * ClutterAnyEvent:
@@ -493,6 +496,49 @@ struct _ClutterTouchpadSwipeEvent
   gfloat dy;
 };
 
+struct _ClutterPadButtonEvent
+{
+  ClutterEventType type;
+  guint32 time;
+  ClutterEventFlags flags;
+  ClutterStage *stage;
+  ClutterActor *source;
+
+  guint32 button;
+  guint32 group;
+  ClutterInputDevice *device;
+};
+
+struct _ClutterPadStripEvent
+{
+  ClutterEventType type;
+  guint32 time;
+  ClutterEventFlags flags;
+  ClutterStage *stage;
+  ClutterActor *source;
+
+  ClutterInputDevice *device;
+  ClutterInputDevicePadSource strip_source;
+  guint32 strip_number;
+  guint32 group;
+  gdouble value;
+};
+
+struct _ClutterPadRingEvent
+{
+  ClutterEventType type;
+  guint32 time;
+  ClutterEventFlags flags;
+  ClutterStage *stage;
+  ClutterActor *source;
+
+  ClutterInputDevice *device;
+  ClutterInputDevicePadSource ring_source;
+  guint32 ring_number;
+  guint32 group;
+  gdouble angle;
+};
+
 /**
  * ClutterEvent:
  *
@@ -516,6 +562,9 @@ union _ClutterEvent
   ClutterTouchpadPinchEvent touchpad_pinch;
   ClutterTouchpadSwipeEvent touchpad_swipe;
   ClutterProximityEvent proximity;
+  ClutterPadButtonEvent pad_button;
+  ClutterPadStripEvent pad_strip;
+  ClutterPadRingEvent pad_ring;
 };
 
 /**

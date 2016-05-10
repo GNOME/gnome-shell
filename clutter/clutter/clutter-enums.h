@@ -1522,6 +1522,11 @@ typedef enum {
   CLUTTER_INPUT_DEVICE_TOOL_LENS
 } ClutterInputDeviceToolType;
 
+typedef enum {
+  CLUTTER_INPUT_DEVICE_PAD_SOURCE_UNKNOWN,
+  CLUTTER_INPUT_DEVICE_PAD_SOURCE_FINGER,
+} ClutterInputDevicePadSource;
+
 G_END_DECLS
 
 #endif /* __CLUTTER_ENUMS_H__ */
