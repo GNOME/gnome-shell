@@ -411,6 +411,8 @@ meta_wayland_tablet_tool_free (MetaWaylandTabletTool *tool)
   wl_resource_for_each_safe (resource, next, &tool->resource_list)
     {
       zwp_tablet_tool_v1_send_removed (resource);
+      wl_list_remove (wl_resource_get_link (resource));
+      wl_list_init (wl_resource_get_link (resource));
     }
 
   g_slice_free (MetaWaylandTabletTool, tool);

@@ -192,6 +192,14 @@ meta_wayland_tablet_seat_new (MetaWaylandTabletManager *manager)
 void
 meta_wayland_tablet_seat_free (MetaWaylandTabletSeat *tablet_seat)
 {
+  struct wl_resource *resource, *next;
+
+  wl_resource_for_each_safe (resource, next, &tablet_seat->resource_list)
+    {
+      wl_list_remove (wl_resource_get_link (resource));
+      wl_list_init (wl_resource_get_link (resource));
+    }
+
   g_signal_handlers_disconnect_by_data (tablet_seat->device_manager,
                                         tablet_seat);
   g_hash_table_destroy (tablet_seat->tablets);
