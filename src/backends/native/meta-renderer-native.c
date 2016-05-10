@@ -67,6 +67,14 @@ struct _MetaRendererNative
   struct gbm_device *gbm;
   CoglClosure *swap_notify_idle;
   CoglBool page_flips_not_supported;
+
+  GList *crtcs;
+
+  int width, height;
+  CoglBool pending_set_crtc;
+  struct gbm_surface *dummy_gbm_surface;
+
+  CoglOnscreen *onscreen;
 };
 
 static void
@@ -80,17 +88,6 @@ G_DEFINE_TYPE_WITH_CODE (MetaRendererNative,
 
 static const CoglWinsysEGLVtable _cogl_winsys_egl_vtable;
 static const CoglWinsysVtable *parent_vtable;
-
-typedef struct _CoglDisplayKMS
-{
-  GList *crtcs;
-
-  int width, height;
-  CoglBool pending_set_crtc;
-  struct gbm_surface *dummy_gbm_surface;
-
-  CoglOnscreen *onscreen;
-} CoglDisplayKMS;
 
 typedef struct _CoglFlipKMS
 {
@@ -335,13 +332,11 @@ fail:
 static void
 setup_crtc_modes (CoglDisplay *display, int fb_id)
 {
-  CoglDisplayEGL *egl_display = display->winsys;
-  CoglDisplayKMS *kms_display = egl_display->platform;
   CoglRendererEGL *egl_renderer = display->renderer->winsys;
   MetaRendererNative *renderer_native = egl_renderer->platform;
   GList *l;
 
-  for (l = kms_display->crtcs; l; l = l->next)
+  for (l = renderer_native->crtcs; l; l = l->next)
     {
       CoglKmsCrtc *crtc = l->data;
 
@@ -359,13 +354,11 @@ static void
 flip_all_crtcs (CoglDisplay *display, CoglFlipKMS *flip, int fb_id)
 {
   CoglDisplayEGL *egl_display = display->winsys;
-  CoglDisplayKMS *kms_display = egl_display->platform;
-  CoglRendererEGL *egl_renderer = display->renderer->winsys;
-  MetaRendererNative *renderer_native = egl_renderer->platform;
+  MetaRendererNative *renderer_native = egl_display->platform;
   GList *l;
   gboolean needs_flip = FALSE;
 
-  for (l = kms_display->crtcs; l; l = l->next)
+  for (l = renderer_native->crtcs; l; l = l->next)
     {
       CoglKmsCrtc *crtc = l->data;
       int ret = 0;
@@ -421,17 +414,15 @@ _cogl_winsys_egl_display_setup (CoglDisplay *display,
                                 CoglError **error)
 {
   CoglDisplayEGL *egl_display = display->winsys;
-  CoglDisplayKMS *kms_display;
   CoglRendererEGL *egl_renderer = display->renderer->winsys;
   MetaRendererNative *renderer_native = egl_renderer->platform;
 
-  kms_display = g_slice_new0 (CoglDisplayKMS);
-  egl_display->platform = kms_display;
+  egl_display->platform = renderer_native;
 
   /* Force a full modeset / drmModeSetCrtc on
    * the first swap buffers call.
    */
-  kms_display->pending_set_crtc = TRUE;
+  renderer_native->pending_set_crtc = TRUE;
 
   return TRUE;
 }
@@ -439,12 +430,6 @@ _cogl_winsys_egl_display_setup (CoglDisplay *display,
 static void
 _cogl_winsys_egl_display_destroy (CoglDisplay *display)
 {
-  CoglDisplayEGL *egl_display = display->winsys;
-  CoglDisplayKMS *kms_display = egl_display->platform;
-
-  g_list_free_full (kms_display->crtcs, (GDestroyNotify) crtc_free);
-
-  g_slice_free (CoglDisplayKMS, egl_display->platform);
 }
 
 static CoglBool
@@ -452,7 +437,6 @@ _cogl_winsys_egl_context_created (CoglDisplay *display,
                                   CoglError **error)
 {
   CoglDisplayEGL *egl_display = display->winsys;
-  CoglDisplayKMS *kms_display = egl_display->platform;
   CoglRenderer *renderer = display->renderer;
   CoglRendererEGL *egl_renderer = renderer->winsys;
   MetaRendererNative *renderer_native = egl_renderer->platform;
@@ -460,12 +444,12 @@ _cogl_winsys_egl_context_created (CoglDisplay *display,
   if ((egl_renderer->private_features &
        COGL_EGL_WINSYS_FEATURE_SURFACELESS_CONTEXT) == 0)
     {
-      kms_display->dummy_gbm_surface =
+      renderer_native->dummy_gbm_surface =
         gbm_surface_create (renderer_native->gbm,
                             16, 16,
                             GBM_FORMAT_XRGB8888,
                             GBM_BO_USE_RENDERING);
-      if (!kms_display->dummy_gbm_surface)
+      if (!renderer_native->dummy_gbm_surface)
         {
           _cogl_set_error (error, COGL_WINSYS_ERROR,
                            COGL_WINSYS_ERROR_CREATE_CONTEXT,
@@ -477,7 +461,7 @@ _cogl_winsys_egl_context_created (CoglDisplay *display,
         eglCreateWindowSurface (egl_renderer->edpy,
                                 egl_display->egl_config,
                                 (EGLNativeWindowType)
-                                kms_display->dummy_gbm_surface,
+                                renderer_native->dummy_gbm_surface,
                                 NULL);
       if (egl_display->dummy_surface == EGL_NO_SURFACE)
         {
@@ -506,7 +490,6 @@ static void
 _cogl_winsys_egl_cleanup_context (CoglDisplay *display)
 {
   CoglDisplayEGL *egl_display = display->winsys;
-  CoglDisplayKMS *kms_display = egl_display->platform;
   CoglRenderer *renderer = display->renderer;
   CoglRendererEGL *egl_renderer = renderer->winsys;
 
@@ -514,12 +497,6 @@ _cogl_winsys_egl_cleanup_context (CoglDisplay *display)
     {
       eglDestroySurface (egl_renderer->edpy, egl_display->dummy_surface);
       egl_display->dummy_surface = EGL_NO_SURFACE;
-    }
-
-  if (kms_display->dummy_gbm_surface != NULL)
-    {
-      gbm_surface_destroy (kms_display->dummy_gbm_surface);
-      kms_display->dummy_gbm_surface = NULL;
     }
 }
 
@@ -529,8 +506,6 @@ _cogl_winsys_onscreen_swap_buffers_with_damage (CoglOnscreen *onscreen,
                                                 int n_rectangles)
 {
   CoglContext *context = COGL_FRAMEBUFFER (onscreen)->context;
-  CoglDisplayEGL *egl_display = context->display->winsys;
-  CoglDisplayKMS *kms_display = egl_display->platform;
   CoglRenderer *renderer = context->display->renderer;
   CoglRendererEGL *egl_renderer = renderer->winsys;
   MetaRendererNative *renderer_native = egl_renderer->platform;
@@ -545,12 +520,15 @@ _cogl_winsys_onscreen_swap_buffers_with_damage (CoglOnscreen *onscreen,
 
   if (kms_onscreen->pending_egl_surface)
     {
+      CoglFramebuffer *fb = COGL_FRAMEBUFFER (renderer_native->onscreen);
+
       eglDestroySurface (egl_renderer->edpy, egl_onscreen->egl_surface);
       egl_onscreen->egl_surface = kms_onscreen->pending_egl_surface;
       kms_onscreen->pending_egl_surface = NULL;
 
-      _cogl_framebuffer_winsys_update_size (COGL_FRAMEBUFFER (kms_display->onscreen),
-                                            kms_display->width, kms_display->height);
+      _cogl_framebuffer_winsys_update_size (fb,
+                                            renderer_native->width,
+                                            renderer_native->height);
       context->current_draw_buffer_changes |= COGL_FRAMEBUFFER_STATE_BIND;
     }
   parent_vtable->onscreen_swap_buffers_with_damage (onscreen,
@@ -572,8 +550,8 @@ _cogl_winsys_onscreen_swap_buffers_with_damage (CoglOnscreen *onscreen,
   handle = gbm_bo_get_handle (kms_onscreen->next_bo).u32;
 
   if (drmModeAddFB (renderer_native->kms_fd,
-                    kms_display->width,
-                    kms_display->height,
+                    renderer_native->width,
+                    renderer_native->height,
                     24, /* depth */
                     32, /* bpp */
                     stride,
@@ -590,10 +568,10 @@ _cogl_winsys_onscreen_swap_buffers_with_damage (CoglOnscreen *onscreen,
 
   /* If this is the first framebuffer to be presented then we now setup the
    * crtc modes, else we flip from the previous buffer */
-  if (kms_display->pending_set_crtc)
+  if (renderer_native->pending_set_crtc)
     {
       setup_crtc_modes (context->display, kms_onscreen->next_fb_id);
-      kms_display->pending_set_crtc = FALSE;
+      renderer_native->pending_set_crtc = FALSE;
     }
 
   flip = g_slice_new0 (CoglFlipKMS);
@@ -652,7 +630,6 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
   CoglContext *context = framebuffer->context;
   CoglDisplay *display = context->display;
   CoglDisplayEGL *egl_display = display->winsys;
-  CoglDisplayKMS *kms_display = egl_display->platform;
   CoglRenderer *renderer = display->renderer;
   CoglRendererEGL *egl_renderer = renderer->winsys;
   MetaRendererNative *renderer_native = egl_renderer->platform;
@@ -661,7 +638,7 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
 
   _COGL_RETURN_VAL_IF_FAIL (egl_display->egl_context, FALSE);
 
-  if (kms_display->onscreen)
+  if (renderer_native->onscreen)
     {
       _cogl_set_error (error, COGL_WINSYS_ERROR,
                        COGL_WINSYS_ERROR_CREATE_ONSCREEN,
@@ -669,7 +646,7 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
       return FALSE;
     }
 
-  kms_display->onscreen = onscreen;
+  renderer_native->onscreen = onscreen;
 
   onscreen->winsys = g_slice_new0 (CoglOnscreenEGL);
   egl_onscreen = onscreen->winsys;
@@ -682,14 +659,14 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
    * is called. In that case, defer creating the surface
    * until then.
    */
-  if (kms_display->width == 0 ||
-      kms_display->height == 0)
+  if (renderer_native->width == 0 ||
+      renderer_native->height == 0)
     return TRUE;
 
   kms_onscreen->surface =
     gbm_surface_create (renderer_native->gbm,
-                        kms_display->width,
-                        kms_display->height,
+                        renderer_native->width,
+                        renderer_native->height,
                         GBM_FORMAT_XRGB8888,
                         GBM_BO_USE_SCANOUT |
                         GBM_BO_USE_RENDERING);
@@ -716,8 +693,8 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
     }
 
   _cogl_framebuffer_winsys_update_size (framebuffer,
-                                        kms_display->width,
-                                        kms_display->height);
+                                        renderer_native->width,
+                                        renderer_native->height);
 
   return TRUE;
 }
@@ -729,7 +706,7 @@ _cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
   CoglContext *context = framebuffer->context;
   CoglDisplay *display = context->display;
   CoglDisplayEGL *egl_display = display->winsys;
-  CoglDisplayKMS *kms_display = egl_display->platform;
+  MetaRendererNative *renderer_native = egl_display->platform;
   CoglRenderer *renderer = context->display->renderer;
   CoglRendererEGL *egl_renderer = renderer->winsys;
   CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
@@ -739,7 +716,7 @@ _cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
   if (egl_onscreen == NULL)
     return;
 
-  kms_display->onscreen = NULL;
+  renderer_native->onscreen = NULL;
 
   kms_onscreen = egl_onscreen->platform;
 
@@ -790,16 +767,7 @@ meta_renderer_native_get_kms_fd (MetaRendererNative *renderer_native)
 void
 meta_renderer_native_queue_modes_reset (MetaRendererNative *renderer_native)
 {
-  ClutterBackend *clutter_backend = clutter_get_default_backend ();
-  CoglContext *cogl_context = clutter_backend_get_cogl_context (clutter_backend);
-  CoglDisplay *cogl_display = cogl_context_get_display (cogl_context);
-
-  if (cogl_display->setup)
-    {
-      CoglDisplayEGL *egl_display = cogl_display->winsys;
-      CoglDisplayKMS *kms_display = egl_display->platform;
-      kms_display->pending_set_crtc = TRUE;
-    }
+  renderer_native->pending_set_crtc = TRUE;
 }
 
 gboolean
@@ -814,17 +782,16 @@ meta_renderer_native_set_layout (MetaRendererNative *renderer_native,
   CoglContext *cogl_context = clutter_backend_get_cogl_context (clutter_backend);
   CoglDisplay *cogl_display = cogl_context_get_display (cogl_context);
   CoglDisplayEGL *egl_display = cogl_display->winsys;
-  CoglDisplayKMS *kms_display = egl_display->platform;
   CoglRenderer *renderer = cogl_display->renderer;
   CoglRendererEGL *egl_renderer = renderer->winsys;
   GList *crtc_list;
   int i;
 
-  if ((width != kms_display->width ||
-       height != kms_display->height) &&
-      kms_display->onscreen)
+  if ((width != renderer_native->width ||
+       height != renderer_native->height) &&
+      renderer_native->onscreen)
     {
-      CoglOnscreenEGL *egl_onscreen = kms_display->onscreen->winsys;
+      CoglOnscreenEGL *egl_onscreen = renderer_native->onscreen->winsys;
       CoglOnscreenKMS *kms_onscreen = egl_onscreen->platform;
       struct gbm_surface *new_surface;
       EGLSurface new_egl_surface;
@@ -875,7 +842,7 @@ meta_renderer_native_set_layout (MetaRendererNative *renderer_native,
         }
       else
         {
-          CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (kms_display->onscreen);
+          CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (renderer_native->onscreen);
 
           kms_onscreen->surface = new_surface;
           egl_onscreen->egl_surface = new_egl_surface;
@@ -884,10 +851,10 @@ meta_renderer_native_set_layout (MetaRendererNative *renderer_native,
         }
     }
 
-  kms_display->width = width;
-  kms_display->height = height;
+  renderer_native->width = width;
+  renderer_native->height = height;
 
-  g_list_free_full (kms_display->crtcs, (GDestroyNotify) crtc_free);
+  g_list_free_full (renderer_native->crtcs, (GDestroyNotify) crtc_free);
 
   crtc_list = NULL;
   for (i = 0; i < n_crtcs; i++)
@@ -895,9 +862,9 @@ meta_renderer_native_set_layout (MetaRendererNative *renderer_native,
       crtc_list = g_list_prepend (crtc_list, crtc_copy (crtcs[i]));
     }
   crtc_list = g_list_reverse (crtc_list);
-  kms_display->crtcs = crtc_list;
+  renderer_native->crtcs = crtc_list;
 
-  kms_display->pending_set_crtc = TRUE;
+  renderer_native->pending_set_crtc = TRUE;
 
   return TRUE;
 }
@@ -907,14 +874,9 @@ meta_renderer_native_set_ignore_crtc (MetaRendererNative *renderer_native,
                                       uint32_t            id,
                                       gboolean            ignore)
 {
-  ClutterBackend *clutter_backend = clutter_get_default_backend ();
-  CoglContext *cogl_context = clutter_backend_get_cogl_context (clutter_backend);
-  CoglDisplay *cogl_display = cogl_context_get_display (cogl_context);
-  CoglDisplayEGL *egl_display = cogl_display->winsys;
-  CoglDisplayKMS *kms_display = egl_display->platform;
   GList *l;
 
-  for (l = kms_display->crtcs; l; l = l->next)
+  for (l = renderer_native->crtcs; l; l = l->next)
     {
       CoglKmsCrtc *crtc = l->data;
       if (crtc->id == id)
@@ -1014,6 +976,9 @@ meta_renderer_native_finalize (GObject *object)
 {
   MetaRendererNative *renderer_native = META_RENDERER_NATIVE (object);
 
+  g_list_free_full (renderer_native->crtcs, (GDestroyNotify) crtc_free);
+
+  g_clear_pointer (&renderer_native->dummy_gbm_surface, gbm_surface_destroy);
   g_clear_pointer (&renderer_native->gbm, gbm_device_destroy);
 
   G_OBJECT_CLASS (meta_renderer_native_parent_class)->finalize (object);
@@ -1025,18 +990,33 @@ meta_renderer_native_initable_init (GInitable     *initable,
                                     GError       **error)
 {
   MetaRendererNative *renderer_native = META_RENDERER_NATIVE (initable);
+  drmModeRes *resources;
 
   renderer_native->gbm = gbm_create_device (renderer_native->kms_fd);
   if (!renderer_native->gbm)
     {
-      g_set_error (error,
-                   G_IO_ERROR,
+      g_set_error (error, G_IO_ERROR,
                    G_IO_ERROR_FAILED,
                    "Failed to create gbm device");
-      return FALSE;
+      goto err;
+    }
+
+  resources = drmModeGetResources (renderer_native->kms_fd);
+  if (!resources)
+    {
+      g_set_error (error, G_IO_ERROR,
+                   G_IO_ERROR_FAILED,
+                   "drmModeGetResources failed");
+      goto err_resources;
     }
 
   return TRUE;
+
+err_resources:
+  g_clear_pointer (&renderer_native->gbm, gbm_device_destroy);
+
+err:
+  return FALSE;
 }
 
 static void
