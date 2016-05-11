@@ -47,6 +47,7 @@
 #include <xf86drm.h>
 
 #include "backends/meta-backend-private.h"
+#include "backends/native/meta-monitor-manager-kms.h"
 #include "backends/native/meta-renderer-native.h"
 #include "cogl/cogl.h"
 
@@ -332,22 +333,13 @@ fail:
 static void
 setup_crtc_modes (CoglDisplay *display, int fb_id)
 {
-  CoglRendererEGL *egl_renderer = display->renderer->winsys;
-  MetaRendererNative *renderer_native = egl_renderer->platform;
-  GList *l;
+  MetaBackend *backend = meta_get_backend ();
+  MetaMonitorManager *monitor_manager =
+    meta_backend_get_monitor_manager (backend);
+  MetaMonitorManagerKms *monitor_manager_kms =
+    META_MONITOR_MANAGER_KMS (monitor_manager);
 
-  for (l = renderer_native->crtcs; l; l = l->next)
-    {
-      CoglKmsCrtc *crtc = l->data;
-
-      int ret = drmModeSetCrtc (renderer_native->kms_fd,
-                                crtc->id,
-                                fb_id, crtc->x, crtc->y,
-                                crtc->connectors, crtc->count,
-                                crtc->count ? &crtc->mode : NULL);
-      if (ret)
-        g_warning ("Failed to set crtc mode %s: %m", crtc->mode.name);
-    }
+  meta_monitor_manager_kms_apply_crtc_modes (monitor_manager_kms, fb_id);
 }
 
 static void
@@ -363,7 +355,7 @@ flip_all_crtcs (CoglDisplay *display, CoglFlipKMS *flip, int fb_id)
       CoglKmsCrtc *crtc = l->data;
       int ret = 0;
 
-      if (crtc->count == 0 || crtc->ignore)
+      if (!crtc->connected || crtc->ignore)
         continue;
 
       needs_flip = TRUE;
@@ -392,7 +384,6 @@ flip_all_crtcs (CoglDisplay *display, CoglFlipKMS *flip, int fb_id)
 static void
 crtc_free (CoglKmsCrtc *crtc)
 {
-  g_free (crtc->connectors);
   g_slice_free (CoglKmsCrtc, crtc);
 }
 
@@ -404,7 +395,6 @@ crtc_copy (CoglKmsCrtc *from)
   new = g_slice_new (CoglKmsCrtc);
 
   *new = *from;
-  new->connectors = g_memdup (from->connectors, from->count * sizeof(uint32_t));
 
   return new;
 }

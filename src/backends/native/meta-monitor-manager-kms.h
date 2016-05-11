@@ -37,4 +37,7 @@ typedef struct _MetaMonitorManagerKms         MetaMonitorManagerKms;
 
 GType meta_monitor_manager_kms_get_type (void);
 
+void meta_monitor_manager_kms_apply_crtc_modes (MetaMonitorManagerKms *manager_kms,
+                                                uint32_t               fb_id);
+
 #endif /* META_MONITOR_MANAGER_KMS_H */

@@ -1008,7 +1008,6 @@ meta_monitor_manager_kms_set_power_save_mode (MetaMonitorManager *manager,
 static void
 crtc_free (CoglKmsCrtc *crtc)
 {
-  g_free (crtc->connectors);
   g_slice_free (CoglKmsCrtc, crtc);
 }
 
@@ -1087,12 +1086,6 @@ meta_monitor_manager_kms_apply_configuration (MetaMonitorManager *manager,
       if (crtc_info->mode == NULL)
         {
           cogl_crtc->id = crtc->crtc_id;
-          cogl_crtc->x = 0;
-          cogl_crtc->y = 0;
-          cogl_crtc->count = 0;
-          memset (&cogl_crtc->mode, 0, sizeof (drmModeModeInfo));
-          cogl_crtc->connectors = NULL;
-          cogl_crtc->count = 0;
 
           crtc->rect.x = 0;
           crtc->rect.y = 0;
@@ -1109,11 +1102,11 @@ meta_monitor_manager_kms_apply_configuration (MetaMonitorManager *manager,
 
           mode = crtc_info->mode;
 
+          n_connectors = crtc_info->outputs->len;
+          connectors = g_new (uint32_t, n_connectors);
+
           cogl_crtc->id = crtc->crtc_id;
-          cogl_crtc->x = crtc_info->x;
-          cogl_crtc->y = crtc_info->y;
-          cogl_crtc->count = n_connectors = crtc_info->outputs->len;
-          cogl_crtc->connectors = connectors = g_new (uint32_t, n_connectors);
+          cogl_crtc->connected = n_connectors > 0;
 
           for (j = 0; j < n_connectors; j++)
             {
@@ -1124,9 +1117,6 @@ meta_monitor_manager_kms_apply_configuration (MetaMonitorManager *manager,
               output->is_dirty = TRUE;
               output->crtc = crtc;
             }
-
-          memcpy (&cogl_crtc->mode, crtc_info->mode->driver_private,
-                  sizeof (drmModeModeInfo));
 
           if (meta_monitor_transform_is_rotated (crtc_info->transform))
             {
@@ -1177,12 +1167,6 @@ meta_monitor_manager_kms_apply_configuration (MetaMonitorManager *manager,
       g_ptr_array_add (cogl_crtcs, cogl_crtc);
 
       cogl_crtc->id = crtc->crtc_id;
-      cogl_crtc->x = 0;
-      cogl_crtc->y = 0;
-      cogl_crtc->count = 0;
-      memset (&cogl_crtc->mode, 0, sizeof (drmModeModeInfo));
-      cogl_crtc->connectors = NULL;
-      cogl_crtc->count = 0;
 
       crtc->rect.x = 0;
       crtc->rect.y = 0;
@@ -1312,6 +1296,72 @@ meta_monitor_manager_kms_init (MetaMonitorManagerKms *manager_kms)
                     G_CALLBACK (on_uevent), manager_kms);
 
   manager_kms->desktop_settings = g_settings_new ("org.gnome.desktop.interface");
+}
+
+static void
+get_crtc_connectors (MetaMonitorManager *manager,
+                     MetaCRTC           *crtc,
+                     uint32_t          **connectors,
+                     unsigned int       *n_connectors)
+{
+  GArray *connectors_array = NULL;
+  unsigned int i;
+
+  for (i = 0; i < manager->n_outputs; i++)
+    {
+      MetaOutput *output = &manager->outputs[i];
+
+      if (output->crtc == crtc)
+        {
+          if (!connectors_array)
+            connectors_array = g_array_new (FALSE, FALSE, sizeof (uint32_t));
+          g_array_append_val (connectors_array, output->winsys_id);
+        }
+    }
+
+  if (connectors_array)
+    {
+      *connectors = (uint32_t *) connectors_array->data;
+      *n_connectors = connectors_array->len;
+    }
+  else
+    {
+      *connectors = NULL;
+      *n_connectors = 0;
+    }
+}
+
+void
+meta_monitor_manager_kms_apply_crtc_modes (MetaMonitorManagerKms *manager_kms,
+                                           uint32_t               fb_id)
+{
+  MetaMonitorManager *manager = META_MONITOR_MANAGER (manager_kms);
+  unsigned int i;
+
+  for (i = 0; i < manager->n_crtcs; i++)
+    {
+      MetaCRTC *crtc = &manager->crtcs[i];
+      uint32_t *connectors;
+      unsigned int n_connectors;
+      drmModeModeInfo *mode;
+
+      get_crtc_connectors (manager, crtc, &connectors, &n_connectors);
+
+      if (connectors)
+        mode = crtc->current_mode->driver_private;
+      else
+        mode = NULL;
+
+      if (drmModeSetCrtc (manager_kms->fd,
+                          crtc->crtc_id,
+                          fb_id,
+                          crtc->rect.x, crtc->rect.y,
+                          connectors, n_connectors,
+                          mode) != 0)
+        g_warning ("Failed to set CRTC mode %s: %m", crtc->current_mode->name);
+
+      g_free (connectors);
+    }
 }
 
 static void
