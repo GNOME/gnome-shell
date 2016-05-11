@@ -326,6 +326,10 @@ gboolean
 meta_parse_accelerator (const char   *accel,
                         MetaKeyCombo *combo)
 {
+  g_return_val_if_fail (combo != NULL, FALSE);
+
+  *combo = (MetaKeyCombo) { 0 };
+
   if (!accel[0] || strcmp (accel, "disabled") == 0)
     return TRUE;
 
@@ -336,7 +340,11 @@ gboolean
 meta_parse_modifier (const char          *accel,
                      MetaVirtualModifier *mask)
 {
-  MetaKeyCombo combo;
+  MetaKeyCombo combo = { 0 };
+
+  g_return_val_if_fail (mask != NULL, FALSE);
+
+  *mask = 0;
 
   if (accel == NULL || !accel[0] || strcmp (accel, "disabled") == 0)
     return TRUE;

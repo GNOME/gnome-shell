@@ -1379,8 +1379,8 @@ meta_display_grab_accelerator (MetaDisplay *display,
   MetaKeyBindingManager *keys = &display->key_binding_manager;
   MetaKeyBinding *binding;
   MetaKeyGrab *grab;
-  MetaKeyCombo combo;
-  MetaResolvedKeyCombo resolved_combo;
+  MetaKeyCombo combo = { 0 };
+  MetaResolvedKeyCombo resolved_combo = { 0 };
 
   if (!meta_parse_accelerator (accelerator, &combo))
     {
