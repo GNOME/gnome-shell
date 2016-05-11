@@ -69,4 +69,9 @@ void                   meta_wayland_tablet_seat_notify_tool         (MetaWayland
                                                                      MetaWaylandTabletTool *tool,
                                                                      struct wl_client      *client);
 
+MetaWaylandTablet     *meta_wayland_tablet_seat_lookup_paired_tablet (MetaWaylandTabletSeat *tablet_seat,
+                                                                      MetaWaylandTabletPad  *pad);
+GList                 *meta_wayland_tablet_seat_lookup_paired_pads   (MetaWaylandTabletSeat *tablet_seat,
+                                                                      MetaWaylandTablet     *tablet);
+
 #endif /* META_WAYLAND_TABLET_SEAT_H */
