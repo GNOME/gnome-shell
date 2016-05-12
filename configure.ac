@@ -119,7 +119,7 @@ PKG_CHECK_MODULES(SHELL_PERF_HELPER, gtk+-3.0 gio-2.0)
 PKG_CHECK_MODULES(SHELL_HOTPLUG_SNIFFER, gio-2.0 gdk-pixbuf-2.0)
 PKG_CHECK_MODULES(TRAY, mutter-clutter-1.0 gtk+-3.0)
 PKG_CHECK_MODULES(GVC, libpulse >= $PULSE_MIN_VERS libpulse-mainloop-glib gobject-2.0)
-PKG_CHECK_MODULES(DESKTOP_SCHEMAS, gsettings-desktop-schemas >= 3.19.2)
+PKG_CHECK_MODULES(DESKTOP_SCHEMAS, gsettings-desktop-schemas >= 3.21.2)
 
 AC_ARG_ENABLE(browser-plugin,
               [AS_HELP_STRING([--enable-browser-plugin],

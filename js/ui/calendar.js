@@ -345,7 +345,7 @@ const Calendar = new Lang.Class({
 
     _init: function() {
         this._weekStart = Shell.util_get_week_start();
-        this._settings = new Gio.Settings({ schema_id: 'org.gnome.shell.calendar' });
+        this._settings = new Gio.Settings({ schema_id: 'org.gnome.desktop.calendar' });
 
         this._settings.connect('changed::' + SHOW_WEEKDATE_KEY, Lang.bind(this, this._onSettingsChange));
         this._useWeekdate = this._settings.get_boolean(SHOW_WEEKDATE_KEY);

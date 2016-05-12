@@ -82,20 +82,8 @@
         adapter is ever seen not to have devices associated to it.
       </_description>
     </key>
-    <child name="calendar" schema="org.gnome.shell.calendar"/>
     <child name="keybindings" schema="org.gnome.shell.keybindings"/>
     <child name="keyboard" schema="org.gnome.shell.keyboard"/>
-  </schema>
-
-  <schema id="org.gnome.shell.calendar" path="/org/gnome/shell/calendar/"
-          gettext-domain="@GETTEXT_PACKAGE@">
-    <key name="show-weekdate" type="b">
-      <default>false</default>
-      <_summary>Show the week date in the calendar</_summary>
-      <_description>
-        If true, display the ISO week date in the calendar.
-      </_description>
-      </key>
   </schema>
 
   <schema id="org.gnome.shell.keybindings" path="/org/gnome/shell/keybindings/"
