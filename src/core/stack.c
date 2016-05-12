@@ -1038,7 +1038,7 @@ stack_sync_to_xserver (MetaStack *stack)
   GArray *x11_stacked;
   GArray *all_root_children_stacked; /* wayland OR x11 */
   GList *tmp;
-  GArray *x11_hidden_stack_ids;
+  GArray *hidden_stack_ids;
 
   /* Bail out if frozen */
   if (stack->freeze_count > 0)
@@ -1053,7 +1053,7 @@ stack_sync_to_xserver (MetaStack *stack)
   x11_stacked = g_array_new (FALSE, FALSE, sizeof (Window));
 
   all_root_children_stacked = g_array_new (FALSE, FALSE, sizeof (guint64));
-  x11_hidden_stack_ids = g_array_new (FALSE, FALSE, sizeof (guint64));
+  hidden_stack_ids = g_array_new (FALSE, FALSE, sizeof (guint64));
 
   meta_topic (META_DEBUG_STACK, "Bottom to top: ");
   meta_push_no_msg_prefix ();
@@ -1087,8 +1087,7 @@ stack_sync_to_xserver (MetaStack *stack)
        * the screens fullscreen guard_window. */
       if (w->hidden)
 	{
-          if (w->client_type == META_WINDOW_CLIENT_TYPE_X11)
-            g_array_append_val (x11_hidden_stack_ids, top_level_window);
+          g_array_append_val (hidden_stack_ids, stack_id);
 	  continue;
 	}
 
@@ -1101,7 +1100,7 @@ stack_sync_to_xserver (MetaStack *stack)
   /* The screen guard window sits above all hidden windows and acts as
    * a barrier to input reaching these windows. */
   guint64 guard_window_id = stack->screen->guard_window;
-  g_array_append_val (x11_hidden_stack_ids, guard_window_id);
+  g_array_append_val (hidden_stack_ids, guard_window_id);
 
   /* Sync to server */
 
@@ -1112,8 +1111,8 @@ stack_sync_to_xserver (MetaStack *stack)
                                       (guint64 *)all_root_children_stacked->data,
                                       all_root_children_stacked->len);
   meta_stack_tracker_restack_at_bottom (stack->screen->stack_tracker,
-                                        (guint64 *)x11_hidden_stack_ids->data,
-                                        x11_hidden_stack_ids->len);
+                                        (guint64 *)hidden_stack_ids->data,
+                                        hidden_stack_ids->len);
 
   /* Sync _NET_CLIENT_LIST and _NET_CLIENT_LIST_STACKING */
 
@@ -1133,7 +1132,7 @@ stack_sync_to_xserver (MetaStack *stack)
                    x11_stacked->len);
 
   g_array_free (x11_stacked, TRUE);
-  g_array_free (x11_hidden_stack_ids, TRUE);
+  g_array_free (hidden_stack_ids, TRUE);
   g_array_free (all_root_children_stacked, TRUE);
 }
 
