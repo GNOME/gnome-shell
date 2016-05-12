@@ -32,6 +32,7 @@
 #include <stdlib.h>
 #include <clutter/clutter.h>
 
+#include <drm.h>
 #include <errno.h>
 #include <sys/ioctl.h>
 #include <sys/mman.h>
@@ -75,11 +76,28 @@ typedef struct {
   uint32_t rotation_map[ALL_TRANSFORMS];
 } MetaCRTCKms;
 
+typedef struct
+{
+  int pending;
+
+  MetaKmsFlipCallback callback;
+  void *user_data;
+} MetaKmsFlipClosure;
+
+typedef struct
+{
+  GSource source;
+
+  gpointer fd_tag;
+  MetaMonitorManagerKms *manager_kms;
+} MetaKmsSource;
+
 struct _MetaMonitorManagerKms
 {
   MetaMonitorManager parent_instance;
 
   int fd;
+  MetaKmsSource *source;
 
   drmModeConnector **connectors;
   unsigned int       n_connectors;
@@ -87,6 +105,8 @@ struct _MetaMonitorManagerKms
   GUdevClient *udev;
 
   GSettings *desktop_settings;
+
+  gboolean page_flips_not_supported;
 };
 
 struct _MetaMonitorManagerKmsClass
@@ -954,8 +974,6 @@ meta_monitor_manager_kms_set_power_save_mode (MetaMonitorManager *manager,
                                               MetaPowerSave       mode)
 {
   MetaMonitorManagerKms *manager_kms = META_MONITOR_MANAGER_KMS (manager);
-  MetaBackend *backend;
-  MetaRenderer *renderer;
   uint64_t state;
   unsigned i;
 
@@ -995,20 +1013,6 @@ meta_monitor_manager_kms_set_power_save_mode (MetaMonitorManager *manager,
                           meta_output->name, strerror (errno));
         }
     }
-
-  backend = meta_get_backend ();
-  renderer = meta_backend_get_renderer (backend);
-
-  for (i = 0; i < manager->n_crtcs; i++)
-    meta_renderer_native_set_ignore_crtc (META_RENDERER_NATIVE (renderer),
-                                          manager->crtcs[i].crtc_id,
-                                          mode != META_POWER_SAVE_ON);
-}
-
-static void
-crtc_free (CoglKmsCrtc *crtc)
-{
-  g_slice_free (CoglKmsCrtc, crtc);
 }
 
 static void
@@ -1064,29 +1068,21 @@ meta_monitor_manager_kms_apply_configuration (MetaMonitorManager *manager,
   MetaBackend *backend;
   MetaRenderer *renderer;
   unsigned i;
-  GPtrArray *cogl_crtcs;
   int screen_width, screen_height;
   gboolean ok;
   GError *error;
 
-  cogl_crtcs = g_ptr_array_new_full (manager->n_crtcs, (GDestroyNotify)crtc_free);
   screen_width = 0; screen_height = 0;
   for (i = 0; i < n_crtcs; i++)
     {
       MetaCRTCInfo *crtc_info = crtcs[i];
       MetaCRTC *crtc = crtc_info->crtc;
       MetaCRTCKms *crtc_kms = crtc->driver_private;
-      CoglKmsCrtc *cogl_crtc;
 
       crtc->is_dirty = TRUE;
 
-      cogl_crtc = g_slice_new0 (CoglKmsCrtc);
-      g_ptr_array_add (cogl_crtcs, cogl_crtc);
-
       if (crtc_info->mode == NULL)
         {
-          cogl_crtc->id = crtc->crtc_id;
-
           crtc->rect.x = 0;
           crtc->rect.y = 0;
           crtc->rect.width = 0;
@@ -1096,23 +1092,14 @@ meta_monitor_manager_kms_apply_configuration (MetaMonitorManager *manager,
       else
         {
           MetaMonitorMode *mode;
-          uint32_t *connectors;
-          unsigned int j, n_connectors;
+          unsigned int j;
           int width, height;
 
           mode = crtc_info->mode;
 
-          n_connectors = crtc_info->outputs->len;
-          connectors = g_new (uint32_t, n_connectors);
-
-          cogl_crtc->id = crtc->crtc_id;
-          cogl_crtc->connected = n_connectors > 0;
-
-          for (j = 0; j < n_connectors; j++)
+          for (j = 0; j < crtc_info->outputs->len; j++)
             {
               MetaOutput *output = g_ptr_array_index (crtc_info->outputs, j);
-
-              connectors[j] = output->winsys_id;
 
               output->is_dirty = TRUE;
               output->crtc = crtc;
@@ -1153,7 +1140,6 @@ meta_monitor_manager_kms_apply_configuration (MetaMonitorManager *manager,
   for (i = 0; i < manager->n_crtcs; i++)
     {
       MetaCRTC *crtc = &manager->crtcs[i];
-      CoglKmsCrtc *cogl_crtc;
 
       crtc->logical_monitor = NULL;
 
@@ -1162,11 +1148,6 @@ meta_monitor_manager_kms_apply_configuration (MetaMonitorManager *manager,
           crtc->is_dirty = FALSE;
           continue;
         }
-
-      cogl_crtc = g_slice_new0 (CoglKmsCrtc);
-      g_ptr_array_add (cogl_crtcs, cogl_crtc);
-
-      cogl_crtc->id = crtc->crtc_id;
 
       crtc->rect.x = 0;
       crtc->rect.y = 0;
@@ -1181,11 +1162,7 @@ meta_monitor_manager_kms_apply_configuration (MetaMonitorManager *manager,
   error = NULL;
   ok = meta_renderer_native_set_layout (META_RENDERER_NATIVE (renderer),
                                         screen_width, screen_height,
-                                        (CoglKmsCrtc**)cogl_crtcs->pdata,
-                                        cogl_crtcs->len,
                                         &error);
-  g_ptr_array_unref (cogl_crtcs);
-
   if (!ok)
     {
       meta_warning ("Applying display configuration failed: %s\n", error->message);
@@ -1279,12 +1256,39 @@ on_uevent (GUdevClient *client,
   meta_monitor_manager_on_hotplug (manager);
 }
 
+static gboolean
+kms_event_check (GSource *source)
+{
+  MetaKmsSource *kms_source = (MetaKmsSource *) source;
+
+  return g_source_query_unix_fd (source, kms_source->fd_tag) & G_IO_IN;
+}
+
+static gboolean
+kms_event_dispatch (GSource    *source,
+                    GSourceFunc callback,
+                    gpointer    user_data)
+{
+  MetaKmsSource *kms_source = (MetaKmsSource *) source;
+
+  meta_monitor_manager_kms_wait_for_flip (kms_source->manager_kms);
+
+  return G_SOURCE_CONTINUE;
+}
+
+static GSourceFuncs kms_event_funcs = {
+  NULL,
+  kms_event_check,
+  kms_event_dispatch
+};
+
 static void
 meta_monitor_manager_kms_init (MetaMonitorManagerKms *manager_kms)
 {
   MetaBackend *backend = meta_get_backend ();
   MetaRenderer *renderer = meta_backend_get_renderer (backend);
   MetaRendererNative *renderer_native = META_RENDERER_NATIVE (renderer);
+  GSource *source;
 
   manager_kms->fd = meta_renderer_native_get_kms_fd (renderer_native);
 
@@ -1294,6 +1298,14 @@ meta_monitor_manager_kms_init (MetaMonitorManagerKms *manager_kms)
   manager_kms->udev = g_udev_client_new (subsystems);
   g_signal_connect (manager_kms->udev, "uevent",
                     G_CALLBACK (on_uevent), manager_kms);
+
+  source = g_source_new (&kms_event_funcs, sizeof (MetaKmsSource));
+  manager_kms->source = (MetaKmsSource *) source;
+  manager_kms->source->fd_tag = g_source_add_unix_fd (source,
+                                                      manager_kms->fd,
+                                                      G_IO_IN | G_IO_ERR);
+  manager_kms->source->manager_kms = manager_kms;
+  g_source_attach (source, NULL);
 
   manager_kms->desktop_settings = g_settings_new ("org.gnome.desktop.interface");
 }
@@ -1364,6 +1376,104 @@ meta_monitor_manager_kms_apply_crtc_modes (MetaMonitorManagerKms *manager_kms,
     }
 }
 
+gboolean
+meta_monitor_manager_kms_flip_all_crtcs (MetaMonitorManagerKms *manager_kms,
+                                         uint32_t               fb_id,
+                                         MetaKmsFlipCallback    flip_callback,
+                                         void                  *user_data)
+{
+  MetaMonitorManager *manager = META_MONITOR_MANAGER (manager_kms);
+  MetaKmsFlipClosure *flip_closure = NULL;
+  unsigned int i;
+  gboolean fb_in_use = FALSE;
+
+  if (manager->power_save_mode != META_POWER_SAVE_ON)
+    return FALSE;
+
+  for (i = 0; i < manager->n_crtcs; i++)
+    {
+      MetaCRTC *crtc = &manager->crtcs[i];
+      uint32_t *connectors;
+      unsigned int n_connectors;
+      int ret;
+
+      get_crtc_connectors (manager, crtc, &connectors, &n_connectors);
+
+      if (n_connectors == 0)
+        continue;
+
+      fb_in_use = TRUE;
+
+      if (manager_kms->page_flips_not_supported)
+        continue;
+
+      if (!flip_closure)
+        {
+          flip_closure = g_new0 (MetaKmsFlipClosure, 1);
+          *flip_closure = (MetaKmsFlipClosure) {
+              .pending = 0,
+              .callback = flip_callback,
+              .user_data = user_data
+          };
+        }
+
+      ret = drmModePageFlip (manager_kms->fd,
+                             crtc->crtc_id,
+                             fb_id,
+                             DRM_MODE_PAGE_FLIP_EVENT,
+                             flip_closure);
+      if (ret != 0 && ret != -EACCES)
+        {
+          g_warning ("Failed to flip: %s", strerror (-ret));
+          manager_kms->page_flips_not_supported = TRUE;
+          break;
+        }
+
+      if (ret == 0)
+        flip_closure->pending++;
+    }
+
+  if (manager_kms->page_flips_not_supported && fb_in_use)
+    {
+      /* If the driver doesn't support page flipping, just set the mode directly
+       * with the new framebuffer.
+       */
+      meta_monitor_manager_kms_apply_crtc_modes (manager_kms, fb_id);
+      flip_callback (user_data);
+      g_free (flip_closure);
+    }
+
+  return fb_in_use;
+}
+
+static void
+page_flip_handler (int fd,
+                   unsigned int frame,
+                   unsigned int sec,
+                   unsigned int usec,
+                   void *data)
+{
+  MetaKmsFlipClosure *flip_closure = data;
+
+  flip_closure->pending--;
+  if (flip_closure->pending == 0)
+    flip_closure->callback (flip_closure->user_data);
+}
+
+void
+meta_monitor_manager_kms_wait_for_flip (MetaMonitorManagerKms *manager_kms)
+{
+  drmEventContext evctx;
+
+  if (manager_kms->page_flips_not_supported)
+    return;
+
+  memset (&evctx, 0, sizeof evctx);
+  evctx.version = DRM_EVENT_CONTEXT_VERSION;
+  evctx.page_flip_handler = page_flip_handler;
+  drmHandleEvent (manager_kms->fd, &evctx);
+}
+
 static void
 meta_monitor_manager_kms_dispose (GObject *object)
 {
@@ -1381,6 +1491,7 @@ meta_monitor_manager_kms_finalize (GObject *object)
   MetaMonitorManagerKms *manager_kms = META_MONITOR_MANAGER_KMS (object);
 
   free_resources (manager_kms);
+  g_source_destroy ((GSource *) manager_kms->source);
 
   G_OBJECT_CLASS (meta_monitor_manager_kms_parent_class)->finalize (object);
 }

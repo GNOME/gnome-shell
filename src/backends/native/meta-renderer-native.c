@@ -67,9 +67,6 @@ struct _MetaRendererNative
   int kms_fd;
   struct gbm_device *gbm;
   CoglClosure *swap_notify_idle;
-  gboolean page_flips_not_supported;
-
-  GList *crtcs;
 
   int width, height;
   gboolean pending_set_crtc;
@@ -89,12 +86,6 @@ G_DEFINE_TYPE_WITH_CODE (MetaRendererNative,
 
 static const CoglWinsysEGLVtable _cogl_winsys_egl_vtable;
 static const CoglWinsysVtable *parent_vtable;
-
-typedef struct _CoglFlipKMS
-{
-  CoglOnscreen *onscreen;
-  int pending;
-} CoglFlipKMS;
 
 typedef struct _CoglOnscreenKMS
 {
@@ -211,73 +202,6 @@ queue_swap_notify_for_onscreen (CoglOnscreen *onscreen)
   kms_onscreen->pending_swap_notify = TRUE;
 }
 
-static void
-process_flip (CoglFlipKMS *flip)
-{
-  /* We're only ready to dispatch a swap notification once all outputs
-   * have flipped... */
-  flip->pending--;
-  if (flip->pending == 0)
-    {
-      CoglOnscreen *onscreen = flip->onscreen;
-      CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
-      CoglOnscreenKMS *kms_onscreen = egl_onscreen->platform;
-
-      queue_swap_notify_for_onscreen (onscreen);
-
-      free_current_bo (onscreen);
-
-      kms_onscreen->current_fb_id = kms_onscreen->next_fb_id;
-      kms_onscreen->next_fb_id = 0;
-
-      kms_onscreen->current_bo = kms_onscreen->next_bo;
-      kms_onscreen->next_bo = NULL;
-
-      cogl_object_unref (flip->onscreen);
-
-      g_slice_free (CoglFlipKMS, flip);
-    }
-}
-
-static void
-page_flip_handler (int fd,
-                   unsigned int frame,
-                   unsigned int sec,
-                   unsigned int usec,
-                   void *data)
-{
-  CoglFlipKMS *flip = data;
-
-  process_flip (flip);
-}
-
-static void
-handle_drm_event (MetaRendererNative *renderer_native)
-{
-  drmEventContext evctx;
-
-  if (renderer_native->page_flips_not_supported)
-    return;
-
-  memset (&evctx, 0, sizeof evctx);
-  evctx.version = DRM_EVENT_CONTEXT_VERSION;
-  evctx.page_flip_handler = page_flip_handler;
-  drmHandleEvent (renderer_native->kms_fd, &evctx);
-}
-
-static void
-dispatch_kms_events (void *user_data, int revents)
-{
-  CoglRenderer *renderer = user_data;
-  CoglRendererEGL *egl_renderer = renderer->winsys;
-  MetaRendererNative *renderer_native = egl_renderer->platform;
-
-  if (!revents)
-    return;
-
-  handle_drm_event (renderer_native);
-}
-
 static CoglBool
 _cogl_winsys_renderer_connect (CoglRenderer *cogl_renderer,
                                CoglError **error)
@@ -315,13 +239,6 @@ _cogl_winsys_renderer_connect (CoglRenderer *cogl_renderer,
   if (!_cogl_winsys_egl_renderer_connect_common (cogl_renderer, error))
     goto fail;
 
-  _cogl_poll_renderer_add_fd (cogl_renderer,
-                              renderer_native->kms_fd,
-                              COGL_POLL_FD_EVENT_IN,
-                              NULL, /* no prepare callback */
-                              dispatch_kms_events,
-                              cogl_renderer);
-
   return TRUE;
 
 fail:
@@ -340,63 +257,6 @@ setup_crtc_modes (CoglDisplay *display, int fb_id)
     META_MONITOR_MANAGER_KMS (monitor_manager);
 
   meta_monitor_manager_kms_apply_crtc_modes (monitor_manager_kms, fb_id);
-}
-
-static void
-flip_all_crtcs (CoglDisplay *display, CoglFlipKMS *flip, int fb_id)
-{
-  CoglDisplayEGL *egl_display = display->winsys;
-  MetaRendererNative *renderer_native = egl_display->platform;
-  GList *l;
-  gboolean needs_flip = FALSE;
-
-  for (l = renderer_native->crtcs; l; l = l->next)
-    {
-      CoglKmsCrtc *crtc = l->data;
-      int ret = 0;
-
-      if (!crtc->connected || crtc->ignore)
-        continue;
-
-      needs_flip = TRUE;
-
-      if (!renderer_native->page_flips_not_supported)
-        {
-          ret = drmModePageFlip (renderer_native->kms_fd,
-                                 crtc->id, fb_id,
-                                 DRM_MODE_PAGE_FLIP_EVENT, flip);
-          if (ret != 0 && ret != -EACCES)
-            {
-              g_warning ("Failed to flip: %m");
-              renderer_native->page_flips_not_supported = TRUE;
-              break;
-            }
-        }
-
-      if (ret == 0)
-        flip->pending++;
-    }
-
-  if (renderer_native->page_flips_not_supported && needs_flip)
-    flip->pending = 1;
-}
-
-static void
-crtc_free (CoglKmsCrtc *crtc)
-{
-  g_slice_free (CoglKmsCrtc, crtc);
-}
-
-static CoglKmsCrtc *
-crtc_copy (CoglKmsCrtc *from)
-{
-  CoglKmsCrtc *new;
-
-  new = g_slice_new (CoglKmsCrtc);
-
-  *new = *from;
-
-  return new;
 }
 
 static CoglBool
@@ -491,10 +351,35 @@ _cogl_winsys_egl_cleanup_context (CoglDisplay *display)
 }
 
 static void
+flip_callback (void *user_data)
+{
+  CoglOnscreen *onscreen = user_data;
+  CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
+  CoglOnscreenKMS *kms_onscreen = egl_onscreen->platform;
+
+  queue_swap_notify_for_onscreen (onscreen);
+
+  free_current_bo (onscreen);
+
+  kms_onscreen->current_fb_id = kms_onscreen->next_fb_id;
+  kms_onscreen->next_fb_id = 0;
+
+  kms_onscreen->current_bo = kms_onscreen->next_bo;
+  kms_onscreen->next_bo = NULL;
+
+  cogl_object_unref (onscreen);
+}
+
+static void
 _cogl_winsys_onscreen_swap_buffers_with_damage (CoglOnscreen *onscreen,
                                                 const int *rectangles,
                                                 int n_rectangles)
 {
+  MetaBackend *backend = meta_get_backend ();
+  MetaMonitorManager *monitor_manager =
+    meta_backend_get_monitor_manager (backend);
+  MetaMonitorManagerKms *monitor_manager_kms =
+    META_MONITOR_MANAGER_KMS (monitor_manager);
   CoglContext *context = COGL_FRAMEBUFFER (onscreen)->context;
   CoglRenderer *renderer = context->display->renderer;
   CoglRendererEGL *egl_renderer = renderer->winsys;
@@ -502,11 +387,12 @@ _cogl_winsys_onscreen_swap_buffers_with_damage (CoglOnscreen *onscreen,
   CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
   CoglOnscreenKMS *kms_onscreen = egl_onscreen->platform;
   uint32_t handle, stride;
-  CoglFlipKMS *flip;
+  gboolean fb_in_use;
+  uint32_t next_fb_id;
 
   /* If we already have a pending swap then block until it completes */
   while (kms_onscreen->next_fb_id != 0)
-    handle_drm_event (renderer_native);
+    meta_monitor_manager_kms_wait_for_flip (monitor_manager_kms);
 
   if (kms_onscreen->pending_egl_surface)
     {
@@ -564,34 +450,27 @@ _cogl_winsys_onscreen_swap_buffers_with_damage (CoglOnscreen *onscreen,
       renderer_native->pending_set_crtc = FALSE;
     }
 
-  flip = g_slice_new0 (CoglFlipKMS);
-  flip->onscreen = onscreen;
+  next_fb_id = kms_onscreen->next_fb_id;
 
-  flip_all_crtcs (context->display, flip, kms_onscreen->next_fb_id);
+  /* Reference will either be released in flip_callback, or if the fb
+   * wasn't used, indicated by the return value below.
+   */
+  cogl_object_ref (onscreen);
+  fb_in_use = meta_monitor_manager_kms_flip_all_crtcs (monitor_manager_kms,
+                                                       next_fb_id,
+                                                       flip_callback, onscreen);
 
-  if (flip->pending == 0)
+  if (!fb_in_use)
     {
       drmModeRmFB (renderer_native->kms_fd, kms_onscreen->next_fb_id);
       gbm_surface_release_buffer (kms_onscreen->surface,
                                   kms_onscreen->next_bo);
       kms_onscreen->next_bo = NULL;
       kms_onscreen->next_fb_id = 0;
-      g_slice_free (CoglFlipKMS, flip);
-      flip = NULL;
 
       queue_swap_notify_for_onscreen (onscreen);
-    }
-  else
-    {
-      /* Ensure the onscreen remains valid while it has any pending flips... */
-      cogl_object_ref (flip->onscreen);
 
-      /* Process flip right away if we can't wait for vblank */
-      if (renderer_native->page_flips_not_supported)
-        {
-          setup_crtc_modes (context->display, kms_onscreen->next_fb_id);
-          process_flip (flip);
-        }
+      g_object_unref (onscreen);
     }
 }
 
@@ -764,8 +643,6 @@ gboolean
 meta_renderer_native_set_layout (MetaRendererNative *renderer_native,
                                  int                 width,
                                  int                 height,
-                                 CoglKmsCrtc       **crtcs,
-                                 int                 n_crtcs,
                                  GError            **error)
 {
   ClutterBackend *clutter_backend = clutter_get_default_backend ();
@@ -774,8 +651,6 @@ meta_renderer_native_set_layout (MetaRendererNative *renderer_native,
   CoglDisplayEGL *egl_display = cogl_display->winsys;
   CoglRenderer *renderer = cogl_display->renderer;
   CoglRendererEGL *egl_renderer = renderer->winsys;
-  GList *crtc_list;
-  int i;
 
   if ((width != renderer_native->width ||
        height != renderer_native->height) &&
@@ -844,37 +719,9 @@ meta_renderer_native_set_layout (MetaRendererNative *renderer_native,
   renderer_native->width = width;
   renderer_native->height = height;
 
-  g_list_free_full (renderer_native->crtcs, (GDestroyNotify) crtc_free);
-
-  crtc_list = NULL;
-  for (i = 0; i < n_crtcs; i++)
-    {
-      crtc_list = g_list_prepend (crtc_list, crtc_copy (crtcs[i]));
-    }
-  crtc_list = g_list_reverse (crtc_list);
-  renderer_native->crtcs = crtc_list;
-
   renderer_native->pending_set_crtc = TRUE;
 
   return TRUE;
-}
-
-void
-meta_renderer_native_set_ignore_crtc (MetaRendererNative *renderer_native,
-                                      uint32_t            id,
-                                      gboolean            ignore)
-{
-  GList *l;
-
-  for (l = renderer_native->crtcs; l; l = l->next)
-    {
-      CoglKmsCrtc *crtc = l->data;
-      if (crtc->id == id)
-        {
-          crtc->ignore = ignore;
-          break;
-        }
-    }
 }
 
 static const CoglWinsysVtable *
@@ -965,8 +812,6 @@ static void
 meta_renderer_native_finalize (GObject *object)
 {
   MetaRendererNative *renderer_native = META_RENDERER_NATIVE (object);
-
-  g_list_free_full (renderer_native->crtcs, (GDestroyNotify) crtc_free);
 
   g_clear_pointer (&renderer_native->dummy_gbm_surface, gbm_surface_destroy);
   g_clear_pointer (&renderer_native->gbm, gbm_device_destroy);
