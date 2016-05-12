@@ -40,6 +40,9 @@ const SystemdLoginSessionIface = '<node> \
 <signal name="Lock" /> \
 <signal name="Unlock" /> \
 <property name="Active" type="b" access="read" /> \
+<method name="SetLockedHint"> \
+    <arg type="b" direction="in"/> \
+</method> \
 </interface> \
 </node>';
 

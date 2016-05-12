@@ -559,6 +559,9 @@ const ScreenShield = new Lang.Class({
         if (prevIsActive != this._isActive)
             this.emit('active-changed');
 
+        if (this._loginSession)
+            this._loginSession.SetLockedHintRemote(active);
+
         this._syncInhibitor();
     },
 
