@@ -142,15 +142,19 @@ meta_stack_remove (MetaStack  *stack,
   stack->added = g_list_remove (stack->added, window);
   stack->sorted = g_list_remove (stack->sorted, window);
 
-  /* Remember the window ID to remove it from the stack array.
-   * The macro is safe to use: Window is guaranteed to be 32 bits, and
-   * GUINT_TO_POINTER says it only works on 32 bits.
-   */
-  stack->removed = g_list_prepend (stack->removed,
-                                   GUINT_TO_POINTER (window->xwindow));
-  if (window->frame)
-    stack->removed = g_list_prepend (stack->removed,
-                                     GUINT_TO_POINTER (window->frame->xwindow));
+  /* stack->removed is only used to update stack->xwindows */
+  if (window->client_type == META_WINDOW_CLIENT_TYPE_X11)
+    {
+      /* Remember the window ID to remove it from the stack array.
+       * The macro is safe to use: Window is guaranteed to be 32 bits, and
+       * GUINT_TO_POINTER says it only works on 32 bits.
+       */
+      stack->removed = g_list_prepend (stack->removed,
+                                       GUINT_TO_POINTER (window->xwindow));
+      if (window->frame)
+        stack->removed = g_list_prepend (stack->removed,
+                                         GUINT_TO_POINTER (window->frame->xwindow));
+    }
 
   stack_sync_to_xserver (stack);
   meta_stack_update_window_tile_matches (stack, window->screen->active_workspace);
@@ -849,29 +853,20 @@ static void
 stack_do_window_additions (MetaStack *stack)
 {
   GList *tmp;
-  gint i, n_added;
+  gint n_added;
 
   n_added = g_list_length (stack->added);
   if (n_added > 0)
     {
-      Window *end;
-      int old_size;
-
       meta_topic (META_DEBUG_STACK,
                   "Adding %d windows to sorted list\n",
                   n_added);
-
-      old_size = stack->xwindows->len;
-      g_array_set_size (stack->xwindows, old_size + n_added);
-
-      end = &g_array_index (stack->xwindows, Window, old_size);
 
       /* stack->added has the most recent additions at the
        * front of the list, so we need to reverse it
        */
       stack->added = g_list_reverse (stack->added);
 
-      i = 0;
       tmp = stack->added;
       while (tmp != NULL)
         {
@@ -879,12 +874,12 @@ stack_do_window_additions (MetaStack *stack)
 
           w = tmp->data;
 
-          end[i] = w->xwindow;
+          if (w->client_type == META_WINDOW_CLIENT_TYPE_X11)
+            g_array_append_val (stack->xwindows, w->xwindow);
 
           /* add to the main list */
           stack->sorted = g_list_prepend (stack->sorted, w);
 
-          ++i;
           tmp = tmp->next;
         }
 
@@ -1070,7 +1065,8 @@ stack_sync_to_xserver (MetaStack *stack)
       meta_topic (META_DEBUG_STACK, "%u:%d - %s ",
 		  w->layer, w->stack_position, w->desc);
 
-      g_array_append_val (x11_stacked, w->xwindow);
+      if (w->client_type == META_WINDOW_CLIENT_TYPE_X11)
+        g_array_append_val (x11_stacked, w->xwindow);
 
       if (w->frame)
 	top_level_window = w->frame->xwindow;
