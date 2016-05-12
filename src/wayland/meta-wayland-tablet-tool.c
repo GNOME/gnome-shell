@@ -31,7 +31,7 @@
 #include <wayland-server.h>
 #include "tablet-unstable-v2-server-protocol.h"
 #include "meta-wayland-private.h"
-#include "meta-wayland-surface-role-cursor.h"
+#include "meta-wayland-surface-role-tablet-cursor.h"
 #include "meta-surface-actor-wayland.h"
 #include "meta-wayland-tablet.h"
 #include "meta-wayland-tablet-seat.h"
@@ -439,7 +439,7 @@ tool_set_cursor (struct wl_client   *client,
 
   if (surface &&
       !meta_wayland_surface_assign_role (surface,
-                                         META_TYPE_WAYLAND_SURFACE_ROLE_CURSOR))
+                                         META_TYPE_WAYLAND_SURFACE_ROLE_TABLET_CURSOR))
     {
       wl_resource_post_error (resource, WL_POINTER_ERROR_ROLE,
                               "wl_surface@%d already has a different role",
