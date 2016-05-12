@@ -63,6 +63,7 @@ clutter_input_device_tool_evdev_new (struct libinput_tablet_tool *tool,
   evdev_tool = g_object_new (CLUTTER_TYPE_INPUT_DEVICE_TOOL_EVDEV,
                              "type", type,
                              "serial", serial,
+                             "id", libinput_tablet_tool_get_tool_id (tool),
                              NULL);
 
   evdev_tool->tool = libinput_tablet_tool_ref (tool);
